@@ -1,5 +1,4 @@
-" Vim syntax file for the mutt progress patch
+" Vim syntax file for the NeoMutt progress feature.
 
 syntax keyword muttrcColorField contained progress
 
-" vim: syntax=vim

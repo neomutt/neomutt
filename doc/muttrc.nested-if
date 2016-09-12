@@ -1,6 +1,6 @@
-# Example Mutt config file for the 'nested-if' feature.
+# Example NeoMutt config file for the nested-if feature.
 
-# This patch uses the format: '%<VAR?TRUE&FALSE>' for conditional
+# This feature uses the format: '%<VAR?TRUE&FALSE>' for conditional
 # format strings that can be nested.
 
 # Example 1

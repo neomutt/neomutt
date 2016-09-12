@@ -1,4 +1,4 @@
-# Example Mutt config file for the 'new-mail-command' patch.
+# Example NeoMutt config file for the new-mail feature.
 
 # --------------------------------------------------------------------------
 # VARIABLES - shown with their default values

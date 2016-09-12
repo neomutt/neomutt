@@ -1,12 +1,12 @@
-# Example Mutt config file for the 'ifdef' feature.
+# Example NeoMutt config file for the ifdef feature.
 
 # This feature introduces three useful commands which allow you to share
 # one config file between versions of Mutt that may have different
 # features compiled in.
 
-#	ifdef  symbol config-command [args...]
-#	ifndef symbol config-command [args...]
-#	finish                                
+#   ifdef  symbol config-command [args...]
+#   ifndef symbol config-command [args...]
+#   finish
 
 # The 'ifdef' command tests whether Mutt understands the name of
 # a variable, function, command or compile-time symbol.

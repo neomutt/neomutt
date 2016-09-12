@@ -1,6 +1,6 @@
-# Example Mutt config file for the 'forgotten attachments' patch.
+# Example NeoMutt config file for the forgotten-attachment feature.
 
-# The 'forgotten attachments' patch provides a new setting for Mutt that
+# The 'forgotten-attachment' feature provides a new setting for Mutt that
 # alerts the user if the message body contains a certain keyword but there are
 # no attachments added. This is meant to ensure that the user does not forget
 # to attach a file after promising to do so in the mail.

@@ -1,6 +1,6 @@
-# Example Mutt config file for the 'initials' patch.
+# Example NeoMutt config file for the initials feature.
 
-# The 'initials' patch has no config of its own.
+# The 'initials' feature has no config of its own.
 # It adds an expando for an author's initials,
 # which can be used in the 'index_format' variable.
 

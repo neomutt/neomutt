@@ -1,6 +1,6 @@
-# Example Mutt config file for the 'status-color' patch.
+# Example NeoMutt config file for the status-color feature.
 
-# The 'status-color' patch allows you to theme different parts of
+# The 'status-color' feature allows you to theme different parts of
 # the status bar (also when it's used by the index).
 
 # For the examples below, set some defaults

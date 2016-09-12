@@ -1,4 +1,4 @@
-" Vim syntax file for the mutt nntp patch
+" Vim syntax file for the NeoMutt nntp feature.
 
 syntax keyword muttrcVarBool    contained skipwhite ask_follow_up         nextgroup=muttrcSetBoolAssignment,muttrcVPrefix,muttrcVarBool,muttrcVarQuad,muttrcVarNum,muttrcVarStr
 syntax keyword muttrcVarBool    contained skipwhite ask_x_comment_to      nextgroup=muttrcSetBoolAssignment,muttrcVPrefix,muttrcVarBool,muttrcVarQuad,muttrcVarNum,muttrcVarStr
@@ -13,9 +13,9 @@ syntax keyword muttrcVarBool    contained skipwhite x_comment_to          nextgr
 syntax keyword muttrcVarNum     contained skipwhite nntp_context          nextgroup=muttrcSetNumAssignment,muttrcVPrefix,muttrcVarBool,muttrcVarQuad,muttrcVarNum,muttrcVarStr
 syntax keyword muttrcVarNum     contained skipwhite nntp_poll             nextgroup=muttrcSetNumAssignment,muttrcVPrefix,muttrcVarBool,muttrcVarQuad,muttrcVarNum,muttrcVarStr
 
-syn keyword muttrcVarQuad	contained skipwhite catchup_newsgroup     nextgroup=muttrcSetQuadAssignment,muttrcVPrefix,muttrcVarBool,muttrcVarQuad,muttrcVarNum,muttrcVarStr
-syn keyword muttrcVarQuad	contained skipwhite followup_to_poster    nextgroup=muttrcSetQuadAssignment,muttrcVPrefix,muttrcVarBool,muttrcVarQuad,muttrcVarNum,muttrcVarStr
-syn keyword muttrcVarQuad	contained skipwhite post_moderated        nextgroup=muttrcSetQuadAssignment,muttrcVPrefix,muttrcVarBool,muttrcVarQuad,muttrcVarNum,muttrcVarStr
+syntax keyword muttrcVarQuad    contained skipwhite catchup_newsgroup     nextgroup=muttrcSetQuadAssignment,muttrcVPrefix,muttrcVarBool,muttrcVarQuad,muttrcVarNum,muttrcVarStr
+syntax keyword muttrcVarQuad    contained skipwhite followup_to_poster    nextgroup=muttrcSetQuadAssignment,muttrcVPrefix,muttrcVarBool,muttrcVarQuad,muttrcVarNum,muttrcVarStr
+syntax keyword muttrcVarQuad    contained skipwhite post_moderated        nextgroup=muttrcSetQuadAssignment,muttrcVPrefix,muttrcVarBool,muttrcVarQuad,muttrcVarNum,muttrcVarStr
 
 syntax keyword muttrcVarStr     contained skipwhite group_index_format    nextgroup=muttrcVarEqualsIdxFmt
 syntax keyword muttrcVarStr     contained skipwhite inews                 nextgroup=muttrcVarEqualsIdxFmt
@@ -27,24 +27,23 @@ syntax keyword muttrcVarStr     contained skipwhite nntp_authenticators   nextgr
 syntax keyword muttrcVarStr     contained skipwhite nntp_pass             nextgroup=muttrcVarEqualsIdxFmt
 syntax keyword muttrcVarStr     contained skipwhite nntp_user             nextgroup=muttrcVarEqualsIdxFmt
 
-syntax match muttrcFunction     contained "\<attach-news-message>"
-syntax match muttrcFunction     contained "\<catchup>"
-syntax match muttrcFunction     contained "\<change-newsgroup-readonly>"
-syntax match muttrcFunction     contained "\<change-newsgroup>"
-syntax match muttrcFunction     contained "\<edit-followup-to>"
-syntax match muttrcFunction     contained "\<edit-newsgroups>"
-syntax match muttrcFunction     contained "\<edit-x-comment-to>"
-syntax match muttrcFunction     contained "\<followup-message>"
-syntax match muttrcFunction     contained "\<forward-to-group>"
-syntax match muttrcFunction     contained "\<get-children>"
-syntax match muttrcFunction     contained "\<get-message>"
-syntax match muttrcFunction     contained "\<get-parent>"
-syntax match muttrcFunction     contained "\<post-message>"
-syntax match muttrcFunction     contained "\<reconstruct-thread>"
-syntax match muttrcFunction     contained "\<reload-active>"
-syntax match muttrcFunction     contained "\<subscribe-pattern>"
-syntax match muttrcFunction     contained "\<toggle-read>"
-syntax match muttrcFunction     contained "\<uncatchup>"
-syntax match muttrcFunction     contained "\<unsubscribe-pattern>"
+syntax match muttrcFunction     contained "\<attach-news-message\>"
+syntax match muttrcFunction     contained "\<catchup\>"
+syntax match muttrcFunction     contained "\<change-newsgroup-readonly\>"
+syntax match muttrcFunction     contained "\<change-newsgroup\>"
+syntax match muttrcFunction     contained "\<edit-followup-to\>"
+syntax match muttrcFunction     contained "\<edit-newsgroups\>"
+syntax match muttrcFunction     contained "\<edit-x-comment-to\>"
+syntax match muttrcFunction     contained "\<followup-message\>"
+syntax match muttrcFunction     contained "\<forward-to-group\>"
+syntax match muttrcFunction     contained "\<get-children\>"
+syntax match muttrcFunction     contained "\<get-message\>"
+syntax match muttrcFunction     contained "\<get-parent\>"
+syntax match muttrcFunction     contained "\<post-message\>"
+syntax match muttrcFunction     contained "\<reconstruct-thread\>"
+syntax match muttrcFunction     contained "\<reload-active\>"
+syntax match muttrcFunction     contained "\<subscribe-pattern\>"
+syntax match muttrcFunction     contained "\<toggle-read\>"
+syntax match muttrcFunction     contained "\<uncatchup\>"
+syntax match muttrcFunction     contained "\<unsubscribe-pattern\>"
 
-" vim: syntax=vim

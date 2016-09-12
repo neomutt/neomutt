@@ -1,4 +1,4 @@
-# Example Mutt config file for the 'index-color' feature.
+# Example NeoMutt config file for the index-color feature.
 
 # Entire index line
 color index white black '.*'

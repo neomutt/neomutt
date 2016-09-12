@@ -777,7 +777,7 @@ set sidebar_divider_char = '│'          <emphasis role="comment"># Pretty line
           after the last separator.
         </para>
         <para>
-          Add some mailboxes of diffent depths.
+          Add some mailboxes of different depths.
         </para>
 <screen>
 set folder="~/mail"
@@ -815,7 +815,7 @@ set sidebar_delim_chars="/"             <emphasis role="comment"># Delete everyt
           in a tree.
         </para>
         <para>
-          Add some mailboxes of diffent depths.
+          Add some mailboxes of different depths.
         </para>
 <screen>
 set folder="~/mail"
@@ -858,7 +858,7 @@ set sidebar_indent_string="  "          <emphasis role="comment"># Indent with t
         <para>
           Sometimes, it will be necessary to add mailboxes, that you
           don't use, to fill in part of the tree.  This will trade
-          vertical space for horizonal space (but it looks good).
+          vertical space for horizontal space (but it looks good).
         </para>
       </sect5>
     </sect4>
@@ -919,7 +919,7 @@ color sidebar_divider   color8  default         <emphasis role="comment"># Dark 
           <row>
             <entry></entry>
             <entry><literal>sidebar_highlight</literal></entry>
-            <entry>Mailbox is highlighed</entry>
+            <entry>Mailbox is highlighted</entry>
           </row>
           <row>
             <entry></entry>
@@ -2383,7 +2383,7 @@ See also the <link linkend="postpone">$postpone</link> quad-option.
 </para>
 
 <para>
-  You may specify your own location for the user config file using the 
+  You may specify your own location for the user config file using the
   <quote>-F</quote> option on the <link linkend="commandline">command line</link>.
 </para>
 
@@ -6706,7 +6706,7 @@ threads and quickly find topics of value.
 <para>
 Mutt has supported textual labels (usually known as X-Labels after
 the header that we use to store them) for many years.  Since we
-initially added support for X-Lanels, however, the larger community
+initially added support for X-Labels, however, the larger community
 has evolved more common ways of using and managing such labels, often
 known as <quote>keywords</quote> or <quote>tags</quote>.
 </para>
@@ -8289,128 +8289,6 @@ for example, in a global <literal>.muttrc</literal>.
 
 </sect1>
 
-<sect1 id="sensible-browser">
-  <title>Sensible-Browser Patch</title>
-  <subtitle>Make the file browser behave</subtitle>
-
-  <sect2 id="sensible-browser-patch">
-    <title>Patch</title>
-
-    <para>
-      To check if Mutt supports <quote>sensible-browser</quote>, look for
-      <quote>patch-sensible-browser</quote> in the mutt version.
-      See: <xref linkend="mutt-patches"/>.
-    </para>
-
-    <itemizedlist>
-      <title>Dependencies:</title>
-      <listitem><para>mutt-1.7.0</para></listitem>
-    </itemizedlist>
-
-    <para>This patch is part of the <ulink url="http://www.neomutt.org/">NeoMutt Project</ulink>.</para>
-  </sect2>
-
-  <sect2 id="sensible-browser-intro">
-    <title>Introduction</title>
-
-    <para>
-      The <quote>sensible browser</quote> is a set of small changes to NeoMutt's
-      mailbox browser which make the browser behave in a more predictable way.
-    </para>
-
-    <para>
-      The behaviour is divided into two use cases: Fixed Order; Variable Order.
-    </para>
-
-    <sect3 id="sensible-browser-sort-fixed">
-      <title>A Fixed Order of Mailboxes</title>
-
-      <para>
-        This is for users who like their mailboxes in a fixed order, e.g.
-        alphabetical, or unsorted (in the order of the config file).
-      </para>
-
-<screen>
-<emphasis role="comment"># Fixed order</emphasis>
-set sort_browser="alpha"
-set sort_browser="unsorted"
-</screen>
-
-      <para>
-        When you first start the browser, e.g. <literal>c?</literal> your current
-        mailbox will be highlighted.
-      </para>
-
-      <para>
-        When you navigate to a parent mailbox (<quote>..</quote>) your old mailbox
-        will be highlighted.
-      </para>
-
-      <para>
-        <quote>..</quote> will always be listed at the top, however the rest of
-        the list is sorted.
-      </para>
-
-    </sect3>
-
-    <sect3 id="sensible-browser-sort-variable">
-      <title>A Variable Order of Mailboxes</title>
-
-      <para>
-        This is for users who like their mailboxes sorted by a characteristic
-        that changes, e.g. count of new mail, or the size of mailbox.
-      </para>
-
-<screen>
-<emphasis role="comment"># Variable order</emphasis>
-set sort_browser="reverse-count"
-set sort_browser="reverse-size"
-</screen>
-
-      <para>
-        When you first start the browser, e.g. <literal>c?</literal> the
-        highlight will be on the first mailbox, e.g. the one with the most new
-        mail.
-      </para>
-
-      <para>
-        When you navigate to a parent mailbox (<quote>..</quote>) your old mailbox
-        will be highlighted.
-      </para>
-
-      <para>
-        <quote>..</quote> will always be listed at the top, however the rest of
-        the list is sorted.
-      </para>
-
-    </sect3>
-
-  </sect2>
-
-  <sect2 id="sensible-browser-see-also">
-    <title>See Also</title>
-
-    <itemizedlist>
-      <listitem><para><ulink url="http://www.neomutt.org/">NeoMutt Project</ulink></para></listitem>
-      <listitem><para><link linkend="folder-format">$folder_format</link></para></listitem>
-    </itemizedlist>
-  </sect2>
-
-  <sect2 id="sensible-browser-known-bugs">
-    <title>Known Bugs</title>
-    <para>None</para>
-  </sect2>
-
-  <sect2 id="sensible-browser-credits">
-    <title>Credits</title>
-    <itemizedlist>
-    <listitem><para>Pierre-Elliott Bécue <email>becue@crans.org</email></para></listitem>
-    <listitem><para>Haakon Riiser <email>haakon.riiser@fys.uio.no</email></para></listitem>
-    <listitem><para>Richard Russon <email>rich@flatcap.org</email></para></listitem>
-    </itemizedlist>
-  </sect2>
-</sect1>
-
 </chapter>
 
 <chapter id="optionalfeatures">
@@ -9069,15 +8947,15 @@ please have a look at the mixmaster documentation.
 </sect1>
 
 <sect1 id="attach-headers-color">
-  <title>attach-headers-color Patch</title>
+  <title>attach-headers-color Feature</title>
   <subtitle>Color attachment headers using regexp, just like mail bodies</subtitle>
 
-  <sect2 id="attach-headers-color-patch">
-    <title>Patch</title>
+  <sect2 id="attach-headers-color-support">
+    <title>Support</title>
 
     <para>
-      To check if Mutt supports <quote>attach-headers-color</quote>, look for
-      <quote>patch-attach-headers-color</quote> in the mutt version.
+      To check if NeoMutt supports <quote>attach-headers-color</quote>, look for
+      <quote>patch-attach-headers-color</quote> in the version info.
       See: <xref linkend="mutt-patches"/>.
     </para>
 
@@ -9086,14 +8964,14 @@ please have a look at the mixmaster documentation.
       <listitem><para>mutt-1.7.0</para></listitem>
     </itemizedlist>
 
-    <para>This patch is part of the <ulink url="http://www.neomutt.org/">NeoMutt Project</ulink>.</para>
+    <para>This feature is part of the <ulink url="http://www.neomutt.org/">NeoMutt Project</ulink>.</para>
   </sect2>
 
   <sect2 id="attach-headers-color-intro">
     <title>Introduction</title>
 
     <para>
-      This patch allows specifying regexps to color attachment headers just like the mail body would.
+      This feature allows specifying regexps to color attachment headers just like the mail body would.
       The headers are the parts colored by the <literal>attachment</literal> color. Coloring them is
       useful to highlight the results of GPGME's signature checks or simply the mimetype or size of
       the attachment. Only the part matched by the regexp is colored.
@@ -9117,28 +8995,32 @@ color attach_headers foreground background pattern
   <sect2 id="attach-headers-color-muttrc">
     <title>Muttrc</title>
 <screen>
-<emphasis role="comment"># Color if the attachment is autoviewed</emphasis>
-color   attach_headers     brightgreen     default        "Autoview"
- 
+<emphasis role="comment"># Example NeoMutt config file for the attach-headers-color feature.
+
+# Color if the attachment is autoviewed</emphasis>
+color   attach_headers     brightgreen     default        &quot;Autoview&quot;
+
 <emphasis role="comment"># Color only the brackets around the headers</emphasis>
-color   attach_headers     brightyellow    default        "^\\[--"
-color   attach_headers     brightyellow    default        "--]$"
- 
-<emphasis role="comment"># Highlight the mime type and size</emphasis>
-color   attach_headers     green           default        "Type: [a-z]+/[a-z]"
-color   attach_headers     green           default        "Size: [0-9\.]+[KM]"
- 
+color   attach_headers     brightyellow    default        &quot;^\\[--&quot;
+color   attach_headers     brightyellow    default        &quot;--]$&quot;
+
+<emphasis role="comment"># Color the mime type and the size</emphasis>
+color   attach_headers     green           default        &quot;Type: [a-z]+/[a-z0-9\-]+&quot;
+color   attach_headers     green           default        &quot;Size: [0-9\.]+[KM]&quot;
+
 <emphasis role="comment"># Color GPGME signature checks</emphasis>
-color   attach_headers     brightgreen     default        "Good signature from.*"
-color   attach_headers     brightred       default        "Bad signature from.*"
-color   attach_headers     brightred       default        "BAD signature from.*"
-color   attach_headers     brightred       default        "Note: This key has expired!"
-color   attach_headers     brightmagenta   default        "Problem signature from.*"
-color   attach_headers     brightmagenta   default        "WARNING: This key is not certified with a trusted signature!"
-color   attach_headers     brightmagenta   default        "         There is no indication that the signature belongs to the owner."
-color   attach_headers     brightmagenta   default        "can't handle these multiple signatures"
-color   attach_headers     brightmagenta   default        "signature verification suppressed"
-color   attach_headers     brightmagenta   default        "invalid node with packet of type"
+color   attach_headers     brightgreen     default        &quot;Good signature from.*&quot;
+color   attach_headers     brightred       default        &quot;Bad signature from.*&quot;
+color   attach_headers     brightred       default        &quot;BAD signature from.*&quot;
+color   attach_headers     brightred       default        &quot;Note: This key has expired!&quot;
+color   attach_headers     brightmagenta   default        &quot;Problem signature from.*&quot;
+color   attach_headers     brightmagenta   default        &quot;WARNING: This key is not certified with a trusted signature!&quot;
+color   attach_headers     brightmagenta   default        &quot;         There is no indication that the signature belongs to the owner.&quot;
+color   attach_headers     brightmagenta   default        &quot;can't handle these multiple signatures&quot;
+color   attach_headers     brightmagenta   default        &quot;signature verification suppressed&quot;
+color   attach_headers     brightmagenta   default        &quot;invalid node with packet of type&quot;
+
+<emphasis role="comment"># vim: syntax=muttrc</emphasis>
 </screen>
   </sect2>
 
@@ -9166,15 +9048,15 @@ color   attach_headers     brightmagenta   default        "invalid node with pac
 </sect1>
 
 <sect1 id="compress">
-  <title>Compressed Folders Patch</title>
+  <title>Compressed Folders Feature</title>
   <subtitle>Read from/write to compressed mailboxes</subtitle>
 
-  <sect2 id="compress-patch">
-    <title>Patch</title>
+  <sect2 id="compress-support">
+    <title>Support</title>
 
     <para>
-      To check if Mutt supports <quote>Compress Folders</quote>, look for
-      <quote>+USE_COMPRESSED</quote> in the mutt version.
+      To check if NeoMutt supports <quote>Compress Folders</quote>, look for
+      <quote>+USE_COMPRESSED</quote> in the version info.
       See: <xref linkend="compile-time-features"/>.
     </para>
 
@@ -9183,7 +9065,7 @@ color   attach_headers     brightmagenta   default        "invalid node with pac
       <listitem><para>mutt-1.7.0</para></listitem>
     </itemizedlist>
 
-    <para>This patch is part of the <ulink url="http://www.neomutt.org/">NeoMutt Project</ulink>.</para>
+    <para>This feature is part of the <ulink url="http://www.neomutt.org/">NeoMutt Project</ulink>.</para>
   </sect2>
 
   <sect2 id="compress-intro">
@@ -9351,7 +9233,7 @@ color   attach_headers     brightmagenta   default        "invalid node with pac
 
       <note>
         <para>
-          If the folder has not been modifed, the
+          If the folder has not been modified, the
           <literal>close-hook</literal> will not be called.
         </para>
       </note>
@@ -9453,43 +9335,43 @@ color   attach_headers     brightmagenta   default        "invalid node with pac
   <sect2 id="compress-muttrc">
     <title>Muttrc</title>
 <screen>
-<emphasis role="comment"># Example Mutt config file for the 'compressed folders' feature.
- 
+<emphasis role="comment"># Example NeoMutt config file for the compress feature.
+
 # This feature adds three hooks to Mutt which allow it to
 # work with compressed, or encrypted, mailboxes.
- 
+
 # The hooks are of the form:
 #       open-hook   regexp &quot;shell-command&quot;
 #       close-hook  regexp &quot;shell-command&quot;
 #       append-hook regexp &quot;shell-command&quot;
- 
+
 # The 'append-hook' is optional.
- 
-# Hander for gzip compressed mailboxes</emphasis>
+
+# Handler for gzip compressed mailboxes</emphasis>
 open-hook   '\.gz$'  &quot;gzip -cd  '%f' &gt;  '%t'&quot;
 close-hook  '\.gz$'  &quot;gzip -c   '%t' &gt;  '%f'&quot;
 append-hook '\.gz$'  &quot;gzip -c   '%t' &gt;&gt; '%f'&quot;
- 
-<emphasis role="comment"># Hander for bzip2 compressed mailboxes</emphasis>
+
+<emphasis role="comment"># Handler for bzip2 compressed mailboxes</emphasis>
 open-hook   '\.bz2$' &quot;bzip2 -cd '%f' &gt;  '%t'&quot;
 close-hook  '\.bz2$' &quot;bzip2 -c  '%t' &gt;  '%f'&quot;
 append-hook '\.bz2$' &quot;bzip2 -c  '%t' &gt;&gt; '%f'&quot;
- 
-<emphasis role="comment"># Hander for xz compressed mailboxes</emphasis>
+
+<emphasis role="comment"># Handler for xz compressed mailboxes</emphasis>
 open-hook   '\.xz$'  &quot;xz    -cd '%f' &gt;  '%t'&quot;
 close-hook  '\.xz$'  &quot;xz    -c  '%t' &gt;  '%f'&quot;
 append-hook '\.xz$'  &quot;xz    -c  '%t' &gt;&gt; '%f'&quot;
- 
-<emphasis role="comment"># Hander for pgp encrypted mailboxes
+
+<emphasis role="comment"># Handler for pgp encrypted mailboxes
 # PGP does not support appending to an encrypted file</emphasis>
 open-hook   '\.pgp$' &quot;pgp -f &lt; '%f' &gt; '%t'&quot;
 close-hook  '\.pgp$' &quot;pgp -fe YourPgpUserIdOrKeyId &lt; '%t' &gt; '%f'&quot;
- 
-<emphasis role="comment"># Hander for gpg encrypted mailboxes
+
+<emphasis role="comment"># Handler for gpg encrypted mailboxes
 # gpg does not support appending to an encrypted file</emphasis>
 open-hook   '\.gpg$' &quot;gpg --decrypt &lt; '%f' &gt; '%t'&quot;
 close-hook  '\.gpg$' &quot;gpg --encrypt --recipient YourGpgUserIdOrKeyId &lt; '%t' &gt; '%f'&quot;
- 
+
 <emphasis role="comment"># vim: syntax=muttrc</emphasis>
 </screen>
   </sect2>
@@ -9529,15 +9411,15 @@ close-hook  '\.gpg$' &quot;gpg --encrypt --recipient YourGpgUserIdOrKeyId &lt; '
 </sect1>
 
 <sect1 id="cond-date">
-  <title>Conditional Dates Patch</title>
+  <title>Conditional Dates Feature</title>
   <subtitle>Use rules to choose date format</subtitle>
 
-  <sect2 id="cond-date-patch">
-    <title>Patch</title>
+  <sect2 id="cond-date-support">
+    <title>Support</title>
 
     <para>
-      To check if Mutt supports <quote>Conditional Dates</quote>, look for
-      <quote>patch-cond-date</quote> in the mutt version.
+      To check if NeoMutt supports <quote>Conditional Dates</quote>, look for
+      <quote>patch-cond-date</quote> in the version info.
       See: <xref linkend="mutt-patches"/>.
     </para>
 
@@ -9548,7 +9430,7 @@ close-hook  '\.gpg$' &quot;gpg --encrypt --recipient YourGpgUserIdOrKeyId &lt; '
     </itemizedlist>
 
     <para>
-      This patch is part of the <ulink url="http://www.neomutt.org/">NeoMutt Project</ulink>.
+      This feature is part of the <ulink url="http://www.neomutt.org/">NeoMutt Project</ulink>.
     </para>
   </sect2>
 
@@ -9566,7 +9448,7 @@ close-hook  '\.gpg$' &quot;gpg --encrypt --recipient YourGpgUserIdOrKeyId &lt; '
     </para>
 
     <para>
-    The format is configurable but only per-mailbox.  This patch allows you
+    The format is configurable but only per-mailbox.  This feature allows you
     to configure the display depending on the age of the email.
     </para>
 
@@ -9752,7 +9634,7 @@ close-hook  '\.gpg$' &quot;gpg --encrypt --recipient YourGpgUserIdOrKeyId &lt; '
 <screen>
 %?[1m?%[%b %d]&amp;%[%Y-%m-%d]?
 </screen>
- 
+
       <para>
         Reparsed a little, for clarity, you can see the
         test condition and the two format strings.
@@ -9813,7 +9695,7 @@ close-hook  '\.gpg$' &quot;gpg --encrypt --recipient YourGpgUserIdOrKeyId &lt; '
       </table>
 
       <para>The $index_format string would contain:</para>
- 
+
 <screen>
 %&lt;[y?%&lt;[m?%&lt;[d?%[%H:%M ]&amp;%[%a %d]&gt;&amp;%[%b %d]&gt;&amp;%[%m/%y ]&gt;
 </screen>
@@ -9860,21 +9742,21 @@ DDD = %[%m/%y ]
   <sect2 id="cond-date-muttrc">
     <title>Muttrc</title>
 <screen>
-<emphasis role="comment"># Example Mutt config file for the 'cond-date' feature.
+<emphasis role="comment"># Example NeoMutt config file for the cond-date feature.
 #
 # The default index_format is:
 #       '%4C %Z %{%b %d} %-15.15L (%?l?%4l&amp;%4c?) %s'
 #
 # We replace the date field '%{%b %d}', giving:</emphasis>
 set index_format='%4C %Z %&lt;[y?%&lt;[m?%&lt;[d?%[%H:%M ]&amp;%[%a %d]&gt;&amp;%[%b %d]&gt;&amp;%[%m/%y ]&gt; %-15.15L (%?l?%4l&amp;%4c?) %s'
- 
+
 <emphasis role="comment"># Test  Date Range  Format String  Example
 # --------------------------------------------
 # %[d   Today       %[%H:%M ]      12:34
 # %[m   This month  %[%a %d]       Thu 12
 # %[y   This year   %[%b %d]       Dec 10
 # -     Older       %[%m/%y ]      06/15
- 
+
 # vim: syntax=muttrc</emphasis>
 </screen>
   </sect2>
@@ -9897,7 +9779,7 @@ set index_format='%4C %Z %&lt;[y?%&lt;[m?%&lt;[d?%[%H:%M ]&amp;%[%a %d]&gt;&amp;
       Date parsing doesn't quite do what you expect.
       <quote>1w</quote> doesn't mean the <quote>in the last 7 days</quote>, but
       <quote><emphasis>this</emphasis> week</quote>.  This doesn't match
-      the normal Mutt behaviour: for example <literal>~d>1w</literal>
+      the normal Mutt behavior: for example <literal>~d>1w</literal>
       means emails dated in the last 7 days.
     </para>
 
@@ -9914,15 +9796,15 @@ set index_format='%4C %Z %&lt;[y?%&lt;[m?%&lt;[d?%[%H:%M ]&amp;%[%a %d]&gt;&amp;
 </sect1>
 
 <sect1 id="encrypt-to-self">
-  <title>Encrypt-to-Self Patch</title>
+  <title>Encrypt-to-Self Feature</title>
   <subtitle>Save a self-encrypted copy of emails</subtitle>
 
-  <sect2 id="encrypt-to-self-patch">
-    <title>Patch</title>
+  <sect2 id="encrypt-to-self-support">
+    <title>Support</title>
 
     <para>
-      To check if Mutt supports <quote>encrypt-to-self</quote>, look for
-      <quote>patch-encrypt-to-self</quote> in the mutt version.
+      To check if NeoMutt supports <quote>encrypt-to-self</quote>, look for
+      <quote>patch-encrypt-to-self</quote> in the version info.
       See: <xref linkend="mutt-patches"/>.
     </para>
 
@@ -9931,7 +9813,7 @@ set index_format='%4C %Z %&lt;[y?%&lt;[m?%&lt;[d?%[%H:%M ]&amp;%[%a %d]&gt;&amp;
       <listitem><para>mutt-1.7.0</para></listitem>
     </itemizedlist>
 
-    <para>This patch is part of the <ulink url="http://www.neomutt.org/">NeoMutt Project</ulink>.</para>
+    <para>This feature is part of the <ulink url="http://www.neomutt.org/">NeoMutt Project</ulink>.</para>
   </sect2>
 
   <sect2 id="encrypt-to-self-intro">
@@ -9956,7 +9838,7 @@ set smime_default_key  = bb345e23.0
 </screen>
 
     <para>
-      Or, if you use PGP, 
+      Or, if you use PGP,
       <link linkend="pgp-encrypt-self">$pgp_encrypt_self</link>, then set
       <link linkend="pgp-sign-as">$pgp_sign_as</link> to your
       personal PGP key id.
@@ -10001,18 +9883,18 @@ set pgp_sign_as      = A4AF18C5582473BD35A1E9CE78BB3D480042198E
   <sect2 id="encrypt-to-self-muttrc">
     <title>Muttrc</title>
 <screen>
-<emphasis role="comment"># This is a complete list of encrypt-self-related configuration.
- 
+<emphasis role="comment"># Example NeoMutt config file for the encrypt-to-self feature.
+
 # --------------------------------------------------------------------------
 # VARIABLES - shown with their default values
 # --------------------------------------------------------------------------
- 
-# Save a copy of outgoing email, encrypted to yourself using SMIME</emphasis>
-set smime_encrypt_self = "no"
- 
-<emphasis role="comment"># Save a copy of outgoing email, encrypted to yourself using PGP</emphasis>
-set pgp_encrypt_self = "no"
- 
+
+# Save a copy of outgoing email, encrypted to yourself</emphasis>
+set smime_encrypt_self = &quot;no&quot;
+
+<emphasis role="comment"># Save a copy of outgoing email, encrypted to yourself</emphasis>
+set pgp_encrypt_self = &quot;no&quot;
+
 <emphasis role="comment"># vim: syntax=muttrc</emphasis>
 </screen>
   </sect2>
@@ -10041,15 +9923,15 @@ set pgp_encrypt_self = "no"
 </sect1>
 
 <sect1 id="fmemopen">
-  <title>Fmemopen Patch</title>
+  <title>Fmemopen Feature</title>
   <subtitle>Replace some temporary files with memory buffers</subtitle>
 
-  <sect2 id="fmemopen-patch">
-    <title>Patch</title>
+  <sect2 id="fmemopen-support">
+    <title>Support</title>
 
     <para>
-      To check if Mutt supports <quote>fmemopen</quote>, look for
-      <quote>patch-fmemopen</quote> in the mutt version.
+      To check if NeoMutt supports <quote>fmemopen</quote>, look for
+      <quote>patch-fmemopen</quote> in the version info.
       See: <xref linkend="mutt-patches"/>.
     </para>
 
@@ -10060,11 +9942,11 @@ set pgp_encrypt_self = "no"
     </itemizedlist>
 
     <para>
-      This patch can be disabled by running <literal>configure</literal> with
+      This feature can be disabled by running <literal>configure</literal> with
       the option <literal>--disable-fmemopen</literal>
     </para>
 
-    <para>This patch is part of the <ulink url="http://www.neomutt.org/">NeoMutt Project</ulink>.</para>
+    <para>This feature is part of the <ulink url="http://www.neomutt.org/">NeoMutt Project</ulink>.</para>
   </sect2>
 
   <sect2 id="fmemopen-intro">
@@ -10075,7 +9957,7 @@ set pgp_encrypt_self = "no"
         </para>
 
         <para>
-    This patch changes a few places where Mutt creates temporary files.
+    This feature changes a few places where Mutt creates temporary files.
     It replaces them with in-memory buffers.  This should improve the
     performance when searching the header or body using the
     <link linkend="thorough-search">$thorough_search</link> option.
@@ -10086,15 +9968,10 @@ set pgp_encrypt_self = "no"
         </para>
 
         <para>
-    This patch depends on <literal>open_memstream()</literal> and
+    This feature depends on <literal>open_memstream()</literal> and
     <literal>fmemopen()</literal>.  They are provided by glibc.  Without
     them, Mutt will simply create temporary files.
         </para>
-  </sect2>
-
-  <sect2 id="fmemopen-muttrc">
-    <title>Muttrc</title>
-    <para>None</para>
   </sect2>
 
   <sect2 id="fmemopen-see-also">
@@ -10121,16 +9998,16 @@ set pgp_encrypt_self = "no"
   </sect2>
 </sect1>
 
-<sect1 id="forgotten-attachments">
-  <title>forgotten-attachments Patch</title>
+<sect1 id="forgotten-attachment">
+  <title>forgotten-attachment Feature</title>
   <subtitle>Alert user when (s)he forgets to attach a file to an outgoing email.</subtitle>
 
-  <sect2 id="forgotten-attachments-patch">
-    <title>Patch</title>
+  <sect2 id="forgotten-attachment-support">
+    <title>Support</title>
 
     <para>
-      To check if Mutt supports <quote>forgotten-attachments</quote>, look for
-      <quote>patch-forgotten-attachments</quote> in the mutt version.
+      To check if NeoMutt supports <quote>forgotten-attachment</quote>, look for
+      <quote>patch-forgotten-attachment</quote> in the version info.
       See: <xref linkend="mutt-patches"/>.
     </para>
 
@@ -10139,25 +10016,25 @@ set pgp_encrypt_self = "no"
       <listitem><para>mutt-1.7.0</para></listitem>
     </itemizedlist>
 
-    <para>This patch is part of the <ulink url="http://www.neomutt.org/">NeoMutt Project</ulink>.</para>
+    <para>This feature is part of the <ulink url="http://www.neomutt.org/">NeoMutt Project</ulink>.</para>
   </sect2>
 
-  <sect2 id="forgotten-attachments-intro">
+  <sect2 id="forgotten-attachment-intro">
     <title>Introduction</title>
 
     <para>
-      The 'forgotten attachments' patch provides a new setting for Mutt that
+      The 'forgotten-attachment' patch provides a new setting for Mutt that
       alerts the user if the message body contains a certain keyword but there are
       no attachments added. This is meant to ensure that the user does not forget
       to attach a file after promising to do so in the mail.
     </para>
   </sect2>
 
-  <sect2 id="forgotten-attachments-variables">
+  <sect2 id="forgotten-attachment-variables">
     <title>Variables</title>
 
-    <table id="table-forgotten-attachments-variables">
-      <title>forgotten-attachments Variables</title>
+    <table id="table-forgotten-attachment-variables">
+      <title>forgotten-attachment Variables</title>
       <tgroup cols="3">
         <thead>
           <row>
@@ -10185,29 +10062,25 @@ set pgp_encrypt_self = "no"
   <sect2 id="forgotten-attachment-muttrc">
 <title>Muttrc</title>
 <screen>
-<emphasis role="comment"># This is a complete list of forgotten-attachments-related configuration.
- 
-# --------------------------------------------------------------------------
-# VARIABLES - shown with their default values
-# --------------------------------------------------------------------------
- 
-# The 'forgotten attachments' patch provides a new setting for Mutt that
+<emphasis role="comment"># Example NeoMutt config file for the forgotten-attachment feature.
+
+# The 'forgotten-attachment' feature provides a new setting for Mutt that
 # alerts the user if the message body contains a certain keyword but there are
 # no attachments added. This is meant to ensure that the user does not forget
 # to attach a file after promising to do so in the mail.
- 
+
 # Search for the following keyword in the body of the email</emphasis>
-set attach_keyword = "attached"
- 
+set attach_keyword = &quot;attached&quot;
+
 <emphasis role="comment"># Ask if the user wishes to abort sending if $attach_keyword is found in the
 # body, but no attachments have been added</emphasis>
 set abort_noattach = ask-yes
- 
+
 <emphasis role="comment"># vim: syntax=muttrc</emphasis>
 </screen>
   </sect2>
 
-  <sect2 id="forgotten-attachments-see-also">
+  <sect2 id="forgotten-attachment-see-also">
     <title>See Also</title>
 
     <itemizedlist>
@@ -10217,12 +10090,12 @@ set abort_noattach = ask-yes
     </itemizedlist>
   </sect2>
 
-  <sect2 id="forgotten-attachments-known-bugs">
+  <sect2 id="forgotten-attachment-known-bugs">
     <title>Known Bugs</title>
     <para>None</para>
   </sect2>
 
-  <sect2 id="forgotten-attachments-credits">
+  <sect2 id="forgotten-attachment-credits">
     <title>Credits</title>
     <itemizedlist>
     <listitem><para>Darshit Shah <email>darnir@gmail.com</email></para></listitem>
@@ -10232,15 +10105,15 @@ set abort_noattach = ask-yes
 </sect1>
 
 <sect1 id="ifdef">
-  <title>Ifdef Patch</title>
+  <title>Ifdef Feature</title>
   <subtitle>Conditional config options</subtitle>
 
-  <sect2 id="ifdef-patch">
-    <title>Patch</title>
+  <sect2 id="ifdef-support">
+    <title>Support</title>
 
     <para>
-      To check if Mutt supports <quote>ifdef</quote>, look for
-      <quote>patch-ifdef</quote> in the mutt version.
+      To check if NeoMutt supports <quote>ifdef</quote>, look for
+      <quote>patch-ifdef</quote> in the version info.
       See: <xref linkend="mutt-patches"/>.
     </para>
 
@@ -10249,7 +10122,7 @@ set abort_noattach = ask-yes
       <listitem><para>mutt-1.7.0</para></listitem>
     </itemizedlist>
 
-    <para>This patch is part of the <ulink url="http://www.neomutt.org/">NeoMutt Project</ulink>.</para>
+    <para>This feature is part of the <ulink url="http://www.neomutt.org/">NeoMutt Project</ulink>.</para>
   </sect2>
 
   <sect2 id="ifdef-intro">
@@ -10310,37 +10183,37 @@ ifndef USE_SIDEBAR finish
   <sect2 id="ifdef-muttrc">
     <title>Muttrc</title>
 <screen>
-<emphasis role="comment"># Example Mutt config file for the 'ifdef' feature.
- 
+<emphasis role="comment"># Example NeoMutt config file for the ifdef feature.
+
 # This feature introduces three useful commands which allow you to share
 # one config file between versions of Mutt that may have different
 # features compiled in.
- 
-#     ifdef  symbol config-command [args...]
-#     ifndef symbol config-command [args...]
-#     finish
- 
+
+#   ifdef  symbol config-command [args...]
+#   ifndef symbol config-command [args...]
+#   finish
+
 # The 'ifdef' command tests whether Mutt understands the name of
 # a variable, function, command or compile-time symbol.
 # If it does, then it executes a config command.
- 
+
 # The 'ifndef' command tests whether a symbol does NOT exist.
- 
+
 # The 'finish' command tells Mutt to stop reading current config file.
- 
+
 # If the 'trash' variable exists, set it.</emphasis>
 ifdef trash 'set trash=~/Mail/trash'
- 
+
 <emphasis role="comment"># If the 'tag-pattern' function exists, bind a key to it.</emphasis>
 ifdef tag-pattern 'bind index &lt;F6&gt; tag-pattern'
- 
+
 <emphasis role="comment"># If the 'imap-fetch-mail' command exists, read my IMAP config.</emphasis>
 ifdef imap-fetch-mail 'source ~/.mutt/imap.rc'
- 
+
 <emphasis role="comment"># If the compile-time symbol 'USE_SIDEBAR' does not exist, then
 # stop reading the current config file.</emphasis>
 ifndef USE_SIDEBAR finish
- 
+
 <emphasis role="comment"># vim: syntax=muttrc</emphasis>
 </screen>
   </sect2>
@@ -10369,15 +10242,15 @@ ifndef USE_SIDEBAR finish
 </sect1>
 
 <sect1 id="index-color">
-  <title>Index Color Patch</title>
+  <title>Index Color Feature</title>
   <subtitle>Custom rules for theming the email index</subtitle>
 
-  <sect2 id="index-color-patch">
-    <title>Patch</title>
+  <sect2 id="index-color-support">
+    <title>Support</title>
 
     <para>
-      To check if Mutt supports <quote>Index Color</quote>, look for
-      <quote>patch-index-color</quote> in the mutt version.
+      To check if NeoMutt supports <quote>Index Color</quote>, look for
+      <quote>patch-index-color</quote> in the version info.
       See: <xref linkend="mutt-patches"/>.
     </para>
 
@@ -10387,7 +10260,7 @@ ifndef USE_SIDEBAR finish
       <listitem><para><link linkend="status-color">status-color patch</link></para></listitem>
     </itemizedlist>
 
-    <para>This patch is part of the <ulink url="http://www.neomutt.org/">NeoMutt Project</ulink>.</para>
+    <para>This feature is part of the <ulink url="http://www.neomutt.org/">NeoMutt Project</ulink>.</para>
   </sect2>
 
   <sect2 id="index-color-intro">
@@ -10498,42 +10371,42 @@ color index-object foreground background pattern
   <sect2 id="index-color-muttrc">
     <title>Muttrc</title>
 <screen>
-<emphasis role="comment"># Example Mutt config file for the 'index-color' feature.
- 
+<emphasis role="comment"># Example NeoMutt config file for the index-color feature.
+
 # Entire index line</emphasis>
 color index white black '.*'
- 
+
 <emphasis role="comment"># Author name, %A %a %F %L %n
- 
+
 # Give the author column a dark grey background</emphasis>
 color index_author default color234 '.*'
- 
+
 <emphasis role="comment"># Highlight a particular from (~f)</emphasis>
 color index_author brightyellow color234 '~fRay Charles'
- 
+
 <emphasis role="comment"># Message flags, %S %Z
 # Highlight the flags for flagged (~F) emails</emphasis>
 color index_flags default red '~F'
- 
+
 <emphasis role="comment"># Subject, %s
 # Look for a particular subject (~s)</emphasis>
 color index_subject brightcyan default '~s\(closes #[0-9]+\)'
- 
+
 <emphasis role="comment"># Number of messages in a collapsed thread, %M</emphasis>
 color index_collapsed default brightblue
- 
+
 <emphasis role="comment"># Date field</emphasis>
 color index_date green default
- 
+
 <emphasis role="comment"># Message label, %y %Y</emphasis>
 color index_label default brightgreen
- 
+
 <emphasis role="comment"># Message number, %C</emphasis>
 color index_number red default
- 
+
 <emphasis role="comment"># Message size, %c %l</emphasis>
 color index_size cyan default
- 
+
 <emphasis role="comment"># vim: syntax=muttrc</emphasis>
 </screen>
   </sect2>
@@ -10571,15 +10444,15 @@ color index_size cyan default
 </sect1>
 
 <sect1 id="initials">
-  <title>Initials Expando Patch</title>
+  <title>Initials Expando Feature</title>
   <subtitle>Expando for author's initials</subtitle>
 
-  <sect2 id="initials-patch">
-    <title>Patch</title>
+  <sect2 id="initials-support">
+    <title>Support</title>
 
     <para>
-      To check if Mutt supports <quote>Initials</quote>, look for
-      <quote>patch-initials</quote> in the mutt version.
+      To check if NeoMutt supports <quote>Initials</quote>, look for
+      <quote>patch-initials</quote> in the version info.
       See: <xref linkend="mutt-patches"/>.
     </para>
 
@@ -10588,7 +10461,7 @@ color index_size cyan default
       <listitem><para>mutt-1.7.0</para></listitem>
     </itemizedlist>
 
-    <para>This patch is part of the <ulink url="http://www.neomutt.org/">NeoMutt Project</ulink>.</para>
+    <para>This feature is part of the <ulink url="http://www.neomutt.org/">NeoMutt Project</ulink>.</para>
   </sect2>
 
   <sect2 id="initials-intro">
@@ -10611,7 +10484,7 @@ color index_size cyan default
     <title>Variables</title>
 
         <para>
-        This patch has no config of its own.  It adds an expando which can be
+        This feature has no config of its own.  It adds an expando which can be
     used in the <link linkend="index-format">$index_format</link> variable.
         </para>
   </sect2>
@@ -10619,32 +10492,32 @@ color index_size cyan default
   <sect2 id="initials-muttrc">
     <title>Muttrc</title>
 <screen>
-<emphasis role="comment"># Example Mutt config file for the 'initials' patch.
- 
-# The 'initials' patch has no config of its own.
+<emphasis role="comment"># Example NeoMutt config file for the initials feature.
+
+# The 'initials' feature has no config of its own.
 # It adds an expando for an author's initials,
 # which can be used in the 'index_format' variable.
- 
+
 # The default 'index_format' is:</emphasis>
 set index_format='%4C %Z %{%b %d} %-15.15L (%?l?%4l&amp;%4c?) %s'
- 
+
 <emphasis role="comment"># Where %L represents the author/recipient
- 
+
 # This might look like:
 #       1   + Nov 17 David Bowie   Changesbowie    ( 689)
 #       2   ! Nov 17 Stevie Nicks  Rumours         ( 555)
 #       3   + Nov 16 Jimi Hendrix  Voodoo Child    ( 263)
 #       4   + Nov 16 Debbie Harry  Parallel Lines  ( 540)
- 
+
 # Using the %I expando:</emphasis>
 set index_format='%4C %Z %{%b %d} %I (%?l?%4l&amp;%4c?) %s'
- 
+
 <emphasis role="comment"># This might look like:
 #       1   + Nov 17 DB Changesbowie    ( 689)
 #       2   ! Nov 17 SN Rumours         ( 555)
 #       3   + Nov 16 JH Voodoo Child    ( 263)
 #       4   + Nov 16 DH Parallel Lines  ( 540)
- 
+
 # vim: syntax=muttrc</emphasis>
 </screen>
   </sect2>
@@ -10675,15 +10548,15 @@ set index_format='%4C %Z %{%b %d} %I (%?l?%4l&amp;%4c?) %s'
 </sect1>
 
 <sect1 id="keywords">
-  <title>Keywords Patch</title>
+  <title>Keywords Feature</title>
   <subtitle>Labels/Tagging for emails</subtitle>
 
-  <sect2 id="keywords-patch">
-    <title>Patch</title>
+  <sect2 id="keywords-support">
+    <title>Support</title>
 
     <para>
-      To check if Mutt supports <quote>Keywords</quote>, look for
-      <quote>patch-keywords</quote> in the mutt version.
+      To check if NeoMutt supports <quote>Keywords</quote>, look for
+      <quote>patch-keywords</quote> in the version info.
       See: <xref linkend="mutt-patches"/>.
     </para>
 
@@ -10692,7 +10565,7 @@ set index_format='%4C %Z %{%b %d} %I (%?l?%4l&amp;%4c?) %s'
       <listitem><para>mutt-1.7.0</para></listitem>
     </itemizedlist>
 
-    <para>This patch is part of the <ulink url="http://www.neomutt.org/">NeoMutt Project</ulink>.</para>
+    <para>This feature is part of the <ulink url="http://www.neomutt.org/">NeoMutt Project</ulink>.</para>
   </sect2>
 
   <sect2 id="keywords-intro">
@@ -10712,7 +10585,7 @@ set index_format='%4C %Z %{%b %d} %I (%?l?%4l&amp;%4c?) %s'
     <para>
     We start by changing mutt's internal keyword storage from a single
     string which may contain whitespace to a list of discrete keywords.
-    This has advantages for keyword completion as well as for portabilty
+    This has advantages for keyword completion as well as for portability
     among varying "standards" for keyword storage.  This may represent
     a significant change for existing mutt users who have set x-labels
     containing spaces, and should be regarded with suspicion.  The
@@ -10847,31 +10720,29 @@ set index_format='%4C %Z %{%b %d} %I (%?l?%4l&amp;%4c?) %s'
     <title>Muttrc</title>
 
 <screen>
-<emphasis role="comment"># This is a complete list of keywords-related configuration.
- 
+<emphasis role="comment"># Example NeoMutt config file for the keywords feature.
+
 # --------------------------------------------------------------------------
 # VARIABLES - shown with their default values
 # --------------------------------------------------------------------------
- 
+
 # Should Mutt save the keywords to whatever keyword it came from?</emphasis>
 set keywords_legacy = yes
- 
-<emphasis role="comment"># Should Mutt use the "Keywords:" header?</emphasis>
+
+<emphasis role="comment"># Should Mutt use the &quot;Keywords:&quot; header?</emphasis>
 set keywords_standard = no
- 
+
 <emphasis role="comment"># How should the keywords be separated?</emphasis>
-set xlabel_delimiter = ""
- 
+set xlabel_delimiter = &quot;&quot;
+
 <emphasis role="comment"># --------------------------------------------------------------------------
 # FUNCTIONS - shown with an example mapping
 # --------------------------------------------------------------------------
- 
+
 # Bind 'y' to edit labels/keywords</emphasis>
 bind index,pager y edit-label
- 
-<emphasis role="comment"># --------------------------------------------------------------------------
- 
-# vim: syntax=muttrc</emphasis>
+
+<emphasis role="comment"># vim: syntax=muttrc</emphasis>
 </screen>
   </sect2>
 
@@ -10903,15 +10774,15 @@ bind index,pager y edit-label
 </sect1>
 
 <sect1 id="limit-current-thread">
-  <title>Limit-Current-Thread Patch</title>
+  <title>Limit-Current-Thread Feature</title>
   <subtitle>Focus on one Email Thread</subtitle>
 
-  <sect2 id="limit-current-thread-patch">
-    <title>Patch</title>
+  <sect2 id="limit-current-thread-support">
+    <title>Support</title>
 
     <para>
-      To check if Mutt supports <quote>limit-current-thread</quote>, look for
-      <quote>patch-limit-current-thread</quote> in the mutt version.
+      To check if NeoMutt supports <quote>limit-current-thread</quote>, look for
+      <quote>patch-limit-current-thread</quote> in the version info.
       See: <xref linkend="mutt-patches"/>.
     </para>
 
@@ -10920,14 +10791,14 @@ bind index,pager y edit-label
       <listitem><para>mutt-1.7.0</para></listitem>
     </itemizedlist>
 
-    <para>This patch is part of the <ulink url="http://www.neomutt.org/">NeoMutt Project</ulink>.</para>
+    <para>This feature is part of the <ulink url="http://www.neomutt.org/">NeoMutt Project</ulink>.</para>
   </sect2>
 
   <sect2 id="limit-current-thread-intro">
     <title>Introduction</title>
 
     <para>
-      This patch adds a new way of using the
+      This feature adds a new way of using the
       <link linkend="tuning-search">Limit Command</link>.
       The <literal>&lt;limit-current-thread&gt;</literal>
       function restricts the view to just the current thread.
@@ -10971,11 +10842,11 @@ bind index,pager y edit-label
     <title>Muttrc</title>
 
 <screen>
-<emphasis role="comment"># Example Mutt config file for the 'limit-current-thread' patch.
- 
+<emphasis role="comment"># Example NeoMutt config file for the limit-current-thread feature.
+
 # Limit view to current thread</emphasis>
 bind index &lt;esc&gt;L limit-current-thread
- 
+
 <emphasis role="comment"># vim: syntax=muttrc</emphasis>
 </screen>
   </sect2>
@@ -11003,15 +10874,15 @@ bind index &lt;esc&gt;L limit-current-thread
 </sect1>
 
 <sect1 id="lmdb">
-  <title>LMDB Patch</title>
+  <title>LMDB Feature</title>
   <subtitle>LMDB backend for the header cache</subtitle>
 
-  <sect2 id="lmdb-patch">
-    <title>Patch</title>
+  <sect2 id="lmdb-support">
+    <title>Support</title>
 
     <para>
-      To check if Mutt supports <quote>lmdb</quote>, look for
-      <quote>patch-lmdb</quote> in the mutt version.
+      To check if NeoMutt supports <quote>lmdb</quote>, look for
+      <quote>patch-lmdb</quote> in the version info.
       See: <xref linkend="mutt-patches"/>.
     </para>
 
@@ -11020,14 +10891,14 @@ bind index &lt;esc&gt;L limit-current-thread
       <listitem><para>mutt-1.7.0</para></listitem>
     </itemizedlist>
 
-    <para>This patch is part of the <ulink url="http://www.neomutt.org/">NeoMutt Project</ulink>.</para>
+    <para>This feature is part of the <ulink url="http://www.neomutt.org/">NeoMutt Project</ulink>.</para>
   </sect2>
 
   <sect2 id="lmdb-intro">
     <title>Introduction</title>
 
     <para>
-      This patch adds support for using LMDB as a storage backend for
+      This feature adds support for using LMDB as a storage backend for
       Mutt's header cache (hcache). It is enabled at configure time with
       the <emphasis>--with-lmdb=&lt;path&gt;</emphasis> switch.
     </para>
@@ -11063,15 +10934,15 @@ bind index &lt;esc&gt;L limit-current-thread
 </sect1>
 
 <sect1 id="multiple-fcc">
-  <title>multiple-fcc Patch</title>
+  <title>multiple-fcc Feature</title>
   <subtitle>Save multiple copies of outgoing mail</subtitle>
 
-  <sect2 id="multiple-fcc-patch">
-    <title>Patch</title>
+  <sect2 id="multiple-fcc-support">
+    <title>Support</title>
 
     <para>
-      To check if Mutt supports <quote>multiple-fcc</quote>, look for
-      <quote>patch-multiple-fcc</quote> in the mutt version.
+      To check if NeoMutt supports <quote>multiple-fcc</quote>, look for
+      <quote>patch-multiple-fcc</quote> in the version info.
       See: <xref linkend="mutt-patches"/>.
     </para>
 
@@ -11080,14 +10951,14 @@ bind index &lt;esc&gt;L limit-current-thread
       <listitem><para>mutt-1.7.0</para></listitem>
     </itemizedlist>
 
-    <para>This patch is part of the <ulink url="http://www.neomutt.org/">NeoMutt Project</ulink>.</para>
+    <para>This feature is part of the <ulink url="http://www.neomutt.org/">NeoMutt Project</ulink>.</para>
   </sect2>
 
   <sect2 id="multiple-fcc-intro">
     <title>Introduction</title>
 
     <para>
-      This patch allows the user to save outgoing emails in multiple folders.
+      This feature allows the user to save outgoing emails in multiple folders.
     </para>
 
     <para>
@@ -11129,15 +11000,15 @@ bind index &lt;esc&gt;L limit-current-thread
 </sect1>
 
 <sect1 id="nested-if">
-  <title>Nested If Patch</title>
+  <title>Nested If Feature</title>
   <subtitle>Allow complex nested conditions in format strings</subtitle>
 
-  <sect2 id="nested-if-patch">
-    <title>Patch</title>
+  <sect2 id="nested-if-support">
+    <title>Support</title>
 
     <para>
-      To check if Mutt supports <quote>Nested If</quote>, look for
-      <quote>patch-nested-if</quote> in the mutt version.
+      To check if NeoMutt supports <quote>Nested If</quote>, look for
+      <quote>patch-nested-if</quote> in the version info.
       See: <xref linkend="mutt-patches"/>.
     </para>
 
@@ -11146,7 +11017,7 @@ bind index &lt;esc&gt;L limit-current-thread
       <listitem><para>mutt-1.7.0</para></listitem>
     </itemizedlist>
 
-    <para>This patch is part of the <ulink url="http://www.neomutt.org/">NeoMutt Project</ulink>.</para>
+    <para>This feature is part of the <ulink url="http://www.neomutt.org/">NeoMutt Project</ulink>.</para>
   </sect2>
 
   <sect2 id="nested-if-intro">
@@ -11183,7 +11054,7 @@ if (%S &gt; 0) {
 
     <para>
       These conditions are useful, but in Mutt they cannot be nested
-      within one another.  This patch uses the notation
+      within one another.  This feature uses the notation
       <literal>%&lt;VAR?TRUE&amp;FALSE&gt;</literal> and allows them to be nested.
     </para>
 
@@ -11272,11 +11143,11 @@ else
   <sect2 id="nested-if-muttrc">
     <title>Muttrc</title>
 <screen>
-<emphasis role="comment"># Example Mutt config file for the 'nested-if' feature.
- 
-# This patch uses the format: '%&lt;VAR?TRUE&amp;FALSE&gt;' for conditional
+<emphasis role="comment"># Example NeoMutt config file for the nested-if feature.
+
+# This feature uses the format: '%&lt;VAR?TRUE&amp;FALSE&gt;' for conditional
 # format strings that can be nested.
- 
+
 # Example 1
 # if a thread is folded
 #       display the number of messages (%M)
@@ -11284,7 +11155,7 @@ else
 #       display lines in message (%l)
 # else display the size of the message in bytes (%c)</emphasis>
 set index_format='%4C %Z %{%b %d} %-25.25n %s%&gt; %&lt;M?%M Msgs &amp;%&lt;l?%l Lines&amp;%c Bytes&gt;&gt;'
- 
+
 <emphasis role="comment"># Example 2
 # if a thread is folded
 #       display the number of messages (%M)
@@ -11294,7 +11165,7 @@ set index_format='%4C %Z %{%b %d} %-25.25n %s%&gt; %&lt;M?%M Msgs &amp;%&lt;l?%l
 # else
 #       display the size of the message in bytes (%c)</emphasis>
 set index_format='%4C %Z %{%b %d} %-25.25n %&lt;M?[%M] %s&amp;%s%* %&lt;l?%l&amp;%c&gt;&gt;'
- 
+
 <emphasis role="comment"># vim: syntax=muttrc</emphasis>
 </screen>
   </sect2>
@@ -11327,15 +11198,15 @@ set index_format='%4C %Z %{%b %d} %-25.25n %&lt;M?[%M] %s&amp;%s%* %&lt;l?%l&amp
 </sect1>
 
 <sect1 id="new-mail-hook">
-  <title>new-mail Patch</title>
+  <title>new-mail Feature</title>
   <subtitle>Execute a command upon the receipt of new mail.</subtitle>
 
-  <sect2 id="new-mail-patch">
-    <title>Patch</title>
+  <sect2 id="new-mail-support">
+    <title>Support</title>
 
     <para>
-      To check if Mutt supports <quote>new-mail</quote>, look for
-      <quote>patch-new-mail</quote> in the mutt version.
+      To check if NeoMutt supports <quote>new-mail</quote>, look for
+      <quote>patch-new-mail</quote> in the version info.
       See: <xref linkend="mutt-patches"/>.
     </para>
 
@@ -11344,14 +11215,14 @@ set index_format='%4C %Z %{%b %d} %-25.25n %&lt;M?[%M] %s&amp;%s%* %&lt;l?%l&amp
       <listitem><para>mutt-1.7.0</para></listitem>
     </itemizedlist>
 
-    <para>This patch is part of the <ulink url="http://www.neomutt.org/">NeoMutt Project</ulink>.</para>
+    <para>This feature is part of the <ulink url="http://www.neomutt.org/">NeoMutt Project</ulink>.</para>
   </sect2>
 
   <sect2 id="new-mail-intro">
     <title>Introduction</title>
 
     <para>
-      This patch enables the new_mail_command setting, which can be used to
+      This feature enables the new_mail_command setting, which can be used to
       execute a custom script (e.g., a notification handler) upon receiving a
       new mail.
     </para>
@@ -11409,20 +11280,20 @@ set new_mail_command="terminal-notifier -title '%v' -subtitle 'New Mail in %f' -
   <sect2 id="new-mail-muttrc">
     <title>Muttrc</title>
 <screen>
-<emphasis role="comment"># Example Mutt config file for the 'new-mail-command' patch.
- 
+<emphasis role="comment"># Example NeoMutt config file for the new-mail feature.
+
 # --------------------------------------------------------------------------
 # VARIABLES - shown with their default values
 # --------------------------------------------------------------------------
- 
+
 # Set the command you want mutt to execute upon the receipt of a new email</emphasis>
-set new_mail_command = ""
- 
+set new_mail_command = &quot;&quot;
+
 <emphasis role="comment"># Linux example:
-# set new_command="notify-send --icon='/home/santiago/Pictures/mutt.png' 'New Email in %f' '%n new messages, %u unread.' &amp;"
- 
+# set new_command=&quot;notify-send --icon='/home/santiago/Pictures/mutt.png' 'New Email in %f' '%n new messages, %u unread.' &amp;&quot;
+
 # OS X example:
-# set new_mail_command="terminal-notifier -title '%v' -subtitle 'New Mail in %f' -message '%n new messages, %u unread.' -activate 'com.apple.Terminal'"
+# set new_mail_command=&quot;terminal-notifier -title '%v' -subtitle 'New Mail in %f' -message '%n new messages, %u unread.' -activate 'com.apple.Terminal'&quot;
 
 # --------------------------------------------------------------------------
 
@@ -11469,15 +11340,15 @@ set new_mail_command = ""
 </sect1>
 
 <sect1 id="nntp">
-  <title>NNTP Patch</title>
+  <title>NNTP Feature</title>
   <subtitle>Talk to a Usenet news server</subtitle>
 
-  <sect2 id="nntp-patch">
-    <title>Patch</title>
+  <sect2 id="nntp-support">
+    <title>Support</title>
 
     <para>
-      To check if Mutt supports <quote>NNTP</quote>, look for
-      <quote>+USE_NNTP</quote> in the mutt version.
+      To check if NeoMutt supports <quote>NNTP</quote>, look for
+      <quote>+USE_NNTP</quote> in the version info.
       See: <xref linkend="compile-time-features"/>.
     </para>
 
@@ -11486,7 +11357,7 @@ set new_mail_command = ""
       <listitem><para>mutt-1.7.0</para></listitem>
     </itemizedlist>
 
-    <para>This patch is part of the <ulink url="http://www.neomutt.org/">NeoMutt Project</ulink>.</para>
+    <para>This feature is part of the <ulink url="http://www.neomutt.org/">NeoMutt Project</ulink>.</para>
   </sect2>
 
   <sect2 id="nntp-intro">
@@ -11766,7 +11637,7 @@ set new_mail_command = ""
     <title>Muttrc</title>
 
 <screen>
-<emphasis role="comment"># This is a complete list of nntp configuration.
+<emphasis role="comment"># Example NeoMutt config file for the nntp feature.
 
 # --------------------------------------------------------------------------
 # VARIABLES - shown with their default values
@@ -11801,61 +11672,61 @@ set x_comment_to = no
 # --------------------------------------------------------------------------
 
 # mark all articles in newsgroup as read</emphasis>
-bind browser,index y catchup 
+bind browser,index y catchup
 
 <emphasis role="comment"># open a different newsgroup</emphasis>
-bind index,pager i change-newsgroup 
+bind index,pager i change-newsgroup
 
 <emphasis role="comment"># edit the Followup-To field</emphasis>
-bind compose o edit-followup-to 
+bind compose o edit-followup-to
 
 <emphasis role="comment"># edit the newsgroups list</emphasis>
-bind compose N edit-newsgroups 
+bind compose N edit-newsgroups
 
 <emphasis role="comment"># edit the X-Comment-To field</emphasis>
-bind compose x edit-x-comment-to 
+bind compose x edit-x-comment-to
 
 <emphasis role="comment"># followup to newsgroup</emphasis>
-bind attach,index,pager F followup-message 
+bind attach,index,pager F followup-message
 
 <emphasis role="comment"># post message to newsgroup</emphasis>
-bind index,pager P post-message 
+bind index,pager P post-message
 
 <emphasis role="comment"># load list of all newsgroups from NNTP server</emphasis>
-bind browser g reload-active 
+bind browser g reload-active
 
 <emphasis role="comment"># subscribe to current mbox (IMAP/NNTP only)</emphasis>
-bind browser s subscribe 
+bind browser s subscribe
 
 <emphasis role="comment"># subscribe to newsgroups matching a pattern</emphasis>
-bind browser S subscribe-pattern 
+bind browser S subscribe-pattern
 
 <emphasis role="comment"># mark all articles in newsgroup as unread</emphasis>
-bind browser Y uncatchup 
+bind browser Y uncatchup
 
 <emphasis role="comment"># unsubscribe from current mbox (IMAP/NNTP only)</emphasis>
-bind browser u unsubscribe 
+bind browser u unsubscribe
 
 <emphasis role="comment"># unsubscribe from newsgroups matching a pattern</emphasis>
-bind browser U unsubscribe-pattern 
+bind browser U unsubscribe-pattern
 
 <emphasis role="comment"># open a different newsgroup in read only mode</emphasis>
-bind index,pager \ei change-newsgroup-readonly 
+bind index,pager \ei change-newsgroup-readonly
 
 <emphasis role="comment"># forward to newsgroup</emphasis>
-bind attach,index,pager \eF forward-to-group 
+bind attach,index,pager \eF forward-to-group
 
-<emphasis role="comment"># get all children of the current message</emphasis>
-# bind index ??? get-children 
+<emphasis role="comment"># get all children of the current message
+# bind index ??? get-children
 
-<emphasis role="comment"># get parent of the current message</emphasis>
-bind index \eG get-parent 
+# get parent of the current message</emphasis>
+bind index \eG get-parent
 
-# reconstruct thread containing current message
-# bind index ??? reconstruct-thread 
+<emphasis role="comment"># reconstruct thread containing current message
+# bind index ??? reconstruct-thread
 
-<emphasis role="comment"># get message with Message-Id</emphasis>
-bind index \CG get-message 
+# get message with Message-Id</emphasis>
+bind index \CG get-message
 
 <emphasis role="comment"># --------------------------------------------------------------------------
 
@@ -11890,15 +11761,15 @@ bind index \CG get-message
 </sect1>
 
 <sect1 id="notmuch">
-  <title>Notmuch Patch</title>
+  <title>Notmuch Feature</title>
   <subtitle>Email search engine</subtitle>
 
-  <sect2 id="notmuch-patch">
-    <title>Patch</title>
+  <sect2 id="notmuch-support">
+    <title>Support</title>
 
     <para>
-      To check if Mutt supports <quote>Notmuch</quote>, look for
-      <quote>+USE_NOTMUCH</quote> in the mutt version.
+      To check if NeoMutt supports <quote>Notmuch</quote>, look for
+      <quote>+USE_NOTMUCH</quote> in the version info.
       See: <xref linkend="compile-time-features"/>.
     </para>
 
@@ -11910,7 +11781,7 @@ bind index \CG get-message
       <listitem><para>Notmuch libraries</para></listitem>
     </itemizedlist>
 
-    <para>This patch is part of the <ulink url="http://www.neomutt.org/">NeoMutt Project</ulink>.</para>
+    <para>This feature is part of the <ulink url="http://www.neomutt.org/">NeoMutt Project</ulink>.</para>
   </sect2>
 
   <sect2 id="notmuch-intro">
@@ -11921,7 +11792,7 @@ bind index \CG get-message
     </para>
 
     <itemizedlist>
-      <listitem><para>For more information, see: 
+      <listitem><para>For more information, see:
       <ulink url="http://notmuchmail.org/">http://notmuchmail.org/</ulink>
       </para></listitem>
       <listitem><para>Home page (wiki) and git:
@@ -12062,17 +11933,17 @@ virtual-mailboxes "My INBOX" "notmuch://?query=tag:inbox"
               </row>
               <row>
                 <entry>%&gt;X</entry>
-                <entry>right justify the rest of the string and pad with character 
+                <entry>right justify the rest of the string and pad with character
                 <quote>X</quote></entry>
               </row>
               <row>
                 <entry>%|X</entry>
-                <entry>pad to the end of the line with character 
+                <entry>pad to the end of the line with character
                 <quote>X</quote></entry>
               </row>
               <row>
                 <entry>%*X</entry>
-                <entry>soft-fill with character 
+                <entry>soft-fill with character
                 <quote>X</quote>as pad</entry>
               </row>
             </tbody>
@@ -12307,119 +12178,119 @@ virtual-mailboxes "My INBOX" "notmuch://?query=tag:inbox"
     <title>Muttrc</title>
 
 <screen>
-<emphasis role="comment"># This is a complete list of notmuch-related configuration.
- 
+<emphasis role="comment"># Example NeoMutt config file for the notmuch feature.
+
 # --------------------------------------------------------------------------
 # VARIABLES - shown with their default values
 # --------------------------------------------------------------------------
- 
+
 # This variable specifies notmuch query limit.</emphasis>
 set nm_db_limit = 0
- 
+
 <emphasis role="comment"># This variable specifies the default Notmuch database in format:
 # notmuch://&lt;absolute path&gt;</emphasis>
-set nm_default_uri = ""
- 
+set nm_default_uri = &quot;&quot;
+
 <emphasis role="comment"># The messages tagged with these tags are excluded and not loaded
 # from notmuch DB to mutt unless specified explicitly.</emphasis>
-set nm_exclude_tags = ""
- 
+set nm_exclude_tags = &quot;&quot;
+
 <emphasis role="comment"># This variable specifies private notmuch tags which should not be printed
 # on screen (index, pager).</emphasis>
-set nm_hidden_tags = "unread,draft,flagged,passed,replied,attachment,signed,encrypted"
- 
+set nm_hidden_tags = &quot;unread,draft,flagged,passed,replied,attachment,signed,encrypted&quot;
+
 <emphasis role="comment"># This option specifies timeout for Notmuch database. Default is 5 seconds.</emphasis>
 set nm_open_timeout = 5
- 
+
 <emphasis role="comment"># This variable specifies notmuch query type, supported types: 'threads' and
 # 'messages'.</emphasis>
 set nm_query_type = messages
- 
+
 <emphasis role="comment"># Add messages stored to the mutt record (see $record in the mutt docs)
 # also to notmuch DB.</emphasis>
 set nm_record = no
- 
+
 <emphasis role="comment"># Tags that should be removed or added to the to the messages stored in the mutt record.</emphasis>
-set nm_record_tags = ""
- 
+set nm_record_tags = &quot;&quot;
+
 <emphasis role="comment"># This variable specifies notmuch tag which is used for unread messages.</emphasis>
 set nm_unread_tag = unread
- 
+
 <emphasis role="comment"># This variable allows you to customize the file browser display for virtual
 # folders to your personal taste.</emphasis>
-set vfolder_format = "%2C %?n?%4n/&amp;     ?%4m %N %f"
- 
+set vfolder_format = &quot;%6n(%6N) %f&quot;
+
 <emphasis role="comment"># When set, mutt will use the first virtual mailbox (see virtual-mailboxes)
 # as a spoolfile.</emphasis>
 set virtual_spoolfile = no
- 
+
 <emphasis role="comment"># --------------------------------------------------------------------------
 # FUNCTIONS - shown with an example mapping
 # --------------------------------------------------------------------------
- 
+
 # open a different virtual folder</emphasis>
-bind index,pager X change-vfolder 
- 
+bind index,pager X change-vfolder
+
 <emphasis role="comment"># read entire thread of the current message</emphasis>
-bind index,pager + entire-thread 
- 
+bind index,pager + entire-thread
+
 <emphasis role="comment"># modify (notmuch) tags</emphasis>
-bind index,pager \` modify-labels 
- 
+bind index,pager \` modify-labels
+
 <emphasis role="comment"># generate virtual folder from query</emphasis>
-bind index,pager \eX vfolder-from-query 
- 
+bind index,pager \eX vfolder-from-query
+
 <emphasis role="comment"># modify labels and then hide message
-# bind index,pager ??? modify-labels-then-hide 
- 
+# bind index,pager ??? modify-labels-then-hide
+
 # toggle between mailboxes and virtual mailboxes
-# bind index,pager ??? sidebar-toggle-virtual 
- 
+# bind index,pager ??? sidebar-toggle-virtual
+
 # --------------------------------------------------------------------------
 # COMMANDS - shown with an example
 # --------------------------------------------------------------------------
- 
+
 # virtual-mailboxes description notmuch-URI { description notmuch-URI ...}
-# virtual-mailboxes "Climbing" "notmuch://?query=climbing"
- 
+# virtual-mailboxes &quot;Climbing&quot; &quot;notmuch://?query=climbing&quot;
+
 # Replace some tags with icons
 # tag-transforms tag transformed-string { tag transformed-string ...}
-# tag-transforms "inbox"   "i"   \
-#                "unread"  "u"   \
-#                "replied" "↻ "  \
-#                "sent"    "➥ "  \
-#                "todo"    "T"   \
-#                "deleted" "DEL" \
-#                "invites" "CAL"
- 
+# tag-transforms &quot;inbox&quot;   &quot;i&quot;   \
+#                &quot;unread&quot;  &quot;u&quot;   \
+#                &quot;replied&quot; &quot;↻ &quot;  \
+#                &quot;sent&quot;    &quot;➥ &quot;  \
+#                &quot;todo&quot;    &quot;T&quot;   \
+#                &quot;deleted&quot; &quot;DEL&quot; \
+#                &quot;invites&quot; &quot;CAL&quot;
+
 # See README.notmuch for an explanation
 # tag-formats tag format-string { tag format-string ...}
-# tag-formats "inbox"   "GI" \
-#              "unread"  "GU" \
-#              "replied" "GR" \
-#              "sent"    "GS" \
-#              "todo"    "Gt" \
-#              "deleted" "GD" \
-#              "invites" "Gi"
- 
+# tag-formats &quot;inbox&quot;   &quot;GI&quot; \
+#              &quot;unread&quot;  &quot;GU&quot; \
+#              &quot;replied&quot; &quot;GR&quot; \
+#              &quot;sent&quot;    &quot;GS&quot; \
+#              &quot;todo&quot;    &quot;Gt&quot; \
+#              &quot;deleted&quot; &quot;GD&quot; \
+#              &quot;invites&quot; &quot;Gi&quot;
+
 # set index_format='4C %S %[%y.%m.%d] %-18.18n %?GU?%GU&amp; ? %?GR?%GR&amp; ? %?GI?%GI&amp; ? %s'
- 
+
 # --------------------------------------------------------------------------
 # COLORS - some unpleasant examples are given
 # --------------------------------------------------------------------------
- 
-# These symbols are added to the index-color patch:
- 
+
+# These symbols are added to the index-color feature:
+
 # an individual message tag, %G, uses tag name
 # this symbol uses a pattern</emphasis>
-color index_tag red white "inbox"
- 
+color index_tag red white &quot;inbox&quot;
+
 <emphasis role="comment"># the transformed message tags, %g
 # this symbol does not use a pattern</emphasis>
 color index_tags green default
- 
+
 <emphasis role="comment"># --------------------------------------------------------------------------
- 
+
 # vim: syntax=muttrc</emphasis>
 </screen>
   </sect2>
@@ -12470,15 +12341,15 @@ color index_tags green default
 </sect1>
 
 <sect1 id="progress">
-  <title>Progress Bar Patch</title>
+  <title>Progress Bar Feature</title>
   <subtitle>Show a visual progress bar on slow operations</subtitle>
 
-  <sect2 id="progress-patch">
-    <title>Patch</title>
+  <sect2 id="progress-support">
+    <title>Support</title>
 
     <para>
-      To check if Mutt supports <quote>Progress Bar</quote>, look for
-      <quote>patch-progress</quote> in the mutt version.
+      To check if NeoMutt supports <quote>Progress Bar</quote>, look for
+      <quote>patch-progress</quote> in the version info.
       See: <xref linkend="mutt-patches"/>.
     </para>
 
@@ -12487,7 +12358,7 @@ color index_tags green default
       <listitem><para>mutt-1.7.0</para></listitem>
     </itemizedlist>
 
-    <para>This patch is part of the <ulink url="http://www.neomutt.org/">NeoMutt Project</ulink>.</para>
+    <para>This feature is part of the <ulink url="http://www.neomutt.org/">NeoMutt Project</ulink>.</para>
   </sect2>
 
   <sect2 id="progress-intro">
@@ -12525,15 +12396,15 @@ color index_tags green default
   <sect2 id="progress-muttrc">
     <title>Muttrc</title>
 <screen>
-<emphasis role="comment"># Example Mutt config file for the 'progress' patch.
- 
-# The 'progress' patch provides clear visual feedback for
+<emphasis role="comment"># Example NeoMutt config file for the progress feature.
+
+# The 'progress' feature provides clear visual feedback for
 # slow tasks, such as indexing a large folder over the net.
- 
+
 # Set the color of the progress bar
 # White text on a red background</emphasis>
 color progress white red
- 
+
 <emphasis role="comment"># vim: syntax=muttrc</emphasis>
 </screen>
   </sect2>
@@ -12565,15 +12436,15 @@ color progress white red
 </sect1>
 
 <sect1 id="quasi-delete">
-  <title>Quasi-Delete Patch</title>
+  <title>Quasi-Delete Feature</title>
   <subtitle>Mark emails that should be hidden, but not deleted</subtitle>
 
-  <sect2 id="quasi-delete-patch">
-    <title>Patch</title>
+  <sect2 id="quasi-delete-support">
+    <title>Support</title>
 
     <para>
-      To check if Mutt supports <quote>Quasi-Delete</quote>, look for
-      <quote>patch-quasi-delete</quote> in the mutt version.
+      To check if NeoMutt supports <quote>Quasi-Delete</quote>, look for
+      <quote>patch-quasi-delete</quote> in the version info.
       See: <xref linkend="mutt-patches"/>.
     </para>
 
@@ -12582,21 +12453,21 @@ color progress white red
       <listitem><para>mutt-1.7.0</para></listitem>
     </itemizedlist>
 
-    <para>This patch is part of the <ulink url="http://www.neomutt.org/">NeoMutt Project</ulink>.</para>
+    <para>This feature is part of the <ulink url="http://www.neomutt.org/">NeoMutt Project</ulink>.</para>
   </sect2>
 
   <sect2 id="quasi-delete-intro">
     <title>Introduction</title>
 
-        <para>
+    <para>
     The <quote>quasi-delete</quote> function marks an email that should be
     hidden from the index, but NOT deleted.
-        </para>
+    </para>
 
-        <para>
-    On its own, this patch isn't very useful.  It forms a useful part of
+    <para>
+    On its own, this feature isn't very useful.  It forms a useful part of
     the notmuch plugin.
-        </para>
+    </para>
   </sect2>
 
   <sect2 id="quasi-delete-functions">
@@ -12627,12 +12498,12 @@ color progress white red
   <sect2 id="quasi-delete-muttrc">
     <title>Muttrc</title>
 <screen>
-<emphasis role="comment"># Example Mutt config file for the 'quasi-delete' feature.
- 
+<emphasis role="comment"># Example NeoMutt config file for the quasi-delete feature.
+
 # The 'quasi-delete' function marks an email that should be hidden
 # from the index, but NOT deleted.</emphasis>
 bind index,pager Q quasi-delete
- 
+
 <emphasis role="comment"># vim: syntax=muttrc</emphasis>
 </screen>
   </sect2>
@@ -12661,17 +12532,17 @@ bind index,pager Q quasi-delete
 </sect1>
 
 <sect1 id="reply-with-xorig-patch">
-  <title>Reply With X-Original-To Patch</title>
+  <title>Reply With X-Original-To Feature</title>
   <subtitle>Adds a configuration variable to allow direct reply to a mail using X-Original-To header
       as a From: in the answer.
   </subtitle>
 
-  <sect2 id="reply-with-xorig-patch2">
-    <title>Patch</title>
+  <sect2 id="reply-with-xorig-support">
+    <title>Support</title>
 
     <para>
-      To check if Mutt supports <quote>Reply With X-Original-To</quote>, look for
-      <quote>patch-reply-with-xorig</quote> in the mutt version.
+      To check if NeoMutt supports <quote>Reply With X-Original-To</quote>, look for
+      <quote>patch-reply-with-xorig</quote> in the version info.
       See: <xref linkend="mutt-patches"/>.
     </para>
 
@@ -12680,7 +12551,7 @@ bind index,pager Q quasi-delete
       <listitem><para>mutt-1.7.0</para></listitem>
     </itemizedlist>
 
-    <para>This patch is part of the <ulink url="http://www.neomutt.org/">NeoMutt Project</ulink>.</para>
+    <para>This feature is part of the <ulink url="http://www.neomutt.org/">NeoMutt Project</ulink>.</para>
   </sect2>
 
   <sect2 id="reply-with-xorig-intro">
@@ -12720,16 +12591,16 @@ bind index,pager Q quasi-delete
   <sect2 id="reply-with-xorig-muttrc">
     <title>Muttrc</title>
 <screen>
-<emphasis role="comment"># This is a complete list of reply-with-xorig-related configuration.
- 
+<emphasis role="comment"># Example NeoMutt config file for the reply-with-xorig feature.
+
 # --------------------------------------------------------------------------
 # VARIABLES - shown with their default values
 # --------------------------------------------------------------------------
- 
+
 # Use X-Original-To header to reply when reverse is disabled or no alternate
 # is found.</emphasis>
-set reply_with_xorig = "yes"
- 
+set reply_with_xorig = &quot;yes&quot;
+
 <emphasis role="comment"># vim: syntax=muttrc</emphasis>
 </screen>
   </sect2>
@@ -12742,16 +12613,138 @@ set reply_with_xorig = "yes"
   </sect2>
 </sect1>
 
-<sect1 id="sidebar">
-  <title>Sidebar Patch</title>
-  <subtitle>Overview of mailboxes</subtitle>
+<sect1 id="sensible-browser">
+  <title>Sensible-Browser Feature</title>
+  <subtitle>Make the file browser behave</subtitle>
 
-  <sect2 id="sidebar-patch">
-    <title>Patch</title>
+  <sect2 id="sensible-browser-support">
+    <title>Support</title>
 
     <para>
-      To check if Mutt supports <quote>Sidebar</quote>, look for
-      <quote>+USE_SIDEBAR</quote> in the mutt version.
+      To check if NeoMutt supports <quote>sensible-browser</quote>, look for
+      <quote>patch-sensible-browser</quote> in the version info.
+      See: <xref linkend="mutt-patches"/>.
+    </para>
+
+    <itemizedlist>
+      <title>Dependencies:</title>
+      <listitem><para>mutt-1.7.0</para></listitem>
+    </itemizedlist>
+
+    <para>This feature is part of the <ulink url="http://www.neomutt.org/">NeoMutt Project</ulink>.</para>
+  </sect2>
+
+  <sect2 id="sensible-browser-intro">
+    <title>Introduction</title>
+
+    <para>
+      The <quote>sensible browser</quote> is a set of small changes to NeoMutt's
+      mailbox browser which make the browser behave in a more predictable way.
+    </para>
+
+    <para>
+      The behavior is divided into two use cases: Fixed Order; Variable Order.
+    </para>
+
+    <sect3 id="sensible-browser-sort-fixed">
+      <title>A Fixed Order of Mailboxes</title>
+
+      <para>
+        This is for users who like their mailboxes in a fixed order, e.g.
+        alphabetical, or unsorted (in the order of the config file).
+      </para>
+
+<screen>
+<emphasis role="comment"># Fixed order</emphasis>
+set sort_browser="alpha"
+set sort_browser="unsorted"
+</screen>
+
+      <para>
+        When you first start the browser, e.g. <literal>c?</literal> your current
+        mailbox will be highlighted.
+      </para>
+
+      <para>
+        When you navigate to a parent mailbox (<quote>..</quote>) your old mailbox
+        will be highlighted.
+      </para>
+
+      <para>
+        <quote>..</quote> will always be listed at the top, however the rest of
+        the list is sorted.
+      </para>
+
+    </sect3>
+
+    <sect3 id="sensible-browser-sort-variable">
+      <title>A Variable Order of Mailboxes</title>
+
+      <para>
+        This is for users who like their mailboxes sorted by a characteristic
+        that changes, e.g. count of new mail, or the size of mailbox.
+      </para>
+
+<screen>
+<emphasis role="comment"># Variable order</emphasis>
+set sort_browser="reverse-count"
+set sort_browser="reverse-size"
+</screen>
+
+      <para>
+        When you first start the browser, e.g. <literal>c?</literal> the
+        highlight will be on the first mailbox, e.g. the one with the most new
+        mail.
+      </para>
+
+      <para>
+        When you navigate to a parent mailbox (<quote>..</quote>) your old mailbox
+        will be highlighted.
+      </para>
+
+      <para>
+        <quote>..</quote> will always be listed at the top, however the rest of
+        the list is sorted.
+      </para>
+
+    </sect3>
+
+  </sect2>
+
+  <sect2 id="sensible-browser-see-also">
+    <title>See Also</title>
+
+    <itemizedlist>
+      <listitem><para><ulink url="http://www.neomutt.org/">NeoMutt Project</ulink></para></listitem>
+      <listitem><para><link linkend="folder-format">$folder_format</link></para></listitem>
+    </itemizedlist>
+  </sect2>
+
+  <sect2 id="sensible-browser-known-bugs">
+    <title>Known Bugs</title>
+    <para>None</para>
+  </sect2>
+
+  <sect2 id="sensible-browser-credits">
+    <title>Credits</title>
+    <itemizedlist>
+    <listitem><para>Pierre-Elliott Bécue <email>becue@crans.org</email></para></listitem>
+    <listitem><para>Haakon Riiser <email>haakon.riiser@fys.uio.no</email></para></listitem>
+    <listitem><para>Richard Russon <email>rich@flatcap.org</email></para></listitem>
+    </itemizedlist>
+  </sect2>
+</sect1>
+
+<sect1 id="sidebar">
+  <title>Sidebar Feature</title>
+  <subtitle>Overview of mailboxes</subtitle>
+
+  <sect2 id="sidebar-support">
+    <title>Support</title>
+
+    <para>
+      To check if NeoMutt supports <quote>Sidebar</quote>, look for
+      <quote>+USE_SIDEBAR</quote> in the version info.
       See: <xref linkend="compile-time-features"/>.
     </para>
 
@@ -12760,7 +12753,7 @@ set reply_with_xorig = "yes"
       <listitem><para>mutt-1.7.0</para></listitem>
     </itemizedlist>
 
-    <para>This patch is part of the <ulink url="http://www.neomutt.org/">NeoMutt Project</ulink>.</para>
+    <para>This feature is part of the <ulink url="http://www.neomutt.org/">NeoMutt Project</ulink>.</para>
   </sect2>
 
   <sect2 id="sidebar-intro">
@@ -12849,11 +12842,6 @@ set reply_with_xorig = "yes"
             <entry><literal>sidebar_visible</literal></entry>
             <entry>boolean</entry>
             <entry><literal>no</literal></entry>
-          </row>
-          <row>
-            <entry><literal>sidebar_whitelist</literal></entry>
-            <entry>list</entry>
-            <entry>(empty)</entry>
           </row>
           <row>
             <entry><literal>sidebar_width</literal></entry>
@@ -13055,127 +13043,127 @@ set reply_with_xorig = "yes"
   <sect2 id="sidebar-muttrc">
     <title>Muttrc</title>
 <screen>
-<emphasis role="comment"># This is a complete list of sidebar-related configuration.
- 
+<emphasis role="comment"># Example NeoMutt config file for the sidebar feature.
+
 # --------------------------------------------------------------------------
 # VARIABLES - shown with their default values
 # --------------------------------------------------------------------------
- 
+
 # Should the Sidebar be shown?</emphasis>
 set sidebar_visible = no
- 
+
 <emphasis role="comment"># How wide should the Sidebar be in screen columns?
 # Note: Some characters, e.g. Chinese, take up two columns each.</emphasis>
 set sidebar_width = 20
- 
+
 <emphasis role="comment"># Should the mailbox paths be abbreviated?</emphasis>
 set sidebar_short_path = no
- 
+
 <emphasis role="comment"># When abbreviating mailbox path names, use any of these characters as path
 # separators.  Only the part after the last separators will be shown.
 # For file folders '/' is good.  For IMAP folders, often '.' is useful.</emphasis>
 set sidebar_delim_chars = '/.'
- 
+
 <emphasis role="comment"># If the mailbox path is abbreviated, should it be indented?</emphasis>
 set sidebar_folder_indent = no
- 
+
 <emphasis role="comment"># Indent mailbox paths with this string.</emphasis>
 set sidebar_indent_string = '  '
- 
+
 <emphasis role="comment"># Make the Sidebar only display mailboxes that contain new, or flagged,
 # mail.</emphasis>
 set sidebar_new_mail_only = no
- 
+
 <emphasis role="comment"># Any mailboxes that are whitelisted will always be visible, even if the
 # sidebar_new_mail_only option is enabled.</emphasis>
 sidebar_whitelist '/home/user/mailbox1'
 sidebar_whitelist '/home/user/mailbox2'
- 
+
 <emphasis role="comment"># When searching for mailboxes containing new mail, should the search wrap
 # around when it reaches the end of the list?</emphasis>
 set sidebar_next_new_wrap = no
- 
+
 <emphasis role="comment"># Show the Sidebar on the right-hand side of the screen</emphasis>
 set sidebar_on_right = no
- 
+
 <emphasis role="comment"># The character to use as the divider between the Sidebar and the other Mutt
 # panels.
 # Note: Only the first character of this string is used.</emphasis>
 set sidebar_divider_char = '|'
- 
-<emphasis role="comment"># Display the Sidebar mailboxes using this format string.</emphasis>
-set sidebar_format = '%B%*  %n'
- 
-<emphasis role="comment"># If you want to display more information, this is a useful format:</emphasis>
+
+<emphasis role="comment"># Enable extended buffy mode to calculate total, new, and flagged
+# message counts for each mailbox.</emphasis>
 set mail_check_stats
+
+<emphasis role="comment"># Display the Sidebar mailboxes using this format string.</emphasis>
 set sidebar_format = '%B%?F? [%F]?%* %?N?%N/?%S'
- 
+
 <emphasis role="comment"># Sort the mailboxes in the Sidebar using this method:
 #       count    - total number of messages
 #       flagged  - number of flagged messages
 #       new      - number of new messages
 #       path     - mailbox path
-#       unsorted - order of the mailboxes command</emphasis>
+#       unsorted - do not sort the mailboxes</emphasis>
 set sidebar_sort_method = 'unsorted'
- 
+
 <emphasis role="comment"># --------------------------------------------------------------------------
 # FUNCTIONS - shown with an example mapping
 # --------------------------------------------------------------------------
- 
+
 # Move the highlight to the previous mailbox</emphasis>
 bind index,pager \Cp sidebar-prev
- 
+
 <emphasis role="comment"># Move the highlight to the next mailbox</emphasis>
 bind index,pager \Cn sidebar-next
- 
+
 <emphasis role="comment"># Open the highlighted mailbox</emphasis>
 bind index,pager \Co sidebar-open
- 
+
 <emphasis role="comment"># Move the highlight to the previous page
 # This is useful if you have a LOT of mailboxes.</emphasis>
 bind index,pager &lt;F3&gt; sidebar-page-up
- 
+
 <emphasis role="comment"># Move the highlight to the next page
 # This is useful if you have a LOT of mailboxes.</emphasis>
 bind index,pager &lt;F4&gt; sidebar-page-down
- 
+
 <emphasis role="comment"># Move the highlight to the previous mailbox containing new, or flagged,
 # mail.</emphasis>
 bind index,pager &lt;F5&gt; sidebar-prev-new
- 
+
 <emphasis role="comment"># Move the highlight to the next mailbox containing new, or flagged, mail.</emphasis>
 bind index,pager &lt;F6&gt; sidebar-next-new
- 
+
 <emphasis role="comment"># Toggle the visibility of the Sidebar.</emphasis>
 bind index,pager B sidebar-toggle-visible
- 
+
 <emphasis role="comment"># --------------------------------------------------------------------------
 # COLORS - some unpleasant examples are given
 # --------------------------------------------------------------------------
 # Note: All color operations are of the form:
 #       color OBJECT FOREGROUND BACKGROUND
- 
+
 # Color of the current, open, mailbox
 # Note: This is a general Mutt option which colors all selected items.</emphasis>
 color indicator cyan black
- 
+
 <emphasis role="comment"># Color of the highlighted, but not open, mailbox.</emphasis>
 color sidebar_highlight black color8
- 
+
 <emphasis role="comment"># Color of the divider separating the Sidebar from Mutt panels</emphasis>
 color sidebar_divider color8 black
- 
+
 <emphasis role="comment"># Color to give mailboxes containing flagged mail</emphasis>
 color sidebar_flagged red black
- 
+
 <emphasis role="comment"># Color to give mailboxes containing new mail</emphasis>
 color sidebar_new green black
- 
+
 <emphasis role="comment"># Color to give mailboxes containing no new/flagged mail, etc</emphasis>
 color sidebar_ordinary color245 default
- 
+
 <emphasis role="comment"># --------------------------------------------------------------------------
- 
+
 # vim: syntax=muttrc</emphasis>
 </screen>
   </sect2>
@@ -13217,15 +13205,15 @@ color sidebar_ordinary color245 default
 </sect1>
 
 <sect1 id="skip-quoted-patch">
-  <title>Skip-Quoted Patch</title>
+  <title>Skip-Quoted Feature</title>
   <subtitle>Leave some context visible</subtitle>
 
-  <sect2 id="skip-quoted-patch2">
-    <title>Patch</title>
+  <sect2 id="skip-quoted-support">
+    <title>Support</title>
 
     <para>
-      To check if Mutt supports <quote>skip-quoted</quote>, look for
-      <quote>patch-skip-quoted</quote> in the mutt version.
+      To check if NeoMutt supports <quote>skip-quoted</quote>, look for
+      <quote>patch-skip-quoted</quote> in the version info.
       See: <xref linkend="mutt-patches"/>.
     </para>
 
@@ -13234,7 +13222,7 @@ color sidebar_ordinary color245 default
       <listitem><para>mutt-1.7.0</para></listitem>
     </itemizedlist>
 
-    <para>This patch is part of the <ulink url="http://www.neomutt.org/">NeoMutt Project</ulink>.</para>
+    <para>This feature is part of the <ulink url="http://www.neomutt.org/">NeoMutt Project</ulink>.</para>
   </sect2>
 
   <sect2 id="skip-quoted-intro">
@@ -13280,15 +13268,15 @@ color sidebar_ordinary color245 default
     <title>Muttrc</title>
 
 <screen>
-<emphasis role="comment"># Example Mutt config file for the 'skip-quoted' patch.
- 
+<emphasis role="comment"># Example NeoMutt config file for the skip-quoted feature.
+
 # The 'S' (skip-quoted) command scrolls the pager past the quoted text (usually
 # indented with '&gt; '.  Setting 'skip_quoted_offset' leaves some lines of quoted
 # text on screen for context.
- 
+
 # Show three quoted lines before the reply</emphasis>
 set skip_quoted_offset = 3
- 
+
 <emphasis role="comment"># vim: syntax=muttrc</emphasis>
 </screen>
   </sect2>
@@ -13316,15 +13304,15 @@ set skip_quoted_offset = 3
 </sect1>
 
 <sect1 id="status-color">
-  <title>Status Color Patch</title>
+  <title>Status Color Feature</title>
   <subtitle>Custom rules for theming the status bar</subtitle>
 
-  <sect2 id="status-color-patch">
-    <title>Patch</title>
+  <sect2 id="status-color-support">
+    <title>Support</title>
 
     <para>
-      To check if Mutt supports <quote>Status Color</quote>, look for
-      <quote>patch-status-color</quote> in the mutt version.
+      To check if NeoMutt supports <quote>Status Color</quote>, look for
+      <quote>patch-status-color</quote> in the version info.
       See: <xref linkend="mutt-patches"/>.
     </para>
 
@@ -13333,7 +13321,7 @@ set skip_quoted_offset = 3
       <listitem><para>mutt-1.7.0</para></listitem>
     </itemizedlist>
 
-    <para>This patch is part of the <ulink url="http://www.neomutt.org/">NeoMutt Project</ulink>.</para>
+    <para>This feature is part of the <ulink url="http://www.neomutt.org/">NeoMutt Project</ulink>.</para>
   </sect2>
 
   <sect2 id="status-color-intro">
@@ -13418,54 +13406,54 @@ set skip_quoted_offset = 3
   <sect2 id="status-color-muttrc">
     <title>Muttrc</title>
 <screen>
-<emphasis role="comment"># Example Mutt config file for the 'status-color' patch.
- 
-# The 'status-color' patch allows you to theme different parts of
+<emphasis role="comment"># Example NeoMutt config file for the status-color feature.
+
+# The 'status-color' feature allows you to theme different parts of
 # the status bar (also when it's used by the index).
- 
+
 # For the examples below, set some defaults</emphasis>
 set status_format='-%r-Mutt: %f [Msgs:%?M?%M/?%m%?n? New:%n?%?o? Old:%o?%?d? Del:%d?%?F? Flag:%F?%?t? Tag:%t?%?p? Post:%p?%?b? Inc:%b?%?l? %l?]---(%s/%S)-%&gt;-(%P)---'
 set index_format='%4C %Z %{%b %d} %-15.15L (%?l?%4l&amp;%4c?) %s'
 set sort=threads
 set sort_aux=last-date-received
- 
+
 <emphasis role="comment"># 'status color' can take up to 2 extra parameters
- 
+
 # color status foreground background [ regex [ num ]]
- 
+
 # 0 extra parameters
 # Set the default color for the entire status line</emphasis>
 color status blue white
- 
+
 <emphasis role="comment"># 1 extra parameter
 # Set the color for a matching pattern
 # color status foreground background regexp
- 
+
 # Highlight New, Deleted, or Flagged emails</emphasis>
 color status brightred white '(New|Del|Flag):[0-9]+'
- 
+
 <emphasis role="comment"># Highlight mailbox ordering if it's different from the default
 # First, highlight anything (*/*)</emphasis>
 color status brightred default '\([^)]+/[^)]+\)'
- 
+
 <emphasis role="comment"># Then override the color for one specific case</emphasis>
 color status default   default '\(threads/last-date-received\)'
- 
+
 <emphasis role="comment"># 2 extra parameters
 # Set the color for the nth submatch of a pattern
 # color status foreground background regexp num
- 
+
 # Highlight the contents of the []s but not the [] themselves</emphasis>
 color status red default '\[([^]]+)\]' 1
- 
+
 <emphasis role="comment"># The '1' refers to the first regex submatch, which is the inner
 # part in ()s
- 
+
 # Highlight the mailbox</emphasis>
 color status brightwhite default 'Mutt: ([^ ]+)' 1
- 
+
 <emphasis role="comment"># Search for 'Mutt: ' but only highlight what comes after it
- 
+
 # vim: syntax=muttrc</emphasis>
 </screen>
   </sect2>
@@ -13500,15 +13488,15 @@ color status brightwhite default 'Mutt: ([^ ]+)' 1
 </sect1>
 
 <sect1 id="timeout-hook">
-  <title>Timeout Patch</title>
+  <title>Timeout Feature</title>
   <subtitle>Run a command periodically</subtitle>
 
-  <sect2 id="timeout-patch">
-    <title>Patch</title>
+  <sect2 id="timeout-support">
+    <title>Support</title>
 
     <para>
-      To check if Mutt supports <quote>timeout</quote>, look for
-      <quote>patch-timeout</quote> in the mutt version.
+      To check if NeoMutt supports <quote>timeout</quote>, look for
+      <quote>patch-timeout</quote> in the version info.
       See: <xref linkend="mutt-patches"/>.
     </para>
 
@@ -13517,14 +13505,14 @@ color status brightwhite default 'Mutt: ([^ ]+)' 1
       <listitem><para>mutt-1.7.0</para></listitem>
     </itemizedlist>
 
-    <para>This patch is part of the <ulink url="http://www.neomutt.org/">NeoMutt Project</ulink>.</para>
+    <para>This feature is part of the <ulink url="http://www.neomutt.org/">NeoMutt Project</ulink>.</para>
   </sect2>
 
   <sect2 id="timeout-intro">
     <title>Introduction</title>
 
     <para>
-      This patch implements a new hook that is called periodically when Mutt
+      This feature implements a new hook that is called periodically when Mutt
       checks for new mail. This hook is called every <literal>$timeout</literal> seconds.
     </para>
   </sect2>
@@ -13545,7 +13533,7 @@ color status brightwhite default 'Mutt: ([^ ]+)' 1
   <sect2 id="timeout-muttrc">
     <title>Muttrc</title>
 <screen>
-<emphasis role="comment"># This is a complete list of timeout configuration.
+<emphasis role="comment"># Example NeoMutt config file for the timeout feature.
 
 # --------------------------------------------------------------------------
 # COMMANDS - shown with an example arguments
@@ -13582,15 +13570,15 @@ timeout-hook . 'exec sync-mailbox'
 </sect1>
 
 <sect1 id="tls-sni">
-  <title>TLS-SNI Patch</title>
+  <title>TLS-SNI Feature</title>
   <subtitle>Negotiate with a server for a TSL/SSL certificate</subtitle>
 
-  <sect2 id="tls-sni-patch">
-    <title>Patch</title>
+  <sect2 id="tls-sni-support">
+    <title>Support</title>
 
     <para>
-      To check if Mutt supports <quote>TLS-SNI</quote>, look for
-      <quote>patch-tls-sni</quote> in the mutt version.
+      To check if NeoMutt supports <quote>TLS-SNI</quote>, look for
+      <quote>patch-tls-sni</quote> in the version info.
       See: <xref linkend="mutt-patches"/>.
     </para>
 
@@ -13600,7 +13588,7 @@ timeout-hook . 'exec sync-mailbox'
       <listitem><para>OpenSSL</para></listitem>
     </itemizedlist>
 
-    <para>This patch is part of the <ulink url="http://www.neomutt.org/">NeoMutt Project</ulink>.</para>
+    <para>This feature is part of the <ulink url="http://www.neomutt.org/">NeoMutt Project</ulink>.</para>
   </sect2>
 
   <sect2 id="tls-sni-intro">
@@ -13624,18 +13612,13 @@ timeout-hook . 'exec sync-mailbox'
     and can perform vhosting.
     </para>
 
-        <para>
+    <para>
     To verify TLS SNI support by a server, you can use:
-        </para>
+    </para>
 
 <screen>
 openssl s_client -host &lt;imap server&gt; -port &lt;port&gt; -tls1 -servername &lt;imap server&gt;
 </screen>
-  </sect2>
-
-  <sect2 id="tls-sni-muttrc">
-    <title>Muttrc</title>
-    <para>None</para>
   </sect2>
 
   <sect2 id="tls-sni-see-also">
@@ -14867,13 +14850,14 @@ The following are the commands understood by Mutt:
 <cmdsynopsis>
 <command><link linkend="sidebar-whitelist">sidebar_whitelist</link></command>
 <arg choice="plain">
-<replaceable class="parameter">item</replaceable>
+<replaceable class="parameter">mailbox</replaceable>
 </arg>
-<arg choice="plain">
-<replaceable class="parameter">command</replaceable>
+<arg choice="opt" rep="repeat">
+<replaceable class="parameter">mailbox</replaceable>
 </arg>
 </cmdsynopsis>
 </listitem>
+
 <listitem>
 <cmdsynopsis>
 <command><link linkend="source">source</link></command>

@@ -1,4 +1,4 @@
-" Vim syntax file for the mutt notmuch patch
+" Vim syntax file for the NeoMutt notmuch feature.
 
 syntax keyword muttrcVarBool    contained skipwhite nm_record             nextgroup=muttrcSetBoolAssignment,muttrcVPrefix,muttrcVarBool,muttrcVarQuad,muttrcVarNum,muttrcVarStr
 syntax keyword muttrcVarBool    contained skipwhite virtual_spoolfile     nextgroup=muttrcSetBoolAssignment,muttrcVPrefix,muttrcVarBool,muttrcVarQuad,muttrcVarNum,muttrcVarStr
@@ -18,11 +18,10 @@ syntax keyword muttrcCommand    virtual-mailboxes
 syntax keyword muttrcCommand    tag-transforms
 syntax keyword muttrcCommand    tag-formats
 
-syntax match muttrcFunction     contained "<change-vfolder>"
-syntax match muttrcFunction     contained "<entire-thread>"
-syntax match muttrcFunction     contained "<modify-labels-then-hide>"
-syntax match muttrcFunction     contained "<modify-labels>"
-syntax match muttrcFunction     contained "<sidebar-toggle>"
-syntax match muttrcFunction     contained "<vfolder-from-query>"
+syntax match muttrcFunction     contained "\<change-vfolder\>"
+syntax match muttrcFunction     contained "\<entire-thread\>"
+syntax match muttrcFunction     contained "\<modify-labels-then-hide\>"
+syntax match muttrcFunction     contained "\<modify-labels\>"
+syntax match muttrcFunction     contained "\<sidebar-toggle\>"
+syntax match muttrcFunction     contained "\<vfolder-from-query\>"
 
-" vim: syntax=vim

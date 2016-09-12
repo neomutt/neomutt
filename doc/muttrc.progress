@@ -1,6 +1,6 @@
-# Example Mutt config file for the 'progress' patch.
+# Example NeoMutt config file for the progress feature.
 
-# The 'progress' patch provides clear visual feedback for
+# The 'progress' feature provides clear visual feedback for
 # slow tasks, such as indexing a large folder over the net.
 
 # Set the color of the progress bar

@@ -1,4 +1,4 @@
-# This is a complete list of notmuch-related configuration.
+# Example NeoMutt config file for the notmuch feature.
 
 # --------------------------------------------------------------------------
 # VARIABLES - shown with their default values
@@ -99,7 +99,7 @@ bind index,pager \eX vfolder-from-query
 # COLORS - some unpleasant examples are given
 # --------------------------------------------------------------------------
 
-# These symbols are added to the index-color patch:
+# These symbols are added to the index-color feature:
 
 # an individual message tag, %G, uses tag name
 # this symbol uses a pattern

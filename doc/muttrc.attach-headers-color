@@ -1,7 +1,14 @@
-# Example Mutt config file for the 'index-color' feature.
+# Example NeoMutt config file for the attach-headers-color feature.
 
-# Highlight the mime type and size
-color   attach_headers     green           default        "Type: [a-z]+/[a-z]"
+# Color if the attachment is autoviewed
+color   attach_headers     brightgreen     default        "Autoview"
+
+# Color only the brackets around the headers
+color   attach_headers     brightyellow    default        "^\\[--"
+color   attach_headers     brightyellow    default        "--]$"
+
+# Color the mime type and the size
+color   attach_headers     green           default        "Type: [a-z]+/[a-z0-9\-]+"
 color   attach_headers     green           default        "Size: [0-9\.]+[KM]"
 
 # Color GPGME signature checks

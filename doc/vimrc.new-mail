@@ -1,5 +1,4 @@
-" Vim syntax file for the mutt new-mail patch
+" Vim syntax file for the NeoMutt new-mail feature.
 
 syntax keyword muttrcVarStr     contained skipwhite new_mail_command         nextgroup=muttrcVarEqualsIdxFmt
 
-" vim: syntax=vim

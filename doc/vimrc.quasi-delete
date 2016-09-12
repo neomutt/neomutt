@@ -1,5 +1,4 @@
-" Vim syntax file for the mutt quasi-delete patch
+" Vim syntax file for the NeoMutt quasi-delete feature.
 
 syntax match muttrcFunction     contained "\<quasi-delete\>"
 
-" vim: syntax=vim

@@ -32,7 +32,22 @@ EXTRA_DIST = dotlock.man		\
 	smime-notes.txt			\
 	Muttrc Muttrc.head stamp-doc-rc \
 	makedoc.c makedoc-defs.h 	\
-	mutt.css mutt.xsl html.xsl chunk.xsl $(BUILT_DISTFILES)
+	mutt.css mutt.xsl html.xsl chunk.xsl \
+	$(BUILT_DISTFILES) $(SAMPLE_MUTTRC) $(SAMPLE_VIMRC) \
+	mutt-1.7.0-syntax.vim neomutt-syntax.vim
+
+SAMPLE_MUTTRC = muttrc.attach-headers-color muttrc.compress muttrc.cond-date \
+	muttrc.encrypt-to-self muttrc.forgotten-attachment muttrc.ifdef \
+	muttrc.index-color muttrc.initials muttrc.keywords \
+	muttrc.limit-current-thread muttrc.nested-if muttrc.new-mail \
+	muttrc.nntp muttrc.notmuch muttrc.progress muttrc.quasi-delete \
+	muttrc.reply-with-xorig muttrc.sidebar muttrc.skip-quoted \
+	muttrc.status-color muttrc.timeout
+
+SAMPLE_VIMRC = vimrc.attach-headers-color vimrc.compress vimrc.encrypt-to-self \
+	vimrc.forgotten-attachment vimrc.ifdef vimrc.index-color vimrc.keywords \
+	vimrc.new-mail vimrc.nntp vimrc.notmuch vimrc.progress \
+	vimrc.quasi-delete vimrc.reply-with-xorig vimrc.sidebar vimrc.timeout
 
 CHUNKED_DOCFILES = index.html intro.html gettingstarted.html \
 	configuration.html mimesupport.html advancedusage.html \
@@ -50,7 +65,7 @@ topsrcdir_DOCFILES = COPYRIGHT GPL INSTALL ChangeLog ChangeLog.neomutt	\
 
 all: makedoc-all
 
-makedoc-all: mutt.1 smime_keys.1 muttrc.man manual.html stamp-doc-rc stamp-doc-chunked manual.txt pgpewrap.1 pgpring.1
+makedoc-all: mutt.1 smime_keys.1 muttrc.man manual.html stamp-doc-rc stamp-doc-chunked manual.txt pgpewrap.1 pgpring.1 neomutt-syntax.vim
 
 install-data-local: makedoc-all instdoc
 	$(MKDIR_P) $(DESTDIR)$(mandir)/man1
@@ -76,6 +91,9 @@ install-data-local: makedoc-all instdoc
 	-for f in $(HTML_DOCFILES) ; do \
 		$(INSTALL) -m 644 $$f $(DESTDIR)$(docdir) ; \
 	done
+	-for f in $(SAMPLE_MUTTRC) ; do \
+		$(INSTALL) -m 644 $$f $(DESTDIR)$(docdir) ; \
+	done
 	$(INSTALL) -m 644 Muttrc $(DESTDIR)$(sysconfdir)/Muttrc.dist
 	-if [ -f $(DESTDIR)$(pkgdatadir)/Muttrc ] ; then \
 		mv $(DESTDIR)$(pkgdatadir)/Muttrc* $(DESTDIR)$(sysconfdir) ; \
@@ -84,6 +102,7 @@ install-data-local: makedoc-all instdoc
 	elif [ ! -f $(DESTDIR)$(sysconfdir)/Muttrc ] ; then \
 		$(INSTALL) -m 644 Muttrc $(DESTDIR)$(sysconfdir) ; \
 	fi
+	-$(INSTALL) -m 644 neomutt-syntax.vim $(DESTDIR)$(docdir)
 
 uninstall-local:
 	for f in mutt.1 mutt_dotlock.1 smime_keys.1 pgpewrap.1 pgpring.1; do \
@@ -92,7 +111,7 @@ uninstall-local:
 	for f in muttrc.5 mbox.5 mmdf.5 ; do \
 		rm -f $(DESTDIR)$(mandir)/man5/$$f ; \
 	done
-	for f in $(srcdir_DOCFILES) $(topsrcdir_DOCFILES) $(HTML_DOCFILES) ; \
+	for f in $(srcdir_DOCFILES) $(topsrcdir_DOCFILES) $(HTML_DOCFILES) $(SAMPLE_MUTTRC); \
 	do \
 		rm -f $(DESTDIR)$(docdir)/$$f ; \
 	done
@@ -103,6 +122,7 @@ uninstall-local:
 	  fi ; \
 	  rm $(DESTDIR)$(sysconfdir)/$${i}.dist ; \
 	done
+	rm -f $(DESTDIR)$(docdir)/neomutt-syntax.vim
 
 check:
 manual.txt: manual.html
@@ -135,6 +155,9 @@ manual.tex: stamp-doc-xml
 	-if test -n "$(DSLROOT)"; then \
 	  openjade -t tex -D $(DSLROOT) -d print/docbook.dsl dtds/decls/xml.dcl manual.xml; \
 	fi
+
+neomutt-syntax.vim: $(SAMPLE_VIMRC)
+	cat mutt-1.7.0-syntax.vim $^ > $@
 
 validate: stamp-doc-xml
 	xmllint --noout --noblanks --postvalid manual.xml

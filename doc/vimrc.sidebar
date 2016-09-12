@@ -1,4 +1,4 @@
-" Vim syntax file for the mutt sidebar patch
+" Vim syntax file for the NeoMutt sidebar feature.
 
 syntax keyword muttrcVarBool    contained skipwhite sidebar_folder_indent nextgroup=muttrcSetBoolAssignment,muttrcVPrefix,muttrcVarBool,muttrcVarQuad,muttrcVarNum,muttrcVarStr
 syntax keyword muttrcVarBool    contained skipwhite sidebar_new_mail_only nextgroup=muttrcSetBoolAssignment,muttrcVPrefix,muttrcVarBool,muttrcVarQuad,muttrcVarNum,muttrcVarStr
@@ -31,4 +31,3 @@ syntax keyword muttrcColorField contained sidebar_highlight
 syntax keyword muttrcColorField contained sidebar_indicator
 syntax keyword muttrcColorField contained sidebar_new
 
-" vim: syntax=vim

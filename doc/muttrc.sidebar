@@ -1,4 +1,4 @@
-# This is a complete list of sidebar-related configuration.
+# Example NeoMutt config file for the sidebar feature.
 
 # --------------------------------------------------------------------------
 # VARIABLES - shown with their default values
@@ -113,6 +113,9 @@ color sidebar_flagged red black
 
 # Color to give mailboxes containing new mail
 color sidebar_new green black
+
+# Color to give mailboxes containing no new/flagged mail, etc</emphasis>
+color sidebar_ordinary color245 default
 
 # --------------------------------------------------------------------------
 

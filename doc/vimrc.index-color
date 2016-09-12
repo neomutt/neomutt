@@ -1,4 +1,4 @@
-" Vim syntax file for the mutt index-color patch
+" Vim syntax file for the NeoMutt index-color feature.
 
 syntax keyword muttrcColorField contained index
 syntax keyword muttrcColorField contained index_author
@@ -10,4 +10,3 @@ syntax keyword muttrcColorField contained index_number
 syntax keyword muttrcColorField contained index_size
 syntax keyword muttrcColorField contained index_subject
 
-" vim: syntax=vim
