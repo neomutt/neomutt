@@ -1913,7 +1913,7 @@ main_loop:
       if (snprintf (errorstr, STRING,
         _("Message contains magic keyword \"%s\", but no attachments. Not sending."), AttachKeyword) == -1)
       {
-        errorstr[STRING] = 0; // terminate if need be. our string shouldn't be this long.
+        errorstr[STRING - 1] = 0; // terminate if need be. our string shouldn't be this long.
       }
       mutt_error (errorstr);
     }
