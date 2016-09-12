@@ -18,6 +18,8 @@ if BUILD_HCACHE
 HCVERSION = hcversion.h
 endif
 
+distdir = neo$(PACKAGE)-$(VERSION)
+
 BUILT_SOURCES = keymap_defs.h patchlist.c oldmutt_ver.h conststrings.c hcachever.sh $(HCVERSION) $(top_srcdir)/.version
 
 bin_PROGRAMS = mutt $(DOTLOCK_TARGET) $(PGPAUX_TARGET)

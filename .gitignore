@@ -28,7 +28,7 @@ doc/stamp-doc-xml
 doc/neomutt-syntax.vim
 
 po/POTFILES
-po/neomutt.pot
+po/mutt.pot
 
 .version
 aclocal.m4
