@@ -1247,7 +1247,7 @@ mutt_search_attach_keyword (char *filename)
   char *lowerKeyword = safe_malloc (klen);
   char *inputline = safe_malloc (LONG_STRING);
   int i;
-  for (i = 0; i <= klen; i++)
+  for (i = 0; i < klen; i++)
     lowerKeyword[i] = tolower (AttachKeyword[i]);
 
   int found = 0;
