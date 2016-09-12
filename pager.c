@@ -1828,7 +1828,7 @@ mutt_pager (const char *banner, const char *fname, int flags, pager_t *extra)
       }
 #endif
 
-      if (IsHeader (extra) && PagerIndexLines)
+      if (IsHeader (extra))
       {
 	if (index == NULL)
 	{
