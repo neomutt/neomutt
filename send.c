@@ -34,6 +34,7 @@
 
 #include <ctype.h>
 #include <stdlib.h>
+#include <locale.h>
 #include <unistd.h>
 #include <string.h>
 #include <errno.h>
@@ -391,26 +392,6 @@ static void process_user_header (ENVELOPE *env)
   }
 }
 
-LIST *mutt_copy_list (LIST *p)
-{
-  LIST *t, *r=NULL, *l=NULL;
-
-  for (; p; p = p->next)
-  {
-    t = (LIST *) safe_malloc (sizeof (LIST));
-    t->data = safe_strdup (p->data);
-    t->next = NULL;
-    if (l)
-    {
-      r->next = t;
-      r = r->next;
-    }
-    else
-      l = r = t;
-  }
-  return (l);
-}
-
 void mutt_forward_intro (FILE *fp, HEADER *cur)
 {
   char buffer[STRING];
@@ -469,7 +450,9 @@ void mutt_make_attribution (CONTEXT *ctx, HEADER *cur, FILE *out)
   char buffer[LONG_STRING];
   if (Attribution)
   {
+    setlocale (LC_TIME, NONULL (AttributionLocale));
     mutt_make_string (buffer, sizeof (buffer), Attribution, ctx, cur);
+    setlocale (LC_TIME, "");
     fputs (buffer, out);
     fputc ('\n', out);
   }

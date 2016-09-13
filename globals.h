@@ -36,6 +36,7 @@ WHERE char *AliasFmt;
 WHERE char *AssumedCharset;
 WHERE char *AttachSep;
 WHERE char *Attribution;
+WHERE char *AttributionLocale;
 WHERE char *AttachCharset;
 WHERE char *AttachFormat;
 WHERE char *AttachKeyword;
@@ -67,8 +68,6 @@ WHERE char *ImapUser INITVAL (NULL);
 #endif
 WHERE char *Inbox;
 WHERE char *Ispell;
-WHERE char *KeywordsSave;
-WHERE char *Locale;
 WHERE char *MailcapPath;
 WHERE char *Maildir;
 #if defined(USE_IMAP) || defined(USE_POP) || defined(USE_NNTP)

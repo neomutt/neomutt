@@ -4274,8 +4274,8 @@ Example: <literal><command>send-hook</command> mutt
 <para>
 Another typical use for this command is to change the values of the
 <link linkend="attribution">$attribution</link>, <link
-linkend="signature">$signature</link> and <link
-linkend="locale">$locale</link> variables in order to change the
+linkend="attribution-locale">$attribution_locale</link>, and <link
+linkend="signature">$signature</link> variables in order to change the
 language of the attributions and signatures based upon the recipients.
 </para>
 

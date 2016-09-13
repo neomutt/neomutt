@@ -64,9 +64,7 @@ void crypt_current_time(STATE *s, char *app_name)
   if (option (OPTCRYPTTIMESTAMP))
   {
     t = time(NULL);
-    setlocale (LC_TIME, "");
     strftime (p, sizeof (p), _(" (current time: %c)"), localtime (&t));
-    setlocale (LC_TIME, "C");
   }
   else
     *p = '\0';
