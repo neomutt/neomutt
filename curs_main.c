@@ -365,6 +365,9 @@ void update_index (MUTTMENU *menu, CONTEXT *ctx, int check,
   HEADER  **save_new = NULL;
   int j;
 
+  if (!menu || !ctx)
+    return;
+
   /* take note of the current message */
   if (oldcount)
   {
