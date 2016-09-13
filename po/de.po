@@ -1365,6 +1365,7 @@ msgstr ""
 "PGP (v)erschl., (s)ign., sign. (a)ls, (b)eides, s/(m)ime, (u)nverschl.?"
 
 #: crypt-gpgme.c:4732
+#, fuzzy
 msgid "samfco"
 msgstr ""
 
@@ -1401,6 +1402,7 @@ msgstr ""
 "S/MIME (v)erschl., (s)ign., sign. (a)ls, (b)eides, (p)gp, (u)nverschl.?"
 
 #: crypt-gpgme.c:4763
+#, fuzzy
 msgid "esabpfc"
 msgstr "vsabpku"
 
@@ -1411,6 +1413,7 @@ msgstr ""
 "PGP (v)erschl., (s)ign., sign. (a)ls, (b)eides, s/(m)ime, (u)nverschl.?"
 
 #: crypt-gpgme.c:4769
+#, fuzzy
 msgid "esabmfc"
 msgstr "vsabmku"
 
