@@ -1686,6 +1686,12 @@ int nntp_fetch_message (CONTEXT *ctx, MESSAGE *msg, int msgno)
   return 0;
 }
 
+/* Close message */
+static int nntp_close_message (CONTEXT *ctx, MESSAGE *msg)
+{
+  return safe_fclose (&msg->fp);
+}
+
 /* Post article */
 int nntp_post (const char *msg) {
   NNTP_DATA *nntp_data, nntp_tmp;
@@ -2442,7 +2448,7 @@ struct mx_ops mx_nntp_ops = {
   .close        = nntp_fastclose_mailbox,
   .check        = nntp_check_mailbox,
   .open_msg     = nntp_fetch_message,
-  .close_msg    = NULL,
+  .close_msg    = nntp_close_message,
   .commit_msg   = NULL,
   .open_new_msg = NULL
 };
