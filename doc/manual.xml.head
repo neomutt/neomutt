@@ -11320,6 +11320,12 @@ set new_mail_command = &quot;&quot;
           <ulink url="https://github.com/neomutt/neomutt/issues/20">Issue #20</ulink>
         </para>
     </listitem>
+    <listitem>
+      <para>
+        Will not notify about new e-mail if the pager is open, see
+        <ulink url="https://github.com/neomutt/neomutt/issues/19">Issue #19</ulink>
+      </para>
+    </listitem>
     </itemizedlist>
   </sect2>
 
