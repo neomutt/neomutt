@@ -2905,50 +2905,46 @@ int mutt_nm_query_complete (char *buffer, size_t len, int pos, int numtabs)
 /* Complete the nearest "+" or "-" -prefixed string previous to pos. */
 int mutt_nm_tag_complete (char *buffer, size_t len, int pos, int numtabs)
 {
+  if (!buffer)
+    return 0;
+
   char *pt = buffer;
-  int spaces;
-  const char *first_plus = NULL;
-  const char *first_minus = NULL;
 
-  SKIPWS (buffer);
-  spaces = buffer - pt;
+  /* Only examine the last token */
+  char *last_space = strrchr (buffer, ' ');
+  if (last_space)
+    pt = (last_space + 1);
 
-  first_plus = rstrnstr((char *)buffer, pos, "+");
-  first_minus = rstrnstr((char *)buffer, pos, "-");
-  pt = (char *)MAX(first_plus, first_minus);
-
-  if (pt != NULL) {
+  /* Skip the +/- */
+  if ((pt[0] == '+') || (pt[0] == '-'))
     pt++;
 
-    if (numtabs == 1)
-    {
-      /* First TAB. Collect all the matches */
-      complete_all_nm_tags(pt);
+  if (numtabs == 1)
+  {
+    /* First TAB. Collect all the matches */
+    complete_all_nm_tags(pt);
 
-      /* All matches are stored. Longest non-ambiguous string is ""
-       * i.e. don't change 'buffer'. Fake successful return this time.
-       */
-      if (User_typed[0] == 0)
-	return 1;
-    }
-
-    if (Completed[0] == 0 && User_typed[0])
-      return 0;
-
-    /* Num_matched will _always_ be atleast 1 since the initial
-     * user-typed string is always stored */
-    if (numtabs == 1 && Num_matched == 2)
-      snprintf(Completed, sizeof(Completed),"%s", Matches[0]);
-    else if (numtabs > 1 && Num_matched > 2)
-      /* cycle thru all the matches */
-      snprintf(Completed, sizeof(Completed), "%s",
-	       Matches[(numtabs - 2) % Num_matched]);
-
-    /* return the completed query */
-    strncpy (pt, Completed, buffer + len - pt - spaces);
+    /* All matches are stored. Longest non-ambiguous string is ""
+      * i.e. don't change 'buffer'. Fake successful return this time.
+      */
+    if (User_typed[0] == 0)
+      return 1;
   }
-  else
+
+  if (Completed[0] == 0 && User_typed[0])
     return 0;
+
+  /* Num_matched will _always_ be atleast 1 since the initial
+    * user-typed string is always stored */
+  if (numtabs == 1 && Num_matched == 2)
+    snprintf(Completed, sizeof(Completed),"%s", Matches[0]);
+  else if (numtabs > 1 && Num_matched > 2)
+    /* cycle thru all the matches */
+    snprintf(Completed, sizeof(Completed), "%s",
+	      Matches[(numtabs - 2) % Num_matched]);
+
+  /* return the completed query */
+  strncpy (pt, Completed, buffer + len - pt);
 
   return 1;
 }
