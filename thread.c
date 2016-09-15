@@ -752,6 +752,7 @@ void mutt_sort_threads (CONTEXT *ctx, int init)
   HEADER *cur;
   int i, oldsort, using_refs = 0;
   THREAD *thread, *new, *tmp, top;
+  memset (&top, 0, sizeof (top));
   LIST *ref = NULL;
   
   /* set Sort to the secondary method to support the set sort_aux=reverse-*

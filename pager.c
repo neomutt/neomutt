@@ -66,7 +66,7 @@ static HEADER *OldHdr = NULL;
 				break; \
 			}
 
-#define CHECK_READONLY	if (Context->readonly) \
+#define CHECK_READONLY	if (!Context || Context->readonly) \
 			{ \
 				mutt_flushinp (); \
 				mutt_error _(Mailbox_is_read_only);	\
@@ -81,7 +81,7 @@ static HEADER *OldHdr = NULL;
 		     }
 
 #define CHECK_ACL(aclbit,action) \
-		if (!mutt_bit_isset(Context->rights,aclbit)) { \
+		if (!Context || !mutt_bit_isset(Context->rights,aclbit)) { \
 			mutt_flushinp(); \
         /* L10N: %s is one of the CHECK_ACL entries below. */ \
 			mutt_error (_("%s: Operation not permitted by ACL"), action); \
@@ -1712,7 +1712,7 @@ mutt_pager (const char *banner, const char *fname, int flags, pager_t *extra)
 
   /* Initialize variables */
 
-  if (IsHeader (extra) && !extra->hdr->read)
+  if (Context && IsHeader (extra) && !extra->hdr->read)
   {
     Context->msgnotreadyet = extra->hdr->msgno;
     mutt_set_flag (Context, extra->hdr, MUTT_READ, 1);
@@ -1765,7 +1765,7 @@ mutt_pager (const char *banner, const char *fname, int flags, pager_t *extra)
       move (0, 0);
       clrtobot ();
 
-      if (IsHeader (extra) && Context->vcount + 1 < PagerIndexLines)
+      if (IsHeader (extra) && Context && ((Context->vcount + 1) < PagerIndexLines))
 	indexlen = Context->vcount + 1;
       else
 	indexlen = PagerIndexLines;
@@ -1837,7 +1837,7 @@ mutt_pager (const char *banner, const char *fname, int flags, pager_t *extra)
 	  index = mutt_new_menu(MENU_MAIN);
 	  index->make_entry = index_make_entry;
 	  index->color = index_color;
-	  index->max = Context->vcount;
+	  index->max = Context ? Context->vcount : 0;
 	  index->current = extra->hdr->virtual;
           index->indexwin = index_window;
           index->statuswin = index_status_window;
@@ -2891,11 +2891,14 @@ search_next:
 
       case OP_TAG:
 	CHECK_MODE(IsHeader (extra));
-	mutt_set_flag (Context, extra->hdr, MUTT_TAG, !extra->hdr->tagged);
+	if (Context)
+	{
+	  mutt_set_flag (Context, extra->hdr, MUTT_TAG, !extra->hdr->tagged);
 
-	Context->last_tag = extra->hdr->tagged ? extra->hdr :
-	  ((Context->last_tag == extra->hdr && !extra->hdr->tagged)
-	   ? NULL : Context->last_tag);
+	  Context->last_tag = extra->hdr->tagged ? extra->hdr :
+	    ((Context->last_tag == extra->hdr && !extra->hdr->tagged)
+	    ? NULL : Context->last_tag);
+	}
 
 	redraw = REDRAW_STATUS | REDRAW_INDEX;
 	if (option (OPTRESOLVE))
@@ -2986,7 +2989,7 @@ search_next:
 	}
 	CHECK_MODE(IsHeader (extra));
 	mutt_view_attachments (extra->hdr);
-	if (extra->hdr->attach_del)
+	if (Context && extra->hdr->attach_del)
 	  Context->changed = 1;
 	redraw = REDRAW_FULL;
 	break;
@@ -2995,7 +2998,8 @@ search_next:
         CHECK_MODE(IsHeader (extra));
         rc = mutt_label_message(extra->hdr);
         if (rc > 0) {
-          Context->changed = 1;
+	  if (Context)
+	    Context->changed = 1;
           redraw = REDRAW_FULL;
           mutt_message ("%d label%s changed.", rc, rc == 1 ? "" : "s");
         }
@@ -3062,7 +3066,8 @@ search_next:
   safe_fclose (&fp);
   if (IsHeader (extra))
   {
-    Context->msgnotreadyet = -1;
+    if (Context)
+      Context->msgnotreadyet = -1;
     if (rc == -1)
       OldHdr = NULL;
     else

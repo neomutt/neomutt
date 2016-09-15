@@ -27,6 +27,9 @@
 
 void _mutt_set_flag (CONTEXT *ctx, HEADER *h, int flag, int bf, int upd_ctx)
 {
+  if (!ctx || !h)
+    return;
+
   int changed = h->changed;
   int deleted = ctx->deleted;
   int tagged = ctx->tagged;
