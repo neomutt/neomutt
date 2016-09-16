@@ -305,7 +305,7 @@ static int cb_qsort_sbe (const void *a, const void *b)
       result = (b2->msg_flagged - b1->msg_flagged);
       break;
     case SORT_PATH:
-      result = mutt_strcasecmp (b1->path, b2->path);
+      result = mutt_strcoll (b1->path, b2->path);
       break;
   }
 
