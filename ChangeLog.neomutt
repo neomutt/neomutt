@@ -1,3 +1,37 @@
+2016-09-16  Richard Russon  <rich@flatcap.org>
+* Bug Fixes
+  - Avoid segfault when listing mailboxes on startup
+    John Swinbank
+  - Fix buffer overrun in search for attach keyword
+    James McCoy
+  - Fix off-by-one in error message
+    Antonio Radici
+  - fix AC_INIT tarname parameter
+  - fix crash when exiting the pager
+  - fix another crash in the pager
+  - nntp: close message handles
+  - fix: make the pager more robust
+  - fix sidebar sort order
+  - fix notmuch tag completion
+* Docs
+  - doc: Removes bug entry in new-mail docs
+    Santiago Torres
+  - fix some translations in crypt-gpgme.c
+    Antonio Radici
+  - docs: mass tidy up
+* Upstream
+  - Fix sidebar documentation a bit
+  - Add unsidebar_whitelist command
+  - Remove the $locale configuration variable
+  - Add $attribution_locale configuration variable
+  - Add missing include <locale.h> to send.c and edit.c
+  - Filter out zero width no-break space (U+FEFF)
+  - Update a confusing and obsolete comment
+  - Moves mutt_copy_list to muttlib.c, where it belongs
+  - Redraw screen after an SSL cert prompt
+  - Preserve message-id and mft headers for recalled messages
+  - Fix openssl 1.1 compilation issues
+
 2016-09-10  Richard Russon  <rich@flatcap.org>
 * New Features
   - Colouring Attachments with Regexp
