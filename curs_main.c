@@ -1623,6 +1623,8 @@ int mutt_index_menu (void)
 	break;
 
       case OP_MAIN_QUASI_DELETE:
+	CHECK_MSGCOUNT;
+        CHECK_VISIBLE;
 	if (tag) {
 	  for (j = 0; j < Context->vcount; j++) {
 	    if (Context->hdrs[Context->v2r[j]]->tagged) {
