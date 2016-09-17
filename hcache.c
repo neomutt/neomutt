@@ -28,6 +28,8 @@
 #include <villa.h>
 #elif HAVE_TC
 #include <tcbdb.h>
+#elif HAVE_KC
+#include <kclangc.h>
 #elif HAVE_GDBM
 #include <gdbm.h>
 #elif HAVE_DB4
@@ -63,6 +65,13 @@ struct header_cache
 struct header_cache
 {
   TCBDB *db;
+  char *folder;
+  unsigned int crc;
+};
+#elif HAVE_KC
+struct header_cache
+{
+  KCDB *db;
   char *folder;
   unsigned int crc;
 };
@@ -750,6 +759,9 @@ mutt_hcache_fetch_raw (header_cache_t *h, const char *filename,
 #elif HAVE_TC
   void *data;
   int sp;
+#elif HAVE_KC
+  void *data;
+  size_t sp;
 #elif HAVE_GDBM
   datum key;
   datum data;
@@ -826,6 +838,10 @@ mutt_hcache_fetch_raw (header_cache_t *h, const char *filename,
   return data;
 #elif HAVE_TC
   data = tcbdbget(h->db, path, ksize, &sp);
+
+  return data;
+#elif HAVE_KC
+  data = kcdbget(h->db, path, ksize, &sp);
 
   return data;
 #elif HAVE_GDBM
@@ -938,6 +954,8 @@ mutt_hcache_store_raw (header_cache_t* h, const char* filename, void* data,
   return vlput(h->db, path, ksize, data, dlen, VL_DOVER);
 #elif HAVE_TC
   return tcbdbput(h->db, path, ksize, data, dlen);
+#elif HAVE_KC
+  return kcdbset(h->db, path, ksize, data, dlen);
 #elif HAVE_GDBM
   key.dptr = path;
   key.dsize = ksize;
@@ -1071,6 +1089,74 @@ mutt_hcache_delete(header_cache_t *h, const char *filename,
   ksize = strlen(h->folder) + keylen(path + strlen(h->folder));
 
   return tcbdbout(h->db, path, ksize);
+}
+
+#elif HAVE_KC
+static int
+hcache_open_kc (struct header_cache *h, const char *path)
+{
+  char kcdbpath[_POSIX_PATH_MAX];
+  int printfresult;
+
+  printfresult = snprintf(kcdbpath, sizeof(kcdbpath),
+                          "%s#type=kct#opts=%s#rcomp=lex",
+                          path, option(OPTHCACHECOMPRESS) ? "lc" : "l");
+  if ((printfresult < 0) || (printfresult >= sizeof(kcdbpath)))
+  {
+    return -1;
+  }
+
+  h->db = kcdbnew();
+  if (!h->db)
+      return -1;
+
+  if (kcdbopen(h->db, kcdbpath, KCOWRITER | KCOCREATE))
+    return 0;
+  else
+  {
+#ifdef DEBUG
+    int ecode = kcdbecode (h->db);
+    dprint (2, (debugfile, "kcdbopen failed for %s: %s (ecode %d)\n", kcdbpath, kcdbemsg (h->db), ecode));
+#endif
+    kcdbdel(h->db);
+    return -1;
+  }
+}
+
+void
+mutt_hcache_close(header_cache_t *h)
+{
+  if (!h)
+    return;
+
+  if (!kcdbclose(h->db))
+  {
+#ifdef DEBUG
+    int ecode = kcdbecode (h->db);
+    dprint (2, (debugfile, "kcdbclose failed for %s: %s (ecode %d)\n", h->folder, kcdbemsg (h->db), ecode));
+#endif
+  }
+  kcdbdel(h->db);
+  FREE(&h->folder);
+  FREE(&h);
+}
+
+int
+mutt_hcache_delete(header_cache_t *h, const char *filename,
+		   size_t(*keylen) (const char *fn))
+{
+  char path[_POSIX_PATH_MAX];
+  int ksize;
+
+  if (!h)
+    return -1;
+
+  strncpy(path, h->folder, sizeof (path));
+  safe_strcat(path, sizeof (path), filename);
+
+  ksize = strlen(h->folder) + keylen(path + strlen(h->folder));
+
+  return kcdbremove(h->db, path, ksize);
 }
 
 #elif HAVE_GDBM
@@ -1341,7 +1427,9 @@ mutt_hcache_open(const char *path, const char *folder, hcache_namer_t namer)
 #if HAVE_QDBM
   hcache_open = hcache_open_qdbm;
 #elif HAVE_TC
-  hcache_open= hcache_open_tc;
+  hcache_open = hcache_open_tc;
+#elif HAVE_KC
+  hcache_open = hcache_open_kc;
 #elif HAVE_GDBM
   hcache_open = hcache_open_gdbm;
 #elif HAVE_DB4
@@ -1443,5 +1531,15 @@ const char *mutt_hcache_backend (void)
 const char *mutt_hcache_backend (void)
 {
   return "tokyocabinet " _TC_VERSION;
+}
+#elif HAVE_KC
+const char *mutt_hcache_backend (void)
+{
+  /* SHORT_STRING(128) should be more than enough for KCVERSION */
+  static char version_cache[SHORT_STRING] = "";
+  if (!version_cache[0])
+    snprintf(version_cache, sizeof(version_cache), "kyotocabinet %s", KCVERSION);
+
+  return version_cache;
 }
 #endif
