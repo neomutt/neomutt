@@ -1062,12 +1062,13 @@ struct option_t MuttVars[] = {
   { "header_cache_compress", DT_BOOL, R_NONE, OPTHCACHECOMPRESS, 1 },
   /*
   ** .pp
-  ** When mutt is compiled with qdbm or tokyocabinet as header cache backend,
-  ** this option determines whether the database will be compressed.
-  ** Compression results in database files roughly being one fifth
-  ** of the usual diskspace, but the decompression can result in a
-  ** slower opening of cached folder(s) which in general is still
-  ** much faster than opening non header cached folders.
+  ** When mutt is compiled with qdbm, tokyocabinet or kyotocabinet
+  ** as header cache backend, this option determines whether the
+  ** database will be compressed. Compression results in database
+  ** files roughly being one fifth of the usual diskspace, but the
+  ** decompression can result in a slower opening of cached folder(s)
+  ** which in general is still much faster than opening non header
+  ** cached folders.
   */
 #endif /* HAVE_QDBM */
 #if defined(HAVE_GDBM) || defined(HAVE_DB4)
