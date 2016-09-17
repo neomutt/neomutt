@@ -8789,7 +8789,7 @@ per message.)
 Header caching can be enabled via the configure script and the
 <emphasis>--enable-hcache</emphasis> option. It's not turned on by
 default because external database libraries are required: one of
-tokyocabinet, qdbm, gdbm or bdb must be present.
+tokyocabinet, kyotocabinet, qdbm, gdbm, lmdb or bdb must be present.
 </para>
 
 <para>
@@ -10769,6 +10769,66 @@ bind index,pager y edit-label
     <itemizedlist>
     <listitem><para>David Champion <email>dgc@uchicago.edu</email></para></listitem>
     <listitem><para>Richard Russon <email>rich@flatcap.org</email></para></listitem>
+    </itemizedlist>
+  </sect2>
+</sect1>
+
+<sect1 id="kyoto-cabinet">
+  <title>Kyoto Cabinet Feature</title>
+  <subtitle>Kyoto Cabinet backend for the header cache</subtitle>
+
+  <sect2 id="kyoto-cabinet-support">
+    <title>Support</title>
+
+    <para>
+      To check if Mutt supports Kyoto Cabinet, look for
+
+      <itemizedlist>
+        <listitem><quote>patch-kyoto</quote> in the mutt version. See: <xref linkend="mutt-patches"/>.</listitem>
+        <listitem><quote>+USE_HCACHE</quote> in the compile options</listitem>
+        <listitem><quote>hcache backend: kyotocabinet</quote> in the mutt version</listitem>
+      </itemizedlist>
+    </para>
+
+    <itemizedlist>
+      <title>Dependencies:</title>
+      <listitem><para>mutt-1.7.0</para></listitem>
+      <listitem><para><ulink url="http://fallabs.com/kyotocabinet/">Kyoto Cabinet libraries</ulink></para></listitem>
+    </itemizedlist>
+
+    <para>This feature is part of the <ulink url="http://www.neomutt.org/">NeoMutt Project</ulink>.</para>
+  </sect2>
+
+  <sect2 id="kyoto-cabinet-intro">
+    <title>Introduction</title>
+
+    <para>
+      This feature adds support for using Kyoto Cabinet, the successor to Tokyo
+      Cabinet, as a storage backend for Mutt's header cache (hcache). It is
+      enabled at configure time with the
+      <emphasis>--with-kyotocabinet=&lt;path&gt;</emphasis> switch.
+    </para>
+  </sect2>
+
+  <sect2 id="kyoto-cabinet-see-also">
+    <title>See Also</title>
+
+    <itemizedlist>
+      <listitem><para><ulink url="http://www.neomutt.org/">NeoMutt Project</ulink></para></listitem>
+      <listitem><para><link linkend="caching">Local Caching</link></para></listitem>
+      <listitem><para><ulink url="http://fallabs.com/kyotocabinet/">Kyoto Cabinet</ulink></para></listitem>
+    </itemizedlist>
+  </sect2>
+
+  <sect2 id="kyoto-cabinet-known-bugs">
+    <title>Known Bugs</title>
+    <para>None</para>
+  </sect2>
+
+  <sect2 id="kyoto-cabinet-credits">
+    <title>Credits</title>
+    <itemizedlist>
+    <listitem><para>Clemens Lang <email>neverpanic@gmail.com</email></para></listitem>
     </itemizedlist>
   </sect2>
 </sect1>
