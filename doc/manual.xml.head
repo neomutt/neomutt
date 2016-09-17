@@ -10773,6 +10773,56 @@ bind index,pager y edit-label
   </sect2>
 </sect1>
 
+<sect1 id="FEATURE-NAME">
+  <title>FEATURE-NAME Feature</title>
+  <subtitle>DESCRIPTION</subtitle>
+
+  <sect2 id="FEATURE-NAME-support">
+    <title>Support</title>
+
+    <para>
+      To check if Mutt supports <quote>FEATURE-NAME</quote>, look for
+      <quote>patch-FEATURE-NAME</quote> in the mutt version.
+      See: <xref linkend="mutt-patches"/>.
+    </para>
+
+    <itemizedlist>
+      <title>Dependencies:</title>
+      <listitem><para>mutt-1.7.0</para></listitem>
+    </itemizedlist>
+
+    <para>This feature is part of the <ulink url="http://www.neomutt.org/">NeoMutt Project</ulink>.</para>
+  </sect2>
+
+  <sect2 id="FEATURE-NAME-intro">
+    <title>Introduction</title>
+
+    <para>
+      SIMPLE DESCRIPTION OF FEATURE
+    </para>
+  </sect2>
+
+  <sect2 id="FEATURE-NAME-see-also">
+    <title>See Also</title>
+
+    <itemizedlist>
+      <listitem><para><link linkend="regexp">LINK-DESCRIPTION</link></para></listitem>
+    </itemizedlist>
+  </sect2>
+
+  <sect2 id="FEATURE-NAME-known-bugs">
+    <title>Known Bugs</title>
+    <para>None</para>
+  </sect2>
+
+  <sect2 id="FEATURE-NAME-credits">
+    <title>Credits</title>
+    <itemizedlist>
+    <listitem><para>FIRST LAST <email>EMAIL_ADDRESS</email></para></listitem>
+    </itemizedlist>
+  </sect2>
+</sect1>
+
 <sect1 id="limit-current-thread">
   <title>Limit-Current-Thread Feature</title>
   <subtitle>Focus on one Email Thread</subtitle>
