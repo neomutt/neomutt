@@ -834,7 +834,13 @@ int main (int argc, char **argv)
     }
 
     if (!folder[0])
-      strfcpy (folder, NONULL(Spoolfile), sizeof (folder));
+    {
+      if (Spoolfile)
+        strfcpy (folder, NONULL(Spoolfile), sizeof (folder));
+      else if (Maildir)
+        strfcpy (folder, NONULL(Maildir), sizeof (folder));
+      /* else no folder */
+    }
 
 #ifdef USE_NNTP
     if (option (OPTNEWS))

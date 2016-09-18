@@ -52,6 +52,7 @@
 static const struct mapping_t FolderHelp[] = {
   { N_("Exit"),  OP_EXIT },
   { N_("Chdir"), OP_CHANGE_DIRECTORY },
+  { N_("Goto"),  OP_BROWSER_GOTO_FOLDER },
   { N_("Mask"),  OP_ENTER_MASK },
   { N_("Help"),  OP_HELP },
   { NULL,	 0 }
@@ -882,6 +883,25 @@ static void vfolder_entry (char *s, size_t slen, MUTTMENU *menu, int num)
 }
 #endif
 
+/* Public function
+ *
+ * This function takes a menu and a state and defines the current
+ * entry that should be highlighted.
+ */
+void mutt_browser_highlight_default (struct browser_state *state, MUTTMENU *menu)
+{
+  menu->top = 0;
+  /* Reset menu position to 1.
+   * We do not risk overflow as the init_menu function changes
+   * current if it is bigger than state->entrylen.
+   */
+  if ((mutt_strcmp (state->entry[0].desc, "..")  == 0) ||
+      (mutt_strcmp (state->entry[0].desc, "../") == 0))
+    menu->current = 1;
+  else
+    menu->current = 0;
+}
+
 static void init_menu (struct browser_state *state, MUTTMENU *menu, char *title,
 		       size_t titlelen, int buffy)
 {
@@ -909,59 +929,65 @@ static void init_menu (struct browser_state *state, MUTTMENU *menu, char *title,
   }
   else
 #endif
-  if (buffy)
   {
-    menu->is_mailbox_list = 1;
-    snprintf (title, titlelen, _("Mailboxes [%d]"), mutt_buffy_check (0));
-  }
-  else
-  {
-    menu->is_mailbox_list = 0;
-    strfcpy (path, LastDir, sizeof (path));
-    mutt_pretty_mailbox (path, sizeof (path));
-
-    /* Browser tracking feature.
-     * The goal is to highlight the good directory if LastDir is the parent dir
-     * of OldLastDir (this occurs mostly when one hit "../").
-     */
-    int ldlen = mutt_strlen (LastDir);
-    if ((ldlen > 0) && (mutt_strncmp (LastDir, OldLastDir, ldlen) == 0))
+    if (buffy)
     {
-      char TargetDir[_POSIX_PATH_MAX] = "";
-#ifdef USE_IMAP
-      if (state->imap_browse)
-      {
-        strfcpy (TargetDir, OldLastDir, sizeof (TargetDir));
-        imap_clean_path (TargetDir, sizeof (TargetDir));
-      }
-      else
-#endif
-        strfcpy (TargetDir,
-                strrchr (OldLastDir, '/') + 1,
-                sizeof (TargetDir));
-
-      /* If we get here, it means that LastDir is the parent directory of
-       * OldLastDir.  I.e., we're returning from a subdirectory, and we want
-       * to position the cursor on the directory we're returning from. */
-      int i;
-      for (i = 0; i < state->entrylen; i++)
-      {
-        if (mutt_strcmp (state->entry[i].name, TargetDir) == 0)
-        {
-          menu->current = i;
-	  break;
-        }
-      }
+      menu->is_mailbox_list = 1;
+      snprintf (title, titlelen, _("Mailboxes [%d]"), mutt_buffy_check (0));
     }
     else
     {
-      if ((mutt_strcmp (state->entry[0].desc, "..")  == 0) ||
-          (mutt_strcmp (state->entry[0].desc, "../") == 0))
-	menu->current = 1;
+      menu->is_mailbox_list = 0;
+      strfcpy (path, LastDir, sizeof (path));
+      mutt_pretty_mailbox (path, sizeof (path));
+      snprintf (title, titlelen, _("Directory [%s], File mask: %s"),
+               path, NONULL(Mask.pattern));
     }
-    snprintf (title, titlelen, _("Directory [%s], File mask: %s"),
-	      path, NONULL(Mask.pattern));
   }
+
+  /* Browser tracking feature.
+   * The goal is to highlight the good directory if LastDir is the parent dir
+   * of OldLastDir (this occurs mostly when one hit "../"). It should also work
+   * properly when the user is in examine_mailboxes-mode.
+   */
+  int ldlen = mutt_strlen (LastDir);
+  if ((ldlen > 0) && (mutt_strncmp (LastDir, OldLastDir, ldlen) == 0))
+  {
+    char TargetDir[_POSIX_PATH_MAX] = "";
+
+#ifdef USE_IMAP
+    /* Use mx_is_imap to check what kind of dir is OldLastDir.
+     */
+    if (mx_is_imap (OldLastDir))
+    {
+      strfcpy (TargetDir, OldLastDir, sizeof (TargetDir));
+      imap_clean_path (TargetDir, sizeof (TargetDir));
+    }
+    else
+#endif
+      strfcpy (TargetDir,
+              strrchr (OldLastDir, '/') + 1,
+              sizeof (TargetDir));
+
+    /* If we get here, it means that LastDir is the parent directory of
+     * OldLastDir.  I.e., we're returning from a subdirectory, and we want
+     * to position the cursor on the directory we're returning from. */
+    unsigned int i, matched = 0;
+    for (i = 0; i < state->entrylen; i++)
+    {
+      if (mutt_strcmp (state->entry[i].name, TargetDir) == 0)
+      {
+        menu->current = i;
+        matched = 1;
+        break;
+      }
+    }
+    if (!matched)
+      mutt_browser_highlight_default(state, menu);
+  }
+  else
+    mutt_browser_highlight_default(state, menu);
+
   menu->redraw = REDRAW_FULL;
 }
 
@@ -1011,6 +1037,11 @@ void _mutt_select_file (char *f, size_t flen, int flags, char ***files, int *num
   int multiple = (flags & MUTT_SEL_MULTI)  ? 1 : 0;
   int folder   = (flags & MUTT_SEL_FOLDER) ? 1 : 0;
   int buffy    = (flags & MUTT_SEL_BUFFY)  ? 1 : 0;
+
+  /* Keeps in memory the directory we were in when hitting '='
+   * to go directly to $folder (Maildir)
+   */
+  char GotoSwapper[_POSIX_PATH_MAX] = "";
 
   buffy = buffy && folder;
   
@@ -1135,10 +1166,33 @@ void _mutt_select_file (char *f, size_t flen, int flags, char ***files, int *num
        * This tracker is only used when browser_track is true,
        * meaning only with sort methods SUBJECT/DESC for now.
        */
-      if (CurrentFolder && ((!LastDir[0]) ||
-           (mutt_strcmp (CurrentFolder, OldLastDir) != 0)))
+      if (CurrentFolder)
       {
-        mutt_browser_select_dir (CurrentFolder);
+        if (!LastDir[0])
+        {
+          /* If browsing in "local"-mode, than we chose to define LastDir to
+           * MailDir
+           */
+          switch (mx_get_magic (CurrentFolder))
+          {
+            case MUTT_MBOX:
+            case MUTT_MMDF:
+            case MUTT_MH:
+            case MUTT_MAILDIR:
+              if (Maildir)
+                strfcpy (LastDir, NONULL(Maildir), sizeof (LastDir));
+              else if (Spoolfile)
+                mutt_browser_select_dir (Spoolfile);
+              break;
+            default:
+              mutt_browser_select_dir (CurrentFolder);
+              break;
+          }
+        }
+        else if (mutt_strcmp (CurrentFolder, OldLastDir) != 0)
+        {
+          mutt_browser_select_dir (CurrentFolder);
+        }
       }
 
       /* When browser tracking feature is disabled, shoot a 0
@@ -1337,9 +1391,10 @@ void _mutt_select_file (char *f, size_t flen, int flags, char ***files, int *num
 		goto bail;
 	      }
 	    }
-	    menu->current = 0; 
-	    menu->top = 0; 
+            mutt_browser_highlight_default (&state, menu);
 	    init_menu (&state, menu, title, sizeof (title), buffy);
+            if (GotoSwapper[0])
+              GotoSwapper[0] = '\0';
 	    break;
 	  }
 	}
@@ -1436,8 +1491,7 @@ void _mutt_select_file (char *f, size_t flen, int flags, char ***files, int *num
 	  imap_browse (LastDir, &state);
 	  browser_sort (&state);
 	  menu->data = state.entry;
-	  menu->current = 0; 
-	  menu->top = 0; 
+          mutt_browser_highlight_default (&state, menu);
 	  init_menu (&state, menu, title, sizeof (title), buffy);
 	  MAYBE_REDRAW (menu->redraw);
 	}
@@ -1459,8 +1513,7 @@ void _mutt_select_file (char *f, size_t flen, int flags, char ***files, int *num
 	    imap_browse (LastDir, &state);
 	    browser_sort (&state);
 	    menu->data = state.entry;
-	    menu->current = 0;
-	    menu->top = 0;
+            mutt_browser_highlight_default (&state, menu);
 	    init_menu (&state, menu, title, sizeof (title), buffy);
 	    MAYBE_REDRAW (menu->redraw);
 	  }
@@ -1543,8 +1596,7 @@ void _mutt_select_file (char *f, size_t flen, int flags, char ***files, int *num
 	    imap_browse (LastDir, &state);
 	    browser_sort (&state);
 	    menu->data = state.entry;
-	    menu->current = 0; 
-	    menu->top = 0; 
+            mutt_browser_highlight_default (&state, menu);
 	    init_menu (&state, menu, title, sizeof (title), buffy);
 	  }
 	  else
@@ -1574,8 +1626,7 @@ void _mutt_select_file (char *f, size_t flen, int flags, char ***files, int *num
 		    goto bail;
 		  }
 		}
-		menu->current = 0;
-		menu->top = 0;
+                mutt_browser_highlight_default (&state, menu);
 		init_menu (&state, menu, title, sizeof (title), buffy);
 	      }
 	      else
@@ -1704,12 +1755,7 @@ void _mutt_select_file (char *f, size_t flen, int flags, char ***files, int *num
 	  {
 	    BrowserSort |= reverse ? SORT_REVERSE : 0;
 	    browser_sort (&state);
-
-            /* Reset menu position to 1.
-             * We do not risk overflow as the init_menu function changes
-             * current if it is bigger than state->entrylen.
-             */
-            menu->current = 1;
+            mutt_browser_highlight_default (&state, menu);
 	    menu->redraw = REDRAW_FULL;
 	  }
 	  break;
@@ -1718,7 +1764,32 @@ void _mutt_select_file (char *f, size_t flen, int flags, char ***files, int *num
       case OP_TOGGLE_MAILBOXES:
 	buffy = 1 - buffy;
 
+      case OP_BROWSER_GOTO_FOLDER:
       case OP_CHECK_NEW:
+        if (i == OP_BROWSER_GOTO_FOLDER)
+        {
+          /* When in mailboxes mode, disables this feature */
+          if (Maildir)
+          {
+            dprint(5, (debugfile, "= hit! Maildir: %s, LastDir: %s\n", Maildir, LastDir));
+            if (!GotoSwapper[0])
+            {
+              if (mutt_strcmp (LastDir, Maildir) != 0)
+              {
+                /* Stores into GotoSwapper LastDir, and swaps to Maildir */
+                strfcpy (GotoSwapper, LastDir, sizeof (GotoSwapper));
+                strfcpy (OldLastDir, LastDir, sizeof (OldLastDir));
+                strfcpy (LastDir, Maildir, sizeof (LastDir));
+              }
+            }
+            else
+            {
+              strfcpy (OldLastDir, LastDir, sizeof (OldLastDir));
+              strfcpy (LastDir, GotoSwapper, sizeof (LastDir));
+              GotoSwapper[0] = '\0';
+            }
+          }
+        }
 	destroy_state (&state);
 	prefix[0] = 0;
 	killPrefix = 0;
@@ -2010,5 +2081,6 @@ void _mutt_select_file (char *f, size_t flen, int flags, char ***files, int *num
   
   if (!folder)
     strfcpy (LastDir, LastDirBackup, sizeof (LastDir));
-  
+  if (GotoSwapper[0])
+    GotoSwapper[0] = '\0';
 }

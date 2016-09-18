@@ -484,6 +484,7 @@ const struct binding_t OpBrowser[] = { /* map: browser */
 #ifdef USE_IMAP
   { "toggle-subscribed", OP_BROWSER_TOGGLE_LSUB, "T" },
 #endif
+  { "goto-folder",	OP_BROWSER_GOTO_FOLDER,	"=" },
   { NULL,		0,			NULL }
 };
 
