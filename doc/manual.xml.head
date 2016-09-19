@@ -10046,8 +10046,8 @@ set pgp_encrypt_self = &quot;no&quot;
         <tbody>
           <row>
             <entry><literal>attach_keyword</literal></entry>
-            <entry>string</entry>
-            <entry><literal>attached</literal></entry>
+            <entry>regular expression</entry>
+            <entry><literal>\\&lt;attach(|ed|ments?)\\&gt;</literal></entry>
           </row>
           <row>
             <entry><literal>abort_noattach</literal></entry>
@@ -10065,12 +10065,12 @@ set pgp_encrypt_self = &quot;no&quot;
 <emphasis role="comment"># Example NeoMutt config file for the forgotten-attachment feature.
 
 # The 'forgotten-attachment' feature provides a new setting for Mutt that
-# alerts the user if the message body contains a certain keyword but there are
+# alerts the user if the message body contains a certain regular expression but there are
 # no attachments added. This is meant to ensure that the user does not forget
 # to attach a file after promising to do so in the mail.
 
-# Search for the following keyword in the body of the email</emphasis>
-set attach_keyword = &quot;attached&quot;
+# Search for the following regular expression in the body of the email</emphasis>
+set attach_keyword = &quot;\\&lt;attach(|ed|ments?)\\&gt;&quot;
 
 <emphasis role="comment"># Ask if the user wishes to abort sending if $attach_keyword is found in the
 # body, but no attachments have been added</emphasis>
@@ -10100,6 +10100,7 @@ set abort_noattach = ask-yes
     <itemizedlist>
     <listitem><para>Darshit Shah <email>darnir@gmail.com</email></para></listitem>
     <listitem><para>Richard Russon <email>rich@flatcap.org</email></para></listitem>
+    <listitem><para>Johannes Wei&szlig;l <email>jargon@molb.org</email></para></listitem>
     </itemizedlist>
   </sect2>
 </sect1>

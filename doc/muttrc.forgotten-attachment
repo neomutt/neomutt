@@ -5,8 +5,8 @@
 # no attachments added. This is meant to ensure that the user does not forget
 # to attach a file after promising to do so in the mail.
 
-# Search for the following keyword in the body of the email
-set attach_keyword = "attached"
+# Search for the following regular expression in the body of the email
+set attach_keyword = "\\<attach(|ed|ments?)\\>"
 
 # Ask if the user wishes to abort sending if $attach_keyword is found in the
 # body, but no attachments have been added
