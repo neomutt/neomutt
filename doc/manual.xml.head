@@ -11005,6 +11005,7 @@ bind index &lt;esc&gt;L limit-current-thread
     <itemizedlist>
     <listitem><para>Pietro Cerutti <email>gahr@gahr.ch</email></para></listitem>
     <listitem><para>Jan-Piet Mens <email>jp@mens.de</email></para></listitem>
+    <listitem><para>Clemens Lang <email>neverpanic@gmail.com</email></para></listitem>
     </itemizedlist>
   </sect2>
 </sect1>
