@@ -3699,7 +3699,7 @@ static char *list_to_pattern (LIST *list)
     {
       for(s = l->data; *s; s++)
         {
-          if (*s == '%')
+          if (*s == '%' || *s == '+')
             n += 2;
           n++;
         }
