@@ -39,7 +39,7 @@ WHERE char *Attribution;
 WHERE char *AttributionLocale;
 WHERE char *AttachCharset;
 WHERE char *AttachFormat;
-WHERE char *AttachKeyword;
+WHERE REGEXP AttachKeyword;
 WHERE char *Charset;
 WHERE char *ComposeFormat;
 WHERE char *ConfigCharset;
