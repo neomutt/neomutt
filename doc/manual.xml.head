@@ -10045,7 +10045,7 @@ set pgp_encrypt_self = &quot;no&quot;
         </thead>
         <tbody>
           <row>
-            <entry><literal>attach-keyword</literal></entry>
+            <entry><literal>attach_keyword</literal></entry>
             <entry>string</entry>
             <entry><literal>attached</literal></entry>
           </row>
