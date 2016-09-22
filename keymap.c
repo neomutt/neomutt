@@ -461,13 +461,13 @@ int km_dokey (int menu)
     tmp = mutt_getch();
     timeout (-1);
 
-    /* hide timeouts from line editor */
-    if (menu == MENU_EDITOR && tmp.ch == -2)
-      continue;
-
 #ifdef USE_IMAP
   gotkey:
 #endif
+    /* hide timeouts and window resizes from line editor. */
+    if (menu == MENU_EDITOR && tmp.ch == -2)
+      continue;
+
     LastKey = tmp.ch;
     if (LastKey < 0)
       return -1;
