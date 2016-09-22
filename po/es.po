@@ -1419,6 +1419,7 @@ msgid "PGP (s)ign, sign (a)s, s/(m)ime, (c)lear, or (o)ppenc mode off? "
 msgstr "¿co(d)ificar, f(i)rmar (c)omo, amb(o)s, inc(l)uido, o ca(n)celar? "
 
 #: crypt-gpgme.c:4733
+#, fuzzy
 msgid "samfco"
 msgstr ""
 
