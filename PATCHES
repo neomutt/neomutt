@@ -8,6 +8,7 @@ patch-ifdef-neomutt
 patch-index-color-neomutt
 patch-initials-neomutt
 patch-keywords-neomutt
+patch-kyoto-neomutt
 patch-limit-current-thread-neomutt
 patch-lmdb-neomutt
 patch-multiple-fcc-neomutt
