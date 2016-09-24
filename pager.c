@@ -2512,6 +2512,11 @@ search_next:
         redraw = REDRAW_FULL;
         break;
 
+      case OP_COMPOSE_TO_SENDER:
+	mutt_compose_to_sender (extra->hdr);
+	redraw = REDRAW_FULL;
+	break;
+
       case OP_CHECK_TRADITIONAL:
         CHECK_MODE (IsHeader (extra));
         if (!(WithCrypto & APPLICATION_PGP))

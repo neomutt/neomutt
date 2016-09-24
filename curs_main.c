@@ -1523,6 +1523,12 @@ int mutt_index_menu (void)
 	  menu->redraw = REDRAW_INDEX | REDRAW_STATUS;
 	break;
 
+      case OP_COMPOSE_TO_SENDER:
+
+	mutt_compose_to_sender (tag ? NULL : CURHDR);
+	menu->redraw = REDRAW_FULL;
+	break;
+
 	/* --------------------------------------------------------------------
 	 * The following operations can be performed inside of the pager.
 	 */

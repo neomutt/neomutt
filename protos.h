@@ -324,6 +324,7 @@ int mutt_chscmp (const char *s, const char *chs);
 int mutt_parent_message (CONTEXT *, HEADER *);
 int mutt_prepare_template(FILE*, CONTEXT *, HEADER *, HEADER *, short);
 int mutt_resend_message (FILE *, CONTEXT *, HEADER *);
+int mutt_compose_to_sender (HEADER *);
 #define mutt_enter_fname(A,B,C,D,E) _mutt_enter_fname(A,B,C,D,E,0,NULL,NULL,0)
 #define mutt_enter_vfolder(A,B,C,D,E) _mutt_enter_fname(A,B,C,D,E,0,NULL,NULL,MUTT_SEL_VFOLDER)
 
