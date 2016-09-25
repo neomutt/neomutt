@@ -72,7 +72,7 @@ NEOMUTTOBJS=	account.o addrbook.o alias.o bcache.o browser.o color.o commands.o 
 		pager.o pattern.o postpone.o progress.o query.o recvattach.o \
 		recvcmd.o resize.o rfc1524.o rfc3676.o safe_asprintf.o \
 		score.o send.o sendlib.o sidebar.o smtp.o sort.o state.o \
-		status.o system.o terminal.o version.o
+		status.o system.o terminal.o version.o icommands.o summary.o
 
 @if !HAVE_WCSCASECMP
 NEOMUTTOBJS+=	wcscasecmp.o

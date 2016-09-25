@@ -649,6 +649,14 @@ const struct Binding OpMix[] = { /* map: mixmaster */
   { NULL,                    0,                              NULL },
 };
 #endif /* MIXMASTER */
+
+const struct Binding OpSummary[] =
+{
+  { "quit", OP_QUIT, "q"  },
+  { "help", OP_HELP, "?"  },
+  { NULL,   0,       NULL }
+};
+
 // clang-format on
 
 #endif /* MUTT_FUNCTIONS_H */
