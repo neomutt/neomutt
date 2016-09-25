@@ -1958,7 +1958,11 @@ mutt_pager (const char *banner, const char *fname, int flags, pager_t *extra)
 	mutt_draw_statusline (pager_status_window->cols, bn, sizeof (bn));
       }
       NORMAL_COLOR;
-      if (option(OPTTSENABLED) && TSSupported)
+
+      /*
+       * update terminal status line
+       */
+      if (option(OPTTSENABLED) && TSSupported && index)
       {
 	menu_status_line (buffer, sizeof (buffer), index, NONULL (TSStatusFormat));
 	mutt_ts_status(buffer);
@@ -1967,12 +1971,11 @@ mutt_pager (const char *banner, const char *fname, int flags, pager_t *extra)
       }
     }
 
-    if ((redraw & REDRAW_INDEX) && index)
+    /* redraw the pager_index indicator, because the
+     * flags for this message might have changed. */
+    if ((redraw & REDRAW_INDEX) && index && (index_window->rows > 0))
     {
-      /* redraw the pager_index indicator, because the
-       * flags for this message might have changed. */
-      if (index_window->rows > 0)
-        menu_redraw_current (index);
+      menu_redraw_current (index);
 
       /* print out the index status bar */
       menu_status_line (buffer, sizeof (buffer), index, NONULL(Status));
