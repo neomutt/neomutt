@@ -1455,6 +1455,12 @@ ENVELOPE *mutt_read_rfc822_header (FILE *f, HEADER *hdr, short user_hdrs,
 	e->real_subj = e->subject;
     }
 
+    if (hdr->received < 0)
+    {
+      dprint(1,(debugfile,"read_rfc822_header(): resetting invalid received time to 0\n"));
+      hdr->received = 0;
+    }
+
     /* check for missing or invalid date */
     if (hdr->date_sent <= 0)
     {
