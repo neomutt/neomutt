@@ -157,7 +157,12 @@ manual.tex: stamp-doc-xml
 	fi
 
 neomutt-syntax.vim: $(SAMPLE_VIMRC)
-	cat $(srcdir)/mutt-1.7.0-syntax.vim $^ > $@
+	( \
+		grep -v "vim:" $(srcdir)/mutt-1.7.0-syntax.vim; \
+		echo; \
+		cat $^; \
+		grep "vim:" $(srcdir)/mutt-1.7.0-syntax.vim; \
+	) > $@
 
 validate: stamp-doc-xml
 	xmllint --noout --noblanks --postvalid manual.xml
