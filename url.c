@@ -29,6 +29,7 @@
 #include "url.h"
 
 #include "mime.h"
+#include "rfc2047.h"
 
 #include <ctype.h>
 
@@ -304,12 +305,17 @@ int url_parse_mailto (ENVELOPE *e, char **body, const char *src)
       else
       {
 	char *scratch;
+        char *decoded_value;
 	size_t taglen = mutt_strlen (tag);
 
-	safe_asprintf (&scratch, "%s: %s", tag, value);
+        decoded_value = safe_strdup (value);
+        rfc2047_decode (&decoded_value);
+
+	safe_asprintf (&scratch, "%s: %s", tag, decoded_value);
 	scratch[taglen] = 0; /* overwrite the colon as mutt_parse_rfc822_line expects */
 	value = skip_email_wsp(&scratch[taglen + 1]);
 	mutt_parse_rfc822_line (e, NULL, scratch, value, 1, 0, 0, &last);
+        FREE (&decoded_value);
 	FREE (&scratch);
       }
     }
