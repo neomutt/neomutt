@@ -10,7 +10,7 @@ IMAP_SUBDIR = imap
 IMAP_INCLUDES = -I$(top_srcdir)/imap
 endif
 
-SUBDIRS = m4 po intl doc contrib $(IMAP_SUBDIR)
+SUBDIRS = $(IMAP_SUBDIR) m4 po intl doc contrib
 
 bin_SCRIPTS = $(SMIMEAUX_TARGET)
 
