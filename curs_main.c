@@ -204,6 +204,9 @@ void mutt_ts_icon(char *str)
 
 void index_make_entry (char *s, size_t l, MUTTMENU *menu, int num)
 {
+  if (!Context || !menu)
+    return;
+
   format_flag flag = MUTT_FORMAT_MAKEPRINT | MUTT_FORMAT_ARROWCURSOR | MUTT_FORMAT_INDEX;
   int edgemsgno, reverse = Sort & SORT_REVERSE;
   HEADER *h = Context->hdrs[Context->v2r[num]];
@@ -266,13 +269,19 @@ void index_make_entry (char *s, size_t l, MUTTMENU *menu, int num)
 
 int index_color (int index_no)
 {
+  if (!Context)
+    return 0;
+
   HEADER *h = Context->hdrs[Context->v2r[index_no]];
 
   if (h && h->pair)
     return h->pair;
 
   mutt_set_header_color (Context, h);
-  return h->pair;
+  if (h)
+    return h->pair;
+
+  return 0;
 }
 
 static int ci_next_undeleted (int msgno)
