@@ -18,6 +18,7 @@ addons:
       - libgpgme11-dev
       - libnotmuch-dev
       - libtokyocabinet-dev
+      - libkyotocabinet-dev
       - libgdbm-dev
       - libdb-dev
       # - libqdbm-dev
