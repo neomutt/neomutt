@@ -58,7 +58,9 @@ sorted through them, fixed them up and documented them.
 - Releases:        https://github.com/neomutt/neomutt/releases/latest
 - Questions/Bugs:  https://github.com/neomutt/neomutt/issues
 - Website:         http://www.neomutt.org/
-- IRC              irc://irc.freenode.net/neomutt
+- IRC:             irc://irc.freenode.net/neomutt
+- Mailinglists:    [neomutt-users](mailto:neomutt-users-request@neomutt.org?subject=subscribe) 
+and [neomutt-dev](mailto:neomutt-devel-request@neomutt.org?subject=subscribe)
 - Development:     http://www.neomutt.org/devel/
 
 ## NeoMutt Developers
