@@ -33,6 +33,10 @@ if test "$ac_cv_prog_cc_c99" = "no"; then
   AC_ERROR([Compiler does not support C99. Aborting.])
 fi
 
+if test "$CC" = "gcc"; then
+  CFLAGS="$CFLAGS -fno-delete-null-pointer-checks"
+fi
+
 AC_SEARCH_LIBS([strerror],[cposix])
 if test "x$U" != "x"; then
   AC_MSG_ERROR(Compiler not ANSI compliant)
