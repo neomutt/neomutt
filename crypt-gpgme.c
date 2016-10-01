@@ -1561,6 +1561,7 @@ static int verify_one (BODY *sigbdy, STATE *s,
     { /* Verification succeeded, see what the result is. */
       int res, idx;
       int anybad = 0;
+      gpgme_verify_result_t verify_result;
 
       if (signature_key)
 	{
@@ -1568,15 +1569,19 @@ static int verify_one (BODY *sigbdy, STATE *s,
 	  signature_key = NULL;
 	}
 
-      for(idx=0; (res = show_one_sig_status (ctx, idx, s)) != -1; idx++)
+      verify_result = gpgme_op_verify_result (ctx);
+      if (verify_result && verify_result->signatures)
+      {
+        for (idx=0; (res = show_one_sig_status (ctx, idx, s)) != -1; idx++)
         {
           if (res == 1)
             anybad = 1;
           else if (res == 2)
             anywarn = 2;
         }
-      if (!anybad)
-        badsig = 0;
+        if (!anybad)
+          badsig = 0;
+      }
     }
 
   if (!badsig)
