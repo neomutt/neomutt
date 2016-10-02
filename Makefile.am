@@ -92,9 +92,9 @@ EXTRA_DIST += UPDATING.kz OPS.NOTMUCH
 
 
 
-mutt_dotlock_SOURCES = mutt_dotlock.c
-mutt_dotlock_LDADD = $(LIBOBJS)
-mutt_dotlock_DEPENDENCIES = $(LIBOBJS)
+mutt_dotlock_SOURCES = mutt_dotlock.c extlib.c lib.c
+mutt_dotlock_LDADD = $(LIBOBJS) $(INTLLIBS)
+mutt_dotlock_DEPENDENCIES = $(LIBOBJS) $(INTLDEPS)
 
 pgpring_SOURCES = pgppubring.c pgplib.c lib.c extlib.c sha1.c md5.c pgppacket.c ascii.c
 pgpring_LDADD = $(LIBOBJS) $(INTLLIBS)
