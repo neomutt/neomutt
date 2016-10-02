@@ -1371,7 +1371,7 @@ MESSAGE *mx_open_new_message (CONTEXT *dest, HEADER *hdr, int flags)
   ADDRESS *p = NULL;
   MESSAGE *msg;
 
-  if (!dest->mx_ops->open_new_msg)
+  if (!dest->mx_ops || !dest->mx_ops->open_new_msg)
   {
       dprint (1, (debugfile, "mx_open_new_message(): function unimplemented for mailbox type %d.\n",
               dest->magic));
@@ -1423,7 +1423,7 @@ MESSAGE *mx_open_new_message (CONTEXT *dest, HEADER *hdr, int flags)
 /* check for new mail */
 int mx_check_mailbox (CONTEXT *ctx, int *index_hint)
 {
-  if (!ctx || ctx->magic == 0)
+  if (!ctx || !ctx->mx_ops)
   {
     dprint (1, (debugfile, "mx_check_mailbox: null or invalid context.\n"));
     return -1;
@@ -1437,7 +1437,7 @@ MESSAGE *mx_open_message (CONTEXT *ctx, int msgno)
 {
   MESSAGE *msg;
 
-  if (!ctx->mx_ops->open_msg)
+  if (!ctx->mx_ops || !ctx->mx_ops->open_msg)
   {
     dprint (1, (debugfile, "mx_open_message(): function not implemented for mailbox type %d.\n", ctx->magic));
     return NULL;
@@ -1454,7 +1454,7 @@ MESSAGE *mx_open_message (CONTEXT *ctx, int msgno)
 
 int mx_commit_message (MESSAGE *msg, CONTEXT *ctx)
 {
-  if (!ctx->mx_ops->commit_msg)
+  if (!ctx->mx_ops || !ctx->mx_ops->commit_msg)
     return -1;
 
   if (!(msg->write && ctx->append))
@@ -1472,7 +1472,7 @@ int mx_close_message (CONTEXT *ctx, MESSAGE **msg)
 {
   int r = 0;
 
-  if (ctx->mx_ops->close_msg)
+  if (ctx->mx_ops && ctx->mx_ops->close_msg)
     r = ctx->mx_ops->close_msg (ctx, *msg);
 
   if ((*msg)->path)

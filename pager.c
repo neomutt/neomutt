@@ -3076,12 +3076,16 @@ search_next:
   {
     if (Context)
       Context->msgnotreadyet = -1;
-    if (rc == -1)
-      OldHdr = NULL;
-    else
+    switch (rc)
     {
-      TopLine = topline;
-      OldHdr = extra->hdr;
+      case -1:
+      case OP_DISPLAY_HEADERS:
+        mutt_clear_pager_position ();
+        break;
+      default:
+        TopLine = topline;
+        OldHdr = extra->hdr;
+        break;
     }
   }
     
