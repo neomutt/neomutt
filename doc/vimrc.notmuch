@@ -22,6 +22,6 @@ syntax match muttrcFunction     contained "\<change-vfolder\>"
 syntax match muttrcFunction     contained "\<entire-thread\>"
 syntax match muttrcFunction     contained "\<modify-labels-then-hide\>"
 syntax match muttrcFunction     contained "\<modify-labels\>"
-syntax match muttrcFunction     contained "\<sidebar-toggle\>"
+syntax match muttrcFunction     contained "\<sidebar-toggle-virtual\>"
 syntax match muttrcFunction     contained "\<vfolder-from-query\>"
 
