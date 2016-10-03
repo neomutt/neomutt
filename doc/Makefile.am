@@ -60,7 +60,7 @@ BUILT_DISTFILES = stamp-doc-xml stamp-doc-chunked manual.txt $(HTML_DOCFILES)
 srcdir_DOCFILES = PGP-Notes.txt applying-patches.txt	\
 	devel-notes.txt patch-notes.txt smime-notes.txt
 
-topsrcdir_DOCFILES = COPYRIGHT GPL INSTALL ChangeLog ChangeLog.neomutt	\
+topsrcdir_DOCFILES = COPYRIGHT LICENSE.md INSTALL ChangeLog ChangeLog.neomutt	\
 	README NEWS TODO README.SECURITY README.SSL README.neomutt README.notmuch
 
 all: makedoc-all
