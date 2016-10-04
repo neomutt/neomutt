@@ -63,7 +63,7 @@
 # define LONG_STRING 1024
 # define MAXLOCKATTEMPT 5
 
-# define strfcpy(A,B,C) strncpy (A,B,C), *(A+(C)-1)=0
+#define strfcpy(DST,SRC,LEN) do { if ((LEN) > 0) { *(DST+(LEN)-1)=0; strncpy(DST,SRC,(LEN)-1); } } while (0)
 
 # ifdef USE_SETGID
 

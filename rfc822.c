@@ -30,7 +30,7 @@
 #define safe_strdup strdup
 #define safe_malloc malloc
 #define FREE(x) safe_free(x)
-#define strfcpy(a,b,c) {if (c) {strncpy(a,b,c);a[c-1]=0;}}
+#define strfcpy(DST,SRC,LEN) do { if ((LEN) > 0) { *(DST+(LEN)-1)=0; strncpy(DST,SRC,(LEN)-1); } } while (0)
 #define LONG_STRING 1024
 #include "rfc822.h"
 #endif
