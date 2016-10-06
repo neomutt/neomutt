@@ -153,6 +153,20 @@ void *hash_find_hash (const HASH * table, int hash, const char *key)
   return NULL;
 }
 
+void hash_set_data (HASH *table, const char *key, void *data)
+{
+  if (!table)
+    return;
+
+  unsigned int hash = table->hash_string ((unsigned char *) key, table->nelem);
+
+  struct hash_elem *ptr = table->table[hash];
+  if (!ptr)
+    return;
+
+  ptr->data = data;
+}
+
 void hash_delete_hash (HASH * table, int hash, const char *key, const void *data,
 		       void (*destroy) (void *))
 {

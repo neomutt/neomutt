@@ -46,6 +46,7 @@ void *hash_find_hash (const HASH * table, int hash, const char *key);
 void hash_delete_hash (HASH * table, int hash, const char *key, const void *data,
 		       void (*destroy) (void *));
 void hash_destroy (HASH ** hash, void (*destroy) (void *));
+void hash_set_data (HASH *table, const char *key, void *data);
 
 struct hash_walk_state {
   int index;
