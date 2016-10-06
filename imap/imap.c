@@ -2117,6 +2117,14 @@ int imap_fast_trash (CONTEXT* ctx, char* dest)
   /* loop in case of TRYCREATE */
   do
   {
+    rc = imap_exec_msgset (idata, "UID STORE", "+FLAGS.SILENT (\\Seen)",
+                           MUTT_TRASH, 0, 0);
+    if (rc < 0)
+    {
+      dprint (1, (debugfile, "imap_fast_trash: Unable to mark messages as seen\n"));
+      goto out;
+    }
+
     rc = imap_exec_msgset (idata, "UID COPY", mmbox, MUTT_TRASH, 0, 0);
     if (!rc)
     {
