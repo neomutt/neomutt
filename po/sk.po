@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 0.95.6i\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-08-17 20:11-0700\n"
+"POT-Creation-Date: 2016-10-08 12:54-0700\n"
 "PO-Revision-Date: 1999-07-29 00:00+0100\n"
 "Last-Translator: Miroslav Vasko <vasko@ies.sk>\n"
 "Language-Team: Slovak <sk@li.org>\n"
@@ -1836,11 +1836,11 @@ msgstr "®iadne odmazané správy."
 msgid "You are on the first message."
 msgstr "Ste na prvej správe."
 
-#: curs_main.c:1586 menu.c:773 pager.c:2115 pattern.c:1491
+#: curs_main.c:1586 menu.c:773 pager.c:2115 pattern.c:1494
 msgid "Search wrapped to top."
 msgstr "Vyhµadávanie pokraèuje z vrchu."
 
-#: curs_main.c:1595 pager.c:2137 pattern.c:1502
+#: curs_main.c:1595 pager.c:2137 pattern.c:1505
 msgid "Search wrapped to bottom."
 msgstr "Vyhµadávanie pokraèuje zo spodu."
 
@@ -2390,7 +2390,7 @@ msgstr "Vyberám %s..."
 msgid "Error opening mailbox"
 msgstr "Chyba pri zapisovaní do schránky!"
 
-#: imap/imap.c:808 imap/imap.c:2147 imap/message.c:877 muttlib.c:1565
+#: imap/imap.c:808 imap/imap.c:2147 imap/message.c:877 muttlib.c:1568
 #, c-format
 msgid "Create %s?"
 msgstr "Vytvori» %s?"
@@ -3114,15 +3114,15 @@ msgstr "Ste na poslednej polo¾ke."
 msgid "You are on the first entry."
 msgstr "Ste na prvej polo¾ke."
 
-#: menu.c:747 pager.c:2159 pattern.c:1430
+#: menu.c:747 pager.c:2159 pattern.c:1433
 msgid "Search for: "
 msgstr "Hµada»: "
 
-#: menu.c:747 pager.c:2159 pattern.c:1430
+#: menu.c:747 pager.c:2159 pattern.c:1433
 msgid "Reverse search for: "
 msgstr "Hµada» spätne: "
 
-#: menu.c:791 pager.c:2112 pager.c:2134 pager.c:2254 pattern.c:1545
+#: menu.c:791 pager.c:2112 pager.c:2134 pager.c:2254 pattern.c:1548
 msgid "Not found."
 msgstr "Nenájdené."
 
@@ -3460,45 +3460,45 @@ msgstr "Pripájam sa na %s"
 #. L10N:
 #. Means "The path you specified as the destination file is a directory."
 #. See the msgid "Save to file: " (alias.c, recvattach.c)
-#: muttlib.c:976
+#: muttlib.c:979
 #, fuzzy
 msgid "File is a directory, save under it? [(y)es, (n)o, (a)ll]"
 msgstr "Súbor je adresár, ulo¾i» v òom?"
 
-#: muttlib.c:976
+#: muttlib.c:979
 msgid "yna"
 msgstr ""
 
 #. L10N:
 #. Means "The path you specified as the destination file is a directory."
 #. See the msgid "Save to file: " (alias.c, recvattach.c)
-#: muttlib.c:995
+#: muttlib.c:998
 msgid "File is a directory, save under it?"
 msgstr "Súbor je adresár, ulo¾i» v òom?"
 
-#: muttlib.c:999
+#: muttlib.c:1002
 msgid "File under directory: "
 msgstr "Súbor v adresári: "
 
-#: muttlib.c:1008
+#: muttlib.c:1011
 msgid "File exists, (o)verwrite, (a)ppend, or (c)ancel?"
 msgstr "Súbor existuje, (o)-prepísa», prid(a)» alebo (c)-zru¹i»?"
 
-#: muttlib.c:1008
+#: muttlib.c:1011
 msgid "oac"
 msgstr "oac"
 
-#: muttlib.c:1531
+#: muttlib.c:1534
 #, fuzzy
 msgid "Can't save message to POP mailbox."
 msgstr "Zapísa» správu do schránky"
 
-#: muttlib.c:1540
+#: muttlib.c:1543
 #, c-format
 msgid "Append messages to %s?"
 msgstr "Prida» správy do %s?"
 
-#: muttlib.c:1552
+#: muttlib.c:1555
 #, c-format
 msgid "%s is not a mailbox!"
 msgstr "%s nie je schránka!"
@@ -3707,37 +3707,37 @@ msgstr "nespárované zátvorky: %s"
 msgid "empty pattern"
 msgstr "prázdny vzor"
 
-#: pattern.c:1226
+#: pattern.c:1229
 #, c-format
 msgid "error: unknown op %d (report this error)."
 msgstr "chyba: neznámy operand %d (oznámte túto chybu)."
 
-#: pattern.c:1309 pattern.c:1451
+#: pattern.c:1312 pattern.c:1454
 msgid "Compiling search pattern..."
 msgstr "Kompilujem vyhµadávací vzor..."
 
-#: pattern.c:1330
+#: pattern.c:1333
 msgid "Executing command on matching messages..."
 msgstr "Vykonávam príkaz na nájdených správach..."
 
-#: pattern.c:1399
+#: pattern.c:1402
 msgid "No messages matched criteria."
 msgstr "®iadne správy nesplnili kritérium."
 
-#: pattern.c:1481
+#: pattern.c:1484
 #, fuzzy
 msgid "Searching..."
 msgstr "Ukladám..."
 
-#: pattern.c:1494
+#: pattern.c:1497
 msgid "Search hit bottom without finding match"
 msgstr "Hµadanie narazilo na spodok bez nájdenia zhody"
 
-#: pattern.c:1505
+#: pattern.c:1508
 msgid "Search hit top without finding match"
 msgstr "Hµadanie narazilo na vrchol bez nájdenia zhody"
 
-#: pattern.c:1537
+#: pattern.c:1540
 msgid "Search interrupted."
 msgstr "Hµadanie bolo preru¹ené."
 

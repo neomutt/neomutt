@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Mutt 1.5.17\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-08-17 20:11-0700\n"
+"POT-Creation-Date: 2016-10-08 12:54-0700\n"
 "PO-Revision-Date: 2007-12-15 14:05+0100\n"
 "Last-Translator: Johan Svedberg <johan@svedberg.com>\n"
 "Language-Team: Swedish <sv@li.org>\n"
@@ -1783,11 +1783,11 @@ msgstr "Inga återställda meddelanden."
 msgid "You are on the first message."
 msgstr "Du är på det första meddelandet."
 
-#: curs_main.c:1586 menu.c:773 pager.c:2115 pattern.c:1491
+#: curs_main.c:1586 menu.c:773 pager.c:2115 pattern.c:1494
 msgid "Search wrapped to top."
 msgstr "Sökning fortsatte från början."
 
-#: curs_main.c:1595 pager.c:2137 pattern.c:1502
+#: curs_main.c:1595 pager.c:2137 pattern.c:1505
 msgid "Search wrapped to bottom."
 msgstr "Sökning fortsatte från slutet."
 
@@ -2306,7 +2306,7 @@ msgstr "Väljer %s..."
 msgid "Error opening mailbox"
 msgstr "Fel vid öppning av brevlåda"
 
-#: imap/imap.c:808 imap/imap.c:2147 imap/message.c:877 muttlib.c:1565
+#: imap/imap.c:808 imap/imap.c:2147 imap/message.c:877 muttlib.c:1568
 #, c-format
 msgid "Create %s?"
 msgstr "Skapa %s?"
@@ -3020,15 +3020,15 @@ msgstr "Du är på den sista posten."
 msgid "You are on the first entry."
 msgstr "Du är på den första posten."
 
-#: menu.c:747 pager.c:2159 pattern.c:1430
+#: menu.c:747 pager.c:2159 pattern.c:1433
 msgid "Search for: "
 msgstr "Sök efter: "
 
-#: menu.c:747 pager.c:2159 pattern.c:1430
+#: menu.c:747 pager.c:2159 pattern.c:1433
 msgid "Reverse search for: "
 msgstr "Sök i omvänd ordning efter: "
 
-#: menu.c:791 pager.c:2112 pager.c:2134 pager.c:2254 pattern.c:1545
+#: menu.c:791 pager.c:2112 pager.c:2134 pager.c:2254 pattern.c:1548
 msgid "Not found."
 msgstr "Hittades inte."
 
@@ -3361,43 +3361,43 @@ msgstr "Tunnelfel vid förbindelsen till %s: %s"
 #. L10N:
 #. Means "The path you specified as the destination file is a directory."
 #. See the msgid "Save to file: " (alias.c, recvattach.c)
-#: muttlib.c:976
+#: muttlib.c:979
 msgid "File is a directory, save under it? [(y)es, (n)o, (a)ll]"
 msgstr "Filen är en katalog, spara i den? [(j)a, n(ej), (a)lla]"
 
-#: muttlib.c:976
+#: muttlib.c:979
 msgid "yna"
 msgstr "jna"
 
 #. L10N:
 #. Means "The path you specified as the destination file is a directory."
 #. See the msgid "Save to file: " (alias.c, recvattach.c)
-#: muttlib.c:995
+#: muttlib.c:998
 msgid "File is a directory, save under it?"
 msgstr "Filen är en katalog, spara i den?"
 
-#: muttlib.c:999
+#: muttlib.c:1002
 msgid "File under directory: "
 msgstr "Fil i katalog: "
 
-#: muttlib.c:1008
+#: muttlib.c:1011
 msgid "File exists, (o)verwrite, (a)ppend, or (c)ancel?"
 msgstr "Filen finns, skriv (ö)ver, (l)ägg till, eller (a)vbryt?"
 
-#: muttlib.c:1008
+#: muttlib.c:1011
 msgid "oac"
 msgstr "öla"
 
-#: muttlib.c:1531
+#: muttlib.c:1534
 msgid "Can't save message to POP mailbox."
 msgstr "Kan inte spara meddelande till POP-brevlåda."
 
-#: muttlib.c:1540
+#: muttlib.c:1543
 #, c-format
 msgid "Append messages to %s?"
 msgstr "Lägg till meddelanden till %s?"
 
-#: muttlib.c:1552
+#: muttlib.c:1555
 #, c-format
 msgid "%s is not a mailbox!"
 msgstr "%s är inte en brevlåda!"
@@ -3605,36 +3605,36 @@ msgstr "missmatchande parentes: %s"
 msgid "empty pattern"
 msgstr "tomt mönster"
 
-#: pattern.c:1226
+#: pattern.c:1229
 #, c-format
 msgid "error: unknown op %d (report this error)."
 msgstr "fel: okänd operation %d (rapportera det här felet)."
 
-#: pattern.c:1309 pattern.c:1451
+#: pattern.c:1312 pattern.c:1454
 msgid "Compiling search pattern..."
 msgstr "Kompilerar sökmönster..."
 
-#: pattern.c:1330
+#: pattern.c:1333
 msgid "Executing command on matching messages..."
 msgstr "Kör kommando på matchande meddelanden..."
 
-#: pattern.c:1399
+#: pattern.c:1402
 msgid "No messages matched criteria."
 msgstr "Inga meddelanden matchade kriteriet."
 
-#: pattern.c:1481
+#: pattern.c:1484
 msgid "Searching..."
 msgstr "Söker..."
 
-#: pattern.c:1494
+#: pattern.c:1497
 msgid "Search hit bottom without finding match"
 msgstr "Sökning nådde slutet utan att hitta träff"
 
-#: pattern.c:1505
+#: pattern.c:1508
 msgid "Search hit top without finding match"
 msgstr "Sökning nådde början utan att hitta träff"
 
-#: pattern.c:1537
+#: pattern.c:1540
 msgid "Search interrupted."
 msgstr "Sökning avbruten."
 

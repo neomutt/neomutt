@@ -1,3 +1,161 @@
+2016-10-04 11:13 -0700  Kevin McCarthy  <kevin@8t8.us>  (5c5848dfa4ea)
+
+	* muttlib.c: Preserve forwarded attachment names in d_filename.
+
+	When forwarding an attachment with an non-ascii name,
+	mutt_copy_body() mangles the filename when calling mutt_adv_mktemp.
+	Preserve the original attachment filename in d_filename.
+
+	Remove the double copy of b->filename, which is a memory leak.
+
+2016-09-25 13:11 -0700  Kevin McCarthy  <kevin@8t8.us>  (586dad383893)
+
+	* parse.c: Reset invalid parsed received dates to 0. (closes #3878)
+
+	The actual problem in the ticket would be solved by d3f31cf9239e
+	(see #3798). However there is still the bug that Mutt considers a
+	(hdr->received != 0) to be set and usable, despite not checking the
+	return value of mutt_parse_date().
+
+	Change mutt_read_rfc822_header() to unset an invalid received value
+	back to 0. We don't do this inside mutt_read_rfc822_line() because
+	that would cause the next received line to be parsed.
+
+2016-09-21 18:10 -0700  Antonio Radici  <antonio@dyne.org>  (ee0fe5834195)
+
+	* po/de.po, po/es.po, po/it.po: Mark some gpgme pgp menu keybinding
+	translations as fuzzy. (closes #3874)
+
+	Some translations for crypt-gpgme.c are marked as fuzzy but the
+	keybindings attached to these translations are not, this creates
+	confusions for the users who see the english message but have the
+	keybindings for a message in their own language available.
+
+	As long as the translations are fuzzy, the keybindings should stay
+	fuzzy.
+
+2016-09-21 22:51 +0200  Kevin McCarthy  <kevin@8t8.us>  (9f6e08ba6ff3)
+
+	* mx.c: Check for NULL mx_ops in mx.c
+
+	Eike Rathke reported this happening when in an IMAP index view the
+	underlying connection was terminated, ctx->mx_ops was NULL and thus
+	accessing ctx->mx_ops->check segfaulted.
+
+	Thanks also to Eike Rathke for the initial patch, for which I
+	expanded the checks to other functions.
+
+2016-09-20 13:58 -0700  Antonio Radici  <antonio@dyne.org>  (8ed017079800)
+
+	* crypt-gpgme.c: Fix gpgme segfault when querying candidates with a
+	'+' in the address. (closes #3873)
+
+	list_to_pattern() was not allocating enough space for the '+' to
+	'%2B' transformation.
+
+2016-09-07 18:54 -0700  Kevin McCarthy  <kevin@8t8.us>  (a431c7618def)
+
+	* doc/manual.xml.head, init.h: Fix sidebar documentation a bit.
+	(closes #3859)
+
+	Sidebar_whitelist is a command, not a variable. Also add a blurb
+	about what it does.
+
+	Fix the sort order for $sidebar_divider_char and
+	$sidebar_delim_chars.
+
+2016-09-05 18:50 -0700  Kevin McCarthy  <kevin@8t8.us>  (cd127a968399)
+
+	* contrib/Makefile.am: Add missing sidebar contrib sample files to
+	dist tarball.
+
+	I previously added the files, but neglected to add them to the
+	contrib/Makefile.am file.
+
+	Thanks to isdtor for pointing out the problem and for the original
+	patch.
+
+2016-09-05 12:35 -0700  Kevin McCarthy  <kevin@8t8.us>  (bb25613ce8a4)
+
+	* getdomain.c: Stub out getdnsdomainname() unless HAVE_GETADDRINFO.
+
+	It seems unlikely there are systems without it (given that this
+	mistake has been in since 1.6.0), but for correctness we should stub
+	out the function for those without it.
+
+2016-09-05 12:22 -0700  Kevin McCarthy  <kevin@8t8.us>  (90c1b756d87d)
+
+	* configure.ac: Autoconf: always check for getaddrinfo().
+
+	The getdnsdomainname() function introduced in 1.6.0 uses
+	getaddrinfo().
+
+	Pull the dependency checks for libnsl, libsocket, and getaddrinfo()
+	outside of the "need_socket" block, so they are always checked for.
+
+2016-09-04 18:50 -0700  Guilhem Moulin  <guilhem@guilhem.org>  (b082bcd5d5e2)
+
+	* pgppubring.c: Fix pgpring reporting of DSA and Elgamal key lengths.
+	(closes #3867)
+
+	Patch provided by Guilhem Moulin from an original idea of Fabrizio
+	Tarizzo.
+
+	The key length is always the length of the first MPI for RSA, DSA,
+	and Elgamal.
+
+2016-09-02 19:32 -0700  Kevin McCarthy  <kevin@8t8.us>  (ba5d900a90db)
+
+	* doc/manual.xml.head, pattern.c: Disable ~X when message scoring.
+	(closes #3861)
+
+	mutt_score_message() purposely passes a NULL context to
+	mutt_pattern_exec(). The idea was to block slow patterns, and the
+	scoring documentation notes this by saying:
+
+	 "For efficiency reasons, patterns which scan information not
+	available in the index, such as ~b, ~B or ~h, may not be used"
+
+	~X needs the context to parse the messages (during message scoring
+	at least), and thus isn't suitable for message scoring either.
+
+	Block ~X from being used when the context is NULL. Add ~X to the
+	list of patterns noted as unusable in the message scoring
+	documentation.
+
+2016-09-02 16:20 -0700  Kevin McCarthy  <kevin@8t8.us>  (eef1e8abc46f)
+
+	* browser.c: Increase date buffer size for $folder_format. (closes
+	#3863)
+
+	The buffer size of 16 was sufficient to hold the %d format, but not
+	for using %D. Change to use a SHORT_STRING.
+
+	Thanks to Ian Zimmerman for the original patch, and to Antonio
+	Radici for forwarding it on to us.
+
+2016-08-17 20:17 -0700  Kevin McCarthy  <kevin@8t8.us>  (328e1a32034b)
+
+	* sys_socket.h: merge default into stable
+
+2016-08-17 20:14 -0700  Kevin McCarthy  <kevin@8t8.us>  (e5fcfc5f9c2e)
+
+	* .hgsigs: mutt-1.7.0 signed
+
+2016-08-17 20:12 -0700  Kevin McCarthy  <kevin@8t8.us>  (be1a70b1c080)
+
+	* .hgtags: Added tag mutt-1-7-rel for changeset a4e83f60e42f
+
+2016-08-17 20:12 -0700  Kevin McCarthy  <kevin@8t8.us>  (a4e83f60e42f)
+
+	* ChangeLog, UPDATING, VERSION, po/bg.po, po/ca.po, po/cs.po,
+	po/da.po, po/de.po, po/el.po, po/eo.po, po/es.po, po/et.po,
+	po/eu.po, po/fr.po, po/ga.po, po/gl.po, po/hu.po, po/id.po,
+	po/it.po, po/ja.po, po/ko.po, po/lt.po, po/nl.po, po/pl.po,
+	po/pt_BR.po, po/ru.po, po/sk.po, po/sv.po, po/tr.po, po/uk.po,
+	po/zh_CN.po, po/zh_TW.po: automatic post-release commit for
+	mutt-1.7.0
+
 2016-08-17 18:07 -0700  TAKAHASHI Tamotsu  <ttakah@lapis.plala.or.jp>  (c513c311026f)
 
 	* po/ja.po: Updated Japanese translation.

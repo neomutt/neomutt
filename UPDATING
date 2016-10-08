@@ -4,6 +4,10 @@ mutt. Please read this file carefully when upgrading your installation.
 The keys used are:
   !: modified feature, -: deleted feature, +: new feature
 
+1.7.1 (2016-10-08):
+
+  ! Bug fix release.  No features were modified or added.
+
 1.7.0 (2016-08-18):
 
   ! Improved alignment when using multi-column characters with
