@@ -652,14 +652,17 @@ static void draw_sidebar (int num_rows, int num_cols, int div_width)
     }
 
     /* compute length of Maildir without trailing separator */
-    size_t maildirlen = strlen (Maildir);
-    if (SidebarDelimChars && strchr (SidebarDelimChars, Maildir[maildirlen - 1]))
-      maildirlen--;
-
-    /* check whether Maildir is a prefix of the current folder's path */
     short maildir_is_prefix = 0;
-    if ((strlen (b->path) > maildirlen) && (strncmp (Maildir, b->path, maildirlen) == 0))
-      maildir_is_prefix = 1;
+    size_t maildirlen = mutt_strlen (Maildir);
+    if (maildirlen)
+    {
+      if (SidebarDelimChars && strchr (SidebarDelimChars, Maildir[maildirlen - 1]))
+	maildirlen--;
+
+      /* check whether Maildir is a prefix of the current folder's path */
+      if ((strlen (b->path) > maildirlen) && (strncmp (Maildir, b->path, maildirlen) == 0))
+	maildir_is_prefix = 1;
+    }
 
     /* calculate depth of current folder and generate its display name with indented spaces */
     int sidebar_folder_depth = 0;
