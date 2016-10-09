@@ -1982,7 +1982,7 @@ mutt_pager (const char *banner, const char *fname, int flags, pager_t *extra)
  
       mutt_window_move (index_status_window, 0, 0);
       SETCOLOR (MT_COLOR_STATUS);
-      mutt_paddstr (index_status_window->cols, buffer);
+      mutt_draw_statusline (index_status_window->cols, buffer, sizeof (buffer));
       NORMAL_COLOR;
     }
 
