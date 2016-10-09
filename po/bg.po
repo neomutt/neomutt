@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Mutt 1.5.5.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-08-17 20:11-0700\n"
+"POT-Creation-Date: 2016-10-08 12:54-0700\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=CP1251\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -1819,11 +1819,11 @@ msgstr "Няма възстановени писма."
 msgid "You are on the first message."
 msgstr "Това е първото писмо."
 
-#: curs_main.c:1586 menu.c:773 pager.c:2115 pattern.c:1491
+#: curs_main.c:1586 menu.c:773 pager.c:2115 pattern.c:1494
 msgid "Search wrapped to top."
 msgstr "Търсенето е започнато отгоре."
 
-#: curs_main.c:1595 pager.c:2137 pattern.c:1502
+#: curs_main.c:1595 pager.c:2137 pattern.c:1505
 msgid "Search wrapped to bottom."
 msgstr "Търсенето е започнато отдолу."
 
@@ -2364,7 +2364,7 @@ msgstr "Избиране на %s..."
 msgid "Error opening mailbox"
 msgstr "Грешка при отваряне на пощенската кутия!"
 
-#: imap/imap.c:808 imap/imap.c:2147 imap/message.c:877 muttlib.c:1565
+#: imap/imap.c:808 imap/imap.c:2147 imap/message.c:877 muttlib.c:1568
 #, c-format
 msgid "Create %s?"
 msgstr "Желаете ли да създадете %s?"
@@ -3101,15 +3101,15 @@ msgstr "Това е последният запис."
 msgid "You are on the first entry."
 msgstr "Това е първият запис."
 
-#: menu.c:747 pager.c:2159 pattern.c:1430
+#: menu.c:747 pager.c:2159 pattern.c:1433
 msgid "Search for: "
 msgstr "Търсене: "
 
-#: menu.c:747 pager.c:2159 pattern.c:1430
+#: menu.c:747 pager.c:2159 pattern.c:1433
 msgid "Reverse search for: "
 msgstr "Обратно търсене: "
 
-#: menu.c:791 pager.c:2112 pager.c:2134 pager.c:2254 pattern.c:1545
+#: menu.c:791 pager.c:2112 pager.c:2134 pager.c:2254 pattern.c:1548
 msgid "Not found."
 msgstr "Няма резултати от търсенето."
 
@@ -3450,45 +3450,45 @@ msgstr "Грешка в комуникацията с %s (%s)"
 #. L10N:
 #. Means "The path you specified as the destination file is a directory."
 #. See the msgid "Save to file: " (alias.c, recvattach.c)
-#: muttlib.c:976
+#: muttlib.c:979
 msgid "File is a directory, save under it? [(y)es, (n)o, (a)ll]"
 msgstr ""
 "Файлът е директория. Желаете ли да запишете в нея? [(y) да, (n) не, (a) "
 "всички]"
 
-#: muttlib.c:976
+#: muttlib.c:979
 msgid "yna"
 msgstr "yna"
 
 #. L10N:
 #. Means "The path you specified as the destination file is a directory."
 #. See the msgid "Save to file: " (alias.c, recvattach.c)
-#: muttlib.c:995
+#: muttlib.c:998
 msgid "File is a directory, save under it?"
 msgstr "Файлът е директория. Желаете ли да запишете в нея?"
 
-#: muttlib.c:999
+#: muttlib.c:1002
 msgid "File under directory: "
 msgstr "Файл в тази директория: "
 
-#: muttlib.c:1008
+#: muttlib.c:1011
 msgid "File exists, (o)verwrite, (a)ppend, or (c)ancel?"
 msgstr "Файлът съществува. Презапис(o), добавяне(a) или отказ(c)?"
 
-#: muttlib.c:1008
+#: muttlib.c:1011
 msgid "oac"
 msgstr "oac"
 
-#: muttlib.c:1531
+#: muttlib.c:1534
 msgid "Can't save message to POP mailbox."
 msgstr "Запис на писмо на POP сървър не е възможно."
 
-#: muttlib.c:1540
+#: muttlib.c:1543
 #, c-format
 msgid "Append messages to %s?"
 msgstr "Желаете ли да добавите писмата към %s?"
 
-#: muttlib.c:1552
+#: muttlib.c:1555
 #, c-format
 msgid "%s is not a mailbox!"
 msgstr "%s не е пощенска кутия!"
@@ -3699,37 +3699,37 @@ msgstr "неподходящо поставени скоби: %s"
 msgid "empty pattern"
 msgstr "празен шаблон"
 
-#: pattern.c:1226
+#: pattern.c:1229
 #, c-format
 msgid "error: unknown op %d (report this error)."
 msgstr "грешка: непознат оператор %d (моля, съобщете за тази грешка)."
 
-#: pattern.c:1309 pattern.c:1451
+#: pattern.c:1312 pattern.c:1454
 msgid "Compiling search pattern..."
 msgstr "Компилиране на шаблона за търсене..."
 
-#: pattern.c:1330
+#: pattern.c:1333
 msgid "Executing command on matching messages..."
 msgstr "Изпълняване на команда върху писмата..."
 
-#: pattern.c:1399
+#: pattern.c:1402
 msgid "No messages matched criteria."
 msgstr "Няма писма, отговарящи на този критерий."
 
-#: pattern.c:1481
+#: pattern.c:1484
 #, fuzzy
 msgid "Searching..."
 msgstr "Записване..."
 
-#: pattern.c:1494
+#: pattern.c:1497
 msgid "Search hit bottom without finding match"
 msgstr "Търсенето достигна до края, без да бъде намерено съвпадение"
 
-#: pattern.c:1505
+#: pattern.c:1508
 msgid "Search hit top without finding match"
 msgstr "Търсенето достигна до началото, без да бъде намерено съвпадение"
 
-#: pattern.c:1537
+#: pattern.c:1540
 msgid "Search interrupted."
 msgstr "Търсенето е прекъснато."
 

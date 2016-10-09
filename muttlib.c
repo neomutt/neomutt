@@ -151,8 +151,11 @@ int mutt_copy_body (FILE *fp, BODY **tgt, BODY *src)
   b->xtype = safe_strdup (b->xtype);
   b->subtype = safe_strdup (b->subtype);
   b->form_name = safe_strdup (b->form_name);
-  b->filename = safe_strdup (b->filename);
   b->d_filename = safe_strdup (b->d_filename);
+  /* mutt_adv_mktemp() will mangle the filename in tmp,
+   * so preserve it in d_filename */
+  if (!b->d_filename && use_disp)
+    b->d_filename = safe_strdup (src->filename);
   b->description = safe_strdup (b->description);
 
   /* 

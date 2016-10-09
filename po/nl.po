@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Mutt 1.7.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-08-17 20:11-0700\n"
+"POT-Creation-Date: 2016-10-08 12:54-0700\n"
 "PO-Revision-Date: 2016-08-15 10:27+0200\n"
 "Last-Translator: Benno Schulenberg <benno@vertaalt.nl>\n"
 "Language-Team: Dutch <vertaling@vrijschrift.org>\n"
@@ -1770,11 +1770,11 @@ msgstr "Alle berichten zijn gewist."
 msgid "You are on the first message."
 msgstr "Dit is het eerste bericht."
 
-#: curs_main.c:1586 menu.c:773 pager.c:2115 pattern.c:1491
+#: curs_main.c:1586 menu.c:773 pager.c:2115 pattern.c:1494
 msgid "Search wrapped to top."
 msgstr "Zoekopdracht is bovenaan herbegonnen."
 
-#: curs_main.c:1595 pager.c:2137 pattern.c:1502
+#: curs_main.c:1595 pager.c:2137 pattern.c:1505
 msgid "Search wrapped to bottom."
 msgstr "Zoekopdracht is onderaan herbegonnen."
 
@@ -2283,7 +2283,7 @@ msgstr "%s wordt uitgekozen..."
 msgid "Error opening mailbox"
 msgstr "Er is een fout opgetreden tijdens openen van het postvak"
 
-#: imap/imap.c:808 imap/imap.c:2147 imap/message.c:877 muttlib.c:1565
+#: imap/imap.c:808 imap/imap.c:2147 imap/message.c:877 muttlib.c:1568
 #, c-format
 msgid "Create %s?"
 msgstr "%s aanmaken?"
@@ -2990,15 +2990,15 @@ msgstr "U bent op het laatste item."
 msgid "You are on the first entry."
 msgstr "U bent op het eerste item."
 
-#: menu.c:747 pager.c:2159 pattern.c:1430
+#: menu.c:747 pager.c:2159 pattern.c:1433
 msgid "Search for: "
 msgstr "Zoek naar: "
 
-#: menu.c:747 pager.c:2159 pattern.c:1430
+#: menu.c:747 pager.c:2159 pattern.c:1433
 msgid "Reverse search for: "
 msgstr "Zoek achteruit naar: "
 
-#: menu.c:791 pager.c:2112 pager.c:2134 pager.c:2254 pattern.c:1545
+#: menu.c:791 pager.c:2112 pager.c:2134 pager.c:2254 pattern.c:1548
 msgid "Not found."
 msgstr "Niet gevonden."
 
@@ -3329,43 +3329,43 @@ msgstr "Fout in tunnel in communicatie met %s: %s"
 #. L10N:
 #. Means "The path you specified as the destination file is a directory."
 #. See the msgid "Save to file: " (alias.c, recvattach.c)
-#: muttlib.c:976
+#: muttlib.c:979
 msgid "File is a directory, save under it? [(y)es, (n)o, (a)ll]"
 msgstr "Bestand is een map, daarin opslaan? [(j)a, (n)ee, (a)llen]"
 
-#: muttlib.c:976
+#: muttlib.c:979
 msgid "yna"
 msgstr "jna"
 
 #. L10N:
 #. Means "The path you specified as the destination file is a directory."
 #. See the msgid "Save to file: " (alias.c, recvattach.c)
-#: muttlib.c:995
+#: muttlib.c:998
 msgid "File is a directory, save under it?"
 msgstr "Bestand is een map, daarin opslaan?"
 
-#: muttlib.c:999
+#: muttlib.c:1002
 msgid "File under directory: "
 msgstr "Bestandsnaam in map: "
 
-#: muttlib.c:1008
+#: muttlib.c:1011
 msgid "File exists, (o)verwrite, (a)ppend, or (c)ancel?"
 msgstr "Bestand bestaat, (o)verschrijven, (t)oevoegen, (a)nnuleren?"
 
-#: muttlib.c:1008
+#: muttlib.c:1011
 msgid "oac"
 msgstr "ota"
 
-#: muttlib.c:1531
+#: muttlib.c:1534
 msgid "Can't save message to POP mailbox."
 msgstr "Kan het bericht niet opslaan in het POP-postvak."
 
-#: muttlib.c:1540
+#: muttlib.c:1543
 #, c-format
 msgid "Append messages to %s?"
 msgstr "Bericht aan %s toevoegen?"
 
-#: muttlib.c:1552
+#: muttlib.c:1555
 #, c-format
 msgid "%s is not a mailbox!"
 msgstr "%s is geen postvak!"
@@ -3571,36 +3571,36 @@ msgstr "Haakjes kloppen niet: %s"
 msgid "empty pattern"
 msgstr "Leeg patroon"
 
-#: pattern.c:1226
+#: pattern.c:1229
 #, c-format
 msgid "error: unknown op %d (report this error)."
 msgstr "fout: onbekende operatie %d  (rapporteer deze fout)"
 
-#: pattern.c:1309 pattern.c:1451
+#: pattern.c:1312 pattern.c:1454
 msgid "Compiling search pattern..."
 msgstr "Bezig met het compileren van patroon..."
 
-#: pattern.c:1330
+#: pattern.c:1333
 msgid "Executing command on matching messages..."
 msgstr "Commando wordt uitgevoerd..."
 
-#: pattern.c:1399
+#: pattern.c:1402
 msgid "No messages matched criteria."
 msgstr "Geen berichten voldeden aan de criteria."
 
-#: pattern.c:1481
+#: pattern.c:1484
 msgid "Searching..."
 msgstr "Bezig met zoeken..."
 
-#: pattern.c:1494
+#: pattern.c:1497
 msgid "Search hit bottom without finding match"
 msgstr "Zoeken heeft einde bereikt zonder iets te vinden"
 
-#: pattern.c:1505
+#: pattern.c:1508
 msgid "Search hit top without finding match"
 msgstr "Zoeken heeft begin bereikt zonder iets te vinden"
 
-#: pattern.c:1537
+#: pattern.c:1540
 msgid "Search interrupted."
 msgstr "Het zoeken is onderbroken."
 

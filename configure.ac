@@ -11,7 +11,7 @@ AC_CONFIG_SRCDIR(mutt.h)
 AM_INIT_AUTOMAKE
 AC_CONFIG_HEADERS([config.h])
 
-AC_DEFINE(MUTT_VERSION, "1.7.0", [Version of upstream Mutt])
+AC_DEFINE(MUTT_VERSION, "1.7.1", [Version of upstream Mutt])
 
 AC_USE_SYSTEM_EXTENSIONS
 

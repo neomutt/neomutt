@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Mutt 1.3.22.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-08-17 20:11-0700\n"
+"POT-Creation-Date: 2016-10-08 12:54-0700\n"
 "PO-Revision-Date: 2001-09-06 18:25+0800\n"
 "Last-Translator: Anthony Wong <ypwong@debian.org>\n"
 "Language-Team: Chinese <zh@li.org>\n"
@@ -1831,11 +1831,11 @@ msgstr "沒有要反刪除的信件。"
 msgid "You are on the first message."
 msgstr "您已經在第一封信了。"
 
-#: curs_main.c:1586 menu.c:773 pager.c:2115 pattern.c:1491
+#: curs_main.c:1586 menu.c:773 pager.c:2115 pattern.c:1494
 msgid "Search wrapped to top."
 msgstr "搜尋至開頭。"
 
-#: curs_main.c:1595 pager.c:2137 pattern.c:1502
+#: curs_main.c:1595 pager.c:2137 pattern.c:1505
 msgid "Search wrapped to bottom."
 msgstr "搜尋至結尾。"
 
@@ -2378,7 +2378,7 @@ msgstr "正在選擇 %s …"
 msgid "Error opening mailbox"
 msgstr "開啟信箱時發生錯誤"
 
-#: imap/imap.c:808 imap/imap.c:2147 imap/message.c:877 muttlib.c:1565
+#: imap/imap.c:808 imap/imap.c:2147 imap/message.c:877 muttlib.c:1568
 #, c-format
 msgid "Create %s?"
 msgstr "建立 %s？"
@@ -3101,15 +3101,15 @@ msgstr "您現在在最後一項。"
 msgid "You are on the first entry."
 msgstr "您現在在第一項。"
 
-#: menu.c:747 pager.c:2159 pattern.c:1430
+#: menu.c:747 pager.c:2159 pattern.c:1433
 msgid "Search for: "
 msgstr "搜尋："
 
-#: menu.c:747 pager.c:2159 pattern.c:1430
+#: menu.c:747 pager.c:2159 pattern.c:1433
 msgid "Reverse search for: "
 msgstr "返向搜尋："
 
-#: menu.c:791 pager.c:2112 pager.c:2134 pager.c:2254 pattern.c:1545
+#: menu.c:791 pager.c:2112 pager.c:2134 pager.c:2254 pattern.c:1548
 msgid "Not found."
 msgstr "沒有找到。"
 
@@ -3448,44 +3448,44 @@ msgstr "連線到 %s (%s) 時失敗"
 #. L10N:
 #. Means "The path you specified as the destination file is a directory."
 #. See the msgid "Save to file: " (alias.c, recvattach.c)
-#: muttlib.c:976
+#: muttlib.c:979
 #, fuzzy
 msgid "File is a directory, save under it? [(y)es, (n)o, (a)ll]"
 msgstr "檔案是一個目錄, 儲存在它下面 ?"
 
-#: muttlib.c:976
+#: muttlib.c:979
 msgid "yna"
 msgstr ""
 
 #. L10N:
 #. Means "The path you specified as the destination file is a directory."
 #. See the msgid "Save to file: " (alias.c, recvattach.c)
-#: muttlib.c:995
+#: muttlib.c:998
 msgid "File is a directory, save under it?"
 msgstr "檔案是一個目錄, 儲存在它下面 ?"
 
-#: muttlib.c:999
+#: muttlib.c:1002
 msgid "File under directory: "
 msgstr "在目錄底下的檔案："
 
-#: muttlib.c:1008
+#: muttlib.c:1011
 msgid "File exists, (o)verwrite, (a)ppend, or (c)ancel?"
 msgstr "檔案已經存在, (1)覆蓋, (2)附加, 或是 (3)取消 ?"
 
-#: muttlib.c:1008
+#: muttlib.c:1011
 msgid "oac"
 msgstr "123"
 
-#: muttlib.c:1531
+#: muttlib.c:1534
 msgid "Can't save message to POP mailbox."
 msgstr "無法將信件存到信箱。"
 
-#: muttlib.c:1540
+#: muttlib.c:1543
 #, c-format
 msgid "Append messages to %s?"
 msgstr "附加信件到 %s ?"
 
-#: muttlib.c:1552
+#: muttlib.c:1555
 #, c-format
 msgid "%s is not a mailbox!"
 msgstr "%s 不是信箱！"
@@ -3694,37 +3694,37 @@ msgstr "不對稱的括弧：%s"
 msgid "empty pattern"
 msgstr "空的格式"
 
-#: pattern.c:1226
+#: pattern.c:1229
 #, c-format
 msgid "error: unknown op %d (report this error)."
 msgstr "錯誤：不明的 op %d (請回報這個錯誤)。"
 
-#: pattern.c:1309 pattern.c:1451
+#: pattern.c:1312 pattern.c:1454
 msgid "Compiling search pattern..."
 msgstr "編譯搜尋樣式中…"
 
-#: pattern.c:1330
+#: pattern.c:1333
 msgid "Executing command on matching messages..."
 msgstr "正在對符合的郵件執行命令…"
 
-#: pattern.c:1399
+#: pattern.c:1402
 msgid "No messages matched criteria."
 msgstr "沒有郵件符合要求。"
 
-#: pattern.c:1481
+#: pattern.c:1484
 #, fuzzy
 msgid "Searching..."
 msgstr "儲存中…"
 
-#: pattern.c:1494
+#: pattern.c:1497
 msgid "Search hit bottom without finding match"
 msgstr "已搜尋至結尾，並沒有發現任何符合"
 
-#: pattern.c:1505
+#: pattern.c:1508
 msgid "Search hit top without finding match"
 msgstr "已搜尋至開頭，並沒有發現任何符合"
 
-#: pattern.c:1537
+#: pattern.c:1540
 msgid "Search interrupted."
 msgstr "搜尋已被中斷。"
 
