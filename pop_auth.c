@@ -121,7 +121,7 @@ static pop_auth_res_t pop_auth_sasl (POP_DATA *pop_data, const char *method)
       client_start = 0;
     }
 
-    if (rc != SASL_CONTINUE && (olen == 0 || rc != SASL_OK))
+    if (rc != SASL_CONTINUE && rc != SASL_OK)
       break;
 
     /* send out response, or line break if none needed */
