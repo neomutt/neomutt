@@ -305,8 +305,13 @@ static int cb_qsort_sbe (const void *a, const void *b)
       result = (b2->msg_flagged - b1->msg_flagged);
       break;
     case SORT_PATH:
-      result = mutt_strcoll (b1->path, b2->path);
+    {
+      int same_path = mutt_same_path (b1->path, b2->path);
+      result = (same_path && mutt_is_inbox (b1->path)) ? -1 :
+               (same_path && mutt_is_inbox (b2->path)) ?  1 :
+               mutt_strcoll (b1->path, b2->path);           
       break;
+    }
   }
 
   if (SidebarSortMethod & SORT_REVERSE)
