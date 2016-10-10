@@ -1087,3 +1087,25 @@ int mutt_atol (const char *str, long *dst)
     return -1;
   return 0;
 }
+
+int mutt_is_inbox(const char *path)
+{
+  size_t plen = mutt_strlen(path);
+  return plen >= 5 && 0 == mutt_strcasecmp(path + plen - 5, "inbox");
+}
+
+int mutt_same_path(const char *a, const char *b)
+{
+  const char * a_end = strrchr(a, '/');
+  const char * b_end = strrchr(b, '/');
+  int ret = 0;
+  if (!(!a_end ^ !b_end)) {
+      if (!a_end) {
+          ret = 1;
+      } else {
+          size_t a_len = a_end - a;
+          ret = a_len == b_end - b && 0 == mutt_strncasecmp(a, b, a_len);
+      }
+  }
+  return ret;
+}

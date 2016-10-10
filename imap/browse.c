@@ -35,7 +35,6 @@ static int browse_add_list_result (IMAP_DATA* idata, const char* cmd,
   struct browser_state* state, short isparent);
 static void imap_add_folder (char delim, char *folder, int noselect,
   int noinferiors, struct browser_state *state, short isparent);
-static int compare_names(struct folder_file *a, struct folder_file *b);
 
 /* imap_browse: IMAP hook into the folder browser, fills out browser_state,
  *   given a current folder to browse */
@@ -192,9 +191,6 @@ int imap_browse (char* path, struct browser_state* state)
   }
 
   mutt_clear_error ();
-
-  qsort(&(state->entry[nsup]),state->entrylen-nsup,sizeof(state->entry[0]),
-	(int (*)(const void*,const void*)) compare_names);
 
   if (save_lsub)
     set_option (OPTIMAPCHECKSUBSCRIBED);
@@ -445,9 +441,4 @@ static void imap_add_folder (char delim, char *folder, int noselect,
   (state->entrylen)++;
 
   FREE (&mx.mbox);
-}
-
-static int compare_names(struct folder_file *a, struct folder_file *b) 
-{
-  return mutt_strcmp(a->name, b->name);
 }

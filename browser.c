@@ -102,7 +102,10 @@ static int browser_compare_subject (const void *a, const void *b)
   struct folder_file *pa = (struct folder_file *) a;
   struct folder_file *pb = (struct folder_file *) b;
 
-  int r = mutt_strcoll (pa->name, pb->name);
+  int same_path = mutt_same_path (pa->name, pb->name);
+  int r = (same_path && mutt_is_inbox (pa->name)) ? -1 :
+          (same_path && mutt_is_inbox (pb->name)) ?  1 :
+          mutt_strcoll  (pa->name, pb->name);
 
   return ((BrowserSort & SORT_REVERSE) ? -r : r);
 }
@@ -1085,6 +1088,8 @@ void _mutt_select_file (char *f, size_t flen, int flags, char ***files, int *num
       state.imap_browse = 1;
       if (!imap_browse (f, &state))
         strfcpy (LastDir, state.folder, sizeof (LastDir));
+      else
+        browser_sort (&state);
     }
     else
     {
