@@ -2031,20 +2031,26 @@ mutt_pager (const char *banner, const char *fname, int flags, pager_t *extra)
       else if ((check == MUTT_NEW_MAIL) || (check == MUTT_REOPENED) || (check == MUTT_FLAGS))
       {
         oldcount = Context ? Context->msgcount : 0;
+	index->max = Context ? Context->vcount : 0;
+	index_hint = (Context->vcount && (index->current >= 0) && (index->current < Context->vcount)) ? Context->hdrs[Context->v2r[index->current]]->index : 0;
         update_index (index, Context, check, oldcount, index_hint);
-      }
-      /* notify user of newly arrived mail */
-      if (mutt_buffy_notify())
-      {
-        redraw |= REDRAW_STATUS;
-        if (option (OPTBEEPNEW))
-          beep();
-        if (NewMailCmd)
-        {
-          char cmd[LONG_STRING];
-          menu_status_line (cmd, sizeof (cmd), index, NONULL (NewMailCmd));
-          mutt_system (cmd);
-        }
+
+	/* notify user of newly arrived mail */
+	if (check == MUTT_NEW_MAIL)
+	{
+	  mutt_message _("New mail in this mailbox.");
+	  redraw = REDRAW_FULL;
+	  if (option (OPTBEEPNEW))
+	    beep();
+	  if (NewMailCmd)
+	  {
+	    char cmd[LONG_STRING];
+	    menu_status_line (cmd, sizeof (cmd), index, NONULL (NewMailCmd));
+	    mutt_system (cmd);
+	  }
+
+	  set_option (OPTSEARCHINVALID);
+	}
       }
     }
 
