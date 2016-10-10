@@ -221,6 +221,7 @@ void mutt_str_adjust (char **p);
 void mutt_unlink (const char *);
 void safe_free (void *);
 void safe_realloc (void *, size_t);
+int  mutt_is_inbox(const char *path);
 
 const char *mutt_strsysexit(int e);
 #endif

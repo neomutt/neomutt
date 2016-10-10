@@ -1087,3 +1087,9 @@ int mutt_atol (const char *str, long *dst)
     return -1;
   return 0;
 }
+
+int  mutt_is_inbox(const char *path)
+{
+  size_t plen = mutt_strlen(path);
+  return plen >= 5 && 0 == mutt_strcasecmp(path + plen - 5, "inbox");
+}
