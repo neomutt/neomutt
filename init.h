@@ -267,7 +267,7 @@ struct option_t MuttVars[] = {
   ** .pp
   ** For an explanation of ``soft-fill'', see the $$index_format documentation.
   */
-  { "attach_keyword",  DT_RX,  R_NONE, UL &AttachKeyword, UL "\\<attach(|ed|ments?)\\>" },
+  { "attach_keyword",  DT_RX,  R_NONE, UL &AttachKeyword, UL "\\<(attach|attached|attachments?)\\>" },
   /*
   ** .pp
   ** If $abort_noattach is not set to no, then the body of the message

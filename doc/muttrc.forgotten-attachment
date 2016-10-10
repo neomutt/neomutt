@@ -16,7 +16,7 @@ set abort_noattach = no
 # Search for the following regular expression in the body of the email
 
 # English: attach, attached, attachment, attachments
-set attach_keyword = "\\<attach(|ed|ments?)\\>"
+set attach_keyword = "\\<(attach|attached|attachments?)\\>"
 
 # Nederlands:
 # set attach_keyword = "\\<(bijvoegen|bijgevoegd|bijlage|bijlagen)\\>"

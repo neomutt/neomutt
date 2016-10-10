@@ -10142,7 +10142,7 @@ set pgp_encrypt_self = &quot;no&quot;
           <row>
             <entry><literal>attach_keyword</literal></entry>
             <entry>regular expression</entry>
-            <entry><literal>\\&lt;attach(|ed|ments?)\\&gt;</literal></entry>
+            <entry><literal>\\&lt;(attach|attached|attachments?)\\&gt;</literal></entry>
           </row>
           <row>
             <entry><literal>abort_noattach</literal></entry>

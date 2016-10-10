@@ -1902,7 +1902,7 @@ main_loop:
     /* if the abort is automatic, print an error message */
     if (quadoption (OPT_ATTACH) == MUTT_YES)
     {
-      mutt_error _("Message contains text matching \"attach_keyword\". Not sending.");
+      mutt_error _("Message contains text matching \"$attach_keyword\". Not sending.");
     }
     goto main_loop;
   }

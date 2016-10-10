@@ -1704,6 +1704,7 @@ static void mutt_restore_default (struct option_t *p)
 
 	if (p->init)
 	{
+	  int retval;
 	  char *s = (char *) p->init;
 
 	  pp->rx = safe_calloc (1, sizeof (regex_t));
@@ -1715,10 +1716,15 @@ static void mutt_restore_default (struct option_t *p)
 	    s++;
 	    pp->not = 1;
 	  }
-	  if (REGCOMP (pp->rx, s, flags) != 0)
+	  retval = REGCOMP (pp->rx, s, flags);
+	  if (retval != 0)
 	  {
+	    char msgbuf[STRING];
+	    regerror (retval, pp->rx, msgbuf, sizeof (msgbuf));
 	    fprintf (stderr, _("mutt_restore_default(%s): error in regexp: %s\n"),
 		     p->option, pp->pattern);
+	    fprintf (stderr, "%s\n", msgbuf);
+	    mutt_sleep (0);
 	    FREE (&pp->pattern);
 	    FREE (&pp->rx);
 	  }
