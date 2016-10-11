@@ -207,6 +207,9 @@ static int user_in_addr (ADDRESS *a)
  */
 int mutt_user_is_recipient (HEADER *h)
 {
+  if (!h || !h->env)
+    return 0;
+
   ENVELOPE *env = h->env;
 
   if(!h->recip_valid)
