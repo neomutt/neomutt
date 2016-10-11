@@ -826,27 +826,37 @@ int mutt_index_menu (void)
       }
       else if (check == MUTT_NEW_MAIL || check == MUTT_REOPENED || check == MUTT_FLAGS)
       {
-	update_index (menu, Context, check, oldcount, index_hint);
-
 	/* notify the user of new mail */
 	if (check == MUTT_REOPENED)
 	  mutt_error _("Mailbox was externally modified.  Flags may be wrong.");
 	else if (check == MUTT_NEW_MAIL)
 	{
-	  mutt_message _("New mail in this mailbox.");
-	  if (option (OPTBEEPNEW))
-	    beep ();
-	  if (NewMailCmd)
+	  for (i = oldcount; i < Context->msgcount; i++)
 	  {
-	    char cmd[LONG_STRING];
-	    menu_status_line(cmd, sizeof(cmd), menu, NONULL(NewMailCmd));
-	    mutt_system(cmd);
+	    if (Context->hdrs[i]->read == 0)
+	    {
+	      mutt_message _("New mail in this mailbox.");
+	      if (option (OPTBEEPNEW))
+		beep ();
+	      if (NewMailCmd)
+	      {
+		char cmd[LONG_STRING];
+		menu_status_line(cmd, sizeof(cmd), menu, NONULL(NewMailCmd));
+		mutt_system(cmd);
+	      }
+	      break;
+	    }
 	  }
 	} else if (check == MUTT_FLAGS)
 	  mutt_message _("Mailbox was externally modified.");
 
 	/* avoid the message being overwritten by buffy */
 	do_buffy_notify = 0;
+
+	int q = Context->quiet;
+	Context->quiet = 1;
+	update_index (menu, Context, check, oldcount, index_hint);
+	Context->quiet = q;
 
 	menu->redraw = REDRAW_FULL;
 	menu->max = Context->vcount;
@@ -1919,6 +1929,7 @@ int mutt_index_menu (void)
 
 	if (option (OPTPGPAUTODEC) && (tag || !(CURHDR->security & PGP_TRADITIONAL_CHECKED)))
 	  mutt_check_traditional_pgp (tag ? NULL : CURHDR, &menu->redraw);
+	int index_hint = Context->hdrs[Context->v2r[menu->current]]->index;
 	if ((op = mutt_display_message (CURHDR)) == -1)
 	{
 	  unset_option (OPTNEEDRESORT);
@@ -1927,6 +1938,8 @@ int mutt_index_menu (void)
 
 	menu->menu = MENU_PAGER;
  	menu->oldcurrent = menu->current;
+	update_index (menu, Context, MUTT_NEW_MAIL, menu->max, index_hint);
+
 	continue;
 
       case OP_EXIT:

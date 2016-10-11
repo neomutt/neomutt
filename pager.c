@@ -2014,8 +2014,11 @@ mutt_pager (const char *banner, const char *fname, int flags, pager_t *extra)
       mutt_clear_error ();
     mutt_curs_set (1);
 
+    int do_new_mail = 0;
+
     if (Context && !option (OPTATTACHMSG))
     {
+      oldcount = Context ? Context->msgcount : 0;
       /* check for new mail */
       check = mx_check_mailbox (Context, &index_hint);
       if (check < 0)
@@ -2030,26 +2033,46 @@ mutt_pager (const char *banner, const char *fname, int flags, pager_t *extra)
       }
       else if ((check == MUTT_NEW_MAIL) || (check == MUTT_REOPENED) || (check == MUTT_FLAGS))
       {
-        oldcount = Context ? Context->msgcount : 0;
-	index->max = Context ? Context->vcount : 0;
-	index_hint = (Context->vcount && (index->current >= 0) && (index->current < Context->vcount)) ? Context->hdrs[Context->v2r[index->current]]->index : 0;
-        update_index (index, Context, check, oldcount, index_hint);
-
 	/* notify user of newly arrived mail */
 	if (check == MUTT_NEW_MAIL)
 	{
-	  mutt_message _("New mail in this mailbox.");
-	  redraw = REDRAW_FULL;
-	  if (option (OPTBEEPNEW))
-	    beep();
-	  if (NewMailCmd)
+	  for (i = oldcount; i < Context->msgcount; i++)
 	  {
-	    char cmd[LONG_STRING];
-	    menu_status_line (cmd, sizeof (cmd), index, NONULL (NewMailCmd));
-	    mutt_system (cmd);
+	    HEADER *h = Context->hdrs[i];
+
+	    if (h && (h->read == 0))
+	    {
+	      mutt_message _("New mail in this mailbox.");
+	      do_new_mail = 1;
+	      break;
+	    }
 	  }
 
+	  if (index)
+	  {
+	    oldcount = Context ? Context->msgcount : 0;
+	    index->max = Context ? Context->vcount : 0;
+	    index_hint = Context->hdrs[Context->v2r[index->current]]->index;
+	    int q = Context->quiet;
+	    Context->quiet = 1;
+	    update_index (index, Context, check, oldcount, index_hint);
+	    Context->quiet = q;
+	  }
+
+	  redraw = REDRAW_FULL;
 	  set_option (OPTSEARCHINVALID);
+	}
+      }
+
+      if (mutt_buffy_notify() || do_new_mail)
+      {
+	if (option (OPTBEEPNEW))
+	  beep();
+	if (NewMailCmd)
+	{
+	  char cmd[LONG_STRING];
+	  menu_status_line (cmd, sizeof (cmd), index, NONULL (NewMailCmd));
+	  mutt_system (cmd);
 	}
       }
     }
