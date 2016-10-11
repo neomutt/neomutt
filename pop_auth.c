@@ -74,6 +74,10 @@ static pop_auth_res_t pop_auth_sasl (POP_DATA *pop_data, const char *method)
     return POP_A_UNAVAIL;
   }
 
+  /* About client_start:  If sasl_client_start() returns data via pc/olen,
+   * the client is expected to send this first (after the AUTH string is sent).
+   * sasl_client_start() may in fact return SASL_OK in this case.
+   */
   client_start = olen;
 
   mutt_message _("Authenticating (SASL)...");
@@ -97,6 +101,11 @@ static pop_auth_res_t pop_auth_sasl (POP_DATA *pop_data, const char *method)
       return POP_A_SOCKET;
     }
 
+    /* Note we don't exit if rc==SASL_OK when client_start is true.
+     * This is because the first loop has only sent the AUTH string, we
+     * need to loop at least once more to send the pc/olen returned
+     * by sasl_client_start().
+     */
     if (!client_start && rc != SASL_CONTINUE)
       break;
 
@@ -121,6 +130,9 @@ static pop_auth_res_t pop_auth_sasl (POP_DATA *pop_data, const char *method)
       client_start = 0;
     }
 
+    /* Even if sasl_client_step() returns SASL_OK, we should send at
+     * least one more line to the server.  See #3862.
+     */
     if (rc != SASL_CONTINUE && rc != SASL_OK)
       break;
 
