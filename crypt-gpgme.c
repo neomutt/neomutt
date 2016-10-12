@@ -1345,7 +1345,7 @@ static void show_one_sig_validity (gpgme_ctx_t ctx, int idx, STATE *s)
 static void print_smime_keyinfo (const char* msg, gpgme_signature_t sig,
                                  gpgme_key_t key, STATE *s)
 {
-  size_t msglen;
+  int msgwid;
   gpgme_user_id_t uids = NULL;
   int i, aka = 0;
 
@@ -1360,10 +1360,10 @@ static void print_smime_keyinfo (const char* msg, gpgme_signature_t sig,
 	continue;
       if (aka)
       {
-        /* TODO: need to account for msg wide characters
-         * and "aka" translation length */
-	msglen = mutt_strlen (msg) - 4;
-	for (i = 0; i < msglen; i++)
+	msgwid = mutt_strwidth (msg) - mutt_strwidth (_("aka: ")) + 1;
+	if (msgwid < 0)
+	  msgwid = 0;
+	for (i = 0; i < msgwid; i++)
 	  state_puts(" ", s);
 	state_puts(_("aka: "), s);
       }
@@ -1380,14 +1380,19 @@ static void print_smime_keyinfo (const char* msg, gpgme_signature_t sig,
     state_puts ("\n", s);
   }
 
-  msglen = mutt_strlen (msg) - 8;
-  /* TODO: need to account for msg wide characters
-   * and "created" translation length */
-  for (i = 0; i < msglen; i++)
-    state_puts(" ", s);
-  state_puts (_("created: "), s);
-  print_time (sig->timestamp, s);
-  state_puts ("\n", s);
+  /* timestamp is 0 when verification failed.
+     "Jan 1 1970" is not the created date. */
+  if (sig->timestamp)
+  {
+    msgwid = mutt_strwidth (msg) - mutt_strwidth (_("created: ")) + 1;
+    if (msgwid < 0)
+      msgwid = 0;
+    for (i = 0; i < msgwid; i++)
+      state_puts(" ", s);
+    state_puts (_("created: "), s);
+    print_time (sig->timestamp, s);
+    state_puts ("\n", s);
+  }
 }
 
 /* Show information about one signature.  This function is called with
