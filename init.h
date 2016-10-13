@@ -2673,7 +2673,10 @@ struct option_t MuttVars[] = {
   ** .pp
   ** Specifies the program and arguments used to deliver mail sent by Mutt.
   ** Mutt expects that the specified program interprets additional
-  ** arguments as recipient addresses.
+  ** arguments as recipient addresses.  Mutt appends all recipients after
+  ** adding a \fC--\fP delimiter (if not already present).  Additional
+  ** flags, such as for $$use_8bitmime, $$use_envelope_from,
+  ** $$dsn_notify, or $$dsn_return will be added before the delimiter.
   */
   { "sendmail_wait",	DT_NUM,  R_NONE, UL &SendmailWait, 0 },
   /*
