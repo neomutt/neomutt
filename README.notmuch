@@ -6,14 +6,22 @@ notmuch support for mutt
 
  * home page (wiki) and git:
 
-   https://github.com/karelzak/mutt-kz
+   Note: The mutt-kz project is now deprecated in favour of the NeoMutt Project.
+
+   https://www.neomutt.org
 
    Note that the master branch is rebased to be up to date with mutt upstream. Use
    stable/v<version> branches for downstream packaging.
 
  * mailing list:
 
-   https://admin.fedoraproject.org/mailman/listinfo/mutt-kz
+   NeoMutt Users' Mailing List
+     Discuss your favourite features, share experiences, swap config files, ask for help...
+     http://mailman.neomutt.org/mailman/listinfo/neomutt-users-neomutt.org
+
+   NeoMutt Developers' Mailing List
+     Listen in to the developers, propose new features, offer help...
+     http://mailman.neomutt.org/mailman/listinfo/neomutt-devel-neomutt.org
 
  * requirements:
 
@@ -21,8 +29,8 @@ notmuch support for mutt
 
  * compile:
 
-  $ git clone git://github.com/karelzak/mutt-kz.git
-  $ cd mutt-kz
+  $ git clone https://github.com/neomutt/neomutt
+  $ cd neomutt
   $ ./prepare
   $ ./configure --enable-notmuch [--enable-debug]
   $ make

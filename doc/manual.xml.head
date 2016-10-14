@@ -11961,13 +11961,6 @@ bind index \CG get-message
       <listitem><para>For more information, see:
       <ulink url="http://notmuchmail.org/">http://notmuchmail.org/</ulink>
       </para></listitem>
-      <listitem><para>Home page (wiki) and git:
-      <ulink url="https://github.com/karelzak/mutt-kz">https://github.com/karelzak/mutt-kz</ulink>
-      </para></listitem>
-      <listitem><para>Mailing list:
-      <ulink url="https://admin.fedoraproject.org/mailman/listinfo/mutt-kz">https://admin.fedoraproject.org/mailman/listinfo/mutt-kz</ulink>
-      </para></listitem>
-
       <listitem><para>More examples:
       <ulink url="http://notmuchmail.org/mutttips/">http://notmuchmail.org/mutttips/</ulink>
       </para></listitem>
