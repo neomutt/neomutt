@@ -153,7 +153,7 @@ keymap_alldefs.h: $(srcdir)/OPS $(srcdir)/OPS.SIDEBAR $(srcdir)/OPS.NOTMUCH $(sr
 			> keymap_alldefs.h
 
 oldmutt_ver.h:
-	version="1.7.0" && \
+	version="1.7.1" && \
 	echo 'const char *OldMuttVer = "'$$version'";' > oldmutt_ver.h.tmp; \
 	cmp -s oldmutt_ver.h.tmp oldmutt_ver.h || mv oldmutt_ver.h.tmp oldmutt_ver.h
 

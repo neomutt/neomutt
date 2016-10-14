@@ -47,7 +47,7 @@
 # <https://www.softcatala.org/recursos/quality/gnutools.html>.
 msgid ""
 msgstr ""
-"Project-Id-Version: mutt 1.7.0\n"
+"Project-Id-Version: mutt 1.7.1\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2016-10-08 12:54-0700\n"
 "PO-Revision-Date: 2016-08-10 09:13+0200\n"
