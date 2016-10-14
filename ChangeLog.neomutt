@@ -1,3 +1,25 @@
+2016-10-14  Richard Russon  <rich@flatcap.org>
+* Features
+  - sidebar: Make sure INBOX appears first in the list.
+  - notmuch: Synchronise tags to flags
+* Bug Fixes
+  - updates when pager is open
+  - crash when neither $spoolfile, $folder are set
+  - forgotten-attachment: fix empty regex expression
+  - status-color when pager_index_lines > 0
+  - buffer underrun when no menu item is selected
+  - crash handling keywords/labels
+* Docs
+  - update notmuch references
+* Build
+  - update references to 1.7.1
+  - strfcpy() improvement
+* Upstream
+  - automatic post-release commit for mutt-1.7.1
+  - Mark IMAP fast-trash'ed messages as read before copying. (see #3860)
+  - Updated Czech translation.
+  - Preserve forwarded attachment names in d_filename.
+
 2016-10-03  Richard Russon  <rich@flatcap.org>
 * Build
   - Fix install and dist targets
