@@ -77,7 +77,6 @@
 # define FREE(x) safe_free(x)
 # define NONULL(x) x?x:""
 # define ISSPACE(c) isspace((unsigned char)c)
-# define strfcpy(DST,SRC,LEN) do { if ((LEN) > 0) { *(DST+(LEN)-1)=0; strncpy(DST,SRC,(LEN)-1); } } while (0)
 
 # undef MAX
 # undef MIN
@@ -177,6 +176,7 @@ char *mutt_substrdup (const char *, const char *);
 char *safe_strcat (char *, size_t, const char *);
 char *safe_strncat (char *, size_t, const char *, size_t);
 char *safe_strdup (const char *);
+char *strfcpy (char *dest, const char *src, size_t dlen);
 
 /* strtol() wrappers with range checking; they return
  * 	 0 success

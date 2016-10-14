@@ -1112,3 +1112,13 @@ int mutt_same_path (const char *a, const char *b)
   return ((a_len == (b_end - b)) && (mutt_strncasecmp (a, b, a_len) == 0));
 }
 
+char * strfcpy (char *dest, const char *src, size_t dlen)
+{
+  char *dest0 = dest;
+  while ((--dlen > 0) && (*src != '\0'))
+    *dest++ = *src++;
+
+  *dest = '\0';
+  return dest0;
+}
+
