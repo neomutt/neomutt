@@ -143,7 +143,16 @@ static int ciss_parse_userhost (ciss_url_t *ciss, char *src)
     ciss->user = src;
     if (url_pct_decode (ciss->user) < 0)
       return -1;
-    t++;
+    src = t + 1;
+  }
+
+  /* IPv6 literal address.  It may contain colons, so set t to start
+   * the port scan after it.
+   */
+  if ((*src == '[') && (t = strchr (src, ']')))
+  {
+    src++;
+    *t++ = '\0';
   }
   else
     t = src;
@@ -159,7 +168,7 @@ static int ciss_parse_userhost (ciss_url_t *ciss, char *src)
   else
     ciss->port = 0;
 
-  ciss->host = t;
+  ciss->host = src;
   return url_pct_decode (ciss->host) >= 0 &&
     (!ciss->path || url_pct_decode (ciss->path) >= 0) ? 0 : -1;
 }
@@ -232,10 +241,17 @@ int url_ciss_tostring (ciss_url_t* ciss, char* dest, size_t len, int flags)
       len -= (l = strlen (dest)); dest += l;
     }
 
-    if (ciss->port)
-      snprintf (dest, len, "%s:%hu/", ciss->host, ciss->port);
+    if (strchr (ciss->host, ':'))
+      snprintf (dest, len, "[%s]", ciss->host);
     else
-      snprintf (dest, len, "%s/", ciss->host);
+      snprintf (dest, len, "%s", ciss->host);
+
+    len -= (l = strlen (dest)); dest += l;
+
+    if (ciss->port)
+      snprintf (dest, len, ":%hu/", ciss->port);
+    else
+      snprintf (dest, len, "/");
   }
 
   if (ciss->path)
