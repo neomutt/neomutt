@@ -55,6 +55,13 @@ static int BotIndex = -1;    /* Last mailbox visible in sidebar */
 
 static int select_next (void);
 
+/* The source of the sidebar divider character. */
+enum div_type
+{
+  SB_DIV_USER,
+  SB_DIV_ASCII,
+  SB_DIV_UTF8
+};
 
 enum
 {
@@ -513,39 +520,87 @@ static int prepare_sidebar (int page_size)
  * @num_cols:   Width of the Sidebar
  *
  * Draw a divider using characters from the config option "sidebar_divider_char".
- * This can be an ASCII or Unicode character.  First we calculate this
- * characters' width in screen columns, then subtract that from the config
- * option "sidebar_width".
+ * This can be an ASCII or Unicode character.
+ * We calculate these characters' width in screen columns.
  *
- * Returns:
- *      -1: Error: bad character, etc
- *      0:  Error: 0 width character
- *      n:  Success: character occupies n screen columns
+ * If the user hasn't set $sidebar_divider_char we pick a character for them,
+ * respecting the value of $ascii_chars.
+ *
+ * @return:
+ * *    0:  Empty string
+ * *    n:  Character occupies n screen columns
  */
 static int draw_divider (int num_rows, int num_cols)
 {
-  /* Calculate the width of the delimiter in screen cells */
-  int delim_len = mutt_strwidth (SidebarDividerChar);
+  if ((num_rows < 1) || (num_rows < 1))
+    return 0;
 
-  if (delim_len < 1)
-    return delim_len;
+  int i;
+  int delim_len;
+  enum div_type altchar = SB_DIV_UTF8;
+
+  /* Calculate the width of the delimiter in screen cells */
+  delim_len = mutt_strwidth (SidebarDividerChar);
+  if (delim_len < 0)
+  {
+    delim_len = 1; /* Bad character */
+  }
+  else if (delim_len == 0)
+  {
+    if (SidebarDividerChar)
+      return 0; /* User has set empty string */
+
+    delim_len = 1; /* Unset variable */
+  }
+  else
+  {
+    altchar = SB_DIV_USER; /* User config */
+  }
+
+  if (option (OPTASCIICHARS) && (altchar != SB_DIV_ASCII))
+  {
+    /* $ascii_chars overrides Unicode divider chars */
+    if (altchar == SB_DIV_UTF8)
+    {
+      altchar = SB_DIV_ASCII;
+    }
+    else if (SidebarDividerChar)
+    {
+      for (i = 0; i < delim_len; i++)
+      {
+        if (SidebarDividerChar[i] & ~0x7F) /* high-bit is set */
+        {
+          altchar = SB_DIV_ASCII;
+          delim_len = 1;
+          break;
+        }
+      }
+    }
+  }
 
   if (delim_len > num_cols)
     return 0;
 
   SETCOLOR(MT_COLOR_DIVIDER);
 
-  int col;
-  if (option (OPTSIDEBARONRIGHT))
-    col = 0;
-  else
-    col = SidebarWidth - delim_len;
+  int col = option (OPTSIDEBARONRIGHT) ? 0 : (SidebarWidth - delim_len);
 
-  int i;
   for (i = 0; i < num_rows; i++)
   {
     mutt_window_move (MuttSidebarWindow, i, col);
-    addstr (NONULL(SidebarDividerChar));
+
+    switch (altchar)
+    {
+      case SB_DIV_USER:
+        addstr (NONULL(SidebarDividerChar));
+        break;
+      case SB_DIV_ASCII:
+        addch ('|');
+        break;
+      case SB_DIV_UTF8:
+        addch (ACS_VLINE);
+        break;
+    }
   }
 
   return delim_len;
@@ -758,8 +813,6 @@ void mutt_sb_draw (void)
   int num_cols  = MuttSidebarWindow->cols;
 
   int div_width = draw_divider (num_rows, num_cols);
-  if (div_width < 0)
-    return;
 
   BUFFY *b;
   if (Entries == NULL)
