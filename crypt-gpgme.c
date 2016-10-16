@@ -682,8 +682,11 @@ static gpgme_key_t *create_recipient_set (const char *keylist,
 	      {
 		mutt_error (_("error adding recipient `%s': %s\n"),
 			    buf, gpgme_strerror (err));
-		rset[rset_n] = NULL;
-		free_recipient_set (&rset);
+                if (rset)
+                  {
+                    rset[rset_n] = NULL;
+                    free_recipient_set (&rset);
+                  }
 		gpgme_release (context);
 		return NULL;
 	      }
