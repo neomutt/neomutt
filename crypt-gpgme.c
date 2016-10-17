@@ -673,20 +673,15 @@ static gpgme_key_t *create_recipient_set (const char *keylist,
 	    else
 	      err = gpgme_get_key (context, buf, &key, 0);
 
+            safe_realloc (&rset, sizeof (*rset) * (rset_n + 1));
 	    if (! err)
-	      {
-		safe_realloc (&rset, sizeof (*rset) * (rset_n + 1));
-		rset[rset_n++] = key;
-	      }
+              rset[rset_n++] = key;
 	    else
 	      {
 		mutt_error (_("error adding recipient `%s': %s\n"),
 			    buf, gpgme_strerror (err));
-                if (rset)
-                  {
-                    rset[rset_n] = NULL;
-                    free_recipient_set (&rset);
-                  }
+                rset[rset_n] = NULL;
+                free_recipient_set (&rset);
 		gpgme_release (context);
 		return NULL;
 	      }
