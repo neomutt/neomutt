@@ -13411,7 +13411,7 @@ color sidebar_ordinary color245 default
     <para>
       When viewing an email, the
       <literal>&lt;skip-to-quoted&gt;</literal> function (by default the
-      <literal>S</literal> key) will scroll past any quoted text.
+      <literal>S</literal> key) will scroll past any email headers or quoted text.
       Sometimes, a little context is useful.
     </para>
 
