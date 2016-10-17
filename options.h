@@ -272,6 +272,7 @@ WHERE bool XCommentTo;
 #ifdef USE_NOTMUCH
 WHERE bool VirtualSpoolfile;
 WHERE bool NmRecord;
+WHERE bool ShowTags;
 #endif
 
 #endif /* _MUTT_OPTIONS_H_ */

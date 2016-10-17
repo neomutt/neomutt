@@ -812,11 +812,14 @@ static const char *index_format_str(char *buf, size_t buflen, size_t col, int co
       tags = driver_tags_get_transformed(&hdr->tags);
       if (!optional)
       {
-        colorlen = add_index_color(buf, buflen, flags, MT_COLOR_INDEX_TAGS);
-        mutt_format_s(buf + colorlen, buflen - colorlen, prec, NONULL(tags));
-        add_index_color(buf + colorlen, buflen - colorlen, flags, MT_COLOR_INDEX);
+        if (ShowTags)
+        {
+          colorlen = add_index_color(buf, buflen, flags, MT_COLOR_INDEX_TAGS);
+          mutt_format_s(buf + colorlen, buflen - colorlen, prec, NONULL(tags));
+          add_index_color(buf + colorlen, buflen - colorlen, flags, MT_COLOR_INDEX);
+        }
       }
-      else if (!tags)
+      else if (!tags || !ShowTags)
         optional = 0;
       FREE(&tags);
       break;

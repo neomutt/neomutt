@@ -2151,6 +2151,12 @@ struct Option MuttVars[] = {
   ** connect to news server.
   */
 #endif
+  { "show_tags", DT_BOOL, R_TREE | R_BOTH, UL &ShowTags, 1 },
+  /*
+   ** .pp
+   ** Show tag vaules in format via %g specifier (default). Allow to hide the
+   ** tags if there's large number tags per message. In bindings use 'toggle'.
+   */
   { "pager",            DT_PATH, R_NONE, UL &Pager, UL "builtin" },
   /*
   ** .pp
