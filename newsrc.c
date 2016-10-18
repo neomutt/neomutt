@@ -128,9 +128,17 @@ int nntp_newsrc_parse (NNTP_SERVER *nserv)
   char *line;
   struct stat sb;
 
-  /* if file doesn't exist, create it */
-  nserv->newsrc_fp = safe_fopen (nserv->newsrc_file, "a");
-  safe_fclose (&nserv->newsrc_fp);
+  if (nserv->newsrc_fp)
+  {
+    /* if we already have a handle, close it and reopen */
+    safe_fclose (&nserv->newsrc_fp);
+  }
+  else
+  {
+    /* if file doesn't exist, create it */
+    nserv->newsrc_fp = safe_fopen (nserv->newsrc_file, "a");
+    safe_fclose (&nserv->newsrc_fp);
+  }
 
   /* open .newsrc */
   nserv->newsrc_fp = safe_fopen (nserv->newsrc_file, "r");
