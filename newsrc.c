@@ -351,7 +351,7 @@ static int update_file (char *filename, char *buf)
       mutt_perror (tmpfile);
       break;
     }
-    if (fclose (fp) == EOF)
+    if (safe_fclose (&fp) == EOF)
     {
       mutt_perror (tmpfile);
       fp = NULL;
@@ -368,7 +368,7 @@ static int update_file (char *filename, char *buf)
     break;
   }
   if (fp)
-    fclose (fp);
+    safe_fclose (&fp);
   if (*tmpfile)
     unlink (tmpfile);
   if (rc)
@@ -541,7 +541,7 @@ static int active_get_cache (NNTP_SERVER *nserv)
   if (fgets (buf, sizeof (buf), fp) == NULL ||
       sscanf (buf, "%ld%s", &t, file) != 1 || t == 0)
   {
-    fclose (fp);
+    safe_fclose (&fp);
     return -1;
   }
   nserv->newgroups_time = t;
@@ -550,7 +550,7 @@ static int active_get_cache (NNTP_SERVER *nserv)
   while (fgets (buf, sizeof (buf), fp))
     nntp_add_group (buf, nserv);
   nntp_add_group (NULL, NULL);
-  fclose (fp);
+  safe_fclose (&fp);
   mutt_clear_error ();
   return 0;
 }

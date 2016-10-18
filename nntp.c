@@ -1078,7 +1078,7 @@ static int parse_overview_line (char *line, void *data)
     {
       if (strstr (header, ":full") == NULL && fputs (header, fp) == EOF)
       {
-	fclose (fp);
+	safe_fclose (&fp);
 	unlink (tempfile);
 	return -1;
       }
@@ -1090,7 +1090,7 @@ static int parse_overview_line (char *line, void *data)
       *field++ = '\0';
     if (fputs (b, fp) == EOF || fputc ('\n', fp) == EOF)
     {
-      fclose (fp);
+      safe_fclose (&fp);
       unlink (tempfile);
       return -1;
     }
@@ -1106,7 +1106,7 @@ static int parse_overview_line (char *line, void *data)
   hdr->env = mutt_read_rfc822_header (fp, hdr, 0, 0);
   hdr->env->newsgroups = safe_strdup (nntp_data->group);
   hdr->received = hdr->date_sent;
-  fclose (fp);
+  safe_fclose (&fp);
   unlink (tempfile);
 
 #ifdef USE_HCACHE
@@ -1344,7 +1344,7 @@ static int nntp_fetch_headers (CONTEXT *ctx, void *hc,
 			     fetch_tempfile, fp);
       if (rc)
       {
-	fclose (fp);
+	safe_fclose (&fp);
 	unlink (tempfile);
 	if (rc < 0)
 	  break;
@@ -1373,7 +1373,7 @@ static int nntp_fetch_headers (CONTEXT *ctx, void *hc,
       hdr = ctx->hdrs[ctx->msgcount] = mutt_new_header ();
       hdr->env = mutt_read_rfc822_header (fp, hdr, 0, 0);
       hdr->received = hdr->date_sent;
-      fclose (fp);
+      safe_fclose (&fp);
       unlink (tempfile);
     }
 
@@ -1580,7 +1580,7 @@ int nntp_fetch_message (CONTEXT *ctx, MESSAGE *msg, int msgno)
   {
     if (acache->index == hdr->index)
     {
-      msg->fp = fopen (acache->path, "r");
+      msg->fp = safe_fopen (acache->path, "r");
       if (msg->fp)
 	return 0;
     }
@@ -1744,7 +1744,7 @@ int nntp_post (const char *msg) {
 	buf[1] == '.' ? buf : buf + 1, -1, MUTT_SOCK_LOG_HDR) < 0)
       return nntp_connect_error (nntp_data->nserv);
   }
-  fclose (fp);
+  safe_fclose (&fp);
 
   if ((buf[strlen (buf) - 1] != '\n' &&
       mutt_socket_write_d (nntp_data->nserv->conn, "\r\n", -1, MUTT_SOCK_LOG_HDR) < 0) ||
@@ -2312,7 +2312,7 @@ int nntp_check_msgid (CONTEXT *ctx, const char *msgid)
 			 fetch_tempfile, fp);
   if (rc)
   {
-    fclose (fp);
+    safe_fclose (&fp);
     unlink (tempfile);
     if (rc < 0)
       return -1;
@@ -2328,7 +2328,7 @@ int nntp_check_msgid (CONTEXT *ctx, const char *msgid)
   hdr = ctx->hdrs[ctx->msgcount] = mutt_new_header ();
   hdr->data = safe_calloc (1, sizeof (NNTP_HEADER_DATA));
   hdr->env = mutt_read_rfc822_header (fp, hdr, 0, 0);
-  fclose (fp);
+  safe_fclose (&fp);
   unlink (tempfile);
 
   /* get article number */
