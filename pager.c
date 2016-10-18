@@ -2439,6 +2439,18 @@ search_next:
 	  int dretval = 0;
 	  int new_topline = topline;
 
+	  if (ISHEADER(lineInfo[new_topline].type)) {
+	    while ((new_topline < lastLine ||
+		    (0 == (dretval = display_line (fp, &last_pos, &lineInfo,
+			   new_topline, &lastLine, &maxLine, MUTT_TYPES | (flags & MUTT_PAGER_NOWRAP),
+			   &QuoteList, &q_level, &force_redraw, &SearchRE, pager_window))))
+		   && ISHEADER(lineInfo[new_topline].type)) {
+	      new_topline++;
+	    }
+	    topline = new_topline;
+	    break;
+	  }
+
 	  while (((new_topline + SkipQuotedOffset) < lastLine ||
 		  (0 == (dretval = display_line (fp, &last_pos, &lineInfo,
 			 new_topline, &lastLine, &maxLine, MUTT_TYPES | (flags & MUTT_PAGER_NOWRAP),
