@@ -1091,7 +1091,7 @@ int mutt_atol (const char *str, long *dst)
 int mutt_is_inbox (const char *path)
 {
   size_t plen = mutt_strlen (path);
-  return ((plen >= 5) && (mutt_strcasecmp (path + plen - 5, "inbox") == 0));
+  return ((plen >= 6) && (mutt_strcasecmp (path + plen - 6, "/inbox") == 0));
 }
 
 int mutt_same_path (const char *a, const char *b)
