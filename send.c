@@ -1895,7 +1895,8 @@ main_loop:
   }
 #endif
 
-  if (mutt_search_attach_keyword (msg->content->filename) &&
+  if (quadoption(OPT_ATTACH) != MUTT_NO &&
+         mutt_search_attach_keyword (msg->content->filename) &&
          !msg->content->next &&
          query_quadoption (OPT_ATTACH, _("No attachments, cancel sending?")) != MUTT_NO)
   {
