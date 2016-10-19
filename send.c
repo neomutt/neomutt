@@ -1252,7 +1252,8 @@ mutt_search_attach_keyword (char *filename)
   while (!feof (attf))
   {
     fgets (inputline, LONG_STRING, attf);
-    if (regexec (AttachKeyword.rx, inputline, 0, NULL, 0) == 0)
+    if (regexec (QuoteRegexp.rx, inputline, 0, NULL, 0) != 0 &&
+        regexec (AttachKeyword.rx, inputline, 0, NULL, 0) == 0)
     {
       found = 1;
       break;
@@ -1895,8 +1896,9 @@ main_loop:
   }
 #endif
 
-  if (mutt_search_attach_keyword (msg->content->filename) &&
+  if (quadoption(OPT_ATTACH) != MUTT_NO &&
          !msg->content->next &&
+         mutt_search_attach_keyword (msg->content->filename) &&
          query_quadoption (OPT_ATTACH, _("No attachments, cancel sending?")) != MUTT_NO)
   {
     /* if the abort is automatic, print an error message */
