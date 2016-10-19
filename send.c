@@ -1252,7 +1252,8 @@ mutt_search_attach_keyword (char *filename)
   while (!feof (attf))
   {
     fgets (inputline, LONG_STRING, attf);
-    if (regexec (AttachKeyword.rx, inputline, 0, NULL, 0) == 0)
+    if (regexec (QuoteRegexp.rx, inputline, 0, NULL, 0) != 0 &&
+        regexec (AttachKeyword.rx, inputline, 0, NULL, 0) == 0)
     {
       found = 1;
       break;
