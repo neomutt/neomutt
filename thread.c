@@ -1075,9 +1075,10 @@ int _mutt_aside_thread (HEADER *hdr, short dir, short subthreads)
   return (tmp->virtual);
 }
 
-int mutt_parent_message (CONTEXT *ctx, HEADER *hdr)
+int mutt_parent_message (CONTEXT *ctx, HEADER *hdr, int find_root)
 {
   THREAD *thread;
+  HEADER *parent = NULL;
 
   if ((Sort & SORT_MASK) != SORT_THREADS)
   {
@@ -1085,22 +1086,34 @@ int mutt_parent_message (CONTEXT *ctx, HEADER *hdr)
     return (hdr->virtual);
   }
 
+  /* Root may be the current message */
+  if (find_root)
+    parent = hdr;
+
   for (thread = hdr->thread->parent; thread; thread = thread->parent)
   {
     if ((hdr = thread->message) != NULL)
     {
-      if (VISIBLE (hdr, ctx))
-	return (hdr->virtual);
-      else
-      {
-	mutt_error _("Parent message is not visible in this limited view.");
-	return (-1);
-      }
+      parent = hdr;
+      if (!find_root)
+        break;
     }
   }
-  
-  mutt_error _("Parent message is not available.");
-  return (-1);
+
+  if (!parent)
+  {
+    mutt_error _("Parent message is not available.");
+    return (-1);
+  }
+  if (!VISIBLE (parent, ctx))
+  {
+    if (find_root)
+      mutt_error _("Root message is not visible in this limited view.");
+    else
+      mutt_error _("Parent message is not visible in this limited view.");
+    return (-1);
+  }
+  return (parent->virtual);
 }
 
 void mutt_set_virtual (CONTEXT *ctx)
