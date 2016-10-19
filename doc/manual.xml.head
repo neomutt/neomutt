@@ -10121,7 +10121,8 @@ set pgp_encrypt_self = &quot;no&quot;
       The 'forgotten-attachment' patch provides a new setting for Mutt that
       alerts the user if the message body contains a certain keyword but there are
       no attachments added. This is meant to ensure that the user does not forget
-      to attach a file after promising to do so in the mail.
+      to attach a file after promising to do so in the mail. The attachment keyword
+      will not be scanned in text matched by <link linkend="quote-regexp">$quote_regexp</link>.
     </para>
   </sect2>
 
@@ -10211,6 +10212,7 @@ set attach_keyword = &quot;\\&lt;attach(|ed|ments?)\\&gt;&quot;
     <listitem><para>Darshit Shah <email>darnir@gmail.com</email></para></listitem>
     <listitem><para>Richard Russon <email>rich@flatcap.org</email></para></listitem>
     <listitem><para>Johannes Wei&szlig;l <email>jargon@molb.org</email></para></listitem>
+    <listitem><para>Steven! Ragnar&ouml;k <email>steven@nuclearsandwich.com</email></para></listitem>
     </itemizedlist>
   </sect2>
 </sect1>
