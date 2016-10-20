@@ -429,11 +429,27 @@ mutt_copy_header (FILE *in, HEADER *h, FILE *out, int flags, const char *prefix)
   }
 
 #ifdef USE_NOTMUCH
-  if ((flags & CH_VIRTUAL) && nm_header_get_tags(h))
+  if (flags & CH_VIRTUAL)
   {
-    fputs ("Tags: ", out);
-    fputs (nm_header_get_tags(h), out);
-    fputc ('\n', out);
+    /* Add some fake headers based on notmuch data */
+    char *folder = nm_header_get_folder(h);
+    if (folder)
+    {
+      char buffer[LONG_STRING];
+      strfcpy (buffer, folder, sizeof (buffer));
+      mutt_pretty_mailbox (buffer, sizeof (buffer));
+
+      fputs ("Folder: ", out);
+      fputs (buffer, out);
+      fputc ('\n', out);
+    }
+    char *tags = nm_header_get_tags(h);
+    if (tags)
+    {
+      fputs ("Tags: ", out);
+      fputs (tags, out);
+      fputc ('\n', out);
+    }
   }
 #endif
 
