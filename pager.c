@@ -869,6 +869,13 @@ resolve_types (char *buf, char *raw, struct line_t *lineInfo, int n, int last,
 	  {
 	    if (!found)
 	    {
+              /* Abort if we fill up chunks.
+               * Yes, this really happened. See #3888 */
+              if (lineInfo[n].chunks == SHRT_MAX)
+              {
+                null_rx = 0;
+                break;
+              }
 	      if (++(lineInfo[n].chunks) > 1)
 		safe_realloc (&(lineInfo[n].syntax), 
 			      (lineInfo[n].chunks) * sizeof (struct syntax_t));
