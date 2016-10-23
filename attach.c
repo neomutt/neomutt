@@ -620,6 +620,8 @@ int mutt_pipe_attachment (FILE *fp, BODY *b, const char *path, char *outfile)
     STATE s;
 
     memset (&s, 0, sizeof (STATE));
+    /* perform charset conversion on text attachments when piping */
+    s.flags = MUTT_CHARCONV;
 
     if (outfile && *outfile)
       thepid = mutt_create_filter_fd (path, &s.fpout, NULL, NULL, -1, out, -1);
