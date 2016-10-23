@@ -1888,6 +1888,7 @@ mutt_pager (const char *banner, const char *fname, int flags, pager_t *extra)
 #endif
 
     if ((redraw & REDRAW_BODY) || topline != oldtopline)
+	      dprint (1, (debugfile, "%p %p\n", extra->hdr, Context->hdrs[Context->v2r[index->current]]));
     {
       do {
         mutt_window_move (pager_window, 0, 0);
@@ -2048,15 +2049,29 @@ mutt_pager (const char *banner, const char *fname, int flags, pager_t *extra)
 	    }
 	  }
 
-	  if (index)
+	  if (index && Context)
 	  {
-	    oldcount = Context ? Context->msgcount : 0;
-	    index->max = Context ? Context->vcount : 0;
+	    oldcount = Context->msgcount;
+	    index->max = Context->vcount;
+
+	    /* After the mailbox has been updated,
+	     * index->current might be invalid */
+	    index->current = MIN(index->current, (Context->msgcount - 1));
 	    index_hint = Context->hdrs[Context->v2r[index->current]]->index;
+
 	    int q = Context->quiet;
 	    Context->quiet = 1;
 	    update_index (index, Context, check, oldcount, index_hint);
 	    Context->quiet = q;
+
+	    /* If these header pointers don't match, then our email may have
+	     * been deleted.  Make the pointer safe, then leave the pager */
+	    if (extra->hdr != Context->hdrs[Context->v2r[index->current]])
+	    {
+	      extra->hdr = Context->hdrs[Context->v2r[index->current]];
+	      ch = -1;
+	      break;
+	    }
 	  }
 
 	  redraw = REDRAW_FULL;

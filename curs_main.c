@@ -1938,7 +1938,7 @@ int mutt_index_menu (void)
 
 	menu->menu = MENU_PAGER;
  	menu->oldcurrent = menu->current;
-	update_index (menu, Context, MUTT_NEW_MAIL, menu->max, index_hint);
+	update_index (menu, Context, MUTT_NEW_MAIL, Context->msgcount, index_hint);
 
 	continue;
 
