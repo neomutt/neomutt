@@ -672,6 +672,8 @@ void mutt_pipe_attachment_list (FILE *fp, int tag, BODY *top, int filter)
 
   buf[0] = 0;
   memset (&state, 0, sizeof (STATE));
+  /* perform charset conversion on text attachments when piping */
+  state.flags = MUTT_CHARCONV;
 
   if (mutt_get_field ((filter ? _("Filter through: ") : _("Pipe to: ")),
 				  buf, sizeof (buf), MUTT_CMD) != 0 || !buf[0])
