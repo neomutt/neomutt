@@ -43,6 +43,9 @@
 #ifdef HAVE_LANGINFO_YESEXPR
 #include <langinfo.h>
 #endif
+#ifdef HAVE_ISWBLANK
+#include <wctype.h>
+#endif
 
 #ifdef USE_NOTMUCH
 #include "mutt_notmuch.h"

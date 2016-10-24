@@ -4821,6 +4821,7 @@ re_match_2_internal (bufp, string1, size1, string2, size2, pos, regs, stop)
                actual values.  Otherwise, we will restore only one
                register from the stack, since lowest will == highest in
                `pop_failure_point'.  */
+#ifdef DEBUG
             active_reg_t dummy_low_reg, dummy_high_reg;
             unsigned char *pdummy;
             const char *sdummy;
@@ -4829,6 +4830,7 @@ re_match_2_internal (bufp, string1, size1, string2, size2, pos, regs, stop)
             POP_FAILURE_POINT (sdummy, pdummy,
                                dummy_low_reg, dummy_high_reg,
                                reg_dummy, reg_dummy, reg_info_dummy);
+#endif
           }
 	  /* Note fall through.  */
 
