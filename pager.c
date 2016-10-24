@@ -1888,7 +1888,6 @@ mutt_pager (const char *banner, const char *fname, int flags, pager_t *extra)
 #endif
 
     if ((redraw & REDRAW_BODY) || topline != oldtopline)
-	      dprint (1, (debugfile, "%p %p\n", extra->hdr, Context->hdrs[Context->v2r[index->current]]));
     {
       do {
         mutt_window_move (pager_window, 0, 0);
