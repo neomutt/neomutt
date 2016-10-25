@@ -87,12 +87,12 @@ install-data-local: makedoc-all instdoc
 	for f in $(srcdir_DOCFILES) ; do \
 		$(INSTALL) -m 644 $(srcdir)/$$f $(DESTDIR)$(docdir) ; \
 	done
-	-$(INSTALL) -m 644 manual.txt $(DESTDIR)$(docdir)
+	-$(INSTALL) -m 644 $(srcdir)/manual.txt $(DESTDIR)$(docdir)
 	-for f in $(HTML_DOCFILES) ; do \
-		$(INSTALL) -m 644 $$f $(DESTDIR)$(docdir) ; \
+		$(INSTALL) -m 644 $(srcdir)/$$f $(DESTDIR)$(docdir) ; \
 	done
 	-for f in $(SAMPLE_MUTTRC) ; do \
-		$(INSTALL) -m 644 $$f $(DESTDIR)$(docdir) ; \
+		$(INSTALL) -m 644 $(srcdir)/$$f $(DESTDIR)$(docdir) ; \
 	done
 	$(INSTALL) -m 644 Muttrc $(DESTDIR)$(sysconfdir)/Muttrc.dist
 	-if [ -f $(DESTDIR)$(pkgdatadir)/Muttrc ] ; then \
@@ -102,7 +102,7 @@ install-data-local: makedoc-all instdoc
 	elif [ ! -f $(DESTDIR)$(sysconfdir)/Muttrc ] ; then \
 		$(INSTALL) -m 644 Muttrc $(DESTDIR)$(sysconfdir) ; \
 	fi
-	-$(INSTALL) -m 644 neomutt-syntax.vim $(DESTDIR)$(docdir)
+	-$(INSTALL) -m 644 $(srcdir)/neomutt-syntax.vim $(DESTDIR)$(docdir)
 
 uninstall-local:
 	for f in mutt.1 mutt_dotlock.1 smime_keys.1 pgpewrap.1 pgpring.1; do \
