@@ -25,6 +25,16 @@ addons:
       # - libslang2-dev
       # libcaca includes slang for us
       - libcaca-dev
+      - libgnutls-dev
+      - libssl-dev
+      - libsasl2-dev
+      - libgss-dev
+      - xsltproc
+      - lynx
+      - docbook-simple
+      - docbook-xsl
+      - libxml2-utils
+      - gettext
 
 git:
   depth: 3
