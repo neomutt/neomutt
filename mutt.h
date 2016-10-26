@@ -165,6 +165,9 @@ typedef enum
 #define MUTT_CLOSEHOOK   (1<<14)
 #endif
 #define MUTT_TIMEOUTHOOK (1<<15)
+#define MUTT_STARTUPHOOK (1<<16)
+#define MUTT_SHUTDOWNHOOK (1<<17)
+#define MUTT_GLOBALHOOK   (1<<18)
 
 /* tree characters for linearize_tree and print_enriched_string */
 #define MUTT_TREE_LLCORNER      1

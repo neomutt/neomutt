@@ -1508,6 +1508,8 @@ int mutt_index_menu (void)
 
 	  oldcount = Context ? Context->msgcount : 0;
 
+	  mutt_startup_shutdown_hook (MUTT_SHUTDOWNHOOK);
+
 	  if (!Context || (check = mx_close_mailbox (Context, &index_hint)) == 0)
 	    done = 1;
 	  else

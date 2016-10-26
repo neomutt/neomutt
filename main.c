@@ -870,6 +870,7 @@ int main (int argc, char **argv)
     }
 
     mutt_folder_hook (folder);
+    mutt_startup_shutdown_hook (MUTT_STARTUPHOOK);
 
     if((Context = mx_open_mailbox (folder, ((flags & MUTT_RO) || option (OPTREADONLY)) ? MUTT_READONLY : 0, NULL))
        || !explicit_folder)

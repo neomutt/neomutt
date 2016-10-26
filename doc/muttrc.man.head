@@ -207,6 +207,18 @@ the given \fIcommand\fP is executed.  When multiple
 \fBmessage-hook\fPs match, they are  executed  in  the order in
 which they occur in the configuration file.
 .TP
+\fBtimeout-hook\fP \fIcommand\fP
+Run a command periodically when Mutt checks for new mail.
+This hook is called every $timeout seconds.
+.TP
+\fBstartup-hook\fP \fIcommand\fP
+Before mutt opens the first mailbox when first starting, mutt will run the
+startup hook for the given \fIcommand\fP.
+.TP
+\fBshutdown-hook\fP \fIcommand\fP
+Before mutt is about to exit, and before the mailbox is closed, mutt will run
+the shutdown hook for the given \fIcommand\fP.
+.TP
 \fBfolder-hook\fP [\fB!\fP]\fIregexp\fP \fIcommand\fP
 When mutt enters a folder which matches \fIregexp\fP (or, when
 \fIregexp\fP is preceded by an exclamation mark, does not match

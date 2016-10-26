@@ -10153,6 +10153,125 @@ set attach_keyword = &quot;\\&lt;attach(|ed|ments?)\\&gt;&quot;
   </sect2>
 </sect1>
 
+<sect1 id="global-hooks">
+  <title>Global Hooks</title>
+  <subtitle>Define actions to run globally within Mutt</subtitle>
+
+  <sect2 id="global-hooks-intro">
+    <title>Introduction</title>
+
+    <para>
+      These hooks are called when global events take place in Mutt.
+    </para>
+
+    <itemizedlist>
+      <title>Run a command...</title>
+      <listitem><para><emphasis role="bold">timeout-hook</emphasis> - periodically</para></listitem>
+      <listitem><para><emphasis role="bold">startup-hook</emphasis> - when mutt starts up, before opening the first mailbox</para></listitem>
+      <listitem><para><emphasis role="bold">shutdown-hook</emphasis> - mutt shuts down, before closing the last mailbox</para></listitem>
+    </itemizedlist>
+
+    <sect3 id="timeout-hook-intro">
+      <title>Timeout Hook</title>
+      <subtitle>Run a command periodically</subtitle>
+      <para><emphasis role="bold">Since:</emphasis> NeoMutt 2016-08-08</para>
+      <para>
+        This feature implements a new hook that is called periodically when Mutt
+        checks for new mail. This hook is called every <literal>$timeout</literal> seconds.
+      </para>
+    </sect3>
+
+    <sect3 id="startup-hook-intro">
+      <title>Startup Hook</title>
+      <subtitle>Run a command when mutt starts up, before opening the first mailbox</subtitle>
+      <para><emphasis role="bold">Since:</emphasis> NeoMutt 2016-11-25</para>
+      <para>
+        This feature implements a new hook that is called when Mutt first
+        starts up, but before opening the first mailbox.  This is most likely
+        to be useful to users of <link linkend="notmuch">notmuch</link>.
+      </para>
+    </sect3>
+
+    <sect3 id="shutdown-hook">
+      <title>Shutdown Hook</title>
+      <subtitle>Run a command when mutt shuts down, before closing the last mailbox</subtitle>
+      <para><emphasis role="bold">Since:</emphasis> NeoMutt 2016-11-25</para>
+      <para>
+        This feature implements a hook that is called when Mutt shuts down, but
+        before closing the first mailbox. This is most likely to be useful to
+        users of <link linkend="notmuch">notmuch</link>.
+      </para>
+    </sect3>
+  </sect2>
+
+  <sect2 id="global-hooks-commands">
+    <title>Commands</title>
+
+    <cmdsynopsis>
+      <command>timeout-hook</command>
+      <arg choice="plain">
+        <replaceable class="parameter">MUTT-COMMAND</replaceable>
+      </arg>
+    </cmdsynopsis>
+    <cmdsynopsis>
+      <command>startup-hook</command>
+      <arg choice="plain">
+        <replaceable class="parameter">MUTT-COMMAND</replaceable>
+      </arg>
+    </cmdsynopsis>
+    <cmdsynopsis>
+      <command>shutdown-hook</command>
+      <arg choice="plain">
+        <replaceable class="parameter">MUTT-COMMAND</replaceable>
+      </arg>
+    </cmdsynopsis>
+  </sect2>
+
+  <sect2 id="global-hooks-muttrc">
+    <title>Muttrc</title>
+<screen>
+<emphasis role="comment"># Example NeoMutt config file for the global hooks feature.
+
+# --------------------------------------------------------------------------
+# COMMANDS - shown with an example argument
+# --------------------------------------------------------------------------
+
+# After $timeout seconds of inactivity, run this mutt command</emphasis>
+timeout-hook 'exec sync-mailbox'
+
+<emphasis role="comment"># When mutt first loads, run this mutt command</emphasis>
+startup-hook 'exec sync-mailbox'
+
+<emphasis role="comment"># When mutt quits, run this mutt command</emphasis>
+shutdown-hook 'exec sync-mailbox'
+
+<emphasis role="comment"># vim: syntax=muttrc</emphasis>
+</screen>
+  </sect2>
+
+  <sect2 id="timeout-see-also">
+    <title>See Also</title>
+
+    <itemizedlist>
+      <listitem><para><link linkend="timeout">$timeout</link></para></listitem>
+    </itemizedlist>
+  </sect2>
+
+  <sect2 id="global-hooks-known-bugs">
+    <title>Known Bugs</title>
+    <para>None</para>
+  </sect2>
+
+  <sect2 id="global-hooks-credits">
+    <title>Credits</title>
+    <itemizedlist>
+    <listitem><para>Armin Wolfermann <email>armin@wolfermann.org</email></para></listitem>
+    <listitem><para>Richard Russon <email>rich@flatcap.org</email></para></listitem>
+    <listitem><para>Thomas Adam <email>thomas@xteddy.org</email></para></listitem>
+    </itemizedlist>
+  </sect2>
+</sect1>
+
 <sect1 id="ifdef">
   <title>Ifdef Feature</title>
   <subtitle>Conditional config options</subtitle>
@@ -13382,77 +13501,6 @@ color status brightwhite default 'Mutt: ([^ ]+)' 1
     <listitem><para>David Sterba <email>dsterba@suse.cz</email></para></listitem>
     <listitem><para>Thomas Glanzmann <email>thomas@glanzmann.de</email></para></listitem>
     <listitem><para>Kirill A. Shutemov <email>kirill@shutemov.name</email></para></listitem>
-    <listitem><para>Richard Russon <email>rich@flatcap.org</email></para></listitem>
-    </itemizedlist>
-  </sect2>
-</sect1>
-
-<sect1 id="timeout-hook">
-  <title>Timeout Feature</title>
-  <subtitle>Run a command periodically</subtitle>
-
-  <sect2 id="timeout-support">
-    <title>Support</title>
-
-    <para><emphasis role="bold">Since:</emphasis> NeoMutt 2016-08-08</para>
-    <para><emphasis role="bold">Dependencies:</emphasis> None</para>
-  </sect2>
-
-  <sect2 id="timeout-intro">
-    <title>Introduction</title>
-
-    <para>
-      This feature implements a new hook that is called periodically when Mutt
-      checks for new mail. This hook is called every <literal>$timeout</literal> seconds.
-    </para>
-  </sect2>
-
-  <sect2 id="timeout-commands">
-    <title>Commands</title>
-    <cmdsynopsis>
-      <command>timeout-hook</command>
-      <arg choice="plain">
-        <replaceable class="parameter">.</replaceable>
-      </arg>
-      <arg choice="plain">
-        <replaceable class="parameter">MUTT-COMMAND</replaceable>
-      </arg>
-    </cmdsynopsis>
-  </sect2>
-
-  <sect2 id="timeout-muttrc">
-    <title>Muttrc</title>
-<screen>
-<emphasis role="comment"># Example NeoMutt config file for the timeout feature.
-
-# --------------------------------------------------------------------------
-# COMMANDS - shown with an example arguments
-# --------------------------------------------------------------------------
-
-# After $timeout seconds of inactivity, run this mutt command</emphasis>
-timeout-hook . 'exec sync-mailbox'
-
-<emphasis role="comment"># vim: syntax=muttrc</emphasis>
-</screen>
-  </sect2>
-
-  <sect2 id="timeout-see-also">
-    <title>See Also</title>
-
-    <itemizedlist>
-      <listitem><para><link linkend="timeout">$timeout</link></para></listitem>
-    </itemizedlist>
-  </sect2>
-
-  <sect2 id="timeout-known-bugs">
-    <title>Known Bugs</title>
-    <para>None</para>
-  </sect2>
-
-  <sect2 id="timeout-credits">
-    <title>Credits</title>
-    <itemizedlist>
-    <listitem><para>Armin Wolfermann <email>armin@wolfermann.org</email></para></listitem>
     <listitem><para>Richard Russon <email>rich@flatcap.org</email></para></listitem>
     </itemizedlist>
   </sect2>

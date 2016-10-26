@@ -59,19 +59,26 @@ int mutt_parse_hook (BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err)
   mutt_buffer_init (&pattern);
   mutt_buffer_init (&command);
 
-  if (*s->dptr == '!')
+  if (~data & MUTT_GLOBALHOOK)
   {
-    s->dptr++;
-    SKIPWS (s->dptr);
-    not = 1;
+    if (*s->dptr == '!')
+    {
+      s->dptr++;
+      SKIPWS (s->dptr);
+      not = 1;
+    }
+
+    mutt_extract_token (&pattern, s, 0);
+
+    if (!MoreArgs (s))
+    {
+       strfcpy (err->data, _("too few arguments"), err->dsize);
+       goto error;
+    }
   }
-
-  mutt_extract_token (&pattern, s, 0);
-
-  if (!MoreArgs (s))
+  else
   {
-    strfcpy (err->data, _("too few arguments"), err->dsize);
-    goto error;
+    mutt_extract_token (&pattern, s, 0);
   }
 
   mutt_extract_token (&command, s, (data & (MUTT_FOLDERHOOK | MUTT_SENDHOOK | MUTT_SEND2HOOK | MUTT_ACCOUNTHOOK | MUTT_REPLYHOOK)) ?  MUTT_TOKEN_SPACE : 0);
@@ -154,7 +161,7 @@ int mutt_parse_hook (BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err)
 	ptr->rx.not == not &&
 	!mutt_strcmp (pattern.data, ptr->rx.pattern))
     {
-      if (data & (MUTT_FOLDERHOOK | MUTT_SENDHOOK | MUTT_SEND2HOOK | MUTT_MESSAGEHOOK | MUTT_ACCOUNTHOOK | MUTT_REPLYHOOK | MUTT_CRYPTHOOK | MUTT_TIMEOUTHOOK))
+      if (data & (MUTT_FOLDERHOOK | MUTT_SENDHOOK | MUTT_SEND2HOOK | MUTT_MESSAGEHOOK | MUTT_ACCOUNTHOOK | MUTT_REPLYHOOK | MUTT_CRYPTHOOK | MUTT_TIMEOUTHOOK | MUTT_STARTUPHOOK | MUTT_SHUTDOWNHOOK))
       {
 	/* these hooks allow multiple commands with the same
 	 * pattern, so if we've already seen this pattern/command pair, just
@@ -579,6 +586,39 @@ void mutt_timeout_hook (void)
 
       /* The hooks should be independent of each other, so even though this on
        * failed, we'll carry on with the others. */
+    }
+  }
+}
+
+/**
+ * mutt_startup_shutdown_hook - Execute any startup/shutdown hooks
+ * @type: Hook type: MUTT_STARTUPHOOK or MUTT_SHUTDOWNHOOK
+ *
+ * The user can configure hooks to be run on startup/shutdown.
+ * This function finds all the matching hooks and executes them.
+ */
+void mutt_startup_shutdown_hook (int type)
+{
+  HOOK *hook;
+  BUFFER token;
+  BUFFER err;
+  char buf[STRING];
+
+  err.data = buf;
+  err.dsize = sizeof (buf);
+  memset (&token, 0, sizeof (token));
+
+  for (hook = Hooks; hook; hook = hook->next)
+  {
+    if (!(hook->command && (hook->type & type)))
+      continue;
+
+    if (mutt_parse_rc_line (hook->command, &token, &err) == -1)
+    {
+      FREE (&token.data);
+      mutt_error ("%s", err.data);
+      mutt_sleep (1);
+
     }
   }
 }
