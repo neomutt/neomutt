@@ -1680,8 +1680,8 @@ IMAP_STATUS* imap_mboxcache_get (IMAP_DATA* idata, const char* mbox, int create)
   hc = imap_hcache_open (idata, mbox);
   if (hc)
   {
-    uidvalidity = mutt_hcache_fetch_raw (hc, "/UIDVALIDITY", imap_hcache_keylen);
-    uidnext = mutt_hcache_fetch_raw (hc, "/UIDNEXT", imap_hcache_keylen);
+    uidvalidity = mutt_hcache_fetch_raw (hc, "/UIDVALIDITY", 12);
+    uidnext = mutt_hcache_fetch_raw (hc, "/UIDNEXT", 8);
     mutt_hcache_close (hc);
     if (uidvalidity)
     {

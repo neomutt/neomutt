@@ -124,8 +124,8 @@ int imap_read_headers (IMAP_DATA* idata, int msgbegin, int msgend)
 
   if (idata->hcache && !msgbegin)
   {
-    uid_validity = mutt_hcache_fetch_raw (idata->hcache, "/UIDVALIDITY", imap_hcache_keylen);
-    puidnext = mutt_hcache_fetch_raw (idata->hcache, "/UIDNEXT", imap_hcache_keylen);
+    uid_validity = mutt_hcache_fetch_raw (idata->hcache, "/UIDVALIDITY", 12);
+    puidnext = mutt_hcache_fetch_raw (idata->hcache, "/UIDNEXT", 8);
     if (puidnext)
     {
       uidnext = *puidnext;
@@ -359,16 +359,16 @@ int imap_read_headers (IMAP_DATA* idata, int msgbegin, int msgend)
     status->uidnext = maxuid + 1;
 
 #if USE_HCACHE
-  mutt_hcache_store_raw (idata->hcache, "/UIDVALIDITY", &idata->uid_validity,
-                         sizeof (idata->uid_validity), imap_hcache_keylen);
+  mutt_hcache_store_raw (idata->hcache, "/UIDVALIDITY", 12,
+          &idata->uid_validity, sizeof (idata->uid_validity));
   if (maxuid && idata->uidnext < maxuid + 1)
   {
     dprint (2, (debugfile, "Overriding UIDNEXT: %u -> %u\n", idata->uidnext, maxuid + 1));
     idata->uidnext = maxuid + 1;
   }
   if (idata->uidnext > 1)
-    mutt_hcache_store_raw (idata->hcache, "/UIDNEXT", &idata->uidnext,
-			   sizeof (idata->uidnext), imap_hcache_keylen);
+    mutt_hcache_store_raw (idata->hcache, "/UIDNEXT", 8,
+            &idata->uidnext, sizeof (idata->uidnext));
 
   imap_hcache_close (idata);
 #endif /* USE_HCACHE */

@@ -644,7 +644,7 @@ void nntp_hcache_update (NNTP_DATA *nntp_data, header_cache_t *hc)
     return;
 
   /* fetch previous values of first and last */
-  hdata = mutt_hcache_fetch_raw (hc, "index", strlen);
+  hdata = mutt_hcache_fetch_raw (hc, "index", 5);
   if (hdata)
   {
     dprint (2, (debugfile,
@@ -664,7 +664,7 @@ void nntp_hcache_update (NNTP_DATA *nntp_data, header_cache_t *hc)
 	snprintf (buf, sizeof (buf), "%d", current);
 	dprint (2, (debugfile,
 		    "nntp_hcache_update: mutt_hcache_delete %s\n", buf));
-	mutt_hcache_delete (hc, buf, strlen);
+	mutt_hcache_delete (hc, buf, strlen(buf));
       }
     }
     FREE (&hdata);
@@ -678,7 +678,7 @@ void nntp_hcache_update (NNTP_DATA *nntp_data, header_cache_t *hc)
 					  nntp_data->lastMessage);
     dprint (2, (debugfile,
 		"nntp_hcache_update: mutt_hcache_store index: %s\n", buf));
-    mutt_hcache_store_raw (hc, "index", buf, strlen (buf) + 1, strlen);
+    mutt_hcache_store_raw (hc, "index", 5, buf, strlen (buf));
   }
 }
 #endif
@@ -709,12 +709,11 @@ void nntp_bcache_update (NNTP_DATA *nntp_data)
 /* Remove hcache and bcache of newsgroup */
 void nntp_delete_group_cache (NNTP_DATA *nntp_data)
 {
-  char file[_POSIX_PATH_MAX];
-
   if (!nntp_data || !nntp_data->nserv || !nntp_data->nserv->cacheable)
     return;
 
 #ifdef USE_HCACHE
+  char file[_POSIX_PATH_MAX];
   nntp_hcache_namer (nntp_data->group, file, sizeof (file));
   cache_expand (file, sizeof (file), &nntp_data->nserv->conn->account, file);
   unlink (file);
@@ -1030,7 +1029,7 @@ NNTP_SERVER *nntp_select_server (char *server, int leave_lock)
 	  continue;
 
 	/* fetch previous values of first and last */
-	hdata = mutt_hcache_fetch_raw (hc, "index", strlen);
+	hdata = mutt_hcache_fetch_raw (hc, "index", 5);
 	if (hdata)
 	{
 	  anum_t first, last;

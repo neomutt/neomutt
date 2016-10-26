@@ -37,8 +37,8 @@
 # ifndef USE_HCACHE
 #  define USE_HCACHE
 # endif
-# ifndef HAVE_DB4
-#  define HAVE_DB4
+# ifndef HAVE_BDB
+#  define HAVE_BDB
 # endif
 # ifndef HAVE_GDBM
 #  define HAVE_GDBM

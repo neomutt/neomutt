@@ -223,12 +223,12 @@ HEADER* imap_hcache_get (IMAP_DATA* idata, unsigned int uid)
     return NULL;
 
   sprintf (key, "/%u", uid);
-  uv = (unsigned int*)mutt_hcache_fetch (idata->hcache, key,
-                                         imap_hcache_keylen);
+  uv = mutt_hcache_fetch (idata->hcache, key,
+                                         imap_hcache_keylen(key));
   if (uv)
   {
     if (*uv == idata->uid_validity)
-      h = mutt_hcache_restore ((unsigned char*)uv, NULL);
+      h = mutt_hcache_restore ((const unsigned char*)uv);
     else
       dprint (3, (debugfile, "hcache uidvalidity mismatch: %u", *uv));
     FREE (&uv);
@@ -245,8 +245,8 @@ int imap_hcache_put (IMAP_DATA* idata, HEADER* h)
     return -1;
 
   sprintf (key, "/%u", HEADER_DATA (h)->uid);
-  return mutt_hcache_store (idata->hcache, key, h, idata->uid_validity,
-                            imap_hcache_keylen, 0);
+  return mutt_hcache_store (idata->hcache, key, imap_hcache_keylen(key), h,
+                            idata->uid_validity);
 }
 
 int imap_hcache_del (IMAP_DATA* idata, unsigned int uid)
@@ -257,7 +257,7 @@ int imap_hcache_del (IMAP_DATA* idata, unsigned int uid)
     return -1;
 
   sprintf (key, "/%u", uid);
-  return mutt_hcache_delete (idata->hcache, key, imap_hcache_keylen);
+  return mutt_hcache_delete (idata->hcache, key, imap_hcache_keylen(key));
 }
 #endif
 

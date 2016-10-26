@@ -1064,7 +1064,7 @@ struct option_t MuttVars[] = {
   ** cached folders.
   */
 #endif /* HAVE_QDBM */
-#if defined(HAVE_GDBM) || defined(HAVE_DB4)
+#if defined(HAVE_GDBM) || defined(HAVE_BDB)
   { "header_cache_pagesize", DT_STR, R_NONE, UL &HeaderCachePageSize, UL "16384" },
   /*
   ** .pp
@@ -1073,7 +1073,7 @@ struct option_t MuttVars[] = {
   ** values can waste space, memory, or CPU time. The default should be more
   ** or less optimal for most use cases.
   */
-#endif /* HAVE_GDBM || HAVE_DB4 */
+#endif /* HAVE_GDBM || HAVE_BDB */
 #endif /* USE_HCACHE */
   { "help",		DT_BOOL, R_BOTH|R_REFLOW, OPTHELP, 1 },
   /*
