@@ -2199,6 +2199,11 @@ void mutt_get_parent_path (char *output, char *path, size_t olen)
     imap_get_parent_path (output, path, olen);
   else
 #endif
+#ifdef USE_NOTMUCH
+  if (mx_is_notmuch (path))
+    strfcpy (output, NONULL (Maildir), olen);
+  else
+#endif
   {
     strfcpy (output, path, olen);
     int n = mutt_strlen (output);
