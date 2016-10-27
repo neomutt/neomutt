@@ -8947,7 +8947,7 @@ please have a look at the mixmaster documentation.
 </sect1>
 
 <sect1 id="attach-headers-color">
-  <title>attach-headers-color Feature</title>
+  <title>Attach Headers Color Feature</title>
   <subtitle>Color attachment headers using regexp, just like mail bodies</subtitle>
 
   <sect2 id="attach-headers-color-support">
@@ -8964,7 +8964,7 @@ please have a look at the mixmaster documentation.
       <listitem><para>mutt-1.7.1</para></listitem>
     </itemizedlist>
 
-    <para>This feature is part of the <ulink url="http://www.neomutt.org/">NeoMutt Project</ulink>.</para>
+    <para>This feature is part of the <ulink url="https://www.neomutt.org/">NeoMutt Project</ulink>.</para>
   </sect2>
 
   <sect2 id="attach-headers-color-intro">
@@ -9028,7 +9028,7 @@ color   attach_headers     brightmagenta   default        &quot;invalid node wit
     <title>See Also</title>
 
     <itemizedlist>
-      <listitem><para><ulink url="http://www.neomutt.org/">NeoMutt Project</ulink></para></listitem>
+      <listitem><para><ulink url="https://www.neomutt.org/">NeoMutt Project</ulink></para></listitem>
       <listitem><para><link linkend="color">Color command</link></para></listitem>
       <listitem><para><link linkend="regexp">Regular Expressions</link></para></listitem>
     </itemizedlist>
@@ -9048,7 +9048,7 @@ color   attach_headers     brightmagenta   default        &quot;invalid node wit
 </sect1>
 
 <sect1 id="compose-to-sender">
-  <title>compose-to-sender Feature</title>
+  <title>Compose to Sender Feature</title>
   <subtitle>Send new mail to the sender of the current mail</subtitle>
 
   <sect2 id="compose-to-sender-support">
@@ -9065,7 +9065,7 @@ color   attach_headers     brightmagenta   default        &quot;invalid node wit
       <listitem><para>mutt-1.7.1</para></listitem>
     </itemizedlist>
 
-    <para>This feature is part of the <ulink url="http://www.neomutt.org/">NeoMutt Project</ulink>.</para>
+    <para>This feature is part of the <ulink url="https://www.neomutt.org/">NeoMutt Project</ulink>.</para>
   </sect2>
 
   <sect2 id="compose-to-sender-intro">
@@ -9160,7 +9160,7 @@ bind index,pager @ compose-to-sender
       <listitem><para>mutt-1.7.1</para></listitem>
     </itemizedlist>
 
-    <para>This feature is part of the <ulink url="http://www.neomutt.org/">NeoMutt Project</ulink>.</para>
+    <para>This feature is part of the <ulink url="https://www.neomutt.org/">NeoMutt Project</ulink>.</para>
   </sect2>
 
   <sect2 id="compress-intro">
@@ -9475,7 +9475,7 @@ close-hook  '\.gpg$' &quot;gpg --encrypt --recipient YourGpgUserIdOrKeyId &lt; '
     <title>See Also</title>
 
     <itemizedlist>
-      <listitem><para><ulink url="http://www.neomutt.org/">NeoMutt Project</ulink></para></listitem>
+      <listitem><para><ulink url="https://www.neomutt.org/">NeoMutt Project</ulink></para></listitem>
       <listitem><para><link linkend="compile-time-features">Compile-Time Features</link></para></listitem>
       <listitem><para><link linkend="regexp">Regular Expressions</link></para></listitem>
       <listitem><para><link linkend="tmpdir">$tmpdir</link></para></listitem>
@@ -9525,7 +9525,7 @@ close-hook  '\.gpg$' &quot;gpg --encrypt --recipient YourGpgUserIdOrKeyId &lt; '
     </itemizedlist>
 
     <para>
-      This feature is part of the <ulink url="http://www.neomutt.org/">NeoMutt Project</ulink>.
+      This feature is part of the <ulink url="https://www.neomutt.org/">NeoMutt Project</ulink>.
     </para>
   </sect2>
 
@@ -9860,7 +9860,7 @@ set index_format='%4C %Z %&lt;[y?%&lt;[m?%&lt;[d?%[%H:%M ]&amp;%[%a %d]&gt;&amp;
     <title>See Also</title>
 
     <itemizedlist>
-      <listitem><para><ulink url="http://www.neomutt.org/">NeoMutt Project</ulink></para></listitem>
+      <listitem><para><ulink url="https://www.neomutt.org/">NeoMutt Project</ulink></para></listitem>
       <listitem><para><link linkend="index-format">$index_format</link></para></listitem>
       <listitem><para><link linkend="nested-if">nested-if patch</link></para></listitem>
       <listitem><para><literal>strftime(3)</literal></para></listitem>
@@ -9908,7 +9908,7 @@ set index_format='%4C %Z %&lt;[y?%&lt;[m?%&lt;[d?%[%H:%M ]&amp;%[%a %d]&gt;&amp;
       <listitem><para>mutt-1.7.1</para></listitem>
     </itemizedlist>
 
-    <para>This feature is part of the <ulink url="http://www.neomutt.org/">NeoMutt Project</ulink>.</para>
+    <para>This feature is part of the <ulink url="https://www.neomutt.org/">NeoMutt Project</ulink>.</para>
   </sect2>
 
   <sect2 id="encrypt-to-self-intro">
@@ -9998,7 +9998,7 @@ set pgp_encrypt_self = &quot;no&quot;
     <title>See Also</title>
 
     <itemizedlist>
-      <listitem><para><ulink url="http://www.neomutt.org/">NeoMutt Project</ulink></para></listitem>
+      <listitem><para><ulink url="https://www.neomutt.org/">NeoMutt Project</ulink></para></listitem>
     </itemizedlist>
   </sect2>
 
@@ -10041,7 +10041,7 @@ set pgp_encrypt_self = &quot;no&quot;
       the option <literal>--disable-fmemopen</literal>
     </para>
 
-    <para>This feature is part of the <ulink url="http://www.neomutt.org/">NeoMutt Project</ulink>.</para>
+    <para>This feature is part of the <ulink url="https://www.neomutt.org/">NeoMutt Project</ulink>.</para>
   </sect2>
 
   <sect2 id="fmemopen-intro">
@@ -10073,7 +10073,7 @@ set pgp_encrypt_self = &quot;no&quot;
     <title>See Also</title>
 
     <itemizedlist>
-      <listitem><para><ulink url="http://www.neomutt.org/">NeoMutt Project</ulink></para></listitem>
+      <listitem><para><ulink url="https://www.neomutt.org/">NeoMutt Project</ulink></para></listitem>
       <listitem><para><link linkend="compile-time-features">Compile-Time Features</link></para></listitem>
       <listitem><para><literal>fmemopen(3)</literal></para></listitem>
     </itemizedlist>
@@ -10094,7 +10094,7 @@ set pgp_encrypt_self = &quot;no&quot;
 </sect1>
 
 <sect1 id="forgotten-attachment">
-  <title>forgotten-attachment Feature</title>
+  <title>Forgotten Attachment Feature</title>
   <subtitle>Alert user when (s)he forgets to attach a file to an outgoing email.</subtitle>
 
   <sect2 id="forgotten-attachment-support">
@@ -10111,7 +10111,7 @@ set pgp_encrypt_self = &quot;no&quot;
       <listitem><para>mutt-1.7.1</para></listitem>
     </itemizedlist>
 
-    <para>This feature is part of the <ulink url="http://www.neomutt.org/">NeoMutt Project</ulink>.</para>
+    <para>This feature is part of the <ulink url="https://www.neomutt.org/">NeoMutt Project</ulink>.</para>
   </sect2>
 
   <sect2 id="forgotten-attachment-intro">
@@ -10195,7 +10195,7 @@ set attach_keyword = &quot;\\&lt;attach(|ed|ments?)\\&gt;&quot;
     <title>See Also</title>
 
     <itemizedlist>
-      <listitem><para><ulink url="http://www.neomutt.org/">NeoMutt Project</ulink></para></listitem>
+      <listitem><para><ulink url="https://www.neomutt.org/">NeoMutt Project</ulink></para></listitem>
       <listitem><para><link linkend="attach-menu">The Attachment Menu</link></para></listitem>
       <listitem><para><link linkend="attachment-map">The Attachment Menu key mappings</link></para></listitem>
     </itemizedlist>
@@ -10235,7 +10235,7 @@ set attach_keyword = &quot;\\&lt;attach(|ed|ments?)\\&gt;&quot;
       <listitem><para>mutt-1.7.1</para></listitem>
     </itemizedlist>
 
-    <para>This feature is part of the <ulink url="http://www.neomutt.org/">NeoMutt Project</ulink>.</para>
+    <para>This feature is part of the <ulink url="https://www.neomutt.org/">NeoMutt Project</ulink>.</para>
   </sect2>
 
   <sect2 id="ifdef-intro">
@@ -10335,7 +10335,7 @@ ifndef USE_SIDEBAR finish
     <title>See Also</title>
 
     <itemizedlist>
-      <listitem><para><ulink url="http://www.neomutt.org/">NeoMutt Project</ulink></para></listitem>
+      <listitem><para><ulink url="https://www.neomutt.org/">NeoMutt Project</ulink></para></listitem>
     </itemizedlist>
   </sect2>
 
@@ -10373,7 +10373,7 @@ ifndef USE_SIDEBAR finish
       <listitem><para><link linkend="status-color">status-color patch</link></para></listitem>
     </itemizedlist>
 
-    <para>This feature is part of the <ulink url="http://www.neomutt.org/">NeoMutt Project</ulink>.</para>
+    <para>This feature is part of the <ulink url="https://www.neomutt.org/">NeoMutt Project</ulink>.</para>
   </sect2>
 
   <sect2 id="index-color-intro">
@@ -10528,7 +10528,7 @@ color index_size cyan default
     <title>See Also</title>
 
     <itemizedlist>
-      <listitem><para><ulink url="http://www.neomutt.org/">NeoMutt Project</ulink></para></listitem>
+      <listitem><para><ulink url="https://www.neomutt.org/">NeoMutt Project</ulink></para></listitem>
       <listitem><para><link linkend="regexp">Regular Expressions</link></para></listitem>
       <listitem><para><link linkend="patterns">Patterns</link></para></listitem>
       <listitem><para><link linkend="index-format">$index_format</link></para></listitem>
@@ -10574,7 +10574,7 @@ color index_size cyan default
       <listitem><para>mutt-1.7.1</para></listitem>
     </itemizedlist>
 
-    <para>This feature is part of the <ulink url="http://www.neomutt.org/">NeoMutt Project</ulink>.</para>
+    <para>This feature is part of the <ulink url="https://www.neomutt.org/">NeoMutt Project</ulink>.</para>
   </sect2>
 
   <sect2 id="initials-intro">
@@ -10639,7 +10639,7 @@ set index_format='%4C %Z %{%b %d} %I (%?l?%4l&amp;%4c?) %s'
     <title>See Also</title>
 
     <itemizedlist>
-      <listitem><para><ulink url="http://www.neomutt.org/">NeoMutt Project</ulink></para></listitem>
+      <listitem><para><ulink url="https://www.neomutt.org/">NeoMutt Project</ulink></para></listitem>
       <listitem><para><link linkend="index-format">$index_format</link></para></listitem>
       <listitem><para><link linkend="index-color">index-color patch</link></para></listitem>
       <listitem><para><link linkend="folder-hook">folder-hook</link></para></listitem>
@@ -10678,7 +10678,7 @@ set index_format='%4C %Z %{%b %d} %I (%?l?%4l&amp;%4c?) %s'
       <listitem><para>mutt-1.7.1</para></listitem>
     </itemizedlist>
 
-    <para>This feature is part of the <ulink url="http://www.neomutt.org/">NeoMutt Project</ulink>.</para>
+    <para>This feature is part of the <ulink url="https://www.neomutt.org/">NeoMutt Project</ulink>.</para>
   </sect2>
 
   <sect2 id="keywords-intro">
@@ -10863,7 +10863,7 @@ bind index,pager y edit-label
     <title>See Also</title>
 
     <itemizedlist>
-      <listitem><para><ulink url="http://www.neomutt.org/">NeoMutt Project</ulink></para></listitem>
+      <listitem><para><ulink url="https://www.neomutt.org/">NeoMutt Project</ulink></para></listitem>
       <listitem><para><link linkend="index-format">$index_format</link></para></listitem>
       <listitem><para><link linkend="index-color">index-color patch</link></para></listitem>
       <listitem><para><link linkend="folder-hook">folder-hook</link></para></listitem>
@@ -10909,7 +10909,7 @@ bind index,pager y edit-label
       <listitem><para><ulink url="http://fallabs.com/kyotocabinet/">Kyoto Cabinet libraries</ulink></para></listitem>
     </itemizedlist>
 
-    <para>This feature is part of the <ulink url="http://www.neomutt.org/">NeoMutt Project</ulink>.</para>
+    <para>This feature is part of the <ulink url="https://www.neomutt.org/">NeoMutt Project</ulink>.</para>
   </sect2>
 
   <sect2 id="kyoto-cabinet-intro">
@@ -10927,7 +10927,7 @@ bind index,pager y edit-label
     <title>See Also</title>
 
     <itemizedlist>
-      <listitem><para><ulink url="http://www.neomutt.org/">NeoMutt Project</ulink></para></listitem>
+      <listitem><para><ulink url="https://www.neomutt.org/">NeoMutt Project</ulink></para></listitem>
       <listitem><para><link linkend="caching">Local Caching</link></para></listitem>
       <listitem><para><ulink url="http://fallabs.com/kyotocabinet/">Kyoto Cabinet</ulink></para></listitem>
     </itemizedlist>
@@ -10947,7 +10947,7 @@ bind index,pager y edit-label
 </sect1>
 
 <sect1 id="limit-current-thread">
-  <title>Limit-Current-Thread Feature</title>
+  <title>Limit Current Thread Feature</title>
   <subtitle>Focus on one Email Thread</subtitle>
 
   <sect2 id="limit-current-thread-support">
@@ -10964,7 +10964,7 @@ bind index,pager y edit-label
       <listitem><para>mutt-1.7.1</para></listitem>
     </itemizedlist>
 
-    <para>This feature is part of the <ulink url="http://www.neomutt.org/">NeoMutt Project</ulink>.</para>
+    <para>This feature is part of the <ulink url="https://www.neomutt.org/">NeoMutt Project</ulink>.</para>
   </sect2>
 
   <sect2 id="limit-current-thread-intro">
@@ -11028,7 +11028,7 @@ bind index &lt;esc&gt;L limit-current-thread
     <title>See Also</title>
 
     <itemizedlist>
-      <listitem><para><ulink url="http://www.neomutt.org/">NeoMutt Project</ulink></para></listitem>
+      <listitem><para><ulink url="https://www.neomutt.org/">NeoMutt Project</ulink></para></listitem>
     </itemizedlist>
   </sect2>
 
@@ -11064,7 +11064,7 @@ bind index &lt;esc&gt;L limit-current-thread
       <listitem><para>mutt-1.7.1</para></listitem>
     </itemizedlist>
 
-    <para>This feature is part of the <ulink url="http://www.neomutt.org/">NeoMutt Project</ulink>.</para>
+    <para>This feature is part of the <ulink url="https://www.neomutt.org/">NeoMutt Project</ulink>.</para>
   </sect2>
 
   <sect2 id="lmdb-intro">
@@ -11087,7 +11087,7 @@ bind index &lt;esc&gt;L limit-current-thread
     <title>See Also</title>
 
     <itemizedlist>
-      <listitem><para><ulink url="http://www.neomutt.org/">NeoMutt Project</ulink></para></listitem>
+      <listitem><para><ulink url="https://www.neomutt.org/">NeoMutt Project</ulink></para></listitem>
       <listitem><para><link linkend="caching">Local Caching</link></para></listitem>
     </itemizedlist>
   </sect2>
@@ -11108,7 +11108,7 @@ bind index &lt;esc&gt;L limit-current-thread
 </sect1>
 
 <sect1 id="multiple-fcc">
-  <title>multiple-fcc Feature</title>
+  <title>Multiple FCC Feature</title>
   <subtitle>Save multiple copies of outgoing mail</subtitle>
 
   <sect2 id="multiple-fcc-support">
@@ -11125,7 +11125,7 @@ bind index &lt;esc&gt;L limit-current-thread
       <listitem><para>mutt-1.7.1</para></listitem>
     </itemizedlist>
 
-    <para>This feature is part of the <ulink url="http://www.neomutt.org/">NeoMutt Project</ulink>.</para>
+    <para>This feature is part of the <ulink url="https://www.neomutt.org/">NeoMutt Project</ulink>.</para>
   </sect2>
 
   <sect2 id="multiple-fcc-intro">
@@ -11153,7 +11153,7 @@ bind index &lt;esc&gt;L limit-current-thread
     <title>See Also</title>
 
     <itemizedlist>
-      <listitem><para><ulink url="http://www.neomutt.org/">NeoMutt Project</ulink></para></listitem>
+      <listitem><para><ulink url="https://www.neomutt.org/">NeoMutt Project</ulink></para></listitem>
       <listitem><para><link linkend="record">$record</link></para></listitem>
       <listitem><para><link linkend="fcc-hook">fcc-hook</link></para></listitem>
     </itemizedlist>
@@ -11191,7 +11191,7 @@ bind index &lt;esc&gt;L limit-current-thread
       <listitem><para>mutt-1.7.1</para></listitem>
     </itemizedlist>
 
-    <para>This feature is part of the <ulink url="http://www.neomutt.org/">NeoMutt Project</ulink>.</para>
+    <para>This feature is part of the <ulink url="https://www.neomutt.org/">NeoMutt Project</ulink>.</para>
   </sect2>
 
   <sect2 id="nested-if-intro">
@@ -11348,7 +11348,7 @@ set index_format='%4C %Z %{%b %d} %-25.25n %&lt;M?[%M] %s&amp;%s%* %&lt;l?%l&amp
     <title>See Also</title>
 
     <itemizedlist>
-      <listitem><para><ulink url="http://www.neomutt.org/">NeoMutt Project</ulink></para></listitem>
+      <listitem><para><ulink url="https://www.neomutt.org/">NeoMutt Project</ulink></para></listitem>
       <listitem><para><link linkend="cond-date">cond-date patch</link></para></listitem>
       <listitem><para><link linkend="index-format">$index_format</link></para></listitem>
       <listitem><para><link linkend="status-format">$status_format</link></para></listitem>
@@ -11372,7 +11372,7 @@ set index_format='%4C %Z %{%b %d} %-25.25n %&lt;M?[%M] %s&amp;%s%* %&lt;l?%l&amp
 </sect1>
 
 <sect1 id="new-mail-hook">
-  <title>new-mail Feature</title>
+  <title>New Mail Feature</title>
   <subtitle>Execute a command upon the receipt of new mail.</subtitle>
 
   <sect2 id="new-mail-support">
@@ -11389,7 +11389,7 @@ set index_format='%4C %Z %{%b %d} %-25.25n %&lt;M?[%M] %s&amp;%s%* %&lt;l?%l&amp
       <listitem><para>mutt-1.7.1</para></listitem>
     </itemizedlist>
 
-    <para>This feature is part of the <ulink url="http://www.neomutt.org/">NeoMutt Project</ulink>.</para>
+    <para>This feature is part of the <ulink url="https://www.neomutt.org/">NeoMutt Project</ulink>.</para>
   </sect2>
 
   <sect2 id="new-mail-intro">
@@ -11479,7 +11479,7 @@ set new_mail_command = &quot;&quot;
     <title>See Also</title>
 
     <itemizedlist>
-      <listitem><para><ulink url="http://www.neomutt.org/">NeoMutt Project</ulink></para></listitem>
+      <listitem><para><ulink url="https://www.neomutt.org/">NeoMutt Project</ulink></para></listitem>
       <listitem><para><link linkend="folder-hook">folder-hook</link></para></listitem>
     </itemizedlist>
   </sect2>
@@ -11525,7 +11525,7 @@ set new_mail_command = &quot;&quot;
       <listitem><para>mutt-1.7.1</para></listitem>
     </itemizedlist>
 
-    <para>This feature is part of the <ulink url="http://www.neomutt.org/">NeoMutt Project</ulink>.</para>
+    <para>This feature is part of the <ulink url="https://www.neomutt.org/">NeoMutt Project</ulink>.</para>
   </sect2>
 
   <sect2 id="nntp-intro">
@@ -11906,7 +11906,7 @@ bind index \CG get-message
     <title>See Also</title>
 
     <itemizedlist>
-      <listitem><para><ulink url="http://www.neomutt.org/">NeoMutt Project</ulink></para></listitem>
+      <listitem><para><ulink url="https://www.neomutt.org/">NeoMutt Project</ulink></para></listitem>
       <listitem><para><link linkend="compile-time-features">Compile-Time Features</link></para></listitem>
     </itemizedlist>
   </sect2>
@@ -11949,7 +11949,7 @@ bind index \CG get-message
       <listitem><para>Notmuch libraries</para></listitem>
     </itemizedlist>
 
-    <para>This feature is part of the <ulink url="http://www.neomutt.org/">NeoMutt Project</ulink>.</para>
+    <para>This feature is part of the <ulink url="https://www.neomutt.org/">NeoMutt Project</ulink>.</para>
   </sect2>
 
   <sect2 id="notmuch-intro">
@@ -12460,7 +12460,7 @@ color index_tags green default
     <title>See Also</title>
 
     <itemizedlist>
-      <listitem><para><ulink url="http://www.neomutt.org/">NeoMutt Project</ulink></para></listitem>
+      <listitem><para><ulink url="https://www.neomutt.org/">NeoMutt Project</ulink></para></listitem>
       <listitem><para><link linkend="compile-time-features">Compile-Time Features</link></para></listitem>
     </itemizedlist>
   </sect2>
@@ -12519,7 +12519,7 @@ color index_tags green default
       <listitem><para>mutt-1.7.1</para></listitem>
     </itemizedlist>
 
-    <para>This feature is part of the <ulink url="http://www.neomutt.org/">NeoMutt Project</ulink>.</para>
+    <para>This feature is part of the <ulink url="https://www.neomutt.org/">NeoMutt Project</ulink>.</para>
   </sect2>
 
   <sect2 id="progress-intro">
@@ -12574,7 +12574,7 @@ color progress white red
     <title>See Also</title>
 
     <itemizedlist>
-      <listitem><para><ulink url="http://www.neomutt.org/">NeoMutt Project</ulink></para></listitem>
+      <listitem><para><ulink url="https://www.neomutt.org/">NeoMutt Project</ulink></para></listitem>
       <listitem><para><link linkend="color">Color command</link></para></listitem>
     </itemizedlist>
   </sect2>
@@ -12614,7 +12614,7 @@ color progress white red
       <listitem><para>mutt-1.7.1</para></listitem>
     </itemizedlist>
 
-    <para>This feature is part of the <ulink url="http://www.neomutt.org/">NeoMutt Project</ulink>.</para>
+    <para>This feature is part of the <ulink url="https://www.neomutt.org/">NeoMutt Project</ulink>.</para>
   </sect2>
 
   <sect2 id="quasi-delete-intro">
@@ -12673,7 +12673,7 @@ bind index,pager Q quasi-delete
     <title>See Also</title>
 
     <itemizedlist>
-      <listitem><para><ulink url="http://www.neomutt.org/">NeoMutt Project</ulink></para></listitem>
+      <listitem><para><ulink url="https://www.neomutt.org/">NeoMutt Project</ulink></para></listitem>
       <listitem><para><link linkend="notmuch">notmuch patch</link></para></listitem>
     </itemizedlist>
   </sect2>
@@ -12694,8 +12694,7 @@ bind index,pager Q quasi-delete
 
 <sect1 id="reply-with-xorig-patch">
   <title>Reply With X-Original-To Feature</title>
-  <subtitle>Adds a configuration variable to allow direct reply to a mail using X-Original-To header
-      as a From: in the answer.
+  <subtitle>Direct reply to email using X-Original-To header
   </subtitle>
 
   <sect2 id="reply-with-xorig-support">
@@ -12712,7 +12711,7 @@ bind index,pager Q quasi-delete
       <listitem><para>mutt-1.7.1</para></listitem>
     </itemizedlist>
 
-    <para>This feature is part of the <ulink url="http://www.neomutt.org/">NeoMutt Project</ulink>.</para>
+    <para>This feature is part of the <ulink url="https://www.neomutt.org/">NeoMutt Project</ulink>.</para>
   </sect2>
 
   <sect2 id="reply-with-xorig-intro">
@@ -12775,7 +12774,7 @@ set reply_with_xorig = &quot;yes&quot;
 </sect1>
 
 <sect1 id="sensible-browser">
-  <title>Sensible-Browser Feature</title>
+  <title>Sensible Browser Feature</title>
   <subtitle>Make the file browser behave</subtitle>
 
   <sect2 id="sensible-browser-support">
@@ -12792,7 +12791,7 @@ set reply_with_xorig = &quot;yes&quot;
       <listitem><para>mutt-1.7.1</para></listitem>
     </itemizedlist>
 
-    <para>This feature is part of the <ulink url="http://www.neomutt.org/">NeoMutt Project</ulink>.</para>
+    <para>This feature is part of the <ulink url="https://www.neomutt.org/">NeoMutt Project</ulink>.</para>
   </sect2>
 
   <sect2 id="sensible-browser-intro">
@@ -12876,7 +12875,7 @@ set sort_browser="reverse-size"
     <title>See Also</title>
 
     <itemizedlist>
-      <listitem><para><ulink url="http://www.neomutt.org/">NeoMutt Project</ulink></para></listitem>
+      <listitem><para><ulink url="https://www.neomutt.org/">NeoMutt Project</ulink></para></listitem>
       <listitem><para><link linkend="folder-format">$folder_format</link></para></listitem>
     </itemizedlist>
   </sect2>
@@ -12914,7 +12913,7 @@ set sort_browser="reverse-size"
       <listitem><para>mutt-1.7.1</para></listitem>
     </itemizedlist>
 
-    <para>This feature is part of the <ulink url="http://www.neomutt.org/">NeoMutt Project</ulink>.</para>
+    <para>This feature is part of the <ulink url="https://www.neomutt.org/">NeoMutt Project</ulink>.</para>
   </sect2>
 
   <sect2 id="sidebar-intro">
@@ -13387,7 +13386,7 @@ color sidebar_ordinary color245 default
 </sect1>
 
 <sect1 id="skip-quoted-patch">
-  <title>Skip-Quoted Feature</title>
+  <title>Skip Quoted Feature</title>
   <subtitle>Leave some context visible</subtitle>
 
   <sect2 id="skip-quoted-support">
@@ -13404,7 +13403,7 @@ color sidebar_ordinary color245 default
       <listitem><para>mutt-1.7.1</para></listitem>
     </itemizedlist>
 
-    <para>This feature is part of the <ulink url="http://www.neomutt.org/">NeoMutt Project</ulink>.</para>
+    <para>This feature is part of the <ulink url="https://www.neomutt.org/">NeoMutt Project</ulink>.</para>
   </sect2>
 
   <sect2 id="skip-quoted-intro">
@@ -13467,7 +13466,7 @@ set skip_quoted_offset = 3
     <title>See Also</title>
 
     <itemizedlist>
-      <listitem><para><ulink url="http://www.neomutt.org/">NeoMutt Project</ulink></para></listitem>
+      <listitem><para><ulink url="https://www.neomutt.org/">NeoMutt Project</ulink></para></listitem>
     </itemizedlist>
   </sect2>
 
@@ -13503,7 +13502,7 @@ set skip_quoted_offset = 3
       <listitem><para>mutt-1.7.1</para></listitem>
     </itemizedlist>
 
-    <para>This feature is part of the <ulink url="http://www.neomutt.org/">NeoMutt Project</ulink>.</para>
+    <para>This feature is part of the <ulink url="https://www.neomutt.org/">NeoMutt Project</ulink>.</para>
   </sect2>
 
   <sect2 id="status-color-intro">
@@ -13644,7 +13643,7 @@ color status brightwhite default 'Mutt: ([^ ]+)' 1
     <title>See Also</title>
 
     <itemizedlist>
-      <listitem><para><ulink url="http://www.neomutt.org/">NeoMutt Project</ulink></para></listitem>
+      <listitem><para><ulink url="https://www.neomutt.org/">NeoMutt Project</ulink></para></listitem>
       <listitem><para><link linkend="compile-time-features">Compile-Time Features</link></para></listitem>
       <listitem><para><link linkend="regexp">Regular Expressions</link></para></listitem>
       <listitem><para><link linkend="patterns">Patterns</link></para></listitem>
@@ -13687,7 +13686,7 @@ color status brightwhite default 'Mutt: ([^ ]+)' 1
       <listitem><para>mutt-1.7.1</para></listitem>
     </itemizedlist>
 
-    <para>This feature is part of the <ulink url="http://www.neomutt.org/">NeoMutt Project</ulink>.</para>
+    <para>This feature is part of the <ulink url="https://www.neomutt.org/">NeoMutt Project</ulink>.</para>
   </sect2>
 
   <sect2 id="timeout-intro">
@@ -13732,7 +13731,7 @@ timeout-hook . 'exec sync-mailbox'
     <title>See Also</title>
 
     <itemizedlist>
-      <listitem><para><ulink url="http://www.neomutt.org/">NeoMutt Project</ulink></para></listitem>
+      <listitem><para><ulink url="https://www.neomutt.org/">NeoMutt Project</ulink></para></listitem>
       <listitem><para><link linkend="timeout">$timeout</link></para></listitem>
     </itemizedlist>
   </sect2>
@@ -13770,7 +13769,7 @@ timeout-hook . 'exec sync-mailbox'
       <listitem><para>OpenSSL</para></listitem>
     </itemizedlist>
 
-    <para>This feature is part of the <ulink url="http://www.neomutt.org/">NeoMutt Project</ulink>.</para>
+    <para>This feature is part of the <ulink url="https://www.neomutt.org/">NeoMutt Project</ulink>.</para>
   </sect2>
 
   <sect2 id="tls-sni-intro">
@@ -13807,7 +13806,7 @@ openssl s_client -host &lt;imap server&gt; -port &lt;port&gt; -tls1 -servername 
     <title>See Also</title>
 
     <itemizedlist>
-      <listitem><para><ulink url="http://www.neomutt.org/">NeoMutt Project</ulink></para></listitem>
+      <listitem><para><ulink url="https://www.neomutt.org/">NeoMutt Project</ulink></para></listitem>
     </itemizedlist>
   </sect2>
 
@@ -13821,6 +13820,162 @@ openssl s_client -host &lt;imap server&gt; -port &lt;port&gt; -tls1 -servername 
     <itemizedlist>
     <listitem><para>Jeremy Katz <email>katzj@linuxpower.org</email></para></listitem>
     <listitem><para>Phil Pennock <email>mutt-dev@spodhuis.demon.nl</email></para></listitem>
+    <listitem><para>Richard Russon <email>rich@flatcap.org</email></para></listitem>
+    </itemizedlist>
+  </sect2>
+</sect1>
+
+<sect1 id="trash-folder">
+  <title>Trash Folder Feature</title>
+  <subtitle>Automatically move deleted emails to a trash bin</subtitle>
+
+  <sect2 id="trash-folder-support">
+    <title>Support</title>
+
+    <para>
+      To check if Mutt supports <quote>Trash Folder</quote>, look for
+      <quote>patch-trash</quote> in the version info.
+      See: <xref linkend="mutt-patches"/>.
+    </para>
+
+    <para>
+      If IMAP is enabled, this patch will use it
+    </para>
+
+    <itemizedlist>
+      <title>Dependencies:</title>
+      <listitem><para>mutt-1.7.1</para></listitem>
+      <listitem><para>IMAP support</para></listitem>
+    </itemizedlist>
+
+    <para>This feature is part of the <ulink url="https://www.neomutt.org/">NeoMutt Project</ulink>.</para>
+  </sect2>
+
+  <sect2 id="trash-folder-intro">
+    <title>Introduction</title>
+
+    <para>
+    In Mutt, when you <quote>delete</quote> an email it is first marked
+    deleted.  The email isn't really gone until
+    <link linkend="index-map">&lt;sync-mailbox&gt;</link> is called.
+    This happens when the user leaves the folder, or the function is called
+    manually.
+    </para>
+
+    <para>
+    After <literal>&lt;sync-mailbox&gt;</literal> has been called the email is gone forever.
+    </para>
+
+    <para>
+    The <link linkend="trash">$trash</link> variable defines a folder in
+    which to keep old emails.  As before, first you mark emails for
+    deletion.  When &lt;sync-mailbox&gt; is called the emails are moved to
+    the trash folder.
+    </para>
+
+    <para>
+    The <literal>$trash</literal> path can be either a full directory,
+    or be relative to the <link linkend="folder">$folder</link>
+    variable, like the <literal>mailboxes</literal> command.
+    </para>
+
+    <note>
+      <para>
+        Emails deleted from the trash folder are gone forever.
+      </para>
+    </note>
+  </sect2>
+
+  <sect2 id="trash-folder-variables">
+    <title>Variables</title>
+    <table id="table-trash-variables">
+      <title>Trash Variables</title>
+      <tgroup cols="3">
+        <thead>
+          <row>
+            <entry>Name</entry>
+            <entry>Type</entry>
+            <entry>Default</entry>
+          </row>
+        </thead>
+        <tbody>
+          <row>
+            <entry>trash</entry>
+            <entry>string</entry>
+            <entry>(none)</entry>
+          </row>
+        </tbody>
+      </tgroup>
+    </table>
+  </sect2>
+
+  <sect2 id="trash-folder-functions">
+    <title>Functions</title>
+    <table id="table-trash-functions">
+      <title>Trash Functions</title>
+      <tgroup cols="4">
+        <thead>
+          <row>
+            <entry>Menus</entry>
+            <entry>Default Key</entry>
+            <entry>Function</entry>
+            <entry>Description</entry>
+          </row>
+        </thead>
+        <tbody>
+          <row>
+            <entry>index,pager</entry>
+            <entry>(none)</entry>
+            <entry><literal>&lt;purge-message&gt;</literal></entry>
+            <entry>really delete the current entry, bypassing the trash folder</entry>
+          </row>
+        </tbody>
+      </tgroup>
+    </table>
+  </sect2>
+
+  <sect2 id="trash-folder-muttrc">
+    <title>Muttrc</title>
+<screen>
+<emphasis role="comment"># Example Mutt config file for the 'trash' feature.
+ 
+# This feature defines a new 'trash' folder.
+# When mail is deleted it will be moved to this folder.
+ 
+# Folder in which to put deleted emails</emphasis>
+set trash='+Trash'
+set trash='/home/flatcap/Mail/Trash'
+ 
+<emphasis role="comment"># The default delete key 'd' will move an email to the 'trash' folder
+# Bind 'D' to REALLY delete an email</emphasis>
+bind index D purge-message
+ 
+<emphasis role="comment"># Note: Deleting emails from the 'trash' folder will REALLY delete them.
+ 
+# vim: syntax=muttrc</emphasis>
+</screen>
+  </sect2>
+
+  <sect2 id="trash-folder-see-also">
+    <title>See Also</title>
+
+    <itemizedlist>
+      <listitem><para><ulink url="https://www.neomutt.org/">NeoMutt Project</ulink></para></listitem>
+      <listitem><para><link linkend="folder-hook">folder-hook</link></para></listitem>
+    </itemizedlist>
+  </sect2>
+
+  <sect2 id="trash-folder-known-bugs">
+    <title>Known Bugs</title>
+    <para>None</para>
+  </sect2>
+
+  <sect2 id="trash-folder-credits">
+    <title>Credits</title>
+    <itemizedlist>
+    <listitem><para>Cedric Duval <email>cedricduval@free.fr</email></para></listitem>
+    <listitem><para>Benjamin Kuperman <email>kuperman@acm.org</email></para></listitem>
+    <listitem><para>Paul Miller <email>paul@voltar.org</email></para></listitem>
     <listitem><para>Richard Russon <email>rich@flatcap.org</email></para></listitem>
     </itemizedlist>
   </sect2>
