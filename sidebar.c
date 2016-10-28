@@ -255,7 +255,7 @@ static void make_sidebar_entry (char *buf, unsigned int buflen, int width, char 
 
   /* Force string to be exactly the right width */
   int w = mutt_strwidth (buf);
-  int s = strlen (buf);
+  int s = mutt_strlen (buf);
   width = MIN(buflen, width);
   if (w < width)
   {
@@ -653,17 +653,19 @@ static void draw_sidebar (int num_rows, int num_cols, int div_width)
     }
 
     /* compute length of Maildir without trailing separator */
-    short maildir_is_prefix = 0;
     size_t maildirlen = mutt_strlen (Maildir);
-    if (maildirlen)
-    {
-      if (SidebarDelimChars && strchr (SidebarDelimChars, Maildir[maildirlen - 1]))
-	maildirlen--;
+    if (maildirlen &&
+        SidebarDelimChars &&
+        strchr (SidebarDelimChars, Maildir[maildirlen - 1]))
+      maildirlen--;
 
-      /* check whether Maildir is a prefix of the current folder's path */
-      if ((strlen (b->path) > maildirlen) && (strncmp (Maildir, b->path, maildirlen) == 0))
-	maildir_is_prefix = 1;
-    }
+    /* check whether Maildir is a prefix of the current folder's path */
+    short maildir_is_prefix = 0;
+    if ((mutt_strlen (b->path) > maildirlen) &&
+        (mutt_strncmp (Maildir, b->path, maildirlen) == 0) &&
+        SidebarDelimChars &&
+        strchr (SidebarDelimChars, b->path[maildirlen]))
+      maildir_is_prefix = 1;
 
     /* calculate depth of current folder and generate its display name with indented spaces */
     int sidebar_folder_depth = 0;
@@ -673,7 +675,7 @@ static void draw_sidebar (int num_rows, int num_cols, int div_width)
     {
       /* disregard a trailing separator, so strlen() - 2 */
       sidebar_folder_name = b->path;
-      for (i = strlen (sidebar_folder_name) - 2; i >= 0; i--)
+      for (i = mutt_strlen (sidebar_folder_name) - 2; i >= 0; i--)
       {
         if (SidebarDelimChars &&
             strchr (SidebarDelimChars, sidebar_folder_name[i]))
@@ -691,7 +693,7 @@ static void draw_sidebar (int num_rows, int num_cols, int div_width)
       const char *tmp_folder_name;
       int lastsep = 0;
       tmp_folder_name = b->path + maildirlen + 1;
-      int tmplen = (int) strlen (tmp_folder_name) - 1;
+      int tmplen = (int) mutt_strlen (tmp_folder_name) - 1;
       for (i = 0; i < tmplen; i++)
       {
         if (SidebarDelimChars && strchr (SidebarDelimChars, tmp_folder_name[i]))
@@ -704,8 +706,8 @@ static void draw_sidebar (int num_rows, int num_cols, int div_width)
       {
         if (option (OPTSIDEBARSHORTPATH))
           tmp_folder_name += lastsep;  /* basename */
-        int sfn_len = strlen (tmp_folder_name) +
-                      sidebar_folder_depth*strlen (NONULL(SidebarIndentString)) + 1;
+        int sfn_len = mutt_strlen (tmp_folder_name) +
+                      sidebar_folder_depth*mutt_strlen (SidebarIndentString) + 1;
         sidebar_folder_name = safe_malloc (sfn_len);
         sidebar_folder_name[0]=0;
         for (i=0; i < sidebar_folder_depth; i++)
