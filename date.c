@@ -63,6 +63,10 @@ time_t mutt_local_tz (time_t t)
   return (compute_tz (t, &utc));
 }
 
+/* theoretically time_t can be float but it is integer on most (if not all) systems */
+#define TIME_T_MAX ((((time_t) 1 << (sizeof(time_t) * 8 - 2)) - 1) * 2 + 1)
+#define TM_YEAR_MAX (1970 + (((((TIME_T_MAX - 59) / 60) - 59) / 60) - 23) / 24 / 366)
+
 /* converts struct tm to time_t, but does not take the local timezone into
    account unless ``local'' is nonzero */
 time_t mutt_mktime (struct tm *t, int local)
@@ -72,6 +76,10 @@ time_t mutt_mktime (struct tm *t, int local)
   static const int AccumDaysPerMonth[12] = {
     0, 31, 59, 90, 120, 151, 181, 212, 243, 273, 304, 334
   };
+
+  /* Prevent an integer overflow */
+  if (t->tm_year > TM_YEAR_MAX)
+    return TIME_T_MAX;
 
   /* Compute the number of days since January 1 in the same year */
   g = AccumDaysPerMonth [t->tm_mon % 12];
@@ -84,7 +92,7 @@ time_t mutt_mktime (struct tm *t, int local)
   t->tm_yday = g;
 
   /* Compute the number of days since January 1, 1970 */
-  g += (t->tm_year - 70) * 365;
+  g += (t->tm_year - 70) * (time_t)365;
   g += (t->tm_year - 69) / 4;
 
   /* Compute the number of hours */
