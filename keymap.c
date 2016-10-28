@@ -858,7 +858,6 @@ void km_error_key (int menu)
     return;
   }
 
-  km_expand_key(buf, sizeof(buf), key);
   mutt_error (_("Key is not bound.  Press '%s' for help."), buf);
   return;
 }
