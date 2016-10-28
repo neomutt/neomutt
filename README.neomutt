@@ -20,14 +20,17 @@ sorted through them, fixed them up and documented them.
 | Name                 | Description
 |----------------------|-------------------------------------------------------
 | Attach Headers Color | Color attachment headers using regexp
+| Compose to Sender    | Send new mail to the sender of the current mail
 | Compressed Folders   | Read from/write to compressed mailboxes
 | Conditional Dates    | Conditional Date Formatting
 | Encrypt-to-Self      | Save an self-encrypted copy of emails
+| Forgotten Attachment | Alert user when (s)he forgets to attach a file to an outgoing email
 | Fmemopen             | Use fmemopen(3) for speedier temporary files
 | Ifdef                | Conditional config options
 | Index Color          | Theming of the Index List
 | Initials Expando     | Expando for Author's Initials
 | Keywords             | Labels/Tagging for emails
+| Kyoto Cabinet        | Kyoto Cabinet backend for the header cache
 | Limit-Current-Thread | Limit Index View to Current Thread
 | LMDB                 | LMDB backend for the header cache
 | Multiple fcc         | Save multiple copies of outgoing mail
@@ -37,6 +40,7 @@ sorted through them, fixed them up and documented them.
 | Notmuch              | Powerful email search engine
 | Progress Bar         | Colourful Progress Bar
 | Quasi-Delete         | Hide emails from view, but don't delete them
+| Reply With X-Orig    | Direct reply to email using X-Original-To header
 | Sensible-Browser     | Make the file browser behave
 | Sidebar              | Panel containing list of Mailboxes
 | Skip-Quoted          | Skip Quoted Text
@@ -47,10 +51,8 @@ sorted through them, fixed them up and documented them.
 
 ## Contributed Scripts and Config
 
-- Keybase Integration
-  Joshua Jordi (JakkinStewart)
-- vim-keybindings - Mutt config for vim users
-  Ivan Tham (pickfire)
+- Keybase Integration (Joshua Jordi)
+- vim-keys - Mutt config for vim users (Ivan Tham)
 
 ## Where is NeoMutt?
 
@@ -59,7 +61,7 @@ sorted through them, fixed them up and documented them.
 - Questions/Bugs:  https://github.com/neomutt/neomutt/issues
 - Website:         http://www.neomutt.org/
 - IRC:             irc://irc.freenode.net/neomutt
-- Mailinglists:    [neomutt-users](mailto:neomutt-users-request@neomutt.org?subject=subscribe) 
+- Mailinglists:    [neomutt-users](mailto:neomutt-users-request@neomutt.org?subject=subscribe)
 and [neomutt-devel](mailto:neomutt-devel-request@neomutt.org?subject=subscribe)
 - Development:     http://www.neomutt.org/devel/
 
@@ -67,13 +69,15 @@ and [neomutt-devel](mailto:neomutt-devel-request@neomutt.org?subject=subscribe)
 
 Here's a list of everyone who's helped NeoMutt:
 
-Alex Pearce, Ander Punnar, Antonio Radici, Baptiste Daroussin, Chris Salzberg,
-Christoph Berg, Darshit Shah, David Sterba, Elimar Riesebieter, Evgeni Golov,
-Fabian Groffen, Fabio Alessandro Locati, Faidon Liambotis, Guillaume Brogi,
+Alex Pearce, Ander Punnar, Antonio Radici, Baptiste Daroussin, Chris Czettel,
+Chris Salzberg, Christoph Berg, Clemens Lang, Darshit Shah, David Sterba,
+Doug Stone-Weaver, Elimar Riesebieter, Evgeni Golov, Fabian Groffen,
+Fabio Alessandro Locati, Faidon Liambotis, Guillaume Brogi, Ismaël Bouya,
 Ivan Tham, Johannes Frankenau, Johannes Weißl, Joshua Jordi, Karel Zak,
-Kurt Jaeger, Marco Hinz, Matteo Vescovi, Pierre-Elliott Bécue,
-Richard Hartmann, Richard Russon, Santiago Torres, Sven Guckes,
-Thomas Klausner, Udo Schweigert, Vsevolod Volkov, Werner Fink,
+Kevin Velghe, Kurt Jaeger, Marco Hinz, Matteo Vescovi, Olaf Lessenich,
+Pierre-Elliott Bécue, Pietro Cerutti, Richard Hartmann, Richard Russon,
+Santiago Torres, Stephen Gilles, Steven Ragnarök, Sven Guckes, Thomas Klausner,
+Tobias Angele, Udo Schweigert, Vsevolod Volkov, Werner Fink,
 Yoshiki Vázquez Baeza.
 
 ## Original Patch Authors
