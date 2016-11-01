@@ -1347,6 +1347,13 @@ then
 fi
 AC_SUBST(DSLROOT)
 
+AC_ARG_ENABLE(doc, AS_HELP_STRING([--disable-doc],[Do not build the documentation]),
+[       if test x$enableval = xno ; then
+                do_build_doc=no
+        fi
+])
+AM_CONDITIONAL(BUILD_DOC, test x$do_build_doc != xno)
+
 AC_ARG_ENABLE(full_doc,
 	      AS_HELP_STRING([--disable-full-doc],[Omit disabled variables]),
 [       if test x$enableval = xno ; then
