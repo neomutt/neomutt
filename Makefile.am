@@ -5,12 +5,16 @@ include $(top_srcdir)/flymake.am
 AUTOMAKE_OPTIONS = 1.6 foreign
 EXTRA_PROGRAMS = mutt_dotlock pgpring pgpewrap mutt_md5
 
+if BUILD_DOC
+DOC_SUBDIR = doc
+endif
+
 if BUILD_IMAP
 IMAP_SUBDIR = imap
 IMAP_INCLUDES = -I$(top_srcdir)/imap
 endif
 
-SUBDIRS = $(IMAP_SUBDIR) m4 po intl doc contrib
+SUBDIRS = m4 po intl $(DOC_SUBDIR) contrib $(IMAP_SUBDIR)
 
 bin_SCRIPTS = $(SMIMEAUX_TARGET)
 
