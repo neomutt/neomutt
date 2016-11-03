@@ -53,7 +53,7 @@
 #endif
 
 /* PATH_MAX is undefined on the hurd */
-#ifndef PATH_MAX
+#if !defined(PATH_MAX) && defined(_POSIX_PATH_MAX)
 #define PATH_MAX _POSIX_PATH_MAX
 #endif
 
