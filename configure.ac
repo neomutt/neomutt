@@ -301,7 +301,7 @@ main ()
 
         [mutt_cv_curses=/usr
         AC_ARG_WITH(curses, AS_HELP_STRING([--with-curses=DIR],[Where ncurses is installed]),
-                [if test $withval != yes; then
+                [if test x$withval != xyes; then
                         mutt_cv_curses=$withval
                 fi
                 if test x$mutt_cv_curses != x/usr; then
@@ -322,12 +322,9 @@ main ()
                     AC_CHECK_LIB(tinfo, tgetent, [MUTTLIBS="$MUTTLIBS -ltinfo"])
                 ])
 
-                if test "$cf_ncurses" = ncursesw; then
-			AC_CHECK_HEADERS(ncursesw/ncurses.h,[cf_cv_ncurses_header="ncursesw/ncurses.h"])
-		else
-                  AC_CHECK_HEADERS(ncurses/ncurses.h,[cf_cv_ncurses_header="ncurses/ncurses.h"],
-                    [AC_CHECK_HEADERS(ncurses.h,[cf_cv_ncurses_header="ncurses.h"])])
-		fi],
+                AC_CHECK_HEADERS($cf_ncurses/ncurses.h,[cf_cv_ncurses_header="$cf_ncurses/ncurses.h"],
+                  [AC_CHECK_HEADERS(ncurses.h,[cf_cv_ncurses_header="ncurses.h"])])
+		],
 
                 [CF_CURSES_LIBS])
 		])
