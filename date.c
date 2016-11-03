@@ -77,8 +77,9 @@ time_t mutt_mktime (struct tm *t, int local)
     0, 31, 59, 90, 120, 151, 181, 212, 243, 273, 304, 334
   };
 
-  /* Prevent an integer overflow */
-  if (t->tm_year > TM_YEAR_MAX)
+  /* Prevent an integer overflow.
+   * The time_t cast is an attempt to silence a clang range warning. */
+  if ((time_t)t->tm_year > TM_YEAR_MAX)
     return TIME_T_MAX;
 
   /* Compute the number of days since January 1 in the same year */
