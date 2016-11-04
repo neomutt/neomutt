@@ -301,7 +301,7 @@ main ()
 
         [mutt_cv_curses=/usr
         AC_ARG_WITH(curses, AS_HELP_STRING([--with-curses=DIR],[Where ncurses is installed]),
-                [if test $withval != yes; then
+                [if test x$withval != xyes; then
                         mutt_cv_curses=$withval
                 fi
                 if test x$mutt_cv_curses != x/usr; then
@@ -323,8 +323,9 @@ main ()
                 ])
 
                 if test "$cf_ncurses" = ncursesw; then
-			AC_CHECK_HEADERS(ncursesw/ncurses.h,[cf_cv_ncurses_header="ncursesw/ncurses.h"])
-		else
+                  AC_CHECK_HEADERS(ncursesw/ncurses.h,[cf_cv_ncurses_header="ncursesw/ncurses.h"],
+                    [AC_CHECK_HEADERS(ncurses.h,[cf_cv_ncurses_header="ncurses.h"])])
+                else
                   AC_CHECK_HEADERS(ncurses/ncurses.h,[cf_cv_ncurses_header="ncurses/ncurses.h"],
                     [AC_CHECK_HEADERS(ncurses.h,[cf_cv_ncurses_header="ncurses.h"])])
 		fi],
@@ -1476,6 +1477,13 @@ then
   fi
 fi
 AC_SUBST(DSLROOT)
+
+AC_ARG_ENABLE(doc, AS_HELP_STRING([--disable-doc],[Do not build the documentation]),
+[       if test x$enableval = xno ; then
+                do_build_doc=no
+        fi
+])
+AM_CONDITIONAL(BUILD_DOC, test x$do_build_doc != xno)
 
 AC_ARG_ENABLE(full_doc,
 	      AS_HELP_STRING([--disable-full-doc],[Omit disabled variables]),
