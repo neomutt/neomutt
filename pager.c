@@ -2036,6 +2036,7 @@ mutt_pager (const char *banner, const char *fname, int flags, pager_t *extra)
           FREE (&Context);
           redraw = REDRAW_FULL;
           ch = -1;
+	  break;
         }
       }
       else if ((check == MUTT_NEW_MAIL) || (check == MUTT_REOPENED) || (check == MUTT_FLAGS))
