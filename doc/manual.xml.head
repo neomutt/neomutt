@@ -11486,15 +11486,9 @@ set new_mail_command = &quot;&quot;
 
   <sect2 id="new-mail-known-bugs">
     <title>Known Bugs</title>
-    <itemizedlist>
-      <listitem>
-        <para>
-          Notifies about spurious <emphasis role="bold">new email</emphasis>
-          when an email is saved, see
-          <ulink url="https://github.com/neomutt/neomutt/issues/20">Issue #20</ulink>
-        </para>
-    </listitem>
-    </itemizedlist>
+    <para>
+      None
+    </para>
   </sect2>
 
   <sect2 id="new-mail-credits">
