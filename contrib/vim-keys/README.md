@@ -1,4 +1,4 @@
-# Vim Keybindings
+# Vim Keys
 
 This Mutt config file sets up some keyboard mappings that make Mutt more
 friendly for Vim users.  For example:

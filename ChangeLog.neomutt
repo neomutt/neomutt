@@ -254,7 +254,7 @@
   - Thanks to Alok Singh
 * New Features
   - New Mail Command - Execute a command on receipt of new mail
-  - vim-keybindings - Mutt config for vim users
+  - vim-keys - Mutt config for vim users
   - LMDB: In-memory header caching database
   - SMIME Encrypt to Self - Secure storage of sensitive email
 * Bug Fixes
