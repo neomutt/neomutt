@@ -9316,14 +9316,14 @@ bind index,pager @ compose-to-sender
           <listitem><para>Mutt uses the command <literal>gzip -c</literal>
               to create a new compressed file</para></listitem>
         </itemizedlist>
-      </sect4>
 
-      <note>
-        <para>
-	  The <literal>close-hook</literal> can also include extra options,
-	  e.g. compression level: <literal>--best</literal>
-        </para>
-      </note>
+	<note>
+	  <para>
+	    The <literal>close-hook</literal> can also include extra options,
+	    e.g. compression level: <literal>--best</literal>
+	  </para>
+	</note>
+      </sect4>
     </sect3>
 
     <sect3 id="append-hook">
@@ -9377,15 +9377,14 @@ bind index,pager @ compose-to-sender
           <listitem><para>Mutt uses the command <literal>gzip -c</literal>
               to append to an existing compressed file</para></listitem>
         </itemizedlist>
+
+	<note>
+	  <para>
+	    The <literal>append-hook</literal> can also include extra options,
+	    e.g. compression level: <literal>--best</literal>
+	  </para>
+	</note>
       </sect4>
-
-      <note>
-        <para>
-	  The <literal>append-hook</literal> can also include extra options,
-	  e.g. compression level: <literal>--best</literal>
-        </para>
-      </note>
-
     </sect3>
 
     <sect3 id="compress-empty">
