@@ -23,7 +23,7 @@ patch-reply-with-xorig-neomutt
 patch-sensible-browser-neomutt
 patch-sidebar-neomutt
 patch-skip-quoted-neomutt
-patch-smime-encrypt-self-neomutt
 patch-status-color-neomutt
 patch-timeout-neomutt
 patch-tls-sni-neomutt
+patch-trash-neomutt
