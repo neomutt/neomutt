@@ -12647,7 +12647,7 @@ set sort_browser="reverse-size"
   <sect2 id="sidebar-support">
     <title>Support</title>
 
-    <para><emphasis role="bold">Since:</emphasis> NeoMutt 2016-09-10, Mutt 2016-03-07</para>
+    <para><emphasis role="bold">Since:</emphasis> NeoMutt 2016-09-10, Mutt 1.7.0</para>
     <para><emphasis role="bold">Dependencies:</emphasis> None</para>
   </sect2>
 
@@ -13513,7 +13513,7 @@ openssl s_client -host &lt;imap server&gt; -port &lt;port&gt; -tls1 -servername 
   <sect2 id="trash-folder-support">
     <title>Support</title>
 
-    <para><emphasis role="bold">Since:</emphasis> NeoMutt 2016-09-10, Mutt 2016-03-07</para>
+    <para><emphasis role="bold">Since:</emphasis> NeoMutt 2016-09-10, Mutt 1.7.0</para>
     <variablelist>
       <varlistentry>
         <term><emphasis role="bold">Dependencies:</emphasis></term>
