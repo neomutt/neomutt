@@ -156,11 +156,11 @@ manual.tex: stamp-doc-xml
 	  openjade -t tex -D $(DSLROOT) -d print/docbook.dsl dtds/decls/xml.dcl manual.xml; \
 	fi
 
-neomutt-syntax.vim: $(SAMPLE_VIMRC)
+neomutt-syntax.vim: mutt-1.7.0-syntax.vim $(SAMPLE_VIMRC)
 	( \
-		grep -v "vim:" $(srcdir)/mutt-1.7.0-syntax.vim; \
+		sed -e '/vim:/d' -e "/This file covers/s/$$/ and NeoMutt $(VERSION)/" $(srcdir)/mutt-1.7.0-syntax.vim; \
 		echo; \
-		cat $^; \
+		cat $?; \
 		grep "vim:" $(srcdir)/mutt-1.7.0-syntax.vim; \
 	) > $@
 
