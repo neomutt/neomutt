@@ -9267,9 +9267,9 @@ bind index,pager @ compose-to-sender
       </para>
 
       <sect4 id="compress-open-hook-example">
-        <title>Example of open-hook</title>
+        <title>Example of <literal>open-hook</literal></title>
 
-        <screen>open-hook '\.gz$' &quot;gzip -cd '%f' &gt; '%t'&quot;</screen>
+        <screen>open-hook '\.gz$' &quot;gzip --stdout --decompress '%f' &gt; '%t'&quot;</screen>
 
         <itemizedlist>
           <listitem><para>Mutt finds a file, <quote>example.gz</quote>,
@@ -9303,9 +9303,9 @@ bind index,pager @ compose-to-sender
       </note>
 
       <sect4 id="compress-close-hook-example">
-        <title>Example of close-hook</title>
+        <title>Example of <literal>close-hook</literal></title>
 
-        <screen>close-hook '\.gz$' &quot;gzip -c '%t' &gt; '%f'&quot;</screen>
+        <screen>close-hook '\.gz$' &quot;gzip --stdout '%t' &gt; '%f'&quot;</screen>
 
         <itemizedlist>
           <listitem><para>Mutt has finished with a folder, <quote>example.gz</quote>,
@@ -9317,6 +9317,13 @@ bind index,pager @ compose-to-sender
               to create a new compressed file</para></listitem>
         </itemizedlist>
       </sect4>
+
+      <note>
+        <para>
+	  The <literal>close-hook</literal> can also include extra options,
+	  e.g. compression level: <literal>--best</literal>
+        </para>
+      </note>
     </sect3>
 
     <sect3 id="append-hook">
@@ -9356,9 +9363,9 @@ bind index,pager @ compose-to-sender
       </note>
 
       <sect4 id="compress-append-hook-example">
-        <title>Example of append-hook</title>
+        <title>Example of <literal>append-hook</literal></title>
 
-        <screen>append-hook '\.gz$' &quot;gzip -c '%t' &gt;&gt; '%f'&quot;</screen>
+        <screen>append-hook '\.gz$' &quot;gzip --stdout '%t' &gt;&gt; '%f'&quot;</screen>
 
         <itemizedlist>
           <listitem><para>Mutt wants to append an email to a folder, <quote>example.gz</quote>,
@@ -9371,6 +9378,13 @@ bind index,pager @ compose-to-sender
               to append to an existing compressed file</para></listitem>
         </itemizedlist>
       </sect4>
+
+      <note>
+        <para>
+	  The <literal>append-hook</literal> can also include extra options,
+	  e.g. compression level: <literal>--best</literal>
+        </para>
+      </note>
 
     </sect3>
 
@@ -13517,13 +13531,9 @@ openssl s_client -host &lt;imap server&gt; -port &lt;port&gt; -tls1 -servername 
     <variablelist>
       <varlistentry>
         <term><emphasis role="bold">Dependencies:</emphasis></term>
-        <listitem><para>IMAP support</para></listitem>
+        <listitem><para>If IMAP is enabled, the trash folder will use it wisely</para></listitem>
       </varlistentry>
     </variablelist>
-
-    <para>
-      If IMAP is enabled, this patch will use it
-    </para>
   </sect2>
 
   <sect2 id="trash-folder-intro">
