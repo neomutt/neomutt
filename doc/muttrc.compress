@@ -11,19 +11,19 @@
 # The 'append-hook' is optional.
 
 # Handler for gzip compressed mailboxes
-open-hook   '\.gz$'  "gzip -cd  '%f' >  '%t'"
-close-hook  '\.gz$'  "gzip -c   '%t' >  '%f'"
-append-hook '\.gz$'  "gzip -c   '%t' >> '%f'"
+open-hook   '\.gz$' "gzip --stdout --decompress '%f' >  '%t'"
+close-hook  '\.gz$' "gzip --stdout              '%t' >  '%f'"
+append-hook '\.gz$' "gzip --stdout              '%t' >> '%f'"
 
 # Handler for bzip2 compressed mailboxes
-open-hook   '\.bz2$' "bzip2 -cd '%f' >  '%t'"
-close-hook  '\.bz2$' "bzip2 -c  '%t' >  '%f'"
-append-hook '\.bz2$' "bzip2 -c  '%t' >> '%f'"
+open-hook   '\.bz2$' "bzip2 --stdout --decompress '%f' >  '%t'"
+close-hook  '\.bz2$' "bzip2 --stdout              '%t' >  '%f'"
+append-hook '\.bz2$' "bzip2 --stdout              '%t' >> '%f'"
 
 # Handler for xz compressed mailboxes
-open-hook   '\.xz$'  "xz    -cd '%f' >  '%t'"
-close-hook  '\.xz$'  "xz    -c  '%t' >  '%f'"
-append-hook '\.xz$'  "xz    -c  '%t' >> '%f'"
+open-hook   '\.xz$' "xz --stdout --decompress '%f' >  '%t'"
+close-hook  '\.xz$' "xz --stdout              '%t' >  '%f'"
+append-hook '\.xz$' "xz --stdout              '%t' >> '%f'"
 
 # Handler for pgp encrypted mailboxes
 # PGP does not support appending to an encrypted file

@@ -9412,19 +9412,19 @@ bind index,pager @ compose-to-sender
 # The 'append-hook' is optional.
 
 # Handler for gzip compressed mailboxes</emphasis>
-open-hook   '\.gz$'  &quot;gzip -cd  '%f' &gt;  '%t'&quot;
-close-hook  '\.gz$'  &quot;gzip -c   '%t' &gt;  '%f'&quot;
-append-hook '\.gz$'  &quot;gzip -c   '%t' &gt;&gt; '%f'&quot;
+open-hook   '\.gz$' &quot;gzip --stdout --decompress '%f' &gt;  '%t'&quot;
+close-hook  '\.gz$' &quot;gzip --stdout              '%t' &gt;  '%f'&quot;
+append-hook '\.gz$' &quot;gzip --stdout              '%t' &gt;&gt; '%f'&quot;
 
 <emphasis role="comment"># Handler for bzip2 compressed mailboxes</emphasis>
-open-hook   '\.bz2$' &quot;bzip2 -cd '%f' &gt;  '%t'&quot;
-close-hook  '\.bz2$' &quot;bzip2 -c  '%t' &gt;  '%f'&quot;
-append-hook '\.bz2$' &quot;bzip2 -c  '%t' &gt;&gt; '%f'&quot;
+open-hook   '\.bz2$' &quot;bzip2 --stdout --decompress '%f' &gt;  '%t'&quot;
+close-hook  '\.bz2$' &quot;bzip2 --stdout              '%t' &gt;  '%f'&quot;
+append-hook '\.bz2$' &quot;bzip2 --stdout              '%t' &gt;&gt; '%f'&quot;
 
 <emphasis role="comment"># Handler for xz compressed mailboxes</emphasis>
-open-hook   '\.xz$'  &quot;xz    -cd '%f' &gt;  '%t'&quot;
-close-hook  '\.xz$'  &quot;xz    -c  '%t' &gt;  '%f'&quot;
-append-hook '\.xz$'  &quot;xz    -c  '%t' &gt;&gt; '%f'&quot;
+open-hook   '\.xz$' &quot;xz --stdout --decompress '%f' &gt;  '%t'&quot;
+close-hook  '\.xz$' &quot;xz --stdout              '%t' &gt;  '%f'&quot;
+append-hook '\.xz$' &quot;xz --stdout              '%t' &gt;&gt; '%f'&quot;
 
 <emphasis role="comment"># Handler for pgp encrypted mailboxes
 # PGP does not support appending to an encrypted file</emphasis>
