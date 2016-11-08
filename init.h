@@ -225,6 +225,7 @@ struct option_t MuttVars[] = {
   ** .dt %D  .dd deleted flag
   ** .dt %d  .dd description
   ** .dt %e  .dd MIME content-transfer-encoding
+  ** .dt %F  .dd filename for content-disposition header
   ** .dt %f  .dd filename
   ** .dt %I  .dd disposition (``I'' for inline, ``A'' for attachment)
   ** .dt %m  .dd major MIME type
