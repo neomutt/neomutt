@@ -160,6 +160,7 @@ ATTACHPTR **mutt_gen_attach_list (BODY *m,
  * %D = deleted flag
  * %d = description
  * %e = MIME content-transfer-encoding
+ * %F = filename for content-disposition header
  * %f = filename
  * %I = content-disposition, either I (inline) or A (attachment)
  * %t = tagged flag
@@ -261,6 +262,25 @@ const char *mutt_attach_fmt (char *dest,
 	  mutt_format_s (dest, destlen, prefix, NONULL (aptr->content->filename));
       }
       else if(!aptr->content->filename)
+        optional = 0;
+      break;
+    case 'F':
+      if (!optional)
+      {
+        char fname[_POSIX_PATH_MAX];
+        char *src = NULL;
+
+        if (aptr->content->d_filename)
+          src = aptr->content->d_filename;
+        else if (aptr->content->filename)
+          src = aptr->content->filename;
+        else
+          break;
+
+        strfcpy (fname, mutt_basename (NONULL (src)), sizeof (fname));
+        mutt_format_s (dest, destlen, prefix, fname);
+      }
+      else if (!aptr->content->d_filename && !aptr->content->filename)
         optional = 0;
       break;
     case 'D':
