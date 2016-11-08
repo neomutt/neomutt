@@ -63,7 +63,7 @@ sorted through them, fixed them up and documented them.
 - IRC:             irc://irc.freenode.net/neomutt
 - Mailinglists:    [neomutt-users](mailto:neomutt-users-request@neomutt.org?subject=subscribe)
 and [neomutt-devel](mailto:neomutt-devel-request@neomutt.org?subject=subscribe)
-- Development:     http://www.neomutt.org/devel/
+- Development:     http://www.neomutt.org/dev.html
 
 ## NeoMutt Developers
 
@@ -104,5 +104,5 @@ author Michael Elkins and all the people that have contributed to Mutt during
 its long history, see the Acknowledgements section of the user manual for a
 detailed list.
 
-http://www.neomutt.org/manual/miscellany.html#acknowledgements
+http://www.neomutt.org/guide/miscellany.html#acknowledgements
 
