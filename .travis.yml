@@ -21,10 +21,9 @@ addons:
       - libkyotocabinet-dev
       - libgdbm-dev
       - libdb-dev
-      # - libqdbm-dev
-      # - libslang2-dev
-      # libcaca includes slang for us
-      - libcaca-dev
+      - liblmdb-dev
+      - libqdbm-dev
+      - libslang2-dev
       - libgnutls-dev
       - libssl-dev
       - libsasl2-dev
