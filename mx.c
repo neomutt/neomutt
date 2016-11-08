@@ -593,15 +593,6 @@ static int mx_open_mailbox_append (CONTEXT *ctx, int flags)
   return ctx->mx_ops->open_append (ctx, flags);
 }
 
-/* close a mailbox opened in write-mode */
-static int mx_close_mailbox_append (CONTEXT *ctx)
-{
-  mx_unlock_file (ctx->path, fileno (ctx->fp), 1);
-  mutt_unblock_signals ();
-  mx_fastclose_mailbox (ctx);
-  return 0;
-}
-
 /*
  * open a mailbox and parse it
  *
@@ -896,20 +887,9 @@ int mx_close_mailbox (CONTEXT *ctx, int *index_hint)
 
   ctx->closing = 1;
 
-  if (ctx->readonly || ctx->dontwrite)
+  if (ctx->readonly || ctx->dontwrite || ctx->append)
   {
-    /* mailbox is readonly or we don't want to write */
     mx_fastclose_mailbox (ctx);
-    return 0;
-  }
-
-  if (ctx->append)
-  {
-    /* mailbox was opened in write-mode */
-    if (ctx->magic == MUTT_MBOX || ctx->magic == MUTT_MMDF)
-      mx_close_mailbox_append (ctx);
-    else
-      mx_fastclose_mailbox (ctx);
     return 0;
   }
 
