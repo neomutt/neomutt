@@ -236,7 +236,7 @@ const char *mutt_attach_fmt (char *dest,
 	    break;
 	  }
 	}
-	if (!aptr->content->filename)
+        if (!aptr->content->d_filename && !aptr->content->filename)
 	{
 	  mutt_format_s (dest, destlen, prefix, "<no description>");
 	  break;
@@ -246,6 +246,21 @@ const char *mutt_attach_fmt (char *dest,
 	      (mutt_is_message_type (aptr->content->type, aptr->content->subtype)
 	      && MsgFmt && aptr->content->hdr))
         break;
+    /* FALLS THROUGH TO 'F' */
+    case 'F':
+      if (!optional)
+      {
+        if (aptr->content->d_filename)
+        {
+          mutt_format_s (dest, destlen, prefix, aptr->content->d_filename);
+          break;
+        }
+      }
+      else if (!aptr->content->d_filename && !aptr->content->filename)
+      {
+        optional = 0;
+        break;
+      }
     /* FALLS THROUGH TO 'f' */
     case 'f':
       if(!optional)
@@ -262,25 +277,6 @@ const char *mutt_attach_fmt (char *dest,
 	  mutt_format_s (dest, destlen, prefix, NONULL (aptr->content->filename));
       }
       else if(!aptr->content->filename)
-        optional = 0;
-      break;
-    case 'F':
-      if (!optional)
-      {
-        char fname[_POSIX_PATH_MAX];
-        char *src = NULL;
-
-        if (aptr->content->d_filename)
-          src = aptr->content->d_filename;
-        else if (aptr->content->filename)
-          src = aptr->content->filename;
-        else
-          break;
-
-        strfcpy (fname, mutt_basename (NONULL (src)), sizeof (fname));
-        mutt_format_s (dest, destlen, prefix, fname);
-      }
-      else if (!aptr->content->d_filename && !aptr->content->filename)
         optional = 0;
       break;
     case 'D':
