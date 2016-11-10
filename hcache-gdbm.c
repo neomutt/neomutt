@@ -23,8 +23,8 @@
 
 #ifdef HAVE_GDBM
 
-#include "hcache.h"
-#include "globals.h"
+#include "hcache-backend.h"
+#include "mutt.h"
 #include <gdbm.h>
 
 static void *

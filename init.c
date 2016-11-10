@@ -2348,6 +2348,34 @@ static int parse_set (BUFFER *tmp, BUFFER *s, unsigned long data, BUFFER *err)
 	break;
       }
     }
+#ifdef USE_HCACHE
+    else if (DTYPE (MuttVars[idx].type) == DT_HCACHE)
+    {
+      if (query || (*s->dptr != '='))
+      {
+        pretty_var (err->data, err->dsize, MuttVars[idx].option,
+                NONULL ((*(char **)MuttVars[idx].data)));
+	break;
+      }
+
+      CHECK_PAGER;
+      s->dptr++;
+
+      /* copy the value of the string */
+      mutt_extract_token (tmp, s, 0);
+      if (mutt_hcache_is_valid_backend(tmp->data))
+      {
+          FREE ((void *)MuttVars[idx].data);
+          *(char **)(MuttVars[idx].data) = safe_strdup(tmp->data);
+      }
+      else
+      {
+          snprintf (err->data, err->dsize, _("%s: invalid backend"), tmp->data);
+          r = -1;
+          break;
+      }
+    }
+#endif
     else
     {
       snprintf (err->data, err->dsize, _("%s: unknown type"), MuttVars[idx].option);

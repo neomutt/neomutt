@@ -23,7 +23,8 @@
 
 #ifdef HAVE_LMDB
 
-#include "hcache.h"
+#include "hcache-backend.h"
+#include "lib.h"
 
 #define LMDB_DB_SIZE (1024 * 1024 * 1024)
 #include <lmdb.h>

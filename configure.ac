@@ -905,8 +905,7 @@ AC_ARG_ENABLE(exact-address, AS_HELP_STRING([--enable-exact-address],[Enable reg
         fi])
 
 dnl -- start cache --
-db_requested=auto
-hcache_db_used=no
+hcache_db_used=
 AC_ARG_ENABLE(hcache, AS_HELP_STRING([--enable-hcache],[Enable header caching]))
 AC_ARG_WITH(gdbm,
     AS_HELP_STRING(
@@ -944,59 +943,8 @@ then
 
     need_md5="yes"
 
-    if test -n "$with_tokyocabinet" && test "$with_tokyocabinet" != "no"
-    then
-      db_requested=TokyoCabinet
-    fi
-    if test -n "$with_kyotocabinet" && test "$with_kyotocabinet" != "no"
-    then
-      if test $db_requested != auto
-      then
-        AC_MSG_ERROR([more than one header cache engine requested.])
-      else
-        db_requested=KyotoCabinet
-      fi
-    fi
-    if test -n "$with_qdbm" && test "$with_qdbm" != "no"
-    then
-      if test $db_requested != auto
-      then
-        AC_MSG_ERROR([more than one header cache engine requested.])
-      else
-        db_requested=QDBM
-      fi
-    fi
-    if test -n "$with_gdbm" && test "$with_gdbm" != "no"
-    then
-      if test $db_requested != auto
-      then
-        AC_MSG_ERROR([more than one header cache engine requested.])
-      else
-        db_requested=GDBM
-      fi
-    fi
-    if test -n "$with_bdb" && test "$with_bdb" != "no"
-    then
-      if test $db_requested != auto
-      then
-        AC_MSG_ERROR([more than one header cache engine requested.])
-      else
-        db_requested=BDB
-      fi
-    fi
-    if test -n "$with_lmdb" && test "$with_lmdb" != "no"
-    then
-      if test $db_requested != auto
-      then
-        AC_MSG_ERROR([more than one header cache engine requested.])
-      else
-        db_requested=LMDB
-      fi
-    fi
-    
     dnl -- Tokyo Cabinet --
-    if test "$with_tokyocabinet" != "no" && test $hcache_db_used = no \
-	    && test $db_requested = auto -o $db_requested = TokyoCabinet
+    if test -n "$with_tokyocabinet" && test "$with_tokyocabinet" != "no"
     then
       if test -n "$with_tokyocabinet" && test "$with_tokyocabinet" != "yes"
       then
@@ -1009,18 +957,13 @@ then
         [MUTTLIBS="$MUTTLIBS -ltokyocabinet"
          AC_DEFINE(HAVE_TC, 1, [Tokyo Cabinet Support])
          MUTT_LIB_OBJECTS="$MUTT_LIB_OBJECTS hcache-tc.o"
-         hcache_db_used=TokyoCabinet],
+         hcache_db_used="tokyocabinet $hcache_db_used"],
         [CPPFLAGS="$OLDCPPFLAGS"
          LDFLAGS="$OLDLDFLAGS"]))
-      if test $db_requested != auto && test $hcache_db_used != $db_requested
-      then
-        AC_MSG_ERROR([Tokyo Cabinet could not be used. Check config.log for details.])
-      fi
     fi
 
     dnl -- Kyoto Cabinet --
-    if test "$with_kyotocabinet" != "no" && test $hcache_db_used = no \
-        && test $db_requested = auto -o $db_requested = KyotoCabinet
+    if test -n "$with_kyotocabinet" && test "$with_kyotocabinet" != "no"
     then
       if test -n "$with_kyotocabinet" && test "$with_kyotocabinet" != "yes"
       then
@@ -1033,18 +976,13 @@ then
         [MUTTLIBS="$MUTTLIBS -lkyotocabinet"
          AC_DEFINE(HAVE_KC, 1, [Kyoto Cabinet Support])
          MUTT_LIB_OBJECTS="$MUTT_LIB_OBJECTS hcache-kc.o"
-         hcache_db_used=KyotoCabinet],
+         hcache_db_used="kyotocabinet $hcache_db_used"],
         [CPPFLAGS="$OLDCPPFLAGS"
          LDFLAGS="$OLDLDFLAGS"]))
-      if test $db_requested != auto && test $hcache_db_used != $db_requested
-      then
-        AC_MSG_ERROR([Kyoto Cabinet could not be used. Check config.log for details.])
-      fi
     fi
 
     dnl -- QDBM --
-    if test "$with_qdbm" != "no" && test $hcache_db_used = no \
-	    && test $db_requested = auto -o $db_requested = QDBM
+    if test -n "$with_qdbm" && test "$with_qdbm" != "no"
     then
       if test -n "$with_qdbm" && test "$with_qdbm" != "yes"
       then
@@ -1066,20 +1004,15 @@ then
         [MUTTLIBS="$MUTTLIBS -lqdbm"
          MUTT_LIB_OBJECTS="$MUTT_LIB_OBJECTS hcache-qdbm.o"
          AC_DEFINE(HAVE_QDBM, 1, [QDBM Support])
-         hcache_db_used=QDBM
+         hcache_db_used="qdbm $hcache_db_used"
         ],
         [CPPFLAGS="$OLDCPPFLAGS"
          LDFLAGS="$OLDLDFLAGS"])
       LIBS="$saved_LIBS"
-      if test $db_requested != auto && test $hcache_db_used != $db_requested
-      then
-        AC_MSG_ERROR([QDBM could not be used. Check config.log for details.])
-      fi
     fi
 
     dnl -- GDBM --
-    if test "$with_gdbm" != "no" && test $hcache_db_used = no \
-	    && test $db_requested = auto -o $db_requested = GDBM
+    if test -n "$with_gdbm" && test "$with_gdbm" != "no"
     then
         if test "$with_gdbm" != "yes"
         then
@@ -1098,20 +1031,15 @@ then
           MUTTLIBS="$MUTTLIBS -lgdbm"
           MUTT_LIB_OBJECTS="$MUTT_LIB_OBJECTS hcache-gdbm.o"
           AC_DEFINE(HAVE_GDBM, 1, [GDBM Support])
-          hcache_db_used=GDBM
-        fi
-        if test $db_requested != auto && test $hcache_db_used != $db_requested
-        then
-          AC_MSG_ERROR([GDBM could not be used. Check config.log for details.])
+          hcache_db_used="gdbm $hcache_db_used"
         fi
     fi
 
     dnl -- BDB --
     ac_bdb_prefix="$mutt_cv_prefix /opt /usr/local /usr"
-    if test "$with_bdb" != "no" && test $hcache_db_used = no \
-	    && test $db_requested = auto -o $db_requested = BDB
+    if test -n "$with_bdb" && test "$with_bdb" != "no"
     then
-        if test -n "$with_bdb" && test "$with_bdb" != "yes"
+        if test "$with_bdb" != "yes"
         then
           ac_bdb_prefix="$with_bdb $mutt_cv_prefix"
         fi
@@ -1147,26 +1075,22 @@ then
                         CPPFLAGS="$OLDCPPFLAGS -I$BDB_INCLUDE_DIR"
                         MUTTLIBS="$MUTTLIBS -L$BDB_LIB_DIR -l$BDB_LIB_NAME"
                         MUTT_LIB_OBJECTS="$MUTT_LIB_OBJECTS hcache-bdb.o"
-                        hcache_db_used=BDB
+                        hcache_db_used="BDB $hcache_db_used"
+                        BDB_FOUND=yes
                     ],[
                     ])
                     LIBS="$saved_LIBS"
-                    test "$hcache_db_used" = "BDB" && break
+                    test "$BDB_FOUND" = "yes" && break
                 else
                     AC_MSG_RESULT(no)
                 fi
             done
-            test "$hcache_db_used" = "BDB" && break
+            test "$BDB_FOUND" = "yes" && break
         done
-        if test $db_requested != auto && test $hcache_db_used != $db_requested
-        then
-          AC_MSG_ERROR([BDB could not be used. Check config.log for details.])
-        fi
     fi
 
     dnl -- LMDB --
-    if test "$with_lmdb" != "no" && test $hcache_db_used = no \
-	    && test $db_requested = auto -o $db_requested = LMDB
+    if test -n "$with_lmdb" && test "$with_lmdb" != "no"
     then
         if test "$with_lmdb" != "yes" && test "$with_lmdb" != "NONE"
         then
@@ -1185,29 +1109,25 @@ then
           AC_DEFINE(HAVE_LMDB, 1, [LMDB Support])
           MUTTLIBS="$MUTTLIBS -llmdb"
           MUTT_LIB_OBJECTS="$MUTT_LIB_OBJECTS hcache-lmdb.o"
-          hcache_db_used=LMDB
-        fi
-        if test $db_requested != auto && test $hcache_db_used != $db_requested
-        then
-          AC_MSG_ERROR([LMDB could not be used. Check config.log for details.])
+          hcache_db_used="lmdb $hcache_db_used"
         fi
     fi
 
-    if test $hcache_db_used = no
+    if test -z "$hcache_db_used"
     then
         AC_MSG_ERROR([You need Tokyo Cabinet, Kyoto Cabinet, QDBM, GDBM, Berkeley DB or LMDB for hcache])
     fi
 fi
 dnl -- end cache --
 
-AM_CONDITIONAL(BUILD_HCACHE, test x$hcache_db_used != xno)
+AM_CONDITIONAL(BUILD_HCACHE, test -n "$hcache_db_used")
 
 if test "$need_md5" = "yes"
 then
   MUTT_LIB_OBJECTS="$MUTT_LIB_OBJECTS md5.o"
 fi
 
-if test x$hcache_db_used != xno ; then
+if test -n "$hcache_db_used"; then
   MUTT_MD5="mutt_md5$EXEEXT"
 fi
 AC_SUBST(MUTT_MD5)
@@ -1536,5 +1456,5 @@ AC_MSG_NOTICE([Summary of build options:
   Sidebar:           $enable_sidebar
   Notmuch:           $enable_notmuch
   Compressed Folder: $enable_compressed
-  Header Cache:      $hcache_db_used
+  Header Cache (s):  $hcache_db_used
 ])

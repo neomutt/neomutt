@@ -23,7 +23,7 @@
 #include "config.h"
 #endif				/* HAVE_CONFIG_H */
 
-#if !(HAVE_TC || HAVE_KC || HAVE_GDBM || HAVE_BDB || HAVE_LMDB || HAVE_QDBM)
+#if !(HAVE_BDB || HAVE_GDBM || HAVE_KC || HAVE_LMDB || HAVE_QDBM || HAVE_TC)
 #error "No hcache backend defined"
 #endif
 
@@ -32,6 +32,7 @@
 #include <sys/time.h>
 #endif
 #include "hcache.h"
+#include "hcache-backend.h"
 #include "hcversion.h"
 #include "md5.h"
 
@@ -58,32 +59,50 @@ typedef union
   unsigned int uidvalidity;
 } validate;
 
-#define HCACHE_BACKEND(name) extern hcache_ops_t hcache_##name##_ops;
+#define HCACHE_BACKEND(name) extern const hcache_ops_t hcache_##name##_ops;
 HCACHE_BACKEND_LIST
 #undef HCACHE_BACKEND
 
-static hcache_ops_t *
-hcache_get_ops(void)
+static const hcache_ops_t *
+hcache_get_backend_ops(const char *backend)
 {
-  // TODO - switch to run-time config
-  return
-#if defined(HAVE_BDB)
-    &hcache_bdb_ops
-#elif defined(HAVE_GDBM)
-    &hcache_gdbm_ops
-#elif defined(HAVE_KC)
-    &hcache_kc_ops
-#elif defined(HAVE_LMDB)
-    &hcache_lmdb_ops
-#elif defined(HAVE_QDBM)
-    &hcache_qdbm_ops
-#elif defined(HAVE_TC)
-    &hcache_tc_ops
-#else
-    NULL
+  const char *b = NONULL(backend);
+
+  // Keep this list sorted as it is in configure.ac to avoid user surprise if
+  // no header_cache_backend is specified.
+#define EMPTY_OR_EQ(s1, s2) (!strlen(s1) || !strcmp((s1), (s2)))
+
+#if defined(HAVE_TC)
+  if (EMPTY_OR_EQ(b, "tokyocabinet"))
+    return &hcache_tc_ops;
 #endif
-    ;
+#if defined(HAVE_KC)
+  if (EMPTY_OR_EQ(b, "kyotocabinet"))
+    return &hcache_kc_ops;
+#endif
+#if defined(HAVE_QDBM)
+  if (EMPTY_OR_EQ(b, "qdbm"))
+    return &hcache_qdbm_ops;
+#endif
+#if defined(HAVE_GDBM)
+  if (EMPTY_OR_EQ(b, "gdbm"))
+    return &hcache_gdbm_ops;
+#endif
+#if defined(HAVE_BDB)
+  if (EMPTY_OR_EQ(b, "bdb"))
+    return &hcache_bdb_ops;
+#endif
+#if defined(HAVE_LMDB)
+  if (EMPTY_OR_EQ(b, "lmdb"))
+    return &hcache_lmdb_ops;
+#endif
+
+#undef EMPTY_OR_EQ
+
+  return NULL;
 }
+
+#define hcache_get_ops() hcache_get_backend_ops(HeaderCacheBackend)
 
 static void *
 lazy_malloc(size_t siz)
@@ -718,7 +737,7 @@ static char* get_foldername(const char *folder)
 header_cache_t *
 mutt_hcache_open(const char *path, const char *folder, hcache_namer_t namer)
 {
-  hcache_ops_t *ops = hcache_get_ops();
+  const hcache_ops_t *ops = hcache_get_ops();
   header_cache_t *h = safe_calloc(1, sizeof (header_cache_t));
   struct stat sb;
 
@@ -793,7 +812,7 @@ mutt_hcache_open(const char *path, const char *folder, hcache_namer_t namer)
 
 void mutt_hcache_close(header_cache_t *h)
 {
-  hcache_ops_t *ops = hcache_get_ops();
+  const hcache_ops_t *ops = hcache_get_ops();
   if (!h || !ops)
     return;
 
@@ -822,7 +841,7 @@ void *
 mutt_hcache_fetch_raw(header_cache_t *h, const char *key, size_t keylen)
 {
   char path[_POSIX_PATH_MAX];
-  hcache_ops_t *ops = hcache_get_ops();
+  const hcache_ops_t *ops = hcache_get_ops();
 
   if (!h || !ops)
     return NULL;
@@ -856,7 +875,7 @@ mutt_hcache_store_raw(header_cache_t *h, const char* key, size_t keylen,
                       void* data, size_t dlen)
 {
   char path[_POSIX_PATH_MAX];
-  hcache_ops_t *ops = hcache_get_ops();
+  const hcache_ops_t *ops = hcache_get_ops();
 
   if (!h || !ops)
     return -1;
@@ -870,7 +889,7 @@ int
 mutt_hcache_delete(header_cache_t *h, const char *key, size_t keylen)
 {
   char path[_POSIX_PATH_MAX];
-  hcache_ops_t *ops = hcache_get_ops();
+  const hcache_ops_t *ops = hcache_get_ops();
 
   if (!h)
     return -1;
@@ -883,8 +902,14 @@ mutt_hcache_delete(header_cache_t *h, const char *key, size_t keylen)
 const char *
 mutt_hcache_backend()
 {
-  hcache_ops_t *ops = hcache_get_ops();
+  const hcache_ops_t *ops = hcache_get_ops();
   if (!ops)
       return NULL;
   return ops->backend();
+}
+
+int
+mutt_hcache_is_valid_backend(const char *s)
+{
+  return hcache_get_backend_ops(s) != NULL;
 }

@@ -23,7 +23,8 @@
 
 #ifdef HAVE_TC
 
-#include "hcache.h"
+#include "hcache-backend.h"
+#include "mutt.h"
 #include <tcbdb.h>
 
 static void *

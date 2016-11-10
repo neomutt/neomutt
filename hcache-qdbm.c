@@ -23,7 +23,8 @@
 
 #ifdef HAVE_QDBM
 
-#include "hcache.h"
+#include "hcache-backend.h"
+#include "mutt.h"
 #include <depot.h>
 #include <cabin.h>
 #include <villa.h>

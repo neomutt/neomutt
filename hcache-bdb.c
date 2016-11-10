@@ -23,8 +23,8 @@
 
 #ifdef HAVE_BDB
 
-#include "hcache.h"
-#include "globals.h"
+#include "hcache-backend.h"
+#include "mutt.h"
 #include "mx.h"
 #include <db.h>
 #include <fcntl.h>

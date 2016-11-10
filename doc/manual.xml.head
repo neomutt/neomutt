@@ -8800,6 +8800,14 @@ in lower performance), but one file per folder if it points to a
 directory.
 </para>
 
+<para>
+Additionally, <link linkend="header-cache-backend">$header_cache_backend</link>
+can be used to specify which backend to use. The list of available backends can
+be specified at configure time with a set of --with-&lt;backend&gt; options.
+Currently, the following backends are supported: tokyocabinet, kyotocabinet,
+qdbm, gdbm, bdb, lmdb.
+</para>
+
 </sect2>
 
 <sect2 id="body-caching">

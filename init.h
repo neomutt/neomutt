@@ -37,7 +37,8 @@
 #define DT_RX		7 /* regular expressions */
 #define DT_MAGIC	8 /* mailbox type */
 #define DT_SYN		9 /* synonym for another variable */
-#define DT_ADDR	       10 /* e-mail address */
+#define DT_ADDR		10 /* e-mail address */
+#define DT_HCACHE	11 /* header cache backend */
 
 #define DTYPE(x) ((x) & DT_MASK)
 
@@ -1056,6 +1057,11 @@ struct option_t MuttVars[] = {
   ** .pp
   ** Header caching can greatly improve speed when opening POP, IMAP
   ** MH or Maildir folders, see ``$caching'' for details.
+  */
+  { "header_cache_backend", DT_HCACHE, R_NONE, UL &HeaderCacheBackend, UL 0 },
+  /*
+  ** .pp
+  ** This variable specifies the header cache backend.
   */
 #if defined(HAVE_QDBM) || defined(HAVE_TC) || defined(HAVE_KC)
   { "header_cache_compress", DT_BOOL, R_NONE, OPTHCACHECOMPRESS, 1 },

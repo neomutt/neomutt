@@ -23,7 +23,8 @@
 
 #ifdef HAVE_KC
 
-#include "hcache.h"
+#include "hcache-backend.h"
+#include "mutt.h"
 #include <kclangc.h>
 
 static void *
