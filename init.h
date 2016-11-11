@@ -4166,6 +4166,11 @@ struct option_t MuttVars[] = {
   ** name of original article author) to article that followuped to newsgroup.
   */
 #endif
+  { "collapse_all",     DT_BOOL, R_NONE, OPTCOLLAPSEALL, 0 },
+  /*
+  ** .pp
+  ** When \fIset\fP, Mutt will collapse all threads when entering a folder.
+  */
   /*--*/
   { NULL, 0, 0, 0, 0 }
 };
