@@ -91,9 +91,14 @@ struct option_t MuttVars[] = {
   /*
   ** .pp
   ** If set to \fIyes\fP, when composing messages containing the regular expression
-  ** specified by $attach_keyword (default is "\\<attach(|ed|ments?)\\>") and no attachments
-  ** are given, composition will be aborted. If set to \fIno\fP, composing
-  ** messages as such will never be aborted.
+  ** specified by $attach_keyword and no attachments ** are given, composition
+  ** will be aborted. If set to \fIno\fP, composing ** messages as such will never
+  ** be aborted.
+  ** .pp
+  ** Example:
+  ** .ts
+  ** set attach_keyword = "\\<attach(|ed|ments?)\\>"
+  ** .te
   */
   { "abort_nosubject",	DT_QUAD, R_NONE, OPT_SUBJECT, MUTT_ASKYES },
   /*
@@ -1494,7 +1499,10 @@ struct option_t MuttVars[] = {
   ** .dt %u .dd username
   ** .de
   ** .pp
-  ** Example: set inews="/usr/local/bin/inews -hS"
+  ** Example:
+  ** .ts
+  ** set inews="/usr/local/bin/inews -hS"
+  ** .te
   */
 #endif
   { "ispell",		DT_PATH, R_NONE, UL &Ispell, UL ISPELL },
@@ -3220,7 +3228,7 @@ struct option_t MuttVars[] = {
   /*
   ** .pp
   ** Lines of quoted text that are displayed before the unquoted text after
-  ** "skip to quoted" command (S)
+  ** ``skip to quoted'' command (S)
   */
   { "sleep_time",	DT_NUM, R_NONE, UL &SleepTime, 1 },
   /*
@@ -3528,7 +3536,12 @@ struct option_t MuttVars[] = {
   ** .ie
   ** .pp
   ** You may optionally use the ``reverse-'' prefix to specify reverse sorting
-  ** order (example: ``\fCset sort=reverse-date-sent\fP'').
+  ** order.
+  ** .pp
+  ** Example:
+  ** .ts
+  ** set sort=reverse-date-sent
+  ** .te
   */
   { "sort_alias",	DT_SORT|DT_SORT_ALIAS,	R_NONE,	UL &SortAlias, SORT_ALIAS },
   /*

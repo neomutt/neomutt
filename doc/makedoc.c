@@ -579,7 +579,7 @@ static void man_print_strval (const char *v, FILE *out)
     }
     
     if (*v == '"')
-      fputs ("\\(rq", out);
+      fputs ("\"", out);
     else if (*v == '\\')
       fputs ("\\\\", out);
     else if (*v == '-')
@@ -690,9 +690,9 @@ static void print_confline (const char *varname, int type, const char *val, FILE
       fprintf (out, "Type: %s\n", type2human (type));
       if (type == DT_STR || type == DT_RX || type == DT_ADDR || type == DT_PATH)
       {
-	fputs ("Default: \\(lq", out);
+	fputs ("Default: \"", out);
 	man_print_strval (val, out);
-	fputs ("\\(rq\n", out);
+	fputs ("\"\n", out);
       }
       else {
 	fputs ("Default: ", out);
@@ -1037,7 +1037,7 @@ static int print_it (int special, char *str, FILE *out, int docstat)
 	    for (; *str; str++)
 	    {
 	      if (*str == '"')
-		fputs ("\\(rq", out);
+		fputs ("\"", out);
 	      else if (*str == '\\')
 		fputs ("\\\\", out);
               else if (*str == '-')
