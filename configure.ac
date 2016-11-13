@@ -1107,63 +1107,57 @@ then
     fi
 
     dnl -- BDB --
-    ac_bdb_prefix="$with_bdb"
+    ac_bdb_prefix="$mutt_cv_prefix /opt /usr/local /usr"
     if test "$with_bdb" != "no" && test $hcache_db_used = no \
 	    && test $db_requested = auto -o $db_requested = BDB
     then
-        if test x$ac_bdb_prefix = xyes || test x$ac_bdb_prefix = x
+        if test -n "$with_bdb" && test "$with_bdb" != "yes"
         then
-          ac_bdb_prefix="$mutt_cv_prefix /opt/csw/bdb4 /opt /usr/local /usr"
+          ac_bdb_prefix="$with_bdb $mutt_cv_prefix"
         fi
+        BDB_VERSIONS="db-5.3 db53 db-5 db5 db-4.8 db48 db-4 db4"
         for d in $ac_bdb_prefix; do
-            bdbpfx="$bdbpfx $d"
-            for v in BerkeleyDB.4.3 BerkeleyDB.4.2 BerkeleyDB.4.1; do
-                bdbpfx="$bdbpfx $d/$v"
-            done
-        done
-        BDB_VERSIONS="db-4 db4 db-5 db5 db-5.2 db5.2 db52 db-5.1 db5.1 db51 db-5.0 db5.0 db50 db-4.8 db4.8 db48 db-4.7 db4.7 db47 db-4.6 db4.6 db46 db-4.5 db4.5 db45 db-4.4 db4.4 db44 db-4.3 db4.3 db43 db-4.2 db4.2 db42 db-4.1 db4.1 db41 db ''"
-        AC_MSG_CHECKING([for BerkeleyDB > 4.0])
-        for d in $bdbpfx; do
-            BDB_INCLUDE_DIR=""
-            BDB_LIB_DIR=""
             for v in / $BDB_VERSIONS; do
+                AC_MSG_CHECKING([for BerkeleyDB in $d/include/$v])
                 if test -r "$d/include/$v/db.h"; then
                     BDB_INCLUDE_DIR="$d/include/$v"
-                    for bdblibdir in "$d/lib/$v" "$d/lib"; do
-                        test -d "$bdblibdir" || continue
-                        BDB_LIB_DIR="$bdblibdir"
-                        for l in `echo $BDB_VERSIONS`; do
-                            CPPFLAGS="$OLDCPPFLAGS -I$BDB_INCLUDE_DIR"
-                            LIBS="$OLDLIBS -L$BDB_LIB_DIR -l$l"
-                            AC_LINK_IFELSE([AC_LANG_PROGRAM([[
-                                #include <stdlib.h>
-                                #include <db.h>
-                            ]], [[
-                                DB *db = NULL;
-                                db->open(db,NULL,NULL,NULL,0,0,0);
-                            ]])],[
-                                ac_cv_dbcreate=yes
-                                BDB_LIB="$l"
-                                break
-                            ],[])
-                        done
-                        test x$ac_cv_dbcreate = xyes && break 2
-                    done
+                    BDB_INCLUDE_FILE="$d/include/$v/db.h"
+                    BDB_VERSION_MAJOR=$(awk '/DB_VERSION_MAJOR/{print $NF}' \
+                        $BDB_INCLUDE_FILE)
+                    BDB_VERSION_MINOR=$(awk '/DB_VERSION_MINOR/{print $NF}' \
+                        $BDB_INCLUDE_FILE)
+                    if test -z "$BDB_VERSION_MAJOR" || \
+                       test -z "$BDB_VERSION_MINOR"; then
+                        continue
+                    fi
+                    BDB_LIB_DIR="$d/lib/$v"
+                    BDB_LIB_NAME="db-$BDB_VERSION_MAJOR.$BDB_VERSION_MINOR"
+                    CPPFLAGS="$OLDCPPFLAGS -I$BDB_INCLUDE_DIR"
+                    saved_LIBS="$LIBS"
+                    LIBS="$OLDLIBS -L$BDB_LIB_DIR -l$BDB_LIB_NAME"
+                    AC_LINK_IFELSE([AC_LANG_PROGRAM([[
+                        #include <stdlib.h>
+                        #include <db.h>
+                    ]], [[
+                        DB *db = NULL;
+                        db->open(db,NULL,NULL,NULL,0,0,0);
+                    ]])],[
+                        AC_MSG_RESULT(yes)
+                        AC_DEFINE(HAVE_BDB, 1, [Berkeley DB Support])
+                        CPPFLAGS="$OLDCPPFLAGS -I$BDB_INCLUDE_DIR"
+                        MUTTLIBS="$MUTTLIBS -L$BDB_LIB_DIR -l$BDB_LIB_NAME"
+                        MUTT_LIB_OBJECTS="$MUTT_LIB_OBJECTS hcache-bdb.o"
+                        hcache_db_used=BDB
+                    ],[
+                    ])
+                    LIBS="$saved_LIBS"
+                    test "$hcache_db_used" = "BDB" && break
+                else
+                    AC_MSG_RESULT(no)
                 fi
             done
-            test x$BDB_LIB != x && break
+            test "$hcache_db_used" = "BDB" && break
         done
-        if test x$ac_cv_dbcreate = xyes
-        then
-            AC_MSG_RESULT(yes)
-            CPPFLAGS="$OLDCPPFLAGS -I$BDB_INCLUDE_DIR"
-            AC_DEFINE(HAVE_BDB, 1, [Berkeley DB Support])
-            LIBS="$OLDLIBS -L$BDB_LIB_DIR -l$BDB_LIB"
-            MUTT_LIB_OBJECTS="$MUTT_LIB_OBJECTS hcache-bdb.o"
-            hcache_db_used=BDB
-        else
-            AC_MSG_RESULT(no)
-        fi
         if test $db_requested != auto && test $hcache_db_used != $db_requested
         then
           AC_MSG_ERROR([BDB could not be used. Check config.log for details.])
