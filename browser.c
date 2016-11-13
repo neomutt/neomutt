@@ -901,7 +901,8 @@ void mutt_browser_highlight_default (struct browser_state *state, MUTTMENU *menu
    */
   if ((mutt_strcmp (state->entry[0].desc, "..")  == 0) ||
       (mutt_strcmp (state->entry[0].desc, "../") == 0))
-    menu->current = 1;
+    /* Skip the first entry, unless there's only one entry. */
+    menu->current = (menu->max > 1);
   else
     menu->current = 0;
 }
