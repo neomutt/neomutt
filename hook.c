@@ -115,7 +115,7 @@ int mutt_parse_hook (BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err)
   }
 #ifdef USE_COMPRESSED
   else if (data & (MUTT_APPENDHOOK | MUTT_OPENHOOK | MUTT_CLOSEHOOK)) {
-    if (comp_valid_command (command.data) == 0) {
+    if (mutt_comp_valid_command (command.data) == 0) {
       strfcpy (err->data, _("badly formatted command string"), err->dsize);
       return -1;
     }

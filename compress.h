@@ -19,10 +19,10 @@
 #ifndef _COMPRESS_H_
 #define _COMPRESS_H_
 
-int comp_can_append    (CONTEXT *ctx);
-int comp_can_read      (const char *path);
-int comp_sync          (CONTEXT *ctx);
-int comp_valid_command (const char *cmd);
+int mutt_comp_can_append    (CONTEXT *ctx);
+int mutt_comp_can_read      (const char *path);
+int mutt_comp_sync          (CONTEXT *ctx);
+int mutt_comp_valid_command (const char *cmd);
 
 extern struct mx_ops mx_comp_ops;
 

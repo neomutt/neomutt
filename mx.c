@@ -452,7 +452,7 @@ int mx_get_magic (const char *path)
 #ifdef USE_COMPRESSED
   /* If there are no other matches, see if there are any
    * compress hooks that match */
-  if ((magic == 0) && comp_can_read (path))
+  if ((magic == 0) && mutt_comp_can_read (path))
     return MUTT_COMPRESSED;
 #endif
   return (magic);
@@ -522,7 +522,7 @@ static int mx_open_mailbox_append (CONTEXT *ctx, int flags)
   }
 
 #ifdef USE_COMPRESSED
-  if (comp_can_append (ctx))
+  if (mutt_comp_can_append (ctx))
     ctx->mx_ops = &mx_comp_ops;
   else
 #endif
@@ -722,9 +722,9 @@ static int sync_mailbox (CONTEXT *ctx, int *index_hint)
 
 #ifdef USE_COMPRESSED
   /* If everything went well, the mbox handler saved the changes to our
-   * temporary file.  Next, comp_sync() will compress the temporary file. */
+   * temporary file.  Next, mutt_comp_sync() will compress the temporary file. */
   if ((rc == 0) && ctx->compress_info)
-    return comp_sync (ctx);
+    return mutt_comp_sync (ctx);
 #endif
 
   return rc;
