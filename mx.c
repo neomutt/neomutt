@@ -33,6 +33,10 @@
 #include "sidebar.h"
 #endif
 
+#ifdef USE_COMPRESSED
+#include "compress.h"
+#endif
+
 #ifdef USE_IMAP
 #include "imap.h"
 #endif
@@ -60,7 +64,7 @@
 #include <ctype.h>
 #include <utime.h>
 
-static struct mx_ops* mx_get_ops (int magic)
+struct mx_ops* mx_get_ops (int magic)
 {
   switch (magic)
   {
@@ -79,6 +83,10 @@ static struct mx_ops* mx_get_ops (int magic)
 #ifdef USE_POP
     case MUTT_POP:
       return &mx_pop_ops;
+#endif
+#ifdef USE_COMPRESSED
+    case MUTT_COMPRESSED:
+      return &mx_comp_ops;
 #endif
     default:
       return NULL;
@@ -441,6 +449,12 @@ int mx_get_magic (const char *path)
     return (-1);
   }
 
+#ifdef USE_COMPRESSED
+  /* If there are no other matches, see if there are any
+   * compress hooks that match */
+  if ((magic == 0) && comp_can_read (path))
+    return MUTT_COMPRESSED;
+#endif
   return (magic);
 }
 
@@ -507,6 +521,11 @@ static int mx_open_mailbox_append (CONTEXT *ctx, int flags)
       return -1;
   }
 
+#ifdef USE_COMPRESSED
+  if (comp_can_append (ctx))
+    ctx->mx_ops = &mx_comp_ops;
+  else
+#endif
   ctx->mx_ops = mx_get_ops (ctx->magic);
   if (!ctx->mx_ops || !ctx->mx_ops->open_append)
     return -1;
@@ -700,6 +719,14 @@ static int sync_mailbox (CONTEXT *ctx, int *index_hint)
   
   if (tmp && tmp->new == 0)
     mutt_update_mailbox (tmp);
+
+#ifdef USE_COMPRESSED
+  /* If everything went well, the mbox handler saved the changes to our
+   * temporary file.  Next, comp_sync() will compress the temporary file. */
+  if ((rc == 0) && ctx->compress_info)
+    return comp_sync (ctx);
+#endif
+
   return rc;
 }
 

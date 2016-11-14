@@ -494,6 +494,12 @@ static void show_version (void)
 	"-USE_SIDEBAR  "
 #endif
 
+#ifdef USE_COMPRESSED
+	"+USE_COMPRESSED  "
+#else
+	"-USE_COMPRESSED  "
+#endif
+
 	);
 
 #ifdef ISPELL
