@@ -296,6 +296,49 @@ mutt_free_compress_info (CONTEXT *ctx)
 }
 
 /**
+ * escape_path - Escapes single quotes in a path for a command string.
+ * @src - the path to escape.
+ *
+ * Returns: a pointer to the escaped string.
+ */
+static char *
+escape_path (char *src)
+{
+  static char dest[HUGE_STRING];
+  char *destp = dest;
+  int destsize = 0;
+
+  if (!src)
+    return NULL;
+
+  while (*src && (destsize < sizeof(dest) - 1))
+  {
+    if (*src != '\'')
+    {
+      *destp++ = *src++;
+      destsize++;
+    }
+    else
+    {
+      /* convert ' into '\'' */
+      if (destsize + 4 < sizeof(dest))
+      {
+        *destp++ = *src++;
+        *destp++ = '\\';
+        *destp++ = '\'';
+        *destp++ = '\'';
+        destsize += 4;
+      }
+      else
+        break;
+    }
+  }
+  *destp = '\0';
+
+  return dest;
+}
+
+/**
  * cb_format_str - Expand the filenames in the command string
  * @dest:        Buffer in which to save string
  * @destlen:     Buffer length
@@ -328,11 +371,11 @@ cb_format_str (char *dest, size_t destlen, size_t col, int cols, char op, const 
   {
     case 'f':
       /* Compressed file */
-      snprintf (dest, destlen, "%s", ctx->realpath);
+      snprintf (dest, destlen, "%s", NONULL (escape_path (ctx->realpath)));
       break;
     case 't':
       /* Plaintext, temporary file */
-      snprintf (dest, destlen, "%s", ctx->path);
+      snprintf (dest, destlen, "%s", NONULL (escape_path (ctx->path)));
       break;
   }
   return src;
