@@ -852,16 +852,6 @@ int mutt_save_message (HEADER *h, int delete,
 
   if (mx_open_mailbox (buf, MUTT_APPEND, &ctx) != NULL)
   {
-#ifdef USE_COMPRESSED
-    /* If we're saving to a compressed mailbox, the stats won't be updated
-     * until the next open.  Until then, improvise. */
-    BUFFY *cm = NULL;
-    if (ctx.compress_info)
-      cm = mutt_find_mailbox (ctx.realpath);
-    /* We probably haven't been opened yet */
-    if (cm && (cm->msg_count == 0))
-      cm = NULL;
-#endif
     if (h)
     {
       if (_mutt_save_message(h, &ctx, delete, decode, decrypt) != 0)
@@ -869,16 +859,6 @@ int mutt_save_message (HEADER *h, int delete,
         mx_close_mailbox (&ctx, NULL);
         return -1;
       }
-#ifdef USE_COMPRESSED
-      if (cm)
-      {
-        cm->msg_count++;
-        if (!h->read)
-          cm->msg_unread++;
-        if (h->flagged)
-          cm->msg_flagged++;
-      }
-#endif
     }
     else
     {
@@ -896,17 +876,6 @@ int mutt_save_message (HEADER *h, int delete,
 	  if ((rc = _mutt_save_message(Context->hdrs[Context->v2r[i]],
 			     &ctx, delete, decode, decrypt) != 0))
 	    break;
-#ifdef USE_COMPRESSED
-          if (cm)
-          {
-            HEADER *h = Context->hdrs[Context->v2r[i]];
-            cm->msg_count++;
-            if (!h->read)
-              cm->msg_unread++;
-            if (h->flagged)
-              cm->msg_flagged++;
-          }
-#endif
 	}
       }
 #ifdef USE_NOTMUCH
