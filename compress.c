@@ -117,7 +117,6 @@ unlock_mailbox (CONTEXT *ctx, FILE *fp)
  * Create a temporary filename and put its name in ctx->path.
  *
  * Note: The temporary file is NOT created.
- * Note: ctx->path will be freed by restore_path()
  */
 static void
 setup_paths (CONTEXT *ctx)
@@ -128,36 +127,12 @@ setup_paths (CONTEXT *ctx)
   char tmppath[_POSIX_PATH_MAX];
 
   /* Setup the right paths */
+  FREE(&ctx->realpath);
   ctx->realpath = ctx->path;
 
   /* We will uncompress to /tmp */
   mutt_mktemp (tmppath, sizeof (tmppath));
   ctx->path = safe_strdup (tmppath);
-}
-
-/**
- * restore_path - Put back the original mailbox name
- * @ctx: Mailbox to modify
- *
- * When we use a compressed mailbox, we change the CONTEXT to refer to the
- * uncompressed file.  We store the original name in ctx->realpath.
- *      ctx->path     = "/tmp/mailbox"
- *      ctx->realpath = "mailbox.gz"
- *
- * When we have finished with a compressed mailbox, we put back the original
- * name.
- *      ctx->path     = "mailbox.gz"
- *      ctx->realpath = NULL
- */
-static void
-restore_path (CONTEXT *ctx)
-{
-  if (!ctx)
-    return;
-
-  FREE(&ctx->path);
-  ctx->path = ctx->realpath;
-  ctx->realpath = NULL;
 }
 
 /**
@@ -237,8 +212,6 @@ find_hook (int type, const char *path)
  *
  * When a mailbox is opened, we check if there are any matching hooks.
  *
- * Note: Caller must free the COMPRESS_INFO when done.
- *
  * Returns:
  *      COMPRESS_INFO: Hook info for the mailbox's path
  *      NULL:          On error
@@ -263,11 +236,31 @@ set_compress_info (CONTEXT *ctx)
   COMPRESS_INFO *ci = safe_calloc (1, sizeof (COMPRESS_INFO));
   ctx->compress_info = ci;
 
-  ci->open   = o;
-  ci->close  = c;
-  ci->append = a;
+  ci->open   = safe_strdup (o);
+  ci->close  = safe_strdup (c);
+  ci->append = safe_strdup (a);
 
   return ci;
+}
+
+/**
+ * mutt_free_compress_info - Frees the compress info members and structure.
+ * @ctx: Mailbox to free compress_info for.
+ */
+void
+mutt_free_compress_info (CONTEXT *ctx)
+{
+  COMPRESS_INFO *ci;
+
+  if (!ctx || !ctx->compress_info)
+    return;
+
+  ci = ctx->compress_info;
+  FREE (&ci->open);
+  FREE (&ci->close);
+  FREE (&ci->append);
+
+  FREE (&ctx->compress_info);
 }
 
 /**
@@ -355,18 +348,21 @@ expand_command_str (const CONTEXT *ctx, const char *cmd, char *buf, int buflen)
 static int
 execute_command (CONTEXT *ctx, const char *command, int create_file, const char *progress)
 {
+  FILE *fp;
+  int rc = 0;
+  int unlock = 0;
+  char sys_cmd[HUGE_STRING];
+
   if (!ctx || !command || !progress)
     return 0;
 
   if (!ctx->quiet)
     mutt_message (progress, ctx->realpath);
 
-  FILE *fp;
   if (create_file)
     fp = fopen (ctx->realpath, "a");
   else
     fp = fopen (ctx->realpath, "r");
-
   if (!fp)
   {
     mutt_perror (ctx->realpath);
@@ -377,31 +373,32 @@ execute_command (CONTEXT *ctx, const char *command, int create_file, const char 
   /* If we're creating the file, lock it exclusively */
   if (!lock_mailbox (ctx, fp, create_file))
   {
-    safe_fclose (&fp);
-    mutt_unblock_signals();
     mutt_error (_("Unable to lock mailbox!"));
-    return 0;
+    goto cleanup;
   }
 
+  unlock = 1;
   endwin();
   fflush (stdout);
 
-  char sys_cmd[HUGE_STRING];
-
   expand_command_str (ctx, command, sys_cmd, sizeof (sys_cmd));
 
-  int rc = mutt_system (sys_cmd);
-  if (rc != 0)
+  if (mutt_system (sys_cmd) != 0)
   {
     mutt_any_key_to_continue (NULL);
     mutt_error (_("Error executing: %s\n"), sys_cmd);
+    goto cleanup;
   }
 
-  unlock_mailbox (ctx, fp);
+  rc = 1;
+
+cleanup:
+  if (unlock)
+    unlock_mailbox (ctx, fp);
   mutt_unblock_signals();
   safe_fclose (&fp);
 
-  return 1;
+  return rc;
 }
 
 /**
@@ -461,7 +458,7 @@ open_read (CONTEXT *ctx)
 or_fail:
   /* remove the partial uncompressed file */
   remove (ctx->path);
-  restore_path (ctx);
+  mutt_free_compress_info (ctx);
   return 0;
 }
 
@@ -522,15 +519,14 @@ open_append_mailbox (CONTEXT *ctx, int flags)
   /* To append we need an append-hook or a close-hook */
   if (!ci->append && !ci->close)
   {
-    FREE(&ctx->compress_info);
     mutt_error (_("Cannot append without an append-hook or close-hook : %s"), ctx->path);
-    return -1;
+    goto oa_fail1;
   }
 
   ctx->magic = DefaultMagic;
   /* We can only deal with mbox and mmdf mailboxes */
   if ((ctx->magic != MUTT_MBOX) && (ctx->magic != MUTT_MMDF))
-    return -1;
+    goto oa_fail1;
 
   setup_paths (ctx);
 
@@ -539,17 +535,17 @@ open_append_mailbox (CONTEXT *ctx, int flags)
   if (!ci->child_ops)
   {
     mutt_error (_("Can't find mailbox ops for mailbox type %d"), ctx->magic);
-    return -1;
+    goto oa_fail2;
   }
 
-  if (ci->append)
+  if (ci->append || (access (ctx->realpath, F_OK) != 0))
   {
     /* Create an empty temporary file */
     ctx->fp = safe_fopen (ctx->path, "w");
     if (!ctx->fp)
     {
       mutt_perror (ctx->path);
-      goto oa_fail;
+      goto oa_fail2;
     }
   }
   else
@@ -559,22 +555,25 @@ open_append_mailbox (CONTEXT *ctx, int flags)
     if (rc == 0)
     {
       mutt_error (_("Compress command failed: %s"), ci->open);
-      goto oa_fail;
+      goto oa_fail2;
     }
     ctx->fp = safe_fopen (ctx->path, "a");
     if (!ctx->fp)
     {
       mutt_perror (ctx->path);
-      goto oa_fail;
+      goto oa_fail2;
     }
   }
 
   return 0;
 
-oa_fail:
+oa_fail2:
   /* remove the partial uncompressed file */
   remove (ctx->path);
-  restore_path (ctx);
+oa_fail1:
+  /* Free the compress_info to prevent close from trying to recompress */
+  mutt_free_compress_info (ctx);
+
   return -1;
 }
 
@@ -614,8 +613,6 @@ close_mailbox (CONTEXT *ctx)
       remove (ctx->path);
     }
 
-    restore_path (ctx);
-    FREE(&ctx->compress_info);
     return 0;
   }
 
@@ -640,10 +637,8 @@ close_mailbox (CONTEXT *ctx)
     mutt_any_key_to_continue (NULL);
     mutt_error (_(" %s: Error compressing mailbox!  Uncompressed one kept!\n"), ctx->path);
   }
-
-  remove (ctx->path);
-  restore_path (ctx);
-  FREE(&ctx->compress_info);
+  else
+    remove (ctx->path);
 
   return 0;
 }
@@ -678,14 +673,17 @@ check_mailbox (CONTEXT *ctx, int *index_hint)
   if (size == ci->size)
     return 0;
 
+  /* TODO: this is a copout.  We should reopen the compressed mailbox
+   * and call mutt_reopen_mailbox. */
   if (ctx->changed)
   {
-    FREE(&ctx->compress_info);
-    restore_path (ctx);
+    mutt_free_compress_info (ctx);
+    mx_fastclose_mailbox (ctx);
     mutt_error (_("Mailbox was corrupted!"));
     return -1;
   }
 
+  /* TODO: this block leaks memory.  this is doing it all wrong */
   close_mailbox (ctx);
 
   const char *path = ctx->path;
