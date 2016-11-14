@@ -268,7 +268,7 @@ if test "$CORE" && test -f "$CORE" ; then
 fi
 
 if test "$personal" = "yes" ; then
-	CANDIDATES=".muttrc-${MUTTVERSION} .muttrc .mutt/muttrc-${MUTTVERSION} .mutt/muttrc"
+	CANDIDATES=".muttrc-${MUTTVERSION} .muttrc .mutt/muttrc-${MUTTVERSION} .mutt/muttrc .config/mutt/muttrc-${MUTTVERSION} .config/mutt/muttrc"
 	MATCHED="none"
 	for f in $CANDIDATES; do
 		if test -f "${HOME}/$f" ; then

@@ -266,8 +266,7 @@ status_format_str (char *buf, size_t buflen, size_t col, int cols, char op, cons
       break;
 
     case 'v':
-      snprintf (fmt, sizeof (fmt), "Mutt %%s");
-      snprintf (buf, buflen, fmt, MUTT_VERSION);
+      strfcpy (buf, "Mutt " MUTT_VERSION, buflen);
       break;
 
     case 'V':

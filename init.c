@@ -2851,8 +2851,8 @@ static void start_debug (void)
   if ((debugfile = safe_fopen(buf, "w")) != NULL)
   {
     setbuf (debugfile, NULL); /* don't buffer the debugging output! */
-    dprint(1,(debugfile,"Mutt/%s (%s) debugging at level %d\n",
-	      MUTT_VERSION, ReleaseDate, debuglevel));
+    dprint(1,(debugfile,"Mutt/" MUTT_VERSION " (%s) debugging at level %d\n",
+	      ReleaseDate, debuglevel));
   }
 }
 #endif
@@ -2899,13 +2899,53 @@ static void mutt_srandom (void)
   srandom(seed);
 }
 
+static char* mutt_find_cfg (const char *home, const char *xdg_cfg_home)
+{
+  const char* names[] =
+  {
+    "muttrc-" MUTT_VERSION,
+    "muttrc",
+    NULL,
+  };
+
+  const char* locations[][2] =
+  {
+    { home, ".", },
+    { home, ".mutt/" },
+    { xdg_cfg_home, "mutt/", },
+    { NULL, NULL },
+  };
+
+  int i;
+
+  for (i = 0; locations[i][0] && locations[i][1]; i++)
+  {
+    int j;
+
+    if (!locations[i][0])
+      continue;
+
+    for (j = 0; names[j]; j++)
+    {
+      char buffer[STRING];
+
+      snprintf (buffer, sizeof (buffer),
+                "%s/%s%s", locations[i][0], locations[i][1], names[j]);
+      if (access (buffer, F_OK) == 0)
+        return safe_strdup(buffer);
+    }
+  }
+
+  return NULL;
+}
+
 void mutt_init (int skip_sys_rc, LIST *commands)
 {
   struct passwd *pw;
   struct utsname utsname;
   char *p, buffer[STRING];
   char *domain = NULL;
-  int i, default_rc = 0, need_pause = 0;
+  int i, need_pause = 0;
   BUFFER err;
 
   mutt_buffer_init (&err);
@@ -3121,24 +3161,18 @@ void mutt_init (int skip_sys_rc, LIST *commands)
    * 
    * 
    */
-  
-  
-  
-  
+
   if (!Muttrc)
   {
-    snprintf (buffer, sizeof(buffer), "%s/.muttrc-%s", NONULL(Homedir), MUTT_VERSION);
-    if (access(buffer, F_OK) == -1)
-      snprintf (buffer, sizeof(buffer), "%s/.muttrc", NONULL(Homedir));
-    if (access(buffer, F_OK) == -1)
-      snprintf (buffer, sizeof (buffer), "%s/.mutt/muttrc-%s", NONULL(Homedir), MUTT_VERSION);
-    if (access(buffer, F_OK) == -1)
-      snprintf (buffer, sizeof (buffer), "%s/.mutt/muttrc", NONULL(Homedir));
-    if (access(buffer, F_OK) == -1) /* default to .muttrc for alias_file */
-      snprintf (buffer, sizeof(buffer), "%s/.muttrc", NONULL(Homedir));
+    char *xdg_cfg_home = getenv ("XDG_CONFIG_HOME");
 
-    default_rc = 1;
-    Muttrc = safe_strdup (buffer);
+    if (!xdg_cfg_home && Homedir)
+    {
+      snprintf (buffer, sizeof (buffer), "%s/.config", Homedir);
+      xdg_cfg_home = buffer;
+    }
+
+    Muttrc = mutt_find_cfg (Homedir, xdg_cfg_home);
   }
   else
   {
@@ -3146,19 +3180,29 @@ void mutt_init (int skip_sys_rc, LIST *commands)
     FREE (&Muttrc);
     mutt_expand_path (buffer, sizeof (buffer));
     Muttrc = safe_strdup (buffer);
+    if (access (Muttrc, F_OK))
+    {
+      snprintf (buffer, sizeof (buffer), "%s: %s", Muttrc, strerror (errno));
+      mutt_endwin (buffer);
+      exit (1);
+    }
   }
-  FREE (&AliasFile);
-  AliasFile = safe_strdup (NONULL(Muttrc));
+
+  if (Muttrc)
+  {
+    FREE (&AliasFile);
+    AliasFile = safe_strdup (Muttrc);
+  }
 
   /* Process the global rc file if it exists and the user hasn't explicity
      requested not to via "-n".  */
   if (!skip_sys_rc)
   {
-    snprintf (buffer, sizeof(buffer), "%s/Muttrc-%s", SYSCONFDIR, MUTT_VERSION);
+    snprintf (buffer, sizeof(buffer), "%s/Muttrc-" MUTT_VERSION, SYSCONFDIR);
     if (access (buffer, F_OK) == -1)
       snprintf (buffer, sizeof(buffer), "%s/Muttrc", SYSCONFDIR);
     if (access (buffer, F_OK) == -1)
-      snprintf (buffer, sizeof (buffer), "%s/Muttrc-%s", PKGDATADIR, MUTT_VERSION);
+      snprintf (buffer, sizeof (buffer), "%s/Muttrc-" MUTT_VERSION, PKGDATADIR);
     if (access (buffer, F_OK) == -1)
       snprintf (buffer, sizeof (buffer), "%s/Muttrc", PKGDATADIR);
     if (access (buffer, F_OK) != -1)
@@ -3173,7 +3217,7 @@ void mutt_init (int skip_sys_rc, LIST *commands)
   }
 
   /* Read the user's initialization file.  */
-  if (access (Muttrc, F_OK) != -1)
+  if (Muttrc)
   {
     if (!option (OPTNOCURSES))
       endwin ();
@@ -3183,13 +3227,6 @@ void mutt_init (int skip_sys_rc, LIST *commands)
       fputc ('\n', stderr);
       need_pause = 1;
     }
-  }
-  else if (!default_rc)
-  {
-    /* file specified by -F does not exist */
-    snprintf (buffer, sizeof (buffer), "%s: %s", Muttrc, strerror (errno));
-    mutt_endwin (buffer);
-    exit (1);
   }
 
   if (mutt_execute_commands (commands) != 0)
