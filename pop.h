@@ -105,7 +105,6 @@ void pop_logout (CONTEXT *);
 void pop_error (POP_DATA *, char *);
 
 /* pop.c */
-int pop_sync_mailbox (CONTEXT *, int *);
 int pop_close_mailbox (CONTEXT *);
 void pop_fetch_mail (void);
 

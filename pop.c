@@ -664,7 +664,7 @@ static int pop_close_message (CONTEXT *ctx, MESSAGE *msg)
 }
 
 /* update POP mailbox - delete messages from server */
-int pop_sync_mailbox (CONTEXT *ctx, int *index_hint)
+static int pop_sync_mailbox (CONTEXT *ctx, int *index_hint)
 {
   int i, j, ret = 0;
   char buf[LONG_STRING];
@@ -944,4 +944,5 @@ struct mx_ops mx_pop_ops = {
   .check = pop_check_mailbox,
   .commit_msg = NULL,
   .open_new_msg = NULL,
+  .sync = pop_sync_mailbox,
 };
