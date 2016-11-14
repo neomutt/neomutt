@@ -115,16 +115,20 @@ unlock_mailbox (CONTEXT *ctx, FILE *fp)
  *
  * Save the compressed filename in ctx->realpath.
  * Create a temporary filename and put its name in ctx->path.
+ * The temporary file is created to prevent symlink attacks.
  *
- * Note: The temporary file is NOT created.
+ * Returns:
+ *      0: Success
+ *      -1: Error
  */
-static void
+static int
 setup_paths (CONTEXT *ctx)
 {
   if (!ctx)
-    return;
+    return -1;
 
   char tmppath[_POSIX_PATH_MAX];
+  FILE *tmpfp;
 
   /* Setup the right paths */
   FREE(&ctx->realpath);
@@ -133,6 +137,12 @@ setup_paths (CONTEXT *ctx)
   /* We will uncompress to /tmp */
   mutt_mktemp (tmppath, sizeof (tmppath));
   ctx->path = safe_strdup (tmppath);
+
+  if ((tmpfp = safe_fopen (ctx->path, "w")) == NULL)
+    return -1;
+
+  safe_fclose (&tmpfp);
+  return 0;
 }
 
 /**
@@ -424,7 +434,8 @@ open_mailbox (CONTEXT *ctx)
   if (!ci->close || (access (ctx->path, W_OK) != 0))
     ctx->readonly = 1;
 
-  setup_paths (ctx);
+  if (setup_paths (ctx) != 0)
+    goto or_fail;
   store_size (ctx);
 
   int rc = execute_command (ctx, ci->open, 0, _("Decompressing %s"));
@@ -489,7 +500,8 @@ open_append_mailbox (CONTEXT *ctx, int flags)
   if ((ctx->magic != MUTT_MBOX) && (ctx->magic != MUTT_MMDF))
     goto oa_fail1;
 
-  setup_paths (ctx);
+  if (setup_paths (ctx) != 0)
+    goto oa_fail2;
 
   ctx->mx_ops = &mx_comp_ops;
   ci->child_ops = mx_get_ops (ctx->magic);
