@@ -646,30 +646,27 @@ check_mailbox (CONTEXT *ctx, int *index_hint)
   if (!ci)
     return -1;
 
+  struct mx_ops *ops = ci->child_ops;
+  if (!ops)
+    return -1;
+
   int size = get_size (ctx->realpath);
   if (size == ci->size)
     return 0;
 
-  /* TODO: this is a copout.  We should reopen the compressed mailbox
-   * and call mutt_reopen_mailbox. */
-  if (ctx->changed)
+  if (!lock_realpath (ctx, 0))
   {
-    mutt_free_compress_info (ctx);
-    mx_fastclose_mailbox (ctx);
-    mutt_error (_("Mailbox was corrupted!"));
+    mutt_error (_("Unable to lock mailbox!"));
     return -1;
   }
 
-  /* TODO: this block leaks memory.  this is doing it all wrong */
-  close_mailbox (ctx);
+  int rc = execute_command (ctx, ci->open, _("Decompressing %s"));
+  store_size (ctx);
+  unlock_realpath (ctx);
+  if (rc == 0)
+    return -1;
 
-  const char *path = ctx->path;
-  ctx->path = NULL;
-
-  mx_open_mailbox (path, 0, ctx);
-  FREE(&path);
-
-  return MUTT_REOPENED;
+  return ops->check (ctx, index_hint);
 }
 
 
@@ -852,27 +849,27 @@ sync_mailbox (CONTEXT *ctx, int *index_hint)
     return -1;
   }
 
-  /* TODO: check if mailbox changed first! */
-
-  int rc = ops->sync (ctx, index_hint);
+  int rc = check_mailbox (ctx, index_hint);
   if (rc != 0)
-  {
-    unlock_realpath (ctx);
-    return rc;
-  }
+    goto sync_cleanup;
+
+  rc = ops->sync (ctx, index_hint);
+  if (rc != 0)
+    goto sync_cleanup;
 
   rc = execute_command (ctx, ci->close, _("Compressing %s"));
   if (rc == 0)
   {
-    unlock_realpath (ctx);
-    return -1;
+    rc = -1;
+    goto sync_cleanup;
   }
 
+  rc = 0;
+
+sync_cleanup:
   store_size (ctx);
-
   unlock_realpath (ctx);
-
-  return 0;
+  return rc;
 }
 
 /**
