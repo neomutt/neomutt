@@ -29,6 +29,7 @@
 #include "mailbox.h"
 #include "mutt_curses.h"
 #include "mx.h"
+#include "compress.h"
 
 /* Notes:
  * Any references to compressed files also apply to encrypted files.
@@ -465,8 +466,6 @@ or_fail:
 }
 
 
-struct mx_ops mx_comp_ops;
-
 /**
  * open_mailbox - Open a compressed mailbox
  * @ctx: Mailbox to open
@@ -785,7 +784,7 @@ open_new_message (MESSAGE *msg, CONTEXT *ctx, HEADER *hdr)
 
 
 /**
- * comp_can_append - Can we append to this path?
+ * mutt_comp_can_append - Can we append to this path?
  * @path: pathname of file to be tested
  *
  * To append to a file we can either use an 'append-hook' or a combination of
@@ -798,7 +797,7 @@ open_new_message (MESSAGE *msg, CONTEXT *ctx, HEADER *hdr)
  *      0: No, appending isn't possible
  */
 int
-comp_can_append (CONTEXT *ctx)
+mutt_comp_can_append (CONTEXT *ctx)
 {
   if (!ctx)
     return 0;
@@ -818,7 +817,7 @@ comp_can_append (CONTEXT *ctx)
 }
 
 /**
- * comp_can_read - Can we read from this file?
+ * mutt_comp_can_read - Can we read from this file?
  * @path: Pathname of file to be tested
  *
  * Search for an 'open-hook' with a regex that matches the path.
@@ -830,7 +829,7 @@ comp_can_append (CONTEXT *ctx)
  *      0: No, we cannot read the file
  */
 int
-comp_can_read (const char *path)
+mutt_comp_can_read (const char *path)
 {
   if (!path)
     return 0;
@@ -842,18 +841,18 @@ comp_can_read (const char *path)
 }
 
 /**
- * comp_sync - Save changes to the compressed mailbox file
+ * mutt_comp_sync - Save changes to the compressed mailbox file
  * @ctx: Mailbox to sync
  *
- * Changes in Mutt only affect the tmp file.  Calling comp_sync() will commit
- * them to the compressed file.
+ * Changes in Mutt only affect the tmp file.  Calling mutt_comp_sync()
+ * will commit them to the compressed file.
  *
  * Returns:
  *       0: Success
  *      -1: Failure
  */
 int
-comp_sync (CONTEXT *ctx)
+mutt_comp_sync (CONTEXT *ctx)
 {
   if (!ctx)
     return -1;
@@ -878,7 +877,7 @@ comp_sync (CONTEXT *ctx)
 }
 
 /**
- * comp_valid_command - Is this command string allowed?
+ * mutt_comp_valid_command - Is this command string allowed?
  * @cmd:  Command string
  *
  * A valid command string must have both "%f" (from file) and "%t" (to file).
@@ -889,7 +888,7 @@ comp_sync (CONTEXT *ctx)
  *      0: "%f" and/or "%t" is missing
  */
 int
-comp_valid_command (const char *cmd)
+mutt_comp_valid_command (const char *cmd)
 {
   if (!cmd)
     return 0;
