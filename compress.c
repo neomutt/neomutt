@@ -402,29 +402,23 @@ cleanup:
 }
 
 /**
- * open_read - Open a compressed mailbox for reading
+ * open_mailbox - Open a compressed mailbox
  * @ctx: Mailbox to open
  *
+ * Set up a compressed mailbox to be read.
  * Decompress the mailbox and set up the paths and hooks needed.
- *
- * Note: The message handling will be delegated to the mbox code.
- *
- * Returns:
- *      1: Success
- *      0: Failure
+ * Then determine the type of the mailbox so we can delegate the handling of
+ * messages.
  */
 static int
-open_read (CONTEXT *ctx)
+open_mailbox (CONTEXT *ctx)
 {
-  if (!ctx)
-    return 0;
+  if (!ctx || (ctx->magic != MUTT_COMPRESSED))
+    return -1;
 
   COMPRESS_INFO *ci = set_compress_info (ctx);
   if (!ci)
-  {
-    ctx->magic = 0;
-    return 0;
-  }
+    return -1;
 
   /* If there's no close-hook, or the file isn't writable */
   if (!ci->close || (access (ctx->path, W_OK) != 0))
@@ -435,9 +429,7 @@ open_read (CONTEXT *ctx)
 
   int rc = execute_command (ctx, ci->open, 0, _("Decompressing %s"));
   if (rc == 0)
-  {
     goto or_fail;
-  }
 
   ctx->magic = mx_get_magic (ctx->path);
   if (ctx->magic == 0)
@@ -453,44 +445,13 @@ open_read (CONTEXT *ctx)
     goto or_fail;
   }
 
-  return 1;
+  return ci->child_ops->open (ctx);
 
 or_fail:
   /* remove the partial uncompressed file */
   remove (ctx->path);
   mutt_free_compress_info (ctx);
-  return 0;
-}
-
-
-/**
- * open_mailbox - Open a compressed mailbox
- * @ctx: Mailbox to open
- *
- * Set up a compressed mailbox to be read.
- * First call open_read() to decompress the file.
- * Then determine the type of the mailbox so we can delegate the handling of
- * messages.
- */
-static int
-open_mailbox (CONTEXT *ctx)
-{
-  if (!ctx || (ctx->magic != MUTT_COMPRESSED))
-    return 1;
-
-  if (!open_read (ctx))
-    return 1;
-
-  COMPRESS_INFO *ci = ctx->compress_info;
-  if (!ci)
-    return 1;
-
-  struct mx_ops *ops = ci->child_ops;
-  if (!ops)
-    return 1;
-
-  /* Delegate */
-  return ops->open (ctx);
+  return -1;
 }
 
 /**
@@ -538,32 +499,19 @@ open_append_mailbox (CONTEXT *ctx, int flags)
     goto oa_fail2;
   }
 
-  if (ci->append || (access (ctx->realpath, F_OK) != 0))
+  /* Open the existing mailbox, unless we are appending */
+  if (!ci->append && (access (ctx->realpath, F_OK) == 0))
   {
-    /* Create an empty temporary file */
-    ctx->fp = safe_fopen (ctx->path, "w");
-    if (!ctx->fp)
-    {
-      mutt_perror (ctx->path);
-      goto oa_fail2;
-    }
-  }
-  else
-  {
-    /* Open the existing mailbox */
     int rc = execute_command (ctx, ci->open, 0, _("Decompressing %s"));
     if (rc == 0)
     {
       mutt_error (_("Compress command failed: %s"), ci->open);
       goto oa_fail2;
     }
-    ctx->fp = safe_fopen (ctx->path, "a");
-    if (!ctx->fp)
-    {
-      mutt_perror (ctx->path);
-      goto oa_fail2;
-    }
   }
+
+  if (ci->child_ops->open_append (ctx, flags) != 0)
+    goto oa_fail2;
 
   return 0;
 
@@ -598,7 +546,11 @@ close_mailbox (CONTEXT *ctx)
   if (!ci)
     return -1;
 
-  safe_fclose (&ctx->fp);
+  struct mx_ops *ops = ci->child_ops;
+  if (!ops)
+    return -1;
+
+  ops->close (ctx);
 
   /* sync has already been called, so we only need to delete some files */
   if (!ctx->append)
