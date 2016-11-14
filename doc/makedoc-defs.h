@@ -58,4 +58,7 @@
 # ifndef USE_SIDEBAR
 #  define USE_SIDEBAR
 # endif
+# ifndef USE_COMPRESSED
+#  define USE_COMPRESSED
+# endif
 #endif
