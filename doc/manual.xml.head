@@ -8485,8 +8485,9 @@ please have a look at the mixmaster documentation.
     <para>
       The shell-command must contain two placeholders for filenames:
       <literal>%f</literal> and <literal>%t</literal>.  These represent
-      <quote>from</quote> and <quote>to</quote> filenames.  It's a good idea to
-      put quotes around these placeholders.
+      <quote>from</quote> and <quote>to</quote> filenames.  These placeholders
+      should be placed inside single-quotes to prevent unintended shell
+      expansions.
     </para>
 
     <para>
@@ -8693,14 +8694,6 @@ please have a look at the mixmaster documentation.
         This could be a security risk.
       </para>
     </sect3>
-  </sect2>
-
-  <sect2 id="compress-known-bugs">
-    <title>Known Bugs</title>
-
-    <itemizedlist>
-      <listitem><para>The Compressed Folder hooks cannot deal with filenames that contains quotes/apostrophes.</para></listitem>
-    </itemizedlist>
   </sect2>
 </sect1>
 </chapter>
