@@ -144,6 +144,9 @@ static void collapse_all(MUTTMENU *menu, int toggle)
   THREAD *thread, *top;
   int final;
 
+  if (!Context || (Context->msgcount == 0))
+    return;
+
   /* Figure out what the current message would be after folding / unfolding,
    * so that we can restore the cursor in a sane way afterwards. */
   if (CURHDR->collapsed && toggle)
