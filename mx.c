@@ -508,7 +508,12 @@ static int mx_open_mailbox_append (CONTEXT *ctx, int flags)
     {
       if (errno == ENOENT)
       {
-        ctx->magic = DefaultMagic;
+#ifdef USE_COMPRESSED
+        if (mutt_comp_can_append (ctx))
+          ctx->magic = MUTT_COMPRESSED;
+        else
+#endif
+          ctx->magic = DefaultMagic;
         flags |= MUTT_APPENDNEW;
       }
       else
@@ -521,11 +526,6 @@ static int mx_open_mailbox_append (CONTEXT *ctx, int flags)
       return -1;
   }
 
-#ifdef USE_COMPRESSED
-  if (mutt_comp_can_append (ctx))
-    ctx->mx_ops = &mx_comp_ops;
-  else
-#endif
   ctx->mx_ops = mx_get_ops (ctx->magic);
   if (!ctx->mx_ops || !ctx->mx_ops->open_append)
     return -1;
@@ -656,6 +656,10 @@ void mx_fastclose_mailbox (CONTEXT *ctx)
 
   if (ctx->mx_ops)
     ctx->mx_ops->close (ctx);
+
+#ifdef USE_COMPRESSED
+  mutt_free_compress_info (ctx);
+#endif /* USE_COMPRESSED */
 
   if (ctx->subj_hash)
     hash_destroy (&ctx->subj_hash, NULL);
