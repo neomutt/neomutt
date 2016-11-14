@@ -802,7 +802,7 @@ void mbox_reset_atime (CONTEXT *ctx, struct stat *st)
  *	0	success
  *	-1	failure
  */
-int mbox_sync_mailbox (CONTEXT *ctx, int *index_hint)
+static int mbox_sync_mailbox (CONTEXT *ctx, int *index_hint)
 {
   char tempfile[_POSIX_PATH_MAX];
   char buf[32];
@@ -817,6 +817,7 @@ int mbox_sync_mailbox (CONTEXT *ctx, int *index_hint)
   FILE *fp = NULL;
   progress_t progress;
   char msgbuf[STRING];
+  BUFFY *tmp = NULL;
 
   /* sort message by their position in the mailbox on disk */
   if (Sort != SORT_ORDER)
@@ -1114,6 +1115,13 @@ int mbox_sync_mailbox (CONTEXT *ctx, int *index_hint)
   unlink (tempfile); /* remove partial copy of the mailbox */
   mutt_unblock_signals ();
 
+  if (option(OPTCHECKMBOXSIZE))
+  {
+    tmp = mutt_find_mailbox (ctx->path);
+    if (tmp && tmp->new == 0)
+      mutt_update_mailbox (tmp);
+  }
+
   return (0); /* signal success */
 
 bail:  /* Come here in case of disaster */
@@ -1354,6 +1362,7 @@ struct mx_ops mx_mbox_ops = {
   .commit_msg = mbox_commit_message,
   .open_new_msg = mbox_open_new_message,
   .check = mbox_check_mailbox,
+  .sync = mbox_sync_mailbox,
 };
 
 struct mx_ops mx_mmdf_ops = {
@@ -1365,4 +1374,5 @@ struct mx_ops mx_mmdf_ops = {
   .commit_msg = mmdf_commit_message,
   .open_new_msg = mbox_open_new_message,
   .check = mbox_check_mailbox,
+  .sync = mbox_sync_mailbox,
 };

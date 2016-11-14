@@ -1030,7 +1030,7 @@ static void append_message(CONTEXT *ctx,
 	ctx->msgcount++;
 
 	if (newpath) {
-		/* remember that file has been moved -- nm_sync() will update the DB */
+		/* remember that file has been moved -- nm_sync_mailbox() will update the DB */
 		struct nm_hdrdata *hd = (struct nm_hdrdata *) h->data;
 
 		if (hd) {
@@ -1604,7 +1604,7 @@ int nm_update_filename(CONTEXT *ctx, const char *old, const char *new, HEADER *h
 	return rc;
 }
 
-int nm_sync(CONTEXT *ctx, int *index_hint)
+int nm_sync_mailbox(CONTEXT *ctx, int *index_hint)
 {
 	struct nm_ctxdata *data = get_ctxdata(ctx);
 	int i, rc = 0;
@@ -2072,6 +2072,7 @@ struct mx_ops mx_notmuch_ops = {
         .open_append  = NULL,
 	.close        = deinit_context,
 	.check        = nm_check_database,
+	.sync         = nm_sync_mailbox,
 	.open_msg     = nm_open_message,
 	.close_msg    = nm_close_message,
 	.commit_msg   = nm_commit_message,

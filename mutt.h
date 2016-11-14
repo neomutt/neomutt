@@ -992,6 +992,7 @@ struct mx_ops
   int (*open_append) (struct _context *, int flags);
   int (*close) (struct _context *);
   int (*check) (struct _context *ctx, int *index_hint);
+  int (*sync) (struct _context *ctx, int *index_hint);
   int (*open_msg) (struct _context *, struct _message *, int msgno);
   int (*close_msg) (struct _context *, struct _message *);
   int (*commit_msg) (struct _context *, struct _message *);

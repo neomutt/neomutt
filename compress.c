@@ -816,18 +816,18 @@ mutt_comp_can_read (const char *path)
 }
 
 /**
- * mutt_comp_sync - Save changes to the compressed mailbox file
+ * sync_mailbox - Save changes to the compressed mailbox file
  * @ctx: Mailbox to sync
  *
- * Changes in Mutt only affect the tmp file.  Calling mutt_comp_sync()
+ * Changes in Mutt only affect the tmp file.  Calling sync_mailbox()
  * will commit them to the compressed file.
  *
  * Returns:
  *       0: Success
  *      -1: Failure
  */
-int
-mutt_comp_sync (CONTEXT *ctx)
+static int
+sync_mailbox (CONTEXT *ctx, int *index_hint)
 {
   if (!ctx)
     return -1;
@@ -842,21 +842,35 @@ mutt_comp_sync (CONTEXT *ctx)
     return -1;
   }
 
-  /* TODO: need to refactor sync so we can lock around the
-   * path sync as well as the compress operation */
+  struct mx_ops *ops = ci->child_ops;
+  if (!ops)
+    return -1;
+
   if (!lock_realpath (ctx, 1))
   {
     mutt_error (_("Unable to lock mailbox!"));
     return -1;
   }
 
-  int rc = execute_command (ctx, ci->close, _("Compressing %s"));
-  if (rc == 0)
-    return -1;
+  /* TODO: check if mailbox changed first! */
 
-  unlock_realpath (ctx);
+  int rc = ops->sync (ctx, index_hint);
+  if (rc != 0)
+  {
+    unlock_realpath (ctx);
+    return rc;
+  }
+
+  rc = execute_command (ctx, ci->close, _("Compressing %s"));
+  if (rc == 0)
+  {
+    unlock_realpath (ctx);
+    return -1;
+  }
 
   store_size (ctx);
+
+  unlock_realpath (ctx);
 
   return 0;
 }
@@ -894,6 +908,7 @@ struct mx_ops mx_comp_ops =
   .open_append  = open_append_mailbox,
   .close        = close_mailbox,
   .check        = check_mailbox,
+  .sync         = sync_mailbox,
   .open_msg     = open_message,
   .close_msg    = close_message,
   .commit_msg   = commit_message,

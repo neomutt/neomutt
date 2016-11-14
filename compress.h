@@ -23,7 +23,6 @@ void mutt_free_compress_info (CONTEXT *ctx);
 
 int mutt_comp_can_append    (CONTEXT *ctx);
 int mutt_comp_can_read      (const char *path);
-int mutt_comp_sync          (CONTEXT *ctx);
 int mutt_comp_valid_command (const char *cmd);
 
 extern struct mx_ops mx_comp_ops;
