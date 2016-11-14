@@ -5418,6 +5418,31 @@ msgstr "Extrahiere unterstützte öffentliche Schlüssel"
 msgid "show S/MIME options"
 msgstr "Zeige S/MIME Optionen"
 
+#: compress.c:228 compress.c:253
+#, c-format
+msgid "Decompressing %s"
+msgstr "Entpacke %s"
+
+#: compress.c:264
+#, c-format
+msgid "Error executing: %s\n"
+msgstr "Fehler beim Ausführen von %s\n"
+
+#: compress.c:350 compress.c:377 compress.c:423 compress.c:454
+#, c-format
+msgid "Compressing %s..."
+msgstr "Komprimiere %s..."
+
+#: compress.c:425 compress.c:456
+#, c-format
+msgid "Compressed-appending to %s..."
+msgstr "Hänge komprimiert an %s... an"
+
+#: compress.c:461
+#, c-format
+msgid " %s: Error compressing mailbox!  Uncompressed one kept!\n"
+msgstr " %s: Fehler beim packen der Mailbox! Entpackte Mailbox gespeichert!\n"
+
 #~ msgid "delete message(s)"
 #~ msgstr "Nachricht(en) löschen"
 
