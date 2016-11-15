@@ -3237,7 +3237,7 @@ static char* mutt_find_cfg (const char *home, const char *xdg_cfg_home)
 
   int i;
 
-  for (i = 0; locations[i][0] && locations[i][1]; i++)
+  for (i = 0; locations[i][0] || locations[i][1]; i++)
   {
     int j;
 
