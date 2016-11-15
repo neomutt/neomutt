@@ -29,6 +29,7 @@
 #include "auth.h"
 
 static const imap_auth_t imap_authenticators[] = {
+  { imap_auth_plain, "plain" },
 #ifdef USE_SASL
   { imap_auth_sasl, NULL },
 #else

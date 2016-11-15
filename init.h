@@ -3555,24 +3555,24 @@ struct option_t MuttVars[] = {
   ** (S/MIME only)
   */
 #ifdef USE_SMTP
-# ifdef USE_SASL
   { "smtp_authenticators", DT_STR, R_NONE, UL &SmtpAuthenticators, UL 0 },
   /*
   ** .pp
   ** This is a colon-delimited list of authentication methods mutt may
   ** attempt to use to log in to an SMTP server, in the order mutt should
-  ** try them.  Authentication methods are any SASL mechanism, e.g.
+  ** try them.  Authentication methods are any SASL mechanism, e.g. ``plain'',
   ** ``digest-md5'', ``gssapi'' or ``cram-md5''.
   ** This option is case-insensitive. If it is ``unset''
   ** (the default) mutt will try all available methods, in order from
-  ** most-secure to least-secure.
+  ** most-secure to least-secure. Support for the ``plain'' mechanism is
+  ** bundled; other mechanisms are provided by an external SASL library (look
+  ** for +USE_SASL in the output of mutt -v).
   ** .pp
   ** Example:
   ** .ts
   ** set smtp_authenticators="digest-md5:cram-md5"
   ** .te
   */
-# endif /* USE_SASL */
   { "smtp_pass", 	DT_STR,  R_NONE|F_SENSITIVE, UL &SmtpPass, UL 0 },
   /*
   ** .pp

@@ -40,6 +40,7 @@ typedef struct
 } imap_auth_t;
 
 /* external authenticator prototypes */
+imap_auth_res_t imap_auth_plain (IMAP_DATA *idata, const char *method);
 #ifndef USE_SASL
 imap_auth_res_t imap_auth_anon (IMAP_DATA* idata, const char* method);
 imap_auth_res_t imap_auth_cram_md5 (IMAP_DATA* idata, const char* method);

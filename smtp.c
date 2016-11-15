@@ -34,6 +34,8 @@
 
 #include <sasl/sasl.h>
 #include <sasl/saslutil.h>
+#else
+#include "mutt_sasl_plain.h"
 #endif
 
 #include <netdb.h>
@@ -69,6 +71,8 @@ enum {
 #ifdef USE_SASL
 static int smtp_auth (CONNECTION* conn);
 static int smtp_auth_sasl (CONNECTION* conn, const char* mechanisms);
+#else
+static int smtp_auth_plain (CONNECTION* conn);
 #endif
 
 static int smtp_fill_account (ACCOUNT* account);
@@ -498,9 +502,7 @@ static int smtp_open (CONNECTION* conn)
 #ifdef USE_SASL
     return smtp_auth (conn);
 #else
-    mutt_error (_("SMTP authentication requires SASL"));
-    mutt_sleep (1);
-    return -1;
+    return smtp_auth_plain (conn);
 #endif /* USE_SASL */
   }
 
@@ -661,5 +663,62 @@ fail:
   sasl_dispose (&saslconn);
   FREE (&buf);
   return SMTP_AUTH_FAIL;
+}
+#else /* USE_SASL */
+
+static int smtp_auth_plain(CONNECTION* conn)
+{
+  char buf[LONG_STRING];
+  size_t len;
+  const char *method;
+  const char *delim;
+  const char *error = _("SASL authentication failed");
+
+  if (!SmtpAuthenticators || !*SmtpAuthenticators)
+  {
+    goto error;
+  }
+
+  /* Check if any elements in SmtpAuthenticators is "plain" */
+  for (method = delim = SmtpAuthenticators;
+       *delim && (delim = mutt_strchrnul(method, ':'));
+       method = delim + 1)
+  {
+    if (ascii_strncasecmp(method, "plain", 5) == 0)
+    {
+      /* Get username and password. Bail out of any cannot be retrieved. */
+      if (mutt_account_getuser(&conn->account) ||
+          mutt_account_getpass(&conn->account))
+      {
+        goto error;
+      }
+
+      /* Build the initial client response. */
+      len = mutt_sasl_plain_msg(buf, sizeof(buf), "AUTH PLAIN",
+          conn->account.user, conn->account.user, conn->account.pass);
+
+      /* Terminate as per SMTP protocol. Bail out if there's no room left. */
+      if (snprintf(buf + len, sizeof(buf) - len, "\r\n") != 2)
+      {
+        goto error;
+      }
+
+      /* Send request, receive response (with a check for OK code). */
+      if ((mutt_socket_write(conn, buf) < 0) || smtp_get_resp(conn))
+      {
+        goto error;
+      }
+
+      /* If we got here, auth was successful. */
+      return 0;
+    }
+  }
+
+  error = _("No authenticators available");
+
+error:
+  mutt_error(error);
+  mutt_sleep(1);
+  return -1;
 }
 #endif /* USE_SASL */
