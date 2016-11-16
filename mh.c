@@ -696,8 +696,11 @@ static void maildir_parse_flags (HEADER * h, const char *path)
 	break;
 
       case 'T':		/* trashed */
-	h->trash = 1;
-	h->deleted = 1;
+	if (!h->flagged || !option(OPTFLAGSAFE))
+	{
+	  h->trash = 1;
+	  h->deleted = 1;
+	}
 	break;
       
       default:
