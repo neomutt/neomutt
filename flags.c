@@ -48,7 +48,8 @@ void _mutt_set_flag (CONTEXT *ctx, HEADER *h, int flag, int bf, int upd_ctx)
 
       if (bf)
       {
-	if (!h->deleted && !ctx->readonly)
+	if (!h->deleted && !ctx->readonly
+	    && (!h->flagged || !option(OPTFLAGSAFE)))
 	{
 	  h->deleted = 1;
           update = 1;
