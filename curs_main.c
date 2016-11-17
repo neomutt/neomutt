@@ -2892,6 +2892,34 @@ int mutt_index_menu (void)
 	}
 	break;
 
+
+      case OP_MARK_MSG:
+
+	CHECK_MSGCOUNT;
+	CHECK_VISIBLE;
+	if (CURHDR->env->message_id)
+	{
+	  char str[STRING], macro[STRING];
+	  char buf[128];
+
+	  buf[0] = '\0';
+	  if (!mutt_get_field ("Enter macro stroke: ", buf, sizeof(buf),
+	  		       MUTT_CLEAR) && buf[0])
+	  {
+	    snprintf(str, sizeof(str), "%s%s", MarkMacroPrefix, buf);
+	    snprintf(macro, sizeof(macro),
+		     "<search>~i \"%s\"\n", CURHDR->env->message_id);
+	    km_bind(str, MENU_GENERIC, OP_MACRO, macro, "Message hotkey");
+
+	    snprintf(buf, sizeof(buf), _("Message bound to %s."), str);
+	    mutt_message(buf);
+	    dprint (1, (debugfile, "Mark: %s => %s\n", str, macro));
+	  }
+	}
+	else
+	  mutt_error _("No message ID to macro.");
+	break;
+
       case OP_RECALL_MESSAGE:
 
 	CHECK_ATTACH;

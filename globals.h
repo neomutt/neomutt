@@ -80,6 +80,7 @@ WHERE char *HeaderCacheBackend;
 WHERE char *HeaderCachePageSize;
 #endif /* HAVE_GDBM || HAVE_BDB */
 #endif /* USE_HCACHE */
+WHERE char *MarkMacroPrefix;
 WHERE char *MhFlagged;
 WHERE char *MhReplied;
 WHERE char *MhUnseen;
