@@ -9,7 +9,7 @@ msgstr ""
 "Language-Team: LIE-BR (http://lie-br.conectiva.com.br)\n"
 "Language: \n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=iso-8859-1\n"
+"Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding:\n"
 
 #: account.c:163
@@ -47,7 +47,7 @@ msgstr "Ajuda"
 
 #: addrbook.c:145
 msgid "You have no aliases!"
-msgstr "VocÍ n„o tem apelidos!"
+msgstr "Voc√™ n√£o tem apelidos!"
 
 #: addrbook.c:155
 msgid "Aliases"
@@ -60,7 +60,7 @@ msgstr "Apelidar como: "
 
 #: alias.c:266
 msgid "You already have an alias defined with that name!"
-msgstr "VocÍ j· tem um apelido definido com aquele nome!"
+msgstr "Voc√™ j√° tem um apelido definido com aquele nome!"
 
 #: alias.c:272
 msgid "Warning: This alias name may not work.  Fix it?"
@@ -68,7 +68,7 @@ msgstr ""
 
 #: alias.c:297
 msgid "Address: "
-msgstr "EndereÁo: "
+msgstr "Endere√ßo: "
 
 #: alias.c:307 send.c:206
 #, c-format
@@ -105,12 +105,12 @@ msgstr "Erro ao tentar exibir arquivo"
 
 #: attach.c:113 attach.c:245 attach.c:400 attach.c:925
 msgid "Can't match nametemplate, continue?"
-msgstr "N„o pude casar o nome, continuo?"
+msgstr "N√£o pude casar o nome, continuo?"
 
 #: attach.c:126
 #, c-format
 msgid "Mailcap compose entry requires %%s"
-msgstr "Entrada de composiÁ„o no mailcap requer %%s"
+msgstr "Entrada de composi√ß√£o no mailcap requer %%s"
 
 #: attach.c:134 attach.c:266 commands.c:223 compose.c:1208 curs_lib.c:204
 #: curs_lib.c:723
@@ -120,32 +120,32 @@ msgstr "Erro ao executar \"%s\"!"
 
 #: attach.c:144
 msgid "Failure to open file to parse headers."
-msgstr "Erro ao abrir o arquivo para interpretar os cabeÁalhos."
+msgstr "Erro ao abrir o arquivo para interpretar os cabe√ßalhos."
 
 #: attach.c:175
 msgid "Failure to open file to strip headers."
-msgstr "Erro ao abrir o arquivo para retirar cabeÁalhos."
+msgstr "Erro ao abrir o arquivo para retirar cabe√ßalhos."
 
 #: attach.c:184
 #, fuzzy
 msgid "Failure to rename file."
-msgstr "Erro ao abrir o arquivo para interpretar os cabeÁalhos."
+msgstr "Erro ao abrir o arquivo para interpretar os cabe√ßalhos."
 
 #: attach.c:197
 #, c-format
 msgid "No mailcap compose entry for %s, creating empty file."
 msgstr ""
-"Nenhuma entrada de composiÁ„o no mailcap para %s, criando entrada vazia."
+"Nenhuma entrada de composi√ß√£o no mailcap para %s, criando entrada vazia."
 
 #: attach.c:258
 #, c-format
 msgid "Mailcap Edit entry requires %%s"
-msgstr "Entrada de ediÁ„o no mailcap requer %%s"
+msgstr "Entrada de edi√ß√£o no mailcap requer %%s"
 
 #: attach.c:280
 #, c-format
 msgid "No mailcap edit entry for %s"
-msgstr "Nenhuma entrada de ediÁ„o no mailcap para %s"
+msgstr "Nenhuma entrada de edi√ß√£o no mailcap para %s"
 
 #: attach.c:366
 msgid "No matching mailcap entry found.  Viewing as text."
@@ -153,11 +153,11 @@ msgstr "Nenhuma entrada no mailcap de acordo encontrada. Exibindo como texto."
 
 #: attach.c:379
 msgid "MIME type not defined.  Cannot view attachment."
-msgstr "Tipo MIME n„o definido. N„o È possÌvel visualizar o anexo."
+msgstr "Tipo MIME n√£o definido. N√£o √© poss√≠vel visualizar o anexo."
 
 #: attach.c:469
 msgid "Cannot create filter"
-msgstr "N„o È possÌvel criar o filtro."
+msgstr "N√£o √© poss√≠vel criar o filtro."
 
 #: attach.c:477
 #, c-format
@@ -182,28 +182,28 @@ msgstr "-- Anexos"
 #: attach.c:631 attach.c:663 attach.c:958 attach.c:1016 handler.c:1363
 #: pgpkey.c:572 pgpkey.c:761
 msgid "Can't create filter"
-msgstr "N„o foi possÌvel criar um filtro"
+msgstr "N√£o foi poss√≠vel criar um filtro"
 
 #: attach.c:797
 msgid "Write fault!"
-msgstr "Erro de gravaÁ„o!"
+msgstr "Erro de grava√ß√£o!"
 
 #: attach.c:1039
 msgid "I don't know how to print that!"
-msgstr "Eu n„o sei como imprimir isto!"
+msgstr "Eu n√£o sei como imprimir isto!"
 
 #: browser.c:47
 msgid "Chdir"
-msgstr "DiretÛrio"
+msgstr "Diret√≥rio"
 
 #: browser.c:48
 msgid "Mask"
-msgstr "M·scara"
+msgstr "M√°scara"
 
 #: browser.c:425 browser.c:1091
 #, c-format
 msgid "%s is not a directory."
-msgstr "%s n„o È um diretÛrio."
+msgstr "%s n√£o √© um diret√≥rio."
 
 #: browser.c:573
 #, c-format
@@ -213,39 +213,39 @@ msgstr "Caixas [%d]"
 #: browser.c:580
 #, c-format
 msgid "Subscribed [%s], File mask: %s"
-msgstr "[%s] assinada, M·scara de arquivos: %s"
+msgstr "[%s] assinada, M√°scara de arquivos: %s"
 
 #: browser.c:584
 #, c-format
 msgid "Directory [%s], File mask: %s"
-msgstr "DiretÛrio [%s], M·scara de arquivos: %s"
+msgstr "Diret√≥rio [%s], M√°scara de arquivos: %s"
 
 #: browser.c:596
 msgid "Can't attach a directory!"
-msgstr "N„o È possÌvel anexar um diretÛrio"
+msgstr "N√£o √© poss√≠vel anexar um diret√≥rio"
 
 #: browser.c:735 browser.c:1159 browser.c:1257
 msgid "No files match the file mask"
-msgstr "Nenhum arquivo casa com a m·scara"
+msgstr "Nenhum arquivo casa com a m√°scara"
 
 #: browser.c:939
 #, fuzzy
 msgid "Create is only supported for IMAP mailboxes"
-msgstr "A remoÁ„o sÛ È possÌvel para caixar IMAP"
+msgstr "A remo√ß√£o s√≥ √© poss√≠vel para caixar IMAP"
 
 #: browser.c:963
 #, fuzzy
 msgid "Rename is only supported for IMAP mailboxes"
-msgstr "A remoÁ„o sÛ È possÌvel para caixar IMAP"
+msgstr "A remo√ß√£o s√≥ √© poss√≠vel para caixar IMAP"
 
 #: browser.c:986
 msgid "Delete is only supported for IMAP mailboxes"
-msgstr "A remoÁ„o sÛ È possÌvel para caixar IMAP"
+msgstr "A remo√ß√£o s√≥ √© poss√≠vel para caixar IMAP"
 
 #: browser.c:996
 #, fuzzy
 msgid "Cannot delete root folder"
-msgstr "N„o È possÌvel criar o filtro."
+msgstr "N√£o √© poss√≠vel criar o filtro."
 
 #: browser.c:999
 #, c-format
@@ -258,7 +258,7 @@ msgstr "Caixa de correio removida."
 
 #: browser.c:1021
 msgid "Mailbox not deleted."
-msgstr "Caixa de correio n„o removida."
+msgstr "Caixa de correio n√£o removida."
 
 #: browser.c:1040
 msgid "Chdir to: "
@@ -266,19 +266,19 @@ msgstr "Mudar para: "
 
 #: browser.c:1079 browser.c:1152
 msgid "Error scanning directory."
-msgstr "Erro ao examinar diretÛrio."
+msgstr "Erro ao examinar diret√≥rio."
 
 #: browser.c:1103
 msgid "File Mask: "
-msgstr "M·scara de arquivos: "
+msgstr "M√°scara de arquivos: "
 
 #: browser.c:1175
 msgid "Reverse sort by (d)ate, (a)lpha, si(z)e or do(n)'t sort? "
-msgstr "Ordem inversa por (d)ata, (a)lfa, (t)amanho ou (n)„o ordenar? "
+msgstr "Ordem inversa por (d)ata, (a)lfa, (t)amanho ou (n)√£o ordenar? "
 
 #: browser.c:1176
 msgid "Sort by (d)ate, (a)lpha, si(z)e or do(n)'t sort? "
-msgstr "Ordenar por (d)ata, (a)lfa, (t)amanho ou (n)„o ordenar? "
+msgstr "Ordenar por (d)ata, (a)lfa, (t)amanho ou (n)√£o ordenar? "
 
 #: browser.c:1177
 msgid "dazn"
@@ -290,7 +290,7 @@ msgstr "Nome do novo arquivo: "
 
 #: browser.c:1275
 msgid "Can't view a directory"
-msgstr "N„o È possÌvel visualizar um diretÛrio"
+msgstr "N√£o √© poss√≠vel visualizar um diret√≥rio"
 
 #: browser.c:1292
 msgid "Error trying to view file"
@@ -304,22 +304,22 @@ msgstr "Novas mensagens em %s"
 #: color.c:339
 #, c-format
 msgid "%s: color not supported by term"
-msgstr "%s: o terminal n„o aceita cores"
+msgstr "%s: o terminal n√£o aceita cores"
 
 #: color.c:345
 #, c-format
 msgid "%s: no such color"
-msgstr "%s: n„o existe tal cor"
+msgstr "%s: n√£o existe tal cor"
 
 #: color.c:409 color.c:615 color.c:626
 #, c-format
 msgid "%s: no such object"
-msgstr "%s: n„o existe tal objeto"
+msgstr "%s: n√£o existe tal objeto"
 
 #: color.c:422
 #, fuzzy, c-format
 msgid "%s: command valid only for index, body, header objects"
-msgstr "%s: comando v·lido apenas para o objeto Ìndice"
+msgstr "%s: comando v√°lido apenas para o objeto √≠ndice"
 
 #: color.c:430
 #, c-format
@@ -341,7 +341,7 @@ msgstr "mono: poucos argumentos"
 #: color.c:696
 #, c-format
 msgid "%s: no such attribute"
-msgstr "%s: n„o existe tal atributo"
+msgstr "%s: n√£o existe tal atributo"
 
 #: color.c:736 hook.c:69 hook.c:77 keymap.c:921
 msgid "too few arguments"
@@ -353,7 +353,7 @@ msgstr "muitos argumentos"
 
 #: color.c:761
 msgid "default colors not supported"
-msgstr "cores prÈ-definidas n„o suportadas"
+msgstr "cores pr√©-definidas n√£o suportadas"
 
 #: commands.c:90
 msgid "Verify PGP signature?"
@@ -361,17 +361,17 @@ msgstr "Verificar assinatura de PGP?"
 
 #: commands.c:115 mbox.c:864
 msgid "Could not create temporary file!"
-msgstr "N„o foi possÌvel criar um arquivo tempor·rio!"
+msgstr "N√£o foi poss√≠vel criar um arquivo tempor√°rio!"
 
 #: commands.c:128
 #, fuzzy
 msgid "Cannot create display filter"
-msgstr "N„o È possÌvel criar o filtro."
+msgstr "N√£o √© poss√≠vel criar o filtro."
 
 #: commands.c:152
 #, fuzzy
 msgid "Could not copy message"
-msgstr "N„o foi possÌvel enviar a mensagem."
+msgstr "N√£o foi poss√≠vel enviar a mensagem."
 
 #: commands.c:189
 #, fuzzy
@@ -418,7 +418,7 @@ msgstr "Repetir mensagens marcadas para: "
 
 #: commands.c:291 recvcmd.c:182
 msgid "Error parsing address!"
-msgstr "Erro ao interpretar endereÁo!"
+msgstr "Erro ao interpretar endere√ßo!"
 
 #: commands.c:299 recvcmd.c:190
 #, c-format
@@ -456,7 +456,7 @@ msgstr "Mensagens repetidas."
 #: commands.c:413 commands.c:447 commands.c:464
 #, fuzzy
 msgid "Can't create filter process"
-msgstr "N„o foi possÌvel criar um filtro"
+msgstr "N√£o foi poss√≠vel criar um filtro"
 
 #: commands.c:493
 msgid "Pipe to command: "
@@ -570,7 +570,7 @@ msgstr "Conectando a %s..."
 #: commands.c:951
 #, fuzzy, c-format
 msgid "Character set changed to %s; %s."
-msgstr "O conjunto de caracteres %s È desconhecido."
+msgstr "O conjunto de caracteres %s √© desconhecido."
 
 #: commands.c:953
 msgid "not converting"
@@ -582,7 +582,7 @@ msgstr ""
 
 #: compose.c:47
 msgid "There are no attachments."
-msgstr "N„o h· anexos."
+msgstr "N√£o h√° anexos."
 
 #: compose.c:89
 msgid "Send"
@@ -598,12 +598,12 @@ msgstr "Anexar arquivo"
 
 #: compose.c:95
 msgid "Descrip"
-msgstr "DescriÁ„o"
+msgstr "Descri√ß√£o"
 
 #: compose.c:117
 #, fuzzy
 msgid "Not supported"
-msgstr "N„o È possÌvel marcar."
+msgstr "N√£o √© poss√≠vel marcar."
 
 #: compose.c:122
 msgid "Sign, Encrypt"
@@ -645,7 +645,7 @@ msgstr " assinar como: "
 
 #: compose.c:153 compose.c:157
 msgid "<default>"
-msgstr "<padr„o>"
+msgstr "<padr√£o>"
 
 #: compose.c:165
 #, fuzzy
@@ -660,12 +660,12 @@ msgstr ""
 #: compose.c:219
 #, c-format
 msgid "%s [#%d] no longer exists!"
-msgstr "%s [#%d] n„o existe mais!"
+msgstr "%s [#%d] n√£o existe mais!"
 
 #: compose.c:227
 #, c-format
 msgid "%s [#%d] modified. Update encoding?"
-msgstr "%s [#%d] modificado. Atualizar codificaÁ„o?"
+msgstr "%s [#%d] modificado. Atualizar codifica√ß√£o?"
 
 #: compose.c:270
 msgid "-- Attachments"
@@ -678,7 +678,7 @@ msgstr ""
 
 #: compose.c:321
 msgid "You may not delete the only attachment."
-msgstr "VocÍ n„o pode apagar o ˙nico anexo."
+msgstr "Voc√™ n√£o pode apagar o √∫nico anexo."
 
 #: compose.c:614 send.c:1681
 #, c-format
@@ -692,7 +692,7 @@ msgstr "Anexando os arquivos escolhidos..."
 #: compose.c:714
 #, c-format
 msgid "Unable to attach %s!"
-msgstr "N„o foi possÌvel anexar %s!"
+msgstr "N√£o foi poss√≠vel anexar %s!"
 
 #: compose.c:733
 msgid "Open mailbox to attach message from"
@@ -701,7 +701,7 @@ msgstr "Abrir caixa para anexar mensagem de"
 #: compose.c:763
 #, fuzzy, c-format
 msgid "Unable to open mailbox %s"
-msgstr "N„o foi possÌvel travar a caixa de mensagens!"
+msgstr "N√£o foi poss√≠vel travar a caixa de mensagens!"
 
 #: compose.c:771
 msgid "No messages in that folder."
@@ -709,31 +709,31 @@ msgstr "Nenhuma mensagem naquela pasta."
 
 #: compose.c:780
 msgid "Tag the messages you want to attach!"
-msgstr "Marque as mensagens que vocÍ quer anexar!"
+msgstr "Marque as mensagens que voc√™ quer anexar!"
 
 #: compose.c:812
 msgid "Unable to attach!"
-msgstr "N„o foi possÌvel anexar!"
+msgstr "N√£o foi poss√≠vel anexar!"
 
 #: compose.c:863
 msgid "Recoding only affects text attachments."
-msgstr "A gravaÁ„o sÛ afeta os anexos de texto."
+msgstr "A grava√ß√£o s√≥ afeta os anexos de texto."
 
 #: compose.c:868
 msgid "The current attachment won't be converted."
-msgstr "O anexo atual n„o ser· convertido."
+msgstr "O anexo atual n√£o ser√° convertido."
 
 #: compose.c:870
 msgid "The current attachment will be converted."
-msgstr "O anexo atual ser· convertido"
+msgstr "O anexo atual ser√° convertido"
 
 #: compose.c:945
 msgid "Invalid encoding."
-msgstr "CodificaÁ„o inv·lida"
+msgstr "Codifica√ß√£o inv√°lida"
 
 #: compose.c:971
 msgid "Save a copy of this message?"
-msgstr "Salvar uma cÛpia desta mensagem?"
+msgstr "Salvar uma c√≥pia desta mensagem?"
 
 #: compose.c:1027
 msgid "Rename to: "
@@ -744,7 +744,7 @@ msgstr "Renomear para: "
 #: compose.c:1034 editmsg.c:96 editmsg.c:121 sendlib.c:872
 #, fuzzy, c-format
 msgid "Can't stat %s: %s"
-msgstr "ImpossÌvel consultar: %s"
+msgstr "Imposs√≠vel consultar: %s"
 
 #: compose.c:1061
 msgid "New file: "
@@ -752,7 +752,7 @@ msgstr "Novo arquivo: "
 
 #: compose.c:1074
 msgid "Content-Type is of the form base/sub"
-msgstr "Content-Type È da forma base/sub"
+msgstr "Content-Type √© da forma base/sub"
 
 #: compose.c:1080
 #, c-format
@@ -762,11 +762,11 @@ msgstr "Content-Type %s desconhecido"
 #: compose.c:1093
 #, c-format
 msgid "Can't create file %s"
-msgstr "N„o È possÌvel criar o arquivo %s"
+msgstr "N√£o √© poss√≠vel criar o arquivo %s"
 
 #: compose.c:1101
 msgid "What we have here is a failure to make an attachment"
-msgstr "O que temos aqui È uma falha ao criar um anexo"
+msgstr "O que temos aqui √© uma falha ao criar um anexo"
 
 #: compose.c:1162
 msgid "Postpone this message?"
@@ -796,7 +796,7 @@ msgstr ""
 #: crypt-gpgme.c:393
 #, fuzzy, c-format
 msgid "error creating gpgme context: %s\n"
-msgstr "erro no padr„o em: %s"
+msgstr "erro no padr√£o em: %s"
 
 #: crypt-gpgme.c:403
 #, c-format
@@ -806,31 +806,31 @@ msgstr ""
 #: crypt-gpgme.c:423
 #, fuzzy, c-format
 msgid "error creating gpgme data object: %s\n"
-msgstr "erro no padr„o em: %s"
+msgstr "erro no padr√£o em: %s"
 
 #: crypt-gpgme.c:489 crypt-gpgme.c:507 crypt-gpgme.c:1538 crypt-gpgme.c:2248
 #, fuzzy, c-format
 msgid "error allocating data object: %s\n"
-msgstr "erro no padr„o em: %s"
+msgstr "erro no padr√£o em: %s"
 
 #: crypt-gpgme.c:525
 #, fuzzy, c-format
 msgid "error rewinding data object: %s\n"
-msgstr "erro no padr„o em: %s"
+msgstr "erro no padr√£o em: %s"
 
 #: crypt-gpgme.c:547 crypt-gpgme.c:600
 #, fuzzy, c-format
 msgid "error reading data object: %s\n"
-msgstr "erro no padr„o em: %s"
+msgstr "erro no padr√£o em: %s"
 
 #: crypt-gpgme.c:573 crypt-gpgme.c:3637 pgpkey.c:560 pgpkey.c:741
 msgid "Can't create temporary file"
-msgstr "N„o foi possÌvel criar um arquivo tempor·rio"
+msgstr "N√£o foi poss√≠vel criar um arquivo tempor√°rio"
 
 #: crypt-gpgme.c:683
 #, fuzzy, c-format
 msgid "error adding recipient `%s': %s\n"
-msgstr "erro no padr„o em: %s"
+msgstr "erro no padr√£o em: %s"
 
 #: crypt-gpgme.c:723
 #, c-format
@@ -850,17 +850,17 @@ msgstr ""
 #: crypt-gpgme.c:762
 #, fuzzy, c-format
 msgid "error setting PKA signature notation: %s\n"
-msgstr "erro no padr„o em: %s"
+msgstr "erro no padr√£o em: %s"
 
 #: crypt-gpgme.c:818
 #, fuzzy, c-format
 msgid "error encrypting data: %s\n"
-msgstr "erro no padr„o em: %s"
+msgstr "erro no padr√£o em: %s"
 
 #: crypt-gpgme.c:937
 #, fuzzy, c-format
 msgid "error signing data: %s\n"
-msgstr "erro no padr„o em: %s"
+msgstr "erro no padr√£o em: %s"
 
 #: crypt-gpgme.c:948
 msgid "$pgp_sign_as unset and no default key specified in ~/.gnupg/gpg.conf"
@@ -890,7 +890,7 @@ msgstr ""
 #: crypt-gpgme.c:1186
 #, fuzzy
 msgid "The CRL is not available\n"
-msgstr "A mensagem pai n„o est· disponÌvel."
+msgstr "A mensagem pai n√£o est√° dispon√≠vel."
 
 #: crypt-gpgme.c:1192
 msgid "Available CRL is too old\n"
@@ -916,7 +916,7 @@ msgstr ""
 #: crypt-gpgme.c:1264 crypt-gpgme.c:3468
 #, fuzzy
 msgid "Fingerprint: "
-msgstr "Impress„o digital: %s"
+msgstr "Impress√£o digital: %s"
 
 #: crypt-gpgme.c:1324
 msgid ""
@@ -1008,7 +1008,7 @@ msgstr "[-- Erro: fim de arquivo inesperado! --]\n"
 #: crypt-gpgme.c:2255
 #, fuzzy
 msgid "Error extracting key data!\n"
-msgstr "erro no padr„o em: %s"
+msgstr "erro no padr√£o em: %s"
 
 #: crypt-gpgme.c:2441
 #, c-format
@@ -1024,19 +1024,19 @@ msgid ""
 "[-- BEGIN PGP MESSAGE --]\n"
 "\n"
 msgstr ""
-"[-- INÕCIO DE MENSAGEM DO PGP --]\n"
+"[-- IN√çCIO DE MENSAGEM DO PGP --]\n"
 "\n"
 
 #: crypt-gpgme.c:2509 pgp.c:521
 msgid "[-- BEGIN PGP PUBLIC KEY BLOCK --]\n"
-msgstr "[-- INÕCIO DE BLOCO DE CHAVE P⁄BLICA DO PGP --]\n"
+msgstr "[-- IN√çCIO DE BLOCO DE CHAVE P√öBLICA DO PGP --]\n"
 
 #: crypt-gpgme.c:2512 pgp.c:523
 msgid ""
 "[-- BEGIN PGP SIGNED MESSAGE --]\n"
 "\n"
 msgstr ""
-"[-- INÕCIO DE MENSAGEM ASSINADA POR PGP --]\n"
+"[-- IN√çCIO DE MENSAGEM ASSINADA POR PGP --]\n"
 "\n"
 
 #: crypt-gpgme.c:2539 pgp.c:566
@@ -1048,7 +1048,7 @@ msgstr ""
 
 #: crypt-gpgme.c:2541 pgp.c:573
 msgid "[-- END PGP PUBLIC KEY BLOCK --]\n"
-msgstr "[-- FIM DE BLOCO DE CHAVE P⁄BLICA DO PGP --]\n"
+msgstr "[-- FIM DE BLOCO DE CHAVE P√öBLICA DO PGP --]\n"
 
 #: crypt-gpgme.c:2543 pgp.c:575
 #, fuzzy
@@ -1062,11 +1062,11 @@ msgid ""
 "[-- Error: could not find beginning of PGP message! --]\n"
 "\n"
 msgstr ""
-"[-- Erro: n„o foi possÌvel encontrar o inÌcio da mensagem do PGP! --]\n"
+"[-- Erro: n√£o foi poss√≠vel encontrar o in√≠cio da mensagem do PGP! --]\n"
 
 #: crypt-gpgme.c:2597 crypt-gpgme.c:2670 pgp.c:1091
 msgid "[-- Error: could not create temporary file! --]\n"
-msgstr "[-- Erro: n„o foi possÌvel criar um arquivo tempor·rio! --]\n"
+msgstr "[-- Erro: n√£o foi poss√≠vel criar um arquivo tempor√°rio! --]\n"
 
 #: crypt-gpgme.c:2609
 #, fuzzy
@@ -1074,7 +1074,7 @@ msgid ""
 "[-- The following data is PGP/MIME signed and encrypted --]\n"
 "\n"
 msgstr ""
-"[-- Os dados a seguir est„o encriptados com PGP/MIME --]\n"
+"[-- Os dados a seguir est√£o encriptados com PGP/MIME --]\n"
 "\n"
 
 #: crypt-gpgme.c:2610 pgp.c:1100
@@ -1082,7 +1082,7 @@ msgid ""
 "[-- The following data is PGP/MIME encrypted --]\n"
 "\n"
 msgstr ""
-"[-- Os dados a seguir est„o encriptados com PGP/MIME --]\n"
+"[-- Os dados a seguir est√£o encriptados com PGP/MIME --]\n"
 "\n"
 
 #: crypt-gpgme.c:2632
@@ -1107,7 +1107,7 @@ msgstr "Assinatura PGP verificada com sucesso."
 #: crypt-gpgme.c:2642 pgp.c:505 pgp.c:568 pgp.c:1129
 #, fuzzy
 msgid "Could not decrypt PGP message"
-msgstr "N„o foi possÌvel enviar a mensagem."
+msgstr "N√£o foi poss√≠vel enviar a mensagem."
 
 #: crypt-gpgme.c:2682
 #, fuzzy
@@ -1115,7 +1115,7 @@ msgid ""
 "[-- The following data is S/MIME signed --]\n"
 "\n"
 msgstr ""
-"[-- Os dados a seguir est„o assinados --]\n"
+"[-- Os dados a seguir est√£o assinados --]\n"
 "\n"
 
 #: crypt-gpgme.c:2683
@@ -1124,7 +1124,7 @@ msgid ""
 "[-- The following data is S/MIME encrypted --]\n"
 "\n"
 msgstr ""
-"[-- Os dados a seguir est„o encriptados com PGP/MIME --]\n"
+"[-- Os dados a seguir est√£o encriptados com PGP/MIME --]\n"
 "\n"
 
 #: crypt-gpgme.c:2713
@@ -1168,19 +1168,19 @@ msgstr ""
 #: crypt-gpgme.c:3392 crypt-gpgme.c:3539
 #, fuzzy
 msgid "[Invalid]"
-msgstr "MÍs inv·lido: %s"
+msgstr "M√™s inv√°lido: %s"
 
 #. L10N: DOTFILL
 #: crypt-gpgme.c:3413 crypt-gpgme.c:3564
 #, fuzzy, c-format
 msgid "Valid From : %s\n"
-msgstr "MÍs inv·lido: %s"
+msgstr "M√™s inv√°lido: %s"
 
 #. L10N: DOTFILL
 #: crypt-gpgme.c:3427 crypt-gpgme.c:3578
 #, fuzzy, c-format
 msgid "Valid To ..: %s\n"
-msgstr "MÍs inv·lido: %s"
+msgstr "M√™s inv√°lido: %s"
 
 #. L10N: DOTFILL
 #: crypt-gpgme.c:3441 crypt-gpgme.c:3592
@@ -1282,7 +1282,7 @@ msgstr ""
 #: crypt-gpgme.c:3986
 #, fuzzy
 msgid "All matching keys are marked expired/revoked."
-msgstr "Esta chave n„o pode ser usada: expirada/desabilitada/revogada."
+msgstr "Esta chave n√£o pode ser usada: expirada/desabilitada/revogada."
 
 #: crypt-gpgme.c:4015 mutt_ssl.c:1082 mutt_ssl_gnutls.c:1001 pgpkey.c:516
 #: smime.c:435
@@ -1335,12 +1335,12 @@ msgstr "%s [%s]\n"
 
 #: crypt-gpgme.c:4080 pgpkey.c:602
 msgid "This key can't be used: expired/disabled/revoked."
-msgstr "Esta chave n„o pode ser usada: expirada/desabilitada/revogada."
+msgstr "Esta chave n√£o pode ser usada: expirada/desabilitada/revogada."
 
 #: crypt-gpgme.c:4094 pgpkey.c:614 smime.c:467
 #, fuzzy
 msgid "ID is expired/disabled/revoked."
-msgstr "Esta chave n„o pode ser usada: expirada/desabilitada/revogada."
+msgstr "Esta chave n√£o pode ser usada: expirada/desabilitada/revogada."
 
 #: crypt-gpgme.c:4102 pgpkey.c:618 smime.c:470
 msgid "ID has undefined validity."
@@ -1349,17 +1349,17 @@ msgstr ""
 #: crypt-gpgme.c:4105 pgpkey.c:621
 #, fuzzy
 msgid "ID is not valid."
-msgstr "Este ID n„o È de confianÁa."
+msgstr "Este ID n√£o √© de confian√ßa."
 
 #: crypt-gpgme.c:4108 pgpkey.c:624
 #, fuzzy
 msgid "ID is only marginally valid."
-msgstr "Este ID È de baixa confianÁa."
+msgstr "Este ID √© de baixa confian√ßa."
 
 #: crypt-gpgme.c:4117 pgpkey.c:628 smime.c:477
 #, fuzzy, c-format
 msgid "%s Do you really want to use the key?"
-msgstr "%s VocÍ realmente quer us·-lo?"
+msgstr "%s Voc√™ realmente quer us√°-lo?"
 
 #: crypt-gpgme.c:4178 crypt-gpgme.c:4312 pgpkey.c:839 pgpkey.c:966
 #, c-format
@@ -1383,7 +1383,7 @@ msgstr "Por favor entre o key ID: "
 #: crypt-gpgme.c:4615
 #, fuzzy, c-format
 msgid "Error exporting key: %s\n"
-msgstr "erro no padr„o em: %s"
+msgstr "erro no padr√£o em: %s"
 
 #. L10N:
 #. MIME description for exported (attached) keys.
@@ -1485,7 +1485,7 @@ msgstr ""
 #: crypt-gpgme.c:4933
 #, fuzzy
 msgid "Failed to figure out sender"
-msgstr "Erro ao abrir o arquivo para interpretar os cabeÁalhos."
+msgstr "Erro ao abrir o arquivo para interpretar os cabe√ßalhos."
 
 #: crypt.c:68
 #, c-format
@@ -1495,7 +1495,7 @@ msgstr ""
 #: crypt.c:74
 #, fuzzy, c-format
 msgid "[-- %s output follows%s --]\n"
-msgstr "[-- SaÌda do PGP a seguir (hora atual: "
+msgstr "[-- Sa√≠da do PGP a seguir (hora atual: "
 
 #: crypt.c:89
 #, fuzzy
@@ -1520,7 +1520,7 @@ msgstr ""
 
 #: crypt.c:172 send.c:1609
 msgid "Mail not sent."
-msgstr "Mensagem n„o enviada."
+msgstr "Mensagem n√£o enviada."
 
 #: crypt.c:485
 msgid "S/MIME messages with no hints on content are unsupported."
@@ -1557,7 +1557,7 @@ msgid ""
 "[-- Warning: We can't verify %s/%s signatures. --]\n"
 "\n"
 msgstr ""
-"[-- Aviso: N„o foi possÌvel verificar %s de %s assinaturas. --]\n"
+"[-- Aviso: N√£o foi poss√≠vel verificar %s de %s assinaturas. --]\n"
 "\n"
 
 #: crypt.c:1001
@@ -1566,7 +1566,7 @@ msgid ""
 "[-- The following data is signed --]\n"
 "\n"
 msgstr ""
-"[-- Os dados a seguir est„o assinados --]\n"
+"[-- Os dados a seguir est√£o assinados --]\n"
 "\n"
 
 #: crypt.c:1007
@@ -1574,7 +1574,7 @@ msgid ""
 "[-- Warning: Can't find any signatures. --]\n"
 "\n"
 msgstr ""
-"[-- Aviso: N„o foi possÌvel encontrar nenhuma assinatura. --]\n"
+"[-- Aviso: N√£o foi poss√≠vel encontrar nenhuma assinatura. --]\n"
 "\n"
 
 #: crypt.c:1013
@@ -1601,7 +1601,7 @@ msgstr "sim"
 
 #: curs_lib.c:219
 msgid "no"
-msgstr "n„o"
+msgstr "n√£o"
 
 #: curs_lib.c:326
 msgid "Exit Mutt?"
@@ -1625,15 +1625,15 @@ msgstr "Nenhuma caixa aberta."
 
 #: curs_main.c:58
 msgid "There are no messages."
-msgstr "N„o h· mensagens."
+msgstr "N√£o h√° mensagens."
 
 #: curs_main.c:59 mx.c:1130 pager.c:54 recvattach.c:43
 msgid "Mailbox is read-only."
-msgstr "Esta caixa È somente para leitura."
+msgstr "Esta caixa √© somente para leitura."
 
 #: curs_main.c:60 pager.c:55 recvattach.c:925
 msgid "Function not permitted in attach-message mode."
-msgstr "FunÁ„o n„o permitida no modo anexar-mensagem."
+msgstr "Fun√ß√£o n√£o permitida no modo anexar-mensagem."
 
 #: curs_main.c:61
 #, fuzzy
@@ -1648,15 +1648,15 @@ msgstr ""
 
 #: curs_main.c:332
 msgid "Cannot toggle write on a readonly mailbox!"
-msgstr "N„o È possÌvel ativar escrita em uma caixa somente para leitura!"
+msgstr "N√£o √© poss√≠vel ativar escrita em uma caixa somente para leitura!"
 
 #: curs_main.c:339
 msgid "Changes to folder will be written on folder exit."
-msgstr "MudanÁas na pasta ser„o escritas na saÌda."
+msgstr "Mudan√ßas na pasta ser√£o escritas na sa√≠da."
 
 #: curs_main.c:344
 msgid "Changes to folder will not be written."
-msgstr "MudanÁas na pasta n„o ser„o escritas"
+msgstr "Mudan√ßas na pasta n√£o ser√£o escritas"
 
 #: curs_main.c:486
 msgid "Quit"
@@ -1706,21 +1706,21 @@ msgstr "Pular para mensagem: "
 
 #: curs_main.c:838
 msgid "Argument must be a message number."
-msgstr "O argumento deve ser um n˙mero de mensagem."
+msgstr "O argumento deve ser um n√∫mero de mensagem."
 
 #: curs_main.c:870
 msgid "That message is not visible."
-msgstr "Aquela mensagem n„o est· visÌvel."
+msgstr "Aquela mensagem n√£o est√° vis√≠vel."
 
 #: curs_main.c:873
 msgid "Invalid message number."
-msgstr "N˙mero de mensagem inv·lido."
+msgstr "N√∫mero de mensagem inv√°lido."
 
 #. L10N: CHECK_ACL
 #: curs_main.c:887 curs_main.c:2004 pager.c:2450
 #, fuzzy
 msgid "Cannot delete message(s)"
-msgstr "Nenhuma mensagem n„o removida."
+msgstr "Nenhuma mensagem n√£o removida."
 
 #: curs_main.c:890
 msgid "Delete messages matching: "
@@ -1728,7 +1728,7 @@ msgstr "Apagar mensagens que casem com: "
 
 #: curs_main.c:912
 msgid "No limit pattern is in effect."
-msgstr "Nenhum padr„o limitante est· em efeito."
+msgstr "Nenhum padr√£o limitante est√° em efeito."
 
 #. L10N: ask for a limit to apply
 #: curs_main.c:917
@@ -1756,7 +1756,7 @@ msgstr "Marcar mensagens que casem com: "
 #: curs_main.c:1061 curs_main.c:2304 pager.c:2765
 #, fuzzy
 msgid "Cannot undelete message(s)"
-msgstr "Nenhuma mensagem n„o removida."
+msgstr "Nenhuma mensagem n√£o removida."
 
 #: curs_main.c:1063
 msgid "Undelete messages matching: "
@@ -1769,7 +1769,7 @@ msgstr "Desmarcar mensagens que casem com: "
 #: curs_main.c:1097
 #, fuzzy
 msgid "Logged out of IMAP servers."
-msgstr "Fechando a conex„o com o servidor IMAP..."
+msgstr "Fechando a conex√£o com o servidor IMAP..."
 
 #: curs_main.c:1182
 msgid "Open mailbox in read-only mode"
@@ -1787,16 +1787,16 @@ msgstr "Nenhuma caixa com novas mensagens."
 #: curs_main.c:1231 mx.c:487 mx.c:580
 #, c-format
 msgid "%s is not a mailbox."
-msgstr "%s n„o È uma caixa de correio."
+msgstr "%s n√£o √© uma caixa de correio."
 
 #: curs_main.c:1334
 msgid "Exit Mutt without saving?"
-msgstr "Sair do Mutt sem salvar alteraÁıes?"
+msgstr "Sair do Mutt sem salvar altera√ß√µes?"
 
 #: curs_main.c:1352 curs_main.c:1388 curs_main.c:1846 curs_main.c:1878
 #: flags.c:301 thread.c:1028 thread.c:1083 thread.c:1138
 msgid "Threading is not enabled."
-msgstr "Separar discussıes n„o est· ativado."
+msgstr "Separar discuss√µes n√£o est√° ativado."
 
 #: curs_main.c:1364
 msgid "Thread broken"
@@ -1830,19 +1830,19 @@ msgstr ""
 
 #: curs_main.c:1443 curs_main.c:1468
 msgid "You are on the last message."
-msgstr "VocÍ est· na ˙ltima mensagem."
+msgstr "Voc√™ est√° na √∫ltima mensagem."
 
 #: curs_main.c:1450 curs_main.c:1494
 msgid "No undeleted messages."
-msgstr "Nenhuma mensagem n„o removida."
+msgstr "Nenhuma mensagem n√£o removida."
 
 #: curs_main.c:1487 curs_main.c:1511
 msgid "You are on the first message."
-msgstr "VocÍ est· na primeira mensagem."
+msgstr "Voc√™ est√° na primeira mensagem."
 
 #: curs_main.c:1586 menu.c:773 pager.c:2115 pattern.c:1494
 msgid "Search wrapped to top."
-msgstr "A pesquisa voltou ao inÌcio."
+msgstr "A pesquisa voltou ao in√≠cio."
 
 #: curs_main.c:1595 pager.c:2137 pattern.c:1505
 msgid "Search wrapped to bottom."
@@ -1851,7 +1851,7 @@ msgstr "A pesquisa passou para o final."
 #: curs_main.c:1639
 #, fuzzy
 msgid "No new messages in this limited view."
-msgstr "A mensagem pai n„o est· visÌvel nesta vis„o limitada"
+msgstr "A mensagem pai n√£o est√° vis√≠vel nesta vis√£o limitada"
 
 #: curs_main.c:1641
 #, fuzzy
@@ -1861,12 +1861,12 @@ msgstr "Nenhuma mensagem nova"
 #: curs_main.c:1646
 #, fuzzy
 msgid "No unread messages in this limited view."
-msgstr "A mensagem pai n„o est· visÌvel nesta vis„o limitada"
+msgstr "A mensagem pai n√£o est√° vis√≠vel nesta vis√£o limitada"
 
 #: curs_main.c:1648
 #, fuzzy
 msgid "No unread messages."
-msgstr "Nenhuma mensagem n„o lida"
+msgstr "Nenhuma mensagem n√£o lida"
 
 #. L10N: CHECK_ACL
 #: curs_main.c:1666
@@ -1881,39 +1881,39 @@ msgstr ""
 
 #: curs_main.c:1781
 msgid "No more threads."
-msgstr "Nenhuma discuss„o restante."
+msgstr "Nenhuma discuss√£o restante."
 
 #: curs_main.c:1783
 msgid "You are on the first thread."
-msgstr "VocÍ est· na primeira discuss„o."
+msgstr "Voc√™ est√° na primeira discuss√£o."
 
 #: curs_main.c:1864
 msgid "Thread contains unread messages."
-msgstr "A discuss„o contÈm mensagens n„o lidas."
+msgstr "A discuss√£o cont√©m mensagens n√£o lidas."
 
 #. L10N: CHECK_ACL
 #: curs_main.c:1960 pager.c:2417
 #, fuzzy
 msgid "Cannot delete message"
-msgstr "Nenhuma mensagem n„o removida."
+msgstr "Nenhuma mensagem n√£o removida."
 
 #. L10N: CHECK_ACL
 #: curs_main.c:2046
 #, fuzzy
 msgid "Cannot edit message"
-msgstr "N„o foi possÌvel gravar a mensagem"
+msgstr "N√£o foi poss√≠vel gravar a mensagem"
 
 #. L10N: CHECK_ACL
 #: curs_main.c:2178
 #, fuzzy
 msgid "Cannot mark message(s) as read"
-msgstr "pula para a mensagem pai na discuss„o"
+msgstr "pula para a mensagem pai na discuss√£o"
 
 #. L10N: CHECK_ACL
 #: curs_main.c:2274 pager.c:2748
 #, fuzzy
 msgid "Cannot undelete message"
-msgstr "Nenhuma mensagem n„o removida."
+msgstr "Nenhuma mensagem n√£o removida."
 
 #: edit.c:41
 #, fuzzy
@@ -1928,21 +1928,21 @@ msgid ""
 "~M messages\tsame as ~m, except include headers\n"
 "~p\t\tprint the message\n"
 msgstr ""
-"~~\t\tinsere uma linha com um ˙nico ~\n"
-"~b usu·rios\tadiciona os usu·rios ao campo Bcc:\n"
-"~c usu·rios\tadiciona os usu·rios ao campo Cc:\n"
+"~~\t\tinsere uma linha com um √∫nico ~\n"
+"~b usu√°rios\tadiciona os usu√°rios ao campo Bcc:\n"
+"~c usu√°rios\tadiciona os usu√°rios ao campo Cc:\n"
 "~f mensagens\tinclui as mensagens\n"
-"~F mensagens\to mesmo que ~f, mas tambÈm inclui os cabeÁalhos\n"
-"~h\t\tedita o cabeÁalho da mensagem\n"
+"~F mensagens\to mesmo que ~f, mas tamb√©m inclui os cabe√ßalhos\n"
+"~h\t\tedita o cabe√ßalho da mensagem\n"
 "~m mensagens\tinclui e cita as mensagens\n"
-"~M mensagens\to mesmo que ~m, mas tambÈm inclui os cabeÁalhos\n"
+"~M mensagens\to mesmo que ~m, mas tamb√©m inclui os cabe√ßalhos\n"
 "~p\t\timprime a mensagem\n"
 "~q\t\tgrava o arquivo e sai do editor\n"
-"~r arquivo\tlÍ um arquivo no editor\n"
-"~t usu·rios\tadiciona os usu·rios ao campo To:\n"
-"~u\t\tvolta ‡ linha anterior\n"
+"~r arquivo\tl√™ um arquivo no editor\n"
+"~t usu√°rios\tadiciona os usu√°rios ao campo To:\n"
+"~u\t\tvolta √† linha anterior\n"
 "~w arquivo\tescreve a mensagem no arquivo\n"
-"~x\t\tcancela as mudanÁas e sai do editor\n"
+"~x\t\tcancela as mudan√ßas e sai do editor\n"
 "?\t\testa mensagagem\n"
 ".\t\tsozinho em uma linha termina a mensagem\n"
 
@@ -1959,28 +1959,28 @@ msgid ""
 "~?\t\tthis message\n"
 ".\t\ton a line by itself ends input\n"
 msgstr ""
-"~~\t\tinsere uma linha com um ˙nico ~\n"
-"~b usu·rios\tadiciona os usu·rios ao campo Bcc:\n"
-"~c usu·rios\tadiciona os usu·rios ao campo Cc:\n"
+"~~\t\tinsere uma linha com um √∫nico ~\n"
+"~b usu√°rios\tadiciona os usu√°rios ao campo Bcc:\n"
+"~c usu√°rios\tadiciona os usu√°rios ao campo Cc:\n"
 "~f mensagens\tinclui as mensagens\n"
-"~F mensagens\to mesmo que ~f, mas tambÈm inclui os cabeÁalhos\n"
-"~h\t\tedita o cabeÁalho da mensagem\n"
+"~F mensagens\to mesmo que ~f, mas tamb√©m inclui os cabe√ßalhos\n"
+"~h\t\tedita o cabe√ßalho da mensagem\n"
 "~m mensagens\tinclui e cita as mensagens\n"
-"~M mensagens\to mesmo que ~m, mas tambÈm inclui os cabeÁalhos\n"
+"~M mensagens\to mesmo que ~m, mas tamb√©m inclui os cabe√ßalhos\n"
 "~p\t\timprime a mensagem\n"
 "~q\t\tgrava o arquivo e sai do editor\n"
-"~r arquivo\tlÍ um arquivo no editor\n"
-"~t usu·rios\tadiciona os usu·rios ao campo To:\n"
-"~u\t\tvolta ‡ linha anterior\n"
+"~r arquivo\tl√™ um arquivo no editor\n"
+"~t usu√°rios\tadiciona os usu√°rios ao campo To:\n"
+"~u\t\tvolta √† linha anterior\n"
 "~w arquivo\tescreve a mensagem no arquivo\n"
-"~x\t\tcancela as mudanÁas e sai do editor\n"
+"~x\t\tcancela as mudan√ßas e sai do editor\n"
 "?\t\testa mensagagem\n"
 ".\t\tsozinho em uma linha termina a mensagem\n"
 
 #: edit.c:187
 #, c-format
 msgid "%d: invalid message number.\n"
-msgstr "%d: n˙mero de mensagem iv·lido.\n"
+msgstr "%d: n√∫mero de mensagem iv√°lido.\n"
 
 #: edit.c:329
 msgid "(End message with a . on a line by itself)\n"
@@ -1992,7 +1992,7 @@ msgstr "Nenhuma caixa de mensagens.\n"
 
 #: edit.c:392
 msgid "Message contains:\n"
-msgstr "Mensagem contÈm:\n"
+msgstr "Mensagem cont√©m:\n"
 
 #. L10N:
 #. This entry is shown AFTER the message content,
@@ -2024,41 +2024,41 @@ msgstr "%s: comando de editor desconhecido (~? para ajuda)\n"
 #: editmsg.c:78
 #, c-format
 msgid "could not create temporary folder: %s"
-msgstr "N„o foi possÌvel criar o arquivo tempor·rio: %s"
+msgstr "N√£o foi poss√≠vel criar o arquivo tempor√°rio: %s"
 
 #: editmsg.c:90
 #, c-format
 msgid "could not write temporary mail folder: %s"
-msgstr "N„o foi possÌvel criar a caixa tempor·ria: %s"
+msgstr "N√£o foi poss√≠vel criar a caixa tempor√°ria: %s"
 
 #: editmsg.c:110
 #, fuzzy, c-format
 msgid "could not truncate temporary mail folder: %s"
-msgstr "N„o foi possÌvel criar a caixa tempor·ria: %s"
+msgstr "N√£o foi poss√≠vel criar a caixa tempor√°ria: %s"
 
 #: editmsg.c:127
 msgid "Message file is empty!"
-msgstr "O arquivo de mensagens est· vazio."
+msgstr "O arquivo de mensagens est√° vazio."
 
 #: editmsg.c:134
 msgid "Message not modified!"
-msgstr "Mensagem n„o modificada!"
+msgstr "Mensagem n√£o modificada!"
 
 #: editmsg.c:142
 #, c-format
 msgid "Can't open message file: %s"
-msgstr "N„o È possÌvel abrir o arquivo de mensagens: %s"
+msgstr "N√£o √© poss√≠vel abrir o arquivo de mensagens: %s"
 
 #. L10N: %s is from strerror(errno)
 #: editmsg.c:150 editmsg.c:178
 #, c-format
 msgid "Can't append to folder: %s"
-msgstr "N„o È possÌvel anexar ‡ pasta: %s"
+msgstr "N√£o √© poss√≠vel anexar √† pasta: %s"
 
 #: editmsg.c:210
 #, c-format
 msgid "Error. Preserving temporary file: %s"
-msgstr "Erro. Preservando o arquivo tempor·rio: %s"
+msgstr "Erro. Preservando o arquivo tempor√°rio: %s"
 
 #: flags.c:345
 msgid "Set flag"
@@ -2071,7 +2071,7 @@ msgstr "Limpa marca"
 #: handler.c:1139
 msgid "[-- Error:  Could not display any parts of Multipart/Alternative! --]\n"
 msgstr ""
-"[-- Erro: N„o foi possÌvel exibir nenhuma parte de Multipart/Aternative! "
+"[-- Erro: N√£o foi poss√≠vel exibir nenhuma parte de Multipart/Aternative! "
 "--]\n"
 
 #: handler.c:1254
@@ -2082,7 +2082,7 @@ msgstr "[-- Anexo No.%d"
 #: handler.c:1266
 #, c-format
 msgid "[-- Type: %s/%s, Encoding: %s, Size: %s --]\n"
-msgstr "[-- Tipo: %s/%s, CodificaÁ„o: %s, Tamanho: %s --]\n"
+msgstr "[-- Tipo: %s/%s, Codifica√ß√£o: %s, Tamanho: %s --]\n"
 
 #: handler.c:1282
 msgid "One or more parts of this message could not be displayed"
@@ -2096,7 +2096,7 @@ msgstr "[-- Autovisualizar usando %s --]\n"
 #: handler.c:1335
 #, c-format
 msgid "Invoking autoview command: %s"
-msgstr "Executando comando de autovisualizaÁ„o: %s"
+msgstr "Executando comando de autovisualiza√ß√£o: %s"
 
 #: handler.c:1367
 #, fuzzy, c-format
@@ -2106,12 +2106,12 @@ msgstr "[-- em %s --]\n"
 #: handler.c:1386 handler.c:1407
 #, c-format
 msgid "[-- Autoview stderr of %s --]\n"
-msgstr "[-- SaÌda de erro da autovisualizaÁ„o de %s --]\n"
+msgstr "[-- Sa√≠da de erro da autovisualiza√ß√£o de %s --]\n"
 
 #: handler.c:1446
 msgid "[-- Error: message/external-body has no access-type parameter --]\n"
 msgstr ""
-"[-- Erro: message/external-body n„o tem nenhum par‚metro access-type --]\n"
+"[-- Erro: message/external-body n√£o tem nenhum par√¢metro access-type --]\n"
 
 #: handler.c:1467
 #, c-format
@@ -2148,23 +2148,23 @@ msgid ""
 "[-- and the indicated external source has --]\n"
 "[-- expired. --]\n"
 msgstr ""
-"[-- Este anexo %s/%s n„o est· includÌdo, e --]\n"
-"[-- a fonte externa indicada j· expirou.   --]\n"
+"[-- Este anexo %s/%s n√£o est√° includ√≠do, e --]\n"
+"[-- a fonte externa indicada j√° expirou.   --]\n"
 
 #: handler.c:1519
 #, fuzzy, c-format
 msgid "[-- and the indicated access-type %s is unsupported --]\n"
 msgstr ""
-"[-- Este anexo %s/%s n„o est· incluÌdo, e o --]\n"
-"[-- tipo de acesso %s n„o È aceito.         --]\n"
+"[-- Este anexo %s/%s n√£o est√° inclu√≠do, e o --]\n"
+"[-- tipo de acesso %s n√£o √© aceito.         --]\n"
 
 #: handler.c:1625
 msgid "Unable to open temporary file!"
-msgstr "N„o foi possÌvel abrir o arquivo tempor·rio!"
+msgstr "N√£o foi poss√≠vel abrir o arquivo tempor√°rio!"
 
 #: handler.c:1771
 msgid "Error: multipart/signed has no protocol."
-msgstr "Erro: multipart/signed n„o tem protocolo."
+msgstr "Erro: multipart/signed n√£o tem protocolo."
 
 #: handler.c:1822
 #, fuzzy
@@ -2174,7 +2174,7 @@ msgstr "[-- Este anexo %s/%s "
 #: handler.c:1824
 #, c-format
 msgid "[-- %s/%s is unsupported "
-msgstr "[-- %s/%s n„o È aceito "
+msgstr "[-- %s/%s n√£o √© aceito "
 
 #: handler.c:1831
 #, c-format
@@ -2188,7 +2188,7 @@ msgstr "('view-attachments' precisa estar associado a uma tecla!)"
 #: headers.c:185
 #, c-format
 msgid "%s: unable to attach file"
-msgstr "%s: n„o foi possÌvel anexar o arquivo"
+msgstr "%s: n√£o foi poss√≠vel anexar o arquivo"
 
 #: help.c:310
 msgid "ERROR: please report this bug"
@@ -2205,7 +2205,7 @@ msgid ""
 "\n"
 msgstr ""
 "\n"
-"AssociaÁıes genÈricas:\n"
+"Associa√ß√µes gen√©ricas:\n"
 "\n"
 
 #: help.c:368
@@ -2215,7 +2215,7 @@ msgid ""
 "\n"
 msgstr ""
 "\n"
-"FunÁıes sem associaÁ„o:\n"
+"Fun√ß√µes sem associa√ß√£o:\n"
 "\n"
 
 #: help.c:376
@@ -2254,16 +2254,16 @@ msgstr ""
 #: imap/auth.c:108 pop_auth.c:413 smtp.c:557
 #, fuzzy
 msgid "No authenticators available"
-msgstr "AutenticaÁ„o GSSAPI falhou."
+msgstr "Autentica√ß√£o GSSAPI falhou."
 
 #: imap/auth_anon.c:43
 msgid "Authenticating (anonymous)..."
-msgstr "Autenticando (anÙnimo)..."
+msgstr "Autenticando (an√¥nimo)..."
 
 #: imap/auth_anon.c:73
 #, fuzzy
 msgid "Anonymous authentication failed."
-msgstr "AutenticaÁ„o anÙnima n„o È aceita."
+msgstr "Autentica√ß√£o an√¥nima n√£o √© aceita."
 
 #: imap/auth_cram.c:48
 msgid "Authenticating (CRAM-MD5)..."
@@ -2271,7 +2271,7 @@ msgstr "Autenticando (CRAM-MD5)..."
 
 #: imap/auth_cram.c:128
 msgid "CRAM-MD5 authentication failed."
-msgstr "AutenticaÁ„o CRAM-MD5 falhou."
+msgstr "Autentica√ß√£o CRAM-MD5 falhou."
 
 #: imap/auth_gss.c:145
 #, fuzzy
@@ -2280,7 +2280,7 @@ msgstr "Autenticando (CRAM-MD5)..."
 
 #: imap/auth_gss.c:312
 msgid "GSSAPI authentication failed."
-msgstr "AutenticaÁ„o GSSAPI falhou."
+msgstr "Autentica√ß√£o GSSAPI falhou."
 
 #: imap/auth_login.c:38
 msgid "LOGIN disabled on this server."
@@ -2302,7 +2302,7 @@ msgstr "Autenticando (CRAM-MD5)..."
 #: imap/auth_sasl.c:228 pop_auth.c:168
 #, fuzzy
 msgid "SASL authentication failed."
-msgstr "AutenticaÁ„o GSSAPI falhou."
+msgstr "Autentica√ß√£o GSSAPI falhou."
 
 #: imap/browse.c:59 imap/imap.c:569
 #, c-format
@@ -2316,7 +2316,7 @@ msgstr "Obtendo lista de pastas..."
 #: imap/browse.c:190
 #, fuzzy
 msgid "No such folder"
-msgstr "%s: n„o existe tal cor"
+msgstr "%s: n√£o existe tal cor"
 
 #: imap/browse.c:243
 #, fuzzy
@@ -2326,7 +2326,7 @@ msgstr "Abrir caixa de correio"
 #: imap/browse.c:248 imap/browse.c:301
 #, fuzzy
 msgid "Mailbox must have a name."
-msgstr "A caixa de mensagens n„o sofreu mudanÁas"
+msgstr "A caixa de mensagens n√£o sofreu mudan√ßas"
 
 #: imap/browse.c:256
 #, fuzzy
@@ -2336,7 +2336,7 @@ msgstr "Caixa de correio removida."
 #: imap/browse.c:289
 #, fuzzy
 msgid "Cannot rename root folder"
-msgstr "N„o È possÌvel criar o filtro."
+msgstr "N√£o √© poss√≠vel criar o filtro."
 
 #: imap/browse.c:293
 #, fuzzy, c-format
@@ -2366,11 +2366,11 @@ msgstr "Login falhou."
 #: imap/imap.c:189
 #, fuzzy, c-format
 msgid "Closing connection to %s..."
-msgstr "Fechando a conex„o com o servidor IMAP..."
+msgstr "Fechando a conex√£o com o servidor IMAP..."
 
 #: imap/imap.c:309
 msgid "This IMAP server is ancient. Mutt does not work with it."
-msgstr "Este servidor IMAP È prÈ-histÛrico. Mutt n„o funciona com ele."
+msgstr "Este servidor IMAP √© pr√©-hist√≥rico. Mutt n√£o funciona com ele."
 
 #: imap/imap.c:434 pop_lib.c:295 smtp.c:466
 msgid "Secure connection with TLS?"
@@ -2383,7 +2383,7 @@ msgstr ""
 #: imap/imap.c:459 pop_lib.c:336
 #, fuzzy
 msgid "Encrypted connection unavailable"
-msgstr "Chave de Sess„o Encriptada"
+msgstr "Chave de Sess√£o Encriptada"
 
 #: imap/imap.c:602
 #, c-format
@@ -2422,7 +2422,7 @@ msgstr ""
 #: imap/imap.c:1308
 #, fuzzy
 msgid "Error saving flags"
-msgstr "Erro ao interpretar endereÁo!"
+msgstr "Erro ao interpretar endere√ßo!"
 
 #: imap/imap.c:1331
 msgid "Expunging messages from server..."
@@ -2469,24 +2469,24 @@ msgstr "Copiando %d mensagens para %s..."
 
 #: imap/message.c:98
 msgid "Unable to fetch headers from this IMAP server version."
-msgstr "N„o foi possÌvel obter cabeÁalhos da vers„o deste servidor IMAP."
+msgstr "N√£o foi poss√≠vel obter cabe√ßalhos da vers√£o deste servidor IMAP."
 
 #: imap/message.c:108
 #, fuzzy, c-format
 msgid "Could not create temporary file %s"
-msgstr "N„o foi possÌvel criar um arquivo tempor·rio!"
+msgstr "N√£o foi poss√≠vel criar um arquivo tempor√°rio!"
 
 #. L10N:
 #. Comparing the cached data with the IMAP server's data
 #: imap/message.c:142
 #, fuzzy
 msgid "Evaluating cache..."
-msgstr "Obtendo cabeÁalhos das mensagens... [%d de %d]"
+msgstr "Obtendo cabe√ßalhos das mensagens... [%d de %d]"
 
 #: imap/message.c:232 pop.c:281
 #, fuzzy
 msgid "Fetching message headers..."
-msgstr "Obtendo cabeÁalhos das mensagens... [%d de %d]"
+msgstr "Obtendo cabe√ßalhos das mensagens... [%d de %d]"
 
 #: imap/message.c:444 imap/message.c:501 pop.c:573
 msgid "Fetching message..."
@@ -2513,7 +2513,7 @@ msgstr "Continuar?"
 #: init.c:60 init.c:1768 pager.c:53
 #, c-format
 msgid "Not available in this menu."
-msgstr "N„o disponÌvel neste menu."
+msgstr "N√£o dispon√≠vel neste menu."
 
 #: init.c:468
 #, c-format
@@ -2528,12 +2528,12 @@ msgstr ""
 #: init.c:715
 #, fuzzy
 msgid "spam: no matching pattern"
-msgstr "marca mensagens que casem com um padr„o"
+msgstr "marca mensagens que casem com um padr√£o"
 
 #: init.c:717
 #, fuzzy
 msgid "nospam: no matching pattern"
-msgstr "desmarca mensagens que casem com um padr„o"
+msgstr "desmarca mensagens que casem com um padr√£o"
 
 #: init.c:861
 #, c-format
@@ -2548,17 +2548,17 @@ msgstr ""
 #: init.c:1094
 #, fuzzy
 msgid "attachments: no disposition"
-msgstr "edita a descriÁ„o do anexo"
+msgstr "edita a descri√ß√£o do anexo"
 
 #: init.c:1132
 #, fuzzy
 msgid "attachments: invalid disposition"
-msgstr "edita a descriÁ„o do anexo"
+msgstr "edita a descri√ß√£o do anexo"
 
 #: init.c:1146
 #, fuzzy
 msgid "unattachments: no disposition"
-msgstr "edita a descriÁ„o do anexo"
+msgstr "edita a descri√ß√£o do anexo"
 
 #: init.c:1169
 msgid "unattachments: invalid disposition"
@@ -2566,7 +2566,7 @@ msgstr ""
 
 #: init.c:1296
 msgid "alias: no address"
-msgstr "apelido: sem endereÁo"
+msgstr "apelido: sem endere√ßo"
 
 #: init.c:1344
 #, c-format
@@ -2575,32 +2575,32 @@ msgstr ""
 
 #: init.c:1432
 msgid "invalid header field"
-msgstr "campo de cabeÁalho inv·lido"
+msgstr "campo de cabe√ßalho inv√°lido"
 
 #: init.c:1485
 #, c-format
 msgid "%s: unknown sorting method"
-msgstr "%s: mÈtodo de ordenaÁ„o desconhecido"
+msgstr "%s: m√©todo de ordena√ß√£o desconhecido"
 
 #: init.c:1592
 #, fuzzy, c-format
 msgid "mutt_restore_default(%s): error in regexp: %s\n"
-msgstr "mutt_restore_default: erro na express„o regular: %s\n"
+msgstr "mutt_restore_default: erro na express√£o regular: %s\n"
 
 #: init.c:1745 init.c:1858
 #, c-format
 msgid "%s: unknown variable"
-msgstr "%s: vari·vel desconhecida"
+msgstr "%s: vari√°vel desconhecida"
 
 #: init.c:1754
 #, c-format
 msgid "prefix is illegal with reset"
-msgstr "prefixo È ilegal com reset"
+msgstr "prefixo √© ilegal com reset"
 
 #: init.c:1760
 #, c-format
 msgid "value is illegal with reset"
-msgstr "valor È ilegal com reset"
+msgstr "valor √© ilegal com reset"
 
 #: init.c:1796 init.c:1808
 #, c-format
@@ -2610,27 +2610,27 @@ msgstr ""
 #: init.c:1816
 #, c-format
 msgid "%s is set"
-msgstr "%s est· atribuÌda"
+msgstr "%s est√° atribu√≠da"
 
 #: init.c:1816
 #, c-format
 msgid "%s is unset"
-msgstr "%s n„o est· atribuÌda"
+msgstr "%s n√£o est√° atribu√≠da"
 
 #: init.c:1919
 #, fuzzy, c-format
 msgid "Invalid value for option %s: \"%s\""
-msgstr "Dia do mÍs inv·lido: %s"
+msgstr "Dia do m√™s inv√°lido: %s"
 
 #: init.c:2056
 #, c-format
 msgid "%s: invalid mailbox type"
-msgstr "%s: tipo de caixa inv·lido"
+msgstr "%s: tipo de caixa inv√°lido"
 
 #: init.c:2087
 #, fuzzy, c-format
 msgid "%s: invalid value (%s)"
-msgstr "%s: valor inv·lido"
+msgstr "%s: valor inv√°lido"
 
 #: init.c:2088
 msgid "format error"
@@ -2643,17 +2643,17 @@ msgstr ""
 #: init.c:2148
 #, c-format
 msgid "%s: invalid value"
-msgstr "%s: valor inv·lido"
+msgstr "%s: valor inv√°lido"
 
 #: init.c:2192
 #, fuzzy, c-format
 msgid "%s: Unknown type."
-msgstr "%s: tipo inv·lido"
+msgstr "%s: tipo inv√°lido"
 
 #: init.c:2219
 #, c-format
 msgid "%s: unknown type"
-msgstr "%s: tipo inv·lido"
+msgstr "%s: tipo inv√°lido"
 
 #: init.c:2287
 #, c-format
@@ -2691,16 +2691,16 @@ msgstr "Erro na linha de comando: %s\n"
 
 #: init.c:2951
 msgid "unable to determine home directory"
-msgstr "n„o foi possÌvel determinar o diretÛrio do usu·rio"
+msgstr "n√£o foi poss√≠vel determinar o diret√≥rio do usu√°rio"
 
 #: init.c:2959
 msgid "unable to determine username"
-msgstr "n„o foi possÌvel determinar o nome do usu·rio"
+msgstr "n√£o foi poss√≠vel determinar o nome do usu√°rio"
 
 #: init.c:2985
 #, fuzzy
 msgid "unable to determine nodename via uname()"
-msgstr "n„o foi possÌvel determinar o nome do usu·rio"
+msgstr "n√£o foi poss√≠vel determinar o nome do usu√°rio"
 
 #: init.c:3229
 msgid "-group: no group name"
@@ -2717,16 +2717,16 @@ msgstr ""
 
 #: keymap.c:545
 msgid "Macro loop detected."
-msgstr "LaÁo de macro detectado."
+msgstr "La√ßo de macro detectado."
 
 #: keymap.c:846 keymap.c:854
 msgid "Key is not bound."
-msgstr "Tecla n„o associada."
+msgstr "Tecla n√£o associada."
 
 #: keymap.c:858
 #, c-format
 msgid "Key is not bound.  Press '%s' for help."
-msgstr "Tecla n„o associada. Pressione '%s' para ajuda."
+msgstr "Tecla n√£o associada. Pressione '%s' para ajuda."
 
 #: keymap.c:869
 msgid "push: too many arguments"
@@ -2735,11 +2735,11 @@ msgstr "push: muitos argumentos"
 #: keymap.c:899
 #, c-format
 msgid "%s: no such menu"
-msgstr "%s: n„o existe tal menu"
+msgstr "%s: n√£o existe tal menu"
 
 #: keymap.c:914
 msgid "null key sequence"
-msgstr "seq¸Íncia de teclas nula"
+msgstr "seq√º√™ncia de teclas nula"
 
 #: keymap.c:1001
 msgid "bind: too many arguments"
@@ -2748,11 +2748,11 @@ msgstr "bind: muitos argumentos"
 #: keymap.c:1024
 #, c-format
 msgid "%s: no such function in map"
-msgstr "%s: n„o existe tal funÁ„o no mapa"
+msgstr "%s: n√£o existe tal fun√ß√£o no mapa"
 
 #: keymap.c:1048
 msgid "macro: empty key sequence"
-msgstr "macro: seq¸Íncia de teclas vazia"
+msgstr "macro: seq√º√™ncia de teclas vazia"
 
 #: keymap.c:1059
 msgid "macro: too many arguments"
@@ -2766,7 +2766,7 @@ msgstr "exec: poucos argumentos"
 #: keymap.c:1115
 #, fuzzy, c-format
 msgid "%s: no such function"
-msgstr "%s: n„o existe tal funÁ„o no mapa"
+msgstr "%s: n√£o existe tal fun√ß√£o no mapa"
 
 #: keymap.c:1136
 #, fuzzy
@@ -2784,7 +2784,7 @@ msgstr ""
 
 #: lib.c:138 lib.c:153 lib.c:185
 msgid "Out of memory!"
-msgstr "Acabou a memÛria!"
+msgstr "Acabou a mem√≥ria!"
 
 #: main.c:68
 #, fuzzy
@@ -2806,10 +2806,10 @@ msgid ""
 msgstr ""
 "Copyright (C) 1996-2000 Michael R. Elkins e outros.\n"
 "Mutt vem sem NENHUMA GARANTIA; para mais detalhes digite `mutt -vv'.\n"
-"Mutt È um programa livre, e vocÍ È encorajado a redistribuÌ-lo\n"
-"sob certas condiÁıes; digite `mutt -vv' para os detalhes.\n"
+"Mutt √© um programa livre, e voc√™ √© encorajado a redistribu√≠-lo\n"
+"sob certas condi√ß√µes; digite `mutt -vv' para os detalhes.\n"
 "\n"
-"TraduÁ„o para a lÌngua portuguesa:\n"
+"Tradu√ß√£o para a l√≠ngua portuguesa:\n"
 "Marcus Brito <marcus@visaotec.com.br>\n"
 
 #: main.c:78
@@ -2897,26 +2897,26 @@ msgstr ""
 "       mutt [ -n ] [ -e <cmd> ] [ -F <arq> ] -p\n"
 "       mutt -v[v]\n"
 "\n"
-"opÁıes:\n"
-"  -a <arquivo>\tanexa um arquivo ‡ mensagem\n"
-"  -b <endereÁo>\tespecifica um endereÁo de cÛpia escondica (BCC)\n"
-"  -c <endereÁo>\tespecifica um endereÁo de cÛpia (CC)\n"
+"op√ß√µes:\n"
+"  -a <arquivo>\tanexa um arquivo √† mensagem\n"
+"  -b <endere√ßo>\tespecifica um endere√ßo de c√≥pia escondica (BCC)\n"
+"  -c <endere√ßo>\tespecifica um endere√ßo de c√≥pia (CC)\n"
 "  -e <comando>\tespecifica um comando a ser executado depois a "
-"inicializaÁ„o\n"
+"inicializa√ß√£o\n"
 "  -f <arquivo>\tespecifica qual caixa de mensagens abrir\n"
 "  -F <arquivo>\tespecifica um arquivo muttrc alternativo\n"
-"  -H <arquivo>\tespecifica um rascunho de onde ler cabeÁalhos\n"
+"  -H <arquivo>\tespecifica um rascunho de onde ler cabe√ßalhos\n"
 "  -i <arquivo>\tespecifica um arquivo que o Mutt deve incluir na resposta\n"
-"  -m <tipo>\tespecifica o tipo padr„o de caixa de mensagens\n"
-"  -n\t\tfaz com que o Mutt n„o leia o Muttrc do sistema\n"
+"  -m <tipo>\tespecifica o tipo padr√£o de caixa de mensagens\n"
+"  -n\t\tfaz com que o Mutt n√£o leia o Muttrc do sistema\n"
 "  -p\t\tedita uma mensagem adiada\n"
 "  -R\t\tabre a caixa de mensagens em modo de somente leitura\n"
-"  -s <assunto>\tespecifica um assunto (entre aspas se tiver espaÁos)\n"
-"  -v\t\tmostra a vers„o e definiÁıes de compilaÁ„o\n"
+"  -s <assunto>\tespecifica um assunto (entre aspas se tiver espa√ßos)\n"
+"  -v\t\tmostra a vers√£o e defini√ß√µes de compila√ß√£o\n"
 "  -x\t\tsimula o modo de envio do mailx\n"
 "  -y\t\tescolhe uma caixa na sua lista `mailboxes'\n"
-"  -z\t\tsai imediatamente se n„o houverem mensagens na caixa\n"
-"  -Z\t\tabre a primeira pasta com novas mensagens, sai se n„o houver\n"
+"  -z\t\tsai imediatamente se n√£o houverem mensagens na caixa\n"
+"  -Z\t\tabre a primeira pasta com novas mensagens, sai se n√£o houver\n"
 "  -h\t\testa mensagem de ajuda"
 
 #: main.c:150
@@ -2938,26 +2938,26 @@ msgstr ""
 "       mutt [ -n ] [ -e <cmd> ] [ -F <arq> ] -p\n"
 "       mutt -v[v]\n"
 "\n"
-"opÁıes:\n"
-"  -a <arquivo>\tanexa um arquivo ‡ mensagem\n"
-"  -b <endereÁo>\tespecifica um endereÁo de cÛpia escondica (BCC)\n"
-"  -c <endereÁo>\tespecifica um endereÁo de cÛpia (CC)\n"
+"op√ß√µes:\n"
+"  -a <arquivo>\tanexa um arquivo √† mensagem\n"
+"  -b <endere√ßo>\tespecifica um endere√ßo de c√≥pia escondica (BCC)\n"
+"  -c <endere√ßo>\tespecifica um endere√ßo de c√≥pia (CC)\n"
 "  -e <comando>\tespecifica um comando a ser executado depois a "
-"inicializaÁ„o\n"
+"inicializa√ß√£o\n"
 "  -f <arquivo>\tespecifica qual caixa de mensagens abrir\n"
 "  -F <arquivo>\tespecifica um arquivo muttrc alternativo\n"
-"  -H <arquivo>\tespecifica um rascunho de onde ler cabeÁalhos\n"
+"  -H <arquivo>\tespecifica um rascunho de onde ler cabe√ßalhos\n"
 "  -i <arquivo>\tespecifica um arquivo que o Mutt deve incluir na resposta\n"
-"  -m <tipo>\tespecifica o tipo padr„o de caixa de mensagens\n"
-"  -n\t\tfaz com que o Mutt n„o leia o Muttrc do sistema\n"
+"  -m <tipo>\tespecifica o tipo padr√£o de caixa de mensagens\n"
+"  -n\t\tfaz com que o Mutt n√£o leia o Muttrc do sistema\n"
 "  -p\t\tedita uma mensagem adiada\n"
 "  -R\t\tabre a caixa de mensagens em modo de somente leitura\n"
-"  -s <assunto>\tespecifica um assunto (entre aspas se tiver espaÁos)\n"
-"  -v\t\tmostra a vers„o e definiÁıes de compilaÁ„o\n"
+"  -s <assunto>\tespecifica um assunto (entre aspas se tiver espa√ßos)\n"
+"  -v\t\tmostra a vers√£o e defini√ß√µes de compila√ß√£o\n"
 "  -x\t\tsimula o modo de envio do mailx\n"
 "  -y\t\tescolhe uma caixa na sua lista `mailboxes'\n"
-"  -z\t\tsai imediatamente se n„o houverem mensagens na caixa\n"
-"  -Z\t\tabre a primeira pasta com novas mensagens, sai se n„o houver\n"
+"  -z\t\tsai imediatamente se n√£o houverem mensagens na caixa\n"
+"  -Z\t\tabre a primeira pasta com novas mensagens, sai se n√£o houver\n"
 "  -h\t\testa mensagem de ajuda"
 
 #: main.c:231
@@ -2966,7 +2966,7 @@ msgid ""
 "Compile options:"
 msgstr ""
 "\n"
-"OpÁıes de compilaÁ„o:"
+"Op√ß√µes de compila√ß√£o:"
 
 #: main.c:541
 msgid "Error initializing terminal."
@@ -2980,21 +2980,21 @@ msgstr ""
 #: main.c:682
 #, c-format
 msgid "Debugging at level %d.\n"
-msgstr "Depurando no nÌvel %d.\n"
+msgstr "Depurando no n√≠vel %d.\n"
 
 #: main.c:684
 msgid "DEBUG was not defined during compilation.  Ignored.\n"
-msgstr "DEBUG n„o foi definido durante a compilaÁ„o. Ignorado.\n"
+msgstr "DEBUG n√£o foi definido durante a compila√ß√£o. Ignorado.\n"
 
 #: main.c:862
 #, c-format
 msgid "%s does not exist. Create it?"
-msgstr "%s n„o existe. Devo cri·-lo?"
+msgstr "%s n√£o existe. Devo cri√°-lo?"
 
 #: main.c:866
 #, c-format
 msgid "Can't create %s: %s."
-msgstr "N„o È possÌvel criar %s: %s"
+msgstr "N√£o √© poss√≠vel criar %s: %s"
 
 #: main.c:906
 msgid "Failed to parse mailto: link\n"
@@ -3002,7 +3002,7 @@ msgstr ""
 
 #: main.c:918
 msgid "No recipients specified.\n"
-msgstr "Nenhum destinat·rio foi especificado.\n"
+msgstr "Nenhum destinat√°rio foi especificado.\n"
 
 #: main.c:944
 msgid "Cannot use -E flag with stdin\n"
@@ -3011,7 +3011,7 @@ msgstr ""
 #: main.c:1097
 #, c-format
 msgid "%s: unable to attach file.\n"
-msgstr "%s: n„o foi possÌvel anexar o arquivo.\n"
+msgstr "%s: n√£o foi poss√≠vel anexar o arquivo.\n"
 
 #: main.c:1178
 msgid "No mailbox with new mail."
@@ -3023,7 +3023,7 @@ msgstr "Nenhuma caixa de mensagem para recebimento definida."
 
 #: main.c:1215
 msgid "Mailbox is empty."
-msgstr "A caixa de mensagens est· vazia."
+msgstr "A caixa de mensagens est√° vazia."
 
 #: mbox.c:120 mbox.c:271 mh.c:1255 mx.c:598
 #, c-format
@@ -3032,16 +3032,16 @@ msgstr "Lendo %s..."
 
 #: mbox.c:158 mbox.c:215
 msgid "Mailbox is corrupt!"
-msgstr "A caixa de mensagens est· corrompida!"
+msgstr "A caixa de mensagens est√° corrompida!"
 
 #: mbox.c:456
 #, c-format
 msgid "Couldn't lock %s\n"
-msgstr "N„o foi possÌvel travar %s\n"
+msgstr "N√£o foi poss√≠vel travar %s\n"
 
 #: mbox.c:493 mbox.c:508
 msgid "Can't write message"
-msgstr "N„o foi possÌvel gravar a mensagem"
+msgstr "N√£o foi poss√≠vel gravar a mensagem"
 
 #: mbox.c:748
 msgid "Mailbox was corrupted!"
@@ -3049,11 +3049,11 @@ msgstr "A caixa de mensagens foi corrompida!"
 
 #: mbox.c:829 mbox.c:1089
 msgid "Fatal error!  Could not reopen mailbox!"
-msgstr "Erro fatal! N„o foi posssÌvel reabrir a caixa de mensagens!"
+msgstr "Erro fatal! N√£o foi posss√≠vel reabrir a caixa de mensagens!"
 
 #: mbox.c:838
 msgid "Unable to lock mailbox!"
-msgstr "N„o foi possÌvel travar a caixa de mensagens!"
+msgstr "N√£o foi poss√≠vel travar a caixa de mensagens!"
 
 #: mbox.c:881
 msgid "sync: mbox modified, but no modified messages! (report this bug)"
@@ -3069,16 +3069,16 @@ msgstr "Gravando %s..."
 #: mbox.c:1040
 #, fuzzy
 msgid "Committing changes..."
-msgstr "Compilando padr„o de busca..."
+msgstr "Compilando padr√£o de busca..."
 
 #: mbox.c:1075
 #, c-format
 msgid "Write failed!  Saved partial mailbox to %s"
-msgstr "Erro de gravaÁ„o! Caixa parcial salva em %s"
+msgstr "Erro de grava√ß√£o! Caixa parcial salva em %s"
 
 #: mbox.c:1137
 msgid "Could not reopen mailbox!"
-msgstr "N„o foi possÌvel reabrir a caixa de mensagens!"
+msgstr "N√£o foi poss√≠vel reabrir a caixa de mensagens!"
 
 #: mbox.c:1164
 msgid "Reopening mailbox..."
@@ -3090,7 +3090,7 @@ msgstr "Pular para: "
 
 #: menu.c:439
 msgid "Invalid index number."
-msgstr "N˙mero de Ìndice inv·lido."
+msgstr "N√∫mero de √≠ndice inv√°lido."
 
 #: menu.c:443 menu.c:464 menu.c:529 menu.c:572 menu.c:588 menu.c:599 menu.c:610
 #: menu.c:621 menu.c:634 menu.c:647 menu.c:1065
@@ -3099,27 +3099,27 @@ msgstr "Nenhuma entrada."
 
 #: menu.c:461
 msgid "You cannot scroll down farther."
-msgstr "VocÍ n„o pode mais descer."
+msgstr "Voc√™ n√£o pode mais descer."
 
 #: menu.c:479
 msgid "You cannot scroll up farther."
-msgstr "VocÍ n„o pode mais subir"
+msgstr "Voc√™ n√£o pode mais subir"
 
 #: menu.c:522
 msgid "You are on the first page."
-msgstr "VocÍ est· na primeira p·gina"
+msgstr "Voc√™ est√° na primeira p√°gina"
 
 #: menu.c:523
 msgid "You are on the last page."
-msgstr "VocÍ est· na ˙ltima p·gina."
+msgstr "Voc√™ est√° na √∫ltima p√°gina."
 
 #: menu.c:658
 msgid "You are on the last entry."
-msgstr "VocÍ est· na ˙ltima entrada."
+msgstr "Voc√™ est√° na √∫ltima entrada."
 
 #: menu.c:669
 msgid "You are on the first entry."
-msgstr "VocÍ est· na primeira entrada."
+msgstr "Voc√™ est√° na primeira entrada."
 
 #: menu.c:747 pager.c:2159 pattern.c:1433
 msgid "Search for: "
@@ -3127,11 +3127,11 @@ msgstr "Procurar por: "
 
 #: menu.c:747 pager.c:2159 pattern.c:1433
 msgid "Reverse search for: "
-msgstr "Procurar de tr·s para frente por: "
+msgstr "Procurar de tr√°s para frente por: "
 
 #: menu.c:791 pager.c:2112 pager.c:2134 pager.c:2254 pattern.c:1548
 msgid "Not found."
-msgstr "N„o encontrado."
+msgstr "N√£o encontrado."
 
 #: menu.c:922
 msgid "No tagged entries."
@@ -3139,15 +3139,15 @@ msgstr "Nenhuma entrada marcada."
 
 #: menu.c:1022
 msgid "Search is not implemented for this menu."
-msgstr "A busca n„o est· implementada neste menu."
+msgstr "A busca n√£o est√° implementada neste menu."
 
 #: menu.c:1027
 msgid "Jumping is not implemented for dialogs."
-msgstr "O pulo n„o est· implementado em di·logos."
+msgstr "O pulo n√£o est√° implementado em di√°logos."
 
 #: menu.c:1068
 msgid "Tagging is not supported."
-msgstr "N„o È possÌvel marcar."
+msgstr "N√£o √© poss√≠vel marcar."
 
 #: mh.c:1235
 #, fuzzy, c-format
@@ -3157,7 +3157,7 @@ msgstr "Selecionando %s..."
 #: mh.c:1558 mh.c:1641
 #, fuzzy
 msgid "Could not flush message to disk"
-msgstr "N„o foi possÌvel enviar a mensagem."
+msgstr "N√£o foi poss√≠vel enviar a mensagem."
 
 #: mh.c:1603
 msgid "_maildir_commit_message(): unable to set time on file"
@@ -3170,7 +3170,7 @@ msgstr ""
 #: mutt_sasl.c:230
 #, fuzzy
 msgid "Error allocating SASL connection"
-msgstr "erro no padr„o em: %s"
+msgstr "erro no padr√£o em: %s"
 
 #: mutt_sasl.c:241
 msgid "Error setting SASL security properties"
@@ -3196,7 +3196,7 @@ msgstr ""
 #: mutt_socket.c:332
 #, fuzzy
 msgid "Preconnect command failed."
-msgstr "comando de prÈ-conex„o falhou"
+msgstr "comando de pr√©-conex√£o falhou"
 
 #: mutt_socket.c:403 mutt_socket.c:417
 #, fuzzy, c-format
@@ -3216,7 +3216,7 @@ msgstr "Copiando para %s..."
 #: mutt_socket.c:488 mutt_socket.c:546
 #, fuzzy, c-format
 msgid "Could not find the host \"%s\""
-msgstr "N„o foi possÌvel encontrar o endereÁo do servidor %s."
+msgstr "N√£o foi poss√≠vel encontrar o endere√ßo do servidor %s."
 
 #: mutt_socket.c:494 mutt_socket.c:552
 #, c-format
@@ -3226,7 +3226,7 @@ msgstr "Conectando a %s..."
 #: mutt_socket.c:576
 #, fuzzy, c-format
 msgid "Could not connect to %s (%s)."
-msgstr "N„o foi possÌvel abrir %s"
+msgstr "N√£o foi poss√≠vel abrir %s"
 
 #: mutt_ssl.c:226
 msgid "Failed to find enough entropy on your system"
@@ -3253,7 +3253,7 @@ msgstr ""
 #: mutt_ssl.c:344
 #, fuzzy
 msgid "Unable to create SSL context"
-msgstr "[-- Erro: n„o foi possÌvel criar o subprocesso do OpenSSL! --]\n"
+msgstr "[-- Erro: n√£o foi poss√≠vel criar o subprocesso do OpenSSL! --]\n"
 
 #: mutt_ssl.c:420
 msgid "I/O error"
@@ -3267,7 +3267,7 @@ msgstr "Login falhou."
 #: mutt_ssl.c:438 mutt_ssl_gnutls.c:1079 mutt_ssl_gnutls.c:1114
 #: mutt_ssl_gnutls.c:1124
 msgid "Unable to get certificate from peer"
-msgstr "N„o foi possÌvel obter o certificado do servidor remoto"
+msgstr "N√£o foi poss√≠vel obter o certificado do servidor remoto"
 
 #. L10N:
 #. %1$s is version (e.g. "TLSv1.2")
@@ -3276,7 +3276,7 @@ msgstr "N„o foi possÌvel obter o certificado do servidor remoto"
 #: mutt_ssl.c:450
 #, fuzzy, c-format
 msgid "%s connection using %s (%s)"
-msgstr "Conex„o SSL usando %s"
+msgstr "Conex√£o SSL usando %s"
 
 #: mutt_ssl.c:576
 msgid "Unknown"
@@ -3285,12 +3285,12 @@ msgstr "Desconhecido"
 #: mutt_ssl.c:601 mutt_ssl_gnutls.c:598
 #, c-format
 msgid "[unable to calculate]"
-msgstr "[impossÌvel calcular]"
+msgstr "[imposs√≠vel calcular]"
 
 #: mutt_ssl.c:619 mutt_ssl_gnutls.c:621
 #, fuzzy
 msgid "[invalid date]"
-msgstr "%s: valor inv·lido"
+msgstr "%s: valor inv√°lido"
 
 #: mutt_ssl.c:747
 msgid "Server certificate is not yet valid"
@@ -3304,12 +3304,12 @@ msgstr "Este certificado foi emitido por:"
 #: mutt_ssl.c:876
 #, fuzzy
 msgid "cannot get certificate subject"
-msgstr "N„o foi possÌvel obter o certificado do servidor remoto"
+msgstr "N√£o foi poss√≠vel obter o certificado do servidor remoto"
 
 #: mutt_ssl.c:886 mutt_ssl.c:895
 #, fuzzy
 msgid "cannot get certificate common name"
-msgstr "N„o foi possÌvel obter o certificado do servidor remoto"
+msgstr "N√£o foi poss√≠vel obter o certificado do servidor remoto"
 
 #: mutt_ssl.c:909
 #, c-format
@@ -3347,7 +3347,7 @@ msgstr ""
 #: mutt_ssl.c:1061
 #, c-format
 msgid "Fingerprint: %s"
-msgstr "Impress„o digital: %s"
+msgstr "Impress√£o digital: %s"
 
 #: mutt_ssl.c:1064 mutt_ssl_gnutls.c:982
 #, c-format
@@ -3372,7 +3372,7 @@ msgstr "ra"
 
 #: mutt_ssl.c:1109 mutt_ssl_gnutls.c:1046
 msgid "Warning: Couldn't save certificate"
-msgstr "Aviso: N„o foi possÌvel salvar o certificado"
+msgstr "Aviso: N√£o foi poss√≠vel salvar o certificado"
 
 #: mutt_ssl.c:1114 mutt_ssl_gnutls.c:1051
 msgid "Certificate saved"
@@ -3393,7 +3393,7 @@ msgstr ""
 #: mutt_ssl_gnutls.c:465
 #, fuzzy, c-format
 msgid "SSL/TLS connection using %s (%s/%s/%s)"
-msgstr "Conex„o SSL usando %s"
+msgstr "Conex√£o SSL usando %s"
 
 #: mutt_ssl_gnutls.c:688 mutt_ssl_gnutls.c:840
 #, fuzzy
@@ -3411,12 +3411,12 @@ msgstr ""
 #: mutt_ssl_gnutls.c:950
 #, fuzzy, c-format
 msgid "SHA1 Fingerprint: %s"
-msgstr "Impress„o digital: %s"
+msgstr "Impress√£o digital: %s"
 
 #: mutt_ssl_gnutls.c:953
 #, fuzzy, c-format
 msgid "MD5 Fingerprint: %s"
-msgstr "Impress„o digital: %s"
+msgstr "Impress√£o digital: %s"
 
 #: mutt_ssl_gnutls.c:958
 #, fuzzy
@@ -3472,7 +3472,7 @@ msgstr "Conectando a %s"
 #: muttlib.c:979
 #, fuzzy
 msgid "File is a directory, save under it? [(y)es, (n)o, (a)ll]"
-msgstr "O arquivo È um diretÛrio, salvar l·?"
+msgstr "O arquivo √© um diret√≥rio, salvar l√°?"
 
 #: muttlib.c:979
 msgid "yna"
@@ -3483,11 +3483,11 @@ msgstr ""
 #. See the msgid "Save to file: " (alias.c, recvattach.c)
 #: muttlib.c:998
 msgid "File is a directory, save under it?"
-msgstr "O arquivo È um diretÛrio, salvar l·?"
+msgstr "O arquivo √© um diret√≥rio, salvar l√°?"
 
 #: muttlib.c:1002
 msgid "File under directory: "
-msgstr "Arquivo no diretÛrio: "
+msgstr "Arquivo no diret√≥rio: "
 
 #: muttlib.c:1011
 msgid "File exists, (o)verwrite, (a)ppend, or (c)ancel?"
@@ -3510,7 +3510,7 @@ msgstr "Anexa mensagens a %s?"
 #: muttlib.c:1555
 #, c-format
 msgid "%s is not a mailbox!"
-msgstr "%s n„o È uma caixa de mensagens!"
+msgstr "%s n√£o √© uma caixa de mensagens!"
 
 #: mx.c:143
 #, c-format
@@ -3520,7 +3520,7 @@ msgstr "Limite de travas excedido, remover a trava para %s?"
 #: mx.c:155
 #, c-format
 msgid "Can't dotlock %s.\n"
-msgstr "N„o È possÌvel travar %s.\n"
+msgstr "N√£o √© poss√≠vel travar %s.\n"
 
 #: mx.c:211
 msgid "Timeout exceeded while attempting fcntl lock!"
@@ -3543,7 +3543,7 @@ msgstr "Esperando pela tentativa de flock... %d"
 #: mx.c:707
 #, c-format
 msgid "Could not synchronize mailbox %s!"
-msgstr "N„o foi possÌvel sincronizar a caixa %s!"
+msgstr "N√£o foi poss√≠vel sincronizar a caixa %s!"
 
 #: mx.c:742
 #, fuzzy
@@ -3553,7 +3553,7 @@ msgstr "Marcando %d mensagens como removidas..."
 #: mx.c:775
 #, fuzzy
 msgid "Can't open trash folder"
-msgstr "N„o È possÌvel anexar ‡ pasta: %s"
+msgstr "N√£o √© poss√≠vel anexar √† pasta: %s"
 
 #: mx.c:844
 #, c-format
@@ -3577,7 +3577,7 @@ msgstr "Movendo mensagens lidas para %s..."
 
 #: mx.c:942 mx.c:1137
 msgid "Mailbox is unchanged."
-msgstr "A caixa de mensagens n„o sofreu mudanÁas"
+msgstr "A caixa de mensagens n√£o sofreu mudan√ßas"
 
 #: mx.c:995
 #, c-format
@@ -3592,16 +3592,16 @@ msgstr "%d mantidas, %d apagadas."
 #: mx.c:1121
 #, c-format
 msgid " Press '%s' to toggle write"
-msgstr " Pressione '%s' para trocar entre gravar ou n„o"
+msgstr " Pressione '%s' para trocar entre gravar ou n√£o"
 
 #: mx.c:1123
 msgid "Use 'toggle-write' to re-enable write!"
-msgstr "Use 'toggle-write' para reabilitar a gravaÁ„o!"
+msgstr "Use 'toggle-write' para reabilitar a grava√ß√£o!"
 
 #: mx.c:1125
 #, c-format
 msgid "Mailbox is marked unwritable. %s"
-msgstr "A caixa est· marcada como n„o grav·vel. %s"
+msgstr "A caixa est√° marcada como n√£o grav√°vel. %s"
 
 #: mx.c:1192
 #, fuzzy
@@ -3630,100 +3630,100 @@ msgstr "Prox"
 
 #: pager.c:2013 pager.c:2044 pager.c:2076 pager.c:2352
 msgid "Bottom of message is shown."
-msgstr "O fim da mensagem est· sendo mostrado."
+msgstr "O fim da mensagem est√° sendo mostrado."
 
 #: pager.c:2029 pager.c:2051 pager.c:2058 pager.c:2065
 msgid "Top of message is shown."
-msgstr "O inÌcio da mensagem est· sendo mostrado."
+msgstr "O in√≠cio da mensagem est√° sendo mostrado."
 
 #: pager.c:2290
 msgid "Help is currently being shown."
-msgstr "A ajuda est· sendo mostrada."
+msgstr "A ajuda est√° sendo mostrada."
 
 #: pager.c:2319
 msgid "No more quoted text."
-msgstr "N„o h· mais texto citado."
+msgstr "N√£o h√° mais texto citado."
 
 #: pager.c:2332
 msgid "No more unquoted text after quoted text."
-msgstr "N„o h· mais texto n„o-citado apÛs o texto citado."
+msgstr "N√£o h√° mais texto n√£o-citado ap√≥s o texto citado."
 
 #: parse.c:588
 msgid "multipart message has no boundary parameter!"
-msgstr "mensagem multiparte n„o tem um par‚metro de fronteiras!"
+msgstr "mensagem multiparte n√£o tem um par√¢metro de fronteiras!"
 
 #: pattern.c:266 pattern.c:586
 #, c-format
 msgid "Error in expression: %s"
-msgstr "Erro na express„o: %s"
+msgstr "Erro na express√£o: %s"
 
 #: pattern.c:271 pattern.c:591
 #, fuzzy, c-format
 msgid "Empty expression"
-msgstr "erro na express„o"
+msgstr "erro na express√£o"
 
 #: pattern.c:404
 #, c-format
 msgid "Invalid day of month: %s"
-msgstr "Dia do mÍs inv·lido: %s"
+msgstr "Dia do m√™s inv√°lido: %s"
 
 #: pattern.c:418
 #, c-format
 msgid "Invalid month: %s"
-msgstr "MÍs inv·lido: %s"
+msgstr "M√™s inv√°lido: %s"
 
 #: pattern.c:570
 #, fuzzy, c-format
 msgid "Invalid relative date: %s"
-msgstr "MÍs inv·lido: %s"
+msgstr "M√™s inv√°lido: %s"
 
 #: pattern.c:813 pattern.c:965
 #, c-format
 msgid "error in pattern at: %s"
-msgstr "erro no padr„o em: %s"
+msgstr "erro no padr√£o em: %s"
 
 #: pattern.c:839
 #, fuzzy, c-format
 msgid "missing pattern: %s"
-msgstr "faltam par‚metros"
+msgstr "faltam par√¢metros"
 
 #: pattern.c:849
 #, fuzzy, c-format
 msgid "mismatched brackets: %s"
-msgstr "parÍntese sem um corresponente: %s"
+msgstr "par√™ntese sem um corresponente: %s"
 
 #: pattern.c:905
 #, fuzzy, c-format
 msgid "%c: invalid pattern modifier"
-msgstr "%c: comando inv·lido"
+msgstr "%c: comando inv√°lido"
 
 #: pattern.c:911
 #, c-format
 msgid "%c: not supported in this mode"
-msgstr "%c: n„o È possÌvel neste modo"
+msgstr "%c: n√£o √© poss√≠vel neste modo"
 
 #: pattern.c:924
 #, c-format
 msgid "missing parameter"
-msgstr "faltam par‚metros"
+msgstr "faltam par√¢metros"
 
 #: pattern.c:940
 #, c-format
 msgid "mismatched parenthesis: %s"
-msgstr "parÍntese sem um corresponente: %s"
+msgstr "par√™ntese sem um corresponente: %s"
 
 #: pattern.c:972
 msgid "empty pattern"
-msgstr "padr„o vazio"
+msgstr "padr√£o vazio"
 
 #: pattern.c:1229
 #, c-format
 msgid "error: unknown op %d (report this error)."
-msgstr "erro: operaÁ„o %d desconhecida (relate este erro)."
+msgstr "erro: opera√ß√£o %d desconhecida (relate este erro)."
 
 #: pattern.c:1312 pattern.c:1454
 msgid "Compiling search pattern..."
-msgstr "Compilando padr„o de busca..."
+msgstr "Compilando padr√£o de busca..."
 
 #: pattern.c:1333
 msgid "Executing command on matching messages..."
@@ -3731,7 +3731,7 @@ msgstr "Executando comando nas mensagens que casam..."
 
 #: pattern.c:1402
 msgid "No messages matched criteria."
-msgstr "Nenhuma mensagem casa com o critÈrio"
+msgstr "Nenhuma mensagem casa com o crit√©rio"
 
 #: pattern.c:1484
 #, fuzzy
@@ -3744,7 +3744,7 @@ msgstr "A busca chegou ao fim sem encontrar um resultado"
 
 #: pattern.c:1508
 msgid "Search hit top without finding match"
-msgstr "A busca chegou ao inÌcio sem encontrar um resultado"
+msgstr "A busca chegou ao in√≠cio sem encontrar um resultado"
 
 #: pattern.c:1540
 msgid "Search interrupted."
@@ -3760,14 +3760,14 @@ msgstr "Senha do PGP esquecida."
 
 #: pgp.c:449
 msgid "[-- Error: unable to create PGP subprocess! --]\n"
-msgstr "[-- Erro: n„o foi possÌvel criar o subprocesso do PGP! --]\n"
+msgstr "[-- Erro: n√£o foi poss√≠vel criar o subprocesso do PGP! --]\n"
 
 #: pgp.c:483 pgp.c:752 pgp.c:964
 msgid ""
 "[-- End of PGP output --]\n"
 "\n"
 msgstr ""
-"[-- Fim da saÌda do PGP --]\n"
+"[-- Fim da sa√≠da do PGP --]\n"
 "\n"
 
 #: pgp.c:860
@@ -3779,7 +3779,7 @@ msgid ""
 "[-- Error: could not create a PGP subprocess! --]\n"
 "\n"
 msgstr ""
-"[-- Erro: n„o foi possÌvel criar um subprocesso para o PGP! --]\n"
+"[-- Erro: n√£o foi poss√≠vel criar um subprocesso para o PGP! --]\n"
 "\n"
 
 #: pgp.c:952 pgp.c:976
@@ -3789,11 +3789,11 @@ msgstr "Login falhou."
 
 #: pgp.c:1182
 msgid "Can't open PGP subprocess!"
-msgstr "N„o foi possÌvel abrir o subprocesso do PGP!"
+msgstr "N√£o foi poss√≠vel abrir o subprocesso do PGP!"
 
 #: pgp.c:1616
 msgid "Can't invoke PGP"
-msgstr "N„o foi possÌvel executar o PGP"
+msgstr "N√£o foi poss√≠vel executar o PGP"
 
 #: pgp.c:1730
 #, fuzzy, c-format
@@ -3880,7 +3880,7 @@ msgstr "Obtendo chave PGP..."
 #: pgpkey.c:492
 #, fuzzy
 msgid "All matching keys are expired, revoked, or disabled."
-msgstr "Esta chave n„o pode ser usada: expirada/desabilitada/revogada."
+msgstr "Esta chave n√£o pode ser usada: expirada/desabilitada/revogada."
 
 #: pgpkey.c:533
 #, c-format
@@ -3894,7 +3894,7 @@ msgstr "Chaves do PGP que casam com \"%s\"."
 
 #: pgpkey.c:554 pgpkey.c:747
 msgid "Can't open /dev/null"
-msgstr "N„o foi possÌvel abrir /dev/null"
+msgstr "N√£o foi poss√≠vel abrir /dev/null"
 
 #: pgpkey.c:779
 #, c-format
@@ -3904,17 +3904,17 @@ msgstr "Chave do PGP %s."
 #: pop.c:102 pop_lib.c:210
 #, fuzzy, c-format
 msgid "Command TOP is not supported by server."
-msgstr "N„o È possÌvel marcar."
+msgstr "N√£o √© poss√≠vel marcar."
 
 #: pop.c:129
 #, fuzzy
 msgid "Can't write header to temporary file!"
-msgstr "N„o foi possÌvel criar um arquivo tempor·rio"
+msgstr "N√£o foi poss√≠vel criar um arquivo tempor√°rio"
 
 #: pop.c:276 pop_lib.c:212
 #, fuzzy, c-format
 msgid "Command UIDL is not supported by server."
-msgstr "N„o È possÌvel marcar."
+msgstr "N√£o √© poss√≠vel marcar."
 
 #: pop.c:296
 #, c-format
@@ -3934,7 +3934,7 @@ msgstr "Obtendo mensagem..."
 #: pop.c:613
 #, fuzzy
 msgid "Can't write message to temporary file!"
-msgstr "N„o foi possÌvel criar um arquivo tempor·rio"
+msgstr "N√£o foi poss√≠vel criar um arquivo tempor√°rio"
 
 #: pop.c:684
 #, fuzzy
@@ -3948,7 +3948,7 @@ msgstr "Preparando mensagem encaminhada..."
 
 #: pop.c:791
 msgid "POP host is not defined."
-msgstr "Servidor POP n„o est· definido."
+msgstr "Servidor POP n√£o est√° definido."
 
 #: pop.c:855
 msgid "No new mail in POP mailbox."
@@ -3975,7 +3975,7 @@ msgstr "%s [%d de %d mensagens lidas]"
 
 #: pop.c:933 pop_lib.c:378
 msgid "Server closed connection!"
-msgstr "O servidor fechou a conex„o!"
+msgstr "O servidor fechou a conex√£o!"
 
 #: pop_auth.c:79
 #, fuzzy
@@ -3994,17 +3994,17 @@ msgstr "Autenticando (CRAM-MD5)..."
 #: pop_auth.c:231
 #, fuzzy
 msgid "APOP authentication failed."
-msgstr "AutenticaÁ„o GSSAPI falhou."
+msgstr "Autentica√ß√£o GSSAPI falhou."
 
 #: pop_auth.c:266
 #, fuzzy, c-format
 msgid "Command USER is not supported by server."
-msgstr "N„o È possÌvel marcar."
+msgstr "N√£o √© poss√≠vel marcar."
 
 #: pop_lib.c:57
 #, fuzzy, c-format
 msgid "Invalid POP URL: %s\n"
-msgstr "MÍs inv·lido: %s"
+msgstr "M√™s inv√°lido: %s"
 
 #: pop_lib.c:208
 #, fuzzy
@@ -4019,7 +4019,7 @@ msgstr "Conectando a %s"
 #: pop_lib.c:392
 #, fuzzy
 msgid "Closing connection to POP server..."
-msgstr "Fechando a conex„o com o servidor IMAP..."
+msgstr "Fechando a conex√£o com o servidor IMAP..."
 
 #: pop_lib.c:571
 #, fuzzy
@@ -4029,7 +4029,7 @@ msgstr "Gravando mensagem em %s..."
 #: pop_lib.c:593
 #, fuzzy
 msgid "Connection lost. Reconnect to POP server?"
-msgstr "Fechando a conex„o com o servidor IMAP..."
+msgstr "Fechando a conex√£o com o servidor IMAP..."
 
 #: postpone.c:165
 msgid "Postponed Messages"
@@ -4042,12 +4042,12 @@ msgstr "Nenhuma mensagem adiada."
 #: postpone.c:457 postpone.c:478 postpone.c:512
 #, fuzzy
 msgid "Illegal crypto header"
-msgstr "CabeÁalho de PGP ilegal"
+msgstr "Cabe√ßalho de PGP ilegal"
 
 #: postpone.c:498
 #, fuzzy
 msgid "Illegal S/MIME header"
-msgstr "CabeÁalho de S/MIME ilegal"
+msgstr "Cabe√ßalho de S/MIME ilegal"
 
 #: postpone.c:586
 #, fuzzy
@@ -4077,7 +4077,7 @@ msgstr "Agurdando pela resposta..."
 
 #: query.c:265 query.c:294
 msgid "Query command not defined."
-msgstr "Comando de consulta n„o definido."
+msgstr "Comando de consulta n√£o definido."
 
 #: query.c:321
 #, c-format
@@ -4112,7 +4112,7 @@ msgstr "Anexo salvo."
 #: recvattach.c:591
 #, c-format
 msgid "WARNING!  You are about to overwrite %s, continue?"
-msgstr "AVISO! VocÍ est· prestes a sobrescrever %s, continuar?"
+msgstr "AVISO! Voc√™ est√° prestes a sobrescrever %s, continuar?"
 
 #: recvattach.c:609
 msgid "Attachment filtered."
@@ -4120,7 +4120,7 @@ msgstr "Anexo filtrado."
 
 #: recvattach.c:676
 msgid "Filter through: "
-msgstr "Filtrar atravÈs de: "
+msgstr "Filtrar atrav√©s de: "
 
 #: recvattach.c:676
 msgid "Pipe to: "
@@ -4129,7 +4129,7 @@ msgstr "Passar por cano a: "
 #: recvattach.c:711
 #, fuzzy, c-format
 msgid "I don't know how to print %s attachments!"
-msgstr "Eu n„o sei como imprimir anexos %s!"
+msgstr "Eu n√£o sei como imprimir anexos %s!"
 
 #: recvattach.c:776
 msgid "Print tagged attachment(s)?"
@@ -4142,7 +4142,7 @@ msgstr "Imprimir anexo?"
 #: recvattach.c:1010
 #, fuzzy
 msgid "Can't decrypt encrypted message!"
-msgstr "N„o foi encontrada nenhuma mensagem marcada."
+msgstr "N√£o foi encontrada nenhuma mensagem marcada."
 
 #: recvattach.c:1022
 msgid "Attachments"
@@ -4151,31 +4151,31 @@ msgstr "Anexos"
 #: recvattach.c:1058
 #, fuzzy
 msgid "There are no subparts to show!"
-msgstr "N„o h· anexos."
+msgstr "N√£o h√° anexos."
 
 #: recvattach.c:1119
 #, fuzzy
 msgid "Can't delete attachment from POP server."
-msgstr "obtÈm mensagens do servidor POP"
+msgstr "obt√©m mensagens do servidor POP"
 
 #: recvattach.c:1127
 #, fuzzy
 msgid "Deletion of attachments from encrypted messages is unsupported."
-msgstr "DeleÁ„o de anexos de mensagens PGP n„o È suportada"
+msgstr "Dele√ß√£o de anexos de mensagens PGP n√£o √© suportada"
 
 #: recvattach.c:1133
 #, fuzzy
 msgid ""
 "Deletion of attachments from signed messages may invalidate the signature."
-msgstr "DeleÁ„o de anexos de mensagens PGP n„o È suportada"
+msgstr "Dele√ß√£o de anexos de mensagens PGP n√£o √© suportada"
 
 #: recvattach.c:1150 recvattach.c:1167
 msgid "Only deletion of multipart attachments is supported."
-msgstr "Somente a deleÁ„o de anexos multiparte È suportada."
+msgstr "Somente a dele√ß√£o de anexos multiparte √© suportada."
 
 #: recvcmd.c:43
 msgid "You may only bounce message/rfc822 parts."
-msgstr "VocÍ sÛ pode repetir partes message/rfc822"
+msgstr "Voc√™ s√≥ pode repetir partes message/rfc822"
 
 #: recvcmd.c:241
 #, fuzzy
@@ -4190,7 +4190,7 @@ msgstr "Erro ao enviar mensagem."
 #: recvcmd.c:441
 #, c-format
 msgid "Can't open temporary file %s."
-msgstr "N„o foi possÌvel abrir o arquivo tempor·rio %s."
+msgstr "N√£o foi poss√≠vel abrir o arquivo tempor√°rio %s."
 
 #: recvcmd.c:472
 #, fuzzy
@@ -4200,8 +4200,8 @@ msgstr "mostra anexos MIME"
 #: recvcmd.c:486
 msgid "Can't decode all tagged attachments.  MIME-forward the others?"
 msgstr ""
-"N„o foi possÌvel decodificar todos os anexos marcados.\n"
-"Encaminhar os demais atravÈs de MIME?"
+"N√£o foi poss√≠vel decodificar todos os anexos marcados.\n"
+"Encaminhar os demais atrav√©s de MIME?"
 
 #: recvcmd.c:611
 msgid "Forward MIME encapsulated?"
@@ -4210,11 +4210,11 @@ msgstr "Encaminhar encapsulado em MIME?"
 #: recvcmd.c:619 recvcmd.c:869
 #, c-format
 msgid "Can't create %s."
-msgstr "N„o È possÌvel criar %s."
+msgstr "N√£o √© poss√≠vel criar %s."
 
 #: recvcmd.c:752
 msgid "Can't find any tagged messages."
-msgstr "N„o foi encontrada nenhuma mensagem marcada."
+msgstr "N√£o foi encontrada nenhuma mensagem marcada."
 
 #: recvcmd.c:773 send.c:740
 msgid "No mailing lists found!"
@@ -4223,8 +4223,8 @@ msgstr "Nenhuma lista de email encontrada!"
 #: recvcmd.c:848
 msgid "Can't decode all tagged attachments.  MIME-encapsulate the others?"
 msgstr ""
-"N„o foi possÌvel decodificar todos os anexos marcados.\n"
-"Encapsular os demais atravÈs de MIME?"
+"N√£o foi poss√≠vel decodificar todos os anexos marcados.\n"
+"Encapsular os demais atrav√©s de MIME?"
 
 #: remailer.c:481
 msgid "Append"
@@ -4244,49 +4244,49 @@ msgstr "OK"
 
 #: remailer.c:512
 msgid "Can't get mixmaster's type2.list!"
-msgstr "N„o foi possÌvel obter o type2.list do mixmaster!"
+msgstr "N√£o foi poss√≠vel obter o type2.list do mixmaster!"
 
 #: remailer.c:537
 msgid "Select a remailer chain."
-msgstr "Escolha uma sequÍncia de reenviadores."
+msgstr "Escolha uma sequ√™ncia de reenviadores."
 
 #: remailer.c:596
 #, c-format
 msgid "Error: %s can't be used as the final remailer of a chain."
-msgstr "Erro: %s n„o pode ser usado como reenviador final de uma sequÍncia."
+msgstr "Erro: %s n√£o pode ser usado como reenviador final de uma sequ√™ncia."
 
 #: remailer.c:626
 #, c-format
 msgid "Mixmaster chains are limited to %d elements."
-msgstr "SequÍncias do mixmaster s„o limitadas a %d elementos."
+msgstr "Sequ√™ncias do mixmaster s√£o limitadas a %d elementos."
 
 #: remailer.c:649
 msgid "The remailer chain is already empty."
-msgstr "A sequÍncia de reenviadores j· est· vazia."
+msgstr "A sequ√™ncia de reenviadores j√° est√° vazia."
 
 #: remailer.c:659
 msgid "You already have the first chain element selected."
-msgstr "O primeiro elemento da sequÍncia j· est· selecionado."
+msgstr "O primeiro elemento da sequ√™ncia j√° est√° selecionado."
 
 #: remailer.c:669
 msgid "You already have the last chain element selected."
-msgstr "O ˙ltimo elemento da sequÍncia j· est· selecionado."
+msgstr "O √∫ltimo elemento da sequ√™ncia j√° est√° selecionado."
 
 #: remailer.c:708
 msgid "Mixmaster doesn't accept Cc or Bcc headers."
-msgstr "O mixmaster n„o aceita cabeÁalhos Cc ou Bcc."
+msgstr "O mixmaster n√£o aceita cabe√ßalhos Cc ou Bcc."
 
 #: remailer.c:732
 msgid ""
 "Please set the hostname variable to a proper value when using mixmaster!"
 msgstr ""
-"Por favor, defina a vari·vel hostname para um valor adequado quando for\n"
+"Por favor, defina a vari√°vel hostname para um valor adequado quando for\n"
 "usar o mixmaster!"
 
 #: remailer.c:766
 #, c-format
 msgid "Error sending message, child exited %d.\n"
-msgstr "Erro ao enviar mensagem, processo filho terminou com cÛdigo %d\n"
+msgstr "Erro ao enviar mensagem, processo filho terminou com c√≥digo %d\n"
 
 #: remailer.c:770
 msgid "Error sending message."
@@ -4304,7 +4304,7 @@ msgstr "Nenhum caminho de mailcap especificado"
 #: rfc1524.c:424
 #, c-format
 msgid "mailcap entry for type %s not found"
-msgstr "entrada no mailcap para o tipo %s n„o foi encontrada."
+msgstr "entrada no mailcap para o tipo %s n√£o foi encontrada."
 
 #: score.c:75
 msgid "score: too few arguments"
@@ -4341,7 +4341,7 @@ msgstr "Responder para %s%s?"
 
 #: send.c:715
 msgid "No tagged messages are visible!"
-msgstr "Nenhuma mensagem marcada est· visÌvel!"
+msgstr "Nenhuma mensagem marcada est√° vis√≠vel!"
 
 #: send.c:766
 msgid "Include message in reply?"
@@ -4353,7 +4353,7 @@ msgstr "Enviando mensagem citada..."
 
 #: send.c:781
 msgid "Could not include all requested messages!"
-msgstr "N„o foi possÌvel incluir todas as mensagens solicitadas!"
+msgstr "N√£o foi poss√≠vel incluir todas as mensagens solicitadas!"
 
 #: send.c:795
 #, fuzzy
@@ -4375,11 +4375,11 @@ msgstr "Preparando mensagem encaminhada..."
 
 #: send.c:1475
 msgid "Abort unmodified message?"
-msgstr "Cancelar mensagem n„o modificada?"
+msgstr "Cancelar mensagem n√£o modificada?"
 
 #: send.c:1477
 msgid "Aborted unmodified message."
-msgstr "Mensagem n„o modificada cancelada."
+msgstr "Mensagem n√£o modificada cancelada."
 
 #: send.c:1658
 msgid "Message postponed."
@@ -4387,11 +4387,11 @@ msgstr "Mensagem adiada."
 
 #: send.c:1669
 msgid "No recipients are specified!"
-msgstr "Nenhum destinat·rio est· especificado!"
+msgstr "Nenhum destinat√°rio est√° especificado!"
 
 #: send.c:1674
 msgid "No recipients were specified."
-msgstr "Nenhum destinat·rio foi especificado."
+msgstr "Nenhum destinat√°rio foi especificado."
 
 #: send.c:1690
 msgid "No subject, abort sending?"
@@ -4412,7 +4412,7 @@ msgstr "ver anexo como texto"
 
 #: send.c:1899
 msgid "Could not send the message."
-msgstr "N„o foi possÌvel enviar a mensagem."
+msgstr "N√£o foi poss√≠vel enviar a mensagem."
 
 #: send.c:1904
 msgid "Mail sent."
@@ -4424,22 +4424,22 @@ msgstr "Enviando em segundo plano."
 
 #: sendlib.c:425
 msgid "No boundary parameter found! [report this error]"
-msgstr "Nenhum par‚metro de fronteira encontrado! [relate este erro]"
+msgstr "Nenhum par√¢metro de fronteira encontrado! [relate este erro]"
 
 #: sendlib.c:455
 #, c-format
 msgid "%s no longer exists!"
-msgstr "%s n„o mais existe!"
+msgstr "%s n√£o mais existe!"
 
 #: sendlib.c:878
 #, fuzzy, c-format
 msgid "%s isn't a regular file."
-msgstr "%s n„o È uma caixa de correio."
+msgstr "%s n√£o √© uma caixa de correio."
 
 #: sendlib.c:1051
 #, c-format
 msgid "Could not open %s"
-msgstr "N„o foi possÌvel abrir %s"
+msgstr "N√£o foi poss√≠vel abrir %s"
 
 #: sendlib.c:2360
 msgid "$sendmail must be set in order to send mail."
@@ -4448,11 +4448,11 @@ msgstr ""
 #: sendlib.c:2431
 #, c-format
 msgid "Error sending message, child exited %d (%s)."
-msgstr "Erro ao enviar a mensagem, processo filho saiu com cÛdigo %d (%s)."
+msgstr "Erro ao enviar a mensagem, processo filho saiu com c√≥digo %d (%s)."
 
 #: sendlib.c:2437
 msgid "Output of the delivery process"
-msgstr "SaÌda do processo de entrega"
+msgstr "Sa√≠da do processo de entrega"
 
 #: sendlib.c:2611
 #, c-format
@@ -4503,7 +4503,7 @@ msgstr ""
 #: smime.c:395
 #, fuzzy
 msgid "Invalid   "
-msgstr "MÍs inv·lido: %s"
+msgstr "M√™s inv√°lido: %s"
 
 #: smime.c:398
 #, fuzzy
@@ -4518,7 +4518,7 @@ msgstr "Chaves do S/MIME que casam com \"%s\"."
 #: smime.c:473
 #, fuzzy
 msgid "ID is not trusted."
-msgstr "Este ID n„o È de confianÁa."
+msgstr "Este ID n√£o √© de confian√ßa."
 
 #: smime.c:762
 #, fuzzy
@@ -4533,12 +4533,12 @@ msgstr ""
 #: smime.c:962 smime.c:992 smime.c:1059 smime.c:1103 smime.c:1168 smime.c:1243
 #, fuzzy
 msgid "Error: unable to create OpenSSL subprocess!"
-msgstr "[-- Erro: n„o foi possÌvel criar o subprocesso do OpenSSL! --]\n"
+msgstr "[-- Erro: n√£o foi poss√≠vel criar o subprocesso do OpenSSL! --]\n"
 
 #: smime.c:1321
 #, fuzzy
 msgid "no certfile"
-msgstr "N„o È possÌvel criar o filtro."
+msgstr "N√£o √© poss√≠vel criar o filtro."
 
 #: smime.c:1324
 #, fuzzy
@@ -4556,7 +4556,7 @@ msgstr ""
 #: smime.c:1586
 #, fuzzy
 msgid "Can't open OpenSSL subprocess!"
-msgstr "N„o foi possÌvel abrir o subprocesso do OpenSSL!"
+msgstr "N√£o foi poss√≠vel abrir o subprocesso do OpenSSL!"
 
 #: smime.c:1792 smime.c:1915
 #, fuzzy
@@ -4564,26 +4564,26 @@ msgid ""
 "[-- End of OpenSSL output --]\n"
 "\n"
 msgstr ""
-"[-- Fim da saÌda do OpenSSL --]\n"
+"[-- Fim da sa√≠da do OpenSSL --]\n"
 "\n"
 
 #: smime.c:1874 smime.c:1885
 #, fuzzy
 msgid "[-- Error: unable to create OpenSSL subprocess! --]\n"
-msgstr "[-- Erro: n„o foi possÌvel criar o subprocesso do OpenSSL! --]\n"
+msgstr "[-- Erro: n√£o foi poss√≠vel criar o subprocesso do OpenSSL! --]\n"
 
 #: smime.c:1919
 #, fuzzy
 msgid "[-- The following data is S/MIME encrypted --]\n"
 msgstr ""
-"[-- Os dados a seguir est„o encriptados com S/MIME --]\n"
+"[-- Os dados a seguir est√£o encriptados com S/MIME --]\n"
 "\n"
 
 #: smime.c:1922
 #, fuzzy
 msgid "[-- The following data is S/MIME signed --]\n"
 msgstr ""
-"[-- Os dados a seguir est„o assinados --]\n"
+"[-- Os dados a seguir est√£o assinados --]\n"
 "\n"
 
 #: smime.c:1986
@@ -4705,7 +4705,7 @@ msgstr ""
 #: smtp.c:383
 #, fuzzy, c-format
 msgid "Invalid SMTP URL: %s"
-msgstr "MÍs inv·lido: %s"
+msgstr "M√™s inv√°lido: %s"
 
 #: smtp.c:493
 msgid "SMTP server does not support authentication"
@@ -4714,17 +4714,17 @@ msgstr ""
 #: smtp.c:501
 #, fuzzy
 msgid "SMTP authentication requires SASL"
-msgstr "AutenticaÁ„o GSSAPI falhou."
+msgstr "Autentica√ß√£o GSSAPI falhou."
 
 #: smtp.c:535
 #, fuzzy, c-format
 msgid "%s authentication failed, trying next method"
-msgstr "AutenticaÁ„o GSSAPI falhou."
+msgstr "Autentica√ß√£o GSSAPI falhou."
 
 #: smtp.c:552
 #, fuzzy
 msgid "SASL authentication failed"
-msgstr "AutenticaÁ„o GSSAPI falhou."
+msgstr "Autentica√ß√£o GSSAPI falhou."
 
 #: sort.c:265
 msgid "Sorting mailbox..."
@@ -4733,7 +4733,7 @@ msgstr "Ordenando caixa..."
 #: sort.c:302
 msgid "Could not find sorting function! [report this bug]"
 msgstr ""
-"N„o foi possÌvel encontrar a funÁ„o de ordenaÁ„o! [relate este problema]"
+"N√£o foi poss√≠vel encontrar a fun√ß√£o de ordena√ß√£o! [relate este problema]"
 
 #: status.c:105
 msgid "(no mailbox)"
@@ -4742,15 +4742,15 @@ msgstr "(nenhuma caixa de mensagens)"
 #: thread.c:1095
 #, fuzzy
 msgid "Parent message is not visible in this limited view."
-msgstr "A mensagem pai n„o est· visÌvel nesta vis„o limitada"
+msgstr "A mensagem pai n√£o est√° vis√≠vel nesta vis√£o limitada"
 
 #: thread.c:1101
 msgid "Parent message is not available."
-msgstr "A mensagem pai n„o est· disponÌvel."
+msgstr "A mensagem pai n√£o est√° dispon√≠vel."
 
 #: ../keymap_alldefs.h:5
 msgid "null operation"
-msgstr "operaÁ„o nula"
+msgstr "opera√ß√£o nula"
 
 #: ../keymap_alldefs.h:6
 msgid "end of conditional execution (noop)"
@@ -4758,7 +4758,7 @@ msgstr ""
 
 #: ../keymap_alldefs.h:7
 msgid "force viewing of attachment using mailcap"
-msgstr "forÁar a visualizaÁ„do do anexo usando o mailcap"
+msgstr "for√ßar a visualiza√ß√£do do anexo usando o mailcap"
 
 #: ../keymap_alldefs.h:8
 msgid "view attachment as text"
@@ -4767,23 +4767,23 @@ msgstr "ver anexo como texto"
 #: ../keymap_alldefs.h:9
 #, fuzzy
 msgid "Toggle display of subparts"
-msgstr "troca entre mostrar texto citado ou n„o"
+msgstr "troca entre mostrar texto citado ou n√£o"
 
 #: ../keymap_alldefs.h:10
 msgid "move to the bottom of the page"
-msgstr "anda atÈ o fim da p·gina"
+msgstr "anda at√© o fim da p√°gina"
 
 #: ../keymap_alldefs.h:11
 msgid "remail a message to another user"
-msgstr "re-envia uma mensagem para outro usu·rio"
+msgstr "re-envia uma mensagem para outro usu√°rio"
 
 #: ../keymap_alldefs.h:12
 msgid "select a new file in this directory"
-msgstr "escolhe um novo arquivo neste diretÛrio"
+msgstr "escolhe um novo arquivo neste diret√≥rio"
 
 #: ../keymap_alldefs.h:13
 msgid "view file"
-msgstr "vÍ arquivo"
+msgstr "v√™ arquivo"
 
 #: ../keymap_alldefs.h:14
 msgid "display the currently selected file's name"
@@ -4791,16 +4791,16 @@ msgstr "mostra o nome do arquivo atualmente selecionado"
 
 #: ../keymap_alldefs.h:15
 msgid "subscribe to current mailbox (IMAP only)"
-msgstr "assina ‡ caixa de correio atual (sÛ para IMAP)"
+msgstr "assina √† caixa de correio atual (s√≥ para IMAP)"
 
 #: ../keymap_alldefs.h:16
 #, fuzzy
 msgid "unsubscribe from current mailbox (IMAP only)"
-msgstr "cancela assinatura da caixa atual (sÛ para IMAP)"
+msgstr "cancela assinatura da caixa atual (s√≥ para IMAP)"
 
 #: ../keymap_alldefs.h:17
 msgid "toggle view all/subscribed mailboxes (IMAP only)"
-msgstr "troca ver todas as caixas/sÛ as inscritas (sÛ para IMAP)"
+msgstr "troca ver todas as caixas/s√≥ as inscritas (s√≥ para IMAP)"
 
 #: ../keymap_alldefs.h:18
 #, fuzzy
@@ -4809,40 +4809,40 @@ msgstr "Nenhuma caixa com novas mensagens."
 
 #: ../keymap_alldefs.h:19
 msgid "change directories"
-msgstr "muda de diretÛrio"
+msgstr "muda de diret√≥rio"
 
 #: ../keymap_alldefs.h:20
 msgid "check mailboxes for new mail"
-msgstr "verifica se h· novas mensagens na caixa"
+msgstr "verifica se h√° novas mensagens na caixa"
 
 #: ../keymap_alldefs.h:21
 #, fuzzy
 msgid "attach file(s) to this message"
-msgstr "anexa um(ns) arquivo(s) ‡ esta mensagem"
+msgstr "anexa um(ns) arquivo(s) √† esta mensagem"
 
 #: ../keymap_alldefs.h:22
 msgid "attach message(s) to this message"
-msgstr "anexa uma(s) mensagem(ns) ‡ esta mensagem"
+msgstr "anexa uma(s) mensagem(ns) √† esta mensagem"
 
 #: ../keymap_alldefs.h:23
 msgid "edit the BCC list"
-msgstr "edita a lista de CÛpias Escondidas (BCC)"
+msgstr "edita a lista de C√≥pias Escondidas (BCC)"
 
 #: ../keymap_alldefs.h:24
 msgid "edit the CC list"
-msgstr "edita a lista de CÛpias (CC)"
+msgstr "edita a lista de C√≥pias (CC)"
 
 #: ../keymap_alldefs.h:25
 msgid "edit attachment description"
-msgstr "edita a descriÁ„o do anexo"
+msgstr "edita a descri√ß√£o do anexo"
 
 #: ../keymap_alldefs.h:26
 msgid "edit attachment transfer-encoding"
-msgstr "edita o cÛdigo de transferÍncia do anexo"
+msgstr "edita o c√≥digo de transfer√™ncia do anexo"
 
 #: ../keymap_alldefs.h:27
 msgid "enter a file to save a copy of this message in"
-msgstr "informe um arquivo no qual salvar uma cÛpia desta mensagem"
+msgstr "informe um arquivo no qual salvar uma c√≥pia desta mensagem"
 
 #: ../keymap_alldefs.h:28
 msgid "edit the file to be attached"
@@ -4854,7 +4854,7 @@ msgstr "edita o campo From"
 
 #: ../keymap_alldefs.h:30
 msgid "edit the message with headers"
-msgstr "edita a mensagem e seus cabeÁalhos"
+msgstr "edita a mensagem e seus cabe√ßalhos"
 
 #: ../keymap_alldefs.h:31
 msgid "edit the message"
@@ -4874,11 +4874,11 @@ msgstr "edita o assunto desta mensagem"
 
 #: ../keymap_alldefs.h:35
 msgid "edit the TO list"
-msgstr "edita a lista de Destinat·rios (To)"
+msgstr "edita a lista de Destinat√°rios (To)"
 
 #: ../keymap_alldefs.h:36
 msgid "create a new mailbox (IMAP only)"
-msgstr "cria uma nova caixa de correio (sÛ para IMAP)"
+msgstr "cria uma nova caixa de correio (s√≥ para IMAP)"
 
 #: ../keymap_alldefs.h:37
 msgid "edit attachment content type"
@@ -4886,7 +4886,7 @@ msgstr "edita o tipo de anexo"
 
 #: ../keymap_alldefs.h:38
 msgid "get a temporary copy of an attachment"
-msgstr "obtÈm uma cÛpia tempor·ria do anexo"
+msgstr "obt√©m uma c√≥pia tempor√°ria do anexo"
 
 #: ../keymap_alldefs.h:39
 msgid "run ispell on the message"
@@ -4894,11 +4894,11 @@ msgstr "executa o ispell na mensagem"
 
 #: ../keymap_alldefs.h:40
 msgid "compose new attachment using mailcap entry"
-msgstr "compıe um novo anexo usando a entrada no mailcap"
+msgstr "comp√µe um novo anexo usando a entrada no mailcap"
 
 #: ../keymap_alldefs.h:41
 msgid "toggle recoding of this attachment"
-msgstr "ativa/desativa recodificaÁ„o deste anexo"
+msgstr "ativa/desativa recodifica√ß√£o deste anexo"
 
 #: ../keymap_alldefs.h:42
 msgid "save this message to send later"
@@ -4914,15 +4914,15 @@ msgstr "envia a mensagem"
 
 #: ../keymap_alldefs.h:45
 msgid "toggle disposition between inline/attachment"
-msgstr "troca a visualizaÁ„o de anexos/em linha"
+msgstr "troca a visualiza√ß√£o de anexos/em linha"
 
 #: ../keymap_alldefs.h:46
 msgid "toggle whether to delete file after sending it"
-msgstr "troca entre apagar o arquivo apÛs envi·-lo ou n„o"
+msgstr "troca entre apagar o arquivo ap√≥s envi√°-lo ou n√£o"
 
 #: ../keymap_alldefs.h:47
 msgid "update an attachment's encoding info"
-msgstr "atualiza a informaÁ„o de codificaÁ„o de um anexo"
+msgstr "atualiza a informa√ß√£o de codifica√ß√£o de um anexo"
 
 #: ../keymap_alldefs.h:48
 msgid "write the message to a folder"
@@ -4950,11 +4950,11 @@ msgstr "move a entrada para o topo da tela"
 
 #: ../keymap_alldefs.h:54
 msgid "make decoded (text/plain) copy"
-msgstr "cria uma cÛpia decodificada (text/plain)"
+msgstr "cria uma c√≥pia decodificada (text/plain)"
 
 #: ../keymap_alldefs.h:55
 msgid "make decoded copy (text/plain) and delete"
-msgstr "cria uma cÛpia decodificada (text/plain) e apaga"
+msgstr "cria uma c√≥pia decodificada (text/plain) e apaga"
 
 #: ../keymap_alldefs.h:56
 msgid "delete the current entry"
@@ -4962,23 +4962,23 @@ msgstr "apaga a entrada atual"
 
 #: ../keymap_alldefs.h:57
 msgid "delete the current mailbox (IMAP only)"
-msgstr "apaga a caixa de correio atual (sÛ para IMAP)"
+msgstr "apaga a caixa de correio atual (s√≥ para IMAP)"
 
 #: ../keymap_alldefs.h:58
 msgid "delete all messages in subthread"
-msgstr "apaga todas as mensagens na sub-discuss„o"
+msgstr "apaga todas as mensagens na sub-discuss√£o"
 
 #: ../keymap_alldefs.h:59
 msgid "delete all messages in thread"
-msgstr "apaga todas as mensagens na discuss„o"
+msgstr "apaga todas as mensagens na discuss√£o"
 
 #: ../keymap_alldefs.h:60
 msgid "display full address of sender"
-msgstr "mostra o endereÁo completo do remetente"
+msgstr "mostra o endere√ßo completo do remetente"
 
 #: ../keymap_alldefs.h:61
 msgid "display message and toggle header weeding"
-msgstr "mostra a mensagem e ativa/desativa poda de cabeÁalhos"
+msgstr "mostra a mensagem e ativa/desativa poda de cabe√ßalhos"
 
 #: ../keymap_alldefs.h:62
 msgid "display a message"
@@ -4999,11 +4999,11 @@ msgstr "move o cursor um caractere para a esquerda"
 #: ../keymap_alldefs.h:66
 #, fuzzy
 msgid "move the cursor to the beginning of the word"
-msgstr "pula para o inÌcio da linha"
+msgstr "pula para o in√≠cio da linha"
 
 #: ../keymap_alldefs.h:67
 msgid "jump to the beginning of the line"
-msgstr "pula para o inÌcio da linha"
+msgstr "pula para o in√≠cio da linha"
 
 #: ../keymap_alldefs.h:68
 msgid "cycle among incoming mailboxes"
@@ -5015,7 +5015,7 @@ msgstr "completa um nome de arquivo ou apelido"
 
 #: ../keymap_alldefs.h:70
 msgid "complete address with query"
-msgstr "completa um endereÁo com uma pesquisa"
+msgstr "completa um endere√ßo com uma pesquisa"
 
 #: ../keymap_alldefs.h:71
 msgid "delete the char under the cursor"
@@ -5037,20 +5037,20 @@ msgstr "move o cursor um caractere para a direita"
 #: ../keymap_alldefs.h:75
 #, fuzzy
 msgid "scroll down through the history list"
-msgstr "volta uma p·gina no histÛrico"
+msgstr "volta uma p√°gina no hist√≥rico"
 
 #: ../keymap_alldefs.h:76
 msgid "scroll up through the history list"
-msgstr "volta uma p·gina no histÛrico"
+msgstr "volta uma p√°gina no hist√≥rico"
 
 #: ../keymap_alldefs.h:77
 msgid "delete chars from cursor to end of line"
-msgstr "apaga os caracteres a partir do cursor atÈ o final da linha"
+msgstr "apaga os caracteres a partir do cursor at√© o final da linha"
 
 #: ../keymap_alldefs.h:78
 #, fuzzy
 msgid "delete chars from the cursor to the end of the word"
-msgstr "apaga os caracteres a partir do cursor atÈ o final da linha"
+msgstr "apaga os caracteres a partir do cursor at√© o final da linha"
 
 #: ../keymap_alldefs.h:79
 msgid "delete all chars on the line"
@@ -5062,7 +5062,7 @@ msgstr "apaga a palavra em frente ao cursor"
 
 #: ../keymap_alldefs.h:81
 msgid "quote the next typed key"
-msgstr "pıe a prÛxima tecla digitada entre aspas"
+msgstr "p√µe a pr√≥xima tecla digitada entre aspas"
 
 #: ../keymap_alldefs.h:82
 msgid "transpose character under cursor with previous"
@@ -5075,7 +5075,7 @@ msgstr ""
 #: ../keymap_alldefs.h:84
 #, fuzzy
 msgid "convert the word to lower case"
-msgstr "anda atÈ o fim da p·gina"
+msgstr "anda at√© o fim da p√°gina"
 
 #: ../keymap_alldefs.h:85
 msgid "convert the word to upper case"
@@ -5087,7 +5087,7 @@ msgstr "entra um comando do muttrc"
 
 #: ../keymap_alldefs.h:87
 msgid "enter a file mask"
-msgstr "entra uma m·scara de arquivos"
+msgstr "entra uma m√°scara de arquivos"
 
 #: ../keymap_alldefs.h:88
 msgid "exit this menu"
@@ -5095,11 +5095,11 @@ msgstr "sai deste menu"
 
 #: ../keymap_alldefs.h:89
 msgid "filter attachment through a shell command"
-msgstr "filtra o anexo atravÈs de um comando do shell"
+msgstr "filtra o anexo atrav√©s de um comando do shell"
 
 #: ../keymap_alldefs.h:90
 msgid "move to the first entry"
-msgstr "anda atÈ a primeira entrada"
+msgstr "anda at√© a primeira entrada"
 
 #: ../keymap_alldefs.h:91
 msgid "toggle a message's 'important' flag"
@@ -5107,7 +5107,7 @@ msgstr "troca a marca 'importante' da mensagem"
 
 #: ../keymap_alldefs.h:92
 msgid "forward a message with comments"
-msgstr "encaminha uma mensagem com coment·rios"
+msgstr "encaminha uma mensagem com coment√°rios"
 
 #: ../keymap_alldefs.h:93
 msgid "select the current entry"
@@ -5115,15 +5115,15 @@ msgstr "seleciona a entrada atual"
 
 #: ../keymap_alldefs.h:94
 msgid "reply to all recipients"
-msgstr "responde a todos os destinat·rios"
+msgstr "responde a todos os destinat√°rios"
 
 #: ../keymap_alldefs.h:95
 msgid "scroll down 1/2 page"
-msgstr "passa meia p·gina"
+msgstr "passa meia p√°gina"
 
 #: ../keymap_alldefs.h:96
 msgid "scroll up 1/2 page"
-msgstr "volta meia p·gina"
+msgstr "volta meia p√°gina"
 
 #: ../keymap_alldefs.h:97
 msgid "this screen"
@@ -5131,15 +5131,15 @@ msgstr "esta tela"
 
 #: ../keymap_alldefs.h:98
 msgid "jump to an index number"
-msgstr "pula para um n˙mero de Ìndice"
+msgstr "pula para um n√∫mero de √≠ndice"
 
 #: ../keymap_alldefs.h:99
 msgid "move to the last entry"
-msgstr "anda atÈ a ˙ltima entrada"
+msgstr "anda at√© a √∫ltima entrada"
 
 #: ../keymap_alldefs.h:100
 msgid "reply to specified mailing list"
-msgstr "responde ‡ lista de email especificada"
+msgstr "responde √† lista de email especificada"
 
 #: ../keymap_alldefs.h:101
 msgid "execute a macro"
@@ -5147,7 +5147,7 @@ msgstr "executa um macro"
 
 #: ../keymap_alldefs.h:102
 msgid "compose a new mail message"
-msgstr "compıe uma nova mensagem eletrÙnica"
+msgstr "comp√µe uma nova mensagem eletr√¥nica"
 
 #: ../keymap_alldefs.h:103
 msgid "break the thread in two"
@@ -5167,12 +5167,12 @@ msgstr "retira uma marca de estado de uma mensagem"
 
 #: ../keymap_alldefs.h:107
 msgid "delete messages matching a pattern"
-msgstr "apaga mensagens que casem com um padr„o"
+msgstr "apaga mensagens que casem com um padr√£o"
 
 #: ../keymap_alldefs.h:108
 #, fuzzy
 msgid "force retrieval of mail from IMAP server"
-msgstr "obtÈm mensagens do servidor POP"
+msgstr "obt√©m mensagens do servidor POP"
 
 #: ../keymap_alldefs.h:109
 msgid "logout from all IMAP servers"
@@ -5180,19 +5180,19 @@ msgstr ""
 
 #: ../keymap_alldefs.h:110
 msgid "retrieve mail from POP server"
-msgstr "obtÈm mensagens do servidor POP"
+msgstr "obt√©m mensagens do servidor POP"
 
 #: ../keymap_alldefs.h:111
 msgid "move to the first message"
-msgstr "anda atÈ a primeira mensagem"
+msgstr "anda at√© a primeira mensagem"
 
 #: ../keymap_alldefs.h:112
 msgid "move to the last message"
-msgstr "anda atÈ a ˙ltima mensagem"
+msgstr "anda at√© a √∫ltima mensagem"
 
 #: ../keymap_alldefs.h:113
 msgid "show only messages matching a pattern"
-msgstr "mostra somente mensagens que casem com um padr„o"
+msgstr "mostra somente mensagens que casem com um padr√£o"
 
 #: ../keymap_alldefs.h:114
 #, fuzzy
@@ -5206,44 +5206,44 @@ msgstr "Nenhuma caixa com novas mensagens."
 
 #: ../keymap_alldefs.h:116
 msgid "jump to the next new message"
-msgstr "pula para a prÛxima mensagem nova"
+msgstr "pula para a pr√≥xima mensagem nova"
 
 #: ../keymap_alldefs.h:117
 #, fuzzy
 msgid "jump to the next new or unread message"
-msgstr "pula para a prÛxima mensagem n„o lida"
+msgstr "pula para a pr√≥xima mensagem n√£o lida"
 
 #: ../keymap_alldefs.h:118
 msgid "jump to the next subthread"
-msgstr "pula para a prÛxima sub-discuss„o"
+msgstr "pula para a pr√≥xima sub-discuss√£o"
 
 #: ../keymap_alldefs.h:119
 msgid "jump to the next thread"
-msgstr "pula para a prÛxima discuss„o"
+msgstr "pula para a pr√≥xima discuss√£o"
 
 #: ../keymap_alldefs.h:120
 msgid "move to the next undeleted message"
-msgstr "anda atÈ a prÛxima mensagem n„o apagada"
+msgstr "anda at√© a pr√≥xima mensagem n√£o apagada"
 
 #: ../keymap_alldefs.h:121
 msgid "jump to the next unread message"
-msgstr "pula para a prÛxima mensagem n„o lida"
+msgstr "pula para a pr√≥xima mensagem n√£o lida"
 
 #: ../keymap_alldefs.h:122
 msgid "jump to parent message in thread"
-msgstr "pula para a mensagem pai na discuss„o"
+msgstr "pula para a mensagem pai na discuss√£o"
 
 #: ../keymap_alldefs.h:123
 msgid "jump to previous thread"
-msgstr "pula para a discuss„o anterior"
+msgstr "pula para a discuss√£o anterior"
 
 #: ../keymap_alldefs.h:124
 msgid "jump to previous subthread"
-msgstr "pula para a sub-discuss„o anterior"
+msgstr "pula para a sub-discuss√£o anterior"
 
 #: ../keymap_alldefs.h:125
 msgid "move to the previous undeleted message"
-msgstr "anda atÈ a mensagem n„o apagada anterior"
+msgstr "anda at√© a mensagem n√£o apagada anterior"
 
 #: ../keymap_alldefs.h:126
 msgid "jump to the previous new message"
@@ -5252,19 +5252,19 @@ msgstr "pula para a mensagem nova anterior"
 #: ../keymap_alldefs.h:127
 #, fuzzy
 msgid "jump to the previous new or unread message"
-msgstr "pula para a mensagem n„o lida anterior"
+msgstr "pula para a mensagem n√£o lida anterior"
 
 #: ../keymap_alldefs.h:128
 msgid "jump to the previous unread message"
-msgstr "pula para a mensagem n„o lida anterior"
+msgstr "pula para a mensagem n√£o lida anterior"
 
 #: ../keymap_alldefs.h:129
 msgid "mark the current thread as read"
-msgstr "marca a discuss„o atual como lida"
+msgstr "marca a discuss√£o atual como lida"
 
 #: ../keymap_alldefs.h:130
 msgid "mark the current subthread as read"
-msgstr "marca a sub-discuss„o atual como lida"
+msgstr "marca a sub-discuss√£o atual como lida"
 
 #: ../keymap_alldefs.h:131
 msgid "set a status flag on a message"
@@ -5272,27 +5272,27 @@ msgstr "atribui uma marca de estado em uma mensagem"
 
 #: ../keymap_alldefs.h:132
 msgid "save changes to mailbox"
-msgstr "salva as mudanÁas ‡ caixa"
+msgstr "salva as mudan√ßas √† caixa"
 
 #: ../keymap_alldefs.h:133
 msgid "tag messages matching a pattern"
-msgstr "marca mensagens que casem com um padr„o"
+msgstr "marca mensagens que casem com um padr√£o"
 
 #: ../keymap_alldefs.h:134
 msgid "undelete messages matching a pattern"
-msgstr "restaura mensagens que casem com um padr„o"
+msgstr "restaura mensagens que casem com um padr√£o"
 
 #: ../keymap_alldefs.h:135
 msgid "untag messages matching a pattern"
-msgstr "desmarca mensagens que casem com um padr„o"
+msgstr "desmarca mensagens que casem com um padr√£o"
 
 #: ../keymap_alldefs.h:136
 msgid "move to the middle of the page"
-msgstr "anda atÈ o meio da p·gina"
+msgstr "anda at√© o meio da p√°gina"
 
 #: ../keymap_alldefs.h:137
 msgid "move to the next entry"
-msgstr "anda atÈ a prÛxima entrada"
+msgstr "anda at√© a pr√≥xima entrada"
 
 #: ../keymap_alldefs.h:138
 msgid "scroll down one line"
@@ -5300,7 +5300,7 @@ msgstr "desce uma linha"
 
 #: ../keymap_alldefs.h:139
 msgid "move to the next page"
-msgstr "anda atÈ a prÛxima p·gina"
+msgstr "anda at√© a pr√≥xima p√°gina"
 
 #: ../keymap_alldefs.h:140
 msgid "jump to the bottom of the message"
@@ -5308,7 +5308,7 @@ msgstr "pula para o fim da mensagem"
 
 #: ../keymap_alldefs.h:141
 msgid "toggle display of quoted text"
-msgstr "troca entre mostrar texto citado ou n„o"
+msgstr "troca entre mostrar texto citado ou n√£o"
 
 #: ../keymap_alldefs.h:142
 msgid "skip beyond quoted text"
@@ -5316,15 +5316,15 @@ msgstr "pula para depois do texto citado"
 
 #: ../keymap_alldefs.h:143
 msgid "jump to the top of the message"
-msgstr "volta para o inÌcio da mensagem"
+msgstr "volta para o in√≠cio da mensagem"
 
 #: ../keymap_alldefs.h:144
 msgid "pipe message/attachment to a shell command"
-msgstr "passa a mensagem/anexo para um comando do shell atravÈs de um cano"
+msgstr "passa a mensagem/anexo para um comando do shell atrav√©s de um cano"
 
 #: ../keymap_alldefs.h:145
 msgid "move to the previous entry"
-msgstr "anda atÈ a entrada anterior"
+msgstr "anda at√© a entrada anterior"
 
 #: ../keymap_alldefs.h:146
 msgid "scroll up one line"
@@ -5332,7 +5332,7 @@ msgstr "sobe uma linha"
 
 #: ../keymap_alldefs.h:147
 msgid "move to the previous page"
-msgstr "anda atÈ a p·gina anterior"
+msgstr "anda at√© a p√°gina anterior"
 
 #: ../keymap_alldefs.h:148
 msgid "print the current entry"
@@ -5344,7 +5344,7 @@ msgstr ""
 
 #: ../keymap_alldefs.h:150
 msgid "query external program for addresses"
-msgstr "executa uma busca por um endereÁo atravÈs de um programa externo"
+msgstr "executa uma busca por um endere√ßo atrav√©s de um programa externo"
 
 #: ../keymap_alldefs.h:151
 msgid "append new query results to current results"
@@ -5352,7 +5352,7 @@ msgstr "anexa os resultados da nova busca aos resultados atuais"
 
 #: ../keymap_alldefs.h:152
 msgid "save changes to mailbox and quit"
-msgstr "salva mudanÁas ‡ caixa e sai"
+msgstr "salva mudan√ßas √† caixa e sai"
 
 #: ../keymap_alldefs.h:153
 msgid "recall a postponed message"
@@ -5369,7 +5369,7 @@ msgstr "{interno}"
 #: ../keymap_alldefs.h:156
 #, fuzzy
 msgid "rename the current mailbox (IMAP only)"
-msgstr "apaga a caixa de correio atual (sÛ para IMAP)"
+msgstr "apaga a caixa de correio atual (s√≥ para IMAP)"
 
 #: ../keymap_alldefs.h:157
 msgid "reply to a message"
@@ -5386,23 +5386,23 @@ msgstr "salva mensagem/anexo em um arquivo"
 
 #: ../keymap_alldefs.h:160
 msgid "search for a regular expression"
-msgstr "procura por uma express„o regular"
+msgstr "procura por uma express√£o regular"
 
 #: ../keymap_alldefs.h:161
 msgid "search backwards for a regular expression"
-msgstr "procura de tr·s para a frente por uma express„o regular"
+msgstr "procura de tr√°s para a frente por uma express√£o regular"
 
 #: ../keymap_alldefs.h:162
 msgid "search for next match"
-msgstr "procura pelo prÛximo resultado"
+msgstr "procura pelo pr√≥ximo resultado"
 
 #: ../keymap_alldefs.h:163
 msgid "search for next match in opposite direction"
-msgstr "procura pelo prÛximo resultado na direÁ„o oposta"
+msgstr "procura pelo pr√≥ximo resultado na dire√ß√£o oposta"
 
 #: ../keymap_alldefs.h:164
 msgid "toggle search pattern coloring"
-msgstr "troca entre mostrar cores nos padrıes de busca ou n„o"
+msgstr "troca entre mostrar cores nos padr√µes de busca ou n√£o"
 
 #: ../keymap_alldefs.h:165
 msgid "invoke a command in a subshell"
@@ -5422,20 +5422,20 @@ msgstr "marca a entrada atual"
 
 #: ../keymap_alldefs.h:169
 msgid "apply next function to tagged messages"
-msgstr "aplica a prÛxima funÁ„o ‡s mensagens marcadas"
+msgstr "aplica a pr√≥xima fun√ß√£o √†s mensagens marcadas"
 
 #: ../keymap_alldefs.h:170
 #, fuzzy
 msgid "apply next function ONLY to tagged messages"
-msgstr "aplica a prÛxima funÁ„o ‡s mensagens marcadas"
+msgstr "aplica a pr√≥xima fun√ß√£o √†s mensagens marcadas"
 
 #: ../keymap_alldefs.h:171
 msgid "tag the current subthread"
-msgstr "marca a sub-discuss„o atual"
+msgstr "marca a sub-discuss√£o atual"
 
 #: ../keymap_alldefs.h:172
 msgid "tag the current thread"
-msgstr "marca a discuss„o atual"
+msgstr "marca a discuss√£o atual"
 
 #: ../keymap_alldefs.h:173
 msgid "toggle a message's 'new' flag"
@@ -5443,7 +5443,7 @@ msgstr "troca a marca 'nova' de uma mensagem"
 
 #: ../keymap_alldefs.h:174
 msgid "toggle whether the mailbox will be rewritten"
-msgstr "troca entre reescrever a caixa ou n„o"
+msgstr "troca entre reescrever a caixa ou n√£o"
 
 #: ../keymap_alldefs.h:175
 msgid "toggle whether to browse mailboxes or all files"
@@ -5451,7 +5451,7 @@ msgstr "troca entre pesquisar em caixas ou em todos os arquivos"
 
 #: ../keymap_alldefs.h:176
 msgid "move to the top of the page"
-msgstr "anda atÈ o topo da p·gina"
+msgstr "anda at√© o topo da p√°gina"
 
 #: ../keymap_alldefs.h:177
 msgid "undelete the current entry"
@@ -5459,19 +5459,19 @@ msgstr "restaura a entrada atual"
 
 #: ../keymap_alldefs.h:178
 msgid "undelete all messages in thread"
-msgstr "restaura todas as mensagens na discuss„o"
+msgstr "restaura todas as mensagens na discuss√£o"
 
 #: ../keymap_alldefs.h:179
 msgid "undelete all messages in subthread"
-msgstr "restaura todas as mensagens na sub-discuss„o"
+msgstr "restaura todas as mensagens na sub-discuss√£o"
 
 #: ../keymap_alldefs.h:180
 msgid "show the Mutt version number and date"
-msgstr "mostra o n˙mero e a data da vers„o do Mutt"
+msgstr "mostra o n√∫mero e a data da vers√£o do Mutt"
 
 #: ../keymap_alldefs.h:181
 msgid "view attachment using mailcap entry if necessary"
-msgstr "vÍ anexo usando sua entrada no mailcap se necess·rio"
+msgstr "v√™ anexo usando sua entrada no mailcap se necess√°rio"
 
 #: ../keymap_alldefs.h:182
 msgid "show MIME attachments"
@@ -5483,15 +5483,15 @@ msgstr ""
 
 #: ../keymap_alldefs.h:184
 msgid "show currently active limit pattern"
-msgstr "mostra o padr„o limitante atualmente ativado"
+msgstr "mostra o padr√£o limitante atualmente ativado"
 
 #: ../keymap_alldefs.h:185
 msgid "collapse/uncollapse current thread"
-msgstr "abre/fecha a discuss„o atual"
+msgstr "abre/fecha a discuss√£o atual"
 
 #: ../keymap_alldefs.h:186
 msgid "collapse/uncollapse all threads"
-msgstr "abre/fecha todas as discussıes"
+msgstr "abre/fecha todas as discuss√µes"
 
 #: ../keymap_alldefs.h:187
 msgid "move the highlight to next mailbox"
@@ -5510,17 +5510,17 @@ msgstr "Reabrindo caixa de mensagens..."
 #: ../keymap_alldefs.h:190
 #, fuzzy
 msgid "scroll the sidebar down 1 page"
-msgstr "passa meia p·gina"
+msgstr "passa meia p√°gina"
 
 #: ../keymap_alldefs.h:191
 #, fuzzy
 msgid "scroll the sidebar up 1 page"
-msgstr "volta meia p·gina"
+msgstr "volta meia p√°gina"
 
 #: ../keymap_alldefs.h:192
 #, fuzzy
 msgid "move the highlight to previous mailbox"
-msgstr "anda atÈ a p·gina anterior"
+msgstr "anda at√© a p√°gina anterior"
 
 #: ../keymap_alldefs.h:193
 #, fuzzy
@@ -5533,23 +5533,23 @@ msgstr ""
 
 #: ../keymap_alldefs.h:195
 msgid "attach a PGP public key"
-msgstr "anexa uma chave p˙blica do PGP"
+msgstr "anexa uma chave p√∫blica do PGP"
 
 #: ../keymap_alldefs.h:196
 msgid "show PGP options"
-msgstr "mostra as opÁıes do PGP"
+msgstr "mostra as op√ß√µes do PGP"
 
 #: ../keymap_alldefs.h:197
 msgid "mail a PGP public key"
-msgstr "envia uma chave p˙blica do PGP"
+msgstr "envia uma chave p√∫blica do PGP"
 
 #: ../keymap_alldefs.h:198
 msgid "verify a PGP public key"
-msgstr "verifica uma chave p˙blica do PGP"
+msgstr "verifica uma chave p√∫blica do PGP"
 
 #: ../keymap_alldefs.h:199
 msgid "view the key's user id"
-msgstr "vÍ a identificaÁ„o de usu·rio da chave"
+msgstr "v√™ a identifica√ß√£o de usu√°rio da chave"
 
 #: ../keymap_alldefs.h:200
 msgid "check for classic PGP"
@@ -5558,77 +5558,77 @@ msgstr ""
 #: ../keymap_alldefs.h:201
 #, fuzzy
 msgid "accept the chain constructed"
-msgstr "Aceita a sequÍncia construÌda"
+msgstr "Aceita a sequ√™ncia constru√≠da"
 
 #: ../keymap_alldefs.h:202
 #, fuzzy
 msgid "append a remailer to the chain"
-msgstr "Anexa um reenviador ‡ sequÍncia"
+msgstr "Anexa um reenviador √† sequ√™ncia"
 
 #: ../keymap_alldefs.h:203
 #, fuzzy
 msgid "insert a remailer into the chain"
-msgstr "Insere um reenviador ‡ sequÍncia"
+msgstr "Insere um reenviador √† sequ√™ncia"
 
 #: ../keymap_alldefs.h:204
 #, fuzzy
 msgid "delete a remailer from the chain"
-msgstr "Remove um reenviador da sequÍncia"
+msgstr "Remove um reenviador da sequ√™ncia"
 
 #: ../keymap_alldefs.h:205
 #, fuzzy
 msgid "select the previous element of the chain"
-msgstr "Seleciona o elemento anterior da sequÍncia"
+msgstr "Seleciona o elemento anterior da sequ√™ncia"
 
 #: ../keymap_alldefs.h:206
 #, fuzzy
 msgid "select the next element of the chain"
-msgstr "Seleciona o prÛximo elemento da sequÍncia"
+msgstr "Seleciona o pr√≥ximo elemento da sequ√™ncia"
 
 #: ../keymap_alldefs.h:207
 msgid "send the message through a mixmaster remailer chain"
-msgstr "envia a mensagem atravÈs de uma sequÍncia de reenviadores mixmaster"
+msgstr "envia a mensagem atrav√©s de uma sequ√™ncia de reenviadores mixmaster"
 
 #: ../keymap_alldefs.h:208
 msgid "make decrypted copy and delete"
-msgstr "cria cÛpia desencriptada e apaga"
+msgstr "cria c√≥pia desencriptada e apaga"
 
 #: ../keymap_alldefs.h:209
 msgid "make decrypted copy"
-msgstr "cria cÛpia desencriptada"
+msgstr "cria c√≥pia desencriptada"
 
 #: ../keymap_alldefs.h:210
 #, fuzzy
 msgid "wipe passphrase(s) from memory"
-msgstr "retira a senha do PGP da memÛria"
+msgstr "retira a senha do PGP da mem√≥ria"
 
 #: ../keymap_alldefs.h:211
 #, fuzzy
 msgid "extract supported public keys"
-msgstr "extrai chaves p˙blicas do PGP"
+msgstr "extrai chaves p√∫blicas do PGP"
 
 #: ../keymap_alldefs.h:212
 #, fuzzy
 msgid "show S/MIME options"
-msgstr "mostra as opÁıes do S/MIME"
+msgstr "mostra as op√ß√µes do S/MIME"
 
 #, fuzzy
 #~ msgid "delete message(s)"
-#~ msgstr "Nenhuma mensagem n„o removida."
+#~ msgstr "Nenhuma mensagem n√£o removida."
 
 #~ msgid " in this limited view"
-#~ msgstr " nesta vis„o limitada"
+#~ msgstr " nesta vis√£o limitada"
 
 #, fuzzy
 #~ msgid "delete message"
-#~ msgstr "Nenhuma mensagem n„o removida."
+#~ msgstr "Nenhuma mensagem n√£o removida."
 
 #, fuzzy
 #~ msgid "edit message"
 #~ msgstr "edita a mensagem"
 
 #~ msgid "error in expression"
-#~ msgstr "erro na express„o"
+#~ msgstr "erro na express√£o"
 
 #, fuzzy
 #~ msgid "Internal error. Inform <roessler@does-not-exist.org>."
@@ -5636,7 +5636,7 @@ msgstr "mostra as opÁıes do S/MIME"
 
 #, fuzzy
 #~ msgid "Warning: message has no From: header"
-#~ msgstr "pula para a mensagem pai na discuss„o"
+#~ msgstr "pula para a mensagem pai na discuss√£o"
 
 #~ msgid ""
 #~ "[-- Error: malformed PGP/MIME message! --]\n"
@@ -5646,7 +5646,7 @@ msgstr "mostra as opÁıes do S/MIME"
 #~ "\n"
 
 #~ msgid "Error: multipart/encrypted has no protocol parameter!"
-#~ msgstr "Erro: multipart/encrypted n„o tem nenhum par‚metro de protocolo!"
+#~ msgstr "Erro: multipart/encrypted n√£o tem nenhum par√¢metro de protocolo!"
 
 #, fuzzy
 #~ msgid "Use (untrusted!) ID %s for %s ?"
@@ -5658,7 +5658,7 @@ msgstr "mostra as opÁıes do S/MIME"
 
 #, fuzzy
 #~ msgid "Warning: Intermediate certificate not found."
-#~ msgstr "Aviso: N„o foi possÌvel salvar o certificado"
+#~ msgstr "Aviso: N√£o foi poss√≠vel salvar o certificado"
 
 #~ msgid "Clear"
 #~ msgstr "Nada"
@@ -5668,7 +5668,7 @@ msgstr "mostra as opÁıes do S/MIME"
 #~ msgstr "escaiq"
 
 #~ msgid "No search pattern."
-#~ msgstr "Nenhum padr„o de procura."
+#~ msgstr "Nenhum padr√£o de procura."
 
 #~ msgid "Reverse search: "
 #~ msgstr "Busca reversa: "
@@ -5681,14 +5681,14 @@ msgstr "mostra as opÁıes do S/MIME"
 #~ msgstr "Erro ao enviar mensagem."
 
 #~ msgid "SSL Certificate check"
-#~ msgstr "VerificaÁ„o de certificado SSL"
+#~ msgstr "Verifica√ß√£o de certificado SSL"
 
 #, fuzzy
 #~ msgid "TLS/SSL Certificate check"
-#~ msgstr "VerificaÁ„o de certificado SSL"
+#~ msgstr "Verifica√ß√£o de certificado SSL"
 
 #~ msgid "Getting namespaces..."
-#~ msgstr "Obtendo espaÁos de nomenclatura..."
+#~ msgstr "Obtendo espa√ßos de nomenclatura..."
 
 #, fuzzy
 #~ msgid ""
@@ -5711,27 +5711,27 @@ msgstr "mostra as opÁıes do S/MIME"
 #~ "       mutt [ -n ] [ -e <cmd> ] [ -F <arq> ] -p\n"
 #~ "       mutt -v[v]\n"
 #~ "\n"
-#~ "opÁıes:\n"
-#~ "  -a <arquivo>\tanexa um arquivo ‡ mensagem\n"
-#~ "  -b <endereÁo>\tespecifica um endereÁo de cÛpia escondica (BCC)\n"
-#~ "  -c <endereÁo>\tespecifica um endereÁo de cÛpia (CC)\n"
+#~ "op√ß√µes:\n"
+#~ "  -a <arquivo>\tanexa um arquivo √† mensagem\n"
+#~ "  -b <endere√ßo>\tespecifica um endere√ßo de c√≥pia escondica (BCC)\n"
+#~ "  -c <endere√ßo>\tespecifica um endere√ßo de c√≥pia (CC)\n"
 #~ "  -e <comando>\tespecifica um comando a ser executado depois a "
-#~ "inicializaÁ„o\n"
+#~ "inicializa√ß√£o\n"
 #~ "  -f <arquivo>\tespecifica qual caixa de mensagens abrir\n"
 #~ "  -F <arquivo>\tespecifica um arquivo muttrc alternativo\n"
-#~ "  -H <arquivo>\tespecifica um rascunho de onde ler cabeÁalhos\n"
+#~ "  -H <arquivo>\tespecifica um rascunho de onde ler cabe√ßalhos\n"
 #~ "  -i <arquivo>\tespecifica um arquivo que o Mutt deve incluir na "
 #~ "resposta\n"
-#~ "  -m <tipo>\tespecifica o tipo padr„o de caixa de mensagens\n"
-#~ "  -n\t\tfaz com que o Mutt n„o leia o Muttrc do sistema\n"
+#~ "  -m <tipo>\tespecifica o tipo padr√£o de caixa de mensagens\n"
+#~ "  -n\t\tfaz com que o Mutt n√£o leia o Muttrc do sistema\n"
 #~ "  -p\t\tedita uma mensagem adiada\n"
 #~ "  -R\t\tabre a caixa de mensagens em modo de somente leitura\n"
-#~ "  -s <assunto>\tespecifica um assunto (entre aspas se tiver espaÁos)\n"
-#~ "  -v\t\tmostra a vers„o e definiÁıes de compilaÁ„o\n"
+#~ "  -s <assunto>\tespecifica um assunto (entre aspas se tiver espa√ßos)\n"
+#~ "  -v\t\tmostra a vers√£o e defini√ß√µes de compila√ß√£o\n"
 #~ "  -x\t\tsimula o modo de envio do mailx\n"
 #~ "  -y\t\tescolhe uma caixa na sua lista `mailboxes'\n"
-#~ "  -z\t\tsai imediatamente se n„o houverem mensagens na caixa\n"
-#~ "  -Z\t\tabre a primeira pasta com novas mensagens, sai se n„o houver\n"
+#~ "  -z\t\tsai imediatamente se n√£o houverem mensagens na caixa\n"
+#~ "  -Z\t\tabre a primeira pasta com novas mensagens, sai se n√£o houver\n"
 #~ "  -h\t\testa mensagem de ajuda"
 
 #, fuzzy
@@ -5755,7 +5755,7 @@ msgstr "mostra as opÁıes do S/MIME"
 #~ msgstr "Executando PGP..."
 
 #~ msgid "Fatal error.  Message count is out of sync!"
-#~ msgstr "Erro fatal. O n˙mero de mensagens est· fora de sincronia!"
+#~ msgstr "Erro fatal. O n√∫mero de mensagens est√° fora de sincronia!"
 
 #, fuzzy
 #~ msgid "CLOSE failed"
@@ -5796,39 +5796,39 @@ msgstr "mostra as opÁıes do S/MIME"
 #~ "Copyright (C) 1999-2000 Brendan Cully <brendan@kublai.com>\n"
 #~ "Copyright (C) 1999-2000 Tommi Komulainen <Tommi.Komulainen@iki.fi>\n"
 #~ "\n"
-#~ "TraduÁ„o para a LÌngua Portuguesa por:\n"
+#~ "Tradu√ß√£o para a L√≠ngua Portuguesa por:\n"
 #~ "Marcus Brito <marcus@visaotec.com.br>\n"
 #~ "\n"
-#~ "Muitos outros n„o mencionados aqui contribuÌram com bastante cÛdigo,\n"
-#~ "ajustes e sugestıes.\n"
+#~ "Muitos outros n√£o mencionados aqui contribu√≠ram com bastante c√≥digo,\n"
+#~ "ajustes e sugest√µes.\n"
 #~ "\n"
-#~ "    Este programa È software livre; vocÍ pode redistribuÌ-lo e/ou\n"
-#~ "    modific·-lo sob os termos da LicenÁa P˙blica Geral GNU como "
+#~ "    Este programa √© software livre; voc√™ pode redistribu√≠-lo e/ou\n"
+#~ "    modific√°-lo sob os termos da Licen√ßa P√∫blica Geral GNU como "
 #~ "publicada\n"
-#~ "    pela Free Software Foundation, tanto na vers„o 2 da LicenÁa ou (‡ "
+#~ "    pela Free Software Foundation, tanto na vers√£o 2 da Licen√ßa ou (√† "
 #~ "sua\n"
-#~ "    escolha) qualquer outra vers„o posterior.\n"
+#~ "    escolha) qualquer outra vers√£o posterior.\n"
 #~ "\n"
-#~ "    Este programa È distribuÌdo na esperanÁa de que ele seja ˙til, mas\n"
-#~ "    SEM NENHUMA GARANTIA, nem mesmo a garantia implÌcita de "
+#~ "    Este programa √© distribu√≠do na esperan√ßa de que ele seja √∫til, mas\n"
+#~ "    SEM NENHUMA GARANTIA, nem mesmo a garantia impl√≠cita de "
 #~ "COMERCIABILIDADE\n"
-#~ "    ou FUNCIONALIDADE PARA UM DETERMINADO PROP”SITO. Veja a LicenÁa "
-#~ "P˙blica\n"
+#~ "    ou FUNCIONALIDADE PARA UM DETERMINADO PROP√ìSITO. Veja a Licen√ßa "
+#~ "P√∫blica\n"
 #~ "    Geral da GNU para mais detalhes.\n"
 #~ "\n"
-#~ "    VocÍ deve ter recebido uma cÛpia da LicenÁa P˙blica Geral da GNU "
+#~ "    Voc√™ deve ter recebido uma c√≥pia da Licen√ßa P√∫blica Geral da GNU "
 #~ "junto\n"
-#~ "    com este programa; caso contr·rio, escreva para Free Software\n"
+#~ "    com este programa; caso contr√°rio, escreva para Free Software\n"
 #~ "    Foundation, Inc., 675 Mass Ave, Cambridge, MA 02138, USA.\n"
 
 #~ msgid "First entry is shown."
-#~ msgstr "A primeira entrada est· sendo mostrada."
+#~ msgstr "A primeira entrada est√° sendo mostrada."
 
 #~ msgid "Last entry is shown."
-#~ msgstr "A ˙ltima entrada est· sendo mostrada."
+#~ msgstr "A √∫ltima entrada est√° sendo mostrada."
 
 #~ msgid "Unable to append to IMAP mailboxes at this server"
-#~ msgstr "N„o È possÌvel anexar a caixas IMAP neste servidor"
+#~ msgstr "N√£o √© poss√≠vel anexar a caixas IMAP neste servidor"
 
 #, fuzzy
 #~ msgid "Create a traditional (inline) PGP message?"
@@ -5836,11 +5836,11 @@ msgstr "mostra as opÁıes do S/MIME"
 
 #, fuzzy
 #~ msgid "%s: stat: %s"
-#~ msgstr "ImpossÌvel consultar: %s"
+#~ msgstr "Imposs√≠vel consultar: %s"
 
 #, fuzzy
 #~ msgid "%s: not a regular file"
-#~ msgstr "%s n„o È uma caixa de correio."
+#~ msgstr "%s n√£o √© uma caixa de correio."
 
 #, fuzzy
 #~ msgid "Invoking OpenSSL..."
@@ -5862,7 +5862,7 @@ msgstr "mostra as opÁıes do S/MIME"
 
 #, fuzzy
 #~ msgid "This ID's validity level is undefined."
-#~ msgstr "O nÌvel de confianÁa deste ID È indeterminado."
+#~ msgstr "O n√≠vel de confian√ßa deste ID √© indeterminado."
 
 #~ msgid "Decode-save"
 #~ msgstr "Decodificar-salvar"
@@ -5885,25 +5885,25 @@ msgstr "mostra as opÁıes do S/MIME"
 #~ "\n"
 #~ msgstr ""
 #~ "\n"
-#~ "[-- Fim da saÌda do PGP --]\n"
+#~ "[-- Fim da sa√≠da do PGP --]\n"
 #~ "\n"
 
 #, fuzzy
 #~ msgid "Can't stat %s."
-#~ msgstr "ImpossÌvel consultar: %s"
+#~ msgstr "Imposs√≠vel consultar: %s"
 
 #~ msgid "%s: no such command"
-#~ msgstr "%s: n„o existe tal comando"
+#~ msgstr "%s: n√£o existe tal comando"
 
 #, fuzzy
 #~ msgid "Authentication method is unknown."
-#~ msgstr "AutenticaÁ„o GSSAPI falhou."
+#~ msgstr "Autentica√ß√£o GSSAPI falhou."
 
 #~ msgid "MIC algorithm: "
 #~ msgstr "Algoritmo MIC: "
 
 #~ msgid "This doesn't make sense if you don't want to sign the message."
-#~ msgstr "Isto n„o faz sentido se vocÍ n„o quer assinar a mensagem."
+#~ msgstr "Isto n√£o faz sentido se voc√™ n√£o quer assinar a mensagem."
 
 #~ msgid "Unknown MIC algorithm, valid ones are: pgp-md5, pgp-sha1, pgp-rmd160"
 #~ msgstr "Algoritmo MIC desconhecido, use pgp-md5, pgp-sha1 ou pgp-rmd160"
@@ -5924,28 +5924,28 @@ msgstr "mostra as opÁıes do S/MIME"
 #~ "    along with this program; if not, write to the program's developers.\n"
 #~ msgstr ""
 #~ "\n"
-#~ "ImplementaÁ„o de SHA1 Copyright (C) 1995-1997 Eric A. Young "
+#~ "Implementa√ß√£o de SHA1 Copyright (C) 1995-1997 Eric A. Young "
 #~ "<eay@cryptsoft.com>\n"
 #~ "\n"
-#~ "    RedistribuiÁ„o e uso em forma bin·ria ou cÛdigo fonte, com ou sem\n"
-#~ "    modificaÁıes, s„o permitidas sob certas condiÁıes.\n"
+#~ "    Redistribui√ß√£o e uso em forma bin√°ria ou c√≥digo fonte, com ou sem\n"
+#~ "    modifica√ß√µes, s√£o permitidas sob certas condi√ß√µes.\n"
 #~ "\n"
-#~ "    A implementaÁ„o de SHA1 vem COMO EST¡, e QUALQUER GARANTIA, EXPRESSA\n"
-#~ "    OU IMPLÕCITA, incluindo, mas n„o se limitando a, as garantias "
-#~ "implÌcitas\n"
-#~ "    de comerciabilidade e funcionalidade para um determinado propÛsito, "
-#~ "EST√O\n"
+#~ "    A implementa√ß√£o de SHA1 vem COMO EST√Å, e QUALQUER GARANTIA, EXPRESSA\n"
+#~ "    OU IMPL√çCITA, incluindo, mas n√£o se limitando a, as garantias "
+#~ "impl√≠citas\n"
+#~ "    de comerciabilidade e funcionalidade para um determinado prop√≥sito, "
+#~ "EST√ÉO\n"
 #~ "    REVOGADAS.\n"
 #~ "\n"
-#~ "    VocÍ deve ter recebido uma cÛpia dos termos de distribuiÁ„o "
+#~ "    Voc√™ deve ter recebido uma c√≥pia dos termos de distribui√ß√£o "
 #~ "completos\n"
-#~ "    junto com este programa; caso contr·rio, escreva para os "
+#~ "    junto com este programa; caso contr√°rio, escreva para os "
 #~ "desenvolvedores\n"
 #~ "    do programa.\n"
 
 #, fuzzy
 #~ msgid "POP Username: "
-#~ msgstr "Nome do usu·rio IMAP: "
+#~ msgstr "Nome do usu√°rio IMAP: "
 
 #~ msgid "Reading new message (%d bytes)..."
 #~ msgstr "Lendo nova mensagem (%d bytes)..."
@@ -5954,7 +5954,7 @@ msgstr "mostra as opÁıes do S/MIME"
 #~ msgstr "%s [%d mensagem lida]"
 
 #~ msgid "Creating mailboxes is not yet supported."
-#~ msgstr "Ainda n„o È possÌvel criar caixas de correio."
+#~ msgstr "Ainda n√£o √© poss√≠vel criar caixas de correio."
 
 #~ msgid "Reopening mailbox... %s"
 #~ msgstr "Reabrindo a caixa... %s"
@@ -5963,13 +5963,13 @@ msgstr "mostra as opÁıes do S/MIME"
 #~ msgstr "Fechando caixa de mensagens..."
 
 #~ msgid "IMAP Username: "
-#~ msgstr "Nome do usu·rio IMAP: "
+#~ msgstr "Nome do usu√°rio IMAP: "
 
 #~ msgid "CRAM key for %s@%s: "
 #~ msgstr "Chave CRAM para %s@%s: "
 
 #~ msgid "Skipping CRAM-MD5 authentication."
-#~ msgstr "Pulando a autenticaÁ„o CRAM-MD5."
+#~ msgstr "Pulando a autentica√ß√£o CRAM-MD5."
 
 #~ msgid "Sending APPEND command ..."
 #~ msgstr "Enviando o comando APPEND..."
@@ -5981,16 +5981,16 @@ msgstr "mostra as opÁıes do S/MIME"
 #~ msgstr "Senha POP: "
 
 #~ msgid "No POP username is defined."
-#~ msgstr "Nenhum nome de usu·rio POP definido."
+#~ msgstr "Nenhum nome de usu√°rio POP definido."
 
 #~ msgid "Could not find address for host %s."
-#~ msgstr "N„o foi possÌvel encontrar o endereÁo do servidor %s."
+#~ msgstr "N√£o foi poss√≠vel encontrar o endere√ßo do servidor %s."
 
 #~ msgid "Attachment saved"
 #~ msgstr "Anexo salvo"
 
 #~ msgid "Can't open %s: %s."
-#~ msgstr "N„o foi possÌvel abrir %s: %s."
+#~ msgstr "N√£o foi poss√≠vel abrir %s: %s."
 
 #, fuzzy
 #~ msgid "Error while recoding %s. Leave it unchanged."
@@ -6001,13 +6001,13 @@ msgstr "mostra as opÁıes do S/MIME"
 
 #~ msgid "Can't change character set for non-text attachments!"
 #~ msgstr ""
-#~ "N„o È possÌvel mudar o conjunto de caracteres para anexos n„o-texto!"
+#~ "N√£o √© poss√≠vel mudar o conjunto de caracteres para anexos n√£o-texto!"
 
 #~ msgid "Enter character set: "
 #~ msgstr "Informe o conjunto de caracteres: "
 
 #~ msgid "Recoding successful."
-#~ msgstr "GravaÁ„o bem sucedida."
+#~ msgstr "Grava√ß√£o bem sucedida."
 
 #~ msgid "change an attachment's character set"
 #~ msgstr "muda o conjunto de caracteres do anexo"
@@ -6019,16 +6019,16 @@ msgstr "mostra as opÁıes do S/MIME"
 #~ msgstr "Compor"
 
 #~ msgid "We can't currently handle utf-8 at this point."
-#~ msgstr "Ainda n„o posso manipular UTF-8."
+#~ msgstr "Ainda n√£o posso manipular UTF-8."
 
 #~ msgid "UTF-8 encoding attachments has not yet been implemented."
-#~ msgstr "Anexos codificados como UTF-8 ainda n„o funcionam."
+#~ msgstr "Anexos codificados como UTF-8 ainda n√£o funcionam."
 
 #~ msgid "We currently can't encode to utf-8."
-#~ msgstr "Ainda n„o È possÌvel codificar como UTF-8"
+#~ msgstr "Ainda n√£o √© poss√≠vel codificar como UTF-8"
 
 #~ msgid "move to the last undelete message"
-#~ msgstr "anda atÈ a ˙ltima mensagem n„o apagada"
+#~ msgstr "anda at√© a √∫ltima mensagem n√£o apagada"
 
 #~ msgid "return to the main-menu"
 #~ msgstr "retorna ao menu principal"
@@ -6037,10 +6037,10 @@ msgstr "mostra as opÁıes do S/MIME"
 #~ msgstr "Enviando o comando CREATE..."
 
 #~ msgid "Can't open your secret key ring!"
-#~ msgstr "N„o foi possÌvel abrir seu chaveiro secreto!"
+#~ msgstr "N√£o foi poss√≠vel abrir seu chaveiro secreto!"
 
 #~ msgid "An unkown PGP version was defined for signing."
-#~ msgstr "Uma vers„o desconhecida do PGP foi definida para assinatura."
+#~ msgstr "Uma vers√£o desconhecida do PGP foi definida para assinatura."
 
 #~ msgid "===== Attachments ====="
 #~ msgstr "===== Anexos ====="
@@ -6049,17 +6049,17 @@ msgstr "mostra as opÁıes do S/MIME"
 #~ msgstr "imap_error(): resposta inesperada em %s: %s\n"
 
 #~ msgid "ignoring empty header field: %s"
-#~ msgstr "ignorando campo de cabeÁalho vazio: %s"
+#~ msgstr "ignorando campo de cabe√ßalho vazio: %s"
 
 #~ msgid "Unknown PGP version \"%s\"."
-#~ msgstr "Vers„o \"%s\" do PGP desconhecida."
+#~ msgstr "Vers√£o \"%s\" do PGP desconhecida."
 
 #~ msgid ""
 #~ "[-- Error: this message does not comply with the PGP/MIME specification! "
 #~ "--]\n"
 #~ "\n"
 #~ msgstr ""
-#~ "[-- Erro: esta mensagem n„o est· de acordo com a especificaÁ„o PGP/MIME! "
+#~ "[-- Erro: esta mensagem n√£o est√° de acordo com a especifica√ß√£o PGP/MIME! "
 #~ "--]\n"
 #~ "\n"
 
@@ -6070,7 +6070,7 @@ msgstr "mostra as opÁıes do S/MIME"
 #~ msgstr "Pacote de Assinatura"
 
 #~ msgid "Conventionally Encrypted Session Key Packet"
-#~ msgstr "Pacote de Chaves de Sess„o Convencionalmente Ecriptado"
+#~ msgstr "Pacote de Chaves de Sess√£o Convencionalmente Ecriptado"
 
 #~ msgid "One-Pass Signature Packet"
 #~ msgstr "Pacote de Assinatura de Um Passo"
@@ -6079,7 +6079,7 @@ msgstr "mostra as opÁıes do S/MIME"
 #~ msgstr "Pacote de Chave Secreta"
 
 #~ msgid "Public Key Packet"
-#~ msgstr "Pacote de Chave P˙blica"
+#~ msgstr "Pacote de Chave P√∫blica"
 
 #~ msgid "Secret Subkey Packet"
 #~ msgstr "Pacote de Subchave Secreta"
@@ -6091,13 +6091,13 @@ msgstr "mostra as opÁıes do S/MIME"
 #~ msgstr "Pacote de Dados Simetricamente Encriptado"
 
 #~ msgid "Marker Packet"
-#~ msgstr "Pacote de MarcaÁ„o"
+#~ msgstr "Pacote de Marca√ß√£o"
 
 #~ msgid "Literal Data Packet"
 #~ msgstr "Pacotes de Dados Literais"
 
 #~ msgid "Trust Packet"
-#~ msgstr "Pacote de ConfianÁa"
+#~ msgstr "Pacote de Confian√ßa"
 
 #~ msgid "Name Packet"
 #~ msgstr "Pacote de Nome"
@@ -6109,10 +6109,10 @@ msgstr "mostra as opÁıes do S/MIME"
 #~ msgstr "Reservado"
 
 #~ msgid "Comment Packet"
-#~ msgstr "Pacote de Coment·rio"
+#~ msgstr "Pacote de Coment√°rio"
 
 #~ msgid "Message edited. Really send?"
 #~ msgstr "Mensagem editada. Realmente enviar?"
 
 #~ msgid "Saved output of child process to %s.\n"
-#~ msgstr "SaÌda do processo filho salva em %s.\n"
+#~ msgstr "Sa√≠da do processo filho salva em %s.\n"
