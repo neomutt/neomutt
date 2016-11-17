@@ -15,7 +15,7 @@ AC_DEFINE(MUTT_VERSION, "1.7.1", [Version of upstream Mutt])
 
 AC_USE_SYSTEM_EXTENSIONS
 
-ALL_LINGUAS="de eu ru it es uk fr pl nl cs id sk ko el zh_TW zh_CN pt_BR eo gl sv da lt tr ja hu et ca bg ga"
+ALL_LINGUAS="bg ca cs da de el en_GB eo es et eu fr ga gl hu id it ja ko lt nl pl pt_BR ru sk sv tr uk zh_CN zh_TW"
 
 AC_CANONICAL_HOST
 
