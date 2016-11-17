@@ -183,7 +183,7 @@ sortcheck: manual.xml
 
 clean-local:
 	rm -f *~ *.html *.orig *.rej  stamp-doc-* *.ps mutt.1 smime_keys.1 muttrc.man pgpewrap.1 pgpring.1
-	rm -f *.aux *.log *.tex *.out
+	rm -f *.aux *.log *.tex *.out neomutt-syntax.vim
 
 DISTCLEANFILES=manual.txt manual.html manual.xml manual.pdf html \
 	       instdoc Muttrc
