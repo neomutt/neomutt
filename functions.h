@@ -65,6 +65,7 @@ const struct binding_t OpGeneric[] = { /* map: generic */
   { "previous-line",	OP_PREV_LINE,		"<" },
   { "half-up",		OP_HALF_UP,		"[" },
   { "half-down", 	OP_HALF_DOWN,		"]" },
+  { "mark-message",	OP_MARK_MSG,		"~" },
   { "help",		OP_HELP,		"?" },
   { "tag-prefix",	OP_TAG_PREFIX,		";" },
   { "tag-prefix-cond",	OP_TAG_PREFIX_COND,	NULL },

@@ -5492,6 +5492,27 @@ dates shown in the main index.
 
 </sect1>
 
+<sect1 id="markmsg">
+<title>Marking Messages</title>
+
+<para>
+There are times that it's useful to ask Mutt to "remember" which message
+you're currently looking at, while you move elsewhere in your mailbox.
+You can do this with the <quote>mark-message</quote> operator, which
+is bound to the <quote>~</quote> key by default.  Press this key to
+enter an identifier for the marked message. When you want to return to
+this message, press <quote>'</quote> and the name that you previously
+entered.
+</para>
+
+<para>
+(Message marking is really just a shortcut for defining a macro
+that returns you to the current message by searching for its
+Message-ID.  You can choose a different prefix by setting the <link
+linkend="mark-macro-prefix">$mark_macro_prefix</link> variable.)
+</para>
+</sect1>
+
 <sect1 id="tags">
 <title>Using Tags</title>
 
