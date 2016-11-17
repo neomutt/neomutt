@@ -879,7 +879,7 @@ int mutt_save_message (HEADER *h, int delete,
 
 void mutt_version (void)
 {
-  mutt_message ("Mutt " MUTT_VERSION " (%s)", ReleaseDate);
+  mutt_message ("Mutt %s (%s)", MUTT_VERSION, ReleaseDate);
 }
 
 void mutt_edit_content_type (HEADER *h, BODY *b, FILE *fp)

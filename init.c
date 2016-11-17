@@ -2851,8 +2851,8 @@ static void start_debug (void)
   if ((debugfile = safe_fopen(buf, "w")) != NULL)
   {
     setbuf (debugfile, NULL); /* don't buffer the debugging output! */
-    dprint(1,(debugfile,"Mutt/" MUTT_VERSION " (%s) debugging at level %d\n",
-	      ReleaseDate, debuglevel));
+    dprint(1,(debugfile,"Mutt/%s (%s) debugging at level %d\n",
+	      MUTT_VERSION, ReleaseDate, debuglevel));
   }
 }
 #endif
@@ -2901,11 +2901,11 @@ static void mutt_srandom (void)
 
 static char* mutt_find_cfg (const char *home, const char *xdg_cfg_home)
 {
-  const char* names[] =
+  const char* names[][2] =
   {
-    "muttrc-" MUTT_VERSION,
-    "muttrc",
-    NULL,
+    { "muttrc", "-" MUTT_VERSION },
+    { "muttrc", "" },
+    { NULL, NULL },
   };
 
   const char* locations[][2] =
@@ -2925,12 +2925,12 @@ static char* mutt_find_cfg (const char *home, const char *xdg_cfg_home)
     if (!locations[i][0])
       continue;
 
-    for (j = 0; names[j]; j++)
+    for (j = 0; names[j][0]; j++)
     {
       char buffer[STRING];
 
-      snprintf (buffer, sizeof (buffer),
-                "%s/%s%s", locations[i][0], locations[i][1], names[j]);
+      snprintf (buffer, sizeof (buffer), "%s/%s%s%s",
+                locations[i][0], locations[i][1], names[j][0], names[j][1]);
       if (access (buffer, F_OK) == 0)
         return safe_strdup(buffer);
     }
@@ -3198,11 +3198,11 @@ void mutt_init (int skip_sys_rc, LIST *commands)
      requested not to via "-n".  */
   if (!skip_sys_rc)
   {
-    snprintf (buffer, sizeof(buffer), "%s/Muttrc-" MUTT_VERSION, SYSCONFDIR);
+    snprintf (buffer, sizeof(buffer), "%s/Muttrc-%s", SYSCONFDIR, MUTT_VERSION);
     if (access (buffer, F_OK) == -1)
       snprintf (buffer, sizeof(buffer), "%s/Muttrc", SYSCONFDIR);
     if (access (buffer, F_OK) == -1)
-      snprintf (buffer, sizeof (buffer), "%s/Muttrc-" MUTT_VERSION, PKGDATADIR);
+      snprintf (buffer, sizeof (buffer), "%s/Muttrc-%s", PKGDATADIR, MUTT_VERSION);
     if (access (buffer, F_OK) == -1)
       snprintf (buffer, sizeof (buffer), "%s/Muttrc", PKGDATADIR);
     if (access (buffer, F_OK) != -1)

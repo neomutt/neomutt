@@ -1850,8 +1850,8 @@ void mutt_set_mtime (const char* from, const char* to)
 const char *mutt_make_version (void)
 {
   static char vstring[STRING];
-  snprintf (vstring, sizeof (vstring), "Mutt " MUTT_VERSION " (%s)",
-	    ReleaseDate);
+  snprintf (vstring, sizeof (vstring), "Mutt %s (%s)",
+	    MUTT_VERSION, ReleaseDate);
   return vstring;
 }
 

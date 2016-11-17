@@ -448,7 +448,8 @@ compose_format_str (char *buf, size_t buflen, size_t col, int cols, char op, con
       break;
 
     case 'v':
-      strfcpy(buf, "Mutt " MUTT_VERSION, buflen);
+      snprintf (fmt, sizeof (fmt), "Mutt %%s");
+      snprintf (buf, buflen, fmt, MUTT_VERSION);
       break;
 
     case 0:
