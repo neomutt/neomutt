@@ -565,11 +565,14 @@ static void buffy_check (BUFFY *tmp, struct stat *contex_sb, int check_stats)
     /* check to see if the folder is the currently selected folder
      * before polling */
     if (!Context || !Context->path ||
+	((tmp->magic == MUTT_IMAP ||
 #ifdef USE_NNTP
-	(( tmp->magic == MUTT_IMAP || tmp->magic == MUTT_POP || tmp->magic == MUTT_NNTP )
-#else
-	(( tmp->magic == MUTT_IMAP || tmp->magic == MUTT_POP || tmp->magic == MUTT_NOTMUCH)
+	  tmp->magic == MUTT_NNTP ||
 #endif
+#ifdef USE_NOTMUCH
+	  tmp->magic == MUTT_NOTMUCH ||
+#endif
+	  tmp->magic == MUTT_POP)
 	    ? mutt_strcmp (tmp->path, Context->path) :
 	      (sb.st_dev != contex_sb->st_dev || sb.st_ino != contex_sb->st_ino)))
     {
