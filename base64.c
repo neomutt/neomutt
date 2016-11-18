@@ -48,10 +48,24 @@
 
 #define BAD     -1
 
-/* raw bytes to null-terminated base 64 string */
-void mutt_to_base64 (unsigned char *out, const unsigned char *in, size_t len,
-		     size_t olen)
+/**
+ * mutt_to_base64 - convert raw bytes to null-terminated base64 string.
+ *
+ * @param out Output buffer for the base64 encoded string.
+ * @param cin Input buffer for the raw bytes.
+ * @param len Length of the input buffer.
+ * @param olen Length of the output buffer.
+ * @return The length of the string written to the output buffer.
+ *
+ * This function performs base64 encoding. The resulting string is guaranteed
+ * to be null-terminated. The number of characters up to the terminating
+ * null-byte is returned (equivalent to calling strlen() on the output buffer
+ * after this function returns).
+ */
+size_t mutt_to_base64 (char *out, const char *cin, size_t len, size_t olen)
 {
+  unsigned char *begin = (unsigned char *)out;
+  const unsigned char *in = (const unsigned char *)cin;
   while (len >= 3 && olen > 10)
   {
     *out++ = B64Chars[in[0] >> 2];
@@ -77,10 +91,20 @@ void mutt_to_base64 (unsigned char *out, const unsigned char *in, size_t len,
     *out++ = '=';
   }
   *out = '\0';
+  return out - (char *)begin;
 }
 
-/* Convert '\0'-terminated base 64 string to raw bytes.
- * Returns length of returned buffer, or -1 on error */
+/**
+ * mutt_from_base64 - convert null-terminated base64 string to raw bytes.
+ *
+ * @param out Output buffer for the raw bytes.
+ * @param cin Input buffer for the null-terminated base64-encoded string
+ * @return The number of bytes written on success, -1 on error.
+ *
+ * This function performs base64 decoding. The resulting buffer is NOT
+ * null-terminated. If the input buffer contains invalid base64 characters,
+ * this function returns -1.
+ */
 int mutt_from_base64 (char *out, const char *in)
 {
   int len = 0;
