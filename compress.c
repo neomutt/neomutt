@@ -441,7 +441,7 @@ execute_command (CONTEXT *ctx, const char *command, const char *progress)
   {
     rc = 0;
     mutt_any_key_to_continue (NULL);
-    mutt_error (_("Error executing: %s\n"), sys_cmd);
+    mutt_error (_("Error running \"%s\"!"), sys_cmd);
   }
 
   mutt_unblock_signals();
@@ -657,7 +657,7 @@ close_mailbox (CONTEXT *ctx)
   if (rc == 0)
   {
     mutt_any_key_to_continue (NULL);
-    mutt_error (_(" %s: Error compressing mailbox!  Uncompressed one kept!\n"), ctx->path);
+    mutt_error (_("Error. Preserving temporary file: %s"), ctx->path);
   }
   else
     remove (ctx->path);
