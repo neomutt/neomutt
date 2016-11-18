@@ -21,8 +21,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Mutt 1.7.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-11-18 12:34+0100\n"
-"PO-Revision-Date: 2016-11-18 13:02+0100\n"
+"POT-Creation-Date: 2016-11-18 18:09+0100\n"
+"PO-Revision-Date: 2016-11-18 18:15+0100\n"
 "Last-Translator: Vincent Lefevre <vincent@vinc17.net>\n"
 "Language-Team: Vincent Lefevre <vincent@vinc17.net>\n"
 "Language: fr\n"
@@ -843,7 +843,8 @@ msgstr "Impossible d'identifier le contenu du fichier compressé"
 #: compress.c:501 compress.c:579
 #, c-format
 msgid "Can't find mailbox ops for mailbox type %d"
-msgstr "Impossible de trouver les opérations pour la boîte aux lettres de type %d"
+msgstr ""
+"Impossible de trouver les opérations pour la boîte aux lettres de type %d"
 
 #: compress.c:540 compress.c:834
 #, c-format
@@ -874,7 +875,7 @@ msgstr "Compression de %s..."
 #: compress.c:660
 #, c-format
 msgid " %s: Error compressing mailbox!  Uncompressed one kept!\n"
-msgstr ""
+msgstr " %s: Erreur en compressant la BAL ! BAL décompressée gardée !\n"
 
 #: compress.c:885
 msgid "Can't sync a compressed file without a close-hook"
@@ -1963,6 +1964,11 @@ msgstr "Impossible d'éditer le message"
 #: curs_main.c:2185
 msgid "Cannot mark message(s) as read"
 msgstr "Impossible de marquer le(s) message(s) comme lu(s)"
+
+# , c-format
+#: curs_main.c:2218
+msgid "Enter macro stroke: "
+msgstr "Entrez les touches de la macro : "
 
 #: curs_main.c:2226
 #, c-format
@@ -4608,6 +4614,10 @@ msgstr "Pas de certificat (valide) trouvé pour %s."
 #: smime.c:962 smime.c:992 smime.c:1059 smime.c:1103 smime.c:1168 smime.c:1243
 msgid "Error: unable to create OpenSSL subprocess!"
 msgstr "Erreur : impossible de créer le sous-processus OpenSSL !"
+
+#: smime.c:1231
+msgid "Label for certificate: "
+msgstr "Étiquette pour le certificat : "
 
 #: smime.c:1321
 msgid "no certfile"
