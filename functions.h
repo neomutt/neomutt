@@ -62,7 +62,6 @@ const struct binding_t OpGeneric[] = { /* map: generic */
   { "previous-line",	OP_PREV_LINE,		"<" },
   { "half-up",		OP_HALF_UP,		"[" },
   { "half-down", 	OP_HALF_DOWN,		"]" },
-  { "mark-message",	OP_MARK_MSG,		"~" },
   { "help",		OP_HELP,		"?" },
   { "tag-prefix",	OP_TAG_PREFIX,		";" },
   { "tag-prefix-cond",	OP_TAG_PREFIX_COND,	NULL },
@@ -172,6 +171,7 @@ const struct binding_t OpMain[] = { /* map: index */
 #endif
   { "display-message",		OP_DISPLAY_MESSAGE,		"\n" },
   { "display-message",		OP_DISPLAY_MESSAGE,		"\r" },
+  { "mark-message",		OP_MARK_MSG,			"~" },
   { "buffy-list",		OP_BUFFY_LIST,			"." },
   { "sync-mailbox",		OP_MAIN_SYNC_FOLDER,		"$" },
   { "display-address",		OP_DISPLAY_ADDRESS,		"@" },
