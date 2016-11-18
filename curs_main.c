@@ -2215,7 +2215,7 @@ int mutt_index_menu (void)
 	  char buf[128];
 
 	  buf[0] = '\0';
-	  if (!mutt_get_field ("Enter macro stroke: ", buf, sizeof(buf),
+	  if (!mutt_get_field (_("Enter macro stroke: "), buf, sizeof(buf),
 	  		       MUTT_CLEAR) && buf[0])
 	  {
 	    snprintf(str, sizeof(str), "%s%s", MarkMacroPrefix, buf);
