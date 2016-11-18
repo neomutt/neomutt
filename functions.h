@@ -417,6 +417,7 @@ const struct binding_t OpCompose[] = { /* map: compose */
 #endif
   { "postpone-message",	OP_COMPOSE_POSTPONE_MESSAGE,	"P" },
   { "edit-reply-to",	OP_COMPOSE_EDIT_REPLY_TO,	"r" },
+  { "rename-attachment",OP_COMPOSE_RENAME_ATTACHMENT,	"\017" },
   { "rename-file",	OP_COMPOSE_RENAME_FILE,		"R" },
   { "edit-subject",	OP_COMPOSE_EDIT_SUBJECT,	"s" },
   { "edit-to",		OP_COMPOSE_EDIT_TO,		"t" },
