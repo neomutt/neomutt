@@ -2215,20 +2215,30 @@ int mutt_index_menu (void)
 	  char buf[128];
 
 	  buf[0] = '\0';
+          /* L10N: This is the prompt for <mark-message>.  Whatever they
+             enter will be prefixed by $mark_macro_prefix and will become
+             a macro hotkey to jump to the currently selected message. */
 	  if (!mutt_get_field (_("Enter macro stroke: "), buf, sizeof(buf),
 	  		       MUTT_CLEAR) && buf[0])
 	  {
 	    snprintf(str, sizeof(str), "%s%s", MarkMacroPrefix, buf);
 	    snprintf(macro, sizeof(macro),
 		     "<search>~i \"%s\"\n", CURHDR->env->message_id);
-	    km_bind(str, MENU_GENERIC, OP_MACRO, macro, "Message hotkey");
+            /* L10N: "message hotkey" is the key bindings menu description of a
+               macro created by <mark-message>. */
+	    km_bind(str, MENU_MAIN, OP_MACRO, macro, _("message hotkey"));
 
+            /* L10N: This is echoed after <mark-message> creates a new hotkey
+               macro.  %s is the hotkey string ($mark_macro_prefix followed
+               by whatever they typed at the prompt.) */
 	    snprintf(buf, sizeof(buf), _("Message bound to %s."), str);
 	    mutt_message(buf);
 	    dprint (1, (debugfile, "Mark: %s => %s\n", str, macro));
 	  }
 	}
 	else
+          /* L10N: This error is printed if <mark-message> cannot find a
+             Message-ID for the currently selected message in the index. */
 	  mutt_error _("No message ID to macro.");
 	break;
 
