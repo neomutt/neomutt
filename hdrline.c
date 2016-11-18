@@ -108,8 +108,6 @@ static int first_mailing_list (char *buf, size_t buflen, ADDRESS *a)
 }
 
 /**
- * add_index_color - XXX
- *
  * Takes the color to embed, the buffer to manipulate and the buffer length as
  * arguments.
  * Returns the number of chars written.

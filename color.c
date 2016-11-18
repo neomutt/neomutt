@@ -418,9 +418,6 @@ int mutt_parse_unmono (BUFFER *buf, BUFFER *s, unsigned long data,
   return _mutt_parse_uncolor(buf, s, data, err, 0);
 }
 
-/**
- * mutt_do_uncolor - XXX
- */
 static void
 mutt_do_uncolor (BUFFER *buf, BUFFER *s, COLOR_LINE **ColorList,
                  int *do_cache, int parse_uncolor)

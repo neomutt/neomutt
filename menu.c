@@ -30,9 +30,6 @@
 
 char* SearchBuffers[MENU_MAX];
 
-/**
- * get_color - XXX
- */
 static int
 get_color (int index, unsigned char *s)
 {

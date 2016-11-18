@@ -1526,8 +1526,6 @@ int nntp_open_mailbox (CONTEXT *ctx)
 
   time (&nserv->check_time);
   ctx->data = nntp_data;
-  // QWQ
-  // ctx->mx_close = nntp_fastclose_mailbox;
   if (!nntp_data->bcache && (nntp_data->newsrc_ent ||
       nntp_data->subscribed || option (OPTSAVEUNSUB)))
     nntp_data->bcache = mutt_bcache_open (&nserv->conn->account,

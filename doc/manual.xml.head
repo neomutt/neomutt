@@ -2373,10 +2373,10 @@ See also the <link linkend="postpone">$postpone</link> quad-option.
     <tbody>
       <row><entry>$XDG_CONFIG_DIRS/neomutt/config</entry></row>
       <row><entry>/etc/NeoMuttrc</entry></row>
-      <row><entry>/etc/Muttrc-1.7.1-neo</entry></row>
+      <row><entry>/etc/Muttrc-20161104</entry></row>
       <row><entry>/etc/Muttrc</entry></row>
-      <row><entry>/share/mutt/Muttrc-1.7.1-neo</entry></row>
-      <row><entry>/share/mutt/Muttrc</entry></row>
+      <row><entry>/usr/share/mutt/Muttrc-20161104</entry></row>
+      <row><entry>/usr/share/mutt/Muttrc</entry></row>
     </tbody>
   </tgroup>
 </table>
@@ -2406,10 +2406,11 @@ See also the <link linkend="postpone">$postpone</link> quad-option.
       <row><entry>$XDG_CONFIG_HOME/neomutt/config</entry></row>
       <row><entry>~/.neomuttrc</entry></row>
       <row><entry>~/.mutt/neomuttrc</entry></row>
-      <row><entry>~/.muttrc-1.7.1-neo</entry></row>
+      <row><entry>~/.muttrc-20161104</entry></row>
       <row><entry>~/.muttrc</entry></row>
-      <row><entry>~/.mutt/muttrc-1.7.1-neo</entry></row>
+      <row><entry>~/.mutt/muttrc-20161104</entry></row>
       <row><entry>~/.mutt/muttrc</entry></row>
+      <row><entry>~/.muttrc</entry></row>
     </tbody>
   </tgroup>
 </table>
@@ -13724,20 +13725,20 @@ openssl s_client -host &lt;imap server&gt; -port &lt;port&gt; -tls1 -servername 
     <title>Muttrc</title>
 <screen>
 <emphasis role="comment"># Example Mutt config file for the 'trash' feature.
- 
+
 # This feature defines a new 'trash' folder.
 # When mail is deleted it will be moved to this folder.
- 
+
 # Folder in which to put deleted emails</emphasis>
 set trash='+Trash'
 set trash='/home/flatcap/Mail/Trash'
- 
+
 <emphasis role="comment"># The default delete key 'd' will move an email to the 'trash' folder
 # Bind 'D' to REALLY delete an email</emphasis>
 bind index D purge-message
- 
+
 <emphasis role="comment"># Note: Deleting emails from the 'trash' folder will REALLY delete them.
- 
+
 # vim: syntax=muttrc</emphasis>
 </screen>
   </sect2>
