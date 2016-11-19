@@ -2286,6 +2286,15 @@ linkend="mime-forward">$mime_forward</link> is set.
 </para>
 
 <para>
+By default a forwarded message does not reference the messages it
+contains. When <link linkend="forward-references">$forward_references</link>
+is set, a forwarded message includes the <quote>In-Reply-To:</quote>
+and <quote>References:</quote> headers, just like a reply would. Hence
+the forwarded message becomes part of the original thread instead of
+starting a new one.
+</para>
+
+<para>
 Editing the message to forward follows the same procedure as sending or
 replying to a message does.
 </para>
