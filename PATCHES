@@ -5,6 +5,7 @@ patch-cond-date-neomutt
 patch-encrypt-to-self-neomutt
 patch-fmemopen-neomutt
 patch-forgotten-attachments-neomutt
+patch-forwref-neomutt
 patch-ifdef-neomutt
 patch-index-color-neomutt
 patch-initials-neomutt

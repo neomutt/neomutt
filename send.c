@@ -810,7 +810,11 @@ envelope_defaults (ENVELOPE *env, CONTEXT *ctx, HEADER *cur, int flags)
     mutt_make_reference_headers (tag ? NULL : curenv, env, ctx);
   }
   else if (flags & SENDFORWARD)
+  {
     mutt_make_forward_subject (env, ctx, cur);
+    if (option (OPTFORWREF))
+      mutt_make_reference_headers (tag ? NULL : curenv, env, ctx);
+  }
 
   return (0);
 }

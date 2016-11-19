@@ -983,6 +983,14 @@ struct option_t MuttVars[] = {
   { "forw_quote",	DT_SYN,  R_NONE, UL "forward_quote", 0 },
   /*
   */
+  { "forward_references", DT_BOOL, R_NONE, OPTFORWREF, 0 },
+  /*
+  ** .pp
+  ** When \fIset\fP, forwarded messages set the ``In-Reply-To:'' and
+  ** ``References:'' headers in the same way as normal replies would. Hence the
+  ** forwarded message becomes part of the original thread instead of starting
+  ** a new one.
+  */
   { "from",		DT_ADDR, R_NONE, UL &From, UL 0 },
   /*
   ** .pp
