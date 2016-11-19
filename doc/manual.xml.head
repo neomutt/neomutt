@@ -9186,8 +9186,9 @@ bind index,pager @ compose-to-sender
     <para>
       The shell-command must contain two placeholders for filenames:
       <literal>%f</literal> and <literal>%t</literal>.  These represent
-      <quote>from</quote> and <quote>to</quote> filenames.  It's a good idea to
-      put quotes around these placeholders.
+      <quote>from</quote> and <quote>to</quote> filenames.  These placeholders
+      should be placed inside single-quotes to prevent unintended shell
+      expansions.
     </para>
 
     <para>
@@ -9463,14 +9464,6 @@ close-hook  '\.gpg$' &quot;gpg --encrypt --recipient YourGpgUserIdOrKeyId &lt; '
       <listitem><para><link linkend="mbox-type">$mbox_type</link></para></listitem>
       <listitem><para><link linkend="save-empty">$save_empty</link></para></listitem>
       <listitem><para><link linkend="folder-hook">folder-hook</link></para></listitem>
-    </itemizedlist>
-  </sect2>
-
-  <sect2 id="compress-known-bugs">
-    <title>Known Bugs</title>
-
-    <itemizedlist>
-      <listitem><para>The Compressed Folder hooks cannot deal with filenames that contains quotes/apostrophes.</para></listitem>
     </itemizedlist>
   </sect2>
 

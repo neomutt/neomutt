@@ -2189,4 +2189,5 @@ struct mx_ops mx_imap_ops = {
   .commit_msg = imap_commit_message,
   .open_new_msg = imap_open_new_message,
   .check = imap_check_mailbox_reopen,
+  .sync = NULL,      /* imap syncing is handled by imap_sync_mailbox */
 };

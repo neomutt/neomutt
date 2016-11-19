@@ -1760,7 +1760,7 @@ int nntp_post (const char *msg) {
 }
 
 /* Save changes to .newsrc and cache */
-int nntp_sync_mailbox (CONTEXT *ctx)
+int nntp_sync_mailbox (CONTEXT *ctx, int *index_hint)
 {
   NNTP_DATA *nntp_data = ctx->data;
   int rc, i;
@@ -1770,7 +1770,7 @@ int nntp_sync_mailbox (CONTEXT *ctx)
 
   /* check for new articles */
   nntp_data->nserv->check_time = 0;
-  rc = nntp_check_mailbox (ctx, NULL);
+  rc = nntp_check_mailbox (ctx, index_hint);
   if (rc)
     return rc;
 
@@ -2447,6 +2447,7 @@ struct mx_ops mx_nntp_ops = {
   .open_append  = NULL,
   .close        = nntp_fastclose_mailbox,
   .check        = nntp_check_mailbox,
+  .sync         = nntp_sync_mailbox,
   .open_msg     = nntp_fetch_message,
   .close_msg    = nntp_close_message,
   .commit_msg   = NULL,
