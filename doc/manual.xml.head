@@ -2987,8 +2987,8 @@ addition, <emphasis>key</emphasis> may be a symbolic name as shown in
 <row><entry>&lt;backtab&gt;</entry><entry>backtab / shift-tab</entry></row>
 <row><entry>\r</entry><entry>carriage return</entry></row>
 <row><entry>\n</entry><entry>newline</entry></row>
-<row><entry>\e</entry><entry>escape</entry></row>
-<row><entry>&lt;esc&gt;</entry><entry>escape</entry></row>
+<row><entry>\e</entry><entry>escape/alt</entry></row>
+<row><entry>&lt;esc&gt;</entry><entry>escape/alt</entry></row>
 <row><entry>&lt;up&gt;</entry><entry>up arrow</entry></row>
 <row><entry>&lt;down&gt;</entry><entry>down arrow</entry></row>
 <row><entry>&lt;left&gt;</entry><entry>left arrow</entry></row>
