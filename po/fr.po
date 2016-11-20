@@ -21,8 +21,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Mutt 1.7.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-11-18 18:09+0100\n"
-"PO-Revision-Date: 2016-11-18 18:15+0100\n"
+"POT-Creation-Date: 2016-11-20 01:32+0100\n"
+"PO-Revision-Date: 2016-11-20 01:40+0100\n"
 "Last-Translator: Vincent Lefevre <vincent@vinc17.net>\n"
 "Language-Team: Vincent Lefevre <vincent@vinc17.net>\n"
 "Language: fr\n"
@@ -130,8 +130,8 @@ msgstr "Ne correspond pas au nametemplate, continuer ?"
 msgid "Mailcap compose entry requires %%s"
 msgstr "L'entrée compose du fichier mailcap nécessite %%s"
 
-#: attach.c:134 attach.c:266 commands.c:223 compose.c:1233 curs_lib.c:205
-#: curs_lib.c:724
+#: attach.c:134 attach.c:266 commands.c:223 compose.c:1233 compress.c:444
+#: curs_lib.c:205 curs_lib.c:724
 #, c-format
 msgid "Error running \"%s\"!"
 msgstr "Erreur en exécutant \"%s\" !"
@@ -822,11 +822,6 @@ msgstr "S/MIME déjà sélectionné. Effacer & continuer ? "
 msgid "PGP already selected. Clear & continue ? "
 msgstr "PGP déjà sélectionné. Effacer & continuer ? "
 
-#: compress.c:444
-#, c-format
-msgid "Error executing: %s\n"
-msgstr "Erreur à l'exécution de : %s\n"
-
 #: compress.c:481 compress.c:551 compress.c:706 compress.c:895 mbox.c:847
 msgid "Unable to lock mailbox!"
 msgstr "Impossible de verrouiller la boîte aux lettres !"
@@ -872,10 +867,10 @@ msgstr "Ajout avec compression à %s..."
 msgid "Compressing %s..."
 msgstr "Compression de %s..."
 
-#: compress.c:660
+#: compress.c:660 editmsg.c:210
 #, c-format
-msgid " %s: Error compressing mailbox!  Uncompressed one kept!\n"
-msgstr " %s: Erreur en compressant la BAL ! BAL décompressée gardée !\n"
+msgid "Error. Preserving temporary file: %s"
+msgstr "Erreur. Préservation du fichier temporaire : %s"
 
 #: compress.c:885
 msgid "Can't sync a compressed file without a close-hook"
@@ -1818,7 +1813,7 @@ msgid "Tag messages matching: "
 msgstr "Marquer les messages correspondant à : "
 
 #. L10N: CHECK_ACL
-#: curs_main.c:1061 curs_main.c:2339 pager.c:2772
+#: curs_main.c:1061 curs_main.c:2349 pager.c:2772
 msgid "Cannot undelete message(s)"
 msgstr "Impossible de récupérer le(s) message(s)"
 
@@ -1966,21 +1961,35 @@ msgid "Cannot mark message(s) as read"
 msgstr "Impossible de marquer le(s) message(s) comme lu(s)"
 
 # , c-format
-#: curs_main.c:2218
+#. L10N: This is the prompt for <mark-message>.  Whatever they
+#. enter will be prefixed by $mark_macro_prefix and will become
+#. a macro hotkey to jump to the currently selected message.
+#: curs_main.c:2221
 msgid "Enter macro stroke: "
 msgstr "Entrez les touches de la macro : "
 
-#: curs_main.c:2226
+#. L10N: "message hotkey" is the key bindings menu description of a
+#. macro created by <mark-message>.
+#: curs_main.c:2229
+msgid "message hotkey"
+msgstr "hotkey (marque-page)"
+
+#. L10N: This is echoed after <mark-message> creates a new hotkey
+#. macro.  %s is the hotkey string ($mark_macro_prefix followed
+#. by whatever they typed at the prompt.)
+#: curs_main.c:2234
 #, c-format
 msgid "Message bound to %s."
 msgstr "Message lié à %s."
 
-#: curs_main.c:2232
+#. L10N: This error is printed if <mark-message> cannot find a
+#. Message-ID for the currently selected message in the index.
+#: curs_main.c:2242
 msgid "No message ID to macro."
 msgstr "Pas de Message-ID pour la macro."
 
 #. L10N: CHECK_ACL
-#: curs_main.c:2309 pager.c:2755
+#: curs_main.c:2319 pager.c:2755
 msgid "Cannot undelete message"
 msgstr "Impossible de récupérer le message"
 
@@ -2109,11 +2118,6 @@ msgstr "Impossible d'ouvrir le fichier : %s"
 #, c-format
 msgid "Can't append to folder: %s"
 msgstr "Impossible d'ajouter au dossier : %s"
-
-#: editmsg.c:210
-#, c-format
-msgid "Error. Preserving temporary file: %s"
-msgstr "Erreur. On préserve le fichier temporaire : %s"
 
 # , c-format
 #: flags.c:346
@@ -5353,8 +5357,8 @@ msgid "untag messages matching a pattern"
 msgstr "démarquer les messages correspondant à un motif"
 
 #: ../keymap_alldefs.h:138
-msgid "create a hot-key macro for the current message"
-msgstr "créer un marque-page (hot-key macro) pour le message courant"
+msgid "create a hotkey macro for the current message"
+msgstr "créer une macro hotkey (marque-page) pour le message courant"
 
 #: ../keymap_alldefs.h:139
 msgid "move to the middle of the page"
