@@ -63,41 +63,46 @@ typedef union
 HCACHE_BACKEND_LIST
 #undef HCACHE_BACKEND
 
+/* Keep this list sorted as it is in configure.ac to avoid user surprise if no
+ * header_cache_backend is specified. */
+const hcache_ops_t *hcache_ops[] = {
+#if defined(HAVE_TC)
+  &hcache_tokyocabinet_ops,
+#endif
+#if defined(HAVE_KC)
+  &hcache_kyotocabinet_ops,
+#endif
+#if defined(HAVE_QDBM)
+  &hcache_qdbm_ops,
+#endif
+#if defined(HAVE_GDBM)
+  &hcache_gdbm_ops,
+#endif
+#if defined(HAVE_BDB)
+  &hcache_bdb_ops,
+#endif
+#if defined(HAVE_LMDB)
+  &hcache_lmdb_ops,
+#endif
+  NULL
+};
+
 static const hcache_ops_t *
 hcache_get_backend_ops(const char *backend)
 {
   const char *b = NONULL(backend);
+  if (!b || !*b)
+  {
+      return hcache_ops[0];
+  }
 
-  // Keep this list sorted as it is in configure.ac to avoid user surprise if
-  // no header_cache_backend is specified.
-#define EMPTY_OR_EQ(s1, s2) (!strlen(s1) || !strcmp((s1), (s2)))
-
-#if defined(HAVE_TC)
-  if (EMPTY_OR_EQ(b, "tokyocabinet"))
-    return &hcache_tc_ops;
-#endif
-#if defined(HAVE_KC)
-  if (EMPTY_OR_EQ(b, "kyotocabinet"))
-    return &hcache_kc_ops;
-#endif
-#if defined(HAVE_QDBM)
-  if (EMPTY_OR_EQ(b, "qdbm"))
-    return &hcache_qdbm_ops;
-#endif
-#if defined(HAVE_GDBM)
-  if (EMPTY_OR_EQ(b, "gdbm"))
-    return &hcache_gdbm_ops;
-#endif
-#if defined(HAVE_BDB)
-  if (EMPTY_OR_EQ(b, "bdb"))
-    return &hcache_bdb_ops;
-#endif
-#if defined(HAVE_LMDB)
-  if (EMPTY_OR_EQ(b, "lmdb"))
-    return &hcache_lmdb_ops;
-#endif
-
-#undef EMPTY_OR_EQ
+  for (size_t i = 0; i < sizeof(hcache_ops)/sizeof(*hcache_ops) - 1; ++i)
+  {
+      if (!strcmp(b, hcache_ops[i]->name))
+      {
+          return hcache_ops[i];
+      }
+  }
 
   return NULL;
 }
@@ -902,10 +907,19 @@ mutt_hcache_delete(header_cache_t *h, const char *key, size_t keylen)
 const char *
 mutt_hcache_backend()
 {
-  const hcache_ops_t *ops = hcache_get_ops();
-  if (!ops)
-      return NULL;
-  return ops->backend();
+  char tmp[STRING] = {0};
+  size_t len = 0;
+
+  for (size_t i = 0; i < sizeof(hcache_ops)/sizeof(*hcache_ops) - 1; ++i)
+  {
+    if (len != 0)
+    {
+      len += snprintf(tmp+len, STRING-len, ", ");
+    }
+    len += snprintf(tmp+len, STRING-len, "%s", hcache_ops[i]->name);
+  }
+
+  return strdup(tmp);
 }
 
 int

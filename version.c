@@ -428,7 +428,9 @@ print_version (void)
 #endif
 
 #ifdef USE_HCACHE
-  printf ("\nhcache backend: %s", mutt_hcache_backend());
+  const char *backends = mutt_hcache_backend();
+  printf ("\nhcache backends: %s", backends);
+  FREE(&backends);
 #endif
 
   puts ("\n\nCompiler:");

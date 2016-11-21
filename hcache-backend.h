@@ -91,6 +91,7 @@ typedef const char *(*hcache_backend_t)(void);
 
 typedef struct
 {
+    const char *     name;
     hcache_open_t    open;
     hcache_fetch_t   fetch;
     hcache_store_t   store;
@@ -102,19 +103,20 @@ typedef struct
 #define HCACHE_BACKEND_LIST \
   HCACHE_BACKEND(bdb) \
   HCACHE_BACKEND(gdbm) \
-  HCACHE_BACKEND(kc) \
+  HCACHE_BACKEND(kyotocabinet) \
   HCACHE_BACKEND(lmdb) \
   HCACHE_BACKEND(qdbm) \
-  HCACHE_BACKEND(tc)
+  HCACHE_BACKEND(tokyocabinet)
 
-#define HCACHE_BACKEND_OPS(name)             \
-  const hcache_ops_t hcache_##name##_ops = { \
-    .open    = hcache_##name##_open,         \
-    .fetch   = hcache_##name##_fetch,        \
-    .store   = hcache_##name##_store,        \
-    .delete  = hcache_##name##_delete,       \
-    .close   = hcache_##name##_close,        \
-    .backend = hcache_##name##_backend       \
+#define HCACHE_BACKEND_OPS(_name)             \
+  const hcache_ops_t hcache_##_name##_ops = { \
+    .name    = #_name,                   \
+    .open    = hcache_##_name##_open,         \
+    .fetch   = hcache_##_name##_fetch,        \
+    .store   = hcache_##_name##_store,        \
+    .delete  = hcache_##_name##_delete,       \
+    .close   = hcache_##_name##_close,        \
+    .backend = hcache_##_name##_backend       \
   };
 
 #endif /* _HCACHE_BACKEND_H_ */

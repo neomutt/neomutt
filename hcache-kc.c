@@ -28,7 +28,7 @@
 #include <kclangc.h>
 
 static void *
-hcache_kc_open(const char *path)
+hcache_kyotocabinet_open(const char *path)
 {
   char kcdbpath[_POSIX_PATH_MAX];
   int printfresult;
@@ -59,7 +59,7 @@ hcache_kc_open(const char *path)
 }
 
 static void *
-hcache_kc_fetch(void *ctx, const char *key, size_t keylen)
+hcache_kyotocabinet_fetch(void *ctx, const char *key, size_t keylen)
 {
   size_t sp;
 
@@ -71,7 +71,7 @@ hcache_kc_fetch(void *ctx, const char *key, size_t keylen)
 }
 
 static int
-hcache_kc_store(void *ctx, const char* key, size_t keylen, void *data, size_t dlen)
+hcache_kyotocabinet_store(void *ctx, const char* key, size_t keylen, void *data, size_t dlen)
 {
   if (!ctx)
     return -1;
@@ -81,7 +81,7 @@ hcache_kc_store(void *ctx, const char* key, size_t keylen, void *data, size_t dl
 }
 
 static int
-hcache_kc_delete(void *ctx, const char *key, size_t keylen)
+hcache_kyotocabinet_delete(void *ctx, const char *key, size_t keylen)
 {
   if (!ctx)
     return -1;
@@ -91,7 +91,7 @@ hcache_kc_delete(void *ctx, const char *key, size_t keylen)
 }
 
 static void
-hcache_kc_close(void **ctx)
+hcache_kyotocabinet_close(void **ctx)
 {
   if (!ctx || !*ctx)
     return;
@@ -108,7 +108,7 @@ hcache_kc_close(void **ctx)
 }
 
 static const char *
-hcache_kc_backend(void)
+hcache_kyotocabinet_backend(void)
 {
   /* SHORT_STRING(128) should be more than enough for KCVERSION */
   static char version_cache[SHORT_STRING] = "";
@@ -118,6 +118,6 @@ hcache_kc_backend(void)
   return version_cache;
 }
 
-HCACHE_BACKEND_OPS(kc)
+HCACHE_BACKEND_OPS(kyotocabinet)
 
 #endif /* HAVE_KC */
