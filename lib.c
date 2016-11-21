@@ -309,6 +309,25 @@ char *mutt_strlower (char *s)
   return (s);
 }
 
+/**
+ * mutt_strchrnul - find first occurrence of character in string
+ * @param s Haystack.
+ * @param c Needle.
+ * @return Pointer to the first occurrence if found or to the NULL character.
+ *
+ * This function is like GNU's strchrnul, which is similar to the standard
+ * strchr function: it looks for the c character in the NULL-terminated string
+ * s and returns a pointer to its location. If c is not in s, instead of
+ * returning NULL like its standard counterpart, this function returns a
+ * pointer to the terminating NULL character.
+ */
+const char *mutt_strchrnul(const char *s, char c)
+{
+  for (; *s && (*s != c); s++)
+    ;
+  return s;
+}
+
 void mutt_unlink (const char *s)
 {
   int fd;

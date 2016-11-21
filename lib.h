@@ -171,6 +171,7 @@ char *mutt_concat_path (char *, const char *, const char *, size_t);
 char *mutt_read_line (char *, size_t *, FILE *, int *, int);
 char *mutt_skip_whitespace (char *);
 char *mutt_strlower (char *);
+const char *mutt_strchrnul (const char *, char);
 char *mutt_substrcpy (char *, const char *, const char *, size_t);
 char *mutt_substrdup (const char *, const char *);
 char *safe_strcat (char *, size_t, const char *);
