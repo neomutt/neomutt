@@ -90,21 +90,18 @@ const hcache_ops_t *hcache_ops[] = {
 static const hcache_ops_t *
 hcache_get_backend_ops(const char *backend)
 {
-  const char *b = NONULL(backend);
-  if (!b || !*b)
+  const hcache_ops_t **ops = hcache_ops;
+
+  if (!backend || !*backend)
   {
-      return hcache_ops[0];
+    return *ops;
   }
 
-  for (size_t i = 0; i < sizeof(hcache_ops)/sizeof(*hcache_ops) - 1; ++i)
-  {
-      if (!strcmp(b, hcache_ops[i]->name))
-      {
-          return hcache_ops[i];
-      }
-  }
+  for (; *ops; ++ops)
+    if (!strcmp(backend, (*ops)->name))
+      break;
 
-  return NULL;
+  return *ops;
 }
 
 #define hcache_get_ops() hcache_get_backend_ops(HeaderCacheBackend)
@@ -905,18 +902,19 @@ mutt_hcache_delete(header_cache_t *h, const char *key, size_t keylen)
 }
 
 const char *
-mutt_hcache_backend()
+mutt_hcache_backend_list()
 {
   char tmp[STRING] = {0};
+  const hcache_ops_t **ops = hcache_ops;
   size_t len = 0;
 
-  for (size_t i = 0; i < sizeof(hcache_ops)/sizeof(*hcache_ops) - 1; ++i)
+  for (; *ops; ++ops)
   {
     if (len != 0)
     {
       len += snprintf(tmp+len, STRING-len, ", ");
     }
-    len += snprintf(tmp+len, STRING-len, "%s", hcache_ops[i]->name);
+    len += snprintf(tmp+len, STRING-len, "%s", (*ops)->name);
   }
 
   return strdup(tmp);

@@ -127,12 +127,13 @@ int
 mutt_hcache_delete(header_cache_t *h, const char *key, size_t keylen);
 
 /**
- * mutt_hcache_backend - get a backend-specific identification string.
+ * mutt_hcache_backend_list - get a list of backend identification strings.
  *
- * @return String describing the currently used hcache backend.
+ * @return Comma separated string describing the compiled-in backends.
+ * @note The returned string must be free'd by the caller.
  */
 const char *
-mutt_hcache_backend(void);
+mutt_hcache_backend_list(void);
 
 /**
  * mutt_hcache_is_valid_backend

@@ -42,7 +42,7 @@ const char * mutt_make_version (void);
 void mutt_print_patchlist (void);
 
 /* #include "hcache.h" */
-const char * mutt_hcache_backend (void);
+const char * mutt_hcache_backend_list (void);
 
 const int SCREEN_WIDTH = 80;
 
@@ -428,7 +428,7 @@ print_version (void)
 #endif
 
 #ifdef USE_HCACHE
-  const char *backends = mutt_hcache_backend();
+  const char *backends = mutt_hcache_backend_list();
   printf ("\nhcache backends: %s", backends);
   FREE(&backends);
 #endif
