@@ -982,9 +982,10 @@ static int ssl_check_certificate (CONNECTION *conn, sslsockdata *data)
 #ifdef DEBUG
   char buf[STRING];
 
+  buf[STRING - 1] = '\0';
   dprint (1, (debugfile, "ssl_check_certificate: checking cert %s\n",
               X509_NAME_oneline (X509_get_subject_name (data->cert),
-                                 buf, sizeof (buf))));
+                                 buf, sizeof (buf) - 1)));
 #endif
 
   if ((preauthrc = ssl_check_preauth (data->cert, conn->account.host)) > 0)
@@ -1004,7 +1005,7 @@ static int ssl_check_certificate (CONNECTION *conn, sslsockdata *data)
 
     dprint (1, (debugfile, "ssl_check_certificate: checking cert chain entry %s\n",
                 X509_NAME_oneline (X509_get_subject_name (cert),
-                                   buf, sizeof (buf))));
+                                   buf, sizeof (buf) - 1)));
 
     /* if the certificate validates or is manually accepted, then add it to
      * the trusted set and recheck the peer certificate */
