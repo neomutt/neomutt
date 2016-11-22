@@ -995,7 +995,7 @@ void mutt_edit_content_type (HEADER *h, BODY *b, FILE *fp)
     int r;
     snprintf (tmp, sizeof (tmp), _("Convert to %s upon sending?"),
 	      mutt_get_parameter ("charset", b->parameter));
-    if ((r = mutt_yesorno (tmp, !b->noconv)) != -1)
+    if ((r = mutt_yesorno (tmp, !b->noconv)) != MUTT_ABORT)
       b->noconv = (r == MUTT_NO);
   }
 

@@ -130,7 +130,6 @@ int mutt_protect (HEADER *msg, char *keylist)
   BODY *tmp_smime_pbody = NULL;
   BODY *tmp_pgp_pbody = NULL;
   int flags = (WithCrypto & APPLICATION_PGP)? msg->security: 0;
-  int i;
 
   if (!WithCrypto)
     return -1;
@@ -146,8 +145,8 @@ int mutt_protect (HEADER *msg, char *keylist)
     if ((msg->content->type != TYPETEXT) ||
         ascii_strcasecmp (msg->content->subtype, "plain"))
     {
-      if ((i = query_quadoption (OPT_PGPMIMEAUTO,
-              _("Inline PGP can't be used with attachments.  Revert to PGP/MIME?"))) != MUTT_YES)
+      if (query_quadoption (OPT_PGPMIMEAUTO,
+          _("Inline PGP can't be used with attachments.  Revert to PGP/MIME?")) != MUTT_YES)
       {
         mutt_error _("Mail not sent: inline PGP can't be used with attachments.");
         return -1;
@@ -165,7 +164,7 @@ int mutt_protect (HEADER *msg, char *keylist)
       }
 
       /* otherwise inline won't work...ask for revert */
-      if ((i = query_quadoption (OPT_PGPMIMEAUTO, _("Message can't be sent inline.  Revert to using PGP/MIME?"))) != MUTT_YES)
+      if (query_quadoption (OPT_PGPMIMEAUTO, _("Message can't be sent inline.  Revert to using PGP/MIME?")) != MUTT_YES)
       {
         mutt_error _("Mail not sent.");
         return -1;

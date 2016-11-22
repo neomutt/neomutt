@@ -849,7 +849,7 @@ int mx_close_mailbox (CONTEXT *ctx, int *index_hint)
     if (nntp_data && nntp_data->nserv && nntp_data->group)
     {
       int rc = query_quadoption (OPT_CATCHUP, _("Mark all articles read?"));
-      if (rc < 0)
+      if (rc == MUTT_ABORT)
       {
 	ctx->closing = 0;
 	return -1;
@@ -898,7 +898,7 @@ int mx_close_mailbox (CONTEXT *ctx, int *index_hint)
     {
       mutt_expand_path (mbox, sizeof (mbox));
       snprintf (buf, sizeof (buf), _("Move read messages to %s?"), mbox);
-      if ((move_messages = query_quadoption (OPT_MOVE, buf)) == -1)
+      if ((move_messages = query_quadoption (OPT_MOVE, buf)) == MUTT_ABORT)
       {
 	ctx->closing = 0;
 	return (-1);
@@ -915,7 +915,7 @@ int mx_close_mailbox (CONTEXT *ctx, int *index_hint)
     snprintf (buf, sizeof (buf), ctx->deleted == 1
 	     ? _("Purge %d deleted message?") : _("Purge %d deleted messages?"),
 	      ctx->deleted);
-    if ((purge = query_quadoption (OPT_DELETE, buf)) < 0)
+    if ((purge = query_quadoption (OPT_DELETE, buf)) == MUTT_ABORT)
     {
       ctx->closing = 0;
       return (-1);
@@ -1206,7 +1206,7 @@ int mx_sync_mailbox (CONTEXT *ctx, int *index_hint)
     snprintf (buf, sizeof (buf), ctx->deleted == 1
 	     ? _("Purge %d deleted message?") : _("Purge %d deleted messages?"),
 	      ctx->deleted);
-    if ((purge = query_quadoption (OPT_DELETE, buf)) < 0)
+    if ((purge = query_quadoption (OPT_DELETE, buf)) == MUTT_ABORT)
       return (-1);
     else if (purge == MUTT_NO)
     {

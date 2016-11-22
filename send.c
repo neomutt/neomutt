@@ -589,7 +589,7 @@ int mutt_fetch_recips (ENVELOPE *out, ENVELOPE *in, int flags)
 	      in->mail_followup_to->mailbox,
 	      in->mail_followup_to->next ? ",..." : "");
 
-    if ((hmfupto = query_quadoption (OPT_MFUPTO, prompt)) == -1)
+    if ((hmfupto = query_quadoption (OPT_MFUPTO, prompt)) == MUTT_ABORT)
       return -1;
   }
 
@@ -600,12 +600,12 @@ int mutt_fetch_recips (ENVELOPE *out, ENVELOPE *in, int flags)
     rfc822_free_address (&tmp);
 
     if (in->mail_followup_to && hmfupto == MUTT_YES &&
-        default_to (&out->cc, in, flags & SENDLISTREPLY, hmfupto) == -1)
+        default_to (&out->cc, in, flags & SENDLISTREPLY, hmfupto) == MUTT_ABORT)
       return (-1); /* abort */
   }
   else
   {
-    if (default_to (&out->to, in, flags & SENDGROUPREPLY, hmfupto) == -1)
+    if (default_to (&out->to, in, flags & SENDGROUPREPLY, hmfupto) == MUTT_ABORT)
       return (-1); /* abort */
 
     if ((flags & SENDGROUPREPLY) && (!in->mail_followup_to || hmfupto != MUTT_YES))
@@ -832,7 +832,7 @@ generate_body (FILE *tempfp,	/* stream for outgoing message */
 
   if (flags & SENDREPLY)
   {
-    if ((i = query_quadoption (OPT_INCLUDE, _("Include message in reply?"))) == -1)
+    if ((i = query_quadoption (OPT_INCLUDE, _("Include message in reply?"))) == MUTT_ABORT)
       return (-1);
 
     if (i == MUTT_YES)
@@ -1313,7 +1313,7 @@ ci_send_message (int flags,		/* send mode */
     /* If the user is composing a new message, check to see if there
      * are any postponed messages first.
      */
-    if ((i = query_quadoption (OPT_RECALL, _("Recall postponed message?"))) == -1)
+    if ((i = query_quadoption (OPT_RECALL, _("Recall postponed message?"))) == MUTT_ABORT)
       return rv;
 
     if(i == MUTT_YES)

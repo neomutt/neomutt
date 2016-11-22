@@ -1716,7 +1716,7 @@ int mutt_save_confirm (const char *s, struct stat *st)
       snprintf (tmp, sizeof (tmp), _("Append messages to %s?"), s);
       if ((rc = mutt_yesorno (tmp, MUTT_YES)) == MUTT_NO)
 	ret = 1;
-      else if (rc == -1)
+      else if (rc == MUTT_ABORT)
 	ret = -1;
     }
   }
@@ -1749,7 +1749,7 @@ int mutt_save_confirm (const char *s, struct stat *st)
 	snprintf (tmp, sizeof (tmp), _("Create %s?"), s);
 	if ((rc = mutt_yesorno (tmp, MUTT_YES)) == MUTT_NO)
 	  ret = 1;
-	else if (rc == -1)
+	else if (rc == MUTT_ABORT)
 	  ret = -1;
       }
     }

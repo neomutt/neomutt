@@ -483,7 +483,7 @@ static void attach_forward_bodies (FILE * fp, HEADER * hdr,
       && !check_can_decode (idx, idxlen, cur))
   {
     if ((rc = query_quadoption (OPT_MIMEFWDREST,
-_("Can't decode all tagged attachments.  MIME-forward the others?"))) == -1)
+_("Can't decode all tagged attachments.  MIME-forward the others?"))) == MUTT_ABORT)
       goto bail;
     else if (rc == MUTT_NO)
       mime_fwd_any = 0;
@@ -864,7 +864,7 @@ void mutt_attach_reply (FILE * fp, HEADER * hdr,
   if (nattach > 1 && !check_can_decode (idx, idxlen, cur))
   {
     if ((rc = query_quadoption (OPT_MIMEFWDREST,
-      _("Can't decode all tagged attachments.  MIME-encapsulate the others?"))) == -1)
+      _("Can't decode all tagged attachments.  MIME-encapsulate the others?"))) == MUTT_ABORT)
       return;
     else if (rc == MUTT_YES)
       mime_reply_any = 1;

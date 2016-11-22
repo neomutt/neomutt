@@ -263,7 +263,7 @@ check_attachments(ATTACHPTR **idx, short idxlen)
       
       if((r = mutt_yesorno(msg, MUTT_YES)) == MUTT_YES)
 	mutt_update_encoding(idx[i]->content);
-      else if(r == -1)
+      else if(r == MUTT_ABORT)
 	return -1;
     }
   }
@@ -1130,7 +1130,7 @@ int mutt_compose_menu (HEADER *msg,   /* structure for new message */
 	if (!fccSet && *fcc)
 	{
 	  if ((i = query_quadoption (OPT_COPY,
-				_("Save a copy of this message?"))) == -1)
+				_("Save a copy of this message?"))) == MUTT_ABORT)
 	    break;
 	  else if (i == MUTT_NO)
 	    *fcc = 0;
@@ -1371,7 +1371,7 @@ int mutt_compose_menu (HEADER *msg,   /* structure for new message */
 	  loop = 0;
 	  break;
 	}
-	else if (i == -1)
+	else if (i == MUTT_ABORT)
 	  break; /* abort */
 
 	/* fall through to postpone! */

@@ -271,7 +271,7 @@ int mutt_yesorno (const char *msg, int def)
       break;
     if (ch.ch < 0)
     {
-      def = -1;
+      def = MUTT_ABORT;
       break;
     }
 
@@ -310,7 +310,7 @@ int mutt_yesorno (const char *msg, int def)
     regfree (& reno);
 #endif
 
-  if (def != -1)
+  if (def != MUTT_ABORT)
   {
     addstr ((char *) (def == MUTT_YES ? yes : no));
     mutt_refresh ();

@@ -293,7 +293,7 @@ int pop_open_connection (POP_DATA *pop_data)
     {
       ret = query_quadoption (OPT_SSLSTARTTLS,
 	    _("Secure connection with TLS?"));
-      if (ret == -1)
+      if (ret == MUTT_ABORT)
 	return -2;
       pop_data->use_stls = 1;
       if (ret == MUTT_YES)

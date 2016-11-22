@@ -282,6 +282,7 @@ enum
 /* possible arguments to set_quadoption() */
 enum
 {
+  MUTT_ABORT = -1,
   MUTT_NO,
   MUTT_YES,
   MUTT_ASKNO,

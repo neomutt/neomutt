@@ -1333,7 +1333,7 @@ char *pgp_findKeys (ADDRESS *adrlist, int oppenc_mode)
             continue;
           }
         }
-        else if (r == -1)
+        else if (r == MUTT_ABORT)
         {
           FREE (&keylist);
           rfc822_free_address (&addr);

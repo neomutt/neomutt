@@ -431,7 +431,7 @@ int imap_open_connection (IMAP_DATA* idata)
       if (option(OPTSSLFORCETLS))
         rc = MUTT_YES;
       else if ((rc = query_quadoption (OPT_SSLSTARTTLS,
-        _("Secure connection with TLS?"))) == -1)
+        _("Secure connection with TLS?"))) == MUTT_ABORT)
 	goto err_close_conn;
       if (rc == MUTT_YES) {
 	if ((rc = imap_exec (idata, "STARTTLS", IMAP_CMD_FAIL_OK)) == -1)
@@ -806,7 +806,7 @@ static int imap_open_mailbox_append (CONTEXT *ctx, int flags)
     return -1;
 
   snprintf (buf, sizeof (buf), _("Create %s?"), mailbox);
-  if (option (OPTCONFIRMCREATE) && mutt_yesorno (buf, 1) < 1)
+  if (option (OPTCONFIRMCREATE) && mutt_yesorno (buf, 1) != MUTT_YES)
     return -1;
 
   if (imap_create_mailbox (idata, mailbox) < 0)
@@ -2155,7 +2155,7 @@ int imap_fast_trash (CONTEXT* ctx, char* dest)
         break;
       dprint (3, (debugfile, "imap_fast_trash: server suggests TRYCREATE\n"));
       snprintf (prompt, sizeof (prompt), _("Create %s?"), mbox);
-      if (option (OPTCONFIRMCREATE) && mutt_yesorno (prompt, 1) < 1)
+      if (option (OPTCONFIRMCREATE) && mutt_yesorno (prompt, 1) != MUTT_YES)
       {
         mutt_clear_error ();
         goto out;

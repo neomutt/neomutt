@@ -4116,7 +4116,7 @@ static crypt_key_t *crypt_select_key (crypt_key_t *keys,
                         _("%s Do you really want to use the key?"),
                         _(warn_s));
               
-              if (mutt_yesorno (buff, 0) != 1)
+              if (mutt_yesorno (buff, 0) != MUTT_YES)
                 {
                   mutt_clear_error ();
                   break;
@@ -4504,7 +4504,7 @@ static char *find_keys (ADDRESS *adrlist, unsigned int app, int oppenc_mode)
                     continue;
                   }
               }
-            else if (r == -1)
+            else if (r == MUTT_ABORT)
               {
                 FREE (&keylist);
                 rfc822_free_address (&addr);

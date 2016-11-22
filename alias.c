@@ -275,7 +275,7 @@ retry_name:
       case MUTT_YES:
       	strfcpy (buf, fixed, sizeof (buf));
 	goto retry_name;
-      case -1: 
+      case MUTT_ABORT: 
 	return;
     }
   }

@@ -463,7 +463,7 @@ static int smtp_open (CONNECTION* conn)
     rc = MUTT_YES;
   else if (mutt_bit_isset (Capabilities, STARTTLS) &&
            (rc = query_quadoption (OPT_SSLSTARTTLS,
-                                   _("Secure connection with TLS?"))) == -1)
+                                   _("Secure connection with TLS?"))) == MUTT_ABORT)
     return rc;
 
   if (rc == MUTT_YES)
