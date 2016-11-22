@@ -969,7 +969,7 @@ static int ssl_check_certificate (CONNECTION *conn, sslsockdata *data)
 #ifdef DEBUG
   char buf[STRING];
 
-  /* Note that X509_NAME_online will NULL-terminate buf, even when it
+  /* Note that X509_NAME_oneline will null-terminate buf, even when it
    * has to truncate the data. */
   dprint (1, (debugfile, "ssl_check_certificate: checking cert %s\n",
               X509_NAME_oneline (X509_get_subject_name (data->cert),
