@@ -6321,25 +6321,3 @@ msgstr "Extreu totes les claus públiques possibles."
 msgid "show S/MIME options"
 msgstr "Mostra les opcions de S/MIME."
 
-#~ msgid "Subscribed [%s], File mask: %s"
-#~ msgstr "Subscrites [%s], màscara de fitxers: %s"
-
-# ivb (2004/03/20)
-# ivb  (d)ata, (a)lfabet, (m)ida, (n)o
-#~ msgid "dazn"
-#~ msgstr "damn"
-
-#~ msgid ""
-#~ "To contact the developers, please mail to <mutt-dev@mutt.org>.\n"
-#~ "To report a bug, please visit http://bugs.mutt.org/.\n"
-#~ msgstr ""
-#~ "Per a contactar amb els desenvolupadors, per favor envieu un missatge de\n"
-#~ "correu a <mutt-dev@mutt.org>.  Per a informar d’un error, per favor "
-#~ "visiteu\n"
-#~ "http://bugs.mutt.org/.  Si teniu observacions sobre la traducció, "
-#~ "contacteu\n"
-#~ "amb Ivan Vilata i Balaguer <ivan@selidor.net>.\n"
-
-# El primer argument és p. ex. «SSL».  ivb
-#~ msgid "%s connection using %s (%s)"
-#~ msgstr "La connexió %s empra «%s» (%s)."

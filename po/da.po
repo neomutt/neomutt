@@ -5932,19 +5932,3 @@ msgstr "udtræk understøttede offentlige nøgler"
 msgid "show S/MIME options"
 msgstr "vis tilvalg for S/MIME"
 
-#~ msgid "Subscribed [%s], File mask: %s"
-#~ msgstr "Abonnementer [%s], filmaske: %s"
-
-#~ msgid "dazn"
-#~ msgstr "dasi"
-
-#~ msgid ""
-#~ "To contact the developers, please mail to <mutt-dev@mutt.org>.\n"
-#~ "To report a bug, please visit http://bugs.mutt.org/.\n"
-#~ msgstr ""
-#~ "For at kontakte Mutts udviklere, skriv venligst til <mutt-dev@mutt.org>.\n"
-#~ "Besøg netstedet http://bugs.mutt.org/, hvis du vil rapportere en "
-#~ "programfejl.\n"
-
-#~ msgid "%s connection using %s (%s)"
-#~ msgstr "%s-forbindelse bruger %s (%s)"

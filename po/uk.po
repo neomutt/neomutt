@@ -5925,18 +5925,3 @@ msgstr "розпакувати підтримувані відкриті клю�
 msgid "show S/MIME options"
 msgstr "показати параметри S/MIME"
 
-#~ msgid "Subscribed [%s], File mask: %s"
-#~ msgstr "Підписані [%s] з маскою: %s"
-
-#~ msgid "dazn"
-#~ msgstr "dazn"
-
-#~ msgid ""
-#~ "To contact the developers, please mail to <mutt-dev@mutt.org>.\n"
-#~ "To report a bug, please visit http://bugs.mutt.org/.\n"
-#~ msgstr ""
-#~ "Для зв'язку з розробниками, шліть лист до <mutt-dev@mutt.org>.\n"
-#~ "Для повідомлення про ваду використовуйте http://bugs.mutt.org/..\n"
-
-#~ msgid "%s connection using %s (%s)"
-#~ msgstr "З'єднання %s з використанням %s (%s)"

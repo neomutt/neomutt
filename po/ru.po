@@ -5968,18 +5968,3 @@ msgstr "извлечь поддерживаемые открытые ключи"
 msgid "show S/MIME options"
 msgstr "вывести параметры S/MIME"
 
-#~ msgid "Subscribed [%s], File mask: %s"
-#~ msgstr "Подключение [%s], маска файла: %s"
-
-#~ msgid "dazn"
-#~ msgstr "dazn"
-
-#~ msgid ""
-#~ "To contact the developers, please mail to <mutt-dev@mutt.org>.\n"
-#~ "To report a bug, please visit http://bugs.mutt.org/.\n"
-#~ msgstr ""
-#~ "Чтобы связаться с разработчиками, используйте адрес <mutt-dev@mutt.org>.\n"
-#~ "Чтобы сообщить об ошибке, посетите http://bugs.mutt.org/.\n"
-
-#~ msgid "%s connection using %s (%s)"
-#~ msgstr "%s соединение; шифрование %s (%s)"
