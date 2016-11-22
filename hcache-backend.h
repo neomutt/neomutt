@@ -39,7 +39,7 @@
 typedef void * (*hcache_open_t)(const char *path);
 
 /**
- * hcache_fetch_t -  backend-specific routine to fetch a message's headers.
+ * hcache_fetch_t - backend-specific routine to fetch a message's headers.
  *
  * @param ctx The backend-specific context retrieved via hcache_open.
  * @param key A message identification string.
@@ -47,6 +47,14 @@ typedef void * (*hcache_open_t)(const char *path);
  * @return Pointer to the message's headers on success, NULL otherwise.
  */
 typedef void * (*hcache_fetch_t)(void *ctx, const char *key, size_t keylen);
+
+/**
+ * hcache_free_t - backend-specific routine to free fetched data.
+ *
+ * @param ctx The backend-specific context retrieved via hcache_open.
+ * @param data A pointer to the data got with hcache_fetch or hcache_fetch_raw
+ */
+typedef void (*hcache_free_t)(void *ctx, void **data);
 
 /**
  * hcache_store_t - backend-specific routine to store a message's headers.
@@ -94,6 +102,7 @@ typedef struct
     const char *     name;
     hcache_open_t    open;
     hcache_fetch_t   fetch;
+    hcache_free_t    free;
     hcache_store_t   store;
     hcache_delete_t  delete;
     hcache_close_t   close;
@@ -110,9 +119,10 @@ typedef struct
 
 #define HCACHE_BACKEND_OPS(_name)             \
   const hcache_ops_t hcache_##_name##_ops = { \
-    .name    = #_name,                   \
+    .name    = #_name,                        \
     .open    = hcache_##_name##_open,         \
     .fetch   = hcache_##_name##_fetch,        \
+    .free    = hcache_##_name##_free,         \
     .store   = hcache_##_name##_store,        \
     .delete  = hcache_##_name##_delete,       \
     .close   = hcache_##_name##_close,        \

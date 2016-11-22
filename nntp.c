@@ -1125,7 +1125,7 @@ static int parse_overview_line (char *line, void *data)
       mutt_free_header (&hdr);
       ctx->hdrs[ctx->msgcount] =
       hdr = mutt_hcache_restore (hdata);
-      FREE (&hdata);
+      mutt_hcache_free (fc->hc, &hdata);
       hdr->data = 0;
       hdr->read = 0;
       hdr->old = 0;
@@ -1289,7 +1289,7 @@ static int nntp_fetch_headers (CONTEXT *ctx, void *hc,
 		  "nntp_fetch_headers: mutt_hcache_fetch %s\n", buf));
       ctx->hdrs[ctx->msgcount] =
       hdr = mutt_hcache_restore (hdata);
-      FREE (&hdata);
+      mutt_hcache_free (fc.hc, &hdata);
       hdr->data = 0;
 
       /* skip header marked as deleted in cache */
@@ -2050,7 +2050,7 @@ int nntp_check_mailbox (CONTEXT *ctx, int *index_hint)
 	  dprint (2, (debugfile,
 		      "nntp_check_mailbox: mutt_hcache_fetch %s\n", buf));
 	  hdr = mutt_hcache_restore (hdata);
-	  FREE (&hdata);
+	  mutt_hcache_free (hc, &hdata);
 	  hdr->data = 0;
 	  deleted = hdr->deleted;
 	  flagged = hdr->flagged;
@@ -2099,7 +2099,7 @@ int nntp_check_mailbox (CONTEXT *ctx, int *index_hint)
 
 	ctx->hdrs[ctx->msgcount] =
 	hdr = mutt_hcache_restore (hdata);
-	FREE (&hdata);
+	mutt_hcache_free (hc, &hdata);
 	hdr->data = 0;
 	if (hdr->deleted)
 	{

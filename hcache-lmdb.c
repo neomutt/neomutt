@@ -172,12 +172,14 @@ hcache_lmdb_fetch(void *vctx, const char *key, size_t keylen)
     fprintf(stderr, "mdb_get: %s\n", mdb_strerror(rc));
     return NULL;
   }
-  /* Caller frees the data we return, so I MUST make a copy of it */
 
-  char *d = safe_malloc(data.mv_size);
-  memcpy(d, data.mv_data, data.mv_size);
+  return data.mv_data;
+}
 
-  return d;
+static void
+hcache_lmdb_free(void *vctx, void **data)
+{
+  /* LMDB data is owned by the database */
 }
 
 static int

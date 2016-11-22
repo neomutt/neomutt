@@ -58,6 +58,8 @@ mutt_hcache_close(header_cache_t *h);
  * @return Pointer to the data if found and valid, NULL otherwise.
  * @note This function performs a check on the validity of the data found by
  * comparing it with the crc value of the header_cache_t structure.
+ * @note The returned pointer must be freed by calling mutt_hcache_free. This
+ * must be done before closing the header cache with mutt_hcache_close.
  */
 void *
 mutt_hcache_fetch(header_cache_t *h, const char *key, size_t keylen);
@@ -71,9 +73,20 @@ mutt_hcache_fetch(header_cache_t *h, const char *key, size_t keylen);
  * @return Pointer to the data if found, NULL otherwise.
  * @note This function does not perform any check on the validity of the data
  * found.
+ * @note The returned pointer must be freed by calling mutt_hcache_free. This
+ * must be done before closing the header cache with mutt_hcache_close.
  */
 void *
 mutt_hcache_fetch_raw(header_cache_t *h, const char *key, size_t keylen);
+
+/**
+ * mutt_hcache_free - free previously fetched data.
+ *
+ * @param h Pointer to the header_cache_t structure got by mutt_hcache_open.
+ * @param data Pointer to the data got using hcache_fetch or hcache_fetch_raw.
+ */
+void
+mutt_hcache_free(header_cache_t *h, void **data);
 
 /**
  * mutt_hcache_restore - restore a HEADER from data retrieved from the cache.

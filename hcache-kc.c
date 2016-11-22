@@ -70,6 +70,12 @@ hcache_kyotocabinet_fetch(void *ctx, const char *key, size_t keylen)
   return kcdbget(db, key, keylen, &sp);
 }
 
+static void
+hcache_kyotocabinet_free(void *vctx, void **data)
+{
+    FREE(data);
+}
+
 static int
 hcache_kyotocabinet_store(void *ctx, const char* key, size_t keylen, void *data, size_t dlen)
 {

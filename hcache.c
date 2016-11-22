@@ -829,10 +829,14 @@ mutt_hcache_fetch(header_cache_t *h, const char *key, size_t keylen)
   void* data;
 
   data = mutt_hcache_fetch_raw (h, key, keylen);
-
-  if (!data || !crc_matches(data, h->crc))
+  if (!data)
   {
-    FREE(&data);
+    return NULL;
+  }
+
+  if (!crc_matches(data, h->crc))
+  {
+    mutt_hcache_free(h, &data);
     return NULL;
   }
 
@@ -851,6 +855,17 @@ mutt_hcache_fetch_raw(header_cache_t *h, const char *key, size_t keylen)
   keylen = snprintf(path, sizeof(path), "%s%s", h->folder, key);
 
   return ops->fetch(h->ctx, path, keylen);
+}
+
+void
+mutt_hcache_free(header_cache_t *h, void **data)
+{
+  const hcache_ops_t *ops = hcache_get_ops();
+
+  if (!h || !ops)
+    return;
+
+  ops->free(h->ctx, data);
 }
 
 int

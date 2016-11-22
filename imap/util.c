@@ -216,7 +216,7 @@ void imap_hcache_close (IMAP_DATA* idata)
 HEADER* imap_hcache_get (IMAP_DATA* idata, unsigned int uid)
 {
   char key[16];
-  unsigned int* uv;
+  void* uv;
   HEADER* h = NULL;
 
   if (!idata->hcache)
@@ -227,11 +227,12 @@ HEADER* imap_hcache_get (IMAP_DATA* idata, unsigned int uid)
                                          imap_hcache_keylen(key));
   if (uv)
   {
-    if (*uv == idata->uid_validity)
-      h = mutt_hcache_restore ((const unsigned char*)uv);
+    if (*(unsigned int *)uv == idata->uid_validity)
+      h = mutt_hcache_restore (uv);
     else
-      dprint (3, (debugfile, "hcache uidvalidity mismatch: %u", *uv));
-    FREE (&uv);
+      dprint (3, (debugfile, "hcache uidvalidity mismatch: %u",
+                  *(unsigned int *)uv));
+    mutt_hcache_free (idata->hcache, &uv);
   }
 
   return h;
