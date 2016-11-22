@@ -1,14 +1,15 @@
-# Polish messages for Mutt 1.x
-# Polskie teksty dla Mutta 1.x
-# 1998-2006 Paweł Dziekoński
-# 1998-2002 Sergiusz Pawłowicz
-# Pre-translation has bean done using PePeSza,
-# get it from http://home.elka.pw.edu.pl/~pkolodz2/pepesza.html
+# Polish messages for NeoMutt
+#
+# Copyright (c) 1998-2006 NeoMutt project.
+# This file is distributed under the same license as the NeoMutt package.
+#
+# Pawel Dziekonski <dzieko@pwr.wroc.pl>, 1998-2006
+# Sergiusz Pawłowicz, 1998-2002
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: neomutt-20161104\n"
-"Report-Msgid-Bugs-To: \n"
+"Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
 "POT-Creation-Date: 2016-11-17 15:14+0000\n"
 "PO-Revision-Date: 2007-11-02 11:11+0200\n"
 "Last-Translator: Paweł Dziekoński <dzieko@gmail.com>\n"
@@ -17,6 +18,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=(n==1 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
 
 #: account.c:186
 #, c-format

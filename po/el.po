@@ -1,17 +1,18 @@
-# Hellenic support for mutt by
+# Greek messages for NeoMutt
 #
-# Copyright (C) 1999-2002 Fanis Dokianakis <madf@hellug.gr>
-# Corrections from
-# Nikos Mayrogiannopoulos <nmav@hellug.gr>
-# Simos Xenitellis <S.Xenitellis@rhbnc.ac.uk>
-# kromJx <kromJx@crosswinds.net>
-# ta_panta_rei <ta_panta_rei@flashmail.com>
+# Copyright (c) 1999-2005 NeoMutt project.
+# This file is distributed under the same license as the NeoMutt package.
 #
+# Fanis Dokianakis <madf@hellug.gr>, 1999-2005
+# Nikos Mayrogiannopoulos <nmav@hellug.gr>, 2005
+# Simos Xenitellis <S.Xenitellis@rhbnc.ac.uk>, 2005
+# kromJx <kromJx@crosswinds.net>, 2005
+# ta_panta_rei <ta_panta_rei@flashmail.com>, 2005
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: neomutt-20161104\n"
-"Report-Msgid-Bugs-To: \n"
+"Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
 "POT-Creation-Date: 2016-11-17 15:14+0000\n"
 "PO-Revision-Date: 2005-02-01 00:01GMT+2\n"
 "Last-Translator: Dokianakis Fanis <madf@hellug.gr>\n"
@@ -20,6 +21,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: account.c:186
 #, c-format

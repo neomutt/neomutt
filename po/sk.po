@@ -1,11 +1,14 @@
-# MUTT
-# Copyright (C) 1998 Free Software Foundation, Inc.
-# Miroslav Vasko <vasko@ies.sk>, 1998.
+# Slovak messages for NeoMutt
+#
+# Copyright (c) 1998 NeoMutt project.
+# This file is distributed under the same license as the NeoMutt package.
+#
+# Miroslav Vasko <vasko@ies.sk>, 1998
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: neomutt-20161104\n"
-"Report-Msgid-Bugs-To: \n"
+"Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
 "POT-Creation-Date: 2016-11-17 15:14+0000\n"
 "PO-Revision-Date: 1999-07-29 00:00+0100\n"
 "Last-Translator: Miroslav Vasko <vasko@ies.sk>\n"
@@ -14,6 +17,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
 
 #: account.c:186
 #, fuzzy, c-format

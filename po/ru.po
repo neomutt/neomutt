@@ -1,9 +1,13 @@
-# This file was prepared by (in alphabetical order):
+# Russian messages for NeoMutt
 #
-#   Alexey Vyskubov (alexey@pepper.spb.ru)
-#   Andrew W. Nosenko (awn@bcs.zp.ua)
-#   Michael Sobolev (mss@transas.com)
-#   Vsevolod Volkov (vvv@mutt.org.ua)
+# Copyright (c) 1998-2000 NeoMutt project.
+# This file is distributed under the same license as the NeoMutt package.
+#
+# Andrej N. Gritsenko <andrej@lucky.net>, 1998
+# Michael Sobolev <mss@transas.com>, 1999
+# Andrew W. Nosenko <awn@bcs.zp.ua>, 2000
+# Alexey Vyskubov <alexey@pepper.spb.ru>, 2001-2010,2012,2014,2016
+# Vsevolod Volkov <vvv@mutt.org.ua>, 2002-2010, 2012, 2014-2016
 #
 # To contact translators, please use mutt-ru mailing list:
 #   http://woe.spb.ru/mailman/listinfo/mutt-ru
@@ -11,7 +15,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: neomutt-20161104\n"
-"Report-Msgid-Bugs-To: \n"
+"Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
 "POT-Creation-Date: 2016-11-17 15:14+0000\n"
 "PO-Revision-Date: 2016-08-09 21:06+0300\n"
 "Last-Translator: Vsevolod Volkov <vvv@mutt.org.ua>\n"
@@ -20,6 +24,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
 
 #: account.c:186
 #, c-format
