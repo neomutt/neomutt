@@ -9,12 +9,16 @@ if BUILD_DOC
 DOC_SUBDIR = doc
 endif
 
+if BUILD_PO
+PO_SUBDIR = po
+endif
+
 if BUILD_IMAP
 IMAP_SUBDIR = imap
 IMAP_INCLUDES = -I$(top_srcdir)/imap
 endif
 
-SUBDIRS = m4 po intl $(DOC_SUBDIR) contrib $(IMAP_SUBDIR)
+SUBDIRS = m4 intl $(DOC_SUBDIR) $(PO_SUBDIR) contrib $(IMAP_SUBDIR)
 
 bin_SCRIPTS = $(SMIMEAUX_TARGET)
 

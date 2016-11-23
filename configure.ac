@@ -1434,6 +1434,13 @@ AC_ARG_ENABLE(doc, AS_HELP_STRING([--disable-doc],[Do not build the documentatio
 ])
 AM_CONDITIONAL(BUILD_DOC, test x$do_build_doc != xno)
 
+AC_ARG_ENABLE(po, AS_HELP_STRING([--disable-po],[Do not build the translation messages]),
+[       if test x$enableval = xno ; then
+                do_build_po=no
+        fi
+])
+AM_CONDITIONAL(BUILD_PO, test x$do_build_po != xno)
+
 AC_ARG_ENABLE(full_doc,
 	      AS_HELP_STRING([--disable-full-doc],[Omit disabled variables]),
 [       if test x$enableval = xno ; then
