@@ -14,7 +14,7 @@ msgstr ""
 "Project-Id-Version: neomutt-20161104\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
 "POT-Creation-Date: 2016-11-14 22:50+0000\n"
-"PO-Revision-Date: 2016-11-22 06:40+0100\n"
+"PO-Revision-Date: 2016-11-23 06:53+0100\n"
 "Last-Translator: André Berger\n"
 "Language-Team: none\n"
 "Language: de\n"
@@ -23,12 +23,11 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-# If this refers to a date:
 #. L10N: Example: Username at myhost.com
 #: account.c:186
-#, fuzzy, c-format
+#, c-format
 msgid "Username at %s: "
-msgstr "Benutzername am %s: "
+msgstr "Benutzername unter %s: "
 
 #: account.c:251
 #, c-format
@@ -348,9 +347,8 @@ msgid "Unsubscribe pattern: "
 msgstr "Muster abbestellen: "
 
 #: browser.c:2002
-#, fuzzy
 msgid "No newsgroups match the mask"
-msgstr "Es gibt keine zur Maske passenden Dateien"
+msgstr "Es gibt keine zur Maske passenden Newsgroups"
 
 #: buffy.c:703
 msgid "New mail in "
@@ -654,11 +652,10 @@ msgstr "Verschlüsseln"
 msgid "Sign"
 msgstr "Signieren"
 
-#: compose.c:161
 #. L10N: This refers to the encryption of the email, e.g. "Security: None"
-#, fuzzy
+#: compose.c:161
 msgid "None"
-msgstr "Kein(e/s)"
+msgstr "Keine"
 
 #: compose.c:168
 msgid " (inline PGP)"
@@ -897,7 +894,7 @@ msgstr "Komprimiere %s..."
 
 #: copy.c:725
 msgid "No decryption engine available for message"
-msgstr ""
+msgstr "Kein Entschlüsselungsmechanismus für Nachricht vorhanden"
 
 #: crypt-gpgme.c:393
 #, c-format
@@ -1336,7 +1333,6 @@ msgid "Error finding issuer key: %s\n"
 msgstr "Fehler bei der Suche nach dem Schlüssel des Herausgebers: %s\n"
 
 #: crypt-gpgme.c:3675
-#, fuzzy
 msgid "Error: certification chain too long - stopping here\n"
 msgstr "Fehler: Zertifikatskette zu lang - Stoppe hier\n"
 
@@ -1475,76 +1471,69 @@ msgstr "GPGME: OpenPGP Protokoll nicht verfügbar"
 msgid "GPGME: CMS protocol not available"
 msgstr "GPGME: CMS Protokoll nicht verfügbar"
 
-# Help! oppenc mode, what is it?
+#. L10N: S/MIME options (opportunistic encryption is on)
 #: crypt-gpgme.c:4721
-#, fuzzy
 msgid "S/MIME (s)ign, sign (a)s, (p)gp, (c)lear, or (o)ppenc mode off? "
-msgstr ""
-"S/MIME (s)ign., sign. (a)ls, (p)gp, (u)nverschl., oder (o)ppenc Modus aus? "
+msgstr "S/MIME (s)ign., sign. (a)ls, (p)gp, (u)nverschl., oder (w)ie-mögl.-Modus aus? "
 
-#. L10N: The 'f' is from "forget it", an old undocumented synonym of
-#. 'clear'.  Please use a corresponding letter in your language.
-#. Alternatively, you may duplicate the letter 'c' is translated to.
-#. This comment also applies to the five following letter sequences.
+#. L10N: S/MIME options (opportunistic encryption is on)
+#. The 'f' is undocumented. Please duplicate the letter 'c' is translated into.
 #: crypt-gpgme.c:4726
 msgid "sapfco"
-msgstr "sapuuo"
+msgstr "sapuuw"
 
-# Help! oppenc mode, what is it?
+#. L10N: PGP options (opportunistic encryption is on)
 #: crypt-gpgme.c:4731
-#, fuzzy
 msgid "PGP (s)ign, sign (a)s, s/(m)ime, (c)lear, or (o)ppenc mode off? "
-msgstr ""
-"PGP (s)ign., sign. (a)ls, s/(m)ime, (u)nverschl., oder (o)ppenc Modus aus? "
+msgstr "PGP (s)ign., sign. (a)ls, s/(m)ime, (u)nverschl., oder (w)ie-mögl.-Modus aus? "
 
+#. L10N: PGP options (opportunistic encryption is on)
+#. The 'f' is undocumented. Please duplicate the letter 'c' is translated into.
 #: crypt-gpgme.c:4732
 msgid "samfco"
-msgstr "samuuo"
+msgstr "samuuw"
 
-# Help! oppenc mode, what is it?
+#. L10N: S/MIME options (opportunistic encryption is off)
 #: crypt-gpgme.c:4744
-#, fuzzy
-msgid ""
-"S/MIME (e)ncrypt, (s)ign, sign (a)s, (b)oth, (p)gp, (c)lear, or (o)ppenc mode? "
-msgstr ""
-"S/MIME (v)erschl., (s)ign., sign. (a)ls, (b)eides, (p)gp, (u)nverschl., oder "
-"(o)ppenc Modus? "
+msgid "S/MIME (e)ncrypt, (s)ign, sign (a)s, (b)oth, (p)gp, (c)lear, or (o)ppenc mode? "
+msgstr "S/MIME (v)erschl., (s)ign., sign. (a)ls, (b)eides, (p)gp, (u)nverschl., oder (w)ie-mögl.-Modus? "
 
+#. L10N: S/MIME options (opportunistic encryption is off)
+#. The 'f' is undocumented. Please duplicate the letter 'c' is translated into.
 #: crypt-gpgme.c:4745
-#, fuzzy
 msgid "esabpfco"
-msgstr "vsabpku"
+msgstr "vsabpuuw"
 
-# Help! oppenc mode, what is it?
+#. L10N: PGP options (opportunistic encryption is off)
 #: crypt-gpgme.c:4750
-#, fuzzy
-msgid ""
-"PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, s/(m)ime, (c)lear, or (o)ppenc mode? "
-msgstr ""
-"PGP (v)erschl., (s)ign., sign. (a)ls, (b)eides, s/(m)ime, (u)nverschl., oder "
-"(o)ppenc Modus? "
+msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, s/(m)ime, (c)lear, or (o)ppenc mode? "
+msgstr "PGP (v)erschl., (s)ign., sign. (a)ls, (b)eides, s/(m)ime, (u)nverschl., oder (w)ie-mögl.-Modus? "
 
+#. L10N: PGP options (opportunistic encryption is off)
+#. The 'f' is undocumented. Please duplicate the letter 'c' is translated into.
 #: crypt-gpgme.c:4751
-#, fuzzy
 msgid "esabmfco"
-msgstr "vsabmuu"
+msgstr "vsabmuuw"
 
+#. L10N: S/MIME options
 #: crypt-gpgme.c:4762
 msgid "S/MIME (e)ncrypt, (s)ign, sign (a)s, (b)oth, (p)gp or (c)lear? "
-msgstr ""
-"S/MIME (v)erschl., (s)ign., sign. (a)ls, (b)eides, (p)gp, oder (u)nverschl.?"
+msgstr "S/MIME (v)erschl., (s)ign., sign. (a)ls, (b)eides, (p)gp oder (u)nverschl.? "
 
+#. L10N: S/MIME options
+#. The 'f' is undocumented. Please duplicate the letter 'c' is translated into.
 #: crypt-gpgme.c:4763
-#, fuzzy
 msgid "esabpfc"
 msgstr "vsabpuu"
 
+#. L10N: PGP options
 #: crypt-gpgme.c:4768
 msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, s/(m)ime or (c)lear? "
-msgstr "PGP (v)erschl., (s)ign., sign. (a)ls, (b)eides, s/(m)ime, (u)nverschl.? "
+msgstr "PGP (v)erschl., (s)ign., sign. (a)ls, (b)eides, s/(m)ime oder (u)nverschl.? "
 
+#. L10N: PGP options
+#. The 'f' is undocumented. Please duplicate the letter 'c' is translated into.
 #: crypt-gpgme.c:4769
-#, fuzzy
 msgid "esabmfc"
 msgstr "vsabmuu"
 
@@ -1874,7 +1863,6 @@ msgstr "Markiere Nachrichten nach Muster: "
 
 #. L10N: CHECK_ACL
 #: curs_main.c:1605 curs_main.c:3030 pager.c:3026
-#, fuzzy
 msgid "Cannot undelete message(s)"
 msgstr "Kann Löschmarkierung nicht von Nachricht(en) entfernen"
 
@@ -3533,49 +3521,46 @@ msgid "%s is not a mailbox!"
 msgstr "%s ist keine Mailbox!"
 
 #: mutt_notmuch.c:271 mutt_notmuch.c:1712
-#, fuzzy, c-format
+#, c-format
 msgid "failed to parse notmuch uri: %s"
-msgstr "Fehler beim Parsen von mailto: Link\n"
+msgstr "Fehler beim Verwenden von notmuch URI: %s"
 
 #: mutt_notmuch.c:393
 #, c-format
 msgid "failed to parse notmuch query type: %s"
-msgstr ""
+msgstr "Fehler beim Verwenden von notmuch Anfrage-Typ: %s"
 
 #: mutt_notmuch.c:412
-#, fuzzy, c-format
+#, c-format
 msgid "failed to parse notmuch limit: %s"
-msgstr "Fehler beim Parsen von mailto: Link\n"
+msgstr "Fehler beider Verwendung von notmuch Limit: %s"
 
 #: mutt_notmuch.c:481
-#, fuzzy, c-format
+#, c-format
 msgid "Waiting for notmuch DB... (%d sec)"
-msgstr "Warte auf fcntl-Lock... %d"
+msgstr "Warte auf notmuch DB... (%d sec)"
 
 #: mutt_notmuch.c:488
 #, c-format
 msgid "Cannot open notmuch database: %s: %s"
-msgstr ""
+msgstr "Kann notmuch Datenbank %s nicht öffnen: %s"
 
 #: mutt_notmuch.c:491
-#, fuzzy
 msgid "unknown reason"
-msgstr "unbekannter Fehler"
+msgstr "unbekannter Grund"
 
 #: mutt_notmuch.c:945
-#, fuzzy, c-format
+#, c-format
 msgid "Reading messages..."
-msgstr "Verschicke Nachricht..."
+msgstr "Lese Nachrichten..."
 
 #: mutt_notmuch.c:1236
-#, fuzzy
 msgid "No more messages in the thread."
-msgstr "Bezugsnachricht ist in dieser begrenzten Sicht nicht sichtbar."
+msgstr "Keine weiteren Nachrichten in diesen Diskussionsfaden."
 
 #: mutt_notmuch.c:2066
-#, fuzzy
 msgid "Can't write to virtual folder."
-msgstr "Kann an Mailbox nicht anhängen: %s"
+msgstr "Kann nicht in virtuelle Mailbox schreiben: %s"
 
 #: mx.c:167
 #, c-format
@@ -4951,9 +4936,12 @@ msgid ""
 "    https://github.com/neomutt/neomutt/issues\n"
 "or send an email to: <neomutt-devel@neomutt.org>\n"
 msgstr ""
+"Um mehr über NeoMutt zu erfahren, besuchen Sie: http://www.neomutt.org/\n"
+"Falls Sie einen Bug in NeoMutt finden, eröffnen Sie bitte ein Ticket unter:\n"
+"    https://github.com/neomutt/neomutt/issues\n"
+"oder senden Sie eine E-Mail an: <neomutt-devel@neomutt.org>\n"
 
 #: version.c:94
-#, fuzzy
 msgid ""
 "Copyright (C) 1996-2016 Michael R. Elkins and others.\n"
 "Mutt comes with ABSOLUTELY NO WARRANTY; for details type `mutt -vv'.\n"
@@ -4972,7 +4960,7 @@ msgid ""
 "Compile options:"
 msgstr ""
 "\n"
-"Einstellungen bei der Compilierung:"
+"Einstellungen bei der Kompilierung:"
 
 #: ../keymap_alldefs.h:5
 msgid "null operation"
