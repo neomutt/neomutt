@@ -95,6 +95,7 @@ $(PACKAGE).pot: $(POTFILES) $(BUILT_POTFILES) $(srcdir)/POTFILES.in
 	  --files-from=$(srcdir)/POTFILES.in \
 	&& \
 	$(XGETTEXT) --default-domain=$(PACKAGE) \
+	  --msgid-bugs-address=neomutt-devel@neomutt.org \
 	  --add-comments=L10N --keyword=_ --keyword=N_ \
 	  --join $(BUILT_POTFILES) \
 	&& test ! -f $(PACKAGE).po \
