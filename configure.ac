@@ -987,6 +987,34 @@ then
         ]))
     fi
 
+    dnl -- GDBM --
+    dnl -- Make sure the GDBM block comes before the QDBM one. QDBM provides
+    dnl -- the GDBM symbols in a compatibility layer (google for gdbm hovel).
+    dnl -- By doing this, we make sure the symbols are resolved in GDBM's
+    dnl -- library when both GDBM and QDBM are linked.
+    if test -n "$with_gdbm" && test "$with_gdbm" != "no"
+    then
+      OLDCPPFLAGS="$CPPFLAGS"
+      OLDLDFLAGS="$LDFLAGS"
+      if test "$with_gdbm" != "yes"
+      then
+        CPPFLAGS="$CPPFLAGS -I$with_gdbm/include"
+        LDFLAGS="$LDFLAGS -L$with_gdbm/lib"
+      fi
+
+      AC_CHECK_HEADERS(gdbm.h,
+      AC_CHECK_LIB(gdbm, gdbm_open,
+        [
+         MUTTLIBS="$MUTTLIBS -lgdbm"
+         MUTT_LIB_OBJECTS="$MUTT_LIB_OBJECTS hcache-gdbm.o"
+         AC_DEFINE(HAVE_GDBM, 1, [GDBM Support])
+         hcache_db_used="gdbm $hcache_db_used"
+        ],[
+         CPPFLAGS="$OLDCPPFLAGS"
+         LDFLAGS="$OLDLDFLAGS"
+        ]))
+    fi
+
     dnl -- QDBM --
     if test -n "$with_qdbm" && test "$with_qdbm" != "no"
     then
@@ -1019,29 +1047,6 @@ then
         ]))
     fi
 
-    dnl -- GDBM --
-    if test -n "$with_gdbm" && test "$with_gdbm" != "no"
-    then
-      OLDCPPFLAGS="$CPPFLAGS"
-      OLDLDFLAGS="$LDFLAGS"
-      if test "$with_gdbm" != "yes"
-      then
-        CPPFLAGS="$CPPFLAGS -I$with_gdbm/include"
-        LDFLAGS="$LDFLAGS -L$with_gdbm/lib"
-      fi
-
-      AC_CHECK_HEADERS(gdbm.h,
-      AC_CHECK_LIB(gdbm, gdbm_open,
-        [
-         MUTTLIBS="$MUTTLIBS -lgdbm"
-         MUTT_LIB_OBJECTS="$MUTT_LIB_OBJECTS hcache-gdbm.o"
-         AC_DEFINE(HAVE_GDBM, 1, [GDBM Support])
-         hcache_db_used="gdbm $hcache_db_used"
-        ],[
-         CPPFLAGS="$OLDCPPFLAGS"
-         LDFLAGS="$OLDLDFLAGS"
-        ]))
-    fi
 
     dnl -- BDB --
     ac_bdb_prefix="$mutt_cv_prefix /opt /usr/local /usr"
