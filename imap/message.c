@@ -75,8 +75,8 @@ int imap_read_headers (IMAP_DATA* idata, int msgbegin, int msgend)
 
 #if USE_HCACHE
   char buf[LONG_STRING];
-  unsigned int *uid_validity = NULL;
-  unsigned int *puidnext = NULL;
+  void *uid_validity = NULL;
+  void *puidnext = NULL;
   unsigned int uidnext = 0;
   int evalhc = 0;
 #endif /* USE_HCACHE */
@@ -128,12 +128,13 @@ int imap_read_headers (IMAP_DATA* idata, int msgbegin, int msgend)
     puidnext = mutt_hcache_fetch_raw (idata->hcache, "/UIDNEXT", 8);
     if (puidnext)
     {
-      uidnext = *puidnext;
-      FREE (&puidnext);
+      uidnext = *(unsigned int *)puidnext;
+      mutt_hcache_free (idata->hcache, &puidnext);
     }
-    if (uid_validity && uidnext && *uid_validity == idata->uid_validity)
+    if (uid_validity && uidnext &&
+        *(unsigned int *)uid_validity == idata->uid_validity)
       evalhc = 1;
-    FREE (&uid_validity);
+    mutt_hcache_free (idata->hcache, &uid_validity);
   }
   if (evalhc)
   {

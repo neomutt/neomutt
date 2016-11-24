@@ -23,7 +23,8 @@
 
 #ifdef HAVE_QDBM
 
-#include "hcache.h"
+#include "hcache-backend.h"
+#include "mutt.h"
 #include <depot.h>
 #include <cabin.h>
 #include <villa.h>
@@ -47,6 +48,12 @@ hcache_qdbm_fetch(void *ctx, const char *key, size_t keylen)
 
   VILLA *db = ctx;
   return vlget(db, key, keylen, NULL);
+}
+
+static void
+hcache_qdbm_free(void *ctx, void **data)
+{
+    FREE(data);
 }
 
 static int

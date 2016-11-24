@@ -23,8 +23,8 @@
 
 #ifdef HAVE_GDBM
 
-#include "hcache.h"
-#include "globals.h"
+#include "hcache-backend.h"
+#include "mutt.h"
 #include <gdbm.h>
 
 static void *
@@ -58,6 +58,12 @@ hcache_gdbm_fetch(void *ctx, const char *key, size_t keylen)
   dkey.dsize = keylen;
   data = gdbm_fetch(db, dkey);
   return data.dptr;
+}
+
+static void
+hcache_gdbm_free(void *vctx, void **data)
+{
+    FREE(data);
 }
 
 static int

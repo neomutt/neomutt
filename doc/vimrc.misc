@@ -2,3 +2,5 @@
 
 syntax keyword muttrcVarBool    contained skipwhite collapse_all nextgroup=muttrcSetBoolAssignment,muttrcVPrefix,muttrcVarBool,muttrcVarQuad,muttrcVarNum,muttrcVarStr
 
+syntax keyword muttrcVarStr     contained skipwhite header_cache_backend nextgroup=muttrcSetStrAssignment,muttrcVPrefix,muttrcVarBool,muttrcVarQuad,muttrcVarNum,muttrcVarStr
+

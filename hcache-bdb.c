@@ -23,8 +23,8 @@
 
 #ifdef HAVE_BDB
 
-#include "hcache.h"
-#include "globals.h"
+#include "hcache-backend.h"
+#include "mutt.h"
 #include "mx.h"
 #include <db.h>
 #include <fcntl.h>
@@ -138,6 +138,12 @@ hcache_bdb_fetch(void *vctx, const char *key, size_t keylen)
   ctx->db->get(ctx->db, NULL, &dkey, &data, 0);
 
   return data.data;
+}
+
+static void
+hcache_bdb_free(void *vctx, void **data)
+{
+    FREE(data);
 }
 
 static int

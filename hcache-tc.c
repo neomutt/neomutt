@@ -23,11 +23,12 @@
 
 #ifdef HAVE_TC
 
-#include "hcache.h"
+#include "hcache-backend.h"
+#include "mutt.h"
 #include <tcbdb.h>
 
 static void *
-hcache_tc_open(const char *path)
+hcache_tokyocabinet_open(const char *path)
 {
   TCBDB *db = tcbdbnew();
   if (!db)
@@ -48,7 +49,7 @@ hcache_tc_open(const char *path)
 }
 
 static void *
-hcache_tc_fetch(void *ctx, const char *key, size_t keylen)
+hcache_tokyocabinet_fetch(void *ctx, const char *key, size_t keylen)
 {
   int sp;
 
@@ -59,8 +60,14 @@ hcache_tc_fetch(void *ctx, const char *key, size_t keylen)
   return tcbdbget(db, key, keylen, &sp);
 }
 
+static void
+hcache_tokyocabinet_free(void *ctx, void **data)
+{
+    FREE(data);
+}
+
 static int
-hcache_tc_store(void *ctx, const char *key, size_t keylen, void *data, size_t dlen)
+hcache_tokyocabinet_store(void *ctx, const char *key, size_t keylen, void *data, size_t dlen)
 {
   if (!ctx)
     return -1;
@@ -70,7 +77,7 @@ hcache_tc_store(void *ctx, const char *key, size_t keylen, void *data, size_t dl
 }
 
 static int
-hcache_tc_delete(void *ctx, const char *key, size_t keylen)
+hcache_tokyocabinet_delete(void *ctx, const char *key, size_t keylen)
 {
   if (!ctx)
     return -1;
@@ -80,7 +87,7 @@ hcache_tc_delete(void *ctx, const char *key, size_t keylen)
 }
 
 static void
-hcache_tc_close(void **ctx)
+hcache_tokyocabinet_close(void **ctx)
 {
   if (!ctx || !*ctx)
     return;
@@ -97,11 +104,11 @@ hcache_tc_close(void **ctx)
 }
 
 static const char *
-hcache_tc_backend(void)
+hcache_tokyocabinet_backend(void)
 {
   return "tokyocabinet " _TC_VERSION;
 }
 
-HCACHE_BACKEND_OPS(tc)
+HCACHE_BACKEND_OPS(tokyocabinet)
 
 #endif /* HAVE_TC */

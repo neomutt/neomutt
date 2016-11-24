@@ -75,6 +75,7 @@ WHERE char *MessageCachedir;
 #endif
 #if USE_HCACHE
 WHERE char *HeaderCache;
+WHERE char *HeaderCacheBackend;
 #if HAVE_GDBM || HAVE_BDB
 WHERE char *HeaderCachePageSize;
 #endif /* HAVE_GDBM || HAVE_BDB */

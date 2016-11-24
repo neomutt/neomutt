@@ -667,7 +667,7 @@ void nntp_hcache_update (NNTP_DATA *nntp_data, header_cache_t *hc)
 	mutt_hcache_delete (hc, buf, strlen(buf));
       }
     }
-    FREE (&hdata);
+    mutt_hcache_free (hc, &hdata);
   }
 
   /* store current values of first and last */
@@ -1049,7 +1049,7 @@ NNTP_SERVER *nntp_select_server (char *server, int leave_lock)
 			  nntp_data->group, last));
 	    }
 	  }
-	  FREE (&hdata);
+	  mutt_hcache_free (hc, &hdata);
 	}
 	mutt_hcache_close (hc);
       }

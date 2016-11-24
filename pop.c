@@ -318,6 +318,7 @@ static int pop_fetch_headers (CONTEXT *ctx)
 	 *   hcache so there shouldn't be a memleak here)
 	 */
 	HEADER *h = mutt_hcache_restore ((unsigned char *) data);
+	mutt_hcache_free (hc, &data);
 	mutt_free_header (&ctx->hdrs[i]);
 	ctx->hdrs[i] = h;
 	ctx->hdrs[i]->refno = refno;
@@ -336,8 +337,6 @@ static int pop_fetch_headers (CONTEXT *ctx)
 	mutt_hcache_store (hc, ctx->hdrs[i]->data, strlen(ctx->hdrs[i]->data), 
                        ctx->hdrs[i], 0);
       }
-
-      FREE(&data);
 #endif
 
       /*
