@@ -171,6 +171,7 @@ const struct binding_t OpMain[] = { /* map: index */
 #endif
   { "display-message",		OP_DISPLAY_MESSAGE,		"\n" },
   { "display-message",		OP_DISPLAY_MESSAGE,		"\r" },
+  { "mark-message",		OP_MARK_MSG,			"~" },
   { "buffy-list",		OP_BUFFY_LIST,			"." },
   { "sync-mailbox",		OP_MAIN_SYNC_FOLDER,		"$" },
   { "display-address",		OP_DISPLAY_ADDRESS,		"@" },

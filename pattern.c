@@ -834,6 +834,7 @@ pattern_t *mutt_pattern_comp (/* const */ char *s, int flags, BUFFER *err)
   int alladdr = 0;
   int or = 0;
   int implicit = 1;	/* used to detect logical AND operator */
+  int isalias = 0;
   const struct pattern_flags *entry;
   char *p;
   char *buf;
@@ -855,6 +856,10 @@ pattern_t *mutt_pattern_comp (/* const */ char *s, int flags, BUFFER *err)
       case '!':
 	ps.dptr++;
 	not = !not;
+	break;
+      case '@':
+	ps.dptr++;
+	isalias = !isalias;
 	break;
       case '|':
 	if (!or)
@@ -881,6 +886,7 @@ pattern_t *mutt_pattern_comp (/* const */ char *s, int flags, BUFFER *err)
 	implicit = 0;
 	not = 0;
 	alladdr = 0;
+	isalias = 0;
 	break;
       case '%':
       case '=':
@@ -910,8 +916,10 @@ pattern_t *mutt_pattern_comp (/* const */ char *s, int flags, BUFFER *err)
 	  last = tmp;
 	  tmp->not ^= not;
 	  tmp->alladdr |= alladdr;
+	  tmp->isalias |= isalias;
 	  not = 0;
 	  alladdr = 0;
+	  isalias = 0;
 	  /* compile the sub-expression */
 	  buf = mutt_substrdup (ps.dptr + 1, p);
 	  if ((tmp2 = mutt_pattern_comp (buf, flags, err)) == NULL)
@@ -939,10 +947,12 @@ pattern_t *mutt_pattern_comp (/* const */ char *s, int flags, BUFFER *err)
 	tmp = new_pattern ();
 	tmp->not = not;
 	tmp->alladdr = alladdr;
+	tmp->isalias = isalias;
         tmp->stringmatch = (*ps.dptr == '=') ? 1 : 0;
         tmp->groupmatch  = (*ps.dptr == '%') ? 1 : 0;
 	not = 0;
 	alladdr = 0;
+	isalias = 0;
 
 	if (last)
 	  last->next = tmp;
@@ -1008,8 +1018,10 @@ pattern_t *mutt_pattern_comp (/* const */ char *s, int flags, BUFFER *err)
 	last = tmp;
 	tmp->not ^= not;
 	tmp->alladdr |= alladdr;
+	tmp->isalias |= isalias;
 	not = 0;
 	alladdr = 0;
+	isalias = 0;
 	ps.dptr = p + 1; /* restore location */
 	break;
       default:
@@ -1061,8 +1073,10 @@ static int match_adrlist (pattern_t *pat, int match_personal, int n, ...)
   {
     for (a = va_arg (ap, ADDRESS *) ; a ; a = a->next)
     {
-      if (pat->alladdr ^ ((a->mailbox && patmatch (pat, a->mailbox) == 0) ||
-	   (match_personal && a->personal && patmatch (pat, a->personal) == 0)))
+      if (pat->alladdr ^
+          ((!pat->isalias || alias_reverse_lookup (a)) &&
+           ((a->mailbox && !patmatch (pat, a->mailbox)) ||
+	    (match_personal && a->personal && !patmatch (pat, a->personal) ))))
       {
 	va_end (ap);
 	return (! pat->alladdr); /* Found match, or non-match if alladdr */

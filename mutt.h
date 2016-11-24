@@ -395,6 +395,7 @@ enum
   OPTENVFROM,
   OPTFASTREPLY,
   OPTFCCCLEAR,
+  OPTFLAGSAFE,
   OPTFOLLOWUPTO,
   OPTFORCENAME,
   OPTFORWDECODE,
@@ -944,6 +945,7 @@ typedef struct pattern_t
   unsigned int stringmatch : 1;
   unsigned int groupmatch : 1;
   unsigned int ign_case : 1;		/* ignore case for local stringmatch searches */
+  unsigned int isalias : 1;
   int min;
   int max;
   struct pattern_t *next;

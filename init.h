@@ -849,6 +849,11 @@ struct option_t MuttVars[] = {
   ** signed.
   ** (PGP only)
   */
+  { "flag_safe", DT_BOOL, R_NONE, OPTFLAGSAFE, 0 },
+  /*
+  ** .pp
+  ** If set, flagged messages cannot be deleted.
+  */
   { "folder",		DT_PATH, R_NONE, UL &Maildir, UL "~/Mail" },
   /*
   ** .pp
@@ -1630,6 +1635,13 @@ struct option_t MuttVars[] = {
   ** messages to the cur directory.  Note that setting this option may
   ** slow down polling for new messages in large folders, since mutt has
   ** to scan all cur messages.
+  */
+  { "mark_macro_prefix",DT_STR, R_NONE, UL &MarkMacroPrefix, UL "'" },
+  /*
+  ** .pp
+  ** Prefix for macros created using mark-message.  A new macro
+  ** automatically generated with \fI<mark-message>a\fP will be composed
+  ** from this prefix and the letter \fIa\fP.
   */
   { "mark_old",		DT_BOOL, R_BOTH, OPTMARKOLD, 1 },
   /*
