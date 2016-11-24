@@ -60,6 +60,7 @@ static const char *Copyright = N_(
   "Copyright (C) 2000-2004 Edmund Grimley Evans <edmundo@rano.org>\n"
   "Copyright (C) 2006-2009 Rocco Rutte <pdmef@gmx.net>\n"
   "Copyright (C) 2014-2016 Kevin J. McCarthy <kevin@8t8.us>\n"
+  "Copyright (C) 2015-2016 Richard Russon <rich@flatcap.org>\n"
   "\n"
   "Many others not mentioned here contributed code, fixes,\n"
   "and suggestions.\n"
