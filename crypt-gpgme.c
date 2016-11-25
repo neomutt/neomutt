@@ -3463,7 +3463,7 @@ static void print_key_info (gpgme_key_t key, FILE *fp)
   if (key->subkeys)
     {
       s = key->subkeys->fpr;
-      /* L10N:
+      /* L10N: DOTFILL
          Fill dots to make the DOTFILL entries the same length.
          In English, msgid "Fingerprint: " is the longest entry for this menu.
          Your language may vary. */

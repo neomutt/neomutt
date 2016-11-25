@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neomutt-20161104\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
-"POT-Creation-Date: 2016-11-17 15:14+0000\n"
+"POT-Creation-Date: 2016-11-24 23:07+0000\n"
 "PO-Revision-Date: 2008-05-20 22:39+0200\n"
 "Last-Translator: Piarres Beobide <pi@beobide.net>\n"
 "Language-Team: Euskara <debian-l10n-basque@lists.debian.org>\n"
@@ -20,12 +20,13 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: account.c:186
+#. L10N: Example: Username at myhost.com
+#: account.c:187
 #, c-format
 msgid "Username at %s: "
 msgstr "%s -n erabiltzaile izena: "
 
-#: account.c:251
+#: account.c:252
 #, c-format
 msgid "Password for %s@%s: "
 msgstr "%s@%s-ren pasahitza: "
@@ -49,7 +50,7 @@ msgid "Select"
 msgstr "Hautatu"
 
 #: addrbook.c:41 browser.c:57 browser.c:69 compose.c:116 compose.c:128
-#: crypt-gpgme.c:4022 curs_main.c:801 curs_main.c:814 mutt_ssl.c:1089
+#: crypt-gpgme.c:4022 curs_main.c:801 curs_main.c:814 mutt_ssl.c:1097
 #: mutt_ssl_gnutls.c:1005 pager.c:1752 pgpkey.c:522 postpone.c:44 query.c:53
 #: recvattach.c:57 smime.c:440
 msgid "Help"
@@ -94,8 +95,8 @@ msgstr "Pertsona izena: "
 msgid "[%s = %s] Accept?"
 msgstr "[%s = %s] Onartu?"
 
-#: alias.c:348 recvattach.c:441 recvattach.c:467 recvattach.c:480
-#: recvattach.c:493 recvattach.c:523
+#: alias.c:348 recvattach.c:457 recvattach.c:483 recvattach.c:496
+#: recvattach.c:509 recvattach.c:539
 msgid "Save to file: "
 msgstr "Gorde fitxategian: "
 
@@ -120,8 +121,8 @@ msgstr "Ezin da txantiloi izena aurkitu, jarraitu?"
 msgid "Mailcap compose entry requires %%s"
 msgstr "Mailcap konposaketa sarrerak hau behar du %%s"
 
-#: attach.c:134 attach.c:266 commands.c:234 compose.c:1369 curs_lib.c:212
-#: curs_lib.c:796
+#: attach.c:134 attach.c:266 commands.c:234 compose.c:1395 compress.c:444
+#: curs_lib.c:212 curs_lib.c:796
 #, c-format
 msgid "Error running \"%s\"!"
 msgstr "Errorea \"%s\" abiarazten!"
@@ -257,7 +258,7 @@ msgstr "Karpeta [%s], Fitxategi maskara: %s"
 msgid "Can't attach a directory!"
 msgstr "Ezin da karpeta bat gehitu!"
 
-#: browser.c:1284 browser.c:1708 browser.c:1844
+#: browser.c:1284 browser.c:1708 browser.c:1847
 msgid "No files match the file mask"
 msgstr "Ez da fitxategi maskara araberako fitxategirik aurkitu"
 
@@ -302,48 +303,51 @@ msgstr "Errorea karpeta arakatzerakoan."
 msgid "File Mask: "
 msgstr "Fitxategi maskara: "
 
-#: browser.c:1724
+#. L10N: The highlighted letters must match the "Sort" options
+#: browser.c:1725
 #, fuzzy
 msgid "Reverse sort by (d)ate, (a)lpha, si(z)e, d(e)scription, (c)ount, ne(w) count, or do(n)'t sort? "
 msgstr "Atzekoz aurrera (d)ataz, (a)lphaz, tamaina(z) edo ez orde(n)atu? "
 
-#: browser.c:1725
+#. L10N: The highlighted letters must match the "Reverse Sort" options
+#: browser.c:1727
 #, fuzzy
 msgid "Sort by (d)ate, (a)lpha, si(z)e, d(e)scription, (c)ount, ne(w) count, or do(n)'t sort? "
 msgstr "(d)ataz, (a)lpha, tamaina(z) edo ez orde(n)atu? "
 
-#: browser.c:1726
+#. L10N: These must match the highlighted letters from "Sort" and "Reverse Sort"
+#: browser.c:1729
 msgid "dazecwn"
 msgstr ""
 
-#: browser.c:1831
+#: browser.c:1834
 msgid "New file name: "
 msgstr "Fitxategi izen berria: "
 
-#: browser.c:1862
+#: browser.c:1865
 msgid "Can't view a directory"
 msgstr "Ezin da karpeta ikusi"
 
-#: browser.c:1879
+#: browser.c:1882
 msgid "Error trying to view file"
 msgstr "Errorea fitxategia ikusten saiatzerakoan"
 
-#: browser.c:1979
+#: browser.c:1982
 #, fuzzy, c-format
 msgid "Subscribe pattern: "
 msgstr "%s-ra harpideturik"
 
-#: browser.c:1981
+#: browser.c:1984
 #, fuzzy, c-format
 msgid "Unsubscribe pattern: "
 msgstr "%s-ra harpidetzaz ezabaturik"
 
-#: browser.c:2002
+#: browser.c:2005
 #, fuzzy
 msgid "No newsgroups match the mask"
 msgstr "Ez da fitxategi maskara araberako fitxategirik aurkitu"
 
-#: buffy.c:703
+#: buffy.c:706
 msgid "New mail in "
 msgstr "Posta berria "
 
@@ -357,47 +361,47 @@ msgstr "%s: kolorea ez du terminalak onartzen"
 msgid "%s: no such color"
 msgstr "%s: ez da kolorea aurkitu"
 
-#: color.c:484 color.c:674 color.c:685
+#: color.c:481 color.c:671 color.c:682
 #, c-format
 msgid "%s: no such object"
 msgstr "%s: ez da objektua aurkitu"
 
-#: color.c:499
+#: color.c:496
 #, fuzzy, c-format
 msgid "%s: command valid only for index, body, header objects"
 msgstr "%s: komandoa sarrera objektutan bakarrik erabili daiteke"
 
-#: color.c:507 init.c:710
+#: color.c:504 init.c:710
 #, c-format
 msgid "%s: too few arguments"
 msgstr "%s: argumentu gutxiegi"
 
-#: color.c:662
+#: color.c:659
 msgid "Missing arguments."
 msgstr "Ez dira argumentuak aurkitzen."
 
-#: color.c:701 color.c:712
+#: color.c:698 color.c:709
 msgid "color: too few arguments"
 msgstr "kolorea:argumentu gutxiegi"
 
-#: color.c:735
+#: color.c:732
 msgid "mono: too few arguments"
 msgstr "mono: argumentu gutxiegi"
 
-#: color.c:755
+#: color.c:752
 #, c-format
 msgid "%s: no such attribute"
 msgstr "%s: ez da atributua aurkitu"
 
-#: color.c:803 hook.c:73 hook.c:81 keymap.c:924
+#: color.c:800 hook.c:75 hook.c:88 keymap.c:924
 msgid "too few arguments"
 msgstr "argumentu gutxiegi"
 
-#: color.c:812 color.c:857 hook.c:87
+#: color.c:809 color.c:854 hook.c:94
 msgid "too many arguments"
 msgstr "argumentu gehiegi"
 
-#: color.c:828
+#: color.c:825
 msgid "default colors not supported"
 msgstr "lehenetsitako kolorea ez da onartzen"
 
@@ -405,7 +409,7 @@ msgstr "lehenetsitako kolorea ez da onartzen"
 msgid "Verify PGP signature?"
 msgstr "PGP sinadura egiaztatu?"
 
-#: commands.c:120 mbox.c:864
+#: commands.c:120 mbox.c:873
 msgid "Could not create temporary file!"
 msgstr "Ezin da behin-behineko fitxategia sortu!"
 
@@ -528,84 +532,87 @@ msgstr "Ezin da mezua inprimatu"
 msgid "Messages could not be printed"
 msgstr "Ezin dira mezuak inprimatu"
 
-#: commands.c:547
+#. L10N: The highlighted letters must match the "Sort" options
+#: commands.c:548
 #, fuzzy
 msgid "Rev-Sort Date/Frm/Recv/Subj/tO/Thread/Unsort/siZe/sCore/sPam/Label?: "
 msgstr "Alderantziz-Ordenatu (d)ata/(j)at/ja(s)/(g)aia/(n)ori/(h)aria/(e)z-ordenatu/(t)amaina/(p)untuak/(z)abor-posta?: "
 
-#: commands.c:548
+#. L10N: The highlighted letters must match the "Rev-Sort" options
+#: commands.c:550
 #, fuzzy
 msgid "Sort Date/Frm/Recv/Subj/tO/Thread/Unsort/siZe/sCore/sPam/Label?: "
 msgstr "Ordenatu (d)ata/(j)at/ja(s)/(g)aia/(n)ori/(h)aria/(e)z-ordenatu/(t)amaina/(p)untuak/(z)abor-posta?  "
 
-#: commands.c:549
+#. L10N: These must match the highlighted letters from "Sort" and "Rev-Sort"
+#: commands.c:552
 #, fuzzy
 msgid "dfrsotuzcpl"
 msgstr "djsgnhetpz"
 
-#: commands.c:610
+#: commands.c:613
 msgid "Shell command: "
 msgstr "Shell komandoa: "
 
-#: commands.c:757
+#: commands.c:760
 #, c-format
 msgid "Decode-save%s to mailbox"
 msgstr "Deskodifikatu-gorde%s postakutxan"
 
-#: commands.c:758
+#: commands.c:761
 #, c-format
 msgid "Decode-copy%s to mailbox"
 msgstr "Deskodifikatu-kopiatu%s postakutxan"
 
-#: commands.c:759
+#: commands.c:762
 #, c-format
 msgid "Decrypt-save%s to mailbox"
 msgstr "Desenkriptatu-gorde%s postakutxan"
 
-#: commands.c:760
+#: commands.c:763
 #, c-format
 msgid "Decrypt-copy%s to mailbox"
 msgstr "Desenkriptatu-kopiatu%s postakutxan"
 
-#: commands.c:761
+#: commands.c:764
 #, c-format
 msgid "Save%s to mailbox"
 msgstr "%s posta-kutxan gorde"
 
-#: commands.c:761
+#: commands.c:764
 #, c-format
 msgid "Copy%s to mailbox"
 msgstr "%s posta-kutxan kopiatu"
 
-#: commands.c:762
+#: commands.c:765
 msgid " tagged"
 msgstr " markatua"
 
-#: commands.c:835
+#: commands.c:838
 #, c-format
 msgid "Copying to %s..."
 msgstr "Hona kopiatzen %s..."
 
-#: commands.c:993
+#: commands.c:996
 #, c-format
 msgid "Convert to %s upon sending?"
 msgstr "Bidali aurretik %s-ra bihurtu?"
 
-#: commands.c:1003
+#: commands.c:1006
 #, c-format
 msgid "Content-Type changed to %s."
 msgstr "Eduki mota %s-ra aldatzen."
 
-#: commands.c:1008
+#: commands.c:1011
 #, c-format
 msgid "Character set changed to %s; %s."
 msgstr "Karaktere ezarpena %s-ra aldaturik: %s."
 
-#: commands.c:1010
+#: commands.c:1013
 msgid "not converting"
 msgstr "ez da bihurtzen"
 
-#: commands.c:1010
+#: commands.c:1013
 msgid "converting"
 msgstr "bihurtzen"
 
@@ -621,7 +628,7 @@ msgstr "Bidali"
 msgid "Abort"
 msgstr "Ezeztatu"
 
-#: compose.c:114 compose.c:126 compose.c:820
+#: compose.c:114 compose.c:126 compose.c:821
 msgid "Attach file"
 msgstr "Fitxategia gehitu"
 
@@ -646,244 +653,245 @@ msgstr "Enkriptatu"
 msgid "Sign"
 msgstr "Sinatu"
 
-#: compose.c:161
+#. L10N: This refers to the encryption of the email, e.g. "Security: None"
+#: compose.c:162
 msgid "None"
 msgstr ""
 
-#: compose.c:168
+#: compose.c:169
 #, fuzzy
 msgid " (inline PGP)"
 msgstr " (barruan)"
 
-#: compose.c:170
+#: compose.c:171
 msgid " (PGP/MIME)"
 msgstr " (PGP/MIME)"
 
-#: compose.c:174
+#: compose.c:175
 #, fuzzy
 msgid " (S/MIME)"
 msgstr " (PGP/MIME)"
 
-#: compose.c:178
+#: compose.c:179
 msgid " (OppEnc mode)"
 msgstr ""
 
-#: compose.c:186 compose.c:190
+#: compose.c:187 compose.c:191
 #, fuzzy
 msgid "sign as: "
 msgstr " horrela sinatu: "
 
-#: compose.c:186 compose.c:190
+#: compose.c:187 compose.c:191
 msgid "<default>"
 msgstr "<lehenetsia>"
 
-#: compose.c:198
+#: compose.c:199
 msgid "Encrypt with: "
 msgstr "Honekin enkriptatu: "
 
 #. L10N: "Mix" refers to the MixMaster chain for anonymous email
-#: compose.c:212
+#: compose.c:213
 msgid "Mix: "
 msgstr ""
 
-#: compose.c:252
+#: compose.c:253
 #, c-format
 msgid "%s [#%d] no longer exists!"
 msgstr "%s [#%d] ez da gehiago existitzen!"
 
-#: compose.c:260
+#: compose.c:261
 #, c-format
 msgid "%s [#%d] modified. Update encoding?"
 msgstr "%s [#%d] aldaturik. Kodeketea eguneratu?"
 
-#: compose.c:322
+#: compose.c:323
 msgid "-- Attachments"
 msgstr "-- Gehigarriak"
 
-#: compose.c:350
+#: compose.c:351
 #, c-format
 msgid "Warning: '%s' is a bad IDN."
 msgstr "Kontuz: '%s' IDN okerra da."
 
-#: compose.c:373
+#: compose.c:374
 msgid "You may not delete the only attachment."
 msgstr "Ezin duzu gehigarri bakarra ezabatu."
 
-#: compose.c:748 send.c:1869
+#: compose.c:749 send.c:1873
 #, c-format
 msgid "Bad IDN in \"%s\": '%s'"
 msgstr "IDN okerra \"%s\"-n: '%s'"
 
-#: compose.c:837
+#: compose.c:838
 msgid "Attaching selected files..."
 msgstr "Aukeratutako fitxategia gehitzen..."
 
-#: compose.c:849
+#: compose.c:850
 #, c-format
 msgid "Unable to attach %s!"
 msgstr "Ezin da %s gehitu!"
 
-#: compose.c:871
+#: compose.c:872
 msgid "Open mailbox to attach message from"
 msgstr "Bertatik mezu bat gehitzeko postakutxa ireki"
 
-#: compose.c:880
+#: compose.c:881
 #, fuzzy
 msgid "Open newsgroup to attach message from"
 msgstr "Bertatik mezu bat gehitzeko postakutxa ireki"
 
-#: compose.c:924
+#: compose.c:925
 #, fuzzy, c-format
 msgid "Unable to open mailbox %s"
 msgstr "Ezin da postakutxa blokeatu!"
 
-#: compose.c:932
+#: compose.c:933
 msgid "No messages in that folder."
 msgstr "Ez dago mezurik karpeta honetan."
 
-#: compose.c:941
+#: compose.c:942
 msgid "Tag the messages you want to attach!"
 msgstr "Gehitu nahi dituzun mezuak markatu!"
 
-#: compose.c:973
+#: compose.c:974
 msgid "Unable to attach!"
 msgstr "Ezin da gehitu!"
 
-#: compose.c:1024
+#: compose.c:1025
 msgid "Recoding only affects text attachments."
 msgstr "Gordetzeak mezu gehigarriei bakarrik eragiten die."
 
-#: compose.c:1029
+#: compose.c:1030
 msgid "The current attachment won't be converted."
 msgstr "Gehigarri hau ezin da bihurtu."
 
-#: compose.c:1031
+#: compose.c:1032
 msgid "The current attachment will be converted."
 msgstr "Gehigarri hau bihurtua izango da."
 
-#: compose.c:1106
+#: compose.c:1107
 msgid "Invalid encoding."
 msgstr "Kodifikazio baliogabea."
 
-#: compose.c:1132
+#: compose.c:1133
 msgid "Save a copy of this message?"
 msgstr "Mezu honen kopia gorde?"
 
-#: compose.c:1188
+#: compose.c:1196
+#, fuzzy
+msgid "Send attachment with name: "
+msgstr "gehigarriak testua balira ikusi"
+
+#: compose.c:1214
 msgid "Rename to: "
 msgstr "Honetara berrizendatu: "
 
 #. L10N:
 #. "stat" is a system call. Do "man 2 stat" for more information.
-#: compose.c:1195 editmsg.c:96 editmsg.c:121 sendlib.c:883
+#: compose.c:1221 editmsg.c:96 editmsg.c:121 sendlib.c:883
 #, c-format
 msgid "Can't stat %s: %s"
 msgstr "Ezin egiaztatu %s egoera: %s"
 
-#: compose.c:1222
+#: compose.c:1248
 msgid "New file: "
 msgstr "Fitxategi berria: "
 
-#: compose.c:1235
+#: compose.c:1261
 msgid "Content-Type is of the form base/sub"
 msgstr "Eduki-mota base/sub modukoa da"
 
-#: compose.c:1241
+#: compose.c:1267
 #, c-format
 msgid "Unknown Content-Type %s"
 msgstr "%s eduki mota ezezaguna"
 
-#: compose.c:1254
+#: compose.c:1280
 #, c-format
 msgid "Can't create file %s"
 msgstr "Ezin da %s fitxategia sortu"
 
-#: compose.c:1262
+#: compose.c:1288
 msgid "What we have here is a failure to make an attachment"
 msgstr "Hemen duguna gehigarria sortzerakoan huts bat da"
 
-#: compose.c:1323
+#: compose.c:1349
 msgid "Postpone this message?"
 msgstr "Mezu hau atzeratu?"
 
-#: compose.c:1387
+#: compose.c:1413
 msgid "Write message to mailbox"
 msgstr "Mezuak postakutxan gorde"
 
-#: compose.c:1390
+#: compose.c:1416
 #, c-format
 msgid "Writing message to %s ..."
 msgstr "Mezuak %s-n gordetzen ..."
 
-#: compose.c:1399
+#: compose.c:1425
 msgid "Message written."
 msgstr "Mezua idazten."
 
-#: compose.c:1413
+#: compose.c:1439
 msgid "S/MIME already selected. Clear & continue ? "
 msgstr "S/MIME dagoeneko aukeraturik. Garbitu era jarraitu ? "
 
-#: compose.c:1446
+#: compose.c:1472
 msgid "PGP already selected. Clear & continue ? "
 msgstr "PGP dagoeneko aukeraturik. Garbitu eta jarraitu ? "
 
-#: compress.c:381 mbox.c:838
+#: compress.c:481 compress.c:551 compress.c:706 compress.c:895 mbox.c:847
 msgid "Unable to lock mailbox!"
 msgstr "Ezin da postakutxa blokeatu!"
 
-#: compress.c:396
-#, fuzzy, c-format
-msgid "Error executing: %s\n"
-msgstr "Errorea gako argibideak eskuratzen: "
-
-#: compress.c:438 compress.c:559
+#: compress.c:485 compress.c:558 compress.c:710
 #, c-format
 msgid "Decompressing %s"
 msgstr ""
 
-#: compress.c:447
+#: compress.c:494
 msgid "Can't identify the contents of the compressed file"
 msgstr ""
 
-#: compress.c:454 compress.c:542
+#: compress.c:501 compress.c:579
 #, c-format
 msgid "Can't find mailbox ops for mailbox type %d"
 msgstr ""
 
-#: compress.c:527 compress.c:816
+#: compress.c:540 compress.c:834
 #, c-format
 msgid "Cannot append without an append-hook or close-hook : %s"
 msgstr ""
 
-#: compress.c:562
+#: compress.c:561
 #, fuzzy, c-format
 msgid "Compress command failed: %s"
 msgstr "Aurrekonexio komandoak huts egin du."
 
-#: compress.c:630
+#: compress.c:572
+msgid "Unsupported mailbox type for appending."
+msgstr ""
+
+#: compress.c:648
 #, fuzzy, c-format
 msgid "Compressed-appending to %s..."
 msgstr "Hona kopiatzen %s..."
 
-#: compress.c:635
+#: compress.c:653
 #, fuzzy, c-format
 msgid "Compressing %s..."
 msgstr "Hona kopiatzen %s..."
 
-#: compress.c:642
+#: compress.c:660 editmsg.c:210
 #, c-format
-msgid " %s: Error compressing mailbox!  Uncompressed one kept!\n"
-msgstr ""
+msgid "Error. Preserving temporary file: %s"
+msgstr "Errorea. Behin behineko fitxategi gordetzen: %s"
 
-#: compress.c:686 mbox.c:748
-msgid "Mailbox was corrupted!"
-msgstr "Postakutxa hondaturik zegoen!"
-
-#: compress.c:867
+#: compress.c:885
 msgid "Can't sync a compressed file without a close-hook"
 msgstr ""
 
-#: compress.c:871
+#: compress.c:907
 #, fuzzy, c-format
 msgid "Compressing %s"
 msgstr "Hona kopiatzen %s..."
@@ -1009,7 +1017,10 @@ msgstr "KONTUAZ: PKA sarrera ez da sinatzaile helbidearen berdina: "
 msgid "PKA verified signer's address is: "
 msgstr "PKA egiaztaturiko sinatzaile helbidea: "
 
-#. L10N: DOTFILL
+#. L10N:
+#. Fill dots to make the DOTFILL entries the same length.
+#. In English, msgid "Fingerprint: " is the longest entry for this menu.
+#. Your language may vary.
 #: crypt-gpgme.c:1260 crypt-gpgme.c:3470
 msgid "Fingerprint: "
 msgstr "Hatz-marka: "
@@ -1228,60 +1239,57 @@ msgstr "[Ezin da erabiltzaile ID hau bistarazi (kodeketa baliogabea)]"
 msgid "[Can't display this user ID (invalid DN)]"
 msgstr "[Ezin da erabiltzaile ID hau bistarazi (DN baliogabea)]"
 
-#. L10N:
-#. Fill dots to make the DOTFILL entries the same length.
-#. In English, msgid "Fingerprint: " is the longest entry for this menu.
-#. Your language may vary.
-#: crypt-gpgme.c:3391
+#. L10N: DOTFILL
+#: crypt-gpgme.c:3388
 msgid " aka ......: "
 msgstr " hemen ......: "
 
-#: crypt-gpgme.c:3391
+#: crypt-gpgme.c:3388
 msgid "Name ......: "
 msgstr "Izena ......: "
 
-#: crypt-gpgme.c:3394 crypt-gpgme.c:3541
+#: crypt-gpgme.c:3391 crypt-gpgme.c:3541
 msgid "[Invalid]"
 msgstr "[Baliogabea]"
 
 #. L10N: DOTFILL
-#: crypt-gpgme.c:3415 crypt-gpgme.c:3566
+#: crypt-gpgme.c:3412 crypt-gpgme.c:3566
 #, c-format
 msgid "Valid From : %s\n"
 msgstr "Baliozko Nork: %s\n"
 
 #. L10N: DOTFILL
-#: crypt-gpgme.c:3429 crypt-gpgme.c:3580
+#: crypt-gpgme.c:3426 crypt-gpgme.c:3580
 #, c-format
 msgid "Valid To ..: %s\n"
 msgstr "Baliozko Nori ..: %s\n"
 
 #. L10N: DOTFILL
-#: crypt-gpgme.c:3443 crypt-gpgme.c:3594
+#: crypt-gpgme.c:3440 crypt-gpgme.c:3594
 #, c-format
 msgid "Key Type ..: %s, %lu bit %s\n"
 msgstr "Gako mota ..: %s, %lu bit %s\n"
 
 #. L10N: DOTFILL
-#: crypt-gpgme.c:3446 crypt-gpgme.c:3597
+#: crypt-gpgme.c:3443 crypt-gpgme.c:3597
 #, c-format
 msgid "Key Usage .: "
 msgstr "Tekla Erabilera .: "
 
-#: crypt-gpgme.c:3451 crypt-gpgme.c:3602
+#: crypt-gpgme.c:3448 crypt-gpgme.c:3602
 msgid "encryption"
 msgstr "enkriptazioa"
 
-#: crypt-gpgme.c:3452 crypt-gpgme.c:3457 crypt-gpgme.c:3462 crypt-gpgme.c:3603
+#: crypt-gpgme.c:3449 crypt-gpgme.c:3454 crypt-gpgme.c:3459 crypt-gpgme.c:3603
 #: crypt-gpgme.c:3608 crypt-gpgme.c:3613
 msgid ", "
 msgstr ", "
 
-#: crypt-gpgme.c:3456 crypt-gpgme.c:3607
+#: crypt-gpgme.c:3453 crypt-gpgme.c:3607
 msgid "signing"
 msgstr "sinatzen"
 
-#: crypt-gpgme.c:3461 crypt-gpgme.c:3612
+#: crypt-gpgme.c:3458 crypt-gpgme.c:3612
 msgid "certification"
 msgstr "ziurtapena"
 
@@ -1353,7 +1361,7 @@ msgstr "gpgme_op_keylist_next hutsa: %s"
 msgid "All matching keys are marked expired/revoked."
 msgstr "Pareko gako guztiak iraungita/errebokatua bezala markaturik daude."
 
-#: crypt-gpgme.c:4014 mutt_ssl.c:1087 mutt_ssl_gnutls.c:1003 pgpkey.c:515
+#: crypt-gpgme.c:4014 mutt_ssl.c:1095 mutt_ssl_gnutls.c:1003 pgpkey.c:515
 #: smime.c:435
 msgid "Exit  "
 msgstr "Irten  "
@@ -1464,75 +1472,89 @@ msgstr ""
 msgid "GPGME: CMS protocol not available"
 msgstr ""
 
-#: crypt-gpgme.c:4721
+#. L10N: S/MIME options (opportunistic encryption is on)
+#: crypt-gpgme.c:4722
 #, fuzzy
 msgid "S/MIME (s)ign, sign (a)s, (p)gp, (c)lear, or (o)ppenc mode off? "
 msgstr "S/MIME (e)nkript, (s)ina, sin (a) honela, (b)iak, (p)gp or (g)arbitu?"
 
-#. L10N: The 'f' is from "forget it", an old undocumented synonym of
-#. 'clear'.  Please use a corresponding letter in your language.
-#. Alternatively, you may duplicate the letter 'c' is translated to.
-#. This comment also applies to the five following letter sequences.
-#: crypt-gpgme.c:4726
+#. L10N: S/MIME options (opportunistic encryption is on)
+#. The 'f' is undocumented. Please duplicate the letter 'c' is translated into.
+#: crypt-gpgme.c:4725
 msgid "sapfco"
 msgstr ""
 
+#. L10N: PGP options (opportunistic encryption is on)
 #: crypt-gpgme.c:4731
 #, fuzzy
 msgid "PGP (s)ign, sign (a)s, s/(m)ime, (c)lear, or (o)ppenc mode off? "
 msgstr "PGP (e)nkrippt, (s)ina, sin(a)tu hola, (b)iak, s/(m)ime edo (g)abitu?"
 
-#: crypt-gpgme.c:4732
+#. L10N: PGP options (opportunistic encryption is on)
+#. The 'f' is undocumented. Please duplicate the letter 'c' is translated into.
+#: crypt-gpgme.c:4734
 msgid "samfco"
 msgstr ""
 
-#: crypt-gpgme.c:4744
+#. L10N: S/MIME options (opportunistic encryption is off)
+#: crypt-gpgme.c:4747
 #, fuzzy
 msgid "S/MIME (e)ncrypt, (s)ign, sign (a)s, (b)oth, (p)gp, (c)lear, or (o)ppenc mode? "
 msgstr "S/MIME (e)nkript, (s)ina, sin (a) honela, (b)iak, (p)gp or (g)arbitu?"
 
-#: crypt-gpgme.c:4745
+#. L10N: S/MIME options (opportunistic encryption is off)
+#. The 'f' is undocumented. Please duplicate the letter 'c' is translated into.
+#: crypt-gpgme.c:4750
 #, fuzzy
 msgid "esabpfco"
 msgstr "esabpfg"
 
-#: crypt-gpgme.c:4750
+#. L10N: PGP options (opportunistic encryption is off)
+#: crypt-gpgme.c:4756
 #, fuzzy
 msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, s/(m)ime, (c)lear, or (o)ppenc mode? "
 msgstr "PGP (e)nkrippt, (s)ina, sin(a)tu hola, (b)iak, s/(m)ime edo (g)abitu?"
 
-#: crypt-gpgme.c:4751
+#. L10N: PGP options (opportunistic encryption is off)
+#. The 'f' is undocumented. Please duplicate the letter 'c' is translated into.
+#: crypt-gpgme.c:4759
 #, fuzzy
 msgid "esabmfco"
 msgstr "esabmfg"
 
-#: crypt-gpgme.c:4762
+#. L10N: S/MIME options
+#: crypt-gpgme.c:4771
 #, fuzzy
 msgid "S/MIME (e)ncrypt, (s)ign, sign (a)s, (b)oth, (p)gp or (c)lear? "
 msgstr "S/MIME (e)nkript, (s)ina, sin (a) honela, (b)iak, (p)gp or (g)arbitu?"
 
-#: crypt-gpgme.c:4763
+#. L10N: S/MIME options
+#. The 'f' is undocumented. Please duplicate the letter 'c' is translated into.
+#: crypt-gpgme.c:4774
 msgid "esabpfc"
 msgstr "esabpfg"
 
-#: crypt-gpgme.c:4768
+#. L10N: PGP options
+#: crypt-gpgme.c:4780
 #, fuzzy
 msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, s/(m)ime or (c)lear? "
 msgstr "PGP (e)nkrippt, (s)ina, sin(a)tu hola, (b)iak, s/(m)ime edo (g)abitu?"
 
-#: crypt-gpgme.c:4769
+#. L10N: PGP options
+#. The 'f' is undocumented. Please duplicate the letter 'c' is translated into.
+#: crypt-gpgme.c:4783
 msgid "esabmfc"
 msgstr "esabmfg"
 
-#: crypt-gpgme.c:4794 pgp.c:1818 smime.c:2222 smime.c:2237
+#: crypt-gpgme.c:4808 pgp.c:1818 smime.c:2222 smime.c:2237
 msgid "Sign as: "
 msgstr "Honela sinatu: "
 
-#: crypt-gpgme.c:4929
+#: crypt-gpgme.c:4943
 msgid "Failed to verify sender"
 msgstr "Huts bidaltzailea egiaztatzerakoan"
 
-#: crypt-gpgme.c:4932
+#: crypt-gpgme.c:4946
 msgid "Failed to figure out sender"
 msgstr "Ezin izan da biltzailea atzeman"
 
@@ -1567,7 +1589,7 @@ msgstr "PGP deitzen..."
 msgid "Message can't be sent inline.  Revert to using PGP/MIME?"
 msgstr "Mezua ezin da erantsia bidali.  PGP/MIME erabiltzea itzuli?"
 
-#: crypt.c:170 send.c:1792
+#: crypt.c:170 send.c:1796
 msgid "Mail not sent."
 msgstr "Eposta ez da bidali."
 
@@ -1661,7 +1683,7 @@ msgstr "ez"
 msgid "Exit Mutt?"
 msgstr "Mutt utzi?"
 
-#: curs_lib.c:748 mutt_socket.c:591 mutt_ssl.c:437
+#: curs_lib.c:748 mutt_socket.c:591 mutt_ssl.c:436
 msgid "unknown error"
 msgstr "errore ezezaguna"
 
@@ -1681,11 +1703,11 @@ msgstr "Ez da postakutxarik irekirik."
 msgid "There are no messages."
 msgstr "Ez daude mezurik."
 
-#: curs_main.c:68 mx.c:1263 pager.c:55 recvattach.c:43
+#: curs_main.c:68 mx.c:1191 pager.c:55 recvattach.c:43
 msgid "Mailbox is read-only."
 msgstr "Irakurketa soileko posta-kutxa."
 
-#: curs_main.c:69 pager.c:56 recvattach.c:927
+#: curs_main.c:69 pager.c:56 recvattach.c:943
 msgid "Function not permitted in attach-message mode."
 msgstr "Mezu-gehitze moduan baimenik gabeko funtzioa."
 
@@ -1711,7 +1733,7 @@ msgstr "Posta-kutxaren aldaketa bertatik irtetean gordeak izango dira."
 msgid "Changes to folder will not be written."
 msgstr "Karpetako aldaketak ezin dira gorde."
 
-#: curs_main.c:721 mx.c:561 mx.c:662
+#: curs_main.c:721 mx.c:561 mx.c:653
 #, c-format
 msgid "%s is not a mailbox."
 msgstr "%s ez da postakutxa bat."
@@ -1761,7 +1783,7 @@ msgstr "Postakutxa kanpokoaldetik aldatua."
 msgid "No tagged messages."
 msgstr "Ez dago mezu markaturik."
 
-#: curs_main.c:1103 menu.c:1005
+#: curs_main.c:1103 menu.c:1002
 msgid "Nothing to do."
 msgstr "Ez dago ezer egiterik."
 
@@ -1793,7 +1815,7 @@ msgstr ""
 msgid "No Message-Id. Unable to perform operation."
 msgstr ""
 
-#: curs_main.c:1279 imap/message.c:232 nntp.c:1264 pop.c:281
+#: curs_main.c:1279 imap/message.c:233 nntp.c:1264 pop.c:281
 msgid "Fetching message headers..."
 msgstr "Mezu burukoak eskuratzen..."
 
@@ -1819,7 +1841,7 @@ msgid "Invalid message number."
 msgstr "Mezu zenbaki okerra."
 
 #. L10N: CHECK_ACL
-#: curs_main.c:1408 curs_main.c:2661 pager.c:2648
+#: curs_main.c:1408 curs_main.c:2663 pager.c:2648
 #, fuzzy
 msgid "Cannot delete message(s)"
 msgstr "desezabatu mezua(k)"
@@ -1850,228 +1872,258 @@ msgstr "Mezu guztiak ikusteko, \"dena\" bezala mugatu."
 msgid "Quit Mutt?"
 msgstr "Mutt Itxi?"
 
-#: curs_main.c:1595
+#: curs_main.c:1597
 msgid "Tag messages matching: "
 msgstr "Horrelako mezuak markatu: "
 
 #. L10N: CHECK_ACL
-#: curs_main.c:1605 curs_main.c:3030 pager.c:3026
+#: curs_main.c:1607 curs_main.c:3070 pager.c:3026
 #, fuzzy
 msgid "Cannot undelete message(s)"
 msgstr "desezabatu mezua(k)"
 
-#: curs_main.c:1607
+#: curs_main.c:1609
 msgid "Undelete messages matching: "
 msgstr "Hau betetzen duten mezua desezabatu: "
 
-#: curs_main.c:1615
+#: curs_main.c:1617
 msgid "Untag messages matching: "
 msgstr "Horrelako mezuen marka ezabatzen: "
 
-#: curs_main.c:1647
+#: curs_main.c:1649
 msgid "Logged out of IMAP servers."
 msgstr ""
 
-#: curs_main.c:1739 curs_main.c:1773
+#: curs_main.c:1741 curs_main.c:1775
 #, fuzzy
 msgid "No virtual folder, aborting."
 msgstr "Ez du gairik, ezeztatzen."
 
-#: curs_main.c:1745
+#: curs_main.c:1747
 msgid "Failed to read thread, aborting."
 msgstr ""
 
-#: curs_main.c:1781
+#: curs_main.c:1783
 #, fuzzy
 msgid "No label specified, aborting."
 msgstr "Ez du gairik, ezeztatzen."
 
-#: curs_main.c:1791
+#: curs_main.c:1793
 #, c-format
 msgid "Update labels..."
 msgstr ""
 
-#: curs_main.c:1814
+#: curs_main.c:1816
 msgid "Failed to modify labels, aborting."
 msgstr ""
 
-#: curs_main.c:1848
+#: curs_main.c:1850
 #, fuzzy
 msgid "No query, aborting."
 msgstr "Ez du gairik, ezeztatzen."
 
-#: curs_main.c:1852
+#: curs_main.c:1854
 msgid "Failed to create query, aborting."
 msgstr ""
 
-#: curs_main.c:1881
+#: curs_main.c:1883
 msgid "Open mailbox in read-only mode"
 msgstr "Postakutxa irakurtzeko bakarrik ireki"
 
-#: curs_main.c:1884
+#: curs_main.c:1886
 #, fuzzy
 msgid "Open virtual folder"
 msgstr "beste karpeta bat ireki"
 
-#: curs_main.c:1887
+#: curs_main.c:1889
 msgid "Open mailbox"
 msgstr "Postakutxa ireki"
 
-#: curs_main.c:1897
+#: curs_main.c:1899
 msgid "No mailboxes have new mail"
 msgstr "Ez dago posta berririk duen postakutxarik"
 
-#: curs_main.c:1938
+#: curs_main.c:1940
 #, fuzzy
 msgid "Open newsgroup in read-only mode"
 msgstr "Postakutxa irakurtzeko bakarrik ireki"
 
-#: curs_main.c:1940
+#: curs_main.c:1942
 msgid "Open newsgroup"
 msgstr ""
 
-#: curs_main.c:2031
+#: curs_main.c:2033
 #, fuzzy
 msgid "Exit NeoMutt without saving?"
 msgstr "Mutt gorde gabe itxi?"
 
-#: curs_main.c:2047
+#: curs_main.c:2049
 #, fuzzy
 msgid "Cannot break thread"
 msgstr "hariak lotu"
 
-#: curs_main.c:2050 curs_main.c:2086 curs_main.c:2546 curs_main.c:2578
-#: flags.c:304 thread.c:1029 thread.c:1085 thread.c:1152
+#: curs_main.c:2052 curs_main.c:2088 curs_main.c:2548 curs_main.c:2580
+#: flags.c:305 thread.c:1029 thread.c:1085 thread.c:1152
 msgid "Threading is not enabled."
 msgstr "Hari bihurketa ez dago gaiturik."
 
-#: curs_main.c:2062
+#: curs_main.c:2064
 msgid "Thread broken"
 msgstr "Haria apurturik"
 
-#: curs_main.c:2073
+#: curs_main.c:2075
 msgid "Thread cannot be broken, message is not part of a thread"
 msgstr ""
 
 #. L10N: CHECK_ACL
-#: curs_main.c:2083
+#: curs_main.c:2085
 #, fuzzy
 msgid "Cannot link threads"
 msgstr "hariak lotu"
 
-#: curs_main.c:2088
+#: curs_main.c:2090
 msgid "No Message-ID: header available to link thread"
 msgstr "Ez da Mezu-ID burua jaso harira lotzeko"
 
-#: curs_main.c:2090
+#: curs_main.c:2092
 msgid "First, please tag a message to be linked here"
 msgstr "Lehenengo, markatu mezu bat hemen lotzeko"
 
-#: curs_main.c:2102
+#: curs_main.c:2104
 msgid "Threads linked"
 msgstr "Hariak loturik"
 
-#: curs_main.c:2105
+#: curs_main.c:2107
 msgid "No thread linked"
 msgstr "Hariak ez dira lotu"
 
-#: curs_main.c:2141 curs_main.c:2166
+#: curs_main.c:2143 curs_main.c:2168
 msgid "You are on the last message."
 msgstr "Azkenengo mezuan zaude."
 
-#: curs_main.c:2148 curs_main.c:2192
+#: curs_main.c:2150 curs_main.c:2194
 msgid "No undeleted messages."
 msgstr "Ez dago desezabatutako mezurik."
 
-#: curs_main.c:2185 curs_main.c:2209
+#: curs_main.c:2187 curs_main.c:2211
 msgid "You are on the first message."
 msgstr "Lehenengo mezuan zaude."
 
-#: curs_main.c:2284 menu.c:841 pager.c:2292 pattern.c:1640
+#: curs_main.c:2286 menu.c:838 pager.c:2292 pattern.c:1654
 msgid "Search wrapped to top."
 msgstr "Bilaketa berriz hasieratik hasi da."
 
-#: curs_main.c:2293 pager.c:2314 pattern.c:1651
+#: curs_main.c:2295 pager.c:2314 pattern.c:1665
 msgid "Search wrapped to bottom."
 msgstr "Bilaketa berriz amaieratik hasi da."
 
-#: curs_main.c:2337
+#: curs_main.c:2339
 #, fuzzy
 msgid "No new messages in this limited view."
 msgstr "Jatorrizko mezua ez da ikusgarria bistaratze mugatu honetan."
 
-#: curs_main.c:2339
+#: curs_main.c:2341
 #, fuzzy
 msgid "No new messages."
 msgstr "Ez dago mezu berririk"
 
-#: curs_main.c:2344
+#: curs_main.c:2346
 #, fuzzy
 msgid "No unread messages in this limited view."
 msgstr "Jatorrizko mezua ez da ikusgarria bistaratze mugatu honetan."
 
-#: curs_main.c:2346
+#: curs_main.c:2348
 #, fuzzy
 msgid "No unread messages."
 msgstr "Ez dago irakurgabeko mezurik"
 
 #. L10N: CHECK_ACL
-#: curs_main.c:2364
+#: curs_main.c:2366
 #, fuzzy
 msgid "Cannot flag message"
 msgstr "markatu mezua"
 
 #. L10N: CHECK_ACL
-#: curs_main.c:2402 pager.c:2989
+#: curs_main.c:2404 pager.c:2989
 #, fuzzy
 msgid "Cannot toggle new"
 msgstr "txandakatu berria"
 
-#: curs_main.c:2479
+#: curs_main.c:2481
 msgid "No more threads."
 msgstr "Ez dago hari gehiagorik."
 
-#: curs_main.c:2481
+#: curs_main.c:2483
 msgid "You are on the first thread."
 msgstr "Lehenengo harian zaude."
 
-#: curs_main.c:2564
+#: curs_main.c:2566
 msgid "Thread contains unread messages."
 msgstr "Irakurgabeko mezuak dituen haria."
 
 #. L10N: CHECK_ACL
-#: curs_main.c:2616 pager.c:2614
+#: curs_main.c:2618 pager.c:2614
 #, fuzzy
 msgid "Cannot delete message"
 msgstr "desezabatu mezua"
 
 #. L10N: CHECK_ACL
-#: curs_main.c:2723
+#: curs_main.c:2725
 #, fuzzy
 msgid "Cannot edit message"
 msgstr "Ezin da mezua idatzi"
 
-#: curs_main.c:2771 pager.c:3081
+#: curs_main.c:2773 pager.c:3081
 #, fuzzy
 msgid "No labels changed."
 msgstr "Postakutxak ez du aldaketarik."
 
 #. L10N: CHECK_ACL
-#: curs_main.c:2871
+#: curs_main.c:2873
 #, fuzzy
 msgid "Cannot mark message(s) as read"
 msgstr "markatu mezua(k) irakurri gisa"
 
-#: curs_main.c:2933 pager.c:2847 recvattach.c:1246
+#. L10N: This is the prompt for <mark-message>.  Whatever they
+#. enter will be prefixed by $mark_macro_prefix and will become
+#. a macro hotkey to jump to the currently selected message.
+#: curs_main.c:2909
+#, fuzzy
+msgid "Enter macro stroke: "
+msgstr "IDgakoa sartu: "
+
+#. L10N: "message hotkey" is the key bindings menu description of a
+#. macro created by <mark-message>.
+#: curs_main.c:2917
+#, fuzzy
+msgid "message hotkey"
+msgstr "Mezua atzeraturik."
+
+#. L10N: This is echoed after <mark-message> creates a new hotkey
+#. macro.  %s is the hotkey string ($mark_macro_prefix followed
+#. by whatever they typed at the prompt.)
+#: curs_main.c:2922
+#, fuzzy, c-format
+msgid "Message bound to %s."
+msgstr "Mezua errebotaturik."
+
+#. L10N: This error is printed if <mark-message> cannot find a
+#. Message-ID for the currently selected message in the index.
+#: curs_main.c:2930
+#, fuzzy
+msgid "No message ID to macro."
+msgstr "Ez dago mezurik karpeta honetan."
+
+#: curs_main.c:2973 pager.c:2847 recvattach.c:1262
 msgid "Reply by mail as poster prefers?"
 msgstr ""
 
-#: curs_main.c:2938 pager.c:2816 pager.c:2827 pager.c:2851
+#: curs_main.c:2978 pager.c:2816 pager.c:2827 pager.c:2851
 msgid "Posting to this group not allowed, may be moderated. Continue?"
 msgstr ""
 
 #. L10N: CHECK_ACL
-#: curs_main.c:3000 pager.c:3009
+#: curs_main.c:3040 pager.c:3009
 #, fuzzy
 msgid "Cannot undelete message"
 msgstr "desezabatu mezua"
@@ -2199,16 +2251,11 @@ msgstr "Ezin da mezu fitxategia ireki: %s"
 msgid "Can't append to folder: %s"
 msgstr "Ezin karpetan gehitu: %s"
 
-#: editmsg.c:210
-#, c-format
-msgid "Error. Preserving temporary file: %s"
-msgstr "Errorea. Behin behineko fitxategi gordetzen: %s"
-
-#: flags.c:348
+#: flags.c:349
 msgid "Set flag"
 msgstr "Bandera ezarri"
 
-#: flags.c:348
+#: flags.c:349
 msgid "Clear flag"
 msgstr "Bandera ezabatu"
 
@@ -2372,29 +2419,29 @@ msgstr "%s-rako laguntza"
 msgid "Bad history file format (line %d)"
 msgstr "Okerreko historia fitxategi formatua (%d lerroa)"
 
-#: hook.c:97
+#: hook.c:104
 msgid "current mailbox shortcut '^' is unset"
 msgstr ""
 
-#: hook.c:108
+#: hook.c:115
 msgid "mailbox shortcut expanded to empty regexp"
 msgstr ""
 
-#: hook.c:119
+#: hook.c:126
 msgid "badly formatted command string"
 msgstr ""
 
-#: hook.c:279
+#: hook.c:286
 #, c-format
 msgid "unhook: Can't do unhook * from within a hook."
 msgstr "unhook: Ezin da gantxoaren barnekaldetik desengatxatu."
 
-#: hook.c:291
+#: hook.c:298
 #, c-format
 msgid "unhook: unknown hook type: %s"
 msgstr "unhook: gantxo mota ezezaguna: %s"
 
-#: hook.c:297
+#: hook.c:304
 #, c-format
 msgid "unhook: Can't delete a %s from within a %s."
 msgstr "unhook: Ezin da %s bat ezabatu %s baten barnetik."
@@ -2532,7 +2579,7 @@ msgstr "Aukeratzen %s..."
 msgid "Error opening mailbox"
 msgstr "Postakutxa irekitzean errorea"
 
-#: imap/imap.c:808 imap/imap.c:2156 imap/message.c:878 muttlib.c:1749
+#: imap/imap.c:808 imap/imap.c:2157 imap/message.c:879 muttlib.c:1749
 #, c-format
 msgid "Create %s?"
 msgstr "Sortu %s?"
@@ -2567,36 +2614,36 @@ msgstr "Mezuak zerbitzaritik ezabatzen..."
 msgid "imap_sync_mailbox: EXPUNGE failed"
 msgstr "imap_sync_mailbox: EXPUNGE huts egin du"
 
-#: imap/imap.c:1806
+#: imap/imap.c:1807
 #, c-format
 msgid "Header search without header name: %s"
 msgstr "Goiburu bilaketa goiburu izen gabe: %s"
 
-#: imap/imap.c:1877
+#: imap/imap.c:1878
 msgid "Bad mailbox name"
 msgstr "Postakutxa izen okerra"
 
-#: imap/imap.c:1901
+#: imap/imap.c:1902
 #, c-format
 msgid "Subscribing to %s..."
 msgstr "%s-ra harpidetzen..."
 
-#: imap/imap.c:1903
+#: imap/imap.c:1904
 #, c-format
 msgid "Unsubscribing from %s..."
 msgstr "%s-ra harpidetzaz ezabatzen..."
 
-#: imap/imap.c:1913
+#: imap/imap.c:1914
 #, c-format
 msgid "Subscribed to %s"
 msgstr "%s-ra harpideturik"
 
-#: imap/imap.c:1915
+#: imap/imap.c:1916
 #, c-format
 msgid "Unsubscribed from %s"
 msgstr "%s-ra harpidetzaz ezabaturik"
 
-#: imap/imap.c:2141 imap/message.c:842
+#: imap/imap.c:2142 imap/message.c:843
 #, c-format
 msgid "Copying %d messages to %s..."
 msgstr "%d mezuak %s-ra kopiatzen..."
@@ -2612,28 +2659,28 @@ msgstr "Ezin da %s fitxategi tenporala sortu"
 
 #. L10N:
 #. Comparing the cached data with the IMAP server's data
-#: imap/message.c:142
+#: imap/message.c:143
 msgid "Evaluating cache..."
 msgstr "Katxea ebaluatzen..."
 
-#: imap/message.c:445 imap/message.c:502 nntp.c:1574 pop.c:574
+#: imap/message.c:446 imap/message.c:503 nntp.c:1572 pop.c:573
 msgid "Fetching message..."
 msgstr "Mezua eskuratzen..."
 
-#: imap/message.c:491 pop.c:569
+#: imap/message.c:492 pop.c:568
 msgid "The message index is incorrect. Try reopening the mailbox."
 msgstr "Mezu sarrera baliogabekoa. Saia zaitez postakutxa berrirekitzen."
 
-#: imap/message.c:661
+#: imap/message.c:662
 msgid "Uploading message..."
 msgstr "Mezua igotzen..."
 
-#: imap/message.c:846
+#: imap/message.c:847
 #, c-format
 msgid "Copying message %d to %s..."
 msgstr "%d mezua %s-ra kopiatzen..."
 
-#: imap/util.c:458
+#: imap/util.c:459
 msgid "Continue?"
 msgstr "Jarraitu?"
 
@@ -2777,63 +2824,68 @@ msgstr "%s: balio okerra"
 msgid "%s: Unknown type."
 msgstr "%s Mota ezezaguna."
 
-#: init.c:2353
+#: init.c:2373
+#, fuzzy, c-format
+msgid "%s: invalid backend"
+msgstr "%s: balio okerra"
+
+#: init.c:2381
 #, c-format
 msgid "%s: unknown type"
 msgstr "%s: mota ezezaguna"
 
-#: init.c:2421
+#: init.c:2449
 #, c-format
 msgid "Error in %s, line %d: %s"
 msgstr "Errorea %s-n, %d lerroan: %s"
 
-#: init.c:2444
+#: init.c:2472
 #, c-format
 msgid "source: errors in %s"
 msgstr "jatorria: erroreak %s-n"
 
-#: init.c:2445
+#: init.c:2473
 #, fuzzy, c-format
 msgid "source: reading aborted due to too many errors in %s"
 msgstr "jatorria: %s-n akats gehiegiengatik irakurketa ezeztatua"
 
-#: init.c:2459
+#: init.c:2487
 #, c-format
 msgid "source: error at %s"
 msgstr "jatorria: %s-n errorea"
 
-#: init.c:2464
+#: init.c:2492
 msgid "source: too many arguments"
 msgstr "jatorria : argumentu gutxiegi"
 
-#: init.c:2520
+#: init.c:2548
 #, c-format
 msgid "%s: unknown command"
 msgstr "%s: komando ezezaguna"
 
-#: init.c:3180
+#: init.c:3208
 #, c-format
 msgid "Error in command line: %s\n"
 msgstr "Komando lerroan errorea: %s\n"
 
-#: init.c:3242
+#: init.c:3270
 msgid "unable to determine home directory"
 msgstr "ezin da \"home\" karpeta aukeratu"
 
-#: init.c:3250
+#: init.c:3278
 msgid "unable to determine username"
 msgstr "ezinda erabiltzaile izena aurkitu"
 
-#: init.c:3276
+#: init.c:3304
 #, fuzzy
 msgid "unable to determine nodename via uname()"
 msgstr "ezinda erabiltzaile izena aurkitu"
 
-#: init.c:3572
+#: init.c:3600
 msgid "-group: no group name"
 msgstr "-group: ez dago talde izenik"
 
-#: init.c:3582
+#: init.c:3610
 msgid "out of arguments"
 msgstr "argumentu gehiegi"
 
@@ -3055,7 +3107,7 @@ msgstr "Ez da sarrera postakutxarik ezarri."
 msgid "Mailbox is empty."
 msgstr "Postakutxa hutsik dago."
 
-#: mbox.c:120 mbox.c:271 mh.c:1294 mx.c:680
+#: mbox.c:120 mbox.c:271 mh.c:1297 mx.c:671
 #, c-format
 msgid "Reading %s..."
 msgstr "%s irakurtzen..."
@@ -3069,116 +3121,120 @@ msgstr "Postakutxa hondaturik dago!"
 msgid "Couldn't lock %s\n"
 msgstr "Ezin da %s blokeatu\n"
 
-#: mbox.c:493 mbox.c:508
+#: mbox.c:501 mbox.c:516
 msgid "Can't write message"
 msgstr "Ezin da mezua idatzi"
 
-#: mbox.c:829 mbox.c:1089
+#: mbox.c:756
+msgid "Mailbox was corrupted!"
+msgstr "Postakutxa hondaturik zegoen!"
+
+#: mbox.c:838 mbox.c:1098
 msgid "Fatal error!  Could not reopen mailbox!"
 msgstr "Errore konponezina!  Ezin da postakutxa berrireki!"
 
-#: mbox.c:881
+#: mbox.c:890
 msgid "sync: mbox modified, but no modified messages! (report this bug)"
 msgstr "sync: mbox aldatuta baina ez dira mezuak aldatu! (zorri honen berri eman)"
 
-#: mbox.c:905 mh.c:2023 mutt_notmuch.c:1623 mx.c:757
+#: mbox.c:914 mh.c:2026 mutt_notmuch.c:1623 mx.c:752
 #, c-format
 msgid "Writing %s..."
 msgstr "%s idazten..."
 
-#: mbox.c:1040
+#: mbox.c:1049
 msgid "Committing changes..."
 msgstr "Aldaketak eguneratzen..."
 
-#: mbox.c:1075
+#: mbox.c:1084
 #, c-format
 msgid "Write failed!  Saved partial mailbox to %s"
 msgstr "Idazteak huts egin du!  postakutxa zatia %s-n gorderik"
 
-#: mbox.c:1137
+#: mbox.c:1153
 msgid "Could not reopen mailbox!"
 msgstr "Ezin da postakutxa berrireki!"
 
-#: mbox.c:1164
+#: mbox.c:1180
 msgid "Reopening mailbox..."
 msgstr "Postakutxa berrirekitzen..."
 
-#: menu.c:498
+#: menu.c:495
 msgid "Jump to: "
 msgstr "Joan hona: "
 
-#: menu.c:507
+#: menu.c:504
 msgid "Invalid index number."
 msgstr "Baliogabeko sarrera zenbakia."
 
-#: menu.c:511 menu.c:532 menu.c:597 menu.c:640 menu.c:656 menu.c:667 menu.c:678
-#: menu.c:689 menu.c:702 menu.c:715 menu.c:1142
+#: menu.c:508 menu.c:529 menu.c:594 menu.c:637 menu.c:653 menu.c:664 menu.c:675
+#: menu.c:686 menu.c:699 menu.c:712 menu.c:1139
 msgid "No entries."
 msgstr "Ez dago sarrerarik."
 
-#: menu.c:529
+#: menu.c:526
 msgid "You cannot scroll down farther."
 msgstr "Ezin duzu hurrunago jaitsi."
 
-#: menu.c:547
+#: menu.c:544
 msgid "You cannot scroll up farther."
 msgstr "Ezin duzu hurrunago igo."
 
-#: menu.c:590
+#: menu.c:587
 msgid "You are on the first page."
 msgstr "Lehenengo orrialdean zaude."
 
-#: menu.c:591
+#: menu.c:588
 msgid "You are on the last page."
 msgstr "Azkenengo orrialdean zaude."
 
-#: menu.c:726
+#: menu.c:723
 msgid "You are on the last entry."
 msgstr "Azkenengo sarreran zaude."
 
-#: menu.c:737
+#: menu.c:734
 msgid "You are on the first entry."
 msgstr "Lehenengo sarreran zaude."
 
-#: menu.c:815 pager.c:2336 pattern.c:1579
+#: menu.c:812 pager.c:2336 pattern.c:1593
 msgid "Search for: "
 msgstr "Bilatu hau: "
 
-#: menu.c:815 pager.c:2336 pattern.c:1579
+#: menu.c:812 pager.c:2336 pattern.c:1593
 msgid "Reverse search for: "
 msgstr "Bilatu hau atzetik-aurrera: "
 
-#: menu.c:859 pager.c:2289 pager.c:2311 pager.c:2431 pattern.c:1694
+#: menu.c:856 pager.c:2289 pager.c:2311 pager.c:2431 pattern.c:1708
 msgid "Not found."
 msgstr "Ez da aurkitu."
 
-#: menu.c:999
+#: menu.c:996
 msgid "No tagged entries."
 msgstr "Ez dago markaturiko sarrerarik."
 
-#: menu.c:1099
+#: menu.c:1096
 msgid "Search is not implemented for this menu."
 msgstr "Menu honek ez du bilaketarik inplementaturik."
 
-#: menu.c:1104
+#: menu.c:1101
 msgid "Jumping is not implemented for dialogs."
 msgstr "Elkarrizketetan ez da saltorik inplementatu."
 
-#: menu.c:1145
+#: menu.c:1142
 msgid "Tagging is not supported."
 msgstr "Markatzea ez da onartzen."
 
-#: mh.c:1274
+#: mh.c:1277
 #, c-format
 msgid "Scanning %s..."
 msgstr "Arakatzen %s..."
 
-#: mh.c:1597 mh.c:1688
+#: mh.c:1600 mh.c:1691
 #, fuzzy
 msgid "Could not flush message to disk"
 msgstr "Ezin da mezua bidali."
 
-#: mh.c:1638
+#: mh.c:1641
 #, fuzzy
 msgid "_maildir_commit_message(): unable to set time on file"
 msgstr "maildir_commit_message(): fitxategian ezin da data ezarri"
@@ -3375,123 +3431,122 @@ msgid "SSL disabled due to the lack of entropy"
 msgstr "Entropia gabezia dela eta SSL ezgaitu egin da"
 
 #. L10N: an SSL context is a data structure returned by the OpenSSL
-#. *       function SSL_CTX_new().  In this case it returned NULL: an
-#. *       error condition.
-#.
-#: mutt_ssl.c:347
+#. function SSL_CTX_new().  In this case it returned NULL: an
+#. error condition.
+#: mutt_ssl.c:346
 #, fuzzy
 msgid "Unable to create SSL context"
 msgstr "Errorea: Ezin da OpenSSL azpiprozesua sortu!"
 
-#: mutt_ssl.c:431
+#: mutt_ssl.c:430
 msgid "I/O error"
 msgstr "S/I errorea"
 
-#: mutt_ssl.c:440
+#: mutt_ssl.c:439
 #, c-format
 msgid "SSL failed: %s"
 msgstr "SSL hutsa: %s"
 
-#: mutt_ssl.c:449 mutt_ssl_gnutls.c:1081 mutt_ssl_gnutls.c:1116
+#: mutt_ssl.c:448 mutt_ssl_gnutls.c:1081 mutt_ssl_gnutls.c:1116
 #: mutt_ssl_gnutls.c:1126
 msgid "Unable to get certificate from peer"
 msgstr "Auzolagunengatik ezin da ziurtagiria jaso"
 
-#: mutt_ssl.c:579
+#: mutt_ssl.c:578
 msgid "Unknown"
 msgstr "Ezezaguna"
 
-#: mutt_ssl.c:604 mutt_ssl_gnutls.c:600
+#: mutt_ssl.c:603 mutt_ssl_gnutls.c:600
 #, c-format
 msgid "[unable to calculate]"
 msgstr "[ezin da kalkulatu]"
 
-#: mutt_ssl.c:622 mutt_ssl_gnutls.c:623
+#: mutt_ssl.c:621 mutt_ssl_gnutls.c:623
 msgid "[invalid date]"
 msgstr "[baliogabeko data]"
 
-#: mutt_ssl.c:752
+#: mutt_ssl.c:750
 msgid "Server certificate is not yet valid"
 msgstr "Jadanik zerbitzari ziurtagiria ez da baliozkoa"
 
-#: mutt_ssl.c:759
+#: mutt_ssl.c:757
 msgid "Server certificate has expired"
 msgstr "Zerbitzariaren ziurtagiria denboraz kanpo dago"
 
-#: mutt_ssl.c:881
+#: mutt_ssl.c:879
 #, fuzzy
 msgid "cannot get certificate subject"
 msgstr "Auzolagunengatik ezin da ziurtagiria jaso"
 
-#: mutt_ssl.c:891 mutt_ssl.c:900
+#: mutt_ssl.c:889 mutt_ssl.c:898
 #, fuzzy
 msgid "cannot get certificate common name"
 msgstr "Auzolagunengatik ezin da ziurtagiria jaso"
 
-#: mutt_ssl.c:914
+#: mutt_ssl.c:912
 #, fuzzy, c-format
 msgid "certificate owner does not match hostname %s"
 msgstr "S/MIME ziurtagiriaren jabea ez da mezua bidali duena."
 
-#: mutt_ssl.c:955
+#: mutt_ssl.c:953
 #, fuzzy, c-format
 msgid "Certificate host check failed: %s"
 msgstr "Ziurtagiria gordea"
 
-#: mutt_ssl.c:1033 mutt_ssl_gnutls.c:862
+#: mutt_ssl.c:1042 mutt_ssl_gnutls.c:862
 msgid "This certificate belongs to:"
 msgstr "Ziurtagiriaren jabea:"
 
-#: mutt_ssl.c:1046 mutt_ssl_gnutls.c:901
+#: mutt_ssl.c:1054 mutt_ssl_gnutls.c:901
 msgid "This certificate was issued by:"
 msgstr "Honek emandako ziurtagiria:"
 
-#: mutt_ssl.c:1057 mutt_ssl_gnutls.c:940
+#: mutt_ssl.c:1065 mutt_ssl_gnutls.c:940
 #, c-format
 msgid "This certificate is valid"
 msgstr "Ziurtagiria hau baliozkoa da"
 
-#: mutt_ssl.c:1058 mutt_ssl_gnutls.c:943
+#: mutt_ssl.c:1066 mutt_ssl_gnutls.c:943
 #, c-format
 msgid "   from %s"
 msgstr "   %s-tik"
 
-#: mutt_ssl.c:1060 mutt_ssl_gnutls.c:947
+#: mutt_ssl.c:1068 mutt_ssl_gnutls.c:947
 #, c-format
 msgid "     to %s"
 msgstr "     %s-ra"
 
-#: mutt_ssl.c:1066
+#: mutt_ssl.c:1074
 #, c-format
 msgid "Fingerprint: %s"
 msgstr "Hatz-marka: %s"
 
-#: mutt_ssl.c:1069 mutt_ssl_gnutls.c:984
+#: mutt_ssl.c:1077 mutt_ssl_gnutls.c:984
 #, c-format
 msgid "SSL Certificate check (certificate %d of %d in chain)"
 msgstr ""
 
-#: mutt_ssl.c:1077 mutt_ssl_gnutls.c:993
+#: mutt_ssl.c:1085 mutt_ssl_gnutls.c:993
 msgid "(r)eject, accept (o)nce, (a)ccept always"
 msgstr "(u)katu, behin (o)nartu, (b)etirko onartu"
 
-#: mutt_ssl.c:1078 mutt_ssl_gnutls.c:994
+#: mutt_ssl.c:1086 mutt_ssl_gnutls.c:994
 msgid "roa"
 msgstr "uob"
 
-#: mutt_ssl.c:1082 mutt_ssl_gnutls.c:998
+#: mutt_ssl.c:1090 mutt_ssl_gnutls.c:998
 msgid "(r)eject, accept (o)nce"
 msgstr "(u)katu, behin (o)nartu"
 
-#: mutt_ssl.c:1083 mutt_ssl_gnutls.c:999
+#: mutt_ssl.c:1091 mutt_ssl_gnutls.c:999
 msgid "ro"
 msgstr "uo"
 
-#: mutt_ssl.c:1114 mutt_ssl_gnutls.c:1048
+#: mutt_ssl.c:1122 mutt_ssl_gnutls.c:1048
 msgid "Warning: Couldn't save certificate"
 msgstr "Kontuz: Ezin da ziurtagiria gorde"
 
-#: mutt_ssl.c:1119 mutt_ssl_gnutls.c:1053
+#: mutt_ssl.c:1127 mutt_ssl_gnutls.c:1053
 msgid "Certificate saved"
 msgstr "Ziurtagiria gordea"
 
@@ -3563,17 +3618,17 @@ msgstr "Ziurtagiria egiaztapen errorea (%s)"
 msgid "Certificate is not X.509"
 msgstr "Ziurtagiria ez da X.509"
 
-#: mutt_tunnel.c:72
+#: mutt_tunnel.c:73
 #, c-format
 msgid "Connecting with \"%s\"..."
 msgstr "\"%s\"-rekin konektatzen..."
 
-#: mutt_tunnel.c:139
+#: mutt_tunnel.c:149
 #, c-format
 msgid "Tunnel to %s returned error %d (%s)"
 msgstr "%s-rako tunelak %d errorea itzuli du (%s)"
 
-#: mutt_tunnel.c:157 mutt_tunnel.c:173
+#: mutt_tunnel.c:167 mutt_tunnel.c:183
 #, c-format
 msgid "Tunnel error talking to %s: %s"
 msgstr "Tunel errorea %s-rekiko konexioan: %s"
@@ -3606,78 +3661,73 @@ msgstr "flock lock itxaroten denbora amaitu da!"
 msgid "Waiting for flock attempt... %d"
 msgstr "flock eskuratzea itxaroten... %d"
 
-#: mx.c:802
-#, c-format
-msgid "Could not synchronize mailbox %s!"
-msgstr "Ezin da %s postakutxa eguneratu!"
-
-#: mx.c:845
+#: mx.c:784
 #, fuzzy
 msgid "message(s) not deleted"
 msgstr "Mezu ezabatuak markatzen..."
 
-#: mx.c:878
+#: mx.c:817
 #, fuzzy
 msgid "Can't open trash folder"
 msgstr "Ezin karpetan gehitu: %s"
 
-#: mx.c:923
+#: mx.c:851
 msgid "Mark all articles read?"
 msgstr ""
 
-#: mx.c:972
+#: mx.c:900
 #, c-format
 msgid "Move read messages to %s?"
 msgstr "Irakurritako mezuak %s-ra mugitu?"
 
-#: mx.c:988 mx.c:1279
+#: mx.c:916 mx.c:1207
 #, c-format
 msgid "Purge %d deleted message?"
 msgstr "Ezabatutako %d mezua betirako ezabatu?"
 
-#: mx.c:988 mx.c:1279
+#: mx.c:916 mx.c:1207
 #, c-format
 msgid "Purge %d deleted messages?"
 msgstr "Ezabatutako %d mezuak betirako ezabatu?"
 
-#: mx.c:1009
+#: mx.c:937
 #, c-format
 msgid "Moving read messages to %s..."
 msgstr "Irakurritako mezuak %s-ra mugitzen..."
 
-#: mx.c:1070 mx.c:1270
+#: mx.c:998 mx.c:1198
 msgid "Mailbox is unchanged."
 msgstr "Postakutxak ez du aldaketarik."
 
-#: mx.c:1123
+#: mx.c:1051
 #, c-format
 msgid "%d kept, %d moved, %d deleted."
 msgstr "%d utzi, %d mugiturik, %d ezabaturik."
 
-#: mx.c:1126 mx.c:1331
+#: mx.c:1054 mx.c:1259
 #, c-format
 msgid "%d kept, %d deleted."
 msgstr "%d utzi, %d ezabaturik."
 
-#: mx.c:1254
+#: mx.c:1182
 #, c-format
 msgid " Press '%s' to toggle write"
 msgstr " %s sakatu idatzitarikoa aldatzeko"
 
-#: mx.c:1256
+#: mx.c:1184
 msgid "Use 'toggle-write' to re-enable write!"
 msgstr "'toogle-write' erabili idazketa berriz gaitzeko!"
 
-#: mx.c:1258
+#: mx.c:1186
 #, c-format
 msgid "Mailbox is marked unwritable. %s"
 msgstr "Postakutxa idaztezin bezala markatuta. %s"
 
-#: mx.c:1325
+#: mx.c:1253
 msgid "Mailbox checkpointed."
 msgstr "Postakutxa markaturik."
 
-#: mx.c:1501
+#: mx.c:1429
 msgid "Integer overflow -- can't allocate memory."
 msgstr "Integral gainezkatzea -- ezin da memoria esleitu."
 
@@ -3694,7 +3744,7 @@ msgstr ""
 msgid "%s is an invalid news server specification!"
 msgstr "%s ez da baliozko datu-bidea"
 
-#: nntp.c:67 nntp.c:595 pop.c:935 pop_lib.c:378
+#: nntp.c:67 nntp.c:595 pop.c:934 pop_lib.c:378
 msgid "Server closed connection!"
 msgstr "Zerbitzariak konexioa itxi du!"
 
@@ -3752,36 +3802,36 @@ msgstr ""
 msgid "Newsgroup %s has been removed from the server."
 msgstr ""
 
-#: nntp.c:1641
+#: nntp.c:1639
 #, c-format
 msgid "Article %d not found on the server."
 msgstr ""
 
-#: nntp.c:1727 nntp.c:1756
+#: nntp.c:1725 nntp.c:1754
 #, fuzzy, c-format
 msgid "Can't post article: %s"
 msgstr "Ezin egiaztatu %s egoera: %s"
 
-#: nntp.c:1880
+#: nntp.c:1878
 #, fuzzy, c-format
 msgid "Loading list of groups from server %s..."
 msgstr "Mezuak zerbitzaritik ezabatzen..."
 
-#: nntp.c:1902 nntp.c:2268
+#: nntp.c:1900 nntp.c:2266
 #, fuzzy
 msgid "Loading descriptions..."
 msgstr "Saio asten..."
 
-#: nntp.c:1980 nntp.c:2205 pop.c:764 pop.c:829
+#: nntp.c:1978 nntp.c:2203 pop.c:763 pop.c:828
 msgid "Checking for new messages..."
 msgstr "Mezu berriak bilatzen..."
 
-#: nntp.c:2195
+#: nntp.c:2193
 #, fuzzy
 msgid "Checking for new newsgroups..."
 msgstr "Mezu berriak bilatzen..."
 
-#: nntp.c:2420
+#: nntp.c:2418
 msgid "Unable to find child articles because server does not support XPAT command."
 msgstr ""
 
@@ -3851,75 +3901,75 @@ msgstr "Baliogabeko hilabetea: %s"
 msgid "Invalid relative date: %s"
 msgstr "Data erlatibo baliogabea: %s"
 
-#: pattern.c:864 pattern.c:1016
+#: pattern.c:869 pattern.c:1028
 #, c-format
 msgid "error in pattern at: %s"
 msgstr "patroiean akatsa: %s"
 
-#: pattern.c:890
+#: pattern.c:896
 #, fuzzy, c-format
 msgid "missing pattern: %s"
 msgstr "galdutako parametroa"
 
-#: pattern.c:900
+#: pattern.c:906
 #, c-format
 msgid "mismatched brackets: %s"
 msgstr "parentesiak ez datoz bat: %s"
 
-#: pattern.c:956
+#: pattern.c:966
 #, c-format
 msgid "%c: invalid pattern modifier"
 msgstr "%c: patroi eraldatzaile baliogabea"
 
-#: pattern.c:962
+#: pattern.c:972
 #, c-format
 msgid "%c: not supported in this mode"
 msgstr "%c: ez da onartzen modu honetan"
 
-#: pattern.c:975
+#: pattern.c:985
 #, c-format
 msgid "missing parameter"
 msgstr "galdutako parametroa"
 
-#: pattern.c:991
+#: pattern.c:1001
 #, c-format
 msgid "mismatched parenthesis: %s"
 msgstr "parentesiak ez datoz bat: %s"
 
-#: pattern.c:1023
+#: pattern.c:1035
 msgid "empty pattern"
 msgstr "patroi hutsa"
 
-#: pattern.c:1304
+#: pattern.c:1318
 #, c-format
 msgid "error: unknown op %d (report this error)."
 msgstr "errorea:%d aukera ezezaguna (errore honen berri eman)."
 
-#: pattern.c:1458 pattern.c:1600
+#: pattern.c:1472 pattern.c:1614
 msgid "Compiling search pattern..."
 msgstr "Bilaketa patroia konpilatzen..."
 
-#: pattern.c:1479
+#: pattern.c:1493
 msgid "Executing command on matching messages..."
 msgstr "Markaturiko mezuetan komandoa abiarazten..."
 
-#: pattern.c:1548
+#: pattern.c:1562
 msgid "No messages matched criteria."
 msgstr "Ez eskatutako parametroetako mezurik aurkitu."
 
-#: pattern.c:1630
+#: pattern.c:1644
 msgid "Searching..."
 msgstr "Bilatzen..."
 
-#: pattern.c:1643
+#: pattern.c:1657
 msgid "Search hit bottom without finding match"
 msgstr "Bilaketa bukaeraraino iritsi da parekorik aurkitu gabe"
 
-#: pattern.c:1654
+#: pattern.c:1668
 msgid "Search hit top without finding match"
 msgstr "Bilaketa hasieraraino iritsi da parekorik aurkitu gabe"
 
-#: pattern.c:1686
+#: pattern.c:1700
 msgid "Search interrupted."
 msgstr "Bilaketa geldiarazirik."
 
@@ -4083,45 +4133,45 @@ msgstr "UIDL komandoa ez du zerbitzariak onartzen."
 msgid "%d messages have been lost. Try reopening the mailbox."
 msgstr "Mezu sarrera baliogabekoa. Saia zaitez postakutxa berrirekitzen."
 
-#: pop.c:412 pop.c:809
+#: pop.c:411 pop.c:808
 #, c-format
 msgid "%s is an invalid POP path"
 msgstr "%s ez da baliozko datu-bidea"
 
-#: pop.c:456
+#: pop.c:455
 msgid "Fetching list of messages..."
 msgstr "Mezuen zerrenda eskuratzen..."
 
-#: pop.c:614
+#: pop.c:613
 msgid "Can't write message to temporary file!"
 msgstr "Ezin da mezua fitxategi tenporalean gorde!"
 
-#: pop.c:685
+#: pop.c:684
 msgid "Marking messages deleted..."
 msgstr "Mezu ezabatuak markatzen..."
 
-#: pop.c:793
+#: pop.c:792
 msgid "POP host is not defined."
 msgstr "POP ostalaria ez dago ezarririk."
 
-#: pop.c:857
+#: pop.c:856
 msgid "No new mail in POP mailbox."
 msgstr "Ez dago posta berririk POP postakutxan."
 
-#: pop.c:864
+#: pop.c:863
 msgid "Delete messages from server?"
 msgstr "Zerbitzaritik mezuak ezabatu?"
 
-#: pop.c:866
+#: pop.c:865
 #, c-format
 msgid "Reading new messages (%d bytes)..."
 msgstr "Mezu berriak irakurtzen (%d byte)..."
 
-#: pop.c:908
+#: pop.c:907
 msgid "Error while writing mailbox!"
 msgstr "Postakutxa idazterakoan errorea!"
 
-#: pop.c:912
+#: pop.c:911
 #, c-format
 msgid "%s [%d of %d messages read]"
 msgstr "%s [%d-tik %d mezu irakurririk]"
@@ -4239,75 +4289,75 @@ msgstr "Hodia"
 msgid "Print"
 msgstr "Inprimatu"
 
-#: recvattach.c:485
+#: recvattach.c:501
 msgid "Saving..."
 msgstr "Gordetzen..."
 
-#: recvattach.c:488 recvattach.c:579
+#: recvattach.c:504 recvattach.c:595
 msgid "Attachment saved."
 msgstr "Gehigarria gordea."
 
-#: recvattach.c:591
+#: recvattach.c:607
 #, c-format
 msgid "WARNING!  You are about to overwrite %s, continue?"
 msgstr "KONTUZ!  %s gainetik idaztera zoaz, Jarraitu ?"
 
-#: recvattach.c:609
+#: recvattach.c:625
 msgid "Attachment filtered."
 msgstr "Gehigarria iragazirik."
 
-#: recvattach.c:678
+#: recvattach.c:694
 msgid "Filter through: "
 msgstr "Iragazi honen arabera: "
 
-#: recvattach.c:678
+#: recvattach.c:694
 msgid "Pipe to: "
 msgstr "Komandora hodia egin: "
 
-#: recvattach.c:713
+#: recvattach.c:729
 #, fuzzy, c-format
 msgid "I don't know how to print %s attachments!"
 msgstr "Ez dakit nola inprimatu %s gehigarriak!"
 
-#: recvattach.c:778
+#: recvattach.c:794
 msgid "Print tagged attachment(s)?"
 msgstr "Markaturiko mezua(k) inprimatu?"
 
-#: recvattach.c:778
+#: recvattach.c:794
 msgid "Print attachment?"
 msgstr "Gehigarria inprimatu?"
 
-#: recvattach.c:1012
+#: recvattach.c:1028
 msgid "Can't decrypt encrypted message!"
 msgstr "Ezin da enkriptaturiko mezua desenkriptratu!"
 
-#: recvattach.c:1024
+#: recvattach.c:1040
 msgid "Attachments"
 msgstr "Gehigarriak"
 
-#: recvattach.c:1060
+#: recvattach.c:1076
 msgid "There are no subparts to show!"
 msgstr "Hemen ez dago erakusteko azpizatirik!"
 
-#: recvattach.c:1121
+#: recvattach.c:1137
 msgid "Can't delete attachment from POP server."
 msgstr "Ezi da gehigarria POP zerbitzaritik ezabatu."
 
-#: recvattach.c:1130
+#: recvattach.c:1146
 #, fuzzy
 msgid "Can't delete attachment from news server."
 msgstr "Ezi da gehigarria POP zerbitzaritik ezabatu."
 
-#: recvattach.c:1138
+#: recvattach.c:1154
 msgid "Deletion of attachments from encrypted messages is unsupported."
 msgstr "Enkriptaturiko mezuetatik gehigarriak ezabatzea ez da onartzen."
 
-#: recvattach.c:1144
+#: recvattach.c:1160
 #, fuzzy
 msgid "Deletion of attachments from signed messages may invalidate the signature."
 msgstr "Enkriptaturiko mezuetatik gehigarriak ezabatzea ez da onartzen."
 
-#: recvattach.c:1161 recvattach.c:1178
+#: recvattach.c:1177 recvattach.c:1194
 msgid "Only deletion of multipart attachments is supported."
 msgstr "Zati anitzetako gehigarrien ezabaketa bakarrik onartzen da."
 
@@ -4471,103 +4521,103 @@ msgstr "Jarraitu %s%s-ra?"
 msgid "No tagged messages are visible!"
 msgstr "Ez da markatutako mezu ikusgarririk!"
 
-#: send.c:831
+#: send.c:835
 msgid "Include message in reply?"
 msgstr "Erantzunean mezua gehitu?"
 
-#: send.c:836
+#: send.c:840
 msgid "Including quoted message..."
 msgstr "Markaturiko mezua gehitzen..."
 
-#: send.c:846
+#: send.c:850
 msgid "Could not include all requested messages!"
 msgstr "Ezin dira eskaturiko mezu guztiak gehitu!"
 
-#: send.c:860
+#: send.c:864
 msgid "Forward as attachment?"
 msgstr "Gehigarri gisa berbidali?"
 
-#: send.c:864
+#: send.c:868
 msgid "Preparing forwarded message..."
 msgstr "Berbidalketa mezua prestatzen..."
 
-#: send.c:1312
+#: send.c:1316
 msgid "Recall postponed message?"
 msgstr "Atzeraturiko mezuak hartu?"
 
-#: send.c:1604
+#: send.c:1608
 msgid "Edit forwarded message?"
 msgstr "Berbidalitako mezua editatu?"
 
-#: send.c:1653
+#: send.c:1657
 msgid "Abort unmodified message?"
 msgstr "Aldatugabeko mezua ezeztatu?"
 
-#: send.c:1655
+#: send.c:1659
 msgid "Aborted unmodified message."
 msgstr "Aldatugabeko mezua ezeztatuta."
 
-#: send.c:1789
+#: send.c:1793
 #, fuzzy
 msgid "Article not posted."
 msgstr "Eposta ez da bidali."
 
-#: send.c:1843
+#: send.c:1847
 msgid "Message postponed."
 msgstr "Mezua atzeraturik."
 
-#: send.c:1857
+#: send.c:1861
 msgid "No recipients are specified!"
 msgstr "Ez da hartzailerik eman!"
 
-#: send.c:1862
+#: send.c:1866
 msgid "No recipients were specified."
 msgstr "Ez zen hartzailerik eman."
 
-#: send.c:1878
+#: send.c:1882
 msgid "No subject, abort sending?"
 msgstr "Ez dago gairik, bidalketa ezeztatzen?"
 
-#: send.c:1882 send.c:1888
+#: send.c:1886 send.c:1892
 msgid "No subject specified."
 msgstr "Ez da gairik ezarri."
 
-#: send.c:1894
+#: send.c:1898
 #, fuzzy
 msgid "No newsgroup specified."
 msgstr "Ez da gairik ezarri."
 
-#: send.c:1902
+#: send.c:1906
 #, fuzzy
 msgid "No attachments, cancel sending?"
 msgstr "gehigarriaren transferentzi kodifikazioa editatu"
 
-#: send.c:1907
+#: send.c:1911
 msgid "Message contains text matching \"$attach_keyword\". Not sending."
 msgstr ""
 
-#: send.c:1971 smtp.c:188
+#: send.c:1975 smtp.c:188
 msgid "Sending message..."
 msgstr "Mezua bidaltzen..."
 
-#: send.c:2004
+#: send.c:2008
 #, fuzzy
 msgid "Save attachments in Fcc?"
 msgstr "gehigarriak testua balira ikusi"
 
-#: send.c:2115
+#: send.c:2119
 msgid "Could not send the message."
 msgstr "Ezin da mezua bidali."
 
-#: send.c:2120
+#: send.c:2124
 msgid "Sending in background."
 msgstr "Bigarren planoan bidaltzen."
 
-#: send.c:2122
+#: send.c:2126
 msgid "Article posted."
 msgstr ""
 
-#: send.c:2122 send.c:2124
+#: send.c:2126 send.c:2128
 msgid "Mail sent."
 msgstr "Mezua bidalirik."
 
@@ -4677,6 +4727,11 @@ msgstr "Ez da (baliozko) ziurtagiririk aurkitu %s-rentzat."
 #: smime.c:962 smime.c:992 smime.c:1059 smime.c:1103 smime.c:1168 smime.c:1243
 msgid "Error: unable to create OpenSSL subprocess!"
 msgstr "Errorea: Ezin da OpenSSL azpiprozesua sortu!"
+
+#: smime.c:1231
+#, fuzzy
+msgid "Label for certificate: "
+msgstr "Auzolagunengatik ezin da ziurtagiria jaso"
 
 #: smime.c:1321
 msgid "no certfile"
@@ -4882,6 +4937,7 @@ msgid ""
 "Copyright (C) 2000-2004 Edmund Grimley Evans <edmundo@rano.org>\n"
 "Copyright (C) 2006-2009 Rocco Rutte <pdmef@gmx.net>\n"
 "Copyright (C) 2014-2016 Kevin J. McCarthy <kevin@8t8.us>\n"
+"Copyright (C) 2015-2016 Richard Russon <rich@flatcap.org>\n"
 "\n"
 "Many others not mentioned here contributed code, fixes,\n"
 "and suggestions.\n"
@@ -4897,7 +4953,7 @@ msgstr ""
 "Izendatzen ez diren beste zenbaitek kodea, zuzenketak eta gomendioekin\n"
 "lagundu dute.\n"
 
-#: version.c:69
+#: version.c:70
 msgid ""
 "    This program is free software; you can redistribute it and/or modify\n"
 "    it under the terms of the GNU General Public License as published by\n"
@@ -4910,14 +4966,14 @@ msgid ""
 "    GNU General Public License for more details.\n"
 msgstr ""
 
-#: version.c:81
+#: version.c:82
 msgid ""
 "    You should have received a copy of the GNU General Public License\n"
 "    along with this program; if not, write to the Free Software\n"
 "    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.\n"
 msgstr ""
 
-#: version.c:87
+#: version.c:88
 msgid ""
 "To learn more about NeoMutt, visit: http://www.neomutt.org/\n"
 "If you find a bug in NeoMutt, please raise an issue at:\n"
@@ -4925,7 +4981,7 @@ msgid ""
 "or send an email to: <neomutt-devel@neomutt.org>\n"
 msgstr ""
 
-#: version.c:94
+#: version.c:95
 msgid ""
 "Copyright (C) 1996-2016 Michael R. Elkins and others.\n"
 "Mutt comes with ABSOLUTELY NO WARRANTY; for details type `mutt -vv'.\n"
@@ -4933,7 +4989,7 @@ msgid ""
 "under certain conditions; type `mutt -vv' for details.\n"
 msgstr ""
 
-#: version.c:444
+#: version.c:447
 msgid ""
 "\n"
 "Compile options:"
@@ -5124,815 +5180,825 @@ msgid "save this message to send later"
 msgstr "mezu hau beranduago bidaltzeko gorde"
 
 #: ../keymap_alldefs.h:49
+#, fuzzy
+msgid "send attachment with a different name"
+msgstr "gehigarriaren transferentzi kodifikazioa editatu"
+
+#: ../keymap_alldefs.h:50
 msgid "rename/move an attached file"
 msgstr "gehituriko fitxategia ezabatu/berrizendatu"
 
-#: ../keymap_alldefs.h:50
+#: ../keymap_alldefs.h:51
 #, fuzzy
 msgid "compose a new message to the sender"
 msgstr "eposta mezu berri bat idatzi"
 
-#: ../keymap_alldefs.h:51
+#: ../keymap_alldefs.h:52
 msgid "send the message"
 msgstr "bidali mezua"
 
-#: ../keymap_alldefs.h:52
+#: ../keymap_alldefs.h:53
 msgid "toggle disposition between inline/attachment"
 msgstr "mezua/gehigarriaren artean kokalekua aldatu"
 
-#: ../keymap_alldefs.h:53
+#: ../keymap_alldefs.h:54
 msgid "toggle whether to delete file after sending it"
 msgstr "bidali aurretik gehigarria ezabatua baldin bada aldatu"
 
-#: ../keymap_alldefs.h:54
+#: ../keymap_alldefs.h:55
 msgid "update an attachment's encoding info"
 msgstr "gehigarriaren kodeaketa argibideak eguneratu"
 
-#: ../keymap_alldefs.h:55
+#: ../keymap_alldefs.h:56
 msgid "write the message to a folder"
 msgstr "mezua karpeta batetan gorde"
 
-#: ../keymap_alldefs.h:56
+#: ../keymap_alldefs.h:57
 msgid "copy a message to a file/mailbox"
 msgstr "fitxategi/postakutxa batetara kopiatu mezua"
 
-#: ../keymap_alldefs.h:57
+#: ../keymap_alldefs.h:58
 msgid "create an alias from a message sender"
 msgstr "mezuaren bidaltzailearentzat ezizena berria sortu"
 
-#: ../keymap_alldefs.h:58
+#: ../keymap_alldefs.h:59
 msgid "move entry to bottom of screen"
 msgstr "sarrera pantailaren bukaerara mugitu"
 
-#: ../keymap_alldefs.h:59
+#: ../keymap_alldefs.h:60
 msgid "move entry to middle of screen"
 msgstr "sarrera pantailaren erdira mugitu"
 
-#: ../keymap_alldefs.h:60
+#: ../keymap_alldefs.h:61
 msgid "move entry to top of screen"
 msgstr "sarrera pantailaren goikaldera mugitu"
 
-#: ../keymap_alldefs.h:61
+#: ../keymap_alldefs.h:62
 msgid "make decoded (text/plain) copy"
 msgstr "enkriptatu gabeko (testu/laua) kopia"
 
-#: ../keymap_alldefs.h:62
+#: ../keymap_alldefs.h:63
 msgid "make decoded copy (text/plain) and delete"
 msgstr "enkriptatu gabeko (testu/laua) kopia egin eta ezabatu"
 
-#: ../keymap_alldefs.h:63
+#: ../keymap_alldefs.h:64
 msgid "delete the current entry"
 msgstr "uneko sarrera ezabatu"
 
-#: ../keymap_alldefs.h:64
+#: ../keymap_alldefs.h:65
 msgid "delete the current mailbox (IMAP only)"
 msgstr "uneko posta-kutxa ezabatu (IMAP bakarrik)"
 
-#: ../keymap_alldefs.h:65
+#: ../keymap_alldefs.h:66
 msgid "delete all messages in subthread"
 msgstr "azpihari honetako mezuak ezabatu"
 
-#: ../keymap_alldefs.h:66
+#: ../keymap_alldefs.h:67
 msgid "delete all messages in thread"
 msgstr "hari honetako mezu guztiak ezabatu"
 
-#: ../keymap_alldefs.h:67
+#: ../keymap_alldefs.h:68
 msgid "display full address of sender"
 msgstr "bidaltzailearen helbide osoa erakutsi"
 
-#: ../keymap_alldefs.h:68
+#: ../keymap_alldefs.h:69
 msgid "display message and toggle header weeding"
 msgstr "mezua erakutsi eta buru guztien erakustaldia aldatu"
 
-#: ../keymap_alldefs.h:69
+#: ../keymap_alldefs.h:70
 msgid "display a message"
 msgstr "mezua erakutsi"
 
-#: ../keymap_alldefs.h:70
+#: ../keymap_alldefs.h:71
 msgid "add, change, or delete a message's label"
 msgstr ""
 
-#: ../keymap_alldefs.h:71
+#: ../keymap_alldefs.h:72
 msgid "edit the raw message"
 msgstr "mezu laua editatu"
 
-#: ../keymap_alldefs.h:72
+#: ../keymap_alldefs.h:73
 msgid "delete the char in front of the cursor"
 msgstr "kurtsorearen aurrean dagoen karakterra ezabatu"
 
-#: ../keymap_alldefs.h:73
+#: ../keymap_alldefs.h:74
 msgid "move the cursor one character to the left"
 msgstr "kurtsorea karaktere bat ezkerraldera mugitu"
 
-#: ../keymap_alldefs.h:74
+#: ../keymap_alldefs.h:75
 msgid "move the cursor to the beginning of the word"
 msgstr "kurtsorea hitzaren hasierara mugitu"
 
-#: ../keymap_alldefs.h:75
+#: ../keymap_alldefs.h:76
 msgid "jump to the beginning of the line"
 msgstr "lerroaren hasierara salto egin"
 
-#: ../keymap_alldefs.h:76
+#: ../keymap_alldefs.h:77
 msgid "cycle among incoming mailboxes"
 msgstr "sarrera posta-kutxen artean aldatu"
 
-#: ../keymap_alldefs.h:77
+#: ../keymap_alldefs.h:78
 msgid "complete filename or alias"
 msgstr "fitxategi izen edo ezizena bete"
 
-#: ../keymap_alldefs.h:78
+#: ../keymap_alldefs.h:79
 msgid "complete address with query"
 msgstr "galderarekin osatu helbidea"
 
-#: ../keymap_alldefs.h:79
+#: ../keymap_alldefs.h:80
 msgid "delete the char under the cursor"
 msgstr "kurtsorearen azpian dagoen karakterra ezabatu"
 
-#: ../keymap_alldefs.h:80
+#: ../keymap_alldefs.h:81
 msgid "jump to the end of the line"
 msgstr "lerroaren bukaerara salto egin"
 
-#: ../keymap_alldefs.h:81
+#: ../keymap_alldefs.h:82
 msgid "move the cursor one character to the right"
 msgstr "kurtsorea karaktere bat eskuinaldera mugitu"
 
-#: ../keymap_alldefs.h:82
+#: ../keymap_alldefs.h:83
 msgid "move the cursor to the end of the word"
 msgstr "kurtsorea hitzaren bukaerara mugitu"
 
-#: ../keymap_alldefs.h:83
+#: ../keymap_alldefs.h:84
 msgid "scroll down through the history list"
 msgstr "historia zerrendan atzera mugitu"
 
-#: ../keymap_alldefs.h:84
+#: ../keymap_alldefs.h:85
 msgid "scroll up through the history list"
 msgstr "historia zerrendan aurrera mugitu"
 
-#: ../keymap_alldefs.h:85
+#: ../keymap_alldefs.h:86
 msgid "delete chars from cursor to end of line"
 msgstr "kurtsoretik lerro bukaerara dauden karakterrak ezabatu"
 
-#: ../keymap_alldefs.h:86
+#: ../keymap_alldefs.h:87
 msgid "delete chars from the cursor to the end of the word"
 msgstr "kurtsoretik hitzaren bukaerara dauden karakterrak ezabatu"
 
-#: ../keymap_alldefs.h:87
+#: ../keymap_alldefs.h:88
 msgid "delete all chars on the line"
 msgstr "lerro honetako karaktere guziak ezabatu"
 
-#: ../keymap_alldefs.h:88
+#: ../keymap_alldefs.h:89
 msgid "delete the word in front of the cursor"
 msgstr "kurtsorearen aurrean dagoen hitza ezabatu"
 
-#: ../keymap_alldefs.h:89
+#: ../keymap_alldefs.h:90
 msgid "quote the next typed key"
 msgstr "sakatzen den hurrengo tekla markatu"
 
-#: ../keymap_alldefs.h:90
+#: ../keymap_alldefs.h:91
 msgid "transpose character under cursor with previous"
 msgstr "kurtsorearen azpiko karakterra aurrekoarekin irauli"
 
-#: ../keymap_alldefs.h:91
+#: ../keymap_alldefs.h:92
 msgid "capitalize the word"
 msgstr "hitza kapitalizatu"
 
-#: ../keymap_alldefs.h:92
+#: ../keymap_alldefs.h:93
 msgid "convert the word to lower case"
 msgstr "hitza minuskuletara bihurtu"
 
-#: ../keymap_alldefs.h:93
+#: ../keymap_alldefs.h:94
 msgid "convert the word to upper case"
 msgstr "hitza maiuskuletara bihurtu"
 
-#: ../keymap_alldefs.h:94
+#: ../keymap_alldefs.h:95
 msgid "enter a muttrc command"
 msgstr "sar muttrc komandoa"
 
-#: ../keymap_alldefs.h:95
+#: ../keymap_alldefs.h:96
 msgid "enter a file mask"
 msgstr "fitxategi maskara sartu"
 
-#: ../keymap_alldefs.h:96
+#: ../keymap_alldefs.h:97
 msgid "exit this menu"
 msgstr "menu hau utzi"
 
-#: ../keymap_alldefs.h:97
+#: ../keymap_alldefs.h:98
 msgid "filter attachment through a shell command"
 msgstr "sheel komando bidezko gehigarri iragazkia"
 
-#: ../keymap_alldefs.h:98
+#: ../keymap_alldefs.h:99
 msgid "move to the first entry"
 msgstr "lehenengo sarrerara mugitu"
 
-#: ../keymap_alldefs.h:99
+#: ../keymap_alldefs.h:100
 msgid "toggle a message's 'important' flag"
 msgstr "mezuen bandera garrantzitsuak txandakatu"
 
-#: ../keymap_alldefs.h:100
+#: ../keymap_alldefs.h:101
 #, fuzzy
 msgid "followup to newsgroup"
 msgstr "Jarraitu %s%s-ra?"
 
-#: ../keymap_alldefs.h:101
+#: ../keymap_alldefs.h:102
 msgid "forward to newsgroup"
 msgstr ""
 
-#: ../keymap_alldefs.h:102
+#: ../keymap_alldefs.h:103
 msgid "forward a message with comments"
 msgstr "birbidali mezua iruzkinekin"
 
-#: ../keymap_alldefs.h:103
+#: ../keymap_alldefs.h:104
 msgid "select the current entry"
 msgstr "uneko sarrera aukeratu"
 
-#: ../keymap_alldefs.h:104
+#: ../keymap_alldefs.h:105
 #, fuzzy
 msgid "get all children of the current message"
 msgstr "Lehenengo mezuan zaude."
 
-#: ../keymap_alldefs.h:105
+#: ../keymap_alldefs.h:106
 #, fuzzy
 msgid "get message with Message-Id"
 msgstr "mezua buruekin editatu"
 
-#: ../keymap_alldefs.h:106
+#: ../keymap_alldefs.h:107
 #, fuzzy
 msgid "get parent of the current message"
 msgstr "Lehenengo mezuan zaude."
 
-#: ../keymap_alldefs.h:107
+#: ../keymap_alldefs.h:108
 msgid "reply to all recipients"
 msgstr "denei erantzun"
 
-#: ../keymap_alldefs.h:108
+#: ../keymap_alldefs.h:109
 msgid "scroll down 1/2 page"
 msgstr "orrialde erdia jaitsi"
 
-#: ../keymap_alldefs.h:109
+#: ../keymap_alldefs.h:110
 msgid "scroll up 1/2 page"
 msgstr "orrialde erdia igo"
 
-#: ../keymap_alldefs.h:110
+#: ../keymap_alldefs.h:111
 msgid "this screen"
 msgstr "leiho hau"
 
-#: ../keymap_alldefs.h:111
+#: ../keymap_alldefs.h:112
 msgid "jump to an index number"
 msgstr "joan sarrera zenbakira"
 
-#: ../keymap_alldefs.h:112
+#: ../keymap_alldefs.h:113
 msgid "move to the last entry"
 msgstr "azkenengo sarrerara salto egin"
 
-#: ../keymap_alldefs.h:113
+#: ../keymap_alldefs.h:114
 msgid "reply to specified mailing list"
 msgstr "emandako eposta zerrendara erantzun"
 
-#: ../keymap_alldefs.h:114
+#: ../keymap_alldefs.h:115
 msgid "load list of all newsgroups from NNTP server"
 msgstr ""
 
-#: ../keymap_alldefs.h:115
+#: ../keymap_alldefs.h:116
 msgid "execute a macro"
 msgstr "macro bat abiarazi"
 
-#: ../keymap_alldefs.h:116
+#: ../keymap_alldefs.h:117
 msgid "compose a new mail message"
 msgstr "eposta mezu berri bat idatzi"
 
-#: ../keymap_alldefs.h:117
+#: ../keymap_alldefs.h:118
 msgid "break the thread in two"
 msgstr "haria bitan zatitu"
 
-#: ../keymap_alldefs.h:118
+#: ../keymap_alldefs.h:119
 msgid "open a different folder"
 msgstr "beste karpeta bat ireki"
 
-#: ../keymap_alldefs.h:119
+#: ../keymap_alldefs.h:120
 msgid "open a different folder in read only mode"
 msgstr "irakurketa soilerako beste karpeta bat ireki"
 
-#: ../keymap_alldefs.h:120
+#: ../keymap_alldefs.h:121
 #, fuzzy
 msgid "open a different newsgroup"
 msgstr "beste karpeta bat ireki"
 
-#: ../keymap_alldefs.h:121
+#: ../keymap_alldefs.h:122
 #, fuzzy
 msgid "open a different newsgroup in read only mode"
 msgstr "irakurketa soilerako beste karpeta bat ireki"
 
-#: ../keymap_alldefs.h:122
+#: ../keymap_alldefs.h:123
 msgid "clear a status flag from a message"
 msgstr "mezuaren egoera bandera ezabatu"
 
-#: ../keymap_alldefs.h:123
+#: ../keymap_alldefs.h:124
 msgid "delete messages matching a pattern"
 msgstr "emandako patroiaren araberako mezuak ezabatu"
 
-#: ../keymap_alldefs.h:124
+#: ../keymap_alldefs.h:125
 msgid "force retrieval of mail from IMAP server"
 msgstr "IMAP zerbitzari batetatik ePosta jasotzea behartu"
 
-#: ../keymap_alldefs.h:125
+#: ../keymap_alldefs.h:126
 msgid "logout from all IMAP servers"
 msgstr ""
 
-#: ../keymap_alldefs.h:126
+#: ../keymap_alldefs.h:127
 msgid "retrieve mail from POP server"
 msgstr "POP zerbitzaritik ePosta jaso"
 
-#: ../keymap_alldefs.h:127
+#: ../keymap_alldefs.h:128
 msgid "move to the first message"
 msgstr "lehenengo mezura joan"
 
-#: ../keymap_alldefs.h:128
+#: ../keymap_alldefs.h:129
 msgid "move to the last message"
 msgstr "azkenengo mezura joan"
 
-#: ../keymap_alldefs.h:129
+#: ../keymap_alldefs.h:130
 msgid "show only messages matching a pattern"
 msgstr "emandako patroia betetzen duten mezuak bakarrik erakutsi"
 
-#: ../keymap_alldefs.h:130
+#: ../keymap_alldefs.h:131
 msgid "link tagged message to the current one"
 msgstr "lotu markaturiko mezua honetara"
 
-#: ../keymap_alldefs.h:131
+#: ../keymap_alldefs.h:132
 msgid "open next mailbox with new mail"
 msgstr "ireki posta berria duen hurrengo postakutxa"
 
-#: ../keymap_alldefs.h:132
+#: ../keymap_alldefs.h:133
 msgid "jump to the next new message"
 msgstr "hurrengo mezu berrira joan"
 
-#: ../keymap_alldefs.h:133
+#: ../keymap_alldefs.h:134
 msgid "jump to the next new or unread message"
 msgstr "hurrengo mezu berri edo irakurgabera joan"
 
-#: ../keymap_alldefs.h:134
+#: ../keymap_alldefs.h:135
 msgid "jump to the next subthread"
 msgstr "hurrengo azpiharira joan"
 
-#: ../keymap_alldefs.h:135
+#: ../keymap_alldefs.h:136
 msgid "jump to the next thread"
 msgstr "hurrengo harira joan"
 
-#: ../keymap_alldefs.h:136
+#: ../keymap_alldefs.h:137
 msgid "move to the next undeleted message"
 msgstr "hurrengo ezabatu gabeko mezura joan"
 
-#: ../keymap_alldefs.h:137
+#: ../keymap_alldefs.h:138
 msgid "jump to the next unread message"
 msgstr "hurrengo irakurgabeko mezura joan"
 
-#: ../keymap_alldefs.h:138
+#: ../keymap_alldefs.h:139
 msgid "jump to parent message in thread"
 msgstr "hariko goiko mezura joan"
 
-#: ../keymap_alldefs.h:139
+#: ../keymap_alldefs.h:140
 msgid "jump to previous thread"
 msgstr "aurreko harira joan"
 
-#: ../keymap_alldefs.h:140
+#: ../keymap_alldefs.h:141
 msgid "jump to previous subthread"
 msgstr "aurreko harirazpira joan"
 
-#: ../keymap_alldefs.h:141
+#: ../keymap_alldefs.h:142
 msgid "move to the previous undeleted message"
 msgstr "ezabatugabeko hurrengo mezura joan"
 
-#: ../keymap_alldefs.h:142
+#: ../keymap_alldefs.h:143
 msgid "jump to the previous new message"
 msgstr "aurreko mezu berrira joan"
 
-#: ../keymap_alldefs.h:143
+#: ../keymap_alldefs.h:144
 msgid "jump to the previous new or unread message"
 msgstr "aurreko mezu berri edo irakurgabera joan"
 
-#: ../keymap_alldefs.h:144
+#: ../keymap_alldefs.h:145
 msgid "jump to the previous unread message"
 msgstr "aurreko mezu irakurgabera joan"
 
-#: ../keymap_alldefs.h:145
+#: ../keymap_alldefs.h:146
 msgid "mark the current thread as read"
 msgstr "uneko haria irakurria bezala markatu"
 
-#: ../keymap_alldefs.h:146
+#: ../keymap_alldefs.h:147
 msgid "mark the current subthread as read"
 msgstr "uneko azpiharia irakurria bezala markatu"
 
-#: ../keymap_alldefs.h:147
+#: ../keymap_alldefs.h:148
 #, fuzzy
 msgid "jump to root message in thread"
 msgstr "hariko goiko mezura joan"
 
-#: ../keymap_alldefs.h:148
+#: ../keymap_alldefs.h:149
 msgid "set a status flag on a message"
 msgstr "egoera bandera ezarri mezuari"
 
-#: ../keymap_alldefs.h:149
+#: ../keymap_alldefs.h:150
 msgid "save changes to mailbox"
 msgstr "postakutxaren aldaketak gorde"
 
-#: ../keymap_alldefs.h:150
+#: ../keymap_alldefs.h:151
 msgid "tag messages matching a pattern"
 msgstr "emandako patroiaren araberako mezuak markatu"
 
-#: ../keymap_alldefs.h:151
+#: ../keymap_alldefs.h:152
 msgid "delete from mutt, don't touch on disk"
 msgstr ""
 
-#: ../keymap_alldefs.h:152
+#: ../keymap_alldefs.h:153
 msgid "undelete messages matching a pattern"
 msgstr "emandako patroiaren araberako mezuak berreskuratu"
 
-#: ../keymap_alldefs.h:153
+#: ../keymap_alldefs.h:154
 msgid "untag messages matching a pattern"
 msgstr "emandako patroiaren araberako mezuak desmarkatu"
 
-#: ../keymap_alldefs.h:154
+#: ../keymap_alldefs.h:155
+#, fuzzy
+msgid "create a hotkey macro for the current message"
+msgstr "Lehenengo mezuan zaude."
+
+#: ../keymap_alldefs.h:156
 msgid "move to the middle of the page"
 msgstr "orriaren erdira joan"
 
-#: ../keymap_alldefs.h:155
+#: ../keymap_alldefs.h:157
 msgid "move to the next entry"
 msgstr "hurrengo sarrerara joan"
 
-#: ../keymap_alldefs.h:156
+#: ../keymap_alldefs.h:158
 msgid "scroll down one line"
 msgstr "lerro bat jaitsi"
 
-#: ../keymap_alldefs.h:157
+#: ../keymap_alldefs.h:159
 msgid "move to the next page"
 msgstr "hurrengo orrialdera joan"
 
-#: ../keymap_alldefs.h:158
+#: ../keymap_alldefs.h:160
 msgid "jump to the bottom of the message"
 msgstr "mezuaren bukaerara joan"
 
-#: ../keymap_alldefs.h:159
+#: ../keymap_alldefs.h:161
 msgid "toggle display of quoted text"
 msgstr "gako arteko testuaren erakustaldia aldatu"
 
-#: ../keymap_alldefs.h:160
+#: ../keymap_alldefs.h:162
 msgid "skip beyond quoted text"
 msgstr "gako arteko testuaren atzera salto egin"
 
-#: ../keymap_alldefs.h:161
+#: ../keymap_alldefs.h:163
 msgid "jump to the top of the message"
 msgstr "mezuaren hasierara joan"
 
-#: ../keymap_alldefs.h:162
+#: ../keymap_alldefs.h:164
 msgid "pipe message/attachment to a shell command"
 msgstr "mezua/gehigarria shell komando batetara bideratu"
 
-#: ../keymap_alldefs.h:163
+#: ../keymap_alldefs.h:165
 #, fuzzy
 msgid "post message to newsgroup"
 msgstr "Mezua %s-ra errebotatu"
 
-#: ../keymap_alldefs.h:164
+#: ../keymap_alldefs.h:166
 msgid "move to the previous entry"
 msgstr "aurreko sarrerara joan"
 
-#: ../keymap_alldefs.h:165
+#: ../keymap_alldefs.h:167
 msgid "scroll up one line"
 msgstr "lerro bat igo"
 
-#: ../keymap_alldefs.h:166
+#: ../keymap_alldefs.h:168
 msgid "move to the previous page"
 msgstr "aurreko orrialdera joan"
 
-#: ../keymap_alldefs.h:167
+#: ../keymap_alldefs.h:169
 msgid "print the current entry"
 msgstr "uneko sarrera inprimatu"
 
-#: ../keymap_alldefs.h:168
+#: ../keymap_alldefs.h:170
 msgid "really delete the current entry, bypassing the trash folder"
 msgstr ""
 
-#: ../keymap_alldefs.h:169
+#: ../keymap_alldefs.h:171
 msgid "really delete the current thread, bypassing the trash folder"
 msgstr ""
 
-#: ../keymap_alldefs.h:170
+#: ../keymap_alldefs.h:172
 msgid "query external program for addresses"
 msgstr "galdetu kanpoko aplikazioari helbidea lortzeko"
 
-#: ../keymap_alldefs.h:171
+#: ../keymap_alldefs.h:173
 msgid "append new query results to current results"
 msgstr "emaitza hauei bilaketa berriaren emaitzak gehitu"
 
-#: ../keymap_alldefs.h:172
+#: ../keymap_alldefs.h:174
 msgid "save changes to mailbox and quit"
 msgstr "aldaketak postakutxan gorde eta utzi"
 
-#: ../keymap_alldefs.h:173
+#: ../keymap_alldefs.h:175
 msgid "recall a postponed message"
 msgstr "atzeratiutako mezua berriz hartu"
 
-#: ../keymap_alldefs.h:174
+#: ../keymap_alldefs.h:176
 #, fuzzy
 msgid "reconstruct thread containing current message"
 msgstr "Irakurgabeko mezuak dituen haria."
 
-#: ../keymap_alldefs.h:175
+#: ../keymap_alldefs.h:177
 msgid "clear and redraw the screen"
 msgstr "pantaila garbitu eta berriz marraztu"
 
-#: ../keymap_alldefs.h:176
+#: ../keymap_alldefs.h:178
 msgid "{internal}"
 msgstr "{barnekoa}"
 
-#: ../keymap_alldefs.h:177
+#: ../keymap_alldefs.h:179
 msgid "rename the current mailbox (IMAP only)"
 msgstr "uneko postakutxa berrizendatu (IMAP soilik)"
 
-#: ../keymap_alldefs.h:178
+#: ../keymap_alldefs.h:180
 msgid "reply to a message"
 msgstr "mezuari erantzuna"
 
-#: ../keymap_alldefs.h:179
+#: ../keymap_alldefs.h:181
 msgid "use the current message as a template for a new one"
 msgstr "unekoa mezu berri bat egiteko txantiloi gisa erabili"
 
-#: ../keymap_alldefs.h:180
+#: ../keymap_alldefs.h:182
 #, fuzzy
 msgid "save message/attachment to a mailbox/file"
 msgstr "mezua/gehigarria fitxategi batetan gorde"
 
-#: ../keymap_alldefs.h:181
+#: ../keymap_alldefs.h:183
 msgid "search for a regular expression"
 msgstr "espresio erregular bat bilatu"
 
-#: ../keymap_alldefs.h:182
+#: ../keymap_alldefs.h:184
 msgid "search backwards for a regular expression"
 msgstr "espresio erregular baten bidez atzeraka bilatu"
 
-#: ../keymap_alldefs.h:183
+#: ../keymap_alldefs.h:185
 msgid "search for next match"
 msgstr "hurrengo parekatzera joan"
 
-#: ../keymap_alldefs.h:184
+#: ../keymap_alldefs.h:186
 msgid "search for next match in opposite direction"
 msgstr "beste zentzuan hurrengoa parekatzea bilatu"
 
-#: ../keymap_alldefs.h:185
+#: ../keymap_alldefs.h:187
 msgid "toggle search pattern coloring"
 msgstr "bilaketa patroiaren kolorea txandakatu"
 
-#: ../keymap_alldefs.h:186
+#: ../keymap_alldefs.h:188
 msgid "invoke a command in a subshell"
 msgstr "komando bat subshell batetan deitu"
 
-#: ../keymap_alldefs.h:187
+#: ../keymap_alldefs.h:189
 msgid "sort messages"
 msgstr "mezuak ordenatu"
 
-#: ../keymap_alldefs.h:188
+#: ../keymap_alldefs.h:190
 msgid "sort messages in reverse order"
 msgstr "mezuak atzekoz aurrera ordenatu"
 
-#: ../keymap_alldefs.h:189
+#: ../keymap_alldefs.h:191
 #, fuzzy
 msgid "subscribe to newsgroups matching a pattern"
 msgstr "emandako patroiaren araberako mezuak desmarkatu"
 
-#: ../keymap_alldefs.h:190
+#: ../keymap_alldefs.h:192
 msgid "tag the current entry"
 msgstr "uneko sarrera markatu"
 
-#: ../keymap_alldefs.h:191
+#: ../keymap_alldefs.h:193
 msgid "apply next function to tagged messages"
 msgstr "markatutako mezuei funtzio hau aplikatu"
 
-#: ../keymap_alldefs.h:192
+#: ../keymap_alldefs.h:194
 msgid "apply next function ONLY to tagged messages"
 msgstr "hurrengo funtzioa BAKARRIK markaturiko mezuetan erabili"
 
-#: ../keymap_alldefs.h:193
+#: ../keymap_alldefs.h:195
 msgid "tag the current subthread"
 msgstr "uneko azpiharia markatu"
 
-#: ../keymap_alldefs.h:194
+#: ../keymap_alldefs.h:196
 msgid "tag the current thread"
 msgstr "uneko haria markatu"
 
-#: ../keymap_alldefs.h:195
+#: ../keymap_alldefs.h:197
 msgid "toggle a message's 'new' flag"
 msgstr "mezuaren 'berria' bandera aldatu"
 
-#: ../keymap_alldefs.h:196
+#: ../keymap_alldefs.h:198
 #, fuzzy
 msgid "toggle view of read messages"
 msgstr "aurreko mezu berri edo irakurgabera joan"
 
-#: ../keymap_alldefs.h:197
+#: ../keymap_alldefs.h:199
 msgid "toggle whether the mailbox will be rewritten"
 msgstr "posta-kutxaren datuak berritzen direnean aldatu"
 
-#: ../keymap_alldefs.h:198
+#: ../keymap_alldefs.h:200
 msgid "toggle whether to browse mailboxes or all files"
 msgstr "postakutxak eta artxibo guztien ikustaldia aldatu"
 
-#: ../keymap_alldefs.h:199
+#: ../keymap_alldefs.h:201
 msgid "move to the top of the page"
 msgstr "orriaren goikaldera joan"
 
-#: ../keymap_alldefs.h:200
+#: ../keymap_alldefs.h:202
 msgid "mark all articles in newsgroup as unread"
 msgstr ""
 
-#: ../keymap_alldefs.h:201
+#: ../keymap_alldefs.h:203
 msgid "undelete the current entry"
 msgstr "uneko sarrera berreskuratu"
 
-#: ../keymap_alldefs.h:202
+#: ../keymap_alldefs.h:204
 msgid "undelete all messages in thread"
 msgstr "hariko mezu guztiak berreskuratu"
 
-#: ../keymap_alldefs.h:203
+#: ../keymap_alldefs.h:205
 msgid "undelete all messages in subthread"
 msgstr "azpihariko mezu guztiak berreskuratu"
 
-#: ../keymap_alldefs.h:204
+#: ../keymap_alldefs.h:206
 #, fuzzy
 msgid "unsubscribe from newsgroups matching a pattern"
 msgstr "emandako patroiaren araberako mezuak desmarkatu"
 
-#: ../keymap_alldefs.h:205
+#: ../keymap_alldefs.h:207
 msgid "show the Mutt version number and date"
 msgstr "Mutt bertsio zenbakia eta data erakutsi"
 
-#: ../keymap_alldefs.h:206
+#: ../keymap_alldefs.h:208
 msgid "view attachment using mailcap entry if necessary"
 msgstr "gehigarria erakutsi beharrezkoa balitz mailcap sarrera erabiliaz"
 
-#: ../keymap_alldefs.h:207
+#: ../keymap_alldefs.h:209
 msgid "show MIME attachments"
 msgstr "MIME gehigarriak ikusi"
 
-#: ../keymap_alldefs.h:208
+#: ../keymap_alldefs.h:210
 msgid "display the keycode for a key press"
 msgstr "zanpatutako teklaren tekla-kodea erakutsi"
 
-#: ../keymap_alldefs.h:209
+#: ../keymap_alldefs.h:211
 #, fuzzy
 msgid "limit view to current thread"
 msgstr "uneko haria markatu"
 
-#: ../keymap_alldefs.h:210
+#: ../keymap_alldefs.h:212
 msgid "show currently active limit pattern"
 msgstr "unean gaitutako patroiaren muga erakutsi"
 
-#: ../keymap_alldefs.h:211
+#: ../keymap_alldefs.h:213
 msgid "collapse/uncollapse current thread"
 msgstr "uneko haria zabaldu/trinkotu"
 
-#: ../keymap_alldefs.h:212
+#: ../keymap_alldefs.h:214
 msgid "collapse/uncollapse all threads"
 msgstr "hari guztiak zabaldu/trinkotu"
 
-#: ../keymap_alldefs.h:213
+#: ../keymap_alldefs.h:215
 msgid "move the highlight to next mailbox"
 msgstr ""
 
-#: ../keymap_alldefs.h:214
+#: ../keymap_alldefs.h:216
 #, fuzzy
 msgid "move the highlight to next mailbox with new mail"
 msgstr "ireki posta berria duen hurrengo postakutxa"
 
-#: ../keymap_alldefs.h:215
+#: ../keymap_alldefs.h:217
 #, fuzzy
 msgid "open highlighted mailbox"
 msgstr "Postakutxa berrirekitzen..."
 
-#: ../keymap_alldefs.h:216
+#: ../keymap_alldefs.h:218
 #, fuzzy
 msgid "scroll the sidebar down 1 page"
 msgstr "orrialde erdia jaitsi"
 
-#: ../keymap_alldefs.h:217
+#: ../keymap_alldefs.h:219
 #, fuzzy
 msgid "scroll the sidebar up 1 page"
 msgstr "orrialde erdia igo"
 
-#: ../keymap_alldefs.h:218
+#: ../keymap_alldefs.h:220
 #, fuzzy
 msgid "move the highlight to previous mailbox"
 msgstr "aurreko orrialdera joan"
 
-#: ../keymap_alldefs.h:219
+#: ../keymap_alldefs.h:221
 #, fuzzy
 msgid "move the highlight to previous mailbox with new mail"
 msgstr "ireki posta berria duen hurrengo postakutxa"
 
-#: ../keymap_alldefs.h:220
+#: ../keymap_alldefs.h:222
 #, fuzzy
 msgid "toggle between mailboxes and virtual mailboxes"
 msgstr "postakutxak eta artxibo guztien ikustaldia aldatu"
 
-#: ../keymap_alldefs.h:221
+#: ../keymap_alldefs.h:223
 msgid "make the sidebar (in)visible"
 msgstr ""
 
-#: ../keymap_alldefs.h:222
+#: ../keymap_alldefs.h:224
 #, fuzzy
 msgid "open a different virtual folder"
 msgstr "beste karpeta bat ireki"
 
-#: ../keymap_alldefs.h:223
+#: ../keymap_alldefs.h:225
 msgid "generate virtual folder from query"
 msgstr ""
 
-#: ../keymap_alldefs.h:224
+#: ../keymap_alldefs.h:226
 msgid "modify (notmuch) tags"
 msgstr ""
 
-#: ../keymap_alldefs.h:225
+#: ../keymap_alldefs.h:227
 #, fuzzy
 msgid "modify labels and then hide message"
 msgstr "Lehenengo mezuan zaude."
 
-#: ../keymap_alldefs.h:226
+#: ../keymap_alldefs.h:228
 msgid "read entire thread of the current message"
 msgstr ""
 
-#: ../keymap_alldefs.h:227
+#: ../keymap_alldefs.h:229
 msgid "attach a PGP public key"
 msgstr "PGP gako publikoa gehitu"
 
-#: ../keymap_alldefs.h:228
+#: ../keymap_alldefs.h:230
 msgid "show PGP options"
 msgstr "PGP aukerak ikusi"
 
-#: ../keymap_alldefs.h:229
+#: ../keymap_alldefs.h:231
 msgid "mail a PGP public key"
 msgstr "PGP gako publikoa epostaz bidali"
 
-#: ../keymap_alldefs.h:230
+#: ../keymap_alldefs.h:232
 msgid "verify a PGP public key"
 msgstr "PGP gako publikoa egiaztatu"
 
-#: ../keymap_alldefs.h:231
+#: ../keymap_alldefs.h:233
 msgid "view the key's user id"
 msgstr "gakoaren erabiltzaile id-a erakutsi"
 
-#: ../keymap_alldefs.h:232
+#: ../keymap_alldefs.h:234
 msgid "check for classic PGP"
 msgstr "PGP klasiko bila arakatu"
 
-#: ../keymap_alldefs.h:233
+#: ../keymap_alldefs.h:235
 #, fuzzy
 msgid "accept the chain constructed"
 msgstr "Eratutako katea onartu"
 
-#: ../keymap_alldefs.h:234
+#: ../keymap_alldefs.h:236
 #, fuzzy
 msgid "append a remailer to the chain"
 msgstr "Kateari berbidaltze bat gehitu"
 
-#: ../keymap_alldefs.h:235
+#: ../keymap_alldefs.h:237
 #, fuzzy
 msgid "insert a remailer into the chain"
 msgstr "Kateari berbidaltze bat gehitu"
 
-#: ../keymap_alldefs.h:236
+#: ../keymap_alldefs.h:238
 #, fuzzy
 msgid "delete a remailer from the chain"
 msgstr "Kateari berbidaltze bat ezabatu"
 
-#: ../keymap_alldefs.h:237
+#: ../keymap_alldefs.h:239
 #, fuzzy
 msgid "select the previous element of the chain"
 msgstr "Katearen aurreko elementua aukeratu"
 
-#: ../keymap_alldefs.h:238
+#: ../keymap_alldefs.h:240
 #, fuzzy
 msgid "select the next element of the chain"
 msgstr "Katearen hurrengo elementua aukeratu"
 
-#: ../keymap_alldefs.h:239
+#: ../keymap_alldefs.h:241
 msgid "send the message through a mixmaster remailer chain"
 msgstr "mixmaster berbidalketa katearen bidez bidali mezua"
 
-#: ../keymap_alldefs.h:240
+#: ../keymap_alldefs.h:242
 msgid "make decrypted copy and delete"
 msgstr "enkriptatu gabeko kopia egin eta ezabatu"
 
-#: ../keymap_alldefs.h:241
+#: ../keymap_alldefs.h:243
 msgid "make decrypted copy"
 msgstr "enkriptatu gabeko kopia egin"
 
-#: ../keymap_alldefs.h:242
+#: ../keymap_alldefs.h:244
 msgid "wipe passphrase(s) from memory"
 msgstr "pasahitza(k) memoriatik ezabatu"
 
-#: ../keymap_alldefs.h:243
+#: ../keymap_alldefs.h:245
 msgid "extract supported public keys"
 msgstr "onartutako gako publikoak atera"
 
-#: ../keymap_alldefs.h:244
+#: ../keymap_alldefs.h:246
 msgid "show S/MIME options"
 msgstr "S/MIME aukerak ikusi"

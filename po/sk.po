@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neomutt-20161104\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
-"POT-Creation-Date: 2016-11-23 21:24+0000\n"
+"POT-Creation-Date: 2016-11-24 23:07+0000\n"
 "PO-Revision-Date: 2016-11-23 21:20+0100\n"
 "Last-Translator: František Hájik <ferko.hajik@gmail.com>\n"
 "Language-Team: Slovak <sk@li.org>\n"
@@ -50,7 +50,7 @@ msgid "Select"
 msgstr "Označiť"
 
 #: addrbook.c:41 browser.c:57 browser.c:69 compose.c:116 compose.c:128
-#: crypt-gpgme.c:4022 curs_main.c:801 curs_main.c:814 mutt_ssl.c:1088
+#: crypt-gpgme.c:4022 curs_main.c:801 curs_main.c:814 mutt_ssl.c:1097
 #: mutt_ssl_gnutls.c:1005 pager.c:1752 pgpkey.c:522 postpone.c:44 query.c:53
 #: recvattach.c:57 smime.c:440
 msgid "Help"
@@ -345,7 +345,7 @@ msgstr "Neodoberať: "
 msgid "No newsgroups match the mask"
 msgstr "Žiadne diskusné skupiny nezodpovedajú maske."
 
-#: buffy.c:703
+#: buffy.c:706
 msgid "New mail in "
 msgstr "Nová pošta v zložke "
 
@@ -359,47 +359,47 @@ msgstr "%s: terminál túto farbu nepodporuje"
 msgid "%s: no such color"
 msgstr "%s: nenájdená farba"
 
-#: color.c:484 color.c:674 color.c:685
+#: color.c:481 color.c:671 color.c:682
 #, c-format
 msgid "%s: no such object"
 msgstr "%s: nenájdený objekt"
 
-#: color.c:499
+#: color.c:496
 #, c-format
 msgid "%s: command valid only for index, body, header objects"
 msgstr "%s: príkaz je platný iba pre index, telo, hlavičku"
 
-#: color.c:507 init.c:710
+#: color.c:504 init.c:710
 #, c-format
 msgid "%s: too few arguments"
 msgstr "%s: príliš málo parametrov"
 
-#: color.c:662
+#: color.c:659
 msgid "Missing arguments."
 msgstr "Chýbajúce parametre."
 
-#: color.c:701 color.c:712
+#: color.c:698 color.c:709
 msgid "color: too few arguments"
 msgstr "farba: príliš málo parametrov"
 
-#: color.c:735
+#: color.c:732
 msgid "mono: too few arguments"
 msgstr "mono: príliš málo parametrov"
 
-#: color.c:755
+#: color.c:752
 #, c-format
 msgid "%s: no such attribute"
 msgstr "%s: vlastnosť nenájdená"
 
-#: color.c:803 hook.c:75 hook.c:88 keymap.c:924
+#: color.c:800 hook.c:75 hook.c:88 keymap.c:924
 msgid "too few arguments"
 msgstr "príliš málo argumentov"
 
-#: color.c:812 color.c:857 hook.c:94
+#: color.c:809 color.c:854 hook.c:94
 msgid "too many arguments"
 msgstr "príliš veľa argumentov"
 
-#: color.c:828
+#: color.c:825
 msgid "default colors not supported"
 msgstr "štandardné farby nepodporované"
 
@@ -712,7 +712,7 @@ msgstr ""
 msgid "You may not delete the only attachment."
 msgstr "Nemôžete zmazať jediné pridané dáta."
 
-#: compose.c:749 send.c:1869
+#: compose.c:749 send.c:1873
 #, c-format
 msgid "Bad IDN in \"%s\": '%s'"
 msgstr ""
@@ -1351,7 +1351,7 @@ msgstr "gpgme_op_keylist_next zlyhalo: %s"
 msgid "All matching keys are marked expired/revoked."
 msgstr "Všetky vyhovujúce kľúče sú buď expirované alebo zneplatnené."
 
-#: crypt-gpgme.c:4014 mutt_ssl.c:1086 mutt_ssl_gnutls.c:1003 pgpkey.c:515
+#: crypt-gpgme.c:4014 mutt_ssl.c:1095 mutt_ssl_gnutls.c:1003 pgpkey.c:515
 #: smime.c:435
 msgid "Exit  "
 msgstr "Koniec  "
@@ -1570,7 +1570,7 @@ msgstr "Spúšťam PGP..."
 msgid "Message can't be sent inline.  Revert to using PGP/MIME?"
 msgstr "Správa nemožno poslať vloženú do textu. Použiť PGP/MIME?"
 
-#: crypt.c:170 send.c:1792
+#: crypt.c:170 send.c:1796
 msgid "Mail not sent."
 msgstr "Pošta nebola odoslaná."
 
@@ -1759,7 +1759,7 @@ msgstr "Schránka bola zmenená zvonku."
 msgid "No tagged messages."
 msgstr "Žiadne označené správy."
 
-#: curs_main.c:1103 menu.c:1005
+#: curs_main.c:1103 menu.c:1002
 msgid "Nothing to do."
 msgstr "Nič na práci."
 
@@ -1790,7 +1790,7 @@ msgstr "Článok %s sa na serveri nenašiel."
 msgid "No Message-Id. Unable to perform operation."
 msgstr "Správa bez ID. Nemožno vykonať operáciu."
 
-#: curs_main.c:1279 imap/message.c:232 nntp.c:1264 pop.c:281
+#: curs_main.c:1279 imap/message.c:233 nntp.c:1264 pop.c:281
 msgid "Fetching message headers..."
 msgstr "Sťahujem hlavičky správ..."
 
@@ -1850,7 +1850,7 @@ msgid "Tag messages matching: "
 msgstr "Označ správy zodpovedajúce: "
 
 #. L10N: CHECK_ACL
-#: curs_main.c:1607 curs_main.c:3032 pager.c:3026
+#: curs_main.c:1607 curs_main.c:3070 pager.c:3026
 msgid "Cannot undelete message(s)"
 msgstr "Nemožno odmazať správu/y."
 
@@ -1928,7 +1928,7 @@ msgid "Cannot break thread"
 msgstr "Nemožno porušiť vlákno."
 
 #: curs_main.c:2052 curs_main.c:2088 curs_main.c:2548 curs_main.c:2580
-#: flags.c:304 thread.c:1029 thread.c:1085 thread.c:1152
+#: flags.c:305 thread.c:1029 thread.c:1085 thread.c:1152
 msgid "Threading is not enabled."
 msgstr "Vláknenie nie je povolené."
 
@@ -1977,11 +1977,11 @@ msgstr "Žiadne odmazané správy."
 msgid "You are on the first message."
 msgstr "Ste na prvej správe."
 
-#: curs_main.c:2286 menu.c:841 pager.c:2292 pattern.c:1640
+#: curs_main.c:2286 menu.c:838 pager.c:2292 pattern.c:1654
 msgid "Search wrapped to top."
 msgstr "Vyhľadávanie pokračuje z vrchu."
 
-#: curs_main.c:2295 pager.c:2314 pattern.c:1651
+#: curs_main.c:2295 pager.c:2314 pattern.c:1665
 msgid "Search wrapped to bottom."
 msgstr "Vyhľadávanie pokračuje zo spodu."
 
@@ -2042,16 +2042,46 @@ msgstr "Žiadne štítky neboli zmenené."
 msgid "Cannot mark message(s) as read"
 msgstr "Nemožno označiť správy za prečítané."
 
-#: curs_main.c:2935 pager.c:2847 recvattach.c:1262
+#. L10N: This is the prompt for <mark-message>.  Whatever they
+#. enter will be prefixed by $mark_macro_prefix and will become
+#. a macro hotkey to jump to the currently selected message.
+#: curs_main.c:2909
+#, fuzzy
+msgid "Enter macro stroke: "
+msgstr "Zadajte ID kľúča pre %s: "
+
+#. L10N: "message hotkey" is the key bindings menu description of a
+#. macro created by <mark-message>.
+#: curs_main.c:2917
+#, fuzzy
+msgid "message hotkey"
+msgstr "Správa bola odložená."
+
+#. L10N: This is echoed after <mark-message> creates a new hotkey
+#. macro.  %s is the hotkey string ($mark_macro_prefix followed
+#. by whatever they typed at the prompt.)
+#: curs_main.c:2922
+#, fuzzy, c-format
+msgid "Message bound to %s."
+msgstr "Správa bola presmerovaná."
+
+#. L10N: This error is printed if <mark-message> cannot find a
+#. Message-ID for the currently selected message in the index.
+#: curs_main.c:2930
+#, fuzzy
+msgid "No message ID to macro."
+msgstr "V tejto zložke nie sú správy."
+
+#: curs_main.c:2973 pager.c:2847 recvattach.c:1262
 msgid "Reply by mail as poster prefers?"
 msgstr ""
 
-#: curs_main.c:2940 pager.c:2816 pager.c:2827 pager.c:2851
+#: curs_main.c:2978 pager.c:2816 pager.c:2827 pager.c:2851
 msgid "Posting to this group not allowed, may be moderated. Continue?"
 msgstr ""
 
 #. L10N: CHECK_ACL
-#: curs_main.c:3002 pager.c:3009
+#: curs_main.c:3040 pager.c:3009
 #, fuzzy
 msgid "Cannot undelete message"
 msgstr "Žiadne odmazané správy."
@@ -2200,11 +2230,11 @@ msgstr "Nemožno vytvoriť súbor %s"
 msgid "Can't append to folder: %s"
 msgstr "Nemožno vytvoriť súbor %s"
 
-#: flags.c:348
+#: flags.c:349
 msgid "Set flag"
 msgstr "Nastaviť príznak"
 
-#: flags.c:348
+#: flags.c:349
 msgid "Clear flag"
 msgstr "Vymazať príznak"
 
@@ -2538,7 +2568,7 @@ msgstr "Vyberám %s..."
 msgid "Error opening mailbox"
 msgstr "Chyba pri zapisovaní do schránky!"
 
-#: imap/imap.c:808 imap/imap.c:2156 imap/message.c:878 muttlib.c:1749
+#: imap/imap.c:808 imap/imap.c:2157 imap/message.c:879 muttlib.c:1749
 #, c-format
 msgid "Create %s?"
 msgstr "Vytvoriť %s?"
@@ -2575,37 +2605,37 @@ msgstr "Vymazávam správy zo serveru..."
 msgid "imap_sync_mailbox: EXPUNGE failed"
 msgstr ""
 
-#: imap/imap.c:1806
+#: imap/imap.c:1807
 #, c-format
 msgid "Header search without header name: %s"
 msgstr ""
 
-#: imap/imap.c:1877
+#: imap/imap.c:1878
 #, fuzzy
 msgid "Bad mailbox name"
 msgstr "Otvor schránku"
 
-#: imap/imap.c:1901
+#: imap/imap.c:1902
 #, fuzzy, c-format
 msgid "Subscribing to %s..."
 msgstr "Kopírujem do %s..."
 
-#: imap/imap.c:1903
+#: imap/imap.c:1904
 #, fuzzy, c-format
 msgid "Unsubscribing from %s..."
 msgstr "Spájam sa s %s..."
 
-#: imap/imap.c:1913
+#: imap/imap.c:1914
 #, fuzzy, c-format
 msgid "Subscribed to %s"
 msgstr "Kopírujem do %s..."
 
-#: imap/imap.c:1915
+#: imap/imap.c:1916
 #, fuzzy, c-format
 msgid "Unsubscribed from %s"
 msgstr "Spájam sa s %s..."
 
-#: imap/imap.c:2141 imap/message.c:842
+#: imap/imap.c:2142 imap/message.c:843
 #, fuzzy, c-format
 msgid "Copying %d messages to %s..."
 msgstr "Presúvam prečítané správy do %s..."
@@ -2621,30 +2651,30 @@ msgstr "Nemožno vytvoriť dočasný súbor!"
 
 #. L10N:
 #. Comparing the cached data with the IMAP server's data
-#: imap/message.c:142
+#: imap/message.c:143
 #, fuzzy
 msgid "Evaluating cache..."
 msgstr "Vyvolávam hlavičky správ... [%d/%d]"
 
-#: imap/message.c:445 imap/message.c:502 nntp.c:1574 pop.c:574
+#: imap/message.c:446 imap/message.c:503 nntp.c:1572 pop.c:573
 msgid "Fetching message..."
 msgstr "Vyvolávam správu..."
 
-#: imap/message.c:491 pop.c:569
+#: imap/message.c:492 pop.c:568
 msgid "The message index is incorrect. Try reopening the mailbox."
 msgstr ""
 
-#: imap/message.c:661
+#: imap/message.c:662
 #, fuzzy
 msgid "Uploading message..."
 msgstr "Odsúvam správu ..."
 
-#: imap/message.c:846
+#: imap/message.c:847
 #, fuzzy, c-format
 msgid "Copying message %d to %s..."
 msgstr "Zapisujem správu do %s ..."
 
-#: imap/util.c:458
+#: imap/util.c:459
 #, fuzzy
 msgid "Continue?"
 msgstr "(pokračovať)\n"
@@ -2794,63 +2824,68 @@ msgstr "%s: neplatná hodnota"
 msgid "%s: Unknown type."
 msgstr "%s: neznáma hodnota"
 
-#: init.c:2353
+#: init.c:2373
+#, fuzzy, c-format
+msgid "%s: invalid backend"
+msgstr "%s: neplatná hodnota"
+
+#: init.c:2381
 #, c-format
 msgid "%s: unknown type"
 msgstr "%s: neznáma hodnota"
 
-#: init.c:2421
+#: init.c:2449
 #, c-format
 msgid "Error in %s, line %d: %s"
 msgstr "Chyba v %s, riadok %d: %s"
 
-#: init.c:2444
+#: init.c:2472
 #, c-format
 msgid "source: errors in %s"
 msgstr "zdroj: chyby v %s"
 
-#: init.c:2445
+#: init.c:2473
 #, c-format
 msgid "source: reading aborted due to too many errors in %s"
 msgstr ""
 
-#: init.c:2459
+#: init.c:2487
 #, c-format
 msgid "source: error at %s"
 msgstr "zdroj: chyba na %s"
 
-#: init.c:2464
+#: init.c:2492
 msgid "source: too many arguments"
 msgstr "zdroj: príliš veľa argumentov"
 
-#: init.c:2520
+#: init.c:2548
 #, c-format
 msgid "%s: unknown command"
 msgstr "%s: neznámy príkaz"
 
-#: init.c:3180
+#: init.c:3208
 #, c-format
 msgid "Error in command line: %s\n"
 msgstr "Chyba v príkazovom riadku: %s\n"
 
-#: init.c:3242
+#: init.c:3270
 msgid "unable to determine home directory"
 msgstr "nemožno určiť domáci adresár"
 
-#: init.c:3250
+#: init.c:3278
 msgid "unable to determine username"
 msgstr "nemožno určiť meno používateľa"
 
-#: init.c:3276
+#: init.c:3304
 #, fuzzy
 msgid "unable to determine nodename via uname()"
 msgstr "nemožno určiť meno používateľa"
 
-#: init.c:3572
+#: init.c:3600
 msgid "-group: no group name"
 msgstr ""
 
-#: init.c:3582
+#: init.c:3610
 #, fuzzy
 msgid "out of arguments"
 msgstr "príliš málo argumentov"
@@ -3095,7 +3130,7 @@ msgstr "cykluj medzi schránkami s príchodzími správami"
 msgid "Mailbox is empty."
 msgstr "Schránka je prázdna."
 
-#: mbox.c:120 mbox.c:271 mh.c:1294 mx.c:671
+#: mbox.c:120 mbox.c:271 mh.c:1297 mx.c:671
 #, c-format
 msgid "Reading %s..."
 msgstr "Čítam %s..."
@@ -3126,7 +3161,7 @@ msgstr "Fatálna chyba! Nemožno znovu otvoriť schránku!"
 msgid "sync: mbox modified, but no modified messages! (report this bug)"
 msgstr "sync: schránka zmenená, ale žiadne zmenené správy! (oznámte túto chybu)"
 
-#: mbox.c:914 mh.c:2023 mutt_notmuch.c:1623 mx.c:752
+#: mbox.c:914 mh.c:2026 mutt_notmuch.c:1623 mx.c:752
 #, c-format
 msgid "Writing %s..."
 msgstr "Zapisujem %s..."
@@ -3149,83 +3184,83 @@ msgstr "Nemožno znovu otvoriť schránku!"
 msgid "Reopening mailbox..."
 msgstr "Znovuotváram schránku..."
 
-#: menu.c:498
+#: menu.c:495
 msgid "Jump to: "
 msgstr "Skoč do: "
 
-#: menu.c:507
+#: menu.c:504
 msgid "Invalid index number."
 msgstr "Neplatné číslo indexu."
 
-#: menu.c:511 menu.c:532 menu.c:597 menu.c:640 menu.c:656 menu.c:667 menu.c:678
-#: menu.c:689 menu.c:702 menu.c:715 menu.c:1142
+#: menu.c:508 menu.c:529 menu.c:594 menu.c:637 menu.c:653 menu.c:664 menu.c:675
+#: menu.c:686 menu.c:699 menu.c:712 menu.c:1139
 msgid "No entries."
 msgstr "Žiadne položky."
 
-#: menu.c:529
+#: menu.c:526
 msgid "You cannot scroll down farther."
 msgstr "Nemôžte rolovať ďalej dolu."
 
-#: menu.c:547
+#: menu.c:544
 msgid "You cannot scroll up farther."
 msgstr "Nemôžte rolovať ďalej hore."
 
-#: menu.c:590
+#: menu.c:587
 msgid "You are on the first page."
 msgstr "Ste na prvej stránke."
 
-#: menu.c:591
+#: menu.c:588
 msgid "You are on the last page."
 msgstr "Ste na poslednej stránke."
 
-#: menu.c:726
+#: menu.c:723
 msgid "You are on the last entry."
 msgstr "Ste na poslednej položke."
 
-#: menu.c:737
+#: menu.c:734
 msgid "You are on the first entry."
 msgstr "Ste na prvej položke."
 
-#: menu.c:815 pager.c:2336 pattern.c:1579
+#: menu.c:812 pager.c:2336 pattern.c:1593
 msgid "Search for: "
 msgstr "Hľadať: "
 
-#: menu.c:815 pager.c:2336 pattern.c:1579
+#: menu.c:812 pager.c:2336 pattern.c:1593
 msgid "Reverse search for: "
 msgstr "Hľadať spätne: "
 
-#: menu.c:859 pager.c:2289 pager.c:2311 pager.c:2431 pattern.c:1694
+#: menu.c:856 pager.c:2289 pager.c:2311 pager.c:2431 pattern.c:1708
 msgid "Not found."
 msgstr "Nenájdené."
 
-#: menu.c:999
+#: menu.c:996
 msgid "No tagged entries."
 msgstr "Žiadne označené položky."
 
-#: menu.c:1099
+#: menu.c:1096
 msgid "Search is not implemented for this menu."
 msgstr "Hľadanie nie je implementované pre toto menu."
 
-#: menu.c:1104
+#: menu.c:1101
 #, fuzzy
 msgid "Jumping is not implemented for dialogs."
 msgstr "Hľadanie nie je implementované pre toto menu."
 
-#: menu.c:1145
+#: menu.c:1142
 msgid "Tagging is not supported."
 msgstr "Označovanie nie je podporované."
 
-#: mh.c:1274
+#: mh.c:1277
 #, fuzzy, c-format
 msgid "Scanning %s..."
 msgstr "Vyberám %s..."
 
-#: mh.c:1597 mh.c:1688
+#: mh.c:1600 mh.c:1691
 #, fuzzy
 msgid "Could not flush message to disk"
 msgstr "Nemožno poslať správu."
 
-#: mh.c:1638
+#: mh.c:1641
 msgid "_maildir_commit_message(): unable to set time on file"
 msgstr ""
 
@@ -3460,89 +3495,89 @@ msgstr "%s: súbor nemožno pripojiť"
 msgid "[invalid date]"
 msgstr "%s: neplatná hodnota"
 
-#: mutt_ssl.c:751
+#: mutt_ssl.c:750
 msgid "Server certificate is not yet valid"
 msgstr ""
 
-#: mutt_ssl.c:758
+#: mutt_ssl.c:757
 msgid "Server certificate has expired"
 msgstr ""
 
-#: mutt_ssl.c:880
+#: mutt_ssl.c:879
 #, fuzzy
 msgid "cannot get certificate subject"
 msgstr "nemožno určiť domáci adresár"
 
-#: mutt_ssl.c:890 mutt_ssl.c:899
+#: mutt_ssl.c:889 mutt_ssl.c:898
 #, fuzzy
 msgid "cannot get certificate common name"
 msgstr "nemožno určiť domáci adresár"
 
-#: mutt_ssl.c:913
+#: mutt_ssl.c:912
 #, c-format
 msgid "certificate owner does not match hostname %s"
 msgstr ""
 
-#: mutt_ssl.c:954
+#: mutt_ssl.c:953
 #, fuzzy, c-format
 msgid "Certificate host check failed: %s"
 msgstr "Chyba v príkazovom riadku: %s\n"
 
-#: mutt_ssl.c:1032 mutt_ssl_gnutls.c:862
+#: mutt_ssl.c:1042 mutt_ssl_gnutls.c:862
 msgid "This certificate belongs to:"
 msgstr ""
 
-#: mutt_ssl.c:1045 mutt_ssl_gnutls.c:901
+#: mutt_ssl.c:1054 mutt_ssl_gnutls.c:901
 msgid "This certificate was issued by:"
 msgstr ""
 
-#: mutt_ssl.c:1056 mutt_ssl_gnutls.c:940
+#: mutt_ssl.c:1065 mutt_ssl_gnutls.c:940
 #, c-format
 msgid "This certificate is valid"
 msgstr ""
 
-#: mutt_ssl.c:1057 mutt_ssl_gnutls.c:943
+#: mutt_ssl.c:1066 mutt_ssl_gnutls.c:943
 #, c-format
 msgid "   from %s"
 msgstr ""
 
-#: mutt_ssl.c:1059 mutt_ssl_gnutls.c:947
+#: mutt_ssl.c:1068 mutt_ssl_gnutls.c:947
 #, c-format
 msgid "     to %s"
 msgstr ""
 
-#: mutt_ssl.c:1065
+#: mutt_ssl.c:1074
 #, c-format
 msgid "Fingerprint: %s"
 msgstr ""
 
-#: mutt_ssl.c:1068 mutt_ssl_gnutls.c:984
+#: mutt_ssl.c:1077 mutt_ssl_gnutls.c:984
 #, c-format
 msgid "SSL Certificate check (certificate %d of %d in chain)"
 msgstr ""
 
-#: mutt_ssl.c:1076 mutt_ssl_gnutls.c:993
+#: mutt_ssl.c:1085 mutt_ssl_gnutls.c:993
 msgid "(r)eject, accept (o)nce, (a)ccept always"
 msgstr ""
 
-#: mutt_ssl.c:1077 mutt_ssl_gnutls.c:994
+#: mutt_ssl.c:1086 mutt_ssl_gnutls.c:994
 #, fuzzy
 msgid "roa"
 msgstr "oac"
 
-#: mutt_ssl.c:1081 mutt_ssl_gnutls.c:998
+#: mutt_ssl.c:1090 mutt_ssl_gnutls.c:998
 msgid "(r)eject, accept (o)nce"
 msgstr ""
 
-#: mutt_ssl.c:1082 mutt_ssl_gnutls.c:999
+#: mutt_ssl.c:1091 mutt_ssl_gnutls.c:999
 msgid "ro"
 msgstr ""
 
-#: mutt_ssl.c:1113 mutt_ssl_gnutls.c:1048
+#: mutt_ssl.c:1122 mutt_ssl_gnutls.c:1048
 msgid "Warning: Couldn't save certificate"
 msgstr ""
 
-#: mutt_ssl.c:1118 mutt_ssl_gnutls.c:1053
+#: mutt_ssl.c:1127 mutt_ssl_gnutls.c:1053
 msgid "Certificate saved"
 msgstr ""
 
@@ -3615,17 +3650,17 @@ msgstr ""
 msgid "Certificate is not X.509"
 msgstr ""
 
-#: mutt_tunnel.c:72
+#: mutt_tunnel.c:73
 #, c-format
 msgid "Connecting with \"%s\"..."
 msgstr "Spájam sa s \"%s\"..."
 
-#: mutt_tunnel.c:139
+#: mutt_tunnel.c:149
 #, c-format
 msgid "Tunnel to %s returned error %d (%s)"
 msgstr ""
 
-#: mutt_tunnel.c:157 mutt_tunnel.c:173
+#: mutt_tunnel.c:167 mutt_tunnel.c:183
 #, fuzzy, c-format
 msgid "Tunnel error talking to %s: %s"
 msgstr "Pripájam sa na %s"
@@ -3741,7 +3776,7 @@ msgstr "Meno používateľa POP nie je definované."
 msgid "%s is an invalid news server specification!"
 msgstr ""
 
-#: nntp.c:67 nntp.c:595 pop.c:935 pop_lib.c:378
+#: nntp.c:67 nntp.c:595 pop.c:934 pop_lib.c:378
 msgid "Server closed connection!"
 msgstr "Server uzavrel spojenie!"
 
@@ -3798,37 +3833,37 @@ msgstr ""
 msgid "Newsgroup %s has been removed from the server."
 msgstr ""
 
-#: nntp.c:1641
+#: nntp.c:1639
 #, c-format
 msgid "Article %d not found on the server."
 msgstr ""
 
-#: nntp.c:1727 nntp.c:1756
+#: nntp.c:1725 nntp.c:1754
 #, fuzzy, c-format
 msgid "Can't post article: %s"
 msgstr "Nemožno zistiť stav: %s"
 
-#: nntp.c:1880
+#: nntp.c:1878
 #, fuzzy, c-format
 msgid "Loading list of groups from server %s..."
 msgstr "Vymazávam správy zo serveru..."
 
-#: nntp.c:1902 nntp.c:2268
+#: nntp.c:1900 nntp.c:2266
 #, fuzzy
 msgid "Loading descriptions..."
 msgstr "Prihlasujem sa..."
 
-#: nntp.c:1980 nntp.c:2205 pop.c:764 pop.c:829
+#: nntp.c:1978 nntp.c:2203 pop.c:763 pop.c:828
 #, fuzzy
 msgid "Checking for new messages..."
 msgstr "Odsúvam správu ..."
 
-#: nntp.c:2195
+#: nntp.c:2193
 #, fuzzy
 msgid "Checking for new newsgroups..."
 msgstr "Odsúvam správu ..."
 
-#: nntp.c:2420
+#: nntp.c:2418
 msgid "Unable to find child articles because server does not support XPAT command."
 msgstr ""
 
@@ -3897,76 +3932,76 @@ msgstr "Neplatný mesiac: %s"
 msgid "Invalid relative date: %s"
 msgstr "Neplatný mesiac: %s"
 
-#: pattern.c:864 pattern.c:1016
+#: pattern.c:869 pattern.c:1028
 #, c-format
 msgid "error in pattern at: %s"
 msgstr "chyba vo vzore na: %s"
 
-#: pattern.c:890
+#: pattern.c:896
 #, fuzzy, c-format
 msgid "missing pattern: %s"
 msgstr "chýbajúci parameter"
 
-#: pattern.c:900
+#: pattern.c:906
 #, fuzzy, c-format
 msgid "mismatched brackets: %s"
 msgstr "nespárované zátvorky: %s"
 
-#: pattern.c:956
+#: pattern.c:966
 #, fuzzy, c-format
 msgid "%c: invalid pattern modifier"
 msgstr "%c: neplatný príkaz"
 
-#: pattern.c:962
+#: pattern.c:972
 #, c-format
 msgid "%c: not supported in this mode"
 msgstr "%c: nepodporovaný v tomto móde"
 
-#: pattern.c:975
+#: pattern.c:985
 #, c-format
 msgid "missing parameter"
 msgstr "chýbajúci parameter"
 
-#: pattern.c:991
+#: pattern.c:1001
 #, c-format
 msgid "mismatched parenthesis: %s"
 msgstr "nespárované zátvorky: %s"
 
-#: pattern.c:1023
+#: pattern.c:1035
 msgid "empty pattern"
 msgstr "prázdny vzor"
 
-#: pattern.c:1304
+#: pattern.c:1318
 #, c-format
 msgid "error: unknown op %d (report this error)."
 msgstr "chyba: neznámy operand %d (oznámte túto chybu)."
 
-#: pattern.c:1458 pattern.c:1600
+#: pattern.c:1472 pattern.c:1614
 msgid "Compiling search pattern..."
 msgstr "Kompilujem vyhľadávací vzor..."
 
-#: pattern.c:1479
+#: pattern.c:1493
 msgid "Executing command on matching messages..."
 msgstr "Vykonávam príkaz na nájdených správach..."
 
-#: pattern.c:1548
+#: pattern.c:1562
 msgid "No messages matched criteria."
 msgstr "Žiadne správy nesplnili kritérium."
 
-#: pattern.c:1630
+#: pattern.c:1644
 #, fuzzy
 msgid "Searching..."
 msgstr "Ukladám..."
 
-#: pattern.c:1643
+#: pattern.c:1657
 msgid "Search hit bottom without finding match"
 msgstr "Hľadanie narazilo na spodok bez nájdenia zhody"
 
-#: pattern.c:1654
+#: pattern.c:1668
 msgid "Search hit top without finding match"
 msgstr "Hľadanie narazilo na vrchol bez nájdenia zhody"
 
-#: pattern.c:1686
+#: pattern.c:1700
 msgid "Search interrupted."
 msgstr "Hľadanie bolo prerušené."
 
@@ -4133,49 +4168,49 @@ msgstr "Označovanie nie je podporované."
 msgid "%d messages have been lost. Try reopening the mailbox."
 msgstr ""
 
-#: pop.c:412 pop.c:809
+#: pop.c:411 pop.c:808
 #, c-format
 msgid "%s is an invalid POP path"
 msgstr ""
 
-#: pop.c:456
+#: pop.c:455
 #, fuzzy
 msgid "Fetching list of messages..."
 msgstr "Vyvolávam správu..."
 
-#: pop.c:614
+#: pop.c:613
 #, fuzzy
 msgid "Can't write message to temporary file!"
 msgstr "Nemožno vytvoriť dočasný súbor"
 
-#: pop.c:685
+#: pop.c:684
 #, fuzzy
 msgid "Marking messages deleted..."
 msgstr "Čítam %d nových správ (%d bytov)..."
 
-#: pop.c:793
+#: pop.c:792
 msgid "POP host is not defined."
 msgstr "Hostiteľ POP nie je definovaný."
 
-#: pop.c:857
+#: pop.c:856
 msgid "No new mail in POP mailbox."
 msgstr "Žiadna nová pošta v schránke POP."
 
-#: pop.c:864
+#: pop.c:863
 #, fuzzy
 msgid "Delete messages from server?"
 msgstr "Vymazávam správy zo serveru..."
 
-#: pop.c:866
+#: pop.c:865
 #, fuzzy, c-format
 msgid "Reading new messages (%d bytes)..."
 msgstr "Čítam %d nových správ (%d bytov)..."
 
-#: pop.c:908
+#: pop.c:907
 msgid "Error while writing mailbox!"
 msgstr "Chyba pri zapisovaní do schránky!"
 
-#: pop.c:912
+#: pop.c:911
 #, fuzzy, c-format
 msgid "%s [%d of %d messages read]"
 msgstr "%s [prečítaných správ: %d]"
@@ -4545,107 +4580,107 @@ msgstr "Odpovedať na adresu %s%s?"
 msgid "No tagged messages are visible!"
 msgstr "Žiadna z označených správ nie je viditeľná!"
 
-#: send.c:831
+#: send.c:835
 msgid "Include message in reply?"
 msgstr "Priložiť správu do odpovede?"
 
-#: send.c:836
+#: send.c:840
 #, fuzzy
 msgid "Including quoted message..."
 msgstr "Posielam správu..."
 
-#: send.c:846
+#: send.c:850
 msgid "Could not include all requested messages!"
 msgstr "Nemožno pripojiť všetky požadované správy!"
 
-#: send.c:860
+#: send.c:864
 #, fuzzy
 msgid "Forward as attachment?"
 msgstr "Vytlačiť prílohu?"
 
-#: send.c:864
+#: send.c:868
 #, fuzzy
 msgid "Preparing forwarded message..."
 msgstr "Odsúvam správu ..."
 
-#: send.c:1312
+#: send.c:1316
 msgid "Recall postponed message?"
 msgstr "Vyvolať odloženú správu?"
 
-#: send.c:1604
+#: send.c:1608
 #, fuzzy
 msgid "Edit forwarded message?"
 msgstr "Odsúvam správu ..."
 
-#: send.c:1653
+#: send.c:1657
 msgid "Abort unmodified message?"
 msgstr "Zrušiť nezmenenú správu?"
 
-#: send.c:1655
+#: send.c:1659
 msgid "Aborted unmodified message."
 msgstr "Nezmenená správa bola zrušená."
 
-#: send.c:1789
+#: send.c:1793
 #, fuzzy
 msgid "Article not posted."
 msgstr "Pošta nebola odoslaná."
 
-#: send.c:1843
+#: send.c:1847
 msgid "Message postponed."
 msgstr "Správa bola odložená."
 
-#: send.c:1857
+#: send.c:1861
 msgid "No recipients are specified!"
 msgstr "Nie sú uvedení žiadni príjemcovia!"
 
-#: send.c:1862
+#: send.c:1866
 msgid "No recipients were specified."
 msgstr "Neboli uvedení žiadni príjemcovia!"
 
-#: send.c:1878
+#: send.c:1882
 msgid "No subject, abort sending?"
 msgstr "Žiadny predmet, zrušiť posielanie?"
 
-#: send.c:1882 send.c:1888
+#: send.c:1886 send.c:1892
 msgid "No subject specified."
 msgstr "Nebol uvedený predmet."
 
-#: send.c:1894
+#: send.c:1898
 #, fuzzy
 msgid "No newsgroup specified."
 msgstr "Nebol uvedený predmet."
 
-#: send.c:1902
+#: send.c:1906
 #, fuzzy
 msgid "No attachments, cancel sending?"
 msgstr "upraviť kódovanie dát prílohy"
 
-#: send.c:1907
+#: send.c:1911
 msgid "Message contains text matching \"$attach_keyword\". Not sending."
 msgstr ""
 
-#: send.c:1971 smtp.c:188
+#: send.c:1975 smtp.c:188
 msgid "Sending message..."
 msgstr "Posielam správu..."
 
-#: send.c:2004
+#: send.c:2008
 #, fuzzy
 msgid "Save attachments in Fcc?"
 msgstr "prezri prílohu ako text"
 
-#: send.c:2115
+#: send.c:2119
 msgid "Could not send the message."
 msgstr "Nemožno poslať správu."
 
-#: send.c:2120
+#: send.c:2124
 msgid "Sending in background."
 msgstr ""
 
-#: send.c:2122
+#: send.c:2126
 msgid "Article posted."
 msgstr ""
 
-#: send.c:2122 send.c:2124
+#: send.c:2126 send.c:2128
 msgid "Mail sent."
 msgstr "Správa bola odoslaná."
 
@@ -4761,6 +4796,11 @@ msgstr ""
 #, fuzzy
 msgid "Error: unable to create OpenSSL subprocess!"
 msgstr "[-- Chyba: nemožno vytvoriť podproces OpenSSL! --]\n"
+
+#: smime.c:1231
+#, fuzzy
+msgid "Label for certificate: "
+msgstr "nemožno určiť domáci adresár"
 
 #: smime.c:1321
 #, fuzzy
@@ -4983,12 +5023,13 @@ msgid ""
 "Copyright (C) 2000-2004 Edmund Grimley Evans <edmundo@rano.org>\n"
 "Copyright (C) 2006-2009 Rocco Rutte <pdmef@gmx.net>\n"
 "Copyright (C) 2014-2016 Kevin J. McCarthy <kevin@8t8.us>\n"
+"Copyright (C) 2015-2016 Richard Russon <rich@flatcap.org>\n"
 "\n"
 "Many others not mentioned here contributed code, fixes,\n"
 "and suggestions.\n"
 msgstr ""
 
-#: version.c:69
+#: version.c:70
 msgid ""
 "    This program is free software; you can redistribute it and/or modify\n"
 "    it under the terms of the GNU General Public License as published by\n"
@@ -5001,14 +5042,14 @@ msgid ""
 "    GNU General Public License for more details.\n"
 msgstr ""
 
-#: version.c:81
+#: version.c:82
 msgid ""
 "    You should have received a copy of the GNU General Public License\n"
 "    along with this program; if not, write to the Free Software\n"
 "    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.\n"
 msgstr ""
 
-#: version.c:87
+#: version.c:88
 msgid ""
 "To learn more about NeoMutt, visit: http://www.neomutt.org/\n"
 "If you find a bug in NeoMutt, please raise an issue at:\n"
@@ -5016,7 +5057,7 @@ msgid ""
 "or send an email to: <neomutt-devel@neomutt.org>\n"
 msgstr ""
 
-#: version.c:94
+#: version.c:95
 #, fuzzy
 msgid ""
 "Copyright (C) 1996-2016 Michael R. Elkins and others.\n"
@@ -5029,7 +5070,7 @@ msgstr ""
 "Mutt je voľný program, a ste vítaný šíriť ho\n"
 "za určitých podmienok; napíšte `mutt -vv' pre detaily.\n"
 
-#: version.c:444
+#: version.c:447
 msgid ""
 "\n"
 "Compile options:"
@@ -5664,386 +5705,391 @@ msgid "untag messages matching a pattern"
 msgstr "odznačiť správy zodpovedajúce vzoru"
 
 #: ../keymap_alldefs.h:155
+#, fuzzy
+msgid "create a hotkey macro for the current message"
+msgstr "choď na rodičovskú správu k aktuálnej"
+
+#: ../keymap_alldefs.h:156
 msgid "move to the middle of the page"
 msgstr "presunúť do stredu stránky"
 
-#: ../keymap_alldefs.h:156
+#: ../keymap_alldefs.h:157
 msgid "move to the next entry"
 msgstr "presunúť sa na ďaľšiu položku"
 
-#: ../keymap_alldefs.h:157
+#: ../keymap_alldefs.h:158
 msgid "scroll down one line"
 msgstr "rolovať o riadok dolu"
 
-#: ../keymap_alldefs.h:158
+#: ../keymap_alldefs.h:159
 msgid "move to the next page"
 msgstr "presunúť sa na ďaľšiu stránku"
 
-#: ../keymap_alldefs.h:159
+#: ../keymap_alldefs.h:160
 msgid "jump to the bottom of the message"
 msgstr "skočiť na koniec správy"
 
-#: ../keymap_alldefs.h:160
+#: ../keymap_alldefs.h:161
 msgid "toggle display of quoted text"
 msgstr "prepnúť zobrazovanie citovaného textu"
 
-#: ../keymap_alldefs.h:161
+#: ../keymap_alldefs.h:162
 msgid "skip beyond quoted text"
 msgstr "preskočiť za citovaný text"
 
-#: ../keymap_alldefs.h:162
+#: ../keymap_alldefs.h:163
 msgid "jump to the top of the message"
 msgstr "skočiť na začiatok správy"
 
-#: ../keymap_alldefs.h:163
+#: ../keymap_alldefs.h:164
 msgid "pipe message/attachment to a shell command"
 msgstr "zreťaziť výstup do príkazu shell-u"
 
-#: ../keymap_alldefs.h:164
+#: ../keymap_alldefs.h:165
 #, fuzzy
 msgid "post message to newsgroup"
 msgstr "Presmerovať správu do %s"
 
-#: ../keymap_alldefs.h:165
+#: ../keymap_alldefs.h:166
 msgid "move to the previous entry"
 msgstr "presunúť sa na predchádzajúcu položku"
 
-#: ../keymap_alldefs.h:166
+#: ../keymap_alldefs.h:167
 msgid "scroll up one line"
 msgstr "rolovať o riadok hore"
 
-#: ../keymap_alldefs.h:167
+#: ../keymap_alldefs.h:168
 msgid "move to the previous page"
 msgstr "presunúť sa na predchádzajúcu stránku"
 
-#: ../keymap_alldefs.h:168
+#: ../keymap_alldefs.h:169
 msgid "print the current entry"
 msgstr "tlačiť aktuálnu položku"
 
-#: ../keymap_alldefs.h:169
+#: ../keymap_alldefs.h:170
 msgid "really delete the current entry, bypassing the trash folder"
 msgstr ""
 
-#: ../keymap_alldefs.h:170
+#: ../keymap_alldefs.h:171
 msgid "really delete the current thread, bypassing the trash folder"
 msgstr ""
 
-#: ../keymap_alldefs.h:171
+#: ../keymap_alldefs.h:172
 msgid "query external program for addresses"
 msgstr "opýtať sa externého programu na adresy"
 
-#: ../keymap_alldefs.h:172
+#: ../keymap_alldefs.h:173
 msgid "append new query results to current results"
 msgstr "pridať nové výsledky opýtania k terajším"
 
-#: ../keymap_alldefs.h:173
+#: ../keymap_alldefs.h:174
 msgid "save changes to mailbox and quit"
 msgstr "uložiť zmeny v schránke a ukončiť"
 
-#: ../keymap_alldefs.h:174
+#: ../keymap_alldefs.h:175
 msgid "recall a postponed message"
 msgstr "vyvolať odloženú správu"
 
-#: ../keymap_alldefs.h:175
+#: ../keymap_alldefs.h:176
 msgid "reconstruct thread containing current message"
 msgstr "obnov vlákno obsahujúce aktuálnu správu"
 
-#: ../keymap_alldefs.h:176
+#: ../keymap_alldefs.h:177
 msgid "clear and redraw the screen"
 msgstr "vymazať a prekresliť obrazovku"
 
-#: ../keymap_alldefs.h:177
+#: ../keymap_alldefs.h:178
 msgid "{internal}"
 msgstr "{interné}"
 
-#: ../keymap_alldefs.h:178
+#: ../keymap_alldefs.h:179
 msgid "rename the current mailbox (IMAP only)"
 msgstr "premenovať aktuálny mailbox (len IMAP)"
 
-#: ../keymap_alldefs.h:179
+#: ../keymap_alldefs.h:180
 msgid "reply to a message"
 msgstr "odpovedať na správu"
 
-#: ../keymap_alldefs.h:180
+#: ../keymap_alldefs.h:181
 msgid "use the current message as a template for a new one"
 msgstr "použiť aktuálnu správu ako šablónu pre novú správu"
 
-#: ../keymap_alldefs.h:181
+#: ../keymap_alldefs.h:182
 msgid "save message/attachment to a mailbox/file"
 msgstr "uložiť správu/prílohu do mailboxu/súboru"
 
-#: ../keymap_alldefs.h:182
+#: ../keymap_alldefs.h:183
 msgid "search for a regular expression"
 msgstr "hľadať podľa regulérneho výrazu"
 
-#: ../keymap_alldefs.h:183
+#: ../keymap_alldefs.h:184
 msgid "search backwards for a regular expression"
 msgstr "hľadať podľa regulérneho výrazu dozadu"
 
-#: ../keymap_alldefs.h:184
+#: ../keymap_alldefs.h:185
 msgid "search for next match"
 msgstr "hľadať ďaľší výskyt"
 
-#: ../keymap_alldefs.h:185
+#: ../keymap_alldefs.h:186
 msgid "search for next match in opposite direction"
 msgstr "hľadať ďaľší výskyt v opačnom smere"
 
-#: ../keymap_alldefs.h:186
+#: ../keymap_alldefs.h:187
 msgid "toggle search pattern coloring"
 msgstr "prepnúť farby hľadaného výrazu"
 
-#: ../keymap_alldefs.h:187
+#: ../keymap_alldefs.h:188
 msgid "invoke a command in a subshell"
 msgstr "vyvolať príkaz v podriadenom shell-e"
 
-#: ../keymap_alldefs.h:188
+#: ../keymap_alldefs.h:189
 msgid "sort messages"
 msgstr "triediť správy"
 
-#: ../keymap_alldefs.h:189
+#: ../keymap_alldefs.h:190
 msgid "sort messages in reverse order"
 msgstr "triediť správy v opačnom poradí"
 
-#: ../keymap_alldefs.h:190
+#: ../keymap_alldefs.h:191
 #, fuzzy
 msgid "subscribe to newsgroups matching a pattern"
 msgstr "odznačiť správy zodpovedajúce vzoru"
 
-#: ../keymap_alldefs.h:191
+#: ../keymap_alldefs.h:192
 msgid "tag the current entry"
 msgstr "označiť aktuálnu položku"
 
-#: ../keymap_alldefs.h:192
+#: ../keymap_alldefs.h:193
 msgid "apply next function to tagged messages"
 msgstr "použiť ďaľšiu funkciu na označené správy"
 
-#: ../keymap_alldefs.h:193
+#: ../keymap_alldefs.h:194
 #, fuzzy
 msgid "apply next function ONLY to tagged messages"
 msgstr "použiť ďaľšiu funkciu na označené správy"
 
-#: ../keymap_alldefs.h:194
+#: ../keymap_alldefs.h:195
 msgid "tag the current subthread"
 msgstr "označiť aktuálne podvlákno"
 
-#: ../keymap_alldefs.h:195
+#: ../keymap_alldefs.h:196
 msgid "tag the current thread"
 msgstr "označiť akuálne vlákno"
 
-#: ../keymap_alldefs.h:196
+#: ../keymap_alldefs.h:197
 msgid "toggle a message's 'new' flag"
 msgstr "prepnúť príznak 'nová' na správe"
 
-#: ../keymap_alldefs.h:197
+#: ../keymap_alldefs.h:198
 #, fuzzy
 msgid "toggle view of read messages"
 msgstr "prepnúť na predchádzajúcu nečítanú správu"
 
-#: ../keymap_alldefs.h:198
+#: ../keymap_alldefs.h:199
 msgid "toggle whether the mailbox will be rewritten"
 msgstr "prepnúť príznak možnosti prepísania schránky"
 
-#: ../keymap_alldefs.h:199
+#: ../keymap_alldefs.h:200
 msgid "toggle whether to browse mailboxes or all files"
 msgstr "prepnúť, či prezerať schránky alebo všetky súbory"
 
-#: ../keymap_alldefs.h:200
+#: ../keymap_alldefs.h:201
 msgid "move to the top of the page"
 msgstr "presunúť sa na začiatok stránky"
 
-#: ../keymap_alldefs.h:201
+#: ../keymap_alldefs.h:202
 msgid "mark all articles in newsgroup as unread"
 msgstr ""
 
-#: ../keymap_alldefs.h:202
+#: ../keymap_alldefs.h:203
 msgid "undelete the current entry"
 msgstr "odmazať aktuálnu položku"
 
-#: ../keymap_alldefs.h:203
+#: ../keymap_alldefs.h:204
 msgid "undelete all messages in thread"
 msgstr "odmazať všetky správy vo vlákne"
 
-#: ../keymap_alldefs.h:204
+#: ../keymap_alldefs.h:205
 msgid "undelete all messages in subthread"
 msgstr "odmazať všetky správy v podvlákne"
 
-#: ../keymap_alldefs.h:205
+#: ../keymap_alldefs.h:206
 #, fuzzy
 msgid "unsubscribe from newsgroups matching a pattern"
 msgstr "odznačiť správy zodpovedajúce vzoru"
 
-#: ../keymap_alldefs.h:206
+#: ../keymap_alldefs.h:207
 msgid "show the Mutt version number and date"
 msgstr "zobraziť verziu a dátum vytvorenia Mutt"
 
-#: ../keymap_alldefs.h:207
+#: ../keymap_alldefs.h:208
 msgid "view attachment using mailcap entry if necessary"
 msgstr "zobraziť prílohu použijúc položku mailcap-u, ak je to nevyhnutné"
 
-#: ../keymap_alldefs.h:208
+#: ../keymap_alldefs.h:209
 msgid "show MIME attachments"
 msgstr "zobraziť prílohy MIME"
 
-#: ../keymap_alldefs.h:209
+#: ../keymap_alldefs.h:210
 msgid "display the keycode for a key press"
 msgstr ""
 
-#: ../keymap_alldefs.h:210
+#: ../keymap_alldefs.h:211
 #, fuzzy
 msgid "limit view to current thread"
 msgstr "označiť akuálne vlákno"
 
-#: ../keymap_alldefs.h:211
+#: ../keymap_alldefs.h:212
 msgid "show currently active limit pattern"
 msgstr "zobraziť práve aktívny limitovací vzor"
 
-#: ../keymap_alldefs.h:212
+#: ../keymap_alldefs.h:213
 msgid "collapse/uncollapse current thread"
 msgstr "zabaľ/rozbaľ aktuálne vlákno"
 
-#: ../keymap_alldefs.h:213
+#: ../keymap_alldefs.h:214
 msgid "collapse/uncollapse all threads"
 msgstr "zabaľ/rozbaľ všetky vlákna"
 
-#: ../keymap_alldefs.h:214
+#: ../keymap_alldefs.h:215
 msgid "move the highlight to next mailbox"
 msgstr ""
 
-#: ../keymap_alldefs.h:215
+#: ../keymap_alldefs.h:216
 #, fuzzy
 msgid "move the highlight to next mailbox with new mail"
 msgstr "Žiadna schránka s novými správami."
 
-#: ../keymap_alldefs.h:216
+#: ../keymap_alldefs.h:217
 #, fuzzy
 msgid "open highlighted mailbox"
 msgstr "Znovuotváram schránku..."
 
-#: ../keymap_alldefs.h:217
+#: ../keymap_alldefs.h:218
 #, fuzzy
 msgid "scroll the sidebar down 1 page"
 msgstr "rolovať dolu o 1/2 stránky"
 
-#: ../keymap_alldefs.h:218
+#: ../keymap_alldefs.h:219
 #, fuzzy
 msgid "scroll the sidebar up 1 page"
 msgstr "rolovať hore o 1/2 stránky"
 
-#: ../keymap_alldefs.h:219
+#: ../keymap_alldefs.h:220
 #, fuzzy
 msgid "move the highlight to previous mailbox"
 msgstr "presunúť sa na predchádzajúcu stránku"
 
-#: ../keymap_alldefs.h:220
+#: ../keymap_alldefs.h:221
 #, fuzzy
 msgid "move the highlight to previous mailbox with new mail"
 msgstr "Žiadna schránka s novými správami."
 
-#: ../keymap_alldefs.h:221
+#: ../keymap_alldefs.h:222
 #, fuzzy
 msgid "toggle between mailboxes and virtual mailboxes"
 msgstr "prepnúť, či prezerať schránky alebo všetky súbory"
 
-#: ../keymap_alldefs.h:222
+#: ../keymap_alldefs.h:223
 msgid "make the sidebar (in)visible"
 msgstr ""
 
-#: ../keymap_alldefs.h:223
+#: ../keymap_alldefs.h:224
 #, fuzzy
 msgid "open a different virtual folder"
 msgstr "otvoriť odlišnú zložku"
 
-#: ../keymap_alldefs.h:224
+#: ../keymap_alldefs.h:225
 msgid "generate virtual folder from query"
 msgstr ""
 
-#: ../keymap_alldefs.h:225
+#: ../keymap_alldefs.h:226
 msgid "modify (notmuch) tags"
 msgstr ""
 
-#: ../keymap_alldefs.h:226
+#: ../keymap_alldefs.h:227
 #, fuzzy
 msgid "modify labels and then hide message"
 msgstr "Ste na prvej správe."
 
-#: ../keymap_alldefs.h:227
+#: ../keymap_alldefs.h:228
 msgid "read entire thread of the current message"
 msgstr ""
 
-#: ../keymap_alldefs.h:228
+#: ../keymap_alldefs.h:229
 msgid "attach a PGP public key"
 msgstr "pridať verejný kľúč PGP"
 
-#: ../keymap_alldefs.h:229
+#: ../keymap_alldefs.h:230
 msgid "show PGP options"
 msgstr "zobraziť možnosti PGP"
 
-#: ../keymap_alldefs.h:230
+#: ../keymap_alldefs.h:231
 msgid "mail a PGP public key"
 msgstr "poslať verejný kľúč PGP poštou"
 
-#: ../keymap_alldefs.h:231
+#: ../keymap_alldefs.h:232
 msgid "verify a PGP public key"
 msgstr "overiť verejný kľúč PGP"
 
-#: ../keymap_alldefs.h:232
+#: ../keymap_alldefs.h:233
 msgid "view the key's user id"
 msgstr "zobraziť ID používateľa tohoto kľúču"
 
-#: ../keymap_alldefs.h:233
+#: ../keymap_alldefs.h:234
 msgid "check for classic PGP"
 msgstr ""
 
-#: ../keymap_alldefs.h:234
+#: ../keymap_alldefs.h:235
 msgid "accept the chain constructed"
 msgstr ""
 
-#: ../keymap_alldefs.h:235
+#: ../keymap_alldefs.h:236
 #, fuzzy
 msgid "append a remailer to the chain"
 msgstr "zmazať všetky znaky v riadku"
 
-#: ../keymap_alldefs.h:236
+#: ../keymap_alldefs.h:237
 #, fuzzy
 msgid "insert a remailer into the chain"
 msgstr "zmazať všetky znaky v riadku"
 
-#: ../keymap_alldefs.h:237
+#: ../keymap_alldefs.h:238
 #, fuzzy
 msgid "delete a remailer from the chain"
 msgstr "zmazať všetky znaky v riadku"
 
-#: ../keymap_alldefs.h:238
+#: ../keymap_alldefs.h:239
 #, fuzzy
 msgid "select the previous element of the chain"
 msgstr "zmazať všetky znaky v riadku"
 
-#: ../keymap_alldefs.h:239
+#: ../keymap_alldefs.h:240
 #, fuzzy
 msgid "select the next element of the chain"
 msgstr "zmazať všetky znaky v riadku"
 
-#: ../keymap_alldefs.h:240
+#: ../keymap_alldefs.h:241
 #, fuzzy
 msgid "send the message through a mixmaster remailer chain"
 msgstr "pošli správu cez mixmaster remailer reťaz"
 
-#: ../keymap_alldefs.h:241
+#: ../keymap_alldefs.h:242
 msgid "make decrypted copy and delete"
 msgstr "urobiť dešifrovanú kópiu a vymazať"
 
-#: ../keymap_alldefs.h:242
+#: ../keymap_alldefs.h:243
 msgid "make decrypted copy"
 msgstr "urobiť dešifrovanú kópiu"
 
-#: ../keymap_alldefs.h:243
+#: ../keymap_alldefs.h:244
 msgid "wipe passphrase(s) from memory"
 msgstr "vymaž frázu hesla PGP z pamäte"
 
-#: ../keymap_alldefs.h:244
+#: ../keymap_alldefs.h:245
 msgid "extract supported public keys"
 msgstr "extrahuj podporované verejné kľúče PGP"
 
-#: ../keymap_alldefs.h:245
+#: ../keymap_alldefs.h:246
 msgid "show S/MIME options"
 msgstr "zobraziť S/MIME možnosti "
