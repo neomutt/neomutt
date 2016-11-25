@@ -4959,7 +4959,7 @@ int smime_gpgme_verify_sender (HEADER *h)
   return verify_sender (h, GPGME_PROTOCOL_CMS);
 }
 
-void gpgme_set_sender (const char *sender)
+void mutt_gpgme_set_sender (const char *sender)
 {
   mutt_error ("[setting sender] mailbox: %s\n", sender);
   FREE (&current_sender);
