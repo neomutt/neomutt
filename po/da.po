@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neomutt-20161104\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
-"POT-Creation-Date: 2016-11-24 23:07+0000\n"
+"POT-Creation-Date: 2016-11-28 16:06+0000\n"
 "PO-Revision-Date: 2016-11-23 03:41+0000\n"
 "Last-Translator: Richard Russon <rich@flatcap.org>\n"
 "Language-Team: Danish <dansk@dansk-gruppen.dk>\n"
@@ -36,12 +36,12 @@ msgstr "Adgangskode for %s@%s: "
 msgid "Exit"
 msgstr "Tilbage"
 
-#: addrbook.c:38 curs_main.c:795 curs_main.c:808 pager.c:1635 pager.c:1645
+#: addrbook.c:38 curs_main.c:798 curs_main.c:811 pager.c:1635 pager.c:1645
 #: postpone.c:42
 msgid "Del"
 msgstr "Slet"
 
-#: addrbook.c:39 curs_main.c:796 curs_main.c:809 postpone.c:43
+#: addrbook.c:39 curs_main.c:799 curs_main.c:812 postpone.c:43
 msgid "Undel"
 msgstr "Behold"
 
@@ -50,7 +50,7 @@ msgid "Select"
 msgstr "Vælg"
 
 #: addrbook.c:41 browser.c:57 browser.c:69 compose.c:116 compose.c:128
-#: crypt-gpgme.c:4022 curs_main.c:801 curs_main.c:814 mutt_ssl.c:1097
+#: crypt-gpgme.c:4022 curs_main.c:804 curs_main.c:817 mutt_ssl.c:1097
 #: mutt_ssl_gnutls.c:1005 pager.c:1752 pgpkey.c:522 postpone.c:44 query.c:53
 #: recvattach.c:57 smime.c:440
 msgid "Help"
@@ -225,7 +225,7 @@ msgstr "Abonnerer på %s"
 msgid "Unsubscribe"
 msgstr "Afmeldt fra %s"
 
-#: browser.c:67 curs_main.c:813
+#: browser.c:67 curs_main.c:816
 msgid "Catchup"
 msgstr ""
 
@@ -1013,7 +1013,7 @@ msgstr "ADVARSEL: PKA-nøgle matcher ikke underskrivers adresse: "
 msgid "PKA verified signer's address is: "
 msgstr "Underskrivers PKA-verificerede adresse er: "
 
-#. L10N:
+#. L10N: DOTFILL
 #. Fill dots to make the DOTFILL entries the same length.
 #. In English, msgid "Fingerprint: " is the longest entry for this menu.
 #. Your language may vary.
@@ -1459,7 +1459,7 @@ msgid "S/MIME (s)ign, sign (a)s, (p)gp, (c)lear, or (o)ppenc mode off? "
 msgstr "S/MIME (u)nderskriv, underskriv (s)om, (p)gp, r(y)d eller (o)ppenc-tilstand fra? "
 
 #. L10N: S/MIME options (opportunistic encryption is on)
-#. The 'f' is undocumented. Please duplicate the letter 'c' is translated into.
+#. The 'f' is undocumented. Please DO NOT translate it.
 #: crypt-gpgme.c:4725
 msgid "sapfco"
 msgstr "uspgyo"
@@ -1470,7 +1470,7 @@ msgid "PGP (s)ign, sign (a)s, s/(m)ime, (c)lear, or (o)ppenc mode off? "
 msgstr "PGP (u)nderskriv, underskriv (s)om, s/(m)ime, r(y)d eller (o)ppenc-tilstand fra? "
 
 #. L10N: PGP options (opportunistic encryption is on)
-#. The 'f' is undocumented. Please duplicate the letter 'c' is translated into.
+#. The 'f' is undocumented. Please DO NOT translate it.
 #: crypt-gpgme.c:4734
 msgid "samfco"
 msgstr "usmgyo"
@@ -1481,7 +1481,7 @@ msgid "S/MIME (e)ncrypt, (s)ign, sign (a)s, (b)oth, (p)gp, (c)lear, or (o)ppenc 
 msgstr "S/MIME (k)ryptér, (u)nderskriv, underskriv (s)om, (b)egge, (p)gp, r(y)d eller (o)ppenc-tilstand fra? "
 
 #. L10N: S/MIME options (opportunistic encryption is off)
-#. The 'f' is undocumented. Please duplicate the letter 'c' is translated into.
+#. The 'f' is undocumented. Please DO NOT translate it.
 #: crypt-gpgme.c:4750
 msgid "esabpfco"
 msgstr "kusbpgyo"
@@ -1492,7 +1492,7 @@ msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, s/(m)ime, (c)lear, or (o)ppenc 
 msgstr "PGP (k)ryptér, (u)nderskriv, underskriv (s)om, (b)egge, s/(m)ime, r(y)d eller (o)ppenc-tilstand? "
 
 #. L10N: PGP options (opportunistic encryption is off)
-#. The 'f' is undocumented. Please duplicate the letter 'c' is translated into.
+#. The 'f' is undocumented. Please DO NOT translate it.
 #: crypt-gpgme.c:4759
 msgid "esabmfco"
 msgstr "kusbmgyo"
@@ -1503,7 +1503,7 @@ msgid "S/MIME (e)ncrypt, (s)ign, sign (a)s, (b)oth, (p)gp or (c)lear? "
 msgstr "S/MIME (k)ryptér, (u)nderskriv, underskriv (s)om, (b)egge, (p)gp, eller r(y)d? "
 
 #. L10N: S/MIME options
-#. The 'f' is undocumented. Please duplicate the letter 'c' is translated into.
+#. The 'f' is undocumented. Please DO NOT translate it.
 #: crypt-gpgme.c:4774
 msgid "esabpfc"
 msgstr "kusbpgy"
@@ -1514,12 +1514,12 @@ msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, s/(m)ime or (c)lear? "
 msgstr "PGP (k)ryptér, (u)nderskriv, underskriv (s)om, (b)egge, s/(m)ime, eller r(y)d? "
 
 #. L10N: PGP options
-#. The 'f' is undocumented. Please duplicate the letter 'c' is translated into.
+#. The 'f' is undocumented. Please DO NOT translate it.
 #: crypt-gpgme.c:4783
 msgid "esabmfc"
 msgstr "kusbmgy"
 
-#: crypt-gpgme.c:4808 pgp.c:1818 smime.c:2222 smime.c:2237
+#: crypt-gpgme.c:4808 pgp.c:1845 smime.c:2227 smime.c:2242
 msgid "Sign as: "
 msgstr "Underskriv som: "
 
@@ -1663,7 +1663,7 @@ msgstr "Tryk på en tast for at fortsætte ..."
 msgid " ('?' for list): "
 msgstr " ('?' for en liste): "
 
-#: curs_main.c:66 curs_main.c:1066 curs_main.c:1096
+#: curs_main.c:66 curs_main.c:1069 curs_main.c:1099
 msgid "No mailbox is open."
 msgstr "Ingen brevbakke er åben."
 
@@ -1689,368 +1689,368 @@ msgstr "Ingen synlige breve."
 msgid "%s: Operation not permitted by ACL"
 msgstr "%s: Operationen er ikke tilladt af ACL"
 
-#: curs_main.c:417
+#: curs_main.c:420
 msgid "Cannot toggle write on a readonly mailbox!"
 msgstr "Kan ikke skrive til en skrivebeskyttet brevbakke!"
 
-#: curs_main.c:424
+#: curs_main.c:427
 msgid "Changes to folder will be written on folder exit."
 msgstr "Ændringer i brevbakken vil blive skrevet til disk, når den forlades."
 
-#: curs_main.c:429
+#: curs_main.c:432
 msgid "Changes to folder will not be written."
 msgstr "Ændringer i brevbakken vil ikke blive skrevet til disk."
 
-#: curs_main.c:721 mx.c:561 mx.c:653
+#: curs_main.c:724 mx.c:561 mx.c:653
 #, c-format
 msgid "%s is not a mailbox."
 msgstr "%s er ikke en brevbakke."
 
-#: curs_main.c:794 curs_main.c:807
+#: curs_main.c:797 curs_main.c:810
 msgid "Quit"
 msgstr "Afslut"
 
-#: curs_main.c:797 curs_main.c:810 recvattach.c:54
+#: curs_main.c:800 curs_main.c:813 recvattach.c:54
 msgid "Save"
 msgstr "Gem"
 
-#: curs_main.c:798 query.c:49
+#: curs_main.c:801 query.c:49
 msgid "Mail"
 msgstr "Send"
 
-#: curs_main.c:799 pager.c:1636
+#: curs_main.c:802 pager.c:1636
 msgid "Reply"
 msgstr "Svar"
 
-#: curs_main.c:800
+#: curs_main.c:803
 msgid "Group"
 msgstr "Gruppe"
 
-#: curs_main.c:811 pager.c:1643
+#: curs_main.c:814 pager.c:1643
 msgid "Post"
 msgstr ""
 
-#: curs_main.c:812 pager.c:1644
+#: curs_main.c:815 pager.c:1644
 #, fuzzy
 msgid "Followup"
 msgstr "Opfølg til %s%s?"
 
-#: curs_main.c:905
+#: curs_main.c:908
 msgid "Mailbox was externally modified.  Flags may be wrong."
 msgstr "Brevbakke ændret udefra. Statusindikatorer kan være forkerte."
 
-#: curs_main.c:912 pager.c:2053
+#: curs_main.c:915 pager.c:2053
 msgid "New mail in this mailbox."
 msgstr "Nye breve i denne brevbakke."
 
-#: curs_main.c:925
+#: curs_main.c:928
 msgid "Mailbox was externally modified."
 msgstr "Brevbakke ændret udefra."
 
-#: curs_main.c:1072
+#: curs_main.c:1075
 msgid "No tagged messages."
 msgstr "Ingen breve er udvalgt."
 
-#: curs_main.c:1103 menu.c:1002
+#: curs_main.c:1106 menu.c:1002
 msgid "Nothing to do."
 msgstr "Intet at gøre."
 
-#: curs_main.c:1208
+#: curs_main.c:1211
 #, fuzzy
 msgid "Enter Message-Id: "
 msgstr "Anfør nøgle-ID: "
 
-#: curs_main.c:1217
+#: curs_main.c:1220
 msgid "Article has no parent reference."
 msgstr ""
 
-#: curs_main.c:1240
+#: curs_main.c:1243
 #, fuzzy
 msgid "Message is not visible in limited view."
 msgstr "Forrige brev i tråden er ikke synligt i afgrænset oversigt."
 
-#: curs_main.c:1246
+#: curs_main.c:1249
 #, fuzzy, c-format
 msgid "Fetching %s from server..."
 msgstr "Sletter breve på server ..."
 
-#: curs_main.c:1256
+#: curs_main.c:1259
 #, c-format
 msgid "Article %s not found on the server."
 msgstr ""
 
-#: curs_main.c:1275
+#: curs_main.c:1278
 msgid "No Message-Id. Unable to perform operation."
 msgstr ""
 
-#: curs_main.c:1279 imap/message.c:233 nntp.c:1264 pop.c:281
+#: curs_main.c:1282 imap/message.c:233 nntp.c:1264 pop.c:281
 msgid "Fetching message headers..."
 msgstr "Henter brevhoveder ..."
 
-#: curs_main.c:1342
+#: curs_main.c:1345
 #, fuzzy
 msgid "No deleted messages found in the thread."
 msgstr "slet alle breve i tråd"
 
-#: curs_main.c:1353
+#: curs_main.c:1356
 msgid "Jump to message: "
 msgstr "Hop til brev: "
 
-#: curs_main.c:1359
+#: curs_main.c:1362
 msgid "Argument must be a message number."
 msgstr "Parameter skal være nummeret på et brev."
 
-#: curs_main.c:1391
+#: curs_main.c:1394
 msgid "That message is not visible."
 msgstr "Brevet er ikke synligt."
 
-#: curs_main.c:1394
+#: curs_main.c:1397
 msgid "Invalid message number."
 msgstr "Ugyldigt brevnummer."
 
 #. L10N: CHECK_ACL
-#: curs_main.c:1408 curs_main.c:2663 pager.c:2648
+#: curs_main.c:1411 curs_main.c:2666 pager.c:2648
 msgid "Cannot delete message(s)"
 msgstr "Kan ikke slette breve"
 
-#: curs_main.c:1411
+#: curs_main.c:1414
 msgid "Delete messages matching: "
 msgstr "Slet breve efter mønster: "
 
-#: curs_main.c:1433
+#: curs_main.c:1436
 msgid "No limit pattern is in effect."
 msgstr "Intet afgrænsningsmønster er i brug."
 
 #. L10N: ask for a limit to apply
-#: curs_main.c:1438
+#: curs_main.c:1441
 #, c-format
 msgid "Limit: %s"
 msgstr "Afgrænsning: %s"
 
-#: curs_main.c:1471
+#: curs_main.c:1474
 msgid "Limit to messages matching: "
 msgstr "Afgræns til breve efter mønster: "
 
-#: curs_main.c:1493
+#: curs_main.c:1496
 msgid "To view all messages, limit to \"all\"."
 msgstr "Afgræns til \"all\" for at se alle breve."
 
-#: curs_main.c:1505 pager.c:2174
+#: curs_main.c:1508 pager.c:2174
 msgid "Quit Mutt?"
 msgstr "Afslut Mutt?"
 
-#: curs_main.c:1597
+#: curs_main.c:1600
 msgid "Tag messages matching: "
 msgstr "Udvælg breve efter mønster: "
 
 #. L10N: CHECK_ACL
-#: curs_main.c:1607 curs_main.c:3070 pager.c:3026
+#: curs_main.c:1610 curs_main.c:3073 pager.c:3026
 msgid "Cannot undelete message(s)"
 msgstr "Kan ikke fortryde sletning af breve"
 
-#: curs_main.c:1609
+#: curs_main.c:1612
 msgid "Undelete messages matching: "
 msgstr "Behold breve efter mønster: "
 
-#: curs_main.c:1617
+#: curs_main.c:1620
 msgid "Untag messages matching: "
 msgstr "Fjern valg efter mønster: "
 
-#: curs_main.c:1649
+#: curs_main.c:1652
 msgid "Logged out of IMAP servers."
 msgstr "Logget ud fra IMAP-servere."
 
-#: curs_main.c:1741 curs_main.c:1775
+#: curs_main.c:1744 curs_main.c:1778
 #, fuzzy
 msgid "No virtual folder, aborting."
 msgstr "Intet emne, afbryder."
 
-#: curs_main.c:1747
+#: curs_main.c:1750
 msgid "Failed to read thread, aborting."
 msgstr ""
 
-#: curs_main.c:1783
+#: curs_main.c:1786
 #, fuzzy
 msgid "No label specified, aborting."
 msgstr "Intet emne, afbryder."
 
-#: curs_main.c:1793
+#: curs_main.c:1796
 #, c-format
 msgid "Update labels..."
 msgstr ""
 
-#: curs_main.c:1816
+#: curs_main.c:1819
 msgid "Failed to modify labels, aborting."
 msgstr ""
 
-#: curs_main.c:1850
+#: curs_main.c:1853
 #, fuzzy
 msgid "No query, aborting."
 msgstr "Intet emne, afbryder."
 
-#: curs_main.c:1854
+#: curs_main.c:1857
 msgid "Failed to create query, aborting."
 msgstr ""
 
-#: curs_main.c:1883
+#: curs_main.c:1886
 msgid "Open mailbox in read-only mode"
 msgstr "Åbn brevbakke i skrivebeskyttet tilstand"
 
-#: curs_main.c:1886
+#: curs_main.c:1889
 #, fuzzy
 msgid "Open virtual folder"
 msgstr "åbn en anden brevbakke"
 
-#: curs_main.c:1889
+#: curs_main.c:1892
 msgid "Open mailbox"
 msgstr "Åbn brevbakke"
 
-#: curs_main.c:1899
+#: curs_main.c:1902
 msgid "No mailboxes have new mail"
 msgstr "Ingen brevbakker med nye breve"
 
-#: curs_main.c:1940
+#: curs_main.c:1943
 #, fuzzy
 msgid "Open newsgroup in read-only mode"
 msgstr "Åbn brevbakke i skrivebeskyttet tilstand"
 
-#: curs_main.c:1942
+#: curs_main.c:1945
 msgid "Open newsgroup"
 msgstr ""
 
-#: curs_main.c:2033
+#: curs_main.c:2036
 #, fuzzy
 msgid "Exit NeoMutt without saving?"
 msgstr "Afslut Mutt uden at gemme?"
 
-#: curs_main.c:2049
+#: curs_main.c:2052
 #, fuzzy
 msgid "Cannot break thread"
 msgstr "Kan ikke sammenkæde tråde"
 
-#: curs_main.c:2052 curs_main.c:2088 curs_main.c:2548 curs_main.c:2580
+#: curs_main.c:2055 curs_main.c:2091 curs_main.c:2551 curs_main.c:2583
 #: flags.c:305 thread.c:1029 thread.c:1085 thread.c:1152
 msgid "Threading is not enabled."
 msgstr "Trådning er ikke i brug."
 
-#: curs_main.c:2064
+#: curs_main.c:2067
 msgid "Thread broken"
 msgstr "Tråden er brudt"
 
-#: curs_main.c:2075
+#: curs_main.c:2078
 msgid "Thread cannot be broken, message is not part of a thread"
 msgstr "Tråden må ikke være brudt, brevet er ikke en del af en tråd"
 
 #. L10N: CHECK_ACL
-#: curs_main.c:2085
+#: curs_main.c:2088
 msgid "Cannot link threads"
 msgstr "Kan ikke sammenkæde tråde"
 
-#: curs_main.c:2090
+#: curs_main.c:2093
 msgid "No Message-ID: header available to link thread"
 msgstr "Ingen Message-ID: i brevhoved er tilgængelig til at sammenkæde tråde"
 
-#: curs_main.c:2092
+#: curs_main.c:2095
 msgid "First, please tag a message to be linked here"
 msgstr "Markér et brev til sammenkædning som det første"
 
-#: curs_main.c:2104
+#: curs_main.c:2107
 msgid "Threads linked"
 msgstr "Tråde sammenkædet"
 
-#: curs_main.c:2107
+#: curs_main.c:2110
 msgid "No thread linked"
 msgstr "Ingen tråd sammenkædet"
 
-#: curs_main.c:2143 curs_main.c:2168
+#: curs_main.c:2146 curs_main.c:2171
 msgid "You are on the last message."
 msgstr "Du er ved sidste brev."
 
-#: curs_main.c:2150 curs_main.c:2194
+#: curs_main.c:2153 curs_main.c:2197
 msgid "No undeleted messages."
 msgstr "Alle breve har slette-markering."
 
-#: curs_main.c:2187 curs_main.c:2211
+#: curs_main.c:2190 curs_main.c:2214
 msgid "You are on the first message."
 msgstr "Du er ved første brev."
 
-#: curs_main.c:2286 menu.c:838 pager.c:2292 pattern.c:1654
+#: curs_main.c:2289 menu.c:838 pager.c:2292 pattern.c:1654
 msgid "Search wrapped to top."
 msgstr "Søgning fortsat fra top."
 
-#: curs_main.c:2295 pager.c:2314 pattern.c:1665
+#: curs_main.c:2298 pager.c:2314 pattern.c:1665
 msgid "Search wrapped to bottom."
 msgstr "Søgning fortsat fra bund."
 
-#: curs_main.c:2339
+#: curs_main.c:2342
 msgid "No new messages in this limited view."
 msgstr "Ingen nye breve i denne afgrænsede oversigt."
 
-#: curs_main.c:2341
+#: curs_main.c:2344
 msgid "No new messages."
 msgstr "Ingen nye breve."
 
-#: curs_main.c:2346
+#: curs_main.c:2349
 msgid "No unread messages in this limited view."
 msgstr "Ingen ulæste breve i denne afgrænsede oversigt."
 
-#: curs_main.c:2348
+#: curs_main.c:2351
 msgid "No unread messages."
 msgstr "Ingen ulæste breve."
 
 #. L10N: CHECK_ACL
-#: curs_main.c:2366
+#: curs_main.c:2369
 msgid "Cannot flag message"
 msgstr "Kan ikke give brev statusindikator"
 
 #. L10N: CHECK_ACL
-#: curs_main.c:2404 pager.c:2989
+#: curs_main.c:2407 pager.c:2989
 msgid "Cannot toggle new"
 msgstr "Kan ikke skifte mellem ny/ikke-ny"
 
-#: curs_main.c:2481
+#: curs_main.c:2484
 msgid "No more threads."
 msgstr "Ikke flere tråde."
 
-#: curs_main.c:2483
+#: curs_main.c:2486
 msgid "You are on the first thread."
 msgstr "Du er ved den første tråd."
 
-#: curs_main.c:2566
+#: curs_main.c:2569
 msgid "Thread contains unread messages."
 msgstr "Tråden indeholder ulæste breve."
 
 #. L10N: CHECK_ACL
-#: curs_main.c:2618 pager.c:2614
+#: curs_main.c:2621 pager.c:2614
 msgid "Cannot delete message"
 msgstr "Kan ikke slette brev"
 
 #. L10N: CHECK_ACL
-#: curs_main.c:2725
+#: curs_main.c:2728
 msgid "Cannot edit message"
 msgstr "Kan ikke redigere brev"
 
-#: curs_main.c:2773 pager.c:3081
+#: curs_main.c:2776 pager.c:3081
 #, fuzzy
 msgid "No labels changed."
 msgstr "Brevbakken er uændret."
 
 #. L10N: CHECK_ACL
-#: curs_main.c:2873
+#: curs_main.c:2876
 msgid "Cannot mark message(s) as read"
 msgstr "Kan ikke markére breve som læst"
 
 #. L10N: This is the prompt for <mark-message>.  Whatever they
 #. enter will be prefixed by $mark_macro_prefix and will become
 #. a macro hotkey to jump to the currently selected message.
-#: curs_main.c:2909
+#: curs_main.c:2912
 #, fuzzy
 msgid "Enter macro stroke: "
 msgstr "Anfør nøgle-ID: "
 
 #. L10N: "message hotkey" is the key bindings menu description of a
 #. macro created by <mark-message>.
-#: curs_main.c:2917
+#: curs_main.c:2920
 #, fuzzy
 msgid "message hotkey"
 msgstr "Brev tilbageholdt."
@@ -2058,28 +2058,28 @@ msgstr "Brev tilbageholdt."
 #. L10N: This is echoed after <mark-message> creates a new hotkey
 #. macro.  %s is the hotkey string ($mark_macro_prefix followed
 #. by whatever they typed at the prompt.)
-#: curs_main.c:2922
+#: curs_main.c:2925
 #, fuzzy, c-format
 msgid "Message bound to %s."
 msgstr "Brevet er gensendt."
 
 #. L10N: This error is printed if <mark-message> cannot find a
 #. Message-ID for the currently selected message in the index.
-#: curs_main.c:2930
+#: curs_main.c:2933
 #, fuzzy
 msgid "No message ID to macro."
 msgstr "Ingen breve i den brevbakke."
 
-#: curs_main.c:2973 pager.c:2847 recvattach.c:1262
+#: curs_main.c:2976 pager.c:2847 recvattach.c:1262
 msgid "Reply by mail as poster prefers?"
 msgstr ""
 
-#: curs_main.c:2978 pager.c:2816 pager.c:2827 pager.c:2851
+#: curs_main.c:2981 pager.c:2816 pager.c:2827 pager.c:2851
 msgid "Posting to this group not allowed, may be moderated. Continue?"
 msgstr ""
 
 #. L10N: CHECK_ACL
-#: curs_main.c:3040 pager.c:3009
+#: curs_main.c:3043 pager.c:3009
 msgid "Cannot undelete message"
 msgstr "Kan ikke fortryde sletning af brev"
 
@@ -3957,66 +3957,87 @@ msgstr "Kan ikke åbne PGP-delproces!"
 msgid "Can't invoke PGP"
 msgstr "Kan ikke starte PGP"
 
+#. L10N: These next string MUST have the same highlighed letter
+#. One of them will appear in each of the three strings marked "(inline"), below.
+#: pgp.c:1724
+msgid "PGP/M(i)ME"
+msgstr "PGP/M(i)ME"
+
+#. L10N: These previous string MUST have the same highlighed letter
+#. One of them will appear in each of the three strings marked "(inline"), below.
 #: pgp.c:1730
+msgid "(i)nline"
+msgstr "(i)ntegreret"
+
+#. L10N: PGP options (inline) (opportunistic encryption is on)
+#: pgp.c:1744
 #, c-format
 msgid "PGP (s)ign, sign (a)s, %s format, (c)lear, or (o)ppenc mode off? "
 msgstr "PGP (u)nderskriv, underskriv (s)om, %s-format, r(y)d eller (o)ppenc-tilstand fra? "
 
-#: pgp.c:1731 pgp.c:1761 pgp.c:1783
-msgid "PGP/M(i)ME"
-msgstr "PGP/M(i)ME"
-
-#: pgp.c:1731 pgp.c:1761 pgp.c:1783
-msgid "(i)nline"
-msgstr "(i)ntegreret"
-
-#. L10N: The 'f' is from "forget it", an old undocumented synonym of
-#. 'clear'.  Please use a corresponding letter in your language.
-#. Alternatively, you may duplicate the letter 'c' is translated to.
-#. This comment also applies to the five following letter sequences.
-#: pgp.c:1737
+#. L10N: PGP options (inline) (opportunistic encryption is on)
+#. The 'i' is from the "PGP/M(i)ME" or "(i)nline", above.
+#. The 'f' is undocumented. Please DO NOT translate it.
+#: pgp.c:1749
 msgid "safcoi"
 msgstr "usgyoi"
 
-#: pgp.c:1742
+#. L10N: PGP options (opportunistic encryption is on)
+#: pgp.c:1755
 msgid "PGP (s)ign, sign (a)s, (c)lear, or (o)ppenc mode off? "
 msgstr "PGP (u)nderskriv, underskriv (s)om, r(y)d eller (o)ppenc-tilstand fra? "
 
-#: pgp.c:1743
+#. L10N: PGP options (opportunistic encryption is on)
+#. The 'f' is undocumented. Please DO NOT translate it.
+#: pgp.c:1758
 msgid "safco"
 msgstr "usgyo"
 
-#: pgp.c:1760
+#. L10N: PGP options (inline) (opportunistic encryption is off)
+#: pgp.c:1776
 #, c-format
 msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, %s format, (c)lear, or (o)ppenc mode? "
 msgstr "PGP (k)ryptér, (u)nderskriv, underskriv (s)om, (b)egge, %s-format, r(y)d eller (o)ppenc-tilstand? "
 
-#: pgp.c:1763
+#. L10N: PGP options (inline) (opportunistic encryption is off)
+#. The 'i' is from the "PGP/M(i)ME" or "(i)nline", above.
+#. The 'f' is undocumented. Please DO NOT translate it.
+#: pgp.c:1781
 msgid "esabfcoi"
 msgstr "kusbgyoi"
 
-#: pgp.c:1768
+#. L10N: PGP options (opportunistic encryption is off)
+#: pgp.c:1787
 msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, (c)lear, or (o)ppenc mode? "
 msgstr "PGP (k)ryptér, (u)nderskriv, underskriv (s)om, (b)egge, r(y)d eller (o)ppenc-tilstand? "
 
-#: pgp.c:1769
+#. L10N: PGP options (opportunistic encryption is off)
+#. The 'f' is undocumented. Please DO NOT translate it.
+#: pgp.c:1790
 msgid "esabfco"
 msgstr "kusbgyo"
 
-#: pgp.c:1782
+#. L10N: PGP options (inline)
+#: pgp.c:1804
 #, c-format
 msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, %s format, or (c)lear? "
 msgstr "PGP (k)ryptér, (u)nderskriv, underskriv (s)om, (b)egge, %s-format, r(y)d "
 
-#: pgp.c:1785
+#. L10N: PGP options (inline)
+#. The 'i' is from the "PGP/M(i)ME" or "(i)nline", above.
+#. The 'f' is undocumented. Please DO NOT translate it.
+#: pgp.c:1809
 msgid "esabfci"
 msgstr "kusby"
 
-#: pgp.c:1790
+#. L10N: PGP options
+#: pgp.c:1815
 msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, or (c)lear? "
 msgstr "PGP (k)ryptér, (u)nderskriv, underskriv (s)om, (b)egge eller r(y)d? "
 
-#: pgp.c:1791
+#. L10N: PGP options
+#. The 'f' is undocumented. Please DO NOT translate it.
+#: pgp.c:1818
 msgid "esabfc"
 msgstr "kusby"
 
@@ -4719,63 +4740,68 @@ msgstr ""
 "\n"
 "[-- Slut på S/MIME-underskrevne data --]\n"
 
-#: smime.c:2110
+#. L10N: S/MIME options (opportunistic encryption is on)
+#: smime.c:2111
 msgid "S/MIME (s)ign, encrypt (w)ith, sign (a)s, (c)lear, or (o)ppenc mode off? "
 msgstr "S/MIME (u).skriv, kryptér (m)ed, u.skriv (s)om, r(y)d eller (o)ppenc-tilstand fra? "
 
-#. L10N: The 'f' is from "forget it", an old undocumented synonym of
-#. 'clear'.  Please use a corresponding letter in your language.
-#. Alternatively, you may duplicate the letter 'c' is translated to.
-#. This comment also applies to the two following letter sequences.
-#: smime.c:2115
+#. L10N: S/MIME options (opportunistic encryption is on)
+#. The 'f' is undocumented. Please DO NOT translate it.
+#: smime.c:2114
 msgid "swafco"
 msgstr "umsgyo"
 
+#. L10N: S/MIME options (opportunistic encryption is off)
 #: smime.c:2124
 msgid "S/MIME (e)ncrypt, (s)ign, encrypt (w)ith, sign (a)s, (b)oth, (c)lear, or (o)ppenc mode? "
 msgstr "S/MIME (k)ryptér, (u).skriv, kryptér (m)ed, u.skriv (s)om, (b)egge, r(y)d eller (o)ppenc-tilstand? "
 
-#: smime.c:2125
+#. L10N: S/MIME options (opportunistic encryption is off)
+#. The 'f' is undocumented. Please DO NOT translate it.
+#: smime.c:2127
 msgid "eswabfco"
 msgstr "kumsbgyo"
 
-#: smime.c:2133
+#. L10N: S/MIME options
+#: smime.c:2136
 msgid "S/MIME (e)ncrypt, (s)ign, encrypt (w)ith, sign (a)s, (b)oth, or (c)lear? "
 msgstr "S/MIME (k)ryptér, (u).skriv, kryptér (m)ed, u.skriv (s)om, (b)egge, r(y)d? "
 
-#: smime.c:2134
+#. L10N: S/MIME options
+#. The 'f' is undocumented. Please DO NOT translate it.
+#: smime.c:2139
 msgid "eswabfc"
 msgstr "kumsbgy"
 
-#: smime.c:2155
+#: smime.c:2160
 msgid "Choose algorithm family: 1: DES, 2: RC2, 3: AES, or (c)lear? "
 msgstr "Vælg algoritme-familie: 1: DES, 2: RC2, 3: AES, eller r(y)d? "
 
-#: smime.c:2158
+#: smime.c:2163
 msgid "drac"
 msgstr "dray"
 
-#: smime.c:2161
+#: smime.c:2166
 msgid "1: DES, 2: Triple-DES "
 msgstr "1: DES, 2: Triple-DES "
 
-#: smime.c:2162
+#: smime.c:2167
 msgid "dt"
 msgstr "dt"
 
-#: smime.c:2174
+#: smime.c:2179
 msgid "1: RC2-40, 2: RC2-64, 3: RC2-128 "
 msgstr "1: RC2-40, 2: RC2-64, 3: RC2-128 "
 
-#: smime.c:2175
+#: smime.c:2180
 msgid "468"
 msgstr "468"
 
-#: smime.c:2190
+#: smime.c:2195
 msgid "1: AES128, 2: AES192, 3: AES256 "
 msgstr "1: AES128, 2: AES192, 3: AES256 "
 
-#: smime.c:2191
+#: smime.c:2196
 msgid "895"
 msgstr "895"
 

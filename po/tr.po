@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neomutt-20161104\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
-"POT-Creation-Date: 2016-11-24 23:07+0000\n"
+"POT-Creation-Date: 2016-11-28 16:06+0000\n"
 "PO-Revision-Date: 2006-01-11 04:13+0200\n"
 "Last-Translator: Recai Oktaş <roktas@debian.org>\n"
 "Language-Team: Debian L10n Turkish <debian-l10n-turkish@lists.debian.org>\n"
@@ -36,12 +36,12 @@ msgstr "%s@%s için parola: "
 msgid "Exit"
 msgstr "Çık"
 
-#: addrbook.c:38 curs_main.c:795 curs_main.c:808 pager.c:1635 pager.c:1645
+#: addrbook.c:38 curs_main.c:798 curs_main.c:811 pager.c:1635 pager.c:1645
 #: postpone.c:42
 msgid "Del"
 msgstr "Sil"
 
-#: addrbook.c:39 curs_main.c:796 curs_main.c:809 postpone.c:43
+#: addrbook.c:39 curs_main.c:799 curs_main.c:812 postpone.c:43
 msgid "Undel"
 msgstr "Kurtar"
 
@@ -50,7 +50,7 @@ msgid "Select"
 msgstr "Seç"
 
 #: addrbook.c:41 browser.c:57 browser.c:69 compose.c:116 compose.c:128
-#: crypt-gpgme.c:4022 curs_main.c:801 curs_main.c:814 mutt_ssl.c:1097
+#: crypt-gpgme.c:4022 curs_main.c:804 curs_main.c:817 mutt_ssl.c:1097
 #: mutt_ssl_gnutls.c:1005 pager.c:1752 pgpkey.c:522 postpone.c:44 query.c:53
 #: recvattach.c:57 smime.c:440
 msgid "Help"
@@ -227,7 +227,7 @@ msgstr "%s eposta kutusuna abone olunuyor..."
 msgid "Unsubscribe"
 msgstr "%s aboneliği iptal ediliyor..."
 
-#: browser.c:67 curs_main.c:813
+#: browser.c:67 curs_main.c:816
 msgid "Catchup"
 msgstr ""
 
@@ -1021,7 +1021,7 @@ msgstr "UYARI: Sunucu makine adı ile sertifika uyuşmuyor"
 msgid "PKA verified signer's address is: "
 msgstr ""
 
-#. L10N:
+#. L10N: DOTFILL
 #. Fill dots to make the DOTFILL entries the same length.
 #. In English, msgid "Fingerprint: " is the longest entry for this menu.
 #. Your language may vary.
@@ -1481,7 +1481,7 @@ msgid "S/MIME (s)ign, sign (a)s, (p)gp, (c)lear, or (o)ppenc mode off? "
 msgstr "S/MIME şif(r)ele, i(m)zala, (f)arklı imzala, i(k)isi de, p(g)p, i(p)tal?"
 
 #. L10N: S/MIME options (opportunistic encryption is on)
-#. The 'f' is undocumented. Please duplicate the letter 'c' is translated into.
+#. The 'f' is undocumented. Please DO NOT translate it.
 #: crypt-gpgme.c:4725
 msgid "sapfco"
 msgstr ""
@@ -1493,7 +1493,7 @@ msgid "PGP (s)ign, sign (a)s, s/(m)ime, (c)lear, or (o)ppenc mode off? "
 msgstr "PGP şif(r)ele, i(m)zala, (f)arklı imzala, i(k)isi de, (s)/mime, i(p)tal?"
 
 #. L10N: PGP options (opportunistic encryption is on)
-#. The 'f' is undocumented. Please duplicate the letter 'c' is translated into.
+#. The 'f' is undocumented. Please DO NOT translate it.
 #: crypt-gpgme.c:4734
 msgid "samfco"
 msgstr ""
@@ -1505,7 +1505,7 @@ msgid "S/MIME (e)ncrypt, (s)ign, sign (a)s, (b)oth, (p)gp, (c)lear, or (o)ppenc 
 msgstr "S/MIME şif(r)ele, i(m)zala, (f)arklı imzala, i(k)isi de, p(g)p, i(p)tal?"
 
 #. L10N: S/MIME options (opportunistic encryption is off)
-#. The 'f' is undocumented. Please duplicate the letter 'c' is translated into.
+#. The 'f' is undocumented. Please DO NOT translate it.
 #: crypt-gpgme.c:4750
 #, fuzzy
 msgid "esabpfco"
@@ -1518,7 +1518,7 @@ msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, s/(m)ime, (c)lear, or (o)ppenc 
 msgstr "PGP şif(r)ele, i(m)zala, (f)arklı imzala, i(k)isi de, (s)/mime, i(p)tal?"
 
 #. L10N: PGP options (opportunistic encryption is off)
-#. The 'f' is undocumented. Please duplicate the letter 'c' is translated into.
+#. The 'f' is undocumented. Please DO NOT translate it.
 #: crypt-gpgme.c:4759
 #, fuzzy
 msgid "esabmfco"
@@ -1531,7 +1531,7 @@ msgid "S/MIME (e)ncrypt, (s)ign, sign (a)s, (b)oth, (p)gp or (c)lear? "
 msgstr "S/MIME şif(r)ele, i(m)zala, (f)arklı imzala, i(k)isi de, p(g)p, i(p)tal?"
 
 #. L10N: S/MIME options
-#. The 'f' is undocumented. Please duplicate the letter 'c' is translated into.
+#. The 'f' is undocumented. Please DO NOT translate it.
 #: crypt-gpgme.c:4774
 msgid "esabpfc"
 msgstr "rmfkgup"
@@ -1543,12 +1543,12 @@ msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, s/(m)ime or (c)lear? "
 msgstr "PGP şif(r)ele, i(m)zala, (f)arklı imzala, i(k)isi de, (s)/mime, i(p)tal?"
 
 #. L10N: PGP options
-#. The 'f' is undocumented. Please duplicate the letter 'c' is translated into.
+#. The 'f' is undocumented. Please DO NOT translate it.
 #: crypt-gpgme.c:4783
 msgid "esabmfc"
 msgstr "rmfksup"
 
-#: crypt-gpgme.c:4808 pgp.c:1818 smime.c:2222 smime.c:2237
+#: crypt-gpgme.c:4808 pgp.c:1845 smime.c:2227 smime.c:2242
 msgid "Sign as: "
 msgstr "Farklı imzala: "
 
@@ -1698,7 +1698,7 @@ msgstr "Devam etmek için bir tuşa basın..."
 msgid " ('?' for list): "
 msgstr " (liste için '?'e basın): "
 
-#: curs_main.c:66 curs_main.c:1066 curs_main.c:1096
+#: curs_main.c:66 curs_main.c:1069 curs_main.c:1099
 msgid "No mailbox is open."
 msgstr "Hiç bir eposta kutusu açık değil."
 
@@ -1724,365 +1724,365 @@ msgstr "Görüntülenebilir bir ileti yok."
 msgid "%s: Operation not permitted by ACL"
 msgstr ""
 
-#: curs_main.c:417
+#: curs_main.c:420
 msgid "Cannot toggle write on a readonly mailbox!"
 msgstr "Salt-okunur bir eposta kutusu yazılabilir yapılamaz!"
 
-#: curs_main.c:424
+#: curs_main.c:427
 msgid "Changes to folder will be written on folder exit."
 msgstr "Klasördeki değişiklikler çıkışta kaydedilecek."
 
-#: curs_main.c:429
+#: curs_main.c:432
 msgid "Changes to folder will not be written."
 msgstr "Klasördeki değişiklikler kaydedilmeyecek."
 
-#: curs_main.c:721 mx.c:561 mx.c:653
+#: curs_main.c:724 mx.c:561 mx.c:653
 #, c-format
 msgid "%s is not a mailbox."
 msgstr "%s bir eposta kutusu değil!"
 
-#: curs_main.c:794 curs_main.c:807
+#: curs_main.c:797 curs_main.c:810
 msgid "Quit"
 msgstr "Çık"
 
-#: curs_main.c:797 curs_main.c:810 recvattach.c:54
+#: curs_main.c:800 curs_main.c:813 recvattach.c:54
 msgid "Save"
 msgstr "Kaydet"
 
-#: curs_main.c:798 query.c:49
+#: curs_main.c:801 query.c:49
 msgid "Mail"
 msgstr "Gönder"
 
-#: curs_main.c:799 pager.c:1636
+#: curs_main.c:802 pager.c:1636
 msgid "Reply"
 msgstr "Cevapla"
 
-#: curs_main.c:800
+#: curs_main.c:803
 msgid "Group"
 msgstr "Gruba Cevapla"
 
-#: curs_main.c:811 pager.c:1643
+#: curs_main.c:814 pager.c:1643
 msgid "Post"
 msgstr ""
 
-#: curs_main.c:812 pager.c:1644
+#: curs_main.c:815 pager.c:1644
 #, fuzzy
 msgid "Followup"
 msgstr "Cevap adresi olarak %s%s kullanılsın mı? [Mail-Followup-To]"
 
-#: curs_main.c:905
+#: curs_main.c:908
 msgid "Mailbox was externally modified.  Flags may be wrong."
 msgstr "Eposta kutusu değiştirildi.  Bazı eposta bayrakları hatalı olabilir."
 
-#: curs_main.c:912 pager.c:2053
+#: curs_main.c:915 pager.c:2053
 msgid "New mail in this mailbox."
 msgstr "Bu kutuda yeni eposta var!"
 
-#: curs_main.c:925
+#: curs_main.c:928
 msgid "Mailbox was externally modified."
 msgstr "Eposta kutusu değiştirildi."
 
-#: curs_main.c:1072
+#: curs_main.c:1075
 msgid "No tagged messages."
 msgstr "İşaretlenmiş ileti yok."
 
-#: curs_main.c:1103 menu.c:1002
+#: curs_main.c:1106 menu.c:1002
 msgid "Nothing to do."
 msgstr "Yapılacak bir işlem yok."
 
-#: curs_main.c:1208
+#: curs_main.c:1211
 #, fuzzy
 msgid "Enter Message-Id: "
 msgstr "%s için anahtar NO'yu girin: "
 
-#: curs_main.c:1217
+#: curs_main.c:1220
 msgid "Article has no parent reference."
 msgstr ""
 
-#: curs_main.c:1240
+#: curs_main.c:1243
 #, fuzzy
 msgid "Message is not visible in limited view."
 msgstr "Sınırlandırılmış görünümde ana ileti görünemez."
 
-#: curs_main.c:1246
+#: curs_main.c:1249
 #, fuzzy, c-format
 msgid "Fetching %s from server..."
 msgstr "İletileri sunucudan sil..."
 
-#: curs_main.c:1256
+#: curs_main.c:1259
 #, c-format
 msgid "Article %s not found on the server."
 msgstr ""
 
-#: curs_main.c:1275
+#: curs_main.c:1278
 msgid "No Message-Id. Unable to perform operation."
 msgstr ""
 
-#: curs_main.c:1279 imap/message.c:233 nntp.c:1264 pop.c:281
+#: curs_main.c:1282 imap/message.c:233 nntp.c:1264 pop.c:281
 #, fuzzy
 msgid "Fetching message headers..."
 msgstr "İleti başlıkları alınıyor... [%d/%d]"
 
-#: curs_main.c:1342
+#: curs_main.c:1345
 #, fuzzy
 msgid "No deleted messages found in the thread."
 msgstr "ilmekteki bütün iletileri sil"
 
-#: curs_main.c:1353
+#: curs_main.c:1356
 msgid "Jump to message: "
 msgstr "İletiye geç: "
 
-#: curs_main.c:1359
+#: curs_main.c:1362
 msgid "Argument must be a message number."
 msgstr "Argüman bir ileti numarası olmak zorunda."
 
-#: curs_main.c:1391
+#: curs_main.c:1394
 msgid "That message is not visible."
 msgstr "Bu ileti görünmez."
 
-#: curs_main.c:1394
+#: curs_main.c:1397
 msgid "Invalid message number."
 msgstr "Geçersiz ileti numarası."
 
 #. L10N: CHECK_ACL
-#: curs_main.c:1408 curs_main.c:2663 pager.c:2648
+#: curs_main.c:1411 curs_main.c:2666 pager.c:2648
 #, fuzzy
 msgid "Cannot delete message(s)"
 msgstr "Kurtarılan ileti yok."
 
-#: curs_main.c:1411
+#: curs_main.c:1414
 msgid "Delete messages matching: "
 msgstr "Tabire uyan iletileri sil: "
 
-#: curs_main.c:1433
+#: curs_main.c:1436
 msgid "No limit pattern is in effect."
 msgstr "Herhangi bir sınırlandırma tabiri etkin değil."
 
 #. L10N: ask for a limit to apply
-#: curs_main.c:1438
+#: curs_main.c:1441
 #, c-format
 msgid "Limit: %s"
 msgstr "Sınır: %s"
 
-#: curs_main.c:1471
+#: curs_main.c:1474
 msgid "Limit to messages matching: "
 msgstr "Sadece tabire uyan iletiler: "
 
-#: curs_main.c:1493
+#: curs_main.c:1496
 msgid "To view all messages, limit to \"all\"."
 msgstr "İletilerin hepsini görmek için \"all\" tabirini kullanın."
 
-#: curs_main.c:1505 pager.c:2174
+#: curs_main.c:1508 pager.c:2174
 msgid "Quit Mutt?"
 msgstr "Mutt'tan çıkılsın mı?"
 
-#: curs_main.c:1597
+#: curs_main.c:1600
 msgid "Tag messages matching: "
 msgstr "Tabire uyan iletileri işaretle: "
 
 #. L10N: CHECK_ACL
-#: curs_main.c:1607 curs_main.c:3070 pager.c:3026
+#: curs_main.c:1610 curs_main.c:3073 pager.c:3026
 #, fuzzy
 msgid "Cannot undelete message(s)"
 msgstr "Kurtarılan ileti yok."
 
-#: curs_main.c:1609
+#: curs_main.c:1612
 msgid "Undelete messages matching: "
 msgstr "Tabire uyan iletileri kurtar: "
 
-#: curs_main.c:1617
+#: curs_main.c:1620
 msgid "Untag messages matching: "
 msgstr "Tabire uyan iletilerdeki işareti sil: "
 
-#: curs_main.c:1649
+#: curs_main.c:1652
 msgid "Logged out of IMAP servers."
 msgstr ""
 
-#: curs_main.c:1741 curs_main.c:1775
+#: curs_main.c:1744 curs_main.c:1778
 #, fuzzy
 msgid "No virtual folder, aborting."
 msgstr "Konu girilmedi, iptal ediliyor."
 
-#: curs_main.c:1747
+#: curs_main.c:1750
 msgid "Failed to read thread, aborting."
 msgstr ""
 
-#: curs_main.c:1783
+#: curs_main.c:1786
 #, fuzzy
 msgid "No label specified, aborting."
 msgstr "Konu girilmedi, iptal ediliyor."
 
-#: curs_main.c:1793
+#: curs_main.c:1796
 #, c-format
 msgid "Update labels..."
 msgstr ""
 
-#: curs_main.c:1816
+#: curs_main.c:1819
 msgid "Failed to modify labels, aborting."
 msgstr ""
 
-#: curs_main.c:1850
+#: curs_main.c:1853
 #, fuzzy
 msgid "No query, aborting."
 msgstr "Konu girilmedi, iptal ediliyor."
 
-#: curs_main.c:1854
+#: curs_main.c:1857
 msgid "Failed to create query, aborting."
 msgstr ""
 
-#: curs_main.c:1883
+#: curs_main.c:1886
 msgid "Open mailbox in read-only mode"
 msgstr "Eposta kutusunu salt okunur aç"
 
-#: curs_main.c:1886
+#: curs_main.c:1889
 #, fuzzy
 msgid "Open virtual folder"
 msgstr "başka bir dizin aç"
 
-#: curs_main.c:1889
+#: curs_main.c:1892
 msgid "Open mailbox"
 msgstr "Eposta kutusunu aç"
 
-#: curs_main.c:1899
+#: curs_main.c:1902
 #, fuzzy
 msgid "No mailboxes have new mail"
 msgstr "Yeni eposta içeren bir eposta kutusu yok."
 
-#: curs_main.c:1940
+#: curs_main.c:1943
 #, fuzzy
 msgid "Open newsgroup in read-only mode"
 msgstr "Eposta kutusunu salt okunur aç"
 
-#: curs_main.c:1942
+#: curs_main.c:1945
 msgid "Open newsgroup"
 msgstr ""
 
-#: curs_main.c:2033
+#: curs_main.c:2036
 #, fuzzy
 msgid "Exit NeoMutt without saving?"
 msgstr "Mutt'tan kaydedilmeden çıkılsın mı?"
 
-#: curs_main.c:2049
+#: curs_main.c:2052
 #, fuzzy
 msgid "Cannot break thread"
 msgstr "Süzgeç oluşturulamadı"
 
-#: curs_main.c:2052 curs_main.c:2088 curs_main.c:2548 curs_main.c:2580
+#: curs_main.c:2055 curs_main.c:2091 curs_main.c:2551 curs_main.c:2583
 #: flags.c:305 thread.c:1029 thread.c:1085 thread.c:1152
 msgid "Threading is not enabled."
 msgstr "İlmek kullanımı etkin değil."
 
-#: curs_main.c:2064
+#: curs_main.c:2067
 msgid "Thread broken"
 msgstr "Kopuk ilmek"
 
-#: curs_main.c:2075
+#: curs_main.c:2078
 msgid "Thread cannot be broken, message is not part of a thread"
 msgstr ""
 
 #. L10N: CHECK_ACL
-#: curs_main.c:2085
+#: curs_main.c:2088
 msgid "Cannot link threads"
 msgstr ""
 
-#: curs_main.c:2090
+#: curs_main.c:2093
 msgid "No Message-ID: header available to link thread"
 msgstr "İlmeğe bağlamakta kullanılabilecek bir \"Message-ID:\" başlığı yok"
 
-#: curs_main.c:2092
+#: curs_main.c:2095
 msgid "First, please tag a message to be linked here"
 msgstr "Öncelikle lütfen buraya bağlanacak bir ileti işaretleyin"
 
-#: curs_main.c:2104
+#: curs_main.c:2107
 msgid "Threads linked"
 msgstr "Bağlanan ilmekler"
 
-#: curs_main.c:2107
+#: curs_main.c:2110
 msgid "No thread linked"
 msgstr "Herhangi bir ilmeğe bağlanmadı"
 
-#: curs_main.c:2143 curs_main.c:2168
+#: curs_main.c:2146 curs_main.c:2171
 msgid "You are on the last message."
 msgstr "Son iletidesiniz."
 
-#: curs_main.c:2150 curs_main.c:2194
+#: curs_main.c:2153 curs_main.c:2197
 msgid "No undeleted messages."
 msgstr "Kurtarılan ileti yok."
 
-#: curs_main.c:2187 curs_main.c:2211
+#: curs_main.c:2190 curs_main.c:2214
 msgid "You are on the first message."
 msgstr "İlk iletidesiniz."
 
-#: curs_main.c:2286 menu.c:838 pager.c:2292 pattern.c:1654
+#: curs_main.c:2289 menu.c:838 pager.c:2292 pattern.c:1654
 msgid "Search wrapped to top."
 msgstr "Arama başa döndü."
 
-#: curs_main.c:2295 pager.c:2314 pattern.c:1665
+#: curs_main.c:2298 pager.c:2314 pattern.c:1665
 msgid "Search wrapped to bottom."
 msgstr "Arama sona ulaştı."
 
-#: curs_main.c:2339
+#: curs_main.c:2342
 #, fuzzy
 msgid "No new messages in this limited view."
 msgstr "Sınırlandırılmış görünümde ana ileti görünemez."
 
-#: curs_main.c:2341
+#: curs_main.c:2344
 #, fuzzy
 msgid "No new messages."
 msgstr "Yeni ileti yok"
 
-#: curs_main.c:2346
+#: curs_main.c:2349
 #, fuzzy
 msgid "No unread messages in this limited view."
 msgstr "Sınırlandırılmış görünümde ana ileti görünemez."
 
-#: curs_main.c:2348
+#: curs_main.c:2351
 #, fuzzy
 msgid "No unread messages."
 msgstr "Okunmamış ileti yok"
 
 #. L10N: CHECK_ACL
-#: curs_main.c:2366
+#: curs_main.c:2369
 #, fuzzy
 msgid "Cannot flag message"
 msgstr "iletiyi göster"
 
 #. L10N: CHECK_ACL
-#: curs_main.c:2404 pager.c:2989
+#: curs_main.c:2407 pager.c:2989
 msgid "Cannot toggle new"
 msgstr ""
 
-#: curs_main.c:2481
+#: curs_main.c:2484
 msgid "No more threads."
 msgstr "Daha başka ilmek yok."
 
-#: curs_main.c:2483
+#: curs_main.c:2486
 msgid "You are on the first thread."
 msgstr "İlk ilmektesiniz."
 
-#: curs_main.c:2566
+#: curs_main.c:2569
 msgid "Thread contains unread messages."
 msgstr "İlmek okunmamış iletiler içeriyor."
 
 #. L10N: CHECK_ACL
-#: curs_main.c:2618 pager.c:2614
+#: curs_main.c:2621 pager.c:2614
 #, fuzzy
 msgid "Cannot delete message"
 msgstr "Kurtarılan ileti yok."
 
 #. L10N: CHECK_ACL
-#: curs_main.c:2725
+#: curs_main.c:2728
 #, fuzzy
 msgid "Cannot edit message"
 msgstr "İleti yazılamadı"
 
-#: curs_main.c:2773 pager.c:3081
+#: curs_main.c:2776 pager.c:3081
 #, fuzzy
 msgid "No labels changed."
 msgstr "Eposta kutusunda değişiklik yok."
 
 #. L10N: CHECK_ACL
-#: curs_main.c:2873
+#: curs_main.c:2876
 #, fuzzy
 msgid "Cannot mark message(s) as read"
 msgstr "ilmeği başlatan ana iletiye geç"
@@ -2090,14 +2090,14 @@ msgstr "ilmeği başlatan ana iletiye geç"
 #. L10N: This is the prompt for <mark-message>.  Whatever they
 #. enter will be prefixed by $mark_macro_prefix and will become
 #. a macro hotkey to jump to the currently selected message.
-#: curs_main.c:2909
+#: curs_main.c:2912
 #, fuzzy
 msgid "Enter macro stroke: "
 msgstr "%s için anahtar NO'yu girin: "
 
 #. L10N: "message hotkey" is the key bindings menu description of a
 #. macro created by <mark-message>.
-#: curs_main.c:2917
+#: curs_main.c:2920
 #, fuzzy
 msgid "message hotkey"
 msgstr "İleti ertelendi."
@@ -2105,28 +2105,28 @@ msgstr "İleti ertelendi."
 #. L10N: This is echoed after <mark-message> creates a new hotkey
 #. macro.  %s is the hotkey string ($mark_macro_prefix followed
 #. by whatever they typed at the prompt.)
-#: curs_main.c:2922
+#: curs_main.c:2925
 #, fuzzy, c-format
 msgid "Message bound to %s."
 msgstr "İleti geri gönderildi."
 
 #. L10N: This error is printed if <mark-message> cannot find a
 #. Message-ID for the currently selected message in the index.
-#: curs_main.c:2930
+#: curs_main.c:2933
 #, fuzzy
 msgid "No message ID to macro."
 msgstr "Bu klasörde ileti yok."
 
-#: curs_main.c:2973 pager.c:2847 recvattach.c:1262
+#: curs_main.c:2976 pager.c:2847 recvattach.c:1262
 msgid "Reply by mail as poster prefers?"
 msgstr ""
 
-#: curs_main.c:2978 pager.c:2816 pager.c:2827 pager.c:2851
+#: curs_main.c:2981 pager.c:2816 pager.c:2827 pager.c:2851
 msgid "Posting to this group not allowed, may be moderated. Continue?"
 msgstr ""
 
 #. L10N: CHECK_ACL
-#: curs_main.c:3040 pager.c:3009
+#: curs_main.c:3043 pager.c:3009
 #, fuzzy
 msgid "Cannot undelete message"
 msgstr "Kurtarılan ileti yok."
@@ -4015,72 +4015,93 @@ msgstr "PGP alt süreci açılamıyor!"
 msgid "Can't invoke PGP"
 msgstr "PGP çalıştırılamıyor"
 
+#. L10N: These next string MUST have the same highlighed letter
+#. One of them will appear in each of the three strings marked "(inline"), below.
+#: pgp.c:1724
+msgid "PGP/M(i)ME"
+msgstr "PGP/M(i)ME"
+
+#. L10N: These previous string MUST have the same highlighed letter
+#. One of them will appear in each of the three strings marked "(inline"), below.
 #: pgp.c:1730
+msgid "(i)nline"
+msgstr "satır(i)çi"
+
+#. L10N: PGP options (inline) (opportunistic encryption is on)
+#: pgp.c:1744
 #, fuzzy, c-format
 msgid "PGP (s)ign, sign (a)s, %s format, (c)lear, or (o)ppenc mode off? "
 msgstr "PGP şif(r)ele, i(m)zala, (f)arklı imzala, i(k)isi de, %s, i(p)tal? "
 
-#: pgp.c:1731 pgp.c:1761 pgp.c:1783
-msgid "PGP/M(i)ME"
-msgstr "PGP/M(i)ME"
-
-#: pgp.c:1731 pgp.c:1761 pgp.c:1783
-msgid "(i)nline"
-msgstr "satır(i)çi"
-
-#. L10N: The 'f' is from "forget it", an old undocumented synonym of
-#. 'clear'.  Please use a corresponding letter in your language.
-#. Alternatively, you may duplicate the letter 'c' is translated to.
-#. This comment also applies to the five following letter sequences.
-#: pgp.c:1737
+#. L10N: PGP options (inline) (opportunistic encryption is on)
+#. The 'i' is from the "PGP/M(i)ME" or "(i)nline", above.
+#. The 'f' is undocumented. Please DO NOT translate it.
+#: pgp.c:1749
 msgid "safcoi"
 msgstr ""
 
-#: pgp.c:1742
+#. L10N: PGP options (opportunistic encryption is on)
+#: pgp.c:1755
 #, fuzzy
 msgid "PGP (s)ign, sign (a)s, (c)lear, or (o)ppenc mode off? "
 msgstr "PGP şif(r)ele, i(m)zala, (f)arklı imzala, i(k)isi de, %s, i(p)tal? "
 
-#: pgp.c:1743
+#. L10N: PGP options (opportunistic encryption is on)
+#. The 'f' is undocumented. Please DO NOT translate it.
+#: pgp.c:1758
 msgid "safco"
 msgstr ""
 
-#: pgp.c:1760
+#. L10N: PGP options (inline) (opportunistic encryption is off)
+#: pgp.c:1776
 #, fuzzy, c-format
 msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, %s format, (c)lear, or (o)ppenc mode? "
 msgstr "PGP şif(r)ele, i(m)zala, (f)arklı imzala, i(k)isi de, %s, i(p)tal? "
 
-#: pgp.c:1763
+#. L10N: PGP options (inline) (opportunistic encryption is off)
+#. The 'i' is from the "PGP/M(i)ME" or "(i)nline", above.
+#. The 'f' is undocumented. Please DO NOT translate it.
+#: pgp.c:1781
 #, fuzzy
 msgid "esabfcoi"
 msgstr "rmfkgup"
 
-#: pgp.c:1768
+#. L10N: PGP options (opportunistic encryption is off)
+#: pgp.c:1787
 #, fuzzy
 msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, (c)lear, or (o)ppenc mode? "
 msgstr "PGP şif(r)ele, i(m)zala, (f)arklı imzala, i(k)isi de, %s, i(p)tal? "
 
-#: pgp.c:1769
+#. L10N: PGP options (opportunistic encryption is off)
+#. The 'f' is undocumented. Please DO NOT translate it.
+#: pgp.c:1790
 #, fuzzy
 msgid "esabfco"
 msgstr "rmfkgup"
 
-#: pgp.c:1782
+#. L10N: PGP options (inline)
+#: pgp.c:1804
 #, fuzzy, c-format
 msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, %s format, or (c)lear? "
 msgstr "PGP şif(r)ele, i(m)zala, (f)arklı imzala, i(k)isi de, %s, i(p)tal? "
 
-#: pgp.c:1785
+#. L10N: PGP options (inline)
+#. The 'i' is from the "PGP/M(i)ME" or "(i)nline", above.
+#. The 'f' is undocumented. Please DO NOT translate it.
+#: pgp.c:1809
 #, fuzzy
 msgid "esabfci"
 msgstr "rmfkgup"
 
-#: pgp.c:1790
+#. L10N: PGP options
+#: pgp.c:1815
 #, fuzzy
 msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, or (c)lear? "
 msgstr "PGP şif(r)ele, i(m)zala, (f)arklı imzala, i(k)isi de, %s, i(p)tal? "
 
-#: pgp.c:1791
+#. L10N: PGP options
+#. The 'f' is undocumented. Please DO NOT translate it.
+#: pgp.c:1818
 #, fuzzy
 msgid "esabfc"
 msgstr "rmfkgup"
@@ -4789,66 +4810,71 @@ msgstr ""
 "\n"
 "[-- S/MIME ile imzalanmış bilginin sonu --]\n"
 
-#: smime.c:2110
+#. L10N: S/MIME options (opportunistic encryption is on)
+#: smime.c:2111
 #, fuzzy
 msgid "S/MIME (s)ign, encrypt (w)ith, sign (a)s, (c)lear, or (o)ppenc mode off? "
 msgstr "S/MIME şif(r)ele, i(m)zala, f(a)rklı şifrele, (f)arklı imzala, i(k)isi de, i(p)tal?"
 
-#. L10N: The 'f' is from "forget it", an old undocumented synonym of
-#. 'clear'.  Please use a corresponding letter in your language.
-#. Alternatively, you may duplicate the letter 'c' is translated to.
-#. This comment also applies to the two following letter sequences.
-#: smime.c:2115
+#. L10N: S/MIME options (opportunistic encryption is on)
+#. The 'f' is undocumented. Please DO NOT translate it.
+#: smime.c:2114
 msgid "swafco"
 msgstr ""
 
+#. L10N: S/MIME options (opportunistic encryption is off)
 #: smime.c:2124
 #, fuzzy
 msgid "S/MIME (e)ncrypt, (s)ign, encrypt (w)ith, sign (a)s, (b)oth, (c)lear, or (o)ppenc mode? "
 msgstr "S/MIME şif(r)ele, i(m)zala, f(a)rklı şifrele, (f)arklı imzala, i(k)isi de, i(p)tal?"
 
-#: smime.c:2125
+#. L10N: S/MIME options (opportunistic encryption is off)
+#. The 'f' is undocumented. Please DO NOT translate it.
+#: smime.c:2127
 #, fuzzy
 msgid "eswabfco"
 msgstr "rmafkup"
 
-#: smime.c:2133
+#. L10N: S/MIME options
+#: smime.c:2136
 msgid "S/MIME (e)ncrypt, (s)ign, encrypt (w)ith, sign (a)s, (b)oth, or (c)lear? "
 msgstr "S/MIME şif(r)ele, i(m)zala, f(a)rklı şifrele, (f)arklı imzala, i(k)isi de, i(p)tal?"
 
-#: smime.c:2134
+#. L10N: S/MIME options
+#. The 'f' is undocumented. Please DO NOT translate it.
+#: smime.c:2139
 msgid "eswabfc"
 msgstr "rmafkup"
 
-#: smime.c:2155
+#: smime.c:2160
 msgid "Choose algorithm family: 1: DES, 2: RC2, 3: AES, or (c)lear? "
 msgstr "Algoritma ailesini seçin: 1: DES, 2: RC2, 3: AES, şifresi(z)? "
 
-#: smime.c:2158
+#: smime.c:2163
 msgid "drac"
 msgstr "draz"
 
-#: smime.c:2161
+#: smime.c:2166
 msgid "1: DES, 2: Triple-DES "
 msgstr "1: DES, 2: Triple-DES "
 
-#: smime.c:2162
+#: smime.c:2167
 msgid "dt"
 msgstr "dt"
 
-#: smime.c:2174
+#: smime.c:2179
 msgid "1: RC2-40, 2: RC2-64, 3: RC2-128 "
 msgstr "1: RC2-40, 2: RC2-64, 3: RC2-128 "
 
-#: smime.c:2175
+#: smime.c:2180
 msgid "468"
 msgstr "468"
 
-#: smime.c:2190
+#: smime.c:2195
 msgid "1: AES128, 2: AES192, 3: AES256 "
 msgstr "1: AES128, 2: AES192, 3: AES256 "
 
-#: smime.c:2191
+#: smime.c:2196
 msgid "895"
 msgstr "895"
 

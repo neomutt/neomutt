@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neomutt-20161104\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
-"POT-Creation-Date: 2016-11-24 23:07+0000\n"
+"POT-Creation-Date: 2016-11-28 16:06+0000\n"
 "PO-Revision-Date: 2016-08-18 09:40+0900\n"
 "Last-Translator: TAKAHASHI Tamotsu <ttakah@lapis.plala.or.jp>\n"
 "Language-Team: mutt-j <mutt-j-users@lists.osdn.me>\n"
@@ -36,12 +36,12 @@ msgstr "%s@%s のパスワード: "
 msgid "Exit"
 msgstr "戻る"
 
-#: addrbook.c:38 curs_main.c:795 curs_main.c:808 pager.c:1635 pager.c:1645
+#: addrbook.c:38 curs_main.c:798 curs_main.c:811 pager.c:1635 pager.c:1645
 #: postpone.c:42
 msgid "Del"
 msgstr "削除"
 
-#: addrbook.c:39 curs_main.c:796 curs_main.c:809 postpone.c:43
+#: addrbook.c:39 curs_main.c:799 curs_main.c:812 postpone.c:43
 msgid "Undel"
 msgstr "削除を取り消し"
 
@@ -50,7 +50,7 @@ msgid "Select"
 msgstr "選択"
 
 #: addrbook.c:41 browser.c:57 browser.c:69 compose.c:116 compose.c:128
-#: crypt-gpgme.c:4022 curs_main.c:801 curs_main.c:814 mutt_ssl.c:1097
+#: crypt-gpgme.c:4022 curs_main.c:804 curs_main.c:817 mutt_ssl.c:1097
 #: mutt_ssl_gnutls.c:1005 pager.c:1752 pgpkey.c:522 postpone.c:44 query.c:53
 #: recvattach.c:57 smime.c:440
 msgid "Help"
@@ -225,7 +225,7 @@ msgstr "%s を購読を開始した"
 msgid "Unsubscribe"
 msgstr "%s の購読を取り消した"
 
-#: browser.c:67 curs_main.c:813
+#: browser.c:67 curs_main.c:816
 msgid "Catchup"
 msgstr ""
 
@@ -1014,7 +1014,7 @@ msgstr "警告: PKA エントリが署名者アドレスと一致しない: "
 msgid "PKA verified signer's address is: "
 msgstr "PKA で検証された署名者アドレス: "
 
-#. L10N:
+#. L10N: DOTFILL
 #. Fill dots to make the DOTFILL entries the same length.
 #. In English, msgid "Fingerprint: " is the longest entry for this menu.
 #. Your language may vary.
@@ -1472,7 +1472,7 @@ msgid "S/MIME (s)ign, sign (a)s, (p)gp, (c)lear, or (o)ppenc mode off? "
 msgstr "S/MIME s:署名, a:署名鍵選択, p:PGP, c:なし, o:日和見暗号オフ "
 
 #. L10N: S/MIME options (opportunistic encryption is on)
-#. The 'f' is undocumented. Please duplicate the letter 'c' is translated into.
+#. The 'f' is undocumented. Please DO NOT translate it.
 #: crypt-gpgme.c:4725
 msgid "sapfco"
 msgstr "sapfco"
@@ -1483,7 +1483,7 @@ msgid "PGP (s)ign, sign (a)s, s/(m)ime, (c)lear, or (o)ppenc mode off? "
 msgstr "PGP s:署名, a:署名鍵選択, m:S/MIME, c:なし, o:日和見暗号オフ "
 
 #. L10N: PGP options (opportunistic encryption is on)
-#. The 'f' is undocumented. Please duplicate the letter 'c' is translated into.
+#. The 'f' is undocumented. Please DO NOT translate it.
 #: crypt-gpgme.c:4734
 msgid "samfco"
 msgstr "samfco"
@@ -1495,7 +1495,7 @@ msgid "S/MIME (e)ncrypt, (s)ign, sign (a)s, (b)oth, (p)gp, (c)lear, or (o)ppenc 
 msgstr "S/MIME e:暗号化, s:署名, a:署名鍵選択, b:暗号+署名, p:PGP, c:なし, o:日和見暗号 "
 
 #. L10N: S/MIME options (opportunistic encryption is off)
-#. The 'f' is undocumented. Please duplicate the letter 'c' is translated into.
+#. The 'f' is undocumented. Please DO NOT translate it.
 #: crypt-gpgme.c:4750
 msgid "esabpfco"
 msgstr "esabpfco"
@@ -1506,7 +1506,7 @@ msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, s/(m)ime, (c)lear, or (o)ppenc 
 msgstr "PGP e:暗号化, s:署名, a:署名鍵選択, b:暗号+署名, m:S/MIME, c:なし, o:日和見暗号 "
 
 #. L10N: PGP options (opportunistic encryption is off)
-#. The 'f' is undocumented. Please duplicate the letter 'c' is translated into.
+#. The 'f' is undocumented. Please DO NOT translate it.
 #: crypt-gpgme.c:4759
 msgid "esabmfco"
 msgstr "esabmfco"
@@ -1517,7 +1517,7 @@ msgid "S/MIME (e)ncrypt, (s)ign, sign (a)s, (b)oth, (p)gp or (c)lear? "
 msgstr "S/MIME e:暗号化, s:署名, a:署名鍵選択, b:暗号+署名, p:PGP, c:なし "
 
 #. L10N: S/MIME options
-#. The 'f' is undocumented. Please duplicate the letter 'c' is translated into.
+#. The 'f' is undocumented. Please DO NOT translate it.
 #: crypt-gpgme.c:4774
 msgid "esabpfc"
 msgstr "esabpfc"
@@ -1528,12 +1528,12 @@ msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, s/(m)ime or (c)lear? "
 msgstr "PGP e:暗号化, s:署名, a:署名鍵選択, b:暗号+署名, m:S/MIME, c:なし "
 
 #. L10N: PGP options
-#. The 'f' is undocumented. Please duplicate the letter 'c' is translated into.
+#. The 'f' is undocumented. Please DO NOT translate it.
 #: crypt-gpgme.c:4783
 msgid "esabmfc"
 msgstr "esabmfc"
 
-#: crypt-gpgme.c:4808 pgp.c:1818 smime.c:2222 smime.c:2237
+#: crypt-gpgme.c:4808 pgp.c:1845 smime.c:2227 smime.c:2242
 msgid "Sign as: "
 msgstr "署名に使う鍵: "
 
@@ -1681,7 +1681,7 @@ msgstr "続けるには何かキーを..."
 msgid " ('?' for list): "
 msgstr "('?' で一覧): "
 
-#: curs_main.c:66 curs_main.c:1066 curs_main.c:1096
+#: curs_main.c:66 curs_main.c:1069 curs_main.c:1099
 msgid "No mailbox is open."
 msgstr "開いているメールボックスがない。"
 
@@ -1707,369 +1707,369 @@ msgstr "可視メッセージがない。"
 msgid "%s: Operation not permitted by ACL"
 msgstr "%s: 操作が ACL で許可されていない"
 
-#: curs_main.c:417
+#: curs_main.c:420
 msgid "Cannot toggle write on a readonly mailbox!"
 msgstr "読み出し専用メールボックスでは変更の書き込みを切替できない!"
 
-#: curs_main.c:424
+#: curs_main.c:427
 msgid "Changes to folder will be written on folder exit."
 msgstr "フォルダ脱出時にフォルダへの変更が書き込まれる。"
 
-#: curs_main.c:429
+#: curs_main.c:432
 msgid "Changes to folder will not be written."
 msgstr "フォルダへの変更は書き込まれない。"
 
-#: curs_main.c:721 mx.c:561 mx.c:653
+#: curs_main.c:724 mx.c:561 mx.c:653
 #, c-format
 msgid "%s is not a mailbox."
 msgstr "%s はメールボックスではない。"
 
-#: curs_main.c:794 curs_main.c:807
+#: curs_main.c:797 curs_main.c:810
 msgid "Quit"
 msgstr "中止"
 
-#: curs_main.c:797 curs_main.c:810 recvattach.c:54
+#: curs_main.c:800 curs_main.c:813 recvattach.c:54
 msgid "Save"
 msgstr "保存"
 
-#: curs_main.c:798 query.c:49
+#: curs_main.c:801 query.c:49
 msgid "Mail"
 msgstr "メール"
 
-#: curs_main.c:799 pager.c:1636
+#: curs_main.c:802 pager.c:1636
 msgid "Reply"
 msgstr "返信"
 
-#: curs_main.c:800
+#: curs_main.c:803
 msgid "Group"
 msgstr "全員に返信"
 
-#: curs_main.c:811 pager.c:1643
+#: curs_main.c:814 pager.c:1643
 msgid "Post"
 msgstr ""
 
-#: curs_main.c:812 pager.c:1644
+#: curs_main.c:815 pager.c:1644
 #, fuzzy
 msgid "Followup"
 msgstr "%s%s へのフォローアップ?"
 
 # 「不正な可能性あり」だと重大なことのように思えてしまうので変更した。
-#: curs_main.c:905
+#: curs_main.c:908
 msgid "Mailbox was externally modified.  Flags may be wrong."
 msgstr "メールボックスが外部から変更された。フラグが正確でないかもしれない。"
 
-#: curs_main.c:912 pager.c:2053
+#: curs_main.c:915 pager.c:2053
 msgid "New mail in this mailbox."
 msgstr "このメールボックスに新着メール。"
 
-#: curs_main.c:925
+#: curs_main.c:928
 msgid "Mailbox was externally modified."
 msgstr "メールボックスが外部から変更された。"
 
-#: curs_main.c:1072
+#: curs_main.c:1075
 msgid "No tagged messages."
 msgstr "タグ付きメッセージがない。"
 
-#: curs_main.c:1103 menu.c:1002
+#: curs_main.c:1106 menu.c:1002
 msgid "Nothing to do."
 msgstr "何もしない。"
 
-#: curs_main.c:1208
+#: curs_main.c:1211
 #, fuzzy
 msgid "Enter Message-Id: "
 msgstr "鍵ID入力: "
 
-#: curs_main.c:1217
+#: curs_main.c:1220
 msgid "Article has no parent reference."
 msgstr ""
 
-#: curs_main.c:1240
+#: curs_main.c:1243
 #, fuzzy
 msgid "Message is not visible in limited view."
 msgstr "親メッセージはこの制限された表示範囲では不可視。"
 
-#: curs_main.c:1246
+#: curs_main.c:1249
 #, fuzzy, c-format
 msgid "Fetching %s from server..."
 msgstr "サーバからメッセージを削除中..."
 
-#: curs_main.c:1256
+#: curs_main.c:1259
 #, c-format
 msgid "Article %s not found on the server."
 msgstr ""
 
-#: curs_main.c:1275
+#: curs_main.c:1278
 msgid "No Message-Id. Unable to perform operation."
 msgstr ""
 
-#: curs_main.c:1279 imap/message.c:233 nntp.c:1264 pop.c:281
+#: curs_main.c:1282 imap/message.c:233 nntp.c:1264 pop.c:281
 msgid "Fetching message headers..."
 msgstr "メッセージヘッダ取得中..."
 
-#: curs_main.c:1342
+#: curs_main.c:1345
 #, fuzzy
 msgid "No deleted messages found in the thread."
 msgstr "スレッドのメッセージをすべて削除"
 
-#: curs_main.c:1353
+#: curs_main.c:1356
 msgid "Jump to message: "
 msgstr "メッセージ番号を指定: "
 
-#: curs_main.c:1359
+#: curs_main.c:1362
 msgid "Argument must be a message number."
 msgstr "引数はメッセージ番号でなければならない。"
 
-#: curs_main.c:1391
+#: curs_main.c:1394
 msgid "That message is not visible."
 msgstr "そのメッセージは可視ではない。"
 
-#: curs_main.c:1394
+#: curs_main.c:1397
 msgid "Invalid message number."
 msgstr "不正なメッセージ番号。"
 
 #. L10N: CHECK_ACL
-#: curs_main.c:1408 curs_main.c:2663 pager.c:2648
+#: curs_main.c:1411 curs_main.c:2666 pager.c:2648
 msgid "Cannot delete message(s)"
 msgstr "メッセージを削除できない"
 
-#: curs_main.c:1411
+#: curs_main.c:1414
 msgid "Delete messages matching: "
 msgstr "メッセージを削除するためのパターン: "
 
-#: curs_main.c:1433
+#: curs_main.c:1436
 msgid "No limit pattern is in effect."
 msgstr "現在有効な制限パターンはない。"
 
 #. L10N: ask for a limit to apply
-#: curs_main.c:1438
+#: curs_main.c:1441
 #, c-format
 msgid "Limit: %s"
 msgstr "制限パターン: %s"
 
-#: curs_main.c:1471
+#: curs_main.c:1474
 msgid "Limit to messages matching: "
 msgstr "メッセージの表示を制限するパターン: "
 
-#: curs_main.c:1493
+#: curs_main.c:1496
 msgid "To view all messages, limit to \"all\"."
 msgstr "メッセージをすべて見るには制限を \"all\" にする。"
 
-#: curs_main.c:1505 pager.c:2174
+#: curs_main.c:1508 pager.c:2174
 msgid "Quit Mutt?"
 msgstr "Mutt を中止?"
 
-#: curs_main.c:1597
+#: curs_main.c:1600
 msgid "Tag messages matching: "
 msgstr "メッセージにタグを付けるためのパターン: "
 
 #. L10N: CHECK_ACL
-#: curs_main.c:1607 curs_main.c:3070 pager.c:3026
+#: curs_main.c:1610 curs_main.c:3073 pager.c:3026
 msgid "Cannot undelete message(s)"
 msgstr "メッセージの削除状態を解除できない"
 
-#: curs_main.c:1609
+#: curs_main.c:1612
 msgid "Undelete messages matching: "
 msgstr "メッセージの削除を解除するためのパターン: "
 
-#: curs_main.c:1617
+#: curs_main.c:1620
 msgid "Untag messages matching: "
 msgstr "メッセージのタグを外すためのパターン: "
 
-#: curs_main.c:1649
+#: curs_main.c:1652
 msgid "Logged out of IMAP servers."
 msgstr "IMAP サーバからログアウトした。"
 
-#: curs_main.c:1741 curs_main.c:1775
+#: curs_main.c:1744 curs_main.c:1778
 #, fuzzy
 msgid "No virtual folder, aborting."
 msgstr "無題で中止する。"
 
-#: curs_main.c:1747
+#: curs_main.c:1750
 msgid "Failed to read thread, aborting."
 msgstr ""
 
-#: curs_main.c:1783
+#: curs_main.c:1786
 #, fuzzy
 msgid "No label specified, aborting."
 msgstr "無題で中止する。"
 
-#: curs_main.c:1793
+#: curs_main.c:1796
 #, c-format
 msgid "Update labels..."
 msgstr ""
 
-#: curs_main.c:1816
+#: curs_main.c:1819
 msgid "Failed to modify labels, aborting."
 msgstr ""
 
-#: curs_main.c:1850
+#: curs_main.c:1853
 #, fuzzy
 msgid "No query, aborting."
 msgstr "無題で中止する。"
 
-#: curs_main.c:1854
+#: curs_main.c:1857
 msgid "Failed to create query, aborting."
 msgstr ""
 
-#: curs_main.c:1883
+#: curs_main.c:1886
 msgid "Open mailbox in read-only mode"
 msgstr "読み出し専用モードでメールボックスをオープン"
 
-#: curs_main.c:1886
+#: curs_main.c:1889
 #, fuzzy
 msgid "Open virtual folder"
 msgstr "別のフォルダをオープン"
 
-#: curs_main.c:1889
+#: curs_main.c:1892
 msgid "Open mailbox"
 msgstr "メールボックスをオープン"
 
-#: curs_main.c:1899
+#: curs_main.c:1902
 msgid "No mailboxes have new mail"
 msgstr "新着メールのあるメールボックスはない"
 
-#: curs_main.c:1940
+#: curs_main.c:1943
 #, fuzzy
 msgid "Open newsgroup in read-only mode"
 msgstr "読み出し専用モードでメールボックスをオープン"
 
-#: curs_main.c:1942
+#: curs_main.c:1945
 msgid "Open newsgroup"
 msgstr ""
 
-#: curs_main.c:2033
+#: curs_main.c:2036
 #, fuzzy
 msgid "Exit NeoMutt without saving?"
 msgstr "保存しないで Mutt を抜ける?"
 
-#: curs_main.c:2049
+#: curs_main.c:2052
 #, fuzzy
 msgid "Cannot break thread"
 msgstr "スレッドをつなげられない"
 
-#: curs_main.c:2052 curs_main.c:2088 curs_main.c:2548 curs_main.c:2580
+#: curs_main.c:2055 curs_main.c:2091 curs_main.c:2551 curs_main.c:2583
 #: flags.c:305 thread.c:1029 thread.c:1085 thread.c:1152
 msgid "Threading is not enabled."
 msgstr "スレッド表示が有効になっていない。"
 
-#: curs_main.c:2064
+#: curs_main.c:2067
 msgid "Thread broken"
 msgstr "スレッドが外された"
 
-#: curs_main.c:2075
+#: curs_main.c:2078
 msgid "Thread cannot be broken, message is not part of a thread"
 msgstr "スレッドを外せない。メッセージがスレッドの一部ではない"
 
 #. L10N: CHECK_ACL
-#: curs_main.c:2085
+#: curs_main.c:2088
 msgid "Cannot link threads"
 msgstr "スレッドをつなげられない"
 
-#: curs_main.c:2090
+#: curs_main.c:2093
 msgid "No Message-ID: header available to link thread"
 msgstr "Message-ID ヘッダが利用できないのでスレッドをつなげられない"
 
-#: curs_main.c:2092
+#: curs_main.c:2095
 msgid "First, please tag a message to be linked here"
 msgstr "その前に、ここへつなげたいメッセージにタグを付けておくこと"
 
-#: curs_main.c:2104
+#: curs_main.c:2107
 msgid "Threads linked"
 msgstr "スレッドがつながった"
 
-#: curs_main.c:2107
+#: curs_main.c:2110
 msgid "No thread linked"
 msgstr "スレッドはつながらなかった"
 
-#: curs_main.c:2143 curs_main.c:2168
+#: curs_main.c:2146 curs_main.c:2171
 msgid "You are on the last message."
 msgstr "すでに最後のメッセージ。"
 
-#: curs_main.c:2150 curs_main.c:2194
+#: curs_main.c:2153 curs_main.c:2197
 msgid "No undeleted messages."
 msgstr "未削除メッセージがない。"
 
-#: curs_main.c:2187 curs_main.c:2211
+#: curs_main.c:2190 curs_main.c:2214
 msgid "You are on the first message."
 msgstr "すでに最初のメッセージ。"
 
-#: curs_main.c:2286 menu.c:838 pager.c:2292 pattern.c:1654
+#: curs_main.c:2289 menu.c:838 pager.c:2292 pattern.c:1654
 msgid "Search wrapped to top."
 msgstr "検索は一番上に戻った。"
 
-#: curs_main.c:2295 pager.c:2314 pattern.c:1665
+#: curs_main.c:2298 pager.c:2314 pattern.c:1665
 msgid "Search wrapped to bottom."
 msgstr "検索は一番下に戻った。"
 
-#: curs_main.c:2339
+#: curs_main.c:2342
 msgid "No new messages in this limited view."
 msgstr "この制限された表示範囲には新着メッセージがない。"
 
-#: curs_main.c:2341
+#: curs_main.c:2344
 msgid "No new messages."
 msgstr "新着メッセージがない。"
 
-#: curs_main.c:2346
+#: curs_main.c:2349
 msgid "No unread messages in this limited view."
 msgstr "この制限された表示範囲には未読メッセージがない。"
 
-#: curs_main.c:2348
+#: curs_main.c:2351
 msgid "No unread messages."
 msgstr "未読メッセージがない。"
 
 #. L10N: CHECK_ACL
-#: curs_main.c:2366
+#: curs_main.c:2369
 msgid "Cannot flag message"
 msgstr "メッセージにフラグを設定できない"
 
 #. L10N: CHECK_ACL
-#: curs_main.c:2404 pager.c:2989
+#: curs_main.c:2407 pager.c:2989
 msgid "Cannot toggle new"
 msgstr "新着フラグを切替できない"
 
-#: curs_main.c:2481
+#: curs_main.c:2484
 msgid "No more threads."
 msgstr "もうスレッドがない。"
 
-#: curs_main.c:2483
+#: curs_main.c:2486
 msgid "You are on the first thread."
 msgstr "すでに最初のスレッド。"
 
-#: curs_main.c:2566
+#: curs_main.c:2569
 msgid "Thread contains unread messages."
 msgstr "スレッド中に未読メッセージがある。"
 
 #. L10N: CHECK_ACL
-#: curs_main.c:2618 pager.c:2614
+#: curs_main.c:2621 pager.c:2614
 msgid "Cannot delete message"
 msgstr "メッセージを削除できない"
 
 #. L10N: CHECK_ACL
-#: curs_main.c:2725
+#: curs_main.c:2728
 msgid "Cannot edit message"
 msgstr "メッセージを編集できない"
 
-#: curs_main.c:2773 pager.c:3081
+#: curs_main.c:2776 pager.c:3081
 #, fuzzy
 msgid "No labels changed."
 msgstr "メールボックスは変更されなかった"
 
 #. L10N: CHECK_ACL
-#: curs_main.c:2873
+#: curs_main.c:2876
 msgid "Cannot mark message(s) as read"
 msgstr "メッセージを既読にマークできない"
 
 #. L10N: This is the prompt for <mark-message>.  Whatever they
 #. enter will be prefixed by $mark_macro_prefix and will become
 #. a macro hotkey to jump to the currently selected message.
-#: curs_main.c:2909
+#: curs_main.c:2912
 #, fuzzy
 msgid "Enter macro stroke: "
 msgstr "鍵ID入力: "
 
 #. L10N: "message hotkey" is the key bindings menu description of a
 #. macro created by <mark-message>.
-#: curs_main.c:2917
+#: curs_main.c:2920
 #, fuzzy
 msgid "message hotkey"
 msgstr "メッセージは書きかけで保留された。"
@@ -2077,28 +2077,28 @@ msgstr "メッセージは書きかけで保留された。"
 #. L10N: This is echoed after <mark-message> creates a new hotkey
 #. macro.  %s is the hotkey string ($mark_macro_prefix followed
 #. by whatever they typed at the prompt.)
-#: curs_main.c:2922
+#: curs_main.c:2925
 #, fuzzy, c-format
 msgid "Message bound to %s."
 msgstr "メッセージを再送した。"
 
 #. L10N: This error is printed if <mark-message> cannot find a
 #. Message-ID for the currently selected message in the index.
-#: curs_main.c:2930
+#: curs_main.c:2933
 #, fuzzy
 msgid "No message ID to macro."
 msgstr "そのフォルダにはメッセージがない。"
 
-#: curs_main.c:2973 pager.c:2847 recvattach.c:1262
+#: curs_main.c:2976 pager.c:2847 recvattach.c:1262
 msgid "Reply by mail as poster prefers?"
 msgstr ""
 
-#: curs_main.c:2978 pager.c:2816 pager.c:2827 pager.c:2851
+#: curs_main.c:2981 pager.c:2816 pager.c:2827 pager.c:2851
 msgid "Posting to this group not allowed, may be moderated. Continue?"
 msgstr ""
 
 #. L10N: CHECK_ACL
-#: curs_main.c:3040 pager.c:3009
+#: curs_main.c:3043 pager.c:3009
 msgid "Cannot undelete message"
 msgstr "メッセージの削除状態を解除できない"
 
@@ -3989,66 +3989,87 @@ msgstr "PGP 子プロセスをオープンできない!"
 msgid "Can't invoke PGP"
 msgstr "PGP 起動できない"
 
+#. L10N: These next string MUST have the same highlighed letter
+#. One of them will appear in each of the three strings marked "(inline"), below.
+#: pgp.c:1724
+msgid "PGP/M(i)ME"
+msgstr "i:PGP/MIME"
+
+#. L10N: These previous string MUST have the same highlighed letter
+#. One of them will appear in each of the three strings marked "(inline"), below.
 #: pgp.c:1730
+msgid "(i)nline"
+msgstr "i:インライン"
+
+#. L10N: PGP options (inline) (opportunistic encryption is on)
+#: pgp.c:1744
 #, c-format
 msgid "PGP (s)ign, sign (a)s, %s format, (c)lear, or (o)ppenc mode off? "
 msgstr "PGP s:署名, a:署名鍵選択, %s形式, c:なし, o:日和見暗号オフ "
 
-#: pgp.c:1731 pgp.c:1761 pgp.c:1783
-msgid "PGP/M(i)ME"
-msgstr "i:PGP/MIME"
-
-#: pgp.c:1731 pgp.c:1761 pgp.c:1783
-msgid "(i)nline"
-msgstr "i:インライン"
-
-#. L10N: The 'f' is from "forget it", an old undocumented synonym of
-#. 'clear'.  Please use a corresponding letter in your language.
-#. Alternatively, you may duplicate the letter 'c' is translated to.
-#. This comment also applies to the five following letter sequences.
-#: pgp.c:1737
+#. L10N: PGP options (inline) (opportunistic encryption is on)
+#. The 'i' is from the "PGP/M(i)ME" or "(i)nline", above.
+#. The 'f' is undocumented. Please DO NOT translate it.
+#: pgp.c:1749
 msgid "safcoi"
 msgstr "safcoi"
 
-#: pgp.c:1742
+#. L10N: PGP options (opportunistic encryption is on)
+#: pgp.c:1755
 msgid "PGP (s)ign, sign (a)s, (c)lear, or (o)ppenc mode off? "
 msgstr "PGP s:署名, a:署名鍵選択, c:なし, o:日和見暗号オフ "
 
-#: pgp.c:1743
+#. L10N: PGP options (opportunistic encryption is on)
+#. The 'f' is undocumented. Please DO NOT translate it.
+#: pgp.c:1758
 msgid "safco"
 msgstr "safco"
 
-#: pgp.c:1760
+#. L10N: PGP options (inline) (opportunistic encryption is off)
+#: pgp.c:1776
 #, c-format
 msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, %s format, (c)lear, or (o)ppenc mode? "
 msgstr "PGP e:暗号化, s:署名, a:署名鍵選択, b:暗号+署名, %s形式, c:なし, o:日和見暗号 "
 
-#: pgp.c:1763
+#. L10N: PGP options (inline) (opportunistic encryption is off)
+#. The 'i' is from the "PGP/M(i)ME" or "(i)nline", above.
+#. The 'f' is undocumented. Please DO NOT translate it.
+#: pgp.c:1781
 msgid "esabfcoi"
 msgstr "esabfcoi"
 
-#: pgp.c:1768
+#. L10N: PGP options (opportunistic encryption is off)
+#: pgp.c:1787
 msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, (c)lear, or (o)ppenc mode? "
 msgstr "PGP e:暗号化, s:署名, a:署名鍵選択, b:暗号+署名, c:なし, o:日和見暗号 "
 
-#: pgp.c:1769
+#. L10N: PGP options (opportunistic encryption is off)
+#. The 'f' is undocumented. Please DO NOT translate it.
+#: pgp.c:1790
 msgid "esabfco"
 msgstr "esabfco"
 
-#: pgp.c:1782
+#. L10N: PGP options (inline)
+#: pgp.c:1804
 #, c-format
 msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, %s format, or (c)lear? "
 msgstr "PGP e:暗号化, s:署名, a:署名鍵選択, b:暗号+署名, %s形式, c:なし "
 
-#: pgp.c:1785
+#. L10N: PGP options (inline)
+#. The 'i' is from the "PGP/M(i)ME" or "(i)nline", above.
+#. The 'f' is undocumented. Please DO NOT translate it.
+#: pgp.c:1809
 msgid "esabfci"
 msgstr "esabfci"
 
-#: pgp.c:1790
+#. L10N: PGP options
+#: pgp.c:1815
 msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, or (c)lear? "
 msgstr "PGP e:暗号化, s:署名, a:署名鍵選択, b:暗号+署名, c:なし "
 
-#: pgp.c:1791
+#. L10N: PGP options
+#. The 'f' is undocumented. Please DO NOT translate it.
+#: pgp.c:1818
 msgid "esabfc"
 msgstr "esabfc"
 
@@ -4753,65 +4774,70 @@ msgstr ""
 "\n"
 "[-- S/MIME 署名データ終了 --]\n"
 
-#: smime.c:2110
+#. L10N: S/MIME options (opportunistic encryption is on)
+#: smime.c:2111
 msgid "S/MIME (s)ign, encrypt (w)ith, sign (a)s, (c)lear, or (o)ppenc mode off? "
 msgstr "S/MIME s:署名, w:暗号選択, a:署名鍵選択, c:なし, o:日和見暗号オフ "
 
-#. L10N: The 'f' is from "forget it", an old undocumented synonym of
-#. 'clear'.  Please use a corresponding letter in your language.
-#. Alternatively, you may duplicate the letter 'c' is translated to.
-#. This comment also applies to the two following letter sequences.
-#: smime.c:2115
+#. L10N: S/MIME options (opportunistic encryption is on)
+#. The 'f' is undocumented. Please DO NOT translate it.
+#: smime.c:2114
 msgid "swafco"
 msgstr "swafco"
 
 # 80-column 幅に入りきらないのでスペースなし
+#. L10N: S/MIME options (opportunistic encryption is off)
 #: smime.c:2124
 msgid "S/MIME (e)ncrypt, (s)ign, encrypt (w)ith, sign (a)s, (b)oth, (c)lear, or (o)ppenc mode? "
 msgstr "S/MIME e:暗号化,s:署名,w:暗号選択,a:署名鍵選択,b:暗号+署名,c:なし,o:日和見暗号 "
 
-#: smime.c:2125
+#. L10N: S/MIME options (opportunistic encryption is off)
+#. The 'f' is undocumented. Please DO NOT translate it.
+#: smime.c:2127
 msgid "eswabfco"
 msgstr "eswabfco"
 
-#: smime.c:2133
+#. L10N: S/MIME options
+#: smime.c:2136
 msgid "S/MIME (e)ncrypt, (s)ign, encrypt (w)ith, sign (a)s, (b)oth, or (c)lear? "
 msgstr "S/MIME e:暗号化, s:署名, w:暗号選択, a:署名鍵選択, b:暗号+署名, c:なし "
 
-#: smime.c:2134
+#. L10N: S/MIME options
+#. The 'f' is undocumented. Please DO NOT translate it.
+#: smime.c:2139
 msgid "eswabfc"
 msgstr "eswabfc"
 
-#: smime.c:2155
+#: smime.c:2160
 msgid "Choose algorithm family: 1: DES, 2: RC2, 3: AES, or (c)lear? "
 msgstr "アルゴリズムを選択: 1: DES系, 2: RC2系, 3: AES系, c:なし "
 
-#: smime.c:2158
+#: smime.c:2163
 msgid "drac"
 msgstr "drac"
 
-#: smime.c:2161
+#: smime.c:2166
 msgid "1: DES, 2: Triple-DES "
 msgstr "1: DES, 2: トリプルDES "
 
-#: smime.c:2162
+#: smime.c:2167
 msgid "dt"
 msgstr "dt"
 
-#: smime.c:2174
+#: smime.c:2179
 msgid "1: RC2-40, 2: RC2-64, 3: RC2-128 "
 msgstr "1: RC2-40, 2: RC2-64, 3: RC2-128 "
 
 # ちょっとどうかと思うが互換性のため残す
-#: smime.c:2175
+#: smime.c:2180
 msgid "468"
 msgstr "468"
 
-#: smime.c:2190
+#: smime.c:2195
 msgid "1: AES128, 2: AES192, 3: AES256 "
 msgstr "1: AES128, 2: AES192, 3: AES256 "
 
-#: smime.c:2191
+#: smime.c:2196
 msgid "895"
 msgstr "895"
 
