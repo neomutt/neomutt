@@ -304,16 +304,12 @@ msgstr "Filmaske: "
 
 #: browser.c:1724
 #, fuzzy
-msgid ""
-"Reverse sort by (d)ate, (a)lpha, si(z)e, d(e)scription, (c)ount, ne(w) "
-"count, or do(n)'t sort? "
+msgid "Reverse sort by (d)ate, (a)lpha, si(z)e, d(e)scription, (c)ount, ne(w) count, or do(n)'t sort? "
 msgstr "Omvendt sortering efter (d)ato, (a)lfabetisk, (s)tr. eller (i)ngen? "
 
 #: browser.c:1725
 #, fuzzy
-msgid ""
-"Sort by (d)ate, (a)lpha, si(z)e, d(e)scription, (c)ount, ne(w) count, or "
-"do(n)'t sort? "
+msgid "Sort by (d)ate, (a)lpha, si(z)e, d(e)scription, (c)ount, ne(w) count, or do(n)'t sort? "
 msgstr "Sortering efter (d)ato, (a)lfabetisk, (s)tr. eller (i)ngen? "
 
 #: browser.c:1726
@@ -535,16 +531,12 @@ msgstr "Brevene kunne ikke udskrives"
 #: commands.c:547
 #, fuzzy
 msgid "Rev-Sort Date/Frm/Recv/Subj/tO/Thread/Unsort/siZe/sCore/sPam/Label?: "
-msgstr ""
-"Omv-sort. (d)ato/(f)ra/(a)nk./(e)mne/t(i)l/(t)råd/(u)sort/(s)tr./s(c)ore/"
-"s(p)am?: "
+msgstr "Omv-sort. (d)ato/(f)ra/(a)nk./(e)mne/t(i)l/(t)råd/(u)sort/(s)tr./s(c)ore/s(p)am?: "
 
 #: commands.c:548
 #, fuzzy
 msgid "Sort Date/Frm/Recv/Subj/tO/Thread/Unsort/siZe/sCore/sPam/Label?: "
-msgstr ""
-"Sortér (d)ato/(f)ra/(a)nk./(e)mne/t(i)l/(t)råd/(u)sort/(s)tr./s(c)ore/"
-"s(p)am?: "
+msgstr "Sortér (d)ato/(f)ra/(a)nk./(e)mne/t(i)l/(t)råd/(u)sort/(s)tr./s(c)ore/s(p)am?: "
 
 #: commands.c:549
 #, fuzzy
@@ -967,9 +959,7 @@ msgstr "fejl ved underskrivelse af data: %s\n"
 
 #: crypt-gpgme.c:944
 msgid "$pgp_sign_as unset and no default key specified in ~/.gnupg/gpg.conf"
-msgstr ""
-"$pgp_sign_as er ikke indstilet, og ingen standardnøgle er anført i ~/.gnupg/"
-"gpg.conf"
+msgstr "$pgp_sign_as er ikke indstilet, og ingen standardnøgle er anført i ~/.gnupg/gpg.conf"
 
 #: crypt-gpgme.c:1140
 msgid "Warning: One of the keys has been revoked\n"
@@ -1021,23 +1011,16 @@ msgid "Fingerprint: "
 msgstr "Fingeraftryk ....: "
 
 #: crypt-gpgme.c:1320
-msgid ""
-"WARNING: We have NO indication whether the key belongs to the person named "
-"as shown above\n"
-msgstr ""
-"ADVARSEL: Vi har INGEN indikation på om Nøglen tilhører personen med det "
-"ovenfor viste navn\n"
+msgid "WARNING: We have NO indication whether the key belongs to the person named as shown above\n"
+msgstr "ADVARSEL: Vi har INGEN indikation på om Nøglen tilhører personen med det ovenfor viste navn\n"
 
 #: crypt-gpgme.c:1327
 msgid "WARNING: The key does NOT BELONG to the person named as shown above\n"
 msgstr "ADVARSEL: Nøglen TILHØRER IKKE personen med det ovenfor viste navn\n"
 
 #: crypt-gpgme.c:1331
-msgid ""
-"WARNING: It is NOT certain that the key belongs to the person named as shown "
-"above\n"
-msgstr ""
-"ADVARSEL: Det er IKKE sikkert at nøglen personen med det ovenfor viste navn\n"
+msgid "WARNING: It is NOT certain that the key belongs to the person named as shown above\n"
+msgstr "ADVARSEL: Det er IKKE sikkert at nøglen personen med det ovenfor viste navn\n"
 
 #: crypt-gpgme.c:1361 crypt-gpgme.c:1366
 msgid "aka: "
@@ -1464,9 +1447,7 @@ msgstr "GPGME: CMS-protokol utilgængelig"
 
 #: crypt-gpgme.c:4721
 msgid "S/MIME (s)ign, sign (a)s, (p)gp, (c)lear, or (o)ppenc mode off? "
-msgstr ""
-"S/MIME (u)nderskriv, underskriv (s)om, (p)gp, r(y)d eller (o)ppenc-tilstand "
-"fra? "
+msgstr "S/MIME (u)nderskriv, underskriv (s)om, (p)gp, r(y)d eller (o)ppenc-tilstand fra? "
 
 #. L10N: The 'f' is from "forget it", an old undocumented synonym of
 #. 'clear'.  Please use a corresponding letter in your language.
@@ -1478,33 +1459,23 @@ msgstr "uspgyo"
 
 #: crypt-gpgme.c:4731
 msgid "PGP (s)ign, sign (a)s, s/(m)ime, (c)lear, or (o)ppenc mode off? "
-msgstr ""
-"PGP (u)nderskriv, underskriv (s)om, s/(m)ime, r(y)d eller (o)ppenc-tilstand "
-"fra? "
+msgstr "PGP (u)nderskriv, underskriv (s)om, s/(m)ime, r(y)d eller (o)ppenc-tilstand fra? "
 
 #: crypt-gpgme.c:4732
 msgid "samfco"
 msgstr "usmgyo"
 
 #: crypt-gpgme.c:4744
-msgid ""
-"S/MIME (e)ncrypt, (s)ign, sign (a)s, (b)oth, (p)gp, (c)lear, or (o)ppenc "
-"mode? "
-msgstr ""
-"S/MIME (k)ryptér, (u)nderskriv, underskriv (s)om, (b)egge, (p)gp, r(y)d "
-"eller (o)ppenc-tilstand fra? "
+msgid "S/MIME (e)ncrypt, (s)ign, sign (a)s, (b)oth, (p)gp, (c)lear, or (o)ppenc mode? "
+msgstr "S/MIME (k)ryptér, (u)nderskriv, underskriv (s)om, (b)egge, (p)gp, r(y)d eller (o)ppenc-tilstand fra? "
 
 #: crypt-gpgme.c:4745
 msgid "esabpfco"
 msgstr "kusbpgyo"
 
 #: crypt-gpgme.c:4750
-msgid ""
-"PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, s/(m)ime, (c)lear, or (o)ppenc "
-"mode? "
-msgstr ""
-"PGP (k)ryptér, (u)nderskriv, underskriv (s)om, (b)egge, s/(m)ime, r(y)d "
-"eller (o)ppenc-tilstand? "
+msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, s/(m)ime, (c)lear, or (o)ppenc mode? "
+msgstr "PGP (k)ryptér, (u)nderskriv, underskriv (s)om, (b)egge, s/(m)ime, r(y)d eller (o)ppenc-tilstand? "
 
 #: crypt-gpgme.c:4751
 msgid "esabmfco"
@@ -1512,9 +1483,7 @@ msgstr "kusbmgyo"
 
 #: crypt-gpgme.c:4762
 msgid "S/MIME (e)ncrypt, (s)ign, sign (a)s, (b)oth, (p)gp or (c)lear? "
-msgstr ""
-"S/MIME (k)ryptér, (u)nderskriv, underskriv (s)om, (b)egge, (p)gp, eller "
-"r(y)d? "
+msgstr "S/MIME (k)ryptér, (u)nderskriv, underskriv (s)om, (b)egge, (p)gp, eller r(y)d? "
 
 #: crypt-gpgme.c:4763
 msgid "esabpfc"
@@ -1522,9 +1491,7 @@ msgstr "kusbpgy"
 
 #: crypt-gpgme.c:4768
 msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, s/(m)ime or (c)lear? "
-msgstr ""
-"PGP (k)ryptér, (u)nderskriv, underskriv (s)om, (b)egge, s/(m)ime, eller "
-"r(y)d? "
+msgstr "PGP (k)ryptér, (u)nderskriv, underskriv (s)om, (b)egge, s/(m)ime, eller r(y)d? "
 
 #: crypt-gpgme.c:4769
 msgid "esabmfc"
@@ -1558,8 +1525,7 @@ msgstr "Har glemt løsen(er)."
 
 #: crypt.c:150
 msgid "Inline PGP can't be used with attachments.  Revert to PGP/MIME?"
-msgstr ""
-"Integreret PGP kan ikke bruges sammen med bilag. Brug PGP/MIME i stedet?"
+msgstr "Integreret PGP kan ikke bruges sammen med bilag. Brug PGP/MIME i stedet?"
 
 #: crypt.c:152
 msgid "Mail not sent: inline PGP can't be used with attachments."
@@ -2202,8 +2168,7 @@ msgstr "Fjern statusindikator"
 
 #: handler.c:1139
 msgid "[-- Error:  Could not display any parts of Multipart/Alternative! --]\n"
-msgstr ""
-"[-- Fejl: Kunne ikke vise nogen del af \"Multipart/Alternative\"! --]\n"
+msgstr "[-- Fejl: Kunne ikke vise nogen del af \"Multipart/Alternative\"! --]\n"
 
 #: handler.c:1254
 #, c-format
@@ -2241,8 +2206,7 @@ msgstr "[-- Fejl fra autovisning af %s --]\n"
 
 #: handler.c:1446
 msgid "[-- Error: message/external-body has no access-type parameter --]\n"
-msgstr ""
-"[-- Fejl: \"message/external-body\" har ingen \"access-type\"-parameter --]\n"
+msgstr "[-- Fejl: \"message/external-body\" har ingen \"access-type\"-parameter --]\n"
 
 #: handler.c:1467
 #, c-format
@@ -2897,10 +2861,8 @@ msgstr "Ikke mere hukommelse!"
 #: main.c:84
 msgid ""
 "usage: mutt [<options>] [-z] [-f <file> | -yZ]\n"
-"       mutt [<options>] [-Ex] [-Hi <file>] [-s <subj>] [-bc <addr>] [-a "
-"<file> [...] --] <addr> [...]\n"
-"       mutt [<options>] [-x] [-s <subj>] [-bc <addr>] [-a <file> [...] --] "
-"<addr> [...] < message\n"
+"       mutt [<options>] [-Ex] [-Hi <file>] [-s <subj>] [-bc <addr>] [-a <file> [...] --] <addr> [...]\n"
+"       mutt [<options>] [-x] [-s <subj>] [-bc <addr>] [-a <file> [...] --] <addr> [...] < message\n"
 "       mutt [<options>] -p\n"
 "       mutt [<options>] -A <alias> [...]\n"
 "       mutt [<options>] -Q <query> [...]\n"
@@ -2908,10 +2870,8 @@ msgid ""
 "       mutt -v[v]\n"
 msgstr ""
 "brug: mutt [<tilvalg>] [-z] [-f <fil> | -yZ]\n"
-"      mutt [<tilvalg>] [-Ex] [-Hi <fil>] [-s <emne>] [-bc <adr>] [-a <fil> "
-"[...] --] <adr> [...]\n"
-"      mutt [<tilvalg>] [-x] [-s <emne>] [-bc <adr>] [-a <fil> [...] --] "
-"<adr> [...] < brev\n"
+"      mutt [<tilvalg>] [-Ex] [-Hi <fil>] [-s <emne>] [-bc <adr>] [-a <fil> [...] --] <adr> [...]\n"
+"      mutt [<tilvalg>] [-x] [-s <emne>] [-bc <adr>] [-a <fil> [...] --] <adr> [...] < brev\n"
 "      mutt [<tilvalg>] -p\n"
 "      mutt [<tilvalg>] -A <alias> [...]\n"
 "      mutt [<tilvalg>] -Q <forespørgsel> [...]\n"
@@ -2984,8 +2944,7 @@ msgstr ""
 "  -x\t\tsimulér mailx' måde at sende på\n"
 "  -y\t\tvælg en brevbakke som er angivet i din \"mailboxes\"-liste\n"
 "  -z\t\tafslut øjeblikkeligt hvis der ikke er nogen breve i brevbakken\n"
-"  -Z\t\tåbn den første brevbakke med nye breve, afslut øjeblikkeligt hvis "
-"ingen\n"
+"  -Z\t\tåbn den første brevbakke med nye breve, afslut øjeblikkeligt hvis ingen\n"
 "  -h\t\tdenne hjælpebesked"
 
 #: main.c:149
@@ -3764,8 +3723,7 @@ msgid "Checking for new newsgroups..."
 msgstr "Kigger efter nye breve ..."
 
 #: nntp.c:2420
-msgid ""
-"Unable to find child articles because server does not support XPAT command."
+msgid "Unable to find child articles because server does not support XPAT command."
 msgstr ""
 
 #: pager.c:1629
@@ -3952,9 +3910,7 @@ msgstr "Kan ikke starte PGP"
 #: pgp.c:1730
 #, c-format
 msgid "PGP (s)ign, sign (a)s, %s format, (c)lear, or (o)ppenc mode off? "
-msgstr ""
-"PGP (u)nderskriv, underskriv (s)om, %s-format, r(y)d eller (o)ppenc-tilstand "
-"fra? "
+msgstr "PGP (u)nderskriv, underskriv (s)om, %s-format, r(y)d eller (o)ppenc-tilstand fra? "
 
 #: pgp.c:1731 pgp.c:1761 pgp.c:1783
 msgid "PGP/M(i)ME"
@@ -3974,8 +3930,7 @@ msgstr "usgyoi"
 
 #: pgp.c:1742
 msgid "PGP (s)ign, sign (a)s, (c)lear, or (o)ppenc mode off? "
-msgstr ""
-"PGP (u)nderskriv, underskriv (s)om, r(y)d eller (o)ppenc-tilstand fra? "
+msgstr "PGP (u)nderskriv, underskriv (s)om, r(y)d eller (o)ppenc-tilstand fra? "
 
 #: pgp.c:1743
 msgid "safco"
@@ -3983,12 +3938,8 @@ msgstr "usgyo"
 
 #: pgp.c:1760
 #, c-format
-msgid ""
-"PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, %s format, (c)lear, or (o)ppenc "
-"mode? "
-msgstr ""
-"PGP (k)ryptér, (u)nderskriv, underskriv (s)om, (b)egge, %s-format, r(y)d "
-"eller (o)ppenc-tilstand? "
+msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, %s format, (c)lear, or (o)ppenc mode? "
+msgstr "PGP (k)ryptér, (u)nderskriv, underskriv (s)om, (b)egge, %s-format, r(y)d eller (o)ppenc-tilstand? "
 
 #: pgp.c:1763
 msgid "esabfcoi"
@@ -3996,9 +3947,7 @@ msgstr "kusbgyoi"
 
 #: pgp.c:1768
 msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, (c)lear, or (o)ppenc mode? "
-msgstr ""
-"PGP (k)ryptér, (u)nderskriv, underskriv (s)om, (b)egge, r(y)d eller (o)ppenc-"
-"tilstand? "
+msgstr "PGP (k)ryptér, (u)nderskriv, underskriv (s)om, (b)egge, r(y)d eller (o)ppenc-tilstand? "
 
 #: pgp.c:1769
 msgid "esabfco"
@@ -4007,8 +3956,7 @@ msgstr "kusbgyo"
 #: pgp.c:1782
 #, c-format
 msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, %s format, or (c)lear? "
-msgstr ""
-"PGP (k)ryptér, (u)nderskriv, underskriv (s)om, (b)egge, %s-format, r(y)d "
+msgstr "PGP (k)ryptér, (u)nderskriv, underskriv (s)om, (b)egge, %s-format, r(y)d "
 
 #: pgp.c:1785
 msgid "esabfci"
@@ -4288,10 +4236,8 @@ msgid "Deletion of attachments from encrypted messages is unsupported."
 msgstr "Sletning af brevdele fra krypterede breve er ikke understøttet."
 
 #: recvattach.c:1144
-msgid ""
-"Deletion of attachments from signed messages may invalidate the signature."
-msgstr ""
-"Sletning af brevdele fra underskrevne breve kan gøre underskriften ugyldig."
+msgid "Deletion of attachments from signed messages may invalidate the signature."
+msgstr "Sletning af brevdele fra underskrevne breve kan gøre underskriften ugyldig."
 
 #: recvattach.c:1161 recvattach.c:1178
 msgid "Only deletion of multipart attachments is supported."
@@ -4394,8 +4340,7 @@ msgid "Mixmaster doesn't accept Cc or Bcc headers."
 msgstr "Breve sendt med Mixmaster må ikke have Cc- eller Bcc-felter."
 
 #: remailer.c:732
-msgid ""
-"Please set the hostname variable to a proper value when using mixmaster!"
+msgid "Please set the hostname variable to a proper value when using mixmaster!"
 msgstr "Sæt hostname-variablen til en passende værdi ved brug af mixmaster!"
 
 #: remailer.c:766
@@ -4720,11 +4665,8 @@ msgstr ""
 "[-- Slut på S/MIME-underskrevne data --]\n"
 
 #: smime.c:2110
-msgid ""
-"S/MIME (s)ign, encrypt (w)ith, sign (a)s, (c)lear, or (o)ppenc mode off? "
-msgstr ""
-"S/MIME (u).skriv, kryptér (m)ed, u.skriv (s)om, r(y)d eller (o)ppenc-"
-"tilstand fra? "
+msgid "S/MIME (s)ign, encrypt (w)ith, sign (a)s, (c)lear, or (o)ppenc mode off? "
+msgstr "S/MIME (u).skriv, kryptér (m)ed, u.skriv (s)om, r(y)d eller (o)ppenc-tilstand fra? "
 
 #. L10N: The 'f' is from "forget it", an old undocumented synonym of
 #. 'clear'.  Please use a corresponding letter in your language.
@@ -4735,22 +4677,16 @@ msgid "swafco"
 msgstr "umsgyo"
 
 #: smime.c:2124
-msgid ""
-"S/MIME (e)ncrypt, (s)ign, encrypt (w)ith, sign (a)s, (b)oth, (c)lear, or "
-"(o)ppenc mode? "
-msgstr ""
-"S/MIME (k)ryptér, (u).skriv, kryptér (m)ed, u.skriv (s)om, (b)egge, r(y)d "
-"eller (o)ppenc-tilstand? "
+msgid "S/MIME (e)ncrypt, (s)ign, encrypt (w)ith, sign (a)s, (b)oth, (c)lear, or (o)ppenc mode? "
+msgstr "S/MIME (k)ryptér, (u).skriv, kryptér (m)ed, u.skriv (s)om, (b)egge, r(y)d eller (o)ppenc-tilstand? "
 
 #: smime.c:2125
 msgid "eswabfco"
 msgstr "kumsbgyo"
 
 #: smime.c:2133
-msgid ""
-"S/MIME (e)ncrypt, (s)ign, encrypt (w)ith, sign (a)s, (b)oth, or (c)lear? "
-msgstr ""
-"S/MIME (k)ryptér, (u).skriv, kryptér (m)ed, u.skriv (s)om, (b)egge, r(y)d? "
+msgid "S/MIME (e)ncrypt, (s)ign, encrypt (w)ith, sign (a)s, (b)oth, or (c)lear? "
+msgstr "S/MIME (k)ryptér, (u).skriv, kryptér (m)ed, u.skriv (s)om, (b)egge, r(y)d? "
 
 #: smime.c:2134
 msgid "eswabfc"
@@ -4915,13 +4851,11 @@ msgstr ""
 msgid ""
 "    You should have received a copy of the GNU General Public License\n"
 "    along with this program; if not, write to the Free Software\n"
-"    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  "
-"02110-1301, USA.\n"
+"    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.\n"
 msgstr ""
 "    You should have received a copy of the GNU General Public License\n"
 "    along with this program; if not, write to the Free Software\n"
-"    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  "
-"02110-1301, USA.\n"
+"    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.\n"
 
 #: version.c:87
 msgid ""
@@ -5936,4 +5870,3 @@ msgstr "udtræk understøttede offentlige nøgler"
 #: ../keymap_alldefs.h:244
 msgid "show S/MIME options"
 msgstr "vis tilvalg for S/MIME"
-

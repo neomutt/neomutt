@@ -307,16 +307,12 @@ msgstr "Dosya Maskesi: "
 
 #: browser.c:1724
 #, fuzzy
-msgid ""
-"Reverse sort by (d)ate, (a)lpha, si(z)e, d(e)scription, (c)ount, ne(w) "
-"count, or do(n)'t sort? "
+msgid "Reverse sort by (d)ate, (a)lpha, si(z)e, d(e)scription, (c)ount, ne(w) count, or do(n)'t sort? "
 msgstr "Tersine sıralama seçeneği: (t)arih, (a)lfabetik, (b)oyut, (h)iç?"
 
 #: browser.c:1725
 #, fuzzy
-msgid ""
-"Sort by (d)ate, (a)lpha, si(z)e, d(e)scription, (c)ount, ne(w) count, or "
-"do(n)'t sort? "
+msgid "Sort by (d)ate, (a)lpha, si(z)e, d(e)scription, (c)ount, ne(w) count, or do(n)'t sort? "
 msgstr "Sıralama seçeneği: (t)arih, (a)lfabetik, (b)oyut, (h)iç?"
 
 #: browser.c:1726
@@ -538,16 +534,12 @@ msgstr "İletiler yazdırılamadı"
 #: commands.c:547
 #, fuzzy
 msgid "Rev-Sort Date/Frm/Recv/Subj/tO/Thread/Unsort/siZe/sCore/sPam/Label?: "
-msgstr ""
-"Ters-sıra: (t)arih/(k)imden/(a)lıcı/k(o)nu/kim(e)/(i)lmek/sırası(z)/(b)oyut/"
-"(p)uan/(s)pam?:"
+msgstr "Ters-sıra: (t)arih/(k)imden/(a)lıcı/k(o)nu/kim(e)/(i)lmek/sırası(z)/(b)oyut/(p)uan/(s)pam?:"
 
 #: commands.c:548
 #, fuzzy
 msgid "Sort Date/Frm/Recv/Subj/tO/Thread/Unsort/siZe/sCore/sPam/Label?: "
-msgstr ""
-"Sıra: (t)arih/(k)imden/(a)lıcı/k(o)nu/kim(e)/(i)lmek/sırası(z)/(b)oyut/"
-"(p)uan/(s)pam?:"
+msgstr "Sıra: (t)arih/(k)imden/(a)lıcı/k(o)nu/kim(e)/(i)lmek/sırası(z)/(b)oyut/(p)uan/(s)pam?:"
 
 #: commands.c:549
 #, fuzzy
@@ -982,8 +974,7 @@ msgstr "Uyarı: Anahtarlardan biri hükümsüzleştirilmiş\n"
 
 #: crypt-gpgme.c:1149
 msgid "Warning: The key used to create the signature expired at: "
-msgstr ""
-"Uyarı: İmzalamada kullanılan anahtarın süresi dolmuş, son kullanma tarihi: "
+msgstr "Uyarı: İmzalamada kullanılan anahtarın süresi dolmuş, son kullanma tarihi: "
 
 #: crypt-gpgme.c:1155
 msgid "Warning: At least one certification key has expired\n"
@@ -1028,23 +1019,16 @@ msgid "Fingerprint: "
 msgstr "Parmak izi: %s"
 
 #: crypt-gpgme.c:1320
-msgid ""
-"WARNING: We have NO indication whether the key belongs to the person named "
-"as shown above\n"
-msgstr ""
-"UYARI: Anahtarın yukarıda gösterilen isimdeki kişiye ait olduğuna dair HİÇ "
-"BİR belirti yok\n"
+msgid "WARNING: We have NO indication whether the key belongs to the person named as shown above\n"
+msgstr "UYARI: Anahtarın yukarıda gösterilen isimdeki kişiye ait olduğuna dair HİÇ BİR belirti yok\n"
 
 #: crypt-gpgme.c:1327
 msgid "WARNING: The key does NOT BELONG to the person named as shown above\n"
 msgstr "UYARI: Anahtar yukarıda gösterilen isimdeki kişiye ait DEĞİL\n"
 
 #: crypt-gpgme.c:1331
-msgid ""
-"WARNING: It is NOT certain that the key belongs to the person named as shown "
-"above\n"
-msgstr ""
-"UYARI: Anahtarın yukarıda gösterilen isimdeki kişiye ait olduğu kesin DEĞİL\n"
+msgid "WARNING: It is NOT certain that the key belongs to the person named as shown above\n"
+msgstr "UYARI: Anahtarın yukarıda gösterilen isimdeki kişiye ait olduğu kesin DEĞİL\n"
 
 #: crypt-gpgme.c:1361 crypt-gpgme.c:1366
 msgid "aka: "
@@ -1485,8 +1469,7 @@ msgstr ""
 #: crypt-gpgme.c:4721
 #, fuzzy
 msgid "S/MIME (s)ign, sign (a)s, (p)gp, (c)lear, or (o)ppenc mode off? "
-msgstr ""
-"S/MIME şif(r)ele, i(m)zala, (f)arklı imzala, i(k)isi de, p(g)p, i(p)tal?"
+msgstr "S/MIME şif(r)ele, i(m)zala, (f)arklı imzala, i(k)isi de, p(g)p, i(p)tal?"
 
 #. L10N: The 'f' is from "forget it", an old undocumented synonym of
 #. 'clear'.  Please use a corresponding letter in your language.
@@ -1499,8 +1482,7 @@ msgstr ""
 #: crypt-gpgme.c:4731
 #, fuzzy
 msgid "PGP (s)ign, sign (a)s, s/(m)ime, (c)lear, or (o)ppenc mode off? "
-msgstr ""
-"PGP şif(r)ele, i(m)zala, (f)arklı imzala, i(k)isi de, (s)/mime, i(p)tal?"
+msgstr "PGP şif(r)ele, i(m)zala, (f)arklı imzala, i(k)isi de, (s)/mime, i(p)tal?"
 
 #: crypt-gpgme.c:4732
 msgid "samfco"
@@ -1508,11 +1490,8 @@ msgstr ""
 
 #: crypt-gpgme.c:4744
 #, fuzzy
-msgid ""
-"S/MIME (e)ncrypt, (s)ign, sign (a)s, (b)oth, (p)gp, (c)lear, or (o)ppenc "
-"mode? "
-msgstr ""
-"S/MIME şif(r)ele, i(m)zala, (f)arklı imzala, i(k)isi de, p(g)p, i(p)tal?"
+msgid "S/MIME (e)ncrypt, (s)ign, sign (a)s, (b)oth, (p)gp, (c)lear, or (o)ppenc mode? "
+msgstr "S/MIME şif(r)ele, i(m)zala, (f)arklı imzala, i(k)isi de, p(g)p, i(p)tal?"
 
 #: crypt-gpgme.c:4745
 #, fuzzy
@@ -1521,11 +1500,8 @@ msgstr "rmfkgup"
 
 #: crypt-gpgme.c:4750
 #, fuzzy
-msgid ""
-"PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, s/(m)ime, (c)lear, or (o)ppenc "
-"mode? "
-msgstr ""
-"PGP şif(r)ele, i(m)zala, (f)arklı imzala, i(k)isi de, (s)/mime, i(p)tal?"
+msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, s/(m)ime, (c)lear, or (o)ppenc mode? "
+msgstr "PGP şif(r)ele, i(m)zala, (f)arklı imzala, i(k)isi de, (s)/mime, i(p)tal?"
 
 #: crypt-gpgme.c:4751
 #, fuzzy
@@ -1535,8 +1511,7 @@ msgstr "rmfksup"
 #: crypt-gpgme.c:4762
 #, fuzzy
 msgid "S/MIME (e)ncrypt, (s)ign, sign (a)s, (b)oth, (p)gp or (c)lear? "
-msgstr ""
-"S/MIME şif(r)ele, i(m)zala, (f)arklı imzala, i(k)isi de, p(g)p, i(p)tal?"
+msgstr "S/MIME şif(r)ele, i(m)zala, (f)arklı imzala, i(k)isi de, p(g)p, i(p)tal?"
 
 #: crypt-gpgme.c:4763
 msgid "esabpfc"
@@ -1545,8 +1520,7 @@ msgstr "rmfkgup"
 #: crypt-gpgme.c:4768
 #, fuzzy
 msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, s/(m)ime or (c)lear? "
-msgstr ""
-"PGP şif(r)ele, i(m)zala, (f)arklı imzala, i(k)isi de, (s)/mime, i(p)tal?"
+msgstr "PGP şif(r)ele, i(m)zala, (f)arklı imzala, i(k)isi de, (s)/mime, i(p)tal?"
 
 #: crypt-gpgme.c:4769
 msgid "esabmfc"
@@ -1581,8 +1555,7 @@ msgstr "PGP parolası/parolaları unutuldu."
 #: crypt.c:150
 #, fuzzy
 msgid "Inline PGP can't be used with attachments.  Revert to PGP/MIME?"
-msgstr ""
-"İleti satıriçi olarak gönderilemiyor.  PGP/MIME kullanımına geri dönülsün mü?"
+msgstr "İleti satıriçi olarak gönderilemiyor.  PGP/MIME kullanımına geri dönülsün mü?"
 
 #: crypt.c:152
 msgid "Mail not sent: inline PGP can't be used with attachments."
@@ -1594,8 +1567,7 @@ msgstr "PGP çağırılıyor..."
 
 #: crypt.c:168
 msgid "Message can't be sent inline.  Revert to using PGP/MIME?"
-msgstr ""
-"İleti satıriçi olarak gönderilemiyor.  PGP/MIME kullanımına geri dönülsün mü?"
+msgstr "İleti satıriçi olarak gönderilemiyor.  PGP/MIME kullanımına geri dönülsün mü?"
 
 #: crypt.c:170 send.c:1792
 msgid "Mail not sent."
@@ -1611,9 +1583,7 @@ msgstr ""
 
 #: crypt.c:508
 msgid "S/MIME messages with no hints on content are unsupported."
-msgstr ""
-"İçeriği hakkında hiçbir bilginin bulunmadığı S/MIME iletilerinin "
-"gönderilmesi desteklenmiyor."
+msgstr "İçeriği hakkında hiçbir bilginin bulunmadığı S/MIME iletilerinin gönderilmesi desteklenmiyor."
 
 #: crypt.c:728 crypt.c:772
 msgid "Trying to extract PGP keys...\n"
@@ -2247,9 +2217,7 @@ msgstr "Bayrağı sil"
 
 #: handler.c:1139
 msgid "[-- Error:  Could not display any parts of Multipart/Alternative! --]\n"
-msgstr ""
-"[-- Hata:  \"Multipart/Alternative\"e ait hiç bir bölüm görüntülenemiyor! "
-"--]\n"
+msgstr "[-- Hata:  \"Multipart/Alternative\"e ait hiç bir bölüm görüntülenemiyor! --]\n"
 
 #: handler.c:1254
 #, c-format
@@ -2288,8 +2256,7 @@ msgstr "[-- %s otomatik görüntüleme komutunun ürettiği hata --]\n"
 
 #: handler.c:1446
 msgid "[-- Error: message/external-body has no access-type parameter --]\n"
-msgstr ""
-"[-- Hata: \"message/external-body\" herhangi bir erişim tipi içermiyor --]\n"
+msgstr "[-- Hata: \"message/external-body\" herhangi bir erişim tipi içermiyor --]\n"
 
 #: handler.c:1467
 #, c-format
@@ -2833,8 +2800,7 @@ msgstr "source: %s dosyasında hatalar var"
 #: init.c:2445
 #, fuzzy, c-format
 msgid "source: reading aborted due to too many errors in %s"
-msgstr ""
-"source: %s dosyasındaki çok fazla sayıda hatadan dolayı okuma iptal edildi"
+msgstr "source: %s dosyasındaki çok fazla sayıda hatadan dolayı okuma iptal edildi"
 
 #: init.c:2459
 #, c-format
@@ -2953,10 +2919,8 @@ msgstr "Bellek tükendi!"
 #: main.c:84
 msgid ""
 "usage: mutt [<options>] [-z] [-f <file> | -yZ]\n"
-"       mutt [<options>] [-Ex] [-Hi <file>] [-s <subj>] [-bc <addr>] [-a "
-"<file> [...] --] <addr> [...]\n"
-"       mutt [<options>] [-x] [-s <subj>] [-bc <addr>] [-a <file> [...] --] "
-"<addr> [...] < message\n"
+"       mutt [<options>] [-Ex] [-Hi <file>] [-s <subj>] [-bc <addr>] [-a <file> [...] --] <addr> [...]\n"
+"       mutt [<options>] [-x] [-s <subj>] [-bc <addr>] [-a <file> [...] --] <addr> [...] < message\n"
 "       mutt [<options>] -p\n"
 "       mutt [<options>] -A <alias> [...]\n"
 "       mutt [<options>] -Q <query> [...]\n"
@@ -3048,9 +3012,7 @@ msgstr "Hata ayıklama bilgileri için %d seviyesi kullanılıyor.\n"
 
 #: main.c:299
 msgid "DEBUG was not defined during compilation.  Ignored.\n"
-msgstr ""
-"DEBUG (hata ayıkla) seçeneği inşa sırasında tanımlanmamış.  Göz ardı "
-"edildi.\n"
+msgstr "DEBUG (hata ayıkla) seçeneği inşa sırasında tanımlanmamış.  Göz ardı edildi.\n"
 
 #: main.c:487
 #, c-format
@@ -3115,9 +3077,7 @@ msgstr "Ölümcül hata!  Eposta kutusu yeniden açılamadı!"
 
 #: mbox.c:881
 msgid "sync: mbox modified, but no modified messages! (report this bug)"
-msgstr ""
-"sync: eposta kutusu değiştirilmiş, fakat herhangi bir değiştirilmiş ileti de "
-"içermiyor! (bu hatayı bildirin)"
+msgstr "sync: eposta kutusu değiştirilmiş, fakat herhangi bir değiştirilmiş ileti de içermiyor! (bu hatayı bildirin)"
 
 #: mbox.c:905 mh.c:2023 mutt_notmuch.c:1623 mx.c:757
 #, c-format
@@ -3131,8 +3091,7 @@ msgstr "Değişiklikler kaydediliyor..."
 #: mbox.c:1075
 #, c-format
 msgid "Write failed!  Saved partial mailbox to %s"
-msgstr ""
-"Yazma başarısız oldu!  Eposta kutusunun bir bölümü %s dosyasına yazıldı"
+msgstr "Yazma başarısız oldu!  Eposta kutusunun bir bölümü %s dosyasına yazıldı"
 
 #: mbox.c:1137
 msgid "Could not reopen mailbox!"
@@ -3242,8 +3201,7 @@ msgstr ""
 #. See the msgid "Save to file: " (alias.c, recvattach.c)
 #: muttlib.c:1101
 msgid "File is a directory, save under it? [(y)es, (n)o, (a)ll]"
-msgstr ""
-"Dosya bir dizin; bu dizinin altına kaydedilsin mi? [(e)vet, (h)ayır, (t)ümü]"
+msgstr "Dosya bir dizin; bu dizinin altına kaydedilsin mi? [(e)vet, (h)ayır, (t)ümü]"
 
 #: muttlib.c:1101
 msgid "yna"
@@ -3398,8 +3356,7 @@ msgstr "%s sunucusuna bağlanılamadı (%s)."
 
 #: mutt_ssl.c:220
 msgid "Failed to find enough entropy on your system"
-msgstr ""
-"Sistemde, rastgele süreçler için gerekli entropi yeterli seviyede değil"
+msgstr "Sistemde, rastgele süreçler için gerekli entropi yeterli seviyede değil"
 
 #: mutt_ssl.c:244
 #, c-format
@@ -3823,8 +3780,7 @@ msgid "Checking for new newsgroups..."
 msgstr "Yeni iletiler için bakılıyor..."
 
 #: nntp.c:2420
-msgid ""
-"Unable to find child articles because server does not support XPAT command."
+msgid "Unable to find child articles because server does not support XPAT command."
 msgstr ""
 
 #: pager.c:1629
@@ -4041,9 +3997,7 @@ msgstr ""
 
 #: pgp.c:1760
 #, fuzzy, c-format
-msgid ""
-"PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, %s format, (c)lear, or (o)ppenc "
-"mode? "
+msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, %s format, (c)lear, or (o)ppenc mode? "
 msgstr "PGP şif(r)ele, i(m)zala, (f)arklı imzala, i(k)isi de, %s, i(p)tal? "
 
 #: pgp.c:1763
@@ -4087,8 +4041,7 @@ msgstr "PGP anahtarı alınıyor..."
 
 #: pgpkey.c:491
 msgid "All matching keys are expired, revoked, or disabled."
-msgstr ""
-"Uygun bütün anahtarlar ya süresi dolmuş, ya hükümsüz ya da etkisiz durumda."
+msgstr "Uygun bütün anahtarlar ya süresi dolmuş, ya hükümsüz ya da etkisiz durumda."
 
 #: pgpkey.c:532
 #, c-format
@@ -4351,8 +4304,7 @@ msgstr "Şifrelenmiş bir iletiye ait eklerin silinmesi desteklenmiyor."
 
 #: recvattach.c:1144
 #, fuzzy
-msgid ""
-"Deletion of attachments from signed messages may invalidate the signature."
+msgid "Deletion of attachments from signed messages may invalidate the signature."
 msgstr "Şifrelenmiş bir iletiye ait eklerin silinmesi desteklenmiyor."
 
 #: recvattach.c:1161 recvattach.c:1178
@@ -4382,8 +4334,7 @@ msgstr "Ekler halinde iletilsin mi?"
 
 #: recvcmd.c:486
 msgid "Can't decode all tagged attachments.  MIME-forward the others?"
-msgstr ""
-"İşaretlenmiş eklerin hepsi çözülemiyor. Kalanlar MIME olarak iletilsin mi?"
+msgstr "İşaretlenmiş eklerin hepsi çözülemiyor. Kalanlar MIME olarak iletilsin mi?"
 
 #: recvcmd.c:611
 msgid "Forward MIME encapsulated?"
@@ -4404,9 +4355,7 @@ msgstr "Herhangi bir eposta listesi bulunamadı!"
 
 #: recvcmd.c:867
 msgid "Can't decode all tagged attachments.  MIME-encapsulate the others?"
-msgstr ""
-"İşaretlenmiş eklerin hepsi çözülemiyor. Kalanlar MIME ile sarmalanmış olarak "
-"iletilsin mi?"
+msgstr "İşaretlenmiş eklerin hepsi çözülemiyor. Kalanlar MIME ile sarmalanmış olarak iletilsin mi?"
 
 #: remailer.c:481
 msgid "Append"
@@ -4459,10 +4408,8 @@ msgid "Mixmaster doesn't accept Cc or Bcc headers."
 msgstr "Mixmaster Cc ya da Bcc başlıklarını kabul etmez."
 
 #: remailer.c:732
-msgid ""
-"Please set the hostname variable to a proper value when using mixmaster!"
-msgstr ""
-"Lütfen mixmaster kullanırken yerel makina adını uygun şekilde ayarlayın!"
+msgid "Please set the hostname variable to a proper value when using mixmaster!"
+msgstr "Lütfen mixmaster kullanırken yerel makina adını uygun şekilde ayarlayın!"
 
 #: remailer.c:766
 #, c-format
@@ -4476,9 +4423,7 @@ msgstr "İleti gönderilirken hata oluştu."
 #: rfc1524.c:164
 #, c-format
 msgid "Improperly formatted entry for type %s in \"%s\" line %d"
-msgstr ""
-"\"%2$s\" dosyasında %3$d nolu satırdaki %1$s tipi için hatalı "
-"biçimlendirilmiş öge"
+msgstr "\"%2$s\" dosyasında %3$d nolu satırdaki %1$s tipi için hatalı biçimlendirilmiş öge"
 
 #: rfc1524.c:396
 msgid "No mailcap path specified"
@@ -4791,11 +4736,8 @@ msgstr ""
 
 #: smime.c:2110
 #, fuzzy
-msgid ""
-"S/MIME (s)ign, encrypt (w)ith, sign (a)s, (c)lear, or (o)ppenc mode off? "
-msgstr ""
-"S/MIME şif(r)ele, i(m)zala, f(a)rklı şifrele, (f)arklı imzala, i(k)isi de, "
-"i(p)tal?"
+msgid "S/MIME (s)ign, encrypt (w)ith, sign (a)s, (c)lear, or (o)ppenc mode off? "
+msgstr "S/MIME şif(r)ele, i(m)zala, f(a)rklı şifrele, (f)arklı imzala, i(k)isi de, i(p)tal?"
 
 #. L10N: The 'f' is from "forget it", an old undocumented synonym of
 #. 'clear'.  Please use a corresponding letter in your language.
@@ -4807,12 +4749,8 @@ msgstr ""
 
 #: smime.c:2124
 #, fuzzy
-msgid ""
-"S/MIME (e)ncrypt, (s)ign, encrypt (w)ith, sign (a)s, (b)oth, (c)lear, or "
-"(o)ppenc mode? "
-msgstr ""
-"S/MIME şif(r)ele, i(m)zala, f(a)rklı şifrele, (f)arklı imzala, i(k)isi de, "
-"i(p)tal?"
+msgid "S/MIME (e)ncrypt, (s)ign, encrypt (w)ith, sign (a)s, (b)oth, (c)lear, or (o)ppenc mode? "
+msgstr "S/MIME şif(r)ele, i(m)zala, f(a)rklı şifrele, (f)arklı imzala, i(k)isi de, i(p)tal?"
 
 #: smime.c:2125
 #, fuzzy
@@ -4820,11 +4758,8 @@ msgid "eswabfco"
 msgstr "rmafkup"
 
 #: smime.c:2133
-msgid ""
-"S/MIME (e)ncrypt, (s)ign, encrypt (w)ith, sign (a)s, (b)oth, or (c)lear? "
-msgstr ""
-"S/MIME şif(r)ele, i(m)zala, f(a)rklı şifrele, (f)arklı imzala, i(k)isi de, "
-"i(p)tal?"
+msgid "S/MIME (e)ncrypt, (s)ign, encrypt (w)ith, sign (a)s, (b)oth, or (c)lear? "
+msgstr "S/MIME şif(r)ele, i(m)zala, f(a)rklı şifrele, (f)arklı imzala, i(k)isi de, i(p)tal?"
 
 #: smime.c:2134
 msgid "eswabfc"
@@ -4992,13 +4927,11 @@ msgstr ""
 msgid ""
 "    You should have received a copy of the GNU General Public License\n"
 "    along with this program; if not, write to the Free Software\n"
-"    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  "
-"02110-1301, USA.\n"
+"    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.\n"
 msgstr ""
 "    You should have received a copy of the GNU General Public License\n"
 "    along with this program; if not, write to the Free Software\n"
-"    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  "
-"02110-1301, USA.\n"
+"    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.\n"
 
 #: version.c:87
 msgid ""
@@ -5087,8 +5020,7 @@ msgstr "geçerli eposta kutusuna olan aboneliği iptal et (sadece IMAP)"
 
 #: ../keymap_alldefs.h:18
 msgid "toggle view all/subscribed mailboxes (IMAP only)"
-msgstr ""
-"görüntüleme kipleri arasında geçiş yap: hepsi/abone olunanlar (sadece IMAP)"
+msgstr "görüntüleme kipleri arasında geçiş yap: hepsi/abone olunanlar (sadece IMAP)"
 
 #: ../keymap_alldefs.h:19
 msgid "list mailboxes with new mail"
@@ -5827,9 +5759,7 @@ msgstr "eposta kutusunun yeniden yazılması özelliğini aç/kapat"
 
 #: ../keymap_alldefs.h:198
 msgid "toggle whether to browse mailboxes or all files"
-msgstr ""
-"sadece eposta kutuları veya bütün dosyaların görüntülenmesi arasında geçiş "
-"yap"
+msgstr "sadece eposta kutuları veya bütün dosyaların görüntülenmesi arasında geçiş yap"
 
 #: ../keymap_alldefs.h:199
 msgid "move to the top of the page"
@@ -5926,9 +5856,7 @@ msgstr "Yeni eposta içeren bir eposta kutusu yok."
 #: ../keymap_alldefs.h:220
 #, fuzzy
 msgid "toggle between mailboxes and virtual mailboxes"
-msgstr ""
-"sadece eposta kutuları veya bütün dosyaların görüntülenmesi arasında geçiş "
-"yap"
+msgstr "sadece eposta kutuları veya bütün dosyaların görüntülenmesi arasında geçiş yap"
 
 #: ../keymap_alldefs.h:221
 msgid "make the sidebar (in)visible"
@@ -6034,4 +5962,3 @@ msgstr "desteklenen genel anahtarları çıkar"
 #: ../keymap_alldefs.h:244
 msgid "show S/MIME options"
 msgstr "S/MIME seçeneklerini göster"
-

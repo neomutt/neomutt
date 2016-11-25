@@ -310,16 +310,12 @@ msgstr "Bylų kaukė:"
 
 #: browser.c:1724
 #, fuzzy
-msgid ""
-"Reverse sort by (d)ate, (a)lpha, si(z)e, d(e)scription, (c)ount, ne(w) "
-"count, or do(n)'t sort? "
+msgid "Reverse sort by (d)ate, (a)lpha, si(z)e, d(e)scription, (c)ount, ne(w) count, or do(n)'t sort? "
 msgstr "Atvirkščiai rikiuoti pagal (d)atą, (v)ardą, d(y)dį ar (n)erikiuoti?"
 
 #: browser.c:1725
 #, fuzzy
-msgid ""
-"Sort by (d)ate, (a)lpha, si(z)e, d(e)scription, (c)ount, ne(w) count, or "
-"do(n)'t sort? "
+msgid "Sort by (d)ate, (a)lpha, si(z)e, d(e)scription, (c)ount, ne(w) count, or do(n)'t sort? "
 msgstr "Rikiuoti pagal (d)atą, (v)ardą, d(y)dį ar (n)erikiuoti? "
 
 #: browser.c:1726
@@ -547,14 +543,12 @@ msgstr "Laiškai negalėjo būti atspausdinti"
 #: commands.c:547
 #, fuzzy
 msgid "Rev-Sort Date/Frm/Recv/Subj/tO/Thread/Unsort/siZe/sCore/sPam/Label?: "
-msgstr ""
-"Atv-Rik (d)ata/n(u)o/g(a)uta/(t)ema/(k)am/(g)ija/(n)erik/d(y)dis/(v)ertė?: "
+msgstr "Atv-Rik (d)ata/n(u)o/g(a)uta/(t)ema/(k)am/(g)ija/(n)erik/d(y)dis/(v)ertė?: "
 
 #: commands.c:548
 #, fuzzy
 msgid "Sort Date/Frm/Recv/Subj/tO/Thread/Unsort/siZe/sCore/sPam/Label?: "
-msgstr ""
-"Rik (d)ata/n(u)o/g(a)uta/(t)ema/(k)am/(g)ija/(n)erik/d(y)dis/(v)ertė?: "
+msgstr "Rik (d)ata/n(u)o/g(a)uta/(t)ema/(k)am/(g)ija/(n)erik/d(y)dis/(v)ertė?: "
 
 #: commands.c:549
 #, fuzzy
@@ -1036,9 +1030,7 @@ msgid "Fingerprint: "
 msgstr "Pirštų antspaudas: %s"
 
 #: crypt-gpgme.c:1320
-msgid ""
-"WARNING: We have NO indication whether the key belongs to the person named "
-"as shown above\n"
+msgid "WARNING: We have NO indication whether the key belongs to the person named as shown above\n"
 msgstr ""
 
 #: crypt-gpgme.c:1327
@@ -1046,9 +1038,7 @@ msgid "WARNING: The key does NOT BELONG to the person named as shown above\n"
 msgstr ""
 
 #: crypt-gpgme.c:1331
-msgid ""
-"WARNING: It is NOT certain that the key belongs to the person named as shown "
-"above\n"
+msgid "WARNING: It is NOT certain that the key belongs to the person named as shown above\n"
 msgstr ""
 
 #: crypt-gpgme.c:1361 crypt-gpgme.c:1366
@@ -1523,8 +1513,7 @@ msgstr ""
 #: crypt-gpgme.c:4721
 #, fuzzy
 msgid "S/MIME (s)ign, sign (a)s, (p)gp, (c)lear, or (o)ppenc mode off? "
-msgstr ""
-"(u)žšifruot, pa(s)irašyt, pasirašyt k(a)ip, a(b)u, (l)aiške, ar (p)amiršti?"
+msgstr "(u)žšifruot, pa(s)irašyt, pasirašyt k(a)ip, a(b)u, (l)aiške, ar (p)amiršti?"
 
 #. L10N: The 'f' is from "forget it", an old undocumented synonym of
 #. 'clear'.  Please use a corresponding letter in your language.
@@ -1537,8 +1526,7 @@ msgstr ""
 #: crypt-gpgme.c:4731
 #, fuzzy
 msgid "PGP (s)ign, sign (a)s, s/(m)ime, (c)lear, or (o)ppenc mode off? "
-msgstr ""
-"(u)žšifruot, pa(s)irašyt, pasirašyt k(a)ip, a(b)u, (l)aiške, ar (p)amiršti?"
+msgstr "(u)žšifruot, pa(s)irašyt, pasirašyt k(a)ip, a(b)u, (l)aiške, ar (p)amiršti?"
 
 #: crypt-gpgme.c:4732
 msgid "samfco"
@@ -1546,11 +1534,8 @@ msgstr ""
 
 #: crypt-gpgme.c:4744
 #, fuzzy
-msgid ""
-"S/MIME (e)ncrypt, (s)ign, sign (a)s, (b)oth, (p)gp, (c)lear, or (o)ppenc "
-"mode? "
-msgstr ""
-"(u)žšifruot, pa(s)irašyt, pasirašyt k(a)ip, a(b)u, (l)aiške, ar (p)amiršti?"
+msgid "S/MIME (e)ncrypt, (s)ign, sign (a)s, (b)oth, (p)gp, (c)lear, or (o)ppenc mode? "
+msgstr "(u)žšifruot, pa(s)irašyt, pasirašyt k(a)ip, a(b)u, (l)aiške, ar (p)amiršti?"
 
 #: crypt-gpgme.c:4745
 #, fuzzy
@@ -1559,11 +1544,8 @@ msgstr "ustabp"
 
 #: crypt-gpgme.c:4750
 #, fuzzy
-msgid ""
-"PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, s/(m)ime, (c)lear, or (o)ppenc "
-"mode? "
-msgstr ""
-"(u)žšifruot, pa(s)irašyt, pasirašyt k(a)ip, a(b)u, (l)aiške, ar (p)amiršti?"
+msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, s/(m)ime, (c)lear, or (o)ppenc mode? "
+msgstr "(u)žšifruot, pa(s)irašyt, pasirašyt k(a)ip, a(b)u, (l)aiške, ar (p)amiršti?"
 
 #: crypt-gpgme.c:4751
 #, fuzzy
@@ -1573,8 +1555,7 @@ msgstr "ustabp"
 #: crypt-gpgme.c:4762
 #, fuzzy
 msgid "S/MIME (e)ncrypt, (s)ign, sign (a)s, (b)oth, (p)gp or (c)lear? "
-msgstr ""
-"(u)žšifruot, pa(s)irašyt, pasirašyt k(a)ip, a(b)u, (l)aiške, ar (p)amiršti?"
+msgstr "(u)žšifruot, pa(s)irašyt, pasirašyt k(a)ip, a(b)u, (l)aiške, ar (p)amiršti?"
 
 #: crypt-gpgme.c:4763
 #, fuzzy
@@ -1584,8 +1565,7 @@ msgstr "ustabp"
 #: crypt-gpgme.c:4768
 #, fuzzy
 msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, s/(m)ime or (c)lear? "
-msgstr ""
-"(u)žšifruot, pa(s)irašyt, pasirašyt k(a)ip, a(b)u, (l)aiške, ar (p)amiršti?"
+msgstr "(u)žšifruot, pa(s)irašyt, pasirašyt k(a)ip, a(b)u, (l)aiške, ar (p)amiršti?"
 
 #: crypt-gpgme.c:4769
 #, fuzzy
@@ -2310,8 +2290,7 @@ msgstr "Išvalyti flagą"
 
 #: handler.c:1139
 msgid "[-- Error:  Could not display any parts of Multipart/Alternative! --]\n"
-msgstr ""
-"[-- Klaida:  Nepavyko parodyti nė vienos Multipart/Alternative dalies! --]\n"
+msgstr "[-- Klaida:  Nepavyko parodyti nė vienos Multipart/Alternative dalies! --]\n"
 
 #: handler.c:1254
 #, c-format
@@ -2349,8 +2328,7 @@ msgstr "[-- Automatinės peržiūros %s klaidos --]\n"
 
 #: handler.c:1446
 msgid "[-- Error: message/external-body has no access-type parameter --]\n"
-msgstr ""
-"[-- Klaida: message/external-body dalis neturi access-type parametro --]\n"
+msgstr "[-- Klaida: message/external-body dalis neturi access-type parametro --]\n"
 
 #: handler.c:1467
 #, c-format
@@ -3030,10 +3008,8 @@ msgstr "Baigėsi atmintis!"
 #: main.c:84
 msgid ""
 "usage: mutt [<options>] [-z] [-f <file> | -yZ]\n"
-"       mutt [<options>] [-Ex] [-Hi <file>] [-s <subj>] [-bc <addr>] [-a "
-"<file> [...] --] <addr> [...]\n"
-"       mutt [<options>] [-x] [-s <subj>] [-bc <addr>] [-a <file> [...] --] "
-"<addr> [...] < message\n"
+"       mutt [<options>] [-Ex] [-Hi <file>] [-s <subj>] [-bc <addr>] [-a <file> [...] --] <addr> [...]\n"
+"       mutt [<options>] [-x] [-s <subj>] [-bc <addr>] [-a <file> [...] --] <addr> [...] < message\n"
 "       mutt [<options>] -p\n"
 "       mutt [<options>] -A <alias> [...]\n"
 "       mutt [<options>] -Q <query> [...]\n"
@@ -3071,10 +3047,8 @@ msgid ""
 "  -n\t\tcauses Mutt not to read the system Muttrc\n"
 "  -p\t\trecall a postponed message"
 msgstr ""
-"vartosena: mutt [ -nRyzZ ] [ -e <cmd> ] [ -F <byla> ] [ -m <tipas> ] [ -f "
-"<byla> ]\n"
-"       mutt [ -nx ] [ -e <cmd> ] [ -a <byla> ] [ -F <byla> ] [ -H <byla> ] "
-"[ -i <byla> ] [ -s <tema> ] [ -b <adres> ] [ -c <adres> ] <adres> [ ... ]\n"
+"vartosena: mutt [ -nRyzZ ] [ -e <cmd> ] [ -F <byla> ] [ -m <tipas> ] [ -f <byla> ]\n"
+"       mutt [ -nx ] [ -e <cmd> ] [ -a <byla> ] [ -F <byla> ] [ -H <byla> ] [ -i <byla> ] [ -s <tema> ] [ -b <adres> ] [ -c <adres> ] <adres> [ ... ]\n"
 "       mutt [ -n ] [ -e <cmd> ] [ -F <byla> ] -p\n"
 "       mutt -v[v]\n"
 "\n"
@@ -3096,8 +3070,7 @@ msgstr ""
 "  -x\t\tsimuliuoti mailx siuntimo būdą\n"
 "  -y\t\tpasirinkti dėžutę, nurodytą tavo 'mailboxes' sąraše\n"
 "  -z\t\tiškart išeiti, jei dėžutėje nėra laiškų\n"
-"  -Z\t\tatidaryti pirmą aplanką su naujais laiškais, iškart išeiti, jei "
-"nėra\n"
+"  -Z\t\tatidaryti pirmą aplanką su naujais laiškais, iškart išeiti, jei nėra\n"
 "  -h\t\tši pagalbos žinutė"
 
 #: main.c:117
@@ -3113,10 +3086,8 @@ msgid ""
 "  -Z\t\topen the first folder with new message, exit immediately if none\n"
 "  -h\t\tthis help message"
 msgstr ""
-"vartosena: mutt [ -nRyzZ ] [ -e <cmd> ] [ -F <byla> ] [ -m <tipas> ] [ -f "
-"<byla> ]\n"
-"       mutt [ -nx ] [ -e <cmd> ] [ -a <byla> ] [ -F <byla> ] [ -H <byla> ] "
-"[ -i <byla> ] [ -s <tema> ] [ -b <adres> ] [ -c <adres> ] <adres> [ ... ]\n"
+"vartosena: mutt [ -nRyzZ ] [ -e <cmd> ] [ -F <byla> ] [ -m <tipas> ] [ -f <byla> ]\n"
+"       mutt [ -nx ] [ -e <cmd> ] [ -a <byla> ] [ -F <byla> ] [ -H <byla> ] [ -i <byla> ] [ -s <tema> ] [ -b <adres> ] [ -c <adres> ] <adres> [ ... ]\n"
 "       mutt [ -n ] [ -e <cmd> ] [ -F <byla> ] -p\n"
 "       mutt -v[v]\n"
 "\n"
@@ -3138,8 +3109,7 @@ msgstr ""
 "  -x\t\tsimuliuoti mailx siuntimo būdą\n"
 "  -y\t\tpasirinkti dėžutę, nurodytą tavo 'mailboxes' sąraše\n"
 "  -z\t\tiškart išeiti, jei dėžutėje nėra laiškų\n"
-"  -Z\t\tatidaryti pirmą aplanką su naujais laiškais, iškart išeiti, jei "
-"nėra\n"
+"  -Z\t\tatidaryti pirmą aplanką su naujais laiškais, iškart išeiti, jei nėra\n"
 "  -h\t\tši pagalbos žinutė"
 
 #: main.c:149
@@ -3933,8 +3903,7 @@ msgid "Checking for new newsgroups..."
 msgstr "Tikrinu, ar yra naujų laiškų..."
 
 #: nntp.c:2420
-msgid ""
-"Unable to find child articles because server does not support XPAT command."
+msgid "Unable to find child articles because server does not support XPAT command."
 msgstr ""
 
 #: pager.c:1629
@@ -4123,8 +4092,7 @@ msgstr "Negaliu kviesti PGP"
 #: pgp.c:1730
 #, fuzzy, c-format
 msgid "PGP (s)ign, sign (a)s, %s format, (c)lear, or (o)ppenc mode off? "
-msgstr ""
-"(u)žšifruot, pa(s)irašyt, pasirašyt k(a)ip, a(b)u, (l)aiške, ar (p)amiršti?"
+msgstr "(u)žšifruot, pa(s)irašyt, pasirašyt k(a)ip, a(b)u, (l)aiške, ar (p)amiršti?"
 
 #: pgp.c:1731 pgp.c:1761 pgp.c:1783
 msgid "PGP/M(i)ME"
@@ -4145,8 +4113,7 @@ msgstr ""
 #: pgp.c:1742
 #, fuzzy
 msgid "PGP (s)ign, sign (a)s, (c)lear, or (o)ppenc mode off? "
-msgstr ""
-"(u)žšifruot, pa(s)irašyt, pasirašyt k(a)ip, a(b)u, (l)aiške, ar (p)amiršti?"
+msgstr "(u)žšifruot, pa(s)irašyt, pasirašyt k(a)ip, a(b)u, (l)aiške, ar (p)amiršti?"
 
 #: pgp.c:1743
 msgid "safco"
@@ -4154,11 +4121,8 @@ msgstr ""
 
 #: pgp.c:1760
 #, fuzzy, c-format
-msgid ""
-"PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, %s format, (c)lear, or (o)ppenc "
-"mode? "
-msgstr ""
-"(u)žšifruot, pa(s)irašyt, pasirašyt k(a)ip, a(b)u, (l)aiške, ar (p)amiršti?"
+msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, %s format, (c)lear, or (o)ppenc mode? "
+msgstr "(u)žšifruot, pa(s)irašyt, pasirašyt k(a)ip, a(b)u, (l)aiške, ar (p)amiršti?"
 
 #: pgp.c:1763
 #, fuzzy
@@ -4168,8 +4132,7 @@ msgstr "ustabp"
 #: pgp.c:1768
 #, fuzzy
 msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, (c)lear, or (o)ppenc mode? "
-msgstr ""
-"(u)žšifruot, pa(s)irašyt, pasirašyt k(a)ip, a(b)u, (l)aiške, ar (p)amiršti?"
+msgstr "(u)žšifruot, pa(s)irašyt, pasirašyt k(a)ip, a(b)u, (l)aiške, ar (p)amiršti?"
 
 #: pgp.c:1769
 #, fuzzy
@@ -4179,8 +4142,7 @@ msgstr "ustabp"
 #: pgp.c:1782
 #, fuzzy, c-format
 msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, %s format, or (c)lear? "
-msgstr ""
-"(u)žšifruot, pa(s)irašyt, pasirašyt k(a)ip, a(b)u, (l)aiške, ar (p)amiršti?"
+msgstr "(u)žšifruot, pa(s)irašyt, pasirašyt k(a)ip, a(b)u, (l)aiške, ar (p)amiršti?"
 
 #: pgp.c:1785
 #, fuzzy
@@ -4190,8 +4152,7 @@ msgstr "ustabp"
 #: pgp.c:1790
 #, fuzzy
 msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, or (c)lear? "
-msgstr ""
-"(u)žšifruot, pa(s)irašyt, pasirašyt k(a)ip, a(b)u, (l)aiške, ar (p)amiršti?"
+msgstr "(u)žšifruot, pa(s)irašyt, pasirašyt k(a)ip, a(b)u, (l)aiške, ar (p)amiršti?"
 
 #: pgp.c:1791
 #, fuzzy
@@ -4474,8 +4435,7 @@ msgstr "PGP laiškų priedų ištrynimas nepalaikomas."
 
 #: recvattach.c:1144
 #, fuzzy
-msgid ""
-"Deletion of attachments from signed messages may invalidate the signature."
+msgid "Deletion of attachments from signed messages may invalidate the signature."
 msgstr "PGP laiškų priedų ištrynimas nepalaikomas."
 
 #: recvattach.c:1161 recvattach.c:1178
@@ -4529,8 +4489,7 @@ msgstr "Nerasta jokia konferencija!"
 
 #: recvcmd.c:867
 msgid "Can't decode all tagged attachments.  MIME-encapsulate the others?"
-msgstr ""
-"Negaliu dekoduoti visų pažymėtų priedų.  Enkapsuliuoti kitus MIME formatu?"
+msgstr "Negaliu dekoduoti visų pažymėtų priedų.  Enkapsuliuoti kitus MIME formatu?"
 
 #: remailer.c:481
 msgid "Append"
@@ -4559,8 +4518,7 @@ msgstr "Pasirink persiuntėjų grandinę."
 #: remailer.c:596
 #, c-format
 msgid "Error: %s can't be used as the final remailer of a chain."
-msgstr ""
-"Klaida: %s negali būti naudojamas kaip galutinis persiuntėjas grandinėje."
+msgstr "Klaida: %s negali būti naudojamas kaip galutinis persiuntėjas grandinėje."
 
 #: remailer.c:626
 #, c-format
@@ -4584,8 +4542,7 @@ msgid "Mixmaster doesn't accept Cc or Bcc headers."
 msgstr "Mixmaster'is nepriima Cc bei Bcc antraščių."
 
 #: remailer.c:732
-msgid ""
-"Please set the hostname variable to a proper value when using mixmaster!"
+msgid "Please set the hostname variable to a proper value when using mixmaster!"
 msgstr "Teisingai nustatyk hostname kintamąjį, kai naudoji mixmaster'į!"
 
 #: remailer.c:766
@@ -4934,11 +4891,8 @@ msgstr ""
 
 #: smime.c:2110
 #, fuzzy
-msgid ""
-"S/MIME (s)ign, encrypt (w)ith, sign (a)s, (c)lear, or (o)ppenc mode off? "
-msgstr ""
-"(u)žšifruot, pa(s)irašyt, užšifruo(t) su, pasirašyt k(a)ip, a(b)u, ar "
-"(p)amiršti?"
+msgid "S/MIME (s)ign, encrypt (w)ith, sign (a)s, (c)lear, or (o)ppenc mode off? "
+msgstr "(u)žšifruot, pa(s)irašyt, užšifruo(t) su, pasirašyt k(a)ip, a(b)u, ar (p)amiršti?"
 
 #. L10N: The 'f' is from "forget it", an old undocumented synonym of
 #. 'clear'.  Please use a corresponding letter in your language.
@@ -4950,12 +4904,8 @@ msgstr ""
 
 #: smime.c:2124
 #, fuzzy
-msgid ""
-"S/MIME (e)ncrypt, (s)ign, encrypt (w)ith, sign (a)s, (b)oth, (c)lear, or "
-"(o)ppenc mode? "
-msgstr ""
-"(u)žšifruot, pa(s)irašyt, užšifruo(t) su, pasirašyt k(a)ip, a(b)u, ar "
-"(p)amiršti?"
+msgid "S/MIME (e)ncrypt, (s)ign, encrypt (w)ith, sign (a)s, (b)oth, (c)lear, or (o)ppenc mode? "
+msgstr "(u)žšifruot, pa(s)irašyt, užšifruo(t) su, pasirašyt k(a)ip, a(b)u, ar (p)amiršti?"
 
 #: smime.c:2125
 #, fuzzy
@@ -4964,11 +4914,8 @@ msgstr "ustabp"
 
 #: smime.c:2133
 #, fuzzy
-msgid ""
-"S/MIME (e)ncrypt, (s)ign, encrypt (w)ith, sign (a)s, (b)oth, or (c)lear? "
-msgstr ""
-"(u)žšifruot, pa(s)irašyt, užšifruo(t) su, pasirašyt k(a)ip, a(b)u, ar "
-"(p)amiršti?"
+msgid "S/MIME (e)ncrypt, (s)ign, encrypt (w)ith, sign (a)s, (b)oth, or (c)lear? "
+msgstr "(u)žšifruot, pa(s)irašyt, užšifruo(t) su, pasirašyt k(a)ip, a(b)u, ar (p)amiršti?"
 
 #: smime.c:2134
 #, fuzzy
@@ -5116,8 +5063,7 @@ msgstr ""
 msgid ""
 "    You should have received a copy of the GNU General Public License\n"
 "    along with this program; if not, write to the Free Software\n"
-"    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  "
-"02110-1301, USA.\n"
+"    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.\n"
 msgstr ""
 
 #: version.c:87
@@ -5137,8 +5083,7 @@ msgid ""
 "under certain conditions; type `mutt -vv' for details.\n"
 msgstr ""
 "Copyright (C) 1996-2000 Michael R. Elkins ir kiti.\n"
-"Mutt ateina ABSOLIUČIAI BE JOKIOS GARANTIJOS; dėl smulkmenų paleisk 'mutt -"
-"vv.'\n"
+"Mutt ateina ABSOLIUČIAI BE JOKIOS GARANTIJOS; dėl smulkmenų paleisk 'mutt -vv.'\n"
 "Mutt yra free software, ir tu gali laisvai ją platinti su tam\n"
 "tikromis sąlygomis; rašyk 'mutt -vv' dėl smulkmenų.\n"
 
@@ -6159,4 +6104,3 @@ msgstr "ištraukti PGP viešus raktus"
 #, fuzzy
 msgid "show S/MIME options"
 msgstr "rodyti S/MIME parinktis"
-

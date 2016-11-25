@@ -144,8 +144,7 @@ msgstr "Fájl megnyitási hiba a fejléc vizsgálatakor."
 #: attach.c:197
 #, c-format
 msgid "No mailcap compose entry for %s, creating empty file."
-msgstr ""
-"Nincs mailcap \"compose\" bejegyzés a(z) %s esetre, üres fájl létrehozása."
+msgstr "Nincs mailcap \"compose\" bejegyzés a(z) %s esetre, üres fájl létrehozása."
 
 #: attach.c:258
 #, c-format
@@ -310,16 +309,12 @@ msgstr "Fájlmaszk: "
 
 #: browser.c:1724
 #, fuzzy
-msgid ""
-"Reverse sort by (d)ate, (a)lpha, si(z)e, d(e)scription, (c)ount, ne(w) "
-"count, or do(n)'t sort? "
+msgid "Reverse sort by (d)ate, (a)lpha, si(z)e, d(e)scription, (c)ount, ne(w) count, or do(n)'t sort? "
 msgstr "Fordított rendezés (d)átum, (n)év, (m)éret szerint vagy (r)endezetlen?"
 
 #: browser.c:1725
 #, fuzzy
-msgid ""
-"Sort by (d)ate, (a)lpha, si(z)e, d(e)scription, (c)ount, ne(w) count, or "
-"do(n)'t sort? "
+msgid "Sort by (d)ate, (a)lpha, si(z)e, d(e)scription, (c)ount, ne(w) count, or do(n)'t sort? "
 msgstr "Rendezés (d)átum, (n)év, (m)éret szerint vagy (r)endezetlen?"
 
 #: browser.c:1726
@@ -541,15 +536,12 @@ msgstr "A leveleket nem tudtam kinyomtatni"
 #: commands.c:547
 #, fuzzy
 msgid "Rev-Sort Date/Frm/Recv/Subj/tO/Thread/Unsort/siZe/sCore/sPam/Label?: "
-msgstr ""
-"Fordítva rendez Dátum/Feladó/érK/tárGy/Címzett/Téma/Rendetlen/Méret/"
-"Pontszám: "
+msgstr "Fordítva rendez Dátum/Feladó/érK/tárGy/Címzett/Téma/Rendetlen/Méret/Pontszám: "
 
 #: commands.c:548
 #, fuzzy
 msgid "Sort Date/Frm/Recv/Subj/tO/Thread/Unsort/siZe/sCore/sPam/Label?: "
-msgstr ""
-"Rendez Dátum/Feladó/érKezés/tárGy/Címzett/Téma/Rendezetlen/Méret/Pontszám: "
+msgstr "Rendez Dátum/Feladó/érKezés/tárGy/Címzett/Téma/Rendezetlen/Méret/Pontszám: "
 
 #: commands.c:549
 #, fuzzy
@@ -1030,9 +1022,7 @@ msgid "Fingerprint: "
 msgstr "Ujjlenyomat: %s"
 
 #: crypt-gpgme.c:1320
-msgid ""
-"WARNING: We have NO indication whether the key belongs to the person named "
-"as shown above\n"
+msgid "WARNING: We have NO indication whether the key belongs to the person named as shown above\n"
 msgstr ""
 
 #: crypt-gpgme.c:1327
@@ -1040,9 +1030,7 @@ msgid "WARNING: The key does NOT BELONG to the person named as shown above\n"
 msgstr ""
 
 #: crypt-gpgme.c:1331
-msgid ""
-"WARNING: It is NOT certain that the key belongs to the person named as shown "
-"above\n"
+msgid "WARNING: It is NOT certain that the key belongs to the person named as shown above\n"
 msgstr ""
 
 #: crypt-gpgme.c:1361 crypt-gpgme.c:1366
@@ -1500,9 +1488,7 @@ msgstr ""
 #: crypt-gpgme.c:4721
 #, fuzzy
 msgid "S/MIME (s)ign, sign (a)s, (p)gp, (c)lear, or (o)ppenc mode off? "
-msgstr ""
-"S/MIME (t)itkosít, (a)láír, aláír (m)int, titkosít é(s) aláír, (b)eágyazott, "
-"mé(g)se? "
+msgstr "S/MIME (t)itkosít, (a)láír, aláír (m)int, titkosít é(s) aláír, (b)eágyazott, mé(g)se? "
 
 #. L10N: The 'f' is from "forget it", an old undocumented synonym of
 #. 'clear'.  Please use a corresponding letter in your language.
@@ -1515,9 +1501,7 @@ msgstr ""
 #: crypt-gpgme.c:4731
 #, fuzzy
 msgid "PGP (s)ign, sign (a)s, s/(m)ime, (c)lear, or (o)ppenc mode off? "
-msgstr ""
-"PGP (t)itkosít, (a)láír, aláír (m)int, titkosít é(s) aláír, (b)eágyazott, "
-"mé(g)se? "
+msgstr "PGP (t)itkosít, (a)láír, aláír (m)int, titkosít é(s) aláír, (b)eágyazott, mé(g)se? "
 
 #: crypt-gpgme.c:4732
 msgid "samfco"
@@ -1525,12 +1509,8 @@ msgstr ""
 
 #: crypt-gpgme.c:4744
 #, fuzzy
-msgid ""
-"S/MIME (e)ncrypt, (s)ign, sign (a)s, (b)oth, (p)gp, (c)lear, or (o)ppenc "
-"mode? "
-msgstr ""
-"S/MIME (t)itkosít, (a)láír, aláír (m)int, titkosít é(s) aláír, (b)eágyazott, "
-"mé(g)se? "
+msgid "S/MIME (e)ncrypt, (s)ign, sign (a)s, (b)oth, (p)gp, (c)lear, or (o)ppenc mode? "
+msgstr "S/MIME (t)itkosít, (a)láír, aláír (m)int, titkosít é(s) aláír, (b)eágyazott, mé(g)se? "
 
 #: crypt-gpgme.c:4745
 #, fuzzy
@@ -1539,12 +1519,8 @@ msgstr "tapmsg"
 
 #: crypt-gpgme.c:4750
 #, fuzzy
-msgid ""
-"PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, s/(m)ime, (c)lear, or (o)ppenc "
-"mode? "
-msgstr ""
-"PGP (t)itkosít, (a)láír, aláír (m)int, titkosít é(s) aláír, (b)eágyazott, "
-"mé(g)se? "
+msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, s/(m)ime, (c)lear, or (o)ppenc mode? "
+msgstr "PGP (t)itkosít, (a)láír, aláír (m)int, titkosít é(s) aláír, (b)eágyazott, mé(g)se? "
 
 #: crypt-gpgme.c:4751
 #, fuzzy
@@ -1554,9 +1530,7 @@ msgstr "tapmsg"
 #: crypt-gpgme.c:4762
 #, fuzzy
 msgid "S/MIME (e)ncrypt, (s)ign, sign (a)s, (b)oth, (p)gp or (c)lear? "
-msgstr ""
-"S/MIME (t)itkosít, (a)láír, aláír (m)int, titkosít é(s) aláír, (b)eágyazott, "
-"mé(g)se? "
+msgstr "S/MIME (t)itkosít, (a)láír, aláír (m)int, titkosít é(s) aláír, (b)eágyazott, mé(g)se? "
 
 #: crypt-gpgme.c:4763
 #, fuzzy
@@ -1566,9 +1540,7 @@ msgstr "tapmsg"
 #: crypt-gpgme.c:4768
 #, fuzzy
 msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, s/(m)ime or (c)lear? "
-msgstr ""
-"PGP (t)itkosít, (a)láír, aláír (m)int, titkosít é(s) aláír, (b)eágyazott, "
-"mé(g)se? "
+msgstr "PGP (t)itkosít, (a)láír, aláír (m)int, titkosít é(s) aláír, (b)eágyazott, mé(g)se? "
 
 #: crypt-gpgme.c:4769
 #, fuzzy
@@ -1757,8 +1729,7 @@ msgstr "A csak olvasható postafiókba nem lehet írni!"
 
 #: curs_main.c:424
 msgid "Changes to folder will be written on folder exit."
-msgstr ""
-"A postafiók módosításai a postafiókból történő kilépéskor lesznek elmentve."
+msgstr "A postafiók módosításai a postafiókból történő kilépéskor lesznek elmentve."
 
 #: curs_main.c:429
 msgid "Changes to folder will not be written."
@@ -2327,8 +2298,7 @@ msgstr "[-- A(z) %s hiba kimenete --]\n"
 
 #: handler.c:1446
 msgid "[-- Error: message/external-body has no access-type parameter --]\n"
-msgstr ""
-"[-- Hiba: az üzenetnek/külső-törzsének nincs elérési-típus paramétere --]\n"
+msgstr "[-- Hiba: az üzenetnek/külső-törzsének nincs elérési-típus paramétere --]\n"
 
 #: handler.c:1467
 #, c-format
@@ -2700,8 +2670,7 @@ msgstr "Levél letöltése..."
 
 #: imap/message.c:491 pop.c:569
 msgid "The message index is incorrect. Try reopening the mailbox."
-msgstr ""
-"A levelek tartalomjegyzéke hibás. Próbáld megnyitni újra a postafiókot."
+msgstr "A levelek tartalomjegyzéke hibás. Próbáld megnyitni újra a postafiókot."
 
 #: imap/message.c:661
 #, fuzzy
@@ -2999,10 +2968,8 @@ msgstr "Elfogyott a memória!"
 #: main.c:84
 msgid ""
 "usage: mutt [<options>] [-z] [-f <file> | -yZ]\n"
-"       mutt [<options>] [-Ex] [-Hi <file>] [-s <subj>] [-bc <addr>] [-a "
-"<file> [...] --] <addr> [...]\n"
-"       mutt [<options>] [-x] [-s <subj>] [-bc <addr>] [-a <file> [...] --] "
-"<addr> [...] < message\n"
+"       mutt [<options>] [-Ex] [-Hi <file>] [-s <subj>] [-bc <addr>] [-a <file> [...] --] <addr> [...]\n"
+"       mutt [<options>] [-x] [-s <subj>] [-bc <addr>] [-a <file> [...] --] <addr> [...] < message\n"
 "       mutt [<options>] -p\n"
 "       mutt [<options>] -A <alias> [...]\n"
 "       mutt [<options>] -Q <query> [...]\n"
@@ -3041,12 +3008,9 @@ msgid ""
 "  -p\t\trecall a postponed message"
 msgstr ""
 "használat:\n"
-"     mutt [ -nRyzZ ] [ -e <par.> ] [ -F <fájl> ] [ -m <típus> ] [ -f "
-"<fájl> ]\n"
-"     mutt [ -nR ] [ -e <par.> ] [ -F <fájl> ] -Q <kérd.> [ -Q <kérd.> ] "
-"[...]\n"
-"     mutt [ -nR ] [ -e <par.> ] [ -F <fájl> ] -A <álnév> [ -A <álnév> ] "
-"[...]\n"
+"     mutt [ -nRyzZ ] [ -e <par.> ] [ -F <fájl> ] [ -m <típus> ] [ -f <fájl> ]\n"
+"     mutt [ -nR ] [ -e <par.> ] [ -F <fájl> ] -Q <kérd.> [ -Q <kérd.> ] [...]\n"
+"     mutt [ -nR ] [ -e <par.> ] [ -F <fájl> ] -A <álnév> [ -A <álnév> ] [...]\n"
 "     mutt [ -nx ] [ -e <par.> ] [ -a <fájl> ] [ -F <fájl> ] [ -H <fájl> ]\n"
 "\t[ -i <fájl> ] [ -s <tárgy> ] [ -b <címek> ] [ -c <címek> ] <címek>\n"
 "\t[ ... ]\n"
@@ -3069,14 +3033,12 @@ msgstr ""
 "  -p\t\telhalasztott levél visszahívása\n"
 "  -Q <változó>\tkonfigurációs beállítása lekérdezése\n"
 "  -R\t\tpostafiók megnyitása csak olvasható módban\n"
-"  -s <tárgy>\ttárgy megadása (idézőjelek közé kell tenni, ha van benne "
-"szóköz)\n"
+"  -s <tárgy>\ttárgy megadása (idézőjelek közé kell tenni, ha van benne szóköz)\n"
 "  -v\t\tverziószám és fordítási opciók mutatása\n"
 "  -x\t\tmailx küldés szimulálása\n"
 "  -y\t\tpostafiók megadása a `mailboxes' listából\n"
 "  -z\t\tkilép rögtön, ha nincs új levél a postafiókban\n"
-"  -Z\t\tmegnyitja az első olyan postafiókot, amiben új levél van (ha nincs, "
-"kilép)\n"
+"  -Z\t\tmegnyitja az első olyan postafiókot, amiben új levél van (ha nincs, kilép)\n"
 "  -h\t\tkiírja ezt az üzenetet"
 
 #: main.c:117
@@ -3093,12 +3055,9 @@ msgid ""
 "  -h\t\tthis help message"
 msgstr ""
 "használat:\n"
-"     mutt [ -nRyzZ ] [ -e <par.> ] [ -F <fájl> ] [ -m <típus> ] [ -f "
-"<fájl> ]\n"
-"     mutt [ -nR ] [ -e <par.> ] [ -F <fájl> ] -Q <kérd.> [ -Q <kérd.> ] "
-"[...]\n"
-"     mutt [ -nR ] [ -e <par.> ] [ -F <fájl> ] -A <álnév> [ -A <álnév> ] "
-"[...]\n"
+"     mutt [ -nRyzZ ] [ -e <par.> ] [ -F <fájl> ] [ -m <típus> ] [ -f <fájl> ]\n"
+"     mutt [ -nR ] [ -e <par.> ] [ -F <fájl> ] -Q <kérd.> [ -Q <kérd.> ] [...]\n"
+"     mutt [ -nR ] [ -e <par.> ] [ -F <fájl> ] -A <álnév> [ -A <álnév> ] [...]\n"
 "     mutt [ -nx ] [ -e <par.> ] [ -a <fájl> ] [ -F <fájl> ] [ -H <fájl> ]\n"
 "\t[ -i <fájl> ] [ -s <tárgy> ] [ -b <címek> ] [ -c <címek> ] <címek>\n"
 "\t[ ... ]\n"
@@ -3121,14 +3080,12 @@ msgstr ""
 "  -p\t\telhalasztott levél visszahívása\n"
 "  -Q <változó>\tkonfigurációs beállítása lekérdezése\n"
 "  -R\t\tpostafiók megnyitása csak olvasható módban\n"
-"  -s <tárgy>\ttárgy megadása (idézőjelek közé kell tenni, ha van benne "
-"szóköz)\n"
+"  -s <tárgy>\ttárgy megadása (idézőjelek közé kell tenni, ha van benne szóköz)\n"
 "  -v\t\tverziószám és fordítási opciók mutatása\n"
 "  -x\t\tmailx küldés szimulálása\n"
 "  -y\t\tpostafiók megadása a `mailboxes' listából\n"
 "  -z\t\tkilép rögtön, ha nincs új levél a postafiókban\n"
-"  -Z\t\tmegnyitja az első olyan postafiókot, amiben új levél van (ha nincs, "
-"kilép)\n"
+"  -Z\t\tmegnyitja az első olyan postafiókot, amiben új levél van (ha nincs, kilép)\n"
 "  -h\t\tkiírja ezt az üzenetet"
 
 #: main.c:149
@@ -3147,8 +3104,7 @@ msgstr "Hibakövetés szintje: %d.\n"
 
 #: main.c:299
 msgid "DEBUG was not defined during compilation.  Ignored.\n"
-msgstr ""
-"A HIBAKÖVETÉS nem volt engedélyezve fordításkor.  Figyelmen kívül hagyva.\n"
+msgstr "A HIBAKÖVETÉS nem volt engedélyezve fordításkor.  Figyelmen kívül hagyva.\n"
 
 #: main.c:487
 #, c-format
@@ -3213,8 +3169,7 @@ msgstr "Végzetes hiba!  A postafiókot nem lehet újra megnyitni!"
 
 #: mbox.c:881
 msgid "sync: mbox modified, but no modified messages! (report this bug)"
-msgstr ""
-"sync: mbox megváltozott, de nincs módosított levél! (jelentsd ezt a hibát)"
+msgstr "sync: mbox megváltozott, de nincs módosított levél! (jelentsd ezt a hibát)"
 
 #: mbox.c:905 mh.c:2023 mutt_notmuch.c:1623 mx.c:757
 #, c-format
@@ -3924,8 +3879,7 @@ msgid "Checking for new newsgroups..."
 msgstr "Új levelek letöltése..."
 
 #: nntp.c:2420
-msgid ""
-"Unable to find child articles because server does not support XPAT command."
+msgid "Unable to find child articles because server does not support XPAT command."
 msgstr ""
 
 #: pager.c:1629
@@ -4114,9 +4068,7 @@ msgstr "PGP-t nem tudom meghívni"
 #: pgp.c:1730
 #, fuzzy, c-format
 msgid "PGP (s)ign, sign (a)s, %s format, (c)lear, or (o)ppenc mode off? "
-msgstr ""
-"PGP (t)itkosít, (a)láír, aláír (m)int, titkosít é(s) aláír, (b)eágyazott, "
-"mé(g)se? "
+msgstr "PGP (t)itkosít, (a)láír, aláír (m)int, titkosít é(s) aláír, (b)eágyazott, mé(g)se? "
 
 #: pgp.c:1731 pgp.c:1761 pgp.c:1783
 msgid "PGP/M(i)ME"
@@ -4137,9 +4089,7 @@ msgstr ""
 #: pgp.c:1742
 #, fuzzy
 msgid "PGP (s)ign, sign (a)s, (c)lear, or (o)ppenc mode off? "
-msgstr ""
-"PGP (t)itkosít, (a)láír, aláír (m)int, titkosít é(s) aláír, (b)eágyazott, "
-"mé(g)se? "
+msgstr "PGP (t)itkosít, (a)láír, aláír (m)int, titkosít é(s) aláír, (b)eágyazott, mé(g)se? "
 
 #: pgp.c:1743
 msgid "safco"
@@ -4147,12 +4097,8 @@ msgstr ""
 
 #: pgp.c:1760
 #, fuzzy, c-format
-msgid ""
-"PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, %s format, (c)lear, or (o)ppenc "
-"mode? "
-msgstr ""
-"PGP (t)itkosít, (a)láír, aláír (m)int, titkosít é(s) aláír, (b)eágyazott, "
-"mé(g)se? "
+msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, %s format, (c)lear, or (o)ppenc mode? "
+msgstr "PGP (t)itkosít, (a)láír, aláír (m)int, titkosít é(s) aláír, (b)eágyazott, mé(g)se? "
 
 #: pgp.c:1763
 #, fuzzy
@@ -4162,9 +4108,7 @@ msgstr "tapmsg"
 #: pgp.c:1768
 #, fuzzy
 msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, (c)lear, or (o)ppenc mode? "
-msgstr ""
-"PGP (t)itkosít, (a)láír, aláír (m)int, titkosít é(s) aláír, (b)eágyazott, "
-"mé(g)se? "
+msgstr "PGP (t)itkosít, (a)láír, aláír (m)int, titkosít é(s) aláír, (b)eágyazott, mé(g)se? "
 
 #: pgp.c:1769
 #, fuzzy
@@ -4174,9 +4118,7 @@ msgstr "tapmsg"
 #: pgp.c:1782
 #, fuzzy, c-format
 msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, %s format, or (c)lear? "
-msgstr ""
-"PGP (t)itkosít, (a)láír, aláír (m)int, titkosít é(s) aláír, (b)eágyazott, "
-"mé(g)se? "
+msgstr "PGP (t)itkosít, (a)láír, aláír (m)int, titkosít é(s) aláír, (b)eágyazott, mé(g)se? "
 
 #: pgp.c:1785
 #, fuzzy
@@ -4186,9 +4128,7 @@ msgstr "tapmsg"
 #: pgp.c:1790
 #, fuzzy
 msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, or (c)lear? "
-msgstr ""
-"PGP (t)itkosít, (a)láír, aláír (m)int, titkosít é(s) aláír, (b)eágyazott, "
-"mé(g)se? "
+msgstr "PGP (t)itkosít, (a)láír, aláír (m)int, titkosít é(s) aláír, (b)eágyazott, mé(g)se? "
 
 #: pgp.c:1791
 #, fuzzy
@@ -4239,8 +4179,7 @@ msgstr "Az UIDL parancsot nem támogatja a szerver."
 #: pop.c:296
 #, fuzzy, c-format
 msgid "%d messages have been lost. Try reopening the mailbox."
-msgstr ""
-"A levelek tartalomjegyzéke hibás. Próbáld megnyitni újra a postafiókot."
+msgstr "A levelek tartalomjegyzéke hibás. Próbáld megnyitni újra a postafiókot."
 
 #: pop.c:412 pop.c:809
 #, c-format
@@ -4466,8 +4405,7 @@ msgstr "Mellékletek törlése kódolt üzenetből nem támogatott."
 
 #: recvattach.c:1144
 #, fuzzy
-msgid ""
-"Deletion of attachments from signed messages may invalidate the signature."
+msgid "Deletion of attachments from signed messages may invalidate the signature."
 msgstr "Mellékletek törlése kódolt üzenetből nem támogatott."
 
 #: recvattach.c:1161 recvattach.c:1178
@@ -4497,9 +4435,7 @@ msgstr "Továbbítás mellékletként?"
 
 #: recvcmd.c:486
 msgid "Can't decode all tagged attachments.  MIME-forward the others?"
-msgstr ""
-"Nem lehet kibontani minden kijelölt mellékletet. A többit MIME kódolva "
-"küldöd?"
+msgstr "Nem lehet kibontani minden kijelölt mellékletet. A többit MIME kódolva küldöd?"
 
 #: recvcmd.c:611
 msgid "Forward MIME encapsulated?"
@@ -4520,9 +4456,7 @@ msgstr "Nincs levelezőlista!"
 
 #: recvcmd.c:867
 msgid "Can't decode all tagged attachments.  MIME-encapsulate the others?"
-msgstr ""
-"Nem tudom az összes kijelölt mellékletet visszaalakítani.  A többit MIME-"
-"kódolod?"
+msgstr "Nem tudom az összes kijelölt mellékletet visszaalakítani.  A többit MIME-kódolod?"
 
 #: remailer.c:481
 msgid "Append"
@@ -4575,11 +4509,8 @@ msgid "Mixmaster doesn't accept Cc or Bcc headers."
 msgstr "A Mixmaster nem fogadja el a Cc vagy a Bcc fejléceket."
 
 #: remailer.c:732
-msgid ""
-"Please set the hostname variable to a proper value when using mixmaster!"
-msgstr ""
-"Kérlek állítsd be a hostname változót a megfelelő értékre, ha mixmastert "
-"használsz!"
+msgid "Please set the hostname variable to a proper value when using mixmaster!"
+msgstr "Kérlek állítsd be a hostname változót a megfelelő értékre, ha mixmastert használsz!"
 
 #: remailer.c:766
 #, c-format
@@ -4593,9 +4524,7 @@ msgstr "Hiba a levél elküldésekor."
 #: rfc1524.c:164
 #, c-format
 msgid "Improperly formatted entry for type %s in \"%s\" line %d"
-msgstr ""
-"Nem megfelelően formázott bejegyzés a(z) %s típushoz a(z) \"%s\" fájl %d. "
-"sorában"
+msgstr "Nem megfelelően formázott bejegyzés a(z) %s típushoz a(z) \"%s\" fájl %d. sorában"
 
 #: rfc1524.c:396
 msgid "No mailcap path specified"
@@ -4908,11 +4837,8 @@ msgstr ""
 
 #: smime.c:2110
 #, fuzzy
-msgid ""
-"S/MIME (s)ign, encrypt (w)ith, sign (a)s, (c)lear, or (o)ppenc mode off? "
-msgstr ""
-"S/MIME (t)itkosít, (a)láír, titkosít (p)rg, aláír (m)int, titkosít é(s) "
-"aláír, mé(g)se? "
+msgid "S/MIME (s)ign, encrypt (w)ith, sign (a)s, (c)lear, or (o)ppenc mode off? "
+msgstr "S/MIME (t)itkosít, (a)láír, titkosít (p)rg, aláír (m)int, titkosít é(s) aláír, mé(g)se? "
 
 #. L10N: The 'f' is from "forget it", an old undocumented synonym of
 #. 'clear'.  Please use a corresponding letter in your language.
@@ -4924,12 +4850,8 @@ msgstr ""
 
 #: smime.c:2124
 #, fuzzy
-msgid ""
-"S/MIME (e)ncrypt, (s)ign, encrypt (w)ith, sign (a)s, (b)oth, (c)lear, or "
-"(o)ppenc mode? "
-msgstr ""
-"S/MIME (t)itkosít, (a)láír, titkosít (p)rg, aláír (m)int, titkosít é(s) "
-"aláír, mé(g)se? "
+msgid "S/MIME (e)ncrypt, (s)ign, encrypt (w)ith, sign (a)s, (b)oth, (c)lear, or (o)ppenc mode? "
+msgstr "S/MIME (t)itkosít, (a)láír, titkosít (p)rg, aláír (m)int, titkosít é(s) aláír, mé(g)se? "
 
 #: smime.c:2125
 #, fuzzy
@@ -4938,11 +4860,8 @@ msgstr "tapmsg"
 
 #: smime.c:2133
 #, fuzzy
-msgid ""
-"S/MIME (e)ncrypt, (s)ign, encrypt (w)ith, sign (a)s, (b)oth, or (c)lear? "
-msgstr ""
-"S/MIME (t)itkosít, (a)láír, titkosít (p)rg, aláír (m)int, titkosít é(s) "
-"aláír, mé(g)se? "
+msgid "S/MIME (e)ncrypt, (s)ign, encrypt (w)ith, sign (a)s, (b)oth, or (c)lear? "
+msgstr "S/MIME (t)itkosít, (a)láír, titkosít (p)rg, aláír (m)int, titkosít é(s) aláír, mé(g)se? "
 
 #: smime.c:2134
 #, fuzzy
@@ -5089,8 +5008,7 @@ msgstr ""
 msgid ""
 "    You should have received a copy of the GNU General Public License\n"
 "    along with this program; if not, write to the Free Software\n"
-"    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  "
-"02110-1301, USA.\n"
+"    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.\n"
 msgstr ""
 
 #: version.c:87
@@ -6123,4 +6041,3 @@ msgstr "támogatott nyilvános kulcsok kibontása"
 #: ../keymap_alldefs.h:244
 msgid "show S/MIME options"
 msgstr "S/MIME opciók mutatása"
-

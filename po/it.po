@@ -157,9 +157,7 @@ msgstr "Manca la voce edit di mailcap per %s"
 
 #: attach.c:366
 msgid "No matching mailcap entry found.  Viewing as text."
-msgstr ""
-"Non è stata trovata la voce di mailcap corrispondente.  Visualizzo come "
-"testo."
+msgstr "Non è stata trovata la voce di mailcap corrispondente.  Visualizzo come testo."
 
 #: attach.c:379
 msgid "MIME type not defined.  Cannot view attachment."
@@ -308,17 +306,12 @@ msgstr "Maschera dei file: "
 
 #: browser.c:1724
 #, fuzzy
-msgid ""
-"Reverse sort by (d)ate, (a)lpha, si(z)e, d(e)scription, (c)ount, ne(w) "
-"count, or do(n)'t sort? "
-msgstr ""
-"Ordino al contrario per (d)ata, (a)lfabetico, dimensioni(z) o (n)ulla? "
+msgid "Reverse sort by (d)ate, (a)lpha, si(z)e, d(e)scription, (c)ount, ne(w) count, or do(n)'t sort? "
+msgstr "Ordino al contrario per (d)ata, (a)lfabetico, dimensioni(z) o (n)ulla? "
 
 #: browser.c:1725
 #, fuzzy
-msgid ""
-"Sort by (d)ate, (a)lpha, si(z)e, d(e)scription, (c)ount, ne(w) count, or "
-"do(n)'t sort? "
+msgid "Sort by (d)ate, (a)lpha, si(z)e, d(e)scription, (c)ount, ne(w) count, or do(n)'t sort? "
 msgstr "Ordino per (d)ata, (a)lfabetico, dimensioni(z) o (n)ulla? "
 
 #: browser.c:1726
@@ -1018,21 +1011,15 @@ msgid "Fingerprint: "
 msgstr "Fingerprint: "
 
 #: crypt-gpgme.c:1320
-msgid ""
-"WARNING: We have NO indication whether the key belongs to the person named "
-"as shown above\n"
-msgstr ""
-"ATTENZIONE: Non abbiamo NESSUNA indicazione che la chiave appartenga alla "
-"persona citata\n"
+msgid "WARNING: We have NO indication whether the key belongs to the person named as shown above\n"
+msgstr "ATTENZIONE: Non abbiamo NESSUNA indicazione che la chiave appartenga alla persona citata\n"
 
 #: crypt-gpgme.c:1327
 msgid "WARNING: The key does NOT BELONG to the person named as shown above\n"
 msgstr "ATTENZIONE: la chiave NON APPARTIENE alla persona citata\n"
 
 #: crypt-gpgme.c:1331
-msgid ""
-"WARNING: It is NOT certain that the key belongs to the person named as shown "
-"above\n"
+msgid "WARNING: It is NOT certain that the key belongs to the person named as shown above\n"
 msgstr "ATTENZIONE: NON è certo che la chiave appartenga alla persona citata\n"
 
 #: crypt-gpgme.c:1361 crypt-gpgme.c:1366
@@ -1470,8 +1457,7 @@ msgstr ""
 #: crypt-gpgme.c:4721
 #, fuzzy
 msgid "S/MIME (s)ign, sign (a)s, (p)gp, (c)lear, or (o)ppenc mode off? "
-msgstr ""
-"S/MIME cifra(e), firma(s), firma (c)ome, entram(b)i, (p)gp, annullare(c)?"
+msgstr "S/MIME cifra(e), firma(s), firma (c)ome, entram(b)i, (p)gp, annullare(c)?"
 
 #. L10N: The 'f' is from "forget it", an old undocumented synonym of
 #. 'clear'.  Please use a corresponding letter in your language.
@@ -1484,8 +1470,7 @@ msgstr ""
 #: crypt-gpgme.c:4731
 #, fuzzy
 msgid "PGP (s)ign, sign (a)s, s/(m)ime, (c)lear, or (o)ppenc mode off? "
-msgstr ""
-"PGP: cifra(e), firma(s), firma (c)ome, entram(b)i, s/(m)ime, annullare(c)?"
+msgstr "PGP: cifra(e), firma(s), firma (c)ome, entram(b)i, s/(m)ime, annullare(c)?"
 
 #: crypt-gpgme.c:4732
 msgid "samfco"
@@ -1493,11 +1478,8 @@ msgstr ""
 
 #: crypt-gpgme.c:4744
 #, fuzzy
-msgid ""
-"S/MIME (e)ncrypt, (s)ign, sign (a)s, (b)oth, (p)gp, (c)lear, or (o)ppenc "
-"mode? "
-msgstr ""
-"S/MIME cifra(e), firma(s), firma (c)ome, entram(b)i, (p)gp, annullare(c)?"
+msgid "S/MIME (e)ncrypt, (s)ign, sign (a)s, (b)oth, (p)gp, (c)lear, or (o)ppenc mode? "
+msgstr "S/MIME cifra(e), firma(s), firma (c)ome, entram(b)i, (p)gp, annullare(c)?"
 
 #: crypt-gpgme.c:4745
 #, fuzzy
@@ -1506,11 +1488,8 @@ msgstr "esabpfc"
 
 #: crypt-gpgme.c:4750
 #, fuzzy
-msgid ""
-"PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, s/(m)ime, (c)lear, or (o)ppenc "
-"mode? "
-msgstr ""
-"PGP: cifra(e), firma(s), firma (c)ome, entram(b)i, s/(m)ime, annullare(c)?"
+msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, s/(m)ime, (c)lear, or (o)ppenc mode? "
+msgstr "PGP: cifra(e), firma(s), firma (c)ome, entram(b)i, s/(m)ime, annullare(c)?"
 
 #: crypt-gpgme.c:4751
 #, fuzzy
@@ -1520,8 +1499,7 @@ msgstr "esabmfc"
 #: crypt-gpgme.c:4762
 #, fuzzy
 msgid "S/MIME (e)ncrypt, (s)ign, sign (a)s, (b)oth, (p)gp or (c)lear? "
-msgstr ""
-"S/MIME cifra(e), firma(s), firma (c)ome, entram(b)i, (p)gp, annullare(c)?"
+msgstr "S/MIME cifra(e), firma(s), firma (c)ome, entram(b)i, (p)gp, annullare(c)?"
 
 #: crypt-gpgme.c:4763
 #, fuzzy
@@ -1531,8 +1509,7 @@ msgstr "esabpfc"
 #: crypt-gpgme.c:4768
 #, fuzzy
 msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, s/(m)ime or (c)lear? "
-msgstr ""
-"PGP: cifra(e), firma(s), firma (c)ome, entram(b)i, s/(m)ime, annullare(c)?"
+msgstr "PGP: cifra(e), firma(s), firma (c)ome, entram(b)i, s/(m)ime, annullare(c)?"
 
 #: crypt-gpgme.c:4769
 #, fuzzy
@@ -1658,8 +1635,7 @@ msgstr ""
 
 #: cryptglue.c:89
 msgid "\"crypt_use_gpgme\" set but not built with GPGME support."
-msgstr ""
-"\"crypt_use_gpgme\" impostato ma non compilato con il supporto a GPGME."
+msgstr "\"crypt_use_gpgme\" impostato ma non compilato con il supporto a GPGME."
 
 #: cryptglue.c:112
 msgid "Invoking S/MIME..."
@@ -1764,8 +1740,7 @@ msgstr "Inviare un Follow-up a %s%s?"
 
 #: curs_main.c:905
 msgid "Mailbox was externally modified.  Flags may be wrong."
-msgstr ""
-"La mailbox è stata modificata dall'esterno.  I flag possono essere sbagliati."
+msgstr "La mailbox è stata modificata dall'esterno.  I flag possono essere sbagliati."
 
 #: curs_main.c:912 pager.c:2053
 msgid "New mail in this mailbox."
@@ -1969,8 +1944,7 @@ msgstr "Thread corrotto"
 
 #: curs_main.c:2073
 msgid "Thread cannot be broken, message is not part of a thread"
-msgstr ""
-"Il thread non può essere corrotto, il messaggio non fa parte di un thread"
+msgstr "Il thread non può essere corrotto, il messaggio non fa parte di un thread"
 
 #. L10N: CHECK_ACL
 #: curs_main.c:2083
@@ -2233,9 +2207,7 @@ msgstr "Cancella il flag"
 
 #: handler.c:1139
 msgid "[-- Error:  Could not display any parts of Multipart/Alternative! --]\n"
-msgstr ""
-"[-- Errore: impossibile visualizzare ogni parte di multipart/alternative! "
-"--]\n"
+msgstr "[-- Errore: impossibile visualizzare ogni parte di multipart/alternative! --]\n"
 
 #: handler.c:1254
 #, c-format
@@ -2273,8 +2245,7 @@ msgstr "[-- stderr dell'autoview di %s --]\n"
 
 #: handler.c:1446
 msgid "[-- Error: message/external-body has no access-type parameter --]\n"
-msgstr ""
-"[-- Errore: message/external-body non ha un parametro access-type --]\n"
+msgstr "[-- Errore: message/external-body non ha un parametro access-type --]\n"
 
 #: handler.c:1467
 #, c-format
@@ -2934,10 +2905,8 @@ msgstr "Memoria esaurita!"
 #, fuzzy
 msgid ""
 "usage: mutt [<options>] [-z] [-f <file> | -yZ]\n"
-"       mutt [<options>] [-Ex] [-Hi <file>] [-s <subj>] [-bc <addr>] [-a "
-"<file> [...] --] <addr> [...]\n"
-"       mutt [<options>] [-x] [-s <subj>] [-bc <addr>] [-a <file> [...] --] "
-"<addr> [...] < message\n"
+"       mutt [<options>] [-Ex] [-Hi <file>] [-s <subj>] [-bc <addr>] [-a <file> [...] --] <addr> [...]\n"
+"       mutt [<options>] [-x] [-s <subj>] [-bc <addr>] [-a <file> [...] --] <addr> [...] < message\n"
 "       mutt [<options>] -p\n"
 "       mutt [<options>] -A <alias> [...]\n"
 "       mutt [<options>] -Q <query> [...]\n"
@@ -2945,10 +2914,8 @@ msgid ""
 "       mutt -v[v]\n"
 msgstr ""
 "usage: mutt [<opzioni>] [-z] [-f <file> | -yZ]\n"
-"       mutt [<opzioni>] [-x] [-Hi <file>] [-s <oggetto>] [-bc <indir>] [-a "
-"<file> [...] --] <indir> [...]\n"
-"       mutt [<opzioni>] [-x] [-s <oggetto>] [-bc <indir>] [-a <file> [...] "
-"--] <addr> [...] < messaggio\n"
+"       mutt [<opzioni>] [-x] [-Hi <file>] [-s <oggetto>] [-bc <indir>] [-a <file> [...] --] <indir> [...]\n"
+"       mutt [<opzioni>] [-x] [-s <oggetto>] [-bc <indir>] [-a <file> [...] --] <addr> [...] < messaggio\n"
 "       mutt [<options>] -p\n"
 "       mutt [<options>] -A <alias> [...]\n"
 "       mutt [<options>] -Q <query> [...]\n"
@@ -3246,8 +3213,7 @@ msgstr "File nella directory: "
 
 #: muttlib.c:1133
 msgid "File exists, (o)verwrite, (a)ppend, or (c)ancel?"
-msgstr ""
-"Il file esiste, s(o)vrascrivere, (a)ccodare, o (c)ancellare l'operazione?"
+msgstr "Il file esiste, s(o)vrascrivere, (a)ccodare, o (c)ancellare l'operazione?"
 
 #: muttlib.c:1133
 msgid "oac"
@@ -3545,9 +3511,7 @@ msgstr "Errore nell'analisi dei dati del certificato"
 
 #: mutt_ssl_gnutls.c:833
 msgid "Warning: Server certificate was signed using an insecure algorithm"
-msgstr ""
-"Attenzione: il certificato del server è stato firmato con un algoritmo non "
-"sicuro"
+msgstr "Attenzione: il certificato del server è stato firmato con un algoritmo non sicuro"
 
 #: mutt_ssl_gnutls.c:952
 #, c-format
@@ -3577,8 +3541,7 @@ msgstr "ATTENZIONE: il nome host del server non corrisponde al certificato"
 
 #: mutt_ssl_gnutls.c:980
 msgid "WARNING: Signer of server certificate is not a CA"
-msgstr ""
-"ATTENZIONE: il firmatario del certificato del server non è una CA valida"
+msgstr "ATTENZIONE: il firmatario del certificato del server non è una CA valida"
 
 #: mutt_ssl_gnutls.c:1087
 #, c-format
@@ -3808,8 +3771,7 @@ msgid "Checking for new newsgroups..."
 msgstr "Verifica nuovi messaggi..."
 
 #: nntp.c:2420
-msgid ""
-"Unable to find child articles because server does not support XPAT command."
+msgid "Unable to find child articles because server does not support XPAT command."
 msgstr ""
 
 #: pager.c:1629
@@ -3996,8 +3958,7 @@ msgstr "Impossibile eseguire PGP"
 #: pgp.c:1730
 #, fuzzy, c-format
 msgid "PGP (s)ign, sign (a)s, %s format, (c)lear, or (o)ppenc mode off? "
-msgstr ""
-"PGP: cifra(e), firma(s), firma (c)ome, entram(b)i, formato %s, (a)nnullare? "
+msgstr "PGP: cifra(e), firma(s), firma (c)ome, entram(b)i, formato %s, (a)nnullare? "
 
 #: pgp.c:1731 pgp.c:1761 pgp.c:1783
 msgid "PGP/M(i)ME"
@@ -4026,11 +3987,8 @@ msgstr ""
 
 #: pgp.c:1760
 #, fuzzy, c-format
-msgid ""
-"PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, %s format, (c)lear, or (o)ppenc "
-"mode? "
-msgstr ""
-"PGP: cifra(e), firma(s), firma (c)ome, entram(b)i, formato %s, (a)nnullare? "
+msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, %s format, (c)lear, or (o)ppenc mode? "
+msgstr "PGP: cifra(e), firma(s), firma (c)ome, entram(b)i, formato %s, (a)nnullare? "
 
 #: pgp.c:1763
 #, fuzzy
@@ -4050,8 +4008,7 @@ msgstr "esabfc"
 #: pgp.c:1782
 #, c-format
 msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, %s format, or (c)lear? "
-msgstr ""
-"PGP: cifra(e), firma(s), firma (c)ome, entram(b)i, formato %s, (a)nnullare? "
+msgstr "PGP: cifra(e), firma(s), firma (c)ome, entram(b)i, formato %s, (a)nnullare? "
 
 #: pgp.c:1785
 msgid "esabfci"
@@ -4332,8 +4289,7 @@ msgstr "La cancellazione di allegati da messaggi cifrati non è gestita."
 
 #: recvattach.c:1144
 #, fuzzy
-msgid ""
-"Deletion of attachments from signed messages may invalidate the signature."
+msgid "Deletion of attachments from signed messages may invalidate the signature."
 msgstr "La cancellazione di allegati da messaggi cifrati non è gestita."
 
 #: recvattach.c:1161 recvattach.c:1178
@@ -4363,8 +4319,7 @@ msgstr "Inoltro come allegati?"
 
 #: recvcmd.c:486
 msgid "Can't decode all tagged attachments.  MIME-forward the others?"
-msgstr ""
-"Impossibile decodificare tutti gli allegati segnati. Uso MIME per gli altri?"
+msgstr "Impossibile decodificare tutti gli allegati segnati. Uso MIME per gli altri?"
 
 #: recvcmd.c:611
 msgid "Forward MIME encapsulated?"
@@ -4385,8 +4340,7 @@ msgstr "Non è stata trovata alcuna mailing list!"
 
 #: recvcmd.c:867
 msgid "Can't decode all tagged attachments.  MIME-encapsulate the others?"
-msgstr ""
-"Impossibile decodificare tutti gli allegati segnati. Uso MIME per gli altri?"
+msgstr "Impossibile decodificare tutti gli allegati segnati. Uso MIME per gli altri?"
 
 #: remailer.c:481
 msgid "Append"
@@ -4439,11 +4393,8 @@ msgid "Mixmaster doesn't accept Cc or Bcc headers."
 msgstr "Mixmaster non accetta header Cc o Bcc."
 
 #: remailer.c:732
-msgid ""
-"Please set the hostname variable to a proper value when using mixmaster!"
-msgstr ""
-"Impostare la variabile hostname ad un valore corretto quando si usa "
-"mixmaster!"
+msgid "Please set the hostname variable to a proper value when using mixmaster!"
+msgstr "Impostare la variabile hostname ad un valore corretto quando si usa mixmaster!"
 
 #: remailer.c:766
 #, c-format
@@ -4770,11 +4721,8 @@ msgstr ""
 
 #: smime.c:2110
 #, fuzzy
-msgid ""
-"S/MIME (s)ign, encrypt (w)ith, sign (a)s, (c)lear, or (o)ppenc mode off? "
-msgstr ""
-"S/MIME cifra(e), firma(s), cifra come(w), firma (c)ome, entram(b)i, "
-"(a)nnullare? "
+msgid "S/MIME (s)ign, encrypt (w)ith, sign (a)s, (c)lear, or (o)ppenc mode off? "
+msgstr "S/MIME cifra(e), firma(s), cifra come(w), firma (c)ome, entram(b)i, (a)nnullare? "
 
 #. L10N: The 'f' is from "forget it", an old undocumented synonym of
 #. 'clear'.  Please use a corresponding letter in your language.
@@ -4786,12 +4734,8 @@ msgstr ""
 
 #: smime.c:2124
 #, fuzzy
-msgid ""
-"S/MIME (e)ncrypt, (s)ign, encrypt (w)ith, sign (a)s, (b)oth, (c)lear, or "
-"(o)ppenc mode? "
-msgstr ""
-"S/MIME cifra(e), firma(s), cifra come(w), firma (c)ome, entram(b)i, "
-"(a)nnullare? "
+msgid "S/MIME (e)ncrypt, (s)ign, encrypt (w)ith, sign (a)s, (b)oth, (c)lear, or (o)ppenc mode? "
+msgstr "S/MIME cifra(e), firma(s), cifra come(w), firma (c)ome, entram(b)i, (a)nnullare? "
 
 #: smime.c:2125
 #, fuzzy
@@ -4799,11 +4743,8 @@ msgid "eswabfco"
 msgstr "eswabfc"
 
 #: smime.c:2133
-msgid ""
-"S/MIME (e)ncrypt, (s)ign, encrypt (w)ith, sign (a)s, (b)oth, or (c)lear? "
-msgstr ""
-"S/MIME cifra(e), firma(s), cifra come(w), firma (c)ome, entram(b)i, "
-"(a)nnullare? "
+msgid "S/MIME (e)ncrypt, (s)ign, encrypt (w)ith, sign (a)s, (b)oth, or (c)lear? "
+msgstr "S/MIME cifra(e), firma(s), cifra come(w), firma (c)ome, entram(b)i, (a)nnullare? "
 
 #: smime.c:2134
 msgid "eswabfc"
@@ -4811,8 +4752,7 @@ msgstr "eswabfc"
 
 #: smime.c:2155
 msgid "Choose algorithm family: 1: DES, 2: RC2, 3: AES, or (c)lear? "
-msgstr ""
-"Scegliere la famiglia dell'algoritmo: 1: DES, 2: RC2, 3: AES o annullare(c)? "
+msgstr "Scegliere la famiglia dell'algoritmo: 1: DES, 2: RC2, 3: AES o annullare(c)? "
 
 #: smime.c:2158
 msgid "drac"
@@ -4960,8 +4900,7 @@ msgstr ""
 msgid ""
 "    You should have received a copy of the GNU General Public License\n"
 "    along with this program; if not, write to the Free Software\n"
-"    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  "
-"02110-1301, USA.\n"
+"    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.\n"
 msgstr ""
 
 #: version.c:87
@@ -5988,4 +5927,3 @@ msgstr "estra le chiavi pubbliche PGP"
 #: ../keymap_alldefs.h:244
 msgid "show S/MIME options"
 msgstr "mostra le opzioni S/MIME"
-

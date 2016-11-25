@@ -357,16 +357,12 @@ msgstr "Màscara de fitxers: "
 
 #: browser.c:1724
 #, fuzzy
-msgid ""
-"Reverse sort by (d)ate, (a)lpha, si(z)e, d(e)scription, (c)ount, ne(w) "
-"count, or do(n)'t sort? "
+msgid "Reverse sort by (d)ate, (a)lpha, si(z)e, d(e)scription, (c)ount, ne(w) count, or do(n)'t sort? "
 msgstr "Ordena inversament per (d)ata, (a)lfabet, (m)ida, o (n)o ordena? "
 
 #: browser.c:1725
 #, fuzzy
-msgid ""
-"Sort by (d)ate, (a)lpha, si(z)e, d(e)scription, (c)ount, ne(w) count, or "
-"do(n)'t sort? "
+msgid "Sort by (d)ate, (a)lpha, si(z)e, d(e)scription, (c)ount, ne(w) count, or do(n)'t sort? "
 msgstr "Ordena per (d)ata, (a)lfabet, (m)ida, o (n)o ordena? "
 
 #: browser.c:1726
@@ -600,16 +596,12 @@ msgstr "No s’han pogut imprimir els missatges."
 #: commands.c:547
 #, fuzzy
 msgid "Rev-Sort Date/Frm/Recv/Subj/tO/Thread/Unsort/siZe/sCore/sPam/Label?: "
-msgstr ""
-"Dscnd (d)ata/(o)rig/(r)ebut/(t)ema/de(s)t/(f)il/(c)ap/(m)ida/(p)unts/"
-"sp(a)m?: "
+msgstr "Dscnd (d)ata/(o)rig/(r)ebut/(t)ema/de(s)t/(f)il/(c)ap/(m)ida/(p)unts/sp(a)m?: "
 
 #: commands.c:548
 #, fuzzy
 msgid "Sort Date/Frm/Recv/Subj/tO/Thread/Unsort/siZe/sCore/sPam/Label?: "
-msgstr ""
-"Ascnd (d)ata/(o)rig/(r)ebut/(t)ema/de(s)t/(f)il/(c)ap/(m)ida/(p)unts/"
-"sp(a)m?: "
+msgstr "Ascnd (d)ata/(o)rig/(r)ebut/(t)ema/de(s)t/(f)il/(c)ap/(m)ida/(p)unts/sp(a)m?: "
 
 # ivb (2004/08/16)
 # ivb  (d)ata/(o)rig/(r)ebut/(t)ema/de(s)t/(f)il/(c)ap/(m)ida/(p)unt/sp(a)m
@@ -1051,9 +1043,7 @@ msgstr "Error en signar les dades: %s\n"
 
 #: crypt-gpgme.c:944
 msgid "$pgp_sign_as unset and no default key specified in ~/.gnupg/gpg.conf"
-msgstr ""
-"$pgp_sign_as no està establerta i «~/.gnupg/gpg.conf» no conté una clau per "
-"defecte"
+msgstr "$pgp_sign_as no està establerta i «~/.gnupg/gpg.conf» no conté una clau per defecte"
 
 #: crypt-gpgme.c:1140
 msgid "Warning: One of the keys has been revoked\n"
@@ -1108,22 +1098,16 @@ msgid "Fingerprint: "
 msgstr "Empremta digital: "
 
 #: crypt-gpgme.c:1320
-msgid ""
-"WARNING: We have NO indication whether the key belongs to the person named "
-"as shown above\n"
-msgstr ""
-"Avís: RES indica que la clau pertanya a la persona esmentada a sobre.\n"
+msgid "WARNING: We have NO indication whether the key belongs to the person named as shown above\n"
+msgstr "Avís: RES indica que la clau pertanya a la persona esmentada a sobre.\n"
 
 #: crypt-gpgme.c:1327
 msgid "WARNING: The key does NOT BELONG to the person named as shown above\n"
 msgstr "Avís: La clau NO PERTANY a la persona esmentada a sobre.\n"
 
 #: crypt-gpgme.c:1331
-msgid ""
-"WARNING: It is NOT certain that the key belongs to the person named as shown "
-"above\n"
-msgstr ""
-"Avís: NO és segur que la clau pertanya a la persona esmentada a sobre.\n"
+msgid "WARNING: It is NOT certain that the key belongs to the person named as shown above\n"
+msgstr "Avís: NO és segur que la clau pertanya a la persona esmentada a sobre.\n"
 
 #: crypt-gpgme.c:1361 crypt-gpgme.c:1366
 msgid "aka: "
@@ -1471,8 +1455,7 @@ msgstr "Ha fallat gpgme_op_keylist_next(): %s"
 
 #: crypt-gpgme.c:3985
 msgid "All matching keys are marked expired/revoked."
-msgstr ""
-"Totes les claus concordants estan marcades com a expirades o revocades."
+msgstr "Totes les claus concordants estan marcades com a expirades o revocades."
 
 #: crypt-gpgme.c:4014 mutt_ssl.c:1087 mutt_ssl_gnutls.c:1003 pgpkey.c:515
 #: smime.c:435
@@ -1528,8 +1511,7 @@ msgstr "%s «%s»."
 
 #: crypt-gpgme.c:4079 pgpkey.c:601
 msgid "This key can't be used: expired/disabled/revoked."
-msgstr ""
-"No es pot emprar aquesta clau: es troba expirada, inhabilitada o revocada."
+msgstr "No es pot emprar aquesta clau: es troba expirada, inhabilitada o revocada."
 
 # ivb (2001/12/08)
 # ivb  ABREUJAT!
@@ -1632,12 +1614,8 @@ msgid "samfco"
 msgstr "sgmcco"
 
 #: crypt-gpgme.c:4744
-msgid ""
-"S/MIME (e)ncrypt, (s)ign, sign (a)s, (b)oth, (p)gp, (c)lear, or (o)ppenc "
-"mode? "
-msgstr ""
-"S/MIME: (x)ifra, (s)igna, si(g)na com a, (a)mbdós, (p)gp, (c)lar, "
-"(o)portunista? "
+msgid "S/MIME (e)ncrypt, (s)ign, sign (a)s, (b)oth, (p)gp, (c)lear, or (o)ppenc mode? "
+msgstr "S/MIME: (x)ifra, (s)igna, si(g)na com a, (a)mbdós, (p)gp, (c)lar, (o)portunista? "
 
 # (x)ifra, (s)igna, si(g)na com a, (a)mbdós, (p)gp, (c)lar, (o)portunista
 # La «f» i la «c» originals s’agafen en el mateix cas en el codi.  ivb
@@ -1646,12 +1624,8 @@ msgid "esabpfco"
 msgstr "xsgapcco"
 
 #: crypt-gpgme.c:4750
-msgid ""
-"PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, s/(m)ime, (c)lear, or (o)ppenc "
-"mode? "
-msgstr ""
-"PGP: (x)ifra, (s)igna, si(g)na com a, (a)mbdós, s/(m)ime, (c)lar, "
-"(o)portunista? "
+msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, s/(m)ime, (c)lear, or (o)ppenc mode? "
+msgstr "PGP: (x)ifra, (s)igna, si(g)na com a, (a)mbdós, s/(m)ime, (c)lar, (o)portunista? "
 
 # (x)ifra, (s)igna, si(g)na com a, (a)mbdós, s/(m)ime, (c)lar, (o)portunista
 # La «f» i la «c» originals s’agafen en el mateix cas en el codi.  ivb
@@ -1719,8 +1693,7 @@ msgstr "No es pot emprar PGP en línia amb adjuncions.  Emprar PGP/MIME?"
 
 #: crypt.c:152
 msgid "Mail not sent: inline PGP can't be used with attachments."
-msgstr ""
-"No s’ha enviat el missatge: no es pot emprar PGP en línia amb adjuncions."
+msgstr "No s’ha enviat el missatge: no es pot emprar PGP en línia amb adjuncions."
 
 #: crypt.c:159 cryptglue.c:110 pgpkey.c:563 pgpkey.c:753
 msgid "Invoking PGP..."
@@ -1922,8 +1895,7 @@ msgstr "Voleu escriure un seguiment a %s%s?"
 
 #: curs_main.c:905
 msgid "Mailbox was externally modified.  Flags may be wrong."
-msgstr ""
-"S’ha modificat la bústia des de fora.  Els senyaladors poden ser incorrectes."
+msgstr "S’ha modificat la bústia des de fora.  Els senyaladors poden ser incorrectes."
 
 #: curs_main.c:912 pager.c:2053
 msgid "New mail in this mailbox."
@@ -2398,8 +2370,7 @@ msgstr "Quin senyalador voleu desactivar"
 
 #: handler.c:1139
 msgid "[-- Error:  Could not display any parts of Multipart/Alternative! --]\n"
-msgstr ""
-"[-- Error: No s’ha pogut mostrar cap part del «multipart/alternative». --]\n"
+msgstr "[-- Error: No s’ha pogut mostrar cap part del «multipart/alternative». --]\n"
 
 #: handler.c:1254
 #, c-format
@@ -2444,9 +2415,7 @@ msgstr ""
 
 #: handler.c:1446
 msgid "[-- Error: message/external-body has no access-type parameter --]\n"
-msgstr ""
-"[-- Error: La part «message/external-body» no té paràmetre «access-type». "
-"--]\n"
+msgstr "[-- Error: La part «message/external-body» no té paràmetre «access-type». --]\n"
 
 #: handler.c:1467
 #, c-format
@@ -2802,8 +2771,7 @@ msgstr "S’estan copiant %d missatges a «%s»…"
 
 #: imap/message.c:98
 msgid "Unable to fetch headers from this IMAP server version."
-msgstr ""
-"No s’han pogut recollir les capçaleres d’aquesta versió de servidor IMAP."
+msgstr "No s’han pogut recollir les capçaleres d’aquesta versió de servidor IMAP."
 
 #: imap/message.c:108
 #, c-format
@@ -3131,10 +3099,8 @@ msgstr "No resta memòria."
 #: main.c:84
 msgid ""
 "usage: mutt [<options>] [-z] [-f <file> | -yZ]\n"
-"       mutt [<options>] [-Ex] [-Hi <file>] [-s <subj>] [-bc <addr>] [-a "
-"<file> [...] --] <addr> [...]\n"
-"       mutt [<options>] [-x] [-s <subj>] [-bc <addr>] [-a <file> [...] --] "
-"<addr> [...] < message\n"
+"       mutt [<options>] [-Ex] [-Hi <file>] [-s <subj>] [-bc <addr>] [-a <file> [...] --] <addr> [...]\n"
+"       mutt [<options>] [-x] [-s <subj>] [-bc <addr>] [-a <file> [...] --] <addr> [...] < message\n"
 "       mutt [<options>] -p\n"
 "       mutt [<options>] -A <alias> [...]\n"
 "       mutt [<options>] -Q <query> [...]\n"
@@ -3164,8 +3130,7 @@ msgid ""
 msgstr ""
 "Opcions:\n"
 "  -A ÀLIES             Expandeix l’ÀLIES indicat.\n"
-"  -a FITXER… --        Adjunta cada FITXER al missatge.  La llista de "
-"fitxers\n"
+"  -a FITXER… --        Adjunta cada FITXER al missatge.  La llista de fitxers\n"
 "                       ha d’acabar amb l’argument «--».\n"
 "  -b ADREÇA            Indica una ADREÇA per a la còpia cega (Bcc).\n"
 "  -c ADREÇA            Indica una ADREÇA per a la còpia (Cc).\n"
@@ -3174,8 +3139,7 @@ msgstr ""
 
 #: main.c:102
 msgid "  -d <level>\tlog debugging output to ~/.muttdebug0"
-msgstr ""
-"  -d NIVELL            Escriu els missatges de depuració a «~/.muttdebug0»."
+msgstr "  -d NIVELL            Escriu els missatges de depuració a «~/.muttdebug0»."
 
 #: main.c:105
 #, fuzzy
@@ -3194,12 +3158,10 @@ msgid ""
 msgstr ""
 "  -E                   Edita el fitxer esborrany (vegeu l’opció «-H») o el\n"
 "                       fitxer a incloure (opció «-i»).\n"
-"  -e ORDRE             Indica una ORDRE a executar abans de la "
-"inicialització.\n"
+"  -e ORDRE             Indica una ORDRE a executar abans de la inicialització.\n"
 "  -f FITXER            Indica quina bústia llegir.\n"
 "  -F FITXER            Indica un FITXER «muttrc» alternatiu.\n"
-"  -H FITXER            Indica un FITXER esborrany d’on llegir la capçalera i "
-"el\n"
+"  -H FITXER            Indica un FITXER esborrany d’on llegir la capçalera i el\n"
 "                       cos.\n"
 "  -i FITXER            Indica un FITXER que Mutt inclourà al cos.\n"
 "  -m TIPUS             Indica un TIPUS de bústia per defecte.\n"
@@ -3223,8 +3185,7 @@ msgstr ""
 "  -s ASSUMPTE          Indica l’ASSUMPTE (entre cometes si porta espais).\n"
 "  -v                   Mostra la versió i les definicions de compilació.\n"
 "  -x                   Simula el mode d’enviament de «mailx».\n"
-"  -y                   Selecciona una bústia de la vostra llista "
-"«mailboxes».\n"
+"  -y                   Selecciona una bústia de la vostra llista «mailboxes».\n"
 "  -z                   Ix immediatament si no hi ha missatges a la bústia.\n"
 "  -Z                   Obri la primera bústia amb missatges nous, eixint\n"
 "                       immediatament si no n’hi ha cap.\n"
@@ -3317,8 +3278,7 @@ msgstr "Error fatal.  No s’ha pogut reobrir la bústia."
 # ivb  ABREUJAT!
 #: mbox.c:881
 msgid "sync: mbox modified, but no modified messages! (report this bug)"
-msgstr ""
-"sync: La bústia és modificada però els missatges no (informeu de l’error)."
+msgstr "sync: La bústia és modificada però els missatges no (informeu de l’error)."
 
 #: mbox.c:905 mh.c:2023 mutt_notmuch.c:1623 mx.c:757
 #, c-format
@@ -3762,8 +3722,7 @@ msgstr "Tots els protocols de connexió TLS/SSL disponibles estan inhabilitats."
 
 #: mutt_ssl_gnutls.c:359
 msgid "Explicit ciphersuite selection via $ssl_ciphers not supported"
-msgstr ""
-"No es permet la selecció explícita de la suite de xifrat amb $ssl_ciphers."
+msgstr "No es permet la selecció explícita de la suite de xifrat amb $ssl_ciphers."
 
 #: mutt_ssl_gnutls.c:467
 #, c-format
@@ -3780,8 +3739,7 @@ msgstr "Error en processar les dades del certificat."
 
 #: mutt_ssl_gnutls.c:833
 msgid "Warning: Server certificate was signed using an insecure algorithm"
-msgstr ""
-"Avís: El certificat del servidor s’ha signat emprant un algorisme insegur."
+msgstr "Avís: El certificat del servidor s’ha signat emprant un algorisme insegur."
 
 #: mutt_ssl_gnutls.c:952
 #, c-format
@@ -4052,8 +4010,7 @@ msgid "Checking for new newsgroups..."
 msgstr "S’està comprovant si hi ha missatges nous…"
 
 #: nntp.c:2420
-msgid ""
-"Unable to find child articles because server does not support XPAT command."
+msgid "Unable to find child articles because server does not support XPAT command."
 msgstr ""
 
 # ivb (2001/12/08)
@@ -4287,11 +4244,8 @@ msgstr "sgcco"
 # següents la línia esdevé massa llarga.  ivb
 #: pgp.c:1760
 #, c-format
-msgid ""
-"PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, %s format, (c)lear, or (o)ppenc "
-"mode? "
-msgstr ""
-"PGP: (x)ifra, (s)igna, si(g)na com a, (a)mbdós, %s, (c)lar, (o)portunista? "
+msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, %s format, (c)lear, or (o)ppenc mode? "
+msgstr "PGP: (x)ifra, (s)igna, si(g)na com a, (a)mbdós, %s, (c)lar, (o)portunista? "
 
 # (x)ifra, (s)igna, si(g)na com a, (a)mbdós, %s, (c)lar, (o)portunista
 # La «f» i la «c» originals s’agafen en el mateix cas en el codi.  ivb
@@ -4301,8 +4255,7 @@ msgstr "xsgaccoi"
 
 #: pgp.c:1768
 msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, (c)lear, or (o)ppenc mode? "
-msgstr ""
-"PGP: (x)ifra, (s)igna, si(g)na com a, (a)mbdós, (c)lar, (o)portunista? "
+msgstr "PGP: (x)ifra, (s)igna, si(g)na com a, (a)mbdós, (c)lar, (o)portunista? "
 
 # (x)ifra, (s)igna, si(g)na com a, (a)mbdós, (c)lar, (o)portunista
 # La «f» i la «c» originals s’agafen en el mateix cas en el codi.  ivb
@@ -4339,8 +4292,7 @@ msgstr "S’està recollint la clau PGP…"
 
 #: pgpkey.c:491
 msgid "All matching keys are expired, revoked, or disabled."
-msgstr ""
-"Totes les claus concordants han expirat o estan revocades o inhabilitades."
+msgstr "Totes les claus concordants han expirat o estan revocades o inhabilitades."
 
 # Una adreça..  ivb
 #: pgpkey.c:532
@@ -4612,10 +4564,8 @@ msgid "Deletion of attachments from encrypted messages is unsupported."
 msgstr "No es poden esborrar les adjuncions d’un missatge xifrat."
 
 #: recvattach.c:1144
-msgid ""
-"Deletion of attachments from signed messages may invalidate the signature."
-msgstr ""
-"Esborrar les adjuncions d’un missatge xifrat pot invalidar‐ne la signatura."
+msgid "Deletion of attachments from signed messages may invalidate the signature."
+msgstr "Esborrar les adjuncions d’un missatge xifrat pot invalidar‐ne la signatura."
 
 #: recvattach.c:1161 recvattach.c:1178
 msgid "Only deletion of multipart attachments is supported."
@@ -4726,10 +4676,8 @@ msgid "Mixmaster doesn't accept Cc or Bcc headers."
 msgstr "No es poden emprar les capçaleres «Cc» i «Bcc» amb Mixmaster."
 
 #: remailer.c:732
-msgid ""
-"Please set the hostname variable to a proper value when using mixmaster!"
-msgstr ""
-"Per favor, establiu un valor adequat per a «hostname» quan useu Mixmaster."
+msgid "Please set the hostname variable to a proper value when using mixmaster!"
+msgstr "Per favor, establiu un valor adequat per a «hostname» quan useu Mixmaster."
 
 #: remailer.c:766
 #, c-format
@@ -5073,10 +5021,8 @@ msgstr ""
 "[-- Final de les dades signades amb S/MIME. --]\n"
 
 #: smime.c:2110
-msgid ""
-"S/MIME (s)ign, encrypt (w)ith, sign (a)s, (c)lear, or (o)ppenc mode off? "
-msgstr ""
-"S/MIME: (s)igna, xi(f)ra amb, si(g)na com a, (c)lar, no (o)portunista? "
+msgid "S/MIME (s)ign, encrypt (w)ith, sign (a)s, (c)lear, or (o)ppenc mode off? "
+msgstr "S/MIME: (s)igna, xi(f)ra amb, si(g)na com a, (c)lar, no (o)portunista? "
 
 # (s)igna, xi(f)ra amb, si(g)na com a, (c)lar, no (o)portunista
 # La «f» i la «c» originals s’agafen en el mateix cas en el codi.  ivb
@@ -5089,12 +5035,8 @@ msgid "swafco"
 msgstr "sfgcco"
 
 #: smime.c:2124
-msgid ""
-"S/MIME (e)ncrypt, (s)ign, encrypt (w)ith, sign (a)s, (b)oth, (c)lear, or "
-"(o)ppenc mode? "
-msgstr ""
-"S/MIME: (x)ifra, (s)igna, xi(f)ra amb, si(g)na com a, (a)mbdós, (c)lar, "
-"(o)portunista? "
+msgid "S/MIME (e)ncrypt, (s)ign, encrypt (w)ith, sign (a)s, (b)oth, (c)lear, or (o)ppenc mode? "
+msgstr "S/MIME: (x)ifra, (s)igna, xi(f)ra amb, si(g)na com a, (a)mbdós, (c)lar, (o)portunista? "
 
 # (x)ifra, (s)igna, xi(f)ra amb, si(g)na com a, (a)mbdós, (c)lar, (o)portunista
 # La «f» i la «c» originals s’agafen en el mateix cas en el codi.  ivb
@@ -5103,10 +5045,8 @@ msgid "eswabfco"
 msgstr "xsfgacco"
 
 #: smime.c:2133
-msgid ""
-"S/MIME (e)ncrypt, (s)ign, encrypt (w)ith, sign (a)s, (b)oth, or (c)lear? "
-msgstr ""
-"S/MIME: (x)ifra, (s)igna, xi(f)ra amb, si(g)na com a, (a)mbdós, (c)lar? "
+msgid "S/MIME (e)ncrypt, (s)ign, encrypt (w)ith, sign (a)s, (b)oth, or (c)lear? "
+msgstr "S/MIME: (x)ifra, (s)igna, xi(f)ra amb, si(g)na com a, (a)mbdós, (c)lar? "
 
 # ivb (2003/03/26)
 # ivb  (x)ifra, (s)igna, xi(f)ra amb, si(g)na com a, (a)mbdós, (c)lar
@@ -5265,15 +5205,13 @@ msgid ""
 "    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the\n"
 "    GNU General Public License for more details.\n"
 msgstr ""
-"    Aquest és programari lliure; podeu redistribuir‐lo i/o modificar‐lo "
-"sota\n"
+"    Aquest és programari lliure; podeu redistribuir‐lo i/o modificar‐lo sota\n"
 "    els termes de la Llicència Pública General GNU tal i com ha estat\n"
 "    publicada per la Free Software Foundation; bé sota la versió 2 de la\n"
 "    Llicència o bé (si ho preferiu) sota qualsevol versió posterior.\n"
 "\n"
 "    Aquest programa es distribueix amb l’expectativa de que serà útil, però\n"
-"    SENSE CAP GARANTIA; ni tan sols la garantia implícita de "
-"COMERCIABILITAT\n"
+"    SENSE CAP GARANTIA; ni tan sols la garantia implícita de COMERCIABILITAT\n"
 "    o ADEQUACIÓ PER A UN PROPÒSIT PARTICULAR.  Vegeu la Llicència Pública\n"
 "    General GNU per a obtenir‐ne més detalls.\n"
 
@@ -5281,8 +5219,7 @@ msgstr ""
 msgid ""
 "    You should have received a copy of the GNU General Public License\n"
 "    along with this program; if not, write to the Free Software\n"
-"    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  "
-"02110-1301, USA.\n"
+"    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.\n"
 msgstr ""
 "    Hauríeu d’haver rebut una còpia de la Llicència Pública General GNU\n"
 "    juntament amb aquest programa; en cas contrari, escriviu a la Free\n"
@@ -5306,8 +5243,7 @@ msgid ""
 msgstr ""
 "Copyright © 1996‐2016 Michael R. Elkins i d’altres.\n"
 "Mutt s’ofereix SENSE CAP GARANTIA; useu «mutt -vv» per a obtenir‐ne més\n"
-"detalls.  Mutt és programari lliure, i podeu, si voleu, redistribuir‐lo "
-"sota\n"
+"detalls.  Mutt és programari lliure, i podeu, si voleu, redistribuir‐lo sota\n"
 "certes condicions; useu «mutt -vv» per a obtenir‐ne més detalls.\n"
 
 #: version.c:444
@@ -5377,9 +5313,7 @@ msgstr "Es dessubscriu de la bústia actual (només a IMAP)."
 
 #: ../keymap_alldefs.h:18
 msgid "toggle view all/subscribed mailboxes (IMAP only)"
-msgstr ""
-"Canvia entre veure totes les bústies o tan sols les subscrites (només a "
-"IMAP)."
+msgstr "Canvia entre veure totes les bústies o tan sols les subscrites (només a IMAP)."
 
 #: ../keymap_alldefs.h:19
 msgid "list mailboxes with new mail"
@@ -6127,9 +6061,7 @@ msgstr "Estableix si s’escriuran els canvis a la bústia."
 # ivb  Es refereix a les definides en «mailboxes».
 #: ../keymap_alldefs.h:198
 msgid "toggle whether to browse mailboxes or all files"
-msgstr ""
-"Estableix si es navegarà només per les bústies d’entrada o per tots els "
-"fitxers."
+msgstr "Estableix si es navegarà només per les bústies d’entrada o per tots els fitxers."
 
 #: ../keymap_alldefs.h:199
 msgid "move to the top of the page"
@@ -6223,9 +6155,7 @@ msgstr "Mou la selecció a l’anterior bústia amb correu nou."
 #: ../keymap_alldefs.h:220
 #, fuzzy
 msgid "toggle between mailboxes and virtual mailboxes"
-msgstr ""
-"Estableix si es navegarà només per les bústies d’entrada o per tots els "
-"fitxers."
+msgstr "Estableix si es navegarà només per les bústies d’entrada o per tots els fitxers."
 
 #: ../keymap_alldefs.h:221
 msgid "make the sidebar (in)visible"
@@ -6326,4 +6256,3 @@ msgstr "Extreu totes les claus públiques possibles."
 #: ../keymap_alldefs.h:244
 msgid "show S/MIME options"
 msgstr "Mostra les opcions de S/MIME."
-

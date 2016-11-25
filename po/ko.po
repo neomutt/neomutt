@@ -310,16 +310,12 @@ msgstr "파일 매스크: "
 
 #: browser.c:1724
 #, fuzzy
-msgid ""
-"Reverse sort by (d)ate, (a)lpha, si(z)e, d(e)scription, (c)ount, ne(w) "
-"count, or do(n)'t sort? "
+msgid "Reverse sort by (d)ate, (a)lpha, si(z)e, d(e)scription, (c)ount, ne(w) count, or do(n)'t sort? "
 msgstr "역순정렬 방법: 날짜(d), 낱말(a), 크기(z), 안함(n)?"
 
 #: browser.c:1725
 #, fuzzy
-msgid ""
-"Sort by (d)ate, (a)lpha, si(z)e, d(e)scription, (c)ount, ne(w) count, or "
-"do(n)'t sort? "
+msgid "Sort by (d)ate, (a)lpha, si(z)e, d(e)scription, (c)ount, ne(w) count, or do(n)'t sort? "
 msgstr "정렬 방법: 날짜(d), 글자(a), 크기(z), 안함(n)?"
 
 #: browser.c:1726
@@ -541,14 +537,12 @@ msgstr "메일들을 프린트 할 수 없음"
 #: commands.c:547
 #, fuzzy
 msgid "Rev-Sort Date/Frm/Recv/Subj/tO/Thread/Unsort/siZe/sCore/sPam/Label?: "
-msgstr ""
-"역순정렬: (d)ate/(f)rm/(r)ecv/(s)ubj/t(o)/(t)hread/(u)nsort/si(z)e/s(c)ore?: "
+msgstr "역순정렬: (d)ate/(f)rm/(r)ecv/(s)ubj/t(o)/(t)hread/(u)nsort/si(z)e/s(c)ore?: "
 
 #: commands.c:548
 #, fuzzy
 msgid "Sort Date/Frm/Recv/Subj/tO/Thread/Unsort/siZe/sCore/sPam/Label?: "
-msgstr ""
-"정렬: (d)ate/(f)rm/(r)ecv/(s)ubj/t(o)/(t)hread/(u)nsort/si(z)e/s(c)ore?: "
+msgstr "정렬: (d)ate/(f)rm/(r)ecv/(s)ubj/t(o)/(t)hread/(u)nsort/si(z)e/s(c)ore?: "
 
 #: commands.c:549
 #, fuzzy
@@ -1029,9 +1023,7 @@ msgid "Fingerprint: "
 msgstr "Fingerprint: %s"
 
 #: crypt-gpgme.c:1320
-msgid ""
-"WARNING: We have NO indication whether the key belongs to the person named "
-"as shown above\n"
+msgid "WARNING: We have NO indication whether the key belongs to the person named as shown above\n"
 msgstr ""
 
 #: crypt-gpgme.c:1327
@@ -1039,9 +1031,7 @@ msgid "WARNING: The key does NOT BELONG to the person named as shown above\n"
 msgstr ""
 
 #: crypt-gpgme.c:1331
-msgid ""
-"WARNING: It is NOT certain that the key belongs to the person named as shown "
-"above\n"
+msgid "WARNING: It is NOT certain that the key belongs to the person named as shown above\n"
 msgstr ""
 
 #: crypt-gpgme.c:1361 crypt-gpgme.c:1366
@@ -1524,9 +1514,7 @@ msgstr ""
 
 #: crypt-gpgme.c:4744
 #, fuzzy
-msgid ""
-"S/MIME (e)ncrypt, (s)ign, sign (a)s, (b)oth, (p)gp, (c)lear, or (o)ppenc "
-"mode? "
+msgid "S/MIME (e)ncrypt, (s)ign, sign (a)s, (b)oth, (p)gp, (c)lear, or (o)ppenc mode? "
 msgstr "S/MIME 암호화(e), 서명(s), 사용 서명(a), 둘 다(b), (i)nline, 취소(f)? "
 
 #: crypt-gpgme.c:4745
@@ -1536,9 +1524,7 @@ msgstr "eswabf"
 
 #: crypt-gpgme.c:4750
 #, fuzzy
-msgid ""
-"PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, s/(m)ime, (c)lear, or (o)ppenc "
-"mode? "
+msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, s/(m)ime, (c)lear, or (o)ppenc mode? "
 msgstr "PGP 암호화(e), 서명(s), 사용 서명(a), 둘 다(b), (i)nline, 취소(f)? "
 
 #: crypt-gpgme.c:4751
@@ -2982,10 +2968,8 @@ msgstr "메모리 부족!"
 #: main.c:84
 msgid ""
 "usage: mutt [<options>] [-z] [-f <file> | -yZ]\n"
-"       mutt [<options>] [-Ex] [-Hi <file>] [-s <subj>] [-bc <addr>] [-a "
-"<file> [...] --] <addr> [...]\n"
-"       mutt [<options>] [-x] [-s <subj>] [-bc <addr>] [-a <file> [...] --] "
-"<addr> [...] < message\n"
+"       mutt [<options>] [-Ex] [-Hi <file>] [-s <subj>] [-bc <addr>] [-a <file> [...] --] <addr> [...]\n"
+"       mutt [<options>] [-x] [-s <subj>] [-bc <addr>] [-a <file> [...] --] <addr> [...] < message\n"
 "       mutt [<options>] -p\n"
 "       mutt [<options>] -A <alias> [...]\n"
 "       mutt [<options>] -Q <query> [...]\n"
@@ -3023,14 +3007,10 @@ msgid ""
 "  -n\t\tcauses Mutt not to read the system Muttrc\n"
 "  -p\t\trecall a postponed message"
 msgstr ""
-"usage: mutt [ -nRyzZ ] [ -e <명령어> ] [ -F <파일> ] [ -m <종류> ] [ -f <파일"
-"> ]\n"
-"       mutt [ -nR ] [ -e <명령어> ] [ -F <파일> ] -Q <쿼리> [ -Q <쿼리> ] "
-"[...]\n"
-"       mutt [ -nR ] [ -e <명령어> ] [ -F <파일> ] -A <알리아스> [ -A <알리아"
-"스> ] [...]\n"
-"       mutt [ -nx ] [ -e <명령어> ] [ -a <파일> ] [ -F <파일> ] [ -H <파일"
-"> ] [ -i <파일> ] [ -s <제목> ] [ -b <주소> ] [ -c <주소> ] <주소> [ ... ]\n"
+"usage: mutt [ -nRyzZ ] [ -e <명령어> ] [ -F <파일> ] [ -m <종류> ] [ -f <파일> ]\n"
+"       mutt [ -nR ] [ -e <명령어> ] [ -F <파일> ] -Q <쿼리> [ -Q <쿼리> ] [...]\n"
+"       mutt [ -nR ] [ -e <명령어> ] [ -F <파일> ] -A <알리아스> [ -A <알리아스> ] [...]\n"
+"       mutt [ -nx ] [ -e <명령어> ] [ -a <파일> ] [ -F <파일> ] [ -H <파일> ] [ -i <파일> ] [ -s <제목> ] [ -b <주소> ] [ -c <주소> ] <주소> [ ... ]\n"
 "       mutt [ -n ] [ -e <명령어> ] [ -F <파일> ] -p\n"
 "       mutt -v[v]\n"
 "\n"
@@ -3070,14 +3050,10 @@ msgid ""
 "  -Z\t\topen the first folder with new message, exit immediately if none\n"
 "  -h\t\tthis help message"
 msgstr ""
-"usage: mutt [ -nRyzZ ] [ -e <명령어> ] [ -F <파일> ] [ -m <종류> ] [ -f <파일"
-"> ]\n"
-"       mutt [ -nR ] [ -e <명령어> ] [ -F <파일> ] -Q <쿼리> [ -Q <쿼리> ] "
-"[...]\n"
-"       mutt [ -nR ] [ -e <명령어> ] [ -F <파일> ] -A <알리아스> [ -A <알리아"
-"스> ] [...]\n"
-"       mutt [ -nx ] [ -e <명령어> ] [ -a <파일> ] [ -F <파일> ] [ -H <파일"
-"> ] [ -i <파일> ] [ -s <제목> ] [ -b <주소> ] [ -c <주소> ] <주소> [ ... ]\n"
+"usage: mutt [ -nRyzZ ] [ -e <명령어> ] [ -F <파일> ] [ -m <종류> ] [ -f <파일> ]\n"
+"       mutt [ -nR ] [ -e <명령어> ] [ -F <파일> ] -Q <쿼리> [ -Q <쿼리> ] [...]\n"
+"       mutt [ -nR ] [ -e <명령어> ] [ -F <파일> ] -A <알리아스> [ -A <알리아스> ] [...]\n"
+"       mutt [ -nx ] [ -e <명령어> ] [ -a <파일> ] [ -F <파일> ] [ -H <파일> ] [ -i <파일> ] [ -s <제목> ] [ -b <주소> ] [ -c <주소> ] <주소> [ ... ]\n"
 "       mutt [ -n ] [ -e <명령어> ] [ -F <파일> ] -p\n"
 "       mutt -v[v]\n"
 "\n"
@@ -3309,9 +3285,7 @@ msgstr ""
 #. See the msgid "Save to file: " (alias.c, recvattach.c)
 #: muttlib.c:1101
 msgid "File is a directory, save under it? [(y)es, (n)o, (a)ll]"
-msgstr ""
-"파일이 아니라 디렉토리입니다, 그 아래에 저장할까요? [(y)네, (n)아니오, (a)모"
-"두]"
+msgstr "파일이 아니라 디렉토리입니다, 그 아래에 저장할까요? [(y)네, (n)아니오, (a)모두]"
 
 #: muttlib.c:1101
 msgid "yna"
@@ -3896,8 +3870,7 @@ msgid "Checking for new newsgroups..."
 msgstr "새 메일을 확인중..."
 
 #: nntp.c:2420
-msgid ""
-"Unable to find child articles because server does not support XPAT command."
+msgid "Unable to find child articles because server does not support XPAT command."
 msgstr ""
 
 #: pager.c:1629
@@ -4115,9 +4088,7 @@ msgstr ""
 
 #: pgp.c:1760
 #, fuzzy, c-format
-msgid ""
-"PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, %s format, (c)lear, or (o)ppenc "
-"mode? "
+msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, %s format, (c)lear, or (o)ppenc mode? "
 msgstr "PGP 암호화(e), 서명(s), 사용 서명(a), 둘 다(b), (i)nline, 취소(f)? "
 
 #: pgp.c:1763
@@ -4425,8 +4396,7 @@ msgstr "암호화된 메일의 첨부물 삭제는 지원되지 않음."
 
 #: recvattach.c:1144
 #, fuzzy
-msgid ""
-"Deletion of attachments from signed messages may invalidate the signature."
+msgid "Deletion of attachments from signed messages may invalidate the signature."
 msgstr "암호화된 메일의 첨부물 삭제는 지원되지 않음."
 
 #: recvattach.c:1161 recvattach.c:1178
@@ -4530,8 +4500,7 @@ msgid "Mixmaster doesn't accept Cc or Bcc headers."
 msgstr "Mixmaster는 Cc 또는 Bcc 헤더를 허용하지 않음."
 
 #: remailer.c:732
-msgid ""
-"Please set the hostname variable to a proper value when using mixmaster!"
+msgid "Please set the hostname variable to a proper value when using mixmaster!"
 msgstr "mixmaster를 사용하기 위한 적당한 호스트 변수를 사용하세요!"
 
 #: remailer.c:766
@@ -4863,8 +4832,7 @@ msgstr ""
 
 #: smime.c:2110
 #, fuzzy
-msgid ""
-"S/MIME (s)ign, encrypt (w)ith, sign (a)s, (c)lear, or (o)ppenc mode off? "
+msgid "S/MIME (s)ign, encrypt (w)ith, sign (a)s, (c)lear, or (o)ppenc mode off? "
 msgstr "S/MIME 암호화(e), 서명(s), 방식(w), 사용 서명(a), 둘 다(b), 취소(f)? "
 
 #. L10N: The 'f' is from "forget it", an old undocumented synonym of
@@ -4877,9 +4845,7 @@ msgstr ""
 
 #: smime.c:2124
 #, fuzzy
-msgid ""
-"S/MIME (e)ncrypt, (s)ign, encrypt (w)ith, sign (a)s, (b)oth, (c)lear, or "
-"(o)ppenc mode? "
+msgid "S/MIME (e)ncrypt, (s)ign, encrypt (w)ith, sign (a)s, (b)oth, (c)lear, or (o)ppenc mode? "
 msgstr "S/MIME 암호화(e), 서명(s), 방식(w), 사용 서명(a), 둘 다(b), 취소(f)? "
 
 #: smime.c:2125
@@ -4889,8 +4855,7 @@ msgstr "eswabf"
 
 #: smime.c:2133
 #, fuzzy
-msgid ""
-"S/MIME (e)ncrypt, (s)ign, encrypt (w)ith, sign (a)s, (b)oth, or (c)lear? "
+msgid "S/MIME (e)ncrypt, (s)ign, encrypt (w)ith, sign (a)s, (b)oth, or (c)lear? "
 msgstr "S/MIME 암호화(e), 서명(s), 방식(w), 사용 서명(a), 둘 다(b), 취소(f)? "
 
 #: smime.c:2134
@@ -5038,8 +5003,7 @@ msgstr ""
 msgid ""
 "    You should have received a copy of the GNU General Public License\n"
 "    along with this program; if not, write to the Free Software\n"
-"    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  "
-"02110-1301, USA.\n"
+"    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.\n"
 msgstr ""
 
 #: version.c:87
@@ -6071,4 +6035,3 @@ msgstr "공개 열쇠 추출"
 #: ../keymap_alldefs.h:244
 msgid "show S/MIME options"
 msgstr "S/MIME 옵션 보기"
-

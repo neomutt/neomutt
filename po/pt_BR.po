@@ -143,8 +143,7 @@ msgstr "Erro ao abrir o arquivo para interpretar os cabeçalhos."
 #: attach.c:197
 #, c-format
 msgid "No mailcap compose entry for %s, creating empty file."
-msgstr ""
-"Nenhuma entrada de composição no mailcap para %s, criando entrada vazia."
+msgstr "Nenhuma entrada de composição no mailcap para %s, criando entrada vazia."
 
 #: attach.c:258
 #, c-format
@@ -310,16 +309,12 @@ msgstr "Máscara de arquivos: "
 
 #: browser.c:1724
 #, fuzzy
-msgid ""
-"Reverse sort by (d)ate, (a)lpha, si(z)e, d(e)scription, (c)ount, ne(w) "
-"count, or do(n)'t sort? "
+msgid "Reverse sort by (d)ate, (a)lpha, si(z)e, d(e)scription, (c)ount, ne(w) count, or do(n)'t sort? "
 msgstr "Ordem inversa por (d)ata, (a)lfa, (t)amanho ou (n)ão ordenar? "
 
 #: browser.c:1725
 #, fuzzy
-msgid ""
-"Sort by (d)ate, (a)lpha, si(z)e, d(e)scription, (c)ount, ne(w) count, or "
-"do(n)'t sort? "
+msgid "Sort by (d)ate, (a)lpha, si(z)e, d(e)scription, (c)ount, ne(w) count, or do(n)'t sort? "
 msgstr "Ordenar por (d)ata, (a)lfa, (t)amanho ou (n)ão ordenar? "
 
 #: browser.c:1726
@@ -553,14 +548,12 @@ msgstr "Mensagens impressas"
 #: commands.c:547
 #, fuzzy
 msgid "Rev-Sort Date/Frm/Recv/Subj/tO/Thread/Unsort/siZe/sCore/sPam/Label?: "
-msgstr ""
-"Ordem-Rev (d)ata/(f)rm/(r)eceb/(a)sst/(p)ara/dis(c)/de(s)ord/(t)am/r(e)fs?: "
+msgstr "Ordem-Rev (d)ata/(f)rm/(r)eceb/(a)sst/(p)ara/dis(c)/de(s)ord/(t)am/r(e)fs?: "
 
 #: commands.c:548
 #, fuzzy
 msgid "Sort Date/Frm/Recv/Subj/tO/Thread/Unsort/siZe/sCore/sPam/Label?: "
-msgstr ""
-"Ordem (d)ata/(f)rm/(r)eceb/(a)sst/(p)ara/dis(c)/de(s)ord/(t)am/r(e)fs?: "
+msgstr "Ordem (d)ata/(f)rm/(r)eceb/(a)sst/(p)ara/dis(c)/de(s)ord/(t)am/r(e)fs?: "
 
 #: commands.c:549
 #, fuzzy
@@ -1042,9 +1035,7 @@ msgid "Fingerprint: "
 msgstr "Impressão digital: %s"
 
 #: crypt-gpgme.c:1320
-msgid ""
-"WARNING: We have NO indication whether the key belongs to the person named "
-"as shown above\n"
+msgid "WARNING: We have NO indication whether the key belongs to the person named as shown above\n"
 msgstr ""
 
 #: crypt-gpgme.c:1327
@@ -1052,9 +1043,7 @@ msgid "WARNING: The key does NOT BELONG to the person named as shown above\n"
 msgstr ""
 
 #: crypt-gpgme.c:1331
-msgid ""
-"WARNING: It is NOT certain that the key belongs to the person named as shown "
-"above\n"
+msgid "WARNING: It is NOT certain that the key belongs to the person named as shown above\n"
 msgstr ""
 
 #: crypt-gpgme.c:1361 crypt-gpgme.c:1366
@@ -1184,8 +1173,7 @@ msgstr ""
 msgid ""
 "[-- Error: could not find beginning of PGP message! --]\n"
 "\n"
-msgstr ""
-"[-- Erro: não foi possível encontrar o início da mensagem do PGP! --]\n"
+msgstr "[-- Erro: não foi possível encontrar o início da mensagem do PGP! --]\n"
 
 #: crypt-gpgme.c:2603 crypt-gpgme.c:2676 pgp.c:1091
 msgid "[-- Error: could not create temporary file! --]\n"
@@ -1528,8 +1516,7 @@ msgstr ""
 #: crypt-gpgme.c:4721
 #, fuzzy
 msgid "S/MIME (s)ign, sign (a)s, (p)gp, (c)lear, or (o)ppenc mode off? "
-msgstr ""
-"(e)ncripa, a(s)sina, assina (c)omo, (a)mbos, em l(i)nha, ou es(q)uece? "
+msgstr "(e)ncripa, a(s)sina, assina (c)omo, (a)mbos, em l(i)nha, ou es(q)uece? "
 
 #. L10N: The 'f' is from "forget it", an old undocumented synonym of
 #. 'clear'.  Please use a corresponding letter in your language.
@@ -1542,8 +1529,7 @@ msgstr ""
 #: crypt-gpgme.c:4731
 #, fuzzy
 msgid "PGP (s)ign, sign (a)s, s/(m)ime, (c)lear, or (o)ppenc mode off? "
-msgstr ""
-"(e)ncripa, a(s)sina, assina (c)omo, (a)mbos, em l(i)nha, ou es(q)uece? "
+msgstr "(e)ncripa, a(s)sina, assina (c)omo, (a)mbos, em l(i)nha, ou es(q)uece? "
 
 #: crypt-gpgme.c:4732
 msgid "samfco"
@@ -1551,11 +1537,8 @@ msgstr ""
 
 #: crypt-gpgme.c:4744
 #, fuzzy
-msgid ""
-"S/MIME (e)ncrypt, (s)ign, sign (a)s, (b)oth, (p)gp, (c)lear, or (o)ppenc "
-"mode? "
-msgstr ""
-"(e)ncripa, a(s)sina, assina (c)omo, (a)mbos, em l(i)nha, ou es(q)uece? "
+msgid "S/MIME (e)ncrypt, (s)ign, sign (a)s, (b)oth, (p)gp, (c)lear, or (o)ppenc mode? "
+msgstr "(e)ncripa, a(s)sina, assina (c)omo, (a)mbos, em l(i)nha, ou es(q)uece? "
 
 #: crypt-gpgme.c:4745
 #, fuzzy
@@ -1564,11 +1547,8 @@ msgstr "esncaq"
 
 #: crypt-gpgme.c:4750
 #, fuzzy
-msgid ""
-"PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, s/(m)ime, (c)lear, or (o)ppenc "
-"mode? "
-msgstr ""
-"(e)ncripa, a(s)sina, assina (c)omo, (a)mbos, em l(i)nha, ou es(q)uece? "
+msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, s/(m)ime, (c)lear, or (o)ppenc mode? "
+msgstr "(e)ncripa, a(s)sina, assina (c)omo, (a)mbos, em l(i)nha, ou es(q)uece? "
 
 #: crypt-gpgme.c:4751
 #, fuzzy
@@ -1578,8 +1558,7 @@ msgstr "esncaq"
 #: crypt-gpgme.c:4762
 #, fuzzy
 msgid "S/MIME (e)ncrypt, (s)ign, sign (a)s, (b)oth, (p)gp or (c)lear? "
-msgstr ""
-"(e)ncripa, a(s)sina, assina (c)omo, (a)mbos, em l(i)nha, ou es(q)uece? "
+msgstr "(e)ncripa, a(s)sina, assina (c)omo, (a)mbos, em l(i)nha, ou es(q)uece? "
 
 #: crypt-gpgme.c:4763
 #, fuzzy
@@ -1589,8 +1568,7 @@ msgstr "esncaq"
 #: crypt-gpgme.c:4768
 #, fuzzy
 msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, s/(m)ime or (c)lear? "
-msgstr ""
-"(e)ncripa, a(s)sina, assina (c)omo, (a)mbos, em l(i)nha, ou es(q)uece? "
+msgstr "(e)ncripa, a(s)sina, assina (c)omo, (a)mbos, em l(i)nha, ou es(q)uece? "
 
 #: crypt-gpgme.c:4769
 #, fuzzy
@@ -2313,9 +2291,7 @@ msgstr "Limpa marca"
 
 #: handler.c:1139
 msgid "[-- Error:  Could not display any parts of Multipart/Alternative! --]\n"
-msgstr ""
-"[-- Erro: Não foi possível exibir nenhuma parte de Multipart/Aternative! "
-"--]\n"
+msgstr "[-- Erro: Não foi possível exibir nenhuma parte de Multipart/Aternative! --]\n"
 
 #: handler.c:1254
 #, c-format
@@ -2353,8 +2329,7 @@ msgstr "[-- Saída de erro da autovisualização de %s --]\n"
 
 #: handler.c:1446
 msgid "[-- Error: message/external-body has no access-type parameter --]\n"
-msgstr ""
-"[-- Erro: message/external-body não tem nenhum parâmetro access-type --]\n"
+msgstr "[-- Erro: message/external-body não tem nenhum parâmetro access-type --]\n"
 
 #: handler.c:1467
 #, c-format
@@ -3042,10 +3017,8 @@ msgstr "Acabou a memória!"
 #: main.c:84
 msgid ""
 "usage: mutt [<options>] [-z] [-f <file> | -yZ]\n"
-"       mutt [<options>] [-Ex] [-Hi <file>] [-s <subj>] [-bc <addr>] [-a "
-"<file> [...] --] <addr> [...]\n"
-"       mutt [<options>] [-x] [-s <subj>] [-bc <addr>] [-a <file> [...] --] "
-"<addr> [...] < message\n"
+"       mutt [<options>] [-Ex] [-Hi <file>] [-s <subj>] [-bc <addr>] [-a <file> [...] --] <addr> [...]\n"
+"       mutt [<options>] [-x] [-s <subj>] [-bc <addr>] [-a <file> [...] --] <addr> [...] < message\n"
 "       mutt [<options>] -p\n"
 "       mutt [<options>] -A <alias> [...]\n"
 "       mutt [<options>] -Q <query> [...]\n"
@@ -3084,8 +3057,7 @@ msgid ""
 "  -p\t\trecall a postponed message"
 msgstr ""
 "uso: mutt [ -nRzZ ] [ -e <cmd> ] [ -F <arq> ] [ -m <tipo> ] [ -f <arq> ]\n"
-"       mutt [ -nx ] [ -e <cmd> ] [ -a <arq> ] [ -F <arq> ] [ -H <arq> ] [ -i "
-"<arq> ] [ -s <asst> ] [ -b <end> ] [ -c <end> ] <end> [ ... ]\n"
+"       mutt [ -nx ] [ -e <cmd> ] [ -a <arq> ] [ -F <arq> ] [ -H <arq> ] [ -i <arq> ] [ -s <asst> ] [ -b <end> ] [ -c <end> ] <end> [ ... ]\n"
 "       mutt [ -n ] [ -e <cmd> ] [ -F <arq> ] -p\n"
 "       mutt -v[v]\n"
 "\n"
@@ -3093,8 +3065,7 @@ msgstr ""
 "  -a <arquivo>\tanexa um arquivo à mensagem\n"
 "  -b <endereço>\tespecifica um endereço de cópia escondica (BCC)\n"
 "  -c <endereço>\tespecifica um endereço de cópia (CC)\n"
-"  -e <comando>\tespecifica um comando a ser executado depois a "
-"inicialização\n"
+"  -e <comando>\tespecifica um comando a ser executado depois a inicialização\n"
 "  -f <arquivo>\tespecifica qual caixa de mensagens abrir\n"
 "  -F <arquivo>\tespecifica um arquivo muttrc alternativo\n"
 "  -H <arquivo>\tespecifica um rascunho de onde ler cabeçalhos\n"
@@ -3125,8 +3096,7 @@ msgid ""
 "  -h\t\tthis help message"
 msgstr ""
 "uso: mutt [ -nRzZ ] [ -e <cmd> ] [ -F <arq> ] [ -m <tipo> ] [ -f <arq> ]\n"
-"       mutt [ -nx ] [ -e <cmd> ] [ -a <arq> ] [ -F <arq> ] [ -H <arq> ] [ -i "
-"<arq> ] [ -s <asst> ] [ -b <end> ] [ -c <end> ] <end> [ ... ]\n"
+"       mutt [ -nx ] [ -e <cmd> ] [ -a <arq> ] [ -F <arq> ] [ -H <arq> ] [ -i <arq> ] [ -s <asst> ] [ -b <end> ] [ -c <end> ] <end> [ ... ]\n"
 "       mutt [ -n ] [ -e <cmd> ] [ -F <arq> ] -p\n"
 "       mutt -v[v]\n"
 "\n"
@@ -3134,8 +3104,7 @@ msgstr ""
 "  -a <arquivo>\tanexa um arquivo à mensagem\n"
 "  -b <endereço>\tespecifica um endereço de cópia escondica (BCC)\n"
 "  -c <endereço>\tespecifica um endereço de cópia (CC)\n"
-"  -e <comando>\tespecifica um comando a ser executado depois a "
-"inicialização\n"
+"  -e <comando>\tespecifica um comando a ser executado depois a inicialização\n"
 "  -f <arquivo>\tespecifica qual caixa de mensagens abrir\n"
 "  -F <arquivo>\tespecifica um arquivo muttrc alternativo\n"
 "  -H <arquivo>\tespecifica um rascunho de onde ler cabeçalhos\n"
@@ -3233,9 +3202,7 @@ msgstr "Erro fatal! Não foi posssível reabrir a caixa de mensagens!"
 
 #: mbox.c:881
 msgid "sync: mbox modified, but no modified messages! (report this bug)"
-msgstr ""
-"sync: mbox modificada, mas nenhuma mensagem modificada! (relate este "
-"problema)"
+msgstr "sync: mbox modificada, mas nenhuma mensagem modificada! (relate este problema)"
 
 #: mbox.c:905 mh.c:2023 mutt_notmuch.c:1623 mx.c:757
 #, c-format
@@ -3950,8 +3917,7 @@ msgid "Checking for new newsgroups..."
 msgstr "Preparando mensagem encaminhada..."
 
 #: nntp.c:2420
-msgid ""
-"Unable to find child articles because server does not support XPAT command."
+msgid "Unable to find child articles because server does not support XPAT command."
 msgstr ""
 
 #: pager.c:1629
@@ -4140,8 +4106,7 @@ msgstr "Não foi possível executar o PGP"
 #: pgp.c:1730
 #, fuzzy, c-format
 msgid "PGP (s)ign, sign (a)s, %s format, (c)lear, or (o)ppenc mode off? "
-msgstr ""
-"(e)ncripa, a(s)sina, assina (c)omo, (a)mbos, em l(i)nha, ou es(q)uece? "
+msgstr "(e)ncripa, a(s)sina, assina (c)omo, (a)mbos, em l(i)nha, ou es(q)uece? "
 
 #: pgp.c:1731 pgp.c:1761 pgp.c:1783
 msgid "PGP/M(i)ME"
@@ -4162,8 +4127,7 @@ msgstr ""
 #: pgp.c:1742
 #, fuzzy
 msgid "PGP (s)ign, sign (a)s, (c)lear, or (o)ppenc mode off? "
-msgstr ""
-"(e)ncripa, a(s)sina, assina (c)omo, (a)mbos, em l(i)nha, ou es(q)uece? "
+msgstr "(e)ncripa, a(s)sina, assina (c)omo, (a)mbos, em l(i)nha, ou es(q)uece? "
 
 #: pgp.c:1743
 msgid "safco"
@@ -4171,11 +4135,8 @@ msgstr ""
 
 #: pgp.c:1760
 #, fuzzy, c-format
-msgid ""
-"PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, %s format, (c)lear, or (o)ppenc "
-"mode? "
-msgstr ""
-"(e)ncripa, a(s)sina, assina (c)omo, (a)mbos, em l(i)nha, ou es(q)uece? "
+msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, %s format, (c)lear, or (o)ppenc mode? "
+msgstr "(e)ncripa, a(s)sina, assina (c)omo, (a)mbos, em l(i)nha, ou es(q)uece? "
 
 #: pgp.c:1763
 #, fuzzy
@@ -4185,8 +4146,7 @@ msgstr "esncaq"
 #: pgp.c:1768
 #, fuzzy
 msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, (c)lear, or (o)ppenc mode? "
-msgstr ""
-"(e)ncripa, a(s)sina, assina (c)omo, (a)mbos, em l(i)nha, ou es(q)uece? "
+msgstr "(e)ncripa, a(s)sina, assina (c)omo, (a)mbos, em l(i)nha, ou es(q)uece? "
 
 #: pgp.c:1769
 #, fuzzy
@@ -4196,8 +4156,7 @@ msgstr "esncaq"
 #: pgp.c:1782
 #, fuzzy, c-format
 msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, %s format, or (c)lear? "
-msgstr ""
-"(e)ncripa, a(s)sina, assina (c)omo, (a)mbos, em l(i)nha, ou es(q)uece? "
+msgstr "(e)ncripa, a(s)sina, assina (c)omo, (a)mbos, em l(i)nha, ou es(q)uece? "
 
 #: pgp.c:1785
 #, fuzzy
@@ -4207,8 +4166,7 @@ msgstr "esncaq"
 #: pgp.c:1790
 #, fuzzy
 msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, or (c)lear? "
-msgstr ""
-"(e)ncripa, a(s)sina, assina (c)omo, (a)mbos, em l(i)nha, ou es(q)uece? "
+msgstr "(e)ncripa, a(s)sina, assina (c)omo, (a)mbos, em l(i)nha, ou es(q)uece? "
 
 #: pgp.c:1791
 #, fuzzy
@@ -4503,8 +4461,7 @@ msgstr "Deleção de anexos de mensagens PGP não é suportada"
 
 #: recvattach.c:1144
 #, fuzzy
-msgid ""
-"Deletion of attachments from signed messages may invalidate the signature."
+msgid "Deletion of attachments from signed messages may invalidate the signature."
 msgstr "Deleção de anexos de mensagens PGP não é suportada"
 
 #: recvattach.c:1161 recvattach.c:1178
@@ -4615,8 +4572,7 @@ msgid "Mixmaster doesn't accept Cc or Bcc headers."
 msgstr "O mixmaster não aceita cabeçalhos Cc ou Bcc."
 
 #: remailer.c:732
-msgid ""
-"Please set the hostname variable to a proper value when using mixmaster!"
+msgid "Please set the hostname variable to a proper value when using mixmaster!"
 msgstr ""
 "Por favor, defina a variável hostname para um valor adequado quando for\n"
 "usar o mixmaster!"
@@ -4967,10 +4923,8 @@ msgstr ""
 
 #: smime.c:2110
 #, fuzzy
-msgid ""
-"S/MIME (s)ign, encrypt (w)ith, sign (a)s, (c)lear, or (o)ppenc mode off? "
-msgstr ""
-"(e)ncripa, a(s)sina, e(n)cripa com, assina (c)omo, (a)mbos, ou es(q)uece? "
+msgid "S/MIME (s)ign, encrypt (w)ith, sign (a)s, (c)lear, or (o)ppenc mode off? "
+msgstr "(e)ncripa, a(s)sina, e(n)cripa com, assina (c)omo, (a)mbos, ou es(q)uece? "
 
 #. L10N: The 'f' is from "forget it", an old undocumented synonym of
 #. 'clear'.  Please use a corresponding letter in your language.
@@ -4982,11 +4936,8 @@ msgstr ""
 
 #: smime.c:2124
 #, fuzzy
-msgid ""
-"S/MIME (e)ncrypt, (s)ign, encrypt (w)ith, sign (a)s, (b)oth, (c)lear, or "
-"(o)ppenc mode? "
-msgstr ""
-"(e)ncripa, a(s)sina, e(n)cripa com, assina (c)omo, (a)mbos, ou es(q)uece? "
+msgid "S/MIME (e)ncrypt, (s)ign, encrypt (w)ith, sign (a)s, (b)oth, (c)lear, or (o)ppenc mode? "
+msgstr "(e)ncripa, a(s)sina, e(n)cripa com, assina (c)omo, (a)mbos, ou es(q)uece? "
 
 #: smime.c:2125
 #, fuzzy
@@ -4995,10 +4946,8 @@ msgstr "esncaq"
 
 #: smime.c:2133
 #, fuzzy
-msgid ""
-"S/MIME (e)ncrypt, (s)ign, encrypt (w)ith, sign (a)s, (b)oth, or (c)lear? "
-msgstr ""
-"(e)ncripa, a(s)sina, e(n)cripa com, assina (c)omo, (a)mbos, ou es(q)uece? "
+msgid "S/MIME (e)ncrypt, (s)ign, encrypt (w)ith, sign (a)s, (b)oth, or (c)lear? "
+msgstr "(e)ncripa, a(s)sina, e(n)cripa com, assina (c)omo, (a)mbos, ou es(q)uece? "
 
 #: smime.c:2134
 #, fuzzy
@@ -5093,8 +5042,7 @@ msgstr "Ordenando caixa..."
 
 #: sort.c:360
 msgid "Could not find sorting function! [report this bug]"
-msgstr ""
-"Não foi possível encontrar a função de ordenação! [relate este problema]"
+msgstr "Não foi possível encontrar a função de ordenação! [relate este problema]"
 
 #: status.c:122
 msgid "(no mailbox)"
@@ -5147,8 +5095,7 @@ msgstr ""
 msgid ""
 "    You should have received a copy of the GNU General Public License\n"
 "    along with this program; if not, write to the Free Software\n"
-"    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  "
-"02110-1301, USA.\n"
+"    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.\n"
 msgstr ""
 
 #: version.c:87
@@ -6196,4 +6143,3 @@ msgstr "extrai chaves públicas do PGP"
 #, fuzzy
 msgid "show S/MIME options"
 msgstr "mostra as opções do S/MIME"
-

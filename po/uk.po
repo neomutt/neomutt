@@ -305,17 +305,12 @@ msgstr "Маска: "
 
 #: browser.c:1724
 #, fuzzy
-msgid ""
-"Reverse sort by (d)ate, (a)lpha, si(z)e, d(e)scription, (c)ount, ne(w) "
-"count, or do(n)'t sort? "
-msgstr ""
-"Зворотньо сортувати за датою(d), літерою(a), розміром(z), чи не сортувати(n)?"
+msgid "Reverse sort by (d)ate, (a)lpha, si(z)e, d(e)scription, (c)ount, ne(w) count, or do(n)'t sort? "
+msgstr "Зворотньо сортувати за датою(d), літерою(a), розміром(z), чи не сортувати(n)?"
 
 #: browser.c:1725
 #, fuzzy
-msgid ""
-"Sort by (d)ate, (a)lpha, si(z)e, d(e)scription, (c)ount, ne(w) count, or "
-"do(n)'t sort? "
+msgid "Sort by (d)ate, (a)lpha, si(z)e, d(e)scription, (c)ount, ne(w) count, or do(n)'t sort? "
 msgstr "Сортувати за датою(d), літерою(a), розміром(z), чи не сортувати(n)?"
 
 #: browser.c:1726
@@ -537,16 +532,12 @@ msgstr "Повідомлення не можуть бути надрукован
 #: commands.c:547
 #, fuzzy
 msgid "Rev-Sort Date/Frm/Recv/Subj/tO/Thread/Unsort/siZe/sCore/sPam/Label?: "
-msgstr ""
-"Звор.Сорт.:(d)дата/(f)від/(r)отр/(s)тема/(o)кому/(t)розмова/(u)без/(z)розмір/"
-"(c)рахунок/(p)спам?:"
+msgstr "Звор.Сорт.:(d)дата/(f)від/(r)отр/(s)тема/(o)кому/(t)розмова/(u)без/(z)розмір/(c)рахунок/(p)спам?:"
 
 #: commands.c:548
 #, fuzzy
 msgid "Sort Date/Frm/Recv/Subj/tO/Thread/Unsort/siZe/sCore/sPam/Label?: "
-msgstr ""
-"Сортувати: (d)дата/(f)від/(r)отр/(s)тема/(o)кому/(t)розмова/(u)без/(z)розмір/"
-"(c)рахунок/(p)спам?:"
+msgstr "Сортувати: (d)дата/(f)від/(r)отр/(s)тема/(o)кому/(t)розмова/(u)без/(z)розмір/(c)рахунок/(p)спам?:"
 
 #: commands.c:549
 #, fuzzy
@@ -969,8 +960,7 @@ msgstr "помилка при підписуванні даних: %s\n"
 
 #: crypt-gpgme.c:944
 msgid "$pgp_sign_as unset and no default key specified in ~/.gnupg/gpg.conf"
-msgstr ""
-"$pgp_sign_as не встановлено, типовий ключ не вказано в ~/.gnupg/gpg.conf"
+msgstr "$pgp_sign_as не встановлено, типовий ключ не вказано в ~/.gnupg/gpg.conf"
 
 #: crypt-gpgme.c:1140
 msgid "Warning: One of the keys has been revoked\n"
@@ -1022,9 +1012,7 @@ msgid "Fingerprint: "
 msgstr "Відбиток: "
 
 #: crypt-gpgme.c:1320
-msgid ""
-"WARNING: We have NO indication whether the key belongs to the person named "
-"as shown above\n"
+msgid "WARNING: We have NO indication whether the key belongs to the person named as shown above\n"
 msgstr "Попередження: НЕВІДОМО, чи належить даний ключ вказаній особі\n"
 
 #: crypt-gpgme.c:1327
@@ -1032,9 +1020,7 @@ msgid "WARNING: The key does NOT BELONG to the person named as shown above\n"
 msgstr "Попередження: Ключ НЕ НАЛЕЖИТЬ вказаній особі\n"
 
 #: crypt-gpgme.c:1331
-msgid ""
-"WARNING: It is NOT certain that the key belongs to the person named as shown "
-"above\n"
+msgid "WARNING: It is NOT certain that the key belongs to the person named as shown above\n"
 msgstr "Попередження: НЕМАЄ впевненості, що ключ належить вказаній особі\n"
 
 #: crypt-gpgme.c:1361 crypt-gpgme.c:1366
@@ -1402,8 +1388,7 @@ msgstr "%s \"%s\"."
 
 #: crypt-gpgme.c:4079 pgpkey.c:601
 msgid "This key can't be used: expired/disabled/revoked."
-msgstr ""
-"Цей ключ неможливо використати: прострочений, заборонений чи відкликаний."
+msgstr "Цей ключ неможливо використати: прострочений, заборонений чи відкликаний."
 
 #: crypt-gpgme.c:4093 pgpkey.c:613 smime.c:467
 msgid "ID is expired/disabled/revoked."
@@ -1488,24 +1473,16 @@ msgid "samfco"
 msgstr "samfco"
 
 #: crypt-gpgme.c:4744
-msgid ""
-"S/MIME (e)ncrypt, (s)ign, sign (a)s, (b)oth, (p)gp, (c)lear, or (o)ppenc "
-"mode? "
-msgstr ""
-"S/MIME (e)шифр, (s)підп, (a)підп. як, (b)усе, (p)gp, (c)відм, вимк. "
-"(o)ppenc? "
+msgid "S/MIME (e)ncrypt, (s)ign, sign (a)s, (b)oth, (p)gp, (c)lear, or (o)ppenc mode? "
+msgstr "S/MIME (e)шифр, (s)підп, (a)підп. як, (b)усе, (p)gp, (c)відм, вимк. (o)ppenc? "
 
 #: crypt-gpgme.c:4745
 msgid "esabpfco"
 msgstr "esabpfco"
 
 #: crypt-gpgme.c:4750
-msgid ""
-"PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, s/(m)ime, (c)lear, or (o)ppenc "
-"mode? "
-msgstr ""
-"PGP (e)шифр, (s)підп, (a)підп. як, (b)усе, s/(m)ime, (c)відм, вимк. "
-"(o)ppenc? "
+msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, s/(m)ime, (c)lear, or (o)ppenc mode? "
+msgstr "PGP (e)шифр, (s)підп, (a)підп. як, (b)усе, s/(m)ime, (c)відм, вимк. (o)ppenc? "
 
 #: crypt-gpgme.c:4751
 msgid "esabmfco"
@@ -1567,9 +1544,7 @@ msgstr "Виклик PGP..."
 
 #: crypt.c:168
 msgid "Message can't be sent inline.  Revert to using PGP/MIME?"
-msgstr ""
-"Повідомлення не може бути відправленим в текстовому форматі. Використовувати "
-"PGP/MIME?"
+msgstr "Повідомлення не може бути відправленим в текстовому форматі. Використовувати PGP/MIME?"
 
 #: crypt.c:170 send.c:1792
 msgid "Mail not sent."
@@ -1751,8 +1726,7 @@ msgstr "Переслати %s%s?"
 
 #: curs_main.c:905
 msgid "Mailbox was externally modified.  Flags may be wrong."
-msgstr ""
-"Поштову скриньку змінила зовнішня програма. Атрибути можуть бути змінені."
+msgstr "Поштову скриньку змінила зовнішня програма. Атрибути можуть бути змінені."
 
 #: curs_main.c:912 pager.c:2053
 msgid "New mail in this mailbox."
@@ -2205,8 +2179,7 @@ msgstr "Зняти атрибут"
 
 #: handler.c:1139
 msgid "[-- Error:  Could not display any parts of Multipart/Alternative! --]\n"
-msgstr ""
-"[-- Помилка: жодну частину Multipart/Alternative не вийшло відобразити! --]\n"
+msgstr "[-- Помилка: жодну частину Multipart/Alternative не вийшло відобразити! --]\n"
 
 #: handler.c:1254
 #, c-format
@@ -2899,10 +2872,8 @@ msgstr "Не вистачає пам'яті!"
 #: main.c:84
 msgid ""
 "usage: mutt [<options>] [-z] [-f <file> | -yZ]\n"
-"       mutt [<options>] [-Ex] [-Hi <file>] [-s <subj>] [-bc <addr>] [-a "
-"<file> [...] --] <addr> [...]\n"
-"       mutt [<options>] [-x] [-s <subj>] [-bc <addr>] [-a <file> [...] --] "
-"<addr> [...] < message\n"
+"       mutt [<options>] [-Ex] [-Hi <file>] [-s <subj>] [-bc <addr>] [-a <file> [...] --] <addr> [...]\n"
+"       mutt [<options>] [-x] [-s <subj>] [-bc <addr>] [-a <file> [...] --] <addr> [...] < message\n"
 "       mutt [<options>] -p\n"
 "       mutt [<options>] -A <alias> [...]\n"
 "       mutt [<options>] -Q <query> [...]\n"
@@ -2911,10 +2882,8 @@ msgid ""
 msgstr ""
 "Використання:\n"
 "       mutt [<options>] [-z] [-f <file> | -yZ]\n"
-"       mutt [<options>] [-Ex] [-Hi <file>] [-s <subj>] [-bc <addr>] [-a "
-"<file> [...] --] <addr> [...]\n"
-"       mutt [<options>] [-x] [-s <subj>] [-bc <addr>] [-a <file> [...] --] "
-"<addr> [...] < message\n"
+"       mutt [<options>] [-Ex] [-Hi <file>] [-s <subj>] [-bc <addr>] [-a <file> [...] --] <addr> [...]\n"
+"       mutt [<options>] [-x] [-s <subj>] [-bc <addr>] [-a <file> [...] --] <addr> [...] < message\n"
 "       mutt [<options>] -p\n"
 "       mutt [<options>] -A <alias> [...]\n"
 "       mutt [<options>] -Q <query> [...]\n"
@@ -3765,8 +3734,7 @@ msgid "Checking for new newsgroups..."
 msgstr "Перевірка наявності нових повідомлень..."
 
 #: nntp.c:2420
-msgid ""
-"Unable to find child articles because server does not support XPAT command."
+msgid "Unable to find child articles because server does not support XPAT command."
 msgstr ""
 
 #: pager.c:1629
@@ -3981,11 +3949,8 @@ msgstr "safco"
 
 #: pgp.c:1760
 #, c-format
-msgid ""
-"PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, %s format, (c)lear, or (o)ppenc "
-"mode? "
-msgstr ""
-"PGP (e)шифр, (s)підп, (a)підп. як, (b)усе, %s, (с)відм, вимк. (o)ppenc? "
+msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, %s format, (c)lear, or (o)ppenc mode? "
+msgstr "PGP (e)шифр, (s)підп, (a)підп. як, (b)усе, %s, (с)відм, вимк. (o)ppenc? "
 
 #: pgp.c:1763
 msgid "esabfcoi"
@@ -4282,8 +4247,7 @@ msgid "Deletion of attachments from encrypted messages is unsupported."
 msgstr "Видалення додатків з шифрованих листів не підтримується."
 
 #: recvattach.c:1144
-msgid ""
-"Deletion of attachments from signed messages may invalidate the signature."
+msgid "Deletion of attachments from signed messages may invalidate the signature."
 msgstr "Видалення додатків з підписаних листів може анулювати підпис."
 
 #: recvattach.c:1161 recvattach.c:1178
@@ -4387,10 +4351,8 @@ msgid "Mixmaster doesn't accept Cc or Bcc headers."
 msgstr "Mixmaster не приймає заголовки Cc та Bcc."
 
 #: remailer.c:732
-msgid ""
-"Please set the hostname variable to a proper value when using mixmaster!"
-msgstr ""
-"Треба встановити відповідне значення hostname для використання mixmaster!"
+msgid "Please set the hostname variable to a proper value when using mixmaster!"
+msgstr "Треба встановити відповідне значення hostname для використання mixmaster!"
 
 #: remailer.c:766
 #, c-format
@@ -4671,8 +4633,7 @@ msgstr "Немає виводу від OpenSSL..."
 
 #: smime.c:1534
 msgid "Can't sign: No key specified. Use Sign As."
-msgstr ""
-"Неможливо підписати: Ключів не вказано. Використовуйте \"Підписати як\"."
+msgstr "Неможливо підписати: Ключів не вказано. Використовуйте \"Підписати як\"."
 
 #: smime.c:1586
 msgid "Can't open OpenSSL subprocess!"
@@ -4715,10 +4676,8 @@ msgstr ""
 "[-- Кінець підписаних S/MIME даних --]\n"
 
 #: smime.c:2110
-msgid ""
-"S/MIME (s)ign, encrypt (w)ith, sign (a)s, (c)lear, or (o)ppenc mode off? "
-msgstr ""
-"S/MIME (s)підп., (w)шифр. з, (a)підп. як, (c)відм., вимкнути (o)ppenc? "
+msgid "S/MIME (s)ign, encrypt (w)ith, sign (a)s, (c)lear, or (o)ppenc mode off? "
+msgstr "S/MIME (s)підп., (w)шифр. з, (a)підп. як, (c)відм., вимкнути (o)ppenc? "
 
 #. L10N: The 'f' is from "forget it", an old undocumented synonym of
 #. 'clear'.  Please use a corresponding letter in your language.
@@ -4729,22 +4688,16 @@ msgid "swafco"
 msgstr "swafco"
 
 #: smime.c:2124
-msgid ""
-"S/MIME (e)ncrypt, (s)ign, encrypt (w)ith, sign (a)s, (b)oth, (c)lear, or "
-"(o)ppenc mode? "
-msgstr ""
-"S/MIME (e)шифр, (s)підп, (w)шифр.з, (a)підп.як, (b)усе, (c)відм, вимк."
-"(o)ppenc?"
+msgid "S/MIME (e)ncrypt, (s)ign, encrypt (w)ith, sign (a)s, (b)oth, (c)lear, or (o)ppenc mode? "
+msgstr "S/MIME (e)шифр, (s)підп, (w)шифр.з, (a)підп.як, (b)усе, (c)відм, вимк.(o)ppenc?"
 
 #: smime.c:2125
 msgid "eswabfco"
 msgstr "eswabfco"
 
 #: smime.c:2133
-msgid ""
-"S/MIME (e)ncrypt, (s)ign, encrypt (w)ith, sign (a)s, (b)oth, or (c)lear? "
-msgstr ""
-"S/MIME (e)шифр., (s)підп., (w)шифр. з, (a)підп. як, (b)усе, (c)відміна? "
+msgid "S/MIME (e)ncrypt, (s)ign, encrypt (w)ith, sign (a)s, (b)oth, or (c)lear? "
+msgstr "S/MIME (e)шифр., (s)підп., (w)шифр. з, (a)підп. як, (b)усе, (c)відміна? "
 
 #: smime.c:2134
 msgid "eswabfc"
@@ -4880,8 +4833,7 @@ msgstr ""
 "Copyright (C) 2006-2009 Rocco Rutte <pdmef@gmx.net>\n"
 "Copyright (C) 2014-2016 Kevin J. McCarthy <kevin@8t8.us>\n"
 "\n"
-"Багато інших не вказаних тут осіб залишили свій код, виправлення і "
-"побажання.\n"
+"Багато інших не вказаних тут осіб залишили свій код, виправлення і побажання.\n"
 
 #: version.c:69
 msgid ""
@@ -4895,13 +4847,11 @@ msgid ""
 "    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the\n"
 "    GNU General Public License for more details.\n"
 msgstr ""
-"Ця програма -- вільне програмне забезпечення. Ви можете розповсюджувати і/"
-"чи\n"
+"Ця програма -- вільне програмне забезпечення. Ви можете розповсюджувати і/чи\n"
 "змінювати її згідно з умовами GNU General Public License від\n"
 "Free Software Foundation версії 2 чи вище.\n"
 "\n"
-"Ця програма розповсюджується з надуєю, що вона буде корисною, але ми не "
-"надаємо\n"
+"Ця програма розповсюджується з надуєю, що вона буде корисною, але ми не надаємо\n"
 "ЖОДНИХ ГАРАНТІЙ, включаючи гарантії придатності до будь-яких конкретних\n"
 "завдань. Більш детально дивіться GNU General Public License.\n"
 
@@ -4909,8 +4859,7 @@ msgstr ""
 msgid ""
 "    You should have received a copy of the GNU General Public License\n"
 "    along with this program; if not, write to the Free Software\n"
-"    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  "
-"02110-1301, USA.\n"
+"    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.\n"
 msgstr ""
 "Ви мали б отримати копію GNU General Public License разом з цією програмою\n"
 "Якщо це не так, звертайтесь до Free Software Foundation, Inc:\n"
@@ -4933,8 +4882,7 @@ msgid ""
 msgstr ""
 "Copyright (C) 1996-2016 Michael R. Elkins та інші\n"
 "Mutt поставляється БЕЗ БУДЬ-ЯКИХ ГАРАНТІЙ; детальніше: mutt -vv.\n"
-"Mutt -- програмне забезпечення з відкритим кодом, запрошуємо до "
-"розповсюдження\n"
+"Mutt -- програмне забезпечення з відкритим кодом, запрошуємо до розповсюдження\n"
 "з деякими умовами. Детальніше: mutt -vv.\n"
 
 #: version.c:444
@@ -5928,4 +5876,3 @@ msgstr "розпакувати підтримувані відкриті клю�
 #: ../keymap_alldefs.h:244
 msgid "show S/MIME options"
 msgstr "показати параметри S/MIME"
-

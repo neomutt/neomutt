@@ -310,16 +310,12 @@ msgstr "檔案遮罩："
 
 #: browser.c:1724
 #, fuzzy
-msgid ""
-"Reverse sort by (d)ate, (a)lpha, si(z)e, d(e)scription, (c)ount, ne(w) "
-"count, or do(n)'t sort? "
+msgid "Reverse sort by (d)ate, (a)lpha, si(z)e, d(e)scription, (c)ount, ne(w) count, or do(n)'t sort? "
 msgstr "反向排序 (1)日期, (2)字元, (3)大小 或 (4)不排序 ? "
 
 #: browser.c:1725
 #, fuzzy
-msgid ""
-"Sort by (d)ate, (a)lpha, si(z)e, d(e)scription, (c)ount, ne(w) count, or "
-"do(n)'t sort? "
+msgid "Sort by (d)ate, (a)lpha, si(z)e, d(e)scription, (c)ount, ne(w) count, or do(n)'t sort? "
 msgstr "依照 (1)日期 (2)字元 (3)大小 來排序，或(4)不排序 ? "
 
 #: browser.c:1726
@@ -546,16 +542,12 @@ msgstr "信件未能列印出來"
 #: commands.c:547
 #, fuzzy
 msgid "Rev-Sort Date/Frm/Recv/Subj/tO/Thread/Unsort/siZe/sCore/sPam/Label?: "
-msgstr ""
-"反方向 1)日期 2)發信人 3)收信時間 4)標題 5)收信人 6)序列 7)不排 8)大小 9)分"
-"數:"
+msgstr "反方向 1)日期 2)發信人 3)收信時間 4)標題 5)收信人 6)序列 7)不排 8)大小 9)分數:"
 
 #: commands.c:548
 #, fuzzy
 msgid "Sort Date/Frm/Recv/Subj/tO/Thread/Unsort/siZe/sCore/sPam/Label?: "
-msgstr ""
-"排序 1)日期 2)發信人 3)收信時間 4)標題 5)收信人 6)序列 7)不排序 8)大小 9)分"
-"數:"
+msgstr "排序 1)日期 2)發信人 3)收信時間 4)標題 5)收信人 6)序列 7)不排序 8)大小 9)分數:"
 
 #: commands.c:549
 #, fuzzy
@@ -1037,9 +1029,7 @@ msgid "Fingerprint: "
 msgstr "指模：%s"
 
 #: crypt-gpgme.c:1320
-msgid ""
-"WARNING: We have NO indication whether the key belongs to the person named "
-"as shown above\n"
+msgid "WARNING: We have NO indication whether the key belongs to the person named as shown above\n"
 msgstr ""
 
 #: crypt-gpgme.c:1327
@@ -1047,9 +1037,7 @@ msgid "WARNING: The key does NOT BELONG to the person named as shown above\n"
 msgstr ""
 
 #: crypt-gpgme.c:1331
-msgid ""
-"WARNING: It is NOT certain that the key belongs to the person named as shown "
-"above\n"
+msgid "WARNING: It is NOT certain that the key belongs to the person named as shown above\n"
 msgstr ""
 
 #: crypt-gpgme.c:1361 crypt-gpgme.c:1366
@@ -1545,9 +1533,7 @@ msgstr ""
 
 #: crypt-gpgme.c:4744
 #, fuzzy
-msgid ""
-"S/MIME (e)ncrypt, (s)ign, sign (a)s, (b)oth, (p)gp, (c)lear, or (o)ppenc "
-"mode? "
+msgid "S/MIME (e)ncrypt, (s)ign, sign (a)s, (b)oth, (p)gp, (c)lear, or (o)ppenc mode? "
 msgstr "(1)加密, (2)簽名, (3)用別的身份簽, (4)兩者皆要, 或 (5)放棄？"
 
 #: crypt-gpgme.c:4745
@@ -1557,9 +1543,7 @@ msgstr "12345"
 
 #: crypt-gpgme.c:4750
 #, fuzzy
-msgid ""
-"PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, s/(m)ime, (c)lear, or (o)ppenc "
-"mode? "
+msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, s/(m)ime, (c)lear, or (o)ppenc mode? "
 msgstr "(1)加密, (2)簽名, (3)用別的身份簽, (4)兩者皆要, 或 (5)放棄？"
 
 #: crypt-gpgme.c:4751
@@ -2343,8 +2327,7 @@ msgstr "[-- 自動顯示 %s 的 stderr 內容 --]\n"
 
 #: handler.c:1446
 msgid "[-- Error: message/external-body has no access-type parameter --]\n"
-msgstr ""
-"[-- 錯誤：message/external-body 沒有存取類型 (access-type) 的參數 --]\n"
+msgstr "[-- 錯誤：message/external-body 沒有存取類型 (access-type) 的參數 --]\n"
 
 #: handler.c:1467
 #, c-format
@@ -3022,10 +3005,8 @@ msgstr "記憶體不足！"
 #: main.c:84
 msgid ""
 "usage: mutt [<options>] [-z] [-f <file> | -yZ]\n"
-"       mutt [<options>] [-Ex] [-Hi <file>] [-s <subj>] [-bc <addr>] [-a "
-"<file> [...] --] <addr> [...]\n"
-"       mutt [<options>] [-x] [-s <subj>] [-bc <addr>] [-a <file> [...] --] "
-"<addr> [...] < message\n"
+"       mutt [<options>] [-Ex] [-Hi <file>] [-s <subj>] [-bc <addr>] [-a <file> [...] --] <addr> [...]\n"
+"       mutt [<options>] [-x] [-s <subj>] [-bc <addr>] [-a <file> [...] --] <addr> [...] < message\n"
 "       mutt [<options>] -p\n"
 "       mutt [<options>] -A <alias> [...]\n"
 "       mutt [<options>] -Q <query> [...]\n"
@@ -3063,10 +3044,8 @@ msgid ""
 "  -n\t\tcauses Mutt not to read the system Muttrc\n"
 "  -p\t\trecall a postponed message"
 msgstr ""
-"用法: mutt [ -nRzZ ] [ -e <命令> ] [ -F <檔案> ] [ -m <類型> ] [ -f <檔案"
-"> ]\n"
-"        mutt [ -nx ] [ -e <命令> ] [ -a <檔案> ] [ -F <檔案> ] [ -H <檔案> ] "
-"[ -i <檔案> ] [ -s <主題> ] [ -b <地址> ] [ -c <地址> ] <地址> [ ... ]\n"
+"用法: mutt [ -nRzZ ] [ -e <命令> ] [ -F <檔案> ] [ -m <類型> ] [ -f <檔案> ]\n"
+"        mutt [ -nx ] [ -e <命令> ] [ -a <檔案> ] [ -F <檔案> ] [ -H <檔案> ] [ -i <檔案> ] [ -s <主題> ] [ -b <地址> ] [ -c <地址> ] <地址> [ ... ]\n"
 "        mutt [ -n ] [ -e <命令> ] [ -F <檔案> ] -p\n"
 "        mutt -v[v]\n"
 "\n"
@@ -3104,14 +3083,10 @@ msgid ""
 "  -Z\t\topen the first folder with new message, exit immediately if none\n"
 "  -h\t\tthis help message"
 msgstr ""
-"用法: mutt [ -nRyzZ ] [ -e <指令> ] [ -F <檔案> ] [ -m <類型> ] [ -f <檔案"
-"> ]\n"
-"       mutt [ -nR ] [ -e <指令> ] [ -F <檔案> ] -Q <查詢> [ -Q <查詢> ] "
-"[...]\n"
-"       mutt [ -nR ] [ -e <指令> ] [ -F <檔案> ] -A <別名> [ -A <別名> ] "
-"[...]\n"
-"       mutt [ -nx ] [ -e <指令> ] [ -a <檔案> ] [ -F <檔案> ] [ -H <檔案> ] "
-"[ -i <檔案> ] [ -s <主題> ] [ -b <地址> ] [ -c <地址> ] <地址> [ ... ]\n"
+"用法: mutt [ -nRyzZ ] [ -e <指令> ] [ -F <檔案> ] [ -m <類型> ] [ -f <檔案> ]\n"
+"       mutt [ -nR ] [ -e <指令> ] [ -F <檔案> ] -Q <查詢> [ -Q <查詢> ] [...]\n"
+"       mutt [ -nR ] [ -e <指令> ] [ -F <檔案> ] -A <別名> [ -A <別名> ] [...]\n"
+"       mutt [ -nx ] [ -e <指令> ] [ -a <檔案> ] [ -F <檔案> ] [ -H <檔案> ] [ -i <檔案> ] [ -s <主題> ] [ -b <地址> ] [ -c <地址> ] <地址> [ ... ]\n"
 "       mutt [ -n ] [ -e <指令> ] [ -F <檔案> ] -p\n"
 "       mutt -v[v]\n"
 "\n"
@@ -3930,8 +3905,7 @@ msgid "Checking for new newsgroups..."
 msgstr "看看有沒有新信件…"
 
 #: nntp.c:2420
-msgid ""
-"Unable to find child articles because server does not support XPAT command."
+msgid "Unable to find child articles because server does not support XPAT command."
 msgstr ""
 
 #: pager.c:1629
@@ -4149,9 +4123,7 @@ msgstr ""
 
 #: pgp.c:1760
 #, fuzzy, c-format
-msgid ""
-"PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, %s format, (c)lear, or (o)ppenc "
-"mode? "
+msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, %s format, (c)lear, or (o)ppenc mode? "
 msgstr "(1)加密, (2)簽名, (3)用別的身份簽, (4)兩者皆要, 或 (5)放棄？"
 
 #: pgp.c:1763
@@ -4464,8 +4436,7 @@ msgstr "未支援刪除 PGP 信件所附帶的附件。"
 
 #: recvattach.c:1144
 #, fuzzy
-msgid ""
-"Deletion of attachments from signed messages may invalidate the signature."
+msgid "Deletion of attachments from signed messages may invalidate the signature."
 msgstr "未支援刪除 PGP 信件所附帶的附件。"
 
 #: recvattach.c:1161 recvattach.c:1178
@@ -4571,8 +4542,7 @@ msgid "Mixmaster doesn't accept Cc or Bcc headers."
 msgstr "Mixmaster 不接受 Cc 和 Bcc 的標頭。"
 
 #: remailer.c:732
-msgid ""
-"Please set the hostname variable to a proper value when using mixmaster!"
+msgid "Please set the hostname variable to a proper value when using mixmaster!"
 msgstr "使用 mixmaster 時請先設定好 hostname 變數！"
 
 #: remailer.c:766
@@ -4920,8 +4890,7 @@ msgstr ""
 
 #: smime.c:2110
 #, fuzzy
-msgid ""
-"S/MIME (s)ign, encrypt (w)ith, sign (a)s, (c)lear, or (o)ppenc mode off? "
+msgid "S/MIME (s)ign, encrypt (w)ith, sign (a)s, (c)lear, or (o)ppenc mode off? "
 msgstr "(1)加密, (2)簽名, (3)用別的身份簽, (4)兩者皆要, 或 (5)放棄？"
 
 #. L10N: The 'f' is from "forget it", an old undocumented synonym of
@@ -4934,9 +4903,7 @@ msgstr ""
 
 #: smime.c:2124
 #, fuzzy
-msgid ""
-"S/MIME (e)ncrypt, (s)ign, encrypt (w)ith, sign (a)s, (b)oth, (c)lear, or "
-"(o)ppenc mode? "
+msgid "S/MIME (e)ncrypt, (s)ign, encrypt (w)ith, sign (a)s, (b)oth, (c)lear, or (o)ppenc mode? "
 msgstr "(1)加密, (2)簽名, (3)用別的身份簽, (4)兩者皆要, 或 (5)放棄？"
 
 #: smime.c:2125
@@ -4946,8 +4913,7 @@ msgstr "12345"
 
 #: smime.c:2133
 #, fuzzy
-msgid ""
-"S/MIME (e)ncrypt, (s)ign, encrypt (w)ith, sign (a)s, (b)oth, or (c)lear? "
+msgid "S/MIME (e)ncrypt, (s)ign, encrypt (w)ith, sign (a)s, (b)oth, or (c)lear? "
 msgstr "(1)加密, (2)簽名, (3)用別的身份簽, (4)兩者皆要, 或 (5)放棄？"
 
 #: smime.c:2134
@@ -5096,8 +5062,7 @@ msgstr ""
 msgid ""
 "    You should have received a copy of the GNU General Public License\n"
 "    along with this program; if not, write to the Free Software\n"
-"    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  "
-"02110-1301, USA.\n"
+"    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.\n"
 msgstr ""
 
 #: version.c:87
@@ -6139,4 +6104,3 @@ msgstr "擷取 PGP 公共鑰匙"
 #, fuzzy
 msgid "show S/MIME options"
 msgstr "顯示 S/MIME 選項"
-

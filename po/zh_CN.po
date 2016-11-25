@@ -306,16 +306,12 @@ msgstr "文件掩码："
 
 #: browser.c:1724
 #, fuzzy
-msgid ""
-"Reverse sort by (d)ate, (a)lpha, si(z)e, d(e)scription, (c)ount, ne(w) "
-"count, or do(n)'t sort? "
+msgid "Reverse sort by (d)ate, (a)lpha, si(z)e, d(e)scription, (c)ount, ne(w) count, or do(n)'t sort? "
 msgstr "按日期(d)，字母表(a)，大小(z)反向排序或不排序(n)? "
 
 #: browser.c:1725
 #, fuzzy
-msgid ""
-"Sort by (d)ate, (a)lpha, si(z)e, d(e)scription, (c)ount, ne(w) count, or "
-"do(n)'t sort? "
+msgid "Sort by (d)ate, (a)lpha, si(z)e, d(e)scription, (c)ount, ne(w) count, or do(n)'t sort? "
 msgstr "按日期(d)，字母表(a)，大小(z)排序或不排序(n)? "
 
 #: browser.c:1726
@@ -537,16 +533,12 @@ msgstr "信件无法打印"
 #: commands.c:547
 #, fuzzy
 msgid "Rev-Sort Date/Frm/Recv/Subj/tO/Thread/Unsort/siZe/sCore/sPam/Label?: "
-msgstr ""
-"按日期d/发信人f/收信时间r/标题s/收信人o/线索t/不排u/大小z/分数c/垃圾邮件p反向"
-"排序?: "
+msgstr "按日期d/发信人f/收信时间r/标题s/收信人o/线索t/不排u/大小z/分数c/垃圾邮件p反向排序?: "
 
 #: commands.c:548
 #, fuzzy
 msgid "Sort Date/Frm/Recv/Subj/tO/Thread/Unsort/siZe/sCore/sPam/Label?: "
-msgstr ""
-"按日期d/发信人f/收信时间r/标题s/收信人o/线索t/不排u/大小z/分数c/垃圾邮件p排"
-"序?: "
+msgstr "按日期d/发信人f/收信时间r/标题s/收信人o/线索t/不排u/大小z/分数c/垃圾邮件p排序?: "
 
 #: commands.c:549
 #, fuzzy
@@ -1025,9 +1017,7 @@ msgid "Fingerprint: "
 msgstr "指纹："
 
 #: crypt-gpgme.c:1320
-msgid ""
-"WARNING: We have NO indication whether the key belongs to the person named "
-"as shown above\n"
+msgid "WARNING: We have NO indication whether the key belongs to the person named as shown above\n"
 msgstr "警告：我们“无法”证实密钥是否属于上面列出名字的人\n"
 
 #: crypt-gpgme.c:1327
@@ -1035,9 +1025,7 @@ msgid "WARNING: The key does NOT BELONG to the person named as shown above\n"
 msgstr "警告：密钥“不属于”上面列出名字的人\n"
 
 #: crypt-gpgme.c:1331
-msgid ""
-"WARNING: It is NOT certain that the key belongs to the person named as shown "
-"above\n"
+msgid "WARNING: It is NOT certain that the key belongs to the person named as shown above\n"
 msgstr "警告：“无法”确定密钥属于上面列出名字的人\n"
 
 #: crypt-gpgme.c:1361 crypt-gpgme.c:1366
@@ -1475,8 +1463,7 @@ msgstr ""
 #: crypt-gpgme.c:4721
 #, fuzzy
 msgid "S/MIME (s)ign, sign (a)s, (p)gp, (c)lear, or (o)ppenc mode off? "
-msgstr ""
-"S/MIME 加密(e)，签署(s)，选择身份签署(a)，两者皆要(b)，(p)gp或清除(c)？"
+msgstr "S/MIME 加密(e)，签署(s)，选择身份签署(a)，两者皆要(b)，(p)gp或清除(c)？"
 
 #. L10N: The 'f' is from "forget it", an old undocumented synonym of
 #. 'clear'.  Please use a corresponding letter in your language.
@@ -1489,8 +1476,7 @@ msgstr ""
 #: crypt-gpgme.c:4731
 #, fuzzy
 msgid "PGP (s)ign, sign (a)s, s/(m)ime, (c)lear, or (o)ppenc mode off? "
-msgstr ""
-"PGP 加密(e)，签署(s)，选择身份签署(a)，两者皆要(b)，s/(m)ime或清除(c)？"
+msgstr "PGP 加密(e)，签署(s)，选择身份签署(a)，两者皆要(b)，s/(m)ime或清除(c)？"
 
 #: crypt-gpgme.c:4732
 msgid "samfco"
@@ -1498,11 +1484,8 @@ msgstr ""
 
 #: crypt-gpgme.c:4744
 #, fuzzy
-msgid ""
-"S/MIME (e)ncrypt, (s)ign, sign (a)s, (b)oth, (p)gp, (c)lear, or (o)ppenc "
-"mode? "
-msgstr ""
-"S/MIME 加密(e)，签署(s)，选择身份签署(a)，两者皆要(b)，(p)gp或清除(c)？"
+msgid "S/MIME (e)ncrypt, (s)ign, sign (a)s, (b)oth, (p)gp, (c)lear, or (o)ppenc mode? "
+msgstr "S/MIME 加密(e)，签署(s)，选择身份签署(a)，两者皆要(b)，(p)gp或清除(c)？"
 
 #: crypt-gpgme.c:4745
 #, fuzzy
@@ -1511,11 +1494,8 @@ msgstr "esabpfc"
 
 #: crypt-gpgme.c:4750
 #, fuzzy
-msgid ""
-"PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, s/(m)ime, (c)lear, or (o)ppenc "
-"mode? "
-msgstr ""
-"PGP 加密(e)，签署(s)，选择身份签署(a)，两者皆要(b)，s/(m)ime或清除(c)？"
+msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, s/(m)ime, (c)lear, or (o)ppenc mode? "
+msgstr "PGP 加密(e)，签署(s)，选择身份签署(a)，两者皆要(b)，s/(m)ime或清除(c)？"
 
 #: crypt-gpgme.c:4751
 #, fuzzy
@@ -1525,8 +1505,7 @@ msgstr "esabmfc"
 #: crypt-gpgme.c:4762
 #, fuzzy
 msgid "S/MIME (e)ncrypt, (s)ign, sign (a)s, (b)oth, (p)gp or (c)lear? "
-msgstr ""
-"S/MIME 加密(e)，签署(s)，选择身份签署(a)，两者皆要(b)，(p)gp或清除(c)？"
+msgstr "S/MIME 加密(e)，签署(s)，选择身份签署(a)，两者皆要(b)，(p)gp或清除(c)？"
 
 #: crypt-gpgme.c:4763
 msgid "esabpfc"
@@ -1535,8 +1514,7 @@ msgstr "esabpfc"
 #: crypt-gpgme.c:4768
 #, fuzzy
 msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, s/(m)ime or (c)lear? "
-msgstr ""
-"PGP 加密(e)，签署(s)，选择身份签署(a)，两者皆要(b)，s/(m)ime或清除(c)？"
+msgstr "PGP 加密(e)，签署(s)，选择身份签署(a)，两者皆要(b)，s/(m)ime或清除(c)？"
 
 #: crypt-gpgme.c:4769
 msgid "esabmfc"
@@ -2933,10 +2911,8 @@ msgstr "内存用尽！"
 #, fuzzy
 msgid ""
 "usage: mutt [<options>] [-z] [-f <file> | -yZ]\n"
-"       mutt [<options>] [-Ex] [-Hi <file>] [-s <subj>] [-bc <addr>] [-a "
-"<file> [...] --] <addr> [...]\n"
-"       mutt [<options>] [-x] [-s <subj>] [-bc <addr>] [-a <file> [...] --] "
-"<addr> [...] < message\n"
+"       mutt [<options>] [-Ex] [-Hi <file>] [-s <subj>] [-bc <addr>] [-a <file> [...] --] <addr> [...]\n"
+"       mutt [<options>] [-x] [-s <subj>] [-bc <addr>] [-a <file> [...] --] <addr> [...] < message\n"
 "       mutt [<options>] -p\n"
 "       mutt [<options>] -A <alias> [...]\n"
 "       mutt [<options>] -Q <query> [...]\n"
@@ -2944,10 +2920,8 @@ msgid ""
 "       mutt -v[v]\n"
 msgstr ""
 "用法: mutt [<选项>] [-z] [-f <文件> | -yZ]\n"
-"      mutt [<选项>] [-x] [-Hi <文件>] [-s <标题>] [-bc <地址>] [-a <文件> "
-"[...]] [--] <地址> [...]\n"
-"      mutt [<选项>] [-x] [-s <标题>] [-bc <地址>] [-a <文件> [...]] [--] <地"
-"址> [...] < message\n"
+"      mutt [<选项>] [-x] [-Hi <文件>] [-s <标题>] [-bc <地址>] [-a <文件> [...]] [--] <地址> [...]\n"
+"      mutt [<选项>] [-x] [-s <标题>] [-bc <地址>] [-a <文件> [...]] [--] <地址> [...] < message\n"
 "      mutt [<选项>] -p\n"
 "      mutt [<选项>] -A <别名> [...]\n"
 "      mutt [<选项>] -Q <查询> [...]\n"
@@ -3804,8 +3778,7 @@ msgid "Checking for new newsgroups..."
 msgstr "正在检查新邮件..."
 
 #: nntp.c:2420
-msgid ""
-"Unable to find child articles because server does not support XPAT command."
+msgid "Unable to find child articles because server does not support XPAT command."
 msgstr ""
 
 #: pager.c:1629
@@ -4021,9 +3994,7 @@ msgstr ""
 
 #: pgp.c:1760
 #, fuzzy, c-format
-msgid ""
-"PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, %s format, (c)lear, or (o)ppenc "
-"mode? "
+msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, %s format, (c)lear, or (o)ppenc mode? "
 msgstr "PGP 加密(e)，签署(s)，选择身份签署(a)，同时(b)，%s，或清除(c)？"
 
 #: pgp.c:1763
@@ -4328,8 +4299,7 @@ msgstr "不支持从加密信件中删除附件。"
 
 #: recvattach.c:1144
 #, fuzzy
-msgid ""
-"Deletion of attachments from signed messages may invalidate the signature."
+msgid "Deletion of attachments from signed messages may invalidate the signature."
 msgstr "不支持从加密信件中删除附件。"
 
 #: recvattach.c:1161 recvattach.c:1178
@@ -4433,8 +4403,7 @@ msgid "Mixmaster doesn't accept Cc or Bcc headers."
 msgstr "Mixmaster 不接受转发(Cc)或密件转发(Bcc)标头"
 
 #: remailer.c:732
-msgid ""
-"Please set the hostname variable to a proper value when using mixmaster!"
+msgid "Please set the hostname variable to a proper value when using mixmaster!"
 msgstr "使用 mixmaster 时请给 hostname(主机名)变量设置合适的值！"
 
 #: remailer.c:766
@@ -4761,10 +4730,8 @@ msgstr ""
 
 #: smime.c:2110
 #, fuzzy
-msgid ""
-"S/MIME (s)ign, encrypt (w)ith, sign (a)s, (c)lear, or (o)ppenc mode off? "
-msgstr ""
-"S/MIME 加密(e)，签署(s)，选择身份加密(w)，选择身份签署(s)，同时(b)或清除(c)？"
+msgid "S/MIME (s)ign, encrypt (w)ith, sign (a)s, (c)lear, or (o)ppenc mode off? "
+msgstr "S/MIME 加密(e)，签署(s)，选择身份加密(w)，选择身份签署(s)，同时(b)或清除(c)？"
 
 #. L10N: The 'f' is from "forget it", an old undocumented synonym of
 #. 'clear'.  Please use a corresponding letter in your language.
@@ -4776,11 +4743,8 @@ msgstr ""
 
 #: smime.c:2124
 #, fuzzy
-msgid ""
-"S/MIME (e)ncrypt, (s)ign, encrypt (w)ith, sign (a)s, (b)oth, (c)lear, or "
-"(o)ppenc mode? "
-msgstr ""
-"S/MIME 加密(e)，签署(s)，选择身份加密(w)，选择身份签署(s)，同时(b)或清除(c)？"
+msgid "S/MIME (e)ncrypt, (s)ign, encrypt (w)ith, sign (a)s, (b)oth, (c)lear, or (o)ppenc mode? "
+msgstr "S/MIME 加密(e)，签署(s)，选择身份加密(w)，选择身份签署(s)，同时(b)或清除(c)？"
 
 #: smime.c:2125
 #, fuzzy
@@ -4788,10 +4752,8 @@ msgid "eswabfco"
 msgstr "eswabfc"
 
 #: smime.c:2133
-msgid ""
-"S/MIME (e)ncrypt, (s)ign, encrypt (w)ith, sign (a)s, (b)oth, or (c)lear? "
-msgstr ""
-"S/MIME 加密(e)，签署(s)，选择身份加密(w)，选择身份签署(s)，同时(b)或清除(c)？"
+msgid "S/MIME (e)ncrypt, (s)ign, encrypt (w)ith, sign (a)s, (b)oth, or (c)lear? "
+msgstr "S/MIME 加密(e)，签署(s)，选择身份加密(w)，选择身份签署(s)，同时(b)或清除(c)？"
 
 #: smime.c:2134
 msgid "eswabfc"
@@ -4952,12 +4914,10 @@ msgstr ""
 msgid ""
 "    You should have received a copy of the GNU General Public License\n"
 "    along with this program; if not, write to the Free Software\n"
-"    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  "
-"02110-1301, USA.\n"
+"    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.\n"
 msgstr ""
 "    您应已收到附随于本程序的 GNU 通用公共许可的副本；如果没有，请写信\n"
-"    至自由软件基金会，51 Franklin Street, Fifth Floor, Boston, MA "
-"02110-1301, USA.\n"
+"    至自由软件基金会，51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.\n"
 
 #: version.c:87
 msgid ""
@@ -5982,4 +5942,3 @@ msgstr "取出支持的公钥"
 #: ../keymap_alldefs.h:244
 msgid "show S/MIME options"
 msgstr "显示 S/MIME 选项"
-

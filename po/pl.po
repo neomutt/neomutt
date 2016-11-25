@@ -306,16 +306,12 @@ msgstr "Wzorzec nazw plików: "
 
 #: browser.c:1724
 #, fuzzy
-msgid ""
-"Reverse sort by (d)ate, (a)lpha, si(z)e, d(e)scription, (c)ount, ne(w) "
-"count, or do(n)'t sort? "
+msgid "Reverse sort by (d)ate, (a)lpha, si(z)e, d(e)scription, (c)ount, ne(w) count, or do(n)'t sort? "
 msgstr "Sortowanie odwrotne wg (d)aty, (a)lfabetu, (w)ielkości, żad(n)e?"
 
 #: browser.c:1725
 #, fuzzy
-msgid ""
-"Sort by (d)ate, (a)lpha, si(z)e, d(e)scription, (c)ount, ne(w) count, or "
-"do(n)'t sort? "
+msgid "Sort by (d)ate, (a)lpha, si(z)e, d(e)scription, (c)ount, ne(w) count, or do(n)'t sort? "
 msgstr "Sortowanie wg (d)aty, (a)lfabetu, (w)ielkości, żad(n)e?"
 
 #: browser.c:1726
@@ -537,15 +533,12 @@ msgstr "Listy nie zostały wydrukowane"
 #: commands.c:547
 #, fuzzy
 msgid "Rev-Sort Date/Frm/Recv/Subj/tO/Thread/Unsort/siZe/sCore/sPam/Label?: "
-msgstr ""
-"Odwr-Sort (d)ata/(a)ut/o(t)rzym/t(e)m/d(o)/(w)ąt/(b)ez/ro(z)m/wa(g)a/"
-"(s)pam?: "
+msgstr "Odwr-Sort (d)ata/(a)ut/o(t)rzym/t(e)m/d(o)/(w)ąt/(b)ez/ro(z)m/wa(g)a/(s)pam?: "
 
 #: commands.c:548
 #, fuzzy
 msgid "Sort Date/Frm/Recv/Subj/tO/Thread/Unsort/siZe/sCore/sPam/Label?: "
-msgstr ""
-"Sortuj (d)ata/(a)ut/o(t)rzym/t(e)mat/d(o)/(w)ąt/(b)ez/ro(z)m/wa(g)a/(s)pam?: "
+msgstr "Sortuj (d)ata/(a)ut/o(t)rzym/t(e)mat/d(o)/(w)ąt/(b)ez/ro(z)m/wa(g)a/(s)pam?: "
 
 #: commands.c:549
 #, fuzzy
@@ -1024,23 +1017,16 @@ msgid "Fingerprint: "
 msgstr "Odcisk: "
 
 #: crypt-gpgme.c:1320
-msgid ""
-"WARNING: We have NO indication whether the key belongs to the person named "
-"as shown above\n"
-msgstr ""
-"Ostrzeżenie: nie ma ŻADNYCH dowodów, że ten klucz należy do osoby podanej "
-"powyżej.\n"
+msgid "WARNING: We have NO indication whether the key belongs to the person named as shown above\n"
+msgstr "Ostrzeżenie: nie ma ŻADNYCH dowodów, że ten klucz należy do osoby podanej powyżej.\n"
 
 #: crypt-gpgme.c:1327
 msgid "WARNING: The key does NOT BELONG to the person named as shown above\n"
 msgstr "Ostrzeżenie: ten klucz NIE NALEŻY do osoby podanej powyżej.\n"
 
 #: crypt-gpgme.c:1331
-msgid ""
-"WARNING: It is NOT certain that the key belongs to the person named as shown "
-"above\n"
-msgstr ""
-"Ostrzeżenie: NIE ma pewności, że ten klucz należy do osoby podanej powyżej.\n"
+msgid "WARNING: It is NOT certain that the key belongs to the person named as shown above\n"
+msgstr "Ostrzeżenie: NIE ma pewności, że ten klucz należy do osoby podanej powyżej.\n"
 
 #: crypt-gpgme.c:1361 crypt-gpgme.c:1366
 msgid "aka: "
@@ -1343,8 +1329,7 @@ msgstr "Nie znaleziono klucza wydawcy: %s\n"
 #: crypt-gpgme.c:3675
 #, fuzzy
 msgid "Error: certification chain too long - stopping here\n"
-msgstr ""
-"Błąd: łąńcuch certyfikatów zbyt długi - przetwarzanie zatrzymano tutaj\n"
+msgstr "Błąd: łąńcuch certyfikatów zbyt długi - przetwarzanie zatrzymano tutaj\n"
 
 #: crypt-gpgme.c:3686 pgpkey.c:581
 #, c-format
@@ -1484,8 +1469,7 @@ msgstr ""
 #: crypt-gpgme.c:4721
 #, fuzzy
 msgid "S/MIME (s)ign, sign (a)s, (p)gp, (c)lear, or (o)ppenc mode off? "
-msgstr ""
-"S/MIME: (z)aszyfruj, (p)odpisz, podpisz (j)ako, (o)ba, p(g)p, (a)nuluj?"
+msgstr "S/MIME: (z)aszyfruj, (p)odpisz, podpisz (j)ako, (o)ba, p(g)p, (a)nuluj?"
 
 #. L10N: The 'f' is from "forget it", an old undocumented synonym of
 #. 'clear'.  Please use a corresponding letter in your language.
@@ -1498,8 +1482,7 @@ msgstr ""
 #: crypt-gpgme.c:4731
 #, fuzzy
 msgid "PGP (s)ign, sign (a)s, s/(m)ime, (c)lear, or (o)ppenc mode off? "
-msgstr ""
-"PGP: (z)aszyfruj, (p)odpisz, podpisz (j)ako, (o)ba, (s)/mime, (a)nuluj?"
+msgstr "PGP: (z)aszyfruj, (p)odpisz, podpisz (j)ako, (o)ba, (s)/mime, (a)nuluj?"
 
 #: crypt-gpgme.c:4732
 msgid "samfco"
@@ -1507,11 +1490,8 @@ msgstr ""
 
 #: crypt-gpgme.c:4744
 #, fuzzy
-msgid ""
-"S/MIME (e)ncrypt, (s)ign, sign (a)s, (b)oth, (p)gp, (c)lear, or (o)ppenc "
-"mode? "
-msgstr ""
-"S/MIME: (z)aszyfruj, (p)odpisz, podpisz (j)ako, (o)ba, p(g)p, (a)nuluj?"
+msgid "S/MIME (e)ncrypt, (s)ign, sign (a)s, (b)oth, (p)gp, (c)lear, or (o)ppenc mode? "
+msgstr "S/MIME: (z)aszyfruj, (p)odpisz, podpisz (j)ako, (o)ba, p(g)p, (a)nuluj?"
 
 #: crypt-gpgme.c:4745
 #, fuzzy
@@ -1520,11 +1500,8 @@ msgstr "zpjoga"
 
 #: crypt-gpgme.c:4750
 #, fuzzy
-msgid ""
-"PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, s/(m)ime, (c)lear, or (o)ppenc "
-"mode? "
-msgstr ""
-"PGP: (z)aszyfruj, (p)odpisz, podpisz (j)ako, (o)ba, (s)/mime, (a)nuluj?"
+msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, s/(m)ime, (c)lear, or (o)ppenc mode? "
+msgstr "PGP: (z)aszyfruj, (p)odpisz, podpisz (j)ako, (o)ba, (s)/mime, (a)nuluj?"
 
 #: crypt-gpgme.c:4751
 #, fuzzy
@@ -1534,8 +1511,7 @@ msgstr "zpjosa"
 #: crypt-gpgme.c:4762
 #, fuzzy
 msgid "S/MIME (e)ncrypt, (s)ign, sign (a)s, (b)oth, (p)gp or (c)lear? "
-msgstr ""
-"S/MIME: (z)aszyfruj, (p)odpisz, podpisz (j)ako, (o)ba, p(g)p, (a)nuluj?"
+msgstr "S/MIME: (z)aszyfruj, (p)odpisz, podpisz (j)ako, (o)ba, p(g)p, (a)nuluj?"
 
 #: crypt-gpgme.c:4763
 msgid "esabpfc"
@@ -1544,8 +1520,7 @@ msgstr "zpjoga"
 #: crypt-gpgme.c:4768
 #, fuzzy
 msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, s/(m)ime or (c)lear? "
-msgstr ""
-"PGP: (z)aszyfruj, (p)odpisz, podpisz (j)ako, (o)ba, (s)/mime, (a)nuluj?"
+msgstr "PGP: (z)aszyfruj, (p)odpisz, podpisz (j)ako, (o)ba, (s)/mime, (a)nuluj?"
 
 #: crypt-gpgme.c:4769
 msgid "esabmfc"
@@ -1670,8 +1645,7 @@ msgstr ""
 
 #: cryptglue.c:89
 msgid "\"crypt_use_gpgme\" set but not built with GPGME support."
-msgstr ""
-"Ustawiono \"crypt_use_gpgme\" ale zbudowano Mutta bez wsparcia dla GPGME."
+msgstr "Ustawiono \"crypt_use_gpgme\" ale zbudowano Mutta bez wsparcia dla GPGME."
 
 #: cryptglue.c:112
 msgid "Invoking S/MIME..."
@@ -1805,8 +1779,7 @@ msgstr ""
 #: curs_main.c:1240
 #, fuzzy
 msgid "Message is not visible in limited view."
-msgstr ""
-"Pierwszy list wątku nie jest widoczny w trybie ograniczonego przeglądania."
+msgstr "Pierwszy list wątku nie jest widoczny w trybie ograniczonego przeglądania."
 
 #: curs_main.c:1246
 #, fuzzy, c-format
@@ -2027,8 +2000,7 @@ msgstr "Kontynuacja poszukiwania od końca."
 #: curs_main.c:2337
 #, fuzzy
 msgid "No new messages in this limited view."
-msgstr ""
-"Pierwszy list wątku nie jest widoczny w trybie ograniczonego przeglądania."
+msgstr "Pierwszy list wątku nie jest widoczny w trybie ograniczonego przeglądania."
 
 #: curs_main.c:2339
 #, fuzzy
@@ -2038,8 +2010,7 @@ msgstr "Brak nowych listów"
 #: curs_main.c:2344
 #, fuzzy
 msgid "No unread messages in this limited view."
-msgstr ""
-"Pierwszy list wątku nie jest widoczny w trybie ograniczonego przeglądania."
+msgstr "Pierwszy list wątku nie jest widoczny w trybie ograniczonego przeglądania."
 
 #: curs_main.c:2346
 #, fuzzy
@@ -2245,9 +2216,7 @@ msgstr "Wyczyść flagę"
 
 #: handler.c:1139
 msgid "[-- Error:  Could not display any parts of Multipart/Alternative! --]\n"
-msgstr ""
-"[--Błąd: Nie można wyświetlić żadnego z fragmentów Multipart/Alternative! "
-"--]\n"
+msgstr "[--Błąd: Nie można wyświetlić żadnego z fragmentów Multipart/Alternative! --]\n"
 
 #: handler.c:1254
 #, c-format
@@ -2286,8 +2255,7 @@ msgstr "[-- Komunikaty błędów %s --]\n"
 
 #: handler.c:1446
 msgid "[-- Error: message/external-body has no access-type parameter --]\n"
-msgstr ""
-"[-- Błąd: message/external-body nie ma ustawionego rodzaju dostępu --]\n"
+msgstr "[-- Błąd: message/external-body nie ma ustawionego rodzaju dostępu --]\n"
 
 #: handler.c:1467
 #, c-format
@@ -2948,10 +2916,8 @@ msgstr "Brak pamięci!"
 #, fuzzy
 msgid ""
 "usage: mutt [<options>] [-z] [-f <file> | -yZ]\n"
-"       mutt [<options>] [-Ex] [-Hi <file>] [-s <subj>] [-bc <addr>] [-a "
-"<file> [...] --] <addr> [...]\n"
-"       mutt [<options>] [-x] [-s <subj>] [-bc <addr>] [-a <file> [...] --] "
-"<addr> [...] < message\n"
+"       mutt [<options>] [-Ex] [-Hi <file>] [-s <subj>] [-bc <addr>] [-a <file> [...] --] <addr> [...]\n"
+"       mutt [<options>] [-x] [-s <subj>] [-bc <addr>] [-a <file> [...] --] <addr> [...] < message\n"
 "       mutt [<options>] -p\n"
 "       mutt [<options>] -A <alias> [...]\n"
 "       mutt [<options>] -Q <query> [...]\n"
@@ -2959,8 +2925,7 @@ msgid ""
 "       mutt -v[v]\n"
 msgstr ""
 "użycie: mutt [<opcje>]  [-z] [-f <plik> | -yZ]\n"
-"       mutt [<opcje>] [-x] [-Hi <plik>] [-s <temat>] [-bc <adres>] [-a "
-"<plik> [...]] [--] <adres> [...]\n"
+"       mutt [<opcje>] [-x] [-Hi <plik>] [-s <temat>] [-bc <adres>] [-a <plik> [...]] [--] <adres> [...]\n"
 "       mutt [<opcje>] -p\n"
 "       mutt [<opcje>] -A <alias> [...]\n"
 "       mutt [<opcje>] -Q <zmienna> [...]\n"
@@ -3116,9 +3081,7 @@ msgstr "Błąd! Nie można ponownie otworzyć skrzynki!"
 
 #: mbox.c:881
 msgid "sync: mbox modified, but no modified messages! (report this bug)"
-msgstr ""
-"sync: skrzynka zmodyfikowana, ale żaden z listów nie został zmieniony! "
-"(zgłoś ten błąd)"
+msgstr "sync: skrzynka zmodyfikowana, ale żaden z listów nie został zmieniony! (zgłoś ten błąd)"
 
 #: mbox.c:905 mh.c:2023 mutt_notmuch.c:1623 mx.c:757
 #, c-format
@@ -3324,8 +3287,7 @@ msgstr "Wysyłanie listu..."
 #: mutt_notmuch.c:1236
 #, fuzzy
 msgid "No more messages in the thread."
-msgstr ""
-"Pierwszy list wątku nie jest widoczny w trybie ograniczonego przeglądania."
+msgstr "Pierwszy list wątku nie jest widoczny w trybie ograniczonego przeglądania."
 
 #: mutt_notmuch.c:2066
 #, fuzzy
@@ -3822,8 +3784,7 @@ msgid "Checking for new newsgroups..."
 msgstr "Poszukiwanie nowej poczty..."
 
 #: nntp.c:2420
-msgid ""
-"Unable to find child articles because server does not support XPAT command."
+msgid "Unable to find child articles because server does not support XPAT command."
 msgstr ""
 
 #: pager.c:1629
@@ -4039,9 +4000,7 @@ msgstr ""
 
 #: pgp.c:1760
 #, fuzzy, c-format
-msgid ""
-"PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, %s format, (c)lear, or (o)ppenc "
-"mode? "
+msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, %s format, (c)lear, or (o)ppenc mode? "
 msgstr "PGP: (z)aszyfruj, podpi(s)z, podpisz j(a)ko, o(b)a, %s , b(e)z PGP? "
 
 #: pgp.c:1763
@@ -4346,8 +4305,7 @@ msgstr "Usuwanie załączników z zaszyfrowanych listów jest niemożliwe."
 
 #: recvattach.c:1144
 #, fuzzy
-msgid ""
-"Deletion of attachments from signed messages may invalidate the signature."
+msgid "Deletion of attachments from signed messages may invalidate the signature."
 msgstr "Usuwanie załączników z zaszyfrowanych listów jest niemożliwe."
 
 #: recvattach.c:1161 recvattach.c:1178
@@ -4377,8 +4335,7 @@ msgstr "Przesłać dalej jako załączniki?"
 
 #: recvcmd.c:486
 msgid "Can't decode all tagged attachments.  MIME-forward the others?"
-msgstr ""
-"Nie można zdekodować zaznaczonych zał. Przesłać pozostałe dalej (MIME)?"
+msgstr "Nie można zdekodować zaznaczonych zał. Przesłać pozostałe dalej (MIME)?"
 
 #: recvcmd.c:611
 msgid "Forward MIME encapsulated?"
@@ -4399,8 +4356,7 @@ msgstr "Nie znaleziono list pocztowych!"
 
 #: recvcmd.c:867
 msgid "Can't decode all tagged attachments.  MIME-encapsulate the others?"
-msgstr ""
-"Nie można zdekodować wszystkich wybranych zał. Załączyć (MIME) pozostałe?"
+msgstr "Nie można zdekodować wszystkich wybranych zał. Załączyć (MIME) pozostałe?"
 
 #: remailer.c:481
 msgid "Append"
@@ -4453,8 +4409,7 @@ msgid "Mixmaster doesn't accept Cc or Bcc headers."
 msgstr "Mixmaster nie akceptuje nagłówków Cc i Bcc."
 
 #: remailer.c:732
-msgid ""
-"Please set the hostname variable to a proper value when using mixmaster!"
+msgid "Please set the hostname variable to a proper value when using mixmaster!"
 msgstr "Ustaw poprawną wartość hostname jeśli chcesz używać mixmastera!"
 
 #: remailer.c:766
@@ -4782,10 +4737,8 @@ msgstr ""
 
 #: smime.c:2110
 #, fuzzy
-msgid ""
-"S/MIME (s)ign, encrypt (w)ith, sign (a)s, (c)lear, or (o)ppenc mode off? "
-msgstr ""
-"S/MIME: (z)aszyfruj, (p)odpisz, (m)etoda, podp. (j)ako, (o)ba, (a)nuluj?"
+msgid "S/MIME (s)ign, encrypt (w)ith, sign (a)s, (c)lear, or (o)ppenc mode off? "
+msgstr "S/MIME: (z)aszyfruj, (p)odpisz, (m)etoda, podp. (j)ako, (o)ba, (a)nuluj?"
 
 #. L10N: The 'f' is from "forget it", an old undocumented synonym of
 #. 'clear'.  Please use a corresponding letter in your language.
@@ -4797,11 +4750,8 @@ msgstr ""
 
 #: smime.c:2124
 #, fuzzy
-msgid ""
-"S/MIME (e)ncrypt, (s)ign, encrypt (w)ith, sign (a)s, (b)oth, (c)lear, or "
-"(o)ppenc mode? "
-msgstr ""
-"S/MIME: (z)aszyfruj, (p)odpisz, (m)etoda, podp. (j)ako, (o)ba, (a)nuluj?"
+msgid "S/MIME (e)ncrypt, (s)ign, encrypt (w)ith, sign (a)s, (b)oth, (c)lear, or (o)ppenc mode? "
+msgstr "S/MIME: (z)aszyfruj, (p)odpisz, (m)etoda, podp. (j)ako, (o)ba, (a)nuluj?"
 
 #: smime.c:2125
 #, fuzzy
@@ -4809,10 +4759,8 @@ msgid "eswabfco"
 msgstr "zpmjoa"
 
 #: smime.c:2133
-msgid ""
-"S/MIME (e)ncrypt, (s)ign, encrypt (w)ith, sign (a)s, (b)oth, or (c)lear? "
-msgstr ""
-"S/MIME: (z)aszyfruj, (p)odpisz, (m)etoda, podp. (j)ako, (o)ba, (a)nuluj?"
+msgid "S/MIME (e)ncrypt, (s)ign, encrypt (w)ith, sign (a)s, (b)oth, or (c)lear? "
+msgstr "S/MIME: (z)aszyfruj, (p)odpisz, (m)etoda, podp. (j)ako, (o)ba, (a)nuluj?"
 
 #: smime.c:2134
 msgid "eswabfc"
@@ -4917,13 +4865,11 @@ msgstr "Pierwszy list tego wątku nie jest dostępny."
 #: thread.c:1111
 #, fuzzy
 msgid "Root message is not visible in this limited view."
-msgstr ""
-"Pierwszy list wątku nie jest widoczny w trybie ograniczonego przeglądania."
+msgstr "Pierwszy list wątku nie jest widoczny w trybie ograniczonego przeglądania."
 
 #: thread.c:1113
 msgid "Parent message is not visible in this limited view."
-msgstr ""
-"Pierwszy list wątku nie jest widoczny w trybie ograniczonego przeglądania."
+msgstr "Pierwszy list wątku nie jest widoczny w trybie ograniczonego przeglądania."
 
 #: version.c:54
 #, fuzzy
@@ -4971,21 +4917,18 @@ msgstr ""
 "\n"
 "   Program ten jest rozprowadzany w nadziei, że będzie przydatny,\n"
 "   ale BEZ ŻADNYCH GWARANCJI, wyrażonych wprost lub domyślnie nawet,\n"
-"   w tym gwarancji możliwości SPRZEDAŻY i PRZYDATNOŚCI DO KONKRETNYCH "
-"CELÓW.\n"
+"   w tym gwarancji możliwości SPRZEDAŻY i PRZYDATNOŚCI DO KONKRETNYCH CELÓW.\n"
 "   Szczegóły znajdziesz w Powszechnej Licencji Publicznej GNU.\n"
 
 #: version.c:81
 msgid ""
 "    You should have received a copy of the GNU General Public License\n"
 "    along with this program; if not, write to the Free Software\n"
-"    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  "
-"02110-1301, USA.\n"
+"    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.\n"
 msgstr ""
 "    W dokumentacji tego programu powinna znajdować się kopia Powszechnej\n"
 "    Licencji Publicznej GNU. Jeśli tak nie jest, napisz do Free Software\n"
-"    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  "
-"02110-1301, USA.\n"
+"    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.\n"
 
 #: version.c:87
 msgid ""
@@ -5004,11 +4947,9 @@ msgid ""
 "under certain conditions; type `mutt -vv' for details.\n"
 msgstr ""
 "Copyright (C) 1996-2007 Michael R. Elkins i inni.\n"
-"Program nie jest objęty ŻADNĄ gwarancją; szczegóły poznasz pisząc 'mutt -"
-"vv'.\n"
+"Program nie jest objęty ŻADNĄ gwarancją; szczegóły poznasz pisząc 'mutt -vv'.\n"
 "Mutt jest darmowym oprogramowaniem, zapraszamy \n"
-"do jego redystrybucji pod pewnymi warunkami, szczegóły poznasz pisząc 'mutt -"
-"vv'.\n"
+"do jego redystrybucji pod pewnymi warunkami, szczegóły poznasz pisząc 'mutt -vv'.\n"
 
 #: version.c:444
 msgid ""
@@ -5074,8 +5015,7 @@ msgstr "odsubskrybuj bieżącą skrzynkę (tylko IMAP)"
 
 #: ../keymap_alldefs.h:18
 msgid "toggle view all/subscribed mailboxes (IMAP only)"
-msgstr ""
-"zmień tryb przeglądania skrzynek: wszystkie/zasubskrybowane (tylko IMAP)"
+msgstr "zmień tryb przeglądania skrzynek: wszystkie/zasubskrybowane (tylko IMAP)"
 
 #: ../keymap_alldefs.h:19
 msgid "list mailboxes with new mail"
@@ -6014,4 +5954,3 @@ msgstr "kopiuj klucze publiczne"
 #: ../keymap_alldefs.h:244
 msgid "show S/MIME options"
 msgstr "pokaż opcje S/MIME"
-

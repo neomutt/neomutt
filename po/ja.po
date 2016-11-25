@@ -304,16 +304,12 @@ msgstr "ファイルマスク: "
 
 #: browser.c:1724
 #, fuzzy
-msgid ""
-"Reverse sort by (d)ate, (a)lpha, si(z)e, d(e)scription, (c)ount, ne(w) "
-"count, or do(n)'t sort? "
+msgid "Reverse sort by (d)ate, (a)lpha, si(z)e, d(e)scription, (c)ount, ne(w) count, or do(n)'t sort? "
 msgstr "逆順の整列 (d:日付, a:ABC順, z:サイズ, n:整列しない)"
 
 #: browser.c:1725
 #, fuzzy
-msgid ""
-"Sort by (d)ate, (a)lpha, si(z)e, d(e)scription, (c)ount, ne(w) count, or "
-"do(n)'t sort? "
+msgid "Sort by (d)ate, (a)lpha, si(z)e, d(e)scription, (c)ount, ne(w) count, or do(n)'t sort? "
 msgstr "整列 (d:日付, a:ABC順, z:サイズ, n:整列しない)"
 
 #: browser.c:1726
@@ -535,15 +531,12 @@ msgstr "メッセージは印刷できなかった"
 #: commands.c:547
 #, fuzzy
 msgid "Rev-Sort Date/Frm/Recv/Subj/tO/Thread/Unsort/siZe/sCore/sPam/Label?: "
-msgstr ""
-"逆順整列 (d:時 f:送者 r:着順 s:題 o:宛先 t:スレ u:無 z:サイズ c:得点 p:スパ"
-"ム)"
+msgstr "逆順整列 (d:時 f:送者 r:着順 s:題 o:宛先 t:スレ u:無 z:サイズ c:得点 p:スパム)"
 
 #: commands.c:548
 #, fuzzy
 msgid "Sort Date/Frm/Recv/Subj/tO/Thread/Unsort/siZe/sCore/sPam/Label?: "
-msgstr ""
-"整列 (d:時 f:送者 r:着順 s:題 o:宛先 t:スレ u:無 z:サイズ c:得点 p:スパム)"
+msgstr "整列 (d:時 f:送者 r:着順 s:題 o:宛先 t:スレ u:無 z:サイズ c:得点 p:スパム)"
 
 #: commands.c:549
 #, fuzzy
@@ -1019,9 +1012,7 @@ msgid "Fingerprint: "
 msgstr "フィンガープリント: "
 
 #: crypt-gpgme.c:1320
-msgid ""
-"WARNING: We have NO indication whether the key belongs to the person named "
-"as shown above\n"
+msgid "WARNING: We have NO indication whether the key belongs to the person named as shown above\n"
 msgstr "警告: この鍵が上記の人物のものかどうかを示す証拠は一切ない\n"
 
 #: crypt-gpgme.c:1327
@@ -1029,9 +1020,7 @@ msgid "WARNING: The key does NOT BELONG to the person named as shown above\n"
 msgstr "警告: この鍵は上記の人物のものではない!\n"
 
 #: crypt-gpgme.c:1331
-msgid ""
-"WARNING: It is NOT certain that the key belongs to the person named as shown "
-"above\n"
+msgid "WARNING: It is NOT certain that the key belongs to the person named as shown above\n"
 msgstr "警告: この鍵が確実に上記の人物のものだとは言えない\n"
 
 #: crypt-gpgme.c:1361 crypt-gpgme.c:1366
@@ -1491,24 +1480,16 @@ msgstr "samfco"
 
 # 80-columns 幅にギリギリおさまるか？
 #: crypt-gpgme.c:4744
-msgid ""
-"S/MIME (e)ncrypt, (s)ign, sign (a)s, (b)oth, (p)gp, (c)lear, or (o)ppenc "
-"mode? "
-msgstr ""
-"S/MIME e:暗号化, s:署名, a:署名鍵選択, b:暗号+署名, p:PGP, c:なし, o:日和見暗"
-"号 "
+msgid "S/MIME (e)ncrypt, (s)ign, sign (a)s, (b)oth, (p)gp, (c)lear, or (o)ppenc mode? "
+msgstr "S/MIME e:暗号化, s:署名, a:署名鍵選択, b:暗号+署名, p:PGP, c:なし, o:日和見暗号 "
 
 #: crypt-gpgme.c:4745
 msgid "esabpfco"
 msgstr "esabpfco"
 
 #: crypt-gpgme.c:4750
-msgid ""
-"PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, s/(m)ime, (c)lear, or (o)ppenc "
-"mode? "
-msgstr ""
-"PGP e:暗号化, s:署名, a:署名鍵選択, b:暗号+署名, m:S/MIME, c:なし, o:日和見暗"
-"号 "
+msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, s/(m)ime, (c)lear, or (o)ppenc mode? "
+msgstr "PGP e:暗号化, s:署名, a:署名鍵選択, b:暗号+署名, m:S/MIME, c:なし, o:日和見暗号 "
 
 #: crypt-gpgme.c:4751
 msgid "esabmfco"
@@ -1562,8 +1543,7 @@ msgstr "添付ファイルがあるとインライン PGP にできない。PGP/
 
 #: crypt.c:152
 msgid "Mail not sent: inline PGP can't be used with attachments."
-msgstr ""
-"メールは送信されなかった: 添付ファイルがあるとインライン PGP にできない。"
+msgstr "メールは送信されなかった: 添付ファイルがあるとインライン PGP にできない。"
 
 #: crypt.c:159 cryptglue.c:110 pgpkey.c:563 pgpkey.c:753
 msgid "Invoking PGP..."
@@ -1649,9 +1629,7 @@ msgstr ""
 
 #: cryptglue.c:89
 msgid "\"crypt_use_gpgme\" set but not built with GPGME support."
-msgstr ""
-"\"crypt_use_gpgme\" が設定されているが GPGME サポート付きでビルドされていな"
-"い。"
+msgstr "\"crypt_use_gpgme\" が設定されているが GPGME サポート付きでビルドされていない。"
 
 #: cryptglue.c:112
 msgid "Invoking S/MIME..."
@@ -2250,8 +2228,7 @@ msgstr "[-- %s の標準エラー出力を自動表示 --]\n"
 # 「指定」って必要？はみでそうなんですけど
 #: handler.c:1446
 msgid "[-- Error: message/external-body has no access-type parameter --]\n"
-msgstr ""
-"[-- エラー: message/external-body に access-type パラメータの指定がない --]\n"
+msgstr "[-- エラー: message/external-body に access-type パラメータの指定がない --]\n"
 
 #: handler.c:1467
 #, c-format
@@ -2913,10 +2890,8 @@ msgstr "メモリ不足!"
 #: main.c:84
 msgid ""
 "usage: mutt [<options>] [-z] [-f <file> | -yZ]\n"
-"       mutt [<options>] [-Ex] [-Hi <file>] [-s <subj>] [-bc <addr>] [-a "
-"<file> [...] --] <addr> [...]\n"
-"       mutt [<options>] [-x] [-s <subj>] [-bc <addr>] [-a <file> [...] --] "
-"<addr> [...] < message\n"
+"       mutt [<options>] [-Ex] [-Hi <file>] [-s <subj>] [-bc <addr>] [-a <file> [...] --] <addr> [...]\n"
+"       mutt [<options>] [-x] [-s <subj>] [-bc <addr>] [-a <file> [...] --] <addr> [...] < message\n"
 "       mutt [<options>] -p\n"
 "       mutt [<options>] -A <alias> [...]\n"
 "       mutt [<options>] -Q <query> [...]\n"
@@ -2924,10 +2899,8 @@ msgid ""
 "       mutt -v[v]\n"
 msgstr ""
 "使用法: mutt [<オプション>] [-z] [-f <ファイル> | -yZ]\n"
-"        mutt [<オプション>] [-Ex] [-Hi <ファイル>] [-s <題名>] [-bc <アドレス"
-">] [-a <ファイル> [...] --] <アドレス> [...]\n"
-"        mutt [<オプション>] [-x] [-s <題名>] [-bc <アドレス>] [-a <ファイル> "
-"[...] --] <アドレス> [...] < メッセージファイル\n"
+"        mutt [<オプション>] [-Ex] [-Hi <ファイル>] [-s <題名>] [-bc <アドレス>] [-a <ファイル> [...] --] <アドレス> [...]\n"
+"        mutt [<オプション>] [-x] [-s <題名>] [-bc <アドレス>] [-a <ファイル> [...] --] <アドレス> [...] < メッセージファイル\n"
 "        mutt [<オプション>] -p\n"
 "        mutt [<オプション>] -A <別名> [...]\n"
 "        mutt [<オプション>] -Q <問い合わせ> [...]\n"
@@ -3084,8 +3057,7 @@ msgstr "致命的なエラー! メールボックスを再オープンできな�
 
 #: mbox.c:881
 msgid "sync: mbox modified, but no modified messages! (report this bug)"
-msgstr ""
-"sync: メールボックスが変更されたが、変更メッセージがない(このバグを報告せよ)!"
+msgstr "sync: メールボックスが変更されたが、変更メッセージがない(このバグを報告せよ)!"
 
 #: mbox.c:905 mh.c:2023 mutt_notmuch.c:1623 mx.c:757
 #, c-format
@@ -3783,8 +3755,7 @@ msgid "Checking for new newsgroups..."
 msgstr "新着メッセージ検出中..."
 
 #: nntp.c:2420
-msgid ""
-"Unable to find child articles because server does not support XPAT command."
+msgid "Unable to find child articles because server does not support XPAT command."
 msgstr ""
 
 #: pager.c:1629
@@ -3999,12 +3970,8 @@ msgstr "safco"
 
 #: pgp.c:1760
 #, c-format
-msgid ""
-"PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, %s format, (c)lear, or (o)ppenc "
-"mode? "
-msgstr ""
-"PGP e:暗号化, s:署名, a:署名鍵選択, b:暗号+署名, %s形式, c:なし, o:日和見暗"
-"号 "
+msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, %s format, (c)lear, or (o)ppenc mode? "
+msgstr "PGP e:暗号化, s:署名, a:署名鍵選択, b:暗号+署名, %s形式, c:なし, o:日和見暗号 "
 
 #: pgp.c:1763
 msgid "esabfcoi"
@@ -4301,8 +4268,7 @@ msgid "Deletion of attachments from encrypted messages is unsupported."
 msgstr "暗号化メッセージからの添付ファイルの削除はサポートされていない。"
 
 #: recvattach.c:1144
-msgid ""
-"Deletion of attachments from signed messages may invalidate the signature."
+msgid "Deletion of attachments from signed messages may invalidate the signature."
 msgstr "署名メッセージからの添付ファイルの削除は署名を不正にすることがある。"
 
 #: recvattach.c:1161 recvattach.c:1178
@@ -4406,8 +4372,7 @@ msgid "Mixmaster doesn't accept Cc or Bcc headers."
 msgstr "Mixmaster は Cc または Bcc ヘッダを受けつけない。"
 
 #: remailer.c:732
-msgid ""
-"Please set the hostname variable to a proper value when using mixmaster!"
+msgid "Please set the hostname variable to a proper value when using mixmaster!"
 msgstr "mixmaster を使う時には、hostname 変数に適切な値を設定せよ。"
 
 #: remailer.c:766
@@ -4734,8 +4699,7 @@ msgstr ""
 "[-- S/MIME 署名データ終了 --]\n"
 
 #: smime.c:2110
-msgid ""
-"S/MIME (s)ign, encrypt (w)ith, sign (a)s, (c)lear, or (o)ppenc mode off? "
+msgid "S/MIME (s)ign, encrypt (w)ith, sign (a)s, (c)lear, or (o)ppenc mode off? "
 msgstr "S/MIME s:署名, w:暗号選択, a:署名鍵選択, c:なし, o:日和見暗号オフ "
 
 #. L10N: The 'f' is from "forget it", an old undocumented synonym of
@@ -4748,22 +4712,16 @@ msgstr "swafco"
 
 # 80-column 幅に入りきらないのでスペースなし
 #: smime.c:2124
-msgid ""
-"S/MIME (e)ncrypt, (s)ign, encrypt (w)ith, sign (a)s, (b)oth, (c)lear, or "
-"(o)ppenc mode? "
-msgstr ""
-"S/MIME e:暗号化,s:署名,w:暗号選択,a:署名鍵選択,b:暗号+署名,c:なし,o:日和見暗"
-"号 "
+msgid "S/MIME (e)ncrypt, (s)ign, encrypt (w)ith, sign (a)s, (b)oth, (c)lear, or (o)ppenc mode? "
+msgstr "S/MIME e:暗号化,s:署名,w:暗号選択,a:署名鍵選択,b:暗号+署名,c:なし,o:日和見暗号 "
 
 #: smime.c:2125
 msgid "eswabfco"
 msgstr "eswabfco"
 
 #: smime.c:2133
-msgid ""
-"S/MIME (e)ncrypt, (s)ign, encrypt (w)ith, sign (a)s, (b)oth, or (c)lear? "
-msgstr ""
-"S/MIME e:暗号化, s:署名, w:暗号選択, a:署名鍵選択, b:暗号+署名, c:なし "
+msgid "S/MIME (e)ncrypt, (s)ign, encrypt (w)ith, sign (a)s, (b)oth, or (c)lear? "
+msgstr "S/MIME e:暗号化, s:署名, w:暗号選択, a:署名鍵選択, b:暗号+署名, c:なし "
 
 #: smime.c:2134
 msgid "eswabfc"
@@ -4917,13 +4875,11 @@ msgstr ""
 msgid ""
 "    You should have received a copy of the GNU General Public License\n"
 "    along with this program; if not, write to the Free Software\n"
-"    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  "
-"02110-1301, USA.\n"
+"    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.\n"
 msgstr ""
 "    You should have received a copy of the GNU General Public License\n"
 "    along with this program; if not, write to the Free Software\n"
-"    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  "
-"02110-1301, USA.\n"
+"    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.\n"
 
 #: version.c:87
 msgid ""
@@ -5945,4 +5901,3 @@ msgstr "サポートされている公開鍵を抽出"
 #: ../keymap_alldefs.h:244
 msgid "show S/MIME options"
 msgstr "S/MIME オプションを表示"
-

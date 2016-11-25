@@ -159,9 +159,7 @@ msgstr "Non hai entrada \"edit\" no ficheiro Mailcap para %s"
 
 #: attach.c:366
 msgid "No matching mailcap entry found.  Viewing as text."
-msgstr ""
-"Non se atopou ningunha entrada coincidente no ficheiro mailcap.Vendo como "
-"texto"
+msgstr "Non se atopou ningunha entrada coincidente no ficheiro mailcap.Vendo como texto"
 
 #: attach.c:379
 msgid "MIME type not defined.  Cannot view attachment."
@@ -312,16 +310,12 @@ msgstr "Máscara de ficheiro: "
 
 #: browser.c:1724
 #, fuzzy
-msgid ""
-"Reverse sort by (d)ate, (a)lpha, si(z)e, d(e)scription, (c)ount, ne(w) "
-"count, or do(n)'t sort? "
+msgid "Reverse sort by (d)ate, (a)lpha, si(z)e, d(e)scription, (c)ount, ne(w) count, or do(n)'t sort? "
 msgstr "¿Ordear inversamente por (d)ata, (a)lfabeto, (t)amaño ou (s)en orden?"
 
 #: browser.c:1725
 #, fuzzy
-msgid ""
-"Sort by (d)ate, (a)lpha, si(z)e, d(e)scription, (c)ount, ne(w) count, or "
-"do(n)'t sort? "
+msgid "Sort by (d)ate, (a)lpha, si(z)e, d(e)scription, (c)ount, ne(w) count, or do(n)'t sort? "
 msgstr "¿Ordear por (d)ata, (a)lfabeto, (t)amaño ou (s)en orden?"
 
 #: browser.c:1726
@@ -549,8 +543,7 @@ msgstr "Non foi posible imprimi-las mensaxes"
 #: commands.c:547
 #, fuzzy
 msgid "Rev-Sort Date/Frm/Recv/Subj/tO/Thread/Unsort/siZe/sCore/sPam/Label?: "
-msgstr ""
-"Ordear-inv (d)ata/d(e)/(r)ecb/(t)ema/(p)ara/(f)ío/(n)ada/t(a)m/p(u)nt: "
+msgstr "Ordear-inv (d)ata/d(e)/(r)ecb/(t)ema/(p)ara/(f)ío/(n)ada/t(a)m/p(u)nt: "
 
 #: commands.c:548
 #, fuzzy
@@ -1038,9 +1031,7 @@ msgid "Fingerprint: "
 msgstr "Fingerprint: %s"
 
 #: crypt-gpgme.c:1320
-msgid ""
-"WARNING: We have NO indication whether the key belongs to the person named "
-"as shown above\n"
+msgid "WARNING: We have NO indication whether the key belongs to the person named as shown above\n"
 msgstr ""
 
 #: crypt-gpgme.c:1327
@@ -1048,9 +1039,7 @@ msgid "WARNING: The key does NOT BELONG to the person named as shown above\n"
 msgstr ""
 
 #: crypt-gpgme.c:1331
-msgid ""
-"WARNING: It is NOT certain that the key belongs to the person named as shown "
-"above\n"
+msgid "WARNING: It is NOT certain that the key belongs to the person named as shown above\n"
 msgstr ""
 
 #: crypt-gpgme.c:1361 crypt-gpgme.c:1366
@@ -1525,8 +1514,7 @@ msgstr ""
 #: crypt-gpgme.c:4721
 #, fuzzy
 msgid "S/MIME (s)ign, sign (a)s, (p)gp, (c)lear, or (o)ppenc mode off? "
-msgstr ""
-"¿(e)ncriptar, (f)irmar, firmar (c)omo, (a)mbas, (i)nterior, ou (o)lvidar? "
+msgstr "¿(e)ncriptar, (f)irmar, firmar (c)omo, (a)mbas, (i)nterior, ou (o)lvidar? "
 
 #. L10N: The 'f' is from "forget it", an old undocumented synonym of
 #. 'clear'.  Please use a corresponding letter in your language.
@@ -1539,8 +1527,7 @@ msgstr ""
 #: crypt-gpgme.c:4731
 #, fuzzy
 msgid "PGP (s)ign, sign (a)s, s/(m)ime, (c)lear, or (o)ppenc mode off? "
-msgstr ""
-"¿(e)ncriptar, (f)irmar, firmar (c)omo, (a)mbas, (i)nterior, ou (o)lvidar? "
+msgstr "¿(e)ncriptar, (f)irmar, firmar (c)omo, (a)mbas, (i)nterior, ou (o)lvidar? "
 
 #: crypt-gpgme.c:4732
 msgid "samfco"
@@ -1548,11 +1535,8 @@ msgstr ""
 
 #: crypt-gpgme.c:4744
 #, fuzzy
-msgid ""
-"S/MIME (e)ncrypt, (s)ign, sign (a)s, (b)oth, (p)gp, (c)lear, or (o)ppenc "
-"mode? "
-msgstr ""
-"¿(e)ncriptar, (f)irmar, firmar (c)omo, (a)mbas, (i)nterior, ou (o)lvidar? "
+msgid "S/MIME (e)ncrypt, (s)ign, sign (a)s, (b)oth, (p)gp, (c)lear, or (o)ppenc mode? "
+msgstr "¿(e)ncriptar, (f)irmar, firmar (c)omo, (a)mbas, (i)nterior, ou (o)lvidar? "
 
 #: crypt-gpgme.c:4745
 #, fuzzy
@@ -1561,11 +1545,8 @@ msgstr "efcao"
 
 #: crypt-gpgme.c:4750
 #, fuzzy
-msgid ""
-"PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, s/(m)ime, (c)lear, or (o)ppenc "
-"mode? "
-msgstr ""
-"¿(e)ncriptar, (f)irmar, firmar (c)omo, (a)mbas, (i)nterior, ou (o)lvidar? "
+msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, s/(m)ime, (c)lear, or (o)ppenc mode? "
+msgstr "¿(e)ncriptar, (f)irmar, firmar (c)omo, (a)mbas, (i)nterior, ou (o)lvidar? "
 
 #: crypt-gpgme.c:4751
 #, fuzzy
@@ -1575,8 +1556,7 @@ msgstr "efcao"
 #: crypt-gpgme.c:4762
 #, fuzzy
 msgid "S/MIME (e)ncrypt, (s)ign, sign (a)s, (b)oth, (p)gp or (c)lear? "
-msgstr ""
-"¿(e)ncriptar, (f)irmar, firmar (c)omo, (a)mbas, (i)nterior, ou (o)lvidar? "
+msgstr "¿(e)ncriptar, (f)irmar, firmar (c)omo, (a)mbas, (i)nterior, ou (o)lvidar? "
 
 #: crypt-gpgme.c:4763
 #, fuzzy
@@ -1586,8 +1566,7 @@ msgstr "efcao"
 #: crypt-gpgme.c:4768
 #, fuzzy
 msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, s/(m)ime or (c)lear? "
-msgstr ""
-"¿(e)ncriptar, (f)irmar, firmar (c)omo, (a)mbas, (i)nterior, ou (o)lvidar? "
+msgstr "¿(e)ncriptar, (f)irmar, firmar (c)omo, (a)mbas, (i)nterior, ou (o)lvidar? "
 
 #: crypt-gpgme.c:4769
 #, fuzzy
@@ -2310,9 +2289,7 @@ msgstr "Limpar indicador"
 
 #: handler.c:1139
 msgid "[-- Error:  Could not display any parts of Multipart/Alternative! --]\n"
-msgstr ""
-"[-- Erro: ¡Non foi posible amosar ningunha parte de Multipart/"
-"Alternative!--]\n"
+msgstr "[-- Erro: ¡Non foi posible amosar ningunha parte de Multipart/Alternative!--]\n"
 
 #: handler.c:1254
 #, c-format
@@ -3034,10 +3011,8 @@ msgstr "¡Memoria agotada!"
 #: main.c:84
 msgid ""
 "usage: mutt [<options>] [-z] [-f <file> | -yZ]\n"
-"       mutt [<options>] [-Ex] [-Hi <file>] [-s <subj>] [-bc <addr>] [-a "
-"<file> [...] --] <addr> [...]\n"
-"       mutt [<options>] [-x] [-s <subj>] [-bc <addr>] [-a <file> [...] --] "
-"<addr> [...] < message\n"
+"       mutt [<options>] [-Ex] [-Hi <file>] [-s <subj>] [-bc <addr>] [-a <file> [...] --] <addr> [...]\n"
+"       mutt [<options>] [-x] [-s <subj>] [-bc <addr>] [-a <file> [...] --] <addr> [...] < message\n"
 "       mutt [<options>] -p\n"
 "       mutt [<options>] -A <alias> [...]\n"
 "       mutt [<options>] -Q <query> [...]\n"
@@ -3077,8 +3052,7 @@ msgid ""
 msgstr ""
 "uso: mutt [ -nRzZ ] [ -e <cmd> ] [ -F <file> ] [ -m <type> ] [ -f <file> ]\n"
 "       mutt [ -nx ] [ -e <cmd> ] [ -a <ficheiro> ] [ -F <ficheiro> ]\n"
-" [ -H <ficheiro> ] [ -i <ficheiro> ] [ -s <tema> ] [ -b <enderz> ] [ -c "
-"<enderz> ] <enderz> [ ... ]\n"
+" [ -H <ficheiro> ] [ -i <ficheiro> ] [ -s <tema> ] [ -b <enderz> ] [ -c <enderz> ] <enderz> [ ... ]\n"
 "       mutt [ -n ] [ -e <cmd> ] [ -F <ficheiro> ] -p\n"
 "       mutt -v[v]\n"
 "\n"
@@ -3090,8 +3064,7 @@ msgstr ""
 "  -f <ficheiro>\tespecificar que buzón ler\n"
 "  -F <ficheiro>\tespecificar un ficheiro muttrc alternativo\n"
 "  -H <ficheiro>\tespecificar un ficheiro borrador do que le-la cabeceira\n"
-"  -i <ficheiro>\tespecificar un ficheiro que Mutt deberá incluir na "
-"resposta\n"
+"  -i <ficheiro>\tespecificar un ficheiro que Mutt deberá incluir na resposta\n"
 "  -m <tipo>\tespecificar un tipo de buzón por defecto\n"
 "  -n\t\tfai que Mutt non lea o Muttrc do sistema\n"
 "  -p\t\teditar unha mensaxe posposta\n"
@@ -3101,8 +3074,7 @@ msgstr ""
 "  -x\t\tsimula-lo modo de envío de mailx\n"
 "  -y\t\tseleccionar un buzón especificado na súa lista de buzóns\n"
 "  -z\t\tsalir de contado se non quedan mensaxes no buzón\n"
-"  -Z\t\tabri-la primeira carpeta con algunha mensaxe nova, saír de contado "
-"si non hai tal\n"
+"  -Z\t\tabri-la primeira carpeta con algunha mensaxe nova, saír de contado si non hai tal\n"
 "  -h\t\testa mensaxe de axuda"
 
 #: main.c:117
@@ -3120,8 +3092,7 @@ msgid ""
 msgstr ""
 "uso: mutt [ -nRzZ ] [ -e <cmd> ] [ -F <file> ] [ -m <type> ] [ -f <file> ]\n"
 "       mutt [ -nx ] [ -e <cmd> ] [ -a <ficheiro> ] [ -F <ficheiro> ]\n"
-" [ -H <ficheiro> ] [ -i <ficheiro> ] [ -s <tema> ] [ -b <enderz> ] [ -c "
-"<enderz> ] <enderz> [ ... ]\n"
+" [ -H <ficheiro> ] [ -i <ficheiro> ] [ -s <tema> ] [ -b <enderz> ] [ -c <enderz> ] <enderz> [ ... ]\n"
 "       mutt [ -n ] [ -e <cmd> ] [ -F <ficheiro> ] -p\n"
 "       mutt -v[v]\n"
 "\n"
@@ -3133,8 +3104,7 @@ msgstr ""
 "  -f <ficheiro>\tespecificar que buzón ler\n"
 "  -F <ficheiro>\tespecificar un ficheiro muttrc alternativo\n"
 "  -H <ficheiro>\tespecificar un ficheiro borrador do que le-la cabeceira\n"
-"  -i <ficheiro>\tespecificar un ficheiro que Mutt deberá incluir na "
-"resposta\n"
+"  -i <ficheiro>\tespecificar un ficheiro que Mutt deberá incluir na resposta\n"
 "  -m <tipo>\tespecificar un tipo de buzón por defecto\n"
 "  -n\t\tfai que Mutt non lea o Muttrc do sistema\n"
 "  -p\t\teditar unha mensaxe posposta\n"
@@ -3144,8 +3114,7 @@ msgstr ""
 "  -x\t\tsimula-lo modo de envío de mailx\n"
 "  -y\t\tseleccionar un buzón especificado na súa lista de buzóns\n"
 "  -z\t\tsalir de contado se non quedan mensaxes no buzón\n"
-"  -Z\t\tabri-la primeira carpeta con algunha mensaxe nova, saír de contado "
-"si non hai tal\n"
+"  -Z\t\tabri-la primeira carpeta con algunha mensaxe nova, saír de contado si non hai tal\n"
 "  -h\t\testa mensaxe de axuda"
 
 #: main.c:149
@@ -3164,8 +3133,7 @@ msgstr "Depurando a nivel %d.\n"
 
 #: main.c:299
 msgid "DEBUG was not defined during compilation.  Ignored.\n"
-msgstr ""
-"A opción \"DEBUG\" non foi especificada durante a compilación. Ignorado.\n"
+msgstr "A opción \"DEBUG\" non foi especificada durante a compilación. Ignorado.\n"
 
 #: main.c:487
 #, c-format
@@ -3230,9 +3198,7 @@ msgstr "¡Erro fatal! ¡Non foi posible reabri-lo buzón!"
 
 #: mbox.c:881
 msgid "sync: mbox modified, but no modified messages! (report this bug)"
-msgstr ""
-"sync: ¡buzón modificado, mais non hai mensaxes modificadas! (informe deste "
-"fallo)"
+msgstr "sync: ¡buzón modificado, mais non hai mensaxes modificadas! (informe deste fallo)"
 
 #: mbox.c:905 mh.c:2023 mutt_notmuch.c:1623 mx.c:757
 #, c-format
@@ -3943,8 +3909,7 @@ msgid "Checking for new newsgroups..."
 msgstr "Buscando novas mensaxes..."
 
 #: nntp.c:2420
-msgid ""
-"Unable to find child articles because server does not support XPAT command."
+msgid "Unable to find child articles because server does not support XPAT command."
 msgstr ""
 
 #: pager.c:1629
@@ -4131,8 +4096,7 @@ msgstr "Non foi posible invocar ó PGP"
 #: pgp.c:1730
 #, fuzzy, c-format
 msgid "PGP (s)ign, sign (a)s, %s format, (c)lear, or (o)ppenc mode off? "
-msgstr ""
-"¿(e)ncriptar, (f)irmar, firmar (c)omo, (a)mbas, (i)nterior, ou (o)lvidar? "
+msgstr "¿(e)ncriptar, (f)irmar, firmar (c)omo, (a)mbas, (i)nterior, ou (o)lvidar? "
 
 #: pgp.c:1731 pgp.c:1761 pgp.c:1783
 msgid "PGP/M(i)ME"
@@ -4153,8 +4117,7 @@ msgstr ""
 #: pgp.c:1742
 #, fuzzy
 msgid "PGP (s)ign, sign (a)s, (c)lear, or (o)ppenc mode off? "
-msgstr ""
-"¿(e)ncriptar, (f)irmar, firmar (c)omo, (a)mbas, (i)nterior, ou (o)lvidar? "
+msgstr "¿(e)ncriptar, (f)irmar, firmar (c)omo, (a)mbas, (i)nterior, ou (o)lvidar? "
 
 #: pgp.c:1743
 msgid "safco"
@@ -4162,11 +4125,8 @@ msgstr ""
 
 #: pgp.c:1760
 #, fuzzy, c-format
-msgid ""
-"PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, %s format, (c)lear, or (o)ppenc "
-"mode? "
-msgstr ""
-"¿(e)ncriptar, (f)irmar, firmar (c)omo, (a)mbas, (i)nterior, ou (o)lvidar? "
+msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, %s format, (c)lear, or (o)ppenc mode? "
+msgstr "¿(e)ncriptar, (f)irmar, firmar (c)omo, (a)mbas, (i)nterior, ou (o)lvidar? "
 
 #: pgp.c:1763
 #, fuzzy
@@ -4176,8 +4136,7 @@ msgstr "efcao"
 #: pgp.c:1768
 #, fuzzy
 msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, (c)lear, or (o)ppenc mode? "
-msgstr ""
-"¿(e)ncriptar, (f)irmar, firmar (c)omo, (a)mbas, (i)nterior, ou (o)lvidar? "
+msgstr "¿(e)ncriptar, (f)irmar, firmar (c)omo, (a)mbas, (i)nterior, ou (o)lvidar? "
 
 #: pgp.c:1769
 #, fuzzy
@@ -4187,8 +4146,7 @@ msgstr "efcao"
 #: pgp.c:1782
 #, fuzzy, c-format
 msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, %s format, or (c)lear? "
-msgstr ""
-"¿(e)ncriptar, (f)irmar, firmar (c)omo, (a)mbas, (i)nterior, ou (o)lvidar? "
+msgstr "¿(e)ncriptar, (f)irmar, firmar (c)omo, (a)mbas, (i)nterior, ou (o)lvidar? "
 
 #: pgp.c:1785
 #, fuzzy
@@ -4198,8 +4156,7 @@ msgstr "efcao"
 #: pgp.c:1790
 #, fuzzy
 msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, or (c)lear? "
-msgstr ""
-"¿(e)ncriptar, (f)irmar, firmar (c)omo, (a)mbas, (i)nterior, ou (o)lvidar? "
+msgstr "¿(e)ncriptar, (f)irmar, firmar (c)omo, (a)mbas, (i)nterior, ou (o)lvidar? "
 
 #: pgp.c:1791
 #, fuzzy
@@ -4482,8 +4439,7 @@ msgstr "O borrado de adxuntos de mensaxes PGP non está soportado."
 
 #: recvattach.c:1144
 #, fuzzy
-msgid ""
-"Deletion of attachments from signed messages may invalidate the signature."
+msgid "Deletion of attachments from signed messages may invalidate the signature."
 msgstr "O borrado de adxuntos de mensaxes PGP non está soportado."
 
 #: recvattach.c:1161 recvattach.c:1178
@@ -4593,11 +4549,8 @@ msgid "Mixmaster doesn't accept Cc or Bcc headers."
 msgstr "O mixmaster non acepta cabeceiras Cc ou Bcc."
 
 #: remailer.c:732
-msgid ""
-"Please set the hostname variable to a proper value when using mixmaster!"
-msgstr ""
-"Por favor, use un valor correcto da variable 'hostname' cando use o "
-"mixmaster."
+msgid "Please set the hostname variable to a proper value when using mixmaster!"
+msgstr "Por favor, use un valor correcto da variable 'hostname' cando use o mixmaster."
 
 #: remailer.c:766
 #, c-format
@@ -4942,8 +4895,7 @@ msgstr ""
 
 #: smime.c:2110
 #, fuzzy
-msgid ""
-"S/MIME (s)ign, encrypt (w)ith, sign (a)s, (c)lear, or (o)ppenc mode off? "
+msgid "S/MIME (s)ign, encrypt (w)ith, sign (a)s, (c)lear, or (o)ppenc mode off? "
 msgstr "¿(e)ncriptar, (f)irmar, firmar (c)omo, (a)mbas ou (o)lvidar? "
 
 #. L10N: The 'f' is from "forget it", an old undocumented synonym of
@@ -4956,9 +4908,7 @@ msgstr ""
 
 #: smime.c:2124
 #, fuzzy
-msgid ""
-"S/MIME (e)ncrypt, (s)ign, encrypt (w)ith, sign (a)s, (b)oth, (c)lear, or "
-"(o)ppenc mode? "
+msgid "S/MIME (e)ncrypt, (s)ign, encrypt (w)ith, sign (a)s, (b)oth, (c)lear, or (o)ppenc mode? "
 msgstr "¿(e)ncriptar, (f)irmar, firmar (c)omo, (a)mbas ou (o)lvidar? "
 
 #: smime.c:2125
@@ -4968,8 +4918,7 @@ msgstr "efcao"
 
 #: smime.c:2133
 #, fuzzy
-msgid ""
-"S/MIME (e)ncrypt, (s)ign, encrypt (w)ith, sign (a)s, (b)oth, or (c)lear? "
+msgid "S/MIME (e)ncrypt, (s)ign, encrypt (w)ith, sign (a)s, (b)oth, or (c)lear? "
 msgstr "¿(e)ncriptar, (f)irmar, firmar (c)omo, (a)mbas ou (o)lvidar? "
 
 #: smime.c:2134
@@ -5118,8 +5067,7 @@ msgstr ""
 msgid ""
 "    You should have received a copy of the GNU General Public License\n"
 "    along with this program; if not, write to the Free Software\n"
-"    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  "
-"02110-1301, USA.\n"
+"    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.\n"
 msgstr ""
 
 #: version.c:87
@@ -5139,8 +5087,7 @@ msgid ""
 "under certain conditions; type `mutt -vv' for details.\n"
 msgstr ""
 "Copyright (C) 1996-9 de Michael R. Elkins and others.\n"
-"Mutt vén sen NINGÚN TIPO DE GARANTIA; para ve-los detalles, escriba `mutt -"
-"vv'.\n"
+"Mutt vén sen NINGÚN TIPO DE GARANTIA; para ve-los detalles, escriba `mutt -vv'.\n"
 "Mutt é software libre, e vostede é benvido cando desexe redistribuilo \n"
 "baixo certas condicións; escriba `mutt -vv' para ve-losdetalles.\n"
 
@@ -6160,4 +6107,3 @@ msgstr "extraer chaves públicas PGP"
 #, fuzzy
 msgid "show S/MIME options"
 msgstr "amosa-las opcións S/MIME"
-

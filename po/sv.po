@@ -304,16 +304,12 @@ msgstr "Filmask: "
 
 #: browser.c:1724
 #, fuzzy
-msgid ""
-"Reverse sort by (d)ate, (a)lpha, si(z)e, d(e)scription, (c)ount, ne(w) "
-"count, or do(n)'t sort? "
+msgid "Reverse sort by (d)ate, (a)lpha, si(z)e, d(e)scription, (c)ount, ne(w) count, or do(n)'t sort? "
 msgstr "Sortera omvänt efter (d)atum, (a)lpha, (s)torlek eller i(n)te alls? "
 
 #: browser.c:1725
 #, fuzzy
-msgid ""
-"Sort by (d)ate, (a)lpha, si(z)e, d(e)scription, (c)ount, ne(w) count, or "
-"do(n)'t sort? "
+msgid "Sort by (d)ate, (a)lpha, si(z)e, d(e)scription, (c)ount, ne(w) count, or do(n)'t sort? "
 msgstr "Sortera efter (d)atum, (a)lpha, (s)torlek eller i(n)te alls? "
 
 #: browser.c:1726
@@ -535,16 +531,12 @@ msgstr "Meddelanden kunde inte skrivas ut"
 #: commands.c:547
 #, fuzzy
 msgid "Rev-Sort Date/Frm/Recv/Subj/tO/Thread/Unsort/siZe/sCore/sPam/Label?: "
-msgstr ""
-"Omvänt (d)atum/(f)rån/(m)ot./(ä)re./(t)ill/t(r)åd/(o)sor./(s)tor./(p)oäng/"
-"sp(a)m?: "
+msgstr "Omvänt (d)atum/(f)rån/(m)ot./(ä)re./(t)ill/t(r)åd/(o)sor./(s)tor./(p)oäng/sp(a)m?: "
 
 #: commands.c:548
 #, fuzzy
 msgid "Sort Date/Frm/Recv/Subj/tO/Thread/Unsort/siZe/sCore/sPam/Label?: "
-msgstr ""
-"Sortera (d)atum/(f)rån/(m)ot./(ä)re./(t)ill/t(r)åd/(o)sor./(s)tor./(p)oäng/"
-"sp(a)m?: "
+msgstr "Sortera (d)atum/(f)rån/(m)ot./(ä)re./(t)ill/t(r)åd/(o)sor./(s)tor./(p)oäng/sp(a)m?: "
 
 #: commands.c:549
 #, fuzzy
@@ -1023,24 +1015,16 @@ msgid "Fingerprint: "
 msgstr "Fingeravtryck: "
 
 #: crypt-gpgme.c:1320
-msgid ""
-"WARNING: We have NO indication whether the key belongs to the person named "
-"as shown above\n"
-msgstr ""
-"VARNING: Vi har INGEN indikation hurvida nyckeln tillhör personen med namnet "
-"som visas ovanför\n"
+msgid "WARNING: We have NO indication whether the key belongs to the person named as shown above\n"
+msgstr "VARNING: Vi har INGEN indikation hurvida nyckeln tillhör personen med namnet som visas ovanför\n"
 
 #: crypt-gpgme.c:1327
 msgid "WARNING: The key does NOT BELONG to the person named as shown above\n"
 msgstr "VARNING: Nyckeln TILLHÖR INTE personen med namnet som visas ovanför\n"
 
 #: crypt-gpgme.c:1331
-msgid ""
-"WARNING: It is NOT certain that the key belongs to the person named as shown "
-"above\n"
-msgstr ""
-"VARNING: Det är INTE säkert att nyckeln tillhör personen med namnet som "
-"visas ovanför\n"
+msgid "WARNING: It is NOT certain that the key belongs to the person named as shown above\n"
+msgstr "VARNING: Det är INTE säkert att nyckeln tillhör personen med namnet som visas ovanför\n"
 
 #: crypt-gpgme.c:1361 crypt-gpgme.c:1366
 msgid "aka: "
@@ -1483,8 +1467,7 @@ msgstr ""
 #: crypt-gpgme.c:4721
 #, fuzzy
 msgid "S/MIME (s)ign, sign (a)s, (p)gp, (c)lear, or (o)ppenc mode off? "
-msgstr ""
-"S/MIME (k)ryptera, (s)ignera, signera s(o)m, (b)ägge, (p)gp eller (r)ensa?"
+msgstr "S/MIME (k)ryptera, (s)ignera, signera s(o)m, (b)ägge, (p)gp eller (r)ensa?"
 
 #. L10N: The 'f' is from "forget it", an old undocumented synonym of
 #. 'clear'.  Please use a corresponding letter in your language.
@@ -1497,8 +1480,7 @@ msgstr ""
 #: crypt-gpgme.c:4731
 #, fuzzy
 msgid "PGP (s)ign, sign (a)s, s/(m)ime, (c)lear, or (o)ppenc mode off? "
-msgstr ""
-"PGP (k)ryptera, (s)ignera, signera s(o)m, (b)ägge, s/(m)ime eller (r)ensa?"
+msgstr "PGP (k)ryptera, (s)ignera, signera s(o)m, (b)ägge, s/(m)ime eller (r)ensa?"
 
 #: crypt-gpgme.c:4732
 msgid "samfco"
@@ -1506,11 +1488,8 @@ msgstr ""
 
 #: crypt-gpgme.c:4744
 #, fuzzy
-msgid ""
-"S/MIME (e)ncrypt, (s)ign, sign (a)s, (b)oth, (p)gp, (c)lear, or (o)ppenc "
-"mode? "
-msgstr ""
-"S/MIME (k)ryptera, (s)ignera, signera s(o)m, (b)ägge, (p)gp eller (r)ensa?"
+msgid "S/MIME (e)ncrypt, (s)ign, sign (a)s, (b)oth, (p)gp, (c)lear, or (o)ppenc mode? "
+msgstr "S/MIME (k)ryptera, (s)ignera, signera s(o)m, (b)ägge, (p)gp eller (r)ensa?"
 
 #: crypt-gpgme.c:4745
 #, fuzzy
@@ -1519,11 +1498,8 @@ msgstr "ksobpr"
 
 #: crypt-gpgme.c:4750
 #, fuzzy
-msgid ""
-"PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, s/(m)ime, (c)lear, or (o)ppenc "
-"mode? "
-msgstr ""
-"PGP (k)ryptera, (s)ignera, signera s(o)m, (b)ägge, s/(m)ime eller (r)ensa?"
+msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, s/(m)ime, (c)lear, or (o)ppenc mode? "
+msgstr "PGP (k)ryptera, (s)ignera, signera s(o)m, (b)ägge, s/(m)ime eller (r)ensa?"
 
 #: crypt-gpgme.c:4751
 #, fuzzy
@@ -1533,8 +1509,7 @@ msgstr "ksobmr"
 #: crypt-gpgme.c:4762
 #, fuzzy
 msgid "S/MIME (e)ncrypt, (s)ign, sign (a)s, (b)oth, (p)gp or (c)lear? "
-msgstr ""
-"S/MIME (k)ryptera, (s)ignera, signera s(o)m, (b)ägge, (p)gp eller (r)ensa?"
+msgstr "S/MIME (k)ryptera, (s)ignera, signera s(o)m, (b)ägge, (p)gp eller (r)ensa?"
 
 #: crypt-gpgme.c:4763
 msgid "esabpfc"
@@ -1543,8 +1518,7 @@ msgstr "ksobpr"
 #: crypt-gpgme.c:4768
 #, fuzzy
 msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, s/(m)ime or (c)lear? "
-msgstr ""
-"PGP (k)ryptera, (s)ignera, signera s(o)m, (b)ägge, s/(m)ime eller (r)ensa?"
+msgstr "PGP (k)ryptera, (s)ignera, signera s(o)m, (b)ägge, s/(m)ime eller (r)ensa?"
 
 #: crypt-gpgme.c:4769
 msgid "esabmfc"
@@ -2279,8 +2253,7 @@ msgstr "[-- Automatisk visning av standardfel gällande %s --]\n"
 
 #: handler.c:1446
 msgid "[-- Error: message/external-body has no access-type parameter --]\n"
-msgstr ""
-"[-- Fel: \"message/external-body\" har ingen åtkomsttypsparameter --]\n"
+msgstr "[-- Fel: \"message/external-body\" har ingen åtkomsttypsparameter --]\n"
 
 #: handler.c:1467
 #, c-format
@@ -2941,10 +2914,8 @@ msgstr "Slut på minne!"
 #, fuzzy
 msgid ""
 "usage: mutt [<options>] [-z] [-f <file> | -yZ]\n"
-"       mutt [<options>] [-Ex] [-Hi <file>] [-s <subj>] [-bc <addr>] [-a "
-"<file> [...] --] <addr> [...]\n"
-"       mutt [<options>] [-x] [-s <subj>] [-bc <addr>] [-a <file> [...] --] "
-"<addr> [...] < message\n"
+"       mutt [<options>] [-Ex] [-Hi <file>] [-s <subj>] [-bc <addr>] [-a <file> [...] --] <addr> [...]\n"
+"       mutt [<options>] [-x] [-s <subj>] [-bc <addr>] [-a <file> [...] --] <addr> [...] < message\n"
 "       mutt [<options>] -p\n"
 "       mutt [<options>] -A <alias> [...]\n"
 "       mutt [<options>] -Q <query> [...]\n"
@@ -2952,8 +2923,7 @@ msgid ""
 "       mutt -v[v]\n"
 msgstr ""
 "användning: mutt [<flaggor>] [-z] [-f <fil> | -yZ]\n"
-"       mutt [<flaggor>] [-x] [-Hi <fil>] [-s <ämne>] [-bc <adress>] [-a "
-"<file> [...]] [--] <adress> [...]\n"
+"       mutt [<flaggor>] [-x] [-Hi <fil>] [-s <ämne>] [-bc <adress>] [-a <file> [...]] [--] <adress> [...]\n"
 "       mutt [<flaggor>] -p\n"
 "       mutt [<flaggor>] -A <alias> [...]\n"
 "       mutt [<flaggor>] -Q <förfrågan> [...]\n"
@@ -3020,14 +2990,12 @@ msgid ""
 msgstr ""
 "  -Q <variabel>\tundersök värdet på en konfigurationsvariabel\n"
 "  -R\t\töppna brevlåda i skrivskyddat läge\n"
-"  -s <ämne>\tange ett ämne (måste vara inom citationstecken om det "
-"innehåller blanksteg)\n"
+"  -s <ämne>\tange ett ämne (måste vara inom citationstecken om det innehåller blanksteg)\n"
 "  -v\t\tvisa version och definitioner vid kompileringen\n"
 "  -x\t\tsimulera mailx's sändläge\n"
 "  -y\t\tvälj en brevlåda specifierad i din \"mailboxes\"-lista\n"
 "  -z\t\tavsluta omedelbart om det inte finns några meddelanden i brevlådan\n"
-"  -Z\t\töppna den första foldern med ett nytt meddelande, avsluta omedelbart "
-"om inget finns\n"
+"  -Z\t\töppna den första foldern med ett nytt meddelande, avsluta omedelbart om inget finns\n"
 "  -h\t\tden här hjälptexten"
 
 #: main.c:149
@@ -3111,9 +3079,7 @@ msgstr "Fatalt fel! Kunde inte öppna brevlådan igen!"
 
 #: mbox.c:881
 msgid "sync: mbox modified, but no modified messages! (report this bug)"
-msgstr ""
-"sync: mbox modifierad, men inga modifierade meddelanden! (rapportera det här "
-"felet)"
+msgstr "sync: mbox modifierad, men inga modifierade meddelanden! (rapportera det här felet)"
 
 #: mbox.c:905 mh.c:2023 mutt_notmuch.c:1623 mx.c:757
 #, c-format
@@ -3816,8 +3782,7 @@ msgid "Checking for new newsgroups..."
 msgstr "Kollar efter nya meddelanden..."
 
 #: nntp.c:2420
-msgid ""
-"Unable to find child articles because server does not support XPAT command."
+msgid "Unable to find child articles because server does not support XPAT command."
 msgstr ""
 
 #: pager.c:1629
@@ -4033,9 +3998,7 @@ msgstr ""
 
 #: pgp.c:1760
 #, fuzzy, c-format
-msgid ""
-"PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, %s format, (c)lear, or (o)ppenc "
-"mode? "
+msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, %s format, (c)lear, or (o)ppenc mode? "
 msgstr "PGP (k)ryptera, (s)ignera, signera s(o)m, (b)åda %s, eller (r)ensa? "
 
 #: pgp.c:1763
@@ -4340,8 +4303,7 @@ msgstr "Radering av bilagor från krypterade meddelanden stöds ej."
 
 #: recvattach.c:1144
 #, fuzzy
-msgid ""
-"Deletion of attachments from signed messages may invalidate the signature."
+msgid "Deletion of attachments from signed messages may invalidate the signature."
 msgstr "Radering av bilagor från krypterade meddelanden stöds ej."
 
 #: recvattach.c:1161 recvattach.c:1178
@@ -4445,11 +4407,8 @@ msgid "Mixmaster doesn't accept Cc or Bcc headers."
 msgstr "Mixmaster accepterar inte Cc eller Bcc-huvuden."
 
 #: remailer.c:732
-msgid ""
-"Please set the hostname variable to a proper value when using mixmaster!"
-msgstr ""
-"Var vänlig och sätt \"hostname\"-variabeln till ett passande värde vid "
-"användande av mixmaster!"
+msgid "Please set the hostname variable to a proper value when using mixmaster!"
+msgstr "Var vänlig och sätt \"hostname\"-variabeln till ett passande värde vid användande av mixmaster!"
 
 #: remailer.c:766
 #, c-format
@@ -4780,11 +4739,8 @@ msgstr ""
 
 #: smime.c:2110
 #, fuzzy
-msgid ""
-"S/MIME (s)ign, encrypt (w)ith, sign (a)s, (c)lear, or (o)ppenc mode off? "
-msgstr ""
-"S/MIME (k)ryptera, (s)ignera, kryptera (m)ed, signera s(o)m, (b)åda, eller "
-"(r)ensa? "
+msgid "S/MIME (s)ign, encrypt (w)ith, sign (a)s, (c)lear, or (o)ppenc mode off? "
+msgstr "S/MIME (k)ryptera, (s)ignera, kryptera (m)ed, signera s(o)m, (b)åda, eller (r)ensa? "
 
 #. L10N: The 'f' is from "forget it", an old undocumented synonym of
 #. 'clear'.  Please use a corresponding letter in your language.
@@ -4796,12 +4752,8 @@ msgstr ""
 
 #: smime.c:2124
 #, fuzzy
-msgid ""
-"S/MIME (e)ncrypt, (s)ign, encrypt (w)ith, sign (a)s, (b)oth, (c)lear, or "
-"(o)ppenc mode? "
-msgstr ""
-"S/MIME (k)ryptera, (s)ignera, kryptera (m)ed, signera s(o)m, (b)åda, eller "
-"(r)ensa? "
+msgid "S/MIME (e)ncrypt, (s)ign, encrypt (w)ith, sign (a)s, (b)oth, (c)lear, or (o)ppenc mode? "
+msgstr "S/MIME (k)ryptera, (s)ignera, kryptera (m)ed, signera s(o)m, (b)åda, eller (r)ensa? "
 
 #: smime.c:2125
 #, fuzzy
@@ -4809,11 +4761,8 @@ msgid "eswabfco"
 msgstr "ksmobr"
 
 #: smime.c:2133
-msgid ""
-"S/MIME (e)ncrypt, (s)ign, encrypt (w)ith, sign (a)s, (b)oth, or (c)lear? "
-msgstr ""
-"S/MIME (k)ryptera, (s)ignera, kryptera (m)ed, signera s(o)m, (b)åda, eller "
-"(r)ensa? "
+msgid "S/MIME (e)ncrypt, (s)ign, encrypt (w)ith, sign (a)s, (b)oth, or (c)lear? "
+msgstr "S/MIME (k)ryptera, (s)ignera, kryptera (m)ed, signera s(o)m, (b)åda, eller (r)ensa? "
 
 #: smime.c:2134
 msgid "eswabfc"
@@ -4980,13 +4929,11 @@ msgstr ""
 msgid ""
 "    You should have received a copy of the GNU General Public License\n"
 "    along with this program; if not, write to the Free Software\n"
-"    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  "
-"02110-1301, USA.\n"
+"    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.\n"
 msgstr ""
 "    Du bör ha fått en kopia av GNU General Public License\n"
 "    tillsammans med detta program. Om inte, skriv till Free Software \n"
-"    Foundation,Inc., 51 Franklin Street, Fifth Floor, Boston, MA  "
-"02110-1301, USA.\n"
+"    Foundation,Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.\n"
 
 #: version.c:87
 msgid ""
@@ -6012,4 +5959,3 @@ msgstr "extrahera stödda publika nycklar"
 #: ../keymap_alldefs.h:244
 msgid "show S/MIME options"
 msgstr "visa S/MIME-flaggor"
-

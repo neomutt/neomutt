@@ -144,8 +144,7 @@ msgstr "Gagal mengganti nama file."
 #: attach.c:197
 #, c-format
 msgid "No mailcap compose entry for %s, creating empty file."
-msgstr ""
-"'compose' di file mailcap tidak ditemukan untuk %s, membuat file kosong."
+msgstr "'compose' di file mailcap tidak ditemukan untuk %s, membuat file kosong."
 
 #: attach.c:258
 #, c-format
@@ -308,17 +307,12 @@ msgstr "File Mask: "
 
 #: browser.c:1724
 #, fuzzy
-msgid ""
-"Reverse sort by (d)ate, (a)lpha, si(z)e, d(e)scription, (c)ount, ne(w) "
-"count, or do(n)'t sort? "
-msgstr ""
-"Urut terbalik berdasarkan (t)anggal, (a)bjad, (u)kuran atau (n)ggak diurut? "
+msgid "Reverse sort by (d)ate, (a)lpha, si(z)e, d(e)scription, (c)ount, ne(w) count, or do(n)'t sort? "
+msgstr "Urut terbalik berdasarkan (t)anggal, (a)bjad, (u)kuran atau (n)ggak diurut? "
 
 #: browser.c:1725
 #, fuzzy
-msgid ""
-"Sort by (d)ate, (a)lpha, si(z)e, d(e)scription, (c)ount, ne(w) count, or "
-"do(n)'t sort? "
+msgid "Sort by (d)ate, (a)lpha, si(z)e, d(e)scription, (c)ount, ne(w) count, or do(n)'t sort? "
 msgstr "Urut berdasarkan (t)anggal, (a)bjad, (u)kuran atau (n)ggak diurut? "
 
 #: browser.c:1726
@@ -540,16 +534,12 @@ msgstr "Surat-surat tidak dapat dicetak"
 #: commands.c:547
 #, fuzzy
 msgid "Rev-Sort Date/Frm/Recv/Subj/tO/Thread/Unsort/siZe/sCore/sPam/Label?: "
-msgstr ""
-"Urut terbalik tan(g)gal/d(a)ri/t(e)rima/(s)ubj/(k)e/(t)hread/(n)ggak urut/"
-"(u)kuran/n(i)lai/s(p)am?: "
+msgstr "Urut terbalik tan(g)gal/d(a)ri/t(e)rima/(s)ubj/(k)e/(t)hread/(n)ggak urut/(u)kuran/n(i)lai/s(p)am?: "
 
 #: commands.c:548
 #, fuzzy
 msgid "Sort Date/Frm/Recv/Subj/tO/Thread/Unsort/siZe/sCore/sPam/Label?: "
-msgstr ""
-"Urut tan(g)gal/d(a)ri/t(e)rima/(s)ubj/(k)e/(t)hread/(n)ggak urut/(u)kuran/"
-"n(i)lai/s(p)am?: "
+msgstr "Urut tan(g)gal/d(a)ri/t(e)rima/(s)ubj/(k)e/(t)hread/(n)ggak urut/(u)kuran/n(i)lai/s(p)am?: "
 
 #: commands.c:549
 #, fuzzy
@@ -984,9 +974,7 @@ msgstr "Perhatian: Salah satu kunci telah dicabut.\n"
 
 #: crypt-gpgme.c:1149
 msgid "Warning: The key used to create the signature expired at: "
-msgstr ""
-"Perhatian: Kunci yg digunakan utk membuat tandatangan telah kadaluwarsa "
-"pada: "
+msgstr "Perhatian: Kunci yg digunakan utk membuat tandatangan telah kadaluwarsa pada: "
 
 #: crypt-gpgme.c:1155
 msgid "Warning: At least one certification key has expired\n"
@@ -998,8 +986,7 @@ msgstr "Perhatian: Tandatangan sudah kadaluwarsa pada: "
 
 #: crypt-gpgme.c:1177
 msgid "Can't verify due to a missing key or certificate\n"
-msgstr ""
-"Tidak bisa memverifikasi karena kunci atau sertifikat tidak ditemukan\n"
+msgstr "Tidak bisa memverifikasi karena kunci atau sertifikat tidak ditemukan\n"
 
 #: crypt-gpgme.c:1182
 msgid "The CRL is not available\n"
@@ -1031,26 +1018,16 @@ msgid "Fingerprint: "
 msgstr "Cap jari: "
 
 #: crypt-gpgme.c:1320
-msgid ""
-"WARNING: We have NO indication whether the key belongs to the person named "
-"as shown above\n"
-msgstr ""
-"PERHATIAN: TIDAK ada indikasi bahwa kunci tersebut dimiliki oleh orang yang "
-"namanya tertera di atas\n"
+msgid "WARNING: We have NO indication whether the key belongs to the person named as shown above\n"
+msgstr "PERHATIAN: TIDAK ada indikasi bahwa kunci tersebut dimiliki oleh orang yang namanya tertera di atas\n"
 
 #: crypt-gpgme.c:1327
 msgid "WARNING: The key does NOT BELONG to the person named as shown above\n"
-msgstr ""
-"PERHATIAN: Kunci tersebut TIDAK dimiliki oleh oleh orang yang namanya "
-"tertera di atas\n"
+msgstr "PERHATIAN: Kunci tersebut TIDAK dimiliki oleh oleh orang yang namanya tertera di atas\n"
 
 #: crypt-gpgme.c:1331
-msgid ""
-"WARNING: It is NOT certain that the key belongs to the person named as shown "
-"above\n"
-msgstr ""
-"PERHATIAN: TIDAK bisa dipastikan bahwa kunci tersebut dimiliki oleh orang "
-"yang namanya tertera di atas\n"
+msgid "WARNING: It is NOT certain that the key belongs to the person named as shown above\n"
+msgstr "PERHATIAN: TIDAK bisa dipastikan bahwa kunci tersebut dimiliki oleh orang yang namanya tertera di atas\n"
 
 #: crypt-gpgme.c:1361 crypt-gpgme.c:1366
 msgid "aka: "
@@ -1493,9 +1470,7 @@ msgstr ""
 #: crypt-gpgme.c:4721
 #, fuzzy
 msgid "S/MIME (s)ign, sign (a)s, (p)gp, (c)lear, or (o)ppenc mode off? "
-msgstr ""
-"S/MIME (e)nkrip, (t)andatangan, tandatangan (s)bg, ke(d)uanya, (p)gp atau "
-"(b)ersih? "
+msgstr "S/MIME (e)nkrip, (t)andatangan, tandatangan (s)bg, ke(d)uanya, (p)gp atau (b)ersih? "
 
 #. L10N: The 'f' is from "forget it", an old undocumented synonym of
 #. 'clear'.  Please use a corresponding letter in your language.
@@ -1508,9 +1483,7 @@ msgstr ""
 #: crypt-gpgme.c:4731
 #, fuzzy
 msgid "PGP (s)ign, sign (a)s, s/(m)ime, (c)lear, or (o)ppenc mode off? "
-msgstr ""
-"PGP (e)nkrip, (t)andatangan, tandatangan (s)bg, ke(d)uanya, s/(m)ime atau "
-"(b)ersih? "
+msgstr "PGP (e)nkrip, (t)andatangan, tandatangan (s)bg, ke(d)uanya, s/(m)ime atau (b)ersih? "
 
 #: crypt-gpgme.c:4732
 msgid "samfco"
@@ -1518,12 +1491,8 @@ msgstr ""
 
 #: crypt-gpgme.c:4744
 #, fuzzy
-msgid ""
-"S/MIME (e)ncrypt, (s)ign, sign (a)s, (b)oth, (p)gp, (c)lear, or (o)ppenc "
-"mode? "
-msgstr ""
-"S/MIME (e)nkrip, (t)andatangan, tandatangan (s)bg, ke(d)uanya, (p)gp atau "
-"(b)ersih? "
+msgid "S/MIME (e)ncrypt, (s)ign, sign (a)s, (b)oth, (p)gp, (c)lear, or (o)ppenc mode? "
+msgstr "S/MIME (e)nkrip, (t)andatangan, tandatangan (s)bg, ke(d)uanya, (p)gp atau (b)ersih? "
 
 #: crypt-gpgme.c:4745
 #, fuzzy
@@ -1532,12 +1501,8 @@ msgstr "etsdplb"
 
 #: crypt-gpgme.c:4750
 #, fuzzy
-msgid ""
-"PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, s/(m)ime, (c)lear, or (o)ppenc "
-"mode? "
-msgstr ""
-"PGP (e)nkrip, (t)andatangan, tandatangan (s)bg, ke(d)uanya, s/(m)ime atau "
-"(b)ersih? "
+msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, s/(m)ime, (c)lear, or (o)ppenc mode? "
+msgstr "PGP (e)nkrip, (t)andatangan, tandatangan (s)bg, ke(d)uanya, s/(m)ime atau (b)ersih? "
 
 #: crypt-gpgme.c:4751
 #, fuzzy
@@ -1547,9 +1512,7 @@ msgstr "etsdmlb"
 #: crypt-gpgme.c:4762
 #, fuzzy
 msgid "S/MIME (e)ncrypt, (s)ign, sign (a)s, (b)oth, (p)gp or (c)lear? "
-msgstr ""
-"S/MIME (e)nkrip, (t)andatangan, tandatangan (s)bg, ke(d)uanya, (p)gp atau "
-"(b)ersih? "
+msgstr "S/MIME (e)nkrip, (t)andatangan, tandatangan (s)bg, ke(d)uanya, (p)gp atau (b)ersih? "
 
 #: crypt-gpgme.c:4763
 msgid "esabpfc"
@@ -1558,9 +1521,7 @@ msgstr "etsdplb"
 #: crypt-gpgme.c:4768
 #, fuzzy
 msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, s/(m)ime or (c)lear? "
-msgstr ""
-"PGP (e)nkrip, (t)andatangan, tandatangan (s)bg, ke(d)uanya, s/(m)ime atau "
-"(b)ersih? "
+msgstr "PGP (e)nkrip, (t)andatangan, tandatangan (s)bg, ke(d)uanya, s/(m)ime atau (b)ersih? "
 
 #: crypt-gpgme.c:4769
 msgid "esabmfc"
@@ -1789,9 +1750,7 @@ msgstr "Balas ke %s%s?"
 
 #: curs_main.c:905
 msgid "Mailbox was externally modified.  Flags may be wrong."
-msgstr ""
-"Kotak surat diobok-obok oleh program lain. Tanda-tanda surat mungkin tidak "
-"tepat."
+msgstr "Kotak surat diobok-obok oleh program lain. Tanda-tanda surat mungkin tidak tepat."
 
 #: curs_main.c:912 pager.c:2053
 msgid "New mail in this mailbox."
@@ -2258,8 +2217,7 @@ msgstr "Batal ditandai"
 
 #: handler.c:1139
 msgid "[-- Error:  Could not display any parts of Multipart/Alternative! --]\n"
-msgstr ""
-"[-- Error: Tidak ada bagian Multipart/Alternative yg bisa ditampilkan! --]\n"
+msgstr "[-- Error: Tidak ada bagian Multipart/Alternative yg bisa ditampilkan! --]\n"
 
 #: handler.c:1254
 #, c-format
@@ -2298,8 +2256,7 @@ msgstr "[-- Stderr dari tampil-otomatis %s --]\n"
 
 #: handler.c:1446
 msgid "[-- Error: message/external-body has no access-type parameter --]\n"
-msgstr ""
-"[-- Error:  message/external-body tidak punya parameter access-type --]\n"
+msgstr "[-- Error:  message/external-body tidak punya parameter access-type --]\n"
 
 #: handler.c:1467
 #, c-format
@@ -2959,10 +2916,8 @@ msgstr "Buset, memory abis!"
 #: main.c:84
 msgid ""
 "usage: mutt [<options>] [-z] [-f <file> | -yZ]\n"
-"       mutt [<options>] [-Ex] [-Hi <file>] [-s <subj>] [-bc <addr>] [-a "
-"<file> [...] --] <addr> [...]\n"
-"       mutt [<options>] [-x] [-s <subj>] [-bc <addr>] [-a <file> [...] --] "
-"<addr> [...] < message\n"
+"       mutt [<options>] [-Ex] [-Hi <file>] [-s <subj>] [-bc <addr>] [-a <file> [...] --] <addr> [...]\n"
+"       mutt [<options>] [-x] [-s <subj>] [-bc <addr>] [-a <file> [...] --] <addr> [...] < message\n"
 "       mutt [<options>] -p\n"
 "       mutt [<options>] -A <alias> [...]\n"
 "       mutt [<options>] -Q <query> [...]\n"
@@ -3119,8 +3074,7 @@ msgstr "Fatal error! Tidak bisa membuka kembali kotak surat!"
 
 #: mbox.c:881
 msgid "sync: mbox modified, but no modified messages! (report this bug)"
-msgstr ""
-"sync: mbox diubah, tapi tidak ada surat yang berubah! (laporkan bug ini)"
+msgstr "sync: mbox diubah, tapi tidak ada surat yang berubah! (laporkan bug ini)"
 
 #: mbox.c:905 mh.c:2023 mutt_notmuch.c:1623 mx.c:757
 #, c-format
@@ -3244,8 +3198,7 @@ msgstr ""
 #. See the msgid "Save to file: " (alias.c, recvattach.c)
 #: muttlib.c:1101
 msgid "File is a directory, save under it? [(y)es, (n)o, (a)ll]"
-msgstr ""
-"File adalah sebuah direktori, simpan di dalamnya? [(y)a, (t)idak, (s)emua]"
+msgstr "File adalah sebuah direktori, simpan di dalamnya? [(y)a, (t)idak, (s)emua]"
 
 #: muttlib.c:1101
 msgid "yna"
@@ -3824,8 +3777,7 @@ msgid "Checking for new newsgroups..."
 msgstr "Memeriksa surat baru..."
 
 #: nntp.c:2420
-msgid ""
-"Unable to find child articles because server does not support XPAT command."
+msgid "Unable to find child articles because server does not support XPAT command."
 msgstr ""
 
 #: pager.c:1629
@@ -4012,8 +3964,7 @@ msgstr "Tidak dapat menjalankan PGP"
 #: pgp.c:1730
 #, fuzzy, c-format
 msgid "PGP (s)ign, sign (a)s, %s format, (c)lear, or (o)ppenc mode off? "
-msgstr ""
-"S/MIME (e)nkrip, (t)andatangan, tandatangan (s)bg, ke(d)uanya, %s, (b)ersih? "
+msgstr "S/MIME (e)nkrip, (t)andatangan, tandatangan (s)bg, ke(d)uanya, %s, (b)ersih? "
 
 #: pgp.c:1731 pgp.c:1761 pgp.c:1783
 msgid "PGP/M(i)ME"
@@ -4034,8 +3985,7 @@ msgstr ""
 #: pgp.c:1742
 #, fuzzy
 msgid "PGP (s)ign, sign (a)s, (c)lear, or (o)ppenc mode off? "
-msgstr ""
-"S/MIME (e)nkrip, (t)andatangan, tandatangan (s)bg, ke(d)uanya, %s, (b)ersih? "
+msgstr "S/MIME (e)nkrip, (t)andatangan, tandatangan (s)bg, ke(d)uanya, %s, (b)ersih? "
 
 #: pgp.c:1743
 msgid "safco"
@@ -4043,11 +3993,8 @@ msgstr ""
 
 #: pgp.c:1760
 #, fuzzy, c-format
-msgid ""
-"PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, %s format, (c)lear, or (o)ppenc "
-"mode? "
-msgstr ""
-"S/MIME (e)nkrip, (t)andatangan, tandatangan (s)bg, ke(d)uanya, %s, (b)ersih? "
+msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, %s format, (c)lear, or (o)ppenc mode? "
+msgstr "S/MIME (e)nkrip, (t)andatangan, tandatangan (s)bg, ke(d)uanya, %s, (b)ersih? "
 
 #: pgp.c:1763
 #, fuzzy
@@ -4057,8 +4004,7 @@ msgstr "etsdplb"
 #: pgp.c:1768
 #, fuzzy
 msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, (c)lear, or (o)ppenc mode? "
-msgstr ""
-"S/MIME (e)nkrip, (t)andatangan, tandatangan (s)bg, ke(d)uanya, %s, (b)ersih? "
+msgstr "S/MIME (e)nkrip, (t)andatangan, tandatangan (s)bg, ke(d)uanya, %s, (b)ersih? "
 
 #: pgp.c:1769
 #, fuzzy
@@ -4068,8 +4014,7 @@ msgstr "etsdplb"
 #: pgp.c:1782
 #, fuzzy, c-format
 msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, %s format, or (c)lear? "
-msgstr ""
-"S/MIME (e)nkrip, (t)andatangan, tandatangan (s)bg, ke(d)uanya, %s, (b)ersih? "
+msgstr "S/MIME (e)nkrip, (t)andatangan, tandatangan (s)bg, ke(d)uanya, %s, (b)ersih? "
 
 #: pgp.c:1785
 #, fuzzy
@@ -4079,8 +4024,7 @@ msgstr "etsdplb"
 #: pgp.c:1790
 #, fuzzy
 msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, or (c)lear? "
-msgstr ""
-"S/MIME (e)nkrip, (t)andatangan, tandatangan (s)bg, ke(d)uanya, %s, (b)ersih? "
+msgstr "S/MIME (e)nkrip, (t)andatangan, tandatangan (s)bg, ke(d)uanya, %s, (b)ersih? "
 
 #: pgp.c:1791
 #, fuzzy
@@ -4354,8 +4298,7 @@ msgstr "Penghapusan lampiran dari surat yg dienkripsi tidak didukung."
 
 #: recvattach.c:1144
 #, fuzzy
-msgid ""
-"Deletion of attachments from signed messages may invalidate the signature."
+msgid "Deletion of attachments from signed messages may invalidate the signature."
 msgstr "Penghapusan lampiran dari surat yg dienkripsi tidak didukung."
 
 #: recvattach.c:1161 recvattach.c:1178
@@ -4385,9 +4328,7 @@ msgstr "Forward sebagai lampiran?"
 
 #: recvcmd.c:486
 msgid "Can't decode all tagged attachments.  MIME-forward the others?"
-msgstr ""
-"Tidak dapat menguraikan semua lampiran yang ditandai. MIME-forward yg "
-"lainnya?"
+msgstr "Tidak dapat menguraikan semua lampiran yang ditandai. MIME-forward yg lainnya?"
 
 #: recvcmd.c:611
 msgid "Forward MIME encapsulated?"
@@ -4408,9 +4349,7 @@ msgstr "Tidak ada mailing list yang ditemukan!"
 
 #: recvcmd.c:867
 msgid "Can't decode all tagged attachments.  MIME-encapsulate the others?"
-msgstr ""
-"Tidak dapat menguraikan semua lampiran yang ditandai. Ubah yg lainnya ke "
-"MIME?"
+msgstr "Tidak dapat menguraikan semua lampiran yang ditandai. Ubah yg lainnya ke MIME?"
 
 #: remailer.c:481
 msgid "Append"
@@ -4463,8 +4402,7 @@ msgid "Mixmaster doesn't accept Cc or Bcc headers."
 msgstr "Mixmaster tidak menerima header Cc maupun Bcc."
 
 #: remailer.c:732
-msgid ""
-"Please set the hostname variable to a proper value when using mixmaster!"
+msgid "Please set the hostname variable to a proper value when using mixmaster!"
 msgstr "Mohon variabel hostname diisi dengan benar jika menggunakan mixmaster!"
 
 #: remailer.c:766
@@ -4792,11 +4730,8 @@ msgstr ""
 
 #: smime.c:2110
 #, fuzzy
-msgid ""
-"S/MIME (s)ign, encrypt (w)ith, sign (a)s, (c)lear, or (o)ppenc mode off? "
-msgstr ""
-"S/MIME (e)nkrip, (t)andatangan, enkrip d(g), tandatangan (s)bg, ke(d)uanya, "
-"atau (b)ersih? "
+msgid "S/MIME (s)ign, encrypt (w)ith, sign (a)s, (c)lear, or (o)ppenc mode off? "
+msgstr "S/MIME (e)nkrip, (t)andatangan, enkrip d(g), tandatangan (s)bg, ke(d)uanya, atau (b)ersih? "
 
 #. L10N: The 'f' is from "forget it", an old undocumented synonym of
 #. 'clear'.  Please use a corresponding letter in your language.
@@ -4808,12 +4743,8 @@ msgstr ""
 
 #: smime.c:2124
 #, fuzzy
-msgid ""
-"S/MIME (e)ncrypt, (s)ign, encrypt (w)ith, sign (a)s, (b)oth, (c)lear, or "
-"(o)ppenc mode? "
-msgstr ""
-"S/MIME (e)nkrip, (t)andatangan, enkrip d(g), tandatangan (s)bg, ke(d)uanya, "
-"atau (b)ersih? "
+msgid "S/MIME (e)ncrypt, (s)ign, encrypt (w)ith, sign (a)s, (b)oth, (c)lear, or (o)ppenc mode? "
+msgstr "S/MIME (e)nkrip, (t)andatangan, enkrip d(g), tandatangan (s)bg, ke(d)uanya, atau (b)ersih? "
 
 #: smime.c:2125
 #, fuzzy
@@ -4821,11 +4752,8 @@ msgid "eswabfco"
 msgstr "etgsdlb"
 
 #: smime.c:2133
-msgid ""
-"S/MIME (e)ncrypt, (s)ign, encrypt (w)ith, sign (a)s, (b)oth, or (c)lear? "
-msgstr ""
-"S/MIME (e)nkrip, (t)andatangan, enkrip d(g), tandatangan (s)bg, ke(d)uanya, "
-"atau (b)ersih? "
+msgid "S/MIME (e)ncrypt, (s)ign, encrypt (w)ith, sign (a)s, (b)oth, or (c)lear? "
+msgstr "S/MIME (e)nkrip, (t)andatangan, enkrip d(g), tandatangan (s)bg, ke(d)uanya, atau (b)ersih? "
 
 #: smime.c:2134
 msgid "eswabfc"
@@ -4980,8 +4908,7 @@ msgstr ""
 msgid ""
 "    You should have received a copy of the GNU General Public License\n"
 "    along with this program; if not, write to the Free Software\n"
-"    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  "
-"02110-1301, USA.\n"
+"    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.\n"
 msgstr ""
 
 #: version.c:87
@@ -6008,4 +5935,3 @@ msgstr "ekstrak kunci2 publik yg didukung"
 #: ../keymap_alldefs.h:244
 msgid "show S/MIME options"
 msgstr "tunjukan opsi2 S/MIME"
-

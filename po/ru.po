@@ -152,8 +152,7 @@ msgstr "В mailcap не определен способ создания для 
 #: attach.c:258
 #, c-format
 msgid "Mailcap Edit entry requires %%s"
-msgstr ""
-"Указанный в mailcap способ редактирования требует наличия параметра %%s"
+msgstr "Указанный в mailcap способ редактирования требует наличия параметра %%s"
 
 #: attach.c:280
 #, c-format
@@ -274,8 +273,7 @@ msgstr "Создание поддерживается только для поч
 
 #: browser.c:1510
 msgid "Rename is only supported for IMAP mailboxes"
-msgstr ""
-"Переименование поддерживается только для почтовых ящиков на IMAP-серверах"
+msgstr "Переименование поддерживается только для почтовых ящиков на IMAP-серверах"
 
 #: browser.c:1532
 msgid "Delete is only supported for IMAP mailboxes"
@@ -312,16 +310,12 @@ msgstr "Маска файла: "
 
 #: browser.c:1724
 #, fuzzy
-msgid ""
-"Reverse sort by (d)ate, (a)lpha, si(z)e, d(e)scription, (c)ount, ne(w) "
-"count, or do(n)'t sort? "
+msgid "Reverse sort by (d)ate, (a)lpha, si(z)e, d(e)scription, (c)ount, ne(w) count, or do(n)'t sort? "
 msgstr "Обратный порядок по (d)дате, (a)имени, (z)размеру или (n)отсутствует?"
 
 #: browser.c:1725
 #, fuzzy
-msgid ""
-"Sort by (d)ate, (a)lpha, si(z)e, d(e)scription, (c)ount, ne(w) count, or "
-"do(n)'t sort? "
+msgid "Sort by (d)ate, (a)lpha, si(z)e, d(e)scription, (c)ount, ne(w) count, or do(n)'t sort? "
 msgstr "Упорядочить по (d)дате, (a)имени, (z)размеру или (n)отсутствует?"
 
 #: browser.c:1726
@@ -543,16 +537,12 @@ msgstr "Не удалось напечатать сообщения"
 #: commands.c:547
 #, fuzzy
 msgid "Rev-Sort Date/Frm/Recv/Subj/tO/Thread/Unsort/siZe/sCore/sPam/Label?: "
-msgstr ""
-"Обр.пор.:(d)дата/(f)от/(r)получ/(s)тема/(o)кому/(t)диск/(u)без/(z)разм/"
-"(c)конт/(p)спам?"
+msgstr "Обр.пор.:(d)дата/(f)от/(r)получ/(s)тема/(o)кому/(t)диск/(u)без/(z)разм/(c)конт/(p)спам?"
 
 #: commands.c:548
 #, fuzzy
 msgid "Sort Date/Frm/Recv/Subj/tO/Thread/Unsort/siZe/sCore/sPam/Label?: "
-msgstr ""
-"Порядок:(d)дата/(f)от/(r)получ/(s)тема/(o)кому/(t)диск/(u)без/(z)разм/"
-"(c)конт/(p)спам?"
+msgstr "Порядок:(d)дата/(f)от/(r)получ/(s)тема/(o)кому/(t)диск/(u)без/(z)разм/(c)конт/(p)спам?"
 
 #: commands.c:549
 #, fuzzy
@@ -987,8 +977,7 @@ msgstr "Предупреждение: ключ, используемый для 
 
 #: crypt-gpgme.c:1155
 msgid "Warning: At least one certification key has expired\n"
-msgstr ""
-"Предупреждение: срок действия одного или нескольких сертификатов истек\n"
+msgstr "Предупреждение: срок действия одного или нескольких сертификатов истек\n"
 
 #: crypt-gpgme.c:1171
 msgid "Warning: The signature expired at: "
@@ -1028,24 +1017,16 @@ msgid "Fingerprint: "
 msgstr "Отпечаток пальца: "
 
 #: crypt-gpgme.c:1320
-msgid ""
-"WARNING: We have NO indication whether the key belongs to the person named "
-"as shown above\n"
-msgstr ""
-"ПРЕДУПРЕЖДЕНИЕ: НЕ известно, принадлежит ли данный ключ указанной выше "
-"персоне\n"
+msgid "WARNING: We have NO indication whether the key belongs to the person named as shown above\n"
+msgstr "ПРЕДУПРЕЖДЕНИЕ: НЕ известно, принадлежит ли данный ключ указанной выше персоне\n"
 
 #: crypt-gpgme.c:1327
 msgid "WARNING: The key does NOT BELONG to the person named as shown above\n"
 msgstr "ПРЕДУПРЕЖДЕНИЕ: ключ НЕ ПРИНАДЛЕЖИТ указанной выше персоне\n"
 
 #: crypt-gpgme.c:1331
-msgid ""
-"WARNING: It is NOT certain that the key belongs to the person named as shown "
-"above\n"
-msgstr ""
-"ПРЕДУПРЕЖДЕНИЕ: НЕТ уверенности в том, что ключ принадлежит указанной выше "
-"персоне\n"
+msgid "WARNING: It is NOT certain that the key belongs to the person named as shown above\n"
+msgstr "ПРЕДУПРЕЖДЕНИЕ: НЕТ уверенности в том, что ключ принадлежит указанной выше персоне\n"
 
 #: crypt-gpgme.c:1361 crypt-gpgme.c:1366
 msgid "aka: "
@@ -1237,8 +1218,7 @@ msgstr "[Не возможно отобразить ID этого пользов
 
 #: crypt-gpgme.c:3306
 msgid "[Can't display this user ID (invalid encoding)]"
-msgstr ""
-"[Не возможно отобразить ID этого пользователя (неправильная кодировка)]"
+msgstr "[Не возможно отобразить ID этого пользователя (неправильная кодировка)]"
 
 #: crypt-gpgme.c:3311
 msgid "[Can't display this user ID (invalid DN)]"
@@ -1481,8 +1461,7 @@ msgstr "GPGME: Протокол CMS не доступен"
 
 #: crypt-gpgme.c:4721
 msgid "S/MIME (s)ign, sign (a)s, (p)gp, (c)lear, or (o)ppenc mode off? "
-msgstr ""
-"S/MIME (s)подпись, (a)подпись как, (p)gp, (c)отказаться, отключить (o)ppenc? "
+msgstr "S/MIME (s)подпись, (a)подпись как, (p)gp, (c)отказаться, отключить (o)ppenc? "
 
 #. L10N: The 'f' is from "forget it", an old undocumented synonym of
 #. 'clear'.  Please use a corresponding letter in your language.
@@ -1494,32 +1473,23 @@ msgstr "sapfco"
 
 #: crypt-gpgme.c:4731
 msgid "PGP (s)ign, sign (a)s, s/(m)ime, (c)lear, or (o)ppenc mode off? "
-msgstr ""
-"PGP (s)подпись, (a)подпись как, s/(m)ime, (c)отказаться, отключить (o)ppenc? "
+msgstr "PGP (s)подпись, (a)подпись как, s/(m)ime, (c)отказаться, отключить (o)ppenc? "
 
 #: crypt-gpgme.c:4732
 msgid "samfco"
 msgstr "samfco"
 
 #: crypt-gpgme.c:4744
-msgid ""
-"S/MIME (e)ncrypt, (s)ign, sign (a)s, (b)oth, (p)gp, (c)lear, or (o)ppenc "
-"mode? "
-msgstr ""
-"S/MIME (e)шифр, (s)подпись, (a)подпись как, (b)оба, (p)gp, (c)отказ, "
-"(o)ppenc? "
+msgid "S/MIME (e)ncrypt, (s)ign, sign (a)s, (b)oth, (p)gp, (c)lear, or (o)ppenc mode? "
+msgstr "S/MIME (e)шифр, (s)подпись, (a)подпись как, (b)оба, (p)gp, (c)отказ, (o)ppenc? "
 
 #: crypt-gpgme.c:4745
 msgid "esabpfco"
 msgstr "esabpfco"
 
 #: crypt-gpgme.c:4750
-msgid ""
-"PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, s/(m)ime, (c)lear, or (o)ppenc "
-"mode? "
-msgstr ""
-"PGP (e)шифр, (s)подпись, (a)подпись как, (b)оба, s/(m)ime, (c)отказ, "
-"(o)ppenc? "
+msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, s/(m)ime, (c)lear, or (o)ppenc mode? "
+msgstr "PGP (e)шифр, (s)подпись, (a)подпись как, (b)оба, s/(m)ime, (c)отказ, (o)ppenc? "
 
 #: crypt-gpgme.c:4751
 msgid "esabmfco"
@@ -1527,8 +1497,7 @@ msgstr "esabmfco"
 
 #: crypt-gpgme.c:4762
 msgid "S/MIME (e)ncrypt, (s)ign, sign (a)s, (b)oth, (p)gp or (c)lear? "
-msgstr ""
-"S/MIME (e)шифр, (s)подпись, (a)подпись как, (b)оба, (p)gp, (c)отказаться? "
+msgstr "S/MIME (e)шифр, (s)подпись, (a)подпись как, (b)оба, (p)gp, (c)отказаться? "
 
 #: crypt-gpgme.c:4763
 msgid "esabpfc"
@@ -1536,8 +1505,7 @@ msgstr "esabpfc"
 
 #: crypt-gpgme.c:4768
 msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, s/(m)ime or (c)lear? "
-msgstr ""
-"PGP (e)шифр, (s)подпись, (a)подпись как, (b)оба, s/(m)ime, (c)отказаться? "
+msgstr "PGP (e)шифр, (s)подпись, (a)подпись как, (b)оба, s/(m)ime, (c)отказаться? "
 
 #: crypt-gpgme.c:4769
 msgid "esabmfc"
@@ -1583,9 +1551,7 @@ msgstr "Запускается программа PGP..."
 
 #: crypt.c:168
 msgid "Message can't be sent inline.  Revert to using PGP/MIME?"
-msgstr ""
-"Не удалось отправить PGP-сообщение в текстовом формате. Использовать PGP/"
-"MIME?"
+msgstr "Не удалось отправить PGP-сообщение в текстовом формате. Использовать PGP/MIME?"
 
 #: crypt.c:170 send.c:1792
 msgid "Mail not sent."
@@ -1721,8 +1687,7 @@ msgstr "%s: Операция запрещена ACL"
 
 #: curs_main.c:417
 msgid "Cannot toggle write on a readonly mailbox!"
-msgstr ""
-"Не удалось разрешить запись в почтовый ящик, открытый только для чтения!"
+msgstr "Не удалось разрешить запись в почтовый ящик, открытый только для чтения!"
 
 #: curs_main.c:424
 msgid "Changes to folder will be written on folder exit."
@@ -1768,8 +1733,7 @@ msgstr "Отвечать по %s%s?"
 
 #: curs_main.c:905
 msgid "Mailbox was externally modified.  Flags may be wrong."
-msgstr ""
-"Ящик был изменен внешней программой.  Значения флагов могут быть некорректны."
+msgstr "Ящик был изменен внешней программой.  Значения флагов могут быть некорректны."
 
 #: curs_main.c:912 pager.c:2053
 msgid "New mail in this mailbox."
@@ -1971,8 +1935,7 @@ msgstr "Дискуссия разделена"
 
 #: curs_main.c:2073
 msgid "Thread cannot be broken, message is not part of a thread"
-msgstr ""
-"Дискуссия не может быть разделена, сообщение не является частью дискуссии"
+msgstr "Дискуссия не может быть разделена, сообщение не является частью дискуссии"
 
 #. L10N: CHECK_ACL
 #: curs_main.c:2083
@@ -2223,9 +2186,7 @@ msgstr "Сбросить флаг"
 
 #: handler.c:1139
 msgid "[-- Error:  Could not display any parts of Multipart/Alternative! --]\n"
-msgstr ""
-"[-- Ошибка: не удалось показать ни одну из частей Multipart/Alternative! "
-"--]\n"
+msgstr "[-- Ошибка: не удалось показать ни одну из частей Multipart/Alternative! --]\n"
 
 #: handler.c:1254
 #, c-format
@@ -2263,8 +2224,7 @@ msgstr "[-- Автопросмотр стандартного потока ош�
 
 #: handler.c:1446
 msgid "[-- Error: message/external-body has no access-type parameter --]\n"
-msgstr ""
-"[-- Ошибка: тип message/external требует наличие параметра access-type --]\n"
+msgstr "[-- Ошибка: тип message/external требует наличие параметра access-type --]\n"
 
 #: handler.c:1467
 #, c-format
@@ -2519,9 +2479,7 @@ msgstr "Закрытие соединения с сервером %s..."
 #: imap/imap.c:309
 #, fuzzy
 msgid "This IMAP server is ancient. NeoMutt does not work with it."
-msgstr ""
-"Этот IMAP-сервер использует устаревший протокол. Mutt не сможет работать с "
-"ним."
+msgstr "Этот IMAP-сервер использует устаревший протокол. Mutt не сможет работать с ним."
 
 #: imap/imap.c:434 nntp.c:679 pop_lib.c:295 smtp.c:466
 msgid "Secure connection with TLS?"
@@ -2634,8 +2592,7 @@ msgstr "Получение сообщения..."
 
 #: imap/message.c:491 pop.c:569
 msgid "The message index is incorrect. Try reopening the mailbox."
-msgstr ""
-"Нумерация сообщений изменилась. Требуется повторно открыть почтовый ящик."
+msgstr "Нумерация сообщений изменилась. Требуется повторно открыть почтовый ящик."
 
 # или "на сервер" убрать??
 #: imap/message.c:661
@@ -2926,10 +2883,8 @@ msgstr "Нехватка памяти!"
 #: main.c:84
 msgid ""
 "usage: mutt [<options>] [-z] [-f <file> | -yZ]\n"
-"       mutt [<options>] [-Ex] [-Hi <file>] [-s <subj>] [-bc <addr>] [-a "
-"<file> [...] --] <addr> [...]\n"
-"       mutt [<options>] [-x] [-s <subj>] [-bc <addr>] [-a <file> [...] --] "
-"<addr> [...] < message\n"
+"       mutt [<options>] [-Ex] [-Hi <file>] [-s <subj>] [-bc <addr>] [-a <file> [...] --] <addr> [...]\n"
+"       mutt [<options>] [-x] [-s <subj>] [-bc <addr>] [-a <file> [...] --] <addr> [...] < message\n"
 "       mutt [<options>] -p\n"
 "       mutt [<options>] -A <alias> [...]\n"
 "       mutt [<options>] -Q <query> [...]\n"
@@ -2937,10 +2892,8 @@ msgid ""
 "       mutt -v[v]\n"
 msgstr ""
 "запуск: mutt [<options>] [-z] [-f <file> | -yZ]\n"
-"        mutt [<options>] [-Ex] [-Hi <file>] [-s <subj>] [-bc <addr>] [-a "
-"<file> [...] --] <addr> [...]\n"
-"        mutt [<options>] [-x] [-s <subj>] [-bc <addr>] [-a <file> [...] --] "
-"<addr> [...] < message\n"
+"        mutt [<options>] [-Ex] [-Hi <file>] [-s <subj>] [-bc <addr>] [-a <file> [...] --] <addr> [...]\n"
+"        mutt [<options>] [-x] [-s <subj>] [-bc <addr>] [-a <file> [...] --] <addr> [...] < message\n"
 "        mutt [<options>] -p\n"
 "        mutt [<options>] -A <alias> [...]\n"
 "        mutt [<options>] -Q <query> [...]\n"
@@ -2985,8 +2938,7 @@ msgid ""
 "  -p\t\trecall a postponed message"
 msgstr ""
 "  -E\t\tредактировать шаблон (-H) или вставляемый файл (-i)\n"
-"  -e <command>\tуказать команду, которая будет выполнена после "
-"инициализации\n"
+"  -e <command>\tуказать команду, которая будет выполнена после инициализации\n"
 "  -f <file>\tуказать почтовый ящик для работы\n"
 "  -F <file>\tуказать альтернативный muttrc\n"
 "  -H <file>\tуказать файл, содержащий шаблон заголовка и тела письма\n"
@@ -3009,14 +2961,12 @@ msgid ""
 msgstr ""
 "  -Q <имя>\tвывести значение переменной конфигурации\n"
 "  -R\t\tоткрыть почтовый ящик в режиме \"только для чтения\"\n"
-"  -s <тема>\tуказать тему сообщения (должна быть в кавычках, если "
-"присутствуют пробелы)\n"
+"  -s <тема>\tуказать тему сообщения (должна быть в кавычках, если присутствуют пробелы)\n"
 "  -v\t\tвывести номер версии и параметры компиляции\n"
 "  -x\t\tэмулировать режим посылки команды mailx\n"
 "  -y\t\tвыбрать почтовый ящик из списка `mailboxes'\n"
 "  -z\t\tвыйти немедленно если в почтовом ящике отсутствует новая почта\n"
-"  -Z\t\tоткрыть первый почтовый ящик с новой почтой, выйти немедленно если "
-"таковая отсутствует\n"
+"  -Z\t\tоткрыть первый почтовый ящик с новой почтой, выйти немедленно если таковая отсутствует\n"
 "  -h\t\tтекст этой подсказки"
 
 #: main.c:149
@@ -3537,8 +3487,7 @@ msgstr "Ошибка обработки данных сертификата"
 
 #: mutt_ssl_gnutls.c:833
 msgid "Warning: Server certificate was signed using an insecure algorithm"
-msgstr ""
-"Предупреждение: сертификат подписан с использованием небезопасного алгоритма"
+msgstr "Предупреждение: сертификат подписан с использованием небезопасного алгоритма"
 
 #: mutt_ssl_gnutls.c:952
 #, c-format
@@ -3796,8 +3745,7 @@ msgid "Checking for new newsgroups..."
 msgstr "Проверка наличия новых сообщений..."
 
 #: nntp.c:2420
-msgid ""
-"Unable to find child articles because server does not support XPAT command."
+msgid "Unable to find child articles because server does not support XPAT command."
 msgstr ""
 
 #: pager.c:1629
@@ -3984,8 +3932,7 @@ msgstr "Не удалось запустить программу PGP"
 #: pgp.c:1730
 #, c-format
 msgid "PGP (s)ign, sign (a)s, %s format, (c)lear, or (o)ppenc mode off? "
-msgstr ""
-"PGP (s)подпись, (a)подпись как, %s, (c)отказаться, отключить (o)ppenc? "
+msgstr "PGP (s)подпись, (a)подпись как, %s, (c)отказаться, отключить (o)ppenc? "
 
 #: pgp.c:1731 pgp.c:1761 pgp.c:1783
 msgid "PGP/M(i)ME"
@@ -4013,11 +3960,8 @@ msgstr "safco"
 
 #: pgp.c:1760
 #, c-format
-msgid ""
-"PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, %s format, (c)lear, or (o)ppenc "
-"mode? "
-msgstr ""
-"PGP (e)шифр, (s)подпись, (a)подпись как, (b)оба, %s, (c)отказ, (o)ppenc?"
+msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, %s format, (c)lear, or (o)ppenc mode? "
+msgstr "PGP (e)шифр, (s)подпись, (a)подпись как, (b)оба, %s, (c)отказ, (o)ppenc?"
 
 #: pgp.c:1763
 msgid "esabfcoi"
@@ -4054,8 +3998,7 @@ msgstr "Получение PGP-ключа..."
 
 #: pgpkey.c:491
 msgid "All matching keys are expired, revoked, or disabled."
-msgstr ""
-"Все подходящие ключи помечены как просроченные, отозванные или запрещённые."
+msgstr "Все подходящие ключи помечены как просроченные, отозванные или запрещённые."
 
 #: pgpkey.c:532
 #, c-format
@@ -4315,10 +4258,8 @@ msgid "Deletion of attachments from encrypted messages is unsupported."
 msgstr "Удаление вложений из зашифрованных сообщений не поддерживается."
 
 #: recvattach.c:1144
-msgid ""
-"Deletion of attachments from signed messages may invalidate the signature."
-msgstr ""
-"Удаление вложений из зашифрованных сообщений может аннулировать подпись."
+msgid "Deletion of attachments from signed messages may invalidate the signature."
+msgstr "Удаление вложений из зашифрованных сообщений может аннулировать подпись."
 
 #: recvattach.c:1161 recvattach.c:1178
 msgid "Only deletion of multipart attachments is supported."
@@ -4347,8 +4288,7 @@ msgstr "Переслать как вложения?"
 
 #: recvcmd.c:486
 msgid "Can't decode all tagged attachments.  MIME-forward the others?"
-msgstr ""
-"Удалось раскодировать не все вложения. Переслать остальные в виде MIME?"
+msgstr "Удалось раскодировать не все вложения. Переслать остальные в виде MIME?"
 
 #: recvcmd.c:611
 msgid "Forward MIME encapsulated?"
@@ -4369,8 +4309,7 @@ msgstr "Списков рассылки не найдено!"
 
 #: recvcmd.c:867
 msgid "Can't decode all tagged attachments.  MIME-encapsulate the others?"
-msgstr ""
-"Удалось раскодировать не все вложения. Инкапсулировать остальные в MIME?"
+msgstr "Удалось раскодировать не все вложения. Инкапсулировать остальные в MIME?"
 
 #: remailer.c:481
 msgid "Append"
@@ -4423,8 +4362,7 @@ msgid "Mixmaster doesn't accept Cc or Bcc headers."
 msgstr "Mixmaster не позволяет использовать заголовки Cc и Bcc."
 
 #: remailer.c:732
-msgid ""
-"Please set the hostname variable to a proper value when using mixmaster!"
+msgid "Please set the hostname variable to a proper value when using mixmaster!"
 msgstr "Установите значение переменной hostname для использования mixmaster!"
 
 #: remailer.c:766
@@ -4749,11 +4687,8 @@ msgstr ""
 "[-- Конец данных, подписанных в формате S/MIME --]\n"
 
 #: smime.c:2110
-msgid ""
-"S/MIME (s)ign, encrypt (w)ith, sign (a)s, (c)lear, or (o)ppenc mode off? "
-msgstr ""
-"S/MIME (s)подпись, (w)шифр как, (a)подпись как, (c)отказ, отключить "
-"(o)ppenc? "
+msgid "S/MIME (s)ign, encrypt (w)ith, sign (a)s, (c)lear, or (o)ppenc mode off? "
+msgstr "S/MIME (s)подпись, (w)шифр как, (a)подпись как, (c)отказ, отключить (o)ppenc? "
 
 #. L10N: The 'f' is from "forget it", an old undocumented synonym of
 #. 'clear'.  Please use a corresponding letter in your language.
@@ -4764,22 +4699,16 @@ msgid "swafco"
 msgstr "swafco"
 
 #: smime.c:2124
-msgid ""
-"S/MIME (e)ncrypt, (s)ign, encrypt (w)ith, sign (a)s, (b)oth, (c)lear, or "
-"(o)ppenc mode? "
-msgstr ""
-"S/MIME (e)шифр, (s)подпись, (w)шифр как, (a)подпись как, (b)оба, (c)отказ, "
-"(o)ppenc? "
+msgid "S/MIME (e)ncrypt, (s)ign, encrypt (w)ith, sign (a)s, (b)oth, (c)lear, or (o)ppenc mode? "
+msgstr "S/MIME (e)шифр, (s)подпись, (w)шифр как, (a)подпись как, (b)оба, (c)отказ, (o)ppenc? "
 
 #: smime.c:2125
 msgid "eswabfco"
 msgstr "eswabfco"
 
 #: smime.c:2133
-msgid ""
-"S/MIME (e)ncrypt, (s)ign, encrypt (w)ith, sign (a)s, (b)oth, or (c)lear? "
-msgstr ""
-"S/MIME (e)шифр, (s)подпись, (w)шифр как, (a)подпись как, (b)оба, (c)отказ? "
+msgid "S/MIME (e)ncrypt, (s)ign, encrypt (w)ith, sign (a)s, (b)oth, or (c)lear? "
+msgstr "S/MIME (e)шифр, (s)подпись, (w)шифр как, (a)подпись как, (b)оба, (c)отказ? "
 
 #: smime.c:2134
 msgid "eswabfc"
@@ -4944,13 +4873,11 @@ msgstr ""
 msgid ""
 "    You should have received a copy of the GNU General Public License\n"
 "    along with this program; if not, write to the Free Software\n"
-"    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  "
-"02110-1301, USA.\n"
+"    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.\n"
 msgstr ""
 "    Вы должны были получить копию GNU General Public License вместе с\n"
 "    этой программой. Если вы ее не получили, обратитесь во Free Software\n"
-"    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  "
-"02110-1301, USA.\n"
+"    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.\n"
 
 #: version.c:87
 msgid ""
@@ -5038,9 +4965,7 @@ msgstr "отключиться от текущего почтового ящик
 
 #: ../keymap_alldefs.h:18
 msgid "toggle view all/subscribed mailboxes (IMAP only)"
-msgstr ""
-"переключиться между режимами просмотра всех/подключенных почтовых ящиков "
-"(только IMAP)"
+msgstr "переключиться между режимами просмотра всех/подключенных почтовых ящиков (только IMAP)"
 
 #: ../keymap_alldefs.h:19
 msgid "list mailboxes with new mail"
@@ -5337,8 +5262,7 @@ msgstr "поменять символ под курсором с предыду�
 
 #: ../keymap_alldefs.h:91
 msgid "capitalize the word"
-msgstr ""
-"перевести первую букву слова в верхний регистр, а остальные -- в нижний"
+msgstr "перевести первую букву слова в верхний регистр, а остальные -- в нижний"
 
 #: ../keymap_alldefs.h:92
 msgid "convert the word to lower case"
@@ -5778,9 +5702,7 @@ msgstr "разрешить/запретить перезапись почтов�
 
 #: ../keymap_alldefs.h:198
 msgid "toggle whether to browse mailboxes or all files"
-msgstr ""
-"переключиться между режимами просмотра всех файлов и просмотра почтовых "
-"ящиков"
+msgstr "переключиться между режимами просмотра всех файлов и просмотра почтовых ящиков"
 
 #: ../keymap_alldefs.h:199
 msgid "move to the top of the page"
@@ -5871,9 +5793,7 @@ msgstr "переместить указатель на предыдущий ящ
 #: ../keymap_alldefs.h:220
 #, fuzzy
 msgid "toggle between mailboxes and virtual mailboxes"
-msgstr ""
-"переключиться между режимами просмотра всех файлов и просмотра почтовых "
-"ящиков"
+msgstr "переключиться между режимами просмотра всех файлов и просмотра почтовых ящиков"
 
 #: ../keymap_alldefs.h:221
 msgid "make the sidebar (in)visible"
@@ -5972,4 +5892,3 @@ msgstr "извлечь поддерживаемые открытые ключи"
 #: ../keymap_alldefs.h:244
 msgid "show S/MIME options"
 msgstr "вывести параметры S/MIME"
-

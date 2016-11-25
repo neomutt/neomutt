@@ -143,8 +143,7 @@ msgstr "Error al abrir el archivo para leer las cabeceras."
 #: attach.c:197
 #, c-format
 msgid "No mailcap compose entry for %s, creating empty file."
-msgstr ""
-"Falta la entrada \"compose\" de mailcap para %s, creando archivo vacío."
+msgstr "Falta la entrada \"compose\" de mailcap para %s, creando archivo vacío."
 
 #: attach.c:258
 #, c-format
@@ -158,8 +157,7 @@ msgstr "Falta la entrada \"edit\" para %s en el archivo Mailcap"
 
 #: attach.c:366
 msgid "No matching mailcap entry found.  Viewing as text."
-msgstr ""
-"No hay una entrada correspondiente en el archivo mailcap. Viendo como texto."
+msgstr "No hay una entrada correspondiente en el archivo mailcap. Viendo como texto."
 
 #: attach.c:379
 msgid "MIME type not defined.  Cannot view attachment."
@@ -310,17 +308,12 @@ msgstr "Patrón de archivos: "
 
 #: browser.c:1724
 #, fuzzy
-msgid ""
-"Reverse sort by (d)ate, (a)lpha, si(z)e, d(e)scription, (c)ount, ne(w) "
-"count, or do(n)'t sort? "
-msgstr ""
-"¿Órden inverso por (f)echa, (t)amaño, (a)lfabéticamente o (s)in órden? "
+msgid "Reverse sort by (d)ate, (a)lpha, si(z)e, d(e)scription, (c)ount, ne(w) count, or do(n)'t sort? "
+msgstr "¿Órden inverso por (f)echa, (t)amaño, (a)lfabéticamente o (s)in órden? "
 
 #: browser.c:1725
 #, fuzzy
-msgid ""
-"Sort by (d)ate, (a)lpha, si(z)e, d(e)scription, (c)ount, ne(w) count, or "
-"do(n)'t sort? "
+msgid "Sort by (d)ate, (a)lpha, si(z)e, d(e)scription, (c)ount, ne(w) count, or do(n)'t sort? "
 msgstr "¿Ordenar por (f)echa, (t)amaño, (a)lfabéticamente o (s)in órden? "
 
 #: browser.c:1726
@@ -547,14 +540,12 @@ msgstr "Los mensajes no pudieron ser imprimidos"
 #: commands.c:547
 #, fuzzy
 msgid "Rev-Sort Date/Frm/Recv/Subj/tO/Thread/Unsort/siZe/sCore/sPam/Label?: "
-msgstr ""
-"Órden-rev fech(a)/d(e)/(r)ece/a(s)nto/(p)ara/(h)ilo/(n)ada/ta(m)añ/punta(j): "
+msgstr "Órden-rev fech(a)/d(e)/(r)ece/a(s)nto/(p)ara/(h)ilo/(n)ada/ta(m)añ/punta(j): "
 
 #: commands.c:548
 #, fuzzy
 msgid "Sort Date/Frm/Recv/Subj/tO/Thread/Unsort/siZe/sCore/sPam/Label?: "
-msgstr ""
-"Órden fech(a)/d(e)/(r)ecep/a(s)unto/(p)ara/(h)ilo/(n)ada/ta(m)año/punta(j)e: "
+msgstr "Órden fech(a)/d(e)/(r)ecep/a(s)unto/(p)ara/(h)ilo/(n)ada/ta(m)año/punta(j)e: "
 
 #: commands.c:549
 #, fuzzy
@@ -1036,9 +1027,7 @@ msgid "Fingerprint: "
 msgstr "Huella: %s"
 
 #: crypt-gpgme.c:1320
-msgid ""
-"WARNING: We have NO indication whether the key belongs to the person named "
-"as shown above\n"
+msgid "WARNING: We have NO indication whether the key belongs to the person named as shown above\n"
 msgstr ""
 
 #: crypt-gpgme.c:1327
@@ -1046,9 +1035,7 @@ msgid "WARNING: The key does NOT BELONG to the person named as shown above\n"
 msgstr ""
 
 #: crypt-gpgme.c:1331
-msgid ""
-"WARNING: It is NOT certain that the key belongs to the person named as shown "
-"above\n"
+msgid "WARNING: It is NOT certain that the key belongs to the person named as shown above\n"
 msgstr ""
 
 #: crypt-gpgme.c:1361 crypt-gpgme.c:1366
@@ -1546,9 +1533,7 @@ msgstr ""
 
 #: crypt-gpgme.c:4744
 #, fuzzy
-msgid ""
-"S/MIME (e)ncrypt, (s)ign, sign (a)s, (b)oth, (p)gp, (c)lear, or (o)ppenc "
-"mode? "
+msgid "S/MIME (e)ncrypt, (s)ign, sign (a)s, (b)oth, (p)gp, (c)lear, or (o)ppenc mode? "
 msgstr "¿co(d)ificar, f(i)rmar (c)omo, amb(o)s, inc(l)uido, o ca(n)celar? "
 
 #: crypt-gpgme.c:4745
@@ -1558,9 +1543,7 @@ msgstr "dicon"
 
 #: crypt-gpgme.c:4750
 #, fuzzy
-msgid ""
-"PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, s/(m)ime, (c)lear, or (o)ppenc "
-"mode? "
+msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, s/(m)ime, (c)lear, or (o)ppenc mode? "
 msgstr "¿co(d)ificar, f(i)rmar (c)omo, amb(o)s, inc(l)uido, o ca(n)celar? "
 
 #: crypt-gpgme.c:4751
@@ -2304,8 +2287,7 @@ msgstr "Quitar indicador"
 
 #: handler.c:1139
 msgid "[-- Error:  Could not display any parts of Multipart/Alternative! --]\n"
-msgstr ""
-"[-- ¡Error: no se pudo mostrar ninguna parte de multipart/alternative! --]\n"
+msgstr "[-- ¡Error: no se pudo mostrar ninguna parte de multipart/alternative! --]\n"
 
 #: handler.c:1254
 #, c-format
@@ -2343,8 +2325,7 @@ msgstr "[-- Error al ejecutar %s --]\n"
 
 #: handler.c:1446
 msgid "[-- Error: message/external-body has no access-type parameter --]\n"
-msgstr ""
-"[-- Error: Contenido message/external no tiene parámetro acces-type --]\n"
+msgstr "[-- Error: Contenido message/external no tiene parámetro acces-type --]\n"
 
 #: handler.c:1467
 #, c-format
@@ -2703,8 +2684,7 @@ msgstr "Copiando %d mensajes a %s..."
 
 #: imap/message.c:98
 msgid "Unable to fetch headers from this IMAP server version."
-msgstr ""
-"No se pueden recoger cabeceras de mensajes de esta versión de servidor IMAP."
+msgstr "No se pueden recoger cabeceras de mensajes de esta versión de servidor IMAP."
 
 #: imap/message.c:108
 #, fuzzy, c-format
@@ -3024,10 +3004,8 @@ msgstr "¡Sin memoria!"
 #: main.c:84
 msgid ""
 "usage: mutt [<options>] [-z] [-f <file> | -yZ]\n"
-"       mutt [<options>] [-Ex] [-Hi <file>] [-s <subj>] [-bc <addr>] [-a "
-"<file> [...] --] <addr> [...]\n"
-"       mutt [<options>] [-x] [-s <subj>] [-bc <addr>] [-a <file> [...] --] "
-"<addr> [...] < message\n"
+"       mutt [<options>] [-Ex] [-Hi <file>] [-s <subj>] [-bc <addr>] [-a <file> [...] --] <addr> [...]\n"
+"       mutt [<options>] [-x] [-s <subj>] [-bc <addr>] [-a <file> [...] --] <addr> [...] < message\n"
 "       mutt [<options>] -p\n"
 "       mutt [<options>] -A <alias> [...]\n"
 "       mutt [<options>] -Q <query> [...]\n"
@@ -3066,8 +3044,7 @@ msgid ""
 "  -p\t\trecall a postponed message"
 msgstr ""
 "uso: mutt [ -nRyzZ ] [ -e <cmd> ] [ -F <arch> ] [ -m <tipo> ] [ -f <arch> ]\n"
-"     mutt [ -nx ] [ -e <cmd> ] [ -a <arch> ] [ -F <arch> ] [ -H <arch> ] [ -"
-"i <arch> ] [ -s <asunto> ] [ -b <dir> ] [ -c <dir> ] <dir> [ ... ]\n"
+"     mutt [ -nx ] [ -e <cmd> ] [ -a <arch> ] [ -F <arch> ] [ -H <arch> ] [ -i <arch> ] [ -s <asunto> ] [ -b <dir> ] [ -c <dir> ] <dir> [ ... ]\n"
 "     mutt [ -n ] [ -e <cmd> ] [ -F <archivo> ] -p\n"
 "     mutt -v[v]\n"
 "\n"
@@ -3084,8 +3061,7 @@ msgstr ""
 "  -n\t\tproduce que Mutt no lea el archivo Muttrc del sistema\n"
 "  -p\t\tcontinuar un mensaje pospuesto\n"
 "  -R\t\tabrir un buzón en modo de solo-lectura\n"
-"  -s <asunto>\tespecifica el asunto (necesita comillas si contiene "
-"espacios)\n"
+"  -s <asunto>\tespecifica el asunto (necesita comillas si contiene espacios)\n"
 "  -v\t\tmuestra versión y opciones definidas al compilar\n"
 "  -x\t\tsimula el modo de envío mailx\n"
 "  -y\t\tselecciona un buzón especificado en su lista `mailboxes'\n"
@@ -3107,8 +3083,7 @@ msgid ""
 "  -h\t\tthis help message"
 msgstr ""
 "uso: mutt [ -nRyzZ ] [ -e <cmd> ] [ -F <arch> ] [ -m <tipo> ] [ -f <arch> ]\n"
-"     mutt [ -nx ] [ -e <cmd> ] [ -a <arch> ] [ -F <arch> ] [ -H <arch> ] [ -"
-"i <arch> ] [ -s <asunto> ] [ -b <dir> ] [ -c <dir> ] <dir> [ ... ]\n"
+"     mutt [ -nx ] [ -e <cmd> ] [ -a <arch> ] [ -F <arch> ] [ -H <arch> ] [ -i <arch> ] [ -s <asunto> ] [ -b <dir> ] [ -c <dir> ] <dir> [ ... ]\n"
 "     mutt [ -n ] [ -e <cmd> ] [ -F <archivo> ] -p\n"
 "     mutt -v[v]\n"
 "\n"
@@ -3125,8 +3100,7 @@ msgstr ""
 "  -n\t\tproduce que Mutt no lea el archivo Muttrc del sistema\n"
 "  -p\t\tcontinuar un mensaje pospuesto\n"
 "  -R\t\tabrir un buzón en modo de solo-lectura\n"
-"  -s <asunto>\tespecifica el asunto (necesita comillas si contiene "
-"espacios)\n"
+"  -s <asunto>\tespecifica el asunto (necesita comillas si contiene espacios)\n"
 "  -v\t\tmuestra versión y opciones definidas al compilar\n"
 "  -x\t\tsimula el modo de envío mailx\n"
 "  -y\t\tselecciona un buzón especificado en su lista `mailboxes'\n"
@@ -3215,8 +3189,7 @@ msgstr "¡Error fatal! ¡No se pudo reabrir el buzón!"
 
 #: mbox.c:881
 msgid "sync: mbox modified, but no modified messages! (report this bug)"
-msgstr ""
-"sync: buzón modificado, ¡pero sin mensajes modificados! (reporte este fallo)"
+msgstr "sync: buzón modificado, ¡pero sin mensajes modificados! (reporte este fallo)"
 
 #: mbox.c:905 mh.c:2023 mutt_notmuch.c:1623 mx.c:757
 #, c-format
@@ -3926,8 +3899,7 @@ msgid "Checking for new newsgroups..."
 msgstr "Revisando si hay mensajes nuevos..."
 
 #: nntp.c:2420
-msgid ""
-"Unable to find child articles because server does not support XPAT command."
+msgid "Unable to find child articles because server does not support XPAT command."
 msgstr ""
 
 #: pager.c:1629
@@ -4146,9 +4118,7 @@ msgstr ""
 
 #: pgp.c:1760
 #, fuzzy, c-format
-msgid ""
-"PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, %s format, (c)lear, or (o)ppenc "
-"mode? "
+msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, %s format, (c)lear, or (o)ppenc mode? "
 msgstr "¿co(d)ificar, f(i)rmar (c)omo, amb(o)s, inc(l)uido, o ca(n)celar? "
 
 #: pgp.c:1763
@@ -4461,8 +4431,7 @@ msgstr "Suprimir archivos adjuntos de mensajes PGP no es soportado."
 
 #: recvattach.c:1144
 #, fuzzy
-msgid ""
-"Deletion of attachments from signed messages may invalidate the signature."
+msgid "Deletion of attachments from signed messages may invalidate the signature."
 msgstr "Suprimir archivos adjuntos de mensajes PGP no es soportado."
 
 #: recvattach.c:1161 recvattach.c:1178
@@ -4494,9 +4463,7 @@ msgstr "¿Adelatar como archivos adjuntos?"
 
 #: recvcmd.c:486
 msgid "Can't decode all tagged attachments.  MIME-forward the others?"
-msgstr ""
-"No se pudieron decodificar todos los archivos adjuntos marcados.  ¿Adelantar "
-"los otros por MIME?"
+msgstr "No se pudieron decodificar todos los archivos adjuntos marcados.  ¿Adelantar los otros por MIME?"
 
 #: recvcmd.c:611
 msgid "Forward MIME encapsulated?"
@@ -4517,9 +4484,7 @@ msgstr "¡Ninguna lista de correo encontrada!"
 
 #: recvcmd.c:867
 msgid "Can't decode all tagged attachments.  MIME-encapsulate the others?"
-msgstr ""
-"No se pudieron decodificar todos los archivos adjuntos marcados.  "
-"¿Encapsular los otros por MIME?"
+msgstr "No se pudieron decodificar todos los archivos adjuntos marcados.  ¿Encapsular los otros por MIME?"
 
 #: remailer.c:481
 msgid "Append"
@@ -4572,10 +4537,8 @@ msgid "Mixmaster doesn't accept Cc or Bcc headers."
 msgstr "Mixmaster no acepta cabeceras Cc or Bcc."
 
 #: remailer.c:732
-msgid ""
-"Please set the hostname variable to a proper value when using mixmaster!"
-msgstr ""
-"¡Por favor ajuste la variable hostname a un valor correcto si usa mixmaster!"
+msgid "Please set the hostname variable to a proper value when using mixmaster!"
+msgstr "¡Por favor ajuste la variable hostname a un valor correcto si usa mixmaster!"
 
 #: remailer.c:766
 #, c-format
@@ -4922,8 +4885,7 @@ msgstr ""
 
 #: smime.c:2110
 #, fuzzy
-msgid ""
-"S/MIME (s)ign, encrypt (w)ith, sign (a)s, (c)lear, or (o)ppenc mode off? "
+msgid "S/MIME (s)ign, encrypt (w)ith, sign (a)s, (c)lear, or (o)ppenc mode off? "
 msgstr "¿co(d)ificar, f(i)rmar (c)omo, amb(o)s o ca(n)celar? "
 
 #. L10N: The 'f' is from "forget it", an old undocumented synonym of
@@ -4936,9 +4898,7 @@ msgstr ""
 
 #: smime.c:2124
 #, fuzzy
-msgid ""
-"S/MIME (e)ncrypt, (s)ign, encrypt (w)ith, sign (a)s, (b)oth, (c)lear, or "
-"(o)ppenc mode? "
+msgid "S/MIME (e)ncrypt, (s)ign, encrypt (w)ith, sign (a)s, (b)oth, (c)lear, or (o)ppenc mode? "
 msgstr "¿co(d)ificar, f(i)rmar (c)omo, amb(o)s o ca(n)celar? "
 
 #: smime.c:2125
@@ -4948,8 +4908,7 @@ msgstr "dicon"
 
 #: smime.c:2133
 #, fuzzy
-msgid ""
-"S/MIME (e)ncrypt, (s)ign, encrypt (w)ith, sign (a)s, (b)oth, or (c)lear? "
+msgid "S/MIME (e)ncrypt, (s)ign, encrypt (w)ith, sign (a)s, (b)oth, or (c)lear? "
 msgstr "¿co(d)ificar, f(i)rmar (c)omo, amb(o)s o ca(n)celar? "
 
 #: smime.c:2134
@@ -5098,8 +5057,7 @@ msgstr ""
 msgid ""
 "    You should have received a copy of the GNU General Public License\n"
 "    along with this program; if not, write to the Free Software\n"
-"    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  "
-"02110-1301, USA.\n"
+"    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.\n"
 msgstr ""
 
 #: version.c:87
@@ -6139,4 +6097,3 @@ msgstr "extraer claves PGP públicas"
 #, fuzzy
 msgid "show S/MIME options"
 msgstr "mostrar opciones S/MIME"
-

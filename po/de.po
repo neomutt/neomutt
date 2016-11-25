@@ -34,8 +34,8 @@ msgstr "Benutzername unter %s: "
 msgid "Password for %s@%s: "
 msgstr "Passwort für %s@%s: "
 
-#: addrbook.c:37 browser.c:53 browser.c:63 pager.c:1628 postpone.c:41 query.c:48
-#: recvattach.c:53
+#: addrbook.c:37 browser.c:53 browser.c:63 pager.c:1628 postpone.c:41
+#: query.c:48 recvattach.c:53
 msgid "Exit"
 msgstr "Verlassen"
 
@@ -78,9 +78,7 @@ msgstr "Sie haben bereits einen Adressbucheintrag mit diesem Kurznamen definiert
 
 #: alias.c:273
 msgid "Warning: This alias name may not work.  Fix it?"
-msgstr ""
-"Warnung: Dieser Kurzname für das Adressbuch könnte Probleme bereiten. "
-"Korrigieren?"
+msgstr "Warnung: Dieser Kurzname für das Adressbuch könnte Probleme bereiten. Korrigieren?"
 
 #: alias.c:298
 msgid "Address: "
@@ -100,8 +98,8 @@ msgstr "Name: "
 msgid "[%s = %s] Accept?"
 msgstr "[%s = %s] Akzeptieren?"
 
-#: alias.c:348 recvattach.c:441 recvattach.c:467 recvattach.c:480 recvattach.c:493
-#: recvattach.c:523
+#: alias.c:348 recvattach.c:441 recvattach.c:467 recvattach.c:480
+#: recvattach.c:493 recvattach.c:523
 msgid "Save to file: "
 msgstr "Speichern in Datei: "
 
@@ -191,8 +189,8 @@ msgstr "---Anhang: %s: %s"
 msgid "---Attachment: %s"
 msgstr "---Anhang: %s"
 
-#: attach.c:633 attach.c:665 attach.c:967 attach.c:1025 handler.c:1363 pgpkey.c:571
-#: pgpkey.c:760
+#: attach.c:633 attach.c:665 attach.c:967 attach.c:1025 handler.c:1363
+#: pgpkey.c:571 pgpkey.c:760
 msgid "Can't create filter"
 msgstr "Kann Filter nicht erzeugen"
 
@@ -308,16 +306,12 @@ msgstr "Dateimaske: "
 
 #: browser.c:1724
 #, fuzzy
-msgid ""
-"Reverse sort by (d)ate, (a)lpha, si(z)e, d(e)scription, (c)ount, ne(w) count, or "
-"do(n)'t sort? "
+msgid "Reverse sort by (d)ate, (a)lpha, si(z)e, d(e)scription, (c)ount, ne(w) count, or do(n)'t sort? "
 msgstr "Sortiere umgekehrt nach (D)atum, (a)lphabetisch, (G)röße, oder (n)icht? "
 
 #: browser.c:1725
 #, fuzzy
-msgid ""
-"Sort by (d)ate, (a)lpha, si(z)e, d(e)scription, (c)ount, ne(w) count, or do(n)'t "
-"sort? "
+msgid "Sort by (d)ate, (a)lpha, si(z)e, d(e)scription, (c)ount, ne(w) count, or do(n)'t sort? "
 msgstr "Sortiere nach (D)atum, (a)lphabetisch, (G)röße oder (n)icht?"
 
 #: browser.c:1726
@@ -537,14 +531,11 @@ msgstr "Nachrichten konnten nicht gedruckt werden"
 
 #: commands.c:547
 msgid "Rev-Sort Date/Frm/Recv/Subj/tO/Thread/Unsort/siZe/sCore/sPam/Label?: "
-msgstr ""
-"Umgekehrt sortieren Datum/Abs/eiNg/Betr/Empf/Faden/Unsort/Größe/beWert/sPam/"
-"eTikett: "
+msgstr "Umgekehrt sortieren Datum/Abs/eiNg/Betr/Empf/Faden/Unsort/Größe/beWert/sPam/eTikett: "
 
 #: commands.c:548
 msgid "Sort Date/Frm/Recv/Subj/tO/Thread/Unsort/siZe/sCore/sPam/Label?: "
-msgstr ""
-"Sortieren Datum/Abs/eiNg/Betr/Empf/Faden/Unsort/Größe/beWert/sPam/eTikett?: "
+msgstr "Sortieren Datum/Abs/eiNg/Betr/Empf/Faden/Unsort/Größe/beWert/sPam/eTikett?: "
 
 #: commands.c:549
 msgid "dfrsotuzcpl"
@@ -876,8 +867,7 @@ msgstr "Komprimiere %s..."
 #: compress.c:642
 #, c-format
 msgid " %s: Error compressing mailbox!  Uncompressed one kept!\n"
-msgstr ""
-" %s: Fehler beim Dekomprimieren der Mailbox! Die unkomprimierte wurde behalten!\n"
+msgstr " %s: Fehler beim Dekomprimieren der Mailbox! Die unkomprimierte wurde behalten!\n"
 
 #: compress.c:686 mbox.c:748
 msgid "Mailbox was corrupted!"
@@ -967,9 +957,7 @@ msgstr "Fehler beim Signieren der Daten: %s\n"
 
 #: crypt-gpgme.c:944
 msgid "$pgp_sign_as unset and no default key specified in ~/.gnupg/gpg.conf"
-msgstr ""
-"$pgp_sign_as nicht gesetzt und kein Standardschlüssel in ~/.gnupg/gpg.conf "
-"benannt"
+msgstr "$pgp_sign_as nicht gesetzt und kein Standardschlüssel in ~/.gnupg/gpg.conf benannt"
 
 #: crypt-gpgme.c:1140
 msgid "Warning: One of the keys has been revoked\n"
@@ -1024,24 +1012,16 @@ msgid "Fingerprint: "
 msgstr "Fingerabdruck ....: "
 
 #: crypt-gpgme.c:1320
-msgid ""
-"WARNING: We have NO indication whether the key belongs to the person named as "
-"shown above\n"
-msgstr ""
-"WARNUNG: Wir haben KEINEN Beleg, dass der Schlüssel zur oben genannten Person "
-"gehört\n"
+msgid "WARNING: We have NO indication whether the key belongs to the person named as shown above\n"
+msgstr "WARNUNG: Wir haben KEINEN Beleg, dass der Schlüssel zur oben genannten Person gehört\n"
 
 #: crypt-gpgme.c:1327
 msgid "WARNING: The key does NOT BELONG to the person named as shown above\n"
 msgstr "WARNUNG: Der Schlüssel gehört NICHT zur oben genannten Person\n"
 
 #: crypt-gpgme.c:1331
-msgid ""
-"WARNING: It is NOT certain that the key belongs to the person named as shown "
-"above\n"
-msgstr ""
-"WARNUNG: Es ist NICHT sicher, dass der Schlüssel zur oben genannten Person "
-"gehört\n"
+msgid "WARNING: It is NOT certain that the key belongs to the person named as shown above\n"
+msgstr "WARNUNG: Es ist NICHT sicher, dass der Schlüssel zur oben genannten Person gehört\n"
 
 #: crypt-gpgme.c:1361 crypt-gpgme.c:1366
 msgid "aka: "
@@ -1939,8 +1919,8 @@ msgstr "Mutt verlassen, ohne Änderungen zu speichern?"
 msgid "Cannot break thread"
 msgstr "Kann Diskussionsfaden nicht abreißen"
 
-#: curs_main.c:2050 curs_main.c:2086 curs_main.c:2546 curs_main.c:2578 flags.c:304
-#: thread.c:1029 thread.c:1085 thread.c:1152
+#: curs_main.c:2050 curs_main.c:2086 curs_main.c:2546 curs_main.c:2578
+#: flags.c:304 thread.c:1029 thread.c:1085 thread.c:1152
 msgid "Threading is not enabled."
 msgstr "Darstellung von Diskussionsfäden ist nicht eingeschaltet."
 
@@ -1950,9 +1930,7 @@ msgstr "Diskussionsfaden unterbrochen"
 
 #: curs_main.c:2073
 msgid "Thread cannot be broken, message is not part of a thread"
-msgstr ""
-"Kann Diskussionsfaden nicht abreißen, da die Nachricht nicht Teil eines "
-"Diskussionsfadens ist"
+msgstr "Kann Diskussionsfaden nicht abreißen, da die Nachricht nicht Teil eines Diskussionsfadens ist"
 
 #. L10N: CHECK_ACL
 #: curs_main.c:2083
@@ -2058,9 +2036,7 @@ msgstr "Per Mail antworten, wie es der Autor bevorzugt?"
 
 #: curs_main.c:2938 pager.c:2816 pager.c:2827 pager.c:2851
 msgid "Posting to this group not allowed, may be moderated. Continue?"
-msgstr ""
-"Das Posten in diese Newsgroup ist nicht erlaubt, unter Umständen wird sie "
-"moderiert. Fortfahren?"
+msgstr "Das Posten in diese Newsgroup ist nicht erlaubt, unter Umständen wird sie moderiert. Fortfahren?"
 
 #. L10N: CHECK_ACL
 #: curs_main.c:3000 pager.c:3009
@@ -2607,9 +2583,7 @@ msgstr "Hole Nachricht..."
 
 #: imap/message.c:491 pop.c:569
 msgid "The message index is incorrect. Try reopening the mailbox."
-msgstr ""
-"Der Nachrichtenindex ist fehlerhaft. Versuchen Sie ein erneutes Öffnen der "
-"Mailbox."
+msgstr "Der Nachrichtenindex ist fehlerhaft. Versuchen Sie ein erneutes Öffnen der Mailbox."
 
 #: imap/message.c:661
 msgid "Uploading message..."
@@ -2899,10 +2873,8 @@ msgstr "Kein Speicher verfügbar!"
 #: main.c:84
 msgid ""
 "usage: mutt [<options>] [-z] [-f <file> | -yZ]\n"
-"       mutt [<options>] [-Ex] [-Hi <file>] [-s <subj>] [-bc <addr>] [-a <file> "
-"[...] --] <addr> [...]\n"
-"       mutt [<options>] [-x] [-s <subj>] [-bc <addr>] [-a <file> [...] --] "
-"<addr> [...] < message\n"
+"       mutt [<options>] [-Ex] [-Hi <file>] [-s <subj>] [-bc <addr>] [-a <file> [...] --] <addr> [...]\n"
+"       mutt [<options>] [-x] [-s <subj>] [-bc <addr>] [-a <file> [...] --] <addr> [...] < message\n"
 "       mutt [<options>] -p\n"
 "       mutt [<options>] -A <alias> [...]\n"
 "       mutt [<options>] -Q <query> [...]\n"
@@ -2910,10 +2882,8 @@ msgid ""
 "       mutt -v[v]\n"
 msgstr ""
 "Benutzung: mutt [<options>] [-z] [-f <file> | -yZ]\n"
-"       mutt [<options>] [-x] [-Hi <file>] [-s <subj>] [-bc <addr>] [-a <file> "
-"[...]] [--] <addr> [...]\n"
-"       mutt [<options>] [-x] [-s <subj>] [-bc <addr>] [-a <file> [...]] [--] "
-"<addr> [...] < message\n"
+"       mutt [<options>] [-x] [-Hi <file>] [-s <subj>] [-bc <addr>] [-a <file> [...]] [--] <addr> [...]\n"
+"       mutt [<options>] [-x] [-s <subj>] [-bc <addr>] [-a <file> [...]] [--] <addr> [...] < message\n"
 "       mutt [<options>] -p\n"
 "       mutt [<options>] -A <alias> [...]\n"
 "       mutt [<options>] -Q <query> [...]\n"
@@ -2961,8 +2931,7 @@ msgstr ""
 "  -F <Datei>\tAngabe einer alternativen muttrc\n"
 "  -g <Server> Angabe des Newsservers (falls mit NNTP-Unterstützung kompiliert)\n"
 "  -G \t\\Angabe der Newsgroup (falls mit NNTP-Unterstützung kompiliert)\n"
-"  -H <Datei>\tEntwurf, aus dem Kopf und Text der Nachricht gelesen werden "
-"sollen\n"
+"  -H <Datei>\tEntwurf, aus dem Kopf und Text der Nachricht gelesen werden sollen\n"
 "  -i <Datei>\tDatei, die in den Text der Nachricht eingebunden werden soll\n"
 "  -m <Typ>\tAngabe des Mailbox-Typs\n"
 "  -n\t\tDie Muttrc des Systems ignorieren\n"
@@ -2982,8 +2951,7 @@ msgid ""
 msgstr ""
 "  -Q <variable>\tFrage die Variable aus der Konfiguration ab\n"
 "  -R\t\tMailbox nur zum Lesen öffnen\n"
-"  -s <subj>\tBetreff der Mail (in Anführungsstrichen, falls Leerzeichen "
-"enthalten sind)\n"
+"  -s <subj>\tBetreff der Mail (in Anführungsstrichen, falls Leerzeichen enthalten sind)\n"
 "  -v\t\tVersion und einkompilierte Konfiguration anzeigen\n"
 "  -x\t\tSimuliert mailx beim Verschicken von Mails\n"
 "  -y\t\tStarte Mutt mit einer Mailbox aus der `mailboxes' Liste\n"
@@ -3982,8 +3950,7 @@ msgstr ""
 
 #: pgp.c:1760
 #, fuzzy, c-format
-msgid ""
-"PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, %s format, (c)lear, or (o)ppenc mode? "
+msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, %s format, (c)lear, or (o)ppenc mode? "
 msgstr "PGP (v)erschl., (s)ign., sign. (a)ls, (b)eides, %s, (k)ein PGP? "
 
 #: pgp.c:1763
@@ -4065,8 +4032,7 @@ msgstr "Kommando UIDL wird vom Server nicht unterstützt."
 #: pop.c:296
 #, c-format
 msgid "%d messages have been lost. Try reopening the mailbox."
-msgstr ""
-"%d Nachrichten verloren gegangen. Versuche Sie die Mailbox erneut zu öffnen."
+msgstr "%d Nachrichten verloren gegangen. Versuche Sie die Mailbox erneut zu öffnen."
 
 #: pop.c:412 pop.c:809
 #, c-format
@@ -4319,9 +4285,7 @@ msgstr "Als Anhänge weiterleiten?"
 
 #: recvcmd.c:486
 msgid "Can't decode all tagged attachments.  MIME-forward the others?"
-msgstr ""
-"Nicht alle markierten Anhänge sind dekodierbar. MIME-forward für den Rest "
-"verwenden? "
+msgstr "Nicht alle markierten Anhänge sind dekodierbar. MIME-forward für den Rest verwenden? "
 
 #: recvcmd.c:611
 msgid "Forward MIME encapsulated?"
@@ -4342,9 +4306,7 @@ msgstr "Keine Mailing-Listen gefunden!"
 
 #: recvcmd.c:867
 msgid "Can't decode all tagged attachments.  MIME-encapsulate the others?"
-msgstr ""
-"Nicht alle markierten Anhänge sind dekodierbar. MIME-encapsulate für den Rest "
-"verwenden?"
+msgstr "Nicht alle markierten Anhänge sind dekodierbar. MIME-encapsulate für den Rest verwenden?"
 
 #: remailer.c:481
 msgid "Append"
@@ -4398,8 +4360,7 @@ msgstr "Mixmaster unterstützt weder Cc: noch Bcc:"
 
 #: remailer.c:732
 msgid "Please set the hostname variable to a proper value when using mixmaster!"
-msgstr ""
-"Setzen sie die Variable \"hostname\" richtig, wenn Sie Mixmaster verwenden!"
+msgstr "Setzen sie die Variable \"hostname\" richtig, wenn Sie Mixmaster verwenden!"
 
 #: remailer.c:766
 #, c-format
@@ -4681,8 +4642,7 @@ msgstr "Keine Ausgabe von OpenSSL..."
 
 #: smime.c:1534
 msgid "Can't sign: No key specified. Use Sign As."
-msgstr ""
-"Kann nicht signieren: Kein Schlüssel angegeben. Verwenden Sie \"sign. als\"."
+msgstr "Kann nicht signieren: Kein Schlüssel angegeben. Verwenden Sie \"sign. als\"."
 
 #: smime.c:1586
 msgid "Can't open OpenSSL subprocess!"
@@ -4727,8 +4687,7 @@ msgstr ""
 #: smime.c:2110
 #, fuzzy
 msgid "S/MIME (s)ign, encrypt (w)ith, sign (a)s, (c)lear, or (o)ppenc mode off? "
-msgstr ""
-"S/MIME (v)erschl., (s)ign., verschl. (m)it, sign. (a)ls, (b)eides, (k)eins? "
+msgstr "S/MIME (v)erschl., (s)ign., verschl. (m)it, sign. (a)ls, (b)eides, (k)eins? "
 
 #. L10N: The 'f' is from "forget it", an old undocumented synonym of
 #. 'clear'.  Please use a corresponding letter in your language.
@@ -4740,11 +4699,8 @@ msgstr ""
 
 #: smime.c:2124
 #, fuzzy
-msgid ""
-"S/MIME (e)ncrypt, (s)ign, encrypt (w)ith, sign (a)s, (b)oth, (c)lear, or "
-"(o)ppenc mode? "
-msgstr ""
-"S/MIME (v)erschl., (s)ign., verschl. (m)it, sign. (a)ls, (b)eides, (k)eins? "
+msgid "S/MIME (e)ncrypt, (s)ign, encrypt (w)ith, sign (a)s, (b)oth, (c)lear, or (o)ppenc mode? "
+msgstr "S/MIME (v)erschl., (s)ign., verschl. (m)it, sign. (a)ls, (b)eides, (k)eins? "
 
 #: smime.c:2125
 #, fuzzy
@@ -4753,8 +4709,7 @@ msgstr "vsmabkc"
 
 #: smime.c:2133
 msgid "S/MIME (e)ncrypt, (s)ign, encrypt (w)ith, sign (a)s, (b)oth, or (c)lear? "
-msgstr ""
-"S/MIME (v)erschl., (s)ign., verschl. (m)it, sign. (a)ls, (b)eides, (k)eins? "
+msgstr "S/MIME (v)erschl., (s)ign., verschl. (m)it, sign. (a)ls, (b)eides, (k)eins? "
 
 #: smime.c:2134
 msgid "eswabfc"
@@ -4921,8 +4876,7 @@ msgstr ""
 msgid ""
 "    You should have received a copy of the GNU General Public License\n"
 "    along with this program; if not, write to the Free Software\n"
-"    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  "
-"02110-1301, USA.\n"
+"    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.\n"
 msgstr ""
 "    Sie sollten eine Kopie der GNU General Public License zusammen mit\n"
 "    diesem Programm erhalten haben; falls nicht, schreiben sie an die\n"
@@ -5956,4 +5910,3 @@ msgstr "Extrahiere unterstützte öffentliche Schlüssel"
 #: ../keymap_alldefs.h:244
 msgid "show S/MIME options"
 msgstr "Zeige S/MIME Optionen"
-

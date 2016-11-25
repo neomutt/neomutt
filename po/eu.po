@@ -304,16 +304,12 @@ msgstr "Fitxategi maskara: "
 
 #: browser.c:1724
 #, fuzzy
-msgid ""
-"Reverse sort by (d)ate, (a)lpha, si(z)e, d(e)scription, (c)ount, ne(w) "
-"count, or do(n)'t sort? "
+msgid "Reverse sort by (d)ate, (a)lpha, si(z)e, d(e)scription, (c)ount, ne(w) count, or do(n)'t sort? "
 msgstr "Atzekoz aurrera (d)ataz, (a)lphaz, tamaina(z) edo ez orde(n)atu? "
 
 #: browser.c:1725
 #, fuzzy
-msgid ""
-"Sort by (d)ate, (a)lpha, si(z)e, d(e)scription, (c)ount, ne(w) count, or "
-"do(n)'t sort? "
+msgid "Sort by (d)ate, (a)lpha, si(z)e, d(e)scription, (c)ount, ne(w) count, or do(n)'t sort? "
 msgstr "(d)ataz, (a)lpha, tamaina(z) edo ez orde(n)atu? "
 
 #: browser.c:1726
@@ -535,16 +531,12 @@ msgstr "Ezin dira mezuak inprimatu"
 #: commands.c:547
 #, fuzzy
 msgid "Rev-Sort Date/Frm/Recv/Subj/tO/Thread/Unsort/siZe/sCore/sPam/Label?: "
-msgstr ""
-"Alderantziz-Ordenatu (d)ata/(j)at/ja(s)/(g)aia/(n)ori/(h)aria/(e)z-ordenatu/"
-"(t)amaina/(p)untuak/(z)abor-posta?: "
+msgstr "Alderantziz-Ordenatu (d)ata/(j)at/ja(s)/(g)aia/(n)ori/(h)aria/(e)z-ordenatu/(t)amaina/(p)untuak/(z)abor-posta?: "
 
 #: commands.c:548
 #, fuzzy
 msgid "Sort Date/Frm/Recv/Subj/tO/Thread/Unsort/siZe/sCore/sPam/Label?: "
-msgstr ""
-"Ordenatu (d)ata/(j)at/ja(s)/(g)aia/(n)ori/(h)aria/(e)z-ordenatu/(t)amaina/"
-"(p)untuak/(z)abor-posta?  "
+msgstr "Ordenatu (d)ata/(j)at/ja(s)/(g)aia/(n)ori/(h)aria/(e)z-ordenatu/(t)amaina/(p)untuak/(z)abor-posta?  "
 
 #: commands.c:549
 #, fuzzy
@@ -1023,24 +1015,16 @@ msgid "Fingerprint: "
 msgstr "Hatz-marka: "
 
 #: crypt-gpgme.c:1320
-msgid ""
-"WARNING: We have NO indication whether the key belongs to the person named "
-"as shown above\n"
-msgstr ""
-"KONTUZ: EZ dugu ezagutzarik gakoa behean agertzen den pertsonarena dela "
-"frogatzen duenik\n"
+msgid "WARNING: We have NO indication whether the key belongs to the person named as shown above\n"
+msgstr "KONTUZ: EZ dugu ezagutzarik gakoa behean agertzen den pertsonarena dela frogatzen duenik\n"
 
 #: crypt-gpgme.c:1327
 msgid "WARNING: The key does NOT BELONG to the person named as shown above\n"
 msgstr "ABISUA: Gakoa ez da aurrerantzean behean agertzen den pertsonarena\n"
 
 #: crypt-gpgme.c:1331
-msgid ""
-"WARNING: It is NOT certain that the key belongs to the person named as shown "
-"above\n"
-msgstr ""
-"ABISUA: Ez da egia gakoa aurrerantzean behean agertzen den pertsonarena "
-"dela\n"
+msgid "WARNING: It is NOT certain that the key belongs to the person named as shown above\n"
+msgstr "ABISUA: Ez da egia gakoa aurrerantzean behean agertzen den pertsonarena dela\n"
 
 #: crypt-gpgme.c:1361 crypt-gpgme.c:1366
 msgid "aka: "
@@ -1504,9 +1488,7 @@ msgstr ""
 
 #: crypt-gpgme.c:4744
 #, fuzzy
-msgid ""
-"S/MIME (e)ncrypt, (s)ign, sign (a)s, (b)oth, (p)gp, (c)lear, or (o)ppenc "
-"mode? "
+msgid "S/MIME (e)ncrypt, (s)ign, sign (a)s, (b)oth, (p)gp, (c)lear, or (o)ppenc mode? "
 msgstr "S/MIME (e)nkript, (s)ina, sin (a) honela, (b)iak, (p)gp or (g)arbitu?"
 
 #: crypt-gpgme.c:4745
@@ -1516,9 +1498,7 @@ msgstr "esabpfg"
 
 #: crypt-gpgme.c:4750
 #, fuzzy
-msgid ""
-"PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, s/(m)ime, (c)lear, or (o)ppenc "
-"mode? "
+msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, s/(m)ime, (c)lear, or (o)ppenc mode? "
 msgstr "PGP (e)nkrippt, (s)ina, sin(a)tu hola, (b)iak, s/(m)ime edo (g)abitu?"
 
 #: crypt-gpgme.c:4751
@@ -2273,8 +2253,7 @@ msgstr "[-- Aurreikusi %s-eko stderr --]\n"
 
 #: handler.c:1446
 msgid "[-- Error: message/external-body has no access-type parameter --]\n"
-msgstr ""
-"[-- Erroreak: mezu/kanpoko edukiak ez du access-type parametrorik --]\n"
+msgstr "[-- Erroreak: mezu/kanpoko edukiak ez du access-type parametrorik --]\n"
 
 #: handler.c:1467
 #, c-format
@@ -2935,10 +2914,8 @@ msgstr "Memoriaz kanpo!"
 #, fuzzy
 msgid ""
 "usage: mutt [<options>] [-z] [-f <file> | -yZ]\n"
-"       mutt [<options>] [-Ex] [-Hi <file>] [-s <subj>] [-bc <addr>] [-a "
-"<file> [...] --] <addr> [...]\n"
-"       mutt [<options>] [-x] [-s <subj>] [-bc <addr>] [-a <file> [...] --] "
-"<addr> [...] < message\n"
+"       mutt [<options>] [-Ex] [-Hi <file>] [-s <subj>] [-bc <addr>] [-a <file> [...] --] <addr> [...]\n"
+"       mutt [<options>] [-x] [-s <subj>] [-bc <addr>] [-a <file> [...] --] <addr> [...] < message\n"
 "       mutt [<options>] -p\n"
 "       mutt [<options>] -A <alias> [...]\n"
 "       mutt [<options>] -Q <query> [...]\n"
@@ -2946,8 +2923,7 @@ msgid ""
 "       mutt -v[v]\n"
 msgstr ""
 "erabilera: mutt [<aukerak>] [-z] [-f <fitx> | -yZ]\n"
-"       mutt [<aukerak>] [-x] [-Hi <fitx>] [-s <gaia>] [-bc <helb>] [-a "
-"<fitx> [...]] [--] <helb> [...]\n"
+"       mutt [<aukerak>] [-x] [-Hi <fitx>] [-s <gaia>] [-bc <helb>] [-a <fitx> [...]] [--] <helb> [...]\n"
 "       mutt [<aukerak>] -p\n"
 "       mutt [<aukerak>] -A <ezizena> [...]\n"
 "       mutt [<aukerak>] -Q <query> [...]\n"
@@ -2994,8 +2970,7 @@ msgstr ""
 "  -e <komandoa>\tzehaztu abiarazi ondoren exekutatuko den komando bat\n"
 "  -f <fitx>\tzein posta-kutxa irakurri zehaztu\n"
 "  -F <fitx>\tbeste muttrc fitxategi bat zehaztu\n"
-"  -H <fitx>\tzehaztu zirriborro fitxategi bat burua eta gorputza bertatik "
-"kopiatzeko\n"
+"  -H <fitx>\tzehaztu zirriborro fitxategi bat burua eta gorputza bertatik kopiatzeko\n"
 "  -i <fitx>\tzehaztu mutt-ek gorputzean txertatu behar duen fitxategi bat\n"
 "  -m <type>\tzehaztu lehenetsiriko postakutxa mota\n"
 "  -n\t\tMutt-ek sistema Muttrc ez irakurtzea eragiten du\n"
@@ -3104,8 +3079,7 @@ msgstr "Errore konponezina!  Ezin da postakutxa berrireki!"
 
 #: mbox.c:881
 msgid "sync: mbox modified, but no modified messages! (report this bug)"
-msgstr ""
-"sync: mbox aldatuta baina ez dira mezuak aldatu! (zorri honen berri eman)"
+msgstr "sync: mbox aldatuta baina ez dira mezuak aldatu! (zorri honen berri eman)"
 
 #: mbox.c:905 mh.c:2023 mutt_notmuch.c:1623 mx.c:757
 #, c-format
@@ -3229,8 +3203,7 @@ msgstr ""
 #. See the msgid "Save to file: " (alias.c, recvattach.c)
 #: muttlib.c:1101
 msgid "File is a directory, save under it? [(y)es, (n)o, (a)ll]"
-msgstr ""
-"Fitxategia direktorioa bat da, honen barnean gorde?[(b)ai, (e)z, d(a)na]"
+msgstr "Fitxategia direktorioa bat da, honen barnean gorde?[(b)ai, (e)z, d(a)na]"
 
 #: muttlib.c:1101
 msgid "yna"
@@ -3809,8 +3782,7 @@ msgid "Checking for new newsgroups..."
 msgstr "Mezu berriak bilatzen..."
 
 #: nntp.c:2420
-msgid ""
-"Unable to find child articles because server does not support XPAT command."
+msgid "Unable to find child articles because server does not support XPAT command."
 msgstr ""
 
 #: pager.c:1629
@@ -4027,9 +3999,7 @@ msgstr ""
 
 #: pgp.c:1760
 #, fuzzy, c-format
-msgid ""
-"PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, %s format, (c)lear, or (o)ppenc "
-"mode? "
+msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, %s format, (c)lear, or (o)ppenc mode? "
 msgstr "PGP (e)nkript, (s)ina, sign (a)tu hola, (b)iak, %s, edo (g)arbitu? "
 
 #: pgp.c:1763
@@ -4073,9 +4043,7 @@ msgstr "PGP gakoa eskuratzen..."
 
 #: pgpkey.c:491
 msgid "All matching keys are expired, revoked, or disabled."
-msgstr ""
-"Aurkitutako gako guztiak denboraz kanpo, errebokatutarik edo ezgaiturik "
-"daude."
+msgstr "Aurkitutako gako guztiak denboraz kanpo, errebokatutarik edo ezgaiturik daude."
 
 #: pgpkey.c:532
 #, c-format
@@ -4336,8 +4304,7 @@ msgstr "Enkriptaturiko mezuetatik gehigarriak ezabatzea ez da onartzen."
 
 #: recvattach.c:1144
 #, fuzzy
-msgid ""
-"Deletion of attachments from signed messages may invalidate the signature."
+msgid "Deletion of attachments from signed messages may invalidate the signature."
 msgstr "Enkriptaturiko mezuetatik gehigarriak ezabatzea ez da onartzen."
 
 #: recvattach.c:1161 recvattach.c:1178
@@ -4367,9 +4334,7 @@ msgstr "Gehigarri bezala berbidali?"
 
 #: recvcmd.c:486
 msgid "Can't decode all tagged attachments.  MIME-forward the others?"
-msgstr ""
-"Ezin dira markaturiko mezu guztiak deskodifikatu.  Besteak MIME bezala "
-"bidali?"
+msgstr "Ezin dira markaturiko mezu guztiak deskodifikatu.  Besteak MIME bezala bidali?"
 
 #: recvcmd.c:611
 msgid "Forward MIME encapsulated?"
@@ -4390,8 +4355,7 @@ msgstr "Ez da eposta zerrendarik aurkitu!"
 
 #: recvcmd.c:867
 msgid "Can't decode all tagged attachments.  MIME-encapsulate the others?"
-msgstr ""
-"Ezin dira markaturiko mezu guztiak deskodifikatu.  MIME enkapsulatu besteak?"
+msgstr "Ezin dira markaturiko mezu guztiak deskodifikatu.  MIME enkapsulatu besteak?"
 
 #: remailer.c:481
 msgid "Append"
@@ -4444,8 +4408,7 @@ msgid "Mixmaster doesn't accept Cc or Bcc headers."
 msgstr "Miixmasterrek ez du Cc eta Bcc burukorik onartzen."
 
 #: remailer.c:732
-msgid ""
-"Please set the hostname variable to a proper value when using mixmaster!"
+msgid "Please set the hostname variable to a proper value when using mixmaster!"
 msgstr "Mesedez ezarri mixmaster erabiltzen denerako ostalari izen egokia!"
 
 #: remailer.c:766
@@ -4773,11 +4736,8 @@ msgstr ""
 
 #: smime.c:2110
 #, fuzzy
-msgid ""
-"S/MIME (s)ign, encrypt (w)ith, sign (a)s, (c)lear, or (o)ppenc mode off? "
-msgstr ""
-"S/MIME (e)nkrip, (s)inatu, enript (h)onez, sinatu hol(a), (b)iak) edo "
-"(g)arbitu? "
+msgid "S/MIME (s)ign, encrypt (w)ith, sign (a)s, (c)lear, or (o)ppenc mode off? "
+msgstr "S/MIME (e)nkrip, (s)inatu, enript (h)onez, sinatu hol(a), (b)iak) edo (g)arbitu? "
 
 #. L10N: The 'f' is from "forget it", an old undocumented synonym of
 #. 'clear'.  Please use a corresponding letter in your language.
@@ -4789,12 +4749,8 @@ msgstr ""
 
 #: smime.c:2124
 #, fuzzy
-msgid ""
-"S/MIME (e)ncrypt, (s)ign, encrypt (w)ith, sign (a)s, (b)oth, (c)lear, or "
-"(o)ppenc mode? "
-msgstr ""
-"S/MIME (e)nkrip, (s)inatu, enript (h)onez, sinatu hol(a), (b)iak) edo "
-"(g)arbitu? "
+msgid "S/MIME (e)ncrypt, (s)ign, encrypt (w)ith, sign (a)s, (b)oth, (c)lear, or (o)ppenc mode? "
+msgstr "S/MIME (e)nkrip, (s)inatu, enript (h)onez, sinatu hol(a), (b)iak) edo (g)arbitu? "
 
 #: smime.c:2125
 #, fuzzy
@@ -4802,11 +4758,8 @@ msgid "eswabfco"
 msgstr "eshabfc"
 
 #: smime.c:2133
-msgid ""
-"S/MIME (e)ncrypt, (s)ign, encrypt (w)ith, sign (a)s, (b)oth, or (c)lear? "
-msgstr ""
-"S/MIME (e)nkrip, (s)inatu, enript (h)onez, sinatu hol(a), (b)iak) edo "
-"(g)arbitu? "
+msgid "S/MIME (e)ncrypt, (s)ign, encrypt (w)ith, sign (a)s, (b)oth, or (c)lear? "
+msgstr "S/MIME (e)nkrip, (s)inatu, enript (h)onez, sinatu hol(a), (b)iak) edo (g)arbitu? "
 
 #: smime.c:2134
 msgid "eswabfc"
@@ -4961,8 +4914,7 @@ msgstr ""
 msgid ""
 "    You should have received a copy of the GNU General Public License\n"
 "    along with this program; if not, write to the Free Software\n"
-"    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  "
-"02110-1301, USA.\n"
+"    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.\n"
 msgstr ""
 
 #: version.c:87
@@ -5045,8 +4997,7 @@ msgstr "une honetako posta-kutxan harpidetza ezabatu (IMAP bakarrik)"
 
 #: ../keymap_alldefs.h:18
 msgid "toggle view all/subscribed mailboxes (IMAP only)"
-msgstr ""
-"denak/harpidetutako postakutxen (IMAP bakarrik) erakustaldia txandakatu"
+msgstr "denak/harpidetutako postakutxen (IMAP bakarrik) erakustaldia txandakatu"
 
 #: ../keymap_alldefs.h:19
 msgid "list mailboxes with new mail"
@@ -5985,4 +5936,3 @@ msgstr "onartutako gako publikoak atera"
 #: ../keymap_alldefs.h:244
 msgid "show S/MIME options"
 msgstr "S/MIME aukerak ikusi"
-

@@ -304,21 +304,14 @@ msgstr "Maska súborov: "
 #. L10N: The highlighted letters must match the "Sort" options
 #: browser.c:1725
 #, fuzzy
-msgid ""
-"Reverse sort by (d)ate, (a)lpha, si(z)e, d(e)scription, (c)ount, ne(w) "
-"count, or do(n)'t sort? "
-msgstr ""
-"Spätné triedenie podľa (d)átumu, zn(a)kov, (z)-veľkosti, (e)-popisu, "
-"(n)etriediť? "
+msgid "Reverse sort by (d)ate, (a)lpha, si(z)e, d(e)scription, (c)ount, ne(w) count, or do(n)'t sort? "
+msgstr "Spätné triedenie podľa (d)átumu, zn(a)kov, (z)-veľkosti, (e)-popisu, (n)etriediť? "
 
 #. L10N: The highlighted letters must match the "Reverse Sort" options
 #: browser.c:1727
 #, fuzzy
-msgid ""
-"Sort by (d)ate, (a)lpha, si(z)e, d(e)scription, (c)ount, ne(w) count, or "
-"do(n)'t sort? "
-msgstr ""
-"Triedenie podľa (d)átumu, zn(a)kov, (z)-veľkosti, (e)-popisu, (n)etriediť? "
+msgid "Sort by (d)ate, (a)lpha, si(z)e, d(e)scription, (c)ount, ne(w) count, or do(n)'t sort? "
+msgstr "Triedenie podľa (d)átumu, zn(a)kov, (z)-veľkosti, (e)-popisu, (n)etriediť? "
 
 #. L10N: These must match the highlighted letters from "Sort" and "Reverse Sort"
 #: browser.c:1729
@@ -541,17 +534,13 @@ msgstr "Správy nemohli byť vytlačené."
 #: commands.c:548
 #, fuzzy
 msgid "Rev-Sort Date/Frm/Recv/Subj/tO/Thread/Unsort/siZe/sCore/sPam/Label?: "
-msgstr ""
-"Spät.tried.(d)át/(f)-od/p(r)í/(s)-pred/k(o)mu/(t)-reť/(u)-ne/(z)-veľ/(c)-"
-"skóre/sPam/Label?: "
+msgstr "Spät.tried.(d)át/(f)-od/p(r)í/(s)-pred/k(o)mu/(t)-reť/(u)-ne/(z)-veľ/(c)-skóre/sPam/Label?: "
 
 #. L10N: The highlighted letters must match the "Rev-Sort" options
 #: commands.c:550
 #, fuzzy
 msgid "Sort Date/Frm/Recv/Subj/tO/Thread/Unsort/siZe/sCore/sPam/Label?: "
-msgstr ""
-"Tried. (d)át/(f)-od/p(r)í/(s)-pred/k(o)mu/(t)-reť/(u)-ne/(z)-veľ/(c)-skó/"
-"sPam/Lab?: "
+msgstr "Tried. (d)át/(f)-od/p(r)í/(s)-pred/k(o)mu/(t)-reť/(u)-ne/(z)-veľ/(c)-skó/sPam/Lab?: "
 
 #. L10N: These must match the highlighted letters from "Sort" and "Rev-Sort"
 #: commands.c:552
@@ -977,9 +966,7 @@ msgstr "Chyba pri podpisovaní dát: %s\n"
 
 #: crypt-gpgme.c:944
 msgid "$pgp_sign_as unset and no default key specified in ~/.gnupg/gpg.conf"
-msgstr ""
-"$pgp_sign_as nie je nastavený a v ~/.gnupg/gpg.conf nie je určený východzí "
-"kľúč"
+msgstr "$pgp_sign_as nie je nastavený a v ~/.gnupg/gpg.conf nie je určený východzí kľúč"
 
 #: crypt-gpgme.c:1140
 msgid "Warning: One of the keys has been revoked\n"
@@ -1036,9 +1023,7 @@ msgid "Fingerprint: "
 msgstr "Odtlačok kľúča: "
 
 #: crypt-gpgme.c:1320
-msgid ""
-"WARNING: We have NO indication whether the key belongs to the person named "
-"as shown above\n"
+msgid "WARNING: We have NO indication whether the key belongs to the person named as shown above\n"
 msgstr "POZOR: Nemáme ŽIADNY dôkaz, že klúč patrí vyššie menovanej osobe.\n"
 
 #: crypt-gpgme.c:1327
@@ -1046,9 +1031,7 @@ msgid "WARNING: The key does NOT BELONG to the person named as shown above\n"
 msgstr "POZOR: Kľúč NEPATRÍ vyššie menovanej osobe.\n"
 
 #: crypt-gpgme.c:1331
-msgid ""
-"WARNING: It is NOT certain that the key belongs to the person named as shown "
-"above\n"
+msgid "WARNING: It is NOT certain that the key belongs to the person named as shown above\n"
 msgstr "POZOR: NIE JE ISTÉ, či klúč patrí vyššie menovanej osobe.\n"
 
 #: crypt-gpgme.c:1361 crypt-gpgme.c:1366
@@ -1482,9 +1465,7 @@ msgstr "GPGME: CMS protokol nie je k dispozícii."
 #. L10N: S/MIME options (opportunistic encryption is on)
 #: crypt-gpgme.c:4722
 msgid "S/MIME (s)ign, sign (a)s, (p)gp, (c)lear, or (o)ppenc mode off? "
-msgstr ""
-"S/MIME podpí(s)ať, (p)odpísať ako, p(g)p, (v)yčistiť, alebo vypnúť (o)ppenc "
-"mód? "
+msgstr "S/MIME podpí(s)ať, (p)odpísať ako, p(g)p, (v)yčistiť, alebo vypnúť (o)ppenc mód? "
 
 #. L10N: S/MIME options (opportunistic encryption is on)
 #. The 'f' is undocumented. Please duplicate the letter 'c' is translated into.
@@ -1495,9 +1476,7 @@ msgstr "spgvvo"
 #. L10N: PGP options (opportunistic encryption is on)
 #: crypt-gpgme.c:4731
 msgid "PGP (s)ign, sign (a)s, s/(m)ime, (c)lear, or (o)ppenc mode off? "
-msgstr ""
-"PGP podpí(s)ať, (p)odpísať ako, s/(m)ime, (v)yčistiť, alebo vypnúť (o)ppenc "
-"mód? "
+msgstr "PGP podpí(s)ať, (p)odpísať ako, s/(m)ime, (v)yčistiť, alebo vypnúť (o)ppenc mód? "
 
 #. L10N: PGP options (opportunistic encryption is on)
 #. The 'f' is undocumented. Please duplicate the letter 'c' is translated into.
@@ -1507,12 +1486,8 @@ msgstr "spmvvo"
 
 #. L10N: S/MIME options (opportunistic encryption is off)
 #: crypt-gpgme.c:4747
-msgid ""
-"S/MIME (e)ncrypt, (s)ign, sign (a)s, (b)oth, (p)gp, (c)lear, or (o)ppenc "
-"mode? "
-msgstr ""
-"S/MIME šif(r)ovať, podpí(s)ať, (p)odpísať ako, o(b)e, p(g)p, (v)yčistiť, "
-"alebo vypnúť (o)ppenc mód? "
+msgid "S/MIME (e)ncrypt, (s)ign, sign (a)s, (b)oth, (p)gp, (c)lear, or (o)ppenc mode? "
+msgstr "S/MIME šif(r)ovať, podpí(s)ať, (p)odpísať ako, o(b)e, p(g)p, (v)yčistiť, alebo vypnúť (o)ppenc mód? "
 
 #. L10N: S/MIME options (opportunistic encryption is off)
 #. The 'f' is undocumented. Please duplicate the letter 'c' is translated into.
@@ -1522,12 +1497,8 @@ msgstr "rspbgvvo"
 
 #. L10N: PGP options (opportunistic encryption is off)
 #: crypt-gpgme.c:4756
-msgid ""
-"PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, s/(m)ime, (c)lear, or (o)ppenc "
-"mode? "
-msgstr ""
-"PGP šif(r)ovať, podpí(s)ať, (p)odpísať ako, o(b)e, s/(m)ime, (v)yčistiť, "
-"alebo vypnúť (o)ppenc mód? "
+msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, s/(m)ime, (c)lear, or (o)ppenc mode? "
+msgstr "PGP šif(r)ovať, podpí(s)ať, (p)odpísať ako, o(b)e, s/(m)ime, (v)yčistiť, alebo vypnúť (o)ppenc mód? "
 
 #. L10N: PGP options (opportunistic encryption is off)
 #. The 'f' is undocumented. Please duplicate the letter 'c' is translated into.
@@ -1538,8 +1509,7 @@ msgstr "rspbmvvo"
 #. L10N: S/MIME options
 #: crypt-gpgme.c:4771
 msgid "S/MIME (e)ncrypt, (s)ign, sign (a)s, (b)oth, (p)gp or (c)lear? "
-msgstr ""
-"S/MIME šif(r)ovať, podpí(s)ať, (p)odpísať ako, o(b)e, p(g)p, (v)yčistiť? "
+msgstr "S/MIME šif(r)ovať, podpí(s)ať, (p)odpísať ako, o(b)e, p(g)p, (v)yčistiť? "
 
 #. L10N: S/MIME options
 #. The 'f' is undocumented. Please duplicate the letter 'c' is translated into.
@@ -1550,9 +1520,7 @@ msgstr "rspbgvv"
 #. L10N: PGP options
 #: crypt-gpgme.c:4780
 msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, s/(m)ime or (c)lear? "
-msgstr ""
-"PGP šif(r)ovať, podpí(s)ať, (p)odpísať ako, o(b)e, s/(m)ime, alebo "
-"(v)yčistiť? "
+msgstr "PGP šif(r)ovať, podpí(s)ať, (p)odpísať ako, o(b)e, s/(m)ime, alebo (v)yčistiť? "
 
 #. L10N: PGP options
 #. The 'f' is undocumented. Please duplicate the letter 'c' is translated into.
@@ -1674,8 +1642,7 @@ msgstr ""
 
 #: cryptglue.c:89
 msgid "\"crypt_use_gpgme\" set but not built with GPGME support."
-msgstr ""
-"\"crypt_use_gpgme\" je nastavené, ale nie je skompilované s podporou GPGME"
+msgstr "\"crypt_use_gpgme\" je nastavené, ale nie je skompilované s podporou GPGME"
 
 #: cryptglue.c:112
 msgid "Invoking S/MIME..."
@@ -2281,8 +2248,7 @@ msgstr "[-- Chyba pri automatickom prezeraní (stderr) %s --]\n"
 
 #: handler.c:1446
 msgid "[-- Error: message/external-body has no access-type parameter --]\n"
-msgstr ""
-"[-- Chyba: message/external-body nemá vyplnený parameter access-type --]\n"
+msgstr "[-- Chyba: message/external-body nemá vyplnený parameter access-type --]\n"
 
 #: handler.c:1467
 #, c-format
@@ -2967,10 +2933,8 @@ msgstr "Nedostatok pamäte!"
 #: main.c:84
 msgid ""
 "usage: mutt [<options>] [-z] [-f <file> | -yZ]\n"
-"       mutt [<options>] [-Ex] [-Hi <file>] [-s <subj>] [-bc <addr>] [-a "
-"<file> [...] --] <addr> [...]\n"
-"       mutt [<options>] [-x] [-s <subj>] [-bc <addr>] [-a <file> [...] --] "
-"<addr> [...] < message\n"
+"       mutt [<options>] [-Ex] [-Hi <file>] [-s <subj>] [-bc <addr>] [-a <file> [...] --] <addr> [...]\n"
+"       mutt [<options>] [-x] [-s <subj>] [-bc <addr>] [-a <file> [...] --] <addr> [...] < message\n"
 "       mutt [<options>] -p\n"
 "       mutt [<options>] -A <alias> [...]\n"
 "       mutt [<options>] -Q <query> [...]\n"
@@ -3008,10 +2972,8 @@ msgid ""
 "  -n\t\tcauses Mutt not to read the system Muttrc\n"
 "  -p\t\trecall a postponed message"
 msgstr ""
-"použitie: mutt [ -nRzZ ] [ -e <prík> ] [ -F <súb> ] [ -m <typ> ] [ -f "
-"<súb> ]\n"
-"       mutt [ -nx ] [ -e <prík> ] [ -a <súb> ] [ -F <súb> ] [ -H <súb> ] [ -"
-"i <súb> ] [ -s <predm> ] [ -b <adr> ] [ -c <adr> ] <adr> [ ... ]\n"
+"použitie: mutt [ -nRzZ ] [ -e <prík> ] [ -F <súb> ] [ -m <typ> ] [ -f <súb> ]\n"
+"       mutt [ -nx ] [ -e <prík> ] [ -a <súb> ] [ -F <súb> ] [ -H <súb> ] [ -i <súb> ] [ -s <predm> ] [ -b <adr> ] [ -c <adr> ] <adr> [ ... ]\n"
 "       mutt [ -n ] [ -e <prík> ] [ -F <súb> ] -p\n"
 "       mutt -v[v]\n"
 "\n"
@@ -3033,8 +2995,7 @@ msgstr ""
 "  -x\t\tsimulovať mód posielania typický pre mailx\n"
 "  -y\t\tvybrať schránku uvedenú vo Vašom zozname 'mailbox'\n"
 "  -z\t\tukončiť okamžite, ak v schránke nie sú žiadne správy\n"
-"  -Z\t\totvoriť prvú zložku s novými správami, okamžite skončiť, ak žiadne "
-"nie sú\n"
+"  -Z\t\totvoriť prvú zložku s novými správami, okamžite skončiť, ak žiadne nie sú\n"
 "  -h\t\ttáto pomoc"
 
 #: main.c:117
@@ -3050,10 +3011,8 @@ msgid ""
 "  -Z\t\topen the first folder with new message, exit immediately if none\n"
 "  -h\t\tthis help message"
 msgstr ""
-"použitie: mutt [ -nRzZ ] [ -e <prík> ] [ -F <súb> ] [ -m <typ> ] [ -f "
-"<súb> ]\n"
-"       mutt [ -nx ] [ -e <prík> ] [ -a <súb> ] [ -F <súb> ] [ -H <súb> ] [ -"
-"i <súb> ] [ -s <predm> ] [ -b <adr> ] [ -c <adr> ] <adr> [ ... ]\n"
+"použitie: mutt [ -nRzZ ] [ -e <prík> ] [ -F <súb> ] [ -m <typ> ] [ -f <súb> ]\n"
+"       mutt [ -nx ] [ -e <prík> ] [ -a <súb> ] [ -F <súb> ] [ -H <súb> ] [ -i <súb> ] [ -s <predm> ] [ -b <adr> ] [ -c <adr> ] <adr> [ ... ]\n"
 "       mutt [ -n ] [ -e <prík> ] [ -F <súb> ] -p\n"
 "       mutt -v[v]\n"
 "\n"
@@ -3075,8 +3034,7 @@ msgstr ""
 "  -x\t\tsimulovať mód posielania typický pre mailx\n"
 "  -y\t\tvybrať schránku uvedenú vo Vašom zozname 'mailbox'\n"
 "  -z\t\tukončiť okamžite, ak v schránke nie sú žiadne správy\n"
-"  -Z\t\totvoriť prvú zložku s novými správami, okamžite skončiť, ak žiadne "
-"nie sú\n"
+"  -Z\t\totvoriť prvú zložku s novými správami, okamžite skončiť, ak žiadne nie sú\n"
 "  -h\t\ttáto pomoc"
 
 #: main.c:149
@@ -3166,8 +3124,7 @@ msgstr "Fatálna chyba! Nemožno znovu otvoriť schránku!"
 
 #: mbox.c:890
 msgid "sync: mbox modified, but no modified messages! (report this bug)"
-msgstr ""
-"sync: schránka zmenená, ale žiadne zmenené správy! (oznámte túto chybu)"
+msgstr "sync: schránka zmenená, ale žiadne zmenené správy! (oznámte túto chybu)"
 
 #: mbox.c:914 mh.c:2023 mutt_notmuch.c:1623 mx.c:752
 #, c-format
@@ -3872,8 +3829,7 @@ msgid "Checking for new newsgroups..."
 msgstr "Odsúvam správu ..."
 
 #: nntp.c:2420
-msgid ""
-"Unable to find child articles because server does not support XPAT command."
+msgid "Unable to find child articles because server does not support XPAT command."
 msgstr ""
 
 #: pager.c:1629
@@ -4062,8 +4018,7 @@ msgstr ""
 #: pgp.c:1730
 #, fuzzy, c-format
 msgid "PGP (s)ign, sign (a)s, %s format, (c)lear, or (o)ppenc mode off? "
-msgstr ""
-"(e)-šifr, (s)-podp, podp (a)ko, o(b)e, (i)nline, alebo (f)-zabudnúť na to? "
+msgstr "(e)-šifr, (s)-podp, podp (a)ko, o(b)e, (i)nline, alebo (f)-zabudnúť na to? "
 
 #: pgp.c:1731 pgp.c:1761 pgp.c:1783
 msgid "PGP/M(i)ME"
@@ -4084,8 +4039,7 @@ msgstr ""
 #: pgp.c:1742
 #, fuzzy
 msgid "PGP (s)ign, sign (a)s, (c)lear, or (o)ppenc mode off? "
-msgstr ""
-"(e)-šifr, (s)-podp, podp (a)ko, o(b)e, (i)nline, alebo (f)-zabudnúť na to? "
+msgstr "(e)-šifr, (s)-podp, podp (a)ko, o(b)e, (i)nline, alebo (f)-zabudnúť na to? "
 
 #: pgp.c:1743
 msgid "safco"
@@ -4093,11 +4047,8 @@ msgstr ""
 
 #: pgp.c:1760
 #, fuzzy, c-format
-msgid ""
-"PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, %s format, (c)lear, or (o)ppenc "
-"mode? "
-msgstr ""
-"(e)-šifr, (s)-podp, podp (a)ko, o(b)e, (i)nline, alebo (f)-zabudnúť na to? "
+msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, %s format, (c)lear, or (o)ppenc mode? "
+msgstr "(e)-šifr, (s)-podp, podp (a)ko, o(b)e, (i)nline, alebo (f)-zabudnúť na to? "
 
 #: pgp.c:1763
 #, fuzzy
@@ -4107,8 +4058,7 @@ msgstr "eswabf"
 #: pgp.c:1768
 #, fuzzy
 msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, (c)lear, or (o)ppenc mode? "
-msgstr ""
-"(e)-šifr, (s)-podp, podp (a)ko, o(b)e, (i)nline, alebo (f)-zabudnúť na to? "
+msgstr "(e)-šifr, (s)-podp, podp (a)ko, o(b)e, (i)nline, alebo (f)-zabudnúť na to? "
 
 #: pgp.c:1769
 #, fuzzy
@@ -4118,8 +4068,7 @@ msgstr "eswabf"
 #: pgp.c:1782
 #, fuzzy, c-format
 msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, %s format, or (c)lear? "
-msgstr ""
-"(e)-šifr, (s)-podp, podp (a)ko, o(b)e, (i)nline, alebo (f)-zabudnúť na to? "
+msgstr "(e)-šifr, (s)-podp, podp (a)ko, o(b)e, (i)nline, alebo (f)-zabudnúť na to? "
 
 #: pgp.c:1785
 #, fuzzy
@@ -4129,8 +4078,7 @@ msgstr "eswabf"
 #: pgp.c:1790
 #, fuzzy
 msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, or (c)lear? "
-msgstr ""
-"(e)-šifr, (s)-podp, podp (a)ko, o(b)e, (i)nline, alebo (f)-zabudnúť na to? "
+msgstr "(e)-šifr, (s)-podp, podp (a)ko, o(b)e, (i)nline, alebo (f)-zabudnúť na to? "
 
 #: pgp.c:1791
 #, fuzzy
@@ -4422,8 +4370,7 @@ msgstr "Mazanie príloh z PGP správ nie je podporované."
 
 #: recvattach.c:1160
 #, fuzzy
-msgid ""
-"Deletion of attachments from signed messages may invalidate the signature."
+msgid "Deletion of attachments from signed messages may invalidate the signature."
 msgstr "Mazanie príloh z PGP správ nie je podporované."
 
 #: recvattach.c:1177 recvattach.c:1194
@@ -4535,8 +4482,7 @@ msgid "Mixmaster doesn't accept Cc or Bcc headers."
 msgstr ""
 
 #: remailer.c:732
-msgid ""
-"Please set the hostname variable to a proper value when using mixmaster!"
+msgid "Please set the hostname variable to a proper value when using mixmaster!"
 msgstr ""
 
 #: remailer.c:766
@@ -4887,10 +4833,8 @@ msgstr ""
 
 #: smime.c:2110
 #, fuzzy
-msgid ""
-"S/MIME (s)ign, encrypt (w)ith, sign (a)s, (c)lear, or (o)ppenc mode off? "
-msgstr ""
-"(e)-šifr, (s)-podp, (w)-šifr s, podp (a)ko, o(b)e, alebo (f)-zabudnúť na to? "
+msgid "S/MIME (s)ign, encrypt (w)ith, sign (a)s, (c)lear, or (o)ppenc mode off? "
+msgstr "(e)-šifr, (s)-podp, (w)-šifr s, podp (a)ko, o(b)e, alebo (f)-zabudnúť na to? "
 
 #. L10N: The 'f' is from "forget it", an old undocumented synonym of
 #. 'clear'.  Please use a corresponding letter in your language.
@@ -4902,11 +4846,8 @@ msgstr ""
 
 #: smime.c:2124
 #, fuzzy
-msgid ""
-"S/MIME (e)ncrypt, (s)ign, encrypt (w)ith, sign (a)s, (b)oth, (c)lear, or "
-"(o)ppenc mode? "
-msgstr ""
-"(e)-šifr, (s)-podp, (w)-šifr s, podp (a)ko, o(b)e, alebo (f)-zabudnúť na to? "
+msgid "S/MIME (e)ncrypt, (s)ign, encrypt (w)ith, sign (a)s, (b)oth, (c)lear, or (o)ppenc mode? "
+msgstr "(e)-šifr, (s)-podp, (w)-šifr s, podp (a)ko, o(b)e, alebo (f)-zabudnúť na to? "
 
 #: smime.c:2125
 #, fuzzy
@@ -4915,10 +4856,8 @@ msgstr "eswabf"
 
 #: smime.c:2133
 #, fuzzy
-msgid ""
-"S/MIME (e)ncrypt, (s)ign, encrypt (w)ith, sign (a)s, (b)oth, or (c)lear? "
-msgstr ""
-"(e)-šifr, (s)-podp, (w)-šifr s, podp (a)ko, o(b)e, alebo (f)-zabudnúť na to? "
+msgid "S/MIME (e)ncrypt, (s)ign, encrypt (w)ith, sign (a)s, (b)oth, or (c)lear? "
+msgstr "(e)-šifr, (s)-podp, (w)-šifr s, podp (a)ko, o(b)e, alebo (f)-zabudnúť na to? "
 
 #: smime.c:2134
 #, fuzzy
@@ -5066,8 +5005,7 @@ msgstr ""
 msgid ""
 "    You should have received a copy of the GNU General Public License\n"
 "    along with this program; if not, write to the Free Software\n"
-"    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  "
-"02110-1301, USA.\n"
+"    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.\n"
 msgstr ""
 
 #: version.c:87
@@ -6109,4 +6047,3 @@ msgstr "extrahuj podporované verejné kľúče PGP"
 #: ../keymap_alldefs.h:245
 msgid "show S/MIME options"
 msgstr "zobraziť S/MIME možnosti "
-

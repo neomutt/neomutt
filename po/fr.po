@@ -509,20 +509,12 @@ msgid "Messages could not be printed"
 msgstr "Les messages n'ont pas pu être imprimés"
 
 #: commands.c:536
-msgid ""
-"Rev-Sort (d)ate/(f)rm/(r)ecv/(s)ubj/t(o)/(t)hread/(u)nsort/si(z)e/s(c)ore/"
-"s(p)am?: "
-msgstr ""
-"Tri inv (d)at/(a)ut/(r)eçu/(o)bj/de(s)t/d(i)sc/(n)on/(t)aille/s(c)or/"
-"s(p)am ? : "
+msgid "Rev-Sort (d)ate/(f)rm/(r)ecv/(s)ubj/t(o)/(t)hread/(u)nsort/si(z)e/s(c)ore/s(p)am?: "
+msgstr "Tri inv (d)at/(a)ut/(r)eçu/(o)bj/de(s)t/d(i)sc/(n)on/(t)aille/s(c)or/s(p)am ? : "
 
 #: commands.c:537
-msgid ""
-"Sort (d)ate/(f)rm/(r)ecv/(s)ubj/t(o)/(t)hread/(u)nsort/si(z)e/s(c)ore/"
-"s(p)am?: "
-msgstr ""
-"Tri (d)ate/(a)ut/(r)eçu/(o)bj/de(s)t/d(i)sc/(n)on/(t)aille/s(c)ore/"
-"s(p)am ? : "
+msgid "Sort (d)ate/(f)rm/(r)ecv/(s)ubj/t(o)/(t)hread/(u)nsort/si(z)e/s(c)ore/s(p)am?: "
+msgstr "Tri (d)ate/(a)ut/(r)eçu/(o)bj/de(s)t/d(i)sc/(n)on/(t)aille/s(c)ore/s(p)am ? : "
 
 #: commands.c:538
 msgid "dfrsotuzcp"
@@ -837,8 +829,7 @@ msgstr "Impossible d'identifier le contenu du fichier compressé"
 #: compress.c:501 compress.c:579
 #, c-format
 msgid "Can't find mailbox ops for mailbox type %d"
-msgstr ""
-"Impossible de trouver les opérations pour la boîte aux lettres de type %d"
+msgstr "Impossible de trouver les opérations pour la boîte aux lettres de type %d"
 
 #: compress.c:540 compress.c:834
 #, c-format
@@ -960,8 +951,7 @@ msgstr "erreur lors de la signature des données : %s\n"
 
 #: crypt-gpgme.c:944
 msgid "$pgp_sign_as unset and no default key specified in ~/.gnupg/gpg.conf"
-msgstr ""
-"$pgp_sign_as non renseigné et pas de clé par défaut dans ~/.gnupg/gpg.conf"
+msgstr "$pgp_sign_as non renseigné et pas de clé par défaut dans ~/.gnupg/gpg.conf"
 
 #: crypt-gpgme.c:1140
 msgid "Warning: One of the keys has been revoked\n"
@@ -1001,8 +991,7 @@ msgstr "Une erreur système s'est produite"
 
 #: crypt-gpgme.c:1236
 msgid "WARNING: PKA entry does not match signer's address: "
-msgstr ""
-"ATTENTION : l'entrée PKA ne correspond pas à l'adresse du signataire : "
+msgstr "ATTENTION : l'entrée PKA ne correspond pas à l'adresse du signataire : "
 
 #: crypt-gpgme.c:1243
 msgid "PKA verified signer's address is: "
@@ -1014,24 +1003,16 @@ msgid "Fingerprint: "
 msgstr "Empreinte : "
 
 #: crypt-gpgme.c:1320
-msgid ""
-"WARNING: We have NO indication whether the key belongs to the person named "
-"as shown above\n"
-msgstr ""
-"ATTENTION ! Nous n'avons AUCUNE indication informant si la clé appartient à "
-"la personne nommée ci-dessus\n"
+msgid "WARNING: We have NO indication whether the key belongs to the person named as shown above\n"
+msgstr "ATTENTION ! Nous n'avons AUCUNE indication informant si la clé appartient à la personne nommée ci-dessus\n"
 
 #: crypt-gpgme.c:1327
 msgid "WARNING: The key does NOT BELONG to the person named as shown above\n"
 msgstr "ATTENTION ! La clé N'APPARTIENT PAS à la personne nommée ci-dessus\n"
 
 #: crypt-gpgme.c:1331
-msgid ""
-"WARNING: It is NOT certain that the key belongs to the person named as shown "
-"above\n"
-msgstr ""
-"ATTENTION ! Il n'est PAS certain que la clé appartienne à la personne nommée "
-"ci-dessus\n"
+msgid "WARNING: It is NOT certain that the key belongs to the person named as shown above\n"
+msgstr "ATTENTION ! Il n'est PAS certain que la clé appartienne à la personne nommée ci-dessus\n"
 
 #: crypt-gpgme.c:1361 crypt-gpgme.c:1366
 msgid "aka: "
@@ -1498,22 +1479,16 @@ msgid "samfco"
 msgstr "semrro"
 
 #: crypt-gpgme.c:4744
-msgid ""
-"S/MIME (e)ncrypt, (s)ign, sign (a)s, (b)oth, (p)gp, (c)lear, or (o)ppenc "
-"mode? "
-msgstr ""
-"Chiffrer s/mime, Signer, En tant que, les Deux, Pgp, Rien, ou mode Oppenc ? "
+msgid "S/MIME (e)ncrypt, (s)ign, sign (a)s, (b)oth, (p)gp, (c)lear, or (o)ppenc mode? "
+msgstr "Chiffrer s/mime, Signer, En tant que, les Deux, Pgp, Rien, ou mode Oppenc ? "
 
 #: crypt-gpgme.c:4745
 msgid "esabpfco"
 msgstr "csedprro"
 
 #: crypt-gpgme.c:4750
-msgid ""
-"PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, s/(m)ime, (c)lear, or (o)ppenc "
-"mode? "
-msgstr ""
-"Chiffrer pgp, Signer, En tant que, les Deux, s/Mime, Rien, ou mode Oppenc ? "
+msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, s/(m)ime, (c)lear, or (o)ppenc mode? "
+msgstr "Chiffrer pgp, Signer, En tant que, les Deux, s/Mime, Rien, ou mode Oppenc ? "
 
 #: crypt-gpgme.c:4751
 msgid "esabmfco"
@@ -1567,8 +1542,7 @@ msgstr "PGP en ligne est impossible avec des attachements. Utiliser PGP/MIME ?"
 
 #: crypt.c:152
 msgid "Mail not sent: inline PGP can't be used with attachments."
-msgstr ""
-"Message non envoyé : PGP en ligne est impossible avec des attachements."
+msgstr "Message non envoyé : PGP en ligne est impossible avec des attachements."
 
 #: crypt.c:159 cryptglue.c:110 pgpkey.c:563 pgpkey.c:753
 msgid "Invoking PGP..."
@@ -1584,8 +1558,7 @@ msgstr "Message non envoyé."
 
 #: crypt.c:483
 msgid "S/MIME messages with no hints on content are unsupported."
-msgstr ""
-"Les messages S/MIME sans indication sur le contenu ne sont pas supportés."
+msgstr "Les messages S/MIME sans indication sur le contenu ne sont pas supportés."
 
 #: crypt.c:703 crypt.c:747
 msgid "Trying to extract PGP keys...\n"
@@ -1706,8 +1679,7 @@ msgstr "%s : opération non permise par les ACL"
 
 #: curs_main.c:332
 msgid "Cannot toggle write on a readonly mailbox!"
-msgstr ""
-"Impossible de rendre inscriptible une boîte aux lettres en lecture seule !"
+msgstr "Impossible de rendre inscriptible une boîte aux lettres en lecture seule !"
 
 #: curs_main.c:339
 msgid "Changes to folder will be written on folder exit."
@@ -1739,8 +1711,7 @@ msgstr "Groupe"
 
 #: curs_main.c:574
 msgid "Mailbox was externally modified.  Flags may be wrong."
-msgstr ""
-"Boîte aux lettres modifiée extérieurement. Les indicateurs peuvent être faux."
+msgstr "Boîte aux lettres modifiée extérieurement. Les indicateurs peuvent être faux."
 
 #: curs_main.c:577
 msgid "New mail in this mailbox."
@@ -1861,9 +1832,7 @@ msgstr "Discussion cassée"
 
 #: curs_main.c:1380
 msgid "Thread cannot be broken, message is not part of a thread"
-msgstr ""
-"La discussion ne peut pas être cassée, le message n'est pas dans une "
-"discussion"
+msgstr "La discussion ne peut pas être cassée, le message n'est pas dans une discussion"
 
 #. L10N: CHECK_ACL
 #: curs_main.c:1390
@@ -2130,9 +2099,7 @@ msgstr "Effacer l'indicateur"
 
 #: handler.c:1139
 msgid "[-- Error:  Could not display any parts of Multipart/Alternative! --]\n"
-msgstr ""
-"[-- Erreur : Aucune partie du Multipart/Alternative n'a pu être affichée ! "
-"--]\n"
+msgstr "[-- Erreur : Aucune partie du Multipart/Alternative n'a pu être affichée ! --]\n"
 
 # , c-format
 #: handler.c:1254
@@ -2176,8 +2143,7 @@ msgstr "[-- Visualisation automatique stderr de %s --]\n"
 
 #: handler.c:1446
 msgid "[-- Error: message/external-body has no access-type parameter --]\n"
-msgstr ""
-"[-- Erreur : message/external-body n'a pas de paramètre access-type --]\n"
+msgstr "[-- Erreur : message/external-body n'a pas de paramètre access-type --]\n"
 
 # , c-format
 #: handler.c:1467
@@ -2305,8 +2271,7 @@ msgstr "le raccourci de boîte aux lettres courante '^' n'a pas de valeur"
 
 #: hook.c:108
 msgid "mailbox shortcut expanded to empty regexp"
-msgstr ""
-"le raccourci de boîte aux lettres a donné une expression rationnelle vide"
+msgstr "le raccourci de boîte aux lettres a donné une expression rationnelle vide"
 
 #: hook.c:119
 msgid "badly formatted command string"
@@ -2540,9 +2505,7 @@ msgstr "Copie de %d messages dans %s..."
 
 #: imap/message.c:98
 msgid "Unable to fetch headers from this IMAP server version."
-msgstr ""
-"Impossible de récupérer les en-têtes à partir de cette version du serveur "
-"IMAP."
+msgstr "Impossible de récupérer les en-têtes à partir de cette version du serveur IMAP."
 
 #: imap/message.c:108
 #, c-format
@@ -2567,8 +2530,7 @@ msgstr "Récupération du message..."
 
 #: imap/message.c:490 pop.c:568
 msgid "The message index is incorrect. Try reopening the mailbox."
-msgstr ""
-"L'index du message est incorrect. Essayez de rouvrir la boîte aux lettres."
+msgstr "L'index du message est incorrect. Essayez de rouvrir la boîte aux lettres."
 
 #: imap/message.c:660
 msgid "Uploading message..."
@@ -2866,8 +2828,7 @@ msgstr "Caractère = %s, Octal = %o, Decimal = %d"
 
 #: lib.c:131
 msgid "Integer overflow -- can't allocate memory!"
-msgstr ""
-"Dépassement de capacité sur entier -- impossible d'allouer la mémoire !"
+msgstr "Dépassement de capacité sur entier -- impossible d'allouer la mémoire !"
 
 #: lib.c:138 lib.c:153 lib.c:185
 msgid "Out of memory!"
@@ -2889,8 +2850,7 @@ msgid ""
 "under certain conditions; type `mutt -vv' for details.\n"
 msgstr ""
 "Copyright (C) 1996-2016 Michael R. Elkins et autres.\n"
-"Mutt ne fournit ABSOLUMENT AUCUNE GARANTIE ; pour les détails tapez `mutt -"
-"vv'.\n"
+"Mutt ne fournit ABSOLUMENT AUCUNE GARANTIE ; pour les détails tapez `mutt -vv'.\n"
 "Mutt est un logiciel libre, et vous êtes libre de le redistribuer\n"
 "sous certaines conditions ; tapez `mutt -vv' pour les détails.\n"
 
@@ -2948,21 +2908,17 @@ msgstr ""
 msgid ""
 "    You should have received a copy of the GNU General Public License\n"
 "    along with this program; if not, write to the Free Software\n"
-"    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  "
-"02110-1301, USA.\n"
+"    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.\n"
 msgstr ""
 "    Vous devez avoir reçu un exemplaire de la GNU General Public License\n"
 "    avec ce programme ; si ce n'est pas le cas, écrivez à la Free Software\n"
-"    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  "
-"02110-1301, USA.\n"
+"    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.\n"
 
 #: main.c:119
 msgid ""
 "usage: mutt [<options>] [-z] [-f <file> | -yZ]\n"
-"       mutt [<options>] [-Ex] [-Hi <file>] [-s <subj>] [-bc <addr>] [-a "
-"<file> [...] --] <addr> [...]\n"
-"       mutt [<options>] [-x] [-s <subj>] [-bc <addr>] [-a <file> [...] --] "
-"<addr> [...] < message\n"
+"       mutt [<options>] [-Ex] [-Hi <file>] [-s <subj>] [-bc <addr>] [-a <file> [...] --] <addr> [...]\n"
+"       mutt [<options>] [-x] [-s <subj>] [-bc <addr>] [-a <file> [...] --] <addr> [...] < message\n"
 "       mutt [<options>] -p\n"
 "       mutt [<options>] -A <alias> [...]\n"
 "       mutt [<options>] -Q <query> [...]\n"
@@ -2970,10 +2926,8 @@ msgid ""
 "       mutt -v[v]\n"
 msgstr ""
 "usage : mutt [<options>] [-z] [-f <fichier> | -yZ]\n"
-"        mutt [<options>] [-Ex] [-Hi <fichier>] [-s <objet>] [-bc <adresse>] "
-"[-a <fichier> [...] --] <adresse> [...]\n"
-"        mutt [<options>] [-x] [-s <objet>] [-bc <adresse>] [-a <fichier> "
-"[...] --] <adresse> [...] < message\n"
+"        mutt [<options>] [-Ex] [-Hi <fichier>] [-s <objet>] [-bc <adresse>] [-a <fichier> [...] --] <adresse> [...]\n"
+"        mutt [<options>] [-x] [-s <objet>] [-bc <adresse>] [-a <fichier> [...] --] <adresse> [...] < message\n"
 "        mutt [<options>] -p\n"
 "        mutt [<options>] -A <alias> [...]\n"
 "        mutt [<options>] -Q <requête> [...]\n"
@@ -3473,13 +3427,11 @@ msgstr "Erreur : pas de socket TLS ouverte"
 
 #: mutt_ssl_gnutls.c:312 mutt_ssl_gnutls.c:351
 msgid "All available protocols for TLS/SSL connection disabled"
-msgstr ""
-"Tous les protocoles disponibles pour une connexion TLS/SSL sont désactivés"
+msgstr "Tous les protocoles disponibles pour une connexion TLS/SSL sont désactivés"
 
 #: mutt_ssl_gnutls.c:357
 msgid "Explicit ciphersuite selection via $ssl_ciphers not supported"
-msgstr ""
-"Sélection de suite cryptographique explicite via $ssl_ciphers non supportée"
+msgstr "Sélection de suite cryptographique explicite via $ssl_ciphers non supportée"
 
 # , c-format
 #: mutt_ssl_gnutls.c:465
@@ -3497,8 +3449,7 @@ msgstr "Erreur de traitement des données du certificat"
 
 #: mutt_ssl_gnutls.c:831
 msgid "Warning: Server certificate was signed using an insecure algorithm"
-msgstr ""
-"Attention : le certificat du serveur a été signé avec un algorithme peu sûr"
+msgstr "Attention : le certificat du serveur a été signé avec un algorithme peu sûr"
 
 #: mutt_ssl_gnutls.c:950
 #, c-format
@@ -3561,8 +3512,7 @@ msgstr "Erreur de tunnel en parlant à %s : %s"
 #. See the msgid "Save to file: " (alias.c, recvattach.c)
 #: muttlib.c:999
 msgid "File is a directory, save under it? [(y)es, (n)o, (a)ll]"
-msgstr ""
-"Le fichier est un répertoire, sauver dans celui-ci ? [(o)ui, (n)on, (t)ous]"
+msgstr "Le fichier est un répertoire, sauver dans celui-ci ? [(o)ui, (n)on, (t)ous]"
 
 #: muttlib.c:999
 msgid "yna"
@@ -3931,11 +3881,8 @@ msgstr "serro"
 
 #: pgp.c:1760
 #, c-format
-msgid ""
-"PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, %s format, (c)lear, or (o)ppenc "
-"mode? "
-msgstr ""
-"Chiffrer pgp, Signer, En tant que, les Deux, format %s, Rien, ou Oppenc ? "
+msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, %s format, (c)lear, or (o)ppenc mode? "
+msgstr "Chiffrer pgp, Signer, En tant que, les Deux, format %s, Rien, ou Oppenc ? "
 
 #: pgp.c:1763
 msgid "esabfcoi"
@@ -3972,8 +3919,7 @@ msgstr "Récupération de la clé PGP..."
 
 #: pgpkey.c:491
 msgid "All matching keys are expired, revoked, or disabled."
-msgstr ""
-"Toutes les clés correspondantes sont expirées, révoquées, ou désactivées."
+msgstr "Toutes les clés correspondantes sont expirées, révoquées, ou désactivées."
 
 #: pgpkey.c:532
 #, c-format
@@ -4246,10 +4192,8 @@ msgid "Deletion of attachments from encrypted messages is unsupported."
 msgstr "L'effacement d'attachements de messages chiffrés n'est pas supporté."
 
 #: recvattach.c:1151
-msgid ""
-"Deletion of attachments from signed messages may invalidate the signature."
-msgstr ""
-"L'effacement d'attachements de messages signés peut invalider la signature."
+msgid "Deletion of attachments from signed messages may invalidate the signature."
+msgstr "L'effacement d'attachements de messages signés peut invalider la signature."
 
 #: recvattach.c:1168 recvattach.c:1185
 msgid "Only deletion of multipart attachments is supported."
@@ -4278,9 +4222,7 @@ msgstr "Faire suivre sous forme d'attachements ?"
 
 #: recvcmd.c:486
 msgid "Can't decode all tagged attachments.  MIME-forward the others?"
-msgstr ""
-"Impossible de décoder tous les attachements marqués. Faire suivre les "
-"autres ?"
+msgstr "Impossible de décoder tous les attachements marqués. Faire suivre les autres ?"
 
 #: recvcmd.c:611
 msgid "Forward MIME encapsulated?"
@@ -4302,9 +4244,7 @@ msgstr "Pas de liste de diffusion trouvée !"
 
 #: recvcmd.c:848
 msgid "Can't decode all tagged attachments.  MIME-encapsulate the others?"
-msgstr ""
-"Impossible de décoder ts les attachements marqués. MIME-encapsuler les "
-"autres ?"
+msgstr "Impossible de décoder ts les attachements marqués. MIME-encapsuler les autres ?"
 
 #: remailer.c:481
 msgid "Append"
@@ -4357,10 +4297,8 @@ msgid "Mixmaster doesn't accept Cc or Bcc headers."
 msgstr "Le mixmaster n'accepte pas les en-têtes Cc et Bcc."
 
 #: remailer.c:732
-msgid ""
-"Please set the hostname variable to a proper value when using mixmaster!"
-msgstr ""
-"Donnez une valeur correcte à hostname quand vous utilisez le mixmaster !"
+msgid "Please set the hostname variable to a proper value when using mixmaster!"
+msgstr "Donnez une valeur correcte à hostname quand vous utilisez le mixmaster !"
 
 # , c-format
 #: remailer.c:766
@@ -4636,8 +4574,7 @@ msgstr "Pas de sortie pour OpenSSL..."
 
 #: smime.c:1534
 msgid "Can't sign: No key specified. Use Sign As."
-msgstr ""
-"Impossible de signer : pas de clé spécifiée. Utilisez « Signer en tant que »."
+msgstr "Impossible de signer : pas de clé spécifiée. Utilisez « Signer en tant que »."
 
 #: smime.c:1586
 msgid "Can't open OpenSSL subprocess!"
@@ -4680,10 +4617,8 @@ msgstr ""
 "[-- Fin des données signées avec S/MIME. --]\n"
 
 #: smime.c:2110
-msgid ""
-"S/MIME (s)ign, encrypt (w)ith, sign (a)s, (c)lear, or (o)ppenc mode off? "
-msgstr ""
-"Signer s/mime, chiffer Avec, signer En tant que, Rien, ou Oppenc inactif ? "
+msgid "S/MIME (s)ign, encrypt (w)ith, sign (a)s, (c)lear, or (o)ppenc mode off? "
+msgstr "Signer s/mime, chiffer Avec, signer En tant que, Rien, ou Oppenc inactif ? "
 
 #. L10N: The 'f' is from "forget it", an old undocumented synonym of
 #. 'clear'.  Please use a corresponding letter in your language.
@@ -4694,22 +4629,16 @@ msgid "swafco"
 msgstr "saerro"
 
 #: smime.c:2124
-msgid ""
-"S/MIME (e)ncrypt, (s)ign, encrypt (w)ith, sign (a)s, (b)oth, (c)lear, or "
-"(o)ppenc mode? "
-msgstr ""
-"Ch. s/mime, Signer, ch. Avec, signer En tant que, les Deux, Rien, ou "
-"Oppenc ? "
+msgid "S/MIME (e)ncrypt, (s)ign, encrypt (w)ith, sign (a)s, (b)oth, (c)lear, or (o)ppenc mode? "
+msgstr "Ch. s/mime, Signer, ch. Avec, signer En tant que, les Deux, Rien, ou Oppenc ? "
 
 #: smime.c:2125
 msgid "eswabfco"
 msgstr "csaedrro"
 
 #: smime.c:2133
-msgid ""
-"S/MIME (e)ncrypt, (s)ign, encrypt (w)ith, sign (a)s, (b)oth, or (c)lear? "
-msgstr ""
-"Chiffrer s/mime, Signer, ch. Avec, signer En tant que, les Deux, ou Rien ? "
+msgid "S/MIME (e)ncrypt, (s)ign, encrypt (w)ith, sign (a)s, (b)oth, or (c)lear? "
+msgstr "Chiffrer s/mime, Signer, ch. Avec, signer En tant que, les Deux, ou Rien ? "
 
 #: smime.c:2134
 msgid "eswabfc"
@@ -4717,8 +4646,7 @@ msgstr "csaedrr"
 
 #: smime.c:2155
 msgid "Choose algorithm family: 1: DES, 2: RC2, 3: AES, or (c)lear? "
-msgstr ""
-"Choisissez une famille d'algo : 1: DES, 2: RC2, 3: AES, ou (e)ffacer ? "
+msgstr "Choisissez une famille d'algo : 1: DES, 2: RC2, 3: AES, ou (e)ffacer ? "
 
 #: smime.c:2158
 msgid "drac"
@@ -4831,8 +4759,7 @@ msgstr "fin d'exécution conditionnelle (noop)"
 
 #: ../keymap_alldefs.h:7
 msgid "force viewing of attachment using mailcap"
-msgstr ""
-"forcer la visualisation d'un attachment en utilisant le fichier mailcap"
+msgstr "forcer la visualisation d'un attachment en utilisant le fichier mailcap"
 
 #: ../keymap_alldefs.h:8
 msgid "view attachment as text"
@@ -4872,8 +4799,7 @@ msgstr "se désabonner de la BAL courante (IMAP seulement)"
 
 #: ../keymap_alldefs.h:17
 msgid "toggle view all/subscribed mailboxes (IMAP only)"
-msgstr ""
-"changer entre voir toutes les BAL/voir les BAL abonnées (IMAP seulement)"
+msgstr "changer entre voir toutes les BAL/voir les BAL abonnées (IMAP seulement)"
 
 #: ../keymap_alldefs.h:18
 msgid "list mailboxes with new mail"
@@ -5453,8 +5379,7 @@ msgstr "utiliser le message courant comme modèle pour un nouveau message"
 
 #: ../keymap_alldefs.h:162
 msgid "save message/attachment to a mailbox/file"
-msgstr ""
-"sauver le message/l'attachement dans une boîte aux lettres ou un fichier"
+msgstr "sauver le message/l'attachement dans une boîte aux lettres ou un fichier"
 
 #: ../keymap_alldefs.h:163
 msgid "search for a regular expression"
@@ -5646,8 +5571,7 @@ msgstr "sélectionner l'élément suivant de la chaîne"
 
 #: ../keymap_alldefs.h:210
 msgid "send the message through a mixmaster remailer chain"
-msgstr ""
-"envoyer le message dans une chaîne de redistributeurs de courrier mixmaster"
+msgstr "envoyer le message dans une chaîne de redistributeurs de courrier mixmaster"
 
 #: ../keymap_alldefs.h:211
 msgid "make decrypted copy and delete"

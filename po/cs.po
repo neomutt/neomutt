@@ -306,16 +306,12 @@ msgstr "Souborová maska: "
 
 #: browser.c:1724
 #, fuzzy
-msgid ""
-"Reverse sort by (d)ate, (a)lpha, si(z)e, d(e)scription, (c)ount, ne(w) "
-"count, or do(n)'t sort? "
+msgid "Reverse sort by (d)ate, (a)lpha, si(z)e, d(e)scription, (c)ount, ne(w) count, or do(n)'t sort? "
 msgstr "Obrácené řazení dle (d)ata, (p)ísmena, (v)elikosti či (n)eřadit?"
 
 #: browser.c:1725
 #, fuzzy
-msgid ""
-"Sort by (d)ate, (a)lpha, si(z)e, d(e)scription, (c)ount, ne(w) count, or "
-"do(n)'t sort? "
+msgid "Sort by (d)ate, (a)lpha, si(z)e, d(e)scription, (c)ount, ne(w) count, or do(n)'t sort? "
 msgstr "Řadit dle (d)ata, (p)ísmena, (v)elikosti či (n)eřadit?"
 
 #: browser.c:1726
@@ -537,16 +533,12 @@ msgstr "Zprávy nelze vytisknout"
 #: commands.c:547
 #, fuzzy
 msgid "Rev-Sort Date/Frm/Recv/Subj/tO/Thread/Unsort/siZe/sCore/sPam/Label?: "
-msgstr ""
-"Řadit opačně (d)at/(o)d/pří(j)/(v)ěc/(p)ro/v(l)ákno/(n)eseř/veli(k)/(s)kóre/"
-"sp(a)m?: "
+msgstr "Řadit opačně (d)at/(o)d/pří(j)/(v)ěc/(p)ro/v(l)ákno/(n)eseř/veli(k)/(s)kóre/sp(a)m?: "
 
 #: commands.c:548
 #, fuzzy
 msgid "Sort Date/Frm/Recv/Subj/tO/Thread/Unsort/siZe/sCore/sPam/Label?: "
-msgstr ""
-"Řadit (d)at/(o)d/pří(j)/(v)ěc/(p)ro/v(l)ákno/(n)eseř/veli(k)/(s)kóre/"
-"sp(a)m?: "
+msgstr "Řadit (d)at/(o)d/pří(j)/(v)ěc/(p)ro/v(l)ákno/(n)eseř/veli(k)/(s)kóre/sp(a)m?: "
 
 #: commands.c:549
 #, fuzzy
@@ -971,8 +963,7 @@ msgstr "chyba při podepisování dat: %s\n"
 
 #: crypt-gpgme.c:944
 msgid "$pgp_sign_as unset and no default key specified in ~/.gnupg/gpg.conf"
-msgstr ""
-"$pgp_sign_as není nastaveno a v ~/.gnupg/gpg.conf není určen výchozí klíč"
+msgstr "$pgp_sign_as není nastaveno a v ~/.gnupg/gpg.conf není určen výchozí klíč"
 
 #: crypt-gpgme.c:1140
 msgid "Warning: One of the keys has been revoked\n"
@@ -1024,9 +1015,7 @@ msgid "Fingerprint: "
 msgstr "Otisk klíče: "
 
 #: crypt-gpgme.c:1320
-msgid ""
-"WARNING: We have NO indication whether the key belongs to the person named "
-"as shown above\n"
+msgid "WARNING: We have NO indication whether the key belongs to the person named as shown above\n"
 msgstr "POZOR: Nemáme ŽÁDNÝ důkaz, že klíč patří výše jmenované osobě\n"
 
 #: crypt-gpgme.c:1327
@@ -1034,9 +1023,7 @@ msgid "WARNING: The key does NOT BELONG to the person named as shown above\n"
 msgstr "POZOR: Klíč NEPATŘÍ výše jmenované osobě\n"
 
 #: crypt-gpgme.c:1331
-msgid ""
-"WARNING: It is NOT certain that the key belongs to the person named as shown "
-"above\n"
+msgid "WARNING: It is NOT certain that the key belongs to the person named as shown above\n"
 msgstr "POZOR: NENÍ jisté, zda klíč patří výše jmenované osobě\n"
 
 #: crypt-gpgme.c:1361 crypt-gpgme.c:1366
@@ -1472,8 +1459,7 @@ msgstr "GPGME: Protokol CMS není dostupný"
 
 #: crypt-gpgme.c:4721
 msgid "S/MIME (s)ign, sign (a)s, (p)gp, (c)lear, or (o)ppenc mode off? "
-msgstr ""
-"S/MIME (p)odepsat, podepsat (j)ako, p(g)p, (n)ic či vypnout pří(l)ež. šifr.? "
+msgstr "S/MIME (p)odepsat, podepsat (j)ako, p(g)p, (n)ic či vypnout pří(l)ež. šifr.? "
 
 #. L10N: The 'f' is from "forget it", an old undocumented synonym of
 #. 'clear'.  Please use a corresponding letter in your language.
@@ -1485,20 +1471,15 @@ msgstr "pjgfnl"
 
 #: crypt-gpgme.c:4731
 msgid "PGP (s)ign, sign (a)s, s/(m)ime, (c)lear, or (o)ppenc mode off? "
-msgstr ""
-"PGP (p)odepsat, podepsat (j)ako, s/(m)ime, (n)ic či vypnout pří(l)ež. šifr.? "
+msgstr "PGP (p)odepsat, podepsat (j)ako, s/(m)ime, (n)ic či vypnout pří(l)ež. šifr.? "
 
 #: crypt-gpgme.c:4732
 msgid "samfco"
 msgstr "pjmfnl"
 
 #: crypt-gpgme.c:4744
-msgid ""
-"S/MIME (e)ncrypt, (s)ign, sign (a)s, (b)oth, (p)gp, (c)lear, or (o)ppenc "
-"mode? "
-msgstr ""
-"S/MIME šif(r)ovat, (p)odepsat, pod.(j)ako, (o)bojí, p(g)p, (n)ic, pří(l)."
-"šifr.? "
+msgid "S/MIME (e)ncrypt, (s)ign, sign (a)s, (b)oth, (p)gp, (c)lear, or (o)ppenc mode? "
+msgstr "S/MIME šif(r)ovat, (p)odepsat, pod.(j)ako, (o)bojí, p(g)p, (n)ic, pří(l).šifr.? "
 
 # `f` means forget it. The absolute order must be preserved. Therefore `f'
 # has to be injected on 6th position.
@@ -1507,12 +1488,8 @@ msgid "esabpfco"
 msgstr "rpjogfnl"
 
 #: crypt-gpgme.c:4750
-msgid ""
-"PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, s/(m)ime, (c)lear, or (o)ppenc "
-"mode? "
-msgstr ""
-"PGP šif(r)ovat, (p)odepsat, pod.(j)ako, (o)bojí, s/(m)ime, (n)ic, pří(l)."
-"šifr.? "
+msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, s/(m)ime, (c)lear, or (o)ppenc mode? "
+msgstr "PGP šif(r)ovat, (p)odepsat, pod.(j)ako, (o)bojí, s/(m)ime, (n)ic, pří(l).šifr.? "
 
 # `f` means forget it. The absolute order must be preserved. Therefore `f'
 # has to be injected on 6th position.
@@ -1522,8 +1499,7 @@ msgstr "rpjomfnl"
 
 #: crypt-gpgme.c:4762
 msgid "S/MIME (e)ncrypt, (s)ign, sign (a)s, (b)oth, (p)gp or (c)lear? "
-msgstr ""
-"S/MIME šif(r)ovat, (p)odepsat, podepsat (j)ako, (o)bojí, p(g)p či (n)ic? "
+msgstr "S/MIME šif(r)ovat, (p)odepsat, podepsat (j)ako, (o)bojí, p(g)p či (n)ic? "
 
 # `f` means forget it. The absolute order must be preserved. Therefore `f'
 # has to be injected on 6th position.
@@ -1533,8 +1509,7 @@ msgstr "rpjogfn"
 
 #: crypt-gpgme.c:4768
 msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, s/(m)ime or (c)lear? "
-msgstr ""
-"PGP šif(r)ovat, (p)odepsat, podepsat (j)ako, (o)bojí, s/(m)ime, či (n)ic? "
+msgstr "PGP šif(r)ovat, (p)odepsat, podepsat (j)ako, (o)bojí, s/(m)ime, či (n)ic? "
 
 # `f` means forget it. The absolute order must be preserved. Therefore `f'
 # has to be injected on 6th position.
@@ -2217,8 +2192,7 @@ msgstr "Vypnout příznak"
 
 #: handler.c:1139
 msgid "[-- Error:  Could not display any parts of Multipart/Alternative! --]\n"
-msgstr ""
-"[-- Chyba: Žádnou z částí „Multipart/Alternative“ nelze zobrazit! --]\n"
+msgstr "[-- Chyba: Žádnou z částí „Multipart/Alternative“ nelze zobrazit! --]\n"
 
 #: handler.c:1254
 #, c-format
@@ -2256,8 +2230,7 @@ msgstr "[-- Automaticky zobrazuji standardní chybový výstup %s --]\n"
 
 #: handler.c:1446
 msgid "[-- Error: message/external-body has no access-type parameter --]\n"
-msgstr ""
-"[-- Chyba: typ „message/external-body“ nemá parametr „access-type“ --]\n"
+msgstr "[-- Chyba: typ „message/external-body“ nemá parametr „access-type“ --]\n"
 
 #: handler.c:1467
 #, c-format
@@ -2916,10 +2889,8 @@ msgstr "Paměť vyčerpána!"
 #: main.c:84
 msgid ""
 "usage: mutt [<options>] [-z] [-f <file> | -yZ]\n"
-"       mutt [<options>] [-Ex] [-Hi <file>] [-s <subj>] [-bc <addr>] [-a "
-"<file> [...] --] <addr> [...]\n"
-"       mutt [<options>] [-x] [-s <subj>] [-bc <addr>] [-a <file> [...] --] "
-"<addr> [...] < message\n"
+"       mutt [<options>] [-Ex] [-Hi <file>] [-s <subj>] [-bc <addr>] [-a <file> [...] --] <addr> [...]\n"
+"       mutt [<options>] [-x] [-s <subj>] [-bc <addr>] [-a <file> [...] --] <addr> [...] < message\n"
 "       mutt [<options>] -p\n"
 "       mutt [<options>] -A <alias> [...]\n"
 "       mutt [<options>] -Q <query> [...]\n"
@@ -2929,8 +2900,7 @@ msgstr ""
 "Použití: mutt [<přepínače>] [-z] [-f <soubor> | -yZ]\n"
 "         mutt [<přepínače>] [-Ex] [-Hi <soubor>] [-s <věc>] [-bc <adr>]\n"
 "              [-a <soubor> […] --] <adr> […]\n"
-"         mutt [<přepínače>] [-x] [-s <věc>] [-bc <adr>] [-a <soubor> […] "
-"--]\n"
+"         mutt [<přepínače>] [-x] [-s <věc>] [-bc <adr>] [-a <soubor> […] --]\n"
 "              <adr> […] < zpráva\n"
 "         mutt [<přepínače>] -p\n"
 "         mutt [<přepínače>] -A <alias> […]\n"
@@ -3090,8 +3060,7 @@ msgstr "Kritická chyba! Schránku nelze znovu otevřít!"
 
 #: mbox.c:881
 msgid "sync: mbox modified, but no modified messages! (report this bug)"
-msgstr ""
-"sync: mbox byl změněn, ale nebyly změněny žádné zprávy! (ohlaste tuto chybu)"
+msgstr "sync: mbox byl změněn, ale nebyly změněny žádné zprávy! (ohlaste tuto chybu)"
 
 #: mbox.c:905 mh.c:2023 mutt_notmuch.c:1623 mx.c:757
 #, c-format
@@ -3511,8 +3480,7 @@ msgstr "Všechny dostupné protokoly pro TLS/SSL byly zakázány"
 
 #: mutt_ssl_gnutls.c:359
 msgid "Explicit ciphersuite selection via $ssl_ciphers not supported"
-msgstr ""
-"Explicitní výběr šifrovacích algoritmů pomoc $ssl_ciphers není podporován"
+msgstr "Explicitní výběr šifrovacích algoritmů pomoc $ssl_ciphers není podporován"
 
 #: mutt_ssl_gnutls.c:467
 #, c-format
@@ -3787,8 +3755,7 @@ msgid "Checking for new newsgroups..."
 msgstr "Hledám nové zprávy…"
 
 #: nntp.c:2420
-msgid ""
-"Unable to find child articles because server does not support XPAT command."
+msgid "Unable to find child articles because server does not support XPAT command."
 msgstr ""
 
 #: pager.c:1629
@@ -4005,11 +3972,8 @@ msgstr "pjfnl"
 # XXX: %s is "PGP/M(i)ME" or "(i)nline"
 #: pgp.c:1760
 #, c-format
-msgid ""
-"PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, %s format, (c)lear, or (o)ppenc "
-"mode? "
-msgstr ""
-"PGP šif(r)ovat, (p)odep., pod.(j)ako, (o)bojí, %s, (n)ic, pří(l).šif.? "
+msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, %s format, (c)lear, or (o)ppenc mode? "
+msgstr "PGP šif(r)ovat, (p)odep., pod.(j)ako, (o)bojí, %s, (n)ic, pří(l).šif.? "
 
 # `f` means forget it. The absolute order must be preserved. Therefore `f'
 # has to be injected on 6th position.
@@ -4019,8 +3983,7 @@ msgstr "rpjofnli"
 
 #: pgp.c:1768
 msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, (c)lear, or (o)ppenc mode? "
-msgstr ""
-"PGP šif(r)ovat, (p)odepsat, podepsat (j)ako, (o)bojí, (n)ic, pří(l). šifr.? "
+msgstr "PGP šif(r)ovat, (p)odepsat, podepsat (j)ako, (o)bojí, (n)ic, pří(l). šifr.? "
 
 # `f` means forget it. The absolute order must be preserved. Therefore `f'
 # has to be injected on 6th position.
@@ -4056,8 +4019,7 @@ msgstr "Získávám PGP klíč…"
 
 #: pgpkey.c:491
 msgid "All matching keys are expired, revoked, or disabled."
-msgstr ""
-"Všem vyhovujícím klíčům vypršela platnost, byly zneplatněny nebo zakázány."
+msgstr "Všem vyhovujícím klíčům vypršela platnost, byly zneplatněny nebo zakázány."
 
 #: pgpkey.c:532
 #, c-format
@@ -4318,8 +4280,7 @@ msgid "Deletion of attachments from encrypted messages is unsupported."
 msgstr "Mazání příloh ze zašifrovaných zpráv není podporováno."
 
 #: recvattach.c:1144
-msgid ""
-"Deletion of attachments from signed messages may invalidate the signature."
+msgid "Deletion of attachments from signed messages may invalidate the signature."
 msgstr "Mazání příloh z podepsaných zpráv může zneplatnit podpis."
 
 #: recvattach.c:1161 recvattach.c:1178
@@ -4370,8 +4331,7 @@ msgstr "Žádné poštovní konference nebyly nalezeny!"
 
 #: recvcmd.c:867
 msgid "Can't decode all tagged attachments.  MIME-encapsulate the others?"
-msgstr ""
-"Všechny označené přílohy nelze dekódovat. Zapouzdřit je do MIME formátu?"
+msgstr "Všechny označené přílohy nelze dekódovat. Zapouzdřit je do MIME formátu?"
 
 #: remailer.c:481
 msgid "Append"
@@ -4424,10 +4384,8 @@ msgid "Mixmaster doesn't accept Cc or Bcc headers."
 msgstr "Mixmaster nepovoluje Cc a Bcc hlavičky."
 
 #: remailer.c:732
-msgid ""
-"Please set the hostname variable to a proper value when using mixmaster!"
-msgstr ""
-"Pokud používáte mixmaster, je třeba správně nastavit proměnnou „hostname“."
+msgid "Please set the hostname variable to a proper value when using mixmaster!"
+msgstr "Pokud používáte mixmaster, je třeba správně nastavit proměnnou „hostname“."
 
 #: remailer.c:766
 #, c-format
@@ -4751,11 +4709,8 @@ msgstr ""
 "[-- Konec dat podepsaných pomocí S/MIME --]\n"
 
 #: smime.c:2110
-msgid ""
-"S/MIME (s)ign, encrypt (w)ith, sign (a)s, (c)lear, or (o)ppenc mode off? "
-msgstr ""
-"S/MIME (p)odepsat, šifr. po(m)ocí, podep. (j)ako, (n)ic, vypnout pří(l). "
-"šifr.? "
+msgid "S/MIME (s)ign, encrypt (w)ith, sign (a)s, (c)lear, or (o)ppenc mode off? "
+msgstr "S/MIME (p)odepsat, šifr. po(m)ocí, podep. (j)ako, (n)ic, vypnout pří(l). šifr.? "
 
 #. L10N: The 'f' is from "forget it", an old undocumented synonym of
 #. 'clear'.  Please use a corresponding letter in your language.
@@ -4766,12 +4721,8 @@ msgid "swafco"
 msgstr "pmjfnl"
 
 #: smime.c:2124
-msgid ""
-"S/MIME (e)ncrypt, (s)ign, encrypt (w)ith, sign (a)s, (b)oth, (c)lear, or "
-"(o)ppenc mode? "
-msgstr ""
-"S/MIME šif(r)., (p)ode., šif.po(m)ocí, pod.(j)ako, (o)bojí, (n)ic, pří(l)."
-"šif.? "
+msgid "S/MIME (e)ncrypt, (s)ign, encrypt (w)ith, sign (a)s, (b)oth, (c)lear, or (o)ppenc mode? "
+msgstr "S/MIME šif(r)., (p)ode., šif.po(m)ocí, pod.(j)ako, (o)bojí, (n)ic, pří(l).šif.? "
 
 # `f` means forget it. The absolute order must be preserved. Therefore `f'
 # has to be injected on 6th position.
@@ -4780,11 +4731,8 @@ msgid "eswabfco"
 msgstr "rpmjofnl"
 
 #: smime.c:2133
-msgid ""
-"S/MIME (e)ncrypt, (s)ign, encrypt (w)ith, sign (a)s, (b)oth, or (c)lear? "
-msgstr ""
-"S/MIME šif(r)ovat, (p)odepsat, šifr. po(m)ocí, podep. (j)ako, (o)bojí či "
-"(n)ic? "
+msgid "S/MIME (e)ncrypt, (s)ign, encrypt (w)ith, sign (a)s, (b)oth, or (c)lear? "
+msgstr "S/MIME šif(r)ovat, (p)odepsat, šifr. po(m)ocí, podep. (j)ako, (o)bojí či (n)ic? "
 
 # `f` means forget it. The absolute order must be preserved. Therefore `f'
 # has to be injected on 6th position.
@@ -4949,8 +4897,7 @@ msgstr ""
 msgid ""
 "    You should have received a copy of the GNU General Public License\n"
 "    along with this program; if not, write to the Free Software\n"
-"    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  "
-"02110-1301, USA.\n"
+"    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.\n"
 msgstr ""
 "    S tímto programem byste měli obdržet kopii GNU GPL. Pokud se tak\n"
 "    nestalo, obraťte se na Free Software Foundation, Inc.,\n"
@@ -5969,4 +5916,3 @@ msgstr "extrahovat všechny podporované veřejné klíče"
 #: ../keymap_alldefs.h:244
 msgid "show S/MIME options"
 msgstr "zobrazit menu S/MIME"
-
