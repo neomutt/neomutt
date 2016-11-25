@@ -158,6 +158,7 @@ static void redraw_crypt_lines (HEADER *msg)
   else if (msg->security & SIGN)
     addstr (_("Sign"));
   else
+    /* L10N: This refers to the encryption of the email, e.g. "Security: None" */
     addstr (_("None"));
 
   if ((msg->security & (ENCRYPT | SIGN)))

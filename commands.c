@@ -544,8 +544,11 @@ int mutt_select_sort (int reverse)
   int method = Sort; /* save the current method in case of abort */
 
   switch (mutt_multi_choice (reverse ?
+                             /* L10N: The highlighted letters must match the "Sort" options */
 			     _("Rev-Sort Date/Frm/Recv/Subj/tO/Thread/Unsort/siZe/sCore/sPam/Label?: ") :
+                             /* L10N: The highlighted letters must match the "Rev-Sort" options */
 			     _("Sort Date/Frm/Recv/Subj/tO/Thread/Unsort/siZe/sCore/sPam/Label?: "),
+                             /* L10N: These must match the highlighted letters from "Sort" and "Rev-Sort" */
 			     _("dfrsotuzcpl")))
   {
   case -1: /* abort - don't resort */

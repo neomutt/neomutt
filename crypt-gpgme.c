@@ -3384,10 +3384,7 @@ static void print_key_info (gpgme_key_t key, FILE *fp)
         continue;
 
       s = uid->uid;
-      /* L10N:
-         Fill dots to make the DOTFILL entries the same length.
-         In English, msgid "Fingerprint: " is the longest entry for this menu.
-         Your language may vary. */
+      /* L10N: DOTFILL */
       fputs (idx ? _(" aka ......: ") :_("Name ......: "), fp);
       if (uid->invalid)
         {
@@ -3466,7 +3463,10 @@ static void print_key_info (gpgme_key_t key, FILE *fp)
   if (key->subkeys)
     {
       s = key->subkeys->fpr;
-      /* L10N: DOTFILL */
+      /* L10N: DOTFILL
+         Fill dots to make the DOTFILL entries the same length.
+         In English, msgid "Fingerprint: " is the longest entry for this menu.
+         Your language may vary. */
       fputs (_("Fingerprint: "), fp);
       if (is_pgp && strlen (s) == 40)
         {
@@ -4718,17 +4718,19 @@ static int gpgme_send_menu (HEADER *msg, int *redraw, int is_smime)
   {
     if (is_smime)
     {
+      /* L10N: S/MIME options (opportunistic encryption is on) */
       prompt = _("S/MIME (s)ign, sign (a)s, (p)gp, (c)lear, or (o)ppenc mode off? ");
-      /* L10N: The 'f' is from "forget it", an old undocumented synonym of
-         'clear'.  Please use a corresponding letter in your language.
-         Alternatively, you may duplicate the letter 'c' is translated to.
-         This comment also applies to the five following letter sequences. */
+      /* L10N: S/MIME options (opportunistic encryption is on)
+         The 'f' is undocumented. Please duplicate the letter 'c' is translated into. */
       letters = _("sapfco");
       choices = "SapFCo";
     }
     else
     {
+      /* L10N: PGP options (opportunistic encryption is on) */
       prompt = _("PGP (s)ign, sign (a)s, s/(m)ime, (c)lear, or (o)ppenc mode off? ");
+      /* L10N: PGP options (opportunistic encryption is on)
+         The 'f' is undocumented. Please duplicate the letter 'c' is translated into. */
       letters = _("samfco");
       choices = "SamFCo";
     }
@@ -4741,13 +4743,19 @@ static int gpgme_send_menu (HEADER *msg, int *redraw, int is_smime)
   {
     if (is_smime)
     {
+      /* L10N: S/MIME options (opportunistic encryption is off) */
       prompt = _("S/MIME (e)ncrypt, (s)ign, sign (a)s, (b)oth, (p)gp, (c)lear, or (o)ppenc mode? ");
+      /* L10N: S/MIME options (opportunistic encryption is off)
+         The 'f' is undocumented. Please duplicate the letter 'c' is translated into. */
       letters = _("esabpfco");
       choices = "esabpfcO";
     }
     else
     {
+      /* L10N: PGP options (opportunistic encryption is off) */
       prompt = _("PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, s/(m)ime, (c)lear, or (o)ppenc mode? ");
+      /* L10N: PGP options (opportunistic encryption is off)
+         The 'f' is undocumented. Please duplicate the letter 'c' is translated into. */
       letters = _("esabmfco");
       choices = "esabmfcO";
     }
@@ -4759,13 +4767,19 @@ static int gpgme_send_menu (HEADER *msg, int *redraw, int is_smime)
   {
     if (is_smime)
     {
+      /* L10N: S/MIME options */
       prompt = _("S/MIME (e)ncrypt, (s)ign, sign (a)s, (b)oth, (p)gp or (c)lear? ");
+      /* L10N: S/MIME options
+         The 'f' is undocumented. Please duplicate the letter 'c' is translated into. */
       letters = _("esabpfc");
       choices = "esabpfc";
     }
     else
     {
+      /* L10N: PGP options */
       prompt = _("PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, s/(m)ime or (c)lear? ");
+      /* L10N: PGP options
+         The 'f' is undocumented. Please duplicate the letter 'c' is translated into. */
       letters = _("esabmfc");
       choices = "esabmfc";
     }

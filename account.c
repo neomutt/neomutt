@@ -183,6 +183,7 @@ int mutt_account_getuser (ACCOUNT* account)
   /* prompt (defaults to unix username), copy into account->user */
   else
   {
+    /* L10N: Example: Username at myhost.com */
     snprintf (prompt, sizeof (prompt), _("Username at %s: "), account->host);
     strfcpy (account->user, NONULL (Username), sizeof (account->user));
     if (mutt_get_field_unbuffered (prompt, account->user, sizeof (account->user), 0))

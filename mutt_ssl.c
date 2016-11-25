@@ -341,9 +341,8 @@ static int ssl_socket_open (CONNECTION * conn)
   if (! (data->ctx = SSL_CTX_new (SSLv23_client_method ())))
   {
     /* L10N: an SSL context is a data structure returned by the OpenSSL
-     *       function SSL_CTX_new().  In this case it returned NULL: an
-     *       error condition.
-     */
+             function SSL_CTX_new().  In this case it returned NULL: an
+             error condition.  */
     mutt_error (_("Unable to create SSL context"));
     ssl_dprint_err_stack ();
     mutt_socket_close (conn);

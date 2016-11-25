@@ -95,6 +95,7 @@ $(PACKAGE).pot: $(POTFILES) $(BUILT_POTFILES) $(srcdir)/POTFILES.in
 	  --files-from=$(srcdir)/POTFILES.in \
 	&& \
 	$(XGETTEXT) --default-domain=$(PACKAGE) \
+	  --msgid-bugs-address=neomutt-devel@neomutt.org \
 	  --add-comments=L10N --keyword=_ --keyword=N_ \
 	  --join $(BUILT_POTFILES) \
 	&& test ! -f $(PACKAGE).po \
@@ -152,18 +153,14 @@ check: all
 dvi info tags TAGS ID:
 
 mostlyclean:
-	rm -f core core.* *.pox $(PACKAGE).po *.new.po
-	rm -fr *.o
+	rm -f $(GMOFILES)
 
 clean: mostlyclean
 
 distclean: clean
-	rm -f Makefile Makefile.in POTFILES *.mo
+	rm -f Makefile Makefile.in POTFILES
 
 maintainer-clean: distclean
-	@echo "This command is intended for maintainers to use;"
-	@echo "it deletes files that may require special tools to rebuild."
-	rm -f $(GMOFILES)
 
 distdir = $(top_builddir)/$(PACKAGE)-$(VERSION)/$(subdir)
 dist distdir: $(DISTFILES)

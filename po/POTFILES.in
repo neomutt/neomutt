@@ -4,11 +4,11 @@ alias.c
 attach.c
 browser.c
 buffy.c
-charset.c
 color.c
 commands.c
 compose.c
 compress.c
+copy.c
 crypt-gpgme.c
 crypt.c
 cryptglue.c
@@ -40,12 +40,13 @@ main.c
 mbox.c
 menu.c
 mh.c
+muttlib.c
+mutt_notmuch.c
 mutt_sasl.c
 mutt_socket.c
 mutt_ssl.c
 mutt_ssl_gnutls.c
 mutt_tunnel.c
-muttlib.c
 mx.c
 newsrc.c
 nntp.c
@@ -64,6 +65,7 @@ recvattach.c
 recvcmd.c
 remailer.c
 rfc1524.c
+safe_asprintf.c
 score.c
 send.c
 sendlib.c
@@ -73,3 +75,4 @@ smtp.c
 sort.c
 status.c
 thread.c
+version.c
