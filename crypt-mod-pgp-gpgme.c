@@ -104,7 +104,7 @@ static BODY *crypt_mod_pgp_make_key_attachment (char *tempf)
 
 static void crypt_mod_pgp_set_sender (const char *sender)
 {
-  gpgme_set_sender (sender);
+  mutt_gpgme_set_sender (sender);
 }
 
 struct crypt_module_specs crypt_mod_pgp_gpgme =
