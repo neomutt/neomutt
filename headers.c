@@ -345,7 +345,7 @@ void mutt_label_ref_inc(ENVELOPE *env)
 /*
  * set labels on a message
  */
-static int label_message(HEADER *hdr, char *new)
+static int label_message(HEADER *hdr, const char *new)
 {
   if (hdr == NULL)
     return 0;
@@ -368,8 +368,12 @@ static int label_message(HEADER *hdr, char *new)
   if ((new != NULL) && (*new != '\0'))
   {
     char *last, *label;
+    char copy[LONG_STRING];
 
-    for (label = strtok_r(new, ",", &last); label;
+    /* We take a copy because we're going to alter it */
+    strfcpy (copy, new, sizeof(copy));
+
+    for (label = strtok_r(copy, ",", &last); label;
          label = strtok_r(NULL, ",", &last)) 
     {
       SKIPWS(label);
