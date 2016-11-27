@@ -1716,6 +1716,19 @@ int pgp_send_menu (HEADER *msg, int *redraw)
 
   msg->security |= APPLICATION_PGP;
 
+  char *mime_inline;
+  if (msg->security & INLINE)
+  {
+    /* L10N: These next string MUST have the same highlighed letter
+             One of them will appear in each of the three strings marked "(inline"), below. */
+    mime_inline = _("PGP/M(i)ME");
+  }
+  else
+  {
+    /* L10N: These previous string MUST have the same highlighed letter
+             One of them will appear in each of the three strings marked "(inline"), below. */
+    mime_inline = _("(i)nline");
+  }
   /*
    * Opportunistic encrypt is controlling encryption.  Allow to toggle
    * between inline and mime, but not turn encryption on or off.
@@ -1727,19 +1740,21 @@ int pgp_send_menu (HEADER *msg, int *redraw)
     if (msg->security & (ENCRYPT | SIGN))
     {
       snprintf (promptbuf, sizeof (promptbuf),
-          _("PGP (s)ign, sign (a)s, %s format, (c)lear, or (o)ppenc mode off? "),
-          (msg->security & INLINE) ? _("PGP/M(i)ME") : _("(i)nline"));
+          /* L10N: PGP options (inline) (opportunistic encryption is on) */
+          _("PGP (s)ign, sign (a)s, %s format, (c)lear, or (o)ppenc mode off? "), mime_inline);
       prompt = promptbuf;
-      /* L10N: The 'f' is from "forget it", an old undocumented synonym of
-         'clear'.  Please use a corresponding letter in your language.
-         Alternatively, you may duplicate the letter 'c' is translated to.
-         This comment also applies to the five following letter sequences. */
+      /* L10N: PGP options (inline) (opportunistic encryption is on)
+         The 'i' is from the "PGP/M(i)ME" or "(i)nline", above.
+         The 'f' is undocumented. Please DO NOT translate it. */
       letters = _("safcoi");
       choices = "SaFCoi";
     }
     else
     {
+      /* L10N: PGP options (opportunistic encryption is on) */
       prompt = _("PGP (s)ign, sign (a)s, (c)lear, or (o)ppenc mode off? ");
+      /* L10N: PGP options (opportunistic encryption is on)
+         The 'f' is undocumented. Please DO NOT translate it. */
       letters = _("safco");
       choices = "SaFCo";
     }
@@ -1757,15 +1772,21 @@ int pgp_send_menu (HEADER *msg, int *redraw)
     {
 
       snprintf (promptbuf, sizeof (promptbuf), 
-          _("PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, %s format, (c)lear, or (o)ppenc mode? "),
-          (msg->security & INLINE) ? _("PGP/M(i)ME") : _("(i)nline"));
+          /* L10N: PGP options (inline) (opportunistic encryption is off) */
+          _("PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, %s format, (c)lear, or (o)ppenc mode? "), mime_inline);
       prompt = promptbuf;
+      /* L10N: PGP options (inline) (opportunistic encryption is off)
+         The 'i' is from the "PGP/M(i)ME" or "(i)nline", above.
+         The 'f' is undocumented. Please DO NOT translate it. */
       letters = _("esabfcoi");
       choices = "esabfcOi";
     }
     else
     {
+      /* L10N: PGP options (opportunistic encryption is off) */
       prompt = _("PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, (c)lear, or (o)ppenc mode? ");
+      /* L10N: PGP options (opportunistic encryption is off)
+         The 'f' is undocumented. Please DO NOT translate it. */
       letters = _("esabfco");
       choices = "esabfcO";
     }
@@ -1779,15 +1800,21 @@ int pgp_send_menu (HEADER *msg, int *redraw)
     {
 
       snprintf (promptbuf, sizeof (promptbuf), 
-          _("PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, %s format, or (c)lear? "),
-          (msg->security & INLINE) ? _("PGP/M(i)ME") : _("(i)nline"));
+          /* L10N: PGP options (inline) */
+          _("PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, %s format, or (c)lear? "), mime_inline);
       prompt = promptbuf;
+      /* L10N: PGP options (inline)
+         The 'i' is from the "PGP/M(i)ME" or "(i)nline", above.
+         The 'f' is undocumented. Please DO NOT translate it. */
       letters = _("esabfci");
       choices = "esabfci";
     }
     else
     {
+      /* L10N: PGP options */
       prompt = _("PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, or (c)lear? ");
+      /* L10N: PGP options
+         The 'f' is undocumented. Please DO NOT translate it. */
       letters = _("esabfc");
       choices = "esabfc";
     }

@@ -2107,11 +2107,10 @@ int smime_send_menu (HEADER *msg, int *redraw)
    */
   if (option (OPTCRYPTOPPORTUNISTICENCRYPT) && (msg->security & OPPENCRYPT))
   {
+    /* L10N: S/MIME options (opportunistic encryption is on) */
     prompt = _("S/MIME (s)ign, encrypt (w)ith, sign (a)s, (c)lear, or (o)ppenc mode off? ");
-    /* L10N: The 'f' is from "forget it", an old undocumented synonym of
-       'clear'.  Please use a corresponding letter in your language.
-       Alternatively, you may duplicate the letter 'c' is translated to.
-       This comment also applies to the two following letter sequences. */
+    /* L10N: S/MIME options (opportunistic encryption is on)
+        The 'f' is undocumented. Please DO NOT translate it. */
     letters = _("swafco");
     choices = "SwaFCo";
   }
@@ -2121,7 +2120,10 @@ int smime_send_menu (HEADER *msg, int *redraw)
    */
   else if (option (OPTCRYPTOPPORTUNISTICENCRYPT))
   {
+    /* L10N: S/MIME options (opportunistic encryption is off) */
     prompt = _("S/MIME (e)ncrypt, (s)ign, encrypt (w)ith, sign (a)s, (b)oth, (c)lear, or (o)ppenc mode? ");
+    /* L10N: S/MIME options (opportunistic encryption is off)
+        The 'f' is undocumented. Please DO NOT translate it. */
     letters = _("eswabfco");
     choices = "eswabfcO";
   }
@@ -2130,7 +2132,10 @@ int smime_send_menu (HEADER *msg, int *redraw)
    */
   else
   {
+    /* L10N: S/MIME options */
     prompt = _("S/MIME (e)ncrypt, (s)ign, encrypt (w)ith, sign (a)s, (b)oth, or (c)lear? ");
+    /* L10N: S/MIME options
+        The 'f' is undocumented. Please DO NOT translate it. */
     letters = _("eswabfc");
     choices = "eswabfc";
   }
