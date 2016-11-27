@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neomutt-20161104\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
-"POT-Creation-Date: 2017-04-28 12:34+0100\n"
+"POT-Creation-Date: 2017-04-29 14:20+0100\n"
 "PO-Revision-Date: 2016-11-23 21:20+0100\n"
 "Last-Translator: František Hájik <ferko.hajik@gmail.com>\n"
 "Language-Team: Slovak <sk@li.org>\n"
@@ -1620,7 +1620,7 @@ msgstr ""
 #. The 'f' is undocumented. Please DO NOT translate it.
 #: crypt_gpgme.c:4607
 msgid "sapfco"
-msgstr "spgvvo"
+msgstr ""
 
 #: crypt_gpgme.c:4614
 msgid "PGP (s)ign, sign (a)s, s/(m)ime, (c)lear, or (o)ppenc mode off? "
@@ -1632,7 +1632,7 @@ msgstr ""
 #. The 'f' is undocumented. Please DO NOT translate it.
 #: crypt_gpgme.c:4617
 msgid "samfco"
-msgstr "spmvvo"
+msgstr ""
 
 #. L10N: S/MIME options (opportunistic encryption is off)
 #: crypt_gpgme.c:4630
@@ -1646,8 +1646,9 @@ msgstr ""
 #. L10N: S/MIME options (opportunistic encryption is off)
 #. The 'f' is undocumented. Please DO NOT translate it.
 #: crypt_gpgme.c:4634
+#, fuzzy
 msgid "esabpfco"
-msgstr "rspbgvvo"
+msgstr "rspbgvo"
 
 #. L10N: PGP options (opportunistic encryption is off)
 #: crypt_gpgme.c:4640
@@ -1661,8 +1662,9 @@ msgstr ""
 #. L10N: PGP options (opportunistic encryption is off)
 #. The 'f' is undocumented. Please DO NOT translate it.
 #: crypt_gpgme.c:4644
+#, fuzzy
 msgid "esabmfco"
-msgstr "rspbmvvo"
+msgstr "rspbmvo"
 
 #: crypt_gpgme.c:4657
 msgid "S/MIME (e)ncrypt, (s)ign, sign (a)s, (b)oth, (p)gp or (c)lear? "
@@ -1672,8 +1674,9 @@ msgstr ""
 #. L10N: S/MIME options
 #. The 'f' is undocumented. Please DO NOT translate it.
 #: crypt_gpgme.c:4660
+#, fuzzy
 msgid "esabpfc"
-msgstr "rspbgvv"
+msgstr "rspbgv"
 
 #: crypt_gpgme.c:4667
 msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, s/(m)ime or (c)lear? "
@@ -1684,8 +1687,9 @@ msgstr ""
 #. L10N: PGP options
 #. The 'f' is undocumented. Please DO NOT translate it.
 #: crypt_gpgme.c:4670
+#, fuzzy
 msgid "esabmfc"
-msgstr "rspbmvv"
+msgstr "rspbmv"
 
 #: crypt_gpgme.c:4695 pgp.c:1760 smime.c:2143 smime.c:2158
 msgid "Sign as: "
@@ -5304,7 +5308,7 @@ msgstr ""
 #: pgp.c:1694
 #, fuzzy
 msgid "esabfcoi"
-msgstr "eswabf"
+msgstr "rspbgvo"
 
 #. L10N: PGP options (opportunistic encryption is off)
 #: pgp.c:1700
@@ -5318,7 +5322,7 @@ msgstr ""
 #: pgp.c:1704
 #, fuzzy
 msgid "esabfco"
-msgstr "eswabf"
+msgstr "rspbgvo"
 
 #. L10N: PGP options (inline)
 #: pgp.c:1717
@@ -5333,7 +5337,7 @@ msgstr ""
 #: pgp.c:1724
 #, fuzzy
 msgid "esabfci"
-msgstr "eswabf"
+msgstr "rspbgv"
 
 #. L10N: PGP options
 #: pgp.c:1730
@@ -5347,7 +5351,7 @@ msgstr ""
 #: pgp.c:1733
 #, fuzzy
 msgid "esabfc"
-msgstr "eswabf"
+msgstr "rspbgv"
 
 #: pgpinvoke.c:288
 #, fuzzy
@@ -6314,10 +6318,16 @@ msgstr ""
 "Mutt je voľný program, a ste vítaný šíriť ho\n"
 "za určitých podmienok; napíšte `mutt -vv' pre detaily.\n"
 
-#: version.c:430
+#: version.c:428
 msgid ""
 "\n"
 "Compile options:"
 msgstr ""
 "\n"
 "Nastavenia kompilácie:"
+
+#~ msgid "sapco"
+#~ msgstr "spgvo"
+
+#~ msgid "samco"
+#~ msgstr "spmvo"

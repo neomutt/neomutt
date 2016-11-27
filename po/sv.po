@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neomutt-20161104\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
-"POT-Creation-Date: 2017-04-28 12:34+0100\n"
+"POT-Creation-Date: 2017-04-29 14:20+0100\n"
 "PO-Revision-Date: 2007-12-15 14:05+0100\n"
 "Last-Translator: Johan Svedberg <johan@svedberg.com>\n"
 "Language-Team: Swedish <sv@li.org>\n"
@@ -1688,6 +1688,7 @@ msgstr ""
 #. L10N: S/MIME options
 #. The 'f' is undocumented. Please DO NOT translate it.
 #: crypt_gpgme.c:4660
+#, fuzzy
 msgid "esabpfc"
 msgstr "ksobpr"
 
@@ -1700,6 +1701,7 @@ msgstr ""
 #. L10N: PGP options
 #. The 'f' is undocumented. Please DO NOT translate it.
 #: crypt_gpgme.c:4670
+#, fuzzy
 msgid "esabmfc"
 msgstr "ksobmr"
 
@@ -6048,6 +6050,7 @@ msgstr ""
 #. L10N: S/MIME options
 #. The 'f' is undocumented. Please DO NOT translate it.
 #: smime.c:2058
+#, fuzzy
 msgid "eswabfc"
 msgstr "ksmobr"
 
@@ -6238,10 +6241,14 @@ msgstr ""
 "Mutt är fri mjukvara, och du är välkommen att sprida det vidare\n"
 "under vissa villkor; kör `mutt -vv' för detaljer.\n"
 
-#: version.c:430
+#: version.c:428
 msgid ""
 "\n"
 "Compile options:"
 msgstr ""
 "\n"
 "Kompileringsval:"
+
+#, fuzzy
+#~ msgid "esabic"
+#~ msgstr "ksobpr"

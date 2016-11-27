@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neomutt-20161104\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
-"POT-Creation-Date: 2017-04-28 12:34+0100\n"
+"POT-Creation-Date: 2017-04-29 14:20+0100\n"
 "PO-Revision-Date: 2001-09-06 18:25+0800\n"
 "Last-Translator: Anthony Wong <ypwong@debian.org>\n"
 "Language-Team: Chinese <zh@li.org>\n"
@@ -6183,9 +6183,8 @@ msgstr "(1)加密, (2)簽名, (3)用別的身份簽, (4)兩者皆要, 或 (5)放
 #. L10N: S/MIME options (opportunistic encryption is off)
 #. The 'f' is undocumented. Please DO NOT translate it.
 #: smime.c:2045
-#, fuzzy
 msgid "eswabfco"
-msgstr "12345"
+msgstr ""
 
 #. L10N: S/MIME options
 #: smime.c:2054
@@ -6197,9 +6196,8 @@ msgstr "(1)加密, (2)簽名, (3)用別的身份簽, (4)兩者皆要, 或 (5)放
 #. L10N: S/MIME options
 #. The 'f' is undocumented. Please DO NOT translate it.
 #: smime.c:2058
-#, fuzzy
 msgid "eswabfc"
-msgstr "12345"
+msgstr ""
 
 #: smime.c:2079
 msgid "Choose algorithm family: 1: DES, 2: RC2, 3: AES, or (c)lear? "
@@ -6363,7 +6361,7 @@ msgstr ""
 "Mutt 是一個自由軟體, 歡迎您在某些特定的條件上，重新將它分發。\n"
 "若需要更詳細的資料, 請鍵入 `mutt -vv'\n"
 
-#: version.c:430
+#: version.c:428
 msgid ""
 "\n"
 "Compile options:"

@@ -13,7 +13,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neomutt-20161104\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
-"POT-Creation-Date: 2017-04-28 12:34+0100\n"
+"POT-Creation-Date: 2017-04-29 14:20+0100\n"
 "PO-Revision-Date: 2017-02-13 21:09+01:00\n"
 "Last-Translator: Petr Písař <petr.pisar@atlas.cz>\n"
 "Language-Team: Czech <translation-team-cs@lists.sourceforge.net>\n"
@@ -1618,7 +1618,7 @@ msgstr ""
 #. The 'f' is undocumented. Please DO NOT translate it.
 #: crypt_gpgme.c:4607
 msgid "sapfco"
-msgstr "pjgfnl"
+msgstr ""
 
 #: crypt_gpgme.c:4614
 msgid "PGP (s)ign, sign (a)s, s/(m)ime, (c)lear, or (o)ppenc mode off? "
@@ -1629,7 +1629,7 @@ msgstr ""
 #. The 'f' is undocumented. Please DO NOT translate it.
 #: crypt_gpgme.c:4617
 msgid "samfco"
-msgstr "pjmfnl"
+msgstr ""
 
 #. L10N: S/MIME options (opportunistic encryption is off)
 #: crypt_gpgme.c:4630
@@ -1640,13 +1640,12 @@ msgstr ""
 "S/MIME šif(r)ovat, (p)odepsat, pod.(j)ako, (o)bojí, p(g)p, (n)ic, pří(l)."
 "šifr.? "
 
-# `f` means forget it. The absolute order must be preserved. Therefore `f'
-# has to be injected on 6th position.
 #. L10N: S/MIME options (opportunistic encryption is off)
 #. The 'f' is undocumented. Please DO NOT translate it.
 #: crypt_gpgme.c:4634
+#, fuzzy
 msgid "esabpfco"
-msgstr "rpjogfnl"
+msgstr "rpjognl"
 
 #. L10N: PGP options (opportunistic encryption is off)
 #: crypt_gpgme.c:4640
@@ -1657,39 +1656,36 @@ msgstr ""
 "PGP šif(r)ovat, (p)odepsat, pod.(j)ako, (o)bojí, s/(m)ime, (n)ic, pří(l)."
 "šifr.? "
 
-# `f` means forget it. The absolute order must be preserved. Therefore `f'
-# has to be injected on 6th position.
 #. L10N: PGP options (opportunistic encryption is off)
 #. The 'f' is undocumented. Please DO NOT translate it.
 #: crypt_gpgme.c:4644
+#, fuzzy
 msgid "esabmfco"
-msgstr "rpjomfnl"
+msgstr "rpjomnl"
 
 #: crypt_gpgme.c:4657
 msgid "S/MIME (e)ncrypt, (s)ign, sign (a)s, (b)oth, (p)gp or (c)lear? "
 msgstr ""
 "S/MIME šif(r)ovat, (p)odepsat, podepsat (j)ako, (o)bojí, p(g)p či (n)ic? "
 
-# `f` means forget it. The absolute order must be preserved. Therefore `f'
-# has to be injected on 6th position.
 #. L10N: S/MIME options
 #. The 'f' is undocumented. Please DO NOT translate it.
 #: crypt_gpgme.c:4660
+#, fuzzy
 msgid "esabpfc"
-msgstr "rpjogfn"
+msgstr "rpjogn"
 
 #: crypt_gpgme.c:4667
 msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, s/(m)ime or (c)lear? "
 msgstr ""
 "PGP šif(r)ovat, (p)odepsat, podepsat (j)ako, (o)bojí, s/(m)ime, či (n)ic? "
 
-# `f` means forget it. The absolute order must be preserved. Therefore `f'
-# has to be injected on 6th position.
 #. L10N: PGP options
 #. The 'f' is undocumented. Please DO NOT translate it.
 #: crypt_gpgme.c:4670
+#, fuzzy
 msgid "esabmfc"
-msgstr "rpjomfn"
+msgstr "rpjomn"
 
 #: crypt_gpgme.c:4695 pgp.c:1760 smime.c:2143 smime.c:2158
 msgid "Sign as: "
@@ -5174,7 +5170,7 @@ msgstr "PGP (p)odepsat, pod.(j)ako, formát %s, (n)ic, vypnout pří(l).šifr.? 
 #. The 'f' is undocumented. Please DO NOT translate it.
 #: pgp.c:1661
 msgid "safcoi"
-msgstr "pjfnli"
+msgstr ""
 
 #. L10N: PGP options (opportunistic encryption is on)
 #: pgp.c:1667
@@ -5185,7 +5181,7 @@ msgstr "PGP (p)odepsat, podepsat (j)ako, (n)ic, vypnout pří(l). šifr.? "
 #. The 'f' is undocumented. Please DO NOT translate it.
 #: pgp.c:1670
 msgid "safco"
-msgstr "pjfnl"
+msgstr ""
 
 # XXX: %s is "PGP/M(i)ME" or "(i)nline"
 #. L10N: PGP options (inline) (opportunistic encryption is off)
@@ -5197,14 +5193,13 @@ msgid ""
 msgstr ""
 "PGP šif(r)ovat, (p)odep., pod.(j)ako, (o)bojí, %s, (n)ic, pří(l).šif.? "
 
-# `f` means forget it. The absolute order must be preserved. Therefore `f'
-# has to be injected on 6th position.
 #. L10N: PGP options (inline) (opportunistic encryption is off)
 #. The 'i' is from the "PGP/M(i)ME" or "(i)nline", above.
 #. The 'f' is undocumented. Please DO NOT translate it.
 #: pgp.c:1694
+#, fuzzy
 msgid "esabfcoi"
-msgstr "rpjofnli"
+msgstr "rpjonl"
 
 #. L10N: PGP options (opportunistic encryption is off)
 #: pgp.c:1700
@@ -5212,13 +5207,12 @@ msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, (c)lear, or (o)ppenc mode? "
 msgstr ""
 "PGP šif(r)ovat, (p)odepsat, podepsat (j)ako, (o)bojí, (n)ic, pří(l). šifr.? "
 
-# `f` means forget it. The absolute order must be preserved. Therefore `f'
-# has to be injected on 6th position.
 #. L10N: PGP options (opportunistic encryption is off)
 #. The 'f' is undocumented. Please DO NOT translate it.
 #: pgp.c:1704
+#, fuzzy
 msgid "esabfco"
-msgstr "rpjofnl"
+msgstr "rpjonl"
 
 # XXX: %s is "PGP/M(i)ME" or "(i)nline"
 #. L10N: PGP options (inline)
@@ -5227,27 +5221,25 @@ msgstr "rpjofnl"
 msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, %s format, or (c)lear? "
 msgstr "PGP šif(r)ovat, (p)odepsat, podp (j)ako, (o)bojí, formát %s, či (n)ic?"
 
-# `f` means forget it. The absolute order must be preserved. Therefore `f'
-# has to be injected on 6th position.
 #. L10N: PGP options (inline)
 #. The 'i' is from the "PGP/M(i)ME" or "(i)nline", above.
 #. The 'f' is undocumented. Please DO NOT translate it.
 #: pgp.c:1724
+#, fuzzy
 msgid "esabfci"
-msgstr "rpjofni"
+msgstr "rpjon"
 
 #. L10N: PGP options
 #: pgp.c:1730
 msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, or (c)lear? "
 msgstr "PGP šif(r)ovat, (p)odepsat, podepsat (j)ako, (o)bojí, či (n)ic?"
 
-# `f` means forget it. The absolute order must be preserved. Therefore `f'
-# has to be injected on 6th position.
 #. L10N: PGP options
 #. The 'f' is undocumented. Please DO NOT translate it.
 #: pgp.c:1733
+#, fuzzy
 msgid "esabfc"
-msgstr "rpjofn"
+msgstr "rpjon"
 
 #: pgpinvoke.c:288
 msgid "Fetching PGP key..."
@@ -5969,7 +5961,7 @@ msgstr ""
 #. The 'f' is undocumented. Please DO NOT translate it.
 #: smime.c:2031
 msgid "swafco"
-msgstr "pmjfnl"
+msgstr ""
 
 #. L10N: S/MIME options (opportunistic encryption is off)
 #: smime.c:2041
@@ -5980,13 +5972,12 @@ msgstr ""
 "S/MIME šif(r)., (p)ode., šif.po(m)ocí, pod.(j)ako, (o)bojí, (n)ic, pří(l)."
 "šif.? "
 
-# `f` means forget it. The absolute order must be preserved. Therefore `f'
-# has to be injected on 6th position.
 #. L10N: S/MIME options (opportunistic encryption is off)
 #. The 'f' is undocumented. Please DO NOT translate it.
 #: smime.c:2045
+#, fuzzy
 msgid "eswabfco"
-msgstr "rpmjofnl"
+msgstr "rpmjonl"
 
 #. L10N: S/MIME options
 #: smime.c:2054
@@ -5996,13 +5987,12 @@ msgstr ""
 "S/MIME šif(r)ovat, (p)odepsat, šifr. po(m)ocí, podep. (j)ako, (o)bojí či "
 "(n)ic? "
 
-# `f` means forget it. The absolute order must be preserved. Therefore `f'
-# has to be injected on 6th position.
 #. L10N: S/MIME options
 #. The 'f' is undocumented. Please DO NOT translate it.
 #: smime.c:2058
+#, fuzzy
 msgid "eswabfc"
-msgstr "rpmjofn"
+msgstr "rpmjon"
 
 #: smime.c:2079
 msgid "Choose algorithm family: 1: DES, 2: RC2, 3: AES, or (c)lear? "
@@ -6187,10 +6177,31 @@ msgstr ""
 "musíte ovšem dodržet určitá pravidla; další informace získáte příkazem\n"
 "„mutt -vv“.\n"
 
-#: version.c:430
+#: version.c:428
 msgid ""
 "\n"
 "Compile options:"
 msgstr ""
 "\n"
 "Přeloženo s volbami:"
+
+#~ msgid "sapco"
+#~ msgstr "pjgnl"
+
+#~ msgid "samco"
+#~ msgstr "pjmnl"
+
+#~ msgid "saico"
+#~ msgstr "pjinl"
+
+#~ msgid "saco"
+#~ msgstr "pjnl"
+
+#~ msgid "esabico"
+#~ msgstr "rpjoinl"
+
+#~ msgid "esabic"
+#~ msgstr "rpjoin"
+
+#~ msgid "swaco"
+#~ msgstr "pmjnl"

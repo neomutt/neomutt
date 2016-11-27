@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neomutt-20161104\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
-"POT-Creation-Date: 2017-04-28 12:34+0100\n"
+"POT-Creation-Date: 2017-04-29 14:20+0100\n"
 "PO-Revision-Date: 2016-11-28 19:29+0100\n"
 "Last-Translator: Rubén Llorente\n"
 "Language-Team: none\n"
@@ -1713,9 +1713,8 @@ msgstr "¿co(d)ificar, f(i)rmar (c)omo, amb(o)s, inc(l)uido, o ca(n)celar? "
 #. L10N: S/MIME options (opportunistic encryption is off)
 #. The 'f' is undocumented. Please DO NOT translate it.
 #: crypt_gpgme.c:4634
-#, fuzzy
 msgid "esabpfco"
-msgstr "dicon"
+msgstr ""
 
 #. L10N: PGP options (opportunistic encryption is off)
 #: crypt_gpgme.c:4640
@@ -1728,9 +1727,8 @@ msgstr "¿co(d)ificar, f(i)rmar (c)omo, amb(o)s, inc(l)uido, o ca(n)celar? "
 #. L10N: PGP options (opportunistic encryption is off)
 #. The 'f' is undocumented. Please DO NOT translate it.
 #: crypt_gpgme.c:4644
-#, fuzzy
 msgid "esabmfco"
-msgstr "dicon"
+msgstr ""
 
 #: crypt_gpgme.c:4657
 #, fuzzy
@@ -1740,9 +1738,8 @@ msgstr "¿co(d)ificar, f(i)rmar (c)omo, amb(o)s, inc(l)uido, o ca(n)celar? "
 #. L10N: S/MIME options
 #. The 'f' is undocumented. Please DO NOT translate it.
 #: crypt_gpgme.c:4660
-#, fuzzy
 msgid "esabpfc"
-msgstr "dicon"
+msgstr ""
 
 #: crypt_gpgme.c:4667
 #, fuzzy
@@ -1752,9 +1749,8 @@ msgstr "¿co(d)ificar, f(i)rmar (c)omo, amb(o)s, inc(l)uido, o ca(n)celar? "
 #. L10N: PGP options
 #. The 'f' is undocumented. Please DO NOT translate it.
 #: crypt_gpgme.c:4670
-#, fuzzy
 msgid "esabmfc"
-msgstr "dicon"
+msgstr ""
 
 #: crypt_gpgme.c:4695 pgp.c:1760 smime.c:2143 smime.c:2158
 msgid "Sign as: "
@@ -5392,9 +5388,8 @@ msgstr "¿co(d)ificar, f(i)rmar (c)omo, amb(o)s, inc(l)uido, o ca(n)celar? "
 #. The 'i' is from the "PGP/M(i)ME" or "(i)nline", above.
 #. The 'f' is undocumented. Please DO NOT translate it.
 #: pgp.c:1694
-#, fuzzy
 msgid "esabfcoi"
-msgstr "dicon"
+msgstr ""
 
 #. L10N: PGP options (opportunistic encryption is off)
 #: pgp.c:1700
@@ -5405,9 +5400,8 @@ msgstr "¿co(d)ificar, f(i)rmar (c)omo, amb(o)s, inc(l)uido, o ca(n)celar? "
 #. L10N: PGP options (opportunistic encryption is off)
 #. The 'f' is undocumented. Please DO NOT translate it.
 #: pgp.c:1704
-#, fuzzy
 msgid "esabfco"
-msgstr "dicon"
+msgstr ""
 
 #. L10N: PGP options (inline)
 #: pgp.c:1717
@@ -5419,9 +5413,8 @@ msgstr "¿co(d)ificar, f(i)rmar (c)omo, amb(o)s, inc(l)uido, o ca(n)celar? "
 #. The 'i' is from the "PGP/M(i)ME" or "(i)nline", above.
 #. The 'f' is undocumented. Please DO NOT translate it.
 #: pgp.c:1724
-#, fuzzy
 msgid "esabfci"
-msgstr "dicon"
+msgstr ""
 
 #. L10N: PGP options
 #: pgp.c:1730
@@ -5432,9 +5425,8 @@ msgstr "¿co(d)ificar, f(i)rmar (c)omo, amb(o)s, inc(l)uido, o ca(n)celar? "
 #. L10N: PGP options
 #. The 'f' is undocumented. Please DO NOT translate it.
 #: pgp.c:1733
-#, fuzzy
 msgid "esabfc"
-msgstr "dicon"
+msgstr ""
 
 #: pgpinvoke.c:288
 msgid "Fetching PGP key..."
@@ -6397,7 +6389,7 @@ msgstr ""
 "teclee `mutt -vv'. Mutt es software libre, puede redistribuirlo\n"
 "bajo ciertas condiciones; teclee `mutt -vv' para más detalles.\n"
 
-#: version.c:430
+#: version.c:428
 msgid ""
 "\n"
 "Compile options:"

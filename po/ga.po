@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neomutt-20161104\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
-"POT-Creation-Date: 2017-04-28 12:34+0100\n"
+"POT-Creation-Date: 2017-04-29 14:20+0100\n"
 "PO-Revision-Date: 2006-10-16 14:22-0500\n"
 "Last-Translator: Kevin Patrick Scannell <scannell@SLU.EDU>\n"
 "Language-Team: Irish <ga@li.org>\n"
@@ -1692,6 +1692,7 @@ msgstr "S/MIME (c)ript, (s)ínigh, sínigh (m)ar, (a)raon, (p)gp, nó (g)lan?"
 #. L10N: S/MIME options
 #. The 'f' is undocumented. Please DO NOT translate it.
 #: crypt_gpgme.c:4660
+#, fuzzy
 msgid "esabpfc"
 msgstr "csmapg"
 
@@ -1703,6 +1704,7 @@ msgstr "PGP (c)ript, (s)ínigh, sínigh (m)ar, (a)raon, s/m(i)me, nó (g)lan?"
 #. L10N: PGP options
 #. The 'f' is undocumented. Please DO NOT translate it.
 #: crypt_gpgme.c:4670
+#, fuzzy
 msgid "esabmfc"
 msgstr "csmaig"
 
@@ -6056,7 +6058,7 @@ msgstr ""
 #: smime.c:2045
 #, fuzzy
 msgid "eswabfco"
-msgstr "cslmafn"
+msgstr "cslman"
 
 #. L10N: S/MIME options
 #: smime.c:2054
@@ -6069,8 +6071,9 @@ msgstr ""
 #. L10N: S/MIME options
 #. The 'f' is undocumented. Please DO NOT translate it.
 #: smime.c:2058
+#, fuzzy
 msgid "eswabfc"
-msgstr "cslmafn"
+msgstr "cslman"
 
 #: smime.c:2079
 msgid "Choose algorithm family: 1: DES, 2: RC2, 3: AES, or (c)lear? "
@@ -6259,7 +6262,7 @@ msgstr ""
 "a athdháileadh, agus fáilte, ach de réir coinníollacha áirithe.\n"
 "Iontráil `mutt -vv' chun tuilleadh eolais a fháil.\n"
 
-#: version.c:430
+#: version.c:428
 msgid ""
 "\n"
 "Compile options:"

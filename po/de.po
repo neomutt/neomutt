@@ -13,7 +13,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neomutt-20161104\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
-"POT-Creation-Date: 2017-04-28 12:34+0100\n"
+"POT-Creation-Date: 2017-04-29 14:20+0100\n"
 "PO-Revision-Date: 2017-02-13 20:19+0100\n"
 "Last-Translator: André Berger <andre.berger@web.de>\n"
 "Language-Team: none\n"
@@ -1628,7 +1628,7 @@ msgstr ""
 #. The 'f' is undocumented. Please DO NOT translate it.
 #: crypt_gpgme.c:4607
 msgid "sapfco"
-msgstr "sapuuw"
+msgstr ""
 
 #: crypt_gpgme.c:4614
 msgid "PGP (s)ign, sign (a)s, s/(m)ime, (c)lear, or (o)ppenc mode off? "
@@ -1640,7 +1640,7 @@ msgstr ""
 #. The 'f' is undocumented. Please DO NOT translate it.
 #: crypt_gpgme.c:4617
 msgid "samfco"
-msgstr "samuuw"
+msgstr ""
 
 #. L10N: S/MIME options (opportunistic encryption is off)
 #: crypt_gpgme.c:4630
@@ -1654,8 +1654,9 @@ msgstr ""
 #. L10N: S/MIME options (opportunistic encryption is off)
 #. The 'f' is undocumented. Please DO NOT translate it.
 #: crypt_gpgme.c:4634
+#, fuzzy
 msgid "esabpfco"
-msgstr "vsabpuuw"
+msgstr "vsabpuw"
 
 #. L10N: PGP options (opportunistic encryption is off)
 #: crypt_gpgme.c:4640
@@ -1669,8 +1670,9 @@ msgstr ""
 #. L10N: PGP options (opportunistic encryption is off)
 #. The 'f' is undocumented. Please DO NOT translate it.
 #: crypt_gpgme.c:4644
+#, fuzzy
 msgid "esabmfco"
-msgstr "vsabmuuw"
+msgstr "vsabmuw"
 
 #: crypt_gpgme.c:4657
 msgid "S/MIME (e)ncrypt, (s)ign, sign (a)s, (b)oth, (p)gp or (c)lear? "
@@ -1680,8 +1682,9 @@ msgstr ""
 #. L10N: S/MIME options
 #. The 'f' is undocumented. Please DO NOT translate it.
 #: crypt_gpgme.c:4660
+#, fuzzy
 msgid "esabpfc"
-msgstr "vsabpuu"
+msgstr "vsabpu"
 
 #: crypt_gpgme.c:4667
 msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, s/(m)ime or (c)lear? "
@@ -1691,8 +1694,9 @@ msgstr ""
 #. L10N: PGP options
 #. The 'f' is undocumented. Please DO NOT translate it.
 #: crypt_gpgme.c:4670
+#, fuzzy
 msgid "esabmfc"
-msgstr "vsabmuu"
+msgstr "vsabmu"
 
 #: crypt_gpgme.c:4695 pgp.c:1760 smime.c:2143 smime.c:2158
 msgid "Sign as: "
@@ -5144,7 +5148,7 @@ msgstr ""
 #. The 'f' is undocumented. Please DO NOT translate it.
 #: pgp.c:1661
 msgid "safcoi"
-msgstr "sauuwi"
+msgstr ""
 
 #. L10N: PGP options (opportunistic encryption is on)
 #: pgp.c:1667
@@ -5155,7 +5159,7 @@ msgstr "PGP (s)ign., sign. (a)ls, (u)nverschl., oder kein (w)ie-mögl.-Modus? "
 #. The 'f' is undocumented. Please DO NOT translate it.
 #: pgp.c:1670
 msgid "safco"
-msgstr "sauuw"
+msgstr ""
 
 #. L10N: PGP options (inline) (opportunistic encryption is off)
 #: pgp.c:1687
@@ -5171,8 +5175,9 @@ msgstr ""
 #. The 'i' is from the "PGP/M(i)ME" or "(i)nline", above.
 #. The 'f' is undocumented. Please DO NOT translate it.
 #: pgp.c:1694
+#, fuzzy
 msgid "esabfcoi"
-msgstr "vsabuuwi"
+msgstr "vsabuw"
 
 #. L10N: PGP options (opportunistic encryption is off)
 #: pgp.c:1700
@@ -5184,8 +5189,9 @@ msgstr ""
 #. L10N: PGP options (opportunistic encryption is off)
 #. The 'f' is undocumented. Please DO NOT translate it.
 #: pgp.c:1704
+#, fuzzy
 msgid "esabfco"
-msgstr "vsabuuw"
+msgstr "vsabuw"
 
 #. L10N: PGP options (inline)
 #: pgp.c:1717
@@ -5199,8 +5205,9 @@ msgstr ""
 #. The 'i' is from the "PGP/M(i)ME" or "(i)nline", above.
 #. The 'f' is undocumented. Please DO NOT translate it.
 #: pgp.c:1724
+#, fuzzy
 msgid "esabfci"
-msgstr "vsabuui"
+msgstr "vsabu"
 
 #. L10N: PGP options
 #: pgp.c:1730
@@ -5210,8 +5217,9 @@ msgstr "PGP (v)erschl., (s)ign., sign. (a)ls, (b)eides, oder (u)nverschl.?"
 #. L10N: PGP options
 #. The 'f' is undocumented. Please DO NOT translate it.
 #: pgp.c:1733
+#, fuzzy
 msgid "esabfc"
-msgstr "vsabuu"
+msgstr "vsabu"
 
 #: pgpinvoke.c:288
 msgid "Fetching PGP key..."
@@ -5938,7 +5946,7 @@ msgstr ""
 #. The 'f' is undocumented. Please DO NOT translate it.
 #: smime.c:2031
 msgid "swafco"
-msgstr "smauuw"
+msgstr ""
 
 #. L10N: S/MIME options (opportunistic encryption is off)
 #: smime.c:2041
@@ -5952,8 +5960,9 @@ msgstr ""
 #. L10N: S/MIME options (opportunistic encryption is off)
 #. The 'f' is undocumented. Please DO NOT translate it.
 #: smime.c:2045
+#, fuzzy
 msgid "eswabfco"
-msgstr "vsmabuuw"
+msgstr "vsmabuw"
 
 #. L10N: S/MIME options
 #: smime.c:2054
@@ -5966,8 +5975,9 @@ msgstr ""
 #. L10N: S/MIME options
 #. The 'f' is undocumented. Please DO NOT translate it.
 #: smime.c:2058
+#, fuzzy
 msgid "eswabfc"
-msgstr "vsmabuu"
+msgstr "vsmabu"
 
 #: smime.c:2079
 msgid "Choose algorithm family: 1: DES, 2: RC2, 3: AES, or (c)lear? "
@@ -6162,10 +6172,31 @@ msgstr ""
 "Sie können es unter bestimmten Bedingungen weitergeben; starten Sie\n"
 "`mutt -vv' für weitere Details.\n"
 
-#: version.c:430
+#: version.c:428
 msgid ""
 "\n"
 "Compile options:"
 msgstr ""
 "\n"
 "Einstellungen bei der Kompilierung:"
+
+#~ msgid "sapco"
+#~ msgstr "sapuw"
+
+#~ msgid "samco"
+#~ msgstr "samuw"
+
+#~ msgid "saico"
+#~ msgstr "saiuw"
+
+#~ msgid "saco"
+#~ msgstr "sauw"
+
+#~ msgid "esabico"
+#~ msgstr "vsabiuw"
+
+#~ msgid "esabic"
+#~ msgstr "vsabiu"
+
+#~ msgid "swaco"
+#~ msgstr "smauw"

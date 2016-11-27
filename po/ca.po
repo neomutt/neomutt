@@ -54,7 +54,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neomutt-20161104\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
-"POT-Creation-Date: 2017-04-28 12:34+0100\n"
+"POT-Creation-Date: 2017-04-29 14:20+0100\n"
 "PO-Revision-Date: 2017-02-18 01:24+0100\n"
 "Last-Translator: Ivan Vilata i Balaguer <ivan@selidor.net>\n"
 "Language-Team: Catalan <ca@dodds.net>\n"
@@ -1758,25 +1758,21 @@ msgstr "GPGME: El protocol CMS no es troba disponible."
 msgid "S/MIME (s)ign, sign (a)s, (p)gp, (c)lear, or (o)ppenc mode off? "
 msgstr "S/MIME: (s)igna, si(g)na com a, (p)gp, (c)lar, no (o)portunista? "
 
-# (s)igna, si(g)na com a, (p)gp, (c)lar, no (o)portunista
-# La «f» i la «c» originals s’agafen en el mateix cas en el codi.  ivb
 #. L10N: S/MIME options (opportunistic encryption is on)
 #. The 'f' is undocumented. Please DO NOT translate it.
 #: crypt_gpgme.c:4607
 msgid "sapfco"
-msgstr "sgpcco"
+msgstr ""
 
 #: crypt_gpgme.c:4614
 msgid "PGP (s)ign, sign (a)s, s/(m)ime, (c)lear, or (o)ppenc mode off? "
 msgstr "PGP: (s)igna, si(g)na com a, s/(m)ime, (c)lar, no (o)portunista? "
 
-# (s)igna, si(g)na com a, s/(m)ime, (c)lar, no (o)portunista
-# La «f» i la «c» originals s’agafen en el mateix cas en el codi.  ivb
 #. L10N: PGP options (opportunistic encryption is on)
 #. The 'f' is undocumented. Please DO NOT translate it.
 #: crypt_gpgme.c:4617
 msgid "samfco"
-msgstr "sgmcco"
+msgstr ""
 
 #. L10N: S/MIME options (opportunistic encryption is off)
 #: crypt_gpgme.c:4630
@@ -1792,8 +1788,9 @@ msgstr ""
 #. L10N: S/MIME options (opportunistic encryption is off)
 #. The 'f' is undocumented. Please DO NOT translate it.
 #: crypt_gpgme.c:4634
+#, fuzzy
 msgid "esabpfco"
-msgstr "xsgapcco"
+msgstr "xsgapco"
 
 #. L10N: PGP options (opportunistic encryption is off)
 #: crypt_gpgme.c:4640
@@ -1809,8 +1806,9 @@ msgstr ""
 #. L10N: PGP options (opportunistic encryption is off)
 #. The 'f' is undocumented. Please DO NOT translate it.
 #: crypt_gpgme.c:4644
+#, fuzzy
 msgid "esabmfco"
-msgstr "xsgamcco"
+msgstr "xsgamco"
 
 #: crypt_gpgme.c:4657
 msgid "S/MIME (e)ncrypt, (s)ign, sign (a)s, (b)oth, (p)gp or (c)lear? "
@@ -1821,8 +1819,9 @@ msgstr "S/MIME: (x)ifra, (s)igna, si(g)na com a, (a)mbdós, (p)gp, (c)lar? "
 #. L10N: S/MIME options
 #. The 'f' is undocumented. Please DO NOT translate it.
 #: crypt_gpgme.c:4660
+#, fuzzy
 msgid "esabpfc"
-msgstr "xsgapcc"
+msgstr "xsgapc"
 
 #: crypt_gpgme.c:4667
 msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, s/(m)ime or (c)lear? "
@@ -1833,8 +1832,9 @@ msgstr "PGP: (x)ifra, (s)igna, si(g)na com a, (a)mbdós, s/(m)ime, (c)lar? "
 #. L10N: PGP options
 #. The 'f' is undocumented. Please DO NOT translate it.
 #: crypt_gpgme.c:4670
+#, fuzzy
 msgid "esabmfc"
-msgstr "xsgamcc"
+msgstr "xsgamc"
 
 #: crypt_gpgme.c:4695 pgp.c:1760 smime.c:2143 smime.c:2158
 msgid "Sign as: "
@@ -5463,27 +5463,23 @@ msgstr "en lín(i)a"
 msgid "PGP (s)ign, sign (a)s, %s format, (c)lear, or (o)ppenc mode off? "
 msgstr "PGP: (s)igna, si(g)na com a, %s, (c)lar, no (o)portunista? "
 
-# (s)igna, si(g)na com a, %s, (c)lar, no (o)portunista
-# La «f» i la «c» originals s’agafen en el mateix cas en el codi.  ivb
 #. L10N: PGP options (inline) (opportunistic encryption is on)
 #. The 'i' is from the "PGP/M(i)ME" or "(i)nline", above.
 #. The 'f' is undocumented. Please DO NOT translate it.
 #: pgp.c:1661
 msgid "safcoi"
-msgstr "sgccoi"
+msgstr ""
 
 #. L10N: PGP options (opportunistic encryption is on)
 #: pgp.c:1667
 msgid "PGP (s)ign, sign (a)s, (c)lear, or (o)ppenc mode off? "
 msgstr "PGP: (s)igna, si(g)na com a, (c)lar, no (o)portunista? "
 
-# (s)igna, si(g)na com a, (c)lar, no (o)portunista
-# La «f» i la «c» originals s’agafen en el mateix cas en el codi.  ivb
 #. L10N: PGP options (opportunistic encryption is on)
 #. The 'f' is undocumented. Please DO NOT translate it.
 #: pgp.c:1670
 msgid "safco"
-msgstr "sgcco"
+msgstr ""
 
 # Prescindesc de la paraula «format» perquè en reemplaçar‐hi les cadenes
 # següents la línia esdevé massa llarga.  ivb
@@ -5496,14 +5492,15 @@ msgid ""
 msgstr ""
 "PGP: (x)ifra, (s)igna, si(g)na com a, (a)mbdós, %s, (c)lar, (o)portunista? "
 
-# (x)ifra, (s)igna, si(g)na com a, (a)mbdós, %s, (c)lar, (o)portunista
+# (x)ifra, (s)igna, si(g)na com a, (a)mbdós, (c)lar, (o)portunista
 # La «f» i la «c» originals s’agafen en el mateix cas en el codi.  ivb
 #. L10N: PGP options (inline) (opportunistic encryption is off)
 #. The 'i' is from the "PGP/M(i)ME" or "(i)nline", above.
 #. The 'f' is undocumented. Please DO NOT translate it.
 #: pgp.c:1694
+#, fuzzy
 msgid "esabfcoi"
-msgstr "xsgaccoi"
+msgstr "xsgaco"
 
 #. L10N: PGP options (opportunistic encryption is off)
 #: pgp.c:1700
@@ -5516,8 +5513,9 @@ msgstr ""
 #. L10N: PGP options (opportunistic encryption is off)
 #. The 'f' is undocumented. Please DO NOT translate it.
 #: pgp.c:1704
+#, fuzzy
 msgid "esabfco"
-msgstr "xsgacco"
+msgstr "xsgaco"
 
 # Prescindesc de la paraula «format» perquè en reemplaçar‐hi les cadenes
 # següents la línia esdevé massa llarga.  ivb
@@ -5527,14 +5525,15 @@ msgstr "xsgacco"
 msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, %s format, or (c)lear? "
 msgstr "PGP: (x)ifra, (s)igna, si(g)na com a, (a)mbdós, %s, (c)lar? "
 
-# (x)ifra, (s)igna, si(g)na com a, (a)mbdós, %s, (c)lar
+# (x)ifra, (s)igna, si(g)na com a, (a)mbdós, (c)lar
 # La «f» i la «c» originals s’agafen en el mateix cas en el codi.  ivb
 #. L10N: PGP options (inline)
 #. The 'i' is from the "PGP/M(i)ME" or "(i)nline", above.
 #. The 'f' is undocumented. Please DO NOT translate it.
 #: pgp.c:1724
+#, fuzzy
 msgid "esabfci"
-msgstr "xsgacci"
+msgstr "xsgac"
 
 #. L10N: PGP options
 #: pgp.c:1730
@@ -5546,8 +5545,9 @@ msgstr "PGP: (x)ifra, (s)igna, si(g)na com a, (a)mbdós, (c)lar? "
 #. L10N: PGP options
 #. The 'f' is undocumented. Please DO NOT translate it.
 #: pgp.c:1733
+#, fuzzy
 msgid "esabfc"
-msgstr "xsgacc"
+msgstr "xsgac"
 
 #: pgpinvoke.c:288
 msgid "Fetching PGP key..."
@@ -6305,13 +6305,11 @@ msgid ""
 msgstr ""
 "S/MIME: (s)igna, xi(f)ra amb, si(g)na com a, (c)lar, no (o)portunista? "
 
-# (s)igna, xi(f)ra amb, si(g)na com a, (c)lar, no (o)portunista
-# La «f» i la «c» originals s’agafen en el mateix cas en el codi.  ivb
 #. L10N: S/MIME options (opportunistic encryption is on)
 #. The 'f' is undocumented. Please DO NOT translate it.
 #: smime.c:2031
 msgid "swafco"
-msgstr "sfgcco"
+msgstr ""
 
 #. L10N: S/MIME options (opportunistic encryption is off)
 #: smime.c:2041
@@ -6327,8 +6325,9 @@ msgstr ""
 #. L10N: S/MIME options (opportunistic encryption is off)
 #. The 'f' is undocumented. Please DO NOT translate it.
 #: smime.c:2045
+#, fuzzy
 msgid "eswabfco"
-msgstr "xsfgacco"
+msgstr "xsfgaco"
 
 #. L10N: S/MIME options
 #: smime.c:2054
@@ -6343,8 +6342,9 @@ msgstr ""
 #. L10N: S/MIME options
 #. The 'f' is undocumented. Please DO NOT translate it.
 #: smime.c:2058
+#, fuzzy
 msgid "eswabfc"
-msgstr "xsfgacc"
+msgstr "xsfgac"
 
 # Més coherent que l’original.  ivb
 #: smime.c:2079
@@ -6538,10 +6538,45 @@ msgstr ""
 "sota\n"
 "certes condicions; useu «mutt -vv» per a obtenir‐ne més detalls.\n"
 
-#: version.c:430
+#: version.c:428
 msgid ""
 "\n"
 "Compile options:"
 msgstr ""
 "\n"
 "Opcions de compilació:"
+
+# (s)igna, si(g)na com a, (p)gp, (c)lar, no (o)portunista
+# La «f» i la «c» originals s’agafen en el mateix cas en el codi.  ivb
+#~ msgid "sapco"
+#~ msgstr "sgpco"
+
+# (s)igna, si(g)na com a, s/(m)ime, (c)lar, no (o)portunista
+# La «f» i la «c» originals s’agafen en el mateix cas en el codi.  ivb
+#~ msgid "samco"
+#~ msgstr "sgmco"
+
+# (s)igna, si(g)na com a, %s, (c)lar, no (o)portunista
+# La «f» i la «c» originals s’agafen en el mateix cas en el codi.  ivb
+#~ msgid "saico"
+#~ msgstr "sgico"
+
+# (s)igna, si(g)na com a, (c)lar, no (o)portunista
+# La «f» i la «c» originals s’agafen en el mateix cas en el codi.  ivb
+#~ msgid "saco"
+#~ msgstr "sgco"
+
+# (x)ifra, (s)igna, si(g)na com a, (a)mbdós, %s, (c)lar, (o)portunista
+# La «f» i la «c» originals s’agafen en el mateix cas en el codi.  ivb
+#~ msgid "esabico"
+#~ msgstr "xsgaico"
+
+# (x)ifra, (s)igna, si(g)na com a, (a)mbdós, %s, (c)lar
+# La «f» i la «c» originals s’agafen en el mateix cas en el codi.  ivb
+#~ msgid "esabic"
+#~ msgstr "xsgaic"
+
+# (s)igna, xi(f)ra amb, si(g)na com a, (c)lar, no (o)portunista
+# La «f» i la «c» originals s’agafen en el mateix cas en el codi.  ivb
+#~ msgid "swaco"
+#~ msgstr "sfgco"

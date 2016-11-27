@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neomutt-20161104\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
-"POT-Creation-Date: 2017-04-28 12:34+0100\n"
+"POT-Creation-Date: 2017-04-29 14:20+0100\n"
 "PO-Revision-Date: 2008-05-20 22:39+0200\n"
 "Last-Translator: Piarres Beobide <pi@beobide.net>\n"
 "Language-Team: Euskara <debian-l10n-basque@lists.debian.org>\n"
@@ -1658,7 +1658,7 @@ msgstr "S/MIME (e)nkript, (s)ina, sin (a) honela, (b)iak, (p)gp or (g)arbitu?"
 #: crypt_gpgme.c:4634
 #, fuzzy
 msgid "esabpfco"
-msgstr "esabpfg"
+msgstr "esabmg"
 
 #. L10N: PGP options (opportunistic encryption is off)
 #: crypt_gpgme.c:4640
@@ -1673,7 +1673,7 @@ msgstr "PGP (e)nkrippt, (s)ina, sin(a)tu hola, (b)iak, s/(m)ime edo (g)abitu?"
 #: crypt_gpgme.c:4644
 #, fuzzy
 msgid "esabmfco"
-msgstr "esabmfg"
+msgstr "esabmg"
 
 #: crypt_gpgme.c:4657
 #, fuzzy
@@ -1683,8 +1683,9 @@ msgstr "S/MIME (e)nkript, (s)ina, sin (a) honela, (b)iak, (p)gp or (g)arbitu?"
 #. L10N: S/MIME options
 #. The 'f' is undocumented. Please DO NOT translate it.
 #: crypt_gpgme.c:4660
+#, fuzzy
 msgid "esabpfc"
-msgstr "esabpfg"
+msgstr "esabmg"
 
 #: crypt_gpgme.c:4667
 #, fuzzy
@@ -1694,8 +1695,9 @@ msgstr "PGP (e)nkrippt, (s)ina, sin(a)tu hola, (b)iak, s/(m)ime edo (g)abitu?"
 #. L10N: PGP options
 #. The 'f' is undocumented. Please DO NOT translate it.
 #: crypt_gpgme.c:4670
+#, fuzzy
 msgid "esabmfc"
-msgstr "esabmfg"
+msgstr "esabmg"
 
 #: crypt_gpgme.c:4695 pgp.c:1760 smime.c:2143 smime.c:2158
 msgid "Sign as: "
@@ -5245,7 +5247,7 @@ msgstr "PGP (e)nkript, (s)ina, sign (a)tu hola, (b)iak, %s, edo (g)arbitu? "
 #: pgp.c:1694
 #, fuzzy
 msgid "esabfcoi"
-msgstr "esabpfg"
+msgstr "esabmg"
 
 #. L10N: PGP options (opportunistic encryption is off)
 #: pgp.c:1700
@@ -5258,7 +5260,7 @@ msgstr "PGP (e)nkript, (s)ina, sign (a)tu hola, (b)iak, %s, edo (g)arbitu? "
 #: pgp.c:1704
 #, fuzzy
 msgid "esabfco"
-msgstr "esabpfg"
+msgstr "esabmg"
 
 #. L10N: PGP options (inline)
 #: pgp.c:1717
@@ -5272,7 +5274,7 @@ msgstr "PGP (e)nkript, (s)ina, sign (a)tu hola, (b)iak, %s, edo (g)arbitu? "
 #: pgp.c:1724
 #, fuzzy
 msgid "esabfci"
-msgstr "esabpfg"
+msgstr "esabmg"
 
 #. L10N: PGP options
 #: pgp.c:1730
@@ -5285,7 +5287,7 @@ msgstr "PGP (e)nkript, (s)ina, sign (a)tu hola, (b)iak, %s, edo (g)arbitu? "
 #: pgp.c:1733
 #, fuzzy
 msgid "esabfc"
-msgstr "esabpfg"
+msgstr "esabmg"
 
 #: pgpinvoke.c:288
 msgid "Fetching PGP key..."
@@ -6030,7 +6032,7 @@ msgstr ""
 #: smime.c:2045
 #, fuzzy
 msgid "eswabfco"
-msgstr "eshabfc"
+msgstr "eshabc"
 
 #. L10N: S/MIME options
 #: smime.c:2054
@@ -6043,8 +6045,9 @@ msgstr ""
 #. L10N: S/MIME options
 #. The 'f' is undocumented. Please DO NOT translate it.
 #: smime.c:2058
+#, fuzzy
 msgid "eswabfc"
-msgstr "eshabfc"
+msgstr "eshabc"
 
 #: smime.c:2079
 msgid "Choose algorithm family: 1: DES, 2: RC2, 3: AES, or (c)lear? "
@@ -6212,10 +6215,14 @@ msgid ""
 "under certain conditions; type `mutt -vv' for details.\n"
 msgstr ""
 
-#: version.c:430
+#: version.c:428
 msgid ""
 "\n"
 "Compile options:"
 msgstr ""
 "\n"
 "Konpilazio aukerak:"
+
+#, fuzzy
+#~ msgid "esabic"
+#~ msgstr "esabpg"

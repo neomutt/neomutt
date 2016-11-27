@@ -13,7 +13,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neomutt-20161104\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
-"POT-Creation-Date: 2017-04-28 12:34+0100\n"
+"POT-Creation-Date: 2017-04-29 14:20+0100\n"
 "PO-Revision-Date: 2005-02-01 00:01GMT+2\n"
 "Last-Translator: Dokianakis Fanis <madf@hellug.gr>\n"
 "Language-Team: Greek <EL@li.org>\n"
@@ -1687,7 +1687,7 @@ msgstr "S/MIME (e)κλείδ, (s)υπογρ, υπογρ.σ(a)ν, (b)κλ+υπ, %
 #: crypt_gpgme.c:4634
 #, fuzzy
 msgid "esabpfco"
-msgstr "eswabfc"
+msgstr "eswabc"
 
 #. L10N: PGP options (opportunistic encryption is off)
 #: crypt_gpgme.c:4640
@@ -1702,7 +1702,7 @@ msgstr "PGP (e)κλείδ, (s)υπογρ, υπογρ.σ(a)ν, (b)κλ+υπ, %s, 
 #: crypt_gpgme.c:4644
 #, fuzzy
 msgid "esabmfco"
-msgstr "eswabfc"
+msgstr "eswabc"
 
 #: crypt_gpgme.c:4657
 #, fuzzy
@@ -1714,7 +1714,7 @@ msgstr "S/MIME (e)κλείδ, (s)υπογρ, υπογρ.σ(a)ν, (b)κλ+υπ, %
 #: crypt_gpgme.c:4660
 #, fuzzy
 msgid "esabpfc"
-msgstr "eswabfc"
+msgstr "eswabc"
 
 #: crypt_gpgme.c:4667
 #, fuzzy
@@ -1726,7 +1726,7 @@ msgstr "PGP (e)κλείδ, (s)υπογρ, υπογρ.σ(a)ν, (b)κλ+υπ, %s, 
 #: crypt_gpgme.c:4670
 #, fuzzy
 msgid "esabmfc"
-msgstr "eswabfc"
+msgstr "eswabc"
 
 #: crypt_gpgme.c:4695 pgp.c:1760 smime.c:2143 smime.c:2158
 msgid "Sign as: "
@@ -5373,7 +5373,7 @@ msgstr "PGP (e)κλείδ, (s)υπογρ, υπογρ.σ(a)ν, (b)κλ+υπ, %s, 
 #: pgp.c:1694
 #, fuzzy
 msgid "esabfcoi"
-msgstr "eswabfc"
+msgstr "eswabc"
 
 #. L10N: PGP options (opportunistic encryption is off)
 #: pgp.c:1700
@@ -5386,7 +5386,7 @@ msgstr "PGP (e)κλείδ, (s)υπογρ, υπογρ.σ(a)ν, (b)κλ+υπ, %s, 
 #: pgp.c:1704
 #, fuzzy
 msgid "esabfco"
-msgstr "eswabfc"
+msgstr "eswabc"
 
 #. L10N: PGP options (inline)
 #: pgp.c:1717
@@ -5400,7 +5400,7 @@ msgstr "PGP (e)κλείδ, (s)υπογρ, υπογρ.σ(a)ν, (b)κλ+υπ, %s, 
 #: pgp.c:1724
 #, fuzzy
 msgid "esabfci"
-msgstr "eswabfc"
+msgstr "eswabc"
 
 #. L10N: PGP options
 #: pgp.c:1730
@@ -5413,7 +5413,7 @@ msgstr "PGP (e)κλείδ, (s)υπογρ, υπογρ.σ(a)ν, (b)κλ+υπ, %s, 
 #: pgp.c:1733
 #, fuzzy
 msgid "esabfc"
-msgstr "eswabfc"
+msgstr "eswabc"
 
 #: pgpinvoke.c:288
 msgid "Fetching PGP key..."
@@ -6162,9 +6162,8 @@ msgstr ""
 #. L10N: S/MIME options (opportunistic encryption is off)
 #. The 'f' is undocumented. Please DO NOT translate it.
 #: smime.c:2045
-#, fuzzy
 msgid "eswabfco"
-msgstr "eswabfc"
+msgstr ""
 
 #. L10N: S/MIME options
 #: smime.c:2054
@@ -6177,7 +6176,7 @@ msgstr ""
 #. The 'f' is undocumented. Please DO NOT translate it.
 #: smime.c:2058
 msgid "eswabfc"
-msgstr "eswabfc"
+msgstr ""
 
 #: smime.c:2079
 msgid "Choose algorithm family: 1: DES, 2: RC2, 3: AES, or (c)lear? "
@@ -6343,7 +6342,7 @@ msgstr ""
 "επαναδιανέμετε\n"
 "υπό ορισμένους όρους; γράψτε `mutt -vv' για λεπτομέρειες.\n"
 
-#: version.c:430
+#: version.c:428
 msgid ""
 "\n"
 "Compile options:"
