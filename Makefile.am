@@ -5,6 +5,9 @@ include $(top_srcdir)/flymake.am
 AUTOMAKE_OPTIONS = 1.6 foreign
 EXTRA_PROGRAMS = mutt_dotlock pgpring pgpewrap mutt_md5
 
+# Test the .tar file by building everything
+AM_DISTCHECK_CONFIGURE_FLAGS = --enable-pop --enable-imap --enable-smtp --enable-hcache --with-bdb --with-gdbm --with-kyotocabinet --with-lmdb --with-qdbm --with-tokyocabinet --enable-gpgme --enable-sidebar --enable-nntp --enable-notmuch --enable-compressed --enable-debug --with-gnutls --with-sasl --with-gss
+
 if BUILD_DOC
 DOC_SUBDIR = doc
 endif
@@ -86,6 +89,8 @@ EXTRA_DIST = COPYRIGHT LICENSE.md OPS OPS.PGP OPS.CRYPT OPS.SMIME TODO UPDATING 
 	ChangeLog ChangeLog.neomutt mutt_idna.h sidebar.h OPS.SIDEBAR \
 	snprintf.c regex.c crypt-gpgme.h hcachever.sh.in \
 	txt2c.c txt2c.sh version.h \
+	hcache-backend.h hcache-bdb.c hcache-gdbm.c hcache-kc.c hcache-lmdb.c \
+	hcache-qdbm.c hcache-tc.c \
 	$(top_srcdir)/.version git-version-gen
 
 EXTRA_SCRIPTS = smime_keys
