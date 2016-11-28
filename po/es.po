@@ -4,14 +4,15 @@
 # This file is distributed under the same license as the NeoMutt package.
 #
 # Boris Wesslowski <Boris@Wesslowski.com>, 1999-2001
+# Rubén Llorente <porting@use.startmail.com>, 2016
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: neomutt-20161104\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
-"POT-Creation-Date: 2016-11-28 16:06+0000\n"
-"PO-Revision-Date: 2001-06-08 19:44+02:00\n"
-"Last-Translator: Boris Wesslowski <Boris@Wesslowski.com>\n"
+"POT-Creation-Date: 2016-11-28 23:55+0000\n"
+"PO-Revision-Date: 2016-11-28 19:29+0100\n"
+"Last-Translator: Rubén Llorente\n"
 "Language-Team: none\n"
 "Language: es\n"
 "MIME-Version: 1.0\n"
@@ -74,7 +75,7 @@ msgstr "¡Este nombre ya está definido en la libreta!"
 
 #: alias.c:273
 msgid "Warning: This alias name may not work.  Fix it?"
-msgstr ""
+msgstr "Aviso: Este alias podría no funcionar adecuadamente. ¿Desea arreglarlo? "
 
 #: alias.c:298
 msgid "Address: "
@@ -83,7 +84,7 @@ msgstr "Dirección: "
 #: alias.c:308 send.c:215
 #, c-format
 msgid "Error: '%s' is a bad IDN."
-msgstr ""
+msgstr "Error: '%s' es un IDN incorrecto."
 
 #: alias.c:320
 msgid "Personal name: "
@@ -171,12 +172,12 @@ msgstr "No se pudo crear el filtro"
 #: attach.c:477
 #, c-format
 msgid "---Command: %-20.20s Description: %s"
-msgstr ""
+msgstr "---Orden: %-20.20s Descripción: %s"
 
 #: attach.c:481
 #, c-format
 msgid "---Command: %-30.30s Attachment: %s"
-msgstr ""
+msgstr "---Orden: %-30.30s Adjunto: %s"
 
 #: attach.c:558
 #, fuzzy, c-format
@@ -207,7 +208,7 @@ msgstr "Directorio"
 
 #: browser.c:55
 msgid "Goto"
-msgstr ""
+msgstr "Ir a"
 
 #: browser.c:56 browser.c:68
 msgid "Mask"
@@ -215,7 +216,7 @@ msgstr "Patrón"
 
 #: browser.c:64
 msgid "List"
-msgstr ""
+msgstr "Lista"
 
 #: browser.c:65
 #, fuzzy
@@ -229,7 +230,7 @@ msgstr "Desuscribiendo de %s..."
 
 #: browser.c:67 curs_main.c:816
 msgid "Catchup"
-msgstr ""
+msgstr "Actualizar"
 
 #: browser.c:671 browser.c:1640
 #, c-format
@@ -244,7 +245,7 @@ msgstr "Suscribiendo a %s..."
 #: browser.c:932
 #, c-format
 msgid "Newsgroups on server [%s]"
-msgstr ""
+msgstr "Grupos de noticias en el servidor [%s]"
 
 #: browser.c:941
 #, c-format
@@ -433,11 +434,11 @@ msgstr "Firma S/MIME verificada con éxito."
 
 #: commands.c:202
 msgid "S/MIME certificate owner does not match sender."
-msgstr ""
+msgstr "El propietario del certificado S/MIME no coincide con el remitente."
 
 #: commands.c:205 commands.c:216
 msgid "Warning: Part of this message has not been signed."
-msgstr ""
+msgstr "Aviso: Parte de este mensaje no ha sido firmado."
 
 #: commands.c:207
 #, fuzzy
@@ -458,7 +459,7 @@ msgstr "Comando: "
 
 #: commands.c:267 commands.c:277 recvcmd.c:148 recvcmd.c:161
 msgid "Warning: message contains no From: header"
-msgstr ""
+msgstr "Aviso: El mensaje no contiene una cabecera From:"
 
 #: commands.c:285 recvcmd.c:171
 msgid "Bounce message to: "
@@ -475,7 +476,7 @@ msgstr "¡Dirección errónea!"
 #: commands.c:310 recvcmd.c:190
 #, c-format
 msgid "Bad IDN: '%s'"
-msgstr ""
+msgstr "IDN incorrecto: '%s'"
 
 #: commands.c:321 recvcmd.c:204
 #, c-format
@@ -665,7 +666,7 @@ msgstr "Firmar"
 #. L10N: This refers to the encryption of the email, e.g. "Security: None"
 #: compose.c:162
 msgid "None"
-msgstr ""
+msgstr "Ninguna"
 
 #: compose.c:169
 #, fuzzy
@@ -674,15 +675,15 @@ msgstr "(continuar)\n"
 
 #: compose.c:171
 msgid " (PGP/MIME)"
-msgstr ""
+msgstr " (PGP/MIME)"
 
 #: compose.c:175
 msgid " (S/MIME)"
-msgstr ""
+msgstr " (S/MIME)"
 
 #: compose.c:179
 msgid " (OppEnc mode)"
-msgstr ""
+msgstr " (Modo OppEnc)"
 
 #: compose.c:187 compose.c:191
 #, fuzzy
@@ -720,7 +721,7 @@ msgstr "-- Archivos adjuntos"
 #: compose.c:351
 #, c-format
 msgid "Warning: '%s' is a bad IDN."
-msgstr ""
+msgstr "Aviso: '%s' es un IDN inválido."
 
 #: compose.c:374
 msgid "You may not delete the only attachment."
@@ -729,7 +730,7 @@ msgstr "No puede borrar la única pieza."
 #: compose.c:749 send.c:1873
 #, c-format
 msgid "Bad IDN in \"%s\": '%s'"
-msgstr ""
+msgstr "IDN inválido en \"%s\": '%s'"
 
 #: compose.c:838
 msgid "Attaching selected files..."
@@ -843,11 +844,11 @@ msgstr "Mensaje escrito."
 
 #: compose.c:1439
 msgid "S/MIME already selected. Clear & continue ? "
-msgstr ""
+msgstr "S/MIME ya ha sido seleccionado. ¿Limpiar y continuar?"
 
 #: compose.c:1472
 msgid "PGP already selected. Clear & continue ? "
-msgstr ""
+msgstr "PGP ya ha sido seleccionado. ¿Limpiar y continuar?"
 
 #: compress.c:481 compress.c:551 compress.c:706 compress.c:895 mbox.c:847
 msgid "Unable to lock mailbox!"
@@ -856,21 +857,21 @@ msgstr "¡Imposible bloquear buzón!"
 #: compress.c:485 compress.c:558 compress.c:710
 #, c-format
 msgid "Decompressing %s"
-msgstr ""
+msgstr "Descomprimiendo %s"
 
 #: compress.c:494
 msgid "Can't identify the contents of the compressed file"
-msgstr ""
+msgstr "El contenido del archivo comprimido no puede ser identificado"
 
 #: compress.c:501 compress.c:579
 #, c-format
 msgid "Can't find mailbox ops for mailbox type %d"
-msgstr ""
+msgstr "No se encuentran operaciones para la bandeja de email de tipo %d"
 
 #: compress.c:540 compress.c:834
 #, c-format
 msgid "Cannot append without an append-hook or close-hook : %s"
-msgstr ""
+msgstr "No se puede concatenar sin un append-hook o close-hook: %s"
 
 #: compress.c:561
 #, fuzzy, c-format
@@ -879,7 +880,7 @@ msgstr "La órden anterior a la conexión falló."
 
 #: compress.c:572
 msgid "Unsupported mailbox type for appending."
-msgstr ""
+msgstr "Este tipo de bandeja de email no soporta operaciones de concatenación."
 
 #: compress.c:648
 #, fuzzy, c-format
@@ -898,7 +899,7 @@ msgstr "Error. Preservando el archivo temporal: %s"
 
 #: compress.c:885
 msgid "Can't sync a compressed file without a close-hook"
-msgstr ""
+msgstr "No se puede sincronizar un archivo comprimido sin un close-hook"
 
 #: compress.c:907
 #, fuzzy, c-format
@@ -907,7 +908,7 @@ msgstr "Copiando a %s..."
 
 #: copy.c:725
 msgid "No decryption engine available for message"
-msgstr ""
+msgstr "No existe un motor de descifrado disponible para el mensaje"
 
 #: crypt-gpgme.c:393
 #, fuzzy, c-format
@@ -917,7 +918,7 @@ msgstr "error en patrón en: %s"
 #: crypt-gpgme.c:403
 #, c-format
 msgid "error enabling CMS protocol: %s\n"
-msgstr ""
+msgstr "error activando el protocolo CMS: %s\n"
 
 #: crypt-gpgme.c:423
 #, fuzzy, c-format
@@ -951,17 +952,17 @@ msgstr "error en patrón en: %s"
 #: crypt-gpgme.c:721
 #, c-format
 msgid "secret key `%s' not found: %s\n"
-msgstr ""
+msgstr "clave secreta `%s' no encontrada: %s\n"
 
 #: crypt-gpgme.c:731
 #, c-format
 msgid "ambiguous specification of secret key `%s'\n"
-msgstr ""
+msgstr "Especificación ambigua de la clave secreta `%s'\n"
 
 #: crypt-gpgme.c:743
 #, c-format
 msgid "error setting secret key `%s': %s\n"
-msgstr ""
+msgstr "error seleccionando la clave secreta `%s': %s\n"
 
 #: crypt-gpgme.c:760
 #, fuzzy, c-format
@@ -980,15 +981,15 @@ msgstr "error en patrón en: %s"
 
 #: crypt-gpgme.c:944
 msgid "$pgp_sign_as unset and no default key specified in ~/.gnupg/gpg.conf"
-msgstr ""
+msgstr "$pgp_sign_as no está definido, y no hay clave por defecto especificada en ~/.gnupg/gpg.conf"
 
 #: crypt-gpgme.c:1140
 msgid "Warning: One of the keys has been revoked\n"
-msgstr ""
+msgstr "Aviso: una de las claves ha sido revocada\n"
 
 #: crypt-gpgme.c:1149
 msgid "Warning: The key used to create the signature expired at: "
-msgstr ""
+msgstr "Aviso: la clave empleada para crear la firma caducó el: "
 
 #: crypt-gpgme.c:1155
 #, fuzzy
@@ -997,11 +998,11 @@ msgstr "Certificado del servidor ha expirado"
 
 #: crypt-gpgme.c:1171
 msgid "Warning: The signature expired at: "
-msgstr ""
+msgstr "Aviso: la firma caducó el:"
 
 #: crypt-gpgme.c:1177
 msgid "Can't verify due to a missing key or certificate\n"
-msgstr ""
+msgstr "No se puede verificar, debido a la ausencia de una clave o certificado\n"
 
 #: crypt-gpgme.c:1182
 #, fuzzy
@@ -1010,7 +1011,7 @@ msgstr "SSL no está disponible."
 
 #: crypt-gpgme.c:1188
 msgid "Available CRL is too old\n"
-msgstr ""
+msgstr "El CRL disponible es demasiado antigüo\n"
 
 #: crypt-gpgme.c:1193
 msgid "A policy requirement was not met\n"
@@ -1018,15 +1019,15 @@ msgstr ""
 
 #: crypt-gpgme.c:1202
 msgid "A system error occurred"
-msgstr ""
+msgstr "Ha ocurrido un error del sistema"
 
 #: crypt-gpgme.c:1236
 msgid "WARNING: PKA entry does not match signer's address: "
-msgstr ""
+msgstr "AVISO: La entrada PKA no coincide con la dirección del firmante: "
 
 #: crypt-gpgme.c:1243
 msgid "PKA verified signer's address is: "
-msgstr ""
+msgstr "La dirección del firmante con PKA verificada es: "
 
 #. L10N: DOTFILL
 #. Fill dots to make the DOTFILL entries the same length.
@@ -1035,27 +1036,27 @@ msgstr ""
 #: crypt-gpgme.c:1260 crypt-gpgme.c:3470
 #, fuzzy
 msgid "Fingerprint: "
-msgstr "Huella: %s"
+msgstr "Huella .........: %s"
 
 #: crypt-gpgme.c:1320
 msgid "WARNING: We have NO indication whether the key belongs to the person named as shown above\n"
-msgstr ""
+msgstr "AVISO: NO hay evidencia de que la clave pertenezca a la persona indicada más arriba\n"
 
 #: crypt-gpgme.c:1327
 msgid "WARNING: The key does NOT BELONG to the person named as shown above\n"
-msgstr ""
+msgstr "AVISO: La clave NO PERTENECE a la persona indicada más arriba\n"
 
 #: crypt-gpgme.c:1331
 msgid "WARNING: It is NOT certain that the key belongs to the person named as shown above\n"
-msgstr ""
+msgstr "AVISO: NO existe la seguridad de que la clave pertenezca a la persona indicada más arriba\n"
 
 #: crypt-gpgme.c:1361 crypt-gpgme.c:1366
 msgid "aka: "
-msgstr ""
+msgstr " alias .........: "
 
 #: crypt-gpgme.c:1376
 msgid "KeyID "
-msgstr ""
+msgstr "Identificador de clave "
 
 #: crypt-gpgme.c:1385 crypt-gpgme.c:1390
 #, fuzzy
@@ -1065,30 +1066,30 @@ msgstr "¿Crear %s?"
 #: crypt-gpgme.c:1463
 #, c-format
 msgid "Error getting key information for KeyID %s: %s\n"
-msgstr ""
+msgstr "Error al obtener información para el identificador de clave %s: %s\n"
 
 #: crypt-gpgme.c:1470 crypt-gpgme.c:1485
 msgid "Good signature from:"
-msgstr ""
+msgstr "Firma válida de:"
 
 #: crypt-gpgme.c:1477
 msgid "*BAD* signature from:"
-msgstr ""
+msgstr "Firma *INVÁLIDA* de:"
 
 #: crypt-gpgme.c:1493
 msgid "Problem signature from:"
-msgstr ""
+msgstr "Firma problemática de:"
 
 #. L10N:
 #. This is trying to match the width of the
 #. "Problem signature from:" translation just above.
 #: crypt-gpgme.c:1500
 msgid "               expires: "
-msgstr ""
+msgstr "               caduca: "
 
 #: crypt-gpgme.c:1547 crypt-gpgme.c:1770 crypt-gpgme.c:2471
 msgid "[-- Begin signature information --]\n"
-msgstr ""
+msgstr "[-- Inicio de la información de la firma --]\n"
 
 #: crypt-gpgme.c:1559
 #, fuzzy, c-format
@@ -1098,11 +1099,11 @@ msgstr "Error en línea de comando: %s\n"
 #: crypt-gpgme.c:1613
 #, c-format
 msgid "*** Begin Notation (signature by: %s) ***\n"
-msgstr ""
+msgstr "*** Comienzo del Comentario (firma de: %s) ***\n"
 
 #: crypt-gpgme.c:1635
 msgid "*** End Notation ***\n"
-msgstr ""
+msgstr "*** Fin del Comentario ***\n"
 
 #: crypt-gpgme.c:1643 crypt-gpgme.c:1783 crypt-gpgme.c:2484
 #, fuzzy
@@ -1128,11 +1129,11 @@ msgstr "error en patrón en: %s"
 #: crypt-gpgme.c:2447
 #, c-format
 msgid "Error: decryption/verification failed: %s\n"
-msgstr ""
+msgstr "Error: descifrado/verificación fallida: %s\n"
 
 #: crypt-gpgme.c:2492
 msgid "Error: copy data failed\n"
-msgstr ""
+msgstr "Error: copia de datos fallida\n"
 
 #: crypt-gpgme.c:2513 pgp.c:519
 msgid ""
@@ -1261,24 +1262,24 @@ msgstr ""
 
 #: crypt-gpgme.c:3304
 msgid "[Can't display this user ID (unknown encoding)]"
-msgstr ""
+msgstr "[No se puede mostrar este identificador de usuario (codificación desconocida)]"
 
 #: crypt-gpgme.c:3306
 msgid "[Can't display this user ID (invalid encoding)]"
-msgstr ""
+msgstr "[No se puede mostrar este identificador de usuario (codificación inválida)]"
 
 #: crypt-gpgme.c:3311
 msgid "[Can't display this user ID (invalid DN)]"
-msgstr ""
+msgstr "[No se puede mostrar este identificador de usuario (DN inválido)]"
 
 #. L10N: DOTFILL
 #: crypt-gpgme.c:3388
 msgid " aka ......: "
-msgstr ""
+msgstr " alias ......: "
 
 #: crypt-gpgme.c:3388
 msgid "Name ......: "
-msgstr ""
+msgstr "Nombre ......: "
 
 #: crypt-gpgme.c:3391 crypt-gpgme.c:3541
 #, fuzzy
@@ -1289,25 +1290,25 @@ msgstr "Mes inválido: %s"
 #: crypt-gpgme.c:3412 crypt-gpgme.c:3566
 #, fuzzy, c-format
 msgid "Valid From : %s\n"
-msgstr "Mes inválido: %s"
+msgstr "Mes inválido ...: %s"
 
 #. L10N: DOTFILL
 #: crypt-gpgme.c:3426 crypt-gpgme.c:3580
 #, fuzzy, c-format
 msgid "Valid To ..: %s\n"
-msgstr "Mes inválido: %s"
+msgstr "Mes inválido ...: %s"
 
 #. L10N: DOTFILL
 #: crypt-gpgme.c:3440 crypt-gpgme.c:3594
 #, c-format
 msgid "Key Type ..: %s, %lu bit %s\n"
-msgstr ""
+msgstr "Tipo de clave ..: %s, %lu bit %s\n"
 
 #. L10N: DOTFILL
 #: crypt-gpgme.c:3443 crypt-gpgme.c:3597
 #, c-format
 msgid "Key Usage .: "
-msgstr ""
+msgstr "Usos de la clave: "
 
 #: crypt-gpgme.c:3448 crypt-gpgme.c:3602
 #, fuzzy
@@ -1317,11 +1318,11 @@ msgstr "Cifrar"
 #: crypt-gpgme.c:3449 crypt-gpgme.c:3454 crypt-gpgme.c:3459 crypt-gpgme.c:3603
 #: crypt-gpgme.c:3608 crypt-gpgme.c:3613
 msgid ", "
-msgstr ""
+msgstr ", "
 
 #: crypt-gpgme.c:3453 crypt-gpgme.c:3607
 msgid "signing"
-msgstr ""
+msgstr "firmando"
 
 #: crypt-gpgme.c:3458 crypt-gpgme.c:3612
 #, fuzzy
@@ -1332,23 +1333,23 @@ msgstr "El certificado fue guardado"
 #: crypt-gpgme.c:3503
 #, c-format
 msgid "Serial-No .: 0x%s\n"
-msgstr ""
+msgstr "Número de serie : 0x%s\n"
 
 #. L10N: DOTFILL
 #: crypt-gpgme.c:3512
 #, c-format
 msgid "Issued By .: "
-msgstr ""
+msgstr "Emitido por ....: "
 
 #. L10N: DOTFILL
 #: crypt-gpgme.c:3532
 #, fuzzy, c-format
 msgid "Subkey ....: 0x%s"
-msgstr "Key ID: 0x%s"
+msgstr "Key ID .........: 0x%s"
 
 #: crypt-gpgme.c:3536
 msgid "[Revoked]"
-msgstr ""
+msgstr "[Revocada]"
 
 #: crypt-gpgme.c:3546
 #, fuzzy
@@ -1357,7 +1358,7 @@ msgstr "Salir  "
 
 #: crypt-gpgme.c:3551
 msgid "[Disabled]"
-msgstr ""
+msgstr "[Disactivada]"
 
 #: crypt-gpgme.c:3639
 #, fuzzy
@@ -1387,12 +1388,12 @@ msgstr "CLOSE falló"
 #: crypt-gpgme.c:3808 crypt-gpgme.c:3883
 #, c-format
 msgid "gpgme_op_keylist_start failed: %s"
-msgstr ""
+msgstr "gpgme_op_keylist_start falló: %s"
 
 #: crypt-gpgme.c:3870 crypt-gpgme.c:3914
 #, c-format
 msgid "gpgme_op_keylist_next failed: %s"
-msgstr ""
+msgstr "gpgme_op_keylist_next falló: %s"
 
 #: crypt-gpgme.c:3985
 #, fuzzy
@@ -1459,7 +1460,7 @@ msgstr "Esta clave está expirada/desactivada/revocada"
 
 #: crypt-gpgme.c:4101 pgpkey.c:617 smime.c:470
 msgid "ID has undefined validity."
-msgstr ""
+msgstr "El identificador tiene una validez indefinida."
 
 #: crypt-gpgme.c:4104 pgpkey.c:620
 #, fuzzy
@@ -1511,11 +1512,11 @@ msgstr "Clave PGP %s."
 
 #: crypt-gpgme.c:4676
 msgid "GPGME: OpenPGP protocol not available"
-msgstr ""
+msgstr "GPGME: protocolo OpenPGP no disponible"
 
 #: crypt-gpgme.c:4684
 msgid "GPGME: CMS protocol not available"
-msgstr ""
+msgstr "GPGME: protocolo CMS no disponible"
 
 #. L10N: S/MIME options (opportunistic encryption is on)
 #: crypt-gpgme.c:4722
@@ -1599,7 +1600,7 @@ msgstr "Firmar como: "
 
 #: crypt-gpgme.c:4943
 msgid "Failed to verify sender"
-msgstr ""
+msgstr "Fallo al verificar el remitente"
 
 #: crypt-gpgme.c:4946
 #, fuzzy
@@ -1609,7 +1610,7 @@ msgstr "Error al abrir el archivo para leer las cabeceras."
 #: crypt.c:67
 #, c-format
 msgid " (current time: %c)"
-msgstr ""
+msgstr " (fecha actual: %c)"
 
 #: crypt.c:72
 #, fuzzy, c-format
@@ -1623,11 +1624,11 @@ msgstr "Contraseña PGP olvidada."
 
 #: crypt.c:150
 msgid "Inline PGP can't be used with attachments.  Revert to PGP/MIME?"
-msgstr ""
+msgstr "PGP Inline no puede ser utilizado con adjuntos. ¿Cambiar a PGP/MIME?"
 
 #: crypt.c:152
 msgid "Mail not sent: inline PGP can't be used with attachments."
-msgstr ""
+msgstr "Email no enviado: PGP inline no puede utilizarse con adjuntos."
 
 #: crypt.c:159 cryptglue.c:110 pgpkey.c:563 pgpkey.c:753
 msgid "Invoking PGP..."
@@ -1635,7 +1636,7 @@ msgstr "Invocando PGP..."
 
 #: crypt.c:168
 msgid "Message can't be sent inline.  Revert to using PGP/MIME?"
-msgstr ""
+msgstr "El mensaje no puede enviarse en modo inline. ¿Cambiar a PGP/MIME?"
 
 #: crypt.c:170 send.c:1796
 msgid "Mail not sent."
@@ -1643,23 +1644,23 @@ msgstr "Mensaje no enviado."
 
 #: crypt.c:234
 msgid "Encrypt message to S/MIME Default Key also?"
-msgstr ""
+msgstr "¿Cifrar el mensaje también para la clave S/MIME por defecto?"
 
 #: crypt.c:268
 msgid "Encrypt message to PGP Default Key also?"
-msgstr ""
+msgstr "¿Cifrar el mensaje también para la clave PGP por defecto?"
 
 #: crypt.c:508
 msgid "S/MIME messages with no hints on content are unsupported."
-msgstr ""
+msgstr "Los mensajes S/MIME sin pistas sobre el contenido no están soportados."
 
 #: crypt.c:728 crypt.c:772
 msgid "Trying to extract PGP keys...\n"
-msgstr ""
+msgstr "Intentando extraer las claces PGP... \n"
 
 #: crypt.c:752 crypt.c:792
 msgid "Trying to extract S/MIME certificates...\n"
-msgstr ""
+msgstr "Intentando extraer los certificados S/MIME... \n"
 
 #: crypt.c:939
 #, c-format
@@ -1715,7 +1716,7 @@ msgstr ""
 
 #: cryptglue.c:89
 msgid "\"crypt_use_gpgme\" set but not built with GPGME support."
-msgstr ""
+msgstr "\"crypt_use_gpgme\" definido, pero construido sin soporte GPGME."
 
 #: cryptglue.c:112
 #, fuzzy
@@ -1846,7 +1847,7 @@ msgstr "Entre keyID para %s: "
 
 #: curs_main.c:1220
 msgid "Article has no parent reference."
-msgstr ""
+msgstr "Al articulo no tiene referencia."
 
 #: curs_main.c:1243
 #, fuzzy
@@ -1861,11 +1862,11 @@ msgstr "Eliminando mensajes del servidor..."
 #: curs_main.c:1259
 #, c-format
 msgid "Article %s not found on the server."
-msgstr ""
+msgstr "Artículo %s no encontrado en el servidor."
 
 #: curs_main.c:1278
 msgid "No Message-Id. Unable to perform operation."
-msgstr ""
+msgstr "Sin Message-Id. No se puede realizar la operación."
 
 #: curs_main.c:1282 imap/message.c:233 nntp.c:1264 pop.c:281
 #, fuzzy
@@ -1919,7 +1920,7 @@ msgstr "Limitar a mensajes que coincidan con: "
 
 #: curs_main.c:1496
 msgid "To view all messages, limit to \"all\"."
-msgstr ""
+msgstr "Para ver todos los mensajes, limite a \"all\"."
 
 #: curs_main.c:1508 pager.c:2174
 msgid "Quit Mutt?"
@@ -1955,7 +1956,7 @@ msgstr "Sin asunto, cancelando."
 
 #: curs_main.c:1750
 msgid "Failed to read thread, aborting."
-msgstr ""
+msgstr "Fallo al leer el hilo, abortando."
 
 #: curs_main.c:1786
 #, fuzzy
@@ -1965,11 +1966,11 @@ msgstr "Sin asunto, cancelando."
 #: curs_main.c:1796
 #, c-format
 msgid "Update labels..."
-msgstr ""
+msgstr "Actualizando etiquetas..."
 
 #: curs_main.c:1819
 msgid "Failed to modify labels, aborting."
-msgstr ""
+msgstr "Fallo al modificar etiquetas, abortando."
 
 #: curs_main.c:1853
 #, fuzzy
@@ -1978,7 +1979,7 @@ msgstr "Sin asunto, cancelando."
 
 #: curs_main.c:1857
 msgid "Failed to create query, aborting."
-msgstr ""
+msgstr "Fallo al crear petición, abortando."
 
 #: curs_main.c:1886
 msgid "Open mailbox in read-only mode"
@@ -2005,7 +2006,7 @@ msgstr "Abrir buzón en modo de sólo lectura"
 
 #: curs_main.c:1945
 msgid "Open newsgroup"
-msgstr ""
+msgstr "Abrir grupo de noticias"
 
 #: curs_main.c:2036
 #, fuzzy
@@ -2024,16 +2025,16 @@ msgstr "La muestra por hilos no está activada."
 
 #: curs_main.c:2067
 msgid "Thread broken"
-msgstr ""
+msgstr "Hilo roto"
 
 #: curs_main.c:2078
 msgid "Thread cannot be broken, message is not part of a thread"
-msgstr ""
+msgstr "El hilo no puede romperse, el mensaje no es parte de un hilo"
 
 #. L10N: CHECK_ACL
 #: curs_main.c:2088
 msgid "Cannot link threads"
-msgstr ""
+msgstr "No se pueden vincular los hilos"
 
 #: curs_main.c:2093
 msgid "No Message-ID: header available to link thread"
@@ -2046,11 +2047,11 @@ msgstr "guardar este mensaje para enviarlo después"
 
 #: curs_main.c:2107
 msgid "Threads linked"
-msgstr ""
+msgstr "Hilos enlazados"
 
 #: curs_main.c:2110
 msgid "No thread linked"
-msgstr ""
+msgstr "Ningún hilo enlazado"
 
 #: curs_main.c:2146 curs_main.c:2171
 msgid "You are on the last message."
@@ -2170,11 +2171,11 @@ msgstr "No hay mensajes en esa carpeta."
 
 #: curs_main.c:2976 pager.c:2847 recvattach.c:1262
 msgid "Reply by mail as poster prefers?"
-msgstr ""
+msgstr "¿Responder mediante email tal y como el autor del mensaje prefiere?"
 
 #: curs_main.c:2981 pager.c:2816 pager.c:2827 pager.c:2851
 msgid "Posting to this group not allowed, may be moderated. Continue?"
-msgstr ""
+msgstr "Enviar un mensaje a este grupo no está permitido, puede ser un grupo moderado. ¿Continuar?"
 
 #. L10N: CHECK_ACL
 #: curs_main.c:3043 pager.c:3009
@@ -2283,7 +2284,7 @@ msgstr "No hay renglones en el mensaje.\n"
 #: edit.c:454
 #, c-format
 msgid "Bad IDN in %s: '%s'\n"
-msgstr ""
+msgstr "IDN inválido en %s: '%s'\n"
 
 #: edit.c:472
 #, c-format
@@ -2348,7 +2349,7 @@ msgstr "[-- Tipo: %s/%s, codificación: %s, tamaño: %s --]\n"
 
 #: handler.c:1282
 msgid "One or more parts of this message could not be displayed"
-msgstr ""
+msgstr "Una o más partes de este mensaje no han podido ser mostradas"
 
 #: handler.c:1334
 #, c-format
@@ -2492,19 +2493,19 @@ msgstr "Ayuda para %s"
 #: history.c:77 history.c:114 history.c:140
 #, c-format
 msgid "Bad history file format (line %d)"
-msgstr ""
+msgstr "Formato de archivo de historial inválido (línea %d)"
 
 #: hook.c:104
 msgid "current mailbox shortcut '^' is unset"
-msgstr ""
+msgstr "el atajo '^' no está definido"
 
 #: hook.c:115
 msgid "mailbox shortcut expanded to empty regexp"
-msgstr ""
+msgstr "atajo expandido a expresión regular vacía"
 
 #: hook.c:126
 msgid "badly formatted command string"
-msgstr ""
+msgstr "línea de orden formateada de manera incorrecta"
 
 #: hook.c:286
 #, c-format
@@ -2573,7 +2574,7 @@ msgstr "Verificación de autentidad SASL falló."
 #: imap/browse.c:57 imap/imap.c:569
 #, c-format
 msgid "%s is an invalid IMAP path"
-msgstr ""
+msgstr "%s es una ruta IMAP inválida"
 
 #: imap/browse.c:68
 msgid "Getting folder list..."
@@ -2645,7 +2646,7 @@ msgstr "No se pudo negociar una conexión TLS"
 
 #: imap/imap.c:459 pop_lib.c:336
 msgid "Encrypted connection unavailable"
-msgstr ""
+msgstr "Conexión cifrada no disponible"
 
 #: imap/imap.c:602 nntp.c:1472
 #, c-format
@@ -2679,7 +2680,7 @@ msgstr "Guardando indicadores de estado de mensajes... [%d/%d]"
 
 #: imap/imap.c:1301
 msgid "Error saving flags. Close anyway?"
-msgstr ""
+msgstr "Error al guardar las marcas. ¿Cerrar igualmente?"
 
 #: imap/imap.c:1309
 #, fuzzy
@@ -2775,12 +2776,12 @@ msgstr "No disponible en este menú."
 #: init.c:477
 #, c-format
 msgid "Bad regexp: %s"
-msgstr ""
+msgstr "Expresión regular incorrecta: %s"
 
 #: init.c:534
 #, c-format
 msgid "Not enough subexpressions for spam template"
-msgstr ""
+msgstr "Subexpresiones insuficientes para la plantilla de spam"
 
 #: init.c:630
 #, fuzzy, c-format
@@ -2800,12 +2801,12 @@ msgstr "quitar marca de los mensajes que coincidan con un patrón"
 #: init.c:989
 #, c-format
 msgid "%sgroup: missing -rx or -addr."
-msgstr ""
+msgstr "%sgroup: falta -rx o -addr."
 
 #: init.c:1007
 #, c-format
 msgid "%sgroup: warning: bad IDN '%s'.\n"
-msgstr ""
+msgstr "%sgroup: aviso: IDN inválido '%s'.\n"
 
 #: init.c:1222
 #, fuzzy
@@ -2833,7 +2834,7 @@ msgstr "alias: sin dirección"
 #: init.c:1472
 #, c-format
 msgid "Warning: Bad IDN '%s' in alias '%s'.\n"
-msgstr ""
+msgstr "Aviso: IDN '%s' inválido en alias '%s'.\n"
 
 #: init.c:1560
 msgid "invalid header field"
@@ -2896,11 +2897,11 @@ msgstr "%s: valor inválido"
 
 #: init.c:2222
 msgid "format error"
-msgstr ""
+msgstr "error de formato"
 
 #: init.c:2222
 msgid "number overflow"
-msgstr ""
+msgstr "desbordamiento de número"
 
 #: init.c:2282
 #, c-format
@@ -3047,7 +3048,7 @@ msgstr ""
 
 #: lib.c:131
 msgid "Integer overflow -- can't allocate memory!"
-msgstr ""
+msgstr "Desbordamiento de número entero -- ¡No se puede asignar memoria!"
 
 #: lib.c:138 lib.c:153 lib.c:185 safe_asprintf.c:42
 msgid "Out of memory!"
@@ -3167,7 +3168,7 @@ msgstr "Error al inicializar la terminal."
 #: main.c:294
 #, c-format
 msgid "Error: value '%s' is invalid for -d.\n"
-msgstr ""
+msgstr "Error: valor '%s' es inválido para -d.\n"
 
 #: main.c:297
 #, c-format
@@ -3190,7 +3191,7 @@ msgstr "No se pudo crear %s: %s."
 
 #: main.c:531
 msgid "Failed to parse mailto: link\n"
-msgstr ""
+msgstr "Fallo al interpretar enlace mailto:\n"
 
 #: main.c:543
 msgid "No recipients specified.\n"
@@ -3198,7 +3199,7 @@ msgstr "No hay destinatario.\n"
 
 #: main.c:569
 msgid "Cannot use -E flag with stdin\n"
-msgstr ""
+msgstr "No se puede usar -E con la salida estándar\n"
 
 #: main.c:722
 #, c-format
@@ -3347,7 +3348,7 @@ msgstr "No se pudo enviar el mensaje."
 
 #: mh.c:1641
 msgid "_maildir_commit_message(): unable to set time on file"
-msgstr ""
+msgstr "_maildir_commit_message(): incapaz de asignar fecha al archivo"
 
 #: muttlib.c:840
 #, c-format
@@ -3357,12 +3358,12 @@ msgstr ""
 #: muttlib.c:856
 #, c-format
 msgid "open /dev/urandom: %s"
-msgstr ""
+msgstr "abrir /dev/urandom: %s"
 
 #: muttlib.c:862
 #, c-format
 msgid "read /dev/urandom: %s"
-msgstr ""
+msgstr "leer /dev/urandom: %s"
 
 #. L10N:
 #. Means "The path you specified as the destination file is a directory."
@@ -3417,17 +3418,17 @@ msgstr "¡%s no es un buzón!"
 #: mutt_notmuch.c:271 mutt_notmuch.c:1712
 #, c-format
 msgid "failed to parse notmuch uri: %s"
-msgstr ""
+msgstr "fallo al interpretar uri nontmuch: %s"
 
 #: mutt_notmuch.c:393
 #, c-format
 msgid "failed to parse notmuch query type: %s"
-msgstr ""
+msgstr "fallo al interpretar tipo de petición notmuch: %s"
 
 #: mutt_notmuch.c:412
 #, c-format
 msgid "failed to parse notmuch limit: %s"
-msgstr ""
+msgstr "fallo al interpretar límite notmuch: %s"
 
 #: mutt_notmuch.c:481
 #, fuzzy, c-format
@@ -3437,7 +3438,7 @@ msgstr "Esperando bloqueo fcntl... %d"
 #: mutt_notmuch.c:488
 #, c-format
 msgid "Cannot open notmuch database: %s: %s"
-msgstr ""
+msgstr "No se puede abrir la base de datos notmuch: %s: %s"
 
 #: mutt_notmuch.c:491
 #, fuzzy
@@ -3461,7 +3462,7 @@ msgstr "No se pudo agregar a la carpeta: %s"
 
 #: mutt_sasl.c:201
 msgid "Unknown SASL profile"
-msgstr ""
+msgstr "Perfil SASL desconocido"
 
 #: mutt_sasl.c:235
 #, fuzzy
@@ -3470,7 +3471,7 @@ msgstr "error en patrón en: %s"
 
 #: mutt_sasl.c:246
 msgid "Error setting SASL security properties"
-msgstr ""
+msgstr "Error al configurar las propiedades de seguridad SASL"
 
 #: mutt_sasl.c:256
 msgid "Error setting SASL external security strength"
@@ -3478,7 +3479,7 @@ msgstr ""
 
 #: mutt_sasl.c:265
 msgid "Error setting SASL external user name"
-msgstr ""
+msgstr "Error al configurar el nombre de usuario externo SASL"
 
 #: mutt_socket.c:103 mutt_socket.c:181
 #, c-format
@@ -3501,7 +3502,7 @@ msgstr "Error al hablar con %s (%s)"
 #: mutt_socket.c:484 mutt_socket.c:543
 #, c-format
 msgid "Bad IDN \"%s\"."
-msgstr ""
+msgstr "IDN inválido \"%s\"."
 
 #: mutt_socket.c:492 mutt_socket.c:551
 #, c-format
@@ -3552,7 +3553,7 @@ msgstr "[-- ¡Error: imposible crear subproceso OpenSSL! --]\n"
 
 #: mutt_ssl.c:430
 msgid "I/O error"
-msgstr ""
+msgstr "Error de Entrada/Salida"
 
 #: mutt_ssl.c:439
 #, fuzzy, c-format
@@ -3598,7 +3599,7 @@ msgstr "Imposible recoger el certificado de la contraparte"
 #: mutt_ssl.c:912
 #, c-format
 msgid "certificate owner does not match hostname %s"
-msgstr ""
+msgstr "el propietario del certificado no coincide con el nombre del equipo %s"
 
 #: mutt_ssl.c:953
 #, fuzzy, c-format
@@ -3664,11 +3665,11 @@ msgstr "El certificado fue guardado"
 
 #: mutt_ssl_gnutls.c:137 mutt_ssl_gnutls.c:166
 msgid "Error: no TLS socket open"
-msgstr ""
+msgstr "Error: no hay un socket TLS abierto"
 
 #: mutt_ssl_gnutls.c:314 mutt_ssl_gnutls.c:353
 msgid "All available protocols for TLS/SSL connection disabled"
-msgstr ""
+msgstr "Todos los protocolos para conexiones TLS/SSL deshabilitados"
 
 #: mutt_ssl_gnutls.c:359
 msgid "Explicit ciphersuite selection via $ssl_ciphers not supported"
@@ -3686,11 +3687,11 @@ msgstr "Error al inicializar la terminal."
 
 #: mutt_ssl_gnutls.c:697 mutt_ssl_gnutls.c:849
 msgid "Error processing certificate data"
-msgstr ""
+msgstr "Error al procesar los datos del certificado"
 
 #: mutt_ssl_gnutls.c:833
 msgid "Warning: Server certificate was signed using an insecure algorithm"
-msgstr ""
+msgstr "Aviso: el certificado del servidor ha sido firmado usando un algoritmo inseguro"
 
 #: mutt_ssl_gnutls.c:952
 #, fuzzy, c-format
@@ -3719,7 +3720,7 @@ msgstr "Certificado del servidor ha expirado"
 
 #: mutt_ssl_gnutls.c:975
 msgid "WARNING: Server hostname does not match certificate"
-msgstr ""
+msgstr "AVISO: El nombre del servidor no coincide con el certificado"
 
 #: mutt_ssl_gnutls.c:980
 #, fuzzy
@@ -3729,7 +3730,7 @@ msgstr "Certificado del servidor todavía no es válido"
 #: mutt_ssl_gnutls.c:1087
 #, c-format
 msgid "Certificate verification error (%s)"
-msgstr ""
+msgstr "Error de verificación de certificado (%s)"
 
 #: mutt_ssl_gnutls.c:1096
 #, fuzzy
@@ -3744,7 +3745,7 @@ msgstr "Conectando a %s..."
 #: mutt_tunnel.c:149
 #, c-format
 msgid "Tunnel to %s returned error %d (%s)"
-msgstr ""
+msgstr "El túnel a %s devolvió el error %d (%s)"
 
 #: mutt_tunnel.c:167 mutt_tunnel.c:183
 #, fuzzy, c-format
@@ -3791,7 +3792,7 @@ msgstr "No se pudo agregar a la carpeta: %s"
 
 #: mx.c:851
 msgid "Mark all articles read?"
-msgstr ""
+msgstr "¿Marcar todos los artículos como leídos?"
 
 #: mx.c:900
 #, c-format
@@ -3847,20 +3848,20 @@ msgstr "El buzón fue marcado."
 
 #: mx.c:1429
 msgid "Integer overflow -- can't allocate memory."
-msgstr ""
+msgstr "Desbordameinto de número entero - no se puede asignar memoria."
 
 #: newsrc.c:557
 msgid "Loading list of groups from cache..."
-msgstr ""
+msgstr "Cargando lista de grupos desde la cahé..."
 
 #: newsrc.c:884
 msgid "No news server defined!"
-msgstr ""
+msgstr "¡NO hay servidor de noticias definido!"
 
 #: newsrc.c:900
 #, c-format
 msgid "%s is an invalid news server specification!"
-msgstr ""
+msgstr "¡%s es una especificación de servidor de noticias inválida!"
 
 #: nntp.c:67 nntp.c:595 pop.c:934 pop_lib.c:378
 msgid "Server closed connection!"
@@ -3868,7 +3869,7 @@ msgstr "¡El servidor cerró la conneción!"
 
 #: nntp.c:166
 msgid "Server doesn't support reader mode."
-msgstr ""
+msgstr "El servidor no soporta modo lectura."
 
 #: nntp.c:583
 #, fuzzy, c-format
@@ -3907,22 +3908,22 @@ msgstr "Consiguiendo la lista de mensajes..."
 #: nntp.c:1443
 #, c-format
 msgid "%s is an invalid newsgroup specification!"
-msgstr ""
+msgstr "¡%s es una especificación de grupo de noticias inválida!"
 
 #: nntp.c:1461
 #, c-format
 msgid "Newsgroup %s not found on the server."
-msgstr ""
+msgstr "Grupo de noticias %s no encontrado en el servidor."
 
 #: nntp.c:1483
 #, c-format
 msgid "Newsgroup %s has been removed from the server."
-msgstr ""
+msgstr "El grupo de noticias %s ha sido eliminado del servidor."
 
 #: nntp.c:1639
 #, c-format
 msgid "Article %d not found on the server."
-msgstr ""
+msgstr "Artículo %d no encontrado en el servidor."
 
 #: nntp.c:1725 nntp.c:1754
 #, fuzzy, c-format
@@ -4113,7 +4114,7 @@ msgstr ""
 
 #: pgp.c:860
 msgid "Internal error.  Please submit a bug report."
-msgstr ""
+msgstr "Error interno. Por favor, envíe un informe del fallo."
 
 #: pgp.c:921
 msgid ""
@@ -4277,7 +4278,7 @@ msgstr "El índice de mensajes es incorrecto. Intente reabrir el buzón."
 #: pop.c:411 pop.c:808
 #, c-format
 msgid "%s is an invalid POP path"
-msgstr ""
+msgstr "%s es una ruta POP inválida"
 
 #: pop.c:455
 msgid "Fetching list of messages..."
@@ -4324,7 +4325,7 @@ msgstr "Verificando autentidad (SASL)..."
 
 #: pop_auth.c:215
 msgid "POP timestamp is invalid!"
-msgstr ""
+msgstr "¡Marca de tiempo POP inválida!"
 
 #: pop_auth.c:220
 msgid "Authenticating (APOP)..."
@@ -4745,7 +4746,7 @@ msgstr "editar la codificación del archivo adjunto"
 
 #: send.c:1911
 msgid "Message contains text matching \"$attach_keyword\". Not sending."
-msgstr ""
+msgstr "El mensaje contiene texto que coincide con \"$attach_keyword\". No se envía."
 
 #: send.c:1975 smtp.c:188
 msgid "Sending message..."
@@ -4766,7 +4767,7 @@ msgstr "Enviando en un proceso en segundo plano."
 
 #: send.c:2126
 msgid "Article posted."
-msgstr ""
+msgstr "Artículo enviado."
 
 #: send.c:2126 send.c:2128
 msgid "Mail sent."
@@ -4793,7 +4794,7 @@ msgstr "No se pudo abrir %s"
 
 #: sendlib.c:2431
 msgid "$sendmail must be set in order to send mail."
-msgstr ""
+msgstr "$sendmail debe ser definido para mandar emails."
 
 #: sendlib.c:2530
 #, c-format
@@ -4807,7 +4808,7 @@ msgstr "Salida del proceso de repartición de correo"
 #: sendlib.c:2715
 #, c-format
 msgid "Bad IDN %s while preparing resent-from."
-msgstr ""
+msgstr "IDN %s inválido mientras se preparaba resent-from."
 
 #: signal.c:43
 #, c-format
@@ -4878,7 +4879,7 @@ msgstr "Entre keyID para %s: "
 #: smime.c:909
 #, c-format
 msgid "No (valid) certificate found for %s."
-msgstr ""
+msgstr "No se ha encontrado ningún certificado (válido) para %s."
 
 #: smime.c:962 smime.c:992 smime.c:1059 smime.c:1103 smime.c:1168 smime.c:1243
 #, fuzzy
@@ -4902,11 +4903,11 @@ msgstr "(ningún buzón)"
 
 #: smime.c:1467 smime.c:1624
 msgid "No output from OpenSSL..."
-msgstr ""
+msgstr "Sin respuesta de OpenSSL..."
 
 #: smime.c:1534
 msgid "Can't sign: No key specified. Use Sign As."
-msgstr ""
+msgstr "No se puede firmar: NO se ha especificado una clave. Utilice \"Firmar Como\"."
 
 #: smime.c:1586
 #, fuzzy
@@ -4980,9 +4981,8 @@ msgstr "¿co(d)ificar, f(i)rmar (c)omo, amb(o)s o ca(n)celar? "
 #. L10N: S/MIME options (opportunistic encryption is off)
 #. The 'f' is undocumented. Please DO NOT translate it.
 #: smime.c:2127
-#, fuzzy
 msgid "eswabfco"
-msgstr "dicon"
+msgstr ""
 
 #. L10N: S/MIME options
 #: smime.c:2136
@@ -4993,9 +4993,8 @@ msgstr "¿co(d)ificar, f(i)rmar (c)omo, amb(o)s o ca(n)celar? "
 #. L10N: S/MIME options
 #. The 'f' is undocumented. Please DO NOT translate it.
 #: smime.c:2139
-#, fuzzy
 msgid "eswabfc"
-msgstr "dicon"
+msgstr ""
 
 #: smime.c:2160
 msgid "Choose algorithm family: 1: DES, 2: RC2, 3: AES, or (c)lear? "
@@ -5045,15 +5044,15 @@ msgstr ""
 
 #: smtp.c:356
 msgid "SMTP session failed: read error"
-msgstr ""
+msgstr "Sesión SMTP fallida: error de lectura"
 
 #: smtp.c:358
 msgid "SMTP session failed: write error"
-msgstr ""
+msgstr "Sesión SMTP fallida: error de escritura"
 
 #: smtp.c:360
 msgid "Invalid server response"
-msgstr ""
+msgstr "Respuesta del servidor inválida"
 
 #: smtp.c:383
 #, fuzzy, c-format
@@ -5062,7 +5061,7 @@ msgstr "Mes inválido: %s"
 
 #: smtp.c:493
 msgid "SMTP server does not support authentication"
-msgstr ""
+msgstr "El servidor SMTP no soporta autentificación"
 
 #: smtp.c:501
 #, fuzzy
@@ -5121,6 +5120,19 @@ msgid ""
 "Many others not mentioned here contributed code, fixes,\n"
 "and suggestions.\n"
 msgstr ""
+"Copyright (C) 1996-2016 Michael R. Elkins <me@mutt.org>\n"
+"Copyright (C) 1996-2002 Brandon Long <blong@fiction.net>\n"
+"Copyright (C) 1997-2009 Thomas Roessler <roessler@does-not-exist.org>\n"
+"Copyright (C) 1998-2005 Werner Koch <wk@isil.d.shuttle.de>\n"
+"Copyright (C) 1999-2014 Brendan Cully <brendan@kublai.com>\n"
+"Copyright (C) 1999-2002 Tommi Komulainen <Tommi.Komulainen@iki.fi>\n"
+"Copyright (C) 2000-2004 Edmund Grimley Evans <edmundo@rano.org>\n"
+"Copyright (C) 2006-2009 Rocco Rutte <pdmef@gmx.net>\n"
+"Copyright (C) 2014-2016 Kevin J. McCarthy <kevin@8t8.us>\n"
+"Copyright (C) 2015-2016 Richard Russon <rich@flatcap.org>\n"
+"\n"
+"Muchos otros que no son mencionados aquí han contribuido con\n"
+"código, parches y sugerencias.\n"
 
 #: version.c:70
 msgid ""
@@ -5177,7 +5189,7 @@ msgstr "operación nula"
 
 #: ../keymap_alldefs.h:6
 msgid "end of conditional execution (noop)"
-msgstr ""
+msgstr "fin de ejecución condicional (noop)"
 
 #: ../keymap_alldefs.h:7
 msgid "force viewing of attachment using mailcap"
@@ -5201,7 +5213,7 @@ msgstr "reenviar el mensaje a otro usuario"
 
 #: ../keymap_alldefs.h:12
 msgid "swap the current folder position with $folder if it exists"
-msgstr ""
+msgstr "intercambiar la posición de la carpeta actual con $folder si existe"
 
 #: ../keymap_alldefs.h:13
 msgid "select a new file in this directory"
@@ -5236,7 +5248,7 @@ msgstr "Ningún buzón con correo nuevo."
 
 #: ../keymap_alldefs.h:20
 msgid "mark all articles in newsgroup as read"
-msgstr ""
+msgstr "marcar todos los artículos del grupo de noticias como leídos"
 
 #: ../keymap_alldefs.h:21
 msgid "change directories"
@@ -5447,7 +5459,7 @@ msgstr "mostrar el mensaje"
 
 #: ../keymap_alldefs.h:71
 msgid "add, change, or delete a message's label"
-msgstr ""
+msgstr "añadir, cambiar o borrar la etiqueta de un mensaje"
 
 #: ../keymap_alldefs.h:72
 msgid "edit the raw message"
@@ -5573,7 +5585,7 @@ msgstr "¿Responder a %s%s?"
 
 #: ../keymap_alldefs.h:102
 msgid "forward to newsgroup"
-msgstr ""
+msgstr "reenviar a grupo de noticias"
 
 #: ../keymap_alldefs.h:103
 msgid "forward a message with comments"
@@ -5628,7 +5640,7 @@ msgstr "responder a la lista de correo"
 
 #: ../keymap_alldefs.h:115
 msgid "load list of all newsgroups from NNTP server"
-msgstr ""
+msgstr "cargar lista de todos los grupos desde un servidor NNTP"
 
 #: ../keymap_alldefs.h:116
 msgid "execute a macro"
@@ -5640,7 +5652,7 @@ msgstr "escribir un mensaje nuevo"
 
 #: ../keymap_alldefs.h:118
 msgid "break the thread in two"
-msgstr ""
+msgstr "romper el hilo en dos"
 
 #: ../keymap_alldefs.h:119
 msgid "open a different folder"
@@ -5674,7 +5686,7 @@ msgstr "forzar el obtener correo de un servidor IMAP"
 
 #: ../keymap_alldefs.h:126
 msgid "logout from all IMAP servers"
-msgstr ""
+msgstr "desconectarse de todos los servidores IMAP"
 
 #: ../keymap_alldefs.h:127
 msgid "retrieve mail from POP server"
@@ -5783,7 +5795,7 @@ msgstr "marcar mensajes que coincidan con un patrón"
 
 #: ../keymap_alldefs.h:152
 msgid "delete from mutt, don't touch on disk"
-msgstr ""
+msgstr "borrar de mutt, no tocar en el disco"
 
 #: ../keymap_alldefs.h:153
 msgid "undelete messages matching a pattern"
@@ -5857,11 +5869,11 @@ msgstr "imprimir la entrada actual"
 
 #: ../keymap_alldefs.h:170
 msgid "really delete the current entry, bypassing the trash folder"
-msgstr ""
+msgstr "borrar la entrada actual, sin pasar por la papelera de reciclaje"
 
 #: ../keymap_alldefs.h:171
 msgid "really delete the current thread, bypassing the trash folder"
-msgstr ""
+msgstr "borrar el hilo actual, sin pasar por la papelera de reciclaje"
 
 #: ../keymap_alldefs.h:172
 msgid "query external program for addresses"
@@ -6084,7 +6096,7 @@ msgstr "cambiar entre ver buzones o todos los archivos al navegar"
 
 #: ../keymap_alldefs.h:223
 msgid "make the sidebar (in)visible"
-msgstr ""
+msgstr "hacer la barra lateral (in)visible"
 
 #: ../keymap_alldefs.h:224
 #, fuzzy
@@ -6106,7 +6118,7 @@ msgstr "Está en el primer mensaje."
 
 #: ../keymap_alldefs.h:228
 msgid "read entire thread of the current message"
-msgstr ""
+msgstr "leer el hilo entero del presente mensaje"
 
 #: ../keymap_alldefs.h:229
 msgid "attach a PGP public key"
