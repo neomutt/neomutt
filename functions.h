@@ -275,6 +275,9 @@ const struct binding_t OpPager[] = { /* map: pager */
   { "exit",		OP_EXIT,			"q" },
   { "reply",		OP_REPLY,			"r" },
   { "recall-message",	OP_RECALL_MESSAGE,		"R" },
+#ifdef USE_NNTP
+  { "reconstruct-thread",	OP_RECONSTRUCT_THREAD,			NULL },
+#endif
   { "read-thread",	OP_MAIN_READ_THREAD,		"\022" },
   { "read-subthread",	OP_MAIN_READ_SUBTHREAD,		"\033r" },
   { "resend-message",	OP_RESEND,			"\033e" },
