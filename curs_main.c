@@ -1269,80 +1269,80 @@ int mutt_index_menu (void)
 	CHECK_ATTACH;
 	if (Context->magic == MUTT_NNTP)
 	{
-	  int oldmsgcount = Context->msgcount;
-	  int oldindex = CURHDR->index;
-	  int rc = 0;
+    int oldmsgcount = Context->msgcount;
+    int oldindex = CURHDR->index;
+    int rc = 0;
 
-	  if (!CURHDR->env->message_id)
-	  {
-	    mutt_error _("No Message-Id. Unable to perform operation.");
-	    break;
-	  }
+    if (!CURHDR->env->message_id)
+    {
+      mutt_error _("No Message-Id. Unable to perform operation.");
+      break;
+    }
 
-	  mutt_message _("Fetching message headers...");
-	  if (!Context->id_hash)
-	    Context->id_hash = mutt_make_id_hash (Context);
-	  strfcpy (buf, CURHDR->env->message_id, sizeof (buf));
+    mutt_message _("Fetching message headers...");
+    if (!Context->id_hash)
+      Context->id_hash = mutt_make_id_hash (Context);
+    strfcpy (buf, CURHDR->env->message_id, sizeof (buf));
 
-	  /* trying to find msgid of the root message */
-	  if (op == OP_RECONSTRUCT_THREAD)
-	  {
-	    LIST *ref = CURHDR->env->references;
-	    while (ref)
-	    {
-	      if (hash_find (Context->id_hash, ref->data) == NULL)
-	      {
-		rc = nntp_check_msgid (Context, ref->data);
-		if (rc < 0)
-		  break;
-	      }
+    /* trying to find msgid of the root message */
+    if (op == OP_RECONSTRUCT_THREAD)
+    {
+      LIST *ref = CURHDR->env->references;
+      while (ref)
+      {
+        if (hash_find (Context->id_hash, ref->data) == NULL)
+        {
+          rc = nntp_check_msgid (Context, ref->data);
+          if (rc < 0)
+            break;
+        }
 
-	      /* the last msgid in References is the root message */
-	      if (!ref->next)
-		strfcpy (buf, ref->data, sizeof (buf));
-	      ref = ref->next;
-	    }
-	  }
+        /* the last msgid in References is the root message */
+        if (!ref->next)
+          strfcpy (buf, ref->data, sizeof (buf));
+        ref = ref->next;
+      }
+    }
 
-	  /* fetching all child messages */
-	  if (rc >= 0)
-	    rc = nntp_check_children (Context, buf);
+    /* fetching all child messages */
+    if (rc >= 0)
+      rc = nntp_check_children (Context, buf);
 
-	  /* at least one message has been loaded */
-	  if (Context->msgcount > oldmsgcount)
-	  {
-	    HEADER *hdr;
-	    int i, quiet = Context->quiet;
+    /* at least one message has been loaded */
+    if (Context->msgcount > oldmsgcount)
+    {
+      HEADER *hdr;
+      int i, quiet = Context->quiet;
 
-	    if (rc < 0)
-	      Context->quiet = 1;
-	    mutt_sort_headers (Context, (op == OP_RECONSTRUCT_THREAD));
-	    Context->quiet = quiet;
+      if (rc < 0)
+        Context->quiet = 1;
+      mutt_sort_headers (Context, (op == OP_RECONSTRUCT_THREAD));
+      Context->quiet = quiet;
 
-	    /* if the root message was retrieved, move to it */
-	    hdr = hash_find (Context->id_hash, buf);
-	    if (hdr)
-	      menu->current = hdr->virtual;
+      /* if the root message was retrieved, move to it */
+      hdr = hash_find (Context->id_hash, buf);
+      if (hdr)
+        menu->current = hdr->virtual;
 
-	    /* try to restore old position */
-	    else
-	    {
-	      for (i = 0; i < Context->msgcount; i++)
-	      {
-		if (Context->hdrs[i]->index == oldindex)
-		{
-		  menu->current = Context->hdrs[i]->virtual;
-		  /* as an added courtesy, recenter the menu
-		   * with the current entry at the middle of the screen */
-		  menu_check_recenter (menu);
-		  menu_current_middle (menu);
-		}
-	      }
-	    }
-	    menu->redraw = REDRAW_FULL;
-	  }
-	  else if (rc >= 0)
-	    mutt_error _("No deleted messages found in the thread.");
+      /* try to restore old position */
+      else
+      {
+        for (i = 0; i < Context->msgcount; i++)
+        {
+          if (Context->hdrs[i]->index == oldindex)
+          {
+            menu->current = Context->hdrs[i]->virtual;
+            /* as an added courtesy, recenter the menu
+             * with the current entry at the middle of the screen */
+            menu_check_recenter (menu);
+            menu_current_middle (menu);
+          }
+        }
+      }
+      menu->redraw = REDRAW_FULL;
+    }
+    else if (rc >= 0)
+      mutt_error _("No deleted messages found in the thread.");
 	}
 	break;
 #endif
