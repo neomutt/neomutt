@@ -1311,6 +1311,7 @@ int mutt_index_menu (void)
 	  /* at least one message has been loaded */
 	  if (Context->msgcount > oldmsgcount)
 	  {
+	    HEADER *oldcur = CURHDR;
 	    HEADER *hdr;
 	    int i, quiet = Context->quiet;
 
@@ -1318,6 +1319,16 @@ int mutt_index_menu (void)
 	      Context->quiet = 1;
 	    mutt_sort_headers (Context, (op == OP_RECONSTRUCT_THREAD));
 	    Context->quiet = quiet;
+
+	    /* Similar to OP_MAIN_ENTIRE_THREAD, keep displaying the old message, but
+	       update the index */
+	    if (menu->menu == MENU_PAGER)
+	    {
+	      menu->current = oldcur->virtual;
+	      menu->redraw = REDRAW_STATUS | REDRAW_INDEX;
+	      op = OP_DISPLAY_MESSAGE;
+	      continue;
+	    }
 
 	    /* if the root message was retrieved, move to it */
 	    hdr = hash_find (Context->id_hash, buf);
@@ -1342,7 +1353,16 @@ int mutt_index_menu (void)
 	    menu->redraw = REDRAW_FULL;
 	  }
 	  else if (rc >= 0)
+	  {
 	    mutt_error _("No deleted messages found in the thread.");
+	    /* Similar to OP_MAIN_ENTIRE_THREAD, keep displaying the old message, but
+	       update the index */
+	    if (menu->menu == MENU_PAGER)
+	    {
+	      op = OP_DISPLAY_MESSAGE;
+	      continue;
+	    }
+	  }
 	}
 	break;
 #endif
