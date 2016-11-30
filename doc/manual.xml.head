@@ -11517,19 +11517,21 @@ set new_mail_command = &quot;&quot;
     <title>Introduction</title>
 
     <para>Reading news via NNTP</para>
+
     <para>
-    If compiled with <emphasis>--enable-nntp</emphasis> option, Mutt can
-    read news from news server via NNTP.  You can open a newsgroup with
-    function ``change-newsgroup'' (default: ``i'').  Default news server
-    can be obtained from <literal>$NNTPSERVER</literal> environment
-    variable or from <literal>/etc/nntpserver</literal> file.  Like other
-    news readers, info about subscribed newsgroups is saved in file by
-    <link linkend="newsrc">$newsrc</link> variable.  The variable <link
-    linkend="news-cache-dir">$news_cache_dir</link> can be used to point
-    to a directory.  Mutt will create a hierarchy of subdirectories named
-    like the account and newsgroup the cache is for.  Also the hierarchy
-    is used to store header cache if Mutt was compiled with <link
-    linkend="header-caching">header cache</link> support.
+		If Mutt is compiled with the <emphasis>--enable-nntp</emphasis> option, it can read from a news server using NNTP.
+    </para>
+
+    <para>
+    The default news server can be obtained from the <literal>$NNTPSERVER</literal> environment variable or from the <literal>/etc/nntpserver</literal> file.
+    Like in other news readers, information about the subscribed newsgroups is saved in the file specified by the <link linkend="newsrc">$newsrc</link> variable.
+    You can open a newsgroup with the function <literal>&lt;change-newsgroup&gt;</literal>
+    </para>
+
+    <para>
+    The variable <link linkend="news-cache-dir">$news_cache_dir</link> can be used to point to a directory.
+    Mutt will create a hierarchy of subdirectories named like the account and newsgroup the cache is for.
+    The hierarchy is also used to store header cache if Mutt was compiled with <link linkend="header-caching">header cache</link> support.
     </para>
   </sect2>
 
