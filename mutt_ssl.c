@@ -1029,7 +1029,7 @@ static int interactive_check_cert (X509 *cert, int idx, int len)
   int done, row, i;
   FILE *fp;
 
-  menu->max = 23;
+  menu->max = mutt_array_size (part) * 2 + 9;
   menu->dialog = (char **) safe_calloc (1, menu->max * sizeof (char *));
   for (i = 0; i < menu->max; i++)
     menu->dialog[i] = (char *) safe_calloc (1, SHORT_STRING * sizeof (char));
@@ -1038,7 +1038,7 @@ static int interactive_check_cert (X509 *cert, int idx, int len)
   strfcpy (menu->dialog[row], _("This certificate belongs to:"), SHORT_STRING);
   row++;
   x509_subject = X509_get_subject_name (cert);
-  for (i = 0; i < 7; i++)
+  for (i = 0; i < mutt_array_size (part); i++)
     snprintf (menu->dialog[row++], SHORT_STRING, "   %s",
               x509_get_part (x509_subject, part[i]));
 
@@ -1046,7 +1046,7 @@ static int interactive_check_cert (X509 *cert, int idx, int len)
   strfcpy (menu->dialog[row], _("This certificate was issued by:"), SHORT_STRING);
   row++;
   x509_issuer = X509_get_issuer_name (cert);
-  for (i = 0; i < 7; i++)
+  for (i = 0; i < mutt_array_size (part); i++)
     snprintf (menu->dialog[row++], SHORT_STRING, "   %s",
               x509_get_part (x509_issuer, part[i]));
 
