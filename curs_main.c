@@ -831,7 +831,14 @@ int mutt_index_menu (void)
 	buf[0] = 0;
 	if (mutt_get_field (_("Jump to message: "), buf, sizeof (buf), 0) != 0
 	    || !buf[0])
+        {
+          if (menu->menu == MENU_PAGER)
+          {
+            op = OP_DISPLAY_MESSAGE;
+            continue;
+          }
 	  break;
+        }
 
 	if (mutt_atoi (buf, &i) < 0)
 	{
