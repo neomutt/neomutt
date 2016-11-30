@@ -9380,12 +9380,12 @@ bind index,pager @ compose-to-sender
               to create a new compressed file</para></listitem>
         </itemizedlist>
 
-	<note>
-	  <para>
-	    The <literal>close-hook</literal> can also include extra options,
-	    e.g. compression level: <literal>--best</literal>
-	  </para>
-	</note>
+        <note>
+          <para>
+            The <literal>close-hook</literal> can also include extra options,
+            e.g. compression level: <literal>--best</literal>
+          </para>
+        </note>
       </sect4>
     </sect3>
 
@@ -9441,12 +9441,12 @@ bind index,pager @ compose-to-sender
               to append to an existing compressed file</para></listitem>
         </itemizedlist>
 
-	<note>
-	  <para>
-	    The <literal>append-hook</literal> can also include extra options,
-	    e.g. compression level: <literal>--best</literal>
-	  </para>
-	</note>
+        <note>
+          <para>
+            The <literal>append-hook</literal> can also include extra options,
+            e.g. compression level: <literal>--best</literal>
+          </para>
+        </note>
       </sect4>
     </sect3>
 
@@ -11519,7 +11519,7 @@ set new_mail_command = &quot;&quot;
     <para>Reading news via NNTP</para>
 
     <para>
-		If Mutt is compiled with the <emphasis>--enable-nntp</emphasis> option, it can read from a news server using NNTP.
+    If Mutt is compiled with the <emphasis>--enable-nntp</emphasis> option, it can read from a news server using NNTP.
     </para>
 
     <para>
