@@ -558,24 +558,13 @@ static void ssl_dprint_err_stack (void)
 }
 
 
-static char *x509_get_part (char *line, const char *ndx)
+static char *x509_get_part (X509_NAME *name, int nid)
 {
   static char ret[SHORT_STRING];
-  char *c, *c2;
 
-  strfcpy (ret, _("Unknown"), sizeof (ret));
-
-  c = strstr (line, ndx);
-  if (c)
-  {
-    c += strlen (ndx);
-    c2 = strchr (c, '/');
-    if (c2)
-      *c2 = '\0';
-    strfcpy (ret, c, sizeof (ret));
-    if (c2)
-      *c2 = '/';
-  }
+  if (!name ||
+      X509_NAME_get_text_by_NID (name, nid, ret, sizeof (ret)) < 0)
+    strfcpy (ret, _("Unknown"), sizeof (ret));
 
   return ret;
 }
@@ -1011,17 +1000,24 @@ static int ssl_check_certificate (CONNECTION *conn, sslsockdata *data)
 
 static int interactive_check_cert (X509 *cert, int idx, int len)
 {
-  static const char * const part[] =
-    {"/CN=", "/Email=", "/O=", "/OU=", "/L=", "/ST=", "/C="};
+  static const int part[] =
+    { NID_commonName,             /* CN */
+      NID_pkcs9_emailAddress,     /* Email */
+      NID_organizationName,       /* O */
+      NID_organizationalUnitName, /* OU */
+      NID_localityName,           /* L */
+      NID_stateOrProvinceName,    /* ST */
+      NID_countryName             /* C */ };
+  X509_NAME *x509_subject;
+  X509_NAME *x509_issuer;
   char helpstr[LONG_STRING];
   char buf[STRING];
   char title[STRING];
   MUTTMENU *menu = mutt_new_menu (MENU_GENERIC);
   int done, row, i;
   FILE *fp;
-  char *name = NULL, *c;
 
-  menu->max = 19;
+  menu->max = 23;
   menu->dialog = (char **) safe_calloc (1, menu->max * sizeof (char *));
   for (i = 0; i < menu->max; i++)
     menu->dialog[i] = (char *) safe_calloc (1, SHORT_STRING * sizeof (char));
@@ -1029,25 +1025,18 @@ static int interactive_check_cert (X509 *cert, int idx, int len)
   row = 0;
   strfcpy (menu->dialog[row], _("This certificate belongs to:"), SHORT_STRING);
   row++;
-  name = X509_NAME_oneline (X509_get_subject_name (cert),
-			    buf, sizeof (buf));
-
-  for (i = 0; i < 5; i++)
-  {
-    c = x509_get_part (name, part[i]);
-    snprintf (menu->dialog[row++], SHORT_STRING, "   %s", c);
-  }
+  x509_subject = X509_get_subject_name (cert);
+  for (i = 0; i < 7; i++)
+    snprintf (menu->dialog[row++], SHORT_STRING, "   %s",
+              x509_get_part (x509_subject, part[i]));
 
   row++;
   strfcpy (menu->dialog[row], _("This certificate was issued by:"), SHORT_STRING);
   row++;
-  name = X509_NAME_oneline (X509_get_issuer_name (cert),
-			    buf, sizeof (buf));
-  for (i = 0; i < 5; i++)
-  {
-    c = x509_get_part (name, part[i]);
-    snprintf (menu->dialog[row++], SHORT_STRING, "   %s", c);
-  }
+  x509_issuer = X509_get_issuer_name (cert);
+  for (i = 0; i < 7; i++)
+    snprintf (menu->dialog[row++], SHORT_STRING, "   %s",
+              x509_get_part (x509_issuer, part[i]));
 
   row++;
   snprintf (menu->dialog[row++], SHORT_STRING, _("This certificate is valid"));
