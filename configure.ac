@@ -128,11 +128,122 @@ AC_DEFINE_UNQUOTED(SENDMAIL,"$ac_cv_path_SENDMAIL", [Where to find sendmail on y
 
 OPS='$(srcdir)/OPS'
 
-AC_MSG_CHECKING([whether to build with GPGME support])
-AC_ARG_ENABLE(gpgme, AS_HELP_STRING([--enable-gpgme],[Enable GPGME support]), enable_gpgme=$enableval, enable_gpgme=no)
 
-AS_IF([test x$enable_gpgme = "xyes"], [
-   AC_MSG_RESULT([yes])
+dnl Define the option to enable everything before any feature / option is declared
+dnl This is important because it allows us to set a default value for the options
+dnl that can later be overridden by the user's command line options. Remember, the
+dnl user is always the most powerful
+
+dnl When adding new features / options, **PLEASE** do not use the enable_* or
+dnl with_* variables. They are also used by autoconf internally and will mangle
+dnl with our logic. Also, remember to initialize the variable in both the true and
+dnl the else case, otherwise it will appear blank in the configure summary
+AC_ARG_ENABLE(everything,
+			  AC_HELP_STRING([--enable-everything], [Enable all Options and Features]),
+			  [enable_everything=$enableval], [enable_everything=no])
+
+
+AS_IF([test x$enable_everything = "xyes"], [
+	use_gpgme="yes"
+	use_pgp="yes"
+	use_smime="yes"
+	use_sidebar="yes"
+	use_compressed="yes"
+	use_notmuch="yes"
+	use_pop="yes"
+	use_imap="yes"
+	use_nntp="yes"
+	use_smtp="yes"
+	hcache_tokyocabinet="yes"
+	hcache_kyotocabinet="yes"
+	hcache_bdb="yes"
+	hcache_gdbm="yes"
+	hcache_qdbm="yes"
+	hcache_lmdb="yes"
+], [
+	use_gpgme="no"
+	use_pgp="no"
+	use_smime="no"
+	use_sidebar="no"
+	use_compressed="no"
+	use_notmuch="no"
+	use_pop="no"
+	use_imap="no"
+	use_nntp="no"
+	use_smtp="no"
+])
+
+
+dnl : A note about the organization of this file
+dnl : =========================================================================
+dnl : All features and options must be defined below the line marked as their
+dnl : beginning. However only the configure option definitions should be there.
+dnl : These definitions should do nothing more than set a variable indicating
+dnl : whether the feature / option is enabled or disabled. All checks for
+dnl : libraries and other changes should be made *AFTER* the
+dnl : --enable-everything option is defined. There will be a line stating it is
+dnl : safe to start running checks after it. Do *NOT* violate this rule, or you
+dnl : risk incurring the wrath of Khan.
+
+dnl : Also, please remember to use the following convention:
+dnl : When a feature defaults to enabled, define both the cases in
+dnl : AC_ARG_ENABLE. However, when a feature defaults to disabled, do *NOT*
+dnl : write the `action-if-not-given` case. Explicitly disabling it has no
+dnl : benefits, but will cause the --enable-everything options to not work
+
+dnl == All Mutt Features and Options must be "defined" below this line ==
+
+AC_ARG_ENABLE(gpgme,
+			  AS_HELP_STRING([--enable-gpgme], [Enable GPGME support]),
+			  [use_gpgme=$enableval])
+
+AC_ARG_ENABLE(pgp,
+			  AS_HELP_STRING([--disable-pgp], [Disable PGP support]),
+			  [use_pgp=$enableval], [use_pgp=yes])
+
+AC_ARG_ENABLE(smime,
+			  AS_HELP_STRING([--disable-smime], [Disable SMIME support]),
+			  [use_smime=$enableval], [use_smime=yes])
+
+AC_ARG_ENABLE(sidebar,
+			  AC_HELP_STRING([--enable-sidebar], [Enable Sidebar support]),
+			  [use_sidebar=$enableval])
+
+AC_ARG_ENABLE(compressed,
+			  AC_HELP_STRING([--enable-compressed], [Enable compressed folders support]),
+              [use_compressed=$enableval])
+
+AC_ARG_ENABLE(notmuch,
+			  AC_HELP_STRING([--enable-notmuch], [Enable NOTMUCH support]),
+			  [use_notmuch=$enableval])
+
+AC_ARG_ENABLE(pop,
+			  AS_HELP_STRING([--enable-pop], [Enable POP3 support]),
+			  [use_pop=$enableval])
+
+AC_ARG_ENABLE(imap,
+			  AS_HELP_STRING([--enable-imap], [Enable IMAP support]),
+			  [use_imap=$enableval])
+
+AC_ARG_ENABLE(nntp,
+			  AC_HELP_STRING([--enable-nntp], [Enable NNTP support]),
+			  [use_nntp=$enableval])
+
+AC_ARG_ENABLE(smtp,
+			  AS_HELP_STRING([--enable-smtp], [include internal SMTP relay support]),
+			  [use_smtp=$enableval])
+
+AC_ARG_WITH(mixmaster,
+			AS_HELP_STRING([--with-mixmaster@<:@=PATH@:>@], [Include Mixmaster support]),
+			[alongwith_mixmaster=$withval], [alongwith_mixmaster=no])
+
+dnl == End of Features and Options Definitions ==
+
+
+dnl == Declare all the checks and code for options / features below this line ==
+
+dnl --enable-gpgme
+AS_IF([test x$use_gpgme = "xyes"], [
    AM_PATH_GPGME(1.0.0, AC_DEFINE(CRYPT_BACKEND_GPGME, 1,
 		 [Defined, if GPGME support is enabled]),
 		 [gpgme_found=no])
@@ -141,9 +252,6 @@ AS_IF([test x$enable_gpgme = "xyes"], [
    ], [
       AM_PATH_GPGME(1.1.1, AC_DEFINE(HAVE_GPGME_PKA_TRUST, 1,
 				  [Define if GPGME supports PKA]))
-      #needed to get GPGME_LIBS and al correctly
-      AM_PATH_GPGME(1.0.0, AC_DEFINE(CRYPT_BACKEND_GPGME, 1,
-                    [Define if you use GPGME to support OpenPGP]))
       dnl AC_CHECK_FUNCS([gpgme_op_export_keys])
       saved_LIBS="$LIBS"
       LIBS="$LIBS $GPGME_LIBS"
@@ -151,43 +259,38 @@ AS_IF([test x$enable_gpgme = "xyes"], [
       LIBS="$saved_LIBS"
       MUTT_LIB_OBJECTS="$MUTT_LIB_OBJECTS crypt-gpgme.o crypt-mod-pgp-gpgme.o crypt-mod-smime-gpgme.o"
    ])
-], [
-   AC_MSG_RESULT([no])
 ])
 
-AC_ARG_ENABLE(pgp, AS_HELP_STRING([--disable-pgp],[Disable PGP support]), enable_pgp=$enableval, enable_pgp=yes)
-AS_IF([test x$enable_pgp != "xno"], [
+dnl --enable-pgp
+AS_IF([test x$use_pgp != "xno"], [
 	   AC_DEFINE(CRYPT_BACKEND_CLASSIC_PGP, 1, [Define if you want classic PGP Support.])
 	   PGPAUX_TARGET="pgpring\$(EXEEXT) pgpewrap\$(EXEEXT)"
 	   MUTT_LIB_OBJECTS="$MUTT_LIB_OBJECTS pgp.o pgpinvoke.o pgpkey.o pgplib.o gnupgparse.o pgpmicalg.o pgppacket.o crypt-mod-pgp-classic.o"
 ])
 
-AC_ARG_ENABLE(smime, AS_HELP_STRING([--disable-smime],[Disable SMIME support]), enable_smime=$enableval, enable_smime=yes)
-AS_IF([test x$enable_smime != "xno"], [
+dnl --enable-smime
+AS_IF([test x$use_smime != "xno"], [
        AC_DEFINE(CRYPT_BACKEND_CLASSIC_SMIME, 1, [Define if you want classic S/MIME support.])
        MUTT_LIB_OBJECTS="$MUTT_LIB_OBJECTS smime.o crypt-mod-smime-classic.o"
        SMIMEAUX_TARGET="smime_keys"
 ])
 
-AC_ARG_ENABLE(sidebar, AC_HELP_STRING([--enable-sidebar], [Enable Sidebar support]), enable_sidebar=$enableval, enable_sidebar=no)
-AS_IF([test x$enable_sidebar = "xyes"], [
+dnl --enable-sidebar
+AS_IF([test x$use_sidebar = "xyes"], [
 	   AC_DEFINE(USE_SIDEBAR, 1, [Define if you want support for the sidebar.])
 	   OPS="$OPS \$(srcdir)/OPS.SIDEBAR"
 	   MUTT_LIB_OBJECTS="$MUTT_LIB_OBJECTS sidebar.o"
 ])
 
-AC_ARG_ENABLE(compressed, AC_HELP_STRING([--enable-compressed], [Enable compressed folders support]),
-              enable_compressed=$enableval, enable_compressed=no
-)
-AS_IF([test x$enable_compressed = "xyes"], [
+dnl --enable-compressed
+AS_IF([test x$use_compressed = "xyes"], [
 	   AC_DEFINE(USE_COMPRESSED, 1, [Define to enable compressed folders support.])
 	   MUTT_LIB_OBJECTS="$MUTT_LIB_OBJECTS compress.o"
 ])
 AM_CONDITIONAL(BUILD_COMPRESS, test x$enable_compressed = xyes)
 
-dnl Clean up this code. Maybe also use pkg_config
-AC_ARG_ENABLE(notmuch, AC_HELP_STRING([--enable-notmuch], [Enable NOTMUCH support]), enable_notmuch=$enableval, enable_notmuch=no)
-AS_IF([test x$enable_notmuch = "xyes"], [
+dnl --enable-notmuch
+AS_IF([test x$use_notmuch = "xyes"], [
 		AC_CHECK_LIB(notmuch, notmuch_database_open,,
 			AC_MSG_ERROR([Unable to find Notmuch library]))
 		AC_DEFINE(USE_NOTMUCH,1,[ Define if you want support for the notmuch. ])
@@ -209,21 +312,14 @@ AS_IF([test x$enable_notmuch = "xyes"], [
 ])
 AM_CONDITIONAL(BUILD_NOTMUCH, test x$need_notmuch = xyes)
 
+dnl --with-mixmaster
+AS_IF([test "$alongwith_mixmaster" != "no"], [
+	   AS_IF([test -x "$alongwith_mixmaster"], [MIXMASTER="$alongwith_mixmaster"], [MIXMASTER="mixmaster"])
+	   OPS="$OPS \$(srcdir)/OPS.MIX"
+	   MUTT_LIB_OBJECTS="$MUTT_LIB_OBJECTS remailer.o"
+	   AC_DEFINE_UNQUOTED(MIXMASTER, "$MIXMASTER", [Where to find mixmaster on your system.])
+	  ])
 
-dnl TODO: Clean this up. Needs some work understanding and fixing the AC_ARG_WITH
-AC_ARG_WITH(mixmaster, AS_HELP_STRING([--with-mixmaster@<:@=PATH@:>@],[Include Mixmaster support]),
-  [if test "$withval" != no
-   then
-     if test -x "$withval"
-     then
-       MIXMASTER="$withval"
-     else
-       MIXMASTER="mixmaster"
-     fi
-     OPS="$OPS \$(srcdir)/OPS.MIX"
-     MUTT_LIB_OBJECTS="$MUTT_LIB_OBJECTS remailer.o"
-     AC_DEFINE_UNQUOTED(MIXMASTER,"$MIXMASTER", [Where to find mixmaster on your system.])
-   fi])
 
 # We now require all OPS
 OPS="$OPS \$(srcdir)/OPS.PGP \$(srcdir)/OPS.SMIME \$(srcdir)/OPS.CRYPT "
@@ -626,45 +722,40 @@ AC_CHECK_FUNC(gethostent, , AC_CHECK_LIB(nsl, gethostent))
 AC_CHECK_FUNC(setsockopt, , AC_CHECK_LIB(socket, setsockopt))
 AC_CHECK_FUNCS(getaddrinfo)
 
-AC_ARG_ENABLE(pop,  AS_HELP_STRING([--enable-pop],[Enable POP3 support]),
-[       if test x$enableval = xyes ; then
-                AC_DEFINE(USE_POP,1,[ Define if you want support for the POP3 protocol. ])
-                MUTT_LIB_OBJECTS="$MUTT_LIB_OBJECTS pop.o pop_lib.o pop_auth.o"
-                need_pop="yes"
-                need_socket="yes"
-                need_md5="yes"
-        fi
+AS_IF([test x$enable_pop = "xyes"], [
+	AC_DEFINE(USE_POP, 1, [Define if you want support for the POP3 protocol.])
+	MUTT_LIB_OBJECTS="$MUTT_LIB_OBJECTS pop.o pop_lib.o pop_auth.o"
+	need_pop="yes"
+	need_socket="yes"
+	need_md5="yes"
 ])
 
-AC_ARG_ENABLE(imap, AS_HELP_STRING([--enable-imap],[Enable IMAP support]),
-[       if test x$enableval = xyes ; then
-                AC_DEFINE(USE_IMAP,1,[ Define if you want support for the IMAP protocol. ])
-                LIBIMAP="-Limap -limap"
-                LIBIMAPDEPS="\$(top_srcdir)/imap/imap.h imap/libimap.a"
-                need_imap="yes"
-                need_socket="yes"
-                need_md5="yes"
-        fi
+AS_IF([test x$enable_imap = "xyes"], [
+	AC_DEFINE(USE_IMAP, 1, [Define if you want support for the IMAP protocol.])
+    LIBIMAP="-Limap -limap"
+    LIBIMAPDEPS="\$(top_srcdir)/imap/imap.h imap/libimap.a"
+    need_imap="yes"
+    need_socket="yes"
+    need_md5="yes"
 ])
 AM_CONDITIONAL(BUILD_IMAP, test x$need_imap = xyes)
 
-AC_ARG_ENABLE(nntp, AC_HELP_STRING([--enable-nntp],[Enable NNTP support]),
-[	if test x$enableval = xyes ; then
-		AC_DEFINE(USE_NNTP,1,[ Define if you want support for the NNTP protocol. ])
-		MUTT_LIB_OBJECTS="$MUTT_LIB_OBJECTS nntp.o newsrc.o"
-		need_nntp="yes"
-		need_socket="yes"
-	fi
+AS_IF([test x$enable_nntp = "xyes"], [
+	AC_DEFINE(USE_NNTP, 1, [Define if you want support for the NNTP protocol.])
+	MUTT_LIB_OBJECTS="$MUTT_LIB_OBJECTS nntp.o newsrc.o"
+	need_nntp="yes"
+	need_socket="yes"
 ])
 
-AC_ARG_ENABLE(smtp, AS_HELP_STRING([--enable-smtp],[include internal SMTP relay support]),
-	[if test $enableval = yes; then
-		AC_DEFINE(USE_SMTP, 1, [Include internal SMTP relay support])
-            	MUTT_LIB_OBJECTS="$MUTT_LIB_OBJECTS smtp.o"
-		need_socket="yes"
-	fi])
 
-if test x"$need_imap" = xyes -o x"$need_pop" = xyes -o x"$need_nntp" = xyes ; then
+AS_IF([test x$use_smtp = "xyes"], [
+	AC_DEFINE(USE_SMTP, 1, [Include internal SMTP relay support])
+	MUTT_LIB_OBJECTS="$MUTT_LIB_OBJECTS smtp.o"
+	need_socket="yes"
+])
+
+if test x"$need_imap" = xyes -o x"$need_pop" = xyes -o x"$need_nntp" = xyes ;
+then
   MUTT_LIB_OBJECTS="$MUTT_LIB_OBJECTS bcache.o"
 fi
 
@@ -909,37 +1000,43 @@ hcache_db_used=
 AC_ARG_WITH(gdbm,
     AS_HELP_STRING(
         [--with-gdbm@<:@=DIR@:>@],
-        [Use gdbm for the header cache]))
+        [Use gdbm for the header cache]),
+		[hcache_gdbm=$withval])
 AC_ARG_WITH(tokyocabinet,
     AS_HELP_STRING(
         [--with-tokyocabinet@<:@=DIR@:>@],
-        [Use tokyocabinet for the header cache]))
+        [Use tokyocabinet for the header cache]),
+		[hcache_tokyocabinet=$withval])
 AC_ARG_WITH(kyotocabinet,
     AS_HELP_STRING(
         [--with-kyotocabinet@<:@=DIR@:>@],
-        [Use kyotocabinet for the header cache]))
+        [Use kyotocabinet for the header cache]),
+		[hcache_kyotocabinet=$withval])
 AC_ARG_WITH(qdbm,
     AS_HELP_STRING(
         [--with-qdbm@<:@=DIR@:>@],
-        [Use qdbm for the header cache]))
+        [Use qdbm for the header cache]),
+		[hcache_qdbm=$withval])
 AC_ARG_WITH(bdb,
     AS_HELP_STRING(
         [--with-bdb@<:@=DIR@:>@],
-        [Use BerkeleyDB for the header cache]))
+        [Use BerkeleyDB for the header cache]),
+		[hcache_bdb=$withval])
 AC_ARG_WITH(lmdb,
     AS_HELP_STRING(
         [--with-lmdb@<:@=DIR@:>@],
-        [Use LMDB for the header cache]))
+        [Use LMDB for the header cache]),
+		[hcache_lmdb=$withval])
 
 dnl -- Tokyo Cabinet --
-if test -n "$with_tokyocabinet" && test "$with_tokyocabinet" != "no"
+if test -n "$hcache_tokyocabinet" && test "$hcache_tokyocabinet" != "no"
 then
   OLDCPPFLAGS="$CPPFLAGS"
   OLDLDFLAGS="$LDFLAGS"
-  if test "$with_tokyocabinet" != "yes"
+  if test "$hcache_tokyocabinet" != "yes"
   then
-    CPPFLAGS="$CPPFLAGS -I$with_tokyocabinet/include"
-    LDFLAGS="$LDFLAGS -L$with_tokyocabinet/lib"
+    CPPFLAGS="$CPPFLAGS -I$hcache_tokyocabinet/include"
+    LDFLAGS="$LDFLAGS -L$hcache_tokyocabinet/lib"
   fi
 
   AC_CHECK_HEADER(tcbdb.h,
@@ -956,14 +1053,14 @@ then
 fi
 
 dnl -- Kyoto Cabinet --
-if test -n "$with_kyotocabinet" && test "$with_kyotocabinet" != "no"
+if test -n "$hcache_kyotocabinet" && test "$hcache_kyotocabinet" != "no"
 then
   OLDCPPFLAGS="$CPPFLAGS"
   OLDLDFLAGS="$LDFLAGS"
-  if test "$with_kyotocabinet" != "yes"
+  if test "$hcache_kyotocabinet" != "yes"
   then
-    CPPFLAGS="$CPPFLAGS -I$with_kyotocabinet/include"
-    LDFLAGS="$LDFLAGS -L$with_kyotocabinet/lib"
+    CPPFLAGS="$CPPFLAGS -I$hcache_kyotocabinet/include"
+    LDFLAGS="$LDFLAGS -L$hcache_kyotocabinet/lib"
   fi
 
   AC_CHECK_HEADER(kclangc.h,
@@ -984,14 +1081,14 @@ dnl -- Make sure the GDBM block comes before the QDBM one. QDBM provides
 dnl -- the GDBM symbols in a compatibility layer (google for gdbm hovel).
 dnl -- By doing this, we make sure the symbols are resolved in GDBM's
 dnl -- library when both GDBM and QDBM are linked.
-if test -n "$with_gdbm" && test "$with_gdbm" != "no"
+if test -n "$hcache_gdbm" && test "$hcache_gdbm" != "no"
 then
   OLDCPPFLAGS="$CPPFLAGS"
   OLDLDFLAGS="$LDFLAGS"
-  if test "$with_gdbm" != "yes"
+  if test "$hcache_gdbm" != "yes"
   then
-    CPPFLAGS="$CPPFLAGS -I$with_gdbm/include"
-    LDFLAGS="$LDFLAGS -L$with_gdbm/lib"
+    CPPFLAGS="$CPPFLAGS -I$hcache_gdbm/include"
+    LDFLAGS="$LDFLAGS -L$hcache_gdbm/lib"
   fi
 
   AC_CHECK_HEADERS(gdbm.h,
@@ -1008,18 +1105,18 @@ then
 fi
 
 dnl -- QDBM --
-if test -n "$with_qdbm" && test "$with_qdbm" != "no"
+if test -n "$hcache_qdbm" && test "$hcache_qdbm" != "no"
 then
   OLDCPPFLAGS="$CPPFLAGS"
   OLDLDFLAGS="$LDFLAGS"
-  if test "$with_qdbm" != "yes"
+  if test "$hcache_qdbm" != "yes"
   then
-    if test -d $with_qdbm/include/qdbm; then
-      CPPFLAGS="$CPPFLAGS -I$with_qdbm/include/qdbm"
+    if test -d $hcache_qdbm/include/qdbm; then
+      CPPFLAGS="$CPPFLAGS -I$hcache_qdbm/include/qdbm"
     else
-      CPPFLAGS="$CPPFLAGS -I$with_qdbm/include"
+      CPPFLAGS="$CPPFLAGS -I$hcache_qdbm/include"
     fi
-    LDFLAGS="$LDFLAGS -L$with_qdbm/lib"
+    LDFLAGS="$LDFLAGS -L$hcache_qdbm/lib"
   else                                                                                                                                                      
     if test -d /usr/include/qdbm; then                                                                                                                     
         CPPFLAGS="$CPPFLAGS -I/usr/include/qdbm"                                                                                                             
@@ -1042,13 +1139,13 @@ fi
 
 dnl -- BDB --
 ac_bdb_prefix="$mutt_cv_prefix /opt /usr/local /usr"
-if test -n "$with_bdb" && test "$with_bdb" != "no"
+if test -n "$hcache_bdb" && test "$hcache_bdb" != "no"
 then
   OLDCPPFLAGS="$CPPFLAGS"
   OLDLDFLAGS="$LDFLAGS"
-  if test "$with_bdb" != "yes"
+  if test "$hcache_bdb" != "yes"
   then
-    ac_bdb_prefix="$with_bdb $mutt_cv_prefix"
+    ac_bdb_prefix="$hcache_bdb $mutt_cv_prefix"
   fi
   BDB_VERSIONS="db-5.3 db53 db-5 db5 db-4.8 db48 db-4 db4"
   for d in $ac_bdb_prefix; do
@@ -1092,14 +1189,14 @@ then
 fi
 
 dnl -- LMDB --
-if test -n "$with_lmdb" && test "$with_lmdb" != "no"
+if test -n "$hcache_lmdb" && test "$hcache_lmdb" != "no"
 then
   OLDCPPFLAGS="$CPPFLAGS"
   OLDLDFLAGS="$LDFLAGS"
-  if test "$with_lmdb" != "yes"
+  if test "$hcache_lmdb" != "yes"
   then
-    CPPFLAGS="$CPPFLAGS -I$with_lmdb/include"
-    LDFLAGS="$LDFLAGS -L$with_lmdb/lib"
+    CPPFLAGS="$CPPFLAGS -I$hcache_lmdb/include"
+    LDFLAGS="$LDFLAGS -L$hcache_lmdb/lib"
   fi
   AC_CHECK_HEADERS(lmdb.h,
   AC_CHECK_LIB(lmdb, mdb_env_create,
@@ -1457,11 +1554,16 @@ AC_MSG_NOTICE([Summary of build options:
   Libs:              ${LIBS}
   Mutt libs:         ${MUTTLIBS}
 
-  GPGME:             $enable_gpgme
-  PGP:               $enable_pgp
-  SMIME:             $enable_smime
-  Sidebar:           $enable_sidebar
-  Notmuch:           $enable_notmuch
-  Compressed Folder: $enable_compressed
+  GPGME:             $use_gpgme
+  PGP:               $use_pgp
+  SMIME:             $use_smime
+  Sidebar:           $use_sidebar
+  Notmuch:           $use_notmuch
+  Compressed Folder: $use_compressed
   Header Cache(s):   $hcache_db_used
+
+  POP3:              $use_pop
+  IMAP:              $use_imap
+  NNTP:              $use_nntp
+  SMTP:              $use_smtp
 ])
