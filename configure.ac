@@ -1118,6 +1118,7 @@ AM_CONDITIONAL(BUILD_HCACHE, test -n "$hcache_db_used")
 if test -n "$hcache_db_used"; then
   AC_DEFINE(USE_HCACHE, 1, [Enable header caching])
   MUTT_LIB_OBJECTS="$MUTT_LIB_OBJECTS hcache.o"
+  need_md5="yes"
 else
   # For outputting in the summary
   hcache_db_used="no"
