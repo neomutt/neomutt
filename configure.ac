@@ -128,11 +128,67 @@ AC_DEFINE_UNQUOTED(SENDMAIL,"$ac_cv_path_SENDMAIL", [Where to find sendmail on y
 
 OPS='$(srcdir)/OPS'
 
-AC_MSG_CHECKING([whether to build with GPGME support])
-AC_ARG_ENABLE(gpgme, AS_HELP_STRING([--enable-gpgme],[Enable GPGME support]), enable_gpgme=$enableval, enable_gpgme=no)
+dnl : A note about the organization of this file
+dnl : =========================================================================
+dnl : All features and options must be defined below the line marked as their
+dnl : beginning. However only the configure option definitions should be there.
+dnl : These definitions should do nothing more than set a variable indicating
+dnl : whether the feature / option is enabled or disabled. All checks for
+dnl : libraries and other changes should be made *AFTER* the
+dnl : --enable-everything option is defined. There will be a line stating it is
+dnl : safe to start running checks after it. Do *NOT* violate this rule, or you
+dnl : risk incurring the wrath of Khan.
 
+dnl == All Mutt Features and Options must be "defined" below this line ==
+
+AC_ARG_ENABLE(gpgme,
+			  AS_HELP_STRING([--enable-gpgme], [Enable GPGME support]),
+			  [enable_gpgme=$enableval], [enable_gpgme=no])
+
+AC_ARG_ENABLE(pgp,
+			  AS_HELP_STRING([--disable-pgp], [Disable PGP support]),
+			  [enable_pgp=$enableval], [enable_pgp=yes])
+
+AC_ARG_ENABLE(smime,
+			  AS_HELP_STRING([--disable-smime], [Disable SMIME support]),
+			  [enable_smime=$enableval], [enable_smime=yes])
+
+AC_ARG_ENABLE(sidebar,
+			  AC_HELP_STRING([--enable-sidebar], [Enable Sidebar support]),
+			  [enable_sidebar=$enableval], [enable_sidebar=no])
+
+AC_ARG_ENABLE(compressed,
+			  AC_HELP_STRING([--enable-compressed], [Enable compressed folders support]),
+              [enable_compressed=$enableval], [enable_compressed=no])
+
+AC_ARG_ENABLE(notmuch,
+			  AC_HELP_STRING([--enable-notmuch], [Enable NOTMUCH support]),
+			  [enable_notmuch=$enableval], [enable_notmuch=no])
+
+AC_ARG_WITH(mixmaster,
+			AS_HELP_STRING([--with-mixmaster@<:@=PATH@:>@], [Include Mixmaster support]),
+			[with_mixmaster=$withval], [with_mixmaster=no])
+
+dnl == End of Features and Options Definitions ==
+
+AC_ARG_ENABLE(everything,
+			  AC_HELP_STRING([--enable-everything], [Enable all Options and Features]),
+			  [enable_everything=$enableval], [enable_everything=no])
+
+
+AS_IF([test x$enable_everything = "xyes"], [
+	   enable_gpgme="yes"
+	   enable_pgp="yes"
+	   enable_smime="yes"
+	   enable_sidebar="yes"
+	   enable_compressed="yes"
+	   enable_notmuch="yes"
+	  ], [])
+
+dnl == Declare all the checks and code for options / features below this line ==
+
+dnl --enable-gpgme
 AS_IF([test x$enable_gpgme = "xyes"], [
-   AC_MSG_RESULT([yes])
    AM_PATH_GPGME(1.0.0, AC_DEFINE(CRYPT_BACKEND_GPGME, 1,
 		 [Defined, if GPGME support is enabled]),
 		 [gpgme_found=no])
@@ -141,9 +197,6 @@ AS_IF([test x$enable_gpgme = "xyes"], [
    ], [
       AM_PATH_GPGME(1.1.1, AC_DEFINE(HAVE_GPGME_PKA_TRUST, 1,
 				  [Define if GPGME supports PKA]))
-      #needed to get GPGME_LIBS and al correctly
-      AM_PATH_GPGME(1.0.0, AC_DEFINE(CRYPT_BACKEND_GPGME, 1,
-                    [Define if you use GPGME to support OpenPGP]))
       dnl AC_CHECK_FUNCS([gpgme_op_export_keys])
       saved_LIBS="$LIBS"
       LIBS="$LIBS $GPGME_LIBS"
@@ -151,42 +204,37 @@ AS_IF([test x$enable_gpgme = "xyes"], [
       LIBS="$saved_LIBS"
       MUTT_LIB_OBJECTS="$MUTT_LIB_OBJECTS crypt-gpgme.o crypt-mod-pgp-gpgme.o crypt-mod-smime-gpgme.o"
    ])
-], [
-   AC_MSG_RESULT([no])
 ])
 
-AC_ARG_ENABLE(pgp, AS_HELP_STRING([--disable-pgp],[Disable PGP support]), enable_pgp=$enableval, enable_pgp=yes)
+dnl --enable-pgp
 AS_IF([test x$enable_pgp != "xno"], [
 	   AC_DEFINE(CRYPT_BACKEND_CLASSIC_PGP, 1, [Define if you want classic PGP Support.])
 	   PGPAUX_TARGET="pgpring\$(EXEEXT) pgpewrap\$(EXEEXT)"
 	   MUTT_LIB_OBJECTS="$MUTT_LIB_OBJECTS pgp.o pgpinvoke.o pgpkey.o pgplib.o gnupgparse.o pgpmicalg.o pgppacket.o crypt-mod-pgp-classic.o"
 ])
 
-AC_ARG_ENABLE(smime, AS_HELP_STRING([--disable-smime],[Disable SMIME support]), enable_smime=$enableval, enable_smime=yes)
+dnl --enable-smime
 AS_IF([test x$enable_smime != "xno"], [
        AC_DEFINE(CRYPT_BACKEND_CLASSIC_SMIME, 1, [Define if you want classic S/MIME support.])
        MUTT_LIB_OBJECTS="$MUTT_LIB_OBJECTS smime.o crypt-mod-smime-classic.o"
        SMIMEAUX_TARGET="smime_keys"
 ])
 
-AC_ARG_ENABLE(sidebar, AC_HELP_STRING([--enable-sidebar], [Enable Sidebar support]), enable_sidebar=$enableval, enable_sidebar=no)
+dnl --enable-sidebar
 AS_IF([test x$enable_sidebar = "xyes"], [
 	   AC_DEFINE(USE_SIDEBAR, 1, [Define if you want support for the sidebar.])
 	   OPS="$OPS \$(srcdir)/OPS.SIDEBAR"
 	   MUTT_LIB_OBJECTS="$MUTT_LIB_OBJECTS sidebar.o"
 ])
 
-AC_ARG_ENABLE(compressed, AC_HELP_STRING([--enable-compressed], [Enable compressed folders support]),
-              enable_compressed=$enableval, enable_compressed=no
-)
+dnl --enable-compressed
 AS_IF([test x$enable_compressed = "xyes"], [
 	   AC_DEFINE(USE_COMPRESSED, 1, [Define to enable compressed folders support.])
 	   MUTT_LIB_OBJECTS="$MUTT_LIB_OBJECTS compress.o"
 ])
 AM_CONDITIONAL(BUILD_COMPRESS, test x$enable_compressed = xyes)
 
-dnl Clean up this code. Maybe also use pkg_config
-AC_ARG_ENABLE(notmuch, AC_HELP_STRING([--enable-notmuch], [Enable NOTMUCH support]), enable_notmuch=$enableval, enable_notmuch=no)
+dnl --enable-notmuch
 AS_IF([test x$enable_notmuch = "xyes"], [
 		AC_CHECK_LIB(notmuch, notmuch_database_open,,
 			AC_MSG_ERROR([Unable to find Notmuch library]))
@@ -209,21 +257,14 @@ AS_IF([test x$enable_notmuch = "xyes"], [
 ])
 AM_CONDITIONAL(BUILD_NOTMUCH, test x$need_notmuch = xyes)
 
+dnl --with-mixmaster
+AS_IF([test "$with_mixmaster" != "no"], [
+	   AS_IF([test -x "$with_mixmaster"], [MIXMASTER="$with_mixmaster"], [MIXMASTER="mixmaster"])
+	   OPS="$OPS \$(srcdir)/OPS.MIX"
+	   MUTT_LIB_OBJECTS="$MUTT_LIB_OBJECTS remailer.o"
+	   AC_DEFINE_UNQUOTED(MIXMASTER, "$MIXMASTER", [Where to find mixmaster on your system.])
+	  ])
 
-dnl TODO: Clean this up. Needs some work understanding and fixing the AC_ARG_WITH
-AC_ARG_WITH(mixmaster, AS_HELP_STRING([--with-mixmaster@<:@=PATH@:>@],[Include Mixmaster support]),
-  [if test "$withval" != no
-   then
-     if test -x "$withval"
-     then
-       MIXMASTER="$withval"
-     else
-       MIXMASTER="mixmaster"
-     fi
-     OPS="$OPS \$(srcdir)/OPS.MIX"
-     MUTT_LIB_OBJECTS="$MUTT_LIB_OBJECTS remailer.o"
-     AC_DEFINE_UNQUOTED(MIXMASTER,"$MIXMASTER", [Where to find mixmaster on your system.])
-   fi])
 
 # We now require all OPS
 OPS="$OPS \$(srcdir)/OPS.PGP \$(srcdir)/OPS.SMIME \$(srcdir)/OPS.CRYPT "
