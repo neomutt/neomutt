@@ -154,6 +154,12 @@ AS_IF([test x$enable_everything = "xyes"], [
 	use_imap="yes"
 	use_nntp="yes"
 	use_smtp="yes"
+	hcache_tokyocabinet="yes"
+	hcache_kyotocabinet="yes"
+	hcache_bdb="yes"
+	hcache_gdbm="yes"
+	hcache_qdbm="yes"
+	hcache_lmdb="yes"
 ], [
 	use_gpgme="no"
 	use_pgp="no"
@@ -994,37 +1000,43 @@ hcache_db_used=
 AC_ARG_WITH(gdbm,
     AS_HELP_STRING(
         [--with-gdbm@<:@=DIR@:>@],
-        [Use gdbm for the header cache]))
+        [Use gdbm for the header cache]),
+		[hcache_gdbm=$withval])
 AC_ARG_WITH(tokyocabinet,
     AS_HELP_STRING(
         [--with-tokyocabinet@<:@=DIR@:>@],
-        [Use tokyocabinet for the header cache]))
+        [Use tokyocabinet for the header cache]),
+		[hcache_tokyocabinet=$withval])
 AC_ARG_WITH(kyotocabinet,
     AS_HELP_STRING(
         [--with-kyotocabinet@<:@=DIR@:>@],
-        [Use kyotocabinet for the header cache]))
+        [Use kyotocabinet for the header cache]),
+		[hcache_kyotocabinet=$withval])
 AC_ARG_WITH(qdbm,
     AS_HELP_STRING(
         [--with-qdbm@<:@=DIR@:>@],
-        [Use qdbm for the header cache]))
+        [Use qdbm for the header cache]),
+		[hcache_qdbm=$withval])
 AC_ARG_WITH(bdb,
     AS_HELP_STRING(
         [--with-bdb@<:@=DIR@:>@],
-        [Use BerkeleyDB for the header cache]))
+        [Use BerkeleyDB for the header cache]),
+		[hcache_bdb=$withval])
 AC_ARG_WITH(lmdb,
     AS_HELP_STRING(
         [--with-lmdb@<:@=DIR@:>@],
-        [Use LMDB for the header cache]))
+        [Use LMDB for the header cache]),
+		[hcache_lmdb=$withval])
 
 dnl -- Tokyo Cabinet --
-if test -n "$with_tokyocabinet" && test "$with_tokyocabinet" != "no"
+if test -n "$hcache_tokyocabinet" && test "$hcache_tokyocabinet" != "no"
 then
   OLDCPPFLAGS="$CPPFLAGS"
   OLDLDFLAGS="$LDFLAGS"
-  if test "$with_tokyocabinet" != "yes"
+  if test "$hcache_tokyocabinet" != "yes"
   then
-    CPPFLAGS="$CPPFLAGS -I$with_tokyocabinet/include"
-    LDFLAGS="$LDFLAGS -L$with_tokyocabinet/lib"
+    CPPFLAGS="$CPPFLAGS -I$hcache_tokyocabinet/include"
+    LDFLAGS="$LDFLAGS -L$hcache_tokyocabinet/lib"
   fi
 
   AC_CHECK_HEADER(tcbdb.h,
@@ -1041,14 +1053,14 @@ then
 fi
 
 dnl -- Kyoto Cabinet --
-if test -n "$with_kyotocabinet" && test "$with_kyotocabinet" != "no"
+if test -n "$hcache_kyotocabinet" && test "$hcache_kyotocabinet" != "no"
 then
   OLDCPPFLAGS="$CPPFLAGS"
   OLDLDFLAGS="$LDFLAGS"
-  if test "$with_kyotocabinet" != "yes"
+  if test "$hcache_kyotocabinet" != "yes"
   then
-    CPPFLAGS="$CPPFLAGS -I$with_kyotocabinet/include"
-    LDFLAGS="$LDFLAGS -L$with_kyotocabinet/lib"
+    CPPFLAGS="$CPPFLAGS -I$hcache_kyotocabinet/include"
+    LDFLAGS="$LDFLAGS -L$hcache_kyotocabinet/lib"
   fi
 
   AC_CHECK_HEADER(kclangc.h,
@@ -1069,14 +1081,14 @@ dnl -- Make sure the GDBM block comes before the QDBM one. QDBM provides
 dnl -- the GDBM symbols in a compatibility layer (google for gdbm hovel).
 dnl -- By doing this, we make sure the symbols are resolved in GDBM's
 dnl -- library when both GDBM and QDBM are linked.
-if test -n "$with_gdbm" && test "$with_gdbm" != "no"
+if test -n "$hcache_gdbm" && test "$hcache_gdbm" != "no"
 then
   OLDCPPFLAGS="$CPPFLAGS"
   OLDLDFLAGS="$LDFLAGS"
-  if test "$with_gdbm" != "yes"
+  if test "$hcache_gdbm" != "yes"
   then
-    CPPFLAGS="$CPPFLAGS -I$with_gdbm/include"
-    LDFLAGS="$LDFLAGS -L$with_gdbm/lib"
+    CPPFLAGS="$CPPFLAGS -I$hcache_gdbm/include"
+    LDFLAGS="$LDFLAGS -L$hcache_gdbm/lib"
   fi
 
   AC_CHECK_HEADERS(gdbm.h,
@@ -1093,18 +1105,18 @@ then
 fi
 
 dnl -- QDBM --
-if test -n "$with_qdbm" && test "$with_qdbm" != "no"
+if test -n "$hcache_qdbm" && test "$hcache_qdbm" != "no"
 then
   OLDCPPFLAGS="$CPPFLAGS"
   OLDLDFLAGS="$LDFLAGS"
-  if test "$with_qdbm" != "yes"
+  if test "$hcache_qdbm" != "yes"
   then
-    if test -d $with_qdbm/include/qdbm; then
-      CPPFLAGS="$CPPFLAGS -I$with_qdbm/include/qdbm"
+    if test -d $hcache_qdbm/include/qdbm; then
+      CPPFLAGS="$CPPFLAGS -I$hcache_qdbm/include/qdbm"
     else
-      CPPFLAGS="$CPPFLAGS -I$with_qdbm/include"
+      CPPFLAGS="$CPPFLAGS -I$hcache_qdbm/include"
     fi
-    LDFLAGS="$LDFLAGS -L$with_qdbm/lib"
+    LDFLAGS="$LDFLAGS -L$hcache_qdbm/lib"
   else                                                                                                                                                      
     if test -d /usr/include/qdbm; then                                                                                                                     
         CPPFLAGS="$CPPFLAGS -I/usr/include/qdbm"                                                                                                             
@@ -1127,13 +1139,13 @@ fi
 
 dnl -- BDB --
 ac_bdb_prefix="$mutt_cv_prefix /opt /usr/local /usr"
-if test -n "$with_bdb" && test "$with_bdb" != "no"
+if test -n "$hcache_bdb" && test "$hcache_bdb" != "no"
 then
   OLDCPPFLAGS="$CPPFLAGS"
   OLDLDFLAGS="$LDFLAGS"
-  if test "$with_bdb" != "yes"
+  if test "$hcache_bdb" != "yes"
   then
-    ac_bdb_prefix="$with_bdb $mutt_cv_prefix"
+    ac_bdb_prefix="$hcache_bdb $mutt_cv_prefix"
   fi
   BDB_VERSIONS="db-5.3 db53 db-5 db5 db-4.8 db48 db-4 db4"
   for d in $ac_bdb_prefix; do
@@ -1177,14 +1189,14 @@ then
 fi
 
 dnl -- LMDB --
-if test -n "$with_lmdb" && test "$with_lmdb" != "no"
+if test -n "$hcache_lmdb" && test "$hcache_lmdb" != "no"
 then
   OLDCPPFLAGS="$CPPFLAGS"
   OLDLDFLAGS="$LDFLAGS"
-  if test "$with_lmdb" != "yes"
+  if test "$hcache_lmdb" != "yes"
   then
-    CPPFLAGS="$CPPFLAGS -I$with_lmdb/include"
-    LDFLAGS="$LDFLAGS -L$with_lmdb/lib"
+    CPPFLAGS="$CPPFLAGS -I$hcache_lmdb/include"
+    LDFLAGS="$LDFLAGS -L$hcache_lmdb/lib"
   fi
   AC_CHECK_HEADERS(lmdb.h,
   AC_CHECK_LIB(lmdb, mdb_env_create,
