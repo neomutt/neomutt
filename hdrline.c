@@ -204,9 +204,10 @@ static void make_from (ENVELOPE *hdr, char *buf, size_t len, int do_lists)
 
 static void make_from_addr (ENVELOPE *hdr, char *buf, size_t len, int do_lists)
 {
-  int me;
+  if (!hdr || !buf)
+    return;
 
-  me = mutt_addr_is_user (hdr->from);
+  int me = mutt_addr_is_user (hdr->from);
 
   if (do_lists || me)
   {
@@ -869,9 +870,9 @@ hdr_format_str (char *dest,
       break;
 
     case 'T':
-      snprintf (fmt, sizeof (fmt), "%%%sc", prefix);
+      snprintf (fmt, sizeof (fmt), "%%%ss", prefix);
       snprintf (dest, destlen, fmt,
-		(Tochars && ((i = mutt_user_is_recipient (hdr))) < mutt_strlen (Tochars)) ? Tochars[i] : ' ');
+		get_nth_wchar (Tochars, mutt_user_is_recipient (hdr)));
       break;
 
     case 'u':
@@ -933,13 +934,13 @@ hdr_format_str (char *dest,
         ch = 'K';
 
       snprintf (buf2, sizeof (buf2),
-		"%c%c%c", (THREAD_NEW ? 'n' : (THREAD_OLD ? 'o' : 
+		"%c%c%s", (THREAD_NEW ? 'n' : (THREAD_OLD ? 'o' :
 		((hdr->read && (ctx && ctx->msgnotreadyet != hdr->msgno))
 		? (hdr->replied ? 'r' : ' ') : (hdr->old ? 'O' : 'N')))),
 		hdr->deleted ? 'D' : (hdr->attach_del ? 'd' : ch),
-		hdr->tagged ? '*' :
-		(hdr->flagged ? '!' :
-		 (Tochars && ((i = mutt_user_is_recipient (hdr)) < mutt_strlen (Tochars)) ? Tochars[i] : ' ')));
+		hdr->tagged ? "*" :
+		(hdr->flagged ? "!" :
+		 get_nth_wchar (Tochars, mutt_user_is_recipient (hdr))));
       colorlen = add_index_color (dest, destlen, flags, MT_COLOR_INDEX_FLAGS);
       mutt_format_s (dest + colorlen, destlen - colorlen, prefix, buf2);
       add_index_color (dest + colorlen, destlen - colorlen, flags, MT_COLOR_INDEX);
