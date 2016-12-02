@@ -1005,6 +1005,30 @@ struct option_t MuttVars[] = {
   ** .pp
   ** This setting defaults to the contents of the environment variable \fC$$$EMAIL\fP.
   */
+  { "from_chars",		DT_STR,	 R_BOTH, UL &Fromchars, UL 0 },
+  /*
+  ** .pp
+  ** Controls the character used to prefix the %F and %L fields in the
+  ** index.
+  ** .dl
+  ** .dt \fBCharacter\fP .dd \fBDescription\fP
+  ** .dt 1 .dd Mail is written by you and has a To address, or has a known mailing list in the To address.
+  ** .dt 2 .dd Mail is written by you and has a Cc address, or has a known mailing list in the Cc address.
+  ** .dt 3 .dd Mail is written by you and has a Bcc address.
+  ** .dt 4 .dd All remaining cases.
+  ** .de
+  ** .pp
+  ** If this is empty or unset (default), the traditional long "To ",
+  ** "Cc " and "Bcc " prefixes are used.  If set but too short to
+  ** include a character for a particular case, a single space will be
+  ** prepended to the field.  To prevent any prefix at all from being
+  ** added in a particular case, use the special value CR (aka ^M)
+  ** for the corresponding character.
+  ** .pp
+  ** This slightly odd interface is necessitated by mutt's handling of
+  ** string variables; one cannot tell a variable that is unset from one
+  ** that is set to the empty string.
+  */
   { "gecos_mask",	DT_RX,	 R_NONE, UL &GecosMask, UL "^[^,]*" },
   /*
   ** .pp
@@ -3956,16 +3980,16 @@ struct option_t MuttVars[] = {
   { "to_chars",		DT_STR,	 R_BOTH, UL &Tochars, UL " +TCFL" },
   /*
   ** .pp
-  ** Controls the character used to indicate mail addressed to you.  The
-  ** first character is the one used when the mail is \fInot\fP addressed to your
-  ** address.  The second is used when you are the only
-  ** recipient of the message.  The third is when your address
-  ** appears in the ``To:'' header field, but you are not the only recipient of
-  ** the message.  The fourth character is used when your
-  ** address is specified in the ``Cc:'' header field, but you are not the only
-  ** recipient.  The fifth character is used to indicate mail that was sent
-  ** by \fIyou\fP.  The sixth character is used to indicate when a mail
-  ** was sent to a mailing-list you subscribe to.
+  ** Controls the character used to indicate mail addressed to you.
+  ** .dl
+  ** .dt \fBCharacter\fP .dd \fBDefault\fP .dd \fBDescription\fP
+  ** .dt 1 .dd <space> .dd The mail is \fInot\fP addressed to your address.
+  ** .dt 2 .dd + .dd You are the only recipient of the message.
+  ** .dt 3 .dd T .dd Your address appears in the ``To:'' header field, but you are not the only recipient of the message.
+  ** .dt 4 .dd C .dd Your address is specified in the ``Cc:'' header field, but you are not the only recipient.
+  ** .dt 5 .dd F .dd Indicates the mail that was sent by \fIyou\fP.
+  ** .dt 6 .dd L .dd Indicates the mail was sent to a mailing-list you subscribe to.
+  ** .de
   */
   { "trash",		DT_PATH, R_NONE, UL &TrashPath, 0 },
   /*

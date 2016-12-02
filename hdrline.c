@@ -1,5 +1,7 @@
 /*
  * Copyright (C) 1996-2000,2002,2007 Michael R. Elkins <me@mutt.org>
+ * Copyright (C) 2016 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2016 Ian Zimmerman <itz@primate.net>
  * 
  *     This program is free software; you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -60,7 +62,7 @@ int mutt_is_subscribed_list (ADDRESS *addr)
  * return 1.  Otherwise, simply return 0.
  */
 static int
-check_for_mailing_list (ADDRESS *adr, char *pfx, char *buf, int buflen)
+check_for_mailing_list (ADDRESS *adr, const char *pfx, char *buf, int buflen)
 {
   for (; adr; adr = adr->next)
   {
@@ -137,37 +139,150 @@ add_index_color (char *buf, size_t buflen, format_flag flags, char color)
   return 2;
 }
 
-static void make_from (ENVELOPE *hdr, char *buf, size_t len, int do_lists)
+/**
+ * get_nth_wchar - Extract one char from a utf-8 string
+ * @ustr:   Unicode string
+ * @index:  Select this character
+ * @return: String pointer to the character
+ *
+ * Extract one multi-byte character from a string.
+ * If the (index < 0) the first character will be selected.
+ * If the index is larger thant the string, then " " will be returned.
+ * If the character selected is '\n' (Ctrl-M), then "" will be returned.
+ *
+ * Note: get_nth_wchar() may return a pointer to a static buffer.
+ */
+char *get_nth_wchar (char *ustr, int index)
 {
-  int me;
+  static char buffer[5];
+  int clen = 0;
+  int i;
 
-  me = mutt_addr_is_user (hdr->from);
+  if (!*ustr)
+    return " ";
+
+  for (i = 0; i <= index; i++)
+  {
+    ustr += clen;
+    clen = mutt_charlen (ustr, NULL);
+    if (clen < 1)
+      return " ";
+  }
+
+  if ((clen == 1) && (ustr[0] == '\r'))
+    return "";
+
+  memcpy (buffer, ustr, clen);
+  buffer[clen] = 0;
+  return buffer;
+}
+
+enum FieldType
+{
+  DISP_TO,
+  DISP_CC,
+  DISP_BCC,
+  DISP_FROM,
+  DISP_NUM
+};
+
+/**
+ * make_from_prefix - Create a prefix for an author field
+ * @disp:   Type of field
+ * @return: Prefix string (do not free() it)
+ *
+ * If $from_chars is set, pick an appropriate character from it.
+ * If not, use the default prefix: "To", "Cc", etc
+ */
+static const char *make_from_prefix(enum FieldType disp)
+{
+  static char padded[8];
+  static const char *long_prefixes[DISP_NUM] =
+  {
+    [DISP_TO]   = "To ",
+    [DISP_CC]   = "Cc ",
+    [DISP_BCC]  = "Bcc ",
+    [DISP_FROM] = ""
+  };
+
+  if (!Fromchars || (*Fromchars == '\0'))
+    return long_prefixes[disp];
+
+  char *prefix = get_nth_wchar (Fromchars, disp);
+  if (!prefix || (prefix[0] == '\0'))
+      return prefix;
+
+  snprintf (padded, sizeof(padded), "%s ", prefix);
+  return padded;
+}
+
+/**
+ * make_from - Generate a From: field (with optional prefix)
+ * @env:      Envelope of the email
+ * @buf:      Buffer to store the result
+ * @len:      Size of the buffer
+ * @do_lists: Should we check for mailing lists?
+ *
+ * Generate the %F or %L field in $index_format.
+ * This is the author, or recipient of the email.
+ *
+ * The field can optionally be prefixed by a character from $from_chars.
+ * If $from_chars is not set, the prefix will be, "To", "Cc", etc
+ */
+static void make_from (ENVELOPE *env, char *buf, size_t len, int do_lists)
+{
+  if (!env || !buf)
+    return;
+
+  int me;
+  enum FieldType disp;
+  ADDRESS *name;
+
+  me = mutt_addr_is_user (env->from);
 
   if (do_lists || me)
   {
-    if (check_for_mailing_list (hdr->to, "To ", buf, len))
+    if (check_for_mailing_list (env->to, make_from_prefix(DISP_TO), buf, len))
       return;
-    if (check_for_mailing_list (hdr->cc, "Cc ", buf, len))
+    if (check_for_mailing_list (env->cc, make_from_prefix(DISP_CC), buf, len))
       return;
   }
 
-  if (me && hdr->to)
-    snprintf (buf, len, "To %s", mutt_get_name (hdr->to));
-  else if (me && hdr->cc)
-    snprintf (buf, len, "Cc %s", mutt_get_name (hdr->cc));
-  else if (me && hdr->bcc)
-    snprintf (buf, len, "Bcc %s", mutt_get_name (hdr->bcc));
-  else if (hdr->from)
-    strfcpy (buf, mutt_get_name (hdr->from), len);
+  if (me && env->to)
+  {
+    disp = DISP_TO;
+    name = env->to;
+  }
+  else if (me && env->cc)
+  {
+    disp = DISP_CC;
+    name = env->cc;
+  }
+  else if (me && env->bcc)
+  {
+    disp = DISP_BCC;
+    name = env->bcc;
+  }
+  else if (env->from)
+  {
+    disp = DISP_FROM;
+    name = env->from;
+  }
   else
-    *buf = 0;
+  {
+    *buf = '\0';
+    return;
+  }
+
+  snprintf (buf, len, "%s%s", make_from_prefix(disp), mutt_get_name (name));
 }
 
 static void make_from_addr (ENVELOPE *hdr, char *buf, size_t len, int do_lists)
 {
-  int me;
+  if (!hdr || !buf)
+    return;
 
-  me = mutt_addr_is_user (hdr->from);
+  int me = mutt_addr_is_user (hdr->from);
 
   if (do_lists || me)
   {
@@ -830,9 +945,9 @@ hdr_format_str (char *dest,
       break;
 
     case 'T':
-      snprintf (fmt, sizeof (fmt), "%%%sc", prefix);
+      snprintf (fmt, sizeof (fmt), "%%%ss", prefix);
       snprintf (dest, destlen, fmt,
-		(Tochars && ((i = mutt_user_is_recipient (hdr))) < mutt_strlen (Tochars)) ? Tochars[i] : ' ');
+		get_nth_wchar (Tochars, mutt_user_is_recipient (hdr)));
       break;
 
     case 'u':
@@ -894,13 +1009,13 @@ hdr_format_str (char *dest,
         ch = 'K';
 
       snprintf (buf2, sizeof (buf2),
-		"%c%c%c", (THREAD_NEW ? 'n' : (THREAD_OLD ? 'o' : 
+		"%c%c%s", (THREAD_NEW ? 'n' : (THREAD_OLD ? 'o' :
 		((hdr->read && (ctx && ctx->msgnotreadyet != hdr->msgno))
 		? (hdr->replied ? 'r' : ' ') : (hdr->old ? 'O' : 'N')))),
 		hdr->deleted ? 'D' : (hdr->attach_del ? 'd' : ch),
-		hdr->tagged ? '*' :
-		(hdr->flagged ? '!' :
-		 (Tochars && ((i = mutt_user_is_recipient (hdr)) < mutt_strlen (Tochars)) ? Tochars[i] : ' ')));
+		hdr->tagged ? "*" :
+		(hdr->flagged ? "!" :
+		 get_nth_wchar (Tochars, mutt_user_is_recipient (hdr))));
       colorlen = add_index_color (dest, destlen, flags, MT_COLOR_INDEX_FLAGS);
       mutt_format_s (dest + colorlen, destlen - colorlen, prefix, buf2);
       add_index_color (dest + colorlen, destlen - colorlen, flags, MT_COLOR_INDEX);
