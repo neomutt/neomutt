@@ -3956,16 +3956,16 @@ struct option_t MuttVars[] = {
   { "to_chars",		DT_STR,	 R_BOTH, UL &Tochars, UL " +TCFL" },
   /*
   ** .pp
-  ** Controls the character used to indicate mail addressed to you.  The
-  ** first character is the one used when the mail is \fInot\fP addressed to your
-  ** address.  The second is used when you are the only
-  ** recipient of the message.  The third is when your address
-  ** appears in the ``To:'' header field, but you are not the only recipient of
-  ** the message.  The fourth character is used when your
-  ** address is specified in the ``Cc:'' header field, but you are not the only
-  ** recipient.  The fifth character is used to indicate mail that was sent
-  ** by \fIyou\fP.  The sixth character is used to indicate when a mail
-  ** was sent to a mailing-list you subscribe to.
+  ** Controls the character used to indicate mail addressed to you.
+  ** .dl
+  ** .dt \fBCharacter\fP .dd \fBDefault\fP .dd \fBDescription\fP
+  ** .dt 1 .dd <space> .dd The mail is \fInot\fP addressed to your address.
+  ** .dt 2 .dd + .dd You are the only recipient of the message.
+  ** .dt 3 .dd T .dd Your address appears in the ``To:'' header field, but you are not the only recipient of the message.
+  ** .dt 4 .dd C .dd Your address is specified in the ``Cc:'' header field, but you are not the only recipient.
+  ** .dt 5 .dd F .dd Indicates the mail that was sent by \fIyou\fP.
+  ** .dt 6 .dd L .dd Indicates the mail was sent to a mailing-list you subscribe to.
+  ** .de
   */
   { "trash",		DT_PATH, R_NONE, UL &TrashPath, 0 },
   /*
