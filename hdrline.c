@@ -1,6 +1,7 @@
 /*
  * Copyright (C) 1996-2000,2002,2007 Michael R. Elkins <me@mutt.org>
  * Copyright (C) 2016 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2016 Ian Zimmerman <itz@primate.net>
  * 
  *     This program is free software; you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -61,7 +62,7 @@ int mutt_is_subscribed_list (ADDRESS *addr)
  * return 1.  Otherwise, simply return 0.
  */
 static int
-check_for_mailing_list (ADDRESS *adr, char *pfx, char *buf, int buflen)
+check_for_mailing_list (ADDRESS *adr, const char *pfx, char *buf, int buflen)
 {
   for (; adr; adr = adr->next)
   {
@@ -176,30 +177,104 @@ char *get_nth_wchar (char *ustr, int index)
   return buffer;
 }
 
-static void make_from (ENVELOPE *hdr, char *buf, size_t len, int do_lists)
+enum FieldType
 {
-  int me;
+  DISP_TO,
+  DISP_CC,
+  DISP_BCC,
+  DISP_FROM,
+  DISP_NUM
+};
 
-  me = mutt_addr_is_user (hdr->from);
+/**
+ * make_from_prefix - Create a prefix for an author field
+ * @disp:   Type of field
+ * @return: Prefix string (do not free() it)
+ *
+ * If $from_chars is set, pick an appropriate character from it.
+ * If not, use the default prefix: "To", "Cc", etc
+ */
+static const char *make_from_prefix(enum FieldType disp)
+{
+  static char padded[8];
+  static const char *long_prefixes[DISP_NUM] =
+  {
+    [DISP_TO]   = "To ",
+    [DISP_CC]   = "Cc ",
+    [DISP_BCC]  = "Bcc ",
+    [DISP_FROM] = ""
+  };
+
+  if (!Fromchars || (*Fromchars == '\0'))
+    return long_prefixes[disp];
+
+  char *prefix = get_nth_wchar (Fromchars, disp);
+  if (!prefix || (prefix[0] == '\0'))
+      return prefix;
+
+  snprintf (padded, sizeof(padded), "%s ", prefix);
+  return padded;
+}
+
+/**
+ * make_from - Generate a From: field (with optional prefix)
+ * @env:      Envelope of the email
+ * @buf:      Buffer to store the result
+ * @len:      Size of the buffer
+ * @do_lists: Should we check for mailing lists?
+ *
+ * Generate the %F or %L field in $index_format.
+ * This is the author, or recipient of the email.
+ *
+ * The field can optionally be prefixed by a character from $from_chars.
+ * If $from_chars is not set, the prefix will be, "To", "Cc", etc
+ */
+static void make_from (ENVELOPE *env, char *buf, size_t len, int do_lists)
+{
+  if (!env || !buf)
+    return;
+
+  int me;
+  enum FieldType disp;
+  ADDRESS *name;
+
+  me = mutt_addr_is_user (env->from);
 
   if (do_lists || me)
   {
-    if (check_for_mailing_list (hdr->to, "To ", buf, len))
+    if (check_for_mailing_list (env->to, make_from_prefix(DISP_TO), buf, len))
       return;
-    if (check_for_mailing_list (hdr->cc, "Cc ", buf, len))
+    if (check_for_mailing_list (env->cc, make_from_prefix(DISP_CC), buf, len))
       return;
   }
 
-  if (me && hdr->to)
-    snprintf (buf, len, "To %s", mutt_get_name (hdr->to));
-  else if (me && hdr->cc)
-    snprintf (buf, len, "Cc %s", mutt_get_name (hdr->cc));
-  else if (me && hdr->bcc)
-    snprintf (buf, len, "Bcc %s", mutt_get_name (hdr->bcc));
-  else if (hdr->from)
-    strfcpy (buf, mutt_get_name (hdr->from), len);
+  if (me && env->to)
+  {
+    disp = DISP_TO;
+    name = env->to;
+  }
+  else if (me && env->cc)
+  {
+    disp = DISP_CC;
+    name = env->cc;
+  }
+  else if (me && env->bcc)
+  {
+    disp = DISP_BCC;
+    name = env->bcc;
+  }
+  else if (env->from)
+  {
+    disp = DISP_FROM;
+    name = env->from;
+  }
   else
-    *buf = 0;
+  {
+    *buf = '\0';
+    return;
+  }
+
+  snprintf (buf, len, "%s%s", make_from_prefix(disp), mutt_get_name (name));
 }
 
 static void make_from_addr (ENVELOPE *hdr, char *buf, size_t len, int do_lists)

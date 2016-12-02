@@ -1005,6 +1005,30 @@ struct option_t MuttVars[] = {
   ** .pp
   ** This setting defaults to the contents of the environment variable \fC$$$EMAIL\fP.
   */
+  { "from_chars",		DT_STR,	 R_BOTH, UL &Fromchars, UL 0 },
+  /*
+  ** .pp
+  ** Controls the character used to prefix the %F and %L fields in the
+  ** index.
+  ** .dl
+  ** .dt \fBCharacter\fP .dd \fBDescription\fP
+  ** .dt 1 .dd Mail is written by you and has a To address, or has a known mailing list in the To address.
+  ** .dt 2 .dd Mail is written by you and has a Cc address, or has a known mailing list in the Cc address.
+  ** .dt 3 .dd Mail is written by you and has a Bcc address.
+  ** .dt 4 .dd All remaining cases.
+  ** .de
+  ** .pp
+  ** If this is empty or unset (default), the traditional long "To ",
+  ** "Cc " and "Bcc " prefixes are used.  If set but too short to
+  ** include a character for a particular case, a single space will be
+  ** prepended to the field.  To prevent any prefix at all from being
+  ** added in a particular case, use the special value CR (aka ^M)
+  ** for the corresponding character.
+  ** .pp
+  ** This slightly odd interface is necessitated by mutt's handling of
+  ** string variables; one cannot tell a variable that is unset from one
+  ** that is set to the empty string.
+  */
   { "gecos_mask",	DT_RX,	 R_NONE, UL &GecosMask, UL "^[^,]*" },
   /*
   ** .pp
