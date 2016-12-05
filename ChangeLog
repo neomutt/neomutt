@@ -1,3 +1,98 @@
+2016-11-26 00:57 +0100  Vincent Lefevre  <vincent@vinc17.net>  (a0a970530a8b)
+
+	* crypt-gpgme.c, crypt-gpgme.h, crypt-mod-pgp-gpgme.c: Fix build
+	failure with GPGME 1.8: do not steal the gpgme_ prefix.
+
+2016-11-19 19:35 -0800  Kevin McCarthy  <kevin@8t8.us>  (10c4761cea89)
+
+	* mutt_ssl.c: More openssl1.1 fixes: remove uses of X509->name in
+	debugging. (closes #3870)
+
+	X509->name was a shortcut for the longer name = X509_NAME_oneline
+	(X509_get_subject_name (cert), buf, sizeof (buf)); invocation.
+	Change the debugging to print the cert name and chain names in the
+	ssl_check_certificate() loop instead.
+
+2016-09-07 20:00 -0700  TAKAHASHI Tamotsu  <ttakah@lapis.plala.or.jp>  (2c1d79d3edd5)
+
+	* configure.ac, mutt_ssl.c: Fix openssl 1.1 compilation issues.
+	(closes #3870)
+
+	With these changes, Mutt will no longer compile for versions less
+	than 0.9.6.
+
+2016-10-23 14:46 -0700  Kevin McCarthy  <kevin@8t8.us>  (c6704c7f8e23)
+
+	* pager.c: Fix pager segfault when lineInfo.chunks overflows. (closes
+	#3888)
+
+	The reporter had an html attachment with extremely long lines,
+	combined with a color pattern of "color body default default ." This
+	overflowed the lineInfo.chunks, causing a segfault.
+
+	Abort the body color patterns if this happens.
+
+2016-10-23 13:43 -0700  Kevin McCarthy  <kevin@8t8.us>  (a8203b4463c1)
+
+	* date.c: Prevent an integer overflow in mutt_mktime() (closes #3880)
+
+	Check to make sure the year passed in isn't bigger than can be
+	represented using time_t on the platform.
+
+	Also add a (time_t) cast to an intermediate "years * 365"
+	calculation to prevent an overflow there.
+
+	Thanks to TAKAHASHI Tamotsu for his patch, and to Vincent Lefèvre
+	for his improvement. I merely took their code and commited it.
+
+2016-10-17 11:22 -0700  Kevin McCarthy  <kevin@8t8.us>  (113b73b0b616)
+
+	* crypt-gpgme.c: Actually fix gpgme segfault in
+	create_recipient_set().
+
+	Changeset 6e44bfa16096 did not fix the segv. (Sorry, I made the fix
+	based off a report on IRC but didn't trigger the segv myself: it was
+	caused by an out-of-tree patch).
+
+	The actual problem was that the rset was only resized on a
+	successful gpgme_get_key(). However, on error, the array still needs
+	to be NULL-terminated before calling free_recipient_set().
+
+	Move the resize so it always takes place. This obviates the need for
+	the NULL check added in 6e44bfa16096.
+
+2016-10-16 15:12 -0700  Kevin McCarthy  <kevin@8t8.us>  (783dce6dfcd4)
+
+	* sidebar.c: Use mutt_strlen and mutt_strncmp in sidebar.c.
+
+	This prevents a segv if folder is unset.
+
+2016-10-16 14:16 -0700  Kevin McCarthy  <kevin@8t8.us>  (6e44bfa16096)
+
+	* crypt-gpgme.c: Fix gpgme segfault in create_recipient_set().
+
+	If gpgme_get_key() errors on the first key, the rset will not be
+	allocated yet. Attempting to null-terminate (and then free) the
+	array causes a segfault.
+
+2016-10-08 12:57 -0700  Kevin McCarthy  <kevin@8t8.us>  (58f4b38312bf)
+
+	* .hgsigs: mutt-1.7.1 signed
+
+2016-10-08 12:56 -0700  Kevin McCarthy  <kevin@8t8.us>  (e8d9ae6f41d3)
+
+	* .hgtags: Added tag mutt-1-7-1-rel for changeset 0ce5f9bff1fd
+
+2016-10-08 12:56 -0700  Kevin McCarthy  <kevin@8t8.us>  (0ce5f9bff1fd)
+
+	* ChangeLog, UPDATING, VERSION, po/bg.po, po/ca.po, po/cs.po,
+	po/da.po, po/de.po, po/el.po, po/eo.po, po/es.po, po/et.po,
+	po/eu.po, po/fr.po, po/ga.po, po/gl.po, po/hu.po, po/id.po,
+	po/it.po, po/ja.po, po/ko.po, po/lt.po, po/nl.po, po/pl.po,
+	po/pt_BR.po, po/ru.po, po/sk.po, po/sv.po, po/tr.po, po/uk.po,
+	po/zh_CN.po, po/zh_TW.po: automatic post-release commit for
+	mutt-1.7.1
+
 2016-10-04 11:13 -0700  Kevin McCarthy  <kevin@8t8.us>  (5c5848dfa4ea)
 
 	* muttlib.c: Preserve forwarded attachment names in d_filename.
