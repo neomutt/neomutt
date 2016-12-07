@@ -4359,29 +4359,6 @@ configuration command, preventing Mutt from recording the
 <command>macro</command>'s commands into its history.
 </para>
 
-<para>
-You can restrict address pattern matching to aliases that you have
-defined with the "@" modifier.  This example matches messages whose
-recipients are all from Germany, and who are known to your alias list.
-</para>
-
-<para>
-<screen>
-^@~C \.de$
-</screen>
-</para>
-
-<para>
-To match any defined alias, use a regular expression that matches any
-string.  This example matches messages whose senders are known aliases.
-</para>
-
-<para>
-<screen>
-@~f .
-</screen>
-</para>
-
 </sect3>
 
 </sect2>
@@ -5220,6 +5197,29 @@ recipients from Germany.
 ^~C \.de$
 </screen>
 </example>
+
+<para>
+You can restrict address pattern matching to aliases that you have
+defined with the "@" modifier.  This example matches messages whose
+recipients are all from Germany, and who are known to your alias list.
+</para>
+
+<para>
+<screen>
+^@~C \.de$
+</screen>
+</para>
+
+<para>
+To match any defined alias, use a regular expression that matches any
+string.  This example matches messages whose senders are known aliases.
+</para>
+
+<para>
+<screen>
+@~f .
+</screen>
+</para>
 
 </sect2>
 
