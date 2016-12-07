@@ -1028,7 +1028,8 @@ if test -n "$hcache_tokyocabinet" && test "$hcache_tokyocabinet" != "no"; then
 		],[
 			CPPFLAGS="$OLDCPPFLAGS"
 			LDFLAGS="$OLDLDFLAGS"
-		]))
+			AC_MSG_ERROR(Unable to find TokyoCabinet)
+		]),	AC_MSG_ERROR(Unable to find TokyoCabinet))
 fi
 
 dnl -- Kyoto Cabinet --
@@ -1050,7 +1051,8 @@ if test -n "$hcache_kyotocabinet" && test "$hcache_kyotocabinet" != "no"; then
 		],[
 			CPPFLAGS="$OLDCPPFLAGS"
 			LDFLAGS="$OLDLDFLAGS"
-		]))
+			AC_MSG_ERROR(Unable to find KyotoCabinet)
+		]),	AC_MSG_ERROR(Unable to find KyotoCabinet))
 fi
 
 dnl -- GDBM --
@@ -1076,7 +1078,8 @@ if test -n "$hcache_gdbm" && test "$hcache_gdbm" != "no"; then
 		],[
 			CPPFLAGS="$OLDCPPFLAGS"
 			LDFLAGS="$OLDLDFLAGS"
-		]))
+			AC_MSG_ERROR(Unable to find GDBM)
+		]),	AC_MSG_ERROR(Unable to find GDBM))
 fi
 
 dnl -- QDBM --
@@ -1106,7 +1109,8 @@ if test -n "$hcache_qdbm" && test "$hcache_qdbm" != "no"; then
 		],[
 			CPPFLAGS="$OLDCPPFLAGS"
 			LDFLAGS="$OLDLDFLAGS"
-		]))
+			AC_MSG_ERROR(Unable to find QDBM)
+		]),	AC_MSG_ERROR(Unable to find QDBM))
 fi
 
 dnl -- BDB --
@@ -1156,6 +1160,9 @@ if test -n "$hcache_bdb" && test "$hcache_bdb" != "no"; then
 		done
 		test "$BDB_FOUND" = "yes" && break
 	done
+	if test "$BDB_FOUND" != "yes"; then
+		AC_MSG_ERROR(Unable to find BDB)
+	fi
 fi
 
 dnl -- LMDB --
@@ -1176,7 +1183,8 @@ if test -n "$hcache_lmdb" && test "$hcache_lmdb" != "no"; then
 		],[
 			CPPFLAGS="$OLDCPPFLAGS"
 			LDFLAGS="$OLDLDFLAGS"
-		]))
+			AC_MSG_ERROR(Unable to find LMDB)
+		]),	AC_MSG_ERROR(Unable to find LMDB))
 fi
 
 AM_CONDITIONAL(BUILD_HCACHE, test -n "$hcache_db_used")
