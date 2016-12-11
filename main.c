@@ -488,7 +488,7 @@ int main (int argc, char **argv)
       if (mutt_yesorno (msg, MUTT_YES) == MUTT_YES)
       {
 	if (mkdir (fpath, 0700) == -1 && errno != EEXIST)
-	  mutt_error ( _("Can't create %s: %s."), Maildir, strerror (errno));
+	  mutt_error (_("Can't create %s: %s."), Maildir, strerror (errno));
       }
     }
   }

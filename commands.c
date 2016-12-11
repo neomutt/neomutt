@@ -197,14 +197,14 @@ int mutt_display_message (HEADER *cur)
       if (cur->security & GOODSIGN)
       {
 	if (!crypt_smime_verify_sender(cur))
-	  mutt_message ( _("S/MIME signature successfully verified."));
+	  mutt_message (_("S/MIME signature successfully verified."));
 	else
-	  mutt_error ( _("S/MIME certificate owner does not match sender."));
+	  mutt_error (_("S/MIME certificate owner does not match sender."));
       }
       else if (cur->security & PARTSIGN)
 	mutt_message (_("Warning: Part of this message has not been signed."));
       else if (cur->security & SIGN || cur->security & BADSIGN)
-	mutt_error ( _("S/MIME signature could NOT be verified."));
+	mutt_error (_("S/MIME signature could NOT be verified."));
     }
 
     if (WithCrypto 

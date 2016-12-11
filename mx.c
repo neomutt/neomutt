@@ -176,7 +176,7 @@ retry_lock:
     } 
     else
     {
-      mutt_error ( _("Can't dotlock %s.\n"), path);
+      mutt_error (_("Can't dotlock %s.\n"), path);
     }
   }
   return (r == DL_EX_OK ? 0 : -1);
