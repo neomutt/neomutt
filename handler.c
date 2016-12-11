@@ -1677,7 +1677,7 @@ static int run_decode_and_handler (BODY *b, STATE *s, handler_t handler, int pla
         s->fpin = safe_fopen ("/dev/null", "r");
       }
       if (!s->fpin) {
-        mutt_perror ("failed to re-open memstream!");
+        mutt_perror (_("failed to re-open memstream!"));
         return -1;
       }
 #else

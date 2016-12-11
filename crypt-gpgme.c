@@ -554,7 +554,7 @@ static int data_object_to_stream (gpgme_data_t data, FILE *fp)
 
      if (ferror (fp))
        {
-         mutt_perror ("[tempfile]");
+         mutt_perror (_("[tempfile]"));
          return -1;
        }
     }

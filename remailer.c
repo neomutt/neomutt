@@ -161,7 +161,7 @@ static REMAILER **mix_type2_list (size_t *l)
   /* first, generate the "random" remailer */
   
   p = mix_new_remailer ();
-  p->shortname = safe_strdup ("<random>");
+  p->shortname = safe_strdup (_("<random>"));
   mix_add_entry (&type2_list, p, &slots, &used);
   
   while (fgets (line, sizeof (line), fp))

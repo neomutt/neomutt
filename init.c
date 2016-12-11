@@ -1284,7 +1284,7 @@ static int parse_attachments (BUFFER *buf, BUFFER *s, unsigned long data, BUFFER
   if (op == '?') {
     mutt_endwin (NULL);
     fflush (stdout);
-    printf("\nCurrent attachments settings:\n\n");
+    printf(_("\nCurrent attachments settings:\n\n"));
     print_attach_list(AttachAllow,   '+', "A");
     print_attach_list(AttachExclude, '-', "A");
     print_attach_list(InlineAllow,   '+', "I");

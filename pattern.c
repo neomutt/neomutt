@@ -183,7 +183,7 @@ msg_search (CONTEXT *ctx, pattern_t* pat, int msgno)
 #ifdef USE_FMEMOPEN
       s.fpout = open_memstream (&temp, &tempsize);
       if (!s.fpout) {
-	mutt_perror ("Error opening memstream");
+	mutt_perror (_("Error opening memstream"));
 	return 0;
       }
 #else
@@ -229,13 +229,13 @@ msg_search (CONTEXT *ctx, pattern_t* pat, int msgno)
       if (tempsize) {
         fp = fmemopen (temp, tempsize, "r");
         if (!fp) {
-          mutt_perror ("Error re-opening memstream");
+          mutt_perror (_("Error re-opening memstream"));
           return 0;
         }
       } else { /* fmemopen cannot handle empty buffers */
         fp = safe_fopen ("/dev/null", "r");
         if (!fp) {
-          mutt_perror ("Error opening /dev/null");
+          mutt_perror (_("Error opening /dev/null"));
           return 0;
         }
       }
