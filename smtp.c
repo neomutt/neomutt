@@ -185,7 +185,7 @@ smtp_data (CONNECTION * conn, const char *msgfile)
   }
   stat (msgfile, &st);
   unlink (msgfile);
-  mutt_progress_init (&progress, _("Sending message..."), MUTT_PROGRESS_SIZE,
+  mutt_progress_init (&progress, (_("Sending message...")), MUTT_PROGRESS_SIZE,
                       NetInc, st.st_size);
 
   snprintf (buf, sizeof (buf), "DATA\r\n");
@@ -463,7 +463,7 @@ static int smtp_open (CONNECTION* conn)
     rc = MUTT_YES;
   else if (mutt_bit_isset (Capabilities, STARTTLS) &&
            (rc = query_quadoption (OPT_SSLSTARTTLS,
-                                   _("Secure connection with TLS?"))) == MUTT_ABORT)
+                                   (_("Secure connection with TLS?"))) == MUTT_ABORT)
     return rc;
 
   if (rc == MUTT_YES)

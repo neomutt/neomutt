@@ -585,7 +585,7 @@ BODY *mutt_parse_multipart (FILE *fp, const char *boundary, LOFF_T end_off, int 
 
   if (!boundary)
   {
-    mutt_error _("multipart message has no boundary parameter!");
+    mutt_error (_("multipart message has no boundary parameter!"));
     return (NULL);
   }
 

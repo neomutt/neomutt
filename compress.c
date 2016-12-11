@@ -482,7 +482,7 @@ open_mailbox (CONTEXT *ctx)
     goto or_fail;
   }
 
-  int rc = execute_command (ctx, ci->open, _("Decompressing %s"));
+  int rc = execute_command (ctx, ci->open, (_("Decompressing %s"));
   if (rc == 0)
     goto or_fail;
 
@@ -555,7 +555,7 @@ open_append_mailbox (CONTEXT *ctx, int flags)
   /* Open the existing mailbox, unless we are appending */
   if (!ci->append && (get_size (ctx->realpath) > 0))
   {
-    int rc = execute_command (ctx, ci->open, _("Decompressing %s"));
+    int rc = execute_command (ctx, ci->open, (_("Decompressing %s"));
     if (rc == 0)
     {
       mutt_error (_("Compress command failed: %s"), ci->open);
@@ -645,12 +645,12 @@ close_mailbox (CONTEXT *ctx)
   if ((access (ctx->realpath, F_OK) == 0) && ci->append)
   {
     append = ci->append;
-    msg = _("Compressed-appending to %s...");
+    msg = (_("Compressed-appending to %s..."));
   }
   else
   {
     append = ci->close;
-    msg = _("Compressing %s...");
+    msg = (_("Compressing %s..."));
   }
 
   int rc = execute_command (ctx, append, msg);
@@ -707,7 +707,7 @@ check_mailbox (CONTEXT *ctx, int *index_hint)
     return -1;
   }
 
-  int rc = execute_command (ctx, ci->open, _("Decompressing %s"));
+  int rc = execute_command (ctx, ci->open, (_("Decompressing %s"));
   store_size (ctx);
   unlock_realpath (ctx);
   if (rc == 0)
@@ -904,7 +904,7 @@ sync_mailbox (CONTEXT *ctx, int *index_hint)
   if (rc != 0)
     goto sync_cleanup;
 
-  rc = execute_command (ctx, ci->close, _("Compressing %s"));
+  rc = execute_command (ctx, ci->close, (_("Compressing %s"));
   if (rc == 0)
   {
     rc = -1;

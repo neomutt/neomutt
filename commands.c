@@ -92,7 +92,7 @@ int mutt_display_message (HEADER *cur)
     else if (cur->security & SIGN)
     {
       /* find out whether or not the verify signature */
-      if (query_quadoption (OPT_VERIFYSIG, _("Verify PGP signature?")) == MUTT_YES)
+      if (query_quadoption (OPT_VERIFYSIG, (_("Verify PGP signature?")) == MUTT_YES)
       {
 	cmflags |= MUTT_CM_VERIFY;
       }
@@ -117,7 +117,7 @@ int mutt_display_message (HEADER *cur)
   mutt_mktemp (tempfile, sizeof (tempfile));
   if ((fpout = safe_fopen (tempfile, "w")) == NULL)
   {
-    mutt_error _("Could not create temporary file!");
+    mutt_error (_("Could not create temporary file!"));
     return (0);
   }
 
@@ -239,7 +239,7 @@ int mutt_display_message (HEADER *cur)
       mutt_set_flag (Context, cur, MUTT_READ, 1);
     if (r != -1 && option (OPTPROMPTAFTER))
     {
-      mutt_unget_event (mutt_any_key_to_continue _("Command: "), 0);
+      mutt_unget_event (mutt_any_key_to_continue (_("Command: ")), 0);
       rc = km_dokey (MENU_PAGER);
     }
     else
@@ -264,7 +264,7 @@ void ci_bounce_message (HEADER *h, int *redraw)
   {
     if (!h->env->from)
     {
-      mutt_error _("Warning: message contains no From: header");
+      mutt_error (_("Warning: message contains no From: header"));
       mutt_sleep (2);
     }
   }
@@ -274,7 +274,7 @@ void ci_bounce_message (HEADER *h, int *redraw)
     {
       if (Context->hdrs[rc]->tagged && !Context->hdrs[rc]->env->from)
       {
-	mutt_error _("Warning: message contains no From: header");
+	mutt_error (_("Warning: message contains no From: header"));
 	mutt_sleep (2);
 	break;
       }
@@ -282,9 +282,9 @@ void ci_bounce_message (HEADER *h, int *redraw)
   }
 
   if(h)
-    strfcpy(prompt, _("Bounce message to: "), sizeof(prompt));
+    strfcpy(prompt, (_("Bounce message to: ")), sizeof(prompt));
   else
-    strfcpy(prompt, _("Bounce tagged messages to: "), sizeof(prompt));
+    strfcpy(prompt, (_("Bounce tagged messages to: ")), sizeof(prompt));
   
   rc = mutt_get_field (prompt, buf, sizeof (buf), MUTT_ALIAS);
 
@@ -299,7 +299,7 @@ void ci_bounce_message (HEADER *h, int *redraw)
 
   if (!(adr = mutt_parse_adrlist (adr, buf)))
   {
-    mutt_error _("Error parsing address!");
+    mutt_error (_("Error parsing address!"));
     return;
   }
 
@@ -318,7 +318,7 @@ void ci_bounce_message (HEADER *h, int *redraw)
 
 #define extra_space (15 + 7 + 2)
   snprintf (scratch, sizeof (scratch),
-           (h ? _("Bounce message to %s") : _("Bounce messages to %s")), buf);
+           (h ? (_("Bounce message to %s")) : (_("Bounce messages to %s")), buf);
 
   if (mutt_strwidth (prompt) > MuttMessageWindow->cols - extra_space)
   {
@@ -334,7 +334,7 @@ void ci_bounce_message (HEADER *h, int *redraw)
   {
     rfc822_free_address (&adr);
     mutt_window_clearline (MuttMessageWindow, 0);
-    mutt_message (h ? _("Message not bounced.") : _("Messages not bounced."));
+    mutt_message (h ? (_("Message not bounced.")) : (_("Messages not bounced."));
     return;
   }
 
@@ -344,7 +344,7 @@ void ci_bounce_message (HEADER *h, int *redraw)
   rfc822_free_address (&adr);
   /* If no error, or background, display message. */
   if ((rc == 0) || (rc == S_BKG))
-    mutt_message (h ? _("Message bounced.") : _("Messages bounced."));
+    mutt_message (h ? (_("Message bounced.")) : (_("Messages bounced."));
 }
 
 static void pipe_set_flags (int decode, int print, int *cmflags, int *chflags)
@@ -421,7 +421,7 @@ static int _mutt_pipe_message (HEADER *h, char *cmd,
 
     if ((thepid = mutt_create_filter (cmd, &fpout, NULL, NULL)) < 0)
     {
-      mutt_perror _("Can't create filter process");
+      mutt_perror (_("Can't create filter process"));
       return 1;
     }
       
@@ -455,7 +455,7 @@ static int _mutt_pipe_message (HEADER *h, char *cmd,
 	  mutt_endwin (NULL);
 	  if ((thepid = mutt_create_filter (cmd, &fpout, NULL, NULL)) < 0)
 	  {
-	    mutt_perror _("Can't create filter process");
+	    mutt_perror (_("Can't create filter process"));
 	    return 1;
 	  }
           pipe_msg (Context->hdrs[Context->v2r[i]], fpout, decode, print);
@@ -472,7 +472,7 @@ static int _mutt_pipe_message (HEADER *h, char *cmd,
       mutt_endwin (NULL);
       if ((thepid = mutt_create_filter (cmd, &fpout, NULL, NULL)) < 0)
       {
-	mutt_perror _("Can't create filter process");
+	mutt_perror (_("Can't create filter process"));
 	return 1;
       }
       for (i = 0; i < Context->vcount; i++)
@@ -523,7 +523,7 @@ void mutt_print_message (HEADER *h)
   }
   
   if (query_quadoption (OPT_PRINT,
-			h ? _("Print message?") : _("Print tagged messages?"))
+			h ? (_("Print message?")) : (_("Print tagged messages?"))
 		  	!= MUTT_YES)
     return;
 
@@ -532,10 +532,10 @@ void mutt_print_message (HEADER *h)
 			  1,
 			  option (OPTPRINTSPLIT),
 			  "\f") == 0)
-    mutt_message (h ? _("Message printed") : _("Messages printed"));
+    mutt_message (h ? (_("Message printed")) : (_("Messages printed"));
   else
-    mutt_message (h ? _("Message could not be printed") :
-		  _("Messages could not be printed"));
+    mutt_message (h ? (_("Message could not be printed")) :
+		  (_("Messages could not be printed"));
 }
 
 
@@ -545,11 +545,11 @@ int mutt_select_sort (int reverse)
 
   switch (mutt_multi_choice (reverse ?
                              /* L10N: The highlighted letters must match the "Sort" options */
-			     _("Rev-Sort Date/Frm/Recv/Subj/tO/Thread/Unsort/siZe/sCore/sPam/Label?: ") :
+			     (_("Rev-Sort Date/Frm/Recv/Subj/tO/Thread/Unsort/siZe/sCore/sPam/Label?: ")) :
                              /* L10N: The highlighted letters must match the "Rev-Sort" options */
-			     _("Sort Date/Frm/Recv/Subj/tO/Thread/Unsort/siZe/sCore/sPam/Label?: "),
+			     (_("Sort Date/Frm/Recv/Subj/tO/Thread/Unsort/siZe/sCore/sPam/Label?: ")),
                              /* L10N: These must match the highlighted letters from "Sort" and "Rev-Sort" */
-			     _("dfrsotuzcpl")))
+			     (_("dfrsotuzcpl")))
   {
   case -1: /* abort - don't resort */
     return -1;
@@ -757,12 +757,12 @@ int mutt_save_message (HEADER *h, int delete,
 
   
   snprintf (prompt, sizeof (prompt),
-	    decode  ? (delete ? _("Decode-save%s to mailbox") :
-		       _("Decode-copy%s to mailbox")) :
-	    (decrypt ? (delete ? _("Decrypt-save%s to mailbox") :
+	    decode  ? (delete ? (_("Decode-save%s to mailbox")) :
+		       (_("Decode-copy%s to mailbox")) :
+	    (decrypt ? (delete ? (_("Decrypt-save%s to mailbox")) :
 			_("Decrypt-copy%s to mailbox")) :
-	     (delete ? _("Save%s to mailbox") : _("Copy%s to mailbox"))),
-	    h ? "" : _(" tagged"));
+	     (delete ? (_("Save%s to mailbox")) : (_("Copy%s to mailbox"))),
+	    h ? "" : (_(" tagged"));
   
 
   if (h)
@@ -993,7 +993,7 @@ void mutt_edit_content_type (HEADER *h, BODY *b, FILE *fp)
   if (!h && b->type == TYPETEXT && charset_changed)
   {
     int r;
-    snprintf (tmp, sizeof (tmp), _("Convert to %s upon sending?"),
+    snprintf (tmp, sizeof (tmp), (_("Convert to %s upon sending?")),
 	      mutt_get_parameter ("charset", b->parameter));
     if ((r = mutt_yesorno (tmp, !b->noconv)) != MUTT_ABORT)
       b->noconv = (r == MUTT_NO);
@@ -1010,7 +1010,7 @@ void mutt_edit_content_type (HEADER *h, BODY *b, FILE *fp)
       mutt_sleep (1);
     mutt_message (_("Character set changed to %s; %s."),
 		  mutt_get_parameter ("charset", b->parameter),
-		  b->noconv ? _("not converting") : _("converting"));
+		  b->noconv ? (_("not converting")) : (_("converting"));
   }
 
   b->force_charset |= charset_changed ? 1 : 0;

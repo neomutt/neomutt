@@ -60,7 +60,7 @@
 	    (MuttVars[idx].flags & R_RESORT)) \
 	{ \
 	  snprintf (err->data, err->dsize, \
-	    _("Not available in this menu.")); \
+	    (_("Not available in this menu.")); \
 	  return (-1); \
 	}
 
@@ -474,7 +474,7 @@ static int add_to_spam_list (SPAM_LIST **list, const char *pat, const char *temp
 
   if (!(rx = mutt_compile_regexp (pat, REG_ICASE)))
   {
-    snprintf (err->data, err->dsize, _("Bad regexp: %s"), pat);
+    snprintf (err->data, err->dsize, (_("Bad regexp: %s")), pat);
     return -1;
   }
 
@@ -627,7 +627,7 @@ static int finish_source (BUFFER *tmp, BUFFER *s, unsigned long data, BUFFER *er
 {
   if (MoreArgs (s))
   {
-    snprintf (err->data, err->dsize, _("finish: too many arguments"));
+    snprintf (err->data, err->dsize, (_("finish: too many arguments"));
     return -1;
   }
 
@@ -707,7 +707,7 @@ static int parse_ifdef (BUFFER *tmp, BUFFER *s, unsigned long data, BUFFER *err)
 
   if (!MoreArgs (s))
   {
-    snprintf (err->data, err->dsize, _("%s: too few arguments"),
+    snprintf (err->data, err->dsize, (_("%s: too few arguments")),
       (data ? "ifndef" : "ifdef"));
     return -1;
   }
@@ -840,9 +840,9 @@ static int parse_spam_list (BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *
   if (!MoreArgs(s))
   {
     if (data == MUTT_SPAM)
-      strfcpy(err->data, _("spam: no matching pattern"), err->dsize);
+      strfcpy(err->data, (_("spam: no matching pattern")), err->dsize);
     else
-      strfcpy(err->data, _("nospam: no matching pattern"), err->dsize);
+      strfcpy(err->data, (_("nospam: no matching pattern")), err->dsize);
     return -1;
   }
 
@@ -986,7 +986,7 @@ static int parse_group (BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err)
       switch (state)
       {
 	case NONE:
-	  snprintf (err->data, err->dsize, _("%sgroup: missing -rx or -addr."),
+	  snprintf (err->data, err->dsize, (_("%sgroup: missing -rx or -addr.")),
 		   data == MUTT_UNGROUP ? "un" : "");
 	  goto bail;
 
@@ -1004,7 +1004,7 @@ static int parse_group (BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err)
 	    goto bail;
 	  if (mutt_addrlist_to_intl (addr, &estr))
 	  { 
-	    snprintf (err->data, err->dsize, _("%sgroup: warning: bad IDN '%s'.\n"),
+	    snprintf (err->data, err->dsize, (_("%sgroup: warning: bad IDN '%s'.\n")),
 		      data == 1 ? "un" : "", estr);
 	    goto bail;
 	  }
@@ -1219,7 +1219,7 @@ static int parse_attachments (BUFFER *buf, BUFFER *s, unsigned long data, BUFFER
 
   mutt_extract_token(buf, s, 0);
   if (!buf->data || *buf->data == '\0') {
-    strfcpy(err->data, _("attachments: no disposition"), err->dsize);
+    strfcpy(err->data, (_("attachments: no disposition")), err->dsize);
     return -1;
   }
 
@@ -1257,7 +1257,7 @@ static int parse_attachments (BUFFER *buf, BUFFER *s, unsigned long data, BUFFER
       listp = &InlineExclude;
   }
   else {
-    strfcpy(err->data, _("attachments: invalid disposition"), err->dsize);
+    strfcpy(err->data, (_("attachments: invalid disposition")), err->dsize);
     return -1;
   }
 
@@ -1271,7 +1271,7 @@ static int parse_unattachments (BUFFER *buf, BUFFER *s, unsigned long data, BUFF
 
   mutt_extract_token(buf, s, 0);
   if (!buf->data || *buf->data == '\0') {
-    strfcpy(err->data, _("unattachments: no disposition"), err->dsize);
+    strfcpy(err->data, (_("unattachments: no disposition")), err->dsize);
     return -1;
   }
 
@@ -1294,7 +1294,7 @@ static int parse_unattachments (BUFFER *buf, BUFFER *s, unsigned long data, BUFF
       listp = &InlineExclude;
   }
   else {
-    strfcpy(err->data, _("unattachments: invalid disposition"), err->dsize);
+    strfcpy(err->data, (_("unattachments: invalid disposition")), err->dsize);
     return -1;
   }
 
@@ -1421,7 +1421,7 @@ static int parse_alias (BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err)
   
   if (!MoreArgs (s))
   {
-    strfcpy (err->data, _("alias: no address"), err->dsize);
+    strfcpy (err->data, (_("alias: no address")), err->dsize);
     return (-1);
   }
 
@@ -1469,7 +1469,7 @@ static int parse_alias (BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err)
     Aliases = tmp;
   if (mutt_addrlist_to_intl (tmp->addr, &estr))
   {
-    snprintf (err->data, err->dsize, _("Warning: Bad IDN '%s' in alias '%s'.\n"),
+    snprintf (err->data, err->dsize, (_("Warning: Bad IDN '%s' in alias '%s'.\n")),
 	      estr, tmp->name);
     goto bail;
   }
@@ -1557,7 +1557,7 @@ static int parse_my_hdr (BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err
   mutt_extract_token (buf, s, MUTT_TOKEN_SPACE | MUTT_TOKEN_QUOTE);
   if ((p = strpbrk (buf->data, ": \t")) == NULL || *p != ':')
   {
-    strfcpy (err->data, _("invalid header field"), err->dsize);
+    strfcpy (err->data, (_("invalid header field")), err->dsize);
     return (-1);
   }
   keylen = p - buf->data + 1;
@@ -1610,7 +1610,7 @@ parse_sort (short *val, const char *s, const struct mapping_t *map, BUFFER *err)
 
   if ((i = mutt_getvaluebyname (s, map)) == -1)
   {
-    snprintf (err->data, err->dsize, _("%s: unknown sorting method"), s);
+    snprintf (err->data, err->dsize, (_("%s: unknown sorting method")), s);
     return (-1);
   }
 
@@ -1721,7 +1721,7 @@ static void mutt_restore_default (struct option_t *p)
 	  {
 	    char msgbuf[STRING];
 	    regerror (retval, pp->rx, msgbuf, sizeof (msgbuf));
-	    fprintf (stderr, _("mutt_restore_default(%s): error in regexp: %s\n"),
+	    fprintf (stderr, (_("mutt_restore_default(%s): error in regexp: %s\n")),
 		     p->option, pp->pattern);
 	    fprintf (stderr, "%s\n", msgbuf);
 	    mutt_sleep (0);
@@ -1876,7 +1876,7 @@ static int parse_set (BUFFER *tmp, BUFFER *s, unsigned long data, BUFFER *err)
     else if ((idx = mutt_option_index (tmp->data)) == -1 &&
 	!(reset && !mutt_strcmp ("all", tmp->data)))
     {
-      snprintf (err->data, err->dsize, _("%s: unknown variable"), tmp->data);
+      snprintf (err->data, err->dsize, (_("%s: unknown variable")), tmp->data);
       return (-1);
     }
     SKIPWS (s->dptr);
@@ -1885,13 +1885,13 @@ static int parse_set (BUFFER *tmp, BUFFER *s, unsigned long data, BUFFER *err)
     {
       if (query || unset || inv)
       {
-	snprintf (err->data, err->dsize, _("prefix is illegal with reset"));
+	snprintf (err->data, err->dsize, (_("prefix is illegal with reset"));
 	return (-1);
       }
 
       if (s && *s->dptr == '=')
       {
-	snprintf (err->data, err->dsize, _("value is illegal with reset"));
+	snprintf (err->data, err->dsize, (_("value is illegal with reset"));
 	return (-1);
       }
      
@@ -1899,7 +1899,7 @@ static int parse_set (BUFFER *tmp, BUFFER *s, unsigned long data, BUFFER *err)
       {
 	if (CurrentMenu == MENU_PAGER)
 	{
-	  snprintf (err->data, err->dsize, _("Not available in this menu."));
+	  snprintf (err->data, err->dsize, (_("Not available in this menu."));
 	  return (-1);
 	}
 	for (idx = 0; MuttVars[idx].option; idx++)
@@ -1927,7 +1927,7 @@ static int parse_set (BUFFER *tmp, BUFFER *s, unsigned long data, BUFFER *err)
       {
 	if (unset || inv || query)
 	{
-	  snprintf (err->data, err->dsize, _("Usage: set variable=yes|no"));
+	  snprintf (err->data, err->dsize, (_("Usage: set variable=yes|no"));
 	  return (-1);
 	}
 
@@ -1939,7 +1939,7 @@ static int parse_set (BUFFER *tmp, BUFFER *s, unsigned long data, BUFFER *err)
 	  unset = 1;
 	else
 	{
-	  snprintf (err->data, err->dsize, _("Usage: set variable=yes|no"));
+	  snprintf (err->data, err->dsize, (_("Usage: set variable=yes|no"));
 	  return (-1);
 	}
       }
@@ -1947,7 +1947,7 @@ static int parse_set (BUFFER *tmp, BUFFER *s, unsigned long data, BUFFER *err)
       if (query)
       {
 	snprintf (err->data, err->dsize, option (MuttVars[idx].data)
-			? _("%s is set") : _("%s is unset"), tmp->data);
+			? (_("%s is set")) : (_("%s is unset")), tmp->data);
 	return 0;
       }
 
@@ -1989,7 +1989,7 @@ static int parse_set (BUFFER *tmp, BUFFER *s, unsigned long data, BUFFER *err)
           }
           else
           {
-            snprintf (err->data, err->dsize, _("%s: unknown variable"), myvar);
+            snprintf (err->data, err->dsize, (_("%s: unknown variable")), myvar);
             return (-1);
           }
         }
@@ -2050,7 +2050,7 @@ static int parse_set (BUFFER *tmp, BUFFER *s, unsigned long data, BUFFER *err)
 	      /* $charset can't be empty, others can */
 	      (strcmp(MuttVars[idx].option, "charset") == 0 && ! *tmp->data))
 	  {
-	    snprintf (err->data, err->dsize, _("Invalid value for option %s: \"%s\""),
+	    snprintf (err->data, err->dsize, (_("Invalid value for option %s: \"%s\"")),
 		      MuttVars[idx].option, tmp->data);
 	    return (-1);
 	  }
@@ -2187,7 +2187,7 @@ static int parse_set (BUFFER *tmp, BUFFER *s, unsigned long data, BUFFER *err)
       mutt_extract_token (tmp, s, 0);
       if (mx_set_magic (tmp->data))
       {
-	snprintf (err->data, err->dsize, _("%s: invalid mailbox type"), tmp->data);
+	snprintf (err->data, err->dsize, (_("%s: invalid mailbox type")), tmp->data);
 	r = -1;
 	break;
       }
@@ -2218,8 +2218,8 @@ static int parse_set (BUFFER *tmp, BUFFER *s, unsigned long data, BUFFER *err)
 
       if (rc < 0 || !*tmp->data)
       {
-	snprintf (err->data, err->dsize, _("%s: invalid value (%s)"), tmp->data,
-		  rc == -1 ? _("format error") : _("number overflow"));
+	snprintf (err->data, err->dsize, (_("%s: invalid value (%s)")), tmp->data,
+		  rc == -1 ? (_("format error")) : (_("number overflow"));
 	r = -1;
 	break;
       }
@@ -2279,7 +2279,7 @@ static int parse_set (BUFFER *tmp, BUFFER *s, unsigned long data, BUFFER *err)
 	  set_quadoption (MuttVars[idx].data, MUTT_ASKNO);
 	else
 	{
-	  snprintf (err->data, err->dsize, _("%s: invalid value"), tmp->data);
+	  snprintf (err->data, err->dsize, (_("%s: invalid value")), tmp->data);
 	  r = -1;
 	  break;
 	}
@@ -2323,7 +2323,7 @@ static int parse_set (BUFFER *tmp, BUFFER *s, unsigned long data, BUFFER *err)
 
       if (!map)
       {
-	snprintf (err->data, err->dsize, _("%s: Unknown type."), MuttVars[idx].option);
+	snprintf (err->data, err->dsize, (_("%s: Unknown type.")), MuttVars[idx].option);
 	r = -1;
 	break;
       }
@@ -2370,7 +2370,7 @@ static int parse_set (BUFFER *tmp, BUFFER *s, unsigned long data, BUFFER *err)
       }
       else
       {
-          snprintf (err->data, err->dsize, _("%s: invalid backend"), tmp->data);
+          snprintf (err->data, err->dsize, (_("%s: invalid backend")), tmp->data);
           r = -1;
           break;
       }
@@ -2378,7 +2378,7 @@ static int parse_set (BUFFER *tmp, BUFFER *s, unsigned long data, BUFFER *err)
 #endif
     else
     {
-      snprintf (err->data, err->dsize, _("%s: unknown type"), MuttVars[idx].option);
+      snprintf (err->data, err->dsize, (_("%s: unknown type")), MuttVars[idx].option);
       r = -1;
       break;
     }
@@ -2469,8 +2469,8 @@ static int source_rc (const char *rcfile, BUFFER *err)
   if (rc)
   {
     /* the muttrc source keyword */
-    snprintf (err->data, err->dsize, rc >= -MAXERRS ? _("source: errors in %s")
-      : _("source: reading aborted due to too many errors in %s"), rcfile);
+    snprintf (err->data, err->dsize, rc >= -MAXERRS ? (_("source: errors in %s"))
+      : (_("source: reading aborted due to too many errors in %s")), rcfile);
     rc = -1;
   }
   return (rc);
@@ -2484,12 +2484,12 @@ static int parse_source (BUFFER *tmp, BUFFER *s, unsigned long data, BUFFER *err
 
   if (mutt_extract_token (tmp, s, 0) != 0)
   {
-    snprintf (err->data, err->dsize, _("source: error at %s"), s->dptr);
+    snprintf (err->data, err->dsize, (_("source: error at %s")), s->dptr);
     return (-1);
   }
   if (MoreArgs (s))
   {
-    strfcpy (err->data, _("source: too many arguments"), err->dsize);
+    strfcpy (err->data, (_("source: too many arguments")), err->dsize);
     return (-1);
   }
   strfcpy (path, tmp->data, sizeof (path));
@@ -2545,7 +2545,7 @@ int mutt_parse_rc_line (/* const */ char *line, BUFFER *token, BUFFER *err)
     }
     if (!Commands[i].name)
     {
-      snprintf (err->data, err->dsize, _("%s: unknown command"), NONULL (token->data));
+      snprintf (err->data, err->dsize, (_("%s: unknown command")), NONULL (token->data));
       r = -1;
       break;            /* Ignore the rest of the line */
     }
@@ -3205,7 +3205,7 @@ static int mutt_execute_commands (LIST *p)
   {
     if (mutt_parse_rc_line (p->data, &token, &err) == -1)
     {
-      fprintf (stderr, _("Error in command line: %s\n"), err.data);
+      fprintf (stderr, (_("Error in command line: %s\n")), err.data);
       FREE (&token.data);
       FREE (&err.data);
 
@@ -3597,7 +3597,7 @@ static int parse_group_context (group_context_t **ctx, BUFFER *buf, BUFFER *s, u
   {
     if (!MoreArgs (s)) 
     {
-      strfcpy (err->data, _("-group: no group name"), err->dsize);
+      strfcpy (err->data, (_("-group: no group name")), err->dsize);
       goto bail;
     }
     
@@ -3607,7 +3607,7 @@ static int parse_group_context (group_context_t **ctx, BUFFER *buf, BUFFER *s, u
     
     if (!MoreArgs (s))
     {
-      strfcpy (err->data, _("out of arguments"), err->dsize);
+      strfcpy (err->data, (_("out of arguments")), err->dsize);
       goto bail;
     }
     

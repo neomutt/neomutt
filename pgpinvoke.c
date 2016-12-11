@@ -307,7 +307,7 @@ void pgp_invoke_getkeys (ADDRESS *addr)
 
   devnull = open ("/dev/null", O_RDWR);
 
-  if (!isendwin ()) mutt_message  _("Fetching PGP key...");
+  if (!isendwin ()) mutt_message  (_("Fetching PGP key..."));
 
   mutt_system (cmd);
 

@@ -119,7 +119,7 @@ status_format_str (char *buf, size_t buflen, size_t col, int cols, char op, cons
 	mutt_pretty_mailbox (tmp, sizeof (tmp));
       }
       else
-	strfcpy (tmp, _("(no mailbox)"), sizeof (tmp));
+	strfcpy (tmp, (_("(no mailbox)")), sizeof (tmp));
 
       snprintf (fmt, sizeof(fmt), "%%%ss", prefix);
       snprintf (buf, buflen, fmt, tmp);

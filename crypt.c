@@ -64,12 +64,12 @@ void crypt_current_time(STATE *s, char *app_name)
   if (option (OPTCRYPTTIMESTAMP))
   {
     t = time(NULL);
-    strftime (p, sizeof (p), _(" (current time: %c)"), localtime (&t));
+    strftime (p, sizeof (p), (_(" (current time: %c)")), localtime (&t));
   }
   else
     *p = '\0';
 
-  snprintf (tmp, sizeof (tmp), _("[-- %s output follows%s --]\n"), NONULL(app_name), p);
+  snprintf (tmp, sizeof (tmp), (_("[-- %s output follows%s --]\n")), NONULL(app_name), p);
   state_attach_puts (tmp, s);
 }
 
@@ -84,7 +84,7 @@ void crypt_forget_passphrase (void)
     crypt_smime_void_passphrase ();
 
   if (WithCrypto)
-    mutt_message _("Passphrase(s) forgotten.");
+    mutt_message (_("Passphrase(s) forgotten."));
 }
 
 
@@ -146,16 +146,16 @@ int mutt_protect (HEADER *msg, char *keylist)
         ascii_strcasecmp (msg->content->subtype, "plain"))
     {
       if (query_quadoption (OPT_PGPMIMEAUTO,
-          _("Inline PGP can't be used with attachments.  Revert to PGP/MIME?")) != MUTT_YES)
+          (_("Inline PGP can't be used with attachments.  Revert to PGP/MIME?")) != MUTT_YES)
       {
-        mutt_error _("Mail not sent: inline PGP can't be used with attachments.");
+        mutt_error (_("Mail not sent: inline PGP can't be used with attachments."));
         return -1;
       }
     }
     else
     {
       /* they really want to send it inline... go for it */
-      if (!isendwin ()) mutt_endwin _("Invoking PGP...");
+      if (!isendwin ()) mutt_endwin (_("Invoking PGP..."));
       pbody = crypt_pgp_traditional_encryptsign (msg->content, flags, keylist);
       if (pbody)
       {
@@ -164,9 +164,9 @@ int mutt_protect (HEADER *msg, char *keylist)
       }
 
       /* otherwise inline won't work...ask for revert */
-      if (query_quadoption (OPT_PGPMIMEAUTO, _("Message can't be sent inline.  Revert to using PGP/MIME?")) != MUTT_YES)
+      if (query_quadoption (OPT_PGPMIMEAUTO, (_("Message can't be sent inline.  Revert to using PGP/MIME?")) != MUTT_YES)
       {
-        mutt_error _("Mail not sent.");
+        mutt_error (_("Mail not sent."));
         return -1;
       }
     }
@@ -230,7 +230,7 @@ int mutt_protect (HEADER *msg, char *keylist)
     {
       char *new_keylist = keylist;
 
-      if (SmimeDefaultKey && query_quadoption(OPT_SMIMEENCRYPTSELF, _("Encrypt message to S/MIME Default Key also?")) == MUTT_YES)
+      if (SmimeDefaultKey && query_quadoption(OPT_SMIMEENCRYPTSELF, (_("Encrypt message to S/MIME Default Key also?")) == MUTT_YES)
       {
         /* +1 for NULL, +1 for \n */
         int size = mutt_strlen(keylist) + mutt_strlen(SmimeDefaultKey) + 2;
@@ -264,7 +264,7 @@ int mutt_protect (HEADER *msg, char *keylist)
     {
       char *new_keylist = keylist;
 
-      if (PgpSignAs && query_quadoption (OPT_PGPENCRYPTSELF, _("Encrypt message to PGP Default Key also?")) == MUTT_YES)
+      if (PgpSignAs && query_quadoption (OPT_PGPENCRYPTSELF, (_("Encrypt message to PGP Default Key also?")) == MUTT_YES)
       {
         /* +1 for SPACE, +1 for NULL */
         int size = mutt_strlen (keylist) + mutt_strlen (PgpSignAs) + 2;

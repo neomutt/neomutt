@@ -306,7 +306,7 @@ static int imap_check_capabilities (IMAP_DATA* idata)
   if (!(mutt_bit_isset(idata->capabilities,IMAP4)
       ||mutt_bit_isset(idata->capabilities,IMAP4REV1)))
   {
-    mutt_error _("This IMAP server is ancient. NeoMutt does not work with it.");
+    mutt_error (_("This IMAP server is ancient. NeoMutt does not work with it."));
     mutt_sleep (2);	/* pause a moment to let the user see the error */
 
     return -1;
@@ -431,7 +431,7 @@ int imap_open_connection (IMAP_DATA* idata)
       if (option(OPTSSLFORCETLS))
         rc = MUTT_YES;
       else if ((rc = query_quadoption (OPT_SSLSTARTTLS,
-        _("Secure connection with TLS?"))) == MUTT_ABORT)
+        (_("Secure connection with TLS?"))) == MUTT_ABORT)
 	goto err_close_conn;
       if (rc == MUTT_YES) {
 	if ((rc = imap_exec (idata, "STARTTLS", IMAP_CMD_FAIL_OK)) == -1)
@@ -456,7 +456,7 @@ int imap_open_connection (IMAP_DATA* idata)
 
     if (option(OPTSSLFORCETLS) && ! idata->conn->ssf)
     {
-      mutt_error _("Encrypted connection unavailable");
+      mutt_error (_("Encrypted connection unavailable"));
       mutt_sleep (1);
       goto err_close_conn;
     }
@@ -754,7 +754,7 @@ static int imap_open_mailbox (CONTEXT* ctx)
 
   if (count && (imap_read_headers (idata, 0, count-1) < 0))
   {
-    mutt_error _("Error opening mailbox");
+    mutt_error (_("Error opening mailbox"));
     mutt_sleep (1);
     goto fail;
   }
@@ -805,7 +805,7 @@ static int imap_open_mailbox_append (CONTEXT *ctx, int flags)
   if (rc == -1)
     return -1;
 
-  snprintf (buf, sizeof (buf), _("Create %s?"), mailbox);
+  snprintf (buf, sizeof (buf), (_("Create %s?")), mailbox);
   if (option (OPTCONFIRMCREATE) && mutt_yesorno (buf, 1) != MUTT_YES)
     return -1;
 
@@ -1306,7 +1306,7 @@ int imap_sync_mailbox (CONTEXT* ctx, int expunge, int* index_hint)
       }
     }
     else
-      mutt_error _("Error saving flags");
+      mutt_error (_("Error saving flags"));
     rc = -1;
     goto out;
   }
@@ -1329,7 +1329,7 @@ int imap_sync_mailbox (CONTEXT* ctx, int expunge, int* index_hint)
   if (expunge && !(ctx->closing) &&
       mutt_bit_isset(ctx->rights, MUTT_ACL_DELETE))
   {
-    mutt_message _("Expunging messages from server...");
+    mutt_message (_("Expunging messages from server..."));
     /* Set expunge bit so we don't get spurious reopened messages */
     idata->reopen |= IMAP_EXPUNGE_EXPECTED;
     if (imap_exec (idata, "EXPUNGE", 0) != 0)
@@ -2154,7 +2154,7 @@ int imap_fast_trash (CONTEXT* ctx, char* dest)
       if (ascii_strncasecmp (imap_get_qualifier (idata->buf), "[TRYCREATE]", 11))
         break;
       dprint (3, (debugfile, "imap_fast_trash: server suggests TRYCREATE\n"));
-      snprintf (prompt, sizeof (prompt), _("Create %s?"), mbox);
+      snprintf (prompt, sizeof (prompt), (_("Create %s?")), mbox);
       if (option (OPTCONFIRMCREATE) && mutt_yesorno (prompt, 1) != MUTT_YES)
       {
         mutt_clear_error ();

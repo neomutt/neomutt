@@ -554,7 +554,7 @@ static int active_get_cache (NNTP_SERVER *nserv)
   }
   nserv->newgroups_time = t;
 
-  mutt_message _("Loading list of groups from cache...");
+  mutt_message (_("Loading list of groups from cache..."));
   while (fgets (buf, sizeof (buf), fp))
     nntp_add_group (buf, nserv);
   nntp_add_group (NULL, NULL);
@@ -881,7 +881,7 @@ NNTP_SERVER *nntp_select_server (char *server, int leave_lock)
 
   if (!server || !*server)
   {
-    mutt_error _("No news server defined!");
+    mutt_error (_("No news server defined!"));
     mutt_sleep (2);
     return NULL;
   }

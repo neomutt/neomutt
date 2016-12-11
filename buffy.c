@@ -703,7 +703,7 @@ int mutt_buffy_list (void)
   int have_unnotified = BuffyNotify;
   
   buffylist[0] = 0;
-  pos += strlen (strncat (buffylist, _("New mail in "), sizeof (buffylist) - 1 - pos)); /* __STRNCAT_CHECKED__ */
+  pos += strlen (strncat (buffylist, (_("New mail in ")), sizeof (buffylist) - 1 - pos)); /* __STRNCAT_CHECKED__ */
   for (tmp = Incoming; tmp; tmp = tmp->next)
   {
     /* Is there new mail in this mailbox? */

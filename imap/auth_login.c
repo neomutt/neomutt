@@ -35,7 +35,7 @@ imap_auth_res_t imap_auth_login (IMAP_DATA* idata, const char* method)
 
   if (mutt_bit_isset (idata->capabilities, LOGINDISABLED))
   {
-    mutt_message _("LOGIN disabled on this server.");
+    mutt_message (_("LOGIN disabled on this server."));
     return IMAP_AUTH_UNAVAIL;
   }
 
@@ -44,7 +44,7 @@ imap_auth_res_t imap_auth_login (IMAP_DATA* idata, const char* method)
   if (mutt_account_getpass (&idata->conn->account))
     return IMAP_AUTH_FAILURE;
 
-  mutt_message _("Logging in...");
+  mutt_message (_("Logging in..."));
 
   imap_quote_string (q_user, sizeof (q_user), idata->conn->account.user);
   imap_quote_string (q_pass, sizeof (q_pass), idata->conn->account.pass);
@@ -67,7 +67,7 @@ imap_auth_res_t imap_auth_login (IMAP_DATA* idata, const char* method)
     return IMAP_AUTH_SUCCESS;
   }
 
-  mutt_error _("Login failed.");
+  mutt_error (_("Login failed."));
   mutt_sleep (2);
   return IMAP_AUTH_FAILURE;
 }

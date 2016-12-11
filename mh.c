@@ -1274,7 +1274,7 @@ static int mh_read_dir (CONTEXT * ctx, const char *subdir)
   memset (&mhs, 0, sizeof (mhs));
   if (!ctx->quiet)
   {
-    snprintf (msgbuf, sizeof (msgbuf), _("Scanning %s..."), ctx->path);
+    snprintf (msgbuf, sizeof (msgbuf), (_("Scanning %s...")), ctx->path);
     mutt_progress_init (&progress, msgbuf, MUTT_PROGRESS_MSG, ReadInc, 0);
   }
 
@@ -1294,7 +1294,7 @@ static int mh_read_dir (CONTEXT * ctx, const char *subdir)
 
   if (!ctx->quiet)
   {
-    snprintf (msgbuf, sizeof (msgbuf), _("Reading %s..."), ctx->path);
+    snprintf (msgbuf, sizeof (msgbuf), (_("Reading %s...")), ctx->path);
     mutt_progress_init (&progress, msgbuf, MUTT_PROGRESS_MSG, ReadInc, count);
   }
   maildir_delayed_parsing (ctx, &md, &progress);
@@ -2023,7 +2023,7 @@ int mh_sync_mailbox (CONTEXT * ctx, int *index_hint)
 
   if (!ctx->quiet)
   {
-    snprintf (msgbuf, sizeof (msgbuf), _("Writing %s..."), ctx->path);
+    snprintf (msgbuf, sizeof (msgbuf), (_("Writing %s...")), ctx->path);
     mutt_progress_init (&progress, msgbuf, MUTT_PROGRESS_MSG, WriteInc, ctx->msgcount);
   }
 

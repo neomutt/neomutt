@@ -359,13 +359,13 @@ parse_color_name (const char *s, int *col, int *attr, int is_fg, BUFFER *err)
     if (!*s || *eptr || *col < 0 ||
 	(*col >= COLORS && !option(OPTNOCURSES) && has_colors()))
     {
-      snprintf (err->data, err->dsize, _("%s: color not supported by term"), s);
+      snprintf (err->data, err->dsize, (_("%s: color not supported by term")), s);
       return (-1);
     }
   }
   else if ((*col = mutt_getvaluebyname (s, Colors)) == -1)
   {
-    snprintf (err->data, err->dsize, _("%s: no such color"), s);
+    snprintf (err->data, err->dsize, (_("%s: no such color")), s);
     return (-1);
   }
 
@@ -478,7 +478,7 @@ static int _mutt_parse_uncolor (BUFFER *buf, BUFFER *s, unsigned long data,
 
   if ((object = mutt_getvaluebyname (buf->data, Fields)) == -1)
   {
-    snprintf (err->data, err->dsize, _("%s: no such object"), buf->data);
+    snprintf (err->data, err->dsize, (_("%s: no such object")), buf->data);
     return (-1);
   }
 
@@ -493,7 +493,7 @@ static int _mutt_parse_uncolor (BUFFER *buf, BUFFER *s, unsigned long data,
       (mutt_strncmp (buf->data, "index",  5) != 0))
   {
     snprintf (err->data, err->dsize,
-	      _("%s: command valid only for index, body, header objects"),
+	      (_("%s: command valid only for index, body, header objects")),
 	      parse_uncolor ? "uncolor" : "unmono");
     return (-1);
   }
@@ -501,7 +501,7 @@ static int _mutt_parse_uncolor (BUFFER *buf, BUFFER *s, unsigned long data,
   if (!MoreArgs (s))
   {
     snprintf (err->data, err->dsize,
-	      _("%s: too few arguments"), parse_uncolor ? "uncolor" : "unmono");
+	      (_("%s: too few arguments")), parse_uncolor ? "uncolor" : "unmono");
     return (-1);
   }
 
@@ -656,7 +656,7 @@ parse_object(BUFFER *buf, BUFFER *s, int *o, int *ql, BUFFER *err)
   
   if(!MoreArgs(s))
   {
-    strfcpy(err->data, _("Missing arguments."), err->dsize);
+    strfcpy(err->data, (_("Missing arguments.")), err->dsize);
     return -1;
   }
   
@@ -668,7 +668,7 @@ parse_object(BUFFER *buf, BUFFER *s, int *o, int *ql, BUFFER *err)
       *ql = strtol(buf->data + 6, &eptr, 10);
       if(*eptr || q_level < 0)
       {
-	snprintf(err->data, err->dsize, _("%s: no such object"), buf->data);
+	snprintf(err->data, err->dsize, (_("%s: no such object")), buf->data);
 	return -1;
       }
     }
@@ -679,7 +679,7 @@ parse_object(BUFFER *buf, BUFFER *s, int *o, int *ql, BUFFER *err)
   }
   else if ((*o = mutt_getvaluebyname (buf->data, Fields)) == -1)
   {
-    snprintf (err->data, err->dsize, _("%s: no such object"), buf->data);
+    snprintf (err->data, err->dsize, (_("%s: no such object")), buf->data);
     return (-1);
   }
 
@@ -695,7 +695,7 @@ parse_color_pair(BUFFER *buf, BUFFER *s, int *fg, int *bg, int *attr, BUFFER *er
 {
   if (! MoreArgs (s))
   {
-    strfcpy (err->data, _("color: too few arguments"), err->dsize);
+    strfcpy (err->data, (_("color: too few arguments")), err->dsize);
     return (-1);
   }
 
@@ -706,7 +706,7 @@ parse_color_pair(BUFFER *buf, BUFFER *s, int *fg, int *bg, int *attr, BUFFER *er
 
   if (! MoreArgs (s))
   {
-    strfcpy (err->data, _("color: too few arguments"), err->dsize);
+    strfcpy (err->data, (_("color: too few arguments")), err->dsize);
     return (-1);
   }
   
@@ -729,7 +729,7 @@ parse_attr_spec(BUFFER *buf, BUFFER *s, int *fg, int *bg, int *attr, BUFFER *err
 
   if (! MoreArgs (s))
   {
-    strfcpy (err->data, _("mono: too few arguments"), err->dsize);
+    strfcpy (err->data, (_("mono: too few arguments")), err->dsize);
     return (-1);
   }
 
@@ -749,7 +749,7 @@ parse_attr_spec(BUFFER *buf, BUFFER *s, int *fg, int *bg, int *attr, BUFFER *err
     *attr = A_NORMAL; /* needs use = instead of |= to clear other bits */
   else
   {
-    snprintf (err->data, err->dsize, _("%s: no such attribute"), buf->data);
+    snprintf (err->data, err->dsize, (_("%s: no such attribute")), buf->data);
     return (-1);
   }
   
@@ -797,7 +797,7 @@ _mutt_parse_color (BUFFER *buf, BUFFER *s, BUFFER *err,
       (object == MT_COLOR_INDEX_SUBJECT)) {
     if (!MoreArgs (s))
     {
-      strfcpy (err->data, _("too few arguments"), err->dsize);
+      strfcpy (err->data, (_("too few arguments")), err->dsize);
       return -1;
     }
 
@@ -806,7 +806,7 @@ _mutt_parse_color (BUFFER *buf, BUFFER *s, BUFFER *err,
    
   if (MoreArgs (s) && (object != MT_COLOR_STATUS))
   {
-    strfcpy (err->data, _("too many arguments"), err->dsize);
+    strfcpy (err->data, (_("too many arguments")), err->dsize);
     return (-1);
   }
   
@@ -826,7 +826,7 @@ _mutt_parse_color (BUFFER *buf, BUFFER *s, BUFFER *err,
     && (fg == COLOR_DEFAULT || bg == COLOR_DEFAULT)
     && use_default_colors () != OK)
   {
-    strfcpy (err->data, _("default colors not supported"), err->dsize);
+    strfcpy (err->data, (_("default colors not supported")), err->dsize);
     return (-1);
   }
 # endif /* HAVE_USE_DEFAULT_COLORS */
@@ -855,7 +855,7 @@ _mutt_parse_color (BUFFER *buf, BUFFER *s, BUFFER *err,
     }
 
     if (MoreArgs (s)) {
-      strfcpy (err->data, _("too many arguments"), err->dsize);
+      strfcpy (err->data, (_("too many arguments")), err->dsize);
       return -1;
     }
 

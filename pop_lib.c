@@ -205,11 +205,11 @@ static int pop_capabilities (POP_DATA *pop_data, int mode)
     char *msg = NULL;
 
     if (!pop_data->expire)
-      msg = _("Unable to leave messages on server.");
+      msg = (_("Unable to leave messages on server."));
     if (!pop_data->cmd_top)
-      msg = _("Command TOP is not supported by server.");
+      msg = (_("Command TOP is not supported by server."));
     if (!pop_data->cmd_uidl)
-      msg = _("Command UIDL is not supported by server.");
+      msg = (_("Command UIDL is not supported by server."));
     if (msg && pop_data->cmd_capa)
     {
       mutt_error (msg);
@@ -292,7 +292,7 @@ int pop_open_connection (POP_DATA *pop_data)
     if (pop_data->use_stls == 0)
     {
       ret = query_quadoption (OPT_SSLSTARTTLS,
-	    _("Secure connection with TLS?"));
+	    (_("Secure connection with TLS?"));
       if (ret == MUTT_ABORT)
 	return -2;
       pop_data->use_stls = 1;
@@ -333,7 +333,7 @@ int pop_open_connection (POP_DATA *pop_data)
 
   if (option(OPTSSLFORCETLS) && !pop_data->conn->ssf)
   {
-    mutt_error _("Encrypted connection unavailable");
+    mutt_error (_("Encrypted connection unavailable"));
     mutt_sleep (1);
     return -2;
   }
@@ -375,7 +375,7 @@ int pop_open_connection (POP_DATA *pop_data)
 
 err_conn:
   pop_data->status = POP_DISCONNECTED;
-  mutt_error _("Server closed connection!");
+  mutt_error (_("Server closed connection!"));
   mutt_sleep (2);
   return -1;
 }
@@ -389,7 +389,7 @@ void pop_logout (CONTEXT *ctx)
 
   if (pop_data->status == POP_CONNECTED)
   {
-    mutt_message _("Closing connection to POP server...");
+    mutt_message (_("Closing connection to POP server..."));
 
     if (ctx->readonly)
     {
@@ -568,7 +568,7 @@ int pop_reconnect (CONTEXT *ctx)
     {
       int i;
 
-      mutt_progress_init (&progressbar, _("Verifying message indexes..."),
+      mutt_progress_init (&progressbar, (_("Verifying message indexes...")),
 			  MUTT_PROGRESS_SIZE, NetInc, 0);
 
       for (i = 0; i < ctx->msgcount; i++)

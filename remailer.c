@@ -509,7 +509,7 @@ void mix_make_chain (LIST **chainp, int *redraw)
 
   if (!(type2_list = mix_type2_list (&ttll)))
   {
-    mutt_error _("Can't get mixmaster's type2.list!");
+    mutt_error (_("Can't get mixmaster's type2.list!"));
     return;
   }
 
@@ -534,7 +534,7 @@ void mix_make_chain (LIST **chainp, int *redraw)
   menu->max = ttll;
   menu->make_entry = mix_entry;
   menu->tag = NULL;
-  menu->title = _("Select a remailer chain.");
+  menu->title = (_("Select a remailer chain."));
   menu->data = type2_list;
   menu->help = mutt_compile_help (helpstr, sizeof (helpstr), MENU_MIX, RemailerHelp);
   menu->pagelen = MIX_VOFFSET - 1;
@@ -646,7 +646,7 @@ void mix_make_chain (LIST **chainp, int *redraw)
 	}
 	else
 	{
-	  mutt_error _("The remailer chain is already empty.");
+	  mutt_error (_("The remailer chain is already empty."));
 	}
 	break;
       }
@@ -656,7 +656,7 @@ void mix_make_chain (LIST **chainp, int *redraw)
 	if (c_cur) 
 	  c_cur--;
 	else
-	  mutt_error _("You already have the first chain element selected.");
+	  mutt_error (_("You already have the first chain element selected."));
 	
 	break;
       }
@@ -666,7 +666,7 @@ void mix_make_chain (LIST **chainp, int *redraw)
 	if (chain->cl && c_cur < chain->cl - 1)
 	  c_cur++;
 	else
-	  mutt_error _("You already have the last chain element selected.");
+	  mutt_error (_("You already have the last chain element selected."));
 	
 	break;
       }
@@ -705,7 +705,7 @@ int mix_check_message (HEADER *msg)
   
   if (msg->env->cc || msg->env->bcc)
   {
-    mutt_error _("Mixmaster doesn't accept Cc or Bcc headers.");
+    mutt_error (_("Mixmaster doesn't accept Cc or Bcc headers."));
     return -1;
   }
 
@@ -729,7 +729,7 @@ int mix_check_message (HEADER *msg)
     
     if (!(fqdn = mutt_fqdn (1)))
     {
-      mutt_error _("Please set the hostname variable to a proper value when using mixmaster!");
+      mutt_error (_("Please set the hostname variable to a proper value when using mixmaster!"));
       return (-1);
     }
   
@@ -763,11 +763,11 @@ int mix_send_message (LIST *chain, const char *tempfile)
   
   if ((i = mutt_system (cmd)))
   {
-    fprintf (stderr, _("Error sending message, child exited %d.\n"), i);
+    fprintf (stderr, (_("Error sending message, child exited %d.\n")), i);
     if (!option (OPTNOCURSES))
     {
       mutt_any_key_to_continue (NULL);
-      mutt_error _("Error sending message.");
+      mutt_error (_("Error sending message."));
     }
   }
 

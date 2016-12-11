@@ -225,7 +225,7 @@ imap_auth_res_t imap_auth_sasl (IMAP_DATA* idata, const char* method)
     return IMAP_AUTH_UNAVAIL;
   }
 
-  mutt_error _("SASL authentication failed.");
+  mutt_error (_("SASL authentication failed."));
   mutt_sleep(2);
 
   return IMAP_AUTH_FAILURE;

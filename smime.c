@@ -427,17 +427,17 @@ static smime_key_t *smime_select_key (smime_key_t *keys, char *query)
     table[table_index++] = key;
   }
 
-  snprintf(title, sizeof(title), _("S/MIME certificates matching \"%s\"."),
+  snprintf(title, sizeof(title), (_("S/MIME certificates matching \"%s\".")),
     query);
 
   /* Make Helpstring */
   helpstr[0] = 0;
-  mutt_make_help (buf, sizeof (buf), _("Exit  "), MENU_SMIME, OP_EXIT);
+  mutt_make_help (buf, sizeof (buf), (_("Exit  ")), MENU_SMIME, OP_EXIT);
   strcat (helpstr, buf);	/* __STRCAT_CHECKED__ */
-  mutt_make_help (buf, sizeof (buf), _("Select  "), MENU_SMIME,
+  mutt_make_help (buf, sizeof (buf), (_("Select  ")), MENU_SMIME,
       OP_GENERIC_SELECT_ENTRY);
   strcat (helpstr, buf);	/* __STRCAT_CHECKED__ */
-  mutt_make_help (buf, sizeof(buf), _("Help"), MENU_SMIME, OP_HELP);
+  mutt_make_help (buf, sizeof(buf), (_("Help")), MENU_SMIME, OP_HELP);
   strcat (helpstr, buf);	/* __STRCAT_CHECKED__ */
 
   /* Create the menu */
@@ -474,7 +474,7 @@ static smime_key_t *smime_select_key (smime_key_t *keys, char *query)
               break;
           }
 
-          snprintf (buf, sizeof (buf), _("%s Do you really want to use the key?"),
+          snprintf (buf, sizeof (buf), (_("%s Do you really want to use the key?")),
                     _(s));
 
           if (mutt_yesorno (buf, MUTT_NO) != MUTT_YES)
@@ -759,7 +759,7 @@ smime_key_t *smime_ask_for_key(char *prompt, short abilities, short public)
   smime_key_t *key;
   char resp[SHORT_STRING];
 
-  if (!prompt) prompt = _("Enter keyID: ");
+  if (!prompt) prompt = (_("Enter keyID: "));
 
   mutt_clear_error ();
 
@@ -793,7 +793,7 @@ void _smime_getkeys (char *mailbox)
 
   if (!key)
   {
-    snprintf(buf, sizeof(buf), _("Enter keyID for %s: "),
+    snprintf(buf, sizeof(buf), (_("Enter keyID for %s: ")),
 	     mailbox);
     key = smime_ask_for_key (buf, KEYFLAG_CANENCRYPT, 0);
   }
@@ -899,7 +899,7 @@ char *smime_findKeys (ADDRESS *adrlist, int oppenc_mode)
     if ((key == NULL) && (! oppenc_mode))
     {
       snprintf(buf, sizeof(buf),
-	       _("Enter keyID for %s: "),
+	       (_("Enter keyID for %s: ")),
 	       q->mailbox);
       key = smime_ask_for_key (buf, KEYFLAG_CANENCRYPT, 1);
     }
@@ -1464,7 +1464,7 @@ BODY *smime_build_smime_entity (BODY *a, char *certlist)
   if (empty)
   {
     /* fatal error while trying to encrypt message */
-    if (!err) mutt_any_key_to_continue _("No output from OpenSSL...");
+    if (!err) mutt_any_key_to_continue (_("No output from OpenSSL..."));
     mutt_unlink (tempfile);
     return (NULL);
   }
@@ -1531,7 +1531,7 @@ BODY *smime_sign_message (BODY *a )
 
   if (!SmimeDefaultKey)
   {
-    mutt_error _("Can't sign: No key specified. Use Sign As.");
+    mutt_error (_("Can't sign: No key specified. Use Sign As."));
     return NULL;
   }
 
@@ -1583,7 +1583,7 @@ BODY *smime_sign_message (BODY *a )
   if ((thepid = smime_invoke_sign (&smimein, NULL, &smimeerr,
 				 -1, fileno (smimeout), -1, filetosign)) == -1)
   {
-    mutt_perror _("Can't open OpenSSL subprocess!");
+    mutt_perror (_("Can't open OpenSSL subprocess!"));
     safe_fclose (&smimeout);
     mutt_unlink (signedfile);
     mutt_unlink (filetosign);
@@ -1621,7 +1621,7 @@ BODY *smime_sign_message (BODY *a )
 
   if (empty)
   {
-    mutt_any_key_to_continue _("No output from OpenSSL...");
+    mutt_any_key_to_continue (_("No output from OpenSSL..."));
     mutt_unlink (signedfile);
     return (NULL); /* fatal error while signing */
   }
@@ -2107,12 +2107,12 @@ int smime_send_menu (HEADER *msg, int *redraw)
    */
   if (option (OPTCRYPTOPPORTUNISTICENCRYPT) && (msg->security & OPPENCRYPT))
   {
-    prompt = _("S/MIME (s)ign, encrypt (w)ith, sign (a)s, (c)lear, or (o)ppenc mode off? ");
+    prompt = (_("S/MIME (s)ign, encrypt (w)ith, sign (a)s, (c)lear, or (o)ppenc mode off? "));
     /* L10N: The 'f' is from "forget it", an old undocumented synonym of
        'clear'.  Please use a corresponding letter in your language.
        Alternatively, you may duplicate the letter 'c' is translated to.
        This comment also applies to the two following letter sequences. */
-    letters = _("swafco");
+    letters = (_("swafco"));
     choices = "SwaFCo";
   }
   /*
@@ -2121,8 +2121,8 @@ int smime_send_menu (HEADER *msg, int *redraw)
    */
   else if (option (OPTCRYPTOPPORTUNISTICENCRYPT))
   {
-    prompt = _("S/MIME (e)ncrypt, (s)ign, encrypt (w)ith, sign (a)s, (b)oth, (c)lear, or (o)ppenc mode? ");
-    letters = _("eswabfco");
+    prompt = (_("S/MIME (e)ncrypt, (s)ign, encrypt (w)ith, sign (a)s, (b)oth, (c)lear, or (o)ppenc mode? "));
+    letters = (_("eswabfco"));
     choices = "eswabfcO";
   }
   /*
@@ -2130,8 +2130,8 @@ int smime_send_menu (HEADER *msg, int *redraw)
    */
   else
   {
-    prompt = _("S/MIME (e)ncrypt, (s)ign, encrypt (w)ith, sign (a)s, (b)oth, or (c)lear? ");
-    letters = _("eswabfc");
+    prompt = (_("S/MIME (e)ncrypt, (s)ign, encrypt (w)ith, sign (a)s, (b)oth, or (c)lear? "));
+    letters = (_("eswabfc"));
     choices = "eswabfc";
   }
 
@@ -2155,11 +2155,11 @@ int smime_send_menu (HEADER *msg, int *redraw)
           switch (mutt_multi_choice (_("Choose algorithm family:"
                                       " 1: DES, 2: RC2, 3: AES,"
                                       " or (c)lear? "),
-                                    _("drac")))
+                                    (_("drac")))
           {
           case 1:
             switch (choice = mutt_multi_choice (_("1: DES, 2: Triple-DES "),
-                                                _("dt")))
+                                                (_("dt")))
             {
             case 1:
               mutt_str_replace (&SmimeCryptAlg, "des");
@@ -2172,7 +2172,7 @@ int smime_send_menu (HEADER *msg, int *redraw)
 
           case 2:
             switch (choice = mutt_multi_choice (_("1: RC2-40, 2: RC2-64, 3: RC2-128 "),
-                                                _("468")))
+                                                (_("468")))
             {
             case 1:
               mutt_str_replace (&SmimeCryptAlg, "rc2-40");
@@ -2188,7 +2188,7 @@ int smime_send_menu (HEADER *msg, int *redraw)
 
           case 3:
             switch (choice = mutt_multi_choice (_("1: AES128, 2: AES192, 3: AES256 "),
-                                                _("895")))
+                                                (_("895")))
             {
             case 1:
               mutt_str_replace (&SmimeCryptAlg, "aes128");

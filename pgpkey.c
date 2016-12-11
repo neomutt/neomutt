@@ -488,7 +488,7 @@ static pgp_key_t pgp_select_key (pgp_key_t keys,
 
   if (!i && unusable)
   {
-    mutt_error _("All matching keys are expired, revoked, or disabled.");
+    mutt_error (_("All matching keys are expired, revoked, or disabled."));
     mutt_sleep (1);
     return NULL;
   }
@@ -512,14 +512,14 @@ static pgp_key_t pgp_select_key (pgp_key_t keys,
   qsort (KeyTable, i, sizeof (pgp_uid_t *), f);
 
   helpstr[0] = 0;
-  mutt_make_help (buf, sizeof (buf), _("Exit  "), MENU_PGP, OP_EXIT);
+  mutt_make_help (buf, sizeof (buf), (_("Exit  ")), MENU_PGP, OP_EXIT);
   strcat (helpstr, buf);	/* __STRCAT_CHECKED__ */
-  mutt_make_help (buf, sizeof (buf), _("Select  "), MENU_PGP,
+  mutt_make_help (buf, sizeof (buf), (_("Select  ")), MENU_PGP,
 		  OP_GENERIC_SELECT_ENTRY);
   strcat (helpstr, buf);	/* __STRCAT_CHECKED__ */
-  mutt_make_help (buf, sizeof (buf), _("Check key  "), MENU_PGP, OP_VERIFY_KEY);
+  mutt_make_help (buf, sizeof (buf), (_("Check key  ")), MENU_PGP, OP_VERIFY_KEY);
   strcat (helpstr, buf);	/* __STRCAT_CHECKED__ */
-  mutt_make_help (buf, sizeof (buf), _("Help"), MENU_PGP, OP_HELP);
+  mutt_make_help (buf, sizeof (buf), (_("Help")), MENU_PGP, OP_HELP);
   strcat (helpstr, buf);	/* __STRCAT_CHECKED__ */
 
   menu = mutt_new_menu (MENU_PGP);
@@ -529,9 +529,9 @@ static pgp_key_t pgp_select_key (pgp_key_t keys,
   menu->data = KeyTable;
 
   if (p)
-    snprintf (buf, sizeof (buf), _("PGP keys matching <%s>."), p->mailbox);
+    snprintf (buf, sizeof (buf), (_("PGP keys matching <%s>.")), p->mailbox);
   else
-    snprintf (buf, sizeof (buf), _("PGP keys matching \"%s\"."), s);
+    snprintf (buf, sizeof (buf), (_("PGP keys matching \"%s\".")), s);
 
 
   menu->title = buf;
@@ -550,17 +550,17 @@ static pgp_key_t pgp_select_key (pgp_key_t keys,
       mutt_mktemp (tempfile, sizeof (tempfile));
       if ((devnull = fopen ("/dev/null", "w")) == NULL)	/* __FOPEN_CHECKED__ */
       {
-	mutt_perror _("Can't open /dev/null");
+	mutt_perror (_("Can't open /dev/null"));
 	break;
       }
       if ((fp = safe_fopen (tempfile, "w")) == NULL)
       {
 	safe_fclose (&devnull);
-	mutt_perror _("Can't create temporary file");
+	mutt_perror (_("Can't create temporary file"));
 	break;
       }
 
-      mutt_message _("Invoking PGP...");
+      mutt_message (_("Invoking PGP..."));
 
       snprintf (tmpbuf, sizeof (tmpbuf), "0x%s",
           pgp_fpr_or_lkeyid (pgp_principal_key (KeyTable[menu->current]->parent)));
@@ -568,7 +568,7 @@ static pgp_key_t pgp_select_key (pgp_key_t keys,
       if ((thepid = pgp_invoke_verify_key (NULL, NULL, NULL, -1,
 		    fileno (fp), fileno (devnull), tmpbuf)) == -1)
       {
-	mutt_perror _("Can't create filter");
+	mutt_perror (_("Can't create filter"));
 	unlink (tempfile);
 	safe_fclose (&fp);
 	safe_fclose (&devnull);
@@ -578,7 +578,7 @@ static pgp_key_t pgp_select_key (pgp_key_t keys,
       safe_fclose (&fp);
       safe_fclose (&devnull);
       mutt_clear_error ();
-      snprintf (cmd, sizeof (cmd), _("Key ID: 0x%s"), 
+      snprintf (cmd, sizeof (cmd), (_("Key ID: 0x%s")), 
 		pgp_keyid (pgp_principal_key (KeyTable[menu->current]->parent)));
       mutt_do_pager (cmd, tempfile, 0, NULL);
       menu->redraw = REDRAW_FULL;
@@ -598,7 +598,7 @@ static pgp_key_t pgp_select_key (pgp_key_t keys,
       if (option (OPTPGPCHECKTRUST))
 	if (!pgp_key_is_valid (KeyTable[menu->current]->parent))
 	{
-	  mutt_error _("This key can't be used: expired/disabled/revoked.");
+	  mutt_error (_("This key can't be used: expired/disabled/revoked."));
 	  break;
 	}
 
@@ -624,7 +624,7 @@ static pgp_key_t pgp_select_key (pgp_key_t keys,
 	    break;
 	}
 
-	snprintf (buff, sizeof (buff), _("%s Do you really want to use the key?"),
+	snprintf (buff, sizeof (buff), (_("%s Do you really want to use the key?")),
 		  _(s));
 
 	if (mutt_yesorno (buff, MUTT_NO) != MUTT_YES)
@@ -737,27 +737,27 @@ BODY *pgp_make_key_attachment (char *tempf)
 
   if ((tempfp = safe_fopen (tempf, tempf == tempfb ? "w" : "a")) == NULL)
   {
-    mutt_perror _("Can't create temporary file");
+    mutt_perror (_("Can't create temporary file"));
     return NULL;
   }
 
   if ((devnull = fopen ("/dev/null", "w")) == NULL)	/* __FOPEN_CHECKED__ */
   {
-    mutt_perror _("Can't open /dev/null");
+    mutt_perror (_("Can't open /dev/null"));
     safe_fclose (&tempfp);
     if (tempf == tempfb)
       unlink (tempf);
     return NULL;
   }
 
-  mutt_message _("Invoking PGP...");
+  mutt_message (_("Invoking PGP..."));
 
 
   if ((thepid = 
        pgp_invoke_export (NULL, NULL, NULL, -1,
 			   fileno (tempfp), fileno (devnull), tmp)) == -1)
   {
-    mutt_perror _("Can't create filter");
+    mutt_perror (_("Can't create filter"));
     unlink (tempf);
     safe_fclose (&tempfp);
     safe_fclose (&devnull);
@@ -775,7 +775,7 @@ BODY *pgp_make_key_attachment (char *tempf)
   att->use_disp = 0;
   att->type = TYPEAPPLICATION;
   att->subtype = safe_strdup ("pgp-keys");
-  snprintf (buff, sizeof (buff), _("PGP Key %s."), tmp);
+  snprintf (buff, sizeof (buff), (_("PGP Key %s.")), tmp);
   att->description = safe_strdup (buff);
   mutt_update_encoding (att);
 

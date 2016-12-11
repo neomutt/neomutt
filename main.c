@@ -99,7 +99,7 @@ options:\n\
   -c <address>\tspecify a carbon-copy (CC) address\n\
   -D\t\tprint the value of all variables to stdout");
 #if DEBUG
-  puts _("  -d <level>\tlog debugging output to ~/.muttdebug0");
+  puts (_("  -d <level>\tlog debugging output to ~/.muttdebug0"));
 #endif
   puts _(
 "  -E\t\tedit the draft (-H) or include (-i) file\n\
@@ -146,7 +146,7 @@ static void start_curses (void)
 #endif
   if (initscr () == NULL)
   {
-    puts _("Error initializing terminal.");
+    puts (_("Error initializing terminal."));
     exit (1);
   }
 #if 1 /* USE_SLANG_CURSES  - commenting out suggested in #455. */
@@ -291,12 +291,12 @@ int main (int argc, char **argv)
 #ifdef DEBUG
 	if (mutt_atoi (optarg, &debuglevel) < 0 || debuglevel <= 0)
 	{
-	  fprintf (stderr, _("Error: value '%s' is invalid for -d.\n"), optarg);
+	  fprintf (stderr, (_("Error: value '%s' is invalid for -d.\n")), optarg);
 	  return 1;
 	}
 	printf (_("Debugging at level %d.\n"), debuglevel);
 #else
-	printf _("DEBUG was not defined during compilation.  Ignored.\n");
+	printf (_("DEBUG was not defined during compilation.  Ignored.\n"));
 #endif
 	break;
 
@@ -484,7 +484,7 @@ int main (int argc, char **argv)
 #endif
     if (stat (fpath, &sb) == -1 && errno == ENOENT)
     {
-      snprintf (msg, sizeof (msg), _("%s does not exist. Create it?"), Maildir);
+      snprintf (msg, sizeof (msg), (_("%s does not exist. Create it?")), Maildir);
       if (mutt_yesorno (msg, MUTT_YES) == MUTT_YES)
       {
 	if (mkdir (fpath, 0700) == -1 && errno != EEXIST)
@@ -719,7 +719,7 @@ int main (int argc, char **argv)
 	{
 	  if (!option (OPTNOCURSES))
 	    mutt_endwin (NULL);
-	  fprintf (stderr, _("%s: unable to attach file.\n"), t->data);
+	  fprintf (stderr, (_("%s: unable to attach file.\n")), t->data);
 	  mutt_free_list (&attach);
 	  exit (1);
 	}
@@ -800,7 +800,7 @@ int main (int argc, char **argv)
     {
       if (!mutt_buffy_check (0))
       {
-	mutt_endwin _("No mailbox with new mail.");
+	mutt_endwin (_("No mailbox with new mail."));
 	exit (1);
       }
       folder[0] = 0;
@@ -821,7 +821,7 @@ int main (int argc, char **argv)
       else
 #endif
       if (!Incoming) {
-	mutt_endwin _("No incoming mailboxes defined.");
+	mutt_endwin (_("No incoming mailboxes defined."));
 	exit (1);
       }
       folder[0] = 0;
@@ -864,7 +864,7 @@ int main (int argc, char **argv)
 	  mutt_endwin (strerror (errno));
 	  exit (1);
 	case 1:
-	  mutt_endwin _("Mailbox is empty.");
+	  mutt_endwin (_("Mailbox is empty."));
 	  exit (1);
       }
     }

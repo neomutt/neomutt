@@ -1749,7 +1749,7 @@ mutt_pager (const char *banner, const char *fname, int flags, pager_t *extra)
   if (!InHelp)
   {
     strfcpy (tmphelp, helpstr, sizeof (tmphelp));
-    mutt_make_help (buffer, sizeof (buffer), _("Help"), MENU_PAGER, OP_HELP);
+    mutt_make_help (buffer, sizeof (buffer), (_("Help")), MENU_PAGER, OP_HELP);
     snprintf (helpstr, sizeof (helpstr), "%s %s", tmphelp, buffer);
   }
 
@@ -2050,7 +2050,7 @@ mutt_pager (const char *banner, const char *fname, int flags, pager_t *extra)
 
 	    if (h && (h->read == 0))
 	    {
-	      mutt_message _("New mail in this mailbox.");
+	      mutt_message (_("New mail in this mailbox."));
 	      do_new_mail = 1;
 	      break;
 	    }
@@ -2171,7 +2171,7 @@ mutt_pager (const char *banner, const char *fname, int flags, pager_t *extra)
 	break;
 
       case OP_QUIT:
-	if (query_quadoption (OPT_QUIT, _("Quit Mutt?")) == MUTT_YES)
+	if (query_quadoption (OPT_QUIT, (_("Quit Mutt?")) == MUTT_YES)
 	{
 	  /* avoid prompting again in the index menu */
 	  set_quadoption (OPT_QUIT, MUTT_YES);
@@ -2187,7 +2187,7 @@ mutt_pager (const char *banner, const char *fname, int flags, pager_t *extra)
 	else if (option (OPTPAGERSTOP))
 	{
 	  /* emulate "less -q" and don't go on to the next message. */
-	  mutt_error _("Bottom of message is shown.");
+	  mutt_error (_("Bottom of message is shown."));
 	}
 	else
 	{
@@ -2203,7 +2203,7 @@ mutt_pager (const char *banner, const char *fname, int flags, pager_t *extra)
 	  topline = upNLines (pager_window->rows-PagerContext, lineInfo, topline, hideQuoted);
 	}
 	else
-	  mutt_error _("Top of message is shown.");
+	  mutt_error (_("Top of message is shown."));
 	break;
 
       case OP_NEXT_LINE:
@@ -2218,28 +2218,28 @@ mutt_pager (const char *banner, const char *fname, int flags, pager_t *extra)
 	  }
 	}
 	else
-	  mutt_error _("Bottom of message is shown.");
+	  mutt_error (_("Bottom of message is shown."));
 	break;
 
       case OP_PREV_LINE:
 	if (topline)
 	  topline = upNLines (1, lineInfo, topline, hideQuoted);
 	else
-	  mutt_error _("Top of message is shown.");
+	  mutt_error (_("Top of message is shown."));
 	break;
 
       case OP_PAGER_TOP:
         if (topline)
 	  topline = 0;
       	else
-	  mutt_error _("Top of message is shown.");
+	  mutt_error (_("Top of message is shown."));
 	break;
 
       case OP_HALF_UP:
 	if (topline)
 	  topline = upNLines (pager_window->rows/2, lineInfo, topline, hideQuoted);
 	else
-	  mutt_error _("Top of message is shown.");
+	  mutt_error (_("Top of message is shown."));
 	break;
 
       case OP_HALF_DOWN:
@@ -2250,7 +2250,7 @@ mutt_pager (const char *banner, const char *fname, int flags, pager_t *extra)
 	else if (option (OPTPAGERSTOP))
 	{
 	  /* emulate "less -q" and don't go on to the next message. */
-	  mutt_error _("Bottom of message is shown.");
+	  mutt_error (_("Bottom of message is shown."));
 	}
 	else
 	{
@@ -2286,10 +2286,10 @@ search_next:
 	    if (i < lastLine)
 	      topline = i;
 	    else if (wrapped || !option (OPTWRAPSEARCH))
-	      mutt_error _("Not found.");
+	      mutt_error (_("Not found."));
 	    else
 	    {
-	      mutt_message _("Search wrapped to top.");
+	      mutt_message (_("Search wrapped to top."));
 	      wrapped = 1;
 	      goto search_next;
 	    }
@@ -2308,10 +2308,10 @@ search_next:
 	    if (i >= 0)
 	      topline = i;
 	    else if (wrapped || !option (OPTWRAPSEARCH))
-	      mutt_error _("Not found.");
+	      mutt_error (_("Not found."));
 	    else
 	    {
-	      mutt_message _("Search wrapped to bottom.");
+	      mutt_message (_("Search wrapped to bottom."));
 	      wrapped = 1;
 	      goto search_next;
 	    }
@@ -2333,7 +2333,7 @@ search_next:
       case OP_SEARCH_REVERSE:
         strfcpy (buffer, searchbuf, sizeof (buffer));
 	if (mutt_get_field ((ch == OP_SEARCH || ch == OP_SEARCH_NEXT) ?
-			    _("Search for: ") : _("Reverse search for: "),
+			    (_("Search for: ")) : (_("Reverse search for: ")),
 			    buffer, sizeof (buffer),
 			    MUTT_CLEAR) != 0)
 	  break;
@@ -2428,7 +2428,7 @@ search_next:
 	  if (lineInfo[topline].search_cnt == 0)
 	  {
 	    SearchFlag = 0;
-	    mutt_error _("Not found.");
+	    mutt_error (_("Not found."));
 	  }
 	  else
 	  {
@@ -2464,7 +2464,7 @@ search_next:
 	  InHelp = 0;
 	}
 	else
-	  mutt_error _("Help is currently being shown.");
+	  mutt_error (_("Help is currently being shown."));
 	break;
 
       case OP_PAGER_HIDE_QUOTED:
@@ -2508,7 +2508,7 @@ search_next:
 
 	  if (dretval < 0)
 	  {
-	    mutt_error _("No more quoted text.");
+	    mutt_error (_("No more quoted text."));
 	    break;
 	  }
 
@@ -2521,7 +2521,7 @@ search_next:
 
 	  if (dretval < 0)
 	  {
-	    mutt_error _("No more unquoted text after quoted text.");
+	    mutt_error (_("No more unquoted text after quoted text."));
 	    break;	  
 	  }
 	  topline = new_topline;
@@ -2541,7 +2541,7 @@ search_next:
 	  topline = upNLines (pager_window->rows, lineInfo, lastLine, hideQuoted);
 	}
 	else
-	  mutt_error _("Bottom of message is shown.");
+	  mutt_error (_("Bottom of message is shown."));
 	break;
 
       case OP_REDRAW:
@@ -2611,7 +2611,7 @@ search_next:
 	CHECK_MODE(IsHeader (extra));
 	CHECK_READONLY;
         /* L10N: CHECK_ACL */
-	CHECK_ACL(MUTT_ACL_DELETE, _("Cannot delete message"));
+	CHECK_ACL(MUTT_ACL_DELETE, (_("Cannot delete message"));
 
 	mutt_set_flag (Context, extra->hdr, MUTT_DELETE, 1);
 	mutt_set_flag (Context, extra->hdr, MUTT_PURGE, (ch == OP_PURGE_MESSAGE));
@@ -2645,7 +2645,7 @@ search_next:
 	CHECK_MODE(IsHeader (extra));
 	CHECK_READONLY;
         /* L10N: CHECK_ACL */
-	CHECK_ACL(MUTT_ACL_DELETE, _("Cannot delete message(s)"));
+	CHECK_ACL(MUTT_ACL_DELETE, (_("Cannot delete message(s)"));
 
 	{
 	  int subthread = (ch == OP_DELETE_SUBTHREAD);
@@ -2986,7 +2986,7 @@ search_next:
 	CHECK_MODE(IsHeader (extra));
 	CHECK_READONLY;
         /* L10N: CHECK_ACL */
-	CHECK_ACL(MUTT_ACL_SEEN, _("Cannot toggle new"));
+	CHECK_ACL(MUTT_ACL_SEEN, (_("Cannot toggle new"));
 
 	if (extra->hdr->read || extra->hdr->old)
 	  mutt_set_flag (Context, extra->hdr, MUTT_NEW, 1);
@@ -3006,7 +3006,7 @@ search_next:
 	CHECK_MODE(IsHeader (extra));
 	CHECK_READONLY;
         /* L10N: CHECK_ACL */
-	CHECK_ACL(MUTT_ACL_DELETE, _("Cannot undelete message"));
+	CHECK_ACL(MUTT_ACL_DELETE, (_("Cannot undelete message"));
 
 	mutt_set_flag (Context, extra->hdr, MUTT_DELETE, 0);
 	mutt_set_flag (Context, extra->hdr, MUTT_PURGE, 0);
@@ -3023,7 +3023,7 @@ search_next:
 	CHECK_MODE(IsHeader (extra));
 	CHECK_READONLY;
         /* L10N: CHECK_ACL */
-	CHECK_ACL(MUTT_ACL_DELETE, _("Cannot undelete message(s)"));
+	CHECK_ACL(MUTT_ACL_DELETE, (_("Cannot undelete message(s)"));
 
 	r = mutt_thread_set_flag (extra->hdr, MUTT_DELETE, 0,
 				  ch == OP_UNDELETE_THREAD ? 0 : 1);
@@ -3078,7 +3078,7 @@ search_next:
           mutt_message ("%d label%s changed.", rc, rc == 1 ? "" : "s");
         }
         else {
-          mutt_message _("No labels changed.");
+          mutt_message (_("No labels changed."));
         }
         break;
 

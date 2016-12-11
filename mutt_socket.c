@@ -297,7 +297,7 @@ CONNECTION* mutt_conn_find (const CONNECTION* start, const ACCOUNT* account)
       return NULL;
     }
 #else
-    mutt_error _("SSL is unavailable.");
+    mutt_error (_("SSL is unavailable."));
     mutt_sleep (2);
     mutt_socket_free (conn);
 
@@ -588,7 +588,7 @@ int raw_socket_open (CONNECTION* conn)
   if (rc)
   {
     mutt_error (_("Could not connect to %s (%s)."), conn->account.host,
-	    (rc > 0) ? strerror (rc) : _("unknown error"));
+	    (rc > 0) ? strerror (rc) : (_("unknown error"));
     mutt_sleep (2);
     return -1;
   }

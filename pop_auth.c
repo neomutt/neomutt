@@ -80,7 +80,7 @@ static pop_auth_res_t pop_auth_sasl (POP_DATA *pop_data, const char *method)
    */
   client_start = olen;
 
-  mutt_message _("Authenticating (SASL)...");
+  mutt_message (_("Authenticating (SASL)..."));
 
   bufsize = ((olen * 2) > LONG_STRING) ? (olen * 2) : LONG_STRING;
   buf = safe_malloc (bufsize);
@@ -177,7 +177,7 @@ bail:
   }
 
   FREE (&buf);
-  mutt_error _("SASL authentication failed.");
+  mutt_error (_("SASL authentication failed."));
   mutt_sleep (2);
 
   return POP_A_FAILURE;
@@ -212,12 +212,12 @@ static pop_auth_res_t pop_auth_apop (POP_DATA *pop_data, const char *method)
 
   if (rfc822_valid_msgid (pop_data->timestamp) < 0)
   {
-    mutt_error _("POP timestamp is invalid!");
+    mutt_error (_("POP timestamp is invalid!"));
     mutt_sleep (2);
     return POP_A_UNAVAIL;
   }
 
-  mutt_message _("Authenticating (APOP)...");
+  mutt_message (_("Authenticating (APOP)..."));
 
   /* Compute the authentication hash to send to the server */
   md5_init_ctx (&ctx);
@@ -240,7 +240,7 @@ static pop_auth_res_t pop_auth_apop (POP_DATA *pop_data, const char *method)
       return POP_A_SOCKET;
   }
 
-  mutt_error _("APOP authentication failed.");
+  mutt_error (_("APOP authentication failed."));
   mutt_sleep (2);
 
   return POP_A_FAILURE;
@@ -255,7 +255,7 @@ static pop_auth_res_t pop_auth_user (POP_DATA *pop_data, const char *method)
   if (!pop_data->cmd_user)
     return POP_A_UNAVAIL;
 
-  mutt_message _("Logging in...");
+  mutt_message (_("Logging in..."));
 
   snprintf (buf, sizeof (buf), "USER %s\r\n", pop_data->conn->account.user);
   ret = pop_query (pop_data, buf, sizeof (buf));
@@ -275,7 +275,7 @@ static pop_auth_res_t pop_auth_user (POP_DATA *pop_data, const char *method)
 
       dprint (1, (debugfile, "pop_auth_user: unset USER capability\n"));
       snprintf (pop_data->err_msg, sizeof (pop_data->err_msg),
-              _("Command USER is not supported by server."));
+              (_("Command USER is not supported by server."));
     }
   }
 
@@ -298,7 +298,7 @@ static pop_auth_res_t pop_auth_user (POP_DATA *pop_data, const char *method)
       return POP_A_SOCKET;
   }
 
-  mutt_error ("%s %s", _("Login failed."), pop_data->err_msg);
+  mutt_error ("%s %s", (_("Login failed.")), pop_data->err_msg);
   mutt_sleep (2);
 
   return POP_A_FAILURE;

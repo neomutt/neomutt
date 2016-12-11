@@ -64,7 +64,7 @@
 static int nntp_connect_error (NNTP_SERVER *nserv)
 {
   nserv->status = NNTP_NONE;
-  mutt_error _("Server closed connection!");
+  mutt_error (_("Server closed connection!"));
   mutt_sleep (2);
   return -1;
 }
@@ -163,7 +163,7 @@ static int nntp_capabilities (NNTP_SERVER *nserv)
 
   mutt_socket_close (conn);
   nserv->status = NNTP_BYE;
-  mutt_error _("Server doesn't support reader mode.");
+  mutt_error (_("Server doesn't support reader mode."));
   mutt_sleep (2);
   return -1;
 }
@@ -349,7 +349,7 @@ static int nntp_auth (NNTP_SERVER *nserv)
     {
       if (!a)
       {
-	mutt_error _("No authenticators available");
+	mutt_error (_("No authenticators available"));
 	mutt_sleep (2);
 	break;
       }
@@ -592,7 +592,7 @@ static int nntp_auth (NNTP_SERVER *nserv)
   conn->account.flags = flags;
   if (conn->fd < 0)
   {
-    mutt_error _("Server closed connection!");
+    mutt_error (_("Server closed connection!"));
     mutt_sleep (2);
   }
   else
@@ -651,7 +651,7 @@ int nntp_open_connection (NNTP_SERVER *nserv)
     else if (nserv->hasCAPABILITIES)
     {
       mutt_socket_close (conn);
-      mutt_error _("Could not switch to reader mode.");
+      mutt_error (_("Could not switch to reader mode."));
       mutt_sleep (2);
       return -1;
     }
@@ -666,7 +666,7 @@ int nntp_open_connection (NNTP_SERVER *nserv)
   }
 
   mutt_message (_("Connected to %s. %s"), conn->account.host,
-		posting ? _("Posting is ok.") : _("Posting is NOT ok."));
+		posting ? (_("Posting is ok.")) : (_("Posting is NOT ok."));
   mutt_sleep (1);
 
 #if defined(USE_SSL)
@@ -693,7 +693,7 @@ int nntp_open_connection (NNTP_SERVER *nserv)
 	nserv->use_tls = 0;
 	nserv->status = NNTP_NONE;
 	mutt_socket_close (nserv->conn);
-	mutt_error _("Could not negotiate TLS connection");
+	mutt_error (_("Could not negotiate TLS connection"));
 	mutt_sleep (2);
 	return -1;
       }
@@ -736,7 +736,7 @@ int nntp_open_connection (NNTP_SERVER *nserv)
     if (cap > 0)
     {
       mutt_socket_close (conn);
-      mutt_error _("Could not switch to reader mode.");
+      mutt_error (_("Could not switch to reader mode."));
       mutt_sleep (2);
       return -1;
     }
@@ -785,7 +785,7 @@ static int nntp_query (NNTP_DATA *nntp_data, char *line, size_t linelen)
       if (nntp_open_connection (nserv) == 0)
 	break;
 
-      snprintf (buf, sizeof (buf), _("Connection to %s lost. Reconnect?"),
+      snprintf (buf, sizeof (buf), (_("Connection to %s lost. Reconnect?")),
 		nserv->conn->account.host);
       if (mutt_yesorno (buf, MUTT_YES) != MUTT_YES)
       {
@@ -1216,7 +1216,7 @@ static int nntp_fetch_headers (CONTEXT *ctx, void *hc,
       !nntp_data->deleted)
   {
     if (!ctx->quiet)
-      mutt_message _("Fetching list of articles...");
+      mutt_message (_("Fetching list of articles..."));
     if (nntp_data->nserv->hasLISTGROUPrange)
       snprintf (buf, sizeof (buf), "LISTGROUP %s %d-%d\r\n", nntp_data->group,
 		first, last);
@@ -1261,7 +1261,7 @@ static int nntp_fetch_headers (CONTEXT *ctx, void *hc,
 
   /* fetching header from cache or server, or fallback to fetch overview */
   if (!ctx->quiet)
-    mutt_progress_init (&fc.progress, _("Fetching message headers..."),
+    mutt_progress_init (&fc.progress, (_("Fetching message headers...")),
 			MUTT_PROGRESS_MSG, ReadInc, last - first + 1);
   for (current = first; current <= last && rc == 0; current++)
   {
@@ -1569,7 +1569,7 @@ int nntp_fetch_message (CONTEXT *ctx, MESSAGE *msg, int msgno)
   HEADER *hdr = ctx->hdrs[msgno];
   char buf[_POSIX_PATH_MAX];
   char article[16];
-  char *fetch_msg = _("Fetching message...");
+  char *fetch_msg = (_("Fetching message..."));
   int rc;
 
   /* try to get article from cache */
@@ -1875,7 +1875,7 @@ int nntp_active_fetch (NNTP_SERVER *nserv)
   unsigned int i;
   int rc;
 
-  snprintf (msg, sizeof (msg), _("Loading list of groups from server %s..."),
+  snprintf (msg, sizeof (msg), (_("Loading list of groups from server %s...")),
 	    nserv->conn->account.host);
   mutt_message (msg);
   if (nntp_date (nserv, &nserv->newgroups_time) < 0)
@@ -1897,7 +1897,7 @@ int nntp_active_fetch (NNTP_SERVER *nserv)
   }
 
   if (option (OPTLOADDESC) &&
-      get_description (&nntp_data, "*", _("Loading descriptions...")) < 0)
+      get_description (&nntp_data, "*", (_("Loading descriptions...")) < 0)
     return -1;
 
   for (i = 0; i < nserv->groups_num; i++)
@@ -1975,7 +1975,7 @@ int nntp_check_mailbox (CONTEXT *ctx, int *index_hint)
   if (nserv->check_time + NewsPollTimeout > now)
     return 0;
 
-  mutt_message _("Checking for new messages...");
+  mutt_message (_("Checking for new messages..."));
   if (nntp_newsrc_parse (nserv) < 0)
     return -1;
 
@@ -2190,7 +2190,7 @@ int nntp_check_new_groups (NNTP_SERVER *nserv)
   time_t now;
   struct tm *tm;
   char buf[LONG_STRING];
-  char *msg = _("Checking for new newsgroups...");
+  char *msg = (_("Checking for new newsgroups..."));
   unsigned int i;
   int rc, update_active = FALSE;
 
@@ -2200,7 +2200,7 @@ int nntp_check_new_groups (NNTP_SERVER *nserv)
   /* check subscribed newsgroups for new articles */
   if (option (OPTSHOWNEWNEWS))
   {
-    mutt_message _("Checking for new messages...");
+    mutt_message (_("Checking for new messages..."));
     for (i = 0; i < nserv->groups_num; i++)
     {
       NNTP_DATA *nntp_data = nserv->groups_list[i];
@@ -2263,7 +2263,7 @@ int nntp_check_new_groups (NNTP_SERVER *nserv)
       unsigned int count = 0;
       progress_t progress;
 
-      mutt_progress_init (&progress, _("Loading descriptions..."),
+      mutt_progress_init (&progress, (_("Loading descriptions...")),
 			  MUTT_PROGRESS_MSG, ReadInc, nserv->groups_num - i);
       for (; i < nserv->groups_num; i++)
       {
@@ -2415,7 +2415,7 @@ int nntp_check_children (CONTEXT *ctx, const char *msgid)
       if (mutt_strncmp ("500", buf, 3))
 	mutt_error ("XPAT: %s", buf);
       else
-	mutt_error _("Unable to find child articles because server does not support XPAT command.");
+	mutt_error (_("Unable to find child articles because server does not support XPAT command."));
     }
     return -1;
   }

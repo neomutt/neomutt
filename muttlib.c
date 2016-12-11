@@ -1098,7 +1098,7 @@ int mutt_check_overwrite (const char *attname, const char *path,
       /* L10N:
          Means "The path you specified as the destination file is a directory."
          See the msgid "Save to file: " (alias.c, recvattach.c) */
-	      (_("File is a directory, save under it? [(y)es, (n)o, (a)ll]"), _("yna")))
+	      (_("File is a directory, save under it? [(y)es, (n)o, (a)ll]"), (_("yna")))
       {
 	case 3:		/* all */
 	  mutt_str_replace (directory, fname);
@@ -1130,7 +1130,7 @@ int mutt_check_overwrite (const char *attname, const char *path,
   if (*append == 0 && access (fname, F_OK) == 0)
   {
     switch (mutt_multi_choice
-	    (_("File exists, (o)verwrite, (a)ppend, or (c)ancel?"), _("oac")))
+	    (_("File exists, (o)verwrite, (a)ppend, or (c)ancel?"), (_("oac")))
     {
       case -1: /* abort */
         return -1;
@@ -1704,7 +1704,7 @@ int mutt_save_confirm (const char *s, struct stat *st)
 #ifdef USE_POP
   if (magic == MUTT_POP)
   {
-    mutt_error _("Can't save message to POP mailbox.");
+    mutt_error (_("Can't save message to POP mailbox."));
     return 1;
   }
 #endif
@@ -1713,7 +1713,7 @@ int mutt_save_confirm (const char *s, struct stat *st)
   {
     if (option (OPTCONFIRMAPPEND))
     {
-      snprintf (tmp, sizeof (tmp), _("Append messages to %s?"), s);
+      snprintf (tmp, sizeof (tmp), (_("Append messages to %s?")), s);
       if ((rc = mutt_yesorno (tmp, MUTT_YES)) == MUTT_NO)
 	ret = 1;
       else if (rc == MUTT_ABORT)
@@ -1724,7 +1724,7 @@ int mutt_save_confirm (const char *s, struct stat *st)
 #ifdef USE_NNTP
   if (magic == MUTT_NNTP)
   {
-    mutt_error _("Can't save message to news server.");
+    mutt_error (_("Can't save message to news server."));
     return 0;
   }
 #endif
@@ -1746,7 +1746,7 @@ int mutt_save_confirm (const char *s, struct stat *st)
     {
       if (option (OPTCONFIRMCREATE))
       {
-	snprintf (tmp, sizeof (tmp), _("Create %s?"), s);
+	snprintf (tmp, sizeof (tmp), (_("Create %s?")), s);
 	if ((rc = mutt_yesorno (tmp, MUTT_YES)) == MUTT_NO)
 	  ret = 1;
 	else if (rc == MUTT_ABORT)

@@ -117,7 +117,7 @@ int mmdf_parse_mailbox (CONTEXT *ctx)
 
   if (!ctx->quiet)
   {
-    snprintf (msgbuf, sizeof (msgbuf), _("Reading %s..."), ctx->path);
+    snprintf (msgbuf, sizeof (msgbuf), (_("Reading %s...")), ctx->path);
     mutt_progress_init (&progress, msgbuf, MUTT_PROGRESS_MSG, ReadInc, 0);
   }
 
@@ -155,7 +155,7 @@ int mmdf_parse_mailbox (CONTEXT *ctx)
 	if (fseeko (ctx->fp, loc, SEEK_SET) != 0)
 	{
 	  dprint (1, (debugfile, "mmdf_parse_mailbox: fseek() failed\n"));
-	  mutt_error _("Mailbox is corrupt!");
+	  mutt_error (_("Mailbox is corrupt!"));
 	  return (-1);
 	}
       } 
@@ -212,7 +212,7 @@ int mmdf_parse_mailbox (CONTEXT *ctx)
     else
     {
       dprint (1, (debugfile, "mmdf_parse_mailbox: corrupt mailbox!\n"));
-      mutt_error _("Mailbox is corrupt!");
+      mutt_error (_("Mailbox is corrupt!"));
       return (-1);
     }
   }
@@ -268,7 +268,7 @@ int mbox_parse_mailbox (CONTEXT *ctx)
 
   if (!ctx->quiet)
   {
-    snprintf (msgbuf, sizeof (msgbuf), _("Reading %s..."), ctx->path);
+    snprintf (msgbuf, sizeof (msgbuf), (_("Reading %s...")), ctx->path);
     mutt_progress_init (&progress, msgbuf, MUTT_PROGRESS_MSG, ReadInc, 0);
   }
 
@@ -498,7 +498,7 @@ static int mbox_commit_message (CONTEXT *ctx, MESSAGE *msg)
   if ((fflush (msg->fp) == EOF) ||
       (fsync (fileno (msg->fp)) == -1))
   {
-    mutt_perror _("Can't write message");
+    mutt_perror (_("Can't write message"));
     return -1;
   }
 
@@ -513,7 +513,7 @@ static int mmdf_commit_message (CONTEXT *ctx, MESSAGE *msg)
   if ((fflush (msg->fp) == EOF) ||
       (fsync (fileno (msg->fp)) == -1))
   {
-    mutt_perror _("Can't write message");
+    mutt_perror (_("Can't write message"));
     return -1;
   }
 
@@ -753,7 +753,7 @@ static int mbox_check_mailbox (CONTEXT *ctx, int *index_hint)
   mbox_unlock_mailbox (ctx);
   mx_fastclose_mailbox (ctx);
   mutt_unblock_signals ();
-  mutt_error _("Mailbox was corrupted!");
+  mutt_error (_("Mailbox was corrupted!"));
   return (-1);
 }
 
@@ -835,7 +835,7 @@ static int mbox_sync_mailbox (CONTEXT *ctx, int *index_hint)
   if ((ctx->fp = freopen (ctx->path, "r+", ctx->fp)) == NULL)
   {
     mx_fastclose_mailbox (ctx);
-    mutt_error _("Fatal error!  Could not reopen mailbox!");
+    mutt_error (_("Fatal error!  Could not reopen mailbox!"));
     return (-1);
   }
 
@@ -844,7 +844,7 @@ static int mbox_sync_mailbox (CONTEXT *ctx, int *index_hint)
   if (mbox_lock_mailbox (ctx, 1, 1) == -1)
   {
     mutt_unblock_signals ();
-    mutt_error _("Unable to lock mailbox!");
+    mutt_error (_("Unable to lock mailbox!"));
     goto bail;
   }
 
@@ -870,7 +870,7 @@ static int mbox_sync_mailbox (CONTEXT *ctx, int *index_hint)
       close (i);
       unlink (tempfile);
     }
-    mutt_error _("Could not create temporary file!");
+    mutt_error (_("Could not create temporary file!"));
     mutt_sleep (5);
     goto bail;
   }
@@ -887,7 +887,7 @@ static int mbox_sync_mailbox (CONTEXT *ctx, int *index_hint)
      * messages were found to be changed or deleted.  This should
      * never happen, is we presume it is a bug in mutt.
      */
-    mutt_error _("sync: mbox modified, but no modified messages! (report this bug)");
+    mutt_error (_("sync: mbox modified, but no modified messages! (report this bug)"));
     mutt_sleep(5); /* the mutt_error /will/ get cleared! */
     dprint(1, (debugfile, "mbox_sync_mailbox(): no modified messages.\n"));
     unlink (tempfile);
@@ -911,7 +911,7 @@ static int mbox_sync_mailbox (CONTEXT *ctx, int *index_hint)
 
   if (!ctx->quiet)
   {
-    snprintf (msgbuf, sizeof (msgbuf), _("Writing %s..."), ctx->path);
+    snprintf (msgbuf, sizeof (msgbuf), (_("Writing %s...")), ctx->path);
     mutt_progress_init (&progress, msgbuf, MUTT_PROGRESS_MSG, WriteInc, ctx->msgcount);
   }
 
@@ -1046,7 +1046,7 @@ static int mbox_sync_mailbox (CONTEXT *ctx, int *index_hint)
        * change/deleted message
        */
       if (!ctx->quiet)
-	mutt_message _("Committing changes...");
+	mutt_message (_("Committing changes..."));
       i = mutt_copy_stream (fp, ctx->fp);
 
       if (ferror (ctx->fp))
@@ -1095,7 +1095,7 @@ static int mbox_sync_mailbox (CONTEXT *ctx, int *index_hint)
     unlink (tempfile);
     mutt_unblock_signals ();
     mx_fastclose_mailbox (ctx);
-    mutt_error _("Fatal error!  Could not reopen mailbox!");
+    mutt_error (_("Fatal error!  Could not reopen mailbox!"));
     return (-1);
   }
 
@@ -1150,7 +1150,7 @@ bail:  /* Come here in case of disaster */
 
   if ((ctx->fp = freopen (ctx->path, "r", ctx->fp)) == NULL)
   {
-    mutt_error _("Could not reopen mailbox!");
+    mutt_error (_("Could not reopen mailbox!"));
     mx_fastclose_mailbox (ctx);
     return (-1);
   }
@@ -1177,7 +1177,7 @@ int mutt_reopen_mailbox (CONTEXT *ctx, int *index_hint)
   ctx->quiet = 1;
   
   if (!ctx->quiet)
-    mutt_message _("Reopening mailbox...");
+    mutt_message (_("Reopening mailbox..."));
   
   /* our heuristics require the old mailbox to be unsorted */
   if (Sort != SORT_ORDER)
