@@ -87,7 +87,7 @@ static int fseek_last_message (FILE * f)
     if (bytes_read == -1)
       return -1;
     for (i = bytes_read; --i >= 0;)
-      if (!mutt_strncmp (buffer + i, "\n\nFrom ", mutt_strlen ("\n\nFrom ")))
+      if (!mutt_strncmp (buffer + i, "\n\nFrom ", mutt_strlen (_("\n\nFrom ")))
       {				/* found it - go to the beginning of the From */
 	fseeko (f, pos + i + 2, SEEK_SET);
 	return 0;

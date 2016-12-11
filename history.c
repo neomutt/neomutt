@@ -176,7 +176,7 @@ static void save_history (history_class_t hclass, const char *s)
 
   if ((f = fopen (HistFile, "a")) == NULL)
   {
-    mutt_perror ("fopen");
+    mutt_perror (_("fopen"));
     return;
   }
 

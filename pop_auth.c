@@ -298,7 +298,7 @@ static pop_auth_res_t pop_auth_user (POP_DATA *pop_data, const char *method)
       return POP_A_SOCKET;
   }
 
-  mutt_error ("%s %s", (_("Login failed.")), pop_data->err_msg);
+  mutt_error (_("%s %s", (_("Login failed.")), pop_data->err_msg));
   mutt_sleep (2);
 
   return POP_A_FAILURE;

@@ -1070,9 +1070,9 @@ static int parse_attach_list (BUFFER *buf, BUFFER *s, LIST **ldata, BUFFER *err)
 
     /* some cheap hacks that I expect to remove */
     if (!ascii_strcasecmp(buf->data, "any"))
-      a->major = safe_strdup("*/.*");
+      a->major = safe_strdup(_("*/.*"));
     else if (!ascii_strcasecmp(buf->data, "none"))
-      a->major = safe_strdup("cheap_hack/this_should_never_match");
+      a->major = safe_strdup(_("cheap_hack/this_should_never_match"));
     else
       a->major = safe_strdup(buf->data);
 
@@ -1142,9 +1142,9 @@ static int parse_unattach_list (BUFFER *buf, BUFFER *s, LIST **ldata, BUFFER *er
     mutt_extract_token (buf, s, 0);
 
     if (!ascii_strcasecmp(buf->data, "any"))
-      tmp = safe_strdup("*/.*");
+      tmp = safe_strdup(_("*/.*"));
     else if (!ascii_strcasecmp(buf->data, "none"))
-      tmp = safe_strdup("cheap_hack/this_should_never_match");
+      tmp = safe_strdup(_("cheap_hack/this_should_never_match"));
     else
       tmp = safe_strdup(buf->data);
 
@@ -1229,7 +1229,7 @@ static int parse_attachments (BUFFER *buf, BUFFER *s, unsigned long data, BUFFER
   if (op == '?') {
     mutt_endwin (NULL);
     fflush (stdout);
-    printf("\nCurrent attachments settings:\n\n");
+    printf(_("\nCurrent attachments settings:\n\n"));
     print_attach_list(AttachAllow,   '+', "A");
     print_attach_list(AttachExclude, '-', "A");
     print_attach_list(InlineAllow,   '+', "I");
@@ -3246,7 +3246,7 @@ void mutt_init (int skip_sys_rc, LIST *commands)
   
   /* on one of the systems I use, getcwd() does not return the same prefix
      as is listed in the passwd file */
-  if ((p = getenv ("HOME")))
+  if ((p = getenv (_("HOME")))
     Homedir = safe_strdup (p);
 
   /* Get some information about the user */
@@ -3270,7 +3270,7 @@ void mutt_init (int skip_sys_rc, LIST *commands)
       fputs (_("unable to determine home directory"), stderr);
       exit (1);
     }
-    if ((p = getenv ("USER")))
+    if ((p = getenv (_("USER")))
       Username = safe_strdup (p);
     else
     {
@@ -3278,7 +3278,7 @@ void mutt_init (int skip_sys_rc, LIST *commands)
       fputs (_("unable to determine username"), stderr);
       exit (1);
     }
-    Shell = safe_strdup ((p = getenv ("SHELL")) ? p : "/bin/sh");
+    Shell = safe_strdup ((p = getenv (_("SHELL")) ? p : "/bin/sh");
   }
 
 #ifdef DEBUG
@@ -3354,13 +3354,13 @@ void mutt_init (int skip_sys_rc, LIST *commands)
       fclose (f);
     }
   }
-  if ((p = getenv ("NNTPSERVER")))
+  if ((p = getenv (_("NNTPSERVER")))
     NewsServer = safe_strdup (p);
 #endif
 
-  if ((p = getenv ("MAIL")))
+  if ((p = getenv (_("MAIL")))
     Spoolfile = safe_strdup (p);
-  else if ((p = getenv ("MAILDIR")))
+  else if ((p = getenv (_("MAILDIR")))
     Spoolfile = safe_strdup (p);
   else
   {
@@ -3372,27 +3372,27 @@ void mutt_init (int skip_sys_rc, LIST *commands)
     Spoolfile = safe_strdup (buffer);
   }
 
-  if ((p = getenv ("MAILCAPS")))
+  if ((p = getenv (_("MAILCAPS")))
     MailcapPath = safe_strdup (p);
   else
   {
     /* Default search path from RFC1524 */
-    MailcapPath = safe_strdup ("~/.mailcap:" PKGDATADIR "/mailcap:" SYSCONFDIR "/mailcap:/etc/mailcap:/usr/etc/mailcap:/usr/local/etc/mailcap");
+    MailcapPath = safe_strdup (_("~/.mailcap:" PKGDATADIR "/mailcap:" SYSCONFDIR "/mailcap:/etc/mailcap:/usr/etc/mailcap:/usr/local/etc/mailcap"));
   }
 
-  Tempdir = safe_strdup ((p = getenv ("TMPDIR")) ? p : "/tmp");
+  Tempdir = safe_strdup ((p = getenv (_("TMPDIR")) ? p : "/tmp");
 
-  p = getenv ("VISUAL");
+  p = getenv (_("VISUAL"));
   if (!p)
   {
-    p = getenv ("EDITOR");
+    p = getenv (_("EDITOR"));
     if (!p)
       p = "vi";
   }
   Editor = safe_strdup (p);
   Visual = safe_strdup (p);
 
-  if ((p = getenv ("REPLYTO")) != NULL)
+  if ((p = getenv (_("REPLYTO")) != NULL)
   {
     BUFFER buf, token;
 
@@ -3407,7 +3407,7 @@ void mutt_init (int skip_sys_rc, LIST *commands)
     FREE (&token.data);
   }
 
-  if ((p = getenv ("EMAIL")) != NULL)
+  if ((p = getenv (_("EMAIL")) != NULL)
     From = rfc822_parse_adrlist (NULL, p);
   
   mutt_set_langinfo_charset ();
@@ -3427,9 +3427,9 @@ void mutt_init (int skip_sys_rc, LIST *commands)
 
 #ifndef LOCALES_HACK
   /* Do we have a locale definition? */
-  if (((p = getenv ("LC_ALL")) != NULL && p[0]) ||
-      ((p = getenv ("LANG")) != NULL && p[0]) ||
-      ((p = getenv ("LC_CTYPE")) != NULL && p[0]))
+  if (((p = getenv (_("LC_ALL")) != NULL && p[0]) ||
+      ((p = getenv (_("LANG")) != NULL && p[0]) ||
+      ((p = getenv (_("LC_CTYPE")) != NULL && p[0]))
     set_option (OPTLOCALES);
 #endif
 

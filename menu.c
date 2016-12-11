@@ -97,7 +97,7 @@ static void print_enriched_string (int index, int attr, unsigned char *s, int do
 	      add_wch(WACS_LLCORNER);
 #else
 	    else if (Charset_is_utf8)
-	      addstr ("\342\224\224"); /* WACS_LLCORNER */
+	      addstr (_("\342\224\224")); /* WACS_LLCORNER */
 	    else
 	      addch (ACS_LLCORNER);
 #endif
@@ -110,7 +110,7 @@ static void print_enriched_string (int index, int attr, unsigned char *s, int do
 	      add_wch(WACS_ULCORNER);
 #else
 	    else if (Charset_is_utf8)
-	      addstr ("\342\224\214"); /* WACS_ULCORNER */
+	      addstr (_("\342\224\214")); /* WACS_ULCORNER */
 	    else
 	      addch (ACS_ULCORNER);
 #endif
@@ -123,7 +123,7 @@ static void print_enriched_string (int index, int attr, unsigned char *s, int do
 	      add_wch(WACS_LTEE);
 #else
 	    else if (Charset_is_utf8)
-	      addstr ("\342\224\234"); /* WACS_LTEE */
+	      addstr (_("\342\224\234")); /* WACS_LTEE */
 	    else
 	      addch (ACS_LTEE);
 #endif
@@ -136,7 +136,7 @@ static void print_enriched_string (int index, int attr, unsigned char *s, int do
 	      add_wch(WACS_HLINE);
 #else
 	    else if (Charset_is_utf8)
-	      addstr ("\342\224\200"); /* WACS_HLINE */
+	      addstr (_("\342\224\200")); /* WACS_HLINE */
 	    else
 	      addch (ACS_HLINE);
 #endif
@@ -149,7 +149,7 @@ static void print_enriched_string (int index, int attr, unsigned char *s, int do
 	      add_wch(WACS_VLINE);
 #else
 	    else if (Charset_is_utf8)
-	      addstr ("\342\224\202"); /* WACS_VLINE */
+	      addstr (_("\342\224\202")); /* WACS_VLINE */
 	    else
 	      addch (ACS_VLINE);
 #endif
@@ -162,7 +162,7 @@ static void print_enriched_string (int index, int attr, unsigned char *s, int do
 	      add_wch(WACS_TTEE);
 #else
 	    else if (Charset_is_utf8)
-	      addstr ("\342\224\254"); /* WACS_TTEE */
+	      addstr (_("\342\224\254")); /* WACS_TTEE */
 	    else
 	      addch (ACS_TTEE);
 #endif
@@ -175,7 +175,7 @@ static void print_enriched_string (int index, int attr, unsigned char *s, int do
 	      add_wch(WACS_BTEE);
 #else
 	    else if (Charset_is_utf8)
-	      addstr ("\342\224\264"); /* WACS_BTEE */
+	      addstr (_("\342\224\264")); /* WACS_BTEE */
 	    else
 	      addch (ACS_BTEE);
 #endif
@@ -332,7 +332,7 @@ void menu_redraw_index (MUTTMENU *menu)
 	  SETCOLOR(MT_COLOR_INDICATOR);
 	  if (option(OPTARROWCURSOR))
 	  {
-	    addstr ("->");
+	    addstr (_("->"));
 	    ATTRSET(attr);
 	    addch (' ');
 	  }
@@ -340,7 +340,7 @@ void menu_redraw_index (MUTTMENU *menu)
 	    do_color = 0;
       }
       else if (option(OPTARROWCURSOR))
-	addstr("   ");
+	addstr(_("   "));
 
       print_enriched_string (i, attr, (unsigned char *) buf, do_color);
     }
@@ -370,7 +370,7 @@ void menu_redraw_motion (MUTTMENU *menu)
   if (option (OPTARROWCURSOR))
   {
     /* clear the pointer */
-    addstr ("  ");
+    addstr (_("  "));
 
     if (menu->redraw & REDRAW_MOTION_RESYNCH)
     {
@@ -414,7 +414,7 @@ void menu_redraw_current (MUTTMENU *menu)
   SETCOLOR(MT_COLOR_INDICATOR);
   if (option (OPTARROWCURSOR))
   {
-    addstr ("->");
+    addstr (_("->"));
     ATTRSET(attr);
     addch (' ');
     menu_pad_string (menu, buf, sizeof (buf));

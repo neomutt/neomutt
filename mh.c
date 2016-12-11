@@ -1904,7 +1904,7 @@ static int maildir_sync_message (CONTEXT * ctx, int msgno)
 
     if (rename (oldpath, fullpath) != 0)
     {
-      mutt_perror ("rename");
+      mutt_perror (_("rename"));
       return (-1);
     }
     mutt_str_replace (&h->path, partpath);

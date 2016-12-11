@@ -135,9 +135,9 @@ int main (int argc, char * const argv[])
     strfcpy (kring, _kring, sizeof (kring));
   else
   {
-    if ((env_pgppath = getenv ("PGPPATH")))
+    if ((env_pgppath = getenv (_("PGPPATH")))
       strfcpy (pgppath, env_pgppath, sizeof (pgppath));
-    else if ((env_home = getenv ("HOME")))
+    else if ((env_home = getenv (_("HOME")))
       snprintf (pgppath, sizeof (pgppath), "%s/.pgp", env_home);
     else
     {
@@ -773,7 +773,7 @@ static void pgpring_find_candidates (char *ringfile, const char *hints[], int nh
     char *error_buf;
     size_t error_buf_len;
 
-    error_buf_len = sizeof ("fopen: ") - 1 + strlen (ringfile) + 1;
+    error_buf_len = sizeof (_("fopen: ")) - 1 + strlen (ringfile) + 1;
     error_buf = safe_malloc (error_buf_len);
     snprintf (error_buf, error_buf_len, "fopen: %s", ringfile);
     perror (error_buf);
@@ -889,16 +889,16 @@ static void pgpring_dump_keyblock (pgp_key_t p)
     if (p->flags & KEYFLAG_SECRET)
     {
       if (p->flags & KEYFLAG_SUBKEY)
-	printf ("ssb:");
+	printf (_("ssb:"));
       else
-	printf ("sec:");
+	printf (_("sec:"));
     }
     else 
     {
       if (p->flags & KEYFLAG_SUBKEY)
-	printf ("sub:");
+	printf (_("sub:"));
       else
-	printf ("pub:");
+	printf (_("pub:"));
     }
     
     if (p->flags & KEYFLAG_REVOKED)
@@ -914,7 +914,7 @@ static void pgpring_dump_keyblock (pgp_key_t p)
       {
 	printf ("uid:%c::::::::", gnupg_trustletter (uid->trust));
 	print_userid (uid->addr);
-	printf (":\n");
+	printf (_(":\n"));
       }
       else
       {
@@ -930,7 +930,7 @@ static void pgpring_dump_keyblock (pgp_key_t p)
 		1900 + tp->tm_year, tp->tm_mon + 1, tp->tm_mday);
 	
 	print_userid (uid->addr);
-	printf ("::");
+	printf (_("::"));
 
 	if(pgp_canencrypt(p->numalg))
 	  putchar ('e');
@@ -938,7 +938,7 @@ static void pgpring_dump_keyblock (pgp_key_t p)
 	  putchar ('s');
 	if (p->flags & KEYFLAG_DISABLED)
 	  putchar ('D');
-	printf (":\n");
+	printf (_(":\n"));
 
 	if (dump_fingerprints) 
           print_fingerprint (p);

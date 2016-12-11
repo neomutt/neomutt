@@ -996,7 +996,7 @@ static void cmd_parse_status (IMAP_DATA* idata, char* s)
 	FREE (&mx.mbox);
       }
       else
-	value = safe_strdup ("INBOX");
+	value = safe_strdup (_("INBOX"));
 
       if (value && !imap_mxcmp (mailbox, value))
       {

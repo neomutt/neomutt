@@ -227,14 +227,14 @@ void mutt_set_langinfo_charset (void)
   
   /* finally, set $charset */
   if (!(Charset = safe_strdup (buff2)))
-    Charset = safe_strdup ("iso-8859-1");
+    Charset = safe_strdup (_("iso-8859-1"));
 }
 
 #else
 
 void mutt_set_langinfo_charset (void)
 {
-  Charset = safe_strdup ("iso-8859-1");
+  Charset = safe_strdup (_("iso-8859-1"));
 }
 
 #endif

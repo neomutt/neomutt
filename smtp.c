@@ -397,7 +397,7 @@ static int smtp_fill_account (ACCOUNT* account)
     {
       if (!SmtpPort)
       {
-        service = getservbyname ("smtp", "tcp");
+        service = getservbyname (_("smtp", "tcp"));
         if (service)
           SmtpPort = ntohs (service->s_port);
         else

@@ -59,12 +59,12 @@ void mutt_resize_screen (void)
   }
   if (SLtt_Screen_Rows <= 0)
   {
-    if ((cp = getenv ("LINES")) != NULL && mutt_atoi (cp, &SLtt_Screen_Rows) < 0)
+    if ((cp = getenv (_("LINES")) != NULL && mutt_atoi (cp, &SLtt_Screen_Rows) < 0)
       SLtt_Screen_Rows = 24;
   }
   if (SLtt_Screen_Cols <= 0)
   {
-    if ((cp = getenv ("COLUMNS")) != NULL && mutt_atoi (cp, &SLtt_Screen_Cols) < 0)
+    if ((cp = getenv (_("COLUMNS")) != NULL && mutt_atoi (cp, &SLtt_Screen_Cols) < 0)
       SLtt_Screen_Cols = 80;
   }
 #ifdef USE_SLANG_CURSES

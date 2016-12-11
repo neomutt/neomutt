@@ -328,7 +328,7 @@ parse_route_addr (const char *s,
   }
 
   if (!addr->mailbox)
-    addr->mailbox = safe_strdup ("@");
+    addr->mailbox = safe_strdup (_("@"));
 
   s++;
   return s;
@@ -855,7 +855,7 @@ int rfc822_valid_msgid (const char *msgid)
    * word           = atom / quoted-string
    * atom           = 1*<any CHAR except specials, SPACE and CTLs>
    * CHAR           = ( 0.-127. )
-   * specials       = "(" / ")" / "<" / ">" / "@"
+   * specials       = "(_(" / "))" / "<" / ">" / "@"
                     / "," / ";" / ":" / "\" / <">
 		    / "." / "[" / "]"
    * SPACE          = ( 32. )

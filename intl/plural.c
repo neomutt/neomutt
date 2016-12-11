@@ -408,7 +408,7 @@ do								\
       goto yybackup;						\
     }								\
   else								\
-    { yyerror ("syntax error: cannot back up"); YYERROR; }	\
+    { yyerror (_("syntax error: cannot back up")); YYERROR; }	\
 while (0)
 
 #define YYTERROR	1
@@ -659,7 +659,7 @@ yynewstate:
       /* Extend the stack our own way.  */
       if (yystacksize >= YYMAXDEPTH)
 	{
-	  yyerror("parser stack overflow");
+	  yyerror(_("parser stack overflow"));
 	  if (yyfree_stacks)
 	    {
 	      free (yyss);
@@ -1019,11 +1019,11 @@ yyerrlab:   /* here on detecting error */
 	      free(msg);
 	    }
 	  else
-	    yyerror ("parse error; also virtual memory exceeded");
+	    yyerror (_("parse error; also virtual memory exceeded"));
 	}
       else
 #endif /* YYERROR_VERBOSE */
-	yyerror("parse error");
+	yyerror(_("parse error"));
     }
 
   goto yyerrlab1;

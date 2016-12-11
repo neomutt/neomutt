@@ -195,7 +195,7 @@ static void collapse_all(MUTTMENU *menu, int toggle)
 /* terminal status capability check. terminfo must have been initialized. */
 short mutt_ts_capability(void)
 {
-  char *term = getenv("TERM");
+  char *term = getenv(_("TERM"));
   char *tcaps;
 #ifdef HAVE_USE_EXTENDED_NAMES
   int tcapi;
@@ -215,13 +215,13 @@ short mutt_ts_capability(void)
   };
 
   /* If tsl is set, then terminfo says that status lines work. */
-  tcaps = tigetstr("tsl");
+  tcaps = tigetstr(_("tsl"));
   if (tcaps && tcaps != (char *)-1 && *tcaps)
   {
     /* update the static defns of tsl/fsl from terminfo */
     tsl = safe_strdup(tcaps);
 
-    tcaps = tigetstr("fsl");
+    tcaps = tigetstr(_("fsl"));
     if (tcaps && tcaps != (char *)-1 && *tcaps)
       fsl = safe_strdup(tcaps);
 
@@ -232,7 +232,7 @@ short mutt_ts_capability(void)
   /* Beware: tigetflag returns -1 if XT is invalid or not a boolean. */
 #ifdef HAVE_USE_EXTENDED_NAMES
   use_extended_names (TRUE);
-  tcapi = tigetflag("XT");
+  tcapi = tigetflag(_("XT"));
   if (tcapi == 1)
     return 1;
 #endif /* HAVE_USE_EXTENDED_NAMES */
@@ -2790,7 +2790,7 @@ int mutt_index_menu (void)
 	if (rc > 0) {
 	  Context->changed = 1;
 	  menu->redraw = REDRAW_FULL;
-	  mutt_message ("%d label%s changed.", rc, rc == 1 ? "" : "s");
+	  mutt_message (_("%d label%s changed.", rc, rc == 1 ? "" : "s"));
 	}
 	else {
 	  mutt_message (_("No labels changed."));

@@ -244,7 +244,7 @@ _nl_init_domain_conv (domain_file, domain, domainbinding)
 	  char *charset;
 	  const char *outcharset;
 
-	  charsetstr += strlen ("charset=");
+	  charsetstr += strlen (_("charset="));
 	  len = strcspn (charsetstr, " \t\n");
 
 	  charset = (char *) alloca (len + 1);
@@ -264,7 +264,7 @@ _nl_init_domain_conv (domain_file, domain, domainbinding)
 	    outcharset = domainbinding->codeset;
 	  else
 	    {
-	      outcharset = getenv ("OUTPUT_CHARSET");
+	      outcharset = getenv (_("OUTPUT_CHARSET"));
 	      if (outcharset == NULL || outcharset[0] == '\0')
 		{
 # ifdef _LIBC

@@ -683,7 +683,7 @@ void mutt_make_misc_reply_headers (ENVELOPE *env, CONTEXT *ctx,
     sprintf (env->subject, "Re: %s", curenv->real_subj);	/* __SPRINTF_CHECKED__ */
   }
   else if (!env->subject)
-    env->subject = safe_strdup ("Re: your mail");
+    env->subject = safe_strdup (_("Re: your mail"));
 }
 
 void mutt_add_to_reference_headers (ENVELOPE *env, ENVELOPE *curenv, LIST ***pp, LIST ***qq)
@@ -1395,7 +1395,7 @@ ci_send_message (int flags,		/* send mode */
       msg->content = pbody;
 
       if (!(ctype = safe_strdup (ContentType)))
-        ctype = safe_strdup ("text/plain");
+        ctype = safe_strdup (_("text/plain"));
       mutt_parse_content_type (ctype, msg->content);
       FREE (&ctype);
       msg->content->unlink = 1;

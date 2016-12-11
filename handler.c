@@ -567,7 +567,7 @@ static void enriched_wrap (struct enriched_state *stte)
       else
       {
 	state_puts ("> ", stte->s);
-	stte->indent_len += mutt_strlen ("> ");
+	stte->indent_len += mutt_strlen (_("> "));
       }
       x--;
     }
@@ -910,7 +910,7 @@ static int is_mmnoask (const char *buf)
   char tmp[LONG_STRING], *p, *q;
   int lng;
 
-  if ((p = getenv ("MM_NOASK")) != NULL && *p)
+  if ((p = getenv (_("MM_NOASK")) != NULL && *p)
   {
     if (mutt_strcmp (p, "1") == 0)
       return (1);
@@ -1337,7 +1337,7 @@ static int autoview_handler (BODY *a, STATE *s)
 
     if ((fpin = safe_fopen (tempfile, "w+")) == NULL)
     {
-      mutt_perror ("fopen");
+      mutt_perror (_("fopen"));
       rfc1524_free_entry (&entry);
       return -1;
     }
@@ -1674,10 +1674,10 @@ static int run_decode_and_handler (BODY *b, STATE *s, handler_t handler, int pla
       if (tempsize) {
         s->fpin = fmemopen (temp, tempsize, "r");
       } else { /* fmemopen cannot handle zero-length buffers */
-        s->fpin = safe_fopen ("/dev/null", "r");
+        s->fpin = safe_fopen (_("/dev/null", "r"));
       }
       if (!s->fpin) {
-        mutt_perror ("failed to re-open memstream!");
+        mutt_perror (_("failed to re-open memstream!"));
         return -1;
       }
 #else

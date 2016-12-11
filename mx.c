@@ -218,7 +218,7 @@ int mx_lock_file (const char *path, int fd, int excl, int dot, int timeout)
     dprint(1,(debugfile, "mx_lock_file(): fcntl errno %d.\n", errno));
     if (errno != EAGAIN && errno != EACCES)
     {
-      mutt_perror ("fcntl");
+      mutt_perror (_("fcntl"));
       return -1;
     }
 
@@ -250,7 +250,7 @@ int mx_lock_file (const char *path, int fd, int excl, int dot, int timeout)
   {
     if (errno != EWOULDBLOCK)
     {
-      mutt_perror ("flock");
+      mutt_perror (_("flock"));
       r = -1;
       break;
     }

@@ -146,7 +146,7 @@ imap_auth_res_t imap_auth_gss (IMAP_DATA* idata, const char* method)
 
   imap_cmd_start (idata, "AUTHENTICATE GSSAPI");
 
-  /* expect a null continuation response ("+") */
+  /* expect a null continuation response (_("+")) */
   do
     rc = imap_cmd_step (idata);
   while (rc == IMAP_CMD_CONTINUE);

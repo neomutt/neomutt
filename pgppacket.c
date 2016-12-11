@@ -51,7 +51,7 @@ static int read_material (size_t material, size_t * used, FILE * fp)
 
     if (!(p = realloc (pbuf, nplen)))	/* __MEM_CHECKED__ */
     {
-      perror ("realloc");
+      perror (_("realloc"));
       return -1;
     }
     plen = nplen;
@@ -60,7 +60,7 @@ static int read_material (size_t material, size_t * used, FILE * fp)
 
   if (fread (pbuf + *used, 1, material, fp) < material)
   {
-    perror ("fread");
+    perror (_("fread"));
     return -1;
   }
 
@@ -87,7 +87,7 @@ unsigned char *pgp_read_packet (FILE * fp, size_t * len)
   if (fread (&ctb, 1, 1, fp) < 1)
   {
     if (!feof (fp))
-      perror ("fread");
+      perror (_("fread"));
     goto bail;
   }
 
@@ -106,7 +106,7 @@ unsigned char *pgp_read_packet (FILE * fp, size_t * len)
     {
       if (fread (&b, 1, 1, fp) < 1)
       {
-	perror ("fread");
+	perror (_("fread"));
 	goto bail;
       }
 
@@ -121,7 +121,7 @@ unsigned char *pgp_read_packet (FILE * fp, size_t * len)
 	material = (b - 192) * 256;
 	if (fread (&b, 1, 1, fp) < 1)
 	{
-	  perror ("fread");
+	  perror (_("fread"));
 	  goto bail;
 	}
 	material += b + 192;
@@ -140,7 +140,7 @@ unsigned char *pgp_read_packet (FILE * fp, size_t * len)
 	unsigned char buf[4];
 	if (fread (buf, 4, 1, fp) < 1)
 	{
-	  perror ("fread");
+	  perror (_("fread"));
 	  goto bail;
 	}
 	/*assert( sizeof(material) >= 4 ); */
@@ -171,7 +171,7 @@ unsigned char *pgp_read_packet (FILE * fp, size_t * len)
       {
 	if (fread (&b, 1, 1, fp) < 1)
 	{
-	  perror ("fread");
+	  perror (_("fread"));
 	  goto bail;
 	}
 
@@ -195,7 +195,7 @@ unsigned char *pgp_read_packet (FILE * fp, size_t * len)
 	{
 	  if (fread (&b, 1, 1, fp) < 1)
 	  {
-	    perror ("fread");
+	    perror (_("fread"));
 	    goto bail;
 	  }
 

@@ -180,7 +180,7 @@ int mutt_complete (char *s, size_t slen)
       /* no directory name, so assume current directory. */
       dirpart[0] = 0;
       strfcpy (filepart, s, sizeof (filepart));
-      dirp = opendir (".");
+      dirp = opendir (_("."));
     }
   }
 

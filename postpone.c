@@ -630,7 +630,7 @@ int mutt_prepare_template (FILE *fp, CONTEXT *ctx, HEADER *newhdr, HEADER *hdr,
   {
     newhdr->security |= SIGN;
     if ((WithCrypto & APPLICATION_PGP)
-        && ascii_strcasecmp (mutt_get_parameter ("protocol", newhdr->content->parameter), "application/pgp-signature") == 0)
+        && ascii_strcasecmp (mutt_get_parameter (_("protocol", newhdr->content->parameter)), "application/pgp-signature") == 0)
       newhdr->security |= APPLICATION_PGP;
     else if ((WithCrypto & APPLICATION_SMIME))
       newhdr->security |= APPLICATION_SMIME;

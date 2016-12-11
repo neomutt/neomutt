@@ -54,7 +54,7 @@ imap_auth_res_t imap_auth_anon (IMAP_DATA* idata, const char* method)
     goto bail;
   }
 
-  mutt_socket_write (idata->conn, "ZHVtbXkK\r\n"); /* base64 ("dummy") */
+  mutt_socket_write (idata->conn, "ZHVtbXkK\r\n"); /* base64 (_("dummy")) */
 
   do
     rc = imap_cmd_step (idata);

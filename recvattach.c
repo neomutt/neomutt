@@ -647,7 +647,7 @@ static void pipe_attachment (FILE *fp, BODY *b, STATE *state)
   {
     if ((ifp = fopen (b->filename, "r")) == NULL)
     {
-      mutt_perror ("fopen");
+      mutt_perror (_("fopen"));
       return;
     }
     mutt_copy_stream (ifp, state->fpout);

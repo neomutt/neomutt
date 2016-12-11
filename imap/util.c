@@ -277,7 +277,7 @@ int imap_parse_path (const char* path, IMAP_MBOX* mx)
 
   if (!ImapPort)
   {
-    service = getservbyname ("imap", "tcp");
+    service = getservbyname (_("imap", "tcp"));
     if (service)
       ImapPort = ntohs (service->s_port);
     else
@@ -286,7 +286,7 @@ int imap_parse_path (const char* path, IMAP_MBOX* mx)
   }
   if (!ImapsPort)
   {
-    service = getservbyname ("imaps", "tcp");
+    service = getservbyname (_("imaps", "tcp"));
     if (service)
       ImapsPort = ntohs (service->s_port);
     else

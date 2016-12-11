@@ -214,7 +214,7 @@ static void redraw_mix_line (LIST *chain)
 
   if (!chain)
   {
-    addstr ("<no chain defined>");
+    addstr (_("<no chain defined>"));
     mutt_window_clrtoeol (MuttIndexWindow);
     return;
   }
@@ -230,7 +230,7 @@ static void redraw_mix_line (LIST *chain)
 
     addstr (NONULL(t));
     if (chain->next)
-      addstr (", ");
+      addstr (_(", "));
 
     c += mutt_strlen (t) + 2;
   }

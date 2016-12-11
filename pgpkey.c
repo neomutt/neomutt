@@ -548,7 +548,7 @@ static pgp_key_t pgp_select_key (pgp_key_t keys,
     case OP_VERIFY_KEY:
 
       mutt_mktemp (tempfile, sizeof (tempfile));
-      if ((devnull = fopen ("/dev/null", "w")) == NULL)	/* __FOPEN_CHECKED__ */
+      if ((devnull = fopen (_("/dev/null", "w")) == NULL)	/* __FOPEN_CHECKED__ */
       {
 	mutt_perror (_("Can't open /dev/null"));
 	break;
@@ -741,7 +741,7 @@ BODY *pgp_make_key_attachment (char *tempf)
     return NULL;
   }
 
-  if ((devnull = fopen ("/dev/null", "w")) == NULL)	/* __FOPEN_CHECKED__ */
+  if ((devnull = fopen (_("/dev/null", "w")) == NULL)	/* __FOPEN_CHECKED__ */
   {
     mutt_perror (_("Can't open /dev/null"));
     safe_fclose (&tempfp);
@@ -774,7 +774,7 @@ BODY *pgp_make_key_attachment (char *tempf)
   att->unlink = 1;
   att->use_disp = 0;
   att->type = TYPEAPPLICATION;
-  att->subtype = safe_strdup ("pgp-keys");
+  att->subtype = safe_strdup (_("pgp-keys"));
   snprintf (buff, sizeof (buff), (_("PGP Key %s.")), tmp);
   att->description = safe_strdup (buff);
   mutt_update_encoding (att);

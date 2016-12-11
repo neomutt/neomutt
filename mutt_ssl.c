@@ -206,10 +206,10 @@ static int ssl_init (void)
 
     /* load entropy from egd sockets */
 #ifdef HAVE_RAND_EGD
-    add_entropy (getenv ("EGDSOCKET"));
+    add_entropy (getenv (_("EGDSOCKET"));
     snprintf (path, sizeof(path), "%s/.entropy", NONULL(Homedir));
     add_entropy (path);
-    add_entropy ("/tmp/entropy");
+    add_entropy (_("/tmp/entropy"));
 #endif
 
     /* shuffle $RANDFILE (or ~/.rnd if unset) */

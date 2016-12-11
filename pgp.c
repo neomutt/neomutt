@@ -1223,7 +1223,7 @@ BODY *pgp_sign_message (BODY *a)
   
   if (fclose (fp) != 0)
   {
-    mutt_perror ("fclose");
+    mutt_perror (_("fclose"));
     unlink (sigfile);
     return (NULL);
   }
@@ -1240,7 +1240,7 @@ BODY *pgp_sign_message (BODY *a)
 
   t = mutt_new_body ();
   t->type = TYPEMULTIPART;
-  t->subtype = safe_strdup ("signed");
+  t->subtype = safe_strdup (_("signed"));
   t->encoding = ENC7BIT;
   t->use_disp = 0;
   t->disposition = DISPINLINE;
@@ -1255,7 +1255,7 @@ BODY *pgp_sign_message (BODY *a)
   t->parts->next = mutt_new_body ();
   t = t->parts->next;
   t->type = TYPEAPPLICATION;
-  t->subtype = safe_strdup ("pgp-signature");
+  t->subtype = safe_strdup (_("pgp-signature"));
   t->filename = safe_strdup (sigfile);
   t->use_disp = 0;
   t->disposition = DISPNONE;
@@ -1488,7 +1488,7 @@ BODY *pgp_encrypt_message (BODY *a, char *keylist, int sign)
 
   t = mutt_new_body ();
   t->type = TYPEMULTIPART;
-  t->subtype = safe_strdup ("encrypted");
+  t->subtype = safe_strdup (_("encrypted"));
   t->encoding = ENC7BIT;
   t->use_disp = 0;
   t->disposition = DISPINLINE;
@@ -1498,18 +1498,18 @@ BODY *pgp_encrypt_message (BODY *a, char *keylist, int sign)
   
   t->parts = mutt_new_body ();
   t->parts->type = TYPEAPPLICATION;
-  t->parts->subtype = safe_strdup ("pgp-encrypted");
+  t->parts->subtype = safe_strdup (_("pgp-encrypted"));
   t->parts->encoding = ENC7BIT;
 
   t->parts->next = mutt_new_body ();
   t->parts->next->type = TYPEAPPLICATION;
-  t->parts->next->subtype = safe_strdup ("octet-stream");
+  t->parts->next->subtype = safe_strdup (_("octet-stream"));
   t->parts->next->encoding = ENC7BIT;
   t->parts->next->filename = safe_strdup (tempfile);
   t->parts->next->use_disp = 1;
   t->parts->next->disposition = DISPATTACH;
   t->parts->next->unlink = 1; /* delete after sending the message */
-  t->parts->next->d_filename = safe_strdup ("msg.asc"); /* non pgp/mime can save */
+  t->parts->next->d_filename = safe_strdup (_("msg.asc")); /* non pgp/mime can save */
 
   return (t);
 }
@@ -1668,7 +1668,7 @@ BODY *pgp_traditional_encryptsign (BODY *a, int flags, char *keylist)
   b->encoding = ENC7BIT;
 
   b->type = TYPETEXT;
-  b->subtype = safe_strdup ("plain");
+  b->subtype = safe_strdup (_("plain"));
   
   mutt_set_parameter ("x-action", flags & ENCRYPT ? "pgp-encrypted" : "pgp-signed",
 		      &b->parameter);
@@ -1681,7 +1681,7 @@ BODY *pgp_traditional_encryptsign (BODY *a, int flags, char *keylist)
    * "mail environments" which are typically used by large corporations.
    */
 
-  b->d_filename = safe_strdup ("msg.pgp");
+  b->d_filename = safe_strdup (_("msg.pgp"));
   b->use_disp = 1;
 
 #endif

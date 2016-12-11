@@ -3075,7 +3075,7 @@ search_next:
 	  if (Context)
 	    Context->changed = 1;
           redraw = REDRAW_FULL;
-          mutt_message ("%d label%s changed.", rc, rc == 1 ? "" : "s");
+          mutt_message (_("%d label%s changed.", rc, rc == 1 ? "" : "s"));
         }
         else {
           mutt_message (_("No labels changed."));

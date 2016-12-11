@@ -538,7 +538,7 @@ static int data_object_to_stream (gpgme_data_t data, FILE *fp)
 
      if (ferror (fp))
        {
-         mutt_perror ("[tempfile]");
+         mutt_perror (_("[tempfile]"));
          return -1;
        }
     }
@@ -955,7 +955,7 @@ static BODY *sign_message (BODY *a, int use_smime)
 
   t = mutt_new_body ();
   t->type = TYPEMULTIPART;
-  t->subtype = safe_strdup ("signed");
+  t->subtype = safe_strdup (_("signed"));
   t->encoding = ENC7BIT;
   t->use_disp = 0;
   t->disposition = DISPINLINE;
@@ -981,16 +981,16 @@ static BODY *sign_message (BODY *a, int use_smime)
   t->type = TYPEAPPLICATION;
   if (use_smime)
     {
-      t->subtype = safe_strdup ("pkcs7-signature");
+      t->subtype = safe_strdup (_("pkcs7-signature"));
       mutt_set_parameter ("name", "smime.p7s", &t->parameter);
       t->encoding = ENCBASE64; 
       t->use_disp = 1;
       t->disposition = DISPATTACH;
-      t->d_filename = safe_strdup ("smime.p7s");
+      t->d_filename = safe_strdup (_("smime.p7s"));
     }
   else
     {
-      t->subtype = safe_strdup ("pgp-signature");
+      t->subtype = safe_strdup (_("pgp-signature"));
       mutt_set_parameter ("name", "signature.asc", &t->parameter);
       t->use_disp = 0;
       t->disposition = DISPNONE;
@@ -1047,7 +1047,7 @@ BODY *pgp_gpgme_encrypt_message (BODY *a, char *keylist, int sign)
 
   t = mutt_new_body ();
   t->type = TYPEMULTIPART;
-  t->subtype = safe_strdup ("encrypted");
+  t->subtype = safe_strdup (_("encrypted"));
   t->encoding = ENC7BIT;
   t->use_disp = 0;
   t->disposition = DISPINLINE;
@@ -1057,18 +1057,18 @@ BODY *pgp_gpgme_encrypt_message (BODY *a, char *keylist, int sign)
   
   t->parts = mutt_new_body ();
   t->parts->type = TYPEAPPLICATION;
-  t->parts->subtype = safe_strdup ("pgp-encrypted");
+  t->parts->subtype = safe_strdup (_("pgp-encrypted"));
   t->parts->encoding = ENC7BIT;
 
   t->parts->next = mutt_new_body ();
   t->parts->next->type = TYPEAPPLICATION;
-  t->parts->next->subtype = safe_strdup ("octet-stream");
+  t->parts->next->subtype = safe_strdup (_("octet-stream"));
   t->parts->next->encoding = ENC7BIT;
   t->parts->next->filename = outfile;
   t->parts->next->use_disp = 1;
   t->parts->next->disposition = DISPATTACH;
   t->parts->next->unlink = 1; /* delete after sending the message */
-  t->parts->next->d_filename = safe_strdup ("msg.asc"); /* non pgp/mime
+  t->parts->next->d_filename = safe_strdup (_("msg.asc")); /* non pgp/mime
                                                            can save */
 
   return t;
@@ -1106,13 +1106,13 @@ BODY *smime_gpgme_build_smime_entity (BODY *a, char *keylist)
 
   t = mutt_new_body ();
   t->type = TYPEAPPLICATION;
-  t->subtype = safe_strdup ("pkcs7-mime");
+  t->subtype = safe_strdup (_("pkcs7-mime"));
   mutt_set_parameter ("name", "smime.p7m", &t->parameter);
   mutt_set_parameter ("smime-type", "enveloped-data", &t->parameter);
   t->encoding = ENCBASE64;  /* The output of OpenSSL SHOULD be binary */
   t->use_disp = 1;
   t->disposition = DISPATTACH;
-  t->d_filename = safe_strdup ("smime.p7m");
+  t->d_filename = safe_strdup (_("smime.p7m"));
   t->filename = outfile;
   t->unlink = 1; /*delete after sending the message */
   t->parts=0;
@@ -4626,7 +4626,7 @@ BODY *pgp_gpgme_make_key_attachment (char *tempf)
   att->unlink = 1;
   att->use_disp = 0;
   att->type = TYPEAPPLICATION;
-  att->subtype = safe_strdup ("pgp-keys");
+  att->subtype = safe_strdup (_("pgp-keys"));
   /* L10N:
      MIME description for exported (attached) keys.
      You can translate this entry to a non-ASCII string (it will be encoded),
