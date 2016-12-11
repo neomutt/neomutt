@@ -1764,7 +1764,7 @@ int mutt_pattern_func (int op, char *prompt)
   if (mutt_get_field (prompt, buf, sizeof (buf), MUTT_PATTERN | MUTT_CLEAR) != 0 || !buf[0])
     return (-1);
 
-  mutt_message _("Compiling search pattern...");
+  mutt_message (_("Compiling search pattern..."));
   
   simple = safe_strdup (buf);
   mutt_check_simple (buf, sizeof (buf), NONULL (SimpleSearch));
@@ -1854,7 +1854,7 @@ int mutt_pattern_func (int op, char *prompt)
       mutt_pattern_free (&Context->limit_pattern);
 
     if (Context->msgcount && !Context->vcount)
-      mutt_error _("No messages matched criteria.");
+      mutt_error (_("No messages matched criteria."));
 
     /* record new limit pattern, unless match all */
     if (mutt_strcmp (buf, "~A") != 0)
@@ -1906,7 +1906,7 @@ int mutt_search_command (int cur, int op)
       mutt_buffer_init (&err);
       set_option (OPTSEARCHINVALID);
       strfcpy (LastSearch, buf, sizeof (LastSearch));
-      mutt_message _("Compiling search pattern...");
+      mutt_message (_("Compiling search pattern..."));
       mutt_pattern_free (&SearchPattern);
       err.dsize = STRING;
       err.data = safe_malloc (err.dsize);
@@ -1949,7 +1949,7 @@ int mutt_search_command (int cur, int op)
         msg = _("Search wrapped to top.");
       else 
       {
-        mutt_message _("Search hit bottom without finding match");
+        mutt_message (_("Search hit bottom without finding match"));
 	return (-1);
       }
     }
@@ -1960,7 +1960,7 @@ int mutt_search_command (int cur, int op)
         msg = _("Search wrapped to bottom.");
       else 
       {
-        mutt_message _("Search hit top without finding match");
+        mutt_message (_("Search hit top without finding match"));
 	return (-1);
       }
     }
@@ -1992,7 +1992,7 @@ int mutt_search_command (int cur, int op)
 
     if (SigInt)
     {
-      mutt_error _("Search interrupted.");
+      mutt_error (_("Search interrupted."));
       SigInt = 0;
       return (-1);
     }
@@ -2000,6 +2000,6 @@ int mutt_search_command (int cur, int op)
     i += incr;
   }
 
-  mutt_error _("Not found.");
+  mutt_error (_("Not found."));
   return (-1);
 }

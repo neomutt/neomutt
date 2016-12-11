@@ -40,7 +40,7 @@ imap_auth_res_t imap_auth_plain(IMAP_DATA *idata, const char *method)
   if (mutt_account_getpass(&idata->conn->account))
     return IMAP_AUTH_FAILURE;
 
-  mutt_message _("Logging in...");
+  mutt_message(_("Logging in..."));
 
   mutt_sasl_plain_msg(buf, STRING, "AUTHENTICATE PLAIN",
                       idata->conn->account.user, idata->conn->account.user,
@@ -57,7 +57,7 @@ imap_auth_res_t imap_auth_plain(IMAP_DATA *idata, const char *method)
   }
   else if (rc == IMAP_CMD_NO)
   {
-    mutt_error _("Login failed.");
+    mutt_error(_("Login failed."));
     mutt_sleep(2);
     res = IMAP_AUTH_FAILURE;
   }

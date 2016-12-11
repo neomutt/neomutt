@@ -1742,7 +1742,7 @@ int mutt_save_confirm (const char *s, struct stat *st)
 #ifdef USE_POP
   if (magic == MUTT_POP)
   {
-    mutt_error _("Can't save message to POP mailbox.");
+    mutt_error (_("Can't save message to POP mailbox."));
     return 1;
   }
 #endif

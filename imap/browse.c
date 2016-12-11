@@ -65,7 +65,7 @@ int imap_browse (char* path, struct browser_state* state)
   if (!(idata = imap_conn_find (&(mx.account), 0)))
     goto fail;
 
-  mutt_message _("Getting folder list...");
+  mutt_message (_("Getting folder list..."));
 
   /* skip check for parents when at the root */
   if (mx.mbox && mx.mbox[0] != '\0')
@@ -183,7 +183,7 @@ int imap_browse (char* path, struct browser_state* state)
 
   if (!state->entrylen)
   {
-    mutt_error _("No such folder");
+    mutt_error (_("No such folder"));
     goto fail;
   }
 
@@ -246,7 +246,7 @@ int imap_mailbox_create (const char* folder)
   if (imap_create_mailbox (idata, buf) < 0)
     goto fail;
 
-  mutt_message _("Mailbox created.");
+  mutt_message (_("Mailbox created."));
   mutt_sleep (0);
 
   FREE (&mx.mbox);
@@ -279,7 +279,7 @@ int imap_mailbox_rename(const char* mailbox)
 
   if (!mx.mbox)
   {
-    mutt_error _("Cannot rename root folder");
+    mutt_error (_("Cannot rename root folder"));
     goto fail;
   }
 

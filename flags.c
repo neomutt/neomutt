@@ -302,7 +302,7 @@ int mutt_thread_set_flag (HEADER *hdr, int flag, int bf, int subthread)
   
   if ((Sort & SORT_MASK) != SORT_THREADS)
   {
-    mutt_error _("Threading is not enabled.");
+    mutt_error (_("Threading is not enabled."));
     return (-1);
   }
 

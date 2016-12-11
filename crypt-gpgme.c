@@ -586,7 +586,7 @@ static char *data_object_to_tempfile (gpgme_data_t data, char *tempf, FILE **ret
     }
   if ((fp = safe_fopen (tempf, tempf == tempfb ? "w+" : "a+")) == NULL)
     {
-      mutt_perror _("Can't create temporary file");
+      mutt_perror (_("Can't create temporary file"));
       return NULL;
     }
 
@@ -2657,11 +2657,11 @@ int pgp_gpgme_encrypted_handler (BODY *a, STATE *s)
         }
 
       mutt_free_body (&tattach);
-      mutt_message _("PGP message successfully decrypted.");
+      mutt_message (_("PGP message successfully decrypted."));
     }
   else
     {
-      mutt_error _("Could not decrypt PGP message");
+      mutt_error (_("Could not decrypt PGP message"));
       mutt_sleep (2);
       rc = -1;
     }
@@ -3643,10 +3643,10 @@ verify_key (crypt_key_t *key)
   mutt_mktemp (tempfile, sizeof (tempfile));
   if (!(fp = safe_fopen (tempfile, "w")))
     {
-      mutt_perror _("Can't create temporary file");
+      mutt_perror (_("Can't create temporary file"));
       return;
     }
-  mutt_message _("Collecting data...");
+  mutt_message (_("Collecting data..."));
 
   print_key_info (key->kobj, fp);
 
@@ -3992,7 +3992,7 @@ static crypt_key_t *crypt_select_key (crypt_key_t *keys,
 
   if (!i && unusable)
     {
-      mutt_error _("All matching keys are marked expired/revoked.");
+      mutt_error (_("All matching keys are marked expired/revoked."));
       mutt_sleep (1);
       return NULL;
     }
@@ -4086,8 +4086,8 @@ static crypt_key_t *crypt_select_key (crypt_key_t *keys,
             {
             if (!crypt_key_is_valid (key_table[menu->current]))
               {
-                mutt_error _("This key can't be used: "
-                             "expired/disabled/revoked.");
+                mutt_error(_("This key can't be used: "
+                             "expired/disabled/revoked."));
                 break;
               }
             }

@@ -45,7 +45,7 @@ static const char *Mailbox_is_read_only = N_("Mailbox is read-only.");
 #define CHECK_READONLY if (Context->readonly) \
 {\
     mutt_flushinp (); \
-    mutt_error _(Mailbox_is_read_only); \
+    mutt_error(_(Mailbox_is_read_only)); \
     break; \
 }
 
@@ -498,10 +498,10 @@ static int mutt_query_save_attachment (FILE *fp, BODY *body, HEADER *hdr, char *
       }
     }
     
-    mutt_message _("Saving...");
+    mutt_message (_("Saving..."));
     if (mutt_save_attachment (fp, body, tfile, append, (hdr || !is_message) ? hdr : body->hdr) == 0)
     {
-      mutt_message _("Attachment saved.");
+      mutt_message (_("Attachment saved."));
       return 0;
     }
     else
@@ -592,7 +592,7 @@ void mutt_save_attachment_list (FILE *fp, int tag, BODY *top, HEADER *hdr, MUTTM
   }
   
   if (!option (OPTATTACHSPLIT) && (rc == 0))
-    mutt_message _("Attachment saved.");
+    mutt_message (_("Attachment saved."));
 }
 
 static void
@@ -622,7 +622,7 @@ mutt_query_pipe_attachment (char *command, FILE *fp, BODY *body, int filter)
       mutt_unlink (body->filename);
       mutt_rename_file (tfile, body->filename);
       mutt_update_encoding (body);
-      mutt_message _("Attachment filtered.");
+      mutt_message (_("Attachment filtered."));
     }
   }
   else
@@ -945,7 +945,7 @@ static const char *Function_not_permitted = N_("Function not permitted in attach
 #define CHECK_ATTACH if(option(OPTATTACHMSG)) \
 		     {\
 			mutt_flushinp (); \
-			mutt_error _(Function_not_permitted); \
+			mutt_error(_(Function_not_permitted)); \
 			break; \
 		     }
 
@@ -1025,7 +1025,7 @@ void mutt_view_attachments (HEADER *hdr)
     if (need_secured && !secured)
     {
       mx_close_message (Context, &msg);
-      mutt_error _("Can't decrypt encrypted message!");
+      mutt_error (_("Can't decrypt encrypted message!"));
       return;
     }
   }
@@ -1075,7 +1075,7 @@ void mutt_view_attachments (HEADER *hdr)
       case OP_ATTACH_COLLAPSE:
         if (!idx[menu->current]->content->parts)
         {
-	  mutt_error _("There are no subparts to show!");
+	  mutt_error (_("There are no subparts to show!"));
 	  break;
 	}
         if (!idx[menu->current]->content->collapsed)
@@ -1136,7 +1136,7 @@ void mutt_view_attachments (HEADER *hdr)
 	if (Context->magic == MUTT_POP)
 	{
 	  mutt_flushinp ();
-	  mutt_error _("Can't delete attachment from POP server.");
+	  mutt_error (_("Can't delete attachment from POP server."));
 	  break;
 	}
 #endif
@@ -1152,14 +1152,14 @@ void mutt_view_attachments (HEADER *hdr)
 
         if (WithCrypto && (hdr->security & ENCRYPT))
         {
-          mutt_message _(
-            "Deletion of attachments from encrypted messages is unsupported.");
+          mutt_message(_(
+            "Deletion of attachments from encrypted messages is unsupported."));
           break;
         }
         if (WithCrypto && (hdr->security & (SIGN | PARTSIGN)))
         {
-          mutt_message _(
-            "Deletion of attachments from signed messages may invalidate the signature.");
+          mutt_message(_(
+            "Deletion of attachments from signed messages may invalidate the signature."));
         }
         if (!menu->tagprefix)
         {
@@ -1175,8 +1175,8 @@ void mutt_view_attachments (HEADER *hdr)
               menu->redraw = REDRAW_CURRENT;
           }
           else
-            mutt_message _(
-              "Only deletion of multipart attachments is supported.");
+            mutt_message(_(
+              "Only deletion of multipart attachments is supported."));
         }
         else
         {
@@ -1192,8 +1192,8 @@ void mutt_view_attachments (HEADER *hdr)
                 menu->redraw = REDRAW_INDEX;
               }
               else
-                mutt_message _(
-                  "Only deletion of multipart attachments is supported.");
+                mutt_message(_(
+                  "Only deletion of multipart attachments is supported."));
             }
           }
         }

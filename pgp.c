@@ -102,7 +102,7 @@ int pgp_valid_passphrase (void)
 void pgp_forget_passphrase (void)
 {
   pgp_void_passphrase ();
-  mutt_message _("PGP passphrase forgotten.");
+  mutt_message (_("PGP passphrase forgotten."));
 }
 
 int pgp_use_gpg_agent (void)
@@ -502,7 +502,7 @@ int pgp_application_pgp_handler (BODY *m, STATE *s)
 	
 	if (could_not_decrypt && !(s->flags & MUTT_DISPLAY))
 	{
-          mutt_error _("Could not decrypt PGP message");
+          mutt_error (_("Could not decrypt PGP message"));
 	  mutt_sleep (1);
 	  rc = -1;
 	  goto out;
@@ -565,9 +565,9 @@ int pgp_application_pgp_handler (BODY *m, STATE *s)
         {
 	  state_attach_puts (_("[-- END PGP MESSAGE --]\n"), s);
 	  if (could_not_decrypt)
-	    mutt_error _("Could not decrypt PGP message");
+	    mutt_error (_("Could not decrypt PGP message"));
 	  else
-	    mutt_message _("PGP message successfully decrypted.");
+	    mutt_message (_("PGP message successfully decrypted."));
         }
 	else if (pgp_keyblock)
 	  state_attach_puts (_("[-- END PGP PUBLIC KEY BLOCK --]\n"), s);
@@ -857,7 +857,7 @@ void pgp_extract_keys_from_attachment_list (FILE *fp, int tag, BODY *top)
 {
   if(!fp)
   {
-    mutt_error _("Internal error.  Please submit a bug report.");
+    mutt_error (_("Internal error.  Please submit a bug report."));
     return;
   }
 
@@ -949,7 +949,7 @@ BODY *pgp_decrypt_part (BODY *a, STATE *s, FILE *fpout, BODY *p)
   rewind (pgperr);
   if (pgp_check_decryption_okay (pgperr) < 0)
   {
-    mutt_error _("Decryption failed");
+    mutt_error (_("Decryption failed"));
     pgp_void_passphrase ();
     return NULL;
   }
@@ -973,7 +973,7 @@ BODY *pgp_decrypt_part (BODY *a, STATE *s, FILE *fpout, BODY *p)
 
   if (fgetc (fpout) == EOF)
   {
-    mutt_error _("Decryption failed");
+    mutt_error (_("Decryption failed"));
     pgp_void_passphrase ();
     return NULL;
   }
@@ -1122,11 +1122,11 @@ int pgp_encrypted_handler (BODY *a, STATE *s)
 
     mutt_free_body (&tattach);
     /* clear 'Invoking...' message, since there's no error */
-    mutt_message _("PGP message successfully decrypted.");
+    mutt_message (_("PGP message successfully decrypted."));
   }
   else
   {
-    mutt_error _("Could not decrypt PGP message");
+    mutt_error (_("Could not decrypt PGP message"));
     mutt_sleep (2);
     /* void the passphrase, even if it's not necessarily the problem */
     pgp_void_passphrase ();
@@ -1179,7 +1179,7 @@ BODY *pgp_sign_message (BODY *a)
   if ((thepid = pgp_invoke_sign (&pgpin, &pgpout, &pgperr,
 				 -1, -1, -1, signedfile)) == -1)
   {
-    mutt_perror _("Can't open PGP subprocess!");
+    mutt_perror (_("Can't open PGP subprocess!"));
     safe_fclose (&fp);
     unlink(sigfile);
     unlink(signedfile);
@@ -1613,7 +1613,7 @@ BODY *pgp_traditional_encryptsign (BODY *a, int flags, char *keylist)
 					-1, fileno (pgpout), fileno (pgperr),
 					pgpinfile, keylist, flags)) == -1)
   {
-    mutt_perror _("Can't invoke PGP");
+    mutt_perror (_("Can't invoke PGP"));
     safe_fclose (&pgpout);
     safe_fclose (&pgperr);
     mutt_unlink (pgpinfile);

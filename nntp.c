@@ -2190,7 +2190,7 @@ int nntp_check_new_groups (NNTP_SERVER *nserv)
   time_t now;
   struct tm *tm;
   char buf[LONG_STRING];
-  char *msg = _("Checking for new newsgroups...");
+  char *msg = (_("Checking for new newsgroups..."));
   unsigned int i;
   int rc, update_active = false;
 

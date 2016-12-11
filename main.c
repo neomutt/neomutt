@@ -82,7 +82,7 @@ static void mutt_usage (void)
 {
   puts (mutt_make_version ());
 
-  puts _(
+  puts (_(
 "usage: mutt [<options>] [-z] [-f <file> | -yZ]\n\
        mutt [<options>] [-Ex] [-Hi <file>] [-s <subj>] [-bc <addr>] [-a <file> [...] --] <addr> [...]\n\
        mutt [<options>] [-x] [-s <subj>] [-bc <addr>] [-a <file> [...] --] <addr> [...] < message\n\
@@ -90,9 +90,9 @@ static void mutt_usage (void)
        mutt [<options>] -A <alias> [...]\n\
        mutt [<options>] -Q <query> [...]\n\
        mutt [<options>] -D [-S]\n\
-       mutt -v[v]\n");
+       mutt -v[v]\n"));
 
-  puts _("\
+  puts (_("\
 options:\n\
   -A <alias>\texpand the given alias\n\
   -a <file> [...] --\tattach file(s) to the message\n\
@@ -100,11 +100,11 @@ options:\n\
   -b <address>\tspecify a blind carbon-copy (BCC) address\n\
   -c <address>\tspecify a carbon-copy (CC) address\n\
   -D\t\tprint the value of all variables to stdout\n\
-  -D -S\t\tlike -D, but hide the value of sensitive variables");
+  -D -S\t\tlike -D, but hide the value of sensitive variables"));
 #if DEBUG
-  puts _("  -d <level>\tlog debugging output to ~/.muttdebug0");
+  puts (_("  -d <level>\tlog debugging output to ~/.muttdebug0"));
 #endif
-  puts _(
+  puts (_(
 "  -E\t\tedit the draft (-H) or include (-i) file\n\
   -e <command>\tspecify a command to be executed after initialization\n\
   -f <file>\tspecify which mailbox to read\n\
@@ -115,9 +115,9 @@ options:\n\
   -i <file>\tspecify a file which Mutt should include in the body\n\
   -m <type>\tspecify a default mailbox type\n\
   -n\t\tcauses Mutt not to read the system Muttrc\n\
-  -p\t\trecall a postponed message");
+  -p\t\trecall a postponed message"));
   
-  puts _("\
+  puts (_("\
   -Q <variable>\tquery a configuration variable\n\
   -R\t\topen mailbox in read-only mode\n\
   -s <subj>\tspecify a subject (must be in quotes if it has spaces)\n\
@@ -126,7 +126,7 @@ options:\n\
   -y\t\tselect a mailbox specified in your `mailboxes' list\n\
   -z\t\texit immediately if there are no messages in the mailbox\n\
   -Z\t\topen the first folder with new message, exit immediately if none\n\
-  -h\t\tthis help message");
+  -h\t\tthis help message"));
 
   exit (0);
 }
@@ -149,7 +149,7 @@ static void start_curses (void)
 #endif
   if (initscr () == NULL)
   {
-    puts _("Error initializing terminal.");
+    puts (_("Error initializing terminal."));
     exit (1);
   }
 #if 1 /* USE_SLANG_CURSES  - commenting out suggested in #455. */
@@ -312,7 +312,7 @@ int main (int argc, char **argv, char **environ)
 	}
 	printf (_("Debugging at level %d.\n"), debuglevel);
 #else
-	printf _("DEBUG was not defined during compilation.  Ignored.\n");
+	printf (_("DEBUG was not defined during compilation.  Ignored.\n"));
 #endif
 	break;
 
@@ -508,7 +508,7 @@ int main (int argc, char **argv, char **environ)
       if (mutt_yesorno (msg, MUTT_YES) == MUTT_YES)
       {
 	if (mkdir (fpath, 0700) == -1 && errno != EEXIST)
-	  mutt_error ( _("Can't create %s: %s."), Maildir, strerror (errno));
+	  mutt_error (_("Can't create %s: %s."), Maildir, strerror (errno));
       }
     }
   }
@@ -820,7 +820,7 @@ int main (int argc, char **argv, char **environ)
     {
       if (!mutt_buffy_check (0))
       {
-	mutt_endwin _("No mailbox with new mail.");
+	mutt_endwin (_("No mailbox with new mail."));
 	exit (1);
       }
       folder[0] = 0;
@@ -841,7 +841,7 @@ int main (int argc, char **argv, char **environ)
       else
 #endif
       if (!Incoming) {
-	mutt_endwin _("No incoming mailboxes defined.");
+	mutt_endwin (_("No incoming mailboxes defined."));
 	exit (1);
       }
       folder[0] = 0;
@@ -884,7 +884,7 @@ int main (int argc, char **argv, char **environ)
 	  mutt_endwin (strerror (errno));
 	  exit (1);
 	case 1:
-	  mutt_endwin _("Mailbox is empty.");
+	  mutt_endwin (_("Mailbox is empty."));
 	  exit (1);
       }
     }

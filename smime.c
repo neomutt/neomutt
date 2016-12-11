@@ -1464,7 +1464,7 @@ BODY *smime_build_smime_entity (BODY *a, char *certlist)
   if (empty)
   {
     /* fatal error while trying to encrypt message */
-    if (!err) mutt_any_key_to_continue _("No output from OpenSSL...");
+    if (!err) mutt_any_key_to_continue (_("No output from OpenSSL..."));
     mutt_unlink (tempfile);
     return (NULL);
   }
@@ -1531,7 +1531,7 @@ BODY *smime_sign_message (BODY *a )
 
   if (!SmimeDefaultKey)
   {
-    mutt_error _("Can't sign: No key specified. Use Sign As.");
+    mutt_error (_("Can't sign: No key specified. Use Sign As."));
     return NULL;
   }
 
@@ -1583,7 +1583,7 @@ BODY *smime_sign_message (BODY *a )
   if ((thepid = smime_invoke_sign (&smimein, NULL, &smimeerr,
 				 -1, fileno (smimeout), -1, filetosign)) == -1)
   {
-    mutt_perror _("Can't open OpenSSL subprocess!");
+    mutt_perror (_("Can't open OpenSSL subprocess!"));
     safe_fclose (&smimeout);
     mutt_unlink (signedfile);
     mutt_unlink (filetosign);
@@ -1621,7 +1621,7 @@ BODY *smime_sign_message (BODY *a )
 
   if (empty)
   {
-    mutt_any_key_to_continue _("No output from OpenSSL...");
+    mutt_any_key_to_continue (_("No output from OpenSSL..."));
     mutt_unlink (signedfile);
     return (NULL); /* fatal error while signing */
   }

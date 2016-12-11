@@ -142,7 +142,7 @@ void mutt_alias_menu (char *buf, size_t buflen, ALIAS *aliases)
   
   if (!aliases)
   {
-    mutt_error _("You have no aliases!");
+    mutt_error (_("You have no aliases!"));
     return;
   }
   

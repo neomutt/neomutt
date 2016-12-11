@@ -433,7 +433,7 @@ int mutt_write_mime_body (BODY *a, FILE *f)
     if (!(p = mutt_get_parameter ("boundary", a->parameter)))
     {
       dprint (1, (debugfile, "mutt_write_mime_body(): no boundary parameter found!\n"));
-      mutt_error _("No boundary parameter found! [report this error]");
+      mutt_error (_("No boundary parameter found! [report this error]"));
       return (-1);
     }
     strfcpy (boundary, p, sizeof (boundary));
