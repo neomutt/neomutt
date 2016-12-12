@@ -105,6 +105,8 @@ static const char *Obtaining = N_("\
     Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.\n\
 ");
 
+char **envlist;
+
 void mutt_exit (int code)
 {
   mutt_endwin (NULL);
@@ -571,7 +573,7 @@ init_extended_keys();
 #define MUTT_RO      (1<<3)	/* -R */
 #define MUTT_SELECT  (1<<4)	/* -y */
 
-int main (int argc, char **argv)
+int main (int argc, char **argv, char **environ)
 {
   char folder[_POSIX_PATH_MAX] = "";
   char *subject = NULL;
@@ -618,6 +620,17 @@ int main (int argc, char **argv)
 
   memset (Options, 0, sizeof (Options));
   memset (QuadOptions, 0, sizeof (QuadOptions));
+
+  /* Init envlist */
+  {
+    char **srcp, **dstp;
+    int count = 0;
+    for (srcp = environ; srcp && *srcp; srcp++)
+      count++;
+    envlist = safe_calloc(count+1, sizeof(char *));
+    for (srcp = environ, dstp = envlist; srcp && *srcp; srcp++, dstp++)
+      *dstp = safe_strdup(*srcp);
+  }
 
   for (optind = 1; optind < double_dash; )
   {
