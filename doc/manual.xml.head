@@ -6480,6 +6480,24 @@ if the mailbox shortcut results in an empty regexp.
 
 </sect1>
 
+<sect1 id="setenv">
+<title>Managing the Environment</title>
+
+<para>
+You can alter the environment that Mutt passes on to its child processes
+using the <quote>setenv</quote> and <quote>unsetenv</quote> operators.
+(N.B. These follow Mutt-style syntax, not shell-style!)  You can also
+query current environment values by prefixing a <quote>?</quote> character.
+</para>
+
+<screen>
+setenv TERM vt100
+setenv ORGANIZATION "The Mutt Development Team"
+unsetenv DISPLAY
+setenv ?LESS
+</screen>
+</sect1>
+
 <sect1 id="query">
 <title>External Address Queries</title>
 
@@ -14981,6 +14999,23 @@ The following are the commands understood by Mutt:
 <replaceable class="parameter">variable</replaceable>
 </arg>
 </cmdsynopsis>
+</listitem>
+
+<listitem>
+  <cmdsynopsis>
+    <command><link linkend="setenv">setenv</link></command>
+    <arg choice="plain">
+      <replaceable class="parameter">[?]variable</replaceable>
+    </arg>
+    <arg choice="opt">
+      <replaceable class="parameter">value</replaceable>
+    </arg>
+
+    <command><link linkend="setenv">unsetenv</link></command>
+    <arg choice="plain">
+      <replaceable class="parameter">variable</replaceable>
+    </arg>
+  </cmdsynopsis>
 </listitem>
 
 <listitem>
