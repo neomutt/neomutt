@@ -26,8 +26,11 @@
 #include "hcache-backend.h"
 #include "lib.h"
 
-#define LMDB_DB_SIZE (1024 * 1024 * 1024)
 #include <lmdb.h>
+
+/* The maximum size of the database file (2GiB).
+ * The file is mmap(2)'d into memory. */
+const size_t LMDB_DB_SIZE = 2147483648;
 
 enum mdb_txn_mode
 {
