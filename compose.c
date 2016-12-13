@@ -501,8 +501,8 @@ compose_format_str (char *buf, size_t buflen, size_t col, int cols, char op, con
       break;
 
     case 'v':
-      snprintf (fmt, sizeof (fmt), "NeoMutt %%s");
-      snprintf (buf, buflen, fmt, PACKAGE_VERSION);
+      snprintf (fmt, sizeof (fmt), "NeoMutt %%s%%s");
+      snprintf (buf, buflen, fmt, PACKAGE_VERSION, GitVer);
       break;
 
     case 0:

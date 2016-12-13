@@ -53,7 +53,7 @@
 #endif
 
 #ifdef DL_STANDALONE
-# include "oldmutt_ver.h"
+#include "git-ver.h"
 #endif
 
 #define MAXLINKS 1024 /* maximum link depth */
@@ -339,22 +339,22 @@ END_PRIVILEGED (void)
 static void 
 usage (const char *av0)
 {
-  fprintf (stderr, "dotlock [NeoMutt %s (%s)]\n", PACKAGE_VERSION, OldMuttVer);
+  fprintf (stderr, "dotlock [NeoMutt %s%s (%s)]\n", PACKAGE_VERSION, GitVer, MUTT_VERSION);
   fprintf (stderr, "usage: %s [-t|-f|-u|-d] [-p] [-r <retries>] file\n",
-	  av0);
+    av0);
 
   fputs ("\noptions:"
-	"\n  -t\t\ttry"
-	"\n  -f\t\tforce"
-	"\n  -u\t\tunlock"
-	"\n  -d\t\tunlink"
-	"\n  -p\t\tprivileged"
+  "\n  -t\t\ttry"
+  "\n  -f\t\tforce"
+  "\n  -u\t\tunlock"
+  "\n  -d\t\tunlink"
+  "\n  -p\t\tprivileged"
 #ifndef USE_SETGID
-	" (ignored)"
+  " (ignored)"
 #endif
-	"\n  -r <retries>\tRetry locking"
-	"\n", stderr);
-  
+  "\n  -r <retries>\tRetry locking"
+  "\n", stderr);
+
   exit (DL_EX_ERROR);
 }
 

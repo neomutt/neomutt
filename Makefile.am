@@ -31,7 +31,7 @@ endif
 
 distdir = neo$(PACKAGE)-$(VERSION)
 
-BUILT_SOURCES = keymap_defs.h patchlist.c oldmutt_ver.h conststrings.c hcachever.sh $(HCVERSION) $(top_srcdir)/.version
+BUILT_SOURCES = keymap_defs.h patchlist.c git-ver.h conststrings.c hcachever.sh $(HCVERSION)
 
 bin_PROGRAMS = mutt $(DOTLOCK_TARGET) $(PGPAUX_TARGET)
 mutt_SOURCES = \
@@ -90,8 +90,7 @@ EXTRA_DIST = COPYRIGHT LICENSE.md OPS OPS.PGP OPS.CRYPT OPS.SMIME TODO UPDATING 
 	snprintf.c regex.c crypt-gpgme.h hcachever.sh.in \
 	txt2c.c txt2c.sh version.h \
 	hcache-backend.h hcache-bdb.c hcache-gdbm.c hcache-kc.c hcache-lmdb.c \
-	hcache-qdbm.c hcache-tc.c \
-	$(top_srcdir)/.version git-version-gen
+	hcache-qdbm.c hcache-tc.c
 
 EXTRA_SCRIPTS = smime_keys
 
@@ -146,9 +145,6 @@ ACLOCAL_AMFLAGS = -I m4
 
 LDADD = $(LIBOBJS) $(INTLLIBS)
 
-$(top_srcdir)/.version:
-	echo $(VERSION) > $@-t && mv $@-t $@
-
 dist-hook:
 	echo $(VERSION) > $(distdir)/.tarball-version
 
@@ -165,16 +161,11 @@ keymap_alldefs.h: $(srcdir)/OPS $(srcdir)/OPS.SIDEBAR $(srcdir)/OPS.NOTMUCH $(sr
 		$(srcdir)/OPS.MIX $(srcdir)/OPS.CRYPT $(srcdir)/OPS.SMIME \
 			> keymap_alldefs.h
 
-oldmutt_ver.h:
-	version="1.7.1" && \
-	echo 'const char *OldMuttVer = "'$$version'";' > oldmutt_ver.h.tmp; \
-	cmp -s oldmutt_ver.h.tmp oldmutt_ver.h || mv oldmutt_ver.h.tmp oldmutt_ver.h
-
-# reldate.h:
-# 	date=`head -n 1 $(top_srcdir)/ChangeLog.neomutt | LC_ALL=C cut -b 1-10` && \
-# 	echo 'const char *ReleaseDate = "'$$date'";' > reldate.h.tmp; \
-# 	cmp -s reldate.h.tmp reldate.h || cp reldate.h.tmp reldate.h; \
-# 	rm reldate.h.tmp
+git-ver.h:
+	@version=`git describe --dirty --abbrev=6 --match "neomutt-*" 2> /dev/null | sed -e 's/^neomutt-[0-9]\{8\}//' -e 's/g//'`; \
+	echo 'const char *GitVer = "'$$version'";' > git-ver.h.tmp; \
+	cmp -s git-ver.h.tmp git-ver.h || mv git-ver.h.tmp git-ver.h; \
+	rm -f git-ver.h.tmp
 
 # The '#undef ENABLE_NLS' is to work around an automake ordering issue:
 # BUILT_SOURCES are processed before SUBDIRS.
@@ -223,4 +214,4 @@ check-security:
 update-doc:
 	(cd doc && $(MAKE) update-doc)
 
-.PHONY: commit pclean check-security
+.PHONY: commit pclean check-security git-ver.h

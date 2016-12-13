@@ -3188,7 +3188,7 @@ static void start_debug (void)
   {
     setbuf (debugfile, NULL); /* don't buffer the debugging output! */
     dprint(1,(debugfile,"NeoMutt/%s (%s) debugging at level %d\n",
-				PACKAGE_VERSION, OldMuttVer, debuglevel));
+				PACKAGE_VERSION, MUTT_VERSION, debuglevel));
   }
 }
 #endif

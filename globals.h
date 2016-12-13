@@ -175,7 +175,7 @@ WHERE char *CurrentFolder;
 WHERE char *LastFolder;
 
 
-WHERE const char *OldMuttVer;
+WHERE const char *GitVer;
 
 WHERE HASH *Groups;
 WHERE HASH *Labels;
@@ -342,5 +342,5 @@ extern const char * const Months[];
 #include "buffy.h"
 #include "sort.h"
 #include "mutt_crypt.h"
-#include "oldmutt_ver.h"
+#include "git-ver.h"
 #endif /* MAIN_C */

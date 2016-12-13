@@ -939,7 +939,7 @@ int mutt_save_message (HEADER *h, int delete,
 
 void mutt_version (void)
 {
-  mutt_message ("NeoMutt %s (%s)", PACKAGE_VERSION, OldMuttVer);
+  mutt_message ("NeoMutt %s%s (%s)", PACKAGE_VERSION, GitVer, MUTT_VERSION);
 }
 
 void mutt_edit_content_type (HEADER *h, BODY *b, FILE *fp)

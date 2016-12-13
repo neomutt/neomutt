@@ -2122,7 +2122,7 @@ int mutt_write_rfc822_header (FILE *fp, ENVELOPE *env, BODY *attach,
   if (mode == 0 && !privacy && option (OPTXMAILER) && !has_agent)
   {
     /* Add a vanity header */
-    fprintf (fp, "User-Agent: NeoMutt/%s (%s)\n", PACKAGE_VERSION, OldMuttVer);
+    fprintf (fp, "User-Agent: NeoMutt/%s%s (%s)\n", PACKAGE_VERSION, GitVer, MUTT_VERSION);
   }
 
   return (ferror (fp) == 0 ? 0 : -1);

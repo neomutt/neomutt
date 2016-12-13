@@ -51,7 +51,7 @@ mutt
 mutt_dotlock
 mutt_dotlock.c
 mutt_md5
-oldmutt_ver.h
+git-ver.h
 patchlist.c
 pgpewrap
 pgpring

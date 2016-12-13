@@ -2011,8 +2011,8 @@ void mutt_set_mtime (const char* from, const char* to)
 const char *mutt_make_version (void)
 {
   static char vstring[STRING];
-  snprintf (vstring, sizeof (vstring), "NeoMutt %s (%s)",
-	    PACKAGE_VERSION, OldMuttVer);
+  snprintf (vstring, sizeof (vstring), "NeoMutt %s%s (%s)",
+	    PACKAGE_VERSION, GitVer, MUTT_VERSION);
   return vstring;
 }
 
