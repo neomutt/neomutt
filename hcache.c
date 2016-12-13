@@ -865,7 +865,7 @@ mutt_hcache_free(header_cache_t *h, void **data)
   if (!h || !ops)
     return;
 
-  ops->free(h->ctx, data);
+  ops->free(h->ctx, data); /* __MEM_CHECKED__ */
 }
 
 int
@@ -932,7 +932,7 @@ mutt_hcache_backend_list()
     len += snprintf(tmp+len, STRING-len, "%s", (*ops)->name);
   }
 
-  return strdup(tmp);
+  return safe_strdup(tmp);
 }
 
 int

@@ -189,7 +189,7 @@ enum FieldType
 /**
  * make_from_prefix - Create a prefix for an author field
  * @disp:   Type of field
- * @return: Prefix string (do not free() it)
+ * @return: Prefix string (do not free it)
  *
  * If $from_chars is set, pick an appropriate character from it.
  * If not, use the default prefix: "To", "Cc", etc

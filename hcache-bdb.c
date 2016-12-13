@@ -143,7 +143,7 @@ hcache_bdb_fetch(void *vctx, const char *key, size_t keylen)
 static void
 hcache_bdb_free(void *vctx, void **data)
 {
-    FREE(data);
+    FREE(data); /* __FREE_CHECKED__ */
 }
 
 static int

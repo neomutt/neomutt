@@ -2365,7 +2365,7 @@ static int parse_set (BUFFER *tmp, BUFFER *s, unsigned long data, BUFFER *err)
       mutt_extract_token (tmp, s, 0);
       if (mutt_hcache_is_valid_backend(tmp->data))
       {
-          FREE ((void *)MuttVars[idx].data);
+          FREE ((void *)MuttVars[idx].data); /* __FREE_CHECKED__ */
           *(char **)(MuttVars[idx].data) = safe_strdup(tmp->data);
       }
       else
