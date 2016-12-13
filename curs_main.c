@@ -390,7 +390,7 @@ static void update_index (MUTTMENU *menu, CONTEXT *ctx, int check,
   }
 
   /* save the list of new messages */
-  if (oldcount && check != MUTT_REOPENED
+  if (option(OPTUNCOLLAPSENEW) && oldcount && check != MUTT_REOPENED
       && ((Sort & SORT_MASK) == SORT_THREADS))
   {
     save_new = (HEADER **) safe_malloc (sizeof (HEADER *) * (ctx->msgcount - oldcount));
@@ -402,7 +402,7 @@ static void update_index (MUTTMENU *menu, CONTEXT *ctx, int check,
   mutt_sort_headers (ctx, (check == MUTT_REOPENED));
 
   /* uncollapse threads with new mail */
-  if ((Sort & SORT_MASK) == SORT_THREADS)
+  if (option(OPTUNCOLLAPSENEW) && ((Sort & SORT_MASK) == SORT_THREADS))
   {
     if (check == MUTT_REOPENED)
     {
