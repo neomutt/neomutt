@@ -54,6 +54,8 @@ static int entropy_byte_count = 0;
 #define HAVE_ENTROPY()	(!access(DEVRANDOM, R_OK) || entropy_byte_count >= 16)
 #endif
 
+/* index for storing hostname as application specific data in SSL structure */
+static int HostExDataIndex = -1;
 /* keep a handle on accepted certificates in case we want to
  * open up another connection to the same server in this session */
 static STACK_OF(X509) *SslSessionCerts = NULL;
@@ -78,7 +80,7 @@ static int tls_close (CONNECTION* conn);
 static void ssl_err (sslsockdata *data, int err);
 static void ssl_dprint_err_stack (void);
 static int ssl_cache_trusted_cert (X509 *cert);
-static int ssl_check_certificate (CONNECTION *conn, sslsockdata * data);
+static int ssl_verify_callback (int preverify_ok, X509_STORE_CTX *ctx);
 static int interactive_check_cert (X509 *cert, int idx, int len);
 static void ssl_get_client_cert(sslsockdata *ssldata, CONNECTION *conn);
 static int ssl_passwd_cb(char *buf, int size, int rwflag, void *userdata);
@@ -132,6 +134,18 @@ int mutt_ssl_starttls (CONNECTION* conn)
     dprint(1, (debugfile, "mutt_ssl_starttls: Error setting options to %ld\n", ssl_options));
     goto bail_ctx;
   }
+
+  if (option (OPTSSLSYSTEMCERTS))
+  {
+    if (! SSL_CTX_set_default_verify_paths (ssldata->ctx))
+    {
+      dprint (1, (debugfile, "mutt_ssl_starttls: Error setting default verify paths\n"));
+      goto bail_ctx;
+    }
+  }
+
+  if (SslCertFile && ! SSL_CTX_load_verify_locations (ssldata->ctx, SslCertFile, NULL))
+    dprint (1, (debugfile, "mutt_ssl_starttls: Error loading trusted certificates\n"));
 
   ssl_get_client_cert(ssldata, conn);
 
@@ -370,6 +384,19 @@ static int ssl_socket_open (CONNECTION * conn)
     SSL_CTX_set_options(data->ctx, SSL_OP_NO_SSLv3);
   }
 
+  if (option (OPTSSLSYSTEMCERTS))
+  {
+    if (! SSL_CTX_set_default_verify_paths (data->ctx))
+    {
+      dprint (1, (debugfile, "ssl_socket_open: Error setting default verify paths\n"));
+      mutt_socket_close (conn);
+      return -1;
+    }
+  }
+
+  if (SslCertFile && ! SSL_CTX_load_verify_locations (data->ctx, SslCertFile, NULL))
+    dprint (1, (debugfile, "ssl_socket_open: Error loading trusted certificates\n"));
+
   ssl_get_client_cert(data, conn);
 
   if (SslCiphers) {
@@ -400,6 +427,19 @@ static int ssl_negotiate (CONNECTION *conn, sslsockdata* ssldata)
   int err;
   const char* errmsg;
 
+  if ((HostExDataIndex = SSL_get_ex_new_index (0, "host", NULL, NULL, NULL)) == -1)
+  {
+    dprint (1, (debugfile, "failed to get index for application specific data\n"));
+    return -1;
+  }
+
+  if (! SSL_set_ex_data (ssldata->ssl, HostExDataIndex, conn->account.host))
+  {
+    dprint (1, (debugfile, "failed to save hostname in SSL structure\n"));
+    return -1;
+  }
+
+  SSL_set_verify (ssldata->ssl, SSL_VERIFY_PEER, ssl_verify_callback);
   SSL_set_mode (ssldata->ssl, SSL_MODE_AUTO_RETRY);
 
   if ((err = SSL_connect (ssldata->ssl)) != 1)
@@ -421,17 +461,6 @@ static int ssl_negotiate (CONNECTION *conn, sslsockdata* ssldata)
 
     return -1;
   }
-
-  ssldata->cert = SSL_get_peer_certificate (ssldata->ssl);
-  if (!ssldata->cert)
-  {
-    mutt_error (_("Unable to get certificate from peer"));
-    mutt_sleep (1);
-    return -1;
-  }
-
-  if (!ssl_check_certificate (conn, ssldata))
-    return -1;
 
   /* L10N:
      %1$s is version (e.g. "TLSv1.2")
@@ -606,61 +635,6 @@ static char *asn1time_to_string (ASN1_UTCTIME *tm)
   }
 
   return buf;
-}
-
-static int check_certificate_by_signer (X509 *peercert)
-{
-  X509_STORE_CTX *xsc;
-  X509_STORE *ctx;
-  int pass = 0, i;
-
-  ctx = X509_STORE_new ();
-  if (ctx == NULL) return 0;
-
-  if (option (OPTSSLSYSTEMCERTS))
-  {
-    if (X509_STORE_set_default_paths (ctx))
-      pass++;
-    else
-      dprint (2, (debugfile, "X509_STORE_set_default_paths failed\n"));
-  }
-
-  if (X509_STORE_load_locations (ctx, SslCertFile, NULL))
-    pass++;
-  else
-    dprint (2, (debugfile, "X509_STORE_load_locations failed\n"));
-
-  for (i = 0; i < sk_X509_num (SslSessionCerts); i++)
-    pass += (X509_STORE_add_cert (ctx, sk_X509_value (SslSessionCerts, i)) != 0);
-
-  if (pass == 0)
-  {
-    /* nothing to do */
-    X509_STORE_free (ctx);
-    return 0;
-  }
-
-  xsc = X509_STORE_CTX_new();
-  if (xsc == NULL) return 0;
-  X509_STORE_CTX_init (xsc, ctx, peercert, SslSessionCerts);
-
-  pass = (X509_verify_cert (xsc) > 0);
-#ifdef DEBUG
-  if (! pass)
-  {
-    char buf[SHORT_STRING];
-    int err;
-
-    err = X509_STORE_CTX_get_error (xsc);
-    snprintf (buf, sizeof (buf), "%s (%d)",
-	X509_verify_cert_error_string(err), err);
-    dprint (2, (debugfile, "X509_verify_cert: %s\n", buf));
-  }
-#endif
-  X509_STORE_CTX_free (xsc);
-  X509_STORE_free (ctx);
-
-  return pass;
 }
 
 static int compare_certificates (X509 *cert, X509 *peercert,
@@ -908,94 +882,80 @@ static int ssl_cache_trusted_cert (X509 *c)
   return (sk_X509_push (SslSessionCerts, X509_dup(c)));
 }
 
-/* check whether cert is preauthorized. If host is not null, verify that
- * it matches the certificate.
- * Return > 0: authorized, < 0: problems, 0: unknown validity */
-static int ssl_check_preauth (X509 *cert, const char* host)
+/* certificate verification callback, called for each certificate in the chain
+ * sent by the peer, starting from the root; returning 1 means that the given
+ * certificate is trusted, returning 0 immediately aborts the SSL connection */
+static int ssl_verify_callback (int preverify_ok, X509_STORE_CTX *ctx)
 {
-  char buf[SHORT_STRING];
+  char buf[STRING];
+  const char *host;
+  int len, pos;
+  X509 *cert;
+  SSL *ssl;
+
+  if (! (ssl = X509_STORE_CTX_get_ex_data (ctx, SSL_get_ex_data_X509_STORE_CTX_idx ())))
+  {
+    dprint (1, (debugfile, "ssl_verify_callback: failed to retrieve SSL structure from X509_STORE_CTX\n"));
+    return 0;
+  }
+  if (! (host = SSL_get_ex_data (ssl, HostExDataIndex)))
+  {
+    dprint (1, (debugfile, "ssl_verify_callback: failed to retrieve hostname from SSL structure\n"));
+    return 0;
+  }
+
+  cert = X509_STORE_CTX_get_current_cert (ctx);
+  pos = X509_STORE_CTX_get_error_depth (ctx);
+  len = sk_X509_num (X509_STORE_CTX_get_chain (ctx));
+
+  dprint (1, (debugfile, "ssl_verify_callback: checking cert chain entry %s (preverify: %d)\n",
+              X509_NAME_oneline (X509_get_subject_name (cert),
+                                 buf, sizeof (buf)), preverify_ok));
 
   /* check session cache first */
   if (check_certificate_cache (cert))
   {
-    dprint (2, (debugfile, "ssl_check_preauth: using cached certificate\n"));
+    dprint (2, (debugfile, "ssl_verify_callback: using cached certificate\n"));
     return 1;
   }
 
+  /* check hostname only for the leaf certificate */
   buf[0] = 0;
-  if (host && option (OPTSSLVERIFYHOST) != MUTT_NO)
+  if (pos == 0 && option (OPTSSLVERIFYHOST) != MUTT_NO)
   {
     if (!check_host (cert, host, buf, sizeof (buf)))
     {
       mutt_error (_("Certificate host check failed: %s"), buf);
       mutt_sleep (2);
-      return -1;
+      return interactive_check_cert (cert, pos, len);
     }
-    dprint (2, (debugfile, "ssl_check_preauth: hostname check passed\n"));
+    dprint (2, (debugfile, "ssl_verify_callback: hostname check passed\n"));
   }
 
-  if (check_certificate_by_signer (cert))
+  if (!preverify_ok)
   {
-    dprint (2, (debugfile, "ssl_check_preauth: signer check passed\n"));
-    return 1;
-  }
+    /* automatic check from user's database */
+    if (SslCertFile && check_certificate_by_digest (cert))
+    {
+      dprint (2, (debugfile, "ssl_verify_callback: digest check passed\n"));
+      return 1;
+    }
 
-  /* automatic check from user's database */
-  if (SslCertFile && check_certificate_by_digest (cert))
-  {
-    dprint (2, (debugfile, "ssl_check_preauth: digest check passed\n"));
-    return 1;
-  }
-
-  return 0;
-}
-
-static int ssl_check_certificate (CONNECTION *conn, sslsockdata *data)
-{
-  int i, preauthrc, chain_len;
-  STACK_OF(X509) *chain;
-  X509 *cert;
 #ifdef DEBUG
-  char buf[STRING];
-
-  /* Note that X509_NAME_oneline will null-terminate buf, even when it
-   * has to truncate the data. */
-  dprint (1, (debugfile, "ssl_check_certificate: checking cert %s\n",
-              X509_NAME_oneline (X509_get_subject_name (data->cert),
-                                 buf, sizeof (buf))));
+    /* log verification error */
+    {
+      int err = X509_STORE_CTX_get_error (ctx);
+      snprintf (buf, sizeof (buf), "%s (%d)",
+         X509_verify_cert_error_string (err), err);
+      dprint (2, (debugfile, "X509_verify_cert: %s\n", buf));
+    }
 #endif
 
-  if ((preauthrc = ssl_check_preauth (data->cert, conn->account.host)) > 0)
-    return preauthrc;
-
-  chain = SSL_get_peer_cert_chain (data->ssl);
-  chain_len = sk_X509_num (chain);
-  /* negative preauthrc means the certificate won't be accepted without
-   * manual override. */
-  if (preauthrc < 0 || !chain || (chain_len <= 1))
-    return interactive_check_cert (data->cert, 0, 0);
-
-  /* check the chain from root to peer. */
-  for (i = chain_len-1; i >= 0; i--)
-  {
-    cert = sk_X509_value (chain, i);
-
-    dprint (1, (debugfile, "ssl_check_certificate: checking cert chain entry %s\n",
-                X509_NAME_oneline (X509_get_subject_name (cert),
-                                   buf, sizeof (buf))));
-
-    /* if the certificate validates or is manually accepted, then add it to
-     * the trusted set and recheck the peer certificate */
-    if (ssl_check_preauth (cert, NULL)
-	|| interactive_check_cert (cert, i, chain_len))
-    {
-      ssl_cache_trusted_cert (cert);
-      if (ssl_check_preauth (data->cert, conn->account.host))
-	return 1;
-    }
+    /* prompt user */
+    return interactive_check_cert (cert, pos, len);
   }
 
-  return 0;
+  return 1;
 }
 
 static int interactive_check_cert (X509 *cert, int idx, int len)
