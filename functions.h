@@ -394,7 +394,9 @@ const struct binding_t OpAttach[] = { /* map: attachment */
 const struct binding_t OpCompose[] = { /* map: compose */
   { "attach-file",	OP_COMPOSE_ATTACH_FILE,		"a" },
   { "attach-message",	OP_COMPOSE_ATTACH_MESSAGE,	"A" },
+#ifdef USE_NNTP
   { "attach-news-message",OP_COMPOSE_ATTACH_NEWS_MESSAGE,NULL },
+#endif
   { "edit-bcc",		OP_COMPOSE_EDIT_BCC,		"b" },
   { "edit-cc",		OP_COMPOSE_EDIT_CC,		"c" },
   { "copy-file",	OP_SAVE,			"C" },
