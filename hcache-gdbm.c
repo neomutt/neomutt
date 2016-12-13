@@ -21,8 +21,6 @@
 
 #include "config.h"
 
-#ifdef HAVE_GDBM
-
 #include "hcache-backend.h"
 #include "mutt.h"
 #include <gdbm.h>
@@ -120,4 +118,3 @@ hcache_gdbm_backend(void)
 
 HCACHE_BACKEND_OPS(gdbm)
 
-#endif /* HAVE_GDBM */

@@ -25,8 +25,6 @@
 # include "config.h"
 #endif
 
-#ifdef CRYPT_BACKEND_GPGME
-
 #include "mutt.h"
 #include "mutt_crypt.h"
 #include "mutt_menu.h"
@@ -4966,5 +4964,3 @@ void mutt_gpgme_set_sender (const char *sender)
   current_sender = safe_strdup (sender);
 }
 
-
-#endif

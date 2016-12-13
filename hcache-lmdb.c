@@ -21,8 +21,6 @@
 
 #include "config.h"
 
-#ifdef HAVE_LMDB
-
 #include "hcache-backend.h"
 #include "lib.h"
 
@@ -281,4 +279,3 @@ hcache_lmdb_backend(void)
 
 HCACHE_BACKEND_OPS(lmdb)
 
-#endif /* HAVE_LMDB */

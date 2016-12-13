@@ -21,8 +21,6 @@
 
 #include "config.h"
 
-#ifdef HAVE_BDB
-
 #include "hcache-backend.h"
 #include "mutt.h"
 #include "mx.h"
@@ -205,4 +203,3 @@ hcache_bdb_backend(void)
 
 HCACHE_BACKEND_OPS(bdb)
 
-#endif /* HAVE_BDB */

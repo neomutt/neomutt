@@ -21,8 +21,6 @@
 
 #include "config.h"
 
-#ifdef HAVE_KC
-
 #include "hcache-backend.h"
 #include "mutt.h"
 #include <kclangc.h>
@@ -126,4 +124,3 @@ hcache_kyotocabinet_backend(void)
 
 HCACHE_BACKEND_OPS(kyotocabinet)
 
-#endif /* HAVE_KC */

@@ -21,8 +21,6 @@
 
 #include "config.h"
 
-#ifdef HAVE_TC
-
 #include "hcache-backend.h"
 #include "mutt.h"
 #include <tcbdb.h>
@@ -111,4 +109,3 @@ hcache_tokyocabinet_backend(void)
 
 HCACHE_BACKEND_OPS(tokyocabinet)
 
-#endif /* HAVE_TC */

@@ -21,8 +21,6 @@
 
 #include "config.h"
 
-#ifdef HAVE_QDBM
-
 #include "hcache-backend.h"
 #include "mutt.h"
 #include <depot.h>
@@ -94,4 +92,3 @@ hcache_qdbm_backend(void)
 
 HCACHE_BACKEND_OPS(qdbm)
 
-#endif /* HAVE_LMDB */
