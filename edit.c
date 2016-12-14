@@ -184,7 +184,7 @@ be_include_messages (char *msg, char **buf, int *bufmax, int *buflen,
 
       if (*bufmax == *buflen)
 	safe_realloc (&buf, sizeof (char *) * (*bufmax += 25));
-      buf[(*buflen)++] = safe_strdup ("\n");
+      buf[(*buflen)++] = safe_strdup (_("\n"));
     }
     else
       printw (_("%d: invalid message number.\n"), n);
@@ -199,7 +199,7 @@ static void be_print_header (ENVELOPE *env)
 
   if (env->to)
   {
-    addstr ("To: ");
+    addstr (_("To: "));
     tmp[0] = 0;
     rfc822_write_address (tmp, sizeof (tmp), env->to, 1);
     addstr (tmp);
@@ -207,7 +207,7 @@ static void be_print_header (ENVELOPE *env)
   }
   if (env->cc)
   {
-    addstr ("Cc: ");
+    addstr (_("Cc: "));
     tmp[0] = 0;
     rfc822_write_address (tmp, sizeof (tmp), env->cc, 1);
     addstr (tmp);
@@ -215,7 +215,7 @@ static void be_print_header (ENVELOPE *env)
   }
   if (env->bcc)
   {
-    addstr ("Bcc: ");
+    addstr (_("Bcc: "));
     tmp[0] = 0;
     rfc822_write_address (tmp, sizeof (tmp), env->bcc, 1);
     addstr (tmp);
@@ -223,7 +223,7 @@ static void be_print_header (ENVELOPE *env)
   }
   if (env->subject)
   {
-    addstr ("Subject: ");
+    addstr (_("Subject: "));
     addstr (env->subject);
     addch ('\n');
   }
@@ -239,7 +239,7 @@ static void be_edit_header (ENVELOPE *e, int force)
 
   mutt_window_move (MuttMessageWindow, 0, 0);
 
-  addstr ("To: ");
+  addstr (_("To: "));
   tmp[0] = 0;
   mutt_addrlist_to_local (e->to);
   rfc822_write_address (tmp, sizeof (tmp), e->to, 0);
@@ -265,7 +265,7 @@ static void be_edit_header (ENVELOPE *e, int force)
 
   if (!e->subject || force)
   {
-    addstr ("Subject: ");
+    addstr (_("Subject: "));
     strfcpy (tmp, e->subject ? e->subject: "", sizeof (tmp));
     if (mutt_enter_string (tmp, sizeof (tmp), 9, 0) == 0)
       mutt_str_replace (&e->subject, tmp);
@@ -274,7 +274,7 @@ static void be_edit_header (ENVELOPE *e, int force)
 
   if ((!e->cc && option (OPTASKCC)) || force)
   {
-    addstr ("Cc: ");
+    addstr (_("Cc: "));
     tmp[0] = 0;
     mutt_addrlist_to_local (e->cc);
     rfc822_write_address (tmp, sizeof (tmp), e->cc, 0);
@@ -295,7 +295,7 @@ static void be_edit_header (ENVELOPE *e, int force)
 
   if (option (OPTASKBCC) || force)
   {
-    addstr ("Bcc: ");
+    addstr (_("Bcc: "));
     tmp[0] = 0;
     mutt_addrlist_to_local (e->bcc);
     rfc822_write_address (tmp, sizeof (tmp), e->bcc, 0);
@@ -391,7 +391,7 @@ int mutt_builtin_editor (const char *path, HEADER *msg, HEADER *cur)
 	    addstr (_("No mailbox.\n"));
 	  break;
 	case 'p':
-	  addstr ("-----\n");
+	  addstr (_("-----\n"));
 	  addstr (_("Message contains:\n"));
 	  be_print_header (msg->env);
 	  for (i = 0; i < buflen; i++)

@@ -40,7 +40,7 @@ static short check_msg (BODY * b, short err)
   if (!mutt_is_message_type (b->type, b->subtype))
   {
     if (err)
-      mutt_error _("You may only bounce message/rfc822 parts.");
+      mutt_error (_("You may only bounce message/rfc822 parts."));
     return -1;
   }
   return 0;
@@ -145,7 +145,7 @@ void mutt_attach_bounce (FILE * fp, HEADER * hdr,
   {
     if (!cur->hdr->env->from)
     {
-      mutt_error _("Warning: message contains no From: header");
+      mutt_error (_("Warning: message contains no From: header"));
       mutt_sleep (2);
       mutt_clear_error ();
     }
@@ -158,7 +158,7 @@ void mutt_attach_bounce (FILE * fp, HEADER * hdr,
       {
 	if (!idx[i]->content->hdr->env->from)
 	{
-	  mutt_error _("Warning: message contains no From: header");
+	  mutt_error (_("Warning: message contains no From: header"));
 	  mutt_sleep (2);
 	  mutt_clear_error ();
 	  break;
@@ -168,9 +168,9 @@ void mutt_attach_bounce (FILE * fp, HEADER * hdr,
   }
 
   if (p)
-    strfcpy (prompt, _("Bounce message to: "), sizeof (prompt));
+    strfcpy (prompt, (_("Bounce message to: ")), sizeof (prompt));
   else
-    strfcpy (prompt, _("Bounce tagged messages to: "), sizeof (prompt));
+    strfcpy (prompt, (_("Bounce tagged messages to: ")), sizeof (prompt));
 
   buf[0] = '\0';
   if (mutt_get_field (prompt, buf, sizeof (buf), MUTT_ALIAS) 
@@ -179,7 +179,7 @@ void mutt_attach_bounce (FILE * fp, HEADER * hdr,
 
   if (!(adr = rfc822_parse_adrlist (adr, buf)))
   {
-    mutt_error _("Error parsing address!");
+    mutt_error (_("Error parsing address!"));
     return;
   }
 
@@ -201,7 +201,7 @@ void mutt_attach_bounce (FILE * fp, HEADER * hdr,
    * See commands.c.
    */
   snprintf (prompt, sizeof (prompt) - 4, 
-   (p ? _("Bounce message to %s") : _("Bounce messages to %s")), buf);
+   (p ? (_("Bounce message to %s")) : (_("Bounce messages to %s")), buf);
   
   if (mutt_strwidth (prompt) > MuttMessageWindow->cols - extra_space)
   {
@@ -217,7 +217,7 @@ void mutt_attach_bounce (FILE * fp, HEADER * hdr,
   {
     rfc822_free_address (&adr);
     mutt_window_clearline (MuttMessageWindow, 0);
-    mutt_message (p ? _("Message not bounced.") : _("Messages not bounced."));
+    mutt_message (p ? (_("Message not bounced.")) : (_("Messages not bounced."));
     return;
   }
   
@@ -236,9 +236,9 @@ void mutt_attach_bounce (FILE * fp, HEADER * hdr,
   }
 
   if (!ret)
-    mutt_message (p ? _("Message bounced.") : _("Messages bounced."));
+    mutt_message (p ? (_("Message bounced.")) : (_("Messages bounced."));
   else
-    mutt_error (p ? _("Error bouncing message!") : _("Error bouncing messages!"));
+    mutt_error (p ? (_("Error bouncing message!")) : (_("Error bouncing messages!"));
 }
 
 
@@ -469,7 +469,7 @@ static void attach_forward_bodies (FILE * fp, HEADER * hdr,
 
   if ((!cur || mutt_can_decode (cur)) &&
       (rc = query_quadoption (OPT_MIMEFWD, 
-			      _("Forward as attachments?"))) == MUTT_YES)
+			      (_("Forward as attachments?"))) == MUTT_YES)
     mime_fwd_all = 1;
   else if (rc == -1)
     goto bail;
@@ -608,7 +608,7 @@ static void attach_forward_msgs (FILE * fp, HEADER * hdr,
   tmpbody[0] = '\0';
 
   if ((rc = query_quadoption (OPT_MIMEFWD, 
-		 _("Forward MIME encapsulated?"))) == MUTT_NO)
+		 (_("Forward MIME encapsulated?"))) == MUTT_NO)
   {
     
     /* no MIME encapsulation */
@@ -749,7 +749,7 @@ attach_reply_envelope_defaults (ENVELOPE *env, ATTACHPTR **idx, short idxlen,
 
   if (curenv == NULL  ||  curhdr == NULL)
   {
-    mutt_error _("Can't find any tagged messages.");
+    mutt_error (_("Can't find any tagged messages."));
     return -1;
   }
 
@@ -781,7 +781,7 @@ attach_reply_envelope_defaults (ENVELOPE *env, ATTACHPTR **idx, short idxlen,
 
     if ((flags & SENDLISTREPLY) && !env->to)
     {
-      mutt_error _("No mailing lists found!");
+      mutt_error (_("No mailing lists found!"));
       return (-1);
     }
 
@@ -864,7 +864,7 @@ void mutt_attach_reply (FILE * fp, HEADER * hdr,
   if (nattach > 1 && !check_can_decode (idx, idxlen, cur))
   {
     if ((rc = query_quadoption (OPT_MIMEFWDREST,
-      _("Can't decode all tagged attachments.  MIME-encapsulate the others?"))) == MUTT_ABORT)
+      (_("Can't decode all tagged attachments.  MIME-encapsulate the others?"))) == MUTT_ABORT)
       return;
     else if (rc == MUTT_YES)
       mime_reply_any = 1;

@@ -126,7 +126,7 @@ static int pop_read_header (POP_DATA *pop_data, HEADER *h)
     }
     case -3:
     {
-      mutt_error _("Can't write header to temporary file!");
+      mutt_error (_("Can't write header to temporary file!"));
       break;
     }
   }
@@ -273,12 +273,12 @@ static int pop_fetch_headers (CONTEXT *ctx)
 
       dprint (1, (debugfile, "pop_fetch_headers: unset UIDL capability\n"));
       snprintf (pop_data->err_msg, sizeof (pop_data->err_msg),
-	      _("Command UIDL is not supported by server."));
+	      (_("Command UIDL is not supported by server."));
     }
   }
 
   if (!ctx->quiet)
-    mutt_progress_init (&progress, _("Fetching message headers..."),
+    mutt_progress_init (&progress, (_("Fetching message headers...")),
                         MUTT_PROGRESS_MSG, ReadInc, new_count - old_count);
 
   if (ret == 0)
@@ -452,7 +452,7 @@ static int pop_open_mailbox (CONTEXT *ctx)
 
     ctx->size = pop_data->size;
 
-    mutt_message _("Fetching list of messages...");
+    mutt_message (_("Fetching list of messages..."));
 
     ret = pop_fetch_headers (ctx);
 
@@ -565,12 +565,12 @@ static int pop_fetch_message (CONTEXT* ctx, MESSAGE* msg, int msgno)
     /* verify that massage index is correct */
     if (h->refno < 0)
     {
-      mutt_error _("The message index is incorrect. Try reopening the mailbox.");
+      mutt_error (_("The message index is incorrect. Try reopening the mailbox."));
       mutt_sleep (2);
       return -1;
     }
 
-    mutt_progress_init (&progressbar, _("Fetching message..."),
+    mutt_progress_init (&progressbar, (_("Fetching message...")),
 			MUTT_PROGRESS_SIZE, NetInc, h->content->length + h->content->offset - 1);
 
     /* see if we can put in body cache; use our cache as fallback */
@@ -610,7 +610,7 @@ static int pop_fetch_message (CONTEXT* ctx, MESSAGE* msg, int msgno)
 
     if (ret == -3)
     {
-      mutt_error _("Can't write message to temporary file!");
+      mutt_error (_("Can't write message to temporary file!"));
       mutt_sleep (2);
       return -1;
     }
@@ -681,7 +681,7 @@ static int pop_sync_mailbox (CONTEXT *ctx, int *index_hint)
     if (pop_reconnect (ctx) < 0)
       return -1;
 
-    mutt_progress_init (&progress, _("Marking messages deleted..."),
+    mutt_progress_init (&progress, (_("Marking messages deleted...")),
 			MUTT_PROGRESS_MSG, WriteInc, ctx->deleted);
 
 #if USE_HCACHE
@@ -760,7 +760,7 @@ static int pop_check_mailbox (CONTEXT *ctx, int *index_hint)
 
   ctx->size = pop_data->size;
 
-  mutt_message _("Checking for new messages...");
+  mutt_message (_("Checking for new messages..."));
 
   ret = pop_fetch_headers (ctx);
   pop_clear_cache (pop_data);
@@ -789,7 +789,7 @@ void pop_fetch_mail (void)
 
   if (!PopHost)
   {
-    mutt_error _("POP host is not defined.");
+    mutt_error (_("POP host is not defined."));
     return;
   }
 
@@ -825,7 +825,7 @@ void pop_fetch_mail (void)
 
   conn->data = pop_data;
 
-  mutt_message _("Checking for new messages...");
+  mutt_message (_("Checking for new messages..."));
 
   /* find out how many messages are in the mailbox. */
   strfcpy (buffer, "STAT\r\n", sizeof (buffer));
@@ -853,16 +853,16 @@ void pop_fetch_mail (void)
 
   if (msgs <= last)
   {
-    mutt_message _("No new mail in POP mailbox.");
+    mutt_message (_("No new mail in POP mailbox."));
     goto finish;
   }
 
   if (mx_open_mailbox (NONULL (Spoolfile), MUTT_APPEND, &ctx) == NULL)
     goto finish;
 
-  delanswer = query_quadoption (OPT_POPDELETE, _("Delete messages from server?"));
+  delanswer = query_quadoption (OPT_POPDELETE, (_("Delete messages from server?"));
 
-  snprintf (msgbuf, sizeof (msgbuf), _("Reading new messages (%d bytes)..."), bytes);
+  snprintf (msgbuf, sizeof (msgbuf), (_("Reading new messages (%d bytes)...")), bytes);
   mutt_message ("%s", msgbuf);
 
   for (i = last + 1 ; i <= msgs ; i++)
@@ -904,7 +904,7 @@ void pop_fetch_mail (void)
     }
     if (ret == -3)
     {
-      mutt_error _("Error while writing mailbox!");
+      mutt_error (_("Error while writing mailbox!"));
       break;
     }
 
@@ -931,7 +931,7 @@ finish:
   return;
 
 fail:
-  mutt_error _("Server closed connection!");
+  mutt_error (_("Server closed connection!"));
   mutt_socket_close (conn);
   FREE (&pop_data);
 }

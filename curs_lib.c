@@ -223,8 +223,8 @@ void mutt_edit_file (const char *editor, const char *data)
 int mutt_yesorno (const char *msg, int def)
 {
   event_t ch;
-  char *yes = _("yes");
-  char *no = _("no");
+  char *yes = (_("yes"));
+  char *no = (_("no"));
   char *answer_string;
   size_t answer_string_len;
   size_t msglen;
@@ -745,7 +745,7 @@ void mutt_perror (const char *s)
 
   dprint (1, (debugfile, "%s: %s (errno = %d)\n", s, 
       p ? p : "unknown error", errno));
-  mutt_error ("%s: %s (errno = %d)", s, p ? p : _("unknown error"), errno);
+  mutt_error (_("%s: %s (errno = %d)", s, p ? p : (_("unknown error")), errno));
 }
 
 int mutt_any_key_to_continue (const char *s)

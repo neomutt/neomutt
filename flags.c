@@ -302,7 +302,7 @@ int mutt_thread_set_flag (HEADER *hdr, int flag, int bf, int subthread)
   
   if ((Sort & SORT_MASK) != SORT_THREADS)
   {
-    mutt_error _("Threading is not enabled.");
+    mutt_error (_("Threading is not enabled."));
     return (-1);
   }
 
@@ -346,7 +346,7 @@ int mutt_change_flag (HEADER *h, int bf)
   event_t event;
 
   mutt_window_mvprintw (MuttMessageWindow, 0, 0,
-                        "%s? (D/N/O/r/*/!): ", bf ? _("Set flag") : _("Clear flag"));
+                        "%s? (D/N/O/r/*/!): ", bf ? (_("Set flag")) : (_("Clear flag"));
   mutt_window_clrtoeol (MuttMessageWindow);
 
   event = mutt_getch();

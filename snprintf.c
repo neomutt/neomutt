@@ -783,7 +783,7 @@ int main (void)
   int fail = 0;
   int num = 0;
 
-  printf ("Testing snprintf format codes against system sprintf...\n");
+  printf (_("Testing snprintf format codes against system sprintf...\n"));
 
   for (x = 0; fp_fmt[x] != NULL ; x++)
     for (y = 0; fp_nums[y] != 0 ; y++)

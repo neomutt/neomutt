@@ -538,7 +538,7 @@ static int data_object_to_stream (gpgme_data_t data, FILE *fp)
 
      if (ferror (fp))
        {
-         mutt_perror ("[tempfile]");
+         mutt_perror (_("[tempfile]"));
          return -1;
        }
     }
@@ -570,7 +570,7 @@ static char *data_object_to_tempfile (gpgme_data_t data, char *tempf, FILE **ret
     }
   if ((fp = safe_fopen (tempf, tempf == tempfb ? "w+" : "a+")) == NULL)
     {
-      mutt_perror _("Can't create temporary file");
+      mutt_perror (_("Can't create temporary file"));
       return NULL;
     }
 
@@ -955,7 +955,7 @@ static BODY *sign_message (BODY *a, int use_smime)
 
   t = mutt_new_body ();
   t->type = TYPEMULTIPART;
-  t->subtype = safe_strdup ("signed");
+  t->subtype = safe_strdup (_("signed"));
   t->encoding = ENC7BIT;
   t->use_disp = 0;
   t->disposition = DISPINLINE;
@@ -981,16 +981,16 @@ static BODY *sign_message (BODY *a, int use_smime)
   t->type = TYPEAPPLICATION;
   if (use_smime)
     {
-      t->subtype = safe_strdup ("pkcs7-signature");
+      t->subtype = safe_strdup (_("pkcs7-signature"));
       mutt_set_parameter ("name", "smime.p7s", &t->parameter);
       t->encoding = ENCBASE64; 
       t->use_disp = 1;
       t->disposition = DISPATTACH;
-      t->d_filename = safe_strdup ("smime.p7s");
+      t->d_filename = safe_strdup (_("smime.p7s"));
     }
   else
     {
-      t->subtype = safe_strdup ("pgp-signature");
+      t->subtype = safe_strdup (_("pgp-signature"));
       mutt_set_parameter ("name", "signature.asc", &t->parameter);
       t->use_disp = 0;
       t->disposition = DISPNONE;
@@ -1047,7 +1047,7 @@ BODY *pgp_gpgme_encrypt_message (BODY *a, char *keylist, int sign)
 
   t = mutt_new_body ();
   t->type = TYPEMULTIPART;
-  t->subtype = safe_strdup ("encrypted");
+  t->subtype = safe_strdup (_("encrypted"));
   t->encoding = ENC7BIT;
   t->use_disp = 0;
   t->disposition = DISPINLINE;
@@ -1057,18 +1057,18 @@ BODY *pgp_gpgme_encrypt_message (BODY *a, char *keylist, int sign)
   
   t->parts = mutt_new_body ();
   t->parts->type = TYPEAPPLICATION;
-  t->parts->subtype = safe_strdup ("pgp-encrypted");
+  t->parts->subtype = safe_strdup (_("pgp-encrypted"));
   t->parts->encoding = ENC7BIT;
 
   t->parts->next = mutt_new_body ();
   t->parts->next->type = TYPEAPPLICATION;
-  t->parts->next->subtype = safe_strdup ("octet-stream");
+  t->parts->next->subtype = safe_strdup (_("octet-stream"));
   t->parts->next->encoding = ENC7BIT;
   t->parts->next->filename = outfile;
   t->parts->next->use_disp = 1;
   t->parts->next->disposition = DISPATTACH;
   t->parts->next->unlink = 1; /* delete after sending the message */
-  t->parts->next->d_filename = safe_strdup ("msg.asc"); /* non pgp/mime
+  t->parts->next->d_filename = safe_strdup (_("msg.asc")); /* non pgp/mime
                                                            can save */
 
   return t;
@@ -1106,13 +1106,13 @@ BODY *smime_gpgme_build_smime_entity (BODY *a, char *keylist)
 
   t = mutt_new_body ();
   t->type = TYPEAPPLICATION;
-  t->subtype = safe_strdup ("pkcs7-mime");
+  t->subtype = safe_strdup (_("pkcs7-mime"));
   mutt_set_parameter ("name", "smime.p7m", &t->parameter);
   mutt_set_parameter ("smime-type", "enveloped-data", &t->parameter);
   t->encoding = ENCBASE64;  /* The output of OpenSSL SHOULD be binary */
   t->use_disp = 1;
   t->disposition = DISPATTACH;
-  t->d_filename = safe_strdup ("smime.p7m");
+  t->d_filename = safe_strdup (_("smime.p7m"));
   t->filename = outfile;
   t->unlink = 1; /*delete after sending the message */
   t->parts=0;
@@ -1257,7 +1257,7 @@ static void show_fingerprint (gpgme_key_t key, STATE *state)
   const char *s;
   int i, is_pgp;
   char *buf, *p;
-  const char *prefix = _("Fingerprint: ");
+  const char *prefix = (_("Fingerprint: "));
 
   if (!key)
     return;
@@ -1460,7 +1460,7 @@ static int show_one_sig_status (gpgme_ctx_t ctx, int idx, STATE *s)
       else if (err)
 	{
           snprintf (buf, sizeof (buf),
-              _("Error getting key information for KeyID %s: %s\n"),
+              (_("Error getting key information for KeyID %s: %s\n")),
               fpr, gpgme_strerror (err));
           state_puts (buf, s);
           anybad = 1;
@@ -1556,7 +1556,7 @@ static int verify_one (BODY *sigbdy, STATE *s,
       char buf[200];
       
       snprintf (buf, sizeof(buf)-1, 
-                _("Error: verification failed: %s\n"),
+                (_("Error: verification failed: %s\n")),
                 gpgme_strerror (err));
       state_puts (buf, s);
     }
@@ -1610,7 +1610,7 @@ static int verify_one (BODY *sigbdy, STATE *s,
 	  {
 	    char buf[SHORT_STRING];
 	    snprintf (buf, sizeof (buf),
-		      _("*** Begin Notation (signature by: %s) ***\n"),
+		      (_("*** Begin Notation (signature by: %s) ***\n")),
 		      signature->fpr);
 	    state_puts (buf, s);
 	    for (notation = signature->notations; notation;
@@ -1735,7 +1735,7 @@ static BODY *decrypt_part (BODY *a, STATE *s, FILE *fpout, int is_smime,
           char buf[200];
           
           snprintf (buf, sizeof(buf)-1, 
-                    _("[-- Error: decryption failed: %s --]\n\n"),
+                    (_("[-- Error: decryption failed: %s --]\n\n")),
                     gpgme_strerror (err));
           state_attach_puts (buf, s);
         }
@@ -2444,7 +2444,7 @@ int pgp_gpgme_application_handler (BODY *m, STATE *s)
                   char errbuf[200];
                   
                   snprintf (errbuf, sizeof(errbuf)-1, 
-                            _("Error: decryption/verification failed: %s\n"),
+                            (_("Error: decryption/verification failed: %s\n")),
                             gpgme_strerror (err));
                   state_puts (errbuf, s);
                 }
@@ -2612,8 +2612,8 @@ int pgp_gpgme_encrypted_handler (BODY *a, STATE *s)
 
       if (s->flags & MUTT_DISPLAY)
         state_attach_puts (is_signed?
-          _("[-- The following data is PGP/MIME signed and encrypted --]\n\n"):
-          _("[-- The following data is PGP/MIME encrypted --]\n\n"),
+          (_("[-- The following data is PGP/MIME signed and encrypted --]\n\n")):
+          (_("[-- The following data is PGP/MIME encrypted --]\n\n")),
                            s);
       
       {
@@ -2635,17 +2635,17 @@ int pgp_gpgme_encrypted_handler (BODY *a, STATE *s)
         {
           state_puts ("\n", s);
           state_attach_puts (is_signed?
-             _("[-- End of PGP/MIME signed and encrypted data --]\n"):
-             _("[-- End of PGP/MIME encrypted data --]\n"),
+             (_("[-- End of PGP/MIME signed and encrypted data --]\n")):
+             (_("[-- End of PGP/MIME encrypted data --]\n")),
                              s);
         }
 
       mutt_free_body (&tattach);
-      mutt_message _("PGP message successfully decrypted.");
+      mutt_message (_("PGP message successfully decrypted."));
     }
   else
     {
-      mutt_error _("Could not decrypt PGP message");
+      mutt_error (_("Could not decrypt PGP message"));
       mutt_sleep (2);
       rc = -1;
     }
@@ -2685,8 +2685,8 @@ int smime_gpgme_application_handler (BODY *a, STATE *s)
 
       if (s->flags & MUTT_DISPLAY)
         state_attach_puts (is_signed?
-          _("[-- The following data is S/MIME signed --]\n\n"):
-          _("[-- The following data is S/MIME encrypted --]\n\n"),
+          (_("[-- The following data is S/MIME signed --]\n\n")):
+          (_("[-- The following data is S/MIME encrypted --]\n\n")),
                            s);
       
       {
@@ -2716,8 +2716,8 @@ int smime_gpgme_application_handler (BODY *a, STATE *s)
         {
           state_puts ("\n", s);
           state_attach_puts (is_signed?
-             _("[-- End of S/MIME signed data --]\n"):
-             _("[-- End of S/MIME encrypted data --]\n"),
+             (_("[-- End of S/MIME signed data --]\n")):
+             (_("[-- End of S/MIME encrypted data --]\n")),
                              s);
         }
 
@@ -3385,7 +3385,7 @@ static void print_key_info (gpgme_key_t key, FILE *fp)
 
       s = uid->uid;
       /* L10N: DOTFILL */
-      fputs (idx ? _(" aka ......: ") :_("Name ......: "), fp);
+      fputs (idx ? (_(" aka ......: ")) :_("Name ......: "), fp);
       if (uid->invalid)
         {
           fputs (_("[Invalid]"), fp);
@@ -3409,7 +3409,7 @@ static void print_key_info (gpgme_key_t key, FILE *fp)
       strftime (shortbuf, sizeof shortbuf, "%c", tm);
 #endif
       /* L10N: DOTFILL */
-      fprintf (fp, _("Valid From : %s\n"), shortbuf);
+      fprintf (fp, (_("Valid From : %s\n")), shortbuf);
     }
   
   if (key->subkeys && (key->subkeys->expires > 0))
@@ -3423,7 +3423,7 @@ static void print_key_info (gpgme_key_t key, FILE *fp)
       strftime (shortbuf, sizeof shortbuf, "%c", tm);
 #endif
       /* L10N: DOTFILL */
-      fprintf (fp, _("Valid To ..: %s\n"), shortbuf);
+      fprintf (fp, (_("Valid To ..: %s\n")), shortbuf);
     }
 
   if (key->subkeys)
@@ -3437,26 +3437,26 @@ static void print_key_info (gpgme_key_t key, FILE *fp)
     aval = key->subkeys->length;
 
   /* L10N: DOTFILL */
-  fprintf (fp, _("Key Type ..: %s, %lu bit %s\n"), s2, aval, s);
+  fprintf (fp, (_("Key Type ..: %s, %lu bit %s\n")), s2, aval, s);
 
   /* L10N: DOTFILL */
-  fprintf (fp, _("Key Usage .: "));
+  fprintf (fp, (_("Key Usage .: "));
   delim = "";
 
   if (key_check_cap (key, KEY_CAP_CAN_ENCRYPT))
     {
-      fprintf (fp, "%s%s", delim, _("encryption"));
-      delim = _(", ");
+      fprintf (fp, "%s%s", delim, (_("encryption"));
+      delim = (_(", "));
     }
   if (key_check_cap (key, KEY_CAP_CAN_SIGN))
     {
-      fprintf (fp, "%s%s", delim, _("signing"));
-      delim = _(", ");
+      fprintf (fp, "%s%s", delim, (_("signing"));
+      delim = (_(", "));
     }
   if (key_check_cap (key, KEY_CAP_CAN_CERTIFY))
     {
-      fprintf (fp, "%s%s", delim, _("certification"));
-      delim = _(", ");
+      fprintf (fp, "%s%s", delim, (_("certification"));
+      delim = (_(", "));
     }
   putc ('\n', fp);
 
@@ -3500,7 +3500,7 @@ static void print_key_info (gpgme_key_t key, FILE *fp)
       s = key->issuer_serial;
       if (s)
         /* L10N: DOTFILL */
-	fprintf (fp, _("Serial-No .: 0x%s\n"), s);
+	fprintf (fp, (_("Serial-No .: 0x%s\n")), s);
     }
 
   if (key->issuer_name)
@@ -3509,7 +3509,7 @@ static void print_key_info (gpgme_key_t key, FILE *fp)
       if (s)
 	{
           /* L10N: DOTFILL */
-	  fprintf (fp, _("Issued By .: "));
+	  fprintf (fp, (_("Issued By .: "));
 	  parse_and_print_user_id (fp, s);
 	  putc ('\n', fp);
 	}
@@ -3529,7 +3529,7 @@ static void print_key_info (gpgme_key_t key, FILE *fp)
           if ( strlen (s) == 16)
             s += 8; /* display only the short keyID */
           /* L10N: DOTFILL */
-          fprintf (fp, _("Subkey ....: 0x%s"), s);
+          fprintf (fp, (_("Subkey ....: 0x%s")), s);
 	  if (subkey->revoked)
             {
               putc (' ', fp);
@@ -3563,7 +3563,7 @@ static void print_key_info (gpgme_key_t key, FILE *fp)
               strftime (shortbuf, sizeof shortbuf, "%c", tm);
 #endif
               /* L10N: DOTFILL */
-              fprintf (fp, _("Valid From : %s\n"), shortbuf);
+              fprintf (fp, (_("Valid From : %s\n")), shortbuf);
             }
 
 	  if (subkey->expires > 0)
@@ -3577,7 +3577,7 @@ static void print_key_info (gpgme_key_t key, FILE *fp)
               strftime (shortbuf, sizeof shortbuf, "%c", tm);
 #endif
               /* L10N: DOTFILL */
-              fprintf (fp, _("Valid To ..: %s\n"), shortbuf);
+              fprintf (fp, (_("Valid To ..: %s\n")), shortbuf);
             }
 
 	  if (subkey)
@@ -3591,26 +3591,26 @@ static void print_key_info (gpgme_key_t key, FILE *fp)
 	    aval = 0;
 
           /* L10N: DOTFILL */
-          fprintf (fp, _("Key Type ..: %s, %lu bit %s\n"), "PGP", aval, s);
+          fprintf (fp, (_("Key Type ..: %s, %lu bit %s\n")), "PGP", aval, s);
 
           /* L10N: DOTFILL */
-          fprintf (fp, _("Key Usage .: "));
+          fprintf (fp, (_("Key Usage .: "));
           delim = "";
 
 	  if (subkey->can_encrypt)
             {
-              fprintf (fp, "%s%s", delim, _("encryption"));
-              delim = _(", ");
+              fprintf (fp, "%s%s", delim, (_("encryption"));
+              delim = (_(", "));
             }
           if (subkey->can_sign)
             {
-              fprintf (fp, "%s%s", delim, _("signing"));
-              delim = _(", ");
+              fprintf (fp, "%s%s", delim, (_("signing"));
+              delim = (_(", "));
             }
           if (subkey->can_certify)
             {
-              fprintf (fp, "%s%s", delim, _("certification"));
-              delim = _(", ");
+              fprintf (fp, "%s%s", delim, (_("certification"));
+              delim = (_(", "));
             }
           putc ('\n', fp);
         }
@@ -3633,10 +3633,10 @@ verify_key (crypt_key_t *key)
   mutt_mktemp (tempfile, sizeof (tempfile));
   if (!(fp = safe_fopen (tempfile, "w")))
     {
-      mutt_perror _("Can't create temporary file");
+      mutt_perror (_("Can't create temporary file"));
       return;
     }
-  mutt_message _("Collecting data...");
+  mutt_message (_("Collecting data..."));
 
   print_key_info (key->kobj, fp);
 
@@ -3662,7 +3662,7 @@ verify_key (crypt_key_t *key)
 	err = gpgme_op_keylist_next (listctx, &k);
       if (err)
         {
-          fprintf (fp, _("Error finding issuer key: %s\n"),
+          fprintf (fp, (_("Error finding issuer key: %s\n")),
                    gpgme_strerror (err));
           goto leave;
         }
@@ -3683,7 +3683,7 @@ verify_key (crypt_key_t *key)
   gpgme_release (listctx);
   safe_fclose (&fp);
   mutt_clear_error ();
-  snprintf (cmd, sizeof (cmd), _("Key ID: 0x%s"),  crypt_keyid (key));
+  snprintf (cmd, sizeof (cmd), (_("Key ID: 0x%s")),  crypt_keyid (key));
   mutt_do_pager (cmd, tempfile, 0, NULL);
 }
 
@@ -3982,7 +3982,7 @@ static crypt_key_t *crypt_select_key (crypt_key_t *keys,
 
   if (!i && unusable)
     {
-      mutt_error _("All matching keys are marked expired/revoked.");
+      mutt_error (_("All matching keys are marked expired/revoked."));
       mutt_sleep (1);
       return NULL;
     }
@@ -4011,15 +4011,15 @@ static crypt_key_t *crypt_select_key (crypt_key_t *keys,
     menu_to_use = MENU_KEY_SELECT_SMIME;
 
   helpstr[0] = 0;
-  mutt_make_help (buf, sizeof (buf), _("Exit  "), menu_to_use, OP_EXIT);
+  mutt_make_help (buf, sizeof (buf), (_("Exit  ")), menu_to_use, OP_EXIT);
   strcat (helpstr, buf);	/* __STRCAT_CHECKED__ */
-  mutt_make_help (buf, sizeof (buf), _("Select  "), menu_to_use,
+  mutt_make_help (buf, sizeof (buf), (_("Select  ")), menu_to_use,
 		  OP_GENERIC_SELECT_ENTRY);
   strcat (helpstr, buf);	/* __STRCAT_CHECKED__ */
-  mutt_make_help (buf, sizeof (buf), _("Check key  "),
+  mutt_make_help (buf, sizeof (buf), (_("Check key  ")),
                   menu_to_use, OP_VERIFY_KEY);
   strcat (helpstr, buf);	/* __STRCAT_CHECKED__ */
-  mutt_make_help (buf, sizeof (buf), _("Help"), menu_to_use, OP_HELP);
+  mutt_make_help (buf, sizeof (buf), (_("Help")), menu_to_use, OP_HELP);
   strcat (helpstr, buf);	/* __STRCAT_CHECKED__ */
 
   menu = mutt_new_menu (menu_to_use);
@@ -4032,24 +4032,24 @@ static crypt_key_t *crypt_select_key (crypt_key_t *keys,
     const char *ts;
 
     if ((app & APPLICATION_PGP) && (app &  APPLICATION_SMIME))
-      ts = _("PGP and S/MIME keys matching");
+      ts = (_("PGP and S/MIME keys matching"));
     else if ((app & APPLICATION_PGP))
-      ts = _("PGP keys matching");
+      ts = (_("PGP keys matching"));
     else if ((app & APPLICATION_SMIME))
-      ts = _("S/MIME keys matching");
+      ts = (_("S/MIME keys matching"));
     else
-      ts = _("keys matching");
+      ts = (_("keys matching"));
 
     if (p)
       /* L10N:
          %1$s is one of the previous four entries.
          %2$s is an address.
          e.g. "S/MIME keys matching <me@mutt.org>." */
-      snprintf (buf, sizeof (buf), _("%s <%s>."), ts, p->mailbox);
+      snprintf (buf, sizeof (buf), (_("%s <%s>.")), ts, p->mailbox);
     else
       /* L10N:
          e.g. 'S/MIME keys matching "Michael Elkins".' */
-      snprintf (buf, sizeof (buf), _("%s \"%s\"."), ts, s);
+      snprintf (buf, sizeof (buf), (_("%s \"%s\".")), ts, s);
     menu->title = buf; 
   }
 
@@ -4113,7 +4113,7 @@ static crypt_key_t *crypt_select_key (crypt_key_t *keys,
                 }
 
               snprintf (buff, sizeof (buff),
-                        _("%s Do you really want to use the key?"),
+                        (_("%s Do you really want to use the key?")),
                         _(warn_s));
               
               if (mutt_yesorno (buff, 0) != MUTT_YES)
@@ -4463,7 +4463,7 @@ static char *find_keys (ADDRESS *adrlist, unsigned int app, int oppenc_mode)
             r = MUTT_YES;
             if (! oppenc_mode && option(OPTCRYPTCONFIRMHOOK))
               {
-                snprintf (buf, sizeof (buf), _("Use keyID = \"%s\" for %s?"),
+                snprintf (buf, sizeof (buf), (_("Use keyID = \"%s\" for %s?")),
                           crypt_hook_val, p->mailbox);
                 r = mutt_yesorno (buf, MUTT_YES);
               }
@@ -4521,7 +4521,7 @@ static char *find_keys (ADDRESS *adrlist, unsigned int app, int oppenc_mode)
 
         if ((k_info == NULL) && (! oppenc_mode))
           {
-            snprintf (buf, sizeof (buf), _("Enter keyID for %s: "), q->mailbox);
+            snprintf (buf, sizeof (buf), (_("Enter keyID for %s: ")), q->mailbox);
             
             k_info = crypt_ask_for_key (buf, q->mailbox,
                                         KEYFLAG_CANENCRYPT,
@@ -4626,12 +4626,12 @@ BODY *pgp_gpgme_make_key_attachment (char *tempf)
   att->unlink = 1;
   att->use_disp = 0;
   att->type = TYPEAPPLICATION;
-  att->subtype = safe_strdup ("pgp-keys");
+  att->subtype = safe_strdup (_("pgp-keys"));
   /* L10N:
      MIME description for exported (attached) keys.
      You can translate this entry to a non-ASCII string (it will be encoded),
      but it may be safer to keep it untranslated. */
-  snprintf (buff, sizeof (buff), _("PGP Key 0x%s."), crypt_keyid (key));
+  snprintf (buff, sizeof (buff), (_("PGP Key 0x%s.")), crypt_keyid (key));
   att->description = safe_strdup (buff);
   mutt_update_encoding (att);
 
@@ -4719,19 +4719,19 @@ static int gpgme_send_menu (HEADER *msg, int *redraw, int is_smime)
     if (is_smime)
     {
       /* L10N: S/MIME options (opportunistic encryption is on) */
-      prompt = _("S/MIME (s)ign, sign (a)s, (p)gp, (c)lear, or (o)ppenc mode off? ");
+      prompt = (_("S/MIME (s)ign, sign (a)s, (p)gp, (c)lear, or (o)ppenc mode off? "));
       /* L10N: S/MIME options (opportunistic encryption is on)
          The 'f' is undocumented. Please duplicate the letter 'c' is translated into. */
-      letters = _("sapfco");
+      letters = (_("sapfco"));
       choices = "SapFCo";
     }
     else
     {
       /* L10N: PGP options (opportunistic encryption is on) */
-      prompt = _("PGP (s)ign, sign (a)s, s/(m)ime, (c)lear, or (o)ppenc mode off? ");
+      prompt = (_("PGP (s)ign, sign (a)s, s/(m)ime, (c)lear, or (o)ppenc mode off? "));
       /* L10N: PGP options (opportunistic encryption is on)
          The 'f' is undocumented. Please duplicate the letter 'c' is translated into. */
-      letters = _("samfco");
+      letters = (_("samfco"));
       choices = "SamFCo";
     }
   }
@@ -4744,19 +4744,19 @@ static int gpgme_send_menu (HEADER *msg, int *redraw, int is_smime)
     if (is_smime)
     {
       /* L10N: S/MIME options (opportunistic encryption is off) */
-      prompt = _("S/MIME (e)ncrypt, (s)ign, sign (a)s, (b)oth, (p)gp, (c)lear, or (o)ppenc mode? ");
+      prompt = (_("S/MIME (e)ncrypt, (s)ign, sign (a)s, (b)oth, (p)gp, (c)lear, or (o)ppenc mode? "));
       /* L10N: S/MIME options (opportunistic encryption is off)
          The 'f' is undocumented. Please duplicate the letter 'c' is translated into. */
-      letters = _("esabpfco");
+      letters = (_("esabpfco"));
       choices = "esabpfcO";
     }
     else
     {
       /* L10N: PGP options (opportunistic encryption is off) */
-      prompt = _("PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, s/(m)ime, (c)lear, or (o)ppenc mode? ");
+      prompt = (_("PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, s/(m)ime, (c)lear, or (o)ppenc mode? "));
       /* L10N: PGP options (opportunistic encryption is off)
          The 'f' is undocumented. Please duplicate the letter 'c' is translated into. */
-      letters = _("esabmfco");
+      letters = (_("esabmfco"));
       choices = "esabmfcO";
     }
   }
@@ -4768,19 +4768,19 @@ static int gpgme_send_menu (HEADER *msg, int *redraw, int is_smime)
     if (is_smime)
     {
       /* L10N: S/MIME options */
-      prompt = _("S/MIME (e)ncrypt, (s)ign, sign (a)s, (b)oth, (p)gp or (c)lear? ");
+      prompt = (_("S/MIME (e)ncrypt, (s)ign, sign (a)s, (b)oth, (p)gp or (c)lear? "));
       /* L10N: S/MIME options
          The 'f' is undocumented. Please duplicate the letter 'c' is translated into. */
-      letters = _("esabpfc");
+      letters = (_("esabpfc"));
       choices = "esabpfc";
     }
     else
     {
       /* L10N: PGP options */
-      prompt = _("PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, s/(m)ime or (c)lear? ");
+      prompt = (_("PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, s/(m)ime or (c)lear? "));
       /* L10N: PGP options
          The 'f' is undocumented. Please duplicate the letter 'c' is translated into. */
-      letters = _("esabmfc");
+      letters = (_("esabmfc"));
       choices = "esabmfc";
     }
   }

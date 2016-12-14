@@ -320,7 +320,7 @@ void mutt_sort_headers (CONTEXT *ctx, int init)
   }
 
   if (!ctx->quiet)
-    mutt_message _("Sorting mailbox...");
+    mutt_message (_("Sorting mailbox..."));
 
   if (option (OPTNEEDRESCORE) && option (OPTSCORE))
   {
@@ -357,7 +357,7 @@ void mutt_sort_headers (CONTEXT *ctx, int init)
   else if ((sortfunc = mutt_get_sort_func (Sort)) == NULL ||
 	   (AuxSort = mutt_get_sort_func (SortAux)) == NULL)
   {
-    mutt_error _("Could not find sorting function! [report this bug]");
+    mutt_error (_("Could not find sorting function! [report this bug]"));
     mutt_sleep (1);
     return;
   }

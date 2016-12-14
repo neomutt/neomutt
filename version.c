@@ -434,7 +434,7 @@ print_version (void)
   FREE(&backends);
 #endif
 
-  puts ("\n\nCompiler:");
+  puts (_("\n\nCompiler:"));
   rstrip_in_place ((char *) cc_version);
   puts (cc_version);
 
@@ -450,19 +450,19 @@ print_version (void)
 #ifdef DOMAIN
   printf ("DOMAIN=\"%s\"\n", DOMAIN);
 #else
-  puts ("-DOMAIN");
+  puts (_("-DOMAIN"));
 #endif
 
 #ifdef MIXMASTER
   printf ("MIXMASTER=\"%s\"\n", MIXMASTER);
 #else
-  puts ("-MIXMASTER");
+  puts (_("-MIXMASTER"));
 #endif
 
 #ifdef ISPELL
   printf ("ISPELL=\"%s\"\n", ISPELL);
 #else
-  puts ("-ISPELL");
+  puts (_("-ISPELL"));
 #endif
 
   printf ("SENDMAIL=\"%s\"\n", SENDMAIL);

@@ -184,11 +184,11 @@ static void redraw_crypt_lines (HEADER *msg)
 
   if ((WithCrypto & APPLICATION_PGP)
       && (msg->security & APPLICATION_PGP) && (msg->security & SIGN))
-    printw (TITLE_FMT "%s", _("sign as: "), PgpSignAs ? PgpSignAs : _("<default>"));
+    printw (TITLE_FMT "%s", (_("sign as: ")), PgpSignAs ? PgpSignAs : (_("<default>"));
 
   if ((WithCrypto & APPLICATION_SMIME)
       && (msg->security & APPLICATION_SMIME) && (msg->security & SIGN)) {
-      printw (TITLE_FMT "%s", _("sign as: "), SmimeDefaultKey ? SmimeDefaultKey : _("<default>"));
+      printw (TITLE_FMT "%s", (_("sign as: ")), SmimeDefaultKey ? SmimeDefaultKey : (_("<default>"));
   }
 
   if ((WithCrypto & APPLICATION_SMIME)
@@ -196,7 +196,7 @@ static void redraw_crypt_lines (HEADER *msg)
       && (msg->security & ENCRYPT)
       && SmimeCryptAlg
       && *SmimeCryptAlg) {
-    mutt_window_mvprintw (MuttIndexWindow, HDR_CRYPTINFO, 40, "%s%s", _("Encrypt with: "),
+    mutt_window_mvprintw (MuttIndexWindow, HDR_CRYPTINFO, 40, "%s%s", (_("Encrypt with: ")),
 		NONULL(SmimeCryptAlg));
   }
 }
@@ -210,11 +210,11 @@ static void redraw_mix_line (LIST *chain)
   char *t;
 
   /* L10N: "Mix" refers to the MixMaster chain for anonymous email */
-  mutt_window_mvprintw (MuttIndexWindow, HDR_MIX, 0, TITLE_FMT, _("Mix: "));
+  mutt_window_mvprintw (MuttIndexWindow, HDR_MIX, 0, TITLE_FMT, (_("Mix: "));
 
   if (!chain)
   {
-    addstr ("<no chain defined>");
+    addstr (_("<no chain defined>"));
     mutt_window_clrtoeol (MuttIndexWindow);
     return;
   }
@@ -230,7 +230,7 @@ static void redraw_mix_line (LIST *chain)
 
     addstr (NONULL(t));
     if (chain->next)
-      addstr (", ");
+      addstr (_(", "));
 
     c += mutt_strlen (t) + 2;
   }
@@ -258,7 +258,7 @@ check_attachments(ATTACHPTR **idx, short idxlen)
     if(idx[i]->content->stamp < st.st_mtime)
     {
       mutt_pretty_mailbox(pretty, sizeof (pretty));
-      snprintf(msg, sizeof(msg), _("%s [#%d] modified. Update encoding?"),
+      snprintf(msg, sizeof(msg), (_("%s [#%d] modified. Update encoding?")),
 	       pretty, i+1);
       
       if((r = mutt_yesorno(msg, MUTT_YES)) == MUTT_YES)
@@ -320,7 +320,7 @@ static void draw_envelope (HEADER *msg, char *fcc)
 #endif
 
   SETCOLOR (MT_COLOR_STATUS);
-  mutt_window_mvaddstr (MuttIndexWindow, HDR_ATTACH - 1, 0, _("-- Attachments"));
+  mutt_window_mvaddstr (MuttIndexWindow, HDR_ATTACH - 1, 0, (_("-- Attachments"));
   mutt_window_clrtoeol (MuttIndexWindow);
 
   NORMAL_COLOR;
@@ -371,7 +371,7 @@ static int delete_attachment (MUTTMENU *menu, short *idxlen, int x)
 
   if (x == 0 && menu->max == 1)
   {
-    mutt_error _("You may not delete the only attachment.");
+    mutt_error (_("You may not delete the only attachment."));
     idx[x]->content->tagged = 0;
     return (-1);
   }
@@ -818,7 +818,7 @@ int mutt_compose_menu (HEADER *msg,   /* structure for new message */
 	  int error, numfiles;
 
 	  fname[0] = 0;
-	  prompt = _("Attach file");
+	  prompt = (_("Attach file"));
 	  numfiles = 0;
 	  files = NULL;
 
@@ -835,7 +835,7 @@ int mutt_compose_menu (HEADER *msg,   /* structure for new message */
 
 	  error = 0;
 	  if (numfiles > 1)
-	    mutt_message _("Attaching selected files...");
+	    mutt_message (_("Attaching selected files..."));
 	  for (i = 0; i < numfiles; i++)
 	  {
 	    char *att = files[i];
@@ -869,7 +869,7 @@ int mutt_compose_menu (HEADER *msg,   /* structure for new message */
 	  HEADER *h;
 
 	  fname[0] = 0;
-	  prompt = _("Open mailbox to attach message from");
+	  prompt = (_("Open mailbox to attach message from"));
 
 #ifdef USE_NNTP
 	  unset_option (OPTNEWS);
@@ -878,7 +878,7 @@ int mutt_compose_menu (HEADER *msg,   /* structure for new message */
 	    if (!(CurrentNewsSrv = nntp_select_server (NewsServer, 0)))
 	      break;
 
-	    prompt = _("Open newsgroup to attach message from");
+	    prompt = (_("Open newsgroup to attach message from"));
 	    set_option (OPTNEWS);
 	  }
 #endif
@@ -930,7 +930,7 @@ int mutt_compose_menu (HEADER *msg,   /* structure for new message */
 	  {
 	    mx_close_mailbox (ctx, NULL);
 	    FREE (&ctx);
-	    mutt_error _("No messages in that folder.");
+	    mutt_error (_("No messages in that folder."));
 	    break;
 	  }
 
@@ -939,7 +939,7 @@ int mutt_compose_menu (HEADER *msg,   /* structure for new message */
 	  
 	  Context = ctx;
 	  set_option(OPTATTACHMSG);
-	  mutt_message _("Tag the messages you want to attach!");
+	  mutt_message (_("Tag the messages you want to attach!"));
 	  close = mutt_index_menu ();
 	  unset_option(OPTATTACHMSG);
 
@@ -971,7 +971,7 @@ int mutt_compose_menu (HEADER *msg,   /* structure for new message */
 		update_idx (menu, idx, idxlen++);
 	      else
 	      {
-		mutt_error _("Unable to attach!");
+		mutt_error (_("Unable to attach!"));
 		FREE (&idx[idxlen]);
 	      }
 	    }
@@ -1104,7 +1104,7 @@ int mutt_compose_menu (HEADER *msg,   /* structure for new message */
 	    mutt_clear_error();
 	  }
 	  else
-	    mutt_error _("Invalid encoding.");
+	    mutt_error (_("Invalid encoding."));
 	}
         mutt_message_hook (NULL, msg, MUTT_SEND2HOOK);
         break;
@@ -1258,7 +1258,7 @@ int mutt_compose_menu (HEADER *msg,   /* structure for new message */
 
 	  if (!(p = strchr (type, '/')))
 	  {
-	    mutt_error _("Content-Type is of the form base/sub");
+	    mutt_error (_("Content-Type is of the form base/sub"));
 	    continue;
 	  }
 	  *p++ = 0;
@@ -1285,7 +1285,7 @@ int mutt_compose_menu (HEADER *msg,   /* structure for new message */
 
 	  if ((idx[idxlen]->content = mutt_make_file_attach (fname)) == NULL)
 	  {
-	    mutt_error _("What we have here is a failure to make an attachment");
+	    mutt_error (_("What we have here is a failure to make an attachment"));
 	    continue;
 	  }
 	  update_idx (menu, idx, idxlen++);
@@ -1346,7 +1346,7 @@ int mutt_compose_menu (HEADER *msg,   /* structure for new message */
 	break;
 
       case OP_EXIT:
-	if ((i = query_quadoption (OPT_POSTPONE, _("Postpone this message?"))) == MUTT_NO)
+	if ((i = query_quadoption (OPT_POSTPONE, (_("Postpone this message?"))) == MUTT_NO)
 	{
           for (i = 0; i < idxlen; i++)
             if (idx[i]->unowned)
@@ -1422,7 +1422,7 @@ int mutt_compose_menu (HEADER *msg,   /* structure for new message */
          if (mutt_write_fcc (fname, msg, NULL, 0, NULL, NULL) < 0)
            msg->content = mutt_remove_multipart (msg->content);
          else
-           mutt_message _("Message written.");
+           mutt_message (_("Message written."));
        }
        break;
 

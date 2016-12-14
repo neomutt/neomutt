@@ -307,7 +307,7 @@ static void dump_menu (FILE *f, int menu)
       {
 	b = help_lookupFunction (map->op, menu);
 	format_line (f, 0, buf, b ? b->name : "UNKNOWN",
-	      b ? _(HelpStrings[b->op]) : _("ERROR: please report this bug"));
+	      b ? _(HelpStrings[b->op]) : (_("ERROR: please report this bug"));
       }
     }
   }
@@ -349,7 +349,7 @@ void mutt_help (int menu)
   funcs = km_get_table (menu);
   desc = mutt_getnamebyvalue (menu, Menus);
   if (!desc)
-    desc = _("<UNKNOWN>");
+    desc = (_("<UNKNOWN>"));
   
   do {
     if ((f = safe_fopen (t, "w")) == NULL)
@@ -373,7 +373,7 @@ void mutt_help (int menu)
   
     safe_fclose (&f);
   
-    snprintf (buf, sizeof (buf), _("Help for %s"), desc);
+    snprintf (buf, sizeof (buf), (_("Help for %s")), desc);
   }
   while
     (mutt_do_pager (buf, t,

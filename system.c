@@ -92,7 +92,7 @@ int _mutt_system (const char *cmd, int flags)
 	  close (1);
 	  close (2);
 #endif
-	  chdir ("/");
+	  chdir (_("/"));
 	  act.sa_handler = SIG_DFL;
 	  sigaction (SIGCHLD, &act, NULL);
 	  break;

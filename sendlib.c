@@ -433,7 +433,7 @@ int mutt_write_mime_body (BODY *a, FILE *f)
     if (!(p = mutt_get_parameter ("boundary", a->parameter)))
     {
       dprint (1, (debugfile, "mutt_write_mime_body(): no boundary parameter found!\n"));
-      mutt_error _("No boundary parameter found! [report this error]");
+      mutt_error (_("No boundary parameter found! [report this error]"));
       return (-1);
     }
     strfcpy (boundary, p, sizeof (boundary));
@@ -636,7 +636,7 @@ static void update_content_info (CONTENT *info, CONTENT_STATE *s, char *d, size_
  * We convert via UTF-8 in order to avoid the condition -1(EINVAL),
  * which would otherwise prevent us from knowing the number of inexact
  * conversions. Where the candidate target charset is UTF-8 we avoid
- * doing the second conversion because iconv_open("UTF-8", "UTF-8")
+ * doing the second conversion because iconv_open(_("UTF-8", "UTF-8"))
  * fails with some libraries.
  *
  * We assume that the output from iconv is never more than 4 times as
@@ -1067,7 +1067,7 @@ void mutt_message_to_7bit (BODY *a, FILE *fp)
     a->offset = 0;
     if (stat (a->filename, &sb) == -1)
     {
-      mutt_perror ("stat");
+      mutt_perror (_("stat"));
       safe_fclose (&fpin);
     }
     a->length = sb.st_size;
@@ -1076,7 +1076,7 @@ void mutt_message_to_7bit (BODY *a, FILE *fp)
   mutt_mktemp (temp, sizeof (temp));
   if (!(fpout = safe_fopen (temp, "w+")))
   {
-    mutt_perror ("fopen");
+    mutt_perror (_("fopen"));
     goto cleanup;
   }
 
@@ -1112,7 +1112,7 @@ void mutt_message_to_7bit (BODY *a, FILE *fp)
   a->unlink = 1;
   if(stat (a->filename, &sb) == -1)
   {
-    mutt_perror ("stat");
+    mutt_perror (_("stat"));
     return;
   }
   a->length = sb.st_size;
@@ -1148,7 +1148,7 @@ static void transform_to_7bit (BODY *a, FILE *fpin)
       mutt_mktemp (buff, sizeof (buff));
       if ((s.fpout = safe_fopen (buff, "w")) == NULL)
       {
-	mutt_perror ("fopen");
+	mutt_perror (_("fopen"));
 	return;
       }
       s.fpin = fpin;
@@ -1160,7 +1160,7 @@ static void transform_to_7bit (BODY *a, FILE *fpin)
       a->unlink = 1;
       if (stat (a->filename, &sb) == -1)
       {
-	mutt_perror ("stat");
+	mutt_perror (_("stat"));
 	return;
       }
       a->length = sb.st_size;
@@ -1295,7 +1295,7 @@ BODY *mutt_make_message_attach (CONTEXT *ctx, HEADER *hdr, int attach_msg)
 
   body = mutt_new_body ();
   body->type = TYPEMESSAGE;
-  body->subtype = safe_strdup ("rfc822");
+  body->subtype = safe_strdup (_("rfc822"));
   body->filename = safe_strdup (buffer);
   body->unlink = 1;
   body->use_disp = 0;
@@ -1405,12 +1405,12 @@ BODY *mutt_make_file_attach (const char *path)
        * chars if this is really a binary file...
        */
       att->type = TYPETEXT;
-      att->subtype = safe_strdup ("plain");
+      att->subtype = safe_strdup (_("plain"));
     }
     else
     {
       att->type = TYPEAPPLICATION;
-      att->subtype = safe_strdup ("octet-stream");
+      att->subtype = safe_strdup (_("octet-stream"));
     }
   }
 
@@ -1457,7 +1457,7 @@ BODY *mutt_make_multipart (BODY *b)
 
   new = mutt_new_body ();
   new->type = TYPEMULTIPART;
-  new->subtype = safe_strdup ("mixed");
+  new->subtype = safe_strdup (_("mixed"));
   new->encoding = get_toplevel_encoding (b);
   do
   {

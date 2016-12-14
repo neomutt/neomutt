@@ -97,7 +97,7 @@ static void print_enriched_string (int index, int attr, unsigned char *s, int do
 	      add_wch(WACS_LLCORNER);
 #else
 	    else if (Charset_is_utf8)
-	      addstr ("\342\224\224"); /* WACS_LLCORNER */
+	      addstr (_("\342\224\224")); /* WACS_LLCORNER */
 	    else
 	      addch (ACS_LLCORNER);
 #endif
@@ -110,7 +110,7 @@ static void print_enriched_string (int index, int attr, unsigned char *s, int do
 	      add_wch(WACS_ULCORNER);
 #else
 	    else if (Charset_is_utf8)
-	      addstr ("\342\224\214"); /* WACS_ULCORNER */
+	      addstr (_("\342\224\214")); /* WACS_ULCORNER */
 	    else
 	      addch (ACS_ULCORNER);
 #endif
@@ -123,7 +123,7 @@ static void print_enriched_string (int index, int attr, unsigned char *s, int do
 	      add_wch(WACS_LTEE);
 #else
 	    else if (Charset_is_utf8)
-	      addstr ("\342\224\234"); /* WACS_LTEE */
+	      addstr (_("\342\224\234")); /* WACS_LTEE */
 	    else
 	      addch (ACS_LTEE);
 #endif
@@ -136,7 +136,7 @@ static void print_enriched_string (int index, int attr, unsigned char *s, int do
 	      add_wch(WACS_HLINE);
 #else
 	    else if (Charset_is_utf8)
-	      addstr ("\342\224\200"); /* WACS_HLINE */
+	      addstr (_("\342\224\200")); /* WACS_HLINE */
 	    else
 	      addch (ACS_HLINE);
 #endif
@@ -149,7 +149,7 @@ static void print_enriched_string (int index, int attr, unsigned char *s, int do
 	      add_wch(WACS_VLINE);
 #else
 	    else if (Charset_is_utf8)
-	      addstr ("\342\224\202"); /* WACS_VLINE */
+	      addstr (_("\342\224\202")); /* WACS_VLINE */
 	    else
 	      addch (ACS_VLINE);
 #endif
@@ -162,7 +162,7 @@ static void print_enriched_string (int index, int attr, unsigned char *s, int do
 	      add_wch(WACS_TTEE);
 #else
 	    else if (Charset_is_utf8)
-	      addstr ("\342\224\254"); /* WACS_TTEE */
+	      addstr (_("\342\224\254")); /* WACS_TTEE */
 	    else
 	      addch (ACS_TTEE);
 #endif
@@ -175,7 +175,7 @@ static void print_enriched_string (int index, int attr, unsigned char *s, int do
 	      add_wch(WACS_BTEE);
 #else
 	    else if (Charset_is_utf8)
-	      addstr ("\342\224\264"); /* WACS_BTEE */
+	      addstr (_("\342\224\264")); /* WACS_BTEE */
 	    else
 	      addch (ACS_BTEE);
 #endif
@@ -332,7 +332,7 @@ void menu_redraw_index (MUTTMENU *menu)
 	  SETCOLOR(MT_COLOR_INDICATOR);
 	  if (option(OPTARROWCURSOR))
 	  {
-	    addstr ("->");
+	    addstr (_("->"));
 	    ATTRSET(attr);
 	    addch (' ');
 	  }
@@ -340,7 +340,7 @@ void menu_redraw_index (MUTTMENU *menu)
 	    do_color = 0;
       }
       else if (option(OPTARROWCURSOR))
-	addstr("   ");
+	addstr(_("   "));
 
       print_enriched_string (i, attr, (unsigned char *) buf, do_color);
     }
@@ -370,7 +370,7 @@ void menu_redraw_motion (MUTTMENU *menu)
   if (option (OPTARROWCURSOR))
   {
     /* clear the pointer */
-    addstr ("  ");
+    addstr (_("  "));
 
     if (menu->redraw & REDRAW_MOTION_RESYNCH)
     {
@@ -414,7 +414,7 @@ void menu_redraw_current (MUTTMENU *menu)
   SETCOLOR(MT_COLOR_INDICATOR);
   if (option (OPTARROWCURSOR))
   {
-    addstr ("->");
+    addstr (_("->"));
     ATTRSET(attr);
     addch (' ');
     menu_pad_string (menu, buf, sizeof (buf));
@@ -501,11 +501,11 @@ void menu_jump (MUTTMENU *menu)
 	menu->redraw = REDRAW_MOTION;
       }
       else
-	mutt_error _("Invalid index number.");
+	mutt_error (_("Invalid index number."));
     }
   }
   else
-    mutt_error _("No entries.");
+    mutt_error (_("No entries."));
 }
 
 void menu_next_line (MUTTMENU *menu)
@@ -523,10 +523,10 @@ void menu_next_line (MUTTMENU *menu)
       menu->redraw = REDRAW_INDEX;
     }
     else
-      mutt_error _("You cannot scroll down farther.");
+      mutt_error (_("You cannot scroll down farther."));
   }
   else
-    mutt_error _("No entries.");
+    mutt_error (_("No entries."));
 }
 
 void menu_prev_line (MUTTMENU *menu)
@@ -541,7 +541,7 @@ void menu_prev_line (MUTTMENU *menu)
     menu->redraw = REDRAW_INDEX;
   }
   else
-    mutt_error _("You cannot scroll up farther.");
+    mutt_error (_("You cannot scroll up farther."));
 }
 
 /* 
@@ -584,14 +584,14 @@ static void menu_length_jump (MUTTMENU *menu, int jumplen)
       menu->redraw = REDRAW_MOTION;
     }
     else
-      mutt_error (neg ? _("You are on the first page.")
-		      : _("You are on the last page."));
+      mutt_error (neg ? (_("You are on the first page."))
+		      : (_("You are on the last page."));
 
     menu->current = MIN (menu->current, menu->max - 1);
     menu->current = MAX (menu->current, 0);
   }
   else
-    mutt_error _("No entries.");
+    mutt_error (_("No entries."));
 }
 #undef DIRECTION
 
@@ -634,7 +634,7 @@ void menu_bottom_page (MUTTMENU *menu)
     menu->redraw = REDRAW_MOTION;
   }
   else
-    mutt_error _("No entries.");
+    mutt_error (_("No entries."));
 }
 
 void menu_middle_page (MUTTMENU *menu)
@@ -650,7 +650,7 @@ void menu_middle_page (MUTTMENU *menu)
     menu->redraw = REDRAW_MOTION;
   }
   else
-    mutt_error _("No entries.");
+    mutt_error (_("No entries."));
 }
 
 void menu_first_entry (MUTTMENU *menu)
@@ -661,7 +661,7 @@ void menu_first_entry (MUTTMENU *menu)
     menu->redraw = REDRAW_MOTION;
   }
   else
-    mutt_error _("No entries.");
+    mutt_error (_("No entries."));
 }
 
 void menu_last_entry (MUTTMENU *menu)
@@ -672,7 +672,7 @@ void menu_last_entry (MUTTMENU *menu)
     menu->redraw = REDRAW_MOTION;
   }
   else
-    mutt_error _("No entries.");
+    mutt_error (_("No entries."));
 }
 
 void menu_current_top (MUTTMENU *menu)
@@ -683,7 +683,7 @@ void menu_current_top (MUTTMENU *menu)
     menu->redraw = REDRAW_INDEX;
   }
   else
-    mutt_error _("No entries.");
+    mutt_error (_("No entries."));
 }
 
 void menu_current_middle (MUTTMENU *menu)
@@ -696,7 +696,7 @@ void menu_current_middle (MUTTMENU *menu)
     menu->redraw = REDRAW_INDEX;
   }
   else
-    mutt_error _("No entries.");
+    mutt_error (_("No entries."));
 }
 
 void menu_current_bottom (MUTTMENU *menu)
@@ -709,7 +709,7 @@ void menu_current_bottom (MUTTMENU *menu)
     menu->redraw = REDRAW_INDEX;
   }
   else
-    mutt_error _("No entries.");
+    mutt_error (_("No entries."));
 }
 
 static void menu_next_entry (MUTTMENU *menu)
@@ -720,7 +720,7 @@ static void menu_next_entry (MUTTMENU *menu)
     menu->redraw = REDRAW_MOTION;
   }
   else
-    mutt_error _("You are on the last entry.");
+    mutt_error (_("You are on the last entry."));
 }
 
 static void menu_prev_entry (MUTTMENU *menu)
@@ -731,7 +731,7 @@ static void menu_prev_entry (MUTTMENU *menu)
     menu->redraw = REDRAW_MOTION;
   }
   else
-    mutt_error _("You are on the first entry.");
+    mutt_error (_("You are on the first entry."));
 }
 
 static int default_color (int i)
@@ -809,7 +809,7 @@ static int menu_search (MUTTMENU *menu, int op)
   {
     strfcpy (buf, searchBuf && *searchBuf ? searchBuf : "", sizeof (buf));
     if (mutt_get_field ((op == OP_SEARCH || op == OP_SEARCH_NEXT)
-			? _("Search for: ") : _("Reverse search for: "),
+			? (_("Search for: ")) : (_("Reverse search for: ")),
 			buf, sizeof (buf), MUTT_CLEAR) != 0 || !buf[0])
       return (-1);
     if (menu->menu >= 0 && menu->menu < MENU_MAX)
@@ -853,7 +853,7 @@ search_next:
     goto search_next;
   }
   regfree (&re);
-  mutt_error _("Not found.");
+  mutt_error (_("Not found."));
   return (-1);
 }
 
@@ -993,13 +993,13 @@ int mutt_menuLoop (MUTTMENU *menu)
       }
       else if (i == OP_TAG_PREFIX)
       {
-	mutt_error _("No tagged entries.");
+	mutt_error (_("No tagged entries."));
 	i = -1;
       }
       else /* None tagged, OP_TAG_PREFIX_COND */
       {
 	mutt_flush_macro_to_endcond ();
-	mutt_message _("Nothing to do.");
+	mutt_message (_("Nothing to do."));
 	i = -1;
       }
     }
@@ -1093,12 +1093,12 @@ int mutt_menuLoop (MUTTMENU *menu)
 	    menu->current = menu->oldcurrent;
 	}
 	else
-	  mutt_error _("Search is not implemented for this menu.");
+	  mutt_error (_("Search is not implemented for this menu."));
 	break;
 
       case OP_JUMP:
 	if (menu->dialog)
-	  mutt_error _("Jumping is not implemented for dialogs.");
+	  mutt_error (_("Jumping is not implemented for dialogs."));
 	else
 	  menu_jump (menu);
 	break;
@@ -1136,10 +1136,10 @@ int mutt_menuLoop (MUTTMENU *menu)
 	      menu->redraw = REDRAW_CURRENT;
 	  }
 	  else
-	    mutt_error _("No entries.");
+	    mutt_error (_("No entries."));
 	}
 	else
-	  mutt_error _("Tagging is not supported.");
+	  mutt_error (_("Tagging is not supported."));
 	break;
 
       case OP_SHELL_ESCAPE:

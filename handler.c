@@ -567,7 +567,7 @@ static void enriched_wrap (struct enriched_state *stte)
       else
       {
 	state_puts ("> ", stte->s);
-	stte->indent_len += mutt_strlen ("> ");
+	stte->indent_len += mutt_strlen (_("> "));
       }
       x--;
     }
@@ -910,7 +910,7 @@ static int is_mmnoask (const char *buf)
   char tmp[LONG_STRING], *p, *q;
   int lng;
 
-  if ((p = getenv ("MM_NOASK")) != NULL && *p)
+  if ((p = getenv (_("MM_NOASK")) != NULL && *p)
   {
     if (mutt_strcmp (p, "1") == 0)
       return (1);
@@ -1251,7 +1251,7 @@ static int multipart_handler (BODY *a, STATE *s)
     if (s->flags & MUTT_DISPLAY)
     {
       state_mark_attach (s);
-      state_printf (s, _("[-- Attachment #%d"), count);
+      state_printf (s, (_("[-- Attachment #%d")), count);
       if (p->description || p->filename || p->form_name)
       {
 	state_puts (": ", s);
@@ -1263,7 +1263,7 @@ static int multipart_handler (BODY *a, STATE *s)
       mutt_pretty_size (length, sizeof (length), p->length);
       
       state_mark_attach (s);
-      state_printf (s, _("[-- Type: %s/%s, Encoding: %s, Size: %s --]\n"),
+      state_printf (s, (_("[-- Type: %s/%s, Encoding: %s, Size: %s --]\n")),
 		    TYPE (p), p->subtype, ENCODING (p->encoding), length);
       if (!option (OPTWEED))
       {
@@ -1331,13 +1331,13 @@ static int autoview_handler (BODY *a, STATE *s)
     if (s->flags & MUTT_DISPLAY)
     {
       state_mark_attach (s);
-      state_printf (s, _("[-- Autoview using %s --]\n"), command);
+      state_printf (s, (_("[-- Autoview using %s --]\n")), command);
       mutt_message(_("Invoking autoview command: %s"),command);
     }
 
     if ((fpin = safe_fopen (tempfile, "w+")) == NULL)
     {
-      mutt_perror ("fopen");
+      mutt_perror (_("fopen"));
       rfc1524_free_entry (&entry);
       return -1;
     }
@@ -1360,11 +1360,11 @@ static int autoview_handler (BODY *a, STATE *s)
 
     if (thepid < 0)
     {
-      mutt_perror _("Can't create filter");
+      mutt_perror (_("Can't create filter"));
       if (s->flags & MUTT_DISPLAY)
       {
 	state_mark_attach (s);
-	state_printf (s, _("[-- Can't run %s. --]\n"), command);
+	state_printf (s, (_("[-- Can't run %s. --]\n")), command);
       }
       rc = -1;
       goto bail;
@@ -1383,7 +1383,7 @@ static int autoview_handler (BODY *a, STATE *s)
 	if (s->flags & MUTT_DISPLAY)
 	{
 	  state_mark_attach (s);
-	  state_printf (s, _("[-- Autoview stderr of %s --]\n"), command);
+	  state_printf (s, (_("[-- Autoview stderr of %s --]\n")), command);
 	}
 
 	state_puts (s->prefix, s);
@@ -1404,7 +1404,7 @@ static int autoview_handler (BODY *a, STATE *s)
 	if (s->flags & MUTT_DISPLAY)
 	{
 	  state_mark_attach (s);
-	  state_printf (s, _("[-- Autoview stderr of %s --]\n"), 
+	  state_printf (s, (_("[-- Autoview stderr of %s --]\n")), 
 			command);
 	}
 	
@@ -1464,26 +1464,26 @@ static int external_body_handler (BODY *b, STATE *s)
       char pretty_size[10];
       
       state_mark_attach (s);
-      state_printf (s, _("[-- This %s/%s attachment "),
+      state_printf (s, (_("[-- This %s/%s attachment ")),
 	       TYPE(b->parts), b->parts->subtype);
       length = mutt_get_parameter ("length", b->parameter);
       if (length)
       {
 	mutt_pretty_size (pretty_size, sizeof (pretty_size),
 			  strtol (length, NULL, 10));
-	state_printf (s, _("(size %s bytes) "), pretty_size);
+	state_printf (s, (_("(size %s bytes) ")), pretty_size);
       }
       state_puts (_("has been deleted --]\n"), s);
 
       if (expire != -1)
       {
 	state_mark_attach (s);
-	state_printf (s, _("[-- on %s --]\n"), expiration);
+	state_printf (s, (_("[-- on %s --]\n")), expiration);
       }
       if (b->parts->filename)
       {
 	state_mark_attach (s);
-	state_printf (s, _("[-- name: %s --]\n"), b->parts->filename);
+	state_printf (s, (_("[-- name: %s --]\n")), b->parts->filename);
       }
 
       mutt_copy_hdr (s->fpin, s->fpout, ftello (s->fpin), b->parts->offset,
@@ -1496,7 +1496,7 @@ static int external_body_handler (BODY *b, STATE *s)
     if (s->flags & MUTT_DISPLAY)
     {
       state_mark_attach (s);
-      state_printf (s, _("[-- This %s/%s attachment is not included, --]\n"),
+      state_printf (s, (_("[-- This %s/%s attachment is not included, --]\n")),
 		    TYPE(b->parts), b->parts->subtype);
       state_attach_puts (_("[-- and the indicated external source has --]\n"
 			   "[-- expired. --]\n"), s);
@@ -1512,11 +1512,11 @@ static int external_body_handler (BODY *b, STATE *s)
     {
       state_mark_attach (s);
       state_printf (s,
-		    _("[-- This %s/%s attachment is not included, --]\n"),
+		    (_("[-- This %s/%s attachment is not included, --]\n")),
 		    TYPE (b->parts), b->parts->subtype);
       state_mark_attach (s);
       state_printf (s, 
-		    _("[-- and the indicated access-type %s is unsupported --]\n"),
+		    (_("[-- and the indicated access-type %s is unsupported --]\n")),
 		    access_type);
       mutt_copy_hdr (s->fpin, s->fpout, ftello (s->fpin), b->parts->offset,
 		     (option (OPTWEED) ? (CH_WEED | CH_REORDER) : 0) |
@@ -1629,7 +1629,7 @@ static int run_decode_and_handler (BODY *b, STATE *s, handler_t handler, int pla
 #ifdef USE_FMEMOPEN
      s->fpout = open_memstream (&temp, &tempsize);
      if (!s->fpout) {
-       mutt_error _("Unable to open memory stream!");
+       mutt_error (_("Unable to open memory stream!"));
        dprint (1, (debugfile, "Can't open memory stream.\n"));
        return -1;
      }
@@ -1637,7 +1637,7 @@ static int run_decode_and_handler (BODY *b, STATE *s, handler_t handler, int pla
       mutt_mktemp (tempfile, sizeof (tempfile));
       if ((s->fpout = safe_fopen (tempfile, "w")) == NULL)
       {
-        mutt_error _("Unable to open temporary file!");
+        mutt_error (_("Unable to open temporary file!"));
         dprint (1, (debugfile, "Can't open %s.\n", tempfile));
         return -1;
       }
@@ -1674,10 +1674,10 @@ static int run_decode_and_handler (BODY *b, STATE *s, handler_t handler, int pla
       if (tempsize) {
         s->fpin = fmemopen (temp, tempsize, "r");
       } else { /* fmemopen cannot handle zero-length buffers */
-        s->fpin = safe_fopen ("/dev/null", "r");
+        s->fpin = safe_fopen (_("/dev/null", "r"));
       }
       if (!s->fpin) {
-        mutt_perror ("failed to re-open memstream!");
+        mutt_perror (_("failed to re-open memstream!"));
         return -1;
       }
 #else
@@ -1799,7 +1799,7 @@ int mutt_body_handler (BODY *b, STATE *s)
       p = mutt_get_parameter ("protocol", b->parameter);
 
       if (!p)
-        mutt_error _("Error: multipart/signed has no protocol.");
+        mutt_error (_("Error: multipart/signed has no protocol."));
       else if (s->flags & MUTT_VERIFY)
 	handler = mutt_signed_handler;
     }
@@ -1852,14 +1852,14 @@ int mutt_body_handler (BODY *b, STATE *s)
     if (option (OPTHONORDISP) && b->disposition == DISPATTACH)
       fputs (_("[-- This is an attachment "), s->fpout);
     else
-      state_printf (s, _("[-- %s/%s is unsupported "), TYPE (b), b->subtype);
+      state_printf (s, (_("[-- %s/%s is unsupported ")), TYPE (b), b->subtype);
     if (!option (OPTVIEWATTACH))
     {
       char keystroke[SHORT_STRING];
 
       if (km_expand_key (keystroke, sizeof(keystroke),
 			km_find_func (MENU_PAGER, OP_VIEW_ATTACHMENTS)))
-	fprintf (s->fpout, _("(use '%s' to view this part)"), keystroke);
+	fprintf (s->fpout, (_("(use '%s' to view this part)")), keystroke);
       else
 	fputs (_("(need 'view-attachments' bound to key!)"), s->fpout);
     }

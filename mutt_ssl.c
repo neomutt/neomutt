@@ -206,10 +206,10 @@ static int ssl_init (void)
 
     /* load entropy from egd sockets */
 #ifdef HAVE_RAND_EGD
-    add_entropy (getenv ("EGDSOCKET"));
+    add_entropy (getenv (_("EGDSOCKET"));
     snprintf (path, sizeof(path), "%s/.entropy", NONULL(Homedir));
     add_entropy (path);
-    add_entropy ("/tmp/entropy");
+    add_entropy (_("/tmp/entropy"));
 #endif
 
     /* shuffle $RANDFILE (or ~/.rnd if unset) */
@@ -427,13 +427,13 @@ static int ssl_negotiate (CONNECTION *conn, sslsockdata* ssldata)
     switch (SSL_get_error (ssldata->ssl, err))
     {
     case SSL_ERROR_SYSCALL:
-      errmsg = _("I/O error");
+      errmsg = (_("I/O error"));
       break;
     case SSL_ERROR_SSL:
       errmsg = ERR_error_string (ERR_get_error (), NULL);
       break;
     default:
-      errmsg = _("unknown error");
+      errmsg = (_("unknown error"));
     }
 
     mutt_error (_("SSL failed: %s"), errmsg);
@@ -575,7 +575,7 @@ static char *x509_get_part (char *line, const char *ndx)
   static char ret[SHORT_STRING];
   char *c, *c2;
 
-  strfcpy (ret, _("Unknown"), sizeof (ret));
+  strfcpy (ret, (_("Unknown")), sizeof (ret));
 
   c = strstr (line, ndx);
   if (c)
@@ -600,7 +600,7 @@ static void x509_fingerprint (char *s, int l, X509 * cert)
 
   if (!X509_digest (cert, EVP_md5 (), md, &n))
   {
-    snprintf (s, l, _("[unable to calculate]"));
+    snprintf (s, l, (_("[unable to calculate]"));
   }
   else
   {
@@ -618,7 +618,7 @@ static char *asn1time_to_string (ASN1_UTCTIME *tm)
   static char buf[64];
   BIO *bio;
 
-  strfcpy (buf, _("[invalid date]"), sizeof (buf));
+  strfcpy (buf, (_("[invalid date]")), sizeof (buf));
 
   bio = BIO_new (BIO_s_mem());
   if (bio)
@@ -876,7 +876,7 @@ static int check_host (X509 *x509cert, const char *hostname, char *err, size_t e
     if (!(x509_subject = X509_get_subject_name(x509cert)))
     {
       if (err && errlen)
-	strfcpy (err, _("cannot get certificate subject"), errlen);
+	strfcpy (err, (_("cannot get certificate subject")), errlen);
       goto out;
     }
 
@@ -886,7 +886,7 @@ static int check_host (X509 *x509cert, const char *hostname, char *err, size_t e
     if (bufsize == -1)
     {
       if (err && errlen)
-	strfcpy (err, _("cannot get certificate common name"), errlen);
+	strfcpy (err, (_("cannot get certificate common name")), errlen);
       goto out;
     }
     bufsize++; /* space for the terminal nul char */
@@ -895,7 +895,7 @@ static int check_host (X509 *x509cert, const char *hostname, char *err, size_t e
 				  buf, bufsize) == -1)
     {
       if (err && errlen)
-	strfcpy (err, _("cannot get certificate common name"), errlen);
+	strfcpy (err, (_("cannot get certificate common name")), errlen);
       goto out;
     }
     /* cast is safe since bufsize is incremented above, so bufsize-1 is always
@@ -909,7 +909,7 @@ static int check_host (X509 *x509cert, const char *hostname, char *err, size_t e
   if (!match_found)
   {
     if (err && errlen)
-      snprintf (err, errlen, _("certificate owner does not match hostname %s"),
+      snprintf (err, errlen, (_("certificate owner does not match hostname %s")),
 		hostname);
     goto out;
   }
@@ -1039,7 +1039,7 @@ static int interactive_check_cert (X509 *cert, int idx, int len)
     menu->dialog[i] = (char *) safe_calloc (1, SHORT_STRING * sizeof (char));
 
   row = 0;
-  strfcpy (menu->dialog[row], _("This certificate belongs to:"), SHORT_STRING);
+  strfcpy (menu->dialog[row], (_("This certificate belongs to:")), SHORT_STRING);
   row++;
   name = X509_NAME_oneline (X509_get_subject_name (cert),
 			    buf, sizeof (buf));
@@ -1051,7 +1051,7 @@ static int interactive_check_cert (X509 *cert, int idx, int len)
   }
 
   row++;
-  strfcpy (menu->dialog[row], _("This certificate was issued by:"), SHORT_STRING);
+  strfcpy (menu->dialog[row], (_("This certificate was issued by:")), SHORT_STRING);
   row++;
   name = X509_NAME_oneline (X509_get_issuer_name (cert),
 			    buf, sizeof (buf));
@@ -1062,19 +1062,19 @@ static int interactive_check_cert (X509 *cert, int idx, int len)
   }
 
   row++;
-  snprintf (menu->dialog[row++], SHORT_STRING, _("This certificate is valid"));
-  snprintf (menu->dialog[row++], SHORT_STRING, _("   from %s"),
+  snprintf (menu->dialog[row++], SHORT_STRING, (_("This certificate is valid"));
+  snprintf (menu->dialog[row++], SHORT_STRING, (_("   from %s")),
       asn1time_to_string (X509_get_notBefore (cert)));
-  snprintf (menu->dialog[row++], SHORT_STRING, _("     to %s"),
+  snprintf (menu->dialog[row++], SHORT_STRING, (_("     to %s")),
       asn1time_to_string (X509_get_notAfter (cert)));
 
   row++;
   buf[0] = '\0';
   x509_fingerprint (buf, sizeof (buf), cert);
-  snprintf (menu->dialog[row++], SHORT_STRING, _("Fingerprint: %s"), buf);
+  snprintf (menu->dialog[row++], SHORT_STRING, (_("Fingerprint: %s")), buf);
 
   snprintf (title, sizeof (title),
-	    _("SSL Certificate check (certificate %d of %d in chain)"),
+	    (_("SSL Certificate check (certificate %d of %d in chain)")),
 	    len - idx, len);
   menu->title = title;
   if (SslCertFile
@@ -1082,19 +1082,19 @@ static int interactive_check_cert (X509 *cert, int idx, int len)
 	  || (X509_cmp_current_time (X509_get_notAfter (cert)) >= 0
 	      && X509_cmp_current_time (X509_get_notBefore (cert)) < 0)))
   {
-    menu->prompt = _("(r)eject, accept (o)nce, (a)ccept always");
-    menu->keys = _("roa");
+    menu->prompt = (_("(r)eject, accept (o)nce, (a)ccept always"));
+    menu->keys = (_("roa"));
   }
   else
   {
-    menu->prompt = _("(r)eject, accept (o)nce");
-    menu->keys = _("ro");
+    menu->prompt = (_("(r)eject, accept (o)nce"));
+    menu->keys = (_("ro"));
   }
 
   helpstr[0] = '\0';
-  mutt_make_help (buf, sizeof (buf), _("Exit  "), MENU_GENERIC, OP_EXIT);
+  mutt_make_help (buf, sizeof (buf), (_("Exit  ")), MENU_GENERIC, OP_EXIT);
   safe_strcat (helpstr, sizeof (helpstr), buf);
-  mutt_make_help (buf, sizeof (buf), _("Help"), MENU_GENERIC, OP_HELP);
+  mutt_make_help (buf, sizeof (buf), (_("Help")), MENU_GENERIC, OP_HELP);
   safe_strcat (helpstr, sizeof (helpstr), buf);
   menu->help = helpstr;
 

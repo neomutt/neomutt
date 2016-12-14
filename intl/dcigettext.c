@@ -1159,7 +1159,7 @@ guess_category_value (category, categoryname)
   /* The highest priority value is the `LANGUAGE' environment
      variable.  But we don't use the value if the currently selected
      locale is the C locale.  This is a GNU extension.  */
-  language = getenv ("LANGUAGE");
+  language = getenv (_("LANGUAGE"));
   if (language != NULL && language[0] == '\0')
     language = NULL;
 
@@ -1170,7 +1170,7 @@ guess_category_value (category, categoryname)
   retval = setlocale (category, NULL);
 #else
   /* Setting of LC_ALL overwrites all other.  */
-  retval = getenv ("LC_ALL");
+  retval = getenv (_("LC_ALL"));
   if (retval == NULL || retval[0] == '\0')
     {
       /* Next comes the name of the desired category.  */
@@ -1178,7 +1178,7 @@ guess_category_value (category, categoryname)
       if (retval == NULL || retval[0] == '\0')
 	{
 	  /* Last possibility is the LANG environment variable.  */
-	  retval = getenv ("LANG");
+	  retval = getenv (_("LANG"));
 	  if (retval == NULL || retval[0] == '\0')
 	    /* We use C as the default domain.  POSIX says this is
 	       implementation defined.  */

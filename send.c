@@ -295,9 +295,9 @@ static int edit_envelope (ENVELOPE *en, int flags)
   }
   
   if (mutt_get_field ("Subject: ", buf, sizeof (buf), 0) != 0 ||
-      (!buf[0] && query_quadoption (OPT_SUBJECT, _("No subject, abort?")) != MUTT_NO))
+      (!buf[0] && query_quadoption (OPT_SUBJECT, (_("No subject, abort?")) != MUTT_NO))
   {
-    mutt_message _("No subject, aborting.");
+    mutt_message (_("No subject, aborting."));
     return (-1);
   }
   mutt_str_replace (&en->subject, buf);
@@ -551,7 +551,7 @@ static int default_to (ADDRESS **to, ENVELOPE *env, int flags, int hmfupto)
       /* L10N:
          Asks whether the user respects the reply-to header.
          If she says no, mutt will reply to the from header's address instead. */
-      snprintf (prompt, sizeof (prompt), _("Reply to %s%s?"),
+      snprintf (prompt, sizeof (prompt), (_("Reply to %s%s?")),
 		env->reply_to->mailbox, 
 		env->reply_to->next?",...":"");
       switch (query_quadoption (OPT_REPLYTO, prompt))
@@ -585,7 +585,7 @@ int mutt_fetch_recips (ENVELOPE *out, ENVELOPE *in, int flags)
 
   if ((flags & (SENDLISTREPLY|SENDGROUPREPLY)) && in->mail_followup_to)
   {
-    snprintf (prompt, sizeof (prompt), _("Follow-up to %s%s?"),
+    snprintf (prompt, sizeof (prompt), (_("Follow-up to %s%s?")),
 	      in->mail_followup_to->mailbox,
 	      in->mail_followup_to->next ? ",..." : "");
 
@@ -683,7 +683,7 @@ void mutt_make_misc_reply_headers (ENVELOPE *env, CONTEXT *ctx,
     sprintf (env->subject, "Re: %s", curenv->real_subj);	/* __SPRINTF_CHECKED__ */
   }
   else if (!env->subject)
-    env->subject = safe_strdup ("Re: your mail");
+    env->subject = safe_strdup (_("Re: your mail"));
 }
 
 void mutt_add_to_reference_headers (ENVELOPE *env, ENVELOPE *curenv, LIST ***pp, LIST ***qq)
@@ -767,7 +767,7 @@ envelope_defaults (ENVELOPE *env, CONTEXT *ctx, HEADER *cur, int flags)
       /* This could happen if the user tagged some messages and then did
        * a limit such that none of the tagged message are visible.
        */
-      mutt_error _("No tagged messages are visible!");
+      mutt_error (_("No tagged messages are visible!"));
       return (-1);
     }
   }
@@ -802,7 +802,7 @@ envelope_defaults (ENVELOPE *env, CONTEXT *ctx, HEADER *cur, int flags)
 
     if ((flags & SENDLISTREPLY) && !env->to)
     {
-      mutt_error _("No mailing lists found!");
+      mutt_error (_("No mailing lists found!"));
       return (-1);
     }
 
@@ -832,12 +832,12 @@ generate_body (FILE *tempfp,	/* stream for outgoing message */
 
   if (flags & SENDREPLY)
   {
-    if ((i = query_quadoption (OPT_INCLUDE, _("Include message in reply?"))) == MUTT_ABORT)
+    if ((i = query_quadoption (OPT_INCLUDE, (_("Include message in reply?"))) == MUTT_ABORT)
       return (-1);
 
     if (i == MUTT_YES)
     {
-      mutt_message _("Including quoted message...");
+      mutt_message (_("Including quoted message..."));
       if (!cur)
       {
 	for (i = 0; i < ctx->vcount; i++)
@@ -847,7 +847,7 @@ generate_body (FILE *tempfp,	/* stream for outgoing message */
 	  {
 	    if (include_reply (ctx, h, tempfp) == -1)
 	    {
-	      mutt_error _("Could not include all requested messages!");
+	      mutt_error (_("Could not include all requested messages!"));
 	      return (-1);
 	    }
 	    fputc ('\n', tempfp);
@@ -861,11 +861,11 @@ generate_body (FILE *tempfp,	/* stream for outgoing message */
   }
   else if (flags & SENDFORWARD)
   {
-    if ((i = query_quadoption (OPT_MIMEFWD, _("Forward as attachment?"))) == MUTT_YES)
+    if ((i = query_quadoption (OPT_MIMEFWD, (_("Forward as attachment?"))) == MUTT_YES)
     {
       BODY *last = msg->content;
 
-      mutt_message _("Preparing forwarded message...");
+      mutt_message (_("Preparing forwarded message..."));
       
       while (last && last->next)
 	last = last->next;
@@ -1313,7 +1313,7 @@ ci_send_message (int flags,		/* send mode */
     /* If the user is composing a new message, check to see if there
      * are any postponed messages first.
      */
-    if ((i = query_quadoption (OPT_RECALL, _("Recall postponed message?"))) == MUTT_ABORT)
+    if ((i = query_quadoption (OPT_RECALL, (_("Recall postponed message?"))) == MUTT_ABORT)
       return rv;
 
     if(i == MUTT_YES)
@@ -1395,7 +1395,7 @@ ci_send_message (int flags,		/* send mode */
       msg->content = pbody;
 
       if (!(ctype = safe_strdup (ContentType)))
-        ctype = safe_strdup ("text/plain");
+        ctype = safe_strdup (_("text/plain"));
       mutt_parse_content_type (ctype, msg->content);
       FREE (&ctype);
       msg->content->unlink = 1;
@@ -1605,7 +1605,7 @@ ci_send_message (int flags,		/* send mode */
     if (! (flags & SENDKEY) &&
 	((flags & SENDFORWARD) == 0 ||
 	 (option (OPTEDITHDRS) && option (OPTAUTOEDIT)) ||
-	 query_quadoption (OPT_FORWEDIT, _("Edit forwarded message?")) == MUTT_YES))
+	 query_quadoption (OPT_FORWEDIT, (_("Edit forwarded message?")) == MUTT_YES))
     {
       /* If the this isn't a text message, look for a mailcap edit command */
       if (mutt_needs_mailcap (msg->content))
@@ -1654,9 +1654,9 @@ ci_send_message (int flags,		/* send mode */
       {
 	/* if the file was not modified, bail out now */
 	if (mtime == st.st_mtime && !msg->content->next &&
-	    query_quadoption (OPT_ABORT, _("Abort unmodified message?")) == MUTT_YES)
+	    query_quadoption (OPT_ABORT, (_("Abort unmodified message?")) == MUTT_YES)
 	{
-	  mutt_message _("Aborted unmodified message.");
+	  mutt_message (_("Aborted unmodified message."));
 	  goto cleanup;
 	}
       }
@@ -1790,10 +1790,10 @@ main_loop:
       /* abort */
 #ifdef USE_NNTP
       if (flags & SENDNEWS)
-	mutt_message _("Article not posted.");
+	mutt_message (_("Article not posted."));
       else
 #endif
-      mutt_message _("Mail not sent.");
+      mutt_message (_("Mail not sent."));
       goto cleanup;
     }
     else if (i == 1)
@@ -1844,7 +1844,7 @@ main_loop:
 	goto main_loop;
       }
       mutt_update_num_postponed ();
-      mutt_message _("Message postponed.");
+      mutt_message (_("Message postponed."));
       rv = 1;
       goto cleanup;
     }
@@ -1858,12 +1858,12 @@ main_loop:
   {
     if (! (flags & SENDBATCH))
     {
-      mutt_error _("No recipients are specified!");
+      mutt_error (_("No recipients are specified!"));
       goto main_loop;
     }
     else
     {
-      puts _("No recipients were specified.");
+      puts (_("No recipients were specified."));
       goto cleanup;
     }
   }
@@ -1879,23 +1879,23 @@ main_loop:
   }
   
   if (!msg->env->subject && ! (flags & SENDBATCH) &&
-      (i = query_quadoption (OPT_SUBJECT, _("No subject, abort sending?"))) != MUTT_NO)
+      (i = query_quadoption (OPT_SUBJECT, (_("No subject, abort sending?"))) != MUTT_NO)
   {
     /* if the abort is automatic, print an error message */
     if (quadoption (OPT_SUBJECT) == MUTT_YES)
-      mutt_error _("No subject specified.");
+      mutt_error (_("No subject specified."));
     goto main_loop;
   }
 #ifdef USE_NNTP
   if ((flags & SENDNEWS) && !msg->env->subject)
   {
-    mutt_error _("No subject specified.");
+    mutt_error (_("No subject specified."));
     goto main_loop;
   }
 
   if ((flags & SENDNEWS) && !msg->env->newsgroups)
   {
-    mutt_error _("No newsgroup specified.");
+    mutt_error (_("No newsgroup specified."));
     goto main_loop;
   }
 #endif
@@ -1903,12 +1903,12 @@ main_loop:
   if (quadoption(OPT_ATTACH) != MUTT_NO &&
          !msg->content->next &&
          mutt_search_attach_keyword (msg->content->filename) &&
-         query_quadoption (OPT_ATTACH, _("No attachments, cancel sending?")) != MUTT_NO)
+         query_quadoption (OPT_ATTACH, (_("No attachments, cancel sending?")) != MUTT_NO)
   {
     /* if the abort is automatic, print an error message */
     if (quadoption (OPT_ATTACH) == MUTT_YES)
     {
-      mutt_error _("Message contains text matching \"$attach_keyword\". Not sending.");
+      mutt_error (_("Message contains text matching \"$attach_keyword\". Not sending."));
     }
     goto main_loop;
   }
@@ -1972,7 +1972,7 @@ main_loop:
   }
 
   if (!option (OPTNOCURSES) && !(flags & SENDMAILX))
-    mutt_message _("Sending message...");
+    mutt_message (_("Sending message..."));
 
   mutt_prepare_envelope (msg->env, 1);
 
@@ -2005,7 +2005,7 @@ main_loop:
       msg->content = clear_content;
 
     /* check to see if the user wants copies of all attachments */
-    if (query_quadoption (OPT_FCCATTACH, _("Save attachments in Fcc?")) != MUTT_YES &&
+    if (query_quadoption (OPT_FCCATTACH, (_("Save attachments in Fcc?")) != MUTT_YES &&
 	msg->content->type == TYPEMULTIPART)
     {
       if (WithCrypto
@@ -2116,16 +2116,16 @@ full_fcc:
     }
     else
     {
-      puts _("Could not send the message.");
+      puts (_("Could not send the message."));
       goto cleanup;
     }
   }
   else if (!option (OPTNOCURSES) && ! (flags & SENDMAILX)) {
-    mutt_message (i != 0 ? _("Sending in background.") :
+    mutt_message (i != 0 ? (_("Sending in background.")) :
 #ifdef USE_NNTP
-		  (flags & SENDNEWS) ? _("Article posted.") : _("Mail sent."));
+		  (flags & SENDNEWS) ? (_("Article posted.")) : (_("Mail sent."));
 #else
-		  _("Mail sent."));
+		  (_("Mail sent."));
 #endif
 #ifdef USE_NOTMUCH
     if (option(OPTNOTMUCHRECORD))

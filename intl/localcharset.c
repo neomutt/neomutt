@@ -226,12 +226,12 @@ locale_charset ()
 #  endif
   if (locale == NULL || locale[0] == '\0')
     {
-      locale = getenv ("LC_ALL");
+      locale = getenv (_("LC_ALL"));
       if (locale == NULL || locale[0] == '\0')
 	{
-	  locale = getenv ("LC_CTYPE");
+	  locale = getenv (_("LC_CTYPE"));
 	  if (locale == NULL || locale[0] == '\0')
-	    locale = getenv ("LANG");
+	    locale = getenv (_("LANG"));
 	}
     }
 

@@ -454,7 +454,7 @@ static int mutt_query_save_attachment (FILE *fp, BODY *body, HEADER *hdr, char *
 
   prepend_curdir (buf, sizeof (buf));
 
-  prompt = _("Save to file: ");
+  prompt = (_("Save to file: "));
   while (prompt)
   {
     if (mutt_get_field (prompt, buf, sizeof (buf), MUTT_FILE | MUTT_CLEAR) != 0
@@ -480,7 +480,7 @@ static int mutt_query_save_attachment (FILE *fp, BODY *body, HEADER *hdr, char *
       /* check to make sure that this file is really the one the user wants */
       if ((rc = mutt_save_confirm (buf, &st)) == 1)
       {
-	prompt = _("Save to file: ");
+	prompt = (_("Save to file: "));
 	continue;
       } 
       else if (rc == -1)
@@ -493,20 +493,20 @@ static int mutt_query_save_attachment (FILE *fp, BODY *body, HEADER *hdr, char *
 	return -1;
       else if (rc == 1)
       {
-	prompt = _("Save to file: ");
+	prompt = (_("Save to file: "));
 	continue;
       }
     }
     
-    mutt_message _("Saving...");
+    mutt_message (_("Saving..."));
     if (mutt_save_attachment (fp, body, tfile, append, (hdr || !is_message) ? hdr : body->hdr) == 0)
     {
-      mutt_message _("Attachment saved.");
+      mutt_message (_("Attachment saved."));
       return 0;
     }
     else
     {
-      prompt = _("Save to file: ");
+      prompt = (_("Save to file: "));
       continue;
     }
   }
@@ -592,7 +592,7 @@ void mutt_save_attachment_list (FILE *fp, int tag, BODY *top, HEADER *hdr, MUTTM
   }
   
   if (!option (OPTATTACHSPLIT) && (rc == 0))
-    mutt_message _("Attachment saved.");
+    mutt_message (_("Attachment saved."));
 }
 
 static void
@@ -604,7 +604,7 @@ mutt_query_pipe_attachment (char *command, FILE *fp, BODY *body, int filter)
   if (filter)
   {
     snprintf (warning, sizeof (warning),
-	      _("WARNING!  You are about to overwrite %s, continue?"),
+	      (_("WARNING!  You are about to overwrite %s, continue?")),
 	      body->filename);
     if (mutt_yesorno (warning, MUTT_NO) != MUTT_YES) {
       mutt_window_clearline (MuttMessageWindow, 0);
@@ -622,7 +622,7 @@ mutt_query_pipe_attachment (char *command, FILE *fp, BODY *body, int filter)
       mutt_unlink (body->filename);
       mutt_rename_file (tfile, body->filename);
       mutt_update_encoding (body);
-      mutt_message _("Attachment filtered.");
+      mutt_message (_("Attachment filtered."));
     }
   }
   else
@@ -647,7 +647,7 @@ static void pipe_attachment (FILE *fp, BODY *b, STATE *state)
   {
     if ((ifp = fopen (b->filename, "r")) == NULL)
     {
-      mutt_perror ("fopen");
+      mutt_perror (_("fopen"));
       return;
     }
     mutt_copy_stream (ifp, state->fpout);
@@ -691,7 +691,7 @@ void mutt_pipe_attachment_list (FILE *fp, int tag, BODY *top, int filter)
   /* perform charset conversion on text attachments when piping */
   state.flags = MUTT_CHARCONV;
 
-  if (mutt_get_field ((filter ? _("Filter through: ") : _("Pipe to: ")),
+  if (mutt_get_field ((filter ? (_("Filter through: ")) : (_("Pipe to: ")),
 				  buf, sizeof (buf), MUTT_CMD) != 0 || !buf[0])
     return;
 
@@ -791,7 +791,7 @@ void mutt_print_attachment_list (FILE *fp, int tag, BODY *top)
   STATE state;
   
   pid_t thepid;
-  if (query_quadoption (OPT_PRINT, tag ? _("Print tagged attachment(s)?") : _("Print attachment?")) != MUTT_YES)
+  if (query_quadoption (OPT_PRINT, tag ? (_("Print tagged attachment(s)?")) : (_("Print attachment?")) != MUTT_YES)
     return;
 
   if (!option (OPTATTACHSPLIT))
@@ -1025,7 +1025,7 @@ void mutt_view_attachments (HEADER *hdr)
     if (need_secured && !secured)
     {
       mx_close_message (Context, &msg);
-      mutt_error _("Can't decrypt encrypted message!");
+      mutt_error (_("Can't decrypt encrypted message!"));
       return;
     }
   }
@@ -1037,7 +1037,7 @@ void mutt_view_attachments (HEADER *hdr)
   }
 
   menu = mutt_new_menu (MENU_ATTACH);
-  menu->title = _("Attachments");
+  menu->title = (_("Attachments"));
   menu->make_entry = attach_entry;
   menu->tag = mutt_tag_attach;
   menu->help = mutt_compile_help (helpstr, sizeof (helpstr), MENU_ATTACH, AttachHelp);
@@ -1073,7 +1073,7 @@ void mutt_view_attachments (HEADER *hdr)
       case OP_ATTACH_COLLAPSE:
         if (!idx[menu->current]->content->parts)
         {
-	  mutt_error _("There are no subparts to show!");
+	  mutt_error (_("There are no subparts to show!"));
 	  break;
 	}
         if (!idx[menu->current]->content->collapsed)
@@ -1134,7 +1134,7 @@ void mutt_view_attachments (HEADER *hdr)
 	if (Context->magic == MUTT_POP)
 	{
 	  mutt_flushinp ();
-	  mutt_error _("Can't delete attachment from POP server.");
+	  mutt_error (_("Can't delete attachment from POP server."));
 	  break;
 	}
 #endif
@@ -1143,7 +1143,7 @@ void mutt_view_attachments (HEADER *hdr)
 	if (Context->magic == MUTT_NNTP)
 	{
 	  mutt_flushinp ();
-	  mutt_error _("Can't delete attachment from news server.");
+	  mutt_error (_("Can't delete attachment from news server."));
 	  break;
 	}
 #endif

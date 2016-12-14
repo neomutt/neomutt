@@ -184,7 +184,7 @@ int mutt_account_getuser (ACCOUNT* account)
   else
   {
     /* L10N: Example: Username at myhost.com */
-    snprintf (prompt, sizeof (prompt), _("Username at %s: "), account->host);
+    snprintf (prompt, sizeof (prompt), (_("Username at %s: ")), account->host);
     strfcpy (account->user, NONULL (Username), sizeof (account->user));
     if (mutt_get_field_unbuffered (prompt, account->user, sizeof (account->user), 0))
       return -1;
@@ -249,7 +249,7 @@ int mutt_account_getpass (ACCOUNT* account)
     return -1;
   else
   {
-    snprintf (prompt, sizeof (prompt), _("Password for %s@%s: "),
+    snprintf (prompt, sizeof (prompt), (_("Password for %s@%s: ")),
               account->flags & MUTT_ACCT_LOGIN ? account->login : account->user,
               account->host);
     account->pass[0] = '\0';

@@ -264,7 +264,7 @@ retry_name:
   /* check to see if the user already has an alias defined */
   if (mutt_lookup_alias (buf))
   {
-    mutt_error _("You already have an alias defined with that name!");
+    mutt_error (_("You already have an alias defined with that name!"));
     return;
   }
   
@@ -326,7 +326,7 @@ retry_name:
 
   buf[0] = 0;
   rfc822_write_address (buf, sizeof (buf), new->addr, 1);
-  snprintf (prompt, sizeof (prompt), _("[%s = %s] Accept?"), new->name, buf);
+  snprintf (prompt, sizeof (prompt), (_("[%s = %s] Accept?")), new->name, buf);
   if (mutt_yesorno (prompt, MUTT_YES) != MUTT_YES)
   {
     mutt_free_alias (&new);
@@ -383,7 +383,7 @@ retry_name:
     if (safe_fsync_close(&rc) != 0)
       mutt_message ("Trouble adding alias: %s.", strerror(errno));
     else
-      mutt_message _("Alias added.");
+      mutt_message (_("Alias added."));
   }
   else
     mutt_perror (buf);

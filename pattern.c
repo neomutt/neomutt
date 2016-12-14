@@ -181,7 +181,7 @@ msg_search (CONTEXT *ctx, pattern_t* pat, int msgno)
 #ifdef USE_FMEMOPEN
       s.fpout = open_memstream (&temp, &tempsize);
       if (!s.fpout) {
-	mutt_perror ("Error opening memstream");
+	mutt_perror (_("Error opening memstream"));
 	return 0;
       }
 #else
@@ -227,13 +227,13 @@ msg_search (CONTEXT *ctx, pattern_t* pat, int msgno)
       if (tempsize) {
         fp = fmemopen (temp, tempsize, "r");
         if (!fp) {
-          mutt_perror ("Error re-opening memstream");
+          mutt_perror (_("Error re-opening memstream"));
           return 0;
         }
       } else { /* fmemopen cannot handle empty buffers */
-        fp = safe_fopen ("/dev/null", "r");
+        fp = safe_fopen (_("/dev/null", "r"));
         if (!fp) {
-          mutt_perror ("Error opening /dev/null");
+          mutt_perror (_("Error opening /dev/null"));
           return 0;
         }
       }
@@ -314,12 +314,12 @@ static int eat_regexp (pattern_t *pat, BUFFER *s, BUFFER *err)
   if (mutt_extract_token (&buf, s, MUTT_TOKEN_PATTERN | MUTT_TOKEN_COMMENT) != 0 ||
       !buf.data)
   {
-    snprintf (err->data, err->dsize, _("Error in expression: %s"), pexpr);
+    snprintf (err->data, err->dsize, (_("Error in expression: %s")), pexpr);
     return (-1);
   }
   if (!*buf.data)
   {
-    snprintf (err->data, err->dsize, _("Empty expression"));
+    snprintf (err->data, err->dsize, (_("Empty expression"));
     return (-1);
   }
 
@@ -452,7 +452,7 @@ static const char *getDate (const char *s, struct tm *t, BUFFER *err)
   t->tm_mday = strtol (s, &p, 10);
   if (t->tm_mday < 1 || t->tm_mday > 31)
   {
-    snprintf (err->data, err->dsize, _("Invalid day of month: %s"), s);
+    snprintf (err->data, err->dsize, (_("Invalid day of month: %s")), s);
     return NULL;
   }
   if (*p != '/')
@@ -466,7 +466,7 @@ static const char *getDate (const char *s, struct tm *t, BUFFER *err)
   t->tm_mon = strtol (p, &p, 10) - 1;
   if (t->tm_mon < 0 || t->tm_mon > 11)
   {
-    snprintf (err->data, err->dsize, _("Invalid month: %s"), p);
+    snprintf (err->data, err->dsize, (_("Invalid month: %s")), p);
     return NULL;
   }
   if (*p != '/')
@@ -618,7 +618,7 @@ static const char * parse_date_range (const char* pc, struct tm *min,
   }
   if ((flag & MUTT_PDR_ERROR) && !(flag & MUTT_PDR_ABSOLUTE))
   { /* getDate has its own error message, don't overwrite it here */
-    snprintf (err->data, err->dsize, _("Invalid relative date: %s"), pc-1);
+    snprintf (err->data, err->dsize, (_("Invalid relative date: %s")), pc-1);
   }
   return ((flag & MUTT_PDR_ERROR) ? NULL : pc);
 }
@@ -634,12 +634,12 @@ static int eat_date (pattern_t *pat, BUFFER *s, BUFFER *err)
   if (mutt_extract_token (&buffer, s, MUTT_TOKEN_COMMENT | MUTT_TOKEN_PATTERN) != 0
       || !buffer.data)
   {
-    snprintf (err->data, err->dsize, _("Error in expression: %s"), pexpr);
+    snprintf (err->data, err->dsize, (_("Error in expression: %s")), pexpr);
     return (-1);
   }
   if (!*buffer.data)
   {
-    snprintf (err->data, err->dsize, _("Empty expression"));
+    snprintf (err->data, err->dsize, (_("Empty expression"));
     return (-1);
   }
 
@@ -866,7 +866,7 @@ pattern_t *mutt_pattern_comp (/* const */ char *s, int flags, BUFFER *err)
 	{
 	  if (!curlist)
 	  {
-	    snprintf (err->data, err->dsize, _("error in pattern at: %s"), ps.dptr);
+	    snprintf (err->data, err->dsize, (_("error in pattern at: %s")), ps.dptr);
 	    return NULL;
 	  }
 	  if (curlist->next)
@@ -893,7 +893,7 @@ pattern_t *mutt_pattern_comp (/* const */ char *s, int flags, BUFFER *err)
       case '~':
 	if (!*(ps.dptr + 1))
 	{
-	  snprintf (err->data, err->dsize, _("missing pattern: %s"), ps.dptr);
+	  snprintf (err->data, err->dsize, (_("missing pattern: %s")), ps.dptr);
 	  mutt_pattern_free (&curlist);
 	  return NULL;
 	}
@@ -903,7 +903,7 @@ pattern_t *mutt_pattern_comp (/* const */ char *s, int flags, BUFFER *err)
 	  p = find_matching_paren (ps.dptr + 1);
 	  if (*p != ')')
 	  {
-	    snprintf (err->data, err->dsize, _("mismatched brackets: %s"), ps.dptr);
+	    snprintf (err->data, err->dsize, (_("mismatched brackets: %s")), ps.dptr);
 	    mutt_pattern_free (&curlist);
 	    return NULL;
 	  }
@@ -963,13 +963,13 @@ pattern_t *mutt_pattern_comp (/* const */ char *s, int flags, BUFFER *err)
 	ps.dptr++; /* move past the ~ */
 	if ((entry = lookup_tag (*ps.dptr)) == NULL)
 	{
-	  snprintf (err->data, err->dsize, _("%c: invalid pattern modifier"), *ps.dptr);
+	  snprintf (err->data, err->dsize, (_("%c: invalid pattern modifier")), *ps.dptr);
 	  mutt_pattern_free (&curlist);
 	  return NULL;
 	}
 	if (entry->class && (flags & entry->class) == 0)
 	{
-	  snprintf (err->data, err->dsize, _("%c: not supported in this mode"), *ps.dptr);
+	  snprintf (err->data, err->dsize, (_("%c: not supported in this mode")), *ps.dptr);
 	  mutt_pattern_free (&curlist);
 	  return NULL;
 	}
@@ -982,7 +982,7 @@ pattern_t *mutt_pattern_comp (/* const */ char *s, int flags, BUFFER *err)
 	{
 	  if (!*ps.dptr)
 	  {
-	    snprintf (err->data, err->dsize, _("missing parameter"));
+	    snprintf (err->data, err->dsize, (_("missing parameter"));
 	    mutt_pattern_free (&curlist);
 	    return NULL;
 	  }
@@ -998,7 +998,7 @@ pattern_t *mutt_pattern_comp (/* const */ char *s, int flags, BUFFER *err)
 	p = find_matching_paren (ps.dptr + 1);
 	if (*p != ')')
 	{
-	  snprintf (err->data, err->dsize, _("mismatched parenthesis: %s"), ps.dptr);
+	  snprintf (err->data, err->dsize, (_("mismatched parenthesis: %s")), ps.dptr);
 	  mutt_pattern_free (&curlist);
 	  return NULL;
 	}
@@ -1025,14 +1025,14 @@ pattern_t *mutt_pattern_comp (/* const */ char *s, int flags, BUFFER *err)
 	ps.dptr = p + 1; /* restore location */
 	break;
       default:
-	snprintf (err->data, err->dsize, _("error in pattern at: %s"), ps.dptr);
+	snprintf (err->data, err->dsize, (_("error in pattern at: %s")), ps.dptr);
 	mutt_pattern_free (&curlist);
 	return NULL;
     }
   }
   if (!curlist)
   {
-    strfcpy (err->data, _("empty pattern"), err->dsize);
+    strfcpy (err->data, (_("empty pattern")), err->dsize);
     return NULL;
   }
   if (curlist->next)
@@ -1469,7 +1469,7 @@ int mutt_pattern_func (int op, char *prompt)
   if (mutt_get_field (prompt, buf, sizeof (buf), MUTT_PATTERN | MUTT_CLEAR) != 0 || !buf[0])
     return (-1);
 
-  mutt_message _("Compiling search pattern...");
+  mutt_message (_("Compiling search pattern..."));
   
   simple = safe_strdup (buf);
   mutt_check_simple (buf, sizeof (buf), NONULL (SimpleSearch));
@@ -1490,7 +1490,7 @@ int mutt_pattern_func (int op, char *prompt)
     return -1;
 #endif
 
-  mutt_progress_init (&progress, _("Executing command on matching messages..."),
+  mutt_progress_init (&progress, (_("Executing command on matching messages...")),
 		      MUTT_PROGRESS_MSG, ReadInc,
 		      (op == MUTT_LIMIT) ? Context->msgcount : Context->vcount);
 
@@ -1559,7 +1559,7 @@ int mutt_pattern_func (int op, char *prompt)
       mutt_pattern_free (&Context->limit_pattern);
 
     if (Context->msgcount && !Context->vcount)
-      mutt_error _("No messages matched criteria.");
+      mutt_error (_("No messages matched criteria."));
 
     /* record new limit pattern, unless match all */
     if (mutt_strcmp (buf, "~A") != 0)
@@ -1590,7 +1590,7 @@ int mutt_search_command (int cur, int op)
   {
     strfcpy (buf, *LastSearch ? LastSearch : "", sizeof (buf));
     if (mutt_get_field ((op == OP_SEARCH || op == OP_SEARCH_NEXT) ?
-			_("Search for: ") : _("Reverse search for: "),
+			_("Search for: ") : (_("Reverse search for: ")),
 			buf, sizeof (buf),
 		      MUTT_CLEAR | MUTT_PATTERN) != 0 || !buf[0])
       return (-1);
@@ -1611,7 +1611,7 @@ int mutt_search_command (int cur, int op)
       mutt_buffer_init (&err);
       set_option (OPTSEARCHINVALID);
       strfcpy (LastSearch, buf, sizeof (LastSearch));
-      mutt_message _("Compiling search pattern...");
+      mutt_message (_("Compiling search pattern..."));
       mutt_pattern_free (&SearchPattern);
       err.dsize = STRING;
       err.data = safe_malloc (err.dsize);
@@ -1641,7 +1641,7 @@ int mutt_search_command (int cur, int op)
   if (op == OP_SEARCH_OPPOSITE)
     incr = -incr;
 
-  mutt_progress_init (&progress, _("Searching..."), MUTT_PROGRESS_MSG,
+  mutt_progress_init (&progress, (_("Searching...")), MUTT_PROGRESS_MSG,
 		      ReadInc, Context->vcount);
 
   for (i = cur + incr, j = 0 ; j != Context->vcount; j++)
@@ -1651,10 +1651,10 @@ int mutt_search_command (int cur, int op)
     {
       i = 0;
       if (option (OPTWRAPSEARCH))
-        msg = _("Search wrapped to top.");
+        msg = (_("Search wrapped to top."));
       else 
       {
-        mutt_message _("Search hit bottom without finding match");
+        mutt_message (_("Search hit bottom without finding match"));
 	return (-1);
       }
     }
@@ -1662,10 +1662,10 @@ int mutt_search_command (int cur, int op)
     {
       i = Context->vcount - 1;
       if (option (OPTWRAPSEARCH))
-        msg = _("Search wrapped to bottom.");
+        msg = (_("Search wrapped to bottom."));
       else 
       {
-        mutt_message _("Search hit top without finding match");
+        mutt_message (_("Search hit top without finding match"));
 	return (-1);
       }
     }
@@ -1697,7 +1697,7 @@ int mutt_search_command (int cur, int op)
 
     if (SigInt)
     {
-      mutt_error _("Search interrupted.");
+      mutt_error (_("Search interrupted."));
       SigInt = 0;
       return (-1);
     }
@@ -1705,6 +1705,6 @@ int mutt_search_command (int cur, int op)
     i += incr;
   }
 
-  mutt_error _("Not found.");
+  mutt_error (_("Not found."));
   return (-1);
 }

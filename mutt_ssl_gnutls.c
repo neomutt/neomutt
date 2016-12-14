@@ -597,7 +597,7 @@ static void tls_fingerprint (gnutls_digest_algorithm_t algo,
 
   if (gnutls_fingerprint (algo, data, (char *)md, &n) < 0)
   {
-    snprintf (s, l, _("[unable to calculate]"));
+    snprintf (s, l, (_("[unable to calculate]"));
   }
   else
   {
@@ -620,7 +620,7 @@ static char *tls_make_date (time_t t, char *s, size_t len)
 	      Weekdays[l->tm_wday], l->tm_mday, Months[l->tm_mon],
 	      l->tm_year + 1900, l->tm_hour, l->tm_min, l->tm_sec);
   else
-    strfcpy (s, _("[invalid date]"), len);
+    strfcpy (s, (_("[invalid date]")), len);
 
   return (s);
 }
@@ -859,7 +859,7 @@ static int tls_check_one_certificate (const gnutls_datum_t *certdata,
     menu->dialog[i] = (char *) safe_calloc (1, SHORT_STRING * sizeof (char));
 
   row = 0;
-  strfcpy (menu->dialog[row], _("This certificate belongs to:"), SHORT_STRING);
+  strfcpy (menu->dialog[row], (_("This certificate belongs to:")), SHORT_STRING);
   row++;
 
   buflen = sizeof (dn_common_name);
@@ -898,7 +898,7 @@ static int tls_check_one_certificate (const gnutls_datum_t *certdata,
             dn_locality, dn_province, dn_country);
   row++;
 
-  strfcpy (menu->dialog[row], _("This certificate was issued by:"), SHORT_STRING);
+  strfcpy (menu->dialog[row], (_("This certificate was issued by:")), SHORT_STRING);
   row++;
 
   buflen = sizeof (dn_common_name);
@@ -937,51 +937,51 @@ static int tls_check_one_certificate (const gnutls_datum_t *certdata,
             dn_locality, dn_province, dn_country);
   row++;
 
-  snprintf (menu->dialog[row++], SHORT_STRING, _("This certificate is valid"));
+  snprintf (menu->dialog[row++], SHORT_STRING, (_("This certificate is valid"));
 
   t = gnutls_x509_crt_get_activation_time (cert);
-  snprintf (menu->dialog[row++], SHORT_STRING, _("   from %s"),
+  snprintf (menu->dialog[row++], SHORT_STRING, (_("   from %s")),
 	    tls_make_date (t, datestr, 30));
 
   t = gnutls_x509_crt_get_expiration_time (cert);
-  snprintf (menu->dialog[row++], SHORT_STRING, _("     to %s"),
+  snprintf (menu->dialog[row++], SHORT_STRING, (_("     to %s")),
 	    tls_make_date (t, datestr, 30));
 
   fpbuf[0] = '\0';
   tls_fingerprint (GNUTLS_DIG_SHA, fpbuf, sizeof (fpbuf), certdata);
-  snprintf (menu->dialog[row++], SHORT_STRING, _("SHA1 Fingerprint: %s"), fpbuf);
+  snprintf (menu->dialog[row++], SHORT_STRING, (_("SHA1 Fingerprint: %s")), fpbuf);
   fpbuf[0] = '\0';
   tls_fingerprint (GNUTLS_DIG_MD5, fpbuf, sizeof (fpbuf), certdata);
-  snprintf (menu->dialog[row++], SHORT_STRING, _("MD5 Fingerprint: %s"), fpbuf);
+  snprintf (menu->dialog[row++], SHORT_STRING, (_("MD5 Fingerprint: %s")), fpbuf);
 
   if (certerr & CERTERR_NOTYETVALID)
   {
     row++;
-    strfcpy (menu->dialog[row], _("WARNING: Server certificate is not yet valid"), SHORT_STRING);
+    strfcpy (menu->dialog[row], (_("WARNING: Server certificate is not yet valid")), SHORT_STRING);
   }
   if (certerr & CERTERR_EXPIRED)
   {
     row++;
-    strfcpy (menu->dialog[row], _("WARNING: Server certificate has expired"), SHORT_STRING);
+    strfcpy (menu->dialog[row], (_("WARNING: Server certificate has expired")), SHORT_STRING);
   }
   if (certerr & CERTERR_REVOKED)
   {
     row++;
-    strfcpy (menu->dialog[row], _("WARNING: Server certificate has been revoked"), SHORT_STRING);
+    strfcpy (menu->dialog[row], (_("WARNING: Server certificate has been revoked")), SHORT_STRING);
   }
   if (certerr & CERTERR_HOSTNAME)
   {
     row++;
-    strfcpy (menu->dialog[row], _("WARNING: Server hostname does not match certificate"), SHORT_STRING);
+    strfcpy (menu->dialog[row], (_("WARNING: Server hostname does not match certificate")), SHORT_STRING);
   }
   if (certerr & CERTERR_SIGNERNOTCA)
   {
     row++;
-    strfcpy (menu->dialog[row], _("WARNING: Signer of server certificate is not a CA"), SHORT_STRING);
+    strfcpy (menu->dialog[row], (_("WARNING: Signer of server certificate is not a CA")), SHORT_STRING);
   }
 
   snprintf (title, sizeof (title),
-            _("SSL Certificate check (certificate %d of %d in chain)"),
+            (_("SSL Certificate check (certificate %d of %d in chain)")),
             len - idx, len);
   menu->title = title;
   /* certificates with bad dates, or that are revoked, must be
@@ -990,19 +990,19 @@ static int tls_check_one_certificate (const gnutls_datum_t *certdata,
         && !(certerr & (CERTERR_EXPIRED | CERTERR_NOTYETVALID
                         | CERTERR_REVOKED)))
   {
-    menu->prompt = _("(r)eject, accept (o)nce, (a)ccept always");
-    menu->keys = _("roa");
+    menu->prompt = (_("(r)eject, accept (o)nce, (a)ccept always"));
+    menu->keys = (_("roa"));
   }
   else
   {
-    menu->prompt = _("(r)eject, accept (o)nce");
-    menu->keys = _("ro");
+    menu->prompt = (_("(r)eject, accept (o)nce"));
+    menu->keys = (_("ro"));
   }
 
   helpstr[0] = '\0';
-  mutt_make_help (buf, sizeof (buf), _("Exit  "), MENU_GENERIC, OP_EXIT);
+  mutt_make_help (buf, sizeof (buf), (_("Exit  ")), MENU_GENERIC, OP_EXIT);
   safe_strcat (helpstr, sizeof (helpstr), buf);
-  mutt_make_help (buf, sizeof (buf), _("Help"), MENU_GENERIC, OP_HELP);
+  mutt_make_help (buf, sizeof (buf), (_("Help")), MENU_GENERIC, OP_HELP);
   safe_strcat (helpstr, sizeof (helpstr), buf);
   menu->help = helpstr;
 

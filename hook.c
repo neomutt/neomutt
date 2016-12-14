@@ -72,7 +72,7 @@ int mutt_parse_hook (BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err)
 
     if (!MoreArgs (s))
     {
-       strfcpy (err->data, _("too few arguments"), err->dsize);
+       strfcpy (err->data, (_("too few arguments")), err->dsize);
        goto error;
     }
   }
@@ -85,13 +85,13 @@ int mutt_parse_hook (BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err)
 
   if (!command.data)
   {
-    strfcpy (err->data, _("too few arguments"), err->dsize);
+    strfcpy (err->data, (_("too few arguments")), err->dsize);
     goto error;
   }
 
   if (MoreArgs (s))
   {
-    strfcpy (err->data, _("too many arguments"), err->dsize);
+    strfcpy (err->data, (_("too many arguments")), err->dsize);
     goto error;
   }
 
@@ -101,7 +101,7 @@ int mutt_parse_hook (BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err)
      * common mistake */
     if ((*pattern.data == '^') && (! CurrentFolder))
     {
-      strfcpy (err->data, _("current mailbox shortcut '^' is unset"), err->dsize);
+      strfcpy (err->data, (_("current mailbox shortcut '^' is unset")), err->dsize);
       goto error;
     }
 
@@ -112,7 +112,7 @@ int mutt_parse_hook (BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err)
      * This is likely a mistake too */
     if (!*path && *pattern.data)
     {
-      strfcpy (err->data, _("mailbox shortcut expanded to empty regexp"), err->dsize);
+      strfcpy (err->data, (_("mailbox shortcut expanded to empty regexp")), err->dsize);
       goto error;
     }
 
@@ -123,7 +123,7 @@ int mutt_parse_hook (BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err)
 #ifdef USE_COMPRESSED
   else if (data & (MUTT_APPENDHOOK | MUTT_OPENHOOK | MUTT_CLOSEHOOK)) {
     if (mutt_comp_valid_command (command.data) == 0) {
-      strfcpy (err->data, _("badly formatted command string"), err->dsize);
+      strfcpy (err->data, (_("badly formatted command string")), err->dsize);
       return -1;
     }
   }
@@ -283,7 +283,7 @@ int mutt_parse_unhook (BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err)
       if (current_hook_type)
       {
 	snprintf (err->data, err->dsize,
-		  _("unhook: Can't do unhook * from within a hook."));
+		  (_("unhook: Can't do unhook * from within a hook."));
 	return -1;
       }
       delete_hooks (0);
@@ -295,13 +295,13 @@ int mutt_parse_unhook (BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err)
       if (!type)
       {
 	snprintf (err->data, err->dsize,
-		 _("unhook: unknown hook type: %s"), buf->data);
+		 (_("unhook: unknown hook type: %s")), buf->data);
 	return (-1);
       }
       if (current_hook_type == type)
       {
 	snprintf (err->data, err->dsize,
-		  _("unhook: Can't delete a %s from within a %s."),
+		  (_("unhook: Can't delete a %s from within a %s.")),
 		  buf->data, buf->data);
 	return -1;
       }

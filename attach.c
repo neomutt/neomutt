@@ -123,7 +123,7 @@ int mutt_compose_attachment (BODY *a)
 				      command, sizeof (command)))
       {
 	/* For now, editing requires a file, no piping */
-	mutt_error _("Mailcap compose entry requires %%s");
+	mutt_error (_("Mailcap compose entry requires %%s"));
       }
       else
       {
@@ -141,7 +141,7 @@ int mutt_compose_attachment (BODY *a)
 
 	  if ((fp = safe_fopen (a->filename, "r")) == NULL)
 	  {
-	    mutt_perror _("Failure to open file to parse headers.");
+	    mutt_perror (_("Failure to open file to parse headers."));
 	    goto bailout;
 	  }
 
@@ -172,7 +172,7 @@ int mutt_compose_attachment (BODY *a)
 	    mutt_mktemp (tempfile, sizeof (tempfile));
 	    if ((tfp = safe_fopen (tempfile, "w")) == NULL)
 	    {
-	      mutt_perror _("Failure to open file to strip headers.");
+	      mutt_perror (_("Failure to open file to strip headers."));
 	      goto bailout;
 	    }
 	    mutt_copy_stream (fp, tfp);
@@ -181,7 +181,7 @@ int mutt_compose_attachment (BODY *a)
 	    mutt_unlink (a->filename);  
 	    if (mutt_rename_file (tempfile, a->filename) != 0) 
 	    {
-	      mutt_perror _("Failure to rename file.");
+	      mutt_perror (_("Failure to rename file."));
 	      goto bailout;
 	    }
 
@@ -255,7 +255,7 @@ int mutt_edit_attachment (BODY *a)
 				      command, sizeof (command)))
       {
 	/* For now, editing requires a file, no piping */
-	mutt_error _("Mailcap Edit entry requires %%s");
+	mutt_error (_("Mailcap Edit entry requires %%s"));
         goto bailout;
       }
       else
@@ -363,7 +363,7 @@ int mutt_view_attachment (FILE *fp, BODY *a, int flag, HEADER *hdr,
       {
 	/* fallback to view as text */
 	rfc1524_free_entry (&entry);
-	mutt_error _("No matching mailcap entry found.  Viewing as text.");
+	mutt_error (_("No matching mailcap entry found.  Viewing as text."));
 	flag = MUTT_AS_TEXT;
 	use_mailcap = 0;
       }
@@ -376,7 +376,7 @@ int mutt_view_attachment (FILE *fp, BODY *a, int flag, HEADER *hdr,
   {
     if (!entry->command)
     {
-      mutt_error _("MIME type not defined.  Cannot view attachment.");
+      mutt_error (_("MIME type not defined.  Cannot view attachment."));
       goto return_error;
     }
     strfcpy (command, entry->command, sizeof (command));
@@ -446,14 +446,14 @@ int mutt_view_attachment (FILE *fp, BODY *a, int flag, HEADER *hdr,
     {
       if (use_pager && ((pagerfd = safe_open (pagerfile, O_CREAT | O_EXCL | O_WRONLY)) == -1))
       {
-	mutt_perror ("open");
+	mutt_perror (_("open"));
 	goto return_error;
       }
       if (use_pipe && ((tempfd = open (tempfile, 0)) == -1))
       {
 	if(pagerfd != -1)
 	  close(pagerfd);
-	mutt_perror ("open");
+	mutt_perror (_("open"));
 	goto return_error;
       }
 
@@ -466,7 +466,7 @@ int mutt_view_attachment (FILE *fp, BODY *a, int flag, HEADER *hdr,
 	if(tempfd != -1)
 	  close(tempfd);
 
-	mutt_error _("Cannot create filter");
+	mutt_error (_("Cannot create filter"));
 	goto return_error;
       }
 
@@ -474,11 +474,11 @@ int mutt_view_attachment (FILE *fp, BODY *a, int flag, HEADER *hdr,
       {
 	if (a->description)
 	  snprintf (descrip, sizeof (descrip),
-		    _("---Command: %-20.20s Description: %s"),
+		    (_("---Command: %-20.20s Description: %s")),
 		    command, a->description);
 	else
 	  snprintf (descrip, sizeof (descrip),
-		    _("---Command: %-30.30s Attachment: %s"), command, type);
+		    (_("---Command: %-30.30s Attachment: %s")), command, type);
       }
 
       if ((mutt_wait_filter (thepid) || (entry->needsterminal &&
@@ -555,10 +555,10 @@ int mutt_view_attachment (FILE *fp, BODY *a, int flag, HEADER *hdr,
     if (a->description)
       strfcpy (descrip, a->description, sizeof (descrip));
     else if (a->filename)
-      snprintf (descrip, sizeof (descrip), _("---Attachment: %s: %s"),
+      snprintf (descrip, sizeof (descrip), (_("---Attachment: %s: %s")),
 	  a->filename, type);
     else
-      snprintf (descrip, sizeof (descrip), _("---Attachment: %s"), type);
+      snprintf (descrip, sizeof (descrip), (_("---Attachment: %s")), type);
   }
   
   /* We only reach this point if there have been no errors */
@@ -607,7 +607,7 @@ int mutt_pipe_attachment (FILE *fp, BODY *b, const char *path, char *outfile)
   if (outfile && *outfile)
     if ((out = safe_open (outfile, O_CREAT | O_EXCL | O_WRONLY)) < 0)
     {
-      mutt_perror ("open");
+      mutt_perror (_("open"));
       return 0;
     }
 
@@ -630,7 +630,7 @@ int mutt_pipe_attachment (FILE *fp, BODY *b, const char *path, char *outfile)
 
     if (thepid < 0)
     {
-      mutt_perror _("Can't create filter");
+      mutt_perror (_("Can't create filter"));
       goto bail;
     }
     
@@ -646,7 +646,7 @@ int mutt_pipe_attachment (FILE *fp, BODY *b, const char *path, char *outfile)
 
     if ((ifp = fopen (b->filename, "r")) == NULL)
     {
-      mutt_perror ("fopen");
+      mutt_perror (_("fopen"));
       if (outfile && *outfile)
       {
 	close (out);
@@ -662,7 +662,7 @@ int mutt_pipe_attachment (FILE *fp, BODY *b, const char *path, char *outfile)
 
     if (thepid < 0)
     {
-      mutt_perror _("Can't create filter");
+      mutt_perror (_("Can't create filter"));
       safe_fclose (&ifp);
       goto bail;
     }
@@ -760,7 +760,7 @@ int mutt_save_attachment (FILE *fp, BODY *m, char *path, int flags, HEADER *hdr)
       memset (&s, 0, sizeof (s));
       if ((s.fpout = mutt_save_attachment_open (path, flags)) == NULL)
       {
-	mutt_perror ("fopen");
+	mutt_perror (_("fopen"));
 	mutt_sleep (2);
 	return (-1);
       }
@@ -769,7 +769,7 @@ int mutt_save_attachment (FILE *fp, BODY *m, char *path, int flags, HEADER *hdr)
       
       if (safe_fsync_close (&s.fpout) != 0)
       {
-	mutt_perror ("fclose");
+	mutt_perror (_("fclose"));
 	mutt_sleep (2);
 	return (-1);
       }
@@ -783,27 +783,27 @@ int mutt_save_attachment (FILE *fp, BODY *m, char *path, int flags, HEADER *hdr)
 
     if ((ofp = fopen (m->filename, "r")) == NULL)
     {
-      mutt_perror ("fopen");
+      mutt_perror (_("fopen"));
       return (-1);
     }
     
     if ((nfp = mutt_save_attachment_open (path, flags)) == NULL)
     {
-      mutt_perror ("fopen");
+      mutt_perror (_("fopen"));
       safe_fclose (&ofp);
       return (-1);
     }
 
     if (mutt_copy_stream (ofp, nfp) == -1)
     {
-      mutt_error _("Write fault!");
+      mutt_error (_("Write fault!"));
       safe_fclose (&ofp);
       safe_fclose (&nfp);
       return (-1);
     }
     safe_fclose (&ofp);
     if (safe_fsync_close (&nfp) != 0) {
-      mutt_error _("Write fault!");
+      mutt_error (_("Write fault!"));
       return (-1);
     }
   }
@@ -833,7 +833,7 @@ int mutt_decode_save_attachment (FILE *fp, BODY *m, char *path,
 
   if (s.fpout == NULL)
   {
-    mutt_perror ("fopen");
+    mutt_perror (_("fopen"));
     return (-1);
   }
 
@@ -845,14 +845,14 @@ int mutt_decode_save_attachment (FILE *fp, BODY *m, char *path,
 
     if (stat (m->filename, &st) == -1)
     {
-      mutt_perror ("stat");
+      mutt_perror (_("stat"));
       safe_fclose (&s.fpout);
       return (-1);
     }
 
     if ((s.fpin = fopen (m->filename, "r")) == NULL)
     {
-      mutt_perror ("fopen");
+      mutt_perror (_("fopen"));
       return (-1);
     }
 
@@ -878,7 +878,7 @@ int mutt_decode_save_attachment (FILE *fp, BODY *m, char *path,
   mutt_body_handler (m, &s);
 
   if (safe_fsync_close (&s.fpout) != 0) {
-    mutt_perror("fclose");
+    mutt_perror(_("fclose"));
     ret = -1;
   }
   if (fp == NULL)
@@ -957,14 +957,14 @@ int mutt_print_attachment (FILE *fp, BODY *a)
     {
       if ((ifp = fopen (newfile, "r")) == NULL)
       {
-	mutt_perror ("fopen");
+	mutt_perror (_("fopen"));
 	rfc1524_free_entry (&entry);
 	return (0);
       }
 
       if ((thepid = mutt_create_filter (command, &fpout, NULL, NULL)) < 0)
       {
-	mutt_perror _("Can't create filter");
+	mutt_perror (_("Can't create filter"));
 	rfc1524_free_entry (&entry);
 	safe_fclose (&ifp);
 	return 0;
@@ -1013,7 +1013,7 @@ int mutt_print_attachment (FILE *fp, BODY *a)
       
       if ((ifp = fopen (newfile, "r")) == NULL)
       {
-	mutt_perror ("fopen");
+	mutt_perror (_("fopen"));
 	goto bail0;
       }
 
@@ -1022,7 +1022,7 @@ int mutt_print_attachment (FILE *fp, BODY *a)
       mutt_endwin (NULL);
       if ((thepid = mutt_create_filter (NONULL(PrintCmd), &fpout, NULL, NULL)) < 0)
       {
-	mutt_perror _("Can't create filter");
+	mutt_perror (_("Can't create filter"));
 	goto bail0;
       }
 
@@ -1045,7 +1045,7 @@ int mutt_print_attachment (FILE *fp, BODY *a)
   }
   else
   {
-    mutt_error _("I don't know how to print that!");
+    mutt_error (_("I don't know how to print that!"));
     return 0;
   }
 }

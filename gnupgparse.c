@@ -433,7 +433,7 @@ pgp_key_t pgp_get_candidates (pgp_ring_t keyring, LIST * hints)
   }
 
   if (ferror (fp))
-    mutt_perror ("fgets");
+    mutt_perror (_("fgets"));
 
   safe_fclose (&fp);
   mutt_wait_filter (thepid);

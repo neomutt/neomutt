@@ -111,7 +111,7 @@ static QUERY *run_query (char *s, int quiet)
     return 0;
   }
   if (!quiet)
-    mutt_message _("Waiting for response...");
+    mutt_message (_("Waiting for response..."));
   fgets (msg, sizeof (msg), fp);
   if ((p = strrchr (msg, '\n')))
     *p = '\0';
@@ -262,7 +262,7 @@ int mutt_query_complete (char *buf, size_t buflen)
 
   if (!QueryCmd)
   {
-    mutt_error _("Query command not defined.");
+    mutt_error (_("Query command not defined."));
     return 0;
   }
 
@@ -291,7 +291,7 @@ void mutt_query_menu (char *buf, size_t buflen)
 {
   if (!QueryCmd)
   {
-    mutt_error _("Query command not defined.");
+    mutt_error (_("Query command not defined."));
     return;
   }
 
@@ -318,7 +318,7 @@ static void query_menu (char *buf, size_t buflen, QUERY *results, int retbuf)
   char helpstr[LONG_STRING];
   char title[STRING];
 
-  snprintf (title, sizeof (title), _("Query")); /* FIXME */
+  snprintf (title, sizeof (title), (_("Query")); /* FIXME */
 
   menu = mutt_new_menu (MENU_QUERY);
   menu->make_entry = query_entry;
@@ -338,7 +338,7 @@ static void query_menu (char *buf, size_t buflen, QUERY *results, int retbuf)
 
   if (results)
   {
-    snprintf (title, sizeof (title), _("Query '%s'"), buf);
+    snprintf (title, sizeof (title), (_("Query '%s'")), buf);
 
     /* count the number of results */
     for (queryp = results; queryp; queryp = queryp->next)
@@ -364,7 +364,7 @@ static void query_menu (char *buf, size_t buflen, QUERY *results, int retbuf)
 	    menu->redraw = REDRAW_FULL;
 	    if (newresults)
 	    {
-	      snprintf (title, sizeof (title), _("Query '%s'"), buf);
+	      snprintf (title, sizeof (title), (_("Query '%s'")), buf);
 
 	      if (op == OP_QUERY)
 	      {

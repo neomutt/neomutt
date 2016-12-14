@@ -42,7 +42,7 @@
 #endif
 
 #define ENCWORD_LEN_MAX 75
-#define ENCWORD_LEN_MIN 9 /* strlen ("=?.?.?.?=") */
+#define ENCWORD_LEN_MIN 9 /* strlen (_("=?.?.?.?=")) */
 
 #define HSPACE(x) ((x) == '\0' || (x) == ' ' || (x) == '\t')
 

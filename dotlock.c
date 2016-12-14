@@ -296,7 +296,7 @@ BEGIN_PRIVILEGED (void)
   {
     if (SETEGID (MailGid) != 0)
     {
-      /* perror ("setegid"); */
+      /* perror (_("setegid")); */
       exit (DL_EX_ERROR);
     }
   }
@@ -320,7 +320,7 @@ END_PRIVILEGED (void)
   {
     if (SETEGID (UserGid) != 0)
     {
-      /* perror ("setegid"); */
+      /* perror (_("setegid")); */
       exit (DL_EX_ERROR);
     }
   }
@@ -611,7 +611,7 @@ dotlock_lock (const char *realpath)
   
     if (errno != EAGAIN)
     {
-      /* perror ("cannot open NFS lock file"); */
+      /* perror (_("cannot open NFS lock file")); */
       return DL_EX_ERROR;
     }
 
@@ -633,7 +633,7 @@ dotlock_lock (const char *realpath)
 
     if (stat (nfslockfile, &sb) != 0)
     {
-      /* perror ("stat"); */
+      /* perror (_("stat")); */
       return DL_EX_ERROR;
     }
 

@@ -74,13 +74,13 @@ static int tunnel_socket_open (CONNECTION *conn)
 
   if ((rc = pipe (pin)) == -1)
   {
-    mutt_perror ("pipe");
+    mutt_perror (_("pipe"));
     FREE (&conn->sockdata);
     return -1;
   }
   if ((rc = pipe (pout)) == -1)
   {
-    mutt_perror ("pipe");
+    mutt_perror (_("pipe"));
     close (pin[0]);
     close (pin[1]);
     FREE (&conn->sockdata);
@@ -113,7 +113,7 @@ static int tunnel_socket_open (CONNECTION *conn)
 
   if (pid == -1)
   {
-    mutt_perror ("fork");
+    mutt_perror (_("fork"));
     close (pin[0]);
     close (pin[1]);
     close (pout[0]);
@@ -122,7 +122,7 @@ static int tunnel_socket_open (CONNECTION *conn)
     return -1;
   }
   if (close (pin[1]) < 0 || close (pout[0]) < 0)
-    mutt_perror ("close");
+    mutt_perror (_("close"));
 
   fcntl (pin[0], F_SETFD, FD_CLOEXEC);
   fcntl (pout[1], F_SETFD, FD_CLOEXEC);

@@ -116,20 +116,20 @@ LIST *mutt_parse_references (char *s, int in_reply_to)
 
 int mutt_check_encoding (const char *c)
 {
-  if (ascii_strncasecmp ("7bit", c, sizeof ("7bit")-1) == 0)
+  if (ascii_strncasecmp (_("7bit", c, sizeof ("7bit")-1)) == 0)
     return (ENC7BIT);
-  else if (ascii_strncasecmp ("8bit", c, sizeof ("8bit")-1) == 0)
+  else if (ascii_strncasecmp (_("8bit", c, sizeof ("8bit")-1)) == 0)
     return (ENC8BIT);
-  else if (ascii_strncasecmp ("binary", c, sizeof ("binary")-1) == 0)
+  else if (ascii_strncasecmp (_("binary", c, sizeof ("binary")-1)) == 0)
     return (ENCBINARY);
-  else if (ascii_strncasecmp ("quoted-printable", c, sizeof ("quoted-printable")-1) == 0)
+  else if (ascii_strncasecmp (_("quoted-printable", c, sizeof ("quoted-printable")-1)) == 0)
     return (ENCQUOTEDPRINTABLE);
-  else if (ascii_strncasecmp ("base64", c, sizeof("base64")-1) == 0)
+  else if (ascii_strncasecmp (_("base64", c, sizeof("base64")-1)) == 0)
     return (ENCBASE64);
-  else if (ascii_strncasecmp ("x-uuencode", c, sizeof("x-uuencode")-1) == 0)
+  else if (ascii_strncasecmp (_("x-uuencode", c, sizeof("x-uuencode")-1)) == 0)
     return (ENCUUENCODED);
 #ifdef SUN_ATTACHMENT
-  else if (ascii_strncasecmp ("uuencode", c, sizeof("uuencode")-1) == 0)
+  else if (ascii_strncasecmp (_("uuencode", c, sizeof("uuencode")-1)) == 0)
     return (ENCUUENCODED);
 #endif
   else
@@ -335,7 +335,7 @@ void mutt_parse_content_type (char *s, BODY *ct)
 
 #ifdef SUN_ATTACHMENT
   if (ascii_strcasecmp ("x-sun-attachment", s) == 0)
-      ct->subtype = safe_strdup ("x-sun-attachment");
+      ct->subtype = safe_strdup (_("x-sun-attachment"));
 #endif
 
   if (ct->type == TYPEOTHER)
@@ -349,11 +349,11 @@ void mutt_parse_content_type (char *s, BODY *ct)
      * field, so we can attempt to convert the type to BODY here.
      */
     if (ct->type == TYPETEXT)
-      ct->subtype = safe_strdup ("plain");
+      ct->subtype = safe_strdup (_("plain"));
     else if (ct->type == TYPEAUDIO)
-      ct->subtype = safe_strdup ("basic");
+      ct->subtype = safe_strdup (_("basic"));
     else if (ct->type == TYPEMESSAGE)
-      ct->subtype = safe_strdup ("rfc822");
+      ct->subtype = safe_strdup (_("rfc822"));
     else if (ct->type == TYPEOTHER)
     {
       char buffer[SHORT_STRING];
@@ -363,7 +363,7 @@ void mutt_parse_content_type (char *s, BODY *ct)
       ct->subtype = safe_strdup (buffer);
     }
     else
-      ct->subtype = safe_strdup ("x-unknown");
+      ct->subtype = safe_strdup (_("x-unknown"));
   }
 
   /* Default character set for text types. */
@@ -472,9 +472,9 @@ BODY *mutt_read_mime_header (FILE *fp, int digest)
   }
   p->offset = ftello (fp); /* Mark the start of the real data */
   if (p->type == TYPETEXT && !p->subtype)
-    p->subtype = safe_strdup ("plain");
+    p->subtype = safe_strdup (_("plain"));
   else if (p->type == TYPEMESSAGE && !p->subtype)
-    p->subtype = safe_strdup ("rfc822");
+    p->subtype = safe_strdup (_("rfc822"));
 
   FREE (&line);
 
@@ -585,7 +585,7 @@ BODY *mutt_parse_multipart (FILE *fp, const char *boundary, LOFF_T end_off, int 
 
   if (!boundary)
   {
-    mutt_error _("multipart message has no boundary parameter!");
+    mutt_error (_("multipart message has no boundary parameter!"));
     return (NULL);
   }
 
@@ -1454,7 +1454,7 @@ ENVELOPE *mutt_read_rfc822_header (FILE *f, HEADER *hdr, short user_hdrs,
 
       /* set the defaults from RFC1521 */
       hdr->content->type        = TYPETEXT;
-      hdr->content->subtype     = safe_strdup ("plain");
+      hdr->content->subtype     = safe_strdup (_("plain"));
       hdr->content->encoding    = ENC7BIT;
       hdr->content->length      = -1;
 
@@ -1657,11 +1657,11 @@ static int count_body_parts (BODY *body, int flags)
   for (bp = body; bp != NULL; bp = bp->next)
   {
     /* Initial disposition is to count and not to recurse this part. */
-    AT_COUNT("default");
+    AT_COUNT(_("default"));
     shallrecurse = 0;
 
     dprint(5, (debugfile, "bp: desc=\"%s\"; fn=\"%s\", type=\"%d/%s\"\n",
-	   bp->description ? bp->description : ("none"),
+	   bp->description ? bp->description : (_("none")),
 	   bp->filename ? bp->filename :
 			bp->d_filename ? bp->d_filename : "(none)",
 	   bp->type, bp->subtype ? bp->subtype : "*"));
@@ -1676,7 +1676,7 @@ static int count_body_parts (BODY *body, int flags)
 
       /* Don't count containers if they're top-level. */
       if (flags & MUTT_PARTS_TOPLEVEL)
-	AT_NOCOUNT("top-level message/*");
+	AT_NOCOUNT(_("top-level message/*"));
     }
     else if (bp->type == TYPEMULTIPART)
     {
@@ -1687,12 +1687,12 @@ static int count_body_parts (BODY *body, int flags)
 
       /* Don't count containers if they're top-level. */
       if (flags & MUTT_PARTS_TOPLEVEL)
-	AT_NOCOUNT("top-level multipart");
+	AT_NOCOUNT(_("top-level multipart"));
     }
 
     if (bp->disposition == DISPINLINE &&
         bp->type != TYPEMULTIPART && bp->type != TYPEMESSAGE && bp == body)
-      AT_NOCOUNT("ignore fundamental inlines");
+      AT_NOCOUNT(_("ignore fundamental inlines"));
 
     /* If this body isn't scheduled for enumeration already, don't bother
      * profiling it further.
@@ -1707,16 +1707,16 @@ static int count_body_parts (BODY *body, int flags)
       if (bp->disposition == DISPATTACH)
       {
         if (!count_body_parts_check(&AttachAllow, bp, 1))
-	  AT_NOCOUNT("attach not allowed");
+	  AT_NOCOUNT(_("attach not allowed"));
         if (count_body_parts_check(&AttachExclude, bp, 0))
-	  AT_NOCOUNT("attach excluded");
+	  AT_NOCOUNT(_("attach excluded"));
       }
       else
       {
         if (!count_body_parts_check(&InlineAllow, bp, 1))
-	  AT_NOCOUNT("inline not allowed");
+	  AT_NOCOUNT(_("inline not allowed"));
         if (count_body_parts_check(&InlineExclude, bp, 0))
-	  AT_NOCOUNT("excluded");
+	  AT_NOCOUNT(_("excluded"));
       }
     }
 

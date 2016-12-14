@@ -488,7 +488,7 @@ static notmuch_database_t *do_database_open(const char *filename,
 			mutt_error (_("Cannot open notmuch database: %s: %s"),
 				    filename,
 				    st ? notmuch_status_to_string(st) :
-					 _("unknown reason"));
+					 (_("unknown reason"));
 		else if (ct > 1)
 			mutt_clear_error();
 	}
@@ -942,7 +942,7 @@ static void nm_progress_update(CONTEXT *ctx, notmuch_query_t *q)
 	if (!data->progress_ready && q) {
 		unsigned count;
 		static char msg[STRING];
-		snprintf(msg, sizeof(msg), _("Reading messages..."));
+		snprintf(msg, sizeof(msg), (_("Reading messages..."));
 
 #if LIBNOTMUCH_CHECK_VERSION(4,3,0)
 		if (notmuch_query_count_messages_st (q, &count) != NOTMUCH_STATUS_SUCCESS)
@@ -1233,7 +1233,7 @@ done:
 		release_db(data);
 
 	if (ctx->msgcount == data->oldmsgcount)
-		mutt_message _("No more messages in the thread.");
+		mutt_message (_("No more messages in the thread."));
 
 	data->oldmsgcount = 0;
 	dprint(1, (debugfile, "nm: reading entire-thread messages... done [rc=%d, count=%d]\n",
@@ -1620,7 +1620,7 @@ int nm_sync_mailbox(CONTEXT *ctx, int *index_hint)
 
 	if (!ctx->quiet) {
 		/* all is in this function so we don't use data->progress here */
-		snprintf(msgbuf, sizeof (msgbuf), _("Writing %s..."), ctx->path);
+		snprintf(msgbuf, sizeof (msgbuf), (_("Writing %s...")), ctx->path);
 		mutt_progress_init(&progress, msgbuf, MUTT_PROGRESS_MSG,
 				   WriteInc, ctx->msgcount);
 	}
@@ -2063,7 +2063,7 @@ static int nm_close_message (CONTEXT *ctx, MESSAGE *msg)
 
 static int nm_commit_message (CONTEXT *ctx, MESSAGE *msg)
 {
-	mutt_perror _("Can't write to virtual folder.");
+	mutt_perror (_("Can't write to virtual folder."));
 	return 1;
 }
 

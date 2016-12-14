@@ -927,9 +927,9 @@ static void init_menu (struct browser_state *state, MUTTMENU *menu, char *title,
   if (option (OPTNEWS))
   {
     if (buffy)
-      snprintf (title, titlelen, _("Subscribed newsgroups"));
+      snprintf (title, titlelen, (_("Subscribed newsgroups"));
     else
-      snprintf (title, titlelen, _("Newsgroups on server [%s]"),
+      snprintf (title, titlelen, (_("Newsgroups on server [%s]")),
 		CurrentNewsSrv->conn->account.host);
   }
   else
@@ -938,14 +938,14 @@ static void init_menu (struct browser_state *state, MUTTMENU *menu, char *title,
     if (buffy)
     {
       menu->is_mailbox_list = 1;
-      snprintf (title, titlelen, _("Mailboxes [%d]"), mutt_buffy_check (0));
+      snprintf (title, titlelen, (_("Mailboxes [%d]")), mutt_buffy_check (0));
     }
     else
     {
       menu->is_mailbox_list = 0;
       strfcpy (path, LastDir, sizeof (path));
       mutt_pretty_mailbox (path, sizeof (path));
-      snprintf (title, titlelen, _("Directory [%s], File mask: %s"),
+      snprintf (title, titlelen, (_("Directory [%s], File mask: %s")),
                path, NONULL(Mask.pattern));
     }
   }
@@ -1002,7 +1002,7 @@ static int file_tag (MUTTMENU *menu, int n, int m)
   int ot;
   if (S_ISDIR (ff->mode) || (S_ISLNK (ff->mode) && link_is_dir (LastDir, ff->name)))
   {
-    mutt_error _("Can't attach a directory!");
+    mutt_error (_("Can't attach a directory!"));
     return 0;
   }
   
@@ -1281,7 +1281,7 @@ void _mutt_select_file (char *f, size_t flen, int flags, char ***files, int *num
 
 	if (!state.entrylen)
 	{
-	  mutt_error _("No files match the file mask");
+	  mutt_error (_("No files match the file mask"));
 	  break;
 	}
 
@@ -1539,10 +1539,10 @@ void _mutt_select_file (char *f, size_t flen, int flags, char ***files, int *num
 	  imap_parse_path (state.entry[nentry].name, &mx);
 	  if (!mx.mbox)
 	  {
-	    mutt_error _("Cannot delete root folder");
+	    mutt_error (_("Cannot delete root folder"));
 	    break;
 	  }
-	  snprintf (msg, sizeof (msg), _("Really delete mailbox \"%s\"?"),
+	  snprintf (msg, sizeof (msg), (_("Really delete mailbox \"%s\"?")),
             mx.mbox);
 	  if (mutt_yesorno (msg, MUTT_NO) == MUTT_YES)
           {
@@ -1558,13 +1558,13 @@ void _mutt_select_file (char *f, size_t flen, int flags, char ***files, int *num
               memset (&state.entry[state.entrylen - 1], 0,
                       sizeof (struct folder_file));
 	      state.entrylen--;
-	      mutt_message _("Mailbox deleted.");
+	      mutt_message (_("Mailbox deleted."));
 	      init_menu (&state, menu, title, sizeof (title), buffy);
 	      MAYBE_REDRAW (menu->redraw);
 	    }
 	  }
 	  else
-	    mutt_message _("Mailbox not deleted.");
+	    mutt_message (_("Mailbox not deleted."));
 	  FREE (&mx.mbox);
         }
         break;
@@ -1626,7 +1626,7 @@ void _mutt_select_file (char *f, size_t flen, int flags, char ***files, int *num
 		  strfcpy (LastDir, buf, sizeof (LastDir));
 		else
 		{
-		  mutt_error _("Error scanning directory.");
+		  mutt_error (_("Error scanning directory."));
 		  if (examine_directory (menu, &state, LastDir, prefix) == -1)
 		  {
 		    mutt_menuDestroy (&menu);
@@ -1698,14 +1698,14 @@ void _mutt_select_file (char *f, size_t flen, int flags, char ***files, int *num
 	      init_menu (&state, menu, title, sizeof (title), buffy);
 	    else
 	    {
-	      mutt_error _("Error scanning directory.");
+	      mutt_error (_("Error scanning directory."));
 	      mutt_menuDestroy (&menu);
 	      goto bail;
 	    }
 	    killPrefix = 0;
 	    if (!state.entrylen)
 	    {
-	      mutt_error _("No files match the file mask");
+	      mutt_error (_("No files match the file mask"));
 	      break;
 	    }
 	  }
@@ -1722,11 +1722,11 @@ void _mutt_select_file (char *f, size_t flen, int flags, char ***files, int *num
 	  
 	  switch (mutt_multi_choice ((reverse) ?
 	      /* L10N: The highlighted letters must match the "Sort" options */
-	      _("Reverse sort by (d)ate, (a)lpha, si(z)e, d(e)scription, (c)ount, ne(w) count, or do(n)'t sort? ") :
+	      (_("Reverse sort by (d)ate, (a)lpha, si(z)e, d(e)scription, (c)ount, ne(w) count, or do(n)'t sort? ")) :
 	      /* L10N: The highlighted letters must match the "Reverse Sort" options */
-	      _("Sort by (d)ate, (a)lpha, si(z)e, d(e)scription, (c)ount, ne(w) count, or do(n)'t sort? "),
+	      (_("Sort by (d)ate, (a)lpha, si(z)e, d(e)scription, (c)ount, ne(w) count, or do(n)'t sort? ")),
 	      /* L10N: These must match the highlighted letters from "Sort" and "Reverse Sort" */
-	      _("dazecwn")))
+	      (_("dazecwn")))
 	  {
 	    case -1: /* abort */
 	      resort = 0;
@@ -1844,7 +1844,7 @@ void _mutt_select_file (char *f, size_t flen, int flags, char ***files, int *num
       case OP_BROWSER_VIEW_FILE:
 	if (!state.entrylen)
 	{
-	  mutt_error _("No files match the file mask");
+	  mutt_error (_("No files match the file mask"));
 	  break;
 	}
 
@@ -1862,7 +1862,7 @@ void _mutt_select_file (char *f, size_t flen, int flags, char ***files, int *num
 	    (S_ISLNK (state.entry[menu->current].mode) &&
 	    link_is_dir (LastDir, state.entry[menu->current].name)))
 	{
-	  mutt_error _("Can't view a directory");
+	  mutt_error (_("Can't view a directory"));
 	  break;
 	} 
 	else
@@ -1879,7 +1879,7 @@ void _mutt_select_file (char *f, size_t flen, int flags, char ***files, int *num
 	    menu->redraw = REDRAW_FULL;
 	  }
 	  else
-	    mutt_error _("Error trying to view file");
+	    mutt_error (_("Error trying to view file"));
 	}
 	break;
 
@@ -1979,9 +1979,9 @@ void _mutt_select_file (char *f, size_t flen, int flags, char ***files, int *num
 
 	    buf[0] = 0;
 	    if (i == OP_SUBSCRIBE_PATTERN)
-	      snprintf (tmp, sizeof (tmp), _("Subscribe pattern: "));
+	      snprintf (tmp, sizeof (tmp), (_("Subscribe pattern: "));
 	    else
-	      snprintf (tmp, sizeof (tmp), _("Unsubscribe pattern: "));
+	      snprintf (tmp, sizeof (tmp), (_("Unsubscribe pattern: "));
 	    if (mutt_get_field (tmp, buf, sizeof (buf), 0) != 0 || !buf[0])
 	    {
 	      FREE (&rx);
@@ -2002,7 +2002,7 @@ void _mutt_select_file (char *f, size_t flen, int flags, char ***files, int *num
 	  }
 	  else if (!state.entrylen)
 	  {
-	    mutt_error _("No newsgroups match the mask");
+	    mutt_error (_("No newsgroups match the mask"));
 	    break;
 	  }
 

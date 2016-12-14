@@ -95,7 +95,7 @@ int imap_read_headers (IMAP_DATA* idata, int msgbegin, int msgend)
   }
   else
   {	/* Unable to fetch headers for lower versions */
-    mutt_error _("Unable to fetch headers from this IMAP server version.");
+    mutt_error (_("Unable to fetch headers from this IMAP server version."));
     mutt_sleep (2);	/* pause a moment to let the user see the error */
     goto error_out_0;
   }
@@ -140,7 +140,7 @@ int imap_read_headers (IMAP_DATA* idata, int msgbegin, int msgend)
   {
     /* L10N:
        Comparing the cached data with the IMAP server's data */
-    mutt_progress_init (&progress, _("Evaluating cache..."),
+    mutt_progress_init (&progress, (_("Evaluating cache...")),
 			MUTT_PROGRESS_MSG, ReadInc, msgend + 1);
 
     snprintf (buf, sizeof (buf),
@@ -230,7 +230,7 @@ int imap_read_headers (IMAP_DATA* idata, int msgbegin, int msgend)
   }
 #endif /* USE_HCACHE */
 
-  mutt_progress_init (&progress, _("Fetching message headers..."),
+  mutt_progress_init (&progress, (_("Fetching message headers...")),
 		      MUTT_PROGRESS_MSG, ReadInc, msgend + 1);
 
   for (msgno = msgbegin; msgno <= msgend ; msgno++)
@@ -443,7 +443,7 @@ int imap_fetch_message (CONTEXT *ctx, MESSAGE *msg, int msgno)
   }
 
   if (!isendwin())
-    mutt_message _("Fetching message...");
+    mutt_message (_("Fetching message..."));
 
   if (!(msg->fp = msg_cache_put (idata, h)))
   {
@@ -500,7 +500,7 @@ int imap_fetch_message (CONTEXT *ctx, MESSAGE *msg, int msgno)
 	    imap_error ("imap_fetch_message()", buf);
 	    goto bail;
 	  }
-	  mutt_progress_init (&progressbar, _("Fetching message..."),
+	  mutt_progress_init (&progressbar, (_("Fetching message...")),
 			      MUTT_PROGRESS_SIZE, NetInc, bytes);
 	  if (imap_read_literal (msg->fp, idata, bytes, &progressbar) < 0)
 	    goto bail;
@@ -659,7 +659,7 @@ int imap_append_message (CONTEXT *ctx, MESSAGE *msg)
   }
   rewind (fp);
 
-  mutt_progress_init (&progressbar, _("Uploading message..."),
+  mutt_progress_init (&progressbar, (_("Uploading message...")),
 		      MUTT_PROGRESS_SIZE, NetInc, len);
 
   imap_munge_mbox_name (idata, mbox, sizeof (mbox), mailbox);
@@ -876,7 +876,7 @@ int imap_copy_messages (CONTEXT* ctx, HEADER* h, char* dest, int delete)
       if (ascii_strncasecmp (imap_get_qualifier (idata->buf), "[TRYCREATE]", 11))
         break;
       dprint (3, (debugfile, "imap_copy_messages: server suggests TRYCREATE\n"));
-      snprintf (prompt, sizeof (prompt), _("Create %s?"), mbox);
+      snprintf (prompt, sizeof (prompt), (_("Create %s?")), mbox);
       if (option (OPTCONFIRMCREATE) && mutt_yesorno (prompt, 1) != MUTT_YES)
       {
         mutt_clear_error ();
