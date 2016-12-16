@@ -36,6 +36,7 @@
 #include "mutt_crypt.h"
 #include "mutt_curses.h"
 #include "group.h"
+#include "mutt_menu.h"
 
 #ifdef USE_IMAP
 #include "mx.h"
@@ -49,6 +50,7 @@
 static int eat_regexp (pattern_t *pat, BUFFER *, BUFFER *);
 static int eat_date (pattern_t *pat, BUFFER *, BUFFER *);
 static int eat_range (pattern_t *pat, BUFFER *, BUFFER *);
+static int eat_message_range (pattern_t *pat, BUFFER *s, BUFFER *err);
 static int patmatch (const pattern_t *pat, const char *buf);
 
 static const struct pattern_flags
@@ -79,7 +81,7 @@ Flags[] =
   { 'k', MUTT_PGP_KEY,		0,		NULL },
   { 'l', MUTT_LIST,		0,		NULL },
   { 'L', MUTT_ADDRESS,		0,		eat_regexp },
-  { 'm', MUTT_MESSAGE,		0,		eat_range },
+  { 'm', MUTT_MESSAGE,		0,		eat_message_range },
   { 'n', MUTT_SCORE,		0,		eat_range },
   { 'N', MUTT_NEW,			0,		NULL },
   { 'O', MUTT_OLD,			0,		NULL },
@@ -356,6 +358,289 @@ static int eat_regexp (pattern_t *pat, BUFFER *s, BUFFER *err)
   }
 
   return 0;
+}
+
+#define KILO 1024
+#define MEGA 1048576
+#define HMSG(h) (((h)->msgno) + 1)
+#define CTX_MSGNO(c) (HMSG((c)->hdrs[(c)->v2r[(c)->menu->current]]))
+
+enum
+{
+  RANGE_K_REL,
+  RANGE_K_ABS,
+  RANGE_K_LT,
+  RANGE_K_GT,
+  RANGE_K_BARE,
+  /* add new ones HERE */
+  RANGE_K_INVALID
+};
+
+static int
+scan_range_num (BUFFER *s, regmatch_t pmatch[], int group, int kind)
+{
+  int num;
+  unsigned char c;
+
+  /* this cast looks dangerous, but is already all over this code
+   * (explicit or not) */
+  num = (int)strtol(&s->dptr[pmatch[group].rm_so], NULL, 0);
+  c = (unsigned char)(s->dptr[pmatch[group].rm_eo - 1]);
+  if (toupper(c) == 'K')
+    num *= KILO;
+  else if (toupper(c) == 'M')
+    num *= MEGA;
+  switch (kind)
+  {
+  case RANGE_K_REL:
+    return num + CTX_MSGNO(Context);
+  case RANGE_K_LT:
+    return num - 1;
+  case RANGE_K_GT:
+    return num + 1;
+  default:
+    return num;
+  }
+}
+
+#define RANGE_DOT '.'
+#define RANGE_CIRCUM '^'
+#define RANGE_DOLLAR '$'
+#define RANGE_LT '<'
+#define RANGE_GT '>'
+
+/* range sides: left or right */
+enum
+{
+  RANGE_S_LEFT,
+  RANGE_S_RIGHT
+};
+
+static int
+scan_range_slot (BUFFER *s, regmatch_t pmatch[], int grp,
+                 int side, int kind)
+{
+  unsigned char c;
+
+  /* This means the left or right subpattern was empty, e.g. ",." */
+  if ((pmatch[grp].rm_so == -1) || (pmatch[grp].rm_so == pmatch[grp].rm_eo))
+  {
+    if (side == RANGE_S_LEFT)
+      return 1;
+    else if (side == RANGE_S_RIGHT)
+      return Context->msgcount;
+  }
+  /* We have something, so determine what */
+  c = (unsigned char)(s->dptr[pmatch[grp].rm_so]);
+  switch (c)
+  {
+  case RANGE_CIRCUM:
+    return 1;
+  case RANGE_DOLLAR:
+    return Context->msgcount;
+  case RANGE_DOT:
+    return CTX_MSGNO(Context);
+  case RANGE_LT:
+  case RANGE_GT:
+    return scan_range_num(s, pmatch, grp+1, kind);
+  default:
+    /* Only other possibility: a number */
+    return scan_range_num(s, pmatch, grp, kind);
+  }
+}
+
+static void
+order_range (pattern_t *pat)
+{
+  int num;
+
+  if (pat->min <= pat->max)
+    return;
+  num = pat->min;
+  pat->min = pat->max;
+  pat->max = num;
+}
+
+/* Error codes for eat_range_by_regexp */
+enum
+{
+  RANGE_E_OK,
+  RANGE_E_SYNTAX,
+  RANGE_E_CTX,
+};
+
+static int
+report_regerror(int regerr, regex_t *preg, BUFFER *err)
+{
+  size_t ds = err->dsize;
+
+  if (regerror(regerr, preg, err->data, ds) > ds)
+    dprint(2, (debugfile, "warning: buffer too small for regerror\n"));
+  /* The return value is fixed, exists only to shorten code at callsite */
+  return RANGE_E_SYNTAX;
+}
+
+static int
+is_context_available(BUFFER *s, regmatch_t pmatch[], int kind, BUFFER *err)
+{
+  char *context_loc;
+  const char *context_req_chars[] =
+  {
+    [RANGE_K_REL] = ".0123456789",
+    [RANGE_K_ABS] = ".",
+    [RANGE_K_LT] = "",
+    [RANGE_K_GT] = "",
+    [RANGE_K_BARE] = ".",
+  };
+
+  /* First decide if we're going to need the context at all.
+   * Relative patterns need it iff they contain a dot or a number.
+   * Absolute patterns only need it if they contain a dot. */
+  context_loc = strpbrk(s->dptr+pmatch[0].rm_so, context_req_chars[kind]);
+  if ((context_loc == NULL) || (context_loc >= &s->dptr[pmatch[0].rm_eo]))
+    return 1;
+
+  /* We need a current message.  Do we actually have one? */
+  if (Context->menu)
+    return 1;
+
+  /* Nope. */
+  strfcpy(err->data, _("No current message"), err->dsize);
+  return 0;
+}
+
+#define RANGE_NUM_RX "([[:digit:]]+|0x[[:xdigit:]]+)[MmKk]?"
+
+#define RANGE_REL_SLOT_RX \
+    "[[:blank:]]*([.^$]|-?" RANGE_NUM_RX ")?[[:blank:]]*"
+
+#define RANGE_REL_RX "^" RANGE_REL_SLOT_RX "," RANGE_REL_SLOT_RX
+
+/* Almost the same, but no negative numbers allowed */
+#define RANGE_ABS_SLOT_RX \
+    "[[:blank:]]*([.^$]|" RANGE_NUM_RX ")?[[:blank:]]*"
+
+#define RANGE_ABS_RX "^" RANGE_ABS_SLOT_RX "-" RANGE_ABS_SLOT_RX
+
+/* Frist group is intentionally empty */
+#define RANGE_LT_RX "^()[[:blank:]]*(<[[:blank:]]*" RANGE_NUM_RX ")[[:blank:]]*"
+
+#define RANGE_GT_RX "^()[[:blank:]]*(>[[:blank:]]*" RANGE_NUM_RX ")[[:blank:]]*"
+
+/* Single group for min and max */
+#define RANGE_BARE_RX "^[[:blank:]]*([.^$]|" RANGE_NUM_RX ")[[:blank:]]*"
+
+#define RANGE_RX_GROUPS 5
+
+struct range_regexp
+{
+  const char* raw;              /* regexp as string */
+  int lgrp;                     /* paren group matching the left side */
+  int rgrp;                     /* paren group matching the right side */
+  int ready;                    /* compiled yet? */
+  regex_t cooked;               /* compiled form */
+};
+
+static struct range_regexp range_regexps[] =
+{
+  [RANGE_K_REL] = {.raw = RANGE_REL_RX, .lgrp = 1, .rgrp = 3, .ready = 0},
+  [RANGE_K_ABS] = {.raw = RANGE_ABS_RX, .lgrp = 1, .rgrp = 3, .ready = 0},
+  [RANGE_K_LT] = {.raw = RANGE_LT_RX, .lgrp = 1, .rgrp = 2, .ready = 0},
+  [RANGE_K_GT] = {.raw = RANGE_GT_RX, .lgrp = 2, .rgrp = 1, .ready = 0},
+  [RANGE_K_BARE] = {.raw = RANGE_BARE_RX, .lgrp = 1, .rgrp = 1, .ready = 0},
+};
+
+static int
+eat_range_by_regexp (pattern_t *pat, BUFFER *s, int kind, BUFFER *err)
+{
+  int regerr;
+  regmatch_t pmatch[RANGE_RX_GROUPS];
+  struct range_regexp *pspec = &range_regexps[kind];
+
+  /* First time through, compile the big regexp */
+  if (!pspec->ready)
+  {
+    regerr = regcomp(&pspec->cooked, pspec->raw, REG_EXTENDED);
+    if (regerr)
+      return report_regerror(regerr, &pspec->cooked, err);
+    pspec->ready = 1;
+  }
+
+  /* Match the pattern buffer against the compiled regexp.
+   * No match means syntax error. */
+  regerr = regexec(&pspec->cooked, s->dptr, RANGE_RX_GROUPS, pmatch, 0);
+  if (regerr)
+    return report_regerror(regerr, &pspec->cooked, err);
+
+  if (!is_context_available(s, pmatch, kind, err))
+    return RANGE_E_CTX;
+
+  /* Snarf the contents of the two sides of the range. */
+  pat->min = scan_range_slot(s, pmatch, pspec->lgrp, RANGE_S_LEFT, kind);
+  pat->max = scan_range_slot(s, pmatch, pspec->rgrp, RANGE_S_RIGHT, kind);
+  dprint(1, (debugfile, "pat->min=%d pat->max=%d\n", pat->min, pat->max));
+
+  /* Special case for a bare 0. */
+  if ((kind == RANGE_K_BARE) && (pat->min == 0) && (pat->max == 0))
+  {
+    if (!Context->menu)
+    {
+      strfcpy(err->data, _("No current message"), err->dsize);
+      return RANGE_E_CTX;
+    }
+    pat->min = pat->max = CTX_MSGNO(Context);
+  }
+  
+  /* Since we don't enforce order, we must swap bounds if they're backward */
+  order_range(pat);
+
+  /* Slide pointer past the entire match. */
+  s->dptr += pmatch[0].rm_eo;
+  return RANGE_E_OK;
+}
+
+static int
+eat_message_range (pattern_t *pat, BUFFER *s, BUFFER *err)
+{
+  int skip_quote = 0;
+  int i_kind;
+
+  /* We need a Context for pretty much anything. */
+  if (!Context)
+  {
+    strfcpy(err->data, _("No Context"), err->dsize);
+    return -1;
+  }
+
+  /*
+   * If simple_search is set to "~m %s", the range will have double quotes
+   * around it...
+   */
+  if (*s->dptr == '"')
+  {
+    s->dptr++;
+    skip_quote = 1;
+  }
+
+  for (i_kind = 0; i_kind != RANGE_K_INVALID; ++i_kind)
+  {
+    switch (eat_range_by_regexp(pat, s, i_kind, err))
+    {
+    case RANGE_E_CTX:
+      /* This means it matched syntactically but lacked context.
+       * No point in continuing. */
+      break;
+    case RANGE_E_SYNTAX:
+      /* Try another syntax, then */
+      continue;
+    case RANGE_E_OK:
+      if (skip_quote && (*s->dptr == '"'))
+        s->dptr++;
+      SKIPWS (s->dptr);
+      return 0;
+    }
+  }
+  return -1;
 }
 
 int eat_range (pattern_t *pat, BUFFER *s, BUFFER *err)
@@ -1195,8 +1480,7 @@ mutt_pattern_exec (struct pattern_t *pat, pattern_exec_flag flags, CONTEXT *ctx,
     case MUTT_DELETED:
       return (pat->not ^ h->deleted);
     case MUTT_MESSAGE:
-      return (pat->not ^ (h->msgno >= pat->min - 1 && (pat->max == MUTT_MAXRANGE ||
-						   h->msgno <= pat->max - 1)));
+      return (pat->not ^ ((HMSG(h) >= pat->min) && (HMSG(h) <= pat->max)));
     case MUTT_DATE:
       return (pat->not ^ (h->date_sent >= pat->min && h->date_sent <= pat->max));
     case MUTT_DATE_RECEIVED:

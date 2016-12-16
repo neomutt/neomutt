@@ -124,12 +124,6 @@ typedef struct
   int destroy;	/* destroy `data' when done? */
 } BUFFER;
 
-typedef struct
-{
-  int ch; /* raw key pressed */
-  int op; /* function op */
-} event_t;
-
 /* flags for _mutt_system() */
 #define MUTT_DETACH_PROCESS	1	/* detach subprocess from group */
 
@@ -1005,6 +999,8 @@ struct mx_ops
   int (*open_new_msg) (struct _message *, struct _context *, HEADER *);
 };
 
+#include "mutt_menu.h"
+
 typedef struct _context
 {
   char *path;
@@ -1032,6 +1028,8 @@ typedef struct _context
   int deleted;			/* how many deleted messages */
   int flagged;			/* how many flagged messages */
   int msgnotreadyet;		/* which msg "new" in pager, -1 if none */
+
+  MUTTMENU *menu;               /* needed for pattern compilation */
 
   short magic;			/* mailbox type */
 
