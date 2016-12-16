@@ -5967,6 +5967,39 @@ string.  This example matches messages whose senders are known aliases.
 </screen>
 </example>
 
+<sect3 id="message-ranges">
+  <title>Message Ranges</title>
+
+  <para>
+    description of range types -- absolute, relative
+    mnemonics: ^ . $
+    closed vs open ranges
+  </para>
+
+  <table id="message-range-examples">
+    <title>Message Range Examples</title>
+    <tgroup cols="2">
+      <thead>
+        <row>
+          <entry>Range</entry>
+          <entry>Start</entry>
+          <entry>End</entry>
+          <entry>Description</entry>
+        </row>
+      </thead>
+      <tbody>
+        <row>
+          <entry>-3,2</entry>
+          <entry>Previous three emails</entry>
+          <entry>Next two emails</entry>
+          <entry>Relative to current email</entry>
+        </row>
+      </tbody>
+    </tgroup>
+  </table>
+
+</sect3>
+
 </sect2>
 
 <sect2 id="simple-searches">
