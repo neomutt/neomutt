@@ -36,6 +36,7 @@
 #include "mutt_crypt.h"
 #include "mutt_curses.h"
 #include "group.h"
+#include "mutt_menu.h"
 
 #ifdef USE_IMAP
 #include "mx.h"
@@ -358,21 +359,44 @@ static int eat_regexp (pattern_t *pat, BUFFER *s, BUFFER *err)
   return 0;
 }
 
-int eat_range (pattern_t *pat, BUFFER *s, BUFFER *err)
+#define CTX_HUMAN_MSGNO(c) (((c)->hdrs[(c)->v2r[(c)->menu->current]]->msgno)+1)
+
+static char* eat_range_current (pattern_t *pat, BUFFER *s, BUFFER *err)
+{
+  char *tmp;
+  int num;
+  
+  /* Do we actually have a current message? */
+  if (!Context || !Context->menu) {
+    strfcpy(err->data, _("No current message"), err->dsize);
+    return NULL;
+  }
+
+  num = (int) strtol (s->dptr + 1, &tmp, 0);
+  switch (*s->dptr++) {
+  case '/':
+    pat->min = CTX_HUMAN_MSGNO(Context);
+    pat->max = pat->min + num - 1;
+    break;
+  case ',':
+    pat->max = CTX_HUMAN_MSGNO(Context);
+    if (pat->max >= num)
+      pat->min = pat->max - num + 1;
+    else
+      pat->min = 1;
+    break;
+  }
+
+  s->dptr = tmp;
+  return tmp;
+  
+}
+
+static char* eat_range_nocurrent (pattern_t *pat, BUFFER *s)
 {
   char *tmp;
   int do_exclusive = 0;
-  int skip_quote = 0;
-  
-  /*
-   * If simple_search is set to "~m %s", the range will have double quotes 
-   * around it...
-   */
-  if (*s->dptr == '"')
-  {
-    s->dptr++;
-    skip_quote = 1;
-  }
+
   if (*s->dptr == '<')
     do_exclusive = 1;
   if ((*s->dptr != '-') && (*s->dptr != '<'))
@@ -398,14 +422,14 @@ int eat_range (pattern_t *pat, BUFFER *s, BUFFER *err)
     if (*s->dptr == '>')
     {
       s->dptr = tmp;
-      return 0;
+      return tmp;
     }
     if (*tmp != '-')
     {
       /* exact value */
       pat->max = pat->min;
       s->dptr = tmp;
-      return 0;
+      return tmp;
     }
     tmp++;
   }
@@ -435,6 +459,32 @@ int eat_range (pattern_t *pat, BUFFER *s, BUFFER *err)
   else
     pat->max = MUTT_MAXRANGE;
 
+  return tmp;
+}
+
+int eat_range (pattern_t *pat, BUFFER *s, BUFFER *err)
+{
+  char *tmp = NULL;
+  int skip_quote = 0;
+  
+  /*
+   * If simple_search is set to "~m %s", the range will have double quotes 
+   * around it...
+   */
+  if (*s->dptr == '"')
+  {
+    s->dptr++;
+    skip_quote = 1;
+  }
+
+  /* Classical case: no current message number pattern. */
+  if (*s->dptr != '/' && *s->dptr != ',')
+    tmp = eat_range_nocurrent(pat, s);
+  else {
+    tmp = eat_range_current(pat, s, err);
+    if (!tmp) return -1;
+  }
+  
   if (skip_quote && *tmp == '"')
     tmp++;
 
