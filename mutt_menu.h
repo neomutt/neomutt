@@ -127,6 +127,4 @@ int mutt_menuLoop (MUTTMENU *);
 void index_make_entry (char *, size_t, struct menu_t *, int);
 int index_color (int);
 
-int mutt_limit_current_thread (HEADER *h);
-
 #endif /* _MUTT_MENU_H_ */

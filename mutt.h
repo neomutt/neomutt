@@ -125,12 +125,6 @@ typedef struct
   int destroy;	/* destroy `data' when done? */
 } BUFFER;
 
-typedef struct
-{
-  int ch; /* raw key pressed */
-  int op; /* function op */
-} event_t;
-
 /* flags for _mutt_system() */
 #define MUTT_DETACH_PROCESS	1	/* detach subprocess from group */
 

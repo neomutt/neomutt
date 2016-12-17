@@ -1460,52 +1460,6 @@ top_of_thread (HEADER *h)
   return t;
 }
 
-/**
- * mutt_limit_current_thread - Limit the email view to the current thread
- * @h: Header of current email
- *
- * Returns:
- *  1: Success
- *  0: Failure
- */
-int
-mutt_limit_current_thread (HEADER *h)
-{
-  int i;
-  THREAD *me;
-
-  if (!h)
-    return 0;
-
-  me = top_of_thread (h);
-  if (!me)
-    return 0;
-
-  Context->vcount    = 0;
-  Context->vsize     = 0;
-  Context->collapsed = 0;
-
-  for (i = 0; i < Context->msgcount; i++)
-  {
-    Context->hdrs[i]->virtual    = -1;
-    Context->hdrs[i]->limited    = 0;
-    Context->hdrs[i]->collapsed  = 0;
-    Context->hdrs[i]->num_hidden = 0;
-
-    if (top_of_thread (Context->hdrs[i]) == me)
-    {
-      BODY *body = Context->hdrs[i]->content;
-
-      Context->hdrs[i]->virtual = Context->vcount;
-      Context->hdrs[i]->limited = 1;
-      Context->v2r[Context->vcount] = i;
-      Context->vcount++;
-      Context->vsize += (body->length + body->offset - body->hdr_offset);
-    }
-  }
-  return 1;
-}
-
 int mutt_pattern_func (int op, char *prompt)
 {
   pattern_t *pat;
