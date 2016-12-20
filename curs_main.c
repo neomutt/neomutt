@@ -1490,8 +1490,10 @@ int mutt_index_menu (void)
 	  FREE (&Context->pattern);
 	  Context->pattern = safe_strdup (buf);
 	}
-	if ((op == OP_TOGGLE_READ && mutt_pattern_func (MUTT_LIMIT, NULL) == 0) ||
-	    mutt_pattern_func (MUTT_LIMIT, _("Limit to messages matching: ")) == 0)
+
+	if (((op == OP_LIMIT_CURRENT_THREAD) && mutt_limit_current_thread(CURHDR)) ||
+            ((op == OP_MAIN_LIMIT) && (mutt_pattern_func (MUTT_LIMIT,
+                _("Limit to messages matching: ")) == 0)))
 	{
 	  if (menu->oldcurrent >= 0)
 	  {
