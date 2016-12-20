@@ -309,6 +309,63 @@ int mutt_user_is_recipient (HEADER *h)
   return h->recipient;
 }
 
+/**
+ * get_initials - Turn a name into initials
+ * @name:   String to be converted
+ * @buf:    Buffer for the result
+ * @buflen: Size of the buffer
+ * @return: 1 on Success, 0 on Failure
+ *
+ * Take a name, e.g. "John F. Kennedy" and reduce it to initials "JFK".
+ * The function saves the first character from each word.  Words are delimited
+ * by whitespace, or hyphens (so "Jean-Pierre" becomes "JP").
+ */
+static int get_initials(const char *name, char *buf, int buflen)
+{
+  if (!name || !buf)
+    return 0;
+
+  while (*name)
+  {
+    /* Char's length in bytes */
+    int clen = mutt_charlen(name, NULL);
+    if (clen < 1)
+      return 0;
+
+    /* Ignore punctuation at the beginning of a word */
+    if ((clen == 1) && ispunct (*name))
+    {
+      name++;
+      continue;
+    }
+
+    if (clen >= buflen)
+      return 0;
+
+    /* Copy one multibyte character */
+    buflen -= clen;
+    while (clen--)
+      *buf++ = *name++;
+
+    /* Skip to end-of-word */
+    for (; *name; name += clen)
+    {
+      clen = mutt_charlen(name, NULL);
+      if (clen < 1)
+        return 0;
+      else if ((clen == 1) && (isspace(*name) || (*name == '-')))
+        break;
+    }
+
+    /* Skip any whitespace, or hyphens */
+    while (*name && (isspace(*name) || (*name == '-')))
+      name++;
+  }
+
+  *buf = 0;
+  return 1;
+}
+
 /* %a = address of author
  * %A = reply-to address (if present; otherwise: address of author
  * %b = filename of the originating folder
@@ -382,14 +439,28 @@ hdr_format_str (char *dest,
   switch (op)
   {
     case 'A':
-      if(hdr->env->reply_to && hdr->env->reply_to->mailbox)
+    case 'I':
+      if (op == 'A')
       {
-        colorlen = add_index_color (dest, destlen, flags, MT_COLOR_INDEX_AUTHOR);
-        mutt_format_s (dest + colorlen, destlen - colorlen, prefix, mutt_addr_for_display (hdr->env->reply_to));
-        add_index_color (dest + colorlen, destlen - colorlen, flags, MT_COLOR_INDEX);
-	break;
+        if(hdr->env->reply_to && hdr->env->reply_to->mailbox)
+        {
+          colorlen = add_index_color (dest, destlen, flags, MT_COLOR_INDEX_AUTHOR);
+          mutt_format_s (dest + colorlen, destlen - colorlen, prefix, mutt_addr_for_display (hdr->env->reply_to));
+          add_index_color (dest + colorlen, destlen - colorlen, flags, MT_COLOR_INDEX);
+          break;
+        }
       }
-      /* fall through if 'A' returns nothing */
+      else
+      {
+        if (get_initials(mutt_get_name (hdr->env->from), buf2, sizeof (buf2)))
+        {
+          colorlen = add_index_color (dest, destlen, flags, MT_COLOR_INDEX_AUTHOR);
+          mutt_format_s (dest + colorlen, destlen - colorlen, prefix, buf2);
+          add_index_color (dest + colorlen, destlen - colorlen, flags, MT_COLOR_INDEX);
+          break;
+        }
+     }
+     /* fall through on failure */
 
     case 'a':
       colorlen = add_index_color (dest, destlen, flags, MT_COLOR_INDEX_AUTHOR);
@@ -700,28 +771,6 @@ hdr_format_str (char *dest,
 
     case 'i':
       mutt_format_s (dest, destlen, prefix, hdr->env->message_id ? hdr->env->message_id : "<no.id>");
-      break;
-
-    case 'I':
-      {
-	int iflag = FALSE;
-	int j = 0;
-
-	for (i = 0; hdr->env->from && hdr->env->from->personal &&
-		    hdr->env->from->personal[i] && (j < (SHORT_STRING - 1)); i++) {
-	  if (isalpha ((int) hdr->env->from->personal[i])) {
-	    if (!iflag) {
-	      buf2[j++] = hdr->env->from->personal[i];
-	      iflag = TRUE;
-	    }
-	  } else {
-	    iflag = FALSE;
-	  }
-	}
-
-	buf2[j] = '\0';
-      }
-      mutt_format_s (dest, destlen, prefix, buf2);
       break;
 
     case 'l':
