@@ -171,6 +171,11 @@ static struct compile_options comp_opts[] =
 #else
   { "HAVE_CURS_SET", 0 },
 #endif
+#ifdef HAVE_FUTIMENS
+  { "HAVE_FUTIMENS", 1 },
+#else
+  { "HAVE_FUTIMENS", 0 },
+#endif
 #ifdef HAVE_GETADDRINFO
   { "HAVE_GETADDRINFO", 1 },
 #else
