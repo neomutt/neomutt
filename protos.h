@@ -132,6 +132,7 @@ time_t mutt_local_tz (time_t);
 time_t mutt_mktime (struct tm *, int);
 time_t mutt_parse_date (const char *, HEADER *);
 int is_from (const char *, char *, size_t, time_t *);
+void mutt_touch_atime (int);
 
 const char *mutt_attach_fmt (
 	char *dest,
