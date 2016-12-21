@@ -436,6 +436,7 @@ static int mbox_open_mailbox (CONTEXT *ctx)
     rc = mmdf_parse_mailbox (ctx);
   else
     rc = -1;
+  mutt_touch_atime (fileno (ctx->fp));
 
   mbox_unlock_mailbox (ctx);
   mutt_unblock_signals ();
@@ -1254,6 +1255,8 @@ int mutt_reopen_mailbox (CONTEXT *ctx, int *index_hint)
     ctx->quiet = 0;
     return (-1);
   }
+
+  mutt_touch_atime (fileno (ctx->fp));
 
   /* now try to recover the old flags */
 
