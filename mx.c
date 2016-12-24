@@ -1401,6 +1401,8 @@ int mx_commit_message (MESSAGE *msg, CONTEXT *ctx)
 /* close a pointer to a message */
 int mx_close_message (CONTEXT *ctx, MESSAGE **msg)
 {
+  if (!ctx || !msg)
+    return 0;
   int r = 0;
 
   if (ctx->mx_ops && ctx->mx_ops->close_msg)

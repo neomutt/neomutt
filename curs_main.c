@@ -3127,7 +3127,7 @@ int mutt_index_menu (void)
 	CHECK_MSGCOUNT;
         CHECK_VISIBLE;
 	mutt_view_attachments (CURHDR);
-	if (CURHDR->attach_del)
+	if (Context && CURHDR->attach_del)
 	  Context->changed = 1;
 	menu->redraw = REDRAW_FULL;
 	break;

@@ -418,6 +418,8 @@ hdr_format_str (char *dest,
   hdr = hfi->hdr;
   ctx = hfi->ctx;
 
+  if (!hdr || !hdr->env)
+    return src;
   dest[0] = 0;
   switch (op)
   {

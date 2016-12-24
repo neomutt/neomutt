@@ -1223,6 +1223,8 @@ int mutt_resend_message (FILE *fp, CONTEXT *ctx, HEADER *cur)
 
 static int is_reply (HEADER *reply, HEADER *orig)
 {
+  if (!reply || !reply->env || !orig || !orig->env)
+    return 0;
   return mutt_find_list (orig->env->references, reply->env->message_id) ||
          mutt_find_list (orig->env->in_reply_to, reply->env->message_id);
 }
