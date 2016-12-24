@@ -2344,9 +2344,12 @@ send_msg (const char *path, char **args, const char *msg, char **tempfile)
       }
     }
 
-    /* reset alarm; not really needed, but... */
-    alarm (0);
-    sigaction (SIGALRM, &oldalrm, NULL);
+    if (SendmailWait > 0)
+    {
+      /* reset alarm; not really needed, but... */
+      alarm (0);
+      sigaction (SIGALRM, &oldalrm, NULL);
+    }
 
     if (kill (ppid, 0) == -1 && errno == ESRCH && tempfile && *tempfile)
     {
