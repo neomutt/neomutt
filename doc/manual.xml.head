@@ -5204,22 +5204,24 @@ defined with the "@" modifier.  This example matches messages whose
 recipients are all from Germany, and who are known to your alias list.
 </para>
 
-<para>
+<example id="ex-restrict-to-aliases">
+<title>Matching restricted to aliases</title>
 <screen>
 ^@~C \.de$
 </screen>
-</para>
+</example>
 
 <para>
 To match any defined alias, use a regular expression that matches any
 string.  This example matches messages whose senders are known aliases.
 </para>
 
-<para>
+<example id="ex-match-alias">
+<title>Matching any defined alias</title>
 <screen>
 @~f .
 </screen>
-</para>
+</example>
 
 </sect2>
 
