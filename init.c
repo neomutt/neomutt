@@ -603,6 +603,59 @@ static void remove_from_list (LIST **l, const char *str)
   }
 }
 
+static void free_mbchar_table (mbchar_table **t)
+{
+  if (!t || !*t)
+    return;
+
+  FREE (&(*t)->chars);
+  FREE (&(*t)->segmented_str);
+  FREE (&(*t)->orig_str);
+  FREE (t);		/* __FREE_CHECKED__ */
+}
+
+static mbchar_table *parse_mbchar_table (const char *s)
+{
+  mbchar_table *t;
+  size_t slen, k;
+  mbstate_t mbstate;
+  char *d;
+
+  t = safe_calloc (1, sizeof (mbchar_table));
+  slen = mutt_strlen (s);
+  if (!slen)
+    return t;
+
+  t->orig_str = safe_strdup (s);
+  /* This could be more space efficient.  However, being used on tiny
+   * strings (Tochars and StChars), the overhead is not great. */
+  t->chars = safe_calloc (slen, sizeof (char *));
+  d = t->segmented_str = safe_calloc (slen * 2, sizeof (char));
+
+  memset (&mbstate, 0, sizeof (mbstate));
+  while (slen && (k = mbrtowc (NULL, s, slen, &mbstate)))
+  {
+    if (k == (size_t)(-1) || k == (size_t)(-2))
+    {
+      dprint (1, (debugfile,
+                  "parse_mbchar_table: mbrtowc returned %d converting %s in %s\n",
+                  (k == (size_t)(-1)) ? -1 : -2,
+                  s, t->orig_str));
+      if (k == (size_t)(-1))
+        memset (&mbstate, 0, sizeof (mbstate));
+      k = (k == (size_t)(-1)) ? 1 : slen;
+    }
+
+    slen -= k;
+    t->chars[t->len++] = d;
+    while (k--)
+      *d++ = *s++;
+    *d++ = '\0';
+  }
+
+  return t;
+}
+
 static int parse_unignore (BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err)
 {
   do
@@ -1535,6 +1588,10 @@ static void mutt_restore_default (struct option_t *p)
     case DT_STR:
       mutt_str_replace ((char **) p->data, (char *) p->init); 
       break;
+    case DT_MBCHARTBL:
+      free_mbchar_table ((mbchar_table **)p->data);
+      *((mbchar_table **) p->data) = parse_mbchar_table ((char *) p->init);
+      break;
     case DT_PATH:
       FREE((char **) p->data);		/* __FREE_CHECKED__ */
       if (p->init)
@@ -1956,7 +2013,8 @@ static int parse_set (BUFFER *tmp, BUFFER *s, unsigned long data, BUFFER *err)
     }
     else if (myvar || DTYPE (MuttVars[idx].type) == DT_STR ||
 	     DTYPE (MuttVars[idx].type) == DT_PATH ||
-	     DTYPE (MuttVars[idx].type) == DT_ADDR)
+	     DTYPE (MuttVars[idx].type) == DT_ADDR ||
+	     DTYPE (MuttVars[idx].type) == DT_MBCHARTBL)
     {
       if (unset)
       {
@@ -1965,6 +2023,8 @@ static int parse_set (BUFFER *tmp, BUFFER *s, unsigned long data, BUFFER *err)
           myvar_del (myvar);
 	else if (DTYPE (MuttVars[idx].type) == DT_ADDR)
 	  rfc822_free_address ((ADDRESS **) MuttVars[idx].data);
+	else if (DTYPE (MuttVars[idx].type) == DT_MBCHARTBL)
+          free_mbchar_table ((mbchar_table **) MuttVars[idx].data);
 	else
 	  /* MuttVars[idx].data is already 'char**' (or some 'void**') or... 
 	   * so cast to 'void*' is okay */
@@ -2001,6 +2061,11 @@ static int parse_set (BUFFER *tmp, BUFFER *s, unsigned long data, BUFFER *err)
 	  mutt_pretty_mailbox (_tmp, sizeof (_tmp));
 	  val = _tmp;
 	}
+	else if (DTYPE (MuttVars[idx].type) == DT_MBCHARTBL)
+        {
+          mbchar_table *mbt = (*((mbchar_table **) MuttVars[idx].data));
+          val = mbt ? NONULL (mbt->orig_str) : "";
+        }
 	else
 	  val = *((char **) MuttVars[idx].data);
 	
@@ -2054,6 +2119,11 @@ static int parse_set (BUFFER *tmp, BUFFER *s, unsigned long data, BUFFER *err)
 	  *((char **) MuttVars[idx].data) = safe_strdup (tmp->data);
 	  if (mutt_strcmp (MuttVars[idx].option, "charset") == 0)
 	    mutt_set_charset (Charset);
+        }
+        else if (DTYPE (MuttVars[idx].type) == DT_MBCHARTBL)
+        {
+          free_mbchar_table ((mbchar_table **) MuttVars[idx].data);
+          *((mbchar_table **) MuttVars[idx].data) = parse_mbchar_table (tmp->data);
         }
         else
         {
@@ -2791,6 +2861,11 @@ static int var_to_string (int idx, char* val, size_t len)
     strfcpy (tmp, NONULL (*((char **) MuttVars[idx].data)), sizeof (tmp));
     if (DTYPE (MuttVars[idx].type) == DT_PATH)
       mutt_pretty_mailbox (tmp, sizeof (tmp));
+  }
+  else if (DTYPE (MuttVars[idx].type) == DT_MBCHARTBL)
+  {
+    mbchar_table *mbt = (*((mbchar_table **) MuttVars[idx].data));
+    strfcpy (tmp, mbt ? NONULL (mbt->orig_str) : "", sizeof (tmp));
   }
   else if (DTYPE (MuttVars[idx].type) == DT_ADDR)
   {

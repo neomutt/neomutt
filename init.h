@@ -38,6 +38,7 @@
 #define DT_MAGIC	8 /* mailbox type */
 #define DT_SYN		9 /* synonym for another variable */
 #define DT_ADDR	       10 /* e-mail address */
+#define DT_MBCHARTBL   11 /* multibyte char table */
 
 #define DTYPE(x) ((x) & DT_MASK)
 
