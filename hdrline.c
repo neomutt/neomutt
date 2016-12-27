@@ -441,7 +441,7 @@ hdr_format_str (char *dest,
   struct hdr_format_info *hfi = (struct hdr_format_info *) data;
   HEADER *hdr, *htmp;
   CONTEXT *ctx;
-  char fmt[SHORT_STRING], buf2[LONG_STRING], ch, *p;
+  char fmt[SHORT_STRING], buf2[LONG_STRING], *p;
   char *wch;
   int do_locales, i;
   int optional = (flags & MUTT_FORMAT_OPTIONAL);
@@ -1037,26 +1037,34 @@ hdr_format_str (char *dest,
 #endif
 
     case 'Z':
-    
-      ch = ' ';
+      wch = " ";
 
       if (WithCrypto && hdr->security & GOODSIGN)
-        ch = 'S';
+        wch = "S";
       else if (WithCrypto && hdr->security & ENCRYPT)
-      	ch = 'P';
+        wch = "P";
       else if (WithCrypto && hdr->security & SIGN)
-        ch = 's';
+        wch = "s";
       else if ((WithCrypto & APPLICATION_PGP) && hdr->security & PGPKEY)
-        ch = 'K';
+        wch = "K";
 
-      snprintf (buf2, sizeof (buf2),
-		"%c%c%s", (THREAD_NEW ? 'n' : (THREAD_OLD ? 'o' :
-		((hdr->read && (ctx && ctx->msgnotreadyet != hdr->msgno))
-		? (hdr->replied ? 'r' : ' ') : (hdr->old ? 'O' : 'N')))),
-		hdr->deleted ? 'D' : (hdr->attach_del ? 'd' : ch),
-		hdr->tagged ? get_nth_wchar (Flagchars, MUTT_FLAG_TAGGED) :
-		(hdr->flagged ? get_nth_wchar (Flagchars, MUTT_FLAG_IMPORTANT) :
-		 get_nth_wchar (Tochars, mutt_user_is_recipient (hdr))));
+      snprintf (buf2, sizeof (buf2), "%s%s%s",
+        /* New/Old for threads; replied; New/Old for messages */
+        (THREAD_NEW ? get_nth_wchar (Flagchars, MUTT_FLAG_NEW_THREAD) :
+          (THREAD_OLD ? get_nth_wchar (Flagchars, MUTT_FLAG_OLD_THREAD) :
+            ((hdr->read && (ctx && ctx->msgnotreadyet != hdr->msgno)) ?
+              (hdr->replied ? get_nth_wchar (Flagchars, MUTT_FLAG_REPLIED) :
+                get_nth_wchar (Flagchars, MUTT_FLAG_Z_EMPTY)) :
+              (hdr->old ? get_nth_wchar (Flagchars, MUTT_FLAG_OLD) :
+                get_nth_wchar (Flagchars, MUTT_FLAG_NEW))))),
+        /* Marked for deletion; deleted attachments; crypto */
+        (hdr->deleted ? get_nth_wchar (Flagchars, MUTT_FLAG_DELETED) :
+          (hdr->attach_del ? get_nth_wchar (Flagchars, MUTT_FLAG_DELETED_ATTACH) :
+          wch)),
+        /* Tagged, flagged and recipient flag */
+        (hdr->tagged ? get_nth_wchar (Flagchars, MUTT_FLAG_TAGGED) :
+          (hdr->flagged ? get_nth_wchar (Flagchars, MUTT_FLAG_IMPORTANT) :
+          get_nth_wchar (Tochars, mutt_user_is_recipient (hdr)))));
       colorlen = add_index_color (dest, destlen, flags, MT_COLOR_INDEX_FLAGS);
       mutt_format_s (dest + colorlen, destlen - colorlen, prefix, buf2);
       add_index_color (dest + colorlen, destlen - colorlen, flags, MT_COLOR_INDEX);
