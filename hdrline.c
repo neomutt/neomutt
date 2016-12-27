@@ -620,9 +620,9 @@ hdr_format_str (char *dest,
       break;
 
     case 'T':
-      snprintf (fmt, sizeof (fmt), "%%%sc", prefix);
+      snprintf (fmt, sizeof (fmt), "%%%ss", prefix);
       snprintf (dest, destlen, fmt,
-		(Tochars && ((i = mutt_user_is_recipient (hdr))) < mutt_strlen (Tochars)) ? Tochars[i] : ' ');
+		(Tochars && ((i = mutt_user_is_recipient (hdr))) < Tochars->len) ? Tochars->chars[i] : " ");
       break;
 
     case 'u':
@@ -668,13 +668,13 @@ hdr_format_str (char *dest,
         ch = 'K';
 
       snprintf (buf2, sizeof (buf2),
-		"%c%c%c", (THREAD_NEW ? 'n' : (THREAD_OLD ? 'o' : 
+		"%c%c%s", (THREAD_NEW ? 'n' : (THREAD_OLD ? 'o' :
 		((hdr->read && (ctx && ctx->msgnotreadyet != hdr->msgno))
 		? (hdr->replied ? 'r' : ' ') : (hdr->old ? 'O' : 'N')))),
 		hdr->deleted ? 'D' : (hdr->attach_del ? 'd' : ch),
-		hdr->tagged ? '*' :
-		(hdr->flagged ? '!' :
-		 (Tochars && ((i = mutt_user_is_recipient (hdr)) < mutt_strlen (Tochars)) ? Tochars[i] : ' ')));
+		hdr->tagged ? "*" :
+		(hdr->flagged ? "!" :
+		 (Tochars && ((i = mutt_user_is_recipient (hdr)) < Tochars->len) ? Tochars->chars[i] : " ")));
       mutt_format_s (dest, destlen, prefix, buf2);
       break;
 

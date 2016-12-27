@@ -228,14 +228,12 @@ status_format_str (char *buf, size_t buflen, size_t col, int cols, char op, cons
            Context->deleted)) ? 1 : 0);
       }
       
-      if (!StChars)
+      if (!StChars || !StChars->len)
 	buf[0] = 0;
-      else if (i >= mutt_strlen(StChars))
-	buf[0] = StChars[0];
+      else if (i >= StChars->len)
+        snprintf (buf, buflen, "%s", StChars->chars[0]);
       else
-	buf[0] = StChars[i];
-
-      buf[1] = 0;
+        snprintf (buf, buflen, "%s", StChars->chars[i]);
       break;
     }
       

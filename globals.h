@@ -144,10 +144,10 @@ WHERE short SslDHPrimeBits;
 WHERE char *SslCACertFile INITVAL (NULL);
 #endif
 #endif
-WHERE char *StChars;
+WHERE mbchar_table *StChars;
 WHERE char *Status;
 WHERE char *Tempdir;
-WHERE char *Tochars;
+WHERE mbchar_table *Tochars;
 WHERE char *TrashPath;
 WHERE char *TSStatusFormat;
 WHERE char *TSIconFormat;
