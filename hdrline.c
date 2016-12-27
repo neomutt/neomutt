@@ -949,7 +949,7 @@ hdr_format_str (char *dest,
     case 'T':
       snprintf (fmt, sizeof (fmt), "%%%ss", prefix);
       snprintf (dest, destlen, fmt,
-		get_nth_wchar (Tochars, mutt_user_is_recipient (hdr)));
+		(Tochars && ((i = mutt_user_is_recipient (hdr))) < Tochars->len) ? Tochars->chars[i] : " ");
       break;
 
     case 'u':
@@ -1017,7 +1017,7 @@ hdr_format_str (char *dest,
 		hdr->deleted ? 'D' : (hdr->attach_del ? 'd' : ch),
 		hdr->tagged ? "*" :
 		(hdr->flagged ? "!" :
-		 get_nth_wchar (Tochars, mutt_user_is_recipient (hdr))));
+		 (Tochars && ((i = mutt_user_is_recipient (hdr)) < Tochars->len) ? Tochars->chars[i] : " ")));
       colorlen = add_index_color (dest, destlen, flags, MT_COLOR_INDEX_FLAGS);
       mutt_format_s (dest + colorlen, destlen - colorlen, prefix, buf2);
       add_index_color (dest + colorlen, destlen - colorlen, flags, MT_COLOR_INDEX);
