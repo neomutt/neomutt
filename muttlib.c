@@ -2175,21 +2175,49 @@ int mutt_set_xdg_path(const XDGType type, char *buf, size_t bufsize)
   char *xdg     = (xdg_env && *xdg_env) ? safe_strdup (xdg_env) : safe_strdup (xdg_defaults[type]);
   char *x       = xdg;  /* strsep() changes xdg, so free x instead later */
   char *token   = NULL;
+  int   rc      = 0;
 
   while ((token = strsep (&xdg, ":")))
   {
-    if (snprintf (buf, bufsize, "%s/neomutt/config", token) < 0)
+    if (snprintf (buf, bufsize, "%s/%s/neomuttrc-%s", token, PACKAGE, PACKAGE_VERSION) < 0)
       continue;
     mutt_expand_path (buf, bufsize);
     if (access (buf, F_OK) == 0)
     {
-      FREE (&x);
-      return 1;
+      rc = 1;
+      break;
+    }
+
+    if (snprintf (buf, bufsize, "%s/%s/neomuttrc", token, PACKAGE) < 0)
+      continue;
+    mutt_expand_path (buf, bufsize);
+    if (access (buf, F_OK) == 0)
+    {
+      rc = 1;
+      break;
+    }
+
+    if (snprintf (buf, bufsize, "%s/%s/Muttrc-%s", token, PACKAGE, MUTT_VERSION) < 0)
+      continue;
+    mutt_expand_path (buf, bufsize);
+    if (access (buf, F_OK) == 0)
+    {
+      rc = 1;
+      break;
+    }
+
+    if (snprintf (buf, bufsize, "%s/%s/Muttrc", token, PACKAGE) < 0)
+      continue;
+    mutt_expand_path (buf, bufsize);
+    if (access (buf, F_OK) == 0)
+    {
+      rc = 1;
+      break;
     }
   }
 
   FREE (&x);
-  return 0;
+  return rc;
 }
 
 void mutt_get_parent_path (char *output, char *path, size_t olen)

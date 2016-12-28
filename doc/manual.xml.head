@@ -2349,75 +2349,126 @@ See also the <link linkend="postpone">$postpone</link> quad-option.
 <title>Location of Initialization Files</title>
 
 <para>
-  When Mutt starts up it looks for two configuration files -- a
-  <quote>system</quote> file and a <quote>user</quote> file.
+  When Mutt starts up it looks for two configuration files -- one
+  <quote>system</quote> file and one <quote>user</quote> file.
 </para>
 
 <para>
-  Mutt will search for a system config file in several places.  The filenames
-  may depend on the version number of Mutt.  Mutt will read just one file, the
-  first file it finds, from the list below.
+  Mutt searches for several different file names when looking for config.  It
+  looks for NeoMutt config files before Mutt config files and versioned config
+  before plain config.  For example:
 </para>
 
-<para>
-  The system config file will not be read if the <quote>-n</quote>
-  option is used on the <link linkend="commandline">command line</link>.
-</para>
-
-<table id="system-muttrc">
-  <title>Mutt system config file locations</title>
+<table id="muttrc-order">
+  <title>Mutt config file search order</title>
   <tgroup cols="1">
-    <thead>
-      <row><entry>File Location</entry></row>
-    </thead>
     <tbody>
-      <row><entry>$XDG_CONFIG_DIRS/neomutt/config</entry></row>
-      <row><entry>/etc/NeoMuttrc</entry></row>
-      <row><entry>/etc/Muttrc-20161104</entry></row>
-      <row><entry>/etc/Muttrc</entry></row>
-      <row><entry>/usr/share/mutt/Muttrc-20161104</entry></row>
-      <row><entry>/usr/share/mutt/Muttrc</entry></row>
+      <row><entry>neomuttrc-20161126</entry></row> 
+      <row><entry>neomuttrc</entry></row>          
+      <row><entry>muttrc-1.7.2</entry></row>       
+      <row><entry>muttrc</entry></row>             
     </tbody>
   </tgroup>
 </table>
 
 <para>
-  <emphasis>($XDG_CONFIG_DIRS defaults to "/etc/xdg".)</emphasis>
+  This allows the user to create separate Mutt and NeoMutt config files on the
+  same system.
 </para>
 
-<para>
-  Mutt will search for a user config file in several places in your home
-  directory.  The filenames may depend on the version number of Mutt.  Mutt
-  will read just one file, the first file it finds, from the list below.
-</para>
+<sect2 id="muttrc-system">
+  <title>Location of Mutt system config files</title>
 
-<para>
-  You may specify your own location for the user config file using the
-  <quote>-F</quote> option on the <link linkend="commandline">command line</link>.
-</para>
+  <para>
+    Mutt will search for a system config file in a <literal>mutt</literal>
+    directory in several places.  First it searches the locations specified in
+    the <literal>XDG_CONFIG_DIRS</literal> environment variable, which defaults
+    to <literal>/etc/xdg</literal>.  Next, it looks in <literal>/etc</literal>.
+    Finally, it tries <literal>/usr/share</literal>.
+  </para>
 
-<table id="user-muttrc">
-  <title>Mutt user config file locations</title>
-  <tgroup cols="1">
-    <thead>
-      <row><entry>File Location</entry></row>
-    </thead>
-    <tbody>
-      <row><entry>$XDG_CONFIG_HOME/neomutt/config</entry></row>
-      <row><entry>~/.neomuttrc</entry></row>
-      <row><entry>~/.mutt/neomuttrc</entry></row>
-      <row><entry>~/.muttrc-20161104</entry></row>
-      <row><entry>~/.muttrc</entry></row>
-      <row><entry>~/.mutt/muttrc-20161104</entry></row>
-      <row><entry>~/.mutt/muttrc</entry></row>
-      <row><entry>~/.muttrc</entry></row>
-    </tbody>
-  </tgroup>
-</table>
+  <para>
+    The system config file will not be read if the <quote>-n</quote>
+    option is used on the <link linkend="commandline">command line</link>.
+  </para>
 
-<para>
-  <emphasis>($XDG_CONFIG_HOME defaults to "$HOME/.config".)</emphasis>
-</para>
+  <para>
+    Mutt will read just one file, the first file it finds, from the list below.
+  </para>
+
+  <table id="muttrc-system-files">
+    <title>Mutt system config file locations</title>
+    <tgroup cols="2">
+      <thead>
+        <row>
+          <entry>File Location</entry>
+          <entry>Notes</entry>
+        </row>
+      </thead>
+      <tbody>
+        <row><entry>/etc/xdg/mutt/neomuttrc-20161126</entry><entry>NeoMutt release version</entry></row> 
+        <row><entry>/etc/xdg/mutt/neomuttrc</entry></row>          
+        <row><entry>/etc/xdg/mutt/Muttrc-1.7.2</entry><entry>Mutt release version, Note the case of the filename</entry></row>       
+        <row><entry>/etc/xdg/mutt/Muttrc</entry><entry>Note the case of the filename</entry></row>             
+        <row><entry>/etc/mutt/neomuttrc-20161126</entry><entry>NeoMutt release version</entry></row> 
+        <row><entry>/etc/mutt/neomuttrc</entry></row>          
+        <row><entry>/etc/mutt/Muttrc-1.7.2</entry><entry>Mutt release version, Note the case of the filename</entry></row>       
+        <row><entry>/etc/mutt/Muttrc</entry><entry>Note the case of the filename</entry></row>             
+        <row><entry>/usr/share/mutt/neomuttrc-20161126</entry><entry>NeoMutt release version</entry></row>
+        <row><entry>/usr/share/mutt/neomuttrc</entry></row>
+        <row><entry>/usr/share/mutt/Muttrc-1.7.2</entry><entry>Mutt release version, Note the case of the filename</entry></row>
+        <row><entry>/usr/share/mutt/Muttrc</entry><entry>Note the case of the filename</entry></row>
+      </tbody>
+    </tgroup>
+  </table>
+</sect2>
+
+<sect2 id="muttrc-user">
+  <title>Location of Mutt system config files</title>
+
+  <para>
+    Mutt will search for a user config file in several places.  First it looks
+    in the directory specified in the <literal>XDG_CONFIG_HOME</literal>
+    environment variable, which defaults to <literal>~/.config/mutt</literal>.
+    Next, it looks in <literal>~</literal> (your home directory).  Finally, it
+    tries <literal>~/.mutt</literal>.
+  </para>
+
+  <para>
+    You may specify your own location for the user config file using the
+    <quote>-F</quote> option on the <link linkend="commandline">command line</link>.
+  </para>
+
+  <para>
+    Mutt will read just one file, the first file it finds, from the list below.
+  </para>
+
+  <table id="muttrc-user-files">
+    <title>Mutt user config file locations</title>
+    <tgroup cols="2">
+      <thead>
+        <row>
+          <entry>File Location</entry>
+          <entry>Notes</entry>
+        </row>
+      </thead>
+      <tbody>
+        <row><entry>~/.config/mutt/neomuttrc-20161126</entry><entry>NeoMutt release version</entry></row> 
+        <row><entry>~/.config/mutt/neomuttrc</entry></row>          
+        <row><entry>~/.config/mutt/muttrc-1.7.2</entry><entry>Mutt release version</entry></row>       
+        <row><entry>~/.config/mutt/muttrc</entry></row>             
+        <row><entry>~/.neomuttrc-20161126</entry><entry>NeoMutt release version</entry></row> 
+        <row><entry>~/.neomuttrc</entry></row>          
+        <row><entry>~/.muttrc-1.7.2</entry><entry>Mutt release version</entry></row>       
+        <row><entry>~/.muttrc</entry></row>             
+        <row><entry>~/.mutt/neomuttrc-20161126</entry><entry>NeoMutt release version</entry></row> 
+        <row><entry>~/.mutt/neomuttrc</entry></row>          
+        <row><entry>~/.mutt/muttrc-1.7.2</entry><entry>Mutt release version</entry></row>       
+        <row><entry>~/.mutt/muttrc</entry></row>             
+      </tbody>
+    </tgroup>
+  </table>
+</sect2>
 
 </sect1>
 

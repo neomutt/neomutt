@@ -3426,6 +3426,8 @@ static char* mutt_find_cfg (const char *home, const char *xdg_cfg_home)
 {
   const char* names[] =
   {
+    "neomuttrc-" PACKAGE_VERSION,
+    "neomuttrc",
     "muttrc-" MUTT_VERSION,
     "muttrc",
     NULL,
@@ -3433,9 +3435,9 @@ static char* mutt_find_cfg (const char *home, const char *xdg_cfg_home)
 
   const char* locations[][2] =
   {
+    { xdg_cfg_home, "mutt/", },
     { home, ".", },
     { home, ".mutt/" },
-    { xdg_cfg_home, "mutt/", },
     { NULL, NULL },
   };
 
@@ -3736,11 +3738,15 @@ void mutt_init (int skip_sys_rc, LIST *commands)
       if (mutt_set_xdg_path (kXDGConfigDirs, buffer, sizeof buffer))
         break;
 
-      snprintf (buffer, sizeof buffer, "%s/NeoMuttrc", SYSCONFDIR);
+      snprintf (buffer, sizeof buffer, "%s/neomuttrc-%s", SYSCONFDIR, PACKAGE_VERSION);
       if (access (buffer, F_OK) == 0)
         break;
 
-      snprintf (buffer, sizeof buffer, "%s/Muttrc-%s", SYSCONFDIR, PACKAGE_VERSION);
+      snprintf (buffer, sizeof buffer, "%s/neomuttrc", SYSCONFDIR);
+      if (access (buffer, F_OK) == 0)
+        break;
+
+      snprintf (buffer, sizeof buffer, "%s/Muttrc-%s", SYSCONFDIR, MUTT_VERSION);
       if (access (buffer, F_OK) == 0)
         break;
 
@@ -3748,7 +3754,15 @@ void mutt_init (int skip_sys_rc, LIST *commands)
       if (access (buffer, F_OK) == 0)
         break;
 
-      snprintf (buffer, sizeof buffer, "%s/Muttrc-%s", PKGDATADIR, PACKAGE_VERSION);
+      snprintf (buffer, sizeof buffer, "%s/neomuttrc-%s", PKGDATADIR, PACKAGE_VERSION);
+      if (access (buffer, F_OK) == 0)
+        break;
+
+      snprintf (buffer, sizeof buffer, "%s/neomuttrc", PKGDATADIR);
+      if (access (buffer, F_OK) == 0)
+        break;
+
+      snprintf (buffer, sizeof buffer, "%s/Muttrc-%s", PKGDATADIR, MUTT_VERSION);
       if (access (buffer, F_OK) == 0)
         break;
 

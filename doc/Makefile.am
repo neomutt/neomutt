@@ -218,8 +218,8 @@ smime_keys.1: $(srcdir)/smime_keys.man
 stamp-doc-xml: makedoc$(EXEEXT) $(top_srcdir)/init.h \
                manual.xml.head $(top_srcdir)/functions.h $(top_srcdir)/OPS* manual.xml.tail \
                $(srcdir)/gen-map-doc
-	( date=`head -n 1 $(top_srcdir)/ChangeLog.neomutt | LC_ALL=C cut -b 1-10` && \
-	  sed -e "s/@VERSION\@/$(PACKAGE_VERSION) (1.7.1)/" $(srcdir)/manual.xml.head && \
+	( mutt_ver=`sed -n -e '/MUTT_VERSION/s/.*"\(.*\)".*/\1/p' $(top_srcdir)/config.h` && \
+	  sed -e "s/@VERSION\@/$(PACKAGE_VERSION) ($$mutt_ver)/" $(srcdir)/manual.xml.head && \
 	  $(MAKEDOC_CPP) $(top_srcdir)/init.h | ./makedoc$(EXEEXT) -s && \
 	  $(MAKEDOC_CPP) $(top_srcdir)/functions.h | \
 	    perl $(srcdir)/gen-map-doc $(srcdir)/manual.xml.tail $(top_srcdir)/OPS* \
