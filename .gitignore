@@ -33,12 +33,16 @@ po/mutt.pot
 .version
 aclocal.m4
 compile
+confdefs.h
 config.guess
 config.h
 config.log
 config.status
 config.sub
 configure
+conftest
+conftest.c
+conftest.err
 conststrings.c
 depcomp
 hcachever.sh
