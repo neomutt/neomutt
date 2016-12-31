@@ -4,6 +4,11 @@ mutt. Please read this file carefully when upgrading your installation.
 The keys used are:
   !: modified feature, -: deleted feature, +: new feature
 
+1.7.2 (2016-12-04):
+
+  ! Bug fix release.  No features were modified or added.
+  ! Fixes for OpenSSL 1.1.  Versions less than 0.9.6 are no longer supported.
+
 1.7.1 (2016-10-08):
 
   ! Bug fix release.  No features were modified or added.

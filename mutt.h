@@ -514,6 +514,7 @@ enum
   OPTTILDE,
   OPTTSENABLED,
   OPTUNCOLLAPSEJUMP,
+  OPTUNCOLLAPSENEW,
   OPTUSE8BITMIME,
   OPTUSEDOMAIN,
   OPTUSEFROM,
@@ -1104,6 +1105,17 @@ typedef struct
   char   *minor;
   regex_t minor_rx;
 } ATTACH_MATCH;
+
+/* multibyte character table.
+ * Allows for direct access to the individual multibyte characters in a
+ * string.  This is used for the Tochars and StChars option types. */
+typedef struct
+{
+  int len;               /* number of characters */
+  char **chars;          /* the array of multibyte character strings */
+  char *segmented_str;   /* each chars entry points inside this string */
+  char *orig_str;
+} mbchar_table;
 
 #define MUTT_PARTS_TOPLEVEL	(1<<0)	/* is the top-level part */
 
