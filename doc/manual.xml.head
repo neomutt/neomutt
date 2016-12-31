@@ -128,7 +128,7 @@ at <ulink url="http://wiki.mutt.org/">http://wiki.mutt.org/</ulink>.
 <listitem>
 <para>
 For the IRC user community, visit channel <emphasis>#mutt</emphasis> on
-<ulink url="http://www.freenode.net/">irc.freenode.net</ulink>.
+<ulink url="http://freenode.net/">irc.freenode.net</ulink>.
 </para>
 </listitem>
 </varlistentry>
@@ -12010,10 +12010,10 @@ bind index \CG get-message
 
     <itemizedlist>
       <listitem><para>For more information, see:
-      <ulink url="http://notmuchmail.org/">http://notmuchmail.org/</ulink>
+      <ulink url="https://notmuchmail.org/">https://notmuchmail.org/</ulink>
       </para></listitem>
       <listitem><para>More examples:
-      <ulink url="http://notmuchmail.org/mutttips/">http://notmuchmail.org/mutttips/</ulink>
+      <ulink url="https://notmuchmail.org/mutttips/">https://notmuchmail.org/mutttips/</ulink>
       </para></listitem>
     </itemizedlist>
 
@@ -12083,7 +12083,7 @@ virtual-mailboxes "My INBOX" "notmuch://?query=tag:inbox"
 
       <para>
         For more details about Xapian queries, see:
-        <ulink url="http://xapian.org/docs/queryparser.html">http://xapian.org/docs/queryparser.html</ulink>
+        <ulink url="https://xapian.org/docs/queryparser.html">https://xapian.org/docs/queryparser.html</ulink>
       </para>
 
       <para>
