@@ -2008,6 +2008,16 @@ void mutt_set_mtime (const char* from, const char* to)
   }
 }
 
+/* set atime to current time, just as read() would do on !noatime.
+ * Silently ignored if unsupported. */
+void mutt_touch_atime (int f)
+{
+#ifdef HAVE_FUTIMENS
+  struct timespec times[2]={{0,UTIME_NOW},{0,UTIME_OMIT}};
+  futimens(f, times);
+#endif
+}
+
 const char *mutt_make_version (void)
 {
   static char vstring[STRING];

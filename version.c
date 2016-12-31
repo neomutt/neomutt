@@ -211,6 +211,11 @@ static struct compile_options comp_opts[] =
 #else
   { "HAVE_REGCOMP", 0 },
 #endif
+#ifdef HAVE_FUTIMENS
+  { "HAVE_FUTIMENS", 1 },
+#else
+  { "HAVE_FUTIMENS", 0 },
+#endif
 #ifdef HAVE_RESIZETERM
   { "HAVE_RESIZETERM", 1 },
 #else

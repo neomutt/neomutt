@@ -564,6 +564,8 @@ AC_CHECK_FUNCS(ftruncate, , [AC_CHECK_LIB(x, chsize)])
 dnl SCO has strftime() in libintl
 AC_CHECK_FUNCS(strftime, , [AC_CHECK_LIB(intl, strftime)])
 
+AC_CHECK_FUNCS(futimens)
+
 dnl AIX may not have fchdir()
 AC_CHECK_FUNCS(fchdir, , [mutt_cv_fchdir=no])
 
