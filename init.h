@@ -1006,7 +1006,7 @@ struct option_t MuttVars[] = {
   ** .pp
   ** This setting defaults to the contents of the environment variable \fC$$$EMAIL\fP.
   */
-  { "from_chars",		DT_STR,	 R_BOTH, UL &Fromchars, UL 0 },
+  { "from_chars",		DT_MBCHARTBL,	 R_BOTH, UL &Fromchars, 0 },
   /*
   ** .pp
   ** Controls the character used to prefix the %F and %L fields in the

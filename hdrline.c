@@ -139,44 +139,6 @@ add_index_color (char *buf, size_t buflen, format_flag flags, char color)
   return 2;
 }
 
-/**
- * get_nth_wchar - Extract one char from a utf-8 string
- * @ustr:   Unicode string
- * @index:  Select this character
- * @return: String pointer to the character
- *
- * Extract one multi-byte character from a string.
- * If the (index < 0) the first character will be selected.
- * If the index is larger thant the string, then " " will be returned.
- * If the character selected is '\n' (Ctrl-M), then "" will be returned.
- *
- * Note: get_nth_wchar() may return a pointer to a static buffer.
- */
-char *get_nth_wchar (char *ustr, int index)
-{
-  static char buffer[5];
-  int clen = 0;
-  int i;
-
-  if (!*ustr)
-    return " ";
-
-  for (i = 0; i <= index; i++)
-  {
-    ustr += clen;
-    clen = mutt_charlen (ustr, NULL);
-    if (clen < 1)
-      return " ";
-  }
-
-  if ((clen == 1) && (ustr[0] == '\r'))
-    return "";
-
-  memcpy (buffer, ustr, clen);
-  buffer[clen] = 0;
-  return buffer;
-}
-
 enum FieldType
 {
   DISP_TO,
@@ -205,14 +167,10 @@ static const char *make_from_prefix(enum FieldType disp)
     [DISP_FROM] = ""
   };
 
-  if (!Fromchars || (*Fromchars == '\0'))
+  if (!Fromchars || (disp >= Fromchars->len))
     return long_prefixes[disp];
 
-  char *prefix = get_nth_wchar (Fromchars, disp);
-  if (!prefix || (prefix[0] == '\0'))
-      return prefix;
-
-  snprintf (padded, sizeof(padded), "%s ", prefix);
+  snprintf (padded, sizeof(padded), "%s ", Fromchars->chars[disp]);
   return padded;
 }
 
