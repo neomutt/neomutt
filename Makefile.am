@@ -6,7 +6,7 @@ AUTOMAKE_OPTIONS = 1.6 foreign
 EXTRA_PROGRAMS = mutt_dotlock pgpring pgpewrap mutt_md5
 
 # Test the .tar file by building everything
-AM_DISTCHECK_CONFIGURE_FLAGS = --enable-pop --enable-imap --enable-smtp --enable-hcache --with-bdb --with-gdbm --with-kyotocabinet --with-lmdb --with-qdbm --with-tokyocabinet --enable-gpgme --enable-sidebar --enable-nntp --enable-notmuch --enable-compressed --enable-debug --with-gnutls --with-sasl --with-gss
+AM_DISTCHECK_CONFIGURE_FLAGS = --enable-pop --enable-imap --enable-smtp --with-bdb --with-gdbm --with-kyotocabinet --with-lmdb --with-qdbm --with-tokyocabinet --enable-gpgme --enable-sidebar --enable-nntp --enable-notmuch --enable-compressed --enable-debug --with-gnutls --with-sasl --with-gss
 
 if BUILD_DOC
 DOC_SUBDIR = doc

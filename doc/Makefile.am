@@ -218,7 +218,7 @@ smime_keys.1: $(srcdir)/smime_keys.man
 stamp-doc-xml: makedoc$(EXEEXT) $(top_srcdir)/init.h \
                manual.xml.head $(top_srcdir)/functions.h $(top_srcdir)/OPS* manual.xml.tail \
                $(srcdir)/gen-map-doc
-	( mutt_ver=`sed -n -e '/MUTT_VERSION/s/.*"\(.*\)".*/\1/p' $(top_srcdir)/config.h` && \
+	( mutt_ver=`sed -n -e '/MUTT_VERSION/s/.*"\(.*\)".*/\1/p' ../config.h` && \
 	  sed -e "s/@VERSION\@/$(PACKAGE_VERSION) ($$mutt_ver)/" $(srcdir)/manual.xml.head && \
 	  $(MAKEDOC_CPP) $(top_srcdir)/init.h | ./makedoc$(EXEEXT) -s && \
 	  $(MAKEDOC_CPP) $(top_srcdir)/functions.h | \
