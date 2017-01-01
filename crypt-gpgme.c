@@ -1091,7 +1091,11 @@ BODY *smime_gpgme_build_smime_entity (BODY *a, char *keylist)
   if (!rset)
     return NULL;
 
-  plaintext = body_to_data_object (a, 0);
+  /* OpenSSL converts line endings to crlf when encrypting.  Some
+   * clients depend on this for signed+encrypted messages: they do not
+   * convert line endings between decrypting and checking the
+   * signature.  See #3904. */
+  plaintext = body_to_data_object (a, 1);
   if (!plaintext)
     {
       free_recipient_set (&rset);
