@@ -4015,6 +4015,25 @@ struct option_t MuttVars[] = {
   ** .dt 6 .dd L .dd Indicates the mail was sent to a mailing-list you subscribe to.
   ** .de
   */
+  { "flag_chars",	DT_MBCHARTBL,	 R_BOTH, UL &Flagchars, UL "*!DdrONon- " },
+  /*
+   ** .pp
+   ** Controls the characters used in several flags.
+   ** .dl
+   ** .dt \fBCharacter\fP .dd \fBDefault\fP .dd \fBDescription\fP
+   ** .dt 1 .dd * .dd The mail is tagged.
+   ** .dt 2 .dd ! .dd The mail is flagged as important.
+   ** .dt 3 .dd D .dd The mail is marked for deletion.
+   ** .dt 4 .dd d .dd The mail has attachments marked for deletion.
+   ** .dt 5 .dd r .dd The mail has been replied to.
+   ** .dt 6 .dd O .dd The mail is Old (Unread but seen).
+   ** .dt 7 .dd N .dd The mail is New (Unread but not seen).
+   ** .dt 8 .dd o .dd The mail thread is Old (Unread but seen).
+   ** .dt 9 .dd n .dd The mail thread is New (Unread but not seen).
+   ** .dt 10 .dd - .dd The mail is read - %S expando.
+   ** .dt 11 .dd <space> .dd The mail is read - %Z expando.
+   ** .de
+   */
   { "trash",		DT_PATH, R_NONE, UL &TrashPath, 0 },
   /*
   ** .pp

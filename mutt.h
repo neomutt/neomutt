@@ -1109,7 +1109,8 @@ typedef struct
 
 /* multibyte character table.
  * Allows for direct access to the individual multibyte characters in a
- * string.  This is used for the Tochars and StChars option types. */
+ * string.  This is used for the Flagchars, Fromchars, StChars and Tochars
+ * option types. */
 typedef struct
 {
   int len;               /* number of characters */
