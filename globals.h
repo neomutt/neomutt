@@ -163,6 +163,7 @@ WHERE mbchar_table *StChars;
 WHERE char *Status;
 WHERE char *Tempdir;
 WHERE mbchar_table *Tochars;
+WHERE mbchar_table *Flagchars;
 WHERE char *TrashPath;
 WHERE char *TSStatusFormat;
 WHERE char *TSIconFormat;

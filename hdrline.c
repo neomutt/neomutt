@@ -366,6 +366,27 @@ static int get_initials(const char *name, char *buf, int buflen)
   return 1;
 }
 
+/**
+ * get_nth_wchar - Extract one char from a utf-8 string
+ * @ustr:   Unicode string
+ * @index:  Select this character
+ * @return: String pointer to the character
+ *
+ * Extract one multi-byte character from a string.
+ * If the (index < 0) the first character will be selected.
+ * If the index is larger thant the string, then " " will be returned.
+ * If the character selected is '\n' (Ctrl-M), then "" will be returned.
+ *
+ * Note: get_nth_wchar() returns a pointer to a static buffer.
+ */
+char *get_nth_wchar (mbchar_table *table, int index)
+{
+  if (!table || !table->chars || (index < 0) || (index >= table->len))
+    return " ";
+
+  return table->chars[index];
+}
+
 /* %a = address of author
  * %A = reply-to address (if present; otherwise: address of author
  * %b = filename of the originating folder
@@ -421,6 +442,7 @@ hdr_format_str (char *dest,
   HEADER *hdr, *htmp;
   CONTEXT *ctx;
   char fmt[SHORT_STRING], buf2[LONG_STRING], ch, *p;
+  char *wch;
   int do_locales, i;
   int optional = (flags & MUTT_FORMAT_OPTIONAL);
   int threads = ((Sort & SORT_MASK) == SORT_THREADS);
@@ -429,6 +451,19 @@ hdr_format_str (char *dest,
 #define THREAD_OLD (threads && hdr->collapsed && hdr->num_hidden > 1 && mutt_thread_contains_unread (ctx, hdr) == 2)
   size_t len;
   size_t colorlen;
+
+  /* Flagchars */
+  #define MUTT_FLAG_TAGGED 0
+  #define MUTT_FLAG_IMPORTANT 1
+  #define MUTT_FLAG_DELETED 2
+  #define MUTT_FLAG_DELETED_ATTACH 3
+  #define MUTT_FLAG_REPLIED 4
+  #define MUTT_FLAG_OLD 5
+  #define MUTT_FLAG_NEW 6
+  #define MUTT_FLAG_OLD_THREAD 7
+  #define MUTT_FLAG_NEW_THREAD 8
+  #define MUTT_FLAG_S_EMPTY 9
+  #define MUTT_FLAG_Z_EMPTY 10
 
   hdr = hfi->hdr;
   ctx = hfi->ctx;
@@ -915,26 +950,23 @@ hdr_format_str (char *dest,
 
     case 'S':
       if (hdr->deleted)
-	ch = 'D';
+        wch = get_nth_wchar (Flagchars, MUTT_FLAG_DELETED);
       else if (hdr->attach_del)
-	ch = 'd';
+        wch = get_nth_wchar (Flagchars, MUTT_FLAG_DELETED_ATTACH);
       else if (hdr->tagged)
-	ch = '*';
+        wch = get_nth_wchar (Flagchars, MUTT_FLAG_TAGGED);
       else if (hdr->flagged)
-	ch = '!';
+        wch = get_nth_wchar (Flagchars, MUTT_FLAG_IMPORTANT);
       else if (hdr->replied)
-	ch = 'r';
+        wch = get_nth_wchar (Flagchars, MUTT_FLAG_REPLIED);
       else if (hdr->read && (ctx && ctx->msgnotreadyet != hdr->msgno))
-	ch = '-';
+        wch = get_nth_wchar (Flagchars, MUTT_FLAG_S_EMPTY);
       else if (hdr->old)
-	ch = 'O';
+        wch = get_nth_wchar (Flagchars, MUTT_FLAG_OLD);
       else
-	ch = 'N';
+        wch = get_nth_wchar (Flagchars, MUTT_FLAG_NEW);
 
-      /* FOO - this is probably unsafe, but we are not likely to have such
-	 a short string passed into this routine */
-      buf2[0] = ch;
-      buf2[1] = 0;
+      snprintf (buf2, sizeof (buf2), "%s", wch);
       colorlen = add_index_color (dest, destlen, flags, MT_COLOR_INDEX_FLAGS);
       mutt_format_s (dest + colorlen, destlen - colorlen, prefix, buf2);
       add_index_color (dest + colorlen, destlen - colorlen, flags, MT_COLOR_INDEX);
@@ -1022,9 +1054,9 @@ hdr_format_str (char *dest,
 		((hdr->read && (ctx && ctx->msgnotreadyet != hdr->msgno))
 		? (hdr->replied ? 'r' : ' ') : (hdr->old ? 'O' : 'N')))),
 		hdr->deleted ? 'D' : (hdr->attach_del ? 'd' : ch),
-		hdr->tagged ? "*" :
-		(hdr->flagged ? "!" :
-		 (Tochars && ((i = mutt_user_is_recipient (hdr)) < Tochars->len) ? Tochars->chars[i] : " ")));
+		hdr->tagged ? get_nth_wchar (Flagchars, MUTT_FLAG_TAGGED) :
+		(hdr->flagged ? get_nth_wchar (Flagchars, MUTT_FLAG_IMPORTANT) :
+		 get_nth_wchar (Tochars, mutt_user_is_recipient (hdr))));
       colorlen = add_index_color (dest, destlen, flags, MT_COLOR_INDEX_FLAGS);
       mutt_format_s (dest + colorlen, destlen - colorlen, prefix, buf2);
       add_index_color (dest + colorlen, destlen - colorlen, flags, MT_COLOR_INDEX);
