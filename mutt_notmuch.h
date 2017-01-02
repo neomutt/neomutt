@@ -15,6 +15,13 @@ int nm_update_filename(CONTEXT *ctx, const char *o, const char *n, HEADER *h);
 char *nm_uri_from_query(CONTEXT *ctx, char *buf, size_t bufsz);
 int nm_modify_message_tags(CONTEXT *ctx, HEADER *hdr, char *tags);
 
+void nm_setup_windowed_query(char *buf, size_t bufsz);
+char *nm_uri_from_windowed_query(CONTEXT *ctx, char *buf, size_t bufsz, char *timebase, int duration);
+void nm_query_window_reset();
+void nm_query_window_backward();
+void nm_query_window_forward();
+int nm_query_window_check_timebase(char *timebase);
+
 void nm_longrun_init(CONTEXT *cxt, int writable);
 void nm_longrun_done(CONTEXT *cxt);
 

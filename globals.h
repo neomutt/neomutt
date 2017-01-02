@@ -320,6 +320,10 @@ WHERE char *VirtFolderFormat;
 WHERE int NotmuchDBLimit;
 WHERE char *NotmuchQueryType;
 WHERE char *NotmuchRecordTags;
+WHERE int NotmuchQueryWindowDuration;
+WHERE char *NotmuchQueryWindowTimebase;
+WHERE int NotmuchQueryWindowCurrentPosition;
+WHERE char *NotmuchQueryWindowCurrentSearch;
 #endif
 
 
