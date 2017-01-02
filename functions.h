@@ -209,6 +209,9 @@ const struct binding_t OpMain[] = { /* map: index */
 #ifdef USE_NOTMUCH
   { "change-vfolder",		OP_MAIN_CHANGE_VFOLDER,         NULL },
   { "vfolder-from-query",	OP_MAIN_VFOLDER_FROM_QUERY,     NULL },
+  { "windowed-vfolder-from-query",	OP_MAIN_WINDOWED_VFOLDER_FROM_QUERY, NULL },
+  { "windowed-vfolder-backward",	OP_MAIN_WINDOWED_VFOLDER_BACKWARD,   NULL },
+  { "windowed-vfolder-forward",		OP_MAIN_WINDOWED_VFOLDER_FORWARD,    NULL },
   { "modify-labels",		OP_MAIN_MODIFY_LABELS,		NULL },
   { "modify-labels-then-hide",	OP_MAIN_MODIFY_LABELS_THEN_HIDE, NULL },
   { "entire-thread",		OP_MAIN_ENTIRE_THREAD,          NULL },
