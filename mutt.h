@@ -657,7 +657,8 @@ void mutt_free_list (LIST **);
 void mutt_free_rx_list (RX_LIST **);
 void mutt_free_spam_list (SPAM_LIST **);
 LIST *mutt_copy_list (LIST *);
-int mutt_matches_ignore (const char *, LIST *);
+int mutt_matches_ignore (const char *);
+int mutt_matches_list (const char *, LIST *);
 
 /* add an element to a list */
 LIST *mutt_add_list (LIST *, const char *);
