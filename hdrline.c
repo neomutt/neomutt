@@ -42,6 +42,22 @@
 #include "mutt_notmuch.h"
 #endif
 
+enum
+{
+  /* Indexing into the Flagchars variable ($flag_chars) */
+  FlagCharTagged,
+  FlagCharImportant,
+  FlagCharDeleted,
+  FlagCharDeletedAttach,
+  FlagCharReplied,
+  FlagCharOld,
+  FlagCharNew,
+  FlagCharOldThread,
+  FlagCharNewThread,
+  FlagCharSEmpty,
+  FlagCharZEmpty
+};
+
 int mutt_is_mail_list (ADDRESS *addr)
 {
   if (!mutt_match_rx_list (addr->mailbox, UnMailLists))
@@ -367,22 +383,22 @@ static int get_initials(const char *name, char *buf, int buflen)
 }
 
 /**
- * get_nth_wchar - Extract one char from a utf-8 string
- * @ustr:   Unicode string
+ * get_nth_wchar - Extract one char from a multi-byte table
+ * @table:  Multi-byte table
  * @index:  Select this character
  * @return: String pointer to the character
  *
- * Extract one multi-byte character from a string.
- * If the (index < 0) the first character will be selected.
- * If the index is larger thant the string, then " " will be returned.
+ * Extract one multi-byte character from a string table.
+ * If the index is invalid, then a space character will be returned.
  * If the character selected is '\n' (Ctrl-M), then "" will be returned.
- *
- * Note: get_nth_wchar() returns a pointer to a static buffer.
  */
 char *get_nth_wchar (mbchar_table *table, int index)
 {
   if (!table || !table->chars || (index < 0) || (index >= table->len))
     return " ";
+
+  if (table->chars[index][0] == '\n')
+	  return "";
 
   return table->chars[index];
 }
@@ -451,19 +467,6 @@ hdr_format_str (char *dest,
 #define THREAD_OLD (threads && hdr->collapsed && hdr->num_hidden > 1 && mutt_thread_contains_unread (ctx, hdr) == 2)
   size_t len;
   size_t colorlen;
-
-  /* Flagchars */
-  #define MUTT_FLAG_TAGGED 0
-  #define MUTT_FLAG_IMPORTANT 1
-  #define MUTT_FLAG_DELETED 2
-  #define MUTT_FLAG_DELETED_ATTACH 3
-  #define MUTT_FLAG_REPLIED 4
-  #define MUTT_FLAG_OLD 5
-  #define MUTT_FLAG_NEW 6
-  #define MUTT_FLAG_OLD_THREAD 7
-  #define MUTT_FLAG_NEW_THREAD 8
-  #define MUTT_FLAG_S_EMPTY 9
-  #define MUTT_FLAG_Z_EMPTY 10
 
   hdr = hfi->hdr;
   ctx = hfi->ctx;
@@ -950,21 +953,21 @@ hdr_format_str (char *dest,
 
     case 'S':
       if (hdr->deleted)
-        wch = get_nth_wchar (Flagchars, MUTT_FLAG_DELETED);
+        wch = get_nth_wchar (Flagchars, FlagCharDeleted);
       else if (hdr->attach_del)
-        wch = get_nth_wchar (Flagchars, MUTT_FLAG_DELETED_ATTACH);
+        wch = get_nth_wchar (Flagchars, FlagCharDeletedAttach);
       else if (hdr->tagged)
-        wch = get_nth_wchar (Flagchars, MUTT_FLAG_TAGGED);
+        wch = get_nth_wchar (Flagchars, FlagCharTagged);
       else if (hdr->flagged)
-        wch = get_nth_wchar (Flagchars, MUTT_FLAG_IMPORTANT);
+        wch = get_nth_wchar (Flagchars, FlagCharImportant);
       else if (hdr->replied)
-        wch = get_nth_wchar (Flagchars, MUTT_FLAG_REPLIED);
+        wch = get_nth_wchar (Flagchars, FlagCharReplied);
       else if (hdr->read && (ctx && ctx->msgnotreadyet != hdr->msgno))
-        wch = get_nth_wchar (Flagchars, MUTT_FLAG_S_EMPTY);
+        wch = get_nth_wchar (Flagchars, FlagCharSEmpty);
       else if (hdr->old)
-        wch = get_nth_wchar (Flagchars, MUTT_FLAG_OLD);
+        wch = get_nth_wchar (Flagchars, FlagCharOld);
       else
-        wch = get_nth_wchar (Flagchars, MUTT_FLAG_NEW);
+        wch = get_nth_wchar (Flagchars, FlagCharNew);
 
       snprintf (buf2, sizeof (buf2), "%s", wch);
       colorlen = add_index_color (dest, destlen, flags, MT_COLOR_INDEX_FLAGS);
@@ -1037,34 +1040,57 @@ hdr_format_str (char *dest,
 #endif
 
     case 'Z':
-      wch = " ";
-
-      if (WithCrypto && hdr->security & GOODSIGN)
-        wch = "S";
-      else if (WithCrypto && hdr->security & ENCRYPT)
-        wch = "P";
-      else if (WithCrypto && hdr->security & SIGN)
-        wch = "s";
-      else if ((WithCrypto & APPLICATION_PGP) && hdr->security & PGPKEY)
-        wch = "K";
-
-      snprintf (buf2, sizeof (buf2), "%s%s%s",
+      {
         /* New/Old for threads; replied; New/Old for messages */
-        (THREAD_NEW ? get_nth_wchar (Flagchars, MUTT_FLAG_NEW_THREAD) :
-          (THREAD_OLD ? get_nth_wchar (Flagchars, MUTT_FLAG_OLD_THREAD) :
-            ((hdr->read && (ctx && ctx->msgnotreadyet != hdr->msgno)) ?
-              (hdr->replied ? get_nth_wchar (Flagchars, MUTT_FLAG_REPLIED) :
-                get_nth_wchar (Flagchars, MUTT_FLAG_Z_EMPTY)) :
-              (hdr->old ? get_nth_wchar (Flagchars, MUTT_FLAG_OLD) :
-                get_nth_wchar (Flagchars, MUTT_FLAG_NEW))))),
+        char *first;
+        if (THREAD_NEW)
+          first = get_nth_wchar (Flagchars, FlagCharNewThread);
+        else if (THREAD_OLD)
+          first = get_nth_wchar (Flagchars, FlagCharOldThread);
+        else if (hdr->read && (ctx && (ctx->msgnotreadyet != hdr->msgno)))
+        {
+          if (hdr->replied)
+            first = get_nth_wchar (Flagchars, FlagCharReplied);
+          else
+            first = get_nth_wchar (Flagchars, FlagCharZEmpty);
+        }
+        else
+        {
+          if (hdr->old)
+            first = get_nth_wchar (Flagchars, FlagCharOld);
+          else
+            first = get_nth_wchar (Flagchars, FlagCharNew);
+        }
+
         /* Marked for deletion; deleted attachments; crypto */
-        (hdr->deleted ? get_nth_wchar (Flagchars, MUTT_FLAG_DELETED) :
-          (hdr->attach_del ? get_nth_wchar (Flagchars, MUTT_FLAG_DELETED_ATTACH) :
-          wch)),
+        char *second;
+        if (hdr->deleted)
+          second = get_nth_wchar (Flagchars, FlagCharDeleted);
+        else if (hdr->attach_del)
+          second = get_nth_wchar (Flagchars, FlagCharDeletedAttach);
+        else if (WithCrypto && (hdr->security & GOODSIGN))
+          second = "S";
+        else if (WithCrypto && (hdr->security & ENCRYPT))
+          second = "P";
+        else if (WithCrypto && (hdr->security & SIGN))
+          second = "s";
+        else if ((WithCrypto & APPLICATION_PGP) && (hdr->security & PGPKEY))
+          second = "K";
+        else
+          second = " ";
+
         /* Tagged, flagged and recipient flag */
-        (hdr->tagged ? get_nth_wchar (Flagchars, MUTT_FLAG_TAGGED) :
-          (hdr->flagged ? get_nth_wchar (Flagchars, MUTT_FLAG_IMPORTANT) :
-          get_nth_wchar (Tochars, mutt_user_is_recipient (hdr)))));
+        char *third;
+        if (hdr->tagged)
+          third = get_nth_wchar (Flagchars, FlagCharTagged);
+        else if (hdr->flagged)
+          third = get_nth_wchar (Flagchars, FlagCharImportant);
+        else
+          third = get_nth_wchar (Tochars, mutt_user_is_recipient (hdr));
+
+        snprintf (buf2, sizeof (buf2), "%s%s%s", first, second, third);
+      }
+
       colorlen = add_index_color (dest, destlen, flags, MT_COLOR_INDEX_FLAGS);
       mutt_format_s (dest + colorlen, destlen - colorlen, prefix, buf2);
       add_index_color (dest + colorlen, destlen - colorlen, flags, MT_COLOR_INDEX);
