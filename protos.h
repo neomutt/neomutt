@@ -406,7 +406,7 @@ int mutt_wctoutf8 (char *s, unsigned int c, size_t buflen);
 
 #define new_pattern() safe_calloc(1, sizeof (pattern_t))
 
-int mutt_pattern_exec (struct pattern_t *pat, pattern_exec_flag flags, CONTEXT *ctx, HEADER *h);
+int mutt_pattern_exec (struct pattern_t *pat, pattern_exec_flag flags, CONTEXT *ctx, HEADER *h, pattern_cache_t *);
 pattern_t *mutt_pattern_comp (/* const */ char *s, int flags, BUFFER *err);
 void mutt_check_simple (char *s, size_t len, const char *simple);
 void mutt_pattern_free (pattern_t **pat);
