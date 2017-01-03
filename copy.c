@@ -200,9 +200,7 @@ mutt_copy_hdr (FILE *in, FILE *out, LOFF_T off_start, LOFF_T off_end, int flags,
 
       /* note: CH_FROM takes precedence over header weeding. */
       if (!((flags & CH_FROM) && (flags & CH_FORCE_FROM) && this_is_from) &&
-	  (flags & CH_WEED) &&
-	  mutt_matches_ignore (buf, Ignore) &&
-	  !mutt_matches_ignore (buf, UnIgnore))
+	  (flags & CH_WEED) && mutt_matches_ignore (buf))
 	continue;
       if ((flags & CH_WEED_DELIVERED) &&
 	  ascii_strncasecmp ("Delivered-To:", buf, 13) == 0)

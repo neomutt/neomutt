@@ -382,7 +382,7 @@ void mutt_free_header (HEADER **h)
 }
 
 /* returns true if the header contained in "s" is in list "t" */
-int mutt_matches_ignore (const char *s, LIST *t)
+int mutt_matches_list (const char *s, LIST *t)
 {
   for (; t; t = t->next)
   {
@@ -390,6 +390,12 @@ int mutt_matches_ignore (const char *s, LIST *t)
       return 1;
   }
   return 0;
+}
+
+/* checks Ignore and UnIgnore using mutt_matches_list */
+int mutt_matches_ignore (const char *s)
+{
+    return mutt_matches_list (s, Ignore) && !mutt_matches_list (s, UnIgnore);
 }
 
 /* prepend the path part of *path to *link */
