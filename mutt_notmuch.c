@@ -1284,8 +1284,8 @@ char *nm_uri_from_windowed_query(CONTEXT *ctx, char *buf, size_t bufsz, char *ti
 {
 	dprint(2, (debugfile, "nm_uri_from_windowed_query (%s, %s, %d)\n", buf, timebase, duration));
 
-	int beg = duration*(NotmuchQueryWindowCurrentPosition+1);
-	int end = duration*NotmuchQueryWindowCurrentPosition;
+	int beg = duration * (NotmuchQueryWindowCurrentPosition + 1);
+	int end = duration *  NotmuchQueryWindowCurrentPosition;
 
 	if (NULL == NotmuchQueryWindowCurrentSearch)
 	{
