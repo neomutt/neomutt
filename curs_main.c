@@ -1895,7 +1895,8 @@ int mutt_index_menu (void)
           mutt_message _("Windowed queries disabled.");
           break;
         }
-        if (!nm_query_window_check_timebase(NotmuchQueryWindowTimebase)) {
+        if (!nm_query_window_check_timebase(NotmuchQueryWindowTimebase))
+        {
           mutt_message _("Invalid nm_query_window_timebase value (valid values are: hour, day, week, month or year).");
           break;
         }
@@ -1923,7 +1924,8 @@ int mutt_index_menu (void)
           mutt_message _("Windowed queries disabled.");
           break;
         }
-        if (!nm_query_window_check_timebase(NotmuchQueryWindowTimebase)) {
+        if (!nm_query_window_check_timebase(NotmuchQueryWindowTimebase))
+        {
           mutt_message _("Invalid nm_query_window_timebase value (valid values are: hour, day, week, month or year).");
           break;
         }
@@ -1945,7 +1947,8 @@ int mutt_index_menu (void)
           mutt_message _("Windowed queries disabled.");
           break;
         }
-        if (!nm_query_window_check_timebase(NotmuchQueryWindowTimebase)) {
+        if (!nm_query_window_check_timebase(NotmuchQueryWindowTimebase))
+        {
           mutt_message _("Invalid nm_query_window_timebase value (valid values are: hour, day, week, month or year).");
           break;
         }
