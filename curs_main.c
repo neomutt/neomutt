@@ -1890,7 +1890,7 @@ int mutt_index_menu (void)
 
       case OP_MAIN_WINDOWED_VFOLDER_FROM_QUERY:
         dprint(2, (debugfile, "OP_MAIN_WINDOWED_VFOLDER_FROM_QUERY\n"));
-        if (0 > NotmuchQueryWindowDuration) 
+        if (NotmuchQueryWindowDuration < 0) 
         {
           mutt_message (_("Windowed queries disabled."));
           break;
@@ -1901,7 +1901,7 @@ int mutt_index_menu (void)
           break;
         }
         buf[0] = '\0';
-        if (mutt_get_field ("Query: ", buf, sizeof (buf), MUTT_NM_QUERY) != 0 || !buf[0])
+        if ((mutt_get_field ("Query: ", buf, sizeof (buf), MUTT_NM_QUERY) != 0) || !buf[0])
         {
           mutt_message (_("No query, aborting."));
           break;
@@ -1919,7 +1919,7 @@ int mutt_index_menu (void)
 
       case OP_MAIN_WINDOWED_VFOLDER_BACKWARD:
         dprint(2, (debugfile, "OP_MAIN_WINDOWED_VFOLDER_BACKWARD\n"));
-        if (0 > NotmuchQueryWindowDuration) 
+        if (NotmuchQueryWindowDuration < 0) 
         {
           mutt_message (_("Windowed queries disabled."));
           break;
@@ -1942,7 +1942,7 @@ int mutt_index_menu (void)
 
       case OP_MAIN_WINDOWED_VFOLDER_FORWARD:
         dprint(2, (debugfile, "OP_MAIN_WINDOWED_VFOLDER_FORWARD\n"));
-        if (0 > NotmuchQueryWindowDuration) 
+        if (NotmuchQueryWindowDuration < 0) 
         {
           mutt_message (_("Windowed queries disabled."));
           break;

@@ -1271,11 +1271,11 @@ void nm_setup_windowed_query(char *buf, size_t bufsz)
 
 int nm_query_window_check_timebase(char *timebase)
 {
-	if (strcmp(timebase, "hour") == 0
-	    || strcmp(timebase, "day") == 0
-	    || strcmp(timebase, "week") == 0
-	    || strcmp(timebase, "month") == 0
-	    || strcmp(timebase, "year") == 0)
+	if ((strcmp(timebase, "hour")  == 0) ||
+	    (strcmp(timebase, "day")   == 0) ||
+	    (strcmp(timebase, "week")  == 0) ||
+	    (strcmp(timebase, "month") == 0) ||
+	    (strcmp(timebase, "year")  == 0))
 		return true;
 	return false;
 }
@@ -1287,14 +1287,14 @@ char *nm_uri_from_windowed_query(CONTEXT *ctx, char *buf, size_t bufsz, char *ti
 	int beg = duration * (NotmuchQueryWindowCurrentPosition + 1);
 	int end = duration *  NotmuchQueryWindowCurrentPosition;
 
-	if (NULL == NotmuchQueryWindowCurrentSearch)
+	if (!NotmuchQueryWindowCurrentSearch)
 	{
 		nm_query_window_reset();
 		FREE(&NotmuchQueryWindowCurrentSearch);
 		return NULL;
 	}
 
-	if (0 == end)
+	if (end == 0)
 		snprintf(buf, bufsz, "date:%d%s..now and %s", beg, timebase, NotmuchQueryWindowCurrentSearch);
 	else
 		snprintf(buf, bufsz, "date:%d%s..%d%s and %s", beg, timebase, end, timebase, NotmuchQueryWindowCurrentSearch);
@@ -1316,7 +1316,7 @@ void nm_query_window_backward()
 
 void nm_query_window_forward()
 {
-	if (0 != NotmuchQueryWindowCurrentPosition)
+	if (NotmuchQueryWindowCurrentPosition != 0)
 		NotmuchQueryWindowCurrentPosition -= 1;
 
 	dprint(2, (debugfile, "nm_query_window_forward (%d)\n", NotmuchQueryWindowCurrentPosition));
