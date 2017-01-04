@@ -1287,10 +1287,9 @@ char *nm_uri_from_windowed_query(CONTEXT *ctx, char *buf, size_t bufsz, char *ti
 	int beg = duration * (NotmuchQueryWindowCurrentPosition + 1);
 	int end = duration *  NotmuchQueryWindowCurrentPosition;
 
-	if (!NotmuchQueryWindowCurrentSearch)
+	if (NotmuchQueryWindowCurrentSearch == NULL)
 	{
 		nm_query_window_reset();
-		FREE(&NotmuchQueryWindowCurrentSearch);
 		return NULL;
 	}
 
