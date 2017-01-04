@@ -1269,15 +1269,15 @@ void nm_setup_windowed_query(char *buf, size_t bufsz)
 	mutt_str_replace(&NotmuchQueryWindowCurrentSearch, buf);
 }
 
-int nm_query_window_check_timebase(char *timebase) 
+int nm_query_window_check_timebase(char *timebase)
 {
-  if (strcmp(timebase, "hour") == 0
-      || strcmp(timebase, "day") == 0
-      || strcmp(timebase, "week") == 0
-      || strcmp(timebase, "month") == 0
-      || strcmp(timebase, "year") == 0)
-      return true;
-  return false;
+	if (strcmp(timebase, "hour") == 0
+	    || strcmp(timebase, "day") == 0
+	    || strcmp(timebase, "week") == 0
+	    || strcmp(timebase, "month") == 0
+	    || strcmp(timebase, "year") == 0)
+		return true;
+	return false;
 }
 
 char *nm_uri_from_windowed_query(CONTEXT *ctx, char *buf, size_t bufsz, char *timebase, int duration)
@@ -1316,7 +1316,7 @@ void nm_query_window_backward()
 void nm_query_window_forward()
 {
 	if (0 != NotmuchQueryWindowCurrentPosition)
-	  NotmuchQueryWindowCurrentPosition -= 1;
+		NotmuchQueryWindowCurrentPosition -= 1;
 
 	dprint(2, (debugfile, "nm_query_window_forward (%d)\n", NotmuchQueryWindowCurrentPosition));
 }
