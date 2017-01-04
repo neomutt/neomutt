@@ -2053,19 +2053,19 @@ struct option_t MuttVars[] = {
   /*
    ** .pp
    ** This variable sets the time base of a windowed notmuch query.
-   ** accepted values are 'minute', 'hour', 'day', 'week', 'month', 'year'
+   ** Accepted values are 'minute', 'hour', 'day', 'week', 'month', 'year'
    */
   { "nm_query_window_timebase", DT_STR, R_NONE, UL &NotmuchQueryWindowTimebase, UL "week" },
   /*
    ** .pp
    ** This variable sets the time duration of a windowed notmuch query.
-   ** accepted values all non negative integers. A value of 0 disables the feature.
+   ** Accepted values all non negative integers. A value of 0 disables the feature.
    */
   { "nm_query_window_current_search", DT_STR, R_NONE, UL &NotmuchQueryWindowCurrentSearch, UL "" },
   /*
    ** .pp
    ** This variable sets the time duration of a windowed notmuch query.
-   ** accepted values all non negative integers. A value of 0 disables the feature.
+   ** Accepted values all non negative integers. A value of 0 disables the feature.
    */
   { "nm_query_window_current_position", DT_NUM, R_NONE, UL &NotmuchQueryWindowCurrentPosition, 0 },
   /*
