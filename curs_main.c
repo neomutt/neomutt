@@ -1892,24 +1892,24 @@ int mutt_index_menu (void)
         dprint(2, (debugfile, "OP_MAIN_WINDOWED_VFOLDER_FROM_QUERY\n"));
         if (0 > NotmuchQueryWindowDuration) 
         {
-          mutt_message _("Windowed queries disabled.");
+          mutt_message (_("Windowed queries disabled."));
           break;
         }
         if (!nm_query_window_check_timebase(NotmuchQueryWindowTimebase))
         {
-          mutt_message _("Invalid nm_query_window_timebase value (valid values are: hour, day, week, month or year).");
+          mutt_message (_("Invalid nm_query_window_timebase value (valid values are: hour, day, week, month or year)."));
           break;
         }
         buf[0] = '\0';
         if (mutt_get_field ("Query: ", buf, sizeof (buf), MUTT_NM_QUERY) != 0 || !buf[0])
         {
-          mutt_message _("No query, aborting.");
+          mutt_message (_("No query, aborting."));
           break;
         }
         nm_setup_windowed_query(buf, sizeof (buf));
         nm_query_window_reset();
         if (!nm_uri_from_windowed_query(Context, buf, sizeof(buf), NotmuchQueryWindowTimebase, NotmuchQueryWindowDuration))
-          mutt_message _("Failed to create query, aborting.");
+          mutt_message (_("Failed to create query, aborting."));
         else
         {
           dprint(2, (debugfile, "nm: windowed query (%s)\n", buf));
@@ -1921,18 +1921,18 @@ int mutt_index_menu (void)
         dprint(2, (debugfile, "OP_MAIN_WINDOWED_VFOLDER_BACKWARD\n"));
         if (0 > NotmuchQueryWindowDuration) 
         {
-          mutt_message _("Windowed queries disabled.");
+          mutt_message (_("Windowed queries disabled."));
           break;
         }
         if (!nm_query_window_check_timebase(NotmuchQueryWindowTimebase))
         {
-          mutt_message _("Invalid nm_query_window_timebase value (valid values are: hour, day, week, month or year).");
+          mutt_message (_("Invalid nm_query_window_timebase value (valid values are: hour, day, week, month or year)."));
           break;
         }
         buf[0] = '\0';
         nm_query_window_backward();
         if (!nm_uri_from_windowed_query(Context, buf, sizeof(buf), NotmuchQueryWindowTimebase, NotmuchQueryWindowDuration))
-          mutt_message _("Failed to create query, aborting.");
+          mutt_message (_("Failed to create query, aborting."));
         else
         {
           dprint(2, (debugfile, "nm: - windowed query (%s)\n", buf));
@@ -1944,18 +1944,18 @@ int mutt_index_menu (void)
         dprint(2, (debugfile, "OP_MAIN_WINDOWED_VFOLDER_FORWARD\n"));
         if (0 > NotmuchQueryWindowDuration) 
         {
-          mutt_message _("Windowed queries disabled.");
+          mutt_message (_("Windowed queries disabled."));
           break;
         }
         if (!nm_query_window_check_timebase(NotmuchQueryWindowTimebase))
         {
-          mutt_message _("Invalid nm_query_window_timebase value (valid values are: hour, day, week, month or year).");
+          mutt_message (_("Invalid nm_query_window_timebase value (valid values are: hour, day, week, month or year)."));
           break;
         }
         buf[0] = '\0';
         nm_query_window_forward();
         if (!nm_uri_from_windowed_query(Context, buf, sizeof(buf), NotmuchQueryWindowTimebase, NotmuchQueryWindowDuration))
-          mutt_message _("Failed to create query, aborting.");
+          mutt_message (_("Failed to create query, aborting."));
         else
         {
           dprint(2, (debugfile, "nm: + windowed query (%s)\n", buf));
