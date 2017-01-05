@@ -802,8 +802,9 @@ int mutt_save_attachment (FILE *fp, BODY *m, char *path, int flags, HEADER *hdr)
       return (-1);
     }
     safe_fclose (&ofp);
-    if (safe_fsync_close (&nfp) != 0) {
-      mutt_error _("Write fault!");
+    if (safe_fsync_close (&nfp) != 0)
+    {
+      mutt_error (_("Write fault!"));
       return (-1);
     }
   }

@@ -1233,7 +1233,7 @@ done:
 		release_db(data);
 
 	if (ctx->msgcount == data->oldmsgcount)
-		mutt_message _("No more messages in the thread.");
+		mutt_message (_("No more messages in the thread."));
 
 	data->oldmsgcount = 0;
 	dprint(1, (debugfile, "nm: reading entire-thread messages... done [rc=%d, count=%d]\n",
@@ -1301,19 +1301,19 @@ char *nm_uri_from_windowed_query(CONTEXT *ctx, char *buf, size_t bufsz, char *ti
 	return nm_uri_from_query(ctx, buf, bufsz);
 }
 
-void nm_query_window_reset()
+void nm_query_window_reset(void)
 {
 	dprint(2, (debugfile, "nm_query_window_reset ()\n"));
 	NotmuchQueryWindowCurrentPosition = 0;
 }
 
-void nm_query_window_backward()
+void nm_query_window_backward(void)
 {
 	NotmuchQueryWindowCurrentPosition += 1;
 	dprint(2, (debugfile, "nm_query_window_backward (%d)\n", NotmuchQueryWindowCurrentPosition));
 }
 
-void nm_query_window_forward()
+void nm_query_window_forward(void)
 {
 	if (NotmuchQueryWindowCurrentPosition != 0)
 		NotmuchQueryWindowCurrentPosition -= 1;

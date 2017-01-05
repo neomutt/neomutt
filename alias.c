@@ -383,7 +383,7 @@ retry_name:
     if (safe_fsync_close(&rc) != 0)
       mutt_message ("Trouble adding alias: %s.", strerror(errno));
     else
-      mutt_message _("Alias added.");
+      mutt_message (_("Alias added."));
   }
   else
     mutt_perror (buf);

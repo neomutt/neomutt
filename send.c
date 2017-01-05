@@ -1792,7 +1792,7 @@ main_loop:
       /* abort */
 #ifdef USE_NNTP
       if (flags & SENDNEWS)
-	mutt_message _("Article not posted.");
+	mutt_message (_("Article not posted."));
       else
 #endif
       mutt_message _("Mail not sent.");
@@ -1891,13 +1891,13 @@ main_loop:
 #ifdef USE_NNTP
   if ((flags & SENDNEWS) && !msg->env->subject)
   {
-    mutt_error _("No subject specified.");
+    mutt_error (_("No subject specified."));
     goto main_loop;
   }
 
   if ((flags & SENDNEWS) && !msg->env->newsgroups)
   {
-    mutt_error _("No newsgroup specified.");
+    mutt_error (_("No newsgroup specified."));
     goto main_loop;
   }
 #endif
@@ -1910,7 +1910,7 @@ main_loop:
     /* if the abort is automatic, print an error message */
     if (quadoption (OPT_ATTACH) == MUTT_YES)
     {
-      mutt_error _("Message contains text matching \"$attach_keyword\". Not sending.");
+      mutt_error (_("Message contains text matching \"$attach_keyword\". Not sending."));
     }
     goto main_loop;
   }

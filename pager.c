@@ -2050,7 +2050,7 @@ mutt_pager (const char *banner, const char *fname, int flags, pager_t *extra)
 
 	    if (h && (h->read == 0))
 	    {
-	      mutt_message _("New mail in this mailbox.");
+	      mutt_message (_("New mail in this mailbox."));
 	      do_new_mail = 1;
 	      break;
 	    }
@@ -3078,7 +3078,7 @@ search_next:
           mutt_message ("%d label%s changed.", rc, rc == 1 ? "" : "s");
         }
         else {
-          mutt_message _("No labels changed.");
+          mutt_message (_("No labels changed."));
         }
         break;
 

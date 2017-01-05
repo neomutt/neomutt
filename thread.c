@@ -1102,15 +1102,15 @@ int mutt_parent_message (CONTEXT *ctx, HEADER *hdr, int find_root)
 
   if (!parent)
   {
-    mutt_error _("Parent message is not available.");
+    mutt_error (_("Parent message is not available."));
     return (-1);
   }
   if (!VISIBLE (parent, ctx))
   {
     if (find_root)
-      mutt_error _("Root message is not visible in this limited view.");
+      mutt_error (_("Root message is not visible in this limited view."));
     else
-      mutt_error _("Parent message is not visible in this limited view.");
+      mutt_error (_("Parent message is not visible in this limited view."));
     return (-1);
   }
   return (parent->virtual);

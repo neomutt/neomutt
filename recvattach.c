@@ -1145,7 +1145,7 @@ void mutt_view_attachments (HEADER *hdr)
 	if (Context->magic == MUTT_NNTP)
 	{
 	  mutt_flushinp ();
-	  mutt_error _("Can't delete attachment from news server.");
+	  mutt_error (_("Can't delete attachment from news server."));
 	  break;
 	}
 #endif

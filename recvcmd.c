@@ -781,7 +781,7 @@ attach_reply_envelope_defaults (ENVELOPE *env, ATTACHPTR **idx, short idxlen,
 
     if ((flags & SENDLISTREPLY) && !env->to)
     {
-      mutt_error _("No mailing lists found!");
+      mutt_error (_("No mailing lists found!"));
       return (-1);
     }
 

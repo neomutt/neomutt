@@ -912,7 +912,7 @@ int mutt_index_menu (void)
 	  {
 	    if (Context->hdrs[i]->read == 0)
 	    {
-	      mutt_message _("New mail in this mailbox.");
+	      mutt_message (_("New mail in this mailbox."));
 	      if (option (OPTBEEPNEW))
 		beep ();
 	      if (NewMailCmd)
@@ -1217,7 +1217,7 @@ int mutt_index_menu (void)
 	    LIST *ref = CURHDR->env->references;
 	    if (!ref)
 	    {
-	      mutt_error _("Article has no parent reference.");
+	      mutt_error (_("Article has no parent reference."));
 	      break;
 	    }
 	    strfcpy (buf, ref->data, sizeof (buf));
@@ -1240,7 +1240,7 @@ int mutt_index_menu (void)
 	      menu->redraw = REDRAW_MOTION_RESYNCH;
 	    }
 	    else
-	      mutt_error _("Message is not visible in limited view.");
+	      mutt_error (_("Message is not visible in limited view."));
 	  }
 	  else
 	  {
@@ -1275,11 +1275,11 @@ int mutt_index_menu (void)
 
 	  if (!CURHDR->env->message_id)
 	  {
-	    mutt_error _("No Message-Id. Unable to perform operation.");
+	    mutt_error (_("No Message-Id. Unable to perform operation."));
 	    break;
 	  }
 
-	  mutt_message _("Fetching message headers...");
+	  mutt_message (_("Fetching message headers..."));
 	  if (!Context->id_hash)
 	    Context->id_hash = mutt_make_id_hash (Context);
 	  strfcpy (buf, CURHDR->env->message_id, sizeof (buf));
@@ -1354,7 +1354,7 @@ int mutt_index_menu (void)
 	  }
 	  else if (rc >= 0)
 	  {
-	    mutt_error _("No deleted messages found in the thread.");
+	    mutt_error (_("No deleted messages found in the thread."));
 	    /* Similar to OP_MAIN_ENTIRE_THREAD, keep displaying the old message, but
 	       update the index */
 	    if (menu->menu == MENU_PAGER)
@@ -1770,13 +1770,13 @@ int mutt_index_menu (void)
       {
 	int oldcount  = Context->msgcount;
 	if (Context->magic != MUTT_NOTMUCH) {
-	  mutt_message _("No virtual folder, aborting.");
+	  mutt_message (_("No virtual folder, aborting."));
 	  break;
 	}
 	CHECK_MSGCOUNT;
         CHECK_VISIBLE;
 	if (nm_read_entire_thread(Context, CURHDR) < 0) {
-	   mutt_message _("Failed to read thread, aborting.");
+	   mutt_message (_("Failed to read thread, aborting."));
 	   break;
 	}
 	if (oldcount < Context->msgcount) {
@@ -1804,7 +1804,7 @@ int mutt_index_menu (void)
       case OP_MAIN_MODIFY_LABELS_THEN_HIDE:
       {
 	if (Context->magic != MUTT_NOTMUCH) {
-	  mutt_message _("No virtual folder, aborting.");
+	  mutt_message (_("No virtual folder, aborting."));
 	  break;
 	}
 	CHECK_MSGCOUNT;
@@ -1812,7 +1812,7 @@ int mutt_index_menu (void)
 	*buf = '\0';
 	if (mutt_get_field ("Add/remove labels: ", buf, sizeof (buf), MUTT_NM_TAG) || !*buf)
 	{
-          mutt_message _("No label specified, aborting.");
+          mutt_message (_("No label specified, aborting."));
           break;
         }
 	if (tag)
@@ -1845,7 +1845,7 @@ int mutt_index_menu (void)
 	else
 	{
 	  if (nm_modify_message_tags(Context, CURHDR, buf)) {
-	    mutt_message _("Failed to modify labels, aborting.");
+	    mutt_message (_("Failed to modify labels, aborting."));
 	    break;
 	  }
 	  if (op == OP_MAIN_MODIFY_LABELS_THEN_HIDE)
@@ -1879,11 +1879,11 @@ int mutt_index_menu (void)
 	buf[0] = '\0';
         if (mutt_get_field ("Query: ", buf, sizeof (buf), MUTT_NM_QUERY) != 0 || !buf[0])
         {
-          mutt_message _("No query, aborting.");
+          mutt_message (_("No query, aborting."));
           break;
         }
 	if (!nm_uri_from_query(Context, buf, sizeof (buf)))
-	  mutt_message _("Failed to create query, aborting.");
+	  mutt_message (_("Failed to create query, aborting."));
 	else
 	  main_change_folder(menu, op, buf, sizeof (buf), &oldcount, &index_hint, 0);
 	break;
@@ -2684,7 +2684,7 @@ int mutt_index_menu (void)
 
         if ((Sort & SORT_MASK) != SORT_THREADS)
         {
-          mutt_error _("Threading is not enabled.");
+          mutt_error (_("Threading is not enabled."));
           break;
         }
         collapse_all (menu, 1);
@@ -2877,7 +2877,7 @@ int mutt_index_menu (void)
 	  mutt_message ("%d label%s changed.", rc, rc == 1 ? "" : "s");
 	}
 	else {
-	  mutt_message _("No labels changed.");
+	  mutt_message (_("No labels changed."));
 	}
 	break;
 
@@ -3034,7 +3034,7 @@ int mutt_index_menu (void)
 	else
           /* L10N: This error is printed if <mark-message> cannot find a
              Message-ID for the currently selected message in the index. */
-	  mutt_error _("No message ID to macro.");
+	  mutt_error (_("No message ID to macro."));
 	break;
 
       case OP_RECALL_MESSAGE:

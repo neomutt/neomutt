@@ -2002,7 +2002,7 @@ void _mutt_select_file (char *f, size_t flen, int flags, char ***files, int *num
 	  }
 	  else if (!state.entrylen)
 	  {
-	    mutt_error _("No newsgroups match the mask");
+	    mutt_error (_("No newsgroups match the mask"));
 	    break;
 	  }
 
