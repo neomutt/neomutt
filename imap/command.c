@@ -884,7 +884,7 @@ static void cmd_parse_search (IMAP_DATA* idata, const char* s)
     msgno = uid2msgno (idata, uid);
     
     if (msgno >= 0)
-      idata->ctx->hdrs[uid2msgno (idata, uid)]->matched = 1;
+      idata->ctx->hdrs[msgno]->matched = 1;
   }
 }
 
