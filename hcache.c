@@ -719,19 +719,14 @@ static char* get_foldername(const char *folder)
 {
   char *p = NULL;
   char path[_POSIX_PATH_MAX];
-  struct stat st;
 
   mutt_encode_path (path, sizeof (path), folder);
 
   /* if the folder is local, canonify the path to avoid
    * to ensure equivalent paths share the hcache */
-  if (stat (path, &st) == 0)
-  {
-    p = safe_malloc (PATH_MAX+1);
-    if (!realpath (path, p))
-      mutt_str_replace (&p, path);
-  } else
-    p = safe_strdup (path);
+  p = safe_malloc (PATH_MAX+1);
+  if (!realpath (path, p))
+    mutt_str_replace (&p, path);
 
   return p;
 }
@@ -740,11 +735,10 @@ header_cache_t *
 mutt_hcache_open(const char *path, const char *folder, hcache_namer_t namer)
 {
   const hcache_ops_t *ops = hcache_get_ops();
-  header_cache_t *h = safe_calloc(1, sizeof (header_cache_t));
-  struct stat sb;
-
   if (!ops)
     return NULL;
+
+  header_cache_t *h = safe_calloc(1, sizeof (header_cache_t));
 
   /* Calculate the current hcache version from dynamic configuration */
   if (hcachever == 0x0) {
@@ -799,7 +793,7 @@ mutt_hcache_open(const char *path, const char *folder, hcache_namer_t namer)
   else
   {
     /* remove a possibly incompatible version */
-    if (!stat (path, &sb) && !unlink (path))
+    if (unlink (path) == 0)
     {
       h->ctx = ops->open(path);
       if (h->ctx)

@@ -436,7 +436,8 @@ int pop_query_d (POP_DATA *pop_data, char *buf, size_t buflen, char *msg)
   mutt_socket_write_d (pop_data->conn, buf, -1, dbg);
 
   c = strpbrk (buf, " \r\n");
-  *c = '\0';
+  if (c)
+    *c = '\0';
   snprintf (pop_data->err_msg, sizeof (pop_data->err_msg), "%s: ", buf);
 
   if (mutt_socket_readln (buf, buflen, pop_data->conn) < 0)

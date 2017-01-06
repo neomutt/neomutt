@@ -2097,13 +2097,13 @@ static int pgp_gpgme_extract_keys (gpgme_data_t keydata, FILE** fp, int dryrun)
       strftime (date, sizeof (date), "%Y-%m-%d", localtime (&tt));
 
       if (!more)
-        fprintf (*fp, "%s %5.5s %d/%8s %s %s\n", more ? "sub" : "pub",
+        fprintf (*fp, "pub %5.5s %d/%8s %s %s\n",
                  gpgme_pubkey_algo_name (subkey->pubkey_algo), subkey->length,
                  shortid, date, uid->uid);
       else
-        fprintf (*fp, "%s %5.5s %d/%8s %s\n", more ? "sub" : "pub",
+        fprintf (*fp, "sub %5.5s %d/%8s %s\n",
                  gpgme_pubkey_algo_name (subkey->pubkey_algo), subkey->length,
-                 shortid, date);      
+                 shortid, date);
       subkey = subkey->next;
       more = 1;
     }
@@ -3578,15 +3578,9 @@ static void print_key_info (gpgme_key_t key, FILE *fp)
               fprintf (fp, _("Valid To ..: %s\n"), shortbuf);
             }
 
-	  if (subkey)
-	    s = gpgme_pubkey_algo_name (subkey->pubkey_algo);
-	  else
-            s = "?";
+          s = gpgme_pubkey_algo_name (subkey->pubkey_algo);
 
-	  if (subkey)
-	    aval = subkey->length;
-	  else
-	    aval = 0;
+          aval = subkey->length;
 
           /* L10N: DOTFILL */
           fprintf (fp, _("Key Type ..: %s, %lu bit %s\n"), "PGP", aval, s);

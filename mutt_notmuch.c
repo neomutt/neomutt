@@ -152,12 +152,10 @@ static int url_parse_query(char *url, char **filename, struct uri_tag **tags)
 
 	*filename = e ? e == p ? NULL : strndup(p, e - p) : safe_strdup(p);
 	if (!e)
-		return 0;
+		return 0;	/* only filename */
 
 	if (*filename && url_pct_decode(*filename) < 0)
 		goto err;
-	if (!e)
-		return 0;	/* only filename */
 
 	++e;	/* skip '?' */
 	p = e;
@@ -269,9 +267,7 @@ static struct nm_ctxdata *new_ctxdata(char *uri)
 
 	if (url_parse_query(uri, &data->db_filename, &data->query_items)) {
 		mutt_error(_("failed to parse notmuch uri: %s"), uri);
-		data->db_filename = NULL;
-		data->query_items = NULL;
-		data->query_type = 0;
+		FREE(&data);
 		return NULL;
 	}
 
@@ -924,6 +920,8 @@ static void nm_progress_reset(CONTEXT *ctx)
 		return;
 
 	data = get_ctxdata(ctx);
+	if (!data)
+		return;
 
 	memset(&data->progress, 0, sizeof(data->progress));
 	data->oldmsgcount = ctx->msgcount;
@@ -936,7 +934,7 @@ static void nm_progress_update(CONTEXT *ctx, notmuch_query_t *q)
 {
 	struct nm_ctxdata *data = get_ctxdata(ctx);
 
-	if (ctx->quiet || data->noprogress)
+	if (ctx->quiet || !data || data->noprogress)
 		return;
 
 	if (!data->progress_ready && q) {
@@ -970,9 +968,13 @@ static void append_message(CONTEXT *ctx,
 	const char *path;
 	HEADER *h = NULL;
 
+	struct nm_ctxdata *data = get_ctxdata(ctx);
+	if (!data)
+		return;
+
 	/* deduplicate */
 	if (dedup && get_mutt_header(ctx, msg)) {
-		get_ctxdata(ctx)->ignmsgcount++;
+		data->ignmsgcount++;
 		nm_progress_update(ctx, q);
 	        dprint(2, (debugfile, "nm: ignore id=%s, already in the context\n",
 					notmuch_message_get_message_id(msg)));
@@ -1469,10 +1471,13 @@ static int rename_maildir_filename(const char *old, char *newpath, size_t newsz,
 
 	strfcpy(folder, old, sizeof(folder));
 	p = strrchr(folder, '/');
-	if (p)
+	if (p) {
 		*p = '\0';
+		p++;
+	} else {
+		p = folder;
+	}
 
-	p++;
 	strfcpy(filename, p, sizeof(filename));
 
 	/* remove (new,cur,...) from folder path */
