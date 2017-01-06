@@ -19,9 +19,15 @@
 #ifndef _HASH_H
 #define _HASH_H
 
+union hash_key
+{
+  const char *strkey;
+  unsigned int intkey;
+};
+
 struct hash_elem
 {
-  const char *key;
+  union hash_key key;
   void *data;
   struct hash_elem *next;
 };
@@ -30,20 +36,27 @@ typedef struct
 {
   int nelem;
   struct hash_elem **table;
-  unsigned int (*hash_string)(const unsigned char *, unsigned int);
-  int (*cmp_string)(const char *, const char *);
+  unsigned int (*gen_hash)(union hash_key, unsigned int);
+  int (*cmp_key)(union hash_key, union hash_key);
 }
 HASH;
 
-#define hash_find(table, key) hash_find_hash(table, table->hash_string ((unsigned char *)key, table->nelem), key)
-
-#define hash_delete(table,key,data,destroy) hash_delete_hash(table, table->hash_string ((unsigned char *)key, table->nelem), key, data, destroy)
-
 HASH *hash_create (int nelem, int lower);
+HASH *int_hash_create (int nelem);
+
 int hash_insert (HASH * table, const char *key, void *data, int allow_dup);
-void *hash_find_hash (const HASH * table, int hash, const char *key);
-void hash_delete_hash (HASH * table, int hash, const char *key, const void *data,
-		       void (*destroy) (void *));
+int int_hash_insert (HASH *table, unsigned int key, void *data, int allow_dup);
+
+void *hash_find (const HASH *table, const char *key);
+void *int_hash_find (const HASH *table, unsigned int key);
+
+struct hash_elem *hash_find_bucket (const HASH *table, const char *key);
+
+void hash_delete (HASH * table, const char *key, const void *data,
+                  void (*destroy) (void *));
+void int_hash_delete (HASH * table, unsigned int key, const void *data,
+                  void (*destroy) (void *));
+
 void hash_destroy (HASH ** hash, void (*destroy) (void *));
 
 #endif
