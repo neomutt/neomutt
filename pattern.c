@@ -1288,7 +1288,6 @@ mutt_pattern_exec (struct pattern_t *pat, pattern_exec_flag flags, CONTEXT *ctx,
         }
         return pat->not ^ result;
       }
-      return (pat->not ^ (h->env->x_label && patmatch (pat, h->env->x_label) == 0));
 #ifdef USE_NOTMUCH
     case MUTT_NOTMUCH_LABEL:
       {

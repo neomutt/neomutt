@@ -129,8 +129,11 @@ int _mutt_system (const char *cmd, int flags)
 #endif
   }
 
-  sigaction (SIGCONT, &oldcont, NULL);
-  sigaction (SIGTSTP, &oldtstp, NULL);
+  if (!(flags & MUTT_DETACH_PROCESS))
+  {
+    sigaction (SIGCONT, &oldcont, NULL);
+    sigaction (SIGTSTP, &oldtstp, NULL);
+  }
 
   /* reset SIGINT, SIGQUIT and SIGCHLD */
   mutt_unblock_signals_system (1);

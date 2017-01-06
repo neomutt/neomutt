@@ -99,6 +99,7 @@ hcache_lmdb_open(const char *path)
   if (rc != MDB_SUCCESS)
   {
     fprintf(stderr, "hcache_open_lmdb: mdb_env_create: %s", mdb_strerror(rc));
+    FREE(&ctx);
     return NULL;
   }
 

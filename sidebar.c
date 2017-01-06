@@ -532,7 +532,7 @@ static int prepare_sidebar (int page_size)
  */
 static int draw_divider (int num_rows, int num_cols)
 {
-  if ((num_rows < 1) || (num_rows < 1))
+  if ((num_rows < 1) || (num_cols < 1))
     return 0;
 
   int i;
