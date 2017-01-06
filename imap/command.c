@@ -855,36 +855,20 @@ static void cmd_parse_myrights (IMAP_DATA* idata, const char* s)
   }
 }
 
-/* This should be optimised (eg with a tree or hash) */
-static int uid2msgno (IMAP_DATA* idata, unsigned int uid)
-{
-  int i;
-  
-  for (i = 0; i < idata->ctx->msgcount; i++)
-  {
-    HEADER* h = idata->ctx->hdrs[i];
-    if (HEADER_DATA(h)->uid == uid)
-      return i;
-  }
-  
-  return -1;
-}
-
 /* cmd_parse_search: store SEARCH response for later use */
 static void cmd_parse_search (IMAP_DATA* idata, const char* s)
 {
   unsigned int uid;
-  int msgno;
+  HEADER *h;
 
   dprint (2, (debugfile, "Handling SEARCH\n"));
 
   while ((s = imap_next_word ((char*)s)) && *s != '\0')
   {
-    uid = atoi (s);
-    msgno = uid2msgno (idata, uid);
-    
-    if (msgno >= 0)
-      idata->ctx->hdrs[msgno]->matched = 1;
+    uid = (unsigned int)atoi (s);
+    h = (HEADER *)int_hash_find (idata->uid_hash, uid);
+    if (h)
+      h->matched = 1;
   }
 }
 
