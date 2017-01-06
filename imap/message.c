@@ -52,6 +52,23 @@ static int msg_fetch_header (CONTEXT* ctx, IMAP_HEADER* h, char* buf,
 static int msg_parse_fetch (IMAP_HEADER* h, char* s);
 static char* msg_parse_flags (IMAP_HEADER* h, char* s);
 
+static void imap_update_context (IMAP_DATA *idata, int oldmsgcount)
+{
+  CONTEXT *ctx;
+  HEADER *h;
+  int msgno;
+
+  ctx = idata->ctx;
+  if (!idata->uid_hash)
+    idata->uid_hash = int_hash_create (MAX (6 * ctx->msgcount / 5, 30));
+
+  for (msgno = oldmsgcount; msgno < ctx->msgcount; msgno++)
+  {
+    h = ctx->hdrs[msgno];
+    int_hash_insert (idata->uid_hash, HEADER_DATA(h)->uid, h, 0);
+  }
+}
+
 /* imap_read_headers:
  * Changed to read many headers instead of just one. It will return the
  * msgno of the last message read. It will return a value other than
@@ -377,6 +394,7 @@ int imap_read_headers (IMAP_DATA* idata, int msgbegin, int msgend)
   {
     mx_alloc_memory(ctx);
     mx_update_context (ctx, ctx->msgcount - oldmsgcount);
+    imap_update_context (idata, oldmsgcount);
   }
 
   idata->reopen |= IMAP_REOPEN_ALLOW;

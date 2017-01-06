@@ -280,6 +280,8 @@ void imap_expunge_mailbox (IMAP_DATA* idata)
 	FREE (&idata->cache[cacheno].path);
       }
 
+      int_hash_delete (idata->uid_hash, HEADER_DATA(h)->uid, h, NULL);
+
       imap_free_header_data ((IMAP_HEADER_DATA**)&h->data);
     }
   }
@@ -1392,6 +1394,7 @@ int imap_close_mailbox (CONTEXT* ctx)
     /* mailbox may not have fully loaded */
     if (ctx->hdrs[i] && ctx->hdrs[i]->data)
       imap_free_header_data ((IMAP_HEADER_DATA**)&(ctx->hdrs[i]->data));
+  hash_destroy (&idata->uid_hash, NULL);
 
   for (i = 0; i < IMAP_CACHE_LEN; i++)
   {
