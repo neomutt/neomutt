@@ -4077,7 +4077,7 @@ int mutt_label_complete (char *buffer, size_t len, int pos, int numtabs)
     memset (Completed, 0, sizeof (Completed));
     memset (&state, 0, sizeof(state));
     while ((entry = hash_walk(Labels, &state)))
-      candidate (Completed, User_typed, entry->key, sizeof (Completed));
+      candidate (Completed, User_typed, entry->key.strkey, sizeof (Completed));
     matches_ensure_morespace (Num_matched);
     qsort(Matches, Num_matched, sizeof(char *), (sort_t *) mutt_strcasecmp);
     Matches[Num_matched++] = User_typed;

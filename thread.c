@@ -416,7 +416,6 @@ static THREAD *find_subject (CONTEXT *ctx, THREAD *cur)
 {
   struct hash_elem *ptr;
   THREAD *tmp, *last = NULL;
-  unsigned int hash;
   LIST *subjects = NULL, *oldlist;
   time_t date = 0;  
 
@@ -424,9 +423,7 @@ static THREAD *find_subject (CONTEXT *ctx, THREAD *cur)
 
   while (subjects)
   {
-    hash = ctx->subj_hash->hash_string ((unsigned char *) subjects->data,
-					ctx->subj_hash->nelem);
-    for (ptr = ctx->subj_hash->table[hash]; ptr; ptr = ptr->next)
+    for (ptr = hash_find_bucket (ctx->subj_hash, subjects->data); ptr; ptr = ptr->next)
     {
       tmp = ((HEADER *) ptr->data)->thread;
       if (tmp != cur &&			   /* don't match the same message */
