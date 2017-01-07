@@ -3801,6 +3801,8 @@ void mutt_init (int skip_sys_rc, LIST *commands)
       mutt_exit(1);
   }
 
+  mutt_mkdir(Tempdir, S_IRWXU);
+
   mutt_read_histfile ();
 
 #ifdef USE_NOTMUCH
