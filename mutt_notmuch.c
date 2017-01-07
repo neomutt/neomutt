@@ -446,9 +446,9 @@ static void query_window_reset(void)
   NotmuchQueryWindowCurrentPosition = 0;
 }
 
-static int windowed_query_from_query(char *query, char *buf, size_t bufsz)
+static int windowed_query_from_query(const char *query, char *buf, size_t bufsz)
 {
-  dprint(2, (debugfile, "windowed_query_from_query (%s)\n", query));
+  dprint(2, (debugfile, "nm: windowed_query_from_query (%s)\n", query));
 
   int beg = NotmuchQueryWindowDuration * (NotmuchQueryWindowCurrentPosition + 1);
   int end = NotmuchQueryWindowDuration *  NotmuchQueryWindowCurrentPosition;
@@ -478,15 +478,16 @@ static int windowed_query_from_query(char *query, char *buf, size_t bufsz)
     snprintf(buf, bufsz, "date:%d%s..%d%s and %s", 
         beg, NotmuchQueryWindowTimebase, end, NotmuchQueryWindowTimebase, NotmuchQueryWindowCurrentSearch);
 
+  dprint(2, (debugfile, "nm: windowed_query_from_query (%s) → %s\n", query, buf));
+
   return 1;
 }
 
-static char *get_query_string(struct nm_ctxdata *data)
+static char *get_query_string(struct nm_ctxdata *data, int window) 
 {
-  dprint(2, (debugfile, "nm: get_query_string()\n"));
+  dprint(2, (debugfile, "nm: get_query_string(%d)\n", window));
 
   struct uri_tag *item;
-  char buf[LONG_STRING];
 
   if (!data)
     return NULL;
@@ -513,16 +514,21 @@ static char *get_query_string(struct nm_ctxdata *data)
   if (!data->query_type)
     data->query_type = string_to_query_type(NULL);
 
-   mutt_str_replace(&NotmuchQueryWindowCurrentSearch, data->db_query);
+  if (window) {
+    char buf[LONG_STRING];
+    mutt_str_replace(&NotmuchQueryWindowCurrentSearch, data->db_query);
 
-   // if a date part is defined, do not apply windows (to avoid the risk of
-   // having a non-intersected date frame). A good improvement would be to
-   // accept if they intersect
-   if (!strstr(data->db_query, "date:") &&
-                   windowed_query_from_query(data->db_query, buf, sizeof(buf)))
-     data->db_query = safe_strdup(buf);
+    // if a date part is defined, do not apply windows (to avoid the risk of
+    // having a non-intersected date frame). A good improvement would be to
+    // accept if they intersect
+    if (!strstr(data->db_query, "date:") &&
+        windowed_query_from_query(data->db_query, buf, sizeof(buf)))
+      data->db_query = safe_strdup(buf);
 
-  dprint(2, (debugfile, "nm: query '%s'\n", data->db_query));
+    dprint(2, (debugfile, "nm: query (windowed) '%s'\n", data->db_query));
+  }
+  else
+    dprint(2, (debugfile, "nm: query '%s'\n", data->db_query));
 
   return data->db_query;
 }
@@ -729,7 +735,7 @@ static notmuch_query_t *get_query(struct nm_ctxdata *data, int writable)
     return NULL;
 
   db = get_db(data, writable);
-  str = get_query_string(data);
+  str = get_query_string(data, true);
 
   if (!db || !str)
     goto err;
@@ -740,7 +746,7 @@ static notmuch_query_t *get_query(struct nm_ctxdata *data, int writable)
 
   apply_exclude_tags(q);
   notmuch_query_set_sort(q, NOTMUCH_SORT_NEWEST_FIRST);
-  dprint(2, (debugfile, "nm: query successfully initialized\n"));
+  dprint(2, (debugfile, "nm: query successfully initialized (%s)\n", str));
   return q;
 err:
   if (!is_longrun(data))
@@ -1527,6 +1533,35 @@ static unsigned count_query(notmuch_database_t *db, const char *qstr)
   return res;
 }
 
+static void setup_windowed_query(char *buf, size_t bufsz)
+{
+  dprint(2, (debugfile, "setup_windowed_query (%s)\n", buf));
+  mutt_str_replace(&NotmuchQueryWindowCurrentSearch, buf);
+}
+
+static char *uri_from_windowed_query(CONTEXT *ctx, char *buf, size_t bufsz,
+                                 char *timebase, int duration)
+{
+  dprint(2, (debugfile, "uri_from_windowed_query (%s, %s, %d)\n", buf,
+             timebase, duration));
+
+  int beg = duration * (NotmuchQueryWindowCurrentPosition + 1);
+  int end = duration *  NotmuchQueryWindowCurrentPosition;
+
+  if (NotmuchQueryWindowCurrentSearch == NULL)
+  {
+    query_window_reset();
+    return NULL;
+  }
+
+  if (end == 0)
+    snprintf(buf, bufsz, "date:%d%s..now and %s", beg, timebase, NotmuchQueryWindowCurrentSearch);
+  else
+    snprintf(buf, bufsz, "date:%d%s..%d%s and %s", beg, timebase, end, timebase, NotmuchQueryWindowCurrentSearch);
+
+  return nm_uri_from_query(ctx, buf, bufsz);
+}
+
 
 char *nm_header_get_folder(HEADER *h)
 {
@@ -1668,6 +1703,51 @@ char *nm_uri_from_query(CONTEXT *ctx, char *buf, size_t bufsz)
 
   dprint(1, (debugfile, "nm: uri from query '%s'\n", buf));
   return buf;
+}
+
+/*
+ * takes a notmuch URI, parses it and reformat it in a canonical way
+ */
+int nm_normalize_uri(char* new_url, char* url, size_t new_url_sz) 
+{
+  dprint(2, (debugfile, "nm_normalize_uri (%s)\n", url));
+  char buf[LONG_STRING];
+
+  CONTEXT tmp_ctx;
+  struct nm_ctxdata tmp_ctxdata;
+
+  tmp_ctx.magic = MUTT_NOTMUCH;
+  tmp_ctx.data = &tmp_ctxdata;
+  tmp_ctxdata.db_query = NULL;
+
+  if (url_parse_query(url, &tmp_ctxdata.db_filename, &tmp_ctxdata.query_items)) {
+    mutt_error(_("failed to parse #1 notmuch uri: %s"), url);
+    dprint(2, (debugfile, "nm_normalize_uri () → error #1\n"));
+    return 0;
+  }
+
+  dprint(2, (debugfile, "nm_normalize_uri #1 () → db_query: %s\n", tmp_ctxdata.db_query));
+
+  if (get_query_string(&tmp_ctxdata, false) == NULL) {
+    mutt_error(_("failed to parse #2 notmuch uri: %s"), url);
+    dprint(2, (debugfile, "nm_normalize_uri () → error #2\n"));
+    return 0;
+  }
+
+  dprint(2, (debugfile, "nm_normalize_uri #2 () → db_query: %s\n", tmp_ctxdata.db_query));
+
+  strncpy(buf, tmp_ctxdata.db_query, sizeof(buf));
+
+  if (nm_uri_from_query(&tmp_ctx, buf, sizeof(buf)) == NULL) {
+    mutt_error(_("failed to parse #3 notmuch uri: %s"), url);
+    dprint(2, (debugfile, "nm_normalize_uri () → error #3\n"));
+    return 0;
+  }
+
+  strncpy(new_url, buf, new_url_sz);
+
+  dprint(2, (debugfile, "nm_normalize_uri #3 (%s) → %s\n", url, new_url));
+  return 1;
 }
 
 void nm_query_window_forward(void)
