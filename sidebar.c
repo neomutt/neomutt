@@ -31,6 +31,10 @@
 #include "sort.h"
 #include "sidebar.h"
 
+#ifdef USE_NOTMUCH
+#include "mutt_notmuch.h"
+#endif
+
 /* Previous values for some sidebar config */
 static short PreviousSort = SORT_ORDER;  /* sidebar_sort_method */
 
@@ -704,8 +708,15 @@ static void draw_sidebar (int num_rows, int num_cols, int div_width)
     if (Context && Context->realpath &&
         !mutt_strcmp (b->realpath, Context->realpath))
     {
-      b->msg_unread  = Context->unread;
-      b->msg_count   = Context->msgcount;
+#ifdef USE_NOTMUCH
+      if (b->magic == MUTT_NOTMUCH)
+        nm_nonctx_get_count(b->realpath, &b->msg_count, &b->msg_unread);
+      else
+#endif
+      {
+        b->msg_unread  = Context->unread;
+        b->msg_count   = Context->msgcount;
+      }
       b->msg_flagged = Context->flagged;
     }
 
