@@ -212,6 +212,7 @@ int safe_symlink (const char *, const char *);
 int safe_fclose (FILE **);
 int safe_fsync_close (FILE **);
 int mutt_rmtree (const char *);
+int mutt_mkdir(const char *path, mode_t mode);
 
 size_t mutt_quote_filename (char *, size_t, const char *);
 size_t mutt_strlen (const char *);

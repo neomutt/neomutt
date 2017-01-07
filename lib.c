@@ -1141,3 +1141,59 @@ char * strfcpy (char *dest, const char *src, size_t dlen)
   return dest0;
 }
 
+/**
+ * mutt_mkdir - Recursively create directories
+ * @path: Directories to create
+ * @mode: Permissions for final directory
+ * @return:
+ * *    0  Success
+ * *   -1  Error (errno set)
+ *
+ * Create a directory, creating the parents if necessary. (like mkdir -p)
+ *
+ * Note: The permissions are only set on the final directory.
+ *       The permissions of any parent directoies are determined by the umask.
+ *       (This is how "mkdir -p" behaves)
+ */
+int mutt_mkdir(const char *path, mode_t mode)
+{
+  if (!path || !*path)
+  {
+    errno = EINVAL;
+    return -1;
+  }
+
+  char *p;
+  char _path[PATH_MAX];
+  const size_t len = strlen(path);
+
+  if (len >= sizeof(_path))
+  {
+    errno = ENAMETOOLONG;
+    return -1;
+  }
+
+  /* Create a mutable copy */
+  strfcpy(_path, path, sizeof(_path));
+
+  for (p = _path + 1; *p; p++)
+  {
+    if (*p != '/')
+      continue;
+
+    /* Temporarily truncate the path */
+    *p = '\0';
+
+    if ((mkdir(_path, S_IRWXU | S_IRWXG | S_IRWXO) != 0) && (errno != EEXIST))
+      return -1;
+
+    *p = '/';
+  }
+
+  if ((mkdir(_path, mode) != 0) && (errno != EEXIST))
+    return -1;
+
+  errno = 0;
+  return 0;
+}
+
