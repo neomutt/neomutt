@@ -526,103 +526,111 @@ crc_matches(const char *d, unsigned int crc)
   return (crc == mycrc);
 }
 
-/* Append md5sumed folder to path if path is a directory. */
-static const char *
-mutt_hcache_per_folder(const char *path, const char *folder,
-                       hcache_namer_t namer)
+/**
+ * create_hcache_dir - Create parent dirs for the hcache database
+ * @path: Database filename
+ *
+ * @retval 1 Success
+ * @retval 0 Failure (errno set)
+ */
+static int create_hcache_dir(const char *path)
+{
+  if (!path)
+    return 0;
+
+  static char dir[_POSIX_PATH_MAX];
+  strfcpy (dir, path, sizeof(dir));
+
+  char *p = strrchr (dir, '/');
+  if (!p)
+    return 1;
+
+  *p = 0;
+  if (mutt_mkdir (dir, S_IRWXU | S_IRWXG | S_IRWXO) == 0)
+    return 1;
+
+  mutt_error (_("Can't create %s: %s."), dir, strerror (errno));
+  mutt_sleep (2);
+  return 0;
+}
+
+/**
+ * mutt_hcache_per_folder - Generate the hcache pathname
+ * @param path   Base directory, from $header_cache
+ * @paran folder Mailbox name (including protocol)
+ * @param namer  Callback to generate database filename
+ *
+ * @return Full pathname to the database (to be generated)
+ *         (path must be freed by the caller)
+ *
+ * Generate the pathname for the hcache database, it will be of the form:
+ *     BASE/FOLDER/NAME-SUFFIX
+ *
+ * BASE :  Base directory (@path)
+ * FOLDER: Mailbox name (@folder)
+ * NAME:   Create by @namer, or md5sum of @folder
+ * SUFFIX: Character set (if ICONV isn't being used)
+ *
+ * This function will create any parent directories needed, so the caller just
+ * needs to create the database file.
+ *
+ * If @path exists and is a directory, it is used.
+ * If @path has a trailing '/' it is assumed to be a directory.
+ * If ICONV isn't being used, then a suffix is added to the path, e.g. '-utf-8'.
+ * Otherise @path is assumed to be a file.
+ */
+static const char *mutt_hcache_per_folder(const char *path, const char *folder,
+                                          hcache_namer_t namer)
 {
   static char hcpath[_POSIX_PATH_MAX];
   struct stat sb;
-  unsigned char md5sum[16];
-  char* s;
-  int ret, plen;
-#ifndef HAVE_ICONV
-  const char *chs = Charset && *Charset ? Charset : 
-		    mutt_get_default_charset ();
-#endif
 
-  plen = mutt_strlen (path);
-
-  ret = stat(path, &sb);
-  if (ret < 0 && path[plen-1] != '/')
-  {
-#ifdef HAVE_ICONV
-    return path;
-#else
-    snprintf (hcpath, _POSIX_PATH_MAX, "%s-%s", path, chs);
-    return hcpath;
-#endif
-  }
-
-  if (ret >= 0 && !S_ISDIR(sb.st_mode))
-  {
-#ifdef HAVE_ICONV
-    return path;
-#else
-    snprintf (hcpath, _POSIX_PATH_MAX, "%s-%s", path, chs);
-    return hcpath;
-#endif
-  }
+  int plen = mutt_strlen(path);
+  int ret = stat(path, &sb);
+  int slash = (path[plen - 1] == '/');
 
   if (namer)
   {
-    snprintf (hcpath, sizeof (hcpath), "%s%s", path,
-              path[plen-1] == '/' ? "" : "/");
-    if (path[plen-1] != '/')
+    /* We have a mailbox-specific namer function */
+    snprintf(hcpath, sizeof(hcpath), "%s%s", path, slash ? "" : "/");
+    if (!slash)
       plen++;
 
-    ret = namer (folder, hcpath + plen, sizeof (hcpath) - plen);
+    ret = namer(folder, hcpath + plen, sizeof(hcpath) - plen);
   }
   else
   {
-    md5_buffer (folder, strlen (folder), &md5sum);
+    unsigned char m[16]; /* binary md5sum */
+    char name[33];
+    md5_buffer(folder, strlen(folder), &m);
+    snprintf(name, sizeof(name),
+             "%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x",
+             m[0], m[1], m[2],  m[3],  m[4],  m[5],  m[6],  m[7],
+             m[8], m[9], m[10], m[11], m[12], m[13], m[14], m[15]);
 
-    /* On some systems (e.g. OS X), snprintf is defined as a macro.
-     * Embedding directives inside macros is undefined, so we have to duplicate
-     * the whole call:
-     */
+    char suffix[32] = "";
 #ifndef HAVE_ICONV
-    ret = snprintf(hcpath, _POSIX_PATH_MAX,
-                   "%s/%02x%02x%02x%02x%02x%02x%02x%02x"
-                   "%02x%02x%02x%02x%02x%02x%02x%02x"
-		   "-%s"
-		   ,
-		   path, md5sum[0], md5sum[1], md5sum[2], md5sum[3],
-                   md5sum[4], md5sum[5], md5sum[6], md5sum[7], md5sum[8],
-                   md5sum[9], md5sum[10], md5sum[11], md5sum[12],
-                   md5sum[13], md5sum[14], md5sum[15]
-		   ,chs
-		   );
-#else
-    ret = snprintf(hcpath, _POSIX_PATH_MAX,
-                   "%s/%02x%02x%02x%02x%02x%02x%02x%02x"
-                   "%02x%02x%02x%02x%02x%02x%02x%02x"
-		   ,
-		   path, md5sum[0], md5sum[1], md5sum[2], md5sum[3],
-                   md5sum[4], md5sum[5], md5sum[6], md5sum[7], md5sum[8],
-                   md5sum[9], md5sum[10], md5sum[11], md5sum[12],
-                   md5sum[13], md5sum[14], md5sum[15]
-		   );
+    const char *chs = Charset && *Charset ? Charset : mutt_get_default_charset();
+    snprintf(suffix, sizeof(suffix), "-%s", chs);
 #endif
+
+    if (((ret == 0) && S_ISDIR(sb.st_mode)) || ((ret == -1) && slash))
+    {
+      /* An existing directory or a trailing slash => a directory */
+      ret = snprintf(hcpath, sizeof(hcpath), "%s%s%s%s", path,
+          slash ? "" : "/", name, suffix);
+    }
+    else
+    {
+      /* Otherwise, we have a file */
+      ret = snprintf(hcpath, sizeof(hcpath), "%s%s", path, suffix);
+    }
   }
-  
-  if (ret <= 0)
+
+  if (ret < 0)
     return path;
 
-  if (stat (hcpath, &sb) >= 0)
-    return hcpath;
-
-  s = strchr (hcpath + 1, '/');
-  while (s)
-  {
-    /* create missing path components */
-    *s = '\0';
-    if (stat (hcpath, &sb) < 0 && (errno != ENOENT || mkdir (hcpath, 0777) < 0))
-      return path;
-    *s = '/';
-    s = strchr (s + 1, '/');
-  }
-
+  create_hcache_dir(hcpath);
   return hcpath;
 }
 

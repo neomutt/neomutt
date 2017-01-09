@@ -1179,6 +1179,7 @@ int mutt_mkdir(const char *path, mode_t mode)
     return -1;
   }
 
+  errno = 0;
   char *p;
   char _path[PATH_MAX];
   const size_t len = strlen(path);
@@ -1188,6 +1189,10 @@ int mutt_mkdir(const char *path, mode_t mode)
     errno = ENAMETOOLONG;
     return -1;
   }
+
+  struct stat sb;
+  if ((stat(path, &sb) == 0) && S_ISDIR(sb.st_mode))
+    return 0;
 
   /* Create a mutable copy */
   strfcpy(_path, path, sizeof(_path));
@@ -1209,7 +1214,6 @@ int mutt_mkdir(const char *path, mode_t mode)
   if ((mkdir(_path, mode) != 0) && (errno != EEXIST))
     return -1;
 
-  errno = 0;
   return 0;
 }
 
