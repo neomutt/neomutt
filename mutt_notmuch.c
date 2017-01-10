@@ -49,6 +49,12 @@
 #undef LIBNOTMUCH_CHECK_VERSION
 #endif
 
+#ifndef __bool_true_false_are_defined
+# define bool int
+# define false 1
+# define true (!false)
+#endif
+
 /* The definition in <notmuch.h> is broken */
 #define LIBNOTMUCH_CHECK_VERSION(major, minor, micro)                               \
     (LIBNOTMUCH_MAJOR_VERSION > (major) ||                                          \
@@ -1089,20 +1095,20 @@ static void append_thread(CONTEXT *ctx,
 	}
 }
 
-static void read_mesgs_query(CONTEXT *ctx, notmuch_query_t *q, int dedup)
+static bool read_mesgs_query(CONTEXT *ctx, notmuch_query_t *q, int dedup)
 {
 	struct nm_ctxdata *data = get_ctxdata(ctx);
 	int limit;
 	notmuch_messages_t *msgs;
 
 	if (!data)
-		return;
+		return false;
 
 	limit = get_limit(data);
 
 #if LIBNOTMUCH_CHECK_VERSION(4,3,0)
 	if (notmuch_query_search_messages_st (q, &msgs) != NOTMUCH_STATUS_SUCCESS)
-		return;
+		return false;
 #else
 	msgs = notmuch_query_search_messages(q);
 #endif
@@ -1111,23 +1117,28 @@ static void read_mesgs_query(CONTEXT *ctx, notmuch_query_t *q, int dedup)
 		(limit == 0 || ctx->msgcount < limit);
 	     notmuch_messages_move_to_next(msgs)) {
 
+		if (SigInt == 1) {
+			SigInt = 0;
+			return false;
+		}
 		notmuch_message_t *m = notmuch_messages_get(msgs);
 		append_message(ctx, q, m, dedup);
 		notmuch_message_destroy(m);
 	}
+	return true;
 }
 
-static void read_threads_query(CONTEXT *ctx, notmuch_query_t *q, int dedup, int limit)
+static bool read_threads_query(CONTEXT *ctx, notmuch_query_t *q, int dedup, int limit)
 {
 	struct nm_ctxdata *data = get_ctxdata(ctx);
 	notmuch_threads_t *threads;
 
 	if (!data)
-		return;
+		return false;
 
 #if LIBNOTMUCH_CHECK_VERSION(4,3,0)
 	if (notmuch_query_search_threads_st (q, &threads) != NOTMUCH_STATUS_SUCCESS)
-		return;
+		return false;
 #else
 	threads = notmuch_query_search_threads(q);
 #endif
@@ -1136,10 +1147,15 @@ static void read_threads_query(CONTEXT *ctx, notmuch_query_t *q, int dedup, int 
 		(limit == 0 || ctx->msgcount < limit);
 	     notmuch_threads_move_to_next(threads)) {
 
+		if (SigInt == 1) {
+			SigInt = 0;
+			return false;
+		}
 		notmuch_thread_t *thread = notmuch_threads_get(threads);
 		append_thread(ctx, q, thread, dedup);
 		notmuch_thread_destroy(thread);
 	}
+	return true;
 }
 
 int nm_read_query(CONTEXT *ctx)
@@ -1162,16 +1178,18 @@ int nm_read_query(CONTEXT *ctx)
 
 	q = get_query(data, FALSE);
 	if (q) {
+		rc = 0;
 		switch(get_query_type(data)) {
 		case NM_QUERY_TYPE_MESGS:
-			read_mesgs_query(ctx, q, 0);
+			if (!read_mesgs_query(ctx, q, 0))
+				rc = -2;
 			break;
 		case NM_QUERY_TYPE_THREADS:
-			read_threads_query(ctx, q, 0, get_limit(data));
+			if (!read_threads_query(ctx, q, 0, get_limit(data)))
+				rc = -2;
 			break;
 		}
 		notmuch_query_destroy(q);
-		rc = 0;
 
 	}
 
