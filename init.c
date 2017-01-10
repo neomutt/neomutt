@@ -2607,23 +2607,88 @@ static int parse_set (BUFFER *tmp, BUFFER *s, unsigned long data, BUFFER *err)
   return (r);
 }
 
+/* Heap structure
+ * FILO designed to contain the list of config files that have been sourced
+ * and avoid cyclic sourcing */
+static HEAP *MuttrcHeap;
+
+/* Use POSIX functions to convert a path to absolute, relatively to another path
+ * Args:
+ *  - path: instance containing the relative path to the file we want the absolute
+ *     path of. Should be at least of PATH_MAX length, will contain the full result.
+ *  - reference: path to a file which directory will be set as reference for setting
+ *      up the absolute path.
+ * Returns: TRUE (1) on success, FALSE (0) otherwise.
+ */
+static int to_absolute_path(char *path, const char *reference)
+{
+  char *ref_tmp, *dirpath;
+  char abs_path[PATH_MAX];
+  int path_len;
+
+  /* if path is already absolute, don't do anything */
+  if ((strlen(path) > 1) && (path[0] == '/'))
+  {
+    return TRUE;
+  }
+
+  ref_tmp = strdup(reference);
+  dirpath = dirname(ref_tmp); // get directory name of
+  strncpy(abs_path, dirpath, PATH_MAX);
+  strncat(abs_path, "/", PATH_MAX - 1); // append a / at the end of the path
+
+  free(ref_tmp);
+  path_len = PATH_MAX - strlen(path);
+
+  strncat(abs_path, path, path_len > 0 ? path_len : 0);
+
+  path = realpath(abs_path, path);
+
+  if (!path)
+  {
+    printf("Error: issue converting path to absolute (%s)", strerror(errno));
+    return FALSE;
+  }
+
+  return TRUE;
+}
+
 #define MAXERRS 128
 
 /* reads the specified initialization file.  returns -1 if errors were found
    so that we can pause to let the user know...  */
-static int source_rc (const char *rcfile, BUFFER *err)
+static int source_rc (const char *rcfile_path, BUFFER *err)
 {
   FILE *f;
   int line = 0, rc = 0, conv = 0, line_rc;
   BUFFER token;
   char *linebuf = NULL;
   char *currentline = NULL;
+  char rcfile[PATH_MAX];
   size_t buflen;
+
   pid_t pid;
 
-  dprint (2, (debugfile, "Reading configuration file '%s'.\n",
-	  rcfile));
-  
+  strncpy(rcfile, rcfile_path, PATH_MAX);
+
+  if (!to_absolute_path(rcfile, mutt_front_heap(MuttrcHeap)))
+  {
+    mutt_error("Error: impossible to build path of '%s'.", rcfile_path);
+    return (-1);
+  }
+
+  dprint(2, (debugfile, "Reading configuration file '%s'.\n", rcfile));
+
+  if (!MuttrcHeap || mutt_find_heap(MuttrcHeap, rcfile) == NULL)
+  {
+    mutt_push_heap(&MuttrcHeap, rcfile);
+  }
+  else
+  {
+    mutt_error("Error: Cyclic sourcing of configuration file '%s'.", rcfile);
+    return (-1);
+  }
+
   if ((f = mutt_open_read (rcfile, &pid)) == NULL)
   {
     snprintf (err->data, err->dsize, "%s: %s", rcfile, strerror (errno));
@@ -2672,6 +2737,9 @@ static int source_rc (const char *rcfile, BUFFER *err)
       : _("source: reading aborted due to too many errors in %s"), rcfile);
     rc = -1;
   }
+
+  mutt_pop_heap(&MuttrcHeap);
+
   return (rc);
 }
 
@@ -2693,7 +2761,7 @@ static int parse_source (BUFFER *tmp, BUFFER *s, unsigned long data, BUFFER *err
   }
   strfcpy (path, tmp->data, sizeof (path));
   mutt_expand_path (path, sizeof (path));
-  return (source_rc (path, err));
+  return source_rc (path, err);
 }
 
 /* line		command to execute

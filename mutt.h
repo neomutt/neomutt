@@ -57,6 +57,7 @@
 #define PATH_MAX _POSIX_PATH_MAX
 #endif
 
+#include <libgen.h>
 #include <pwd.h>
 #include <grp.h>
 
@@ -630,6 +631,8 @@ typedef struct list_t
   struct list_t *next;
 } LIST;
 
+typedef struct list_t HEAP;
+
 typedef struct rx_list_t
 {
   REGEXP *rx;
@@ -645,6 +648,7 @@ typedef struct spam_list_t
 } SPAM_LIST;
 
 #define mutt_new_list() safe_calloc (1, sizeof (LIST))
+#define mutt_new_heap() safe_calloc(1, sizeof(HEAP))
 #define mutt_new_rx_list() safe_calloc (1, sizeof (RX_LIST))
 #define mutt_new_spam_list() safe_calloc (1, sizeof (SPAM_LIST))
 void mutt_free_list (LIST **);
@@ -659,6 +663,12 @@ LIST *mutt_add_list (LIST *, const char *);
 LIST *mutt_add_list_n (LIST*, const void *, size_t);
 LIST *mutt_find_list (LIST *, const char *);
 int mutt_remove_from_rx_list (RX_LIST **l, const char *str);
+
+/* handle heap */
+void mutt_push_heap(HEAP **head, const char *data);
+int mutt_pop_heap(HEAP **head);
+const char *mutt_front_heap(HEAP *head);
+HEAP *mutt_find_heap(HEAP *head, const char *data);
 
 void mutt_init (int, LIST *);
 
