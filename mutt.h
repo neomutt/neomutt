@@ -57,6 +57,7 @@
 #define PATH_MAX _POSIX_PATH_MAX
 #endif
 
+#include <libgen.h>
 #include <pwd.h>
 #include <grp.h>
 
