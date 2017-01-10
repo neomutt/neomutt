@@ -72,7 +72,7 @@ void mutt_resize_screen (void)
   SLsmg_reset_smg ();
   SLsmg_init_smg ();
   stdscr = newwin (0, 0, 0, 0);
-  keypad (stdscr, TRUE);
+  keypad (stdscr, true);
 #else
   resizeterm (SLtt_Screen_Rows, SLtt_Screen_Cols);
 #endif

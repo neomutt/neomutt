@@ -606,7 +606,7 @@ static int string_is_address(const char *str, const char *u, const char *d)
   return 0;
 }
 
-/* returns TRUE if the given address belongs to the user. */
+/* returns true if the given address belongs to the user. */
 int mutt_addr_is_user (ADDRESS *addr)
 {
   const char *fqdn;

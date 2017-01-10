@@ -693,7 +693,7 @@ static notmuch_database_t *get_db(struct nm_ctxdata *data, int writable)
     const char *db_filename = get_db_filename(data);
 
     if (db_filename)
-      data->db = do_database_open(db_filename, writable, TRUE);
+      data->db = do_database_open(db_filename, writable, true);
   }
   return data->db;
 }
@@ -1459,7 +1459,7 @@ static int remove_filename(struct nm_ctxdata *data, const char *path)
   notmuch_status_t st;
   notmuch_filenames_t *ls;
   notmuch_message_t *msg = NULL;
-  notmuch_database_t *db = get_db(data, TRUE);
+  notmuch_database_t *db = get_db(data, true);
   int trans;
 
   dprint(2, (debugfile, "nm: remove filename '%s'\n", path));
@@ -1517,7 +1517,7 @@ static int rename_filename(struct nm_ctxdata *data, const char *old,
   notmuch_status_t st;
   notmuch_filenames_t *ls;
   notmuch_message_t *msg;
-  notmuch_database_t *db = get_db(data, TRUE);
+  notmuch_database_t *db = get_db(data, true);
   int trans;
 
   if (!db || !new || !old || (access(new, F_OK) != 0))
@@ -1693,7 +1693,7 @@ int nm_read_entire_thread(CONTEXT *ctx, HEADER *h)
 
   if (!data)
     return -1;
-  if (!(db = get_db(data, FALSE)) || !(msg = get_nm_message(db, h)))
+  if (!(db = get_db(data, false)) || !(msg = get_nm_message(db, h)))
     goto done;
 
   dprint(1, (debugfile,
@@ -1861,7 +1861,7 @@ int nm_modify_message_tags(CONTEXT *ctx, HEADER *hdr, char *buf)
   if (!buf || !*buf || !data)
     return -1;
 
-  if (!(db = get_db(data, TRUE)) || !(msg = get_nm_message(db, hdr)))
+  if (!(db = get_db(data, true)) || !(msg = get_nm_message(db, hdr)))
     goto done;
 
   dprint(1, (debugfile, "nm: tags modify: '%s'\n", buf));
@@ -1872,7 +1872,7 @@ int nm_modify_message_tags(CONTEXT *ctx, HEADER *hdr, char *buf)
   mutt_set_header_color(ctx, hdr);
 
   rc = 0;
-  hdr->changed = TRUE;
+  hdr->changed = true;
 done:
   if (!is_longrun(data))
     release_db(data);
@@ -1951,7 +1951,7 @@ int nm_nonctx_get_count(char *path, int *all, int *new)
 
   /* don't be verbose about connection, as we're called from
    * sidebar/buffy very often */
-  db = do_database_open(db_filename, FALSE, FALSE);
+  db = do_database_open(db_filename, false, false);
   if (!db)
     goto done;
 
@@ -2027,7 +2027,7 @@ int nm_record_message(CONTEXT *ctx, char *path, HEADER *h)
 
   if (!path || !data || (access(path, F_OK) != 0))
     return 0;
-  db = get_db(data, TRUE);
+  db = get_db(data, true);
   if (!db)
     return -1;
 
@@ -2075,7 +2075,7 @@ int nm_get_all_tags(CONTEXT *ctx, char **tag_list, int *tag_count)
   if (!data)
     return -1;
 
-  if (!(db = get_db(data, FALSE)) ||
+  if (!(db = get_db(data, false)) ||
       !(tags = notmuch_database_get_all_tags(db)))
     goto done;
 
@@ -2124,7 +2124,7 @@ static int nm_open_mailbox(CONTEXT *ctx)
 
   progress_reset(ctx);
 
-  q = get_query(data, FALSE);
+  q = get_query(data, false);
   if (q)
   {
     switch (get_query_type(data))
@@ -2196,7 +2196,7 @@ static int nm_check_mailbox(CONTEXT *ctx, int *index_hint)
 
   dprint(1, (debugfile, "nm: checking (db=%d ctx=%d)\n", mtime, ctx->mtime));
 
-  q = get_query(data, FALSE);
+  q = get_query(data, false);
   if (!q)
     goto done;
 

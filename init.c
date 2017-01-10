@@ -2618,7 +2618,7 @@ static HEAP *MuttrcHeap;
  *     path of. Should be at least of PATH_MAX length, will contain the full result.
  *  - reference: path to a file which directory will be set as reference for setting
  *      up the absolute path.
- * Returns: TRUE (1) on success, FALSE (0) otherwise.
+ * Returns: true (1) on success, false (0) otherwise.
  */
 static int to_absolute_path(char *path, const char *reference)
 {
@@ -2629,7 +2629,7 @@ static int to_absolute_path(char *path, const char *reference)
   /* if path is already absolute, don't do anything */
   if ((strlen(path) > 1) && (path[0] == '/'))
   {
-    return TRUE;
+    return true;
   }
 
   ref_tmp = strdup(reference);
@@ -2647,10 +2647,10 @@ static int to_absolute_path(char *path, const char *reference)
   if (!path)
   {
     printf("Error: issue converting path to absolute (%s)", strerror(errno));
-    return FALSE;
+    return false;
   }
 
-  return TRUE;
+  return true;
 }
 
 #define MAXERRS 128
@@ -3095,7 +3095,7 @@ static int complete_all_nm_tags (const char *pt)
   memset (Matches, 0, Matches_listsize);
   memset (Completed, 0, sizeof (Completed));
 
-  nm_longrun_init(Context, FALSE);
+  nm_longrun_init(Context, false);
 
   /* Work out how many tags there are. */
   if (nm_get_all_tags(Context, NULL, &tag_count_1) || tag_count_1 == 0)
