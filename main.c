@@ -156,7 +156,7 @@ static void start_curses (void)
   mutt_signal_init ();
 #endif
   ci_start_color ();
-  keypad (stdscr, TRUE);
+  keypad (stdscr, true);
   cbreak ();
   noecho ();
   nonl ();
@@ -164,7 +164,7 @@ static void start_curses (void)
   typeahead (-1);       /* simulate smooth scrolling */
 #endif
 #if HAVE_META
-  meta (stdscr, TRUE);
+  meta (stdscr, true);
 #endif
 init_extended_keys();
   mutt_reflow_windows ();

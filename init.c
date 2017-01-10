@@ -3027,7 +3027,7 @@ static int complete_all_nm_tags (const char *pt)
   memset (Matches, 0, Matches_listsize);
   memset (Completed, 0, sizeof (Completed));
 
-  nm_longrun_init(Context, FALSE);
+  nm_longrun_init(Context, false);
 
   /* Work out how many tags there are. */
   if (nm_get_all_tags(Context, NULL, &tag_count_1) || tag_count_1 == 0)
