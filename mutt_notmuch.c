@@ -150,7 +150,7 @@ static int url_parse_query(char *url, char **filename, struct uri_tag **tags)
 
 	e = strchr(p, '?');
 
-	*filename = e ? e == p ? NULL : strndup(p, e - p) : safe_strdup(p);
+	*filename = e ? e == p ? NULL : mutt_substrdup(p, e) : safe_strdup(p);
 	if (!e)
 		return 0;	/* only filename */
 
@@ -175,7 +175,7 @@ static int url_parse_query(char *url, char **filename, struct uri_tag **tags)
 		e = strchr(p, '=');
 		if (!e)
 			e = strchr(p, '&');
-		tag->name = e ? strndup(p, e - p) : safe_strdup(p);
+		tag->name = e ? mutt_substrdup(p, e) : safe_strdup(p);
 		if (!tag->name || url_pct_decode(tag->name) < 0)
 			goto err;
 		if (!e)
@@ -187,7 +187,7 @@ static int url_parse_query(char *url, char **filename, struct uri_tag **tags)
 			continue;
 
 		e = strchr(p, '&');
-		tag->value = e ? strndup(p, e - p) : safe_strdup(p);
+		tag->value = e ? mutt_substrdup(p, e) : safe_strdup(p);
 		if (!tag->value || url_pct_decode(tag->value) < 0)
 			goto err;
 		if (!e)
@@ -787,7 +787,7 @@ static int update_message_path(HEADER *h, const char *path)
 
 		for (; p > path && *(p - 1) == '/'; p--);
 
-		data->folder = strndup(path, p - path);
+		data->folder = mutt_substrdup(path, p);
 
 		dprint(2, (debugfile, "nm: folder='%s', file='%s'\n", data->folder, h->path));
 		return 0;
@@ -808,7 +808,7 @@ static char *get_folder_from_path(const char *path)
 		p -= 3;
 		for (; p > path && *(p - 1) == '/'; p--);
 
-		return strndup(path, p - path);
+		return mutt_substrdup(path, p);
 	}
 
 	return NULL;
