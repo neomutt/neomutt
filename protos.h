@@ -597,10 +597,3 @@ char *strcasestr (const char *, const char *);
 char *mkdtemp (char *tmpl);
 #endif
 
-#ifndef HAVE_STRNLEN
-size_t strnlen(const char *s, size_t maxlen);
-#endif
-
-#ifndef strndup
-char *strndup(const char *s, size_t n);
-#endif
