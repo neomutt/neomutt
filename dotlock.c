@@ -593,7 +593,13 @@ dotlock_lock (const char *realpath)
   time_t t;
   
   snprintf (nfslockfile, sizeof (nfslockfile), "%s.%s.%d",
-	   realpath, utsname.nodename, (int) getpid ());
+       realpath,
+#ifdef DL_STANDALONE
+       utsname.nodename
+#else
+       Hostname
+#endif
+       , (int) getpid ());
   snprintf (lockfile, sizeof (lockfile), "%s.lock", realpath);
 
   
