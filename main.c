@@ -276,7 +276,8 @@ int main (int argc, char **argv, char **environ)
 	break;
 
       case 'F':
-	mutt_str_replace (&Muttrc, optarg);
+	// mutt_str_replace (&Muttrc, optarg);
+    Muttrc = mutt_add_list (Muttrc, optarg);
 	break;
 
       case 'f':

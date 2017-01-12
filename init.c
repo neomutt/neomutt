@@ -3707,26 +3707,30 @@ void mutt_init (int skip_sys_rc, LIST *commands)
       xdg_cfg_home = buffer;
     }
 
-    Muttrc = mutt_find_cfg (Homedir, xdg_cfg_home);
+    char *config = mutt_find_cfg (Homedir, xdg_cfg_home);
+    if (config)
+      Muttrc = mutt_add_list (Muttrc, config);
   }
   else
   {
-    strfcpy (buffer, Muttrc, sizeof (buffer));
-    FREE (&Muttrc);
-    mutt_expand_path (buffer, sizeof (buffer));
-    Muttrc = safe_strdup (buffer);
-    if (access (Muttrc, F_OK))
-    {
-      snprintf (buffer, sizeof (buffer), "%s: %s", Muttrc, strerror (errno));
-      mutt_endwin (buffer);
-      exit (1);
+    for (LIST *config=Muttrc ; config != NULL; config = config->next) {
+      strfcpy (buffer, config->data, sizeof (buffer));
+      FREE (&config->data);
+      mutt_expand_path (buffer, sizeof (buffer));
+      config->data = safe_strdup (buffer);
+      if (access (config->data, F_OK))
+      {
+	snprintf (buffer, sizeof (buffer), "%s: %s", config->data, strerror (errno));
+	mutt_endwin (buffer);
+	exit (1);
+      }
     }
   }
 
   if (Muttrc)
   {
-    FREE (&AliasFile);
-    AliasFile = safe_strdup (Muttrc);
+    FREE (&AliasFiles);
+    AliasFiles = mutt_copy_list(Muttrc);
   }
 
   /* Process the global rc file if it exists and the user hasn't explicity
@@ -3780,15 +3784,17 @@ void mutt_init (int skip_sys_rc, LIST *commands)
   }
 
   /* Read the user's initialization file.  */
-  if (Muttrc)
-  {
-    if (!option (OPTNOCURSES))
-      endwin ();
-    if (source_rc (Muttrc, &err) != 0)
+  for (LIST *config = Muttrc; config != NULL; config = config->next) {
+    if (config->data)
     {
-      fputs (err.data, stderr);
-      fputc ('\n', stderr);
-      need_pause = 1;
+      if (!option (OPTNOCURSES))
+	endwin ();
+      if (source_rc (config->data, &err) != 0)
+      {
+	fputs (err.data, stderr);
+	fputc ('\n', stderr);
+	need_pause = 1;
+      }
     }
   }
 

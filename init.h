@@ -118,7 +118,7 @@ struct option_t MuttVars[] = {
   ** check only happens after the \fIfirst\fP edit of the file).  When set
   ** to \fIno\fP, composition will never be aborted.
   */
-  { "alias_file",	DT_PATH, R_NONE, UL &AliasFile, UL "~/.muttrc" },
+  { "alias_file",	DT_PATH, R_NONE, UL &AliasFiles, UL "~/.muttrc" },
   /*
   ** .pp
   ** The default file in which to save aliases created by the

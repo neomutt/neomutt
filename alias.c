@@ -344,49 +344,51 @@ retry_name:
   else
     Aliases = new;
 
-  strfcpy (buf, NONULL (AliasFile), sizeof (buf));
-  if (mutt_get_field (_("Save to file: "), buf, sizeof (buf), MUTT_FILE) != 0)
-    return;
-  mutt_expand_path (buf, sizeof (buf));
-  if ((rc = fopen (buf, "a+")))
-  {
-    /* terminate existing file with \n if necessary */
-    if (fseek (rc, 0, SEEK_END))
-      goto fseek_err;
-    if (ftell(rc) > 0)
+  for (LIST *AliasFile = AliasFiles; AliasFile != NULL; AliasFile = AliasFile->next) {
+    strfcpy (buf, NONULL (AliasFile->data), sizeof (buf));
+    if (mutt_get_field (_("Save to file: "), buf, sizeof (buf), MUTT_FILE) != 0)
+      return;
+    mutt_expand_path (buf, sizeof (buf));
+    if ((rc = fopen (buf, "a+")))
     {
-      if (fseek (rc, -1, SEEK_CUR) < 0)
-	goto fseek_err;
-      if (fread(buf, 1, 1, rc) != 1)
+      /* terminate existing file with \n if necessary */
+      if (fseek (rc, 0, SEEK_END))
+        goto fseek_err;
+      if (ftell(rc) > 0)
       {
-	mutt_perror (_("Error reading alias file"));
-	safe_fclose (&rc);
-	return;
+        if (fseek (rc, -1, SEEK_CUR) < 0)
+          goto fseek_err;
+        if (fread(buf, 1, 1, rc) != 1)
+        {
+          mutt_perror (_("Error reading alias file"));
+          safe_fclose (&rc);
+          return;
+        }
+        if (fseek (rc, 0, SEEK_END) < 0)
+          goto fseek_err;
+        if (buf[0] != '\n')
+          fputc ('\n', rc);
       }
-      if (fseek (rc, 0, SEEK_END) < 0)
-	goto fseek_err;
-      if (buf[0] != '\n')
-	fputc ('\n', rc);
-    }
 
-    if (mutt_check_alias_name (new->name, NULL, 0))
-      mutt_quote_filename (buf, sizeof (buf), new->name);
+      if (mutt_check_alias_name (new->name, NULL, 0))
+        mutt_quote_filename (buf, sizeof (buf), new->name);
+      else
+        strfcpy (buf, new->name, sizeof (buf));
+      recode_buf (buf, sizeof (buf));
+      fprintf (rc, "alias %s ", buf);
+      buf[0] = 0;
+      rfc822_write_address (buf, sizeof (buf), new->addr, 0);
+      recode_buf (buf, sizeof (buf));
+      write_safe_address (rc, buf);
+      fputc ('\n', rc);
+      if (safe_fsync_close(&rc) != 0)
+        mutt_message ("Trouble adding alias: %s.", strerror(errno));
+      else
+        mutt_message (_("Alias added."));
+    }
     else
-      strfcpy (buf, new->name, sizeof (buf));
-    recode_buf (buf, sizeof (buf));
-    fprintf (rc, "alias %s ", buf);
-    buf[0] = 0;
-    rfc822_write_address (buf, sizeof (buf), new->addr, 0);
-    recode_buf (buf, sizeof (buf));
-    write_safe_address (rc, buf);
-    fputc ('\n', rc);
-    if (safe_fsync_close(&rc) != 0)
-      mutt_message ("Trouble adding alias: %s.", strerror(errno));
-    else
-      mutt_message (_("Alias added."));
+      mutt_perror (buf);
   }
-  else
-    mutt_perror (buf);
 
   return;
   
