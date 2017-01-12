@@ -583,11 +583,26 @@ static const char *mutt_hcache_per_folder(const char *path, const char *folder,
                                           hcache_namer_t namer)
 {
   static char hcpath[_POSIX_PATH_MAX];
+  char suffix[32] = "";
   struct stat sb;
 
   int plen = mutt_strlen(path);
   int ret = stat(path, &sb);
   int slash = (path[plen - 1] == '/');
+
+#ifndef HAVE_ICONV
+  snprintf(suffix, sizeof(suffix), "-%s",
+      Charset && *Charset ? Charset : mutt_get_default_charset());
+#endif
+
+  if (((ret == 0) && !S_ISDIR(sb.st_mode)) || ((ret == -1) && !slash))
+  {
+      /* An existing file or a non-existing path not ending with a slash */
+      snprintf(hcpath, sizeof(hcpath), "%s%s", path, suffix);
+      return hcpath;
+  }
+
+  /* We have a directory - no matter whether it exists, or not */
 
   if (namer)
   {
@@ -608,26 +623,11 @@ static const char *mutt_hcache_per_folder(const char *path, const char *folder,
              m[0], m[1], m[2],  m[3],  m[4],  m[5],  m[6],  m[7],
              m[8], m[9], m[10], m[11], m[12], m[13], m[14], m[15]);
 
-    char suffix[32] = "";
-#ifndef HAVE_ICONV
-    const char *chs = Charset && *Charset ? Charset : mutt_get_default_charset();
-    snprintf(suffix, sizeof(suffix), "-%s", chs);
-#endif
-
-    if (((ret == 0) && S_ISDIR(sb.st_mode)) || ((ret == -1) && slash))
-    {
-      /* An existing directory or a trailing slash => a directory */
-      ret = snprintf(hcpath, sizeof(hcpath), "%s%s%s%s", path,
-          slash ? "" : "/", name, suffix);
-    }
-    else
-    {
-      /* Otherwise, we have a file */
-      ret = snprintf(hcpath, sizeof(hcpath), "%s%s", path, suffix);
-    }
+    ret = snprintf(hcpath, sizeof(hcpath), "%s%s%s%s", path, slash ? "" : "/",
+        name, suffix);
   }
 
-  if (ret < 0)
+  if (ret < 0) /* namer or fprintf failed.. should not happen */
     return path;
 
   create_hcache_dir(hcpath);
