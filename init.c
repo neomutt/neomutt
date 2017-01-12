@@ -2610,42 +2610,7 @@ static int parse_set (BUFFER *tmp, BUFFER *s, unsigned long data, BUFFER *err)
 /* Heap structure
  * FILO designed to contain the list of config files that have been sourced
  * and avoid cyclic sourcing */
-static struct config_path_heap {
-    char *path;
-    struct config_path_heap *prev;
-} *ConfigPathHeap;
-
-static void path_heap_push (char *path) {
-  struct config_path_heap *elt = safe_malloc(sizeof(struct config_path_heap));
-  elt->path = strdup(path);
-  elt->prev = ConfigPathHeap;
-  ConfigPathHeap = elt;
-}
-
-static int path_heap_pop () {
-  struct config_path_heap *elt = ConfigPathHeap;
-  if (!ConfigPathHeap)
-      return 0;
-  ConfigPathHeap = elt->prev;
-  free(elt->path);
-    free(elt);
-  return 1;
-}
-
-static const char *path_heap_front (void) {
-  if (!ConfigPathHeap || !ConfigPathHeap->path)
-      return "";
-  return ConfigPathHeap->path;
-}
-
-static int path_heap_find(char *path) {
-  for (struct config_path_heap* former=ConfigPathHeap; 
-       former != NULL;
-       former = former->prev)
-    if (strcmp(path, former->path) == 0)
-      return TRUE;
-  return FALSE;
-}
+static HEAP *MuttrcHeap;
 
 /* Use POSIX functions to convert a path to absolute, relatively to another path 
  * Args:
@@ -2704,16 +2669,16 @@ static int source_rc (const char *rcfile_path, BUFFER *err)
 
   strncpy(rcfile, rcfile_path, PATH_MAX);
 
-  if (to_absolute_path (rcfile, path_heap_front())) {
+  if (!to_absolute_path (rcfile, mutt_front_heap(MuttrcHeap))) {
     mutt_error ("Error: impossible to build path of '%s'.", rcfile_path);
     return (-1);
   }
 
   dprint (2, (debugfile, "Reading configuration file '%s'.\n", rcfile));
 
-  if (!path_heap_find(rcfile))
-    path_heap_push(strdup(rcfile));
-  else {
+  if (!MuttrcHeap || mutt_find_heap(MuttrcHeap, rcfile) == NULL) {
+    mutt_push_heap(&MuttrcHeap, rcfile);
+  } else {
     mutt_error ("Error: Cyclic sourcing of configuration file '%s'.", rcfile);
     return (-1);
   }
@@ -2767,7 +2732,7 @@ static int source_rc (const char *rcfile_path, BUFFER *err)
     rc = -1;
   }
 
-  path_heap_pop();
+  mutt_pop_heap(&MuttrcHeap);
 
   return (rc);
 }
