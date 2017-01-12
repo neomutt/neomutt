@@ -573,10 +573,6 @@ int strcasecmp (char *, char *);
 int strncasecmp (char *, char *, size_t);
 #endif
 
-#ifndef HAVE_STRDUP
-char *strdup (const char *);
-#endif
-
 #ifndef HAVE_STRSEP
 char *strsep (char **, const char *);
 #endif

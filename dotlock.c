@@ -97,7 +97,7 @@ static int DotlockFlags;
 static int Retry = MAXLOCKATTEMPT;
 
 #ifdef DL_STANDALONE
-static char *Hostname;
+struct utsname utsname;
 #endif
 
 #ifdef USE_SETGID
@@ -138,7 +138,6 @@ int main (int argc, char **argv)
 {
   int i;
   char *p;
-  struct utsname utsname;
 
   /* first, drop privileges */
   
@@ -149,9 +148,7 @@ int main (int argc, char **argv)
   /* determine the system's host name */
   
   uname (&utsname);
-  if (!(Hostname = strdup (utsname.nodename)))	/* __MEM_CHECKED__ */
-    return DL_EX_ERROR;
-  if ((p = strchr (Hostname, '.')))
+  if ((p = strchr (utsname.nodename, '.')))
     *p = '\0';
 
 
@@ -596,7 +593,13 @@ dotlock_lock (const char *realpath)
   time_t t;
   
   snprintf (nfslockfile, sizeof (nfslockfile), "%s.%s.%d",
-	   realpath, Hostname, (int) getpid ());
+       realpath,
+#ifdef DL_STANDALONE
+       utsname.nodename,
+#else
+       Hostname,
+#endif
+       (int) getpid ());
   snprintf (lockfile, sizeof (lockfile), "%s.lock", realpath);
 
   
