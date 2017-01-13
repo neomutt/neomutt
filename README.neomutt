@@ -19,35 +19,35 @@ sorted through them, fixed them up and documented them.
 
 | Name                 | Description
 |----------------------|-------------------------------------------------------
-| Attach Headers Color | Color attachment headers using regexp
+| Attach Headers Color | Color attachment headers using regexp, just like mail bodies
 | Compose to Sender    | Send new mail to the sender of the current mail
 | Compressed Folders   | Read from/write to compressed mailboxes
-| Conditional Dates    | Conditional Date Formatting
-| Encrypt-to-Self      | Save an self-encrypted copy of emails
-| Forgotten Attachment | Alert user when (s)he forgets to attach a file to an outgoing email
-| Fmemopen             | Use fmemopen(3) for speedier temporary files
+| Conditional Dates    | Use rules to choose date format
+| Encrypt-to-Self      | Save a self-encrypted copy of emails
+| Fmemopen             | Replace some temporary files with memory buffers
+| Forgotten Attachment | Alert user when (s)he forgets to attach a file to an outgoing email.
+| Global Hooks         | Define actions to run globally within Mutt
 | Ifdef                | Conditional config options
-| Index Color          | Theming of the Index List
-| Initials Expando     | Expando for Author's Initials
+| Index Color          | Custom rules for theming the email index
+| Initials Expando     | Expando for author's initials
 | Keywords             | Labels/Tagging for emails
 | Kyoto Cabinet        | Kyoto Cabinet backend for the header cache
-| Limit-Current-Thread | Limit Index View to Current Thread
+| Limit Current Thread | Focus on one Email Thread
 | LMDB                 | LMDB backend for the header cache
-| Multiple fcc         | Save multiple copies of outgoing mail
-| Nested If            | Allow deeply nested conditionals in format strings
-| New Mail Command     | Run a command when new mail arrives
+| Multiple FCC         | Save multiple copies of outgoing mail
+| Nested If            | Allow complex nested conditions in format strings
+| New Mail             | Execute a command upon the receipt of new mail.
 | NNTP                 | Talk to a Usenet news server
-| Notmuch              | Powerful email search engine
-| Progress Bar         | Colourful Progress Bar
-| Quasi-Delete         | Hide emails from view, but don't delete them
-| Reply With X-Orig    | Direct reply to email using X-Original-To header
-| Sensible-Browser     | Make the file browser behave
+| Notmuch              | Email search engine
+| Progress Bar         | Show a visual progress bar on slow operations
+| Quasi-Delete         | Mark emails that should be hidden, but not deleted
+| Reply With X-Orig-To | Direct reply to email using X-Original-To header
+| Sensible Browser     | Make the file browser behave
 | Sidebar              | Panel containing list of Mailboxes
-| Skip-Quoted          | Skip Quoted Text
-| Status Color         | Theming of the Status Bar
-| Timeout Hook         | Run a command periodically
-| TLS-SNI              | Negotiate with a Server for a Certificate
-| Trash Folder         | Automatically move emails to a trash bin
+| Skip Quoted          | Leave some context visible
+| Status Color         | Custom rules for theming the status bar
+| TLS-SNI              | Negotiate with a server for a TSL/SSL certificate
+| Trash Folder         | Automatically move deleted emails to a trash bin
 
 ## Contributed Scripts and Config
 
@@ -69,16 +69,18 @@ and [neomutt-devel](mailto:neomutt-devel-request@neomutt.org?subject=subscribe)
 
 Here's a list of everyone who's helped NeoMutt:
 
-Alex Pearce, Ander Punnar, Antonio Radici, Baptiste Daroussin, Chris Czettel,
-Chris Salzberg, Christoph Berg, Clemens Lang, Darshit Shah, David Sterba,
+Adam Borowski, Alex Pearce, Ander Punnar, André Berger, Antonio Radici,
+Baptiste Daroussin, Bernard Pratz, Chris Czettel, Chris Salzberg,
+Christoph Berg, Clemens Lang, Damien Riegel, Darshit Shah, David Sterba,
 Doug Stone-Weaver, Elimar Riesebieter, Evgeni Golov, Fabian Groffen,
-Fabio Alessandro Locati, Faidon Liambotis, Guillaume Brogi, Ismaël Bouya,
-Ivan Tham, Johannes Frankenau, Johannes Weißl, Joshua Jordi, Karel Zak,
-Kevin Velghe, Kurt Jaeger, Marco Hinz, Matteo Vescovi, Olaf Lessenich,
-Pierre-Elliott Bécue, Pietro Cerutti, Richard Hartmann, Richard Russon,
-Santiago Torres, Stephen Gilles, Steven Ragnarök, Sven Guckes, Thomas Klausner,
-Tobias Angele, Udo Schweigert, Vsevolod Volkov, Werner Fink,
-Yoshiki Vázquez Baeza.
+Fabio Alessandro Locati, Faidon Liambotis, František Hájik, Guillaume Brogi,
+Ian Zimmerman, Ismaël Bouya, Ivan Tham, Jack Stratton, Johannes Frankenau,
+Johannes Weißl, Joshua Jordi, Karel Zak, Kevin Velghe, Kurt Jaeger, Marco Hinz,
+Matteo Vescovi, Olaf Lessenich, Philipp Marek, Pierre-Elliott Bécue,
+Pietro Cerutti, Riad Wahby, Richard Hartmann, Richard Russon, Rubén Llorente,
+Santiago Torres, Serge Gebhardt, Somini, Stephen Gilles, Steven Ragnarök,
+Sven Guckes, Thomas Adam, Thomas Klausner, Tobias Angele, Udo Schweigert,
+Vsevolod Volkov, Werner Fink, Wieland Hoffmann, Yoshiki Vázquez Baeza.
 
 ## Original Patch Authors
 
