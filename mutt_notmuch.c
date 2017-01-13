@@ -1265,64 +1265,6 @@ char *nm_uri_from_query(CONTEXT *ctx, char *buf, size_t bufsz)
 	return buf;
 }
 
-void nm_setup_windowed_query(char *buf, size_t bufsz)
-{
-	dprint(2, (debugfile, "nm_setup_windowed_query (%s)\n", buf));
-	mutt_str_replace(&NotmuchQueryWindowCurrentSearch, buf);
-}
-
-int nm_query_window_check_timebase(char *timebase)
-{
-	if ((strcmp(timebase, "hour")  == 0) ||
-	    (strcmp(timebase, "day")   == 0) ||
-	    (strcmp(timebase, "week")  == 0) ||
-	    (strcmp(timebase, "month") == 0) ||
-	    (strcmp(timebase, "year")  == 0))
-		return true;
-	return false;
-}
-
-char *nm_uri_from_windowed_query(CONTEXT *ctx, char *buf, size_t bufsz, char *timebase, int duration)
-{
-	dprint(2, (debugfile, "nm_uri_from_windowed_query (%s, %s, %d)\n", buf, timebase, duration));
-
-	int beg = duration * (NotmuchQueryWindowCurrentPosition + 1);
-	int end = duration *  NotmuchQueryWindowCurrentPosition;
-
-	if (NotmuchQueryWindowCurrentSearch == NULL)
-	{
-		nm_query_window_reset();
-		return NULL;
-	}
-
-	if (end == 0)
-		snprintf(buf, bufsz, "date:%d%s..now and %s", beg, timebase, NotmuchQueryWindowCurrentSearch);
-	else
-		snprintf(buf, bufsz, "date:%d%s..%d%s and %s", beg, timebase, end, timebase, NotmuchQueryWindowCurrentSearch);
-
-	return nm_uri_from_query(ctx, buf, bufsz);
-}
-
-void nm_query_window_reset(void)
-{
-	dprint(2, (debugfile, "nm_query_window_reset ()\n"));
-	NotmuchQueryWindowCurrentPosition = 0;
-}
-
-void nm_query_window_backward(void)
-{
-	NotmuchQueryWindowCurrentPosition += 1;
-	dprint(2, (debugfile, "nm_query_window_backward (%d)\n", NotmuchQueryWindowCurrentPosition));
-}
-
-void nm_query_window_forward(void)
-{
-	if (NotmuchQueryWindowCurrentPosition != 0)
-		NotmuchQueryWindowCurrentPosition -= 1;
-
-	dprint(2, (debugfile, "nm_query_window_forward (%d)\n", NotmuchQueryWindowCurrentPosition));
-}
-
 /*
  * returns message from notmuch database
  */
