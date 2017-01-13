@@ -179,7 +179,7 @@ update-po: Makefile
 	  cat=`basename $$cat`; \
 	  lang=`echo $$cat | sed 's/\.gmo$$//'`; \
 	  echo "$$lang:"; \
-	  if $(MSGMERGE) $$lang.po $(PACKAGE).pot -o $$lang.new.po; then \
+	  if $(MSGMERGE) --no-wrap $$lang.po $(PACKAGE).pot -o $$lang.new.po; then \
 	    mv -f $$lang.new.po $$lang.po; \
 	  else \
 	    echo "msgmerge for $$cat failed!"; \
