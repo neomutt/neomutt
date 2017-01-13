@@ -3820,16 +3820,19 @@ struct option_t MuttVars[] = {
   { "status_chars",	DT_MBCHARTBL, R_BOTH, UL &StChars, UL "-*%A" },
   /*
   ** .pp
-  ** Controls the characters used by the ``%r'' indicator in
-  ** $$status_format. The first character is used when the mailbox is
-  ** unchanged. The second is used when the mailbox has been changed, and
-  ** it needs to be resynchronized. The third is used if the mailbox is in
-  ** read-only mode, or if the mailbox will not be written when exiting
-  ** that mailbox (You can toggle whether to write changes to a mailbox
-  ** with the \fC<toggle-write>\fP operation, bound by default to ``%''). The fourth
-  ** is used to indicate that the current folder has been opened in attach-
-  ** message mode (Certain operations like composing a new mail, replying,
-  ** forwarding, etc. are not permitted in this mode).
+  ** Controls the characters used by the ``%r'' indicator in $$status_format.
+  ** .dl
+  ** .dt \fBCharacter\fP .dd \fBDefault\fP .dd \fBDescription\fP
+  ** .dt 1 .dd - .dd Mailbox is unchanged
+  ** .dt 2 .dd * .dd Mailbox has been changed and needs to be resynchronized
+  ** .dt 3 .dd % .dd Mailbox is read-only, or will not be written when exiting.
+  **                 (You can toggle whether to write changes to a mailbox
+  **                 with the \fC<toggle-write>\fP operation, bound by default
+  **                 to ``%'')
+  ** .dt 4 .dd A .dd Folder opened in attach-message mode.
+  **                 (Certain operations like composing a new mail, replying,
+  **                 forwarding, etc. are not permitted in this mode)
+  ** .de
   */
   { "status_format",	DT_STR,	 R_BOTH, UL &Status, UL "-%r-NeoMutt: %f [Msgs:%?M?%M/?%m%?n? New:%n?%?o? Old:%o?%?d? Del:%d?%?F? Flag:%F?%?t? Tag:%t?%?p? Post:%p?%?b? Inc:%b?%?l? %l?]---(%s/%S)-%>-(%P)---" },
   /*
