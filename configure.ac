@@ -302,10 +302,10 @@ AX_LUA_HEADERS(:,enable_lua=no)
 AX_LUA_LIBS(:,enable_lua=no)
 
 AS_IF([test x$enable_lua = "xyes"], [
-	   AC_DEFINE(USE_LUA, 1, [Define if you want support for LUA.])
-	   MUTT_LIB_OBJECTS="$MUTT_LIB_OBJECTS mutt-lua.o"
-	   CPPFLAGS="$CPPFLAGS $LUA_INCLUDE"
-	   LIBS="$LIBS $LUA_LIB"
+	AC_DEFINE(USE_LUA, 1, [Define if you want support for LUA.])
+	MUTT_LIB_OBJECTS="$MUTT_LIB_OBJECTS mutt_lua.o"
+	CPPFLAGS="$CPPFLAGS $LUA_INCLUDE"
+	LIBS="$LIBS $LUA_LIB"
 ])
 AM_CONDITIONAL(BUILD_LUA, test x$enable_lua = xyes)
 

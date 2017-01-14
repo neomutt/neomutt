@@ -18,6 +18,9 @@
 #ifndef _MUTT_LUA_H_
 #define _MUTT_LUA_H_
 
-int lua_test (void);
+#include "mutt.h"
+
+int mutt_lua_parse (BUFFER *tmp, BUFFER *s, unsigned long data, BUFFER *err);
+int mutt_lua_source_file (BUFFER *tmp, BUFFER *s, unsigned long data, BUFFER *err);
 
 #endif /* _MUTT_LUA_H_ */

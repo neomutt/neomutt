@@ -25,6 +25,10 @@
 # include "mx.h"
 #endif
 
+#ifdef USE_LUA
+#include "mutt_lua.h"
+#endif
+
 #include "buffy.h"
 
 #ifndef _MAKEDOC
@@ -1604,13 +1608,6 @@ struct option_t MuttVars[] = {
   ** ``$$keywords_standard'' are \fCfalse\fP, mutt will save keywords
   ** to legacy headers to ensure that it does not lose your labels.
   */
-#ifdef USE_LUA
-  { "lua_script",	DT_STR,  R_NONE, UL &LuaScript, 0 },
-  /*
-  ** .pp
-  ** External Lua script to run.
-  */
-#endif
   { "mail_check",	DT_NUM,  R_NONE, UL &BuffyTimeout, 5 },
   /*
   ** .pp
@@ -4487,6 +4484,10 @@ const struct command_t Commands[] = {
 #endif
   { "ignore",		parse_ignore,		0 },
   { "lists",		parse_lists,		0 },
+#ifdef USE_LUA
+  { "lua",		mutt_lua_parse,		0 },
+  { "lua-source",	mutt_lua_source_file,	0 },
+#endif
   { "macro",		mutt_parse_macro,	0 },
   { "mailboxes",	mutt_parse_mailboxes,	MUTT_MAILBOXES },
   { "unmailboxes",	mutt_parse_mailboxes,	MUTT_UNMAILBOXES },
