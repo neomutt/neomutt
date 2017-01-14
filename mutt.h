@@ -34,6 +34,7 @@
 #include <time.h>
 #include <limits.h>
 #include <stdarg.h>
+#include <stdbool.h>
 #include <signal.h>
 /* On OS X 10.5.x, wide char functions are inlined by default breaking
  * --without-wc-funcs compilation
@@ -57,12 +58,21 @@
 #define PATH_MAX _POSIX_PATH_MAX
 #endif
 
+#include <libgen.h>
 #include <pwd.h>
 #include <grp.h>
 
 #include "rfc822.h"
 #include "hash.h"
 #include "charset.h"
+
+#ifndef __bool_true_false_are_defined
+# define boot int
+# define _Bool int
+# define false 0
+# define true (!false)
+# define __bool_true_false_are_defined 1
+#endif
 
 #ifndef HAVE_WC_FUNCS
 # ifdef MB_LEN_MAX
@@ -1127,3 +1137,7 @@ typedef struct
 #include "globals.h"
 
 #endif /*MUTT_H*/
+
+
+
+

@@ -702,8 +702,8 @@ static int eat_date (pattern_t *pat, BUFFER *s, BUFFER *err)
   {
     const char *pc = buffer.data;
 
-    int haveMin = FALSE;
-    int untilNow = FALSE;
+    int haveMin = false;
+    int untilNow = false;
     if (isdigit ((unsigned char)*pc))
     {
       /* minimum date specified */
@@ -712,7 +712,7 @@ static int eat_date (pattern_t *pat, BUFFER *s, BUFFER *err)
 	FREE (&buffer.data);
 	return (-1);
       }
-      haveMin = TRUE;
+      haveMin = true;
       SKIPWS (pc);
       if (*pc == '-')
       {

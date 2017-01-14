@@ -1016,7 +1016,7 @@ int mutt_menuLoop (MUTTMENU *menu)
       mutt_resize_screen ();
       menu->redraw = REDRAW_FULL;
       SigWinch = 0;
-      clearok(stdscr,TRUE);/*force complete redraw*/
+      clearok(stdscr,true);/*force complete redraw*/
     }
 #endif
 
@@ -1152,7 +1152,7 @@ int mutt_menuLoop (MUTTMENU *menu)
 	break;
 
       case OP_REDRAW:
-	clearok (stdscr, TRUE);
+	clearok (stdscr, true);
 	menu->redraw = REDRAW_FULL;
 	break;
 

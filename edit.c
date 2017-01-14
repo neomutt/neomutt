@@ -325,7 +325,7 @@ int mutt_builtin_editor (const char *path, HEADER *msg, HEADER *cur)
   int i;
   char *p;
   
-  scrollok (stdscr, TRUE);
+  scrollok (stdscr, true);
 
   be_edit_header (msg->env, 0);
 

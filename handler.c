@@ -1309,7 +1309,7 @@ static int autoview_handler (BODY *a, STATE *s)
   FILE *fpin = NULL;
   FILE *fpout = NULL;
   FILE *fperr = NULL;
-  int piped = FALSE;
+  int piped = false;
   pid_t thepid;
   int rc = 0;
 

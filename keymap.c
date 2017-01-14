@@ -693,7 +693,7 @@ void init_extended_keys(void)
 #ifdef NCURSES_VERSION
   int j;
 
-  use_extended_names(TRUE);
+  use_extended_names(true);
 
   for (j = 0; KeyNames[j].name; ++j)
   {
