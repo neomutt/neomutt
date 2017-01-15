@@ -483,6 +483,14 @@ int mx_get_magic (const char *path)
   else if ((f = fopen (path, "r")) != NULL)
   {
     struct utimbuf times;
+    int ch = 0;
+
+    /* Some mailbox creation tools erroneously append a blank line to
+     * a file before appending a mail message.  This allows mutt to
+     * detect magic for and thus open those files. */
+    while ((ch = fgetc(f)) && (ch == '\n' || ch == '\r'));
+    if (!feof(f) && ch)
+      ungetc(ch, f);
 
     fgets (tmp, sizeof (tmp), f);
     if (mutt_strncmp ("From ", tmp, 5) == 0)
