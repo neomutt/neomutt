@@ -44,6 +44,15 @@ set vfolder_format = "%6n(%6N) %f"
 # as a spoolfile.
 set virtual_spoolfile = no
 
+# set the time base to apply to the time window
+# valid values are: "hour", "day", "week", "month", "year"
+set nm_query_window_timebase="week"
+
+# how large shall the window be? Any positive integer value is fine, in the
+# unit of the previously defined timebase.
+# When set to 0 (the default) the search window feature is disabled</emphasis>
+set nm_query_window_duration=2
+
 # --------------------------------------------------------------------------
 # FUNCTIONS - shown with an example mapping
 # --------------------------------------------------------------------------
@@ -59,6 +68,12 @@ bind index,pager \` modify-labels
 
 # generate virtual folder from query
 bind index,pager \eX vfolder-from-query
+
+# move the time window forward
+bind index >  vfolder-window-forward
+
+# move the time window backward
+bind index <  vfolder-window-backward
 
 # modify labels and then hide message
 # bind index,pager ??? modify-labels-then-hide
