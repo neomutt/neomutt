@@ -26,6 +26,9 @@ int   nm_update_filename(CONTEXT *ctx, const char *old, const char *new, HEADER 
 char *nm_uri_from_query(CONTEXT *ctx, char *buf, size_t bufsz);
 int   nm_modify_message_tags(CONTEXT *ctx, HEADER *hdr, char *buf);
 
+void  nm_query_window_backward(void);
+void  nm_query_window_forward(void);
+
 void  nm_longrun_init(CONTEXT *ctx, int writable);
 void  nm_longrun_done(CONTEXT *ctx);
 

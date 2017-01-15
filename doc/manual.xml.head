@@ -12293,6 +12293,16 @@ virtual-mailboxes "My INBOX" "notmuch://?query=tag:inbox"
             <entry><literal>&lt;vfolder-from-query&gt;</literal></entry>
             <entry>generate virtual folder from query</entry>
           </row>
+          <row>
+            <entry>index,pager</entry>
+            <entry><literal>&lt;vfolder-window-forward&gt;</literal></entry>
+            <entry>generate virtual folder by moving the query's time window forward</entry>
+          </row>
+          <row>
+            <entry>index,pager</entry>
+            <entry><literal>&lt;vfolder-window-backward&gt;</literal></entry>
+            <entry>generate virtual folder by moving the query's time window backward</entry>
+          </row>
         </tbody>
       </tgroup>
     </table>
@@ -12444,6 +12454,12 @@ set vfolder_format = &quot;%6n(%6N) %f&quot;
 # as a spoolfile.</emphasis>
 set virtual_spoolfile = no
 
+<emphasis role="comment"># setup time window preferences
+# first setup the duration, and then the time unit of that duration
+# when set to 0 (the default) the search window feature is disabled</emphasis>
+set nm_query_window_duration=2
+set nm_query_window_timebase="week" # or "hour", "day", "week", "month", "year"
+
 <emphasis role="comment"># --------------------------------------------------------------------------
 # FUNCTIONS - shown with an example mapping
 # --------------------------------------------------------------------------
@@ -12459,6 +12475,10 @@ bind index,pager \` modify-labels
 
 <emphasis role="comment"># generate virtual folder from query</emphasis>
 bind index,pager \eX vfolder-from-query
+
+<emphasis role="comment"># generate virtual folder from query with time window</emphasis>
+bind index,pager &lt; vfolder-window-backward
+bind index,pager &gt; vfolder-window-forward
 
 <emphasis role="comment"># modify labels and then hide message
 # bind index,pager ??? modify-labels-then-hide
@@ -12557,6 +12577,7 @@ color index_tags green default
     <listitem><para>Vladimir Marek <email>Vladimir.Marek@oracle.com</email></para></listitem>
     <listitem><para>Víctor Manuel Jáquez Leal <email>vjaquez@igalia.com</email></para></listitem>
     <listitem><para>Richard Russon <email>rich@flatcap.org</email></para></listitem>
+    <listitem><para>Bernard 'Guyzmo' Pratz <email>guyzmo+github+pub@m0g.net</email></para></listitem>
     </itemizedlist>
   </sect2>
 </sect1>

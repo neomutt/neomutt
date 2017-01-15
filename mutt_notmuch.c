@@ -429,9 +429,64 @@ static int string_to_query_type(const char *str)
   return NM_QUERY_TYPE_MESGS;
 }
 
+static int query_window_check_timebase(char *timebase)
+{
+  if ((strcmp(timebase, "hour")  == 0) ||
+      (strcmp(timebase, "day")   == 0) ||
+      (strcmp(timebase, "week")  == 0) ||
+      (strcmp(timebase, "month") == 0) ||
+      (strcmp(timebase, "year")  == 0))
+    return true;
+  return false;
+}
+
+static void query_window_reset(void)
+{
+  dprint(2, (debugfile, "query_window_reset ()\n"));
+  NotmuchQueryWindowCurrentPosition = 0;
+}
+
+static int windowed_query_from_query(char *query, char *buf, size_t bufsz)
+{
+  dprint(2, (debugfile, "windowed_query_from_query (%s)\n", query));
+
+  int beg = NotmuchQueryWindowDuration * (NotmuchQueryWindowCurrentPosition + 1);
+  int end = NotmuchQueryWindowDuration *  NotmuchQueryWindowCurrentPosition;
+
+  // if the duration is a non positive integer, disable the window
+  if (NotmuchQueryWindowDuration <= 0) {
+    query_window_reset();
+    return 0;
+  }
+
+  // if the query has changed, reset the window position
+  if (NotmuchQueryWindowCurrentSearch == NULL ||
+      strcmp(query, NotmuchQueryWindowCurrentSearch) != 0)
+    query_window_reset();
+
+  //
+  if (!query_window_check_timebase(NotmuchQueryWindowTimebase)) {
+    mutt_message (_("Invalid nm_query_window_timebase value (valid values are: hour, day, week, month or year)."));
+    dprint(2, (debugfile, "Invalid nm_query_window_timebase value\n"));
+    return 0;
+  }
+
+  if (end == 0)
+    snprintf(buf, bufsz, "date:%d%s..now and %s",
+        beg, NotmuchQueryWindowTimebase, NotmuchQueryWindowCurrentSearch);
+  else
+    snprintf(buf, bufsz, "date:%d%s..%d%s and %s", 
+        beg, NotmuchQueryWindowTimebase, end, NotmuchQueryWindowTimebase, NotmuchQueryWindowCurrentSearch);
+
+  return 1;
+}
+
 static char *get_query_string(struct nm_ctxdata *data)
 {
+  dprint(2, (debugfile, "nm: get_query_string()\n"));
+
   struct uri_tag *item;
+  char buf[LONG_STRING];
 
   if (!data)
     return NULL;
@@ -457,6 +512,15 @@ static char *get_query_string(struct nm_ctxdata *data)
 
   if (!data->query_type)
     data->query_type = string_to_query_type(NULL);
+
+   mutt_str_replace(&NotmuchQueryWindowCurrentSearch, data->db_query);
+
+   // if a date part is defined, do not apply windows (to avoid the risk of
+   // having a non-intersected date frame). A good improvement would be to
+   // accept if they intersect
+   if (!strstr(data->db_query, "date:") &&
+                   windowed_query_from_query(data->db_query, buf, sizeof(buf)))
+     data->db_query = safe_strdup(buf);
 
   dprint(2, (debugfile, "nm: query '%s'\n", data->db_query));
 
@@ -1586,6 +1650,7 @@ done:
 
 char *nm_uri_from_query(CONTEXT *ctx, char *buf, size_t bufsz)
 {
+  dprint(2, (debugfile, "nm_uri_from_query (%s)\n", buf));
   struct nm_ctxdata *data = get_ctxdata(ctx);
   char uri[_POSIX_PATH_MAX + LONG_STRING + 32]; /* path to DB + query + URI "decoration" */
 
@@ -1603,6 +1668,20 @@ char *nm_uri_from_query(CONTEXT *ctx, char *buf, size_t bufsz)
 
   dprint(1, (debugfile, "nm: uri from query '%s'\n", buf));
   return buf;
+}
+
+void nm_query_window_forward(void)
+{
+  if (NotmuchQueryWindowCurrentPosition != 0)
+    NotmuchQueryWindowCurrentPosition -= 1;
+
+  dprint(2, (debugfile, "nm_query_window_forward (%d)\n", NotmuchQueryWindowCurrentPosition));
+}
+
+void nm_query_window_backward(void)
+{
+  NotmuchQueryWindowCurrentPosition += 1;
+  dprint(2, (debugfile, "nm_query_window_backward (%d)\n", NotmuchQueryWindowCurrentPosition));
 }
 
 int nm_modify_message_tags(CONTEXT *ctx, HEADER *hdr, char *buf)

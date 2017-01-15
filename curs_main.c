@@ -1876,17 +1876,59 @@ int mutt_index_menu (void)
       }
 
       case OP_MAIN_VFOLDER_FROM_QUERY:
-	buf[0] = '\0';
+        buf[0] = '\0';
         if (mutt_get_field ("Query: ", buf, sizeof (buf), MUTT_NM_QUERY) != 0 || !buf[0])
         {
           mutt_message (_("No query, aborting."));
           break;
         }
-	if (!nm_uri_from_query(Context, buf, sizeof (buf)))
-	  mutt_message (_("Failed to create query, aborting."));
-	else
-	  main_change_folder(menu, op, buf, sizeof (buf), &oldcount, &index_hint, 0);
-	break;
+        if (!nm_uri_from_query(Context, buf, sizeof (buf)))
+          mutt_message (_("Failed to create query, aborting."));
+        else
+          main_change_folder(menu, op, buf, sizeof (buf), &oldcount, &index_hint, 0);
+        break;
+
+      case OP_MAIN_WINDOWED_VFOLDER_BACKWARD:
+        dprint(2, (debugfile, "OP_MAIN_WINDOWED_VFOLDER_BACKWARD\n"));
+        if (NotmuchQueryWindowDuration <= 0) 
+        {
+          mutt_message (_("Windowed queries disabled."));
+          break;
+        }
+        if (NotmuchQueryWindowCurrentSearch == NULL) 
+        {
+          mutt_message (_("No notmuch vfolder currently loaded."));
+          break;
+        }
+        nm_query_window_backward();
+        strncpy(buf, NotmuchQueryWindowCurrentSearch, sizeof(buf));
+        if (!nm_uri_from_query(Context, buf, sizeof(buf)))
+          mutt_message (_("Failed to create query, aborting."));
+        else
+          main_change_folder(menu, op, buf, sizeof (buf), &oldcount, &index_hint, 0);
+        break;
+
+      case OP_MAIN_WINDOWED_VFOLDER_FORWARD:
+        if (NotmuchQueryWindowDuration <= 0) 
+        {
+          mutt_message (_("Windowed queries disabled."));
+          break;
+        }
+        if (NotmuchQueryWindowCurrentSearch == NULL) 
+        {
+          mutt_message (_("No notmuch vfolder currently loaded."));
+          break;
+        }
+        nm_query_window_forward();
+        strncpy(buf, NotmuchQueryWindowCurrentSearch, sizeof(buf));
+        if (!nm_uri_from_query(Context, buf, sizeof(buf)))
+            mutt_message (_("Failed to create query, aborting."));
+        else
+        {
+          dprint(2, (debugfile, "nm: + windowed query (%s)\n", buf));
+          main_change_folder(menu, op, buf, sizeof (buf), &oldcount, &index_hint, 0);
+        }
+        break;
 
       case OP_MAIN_CHANGE_VFOLDER:
 #endif
