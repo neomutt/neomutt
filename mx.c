@@ -423,20 +423,27 @@ int mx_get_magic (const char *path)
   else if ((f = fopen (path, "r")) != NULL)
   {
     struct utimbuf times;
-    int ch = 0;
+    int ch;
 
     /* Some mailbox creation tools erroneously append a blank line to
      * a file before appending a mail message.  This allows mutt to
      * detect magic for and thus open those files. */
-    while ((ch = fgetc(f)) && (ch == '\n' || ch == '\r'));
-    if (!feof(f) && ch)
-      ungetc(ch, f);
+    while ((ch = fgetc (f)) != EOF)
+    {
+      if (ch != '\n' && ch != '\r')
+      {
+        ungetc (ch, f);
+        break;
+      }
+    }
 
-    fgets (tmp, sizeof (tmp), f);
-    if (mutt_strncmp ("From ", tmp, 5) == 0)
-      magic = MUTT_MBOX;
-    else if (mutt_strcmp (MMDF_SEP, tmp) == 0)
-      magic = MUTT_MMDF;
+    if (fgets (tmp, sizeof (tmp), f))
+    {
+      if (mutt_strncmp ("From ", tmp, 5) == 0)
+        magic = MUTT_MBOX;
+      else if (mutt_strcmp (MMDF_SEP, tmp) == 0)
+        magic = MUTT_MMDF;
+    }
     safe_fclose (&f);
 
     if (!option(OPTCHECKMBOXSIZE))
