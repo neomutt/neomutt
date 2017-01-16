@@ -73,7 +73,7 @@ static bool _lua_init(void)
 {
   if (Lua == NULL) {
     mutt_debug(2, "—→ lua_init()\n");
-    Lua = luaL_newstate(); 
+    Lua = luaL_newstate();
 
     if (Lua == NULL) {
       mutt_error("Error: Couldn't load the lua interpreter.");
@@ -107,7 +107,7 @@ int mutt_lua_parse (BUFFER *tmp, BUFFER *s, unsigned long data, BUFFER *err)
     mutt_debug(2, "—→ mutt_lua_parse(%s) → failure\n", s->dptr);
     // printf("—→ mutt_lua_parse(%s) → failure\n", s->dptr);
     mutt_error("Lua error: %s\n", lua_tostring(Lua, -1));
-    lua_pop(Lua, 1);  
+    lua_pop(Lua, 1);
 /* pop error message from the stack */
     return -1;
   }
@@ -139,7 +139,7 @@ int mutt_lua_source_file (BUFFER *tmp, BUFFER *s, unsigned long data, BUFFER *er
 
   if (luaL_dofile(Lua, path)) {
       mutt_error("Couldn't source lua source: %s", lua_tostring(Lua, -1));
-      lua_pop(Lua, 1);  
+      lua_pop(Lua, 1);
       return -1;
   }
   return 1;

@@ -77,8 +77,8 @@ EXTRA_DIST = COPYRIGHT LICENSE.md OPS OPS.PGP OPS.CRYPT OPS.SMIME TODO UPDATING 
 	account.h \
 	attach.h buffer.h buffy.h charset.h compress.h copy.h crypthash.h dotlock.h functions.h gen_defs \
 	filter.h globals.h hash.h history.h init.h keymap.h mutt_crypt.h myvar.h \
-	mailbox.h mapping.h md5.h mime.h mutt.h mutt_curses.h mutt_menu.h \
-	mutt_regex.h mutt_sasl.h mutt_sasl_plain.h mutt_socket.h mutt_ssl.h \
+	mailbox.h mapping.h md5.h mime.h mutt.h mutt_commands.h mutt_curses.h mutt_menu.h \
+	mutt_options.h mutt_regex.h mutt_sasl.h mutt_sasl_plain.h mutt_socket.h mutt_ssl.h \
 	mutt_tunnel.h mx.h pager.h pgp.h pop.h protos.h rfc1524.h rfc2047.h \
 	rfc2231.h rfc822.h rfc3676.h sha1.h sort.h mime.types \
 	mutt_lua.h nntp.h ChangeLog.nntp \
