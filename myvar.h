@@ -21,7 +21,7 @@
 
 const char* myvar_get (const char* var);
 int var_to_string (int idx, char* val, size_t len);
-int mutt_option_index (char *s);
+int mutt_option_index (const char *s);
 
 #endif
 

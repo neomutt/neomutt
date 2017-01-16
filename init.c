@@ -132,7 +132,7 @@ int query_quadoption (int opt, const char *prompt)
 
 /* given the variable ``s'', return the index into the rc_vars array which
    matches, or -1 if the variable is not found.  */
-int mutt_option_index (char *s)
+int mutt_option_index (const char *s)
 {
   int i;
 
@@ -140,6 +140,70 @@ int mutt_option_index (char *s)
     if (mutt_strcmp (s, MuttVars[i].option) == 0)
       return (MuttVars[i].type == DT_SYN ?  mutt_option_index ((char *) MuttVars[i].data) : i);
   return (-1);
+}
+
+const struct option_t *mutt_option_get (const char* s)
+{
+  mutt_debug(2, " * mutt_option_get(%s)\n", s);
+  int idx = mutt_option_index(s);
+  if (idx != -1)
+    return &MuttVars[idx];
+  return NULL;
+}
+
+static int parse_regex (int idx, BUFFER *tmp, BUFFER *err) {
+  int e, flags = 0;
+  const char *p;
+  regex_t *rx;
+  REGEXP *ptr = (REGEXP *) MuttVars[idx].data;
+
+  if (!ptr->pattern || mutt_strcmp (ptr->pattern, tmp->data) != 0)
+  {
+    int not = 0;
+
+    /* $mask is case-sensitive */
+    if (mutt_strcmp (MuttVars[idx].option, "mask") != 0)
+      flags |= mutt_which_case (tmp->data);
+
+    p = tmp->data;
+    if (mutt_strcmp (MuttVars[idx].option, "mask") == 0)
+    {
+      if (*p == '!')
+      {
+        not = 1;
+        p++;
+      }
+    }
+
+    rx = safe_malloc (sizeof (regex_t));
+    if ((e = REGCOMP (rx, p, flags)) != 0)
+    {
+      regerror (e, rx, err->data, err->dsize);
+      FREE (&rx);
+      return 0;
+    }
+
+    /* get here only if everything went smoothly */
+    if (ptr->pattern)
+    {
+      FREE (&ptr->pattern);
+      regfree ((regex_t *) ptr->rx);
+      FREE (&ptr->rx);
+    }
+
+    ptr->pattern = safe_strdup (tmp->data);
+    ptr->rx = rx;
+    ptr->not = not;
+
+    return 1;
+  }
+  return 0;
+}
+
+int mutt_option_set (const struct option_t* val, BUFFER *err)
+{
+  mutt_debug(2, " * mutt_option_set()\n");
+  return 0;
 }
 
 static void mutt_free_opt (struct option_t* p)
@@ -2178,13 +2242,10 @@ static int parse_set (BUFFER *tmp, BUFFER *s, unsigned long data, BUFFER *err)
     }
     else if (DTYPE(MuttVars[idx].type) == DT_RX)
     {
-      REGEXP *ptr = (REGEXP *) MuttVars[idx].data;
-      regex_t *rx;
-      int e, flags = 0;
-
       if (query || *s->dptr != '=')
       {
 	/* user requested the value of this variable */
+        REGEXP *ptr = (REGEXP *) MuttVars[idx].data;
 	pretty_var (err->data, err->dsize, MuttVars[idx].option, NONULL(ptr->pattern));
 	break;
       }
@@ -2202,46 +2263,8 @@ static int parse_set (BUFFER *tmp, BUFFER *s, unsigned long data, BUFFER *err)
       /* copy the value of the string */
       mutt_extract_token (tmp, s, 0);
 
-      if (!ptr->pattern || mutt_strcmp (ptr->pattern, tmp->data) != 0)
-      {
-	int not = 0;
-
-	/* $mask is case-sensitive */
-	if (mutt_strcmp (MuttVars[idx].option, "mask") != 0)
-	  flags |= mutt_which_case (tmp->data);
-
-	p = tmp->data;
-	if (mutt_strcmp (MuttVars[idx].option, "mask") == 0)
-	{
-	  if (*p == '!')
-	  {
-	    not = 1;
-	    p++;
-	  }
-	}
-	  
-	rx = safe_malloc (sizeof (regex_t));
-	if ((e = REGCOMP (rx, p, flags)) != 0)
-	{
-	  regerror (e, rx, err->data, err->dsize);
-	  FREE (&rx);
-	  break;
-	}
-
-	/* get here only if everything went smootly */
-	if (ptr->pattern)
-	{
-	  FREE (&ptr->pattern);
-	  regfree ((regex_t *) ptr->rx);
-	  FREE (&ptr->rx);
-	}
-
-	ptr->pattern = safe_strdup (tmp->data);
-	ptr->rx = rx;
-	ptr->not = not;
-
+      if (parse_regex(idx, tmp, err))
 	/* $reply_regexp and $alterantes require special treatment */
-	
 	if (Context && Context->msgcount &&
 	    mutt_strcmp (MuttVars[idx].option, "reply_regexp") == 0)
 	{
@@ -2261,7 +2284,6 @@ static int parse_set (BUFFER *tmp, BUFFER *s, unsigned long data, BUFFER *err)
 	  }
 #undef CUR_ENV
 	}
-      }
     }
     else if (DTYPE(MuttVars[idx].type) == DT_MAGIC)
     {
