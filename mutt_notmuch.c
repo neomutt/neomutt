@@ -429,6 +429,14 @@ static int string_to_query_type(const char *str)
   return NM_QUERY_TYPE_MESGS;
 }
 
+/**
+ * query_window_check_timebase - SHORT_DESC
+ * @param timebase: YYY
+ *
+ * @return YYY
+ *
+ * DESC
+ */
 static int query_window_check_timebase(char *timebase)
 {
   if ((strcmp(timebase, "hour")  == 0) ||
@@ -440,12 +448,27 @@ static int query_window_check_timebase(char *timebase)
   return false;
 }
 
+/**
+ * query_window_reset - SHORT_DESC
+ *
+ * DESC
+ */
 static void query_window_reset(void)
 {
   dprint(2, (debugfile, "query_window_reset ()\n"));
   NotmuchQueryWindowCurrentPosition = 0;
 }
 
+/**
+ * windowed_query_from_query - SHORT_DESC
+ * @param query YYY
+ * @param buf   YYY
+ * @param bufsz YYY
+ *
+ * @return YYY
+ *
+ * DESC
+ */
 static int windowed_query_from_query(const char *query, char *buf, size_t bufsz)
 {
   dprint(2, (debugfile, "nm: windowed_query_from_query (%s)\n", query));
@@ -483,6 +506,15 @@ static int windowed_query_from_query(const char *query, char *buf, size_t bufsz)
   return 1;
 }
 
+/**
+ * get_query_string - SHORT_DESC
+ * @param data   YYY
+ * @param window YYY
+ *
+ * @return YYY
+ *
+ * DESC
+ */
 static char *get_query_string(struct nm_ctxdata *data, int window) 
 {
   dprint(2, (debugfile, "nm: get_query_string(%d)\n", window));
@@ -1533,12 +1565,31 @@ static unsigned count_query(notmuch_database_t *db, const char *qstr)
   return res;
 }
 
+/**
+ * setup_windowed_query - SHORT_DESC
+ * @param buf   YYY
+ * @param bufsz YYY
+ *
+ * DESC
+ */
 static void setup_windowed_query(char *buf, size_t bufsz)
 {
   dprint(2, (debugfile, "setup_windowed_query (%s)\n", buf));
   mutt_str_replace(&NotmuchQueryWindowCurrentSearch, buf);
 }
 
+/**
+ * uri_from_windowed_query - SHORT_DESC
+ * @param ctx      YYY
+ * @param buf      YYY
+ * @param bufsz    YYY
+ * @param timebase YYY
+ * @param duration YYY
+ *
+ * @return YYY
+ *
+ * DESC
+ */
 static char *uri_from_windowed_query(CONTEXT *ctx, char *buf, size_t bufsz,
                                  char *timebase, int duration)
 {
@@ -1705,7 +1756,14 @@ char *nm_uri_from_query(CONTEXT *ctx, char *buf, size_t bufsz)
   return buf;
 }
 
-/*
+/**
+ * nm_normalize_uri - SHORT_DESC
+ * @param new_url    YYY
+ * @param url        YYY
+ * @param new_url_sz YYY
+ *
+ * @return YYY
+ *
  * takes a notmuch URI, parses it and reformat it in a canonical way
  */
 int nm_normalize_uri(char* new_url, char* url, size_t new_url_sz) 
@@ -1750,6 +1808,11 @@ int nm_normalize_uri(char* new_url, char* url, size_t new_url_sz)
   return 1;
 }
 
+/**
+ * nm_query_window_forward - SHORT_DESC
+ *
+ * DESC
+ */
 void nm_query_window_forward(void)
 {
   if (NotmuchQueryWindowCurrentPosition != 0)
@@ -1758,6 +1821,11 @@ void nm_query_window_forward(void)
   dprint(2, (debugfile, "nm_query_window_forward (%d)\n", NotmuchQueryWindowCurrentPosition));
 }
 
+/**
+ * nm_query_window_backward - SHORT_DESC
+ *
+ * DESC
+ */
 void nm_query_window_backward(void)
 {
   NotmuchQueryWindowCurrentPosition += 1;
