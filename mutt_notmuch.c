@@ -429,6 +429,18 @@ static int string_to_query_type(const char *str)
   return NM_QUERY_TYPE_MESGS;
 }
 
+/**
+ * query_window_check_timebase - Checks if a given timebase string is valid
+ * @param[in] timebase: string containing a time base
+ *
+ * @return true if the given time base is valid
+ *
+ * this function returns whether a given timebase string is valid or not,
+ * which is used to validate the user settable configuration setting:
+ *
+ *     nm_query_window_timebase
+ *
+ */
 static int query_window_check_timebase(char *timebase)
 {
   if ((strcmp(timebase, "hour")  == 0) ||
@@ -440,12 +452,60 @@ static int query_window_check_timebase(char *timebase)
   return false;
 }
 
+/**
+ * query_window_reset - restores vfolder's search window to its original position
+ *
+ * After moving a vfolder search window backward and forward, calling this function
+ * will reset the search position to its original value, setting to 0 the user settable
+ * variable:
+ *
+ *     nm_query_window_current_position
+ */
 static void query_window_reset(void)
 {
   dprint(2, (debugfile, "query_window_reset ()\n"));
   NotmuchQueryWindowCurrentPosition = 0;
 }
 
+/**
+ * windowed_query_from_query - transforms a vfolder search query into a windowed one
+ * @param[in]  query vfolder search string
+ * @param[out] buf   allocated string buffer to receive the modified search query
+ * @param[in]  bufsz allocated maximum size of the buf string buffer
+ *
+ * @return boolean value set to true if a transformed search query is available as
+ *  a string in buf, otherwise if the search query shall not be transformed.
+ *
+ * This is where the magic of windowed queries happens. Taking a vfolder search
+ * query string as parameter, it will use the following two user settings:
+ *
+ * - `nm_query_window_duration` and
+ * - `nm_query_window_timebase`
+ *
+ * to amend given vfolder search window. Then using a third parameter:
+ *
+ * - `nm_query_window_current_position`
+ *
+ * it will generate a proper notmuch `date:` parameter. For example, given a
+ * duration of `2`, a timebase set to `week` and a position defaulting to `0`,
+ * it will prepend to the 'tag:inbox' notmuch search query the following string:
+ *
+ * - `query`: `tag:inbox`
+ * - `buf`:   `date:2week..now and tag:inbox`
+ *
+ * If the position is set to `4`, with `duration=3` and `timebase=month`:
+ *
+ * - `query`: `tag:archived`
+ * - `buf`:   `date:12month..9month and tag:archived`
+ *
+ * The window won't be applied:
+ *
+ * - If the duration of the search query is set to `0` this function will be disabled.
+ * - If the timebase is invalid, it will show an error message and do nothing.
+ *
+ * If there's no search registered in `nm_query_window_current_search` or this is
+ * a new search, it will reset the window and do the search.
+ */
 static int windowed_query_from_query(const char *query, char *buf, size_t bufsz)
 {
   dprint(2, (debugfile, "nm: windowed_query_from_query (%s)\n", query));
@@ -485,6 +545,23 @@ static int windowed_query_from_query(const char *query, char *buf, size_t bufsz)
   return 1;
 }
 
+/**
+ * get_query_string - builds the notmuch vfolder search string
+ * @param data   internal notmuch context
+ * @param window if true enable application of the window on the search string
+ *
+ * @return string containing a notmuch search query, or a NULL pointer
+ * if none can be generated.
+ *
+ * This function parses the internal representation of a search, and returns
+ * a search query string ready to be fed to the notmuch API, given the search
+ * is valid.
+ *
+ * As a note, the window parameter here is here to decide contextually whether
+ * we want to return a search query with window applied (for the actual search
+ * result in buffy) or not (for the count in the sidebar). It is not aimed at
+ * enabling/disabling the feature.
+ */
 static char *get_query_string(struct nm_ctxdata *data, int window)
 {
   dprint(2, (debugfile, "nm: get_query_string(%d)\n", window));
@@ -1680,8 +1757,22 @@ char *nm_uri_from_query(CONTEXT *ctx, char *buf, size_t bufsz)
   return buf;
 }
 
-/*
- * takes a notmuch URI, parses it and reformat it in a canonical way
+/**
+ * nm_normalize_uri - takes a notmuch URI, parses it and reformat it in a canonical way
+ * @param new_uri    allocated string receiving the reformatted URI
+ * @param orig_uri   original URI to be parsed
+ * @param new_uri_sz size of the allocated new_uri string
+ *
+ * @return false if orig_uri contains an invalid query, true if new_uri contains a
+ *  normalized version of the query.
+ *
+ * This function aims at making notmuch searches URI representations deterministic,
+ * so that when comparing two equivalent searches they will be the same. It works
+ * by building a notmuch context object from the original search string, and
+ * building a new from the notmuch context object.
+ *
+ * It's aimed to be used by buffy when parsing the virtual_mailboxes to make the
+ * parsed user written search strings comparable to the internally generated ones.
  */
 int nm_normalize_uri(char *new_url, char* url, size_t new_url_sz)
 {
@@ -1728,6 +1819,15 @@ int nm_normalize_uri(char *new_url, char* url, size_t new_url_sz)
   return 1;
 }
 
+/**
+ * nm_query_window_forward - Function to move the current search window forward in time
+ *
+ * Updates `nm_query_window_current_position` by decrementing it by 1, or does nothing
+ * if the current window already is set to 0.
+ *
+ * The lower the value of `nm_query_window_current_position` is, the more recent the
+ * result will be.
+ */
 void nm_query_window_forward(void)
 {
   if (NotmuchQueryWindowCurrentPosition != 0)
@@ -1736,6 +1836,14 @@ void nm_query_window_forward(void)
   dprint(2, (debugfile, "nm_query_window_forward (%d)\n", NotmuchQueryWindowCurrentPosition));
 }
 
+/**
+ * nm_query_window_backward - Function to move the current search window backward in time
+ *
+ * Updates `nm_query_window_current_position` by incrementing it by 1
+ *
+ * The higher the value of `nm_query_window_current_position` is, the less recent the
+ * result will be.
+ */
 void nm_query_window_backward(void)
 {
   NotmuchQueryWindowCurrentPosition += 1;
