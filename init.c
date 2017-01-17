@@ -3336,7 +3336,7 @@ int mutt_dump_variables (int hide_sensitive)
     if (MuttVars[i].type == DT_SYN)
       continue;
 
-    if (hide_sensitive && (MuttVars[i].flags & R_SENSITIVE) == R_SENSITIVE)
+    if (hide_sensitive && IS_SENSITIVE(MuttVars[i]))
     {
         printf("%s='***'\n", MuttVars[i].option);
         continue;
