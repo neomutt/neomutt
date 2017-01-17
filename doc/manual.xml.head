@@ -2377,7 +2377,7 @@ See also the <link linkend="postpone">$postpone</link> quad-option.
 </para>
 
 <sect2 id="muttrc-system">
-  <title>Location of Mutt system config files</title>
+  <title>Location of system config files</title>
 
   <para>
     Mutt will search for a system config file in a <literal>mutt</literal>
@@ -2424,7 +2424,7 @@ See also the <link linkend="postpone">$postpone</link> quad-option.
 </sect2>
 
 <sect2 id="muttrc-user">
-  <title>Location of Mutt system config files</title>
+  <title>Location of user config files</title>
 
   <para>
     Mutt will search for a user config file in several places.  First it looks
