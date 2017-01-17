@@ -103,9 +103,9 @@ static int browser_compare_subject (const void *a, const void *b)
   struct folder_file *pb = (struct folder_file *) b;
 
   /* inbox should be sorted ahead of its siblings */
-  int same_path = mutt_same_path (pa->name, pb->name);
-  int r = (same_path && mutt_is_inbox (pa->name)) ? -1 :
-          (same_path && mutt_is_inbox (pb->name)) ?  1 :
+  int common_subpath = mutt_have_common_subpath (pa->name, pb->name);
+  int r = (common_subpath && mutt_is_inbox (pa->name)) ? -1 :
+          (common_subpath && mutt_is_inbox (pb->name)) ?  1 :
           mutt_strcoll  (pa->name, pb->name);
 
   return ((BrowserSort & SORT_REVERSE) ? -r : r);

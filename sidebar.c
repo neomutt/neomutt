@@ -321,9 +321,9 @@ static int cb_qsort_sbe (const void *a, const void *b)
       break;
     case SORT_PATH:
     {
-      int same_path = mutt_same_path (b1->path, b2->path);
-      result = (same_path && mutt_is_inbox (b1->path)) ? -1 :
-               (same_path && mutt_is_inbox (b2->path)) ?  1 :
+      int common_subpath = mutt_have_common_subpath (b1->path, b2->path);
+      result = (common_subpath && mutt_is_inbox (b1->path)) ? -1 :
+               (common_subpath && mutt_is_inbox (b2->path)) ?  1 :
                mutt_strcoll (b1->path, b2->path);           
       break;
     }
