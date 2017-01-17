@@ -3317,7 +3317,7 @@ int mutt_query_variables (LIST *queries)
 }
 
 /* dump out the value of all the variables we have */
-int mutt_dump_variables (void)
+int mutt_dump_variables (int hide_sensitive)
 {
   int i;
   
@@ -3336,6 +3336,11 @@ int mutt_dump_variables (void)
     if (MuttVars[i].type == DT_SYN)
       continue;
 
+    if (hide_sensitive && (MuttVars[i].flags & R_SENSITIVE) == R_SENSITIVE)
+    {
+        printf("%s='***'\n", MuttVars[i].option);
+        continue;
+    }
     snprintf (command, sizeof (command), "set ?%s\n", MuttVars[i].option);
     if (mutt_parse_rc_line (command, &token, &err) == -1)
     {

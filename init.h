@@ -68,6 +68,7 @@
 #define R_SIDEBAR       (1<<7)  /* redraw the sidebar */
 #define R_BOTH		(R_INDEX | R_PAGER)
 #define R_RESORT_BOTH	(R_RESORT | R_RESORT_SUB)
+#define R_SENSITIVE     (1<<8)  /* hide in mutt -C */
 
 struct option_t
 {
@@ -1338,14 +1339,14 @@ struct option_t MuttVars[] = {
   ** only subscribed folders or all folders.  This can be toggled in the
   ** IMAP browser with the \fC<toggle-subscribed>\fP function.
   */
-  { "imap_login",	DT_STR,  R_NONE, UL &ImapLogin, UL 0 },
+  { "imap_login",	DT_STR,  R_NONE|R_SENSITIVE, UL &ImapLogin, UL 0 },
   /*
   ** .pp
   ** Your login name on the IMAP server.
   ** .pp
   ** This variable defaults to the value of $$imap_user.
   */
-  { "imap_pass", 	DT_STR,  R_NONE, UL &ImapPass, UL 0 },
+  { "imap_pass", 	DT_STR,  R_NONE|R_SENSITIVE, UL &ImapPass, UL 0 },
   /*
   ** .pp
   ** Specifies the password for your IMAP account.  If \fIunset\fP, Mutt will
@@ -1393,7 +1394,7 @@ struct option_t MuttVars[] = {
   ** server which are out of the users' hands, you may wish to suppress
   ** them at some point.
   */
-  { "imap_user",	DT_STR,  R_NONE, UL &ImapUser, UL 0 },
+  { "imap_user",	DT_STR,  R_NONE|R_SENSITIVE, UL &ImapUser, UL 0 },
   /*
   ** .pp
   ** The name of the user whose mail you intend to access on the IMAP
@@ -1975,14 +1976,14 @@ struct option_t MuttVars[] = {
   ** must be loaded when newsgroup is added to list (first time list
   ** loading or new newsgroup adding).
   */
-  { "nntp_user",	DT_STR, R_NONE, UL &NntpUser, UL "" },
+  { "nntp_user",	DT_STR, R_NONE|R_SENSITIVE, UL &NntpUser, UL "" },
   /*
   ** .pp
   ** Your login name on the NNTP server.  If \fIunset\fP and NNTP server requires
   ** authentication, Mutt will prompt you for your account name when you
   ** connect to news server.
   */
-  { "nntp_pass",	DT_STR, R_NONE, UL &NntpPass, UL "" },
+  { "nntp_pass",	DT_STR, R_NONE|R_SENSITIVE, UL &NntpPass, UL "" },
   /*
   ** .pp
   ** Your password for NNTP account.
@@ -2543,7 +2544,7 @@ struct option_t MuttVars[] = {
   ** for retrieving only unread messages from the POP server when using
   ** the \fC$<fetch-mail>\fP function.
   */
-  { "pop_pass",		DT_STR,	 R_NONE, UL &PopPass, UL "" },
+  { "pop_pass",		DT_STR,	 R_NONE|R_SENSITIVE, UL &PopPass, UL "" },
   /*
   ** .pp
   ** Specifies the password for your POP account.  If \fIunset\fP, Mutt will
@@ -2559,7 +2560,7 @@ struct option_t MuttVars[] = {
   ** Controls whether or not Mutt will try to reconnect to the POP server if
   ** the connection is lost.
   */
-  { "pop_user",		DT_STR,	 R_NONE, UL &PopUser, 0 },
+  { "pop_user",		DT_STR,	 R_NONE|R_SENSITIVE, UL &PopUser, 0 },
   /*
   ** .pp
   ** Your login name on the POP server.
@@ -3544,7 +3545,7 @@ struct option_t MuttVars[] = {
   ** .te
   */
 # endif /* USE_SASL */
-  { "smtp_pass", 	DT_STR,  R_NONE, UL &SmtpPass, UL 0 },
+  { "smtp_pass", 	DT_STR,  R_NONE|R_SENSITIVE, UL &SmtpPass, UL 0 },
   /*
   ** .pp
   ** Specifies the password for your SMTP account.  If \fIunset\fP, Mutt will
@@ -3555,7 +3556,7 @@ struct option_t MuttVars[] = {
   ** fairly secure machine, because the superuser can read your muttrc even
   ** if you are the only one who can read the file.
   */
-  { "smtp_url",		DT_STR, R_NONE, UL &SmtpUrl, UL 0 },
+  { "smtp_url",		DT_STR, R_NONE|R_SENSITIVE, UL &SmtpUrl, UL 0 },
   /*
   ** .pp
   ** Defines the SMTP smarthost where sent messages should relayed for

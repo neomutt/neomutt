@@ -197,6 +197,7 @@ int main (int argc, char **argv, char **environ)
   int i;
   int explicit_folder = 0;
   int dump_variables = 0;
+  int hide_sensitive = 0;
   int edit_infile = 0;
   extern char *optarg;
   extern int optind;
@@ -262,9 +263,9 @@ int main (int argc, char **argv, char **environ)
     }
 
 #ifdef USE_NNTP
-    if ((i = getopt (argc, argv, "+A:a:b:F:f:c:Dd:Ee:g:GH:s:i:hm:npQ:RvxyzZ")) != EOF)
+    if ((i = getopt (argc, argv, "+A:a:b:F:f:c:CDd:Ee:g:GH:s:i:hm:npQ:RvxyzZ")) != EOF)
 #else
-    if ((i = getopt (argc, argv, "+A:a:b:F:f:c:Dd:Ee:H:s:i:hm:npQ:RvxyzZ")) != EOF)
+    if ((i = getopt (argc, argv, "+A:a:b:F:f:c:CDd:Ee:H:s:i:hm:npQ:RvxyzZ")) != EOF)
 #endif
       switch (i)
       {
@@ -294,6 +295,11 @@ int main (int argc, char **argv, char **environ)
 	  msg->env->bcc = rfc822_parse_adrlist (msg->env->bcc, optarg);
 	else
 	  msg->env->cc = rfc822_parse_adrlist (msg->env->cc, optarg);
+	break;
+
+      case 'C':
+	dump_variables = 1;
+	hide_sensitive = 1;
 	break;
 
       case 'D':
@@ -449,7 +455,7 @@ int main (int argc, char **argv, char **environ)
     return mutt_query_variables (queries);
   }
   if (dump_variables)
-    return mutt_dump_variables();
+    return mutt_dump_variables(hide_sensitive);
 
   if (alias_queries)
   {
