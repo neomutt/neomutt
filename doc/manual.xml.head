@@ -6837,13 +6837,12 @@ known as <quote>keywords</quote> or <quote>tags</quote>.
 </para>
 
 <para>
-If you are new to Mutt or to using keywords in Mutt, you only need
-to know that the &lt;edit-label&gt; binding (<literal>y</literal> by
-default) will edit keywords, and that you can search for keywords
-using the <literal>~y</literal> pattern, and use the <literal>%y</literal>
-expando to display it in your <literal>$index_format</literal>.  You also
-can sort by keyword.  Keywords that you set will be stored to the
-<literal>X-Label:</literal> header by default.
+If you are new to Mutt or to using keywords in Mutt, you only need to know that
+the &lt;edit-label&gt; binding will edit keywords, and that you can search for
+keywords using the <literal>~y</literal> pattern, and use the
+<literal>%y</literal> expando to display it in your
+<literal>$index_format</literal>.  You also can sort by keyword.  Keywords that
+you set will be stored to the <literal>X-Label:</literal> header by default.
 </para>
 
 <para>
