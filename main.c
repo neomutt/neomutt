@@ -89,7 +89,7 @@ static void mutt_usage (void)
        mutt [<options>] -p\n\
        mutt [<options>] -A <alias> [...]\n\
        mutt [<options>] -Q <query> [...]\n\
-       mutt [<options>] -D\n\
+       mutt [<options>] -D [-S]\n\
        mutt -v[v]\n");
 
   puts _("\
@@ -99,7 +99,8 @@ options:\n\
 \t\tthe list of files must be terminated with the \"--\" sequence\n\
   -b <address>\tspecify a blind carbon-copy (BCC) address\n\
   -c <address>\tspecify a carbon-copy (CC) address\n\
-  -D\t\tprint the value of all variables to stdout");
+  -D\t\tprint the value of all variables to stdout\n\
+  -D -S\t\tlike -D, but hide the value of sensitive variables");
 #if DEBUG
   puts _("  -d <level>\tlog debugging output to ~/.muttdebug0");
 #endif
@@ -263,9 +264,9 @@ int main (int argc, char **argv, char **environ)
     }
 
 #ifdef USE_NNTP
-    if ((i = getopt (argc, argv, "+A:a:b:F:f:c:CDd:Ee:g:GH:s:i:hm:npQ:RvxyzZ")) != EOF)
+    if ((i = getopt (argc, argv, "+A:a:b:F:f:c:Dd:Ee:g:GH:s:i:hm:npQ:RSvxyzZ")) != EOF)
 #else
-    if ((i = getopt (argc, argv, "+A:a:b:F:f:c:CDd:Ee:H:s:i:hm:npQ:RvxyzZ")) != EOF)
+    if ((i = getopt (argc, argv, "+A:a:b:F:f:c:Dd:Ee:H:s:i:hm:npQ:RSvxyzZ")) != EOF)
 #endif
       switch (i)
       {
@@ -295,11 +296,6 @@ int main (int argc, char **argv, char **environ)
 	  msg->env->bcc = rfc822_parse_adrlist (msg->env->bcc, optarg);
 	else
 	  msg->env->cc = rfc822_parse_adrlist (msg->env->cc, optarg);
-	break;
-
-      case 'C':
-	dump_variables = 1;
-	hide_sensitive = 1;
 	break;
 
       case 'D':
@@ -354,6 +350,10 @@ int main (int argc, char **argv, char **environ)
       
       case 'R':
 	flags |= MUTT_RO; /* read-only mode */
+	break;
+
+      case 'S':
+	hide_sensitive = 1;
 	break;
 
       case 's':
