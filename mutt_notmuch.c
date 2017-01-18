@@ -46,6 +46,7 @@
 #include <fcntl.h>
 #include <notmuch.h>
 #include <stdlib.h>
+#include <stdbool.h>
 #include <string.h>
 #include <sys/file.h>
 #include <sys/stat.h>
@@ -234,7 +235,7 @@ static void url_free_tags(struct uri_tag *tags)
  * Extract the database filename (optional) and any search parameters (tags).
  * The tags will be saved in a linked list (#uri_tag).
  */
-static int url_parse_query(char *url, char **filename, struct uri_tag **tags)
+static int url_parse_query(const char *url, char **filename, struct uri_tag **tags)
 {
   char *p = strstr(url, "://"); /* remote unsupported */
   char *e;
@@ -437,7 +438,7 @@ static int string_to_query_type(const char *str)
  *
  * DESC
  */
-static int query_window_check_timebase(char *timebase)
+static bool query_window_check_timebase(const char *timebase)
 {
   if ((strcmp(timebase, "hour")  == 0) ||
       (strcmp(timebase, "day")   == 0) ||
@@ -469,7 +470,7 @@ static void query_window_reset(void)
  *
  * DESC
  */
-static int windowed_query_from_query(const char *query, char *buf, size_t bufsz)
+static bool windowed_query_from_query(const char *query, char *buf, size_t bufsz)
 {
   dprint(2, (debugfile, "nm: windowed_query_from_query (%s)\n", query));
 
@@ -479,7 +480,7 @@ static int windowed_query_from_query(const char *query, char *buf, size_t bufsz)
   // if the duration is a non positive integer, disable the window
   if (NotmuchQueryWindowDuration <= 0) {
     query_window_reset();
-    return 0;
+    return false;
   }
 
   // if the query has changed, reset the window position
@@ -491,7 +492,7 @@ static int windowed_query_from_query(const char *query, char *buf, size_t bufsz)
   if (!query_window_check_timebase(NotmuchQueryWindowTimebase)) {
     mutt_message (_("Invalid nm_query_window_timebase value (valid values are: hour, day, week, month or year)."));
     dprint(2, (debugfile, "Invalid nm_query_window_timebase value\n"));
-    return 0;
+    return false;
   }
 
   if (end == 0)
@@ -503,7 +504,7 @@ static int windowed_query_from_query(const char *query, char *buf, size_t bufsz)
 
   dprint(2, (debugfile, "nm: windowed_query_from_query (%s) → %s\n", query, buf));
 
-  return 1;
+  return true;
 }
 
 /**
@@ -1717,9 +1718,9 @@ char *nm_uri_from_query(CONTEXT *ctx, char *buf, size_t bufsz)
  *
  * takes a notmuch URI, parses it and reformat it in a canonical way
  */
-int nm_normalize_uri(char* new_url, char* url, size_t new_url_sz) 
+bool nm_normalize_uri(char* new_uri, const char *orig_uri, size_t new_uri_sz) 
 {
-  dprint(2, (debugfile, "nm_normalize_uri (%s)\n", url));
+  dprint(2, (debugfile, "nm_normalize_uri (%s)\n", orig_uri));
   char buf[LONG_STRING];
 
   CONTEXT tmp_ctx;
@@ -1729,18 +1730,18 @@ int nm_normalize_uri(char* new_url, char* url, size_t new_url_sz)
   tmp_ctx.data = &tmp_ctxdata;
   tmp_ctxdata.db_query = NULL;
 
-  if (url_parse_query(url, &tmp_ctxdata.db_filename, &tmp_ctxdata.query_items)) {
-    mutt_error(_("failed to parse #1 notmuch uri: %s"), url);
+  if (url_parse_query(orig_uri, &tmp_ctxdata.db_filename, &tmp_ctxdata.query_items)) {
+    mutt_error(_("failed to parse notmuch uri: %s"), orig_uri);
     dprint(2, (debugfile, "nm_normalize_uri () → error #1\n"));
-    return 0;
+    return false;
   }
 
   dprint(2, (debugfile, "nm_normalize_uri #1 () → db_query: %s\n", tmp_ctxdata.db_query));
 
   if (get_query_string(&tmp_ctxdata, false) == NULL) {
-    mutt_error(_("failed to parse #2 notmuch uri: %s"), url);
+    mutt_error(_("failed to parse notmuch uri: %s"), orig_uri);
     dprint(2, (debugfile, "nm_normalize_uri () → error #2\n"));
-    return 0;
+    return false;
   }
 
   dprint(2, (debugfile, "nm_normalize_uri #2 () → db_query: %s\n", tmp_ctxdata.db_query));
@@ -1748,15 +1749,15 @@ int nm_normalize_uri(char* new_url, char* url, size_t new_url_sz)
   strncpy(buf, tmp_ctxdata.db_query, sizeof(buf));
 
   if (nm_uri_from_query(&tmp_ctx, buf, sizeof(buf)) == NULL) {
-    mutt_error(_("failed to parse #3 notmuch uri: %s"), url);
+    mutt_error(_("failed to parse notmuch uri: %s"), orig_uri);
     dprint(2, (debugfile, "nm_normalize_uri () → error #3\n"));
-    return 0;
+    return true;
   }
 
-  strncpy(new_url, buf, new_url_sz);
+  strncpy(new_uri, buf, new_uri_sz);
 
-  dprint(2, (debugfile, "nm_normalize_uri #3 (%s) → %s\n", url, new_url));
-  return 1;
+  dprint(2, (debugfile, "nm_normalize_uri #3 (%s) → %s\n", orig_uri, new_uri));
+  return true;
 }
 
 /**
