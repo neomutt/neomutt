@@ -62,7 +62,7 @@ mutt \- The Mutt Mail User Agent
 \-v[v]
 .PP
 .B mutt 
-\-D
+\-D [\-S]
 .SH DESCRIPTION
 .PP
 Mutt is a small but very powerful text based program for reading and sending electronic
@@ -94,6 +94,8 @@ If mutt was compiled with +DEBUG log debugging output to ~/.muttdebug0.
 recommended.
 .IP "-D"
 Print the value of all configuration options to stdout.
+.IP "-D -S"
+like -D but hide the value of sensitive variables
 .IP "-E"
 Causes the draft file specified by -H or include file specified by -i
 to be edited during message composition.
