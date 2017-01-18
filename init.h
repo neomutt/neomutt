@@ -2048,6 +2048,30 @@ struct option_t MuttVars[] = {
   /*
    ** .pp
    ** This variable specifies the default tags applied to messages stored to the mutt record.
+   ** When set to 0 this variable disable the window feature.
+   */
+  { "nm_query_window_duration", DT_NUM, R_NONE, UL &NotmuchQueryWindowDuration, 0 },
+  /*
+   ** .pp
+   ** This variable sets the time base of a windowed notmuch query.
+   ** Accepted values are 'minute', 'hour', 'day', 'week', 'month', 'year'
+   */
+  { "nm_query_window_timebase", DT_STR, R_NONE, UL &NotmuchQueryWindowTimebase, UL "week" },
+  /*
+   ** .pp
+   ** This variable sets the time duration of a windowed notmuch query.
+   ** Accepted values all non negative integers. A value of 0 disables the feature.
+   */
+  { "nm_query_window_current_search", DT_STR, R_NONE, UL &NotmuchQueryWindowCurrentSearch, UL "" },
+  /*
+   ** .pp
+   ** This variable sets the time duration of a windowed notmuch query.
+   ** Accepted values all non negative integers. A value of 0 disables the feature.
+   */
+  { "nm_query_window_current_position", DT_NUM, R_NONE, UL &NotmuchQueryWindowCurrentPosition, 0 },
+  /*
+   ** .pp
+   ** This variable contains the currently setup notmuch search for window based vfolder.
    */
 #endif
   { "pager",		DT_PATH, R_NONE, UL &Pager, UL "builtin" },
