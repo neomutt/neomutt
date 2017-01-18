@@ -485,7 +485,7 @@ int mutt_parse_virtual_mailboxes (BUFFER *path, BUFFER *s, unsigned long data, B
       continue;
 
     mutt_extract_token (path, s, 0);
-    strfcpy (buf, path->data, sizeof (buf));
+    nm_normalize_uri(buf, path->data, sizeof(buf));
 
     /* Skip empty tokens. */
     if(!*buf) {

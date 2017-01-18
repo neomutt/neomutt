@@ -46,6 +46,7 @@
 #include <fcntl.h>
 #include <notmuch.h>
 #include <stdlib.h>
+#include <stdbool.h>
 #include <string.h>
 #include <sys/file.h>
 #include <sys/stat.h>
@@ -234,7 +235,7 @@ static void url_free_tags(struct uri_tag *tags)
  * Extract the database filename (optional) and any search parameters (tags).
  * The tags will be saved in a linked list (#uri_tag).
  */
-static int url_parse_query(char *url, char **filename, struct uri_tag **tags)
+static int url_parse_query(const char *url, char **filename, struct uri_tag **tags)
 {
   char *p = strstr(url, "://"); /* remote unsupported */
   char *e;
@@ -429,8 +430,143 @@ static int string_to_query_type(const char *str)
   return NM_QUERY_TYPE_MESGS;
 }
 
-static char *get_query_string(struct nm_ctxdata *data)
+/**
+ * query_window_check_timebase - Checks if a given timebase string is valid
+ * @param[in] timebase: string containing a time base
+ *
+ * @return true if the given time base is valid
+ *
+ * this function returns whether a given timebase string is valid or not,
+ * which is used to validate the user settable configuration setting:
+ *
+ *     nm_query_window_timebase
+ *
+ */
+static bool query_window_check_timebase(const char *timebase)
 {
+  if ((strcmp(timebase, "hour")  == 0) ||
+      (strcmp(timebase, "day")   == 0) ||
+      (strcmp(timebase, "week")  == 0) ||
+      (strcmp(timebase, "month") == 0) ||
+      (strcmp(timebase, "year")  == 0))
+    return true;
+  return false;
+}
+
+/**
+ * query_window_reset - restores vfolder's search window to its original position
+ *
+ * After moving a vfolder search window backward and forward, calling this function
+ * will reset the search position to its original value, setting to 0 the user settable
+ * variable:
+ *
+ *     nm_query_window_current_position
+ */
+static void query_window_reset(void)
+{
+  dprint(2, (debugfile, "query_window_reset ()\n"));
+  NotmuchQueryWindowCurrentPosition = 0;
+}
+
+/**
+ * windowed_query_from_query - transforms a vfolder search query into a windowed one
+ * @param[in]  query vfolder search string
+ * @param[out] buf   allocated string buffer to receive the modified search query
+ * @param[in]  bufsz allocated maximum size of the buf string buffer
+ *
+ * @return boolean value set to true if a transformed search query is available as
+ *  a string in buf, otherwise if the search query shall not be transformed.
+ *
+ * This is where the magic of windowed queries happens. Taking a vfolder search
+ * query string as parameter, it will use the following two user settings:
+ *
+ * - `nm_query_window_duration` and
+ * - `nm_query_window_timebase`
+ *
+ * to amend given vfolder search window. Then using a third parameter:
+ *
+ * - `nm_query_window_current_position`
+ *
+ * it will generate a proper notmuch `date:` parameter. For example, given a
+ * duration of `2`, a timebase set to `week` and a position defaulting to `0`,
+ * it will prepend to the 'tag:inbox' notmuch search query the following string:
+ *
+ * - `query`: `tag:inbox`
+ * - `buf`:   `date:2week..now and tag:inbox`
+ *
+ * If the position is set to `4`, with `duration=3` and `timebase=month`:
+ *
+ * - `query`: `tag:archived`
+ * - `buf`:   `date:12month..9month and tag:archived`
+ *
+ * The window won't be applied:
+ *
+ * - If the duration of the search query is set to `0` this function will be disabled.
+ * - If the timebase is invalid, it will show an error message and do nothing.
+ *
+ * If there's no search registered in `nm_query_window_current_search` or this is
+ * a new search, it will reset the window and do the search.
+ */
+static bool windowed_query_from_query(const char *query, char *buf, size_t bufsz)
+{
+  dprint(2, (debugfile, "nm: windowed_query_from_query (%s)\n", query));
+
+  int beg = NotmuchQueryWindowDuration * (NotmuchQueryWindowCurrentPosition + 1);
+  int end = NotmuchQueryWindowDuration *  NotmuchQueryWindowCurrentPosition;
+
+  // if the duration is a non positive integer, disable the window
+  if (NotmuchQueryWindowDuration <= 0)
+  {
+    query_window_reset();
+    return false;
+  }
+
+  // if the query has changed, reset the window position
+  if (NotmuchQueryWindowCurrentSearch == NULL ||
+      strcmp(query, NotmuchQueryWindowCurrentSearch) != 0)
+    query_window_reset();
+
+  //
+  if (!query_window_check_timebase(NotmuchQueryWindowTimebase))
+  {
+    mutt_message (_("Invalid nm_query_window_timebase value (valid values are: hour, day, week, month or year)."));
+    dprint(2, (debugfile, "Invalid nm_query_window_timebase value\n"));
+    return false;
+  }
+
+  if (end == 0)
+    snprintf(buf, bufsz, "date:%d%s..now and %s",
+        beg, NotmuchQueryWindowTimebase, NotmuchQueryWindowCurrentSearch);
+  else
+    snprintf(buf, bufsz, "date:%d%s..%d%s and %s",
+        beg, NotmuchQueryWindowTimebase, end, NotmuchQueryWindowTimebase, NotmuchQueryWindowCurrentSearch);
+
+  dprint(2, (debugfile, "nm: windowed_query_from_query (%s) -> %s\n", query, buf));
+
+  return true;
+}
+
+/**
+ * get_query_string - builds the notmuch vfolder search string
+ * @param data   internal notmuch context
+ * @param window if true enable application of the window on the search string
+ *
+ * @return string containing a notmuch search query, or a NULL pointer
+ * if none can be generated.
+ *
+ * This function parses the internal representation of a search, and returns
+ * a search query string ready to be fed to the notmuch API, given the search
+ * is valid.
+ *
+ * As a note, the window parameter here is here to decide contextually whether
+ * we want to return a search query with window applied (for the actual search
+ * result in buffy) or not (for the count in the sidebar). It is not aimed at
+ * enabling/disabling the feature.
+ */
+static char *get_query_string(struct nm_ctxdata *data, int window)
+{
+  dprint(2, (debugfile, "nm: get_query_string(%d)\n", window));
+
   struct uri_tag *item;
 
   if (!data)
@@ -458,7 +594,22 @@ static char *get_query_string(struct nm_ctxdata *data)
   if (!data->query_type)
     data->query_type = string_to_query_type(NULL);
 
-  dprint(2, (debugfile, "nm: query '%s'\n", data->db_query));
+  if (window)
+  {
+    char buf[LONG_STRING];
+    mutt_str_replace(&NotmuchQueryWindowCurrentSearch, data->db_query);
+
+    // if a date part is defined, do not apply windows (to avoid the risk of
+    // having a non-intersected date frame). A good improvement would be to
+    // accept if they intersect
+    if (!strstr(data->db_query, "date:") &&
+        windowed_query_from_query(data->db_query, buf, sizeof(buf)))
+      data->db_query = safe_strdup(buf);
+
+    dprint(2, (debugfile, "nm: query (windowed) '%s'\n", data->db_query));
+  }
+  else
+    dprint(2, (debugfile, "nm: query '%s'\n", data->db_query));
 
   return data->db_query;
 }
@@ -665,7 +816,7 @@ static notmuch_query_t *get_query(struct nm_ctxdata *data, int writable)
     return NULL;
 
   db = get_db(data, writable);
-  str = get_query_string(data);
+  str = get_query_string(data, true);
 
   if (!db || !str)
     goto err;
@@ -676,7 +827,7 @@ static notmuch_query_t *get_query(struct nm_ctxdata *data, int writable)
 
   apply_exclude_tags(q);
   notmuch_query_set_sort(q, NOTMUCH_SORT_NEWEST_FIRST);
-  dprint(2, (debugfile, "nm: query successfully initialized\n"));
+  dprint(2, (debugfile, "nm: query successfully initialized (%s)\n", str));
   return q;
 err:
   if (!is_longrun(data))
@@ -1265,12 +1416,13 @@ static int rename_maildir_filename(const char *old, char *newpath, size_t newsz,
 
   strfcpy(folder, old, sizeof(folder));
   p = strrchr(folder, '/');
-  if (p) {
+  if (p)
+  {
     *p = '\0';
     p++;
-  } else {
-    p = folder;
   }
+  else
+    p = folder;
 
   strfcpy(filename, p, sizeof(filename));
 
@@ -1463,7 +1615,6 @@ static unsigned count_query(notmuch_database_t *db, const char *qstr)
   return res;
 }
 
-
 char *nm_header_get_folder(HEADER *h)
 {
   return (h && h->data) ? ((struct nm_hdrdata *) h->data)->folder : NULL;
@@ -1586,6 +1737,7 @@ done:
 
 char *nm_uri_from_query(CONTEXT *ctx, char *buf, size_t bufsz)
 {
+  dprint(2, (debugfile, "nm_uri_from_query (%s)\n", buf));
   struct nm_ctxdata *data = get_ctxdata(ctx);
   char uri[_POSIX_PATH_MAX + LONG_STRING + 32]; /* path to DB + query + URI "decoration" */
 
@@ -1603,6 +1755,99 @@ char *nm_uri_from_query(CONTEXT *ctx, char *buf, size_t bufsz)
 
   dprint(1, (debugfile, "nm: uri from query '%s'\n", buf));
   return buf;
+}
+
+/**
+ * nm_normalize_uri - takes a notmuch URI, parses it and reformat it in a canonical way
+ * @param new_uri    allocated string receiving the reformatted URI
+ * @param orig_uri   original URI to be parsed
+ * @param new_uri_sz size of the allocated new_uri string
+ *
+ * @return false if orig_uri contains an invalid query, true if new_uri contains a
+ *  normalized version of the query.
+ *
+ * This function aims at making notmuch searches URI representations deterministic,
+ * so that when comparing two equivalent searches they will be the same. It works
+ * by building a notmuch context object from the original search string, and
+ * building a new from the notmuch context object.
+ *
+ * It's aimed to be used by buffy when parsing the virtual_mailboxes to make the
+ * parsed user written search strings comparable to the internally generated ones.
+ */
+bool nm_normalize_uri(char *new_uri, const char *orig_uri, size_t new_uri_sz)
+{
+  dprint(2, (debugfile, "nm_normalize_uri (%s)\n", orig_uri));
+  char buf[LONG_STRING];
+
+  CONTEXT tmp_ctx;
+  struct nm_ctxdata tmp_ctxdata;
+
+  tmp_ctx.magic = MUTT_NOTMUCH;
+  tmp_ctx.data = &tmp_ctxdata;
+  tmp_ctxdata.db_query = NULL;
+
+  if (url_parse_query(orig_uri, &tmp_ctxdata.db_filename, &tmp_ctxdata.query_items))
+  {
+    mutt_error(_("failed to parse notmuch uri: %s"), orig_uri);
+    dprint(2, (debugfile, "nm_normalize_uri () -> error #1\n"));
+    return false;
+  }
+
+  dprint(2, (debugfile, "nm_normalize_uri #1 () -> db_query: %s\n", tmp_ctxdata.db_query));
+
+  if (get_query_string(&tmp_ctxdata, false) == NULL)
+  {
+    mutt_error(_("failed to parse notmuch uri: %s"), orig_uri);
+    dprint(2, (debugfile, "nm_normalize_uri () -> error #2\n"));
+    return false;
+  }
+
+  dprint(2, (debugfile, "nm_normalize_uri #2 () -> db_query: %s\n", tmp_ctxdata.db_query));
+
+  strncpy(buf, tmp_ctxdata.db_query, sizeof(buf));
+
+  if (nm_uri_from_query(&tmp_ctx, buf, sizeof(buf)) == NULL)
+  {
+    mutt_error(_("failed to parse notmuch uri: %s"), orig_uri);
+    dprint(2, (debugfile, "nm_normalize_uri () -> error #3\n"));
+    return true;
+  }
+
+  strncpy(new_uri, buf, new_uri_sz);
+
+  dprint(2, (debugfile, "nm_normalize_uri #3 (%s) -> %s\n", orig_uri, new_uri));
+  return true;
+}
+
+/**
+ * nm_query_window_forward - Function to move the current search window forward in time
+ *
+ * Updates `nm_query_window_current_position` by decrementing it by 1, or does nothing
+ * if the current window already is set to 0.
+ *
+ * The lower the value of `nm_query_window_current_position` is, the more recent the
+ * result will be.
+ */
+void nm_query_window_forward(void)
+{
+  if (NotmuchQueryWindowCurrentPosition != 0)
+    NotmuchQueryWindowCurrentPosition -= 1;
+
+  dprint(2, (debugfile, "nm_query_window_forward (%d)\n", NotmuchQueryWindowCurrentPosition));
+}
+
+/**
+ * nm_query_window_backward - Function to move the current search window backward in time
+ *
+ * Updates `nm_query_window_current_position` by incrementing it by 1
+ *
+ * The higher the value of `nm_query_window_current_position` is, the less recent the
+ * result will be.
+ */
+void nm_query_window_backward(void)
+{
+  NotmuchQueryWindowCurrentPosition += 1;
+  dprint(2, (debugfile, "nm_query_window_backward (%d)\n", NotmuchQueryWindowCurrentPosition));
 }
 
 int nm_modify_message_tags(CONTEXT *ctx, HEADER *hdr, char *buf)
