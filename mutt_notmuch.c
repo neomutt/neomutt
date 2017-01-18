@@ -440,7 +440,7 @@ static int string_to_query_type(const char *str)
  * which is used to validate the user settable configuration setting:
  *
  *     nm_query_window_timebase
- * 
+ *
  */
 static bool query_window_check_timebase(const char *timebase)
 {
@@ -515,7 +515,8 @@ static bool windowed_query_from_query(const char *query, char *buf, size_t bufsz
   int end = NotmuchQueryWindowDuration *  NotmuchQueryWindowCurrentPosition;
 
   // if the duration is a non positive integer, disable the window
-  if (NotmuchQueryWindowDuration <= 0) {
+  if (NotmuchQueryWindowDuration <= 0)
+  {
     query_window_reset();
     return false;
   }
@@ -526,7 +527,8 @@ static bool windowed_query_from_query(const char *query, char *buf, size_t bufsz
     query_window_reset();
 
   //
-  if (!query_window_check_timebase(NotmuchQueryWindowTimebase)) {
+  if (!query_window_check_timebase(NotmuchQueryWindowTimebase))
+  {
     mutt_message (_("Invalid nm_query_window_timebase value (valid values are: hour, day, week, month or year)."));
     dprint(2, (debugfile, "Invalid nm_query_window_timebase value\n"));
     return false;
@@ -536,10 +538,10 @@ static bool windowed_query_from_query(const char *query, char *buf, size_t bufsz
     snprintf(buf, bufsz, "date:%d%s..now and %s",
         beg, NotmuchQueryWindowTimebase, NotmuchQueryWindowCurrentSearch);
   else
-    snprintf(buf, bufsz, "date:%d%s..%d%s and %s", 
+    snprintf(buf, bufsz, "date:%d%s..%d%s and %s",
         beg, NotmuchQueryWindowTimebase, end, NotmuchQueryWindowTimebase, NotmuchQueryWindowCurrentSearch);
 
-  dprint(2, (debugfile, "nm: windowed_query_from_query (%s) → %s\n", query, buf));
+  dprint(2, (debugfile, "nm: windowed_query_from_query (%s) -> %s\n", query, buf));
 
   return true;
 }
@@ -549,7 +551,7 @@ static bool windowed_query_from_query(const char *query, char *buf, size_t bufsz
  * @param data   internal notmuch context
  * @param window if true enable application of the window on the search string
  *
- * @return string containing a notmuch search query, or a NULL pointer 
+ * @return string containing a notmuch search query, or a NULL pointer
  * if none can be generated.
  *
  * This function parses the internal representation of a search, and returns
@@ -561,7 +563,7 @@ static bool windowed_query_from_query(const char *query, char *buf, size_t bufsz
  * result in buffy) or not (for the count in the sidebar). It is not aimed at
  * enabling/disabling the feature.
  */
-static char *get_query_string(struct nm_ctxdata *data, int window) 
+static char *get_query_string(struct nm_ctxdata *data, int window)
 {
   dprint(2, (debugfile, "nm: get_query_string(%d)\n", window));
 
@@ -592,7 +594,8 @@ static char *get_query_string(struct nm_ctxdata *data, int window)
   if (!data->query_type)
     data->query_type = string_to_query_type(NULL);
 
-  if (window) {
+  if (window)
+  {
     char buf[LONG_STRING];
     mutt_str_replace(&NotmuchQueryWindowCurrentSearch, data->db_query);
 
@@ -1413,12 +1416,13 @@ static int rename_maildir_filename(const char *old, char *newpath, size_t newsz,
 
   strfcpy(folder, old, sizeof(folder));
   p = strrchr(folder, '/');
-  if (p) {
+  if (p)
+  {
     *p = '\0';
     p++;
-  } else {
-    p = folder;
   }
+  else
+    p = folder;
 
   strfcpy(filename, p, sizeof(filename));
 
@@ -1757,20 +1761,20 @@ char *nm_uri_from_query(CONTEXT *ctx, char *buf, size_t bufsz)
  * nm_normalize_uri - takes a notmuch URI, parses it and reformat it in a canonical way
  * @param new_uri    allocated string receiving the reformatted URI
  * @param orig_uri   original URI to be parsed
- * @param new_uri_sz size of the allocated new_uri string 
+ * @param new_uri_sz size of the allocated new_uri string
  *
  * @return false if orig_uri contains an invalid query, true if new_uri contains a
  *  normalized version of the query.
  *
  * This function aims at making notmuch searches URI representations deterministic,
  * so that when comparing two equivalent searches they will be the same. It works
- * by building a notmuch context object from the original search string, and 
+ * by building a notmuch context object from the original search string, and
  * building a new from the notmuch context object.
  *
  * It's aimed to be used by buffy when parsing the virtual_mailboxes to make the
  * parsed user written search strings comparable to the internally generated ones.
  */
-bool nm_normalize_uri(char* new_uri, const char *orig_uri, size_t new_uri_sz) 
+bool nm_normalize_uri(char *new_uri, const char *orig_uri, size_t new_uri_sz)
 {
   dprint(2, (debugfile, "nm_normalize_uri (%s)\n", orig_uri));
   char buf[LONG_STRING];
@@ -1782,33 +1786,36 @@ bool nm_normalize_uri(char* new_uri, const char *orig_uri, size_t new_uri_sz)
   tmp_ctx.data = &tmp_ctxdata;
   tmp_ctxdata.db_query = NULL;
 
-  if (url_parse_query(orig_uri, &tmp_ctxdata.db_filename, &tmp_ctxdata.query_items)) {
+  if (url_parse_query(orig_uri, &tmp_ctxdata.db_filename, &tmp_ctxdata.query_items))
+  {
     mutt_error(_("failed to parse notmuch uri: %s"), orig_uri);
-    dprint(2, (debugfile, "nm_normalize_uri () → error #1\n"));
+    dprint(2, (debugfile, "nm_normalize_uri () -> error #1\n"));
     return false;
   }
 
-  dprint(2, (debugfile, "nm_normalize_uri #1 () → db_query: %s\n", tmp_ctxdata.db_query));
+  dprint(2, (debugfile, "nm_normalize_uri #1 () -> db_query: %s\n", tmp_ctxdata.db_query));
 
-  if (get_query_string(&tmp_ctxdata, false) == NULL) {
+  if (get_query_string(&tmp_ctxdata, false) == NULL)
+  {
     mutt_error(_("failed to parse notmuch uri: %s"), orig_uri);
-    dprint(2, (debugfile, "nm_normalize_uri () → error #2\n"));
+    dprint(2, (debugfile, "nm_normalize_uri () -> error #2\n"));
     return false;
   }
 
-  dprint(2, (debugfile, "nm_normalize_uri #2 () → db_query: %s\n", tmp_ctxdata.db_query));
+  dprint(2, (debugfile, "nm_normalize_uri #2 () -> db_query: %s\n", tmp_ctxdata.db_query));
 
   strncpy(buf, tmp_ctxdata.db_query, sizeof(buf));
 
-  if (nm_uri_from_query(&tmp_ctx, buf, sizeof(buf)) == NULL) {
+  if (nm_uri_from_query(&tmp_ctx, buf, sizeof(buf)) == NULL)
+  {
     mutt_error(_("failed to parse notmuch uri: %s"), orig_uri);
-    dprint(2, (debugfile, "nm_normalize_uri () → error #3\n"));
+    dprint(2, (debugfile, "nm_normalize_uri () -> error #3\n"));
     return true;
   }
 
   strncpy(new_uri, buf, new_uri_sz);
 
-  dprint(2, (debugfile, "nm_normalize_uri #3 (%s) → %s\n", orig_uri, new_uri));
+  dprint(2, (debugfile, "nm_normalize_uri #3 (%s) -> %s\n", orig_uri, new_uri));
   return true;
 }
 
