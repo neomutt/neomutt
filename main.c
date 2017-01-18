@@ -90,6 +90,7 @@ static void mutt_usage (void)
        mutt [<options>] -A <alias> [...]\n\
        mutt [<options>] -Q <query> [...]\n\
        mutt [<options>] -D\n\
+       mutt [<options>] -D -S\n\
        mutt -v[v]\n");
 
   puts _("\
@@ -99,7 +100,8 @@ options:\n\
 \t\tthe list of files must be terminated with the \"--\" sequence\n\
   -b <address>\tspecify a blind carbon-copy (BCC) address\n\
   -c <address>\tspecify a carbon-copy (CC) address\n\
-  -D\t\tprint the value of all variables to stdout");
+  -D\t\tprint the value of all variables to stdout\n\
+  -DS\t\tprint the value of all variables to stdout (hiding sensitive info)");
 #if DEBUG
   puts _("  -d <level>\tlog debugging output to ~/.muttdebug0");
 #endif
@@ -196,6 +198,7 @@ int main (int argc, char **argv, char **environ)
   int version = 0;
   int i;
   int explicit_folder = 0;
+  int hide_sensitive_variables = 0;
   int dump_variables = 0;
   int edit_infile = 0;
   extern char *optarg;
@@ -262,9 +265,9 @@ int main (int argc, char **argv, char **environ)
     }
 
 #ifdef USE_NNTP
-    if ((i = getopt (argc, argv, "+A:a:b:F:f:c:Dd:Ee:g:GH:s:i:hm:npQ:RvxyzZ")) != EOF)
+    if ((i = getopt (argc, argv, "+A:a:b:F:f:c:Dd:Ee:g:GH:Ss:i:hm:npQ:RvxyzZ")) != EOF)
 #else
-    if ((i = getopt (argc, argv, "+A:a:b:F:f:c:Dd:Ee:H:s:i:hm:npQ:RvxyzZ")) != EOF)
+    if ((i = getopt (argc, argv, "+A:a:b:F:f:c:Dd:Ee:H:Ss:i:hm:npQ:RvxyzZ")) != EOF)
 #endif
       switch (i)
       {
@@ -298,6 +301,11 @@ int main (int argc, char **argv, char **environ)
 
       case 'D':
 	dump_variables = 1;
+	break;
+
+      case 'S':
+	if (dump_variables)
+          hide_sensitive_variables = 1;
 	break;
 
       case 'd':
@@ -449,7 +457,7 @@ int main (int argc, char **argv, char **environ)
     return mutt_query_variables (queries);
   }
   if (dump_variables)
-    return mutt_dump_variables();
+    return mutt_dump_variables(hide_sensitive_variables);
 
   if (alias_queries)
   {

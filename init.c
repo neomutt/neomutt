@@ -3317,12 +3317,12 @@ int mutt_query_variables (LIST *queries)
 }
 
 /* dump out the value of all the variables we have */
-int mutt_dump_variables (void)
+int mutt_dump_variables (int hide_sensitive)
 {
-  int i;
-  
+  int i, j;
+
   char command[STRING];
-  
+
   BUFFER err, token;
 
   mutt_buffer_init (&err);
@@ -3330,7 +3330,7 @@ int mutt_dump_variables (void)
 
   err.dsize = STRING;
   err.data = safe_malloc (err.dsize);
-  
+
   for (i = 0; MuttVars[i].option; i++)
   {
     if (MuttVars[i].type == DT_SYN)
@@ -3345,7 +3345,18 @@ int mutt_dump_variables (void)
 
       return 1;
     }
-    printf("%s\n", err.data);
+    if (hide_sensitive && (strstr(err.data, "\"\"") == NULL)) {
+      for (j = 0; MuttSensitiveVars[j]; ++j) {
+	if (!strcmp(MuttVars[i].option, MuttSensitiveVars[j])) {
+	  printf("%s='******'\n", MuttVars[i].option);
+	  break;
+	}
+      }
+      if (!MuttSensitiveVars[j])
+	printf("%s\n", err.data);
+    }
+    else
+      printf("%s\n", err.data);
   }
   
   FREE (&token.data);

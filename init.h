@@ -4507,3 +4507,14 @@ const struct command_t Commands[] = {
   { "unsubscribe",	parse_unsubscribe,	0 },
   { NULL,		NULL,			0 }
 };
+
+char *MuttSensitiveVars[] = {
+    "imap_login", "imap_pass",
+    "nntp_user", "nntp_pass", 
+    "pop_user", "pop_pass", 
+    "smtp_pass", 
+    NULL
+};
+
+
+
