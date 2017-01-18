@@ -14125,6 +14125,7 @@ mailboxes and to send messages from the command line as well.
 <row><entry>-c</entry><entry>specify a carbon-copy (Cc) address</entry></row>
 <row><entry>-d</entry><entry>log debugging output to ~/.muttdebug0 if mutt was compiled with +DEBUG; it can range from 1-5 and affects verbosity (a value of 2 is recommended)</entry></row>
 <row><entry>-D</entry><entry>print the value of all Mutt variables to stdout</entry></row>
+<row><entry>-DS</entry><entry>like -D but hide the value of sensitive variables</entry></row>
 <row><entry>-E</entry><entry>edit the draft (-H) or include (-i) file</entry></row>
 <row><entry>-e</entry><entry>specify a config command to be run after initialization files are read</entry></row>
 <row><entry>-f</entry><entry>specify a mailbox to load</entry></row>
