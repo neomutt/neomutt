@@ -3554,7 +3554,7 @@ void mutt_init (int skip_sys_rc, LIST *commands)
   err.dptr = err.data;
 
   Groups = hash_create (1031, 0);
-  ReverseAlias = hash_create (1031, 1);
+  ReverseAlias = hash_create (1031, MUTT_HASH_STRCASECMP);
 #ifdef USE_NOTMUCH
   TagTransforms = hash_create (64, 1);
   TagFormats = hash_create (64, 0);

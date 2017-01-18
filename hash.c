@@ -79,7 +79,7 @@ static int cmp_int_key (union hash_key a, union hash_key b)
 
 static HASH *new_hash (int nelem)
 {
-  HASH *table = safe_malloc (sizeof (HASH));
+  HASH *table = safe_calloc (1, sizeof (HASH));
   if (nelem == 0)
     nelem = 2;
   table->nelem = nelem;
@@ -88,10 +88,10 @@ static HASH *new_hash (int nelem)
   return table;
 }
 
-HASH *hash_create (int nelem, int lower)
+HASH *hash_create (int nelem, int flags)
 {
   HASH *table = new_hash (nelem);
-  if (lower)
+  if (flags & MUTT_HASH_STRCASECMP)
   {
     table->gen_hash = gen_case_string_hash;
     table->cmp_key = cmp_case_string_key;
@@ -101,6 +101,8 @@ HASH *hash_create (int nelem, int lower)
     table->gen_hash = gen_string_hash;
     table->cmp_key = cmp_string_key;
   }
+  if (flags & MUTT_HASH_STRDUP_KEYS)
+    table->strdup_keys = 1;
   return table;
 }
 
@@ -185,7 +187,7 @@ static int union_hash_insert (HASH * table, union hash_key key, void *data, int 
 int hash_insert (HASH * table, const char *strkey, void *data, int allow_dup)
 {
   union hash_key key;
-  key.strkey = strkey;
+  key.strkey = table->strdup_keys ? safe_strdup (strkey) : strkey;
   return union_hash_insert (table, key, data, allow_dup);
 }
 
@@ -279,6 +281,8 @@ static void union_hash_delete (HASH *table, union hash_key key, const void *data
       *last = ptr->next;
       if (destroy)
 	destroy (ptr->data);
+      if (table->strdup_keys)
+        FREE (&ptr->key.strkey);
       FREE (&ptr);
       table->curnelem--;
 
@@ -329,6 +333,8 @@ void hash_destroy (HASH **ptr, void (*destroy) (void *))
       elem = elem->next;
       if (destroy)
 	destroy (tmp->data);
+      if (pptr->strdup_keys)
+        FREE (&tmp->key.strkey);
       FREE (&tmp);
     }
   }

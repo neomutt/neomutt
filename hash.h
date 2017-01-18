@@ -35,11 +35,16 @@ struct hash_elem
 typedef struct
 {
   int nelem, curnelem;
+  int strdup_keys;      /* if set, the key->strkey is strdup'ed */
   struct hash_elem **table;
   unsigned int (*gen_hash)(union hash_key, unsigned int);
   int (*cmp_key)(union hash_key, union hash_key);
 }
 HASH;
+
+/* flags for hash_create() */
+#define MUTT_HASH_STRCASECMP   (1<<0)   /* use strcasecmp() to compare keys */
+#define MUTT_HASH_STRDUP_KEYS  (1<<1)   /* make a copy of the keys */
 
 HASH *hash_create (int nelem, int lower);
 HASH *int_hash_create (int nelem);
