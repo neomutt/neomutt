@@ -1565,55 +1565,6 @@ static unsigned count_query(notmuch_database_t *db, const char *qstr)
   return res;
 }
 
-/**
- * setup_windowed_query - SHORT_DESC
- * @param buf   YYY
- * @param bufsz YYY
- *
- * DESC
- */
-static void setup_windowed_query(char *buf, size_t bufsz)
-{
-  dprint(2, (debugfile, "setup_windowed_query (%s)\n", buf));
-  mutt_str_replace(&NotmuchQueryWindowCurrentSearch, buf);
-}
-
-/**
- * uri_from_windowed_query - SHORT_DESC
- * @param ctx      YYY
- * @param buf      YYY
- * @param bufsz    YYY
- * @param timebase YYY
- * @param duration YYY
- *
- * @return YYY
- *
- * DESC
- */
-static char *uri_from_windowed_query(CONTEXT *ctx, char *buf, size_t bufsz,
-                                 char *timebase, int duration)
-{
-  dprint(2, (debugfile, "uri_from_windowed_query (%s, %s, %d)\n", buf,
-             timebase, duration));
-
-  int beg = duration * (NotmuchQueryWindowCurrentPosition + 1);
-  int end = duration *  NotmuchQueryWindowCurrentPosition;
-
-  if (NotmuchQueryWindowCurrentSearch == NULL)
-  {
-    query_window_reset();
-    return NULL;
-  }
-
-  if (end == 0)
-    snprintf(buf, bufsz, "date:%d%s..now and %s", beg, timebase, NotmuchQueryWindowCurrentSearch);
-  else
-    snprintf(buf, bufsz, "date:%d%s..%d%s and %s", beg, timebase, end, timebase, NotmuchQueryWindowCurrentSearch);
-
-  return nm_uri_from_query(ctx, buf, bufsz);
-}
-
-
 char *nm_header_get_folder(HEADER *h)
 {
   return (h && h->data) ? ((struct nm_hdrdata *) h->data)->folder : NULL;
