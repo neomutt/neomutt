@@ -3158,7 +3158,7 @@ void mutt_init (int skip_sys_rc, LIST *commands)
   err.dptr = err.data;
 
   Groups = hash_create (1031, 0);
-  ReverseAlias = hash_create (1031, 1);
+  ReverseAlias = hash_create (1031, MUTT_HASH_STRCASECMP);
   
   mutt_menu_init ();
   mutt_srandom ();
