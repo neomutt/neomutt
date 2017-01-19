@@ -32,7 +32,7 @@
 #define SORT_TRUST	13
 #define SORT_SPAM	14
 #define SORT_COUNT	15
-#define SORT_COUNT_NEW	16
+#define SORT_UNREAD	16
 #define SORT_FLAGGED	17
 #define SORT_PATH	18
 

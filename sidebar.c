@@ -260,7 +260,7 @@ static int cb_qsort_sbe (const void *a, const void *b)
     case SORT_COUNT:
       result = (b2->msg_count - b1->msg_count);
       break;
-    case SORT_COUNT_NEW:
+    case SORT_UNREAD:
       result = (b2->msg_unread - b1->msg_unread);
       break;
     case SORT_FLAGGED:
@@ -363,7 +363,7 @@ static void sort_entries (void)
 
   /* These are the only sort methods we understand */
   if ((ssm == SORT_COUNT)     ||
-      (ssm == SORT_COUNT_NEW) ||
+      (ssm == SORT_UNREAD)    ||
       (ssm == SORT_FLAGGED)   ||
       (ssm == SORT_PATH))
     qsort (Entries, EntryCount, sizeof (*Entries), cb_qsort_sbe);

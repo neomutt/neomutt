@@ -2757,7 +2757,7 @@ struct option_t MuttVars[] = {
   ** .dl
   ** .dt %B  .dd Name of the mailbox
   ** .dt %S  .dd * Size of mailbox (total number of messages)
-  ** .dt %N  .dd * Number of New messages in the mailbox
+  ** .dt %N  .dd * Number of unread messages in the mailbox
   ** .dt %n  .dd N if mailbox has new mail, blank otherwise
   ** .dt %F  .dd * Number of Flagged messages in the mailbox
   ** .dt %!  .dd ``!'' : one flagged message;
@@ -2828,7 +2828,10 @@ struct option_t MuttVars[] = {
   ** .dd alpha (alphabetically)
   ** .dd count (all message count)
   ** .dd flagged (flagged message count)
-  ** .dd new (new message count)
+  ** .dd name (alphabetically)
+  ** .dd new (unread message count)
+  ** .dd path (alphabetically)
+  ** .dd unread (unread message count)
   ** .dd unsorted
   ** .ie
   ** .pp
@@ -3862,8 +3865,9 @@ const struct mapping_t SortSidebarMethods[] = {
   { "flagged",		SORT_FLAGGED },
   { "mailbox-order",	SORT_ORDER },
   { "name",		SORT_PATH },
-  { "new",		SORT_COUNT_NEW },
+  { "new",		SORT_UNREAD },  /* kept for compatibility */
   { "path",		SORT_PATH },
+  { "unread",		SORT_UNREAD },
   { "unsorted",		SORT_ORDER },
   { NULL,		0 }
 };

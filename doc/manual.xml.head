@@ -8465,11 +8465,15 @@ please have a look at the mixmaster documentation.
 	  </row>
 	  <row>
 	    <entry><literal>new</literal></entry>
-	    <entry>Number of new messages</entry>
+	    <entry>Number of unread messages</entry>
 	  </row>
 	  <row>
 	    <entry><literal>path</literal></entry>
 	    <entry>Alphabetically by path</entry>
+	  </row>
+	  <row>
+	    <entry><literal>unread</literal></entry>
+	    <entry>Number of unread messages</entry>
 	  </row>
 	  <row>
 	    <entry><literal>unsorted</literal></entry>
