@@ -76,6 +76,12 @@ void mutt_curs_set (int);
 #define CI_is_return(c) ((c) == '\r' || (c) == '\n')
 #endif
 
+typedef struct
+{
+  int ch; /* raw key pressed */
+  int op; /* function op */
+} event_t;
+
 event_t mutt_getch (void);
 
 void mutt_endwin (const char *);
@@ -146,7 +152,7 @@ typedef struct color_line
   regex_t rx;
   int match; /* which substringmap 0 for old behaviour */
   char *pattern;
-  pattern_t *color_pattern; /* compiled pattern to speed up index color
+  struct pattern_t *color_pattern; /* compiled pattern to speed up index color
                                calculation */
   short fg;
   short bg;

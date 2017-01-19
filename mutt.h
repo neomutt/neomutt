@@ -91,6 +91,7 @@
 #define WHERE_DEFINED 1
 
 #include "mutt_regex.h"
+#include "mutt_menu.h"
 
 /* flags for mutt_enter_string() */
 #define  MUTT_ALIAS   1      /* do alias "completion" by calling up the alias-menu */
@@ -123,12 +124,6 @@ typedef struct
   size_t dsize;	/* length of data */
   int destroy;	/* destroy `data' when done? */
 } BUFFER;
-
-typedef struct
-{
-  int ch; /* raw key pressed */
-  int op; /* function op */
-} event_t;
 
 /* flags for _mutt_system() */
 #define MUTT_DETACH_PROCESS	1	/* detach subprocess from group */
@@ -1033,6 +1028,8 @@ typedef struct _context
   int flagged;			/* how many flagged messages */
   int msgnotreadyet;		/* which msg "new" in pager, -1 if none */
 
+  MUTTMENU* menu;     /* needed for pattern compilation */
+    
   short magic;			/* mailbox type */
 
   unsigned char rights[(RIGHTSMAX + 7)/8];	/* ACL bits */
