@@ -197,7 +197,7 @@ static int browser_compare (const void *a, const void *b)
       return browser_compare_desc(a, b);
     case SORT_COUNT:
       return browser_compare_count(a, b);
-    case SORT_COUNT_NEW:
+    case SORT_UNREAD:
       return browser_compare_count_new(a, b);
     case SORT_SUBJECT:
     default:
@@ -1751,7 +1751,7 @@ void _mutt_select_file (char *f, size_t flen, int flags, char ***files, int *num
 	      break;
 
             case 6: /* ne(w) count */
-	      BrowserSort = SORT_COUNT_NEW;
+	      BrowserSort = SORT_UNREAD;
 	      break;
 
             case 7: /* do(n)'t sort */
