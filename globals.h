@@ -50,6 +50,7 @@ WHERE char *DisplayFilter;
 WHERE char *DsnNotify;
 WHERE char *DsnReturn;
 WHERE char *Editor;
+WHERE char *EmptySubject;
 WHERE char *EscChar;
 WHERE char *FolderFormat;
 WHERE char *ForwFmt;
