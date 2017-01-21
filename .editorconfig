@@ -15,3 +15,8 @@ indent_size = 2
 [ChangeLog.neomutt]
 indent_style = space
 indent_size = 1
+
+
+[configure]
+indent_size = 2
+indent_style = space
