@@ -10,5 +10,4 @@ trim_trailing_whitespace = true
 
 
 [{*.c,*.h}]
-indent_style = space
 indent_size = 2
