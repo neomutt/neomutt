@@ -9,5 +9,5 @@ charset = utf8
 trim_trailing_whitespace = true
 
 
-[{*.c,*.h}]
+[*.{c,h}]
 indent_size = 2
