@@ -501,7 +501,7 @@ is_context_available(BUFFER *s, regmatch_t pmatch[], int kind, BUFFER *err)
     return 1;
 
   /* We need a current message.  Do we actually have one? */
-  if (Context->menu)
+  if (Context && Context->menu)
     return 1;
 
   /* Nope. */
@@ -511,18 +511,16 @@ is_context_available(BUFFER *s, regmatch_t pmatch[], int kind, BUFFER *err)
 
 #define RANGE_NUM_RX "([[:digit:]]+|0x[[:xdigit:]]+)[MmKk]?"
 
-#define RANGE_REL_SLOT_RX \
-    "[[:blank:]]*([.^$]|-?" RANGE_NUM_RX ")?[[:blank:]]*"
+#define RANGE_REL_SLOT_RX "[[:blank:]]*([.^$]|-?" RANGE_NUM_RX ")?[[:blank:]]*"
 
 #define RANGE_REL_RX "^" RANGE_REL_SLOT_RX "," RANGE_REL_SLOT_RX
 
 /* Almost the same, but no negative numbers allowed */
-#define RANGE_ABS_SLOT_RX \
-    "[[:blank:]]*([.^$]|" RANGE_NUM_RX ")?[[:blank:]]*"
+#define RANGE_ABS_SLOT_RX "[[:blank:]]*([.^$]|" RANGE_NUM_RX ")?[[:blank:]]*"
 
 #define RANGE_ABS_RX "^" RANGE_ABS_SLOT_RX "-" RANGE_ABS_SLOT_RX
 
-/* Frist group is intentionally empty */
+/* First group is intentionally empty */
 #define RANGE_LT_RX "^()[[:blank:]]*(<[[:blank:]]*" RANGE_NUM_RX ")[[:blank:]]*"
 
 #define RANGE_GT_RX "^()[[:blank:]]*(>[[:blank:]]*" RANGE_NUM_RX ")[[:blank:]]*"
