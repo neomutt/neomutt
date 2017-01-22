@@ -3,6 +3,9 @@
 [![License: GPL v2](https://img.shields.io/badge/License-GPL%20v2-blue.svg)](https://github.com/neomutt/neomutt/blob/neomutt/COPYRIGHT)
 [![Travis branch](https://api.travis-ci.org/neomutt/neomutt.svg?branch=neomutt)](https://travis-ci.org/neomutt/neomutt)
 [![Coverity Scan](https://img.shields.io/coverity/scan/8495.svg)](https://scan.coverity.com/projects/neomutt-neomutt)
+[![Backlog](https://badge.waffle.io/neomutt/neomutt.svg?label=status:backlog&title=Backlog)](http://waffle.io/neomutt/neomutt)
+[![In Progress](https://badge.waffle.io/neomutt/neomutt.svg?label=status:in-progress&title=In%20Progress)](http://waffle.io/neomutt/neomutt)
+[![Ready](https://badge.waffle.io/neomutt/neomutt.svg?label=status:ready&title=Ready)](http://waffle.io/neomutt/neomutt)
 
 ## What is NeoMutt?
 
