@@ -5980,70 +5980,163 @@ string.  This example matches messages whose senders are known aliases.
 <sect3 id="message-ranges">
   <title>Message Ranges</title>
 
-<para>
-  If a message number range (from now on: MNR) contains a comma (<literal>,</literal>),
-  it is a <emphasis>relative</emphasis> MNR.  That means the numbers denote
-  <emphasis>offsets</emphasis> from the highlighted message.  For
-  example:
+  <para>
+    If a message number range (from now on: MNR) contains a comma (<literal>,</literal>),
+    it is a <emphasis>relative</emphasis> MNR.  That means the numbers denote
+    <emphasis>offsets</emphasis> from the highlighted message.  For example:
+  </para>
 
   <table id="relative-mnrs">
+    <title>Relative Message Number Ranges</title>
     <tgroup cols="2">
       <thead>
-        <row><entry>Pattern</entry><entry>Explanation</entry></row>
+        <row>
+          <entry>Pattern</entry>
+          <entry>Explanation</entry>
+        </row>
       </thead>
       <tbody>
-        <row><entry><literal>~m -2,2</literal></entry><entry>Previous 2, highlighted and next 2 emails</entry></row>
-        <row><entry><literal>~m 0,1</literal></entry><entry>Highlighted and next email</entry></row>
+        <row>
+          <entry>
+            <literal>~m -2,2</literal>
+          </entry>
+          <entry>Previous 2, highlighted and next 2 emails</entry>
+        </row>
+        <row>
+          <entry>
+            <literal>~m 0,1</literal>
+          </entry>
+          <entry>Highlighted and next email</entry>
+        </row>
       </tbody>
     </tgroup>
   </table>
 
-  In addition to numbers, either side of the range can also contain one
-  of the special characters (shortcuts)<literal>.^$</literal>.  The meaning is:
+  <para>
+    In addition to numbers, either side of the range can also contain one
+    of the special characters (shortcuts)<literal>.^$</literal>.  The meaning is:
+  </para>
 
   <table id="mnrs-shortcuts">
-    <title>MNR Shortcuts</title>
+    <title>Message Number Shortcuts</title>
     <tgroup cols="4">
       <thead>
-        <row><entry>Shortcut</entry><entry>Explanation</entry><entry>Example</entry><entry>Meaning</entry></row>
+        <row>
+          <entry>Shortcut</entry>
+          <entry>Explanation</entry>
+          <entry>Example</entry>
+          <entry>Meaning</entry>
+        </row>
       </thead>
       <tbody>
-        <row><entry><literal>.</literal></entry><entry>Current / Highlighted</entry><entry><literal>~m -3,.</literal></entry><entry>Previous 3 emails plus the highlighted one</entry></row>
-        <row><entry><literal>$</literal></entry><entry>Last</entry><entry><literal>~m .,$</literal></entry><entry>Highlighted email and all the later ones</entry></row>
-        <row><entry><literal>^</literal></entry><entry>First</entry><entry><literal>~m ^,1</literal></entry><entry>Highlighted, next and all preceding ones</entry></row>
+        <row>
+          <entry>
+            <literal>.</literal>
+          </entry>
+          <entry>Current / Highlighted</entry>
+          <entry>
+            <literal>~m -3,.</literal>
+          </entry>
+          <entry>Previous 3 emails plus the highlighted one</entry>
+        </row>
+        <row>
+          <entry>
+            <literal>$</literal>
+          </entry>
+          <entry>Last</entry>
+          <entry>
+            <literal>~m .,$</literal>
+          </entry>
+          <entry>Highlighted email and all the later ones</entry>
+        </row>
+        <row>
+          <entry>
+            <literal>^</literal>
+          </entry>
+          <entry>First</entry>
+          <entry>
+            <literal>~m ^,1</literal>
+          </entry>
+          <entry>Highlighted, next and all preceding ones</entry>
+        </row>
       </tbody>
     </tgroup>
   </table>
 
-  Lastly, you can also leave either side of the range blank, to make it
-  extend as far as possible.  For example, <literal>~m ,1</literal> has
-  the same meaning as the last example in <xref
-  linkend="mnrs-shortcuts"/>.
-</para>
-<para>
-  Otherwise, if a MNR <emphasis>doesn't</emphasis> contain a comma, the
-  meaning is similar to other ranges, except that the shortcuts are
-  still available.  Examples:
+  <para>
+    Lastly, you can also leave either side of the range blank, to make it
+    extend as far as possible.  For example, <literal>~m ,1</literal> has
+    the same meaning as the last example in <xref
+    linkend="mnrs-shortcuts"/>.
+  </para>
+
+  <para>
+    Otherwise, if a MNR <emphasis>doesn't</emphasis> contain a comma, the
+    meaning is similar to other ranges, except that the shortcuts are
+    still available.  Examples:
+  </para>
 
   <table id="mnrs-absolute">
+    <title>Absolute Message Number Ranges</title>
     <tgroup cols="2">
       <thead>
-        <row><entry>Pattern</entry><entry>Explanation</entry></row>
+        <row>
+          <entry>Pattern</entry>
+          <entry>Explanation</entry>
+        </row>
       </thead>
       <tbody>
-        <row><entry><literal>~m 3-10</literal></entry><entry>Emails 3 to 10</entry></row>
-        <row><entry><literal>~m -10</literal></entry><entry>Emails 1 to 10</entry></row>
-        <row><entry><literal>~m 10-</literal></entry><entry>Emails 10 to last</entry></row>
-        <row><entry><literal>~m &lt;3</literal></entry><entry>First and second email</entry></row>
-        <row><entry><literal>~m ^-2</literal></entry><entry>First and second email</entry></row>
-        <row><entry><literal>~m &gt;1</literal></entry><entry>Everything but first email</entry></row>
-        <row><entry><literal>~m 2-$</literal></entry><entry>Everything but first email</entry></row>
-        <row><entry><literal>~m 2</literal></entry><entry>Just the second email</entry></row>
+        <row>
+          <entry>
+            <literal>~m 3-10</literal>
+          </entry>
+          <entry>Emails 3 to 10</entry>
+        </row>
+        <row>
+          <entry>
+            <literal>~m -10</literal>
+          </entry>
+          <entry>Emails 1 to 10</entry>
+        </row>
+        <row>
+          <entry>
+            <literal>~m 10-</literal>
+          </entry>
+          <entry>Emails 10 to last</entry>
+        </row>
+        <row>
+          <entry>
+            <literal>~m &lt;3</literal>
+          </entry>
+          <entry>First and second email</entry>
+        </row>
+        <row>
+          <entry>
+            <literal>~m ^-2</literal>
+          </entry>
+          <entry>First and second email</entry>
+        </row>
+        <row>
+          <entry>
+            <literal>~m &gt;1</literal>
+          </entry>
+          <entry>Everything but first email</entry>
+        </row>
+        <row>
+          <entry>
+            <literal>~m 2-$</literal>
+          </entry>
+          <entry>Everything but first email</entry>
+        </row>
+        <row>
+          <entry>
+            <literal>~m 2</literal>
+          </entry>
+          <entry>Just the second email</entry>
+        </row>
       </tbody>
     </tgroup>
   </table>
-</para>
-
 </sect3>
 
 </sect2>
