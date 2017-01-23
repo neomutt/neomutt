@@ -501,10 +501,6 @@ extern char *sys_errlist[];
 #define memmove(d,s,n) bcopy((s),(d),(n))
 #endif
 
-/* AIX doesn't define these in any headers (sigh) */
-int strcasecmp (const char *, const char *);
-int strncasecmp (const char *, const char *, size_t);
-
 #ifdef _AIX
 int setegid (gid_t);
 #endif /* _AIX */
@@ -566,11 +562,6 @@ int ci_send_message (int, HEADER *, char *, CONTEXT *, HEADER *);
 
 #ifndef HAVE_SETENV
 int setenv (const char *, const char *, int);
-#endif
-
-#ifndef HAVE_STRCASECMP
-int strcasecmp (char *, char *);
-int strncasecmp (char *, char *, size_t);
 #endif
 
 #ifndef HAVE_STRSEP
