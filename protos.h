@@ -560,10 +560,6 @@ int ci_send_message (int, HEADER *, char *, CONTEXT *, HEADER *);
 
 /* prototypes for compatibility functions */
 
-#ifndef HAVE_STRTOK_R
-char *strtok_r (char *, const char *, char **);
-#endif
-
 #ifndef HAVE_WCSCASECMP
 int wcscasecmp (const wchar_t *a, const wchar_t *b);
 #endif

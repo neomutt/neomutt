@@ -454,7 +454,7 @@ AC_CHECK_HEADERS(unix.h)
 
 AC_CHECK_FUNCS(setrlimit getsid)
 AC_CHECK_FUNCS(fgets_unlocked fgetc_unlocked)
-AC_CHECK_FUNCS(strcasecmp strncasecmp setenv strdup strsep)
+AC_CHECK_FUNCS(strcasecmp strncasecmp setenv strdup strsep strtok_r)
 
 AC_MSG_CHECKING(for sig_atomic_t in signal.h)
 AC_EGREP_HEADER(sig_atomic_t,signal.h,
@@ -493,7 +493,7 @@ AC_CHECK_TYPE(ssize_t, int)
 
 AC_CHECK_FUNCS(fgetpos memmove setegid srand48 strerror)
 
-AC_REPLACE_FUNCS([strtok_r wcscasecmp])
+AC_REPLACE_FUNCS([wcscasecmp])
 AC_REPLACE_FUNCS([strcasestr mkdtemp])
 
 AC_CHECK_FUNC(getopt)
