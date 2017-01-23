@@ -560,10 +560,6 @@ int ci_send_message (int, HEADER *, char *, CONTEXT *, HEADER *);
 
 /* prototypes for compatibility functions */
 
-#ifndef HAVE_STRSEP
-char *strsep (char **, const char *);
-#endif
-
 #ifndef HAVE_STRTOK_R
 char *strtok_r (char *, const char *, char **);
 #endif
