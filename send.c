@@ -523,7 +523,8 @@ static int default_to (ADDRESS **to, ENVELOPE *env, int flags, int hmfupto)
   }
   else if (env->reply_to)
   {
-    if ((mutt_addrcmp (env->from, env->reply_to) && !env->reply_to->next) || 
+    if ((mutt_addrcmp (env->from, env->reply_to) && !env->reply_to->next &&
+         !env->reply_to->personal) ||
 	(option (OPTIGNORELISTREPLYTO) &&
 	mutt_is_mail_list (env->reply_to) &&
 	(mutt_addrsrc (env->reply_to, env->to) ||
@@ -534,7 +535,7 @@ static int default_to (ADDRESS **to, ENVELOPE *env, int flags, int hmfupto)
        * 
        * We also take the from header if our correspondent has a reply-to
        * header which is identical to the electronic mail address given
-       * in his From header.
+       * in his From header, and the reply-to has no display-name.
        * 
        */
       rfc822_append (to, env->from, 0);
