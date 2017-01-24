@@ -1321,6 +1321,26 @@ static notmuch_message_t *get_nm_message(notmuch_database_t *db, HEADER *hdr)
   return msg;
 }
 
+static bool nm_message_has_tag(notmuch_message_t *msg, char *tag)
+{
+
+  const char *possible_match_tag;
+  notmuch_tags_t *tags;
+
+  for (tags = notmuch_message_get_tags (msg);
+       notmuch_tags_valid (tags);
+       notmuch_tags_move_to_next (tags))
+    {
+      possible_match_tag = notmuch_tags_get (tags);
+      if (mutt_strncmp (possible_match_tag, tag, mutt_strlen (tag)) == 0)
+        {
+          return true;
+        }
+    }
+  return false;
+}
+
+
 static int update_tags(notmuch_message_t *msg, const char *tags)
 {
   char *tag = NULL, *end = NULL, *p;
@@ -1352,6 +1372,18 @@ static int update_tags(notmuch_message_t *msg, const char *tags)
     {
       dprint(1, (debugfile, "nm: remove tag: '%s'\n", tag + 1));
       notmuch_message_remove_tag(msg, tag + 1);
+    }
+    else if (*tag == '!')
+    {
+      dprint(1, (debugfile, "nm: toggle tag: '%s'\n", tag + 1));
+      if (nm_message_has_tag (msg, tag + 1))
+      {
+        notmuch_message_remove_tag (msg, tag + 1);
+      }
+      else
+      {
+        notmuch_message_add_tag (msg, tag + 1);
+      }
     }
     else
     {
