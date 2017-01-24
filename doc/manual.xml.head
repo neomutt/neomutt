@@ -6098,9 +6098,14 @@ that either is reproduced elsewhere, or is of secondary interest.
 </arg>
 
 <command>unsubjectrx</command>
+<group choice="req">
+<arg choice="plain">
+<replaceable class="parameter">*</replaceable>
+</arg>
 <arg choice="plain">
 <replaceable class="parameter">pattern</replaceable>
 </arg>
+</group>
 </cmdsynopsis>
 
 <para>
@@ -6121,8 +6126,9 @@ entire subject, not just the match!
 </para>
 
 <para>
-<literal>unsubjectrx</literal> removes a given subjectrx from the substitution
-list.
+<literal>unsubjectrx</literal> removes a given subjectrx from the
+substitution list.  If <literal>*</literal> is used as the pattern,
+all substitutions will be removed.
 </para>
 
 <example id="ex-subjectrx">
@@ -10062,13 +10068,18 @@ The following are the commands understood by Mutt:
 <replaceable class="parameter">pattern</replaceable>
 </arg>
 <arg choice="plain">
-<replaceable class="parameter">format</replaceable>
+<replaceable class="parameter">replacement</replaceable>
 </arg>
 
 <command><link linkend="display-munging">unsubjectrx</link></command>
+<group choice="req">
+<arg choice="plain">
+<replaceable class="parameter">*</replaceable>
+</arg>
 <arg choice="plain">
 <replaceable class="parameter">pattern</replaceable>
 </arg>
+</group>
 </cmdsynopsis>
 </listitem>
 
