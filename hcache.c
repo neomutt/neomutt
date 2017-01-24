@@ -1160,7 +1160,7 @@ mutt_hcache_open(const char *path, const char *folder, hcache_namer_t namer)
       unsigned int intval;
     } digest;
     struct md5_ctx ctx;
-    SPAM_LIST *spam;
+    REPLACE_LIST *spam;
     RX_LIST *nospam;
 
     hcachever = HCACHEVER;
