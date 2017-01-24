@@ -199,6 +199,22 @@ int mutt_user_is_recipient (HEADER *h)
   return h->recipient;
 }
 
+static char *apply_subject_mods (ENVELOPE *env)
+{
+  if (env == NULL)
+    return NULL;
+
+  if (SubjectRxList == NULL)
+    return env->subject;
+
+  if (env->subject == NULL || *env->subject == '\0')
+    return env->disp_subj = NULL;
+
+  env->disp_subj = mutt_apply_replace(NULL, 0, env->subject, SubjectRxList);
+  return env->disp_subj;
+}
+
+
 /* %a = address of author
  * %A = reply-to address (if present; otherwise: address of author
  * %b = filename of the originating folder
@@ -566,20 +582,28 @@ hdr_format_str (char *dest,
       break;
 
     case 's':
-      
-      if (flags & MUTT_FORMAT_TREE && !hdr->collapsed)
       {
-	if (flags & MUTT_FORMAT_FORCESUBJ)
+	char *subj;
+        if (hdr->env->disp_subj)
+	  subj = hdr->env->disp_subj;
+	else if (SubjectRxList)
+	  subj = apply_subject_mods(hdr->env);
+	else
+	  subj = hdr->env->subject;
+	if (flags & MUTT_FORMAT_TREE && !hdr->collapsed)
 	{
-	  mutt_format_s (dest, destlen, "", NONULL (hdr->env->subject));
-	  snprintf (buf2, sizeof (buf2), "%s%s", hdr->tree, dest);
-	  mutt_format_s_tree (dest, destlen, prefix, buf2);
+	  if (flags & MUTT_FORMAT_FORCESUBJ)
+	  {
+	    mutt_format_s (dest, destlen, "", NONULL (subj));
+	    snprintf (buf2, sizeof (buf2), "%s%s", hdr->tree, dest);
+	    mutt_format_s_tree (dest, destlen, prefix, buf2);
+	  }
+	  else
+	    mutt_format_s_tree (dest, destlen, prefix, hdr->tree);
 	}
 	else
-	  mutt_format_s_tree (dest, destlen, prefix, hdr->tree);
+	  mutt_format_s (dest, destlen, prefix, NONULL (subj));
       }
-      else
-	mutt_format_s (dest, destlen, prefix, NONULL (hdr->env->subject));
       break;
 
     case 'S':

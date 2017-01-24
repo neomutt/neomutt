@@ -735,6 +735,7 @@ void mutt_free_envelope (ENVELOPE **p)
   FREE (&(*p)->list_post);
   FREE (&(*p)->subject);
   /* real_subj is just an offset to subject and shouldn't be freed */
+  FREE (&(*p)->disp_subj);
   FREE (&(*p)->message_id);
   FREE (&(*p)->supersedes);
   FREE (&(*p)->date);
@@ -782,8 +783,10 @@ void mutt_merge_envelopes(ENVELOPE* base, ENVELOPE** extra)
   {
     base->subject = (*extra)->subject;
     base->real_subj = (*extra)->real_subj;
+    base->disp_subj = (*extra)->disp_subj;
     (*extra)->subject = NULL;
     (*extra)->real_subj = NULL;
+    (*extra)->disp_subj = NULL;
   }
   /* spam and user headers should never be hashed, and the new envelope may
     * have better values. Use new versions regardless. */

@@ -757,6 +757,88 @@ static int parse_unalternates (BUFFER *buf, BUFFER *s, unsigned long data, BUFFE
   return 0;
 }
 
+static int parse_replace_list (BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err)
+{
+  REPLACE_LIST **list = (REPLACE_LIST **)data;
+  BUFFER templ;
+
+  memset(&templ, 0, sizeof(templ));
+
+  /* First token is a regexp. */
+  if (!MoreArgs(s))
+  {
+    strfcpy(err->data, _("not enough arguments"), err->dsize);
+    return -1;
+  }
+  mutt_extract_token(buf, s, 0);
+
+  /* Second token is a replacement template */
+  if (!MoreArgs(s))
+  {
+    strfcpy(err->data, _("not enough arguments"), err->dsize);
+    return -1;
+  }
+  mutt_extract_token(&templ, s, 0);
+
+  if (add_to_replace_list(list, buf->data, templ.data, err) != 0) {
+    FREE(&templ.data);
+    return -1;
+  }
+  FREE(&templ.data);
+
+  return 0;
+}
+
+static int parse_unreplace_list (BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err)
+{
+  REPLACE_LIST **list = (REPLACE_LIST **)data;
+
+  /* First token is a regexp. */
+  if (!MoreArgs(s))
+  {
+    strfcpy(err->data, _("not enough arguments"), err->dsize);
+    return -1;
+  }
+
+  mutt_extract_token(buf, s, 0);
+  remove_from_replace_list(list, buf->data);
+  return 0;
+}
+
+
+static void clear_subject_mods (void)
+{
+  int i;
+  if (Context && Context->msgcount) 
+  {
+    for (i = 0; i < Context->msgcount; i++)
+      FREE(&Context->hdrs[i]->env->disp_subj);
+  }
+}
+
+
+static int parse_subjectrx_list (BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err)
+{
+  int rc;
+
+  rc = parse_replace_list(buf, s, data, err);
+  if (rc == 0)
+    clear_subject_mods();
+  return rc;
+}
+
+
+static int parse_unsubjectrx_list (BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err)
+{
+  int rc;
+
+  rc = parse_unreplace_list(buf, s, data, err);
+  if (rc == 0)
+    clear_subject_mods();
+  return rc;
+}
+
+
 static int parse_spam_list (BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err)
 {
   BUFFER templ;
