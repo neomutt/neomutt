@@ -12644,6 +12644,9 @@ bind index,pager + entire-thread
 <emphasis role="comment"># modify (notmuch) tags</emphasis>
 bind index,pager \` modify-labels
 
+<emphasis role="comment"># modify (notmuch) tag non-interactively.</emphasis>
+bind index,pager tt "&lt;modify-labels&gt;!todo\n" "Toggle the 'todo' tag"
+
 <emphasis role="comment"># generate virtual folder from query</emphasis>
 bind index,pager \eX vfolder-from-query
 
