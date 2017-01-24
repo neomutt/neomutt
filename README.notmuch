@@ -97,7 +97,7 @@ notmuch support for mutt
       - note: TAB completion of 'tag:' names is available
 
    modify-labels:
-      - add or remove notmuch tags; [+]<tag> to add, -<tag> to remove
+      - add, remove, or toggle notmuch tags; [+]<tag> to add, -<tag> to remove, !<tag> to toggle
       - default key: `
       - note: TAB completion of tag names is available
       - example: "+AAA +BBB -CCC"
