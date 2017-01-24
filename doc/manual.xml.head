@@ -7112,6 +7112,72 @@ to your inbox, and it is fully compatible with the new keywords code.
 
 </sect1>
 
+<sect1 id="display-munging">
+<title>Display Munging</title>
+
+<para>
+Working within the confines of a console or terminal window, it is
+often useful to be able to modify certain information elements in a
+non-destructive way -- to change how they display, without changing
+the stored value of the information itself.  This is especially so of
+message subjects, which may often be polluted with extraneous metadata
+that either is reproduced elsewhere, or is of secondary interest.
+</para>
+
+<cmdsynopsis>
+<command>subjectrx</command>
+<arg choice="plain">
+<replaceable class="parameter">pattern</replaceable>
+</arg>
+<arg choice="plain">
+<replaceable class="parameter">replacement</replaceable>
+</arg>
+
+<command>unsubjectrx</command>
+<arg choice="plain">
+<replaceable class="parameter">pattern</replaceable>
+</arg>
+</cmdsynopsis>
+
+<para>
+<literal>subjectrx</literal> specifies a regular expression
+<quote>pattern</quote> which, if detected in a message subject, causes
+the subject to be replaced with the <quote>replacement</quote> value.
+The replacement is subject to substitutions in the same way as for the
+<link linkend="spam">spam</link> command: <literal>%L</literal> for the text
+to the left of the match, <literal>%R</literal> for text to the right of the
+match, and <literal>%1</literal> for the first subgroup in the match (etc).
+If you simply want to erase the match, set it to <quote>%L%R</quote>.
+Any number of <literal>subjectrx</literal> commands may coexist.
+</para>
+
+<para>
+Note this well: the <quote>replacement</quote> value replaces the
+entire subject, not just the match!
+</para>
+
+<para>
+<literal>unsubjectrx</literal> removes a given subjectrx from the substitution
+list.
+</para>
+
+<example id="ex-subjectrx">
+<title>Subject Munging</title>
+<screen>
+# Erase [rt #12345] tags from Request Tracker (RT) e-mails
+subjectrx '\[rt #[0-9]+\] *' '%L%R'
+
+# Servicedesk is another RT that sends more complex subjects.
+# Keep the ticket number.
+subjectrx '\[servicedesk #([0-9]+)\] ([^.]+)\.([^.]+) - (new|open|pending|update) - ' '%L[#%1] %R'
+
+# Strip out annoying [listname] prefixes in subjects
+subjectrx '\[[^\]]*\]:? *' '%L%R'
+</screen>
+</example>
+
+</sect1>
+
 <sect1 id="new-mail">
 <title>New Mail Detection</title>
 
@@ -15322,6 +15388,23 @@ The following are the commands understood by Mutt:
 <replaceable class="parameter">pattern</replaceable>
 </arg>
 </group>
+</cmdsynopsis>
+</listitem>
+
+<listitem>
+<cmdsynopsis>
+<command><link linkend="display-munging">subjectrx</link></command>
+<arg choice="plain">
+<replaceable class="parameter">pattern</replaceable>
+</arg>
+<arg choice="plain">
+<replaceable class="parameter">format</replaceable>
+</arg>
+
+<command><link linkend="display-munging">unsubjectrx</link></command>
+<arg choice="plain">
+<replaceable class="parameter">pattern</replaceable>
+</arg>
 </cmdsynopsis>
 </listitem>
 

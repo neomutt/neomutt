@@ -207,6 +207,7 @@ WHERE RX_LIST *SubscribedLists INITVAL(0);
 WHERE RX_LIST *UnSubscribedLists INITVAL(0);
 WHERE REPLACE_LIST *SpamList INITVAL(0);
 WHERE RX_LIST *NoSpamList INITVAL(0);
+WHERE REPLACE_LIST *SubjectRxList INITVAL(0);
 
 
 /* bit vector for boolean variables */
