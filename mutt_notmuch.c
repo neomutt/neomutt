@@ -1330,7 +1330,7 @@ static bool nm_message_has_tag(notmuch_message_t *msg, char *tag)
        notmuch_tags_move_to_next(tags))
   {
     possible_match_tag = notmuch_tags_get(tags);
-    if (mutt_strncmp(possible_match_tag, tag, mutt_strlen(tag)) == 0)
+    if (mutt_strcmp(possible_match_tag, tag) == 0)
     {
       return true;
     }
