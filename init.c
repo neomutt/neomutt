@@ -2671,28 +2671,35 @@ static int source_rc (const char *rcfile_path, BUFFER *err)
 
   strncpy(rcfile, rcfile_path, PATH_MAX);
 
-  if (!to_absolute_path(rcfile, mutt_front_heap(MuttrcHeap)))
-  {
-    mutt_error("Error: impossible to build path of '%s'.", rcfile_path);
-    return (-1);
-  }
-
   dprint(2, (debugfile, "Reading configuration file '%s'.\n", rcfile));
-
-  if (!MuttrcHeap || mutt_find_heap(MuttrcHeap, rcfile) == NULL)
-  {
-    mutt_push_heap(&MuttrcHeap, rcfile);
-  }
-  else
-  {
-    mutt_error("Error: Cyclic sourcing of configuration file '%s'.", rcfile);
-    return (-1);
-  }
 
   if ((f = mutt_open_read (rcfile, &pid)) == NULL)
   {
     snprintf (err->data, err->dsize, "%s: %s", rcfile, strerror (errno));
     return (-1);
+  }
+
+  /* Avoid cyclic sourcing checks on pipes */
+  if (pid == -1)
+  {
+    if (!to_absolute_path(rcfile, mutt_front_heap(MuttrcHeap)))
+    {
+      mutt_error("Error: impossible to build path of '%s'.", rcfile_path);
+      safe_fclose (&f);
+      return (-1);
+    }
+
+
+    if (!MuttrcHeap || mutt_find_heap(MuttrcHeap, rcfile) == NULL)
+    {
+      mutt_push_heap(&MuttrcHeap, rcfile);
+    }
+    else
+    {
+      mutt_error("Error: Cyclic sourcing of configuration file '%s'.", rcfile);
+      safe_fclose (&f);
+      return (-1);
+    }
   }
 
   mutt_buffer_init (&token);
