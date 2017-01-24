@@ -986,7 +986,7 @@ int mutt_parse_rfc822_line (ENVELOPE *e, HEADER *hdr, char *line, char *p, short
   if (lastp)
     last = *lastp;
   
-  switch (ascii_tolower (line[0]))
+  switch (tolower (line[0]))
   {
     case 'a':
     if (ascii_strcasecmp (line+1, "pparently-to") == 0)

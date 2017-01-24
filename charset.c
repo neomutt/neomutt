@@ -281,7 +281,7 @@ void mutt_canonical_charset (char *dest, size_t dlen, const char *name)
 
   /* for cosmetics' sake, transform to lowercase. */
   for (p = dest; *p; p++)
-    *p = ascii_tolower (*p);
+    *p = tolower (*p);
 
 out:
   if (ext && *ext)

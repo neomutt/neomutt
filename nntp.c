@@ -338,7 +338,7 @@ static int nntp_auth (NNTP_SERVER *nserv)
     p = authenticators;
     while (*p)
     {
-      *p = ascii_toupper (*p);
+      *p = toupper (*p);
       p++;
     }
 

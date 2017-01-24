@@ -92,7 +92,7 @@ url_scheme_t url_check_scheme (const char *s)
 
   strfcpy (sbuf, s, t - s + 1);
   for (t = sbuf; *t; t++)
-    *t = ascii_tolower (*t);
+    *t = tolower (*t);
 
   if ((i = mutt_getvaluebyname (sbuf, UrlMap)) == -1)
     return U_UNKNOWN;

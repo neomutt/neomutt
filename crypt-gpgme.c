@@ -2774,7 +2774,7 @@ static const char *crypt_entry_fmt (char *dest,
   kflags = (key->flags /*| (pkey->flags & KEYFLAG_RESTRICTIONS)
                          | uid->flags*/);
   
-  switch (ascii_tolower (op))
+  switch (tolower (op))
     {
     case '[':
       {
