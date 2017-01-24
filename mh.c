@@ -888,7 +888,7 @@ static int maildir_parse_dir (CONTEXT * ctx, struct maildir ***last,
   if (SigInt == 1)
   {
     SigInt = 0;
-    return -2;
+    return -2; /* action aborted */
   }
 
   return 0;

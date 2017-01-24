@@ -226,7 +226,7 @@ int mmdf_parse_mailbox (CONTEXT *ctx)
   if (SigInt == 1)
   {
       SigInt = 0;
-      return -2;
+      return -2; /* action aborted */
   }
 
   return 0;
@@ -282,7 +282,7 @@ int mbox_parse_mailbox (CONTEXT *ctx)
   }
 
   loc = ftello (ctx->fp);
-  while ((fgets (buf, sizeof (buf), ctx->fp) != NULL) && (SigInt != 0))
+  while ((fgets (buf, sizeof (buf), ctx->fp) != NULL) && (SigInt != 1))
   {
     if (is_from (buf, return_path, sizeof (return_path), &t))
     {
@@ -420,7 +420,7 @@ int mbox_parse_mailbox (CONTEXT *ctx)
   if (SigInt == 1)
   {
     SigInt = 0;
-    return -2;
+    return -2; /* action aborted */
   }
 
   return 0;
