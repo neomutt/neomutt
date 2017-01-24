@@ -2666,28 +2666,34 @@ static int source_rc (const char *rcfile_path, BUFFER *err)
   char *currentline = NULL;
   char rcfile[PATH_MAX];
   size_t buflen;
+  size_t rcfilelen;
 
   pid_t pid;
 
   strncpy(rcfile, rcfile_path, PATH_MAX);
 
-  if (!to_absolute_path(rcfile, mutt_front_heap(MuttrcHeap)))
+  rcfilelen = mutt_strlen(rcfile);
+
+  if (rcfile[rcfilelen-1] != '|')
   {
-    mutt_error("Error: impossible to build path of '%s'.", rcfile_path);
-    return (-1);
+      if (!to_absolute_path(rcfile, mutt_front_heap(MuttrcHeap)))
+      {
+        mutt_error("Error: impossible to build path of '%s'.", rcfile_path);
+        return (-1);
+      }
+
+      if (!MuttrcHeap || mutt_find_heap(MuttrcHeap, rcfile) == NULL)
+      {
+        mutt_push_heap(&MuttrcHeap, rcfile);
+      }
+      else
+      {
+        mutt_error("Error: Cyclic sourcing of configuration file '%s'.", rcfile);
+        return (-1);
+      }
   }
 
   dprint(2, (debugfile, "Reading configuration file '%s'.\n", rcfile));
-
-  if (!MuttrcHeap || mutt_find_heap(MuttrcHeap, rcfile) == NULL)
-  {
-    mutt_push_heap(&MuttrcHeap, rcfile);
-  }
-  else
-  {
-    mutt_error("Error: Cyclic sourcing of configuration file '%s'.", rcfile);
-    return (-1);
-  }
 
   if ((f = mutt_open_read (rcfile, &pid)) == NULL)
   {
