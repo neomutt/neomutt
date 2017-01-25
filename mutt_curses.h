@@ -257,28 +257,4 @@ void ci_start_color (void);
 
 #define MAYBE_REDRAW(x) if (option (OPTNEEDREDRAW)) { unset_option (OPTNEEDREDRAW); x = REDRAW_FULL; }
 
-/* ----------------------------------------------------------------------------
- * These are here to avoid compiler warnings with -Wall under SunOS 4.1.x
- */
-
-#if !defined(STDC_HEADERS) && !defined(NCURSES_VERSION) && !defined(USE_SLANG_CURSES)
-extern int endwin();
-extern int printw();
-extern int beep();
-extern int isendwin();
-extern int w32addch();
-extern int keypad();
-extern int wclrtobot();
-extern int mvprintw();
-extern int getcurx();
-extern int getcury();
-extern int noecho();
-extern int wdelch();
-extern int wrefresh();
-extern int wmove();
-extern int wclear();
-extern int waddstr();
-extern int wclrtoeol();
-#endif
-
 #endif /* _MUTT_CURSES_H_ */

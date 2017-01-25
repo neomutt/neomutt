@@ -144,7 +144,7 @@ static int parse_fkey(char *s)
   char *t;
   int n = 0;
 
-  if(s[0] != '<' || ascii_tolower(s[1]) != 'f')
+  if(s[0] != '<' || tolower(s[1]) != 'f')
     return -1;
 
   for(t = s + 2; *t && isdigit((unsigned char) *t); t++)
