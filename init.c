@@ -2632,15 +2632,15 @@ static int to_absolute_path(char *path, const char *reference)
     return true;
   }
 
-  ref_tmp = strdup(reference);
+  ref_tmp = safe_strdup(reference);
   dirpath = dirname(ref_tmp); // get directory name of
   strncpy(abs_path, dirpath, PATH_MAX);
-  strncat(abs_path, "/", PATH_MAX - 1); // append a / at the end of the path
+  safe_strncat(abs_path, sizeof(abs_path), "/", 1); // append a / at the end of the path
 
-  free(ref_tmp);
+  FREE(&ref_tmp);
   path_len = PATH_MAX - strlen(path);
 
-  strncat(abs_path, path, path_len > 0 ? path_len : 0);
+  safe_strncat(abs_path, sizeof(abs_path), path, path_len > 0 ? path_len : 0);
 
   path = realpath(abs_path, path);
 

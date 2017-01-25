@@ -298,8 +298,8 @@ int mutt_pop_heap(HEAP **head)
   if (!elt)
     return 0;
   *head = elt->next;
-  free(elt->data);
-  free(elt);
+  FREE(&elt->data);
+  FREE(&elt);
   return 1;
 }
 
