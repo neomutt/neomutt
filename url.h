@@ -1,6 +1,8 @@
 #ifndef _URL_H
 # define _URL_H
 
+#include "mutt.h"
+
 typedef enum url_scheme
 {
   U_FILE,

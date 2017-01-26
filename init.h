@@ -25,6 +25,7 @@
 #endif
 
 #include "buffy.h"
+#include "mx.h"
 
 #ifndef _MAKEDOC
 #define DT_MASK		0x0f

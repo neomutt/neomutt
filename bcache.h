@@ -19,6 +19,8 @@
 #ifndef _BCACHE_H_
 #define _BCACHE_H_ 1
 
+#include "account.h"
+
 /*
  * support for body cache
  */

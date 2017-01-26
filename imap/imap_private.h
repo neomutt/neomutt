@@ -20,6 +20,7 @@
 #ifndef _IMAP_PRIVATE_H
 #define _IMAP_PRIVATE_H 1
 
+#include "account.h"
 #include "imap.h"
 #include "mutt_curses.h"
 #include "mutt_socket.h"
