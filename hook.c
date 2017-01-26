@@ -1,4 +1,4 @@
-/* 
+/*
  * Copyright (C) 1996-2002,2004,2007 Michael R. Elkins <me@mutt.org>, and others
  *
  *     This program is free software; you can redistribute it and/or modify
@@ -76,10 +76,6 @@ int mutt_parse_hook (BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err)
        goto error;
     }
   }
-  else
-  {
-    mutt_extract_token (&pattern, s, 0);
-  }
 
   mutt_extract_token (&command, s, (data & (MUTT_FOLDERHOOK | MUTT_SENDHOOK | MUTT_SEND2HOOK | MUTT_ACCOUNTHOOK | MUTT_REPLYHOOK)) ?  MUTT_TOKEN_SPACE : 0);
 
@@ -128,7 +124,8 @@ int mutt_parse_hook (BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err)
     }
   }
 #endif
-  else if (DefaultHook && !(data & (MUTT_CHARSETHOOK | MUTT_ICONVHOOK | MUTT_ACCOUNTHOOK))
+  else if (DefaultHook && (~data & MUTT_GLOBALHOOK) &&
+           !(data & (MUTT_CHARSETHOOK | MUTT_ICONVHOOK | MUTT_ACCOUNTHOOK))
            && (!WithCrypto || !(data & MUTT_CRYPTHOOK))
       )
   {
@@ -157,7 +154,16 @@ int mutt_parse_hook (BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err)
   /* check to make sure that a matching hook doesn't already exist */
   for (ptr = Hooks; ptr; ptr = ptr->next)
   {
-    if (ptr->type == data &&
+    if (data & MUTT_GLOBALHOOK)
+    {
+      /* Ignore duplicate global hooks */
+      if (!mutt_strcmp (ptr->command, command.data))
+      {
+        FREE (&command.data);
+        return 0;
+      }
+    }
+    else if (ptr->type == data &&
 	ptr->rx.not == not &&
 	!mutt_strcmp (pattern.data, ptr->rx.pattern))
     {
@@ -197,7 +203,7 @@ int mutt_parse_hook (BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err)
 				  err)) == NULL)
       goto error;
   }
-  else
+  else if (~data & MUTT_GLOBALHOOK)
   {
     /* Hooks not allowing full patterns: Check syntax of regexp */
     rx = safe_malloc (sizeof (regex_t));
@@ -229,7 +235,8 @@ int mutt_parse_hook (BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err)
   return 0;
 
 error:
-  FREE (&pattern.data);
+  if (~data & MUTT_GLOBALHOOK)
+    FREE (&pattern.data);
   FREE (&command.data);
   return (-1);
 }
@@ -346,7 +353,7 @@ void mutt_folder_hook (char *path)
   }
   FREE (&token.data);
   FREE (&err.data);
-  
+
   current_hook_type = 0;
 }
 
