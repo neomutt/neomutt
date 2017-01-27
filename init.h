@@ -806,7 +806,7 @@ struct option_t MuttVars[] = {
   { "empty_subject",    DT_STR, R_NONE, UL &EmptySubject, UL "Re: your mail" },
   /*
   ** .pp
-  ** This varaible specifies the subject to be used when replying to an email
+  ** This variable specifies the subject to be used when replying to an email
   ** with an empty subject.  It defaults to "Re: your mail".
   */
   { "encode_from",	DT_BOOL, R_NONE, OPTENCODEFROM, 0 },
