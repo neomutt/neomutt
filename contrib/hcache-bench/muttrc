@@ -1,0 +1,7 @@
+set read_inc=0
+set write_inc=0
+set folder=$my_maildir
+set spoolfile=$my_maildir
+set header_cache_backend=$my_backend
+set header_cache=$my_tmpdir/hcache-$my_backend
+folder-hook . exec exit
