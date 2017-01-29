@@ -172,7 +172,7 @@ int int_hash_insert (HASH * table, unsigned int intkey, void *data, int allow_du
   return union_hash_insert (table, key, data, allow_dup);
 }
 
-static void *union_hash_find (const HASH *table, union hash_key key)
+static struct hash_elem *union_hash_find_elem (const HASH *table, union hash_key key)
 {
   int hash;
   struct hash_elem *ptr;
@@ -185,9 +185,18 @@ static void *union_hash_find (const HASH *table, union hash_key key)
   for (; ptr; ptr = ptr->next)
   {
     if (table->cmp_key (key, ptr->key) == 0)
-      return (ptr->data);
+      return (ptr);
   }
   return NULL;
+}
+
+static void *union_hash_find (const HASH *table, union hash_key key)
+{
+  struct hash_elem *ptr = union_hash_find_elem (table, key);
+  if (ptr)
+    return ptr->data;
+  else
+    return NULL;
 }
 
 void *hash_find (const HASH *table, const char *strkey)
@@ -195,6 +204,13 @@ void *hash_find (const HASH *table, const char *strkey)
   union hash_key key;
   key.strkey = strkey;
   return union_hash_find (table, key);
+}
+
+struct hash_elem *hash_find_elem (const HASH *table, const char *strkey)
+{
+  union hash_key key;
+  key.strkey = strkey;
+  return union_hash_find_elem (table, key);
 }
 
 void *int_hash_find (const HASH *table, unsigned int intkey)

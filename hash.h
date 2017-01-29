@@ -53,6 +53,7 @@ int hash_insert (HASH * table, const char *key, void *data, int allow_dup);
 int int_hash_insert (HASH *table, unsigned int key, void *data, int allow_dup);
 
 void *hash_find (const HASH *table, const char *key);
+struct hash_elem *hash_find_elem (const HASH *table, const char *strkey);
 void *int_hash_find (const HASH *table, unsigned int key);
 
 struct hash_elem *hash_find_bucket (const HASH *table, const char *key);
