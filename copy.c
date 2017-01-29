@@ -112,6 +112,10 @@ mutt_copy_hdr (FILE *in, FILE *out, LOFF_T off_start, LOFF_T off_end, int flags,
 	if ((flags & CH_UPDATE_IRT) &&
 	    ascii_strncasecmp ("In-Reply-To:", buf, 12) == 0)
 	  continue;
+	if (flags & CH_UPDATE_LABEL &&
+	    ascii_strncasecmp ("X-Label:", buf, 8) == 0)
+	  continue;
+
 	ignore = 0;
       }
 
@@ -123,10 +127,6 @@ mutt_copy_hdr (FILE *in, FILE *out, LOFF_T off_start, LOFF_T off_end, int flags,
 	    (mutt_strncasecmp ("Keywords:", buf, 9) == 0))
 	  continue;
       }
-
-      if (flags & CH_UPDATE_LABEL &&
-	  ascii_strncasecmp ("X-Label:", buf, 8) == 0)
-	continue;
 
       if (!ignore && fputs (buf, out) == EOF)
 	return (-1);
