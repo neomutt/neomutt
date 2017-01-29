@@ -212,6 +212,31 @@ void mutt_edit_headers (const char *editor,
   }
 }
 
+static void label_ref_dec(char *label)
+{
+  uintptr_t count;
+
+  count = (uintptr_t)hash_find(Labels, label);
+  if (count)
+  {
+    hash_delete(Labels, label, NULL, NULL);
+    count--;
+    if (count > 0)
+      hash_insert(Labels, label, (void *)count, 0);
+  }
+}
+
+static void label_ref_inc(char *label)
+{
+  uintptr_t count;
+
+  count = (uintptr_t)hash_find(Labels, label);
+  if (count)
+    hash_delete(Labels, label, NULL, NULL);
+  count++;  /* was zero if not found */
+  hash_insert(Labels, label, (void *)count, 0);
+}
+
 /*
  * add an X-Label: field.
  */
@@ -221,7 +246,11 @@ static int label_message(HEADER *hdr, char *new)
     return 0;
   if (mutt_strcmp (hdr->env->x_label, new) == 0)
     return 0;
+  if (hdr->env->x_label != NULL)
+    label_ref_dec(hdr->env->x_label);
   mutt_str_replace (&hdr->env->x_label, new);
+  if (hdr->env->x_label != NULL)
+    label_ref_inc(hdr->env->x_label);
   return hdr->changed = hdr->xlabel_changed = 1;
 }
 
@@ -236,7 +265,7 @@ int mutt_label_message(HEADER *hdr)
     strncpy(buf, hdr->env->x_label, LONG_STRING);
   }
 
-  if (mutt_get_field("Label: ", buf, sizeof(buf), 0 /* | MUTT_CLEAR */) != 0)
+  if (mutt_get_field("Label: ", buf, sizeof(buf), MUTT_LABEL /* | MUTT_CLEAR */) != 0)
     return 0;
 
   new = buf;
@@ -261,3 +290,14 @@ int mutt_label_message(HEADER *hdr)
 
   return changed;
 }
+
+/* scan a context (mailbox) and hash all labels we find */
+void mutt_scan_labels(CONTEXT *ctx)
+{
+  int i;
+
+  for (i = 0; i < ctx->msgcount; i++)
+    if (ctx->hdrs[i]->env->x_label)
+      label_ref_inc(ctx->hdrs[i]->env->x_label);
+}
+

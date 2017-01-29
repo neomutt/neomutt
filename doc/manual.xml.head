@@ -548,7 +548,7 @@ descriptions.
 <row><entry>^E or &lt;End&gt;</entry><entry><literal>&lt;eol&gt;</literal></entry><entry>move to the end of the line</entry></row>
 <row><entry>^F or &lt;Right&gt;</entry><entry><literal>&lt;forward-char&gt;</literal></entry><entry>move forward one char</entry></row>
 <row><entry>Esc F</entry><entry><literal>&lt;forward-word&gt;</literal></entry><entry>move forward one word</entry></row>
-<row><entry>&lt;Tab&gt;</entry><entry><literal>&lt;complete&gt;</literal></entry><entry>complete filename or alias</entry></row>
+<row><entry>&lt;Tab&gt;</entry><entry><literal>&lt;complete&gt;</literal></entry><entry>complete filename, alias, or label</entry></row>
 <row><entry>^T</entry><entry><literal>&lt;complete-query&gt;</literal></entry><entry>complete address with query</entry></row>
 <row><entry>^K</entry><entry><literal>&lt;kill-eol&gt;</literal></entry><entry>delete to the end of the line</entry></row>
 <row><entry>Esc d</entry><entry><literal>&lt;kill-eow&gt;</literal></entry><entry>delete to the end of the word</entry></row>
@@ -6067,6 +6067,9 @@ procmail and other mail filtering agents.
 You can change or delete the <quote>X-Label:</quote> field within
 Mutt using the <quote>edit-label</quote> command, bound to the
 <quote>y</quote> key by default.  This works for tagged messages, too.
+While in the edit-label function, pressing the &lt;complete&gt;
+binding (TAB, by default) will perform completion against all labels
+currently in use.
 </para>
 
 <para>
