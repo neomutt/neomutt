@@ -2,9 +2,6 @@
 # Source: https://github.com/h3xx/mutt-colors-neonwolf/blob/master/mutt-colors-neonwolf-256.muttrc
 # Based mostly on the colors from the badwolf airline theme
 
-# make sure that you are using mutt linked against slang, not ncurses, or
-# suffer the consequences of weird color issues. use "mutt -v" to check this.
-
 # custom body highlights -----------------------------------------------
 
 # custom index highlights ----------------------------------------------
