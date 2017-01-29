@@ -4148,6 +4148,9 @@ int mutt_label_complete (char *buffer, size_t len, int pos, int numtabs)
   char *pt = buffer;
   int spaces; /* keep track of the number of leading spaces on the line */
 
+  if (!Context || !Context->label_hash)
+    return 0;
+
   SKIPWS (buffer);
   spaces = buffer - pt;
 
@@ -4166,7 +4169,7 @@ int mutt_label_complete (char *buffer, size_t len, int pos, int numtabs)
     memset (Matches, 0, Matches_listsize);
     memset (Completed, 0, sizeof (Completed));
     memset (&state, 0, sizeof(state));
-    while ((entry = hash_walk(Labels, &state)))
+    while ((entry = hash_walk(Context->label_hash, &state)))
       candidate (Completed, User_typed, entry->key.strkey, sizeof (Completed));
     matches_ensure_morespace (Num_matched);
     qsort(Matches, Num_matched, sizeof(char *), (sort_t *) mutt_strcasecmp);

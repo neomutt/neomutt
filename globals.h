@@ -180,7 +180,6 @@ WHERE char *LastFolder;
 WHERE const char *GitVer;
 
 WHERE HASH *Groups;
-WHERE HASH *Labels;
 WHERE HASH *ReverseAlias;
 #ifdef USE_NOTMUCH
 WHERE HASH *TagTransforms;

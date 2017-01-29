@@ -754,9 +754,6 @@ static int main_change_folder(MUTTMENU *menu, int op, char *buf, size_t bufsz,
     FREE (&Context);
   }
 
-  if (Labels)
-    hash_destroy(&Labels, NULL);
-
   mutt_sleep (0);
 
   /* Set CurrentMenu to MENU_MAIN before executing any folder
@@ -771,7 +768,6 @@ static int main_change_folder(MUTTMENU *menu, int op, char *buf, size_t bufsz,
 		(option (OPTREADONLY) || op == OP_MAIN_CHANGE_FOLDER_READONLY) ?
 		MUTT_READONLY : 0, NULL)) != NULL)
   {
-    Labels = hash_create(131, 0);
     menu->current = ci_first_message ();
   }
   else

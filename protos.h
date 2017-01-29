@@ -200,7 +200,6 @@ int mutt_label_message (HEADER *);
 void mutt_make_label_hash (CONTEXT *);
 void mutt_label_hash_add (CONTEXT *ctx, HEADER *hdr);
 void mutt_label_hash_remove (CONTEXT *ctx, HEADER *hdr);
-void mutt_scan_labels (CONTEXT *);
 int mutt_label_complete (char *, size_t, int, int);
 void mutt_curses_error (const char *, ...);
 void mutt_curses_message (const char *, ...);

@@ -674,7 +674,9 @@ CONTEXT *mx_open_mailbox (const char *path, int flags, CONTEXT *pctx)
       FREE (&ctx);
     return (NULL);
   }
-  
+
+  mutt_make_label_hash (ctx);
+
   /* if the user has a `push' command in their .muttrc, or in a folder-hook,
    * it will cause the progress messages not to be displayed because
    * mutt_refresh() will think we are in the middle of a macro.  so set a
@@ -745,6 +747,7 @@ void mx_fastclose_mailbox (CONTEXT *ctx)
     hash_destroy (&ctx->subj_hash, NULL);
   if (ctx->id_hash)
     hash_destroy (&ctx->id_hash, NULL);
+  hash_destroy (&ctx->label_hash, NULL);
   mutt_clear_threads (ctx);
   for (i = 0; i < ctx->msgcount; i++)
     mutt_free_header (&ctx->hdrs[i]);
@@ -1164,6 +1167,7 @@ void mx_update_tables(CONTEXT *ctx, int committing)
 	hash_delete (ctx->subj_hash, ctx->hdrs[i]->env->real_subj, ctx->hdrs[i], NULL);
       if (ctx->id_hash && ctx->hdrs[i]->env->message_id)
 	hash_delete (ctx->id_hash, ctx->hdrs[i]->env->message_id, ctx->hdrs[i], NULL);
+      mutt_label_hash_remove (ctx, ctx->hdrs[i]);
       /* The path mx_check_mailbox() -> imap_check_mailbox() ->
        *          imap_expunge_mailbox() -> mx_update_tables()
        * can occur before a call to mx_sync_mailbox(), resulting in
@@ -1517,6 +1521,7 @@ void mx_update_context (CONTEXT *ctx, int new_messages)
       hash_insert (ctx->id_hash, h->env->message_id, h, 0);
     if (ctx->subj_hash && h->env->real_subj)
       hash_insert (ctx->subj_hash, h->env->real_subj, h, 1);
+    mutt_label_hash_add (ctx, h);
 
     if (option (OPTSCORE)) 
       mutt_score_message (ctx, h, 0);
