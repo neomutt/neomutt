@@ -2101,9 +2101,14 @@ int mutt_index_menu (void)
 	if (rc > 0) {
 	  Context->changed = 1;
 	  menu->redraw = REDRAW_FULL;
-	  mutt_message ("%d label%s changed.", rc, rc == 1 ? "" : "s");
+          /* L10N: This is displayed when the x-label on one or more
+           * messages is edited. */
+	  mutt_message (_("%d labels changed."), rc);
 	}
 	else {
+          /* L10N: This is displayed when editing an x-label, but no messages
+           * were updated.  Possibly due to canceling at the prompt or if the new
+           * label is the same as the old label. */
 	  mutt_message _("No labels changed.");
 	}
 	break;

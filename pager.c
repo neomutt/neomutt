@@ -2820,7 +2820,7 @@ search_next:
         if (rc > 0) {
           Context->changed = 1;
           redraw = REDRAW_FULL;
-          mutt_message ("%d label%s changed.", rc, rc == 1 ? "" : "s");
+          mutt_message (_("%d labels changed."), rc);
         }
         else {
           mutt_message _("No labels changed.");

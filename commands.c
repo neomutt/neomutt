@@ -533,6 +533,10 @@ int mutt_select_sort (int reverse)
   int method = Sort; /* save the current method in case of abort */
 
   switch (mutt_multi_choice (reverse ?
+       /* L10N: The following three are the sort/reverse sort prompts.
+        * Capital letters must match the order of the characters in the third
+        * string.
+        */
 			     _("Rev-Sort Date/Frm/Recv/Subj/tO/Thread/Unsort/siZe/sCore/sPam/Label?: ") :
 			     _("Sort Date/Frm/Recv/Subj/tO/Thread/Unsort/siZe/sCore/sPam/Label?: "),
 			     _("dfrsotuzcpl")))
