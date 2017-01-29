@@ -125,7 +125,7 @@ mutt_copy_hdr (FILE *in, FILE *out, LOFF_T off_start, LOFF_T off_end, int flags,
       }
 
       if (flags & CH_UPDATE_LABEL &&
-	  mutt_strncasecmp ("X-Label:", buf, 8) == 0)
+	  ascii_strncasecmp ("X-Label:", buf, 8) == 0)
 	continue;
 
       if (!ignore && fputs (buf, out) == EOF)
@@ -455,7 +455,7 @@ mutt_copy_header (FILE *in, HEADER *h, FILE *out, int flags, const char *prefix)
   }
 #endif
 
-  if (flags & CH_UPDATE_LABEL && h->xlabel_changed)
+  if (flags & CH_UPDATE_LABEL)
   {
     h->xlabel_changed = 0;
     if (h->env->x_label != NULL)

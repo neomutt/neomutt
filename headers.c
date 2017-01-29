@@ -222,17 +222,9 @@ static int label_message(HEADER *hdr, char *new)
 {
   if (hdr == NULL)
     return 0;
-  if (hdr->env->x_label == NULL && new == NULL)
+  if (mutt_strcmp (hdr->env->x_label, new) == 0)
     return 0;
-  if (hdr->env->x_label != NULL && new != NULL &&
-      strcmp(hdr->env->x_label, new) == 0)
-    return 0;
-  if (hdr->env->x_label != NULL)
-    FREE(&hdr->env->x_label);
-  if (new == NULL)
-    hdr->env->x_label = NULL;
-  else
-    hdr->env->x_label = safe_strdup(new);
+  mutt_str_replace (&hdr->env->x_label, new);
   return hdr->changed = hdr->xlabel_changed = 1;
 }
 
