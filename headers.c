@@ -211,3 +211,61 @@ void mutt_edit_headers (const char *editor,
     }
   }
 }
+
+/*
+ * add an X-Label: field.
+ */
+static int label_message(HEADER *hdr, char *new)
+{
+  if (hdr == NULL)
+    return 0;
+  if (hdr->env->x_label == NULL && new == NULL)
+    return 0;
+  if (hdr->env->x_label != NULL && new != NULL &&
+      strcmp(hdr->env->x_label, new) == 0)
+    return 0;
+  if (hdr->env->x_label != NULL)
+    FREE(&hdr->env->x_label);
+  if (new == NULL)
+    hdr->env->x_label = NULL;
+  else
+    hdr->env->x_label = safe_strdup(new);
+  return hdr->changed = hdr->xlabel_changed = 1;
+}
+
+int mutt_label_message(HEADER *hdr)
+{
+  char buf[LONG_STRING], *new;
+  int i;
+  int changed;
+
+  *buf = '\0';
+  if (hdr != NULL && hdr->env->x_label != NULL) {
+    strncpy(buf, hdr->env->x_label, LONG_STRING);
+  }
+
+  if (mutt_get_field("Label: ", buf, sizeof(buf), 0 /* | MUTT_CLEAR */) != 0)
+    return 0;
+
+  new = buf;
+  SKIPWS(new);
+  if (*new == '\0')
+    new = NULL;
+
+  changed = 0;
+  if (hdr != NULL) {
+    changed += label_message(hdr, new);
+  } else {
+#define HDR_OF(index) Context->hdrs[Context->v2r[(index)]]
+    for (i = 0; i < Context->vcount; ++i) {
+      if (HDR_OF(i)->tagged)
+        if (label_message(HDR_OF(i), new)) {
+          ++changed;
+          mutt_set_flag(Context, HDR_OF(i),
+            MUTT_TAG, 0);
+        }
+    }
+  }
+
+  return changed;
+}

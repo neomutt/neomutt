@@ -6064,6 +6064,12 @@ procmail and other mail filtering agents.
 </para>
 
 <para>
+You can change or delete the <quote>X-Label:</quote> field within
+Mutt using the <quote>edit-label</quote> command, bound to the
+<quote>y</quote> key by default.  This works for tagged messages, too.
+</para>
+
+<para>
 Lastly, Mutt has the ability to <link linkend="sort">sort</link> the
 mailbox into <link linkend="threads">threads</link>.  A thread is a
 group of messages which all relate to the same subject.  This is usually

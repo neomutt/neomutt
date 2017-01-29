@@ -111,6 +111,10 @@ mutt_copy_hdr (FILE *in, FILE *out, LOFF_T off_start, LOFF_T off_end, int flags,
 	ignore = 0;
       }
 
+      if (flags & CH_UPDATE_LABEL &&
+	  mutt_strncasecmp ("X-Label:", buf, 8) == 0)
+	continue;
+
       if (!ignore && fputs (buf, out) == EOF)
 	return (-1);
     }
@@ -414,6 +418,15 @@ mutt_copy_header (FILE *in, HEADER *h, FILE *out, int flags, const char *prefix)
       fprintf (out, "Lines: %d\n", h->lines);
   }
 
+  if (flags & CH_UPDATE_LABEL && h->xlabel_changed)
+  {
+    h->xlabel_changed = 0;
+    if (h->env->x_label != NULL)
+      if (fprintf(out, "X-Label: %s\n", h->env->x_label) !=
+		  10 + strlen(h->env->x_label))
+        return -1;
+  }
+
   if ((flags & CH_NONEWLINE) == 0)
   {
     if (flags & CH_PREFIX)
@@ -493,6 +506,9 @@ _mutt_copy_message (FILE *fpout, FILE *fpin, HEADER *hdr, BODY *body,
     else
       _mutt_make_string (prefix, sizeof (prefix), NONULL (Prefix), Context, hdr, 0);
   }
+
+  if (hdr->xlabel_changed)
+    chflags |= CH_UPDATE_LABEL;
 
   if ((flags & MUTT_CM_NOHEADER) == 0)
   {

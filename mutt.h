@@ -760,6 +760,7 @@ typedef struct header
 					 * This flag is used by the maildir_trash
 					 * option.
 					 */
+  unsigned int xlabel_changed : 1;	/* editable - used for syncing */
   
   /* timezone of the sender of this message */
   unsigned int zhours : 5;
