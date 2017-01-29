@@ -895,15 +895,16 @@ int main (int argc, char **argv, char **environ)
     if((Context = mx_open_mailbox (folder, ((flags & MUTT_RO) || option (OPTREADONLY)) ? MUTT_READONLY : 0, NULL))
        || !explicit_folder)
     {
+      Labels = hash_create (131, 0);
+      mutt_scan_labels(Context);
 #ifdef USE_SIDEBAR
       mutt_sb_set_open_buffy ();
 #endif
-      Labels = hash_create (131, 0);
       mutt_index_menu ();
       if (Context)
 	FREE (&Context);
       if (Labels)
-        hash_destroy(&Labels, NULL);
+	hash_destroy(&Labels, NULL);
     }
 #ifdef USE_IMAP
     imap_logout_all ();

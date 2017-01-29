@@ -6989,6 +6989,9 @@ field.  When set to <emphasis>yes</emphasis>, the
 You can change or delete the <quote>X-Label:</quote> field within
 Mutt using the <quote>edit-label</quote> command, bound to the
 <quote>y</quote> key by default.  This works for tagged messages, too.
+While in the edit-label function, pressing the &lt;complete&gt;
+binding (TAB, by default) will perform completion against all labels
+currently in use.
 </para>
 
 <para>
