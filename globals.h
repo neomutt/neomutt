@@ -162,7 +162,6 @@ WHERE char *LastFolder;
 WHERE const char *ReleaseDate;
 
 WHERE HASH *Groups;
-WHERE HASH *Labels;
 WHERE HASH *ReverseAlias;
 
 WHERE LIST *AutoViewList INITVAL(0);

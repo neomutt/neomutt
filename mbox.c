@@ -1198,6 +1198,7 @@ int mutt_reopen_mailbox (CONTEXT *ctx, int *index_hint)
     hash_destroy (&ctx->id_hash, NULL);
   if (ctx->subj_hash)
     hash_destroy (&ctx->subj_hash, NULL);
+  hash_destroy (&ctx->label_hash, NULL);
   mutt_clear_threads (ctx);
   FREE (&ctx->v2r);
   if (ctx->readonly)
@@ -1225,6 +1226,7 @@ int mutt_reopen_mailbox (CONTEXT *ctx, int *index_hint)
   ctx->changed = 0;
   ctx->id_hash = NULL;
   ctx->subj_hash = NULL;
+  mutt_make_label_hash (ctx);
 
   switch (ctx->magic)
   {

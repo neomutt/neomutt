@@ -1268,9 +1268,6 @@ int mutt_index_menu (void)
 	  FREE (&Context);
 	}
 
-        if (Labels)
-          hash_destroy(&Labels, NULL);
-
         mutt_sleep (0);
 
 	/* Set CurrentMenu to MENU_MAIN before executing any folder
@@ -1285,8 +1282,6 @@ int mutt_index_menu (void)
 					(option (OPTREADONLY) || op == OP_MAIN_CHANGE_FOLDER_READONLY) ?
 					MUTT_READONLY : 0, NULL)) != NULL)
 	{
-	  Labels = hash_create(131, 0);
-	  mutt_scan_labels(Context);
 	  menu->current = ci_first_message ();
 	}
 	else
