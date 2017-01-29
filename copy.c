@@ -124,6 +124,10 @@ mutt_copy_hdr (FILE *in, FILE *out, LOFF_T off_start, LOFF_T off_end, int flags,
 	  continue;
       }
 
+      if (flags & CH_UPDATE_LABEL &&
+	  mutt_strncasecmp ("X-Label:", buf, 8) == 0)
+	continue;
+
       if (!ignore && fputs (buf, out) == EOF)
 	return (-1);
     }
@@ -451,59 +455,13 @@ mutt_copy_header (FILE *in, HEADER *h, FILE *out, int flags, const char *prefix)
   }
 #endif
 
-  if (flags & CH_UPDATE_LABEL && h->label_changed)
+  if (flags & CH_UPDATE_LABEL && h->xlabel_changed)
   {
-    h->label_changed = 0;
-    if (h->env->labels != NULL)
-    {
-      char buf[HUGE_STRING];
-      char *tmp = NULL;
-      int fail = 0;
-
-      if (fail == 0 &&
-          ((h->env->kwtypes & MUTT_X_LABEL) || (h->env->kwtypes == 0)) &&
-          (option(OPTKEYWORDSLEGACY) || option(OPTKEYWORDSSTANDARD) == 0))
-      {
-        mutt_labels(buf, sizeof(buf), h->env, XlabelDelim);
-        tmp = safe_strdup(buf);
-        rfc2047_encode_string(&tmp);
-        fail = fprintf(out, "X-Label: %s\n", tmp) != 10 + strlen(tmp);
-        FREE(&tmp);
-      }
-
-      if (fail == 0 && (h->env->kwtypes & MUTT_X_KEYWORDS) &&
-          (option(OPTKEYWORDSLEGACY) || option(OPTKEYWORDSSTANDARD) == 0))
-      {
-        mutt_labels(buf, sizeof(buf), h->env, " ");
-        tmp = safe_strdup(buf);
-        rfc2047_encode_string(&tmp);
-        fail = fprintf(out, "X-Keywords: %s\n", tmp) != 13 + strlen(tmp);
-        FREE(&tmp);
-      }
-
-      if (fail == 0 && (h->env->kwtypes & MUTT_X_MOZILLA_KEYS) &&
-          (option(OPTKEYWORDSLEGACY) || option(OPTKEYWORDSSTANDARD) == 0))
-      {
-        mutt_labels(buf, sizeof(buf), h->env, " ");
-        tmp = safe_strdup(buf);
-        rfc2047_encode_string(&tmp);
-        fail = fprintf(out, "X-Mozilla-Keys: %s\n", tmp) != 17 + strlen(tmp);
-        FREE(&tmp);
-      }
-
-      if (fail == 0 && ((h->env->kwtypes & MUTT_KEYWORDS) ||
-                        option(OPTKEYWORDSSTANDARD)))
-      {
-        mutt_labels(buf, sizeof(buf), h->env, NULL);
-        tmp = safe_strdup(buf);
-        rfc2047_encode_string(&tmp);
-        fail = fprintf(out, "Keywords: %s\n", tmp) != 11 + strlen(tmp);
-        FREE(&tmp);
-      }
-
-      if (fail)
+    h->xlabel_changed = 0;
+    if (h->env->x_label != NULL)
+      if (fprintf(out, "X-Label: %s\n", h->env->x_label) !=
+		  10 + strlen(h->env->x_label))
         return -1;
-    }
   }
 
   if ((flags & CH_NONEWLINE) == 0)
@@ -586,7 +544,7 @@ _mutt_copy_message (FILE *fpout, FILE *fpin, HEADER *hdr, BODY *body,
       _mutt_make_string (prefix, sizeof (prefix), NONULL (Prefix), Context, hdr, 0);
   }
 
-  if (hdr->label_changed)
+  if (hdr->xlabel_changed)
     chflags |= CH_UPDATE_LABEL;
 
   if ((flags & MUTT_CM_NOHEADER) == 0)

@@ -772,7 +772,6 @@ static int main_change_folder(MUTTMENU *menu, int op, char *buf, size_t bufsz,
 		MUTT_READONLY : 0, NULL)) != NULL)
   {
     Labels = hash_create(131, 0);
-    mutt_scan_labels(Context);
     menu->current = ci_first_message ();
   }
   else
@@ -2844,7 +2843,7 @@ int mutt_index_menu (void)
 	if (rc > 0) {
 	  Context->changed = 1;
 	  menu->redraw = REDRAW_FULL;
-	  mutt_message ("%d label%s changed.", rc, rc == 1 ? "" : "s");
+	  mutt_message (_("%d labels changed."), rc);
 	}
 	else {
 	  mutt_message (_("No labels changed."));

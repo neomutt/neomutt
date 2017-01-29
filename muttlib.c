@@ -823,8 +823,6 @@ void mutt_free_envelope (ENVELOPE **p)
   mutt_free_list (&(*p)->references);
   mutt_free_list (&(*p)->in_reply_to);
   mutt_free_list (&(*p)->userhdrs);
-  mutt_label_ref_dec ((*p));
-  mutt_free_list (&(*p)->labels);
   FREE (p);		/* __FREE_CHECKED__ */
 }
 
@@ -847,7 +845,7 @@ void mutt_merge_envelopes(ENVELOPE* base, ENVELOPE** extra)
   MOVE_ELEM(message_id);
   MOVE_ELEM(supersedes);
   MOVE_ELEM(date);
-  MOVE_ELEM(labels);
+  MOVE_ELEM(x_label);
   MOVE_ELEM(x_original_to);
   if (!base->refs_changed)
   {

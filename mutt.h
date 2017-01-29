@@ -730,7 +730,6 @@ typedef struct envelope
   LIST *references;		/* message references (in reverse order) */
   LIST *in_reply_to;		/* in-reply-to header content */
   LIST *userhdrs;		/* user defined headers */
-  LIST *labels;
   int kwtypes;
 
   unsigned int irt_changed : 1; /* In-Reply-To changed to link/break threads */
@@ -876,7 +875,7 @@ typedef struct header
 					 * This flag is used by the maildir_trash
 					 * option.
 					 */
-  unsigned int label_changed : 1;	/* editable - used for syncing */
+  unsigned int xlabel_changed : 1;	/* editable - used for syncing */
   
   /* timezone of the sender of this message */
   unsigned int zhours : 5;
