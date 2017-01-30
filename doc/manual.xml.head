@@ -12452,7 +12452,7 @@ virtual-mailboxes "My INBOX" "notmuch://?query=tag:inbox"
           <row>
             <entry>index,pager</entry>
             <entry><literal>&lt;modify-labels-then-hide&gt;</literal></entry>
-            <entry>modify labels and then hide message</entry>
+            <entry>modify labels and then hide message by applying the "quasi-deleted" state. Normal redisplay rules apply here, so the user must call &lt;sync-mailbox&gt; for the changes to be displayed</entry>
           </row>
           <row>
             <entry>index,pager</entry>
