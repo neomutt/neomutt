@@ -127,18 +127,18 @@ static char *current_sender = NULL;
  * General helper functions.
  */
 
-/* accomodate for a redraw if needed */
+/* accommodate for a redraw if needed */
 static void
 redraw_if_needed (gpgme_ctx_t ctx)
 {
-#if GPGME_VERSION_NUMBER < 0x010800
+#if (GPGME_VERSION_NUMBER < 0x010800)
   /* gpgme_get_ctx_flag is not available in gpgme < 1.8.0. In this case, stay
    * on the safe side and always redraw. */
   (void)ctx;
   mutt_need_hard_redraw ();
 #else
   const char *s = gpgme_get_ctx_flag (ctx, "redraw");
-  if (s == NULL /* flag not known */ || *s /* flag true */)
+  if ((s == NULL) /* flag not known */ || *s /* flag true */)
   {
     mutt_need_hard_redraw ();
   }
