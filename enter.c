@@ -605,7 +605,6 @@ int _mutt_enter_string (char *buf, size_t buflen, int col,
           }
 	  else if (flags & MUTT_ALIAS && ch == OP_EDITOR_COMPLETE_QUERY)
 	  {
-	    /* invoke the query-menu to get more addresses */
 	    if ((i = state->curpos))
 	    {
 	      for (; i && state->wbuf[i - 1] != ','; i--)
