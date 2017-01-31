@@ -574,7 +574,7 @@ int _mutt_enter_string (char *buf, size_t buflen, int col,
 	    for (; i < state->lastchar && state->wbuf[i] == ' '; i++)
 	      ;
 	    my_wcstombs (buf, buflen, state->wbuf + i, state->curpos - i);
-	    r = mutt_label_complete (buf, buflen, strlen (buf), state->tabs);
+	    r = mutt_label_complete (buf, buflen, state->tabs);
 	    replace_part (state, i, buf);
 	    if (!r)
 	    {
@@ -591,7 +591,7 @@ int _mutt_enter_string (char *buf, size_t buflen, int col,
             {
               i++;
               my_wcstombs (buf, buflen, state->wbuf + i, state->curpos - i);
-              r = mutt_label_complete (buf, buflen, i, state->tabs);
+              r = mutt_label_complete (buf, buflen, state->tabs);
               replace_part (state, i, buf);
               if (!r)
               {
