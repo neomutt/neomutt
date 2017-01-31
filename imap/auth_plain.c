@@ -51,11 +51,11 @@ imap_auth_res_t imap_auth_plain(IMAP_DATA *idata, const char *method)
     rc = imap_cmd_step(idata);
   while (rc == IMAP_CMD_CONTINUE);
   
-  if (rc == -1)
+  if (rc == IMAP_CMD_BAD)
   {
     res = IMAP_AUTH_UNAVAIL;
   }
-  else if (rc == -2)
+  else if (rc == IMAP_CMD_NO)
   {
     mutt_error _("Login failed.");
     mutt_sleep(2);
