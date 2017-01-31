@@ -2018,7 +2018,9 @@ mutt_pager (const char *banner, const char *fname, int flags, pager_t *extra)
       
     ch = km_dokey (MENU_PAGER);
     if (ch != -1)
+    {
       mutt_clear_error ();
+    }
     mutt_curs_set (1);
 
     int do_new_mail = 0;
@@ -2158,6 +2160,7 @@ mutt_pager (const char *banner, const char *fname, int flags, pager_t *extra)
     else if (ch == -1)
     {
       ch = 0;
+      mutt_timeout_hook();
       continue;
     }
 
