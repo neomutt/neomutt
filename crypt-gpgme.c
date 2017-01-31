@@ -131,9 +131,9 @@ static char *current_sender = NULL;
 static void
 redraw_if_needed (gpgme_ctx_t ctx)
 {
-#if GPGME_VERSION_NUMBER < 0x010801
-  /* The "redraw" flag is not available in gpgme < 1.8.1. In this case, stay on
-   * the safe side and always redraw. */
+#if GPGME_VERSION_NUMBER < 0x010800
+  /* gpgme_get_ctx_flag is not available in gpgme < 1.8.0. In this case, stay
+   * on the safe side and always redraw. */
   (void)ctx;
   mutt_need_hard_redraw ();
 #else
