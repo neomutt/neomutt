@@ -3630,7 +3630,7 @@ static const char* myvar_get (const char* var)
   return NULL;
 }
 
-int mutt_label_complete (char *buffer, size_t len, int pos, int numtabs)
+int mutt_label_complete (char *buffer, size_t len, int numtabs)
 {
   char *pt = buffer;
   int spaces; /* keep track of the number of leading spaces on the line */
@@ -3641,10 +3641,6 @@ int mutt_label_complete (char *buffer, size_t len, int pos, int numtabs)
   SKIPWS (buffer);
   spaces = buffer - pt;
 
-  pt = buffer + pos - spaces;
-  while ((pt > buffer) && !isspace ((unsigned char) *pt))
-    pt--;
-
   /* first TAB. Collect all the matches */
   if (numtabs == 1)
   {
@@ -3652,7 +3648,7 @@ int mutt_label_complete (char *buffer, size_t len, int pos, int numtabs)
     struct hash_walk_state state;
 
     Num_matched = 0;
-    strfcpy (User_typed, pt, sizeof (User_typed));
+    strfcpy (User_typed, buffer, sizeof (User_typed));
     memset (Matches, 0, Matches_listsize);
     memset (Completed, 0, sizeof (Completed));
     memset (&state, 0, sizeof(state));
