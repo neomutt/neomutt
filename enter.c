@@ -587,7 +587,7 @@ int _mutt_enter_string (char *buf, size_t buflen, int col,
           {
             for (i = state->curpos; i && state->wbuf[i-1] != '~'; i--)
               ;
-            if (i && state->wbuf[i-1] == '~' && state->wbuf[i] == 'y')
+            if (i && i < state->curpos && state->wbuf[i-1] == '~' && state->wbuf[i] == 'y')
             {
               i++;
               my_wcstombs (buf, buflen, state->wbuf + i, state->curpos - i);
