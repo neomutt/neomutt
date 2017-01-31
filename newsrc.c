@@ -960,6 +960,7 @@ NNTP_SERVER *nntp_select_server (char *server, int leave_lock)
       mutt_error (_("Can't create %s: %s."), file, strerror (errno));
       mutt_sleep (2);
     }
+    nserv->cacheable = 1;
   }
 
   /* load .newsrc */
