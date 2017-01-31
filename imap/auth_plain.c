@@ -31,6 +31,8 @@
 /* imap_auth_plain: SASL PLAIN support */
 imap_auth_res_t imap_auth_plain(IMAP_DATA *idata, const char *method)
 {
+  int rc;
+  imap_auth_res_t res = IMAP_AUTH_SUCCESS;
   char buf[STRING];
 
   if (mutt_account_getuser(&idata->conn->account))
@@ -44,14 +46,23 @@ imap_auth_res_t imap_auth_plain(IMAP_DATA *idata, const char *method)
                       idata->conn->account.user, idata->conn->account.user,
                       idata->conn->account.pass);
 
-  if (!imap_exec(idata, buf, IMAP_CMD_FAIL_OK | IMAP_CMD_PASS))
+  imap_cmd_start(idata, buf);
+  do
+    rc = imap_cmd_step(idata);
+  while (rc == IMAP_CMD_CONTINUE);
+  
+  if (rc == IMAP_CMD_BAD)
   {
-    mutt_clear_error(); /* clear "Logging in...".  fixes #3524 */
-    return IMAP_AUTH_SUCCESS;
+    res = IMAP_AUTH_UNAVAIL;
+  }
+  else if (rc == IMAP_CMD_NO)
+  {
+    mutt_error _("Login failed.");
+    mutt_sleep(2);
+    res = IMAP_AUTH_FAILURE;
   }
 
-  mutt_error _("Login failed.");
-  mutt_sleep(2);
-  return IMAP_AUTH_FAILURE;
+  mutt_clear_error(); /* clear "Logging in...".  fixes #3524 */
+  return res;
 }
 
