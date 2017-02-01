@@ -165,7 +165,7 @@ int imap_delete_mailbox (CONTEXT* ctx, IMAP_MBOX mx)
   imap_munge_mbox_name (idata, mbox, sizeof (mbox), mx.mbox);
   snprintf (buf, sizeof (buf), "DELETE %s", mbox);
 
-  if (imap_exec ((IMAP_DATA*) idata, buf, 0) != 0)
+  if (imap_exec (idata, buf, 0) != 0)
     return -1;
 
   return 0;
@@ -331,7 +331,7 @@ IMAP_DATA* imap_conn_find (const ACCOUNT* account, int flags)
     else
       memcpy (&conn->account, creds, sizeof (ACCOUNT));
 
-    idata = (IMAP_DATA*)conn->data;
+    idata = conn->data;
     if (flags & MUTT_IMAP_CONN_NONEW)
     {
       if (!idata)
@@ -1167,7 +1167,7 @@ static int sync_helper (IMAP_DATA* idata, int right, int flag, const char* name)
  *   ctx: the current context
  *   expunge: 0 or 1 - do expunge?
  */
-int imap_sync_mailbox (CONTEXT* ctx, int expunge, int* index_hint)
+int imap_sync_mailbox (CONTEXT* ctx, int expunge)
 {
   IMAP_DATA* idata;
   CONTEXT* appendctx = NULL;
@@ -1177,7 +1177,7 @@ int imap_sync_mailbox (CONTEXT* ctx, int expunge, int* index_hint)
   int n;
   int rc;
 
-  idata = (IMAP_DATA*) ctx->data;
+  idata = ctx->data;
 
   if (idata->state < IMAP_SELECTED)
   {
@@ -1189,7 +1189,7 @@ int imap_sync_mailbox (CONTEXT* ctx, int expunge, int* index_hint)
    * to be changed. */
   imap_allow_reopen (ctx);
 
-  if ((rc = imap_check_mailbox (ctx, index_hint, 0)) != 0)
+  if ((rc = imap_check (idata, 0)) != 0)
     return rc;
 
   /* if we are expunging anyway, we can do deleted messages very quickly... */
@@ -1366,7 +1366,7 @@ int imap_close_mailbox (CONTEXT* ctx)
   IMAP_DATA* idata;
   int i;
 
-  idata = (IMAP_DATA*) ctx->data;
+  idata = ctx->data;
   /* Check to see if the mailbox is actually open */
   if (!idata)
     return 0;
@@ -1416,14 +1416,16 @@ int imap_close_mailbox (CONTEXT* ctx)
  *	0		no change
  *	-1		error
  */
-int imap_check_mailbox (CONTEXT *ctx, int *index_hint, int force)
+int imap_check_mailbox (CONTEXT *ctx, int force)
+{
+  return imap_check (ctx->data, force);
+}
+
+int imap_check (IMAP_DATA *idata, int force)
 {
   /* overload keyboard timeout to avoid many mailbox checks in a row.
    * Most users don't like having to wait exactly when they press a key. */
-  IMAP_DATA* idata;
   int result = 0;
-
-  idata = (IMAP_DATA*) ctx->data;
 
   /* try IDLE first, unless force is set */
   if (!force && option (OPTIMAPIDLE) && mutt_bit_isset (idata->capabilities, IDLE)
@@ -1473,9 +1475,10 @@ int imap_check_mailbox (CONTEXT *ctx, int *index_hint, int force)
 static int imap_check_mailbox_reopen (CONTEXT *ctx, int *index_hint)
 {
   int rc;
+  (void)index_hint;
 
   imap_allow_reopen (ctx);
-  rc = imap_check_mailbox (ctx, index_hint, 0);
+  rc = imap_check (ctx->data, 0);
   imap_disallow_reopen (ctx);
 
   return rc;
@@ -1838,7 +1841,7 @@ static int imap_compile_search (const pattern_t* pat, BUFFER* buf)
 int imap_search (CONTEXT* ctx, const pattern_t* pat)
 {
   BUFFER buf;
-  IMAP_DATA* idata = (IMAP_DATA*)ctx->data;
+  IMAP_DATA* idata = ctx->data;
   int i;
 
   for (i = 0; i < ctx->msgcount; i++)
@@ -2094,7 +2097,7 @@ int imap_fast_trash (CONTEXT* ctx, char* dest)
   IMAP_MBOX mx;
   int triedcreate = 0;
 
-  idata = (IMAP_DATA*) ctx->data;
+  idata = ctx->data;
 
   if (imap_parse_path (dest, &mx))
   {
@@ -2103,7 +2106,7 @@ int imap_fast_trash (CONTEXT* ctx, char* dest)
   }
 
   /* check that the save-to folder is in the same account */
-  if (!mutt_account_match (&(CTX_DATA->conn->account), &(mx.account)))
+  if (!mutt_account_match (&(idata->conn->account), &(mx.account)))
   {
     dprint (3, (debugfile, "imap_fast_trash: %s not same server as %s\n",
       dest, ctx->path));
