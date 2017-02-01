@@ -127,6 +127,24 @@ static char *current_sender = NULL;
  * General helper functions.
  */
 
+/* accommodate for a redraw if needed */
+static void
+redraw_if_needed (gpgme_ctx_t ctx)
+{
+#if (GPGME_VERSION_NUMBER < 0x010800)
+  /* gpgme_get_ctx_flag is not available in gpgme < 1.8.0. In this case, stay
+   * on the safe side and always redraw. */
+  (void)ctx;
+  mutt_need_hard_redraw ();
+#else
+  const char *s = gpgme_get_ctx_flag (ctx, "redraw");
+  if ((s == NULL) /* flag not known */ || *s /* flag true */)
+  {
+    mutt_need_hard_redraw ();
+  }
+#endif
+}
+
 /* return true when s points to a digit or letter. */
 static int
 digit_or_letter (const unsigned char *s)
@@ -808,7 +826,7 @@ static char *encrypt_gpgme_object (gpgme_data_t plaintext, gpgme_key_t *rset,
   else
     err = gpgme_op_encrypt (ctx, rset, GPGME_ENCRYPT_ALWAYS_TRUST,
                             plaintext, ciphertext);
-  mutt_need_hard_redraw ();
+  redraw_if_needed (ctx);
   if (err)
     {
       mutt_error (_("error encrypting data: %s\n"), gpgme_strerror (err));
@@ -922,7 +940,7 @@ static BODY *sign_message (BODY *a, int use_smime)
     }
 
   err = gpgme_op_sign (ctx, message, signature, GPGME_SIG_MODE_DETACH );
-  mutt_need_hard_redraw ();
+  redraw_if_needed (ctx);
   gpgme_data_release (message);
   if (err)
     {
@@ -1548,7 +1566,7 @@ static int verify_one (BODY *sigbdy, STATE *s,
   gpgme_data_release (message);
   gpgme_data_release (signature);
 
-  mutt_need_hard_redraw ();
+  redraw_if_needed (ctx);
   if (err)
     {
       char buf[200];
@@ -1727,7 +1745,7 @@ static BODY *decrypt_part (BODY *a, STATE *s, FILE *fpout, int is_smime,
               goto restart;
             }
         }
-      mutt_need_hard_redraw ();
+      redraw_if_needed (ctx);
       if ((s->flags & MUTT_DISPLAY))
         {
           char buf[200];
@@ -1741,7 +1759,7 @@ static BODY *decrypt_part (BODY *a, STATE *s, FILE *fpout, int is_smime,
       gpgme_release (ctx);
       return NULL;
   }
-  mutt_need_hard_redraw ();
+  redraw_if_needed (ctx);
 
   /* Read the output from GPGME, and make sure to change CRLF to LF,
      otherwise read_mime_header has a hard time parsing the message.  */
@@ -2435,7 +2453,7 @@ int pgp_gpgme_application_handler (BODY *m, STATE *s)
                                              NULL, plaintext);
                     }
                 }
-              mutt_need_hard_redraw ();
+              redraw_if_needed (ctx);
 
               if (err)
                 {
