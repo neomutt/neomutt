@@ -1107,26 +1107,16 @@ int mutt_atol (const char *str, long *dst)
   return 0;
 }
 
-int mutt_is_inbox (const char *path)
-{
-  size_t plen = mutt_strlen (path);
-  return ((plen >= 6) && (mutt_strcasecmp (path + plen - 6, "/inbox") == 0));
-}
-
 /**
- * mutt_have_common_subpath - check whether two paths have a common subpath.
+ * mutt_is_inbox_of - check whether two folders share the same path and one is
+ * an inbox.
+ *
  * @param a First path.
  * @param b Second path.
  *
- * @return 1 if a and b have a common subpath, 0 otherwise
- *
- * This function checks whether two paths (where the path separator is assumed
- * to be '/', have a common subpath. Examples:
- *
- * /foo/bar/baz and /foo/hey/you do have a common subpath (/foo/)
- * /apple/banana and /apples/bananas do NOT have a common subpath
+ * @return -1 if a is INBOX of b, 0 if none is INBOX, 1 if b is INBOX for a
  */
-int mutt_have_common_subpath(const char *a, const char *b)
+int mutt_is_inbox_of(const char *a, const char *b)
 {
   const char *a_end = strrchr (a, '/');
   const char *b_end = strrchr (b, '/');
@@ -1137,15 +1127,26 @@ int mutt_have_common_subpath(const char *a, const char *b)
 
   /* If neither path contains a '/' */
   if (!a_end)
-    return 1;
+    return 0;
 
-  /* Compare the paths */
+  /* Compare the subpaths */
   size_t a_len = a_end - a;
   size_t b_len = b_end - b;
   size_t min = MIN(a_len, b_len);
-  return (a[min] == '/') && (b[min] == '/') &&
-         (a[min+1] != '\0') && (b[min+1] != '\0') &&
-         (mutt_strncasecmp(a, b, min) == 0);
+  int same = (a[min] == '/') && (b[min] == '/') &&
+             (a[min+1] != '\0') && (b[min+1] != '\0') &&
+             (mutt_strncasecmp(a, b, min) == 0);
+
+  if (!same)
+      return 0;
+
+  if (mutt_strcasecmp(&a[min+1], "inbox") == 0)
+      return -1;
+
+  if (mutt_strcasecmp(&b[min+1], "inbox") == 0)
+      return 1;
+
+  return 0;
 }
 
 char * strfcpy (char *dest, const char *src, size_t dlen)
