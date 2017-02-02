@@ -1144,7 +1144,8 @@ int mutt_have_common_subpath(const char *a, const char *b)
   size_t b_len = b_end - b;
   size_t min = MIN(a_len, b_len);
   return (a[min] == '/') && (b[min] == '/') &&
-	  (mutt_strncasecmp(a, b, min) == 0);
+         (a[min+1] != '\0') && (b[min+1] != '\0') &&
+         (mutt_strncasecmp(a, b, min) == 0);
 }
 
 char * strfcpy (char *dest, const char *src, size_t dlen)
