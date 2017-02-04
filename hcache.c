@@ -36,7 +36,7 @@
 /* This is the maximum size of the database file (2GiB) which is
  * mmap(2)'ed into memory.  This limit should be good for ~800,000
  * emails. */
-#define LMDB_DB_SIZE    (2 * 1024 * 1024 * 1024)
+#define LMDB_DB_SIZE    2147483648
 #include <lmdb.h>
 #endif
 
@@ -93,8 +93,8 @@ static void mutt_hcache_dbt_empty_init(DBT * dbt);
 enum mdb_txn_mode
 {
   txn_uninitialized = 0,
-  txn_read = 1 << 0,
-  txn_write = 1 << 1
+  txn_read,
+  txn_write
 };
 struct header_cache
 {
@@ -110,17 +110,30 @@ static int mdb_get_r_txn(header_cache_t *h)
 {
   int rc;
 
-  if (h->txn && (h->txn_mode & (txn_read | txn_write)) > 0)
-    return MDB_SUCCESS;
-
   if (h->txn)
-    rc = mdb_txn_renew(h->txn);
-  else
-    rc = mdb_txn_begin(h->env, NULL, MDB_RDONLY, &h->txn);
+  {
+    if (h->txn_mode == txn_read || h->txn_mode == txn_write)
+      return MDB_SUCCESS;
 
-  if (rc == MDB_SUCCESS)
+    if ((rc = mdb_txn_renew (h->txn)) != MDB_SUCCESS)
+    {
+      h->txn = NULL;
+      dprint (2, (debugfile, "mdb_get_r_txn: mdb_txn_renew: %s\n",
+                  mdb_strerror (rc)));
+      return rc;
+    }
     h->txn_mode = txn_read;
+    return rc;
+  }
 
+  if ((rc = mdb_txn_begin (h->env, NULL, MDB_RDONLY, &h->txn)) != MDB_SUCCESS)
+  {
+    h->txn = NULL;
+    dprint (2, (debugfile, "mdb_get_r_txn: mdb_txn_begin: %s\n",
+                mdb_strerror (rc)));
+    return rc;
+  }
+  h->txn_mode = txn_read;
   return rc;
 }
 
@@ -128,20 +141,24 @@ static int mdb_get_w_txn(header_cache_t *h)
 {
   int rc;
 
-  if (h->txn && (h->txn_mode == txn_write))
-    return MDB_SUCCESS;
-
   if (h->txn)
   {
-    if (h->txn_mode == txn_read)
-      mdb_txn_reset(h->txn);
-    h->txn = NULL;
+    if (h->txn_mode == txn_write)
+      return MDB_SUCCESS;
+
+    /* Free up the memory for readonly or reset transactions */
+    mdb_txn_abort (h->txn);
   }
 
-  rc = mdb_txn_begin(h->env, NULL, 0, &h->txn);
-  if (rc == MDB_SUCCESS)
-    h->txn_mode = txn_write;
+  if ((rc = mdb_txn_begin (h->env, NULL, 0, &h->txn)) != MDB_SUCCESS)
+  {
+    h->txn = NULL;
+    dprint (2, (debugfile, "mdb_get_w_txn: mdb_txn_begin %s\n",
+                mdb_strerror (rc)));
+    return rc;
+  }
 
+  h->txn_mode = txn_write;
   return rc;
 }
 #endif
@@ -796,13 +813,11 @@ mutt_hcache_fetch_raw (header_cache_t *h, const char *filename,
 #elif HAVE_LMDB
   MDB_val key;
   MDB_val data;
-  size_t folderlen;
-  int rc;
 #endif
-  
+
   if (!h)
     return NULL;
-  
+
 #ifdef HAVE_DB4
   if (filename[0] == '/')
     filename++;
@@ -810,50 +825,20 @@ mutt_hcache_fetch_raw (header_cache_t *h, const char *filename,
   mutt_hcache_dbt_init(&key, (void *) filename, keylen(filename));
   mutt_hcache_dbt_empty_init(&data);
   data.flags = DB_DBT_MALLOC;
-  
+
   h->db->get(h->db, NULL, &key, &data, 0);
-  
+
   return data.data;
-#elif HAVE_LMDB
-  strncpy(path, h->folder, sizeof (path));
-  safe_strcat(path, sizeof (path), filename);
+#endif
 
-  folderlen = strlen(h->folder);
-  ksize = folderlen + keylen(path + folderlen);  
-  key.mv_data = (char *)path;
-  key.mv_size = ksize;
-  data.mv_data = NULL;
-  data.mv_size = 0;
-  rc = mdb_get_r_txn(h);
-  if (rc != MDB_SUCCESS) {
-    h->txn = NULL;
-    fprintf(stderr, "txn_renew: %s\n", mdb_strerror(rc));
-    return NULL;
-  }
-  rc = mdb_get(h->txn, h->db, &key, &data);
-  if (rc == MDB_NOTFOUND) {
-    return NULL;
-  }
-  if (rc != MDB_SUCCESS) {
-    fprintf(stderr, "mdb_get: %s\n", mdb_strerror(rc));
-    return NULL;
-  }
-  /* Caller frees the data we return, so I MUST make a copy of it */
-
-  char *d = safe_malloc(data.mv_size);
-  memcpy(d, data.mv_data, data.mv_size);
-
-  return d;
-
-#else
   strncpy(path, h->folder, sizeof (path));
   safe_strcat(path, sizeof (path), filename);
 
   ksize = strlen (h->folder) + keylen (path + strlen (h->folder));  
-#endif
+
 #ifdef HAVE_QDBM
   data = vlget(h->db, path, ksize, NULL);
-  
+
   return data;
 #elif HAVE_TC
   data = tcbdbget(h->db, path, ksize, &sp);
@@ -862,10 +847,21 @@ mutt_hcache_fetch_raw (header_cache_t *h, const char *filename,
 #elif HAVE_GDBM
   key.dptr = path;
   key.dsize = ksize;
-  
+
   data = gdbm_fetch(h->db, key);
-  
+
   return data.dptr;
+#elif HAVE_LMDB
+  key.mv_data = path;
+  key.mv_size = ksize;
+  if ((mdb_get_r_txn (h) != MDB_SUCCESS) ||
+      (mdb_get (h->txn, h->db, &key, &data) != MDB_SUCCESS))
+    return NULL;
+
+  /* Unlike other dbs, LMDB claims ownership of the returned data */
+  char *d = safe_malloc (data.mv_size);
+  memcpy (d, data.mv_data, data.mv_size);
+  return d;
 #endif
 }
 
@@ -913,56 +909,32 @@ mutt_hcache_store_raw (header_cache_t* h, const char* filename, void* data,
 #elif HAVE_LMDB
   MDB_val key;
   MDB_val databuf;
-  size_t folderlen;
   int rc;
 #endif
-  
+
   if (!h)
     return -1;
 
 #if HAVE_DB4
   if (filename[0] == '/')
     filename++;
-  
+
   mutt_hcache_dbt_init(&key, (void *) filename, keylen(filename));
-  
+
   mutt_hcache_dbt_empty_init(&databuf);
   databuf.flags = DB_DBT_USERMEM;
   databuf.data = data;
   databuf.size = dlen;
   databuf.ulen = dlen;
-  
-  return h->db->put(h->db, NULL, &key, &databuf, 0);
-#elif HAVE_LMDB
-  folderlen = strlen(h->folder);
-  strncpy(path, h->folder, sizeof (path));
-  safe_strcat(path, sizeof (path), filename);
-  ksize = folderlen + keylen(path + folderlen);
 
-  key.mv_data = (char *)path;
-  key.mv_size = ksize;
-  databuf.mv_data = data;
-  databuf.mv_size = dlen;
-  rc = mdb_get_w_txn(h);
-  if (rc != MDB_SUCCESS) {
-  	fprintf(stderr, "txn_begin: %s\n", mdb_strerror(rc));
-    return rc;
-  }
-  rc = mdb_put(h->txn, h->db, &key, &databuf, 0);
-  if (rc != MDB_SUCCESS) {
-  	fprintf(stderr, "mdb_put: %s\n", mdb_strerror(rc));
-    mdb_txn_abort(h->txn);
-    h->txn_mode = txn_uninitialized;
-    h->txn = NULL;
-    return rc;
-  }
-  return rc;
-#else
+  return h->db->put(h->db, NULL, &key, &databuf, 0);
+#endif
+
   strncpy(path, h->folder, sizeof (path));
   safe_strcat(path, sizeof (path), filename);
 
   ksize = strlen(h->folder) + keylen(path + strlen(h->folder));
-#endif
+
 #if HAVE_QDBM
   return vlput(h->db, path, ksize, data, dlen, VL_DOVER);
 #elif HAVE_TC
@@ -970,11 +942,28 @@ mutt_hcache_store_raw (header_cache_t* h, const char* filename, void* data,
 #elif HAVE_GDBM
   key.dptr = path;
   key.dsize = ksize;
-  
+
   databuf.dsize = dlen;
   databuf.dptr = data;
-  
+
   return gdbm_store(h->db, key, databuf, GDBM_REPLACE);
+#elif HAVE_LMDB
+  key.mv_data = path;
+  key.mv_size = ksize;
+  databuf.mv_data = data;
+  databuf.mv_size = dlen;
+  if ((rc = mdb_get_w_txn (h)) != MDB_SUCCESS)
+    return rc;
+
+  if ((rc = mdb_put (h->txn, h->db, &key, &databuf, 0)) != MDB_SUCCESS)
+  {
+    dprint (2, (debugfile, "mutt_hcache_store_raw: mdb_put: %s\n",
+                mdb_strerror(rc)));
+    mdb_txn_abort (h->txn);
+    h->txn_mode = txn_uninitialized;
+    h->txn = NULL;
+  }
+  return rc;
 #endif
 }
 
@@ -1269,30 +1258,30 @@ hcache_open_lmdb (struct header_cache* h, const char* path)
 
   h->txn = NULL;
 
-  rc = mdb_env_create(&h->env);
-  if (rc != MDB_SUCCESS) {
-	  fprintf(stderr, "hcache_open_lmdb: mdb_env_create: %s", mdb_strerror(rc));
-	  return -1;
+  if ((rc = mdb_env_create(&h->env)) != MDB_SUCCESS)
+  {
+    dprint (2, (debugfile, "hcache_open_lmdb: mdb_env_create: %s\n",
+                mdb_strerror(rc)));
+    return -1;
   }
 
   mdb_env_set_mapsize(h->env, LMDB_DB_SIZE);
 
-  rc = mdb_env_open(h->env, path, MDB_NOSUBDIR, 0644);
-  if (rc != MDB_SUCCESS) {
-	  fprintf(stderr, "hcache_open_lmdb: mdb_env_open: %s", mdb_strerror(rc));
-	  goto fail_env;
+  if ((rc = mdb_env_open(h->env, path, MDB_NOSUBDIR, 0644)) != MDB_SUCCESS)
+  {
+    dprint (2, (debugfile, "hcache_open_lmdb: mdb_env_open: %s\n",
+                mdb_strerror(rc)));
+    goto fail_env;
   }
 
-  rc = mdb_get_r_txn(h);
-  if (rc != MDB_SUCCESS) {
-      fprintf(stderr, "hcache_open_lmdb: mdb_txn_begin: %s", mdb_strerror(rc));
-      goto fail_env;
-  }
+  if ((rc = mdb_get_r_txn(h)) != MDB_SUCCESS)
+    goto fail_env;
 
-  rc = mdb_dbi_open(h->txn, NULL, MDB_CREATE, &h->db);
-  if (rc != MDB_SUCCESS) {
-	  fprintf(stderr, "hcache_open_lmdb: mdb_dbi_open: %s", mdb_strerror(rc));
-	  goto fail_dbi;
+  if ((rc = mdb_dbi_open(h->txn, NULL, MDB_CREATE, &h->db)) != MDB_SUCCESS)
+  {
+    dprint (2, (debugfile, "hcache_open_lmdb: mdb_dbi_open: %s\n",
+                mdb_strerror(rc)));
+    goto fail_dbi;
   }
 
   mdb_txn_reset(h->txn);
@@ -1312,12 +1301,23 @@ fail_env:
 void
 mutt_hcache_close(header_cache_t *h)
 {
+  int rc;
+
   if (!h)
     return;
 
-  if (h->txn && h->txn_mode == txn_write)
+  if (h->txn)
   {
-    mdb_txn_commit(h->txn);
+    if (h->txn_mode == txn_write)
+    {
+      if ((rc = mdb_txn_commit (h->txn)) != MDB_SUCCESS)
+      {
+        dprint (2, (debugfile, "mutt_hcache_close: mdb_txn_commit: %s\n",
+                    mdb_strerror (rc)));
+      }
+    }
+    else
+      mdb_txn_abort (h->txn);
     h->txn_mode = txn_uninitialized;
     h->txn = NULL;
   }
@@ -1331,34 +1331,34 @@ int
 mutt_hcache_delete(header_cache_t *h, const char *filename,
 		   size_t(*keylen) (const char *fn))
 {
+  char path[_POSIX_PATH_MAX];
+  int ksize;
   MDB_val key;
   int rc;
 
   if (!h)
     return -1;
 
-  if (filename[0] == '/')
-    filename++;
+  strncpy(path, h->folder, sizeof (path));
+  safe_strcat(path, sizeof (path), filename);
+  ksize = strlen (h->folder) + keylen (path + strlen (h->folder));
 
-  key.mv_data = (char *)filename;
-  key.mv_size = strlen(filename);
-  rc = mdb_get_w_txn(h);
-  if (rc != MDB_SUCCESS) {
-  	fprintf(stderr, "txn_begin: %s\n", mdb_strerror(rc));
-    return rc;
-  }
+  key.mv_data = path;
+  key.mv_size = ksize;
+  if (mdb_get_w_txn(h) != MDB_SUCCESS)
+    return -1;
   rc = mdb_del(h->txn, h->db, &key, NULL);
-  if (rc != MDB_SUCCESS) {
-    if (rc != MDB_NOTFOUND) {
-  	  fprintf(stderr, "mdb_del: %s\n", mdb_strerror(rc));
-      mdb_txn_abort(h->txn);
-      h->txn_mode = txn_uninitialized;
-      h->txn = NULL;
-    }
-    return rc;
+  if (rc != MDB_SUCCESS && rc != MDB_NOTFOUND)
+  {
+    dprint (2, (debugfile, "mutt_hcache_delete: mdb_del: %s\n",
+                mdb_strerror (rc)));
+    mdb_txn_abort(h->txn);
+    h->txn_mode = txn_uninitialized;
+    h->txn = NULL;
+    return -1;
   }
 
-  return rc;
+  return 0;
 }
 #endif
 
