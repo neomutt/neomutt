@@ -321,7 +321,7 @@ static int cb_qsort_sbe (const void *a, const void *b)
       break;
     case SORT_PATH:
     {
-      result = mutt_is_inbox_of (b1->path, b2->path);
+      result = mutt_inbox_cmp (b1->path, b2->path);
       if (result == 0)
         result = mutt_strcoll (b1->path, b2->path);
       break;

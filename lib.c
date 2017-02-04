@@ -1108,15 +1108,28 @@ int mutt_atol (const char *str, long *dst)
 }
 
 /**
- * mutt_is_inbox_of - check whether two folders share the same path and one is
+ * mutt_inbox_cmp - check whether two folders share the same path and one is
  * an inbox.
  *
  * @param a First path.
  * @param b Second path.
  *
  * @return -1 if a is INBOX of b, 0 if none is INBOX, 1 if b is INBOX for a
+ *
+ * This function compares two folder paths. It first looks for the position of
+ * the last common '/' character. If a valid position is found and it's not the
+ * last character in any of the two paths, the remaining parts of the paths are
+ * compared (case insensitively) with the string "INBOX". If one of the two
+ * paths matches, it's reported as being less than the other and the function
+ * returns -1 (a < b) or 1 (a > b). If no paths match the requirements, the two
+ * paths are considered equivalent and this function returns 0.
+ *
+ * Examples:
+ *   mutt_inbox_cmp("/foo/bar",      "/foo/baz") --> 0
+ *   mutt_inbox_cmp("/foo/bar/",     "/foo/bar/inbox") --> 0
+ *   mutt_inbox_cmp("/foo/bar/sent", "/foo/bar/inbox") --> 1
  */
-int mutt_is_inbox_of(const char *a, const char *b)
+int mutt_inbox_cmp (const char *a, const char *b)
 {
   const char *a_end = strrchr (a, '/');
   const char *b_end = strrchr (b, '/');
