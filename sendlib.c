@@ -69,14 +69,6 @@ extern char RFC822Specials[];
 
 const char MimeSpecials[] = "@.,;:<>[]\\\"()?/= \t";
 
-const char B64Chars[64] = {
-  'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O',
-  'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', 'a', 'b', 'c', 'd',
-  'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's',
-  't', 'u', 'v', 'w', 'x', 'y', 'z', '0', '1', '2', '3', '4', '5', '6', '7',
-  '8', '9', '+', '/'
-};
-
 static void transform_to_7bit (BODY *a, FILE *fpin);
 
 static void encode_quoted (FGETCONV * fc, FILE *fout, int istext)
@@ -211,66 +203,66 @@ static void encode_quoted (FGETCONV * fc, FILE *fout, int istext)
   }
 }
 
-static char b64_buffer[3];
-static short b64_num;
-static short b64_linelen;
+struct b64_context {
+  char  buffer[3];
+  short size;
+  short linelen;
+};
 
-static void b64_flush(FILE *fout)
+static int b64_init(struct b64_context *ctx)
 {
-  short i;
+  memset(ctx->buffer, '\0', sizeof(ctx->buffer));
+  ctx->size = 0;
+  ctx->linelen = 0;
 
-  if(!b64_num)
+  return 0;
+}
+
+static void b64_flush(struct b64_context *ctx, FILE *fout)
+{
+  /* for some reasons, mutt_to_base64 expects the
+   * output buffer to be larger than 10B */
+  char encoded[11];
+  size_t ret, i;
+
+  if (!ctx->size)
     return;
 
-  if(b64_linelen >= 72)
+  if (ctx->linelen >= 72)
   {
     fputc('\n', fout);
-    b64_linelen = 0;
+    ctx->linelen = 0;
   }
 
-  for(i = b64_num; i < 3; i++)
-    b64_buffer[i] = '\0';
-
-  fputc(B64Chars[(b64_buffer[0] >> 2) & 0x3f], fout);
-  b64_linelen++;
-  fputc(B64Chars[((b64_buffer[0] & 0x3) << 4) | ((b64_buffer[1] >> 4) & 0xf) ], fout);
-  b64_linelen++;
-
-  if(b64_num > 1)
+  /* ret should always be equal to 4 here, because ctx->size
+   * is a value between 1 and 3 (included), but let's not hardcode it
+   * and prefer the return value of the function */
+  ret = mutt_to_base64 (encoded, ctx->buffer, ctx->size, sizeof(encoded));
+  for(i = 0; i < ret; i++)
   {
-    fputc(B64Chars[((b64_buffer[1] & 0xf) << 2) | ((b64_buffer[2] >> 6) & 0x3) ], fout);
-    b64_linelen++;
-    if(b64_num > 2)
-    {
-      fputc(B64Chars[b64_buffer[2] & 0x3f], fout);
-      b64_linelen++;
-    }
+    fputc(encoded[i], fout);
+    ctx->linelen++;
   }
 
-  while(b64_linelen % 4)
-  {
-    fputc('=', fout);
-    b64_linelen++;
-  }
-
-  b64_num = 0;
+  ctx->size = 0;
 }
 
 
-static void b64_putc(char c, FILE *fout)
+static void b64_putc(struct b64_context *ctx, char c, FILE *fout)
 {
-  if(b64_num == 3)
-    b64_flush(fout);
+  if(ctx->size == 3)
+    b64_flush(ctx, fout);
 
-  b64_buffer[b64_num++] = c;
+  ctx->buffer[ctx->size++] = c;
 }
 
 
 static void encode_base64 (FGETCONV * fc, FILE *fout, int istext)
 {
+  struct b64_context ctx;
   int ch, ch1 = EOF;
 
-  b64_num = b64_linelen = 0;
+  b64_init(&ctx);
 
   while ((ch = fgetconv (fc)) != EOF)
   {
@@ -279,11 +271,11 @@ static void encode_base64 (FGETCONV * fc, FILE *fout, int istext)
       return;
     }
     if (istext && ch == '\n' && ch1 != '\r')
-      b64_putc('\r', fout);
-    b64_putc(ch, fout);
+      b64_putc(&ctx, '\r', fout);
+    b64_putc(&ctx, ch, fout);
     ch1 = ch;
   }
-  b64_flush(fout);
+  b64_flush(&ctx, fout);
   fputc('\n', fout);
 }
 
