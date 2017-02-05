@@ -1287,11 +1287,11 @@ static int format_line (struct line_t **lineInfo, int n, unsigned char *buf,
       last_special = special;
     }
 
-    if (IsWPrint (wc) || (Charset_is_utf8 && wc == 0x00A0))
+    if (IsWPrint (wc) || (Charset_is_utf8 && (wc == 0x00A0 || wc == 0x202F)))
     {
       if (wc == ' ')
 	space = ch;
-      else if (Charset_is_utf8 && wc == 0x00A0)
+      else if (Charset_is_utf8 && (wc == 0x00A0 || wc == 0x202F))
       {
 	/* Convert non-breaking space to normal space. The local variable
 	 * `space' is not set here so that the caller of this function won't
