@@ -823,7 +823,7 @@ int mutt_compose_menu (HEADER *msg,   /* structure for new message */
 	  files = NULL;
 
 	  if (_mutt_enter_fname (prompt, fname, sizeof (fname),
-			&menu->redraw, 0, 1, &files, &numfiles, 0) == -1 ||
+			&menu->redraw, 0, 1, &files, &numfiles, MUTT_SEL_MULTI) == -1 ||
 	      *fname == '\0')
 	    break;
 
