@@ -32,9 +32,9 @@ const size_t LMDB_DB_SIZE = 2147483648;
 
 enum mdb_txn_mode
 {
-  txn_uninitialized = 0,
-  txn_read          = 1 << 0,
-  txn_write         = 1 << 1
+  txn_uninitialized,
+  txn_read,
+  txn_write
 };
 
 typedef struct
@@ -50,7 +50,7 @@ mdb_get_r_txn(hcache_lmdb_ctx_t *ctx)
 {
   int rc;
 
-  if (ctx->txn && (ctx->txn_mode & (txn_read | txn_write)) > 0)
+  if (ctx->txn && (ctx->txn_mode == txn_read || ctx->txn_mode == txn_write))
     return MDB_SUCCESS;
 
   if (ctx->txn)
@@ -60,6 +60,10 @@ mdb_get_r_txn(hcache_lmdb_ctx_t *ctx)
 
   if (rc == MDB_SUCCESS)
     ctx->txn_mode = txn_read;
+  else
+    dprint(2, (debugfile, "mdb_get_r_txn: %s: %s\n",
+               ctx->txn ? "mdb_txn_renew" : "mdb_txn_begin",
+               mdb_strerror(rc)));
 
   return rc;
 }
@@ -69,19 +73,21 @@ mdb_get_w_txn(hcache_lmdb_ctx_t *ctx)
 {
   int rc;
 
-  if (ctx->txn && (ctx->txn_mode == txn_write))
-    return MDB_SUCCESS;
-
   if (ctx->txn)
   {
-    if (ctx->txn_mode == txn_read)
-      mdb_txn_reset(ctx->txn);
-    ctx->txn = NULL;
+    if (ctx->txn_mode == txn_write)
+      return MDB_SUCCESS;
+
+    /* Free up the memory for readonly or reset transactions */
+    mdb_txn_abort(ctx->txn);
   }
 
   rc = mdb_txn_begin(ctx->env, NULL, 0, &ctx->txn);
   if (rc == MDB_SUCCESS)
     ctx->txn_mode = txn_write;
+  else
+    dprint(2, (debugfile, "mdb_get_w_txn: mdb_txn_begin: %s\n",
+               mdb_strerror(rc)));
 
   return rc;
 }
@@ -98,7 +104,8 @@ hcache_lmdb_open(const char *path)
   rc = mdb_env_create(&ctx->env);
   if (rc != MDB_SUCCESS)
   {
-    fprintf(stderr, "hcache_open_lmdb: mdb_env_create: %s", mdb_strerror(rc));
+    dprint(2, (debugfile, "hcache_open_lmdb: mdb_env_create: %s\n",
+               mdb_strerror(rc)));
     FREE(&ctx);
     return NULL;
   }
@@ -108,21 +115,24 @@ hcache_lmdb_open(const char *path)
   rc = mdb_env_open(ctx->env, path, MDB_NOSUBDIR, 0644);
   if (rc != MDB_SUCCESS)
   {
-    fprintf(stderr, "hcache_open_lmdb: mdb_env_open: %s", mdb_strerror(rc));
+    dprint(2, (debugfile, "hcache_open_lmdb: mdb_env_open: %s",
+               mdb_strerror(rc)));
     goto fail_env;
   }
 
   rc = mdb_get_r_txn(ctx);
   if (rc != MDB_SUCCESS)
   {
-      fprintf(stderr, "hcache_open_lmdb: mdb_txn_begin: %s", mdb_strerror(rc));
+      dprint(2, (debugfile, "hcache_open_lmdb: mdb_txn_begin: %s",
+                 mdb_strerror(rc)));
       goto fail_env;
   }
 
   rc = mdb_dbi_open(ctx->txn, NULL, MDB_CREATE, &ctx->db);
   if (rc != MDB_SUCCESS)
   {
-    fprintf(stderr, "hcache_open_lmdb: mdb_dbi_open: %s", mdb_strerror(rc));
+    dprint(2, (debugfile, "hcache_open_lmdb: mdb_dbi_open: %s",
+               mdb_strerror(rc)));
     goto fail_dbi;
   }
 
@@ -161,7 +171,8 @@ hcache_lmdb_fetch(void *vctx, const char *key, size_t keylen)
   if (rc != MDB_SUCCESS)
   {
     ctx->txn = NULL;
-    fprintf(stderr, "txn_renew: %s\n", mdb_strerror(rc));
+    dprint(2, (debugfile, "hcache_lmdb_fetch: txn_renew: %s\n",
+               mdb_strerror(rc)));
     return NULL;
   }
   rc = mdb_get(ctx->txn, ctx->db, &dkey, &data);
@@ -171,7 +182,8 @@ hcache_lmdb_fetch(void *vctx, const char *key, size_t keylen)
   }
   if (rc != MDB_SUCCESS)
   {
-    fprintf(stderr, "mdb_get: %s\n", mdb_strerror(rc));
+    dprint(2, (debugfile, "hcache_lmdb_fetch: mdb_get: %s\n",
+               mdb_strerror(rc)));
     return NULL;
   }
 
@@ -203,13 +215,15 @@ hcache_lmdb_store(void *vctx, const char *key, size_t keylen, void *data, size_t
   rc = mdb_get_w_txn(ctx);
   if (rc != MDB_SUCCESS)
   {
-    fprintf(stderr, "txn_begin: %s\n", mdb_strerror(rc));
+    dprint(2, (debugfile, "hcache_lmdb_store: mdb_get_w_txn: %s\n",
+               mdb_strerror(rc)));
     return rc;
   }
   rc = mdb_put(ctx->txn, ctx->db, &dkey, &databuf, 0);
   if (rc != MDB_SUCCESS)
   {
-    fprintf(stderr, "mdb_put: %s\n", mdb_strerror(rc));
+    dprint(2, (debugfile, "hcahce_lmdb_store: mdb_put: %s\n",
+               mdb_strerror(rc)));
     mdb_txn_abort(ctx->txn);
     ctx->txn_mode = txn_uninitialized;
     ctx->txn = NULL;
@@ -234,7 +248,8 @@ hcache_lmdb_delete(void *vctx, const char *key, size_t keylen)
   rc = mdb_get_w_txn(ctx);
   if (rc != MDB_SUCCESS)
   {
-    fprintf(stderr, "txn_begin: %s\n", mdb_strerror(rc));
+    dprint(2, (debugfile, "hcache_lmdb_delete: mdb_get_w_txn: %s\n",
+               mdb_strerror(rc)));
     return rc;
   }
   rc = mdb_del(ctx->txn, ctx->db, &dkey, NULL);
@@ -242,7 +257,8 @@ hcache_lmdb_delete(void *vctx, const char *key, size_t keylen)
   {
     if (rc != MDB_NOTFOUND)
     {
-      fprintf(stderr, "mdb_del: %s\n", mdb_strerror(rc));
+      dprint(2, (debugfile, "hcache_lmdb_delete: mdb_del: %s\n",
+                 mdb_strerror(rc)));
       mdb_txn_abort(ctx->txn);
       ctx->txn_mode = txn_uninitialized;
       ctx->txn = NULL;
