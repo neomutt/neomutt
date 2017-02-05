@@ -1339,7 +1339,7 @@ static int format_line (struct line_t **lineInfo, int n, unsigned char *buf,
     {
       if (col + 1 > wrap_cols)
 	break;
-      ++col;
+      col += k;
       if (pa)
 	addch (replacement_char ());
     }
