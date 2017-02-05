@@ -79,7 +79,6 @@ typedef struct folder_t
 
 static char OldLastDir[_POSIX_PATH_MAX] = "";
 static char LastDir[_POSIX_PATH_MAX] = "";
-static char LastDirBackup[_POSIX_PATH_MAX] = "";
 
 /* Frees up the memory allocated for the local-global variables.  */
 static void destroy_state (struct browser_state *state)
@@ -1050,9 +1049,6 @@ void _mutt_select_file (char *f, size_t flen, int flags, char ***files, int *num
   
   memset (&state, 0, sizeof (struct browser_state));
 
-  if (!folder)
-    strfcpy (LastDirBackup, LastDir, sizeof (LastDirBackup));
-
 #ifdef USE_NNTP
   if (option (OPTNEWS))
   {
@@ -1133,9 +1129,9 @@ void _mutt_select_file (char *f, size_t flen, int flags, char ***files, int *num
   else
 #endif
   {
-    if (!folder)
+    if (!*LastDir)
       getcwd (LastDir, sizeof (LastDir));
-    else
+    if (folder)
     {
       /* Whether we use the tracking feature of the browser depends
        * on which sort method we chose to use. This variable is defined
@@ -2087,8 +2083,6 @@ void _mutt_select_file (char *f, size_t flen, int flags, char ***files, int *num
   
   bail:
   
-  if (!folder)
-    strfcpy (LastDir, LastDirBackup, sizeof (LastDir));
   if (GotoSwapper[0])
     GotoSwapper[0] = '\0';
 }
