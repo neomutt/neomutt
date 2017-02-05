@@ -442,7 +442,9 @@ static THREAD *find_subject (CONTEXT *ctx, THREAD *cur)
 	    (last->message->date_sent < tmp->message->date_sent))) &&
 	  tmp->message->env->real_subj &&
 	  mutt_strcmp (subjects->data, tmp->message->env->real_subj) == 0)
-	last = tmp; /* best match so far */
+      {
+        last = tmp; /* best match so far */
+      }
     }
 
     oldlist = subjects;
