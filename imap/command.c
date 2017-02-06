@@ -451,8 +451,14 @@ static void cmd_handle_fatal (IMAP_DATA* idata)
     idata->state = IMAP_DISCONNECTED;
   }
 
-  if (idata->state < IMAP_SELECTED)
-    imap_close_connection (idata);
+  imap_close_connection (idata);
+  if (!idata->recovering)
+  {
+    idata->recovering = 1;
+    if (imap_conn_find (&idata->conn->account, 0))
+      mutt_clear_error ();
+    idata->recovering = 0;
+  }
 }
 
 /* cmd_handle_untagged: fallback parser for otherwise unhandled messages. */
