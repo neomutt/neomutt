@@ -413,7 +413,7 @@ int imap_fetch_message (CONTEXT *ctx, MESSAGE *msg, int msgno)
    * fails. Thanks Sam. */
   short fetched = 0;
 
-  idata = (IMAP_DATA*) ctx->data;
+  idata = ctx->data;
   h = ctx->hdrs[msgno];
 
   if ((msg->fp = msg_cache_get (idata, h)))
@@ -629,7 +629,7 @@ int imap_append_message (CONTEXT *ctx, MESSAGE *msg)
   IMAP_MBOX mx;
   int rc;
 
-  idata = (IMAP_DATA*) ctx->data;
+  idata = ctx->data;
 
   if (imap_parse_path (ctx->path, &mx))
     return -1;
@@ -768,7 +768,7 @@ int imap_copy_messages (CONTEXT* ctx, HEADER* h, char* dest, int delete)
   int err_continue = MUTT_NO;
   int triedcreate = 0;
 
-  idata = (IMAP_DATA*) ctx->data;
+  idata = ctx->data;
 
   if (imap_parse_path (dest, &mx))
   {
@@ -777,7 +777,7 @@ int imap_copy_messages (CONTEXT* ctx, HEADER* h, char* dest, int delete)
   }
 
   /* check that the save-to folder is in the same account */
-  if (!mutt_account_match (&(CTX_DATA->conn->account), &(mx.account)))
+  if (!mutt_account_match (&(idata->conn->account), &(mx.account)))
   {
     dprint (3, (debugfile, "imap_copy_messages: %s not same server as %s\n",
       dest, ctx->path));
@@ -994,7 +994,7 @@ int imap_cache_del (IMAP_DATA* idata, HEADER* h)
 static int msg_cache_clean_cb (const char* id, body_cache_t* bcache, void* data)
 {
   unsigned int uv, uid, n;
-  IMAP_DATA* idata = (IMAP_DATA*)data;
+  IMAP_DATA* idata = data;
 
   if (sscanf (id, "%u-%u", &uv, &uid) != 2)
     return 0;
@@ -1108,7 +1108,7 @@ static int msg_fetch_header (CONTEXT* ctx, IMAP_HEADER* h, char* buf, FILE* fp)
   long bytes;
   int rc = -1; /* default now is that string isn't FETCH response*/
 
-  idata = (IMAP_DATA*) ctx->data;
+  idata = ctx->data;
 
   if (buf[0] != '*')
     return rc;

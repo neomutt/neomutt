@@ -844,43 +844,20 @@ static void alrm_handler (int sig)
 void imap_keepalive (void)
 {
   CONNECTION *conn;
-  CONTEXT *ctx = NULL;
   IMAP_DATA *idata;
+  time_t now = time(NULL);
 
-  conn = mutt_socket_head ();
-  while (conn)
+  for (conn = mutt_socket_head(); conn; conn = conn->next)
   {
     if (conn->account.type == MUTT_ACCT_TYPE_IMAP)
     {
-      int need_free = 0;
-
-      idata = (IMAP_DATA*) conn->data;
-
+      idata = conn->data;
       if (idata->state >= IMAP_AUTHENTICATED
-	  && time(NULL) >= idata->lastread + ImapKeepalive)
+          && now >= idata->lastread + ImapKeepalive)
       {
-	if (idata->ctx)
-	  ctx = idata->ctx;
-	else
-	{
-	  ctx = safe_calloc (1, sizeof (CONTEXT));
-	  ctx->data = idata;
-	  /* imap_close_mailbox will set ctx->iadata->ctx to NULL, so we can't
-	   * rely on the value of iadata->ctx to determine if this placeholder
-	   * context needs to be freed.
-	   */
-	  need_free = 1;
-	}
-	/* if the imap connection closes during this call, ctx may be invalid
-	 * after this point, and thus should not be read.
-	 */
-	imap_check_mailbox (ctx, NULL, 1);
-	if (need_free)
-	  FREE (&ctx);
+        imap_check(idata, 1);
       }
     }
-
-    conn = conn->next;
   }
 }
 
@@ -932,14 +909,16 @@ int imap_wait_keepalive (pid_t pid)
 
 void imap_allow_reopen (CONTEXT *ctx)
 {
-  if (ctx && ctx->magic == MUTT_IMAP && CTX_DATA->ctx == ctx)
-    CTX_DATA->reopen |= IMAP_REOPEN_ALLOW;
+  IMAP_DATA* idata = ctx->data;
+  if (ctx && ctx->magic == MUTT_IMAP && idata->ctx == ctx)
+    idata->reopen |= IMAP_REOPEN_ALLOW;
 }
 
 void imap_disallow_reopen (CONTEXT *ctx)
 {
-  if (ctx && ctx->magic == MUTT_IMAP && CTX_DATA->ctx == ctx)
-    CTX_DATA->reopen &= ~IMAP_REOPEN_ALLOW;
+  IMAP_DATA* idata = ctx->data;
+  if (ctx && ctx->magic == MUTT_IMAP && idata->ctx == ctx)
+    idata->reopen &= ~IMAP_REOPEN_ALLOW;
 }
 
 int imap_account_match (const ACCOUNT* a1, const ACCOUNT* a2)
