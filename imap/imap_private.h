@@ -170,6 +170,7 @@ typedef struct
 {
   /* This data is specific to a CONNECTION to an IMAP server */
   CONNECTION *conn;
+  unsigned char recovering;
   unsigned char state;
   unsigned char status;
   /* let me explain capstr: SASL needs the capability string (not bits).

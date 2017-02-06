@@ -440,7 +440,6 @@ static int cmd_status (const char *s)
 /* cmd_handle_fatal: when IMAP_DATA is in fatal state, do what we can */
 static void cmd_handle_fatal (IMAP_DATA* idata)
 {
-  static int try_reconnect = 1;
   idata->status = IMAP_FATAL;
 
   if ((idata->state >= IMAP_SELECTED) &&
@@ -453,12 +452,12 @@ static void cmd_handle_fatal (IMAP_DATA* idata)
   }
 
   imap_close_connection (idata);
-  if (try_reconnect)
+  if (!idata->recovering)
   {
-    try_reconnect = 0;
+    idata->recovering = 1;
     if (imap_conn_find (&idata->conn->account, 0))
       mutt_clear_error ();
-    try_reconnect = 1;
+    idata->recovering = 0;
   }
 }
 
