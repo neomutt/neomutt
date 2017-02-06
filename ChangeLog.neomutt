@@ -1,3 +1,19 @@
+2017-02-06  Richard Russon  <rich@flatcap.org>
+* Bug Fixes
+  - Unicode 0x202F is a non-break space too (#358) (@gahr)
+  - improve readability of find_subject() (@toogley)
+  - Import hcache-lmdb fixes from upstream (#363) (@gahr)
+  - Rework the "inbox-first" implementation to make code self-explanatory (#356) (@gahr)
+  - If possible, only redraw after gpgme has invoked pinentry (#352) (@gahr)
+  - Remove two use-after free in global hooks (#353) (@guiniol)
+  - Handle BAD as IMAP_AUTH_UNAVAIL (#351) (@gahr)
+  - Do not crash when closing a non-opened mailbox (origin/requests/github/343) (@gahr)
+  - Import hcache benchmark (@gahr)
+  - fix: bug introduced by mkdir changes (#350)
+  - change pager to allow timehook-hook to fire
+* Docs
+  - Update documentation about modify-labels-then-hide (@bbenne10)
+
 2017-01-28  Richard Russon  <rich@flatcap.org>
 * Features
   - Add option for missing subject replacement
