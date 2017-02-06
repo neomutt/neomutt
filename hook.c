@@ -113,7 +113,7 @@ int mutt_parse_hook (BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err)
     }
 
     FREE (&pattern.data);
-    memset (&pattern, 0, sizeof (pattern));
+    mutt_buffer_init(&pattern);
     pattern.data = safe_strdup (path);
   }
 #ifdef USE_COMPRESSED
@@ -138,7 +138,7 @@ int mutt_parse_hook (BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err)
     strfcpy (tmp, pattern.data, sizeof (tmp));
     mutt_check_simple (tmp, sizeof (tmp), DefaultHook);
     FREE (&pattern.data);
-    memset (&pattern, 0, sizeof (pattern));
+    mutt_buffer_init(&pattern);
     pattern.data = safe_strdup (tmp);
   }
 
@@ -147,7 +147,7 @@ int mutt_parse_hook (BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err)
     strfcpy (path, command.data, sizeof (path));
     mutt_expand_path (path, sizeof (path));
     FREE (&command.data);
-    memset (&command, 0, sizeof (command));
+    mutt_buffer_init(&command);
     command.data = safe_strdup (path);
   }
 
@@ -578,7 +578,7 @@ void mutt_timeout_hook (void)
 
   err.data = buf;
   err.dsize = sizeof (buf);
-  memset (&token, 0, sizeof (token));
+  mutt_buffer_init(&token);
 
   for (hook = Hooks; hook; hook = hook->next)
   {
@@ -613,7 +613,7 @@ void mutt_startup_shutdown_hook (int type)
 
   err.data = buf;
   err.dsize = sizeof (buf);
-  memset (&token, 0, sizeof (token));
+  mutt_buffer_init(&token);
 
   for (hook = Hooks; hook; hook = hook->next)
   {
