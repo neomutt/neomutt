@@ -12226,8 +12226,8 @@ virtual-mailboxes "My INBOX" "notmuch://?query=tag:inbox"
       </para>
 
       <para>
-        See SEARCH SYNTAX in notmuch man page. Don't forget to use
-        <quote>and</quote> and <quote>or</quote> operators in your queries.
+	See SEARCH SYNTAX in notmuch man page. Don't forget to use operators
+	(<quote>and</quote> / <quote>or</quote>) in your queries.
       </para>
 
       <para>
