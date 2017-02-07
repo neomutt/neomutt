@@ -484,7 +484,7 @@ void update_index (MUTTMENU *menu, CONTEXT *ctx, int check,
   if (option(OPTUNCOLLAPSENEW) && oldcount && check != MUTT_REOPENED
       && ((Sort & SORT_MASK) == SORT_THREADS))
   {
-    save_new = (HEADER **) safe_malloc (sizeof (HEADER *) * (ctx->msgcount - oldcount));
+    save_new = safe_malloc (sizeof (HEADER *) * (ctx->msgcount - oldcount));
     for (j = oldcount; j < ctx->msgcount; j++)
       save_new[j-oldcount] = ctx->hdrs[j];
   }

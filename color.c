@@ -167,7 +167,7 @@ static void mutt_free_color_line(COLOR_LINE **l,
 void ci_start_color (void)
 {
   memset (ColorDefs, A_NORMAL, sizeof (int) * MT_COLOR_MAX);
-  ColorQuote = (int *) safe_malloc (COLOR_QUOTE_INIT * sizeof (int));
+  ColorQuote = safe_malloc (COLOR_QUOTE_INIT * sizeof (int));
   memset (ColorQuote, A_NORMAL, sizeof (int) * COLOR_QUOTE_INIT);
   ColorQuoteSize = COLOR_QUOTE_INIT;
   ColorQuoteUsed = 0;
@@ -267,7 +267,7 @@ int mutt_alloc_color (int fg, int bg)
     i++;
   }
 
-  p = (COLOR_LIST *) safe_malloc (sizeof (COLOR_LIST));
+  p = safe_malloc (sizeof (COLOR_LIST));
   p->next = ColorList;
   ColorList = p;
 

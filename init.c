@@ -2310,7 +2310,7 @@ static int parse_set (BUFFER *tmp, BUFFER *s, unsigned long data, BUFFER *err)
 	  }
 	}
 	  
-	rx = (regex_t *) safe_malloc (sizeof (regex_t));
+	rx = safe_malloc (sizeof (regex_t));
 	if ((e = REGCOMP (rx, p, flags)) != 0)
 	{
 	  regerror (e, rx, err->data, err->dsize);

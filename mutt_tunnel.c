@@ -67,7 +67,7 @@ static int tunnel_socket_open (CONNECTION *conn)
   int pin[2], pout[2];
   int devnull;
 
-  tunnel = (TUNNEL_DATA*) safe_malloc (sizeof (TUNNEL_DATA));
+  tunnel = safe_malloc (sizeof (TUNNEL_DATA));
   conn->sockdata = tunnel;
 
   mutt_message (_("Connecting with \"%s\"..."), Tunnel);

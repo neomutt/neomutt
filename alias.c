@@ -539,10 +539,10 @@ int mutt_alias_complete (char *s, size_t buflen)
 	if (a->name && (strstr (a->name, s) == a->name))
 	{
 	  if (!a_list)  /* init */
-	    a_cur = a_list = (ALIAS *) safe_malloc (sizeof (ALIAS));
+	    a_cur = a_list = safe_malloc (sizeof (ALIAS));
 	  else
 	  {
-	    a_cur->next = (ALIAS *) safe_malloc (sizeof (ALIAS));
+	    a_cur->next = safe_malloc (sizeof (ALIAS));
 	    a_cur = a_cur->next;
 	  }
 	  memcpy (a_cur, a, sizeof (ALIAS));

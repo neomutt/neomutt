@@ -1503,7 +1503,7 @@ static char *openssl_md_to_smime_micalg(char *md)
   if (mutt_strncasecmp ("sha", md, 3) == 0)
   {
     l = strlen (md) + 2;
-    micalg = (char *)safe_malloc (l);
+    micalg = safe_malloc (l);
     snprintf (micalg, l, "sha-%s", md +3);
   }
   else
