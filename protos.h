@@ -71,12 +71,6 @@ int _mutt_aside_thread (HEADER *, short, short);
 #define mutt_thread_next_unread(x,y) _mutt_traverse_thread(x,y,MUTT_THREAD_NEXT_UNREAD)
 int _mutt_traverse_thread (CONTEXT *ctx, HEADER *hdr, int flag);
 
-
-#define mutt_new_parameter() safe_calloc (1, sizeof (PARAMETER))
-#define mutt_new_header() safe_calloc (1, sizeof (HEADER))
-#define mutt_new_envelope() safe_calloc (1, sizeof (ENVELOPE))
-#define mutt_new_enter_state() safe_calloc (1, sizeof (ENTER_STATE))
-
 typedef const char * format_t (char *, size_t, size_t, int, char, const char *, const char *, const char *, const char *, unsigned long, format_flag);
 
 void mutt_FormatString (char *, size_t, size_t, int, const char *, format_t *, unsigned long, format_flag);

@@ -53,6 +53,18 @@
 #include <sys/types.h>
 #include <utime.h>
 
+/*
+ * External definitions for inline functions in mutt.h
+ */
+extern LIST *mutt_new_list();
+extern HEAP *mutt_new_heap();
+extern RX_LIST *mutt_new_rx_list();
+extern SPAM_LIST *mutt_new_spam_list();
+extern PARAMETER *mutt_new_parameter();
+extern HEADER *mutt_new_header();
+extern ENVELOPE *mutt_new_envelope();
+extern ENTER_STATE *mutt_new_enter_state();
+
 static const char *xdg_env_vars[] =
 {
   [kXDGConfigHome] = "XDG_CONFIG_HOME",
@@ -67,7 +79,7 @@ static const char *xdg_defaults[] =
 
 BODY *mutt_new_body (void)
 {
-  BODY *p = (BODY *) safe_calloc (1, sizeof (BODY));
+  BODY *p = safe_calloc (1, sizeof (BODY));
     
   p->disposition = DISPATTACH;
   p->use_disp = 1;

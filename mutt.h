@@ -656,10 +656,26 @@ typedef struct spam_list_t
   struct spam_list_t *next;
 } SPAM_LIST;
 
-#define mutt_new_list() safe_calloc (1, sizeof (LIST))
-#define mutt_new_heap() safe_calloc(1, sizeof(HEAP))
-#define mutt_new_rx_list() safe_calloc (1, sizeof (RX_LIST))
-#define mutt_new_spam_list() safe_calloc (1, sizeof (SPAM_LIST))
+inline LIST *mutt_new_list()
+{
+  return safe_calloc (1, sizeof (LIST));
+}
+
+inline HEAP *mutt_new_heap()
+{
+  return safe_calloc (1, sizeof (HEAP));
+}
+
+inline RX_LIST *mutt_new_rx_list()
+{
+  return safe_calloc (1, sizeof (RX_LIST));
+}
+
+inline SPAM_LIST *mutt_new_spam_list()
+{
+  return safe_calloc (1, sizeof (SPAM_LIST));
+}
+
 void mutt_free_list (LIST **);
 void mutt_free_rx_list (RX_LIST **);
 void mutt_free_spam_list (SPAM_LIST **);
@@ -728,12 +744,22 @@ typedef struct envelope
   unsigned int refs_changed : 1; /* References changed to break thread */
 } ENVELOPE;
 
+inline ENVELOPE *mutt_new_envelope()
+{
+    return safe_calloc (1, sizeof (ENVELOPE));
+}
+
 typedef struct parameter
 {
   char *attribute;
   char *value;
   struct parameter *next;
 } PARAMETER;
+
+inline PARAMETER *mutt_new_parameter()
+{
+    return safe_calloc (1, sizeof (PARAMETER));
+}
 
 /* Information that helps in determing the Content-* of an attachment */
 typedef struct content
@@ -914,6 +940,11 @@ typedef struct header
   char *maildir_flags;		/* unknown maildir flags */
 } HEADER;
 
+inline HEADER *mutt_new_header()
+{
+    return safe_calloc (1, sizeof (HEADER));
+}
+
 struct mutt_thread
 {
   unsigned int fake_thread : 1;
@@ -1092,6 +1123,11 @@ typedef struct
   size_t begin;
   int	 tabs;
 } ENTER_STATE;
+
+inline ENTER_STATE *mutt_new_enter_state()
+{
+    return safe_calloc (1, sizeof (ENTER_STATE));
+}
 
 /* flags for the STATE struct */
 #define MUTT_DISPLAY       (1<<0) /* output is displayed to the user */
