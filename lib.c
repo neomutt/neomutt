@@ -148,7 +148,7 @@ void *safe_malloc (size_t siz)
 
   if (siz == 0)
     return 0;
-  if ((p = (void *) malloc (siz)) == 0)	/* __MEM_CHECKED__ */
+  if ((p = malloc (siz)) == 0)	/* __MEM_CHECKED__ */
   {
     mutt_error _("Out of memory!");
     sleep (1);
@@ -173,11 +173,11 @@ void safe_realloc (void *ptr, size_t siz)
   }
 
   if (*p)
-    r = (void *) realloc (*p, siz);	/* __MEM_CHECKED__ */
+    r = realloc (*p, siz);	/* __MEM_CHECKED__ */
   else
   {
     /* realloc(NULL, nbytes) doesn't seem to work under SunOS 4.1.x  --- __MEM_CHECKED__ */
-    r = (void *) malloc (siz);		/* __MEM_CHECKED__ */
+    r = malloc (siz);		/* __MEM_CHECKED__ */
   }
 
   if (!r)
@@ -239,7 +239,7 @@ char *safe_strdup (const char *s)
   if (!s || !*s)
     return 0;
   l = strlen (s) + 1;
-  p = (char *)safe_malloc (l);
+  p = safe_malloc (l);
   memcpy (p, s, l);
   return (p);
 }

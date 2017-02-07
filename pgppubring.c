@@ -161,7 +161,7 @@ static char *binary_fingerprint_to_string (unsigned char *buff, size_t length)
   int i;
   char *fingerprint, *pf;
 
-  pf = fingerprint = (char *)safe_malloc ((length * 2) + 1);
+  pf = fingerprint = safe_malloc ((length * 2) + 1);
 
   for (i = 0; i < length; i++)
   {

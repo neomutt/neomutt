@@ -345,7 +345,7 @@ int mutt_sasl_interact (sasl_interact_t* interaction)
  *   for the read/write methods. */
 void mutt_sasl_setup_conn (CONNECTION* conn, sasl_conn_t* saslconn)
 {
-  SASL_DATA* sasldata = (SASL_DATA*) safe_malloc (sizeof (SASL_DATA));
+  SASL_DATA* sasldata = safe_malloc (sizeof (SASL_DATA));
   /* work around sasl_getprop aliasing issues */
   const void* tmp;
 

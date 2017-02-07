@@ -362,8 +362,8 @@ char *alloca ();
   (size1 && string1 <= (ptr) && (ptr) <= string1 + size1)
 
 /* (Re)Allocate N items of type T using malloc, or fail.  */
-#define TALLOC(n, t) ((t *) malloc ((n) * sizeof (t)))
-#define RETALLOC(addr, n, t) ((addr) = (t *) realloc (addr, (n) * sizeof (t)))
+#define TALLOC(n, t) (malloc ((n) * sizeof (t)))
+#define RETALLOC(addr, n, t) ((addr) = realloc (addr, (n) * sizeof (t)))
 #define RETALLOC_IF(addr, n, t) \
   if (addr) RETALLOC((addr), (n), t); else (addr) = TALLOC ((n), t)
 #define REGEX_TALLOC(n, t) ((t *) REGEX_ALLOCATE ((n) * sizeof (t)))
@@ -1149,7 +1149,7 @@ typedef struct
 #ifdef MATCH_MAY_ALLOCATE
 #define INIT_FAIL_STACK()						\
   do {									\
-    fail_stack.stack = (fail_stack_elt_t *)				\
+    fail_stack.stack = 							\
       REGEX_ALLOCATE_STACK (INIT_FAILURE_ALLOC * sizeof (fail_stack_elt_t));	\
 									\
     if (fail_stack.stack == NULL)					\
@@ -1180,7 +1180,7 @@ typedef struct
 #define DOUBLE_FAIL_STACK(fail_stack)					\
   ((fail_stack).size > (unsigned) (re_max_failures * MAX_FAILURE_ITEMS)	\
    ? 0									\
-   : ((fail_stack).stack = (fail_stack_elt_t *)				\
+   : ((fail_stack).stack = 						\
         REGEX_REALLOCATE_STACK ((fail_stack).stack, 			\
           (fail_stack).size * sizeof (fail_stack_elt_t),		\
           ((fail_stack).size << 1) * sizeof (fail_stack_elt_t)),	\
@@ -2900,14 +2900,12 @@ regex_compile (pattern, size, syntax, bufp)
 					      * sizeof (fail_stack_elt_t)));
 #else /* not emacs */
 	if (! fail_stack.stack)
-	  fail_stack.stack
-	    = (fail_stack_elt_t *) malloc (fail_stack.size	/* __MEM_CHECKED__ */
-					   * sizeof (fail_stack_elt_t));
+	  fail_stack.stack = malloc (fail_stack.size	/* __MEM_CHECKED__ */
+				     * sizeof (fail_stack_elt_t));
 	else
-	  fail_stack.stack
-	    = (fail_stack_elt_t *) realloc (fail_stack.stack,	/* __MEM_CHECKED__ */
-					    (fail_stack.size
-					     * sizeof (fail_stack_elt_t)));
+	  fail_stack.stack = realloc (fail_stack.stack,	/* __MEM_CHECKED__ */
+				      (fail_stack.size
+				      * sizeof (fail_stack_elt_t)));
 #endif /* not emacs */
       }
 
@@ -5484,12 +5482,12 @@ re_comp (s)
 
   if (!re_comp_buf.buffer)
     {
-      re_comp_buf.buffer = (unsigned char *) malloc (200);	/* __MEM_CHECKED__ */
+      re_comp_buf.buffer = malloc (200);	/* __MEM_CHECKED__ */
       if (re_comp_buf.buffer == NULL)
         return gettext (re_error_msgid[(int) REG_ESPACE]);
       re_comp_buf.allocated = 200;
 
-      re_comp_buf.fastmap = (char *) malloc (1 << BYTEWIDTH);	/* __MEM_CHECKED__ */
+      re_comp_buf.fastmap = malloc (1 << BYTEWIDTH);	/* __MEM_CHECKED__ */
       if (re_comp_buf.fastmap == NULL)
 	return gettext (re_error_msgid[(int) REG_ESPACE]);
     }
@@ -5588,9 +5586,8 @@ regcomp (preg, pattern, cflags)
     {
       unsigned i;
 
-      preg->translate
-	= (RE_TRANSLATE_TYPE) malloc (CHAR_SET_SIZE	/* __MEM_CHECKED__ */
-				      * sizeof (*(RE_TRANSLATE_TYPE)0));
+      preg->translate = malloc (CHAR_SET_SIZE	/* __MEM_CHECKED__ */
+				* sizeof (*(RE_TRANSLATE_TYPE)0));
       if (preg->translate == NULL)
         return (int) REG_ESPACE;
 

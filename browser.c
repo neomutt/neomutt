@@ -1649,7 +1649,7 @@ void _mutt_select_file (char *f, size_t flen, int flags, char ***files, int *num
 	strfcpy (buf, NONULL(Mask.pattern), sizeof (buf));
 	if (mutt_get_field (_("File Mask: "), buf, sizeof (buf), 0) == 0)
 	{
-	  regex_t *rx = (regex_t *) safe_malloc (sizeof (regex_t));
+	  regex_t *rx = safe_malloc (sizeof (regex_t));
 	  char *s = buf;
 	  int not = 0, err;
 
@@ -1966,7 +1966,7 @@ void _mutt_select_file (char *f, size_t flen, int flags, char ***files, int *num
 	{
 	  NNTP_SERVER *nserv = CurrentNewsSrv;
 	  NNTP_DATA *nntp_data;
-	  regex_t *rx = (regex_t *) safe_malloc (sizeof (regex_t));
+	  regex_t *rx = safe_malloc (sizeof (regex_t));
 	  char *s = buf;
 	  int rc, j = menu->current;
 

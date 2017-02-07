@@ -105,7 +105,7 @@ int hash_insert (HASH * table, const char *key, void *data, int allow_dup)
   struct hash_elem *ptr;
   unsigned int h;
 
-  ptr = (struct hash_elem *) safe_malloc (sizeof (struct hash_elem));
+  ptr = safe_malloc (sizeof (struct hash_elem));
   h = table->hash_string ((unsigned char *) key, table->nelem);
   ptr->key = key;
   ptr->data = data;

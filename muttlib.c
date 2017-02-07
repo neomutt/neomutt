@@ -371,7 +371,7 @@ LIST *mutt_copy_list (LIST *p)
 
   for (; p; p = p->next)
   {
-    t = (LIST *) safe_malloc (sizeof (LIST));
+    t = safe_malloc (sizeof (LIST));
     t->data = safe_strdup (p->data);
     t->next = NULL;
     if (l)
