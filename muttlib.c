@@ -206,8 +206,8 @@ void mutt_free_body (BODY **p)
     {
       if (b->unlink)
 	unlink (b->filename);
-      dprint (1, (debugfile, "mutt_free_body: %sunlinking %s.\n",
-	    b->unlink ? "" : "not ", b->filename));
+      mutt_debug (1, "mutt_free_body: %sunlinking %s.\n",
+                  b->unlink ? "" : "not ", b->filename);
     }
 
     FREE (&b->filename);
@@ -945,11 +945,13 @@ void _mutt_mktemp (char *s, size_t slen, const char *prefix, const char *suffix,
       (int) getuid (), (int) getpid (), mutt_rand64(),
       suffix ? "." : "", NONULL (suffix));
   if (n >= slen)
-    dprint (1, (debugfile, "%s:%d: ERROR: insufficient buffer space to hold temporary filename! slen=%zu but need %zu\n",
-	    src, line, slen, n));
-  dprint (3, (debugfile, "%s:%d: mutt_mktemp returns \"%s\".\n", src, line, s));
+    mutt_debug (1, "%s:%d: ERROR: insufficient buffer space to hold temporary "
+                "filename! slen=%zu but need %zu\n",
+                src, line, slen, n);
+  mutt_debug (3, "%s:%d: mutt_mktemp returns \"%s\".\n", src, line, s);
   if (unlink (s) && errno != ENOENT)
-    dprint (1, (debugfile, "%s:%d: ERROR: unlink(\"%s\"): %s (errno %d)\n", src, line, s, strerror (errno), errno));
+    mutt_debug (1, "%s:%d: ERROR: unlink(\"%s\"): %s (errno %d)\n",
+                src, line, s, strerror (errno), errno);
 }
 
 void mutt_free_alias (ALIAS **p)
@@ -1267,7 +1269,7 @@ void mutt_FormatString (char *dest,		/* output buffer */
       int     i = 0;
 #endif
 
-      dprint(3, (debugfile, "fmtpipe = %s\n", src));
+      mutt_debug (3, "fmtpipe = %s\n", src);
 
       strncpy(srccopy, src, n);
       srccopy[n-1] = '\0';
@@ -1283,11 +1285,11 @@ void mutt_FormatString (char *dest,		/* output buffer */
         char *p;
 
         /* Extract the command name and copy to command line */
-        dprint(3, (debugfile, "fmtpipe +++: %s\n", srcbuf->dptr));
+        mutt_debug (3, "fmtpipe +++: %s\n", srcbuf->dptr);
         if (word->data)
           *word->data = '\0';
         mutt_extract_token(word, srcbuf, 0);
-        dprint(3, (debugfile, "fmtpipe %2d: %s\n", i++, word->data));
+        mutt_debug (3, "fmtpipe %2d: %s\n", i++, word->data);
         mutt_buffer_addch(command, '\'');
         mutt_FormatString(buf, sizeof(buf), 0, cols, word->data, callback, data,
                           flags | MUTT_FORMAT_NOFILTER);
@@ -1306,7 +1308,7 @@ void mutt_FormatString (char *dest,		/* output buffer */
         mutt_buffer_addch(command, ' ');
       } while (MoreArgs(srcbuf));
 
-      dprint(3, (debugfile, "fmtpipe > %s\n", command->data));
+      mutt_debug (3, "fmtpipe > %s\n", command->data);
 
       col -= wlen;	/* reset to passed in value */
       wptr = dest;      /* reset write ptr */
@@ -1319,12 +1321,12 @@ void mutt_FormatString (char *dest,		/* output buffer */
         safe_fclose (&filter);
 	rc = mutt_wait_filter(pid);
 	if (rc != 0)
-	  dprint(1, (debugfile, "format pipe command exited code %d\n", rc));
+	  mutt_debug (1, "format pipe command exited code %d\n", rc);
 	if (n > 0) {
 	  dest[n] = 0;
 	  while ((n > 0) && (dest[n-1] == '\n' || dest[n-1] == '\r'))
 	    dest[--n] = '\0';
-	  dprint(3, (debugfile, "fmtpipe < %s\n", dest));
+	  mutt_debug (3, "fmtpipe < %s\n", dest);
 
 	  /* If the result ends with '%', this indicates that the filter
 	   * generated %-tokens that mutt can expand.  Eliminate the '%'
@@ -1353,7 +1355,8 @@ void mutt_FormatString (char *dest,		/* output buffer */
 	else
 	{
 	  /* read error */
-	  dprint(1, (debugfile, "error reading from fmtpipe: %s (errno=%d)\n", strerror(errno), errno));
+	  mutt_debug (1, "error reading from fmtpipe: %s (errno=%d)\n",
+	              strerror(errno), errno);
 	  *wptr = 0;
 	}
       }
@@ -2126,7 +2129,7 @@ int mutt_match_rx_list (const char *s, RX_LIST *l)
   {
     if (regexec (l->rx->rx, s, (size_t) 0, (regmatch_t *) 0, (int) 0) == 0)
     {
-      dprint (5, (debugfile, "mutt_match_rx_list: %s matches %s\n", s, l->rx->pattern));
+      mutt_debug (5, "mutt_match_rx_list: %s matches %s\n", s, l->rx->pattern);
       return 1;
     }
   }
@@ -2162,8 +2165,8 @@ int mutt_match_spam_list (const char *s, SPAM_LIST *l, char *text, int textsize)
     /* Does this pattern match? */
     if (regexec (l->rx->rx, s, (size_t) l->nmatch, (regmatch_t *) pmatch, (int) 0) == 0)
     {
-      dprint (5, (debugfile, "mutt_match_spam_list: %s matches %s\n", s, l->rx->pattern));
-      dprint (5, (debugfile, "mutt_match_spam_list: %d subs\n", (int)l->rx->rx->re_nsub));
+      mutt_debug (5, "mutt_match_spam_list: %s matches %s\n", s, l->rx->pattern);
+      mutt_debug (5, "mutt_match_spam_list: %d subs\n", (int)l->rx->rx->re_nsub);
 
       /* Copy template into text, with substitutions. */
       for (p = l->template; *p && tlen < textsize - 1;)
@@ -2200,7 +2203,7 @@ int mutt_match_spam_list (const char *s, SPAM_LIST *l, char *text, int textsize)
        * the validity of the text pointer. */
       if (tlen < textsize) {
 	text[tlen] = '\0';
-	dprint (5, (debugfile, "mutt_match_spam_list: \"%s\"\n", text));
+	mutt_debug (5, "mutt_match_spam_list: \"%s\"\n", text);
       }
       return 1;
     }

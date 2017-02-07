@@ -342,8 +342,7 @@ static int nntp_auth (NNTP_SERVER *nserv)
       p++;
     }
 
-    dprint (1, (debugfile,
-		"nntp_auth: available methods: %s\n", nserv->authenticators));
+    mutt_debug (1, "nntp_auth: available methods: %s\n", nserv->authenticators);
     a = authenticators;
     while (1)
     {
@@ -375,7 +374,7 @@ static int nntp_auth (NNTP_SERVER *nserv)
 	if (*m != '\0' && *m != ' ')
 	  continue;
       }
-      dprint (1, (debugfile, "nntp_auth: trying method %s\n", method));
+      mutt_debug (1, "nntp_auth: trying method %s\n", method);
 
       /* AUTHINFO USER authentication */
       if (!strcmp (method, "USER"))
@@ -395,8 +394,7 @@ static int nntp_auth (NNTP_SERVER *nserv)
 	{
 #ifdef DEBUG
 	  if (debuglevel < MUTT_SOCK_LOG_FULL)
-	    dprint (MUTT_SOCK_LOG_CMD, (debugfile,
-		    "%d> AUTHINFO PASS *\n", conn->fd));
+	    mutt_debug (MUTT_SOCK_LOG_CMD, "%d> AUTHINFO PASS *\n", conn->fd);
 #endif
 	  snprintf (buf, sizeof (buf), "AUTHINFO PASS %s\r\n",
 		    conn->account.pass);
@@ -427,8 +425,7 @@ static int nntp_auth (NNTP_SERVER *nserv)
 
 	if (mutt_sasl_client_new (conn, &saslconn) < 0)
 	{
-	  dprint (1, (debugfile,
-		  "nntp_auth: error allocating SASL connection.\n"));
+	  mutt_debug (1, "nntp_auth: error allocating SASL connection.\n");
 	  continue;
 	}
 
@@ -443,8 +440,7 @@ static int nntp_auth (NNTP_SERVER *nserv)
 	if (rc != SASL_OK && rc != SASL_CONTINUE)
 	{
 	  sasl_dispose (&saslconn);
-	  dprint (1, (debugfile,
-		  "nntp_auth: error starting SASL authentication exchange.\n"));
+	  mutt_debug (1, "nntp_auth: error starting SASL authentication exchange.\n");
 	  continue;
 	}
 
@@ -468,7 +464,7 @@ static int nntp_auth (NNTP_SERVER *nserv)
 		  *p = '.';
 	      }
 	      *p = '\0';
-	      dprint (1, (debugfile, "SASL> %s\n", tmp));
+	      mutt_debug (1, "SASL> %s\n", tmp);
 	    }
 #endif
 
@@ -478,8 +474,7 @@ static int nntp_auth (NNTP_SERVER *nserv)
 	    if (sasl_encode64 (client_out, client_len,
 		buf + len, sizeof (buf) - len, &len) != SASL_OK)
 	    {
-	      dprint (1, (debugfile,
-		      "nntp_auth: error base64-encoding client response.\n"));
+	      mutt_debug (1, "nntp_auth: error base64-encoding client response.\n");
 	      break;
 	    }
 	  }
@@ -489,10 +484,10 @@ static int nntp_auth (NNTP_SERVER *nserv)
 	  if (debuglevel < MUTT_SOCK_LOG_FULL)
 	  {
 	    if (strchr (buf, ' '))
-	      dprint (MUTT_SOCK_LOG_CMD, (debugfile, "%d> AUTHINFO SASL %s%s\n",
-		      conn->fd, method, client_len ? " sasl_data" : ""));
+	      mutt_debug (MUTT_SOCK_LOG_CMD, "%d> AUTHINFO SASL %s%s\n",
+		      conn->fd, method, client_len ? " sasl_data" : "");
 	    else
-	      dprint (MUTT_SOCK_LOG_CMD, (debugfile, "%d> sasl_data\n", conn->fd));
+	      mutt_debug (MUTT_SOCK_LOG_CMD, "%d> sasl_data\n", conn->fd);
 	  }
 #endif
 	  client_len = 0;
@@ -504,7 +499,7 @@ static int nntp_auth (NNTP_SERVER *nserv)
 	  {
 #ifdef DEBUG
 	    if (debuglevel < MUTT_SOCK_LOG_FULL)
-	      dprint (MUTT_SOCK_LOG_CMD, (debugfile, "%d< %s\n", conn->fd, inbuf));
+	      mutt_debug (MUTT_SOCK_LOG_CMD, "%d< %s\n", conn->fd, inbuf);
 #endif
 	    break;
 	  }
@@ -512,8 +507,8 @@ static int nntp_auth (NNTP_SERVER *nserv)
 	  if (debuglevel < MUTT_SOCK_LOG_FULL)
 	  {
 	    inbuf[3] = '\0';
-	    dprint (MUTT_SOCK_LOG_CMD, (debugfile,
-		    "%d< %s sasl_data\n", conn->fd, inbuf));
+	    mutt_debug (MUTT_SOCK_LOG_CMD, "%d< %s sasl_data\n",
+	                conn->fd, inbuf);
 	  }
 #endif
 
@@ -522,8 +517,7 @@ static int nntp_auth (NNTP_SERVER *nserv)
 	  else if (sasl_decode64 (inbuf + 4, strlen (inbuf + 4),
 		   buf, sizeof (buf) - 1, &len) != SASL_OK)
 	  {
-	    dprint (1, (debugfile,
-		    "nntp_auth: error base64-decoding server response.\n"));
+	    mutt_debug (1, "nntp_auth: error base64-decoding server response.\n");
 	    break;
 	  }
 #ifdef DEBUG
@@ -537,7 +531,7 @@ static int nntp_auth (NNTP_SERVER *nserv)
 		*p = '.';
 	    }
 	    *p = '\0';
-	    dprint (1, (debugfile, "SASL< %s\n", tmp));
+	    mutt_debug (1, "SASL< %s\n", tmp);
 	  }
 #endif
 
@@ -913,7 +907,7 @@ static int fetch_description (char *line, void *data)
   if (nntp_data && mutt_strcmp (desc, nntp_data->desc))
   {
     mutt_str_replace (&nntp_data->desc, desc);
-    dprint (2, (debugfile, "group: %s, desc: %s\n", line, desc));
+    mutt_debug (2, "group: %s, desc: %s\n", line, desc);
   }
   return 0;
 }
@@ -1048,7 +1042,7 @@ static int parse_overview_line (char *line, void *data)
     *field++ = '\0';
   if (sscanf (line, ANUM, &anum) != 1)
     return 0;
-  dprint (2, (debugfile, "parse_overview_line: " ANUM "\n", anum));
+  mutt_debug (2, "parse_overview_line: " ANUM "\n", anum);
 
   /* out of bounds */
   if (anum < fc->first || anum > fc->last)
@@ -1120,8 +1114,7 @@ static int parse_overview_line (char *line, void *data)
     hdata = mutt_hcache_fetch (fc->hc, buf, strlen(buf));
     if (hdata)
     {
-      dprint (2, (debugfile,
-		  "parse_overview_line: mutt_hcache_fetch %s\n", buf));
+      mutt_debug (2, "parse_overview_line: mutt_hcache_fetch %s\n", buf);
       mutt_free_header (&hdr);
       ctx->hdrs[ctx->msgcount] =
       hdr = mutt_hcache_restore (hdata);
@@ -1135,8 +1128,7 @@ static int parse_overview_line (char *line, void *data)
       {
 	if (nntp_data->bcache)
 	{
-	  dprint (2, (debugfile,
-		      "parse_overview_line: mutt_bcache_del %s\n", buf));
+	  mutt_debug (2, "parse_overview_line: mutt_bcache_del %s\n", buf);
 	  mutt_bcache_del (nntp_data->bcache, buf);
 	}
 	save = 0;
@@ -1146,8 +1138,7 @@ static int parse_overview_line (char *line, void *data)
     /* not chached yet, store header */
     else
     {
-      dprint (2, (debugfile,
-		  "parse_overview_line: mutt_hcache_store %s\n", buf));
+      mutt_debug (2, "parse_overview_line: mutt_hcache_store %s\n", buf);
       mutt_hcache_store (fc->hc, buf, strlen(buf), hdr, 0);
     }
   }
@@ -1239,16 +1230,14 @@ static int nntp_fetch_headers (CONTEXT *ctx, void *hc,
 	snprintf (buf, sizeof (buf), "%d", current);
 	if (nntp_data->bcache)
 	{
-	  dprint (2, (debugfile,
-		      "nntp_fetch_headers: mutt_bcache_del %s\n", buf));
+	  mutt_debug (2, "nntp_fetch_headers: mutt_bcache_del %s\n", buf);
 	  mutt_bcache_del (nntp_data->bcache, buf);
 	}
 
 #ifdef USE_HCACHE
 	if (fc.hc)
 	{
-	  dprint (2, (debugfile,
-		      "nntp_fetch_headers: mutt_hcache_delete %s\n", buf));
+	  mutt_debug (2, "nntp_fetch_headers: mutt_hcache_delete %s\n", buf);
 	  mutt_hcache_delete (fc.hc, buf, strlen(buf));
 	}
 #endif
@@ -1285,8 +1274,7 @@ static int nntp_fetch_headers (CONTEXT *ctx, void *hc,
     hdata = mutt_hcache_fetch (fc.hc, buf, strlen(buf));
     if (hdata)
     {
-      dprint (2, (debugfile,
-		  "nntp_fetch_headers: mutt_hcache_fetch %s\n", buf));
+      mutt_debug (2, "nntp_fetch_headers: mutt_hcache_fetch %s\n", buf);
       ctx->hdrs[ctx->msgcount] =
       hdr = mutt_hcache_restore (hdata);
       mutt_hcache_free (fc.hc, &hdata);
@@ -1298,8 +1286,7 @@ static int nntp_fetch_headers (CONTEXT *ctx, void *hc,
 	mutt_free_header (&hdr);
 	if (nntp_data->bcache)
 	{
-	  dprint (2, (debugfile,
-		      "nntp_fetch_headers: mutt_bcache_del %s\n", buf));
+	  mutt_debug (2, "nntp_fetch_headers: mutt_bcache_del %s\n", buf);
 	  mutt_bcache_del (nntp_data->bcache, buf);
 	}
 	continue;
@@ -1361,8 +1348,7 @@ static int nntp_fetch_headers (CONTEXT *ctx, void *hc,
 	if (nntp_data->bcache)
 	{
 	  snprintf (buf, sizeof (buf), "%d", current);
-	  dprint (2, (debugfile,
-		      "nntp_fetch_headers: mutt_bcache_del %s\n", buf));
+	  mutt_debug (2, "nntp_fetch_headers: mutt_bcache_del %s\n", buf);
 	  mutt_bcache_del (nntp_data->bcache, buf);
 	}
 	rc = 0;
@@ -1786,7 +1772,7 @@ int nntp_sync_mailbox (CONTEXT *ctx, int *index_hint)
     snprintf (buf, sizeof (buf), "%d", NHDR (hdr)->article_num);
     if (nntp_data->bcache && hdr->deleted)
     {
-      dprint (2, (debugfile, "nntp_sync_mailbox: mutt_bcache_del %s\n", buf));
+      mutt_debug (2, "nntp_sync_mailbox: mutt_bcache_del %s\n", buf);
       mutt_bcache_del (nntp_data->bcache, buf);
     }
 
@@ -1795,7 +1781,7 @@ int nntp_sync_mailbox (CONTEXT *ctx, int *index_hint)
     {
       if (hdr->deleted && !hdr->read)
 	nntp_data->unread--;
-      dprint (2, (debugfile, "nntp_sync_mailbox: mutt_hcache_store %s\n", buf));
+      mutt_debug (2, "nntp_sync_mailbox: mutt_hcache_store %s\n", buf);
       mutt_hcache_store (hc, buf, strlen(buf), hdr, 0);
     }
 #endif
@@ -1857,7 +1843,7 @@ int nntp_date (NNTP_SERVER *nserv, time_t *now)
       *now = timegm (&tm);
       if (*now >= 0)
       {
-	dprint (1, (debugfile, "nntp_date: server time is %d\n", *now));
+	mutt_debug (1, "nntp_date: server time is %d\n", *now);
 	return 0;
       }
     }
@@ -2045,8 +2031,7 @@ int nntp_check_mailbox (CONTEXT *ctx, int *index_hint)
 	{
 	  int deleted;
 
-	  dprint (2, (debugfile,
-		      "nntp_check_mailbox: mutt_hcache_fetch %s\n", buf));
+	  mutt_debug (2, "nntp_check_mailbox: mutt_hcache_fetch %s\n", buf);
 	  hdr = mutt_hcache_restore (hdata);
 	  mutt_hcache_free (hc, &hdata);
 	  hdr->data = 0;
@@ -2090,8 +2075,7 @@ int nntp_check_mailbox (CONTEXT *ctx, int *index_hint)
       hdata = mutt_hcache_fetch (hc, buf, strlen(buf));
       if (hdata)
       {
-	dprint (2, (debugfile,
-		    "nntp_check_mailbox: mutt_hcache_fetch %s\n", buf));
+	mutt_debug (2, "nntp_check_mailbox: mutt_hcache_fetch %s\n", buf);
 	if (ctx->msgcount >= ctx->hdrmax)
 	  mx_alloc_memory (ctx);
 
@@ -2104,8 +2088,7 @@ int nntp_check_mailbox (CONTEXT *ctx, int *index_hint)
 	  mutt_free_header (&hdr);
 	  if (nntp_data->bcache)
 	  {
-	    dprint (2, (debugfile,
-			"nntp_check_mailbox: mutt_bcache_del %s\n", buf));
+	    mutt_debug (2, "nntp_check_mailbox: mutt_bcache_del %s\n", buf);
 	    mutt_bcache_del (nntp_data->bcache, buf);
 	  }
 	  continue;

@@ -429,7 +429,7 @@ int pop_query_d (POP_DATA *pop_data, char *buf, size_t buflen, char *msg)
     if (msg)
     {
       dbg = MUTT_SOCK_LOG_FULL;
-      dprint (MUTT_SOCK_LOG_CMD, (debugfile, "> %s", msg));
+      mutt_debug (MUTT_SOCK_LOG_CMD, "> %s", msg);
     }
 #endif
 

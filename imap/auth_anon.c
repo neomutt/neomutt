@@ -50,7 +50,7 @@ imap_auth_res_t imap_auth_anon (IMAP_DATA* idata, const char* method)
 
   if (rc != IMAP_CMD_RESPOND)
   {
-    dprint (1, (debugfile, "Invalid response from server.\n"));
+    mutt_debug (1, "Invalid response from server.\n");
     goto bail;
   }
 
@@ -62,7 +62,7 @@ imap_auth_res_t imap_auth_anon (IMAP_DATA* idata, const char* method)
   
   if (rc != IMAP_CMD_OK)
   {
-    dprint (1, (debugfile, "Error receiving server response.\n"));
+    mutt_debug (1, "Error receiving server response.\n");
     goto bail;
   }
 

@@ -129,31 +129,16 @@ static inline int is_email_wsp(char c)
 extern void (*mutt_error) (const char *, ...);
 # endif
 
-# ifdef _LIB_C
-#  define MUTT_LIB_WHERE 
-#  define MUTT_LIB_INITVAL(x) = x
-# else
-#  define MUTT_LIB_WHERE extern
-#  define MUTT_LIB_INITVAL(x)
-# endif
-
 void mutt_exit (int);
 
 
-# ifdef DEBUG
-
-MUTT_LIB_WHERE FILE *debugfile MUTT_LIB_INITVAL(0);
-MUTT_LIB_WHERE int debuglevel MUTT_LIB_INITVAL(0);
-
-void mutt_debug (FILE *, const char *, ...);
-
-#  define dprint(N,X) do { if(debuglevel>=N && debugfile) mutt_debug X; } while (0)
-
-# else
-
-#  define dprint(N,X) do { } while (0)
-
-# endif
+#ifdef DEBUG
+extern FILE *debugfile;
+extern int debuglevel;
+void mutt_debug (int level, const char *, ...);
+#else
+#define mutt_debug(...) do { } while (0)
+#endif
 
 
 /* Exit values used in send_msg() */

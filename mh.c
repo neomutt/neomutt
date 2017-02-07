@@ -233,7 +233,7 @@ static inline mode_t mh_umask (CONTEXT* ctx)
 
   if (stat (ctx->path, &st))
   {
-    dprint (1, (debugfile, "stat failed on %s\n", ctx->path));
+    mutt_debug (1, "stat failed on %s\n", ctx->path);
     return 077;
   }
 
@@ -849,9 +849,8 @@ static int maildir_parse_dir (CONTEXT * ctx, struct maildir ***last,
       continue;
 
     /* FOO - really ignore the return value? */
-    dprint (2,
-	    (debugfile, "%s:%d: queueing %s\n", __FILE__, __LINE__,
-	     de->d_name));
+    mutt_debug (2, "%s:%d: queueing %s\n",
+                __FILE__, __LINE__, de->d_name);
 
     h = mutt_new_header ();
     h->old = is_old;
@@ -901,17 +900,15 @@ static int maildir_add_to_context (CONTEXT * ctx, struct maildir *md)
   while (md)
   {
 
-    dprint (2, (debugfile, "%s:%d maildir_add_to_context(): Considering %s\n",
-		__FILE__, __LINE__, NONULL (md->canon_fname)));
+    mutt_debug (2, "%s:%d maildir_add_to_context(): Considering %s\n",
+                __FILE__, __LINE__, NONULL (md->canon_fname));
 
     if (md->h)
     {
-      dprint (2,
-	      (debugfile,
-	       "%s:%d Adding header structure. Flags: %s%s%s%s%s\n", __FILE__,
-	       __LINE__, md->h->flagged ? "f" : "", md->h->deleted ? "D" : "",
-	       md->h->replied ? "r" : "", md->h->old ? "O" : "",
-	       md->h->read ? "R" : ""));
+      mutt_debug (2, "%s:%d Adding header structure. Flags: %s%s%s%s%s\n",
+                  __FILE__, __LINE__, md->h->flagged ? "f" : "",
+                  md->h->deleted ? "D" : "", md->h->replied ? "r" : "",
+                  md->h->old ? "O" : "", md->h->read ? "R" : "");
       if (ctx->msgcount == ctx->hdrmax)
 	mx_alloc_memory (ctx);
 
@@ -1096,8 +1093,7 @@ static void mh_sort_natural (CONTEXT *ctx, struct maildir **md)
 {
   if (!ctx || !md || !*md || ctx->magic != MUTT_MH || Sort != SORT_ORDER)
     return;
-  dprint (4, (debugfile, "maildir: sorting %s into natural order\n",
-	      ctx->path));
+  mutt_debug (4, "maildir: sorting %s into natural order\n", ctx->path);
   *md = maildir_sort (*md, (size_t) -1, md_cmp_path);
 }
 
@@ -1148,7 +1144,7 @@ static void maildir_delayed_parsing (CONTEXT * ctx, struct maildir **md,
 #define DO_SORT()	do { \
   if (!sort) \
   { \
-    dprint (4, (debugfile, "maildir: need to sort %s by inode\n", ctx->path)); \
+    mutt_debug (4, "maildir: need to sort %s by inode\n", ctx->path); \
     p = maildir_sort (p, (size_t) -1, md_cmp_inode); \
     if (!last) \
       *md = p; \
@@ -1475,8 +1471,8 @@ static int maildir_mh_open_message (CONTEXT *ctx, MESSAGE *msg, int msgno,
   if (!msg->fp)
   {
     mutt_perror (path);
-    dprint (1, (debugfile, "maildir_mh_open_message: fopen: %s: %s (errno %d).\n",
-            path, strerror (errno), errno));
+    mutt_debug (1, "maildir_mh_open_message: fopen: %s: %s (errno %d).\n",
+                path, strerror (errno), errno);
     return -1;
   }
 
@@ -1538,8 +1534,7 @@ static int maildir_open_new_message (MESSAGE * msg, CONTEXT * dest, HEADER * hdr
 	      dest->path, subdir, (long long)time (NULL), mutt_rand64(),
               NONULL (Hostname), suffix);
 
-    dprint (2, (debugfile, "maildir_open_new_message (): Trying %s.\n",
-		path));
+    mutt_debug (2, "maildir_open_new_message (): Trying %s.\n", path);
 
     if ((fd = open (path, O_WRONLY | O_EXCL | O_CREAT, 0666)) == -1)
     {
@@ -1552,7 +1547,7 @@ static int maildir_open_new_message (MESSAGE * msg, CONTEXT * dest, HEADER * hdr
     }
     else
     {
-      dprint (2, (debugfile, "maildir_open_new_message (): Success.\n"));
+      mutt_debug (2, "maildir_open_new_message (): Success.\n");
       msg->path = safe_strdup (path);
       break;
     }
@@ -1625,8 +1620,8 @@ static int _maildir_commit_message (CONTEXT * ctx, MESSAGE * msg, HEADER * hdr)
 	      NONULL (Hostname), suffix);
     snprintf (full, _POSIX_PATH_MAX, "%s/%s", ctx->path, path);
 
-    dprint (2, (debugfile, "_maildir_commit_message (): renaming %s to %s.\n",
-		msg->path, full));
+    mutt_debug (2, "_maildir_commit_message (): renaming %s to %s.\n",
+                msg->path, full);
 
     if (safe_rename (msg->path, full) == 0)
     {
@@ -1879,10 +1874,8 @@ static int maildir_sync_message (CONTEXT * ctx, int msgno)
 
     if ((p = strrchr (h->path, '/')) == NULL)
     {
-      dprint (1,
-	      (debugfile,
-	       "maildir_sync_message: %s: unable to find subdir!\n",
-	       h->path));
+      mutt_debug (1, "maildir_sync_message: %s: unable to find subdir!\n",
+                  h->path);
       return (-1);
     }
     p++;

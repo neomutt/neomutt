@@ -142,12 +142,12 @@ mutt_copy_hdr (FILE *in, FILE *out, LOFF_T off_start, LOFF_T off_end, int flags,
   {
     for (t = HeaderOrderList; t; t = t->next)
     {
-      dprint(3, (debugfile, "Reorder list: %s\n", t->data));
+      mutt_debug (3, "Reorder list: %s\n", t->data);
       hdr_count++;
     }
   }
 
-  dprint (1, (debugfile, "WEED is %s\n", (flags & CH_WEED) ? "Set" : "Not"));
+  mutt_debug (1, "WEED is %s\n", (flags & CH_WEED) ? "Set" : "Not");
 
   headers = safe_calloc (hdr_count, sizeof (char *));
 
@@ -233,7 +233,7 @@ mutt_copy_hdr (FILE *in, FILE *out, LOFF_T off_start, LOFF_T off_end, int flags,
 	{
 	  if (!ascii_strncasecmp (buf, t->data, mutt_strlen (t->data)))
 	  {
-	    dprint(2, (debugfile, "Reorder: %s matches %s\n", t->data, buf));
+	    mutt_debug (2, "Reorder: %s matches %s\n", t->data, buf);
 	    break;
 	  }
 	}
@@ -244,7 +244,7 @@ mutt_copy_hdr (FILE *in, FILE *out, LOFF_T off_start, LOFF_T off_end, int flags,
 
     if (!ignore)
     {
-      dprint (2, (debugfile, "Reorder: x = %d; hdr_count = %d\n", x, hdr_count));
+      mutt_debug (2, "Reorder: x = %d; hdr_count = %d\n", x, hdr_count);
       if (!this_one) {
 	this_one = safe_strdup (buf);
 	this_one_len = mutt_strlen (this_one);
@@ -784,7 +784,7 @@ mutt_copy_message (FILE *fpout, CONTEXT *src, HEADER *hdr, int flags,
   if ((r = _mutt_copy_message (fpout, msg->fp, hdr, hdr->content, flags, chflags)) == 0 
       && (ferror (fpout) || feof (fpout)))
   {
-    dprint (1, (debugfile, "_mutt_copy_message failed to detect EOF!\n"));
+    mutt_debug (1, "_mutt_copy_message failed to detect EOF!\n");
     r = -1;
   }
   mx_close_message (src, &msg);

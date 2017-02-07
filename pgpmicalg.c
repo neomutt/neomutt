@@ -87,7 +87,7 @@ static void pgp_dearmor (FILE *in, FILE *out)
   }
   if (r == NULL)
   {
-    dprint (1, (debugfile, "pgp_dearmor: Can't find begin of ASCII armor.\n"));
+    mutt_debug (1, "pgp_dearmor: Can't find begin of ASCII armor.\n");
     return;
   }
 
@@ -100,7 +100,7 @@ static void pgp_dearmor (FILE *in, FILE *out)
   }
   if (r == NULL)
   {
-    dprint (1, (debugfile, "pgp_dearmor: Armor header doesn't end.\n"));
+    mutt_debug (1, "pgp_dearmor: Armor header doesn't end.\n");
     return;
   }
   
@@ -116,19 +116,19 @@ static void pgp_dearmor (FILE *in, FILE *out)
   }
   if (r == NULL)
   {
-    dprint (1, (debugfile, "pgp_dearmor: Can't find end of ASCII armor.\n"));
+    mutt_debug (1, "pgp_dearmor: Can't find end of ASCII armor.\n");
     return;
   }
   
   if ((end = ftello (in) - strlen (line)) < start)
   {
-    dprint (1, (debugfile, "pgp_dearmor: end < start???\n"));
+    mutt_debug (1, "pgp_dearmor: end < start???\n");
     return;
   }
   
   if (fseeko (in, start, SEEK_SET) == -1)
   {
-    dprint (1, (debugfile, "pgp_dearmor: Can't seekto start.\n"));
+    mutt_debug (1, "pgp_dearmor: Can't seekto start.\n");
     return;
   }
 
@@ -140,8 +140,8 @@ static short pgp_mic_from_packet (unsigned char *p, size_t len)
   /* is signature? */
   if ((p[0] & 0x3f) != PT_SIG)
   {
-    dprint (1, (debugfile, "pgp_mic_from_packet: tag = %d, want %d.\n",
-		p[0]&0x3f, PT_SIG));
+    mutt_debug (1, "pgp_mic_from_packet: tag = %d, want %d.\n",
+                p[0]&0x3f, PT_SIG);
     return -1;
   }
   
@@ -153,7 +153,7 @@ static short pgp_mic_from_packet (unsigned char *p, size_t len)
     return (short) p[4];
   else
   {
-    dprint (1, (debugfile, "pgp_mic_from_packet: Bad signature packet.\n"));
+    mutt_debug (1, "pgp_mic_from_packet: Bad signature packet.\n");
     return -1;
   }
 }
@@ -193,7 +193,7 @@ static short pgp_find_hash (const char *fname)
   }
   else
   {
-    dprint (1, (debugfile, "pgp_find_hash: No packet.\n"));
+    mutt_debug (1, "pgp_find_hash: No packet.\n");
   }
   
   bye:
