@@ -841,12 +841,12 @@ mutt_hcache_fetch_raw (header_cache_t *h, const char *filename,
   h->db->get(h->db, NULL, &key, &data, 0);
 
   return data.data;
-#endif
-
+#else
   strncpy(path, h->folder, sizeof (path));
   safe_strcat(path, sizeof (path), filename);
 
   ksize = strlen (h->folder) + keylen (path + strlen (h->folder));  
+#endif
 
 #ifdef HAVE_QDBM
   data = vlget(h->db, path, ksize, NULL);
@@ -943,12 +943,12 @@ mutt_hcache_store_raw (header_cache_t* h, const char* filename, void* data,
   databuf.ulen = dlen;
 
   return h->db->put(h->db, NULL, &key, &databuf, 0);
-#endif
-
+#else
   strncpy(path, h->folder, sizeof (path));
   safe_strcat(path, sizeof (path), filename);
 
   ksize = strlen(h->folder) + keylen(path + strlen(h->folder));
+#endif
 
 #if HAVE_QDBM
   return vlput(h->db, path, ksize, data, dlen, VL_DOVER);
