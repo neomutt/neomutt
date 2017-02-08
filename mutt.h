@@ -360,7 +360,7 @@ enum
   OPTFORWQUOTE,
 #ifdef USE_HCACHE
   OPTHCACHEVERIFY,
-#if defined(HAVE_QDBM) || defined(HAVE_TC)
+#if defined(HAVE_QDBM) || defined(HAVE_TC) || defined(HAVE_KC)
   OPTHCACHECOMPRESS,
 #endif /* HAVE_QDBM */
 #endif

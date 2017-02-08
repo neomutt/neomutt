@@ -8118,7 +8118,7 @@ per message.)
 Header caching can be enabled via the configure script and the
 <emphasis>--enable-hcache</emphasis> option. It's not turned on by
 default because external database libraries are required: one of
-tokyocabinet, qdbm, gdbm or bdb must be present.
+tokyocabinet, kyotocabinet, lmdb, qdbm, gdbm or bdb must be present.
 </para>
 
 <para>

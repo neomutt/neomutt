@@ -984,12 +984,12 @@ struct option_t MuttVars[] = {
   ** Header caching can greatly improve speed when opening POP, IMAP
   ** MH or Maildir folders, see ``$caching'' for details.
   */
-#if defined(HAVE_QDBM) || defined(HAVE_TC)
+#if defined(HAVE_QDBM) || defined(HAVE_TC) || defined(HAVE_KC)
   { "header_cache_compress", DT_BOOL, R_NONE, OPTHCACHECOMPRESS, 1 },
   /*
   ** .pp
-  ** When mutt is compiled with qdbm or tokyocabinet as header cache backend,
-  ** this option determines whether the database will be compressed.
+  ** When mutt is compiled with qdbm, tokyocabinet, or kyotocabinet as header
+  ** cache backend, this option determines whether the database will be compressed.
   ** Compression results in database files roughly being one fifth
   ** of the usual diskspace, but the decompression can result in a
   ** slower opening of cached folder(s) which in general is still

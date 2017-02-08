@@ -882,6 +882,7 @@ AC_ARG_WITH(qdbm, AS_HELP_STRING([--without-qdbm],[Don't use qdbm even if it is 
 AC_ARG_WITH(gdbm, AS_HELP_STRING([--without-gdbm],[Don't use gdbm even if it is available]))
 AC_ARG_WITH(bdb, AS_HELP_STRING([--with-bdb@<:@=DIR@:>@],[Use BerkeleyDB4 if gdbm is not available]))
 AC_ARG_WITH(lmdb, AS_HELP_STRING([--with-lmdb@<:@=DIR@:>@],[Use LMDB if gdbm is not available]))
+AC_ARG_WITH(kyotocabinet, AS_HELP_STRING([--with-kyotocabinet@<:@=DIR@:>@],[Use kyotocabinet if gdbm is not available]))
 
 db_found=no
 if test x$enable_hcache = xyes
@@ -933,6 +934,15 @@ then
         AC_MSG_ERROR([more than one header cache engine requested.])
       else
         db_requested=lmdb
+      fi
+    fi
+    if test -n "$with_kyotocabinet" && test "$with_kyotocabinet" != "no"
+    then
+      if test "$db_requested" != "auto"
+      then
+        AC_MSG_ERROR([more than one header cache engine requested.])
+      else
+        db_requested=kc
       fi
     fi
     
@@ -1107,9 +1117,32 @@ then
         fi
     fi
 
+    dnl -- Kyoto Cabinet --
+    if test x$with_kyotocabinet != xno && test $db_found = no \
+	    && test "$db_requested" = auto -o "$db_requested" = kc
+    then
+      if test -n "$with_kyotocabinet" && test "$with_kyotocabinet" != "yes"
+      then
+        CPPFLAGS="$CPPFLAGS -I$with_kyotocabinet/include"
+        LDFLAGS="$LDFLAGS -L$with_kyotocabinet/lib"
+      fi
+
+      AC_CHECK_HEADER(kclangc.h,
+      AC_CHECK_LIB(kyotocabinet, kcdbopen,
+        [MUTTLIBS="$MUTTLIBS -lkyotocabinet"
+         AC_DEFINE(HAVE_KC, 1, [Kyoto Cabinet Support])
+         db_found=kc],
+        [CPPFLAGS="$OLDCPPFLAGS"
+         LDFLAGS="$OLDLDFLAGS"]))
+      if test "$db_requested" != auto && test "$db_found" != "$db_requested"
+      then
+        AC_MSG_ERROR([Kyoto Cabinet could not be used. Check config.log for details.])
+      fi
+    fi
+
     if test $db_found = no
     then
-        AC_MSG_ERROR([You need Tokyo Cabinet, QDBM, GDBM or Berkeley DB4 for hcache])
+        AC_MSG_ERROR([You need Tokyo Cabinet, Kyoto Cabinet, QDBM, GDBM, LMDB or Berkeley DB4 for hcache])
     fi
 fi
 dnl -- end cache --
