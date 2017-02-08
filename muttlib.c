@@ -57,7 +57,6 @@
  * External definitions for inline functions in mutt.h
  */
 extern LIST *mutt_new_list();
-extern HEAP *mutt_new_heap();
 extern RX_LIST *mutt_new_rx_list();
 extern SPAM_LIST *mutt_new_spam_list();
 extern PARAMETER *mutt_new_parameter();
@@ -295,18 +294,18 @@ LIST *mutt_find_list (LIST *l, const char *data)
   return NULL;
 }
 
-void mutt_push_heap(HEAP **head, const char *data)
+void mutt_push_list(LIST **head, const char *data)
 {
-  HEAP *tmp;
-  tmp = safe_malloc(sizeof(HEAP));
+  LIST *tmp;
+  tmp = safe_malloc(sizeof(LIST));
   tmp->data = safe_strdup(data);
   tmp->next = *head;
   *head = tmp;
 }
 
-int mutt_pop_heap(HEAP **head)
+int mutt_pop_list(LIST **head)
 {
-  HEAP *elt = *head;
+  LIST *elt = *head;
   if (!elt)
     return 0;
   *head = elt->next;
@@ -315,16 +314,11 @@ int mutt_pop_heap(HEAP **head)
   return 1;
 }
 
-const char *mutt_front_heap(HEAP *head)
+const char *mutt_front_list(LIST *head)
 {
   if (!head || !head->data)
     return "";
   return head->data;
-}
-
-HEAP *mutt_find_heap(HEAP *head, const char *data)
-{
-  return (HEAP *) mutt_find_list((LIST *) head, data);
 }
 
 int mutt_remove_from_rx_list (RX_LIST **l, const char *str)
