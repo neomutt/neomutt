@@ -1195,7 +1195,7 @@ static void maildir_delayed_parsing (CONTEXT * ctx, struct maildir **md,
       mutt_free_header (&p->h);
 #if USE_HCACHE
     }
-    FREE (&data);
+    mutt_hcache_free (&data);
 #endif
     last = p;
    }

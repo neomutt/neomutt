@@ -130,7 +130,7 @@ HEADER* imap_hcache_get (IMAP_DATA* idata, unsigned int uid)
       h = mutt_hcache_restore ((unsigned char*)uv, NULL);
     else
       dprint (3, (debugfile, "hcache uidvalidity mismatch: %u", *uv));
-    FREE (&uv);
+    mutt_hcache_free ((void **)&uv);
   }
 
   return h;

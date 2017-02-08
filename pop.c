@@ -336,7 +336,7 @@ static int pop_fetch_headers (CONTEXT *ctx)
 	mutt_hcache_store (hc, ctx->hdrs[i]->data, ctx->hdrs[i], 0, strlen, MUTT_GENERATE_UIDVALIDITY);
       }
 
-      FREE(&data);
+      mutt_hcache_free (&data);
 #endif
 
       /*

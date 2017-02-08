@@ -793,7 +793,7 @@ mutt_hcache_fetch(header_cache_t *h, const char *filename,
 
   if (!data || !crc_matches(data, h->crc))
   {
-    FREE(&data);
+    mutt_hcache_free (&data);
     return NULL;
   }
   
@@ -874,10 +874,9 @@ mutt_hcache_fetch_raw (header_cache_t *h, const char *filename,
       (mdb_get (h->txn, h->db, &key, &data) != MDB_SUCCESS))
     return NULL;
 
-  /* Unlike other dbs, LMDB claims ownership of the returned data */
-  char *d = safe_malloc (data.mv_size);
-  memcpy (d, data.mv_data, data.mv_size);
-  return d;
+  /* LMDB claims ownership of the returned data, so this will not be
+   * freed in mutt_hcache_free(). */
+  return data.mv_data;
 #endif
 }
 
@@ -1529,6 +1528,21 @@ mutt_hcache_open(const char *path, const char *folder, hcache_namer_t namer)
 
     return NULL;
   }
+}
+
+void mutt_hcache_free (void **data)
+{
+  if (!data || !*data)
+    return;
+
+#if HAVE_KC
+  kcfree (*data);
+  *data = NULL;
+#elif HAVE_LMDB
+  /* LMDB owns the data returned.  It should not be freed */
+#else
+  FREE (data);  /* __FREE_CHECKED__ */
+#endif
 }
 
 #if HAVE_DB4

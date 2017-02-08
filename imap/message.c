@@ -146,11 +146,11 @@ int imap_read_headers (IMAP_DATA* idata, int msgbegin, int msgend)
     if (puidnext)
     {
       uidnext = *puidnext;
-      FREE (&puidnext);
+      mutt_hcache_free ((void **)&puidnext);
     }
     if (uid_validity && uidnext && *uid_validity == idata->uid_validity)
       evalhc = 1;
-    FREE (&uid_validity);
+    mutt_hcache_free ((void **)&uid_validity);
   }
   if (evalhc)
   {
