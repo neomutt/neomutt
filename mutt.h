@@ -640,8 +640,6 @@ typedef struct list_t
   struct list_t *next;
 } LIST;
 
-typedef struct list_t HEAP;
-
 typedef struct rx_list_t
 {
   REGEXP *rx;
@@ -659,11 +657,6 @@ typedef struct spam_list_t
 inline LIST *mutt_new_list()
 {
   return safe_calloc (1, sizeof (LIST));
-}
-
-inline HEAP *mutt_new_heap()
-{
-  return safe_calloc (1, sizeof (HEAP));
 }
 
 inline RX_LIST *mutt_new_rx_list()
@@ -689,11 +682,10 @@ LIST *mutt_add_list_n (LIST*, const void *, size_t);
 LIST *mutt_find_list (LIST *, const char *);
 int mutt_remove_from_rx_list (RX_LIST **l, const char *str);
 
-/* handle heap */
-void mutt_push_heap(HEAP **head, const char *data);
-int mutt_pop_heap(HEAP **head);
-const char *mutt_front_heap(HEAP *head);
-HEAP *mutt_find_heap(HEAP *head, const char *data);
+/* handle stack */
+void mutt_push_list(LIST **head, const char *data);
+int mutt_pop_list(LIST **head);
+const char *mutt_front_list(LIST *head);
 
 void mutt_init (int, LIST *);
 

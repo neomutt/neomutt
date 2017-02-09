@@ -31,7 +31,7 @@ WHERE char *MuttDotlock;
 WHERE ADDRESS *EnvFrom;
 WHERE ADDRESS *From;
 
-WHERE LIST *AliasFiles;
+WHERE char *AliasFile;
 WHERE char *AliasFmt;
 WHERE char *AssumedCharset;
 WHERE char *AttachSep;

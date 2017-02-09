@@ -2607,10 +2607,10 @@ static int parse_set (BUFFER *tmp, BUFFER *s, unsigned long data, BUFFER *err)
   return (r);
 }
 
-/* Heap structure
+/* Stack structure
  * FILO designed to contain the list of config files that have been sourced
  * and avoid cyclic sourcing */
-static HEAP *MuttrcHeap;
+static LIST *MuttrcStack;
 
 /* Use POSIX functions to convert a path to absolute, relatively to another path
  * Args:
@@ -2676,15 +2676,15 @@ static int source_rc (const char *rcfile_path, BUFFER *err)
 
   if (rcfile[rcfilelen-1] != '|')
   {
-      if (!to_absolute_path(rcfile, mutt_front_heap(MuttrcHeap)))
+      if (!to_absolute_path(rcfile, mutt_front_list(MuttrcStack)))
       {
         mutt_error("Error: impossible to build path of '%s'.", rcfile_path);
         return (-1);
       }
 
-      if (!MuttrcHeap || mutt_find_heap(MuttrcHeap, rcfile) == NULL)
+      if (!MuttrcStack || mutt_find_list(MuttrcStack, rcfile) == NULL)
       {
-        mutt_push_heap(&MuttrcHeap, rcfile);
+        mutt_push_list(&MuttrcStack, rcfile);
       }
       else
       {
@@ -2744,7 +2744,7 @@ static int source_rc (const char *rcfile_path, BUFFER *err)
     rc = -1;
   }
 
-  mutt_pop_heap(&MuttrcHeap);
+  mutt_pop_list(&MuttrcStack);
 
   return (rc);
 }
@@ -3807,10 +3807,10 @@ void mutt_init (int skip_sys_rc, LIST *commands)
     }
   }
 
-  if (Muttrc)
+  if (Muttrc && Muttrc->data)
   {
-    FREE (&AliasFiles);
-    AliasFiles = mutt_copy_list(Muttrc);
+    FREE (&AliasFile);
+    AliasFile = safe_strdup (Muttrc->data);
   }
 
   /* Process the global rc file if it exists and the user hasn't explicity
