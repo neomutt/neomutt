@@ -95,7 +95,7 @@ int imap_read_headers (IMAP_DATA* idata, int msgbegin, int msgend)
   }
   else
   {	/* Unable to fetch headers for lower versions */
-    mutt_error _("Unable to fetch headers from this IMAP server version.");
+    mutt_error (_("Unable to fetch headers from this IMAP server version."));
     mutt_sleep (2);	/* pause a moment to let the user see the error */
     goto error_out_0;
   }
@@ -443,7 +443,7 @@ int imap_fetch_message (CONTEXT *ctx, MESSAGE *msg, int msgno)
   }
 
   if (!isendwin())
-    mutt_message _("Fetching message...");
+    mutt_message (_("Fetching message..."));
 
   if (!(msg->fp = msg_cache_put (idata, h)))
   {

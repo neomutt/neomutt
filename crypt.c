@@ -84,7 +84,7 @@ void crypt_forget_passphrase (void)
     crypt_smime_void_passphrase ();
 
   if (WithCrypto)
-    mutt_message _("Passphrase(s) forgotten.");
+    mutt_message(_("Passphrase(s) forgotten."));
 }
 
 
@@ -148,14 +148,14 @@ int mutt_protect (HEADER *msg, char *keylist)
       if (query_quadoption (OPT_PGPMIMEAUTO,
           _("Inline PGP can't be used with attachments.  Revert to PGP/MIME?")) != MUTT_YES)
       {
-        mutt_error _("Mail not sent: inline PGP can't be used with attachments.");
+        mutt_error (_("Mail not sent: inline PGP can't be used with attachments."));
         return -1;
       }
     }
     else
     {
       /* they really want to send it inline... go for it */
-      if (!isendwin ()) mutt_endwin _("Invoking PGP...");
+      if (!isendwin ()) mutt_endwin(_("Invoking PGP..."));
       pbody = crypt_pgp_traditional_encryptsign (msg->content, flags, keylist);
       if (pbody)
       {
@@ -166,7 +166,7 @@ int mutt_protect (HEADER *msg, char *keylist)
       /* otherwise inline won't work...ask for revert */
       if (query_quadoption (OPT_PGPMIMEAUTO, _("Message can't be sent inline.  Revert to using PGP/MIME?")) != MUTT_YES)
       {
-        mutt_error _("Mail not sent.");
+        mutt_error (_("Mail not sent."));
         return -1;
       }
     }

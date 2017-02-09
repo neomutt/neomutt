@@ -1360,7 +1360,7 @@ static int autoview_handler (BODY *a, STATE *s)
 
     if (thepid < 0)
     {
-      mutt_perror _("Can't create filter");
+      mutt_perror (_("Can't create filter"));
       if (s->flags & MUTT_DISPLAY)
       {
 	state_mark_attach (s);
@@ -1637,7 +1637,7 @@ static int run_decode_and_handler (BODY *b, STATE *s, handler_t handler, int pla
       mutt_mktemp (tempfile, sizeof (tempfile));
       if ((s->fpout = safe_fopen (tempfile, "w")) == NULL)
       {
-        mutt_error _("Unable to open temporary file!");
+        mutt_error (_("Unable to open temporary file!"));
         dprint (1, (debugfile, "Can't open %s.\n", tempfile));
         return -1;
       }
@@ -1677,7 +1677,7 @@ static int run_decode_and_handler (BODY *b, STATE *s, handler_t handler, int pla
         s->fpin = safe_fopen ("/dev/null", "r");
       }
       if (!s->fpin) {
-        mutt_perror ("failed to re-open memstream!");
+        mutt_perror (_("failed to re-open memstream!"));
         return -1;
       }
 #else
@@ -1799,7 +1799,7 @@ int mutt_body_handler (BODY *b, STATE *s)
       p = mutt_get_parameter ("protocol", b->parameter);
 
       if (!p)
-        mutt_error _("Error: multipart/signed has no protocol.");
+        mutt_error (_("Error: multipart/signed has no protocol."));
       else if (s->flags & MUTT_VERIFY)
 	handler = mutt_signed_handler;
     }

@@ -254,7 +254,7 @@ int mutt_get_postponed (CONTEXT *ctx, HEADER *hdr, HEADER **cur, char *fcc, size
   if ((PostContext = mx_open_mailbox (Postponed, MUTT_NOSORT, NULL)) == NULL)
   {
     PostCount = 0;
-    mutt_error _("No postponed messages.");
+    mutt_error (_("No postponed messages."));
     return (-1);
   }
 
@@ -263,7 +263,7 @@ int mutt_get_postponed (CONTEXT *ctx, HEADER *hdr, HEADER **cur, char *fcc, size
     PostCount = 0;
     mx_close_mailbox (PostContext, NULL);
     FREE (&PostContext);
-    mutt_error _("No postponed messages.");
+    mutt_error (_("No postponed messages."));
     return (-1);
   }
 
@@ -465,7 +465,7 @@ int mutt_parse_crypt_hdr (const char *p, int set_empty_signas, int crypt_app)
 
           if (*p!='>')
           {
-            mutt_error _("Illegal crypto header");
+            mutt_error (_("Illegal crypto header"));
             return 0;
           }
         }
@@ -486,7 +486,7 @@ int mutt_parse_crypt_hdr (const char *p, int set_empty_signas, int crypt_app)
 	    ;
 	  if(*p != '>')
 	  {
-	    mutt_error _("Illegal crypto header");
+	    mutt_error (_("Illegal crypto header"));
 	    return 0;
 	  }
 	}
@@ -506,7 +506,7 @@ int mutt_parse_crypt_hdr (const char *p, int set_empty_signas, int crypt_app)
 
 	  if(*p != '>')
 	  {
-	    mutt_error _("Illegal S/MIME header");
+	    mutt_error (_("Illegal S/MIME header"));
 	    return 0;
 	  }
 	}
@@ -520,7 +520,7 @@ int mutt_parse_crypt_hdr (const char *p, int set_empty_signas, int crypt_app)
 	break;
 
       default:
-        mutt_error _("Illegal crypto header");
+        mutt_error (_("Illegal crypto header"));
         return 0;
     }
 
@@ -603,7 +603,7 @@ int mutt_prepare_template (FILE *fp, CONTEXT *ctx, HEADER *newhdr, HEADER *hdr,
     if (!crypt_valid_passphrase (sec_type))
       goto err;
 
-    mutt_message _("Decrypting message...");
+    mutt_message (_("Decrypting message..."));
     if ((crypt_pgp_decrypt_mime (fp, &bfp, newhdr->content, &b) == -1)
 	|| b == NULL)
     {
@@ -611,7 +611,7 @@ int mutt_prepare_template (FILE *fp, CONTEXT *ctx, HEADER *newhdr, HEADER *hdr,
       mx_close_message (ctx, &msg);
       mutt_free_envelope (&newhdr->env);
       mutt_free_body (&newhdr->content);
-      mutt_error _("Decryption failed.");
+      mutt_error (_("Decryption failed."));
       return -1;
     }
 

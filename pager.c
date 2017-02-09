@@ -62,21 +62,21 @@ static HEADER *OldHdr = NULL;
 #define CHECK_MODE(x)	if (!(x)) \
 			{ \
 			  	mutt_flushinp (); \
-				mutt_error _(Not_available_in_this_menu); \
+				mutt_error(_(Not_available_in_this_menu)); \
 				break; \
 			}
 
 #define CHECK_READONLY	if (!Context || Context->readonly) \
 			{ \
 				mutt_flushinp (); \
-				mutt_error _(Mailbox_is_read_only);	\
+				mutt_error(_(Mailbox_is_read_only));	\
 				break; \
 			}
 
 #define CHECK_ATTACH if(option(OPTATTACHMSG)) \
 		     {\
 			mutt_flushinp (); \
-			mutt_error _(Function_not_permitted_in_attach_message_mode); \
+			mutt_error(_(Function_not_permitted_in_attach_message_mode)); \
 			break; \
 		     }
 
@@ -2190,7 +2190,7 @@ mutt_pager (const char *banner, const char *fname, int flags, pager_t *extra)
 	else if (option (OPTPAGERSTOP))
 	{
 	  /* emulate "less -q" and don't go on to the next message. */
-	  mutt_error _("Bottom of message is shown.");
+	  mutt_error (_("Bottom of message is shown."));
 	}
 	else
 	{
@@ -2206,7 +2206,7 @@ mutt_pager (const char *banner, const char *fname, int flags, pager_t *extra)
 	  topline = upNLines (pager_window->rows-PagerContext, lineInfo, topline, hideQuoted);
 	}
 	else
-	  mutt_error _("Top of message is shown.");
+	  mutt_error (_("Top of message is shown."));
 	break;
 
       case OP_NEXT_LINE:
@@ -2221,28 +2221,28 @@ mutt_pager (const char *banner, const char *fname, int flags, pager_t *extra)
 	  }
 	}
 	else
-	  mutt_error _("Bottom of message is shown.");
+	  mutt_error (_("Bottom of message is shown."));
 	break;
 
       case OP_PREV_LINE:
 	if (topline)
 	  topline = upNLines (1, lineInfo, topline, hideQuoted);
 	else
-	  mutt_error _("Top of message is shown.");
+	  mutt_error (_("Top of message is shown."));
 	break;
 
       case OP_PAGER_TOP:
         if (topline)
 	  topline = 0;
       	else
-	  mutt_error _("Top of message is shown.");
+	  mutt_error (_("Top of message is shown."));
 	break;
 
       case OP_HALF_UP:
 	if (topline)
 	  topline = upNLines (pager_window->rows/2, lineInfo, topline, hideQuoted);
 	else
-	  mutt_error _("Top of message is shown.");
+	  mutt_error (_("Top of message is shown."));
 	break;
 
       case OP_HALF_DOWN:
@@ -2253,7 +2253,7 @@ mutt_pager (const char *banner, const char *fname, int flags, pager_t *extra)
 	else if (option (OPTPAGERSTOP))
 	{
 	  /* emulate "less -q" and don't go on to the next message. */
-	  mutt_error _("Bottom of message is shown.");
+	  mutt_error (_("Bottom of message is shown."));
 	}
 	else
 	{
@@ -2289,10 +2289,10 @@ search_next:
 	    if (i < lastLine)
 	      topline = i;
 	    else if (wrapped || !option (OPTWRAPSEARCH))
-	      mutt_error _("Not found.");
+	      mutt_error (_("Not found."));
 	    else
 	    {
-	      mutt_message _("Search wrapped to top.");
+	      mutt_message (_("Search wrapped to top."));
 	      wrapped = 1;
 	      goto search_next;
 	    }
@@ -2311,10 +2311,10 @@ search_next:
 	    if (i >= 0)
 	      topline = i;
 	    else if (wrapped || !option (OPTWRAPSEARCH))
-	      mutt_error _("Not found.");
+	      mutt_error (_("Not found."));
 	    else
 	    {
-	      mutt_message _("Search wrapped to bottom.");
+	      mutt_message (_("Search wrapped to bottom."));
 	      wrapped = 1;
 	      goto search_next;
 	    }
@@ -2431,7 +2431,7 @@ search_next:
 	  if (lineInfo[topline].search_cnt == 0)
 	  {
 	    SearchFlag = 0;
-	    mutt_error _("Not found.");
+	    mutt_error (_("Not found."));
 	  }
 	  else
 	  {
@@ -2467,7 +2467,7 @@ search_next:
 	  InHelp = 0;
 	}
 	else
-	  mutt_error _("Help is currently being shown.");
+	  mutt_error (_("Help is currently being shown."));
 	break;
 
       case OP_PAGER_HIDE_QUOTED:
@@ -2511,7 +2511,7 @@ search_next:
 
 	  if (dretval < 0)
 	  {
-	    mutt_error _("No more quoted text.");
+	    mutt_error (_("No more quoted text."));
 	    break;
 	  }
 
@@ -2524,7 +2524,7 @@ search_next:
 
 	  if (dretval < 0)
 	  {
-	    mutt_error _("No more unquoted text after quoted text.");
+	    mutt_error (_("No more unquoted text after quoted text."));
 	    break;	  
 	  }
 	  topline = new_topline;
@@ -2544,7 +2544,7 @@ search_next:
 	  topline = upNLines (pager_window->rows, lineInfo, lastLine, hideQuoted);
 	}
 	else
-	  mutt_error _("Bottom of message is shown.");
+	  mutt_error (_("Bottom of message is shown."));
 	break;
 
       case OP_REDRAW:

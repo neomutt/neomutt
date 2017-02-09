@@ -1000,7 +1000,7 @@ static int file_tag (MUTTMENU *menu, int n, int m)
   int ot;
   if (S_ISDIR (ff->mode) || (S_ISLNK (ff->mode) && link_is_dir (LastDir, ff->name)))
   {
-    mutt_error _("Can't attach a directory!");
+    mutt_error (_("Can't attach a directory!"));
     return 0;
   }
   
@@ -1279,7 +1279,7 @@ void _mutt_select_file (char *f, size_t flen, int flags, char ***files, int *num
 
 	if (!state.entrylen)
 	{
-	  mutt_error _("No files match the file mask");
+	  mutt_error (_("No files match the file mask"));
 	  break;
 	}
 
@@ -1537,7 +1537,7 @@ void _mutt_select_file (char *f, size_t flen, int flags, char ***files, int *num
 	  imap_parse_path (state.entry[nentry].name, &mx);
 	  if (!mx.mbox)
 	  {
-	    mutt_error _("Cannot delete root folder");
+	    mutt_error (_("Cannot delete root folder"));
 	    break;
 	  }
 	  snprintf (msg, sizeof (msg), _("Really delete mailbox \"%s\"?"),
@@ -1556,13 +1556,13 @@ void _mutt_select_file (char *f, size_t flen, int flags, char ***files, int *num
               memset (&state.entry[state.entrylen - 1], 0,
                       sizeof (struct folder_file));
 	      state.entrylen--;
-	      mutt_message _("Mailbox deleted.");
+	      mutt_message (_("Mailbox deleted."));
 	      init_menu (&state, menu, title, sizeof (title), buffy);
 	      MAYBE_REDRAW (menu->redraw);
 	    }
 	  }
 	  else
-	    mutt_message _("Mailbox not deleted.");
+	    mutt_message (_("Mailbox not deleted."));
 	  FREE (&mx.mbox);
         }
         break;
@@ -1624,7 +1624,7 @@ void _mutt_select_file (char *f, size_t flen, int flags, char ***files, int *num
 		  strfcpy (LastDir, buf, sizeof (LastDir));
 		else
 		{
-		  mutt_error _("Error scanning directory.");
+		  mutt_error (_("Error scanning directory."));
 		  if (examine_directory (menu, &state, LastDir, prefix) == -1)
 		  {
 		    mutt_menuDestroy (&menu);
@@ -1696,14 +1696,14 @@ void _mutt_select_file (char *f, size_t flen, int flags, char ***files, int *num
 	      init_menu (&state, menu, title, sizeof (title), buffy);
 	    else
 	    {
-	      mutt_error _("Error scanning directory.");
+	      mutt_error (_("Error scanning directory."));
 	      mutt_menuDestroy (&menu);
 	      goto bail;
 	    }
 	    killPrefix = 0;
 	    if (!state.entrylen)
 	    {
-	      mutt_error _("No files match the file mask");
+	      mutt_error (_("No files match the file mask"));
 	      break;
 	    }
 	  }
@@ -1842,7 +1842,7 @@ void _mutt_select_file (char *f, size_t flen, int flags, char ***files, int *num
       case OP_BROWSER_VIEW_FILE:
 	if (!state.entrylen)
 	{
-	  mutt_error _("No files match the file mask");
+	  mutt_error (_("No files match the file mask"));
 	  break;
 	}
 
@@ -1860,7 +1860,7 @@ void _mutt_select_file (char *f, size_t flen, int flags, char ***files, int *num
 	    (S_ISLNK (state.entry[menu->current].mode) &&
 	    link_is_dir (LastDir, state.entry[menu->current].name)))
 	{
-	  mutt_error _("Can't view a directory");
+	  mutt_error (_("Can't view a directory"));
 	  break;
 	} 
 	else
@@ -1877,7 +1877,7 @@ void _mutt_select_file (char *f, size_t flen, int flags, char ***files, int *num
 	    menu->redraw = REDRAW_FULL;
 	  }
 	  else
-	    mutt_error _("Error trying to view file");
+	    mutt_error (_("Error trying to view file"));
 	}
 	break;
 

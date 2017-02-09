@@ -117,7 +117,7 @@ int mutt_display_message (HEADER *cur)
   mutt_mktemp (tempfile, sizeof (tempfile));
   if ((fpout = safe_fopen (tempfile, "w")) == NULL)
   {
-    mutt_error _("Could not create temporary file!");
+    mutt_error (_("Could not create temporary file!"));
     return (0);
   }
 
@@ -197,14 +197,14 @@ int mutt_display_message (HEADER *cur)
       if (cur->security & GOODSIGN)
       {
 	if (!crypt_smime_verify_sender(cur))
-	  mutt_message ( _("S/MIME signature successfully verified."));
+	  mutt_message (_("S/MIME signature successfully verified."));
 	else
-	  mutt_error ( _("S/MIME certificate owner does not match sender."));
+	  mutt_error (_("S/MIME certificate owner does not match sender."));
       }
       else if (cur->security & PARTSIGN)
 	mutt_message (_("Warning: Part of this message has not been signed."));
       else if (cur->security & SIGN || cur->security & BADSIGN)
-	mutt_error ( _("S/MIME signature could NOT be verified."));
+	mutt_error (_("S/MIME signature could NOT be verified."));
     }
 
     if (WithCrypto 
@@ -239,7 +239,7 @@ int mutt_display_message (HEADER *cur)
       mutt_set_flag (Context, cur, MUTT_READ, 1);
     if (r != -1 && option (OPTPROMPTAFTER))
     {
-      mutt_unget_event (mutt_any_key_to_continue _("Command: "), 0);
+      mutt_unget_event (mutt_any_key_to_continue(_("Command: ")), 0);
       rc = km_dokey (MENU_PAGER);
     }
     else
@@ -264,7 +264,7 @@ void ci_bounce_message (HEADER *h, int *redraw)
   {
     if (!h->env->from)
     {
-      mutt_error _("Warning: message contains no From: header");
+      mutt_error (_("Warning: message contains no From: header"));
       mutt_sleep (2);
     }
   }
@@ -274,7 +274,7 @@ void ci_bounce_message (HEADER *h, int *redraw)
     {
       if (Context->hdrs[rc]->tagged && !Context->hdrs[rc]->env->from)
       {
-	mutt_error _("Warning: message contains no From: header");
+	mutt_error (_("Warning: message contains no From: header"));
 	mutt_sleep (2);
 	break;
       }
@@ -299,7 +299,7 @@ void ci_bounce_message (HEADER *h, int *redraw)
 
   if (!(adr = mutt_parse_adrlist (adr, buf)))
   {
-    mutt_error _("Error parsing address!");
+    mutt_error (_("Error parsing address!"));
     return;
   }
 
@@ -421,7 +421,7 @@ static int _mutt_pipe_message (HEADER *h, char *cmd,
 
     if ((thepid = mutt_create_filter (cmd, &fpout, NULL, NULL)) < 0)
     {
-      mutt_perror _("Can't create filter process");
+      mutt_perror (_("Can't create filter process"));
       return 1;
     }
       
@@ -455,7 +455,7 @@ static int _mutt_pipe_message (HEADER *h, char *cmd,
 	  mutt_endwin (NULL);
 	  if ((thepid = mutt_create_filter (cmd, &fpout, NULL, NULL)) < 0)
 	  {
-	    mutt_perror _("Can't create filter process");
+	    mutt_perror (_("Can't create filter process"));
 	    return 1;
 	  }
           pipe_msg (Context->hdrs[Context->v2r[i]], fpout, decode, print);
@@ -472,7 +472,7 @@ static int _mutt_pipe_message (HEADER *h, char *cmd,
       mutt_endwin (NULL);
       if ((thepid = mutt_create_filter (cmd, &fpout, NULL, NULL)) < 0)
       {
-	mutt_perror _("Can't create filter process");
+	mutt_perror (_("Can't create filter process"));
 	return 1;
       }
       for (i = 0; i < Context->vcount; i++)

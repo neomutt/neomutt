@@ -142,7 +142,7 @@ imap_auth_res_t imap_auth_gss (IMAP_DATA* idata, const char* method)
   }
 
   /* now begin login */
-  mutt_message _("Authenticating (GSSAPI)...");
+  mutt_message (_("Authenticating (GSSAPI)..."));
 
   imap_cmd_start (idata, "AUTHENTICATE GSSAPI");
 
@@ -309,7 +309,7 @@ imap_auth_res_t imap_auth_gss (IMAP_DATA* idata, const char* method)
   while (rc == IMAP_CMD_CONTINUE);
 
  bail:
-  mutt_error _("GSSAPI authentication failed.");
+  mutt_error (_("GSSAPI authentication failed."));
   mutt_sleep (2);
   return IMAP_AUTH_FAILURE;
 }

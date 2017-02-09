@@ -456,7 +456,7 @@ int imap_open_connection (IMAP_DATA* idata)
 
     if (option(OPTSSLFORCETLS) && ! idata->conn->ssf)
     {
-      mutt_error _("Encrypted connection unavailable");
+      mutt_error (_("Encrypted connection unavailable"));
       mutt_sleep (1);
       goto err_close_conn;
     }
@@ -754,7 +754,7 @@ static int imap_open_mailbox (CONTEXT* ctx)
 
   if (count && (imap_read_headers (idata, 0, count-1) < 0))
   {
-    mutt_error _("Error opening mailbox");
+    mutt_error (_("Error opening mailbox"));
     mutt_sleep (1);
     goto fail;
   }
@@ -1306,7 +1306,7 @@ int imap_sync_mailbox (CONTEXT* ctx, int expunge)
       }
     }
     else
-      mutt_error _("Error saving flags");
+      mutt_error (_("Error saving flags"));
     rc = -1;
     goto out;
   }
@@ -1329,7 +1329,7 @@ int imap_sync_mailbox (CONTEXT* ctx, int expunge)
   if (expunge && !(ctx->closing) &&
       mutt_bit_isset(ctx->rights, MUTT_ACL_DELETE))
   {
-    mutt_message _("Expunging messages from server...");
+    mutt_message (_("Expunging messages from server..."));
     /* Set expunge bit so we don't get spurious reopened messages */
     idata->reopen |= IMAP_EXPUNGE_EXPECTED;
     if (imap_exec (idata, "EXPUNGE", 0) != 0)

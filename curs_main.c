@@ -72,27 +72,27 @@ static const char *No_visible = N_("No visible messages.");
 #define CHECK_IN_MAILBOX if (!Context) \
 	{ \
 		mutt_flushinp (); \
-		mutt_error _(No_mailbox_is_open); \
+		mutt_error(_(No_mailbox_is_open)); \
 		break; \
 	}
 
 #define CHECK_MSGCOUNT if (!Context) \
 	{ \
 	  	mutt_flushinp (); \
-		mutt_error _(No_mailbox_is_open); \
+		mutt_error(_(No_mailbox_is_open)); \
 		break; \
 	} \
 	else if (!Context->msgcount) \
 	{ \
 	  	mutt_flushinp (); \
-		mutt_error _(There_are_no_messages); \
+		mutt_error(_(There_are_no_messages)); \
 		break; \
 	}
 
 #define CHECK_VISIBLE if (Context && menu->current >= Context->vcount) \
   	{\
 	  	mutt_flushinp (); \
-	  	mutt_error _(No_visible); \
+	  	mutt_error(_(No_visible)); \
 	  	break; \
 	}
 
@@ -100,7 +100,7 @@ static const char *No_visible = N_("No visible messages.");
 #define CHECK_READONLY if (Context->readonly) \
 			{ \
 			  	mutt_flushinp (); \
-				mutt_error _(Mailbox_is_read_only); \
+				mutt_error(_(Mailbox_is_read_only)); \
 				break; \
 			}
 
@@ -115,7 +115,7 @@ static const char *No_visible = N_("No visible messages.");
 #define CHECK_ATTACH if(option(OPTATTACHMSG)) \
 		     {\
 			mutt_flushinp (); \
-			mutt_error _(Function_not_permitted_in_attach_message_mode); \
+			mutt_error(_(Function_not_permitted_in_attach_message_mode)); \
 			break; \
 		     }
 
@@ -417,19 +417,19 @@ static int mx_toggle_write (CONTEXT *ctx)
 
   if (ctx->readonly)
   {
-    mutt_error _("Cannot toggle write on a readonly mailbox!");
+    mutt_error (_("Cannot toggle write on a readonly mailbox!"));
     return -1;
   }
 
   if (ctx->dontwrite)
   {
     ctx->dontwrite = 0;
-    mutt_message _("Changes to folder will be written on folder exit.");
+    mutt_message (_("Changes to folder will be written on folder exit."));
   }
   else
   {
     ctx->dontwrite = 1;
-    mutt_message _("Changes to folder will not be written.");
+    mutt_message (_("Changes to folder will not be written."));
   }
 
   return 0;
@@ -908,7 +908,7 @@ int mutt_index_menu (void)
       {
 	/* notify the user of new mail */
 	if (check == MUTT_REOPENED)
-	  mutt_error _("Mailbox was externally modified.  Flags may be wrong.");
+	  mutt_error (_("Mailbox was externally modified.  Flags may be wrong."));
 	else if (check == MUTT_NEW_MAIL)
 	{
 	  for (i = oldcount; i < Context->msgcount; i++)
@@ -928,7 +928,7 @@ int mutt_index_menu (void)
 	    }
 	  }
 	} else if (check == MUTT_FLAGS)
-	  mutt_message _("Mailbox was externally modified.");
+	  mutt_message (_("Mailbox was externally modified."));
 
 	/* avoid the message being overwritten by buffy */
 	do_buffy_notify = 0;
@@ -1069,13 +1069,13 @@ int mutt_index_menu (void)
       {
 	if (!Context)
 	{
-	  mutt_error _("No mailbox is open.");
+	  mutt_error (_("No mailbox is open."));
 	  continue;
 	}
 
 	if (!Context->tagged)
 	{
-	  mutt_error _("No tagged messages.");
+	  mutt_error (_("No tagged messages."));
 	  continue;
 	}
 	tag = 1;
@@ -1099,14 +1099,14 @@ int mutt_index_menu (void)
       {
 	if (!Context)
 	{
-	  mutt_error _("No mailbox is open.");
+	  mutt_error (_("No mailbox is open."));
 	  continue;
 	}
 
 	if (!Context->tagged)
 	{
 	  mutt_flush_macro_to_endcond ();
-	  mutt_message  _("Nothing to do.");
+	  mutt_message  (_("Nothing to do."));
 	  continue;
 	}
 	tag = 1;
@@ -1389,7 +1389,7 @@ int mutt_index_menu (void)
 
 	if (mutt_atoi (buf, &i) < 0)
 	{
-	  mutt_error _("Argument must be a message number.");
+	  mutt_error (_("Argument must be a message number."));
 	  break;
 	}
 
@@ -1421,10 +1421,10 @@ int mutt_index_menu (void)
 	    menu->redraw = REDRAW_MOTION;
 	  }
 	  else
-	    mutt_error _("That message is not visible.");
+	    mutt_error (_("That message is not visible."));
 	}
 	else
-	  mutt_error _("Invalid message number.");
+	  mutt_error (_("Invalid message number."));
 
 	break;
 
@@ -1463,7 +1463,7 @@ int mutt_index_menu (void)
       case OP_MAIN_SHOW_LIMIT:
 	CHECK_IN_MAILBOX;
 	if (!Context->pattern)
-	   mutt_message _("No limit pattern is in effect.");
+	   mutt_message (_("No limit pattern is in effect."));
 	else
 	{
 	   char buf[STRING];
@@ -1525,7 +1525,7 @@ int mutt_index_menu (void)
 	  menu->redraw = REDRAW_FULL;
 	}
         if (Context->pattern)
-	  mutt_message _("To view all messages, limit to \"all\".");
+	  mutt_message (_("To view all messages, limit to \"all\"."));
 	break;
 
       case OP_QUIT:
@@ -1681,7 +1681,7 @@ int mutt_index_menu (void)
 	  FREE (&Context);
 	}
 	imap_logout_all();
-	mutt_message _("Logged out of IMAP servers.");
+	mutt_message (_("Logged out of IMAP servers."));
 	set_option (OPTSEARCHINVALID);
 	menu->redraw = REDRAW_FULL;
 	break;
@@ -1973,7 +1973,7 @@ int mutt_index_menu (void)
 	  mutt_buffy (buf, sizeof (buf));
 	  if (!buf[0])
 	  {
-	    mutt_error _("No mailboxes have new mail");
+	    mutt_error (_("No mailboxes have new mail"));
 	    break;
 	  }
 	}
@@ -2126,7 +2126,7 @@ int mutt_index_menu (void)
 	CHECK_ACL(MUTT_ACL_WRITE, _("Cannot break thread"));
 
         if ((Sort & SORT_MASK) != SORT_THREADS)
-	  mutt_error _("Threading is not enabled.");
+	  mutt_error (_("Threading is not enabled."));
 	else if (CURHDR->env->in_reply_to || CURHDR->env->references)
 	{
 	  {
@@ -2138,7 +2138,7 @@ int mutt_index_menu (void)
 	  }
 
 	  Context->changed = 1;
-	  mutt_message _("Thread broken");
+	  mutt_message (_("Thread broken"));
 
 	  if (menu->menu == MENU_PAGER)
 	  {
@@ -2149,7 +2149,7 @@ int mutt_index_menu (void)
 	    menu->redraw |= REDRAW_INDEX;
 	}
 	else
-	  mutt_error _("Thread cannot be broken, message is not part of a thread");
+	  mutt_error (_("Thread cannot be broken, message is not part of a thread"));
 
 	break;
 
@@ -2162,11 +2162,11 @@ int mutt_index_menu (void)
 	CHECK_ACL(MUTT_ACL_WRITE, _("Cannot link threads"));
 
         if ((Sort & SORT_MASK) != SORT_THREADS)
-	  mutt_error _("Threading is not enabled.");
+	  mutt_error (_("Threading is not enabled."));
 	else if (!CURHDR->env->message_id)
-	  mutt_error _("No Message-ID: header available to link thread");
+	  mutt_error (_("No Message-ID: header available to link thread"));
 	else if (!tag && (!Context->last_tag || !Context->last_tag->tagged))
-	  mutt_error _("First, please tag a message to be linked here");
+	  mutt_error (_("First, please tag a message to be linked here"));
 	else
 	{
 	  HEADER *oldcur = CURHDR;
@@ -2178,10 +2178,10 @@ int mutt_index_menu (void)
 	    menu->current = oldcur->virtual;
 
 	    Context->changed = 1;
-	    mutt_message _("Threads linked");
+	    mutt_message (_("Threads linked"));
 	  }
 	  else
-	    mutt_error _("No thread linked");
+	    mutt_error (_("No thread linked"));
 	}
 
 	if (menu->menu == MENU_PAGER)
@@ -2217,14 +2217,14 @@ int mutt_index_menu (void)
 	if (menu->current >= Context->vcount - 1)
 	{
 	  if (menu->menu == MENU_MAIN)
-	    mutt_error _("You are on the last message.");
+	    mutt_error (_("You are on the last message."));
 	  break;
 	}
 	if ((menu->current = ci_next_undeleted (menu->current)) == -1)
 	{
 	  menu->current = menu->oldcurrent;
 	  if (menu->menu == MENU_MAIN)
-	    mutt_error _("No undeleted messages.");
+	    mutt_error (_("No undeleted messages."));
 	}
 	else if (menu->menu == MENU_PAGER)
 	{
@@ -2242,7 +2242,7 @@ int mutt_index_menu (void)
 	if (menu->current >= Context->vcount - 1)
 	{
 	  if (menu->menu == MENU_MAIN)
-	    mutt_error _("You are on the last message.");
+	    mutt_error (_("You are on the last message."));
 	  break;
 	}
 	menu->current++;
@@ -2261,14 +2261,14 @@ int mutt_index_menu (void)
         CHECK_VISIBLE;
 	if (menu->current < 1)
 	{
-	  mutt_error _("You are on the first message.");
+	  mutt_error (_("You are on the first message."));
 	  break;
 	}
 	if ((menu->current = ci_previous_undeleted (menu->current)) == -1)
 	{
 	  menu->current = menu->oldcurrent;
 	  if (menu->menu == MENU_MAIN)
-	    mutt_error _("No undeleted messages.");
+	    mutt_error (_("No undeleted messages."));
 	}
 	else if (menu->menu == MENU_PAGER)
 	{
@@ -2285,7 +2285,7 @@ int mutt_index_menu (void)
         CHECK_VISIBLE;
 	if (menu->current < 1)
 	{
-	  if (menu->menu == MENU_MAIN) mutt_error _("You are on the first message.");
+	  if (menu->menu == MENU_MAIN) mutt_error (_("You are on the first message."));
 	  break;
 	}
 	menu->current--;
@@ -2360,7 +2360,7 @@ int mutt_index_menu (void)
 	    i++;
 	    if (i > Context->vcount - 1)
 	    {
-	      mutt_message _("Search wrapped to top.");
+	      mutt_message (_("Search wrapped to top."));
 	      i = 0;
 	    }
 	  }
@@ -2369,7 +2369,7 @@ int mutt_index_menu (void)
 	    i--;
 	    if (i < 0)
 	    {
-	      mutt_message _("Search wrapped to bottom.");
+	      mutt_message (_("Search wrapped to bottom."));
 	      i = Context->vcount - 1;
 	    }
 	  }
@@ -2555,9 +2555,9 @@ int mutt_index_menu (void)
 	{
 	  menu->current = menu->oldcurrent;
 	  if (op == OP_MAIN_NEXT_THREAD || op == OP_MAIN_NEXT_SUBTHREAD)
-	    mutt_error _("No more threads.");
+	    mutt_error (_("No more threads."));
 	  else
-	    mutt_error _("You are on the first thread.");
+	    mutt_error (_("You are on the first thread."));
 	}
 	else if (menu->menu == MENU_PAGER)
 	{
@@ -2622,7 +2622,7 @@ int mutt_index_menu (void)
 
         if ((Sort & SORT_MASK) != SORT_THREADS)
         {
-	  mutt_error _("Threading is not enabled.");
+	  mutt_error (_("Threading is not enabled."));
 	  break;
 	}
 
@@ -2640,7 +2640,7 @@ int mutt_index_menu (void)
 	}
 	else
 	{
-	  mutt_error _("Thread contains unread messages.");
+	  mutt_error (_("Thread contains unread messages."));
 	  break;
 	}
 

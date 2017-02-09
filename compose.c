@@ -51,7 +51,7 @@
 
 static const char* There_are_no_attachments = N_("There are no attachments.");
 
-#define CHECK_COUNT if (idxlen == 0) { mutt_error _(There_are_no_attachments); break; }
+#define CHECK_COUNT if (idxlen == 0) { mutt_error(_(There_are_no_attachments)); break; }
 
 
 
@@ -214,7 +214,7 @@ static void redraw_mix_line (LIST *chain)
 
   if (!chain)
   {
-    addstr ("<no chain defined>");
+    addstr (_("<no chain defined>"));
     mutt_window_clrtoeol (MuttIndexWindow);
     return;
   }
@@ -371,7 +371,7 @@ static int delete_attachment (MUTTMENU *menu, short *idxlen, int x)
 
   if (x == 0 && menu->max == 1)
   {
-    mutt_error _("You may not delete the only attachment.");
+    mutt_error (_("You may not delete the only attachment."));
     idx[x]->content->tagged = 0;
     return (-1);
   }
@@ -835,7 +835,7 @@ int mutt_compose_menu (HEADER *msg,   /* structure for new message */
 
 	  error = 0;
 	  if (numfiles > 1)
-	    mutt_message _("Attaching selected files...");
+	    mutt_message (_("Attaching selected files..."));
 	  for (i = 0; i < numfiles; i++)
 	  {
 	    char *att = files[i];
@@ -930,7 +930,7 @@ int mutt_compose_menu (HEADER *msg,   /* structure for new message */
 	  {
 	    mx_close_mailbox (ctx, NULL);
 	    FREE (&ctx);
-	    mutt_error _("No messages in that folder.");
+	    mutt_error (_("No messages in that folder."));
 	    break;
 	  }
 
@@ -939,7 +939,7 @@ int mutt_compose_menu (HEADER *msg,   /* structure for new message */
 	  
 	  Context = ctx;
 	  set_option(OPTATTACHMSG);
-	  mutt_message _("Tag the messages you want to attach!");
+	  mutt_message (_("Tag the messages you want to attach!"));
 	  close = mutt_index_menu ();
 	  unset_option(OPTATTACHMSG);
 
@@ -971,7 +971,7 @@ int mutt_compose_menu (HEADER *msg,   /* structure for new message */
 		update_idx (menu, idx, idxlen++);
 	      else
 	      {
-		mutt_error _("Unable to attach!");
+		mutt_error (_("Unable to attach!"));
 		FREE (&idx[idxlen]);
 	      }
 	    }
@@ -1104,7 +1104,7 @@ int mutt_compose_menu (HEADER *msg,   /* structure for new message */
 	    mutt_clear_error();
 	  }
 	  else
-	    mutt_error _("Invalid encoding.");
+	    mutt_error (_("Invalid encoding."));
 	}
         mutt_message_hook (NULL, msg, MUTT_SEND2HOOK);
         break;
@@ -1258,7 +1258,7 @@ int mutt_compose_menu (HEADER *msg,   /* structure for new message */
 
 	  if (!(p = strchr (type, '/')))
 	  {
-	    mutt_error _("Content-Type is of the form base/sub");
+	    mutt_error (_("Content-Type is of the form base/sub"));
 	    continue;
 	  }
 	  *p++ = 0;
@@ -1285,7 +1285,7 @@ int mutt_compose_menu (HEADER *msg,   /* structure for new message */
 
 	  if ((idx[idxlen]->content = mutt_make_file_attach (fname)) == NULL)
 	  {
-	    mutt_error _("What we have here is a failure to make an attachment");
+	    mutt_error (_("What we have here is a failure to make an attachment"));
 	    continue;
 	  }
 	  update_idx (menu, idx, idxlen++);
@@ -1422,7 +1422,7 @@ int mutt_compose_menu (HEADER *msg,   /* structure for new message */
          if (mutt_write_fcc (fname, msg, NULL, 0, NULL, NULL) < 0)
            msg->content = mutt_remove_multipart (msg->content);
          else
-           mutt_message _("Message written.");
+           mutt_message (_("Message written."));
        }
        break;
 

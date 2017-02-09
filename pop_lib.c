@@ -333,7 +333,7 @@ int pop_open_connection (POP_DATA *pop_data)
 
   if (option(OPTSSLFORCETLS) && !pop_data->conn->ssf)
   {
-    mutt_error _("Encrypted connection unavailable");
+    mutt_error (_("Encrypted connection unavailable"));
     mutt_sleep (1);
     return -2;
   }
@@ -375,7 +375,7 @@ int pop_open_connection (POP_DATA *pop_data)
 
 err_conn:
   pop_data->status = POP_DISCONNECTED;
-  mutt_error _("Server closed connection!");
+  mutt_error (_("Server closed connection!"));
   mutt_sleep (2);
   return -1;
 }
@@ -389,7 +389,7 @@ void pop_logout (CONTEXT *ctx)
 
   if (pop_data->status == POP_CONNECTED)
   {
-    mutt_message _("Closing connection to POP server...");
+    mutt_message (_("Closing connection to POP server..."));
 
     if (ctx->readonly)
     {

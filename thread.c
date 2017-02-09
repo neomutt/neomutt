@@ -1028,7 +1028,7 @@ int _mutt_aside_thread (HEADER *hdr, short dir, short subthreads)
 
   if ((Sort & SORT_MASK) != SORT_THREADS)
   {
-    mutt_error _("Threading is not enabled.");
+    mutt_error (_("Threading is not enabled."));
     return (hdr->virtual);
   }
 
@@ -1084,7 +1084,7 @@ int mutt_parent_message (CONTEXT *ctx, HEADER *hdr, int find_root)
 
   if ((Sort & SORT_MASK) != SORT_THREADS)
   {
-    mutt_error _("Threading is not enabled.");
+    mutt_error (_("Threading is not enabled."));
     return (hdr->virtual);
   }
 

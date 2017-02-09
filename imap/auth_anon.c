@@ -40,7 +40,7 @@ imap_auth_res_t imap_auth_anon (IMAP_DATA* idata, const char* method)
   if (idata->conn->account.user[0] != '\0')
     return IMAP_AUTH_UNAVAIL;
 
-  mutt_message _("Authenticating (anonymous)...");
+  mutt_message (_("Authenticating (anonymous)..."));
 
   imap_cmd_start (idata, "AUTHENTICATE ANONYMOUS");
 
@@ -70,7 +70,7 @@ imap_auth_res_t imap_auth_anon (IMAP_DATA* idata, const char* method)
     return IMAP_AUTH_SUCCESS;
 
  bail:
-  mutt_error _("Anonymous authentication failed.");
+  mutt_error (_("Anonymous authentication failed."));
   mutt_sleep (2);
   return IMAP_AUTH_FAILURE;
 }

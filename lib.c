@@ -128,14 +128,14 @@ void *safe_calloc (size_t nmemb, size_t size)
 
   if (((size_t) -1) / nmemb <= size)
   {
-    mutt_error _("Integer overflow -- can't allocate memory!");
+    mutt_error (_("Integer overflow -- can't allocate memory!"));
     sleep (1);
     mutt_exit (1);
   }
   
   if (!(p = calloc (nmemb, size)))
   {
-    mutt_error _("Out of memory!");
+    mutt_error (_("Out of memory!"));
     sleep (1);
     mutt_exit (1);
   }
@@ -150,7 +150,7 @@ void *safe_malloc (size_t siz)
     return 0;
   if ((p = malloc (siz)) == 0)	/* __MEM_CHECKED__ */
   {
-    mutt_error _("Out of memory!");
+    mutt_error (_("Out of memory!"));
     sleep (1);
     mutt_exit (1);
   }
@@ -182,7 +182,7 @@ void safe_realloc (void *ptr, size_t siz)
 
   if (!r)
   {
-    mutt_error _("Out of memory!");
+    mutt_error (_("Out of memory!"));
     sleep (1);
     mutt_exit (1);
   }

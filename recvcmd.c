@@ -40,7 +40,7 @@ static short check_msg (BODY * b, short err)
   if (!mutt_is_message_type (b->type, b->subtype))
   {
     if (err)
-      mutt_error _("You may only bounce message/rfc822 parts.");
+      mutt_error (_("You may only bounce message/rfc822 parts."));
     return -1;
   }
   return 0;
@@ -145,7 +145,7 @@ void mutt_attach_bounce (FILE * fp, HEADER * hdr,
   {
     if (!cur->hdr->env->from)
     {
-      mutt_error _("Warning: message contains no From: header");
+      mutt_error (_("Warning: message contains no From: header"));
       mutt_sleep (2);
       mutt_clear_error ();
     }
@@ -158,7 +158,7 @@ void mutt_attach_bounce (FILE * fp, HEADER * hdr,
       {
 	if (!idx[i]->content->hdr->env->from)
 	{
-	  mutt_error _("Warning: message contains no From: header");
+	  mutt_error (_("Warning: message contains no From: header"));
 	  mutt_sleep (2);
 	  mutt_clear_error ();
 	  break;
@@ -179,7 +179,7 @@ void mutt_attach_bounce (FILE * fp, HEADER * hdr,
 
   if (!(adr = rfc822_parse_adrlist (adr, buf)))
   {
-    mutt_error _("Error parsing address!");
+    mutt_error (_("Error parsing address!"));
     return;
   }
 
@@ -749,7 +749,7 @@ attach_reply_envelope_defaults (ENVELOPE *env, ATTACHPTR **idx, short idxlen,
 
   if (curenv == NULL  ||  curhdr == NULL)
   {
-    mutt_error _("Can't find any tagged messages.");
+    mutt_error (_("Can't find any tagged messages."));
     return -1;
   }
 

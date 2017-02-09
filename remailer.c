@@ -161,7 +161,7 @@ static REMAILER **mix_type2_list (size_t *l)
   /* first, generate the "random" remailer */
   
   p = mix_new_remailer ();
-  p->shortname = safe_strdup ("<random>");
+  p->shortname = safe_strdup (_("<random>"));
   mix_add_entry (&type2_list, p, &slots, &used);
   
   while (fgets (line, sizeof (line), fp))
@@ -509,7 +509,7 @@ void mix_make_chain (LIST **chainp, int *redraw)
 
   if (!(type2_list = mix_type2_list (&ttll)))
   {
-    mutt_error _("Can't get mixmaster's type2.list!");
+    mutt_error (_("Can't get mixmaster's type2.list!"));
     return;
   }
 
@@ -593,7 +593,7 @@ void mix_make_chain (LIST **chainp, int *redraw)
 	if (chain->cl && chain->ch[chain->cl - 1] && 
 	    (type2_list[chain->ch[chain->cl-1]]->caps & MIX_CAP_MIDDLEMAN))
 	{
-	  mutt_error ( _("Error: %s can't be used as the final remailer of a chain."),
+	  mutt_error (_("Error: %s can't be used as the final remailer of a chain."),
 		    type2_list[chain->ch[chain->cl - 1]]->shortname);
 	}
 	else
@@ -623,7 +623,7 @@ void mix_make_chain (LIST **chainp, int *redraw)
 	  c_redraw = 1;
 	}
 	else
-	  mutt_error ( _("Mixmaster chains are limited to %d elements."),
+	  mutt_error (_("Mixmaster chains are limited to %d elements."),
 		    MAXMIXES);
 	
 	break;
@@ -646,7 +646,7 @@ void mix_make_chain (LIST **chainp, int *redraw)
 	}
 	else
 	{
-	  mutt_error _("The remailer chain is already empty.");
+	  mutt_error (_("The remailer chain is already empty."));
 	}
 	break;
       }
@@ -656,7 +656,7 @@ void mix_make_chain (LIST **chainp, int *redraw)
 	if (c_cur) 
 	  c_cur--;
 	else
-	  mutt_error _("You already have the first chain element selected.");
+	  mutt_error (_("You already have the first chain element selected."));
 	
 	break;
       }
@@ -666,7 +666,7 @@ void mix_make_chain (LIST **chainp, int *redraw)
 	if (chain->cl && c_cur < chain->cl - 1)
 	  c_cur++;
 	else
-	  mutt_error _("You already have the last chain element selected.");
+	  mutt_error (_("You already have the last chain element selected."));
 	
 	break;
       }
@@ -705,7 +705,7 @@ int mix_check_message (HEADER *msg)
   
   if (msg->env->cc || msg->env->bcc)
   {
-    mutt_error _("Mixmaster doesn't accept Cc or Bcc headers.");
+    mutt_error (_("Mixmaster doesn't accept Cc or Bcc headers."));
     return -1;
   }
 
@@ -729,7 +729,7 @@ int mix_check_message (HEADER *msg)
     
     if (!(fqdn = mutt_fqdn (1)))
     {
-      mutt_error _("Please set the hostname variable to a proper value when using mixmaster!");
+      mutt_error (_("Please set the hostname variable to a proper value when using mixmaster!"));
       return (-1);
     }
   
@@ -767,7 +767,7 @@ int mix_send_message (LIST *chain, const char *tempfile)
     if (!option (OPTNOCURSES))
     {
       mutt_any_key_to_continue (NULL);
-      mutt_error _("Error sending message.");
+      mutt_error (_("Error sending message."));
     }
   }
 

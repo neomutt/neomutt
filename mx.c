@@ -176,7 +176,7 @@ retry_lock:
     } 
     else
     {
-      mutt_error ( _("Can't dotlock %s.\n"), path);
+      mutt_error (_("Can't dotlock %s.\n"), path);
     }
   }
   return (r == DL_EX_OK ? 0 : -1);
@@ -232,7 +232,7 @@ int mx_lock_file (const char *path, int fd, int excl, int dot, int timeout)
     if (prev_sb.st_size == sb.st_size && ++count >= (timeout?MAXLOCKATTEMPT:0))
     {
       if (timeout)
-	mutt_error _("Timeout exceeded while attempting fcntl lock!");
+	mutt_error (_("Timeout exceeded while attempting fcntl lock!"));
       return -1;
     }
 
@@ -265,7 +265,7 @@ int mx_lock_file (const char *path, int fd, int excl, int dot, int timeout)
     if (prev_sb.st_size == sb.st_size && ++count >= (timeout?MAXLOCKATTEMPT:0))
     {
       if (timeout)
-	mutt_error _("Timeout exceeded while attempting flock lock!");
+	mutt_error (_("Timeout exceeded while attempting flock lock!"));
       r = -1;
       break;
     }
@@ -783,7 +783,7 @@ static int trash_append (CONTEXT *ctx)
     set_option (OPTCONFIRMAPPEND);
   if (rc != 0)
   {
-    mutt_error _("message(s) not deleted");
+    mutt_error (_("message(s) not deleted"));
     return -1;
   }
 
@@ -816,7 +816,7 @@ static int trash_append (CONTEXT *ctx)
   }
   else
   {
-    mutt_error _("Can't open trash folder");
+    mutt_error (_("Can't open trash folder"));
     return -1;
   }
 
@@ -997,7 +997,7 @@ int mx_close_mailbox (CONTEXT *ctx, int *index_hint)
   else if (!ctx->changed && ctx->deleted == 0)
   {
     if (!ctx->quiet)
-      mutt_message _("Mailbox is unchanged.");
+      mutt_message (_("Mailbox is unchanged."));
     if (ctx->magic == MUTT_MBOX || ctx->magic == MUTT_MMDF)
       mbox_reset_atime (ctx, NULL);
     mx_fastclose_mailbox (ctx);
@@ -1190,14 +1190,14 @@ int mx_sync_mailbox (CONTEXT *ctx, int *index_hint)
   }
   else if (ctx->readonly)
   {
-    mutt_error _("Mailbox is read-only.");
+    mutt_error (_("Mailbox is read-only."));
     return -1;
   }
 
   if (!ctx->changed && !ctx->deleted)
   {
     if (!ctx->quiet)
-      mutt_message _("Mailbox is unchanged.");
+      mutt_message (_("Mailbox is unchanged."));
     return (0);
   }
 
@@ -1252,7 +1252,7 @@ int mx_sync_mailbox (CONTEXT *ctx, int *index_hint)
     if (ctx->magic == MUTT_IMAP && !purge)
     {
       if (!ctx->quiet)
-        mutt_message _("Mailbox checkpointed.");
+        mutt_message (_("Mailbox checkpointed."));
     }
     else
 #endif
@@ -1430,7 +1430,7 @@ void mx_alloc_memory (CONTEXT *ctx)
   
   if ((ctx->hdrmax + 25) * s < ctx->hdrmax * s)
   {
-    mutt_error _("Integer overflow -- can't allocate memory.");
+    mutt_error (_("Integer overflow -- can't allocate memory."));
     sleep (1);
     mutt_exit (1);
   }
