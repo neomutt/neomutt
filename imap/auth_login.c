@@ -54,8 +54,8 @@ imap_auth_res_t imap_auth_login (IMAP_DATA* idata, const char* method)
    * of 5 or higher */
 
   if (debuglevel < IMAP_LOG_PASS)
-    dprint (2, (debugfile, "Sending LOGIN command for %s...\n",
-      idata->conn->account.user));
+    mutt_debug (2, "Sending LOGIN command for %s...\n",
+                idata->conn->account.user);
 #endif
 
   snprintf (buf, sizeof (buf), "LOGIN %s %s", q_user, q_pass);

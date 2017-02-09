@@ -61,7 +61,7 @@ int getdnsdomainname (char *d, size_t len)
     {
       strfcpy(d, ++p, len);
       ret = 0;
-      dprint(1, (debugfile, "getdnsdomainname(): %s\n", d));
+      mutt_debug (1, "getdnsdomainname(): %s\n", d);
     }
     freeaddrinfo(h);
   }

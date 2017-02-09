@@ -26,8 +26,6 @@
  * some of our "standard" functions in external programs, too.
  */
 
-#define _LIB_C 1
-
 #if HAVE_CONFIG_H
 # include "config.h"
 #endif
@@ -382,7 +380,7 @@ int mutt_copy_bytes (FILE *in, FILE *out, size_t size)
       break;
     if (fwrite (buf, 1, chunk, out) != chunk)
     {
-      /* dprint (1, (debugfile, "mutt_copy_bytes(): fwrite() returned short byte count\n")); */
+      /* mutt_debug (1, "mutt_copy_bytes(): fwrite() returned short byte count\n"); */
       return (-1);
     }
     size -= chunk;
@@ -488,7 +486,8 @@ int safe_rename (const char *src, const char *target)
      *
      */
     
-    dprint (1, (debugfile, "safe_rename: link (%s, %s) failed: %s (%d)\n", src, target, strerror (errno), errno));
+    mutt_debug (1, "safe_rename: link (%s, %s) failed: %s (%d)\n",
+                src, target, strerror (errno), errno);
 
     /*
      * FUSE may return ENOSYS. VFAT may return EPERM. FreeBSD's
@@ -503,13 +502,14 @@ int safe_rename (const char *src, const char *target)
 #endif
 	)
     {
-      dprint (1, (debugfile, "safe_rename: trying rename...\n"));
+      mutt_debug (1, "safe_rename: trying rename...\n");
       if (rename (src, target) == -1) 
       {
-	dprint (1, (debugfile, "safe_rename: rename (%s, %s) failed: %s (%d)\n", src, target, strerror (errno), errno));
+        mutt_debug (1, "safe_rename: rename (%s, %s) failed: %s (%d)\n",
+                    src, target, strerror (errno), errno);
 	return -1;
       }
-      dprint (1, (debugfile, "safe_rename: rename succeeded.\n"));
+      mutt_debug (1, "safe_rename: rename succeeded.\n");
     
       return 0;
     }
@@ -523,15 +523,15 @@ int safe_rename (const char *src, const char *target)
   
   if (lstat (src, &ssb) == -1)
   {
-    dprint (1, (debugfile, "safe_rename: can't stat %s: %s (%d)\n",
-		src, strerror (errno), errno));
+    mutt_debug (1, "safe_rename: can't stat %s: %s (%d)\n",
+                src, strerror (errno), errno);
     return -1;
   }
   
   if (lstat (target, &tsb) == -1)
   {
-    dprint (1, (debugfile, "safe_rename: can't stat %s: %s (%d)\n",
-		src, strerror (errno), errno));
+    mutt_debug (1, "safe_rename: can't stat %s: %s (%d)\n",
+                src, strerror (errno), errno);
     return -1;
   }
 
@@ -542,7 +542,8 @@ int safe_rename (const char *src, const char *target)
 
   if (compare_stat (&ssb, &tsb) == -1)
   {
-    dprint (1, (debugfile, "safe_rename: stat blocks for %s and %s diverge; pretending EEXIST.\n", src, target));
+    mutt_debug (1, "safe_rename: stat blocks for %s and %s diverge; "
+                "pretending EEXIST.\n", src, target);
     errno = EEXIST;
     return -1;
   }
@@ -554,8 +555,8 @@ int safe_rename (const char *src, const char *target)
 
   if (unlink (src) == -1) 
   {
-    dprint (1, (debugfile, "safe_rename: unlink (%s) failed: %s (%d)\n",
-		src, strerror (errno), errno));
+    mutt_debug (1, "safe_rename: unlink (%s) failed: %s (%d)\n",
+                src, strerror (errno), errno);
   }
   
 
@@ -588,14 +589,14 @@ static int mutt_mkwrapdir (const char *path, char *newfile, size_t nflen,
   snprintf (newdir, ndlen, "%s/%s", parent, ".muttXXXXXX");
   if (mkdtemp(newdir) == NULL)
   {
-      dprint(1, (debugfile, "mutt_mkwrapdir: mkdtemp() failed\n"));
+      mutt_debug (1, "mutt_mkwrapdir: mkdtemp() failed\n");
       return -1;
   }
   
   if (snprintf (newfile, nflen, "%s/%s", newdir, NONULL(basename)) >= nflen)
   {
       rmdir(newdir);
-      dprint(1, (debugfile, "mutt_mkwrapdir: string was truncated\n"));
+      mutt_debug (1, "mutt_mkwrapdir: string was truncated\n");
       return -1;
   }
   return 0;  
@@ -612,7 +613,7 @@ int mutt_rmtree (const char* path)
 
   if (!(dirp = opendir (path)))
   {
-    dprint (1, (debugfile, "mutt_rmtree: error opening directory %s\n", path));
+    mutt_debug (1, "mutt_rmtree: error opening directory %s\n", path);
     return -1;
   }
   while ((de = readdir (dirp)))
@@ -684,7 +685,7 @@ int safe_open (const char *path, int flags)
   if (lstat (path, &osb) < 0 || fstat (fd, &nsb) < 0 ||
       compare_stat(&osb, &nsb) == -1)
   {
-/*    dprint (1, (debugfile, "safe_open(): %s is a symlink!\n", path)); */
+/*    mutt_debug (1, "safe_open(): %s is a symlink!\n", path); */
     close (fd);
     return (-1);
   }
@@ -1033,23 +1034,31 @@ mutt_strsysexit(int e)
   return sysexits_h[i].str;
 }
 
-void mutt_debug (FILE *fp, const char *fmt, ...)
+#ifdef DEBUG
+FILE *debugfile;
+int debuglevel;
+
+void mutt_debug (int level, const char *fmt, ...)
 {
   va_list ap;
   time_t now = time (NULL);
   static char buf[23] = "";
   static time_t last = 0;
 
+  if (debuglevel < level || !debugfile)
+    return;
+
   if (now > last)
   {
     strftime (buf, sizeof (buf), "%Y-%m-%d %H:%M:%S", localtime (&now));
     last = now;
   }
-  fprintf (fp, "[%s] ", buf);
+  fprintf (debugfile, "[%s] ", buf);
   va_start (ap, fmt);
-  vfprintf (fp, fmt, ap);
+  vfprintf (debugfile, fmt, ap);
   va_end (ap);
 }
+#endif
 
 int mutt_atos (const char *str, short *dst)
 {

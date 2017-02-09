@@ -230,8 +230,7 @@ HEADER* imap_hcache_get (IMAP_DATA* idata, unsigned int uid)
     if (*(unsigned int *)uv == idata->uid_validity)
       h = mutt_hcache_restore (uv);
     else
-      dprint (3, (debugfile, "hcache uidvalidity mismatch: %u",
-                  *(unsigned int *)uv));
+      mutt_debug (3, "hcache uidvalidity mismatch: %u", *(unsigned int *)uv);
     mutt_hcache_free (idata->hcache, &uv);
   }
 
@@ -282,7 +281,7 @@ int imap_parse_path (const char* path, IMAP_MBOX* mx)
       ImapPort = ntohs (service->s_port);
     else
       ImapPort = IMAP_PORT;
-    dprint (3, (debugfile, "Using default IMAP port %d\n", ImapPort));
+    mutt_debug (3, "Using default IMAP port %d\n", ImapPort);
   }
   if (!ImapsPort)
   {
@@ -291,7 +290,7 @@ int imap_parse_path (const char* path, IMAP_MBOX* mx)
       ImapsPort = ntohs (service->s_port);
     else
       ImapsPort = IMAP_SSL_PORT;
-    dprint (3, (debugfile, "Using default IMAPS port %d\n", ImapsPort));
+    mutt_debug (3, "Using default IMAPS port %d\n", ImapsPort);
   }
 
   /* Defaults */
@@ -340,7 +339,7 @@ int imap_parse_path (const char* path, IMAP_MBOX* mx)
 
     if ((n = sscanf (tmp, "%127[^:/]%127s", mx->account.host, tmp)) < 1)
     {
-      dprint (1, (debugfile, "imap_parse_path: NULL host in %s\n", path));
+      mutt_debug (1, "imap_parse_path: NULL host in %s\n", path);
       FREE (&mx->mbox);
       return -1;
     }
@@ -354,7 +353,8 @@ int imap_parse_path (const char* path, IMAP_MBOX* mx)
 	  mx->account.flags |= MUTT_ACCT_SSL;
 	else
 	{
-	  dprint (1, (debugfile, "imap_parse_path: Unknown connection type in %s\n", path));
+	  mutt_debug (1, "imap_parse_path: Unknown connection type in %s\n",
+	              path);
 	  FREE (&mx->mbox);
 	  return -1;
 	}

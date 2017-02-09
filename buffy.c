@@ -264,7 +264,8 @@ int mutt_parse_mailboxes (BUFFER *path, BUFFER *s, unsigned long data, BUFFER *e
     {
       if (mutt_strcmp (p ? p : buf, (*tmp)->realpath) == 0)
       {
-	dprint(3,(debugfile,"mailbox '%s' already registered as '%s'\n", buf, (*tmp)->path));
+        mutt_debug (3, "mailbox '%s' already registered as '%s'\n",
+                    buf, (*tmp)->path);
 	break;
       }
     }
@@ -498,7 +499,8 @@ int mutt_parse_virtual_mailboxes (BUFFER *path, BUFFER *s, unsigned long data, B
     {
       if (mutt_strcmp (buf, (*tmp)->path) == 0)
       {
-	dprint(3,(debugfile,"virtual mailbox '%s' already registered as '%s'\n", buf, (*tmp)->path));
+        mutt_debug (3, "virtual mailbox '%s' already registered as '%s'\n",
+                    buf, (*tmp)->path);
 	break;
       }
     }

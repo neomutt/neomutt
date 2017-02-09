@@ -475,7 +475,7 @@ report_regerror(int regerr, regex_t *preg, BUFFER *err)
   size_t ds = err->dsize;
 
   if (regerror(regerr, preg, err->data, ds) > ds)
-    dprint(2, (debugfile, "warning: buffer too small for regerror\n"));
+    mutt_debug (2, "warning: buffer too small for regerror\n");
   /* The return value is fixed, exists only to shorten code at callsite */
   return RANGE_E_SYNTAX;
 }
@@ -590,7 +590,7 @@ eat_range_by_regexp (pattern_t *pat, BUFFER *s, int kind, BUFFER *err)
   /* Snarf the contents of the two sides of the range. */
   pat->min = scan_range_slot(s, pmatch, pspec->lgrp, RANGE_S_LEFT, kind);
   pat->max = scan_range_slot(s, pmatch, pspec->rgrp, RANGE_S_RIGHT, kind);
-  dprint(1, (debugfile, "pat->min=%d pat->max=%d\n", pat->min, pat->max));
+  mutt_debug (1, "pat->min=%d pat->max=%d\n", pat->min, pat->max);
 
   /* Special case for a bare 0. */
   if ((kind == RANGE_K_BARE) && (pat->min == 0) && (pat->max == 0))

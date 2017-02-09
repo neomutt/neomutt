@@ -107,7 +107,7 @@ static QUERY *run_query (char *s, int quiet)
 
   if ((thepid = mutt_create_filter (cmd, NULL, &fp, NULL)) < 0)
   {
-    dprint (1, (debugfile, "unable to fork command: %s", cmd));
+    mutt_debug (1, "unable to fork command: %s", cmd);
     return 0;
   }
   if (!quiet)
@@ -145,7 +145,7 @@ static QUERY *run_query (char *s, int quiet)
   safe_fclose (&fp);
   if (mutt_wait_filter (thepid))
   {
-    dprint (1, (debugfile, "Error: %s\n", msg));
+    mutt_debug (1, "Error: %s\n", msg);
     if (!quiet)  mutt_error ("%s", msg);
   }
   else

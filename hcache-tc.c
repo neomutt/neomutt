@@ -39,7 +39,8 @@ hcache_tokyocabinet_open(const char *path)
   {
 #ifdef DEBUG
     int ecode = tcbdbecode (db);
-    dprint (2, (debugfile, "tcbdbopen failed for %s: %s (ecode %d)\n", path, tcbdberrmsg (ecode), ecode));
+    mutt_debug (2, "tcbdbopen failed for %s: %s (ecode %d)\n",
+                path, tcbdberrmsg (ecode), ecode);
 #endif
     tcbdbdel(db);
     return NULL;
@@ -95,7 +96,8 @@ hcache_tokyocabinet_close(void **ctx)
   {
 #ifdef DEBUG
     int ecode = tcbdbecode (db);
-    dprint (2, (debugfile, "tcbdbclose failed: %s (ecode %d)\n", tcbdberrmsg (ecode), ecode));
+    mutt_debug (2, "tcbdbclose failed: %s (ecode %d)\n",
+                tcbdberrmsg (ecode), ecode);
 #endif
   }
   tcbdbdel(db);

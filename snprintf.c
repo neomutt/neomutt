@@ -494,8 +494,8 @@ static void fmtint (char *buffer, size_t *currlen, size_t maxlen,
     spadlen = -spadlen; /* Left Justifty */
 
 #ifdef DEBUG_SNPRINTF
-  dprint (1, (debugfile, "zpad: %d, spad: %d, min: %d, max: %d, place: %d\n",
-      zpadlen, spadlen, min, max, place));
+  mutt_debug (1, "zpad: %d, spad: %d, min: %d, max: %d, place: %d\n",
+              zpadlen, spadlen, min, max, place);
 #endif
 
   /* Spaces */
@@ -623,7 +623,7 @@ static void fmtfp (char *buffer, size_t *currlen, size_t maxlen,
   }
 
 #ifdef DEBUG_SNPRINTF
-  dprint (1, (debugfile, "fmtfp: %f =? %d.%d\n", fvalue, intpart, fracpart));
+  mutt_debug (1, "fmtfp: %f =? %d.%d\n", fvalue, intpart, fracpart);
 #endif
 
   /* Convert integer part */

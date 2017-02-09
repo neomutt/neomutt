@@ -232,12 +232,12 @@ static void tls_get_client_cert (CONNECTION* conn)
 
   if (gnutls_x509_crt_init (&clientcrt) < 0)
   {
-    dprint (1, (debugfile, "Failed to init gnutls crt\n"));
+    mutt_debug (1, "Failed to init gnutls crt\n");
     return;
   }
   if (gnutls_x509_crt_import (clientcrt, crtdata, GNUTLS_X509_FMT_DER) < 0)
   {
-    dprint (1, (debugfile, "Failed to import gnutls client crt\n"));
+    mutt_debug (1, "Failed to import gnutls client crt\n");
     goto err_crt;
   }
   /* get length of DN */
@@ -245,16 +245,16 @@ static void tls_get_client_cert (CONNECTION* conn)
   gnutls_x509_crt_get_dn (clientcrt, NULL, &dnlen);
   if (!(dn = calloc (1, dnlen)))
   {
-    dprint (1, (debugfile, "could not allocate DN\n"));
+    mutt_debug (1, "could not allocate DN\n");
     goto err_crt;
   }
   gnutls_x509_crt_get_dn (clientcrt, dn, &dnlen);
-  dprint (2, (debugfile, "client certificate DN: %s\n", dn));
+  mutt_debug (2, "client certificate DN: %s\n", dn);
 
   /* extract CN to use as external user name */
   if (!(cn = strstr (dn, "CN=")))
   {
-    dprint (1, (debugfile, "no CN found in DN\n"));
+    mutt_debug (1, "no CN found in DN\n");
     goto err_dn;
   }
   cn += 3;
@@ -398,7 +398,7 @@ static int tls_negotiate (CONNECTION * conn)
 
   if (SslClientCert)
   {
-    dprint (2, (debugfile, "Using client certificate %s\n", SslClientCert));
+    mutt_debug (2, "Using client certificate %s\n", SslClientCert);
     gnutls_certificate_set_x509_key_file (data->xcred, SslClientCert,
                                           SslClientCert, GNUTLS_X509_FMT_PEM);
   }
@@ -1164,7 +1164,7 @@ static int tls_check_certificate (CONNECTION* conn)
       rc = gnutls_certificate_set_x509_trust_mem (data->xcred, &cert_list[i],
                                                   GNUTLS_X509_FMT_DER);
       if (rc != 1)
-        dprint (1, (debugfile, "error trusting certificate %d: %d\n", i, rc));
+        mutt_debug (1, "error trusting certificate %d: %d\n", i, rc);
 
       certstat = tls_verify_peers (state);
       /* If the cert chain now verifies, and the peer's cert was otherwise

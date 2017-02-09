@@ -301,7 +301,7 @@ static void mutt_smime_command (char *d, size_t dlen,
 {
   mutt_FormatString (d, dlen, 0, MuttIndexWindow->cols, NONULL(fmt), _mutt_fmt_smime_command,
 		    (unsigned long) cctx, 0);
-  dprint (2,(debugfile, "mutt_smime_command: %s\n", d));
+  mutt_debug (2, "mutt_smime_command: %s\n", d);
 }
 
 

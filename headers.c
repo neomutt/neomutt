@@ -84,7 +84,7 @@ void mutt_edit_headers (const char *editor,
   stat (path, &st);
   if (mtime == st.st_mtime)
   {
-    dprint (1, (debugfile, "ci_edit_headers(): temp file was not modified.\n"));
+    mutt_debug (1, "ci_edit_headers(): temp file was not modified.\n");
     /* the file has not changed! */
     mutt_unlink (path);
     return;
@@ -306,7 +306,7 @@ void mutt_label_ref_dec(ENVELOPE *env)
       label_delete (label->data);
     }
 
-    dprint(1, (debugfile, "--label %s: %d\n", label->data, count));
+    mutt_debug (1, "--label %s: %d\n", label->data, count);
   }
 }
 
@@ -338,7 +338,7 @@ void mutt_label_ref_inc(ENVELOPE *env)
       hash_insert(Labels, dup_label, (void *) count, 0);
     }
 
-    dprint(1, (debugfile, "++label %s: %d\n", label->data, count));
+    mutt_debug (1, "++label %s: %d\n", label->data, count);
   }
 }
 

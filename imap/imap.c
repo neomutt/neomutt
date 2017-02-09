@@ -88,7 +88,7 @@ int imap_access (const char* path, int flags)
 
   if (imap_mboxcache_get (idata, mailbox, 0))
   {
-    dprint (3, (debugfile, "imap_access: found %s in cache\n", mailbox));
+    mutt_debug (3, "imap_access: found %s in cache\n", mailbox);
     return 0;
   }
 
@@ -100,13 +100,13 @@ int imap_access (const char* path, int flags)
     snprintf (buf, sizeof (buf), "STATUS %s (UID-VALIDITY)", mbox);
   else
   {
-    dprint (2, (debugfile, "imap_access: STATUS not supported?\n"));
+    mutt_debug (2, "imap_access: STATUS not supported?\n");
     return -1;
   }
 
   if ((rc = imap_exec (idata, buf, IMAP_CMD_FAIL_OK)) < 0)
   {
-    dprint (1, (debugfile, "imap_access: Can't check STATUS of %s\n", mbox));
+    mutt_debug (1, "imap_access: Can't check STATUS of %s\n", mbox);
     return rc;
   }
 
@@ -206,13 +206,14 @@ int imap_read_literal (FILE* fp, IMAP_DATA* idata, long bytes, progress_t* pbar)
 
   int r = 0;
 
-  dprint (2, (debugfile, "imap_read_literal: reading %ld bytes\n", bytes));
+  mutt_debug (2, "imap_read_literal: reading %ld bytes\n", bytes);
 
   for (pos = 0; pos < bytes; pos++)
   {
     if (mutt_socket_readchar (idata->conn, &c) != 1)
     {
-      dprint (1, (debugfile, "imap_read_literal: error during read, %ld bytes read\n", pos));
+      mutt_debug (1, "imap_read_literal: error during read, %ld bytes read\n",
+                  pos);
       idata->status = IMAP_FATAL;
 
       return -1;
@@ -261,7 +262,7 @@ void imap_expunge_mailbox (IMAP_DATA* idata)
 
     if (h->index == -1)
     {
-      dprint (2, (debugfile, "Expunging message UID %d.\n", HEADER_DATA (h)->uid));
+      mutt_debug (2, "Expunging message UID %d.\n", HEADER_DATA (h)->uid);
 
       h->active = 0;
       idata->ctx->size -= h->content->length;
@@ -376,8 +377,8 @@ IMAP_DATA* imap_conn_find (const ACCOUNT* account, int flags)
       FREE (&idata->capstr);
       new = 1;
       if (idata->conn->ssf)
-	dprint (2, (debugfile, "Communication encrypted at %d bits\n",
-		    idata->conn->ssf));
+        mutt_debug (2, "Communication encrypted at %d bits\n",
+                    idata->conn->ssf);
     }
     else
       mutt_account_unsetpass (&idata->conn->account);
@@ -508,16 +509,14 @@ static char* imap_get_flags (LIST** hflags, char* s)
   /* sanity-check string */
   if (ascii_strncasecmp ("FLAGS", s, 5) != 0)
   {
-    dprint (1, (debugfile, "imap_get_flags: not a FLAGS response: %s\n",
-      s));
+    mutt_debug (1, "imap_get_flags: not a FLAGS response: %s\n", s);
     return NULL;
   }
   s += 5;
   SKIPWS(s);
   if (*s != '(')
   {
-    dprint (1, (debugfile, "imap_get_flags: bogus FLAGS response: %s\n",
-      s));
+    mutt_debug (1, "imap_get_flags: bogus FLAGS response: %s\n", s);
     return NULL;
   }
 
@@ -542,8 +541,7 @@ static char* imap_get_flags (LIST** hflags, char* s)
   /* note bad flags response */
   if (*s != ')')
   {
-    dprint (1, (debugfile,
-      "imap_get_flags: Unterminated FLAGS response: %s\n", s));
+    mutt_debug (1, "imap_get_flags: Unterminated FLAGS response: %s\n", s);
     mutt_free_list (hflags);
 
     return NULL;
@@ -652,7 +650,7 @@ static int imap_open_mailbox (CONTEXT* ctx)
       /* don't override PERMANENTFLAGS */
       if (!idata->flags)
       {
-	dprint (3, (debugfile, "Getting mailbox FLAGS\n"));
+        mutt_debug (3, "Getting mailbox FLAGS\n");
 	if ((pc = imap_get_flags (&(idata->flags), pc)) == NULL)
 	  goto fail;
       }
@@ -660,7 +658,7 @@ static int imap_open_mailbox (CONTEXT* ctx)
     /* PERMANENTFLAGS are massaged to look like FLAGS, then override FLAGS */
     else if (ascii_strncasecmp ("OK [PERMANENTFLAGS", pc, 18) == 0)
     {
-      dprint (3, (debugfile, "Getting mailbox PERMANENTFLAGS\n"));
+      mutt_debug (3, "Getting mailbox PERMANENTFLAGS\n");
       /* safe to call on NULL */
       mutt_free_list (&(idata->flags));
       /* skip "OK [PERMANENT" so syntax is the same as FLAGS */
@@ -671,7 +669,7 @@ static int imap_open_mailbox (CONTEXT* ctx)
     /* save UIDVALIDITY for the header cache */
     else if (ascii_strncasecmp ("OK [UIDVALIDITY", pc, 14) == 0)
     {
-      dprint (3, (debugfile, "Getting mailbox UIDVALIDITY\n"));
+      mutt_debug (3, "Getting mailbox UIDVALIDITY\n");
       pc += 3;
       pc = imap_next_word (pc);
       idata->uid_validity = strtol (pc, NULL, 10);
@@ -679,7 +677,7 @@ static int imap_open_mailbox (CONTEXT* ctx)
     }
     else if (ascii_strncasecmp ("OK [UIDNEXT", pc, 11) == 0)
     {
-      dprint (3, (debugfile, "Getting mailbox UIDNEXT\n"));
+      mutt_debug (3, "Getting mailbox UIDNEXT\n");
       pc += 3;
       pc = imap_next_word (pc);
       idata->uidnext = strtol (pc, NULL, 10);
@@ -714,7 +712,7 @@ static int imap_open_mailbox (CONTEXT* ctx)
   if (!ascii_strncasecmp (imap_get_qualifier (idata->buf), "[READ-ONLY]", 11)  \
   && !mutt_bit_isset (idata->capabilities, ACL))
   {
-    dprint (2, (debugfile, "Mailbox is read-only.\n"));
+    mutt_debug (2, "Mailbox is read-only.\n");
     ctx->readonly = 1;
   }
 
@@ -723,20 +721,20 @@ static int imap_open_mailbox (CONTEXT* ctx)
   if (debuglevel > 2)
   {
     if (!idata->flags)
-      dprint (3, (debugfile, "No folder flags found\n"));
+      mutt_debug (3, "No folder flags found\n");
     else
     {
       LIST* t = idata->flags;
 
-      dprint (3, (debugfile, "Mailbox flags: "));
+      mutt_debug (3, "Mailbox flags: ");
 
       t = t->next;
       while (t)
       {
-        dprint (3, (debugfile, "[%s] ", t->data));
+        mutt_debug (3, "[%s] ", t->data);
         t = t->next;
       }
-      dprint (3, (debugfile, "\n"));
+      mutt_debug (3, "\n");
     }
   }
 #endif
@@ -759,7 +757,7 @@ static int imap_open_mailbox (CONTEXT* ctx)
     goto fail;
   }
 
-  dprint (2, (debugfile, "imap_open_mailbox: msgcount is %d\n", ctx->msgcount));
+  mutt_debug (2, "imap_open_mailbox: msgcount is %d\n", ctx->msgcount);
   FREE (&mx.mbox);
   return 0;
 
@@ -984,7 +982,7 @@ int imap_exec_msgset (IMAP_DATA* idata, const char* pre, const char* post,
 
   if (! (cmd = mutt_buffer_new ()))
   {
-    dprint (1, (debugfile, "imap_exec_msgset: unable to allocate buffer\n"));
+    mutt_debug (1, "imap_exec_msgset: unable to allocate buffer\n");
     return -1;
   }
 
@@ -1181,7 +1179,7 @@ int imap_sync_mailbox (CONTEXT* ctx, int expunge)
 
   if (idata->state < IMAP_SELECTED)
   {
-    dprint (2, (debugfile, "imap_sync_mailbox: no mailbox selected\n"));
+    mutt_debug (2, "imap_sync_mailbox: no mailbox selected\n");
     return -1;
   }
 
@@ -1247,7 +1245,7 @@ int imap_sync_mailbox (CONTEXT* ctx, int expunge)
 	if (!appendctx)
 	  appendctx = mx_open_mailbox (ctx->path, MUTT_APPEND | MUTT_QUIET, NULL);
 	if (!appendctx)
-	  dprint (1, (debugfile, "imap_sync_mailbox: Error opening mailbox in append mode\n"));
+	  mutt_debug (1, "imap_sync_mailbox: Error opening mailbox in append mode\n");
 	else
 	  _mutt_save_message (h, appendctx, 1, 0, 0);
 	h->label_changed = 0;
@@ -1440,13 +1438,13 @@ int imap_check (IMAP_DATA *idata, int force)
     {
       if (imap_cmd_step (idata) != IMAP_CMD_CONTINUE)
       {
-        dprint (1, (debugfile, "Error reading IDLE response\n"));
+        mutt_debug (1, "Error reading IDLE response\n");
         return -1;
       }
     }
     if (result < 0)
     {
-      dprint (1, (debugfile, "Poll failed, disabling IDLE\n"));
+      mutt_debug (1, "Poll failed, disabling IDLE\n");
       mutt_bit_unset (idata->capabilities, IDLE);
     }
   }
@@ -1491,7 +1489,7 @@ static int imap_get_mailbox (const char* path, IMAP_DATA** hidata, char* buf, si
 
   if (imap_parse_path (path, &mx))
   {
-    dprint (1, (debugfile, "imap_get_mailbox: Error parsing %s\n", path));
+    mutt_debug (1, "imap_get_mailbox: Error parsing %s\n", path);
     return -1;
   }
   if (!(*hidata = imap_conn_find (&(mx.account), option (OPTIMAPPASSIVE) ? MUTT_IMAP_CONN_NONEW : 0))
@@ -1553,7 +1551,7 @@ int imap_buffy_check (int force, int check_stats)
     if (!mutt_bit_isset (idata->capabilities, IMAP4REV1) &&
         !mutt_bit_isset (idata->capabilities, STATUS))
     {
-      dprint (2, (debugfile, "Server doesn't support STATUS\n"));
+      mutt_debug (2, "Server doesn't support STATUS\n");
       continue;
     }
 
@@ -1562,7 +1560,7 @@ int imap_buffy_check (int force, int check_stats)
       /* Send commands to previous server. Sorting the buffy list
        * may prevent some infelicitous interleavings */
       if (imap_exec (lastdata, NULL, IMAP_CMD_FAIL_OK) == -1)
-        dprint (1, (debugfile, "Error polling mailboxes\n"));
+        mutt_debug (1, "Error polling mailboxes\n");
 
       lastdata = NULL;
     }
@@ -1580,14 +1578,14 @@ int imap_buffy_check (int force, int check_stats)
 
     if (imap_exec (idata, command, IMAP_CMD_QUEUE) < 0)
     {
-      dprint (1, (debugfile, "Error queueing command\n"));
+      mutt_debug (1, "Error queueing command\n");
       return 0;
     }
   }
 
   if (lastdata && (imap_exec (lastdata, NULL, IMAP_CMD_FAIL_OK) == -1))
   {
-    dprint (1, (debugfile, "Error polling mailboxes\n"));
+    mutt_debug (1, "Error polling mailboxes\n");
     return 0;
   }
 
@@ -1696,8 +1694,8 @@ IMAP_STATUS* imap_mboxcache_get (IMAP_DATA* idata, const char* mbox, int create)
       }
       status->uidvalidity = *(unsigned int *)uidvalidity;
       status->uidnext = uidnext ? *(unsigned int *)uidnext: 0;
-      dprint (3, (debugfile, "mboxcache: hcache uidvalidity %d, uidnext %d\n",
-                  status->uidvalidity, status->uidnext));
+      mutt_debug (3, "mboxcache: hcache uidvalidity %d, uidnext %d\n",
+                  status->uidvalidity, status->uidnext);
     }
     mutt_hcache_free (hc, &uidvalidity);
     mutt_hcache_free (hc, &uidnext);
@@ -1897,7 +1895,7 @@ int imap_subscribe (char *path, int subscribe)
     snprintf (mbox, sizeof (mbox), "%smailboxes \"%s\"",
               subscribe ? "" : "un", path);
     if (mutt_parse_rc_line (mbox, &token, &err))
-      dprint (1, (debugfile, "Error adding subscribed mailbox: %s\n", errstr));
+      mutt_debug (1, "Error adding subscribed mailbox: %s\n", errstr);
     FREE (&token.data);
   }
 
@@ -2101,15 +2099,15 @@ int imap_fast_trash (CONTEXT* ctx, char* dest)
 
   if (imap_parse_path (dest, &mx))
   {
-    dprint (1, (debugfile, "imap_fast_trash: bad destination %s\n", dest));
+    mutt_debug (1, "imap_fast_trash: bad destination %s\n", dest);
     return -1;
   }
 
   /* check that the save-to folder is in the same account */
   if (!mutt_account_match (&(idata->conn->account), &(mx.account)))
   {
-    dprint (3, (debugfile, "imap_fast_trash: %s not same server as %s\n",
-      dest, ctx->path));
+    mutt_debug (3, "imap_fast_trash: %s not same server as %s\n",
+                dest, ctx->path);
     return 1;
   }
 
@@ -2125,20 +2123,20 @@ int imap_fast_trash (CONTEXT* ctx, char* dest)
                            MUTT_TRASH, 0, 0);
     if (rc < 0)
     {
-      dprint (1, (debugfile, "imap_fast_trash: Unable to mark messages as seen\n"));
+      mutt_debug (1, "imap_fast_trash: Unable to mark messages as seen\n");
       goto out;
     }
 
     rc = imap_exec_msgset (idata, "UID COPY", mmbox, MUTT_TRASH, 0, 0);
     if (!rc)
     {
-      dprint (1, (debugfile, "imap_fast_trash: No messages to trash\n"));
+      mutt_debug (1, "imap_fast_trash: No messages to trash\n");
       rc = -1;
       goto out;
     }
     else if (rc < 0)
     {
-      dprint (1, (debugfile, "could not queue copy\n"));
+      mutt_debug (1, "could not queue copy\n");
       goto out;
     }
     else
@@ -2150,13 +2148,13 @@ int imap_fast_trash (CONTEXT* ctx, char* dest)
     {
       if (triedcreate)
       {
-        dprint (1, (debugfile, "Already tried to create mailbox %s\n", mbox));
+        mutt_debug (1, "Already tried to create mailbox %s\n", mbox);
         break;
       }
       /* bail out if command failed for reasons other than nonexistent target */
       if (ascii_strncasecmp (imap_get_qualifier (idata->buf), "[TRYCREATE]", 11))
         break;
-      dprint (3, (debugfile, "imap_fast_trash: server suggests TRYCREATE\n"));
+      mutt_debug (3, "imap_fast_trash: server suggests TRYCREATE\n");
       snprintf (prompt, sizeof (prompt), _("Create %s?"), mbox);
       if (option (OPTCONFIRMCREATE) && mutt_yesorno (prompt, 1) != MUTT_YES)
       {

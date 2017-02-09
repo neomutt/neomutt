@@ -188,18 +188,18 @@ static void print_flowed_line (char *line, STATE *s, int ql,
   width = quote_width (s, ql);
   last = line[mutt_strlen (line) - 1];
 
-  dprint (4, (debugfile, "f=f: line [%s], width = %ld, spaces = %d\n",
-	      NONULL(line), (long)width, fst->spaces));
+  mutt_debug (4, "f=f: line [%s], width = %ld, spaces = %d\n",
+              NONULL(line), (long)width, fst->spaces);
 
   for (p = (char *)line, words = 0; (p = strsep (&line, " ")) != NULL ; )
   {
-    dprint(4,(debugfile,"f=f: word [%s], width: %d, remaining = [%s]\n",
-	      p, fst->width, line));
+    mutt_debug (4, "f=f: word [%s], width: %d, remaining = [%s]\n",
+                p, fst->width, line);
 
     /* remember number of spaces */
     if (!*p)
     {
-      dprint(4,(debugfile,"f=f: additional space\n"));
+      mutt_debug (4, "f=f: additional space\n");
       fst->spaces++;
       continue;
     }
@@ -216,8 +216,8 @@ static void print_flowed_line (char *line, STATE *s, int ql,
     if (!(!fst->spaces && fst->delsp && last != ' ') &&
 	w < width && w + fst->width + fst->spaces > width)
     {
-      dprint(4,(debugfile,"f=f: break line at %d, %d spaces left\n",
-		fst->width, fst->spaces));
+      mutt_debug (4, "f=f: break line at %d, %d spaces left\n",
+                  fst->width, fst->spaces);
       /* only honor trailing spaces for format=flowed replies */
       if (option(OPTTEXTFLOWED))
 	for ( ; fst->spaces; fst->spaces--)
@@ -271,7 +271,7 @@ int rfc3676_handler (BODY * a, STATE * s)
     fst.delsp = 1;
   }
 
-  dprint (4, (debugfile, "f=f: DelSp: %s\n", delsp ? "yes" : "no"));
+  mutt_debug (4, "f=f: DelSp: %s\n", delsp ? "yes" : "no");
 
   while ((buf = mutt_read_line (buf, &sz, s->fpin, NULL, 0)))
   {
@@ -349,7 +349,7 @@ void rfc3676_space_stuff (HEADER* hdr)
   if (!hdr || !hdr->content || !hdr->content->filename)
     return;
 
-  dprint (2, (debugfile, "f=f: postprocess %s\n", hdr->content->filename));
+  mutt_debug (2, "f=f: postprocess %s\n", hdr->content->filename);
 
   if ((in = safe_fopen (hdr->content->filename, "r")) == NULL)
     return;
@@ -373,8 +373,8 @@ void rfc3676_space_stuff (HEADER* hdr)
         c = buf[len-1];
         buf[len-1] = '\0';
       }
-      dprint (4, (debugfile, "f=f: line %d needs space-stuffing: '%s'\n",
-                  lc, buf));
+      mutt_debug (4, "f=f: line %d needs space-stuffing: '%s'\n",
+                  lc, buf);
       if (len > 0)
         buf[len-1] = c;
 #endif
