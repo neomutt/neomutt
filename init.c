@@ -3807,10 +3807,10 @@ void mutt_init (int skip_sys_rc, LIST *commands)
     }
   }
 
-  if (Muttrc)
+  if (Muttrc && Muttrc->data)
   {
-    FREE (&AliasFiles);
-    AliasFiles = mutt_copy_list(Muttrc);
+    FREE (&AliasFile);
+    AliasFile = safe_strdup (Muttrc->data);
   }
 
   /* Process the global rc file if it exists and the user hasn't explicity
