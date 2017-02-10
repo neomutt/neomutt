@@ -909,15 +909,15 @@ int imap_wait_keepalive (pid_t pid)
 
 void imap_allow_reopen (CONTEXT *ctx)
 {
-  IMAP_DATA* idata = ctx->data;
-  if (ctx && ctx->magic == MUTT_IMAP && idata->ctx == ctx)
+  IMAP_DATA* idata;
+  if (ctx && ctx->magic == MUTT_IMAP && (idata = ctx->data)->ctx == ctx)
     idata->reopen |= IMAP_REOPEN_ALLOW;
 }
 
 void imap_disallow_reopen (CONTEXT *ctx)
 {
-  IMAP_DATA* idata = ctx->data;
-  if (ctx && ctx->magic == MUTT_IMAP && idata->ctx == ctx)
+  IMAP_DATA *idata;
+  if (ctx && ctx->magic == MUTT_IMAP && (idata = ctx->data)->ctx == ctx)
     idata->reopen &= ~IMAP_REOPEN_ALLOW;
 }
 
