@@ -265,8 +265,6 @@ static int url_parse_query(const char *url, char **filename, struct uri_tag **ta
   while (p && *p)
   {
     tag = safe_calloc(1, sizeof(struct uri_tag));
-    if (!tag)
-      goto err;
 
     if (!*tags)
       last = *tags = tag;

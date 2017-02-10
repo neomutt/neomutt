@@ -121,12 +121,12 @@ static QUERY *run_query (char *s, int quiet)
     {
       if (first == NULL)
       {
-	first = (QUERY *) safe_calloc (1, sizeof (QUERY));
+	first = safe_calloc (1, sizeof (QUERY));
 	cur = first;
       }
       else
       {
-	cur->next = (QUERY *) safe_calloc (1, sizeof (QUERY));
+	cur->next = safe_calloc (1, sizeof (QUERY));
 	cur = cur->next;
       }
 
@@ -344,7 +344,7 @@ static void query_menu (char *buf, size_t buflen, QUERY *results, int retbuf)
     for (queryp = results; queryp; queryp = queryp->next)
       menu->max++;
 
-    menu->data = QueryTable = (ENTRY *) safe_calloc (menu->max, sizeof (ENTRY));
+    menu->data = QueryTable = safe_calloc (menu->max, sizeof (ENTRY));
 
     for (i = 0, queryp = results; queryp; queryp = queryp->next, i++)
       QueryTable[i].data = queryp;
@@ -396,8 +396,7 @@ static void query_menu (char *buf, size_t buflen, QUERY *results, int retbuf)
 
 	      if (op == OP_QUERY)
 	      {
-		menu->data = QueryTable = 
-		  (ENTRY *) safe_calloc (menu->max, sizeof (ENTRY));
+		menu->data = QueryTable = safe_calloc (menu->max, sizeof (ENTRY));
 
 		for (i = 0, queryp = results; queryp; 
 		     queryp = queryp->next, i++)

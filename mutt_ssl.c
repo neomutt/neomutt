@@ -97,7 +97,7 @@ int mutt_ssl_starttls (CONNECTION* conn)
   if (ssl_init())
     goto bail;
 
-  ssldata = (sslsockdata*) safe_calloc (1, sizeof (sslsockdata));
+  ssldata = safe_calloc (1, sizeof (sslsockdata));
   /* the ssl_use_xxx protocol options don't apply. We must use TLS in TLS.
    *
    * However, we need to be able to negotiate amongst various TLS versions,
@@ -350,7 +350,7 @@ static int ssl_socket_open (CONNECTION * conn)
   if (raw_socket_open (conn) < 0)
     return -1;
 
-  data = (sslsockdata *) safe_calloc (1, sizeof (sslsockdata));
+  data = safe_calloc (1, sizeof (sslsockdata));
   conn->sockdata = data;
 
   if (! (data->ctx = SSL_CTX_new (SSLv23_client_method ())))
@@ -991,9 +991,9 @@ static int interactive_check_cert (X509 *cert, int idx, int len)
   FILE *fp;
 
   menu->max = mutt_array_size (part) * 2 + 9;
-  menu->dialog = (char **) safe_calloc (1, menu->max * sizeof (char *));
+  menu->dialog = safe_calloc (1, menu->max * sizeof (char *));
   for (i = 0; i < menu->max; i++)
-    menu->dialog[i] = (char *) safe_calloc (1, SHORT_STRING * sizeof (char));
+    menu->dialog[i] = safe_calloc (1, SHORT_STRING * sizeof (char));
 
   row = 0;
   strfcpy (menu->dialog[row], _("This certificate belongs to:"), SHORT_STRING);

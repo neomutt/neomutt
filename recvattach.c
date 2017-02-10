@@ -128,7 +128,7 @@ ATTACHPTR **mutt_gen_attach_list (BODY *m,
     else
     {
       if (!idx[*idxlen])
-	idx[*idxlen] = (ATTACHPTR *) safe_calloc (1, sizeof (ATTACHPTR));
+	idx[*idxlen] = safe_calloc (1, sizeof (ATTACHPTR));
 
       new = idx[(*idxlen)++];
       new->content = m;

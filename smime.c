@@ -100,7 +100,7 @@ static smime_key_t *smime_copy_key (smime_key_t *key)
   if (!key)
     return NULL;
 
-  copy = safe_calloc (sizeof (smime_key_t), 1);
+  copy = safe_calloc (1, sizeof (smime_key_t));
   copy->email  = safe_strdup(key->email);
   copy->hash   = safe_strdup(key->hash);
   copy->label  = safe_strdup(key->label);
@@ -506,7 +506,7 @@ static smime_key_t *smime_parse_key(char *buf)
   char *pend, *p;
   int field = 0;
 
-  key = safe_calloc (sizeof (smime_key_t), 1);
+  key = safe_calloc (1, sizeof (smime_key_t));
 
   for (p = buf; p; p = pend)
   {
@@ -999,7 +999,7 @@ static int smime_handle_cert_email (char *certificate, char *mailbox,
   if(copy && buffer && num)
   {
     (*num) = count;
-    *buffer =  safe_calloc(sizeof(char*), count);
+    *buffer =  safe_calloc(count, sizeof(char*));
     count = 0;
 
     rewind (fpout);
@@ -1008,7 +1008,7 @@ static int smime_handle_cert_email (char *certificate, char *mailbox,
       len = mutt_strlen (email);
       if (len && (email[len - 1] == '\n'))
         email[len - 1] = '\0';
-      (*buffer)[count] = safe_calloc(1, mutt_strlen (email) + 1);
+      (*buffer)[count] = safe_calloc(mutt_strlen (email) + 1, sizeof(char));
       strncpy((*buffer)[count], email, mutt_strlen (email));
       count++;
     }

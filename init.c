@@ -405,7 +405,7 @@ static void add_to_list (LIST **list, const char *str)
 
   if (!*list || last)
   {
-    t = (LIST *) safe_calloc (1, sizeof (LIST));
+    t = safe_calloc (1, sizeof (LIST));
     t->data = safe_strdup (str);
     if (last)
     {
@@ -1588,7 +1588,7 @@ static int parse_alias (BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err)
   if (!tmp)
   {
     /* create a new alias */
-    tmp = (ALIAS *) safe_calloc (1, sizeof (ALIAS));
+    tmp = safe_calloc (1, sizeof (ALIAS));
     tmp->self = tmp;
     tmp->name = safe_strdup (buf->data);
     /* give the main addressbook code a chance */

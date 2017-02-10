@@ -375,7 +375,7 @@ static int tls_negotiate (CONNECTION * conn)
   tlssockdata *data;
   int err;
 
-  data = (tlssockdata *) safe_calloc (1, sizeof (tlssockdata));
+  data = safe_calloc (1, sizeof (tlssockdata));
   conn->sockdata = data;
   err = gnutls_certificate_allocate_credentials (&data->xcred);
   if (err < 0)
@@ -533,7 +533,7 @@ static int tls_compare_certificates (const gnutls_datum_t *peercert)
     return 0;
 
   b64_data.size = filestat.st_size+1;
-  b64_data_data = (unsigned char *) safe_calloc (1, b64_data.size);
+  b64_data_data = safe_calloc (1, b64_data.size);
   b64_data_data[b64_data.size-1] = '\0';
   b64_data.data = b64_data_data;
 
@@ -854,9 +854,9 @@ static int tls_check_one_certificate (const gnutls_datum_t *certdata,
 
   menu = mutt_new_menu (MENU_GENERIC);
   menu->max = 25;
-  menu->dialog = (char **) safe_calloc (1, menu->max * sizeof (char *));
+  menu->dialog = safe_calloc (1, menu->max * sizeof (char *));
   for (i = 0; i < menu->max; i++)
-    menu->dialog[i] = (char *) safe_calloc (1, SHORT_STRING * sizeof (char));
+    menu->dialog[i] = safe_calloc (1, SHORT_STRING * sizeof (char));
 
   row = 0;
   strfcpy (menu->dialog[row], _("This certificate belongs to:"), SHORT_STRING);
