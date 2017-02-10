@@ -917,7 +917,11 @@ void imap_allow_reopen (CONTEXT *ctx)
 void imap_disallow_reopen (CONTEXT *ctx)
 {
   IMAP_DATA *idata;
-  if (ctx && ctx->magic == MUTT_IMAP && (idata = ctx->data)->ctx == ctx)
+  if (!ctx || !ctx->data || ctx->magic != MUTT_IMAP)
+      return;
+
+  idata = ctx->data;
+  if (idata->ctx == ctx)
     idata->reopen &= ~IMAP_REOPEN_ALLOW;
 }
 
