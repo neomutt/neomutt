@@ -245,7 +245,7 @@ static void label_ref_inc(CONTEXT *ctx, char *label)
   if (!elem)
   {
     count = 1;
-    hash_insert(ctx->label_hash, label, (void *)count, 0);
+    hash_insert(ctx->label_hash, label, (void *)count);
     return;
   }
 

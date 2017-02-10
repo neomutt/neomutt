@@ -3670,7 +3670,8 @@ void mutt_init (int skip_sys_rc, LIST *commands)
 
   Groups = hash_create (1031, 0);
   /* reverse alias keys need to be strdup'ed because of idna conversions */
-  ReverseAlias = hash_create (1031, MUTT_HASH_STRCASECMP | MUTT_HASH_STRDUP_KEYS);
+  ReverseAlias = hash_create (1031, MUTT_HASH_STRCASECMP | MUTT_HASH_STRDUP_KEYS |
+                              MUTT_HASH_ALLOW_DUPS);
 #ifdef USE_NOTMUCH
   TagTransforms = hash_create (64, 1);
   TagFormats = hash_create (64, 0);
@@ -4086,7 +4087,7 @@ int parse_tag_transforms (BUFFER *b, BUFFER *s, unsigned long data, BUFFER *err)
       continue;
     }
 
-    hash_insert(TagTransforms, tag, transform, 0);
+    hash_insert(TagTransforms, tag, transform);
   }
   return 0;
 }
@@ -4117,7 +4118,7 @@ int parse_tag_formats (BUFFER *b, BUFFER *s, unsigned long data, BUFFER *err)
       continue;
     }
 
-    hash_insert(TagFormats, format, tag, 0);
+    hash_insert(TagFormats, format, tag);
   }
   return 0;
 }

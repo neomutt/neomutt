@@ -636,7 +636,7 @@ static int pop_fetch_message (CONTEXT* ctx, MESSAGE* msg, int msgno)
   mutt_free_envelope (&h->env);
   h->env = mutt_read_rfc822_header (msg->fp, h, 0, 0);
   if (ctx->subj_hash && h->env->real_subj)
-    hash_insert (ctx->subj_hash, h->env->real_subj, h, 1);
+    hash_insert (ctx->subj_hash, h->env->real_subj, h);
   mutt_label_hash_add (ctx, h);
 
   h->data = uidl;

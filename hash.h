@@ -35,7 +35,8 @@ struct hash_elem
 typedef struct
 {
   int nelem, curnelem;
-  int strdup_keys;      /* if set, the key->strkey is strdup'ed */
+  unsigned int strdup_keys : 1;      /* if set, the key->strkey is strdup'ed */
+  unsigned int allow_dups : 1;       /* if set, duplicate keys are allowed */
   struct hash_elem **table;
   unsigned int (*gen_hash)(union hash_key, unsigned int);
   int (*cmp_key)(union hash_key, union hash_key);
@@ -45,13 +46,14 @@ HASH;
 /* flags for hash_create() */
 #define MUTT_HASH_STRCASECMP   (1<<0)   /* use strcasecmp() to compare keys */
 #define MUTT_HASH_STRDUP_KEYS  (1<<1)   /* make a copy of the keys */
+#define MUTT_HASH_ALLOW_DUPS   (1<<2)   /* allow duplicate keys to be inserted */
 
-HASH *hash_create (int nelem, int lower);
-HASH *int_hash_create (int nelem);
+HASH *hash_create (int nelem, int flags);
+HASH *int_hash_create (int nelem, int flags);
 
-int hash_insert (HASH * table, const char *key, void *data, int allow_dup);
+int hash_insert (HASH * table, const char *key, void *data);
+int int_hash_insert (HASH *table, unsigned int key, void *data);
 HASH *hash_resize (HASH * table, int nelem, int lower);
-int int_hash_insert (HASH *table, unsigned int key, void *data, int allow_dup);
 
 void *hash_find (const HASH *table, const char *key);
 struct hash_elem *hash_find_elem (const HASH *table, const char *strkey);

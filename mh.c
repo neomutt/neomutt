@@ -2224,7 +2224,7 @@ static int maildir_check_mailbox (CONTEXT * ctx, int *index_hint)
   {
     maildir_canon_filename (buf, p->h->path, sizeof (buf));
     p->canon_fname = safe_strdup (buf);
-    hash_insert (fnames, p->canon_fname, p, 0);
+    hash_insert (fnames, p->canon_fname, p);
   }
 
   /* check for modifications and adjust flags */
@@ -2374,7 +2374,7 @@ static int mh_check_mailbox (CONTEXT * ctx, int *index_hint)
   {
     /* the hash key must survive past the header, which is freed below. */
     p->canon_fname = safe_strdup (p->h->path);
-    hash_insert (fnames, p->canon_fname, p, 0);
+    hash_insert (fnames, p->canon_fname, p);
   }
 
   for (i = 0; i < ctx->msgcount; i++)

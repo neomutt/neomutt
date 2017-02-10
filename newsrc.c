@@ -64,7 +64,7 @@ static NNTP_DATA *nntp_data_find (NNTP_SERVER *nserv, const char *group)
     if (nserv->groups_hash->nelem < nserv->groups_hash->curnelem * 2)
       nserv->groups_hash = hash_resize (nserv->groups_hash,
 			   nserv->groups_hash->nelem * 2, 0);
-    hash_insert (nserv->groups_hash, nntp_data->group, nntp_data, 0);
+    hash_insert (nserv->groups_hash, nntp_data->group, nntp_data);
 
     /* add NNTP_DATA to list */
     if (nserv->groups_num >= nserv->groups_max)
