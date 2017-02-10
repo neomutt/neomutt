@@ -506,11 +506,14 @@ static int add_to_replace_list (REPLACE_LIST **list, const char *pat, const char
   {
     t = mutt_new_replace_list();
     t->rx = rx;
+    rx = NULL;
     if (last)
       last->next = t;
     else
       *list = t;
   }
+  else
+    mutt_free_regexp(&rx);
 
   /* Now t is the REPLACE_LIST* that we want to modify. It is prepared. */
   t->template = safe_strdup(templ);

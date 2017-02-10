@@ -1565,9 +1565,10 @@ static int count_body_parts_check(LIST **checklist, BODY *b, int dflt)
     a = (ATTACH_MATCH *)type->data;
     mutt_debug (5, "cbpc: %s %d/%s ?? %s/%s [%d]... ",
                 dflt ? "[OK]   " : "[EXCL] ",
-                b->type, b->subtype, a->major, a->minor, a->major_int);
+                b->type, b->subtype ? b->subtype : "*",
+                a->major, a->minor, a->major_int);
     if ((a->major_int == TYPEANY || a->major_int == b->type) &&
-	!regexec(&a->minor_rx, b->subtype, 0, NULL, 0))
+        (!b->subtype || !regexec(&a->minor_rx, b->subtype, 0, NULL, 0)))
     {
       mutt_debug (5, "yes\n");
       return 1;
