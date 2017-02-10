@@ -1978,6 +1978,13 @@ static int check_charset (struct option_t *opt, const char *val)
   return rc;
 }
 
+static bool valid_show_multipart_alternative(const char *val)
+{
+  return ((mutt_strcmp(val, "inline") == 0) ||
+          (mutt_strcmp(val, "info") == 0) ||
+          (val == NULL) || (*val == 0));
+}
+
 static int parse_setenv(BUFFER *tmp, BUFFER *s, unsigned long data, BUFFER *err)
 {
   int query, unset, len;
@@ -2342,6 +2349,14 @@ static int parse_set (BUFFER *tmp, BUFFER *s, unsigned long data, BUFFER *err)
 	  *((char **) MuttVars[idx].data) = safe_strdup (tmp->data);
 	  if (mutt_strcmp (MuttVars[idx].option, "charset") == 0)
 	    mutt_set_charset (Charset);
+
+          if ((mutt_strcmp (MuttVars[idx].option, "show_multipart_alternative") == 0) &&
+              !valid_show_multipart_alternative(tmp->data))
+          {
+            snprintf (err->data, err->dsize, _("Invalid value for option %s: \"%s\""),
+                      MuttVars[idx].option, tmp->data);
+            return -1;
+          }
         }
         else if (DTYPE (MuttVars[idx].type) == DT_MBCHARTBL)
         {

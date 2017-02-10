@@ -135,6 +135,7 @@ WHERE short SearchContext;
 WHERE char *SendCharset;
 WHERE char *Sendmail;
 WHERE char *Shell;
+WHERE char *ShowMultipartAlternative;
 #ifdef USE_SIDEBAR
 WHERE char *SidebarDelimChars;
 WHERE char *SidebarDividerChar;

@@ -1273,6 +1273,14 @@ struct option_t MuttVars[] = {
   ** function; \fC<group-reply>\fP will reply to both the sender and the
   ** list.
   */
+  { "show_multipart_alternative", DT_STR, R_NONE, UL &ShowMultipartAlternative, 0 },
+  /*
+  ** .pp
+  ** When \fIset\fP to \fCinfo\fP, the multipart/alternative information is shown.
+  ** When \fIset\fP to \fCinline\fP, all of the alternatives are displayed.
+  ** When not set, the default behavior is to show only the chosen alternative.
+  ** .pp
+  */
 #ifdef USE_IMAP
   { "imap_authenticators", DT_STR, R_NONE, UL &ImapAuthenticators, UL 0 },
   /*

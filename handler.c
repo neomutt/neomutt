@@ -1004,6 +1004,8 @@ static int alternative_handler (BODY *a, STATE *s)
   int type = 0;
   int mustfree = 0;
   int rc = 0;
+  char length[5];
+  int count = 0;
 
   if (a->encoding == ENCBASE64 || a->encoding == ENCQUOTEDPRINTABLE ||
       a->encoding == ENCUUENCODED)
@@ -1130,7 +1132,38 @@ static int alternative_handler (BODY *a, STATE *s)
       fseeko (s->fpin, choice->hdr_offset, 0);
       mutt_copy_bytes(s->fpin, s->fpout, choice->offset-choice->hdr_offset);
     }
+
+    if (mutt_strcmp ("info", ShowMultipartAlternative) == 0)
+    {
+      mutt_pretty_size (length, sizeof (length), choice->length);
+      state_mark_attach (s);
+      state_printf (s, _("[-- Type: %s/%s, Encoding: %s, Size: %s --]\n"),
+                    TYPE (choice), choice->subtype, ENCODING (choice->encoding), length);
+    }
     mutt_body_handler (choice, s);
+
+    if (mutt_strcmp ("info", ShowMultipartAlternative) == 0)
+    {
+      if (a && a->parts)
+        b = a->parts;
+      else
+        b = a;
+      while (b)
+      {
+        if (choice != b)
+        {
+          count += 1;
+          mutt_pretty_size (length, sizeof (length), b->length);
+          if (count == 1)
+            state_putc ('\n', s);
+
+          state_mark_attach (s);
+          state_printf (s, _("[-- Alternative Type #%d %s/%s, Encoding: %s, Size: %s --]\n"),
+                        count, TYPE (b), b->subtype, ENCODING (b->encoding), length);
+        }
+        b = b->next;
+      }
+    }
   }
   else if (s->flags & MUTT_DISPLAY)
   {
@@ -1794,7 +1827,7 @@ int mutt_body_handler (BODY *b, STATE *s)
   {
     char *p;
 
-    if (ascii_strcasecmp ("alternative", b->subtype) == 0)
+    if ((mutt_strcmp ("inline", ShowMultipartAlternative) != 0) && (ascii_strcasecmp ("alternative", b->subtype) == 0))
       handler = alternative_handler;
     else if (WithCrypto && ascii_strcasecmp ("signed", b->subtype) == 0)
     {
