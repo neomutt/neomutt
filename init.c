@@ -506,11 +506,14 @@ static int add_to_spam_list (SPAM_LIST **list, const char *pat, const char *temp
   {
     t = mutt_new_spam_list();
     t->rx = rx;
+    rx = NULL;
     if (last)
       last->next = t;
     else
       *list = t;
   }
+  else
+    mutt_free_regexp(&rx);
 
   /* Now t is the SPAM_LIST* that we want to modify. It is prepared. */
   t->template = safe_strdup(templ);
