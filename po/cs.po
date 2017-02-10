@@ -2,16 +2,17 @@
 # Copyright (C) 2004 Free Software Foundation, Inc.
 # Dan Ohnesorg <dan@ohnesorg.cz>, 2004.
 # Petr Písař <petr.pisar@atlas.cz>, 2007, 2008, 2009, 2010, 2012, 2014, 2015.
-# Petr Písař <petr.pisar@atlas.cz>, 2016.
+# Petr Písař <petr.pisar@atlas.cz>, 2016, 2017.
 #
+# macro (stroke) → značka
 # mailbox → schránka
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: mutt 8262503d1991\n"
+"Project-Id-Version: mutt a4449ebfb5f4\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-10-05 21:17+0200\n"
-"PO-Revision-Date: 2016-10-05 21:20+02:00\n"
+"POT-Creation-Date: 2017-02-10 19:25+0100\n"
+"PO-Revision-Date: 2017-02-10 20:00+01:00\n"
 "Last-Translator: Petr Písař <petr.pisar@atlas.cz>\n"
 "Language-Team: Czech <translation-team-cs@lists.sourceforge.net>\n"
 "Language: cs\n"
@@ -29,12 +30,12 @@ msgstr "Uživatelské jméno na %s: "
 msgid "Password for %s@%s: "
 msgstr "Heslo pro %s@%s: "
 
-#: addrbook.c:37 browser.c:46 pager.c:1553 postpone.c:41 query.c:48
+#: addrbook.c:37 browser.c:46 pager.c:1560 postpone.c:41 query.c:48
 #: recvattach.c:53
 msgid "Exit"
 msgstr "Konec"
 
-#: addrbook.c:38 curs_main.c:487 pager.c:1560 postpone.c:42
+#: addrbook.c:38 curs_main.c:487 pager.c:1567 postpone.c:42
 msgid "Del"
 msgstr "Smazat"
 
@@ -46,8 +47,8 @@ msgstr "Obnovit"
 msgid "Select"
 msgstr "Volba"
 
-#: addrbook.c:41 browser.c:49 compose.c:96 crypt-gpgme.c:4019 curs_main.c:493
-#: mutt_ssl.c:1076 mutt_ssl_gnutls.c:1003 pager.c:1656 pgpkey.c:522
+#: addrbook.c:41 browser.c:49 compose.c:96 crypt-gpgme.c:4026 curs_main.c:493
+#: mutt_ssl.c:1034 mutt_ssl_gnutls.c:1003 pager.c:1663 pgpkey.c:522
 #: postpone.c:44 query.c:53 recvattach.c:57 smime.c:440
 msgid "Help"
 msgstr "Nápověda"
@@ -91,8 +92,8 @@ msgstr "Vlastní jméno: "
 msgid "[%s = %s] Accept?"
 msgstr "[%s = %s] Přijmout?"
 
-#: alias.c:347 recvattach.c:441 recvattach.c:467 recvattach.c:480
-#: recvattach.c:493 recvattach.c:523
+#: alias.c:347 recvattach.c:457 recvattach.c:483 recvattach.c:496
+#: recvattach.c:509 recvattach.c:539
 msgid "Save to file: "
 msgstr "Uložit jako: "
 
@@ -108,7 +109,7 @@ msgstr "Přezdívka zavedena."
 msgid "Error seeking in alias file"
 msgstr "Chyba při pohybu v souboru s přezdívkami"
 
-#: attach.c:113 attach.c:245 attach.c:400 attach.c:925
+#: attach.c:113 attach.c:245 attach.c:400 attach.c:927
 msgid "Can't match nametemplate, continue?"
 msgstr "Shodu pro jmenný vzor nelze nalézt, pokračovat?"
 
@@ -117,8 +118,8 @@ msgstr "Shodu pro jmenný vzor nelze nalézt, pokračovat?"
 msgid "Mailcap compose entry requires %%s"
 msgstr "Položka mailcapu „compose“ vyžaduje %%s"
 
-#: attach.c:134 attach.c:266 commands.c:223 compose.c:1208 curs_lib.c:205
-#: curs_lib.c:724
+#: attach.c:134 attach.c:266 commands.c:223 compose.c:1233 compress.c:444
+#: curs_lib.c:205 curs_lib.c:724
 #, c-format
 msgid "Error running \"%s\"!"
 msgstr "Chyba při běhu programu \"%s\"!"
@@ -182,16 +183,16 @@ msgstr "---Příloha: %s: %s"
 msgid "---Attachment: %s"
 msgstr "--–Příloha: %s"
 
-#: attach.c:631 attach.c:663 attach.c:958 attach.c:1016 handler.c:1363
+#: attach.c:633 attach.c:665 attach.c:960 attach.c:1018 handler.c:1363
 #: pgpkey.c:571 pgpkey.c:760
 msgid "Can't create filter"
 msgstr "Filtr nelze vytvořit"
 
-#: attach.c:797
+#: attach.c:799
 msgid "Write fault!"
 msgstr "Chyba při zápisu!"
 
-#: attach.c:1039
+#: attach.c:1041
 msgid "I don't know how to print that!"
 msgstr "Nevím, jak mám toto vytisknout!"
 
@@ -342,11 +343,11 @@ msgstr "mono: příliš málo argumentů"
 msgid "%s: no such attribute"
 msgstr "Atribut %s není definován."
 
-#: color.c:736 hook.c:69 hook.c:77 keymap.c:921
+#: color.c:736 hook.c:73 hook.c:81 init.c:1860 init.c:1935 keymap.c:921
 msgid "too few arguments"
 msgstr "příliš málo argumentů"
 
-#: color.c:745 hook.c:83
+#: color.c:745 hook.c:87
 msgid "too many arguments"
 msgstr "příliš mnoho argumentů"
 
@@ -358,7 +359,7 @@ msgstr "implicitní barvy nejsou podporovány"
 msgid "Verify PGP signature?"
 msgstr "Ověřit PGP podpis?"
 
-#: commands.c:115 mbox.c:864
+#: commands.c:115 mbox.c:873
 msgid "Could not create temporary file!"
 msgstr "Dočasný soubor nelze vytvořit!"
 
@@ -481,90 +482,86 @@ msgstr "Zprávu nelze vytisknout"
 msgid "Messages could not be printed"
 msgstr "Zprávy nelze vytisknout"
 
-#: commands.c:536
-msgid ""
-"Rev-Sort (d)ate/(f)rm/(r)ecv/(s)ubj/t(o)/(t)hread/(u)nsort/si(z)e/s(c)ore/"
-"s(p)am?: "
-msgstr ""
-"Řadit opačně (d)at/(o)d/pří(j)/(v)ěc/(p)ro/v(l)ákno/(n)eseř/veli(k)/(s)kóre/"
-"sp(a)m?: "
+#. L10N: The following three are the sort/reverse sort prompts.
+#. * Capital letters must match the order of the characters in the third
+#. * string.
+#.
+#: commands.c:540
+msgid "Rev-Sort Date/Frm/Recv/Subj/tO/Thread/Unsort/siZe/sCore/sPam/Label?: "
+msgstr "Řadit opačně Dat/Od/příJ/Věc/Pro/vLákno/Neseř/veliK/Skóre/spAm/štítEk?: "
 
-#: commands.c:537
-msgid ""
-"Sort (d)ate/(f)rm/(r)ecv/(s)ubj/t(o)/(t)hread/(u)nsort/si(z)e/s(c)ore/"
-"s(p)am?: "
-msgstr ""
-"Řadit (d)at/(o)d/pří(j)/(v)ěc/(p)ro/v(l)ákno/(n)eseř/veli(k)/(s)kóre/"
-"sp(a)m?: "
+#: commands.c:541
+msgid "Sort Date/Frm/Recv/Subj/tO/Thread/Unsort/siZe/sCore/sPam/Label?: "
+msgstr "Řadit Dat/Od/příJ/Věc/Pro/vLákno/Neseř/veliK/Skóre/spAm/štítEk?: "
 
-#: commands.c:538
-msgid "dfrsotuzcp"
-msgstr "dojvplnksa"
+#: commands.c:542
+msgid "dfrsotuzcpl"
+msgstr "dojvplnksae"
 
-#: commands.c:595
+#: commands.c:603
 msgid "Shell command: "
 msgstr "Příkaz pro shell: "
 
-#: commands.c:742
+#: commands.c:750
 #, c-format
 msgid "Decode-save%s to mailbox"
 msgstr "Dekódovat - uložit %s do schránky"
 
-#: commands.c:743
+#: commands.c:751
 #, c-format
 msgid "Decode-copy%s to mailbox"
 msgstr "Dekódovat - zkopírovat %s do schránky"
 
-#: commands.c:744
+#: commands.c:752
 #, c-format
 msgid "Decrypt-save%s to mailbox"
 msgstr "Dešifrovat - uložit %s do schránky"
 
-#: commands.c:745
+#: commands.c:753
 #, c-format
 msgid "Decrypt-copy%s to mailbox"
 msgstr "Dešifrovat - zkopírovat %s do schránky"
 
 # XXX: Missing space before %s is not a typo
-#: commands.c:746
+#: commands.c:754
 #, c-format
 msgid "Save%s to mailbox"
 msgstr "Uložit%s do schránky"
 
-#: commands.c:746
+#: commands.c:754
 #, c-format
 msgid "Copy%s to mailbox"
 msgstr "Zkopírovat %s do schránky"
 
-#: commands.c:747
+#: commands.c:755
 msgid " tagged"
 msgstr " označené"
 
-#: commands.c:820
+#: commands.c:828
 #, c-format
 msgid "Copying to %s..."
 msgstr "Kopíruji do %s…"
 
-#: commands.c:936
+#: commands.c:944
 #, c-format
 msgid "Convert to %s upon sending?"
 msgstr "Převést při odesílání na %s?"
 
-#: commands.c:946
+#: commands.c:954
 #, c-format
 msgid "Content-Type changed to %s."
 msgstr "Položka „Content-Type“ změněna na %s."
 
-#: commands.c:951
+#: commands.c:959
 #, c-format
 msgid "Character set changed to %s; %s."
 msgstr "Znaková sada změněna na %s; %s."
 
-#: commands.c:953
+#: commands.c:961
 msgid "not converting"
 msgstr "nepřevádím"
 
-#: commands.c:953
+#: commands.c:961
 msgid "converting"
 msgstr "převádím"
 
@@ -665,7 +662,7 @@ msgstr "Pozor: „%s“ není platné IDN."
 msgid "You may not delete the only attachment."
 msgstr "Nemůžete smazat jedinou přílohu."
 
-#: compose.c:614 send.c:1664
+#: compose.c:614 send.c:1665
 #, c-format
 msgid "Bad IDN in \"%s\": '%s'"
 msgstr "Neplatné IDN v \"%s\": „%s“"
@@ -720,63 +717,123 @@ msgstr "Nesprávné kódování."
 msgid "Save a copy of this message?"
 msgstr "Uložit kopii této zprávy?"
 
-#: compose.c:1027
+#: compose.c:1034
+msgid "Send attachment with name: "
+msgstr "Poslat přílohu pod názvem: "
+
+#: compose.c:1052
 msgid "Rename to: "
 msgstr "Přejmenovat na: "
 
 #. L10N:
 #. "stat" is a system call. Do "man 2 stat" for more information.
-#: compose.c:1034 editmsg.c:96 editmsg.c:121 sendlib.c:872
+#: compose.c:1059 editmsg.c:96 editmsg.c:121 sendlib.c:872
 #, c-format
 msgid "Can't stat %s: %s"
 msgstr "Chyba při volání funkce stat pro %s: %s"
 
-#: compose.c:1061
+#: compose.c:1086
 msgid "New file: "
 msgstr "Nový soubor: "
 
-#: compose.c:1074
+#: compose.c:1099
 msgid "Content-Type is of the form base/sub"
 msgstr "Položka „Content-Type“ je tvaru třída/podtřída"
 
-#: compose.c:1080
+#: compose.c:1105
 #, c-format
 msgid "Unknown Content-Type %s"
 msgstr "Hodnota %s položky „Content-Type“ je neznámá."
 
-#: compose.c:1093
+#: compose.c:1118
 #, c-format
 msgid "Can't create file %s"
 msgstr "Soubor %s nelze vytvořit."
 
-#: compose.c:1101
+#: compose.c:1126
 msgid "What we have here is a failure to make an attachment"
 msgstr "Vytvoření přílohy se nezdařilo."
 
-#: compose.c:1162
+#: compose.c:1187
 msgid "Postpone this message?"
 msgstr "Odložit tuto zprávu?"
 
-#: compose.c:1226
+#: compose.c:1251
 msgid "Write message to mailbox"
 msgstr "Uložit zprávu do schránky"
 
-#: compose.c:1229
+#: compose.c:1254
 #, c-format
 msgid "Writing message to %s ..."
 msgstr "Ukládám zprávu do %s…"
 
-#: compose.c:1238
+#: compose.c:1263
 msgid "Message written."
 msgstr "Zpráva uložena."
 
-#: compose.c:1252
+#: compose.c:1277
 msgid "S/MIME already selected. Clear & continue ? "
 msgstr "Je aktivní S/MIME, zrušit jej a pokračovat?"
 
-#: compose.c:1285
+#: compose.c:1310
 msgid "PGP already selected. Clear & continue ? "
 msgstr "Je aktivní PGP, zrušit jej a pokračovat?"
+
+#: compress.c:481 compress.c:551 compress.c:706 compress.c:895 mbox.c:847
+msgid "Unable to lock mailbox!"
+msgstr "Schránku nelze zamknout!"
+
+#: compress.c:485 compress.c:558 compress.c:710
+#, c-format
+msgid "Decompressing %s"
+msgstr "Dekomprimuje se %s"
+
+#: compress.c:494
+msgid "Can't identify the contents of the compressed file"
+msgstr "Obsah komprimovaného souboru nelze určit"
+
+#: compress.c:501 compress.c:579
+#, c-format
+msgid "Can't find mailbox ops for mailbox type %d"
+msgstr "Pro schránku typu %d nelze nalézt ovladač"
+
+#: compress.c:540 compress.c:834
+#, c-format
+msgid "Cannot append without an append-hook or close-hook : %s"
+msgstr "Bez háčku append-hook nebo close-hook nelze připojit: %s"
+
+#: compress.c:561
+#, c-format
+msgid "Compress command failed: %s"
+msgstr "Kompresní příkaz selhal: %s"
+
+#: compress.c:572
+msgid "Unsupported mailbox type for appending."
+msgstr "U tohoto druhu schránky není připojování podporováno."
+
+#: compress.c:648
+#, c-format
+msgid "Compressed-appending to %s..."
+msgstr "Komprimuje se a připojuje k %s…"
+
+#: compress.c:653
+#, c-format
+msgid "Compressing %s..."
+msgstr "Komprimuje se %s…"
+
+#: compress.c:660 editmsg.c:210
+#, c-format
+msgid "Error. Preserving temporary file: %s"
+msgstr "Chyba. Zachovávám dočasný soubor %s."
+
+#: compress.c:885
+msgid "Can't sync a compressed file without a close-hook"
+msgstr "Bez háčku close-hook nelze komprimovaný soubor synchronizovat"
+
+#: compress.c:907
+#, c-format
+msgid "Compressing %s"
+msgstr "Komprimuje se %s"
 
 #: crypt-gpgme.c:393
 #, c-format
@@ -793,7 +850,7 @@ msgstr "chybě při zapínání CMS protokolu: %s\n"
 msgid "error creating gpgme data object: %s\n"
 msgstr "chybě při vytváření gpgme datového objektu: %s\n"
 
-#: crypt-gpgme.c:489 crypt-gpgme.c:507 crypt-gpgme.c:1536 crypt-gpgme.c:2251
+#: crypt-gpgme.c:489 crypt-gpgme.c:507 crypt-gpgme.c:1543 crypt-gpgme.c:2258
 #, c-format
 msgid "error allocating data object: %s\n"
 msgstr "chybě při alokování datového objektu: %s\n"
@@ -808,170 +865,170 @@ msgstr "chyba při přetáčení datového objektu: %s\n"
 msgid "error reading data object: %s\n"
 msgstr "chyba při čtení datového objektu: %s\n"
 
-#: crypt-gpgme.c:573 crypt-gpgme.c:3633 pgpkey.c:559 pgpkey.c:740
+#: crypt-gpgme.c:573 crypt-gpgme.c:3640 pgpkey.c:559 pgpkey.c:740
 msgid "Can't create temporary file"
 msgstr "Dočasný soubor nelze vytvořit."
 
-#: crypt-gpgme.c:683
+#: crypt-gpgme.c:681
 #, c-format
 msgid "error adding recipient `%s': %s\n"
 msgstr "chyba při přidávání příjemce „%s“: %s\n"
 
-#: crypt-gpgme.c:723
+#: crypt-gpgme.c:721
 #, c-format
 msgid "secret key `%s' not found: %s\n"
 msgstr "tajný klíč „%s“ nenalezen: %s\n"
 
-#: crypt-gpgme.c:733
+#: crypt-gpgme.c:731
 #, c-format
 msgid "ambiguous specification of secret key `%s'\n"
 msgstr "tajný klíč „%s“ neurčen jednoznačně\n"
 
-#: crypt-gpgme.c:745
+#: crypt-gpgme.c:743
 #, c-format
 msgid "error setting secret key `%s': %s\n"
 msgstr "chyba při nastavování tajného klíče „%s“: %s\n"
 
-#: crypt-gpgme.c:762
+#: crypt-gpgme.c:760
 #, c-format
 msgid "error setting PKA signature notation: %s\n"
 msgstr "chyba při nastavování PKA podpisové poznámky: %s\n"
 
-#: crypt-gpgme.c:818
+#: crypt-gpgme.c:816
 #, c-format
 msgid "error encrypting data: %s\n"
 msgstr "chyba při dešifrování dat: %s\n"
 
-#: crypt-gpgme.c:935
+#: crypt-gpgme.c:933
 #, c-format
 msgid "error signing data: %s\n"
 msgstr "chyba při podepisování dat: %s\n"
 
-#: crypt-gpgme.c:946
+#: crypt-gpgme.c:944
 msgid "$pgp_sign_as unset and no default key specified in ~/.gnupg/gpg.conf"
 msgstr ""
 "$pgp_sign_as není nastaveno a v ~/.gnupg/gpg.conf není určen výchozí klíč"
 
-#: crypt-gpgme.c:1142
+#: crypt-gpgme.c:1144
 msgid "Warning: One of the keys has been revoked\n"
 msgstr "Pozor: Jeden z klíčů byl zneplatněn\n"
 
-#: crypt-gpgme.c:1151
+#: crypt-gpgme.c:1153
 msgid "Warning: The key used to create the signature expired at: "
 msgstr "Pozor: Klíči použitému k podepsání vypršela platnost: "
 
-#: crypt-gpgme.c:1157
+#: crypt-gpgme.c:1159
 msgid "Warning: At least one certification key has expired\n"
 msgstr "Pozor: Platnost alespoň jednoho certifikátu vypršela\n"
 
-#: crypt-gpgme.c:1173
+#: crypt-gpgme.c:1175
 msgid "Warning: The signature expired at: "
 msgstr "Pozor: Podpis pozbyl platnosti: "
 
-#: crypt-gpgme.c:1179
+#: crypt-gpgme.c:1181
 msgid "Can't verify due to a missing key or certificate\n"
 msgstr "Nelze ověřit, protože chybí klíč nebo certifikát\n"
 
-#: crypt-gpgme.c:1184
+#: crypt-gpgme.c:1186
 msgid "The CRL is not available\n"
 msgstr "CRL není dostupný\n"
 
-#: crypt-gpgme.c:1190
+#: crypt-gpgme.c:1192
 msgid "Available CRL is too old\n"
 msgstr "Dostupný CRL je příliš starý\n"
 
-#: crypt-gpgme.c:1195
+#: crypt-gpgme.c:1197
 msgid "A policy requirement was not met\n"
 msgstr "Požadavky bezpečnostní politiky nebyly splněny\n"
 
-#: crypt-gpgme.c:1204
+#: crypt-gpgme.c:1206
 msgid "A system error occurred"
 msgstr "Došlo k systémové chybě"
 
-#: crypt-gpgme.c:1238
+#: crypt-gpgme.c:1240
 msgid "WARNING: PKA entry does not match signer's address: "
 msgstr "POZOR: Položka PKA se neshoduje s adresou podepsaného: "
 
-#: crypt-gpgme.c:1245
+#: crypt-gpgme.c:1247
 msgid "PKA verified signer's address is: "
 msgstr "Adresa podepsaného ověřená pomocí PKA je: "
 
 #. L10N: DOTFILL
-#: crypt-gpgme.c:1262 crypt-gpgme.c:3467
+#: crypt-gpgme.c:1264 crypt-gpgme.c:3474
 msgid "Fingerprint: "
 msgstr "Otisk klíče: "
 
-#: crypt-gpgme.c:1322
+#: crypt-gpgme.c:1324
 msgid ""
 "WARNING: We have NO indication whether the key belongs to the person named "
 "as shown above\n"
 msgstr "POZOR: Nemáme ŽÁDNÝ důkaz, že klíč patří výše jmenované osobě\n"
 
-#: crypt-gpgme.c:1329
+#: crypt-gpgme.c:1331
 msgid "WARNING: The key does NOT BELONG to the person named as shown above\n"
 msgstr "POZOR: Klíč NEPATŘÍ výše jmenované osobě\n"
 
-#: crypt-gpgme.c:1333
+#: crypt-gpgme.c:1335
 msgid ""
 "WARNING: It is NOT certain that the key belongs to the person named as shown "
 "above\n"
 msgstr "POZOR: NENÍ jisté, zda klíč patří výše jmenované osobě\n"
 
-#: crypt-gpgme.c:1368
+#: crypt-gpgme.c:1365 crypt-gpgme.c:1370
 msgid "aka: "
 msgstr "alias: "
 
-#: crypt-gpgme.c:1378
+#: crypt-gpgme.c:1380
 msgid "KeyID "
 msgstr "ID klíče "
 
-#: crypt-gpgme.c:1388
+#: crypt-gpgme.c:1389 crypt-gpgme.c:1394
 msgid "created: "
 msgstr "vytvořen: "
 
-#: crypt-gpgme.c:1460
+#: crypt-gpgme.c:1467
 #, c-format
 msgid "Error getting key information for KeyID %s: %s\n"
 msgstr "Chyba při získávání podrobností o klíči s ID %s: %s\n"
 
-#: crypt-gpgme.c:1467 crypt-gpgme.c:1482
+#: crypt-gpgme.c:1474 crypt-gpgme.c:1489
 msgid "Good signature from:"
 msgstr "Dobrý podpis od:"
 
-#: crypt-gpgme.c:1474
+#: crypt-gpgme.c:1481
 msgid "*BAD* signature from:"
 msgstr "*ŠPATNÝ* podpis od:"
 
-#: crypt-gpgme.c:1490
+#: crypt-gpgme.c:1497
 msgid "Problem signature from:"
 msgstr "Problematický podpis od:"
 
 #. L10N:
 #. This is trying to match the width of the
 #. "Problem signature from:" translation just above.
-#: crypt-gpgme.c:1497
+#: crypt-gpgme.c:1504
 msgid "               expires: "
 msgstr "                vyprší: "
 
-#: crypt-gpgme.c:1544 crypt-gpgme.c:1767 crypt-gpgme.c:2468
+#: crypt-gpgme.c:1551 crypt-gpgme.c:1774 crypt-gpgme.c:2475
 msgid "[-- Begin signature information --]\n"
 msgstr "[-- Začátek podrobností o podpisu --]\n"
 
-#: crypt-gpgme.c:1556
+#: crypt-gpgme.c:1563
 #, c-format
 msgid "Error: verification failed: %s\n"
 msgstr "Chyba: ověření selhalo: %s\n"
 
-#: crypt-gpgme.c:1610
+#: crypt-gpgme.c:1617
 #, c-format
 msgid "*** Begin Notation (signature by: %s) ***\n"
 msgstr "*** Začátek zápisu (podepsáno: %s) ***\n"
 
-#: crypt-gpgme.c:1632
+#: crypt-gpgme.c:1639
 msgid "*** End Notation ***\n"
 msgstr "*** Konec zápisu ***\n"
 
-#: crypt-gpgme.c:1640 crypt-gpgme.c:1780 crypt-gpgme.c:2481
+#: crypt-gpgme.c:1647 crypt-gpgme.c:1787 crypt-gpgme.c:2488
 msgid ""
 "[-- End signature information --]\n"
 "\n"
@@ -979,7 +1036,7 @@ msgstr ""
 "[-- Konec podrobností o podpisu --]\n"
 "\n"
 
-#: crypt-gpgme.c:1735
+#: crypt-gpgme.c:1742
 #, c-format
 msgid ""
 "[-- Error: decryption failed: %s --]\n"
@@ -988,20 +1045,20 @@ msgstr ""
 "[-- Chyba: dešifrování selhalo: %s --]\n"
 "\n"
 
-#: crypt-gpgme.c:2258
+#: crypt-gpgme.c:2265
 msgid "Error extracting key data!\n"
 msgstr "Chyba při získávání podrobností o klíči!\n"
 
-#: crypt-gpgme.c:2444
+#: crypt-gpgme.c:2451
 #, c-format
 msgid "Error: decryption/verification failed: %s\n"
 msgstr "Chyba: dešifrování/ověřování selhalo: %s\n"
 
-#: crypt-gpgme.c:2489
+#: crypt-gpgme.c:2496
 msgid "Error: copy data failed\n"
 msgstr "Chyba: selhalo kopírování dat\n"
 
-#: crypt-gpgme.c:2510 pgp.c:519
+#: crypt-gpgme.c:2517 pgp.c:519
 msgid ""
 "[-- BEGIN PGP MESSAGE --]\n"
 "\n"
@@ -1009,11 +1066,11 @@ msgstr ""
 "[-- ZAČÁTEK PGP ZPRÁVY --]\n"
 "\n"
 
-#: crypt-gpgme.c:2512 pgp.c:521
+#: crypt-gpgme.c:2519 pgp.c:521
 msgid "[-- BEGIN PGP PUBLIC KEY BLOCK --]\n"
 msgstr "[--ZAČÁTEK VEŘEJNÉHO KLÍČE PGP --]\n"
 
-#: crypt-gpgme.c:2515 pgp.c:523
+#: crypt-gpgme.c:2522 pgp.c:523
 msgid ""
 "[-- BEGIN PGP SIGNED MESSAGE --]\n"
 "\n"
@@ -1021,19 +1078,19 @@ msgstr ""
 "[-- ZAČÁTEK PODEPSANÉ PGP ZPRÁVY --]\n"
 "\n"
 
-#: crypt-gpgme.c:2542 pgp.c:566
+#: crypt-gpgme.c:2549 pgp.c:566
 msgid "[-- END PGP MESSAGE --]\n"
 msgstr "[-- KONEC PGP ZPRÁVY --]\n"
 
-#: crypt-gpgme.c:2544 pgp.c:573
+#: crypt-gpgme.c:2551 pgp.c:573
 msgid "[-- END PGP PUBLIC KEY BLOCK --]\n"
 msgstr "[-- KONEC VEŘEJNÉHO KLÍČE PGP --]\n"
 
-#: crypt-gpgme.c:2546 pgp.c:575
+#: crypt-gpgme.c:2553 pgp.c:575
 msgid "[-- END PGP SIGNED MESSAGE --]\n"
 msgstr "[-- KONEC PODEPSANÉ PGP ZPRÁVY --]\n"
 
-#: crypt-gpgme.c:2569 pgp.c:608
+#: crypt-gpgme.c:2576 pgp.c:608
 msgid ""
 "[-- Error: could not find beginning of PGP message! --]\n"
 "\n"
@@ -1041,11 +1098,11 @@ msgstr ""
 "[-- Chyba: nelze najít začátek PGP zprávy! --]\n"
 "\n"
 
-#: crypt-gpgme.c:2600 crypt-gpgme.c:2673 pgp.c:1091
+#: crypt-gpgme.c:2607 crypt-gpgme.c:2680 pgp.c:1091
 msgid "[-- Error: could not create temporary file! --]\n"
 msgstr "[-- Chyba: dočasný soubor nelze vytvořit! --]\n"
 
-#: crypt-gpgme.c:2612
+#: crypt-gpgme.c:2619
 msgid ""
 "[-- The following data is PGP/MIME signed and encrypted --]\n"
 "\n"
@@ -1053,7 +1110,7 @@ msgstr ""
 "[-- Následující data jsou podepsána a zašifrována ve formátu PGP/MIME --]\n"
 "\n"
 
-#: crypt-gpgme.c:2613 pgp.c:1100
+#: crypt-gpgme.c:2620 pgp.c:1100
 msgid ""
 "[-- The following data is PGP/MIME encrypted --]\n"
 "\n"
@@ -1061,23 +1118,23 @@ msgstr ""
 "[-- Následující data jsou zašifrována ve formátu PGP/MIME --]\n"
 "\n"
 
-#: crypt-gpgme.c:2635
+#: crypt-gpgme.c:2642
 msgid "[-- End of PGP/MIME signed and encrypted data --]\n"
 msgstr "[-- Konec dat podepsaných a zašifrovaných ve formátu PGP/MIME --]\n"
 
-#: crypt-gpgme.c:2636 pgp.c:1120
+#: crypt-gpgme.c:2643 pgp.c:1120
 msgid "[-- End of PGP/MIME encrypted data --]\n"
 msgstr "[-- Konec dat zašifrovaných ve formátu PGP/MIME --]\n"
 
-#: crypt-gpgme.c:2641 pgp.c:570 pgp.c:1125
+#: crypt-gpgme.c:2648 pgp.c:570 pgp.c:1125
 msgid "PGP message successfully decrypted."
 msgstr "PGP zpráva byla úspěšně dešifrována."
 
-#: crypt-gpgme.c:2645 pgp.c:505 pgp.c:568 pgp.c:1129
+#: crypt-gpgme.c:2652 pgp.c:505 pgp.c:568 pgp.c:1129
 msgid "Could not decrypt PGP message"
 msgstr "PGP zprávu nelze dešifrovat"
 
-#: crypt-gpgme.c:2685
+#: crypt-gpgme.c:2692
 msgid ""
 "[-- The following data is S/MIME signed --]\n"
 "\n"
@@ -1085,7 +1142,7 @@ msgstr ""
 "[-- Následují data podepsaná pomocí S/MIME --]\n"
 "\n"
 
-#: crypt-gpgme.c:2686
+#: crypt-gpgme.c:2693
 msgid ""
 "[-- The following data is S/MIME encrypted --]\n"
 "\n"
@@ -1093,23 +1150,23 @@ msgstr ""
 "[-- Následující data jsou zašifrována pomocí S/MIME --]\n"
 "\n"
 
-#: crypt-gpgme.c:2716
+#: crypt-gpgme.c:2723
 msgid "[-- End of S/MIME signed data --]\n"
 msgstr "[-- Konec dat podepsaných pomocí S/MIME --]\n"
 
-#: crypt-gpgme.c:2717
+#: crypt-gpgme.c:2724
 msgid "[-- End of S/MIME encrypted data --]\n"
 msgstr "[-- Konec dat zašifrovaných ve formátu S/MIME --]\n"
 
-#: crypt-gpgme.c:3301
+#: crypt-gpgme.c:3308
 msgid "[Can't display this user ID (unknown encoding)]"
 msgstr "[Nelze zobrazit ID tohoto uživatele (neznámé kódování)]"
 
-#: crypt-gpgme.c:3303
+#: crypt-gpgme.c:3310
 msgid "[Can't display this user ID (invalid encoding)]"
 msgstr "[Nelze zobrazit ID tohoto uživatele (neplatné kódování)]"
 
-#: crypt-gpgme.c:3308
+#: crypt-gpgme.c:3315
 msgid "[Can't display this user ID (invalid DN)]"
 msgstr "[Nelze zobrazit ID tohoto uživatele (neplatné DN)]"
 
@@ -1117,152 +1174,152 @@ msgstr "[Nelze zobrazit ID tohoto uživatele (neplatné DN)]"
 #. Fill dots to make the DOTFILL entries the same length.
 #. In English, msgid "Fingerprint: " is the longest entry for this menu.
 #. Your language may vary.
-#: crypt-gpgme.c:3388
+#: crypt-gpgme.c:3395
 msgid " aka ......: "
 msgstr " aka ......: "
 
-#: crypt-gpgme.c:3388
+#: crypt-gpgme.c:3395
 msgid "Name ......: "
 msgstr "Jméno .....: "
 
-#: crypt-gpgme.c:3391 crypt-gpgme.c:3538
+#: crypt-gpgme.c:3398 crypt-gpgme.c:3545
 msgid "[Invalid]"
 msgstr "[Neplatný]"
 
 #. L10N: DOTFILL
-#: crypt-gpgme.c:3412 crypt-gpgme.c:3563
+#: crypt-gpgme.c:3419 crypt-gpgme.c:3570
 #, c-format
 msgid "Valid From : %s\n"
 msgstr "Platný od .: %s\n"
 
 #. L10N: DOTFILL
-#: crypt-gpgme.c:3426 crypt-gpgme.c:3577
+#: crypt-gpgme.c:3433 crypt-gpgme.c:3584
 #, c-format
 msgid "Valid To ..: %s\n"
 msgstr "Platný do .: %s\n"
 
 #. L10N: DOTFILL
-#: crypt-gpgme.c:3440 crypt-gpgme.c:3591
+#: crypt-gpgme.c:3447 crypt-gpgme.c:3598
 #, c-format
 msgid "Key Type ..: %s, %lu bit %s\n"
 msgstr "Druh klíče : %s, %lu bit %s\n"
 
 #. L10N: DOTFILL
-#: crypt-gpgme.c:3443 crypt-gpgme.c:3594
+#: crypt-gpgme.c:3450 crypt-gpgme.c:3601
 #, c-format
 msgid "Key Usage .: "
 msgstr "Účel klíče : "
 
-#: crypt-gpgme.c:3448 crypt-gpgme.c:3599
+#: crypt-gpgme.c:3455 crypt-gpgme.c:3606
 msgid "encryption"
 msgstr "šifrovaní"
 
-#: crypt-gpgme.c:3449 crypt-gpgme.c:3454 crypt-gpgme.c:3459 crypt-gpgme.c:3600
-#: crypt-gpgme.c:3605 crypt-gpgme.c:3610
+#: crypt-gpgme.c:3456 crypt-gpgme.c:3461 crypt-gpgme.c:3466 crypt-gpgme.c:3607
+#: crypt-gpgme.c:3612 crypt-gpgme.c:3617
 msgid ", "
 msgstr ", "
 
-#: crypt-gpgme.c:3453 crypt-gpgme.c:3604
+#: crypt-gpgme.c:3460 crypt-gpgme.c:3611
 msgid "signing"
 msgstr "podepisování"
 
-#: crypt-gpgme.c:3458 crypt-gpgme.c:3609
+#: crypt-gpgme.c:3465 crypt-gpgme.c:3616
 msgid "certification"
 msgstr "ověřování"
 
 #. L10N: DOTFILL
-#: crypt-gpgme.c:3500
+#: crypt-gpgme.c:3507
 #, c-format
 msgid "Serial-No .: 0x%s\n"
 msgstr "Sériové č. : 0x%s\n"
 
 #. L10N: DOTFILL
-#: crypt-gpgme.c:3509
+#: crypt-gpgme.c:3516
 #, c-format
 msgid "Issued By .: "
 msgstr "Vydal .....: "
 
 #. L10N: DOTFILL
-#: crypt-gpgme.c:3529
+#: crypt-gpgme.c:3536
 #, c-format
 msgid "Subkey ....: 0x%s"
 msgstr "Podklíč ...: 0x%s"
 
-#: crypt-gpgme.c:3533
+#: crypt-gpgme.c:3540
 msgid "[Revoked]"
 msgstr "[Odvolaný]"
 
-#: crypt-gpgme.c:3543
+#: crypt-gpgme.c:3550
 msgid "[Expired]"
 msgstr "[Platnost vypršela]"
 
-#: crypt-gpgme.c:3548
+#: crypt-gpgme.c:3555
 msgid "[Disabled]"
 msgstr "[Zakázán]"
 
-#: crypt-gpgme.c:3636
+#: crypt-gpgme.c:3643
 msgid "Collecting data..."
 msgstr "Sbírám údaje…"
 
-#: crypt-gpgme.c:3662
+#: crypt-gpgme.c:3669
 #, c-format
 msgid "Error finding issuer key: %s\n"
 msgstr "Chyba při vyhledávání klíče vydavatele: %s\n"
 
-#: crypt-gpgme.c:3672
+#: crypt-gpgme.c:3679
 msgid "Error: certification chain too long - stopping here\n"
 msgstr "Chyba: řetězec certifikátů je příliš dlouhý – zde se končí\n"
 
-#: crypt-gpgme.c:3683 pgpkey.c:581
+#: crypt-gpgme.c:3690 pgpkey.c:581
 #, c-format
 msgid "Key ID: 0x%s"
 msgstr "ID klíče: 0x%s"
 
-#: crypt-gpgme.c:3766
+#: crypt-gpgme.c:3773
 #, c-format
 msgid "gpgme_new failed: %s"
 msgstr "gpgme_new selhala: %s"
 
-#: crypt-gpgme.c:3805 crypt-gpgme.c:3880
+#: crypt-gpgme.c:3812 crypt-gpgme.c:3887
 #, c-format
 msgid "gpgme_op_keylist_start failed: %s"
 msgstr "gpgme_op_keylist_start selhala: %s"
 
-#: crypt-gpgme.c:3867 crypt-gpgme.c:3911
+#: crypt-gpgme.c:3874 crypt-gpgme.c:3918
 #, c-format
 msgid "gpgme_op_keylist_next failed: %s"
 msgstr "gpgme_op_keylist_next selhala: %s"
 
-#: crypt-gpgme.c:3982
+#: crypt-gpgme.c:3989
 msgid "All matching keys are marked expired/revoked."
 msgstr "Všem vyhovujícím klíčům vypršela platnost nebo byly zneplatněny."
 
-#: crypt-gpgme.c:4011 mutt_ssl.c:1074 mutt_ssl_gnutls.c:1001 pgpkey.c:515
+#: crypt-gpgme.c:4018 mutt_ssl.c:1032 mutt_ssl_gnutls.c:1001 pgpkey.c:515
 #: smime.c:435
 msgid "Exit  "
 msgstr "Ukončit  "
 
-#: crypt-gpgme.c:4013 pgpkey.c:517 smime.c:437
+#: crypt-gpgme.c:4020 pgpkey.c:517 smime.c:437
 msgid "Select  "
 msgstr "Zvolit "
 
-#: crypt-gpgme.c:4016 pgpkey.c:520
+#: crypt-gpgme.c:4023 pgpkey.c:520
 msgid "Check key  "
 msgstr "Kontrolovat klíč  "
 
-#: crypt-gpgme.c:4032
+#: crypt-gpgme.c:4039
 msgid "PGP and S/MIME keys matching"
 msgstr "PGP a S/MIME klíče vyhovující"
 
-#: crypt-gpgme.c:4034
+#: crypt-gpgme.c:4041
 msgid "PGP keys matching"
 msgstr "PGP klíče vyhovující"
 
-#: crypt-gpgme.c:4036
+#: crypt-gpgme.c:4043
 msgid "S/MIME keys matching"
 msgstr "S/MIME klíče vyhovující"
 
-#: crypt-gpgme.c:4038
+#: crypt-gpgme.c:4045
 msgid "keys matching"
 msgstr "klíče vyhovující"
 
@@ -1270,63 +1327,63 @@ msgstr "klíče vyhovující"
 #. %1$s is one of the previous four entries.
 #. %2$s is an address.
 #. e.g. "S/MIME keys matching <me@mutt.org>."
-#: crypt-gpgme.c:4045
+#: crypt-gpgme.c:4052
 #, c-format
 msgid "%s <%s>."
 msgstr "%s <%s>."
 
 #. L10N:
 #. e.g. 'S/MIME keys matching "Michael Elkins".'
-#: crypt-gpgme.c:4049
+#: crypt-gpgme.c:4056
 #, c-format
 msgid "%s \"%s\"."
 msgstr "%s \"%s\"."
 
-#: crypt-gpgme.c:4076 pgpkey.c:601
+#: crypt-gpgme.c:4083 pgpkey.c:601
 msgid "This key can't be used: expired/disabled/revoked."
 msgstr "Klíč nelze použít: vypršela jeho platnost, nebo byl zakázán či stažen."
 
-#: crypt-gpgme.c:4090 pgpkey.c:613 smime.c:467
+#: crypt-gpgme.c:4097 pgpkey.c:613 smime.c:467
 msgid "ID is expired/disabled/revoked."
 msgstr "Tomuto ID vypršela platnost, nebo bylo zakázáno či staženo."
 
-#: crypt-gpgme.c:4098 pgpkey.c:617 smime.c:470
+#: crypt-gpgme.c:4105 pgpkey.c:617 smime.c:470
 msgid "ID has undefined validity."
 msgstr "ID nemá definovanou důvěryhodnost"
 
-#: crypt-gpgme.c:4101 pgpkey.c:620
+#: crypt-gpgme.c:4108 pgpkey.c:620
 msgid "ID is not valid."
 msgstr "Toto ID není důvěryhodné."
 
-#: crypt-gpgme.c:4104 pgpkey.c:623
+#: crypt-gpgme.c:4111 pgpkey.c:623
 msgid "ID is only marginally valid."
 msgstr "Důvěryhodnost tohoto ID je pouze částečná."
 
-#: crypt-gpgme.c:4113 pgpkey.c:627 smime.c:477
+#: crypt-gpgme.c:4120 pgpkey.c:627 smime.c:477
 #, c-format
 msgid "%s Do you really want to use the key?"
 msgstr "%s Opravdu chcete tento klíč použít?"
 
-#: crypt-gpgme.c:4174 crypt-gpgme.c:4308 pgpkey.c:838 pgpkey.c:965
+#: crypt-gpgme.c:4181 crypt-gpgme.c:4315 pgpkey.c:838 pgpkey.c:965
 #, c-format
 msgid "Looking for keys matching \"%s\"..."
 msgstr "Hledám klíče vyhovující \"%s\"…"
 
-#: crypt-gpgme.c:4463 pgp.c:1304
+#: crypt-gpgme.c:4470 pgp.c:1304
 #, c-format
 msgid "Use keyID = \"%s\" for %s?"
 msgstr "Použít ID klíče = \"%s\" pro %s?"
 
-#: crypt-gpgme.c:4521 pgp.c:1353 smime.c:796 smime.c:902
+#: crypt-gpgme.c:4528 pgp.c:1353 smime.c:796 smime.c:902
 #, c-format
 msgid "Enter keyID for %s: "
 msgstr "Zadejte ID klíče pro %s: "
 
-#: crypt-gpgme.c:4598 pgpkey.c:725
+#: crypt-gpgme.c:4605 pgpkey.c:725
 msgid "Please enter the key ID: "
 msgstr "Zadejte ID klíče: "
 
-#: crypt-gpgme.c:4611
+#: crypt-gpgme.c:4618
 #, c-format
 msgid "Error exporting key: %s\n"
 msgstr "Chyba při exportu klíče: %s\n"
@@ -1335,20 +1392,20 @@ msgstr "Chyba při exportu klíče: %s\n"
 #. MIME description for exported (attached) keys.
 #. You can translate this entry to a non-ASCII string (it will be encoded),
 #. but it may be safer to keep it untranslated.
-#: crypt-gpgme.c:4631
+#: crypt-gpgme.c:4638
 #, c-format
 msgid "PGP Key 0x%s."
 msgstr "Klíč PGP 0x%s."
 
-#: crypt-gpgme.c:4673
+#: crypt-gpgme.c:4680
 msgid "GPGME: OpenPGP protocol not available"
 msgstr "GPGME: Protokol OpenGPG není dostupný"
 
-#: crypt-gpgme.c:4681
+#: crypt-gpgme.c:4688
 msgid "GPGME: CMS protocol not available"
 msgstr "GPGME: Protokol CMS není dostupný"
 
-#: crypt-gpgme.c:4718
+#: crypt-gpgme.c:4725
 msgid "S/MIME (s)ign, sign (a)s, (p)gp, (c)lear, or (o)ppenc mode off? "
 msgstr ""
 "S/MIME (p)odepsat, podepsat (j)ako, p(g)p, (n)ic či vypnout pří(l)ež. šifr.? "
@@ -1357,20 +1414,20 @@ msgstr ""
 #. 'clear'.  Please use a corresponding letter in your language.
 #. Alternatively, you may duplicate the letter 'c' is translated to.
 #. This comment also applies to the five following letter sequences.
-#: crypt-gpgme.c:4723
+#: crypt-gpgme.c:4730
 msgid "sapfco"
 msgstr "pjgfnl"
 
-#: crypt-gpgme.c:4728
+#: crypt-gpgme.c:4735
 msgid "PGP (s)ign, sign (a)s, s/(m)ime, (c)lear, or (o)ppenc mode off? "
 msgstr ""
 "PGP (p)odepsat, podepsat (j)ako, s/(m)ime, (n)ic či vypnout pří(l)ež. šifr.? "
 
-#: crypt-gpgme.c:4729
+#: crypt-gpgme.c:4736
 msgid "samfco"
 msgstr "pjmfnl"
 
-#: crypt-gpgme.c:4741
+#: crypt-gpgme.c:4748
 msgid ""
 "S/MIME (e)ncrypt, (s)ign, sign (a)s, (b)oth, (p)gp, (c)lear, or (o)ppenc "
 "mode? "
@@ -1380,11 +1437,11 @@ msgstr ""
 
 # `f` means forget it. The absolute order must be preserved. Therefore `f'
 # has to be injected on 6th position.
-#: crypt-gpgme.c:4742
+#: crypt-gpgme.c:4749
 msgid "esabpfco"
 msgstr "rpjogfnl"
 
-#: crypt-gpgme.c:4747
+#: crypt-gpgme.c:4754
 msgid ""
 "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, s/(m)ime, (c)lear, or (o)ppenc "
 "mode? "
@@ -1394,41 +1451,41 @@ msgstr ""
 
 # `f` means forget it. The absolute order must be preserved. Therefore `f'
 # has to be injected on 6th position.
-#: crypt-gpgme.c:4748
+#: crypt-gpgme.c:4755
 msgid "esabmfco"
 msgstr "rpjomfnl"
 
-#: crypt-gpgme.c:4759
+#: crypt-gpgme.c:4766
 msgid "S/MIME (e)ncrypt, (s)ign, sign (a)s, (b)oth, (p)gp or (c)lear? "
 msgstr ""
 "S/MIME šif(r)ovat, (p)odepsat, podepsat (j)ako, (o)bojí, p(g)p či (n)ic? "
 
 # `f` means forget it. The absolute order must be preserved. Therefore `f'
 # has to be injected on 6th position.
-#: crypt-gpgme.c:4760
+#: crypt-gpgme.c:4767
 msgid "esabpfc"
 msgstr "rpjogfn"
 
-#: crypt-gpgme.c:4765
+#: crypt-gpgme.c:4772
 msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, s/(m)ime or (c)lear? "
 msgstr ""
 "PGP šif(r)ovat, (p)odepsat, podepsat (j)ako, (o)bojí, s/(m)ime, či (n)ic? "
 
 # `f` means forget it. The absolute order must be preserved. Therefore `f'
 # has to be injected on 6th position.
-#: crypt-gpgme.c:4766
+#: crypt-gpgme.c:4773
 msgid "esabmfc"
 msgstr "rpjomfn"
 
-#: crypt-gpgme.c:4791 pgp.c:1818 smime.c:2222 smime.c:2237
+#: crypt-gpgme.c:4798 pgp.c:1818 smime.c:2222 smime.c:2237
 msgid "Sign as: "
 msgstr "Podepsat jako: "
 
-#: crypt-gpgme.c:4926
+#: crypt-gpgme.c:4933
 msgid "Failed to verify sender"
 msgstr "Odesílatele nelze ověřit"
 
-#: crypt-gpgme.c:4929
+#: crypt-gpgme.c:4936
 msgid "Failed to figure out sender"
 msgstr "Nelze určit odesílatele"
 
@@ -1462,7 +1519,7 @@ msgstr "Spouští se PGP…"
 msgid "Message can't be sent inline.  Revert to using PGP/MIME?"
 msgstr "Zprávu nelze poslat vloženou do textu. Použít PGP/MIME?"
 
-#: crypt.c:170 send.c:1592
+#: crypt.c:170 send.c:1593
 msgid "Mail not sent."
 msgstr "Zpráva nebyla odeslána."
 
@@ -1548,7 +1605,7 @@ msgstr "ne"
 msgid "Exit Mutt?"
 msgstr "Ukončit Mutt?"
 
-#: curs_lib.c:676 mutt_socket.c:577 mutt_ssl.c:416
+#: curs_lib.c:676 mutt_socket.c:577 mutt_ssl.c:456
 msgid "unknown error"
 msgstr "neznámá chyba"
 
@@ -1568,11 +1625,11 @@ msgstr "Žádná schránka není otevřena."
 msgid "There are no messages."
 msgstr "Nejsou žádné zprávy."
 
-#: curs_main.c:59 mx.c:1130 pager.c:54 recvattach.c:43
+#: curs_main.c:59 mx.c:1117 pager.c:54 recvattach.c:43
 msgid "Mailbox is read-only."
 msgstr "Ze schránky je možné pouze číst."
 
-#: curs_main.c:60 pager.c:55 recvattach.c:925
+#: curs_main.c:60 pager.c:55 recvattach.c:943
 msgid "Function not permitted in attach-message mode."
 msgstr "V režimu přikládání zpráv není tato funkce povolena."
 
@@ -1610,7 +1667,7 @@ msgstr "Uložit"
 msgid "Mail"
 msgstr "Psát"
 
-#: curs_main.c:491 pager.c:1561
+#: curs_main.c:491 pager.c:1568
 msgid "Reply"
 msgstr "Odepsat"
 
@@ -1642,200 +1699,242 @@ msgstr "Není co dělat"
 msgid "Jump to message: "
 msgstr "Přejít na zprávu: "
 
-#: curs_main.c:838
+#: curs_main.c:845
 msgid "Argument must be a message number."
 msgstr "Argumentem musí být číslo zprávy."
 
-#: curs_main.c:870
+#: curs_main.c:877
 msgid "That message is not visible."
 msgstr "Tato zpráva není viditelná."
 
-#: curs_main.c:873
+#: curs_main.c:880
 msgid "Invalid message number."
 msgstr "Číslo zprávy není správné."
 
 #. L10N: CHECK_ACL
-#: curs_main.c:887 curs_main.c:2004 pager.c:2450
+#: curs_main.c:894 curs_main.c:2018 pager.c:2457
 msgid "Cannot delete message(s)"
 msgstr "Zprávu(-y) nelze smazat"
 
-#: curs_main.c:890
+#: curs_main.c:897
 msgid "Delete messages matching: "
 msgstr "Smazat zprávy shodující se s: "
 
-#: curs_main.c:912
+#: curs_main.c:919
 msgid "No limit pattern is in effect."
 msgstr "Žádné omezení není zavedeno."
 
 #. L10N: ask for a limit to apply
-#: curs_main.c:917
+#: curs_main.c:924
 #, c-format
 msgid "Limit: %s"
 msgstr "Omezení: %s"
 
-#: curs_main.c:927
+#: curs_main.c:934
 msgid "Limit to messages matching: "
 msgstr "Omezit na zprávy shodující se s: "
 
-#: curs_main.c:949
+#: curs_main.c:956
 msgid "To view all messages, limit to \"all\"."
 msgstr "Pro zobrazení všech zpráv změňte omezení na „all“."
 
-#: curs_main.c:961 pager.c:1997
+#: curs_main.c:968 pager.c:2004
 msgid "Quit Mutt?"
 msgstr "Ukončit Mutt?"
 
-#: curs_main.c:1051
+#: curs_main.c:1058
 msgid "Tag messages matching: "
 msgstr "Označit zprávy shodující se s: "
 
 #. L10N: CHECK_ACL
-#: curs_main.c:1061 curs_main.c:2304 pager.c:2765
+#: curs_main.c:1068 curs_main.c:2376 pager.c:2772
 msgid "Cannot undelete message(s)"
 msgstr "Zprávu(-y) nelze obnovit"
 
-#: curs_main.c:1063
+#: curs_main.c:1070
 msgid "Undelete messages matching: "
 msgstr "Obnovit zprávy shodující se s: "
 
-#: curs_main.c:1071
+#: curs_main.c:1078
 msgid "Untag messages matching: "
 msgstr "Odznačit zprávy shodující se s: "
 
-#: curs_main.c:1097
+#: curs_main.c:1104
 msgid "Logged out of IMAP servers."
 msgstr "Odhlášeno z IMAP serverů."
 
-#: curs_main.c:1182
+#: curs_main.c:1189
 msgid "Open mailbox in read-only mode"
 msgstr "Otevřít schránku pouze pro čtení"
 
-#: curs_main.c:1184
+#: curs_main.c:1191
 msgid "Open mailbox"
 msgstr "Otevřít schránku"
 
-#: curs_main.c:1194
+#: curs_main.c:1201
 msgid "No mailboxes have new mail"
 msgstr "V žádné schránce není nová pošta"
 
-#: curs_main.c:1231 mx.c:487 mx.c:580
+#: curs_main.c:1238 mx.c:516 mx.c:605
 #, c-format
 msgid "%s is not a mailbox."
 msgstr "%s není schránkou."
 
-#: curs_main.c:1334
+#: curs_main.c:1346
 msgid "Exit Mutt without saving?"
 msgstr "Ukončit Mutt bez uložení změn?"
 
-#: curs_main.c:1352 curs_main.c:1388 curs_main.c:1846 curs_main.c:1878
-#: flags.c:301 thread.c:1028 thread.c:1083 thread.c:1138
+#: curs_main.c:1364 curs_main.c:1400 curs_main.c:1860 curs_main.c:1892
+#: flags.c:302 thread.c:1025 thread.c:1081 thread.c:1148
 msgid "Threading is not enabled."
 msgstr "Vlákna nejsou podporována."
 
-#: curs_main.c:1364
+#: curs_main.c:1376
 msgid "Thread broken"
 msgstr "Vlákno rozbito"
 
-#: curs_main.c:1375
+#: curs_main.c:1387
 msgid "Thread cannot be broken, message is not part of a thread"
 msgstr "Vlákno nelze rozdělit, zpráva není součástí vlákna"
 
 #. L10N: CHECK_ACL
-#: curs_main.c:1385
+#: curs_main.c:1397
 msgid "Cannot link threads"
 msgstr "Vlákna nelze spojit"
 
-#: curs_main.c:1390
+#: curs_main.c:1402
 msgid "No Message-ID: header available to link thread"
 msgstr "Pro spojení vláken chybí hlavička Message-ID:"
 
-#: curs_main.c:1392
+#: curs_main.c:1404
 msgid "First, please tag a message to be linked here"
 msgstr "Aby sem mohla být zpráva připojena, nejprve musíte nějakou označit"
 
-#: curs_main.c:1404
+#: curs_main.c:1416
 msgid "Threads linked"
 msgstr "Vlákna spojena"
 
-#: curs_main.c:1407
+#: curs_main.c:1419
 msgid "No thread linked"
 msgstr "Žádné vlákno nespojeno"
 
-#: curs_main.c:1443 curs_main.c:1468
+#: curs_main.c:1455 curs_main.c:1480
 msgid "You are on the last message."
 msgstr "Jste na poslední zprávě."
 
-#: curs_main.c:1450 curs_main.c:1494
+#: curs_main.c:1462 curs_main.c:1506
 msgid "No undeleted messages."
 msgstr "Nejsou žádné obnovené zprávy."
 
-#: curs_main.c:1487 curs_main.c:1511
+#: curs_main.c:1499 curs_main.c:1523
 msgid "You are on the first message."
 msgstr "Jste na první zprávě."
 
-#: curs_main.c:1586 menu.c:773 pager.c:2115 pattern.c:1494
+#: curs_main.c:1598 menu.c:773 pager.c:2122 pattern.c:1575
 msgid "Search wrapped to top."
 msgstr "Hledání pokračuje od začátku."
 
-#: curs_main.c:1595 pager.c:2137 pattern.c:1505
+#: curs_main.c:1607 pager.c:2144 pattern.c:1586
 msgid "Search wrapped to bottom."
 msgstr "Hledání pokračuje od konce."
 
-#: curs_main.c:1639
+#: curs_main.c:1651
 msgid "No new messages in this limited view."
 msgstr "Žádné nové zprávy v tomto omezeném zobrazení."
 
-#: curs_main.c:1641
+#: curs_main.c:1653
 msgid "No new messages."
 msgstr "Žádné nové zprávy."
 
-#: curs_main.c:1646
+#: curs_main.c:1658
 msgid "No unread messages in this limited view."
 msgstr "Žádné nepřečtené zprávy v tomto omezeném zobrazení."
 
-#: curs_main.c:1648
+#: curs_main.c:1660
 msgid "No unread messages."
 msgstr "Žádné nepřečtené zprávy."
 
 #. L10N: CHECK_ACL
-#: curs_main.c:1666
+#: curs_main.c:1678
 msgid "Cannot flag message"
 msgstr "Zprávě nelze nastavit příznak"
 
 #. L10N: CHECK_ACL
-#: curs_main.c:1704 pager.c:2728
+#: curs_main.c:1716 pager.c:2735
 msgid "Cannot toggle new"
 msgstr "Nelze přepnout mezi nová/stará"
 
-#: curs_main.c:1781
+#: curs_main.c:1793
 msgid "No more threads."
 msgstr "Nejsou další vlákna."
 
-#: curs_main.c:1783
+#: curs_main.c:1795
 msgid "You are on the first thread."
 msgstr "Jste na prvním vláknu."
 
-#: curs_main.c:1864
+#: curs_main.c:1878
 msgid "Thread contains unread messages."
 msgstr "Vlákno obsahuje nepřečtené zprávy."
 
 #. L10N: CHECK_ACL
-#: curs_main.c:1960 pager.c:2417
+#: curs_main.c:1974 pager.c:2424
 msgid "Cannot delete message"
 msgstr "Zprávu nelze smazat"
 
 #. L10N: CHECK_ACL
-#: curs_main.c:2046
+#: curs_main.c:2060
 msgid "Cannot edit message"
 msgstr "Zprávu nelze upravit"
 
+#. L10N: This is displayed when the x-label on one or more
+#. * messages is edited.
+# FIXME: Pluralize
+#: curs_main.c:2106 pager.c:2823
+#, c-format
+msgid "%d labels changed."
+msgstr "%d štítků změněno."
+
+#. L10N: This is displayed when editing an x-label, but no messages
+#. * were updated.  Possibly due to canceling at the prompt or if the new
+#. * label is the same as the old label.
+#: curs_main.c:2112 pager.c:2826
+msgid "No labels changed."
+msgstr "Žádné štítky nebyly změněny."
+
 #. L10N: CHECK_ACL
-#: curs_main.c:2178
+#: curs_main.c:2212
 msgid "Cannot mark message(s) as read"
 msgstr "Zprávu(-y) nelze označit za přečtenou(-é)"
 
+#. L10N: This is the prompt for <mark-message>.  Whatever they
+#. enter will be prefixed by $mark_macro_prefix and will become
+#. a macro hotkey to jump to the currently selected message.
+#: curs_main.c:2248
+msgid "Enter macro stroke: "
+msgstr "Zadejte značku: "
+
+#. L10N: "message hotkey" is the key bindings menu description of a
+#. macro created by <mark-message>.
+#: curs_main.c:2256
+msgid "message hotkey"
+msgstr "horká klávesa pro značku zprávy"
+
+#. L10N: This is echoed after <mark-message> creates a new hotkey
+#. macro.  %s is the hotkey string ($mark_macro_prefix followed
+#. by whatever they typed at the prompt.)
+#: curs_main.c:2261
+#, c-format
+msgid "Message bound to %s."
+msgstr "Zpráva svázána se značkou %s."
+
+#. L10N: This error is printed if <mark-message> cannot find a
+#. Message-ID for the currently selected message in the index.
+#: curs_main.c:2269
+msgid "No message ID to macro."
+msgstr "ID zprávy ze značky neexistuje."
+
 #. L10N: CHECK_ACL
-#: curs_main.c:2274 pager.c:2748
+#: curs_main.c:2346 pager.c:2755
 msgid "Cannot undelete message"
 msgstr "Zprávu nelze obnovit"
 
@@ -1961,16 +2060,11 @@ msgstr "Soubor se zprávou nelze otevřít: %s"
 msgid "Can't append to folder: %s"
 msgstr "Ke složce nelze připojit: %s"
 
-#: editmsg.c:210
-#, c-format
-msgid "Error. Preserving temporary file: %s"
-msgstr "Chyba. Zachovávám dočasný soubor %s."
-
-#: flags.c:345
+#: flags.c:346
 msgid "Set flag"
 msgstr "Nastavit příznak"
 
-#: flags.c:345
+#: flags.c:346
 msgid "Clear flag"
 msgstr "Vypnout příznak"
 
@@ -2086,7 +2180,7 @@ msgstr "(pro zobrazení této části použijte „%s“)"
 msgid "(need 'view-attachments' bound to key!)"
 msgstr "(je třeba svázat funkci „view-attachments“ s nějakou klávesou!)"
 
-#: headers.c:185
+#: headers.c:186
 #, c-format
 msgid "%s: unable to attach file"
 msgstr "soubor %s nelze připojit"
@@ -2129,30 +2223,34 @@ msgstr "Nápověda pro %s"
 msgid "Bad history file format (line %d)"
 msgstr "Špatný formát souboru s historií (řádek %d)"
 
-#: hook.c:93
+#: hook.c:97
 msgid "current mailbox shortcut '^' is unset"
 msgstr "zkratka „^“ pro aktuální schránku není nastavena"
 
-#: hook.c:104
+#: hook.c:108
 msgid "mailbox shortcut expanded to empty regexp"
 msgstr "zkratka pro schránku expandována na prázdný regulární výraz"
 
-#: hook.c:267
+#: hook.c:119
+msgid "badly formatted command string"
+msgstr "špatně utvořený řetězec s příkazem"
+
+#: hook.c:279
 #, c-format
 msgid "unhook: Can't do unhook * from within a hook."
 msgstr "unhook: unhook * nelze provést z jiného háčku."
 
-#: hook.c:279
+#: hook.c:291
 #, c-format
 msgid "unhook: unknown hook type: %s"
 msgstr "unhook: neznámý typ háčku: %s"
 
-#: hook.c:285
+#: hook.c:297
 #, c-format
 msgid "unhook: Can't delete a %s from within a %s."
 msgstr "unhook: %s nelze z %s smazat."
 
-#: imap/auth.c:108 pop_auth.c:413 smtp.c:557
+#: imap/auth.c:108 pop_auth.c:425 smtp.c:557
 msgid "No authenticators available"
 msgstr "Nejsou k dispozici žádné autentizační metody"
 
@@ -2184,11 +2282,11 @@ msgstr "GSSAPI ověření se nezdařilo."
 msgid "LOGIN disabled on this server."
 msgstr "LOGIN autentizace je na tomto serveru zakázána"
 
-#: imap/auth_login.c:47 pop_auth.c:246
+#: imap/auth_login.c:47 pop_auth.c:258
 msgid "Logging in..."
 msgstr "Probíhá přihlašování…"
 
-#: imap/auth_login.c:70 pop_auth.c:289
+#: imap/auth_login.c:70 pop_auth.c:301
 msgid "Login failed."
 msgstr "Přihlášení se nezdařilo."
 
@@ -2197,11 +2295,11 @@ msgstr "Přihlášení se nezdařilo."
 msgid "Authenticating (%s)..."
 msgstr "Přihlašuji (%s)…"
 
-#: imap/auth_sasl.c:228 pop_auth.c:168
+#: imap/auth_sasl.c:228 pop_auth.c:180
 msgid "SASL authentication failed."
 msgstr "SASL ověření se nezdařilo."
 
-#: imap/browse.c:59 imap/imap.c:569
+#: imap/browse.c:59 imap/imap.c:571
 #, c-format
 msgid "%s is an invalid IMAP path"
 msgstr "%s není platná IMAP cesta"
@@ -2258,132 +2356,132 @@ msgstr "Příkaz CREATE selhal: %s"
 msgid "Closing connection to %s..."
 msgstr "Končím spojení s %s…"
 
-#: imap/imap.c:309
+#: imap/imap.c:311
 msgid "This IMAP server is ancient. Mutt does not work with it."
 msgstr "Tento IMAP server je zastaralý. Mutt s ním nebude fungovat."
 
-#: imap/imap.c:434 pop_lib.c:295 smtp.c:466
+#: imap/imap.c:436 pop_lib.c:295 smtp.c:466
 msgid "Secure connection with TLS?"
 msgstr "Bezpečné spojení přes TLS?"
 
-#: imap/imap.c:443 pop_lib.c:315 smtp.c:478
+#: imap/imap.c:445 pop_lib.c:315 smtp.c:478
 msgid "Could not negotiate TLS connection"
 msgstr "Nelze navázat TLS spojení"
 
-#: imap/imap.c:459 pop_lib.c:336
+#: imap/imap.c:461 pop_lib.c:336
 msgid "Encrypted connection unavailable"
 msgstr "Šifrované spojení není k dispozici"
 
-#: imap/imap.c:602
+#: imap/imap.c:604
 #, c-format
 msgid "Selecting %s..."
 msgstr "Volím %s…"
 
-#: imap/imap.c:757
+#: imap/imap.c:759
 msgid "Error opening mailbox"
 msgstr "Chyba při otevírání schránky"
 
-#: imap/imap.c:808 imap/imap.c:2147 imap/message.c:877 muttlib.c:1588
+#: imap/imap.c:810 imap/imap.c:2160 imap/message.c:895 muttlib.c:1683
 #, c-format
 msgid "Create %s?"
 msgstr "Vytvořit %s?"
 
-#: imap/imap.c:1201
+#: imap/imap.c:1203
 msgid "Expunge failed"
 msgstr "Příkaz EXPUNGE se nezdařil."
 
-#: imap/imap.c:1213
+#: imap/imap.c:1215
 #, c-format
 msgid "Marking %d messages deleted..."
 msgstr "Mažu zprávy (počet: %d)…"
 
-#: imap/imap.c:1245
+#: imap/imap.c:1247
 #, c-format
 msgid "Saving changed messages... [%d/%d]"
 msgstr "Ukládám změněné zprávy… [%d/%d]"
 
-#: imap/imap.c:1300
+#: imap/imap.c:1303
 msgid "Error saving flags. Close anyway?"
 msgstr "Došlo k chybě při ukládání příznaků. Přesto uzavřít?"
 
-#: imap/imap.c:1308
+#: imap/imap.c:1311
 msgid "Error saving flags"
 msgstr "Chyba při ukládání příznaků"
 
-#: imap/imap.c:1331
+#: imap/imap.c:1334
 msgid "Expunging messages from server..."
 msgstr "Odstraňuji zprávy ze serveru…"
 
-#: imap/imap.c:1336
+#: imap/imap.c:1339
 msgid "imap_sync_mailbox: EXPUNGE failed"
 msgstr "při volání imap_sync_mailbox: EXPUNGE selhalo"
 
-#: imap/imap.c:1805
+#: imap/imap.c:1810
 #, c-format
 msgid "Header search without header name: %s"
 msgstr "Hledám v hlavičkách bez udání položky: %s"
 
-#: imap/imap.c:1876
+#: imap/imap.c:1881
 msgid "Bad mailbox name"
 msgstr "Chybný název schránky"
 
-#: imap/imap.c:1900
+#: imap/imap.c:1905
 #, c-format
 msgid "Subscribing to %s..."
 msgstr "Přihlašuji %s…"
 
-#: imap/imap.c:1902
+#: imap/imap.c:1907
 #, c-format
 msgid "Unsubscribing from %s..."
 msgstr "Odhlašuji %s…"
 
-#: imap/imap.c:1912
+#: imap/imap.c:1917
 #, c-format
 msgid "Subscribed to %s"
 msgstr "%s přihlášeno"
 
-#: imap/imap.c:1914
+#: imap/imap.c:1919
 #, c-format
 msgid "Unsubscribed from %s"
 msgstr "%s odhlášeno"
 
-#: imap/imap.c:2132 imap/message.c:841
+#: imap/imap.c:2145 imap/message.c:859
 #, c-format
 msgid "Copying %d messages to %s..."
 msgstr "Kopíruji zprávy (%d) do %s…"
 
-#: imap/message.c:98
+#: imap/message.c:115
 msgid "Unable to fetch headers from this IMAP server version."
 msgstr "Z IMAP serveru této verze hlavičky nelze stahovat."
 
-#: imap/message.c:108
+#: imap/message.c:125
 #, c-format
 msgid "Could not create temporary file %s"
 msgstr "Dočasný soubor %s nelze vytvořit"
 
 #. L10N:
 #. Comparing the cached data with the IMAP server's data
-#: imap/message.c:142
+#: imap/message.c:159
 msgid "Evaluating cache..."
 msgstr "Vyhodnocuji cache…"
 
-#: imap/message.c:232 pop.c:281
+#: imap/message.c:249 pop.c:281
 msgid "Fetching message headers..."
 msgstr "Stahuji hlavičky zpráv…"
 
-#: imap/message.c:444 imap/message.c:501 pop.c:573
+#: imap/message.c:462 imap/message.c:519 pop.c:573
 msgid "Fetching message..."
 msgstr "Stahuji zprávu…"
 
-#: imap/message.c:490 pop.c:568
+#: imap/message.c:508 pop.c:568
 msgid "The message index is incorrect. Try reopening the mailbox."
 msgstr "Index zpráv je chybný. Zkuste schránku znovu otevřít."
 
-#: imap/message.c:660
+#: imap/message.c:678
 msgid "Uploading message..."
 msgstr "Nahrávám zprávu na server…"
 
-#: imap/message.c:845
+#: imap/message.c:863
 #, c-format
 msgid "Copying message %d to %s..."
 msgstr "Kopíruji zprávu %d do %s…"
@@ -2392,199 +2490,203 @@ msgstr "Kopíruji zprávu %d do %s…"
 msgid "Continue?"
 msgstr "Pokračovat?"
 
-#: init.c:60 init.c:1768 pager.c:53
+#: init.c:60 init.c:2044 pager.c:53
 #, c-format
 msgid "Not available in this menu."
 msgstr "V tomto menu není tato funkce dostupná."
 
-#: init.c:468
+#: init.c:470
 #, c-format
 msgid "Bad regexp: %s"
 msgstr "Chybný regulární výraz: %s"
 
-#: init.c:525
+#: init.c:527
 #, c-format
-msgid "Not enough subexpressions for spam template"
-msgstr "Na šablonu spamu není dost podvýrazů"
+msgid "Not enough subexpressions for template"
+msgstr "Na šablonu není dost podvýrazů"
 
-#: init.c:715
+#: init.c:770 init.c:778 init.c:799
+msgid "not enough arguments"
+msgstr "příliš málo argumentů"
+
+#: init.c:860
 msgid "spam: no matching pattern"
 msgstr "spam: vzoru nic nevyhovuje"
 
-#: init.c:717
+#: init.c:862
 msgid "nospam: no matching pattern"
 msgstr "nospam: vzoru nic nevyhovuje"
 
 # "%sgroup" is literal
-#: init.c:861
+#: init.c:1006
 #, c-format
 msgid "%sgroup: missing -rx or -addr."
 msgstr "%sgroup: chybí -rx nebo -addr."
 
 # "%sgroup" is literal
-#: init.c:879
+#: init.c:1024
 #, c-format
 msgid "%sgroup: warning: bad IDN '%s'.\n"
 msgstr "%sgroup: pozor: chybné IDN „%s“.\n"
 
-#: init.c:1094
+#: init.c:1239
 msgid "attachments: no disposition"
 msgstr "přílohy: chybí dispozice"
 
-#: init.c:1132
+#: init.c:1277
 msgid "attachments: invalid disposition"
 msgstr "přílohy: chybná dispozice"
 
-#: init.c:1146
+#: init.c:1291
 msgid "unattachments: no disposition"
 msgstr "nepřílohy: chybí dispozice"
 
-#: init.c:1169
+#: init.c:1314
 msgid "unattachments: invalid disposition"
 msgstr "nepřílohy: chybná dispozice"
 
-#: init.c:1296
+#: init.c:1441
 msgid "alias: no address"
 msgstr "přezdívka: žádná adresa"
 
-#: init.c:1344
+#: init.c:1489
 #, c-format
 msgid "Warning: Bad IDN '%s' in alias '%s'.\n"
 msgstr "Pozor: Neplatné IDN „%s“ v přezdívce „%s“.\n"
 
-#: init.c:1432
+#: init.c:1577
 msgid "invalid header field"
 msgstr "neplatná hlavička"
 
-#: init.c:1485
+#: init.c:1630
 #, c-format
 msgid "%s: unknown sorting method"
 msgstr "metoda %s pro řazení není známa"
 
-#: init.c:1592
+#: init.c:1741
 #, c-format
 msgid "mutt_restore_default(%s): error in regexp: %s\n"
 msgstr "mutt_restore_default(%s): chybný regulární výraz %s\n"
 
-#: init.c:1745 init.c:1858
-#, c-format
-msgid "%s: unknown variable"
-msgstr "Proměnná %s není známa."
-
-#: init.c:1754
-#, c-format
-msgid "prefix is illegal with reset"
-msgstr "Prefix není s „reset“ povolen."
-
-#: init.c:1760
-#, c-format
-msgid "value is illegal with reset"
-msgstr "Hodnota není s „reset“ povolena."
-
-#: init.c:1796 init.c:1808
-#, c-format
-msgid "Usage: set variable=yes|no"
-msgstr "Použití: set proměnná=yes|no (ano|ne)"
-
-#: init.c:1816
-#, c-format
-msgid "%s is set"
-msgstr "%s je nastaveno"
-
-#: init.c:1816
+#: init.c:1899 init.c:2092
 #, c-format
 msgid "%s is unset"
 msgstr "%s není nastaveno"
 
-#: init.c:1919
+#: init.c:2021 init.c:2137
+#, c-format
+msgid "%s: unknown variable"
+msgstr "Proměnná %s není známa."
+
+#: init.c:2030
+#, c-format
+msgid "prefix is illegal with reset"
+msgstr "Prefix není s „reset“ povolen."
+
+#: init.c:2036
+#, c-format
+msgid "value is illegal with reset"
+msgstr "Hodnota není s „reset“ povolena."
+
+#: init.c:2072 init.c:2084
+#, c-format
+msgid "Usage: set variable=yes|no"
+msgstr "Použití: set proměnná=yes|no (ano|ne)"
+
+#: init.c:2092
+#, c-format
+msgid "%s is set"
+msgstr "%s je nastaveno"
+
+#: init.c:2203
 #, c-format
 msgid "Invalid value for option %s: \"%s\""
 msgstr "Nesprávná hodnota přepínače %s: „%s“"
 
-#: init.c:2056
+#: init.c:2345
 #, c-format
 msgid "%s: invalid mailbox type"
 msgstr "%s je nesprávný typ schránky."
 
-#: init.c:2087
+#: init.c:2376
 #, c-format
 msgid "%s: invalid value (%s)"
 msgstr "%s: nesprávná hodnota (%s)"
 
-#: init.c:2088
+#: init.c:2377
 msgid "format error"
 msgstr "chyba formátu"
 
-#: init.c:2088
+#: init.c:2377
 msgid "number overflow"
 msgstr "přetečení čísla"
 
-#: init.c:2148
+#: init.c:2437
 #, c-format
 msgid "%s: invalid value"
 msgstr "Hodnota %s je nesprávná."
 
-#: init.c:2192
+#: init.c:2481
 #, c-format
 msgid "%s: Unknown type."
 msgstr "neznámý typ %s"
 
-#: init.c:2219
+#: init.c:2508
 #, c-format
 msgid "%s: unknown type"
 msgstr "neznámý typ %s"
 
-#: init.c:2287
+#: init.c:2576
 #, c-format
 msgid "Error in %s, line %d: %s"
 msgstr "Chyba v %s na řádku %d: %s"
 
-#: init.c:2310
+#: init.c:2599
 #, c-format
 msgid "source: errors in %s"
 msgstr "source: chyby v %s"
 
-#: init.c:2311
+#: init.c:2600
 #, c-format
 msgid "source: reading aborted due to too many errors in %s"
 msgstr "source: čtení přerušeno kvůli velikému množství chyb v %s"
 
-#: init.c:2325
+#: init.c:2614
 #, c-format
 msgid "source: error at %s"
 msgstr "source: chyba na %s"
 
-#: init.c:2330
+#: init.c:2619
 msgid "source: too many arguments"
 msgstr "source: příliš mnoho argumentů"
 
-#: init.c:2384
+#: init.c:2673
 #, c-format
 msgid "%s: unknown command"
 msgstr "Příkaz %s není znám."
 
-#: init.c:2872
+#: init.c:3166
 #, c-format
 msgid "Error in command line: %s\n"
 msgstr "Chyba %s na příkazovém řádku\n"
 
-#: init.c:2951
+#: init.c:3286
 msgid "unable to determine home directory"
 msgstr "domovský adresář nelze určit"
 
-#: init.c:2959
+#: init.c:3294
 msgid "unable to determine username"
 msgstr "uživatelské jméno nelze určit"
 
-#: init.c:2985
+#: init.c:3320
 msgid "unable to determine nodename via uname()"
 msgstr "název stroje nelze určit pomocí volání uname()"
 
-#: init.c:3229
+#: init.c:3561
 msgid "-group: no group name"
 msgstr "-group: chybí jméno skupiny"
 
-#: init.c:3239
+#: init.c:3571
 msgid "out of arguments"
 msgstr "příliš málo argumentů"
 
@@ -2745,7 +2847,7 @@ msgstr ""
 "    nestalo, obraťte se na Free Software Foundation, Inc.,\n"
 "    51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.\n"
 
-#: main.c:119
+#: main.c:121
 msgid ""
 "usage: mutt [<options>] [-z] [-f <file> | -yZ]\n"
 "       mutt [<options>] [-Ex] [-Hi <file>] [-s <subj>] [-bc <addr>] [-a "
@@ -2770,7 +2872,7 @@ msgstr ""
 "         mutt [<přepínače>] -D\n"
 "         mutt -v[v]\n"
 
-#: main.c:128
+#: main.c:130
 msgid ""
 "options:\n"
 "  -A <alias>\texpand the given alias\n"
@@ -2788,11 +2890,11 @@ msgstr ""
 "  -c <adresa>\turčuje adresu pro kopii (CC)\n"
 "  -D\t\tna standardní výstup vypíše hodnoty všech proměnných"
 
-#: main.c:137
+#: main.c:139
 msgid "  -d <level>\tlog debugging output to ~/.muttdebug0"
 msgstr "  -d <úroveň>\tladící informace zapisuje do ~/.muttdebug0"
 
-#: main.c:140
+#: main.c:142
 msgid ""
 "  -E\t\tedit the draft (-H) or include (-i) file\n"
 "  -e <command>\tspecify a command to be executed after initialization\n"
@@ -2814,7 +2916,7 @@ msgstr ""
 "  -n\t\tMutt nebude číst systémový soubor Muttrc\n"
 "  -p\t\tvrátí se k odložené zprávě"
 
-#: main.c:150
+#: main.c:152
 msgid ""
 "  -Q <variable>\tquery a configuration variable\n"
 "  -R\t\topen mailbox in read-only mode\n"
@@ -2838,7 +2940,7 @@ msgstr ""
 "    \t\ttak okamžitě skončí\n"
 "  -h\t\tvypíše tuto nápovědu"
 
-#: main.c:231
+#: main.c:233
 msgid ""
 "\n"
 "Compile options:"
@@ -2846,64 +2948,64 @@ msgstr ""
 "\n"
 "Přeloženo s volbami:"
 
-#: main.c:541
+#: main.c:549
 msgid "Error initializing terminal."
 msgstr "Chyba při inicializaci terminálu."
 
-#: main.c:678
+#: main.c:697
 #, c-format
 msgid "Error: value '%s' is invalid for -d.\n"
 msgstr "Chyba: pro -d není „%s“ platná hodnota.\n"
 
-#: main.c:681
+#: main.c:700
 #, c-format
 msgid "Debugging at level %d.\n"
 msgstr "Úroveň ladění je %d.\n"
 
-#: main.c:683
+#: main.c:702
 msgid "DEBUG was not defined during compilation.  Ignored.\n"
 msgstr "při překladu programu nebylo 'DEBUG' definováno. Ignoruji.\n"
 
-#: main.c:861
+#: main.c:880
 #, c-format
 msgid "%s does not exist. Create it?"
 msgstr "%s neexistuje. Mám ho vytvořit?"
 
-#: main.c:865
+#: main.c:884
 #, c-format
 msgid "Can't create %s: %s."
 msgstr "%s nelze vytvořit: %s"
 
-#: main.c:905
+#: main.c:924
 msgid "Failed to parse mailto: link\n"
 msgstr "Rozebrání odkazu mailto: se nezdařilo\n"
 
-#: main.c:917
+#: main.c:936
 msgid "No recipients specified.\n"
 msgstr "Nejsou specifikováni žádní příjemci.\n"
 
-#: main.c:943
+#: main.c:962
 msgid "Cannot use -E flag with stdin\n"
 msgstr "Přepínač -E nelze se standardním vstupem použít\n"
 
-#: main.c:1096
+#: main.c:1115
 #, c-format
 msgid "%s: unable to attach file.\n"
 msgstr "Soubor %s nelze připojit.\n"
 
-#: main.c:1177
+#: main.c:1196
 msgid "No mailbox with new mail."
 msgstr "V žádné schránce není nová pošta."
 
-#: main.c:1186
+#: main.c:1205
 msgid "No incoming mailboxes defined."
 msgstr "Není definována žádná schránka přijímající novou poštu."
 
-#: main.c:1214
+#: main.c:1233
 msgid "Mailbox is empty."
 msgstr "Schránka je prázdná."
 
-#: mbox.c:120 mbox.c:271 mh.c:1255 mx.c:598
+#: mbox.c:120 mbox.c:271 mh.c:1258 mx.c:625
 #, c-format
 msgid "Reading %s..."
 msgstr "Čtu %s…"
@@ -2917,46 +3019,42 @@ msgstr "Schránka je poškozena!"
 msgid "Couldn't lock %s\n"
 msgstr "%s nelze zamknout.\n"
 
-#: mbox.c:493 mbox.c:508
+#: mbox.c:501 mbox.c:516
 msgid "Can't write message"
 msgstr "Zprávu nelze uložit"
 
-#: mbox.c:748
+#: mbox.c:756
 msgid "Mailbox was corrupted!"
 msgstr "Schránka byla poškozena!"
 
-#: mbox.c:829 mbox.c:1089
+#: mbox.c:838 mbox.c:1098
 msgid "Fatal error!  Could not reopen mailbox!"
 msgstr "Kritická chyba! Schránku nelze znovu otevřít!"
 
-#: mbox.c:838
-msgid "Unable to lock mailbox!"
-msgstr "Schránku nelze zamknout!"
-
-#: mbox.c:881
+#: mbox.c:890
 msgid "sync: mbox modified, but no modified messages! (report this bug)"
 msgstr ""
 "sync: mbox byl změněn, ale nebyly změněny žádné zprávy! (ohlaste tuto chybu)"
 
-#: mbox.c:905 mh.c:1889 mx.c:675
+#: mbox.c:914 mh.c:1892 mx.c:707
 #, c-format
 msgid "Writing %s..."
 msgstr "Ukládám %s…"
 
-#: mbox.c:1040
+#: mbox.c:1049
 msgid "Committing changes..."
 msgstr "Provádím změny…"
 
-#: mbox.c:1075
+#: mbox.c:1084
 #, c-format
 msgid "Write failed!  Saved partial mailbox to %s"
 msgstr "Uložení se nezdařilo! Část schránky byla uložena do %s"
 
-#: mbox.c:1137
+#: mbox.c:1153
 msgid "Could not reopen mailbox!"
 msgstr "Schránku nelze znovu otevřít!"
 
-#: mbox.c:1164
+#: mbox.c:1180
 msgid "Reopening mailbox..."
 msgstr "Otevírám schránku znovu…"
 
@@ -2997,15 +3095,15 @@ msgstr "Jste na poslední položce."
 msgid "You are on the first entry."
 msgstr "Jste na první položce."
 
-#: menu.c:747 pager.c:2159 pattern.c:1433
+#: menu.c:747 pager.c:2166 pattern.c:1514
 msgid "Search for: "
 msgstr "Vyhledat: "
 
-#: menu.c:747 pager.c:2159 pattern.c:1433
+#: menu.c:747 pager.c:2166 pattern.c:1514
 msgid "Reverse search for: "
 msgstr "Vyhledat obráceným směrem: "
 
-#: menu.c:791 pager.c:2112 pager.c:2134 pager.c:2254 pattern.c:1548
+#: menu.c:791 pager.c:2119 pager.c:2141 pager.c:2261 pattern.c:1629
 msgid "Not found."
 msgstr "Nenalezeno."
 
@@ -3025,16 +3123,16 @@ msgstr "V dialozích není přeskakování implementováno."
 msgid "Tagging is not supported."
 msgstr "Označování není podporováno."
 
-#: mh.c:1235
+#: mh.c:1238
 #, c-format
 msgid "Scanning %s..."
 msgstr "Prohledávám %s…"
 
-#: mh.c:1558 mh.c:1641
+#: mh.c:1561 mh.c:1644
 msgid "Could not flush message to disk"
 msgstr "Zprávu nebylo možné bezpečně uložit (flush) na disk"
 
-#: mh.c:1603
+#: mh.c:1606
 msgid "_maildir_commit_message(): unable to set time on file"
 msgstr "při volání _maildir_commit_message(): nelze nastavit čas na souboru"
 
@@ -3101,21 +3199,21 @@ msgstr "Připojuji se k %s…"
 msgid "Could not connect to %s (%s)."
 msgstr "Spojení s %s nelze navázat (%s)."
 
-#: mutt_ssl.c:220
+#: mutt_ssl.c:234
 msgid "Failed to find enough entropy on your system"
 msgstr "Nemohu získat dostatek náhodných dat"
 
-#: mutt_ssl.c:244
+#: mutt_ssl.c:258
 #, c-format
 msgid "Filling entropy pool: %s...\n"
 msgstr "Připravuji zdroj náhodných dat: %s…\n"
 
-#: mutt_ssl.c:252
+#: mutt_ssl.c:266
 #, c-format
 msgid "%s has insecure permissions!"
 msgstr "%s má příliš volná přístupová práva!"
 
-#: mutt_ssl.c:271
+#: mutt_ssl.c:285
 msgid "SSL disabled due to the lack of entropy"
 msgstr "SSL vypnuto kvůli nedostatku entropie"
 
@@ -3123,126 +3221,121 @@ msgstr "SSL vypnuto kvůli nedostatku entropie"
 #. *       function SSL_CTX_new().  In this case it returned NULL: an
 #. *       error condition.
 #.
-#: mutt_ssl.c:338
+#: mutt_ssl.c:352
 msgid "Unable to create SSL context"
 msgstr "Nelze vytvořit kontext SSL"
 
-#: mutt_ssl.c:410
+#: mutt_ssl.c:450
 msgid "I/O error"
 msgstr "I/O chyba"
 
-#: mutt_ssl.c:419
+#: mutt_ssl.c:459
 #, c-format
 msgid "SSL failed: %s"
 msgstr "Chyba SSL: %s"
-
-#: mutt_ssl.c:428 mutt_ssl_gnutls.c:1079 mutt_ssl_gnutls.c:1114
-#: mutt_ssl_gnutls.c:1124
-msgid "Unable to get certificate from peer"
-msgstr "Certifikát od serveru nelze získat"
 
 #. L10N:
 #. %1$s is version (e.g. "TLSv1.2")
 #. %2$s is cipher_version (e.g. "TLSv1/SSLv3")
 #. %3$s is cipher_name (e.g. "ECDHE-RSA-AES128-GCM-SHA256")
-#: mutt_ssl.c:440
+#: mutt_ssl.c:469
 #, c-format
 msgid "%s connection using %s (%s)"
 msgstr "%s spojení pomocí %s (%s)"
 
-#: mutt_ssl.c:566
+#: mutt_ssl.c:596
 msgid "Unknown"
 msgstr "Neznámý"
 
-#: mutt_ssl.c:591 mutt_ssl_gnutls.c:598
+#: mutt_ssl.c:609 mutt_ssl_gnutls.c:598
 #, c-format
 msgid "[unable to calculate]"
 msgstr "[nelze spočítat]"
 
-#: mutt_ssl.c:609 mutt_ssl_gnutls.c:621
+#: mutt_ssl.c:627 mutt_ssl_gnutls.c:621
 msgid "[invalid date]"
 msgstr "[chybné datum]"
 
-#: mutt_ssl.c:739
+#: mutt_ssl.c:701
 msgid "Server certificate is not yet valid"
 msgstr "Certifikát serveru není zatím platný"
 
-#: mutt_ssl.c:746
+#: mutt_ssl.c:708
 msgid "Server certificate has expired"
 msgstr "Platnost certifikátu serveru vypršela."
 
-#: mutt_ssl.c:868
+#: mutt_ssl.c:830
 msgid "cannot get certificate subject"
 msgstr "nelze zjistit, na čí jméno byl certifikát vydán"
 
-#: mutt_ssl.c:878 mutt_ssl.c:887
+#: mutt_ssl.c:840 mutt_ssl.c:849
 msgid "cannot get certificate common name"
 msgstr "nelze získat obecné jméno (CN) certifikátu"
 
-#: mutt_ssl.c:901
+#: mutt_ssl.c:863
 #, c-format
 msgid "certificate owner does not match hostname %s"
 msgstr "vlastník certifikátu není totožný s názvem stroje %s"
 
-#: mutt_ssl.c:942
+#: mutt_ssl.c:928
 #, c-format
 msgid "Certificate host check failed: %s"
 msgstr "Kontrola certifikátu stroje selhala: %s"
 
-#: mutt_ssl.c:1020 mutt_ssl_gnutls.c:860
+#: mutt_ssl.c:986 mutt_ssl_gnutls.c:860
 msgid "This certificate belongs to:"
 msgstr "Tento certifikát patří:"
 
-#: mutt_ssl.c:1033 mutt_ssl_gnutls.c:899
+#: mutt_ssl.c:994 mutt_ssl_gnutls.c:899
 msgid "This certificate was issued by:"
 msgstr "Tento certifikát vydal:"
 
-#: mutt_ssl.c:1044 mutt_ssl_gnutls.c:938
+#: mutt_ssl.c:1002 mutt_ssl_gnutls.c:938
 #, c-format
 msgid "This certificate is valid"
 msgstr "Tento certifikát platí:"
 
-#: mutt_ssl.c:1045 mutt_ssl_gnutls.c:941
+#: mutt_ssl.c:1003 mutt_ssl_gnutls.c:941
 #, c-format
 msgid "   from %s"
 msgstr "   od %s"
 
-#: mutt_ssl.c:1047 mutt_ssl_gnutls.c:945
+#: mutt_ssl.c:1005 mutt_ssl_gnutls.c:945
 #, c-format
 msgid "     to %s"
 msgstr "   do %s"
 
-#: mutt_ssl.c:1053
+#: mutt_ssl.c:1011
 #, c-format
 msgid "Fingerprint: %s"
 msgstr "Otisk klíče: %s"
 
-#: mutt_ssl.c:1056 mutt_ssl_gnutls.c:982
+#: mutt_ssl.c:1014 mutt_ssl_gnutls.c:982
 #, c-format
 msgid "SSL Certificate check (certificate %d of %d in chain)"
 msgstr "Kontrola SSL certifikátu (certifikát %d z %d v řetězu)"
 
-#: mutt_ssl.c:1064 mutt_ssl_gnutls.c:991
+#: mutt_ssl.c:1022 mutt_ssl_gnutls.c:991
 msgid "(r)eject, accept (o)nce, (a)ccept always"
 msgstr "(o)dmítnout, akceptovat pouze (t)eď, akceptovat (v)ždy "
 
-#: mutt_ssl.c:1065 mutt_ssl_gnutls.c:992
+#: mutt_ssl.c:1023 mutt_ssl_gnutls.c:992
 msgid "roa"
 msgstr "otv"
 
-#: mutt_ssl.c:1069 mutt_ssl_gnutls.c:996
+#: mutt_ssl.c:1027 mutt_ssl_gnutls.c:996
 msgid "(r)eject, accept (o)nce"
 msgstr "(o)dmítnout, akceptovat pouze (t)eď "
 
-#: mutt_ssl.c:1070 mutt_ssl_gnutls.c:997
+#: mutt_ssl.c:1028 mutt_ssl_gnutls.c:997
 msgid "ro"
 msgstr "ot"
 
-#: mutt_ssl.c:1101 mutt_ssl_gnutls.c:1046
+#: mutt_ssl.c:1059 mutt_ssl_gnutls.c:1046
 msgid "Warning: Couldn't save certificate"
 msgstr "Varování: Certifikát nelze uložit"
 
-#: mutt_ssl.c:1106 mutt_ssl_gnutls.c:1051
+#: mutt_ssl.c:1064 mutt_ssl_gnutls.c:1051
 msgid "Certificate saved"
 msgstr "Certifikát uložen"
 
@@ -3306,6 +3399,10 @@ msgstr "POZOR: Jméno serveru se neshoduje s jménem v certifikátu"
 msgid "WARNING: Signer of server certificate is not a CA"
 msgstr "POZOR: Certifikát serveru nebyl podepsán certifikační autoritou"
 
+#: mutt_ssl_gnutls.c:1079 mutt_ssl_gnutls.c:1114 mutt_ssl_gnutls.c:1124
+msgid "Unable to get certificate from peer"
+msgstr "Certifikát od serveru nelze získat"
+
 #: mutt_ssl_gnutls.c:1085
 #, c-format
 msgid "Certificate verification error (%s)"
@@ -3315,17 +3412,17 @@ msgstr "Chyba při ověřování certifikátu (%s)"
 msgid "Certificate is not X.509"
 msgstr "Certifikát není typu X.509"
 
-#: mutt_tunnel.c:72
+#: mutt_tunnel.c:73
 #, c-format
 msgid "Connecting with \"%s\"..."
 msgstr "Připojuji se s „%s“…"
 
-#: mutt_tunnel.c:139
+#: mutt_tunnel.c:149
 #, c-format
 msgid "Tunnel to %s returned error %d (%s)"
 msgstr "Tunel do %s vrátil chybu %d (%s)"
 
-#: mutt_tunnel.c:157 mutt_tunnel.c:173
+#: mutt_tunnel.c:167 mutt_tunnel.c:183
 #, c-format
 msgid "Tunnel error talking to %s: %s"
 msgstr "Chyba při komunikaci tunelem s %s (%s)"
@@ -3333,177 +3430,172 @@ msgstr "Chyba při komunikaci tunelem s %s (%s)"
 #. L10N:
 #. Means "The path you specified as the destination file is a directory."
 #. See the msgid "Save to file: " (alias.c, recvattach.c)
-#: muttlib.c:999
+#: muttlib.c:1002
 msgid "File is a directory, save under it? [(y)es, (n)o, (a)ll]"
 msgstr "Soubor je adresářem. Uložit do něj? [(a)no, (n)e, (v)šechny]"
 
-#: muttlib.c:999
+#: muttlib.c:1002
 msgid "yna"
 msgstr "anv"
 
 #. L10N:
 #. Means "The path you specified as the destination file is a directory."
 #. See the msgid "Save to file: " (alias.c, recvattach.c)
-#: muttlib.c:1018
+#: muttlib.c:1021
 msgid "File is a directory, save under it?"
 msgstr "Soubor je adresářem. Uložit do něj?"
 
-#: muttlib.c:1022
+#: muttlib.c:1025
 msgid "File under directory: "
 msgstr "Zadejte jméno souboru: "
 
-#: muttlib.c:1031
+#: muttlib.c:1034
 msgid "File exists, (o)verwrite, (a)ppend, or (c)ancel?"
 msgstr "Soubor již existuje: (p)řepsat, př(i)pojit či (z)rušit?"
 
-#: muttlib.c:1031
+#: muttlib.c:1034
 msgid "oac"
 msgstr "piz"
 
-#: muttlib.c:1554
+#: muttlib.c:1649
 msgid "Can't save message to POP mailbox."
 msgstr "Do POP schránek nelze ukládat zprávy."
 
-#: muttlib.c:1563
+#: muttlib.c:1658
 #, c-format
 msgid "Append messages to %s?"
 msgstr "Připojit zprávy do %s?"
 
-#: muttlib.c:1575
+#: muttlib.c:1670
 #, c-format
 msgid "%s is not a mailbox!"
 msgstr "%s není schránkou!"
 
-#: mx.c:143
+#: mx.c:151
 #, c-format
 msgid "Lock count exceeded, remove lock for %s?"
 msgstr "Zámek stále existuje, odemknout %s?"
 
-#: mx.c:155
+#: mx.c:163
 #, c-format
 msgid "Can't dotlock %s.\n"
 msgstr "%s nelze zamknout.\n"
 
-#: mx.c:211
+#: mx.c:219
 msgid "Timeout exceeded while attempting fcntl lock!"
 msgstr "Vypršel čas pro pokus o zamknutí pomocí funkce fcntl!"
 
-#: mx.c:217
+#: mx.c:225
 #, c-format
 msgid "Waiting for fcntl lock... %d"
 msgstr "Čekám na zamknutí pomocí funkce fcntl… %d"
 
-#: mx.c:244
+#: mx.c:252
 msgid "Timeout exceeded while attempting flock lock!"
 msgstr "Čas pro zamknutí pomocí funkce flock vypršel!"
 
-#: mx.c:251
+#: mx.c:259
 #, c-format
 msgid "Waiting for flock attempt... %d"
 msgstr "Čekám na pokus o zamknutí pomocí funkce flock… %d"
 
-#: mx.c:707
-#, c-format
-msgid "Could not synchronize mailbox %s!"
-msgstr "Schránku %s nelze synchronizovat!"
-
-#: mx.c:742
+#: mx.c:739
 msgid "message(s) not deleted"
 msgstr "zprávy nesmazány"
 
-#: mx.c:775
+#: mx.c:772
 msgid "Can't open trash folder"
 msgstr "Složku koš nelze otevřít"
 
-#: mx.c:844
+#: mx.c:830
 #, c-format
 msgid "Move read messages to %s?"
 msgstr "Přesunout přečtené zprávy do %s?"
 
-#: mx.c:860 mx.c:1146
+#: mx.c:846 mx.c:1133
 #, c-format
 msgid "Purge %d deleted message?"
 msgstr "Zahodit smazané zprávy (%d)?"
 
-#: mx.c:860 mx.c:1146
+#: mx.c:846 mx.c:1133
 #, c-format
 msgid "Purge %d deleted messages?"
 msgstr "Zahodit smazané zprávy (%d)?"
 
-#: mx.c:881
+#: mx.c:867
 #, c-format
 msgid "Moving read messages to %s..."
 msgstr "Přesunuji přečtené zprávy do %s…"
 
-#: mx.c:942 mx.c:1137
+#: mx.c:928 mx.c:1124
 msgid "Mailbox is unchanged."
 msgstr "Obsah schránky nebyl změněn."
 
-#: mx.c:995
+#: mx.c:981
 #, c-format
 msgid "%d kept, %d moved, %d deleted."
 msgstr "ponecháno: %d, přesunuto: %d, smazáno: %d"
 
-#: mx.c:998 mx.c:1198
+#: mx.c:984 mx.c:1185
 #, c-format
 msgid "%d kept, %d deleted."
 msgstr "ponecháno: %d, smazáno: %d"
 
-#: mx.c:1121
+#: mx.c:1108
 #, c-format
 msgid " Press '%s' to toggle write"
 msgstr " Stiskněte „%s“ pro zapnutí zápisu"
 
-#: mx.c:1123
+#: mx.c:1110
 msgid "Use 'toggle-write' to re-enable write!"
 msgstr "Použijte 'toggle-write' pro zapnutí zápisu!"
 
-#: mx.c:1125
+#: mx.c:1112
 #, c-format
 msgid "Mailbox is marked unwritable. %s"
 msgstr "Schránka má vypnut zápis. %s"
 
-#: mx.c:1192
+#: mx.c:1179
 msgid "Mailbox checkpointed."
 msgstr "Do schránky byla vložena kontrolní značka."
 
-#: mx.c:1367
+#: mx.c:1354
 msgid "Integer overflow -- can't allocate memory."
 msgstr "Přetečení celočíselné proměnné – nelze alokovat paměť."
 
-#: pager.c:1554
+#: pager.c:1561
 msgid "PrevPg"
 msgstr "Přstr"
 
-#: pager.c:1555
+#: pager.c:1562
 msgid "NextPg"
 msgstr "Dlstr"
 
-#: pager.c:1559
+#: pager.c:1566
 msgid "View Attachm."
 msgstr "Přílohy"
 
-#: pager.c:1562
+#: pager.c:1569
 msgid "Next"
 msgstr "Další"
 
-#: pager.c:2013 pager.c:2044 pager.c:2076 pager.c:2352
+#: pager.c:2020 pager.c:2051 pager.c:2083 pager.c:2359
 msgid "Bottom of message is shown."
 msgstr "Konec zprávy je zobrazen."
 
-#: pager.c:2029 pager.c:2051 pager.c:2058 pager.c:2065
+#: pager.c:2036 pager.c:2058 pager.c:2065 pager.c:2072
 msgid "Top of message is shown."
 msgstr "Začátek zprávy je zobrazen."
 
-#: pager.c:2290
+#: pager.c:2297
 msgid "Help is currently being shown."
 msgstr "Nápověda je právě zobrazena."
 
-#: pager.c:2319
+#: pager.c:2326
 msgid "No more quoted text."
 msgstr "Žádný další citovaný text."
 
-#: pager.c:2332
+#: pager.c:2339
 msgid "No more unquoted text after quoted text."
 msgstr "Za citovaným textem již nenásleduje žádný běžný text."
 
@@ -3536,75 +3628,75 @@ msgstr "Měsíc %s není správný."
 msgid "Invalid relative date: %s"
 msgstr "Chybné relativní datum: %s"
 
-#: pattern.c:813 pattern.c:965
+#: pattern.c:818 pattern.c:977
 #, c-format
 msgid "error in pattern at: %s"
 msgstr "chyba ve vzoru na: %s"
 
-#: pattern.c:839
+#: pattern.c:845
 #, c-format
 msgid "missing pattern: %s"
 msgstr "chybí vzor: %s"
 
-#: pattern.c:849
+#: pattern.c:855
 #, c-format
 msgid "mismatched brackets: %s"
 msgstr "neshodují se závorky: %s"
 
-#: pattern.c:905
+#: pattern.c:915
 #, c-format
 msgid "%c: invalid pattern modifier"
 msgstr "%c: nesprávný modifikátor vzoru"
 
-#: pattern.c:911
+#: pattern.c:921
 #, c-format
 msgid "%c: not supported in this mode"
 msgstr "V tomto režimu není %c podporováno."
 
-#: pattern.c:924
+#: pattern.c:934
 #, c-format
 msgid "missing parameter"
 msgstr "chybí parametr"
 
-#: pattern.c:940
+#: pattern.c:950
 #, c-format
 msgid "mismatched parenthesis: %s"
 msgstr "neshodují se závorky: %s"
 
-#: pattern.c:972
+#: pattern.c:984
 msgid "empty pattern"
 msgstr "prázdný vzor"
 
-#: pattern.c:1229
+#: pattern.c:1310
 #, c-format
 msgid "error: unknown op %d (report this error)."
 msgstr "chyba: neznámý operand %d (ohlaste tuto chybu)."
 
-#: pattern.c:1312 pattern.c:1454
+#: pattern.c:1393 pattern.c:1535
 msgid "Compiling search pattern..."
 msgstr "Překládám vzor k vyhledání…"
 
-#: pattern.c:1333
+#: pattern.c:1414
 msgid "Executing command on matching messages..."
 msgstr "Spouštím příkaz pro shodující se zprávy… "
 
-#: pattern.c:1402
+#: pattern.c:1483
 msgid "No messages matched criteria."
 msgstr "Žádná ze zpráv nesplňuje daná kritéria."
 
-#: pattern.c:1484
+#: pattern.c:1565
 msgid "Searching..."
 msgstr "Hledám…"
 
-#: pattern.c:1497
+#: pattern.c:1578
 msgid "Search hit bottom without finding match"
 msgstr "Při vyhledávání bylo dosaženo konce bez nalezení shody."
 
-#: pattern.c:1508
+#: pattern.c:1589
 msgid "Search hit top without finding match"
 msgstr "Při vyhledávání bylo dosaženo začátku bez nalezení shody."
 
-#: pattern.c:1540
+#: pattern.c:1621
 msgid "Search interrupted."
 msgstr "Hledání bylo přerušeno."
 
@@ -3778,7 +3870,7 @@ msgstr "Server nepodporuje příkaz UIDL."
 msgid "%d messages have been lost. Try reopening the mailbox."
 msgstr "%d zpráv bylo ztraceno. Zkuste schránku znovu otevřít."
 
-#: pop.c:411 pop.c:807
+#: pop.c:411 pop.c:809
 #, c-format
 msgid "%s is an invalid POP path"
 msgstr "%s není platná POP cesta"
@@ -3791,61 +3883,61 @@ msgstr "Stahuji seznam zpráv…"
 msgid "Can't write message to temporary file!"
 msgstr "Nelze zapsat zprávu do dočasného souboru!"
 
-#: pop.c:684
+#: pop.c:686
 msgid "Marking messages deleted..."
 msgstr "Označuji zprávy ke smazání…"
 
-#: pop.c:762 pop.c:827
+#: pop.c:764 pop.c:829
 msgid "Checking for new messages..."
 msgstr "Hledám nové zprávy…"
 
-#: pop.c:791
+#: pop.c:793
 msgid "POP host is not defined."
 msgstr "POP server není definován."
 
-#: pop.c:855
+#: pop.c:857
 msgid "No new mail in POP mailbox."
 msgstr "Ve schránce na POP serveru nejsou nové zprávy."
 
-#: pop.c:862
+#: pop.c:864
 msgid "Delete messages from server?"
 msgstr "Odstranit zprávy ze serveru?"
 
-#: pop.c:864
+#: pop.c:866
 #, c-format
 msgid "Reading new messages (%d bytes)..."
 msgstr "Načítám nové zprávy (počet bajtů: %d)…"
 
-#: pop.c:906
+#: pop.c:908
 msgid "Error while writing mailbox!"
 msgstr "Chyba při zápisu do schránky!"
 
-#: pop.c:910
+#: pop.c:912
 #, c-format
 msgid "%s [%d of %d messages read]"
 msgstr "%s [počet přečtených zpráv: %d/%d]"
 
-#: pop.c:933 pop_lib.c:378
+#: pop.c:935 pop_lib.c:378
 msgid "Server closed connection!"
 msgstr "Server uzavřel spojení!"
 
-#: pop_auth.c:79
+#: pop_auth.c:83
 msgid "Authenticating (SASL)..."
 msgstr "Ověřuji (SASL)…"
 
-#: pop_auth.c:203
+#: pop_auth.c:215
 msgid "POP timestamp is invalid!"
 msgstr "Časové razítko POP protokolu není platné!"
 
-#: pop_auth.c:208
+#: pop_auth.c:220
 msgid "Authenticating (APOP)..."
 msgstr "Ověřuji (APOP)…"
 
-#: pop_auth.c:231
+#: pop_auth.c:243
 msgid "APOP authentication failed."
 msgstr "APOP ověření se nezdařilo."
 
-#: pop_auth.c:266
+#: pop_auth.c:278
 #, c-format
 msgid "Command USER is not supported by server."
 msgstr "Server nepodporuje příkaz USER."
@@ -3942,70 +4034,70 @@ msgstr "Poslat rourou"
 msgid "Print"
 msgstr "Tisk"
 
-#: recvattach.c:485
+#: recvattach.c:501
 msgid "Saving..."
 msgstr "Ukládám…"
 
-#: recvattach.c:488 recvattach.c:579
+#: recvattach.c:504 recvattach.c:595
 msgid "Attachment saved."
 msgstr "Příloha uložena."
 
-#: recvattach.c:591
+#: recvattach.c:607
 #, c-format
 msgid "WARNING!  You are about to overwrite %s, continue?"
 msgstr "VAROVÁNÍ! Takto přepíšete %s. Pokračovat?"
 
-#: recvattach.c:609
+#: recvattach.c:625
 msgid "Attachment filtered."
 msgstr "Příloha byla filtrována."
 
-#: recvattach.c:676
+#: recvattach.c:694
 msgid "Filter through: "
 msgstr "Filtrovat přes: "
 
-#: recvattach.c:676
+#: recvattach.c:694
 msgid "Pipe to: "
 msgstr "Poslat rourou do: "
 
-#: recvattach.c:711
+#: recvattach.c:729
 #, c-format
 msgid "I don't know how to print %s attachments!"
 msgstr "Neví se, jak vytisknout přílohy typu %s!"
 
-#: recvattach.c:776
+#: recvattach.c:794
 msgid "Print tagged attachment(s)?"
 msgstr "Vytisknout označené přílohy?"
 
-#: recvattach.c:776
+#: recvattach.c:794
 msgid "Print attachment?"
 msgstr "Vytisknout přílohu?"
 
-#: recvattach.c:1010
+#: recvattach.c:1028
 msgid "Can't decrypt encrypted message!"
 msgstr "Nemohu dešifrovat zašifrovanou zprávu!"
 
-#: recvattach.c:1022
+#: recvattach.c:1040
 msgid "Attachments"
 msgstr "Přílohy"
 
-#: recvattach.c:1058
+#: recvattach.c:1076
 msgid "There are no subparts to show!"
 msgstr "Nejsou žádné podčásti pro zobrazení!"
 
-#: recvattach.c:1119
+#: recvattach.c:1137
 msgid "Can't delete attachment from POP server."
 msgstr "Z POP serveru nelze mazat přílohy."
 
-#: recvattach.c:1127
+#: recvattach.c:1145
 msgid "Deletion of attachments from encrypted messages is unsupported."
 msgstr "Mazání příloh ze zašifrovaných zpráv není podporováno."
 
-#: recvattach.c:1133
+#: recvattach.c:1151
 msgid ""
 "Deletion of attachments from signed messages may invalidate the signature."
 msgstr "Mazání příloh z podepsaných zpráv může zneplatnit podpis."
 
-#: recvattach.c:1150 recvattach.c:1167
+#: recvattach.c:1168 recvattach.c:1185
 msgid "Only deletion of multipart attachments is supported."
 msgstr "Podporováno je pouze mazání příloh o více částech."
 
@@ -4047,7 +4139,7 @@ msgstr "Soubor %s nelze vytvořit."
 msgid "Can't find any tagged messages."
 msgstr "Žádná zpráva není označena."
 
-#: recvcmd.c:773 send.c:723
+#: recvcmd.c:773 send.c:724
 msgid "No mailing lists found!"
 msgstr "Žádné poštovní konference nebyly nalezeny!"
 
@@ -4158,93 +4250,93 @@ msgstr "Věc není specifikována, zrušeno."
 #. L10N:
 #. Asks whether the user respects the reply-to header.
 #. If she says no, mutt will reply to the from header's address instead.
-#: send.c:486
+#: send.c:487
 #, c-format
 msgid "Reply to %s%s?"
 msgstr "Odepsat %s%s?"
 
-#: send.c:520
+#: send.c:521
 #, c-format
 msgid "Follow-up to %s%s?"
 msgstr "Odepsat %s%s?"
 
-#: send.c:698
+#: send.c:699
 msgid "No tagged messages are visible!"
 msgstr "Žádná označená zpráva není viditelná!"
 
-#: send.c:749
+#: send.c:750
 msgid "Include message in reply?"
 msgstr "Vložit zprávu do odpovědi?"
 
-#: send.c:754
+#: send.c:755
 msgid "Including quoted message..."
 msgstr "Vkládám zakomentovanou zprávu…"
 
-#: send.c:764
+#: send.c:765
 msgid "Could not include all requested messages!"
 msgstr "Všechny požadované zprávy nelze vložit!"
 
-#: send.c:778
+#: send.c:779
 msgid "Forward as attachment?"
 msgstr "Přeposlat jako přílohu?"
 
-#: send.c:782
+#: send.c:783
 msgid "Preparing forwarded message..."
 msgstr "Připravuji přeposílanou zprávu…"
 
-#: send.c:1159
+#: send.c:1160
 msgid "Recall postponed message?"
 msgstr "Vrátit se k odloženým zprávám?"
 
-#: send.c:1409
+#: send.c:1410
 msgid "Edit forwarded message?"
 msgstr "Upravit přeposílanou zprávu?"
 
-#: send.c:1458
+#: send.c:1459
 msgid "Abort unmodified message?"
 msgstr "Zahodit nezměněnou zprávu?"
 
-#: send.c:1460
+#: send.c:1461
 msgid "Aborted unmodified message."
 msgstr "Nezměněná zpráva byla zahozena."
 
-#: send.c:1641
+#: send.c:1642
 msgid "Message postponed."
 msgstr "Zpráva byla odložena."
 
-#: send.c:1652
+#: send.c:1653
 msgid "No recipients are specified!"
 msgstr "Nejsou zadáni příjemci!"
 
-#: send.c:1657
+#: send.c:1658
 msgid "No recipients were specified."
 msgstr "Nebyli zadání příjemci."
 
-#: send.c:1673
+#: send.c:1674
 msgid "No subject, abort sending?"
 msgstr "Žádná věc, zrušit odeslání?"
 
-#: send.c:1677
+#: send.c:1678
 msgid "No subject specified."
 msgstr "Věc nebyla zadána."
 
-#: send.c:1739 smtp.c:188
+#: send.c:1740 smtp.c:188
 msgid "Sending message..."
 msgstr "Posílám zprávu…"
 
-#: send.c:1772
+#: send.c:1773
 msgid "Save attachments in Fcc?"
 msgstr "Uložit do Fcc přílohy?"
 
-#: send.c:1882
+#: send.c:1883
 msgid "Could not send the message."
 msgstr "Zprávu nelze odeslat."
 
-#: send.c:1887
+#: send.c:1888
 msgid "Mail sent."
 msgstr "Zpráva odeslána."
 
-#: send.c:1887
+#: send.c:1888
 msgid "Sending in background."
 msgstr "Zasílám na pozadí."
 
@@ -4267,20 +4359,20 @@ msgstr "%s není řádným souborem."
 msgid "Could not open %s"
 msgstr "%s nelze otevřít"
 
-#: sendlib.c:2360
+#: sendlib.c:2362
 msgid "$sendmail must be set in order to send mail."
 msgstr "Aby bylo možné odesílat e-maily, je třeba nastavit $sendmail."
 
-#: sendlib.c:2431
+#: sendlib.c:2454
 #, c-format
 msgid "Error sending message, child exited %d (%s)."
 msgstr "Chyba při zasílání zprávy, potomek ukončen %d (%s)."
 
-#: sendlib.c:2437
+#: sendlib.c:2460
 msgid "Output of the delivery process"
 msgstr "Výstup doručovacího programu"
 
-#: sendlib.c:2611
+#: sendlib.c:2635
 #, c-format
 msgid "Bad IDN %s while preparing resent-from."
 msgstr "Chybné IDN %s při generování „resent-from“ (odesláno z)."
@@ -4353,6 +4445,10 @@ msgstr "Nebyl nalezen žádný (platný) certifikát pro %s."
 #: smime.c:962 smime.c:992 smime.c:1059 smime.c:1103 smime.c:1168 smime.c:1243
 msgid "Error: unable to create OpenSSL subprocess!"
 msgstr "Chyba: nelze spustit OpenSSL jako podproces!"
+
+#: smime.c:1231
+msgid "Label for certificate: "
+msgstr "Název certifikátu: "
 
 #: smime.c:1321
 msgid "no certfile"
@@ -4532,25 +4628,29 @@ msgstr "%s autentizace se nezdařila, zkouším další metodu"
 msgid "SASL authentication failed"
 msgstr "SASL autentizace se nezdařila"
 
-#: sort.c:265
+#: sort.c:297
 msgid "Sorting mailbox..."
 msgstr "Řadím schránku…"
 
-#: sort.c:302
+#: sort.c:334
 msgid "Could not find sorting function! [report this bug]"
 msgstr "Řadící funkci nelze nalézt! [ohlaste tuto chybu]"
 
-#: status.c:105
+#: status.c:111
 msgid "(no mailbox)"
 msgstr "(žádná schránka)"
-
-#: thread.c:1095
-msgid "Parent message is not visible in this limited view."
-msgstr "Rodičovská zpráva není v omezeném zobrazení viditelná.."
 
 #: thread.c:1101
 msgid "Parent message is not available."
 msgstr "Rodičovská zpráva není dostupná."
+
+#: thread.c:1107
+msgid "Root message is not visible in this limited view."
+msgstr "Kořenová zpráva není v omezeném zobrazení viditelná."
+
+#: thread.c:1109
+msgid "Parent message is not visible in this limited view."
+msgstr "Rodičovská zpráva není v omezeném zobrazení viditelná."
 
 #: ../keymap_alldefs.h:5
 msgid "null operation"
@@ -5383,6 +5483,9 @@ msgstr "extrahovat všechny podporované veřejné klíče"
 #: ../keymap_alldefs.h:212
 msgid "show S/MIME options"
 msgstr "zobrazit menu S/MIME"
+
+#~ msgid "Could not synchronize mailbox %s!"
+#~ msgstr "Schránku %s nelze synchronizovat!"
 
 #~ msgid "Warning: message has no From: header"
 #~ msgstr "Pozor: zpráva nemá hlavičku From:"
