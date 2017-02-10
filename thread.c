@@ -762,7 +762,7 @@ void mutt_sort_threads (CONTEXT *ctx, int init)
     init = 1;
 
   if (init)
-    ctx->thread_hash = hash_create (ctx->msgcount * 2, 0);
+    ctx->thread_hash = hash_create (ctx->msgcount * 2, MUTT_HASH_ALLOW_DUPS);
 
   /* we want a quick way to see if things are actually attached to the top of the
    * thread tree or if they're just dangling, so we attach everything to a top
@@ -834,7 +834,7 @@ void mutt_sort_threads (CONTEXT *ctx, int init)
 	cur->thread = thread;
 	hash_insert (ctx->thread_hash,
 		     cur->env->message_id ? cur->env->message_id : "",
-		     thread, 1);
+		     thread);
 
 	if (new)
 	{
@@ -921,7 +921,7 @@ void mutt_sort_threads (CONTEXT *ctx, int init)
       if ((new = hash_find (ctx->thread_hash, ref->data)) == NULL)
       {
 	new = safe_calloc (1, sizeof (THREAD));
-	hash_insert (ctx->thread_hash, ref->data, new, 1);
+	hash_insert (ctx->thread_hash, ref->data, new);
       }
       else
       {
@@ -1337,7 +1337,7 @@ HASH *mutt_make_id_hash (CONTEXT *ctx)
   {
     hdr = ctx->hdrs[i];
     if (hdr->env->message_id)
-      hash_insert (hash, hdr->env->message_id, hdr, 0);
+      hash_insert (hash, hdr->env->message_id, hdr);
   }
 
   return hash;
@@ -1349,13 +1349,13 @@ HASH *mutt_make_subj_hash (CONTEXT *ctx)
   HEADER *hdr;
   HASH *hash;
 
-  hash = hash_create (ctx->msgcount * 2, 0);
+  hash = hash_create (ctx->msgcount * 2, MUTT_HASH_ALLOW_DUPS);
 
   for (i = 0; i < ctx->msgcount; i++)
   {
     hdr = ctx->hdrs[i];
     if (hdr->env->real_subj)
-      hash_insert (hash, hdr->env->real_subj, hdr, 1);
+      hash_insert (hash, hdr->env->real_subj, hdr);
   }
 
   return hash;
