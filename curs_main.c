@@ -467,7 +467,7 @@ void update_index (MUTTMENU *menu, CONTEXT *ctx, int check,
 
       if (mutt_pattern_exec (ctx->limit_pattern,
 			     MUTT_MATCH_FULL_ADDRESS,
-			     ctx, ctx->hdrs[j]))
+			     ctx, ctx->hdrs[j], NULL))
       {
 	assert (ctx->vcount < ctx->msgcount);
 	ctx->hdrs[j]->virtual = ctx->vcount;
@@ -754,9 +754,6 @@ static int main_change_folder(MUTTMENU *menu, int op, char *buf, size_t bufsz,
     FREE (&Context);
   }
 
-  if (Labels)
-    hash_destroy(&Labels, NULL);
-
   mutt_sleep (0);
 
   /* Set CurrentMenu to MENU_MAIN before executing any folder
@@ -771,8 +768,6 @@ static int main_change_folder(MUTTMENU *menu, int op, char *buf, size_t bufsz,
 		(option (OPTREADONLY) || op == OP_MAIN_CHANGE_FOLDER_READONLY) ?
 		MUTT_READONLY : 0, NULL)) != NULL)
   {
-    Labels = hash_create(131, 0);
-    mutt_scan_labels(Context);
     menu->current = ci_first_message ();
   }
   else
@@ -2844,9 +2839,14 @@ int mutt_index_menu (void)
 	if (rc > 0) {
 	  Context->changed = 1;
 	  menu->redraw = REDRAW_FULL;
-	  mutt_message ("%d label%s changed.", rc, rc == 1 ? "" : "s");
+          /* L10N: This is displayed when the x-label on one or more
+           * messages is edited. */
+	  mutt_message (_("%d labels changed."), rc);
 	}
 	else {
+          /* L10N: This is displayed when editing an x-label, but no messages
+           * were updated.  Possibly due to canceling at the prompt or if the new
+           * label is the same as the old label. */
 	  mutt_message (_("No labels changed."));
 	}
 	break;
@@ -3241,15 +3241,19 @@ int mutt_index_menu (void)
 void mutt_set_header_color (CONTEXT *ctx, HEADER *curhdr)
 {
   COLOR_LINE *color;
+  pattern_cache_t cache;
 
   if (!curhdr)
     return;
 
+  memset (&cache, 0, sizeof (cache));
+
   for (color = ColorIndexList; color; color = color->next)
-   if (mutt_pattern_exec (color->color_pattern, MUTT_MATCH_FULL_ADDRESS, ctx, curhdr))
-   {
+    if (mutt_pattern_exec (color->color_pattern, MUTT_MATCH_FULL_ADDRESS, ctx, curhdr,
+                           &cache))
+    {
       curhdr->pair = color->pair;
       return;
-   }
+    }
   curhdr->pair = ColorDefs[MT_COLOR_NORMAL];
 }

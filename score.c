@@ -129,11 +129,13 @@ int mutt_parse_score (BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err)
 void mutt_score_message (CONTEXT *ctx, HEADER *hdr, int upd_ctx)
 {
   SCORE *tmp;
+  pattern_cache_t cache;
 
+  memset (&cache, 0, sizeof (cache));
   hdr->score = 0; /* in case of re-scoring */
   for (tmp = Score; tmp; tmp = tmp->next)
   {
-    if (mutt_pattern_exec (tmp->pat, 0, NULL, hdr) > 0)
+    if (mutt_pattern_exec (tmp->pat, 0, NULL, hdr, &cache) > 0)
     {
       if (tmp->exact || tmp->val == 9999 || tmp->val == -9999)
       {

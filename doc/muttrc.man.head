@@ -233,19 +233,22 @@ This command binds the given \fIsequence\fP of keys to the given
 specify multiple maps, put only a comma between the maps.
 .PP
 .nf
-\fBcolor\fP \fIobject\fP \fIforeground\fP \fIbackground\fP [ \fI regexp\fP ]
-\fBcolor\fP index \fIforeground\fP \fIbackground\fP [ \fI pattern\fP ]
+\fBcolor\fP \fIobject\fP \fIforeground\fP \fIbackground\fP [ \fIregexp\fP ]
+\fBcolor\fP index \fIforeground\fP \fIbackground\fP [ \fIpattern\fP ]
 \fBuncolor\fP index \fIpattern\fP [ \fIpattern\fP ... ]
 .fi
 .IP
 If your terminal supports color, these commands can be used to
 assign \fIforeground\fP/\fIbackground\fP combinations to certain
 objects.  Valid objects are:
-.BR attachment ", " body ", " bold ", " header ", "
+.BR attachment ", " body ", " bold ", " error ", " header ", "
 .BR hdrdefault ", " index ", " indicator ", " markers ", "
-.BR message ", " normal ", " quoted ", " quoted\fIN\fP ", "
+.BR message ", " normal ", " prompt ", " quoted ", " quoted\fIN\fP ", "
 .BR search ", " signature ", " status ", " tilde ", " tree ", "
-.BR underline ", " prompt .
+.BR underline .
+If the sidebar is enabled the following objects are also valid:
+.BR sidebar_divider ", " sidebar_flagged ", " sidebar_highlight ", "
+.BR sidebar_indicator ", " sidebar_new ", " sidebar_spoolfile .
 The
 .BR body " and " header
 objects allow you to restrict the colorization to a regular

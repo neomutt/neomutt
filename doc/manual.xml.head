@@ -3412,7 +3412,8 @@ patterns.
 <listitem><para>quoted (text matching <link linkend="quote-regexp">$quote_regexp</link> in the body of a message)</para></listitem>
 <listitem><para>quoted1, quoted2, ..., quoted<emphasis>N</emphasis> (higher levels of quoting)</para></listitem>
 <listitem><para>search (highlighting of words in the pager)</para></listitem>
-<listitem><para>signature</para></listitem><listitem><para>status (mode lines used to display info about the mailbox or message)</para></listitem>
+<listitem><para>signature</para></listitem>
+<listitem><para>status (mode lines used to display info about the mailbox or message)</para></listitem>
 <listitem><para>tilde (the <quote>~</quote> used to pad blank lines in the pager)</para></listitem>
 <listitem><para>tree (thread tree drawn in the message index and attachment menu)</para></listitem>
 <listitem><para>underline (highlighting underlined patterns in the body of messages)</para></listitem>
@@ -6985,6 +6986,15 @@ field.  When set to <emphasis>yes</emphasis>, the
 </para>
 
 <para>
+You can change or delete the <quote>X-Label:</quote> field within
+Mutt using the <quote>edit-label</quote> command, bound to the
+<quote>y</quote> key by default.  This works for tagged messages, too.
+While in the edit-label function, pressing the &lt;complete&gt;
+binding (TAB, by default) will perform completion against all labels
+currently in use.
+</para>
+
+<para>
 Lastly, Mutt has the ability to <link linkend="sort">sort</link> the
 mailbox into <link linkend="threads">threads</link>.  A thread is a
 group of messages which all relate to the same subject.  This is usually
@@ -7108,6 +7118,78 @@ other keyword headers from proxmail or other mail filters.  This is
 a useful trick for categorizing messages en masse as they are delivered
 to your inbox, and it is fully compatible with the new keywords code.
 </para>
+
+</sect1>
+
+<sect1 id="display-munging">
+<title>Display Munging</title>
+
+<para>
+Working within the confines of a console or terminal window, it is
+often useful to be able to modify certain information elements in a
+non-destructive way -- to change how they display, without changing
+the stored value of the information itself.  This is especially so of
+message subjects, which may often be polluted with extraneous metadata
+that either is reproduced elsewhere, or is of secondary interest.
+</para>
+
+<cmdsynopsis>
+<command>subjectrx</command>
+<arg choice="plain">
+<replaceable class="parameter">pattern</replaceable>
+</arg>
+<arg choice="plain">
+<replaceable class="parameter">replacement</replaceable>
+</arg>
+
+<command>unsubjectrx</command>
+<group choice="req">
+<arg choice="plain">
+<replaceable class="parameter">*</replaceable>
+</arg>
+<arg choice="plain">
+<replaceable class="parameter">pattern</replaceable>
+</arg>
+</group>
+</cmdsynopsis>
+
+<para>
+<literal>subjectrx</literal> specifies a regular expression
+<quote>pattern</quote> which, if detected in a message subject, causes
+the subject to be replaced with the <quote>replacement</quote> value.
+The replacement is subject to substitutions in the same way as for the
+<link linkend="spam">spam</link> command: <literal>%L</literal> for the text
+to the left of the match, <literal>%R</literal> for text to the right of the
+match, and <literal>%1</literal> for the first subgroup in the match (etc).
+If you simply want to erase the match, set it to <quote>%L%R</quote>.
+Any number of <literal>subjectrx</literal> commands may coexist.
+</para>
+
+<para>
+Note this well: the <quote>replacement</quote> value replaces the
+entire subject, not just the match!
+</para>
+
+<para>
+<literal>unsubjectrx</literal> removes a given subjectrx from the
+substitution list.  If <literal>*</literal> is used as the pattern,
+all substitutions will be removed.
+</para>
+
+<example id="ex-subjectrx">
+<title>Subject Munging</title>
+<screen>
+# Erase [rt #12345] tags from Request Tracker (RT) e-mails
+subjectrx '\[rt #[0-9]+\] *' '%L%R'
+
+# Servicedesk is another RT that sends more complex subjects.
+# Keep the ticket number.
+subjectrx '\[servicedesk #([0-9]+)\] ([^.]+)\.([^.]+) - (new|open|pending|update) - ' '%L[#%1] %R'
+
+# Strip out annoying [listname] prefixes in subjects
+subjectrx '\[[^\]]*\]:? *' '%L%R'
+</screen>
+</example>
 
 </sect1>
 
@@ -13408,11 +13490,15 @@ set sort_browser="reverse-size"
           </row>
           <row>
             <entry><literal>new</literal></entry>
-            <entry>Number of new messages</entry>
+            <entry>Number of unread messages</entry>
           </row>
           <row>
             <entry><literal>path</literal></entry>
             <entry>Alphabetically by path</entry>
+          </row>
+          <row>
+            <entry><literal>unread</literal></entry>
+            <entry>Number of unread messages</entry>
           </row>
           <row>
             <entry><literal>unsorted</literal></entry>
@@ -15309,6 +15395,28 @@ The following are the commands understood by Mutt:
 </arg>
 
 <command><link linkend="spam">nospam</link></command>
+<group choice="req">
+<arg choice="plain">
+<replaceable class="parameter">*</replaceable>
+</arg>
+<arg choice="plain">
+<replaceable class="parameter">pattern</replaceable>
+</arg>
+</group>
+</cmdsynopsis>
+</listitem>
+
+<listitem>
+<cmdsynopsis>
+<command><link linkend="display-munging">subjectrx</link></command>
+<arg choice="plain">
+<replaceable class="parameter">pattern</replaceable>
+</arg>
+<arg choice="plain">
+<replaceable class="parameter">replacement</replaceable>
+</arg>
+
+<command><link linkend="display-munging">unsubjectrx</link></command>
 <group choice="req">
 <arg choice="plain">
 <replaceable class="parameter">*</replaceable>

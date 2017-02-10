@@ -29,9 +29,10 @@
 
 #define SOMEPRIME 149711
 
-static unsigned int hash_string (const unsigned char *s, unsigned int n)
+static unsigned int gen_string_hash (union hash_key key, unsigned int n)
 {
   unsigned int h = 0;
+  unsigned char *s = (unsigned char *)key.strkey;
 
   while (*s)
     h += (h << 7) + *s++;
@@ -40,9 +41,15 @@ static unsigned int hash_string (const unsigned char *s, unsigned int n)
   return h;
 }
 
-static unsigned int hash_case_string (const unsigned char *s, unsigned int n)
+static int cmp_string_key (union hash_key a, union hash_key b)
+{
+  return mutt_strcmp (a.strkey, b.strkey);
+}
+
+static unsigned int gen_case_string_hash (union hash_key key, unsigned int n)
 {
   unsigned int h = 0;
+  unsigned char *s = (unsigned char *)key.strkey;
 
   while (*s)
     h += (h << 7) + tolower (*s++);
@@ -51,24 +58,59 @@ static unsigned int hash_case_string (const unsigned char *s, unsigned int n)
   return h;
 }
 
-HASH *hash_create (int nelem, int lower)
+static int cmp_case_string_key (union hash_key a, union hash_key b)
 {
-  HASH *table = safe_malloc (sizeof (HASH));
+  return mutt_strcasecmp (a.strkey, b.strkey);
+}
+
+static unsigned int gen_int_hash (union hash_key key, unsigned int n)
+{
+  return key.intkey % n;
+}
+
+static int cmp_int_key (union hash_key a, union hash_key b)
+{
+  if (a.intkey == b.intkey)
+    return 0;
+  if (a.intkey < b.intkey)
+    return -1;
+  return 1;
+}
+
+static HASH *new_hash (int nelem)
+{
+  HASH *table = safe_calloc (1, sizeof (HASH));
   if (nelem == 0)
     nelem = 2;
   table->nelem = nelem;
   table->curnelem = 0;
   table->table = safe_calloc (nelem, sizeof (struct hash_elem *));
-  if (lower)
+  return table;
+}
+
+HASH *hash_create (int nelem, int flags)
+{
+  HASH *table = new_hash (nelem);
+  if (flags & MUTT_HASH_STRCASECMP)
   {
-    table->hash_string = hash_case_string;
-    table->cmp_string = mutt_strcasecmp;
+    table->gen_hash = gen_case_string_hash;
+    table->cmp_key = cmp_case_string_key;
   }
   else
   {
-    table->hash_string = hash_string;
-    table->cmp_string = mutt_strcmp;
+    table->gen_hash = gen_string_hash;
+    table->cmp_key = cmp_string_key;
   }
+  if (flags & MUTT_HASH_STRDUP_KEYS)
+    table->strdup_keys = 1;
+  return table;
+}
+
+HASH *int_hash_create (int nelem)
+{
+  HASH *table = new_hash (nelem);
+  table->gen_hash = gen_int_hash;
+  table->cmp_key = cmp_int_key;
   return table;
 }
 
@@ -86,7 +128,7 @@ HASH *hash_resize (HASH *ptr, int nelem, int lower)
     {
       tmp = elem;
       elem = elem->next;
-      hash_insert (table, tmp->key, tmp->data, 1);
+      hash_insert (table, tmp->key.strkey, tmp->data, 1);
       FREE (&tmp);
     }
   }
@@ -100,13 +142,13 @@ HASH *hash_resize (HASH *ptr, int nelem, int lower)
  * data         data to associate with `key'
  * allow_dup    if nonzero, duplicate keys are allowed in the table 
  */
-int hash_insert (HASH * table, const char *key, void *data, int allow_dup)
+static int union_hash_insert (HASH * table, union hash_key key, void *data, int allow_dup)
 {
   struct hash_elem *ptr;
   unsigned int h;
 
   ptr = safe_malloc (sizeof (struct hash_elem));
-  h = table->hash_string ((unsigned char *) key, table->nelem);
+  h = table->gen_hash (key, table->nelem);
   ptr->key = key;
   ptr->data = data;
 
@@ -123,7 +165,7 @@ int hash_insert (HASH * table, const char *key, void *data, int allow_dup)
 
     for (tmp = table->table[h], last = NULL; tmp; last = tmp, tmp = tmp->next)
     {
-      r = table->cmp_string (tmp->key, key);
+      r = table->cmp_key (tmp->key, key);
       if (r == 0)
       {
 	FREE (&ptr);
@@ -142,13 +184,34 @@ int hash_insert (HASH * table, const char *key, void *data, int allow_dup)
   return h;
 }
 
-void *hash_find_hash (const HASH * table, int hash, const char *key)
+int hash_insert (HASH * table, const char *strkey, void *data, int allow_dup)
 {
-  struct hash_elem *ptr = table->table[hash];
+  union hash_key key;
+  key.strkey = table->strdup_keys ? safe_strdup (strkey) : strkey;
+  return union_hash_insert (table, key, data, allow_dup);
+}
+
+int int_hash_insert (HASH * table, unsigned int intkey, void *data, int allow_dup)
+{
+  union hash_key key;
+  key.intkey = intkey;
+  return union_hash_insert (table, key, data, allow_dup);
+}
+
+static struct hash_elem *union_hash_find_elem (const HASH *table, union hash_key key)
+{
+  int hash;
+  struct hash_elem *ptr;
+
+  if (!table)
+    return NULL;
+
+  hash = table->gen_hash (key, table->nelem);
+  ptr = table->table[hash];
   for (; ptr; ptr = ptr->next)
   {
-    if (table->cmp_string (key, ptr->key) == 0)
-      return (ptr->data);
+    if (table->cmp_key (key, ptr->key) == 0)
+      return (ptr);
   }
   return NULL;
 }
@@ -158,7 +221,10 @@ void hash_set_data (HASH *table, const char *key, void *data)
   if (!table)
     return;
 
-  unsigned int hash = table->hash_string ((unsigned char *) key, table->nelem);
+  union hash_key k;
+  k.strkey = key;
+
+  unsigned int hash = table->gen_hash (k, table->nelem);
 
   struct hash_elem *ptr = table->table[hash];
   if (!ptr)
@@ -167,23 +233,75 @@ void hash_set_data (HASH *table, const char *key, void *data)
   ptr->data = data;
 }
 
-void hash_delete_hash (HASH * table, int hash, const char *key, const void *data,
+static void *union_hash_find (const HASH *table, union hash_key key)
+{
+  struct hash_elem *ptr = union_hash_find_elem (table, key);
+  if (ptr)
+    return ptr->data;
+  else
+    return NULL;
+}
+
+void *hash_find (const HASH *table, const char *strkey)
+{
+  union hash_key key;
+  key.strkey = strkey;
+  return union_hash_find (table, key);
+}
+
+struct hash_elem *hash_find_elem (const HASH *table, const char *strkey)
+{
+  union hash_key key;
+  key.strkey = strkey;
+  return union_hash_find_elem (table, key);
+}
+
+void *int_hash_find (const HASH *table, unsigned int intkey)
+{
+  union hash_key key;
+  key.intkey = intkey;
+  return union_hash_find (table, key);
+}
+
+struct hash_elem *hash_find_bucket (const HASH *table, const char *strkey)
+{
+  union hash_key key;
+  int hash;
+
+  if (!table)
+    return NULL;
+
+  key.strkey = strkey;
+  hash = table->gen_hash (key, table->nelem);
+  return table->table[hash];
+}
+
+static void union_hash_delete (HASH *table, union hash_key key, const void *data,
 		       void (*destroy) (void *))
 {
-  struct hash_elem *ptr = table->table[hash];
-  struct hash_elem **last = &table->table[hash];
+  int hash;
+  struct hash_elem *ptr, **last;
 
-  while (ptr) 
+  if (!table)
+    return;
+
+  hash = table->gen_hash (key, table->nelem);
+  ptr = table->table[hash];
+  last = &table->table[hash];
+
+  while (ptr)
   {
     if ((data == ptr->data || !data)
-	&& table->cmp_string (ptr->key, key) == 0)
+	&& table->cmp_key (ptr->key, key) == 0)
     {
       *last = ptr->next;
       if (destroy)
 	destroy (ptr->data);
+      if (table->strdup_keys)
+        FREE (&ptr->key.strkey);
       FREE (&ptr);
       table->curnelem--;
-      
+
       ptr = *last;
     }
     else
@@ -194,15 +312,35 @@ void hash_delete_hash (HASH * table, int hash, const char *key, const void *data
   }
 }
 
+void hash_delete (HASH *table, const char *strkey, const void *data,
+                  void (*destroy) (void *))
+{
+  union hash_key key;
+  key.strkey = strkey;
+  union_hash_delete (table, key, data, destroy);
+}
+
+void int_hash_delete (HASH *table, unsigned int intkey, const void *data,
+                  void (*destroy) (void *))
+{
+  union hash_key key;
+  key.intkey = intkey;
+  union_hash_delete (table, key, data, destroy);
+}
+
 /* ptr		pointer to the hash table to be freed
  * destroy()	function to call to free the ->data member (optional) 
  */
 void hash_destroy (HASH **ptr, void (*destroy) (void *))
 {
   int i;
-  HASH *pptr = *ptr;
+  HASH *pptr;
   struct hash_elem *elem, *tmp;
 
+  if (!ptr || !*ptr)
+    return;
+
+  pptr = *ptr;
   for (i = 0 ; i < pptr->nelem; i++)
   {
     for (elem = pptr->table[i]; elem; )
@@ -211,6 +349,8 @@ void hash_destroy (HASH **ptr, void (*destroy) (void *))
       elem = elem->next;
       if (destroy)
 	destroy (tmp->data);
+      if (pptr->strdup_keys)
+        FREE (&tmp->key.strkey);
       FREE (&tmp);
     }
   }

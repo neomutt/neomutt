@@ -3071,20 +3071,6 @@ search_next:
 	redraw = REDRAW_FULL;
 	break;
 
-     case OP_EDIT_LABEL:
-        CHECK_MODE(IsHeader (extra));
-        rc = mutt_label_message(extra->hdr);
-        if (rc > 0) {
-	  if (Context)
-	    Context->changed = 1;
-          redraw = REDRAW_FULL;
-          mutt_message ("%d label%s changed.", rc, rc == 1 ? "" : "s");
-        }
-        else {
-          mutt_message (_("No labels changed."));
-        }
-        break;
-
       case OP_MAIL_KEY:
         if (!(WithCrypto & APPLICATION_PGP))
         {
@@ -3097,6 +3083,18 @@ search_next:
 	redraw = REDRAW_FULL;
 	break;
 
+     case OP_EDIT_LABEL:
+        CHECK_MODE(IsHeader (extra));
+        rc = mutt_label_message(extra->hdr);
+        if (rc > 0) {
+          Context->changed = 1;
+          redraw = REDRAW_FULL;
+          mutt_message (_("%d labels changed."), rc);
+        }
+        else {
+          mutt_message (_("No labels changed."));
+        }
+        break;
 
       case OP_FORGET_PASSPHRASE:
 	crypt_forget_passphrase ();

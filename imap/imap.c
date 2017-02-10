@@ -281,6 +281,8 @@ void imap_expunge_mailbox (IMAP_DATA* idata)
 	FREE (&idata->cache[cacheno].path);
       }
 
+      int_hash_delete (idata->uid_hash, HEADER_DATA(h)->uid, h, NULL);
+
       imap_free_header_data ((IMAP_HEADER_DATA**)&h->data);
     }
   }
@@ -1238,7 +1240,7 @@ int imap_sync_mailbox (CONTEXT* ctx, int expunge)
        * we delete the message and reupload it.
        * This works better if we're expunging, of course. */
       if ((h->env && (h->env->refs_changed || h->env->irt_changed)) ||
-	  h->attach_del || h->label_changed)
+	  h->attach_del || h->xlabel_changed)
       {
         mutt_message (_("Saving changed messages... [%d/%d]"), n+1,
                       ctx->msgcount);
@@ -1248,7 +1250,7 @@ int imap_sync_mailbox (CONTEXT* ctx, int expunge)
 	  mutt_debug (1, "imap_sync_mailbox: Error opening mailbox in append mode\n");
 	else
 	  _mutt_save_message (h, appendctx, 1, 0, 0);
-	h->label_changed = 0;
+	h->xlabel_changed = 0;
       }
     }
   }
@@ -1391,6 +1393,7 @@ int imap_close_mailbox (CONTEXT* ctx)
     /* mailbox may not have fully loaded */
     if (ctx->hdrs[i] && ctx->hdrs[i]->data)
       imap_free_header_data ((IMAP_HEADER_DATA**)&(ctx->hdrs[i]->data));
+  hash_destroy (&idata->uid_hash, NULL);
 
   for (i = 0; i < IMAP_CACHE_LEN; i++)
   {

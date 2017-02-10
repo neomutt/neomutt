@@ -58,7 +58,7 @@
  */
 extern LIST *mutt_new_list();
 extern RX_LIST *mutt_new_rx_list();
-extern SPAM_LIST *mutt_new_spam_list();
+extern REPLACE_LIST *mutt_new_replace_list();
 extern PARAMETER *mutt_new_parameter();
 extern HEADER *mutt_new_header();
 extern ENVELOPE *mutt_new_envelope();
@@ -805,6 +805,7 @@ void mutt_free_envelope (ENVELOPE **p)
   FREE (&(*p)->list_post);
   FREE (&(*p)->subject);
   /* real_subj is just an offset to subject and shouldn't be freed */
+  FREE (&(*p)->disp_subj);
   FREE (&(*p)->message_id);
   FREE (&(*p)->supersedes);
   FREE (&(*p)->date);
@@ -822,8 +823,6 @@ void mutt_free_envelope (ENVELOPE **p)
   mutt_free_list (&(*p)->references);
   mutt_free_list (&(*p)->in_reply_to);
   mutt_free_list (&(*p)->userhdrs);
-  mutt_label_ref_dec ((*p));
-  mutt_free_list (&(*p)->labels);
   FREE (p);		/* __FREE_CHECKED__ */
 }
 
@@ -846,7 +845,7 @@ void mutt_merge_envelopes(ENVELOPE* base, ENVELOPE** extra)
   MOVE_ELEM(message_id);
   MOVE_ELEM(supersedes);
   MOVE_ELEM(date);
-  MOVE_ELEM(labels);
+  MOVE_ELEM(x_label);
   MOVE_ELEM(x_original_to);
   if (!base->refs_changed)
   {
@@ -862,8 +861,10 @@ void mutt_merge_envelopes(ENVELOPE* base, ENVELOPE** extra)
   {
     base->subject = (*extra)->subject;
     base->real_subj = (*extra)->real_subj;
+    base->disp_subj = (*extra)->disp_subj;
     (*extra)->subject = NULL;
     (*extra)->real_subj = NULL;
+    (*extra)->disp_subj = NULL;
   }
   /* spam and user headers should never be hashed, and the new envelope may
     * have better values. Use new versions regardless. */
@@ -1220,6 +1221,98 @@ void mutt_safe_path (char *s, size_t l, ADDRESS *a)
   for (p = s; *p; p++)
     if (*p == '/' || ISSPACE (*p) || !IsPrint ((unsigned char) *p))
       *p = '_';
+}
+
+/* Note this function uses a fixed size buffer of LONG_STRING and so
+ * should only be used for visual modifications, such as disp_subj. */
+char *mutt_apply_replace (char *dbuf, size_t dlen, char *sbuf, REPLACE_LIST *rlist)
+{
+  REPLACE_LIST *l;
+  static regmatch_t *pmatch = NULL;
+  static int nmatch = 0;
+  static char twinbuf[2][LONG_STRING];
+  int switcher = 0;
+  char *p;
+  int i, n;
+  size_t cpysize, tlen;
+  char *src, *dst;
+
+  if (dbuf && dlen)
+    dbuf[0] = '\0';
+
+  if (sbuf == NULL || *sbuf == '\0' || (dbuf && !dlen))
+    return dbuf;
+
+  twinbuf[0][0] = '\0';
+  twinbuf[1][0] = '\0';
+  src = twinbuf[switcher];
+  dst = src;
+
+  strfcpy(src, sbuf, LONG_STRING);
+
+  for (l = rlist; l; l = l->next)
+  {
+    /* If this pattern needs more matches, expand pmatch. */
+    if (l->nmatch > nmatch)
+    {
+      safe_realloc (&pmatch, l->nmatch * sizeof(regmatch_t));
+      nmatch = l->nmatch;
+    }
+
+    if (regexec (l->rx->rx, src, l->nmatch, pmatch, 0) == 0)
+    {
+      tlen = 0;
+      switcher ^= 1;
+      dst = twinbuf[switcher];
+
+      mutt_debug (5, "mutt_apply_replace: %s matches %s\n", src, l->rx->pattern);
+
+      /* Copy into other twinbuf with substitutions */
+      if (l->template)
+      {
+        for (p = l->template; *p && (tlen < LONG_STRING - 1); )
+        {
+	  if (*p == '%')
+	  {
+	    p++;
+	    if (*p == 'L')
+	    {
+	      p++;
+              cpysize = MIN (pmatch[0].rm_so, LONG_STRING - tlen - 1);
+	      strncpy(&dst[tlen], src, cpysize);
+	      tlen += cpysize;
+	    }
+	    else if (*p == 'R')
+	    {
+	      p++;
+              cpysize = MIN (strlen (src) - pmatch[0].rm_eo, LONG_STRING - tlen - 1);
+	      strncpy(&dst[tlen], &src[pmatch[0].rm_eo], cpysize);
+	      tlen += cpysize;
+	    }
+	    else
+	    {
+	      n = strtoul(p, &p, 10);               /* get subst number */
+	      while (isdigit((unsigned char)*p))    /* skip subst token */
+                ++p;
+	      for (i = pmatch[n].rm_so; (i < pmatch[n].rm_eo) && (tlen < LONG_STRING-1); i++)
+	        dst[tlen++] = src[i];
+	    }
+	  }
+	  else
+	    dst[tlen++] = *p++;
+        }
+      }
+      dst[tlen] = '\0';
+      mutt_debug (5, "mutt_apply_replace: subst %s\n", dst);
+    }
+    src = dst;
+  }
+
+  if (dbuf)
+    strfcpy(dbuf, dst, dlen);
+  else
+    dbuf = safe_strdup(dst);
+  return dbuf;
 }
 
 
@@ -2106,9 +2199,9 @@ void mutt_free_rx_list (RX_LIST **list)
   }
 }
 
-void mutt_free_spam_list (SPAM_LIST **list)
+void mutt_free_replace_list (REPLACE_LIST **list)
 {
-  SPAM_LIST *p;
+  REPLACE_LIST *p;
   
   if (!list) return;
   while (*list)
@@ -2144,7 +2237,7 @@ int mutt_match_rx_list (const char *s, RX_LIST *l)
  *
  * Returns 1 if the argument `s` matches a pattern in the spam list, otherwise
  * 0. */
-int mutt_match_spam_list (const char *s, SPAM_LIST *l, char *text, int textsize)
+int mutt_match_spam_list (const char *s, REPLACE_LIST *l, char *text, int textsize)
 {
   static regmatch_t *pmatch = NULL;
   static int nmatch = 0;

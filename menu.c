@@ -65,7 +65,7 @@ get_color (int index, unsigned char *s)
 
   for (; color; color = color->next)
     if (mutt_pattern_exec (color->color_pattern, MUTT_MATCH_FULL_ADDRESS,
-        Context, hdr))
+        Context, hdr, NULL))
       return color->pair;
 
   return 0;

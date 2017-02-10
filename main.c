@@ -898,13 +898,9 @@ int main (int argc, char **argv, char **environ)
 #ifdef USE_SIDEBAR
       mutt_sb_set_open_buffy ();
 #endif
-      Labels = hash_create (131, 0);
-      mutt_scan_labels(Context);
       mutt_index_menu ();
       if (Context)
 	FREE (&Context);
-      if (Labels)
-        hash_destroy(&Labels, NULL);
     }
 #ifdef USE_IMAP
     imap_logout_all ();

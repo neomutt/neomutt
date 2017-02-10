@@ -403,6 +403,22 @@ char *get_nth_wchar (mbchar_table *table, int index)
   return table->chars[index];
 }
 
+static char *apply_subject_mods (ENVELOPE *env)
+{
+  if (env == NULL)
+    return NULL;
+
+  if (SubjectRxList == NULL)
+    return env->subject;
+
+  if (env->subject == NULL || *env->subject == '\0')
+    return env->disp_subj = NULL;
+
+  env->disp_subj = mutt_apply_replace(NULL, 0, env->subject, SubjectRxList);
+  return env->disp_subj;
+}
+
+
 /* %a = address of author
  * %A = reply-to address (if present; otherwise: address of author
  * %b = filename of the originating folder
@@ -929,25 +945,33 @@ hdr_format_str (char *dest,
       break;
 
     case 's':
-      
-      if (flags & MUTT_FORMAT_TREE && !hdr->collapsed)
       {
-	if (flags & MUTT_FORMAT_FORCESUBJ)
+	char *subj;
+        if (hdr->env->disp_subj)
+	  subj = hdr->env->disp_subj;
+	else if (SubjectRxList)
+	  subj = apply_subject_mods(hdr->env);
+	else
+	  subj = hdr->env->subject;
+	if (flags & MUTT_FORMAT_TREE && !hdr->collapsed)
 	{
-	  colorlen = add_index_color (dest, destlen, flags, MT_COLOR_INDEX_SUBJECT);
-	  mutt_format_s (dest + colorlen, destlen - colorlen, "", NONULL (hdr->env->subject));
-	  add_index_color (dest + colorlen, destlen - colorlen, flags, MT_COLOR_INDEX);
-	  snprintf (buf2, sizeof (buf2), "%s%s", hdr->tree, dest);
-	  mutt_format_s_tree (dest, destlen, prefix, buf2);
+	  if (flags & MUTT_FORMAT_FORCESUBJ)
+	  {
+	    colorlen = add_index_color (dest, destlen, flags, MT_COLOR_INDEX_SUBJECT);
+	    mutt_format_s (dest + colorlen, destlen - colorlen, "", NONULL (subj));
+	    add_index_color (dest + colorlen, destlen - colorlen, flags, MT_COLOR_INDEX);
+	    snprintf (buf2, sizeof (buf2), "%s%s", hdr->tree, dest);
+	    mutt_format_s_tree (dest, destlen, prefix, buf2);
+	  }
+	  else
+	    mutt_format_s_tree (dest, destlen, prefix, hdr->tree);
 	}
 	else
-	  mutt_format_s_tree (dest, destlen, prefix, hdr->tree);
-      }
-      else
-      {
-	colorlen = add_index_color (dest, destlen, flags, MT_COLOR_INDEX_SUBJECT);
-	mutt_format_s (dest + colorlen, destlen - colorlen, prefix, NONULL (hdr->env->subject));
-	add_index_color (dest + colorlen, destlen - colorlen, flags, MT_COLOR_INDEX);
+	{
+	  colorlen = add_index_color (dest, destlen, flags, MT_COLOR_INDEX_SUBJECT);
+	  mutt_format_s (dest + colorlen, destlen - colorlen, prefix, NONULL (subj));
+	  add_index_color (dest + colorlen, destlen - colorlen, flags, MT_COLOR_INDEX);
+	}
       }
       break;
 
@@ -1111,57 +1135,42 @@ hdr_format_str (char *dest,
 
      case 'y':
        if (optional)
-	 optional = hdr->env->labels ? 1 : 0;
+	 optional = hdr->env->x_label ? 1 : 0;
 
        colorlen = add_index_color (dest, destlen, flags, MT_COLOR_INDEX_LABEL);
-       mutt_format_s (dest + colorlen, destlen - colorlen, prefix, mutt_labels(NULL, 0, hdr->env, NULL));
+       mutt_format_s (dest + colorlen, destlen - colorlen, prefix, NONULL (hdr->env->x_label));
        add_index_color (dest + colorlen, destlen - colorlen, flags, MT_COLOR_INDEX);
        break;
  
     case 'Y':
-      if (hdr->env->labels == NULL)
+      if (hdr->env->x_label)
       {
-        if (optional)
-          optional = 0;
-        mutt_format_s(dest, destlen, prefix, "");
-        break;
+	i = 1;	/* reduce reuse recycle */
+	htmp = NULL;
+	if (flags & MUTT_FORMAT_TREE
+	    && (hdr->thread->prev && hdr->thread->prev->message
+		&& hdr->thread->prev->message->env->x_label))
+	  htmp = hdr->thread->prev->message;
+	else if (flags & MUTT_FORMAT_TREE
+		 && (hdr->thread->parent && hdr->thread->parent->message
+		     && hdr->thread->parent->message->env->x_label))
+	  htmp = hdr->thread->parent->message;
+	if (htmp && mutt_strcasecmp (hdr->env->x_label,
+				     htmp->env->x_label) == 0)
+	  i = 0;
       }
       else
-      {
-        char labels[HUGE_STRING];
-        char labelstmp[HUGE_STRING];
+	i = 0;
 
-        i = 1;  /* reduce reuse recycle */
-        htmp = NULL;
-        if ((flags & MUTT_FORMAT_TREE) &&
-            hdr->thread->prev &&
-            hdr->thread->prev->message &&
-            hdr->thread->prev->message->env->labels)
-          htmp = hdr->thread->prev->message;
-        else if ((flags & MUTT_FORMAT_TREE) &&
-                 hdr->thread->parent &&
-                 hdr->thread->parent->message &&
-                 hdr->thread->parent->message->env->labels)
-          htmp = hdr->thread->parent->message;
+      if (optional)
+	optional = i;
 
-        mutt_labels(labels, sizeof(labels), hdr->env, NULL);
-        if (htmp)
-        {
-          mutt_labels(labelstmp, sizeof(labelstmp), htmp->env, NULL);
-          if (htmp && mutt_strcasecmp (labels, labelstmp) == 0)
-            i = 0;
-        }
-
-        if (optional)
-	  optional = i;
-
-        colorlen = add_index_color (dest, destlen, flags, MT_COLOR_INDEX_LABEL);
-        if (i)
-	  mutt_format_s (dest + colorlen, destlen - colorlen, prefix, labels);
-        else
-          mutt_format_s (dest + colorlen, destlen - colorlen, prefix, "");
-        add_index_color (dest + colorlen, destlen - colorlen, flags, MT_COLOR_INDEX);
-      }
+      colorlen = add_index_color (dest, destlen, flags, MT_COLOR_INDEX_LABEL);
+      if (i)
+        mutt_format_s (dest + colorlen, destlen - colorlen, prefix, NONULL (hdr->env->x_label));
+      else
+        mutt_format_s (dest + colorlen, destlen - colorlen, prefix, "");
+      add_index_color (dest + colorlen, destlen - colorlen, flags, MT_COLOR_INDEX);
 
       break;
 

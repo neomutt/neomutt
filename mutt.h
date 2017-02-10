@@ -646,13 +646,13 @@ typedef struct rx_list_t
   struct rx_list_t *next;
 } RX_LIST;
 
-typedef struct spam_list_t
+typedef struct replace_list_t
 {
   REGEXP *rx;
   int     nmatch;
   char   *template;
-  struct spam_list_t *next;
-} SPAM_LIST;
+  struct replace_list_t *next;
+} REPLACE_LIST;
 
 inline LIST *mutt_new_list()
 {
@@ -664,14 +664,14 @@ inline RX_LIST *mutt_new_rx_list()
   return safe_calloc (1, sizeof (RX_LIST));
 }
 
-inline SPAM_LIST *mutt_new_spam_list()
+inline REPLACE_LIST *mutt_new_replace_list()
 {
-  return safe_calloc (1, sizeof (SPAM_LIST));
+  return safe_calloc (1, sizeof (REPLACE_LIST));
 }
 
 void mutt_free_list (LIST **);
 void mutt_free_rx_list (RX_LIST **);
-void mutt_free_spam_list (SPAM_LIST **);
+void mutt_free_replace_list (REPLACE_LIST **);
 LIST *mutt_copy_list (LIST *);
 int mutt_matches_ignore (const char *);
 int mutt_matches_list (const char *, LIST *);
@@ -714,6 +714,7 @@ typedef struct envelope
   char *list_post;		/* this stores a mailto URL, or nothing */
   char *subject;
   char *real_subj;		/* offset of the real subject */
+  char *disp_subj;		/* display subject (modified copy of subject) */
   char *message_id;
   char *supersedes;
   char *date;
@@ -729,7 +730,6 @@ typedef struct envelope
   LIST *references;		/* message references (in reverse order) */
   LIST *in_reply_to;		/* in-reply-to header content */
   LIST *userhdrs;		/* user defined headers */
-  LIST *labels;
   int kwtypes;
 
   unsigned int irt_changed : 1; /* In-Reply-To changed to link/break threads */
@@ -875,7 +875,7 @@ typedef struct header
 					 * This flag is used by the maildir_trash
 					 * option.
 					 */
-  unsigned int label_changed : 1;	/* editable - used for syncing */
+  unsigned int xlabel_changed : 1;	/* editable - used for syncing */
   
   /* timezone of the sender of this message */
   unsigned int zhours : 5;
@@ -997,6 +997,23 @@ typedef struct pattern_t
   } p;
 } pattern_t;
 
+/* This is used when a message is repeatedly pattern matched against.
+ * e.g. for color, scoring, hooks.  It caches a few of the potentially slow
+ * operations.
+ * Each entry has a value of 0 = unset, 1 = false, 2 = true
+ */
+typedef struct
+{
+  int list_all;          /* ^~l */
+  int list_one;          /*  ~l */
+  int sub_all;           /* ^~u */
+  int sub_one;           /*  ~u */
+  int pers_recip_all;    /* ^~p */
+  int pers_recip_one;    /*  ~p */
+  int pers_from_all;     /* ^~P */
+  int pers_from_one;     /*  ~P */
+} pattern_cache_t;
+
 /* ACL Rights */
 enum
 {
@@ -1060,6 +1077,7 @@ typedef struct _context
   HASH *id_hash;		/* hash table by msg id */
   HASH *subj_hash;		/* hash table by subject */
   HASH *thread_hash;		/* hash table for threading */
+  HASH *label_hash;             /* hash table for x-labels */
   int *v2r;			/* mapping from virtual to real msgno */
   int hdrmax;			/* number of pointers in hdrs */
   int msgcount;			/* number of messages in the mailbox */

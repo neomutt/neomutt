@@ -27,11 +27,7 @@
 #include <sys/stat.h>
 #include <string.h>
 #include <ctype.h>
-
-/* The labels are used as keys in the Labels hash.
- * The keys must have a longer lifespan than the hash.
- */
-static LIST *LabelList = NULL;
+#include <stdint.h>
 
 void mutt_edit_headers (const char *editor,
 			const char *body,
@@ -220,176 +216,61 @@ void mutt_edit_headers (const char *editor,
   }
 }
 
-/**
- * label_add - Add to a list of all labels
- * @label: Label name to keep
- *
- * Add an item to our LIST of all labels.
- *
- * The keys in the Label HASH must have a longer lifespan than the HASH itself.
- * We keep them in an (inefficient) linked list.
- *
- * Note: We don't check for duplicates.
- *
- * Returns:
- *      NULL  on error
- *      LIST* new LIST item, on success
- */
-static LIST *label_add (const char *label)
+static void label_ref_dec(CONTEXT *ctx, char *label)
 {
-  if (!label)
-    return NULL;
-
-  LIST *n = mutt_new_list();
-
-  /* Insert our new LIST item at the front */
-  n->data = safe_strdup (label);
-  n->next = LabelList;
-  LabelList = n;
-
-  return n;
-}
-
-/**
- * label_delete - Delete from a list of all labels
- * @label: Label name to remove
- *
- * Delete an item from our LIST of all labels.
- *
- * The keys in the Label HASH must have a longer lifespan than the HASH itself.
- * We keep them in an (inefficient) linked list.
- */
-static void label_delete (const char *label)
-{
-  if (!label || !LabelList)
-    return;
-
-  LIST *l;
-  LIST **prev;
-
-  for (l = LabelList, prev = &LabelList; l; prev = &l->next, l = l->next)
-  {
-    if (mutt_strcmp (label, l->data) == 0)
-    {
-      *prev = l->next;
-      FREE(&l->data);
-      FREE(&l);
-      break;
-    }
-  }
-}
-
-void mutt_label_ref_dec(ENVELOPE *env)
-{
+  struct hash_elem *elem;
   uintptr_t count;
-  LIST *label;
 
-  if (!env || !env->labels || !Labels)
+  elem = hash_find_elem (ctx->label_hash, label);
+  if (!elem)
     return;
 
-  for (label = env->labels; label; label = label->next)
+  count = (uintptr_t)elem->data;
+  if (count <= 1)
   {
-    if (label->data == NULL)
-      continue;
-
-    count = (uintptr_t)hash_find(Labels, label->data);
-    count--;
-    if (count > 0)
-    {
-      /* Existing label, decrease refcount */
-      hash_set_data (Labels, label->data, (void*) count);
-    }
-    else
-    {
-      /* Old label */
-      hash_delete(Labels, label->data, NULL, NULL);
-      label_delete (label->data);
-    }
-
-    mutt_debug (1, "--label %s: %d\n", label->data, count);
+    hash_delete(ctx->label_hash, label, NULL, NULL);
+    return;
   }
+
+  count--;
+  elem->data = (void *)count;
 }
 
-void mutt_label_ref_inc(ENVELOPE *env)
+static void label_ref_inc(CONTEXT *ctx, char *label)
 {
+  struct hash_elem *elem;
   uintptr_t count;
-  LIST *label;
 
-  if (!env || !env->labels || !Labels)
-    return;
-
-  for (label = env->labels; label; label = label->next)
+  elem = hash_find_elem (ctx->label_hash, label);
+  if (!elem)
   {
-    if (label->data == NULL)
-      continue;
-
-    count = (uintptr_t) hash_find(Labels, label->data);
-    count++;
-    if (count > 1)
-    {
-      /* Existing label, increase refcount */
-      hash_set_data (Labels, label->data, (void*) count);
-    }
-    else
-    {
-      /* New label */
-      const char *dup_label = safe_strdup (label->data);
-      label_add (dup_label);
-      hash_insert(Labels, dup_label, (void *) count, 0);
-    }
-
-    mutt_debug (1, "++label %s: %d\n", label->data, count);
+    count = 1;
+    hash_insert(ctx->label_hash, label, (void *)count, 0);
+    return;
   }
+
+  count = (uintptr_t)elem->data;
+  count++;
+  elem->data = (void *)count;
 }
 
 /*
- * set labels on a message
+ * add an X-Label: field.
  */
-static int label_message(HEADER *hdr, const char *new)
+static int label_message(CONTEXT *ctx, HEADER *hdr, char *new)
 {
   if (hdr == NULL)
     return 0;
-  if (hdr->env->labels == NULL && new == NULL)
+  if (mutt_strcmp (hdr->env->x_label, new) == 0)
     return 0;
-  if (hdr->env->labels != NULL && new != NULL)
-  {
-    char old[HUGE_STRING];
-    mutt_labels(old, sizeof(old), hdr->env, NULL);
-    if (!strcmp(old, new))
-      return 0;
-  }
 
-  if (hdr->env->labels != NULL)
-  {
-    mutt_label_ref_dec(hdr->env);
-    mutt_free_list(&hdr->env->labels);
-  }
+  if (hdr->env->x_label != NULL)
+    label_ref_dec(ctx, hdr->env->x_label);
+  mutt_str_replace (&hdr->env->x_label, new);
+  if (hdr->env->x_label != NULL)
+    label_ref_inc(ctx, hdr->env->x_label);
 
-  if ((new != NULL) && (*new != '\0'))
-  {
-    char *last, *label;
-    char copy[LONG_STRING];
-
-    /* We take a copy because we're going to alter it */
-    strfcpy (copy, new, sizeof(copy));
-
-    for (label = strtok_r(copy, ",", &last); label;
-         label = strtok_r(NULL, ",", &last)) 
-    {
-      SKIPWS(label);
-      if (mutt_find_list(hdr->env->labels, label))
-        continue;
-      if (hdr->env->labels == NULL)
-      {
-        hdr->env->labels = mutt_new_list();
-        hdr->env->labels->data = safe_strdup(label);
-      }
-      else
-        mutt_add_list(hdr->env->labels, label);
-    }
-    mutt_label_ref_inc(hdr->env);
-  }
-  return hdr->changed = hdr->label_changed = 1;
+  return hdr->changed = hdr->xlabel_changed = 1;
 }
 
 int mutt_label_message(HEADER *hdr)
@@ -398,44 +279,33 @@ int mutt_label_message(HEADER *hdr)
   int i;
   int changed;
 
-  *buf = '\0';
-  if (hdr != NULL && hdr->env->labels != NULL)
-    mutt_labels(buf, sizeof(buf)-2, hdr->env, NULL);
+  if (!Context || !Context->label_hash)
+    return 0;
 
-  /* add a comma-space so that new typing is a new keyword */
-  if (buf[0])
-    strcat(buf, ", ");    /* __STRCAT_CHECKED__ */
+  *buf = '\0';
+  if (hdr != NULL && hdr->env->x_label != NULL) {
+    strncpy(buf, hdr->env->x_label, LONG_STRING);
+  }
 
   if (mutt_get_field("Label: ", buf, sizeof(buf), MUTT_LABEL /* | MUTT_CLEAR */) != 0)
     return 0;
 
   new = buf;
   SKIPWS(new);
-  if (new && *new)
-  {
-    char *p;
-    int len = strlen(new);
-    p = &new[len]; /* '\0' */
-    while (p > new)
-    {
-      if (!isspace((unsigned char)*(p-1)) && *(p-1) != ',')
-        break;
-      p--;
-    }
-    *p = '\0';
-  }
   if (*new == '\0')
     new = NULL;
 
   changed = 0;
   if (hdr != NULL) {
-    changed += label_message(hdr, new);
+    changed += label_message(Context, hdr, new);
   } else {
 #define HDR_OF(index) Context->hdrs[Context->v2r[(index)]]
     for (i = 0; i < Context->vcount; ++i) {
       if (HDR_OF(i)->tagged)
-        if (label_message(HDR_OF(i), new)) {
+        if (label_message(Context, HDR_OF(i), new)) {
           ++changed;
+          mutt_set_flag(Context, HDR_OF(i),
+            MUTT_TAG, 0);
         }
     }
   }
@@ -443,52 +313,26 @@ int mutt_label_message(HEADER *hdr)
   return changed;
 }
 
-/* scan a context (mailbox) and hash all labels we find */
-void mutt_scan_labels(CONTEXT *ctx)
+void mutt_make_label_hash (CONTEXT *ctx)
 {
-  int i;
-
-  if (!ctx)
-    return;
-
-  for (i = 0; i < ctx->msgcount; i++)
-    if (ctx->hdrs[i]->env->labels)
-      mutt_label_ref_inc(ctx->hdrs[i]->env);
+  /* 131 is just a rough prime estimate of how many distinct
+   * labels someone might have in a mailbox.
+   */
+  ctx->label_hash = hash_create(131, MUTT_HASH_STRDUP_KEYS);
 }
 
-
-char *mutt_labels(char *dst, int sz, ENVELOPE *env, char *sep)
+void mutt_label_hash_add (CONTEXT *ctx, HEADER *hdr)
 {
-  static char sbuf[HUGE_STRING];
-  int off = 0;
-  int len;
-  LIST *label;
+  if (!ctx || !ctx->label_hash)
+    return;
+  if (hdr->env->x_label)
+    label_ref_inc (ctx, hdr->env->x_label);
+}
 
-  if (sep == NULL)
-    sep = ", ";
-
-  if (dst == NULL)
-  {
-    dst = sbuf;
-    sz = sizeof(sbuf);
-  }
-
-  *dst = '\0';
-
-  for (label = env->labels; label; label = label->next)
-  {
-    if (label->data == NULL)
-      continue;
-    len = MIN(mutt_strlen(label->data), sz-off);
-    strfcpy(&dst[off], label->data, len+1);
-    off += len;
-    if (label->next)
-    {
-      len = MIN(mutt_strlen(sep), sz-off);
-      strfcpy(&dst[off], sep, len+1);
-      off += len;
-    }
-  }
-
-  return dst;
+void mutt_label_hash_remove (CONTEXT *ctx, HEADER *hdr)
+{
+  if (!ctx || !ctx->label_hash)
+    return;
+  if (hdr->env->x_label)
+    label_ref_dec (ctx, hdr->env->x_label);
 }

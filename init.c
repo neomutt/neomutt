@@ -462,11 +462,11 @@ int mutt_add_to_rx_list (RX_LIST **list, const char *s, int flags, BUFFER *err)
   return 0;
 }
 
-static int remove_from_spam_list (SPAM_LIST **list, const char *pat);
+static int remove_from_replace_list (REPLACE_LIST **list, const char *pat);
 
-static int add_to_spam_list (SPAM_LIST **list, const char *pat, const char *templ, BUFFER *err)
+static int add_to_replace_list (REPLACE_LIST **list, const char *pat, const char *templ, BUFFER *err)
 {
-  SPAM_LIST *t = NULL, *last = NULL;
+  REPLACE_LIST *t = NULL, *last = NULL;
   REGEXP *rx;
   int n;
   const char *p;
@@ -499,12 +499,12 @@ static int add_to_spam_list (SPAM_LIST **list, const char *pat, const char *temp
       break;
   }
 
-  /* If t is set, it's pointing into an extant SPAM_LIST* that we want to
+  /* If t is set, it's pointing into an extant REPLACE_LIST* that we want to
    * update. Otherwise we want to make a new one to link at the list's end.
    */
   if (!t)
   {
-    t = mutt_new_spam_list();
+    t = mutt_new_replace_list();
     t->rx = rx;
     if (last)
       last->next = t;
@@ -512,7 +512,7 @@ static int add_to_spam_list (SPAM_LIST **list, const char *pat, const char *temp
       *list = t;
   }
 
-  /* Now t is the SPAM_LIST* that we want to modify. It is prepared. */
+  /* Now t is the REPLACE_LIST* that we want to modify. It is prepared. */
   t->template = safe_strdup(templ);
 
   /* Find highest match number in template string */
@@ -533,9 +533,9 @@ static int add_to_spam_list (SPAM_LIST **list, const char *pat, const char *temp
 
   if (t->nmatch > t->rx->rx->re_nsub)
   {
-    snprintf (err->data, err->dsize, _("Not enough subexpressions for spam "
+    snprintf (err->data, err->dsize, _("Not enough subexpressions for "
                                        "template"));
-    remove_from_spam_list(list, pat);
+    remove_from_replace_list(list, pat);
     return -1;
   }
 
@@ -544,38 +544,38 @@ static int add_to_spam_list (SPAM_LIST **list, const char *pat, const char *temp
   return 0;
 }
 
-static int remove_from_spam_list (SPAM_LIST **list, const char *pat)
+static int remove_from_replace_list (REPLACE_LIST **list, const char *pat)
 {
-  SPAM_LIST *spam, *prev;
+  REPLACE_LIST *cur, *prev;
   int nremoved = 0;
 
   /* Being first is a special case. */
-  spam = *list;
-  if (!spam)
+  cur = *list;
+  if (!cur)
     return 0;
-  if (spam->rx && !mutt_strcmp(spam->rx->pattern, pat))
+  if (cur->rx && !mutt_strcmp(cur->rx->pattern, pat))
   {
-    *list = spam->next;
-    mutt_free_regexp(&spam->rx);
-    FREE(&spam->template);
-    FREE(&spam);
+    *list = cur->next;
+    mutt_free_regexp(&cur->rx);
+    FREE(&cur->template);
+    FREE(&cur);
     return 1;
   }
 
-  prev = spam;
-  for (spam = prev->next; spam;)
+  prev = cur;
+  for (cur = prev->next; cur;)
   {
-    if (!mutt_strcmp(spam->rx->pattern, pat))
+    if (!mutt_strcmp(cur->rx->pattern, pat))
     {
-      prev->next = spam->next;
-      mutt_free_regexp(&spam->rx);
-      FREE(&spam->template);
-      FREE(&spam);
-      spam = prev->next;
+      prev->next = cur->next;
+      mutt_free_regexp(&cur->rx);
+      FREE(&cur->template);
+      FREE(&cur);
+      cur = prev->next;
       ++nremoved;
     }
     else
-      spam = spam->next;
+      cur = cur->next;
   }
 
   return nremoved;
@@ -884,6 +884,96 @@ static int parse_unalternates (BUFFER *buf, BUFFER *s, unsigned long data, BUFFE
   return 0;
 }
 
+static int parse_replace_list (BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err)
+{
+  REPLACE_LIST **list = (REPLACE_LIST **)data;
+  BUFFER templ;
+
+  memset(&templ, 0, sizeof(templ));
+
+  /* First token is a regexp. */
+  if (!MoreArgs(s))
+  {
+    strfcpy(err->data, _("not enough arguments"), err->dsize);
+    return -1;
+  }
+  mutt_extract_token(buf, s, 0);
+
+  /* Second token is a replacement template */
+  if (!MoreArgs(s))
+  {
+    strfcpy(err->data, _("not enough arguments"), err->dsize);
+    return -1;
+  }
+  mutt_extract_token(&templ, s, 0);
+
+  if (add_to_replace_list(list, buf->data, templ.data, err) != 0) {
+    FREE(&templ.data);
+    return -1;
+  }
+  FREE(&templ.data);
+
+  return 0;
+}
+
+static int parse_unreplace_list (BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err)
+{
+  REPLACE_LIST **list = (REPLACE_LIST **)data;
+
+  /* First token is a regexp. */
+  if (!MoreArgs(s))
+  {
+    strfcpy(err->data, _("not enough arguments"), err->dsize);
+    return -1;
+  }
+
+  mutt_extract_token(buf, s, 0);
+
+  /* "*" is a special case. */
+  if (!mutt_strcmp (buf->data, "*"))
+  {
+    mutt_free_replace_list (list);
+    return 0;
+  }
+
+  remove_from_replace_list(list, buf->data);
+  return 0;
+}
+
+
+static void clear_subject_mods (void)
+{
+  int i;
+  if (Context && Context->msgcount) 
+  {
+    for (i = 0; i < Context->msgcount; i++)
+      FREE(&Context->hdrs[i]->env->disp_subj);
+  }
+}
+
+
+static int parse_subjectrx_list (BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err)
+{
+  int rc;
+
+  rc = parse_replace_list(buf, s, data, err);
+  if (rc == 0)
+    clear_subject_mods();
+  return rc;
+}
+
+
+static int parse_unsubjectrx_list (BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err)
+{
+  int rc;
+
+  rc = parse_unreplace_list(buf, s, data, err);
+  if (rc == 0)
+    clear_subject_mods();
+  return rc;
+}
+
+
 static int parse_spam_list (BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err)
 {
   BUFFER templ;
@@ -912,7 +1002,7 @@ static int parse_spam_list (BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *
       mutt_extract_token (&templ, s, 0);
 
       /* Add to the spam list. */
-      if (add_to_spam_list (&SpamList, buf->data, templ.data, err) != 0) {
+      if (add_to_replace_list (&SpamList, buf->data, templ.data, err) != 0) {
 	  FREE(&templ.data);
           return -1;
       }
@@ -936,13 +1026,13 @@ static int parse_spam_list (BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *
     /* "*" is a special case. */
     if (!mutt_strcmp(buf->data, "*"))
     {
-      mutt_free_spam_list (&SpamList);
+      mutt_free_replace_list (&SpamList);
       mutt_free_rx_list (&NoSpamList);
       return 0;
     }
 
     /* If it's on the spam list, just remove it. */
-    if (remove_from_spam_list(&SpamList, buf->data) != 0)
+    if (remove_from_replace_list(&SpamList, buf->data) != 0)
       return 0;
 
     /* Otherwise, add it to the nospam list. */
@@ -3554,7 +3644,8 @@ void mutt_init (int skip_sys_rc, LIST *commands)
   err.dptr = err.data;
 
   Groups = hash_create (1031, 0);
-  ReverseAlias = hash_create (1031, 1);
+  /* reverse alias keys need to be strdup'ed because of idna conversions */
+  ReverseAlias = hash_create (1031, MUTT_HASH_STRCASECMP | MUTT_HASH_STRDUP_KEYS);
 #ifdef USE_NOTMUCH
   TagTransforms = hash_create (64, 1);
   TagFormats = hash_create (64, 0);
@@ -4052,18 +4143,16 @@ static const char* myvar_get (const char* var)
   return NULL;
 }
 
-int mutt_label_complete (char *buffer, size_t len, int pos, int numtabs)
+int mutt_label_complete (char *buffer, size_t len, int numtabs)
 {
   char *pt = buffer;
   int spaces; /* keep track of the number of leading spaces on the line */
-  int prefix;
+
+  if (!Context || !Context->label_hash)
+    return 0;
 
   SKIPWS (buffer);
   spaces = buffer - pt;
-
-  for (pt = buffer; pt && *pt && *(pt+1); pt++);
-  for (; pt > buffer && !isspace(*(pt-1)); pt--);
-  prefix = pt - buffer;
 
   /* first TAB. Collect all the matches */
   if (numtabs == 1)
@@ -4072,12 +4161,12 @@ int mutt_label_complete (char *buffer, size_t len, int pos, int numtabs)
     struct hash_walk_state state;
 
     Num_matched = 0;
-    strfcpy (User_typed, pt, sizeof (User_typed));
+    strfcpy (User_typed, buffer, sizeof (User_typed));
     memset (Matches, 0, Matches_listsize);
     memset (Completed, 0, sizeof (Completed));
     memset (&state, 0, sizeof(state));
-    while ((entry = hash_walk(Labels, &state)))
-      candidate (Completed, User_typed, entry->key, sizeof (Completed));
+    while ((entry = hash_walk(Context->label_hash, &state)))
+      candidate (Completed, User_typed, entry->key.strkey, sizeof (Completed));
     matches_ensure_morespace (Num_matched);
     qsort(Matches, Num_matched, sizeof(char *), (sort_t *) mutt_strcasecmp);
     Matches[Num_matched++] = User_typed;
@@ -4101,7 +4190,7 @@ int mutt_label_complete (char *buffer, size_t len, int pos, int numtabs)
              Matches[(numtabs - 2) % Num_matched]);
 
   /* return the completed label */
-  strncpy (&buffer[prefix], Completed, len - spaces);
+  strncpy (buffer, Completed, len - spaces);
 
   return 1;
 }
