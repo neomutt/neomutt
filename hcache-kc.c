@@ -72,7 +72,8 @@ hcache_kyotocabinet_fetch(void *ctx, const char *key, size_t keylen)
 static void
 hcache_kyotocabinet_free(void *vctx, void **data)
 {
-    FREE(data); /* __FREE_CHECKED__ */
+    kcfree(*data);
+    *data = NULL;
 }
 
 static int
