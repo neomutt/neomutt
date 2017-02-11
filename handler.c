@@ -65,6 +65,23 @@ const int Index_64[128] = {
     41,42,43,44, 45,46,47,48, 49,50,51,-1, -1,-1,-1,-1
 };
 
+static void print_part_line (STATE *s, BODY *b, int n)
+{
+  char length[5];
+  mutt_pretty_size (length, sizeof (length), b->length);
+  state_mark_attach (s);
+  char *charset = mutt_get_parameter ("charset", b->parameter);
+  if (n != 0)
+      state_printf (s, _("[-- Alternative Type #%d: "), n);
+  else
+      state_printf (s, _("[-- Type: "));
+  state_printf (s, _("%s/%s%s%s, Encoding: %s, Size: %s --]\n"),
+          TYPE (b), b->subtype,
+          charset ? "; charset=" : "",
+          charset ? charset : "",
+          ENCODING (b->encoding), length);
+}
+
 static void state_prefix_put (const char *d, size_t dlen, STATE *s)
 {
   if (s->prefix)
@@ -1004,7 +1021,6 @@ static int alternative_handler (BODY *a, STATE *s)
   int type = 0;
   int mustfree = 0;
   int rc = 0;
-  char length[5];
   int count = 0;
 
   if (a->encoding == ENCBASE64 || a->encoding == ENCQUOTEDPRINTABLE ||
@@ -1135,10 +1151,7 @@ static int alternative_handler (BODY *a, STATE *s)
 
     if (mutt_strcmp ("info", ShowMultipartAlternative) == 0)
     {
-      mutt_pretty_size (length, sizeof (length), choice->length);
-      state_mark_attach (s);
-      state_printf (s, _("[-- Type: %s/%s, Encoding: %s, Size: %s --]\n"),
-                    TYPE (choice), choice->subtype, ENCODING (choice->encoding), length);
+      print_part_line (s, choice, 0);
     }
     mutt_body_handler (choice, s);
 
@@ -1153,13 +1166,10 @@ static int alternative_handler (BODY *a, STATE *s)
         if (choice != b)
         {
           count += 1;
-          mutt_pretty_size (length, sizeof (length), b->length);
           if (count == 1)
             state_putc ('\n', s);
 
-          state_mark_attach (s);
-          state_printf (s, _("[-- Alternative Type #%d %s/%s, Encoding: %s, Size: %s --]\n"),
-                        count, TYPE (b), b->subtype, ENCODING (b->encoding), length);
+          print_part_line (s, b, count);
         }
         b = b->next;
       }
@@ -1261,7 +1271,6 @@ int mutt_can_decode (BODY *a)
 static int multipart_handler (BODY *a, STATE *s)
 {
   BODY *b, *p;
-  char length[5];
   struct stat st;
   int count;
   int rc = 0;
@@ -1292,12 +1301,7 @@ static int multipart_handler (BODY *a, STATE *s)
 		    p->filename ? p->filename : p->form_name, s);
       }
       state_puts (" --]\n", s);
-
-      mutt_pretty_size (length, sizeof (length), p->length);
-      
-      state_mark_attach (s);
-      state_printf (s, _("[-- Type: %s/%s, Encoding: %s, Size: %s --]\n"),
-		    TYPE (p), p->subtype, ENCODING (p->encoding), length);
+      print_part_line (s, p, 0);
       if (!option (OPTWEED))
       {
 	fseeko (s->fpin, p->hdr_offset, 0);
