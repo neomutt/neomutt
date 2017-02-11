@@ -63,11 +63,15 @@
  * Helper macros.
  */
 #define digitp(p)   (*(p) >= '0' && *(p) <= '9')
+
+// clang-format off
 #define hexdigitp(a) (digitp (a)                     \
                       || (*(a) >= 'A' && *(a) <= 'F')  \
                       || (*(a) >= 'a' && *(a) <= 'f'))
 #define xtoi_1(p)   (*(p) <= '9'? (*(p)- '0'): \
                      *(p) <= 'F'? (*(p)-'A'+10):(*(p)-'a'+10))
+// clang-format on
+
 #define xtoi_2(p)   ((xtoi_1(p) * 16) + xtoi_1((p)+1))
 
 #define PKA_NOTATION_NAME "pka-address@gnupg.org"

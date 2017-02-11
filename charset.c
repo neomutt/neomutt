@@ -55,7 +55,9 @@ static const struct
   const char *key;
   const char *pref;
 }
-PreferredMIMENames[] = 
+
+// clang-format off
+PreferredMIMENames[] =
 {
   { "ansi_x3.4-1968",        "us-ascii"      },
   { "iso-ir-6",              "us-ascii"      },
@@ -211,6 +213,7 @@ PreferredMIMENames[] =
 
   { NULL,                     NULL           }
 };
+// clang-format on
 
 #ifdef HAVE_LANGINFO_CODESET
 # include <langinfo.h>

@@ -35,6 +35,7 @@
 # include "doc/makedoc-defs.h"
 #endif
 
+// clang-format off
 const struct binding_t OpGeneric[] = { /* map: generic */
   /*
   ** <para>
@@ -564,3 +565,4 @@ const struct binding_t OpMix[] = { /* map: mixmaster */
   { NULL,                    0,                              NULL }
 };
 #endif /* MIXMASTER */
+// clang-format on
