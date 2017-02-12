@@ -86,6 +86,47 @@ static void ssl_get_client_cert(sslsockdata *ssldata, CONNECTION *conn);
 static int ssl_passwd_cb(char *buf, int size, int rwflag, void *userdata);
 static int ssl_negotiate (CONNECTION *conn, sslsockdata*);
 
+/* ssl certificate verification can behave strangely if there are expired
+ * certs loaded into the trusted store.  This function filters out expired
+ * certs.
+ * Previously the code used this form:
+ *     SSL_CTX_load_verify_locations (ssldata->ctx, SslCertFile, NULL);
+ */
+static int ssl_load_certificates (SSL_CTX *ctx)
+{
+  FILE *fp;
+  X509 *cert;
+  X509_STORE *store;
+  char buf[STRING];
+
+  mutt_debug (2, "ssl_load_certificates: loading trusted certificates\n");
+  store = SSL_CTX_get_cert_store (ctx);
+  if (!store)
+  {
+    store = X509_STORE_new ();
+    SSL_CTX_set_cert_store (ctx, store);
+  }
+
+  if ((fp = fopen (SslCertFile, "rt")) == NULL)
+    return 0;
+
+  while ((cert = PEM_read_X509 (fp, NULL, NULL, NULL)) != NULL)
+  {
+    if ((X509_cmp_current_time (X509_get_notBefore (cert)) >= 0) ||
+        (X509_cmp_current_time (X509_get_notAfter (cert)) <= 0))
+    {
+      mutt_debug (2, "ssl_load_certificates: filtering expired cert: %s\n",
+              X509_NAME_oneline (X509_get_subject_name (cert), buf, sizeof (buf)));
+      X509_free (cert);
+    }
+    else
+      X509_STORE_add_cert (store, cert);
+  }
+  safe_fclose (&fp);
+
+  return 1;
+}
+
 /* mutt_ssl_starttls: Negotiate TLS over an already opened connection.
  *   TODO: Merge this code better with ssl_socket_open. */
 int mutt_ssl_starttls (CONNECTION* conn)
@@ -145,7 +186,7 @@ int mutt_ssl_starttls (CONNECTION* conn)
     }
   }
 
-  if (SslCertFile && ! SSL_CTX_load_verify_locations (ssldata->ctx, SslCertFile, NULL))
+  if (SslCertFile && !ssl_load_certificates (ssldata->ctx))
     mutt_debug (1, "mutt_ssl_starttls: Error loading trusted certificates\n");
 
   ssl_get_client_cert(ssldata, conn);
@@ -403,7 +444,7 @@ static int ssl_socket_open (CONNECTION * conn)
     }
   }
 
-  if (SslCertFile && ! SSL_CTX_load_verify_locations (data->ctx, SslCertFile, NULL))
+  if (SslCertFile && !ssl_load_certificates (data->ctx))
     mutt_debug (1, "ssl_socket_open: Error loading trusted certificates\n");
 
   ssl_get_client_cert(data, conn);
@@ -717,7 +758,7 @@ static int check_certificate_by_digest (X509 *peercert)
     }
     if (X509_cmp_current_time (X509_get_notAfter (peercert)) <= 0)
     {
-      mutt_debug (2, "Server certificate has expired");
+      mutt_debug (2, "Server certificate has expired\n");
       mutt_error (_("Server certificate has expired"));
       mutt_sleep (2);
       return 0;
