@@ -763,7 +763,7 @@ static int check_certificate_by_digest (X509 *peercert)
     return 0;
   }
 
-  while ((cert = PEM_read_X509 (fp, &cert, NULL, NULL)) != NULL)
+  while (PEM_read_X509 (fp, &cert, NULL, NULL) != NULL)
   {
     pass = compare_certificates (cert, peercert, peermd, peermdlen) ? 0 : 1;
 
