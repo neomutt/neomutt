@@ -25,6 +25,7 @@
 #include <openssl/x509v3.h>
 #include <openssl/err.h>
 #include <openssl/rand.h>
+#include <openssl/evp.h>
 
 #undef _
 
@@ -641,13 +642,13 @@ static char *x509_get_part (X509_NAME *name, int nid)
   return ret;
 }
 
-static void x509_fingerprint (char *s, int l, X509 * cert)
+static void x509_fingerprint (char *s, int l, X509 * cert, const EVP_MD *(*hashfunc)(void))
 {
   unsigned char md[EVP_MAX_MD_SIZE];
   unsigned int n;
   int j;
 
-  if (!X509_digest (cert, EVP_md5 (), md, &n))
+  if (!X509_digest (cert, hashfunc(), md, &n))
   {
     snprintf (s, l, _("[unable to calculate]"));
   }
@@ -1018,9 +1019,10 @@ static int interactive_check_cert (X509 *cert, int idx, int len)
   char title[STRING];
   MUTTMENU *menu = mutt_new_menu (MENU_GENERIC);
   int done, row, i;
+  unsigned u;
   FILE *fp;
 
-  menu->max = mutt_array_size (part) * 2 + 9;
+  menu->max = mutt_array_size (part) * 2 + 10;
   menu->dialog = (char **) safe_calloc (1, menu->max * sizeof (char *));
   for (i = 0; i < menu->max; i++)
     menu->dialog[i] = (char *) safe_calloc (1, SHORT_STRING * sizeof (char));
@@ -1029,17 +1031,17 @@ static int interactive_check_cert (X509 *cert, int idx, int len)
   strfcpy (menu->dialog[row], _("This certificate belongs to:"), SHORT_STRING);
   row++;
   x509_subject = X509_get_subject_name (cert);
-  for (i = 0; i < mutt_array_size (part); i++)
+  for (u = 0; u < mutt_array_size (part); u++)
     snprintf (menu->dialog[row++], SHORT_STRING, "   %s",
-              x509_get_part (x509_subject, part[i]));
+              x509_get_part (x509_subject, part[u]));
 
   row++;
   strfcpy (menu->dialog[row], _("This certificate was issued by:"), SHORT_STRING);
   row++;
   x509_issuer = X509_get_issuer_name (cert);
-  for (i = 0; i < mutt_array_size (part); i++)
+  for (u = 0; u < mutt_array_size (part); u++)
     snprintf (menu->dialog[row++], SHORT_STRING, "   %s",
-              x509_get_part (x509_issuer, part[i]));
+              x509_get_part (x509_issuer, part[u]));
 
   row++;
   snprintf (menu->dialog[row++], SHORT_STRING, _("This certificate is valid"));
@@ -1050,8 +1052,11 @@ static int interactive_check_cert (X509 *cert, int idx, int len)
 
   row++;
   buf[0] = '\0';
-  x509_fingerprint (buf, sizeof (buf), cert);
-  snprintf (menu->dialog[row++], SHORT_STRING, _("Fingerprint: %s"), buf);
+  x509_fingerprint (buf, sizeof (buf), cert, EVP_sha1);
+  snprintf (menu->dialog[row++], SHORT_STRING, _("SHA1 Fingerprint: %s"), buf);
+  buf[0] = '\0';
+  x509_fingerprint (buf, sizeof (buf), cert, EVP_md5);
+  snprintf (menu->dialog[row++], SHORT_STRING, _("MD5 Fingerprint: %s"), buf);
 
   snprintf (title, sizeof (title),
 	    _("SSL Certificate check (certificate %d of %d in chain)"),
