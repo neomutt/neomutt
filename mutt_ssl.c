@@ -95,7 +95,7 @@ static int ssl_negotiate (CONNECTION *conn, sslsockdata*);
 static int ssl_load_certificates (SSL_CTX *ctx)
 {
   FILE *fp;
-  X509 *cert;
+  X509 *cert = NULL;
   X509_STORE *store;
   char buf[STRING];
 
@@ -110,18 +110,20 @@ static int ssl_load_certificates (SSL_CTX *ctx)
   if ((fp = fopen (SslCertFile, "rt")) == NULL)
     return 0;
 
-  while ((cert = PEM_read_X509 (fp, NULL, NULL, NULL)) != NULL)
+  while (NULL != PEM_read_X509 (fp, &cert, NULL, NULL))
   {
     if ((X509_cmp_current_time (X509_get_notBefore (cert)) >= 0) ||
         (X509_cmp_current_time (X509_get_notAfter (cert)) <= 0))
     {
       dprint (2, (debugfile, "ssl_load_certificates: filtering expired cert: %s\n",
               X509_NAME_oneline (X509_get_subject_name (cert), buf, sizeof (buf))));
-      X509_free (cert);
     }
     else
+    {
       X509_STORE_add_cert (store, cert);
+    }
   }
+  X509_free (cert);
   safe_fclose (&fp);
 
   return 1;
