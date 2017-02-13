@@ -407,7 +407,7 @@ classify_quote (struct q_class_t **QuoteList, const char *qptr,
 
     if (*QuoteList == NULL)
     {
-      class = (struct q_class_t *) safe_calloc (1, sizeof (struct q_class_t));
+      class = safe_calloc (1, sizeof (struct q_class_t));
       class->color = ColorQuote[0];
       *QuoteList = class;
     }
@@ -432,8 +432,8 @@ classify_quote (struct q_class_t **QuoteList, const char *qptr,
 	if (tmp == NULL)
 	{
 	  /* add a node above q_list */
-	  tmp = (struct q_class_t *) safe_calloc (1, sizeof (struct q_class_t));
-	  tmp->prefix = (char *) safe_calloc (1, length + 1);
+	  tmp = safe_calloc (1, sizeof (struct q_class_t));
+	  tmp->prefix = safe_calloc (1, length + 1);
 	  strncpy (tmp->prefix, qptr, length);
 	  tmp->length = length;
 
@@ -542,9 +542,8 @@ classify_quote (struct q_class_t **QuoteList, const char *qptr,
 	      if (tmp == NULL)
 	      {
 		/* add a node above q_list */
-		tmp = (struct q_class_t *) safe_calloc (1, 
-					    sizeof (struct q_class_t));
-		tmp->prefix = (char *) safe_calloc (1, length + 1);
+		tmp = safe_calloc (1, sizeof (struct q_class_t));
+		tmp->prefix = safe_calloc (1, length + 1);
 		strncpy (tmp->prefix, qptr, length);
 		tmp->length = length;
 			
@@ -645,8 +644,8 @@ classify_quote (struct q_class_t **QuoteList, const char *qptr,
 	/* still not found so far: add it as a sibling to the current node */
 	if (class == NULL)
 	{
-	  tmp = (struct q_class_t *) safe_calloc (1, sizeof (struct q_class_t));
-	  tmp->prefix = (char *) safe_calloc (1, length + 1);
+	  tmp = safe_calloc (1, sizeof (struct q_class_t));
+	  tmp->prefix = safe_calloc (1, length + 1);
 	  strncpy (tmp->prefix, qptr, length);
 	  tmp->length = length;
 
@@ -682,8 +681,8 @@ classify_quote (struct q_class_t **QuoteList, const char *qptr,
   if (class == NULL)
   {
     /* not found so far: add it as a top level class */
-    class = (struct q_class_t *) safe_calloc (1, sizeof (struct q_class_t));
-    class->prefix = (char *) safe_calloc (1, length + 1);
+    class = safe_calloc (1, sizeof (struct q_class_t));
+    class->prefix = safe_calloc (1, length + 1);
     strncpy (class->prefix, qptr, length);
     class->length = length;
     new_class_color (class, q_level);
@@ -1753,10 +1752,10 @@ mutt_pager (const char *banner, const char *fname, int flags, pager_t *extra)
     snprintf (helpstr, sizeof (helpstr), "%s %s", tmphelp, buffer);
   }
 
-  index_status_window = safe_calloc (sizeof (mutt_window_t), 1);
-  index_window        = safe_calloc (sizeof (mutt_window_t), 1);
-  pager_status_window = safe_calloc (sizeof (mutt_window_t), 1);
-  pager_window        = safe_calloc (sizeof (mutt_window_t), 1);
+  index_status_window = safe_calloc (1, sizeof (mutt_window_t));
+  index_window        = safe_calloc (1, sizeof (mutt_window_t));
+  pager_status_window = safe_calloc (1, sizeof (mutt_window_t));
+  pager_window        = safe_calloc (1, sizeof (mutt_window_t));
 
   while (ch != -1)
   {

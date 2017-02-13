@@ -791,7 +791,7 @@ int mutt_compose_menu (HEADER *msg,   /* structure for new message */
 	  menu->data = idx;
 	}
 	
-	idx[idxlen] = (ATTACHPTR *) safe_calloc (1, sizeof (ATTACHPTR));
+	idx[idxlen] = safe_calloc (1, sizeof (ATTACHPTR));
 	if ((idx[idxlen]->content = crypt_pgp_make_key_attachment(NULL)) != NULL)
 	{
 	  update_idx (menu, idx, idxlen++);
@@ -839,7 +839,7 @@ int mutt_compose_menu (HEADER *msg,   /* structure for new message */
 	  for (i = 0; i < numfiles; i++)
 	  {
 	    char *att = files[i];
-	    idx[idxlen] = (ATTACHPTR *) safe_calloc (1, sizeof (ATTACHPTR));
+	    idx[idxlen] = safe_calloc (1, sizeof (ATTACHPTR));
             idx[idxlen]->unowned = 1;
 	    idx[idxlen]->content = mutt_make_file_attach (att);
 	    if (idx[idxlen]->content != NULL)
@@ -965,7 +965,7 @@ int mutt_compose_menu (HEADER *msg,   /* structure for new message */
 	    h = Context->hdrs[i];
 	    if (h->tagged)
 	    {
-	      idx[idxlen] = (ATTACHPTR *) safe_calloc (1, sizeof (ATTACHPTR));
+	      idx[idxlen] = safe_calloc (1, sizeof (ATTACHPTR));
 	      idx[idxlen]->content = mutt_make_message_attach (Context, h, 1);
 	      if (idx[idxlen]->content != NULL)
 		update_idx (menu, idx, idxlen++);
@@ -1273,16 +1273,15 @@ int mutt_compose_menu (HEADER *msg,   /* structure for new message */
 	    menu->data = idx;
 	  }
 
-	  idx[idxlen] = (ATTACHPTR *) safe_calloc (1, sizeof (ATTACHPTR));
 	  /* Touch the file */
 	  if (!(fp = safe_fopen (fname, "w")))
 	  {
 	    mutt_error (_("Can't create file %s"), fname);
-	    FREE (&idx[idxlen]);
 	    continue;
 	  }
 	  safe_fclose (&fp);
 
+	  idx[idxlen] = safe_calloc (1, sizeof (ATTACHPTR));
 	  if ((idx[idxlen]->content = mutt_make_file_attach (fname)) == NULL)
 	  {
 	    mutt_error (_("What we have here is a failure to make an attachment"));

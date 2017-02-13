@@ -757,7 +757,7 @@ void mutt_menu_init (void)
 
 MUTTMENU *mutt_new_menu (int menu)
 {
-  MUTTMENU *p = (MUTTMENU *) safe_calloc (1, sizeof (MUTTMENU));
+  MUTTMENU *p = safe_calloc (1, sizeof (MUTTMENU));
 
   if ((menu < 0) || (menu >= MENU_MAX))
     menu = MENU_GENERIC;
