@@ -14,7 +14,7 @@ msgstr ""
 "Project-Id-Version: neomutt-20161104\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
 "POT-Creation-Date: 2017-02-19 23:25+0100\n"
-"PO-Revision-Date: 2017-02-10 20:00+01:00\n"
+"PO-Revision-Date: 2017-02-13 21:09+01:00\n"
 "Last-Translator: Petr Písař <petr.pisar@atlas.cz>\n"
 "Language-Team: Czech <translation-team-cs@lists.sourceforge.net>\n"
 "Language: cs\n"
@@ -5279,9 +5279,8 @@ msgid "save this message to send later"
 msgstr "odložit zprávu pro pozdější použití"
 
 #: ../keymap_alldefs.h:49
-#, fuzzy
 msgid "send attachment with a different name"
-msgstr "Poslat přílohu pod názvem: "
+msgstr "poslat přílohu pod jiným názvem"
 
 #: ../keymap_alldefs.h:50
 msgid "rename/move an attached file"
@@ -5370,7 +5369,7 @@ msgstr "zobrazit zprávu"
 
 #: ../keymap_alldefs.h:71
 msgid "add, change, or delete a message's label"
-msgstr ""
+msgstr "přidat, změnit nebo smazat štítek zprávy"
 
 #: ../keymap_alldefs.h:72
 msgid "edit the raw message"
@@ -5508,7 +5507,7 @@ msgstr "zvolit aktuální položku"
 #: ../keymap_alldefs.h:105
 #, fuzzy
 msgid "get all children of the current message"
-msgstr "Jste na první zprávě."
+msgstr "vytvořit horkou klávesu pro současnou zprávu"
 
 #: ../keymap_alldefs.h:106
 #, fuzzy
@@ -5518,7 +5517,7 @@ msgstr "editovat zprávu i s hlavičkami"
 #: ../keymap_alldefs.h:107
 #, fuzzy
 msgid "get parent of the current message"
-msgstr "Jste na první zprávě."
+msgstr "vytvořit horkou klávesu pro současnou zprávu"
 
 #: ../keymap_alldefs.h:108
 msgid "reply to all recipients"
@@ -5675,9 +5674,8 @@ msgid "mark the current subthread as read"
 msgstr "označit toto podvlákno jako přečtené"
 
 #: ../keymap_alldefs.h:146
-#, fuzzy
 msgid "jump to root message in thread"
-msgstr "přeskočit na předchozí zprávu ve vláknu"
+msgstr "přeskočit na kořenovou zprávu vlákna"
 
 #: ../keymap_alldefs.h:147
 msgid "set a status flag on a message"
@@ -5705,7 +5703,7 @@ msgstr "odznačit zprávy shodující se se vzorem"
 
 #: ../keymap_alldefs.h:153
 msgid "create a hotkey macro for the current message"
-msgstr ""
+msgstr "vytvořit horkou klávesu pro současnou zprávu"
 
 #: ../keymap_alldefs.h:154
 msgid "move to the middle of the page"
@@ -6018,8 +6016,9 @@ msgid "modify labels and then hide message"
 msgstr "Jste na první zprávě."
 
 #: ../keymap_alldefs.h:229
+#, fuzzy
 msgid "read entire thread of the current message"
-msgstr ""
+msgstr "vytvořit horkou klávesu pro současnou zprávu"
 
 #: ../keymap_alldefs.h:230
 msgid "attach a PGP public key"
