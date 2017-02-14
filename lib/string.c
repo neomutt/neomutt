@@ -45,6 +45,7 @@
  * | mutt_strncmp()            | Compare two strings (to a maximum), safely
  * | mutt_str_adjust()         | Shrink-to-fit a string
  * | mutt_str_replace()        | Replace one string with another
+ * | mutt_str_append_item()    | Add a string to another
  * | mutt_substrcpy()          | Copy a sub-string into a buffer
  * | mutt_substrdup()          | Duplicate a sub-string
  * | rfc822_dequote_comment()  | Un-escape characters in an email address comment
@@ -245,6 +246,30 @@ void mutt_str_replace(char **p, const char *s)
 {
   FREE(p);
   *p = safe_strdup(s);
+}
+
+/**
+ * mutt_str_append_item - Add string to another seprated by sep
+ * @param str String appened
+ * @param item String to append
+ * @param sep separator between string item
+ *
+ * This function appends a string to another separate them by sep
+ * if needed
+ *
+ * This function alters the pointer of the caller.
+ */
+void mutt_str_append_item(char **str, const char *item, int sep)
+{
+  char *p = NULL;
+  size_t sz = strlen(item);
+  size_t ssz = *str ? strlen(*str) : 0;
+
+  safe_realloc(str, ssz + ((ssz && sep) ? 1 : 0) + sz + 1);
+  p = *str + ssz;
+  if (sep && ssz)
+    *p++ = sep;
+  memcpy(p, item, sz + 1);
 }
 
 /**
