@@ -28,6 +28,10 @@
 
 #include <slang.h>	/* in addition to slcurses.h, we need slang.h for the version
 			   number to test for 2.x having UTF-8 support in main.c */
+#ifdef bool
+#undef bool
+#endif
+
 #include <slcurses.h>
 
 #define KEY_DC SL_KEY_DELETE
