@@ -65,3 +65,7 @@ txt2c
 
 neomutt-*.tar.gz
 
+# gtags things
+GPATH
+GRTAGS
+GTAGS
