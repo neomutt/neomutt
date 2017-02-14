@@ -2430,7 +2430,7 @@ static int nm_open_message(CONTEXT *ctx, MESSAGE *msg, int msgno)
     msg->fp = maildir_open_find_message(folder, cur->path, NULL);
 
   mutt_debug (1, "%s\n", __func__);
-  return 0;
+  return !msg->fp;
 }
 
 static int nm_close_message(CONTEXT *ctx, MESSAGE *msg)
