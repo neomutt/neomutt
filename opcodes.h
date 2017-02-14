@@ -234,6 +234,8 @@
   _fmt(OP_MAIN_SHOW_LIMIT,                N_("show currently active limit pattern")) \
   _fmt(OP_MAIN_COLLAPSE_THREAD,           N_("collapse/uncollapse current thread")) \
   _fmt(OP_MAIN_COLLAPSE_ALL,              N_("collapse/uncollapse all threads")) \
+  _fmt(OP_MAIN_MODIFY_LABELS,             N_("modify (notmuch) tags")) \
+  _fmt(OP_MAIN_MODIFY_LABELS_THEN_HIDE,   N_("modify labels and then hide message")) \
 
 #define OPS_CRYPT(_fmt) \
   _fmt(OP_DECRYPT_SAVE,                   N_("make decrypted copy and delete")) \
@@ -260,8 +262,6 @@
   _fmt(OP_MAIN_VFOLDER_FROM_QUERY,        N_("generate virtual folder from query")) \
   _fmt(OP_MAIN_WINDOWED_VFOLDER_FORWARD,  N_("shifts virtual folder time window forwards")) \
   _fmt(OP_MAIN_WINDOWED_VFOLDER_BACKWARD, N_("shifts virtual folder time window backwards")) \
-  _fmt(OP_MAIN_MODIFY_LABELS,             N_("modify (notmuch) tags")) \
-  _fmt(OP_MAIN_MODIFY_LABELS_THEN_HIDE,   N_("modify labels and then hide message")) \
   _fmt(OP_MAIN_ENTIRE_THREAD,             N_("read entire thread of the current message"))
 #else
 #define OPS_NOTMUCH(_)
