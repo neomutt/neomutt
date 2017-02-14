@@ -2971,6 +2971,9 @@ static void matches_ensure_morespace(int current)
 */
 static void candidate (char *dest, char *try, const char *src, int len)
 {
+  if (!dest || !try || !src)
+    return;
+
   int l;
 
   if (strstr (src, try) == src)
