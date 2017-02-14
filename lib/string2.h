@@ -64,6 +64,7 @@ int         mutt_atos(const char *str, short *dst);
 void        mutt_remove_trailing_ws(char *s);
 char *      mutt_skip_whitespace(char *p);
 void        mutt_str_adjust(char **p);
+void        mutt_str_append_item(char **p, const char *item, int sep);
 int         mutt_strcasecmp(const char *a, const char *b);
 const char *mutt_strchrnul(const char *s, char c);
 int         mutt_strcmp(const char *a, const char *b);

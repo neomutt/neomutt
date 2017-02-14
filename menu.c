@@ -71,7 +71,6 @@ static int get_color(int index, unsigned char *s)
     case MT_COLOR_INDEX_SUBJECT:
       color = ColorIndexSubjectList;
       break;
-#ifdef USE_NOTMUCH
     case MT_COLOR_INDEX_TAG:
       for (color = ColorIndexTagList; color; color = color->next)
       {
@@ -83,7 +82,6 @@ static int get_color(int index, unsigned char *s)
           return color->pair;
       }
       return 0;
-#endif
     default:
       return ColorDefs[type];
   }

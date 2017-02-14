@@ -42,6 +42,7 @@
 #include "mbtable.h"
 #include "mutt_curses.h"
 #include "mutt_idna.h"
+#include "mutt_tags.h"
 #include "ncrypt/ncrypt.h"
 #include "options.h"
 #include "protos.h"
@@ -469,7 +470,8 @@ static char *apply_subject_mods(struct Envelope *env)
  * | \%E     | number of messages in current thread
  * | \%f     | entire from line
  * | \%F     | like %n, unless from self
- * | \%g     | message labels (e.g. notmuch tags)
+ * | \%g     | message tags (e.g. notmuch tags)
+ * | \%Gx    | individual message tag (e.g. notmuch tags)
  * | \%i     | message-id
  * | \%I     | initials of author
  * | \%K     | the list to which the letter was sent (if any; otherwise: empty)
@@ -837,22 +839,20 @@ static const char *hdr_format_str(char *dest, size_t destlen, size_t col, int co
         optional = 0;
       break;
 
-#ifdef USE_NOTMUCH
     case 'g':
       if (!optional)
       {
         colorlen = add_index_color(dest, destlen, flags, MT_COLOR_INDEX_TAGS);
         mutt_format_s(dest + colorlen, destlen - colorlen, prefix,
-                      nm_header_get_tags_transformed(hdr));
+                      hdr_tags_get_transformed(hdr));
         add_index_color(dest + colorlen, destlen - colorlen, flags, MT_COLOR_INDEX);
       }
-      else if (!nm_header_get_tags_transformed(hdr))
+      else if (!hdr_tags_get_transformed(hdr))
         optional = 0;
       break;
 
-    case 'G':
-    {
-      char *tag_transformed = NULL;
+    case 'G':;
+      const char *tag_transformed = NULL;
       char format[3];
       char *tag = NULL;
 
@@ -865,14 +865,12 @@ static const char *hdr_format_str(char *dest, size_t destlen, size_t col, int co
         tag = hash_find(TagFormats, format);
         if (tag)
         {
-          tag_transformed = nm_header_get_tag_transformed(tag, hdr);
-
+          tag_transformed = hdr_tags_get_transformed_for(tag, hdr);
           colorlen = add_index_color(dest, destlen, flags, MT_COLOR_INDEX_TAG);
           mutt_format_s(dest + colorlen, destlen - colorlen, prefix,
                         (tag_transformed) ? tag_transformed : "");
           add_index_color(dest + colorlen, destlen - colorlen, flags, MT_COLOR_INDEX);
         }
-
         src++;
       }
       else
@@ -883,12 +881,10 @@ static const char *hdr_format_str(char *dest, size_t destlen, size_t col, int co
 
         tag = hash_find(TagFormats, format);
         if (tag)
-          if (nm_header_get_tag_transformed(tag, hdr) == NULL)
+          if (hdr_tags_get_transformed_for(tag, hdr) == NULL)
             optional = 0;
       }
       break;
-    }
-#endif
 
     case 'H':
       /* (Hormel) spam score */

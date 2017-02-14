@@ -12969,7 +12969,7 @@ virtual-mailboxes "My INBOX" "notmuch://?query=tag:inbox"
               </row>
               <row>
                 <entry>
-                  <literal>nm_hidden_tags</literal>
+                  <literal>hidden_tags</literal>
                 </entry>
                 <entry>string</entry>
                 <entry>
@@ -13248,7 +13248,7 @@ set nm_default_uri = ""
 set nm_exclude_tags = ""
 <emphasis role="comment"># This variable specifies private notmuch tags which should not be printed
 # on screen (index, pager).</emphasis>
-set nm_hidden_tags = "unread,draft,flagged,passed,replied,attachment,signed,encrypted"
+set hidden_tags = "unread,draft,flagged,passed,replied,attachment,signed,encrypted"
 <emphasis role="comment"># This option specifies timeout for Notmuch database. Default is 5 seconds.</emphasis>
 set nm_open_timeout = 5
 <emphasis role="comment"># This variable specifies notmuch query type, supported types: 'threads' and
@@ -13339,7 +13339,7 @@ bind index,pager &gt; vfolder-window-forward
 # set index_format='%4C %S %[%y.%m.%d] %-18.18n %?GU?%GU&amp; ? %?GR?%GR&amp; ? %?GI?%GI&amp; ? %s'
 
 # The %G formatting sequence may display all tags including tags hidden by
-# nm_hidden_tags.
+# hidden_tags.
 #
 # --------------------------------------------------------------------------
 # COLORS - some unpleasant examples are given

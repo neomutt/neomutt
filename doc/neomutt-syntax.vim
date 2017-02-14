@@ -892,7 +892,7 @@ syntax keyword muttrcVarNum     contained skipwhite nm_query_window_timebase nex
 
 syntax keyword muttrcVarStr     contained skipwhite nm_default_uri        nextgroup=muttrcVarEqualsIdxFmt
 syntax keyword muttrcVarStr     contained skipwhite nm_exclude_tags       nextgroup=muttrcVarEqualsIdxFmt
-syntax keyword muttrcVarStr     contained skipwhite nm_hidden_tags        nextgroup=muttrcVarEqualsIdxFmt
+syntax keyword muttrcVarStr     contained skipwhite hidden_tags           nextgroup=muttrcVarEqualsIdxFmt
 syntax keyword muttrcVarStr     contained skipwhite nm_query_type         nextgroup=muttrcVarEqualsIdxFmt
 syntax keyword muttrcVarStr     contained skipwhite nm_record_tags        nextgroup=muttrcVarEqualsIdxFmt
 syntax keyword muttrcVarStr     contained skipwhite nm_unread_tag         nextgroup=muttrcVarEqualsIdxFmt
