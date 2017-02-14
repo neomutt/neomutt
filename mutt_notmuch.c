@@ -2109,6 +2109,7 @@ int nm_get_all_tags(CONTEXT *ctx, char **tag_list, int *tag_count)
   struct nm_ctxdata *data = get_ctxdata(ctx);
   notmuch_database_t *db = NULL;
   notmuch_tags_t *tags = NULL;
+  const char *tag;
   int rc = -1;
 
   if (!data)
@@ -2123,11 +2124,14 @@ int nm_get_all_tags(CONTEXT *ctx, char **tag_list, int *tag_count)
 
   while (notmuch_tags_valid(tags))
   {
-    if (tag_list != NULL)
+    tag = notmuch_tags_get(tags);
+    /* Skip empty string */
+    if (*tag)
     {
-      tag_list[*tag_count] = safe_strdup(notmuch_tags_get(tags));
+      if (tag_list != NULL)
+        tag_list[*tag_count] = safe_strdup(tag);
+      (*tag_count)++;
     }
-    (*tag_count)++;
     notmuch_tags_move_to_next(tags);
   }
 
