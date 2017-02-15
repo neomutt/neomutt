@@ -474,14 +474,6 @@ int getdnsdomainname (char *, size_t);
 #define ftruncate chsize
 #endif
 
-#ifndef HAVE_SNPRINTF
-extern int snprintf (char *, size_t, const char *, ...);
-#endif
-
-#ifndef HAVE_VSNPRINTF
-extern int vsnprintf (char *, size_t, const char *, va_list);
-#endif
-
 #ifndef HAVE_STRERROR
 #define strerror(x) ((x) > 0 && (x) < sys_nerr) ? sys_errlist[(x)] : 0
 #endif /* !HAVE_STRERROR */
