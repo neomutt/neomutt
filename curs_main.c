@@ -1801,11 +1801,13 @@ int mutt_index_menu (void)
       case OP_MAIN_MODIFY_LABELS:
       case OP_MAIN_MODIFY_LABELS_THEN_HIDE:
       {
-	if (Context->magic != MUTT_NOTMUCH) {
-	  mutt_message (_("No virtual folder, aborting."));
-	  break;
-	}
-	CHECK_MSGCOUNT;
+        if (Context->magic != MUTT_NOTMUCH) {
+          // remove remaining arguments
+          mutt_get_field ("", buf, sizeof(buf), MUTT_NM_TAG);
+          mutt_error (_("No virtual folder, aborting."));
+          break;
+        }
+        CHECK_MSGCOUNT;
         CHECK_VISIBLE;
 	*buf = '\0';
 	if (mutt_get_field ("Add/remove labels: ", buf, sizeof (buf), MUTT_NM_TAG) || !*buf)
