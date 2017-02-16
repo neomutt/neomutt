@@ -1851,6 +1851,7 @@ static int write_one_header (FILE *fp, int pfxw, int max, int wraplen,
     if (fold_one_header (fp, tagbuf, valbuf, pfx, wraplen, flags) < 0)
     {
       FREE (&valbuf);
+      FREE (&tagbuf);
       return -1;
     }
     FREE (&tagbuf);
