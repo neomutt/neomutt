@@ -3900,7 +3900,10 @@ void mutt_init (int skip_sys_rc, LIST *commands)
 
     char *config = mutt_find_cfg (Homedir, xdg_cfg_home);
     if (config)
+    {
       Muttrc = mutt_add_list (Muttrc, config);
+      FREE(&config);
+    }
   }
   else
   {
