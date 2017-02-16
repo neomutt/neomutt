@@ -78,10 +78,6 @@
 
 # endif
 
-# ifndef HAVE_SNPRINTF
-extern int snprintf (char *, size_t, const char *, ...);
-# endif
-
 #else  /* DL_STANDALONE */
 
 # ifdef USE_SETGID

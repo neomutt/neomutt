@@ -26,9 +26,6 @@
 #ifdef HAVE_UNISTD_H
 # include <unistd.h> /* needed for SEEK_SET */
 #endif
-#ifdef HAVE_UNIX_H
-# include <unix.h>   /* needed for snprintf on QNX. */
-#endif
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <time.h>
