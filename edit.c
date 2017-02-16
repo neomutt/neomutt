@@ -441,7 +441,7 @@ int mutt_builtin_editor (const char *path, HEADER *msg, HEADER *cur)
 	case 'v':
 	  if (be_barf_file (path, buf, buflen) == 0)
 	  {
-	    char *tag, *err;
+            char *tag = NULL, *err = NULL;
 	    be_free_memory (buf, buflen);
 	    buf = NULL;
 	    bufmax = buflen = 0;
@@ -452,6 +452,8 @@ int mutt_builtin_editor (const char *path, HEADER *msg, HEADER *cur)
 	      mutt_edit_headers (NONULL(Visual), path, msg, NULL, 0);
 	      if (mutt_env_to_intl (msg->env, &tag, &err))
 		printw (_("Bad IDN in %s: '%s'\n"), tag, err);
+              /* tag is a statically allocated string and should not be freed */
+              FREE(&err);
 	    }
 	    else
 	      mutt_edit_file (NONULL(Visual), path);
