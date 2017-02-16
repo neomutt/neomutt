@@ -1282,13 +1282,14 @@ static int parse_unattach_list (BUFFER *buf, BUFFER *s, LIST **ldata, BUFFER *er
 {
   ATTACH_MATCH *a;
   LIST *lp, *lastp, *newlp;
-  char *tmp;
+  char *tmp = NULL;
   int major;
   char *minor;
 
   do
   {
     mutt_extract_token (buf, s, 0);
+    FREE(&tmp);
 
     if (!ascii_strcasecmp(buf->data, "any"))
       tmp = safe_strdup("*/.*");
