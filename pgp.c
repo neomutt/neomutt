@@ -1443,6 +1443,7 @@ BODY *pgp_encrypt_message (BODY *a, char *keylist, int sign)
 				    fileno (fpout), fileno (pgperr),
 				    pgpinfile, keylist, sign)) == -1)
   {
+    safe_fclose (&fpout);
     safe_fclose (&pgperr);
     unlink(pgpinfile);
     return (NULL);
