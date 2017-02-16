@@ -1434,6 +1434,7 @@ BODY *smime_build_smime_entity (BODY *a, char *certlist)
     safe_fclose (&smimeerr);
     mutt_unlink (smimeinfile);
     mutt_unlink (certfile);
+    safe_fclose (&fpout);
     return (NULL);
   }
 
