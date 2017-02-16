@@ -2871,6 +2871,7 @@ int mutt_write_fcc (const char *path, HEADER *hdr, const char *msgid,
     onm_flags |= MUTT_SET_DRAFT;
   if ((msg = mx_open_new_message (&f, hdr, onm_flags)) == NULL)
   {
+    safe_fclose(&tempfp);
     mx_close_mailbox (&f, NULL);
     return (-1);
   }
