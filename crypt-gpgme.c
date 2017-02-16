@@ -2309,11 +2309,14 @@ static void copy_clearsigned (gpgme_data_t data, STATE *s, char *charset)
   short complete, armor_header;
   FGETCONV *fc;
   char *fname;
-  FILE *fp;
+  FILE *fp = NULL;
 
   fname = data_object_to_tempfile (data, NULL, &fp);
   if (!fname)
+  {
+    safe_fclose (&fp);
     return;
+  }
   unlink (fname);
   FREE (&fname);
 
