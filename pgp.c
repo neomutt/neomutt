@@ -434,6 +434,7 @@ int pgp_application_pgp_handler (BODY *m, STATE *s)
 	if ((pgpout = safe_fopen (outfile, "w+")) == NULL)
 	{
 	  mutt_perror (outfile);
+          safe_fclose (&tmpfp);
 	  return -1;
 	}
 	
