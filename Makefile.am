@@ -87,7 +87,7 @@ EXTRA_DIST = COPYRIGHT LICENSE.md OPS OPS.PGP OPS.CRYPT OPS.SMIME TODO UPDATING 
 	README.SSL README.md README.neomutt README.notmuch smime.h group.h \
 	pgppacket.h depcomp ascii.h PATCHES patchlist.sh \
 	ChangeLog ChangeLog.neomutt mutt_idna.h sidebar.h OPS.SIDEBAR \
-	snprintf.c regex.c crypt-gpgme.h hcachever.sh.in \
+	regex.c crypt-gpgme.h hcachever.sh.in \
 	txt2c.c txt2c.sh version.h \
 	hcache-backend.h hcache-bdb.c hcache-gdbm.c hcache-kc.c hcache-lmdb.c \
 	hcache-qdbm.c hcache-tc.c
