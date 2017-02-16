@@ -1153,6 +1153,7 @@ static int parse_group (BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err)
 	  { 
 	    snprintf (err->data, err->dsize, _("%sgroup: warning: bad IDN '%s'.\n"),
 		      data == 1 ? "un" : "", estr);
+            rfc822_free_address (&addr);
 	    goto bail;
 	  }
 	  if (data == MUTT_GROUP)
