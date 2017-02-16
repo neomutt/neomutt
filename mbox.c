@@ -1044,6 +1044,7 @@ static int mbox_sync_mailbox (CONTEXT *ctx, int *index_hint)
     mutt_perror (tempfile);
     mutt_sleep (5);
     FREE (&newOffset);
+    FREE (&oldOffset);
     return (-1);
   }
 
@@ -1108,6 +1109,7 @@ static int mbox_sync_mailbox (CONTEXT *ctx, int *index_hint)
     mutt_error (_("Write failed!  Saved partial mailbox to %s"), savefile);
     mutt_sleep (5);
     FREE (&newOffset);
+    FREE (&oldOffset);
     return (-1);
   }
 
@@ -1122,6 +1124,7 @@ static int mbox_sync_mailbox (CONTEXT *ctx, int *index_hint)
     mx_fastclose_mailbox (ctx);
     mutt_error (_("Fatal error!  Could not reopen mailbox!"));
     FREE (&newOffset);
+    FREE (&oldOffset);
     return (-1);
   }
 
