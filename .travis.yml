@@ -5,7 +5,7 @@ notifications:
     on_success: change
     on_failure: always
 
-sudo: required
+sudo: false
 dist: trusty
 
 language: c
