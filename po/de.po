@@ -14,7 +14,7 @@ msgstr ""
 "Project-Id-Version: neomutt-20161104\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
 "POT-Creation-Date: 2017-01-13 14:32+0000\n"
-"PO-Revision-Date: 2016-11-30 06:38+0100\n"
+"PO-Revision-Date: 2017-02-13 20:19+0100\n"
 "Last-Translator: André Berger <andre.berger@web.de>\n"
 "Language-Team: none\n"
 "Language: de\n"
@@ -113,7 +113,7 @@ msgstr "Adresse eingetragen."
 
 #: alias.c:394
 msgid "Error seeking in alias file"
-msgstr "Fehler beim Suchen in alias Datei"
+msgstr "Fehler beim Suchen in Addressbuchdatei"
 
 #: attach.c:113 attach.c:245 attach.c:400 attach.c:935
 msgid "Can't match nametemplate, continue?"
@@ -788,7 +788,7 @@ msgstr "Neue Datei: "
 
 #: compose.c:1261
 msgid "Content-Type is of the form base/sub"
-msgstr "Content-Type ist von der Form Basis/Untertyp."
+msgstr "Content-Type ist von der Form Basis-/Untertyp."
 
 #: compose.c:1267
 #, c-format
@@ -845,7 +845,7 @@ msgstr "Kann den Inhalt der komprimierten Datei nicht bestimmen"
 #: compress.c:501 compress.c:579
 #, c-format
 msgid "Can't find mailbox ops for mailbox type %d"
-msgstr "Finde keine Mailbox Ops für Mailbox Typ %d"
+msgstr "Finde keine Mailbox-Ops für Mailbox-Typ %d"
 
 #: compress.c:540 compress.c:834
 #, c-format
@@ -946,7 +946,7 @@ msgstr "Fehler beim Setzen des geheimen Schlüssels `%s': %s\n"
 #: crypt-gpgme.c:758
 #, c-format
 msgid "error setting PKA signature notation: %s\n"
-msgstr "Fehler beim Setzen der Darstellung der PKA Unterschrift: %s\n"
+msgstr "Fehler beim Setzen der Darstellung der PKA-Unterschrift: %s\n"
 
 #: crypt-gpgme.c:814
 #, c-format
@@ -1000,11 +1000,11 @@ msgstr "Ein Systemfehler ist aufgetreten"
 
 #: crypt-gpgme.c:1234
 msgid "WARNING: PKA entry does not match signer's address: "
-msgstr "WARNUNG: PKA Eintrag entspricht nicht Adresse des Unterzeichners: "
+msgstr "WARNUNG: PKA-Eintrag entspricht nicht Adresse des Unterzeichners: "
 
 #: crypt-gpgme.c:1241
 msgid "PKA verified signer's address is: "
-msgstr "Die PKA geprüfte Adresse des Unterzeichners lautet: "
+msgstr "Die PKA-geprüfte Adresse des Unterzeichners lautet: "
 
 #. L10N: DOTFILL
 #. Fill dots to make the DOTFILL entries the same length.
@@ -1180,11 +1180,11 @@ msgstr "[-- Ende der PGP/MIME-verschlüsselten Daten --]\n"
 
 #: crypt-gpgme.c:2642 pgp.c:570 pgp.c:1125
 msgid "PGP message successfully decrypted."
-msgstr "PGP Nachricht erfolgreich entschlüsselt."
+msgstr "PGP-Nachricht erfolgreich entschlüsselt."
 
 #: crypt-gpgme.c:2646 pgp.c:505 pgp.c:568 pgp.c:1129
 msgid "Could not decrypt PGP message"
-msgstr "Konnte PGP Nachricht nicht entschlüsseln"
+msgstr "Konnte PGP-Nachricht nicht entschlüsseln"
 
 #: crypt-gpgme.c:2686
 msgid ""
@@ -1358,11 +1358,11 @@ msgstr "Schlüssel prüfen  "
 
 #: crypt-gpgme.c:4027
 msgid "PGP and S/MIME keys matching"
-msgstr "Passende PGP und S/MIME Schlüssel"
+msgstr "Passende PGP- und S/MIME-Schlüssel"
 
 #: crypt-gpgme.c:4029
 msgid "PGP keys matching"
-msgstr "Passende PGP Schlüssel"
+msgstr "Passende PGP-Schlüssel"
 
 #: crypt-gpgme.c:4031
 msgid "S/MIME keys matching"
@@ -1444,7 +1444,7 @@ msgstr "Fehler beim Export des Schlüssels: %s\n"
 #: crypt-gpgme.c:4626
 #, c-format
 msgid "PGP Key 0x%s."
-msgstr "PGP Schlüssel 0x%s."
+msgstr "PGP-Schlüssel 0x%s."
 
 #: crypt-gpgme.c:4668
 msgid "GPGME: OpenPGP protocol not available"
@@ -1568,11 +1568,11 @@ msgstr "Nachricht nicht verschickt."
 
 #: crypt.c:233
 msgid "Encrypt message to S/MIME Default Key also?"
-msgstr "Nachricht auch mit dem S/MIME Standardschlüssel verschlüsseln?"
+msgstr "Nachricht auch mit dem S/MIME-Standardschlüssel verschlüsseln?"
 
 #: crypt.c:267
 msgid "Encrypt message to PGP Default Key also?"
-msgstr "Nachricht auch mit dem PGP Standardschlüssel verschlüsseln?"
+msgstr "Nachricht auch mit dem PGP-Standardschlüssel verschlüsseln?"
 
 #: crypt.c:507
 msgid "S/MIME messages with no hints on content are unsupported."
@@ -1580,11 +1580,11 @@ msgstr "S/MIME Nachrichten ohne Hinweis auf den Inhalt werden nicht unterstützt
 
 #: crypt.c:727 crypt.c:771
 msgid "Trying to extract PGP keys...\n"
-msgstr "Versuche PGP Keys zu extrahieren...\n"
+msgstr "Versuche PGP-Schlüssel zu extrahieren...\n"
 
 #: crypt.c:751 crypt.c:791
 msgid "Trying to extract S/MIME certificates...\n"
-msgstr "Versuche S/MIME Zertifikate zu extrahieren...\n"
+msgstr "Versuche S/MIME-Zertifikate zu extrahieren...\n"
 
 #: crypt.c:938
 #, c-format
@@ -2434,12 +2434,12 @@ msgstr "Authentifiziere (%s)..."
 
 #: imap/auth_sasl.c:228 pop_auth.c:180
 msgid "SASL authentication failed."
-msgstr "SASL Authentifizierung fehlgeschlagen."
+msgstr "SASL-Authentifizierung fehlgeschlagen."
 
 #: imap/browse.c:57 imap/imap.c:569
 #, c-format
 msgid "%s is an invalid IMAP path"
-msgstr "%s ist ein ungültiger IMAP Pfad"
+msgstr "%s ist ein ungültiger IMAP-Pfad"
 
 #: imap/browse.c:68
 msgid "Getting folder list..."
@@ -2608,7 +2608,7 @@ msgstr "Hole Nachricht..."
 
 #: imap/message.c:492 pop.c:568
 msgid "The message index is incorrect. Try reopening the mailbox."
-msgstr "Der Nachrichtenindex ist fehlerhaft. Die Mailbox in weiteres Mal geöffnet werden."
+msgstr "Der Nachrichtenindex ist fehlerhaft. Versuchen Sie, die Mailbox erneut zu öffnen."
 
 #: imap/message.c:662
 msgid "Uploading message..."
@@ -3275,7 +3275,7 @@ msgstr "Lese Nachrichten..."
 
 #: mutt_notmuch.c:1238
 msgid "No more messages in the thread."
-msgstr "Keine weiteren Nachrichten in diesen Diskussionsfaden."
+msgstr "Keine weiteren Nachrichten in diesem Diskussionsfaden."
 
 #: mutt_notmuch.c:2071
 msgid "Can't write to virtual folder."
@@ -3506,24 +3506,24 @@ msgstr "Warnung: Server-Zertifikat wurde mit unsicherem Algorithmus signiert"
 #: mutt_ssl_gnutls.c:952
 #, c-format
 msgid "SHA1 Fingerprint: %s"
-msgstr "SHA1 Fingerabdruck: %s"
+msgstr "SHA1-Fingerabdruck: %s"
 
 #: mutt_ssl_gnutls.c:955
 #, c-format
 msgid "MD5 Fingerprint: %s"
-msgstr "MD5 Fingerabdruck: %s"
+msgstr "MD5-Fingerabdruck: %s"
 
 #: mutt_ssl_gnutls.c:960
 msgid "WARNING: Server certificate is not yet valid"
-msgstr "WARNUNG: Zertifikat des Servers ist noch nicht gültig"
+msgstr "WARNUNG: Server-Zertifikat ist noch nicht gültig"
 
 #: mutt_ssl_gnutls.c:965
 msgid "WARNING: Server certificate has expired"
-msgstr "WARNUNG: Zertifikat des Servers ist abgelaufen"
+msgstr "WARNUNG: Server-Zertifikat ist abgelaufen"
 
 #: mutt_ssl_gnutls.c:970
 msgid "WARNING: Server certificate has been revoked"
-msgstr "WARNUNG: Zertifikat des Servers wurde zurückgezogen"
+msgstr "WARNUNG: Server-Zertifikat wurde zurückgezogen"
 
 #: mutt_ssl_gnutls.c:975
 msgid "WARNING: Server hostname does not match certificate"
@@ -3531,7 +3531,7 @@ msgstr "WARNUNG: Hostname des Servers entspricht nicht dem Zertifikat"
 
 #: mutt_ssl_gnutls.c:980
 msgid "WARNING: Signer of server certificate is not a CA"
-msgstr "WARNUNG: Aussteller des Zertifikats ist keine CA"
+msgstr "WARNUNG: Aussteller des Server-Zertifikats ist keine CA"
 
 #: mutt_ssl_gnutls.c:1081 mutt_ssl_gnutls.c:1116 mutt_ssl_gnutls.c:1126
 msgid "Unable to get certificate from peer"
@@ -4022,7 +4022,7 @@ msgstr "vsabuu"
 
 #: pgpinvoke.c:310
 msgid "Fetching PGP key..."
-msgstr "Hole PGP Schlüssel..."
+msgstr "Hole PGP-Schlüssel..."
 
 #: pgpkey.c:491
 msgid "All matching keys are expired, revoked, or disabled."
@@ -4045,7 +4045,7 @@ msgstr "Kann /dev/null nicht öffnen"
 #: pgpkey.c:778
 #, c-format
 msgid "PGP Key %s."
-msgstr "PGP Schlüssel %s."
+msgstr "PGP-Schlüssel %s."
 
 #: pop.c:102 pop_lib.c:210
 #, c-format
@@ -4069,7 +4069,7 @@ msgstr "%d Nachrichten verloren gegangen. Die Mailbox sollte erneut geöffnet we
 #: pop.c:411 pop.c:808
 #, c-format
 msgid "%s is an invalid POP path"
-msgstr "%s ist ein ungültiger POP Pfad"
+msgstr "%s ist ein ungültiger POP-Pfad"
 
 #: pop.c:455
 msgid "Fetching list of messages..."
@@ -4115,7 +4115,7 @@ msgstr "Authentifiziere (SASL)..."
 
 #: pop_auth.c:215
 msgid "POP timestamp is invalid!"
-msgstr "POP Zeitstempel ist ungültig!"
+msgstr "POP-Zeitstempel ist ungültig!"
 
 #: pop_auth.c:220
 msgid "Authenticating (APOP)..."
@@ -4133,7 +4133,7 @@ msgstr "Kommando USER wird vom Server nicht unterstützt."
 #: pop_lib.c:57
 #, c-format
 msgid "Invalid POP URL: %s\n"
-msgstr "Ungültige POP URL: %s\n"
+msgstr "Ungültige POP-URL: %s\n"
 
 #: pop_lib.c:208
 msgid "Unable to leave messages on server."
@@ -4166,11 +4166,11 @@ msgstr "Keine zurückgestellten Nachrichten."
 
 #: postpone.c:468 postpone.c:489 postpone.c:523
 msgid "Illegal crypto header"
-msgstr "Unzulässiger Crypto Header"
+msgstr "Unzulässiger Crypto-Header"
 
 #: postpone.c:509
 msgid "Illegal S/MIME header"
-msgstr "Unzulässiger S/MIME Header"
+msgstr "Unzulässiger S/MIME-Header"
 
 #: postpone.c:606
 msgid "Decrypting message..."
@@ -4635,7 +4635,7 @@ msgstr "Unbekannt "
 #: smime.c:430
 #, c-format
 msgid "S/MIME certificates matching \"%s\"."
-msgstr "S/MIME Zertifikate, die zu \"%s\" passen."
+msgstr "S/MIME-Zertifikate, die zu \"%s\" passen."
 
 #: smime.c:473
 msgid "ID is not trusted."
@@ -4710,9 +4710,7 @@ msgstr ""
 msgid ""
 "\n"
 "[-- End of S/MIME signed data. --]\n"
-msgstr ""
-"\n"
-"[-- Ende der S/MIME signierten Daten --]\n"
+msgstr "\n[-- Ende der S/MIME-signierten Daten --]\n"
 
 #. L10N: S/MIME options (opportunistic encryption is on)
 #: smime.c:2111
@@ -4782,12 +4780,12 @@ msgstr "895"
 #: smtp.c:137
 #, c-format
 msgid "SMTP session failed: %s"
-msgstr "SMTP Verbindung fehlgeschlagen: %s"
+msgstr "SMTP-Verbindung fehlgeschlagen: %s"
 
 #: smtp.c:183
 #, c-format
 msgid "SMTP session failed: unable to open %s"
-msgstr "SMTP Verbindung fehlgeschlagen: Kann %s nicht öffnen"
+msgstr "SMTP-Verbindung fehlgeschlagen: Kann %s nicht öffnen"
 
 #: smtp.c:294
 msgid "No from address given"
@@ -4795,11 +4793,11 @@ msgstr "Keine Absenderadresse angegeben"
 
 #: smtp.c:356
 msgid "SMTP session failed: read error"
-msgstr "SMTP Verbindung fehlgeschlagen: Lesefehler"
+msgstr "SMTP-Verbindung fehlgeschlagen: Lesefehler"
 
 #: smtp.c:358
 msgid "SMTP session failed: write error"
-msgstr "SMTP Verbindung fehlgeschlagen: Schreibfehler"
+msgstr "SMTP-Verbindung fehlgeschlagen: Schreibfehler"
 
 #: smtp.c:360
 msgid "Invalid server response"
@@ -4808,15 +4806,15 @@ msgstr "Ungültige Serverantwort"
 #: smtp.c:383
 #, c-format
 msgid "Invalid SMTP URL: %s"
-msgstr "Ungültige SMTP URL: %s"
+msgstr "Ungültige SMTP-URL: %s"
 
 #: smtp.c:493
 msgid "SMTP server does not support authentication"
-msgstr "SMTP Server unterstützt keine Authentifizierung"
+msgstr "SMTP-Server unterstützt keine Authentifizierung"
 
 #: smtp.c:501
 msgid "SMTP authentication requires SASL"
-msgstr "SMTP Authentifizierung benötigt SASL"
+msgstr "SMTP-Authentifizierung benötigt SASL"
 
 #: smtp.c:535
 #, c-format
@@ -4825,7 +4823,7 @@ msgstr "%s Authentifizierung fehlgeschlagen, versuche nächste Methode"
 
 #: smtp.c:552
 msgid "SASL authentication failed"
-msgstr "SASL Authentifizierung fehlgeschlagen"
+msgstr "SASL-Authentifizierung fehlgeschlagen"
 
 #: sort.c:325
 msgid "Sorting mailbox..."
@@ -5119,7 +5117,7 @@ msgstr "Erzeuge neues Attachment via mailcap"
 
 #: ../keymap_alldefs.h:47
 msgid "toggle recoding of this attachment"
-msgstr "Schalte Ändern der Kodierung für diesen Anhangs ein/aus"
+msgstr "Schalte Ändern der Kodierung für diesen Anhang ein/aus"
 
 #: ../keymap_alldefs.h:48
 msgid "save this message to send later"
@@ -5907,7 +5905,7 @@ msgstr "Extrahiere unterstützte öffentliche Schlüssel"
 
 #: ../keymap_alldefs.h:244
 msgid "show S/MIME options"
-msgstr "Zeige S/MIME Optionen"
+msgstr "Zeige S/MIME-Optionen"
 
 #~ msgid "move to the first message"
 #~ msgstr "Springe zu erster Nachricht"
