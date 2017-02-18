@@ -808,7 +808,7 @@ static int nntp_query (NNTP_DATA *nntp_data, char *line, size_t linelen)
  * funct(NULL, *data) if rewind(*data) needs, exits when fail or done:
  *  0 - success
  *  1 - bad response (answer in query buffer)
- * -1 - conection lost
+ * -1 - connection lost
  * -2 - error in funct(*line, *data) */
 static int nntp_fetch_lines (NNTP_DATA *nntp_data, char *query, size_t qlen,
 			char *msg, int (*funct) (char *, void *), void *data)

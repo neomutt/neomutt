@@ -1741,7 +1741,7 @@ ci_send_message (int flags,		/* send mode */
       }
     }
 
-    /* opportunistic encrypt relys on SMIME or PGP already being selected */
+    /* opportunistic encrypt relies on SMIME or PGP already being selected */
     if (option (OPTCRYPTOPPORTUNISTICENCRYPT))
     {
       /* If something has already enabled encryption, e.g. OPTCRYPTAUTOENCRYPT

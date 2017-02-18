@@ -301,7 +301,7 @@ static const char *guess_category_value PARAMS ((int category,
      internal_function;
 
 
-/* For those loosing systems which don't have `alloca' we have to add
+/* For those losing systems which don't have `alloca' we have to add
    some additional code emulating it.  */
 #ifdef HAVE_ALLOCA
 /* Nothing has to be done.  */
