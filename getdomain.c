@@ -55,7 +55,7 @@ int getdnsdomainname (char *d, size_t len)
     ret = -1;
   else
   {
-    if (!(p = strchr(h->ai_canonname, '.')))
+    if (!h->ai_canonname || !(p = strchr(h->ai_canonname, '.')))
       ret = -1;
     else
     {
