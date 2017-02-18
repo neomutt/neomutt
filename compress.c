@@ -277,7 +277,7 @@ set_compress_info (CONTEXT *ctx)
  * mutt_free_compress_info - Frees the compress info members and structure.
  * @ctx: Mailbox to free compress_info for.
  */
-void
+static void
 mutt_free_compress_info (CONTEXT *ctx)
 {
   COMPRESS_INFO *ci;
@@ -618,7 +618,10 @@ close_mailbox (CONTEXT *ctx)
 
   struct mx_ops *ops = ci->child_ops;
   if (!ops)
+  {
+    mutt_free_compress_info (ctx);
     return -1;
+  }
 
   ops->close (ctx);
 
@@ -634,35 +637,37 @@ close_mailbox (CONTEXT *ctx)
     {
       remove (ctx->path);
     }
-
-    return 0;
-  }
-
-  const char *append;
-  const char *msg;
-
-  /* The file exists and we can append */
-  if ((access (ctx->realpath, F_OK) == 0) && ci->append)
-  {
-    append = ci->append;
-    msg = _("Compressed-appending to %s...");
   }
   else
   {
-    append = ci->close;
-    msg = _("Compressing %s...");
+    const char *append;
+    const char *msg;
+
+    /* The file exists and we can append */
+    if ((access (ctx->realpath, F_OK) == 0) && ci->append)
+    {
+      append = ci->append;
+      msg = _("Compressed-appending to %s...");
+    }
+    else
+    {
+      append = ci->close;
+      msg = _("Compressing %s...");
+    }
+
+    int rc = execute_command (ctx, append, msg);
+    if (rc == 0)
+    {
+      mutt_any_key_to_continue (NULL);
+      mutt_error (_("Error. Preserving temporary file: %s"), ctx->path);
+    }
+    else
+      remove (ctx->path);
+
+    unlock_realpath (ctx);
   }
 
-  int rc = execute_command (ctx, append, msg);
-  if (rc == 0)
-  {
-    mutt_any_key_to_continue (NULL);
-    mutt_error (_("Error. Preserving temporary file: %s"), ctx->path);
-  }
-  else
-    remove (ctx->path);
-
-  unlock_realpath (ctx);
+  mutt_free_compress_info (ctx);
 
   return 0;
 }
