@@ -2880,7 +2880,7 @@ int mutt_write_fcc (const char *path, HEADER *hdr, const char *msgid,
    * */
   mutt_write_rfc822_header (msg->fp, hdr->env, hdr->content, post ? -post : 0, 0);
 
-  /* (postponment) if this was a reply of some sort, <msgid> contians the
+  /* (postponment) if this was a reply of some sort, <msgid> contains the
    * Message-ID: of message replied to.  Save it using a special X-Mutt-
    * header so it can be picked up if the message is recalled at a later
    * point in time.  This will allow the message to be marked as replied if
