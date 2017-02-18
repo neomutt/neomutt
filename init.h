@@ -22,10 +22,10 @@
 # include "doc/makedoc-defs.h"
 #else
 # include "sort.h"
+# include "mx.h"
 #endif
 
 #include "buffy.h"
-#include "mx.h"
 
 #ifndef _MAKEDOC
 #define DT_MASK		0x0f
