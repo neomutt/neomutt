@@ -36,7 +36,7 @@ describe('lua API', function()
     end)
 
     it('works with DT_PATH', function()
-      test_config_type("alias_file", "tests/functional/test_runner.muttrc", "/dev/null")
+      test_config_type("alias_file", os.getenv('SOURCE_DIR') .. "/tests/functional/test_runner.muttrc", "/dev/null")
     end)
 
     it('works with DT_MAGIC', function()

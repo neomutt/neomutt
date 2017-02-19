@@ -2,6 +2,7 @@ notifications:
   email:
     recipients:
       - rich@flatcap.org
+      - z+neomutt+github+travis@m0g.net
     on_success: change
     on_failure: always
 
@@ -15,6 +16,8 @@ cache: ccache
 addons:
   apt:
     packages:
+      - python-software-properties
+      - python-pip
       - libgpgme11-dev
       - libnotmuch-dev
       - libtokyocabinet-dev
@@ -34,22 +37,34 @@ addons:
       - docbook-xsl
       - libxml2-utils
       - gettext
-      - lua5.2
-      - liblua5.2-dev
       - autopoint
 
 git:
   depth: 3
 
-install:
-  - git clone --depth 1 https://github.com/neomutt/travis-build.git ~/config
+env:
+  global:
+    - SOURCE_DIR="."
+    - CONFIG_DIR="config"
+    - LUAC_PATH="lua53"
+    - LUAJ_PATH="luajit"
 
-before_script:
-  - ccache --zero-stats
+before_install:
+  - pip install hererocks cpp-coveralls
+  - hererocks lua53 -l5.3 -rlatest --no-readline --cflags="-fPIC"
+  - hererocks luajit -j2.1 -rlatest --no-readline
+  - for luarocks in luajit/bin/luarocks lua53/bin/luarocks; do
+      for pkg in busted luassert lpeg; do
+        $luarocks install $pkg;
+      done;
+    done
+
+install:
+  - git clone --depth 1 https://github.com/neomutt/travis-build.git ${TRAVIS_BUILD_DIR}/config
 
 script:
-  - ~/config/build
-
-after_script:
-  - ccache --show-stats
+  - bash .ci/run_tests_unit.sh
+  - bash .ci/run_tests_func.sh
+  - bash .ci/run_tests_build.sh
+  - coveralls --exclude lib --exclude tests --gcov-options '\-lp' > /dev/null
 
