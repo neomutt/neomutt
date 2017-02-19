@@ -629,8 +629,12 @@ set sidebar_divider_char = '│'          <emphasis role="comment"># Pretty line
         including the section about <link linkend="formatstrings-conditionals">conditionals</link>.
       </para>
       <para>
-        The default value is <literal>%B%*  %n</literal>
-        The default value is <literal>%B%?F? [%F]?%* %?N?%N/?%S</literal>
+        The default value is:
+        <literal>%B%*  %n</literal>
+      </para>
+      <para>
+        A more detailed value is:
+        <literal>%B%?F? [%F]?%* %?N?%N/?%S</literal>
       </para>
       <itemizedlist>
         <title>Which breaks down as:</title>
