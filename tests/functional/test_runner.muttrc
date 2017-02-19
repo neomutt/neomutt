@@ -1,0 +1,10 @@
+set visual=vim
+set connect_timeout=69
+set arrow_cursor
+set mask="!^\\.[^.]"
+set to_chars="+TCFL"
+set sort="from"
+set from="fubar@example.org"
+set my_fubar="Ford Prefect"
+
+lua-source tests/functional/test_lua-api_spec.lua
