@@ -1,7 +1,5 @@
-# top-most EditorConfig file
 root = true
 
-# Unix-style newlines with a newline ending every file
 [*]
 end_of_line = lf
 insert_final_newline = true
@@ -10,6 +8,7 @@ trim_trailing_whitespace = true
 
 [*.{c,h}]
 indent_size = 2
+indent_style = space
 
 [ChangeLog.neomutt]
 indent_style = space
