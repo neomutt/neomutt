@@ -103,14 +103,18 @@ HASH *hash_create (int nelem, int flags)
   }
   if (flags & MUTT_HASH_STRDUP_KEYS)
     table->strdup_keys = 1;
+  if (flags & MUTT_HASH_ALLOW_DUPS)
+    table->allow_dups = 1;
   return table;
 }
 
-HASH *int_hash_create (int nelem)
+HASH *int_hash_create (int nelem, int flags)
 {
   HASH *table = new_hash (nelem);
   table->gen_hash = gen_int_hash;
   table->cmp_key = cmp_int_key;
+  if (flags & MUTT_HASH_ALLOW_DUPS)
+    table->allow_dups = 1;
   return table;
 }
 
@@ -128,7 +132,7 @@ HASH *hash_resize (HASH *ptr, int nelem, int lower)
     {
       tmp = elem;
       elem = elem->next;
-      hash_insert (table, tmp->key.strkey, tmp->data, 1);
+      hash_insert (table, tmp->key.strkey, tmp->data);
       FREE (&tmp);
     }
   }
@@ -142,7 +146,7 @@ HASH *hash_resize (HASH *ptr, int nelem, int lower)
  * data         data to associate with `key'
  * allow_dup    if nonzero, duplicate keys are allowed in the table 
  */
-static int union_hash_insert (HASH * table, union hash_key key, void *data, int allow_dup)
+static int union_hash_insert (HASH * table, union hash_key key, void *data)
 {
   struct hash_elem *ptr;
   unsigned int h;
@@ -152,7 +156,7 @@ static int union_hash_insert (HASH * table, union hash_key key, void *data, int 
   ptr->key = key;
   ptr->data = data;
 
-  if (allow_dup)
+  if (table->allow_dups)
   {
     ptr->next = table->table[h];
     table->table[h] = ptr;
@@ -184,18 +188,18 @@ static int union_hash_insert (HASH * table, union hash_key key, void *data, int 
   return h;
 }
 
-int hash_insert (HASH * table, const char *strkey, void *data, int allow_dup)
+int hash_insert (HASH * table, const char *strkey, void *data)
 {
   union hash_key key;
   key.strkey = table->strdup_keys ? safe_strdup (strkey) : strkey;
-  return union_hash_insert (table, key, data, allow_dup);
+  return union_hash_insert (table, key, data);
 }
 
-int int_hash_insert (HASH * table, unsigned int intkey, void *data, int allow_dup)
+int int_hash_insert (HASH * table, unsigned int intkey, void *data)
 {
   union hash_key key;
   key.intkey = intkey;
-  return union_hash_insert (table, key, data, allow_dup);
+  return union_hash_insert (table, key, data);
 }
 
 static struct hash_elem *union_hash_find_elem (const HASH *table, union hash_key key)

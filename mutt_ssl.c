@@ -25,6 +25,7 @@
 #include <openssl/x509v3.h>
 #include <openssl/err.h>
 #include <openssl/rand.h>
+#include <openssl/evp.h>
 
 #undef _
 
@@ -86,6 +87,49 @@ static void ssl_get_client_cert(sslsockdata *ssldata, CONNECTION *conn);
 static int ssl_passwd_cb(char *buf, int size, int rwflag, void *userdata);
 static int ssl_negotiate (CONNECTION *conn, sslsockdata*);
 
+/* ssl certificate verification can behave strangely if there are expired
+ * certs loaded into the trusted store.  This function filters out expired
+ * certs.
+ * Previously the code used this form:
+ *     SSL_CTX_load_verify_locations (ssldata->ctx, SslCertFile, NULL);
+ */
+static int ssl_load_certificates (SSL_CTX *ctx)
+{
+  FILE *fp;
+  X509 *cert = NULL;
+  X509_STORE *store;
+  char buf[STRING];
+
+  mutt_debug (2, "ssl_load_certificates: loading trusted certificates\n");
+  store = SSL_CTX_get_cert_store (ctx);
+  if (!store)
+  {
+    store = X509_STORE_new ();
+    SSL_CTX_set_cert_store (ctx, store);
+  }
+
+  if ((fp = fopen (SslCertFile, "rt")) == NULL)
+    return 0;
+
+  while (NULL != PEM_read_X509 (fp, &cert, NULL, NULL))
+  {
+    if ((X509_cmp_current_time (X509_get_notBefore (cert)) >= 0) ||
+        (X509_cmp_current_time (X509_get_notAfter (cert)) <= 0))
+    {
+      mutt_debug (2, "ssl_load_certificates: filtering expired cert: %s\n",
+              X509_NAME_oneline (X509_get_subject_name (cert), buf, sizeof (buf)));
+    }
+    else
+    {
+      X509_STORE_add_cert (store, cert);
+    }
+  }
+  X509_free (cert);
+  safe_fclose (&fp);
+
+  return 1;
+}
+
 /* mutt_ssl_starttls: Negotiate TLS over an already opened connection.
  *   TODO: Merge this code better with ssl_socket_open. */
 int mutt_ssl_starttls (CONNECTION* conn)
@@ -145,7 +189,7 @@ int mutt_ssl_starttls (CONNECTION* conn)
     }
   }
 
-  if (SslCertFile && ! SSL_CTX_load_verify_locations (ssldata->ctx, SslCertFile, NULL))
+  if (SslCertFile && !ssl_load_certificates (ssldata->ctx))
     mutt_debug (1, "mutt_ssl_starttls: Error loading trusted certificates\n");
 
   ssl_get_client_cert(ssldata, conn);
@@ -403,7 +447,7 @@ static int ssl_socket_open (CONNECTION * conn)
     }
   }
 
-  if (SslCertFile && ! SSL_CTX_load_verify_locations (data->ctx, SslCertFile, NULL))
+  if (SslCertFile && !ssl_load_certificates (data->ctx))
     mutt_debug (1, "ssl_socket_open: Error loading trusted certificates\n");
 
   ssl_get_client_cert(data, conn);
@@ -611,13 +655,13 @@ static char *x509_get_part (X509_NAME *name, int nid)
   return ret;
 }
 
-static void x509_fingerprint (char *s, int l, X509 * cert)
+static void x509_fingerprint (char *s, int l, X509 * cert, const EVP_MD *(*hashfunc)(void))
 {
   unsigned char md[EVP_MAX_MD_SIZE];
   unsigned int n;
   int j;
 
-  if (!X509_digest (cert, EVP_md5 (), md, &n))
+  if (!X509_digest (cert, hashfunc(), md, &n))
   {
     snprintf (s, l, _("[unable to calculate]"));
   }
@@ -717,7 +761,7 @@ static int check_certificate_by_digest (X509 *peercert)
     }
     if (X509_cmp_current_time (X509_get_notAfter (peercert)) <= 0)
     {
-      mutt_debug (2, "Server certificate has expired");
+      mutt_debug (2, "Server certificate has expired\n");
       mutt_error (_("Server certificate has expired"));
       mutt_sleep (2);
       return 0;
@@ -733,7 +777,7 @@ static int check_certificate_by_digest (X509 *peercert)
     return 0;
   }
 
-  while ((cert = PEM_read_X509 (fp, &cert, NULL, NULL)) != NULL)
+  while (PEM_read_X509 (fp, &cert, NULL, NULL) != NULL)
   {
     pass = compare_certificates (cert, peercert, peermd, peermdlen) ? 0 : 1;
 
@@ -988,9 +1032,10 @@ static int interactive_check_cert (X509 *cert, int idx, int len)
   char title[STRING];
   MUTTMENU *menu = mutt_new_menu (MENU_GENERIC);
   int done, row, i;
+  unsigned u;
   FILE *fp;
 
-  menu->max = mutt_array_size (part) * 2 + 9;
+  menu->max = mutt_array_size (part) * 2 + 10;
   menu->dialog = safe_calloc (1, menu->max * sizeof (char *));
   for (i = 0; i < menu->max; i++)
     menu->dialog[i] = safe_calloc (1, SHORT_STRING * sizeof (char));
@@ -999,17 +1044,17 @@ static int interactive_check_cert (X509 *cert, int idx, int len)
   strfcpy (menu->dialog[row], _("This certificate belongs to:"), SHORT_STRING);
   row++;
   x509_subject = X509_get_subject_name (cert);
-  for (i = 0; i < mutt_array_size (part); i++)
+  for (u = 0; u < mutt_array_size (part); u++)
     snprintf (menu->dialog[row++], SHORT_STRING, "   %s",
-              x509_get_part (x509_subject, part[i]));
+              x509_get_part (x509_subject, part[u]));
 
   row++;
   strfcpy (menu->dialog[row], _("This certificate was issued by:"), SHORT_STRING);
   row++;
   x509_issuer = X509_get_issuer_name (cert);
-  for (i = 0; i < mutt_array_size (part); i++)
+  for (u = 0; u < mutt_array_size (part); u++)
     snprintf (menu->dialog[row++], SHORT_STRING, "   %s",
-              x509_get_part (x509_issuer, part[i]));
+              x509_get_part (x509_issuer, part[u]));
 
   row++;
   snprintf (menu->dialog[row++], SHORT_STRING, _("This certificate is valid"));
@@ -1020,8 +1065,11 @@ static int interactive_check_cert (X509 *cert, int idx, int len)
 
   row++;
   buf[0] = '\0';
-  x509_fingerprint (buf, sizeof (buf), cert);
-  snprintf (menu->dialog[row++], SHORT_STRING, _("Fingerprint: %s"), buf);
+  x509_fingerprint (buf, sizeof (buf), cert, EVP_sha1);
+  snprintf (menu->dialog[row++], SHORT_STRING, _("SHA1 Fingerprint: %s"), buf);
+  buf[0] = '\0';
+  x509_fingerprint (buf, sizeof (buf), cert, EVP_md5);
+  snprintf (menu->dialog[row++], SHORT_STRING, _("MD5 Fingerprint: %s"), buf);
 
   snprintf (title, sizeof (title),
 	    _("SSL Certificate check (certificate %d of %d in chain)"),

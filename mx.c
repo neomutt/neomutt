@@ -1518,9 +1518,9 @@ void mx_update_context (CONTEXT *ctx, int new_messages)
 
     /* add this message to the hash tables */
     if (ctx->id_hash && h->env->message_id)
-      hash_insert (ctx->id_hash, h->env->message_id, h, 0);
+      hash_insert (ctx->id_hash, h->env->message_id, h);
     if (ctx->subj_hash && h->env->real_subj)
-      hash_insert (ctx->subj_hash, h->env->real_subj, h, 1);
+      hash_insert (ctx->subj_hash, h->env->real_subj, h);
     mutt_label_hash_add (ctx, h);
 
     if (option (OPTSCORE)) 

@@ -469,7 +469,7 @@ void mutt_alias_add_reverse (ALIAS *t)
   for (ap = t->addr; ap; ap = ap->next)
   {
     if (!ap->group && ap->mailbox)
-      hash_insert (ReverseAlias, ap->mailbox, ap, 1);
+      hash_insert (ReverseAlias, ap->mailbox, ap);
   }
 }
 

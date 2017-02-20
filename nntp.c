@@ -1645,9 +1645,9 @@ int nntp_fetch_message (CONTEXT *ctx, MESSAGE *msg, int msgno)
   hdr->env = mutt_read_rfc822_header (msg->fp, hdr, 0, 0);
 
   if (ctx->id_hash && hdr->env->message_id)
-    hash_insert (ctx->id_hash, hdr->env->message_id, hdr, 0);
+    hash_insert (ctx->id_hash, hdr->env->message_id, hdr);
   if (ctx->subj_hash && hdr->env->real_subj)
-    hash_insert (ctx->subj_hash, hdr->env->real_subj, hdr, 1);
+    hash_insert (ctx->subj_hash, hdr->env->real_subj, hdr);
 
   /* fix content length */
   fseek (msg->fp, 0, SEEK_END);
