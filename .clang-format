@@ -57,7 +57,7 @@ AllowShortLoopsOnASingleLine:        false
 # OPTIONAL
 
 AlignTrailingComments:             true
-AlignConsecutiveAssignments:       true
+# AlignConsecutiveAssignments:       true
 # AlignConsecutiveDeclarations:      true
 # AlwaysBreakBeforeMultilineStrings: true
 # SpacesBeforeTrailingComments:      2
