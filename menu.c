@@ -52,6 +52,9 @@ get_color (int index, unsigned char *s)
     case MT_COLOR_INDEX_TAG:
       for (color = ColorIndexTagList; color; color = color->next)
       {
+        if (strncmp((const char *)(s+1), color->pattern,
+                    strlen(color->pattern)) == 0)
+          return color->pair;
         const char * transform = hash_find(TagTransforms, color->pattern);
         if (transform && (strncmp((const char *)(s+1),
             transform, strlen(transform)) == 0))
