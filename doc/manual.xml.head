@@ -1763,7 +1763,8 @@ file is typically <literal>/usr/local/share/mutt/Muttrc</literal> or
 <literal>.muttrc</literal> in your home directory.  If this file does
 not exist and your home directory has a subdirectory named
 <literal>.mutt</literal>, Mutt tries to load a file named
-<literal>.mutt/muttrc</literal>.
+<literal>.mutt/muttrc</literal>.  If still not found, Mutt will try
+<literal>$XDG_CONFIG_HOME/mutt/muttrc</literal>.
 </para>
 
 <para>
