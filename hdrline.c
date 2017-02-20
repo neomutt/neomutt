@@ -472,6 +472,7 @@ static char *apply_subject_mods(struct Envelope *env)
  * | \%F     | like %n, unless from self
  * | \%g     | message tags (e.g. notmuch tags)
  * | \%Gx    | individual message tag (e.g. notmuch tags)
+ * | \%J     | message tags (if present, tree unfolded, and != parent's keywords)
  * | \%i     | message-id
  * | \%I     | initials of author
  * | \%K     | the list to which the letter was sent (if any; otherwise: empty)
@@ -900,6 +901,38 @@ static const char *hdr_format_str(char *dest, size_t destlen, size_t col, int co
     case 'i':
       mutt_format_s(dest, destlen, prefix,
                     hdr->env->message_id ? hdr->env->message_id : "<no.id>");
+      break;
+
+    case 'J':;
+      const char *tags = hdr_tags_get_transformed(hdr);
+      if (tags)
+      {
+        i = 1; /* reduce reuse recycle */
+        htmp = NULL;
+
+        if (flags & MUTT_FORMAT_TREE &&
+            (hdr->thread->prev && hdr->thread->prev->message &&
+             hdr_tags_get_transformed(hdr->thread->prev->message)))
+          htmp = hdr->thread->prev->message;
+        else if (flags & MUTT_FORMAT_TREE &&
+                 (hdr->thread->parent && hdr->thread->parent->message &&
+                  hdr_tags_get_transformed(hdr->thread->parent->message)))
+          htmp = hdr->thread->parent->message;
+        if (htmp && mutt_strcasecmp(tags, hdr_tags_get_transformed(htmp)) == 0)
+          i = 0;
+      }
+      else
+        i = 0;
+
+      if (optional)
+        optional = i;
+
+      colorlen = add_index_color(dest, destlen, flags, MT_COLOR_INDEX_TAGS);
+      if (i)
+        mutt_format_s(dest + colorlen, destlen - colorlen, prefix, NONULL(tags));
+      else
+        mutt_format_s(dest + colorlen, destlen - colorlen, prefix, "");
+      add_index_color(dest + colorlen, destlen - colorlen, flags, MT_COLOR_INDEX);
       break;
 
     case 'l':
