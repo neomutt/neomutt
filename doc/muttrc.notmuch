@@ -108,7 +108,7 @@ bind index <  vfolder-window-backward
 #              "deleted" "GD" \
 #              "invites" "Gi"
 
-# set index_format='4C %S %[%y.%m.%d] %-18.18n %?GU?%GU& ? %?GR?%GR& ? %?GI?%GI& ? %s'
+# set index_format='%4C %S %[%y.%m.%d] %-18.18n %?GU?%GU& ? %?GR?%GR& ? %?GI?%GI& ? %s'
 
 # --------------------------------------------------------------------------
 # COLORS - some unpleasant examples are given

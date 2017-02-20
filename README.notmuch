@@ -199,7 +199,7 @@ notmuch support for mutt
       in a non-deterministic order, you can something like the following which puts
       a transformed tag name in a specific spot on the index line:
 
-      set index_format='4C %S %[%y.%m.%d] %-18.18n %?GU?%GU& ? %?GR?%GR& ? %?GI?%GI& ? %s'
+      set index_format='%4C %S %[%y.%m.%d] %-18.18n %?GU?%GU& ? %?GR?%GR& ? %?GI?%GI& ? %s'
 
       The %G formatting sequence may display all tags including tags hidden by
       nm_hidden_tags.
