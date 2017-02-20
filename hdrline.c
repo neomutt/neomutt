@@ -470,8 +470,8 @@ static char *apply_subject_mods(struct Envelope *env)
  * | \%E     | number of messages in current thread
  * | \%f     | entire from line
  * | \%F     | like %n, unless from self
- * | \%g     | message tags (e.g. notmuch tags)
- * | \%Gx    | individual message tag (e.g. notmuch tags)
+ * | \%g     | message tags (e.g. notmuch tags/imap flags)
+ * | \%Gx    | individual message tag (e.g. notmuch tags/imap flags)
  * | \%J     | message tags (if present, tree unfolded, and != parent's keywords)
  * | \%i     | message-id
  * | \%I     | initials of author

@@ -911,6 +911,15 @@ syntax match muttrcFunction     contained "\<vfolder-from-query\>"
 syntax match muttrcFunction     contained "\<vfolder-window-forward\>"
 syntax match muttrcFunction     contained "\<vfolder-window-backward\>"
 
+" Vim syntax file for the NeoMutt imap keywords feature.
+"
+syntax match muttrcFunction     contained "\<modify-labels\>"
+
+syntax keyword muttrcVarStr     contained skipwhite hidden_tags        nextgroup=muttrcVarEqualsIdxFmt
+
+syntax keyword muttrcCommand    tag-transforms
+syntax keyword muttrcCommand    tag-formats
+
 " Vim syntax file for the NeoMutt progress feature.
 
 syntax keyword muttrcColorField contained progress
