@@ -4086,7 +4086,7 @@ folder-hook work "set sort=threads"
           <para>index_label (the message label, %y %Y)</para>
         </listitem>
         <listitem>
-          <para>index_tags (the transformed message tags, %g)</para>
+          <para>index_tags (the transformed message tags, %g/%J)</para>
         </listitem>
         <listitem>
           <para>index_tag (an individual message tag, %G, uses
@@ -13223,7 +13223,7 @@ virtual-mailboxes "My INBOX" "notmuch://?query=tag:inbox"
                   <literal>index_tags</literal>
                 </entry>
                 <entry>no</entry>
-                <entry>the transformed message tags, %g</entry>
+                <entry>the transformed message tags, %g/%J</entry>
               </row>
             </tbody>
           </tgroup>
@@ -13348,7 +13348,7 @@ bind index,pager &gt; vfolder-window-forward
 # an individual message tag, %G, uses tag name
 # this symbol uses a pattern</emphasis>
 color index_tag red white "inbox"
-<emphasis role="comment"># the transformed message tags, %g
+<emphasis role="comment"># the transformed message tags, %g/%J
 # this symbol does not use a pattern</emphasis>
 color index_tags green default
 <emphasis role="comment"># --------------------------------------------------------------------------
