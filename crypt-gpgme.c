@@ -2309,11 +2309,14 @@ static void copy_clearsigned (gpgme_data_t data, STATE *s, char *charset)
   short complete, armor_header;
   FGETCONV *fc;
   char *fname;
-  FILE *fp;
+  FILE *fp = NULL;
 
   fname = data_object_to_tempfile (data, NULL, &fp);
   if (!fname)
+  {
+    safe_fclose (&fp);
     return;
+  }
   unlink (fname);
   FREE (&fname);
 
@@ -2508,7 +2511,7 @@ int pgp_gpgme_application_handler (BODY *m, STATE *s)
                   tmpfname = data_object_to_tempfile (plaintext, NULL, &pgpout);
                   if (!tmpfname)
                     {
-                      pgpout = NULL;
+                      safe_fclose (&pgpout);
                       state_puts (_("Error: copy data failed\n"), s);
                     }
                   else

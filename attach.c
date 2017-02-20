@@ -47,13 +47,13 @@ int mutt_get_tmp_attachment (BODY *a)
 {
   char type[STRING];
   char tempfile[_POSIX_PATH_MAX];
-  rfc1524_entry *entry = rfc1524_new_entry();
   FILE *fpin = NULL, *fpout = NULL;
   struct stat st;
   
   if(a->unlink)
     return 0;
 
+  rfc1524_entry *entry = rfc1524_new_entry();
   snprintf(type, sizeof(type), "%s/%s", TYPE(a), a->subtype);
   rfc1524_mailcap_lookup(a, type, entry, 0);
   rfc1524_expand_filename(entry->nametemplate, a->filename, 

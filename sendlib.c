@@ -1798,11 +1798,18 @@ static int write_one_header (FILE *fp, int pfxw, int max, int wraplen,
                 "max width = %d <= %d\n",
                 NONULL(pfx), valbuf, max, wraplen);
     if (pfx && *pfx)
+    {
       if (fputs (pfx, fp) == EOF)
+      {
+        FREE (&valbuf);
 	return -1;
+      }
+    }
+
     if (!(t = strchr (valbuf, ':')))
     {
       mutt_debug (1, "mwoh: warning: header not in 'key: value' format!\n");
+      FREE (&valbuf);
       return 0;
     }
     if (print_val (fp, pfx, valbuf, flags, mutt_strlen (pfx)) < 0)
@@ -1842,7 +1849,11 @@ static int write_one_header (FILE *fp, int pfxw, int max, int wraplen,
     mutt_debug (4, "mwoh: buf[%s%s] too long, max width = %d > %d\n",
                 NONULL(pfx), valbuf, max, wraplen);
     if (fold_one_header (fp, tagbuf, valbuf, pfx, wraplen, flags) < 0)
+    {
+      FREE (&valbuf);
+      FREE (&tagbuf);
       return -1;
+    }
     FREE (&tagbuf);
     FREE (&valbuf);
   }
@@ -2871,6 +2882,7 @@ int mutt_write_fcc (const char *path, HEADER *hdr, const char *msgid,
     onm_flags |= MUTT_SET_DRAFT;
   if ((msg = mx_open_new_message (&f, hdr, onm_flags)) == NULL)
   {
+    safe_fclose(&tempfp);
     mx_close_mailbox (&f, NULL);
     return (-1);
   }

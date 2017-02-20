@@ -1434,6 +1434,7 @@ BODY *smime_build_smime_entity (BODY *a, char *certlist)
     safe_fclose (&smimeerr);
     mutt_unlink (smimeinfile);
     mutt_unlink (certfile);
+    safe_fclose (&fpout);
     return (NULL);
   }
 
@@ -1842,7 +1843,7 @@ static BODY *smime_handle_entity (BODY *m, STATE *s, FILE *outFile)
   if ((smimeerr = safe_fopen (errfile, "w+")) == NULL)
   {
     mutt_perror (errfile);
-    safe_fclose (&smimeout); smimeout = NULL;
+    safe_fclose (&smimeout);
     return NULL;
   }
   mutt_unlink (errfile);
@@ -1852,8 +1853,8 @@ static BODY *smime_handle_entity (BODY *m, STATE *s, FILE *outFile)
   if ((tmpfp = safe_fopen (tmpfname, "w+")) == NULL)
   {
     mutt_perror (tmpfname);
-    safe_fclose (&smimeout); smimeout = NULL;
-    safe_fclose (&smimeerr); smimeerr = NULL;
+    safe_fclose (&smimeout);
+    safe_fclose (&smimeerr);
     return NULL;
   }
 
@@ -1868,10 +1869,11 @@ static BODY *smime_handle_entity (BODY *m, STATE *s, FILE *outFile)
       (thepid = smime_invoke_decrypt (&smimein, NULL, NULL, -1,
 				      fileno (smimeout),  fileno (smimeerr), tmpfname)) == -1)
   {
-    safe_fclose (&smimeout); smimeout = NULL;
+    safe_fclose (&smimeout);
     mutt_unlink (tmpfname);
     if (s->flags & MUTT_DISPLAY)
       state_attach_puts (_("[-- Error: unable to create OpenSSL subprocess! --]\n"), s);
+    safe_fclose (&smimeerr);
     return NULL;
   }
   else if ((type & SIGNOPAQUE) &&
@@ -1879,10 +1881,11 @@ static BODY *smime_handle_entity (BODY *m, STATE *s, FILE *outFile)
 					  fileno (smimeout), fileno (smimeerr), NULL,
 					  tmpfname, SIGNOPAQUE)) == -1)
   {
-    safe_fclose (&smimeout); smimeout = NULL;
+    safe_fclose (&smimeout);
     mutt_unlink (tmpfname);
     if (s->flags & MUTT_DISPLAY)
       state_attach_puts (_("[-- Error: unable to create OpenSSL subprocess! --]\n"), s);
+    safe_fclose (&smimeerr);
     return NULL;
   }
 
@@ -1934,7 +1937,8 @@ static BODY *smime_handle_entity (BODY *m, STATE *s, FILE *outFile)
       if ((fpout = safe_fopen (tmptmpfname, "w+")) == NULL)
       {
 	mutt_perror(tmptmpfname);
-	safe_fclose (&smimeout); smimeout = NULL;
+        safe_fclose (&smimeout);
+        safe_fclose (&smimeerr);
 	return NULL;
       }
     }

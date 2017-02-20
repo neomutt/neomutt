@@ -441,6 +441,7 @@ static void query_menu (char *buf, size_t buflen, QUERY *results, int retbuf)
 	      }
 
 	    mutt_create_alias (NULL, naddr);
+            rfc822_free_address (&naddr);
 	  }
 	  else
 	  {
