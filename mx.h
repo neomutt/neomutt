@@ -63,6 +63,8 @@ struct MxOps
   int (*close_msg)(struct Context *ctx, struct Message *msg);
   int (*commit_msg)(struct Context *ctx, struct Message *msg);
   int (*open_new_msg)(struct Message *msg, struct Context *ctx, struct Header *hdr);
+  int (*edit_msg_tags)(struct Context *ctx, const char *tags, char *buf);
+  int (*commit_msg_tags)(struct Context *msg, struct Header *hdr, char *buf);
 };
 
 /**
