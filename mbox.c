@@ -1411,6 +1411,8 @@ struct MxOps mx_mbox_ops = {
   .open_new_msg = mbox_open_new_message,
   .check = mbox_check_mailbox,
   .sync = mbox_sync_mailbox,
+  .edit_msg_tags = NULL,
+  .commit_msg_tags = NULL,
 };
 
 struct MxOps mx_mmdf_ops = {
@@ -1423,4 +1425,6 @@ struct MxOps mx_mmdf_ops = {
   .open_new_msg = mbox_open_new_message,
   .check = mbox_check_mailbox,
   .sync = mbox_sync_mailbox,
+  .edit_msg_tags = NULL,
+  .commit_msg_tags = NULL,
 };

@@ -69,7 +69,6 @@ int imap_mailbox_rename(const char *mailbox);
 /* message.c */
 int imap_append_message(struct Context *ctx, struct Message *msg);
 int imap_copy_messages(struct Context *ctx, struct Header *h, char *dest, int delete);
-int imap_keywords_message(struct Header *h, bool quasi_deleted);
 
 /* socket.c */
 void imap_logout_all(void);
