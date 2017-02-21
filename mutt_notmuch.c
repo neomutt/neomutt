@@ -1845,7 +1845,14 @@ void nm_query_window_backward(void)
   mutt_debug(2, "nm_query_window_backward (%d)\n", NmQueryWindowCurrentPosition);
 }
 
-int nm_modify_message_tags(struct Context *ctx, struct Header *hdr, char *buf)
+static int nm_edit_message_tags(struct Context *ctx, const char *tags, char *buf)
+{
+  *buf = '\0';
+  return (mutt_get_field("Add/remove labels: ", buf, sizeof(buf), MUTT_NM_TAG) || !*buf);
+}
+
+
+static int nm_commit_message_tags(struct Context *ctx, struct Header *hdr, char *buf)
 {
   struct NmCtxData *data = get_ctxdata(ctx);
   notmuch_database_t *db = NULL;
@@ -2528,4 +2535,6 @@ struct MxOps mx_notmuch_ops = {
   .close_msg = nm_close_message,
   .commit_msg = nm_commit_message,
   .open_new_msg = NULL,
+  .edit_msg_tags = nm_edit_message_tags,
+  .commit_msg_tags = nm_commit_message_tags,
 };

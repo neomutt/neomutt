@@ -19,10 +19,12 @@
 
 #include "config.h"
 #include "mutt_tags.h"
+#include "context.h"
 #include "globals.h"
 #include "lib/hash.h"
 #include "lib/string2.h"
 #include "header.h"
+#include "mx.h"
 
 #define HEADER_TAGS(ph) ((struct HeaderTags *) ((ph)->tags))
 
@@ -217,4 +219,24 @@ int hdr_tags_replace(struct Header *h, char *tags)
     FREE(&tags);
   }
   return 1;
+}
+
+
+int hdr_tags_editor(struct Context *ctx, const char *tags, char *buf)
+{
+  if (ctx->mx_ops->edit_msg_tags)
+    return ctx->mx_ops->edit_msg_tags(ctx, tags, buf);
+
+  mutt_message(_("Folder doesn't support tagging, aborting."));
+  return -1;
+}
+
+
+int hdr_tags_commit(struct Context *ctx, struct Header *h, char *tags)
+{
+  if (ctx->mx_ops->commit_msg_tags)
+    return ctx->mx_ops->commit_msg_tags(ctx, h, tags);
+
+  mutt_message(_("Folder doesn't support tagging, aborting."));
+  return -1;
 }
