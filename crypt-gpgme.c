@@ -59,21 +59,6 @@
 # include <sys/resource.h>
 #endif
 
-/*
- * Helper macros.
- */
-#define digitp(p)   (*(p) >= '0' && *(p) <= '9')
-
-// clang-format off
-#define hexdigitp(a) (digitp (a)                     \
-                      || (*(a) >= 'A' && *(a) <= 'F')  \
-                      || (*(a) >= 'a' && *(a) <= 'f'))
-#define xtoi_1(p)   (*(p) <= '9'? (*(p)- '0'): \
-                     *(p) <= 'F'? (*(p)-'A'+10):(*(p)-'a'+10))
-// clang-format on
-
-#define xtoi_2(p)   ((xtoi_1(p) * 16) + xtoi_1((p)+1))
-
 #define PKA_NOTATION_NAME "pka-address@gnupg.org"
 #define is_pka_notation(notation) ((notation)->name && \
 				    ! strcmp ((notation)->name, \
@@ -3162,12 +3147,12 @@ print_dn_parts (FILE *fp, struct dn_array_s *dn)
 
 
 /* Parse an RDN; this is a helper to parse_dn(). */
-static const unsigned char *
-parse_dn_part (struct dn_array_s *array, const unsigned char *string)
+static const char *
+parse_dn_part (struct dn_array_s *array, const char *string)
 {
-  const unsigned char *s, *s1;
+  const char *s, *s1;
   size_t n;
-  unsigned char *p;
+  char *p;
 
   /* parse attributeType */
   for (s = string+1; *s && *s != '='; s++)
@@ -3178,7 +3163,7 @@ parse_dn_part (struct dn_array_s *array, const unsigned char *string)
   if (!n)
     return NULL; /* empty key */
   array->key = safe_malloc (n+1);
-  p = (unsigned char *)array->key;
+  p = array->key;
   memcpy (p, string, n); /* fixme: trim trailing spaces */
   p[n] = 0;
   string = s + 1;
@@ -3186,7 +3171,7 @@ parse_dn_part (struct dn_array_s *array, const unsigned char *string)
   if (*string == '#')
     { /* hexstring */
       string++;
-      for (s=string; hexdigitp (s); s++)
+      for (s=string; isxdigit (*s); s++)
         s++;
       n = s - string;
       if (!n || (n & 1))
@@ -3195,7 +3180,7 @@ parse_dn_part (struct dn_array_s *array, const unsigned char *string)
       p = safe_malloc (n+1);
       array->value = (char*)p;
       for (s1=string; n; s1 += 2, n--)
-        *p++ = xtoi_2 (s1);
+        sscanf (s1, "%2hhx", (unsigned char*) p++);
       *p = 0;
    }
   else
@@ -3209,7 +3194,7 @@ parse_dn_part (struct dn_array_s *array, const unsigned char *string)
                   || *s == '<' || *s == '>' || *s == '#' || *s == ';' 
                   || *s == '\\' || *s == '\"' || *s == ' ')
                 n++;
-              else if (hexdigitp (s) && hexdigitp (s+1))
+              else if (isxdigit (*s) && isxdigit (*(s+1)))
                 {
                   s++;
                   n++;
@@ -3233,9 +3218,9 @@ parse_dn_part (struct dn_array_s *array, const unsigned char *string)
           if (*s == '\\')
             { 
               s++;
-              if (hexdigitp (s))
+              if (isxdigit (*s))
                 {
-                  *p++ = xtoi_2 (s);
+                  sscanf(s, "%2hhx", (unsigned char*) p++);
                   s++;
                 }
               else
@@ -3254,7 +3239,7 @@ parse_dn_part (struct dn_array_s *array, const unsigned char *string)
    parser and it does not support any old-stylish syntax; gpgme is
    expected to return only rfc2253 compatible strings. */
 static struct dn_array_s *
-parse_dn (const unsigned char *string)
+parse_dn (const char *string)
 {
   struct dn_array_s *array;
   size_t arrayidx, arraysize;
@@ -3333,7 +3318,7 @@ parse_and_print_user_id (FILE *fp, const char *userid)
     fputs (_("[Can't display this user ID (invalid encoding)]"), fp);
   else
     {
-      struct dn_array_s *dn = parse_dn ((const unsigned char *)userid);
+      struct dn_array_s *dn = parse_dn (userid);
       if (!dn)
         fputs (_("[Can't display this user ID (invalid DN)]"), fp);
       else 
