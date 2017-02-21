@@ -43,8 +43,8 @@
 
 /* 
  * The following list has been created manually from the data under:
- * http://www.isi.edu/in-notes/iana/assignments/character-sets Last update:
- * 2000-09-07
+ * http://www.isi.edu/in-notes/iana/assignments/character-sets
+ * Last update: 2000-09-07
  *
  * Note that it includes only the subset of character sets for which a preferred
  * MIME name is given.
@@ -520,8 +520,8 @@ int mutt_convert_string (char **ps, const char *from, const char *to, int flags)
 
 
 /*
- * FGETCONV stuff for converting a file while reading it Used in sendlib.c for
- * converting from mutt's Charset
+ * FGETCONV stuff for converting a file while reading it.
+ * Used in sendlib.c for converting from mutt's Charset
  */
 
 struct fgetconv_s
