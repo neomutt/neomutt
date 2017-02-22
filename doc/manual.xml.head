@@ -13382,12 +13382,14 @@ set sort_browser="reverse-size"
       </arg>
 
       <command>unsidebar_whitelist<anchor id="unsidebar-whitelist"/></command>
+      <group choice="req">
       <arg choice="plain">
         <replaceable class="parameter">*</replaceable>
       </arg>
       <arg choice="plain" rep="repeat">
         <replaceable class="parameter">mailbox</replaceable>
       </arg>
+      </group>
     </cmdsynopsis>
 
     <para>

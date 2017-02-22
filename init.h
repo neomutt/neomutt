@@ -259,9 +259,9 @@ struct option_t MuttVars[] = {
   ** .dt %C  .dd charset
   ** .dt %c  .dd requires charset conversion (``n'' or ``c'')
   ** .dt %D  .dd deleted flag
-  ** .dt %d  .dd description
+  ** .dt %d  .dd description (if none, falls back to %F)
   ** .dt %e  .dd MIME content-transfer-encoding
-  ** .dt %F  .dd filename for content-disposition header
+  ** .dt %F  .dd filename in content-disposition header (if none, falls back to %f)
   ** .dt %f  .dd filename
   ** .dt %I  .dd disposition (``I'' for inline, ``A'' for attachment)
   ** .dt %m  .dd major MIME type

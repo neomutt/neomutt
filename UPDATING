@@ -31,7 +31,8 @@ The keys used are:
     $XDG_CONFIG_HOME/mutt/.
   + Compressed mbox and mmdf files are now supported via open-hook,
     close-hook, and append-hook.  See contrib/sample.muttrc-compress
-    for suggested settings.
+    for suggested settings.  Note this is a compile-time option:
+    --enable-compressed.
   + When $flag_safe is set, flagged messages cannot be deleted.
   + The '@' pattern modifier can be used to limit matches to known aliases.
   + <mark-message> creates a hotkey binding to a specific message.  The hotkey
