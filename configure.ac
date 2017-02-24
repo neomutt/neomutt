@@ -658,11 +658,12 @@ need_socket="no"
 
 dnl -- socket dependencies --
 
-dnl getaddrinfo is used by getdomain.c, and requires libnsl and
-dnl libsocket on some platforms
+dnl getaddrinfo/getaddrinfo_a is used by getdomain.c, and requires libnsl and
+dnl libsocket on some platforms, and libanl
 AC_CHECK_FUNC(gethostent, , AC_CHECK_LIB(nsl, gethostent))
 AC_CHECK_FUNC(setsockopt, , AC_CHECK_LIB(socket, setsockopt))
 AC_CHECK_FUNCS(getaddrinfo)
+AC_SEARCH_LIBS([getaddrinfo_a], [anl], [AC_DEFINE(HAVE_GETADDRINFO_A, 1, [Define to 1 if you have the `getaddrinfo_a' function.])])
 
 AS_IF([test x$use_pop = "xyes"], [
 	AC_DEFINE(USE_POP, 1, [Define if you want support for the POP3 protocol.])
