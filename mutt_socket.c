@@ -402,13 +402,17 @@ int raw_socket_read (CONNECTION* conn, char* buf, size_t len)
     mutt_error (_("Error talking to %s (%s)"), conn->account.host,
 		strerror (errno));
     mutt_sleep (2);
-  } else if (errno == EINTR) {
-    rc = -1;
-    mutt_error (_("Error talking to %s (%s)"), conn->account.host,
-               strerror (errno));
-    mutt_sleep (2);
-   }
+    SigInt = 0;
+  }
   mutt_allow_interrupt (0);
+
+  if (SigInt)
+  {
+    mutt_error (_("Connection to %s has been aborted"), conn->account.host);
+    mutt_sleep (2);
+    SigInt = 0;
+    rc = -1;
+  }
 
   return rc;
 }
@@ -423,13 +427,17 @@ int raw_socket_write (CONNECTION* conn, const char* buf, size_t count)
     mutt_error (_("Error talking to %s (%s)"), conn->account.host,
 		strerror (errno));
     mutt_sleep (2);
-  } else if (errno == EINTR) {
-    rc = -1;
-    mutt_error (_("Error talking to %s (%s)"), conn->account.host,
-               strerror (errno));
-    mutt_sleep (2);
+    SigInt = 0;
   }
   mutt_allow_interrupt (0);
+
+  if (SigInt)
+  {
+    mutt_error (_("Connection to %s has been aborted"), conn->account.host);
+    mutt_sleep (2);
+    SigInt = 0;
+    rc = -1;
+  }
 
   return rc;
 }
