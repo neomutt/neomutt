@@ -49,7 +49,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mutt 1.8.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-02-13 11:56-0800\n"
+"POT-Creation-Date: 2017-02-24 10:48-0800\n"
 "PO-Revision-Date: 2017-02-18 01:24+0100\n"
 "Last-Translator: Ivan Vilata i Balaguer <ivan@selidor.net>\n"
 "Language-Team: Catalan <ca@dodds.net>\n"
@@ -549,11 +549,13 @@ msgstr "No s’han pogut imprimir els missatges."
 #.
 #: commands.c:540
 msgid "Rev-Sort Date/Frm/Recv/Subj/tO/Thread/Unsort/siZe/sCore/sPam/Label?: "
-msgstr "Descendent per Data/Orig/Rebut/Tema/deSt/Fil/Cap/Mida/Punts/spAm/Etiqueta?: "
+msgstr ""
+"Descendent per Data/Orig/Rebut/Tema/deSt/Fil/Cap/Mida/Punts/spAm/Etiqueta?: "
 
 #: commands.c:541
 msgid "Sort Date/Frm/Recv/Subj/tO/Thread/Unsort/siZe/sCore/sPam/Label?: "
-msgstr "Ascendent per Data/Orig/Rebut/Tema/deSt/Fil/Cap/Mida/Punts/spAm/Etiqueta?: "
+msgstr ""
+"Ascendent per Data/Orig/Rebut/Tema/deSt/Fil/Cap/Mida/Punts/spAm/Etiqueta?: "
 
 # Data/Orig/Rebut/Tema/deSt/Fil/Cap/Mida/Punts/spAm/Etiqueta  ivb
 #: commands.c:542
