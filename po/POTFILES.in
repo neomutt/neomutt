@@ -8,6 +8,7 @@ charset.c
 color.c
 commands.c
 compose.c
+compress.c
 crypt-gpgme.c
 crypt.c
 cryptglue.c

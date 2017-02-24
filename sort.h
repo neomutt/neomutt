@@ -32,13 +32,24 @@
 #define SORT_TRUST	13
 #define SORT_SPAM	14
 #define SORT_COUNT	15
-#define SORT_COUNT_NEW	16
+#define SORT_UNREAD	16
 #define SORT_FLAGGED	17
 #define SORT_PATH	18
+#define SORT_LABEL	19
 
-/* dgc: Sort & SortAux are shorts, so I'm bumping these bitflags up from
- * bits 4 & 5 to bits 8 & 9 to make room for more sort keys in the future. */
-#define SORT_MASK	0xff
+/* Sort and sort_aux are shorts, and are a composite of a
+ * constant sort operation number and a set of compounded
+ * bitflags.
+ *
+ * Everything below SORT_MASK is a constant. There's room for
+ * SORT_MASK constant SORT_ values.
+ *
+ * Everything above is a bitflag. It's OK to move SORT_MASK
+ * down by powers of 2 if we need more, so long as we don't
+ * collide with the constants above. (Or we can just expand
+ * sort and sort_aux to uint32_t.)
+ */
+#define SORT_MASK	((1<<8) - 1)
 #define SORT_REVERSE	(1<<8)
 #define SORT_LAST	(1<<9)
 

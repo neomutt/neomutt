@@ -268,13 +268,18 @@ if test "$CORE" && test -f "$CORE" ; then
 fi
 
 if test "$personal" = "yes" ; then
-	CANDIDATES=".muttrc-${MUTTVERSION} .muttrc .mutt/muttrc-${MUTTVERSION} .mutt/muttrc"
+	xdg_cfg_home=${XDG_CONFIG_HOME:-${HOME}/.config}
+	CANDIDATES="muttrc-${MUTTVERSION} muttrc"
+	DIRECTORIES="${HOME}/. ${HOME}/.mutt/ $xdg_cfg_home/mutt/"
 	MATCHED="none"
-	for f in $CANDIDATES; do
-		if test -f "${HOME}/$f" ; then
-			MATCHED="${HOME}/$f"
-			break
-	        fi
+	for d in $DIRECTORIES ; do
+		for f in $CANDIDATES; do
+			if test -f ${d}${f} ; then
+				MATCHED="${d}${f}"
+				break
+			fi
+		done
+		test "$MATCHED" = "none" || break
 	done
 	
 	if test "$MATCHED" = "none" ; then

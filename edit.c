@@ -29,6 +29,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
+#include <locale.h>
 #include <ctype.h>
 #include <sys/stat.h>
 #include <fcntl.h>
@@ -160,7 +161,9 @@ be_include_messages (char *msg, char **buf, int *bufmax, int *buflen,
       /* add the attribution */
       if (Attribution)
       {
+        setlocale (LC_TIME, NONULL (AttributionLocale));
 	mutt_make_string (tmp, sizeof (tmp) - 1, Attribution, Context, Context->hdrs[n]);
+        setlocale (LC_TIME, "");
 	strcat (tmp, "\n");	/* __STRCAT_CHECKED__ */
       }
 

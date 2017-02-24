@@ -548,7 +548,7 @@ descriptions.
 <row><entry>^E or &lt;End&gt;</entry><entry><literal>&lt;eol&gt;</literal></entry><entry>move to the end of the line</entry></row>
 <row><entry>^F or &lt;Right&gt;</entry><entry><literal>&lt;forward-char&gt;</literal></entry><entry>move forward one char</entry></row>
 <row><entry>Esc F</entry><entry><literal>&lt;forward-word&gt;</literal></entry><entry>move forward one word</entry></row>
-<row><entry>&lt;Tab&gt;</entry><entry><literal>&lt;complete&gt;</literal></entry><entry>complete filename or alias</entry></row>
+<row><entry>&lt;Tab&gt;</entry><entry><literal>&lt;complete&gt;</literal></entry><entry>complete filename, alias, or label</entry></row>
 <row><entry>^T</entry><entry><literal>&lt;complete-query&gt;</literal></entry><entry>complete address with query</entry></row>
 <row><entry>^K</entry><entry><literal>&lt;kill-eol&gt;</literal></entry><entry>delete to the end of the line</entry></row>
 <row><entry>Esc d</entry><entry><literal>&lt;kill-eow&gt;</literal></entry><entry>delete to the end of the word</entry></row>
@@ -1763,7 +1763,8 @@ file is typically <literal>/usr/local/share/mutt/Muttrc</literal> or
 <literal>.muttrc</literal> in your home directory.  If this file does
 not exist and your home directory has a subdirectory named
 <literal>.mutt</literal>, Mutt tries to load a file named
-<literal>.mutt/muttrc</literal>.
+<literal>.mutt/muttrc</literal>.  If still not found, Mutt will try
+<literal>$XDG_CONFIG_HOME/mutt/muttrc</literal>.
 </para>
 
 <para>
@@ -2719,7 +2720,8 @@ patterns.
 <listitem><para>quoted (text matching <link linkend="quote-regexp">$quote_regexp</link> in the body of a message)</para></listitem>
 <listitem><para>quoted1, quoted2, ..., quoted<emphasis>N</emphasis> (higher levels of quoting)</para></listitem>
 <listitem><para>search (highlighting of words in the pager)</para></listitem>
-<listitem><para>signature</para></listitem><listitem><para>status (mode lines used to display info about the mailbox or message)</para></listitem>
+<listitem><para>signature</para></listitem>
+<listitem><para>status (mode lines used to display info about the mailbox or message)</para></listitem>
 <listitem><para>tilde (the <quote>~</quote> used to pad blank lines in the pager)</para></listitem>
 <listitem><para>tree (thread tree drawn in the message index and attachment menu)</para></listitem>
 <listitem><para>underline (highlighting underlined patterns in the body of messages)</para></listitem>
@@ -3624,8 +3626,8 @@ Example: <literal><command>send-hook</command> mutt
 <para>
 Another typical use for this command is to change the values of the
 <link linkend="attribution">$attribution</link>, <link
-linkend="signature">$signature</link> and <link
-linkend="locale">$locale</link> variables in order to change the
+linkend="attribution-locale">$attribution_locale</link>, and <link
+linkend="signature">$signature</link> variables in order to change the
 language of the attributions and signatures based upon the recipients.
 </para>
 
@@ -5198,6 +5200,31 @@ recipients from Germany.
 </screen>
 </example>
 
+<para>
+You can restrict address pattern matching to aliases that you have
+defined with the "@" modifier.  This example matches messages whose
+recipients are all from Germany, and who are known to your alias list.
+</para>
+
+<example id="ex-restrict-to-aliases">
+<title>Matching restricted to aliases</title>
+<screen>
+^@~C \.de$
+</screen>
+</example>
+
+<para>
+To match any defined alias, use a regular expression that matches any
+string.  This example matches messages whose senders are known aliases.
+</para>
+
+<example id="ex-match-alias">
+<title>Matching any defined alias</title>
+<screen>
+@~f .
+</screen>
+</example>
+
 </sect2>
 
 <sect2 id="simple-searches">
@@ -5469,6 +5496,27 @@ dates shown in the main index.
 
 </sect1>
 
+<sect1 id="markmsg">
+<title>Marking Messages</title>
+
+<para>
+There are times that it's useful to ask Mutt to "remember" which message
+you're currently looking at, while you move elsewhere in your mailbox.
+You can do this with the <quote>mark-message</quote> operator, which
+is bound to the <quote>~</quote> key by default.  Press this key to
+enter an identifier for the marked message. When you want to return to
+this message, press <quote>'</quote> and the name that you previously
+entered.
+</para>
+
+<para>
+(Message marking is really just a shortcut for defining a macro
+that returns you to the current message by searching for its
+Message-ID.  You can choose a different prefix by setting the <link
+linkend="mark-macro-prefix">$mark_macro_prefix</link> variable.)
+</para>
+</sect1>
+
 <sect1 id="tags">
 <title>Using Tags</title>
 
@@ -5723,6 +5771,24 @@ if the mailbox shortcut results in an empty regexp.
 
 </sect2>
 
+</sect1>
+
+<sect1 id="setenv">
+<title>Managing the Environment</title>
+
+<para>
+You can alter the environment that Mutt passes on to its child processes
+using the <quote>setenv</quote> and <quote>unsetenv</quote> operators.
+(N.B. These follow Mutt-style syntax, not shell-style!)  You can also
+query current environment values by prefixing a <quote>?</quote> character.
+</para>
+
+<screen>
+setenv TERM vt100
+setenv ORGANIZATION "The Mutt Development Team"
+unsetenv DISPLAY
+setenv ?LESS
+</screen>
 </sect1>
 
 <sect1 id="query">
@@ -5999,6 +6065,15 @@ procmail and other mail filtering agents.
 </para>
 
 <para>
+You can change or delete the <quote>X-Label:</quote> field within
+Mutt using the <quote>edit-label</quote> command, bound to the
+<quote>y</quote> key by default.  This works for tagged messages, too.
+While in the edit-label function, pressing the &lt;complete&gt;
+binding (TAB, by default) will perform completion against all labels
+currently in use.
+</para>
+
+<para>
 Lastly, Mutt has the ability to <link linkend="sort">sort</link> the
 mailbox into <link linkend="threads">threads</link>.  A thread is a
 group of messages which all relate to the same subject.  This is usually
@@ -6008,6 +6083,78 @@ news client, this is the same concept.  It makes dealing with large
 volume mailing lists easier because you can easily delete uninteresting
 threads and quickly find topics of value.
 </para>
+
+</sect1>
+
+<sect1 id="display-munging">
+<title>Display Munging</title>
+
+<para>
+Working within the confines of a console or terminal window, it is
+often useful to be able to modify certain information elements in a
+non-destructive way -- to change how they display, without changing
+the stored value of the information itself.  This is especially so of
+message subjects, which may often be polluted with extraneous metadata
+that either is reproduced elsewhere, or is of secondary interest.
+</para>
+
+<cmdsynopsis>
+<command>subjectrx</command>
+<arg choice="plain">
+<replaceable class="parameter">pattern</replaceable>
+</arg>
+<arg choice="plain">
+<replaceable class="parameter">replacement</replaceable>
+</arg>
+
+<command>unsubjectrx</command>
+<group choice="req">
+<arg choice="plain">
+<replaceable class="parameter">*</replaceable>
+</arg>
+<arg choice="plain">
+<replaceable class="parameter">pattern</replaceable>
+</arg>
+</group>
+</cmdsynopsis>
+
+<para>
+<literal>subjectrx</literal> specifies a regular expression
+<quote>pattern</quote> which, if detected in a message subject, causes
+the subject to be replaced with the <quote>replacement</quote> value.
+The replacement is subject to substitutions in the same way as for the
+<link linkend="spam">spam</link> command: <literal>%L</literal> for the text
+to the left of the match, <literal>%R</literal> for text to the right of the
+match, and <literal>%1</literal> for the first subgroup in the match (etc).
+If you simply want to erase the match, set it to <quote>%L%R</quote>.
+Any number of <literal>subjectrx</literal> commands may coexist.
+</para>
+
+<para>
+Note this well: the <quote>replacement</quote> value replaces the
+entire subject, not just the match!
+</para>
+
+<para>
+<literal>unsubjectrx</literal> removes a given subjectrx from the
+substitution list.  If <literal>*</literal> is used as the pattern,
+all substitutions will be removed.
+</para>
+
+<example id="ex-subjectrx">
+<title>Subject Munging</title>
+<screen>
+# Erase [rt #12345] tags from Request Tracker (RT) e-mails
+subjectrx '\[rt #[0-9]+\] *' '%L%R'
+
+# Servicedesk is another RT that sends more complex subjects.
+# Keep the ticket number.
+subjectrx '\[servicedesk #([0-9]+)\] ([^.]+)\.([^.]+) - (new|open|pending|update) - ' '%L[#%1] %R'
+
+# Strip out annoying [listname] prefixes in subjects
+subjectrx '\[[^\]]*\]:? *' '%L%R'
+</screen>
+</example>
 
 </sect1>
 
@@ -7972,7 +8119,7 @@ per message.)
 Header caching can be enabled via the configure script and the
 <emphasis>--enable-hcache</emphasis> option. It's not turned on by
 default because external database libraries are required: one of
-tokyocabinet, qdbm, gdbm or bdb must be present.
+tokyocabinet, kyotocabinet, lmdb, qdbm, gdbm or bdb must be present.
 </para>
 
 <para>
@@ -8291,6 +8438,16 @@ please have a look at the mixmaster documentation.
       <arg choice="opt" rep="repeat">
 	<replaceable class="parameter">mailbox</replaceable>
       </arg>
+
+      <command>unsidebar_whitelist<anchor id="unsidebar-whitelist"/></command>
+      <group choice="req">
+      <arg choice="plain">
+	<replaceable class="parameter">*</replaceable>
+      </arg>
+      <arg choice="plain" rep="repeat">
+	<replaceable class="parameter">mailbox</replaceable>
+      </arg>
+      </group>
     </cmdsynopsis>
 
     <para>
@@ -8298,6 +8455,12 @@ please have a look at the mixmaster documentation.
       in the sidebar, even if <link
       linkend="sidebar-new-mail-only">$sidebar_new_mail_only</link>
       is set and the mailbox does not contain new mail.
+    </para>
+
+    <para>
+      The <quote>unsidebar_whitelist</quote> command is used to remove a mailbox from
+      the list of whitelisted mailboxes. Use <quote>unsidebar_whitelist *</quote>
+      to remove all mailboxes.
     </para>
   </sect2>
 
@@ -8386,11 +8549,15 @@ please have a look at the mixmaster documentation.
 	  </row>
 	  <row>
 	    <entry><literal>new</literal></entry>
-	    <entry>Number of new messages</entry>
+	    <entry>Number of unread messages</entry>
 	  </row>
 	  <row>
 	    <entry><literal>path</literal></entry>
 	    <entry>Alphabetically by path</entry>
+	  </row>
+	  <row>
+	    <entry><literal>unread</literal></entry>
+	    <entry>Number of unread messages</entry>
 	  </row>
 	  <row>
 	    <entry><literal>unsorted</literal></entry>
@@ -8413,6 +8580,275 @@ please have a look at the mixmaster documentation.
   </sect2>
 </sect1>
 
+<sect1 id="compress">
+  <title>Compressed Folders Feature</title>
+  <subtitle>Read from/write to compressed mailboxes</subtitle>
+
+  <sect2 id="compress-intro">
+    <title>Introduction</title>
+
+    <para>
+      The Compressed Folder patch allows Mutt to read mailbox files that are
+      compressed.  But it isn't limited to compressed files.  It works well
+      with encrypted files, too.  In fact, if you can create a program/script
+      to convert to and from your format, then Mutt can read it.
+    </para>
+
+    <para>
+      The patch adds three hooks to Mutt: <literal>open-hook</literal>,
+      <literal>close-hook</literal> and <literal>append-hook</literal>.  They
+      define commands to: uncompress a file; compress a file; append
+      messages to an already compressed file.
+    </para>
+
+    <para>
+      There are some examples of both compressed and encrypted files,
+      later.  For now, the documentation will just concentrate on
+      compressed files.
+    </para>
+
+  </sect2>
+
+  <sect2 id="compress-commands">
+    <title>Commands</title>
+    <cmdsynopsis>
+      <command>open-hook</command>
+      <arg choice="plain">
+        <replaceable class="parameter">pattern</replaceable>
+      </arg>
+      <arg choice="plain">
+        <replaceable class="parameter">shell-command</replaceable>
+      </arg>
+      <command>close-hook</command>
+      <arg choice="plain">
+        <replaceable class="parameter">pattern</replaceable>
+      </arg>
+      <arg choice="plain">
+        <replaceable class="parameter">shell-command</replaceable>
+      </arg>
+      <command>append-hook</command>
+      <arg choice="plain">
+        <replaceable class="parameter">pattern</replaceable>
+      </arg>
+      <arg choice="plain">
+        <replaceable class="parameter">shell-command</replaceable>
+      </arg>
+    </cmdsynopsis>
+
+    <para>
+      The shell-command must contain two placeholders for filenames:
+      <literal>%f</literal> and <literal>%t</literal>.  These represent
+      <quote>from</quote> and <quote>to</quote> filenames.  These placeholders
+      should be placed inside single-quotes to prevent unintended shell
+      expansions.
+    </para>
+
+    <para>
+      If you need the exact string <quote>%f</quote> or <quote>%t</quote> in your
+      command, simply double up the <quote>%</quote> character, e.g.
+      <quote>%%f</quote> or <quote>%%t</quote>.
+    </para>
+
+    <table id="table-compress-optional">
+      <title>Not all Hooks are Required</title>
+      <tgroup cols="5">
+        <thead>
+          <row>
+            <entry>Open</entry>
+            <entry>Close</entry>
+            <entry>Append</entry>
+            <entry>Effect</entry>
+            <entry>Useful if</entry>
+          </row>
+        </thead>
+        <tbody>
+          <row>
+            <entry>Open</entry>
+            <entry>-</entry>
+            <entry>-</entry>
+            <entry>Folder is readonly</entry>
+            <entry>The folder is just a backup</entry>
+          </row>
+          <row>
+            <entry>Open</entry>
+            <entry>Close</entry>
+            <entry>-</entry>
+            <entry>Folder is read/write, but the entire folder must be
+              written if anything is changed</entry>
+            <entry>Your compression format doesn't support appending</entry>
+          </row>
+          <row>
+            <entry>Open</entry>
+            <entry>Close</entry>
+            <entry>Append</entry>
+            <entry>Folder is read/write and emails can be efficiently added
+              to the end</entry>
+            <entry>Your compression format supports appending</entry>
+          </row>
+          <row>
+            <entry>Open</entry>
+            <entry>-</entry>
+            <entry>Append</entry>
+            <entry>Folder is readonly, but can be appended to</entry>
+            <entry>You want to store emails, but never change them</entry>
+          </row>
+        </tbody>
+      </tgroup>
+    </table>
+
+    <note>
+      <para>The command:</para>
+      <itemizedlist>
+        <listitem><para>should return a non-zero exit status on failure</para></listitem>
+        <listitem><para>should not delete any files</para></listitem>
+      </itemizedlist>
+    </note>
+
+    <sect3 id="open-hook">
+      <title>Read from compressed mailbox</title>
+
+      <screen>open-hook regexp shell-command</screen>
+
+      <para>
+        If Mutt is unable to open a file, it then looks for
+        <literal>open-hook</literal> that matches the filename.
+      </para>
+
+      <para>
+        If your compression program doesn't have a well-defined extension,
+        then you can use <literal>.</literal> as the regexp.
+      </para>
+
+      <sect4 id="compress-open-hook-example">
+        <title>Example of open-hook</title>
+
+        <screen>open-hook '\.gz$' &quot;gzip -cd '%f' &gt; '%t'&quot;</screen>
+
+        <itemizedlist>
+          <listitem><para>Mutt finds a file, <quote>example.gz</quote>,
+              that it can't read</para></listitem>
+          <listitem><para>Mutt has an <literal>open-hook</literal>
+              whose regexp matches the filename:
+              <literal>\.gz$</literal></para></listitem>
+          <listitem><para>Mutt uses the command <literal>gzip -cd</literal>
+              to create a temporary file that it <emphasis>can</emphasis>
+              read</para></listitem>
+        </itemizedlist>
+      </sect4>
+    </sect3>
+
+    <sect3 id="close-hook">
+      <title>Write to a compressed mailbox</title>
+
+      <screen>close-hook regexp shell-command</screen>
+
+      <para>
+        When Mutt has finished with a compressed mail folder, it will look
+        for a matching <literal>close-hook</literal> to recompress the file.
+        This hook is <link linkend="table-compress-optional">optional</link>.
+      </para>
+
+      <note>
+        <para>
+          If the folder has not been modified, the
+          <literal>close-hook</literal> will not be called.
+        </para>
+      </note>
+
+      <sect4 id="compress-close-hook-example">
+        <title>Example of close-hook</title>
+
+        <screen>close-hook '\.gz$' &quot;gzip -c '%t' &gt; '%f'&quot;</screen>
+
+        <itemizedlist>
+          <listitem><para>Mutt has finished with a folder, <quote>example.gz</quote>,
+              that it opened with <literal>open-hook</literal></para></listitem>
+          <listitem><para>The folder has been modified</para></listitem>
+          <listitem><para>Mutt has a <literal>close-hook</literal> whose regexp
+              matches the filename: <literal>\.gz$</literal></para></listitem>
+          <listitem><para>Mutt uses the command <literal>gzip -c</literal>
+              to create a new compressed file</para></listitem>
+        </itemizedlist>
+      </sect4>
+    </sect3>
+
+    <sect3 id="append-hook">
+      <title>Append to a compressed mailbox</title>
+
+      <screen>append-hook regexp shell-command</screen>
+
+      <para>
+        When Mutt wants to append an email to a compressed mail folder, it
+        will look for a matching <literal>append-hook</literal>.
+        This hook is <link linkend="table-compress-optional">optional</link>.
+      </para>
+
+      <para>
+        Using the <literal>append-hook</literal> will save time, but
+        Mutt won't be able to determine the type of the mail folder
+        inside the compressed file.
+      </para>
+
+      <para>
+        Mutt will <emphasis>assume</emphasis> the type to be that of
+        the <literal>$mbox_type</literal> variable.  Mutt also uses
+        this type for temporary files.
+      </para>
+
+      <para>
+        Mutt will only use the <literal>append-hook</literal> for existing files.
+        The <literal>close-hook</literal> will be used for empty, or missing files.
+      </para>
+
+      <note>
+        <para>
+          If your command writes to stdout, it is vital that you use
+          <literal>&gt;&gt;</literal> in the <quote>append-hook</quote>.
+          If not, data will be lost.
+        </para>
+      </note>
+
+      <sect4 id="compress-append-hook-example">
+        <title>Example of append-hook</title>
+
+        <screen>append-hook '\.gz$' &quot;gzip -c '%t' &gt;&gt; '%f'&quot;</screen>
+
+        <itemizedlist>
+          <listitem><para>Mutt wants to append an email to a folder, <quote>example.gz</quote>,
+              that it opened with <literal>open-hook</literal></para></listitem>
+          <listitem><para>Mutt has an <literal>append-hook</literal> whose regexp matches
+              the filename: <literal>\.gz$</literal></para></listitem>
+          <listitem><para>Mutt knows the mailbox type from the <literal>$mbox</literal>
+              variable</para></listitem>
+          <listitem><para>Mutt uses the command <literal>gzip -c</literal>
+              to append to an existing compressed file</para></listitem>
+        </itemizedlist>
+      </sect4>
+
+    </sect3>
+
+    <sect3 id="compress-empty">
+      <title>Empty Files</title>
+
+      <para>
+        Mutt assumes that an empty file is not compressed.  In this
+        situation, unset <link linkend="save-empty">$save_empty</link>, so
+        that the compressed file will be removed if you delete all of the
+        messages.
+      </para>
+    </sect3>
+
+    <sect3 id="compress-security">
+      <title>Security</title>
+
+      <para>
+        Encrypted files are decrypted into temporary files which are
+        stored in the <link linkend="tmpdir">$tmpdir</link> directory.
+        This could be a security risk.
+      </para>
+    </sect3>
+  </sect2>
+</sect1>
 </chapter>
 
 <chapter id="security">
@@ -9568,16 +10004,44 @@ The following are the commands understood by Mutt:
 </listitem>
 
 <listitem>
+  <cmdsynopsis>
+    <command><link linkend="setenv">setenv</link></command>
+    <arg choice="plain">
+      <replaceable class="parameter">[?]variable</replaceable>
+    </arg>
+    <arg choice="opt">
+      <replaceable class="parameter">value</replaceable>
+    </arg>
+
+    <command><link linkend="setenv">unsetenv</link></command>
+    <arg choice="plain">
+      <replaceable class="parameter">variable</replaceable>
+    </arg>
+  </cmdsynopsis>
+</listitem>
+
+<listitem>
 <cmdsynopsis>
 <command><link linkend="sidebar-whitelist">sidebar_whitelist</link></command>
 <arg choice="plain">
-<replaceable class="parameter">item</replaceable>
+<replaceable class="parameter">mailbox</replaceable>
 </arg>
+<arg choice="opt" rep="repeat">
+<replaceable class="parameter">mailbox</replaceable>
+</arg>
+
+<command><link linkend="unsidebar-whitelist">unsidebar_whitelist</link></command>
+<group choice="req">
 <arg choice="plain">
-<replaceable class="parameter">command</replaceable>
+<replaceable class="parameter">*</replaceable>
 </arg>
+<arg choice="plain" rep="repeat">
+<replaceable class="parameter">mailbox</replaceable>
+</arg>
+</group>
 </cmdsynopsis>
 </listitem>
+
 <listitem>
 <cmdsynopsis>
 <command><link linkend="source">source</link></command>
@@ -9598,6 +10062,28 @@ The following are the commands understood by Mutt:
 </arg>
 
 <command><link linkend="spam">nospam</link></command>
+<group choice="req">
+<arg choice="plain">
+<replaceable class="parameter">*</replaceable>
+</arg>
+<arg choice="plain">
+<replaceable class="parameter">pattern</replaceable>
+</arg>
+</group>
+</cmdsynopsis>
+</listitem>
+
+<listitem>
+<cmdsynopsis>
+<command><link linkend="display-munging">subjectrx</link></command>
+<arg choice="plain">
+<replaceable class="parameter">pattern</replaceable>
+</arg>
+<arg choice="plain">
+<replaceable class="parameter">replacement</replaceable>
+</arg>
+
+<command><link linkend="display-munging">unsubjectrx</link></command>
 <group choice="req">
 <arg choice="plain">
 <replaceable class="parameter">*</replaceable>

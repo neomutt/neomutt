@@ -867,14 +867,12 @@ static void print_time(time_t t, STATE *s)
 {
   char p[STRING];
 
-  setlocale (LC_TIME, "");
 #ifdef HAVE_LANGINFO_D_T_FMT
   strftime (p, sizeof (p), nl_langinfo (D_T_FMT), localtime (&t));
 #else
   strftime (p, sizeof (p), "%c", localtime (&t));
 #endif
-  setlocale (LC_TIME, "C");
-  state_attach_puts (p, s);
+  state_puts (p, s);
 }
 
 /* 
@@ -1093,7 +1091,11 @@ BODY *smime_gpgme_build_smime_entity (BODY *a, char *keylist)
   if (!rset)
     return NULL;
 
-  plaintext = body_to_data_object (a, 0);
+  /* OpenSSL converts line endings to crlf when encrypting.  Some
+   * clients depend on this for signed+encrypted messages: they do not
+   * convert line endings between decrypting and checking the
+   * signature.  See #3904. */
+  plaintext = body_to_data_object (a, 1);
   if (!plaintext)
     {
       free_recipient_set (&rset);
@@ -1139,7 +1141,7 @@ static int show_sig_summary (unsigned long sum,
 
   if ((sum & GPGME_SIGSUM_KEY_REVOKED))
     {
-      state_attach_puts (_("Warning: One of the keys has been revoked\n"),s);
+      state_puts (_("Warning: One of the keys has been revoked\n"),s);
       severe = 1;
     }
 
@@ -1148,13 +1150,13 @@ static int show_sig_summary (unsigned long sum,
       time_t at = key->subkeys->expires ? key->subkeys->expires : 0;
       if (at)
         {
-          state_attach_puts (_("Warning: The key used to create the "
+          state_puts (_("Warning: The key used to create the "
                                "signature expired at: "), s);
           print_time (at , s);
-          state_attach_puts ("\n", s);
+          state_puts ("\n", s);
         }
       else
-        state_attach_puts (_("Warning: At least one certification key "
+        state_puts (_("Warning: At least one certification key "
                              "has expired\n"), s);
     }
 
@@ -1170,29 +1172,29 @@ static int show_sig_summary (unsigned long sum,
            sig = sig->next, i++)
         ;
       
-      state_attach_puts (_("Warning: The signature expired at: "), s);
+      state_puts (_("Warning: The signature expired at: "), s);
       print_time (sig ? sig->exp_timestamp : 0, s);
-      state_attach_puts ("\n", s);
+      state_puts ("\n", s);
     }
 
   if ((sum & GPGME_SIGSUM_KEY_MISSING))
-    state_attach_puts (_("Can't verify due to a missing "
+    state_puts (_("Can't verify due to a missing "
                          "key or certificate\n"), s);
 
   if ((sum & GPGME_SIGSUM_CRL_MISSING))
     {
-      state_attach_puts (_("The CRL is not available\n"), s);
+      state_puts (_("The CRL is not available\n"), s);
       severe = 1;
     }
 
   if ((sum & GPGME_SIGSUM_CRL_TOO_OLD))
     {
-      state_attach_puts (_("Available CRL is too old\n"), s);
+      state_puts (_("Available CRL is too old\n"), s);
       severe = 1;
     }
 
   if ((sum & GPGME_SIGSUM_BAD_POLICY))
-    state_attach_puts (_("A policy requirement was not met\n"), s);
+    state_puts (_("A policy requirement was not met\n"), s);
 
   if ((sum & GPGME_SIGSUM_SYS_ERROR))
     {
@@ -1201,7 +1203,7 @@ static int show_sig_summary (unsigned long sum,
       gpgme_signature_t sig;
       unsigned int i;
 
-      state_attach_puts (_("A system error occurred"), s );
+      state_puts (_("A system error occurred"), s );
 
       /* Try to figure out some more detailed system error information. */
       result = gpgme_op_verify_result (ctx);
@@ -1216,17 +1218,17 @@ static int show_sig_summary (unsigned long sum,
 
       if (t0 || t1)
         {
-          state_attach_puts (": ", s);
+          state_puts (": ", s);
           if (t0)
-              state_attach_puts (t0, s);
+              state_puts (t0, s);
           if (t1 && !(t0 && !strcmp (t0, t1)))
             {
               if (t0)
-                state_attach_puts (",", s);
-              state_attach_puts (t1, s);
+                state_puts (",", s);
+              state_puts (t1, s);
             }
         }
-      state_attach_puts ("\n", s);
+      state_puts ("\n", s);
     }
 
 #ifdef HAVE_GPGME_PKA_TRUST
@@ -1235,16 +1237,16 @@ static int show_sig_summary (unsigned long sum,
     {
       if (sig->pka_trust == 1 && sig->pka_address)
 	{
-	  state_attach_puts (_("WARNING: PKA entry does not match "
+	  state_puts (_("WARNING: PKA entry does not match "
 			       "signer's address: "), s);
-	  state_attach_puts (sig->pka_address, s);
-	  state_attach_puts ("\n", s);
+	  state_puts (sig->pka_address, s);
+	  state_puts ("\n", s);
 	}
       else if (sig->pka_trust == 2 && sig->pka_address)
 	{
-	  state_attach_puts (_("PKA verified signer's address is: "), s);
-	  state_attach_puts (sig->pka_address, s);
-	  state_attach_puts ("\n", s);
+	  state_puts (_("PKA verified signer's address is: "), s);
+	  state_puts (sig->pka_address, s);
+	  state_puts ("\n", s);
 	}
     }
 
@@ -1301,7 +1303,7 @@ static void show_fingerprint (gpgme_key_t key, STATE *state)
     *p++ = *s;
   *p++ = '\n';
   *p = 0;
-  state_attach_puts (buf, state);
+  state_puts (buf, state);
   FREE (&buf);
 }
 
@@ -1339,18 +1341,18 @@ static void show_one_sig_validity (gpgme_ctx_t ctx, int idx, STATE *s)
 	break;
       }
   if (txt)
-    state_attach_puts (txt, s);
+    state_puts (txt, s);
 }
 
 static void print_smime_keyinfo (const char* msg, gpgme_signature_t sig,
                                  gpgme_key_t key, STATE *s)
 {
-  size_t msglen;
+  int msgwid;
   gpgme_user_id_t uids = NULL;
   int i, aka = 0;
 
-  state_attach_puts (msg, s);
-  state_attach_puts (" ", s);
+  state_puts (msg, s);
+  state_puts (" ", s);
   /* key is NULL when not present in the user's keyring */
   if (key)
   {
@@ -1360,34 +1362,39 @@ static void print_smime_keyinfo (const char* msg, gpgme_signature_t sig,
 	continue;
       if (aka)
       {
-        /* TODO: need to account for msg wide characters
-         * and "aka" translation length */
-	msglen = mutt_strlen (msg) - 4;
-	for (i = 0; i < msglen; i++)
-	  state_attach_puts(" ", s);
-	state_attach_puts(_("aka: "), s);
+	msgwid = mutt_strwidth (msg) - mutt_strwidth (_("aka: ")) + 1;
+	if (msgwid < 0)
+	  msgwid = 0;
+	for (i = 0; i < msgwid; i++)
+	  state_puts(" ", s);
+	state_puts(_("aka: "), s);
       }
-      state_attach_puts (uids->uid, s);
-      state_attach_puts ("\n", s);
+      state_puts (uids->uid, s);
+      state_puts ("\n", s);
 
       aka = 1;
     }
   }
   else
   {
-    state_attach_puts (_("KeyID "), s);
-    state_attach_puts (sig->fpr, s);
-    state_attach_puts ("\n", s);
+    state_puts (_("KeyID "), s);
+    state_puts (sig->fpr, s);
+    state_puts ("\n", s);
   }
 
-  msglen = mutt_strlen (msg) - 8;
-  /* TODO: need to account for msg wide characters
-   * and "created" translation length */
-  for (i = 0; i < msglen; i++)
-    state_attach_puts(" ", s);
-  state_attach_puts (_("created: "), s);
-  print_time (sig->timestamp, s);
-  state_attach_puts ("\n", s);  
+  /* timestamp is 0 when verification failed.
+     "Jan 1 1970" is not the created date. */
+  if (sig->timestamp)
+  {
+    msgwid = mutt_strwidth (msg) - mutt_strwidth (_("created: ")) + 1;
+    if (msgwid < 0)
+      msgwid = 0;
+    for (i = 0; i < msgwid; i++)
+      state_puts(" ", s);
+    state_puts (_("created: "), s);
+    print_time (sig->timestamp, s);
+    state_puts ("\n", s);
+  }
 }
 
 /* Show information about one signature.  This function is called with
@@ -1459,7 +1466,7 @@ static int show_one_sig_status (gpgme_ctx_t ctx, int idx, STATE *s)
           snprintf (buf, sizeof (buf),
               _("Error getting key information for KeyID %s: %s\n"),
               fpr, gpgme_strerror (err));
-          state_attach_puts (buf, s);
+          state_puts (buf, s);
           anybad = 1;
 	}
       else if ((sum & GPGME_SIGSUM_GREEN))
@@ -1494,9 +1501,9 @@ static int show_one_sig_status (gpgme_ctx_t ctx, int idx, STATE *s)
           /* L10N:
              This is trying to match the width of the
              "Problem signature from:" translation just above. */
-	  state_attach_puts (_("               expires: "), s);
+	  state_puts (_("               expires: "), s);
 	  print_time (sig->exp_timestamp, s);
-	  state_attach_puts ("\n", s);
+	  state_puts ("\n", s);
 	}
 	show_sig_summary (sum, ctx, key, idx, s, sig);
         anywarn = 1;
@@ -1555,12 +1562,13 @@ static int verify_one (BODY *sigbdy, STATE *s,
       snprintf (buf, sizeof(buf)-1, 
                 _("Error: verification failed: %s\n"),
                 gpgme_strerror (err));
-      state_attach_puts (buf, s);
+      state_puts (buf, s);
     }
   else
     { /* Verification succeeded, see what the result is. */
       int res, idx;
       int anybad = 0;
+      gpgme_verify_result_t verify_result;
 
       if (signature_key)
 	{
@@ -1568,15 +1576,19 @@ static int verify_one (BODY *sigbdy, STATE *s,
 	  signature_key = NULL;
 	}
 
-      for(idx=0; (res = show_one_sig_status (ctx, idx, s)) != -1; idx++)
+      verify_result = gpgme_op_verify_result (ctx);
+      if (verify_result && verify_result->signatures)
+      {
+        for (idx=0; (res = show_one_sig_status (ctx, idx, s)) != -1; idx++)
         {
           if (res == 1)
             anybad = 1;
           else if (res == 2)
             anywarn = 2;
         }
-      if (!anybad)
-        badsig = 0;
+        if (!anybad)
+          badsig = 0;
+      }
     }
 
   if (!badsig)
@@ -1604,7 +1616,7 @@ static int verify_one (BODY *sigbdy, STATE *s,
 	    snprintf (buf, sizeof (buf),
 		      _("*** Begin Notation (signature by: %s) ***\n"),
 		      signature->fpr);
-	    state_attach_puts (buf, s);
+	    state_puts (buf, s);
 	    for (notation = signature->notations; notation;
                  notation = notation->next)
 	    {
@@ -1613,18 +1625,18 @@ static int verify_one (BODY *sigbdy, STATE *s,
 
 	      if (notation->name)
 	      {
-		state_attach_puts (notation->name, s);
-		state_attach_puts ("=", s);
+		state_puts (notation->name, s);
+		state_puts ("=", s);
 	      }
 	      if (notation->value)
 	      {
-		state_attach_puts (notation->value, s);
+		state_puts (notation->value, s);
 		if (!(*notation->value
                       && (notation->value[strlen (notation->value)-1]=='\n')))
-		  state_attach_puts ("\n", s);
+		  state_puts ("\n", s);
 	      }
 	    }
-	    state_attach_puts (_("*** End Notation ***\n"), s);
+	    state_puts (_("*** End Notation ***\n"), s);
 	  }
 	}
       }
@@ -2438,7 +2450,7 @@ int pgp_gpgme_application_handler (BODY *m, STATE *s)
                   snprintf (errbuf, sizeof(errbuf)-1, 
                             _("Error: decryption/verification failed: %s\n"),
                             gpgme_strerror (err));
-                  state_attach_puts (errbuf, s);
+                  state_puts (errbuf, s);
                 }
               else
                 { /* Decryption/Verification succeeded */
@@ -2481,7 +2493,7 @@ int pgp_gpgme_application_handler (BODY *m, STATE *s)
                   if (!tmpfname)
                     {
                       pgpout = NULL;
-                      state_attach_puts (_("Error: copy data failed\n"), s);
+                      state_puts (_("Error: copy data failed\n"), s);
                     }
                   else
                     {
@@ -2813,9 +2825,6 @@ static const char *crypt_entry_fmt (char *dest,
 	}
 	*p = 0;
 
-	if (do_locales && Locale)
-	  setlocale (LC_TIME, Locale);
-        
         {
 	  time_t tt = 0;
 
@@ -2824,11 +2833,13 @@ static const char *crypt_entry_fmt (char *dest,
 
           tm = localtime (&tt);
         }
-	strftime (buf2, sizeof (buf2), dest, tm);
 
-	if (do_locales)
-	  setlocale (LC_TIME, "C");
-        
+        if (!do_locales)
+          setlocale (LC_TIME, "C");
+        strftime (buf2, sizeof (buf2), dest, tm);
+        if (!do_locales)
+          setlocale (LC_TIME, "");
+
 	snprintf (fmt, sizeof (fmt), "%%%ss", prefix);
 	snprintf (dest, destlen, fmt, buf2);
 	if (len > 0)
@@ -3369,9 +3380,6 @@ static void print_key_info (gpgme_key_t key, FILE *fp)
   int i;
   gpgme_user_id_t uid = NULL;
 
-  if (Locale)
-    setlocale (LC_TIME, Locale);
-
   is_pgp = key->protocol == GPGME_PROTOCOL_OpenPGP;
 
   for (idx = 0, uid = key->uids; uid; idx++, uid = uid->next)
@@ -3611,9 +3619,6 @@ static void print_key_info (gpgme_key_t key, FILE *fp)
           putc ('\n', fp);
         }
     }
-
-  if (Locale)
-    setlocale (LC_TIME, "C");
 }
 
 

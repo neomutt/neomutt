@@ -28,10 +28,18 @@
 #include <villa.h>
 #elif HAVE_TC
 #include <tcbdb.h>
+#elif HAVE_KC
+#include <kclangc.h>
 #elif HAVE_GDBM
 #include <gdbm.h>
 #elif HAVE_DB4
 #include <db.h>
+#elif HAVE_LMDB
+/* This is the maximum size of the database file (2GiB) which is
+ * mmap(2)'ed into memory.  This limit should be good for ~800,000
+ * emails. */
+#define LMDB_DB_SIZE    2147483648
+#include <lmdb.h>
 #endif
 
 #include <errno.h>
@@ -63,6 +71,13 @@ struct header_cache
   char *folder;
   unsigned int crc;
 };
+#elif HAVE_KC
+struct header_cache
+{
+  KCDB *db;
+  char *folder;
+  unsigned int crc;
+};
 #elif HAVE_GDBM
 struct header_cache
 {
@@ -83,6 +98,78 @@ struct header_cache
 
 static void mutt_hcache_dbt_init(DBT * dbt, void *data, size_t len);
 static void mutt_hcache_dbt_empty_init(DBT * dbt);
+#elif HAVE_LMDB
+enum mdb_txn_mode
+{
+  txn_uninitialized = 0,
+  txn_read,
+  txn_write
+};
+struct header_cache
+{
+  MDB_env *env;
+  MDB_txn *txn;
+  MDB_dbi db;
+  char *folder;
+  unsigned int crc;
+  enum mdb_txn_mode txn_mode;
+};
+
+static int mdb_get_r_txn(header_cache_t *h)
+{
+  int rc;
+
+  if (h->txn)
+  {
+    if (h->txn_mode == txn_read || h->txn_mode == txn_write)
+      return MDB_SUCCESS;
+
+    if ((rc = mdb_txn_renew (h->txn)) != MDB_SUCCESS)
+    {
+      h->txn = NULL;
+      dprint (2, (debugfile, "mdb_get_r_txn: mdb_txn_renew: %s\n",
+                  mdb_strerror (rc)));
+      return rc;
+    }
+    h->txn_mode = txn_read;
+    return rc;
+  }
+
+  if ((rc = mdb_txn_begin (h->env, NULL, MDB_RDONLY, &h->txn)) != MDB_SUCCESS)
+  {
+    h->txn = NULL;
+    dprint (2, (debugfile, "mdb_get_r_txn: mdb_txn_begin: %s\n",
+                mdb_strerror (rc)));
+    return rc;
+  }
+  h->txn_mode = txn_read;
+  return rc;
+}
+
+static int mdb_get_w_txn(header_cache_t *h)
+{
+  int rc;
+
+  if (h->txn)
+  {
+    if (h->txn_mode == txn_write)
+      return MDB_SUCCESS;
+
+    /* Free up the memory for readonly or reset transactions */
+    mdb_txn_abort (h->txn);
+  }
+
+  if ((rc = mdb_txn_begin (h->env, NULL, 0, &h->txn)) != MDB_SUCCESS)
+  {
+    h->txn = NULL;
+    dprint (2, (debugfile, "mdb_get_w_txn: mdb_txn_begin %s\n",
+                mdb_strerror (rc)));
+    return rc;
+  }
+
+  h->txn_mode = txn_write;
+  return rc;
+}
 #endif
 
 typedef union
@@ -706,7 +793,7 @@ mutt_hcache_fetch(header_cache_t *h, const char *filename,
 
   if (!data || !crc_matches(data, h->crc))
   {
-    FREE(&data);
+    mutt_hcache_free (&data);
     return NULL;
   }
   
@@ -726,17 +813,23 @@ mutt_hcache_fetch_raw (header_cache_t *h, const char *filename,
 #elif HAVE_TC
   void *data;
   int sp;
+#elif HAVE_KC
+  void *data;
+  size_t sp;
 #elif HAVE_GDBM
   datum key;
   datum data;
 #elif HAVE_DB4
   DBT key;
   DBT data;
+#elif HAVE_LMDB
+  MDB_val key;
+  MDB_val data;
 #endif
-  
+
   if (!h)
     return NULL;
-  
+
 #ifdef HAVE_DB4
   if (filename[0] == '/')
     filename++;
@@ -744,9 +837,9 @@ mutt_hcache_fetch_raw (header_cache_t *h, const char *filename,
   mutt_hcache_dbt_init(&key, (void *) filename, keylen(filename));
   mutt_hcache_dbt_empty_init(&data);
   data.flags = DB_DBT_MALLOC;
-  
+
   h->db->get(h->db, NULL, &key, &data, 0);
-  
+
   return data.data;
 #else
   strncpy(path, h->folder, sizeof (path));
@@ -754,21 +847,36 @@ mutt_hcache_fetch_raw (header_cache_t *h, const char *filename,
 
   ksize = strlen (h->folder) + keylen (path + strlen (h->folder));  
 #endif
+
 #ifdef HAVE_QDBM
   data = vlget(h->db, path, ksize, NULL);
-  
+
   return data;
 #elif HAVE_TC
   data = tcbdbget(h->db, path, ksize, &sp);
 
   return data;
+#elif HAVE_KC
+  data = kcdbget(h->db, path, ksize, &sp);
+
+  return data;
 #elif HAVE_GDBM
   key.dptr = path;
   key.dsize = ksize;
-  
+
   data = gdbm_fetch(h->db, key);
-  
+
   return data.dptr;
+#elif HAVE_LMDB
+  key.mv_data = path;
+  key.mv_size = ksize;
+  if ((mdb_get_r_txn (h) != MDB_SUCCESS) ||
+      (mdb_get (h->txn, h->db, &key, &data) != MDB_SUCCESS))
+    return NULL;
+
+  /* LMDB claims ownership of the returned data, so this will not be
+   * freed in mutt_hcache_free(). */
+  return data.mv_data;
 #endif
 }
 
@@ -813,23 +921,27 @@ mutt_hcache_store_raw (header_cache_t* h, const char* filename, void* data,
 #elif HAVE_DB4
   DBT key;
   DBT databuf;
+#elif HAVE_LMDB
+  MDB_val key;
+  MDB_val databuf;
+  int rc;
 #endif
-  
+
   if (!h)
     return -1;
 
 #if HAVE_DB4
   if (filename[0] == '/')
     filename++;
-  
+
   mutt_hcache_dbt_init(&key, (void *) filename, keylen(filename));
-  
+
   mutt_hcache_dbt_empty_init(&databuf);
   databuf.flags = DB_DBT_USERMEM;
   databuf.data = data;
   databuf.size = dlen;
   databuf.ulen = dlen;
-  
+
   return h->db->put(h->db, NULL, &key, &databuf, 0);
 #else
   strncpy(path, h->folder, sizeof (path));
@@ -837,18 +949,38 @@ mutt_hcache_store_raw (header_cache_t* h, const char* filename, void* data,
 
   ksize = strlen(h->folder) + keylen(path + strlen(h->folder));
 #endif
+
 #if HAVE_QDBM
   return vlput(h->db, path, ksize, data, dlen, VL_DOVER);
 #elif HAVE_TC
   return tcbdbput(h->db, path, ksize, data, dlen);
+#elif HAVE_KC
+  return kcdbset(h->db, path, ksize, data, dlen);
 #elif HAVE_GDBM
   key.dptr = path;
   key.dsize = ksize;
-  
+
   databuf.dsize = dlen;
   databuf.dptr = data;
-  
+
   return gdbm_store(h->db, key, databuf, GDBM_REPLACE);
+#elif HAVE_LMDB
+  key.mv_data = path;
+  key.mv_size = ksize;
+  databuf.mv_data = data;
+  databuf.mv_size = dlen;
+  if ((rc = mdb_get_w_txn (h)) != MDB_SUCCESS)
+    return rc;
+
+  if ((rc = mdb_put (h->txn, h->db, &key, &databuf, 0)) != MDB_SUCCESS)
+  {
+    dprint (2, (debugfile, "mutt_hcache_store_raw: mdb_put: %s\n",
+                mdb_strerror(rc)));
+    mdb_txn_abort (h->txn);
+    h->txn_mode = txn_uninitialized;
+    h->txn = NULL;
+  }
+  return rc;
 #endif
 }
 
@@ -974,6 +1106,67 @@ mutt_hcache_delete(header_cache_t *h, const char *filename,
   ksize = strlen(h->folder) + keylen(path + strlen(h->folder));
 
   return tcbdbout(h->db, path, ksize);
+}
+
+#elif HAVE_KC
+static int
+hcache_open_kc (struct header_cache* h, const char* path)
+{
+  char fullpath[_POSIX_PATH_MAX];
+
+  /* Kyoto cabinet options are discussed at
+   * http://fallabs.com/kyotocabinet/spex.html
+   * - rcomp is by default lex, so there is no need to specify it.
+   * - opts=l enables linear collision chaining as opposed to using a binary tree.
+   *   this isn't suggested unless you are tuning the number of buckets.
+   * - opts=c enables compression
+   */
+  snprintf (fullpath, sizeof(fullpath), "%s#type=kct%s", path,
+            option(OPTHCACHECOMPRESS) ? "#opts=c" : "");
+  h->db = kcdbnew();
+  if (!h->db)
+      return -1;
+  if (kcdbopen(h->db, fullpath, KCOWRITER | KCOCREATE))
+    return 0;
+  else
+  {
+    dprint (2, (debugfile, "kcdbopen failed for %s: %s (ecode %d)\n", fullpath,
+                kcdbemsg (h->db), kcdbecode (h->db)));
+    kcdbdel(h->db);
+    return -1;
+  }
+}
+
+void
+mutt_hcache_close(header_cache_t *h)
+{
+  if (!h)
+    return;
+
+  if (!kcdbclose(h->db))
+    dprint (2, (debugfile, "kcdbclose failed for %s: %s (ecode %d)\n", h->folder,
+                kcdbemsg (h->db), kcdbecode (h->db)));
+  kcdbdel(h->db);
+  FREE(&h->folder);
+  FREE(&h);
+}
+
+int
+mutt_hcache_delete(header_cache_t *h, const char *filename,
+		   size_t(*keylen) (const char *fn))
+{
+  char path[_POSIX_PATH_MAX];
+  int ksize;
+
+  if (!h)
+    return -1;
+
+  strncpy(path, h->folder, sizeof (path));
+  safe_strcat(path, sizeof (path), filename);
+
+  ksize = strlen(h->folder) + keylen(path + strlen(h->folder));
+
+  return kcdbremove(h->db, path, ksize);
 }
 
 #elif HAVE_GDBM
@@ -1134,6 +1327,117 @@ mutt_hcache_delete(header_cache_t *h, const char *filename,
   mutt_hcache_dbt_init(&key, (void *) filename, keylen(filename));
   return h->db->del(h->db, NULL, &key, 0);
 }
+#elif HAVE_LMDB
+
+static int
+hcache_open_lmdb (struct header_cache* h, const char* path)
+{
+  int rc;
+
+  h->txn = NULL;
+
+  if ((rc = mdb_env_create(&h->env)) != MDB_SUCCESS)
+  {
+    dprint (2, (debugfile, "hcache_open_lmdb: mdb_env_create: %s\n",
+                mdb_strerror(rc)));
+    return -1;
+  }
+
+  mdb_env_set_mapsize(h->env, LMDB_DB_SIZE);
+
+  if ((rc = mdb_env_open(h->env, path, MDB_NOSUBDIR, 0644)) != MDB_SUCCESS)
+  {
+    dprint (2, (debugfile, "hcache_open_lmdb: mdb_env_open: %s\n",
+                mdb_strerror(rc)));
+    goto fail_env;
+  }
+
+  if ((rc = mdb_get_r_txn(h)) != MDB_SUCCESS)
+    goto fail_env;
+
+  if ((rc = mdb_dbi_open(h->txn, NULL, MDB_CREATE, &h->db)) != MDB_SUCCESS)
+  {
+    dprint (2, (debugfile, "hcache_open_lmdb: mdb_dbi_open: %s\n",
+                mdb_strerror(rc)));
+    goto fail_dbi;
+  }
+
+  mdb_txn_reset(h->txn);
+  h->txn_mode = txn_uninitialized;
+  return 0;
+
+fail_dbi:
+  mdb_txn_abort(h->txn);
+  h->txn_mode = txn_uninitialized;
+  h->txn = NULL;
+
+fail_env:
+  mdb_env_close(h->env);
+  return -1;
+}
+
+void
+mutt_hcache_close(header_cache_t *h)
+{
+  int rc;
+
+  if (!h)
+    return;
+
+  if (h->txn)
+  {
+    if (h->txn_mode == txn_write)
+    {
+      if ((rc = mdb_txn_commit (h->txn)) != MDB_SUCCESS)
+      {
+        dprint (2, (debugfile, "mutt_hcache_close: mdb_txn_commit: %s\n",
+                    mdb_strerror (rc)));
+      }
+    }
+    else
+      mdb_txn_abort (h->txn);
+    h->txn_mode = txn_uninitialized;
+    h->txn = NULL;
+  }
+
+  mdb_env_close(h->env);
+  FREE (&h->folder);
+  FREE (&h);
+}
+
+int
+mutt_hcache_delete(header_cache_t *h, const char *filename,
+		   size_t(*keylen) (const char *fn))
+{
+  char path[_POSIX_PATH_MAX];
+  int ksize;
+  MDB_val key;
+  int rc;
+
+  if (!h)
+    return -1;
+
+  strncpy(path, h->folder, sizeof (path));
+  safe_strcat(path, sizeof (path), filename);
+  ksize = strlen (h->folder) + keylen (path + strlen (h->folder));
+
+  key.mv_data = path;
+  key.mv_size = ksize;
+  if (mdb_get_w_txn(h) != MDB_SUCCESS)
+    return -1;
+  rc = mdb_del(h->txn, h->db, &key, NULL);
+  if (rc != MDB_SUCCESS && rc != MDB_NOTFOUND)
+  {
+    dprint (2, (debugfile, "mutt_hcache_delete: mdb_del: %s\n",
+                mdb_strerror (rc)));
+    mdb_txn_abort(h->txn);
+    h->txn_mode = txn_uninitialized;
+    h->txn = NULL;
+    return -1;
+  }
+
+  return 0;
+}
 #endif
 
 header_cache_t *
@@ -1147,10 +1451,14 @@ mutt_hcache_open(const char *path, const char *folder, hcache_namer_t namer)
   hcache_open = hcache_open_qdbm;
 #elif HAVE_TC
   hcache_open= hcache_open_tc;
+#elif HAVE_KC
+  hcache_open= hcache_open_kc;
 #elif HAVE_GDBM
   hcache_open = hcache_open_gdbm;
 #elif HAVE_DB4
   hcache_open = hcache_open_db4;
+#elif HAVE_LMDB
+  hcache_open = hcache_open_lmdb;
 #endif
 
   /* Calculate the current hcache version from dynamic configuration */
@@ -1160,7 +1468,7 @@ mutt_hcache_open(const char *path, const char *folder, hcache_namer_t namer)
       unsigned int intval;
     } digest;
     struct md5_ctx ctx;
-    SPAM_LIST *spam;
+    REPLACE_LIST *spam;
     RX_LIST *nospam;
 
     hcachever = HCACHEVER;
@@ -1188,7 +1496,11 @@ mutt_hcache_open(const char *path, const char *folder, hcache_namer_t namer)
     hcachever = digest.intval;
   }
 
+#if HAVE_LMDB
+  h->db = 0;
+#else
   h->db = NULL;
+#endif
   h->folder = get_foldername(folder);
   h->crc = hcachever;
 
@@ -1218,10 +1530,30 @@ mutt_hcache_open(const char *path, const char *folder, hcache_namer_t namer)
   }
 }
 
+void mutt_hcache_free (void **data)
+{
+  if (!data || !*data)
+    return;
+
+#if HAVE_KC
+  kcfree (*data);
+  *data = NULL;
+#elif HAVE_LMDB
+  /* LMDB owns the data returned.  It should not be freed */
+#else
+  FREE (data);  /* __FREE_CHECKED__ */
+#endif
+}
+
 #if HAVE_DB4
 const char *mutt_hcache_backend (void)
 {
   return DB_VERSION_STRING;
+}
+#elif HAVE_LMDB
+const char *mutt_hcache_backend (void)
+{
+  return "lmdb " MDB_VERSION_STRING;
 }
 #elif HAVE_GDBM
 const char *mutt_hcache_backend (void)
@@ -1237,5 +1569,12 @@ const char *mutt_hcache_backend (void)
 const char *mutt_hcache_backend (void)
 {
   return "tokyocabinet " _TC_VERSION;
+}
+#elif HAVE_KC
+const char *mutt_hcache_backend (void)
+{
+  static char backend[SHORT_STRING];
+  snprintf(backend, sizeof(backend), "kyotocabinet %s", KCVERSION);
+  return backend;
 }
 #endif

@@ -2814,6 +2814,18 @@ search_next:
 	redraw = REDRAW_FULL;
 	break;
 
+     case OP_EDIT_LABEL:
+        CHECK_MODE(IsHeader (extra));
+        rc = mutt_label_message(extra->hdr);
+        if (rc > 0) {
+          Context->changed = 1;
+          redraw = REDRAW_FULL;
+          mutt_message (_("%d labels changed."), rc);
+        }
+        else {
+          mutt_message _("No labels changed.");
+        }
+        break;
 
       case OP_MAIL_KEY:
         if (!(WithCrypto & APPLICATION_PGP))
@@ -2874,12 +2886,16 @@ search_next:
   if (IsHeader (extra))
   {
     Context->msgnotreadyet = -1;
-    if (rc == -1)
-      OldHdr = NULL;
-    else
+    switch (rc)
     {
-      TopLine = topline;
-      OldHdr = extra->hdr;
+      case -1:
+      case OP_DISPLAY_HEADERS:
+        mutt_clear_pager_position ();
+        break;
+      default:
+        TopLine = topline;
+        OldHdr = extra->hdr;
+        break;
     }
   }
     

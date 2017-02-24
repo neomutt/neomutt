@@ -199,6 +199,22 @@ int mutt_user_is_recipient (HEADER *h)
   return h->recipient;
 }
 
+static char *apply_subject_mods (ENVELOPE *env)
+{
+  if (env == NULL)
+    return NULL;
+
+  if (SubjectRxList == NULL)
+    return env->subject;
+
+  if (env->subject == NULL || *env->subject == '\0')
+    return env->disp_subj = NULL;
+
+  env->disp_subj = mutt_apply_replace(NULL, 0, env->subject, SubjectRxList);
+  return env->disp_subj;
+}
+
+
 /* %a = address of author
  * %A = reply-to address (if present; otherwise: address of author
  * %b = filename of the originating folder
@@ -383,9 +399,6 @@ hdr_format_str (char *dest,
 	}
 	*p = 0;
 
-	if (do_locales && Locale)
-	  setlocale (LC_TIME, Locale);
-
 	if (op == '[' || op == 'D')
 	  tm = localtime (&hdr->date_sent);
 	else if (op == '(')
@@ -406,10 +419,11 @@ hdr_format_str (char *dest,
 	  tm = gmtime (&T);
 	}
 
-	strftime (buf2, sizeof (buf2), dest, tm);
-
-	if (do_locales)
-	  setlocale (LC_TIME, "C");
+        if (!do_locales)
+          setlocale (LC_TIME, "C");
+        strftime (buf2, sizeof (buf2), dest, tm);
+        if (!do_locales)
+          setlocale (LC_TIME, "");
 
 	mutt_format_s (dest, destlen, prefix, buf2);
 	if (len > 0 && op != 'd' && op != 'D') /* Skip ending op */
@@ -568,20 +582,28 @@ hdr_format_str (char *dest,
       break;
 
     case 's':
-      
-      if (flags & MUTT_FORMAT_TREE && !hdr->collapsed)
       {
-	if (flags & MUTT_FORMAT_FORCESUBJ)
+	char *subj;
+        if (hdr->env->disp_subj)
+	  subj = hdr->env->disp_subj;
+	else if (SubjectRxList)
+	  subj = apply_subject_mods(hdr->env);
+	else
+	  subj = hdr->env->subject;
+	if (flags & MUTT_FORMAT_TREE && !hdr->collapsed)
 	{
-	  mutt_format_s (dest, destlen, "", NONULL (hdr->env->subject));
-	  snprintf (buf2, sizeof (buf2), "%s%s", hdr->tree, dest);
-	  mutt_format_s_tree (dest, destlen, prefix, buf2);
+	  if (flags & MUTT_FORMAT_FORCESUBJ)
+	  {
+	    mutt_format_s (dest, destlen, "", NONULL (subj));
+	    snprintf (buf2, sizeof (buf2), "%s%s", hdr->tree, dest);
+	    mutt_format_s_tree (dest, destlen, prefix, buf2);
+	  }
+	  else
+	    mutt_format_s_tree (dest, destlen, prefix, hdr->tree);
 	}
 	else
-	  mutt_format_s_tree (dest, destlen, prefix, hdr->tree);
+	  mutt_format_s (dest, destlen, prefix, NONULL (subj));
       }
-      else
-	mutt_format_s (dest, destlen, prefix, NONULL (hdr->env->subject));
       break;
 
     case 'S':
@@ -622,9 +644,9 @@ hdr_format_str (char *dest,
       break;
 
     case 'T':
-      snprintf (fmt, sizeof (fmt), "%%%sc", prefix);
+      snprintf (fmt, sizeof (fmt), "%%%ss", prefix);
       snprintf (dest, destlen, fmt,
-		(Tochars && ((i = mutt_user_is_recipient (hdr))) < mutt_strlen (Tochars)) ? Tochars[i] : ' ');
+		(Tochars && ((i = mutt_user_is_recipient (hdr))) < Tochars->len) ? Tochars->chars[i] : " ");
       break;
 
     case 'u':
@@ -670,13 +692,13 @@ hdr_format_str (char *dest,
         ch = 'K';
 
       snprintf (buf2, sizeof (buf2),
-		"%c%c%c", (THREAD_NEW ? 'n' : (THREAD_OLD ? 'o' : 
+		"%c%c%s", (THREAD_NEW ? 'n' : (THREAD_OLD ? 'o' :
 		((hdr->read && (ctx && ctx->msgnotreadyet != hdr->msgno))
 		? (hdr->replied ? 'r' : ' ') : (hdr->old ? 'O' : 'N')))),
 		hdr->deleted ? 'D' : (hdr->attach_del ? 'd' : ch),
-		hdr->tagged ? '*' :
-		(hdr->flagged ? '!' :
-		 (Tochars && ((i = mutt_user_is_recipient (hdr)) < mutt_strlen (Tochars)) ? Tochars[i] : ' ')));
+		hdr->tagged ? "*" :
+		(hdr->flagged ? "!" :
+		 (Tochars && ((i = mutt_user_is_recipient (hdr)) < Tochars->len) ? Tochars->chars[i] : " ")));
       mutt_format_s (dest, destlen, prefix, buf2);
       break;
 

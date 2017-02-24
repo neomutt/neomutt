@@ -33,6 +33,7 @@ HEADER *mutt_hcache_restore(const unsigned char *d, HEADER **oh);
 void *mutt_hcache_fetch(header_cache_t *h, const char *filename, size_t (*keylen)(const char *fn));
 void *mutt_hcache_fetch_raw (header_cache_t *h, const char *filename,
                              size_t (*keylen)(const char *fn));
+void mutt_hcache_free (void **data);
 
 typedef enum {
   MUTT_GENERATE_UIDVALIDITY = 1 /* use gettimeofday() as value */

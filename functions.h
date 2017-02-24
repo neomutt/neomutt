@@ -99,6 +99,7 @@ const struct binding_t OpMain[] = { /* map: index */
   { "delete-thread",		OP_DELETE_THREAD,		"\004" },
   { "delete-subthread",		OP_DELETE_SUBTHREAD,		"\033d" },
   { "edit",			OP_EDIT_MESSAGE,		"e" },
+  { "edit-label",		OP_EDIT_LABEL,			"Y" },
   { "edit-type",		OP_EDIT_TYPE,			"\005" },
   { "forward-message",		OP_FORWARD_MESSAGE,		"f" },
   { "flag-message",		OP_FLAG_MESSAGE,		"F" },
@@ -149,6 +150,7 @@ const struct binding_t OpMain[] = { /* map: index */
   { "set-flag",			OP_MAIN_SET_FLAG,		"w" },
   { "clear-flag",		OP_MAIN_CLEAR_FLAG,		"W" },
   { "display-message",		OP_DISPLAY_MESSAGE,		MUTT_ENTER_S },
+  { "mark-message",		OP_MARK_MSG,			"~" },
   { "buffy-list",		OP_BUFFY_LIST,			"." },
   { "sync-mailbox",		OP_MAIN_SYNC_FOLDER,		"$" },
   { "display-address",		OP_DISPLAY_ADDRESS,		"@" },
@@ -160,6 +162,7 @@ const struct binding_t OpMain[] = { /* map: index */
   { "next-unread",		OP_MAIN_NEXT_UNREAD,		NULL },
   { "previous-unread",		OP_MAIN_PREV_UNREAD,		NULL },
   { "parent-message",		OP_MAIN_PARENT_MESSAGE,		"P" },
+  { "root-message",		OP_MAIN_ROOT_MESSAGE,		NULL },
 
 
   { "extract-keys",		OP_EXTRACT_KEYS,		"\013" },
@@ -198,6 +201,7 @@ const struct binding_t OpPager[] = { /* map: pager */
   { "set-flag",  	OP_MAIN_SET_FLAG,		"w" },
   { "clear-flag",       OP_MAIN_CLEAR_FLAG,		"W" },
   { "edit",		OP_EDIT_MESSAGE,		"e" },
+  { "edit-label",	OP_EDIT_LABEL,			"Y" },
   { "edit-type",	OP_EDIT_TYPE,			"\005" },
   { "forward-message",	OP_FORWARD_MESSAGE,		"f" },
   { "flag-message",	OP_FLAG_MESSAGE,		"F" },
@@ -271,6 +275,7 @@ const struct binding_t OpPager[] = { /* map: pager */
   { "previous-line",	OP_PREV_LINE,			NULL },
   { "bottom",		OP_PAGER_BOTTOM,		NULL },
   { "parent-message",	OP_MAIN_PARENT_MESSAGE,		"P" },
+  { "root-message",	OP_MAIN_ROOT_MESSAGE,		NULL },
 
 
 
@@ -348,6 +353,7 @@ const struct binding_t OpCompose[] = { /* map: compose */
   { "new-mime",		OP_COMPOSE_NEW_MIME,		"n" },
   { "postpone-message",	OP_COMPOSE_POSTPONE_MESSAGE,	"P" },
   { "edit-reply-to",	OP_COMPOSE_EDIT_REPLY_TO,	"r" },
+  { "rename-attachment",OP_COMPOSE_RENAME_ATTACHMENT,	"\017" },
   { "rename-file",	OP_COMPOSE_RENAME_FILE,		"R" },
   { "edit-subject",	OP_COMPOSE_EDIT_SUBJECT,	"s" },
   { "edit-to",		OP_COMPOSE_EDIT_TO,		"t" },

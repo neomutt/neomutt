@@ -52,6 +52,11 @@
 #include <limits.h>
 #endif
 
+/* PATH_MAX is undefined on the hurd */
+#if !defined(PATH_MAX) && defined(_POSIX_PATH_MAX)
+#define PATH_MAX _POSIX_PATH_MAX
+#endif
+
 #include <pwd.h>
 #include <grp.h>
 
@@ -88,6 +93,7 @@
 #define  MUTT_CLEAR   (1<<5) /* clear input if printable character is pressed */
 #define  MUTT_COMMAND (1<<6) /* do command completion */
 #define  MUTT_PATTERN (1<<7) /* pattern mode - only used for history classes */
+#define  MUTT_LABEL   (1<<8) /* do label completion */
 
 /* flags for mutt_get_token() */
 #define MUTT_TOKEN_EQUAL      1       /* treat '=' as a special */
@@ -141,6 +147,11 @@ typedef enum
 #define MUTT_ACCOUNTHOOK (1<<9)
 #define MUTT_REPLYHOOK   (1<<10)
 #define MUTT_SEND2HOOK   (1<<11)
+#ifdef USE_COMPRESSED
+#define MUTT_OPENHOOK    (1<<12)
+#define MUTT_APPENDHOOK  (1<<13)
+#define MUTT_CLOSEHOOK   (1<<14)
+#endif
 
 /* tree characters for linearize_tree and print_enriched_string */
 #define MUTT_TREE_LLCORNER      1
@@ -342,13 +353,14 @@ enum
   OPTENVFROM,
   OPTFASTREPLY,
   OPTFCCCLEAR,
+  OPTFLAGSAFE,
   OPTFOLLOWUPTO,
   OPTFORCENAME,
   OPTFORWDECODE,
   OPTFORWQUOTE,
 #ifdef USE_HCACHE
   OPTHCACHEVERIFY,
-#if defined(HAVE_QDBM) || defined(HAVE_TC)
+#if defined(HAVE_QDBM) || defined(HAVE_TC) || defined(HAVE_KC)
   OPTHCACHECOMPRESS,
 #endif /* HAVE_QDBM */
 #endif
@@ -451,6 +463,7 @@ enum
   OPTTILDE,
   OPTTSENABLED,
   OPTUNCOLLAPSEJUMP,
+  OPTUNCOLLAPSENEW,
   OPTUSE8BITMIME,
   OPTUSEDOMAIN,
   OPTUSEFROM,
@@ -557,20 +570,20 @@ typedef struct rx_list_t
   struct rx_list_t *next;
 } RX_LIST;
 
-typedef struct spam_list_t
+typedef struct replace_list_t
 {
   REGEXP *rx;
   int     nmatch;
   char   *template;
-  struct spam_list_t *next;
-} SPAM_LIST;
+  struct replace_list_t *next;
+} REPLACE_LIST;
 
 #define mutt_new_list() safe_calloc (1, sizeof (LIST))
 #define mutt_new_rx_list() safe_calloc (1, sizeof (RX_LIST))
-#define mutt_new_spam_list() safe_calloc (1, sizeof (SPAM_LIST))
+#define mutt_new_replace_list() safe_calloc (1, sizeof (REPLACE_LIST))
 void mutt_free_list (LIST **);
 void mutt_free_rx_list (RX_LIST **);
-void mutt_free_spam_list (SPAM_LIST **);
+void mutt_free_replace_list (REPLACE_LIST **);
 LIST *mutt_copy_list (LIST *);
 int mutt_matches_ignore (const char *, LIST *);
 
@@ -606,6 +619,7 @@ typedef struct envelope
   char *list_post;		/* this stores a mailto URL, or nothing */
   char *subject;
   char *real_subj;		/* offset of the real subject */
+  char *disp_subj;		/* display subject (modified copy of subject) */
   char *message_id;
   char *supersedes;
   char *date;
@@ -747,6 +761,7 @@ typedef struct header
 					 * This flag is used by the maildir_trash
 					 * option.
 					 */
+  unsigned int xlabel_changed : 1;	/* editable - used for syncing */
   
   /* timezone of the sender of this message */
   unsigned int zhours : 5;
@@ -849,6 +864,7 @@ typedef struct pattern_t
   unsigned int stringmatch : 1;
   unsigned int groupmatch : 1;
   unsigned int ign_case : 1;		/* ignore case for local stringmatch searches */
+  unsigned int isalias : 1;
   int min;
   int max;
   struct pattern_t *next;
@@ -860,6 +876,23 @@ typedef struct pattern_t
     char *str;
   } p;
 } pattern_t;
+
+/* This is used when a message is repeatedly pattern matched against.
+ * e.g. for color, scoring, hooks.  It caches a few of the potentially slow
+ * operations.
+ * Each entry has a value of 0 = unset, 1 = false, 2 = true
+ */
+typedef struct
+{
+  int list_all;          /* ^~l */
+  int list_one;          /*  ~l */
+  int sub_all;           /* ^~u */
+  int sub_one;           /*  ~u */
+  int pers_recip_all;    /* ^~p */
+  int pers_recip_one;    /*  ~p */
+  int pers_from_all;     /* ^~P */
+  int pers_from_one;     /*  ~P */
+} pattern_cache_t;
 
 /* ACL Rights */
 enum
@@ -898,6 +931,7 @@ struct mx_ops
   int (*open_append) (struct _context *, int flags);
   int (*close) (struct _context *);
   int (*check) (struct _context *ctx, int *index_hint);
+  int (*sync) (struct _context *ctx, int *index_hint);
   int (*open_msg) (struct _context *, struct _message *, int msgno);
   int (*close_msg) (struct _context *, struct _message *);
   int (*commit_msg) (struct _context *, struct _message *);
@@ -921,6 +955,7 @@ typedef struct _context
   HASH *id_hash;		/* hash table by msg id */
   HASH *subj_hash;		/* hash table by subject */
   HASH *thread_hash;		/* hash table for threading */
+  HASH *label_hash;             /* hash table for x-labels */
   int *v2r;			/* mapping from virtual to real msgno */
   int hdrmax;			/* number of pointers in hdrs */
   int msgcount;			/* number of messages in the mailbox */
@@ -945,6 +980,10 @@ typedef struct _context
   unsigned int collapsed : 1;   /* are all threads collapsed? */
   unsigned int closing : 1;	/* mailbox is being closed */
   unsigned int peekonly : 1;	/* just taking a glance, revert atime */
+
+#ifdef USE_COMPRESSED
+  void *compress_info;		/* compressed mbox module private data */
+#endif /* USE_COMPRESSED */
 
   /* driver hooks */
   void *data;			/* driver specific data */
@@ -1001,6 +1040,17 @@ typedef struct
   char   *minor;
   regex_t minor_rx;
 } ATTACH_MATCH;
+
+/* multibyte character table.
+ * Allows for direct access to the individual multibyte characters in a
+ * string.  This is used for the Tochars and StChars option types. */
+typedef struct
+{
+  int len;               /* number of characters */
+  char **chars;          /* the array of multibyte character strings */
+  char *segmented_str;   /* each chars entry points inside this string */
+  char *orig_str;
+} mbchar_table;
 
 #define MUTT_PARTS_TOPLEVEL	(1<<0)	/* is the top-level part */
 

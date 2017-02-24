@@ -29,6 +29,7 @@
 #include "url.h"
 
 #include "mime.h"
+#include "rfc2047.h"
 
 #include <ctype.h>
 
@@ -142,7 +143,16 @@ static int ciss_parse_userhost (ciss_url_t *ciss, char *src)
     ciss->user = src;
     if (url_pct_decode (ciss->user) < 0)
       return -1;
-    t++;
+    src = t + 1;
+  }
+
+  /* IPv6 literal address.  It may contain colons, so set t to start
+   * the port scan after it.
+   */
+  if ((*src == '[') && (t = strchr (src, ']')))
+  {
+    src++;
+    *t++ = '\0';
   }
   else
     t = src;
@@ -158,7 +168,7 @@ static int ciss_parse_userhost (ciss_url_t *ciss, char *src)
   else
     ciss->port = 0;
 
-  ciss->host = t;
+  ciss->host = src;
   return url_pct_decode (ciss->host) >= 0 &&
     (!ciss->path || url_pct_decode (ciss->path) >= 0) ? 0 : -1;
 }
@@ -231,10 +241,17 @@ int url_ciss_tostring (ciss_url_t* ciss, char* dest, size_t len, int flags)
       len -= (l = strlen (dest)); dest += l;
     }
 
-    if (ciss->port)
-      snprintf (dest, len, "%s:%hu/", ciss->host, ciss->port);
+    if (strchr (ciss->host, ':'))
+      snprintf (dest, len, "[%s]", ciss->host);
     else
-      snprintf (dest, len, "%s/", ciss->host);
+      snprintf (dest, len, "%s", ciss->host);
+
+    len -= (l = strlen (dest)); dest += l;
+
+    if (ciss->port)
+      snprintf (dest, len, ":%hu/", ciss->port);
+    else
+      snprintf (dest, len, "/");
   }
 
   if (ciss->path)
@@ -309,11 +326,23 @@ int url_parse_mailto (ENVELOPE *e, char **body, const char *src)
 	safe_asprintf (&scratch, "%s: %s", tag, value);
 	scratch[taglen] = 0; /* overwrite the colon as mutt_parse_rfc822_line expects */
 	value = skip_email_wsp(&scratch[taglen + 1]);
-	mutt_parse_rfc822_line (e, NULL, scratch, value, 1, 0, 0, &last);
+	mutt_parse_rfc822_line (e, NULL, scratch, value, 1, 0, 1, &last);
 	FREE (&scratch);
       }
     }
   }
+
+  /* RFC2047 decode after the RFC822 parsing */
+  rfc2047_decode_adrlist (e->from);
+  rfc2047_decode_adrlist (e->to);
+  rfc2047_decode_adrlist (e->cc);
+  rfc2047_decode_adrlist (e->bcc);
+  rfc2047_decode_adrlist (e->reply_to);
+  rfc2047_decode_adrlist (e->mail_followup_to);
+  rfc2047_decode_adrlist (e->return_path);
+  rfc2047_decode_adrlist (e->sender);
+  rfc2047_decode (&e->x_label);
+  rfc2047_decode (&e->subject);
 
   rc = 0;
 

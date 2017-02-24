@@ -36,6 +36,7 @@ WHERE char *AliasFmt;
 WHERE char *AssumedCharset;
 WHERE char *AttachSep;
 WHERE char *Attribution;
+WHERE char *AttributionLocale;
 WHERE char *AttachCharset;
 WHERE char *AttachFormat;
 WHERE char *Charset;
@@ -66,7 +67,6 @@ WHERE char *ImapUser INITVAL (NULL);
 #endif
 WHERE char *Inbox;
 WHERE char *Ispell;
-WHERE char *Locale;
 WHERE char *MailcapPath;
 WHERE char *Maildir;
 #if defined(USE_IMAP) || defined(USE_POP)
@@ -78,6 +78,7 @@ WHERE char *HeaderCache;
 WHERE char *HeaderCachePageSize;
 #endif /* HAVE_GDBM || HAVE_DB4 */
 #endif /* USE_HCACHE */
+WHERE char *MarkMacroPrefix;
 WHERE char *MhFlagged;
 WHERE char *MhReplied;
 WHERE char *MhUnseen;
@@ -143,10 +144,10 @@ WHERE short SslDHPrimeBits;
 WHERE char *SslCACertFile INITVAL (NULL);
 #endif
 #endif
-WHERE char *StChars;
+WHERE mbchar_table *StChars;
 WHERE char *Status;
 WHERE char *Tempdir;
-WHERE char *Tochars;
+WHERE mbchar_table *Tochars;
 WHERE char *TrashPath;
 WHERE char *TSStatusFormat;
 WHERE char *TSIconFormat;
@@ -181,8 +182,9 @@ WHERE RX_LIST *MailLists INITVAL(0);
 WHERE RX_LIST *UnMailLists INITVAL(0);
 WHERE RX_LIST *SubscribedLists INITVAL(0);
 WHERE RX_LIST *UnSubscribedLists INITVAL(0);
-WHERE SPAM_LIST *SpamList INITVAL(0);
+WHERE REPLACE_LIST *SpamList INITVAL(0);
 WHERE RX_LIST *NoSpamList INITVAL(0);
+WHERE REPLACE_LIST *SubjectRxList INITVAL(0);
 
 
 /* bit vector for boolean variables */

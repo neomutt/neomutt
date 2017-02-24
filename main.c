@@ -105,6 +105,8 @@ static const char *Obtaining = N_("\
     Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.\n\
 ");
 
+char **envlist;
+
 void mutt_exit (int code)
 {
   mutt_endwin (NULL);
@@ -494,6 +496,12 @@ static void show_version (void)
 	"-USE_SIDEBAR  "
 #endif
 
+#ifdef USE_COMPRESSED
+	"+USE_COMPRESSED  "
+#else
+	"-USE_COMPRESSED  "
+#endif
+
 	);
 
 #ifdef ISPELL
@@ -565,7 +573,7 @@ init_extended_keys();
 #define MUTT_RO      (1<<3)	/* -R */
 #define MUTT_SELECT  (1<<4)	/* -y */
 
-int main (int argc, char **argv)
+int main (int argc, char **argv, char **environ)
 {
   char folder[_POSIX_PATH_MAX] = "";
   char *subject = NULL;
@@ -597,14 +605,13 @@ int main (int argc, char **argv)
     exit(1);
   }
 
+  setlocale (LC_ALL, "");
+
 #ifdef ENABLE_NLS
   /* FIXME what about init.c:1439 ? */
-  setlocale (LC_ALL, "");
   bindtextdomain (PACKAGE, MUTTLOCALEDIR);
   textdomain (PACKAGE);
 #endif
-
-  setlocale (LC_CTYPE, "");
 
   mutt_error = mutt_nocurses_error;
   mutt_message = mutt_nocurses_error;
@@ -613,6 +620,17 @@ int main (int argc, char **argv)
 
   memset (Options, 0, sizeof (Options));
   memset (QuadOptions, 0, sizeof (QuadOptions));
+
+  /* Init envlist */
+  {
+    char **srcp, **dstp;
+    int count = 0;
+    for (srcp = environ; srcp && *srcp; srcp++)
+      count++;
+    envlist = safe_calloc(count+1, sizeof(char *));
+    for (srcp = environ, dstp = envlist; srcp && *srcp; srcp++, dstp++)
+      *dstp = safe_strdup(*srcp);
+  }
 
   for (optind = 1; optind < double_dash; )
   {

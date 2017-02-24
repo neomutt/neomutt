@@ -160,6 +160,7 @@ ATTACHPTR **mutt_gen_attach_list (BODY *m,
  * %D = deleted flag
  * %d = description
  * %e = MIME content-transfer-encoding
+ * %F = filename for content-disposition header
  * %f = filename
  * %I = content-disposition, either I (inline) or A (attachment)
  * %t = tagged flag
@@ -235,7 +236,7 @@ const char *mutt_attach_fmt (char *dest,
 	    break;
 	  }
 	}
-	if (!aptr->content->filename)
+        if (!aptr->content->d_filename && !aptr->content->filename)
 	{
 	  mutt_format_s (dest, destlen, prefix, "<no description>");
 	  break;
@@ -245,6 +246,21 @@ const char *mutt_attach_fmt (char *dest,
 	      (mutt_is_message_type (aptr->content->type, aptr->content->subtype)
 	      && MsgFmt && aptr->content->hdr))
         break;
+    /* FALLS THROUGH TO 'F' */
+    case 'F':
+      if (!optional)
+      {
+        if (aptr->content->d_filename)
+        {
+          mutt_format_s (dest, destlen, prefix, aptr->content->d_filename);
+          break;
+        }
+      }
+      else if (!aptr->content->d_filename && !aptr->content->filename)
+      {
+        optional = 0;
+        break;
+      }
     /* FALLS THROUGH TO 'f' */
     case 'f':
       if(!optional)
@@ -672,6 +688,8 @@ void mutt_pipe_attachment_list (FILE *fp, int tag, BODY *top, int filter)
 
   buf[0] = 0;
   memset (&state, 0, sizeof (STATE));
+  /* perform charset conversion on text attachments when piping */
+  state.flags = MUTT_CHARCONV;
 
   if (mutt_get_field ((filter ? _("Filter through: ") : _("Pipe to: ")),
 				  buf, sizeof (buf), MUTT_CMD) != 0 || !buf[0])

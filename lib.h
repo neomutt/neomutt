@@ -84,6 +84,10 @@
 # define MAX(a,b) ((a) < (b) ? (b) : (a))
 # define MIN(a,b) ((a) < (b) ? (a) : (b))
 
+/* Use this with care.  If the compiler can't see the array
+ * definition, it obviously won't produce a correct result. */
+#define mutt_array_size(x)  (sizeof (x) / sizeof ((x)[0]))
+
 /* For mutt_format_string() justifications */
 /* Making left 0 and center -1 is of course completely nonsensical, but
  * it retains compatibility for any patches that call mutt_format_string.

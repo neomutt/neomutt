@@ -280,6 +280,8 @@ void imap_expunge_mailbox (IMAP_DATA* idata)
 	FREE (&idata->cache[cacheno].path);
       }
 
+      int_hash_delete (idata->uid_hash, HEADER_DATA(h)->uid, h, NULL);
+
       imap_free_header_data ((IMAP_HEADER_DATA**)&h->data);
     }
   }
@@ -1240,7 +1242,7 @@ int imap_sync_mailbox (CONTEXT* ctx, int expunge, int* index_hint)
        * we delete the message and reupload it.
        * This works better if we're expunging, of course. */
       if ((h->env && (h->env->refs_changed || h->env->irt_changed)) ||
-	  h->attach_del)
+	  h->attach_del || h->xlabel_changed)
       {
         mutt_message (_("Saving changed messages... [%d/%d]"), n+1,
                       ctx->msgcount);
@@ -1250,6 +1252,7 @@ int imap_sync_mailbox (CONTEXT* ctx, int expunge, int* index_hint)
 	  dprint (1, (debugfile, "imap_sync_mailbox: Error opening mailbox in append mode\n"));
 	else
 	  _mutt_save_message (h, appendctx, 1, 0, 0);
+	h->xlabel_changed = 0;
       }
     }
   }
@@ -1392,6 +1395,7 @@ int imap_close_mailbox (CONTEXT* ctx)
     /* mailbox may not have fully loaded */
     if (ctx->hdrs[i] && ctx->hdrs[i]->data)
       imap_free_header_data ((IMAP_HEADER_DATA**)&(ctx->hdrs[i]->data));
+  hash_destroy (&idata->uid_hash, NULL);
 
   for (i = 0; i < IMAP_CACHE_LEN; i++)
   {
@@ -1681,13 +1685,13 @@ IMAP_STATUS* imap_mboxcache_get (IMAP_DATA* idata, const char* mbox, int create)
   {
     uidvalidity = mutt_hcache_fetch_raw (hc, "/UIDVALIDITY", imap_hcache_keylen);
     uidnext = mutt_hcache_fetch_raw (hc, "/UIDNEXT", imap_hcache_keylen);
-    mutt_hcache_close (hc);
     if (uidvalidity)
     {
       if (!status)
       {
-        FREE (&uidvalidity);
-        FREE (&uidnext);
+        mutt_hcache_free ((void **)&uidvalidity);
+        mutt_hcache_free ((void **)&uidnext);
+        mutt_hcache_close (hc);
         return imap_mboxcache_get (idata, mbox, 1);
       }
       status->uidvalidity = *uidvalidity;
@@ -1695,8 +1699,9 @@ IMAP_STATUS* imap_mboxcache_get (IMAP_DATA* idata, const char* mbox, int create)
       dprint (3, (debugfile, "mboxcache: hcache uidvalidity %d, uidnext %d\n",
                   status->uidvalidity, status->uidnext));
     }
-    FREE (&uidvalidity);
-    FREE (&uidnext);
+    mutt_hcache_free ((void **)&uidvalidity);
+    mutt_hcache_free ((void **)&uidnext);
+    mutt_hcache_close (hc);
   }
 #endif
 
@@ -2116,6 +2121,14 @@ int imap_fast_trash (CONTEXT* ctx, char* dest)
   /* loop in case of TRYCREATE */
   do
   {
+    rc = imap_exec_msgset (idata, "UID STORE", "+FLAGS.SILENT (\\Seen)",
+                           MUTT_TRASH, 0, 0);
+    if (rc < 0)
+    {
+      dprint (1, (debugfile, "imap_fast_trash: Unable to mark messages as seen\n"));
+      goto out;
+    }
+
     rc = imap_exec_msgset (idata, "UID COPY", mmbox, MUTT_TRASH, 0, 0);
     if (!rc)
     {
@@ -2180,4 +2193,5 @@ struct mx_ops mx_imap_ops = {
   .commit_msg = imap_commit_message,
   .open_new_msg = imap_open_new_message,
   .check = imap_check_mailbox_reopen,
+  .sync = NULL,      /* imap syncing is handled by imap_sync_mailbox */
 };

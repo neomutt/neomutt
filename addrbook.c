@@ -227,16 +227,14 @@ new_aliases:
   {
     if (AliasTable[i]->tagged)
     {
-      mutt_addrlist_to_local (AliasTable[i]->addr);
-      rfc822_write_address (buf, buflen, AliasTable[i]->addr, 0);
+      rfc822_write_address (buf, buflen, AliasTable[i]->addr, 1);
       t = -1;
     }
   }
 
-  if(t != -1)
+  if (t != -1)
   {
-      mutt_addrlist_to_local (AliasTable[t]->addr);
-    rfc822_write_address (buf, buflen, AliasTable[t]->addr, 0);
+    rfc822_write_address (buf, buflen, AliasTable[t]->addr, 1);
   }
 
   mutt_menuDestroy (&menu);

@@ -195,15 +195,14 @@ static const char *pgp_entry_fmt (char *dest,
 	}
 	*p = 0;
 
-	if (do_locales && Locale)
-	  setlocale (LC_TIME, Locale);
 
 	tm = localtime (&key->gen_time);
 
-	strftime (buf2, sizeof (buf2), dest, tm);
-
-	if (do_locales)
-	  setlocale (LC_TIME, "C");
+        if (!do_locales)
+          setlocale (LC_TIME, "C");
+        strftime (buf2, sizeof (buf2), dest, tm);
+        if (!do_locales)
+          setlocale (LC_TIME, "");
 
 	snprintf (fmt, sizeof (fmt), "%%%ss", prefix);
 	snprintf (dest, destlen, fmt, buf2);

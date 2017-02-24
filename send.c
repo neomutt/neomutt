@@ -34,6 +34,7 @@
 
 #include <ctype.h>
 #include <stdlib.h>
+#include <locale.h>
 #include <unistd.h>
 #include <string.h>
 #include <errno.h>
@@ -323,26 +324,6 @@ static void process_user_header (ENVELOPE *env)
   }
 }
 
-LIST *mutt_copy_list (LIST *p)
-{
-  LIST *t, *r=NULL, *l=NULL;
-
-  for (; p; p = p->next)
-  {
-    t = (LIST *) safe_malloc (sizeof (LIST));
-    t->data = safe_strdup (p->data);
-    t->next = NULL;
-    if (l)
-    {
-      r->next = t;
-      r = r->next;
-    }
-    else
-      l = r = t;
-  }
-  return (l);
-}
-
 void mutt_forward_intro (FILE *fp, HEADER *cur)
 {
   char buffer[STRING];
@@ -401,7 +382,9 @@ void mutt_make_attribution (CONTEXT *ctx, HEADER *cur, FILE *out)
   char buffer[LONG_STRING];
   if (Attribution)
   {
+    setlocale (LC_TIME, NONULL (AttributionLocale));
     mutt_make_string (buffer, sizeof (buffer), Attribution, ctx, cur);
+    setlocale (LC_TIME, "");
     fputs (buffer, out);
     fputc ('\n', out);
   }
@@ -472,7 +455,8 @@ static int default_to (ADDRESS **to, ENVELOPE *env, int flags, int hmfupto)
   }
   else if (env->reply_to)
   {
-    if ((mutt_addrcmp (env->from, env->reply_to) && !env->reply_to->next) || 
+    if ((mutt_addrcmp (env->from, env->reply_to) && !env->reply_to->next &&
+         !env->reply_to->personal) ||
 	(option (OPTIGNORELISTREPLYTO) &&
 	mutt_is_mail_list (env->reply_to) &&
 	(mutt_addrsrc (env->reply_to, env->to) ||
@@ -483,7 +467,7 @@ static int default_to (ADDRESS **to, ENVELOPE *env, int flags, int hmfupto)
        * 
        * We also take the from header if our correspondent has a reply-to
        * header which is identical to the electronic mail address given
-       * in his From header.
+       * in his From header, and the reply-to has no display-name.
        * 
        */
       rfc822_append (to, env->from, 0);

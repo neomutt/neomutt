@@ -221,19 +221,22 @@ This command binds the given \fIsequence\fP of keys to the given
 specify multiple maps, put only a comma between the maps.
 .PP
 .nf
-\fBcolor\fP \fIobject\fP \fIforeground\fP \fIbackground\fP [ \fI regexp\fP ]
-\fBcolor\fP index \fIforeground\fP \fIbackground\fP [ \fI pattern\fP ]
+\fBcolor\fP \fIobject\fP \fIforeground\fP \fIbackground\fP [ \fIregexp\fP ]
+\fBcolor\fP index \fIforeground\fP \fIbackground\fP [ \fIpattern\fP ]
 \fBuncolor\fP index \fIpattern\fP [ \fIpattern\fP ... ]
 .fi
 .IP
 If your terminal supports color, these commands can be used to
 assign \fIforeground\fP/\fIbackground\fP combinations to certain
 objects.  Valid objects are:
-.BR attachment ", " body ", " bold ", " header ", "
+.BR attachment ", " body ", " bold ", " error ", " header ", "
 .BR hdrdefault ", " index ", " indicator ", " markers ", "
-.BR message ", " normal ", " quoted ", " quoted\fIN\fP ", "
+.BR message ", " normal ", " prompt ", " quoted ", " quoted\fIN\fP ", "
 .BR search ", " signature ", " status ", " tilde ", " tree ", "
-.BR underline ", " prompt .
+.BR underline .
+If the sidebar is enabled the following objects are also valid:
+.BR sidebar_divider ", " sidebar_flagged ", " sidebar_highlight ", "
+.BR sidebar_indicator ", " sidebar_new ", " sidebar_spoolfile .
 The
 .BR body " and " header
 objects allow you to restrict the colorization to a regular
@@ -358,7 +361,24 @@ You may use multiple
 \fBcrypt-hook\fPs with the same \fIregexp\fP; multiple matching
 \fBcrypt-hook\fPs result in the use of multiple \fIkey-id\fPs for
 a recipient.
-
+.PP
+.nf
+\fBopen-hook\fP \fIregexp\fP "\fIcommand\fP"
+\fBclose-hook\fP \fIregexp\fP "\fIcommand\fP"
+\fBappend-hook\fP \fIregexp\fP "\fIcommand\fP"
+.fi
+.IP
+These commands provide a way to handle compressed folders. The given
+\fBregexp\fP specifies which folders are taken as compressed (e.g.
+"\fI\\\\.gz$\fP"). The commands tell Mutt how to uncompress a folder
+(\fBopen-hook\fP), compress a folder (\fBclose-hook\fP) or append a
+compressed mail to a compressed folder (\fBappend-hook\fP). The
+\fIcommand\fP string is the
+.BR printf (3)
+like format string, and it should accept two parameters: \fB%f\fP,
+which is replaced with the (compressed) folder name, and \fB%t\fP
+which is replaced with the name of the temporary folder to which to
+write.
 .TP
 \fBpush\fP \fIstring\fP
 This command adds the named \fIstring\fP to the keyboard buffer.

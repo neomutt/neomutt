@@ -53,6 +53,7 @@
 #define CH_UPDATE_IRT     (1<<16) /* update In-Reply-To: */
 #define CH_UPDATE_REFS    (1<<17) /* update References: */
 #define CH_DISPLAY        (1<<18) /* display result to user */
+#define CH_UPDATE_LABEL   (1<<19) /* update X-Label: from hdr->env->x_label? */
 
 
 int mutt_copy_hdr (FILE *, FILE *, LOFF_T, LOFF_T, int, const char *);

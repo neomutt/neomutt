@@ -33,6 +33,10 @@
 #include "sidebar.h"
 #endif
 
+#ifdef USE_COMPRESSED
+#include "compress.h"
+#endif
+
 #ifdef USE_IMAP
 #include "imap.h"
 #endif
@@ -60,7 +64,7 @@
 #include <ctype.h>
 #include <utime.h>
 
-static struct mx_ops* mx_get_ops (int magic)
+struct mx_ops* mx_get_ops (int magic)
 {
   switch (magic)
   {
@@ -79,6 +83,10 @@ static struct mx_ops* mx_get_ops (int magic)
 #ifdef USE_POP
     case MUTT_POP:
       return &mx_pop_ops;
+#endif
+#ifdef USE_COMPRESSED
+    case MUTT_COMPRESSED:
+      return &mx_comp_ops;
 #endif
     default:
       return NULL;
@@ -415,12 +423,27 @@ int mx_get_magic (const char *path)
   else if ((f = fopen (path, "r")) != NULL)
   {
     struct utimbuf times;
+    int ch;
 
-    fgets (tmp, sizeof (tmp), f);
-    if (mutt_strncmp ("From ", tmp, 5) == 0)
-      magic = MUTT_MBOX;
-    else if (mutt_strcmp (MMDF_SEP, tmp) == 0)
-      magic = MUTT_MMDF;
+    /* Some mailbox creation tools erroneously append a blank line to
+     * a file before appending a mail message.  This allows mutt to
+     * detect magic for and thus open those files. */
+    while ((ch = fgetc (f)) != EOF)
+    {
+      if (ch != '\n' && ch != '\r')
+      {
+        ungetc (ch, f);
+        break;
+      }
+    }
+
+    if (fgets (tmp, sizeof (tmp), f))
+    {
+      if (mutt_strncmp ("From ", tmp, 5) == 0)
+        magic = MUTT_MBOX;
+      else if (mutt_strcmp (MMDF_SEP, tmp) == 0)
+        magic = MUTT_MMDF;
+    }
     safe_fclose (&f);
 
     if (!option(OPTCHECKMBOXSIZE))
@@ -441,6 +464,12 @@ int mx_get_magic (const char *path)
     return (-1);
   }
 
+#ifdef USE_COMPRESSED
+  /* If there are no other matches, see if there are any
+   * compress hooks that match */
+  if ((magic == 0) && mutt_comp_can_read (path))
+    return MUTT_COMPRESSED;
+#endif
   return (magic);
 }
 
@@ -494,7 +523,12 @@ static int mx_open_mailbox_append (CONTEXT *ctx, int flags)
     {
       if (errno == ENOENT)
       {
-        ctx->magic = DefaultMagic;
+#ifdef USE_COMPRESSED
+        if (mutt_comp_can_append (ctx))
+          ctx->magic = MUTT_COMPRESSED;
+        else
+#endif
+          ctx->magic = DefaultMagic;
         flags |= MUTT_APPENDNEW;
       }
       else
@@ -512,15 +546,6 @@ static int mx_open_mailbox_append (CONTEXT *ctx, int flags)
     return -1;
 
   return ctx->mx_ops->open_append (ctx, flags);
-}
-
-/* close a mailbox opened in write-mode */
-static int mx_close_mailbox_append (CONTEXT *ctx)
-{
-  mx_unlock_file (ctx->path, fileno (ctx->fp), 1);
-  mutt_unblock_signals ();
-  mx_fastclose_mailbox (ctx);
-  return 0;
 }
 
 /*
@@ -586,7 +611,9 @@ CONTEXT *mx_open_mailbox (const char *path, int flags, CONTEXT *pctx)
       FREE (&ctx);
     return (NULL);
   }
-  
+
+  mutt_make_label_hash (ctx);
+
   /* if the user has a `push' command in their .muttrc, or in a folder-hook,
    * it will cause the progress messages not to be displayed because
    * mutt_refresh() will think we are in the middle of a macro.  so set a
@@ -647,10 +674,15 @@ void mx_fastclose_mailbox (CONTEXT *ctx)
   if (ctx->mx_ops)
     ctx->mx_ops->close (ctx);
 
+#ifdef USE_COMPRESSED
+  mutt_free_compress_info (ctx);
+#endif /* USE_COMPRESSED */
+
   if (ctx->subj_hash)
     hash_destroy (&ctx->subj_hash, NULL);
   if (ctx->id_hash)
     hash_destroy (&ctx->id_hash, NULL);
+  hash_destroy (&ctx->label_hash, NULL);
   mutt_clear_threads (ctx);
   for (i = 0; i < ctx->msgcount; i++)
     mutt_free_header (&ctx->hdrs[i]);
@@ -668,48 +700,13 @@ void mx_fastclose_mailbox (CONTEXT *ctx)
 /* save changes to disk */
 static int sync_mailbox (CONTEXT *ctx, int *index_hint)
 {
-  BUFFY *tmp = NULL;
-  int rc = -1;
+  if (!ctx->mx_ops || !ctx->mx_ops->sync)
+    return -1;
 
   if (!ctx->quiet)
     mutt_message (_("Writing %s..."), ctx->path);
 
-  switch (ctx->magic)
-  {
-    case MUTT_MBOX:
-    case MUTT_MMDF:
-      rc = mbox_sync_mailbox (ctx, index_hint);
-      if (option(OPTCHECKMBOXSIZE))
-	tmp = mutt_find_mailbox (ctx->path);
-      break;
-      
-    case MUTT_MH:
-    case MUTT_MAILDIR:
-      rc = mh_sync_mailbox (ctx, index_hint);
-      break;
-      
-#ifdef USE_IMAP
-    case MUTT_IMAP:
-      /* extra argument means EXPUNGE */
-      rc = imap_sync_mailbox (ctx, 1, index_hint);
-      break;
-#endif /* USE_IMAP */
-
-#ifdef USE_POP
-    case MUTT_POP:
-      rc = pop_sync_mailbox (ctx, index_hint);
-      break;
-#endif /* USE_POP */
-  }
-
-#if 0
-  if (!ctx->quiet && !ctx->shutup && rc == -1)
-    mutt_error ( _("Could not synchronize mailbox %s!"), ctx->path);
-#endif
-  
-  if (tmp && tmp->new == 0)
-    mutt_update_mailbox (tmp);
-  return rc;
+  return ctx->mx_ops->sync (ctx, index_hint);
 }
 
 /* move deleted mails to the trash folder */
@@ -793,20 +790,9 @@ int mx_close_mailbox (CONTEXT *ctx, int *index_hint)
 
   ctx->closing = 1;
 
-  if (ctx->readonly || ctx->dontwrite)
+  if (ctx->readonly || ctx->dontwrite || ctx->append)
   {
-    /* mailbox is readonly or we don't want to write */
     mx_fastclose_mailbox (ctx);
-    return 0;
-  }
-
-  if (ctx->append)
-  {
-    /* mailbox was opened in write-mode */
-    if (ctx->magic == MUTT_MBOX || ctx->magic == MUTT_MMDF)
-      mx_close_mailbox_append (ctx);
-    else
-      mx_fastclose_mailbox (ctx);
     return 0;
   }
 
@@ -1086,6 +1072,7 @@ void mx_update_tables(CONTEXT *ctx, int committing)
 	hash_delete (ctx->subj_hash, ctx->hdrs[i]->env->real_subj, ctx->hdrs[i], NULL);
       if (ctx->id_hash && ctx->hdrs[i]->env->message_id)
 	hash_delete (ctx->id_hash, ctx->hdrs[i]->env->message_id, ctx->hdrs[i], NULL);
+      mutt_label_hash_remove (ctx, ctx->hdrs[i]);
       /* The path mx_check_mailbox() -> imap_check_mailbox() ->
        *          imap_expunge_mailbox() -> mx_update_tables()
        * can occur before a call to mx_sync_mailbox(), resulting in
@@ -1433,9 +1420,10 @@ void mx_update_context (CONTEXT *ctx, int new_messages)
 
     /* add this message to the hash tables */
     if (ctx->id_hash && h->env->message_id)
-      hash_insert (ctx->id_hash, h->env->message_id, h, 0);
+      hash_insert (ctx->id_hash, h->env->message_id, h);
     if (ctx->subj_hash && h->env->real_subj)
-      hash_insert (ctx->subj_hash, h->env->real_subj, h, 1);
+      hash_insert (ctx->subj_hash, h->env->real_subj, h);
+    mutt_label_hash_add (ctx, h);
 
     if (option (OPTSCORE)) 
       mutt_score_message (ctx, h, 0);

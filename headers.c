@@ -27,6 +27,7 @@
 #include <sys/stat.h>
 #include <string.h>
 #include <ctype.h>
+#include <stdint.h>
 
 void mutt_edit_headers (const char *editor,
 			const char *body,
@@ -210,4 +211,125 @@ void mutt_edit_headers (const char *editor,
       mutt_free_list (&tmp);
     }
   }
+}
+
+static void label_ref_dec(CONTEXT *ctx, char *label)
+{
+  struct hash_elem *elem;
+  uintptr_t count;
+
+  elem = hash_find_elem (ctx->label_hash, label);
+  if (!elem)
+    return;
+
+  count = (uintptr_t)elem->data;
+  if (count <= 1)
+  {
+    hash_delete(ctx->label_hash, label, NULL, NULL);
+    return;
+  }
+
+  count--;
+  elem->data = (void *)count;
+}
+
+static void label_ref_inc(CONTEXT *ctx, char *label)
+{
+  struct hash_elem *elem;
+  uintptr_t count;
+
+  elem = hash_find_elem (ctx->label_hash, label);
+  if (!elem)
+  {
+    count = 1;
+    hash_insert(ctx->label_hash, label, (void *)count);
+    return;
+  }
+
+  count = (uintptr_t)elem->data;
+  count++;
+  elem->data = (void *)count;
+}
+
+/*
+ * add an X-Label: field.
+ */
+static int label_message(CONTEXT *ctx, HEADER *hdr, char *new)
+{
+  if (hdr == NULL)
+    return 0;
+  if (mutt_strcmp (hdr->env->x_label, new) == 0)
+    return 0;
+
+  if (hdr->env->x_label != NULL)
+    label_ref_dec(ctx, hdr->env->x_label);
+  mutt_str_replace (&hdr->env->x_label, new);
+  if (hdr->env->x_label != NULL)
+    label_ref_inc(ctx, hdr->env->x_label);
+
+  return hdr->changed = hdr->xlabel_changed = 1;
+}
+
+int mutt_label_message(HEADER *hdr)
+{
+  char buf[LONG_STRING], *new;
+  int i;
+  int changed;
+
+  if (!Context || !Context->label_hash)
+    return 0;
+
+  *buf = '\0';
+  if (hdr != NULL && hdr->env->x_label != NULL) {
+    strncpy(buf, hdr->env->x_label, LONG_STRING);
+  }
+
+  if (mutt_get_field("Label: ", buf, sizeof(buf), MUTT_LABEL /* | MUTT_CLEAR */) != 0)
+    return 0;
+
+  new = buf;
+  SKIPWS(new);
+  if (*new == '\0')
+    new = NULL;
+
+  changed = 0;
+  if (hdr != NULL) {
+    changed += label_message(Context, hdr, new);
+  } else {
+#define HDR_OF(index) Context->hdrs[Context->v2r[(index)]]
+    for (i = 0; i < Context->vcount; ++i) {
+      if (HDR_OF(i)->tagged)
+        if (label_message(Context, HDR_OF(i), new)) {
+          ++changed;
+          mutt_set_flag(Context, HDR_OF(i),
+            MUTT_TAG, 0);
+        }
+    }
+  }
+
+  return changed;
+}
+
+void mutt_make_label_hash (CONTEXT *ctx)
+{
+  /* 131 is just a rough prime estimate of how many distinct
+   * labels someone might have in a mailbox.
+   */
+  ctx->label_hash = hash_create(131, MUTT_HASH_STRDUP_KEYS);
+}
+
+void mutt_label_hash_add (CONTEXT *ctx, HEADER *hdr)
+{
+  if (!ctx || !ctx->label_hash)
+    return;
+  if (hdr->env->x_label)
+    label_ref_inc (ctx, hdr->env->x_label);
+}
+
+void mutt_label_hash_remove (CONTEXT *ctx, HEADER *hdr)
+{
+  if (!ctx || !ctx->label_hash)
+    return;
+  if (hdr->env->x_label)
+    label_ref_dec (ctx, hdr->env->x_label);
 }

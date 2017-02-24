@@ -125,9 +125,10 @@ event_t mutt_getch (void)
     return err;
   }
 
-  if(ch == ERR)
+  /* either timeout, a sigwinch (if timeout is set), or the terminal
+   * has been lost */
+  if (ch == ERR)
   {
-    /* either timeout or the terminal has been lost */
     if (!isatty (0))
     {
       endwin ();

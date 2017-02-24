@@ -416,7 +416,6 @@ static THREAD *find_subject (CONTEXT *ctx, THREAD *cur)
 {
   struct hash_elem *ptr;
   THREAD *tmp, *last = NULL;
-  unsigned int hash;
   LIST *subjects = NULL, *oldlist;
   time_t date = 0;  
 
@@ -424,9 +423,7 @@ static THREAD *find_subject (CONTEXT *ctx, THREAD *cur)
 
   while (subjects)
   {
-    hash = ctx->subj_hash->hash_string ((unsigned char *) subjects->data,
-					ctx->subj_hash->nelem);
-    for (ptr = ctx->subj_hash->table[hash]; ptr; ptr = ptr->next)
+    for (ptr = hash_find_bucket (ctx->subj_hash, subjects->data); ptr; ptr = ptr->next)
     {
       tmp = ((HEADER *) ptr->data)->thread;
       if (tmp != cur &&			   /* don't match the same message */
@@ -765,7 +762,7 @@ void mutt_sort_threads (CONTEXT *ctx, int init)
     init = 1;
 
   if (init)
-    ctx->thread_hash = hash_create (ctx->msgcount * 2, 0);
+    ctx->thread_hash = hash_create (ctx->msgcount * 2, MUTT_HASH_ALLOW_DUPS);
 
   /* we want a quick way to see if things are actually attached to the top of the
    * thread tree or if they're just dangling, so we attach everything to a top
@@ -837,7 +834,7 @@ void mutt_sort_threads (CONTEXT *ctx, int init)
 	cur->thread = thread;
 	hash_insert (ctx->thread_hash,
 		     cur->env->message_id ? cur->env->message_id : "",
-		     thread, 1);
+		     thread);
 
 	if (new)
 	{
@@ -924,7 +921,7 @@ void mutt_sort_threads (CONTEXT *ctx, int init)
       if ((new = hash_find (ctx->thread_hash, ref->data)) == NULL)
       {
 	new = safe_calloc (1, sizeof (THREAD));
-	hash_insert (ctx->thread_hash, ref->data, new, 1);
+	hash_insert (ctx->thread_hash, ref->data, new);
       }
       else
       {
@@ -1074,9 +1071,10 @@ int _mutt_aside_thread (HEADER *hdr, short dir, short subthreads)
   return (tmp->virtual);
 }
 
-int mutt_parent_message (CONTEXT *ctx, HEADER *hdr)
+int mutt_parent_message (CONTEXT *ctx, HEADER *hdr, int find_root)
 {
   THREAD *thread;
+  HEADER *parent = NULL;
 
   if ((Sort & SORT_MASK) != SORT_THREADS)
   {
@@ -1084,22 +1082,34 @@ int mutt_parent_message (CONTEXT *ctx, HEADER *hdr)
     return (hdr->virtual);
   }
 
+  /* Root may be the current message */
+  if (find_root)
+    parent = hdr;
+
   for (thread = hdr->thread->parent; thread; thread = thread->parent)
   {
     if ((hdr = thread->message) != NULL)
     {
-      if (VISIBLE (hdr, ctx))
-	return (hdr->virtual);
-      else
-      {
-	mutt_error _("Parent message is not visible in this limited view.");
-	return (-1);
-      }
+      parent = hdr;
+      if (!find_root)
+        break;
     }
   }
-  
-  mutt_error _("Parent message is not available.");
-  return (-1);
+
+  if (!parent)
+  {
+    mutt_error _("Parent message is not available.");
+    return (-1);
+  }
+  if (!VISIBLE (parent, ctx))
+  {
+    if (find_root)
+      mutt_error _("Root message is not visible in this limited view.");
+    else
+      mutt_error _("Parent message is not visible in this limited view.");
+    return (-1);
+  }
+  return (parent->virtual);
 }
 
 void mutt_set_virtual (CONTEXT *ctx)
@@ -1327,7 +1337,7 @@ HASH *mutt_make_id_hash (CONTEXT *ctx)
   {
     hdr = ctx->hdrs[i];
     if (hdr->env->message_id)
-      hash_insert (hash, hdr->env->message_id, hdr, 0);
+      hash_insert (hash, hdr->env->message_id, hdr);
   }
 
   return hash;
@@ -1339,13 +1349,13 @@ HASH *mutt_make_subj_hash (CONTEXT *ctx)
   HEADER *hdr;
   HASH *hash;
 
-  hash = hash_create (ctx->msgcount * 2, 0);
+  hash = hash_create (ctx->msgcount * 2, MUTT_HASH_ALLOW_DUPS);
 
   for (i = 0; i < ctx->msgcount; i++)
   {
     hdr = ctx->hdrs[i];
     if (hdr->env->real_subj)
-      hash_insert (hash, hdr->env->real_subj, hdr, 1);
+      hash_insert (hash, hdr->env->real_subj, hdr);
   }
 
   return hash;

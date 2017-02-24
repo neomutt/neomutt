@@ -1019,7 +1019,32 @@ int mutt_compose_menu (HEADER *msg,   /* structure for new message */
 
         /* No send2hook since this doesn't change the message. */
         break;
-      
+
+      case OP_COMPOSE_RENAME_ATTACHMENT:
+        {
+          char *src;
+          int ret;
+
+          CHECK_COUNT;
+          if (idx[menu->current]->content->d_filename)
+            src = idx[menu->current]->content->d_filename;
+          else
+            src = idx[menu->current]->content->filename;
+          strfcpy (fname, mutt_basename (NONULL (src)), sizeof (fname));
+          ret = mutt_get_field (_("Send attachment with name: "),
+                                fname, sizeof (fname), MUTT_FILE);
+          if (ret == 0)
+          {
+            /*
+             * As opposed to RENAME_FILE, we don't check fname[0] because it's
+             * valid to set an empty string here, to erase what was set
+             */
+            mutt_str_replace (&idx[menu->current]->content->d_filename, fname);
+            menu->redraw = REDRAW_CURRENT;
+          }
+        }
+        break;
+
       case OP_COMPOSE_RENAME_FILE:
 	CHECK_COUNT;
 	strfcpy (fname, idx[menu->current]->content->filename, sizeof (fname));

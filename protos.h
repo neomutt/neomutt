@@ -186,6 +186,11 @@ void mutt_edit_content_type (HEADER *, BODY *, FILE *);
 void mutt_edit_file (const char *, const char *);
 void mutt_edit_headers (const char *, const char *, HEADER *, char *, size_t);
 int mutt_filter_unprintable (char **);
+int mutt_label_message (HEADER *);
+void mutt_make_label_hash (CONTEXT *);
+void mutt_label_hash_add (CONTEXT *ctx, HEADER *hdr);
+void mutt_label_hash_remove (CONTEXT *ctx, HEADER *hdr);
+int mutt_label_complete (char *, size_t, int);
 void mutt_curses_error (const char *, ...);
 void mutt_curses_message (const char *, ...);
 void mutt_encode_descriptions (BODY *, short);
@@ -271,6 +276,7 @@ void mutt_alias_add_reverse (ALIAS *t);
 void mutt_alias_delete_reverse (ALIAS *t);
 int mutt_alloc_color (int fg, int bg);
 int mutt_any_key_to_continue (const char *);
+char *mutt_apply_replace (char *, size_t, char *, REPLACE_LIST *);
 int mutt_buffy_check (int);
 int mutt_buffy_notify (void);
 int mutt_builtin_editor (const char *, HEADER *, HEADER *);
@@ -298,7 +304,7 @@ int mutt_fetch_recips (ENVELOPE *out, ENVELOPE *in, int flags);
 int mutt_chscmp (const char *s, const char *chs);
 #define mutt_is_utf8(a) mutt_chscmp (a, "utf-8")
 #define mutt_is_us_ascii(a) mutt_chscmp (a, "us-ascii")
-int mutt_parent_message (CONTEXT *, HEADER *);
+int mutt_parent_message (CONTEXT *, HEADER *, int);
 int mutt_prepare_template(FILE*, CONTEXT *, HEADER *, HEADER *, short);
 int mutt_resend_message (FILE *, CONTEXT *, HEADER *);
 #define mutt_enter_fname(A,B,C,D,E) _mutt_enter_fname(A,B,C,D,E,0,NULL,NULL)
@@ -324,7 +330,7 @@ int mutt_is_valid_mailbox (const char *);
 int mutt_link_threads (HEADER *, HEADER *, CONTEXT *);
 int mutt_lookup_mime_type (BODY *, const char *);
 int mutt_match_rx_list (const char *, RX_LIST *);
-int mutt_match_spam_list (const char *, SPAM_LIST *, char *, int);
+int mutt_match_spam_list (const char *, REPLACE_LIST *, char *, int);
 int mutt_messages_in_thread (CONTEXT *, HEADER *, int);
 int mutt_multi_choice (char *prompt, char *letters);
 int mutt_needs_mailcap (BODY *);
@@ -406,7 +412,7 @@ int mutt_wctoutf8 (char *s, unsigned int c, size_t buflen);
 
 #define new_pattern() safe_calloc(1, sizeof (pattern_t))
 
-int mutt_pattern_exec (struct pattern_t *pat, pattern_exec_flag flags, CONTEXT *ctx, HEADER *h);
+int mutt_pattern_exec (struct pattern_t *pat, pattern_exec_flag flags, CONTEXT *ctx, HEADER *h, pattern_cache_t *);
 pattern_t *mutt_pattern_comp (/* const */ char *s, int flags, BUFFER *err);
 void mutt_check_simple (char *s, size_t len, const char *simple);
 void mutt_pattern_free (pattern_t **pat);

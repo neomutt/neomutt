@@ -29,7 +29,7 @@ systems:
 - If you are building from Mercurial, or if you are changing parts of mutt,
   particularly the build system, do read doc/devel-notes.txt.
 
-- An ANSI C compiler (such as GCC) is required.
+- A C99 compiler (such as GCC) is required.
 
 - You must also have a SysV compatible curses library, or you must
   install either

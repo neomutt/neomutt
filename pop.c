@@ -336,7 +336,7 @@ static int pop_fetch_headers (CONTEXT *ctx)
 	mutt_hcache_store (hc, ctx->hdrs[i]->data, ctx->hdrs[i], 0, strlen, MUTT_GENERATE_UIDVALIDITY);
       }
 
-      FREE(&data);
+      mutt_hcache_free (&data);
 #endif
 
       /*
@@ -632,10 +632,12 @@ static int pop_fetch_message (CONTEXT* ctx, MESSAGE* msg, int msgno)
   /* we replace envelop, key in subj_hash has to be updated as well */
   if (ctx->subj_hash && h->env->real_subj)
     hash_delete (ctx->subj_hash, h->env->real_subj, h, NULL);
+  mutt_label_hash_remove (ctx, h);
   mutt_free_envelope (&h->env);
   h->env = mutt_read_rfc822_header (msg->fp, h, 0, 0);
   if (ctx->subj_hash && h->env->real_subj)
-    hash_insert (ctx->subj_hash, h->env->real_subj, h, 1);
+    hash_insert (ctx->subj_hash, h->env->real_subj, h);
+  mutt_label_hash_add (ctx, h);
 
   h->data = uidl;
   h->lines = 0;
@@ -664,7 +666,7 @@ static int pop_close_message (CONTEXT *ctx, MESSAGE *msg)
 }
 
 /* update POP mailbox - delete messages from server */
-int pop_sync_mailbox (CONTEXT *ctx, int *index_hint)
+static int pop_sync_mailbox (CONTEXT *ctx, int *index_hint)
 {
   int i, j, ret = 0;
   char buf[LONG_STRING];
@@ -944,4 +946,5 @@ struct mx_ops mx_pop_ops = {
   .check = pop_check_mailbox,
   .commit_msg = NULL,
   .open_new_msg = NULL,
+  .sync = pop_sync_mailbox,
 };

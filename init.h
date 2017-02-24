@@ -38,6 +38,7 @@
 #define DT_MAGIC	8 /* mailbox type */
 #define DT_SYN		9 /* synonym for another variable */
 #define DT_ADDR	       10 /* e-mail address */
+#define DT_MBCHARTBL   11 /* multibyte char table */
 
 #define DTYPE(x) ((x) & DT_MASK)
 
@@ -223,8 +224,9 @@ struct option_t MuttVars[] = {
   ** .dt %C  .dd charset
   ** .dt %c  .dd requires charset conversion (``n'' or ``c'')
   ** .dt %D  .dd deleted flag
-  ** .dt %d  .dd description
+  ** .dt %d  .dd description (if none, falls back to %F)
   ** .dt %e  .dd MIME content-transfer-encoding
+  ** .dt %F  .dd filename in content-disposition header (if none, falls back to %f)
   ** .dt %f  .dd filename
   ** .dt %I  .dd disposition (``I'' for inline, ``A'' for attachment)
   ** .dt %m  .dd major MIME type
@@ -265,6 +267,18 @@ struct option_t MuttVars[] = {
   ** This is the string that will precede a message which has been included
   ** in a reply.  For a full listing of defined \fCprintf(3)\fP-like sequences see
   ** the section on $$index_format.
+  */
+  { "attribution_locale", DT_STR, R_NONE, UL &AttributionLocale, UL "" },
+  /*
+  ** .pp
+  ** The locale used by \fCstrftime(3)\fP to format dates in the
+  ** $attribution string.  Legal values are the strings your system
+  ** accepts for the locale environment variable \fC$$$LC_TIME\fP.
+  ** .pp
+  ** This variable is to allow the attribution date format to be
+  ** customized by recipient or folder using hooks.  By default, Mutt
+  ** will use your locale environment, so there is no need to set
+  ** this except to override that default.
   */
   { "auto_tag",		DT_BOOL, R_NONE, OPTAUTOTAG, 0 },
   /*
@@ -599,8 +613,8 @@ struct option_t MuttVars[] = {
   ** function to process the date, see the man page for the proper syntax.
   ** .pp
   ** Unless the first character in the string is a bang (``!''), the month
-  ** and week day names are expanded according to the locale specified in
-  ** the variable $$locale. If the first character in the string is a
+  ** and week day names are expanded according to the locale.
+  ** If the first character in the string is a
   ** bang, the bang is discarded, and the month and week day names in the
   ** rest of the string are expanded in the \fIC\fP locale (that is in US
   ** English).
@@ -786,6 +800,11 @@ struct option_t MuttVars[] = {
   ** signed.
   ** (PGP only)
   */
+  { "flag_safe", DT_BOOL, R_NONE, OPTFLAGSAFE, 0 },
+  /*
+  ** .pp
+  ** If set, flagged messages cannot be deleted.
+  */
   { "folder",		DT_PATH, R_NONE, UL &Maildir, UL "~/Mail" },
   /*
   ** .pp
@@ -965,12 +984,12 @@ struct option_t MuttVars[] = {
   ** Header caching can greatly improve speed when opening POP, IMAP
   ** MH or Maildir folders, see ``$caching'' for details.
   */
-#if defined(HAVE_QDBM) || defined(HAVE_TC)
+#if defined(HAVE_QDBM) || defined(HAVE_TC) || defined(HAVE_KC)
   { "header_cache_compress", DT_BOOL, R_NONE, OPTHCACHECOMPRESS, 1 },
   /*
   ** .pp
-  ** When mutt is compiled with qdbm or tokyocabinet as header cache backend,
-  ** this option determines whether the database will be compressed.
+  ** When mutt is compiled with qdbm, tokyocabinet, or kyotocabinet as header
+  ** cache backend, this option determines whether the database will be compressed.
   ** Compression results in database files roughly being one fifth
   ** of the usual diskspace, but the decompression can result in a
   ** slower opening of cached folder(s) which in general is still
@@ -1395,12 +1414,6 @@ struct option_t MuttVars[] = {
   ** from your spool mailbox to your $$mbox mailbox, or as a result of
   ** a ``$mbox-hook'' command.
   */
-  { "locale",		DT_STR,  R_BOTH, UL &Locale, UL "C" },
-  /*
-  ** .pp
-  ** The locale used by \fCstrftime(3)\fP to format dates. Legal values are
-  ** the strings your system accepts for the locale environment variable \fC$$$LC_TIME\fP.
-  */
   { "mail_check",	DT_NUM,  R_NONE, UL &BuffyTimeout, 5 },
   /*
   ** .pp
@@ -1477,6 +1490,13 @@ struct option_t MuttVars[] = {
   ** messages to the cur directory.  Note that setting this option may
   ** slow down polling for new messages in large folders, since mutt has
   ** to scan all cur messages.
+  */
+  { "mark_macro_prefix",DT_STR, R_NONE, UL &MarkMacroPrefix, UL "'" },
+  /*
+  ** .pp
+  ** Prefix for macros created using mark-message.  A new macro
+  ** automatically generated with \fI<mark-message>a\fP will be composed
+  ** from this prefix and the letter \fIa\fP.
   */
   { "mark_old",		DT_BOOL, R_BOTH, OPTMARKOLD, 1 },
   /*
@@ -2667,7 +2687,10 @@ struct option_t MuttVars[] = {
   ** .pp
   ** Specifies the program and arguments used to deliver mail sent by Mutt.
   ** Mutt expects that the specified program interprets additional
-  ** arguments as recipient addresses.
+  ** arguments as recipient addresses.  Mutt appends all recipients after
+  ** adding a \fC--\fP delimiter (if not already present).  Additional
+  ** flags, such as for $$use_8bitmime, $$use_envelope_from,
+  ** $$dsn_notify, or $$dsn_return will be added before the delimiter.
   */
   { "sendmail_wait",	DT_NUM,  R_NONE, UL &SendmailWait, 0 },
   /*
@@ -2734,7 +2757,7 @@ struct option_t MuttVars[] = {
   ** .dl
   ** .dt %B  .dd Name of the mailbox
   ** .dt %S  .dd * Size of mailbox (total number of messages)
-  ** .dt %N  .dd * Number of New messages in the mailbox
+  ** .dt %N  .dd * Number of unread messages in the mailbox
   ** .dt %n  .dd N if mailbox has new mail, blank otherwise
   ** .dt %F  .dd * Number of Flagged messages in the mailbox
   ** .dt %!  .dd ``!'' : one flagged message;
@@ -2805,7 +2828,10 @@ struct option_t MuttVars[] = {
   ** .dd alpha (alphabetically)
   ** .dd count (all message count)
   ** .dd flagged (flagged message count)
-  ** .dd new (new message count)
+  ** .dd name (alphabetically)
+  ** .dd new (unread message count)
+  ** .dd path (alphabetically)
+  ** .dd unread (unread message count)
   ** .dd unsorted
   ** .ie
   ** .pp
@@ -3363,7 +3389,7 @@ struct option_t MuttVars[] = {
   ** required.)
   */
 #endif /* defined(USE_SSL) */
-  { "status_chars",	DT_STR,	 R_BOTH, UL &StChars, UL "-*%A" },
+  { "status_chars",	DT_MBCHARTBL, R_BOTH, UL &StChars, UL "-*%A" },
   /*
   ** .pp
   ** Controls the characters used by the ``%r'' indicator in
@@ -3547,7 +3573,7 @@ struct option_t MuttVars[] = {
   ** this variable is not set, the environment variable \fC$$$TMPDIR\fP is
   ** used.  If \fC$$$TMPDIR\fP is not set then ``\fC/tmp\fP'' is used.
   */
-  { "to_chars",		DT_STR,	 R_BOTH, UL &Tochars, UL " +TCFL" },
+  { "to_chars",		DT_MBCHARTBL, R_BOTH, UL &Tochars, UL " +TCFL" },
   /*
   ** .pp
   ** Controls the character used to indicate mail addressed to you.  The
@@ -3616,6 +3642,14 @@ struct option_t MuttVars[] = {
   ** .pp
   ** When \fIset\fP, Mutt will jump to the next unread message, if any,
   ** when the current thread is \fIun\fPcollapsed.
+  */
+  { "uncollapse_new", 	DT_BOOL, R_NONE, OPTUNCOLLAPSENEW, 1 },
+  /*
+  ** .pp
+  ** When \fIset\fP, Mutt will automatically uncollapse any collapsed thread
+  ** that receives a new message. When \fIunset\fP, collapsed threads will
+  ** remain collapsed. the presence of the new message will still affect
+  ** index sorting, though.
   */
   { "use_8bitmime",	DT_BOOL, R_NONE, OPTUSE8BITMIME, 0 },
   /*
@@ -3779,6 +3813,7 @@ const struct mapping_t SortMethods[] = {
   { "to",		SORT_TO },
   { "score",		SORT_SCORE },
   { "spam",		SORT_SPAM },
+  { "label",		SORT_LABEL },
   { NULL,               0 }
 };
 
@@ -3798,6 +3833,7 @@ const struct mapping_t SortAuxMethods[] = {
   { "to",		SORT_TO },
   { "score",		SORT_SCORE },
   { "spam",		SORT_SPAM },
+  { "label",		SORT_LABEL },
   { NULL,               0 }
 };
 
@@ -3831,8 +3867,9 @@ const struct mapping_t SortSidebarMethods[] = {
   { "flagged",		SORT_FLAGGED },
   { "mailbox-order",	SORT_ORDER },
   { "name",		SORT_PATH },
-  { "new",		SORT_COUNT_NEW },
+  { "new",		SORT_UNREAD },  /* kept for compatibility */
   { "path",		SORT_PATH },
+  { "unread",		SORT_UNREAD },
   { "unsorted",		SORT_ORDER },
   { NULL,		0 }
 };
@@ -3854,6 +3891,7 @@ static int parse_ignore (BUFFER *, BUFFER *, unsigned long, BUFFER *);
 static int parse_unignore (BUFFER *, BUFFER *, unsigned long, BUFFER *);
 static int parse_source (BUFFER *, BUFFER *, unsigned long, BUFFER *);
 static int parse_set (BUFFER *, BUFFER *, unsigned long, BUFFER *);
+static int parse_setenv (BUFFER *, BUFFER *, unsigned long, BUFFER *);
 static int parse_my_hdr (BUFFER *, BUFFER *, unsigned long, BUFFER *);
 static int parse_unmy_hdr (BUFFER *, BUFFER *, unsigned long, BUFFER *);
 static int parse_subscribe (BUFFER *, BUFFER *, unsigned long, BUFFER *);
@@ -3862,6 +3900,10 @@ static int parse_attachments (BUFFER *, BUFFER *, unsigned long, BUFFER *);
 static int parse_unattachments (BUFFER *, BUFFER *, unsigned long, BUFFER *);
 
 
+static int parse_replace_list (BUFFER *, BUFFER *, unsigned long, BUFFER *);
+static int parse_unreplace_list (BUFFER *, BUFFER *, unsigned long, BUFFER *);
+static int parse_subjectrx_list (BUFFER *, BUFFER *, unsigned long, BUFFER *);
+static int parse_unsubjectrx_list (BUFFER *, BUFFER *, unsigned long, BUFFER *);
 static int parse_alternates (BUFFER *, BUFFER *, unsigned long, BUFFER *);
 static int parse_unalternates (BUFFER *, BUFFER *, unsigned long, BUFFER *);
 
@@ -3897,6 +3939,11 @@ const struct command_t Commands[] = {
   { "fcc-hook",		mutt_parse_hook,	MUTT_FCCHOOK },
   { "fcc-save-hook",	mutt_parse_hook,	MUTT_FCCHOOK | MUTT_SAVEHOOK },
   { "folder-hook",	mutt_parse_hook,	MUTT_FOLDERHOOK },
+#ifdef USE_COMPRESSED
+  { "open-hook",	mutt_parse_hook,	MUTT_OPENHOOK },
+  { "close-hook",	mutt_parse_hook,	MUTT_CLOSEHOOK },
+  { "append-hook",	mutt_parse_hook,	MUTT_APPENDHOOK },
+#endif
   { "group",		parse_group,		MUTT_GROUP },
   { "ungroup",		parse_group,		MUTT_UNGROUP },
   { "hdr_order",	parse_list,		UL &HeaderOrderList },
@@ -3926,13 +3973,17 @@ const struct command_t Commands[] = {
   { "send-hook",	mutt_parse_hook,	MUTT_SENDHOOK },
   { "send2-hook",	mutt_parse_hook,	MUTT_SEND2HOOK },
   { "set",		parse_set,		0 },
+  { "setenv",		parse_setenv,		0 },
 #ifdef USE_SIDEBAR
   { "sidebar_whitelist",parse_list,		UL &SidebarWhitelist },
+  { "unsidebar_whitelist",parse_unlist,		UL &SidebarWhitelist },
 #endif
   { "source",		parse_source,		0 },
   { "spam",		parse_spam_list,	MUTT_SPAM },
   { "nospam",		parse_spam_list,	MUTT_NOSPAM },
   { "subscribe",	parse_subscribe,	0 },
+  { "subjectrx",    parse_subjectrx_list, UL &SubjectRxList },
+  { "unsubjectrx",  parse_unsubjectrx_list, UL &SubjectRxList },
   { "toggle",		parse_set,		MUTT_SET_INV },
   { "unalias",		parse_unalias,		0 },
   { "unalternative_order",parse_unlist,		UL &AlternativeOrderList },
@@ -3945,6 +3996,7 @@ const struct command_t Commands[] = {
   { "unmy_hdr",		parse_unmy_hdr,		0 },
   { "unscore",		mutt_parse_unscore,	0 },
   { "unset",		parse_set,		MUTT_SET_UNSET },
+  { "unsetenv",		parse_setenv,		MUTT_SET_UNSET },
   { "unsubscribe",	parse_unsubscribe,	0 },
   { NULL,		NULL,			0 }
 };

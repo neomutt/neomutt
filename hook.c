@@ -24,6 +24,10 @@
 #include "mailbox.h"
 #include "mutt_crypt.h"
 
+#ifdef USE_COMPRESSED
+#include "compress.h"
+#endif
+
 #include <limits.h>
 #include <string.h>
 #include <stdlib.h>
@@ -109,6 +113,14 @@ int mutt_parse_hook (BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err)
     memset (&pattern, 0, sizeof (pattern));
     pattern.data = safe_strdup (path);
   }
+#ifdef USE_COMPRESSED
+  else if (data & (MUTT_APPENDHOOK | MUTT_OPENHOOK | MUTT_CLOSEHOOK)) {
+    if (mutt_comp_valid_command (command.data) == 0) {
+      strfcpy (err->data, _("badly formatted command string"), err->dsize);
+      return -1;
+    }
+  }
+#endif
   else if (DefaultHook && !(data & (MUTT_CHARSETHOOK | MUTT_ICONVHOOK | MUTT_ACCOUNTHOOK))
            && (!WithCrypto || !(data & MUTT_CRYPTHOOK))
       )
@@ -348,6 +360,7 @@ void mutt_message_hook (CONTEXT *ctx, HEADER *hdr, int type)
 {
   BUFFER err, token;
   HOOK *hook;
+  pattern_cache_t cache;
 
   current_hook_type = type;
 
@@ -355,13 +368,15 @@ void mutt_message_hook (CONTEXT *ctx, HEADER *hdr, int type)
   err.dsize = STRING;
   err.data = safe_malloc (err.dsize);
   mutt_buffer_init (&token);
+  memset (&cache, 0, sizeof (cache));
   for (hook = Hooks; hook; hook = hook->next)
   {
     if(!hook->command)
       continue;
 
     if (hook->type & type)
-      if ((mutt_pattern_exec (hook->pattern, 0, ctx, hdr) > 0) ^ hook->rx.not)
+      if ((mutt_pattern_exec (hook->pattern, 0, ctx, hdr, &cache) > 0) ^ hook->rx.not)
+      {
 	if (mutt_parse_rc_line (hook->command, &token, &err) != 0)
 	{
 	  FREE (&token.data);
@@ -372,6 +387,10 @@ void mutt_message_hook (CONTEXT *ctx, HEADER *hdr, int type)
 
 	  return;
 	}
+        /* Executing arbitrary commands could affect the pattern results,
+         * so the cache has to be wiped */
+        memset (&cache, 0, sizeof (cache));
+      }
   }
   FREE (&token.data);
   FREE (&err.data);
@@ -383,7 +402,9 @@ static int
 mutt_addr_hook (char *path, size_t pathlen, int type, CONTEXT *ctx, HEADER *hdr)
 {
   HOOK *hook;
+  pattern_cache_t cache;
 
+  memset (&cache, 0, sizeof (cache));
   /* determine if a matching hook exists */
   for (hook = Hooks; hook; hook = hook->next)
   {
@@ -391,7 +412,7 @@ mutt_addr_hook (char *path, size_t pathlen, int type, CONTEXT *ctx, HEADER *hdr)
       continue;
 
     if (hook->type & type)
-      if ((mutt_pattern_exec (hook->pattern, 0, ctx, hdr) > 0) ^ hook->rx.not)
+      if ((mutt_pattern_exec (hook->pattern, 0, ctx, hdr, &cache) > 0) ^ hook->rx.not)
       {
 	mutt_make_string (path, pathlen, hook->command, ctx, hdr);
 	return 0;

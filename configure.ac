@@ -183,6 +183,15 @@ AC_ARG_ENABLE(sidebar, AC_HELP_STRING([--enable-sidebar], [Enable Sidebar suppor
         fi
 ])
 
+AC_ARG_ENABLE(compressed, AC_HELP_STRING([--enable-compressed], [Enable compressed folders support]),
+              enable_compressed=$enableval, enable_compressed=no
+)
+AS_IF([test x$enable_compressed = "xyes"], [
+	   AC_DEFINE(USE_COMPRESSED, 1, [Define to enable compressed folders support.])
+	   MUTT_LIB_OBJECTS="$MUTT_LIB_OBJECTS compress.o"
+])
+AM_CONDITIONAL(BUILD_COMPRESS, test x$enable_compressed = xyes)
+
 AC_ARG_WITH(mixmaster, AS_HELP_STRING([--with-mixmaster@<:@=PATH@:>@],[Include Mixmaster support]),
   [if test "$withval" != no
    then
@@ -273,7 +282,7 @@ main ()
 
         [mutt_cv_curses=/usr
         AC_ARG_WITH(curses, AS_HELP_STRING([--with-curses=DIR],[Where ncurses is installed]),
-                [if test $withval != yes; then
+                [if test x$withval != xyes; then
                         mutt_cv_curses=$withval
                 fi
                 if test x$mutt_cv_curses != x/usr; then
@@ -293,8 +302,9 @@ main ()
                 AC_CHECK_LIB(tinfo, tgetent, [MUTTLIBS="$MUTTLIBS -ltinfo"])
 
                 if test "$cf_ncurses" = ncursesw; then
-			AC_CHECK_HEADERS(ncursesw/ncurses.h,[cf_cv_ncurses_header="ncursesw/ncurses.h"])
-		else
+                  AC_CHECK_HEADERS(ncursesw/ncurses.h,[cf_cv_ncurses_header="ncursesw/ncurses.h"],
+                    [AC_CHECK_HEADERS(ncurses.h,[cf_cv_ncurses_header="ncurses.h"])])
+                else
                   AC_CHECK_HEADERS(ncurses/ncurses.h,[cf_cv_ncurses_header="ncurses/ncurses.h"],
                     [AC_CHECK_HEADERS(ncurses.h,[cf_cv_ncurses_header="ncurses.h"])])
 		fi],
@@ -871,6 +881,8 @@ AC_ARG_WITH(tokyocabinet, AS_HELP_STRING([--without-tokyocabinet],[Don't use tok
 AC_ARG_WITH(qdbm, AS_HELP_STRING([--without-qdbm],[Don't use qdbm even if it is available]))
 AC_ARG_WITH(gdbm, AS_HELP_STRING([--without-gdbm],[Don't use gdbm even if it is available]))
 AC_ARG_WITH(bdb, AS_HELP_STRING([--with-bdb@<:@=DIR@:>@],[Use BerkeleyDB4 if gdbm is not available]))
+AC_ARG_WITH(lmdb, AS_HELP_STRING([--with-lmdb@<:@=DIR@:>@],[Use LMDB if gdbm is not available]))
+AC_ARG_WITH(kyotocabinet, AS_HELP_STRING([--with-kyotocabinet@<:@=DIR@:>@],[Use kyotocabinet if gdbm is not available]))
 
 db_found=no
 if test x$enable_hcache = xyes
@@ -913,6 +925,24 @@ then
         AC_MSG_ERROR([more than one header cache engine requested.])
       else
         db_requested=bdb
+      fi
+    fi
+    if test -n "$with_lmdb" && test "$with_lmdb" != "no"
+    then
+      if test "$db_requested" != "auto"
+      then
+        AC_MSG_ERROR([more than one header cache engine requested.])
+      else
+        db_requested=lmdb
+      fi
+    fi
+    if test -n "$with_kyotocabinet" && test "$with_kyotocabinet" != "no"
+    then
+      if test "$db_requested" != "auto"
+      then
+        AC_MSG_ERROR([more than one header cache engine requested.])
+      else
+        db_requested=kc
       fi
     fi
     
@@ -1002,7 +1032,8 @@ then
 
     dnl -- BDB --
     ac_bdb_prefix="$with_bdb"
-    if test x$ac_bdb_prefix != xno && test $db_found = no
+    if test x$with_bdb != xno && test $db_found = no \
+	    && test "$db_requested" = auto -o "$db_requested" = bdb
     then
         if test x$ac_bdb_prefix = xyes || test x$ac_bdb_prefix = x
         then
@@ -1058,9 +1089,60 @@ then
         fi
     fi
 
+    dnl -- LMDB --
+    if test x$with_lmdb != xno && test $db_found = no \
+	    && test "$db_requested" = auto -o "$db_requested" = lmdb
+    then
+        if test "$with_lmdb" != "yes"
+        then
+          CPPFLAGS="$CPPFLAGS -I$with_lmdb/include"
+          LDFLAGS="$LDFLAGS -L$with_lmdb/lib"
+        fi
+        saved_LIBS="$LIBS"
+        LIBS="$LIBS -llmdb"
+        AC_CACHE_CHECK(for mdb_env_create, ac_cv_mdbenvcreate,[
+            ac_cv_mdbenvcreate=no
+            AC_LINK_IFELSE([AC_LANG_PROGRAM([[#include <lmdb.h>]], [[mdb_env_create(0);]])],[ac_cv_mdbenvcreate=yes],[])
+        ])
+        LIBS="$saved_LIBS"
+        if test "$ac_cv_mdbenvcreate" = yes
+        then
+          AC_DEFINE(HAVE_LMDB, 1, [LMDB Support])
+          MUTTLIBS="$MUTTLIBS -llmdb"
+          db_found=lmdb
+        fi
+        if test "$db_requested" != auto && test "$db_found" != "$db_requested"
+        then
+          AC_MSG_ERROR([LMDB could not be used. Check config.log for details.])
+        fi
+    fi
+
+    dnl -- Kyoto Cabinet --
+    if test x$with_kyotocabinet != xno && test $db_found = no \
+	    && test "$db_requested" = auto -o "$db_requested" = kc
+    then
+      if test -n "$with_kyotocabinet" && test "$with_kyotocabinet" != "yes"
+      then
+        CPPFLAGS="$CPPFLAGS -I$with_kyotocabinet/include"
+        LDFLAGS="$LDFLAGS -L$with_kyotocabinet/lib"
+      fi
+
+      AC_CHECK_HEADER(kclangc.h,
+      AC_CHECK_LIB(kyotocabinet, kcdbopen,
+        [MUTTLIBS="$MUTTLIBS -lkyotocabinet"
+         AC_DEFINE(HAVE_KC, 1, [Kyoto Cabinet Support])
+         db_found=kc],
+        [CPPFLAGS="$OLDCPPFLAGS"
+         LDFLAGS="$OLDLDFLAGS"]))
+      if test "$db_requested" != auto && test "$db_found" != "$db_requested"
+      then
+        AC_MSG_ERROR([Kyoto Cabinet could not be used. Check config.log for details.])
+      fi
+    fi
+
     if test $db_found = no
     then
-        AC_MSG_ERROR([You need Tokyo Cabinet, QDBM, GDBM or Berkeley DB4 for hcache])
+        AC_MSG_ERROR([You need Tokyo Cabinet, Kyoto Cabinet, QDBM, GDBM, LMDB or Berkeley DB4 for hcache])
     fi
 fi
 dnl -- end cache --
@@ -1346,6 +1428,13 @@ then
   fi
 fi
 AC_SUBST(DSLROOT)
+
+AC_ARG_ENABLE(doc, AS_HELP_STRING([--disable-doc],[Do not build the documentation]),
+[       if test x$enableval = xno ; then
+                do_build_doc=no
+        fi
+])
+AM_CONDITIONAL(BUILD_DOC, test x$do_build_doc != xno)
 
 AC_ARG_ENABLE(full_doc,
 	      AS_HELP_STRING([--disable-full-doc],[Omit disabled variables]),
