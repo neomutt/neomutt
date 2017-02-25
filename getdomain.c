@@ -67,7 +67,7 @@ int getdnsdomainname (char *d, size_t len)
 
 #else /* !HAVE_GETADDRINFO_A */
 
-  getaddrinfo(node, NULL, &hints, &h)
+  getaddrinfo(node, NULL, &hints, &h);
 
 #endif
 
