@@ -16,7 +16,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neomutt-20161104\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
-"POT-Creation-Date: 2017-02-19 23:25+0100\n"
+"POT-Creation-Date: 2017-02-25 01:23+0000\n"
 "PO-Revision-Date: 2017-02-15 23:39+0200\n"
 "Last-Translator: Vsevolod Volkov <vvv@mutt.org.ua>\n"
 "Language-Team: mutt-ru@woe.spb.ru\n"
@@ -56,7 +56,7 @@ msgid "Select"
 msgstr "Выбрать"
 
 #: addrbook.c:41 browser.c:57 browser.c:69 compose.c:116 compose.c:128
-#: crypt-gpgme.c:4036 curs_main.c:799 curs_main.c:812 mutt_ssl.c:1047
+#: crypt-gpgme.c:4028 curs_main.c:799 curs_main.c:812 mutt_ssl.c:1095
 #: mutt_ssl_gnutls.c:1005 pager.c:1751 pgpkey.c:522 postpone.c:44 query.c:53
 #: recvattach.c:57 smime.c:440
 msgid "Help"
@@ -192,7 +192,7 @@ msgstr "---Вложение: %s: %s"
 msgid "---Attachment: %s"
 msgstr "---Вложение: %s"
 
-#: attach.c:633 attach.c:665 attach.c:968 attach.c:1026 handler.c:1401
+#: attach.c:633 attach.c:665 attach.c:968 attach.c:1026 handler.c:1403
 #: pgpkey.c:571 pgpkey.c:760
 msgid "Can't create filter"
 msgstr "Не удалось создать фильтр"
@@ -399,7 +399,7 @@ msgstr "mono: слишком мало аргументов"
 msgid "%s: no such attribute"
 msgstr "%s: нет такого атрибута"
 
-#: color.c:800 hook.c:75 hook.c:84 init.c:2000 init.c:2075 keymap.c:924
+#: color.c:800 hook.c:75 hook.c:84 init.c:2004 init.c:2079 keymap.c:924
 msgid "too few arguments"
 msgstr "слишком мало аргументов"
 
@@ -720,7 +720,7 @@ msgstr "Предупреждение: \"%s\" не является коррек�
 msgid "You may not delete the only attachment."
 msgstr "Вы не можете удалить единственное вложение."
 
-#: compose.c:749 send.c:1879
+#: compose.c:749 send.c:1882
 #, c-format
 msgid "Bad IDN in \"%s\": '%s'"
 msgstr "Некорректный IDN в \"%s\": %s."
@@ -902,124 +902,124 @@ msgstr "Упаковывается %s"
 msgid "No decryption engine available for message"
 msgstr ""
 
-#: crypt-gpgme.c:409
+#: crypt-gpgme.c:398
 #, c-format
 msgid "error creating gpgme context: %s\n"
 msgstr "ошибка создания gpgme контекста: %s\n"
 
-#: crypt-gpgme.c:419
+#: crypt-gpgme.c:408
 #, c-format
 msgid "error enabling CMS protocol: %s\n"
 msgstr "ошибка включения CMS протокола: %s\n"
 
-#: crypt-gpgme.c:439
+#: crypt-gpgme.c:428
 #, c-format
 msgid "error creating gpgme data object: %s\n"
 msgstr "ошибка создания объекта данных gpgme: %s\n"
 
-#: crypt-gpgme.c:505 crypt-gpgme.c:523 crypt-gpgme.c:1559 crypt-gpgme.c:2274
+#: crypt-gpgme.c:494 crypt-gpgme.c:512 crypt-gpgme.c:1548 crypt-gpgme.c:2263
 #, c-format
 msgid "error allocating data object: %s\n"
 msgstr "ошибка размещения объекта данных: %s\n"
 
-#: crypt-gpgme.c:541
+#: crypt-gpgme.c:530
 #, c-format
 msgid "error rewinding data object: %s\n"
 msgstr "ошибка позиционирования в начало объекта данных: %s\n"
 
-#: crypt-gpgme.c:557
+#: crypt-gpgme.c:546
 msgid "[tempfile]"
 msgstr ""
 
-#: crypt-gpgme.c:563 crypt-gpgme.c:616
+#: crypt-gpgme.c:552 crypt-gpgme.c:605
 #, c-format
 msgid "error reading data object: %s\n"
 msgstr "ошибка чтения объекта данных: %s\n"
 
-#: crypt-gpgme.c:589 crypt-gpgme.c:3650 pgpkey.c:559 pgpkey.c:740
+#: crypt-gpgme.c:578 crypt-gpgme.c:3642 pgpkey.c:559 pgpkey.c:740
 msgid "Can't create temporary file"
 msgstr "Не удалось создать временный файл"
 
-#: crypt-gpgme.c:697
+#: crypt-gpgme.c:686
 #, c-format
 msgid "error adding recipient `%s': %s\n"
 msgstr "ошибка добавления получателя \"%s\": %s\n"
 
-#: crypt-gpgme.c:737
+#: crypt-gpgme.c:726
 #, c-format
 msgid "secret key `%s' not found: %s\n"
 msgstr "секретный ключ \"%s\" не найден: %s\n"
 
-#: crypt-gpgme.c:747
+#: crypt-gpgme.c:736
 #, c-format
 msgid "ambiguous specification of secret key `%s'\n"
 msgstr "неоднозначное указание секретного ключа \"%s\"\n"
 
-#: crypt-gpgme.c:759
+#: crypt-gpgme.c:748
 #, c-format
 msgid "error setting secret key `%s': %s\n"
 msgstr "ошибка установки секретного ключа \"%s\": %s\n"
 
-#: crypt-gpgme.c:776
+#: crypt-gpgme.c:765
 #, c-format
 msgid "error setting PKA signature notation: %s\n"
 msgstr "ошибка установки примечания к подписи: %s\n"
 
-#: crypt-gpgme.c:832
+#: crypt-gpgme.c:821
 #, c-format
 msgid "error encrypting data: %s\n"
 msgstr "ошибка шифрования данных: %s\n"
 
-#: crypt-gpgme.c:949
+#: crypt-gpgme.c:938
 #, c-format
 msgid "error signing data: %s\n"
 msgstr "ошибка подписывания данных: %s\n"
 
-#: crypt-gpgme.c:960
+#: crypt-gpgme.c:949
 msgid "$pgp_sign_as unset and no default key specified in ~/.gnupg/gpg.conf"
 msgstr "ключ по умолчанию не определён в $pgp_sign_as и в ~/.gnupg/gpg.conf"
 
-#: crypt-gpgme.c:1160
+#: crypt-gpgme.c:1149
 msgid "Warning: One of the keys has been revoked\n"
 msgstr "Предупреждение: один из ключей был отозван\n"
 
-#: crypt-gpgme.c:1169
+#: crypt-gpgme.c:1158
 msgid "Warning: The key used to create the signature expired at: "
 msgstr "Предупреждение: ключ, используемый для создания подписи, просрочен: "
 
-#: crypt-gpgme.c:1175
+#: crypt-gpgme.c:1164
 msgid "Warning: At least one certification key has expired\n"
 msgstr "Предупреждение: срок действия одного или нескольких сертификатов истек\n"
 
-#: crypt-gpgme.c:1191
+#: crypt-gpgme.c:1180
 msgid "Warning: The signature expired at: "
 msgstr "Предупреждение: срок действия подписи истёк: "
 
-#: crypt-gpgme.c:1197
+#: crypt-gpgme.c:1186
 msgid "Can't verify due to a missing key or certificate\n"
 msgstr "Не удалось проверить по причине отсутствия ключа или сертификата\n"
 
-#: crypt-gpgme.c:1202
+#: crypt-gpgme.c:1191
 msgid "The CRL is not available\n"
 msgstr "CRL не доступен\n"
 
-#: crypt-gpgme.c:1208
+#: crypt-gpgme.c:1197
 msgid "Available CRL is too old\n"
 msgstr "Доступный CRL слишком старый\n"
 
-#: crypt-gpgme.c:1213
+#: crypt-gpgme.c:1202
 msgid "A policy requirement was not met\n"
 msgstr "Требование политики не было обнаружено\n"
 
-#: crypt-gpgme.c:1222
+#: crypt-gpgme.c:1211
 msgid "A system error occurred"
 msgstr "Системная ошибка"
 
-#: crypt-gpgme.c:1256
+#: crypt-gpgme.c:1245
 msgid "WARNING: PKA entry does not match signer's address: "
 msgstr "ПРЕДУПРЕЖДЕНИЕ: PKA запись не соответствует адресу владельца:"
 
-#: crypt-gpgme.c:1263
+#: crypt-gpgme.c:1252
 msgid "PKA verified signer's address is: "
 msgstr "Адрес, проверенный при помощи PKA: "
 
@@ -1027,77 +1027,77 @@ msgstr "Адрес, проверенный при помощи PKA: "
 #. Fill dots to make the DOTFILL entries the same length.
 #. In English, msgid "Fingerprint: " is the longest entry for this menu.
 #. Your language may vary.
-#: crypt-gpgme.c:1280 crypt-gpgme.c:3490
+#: crypt-gpgme.c:1269 crypt-gpgme.c:3482
 msgid "Fingerprint: "
 msgstr "Отпечаток пальца: "
 
-#: crypt-gpgme.c:1340
+#: crypt-gpgme.c:1329
 msgid "WARNING: We have NO indication whether the key belongs to the person named as shown above\n"
 msgstr "ПРЕДУПРЕЖДЕНИЕ: НЕ известно, принадлежит ли данный ключ указанной выше персоне\n"
 
-#: crypt-gpgme.c:1347
+#: crypt-gpgme.c:1336
 msgid "WARNING: The key does NOT BELONG to the person named as shown above\n"
 msgstr "ПРЕДУПРЕЖДЕНИЕ: ключ НЕ ПРИНАДЛЕЖИТ указанной выше персоне\n"
 
-#: crypt-gpgme.c:1351
+#: crypt-gpgme.c:1340
 msgid "WARNING: It is NOT certain that the key belongs to the person named as shown above\n"
 msgstr "ПРЕДУПРЕЖДЕНИЕ: НЕТ уверенности в том, что ключ принадлежит указанной выше персоне\n"
 
-#: crypt-gpgme.c:1381 crypt-gpgme.c:1386
+#: crypt-gpgme.c:1370 crypt-gpgme.c:1375
 msgid "aka: "
 msgstr "aka: "
 
-#: crypt-gpgme.c:1396
+#: crypt-gpgme.c:1385
 msgid "KeyID "
 msgstr "ID ключа "
 
-#: crypt-gpgme.c:1405 crypt-gpgme.c:1410
+#: crypt-gpgme.c:1394 crypt-gpgme.c:1399
 msgid "created: "
 msgstr "создано: "
 
-#: crypt-gpgme.c:1483
+#: crypt-gpgme.c:1472
 #, c-format
 msgid "Error getting key information for KeyID %s: %s\n"
 msgstr "Ошибка получения информации о ключе с ID %s: %s\n"
 
-#: crypt-gpgme.c:1490 crypt-gpgme.c:1505
+#: crypt-gpgme.c:1479 crypt-gpgme.c:1494
 msgid "Good signature from:"
 msgstr "Хорошая подпись от:"
 
-#: crypt-gpgme.c:1497
+#: crypt-gpgme.c:1486
 msgid "*BAD* signature from:"
 msgstr "*ПЛОХАЯ* подпись от:"
 
-#: crypt-gpgme.c:1513
+#: crypt-gpgme.c:1502
 msgid "Problem signature from:"
 msgstr "Сомнительная подпись от:"
 
 #. L10N:
 #. This is trying to match the width of the
 #. "Problem signature from:" translation just above.
-#: crypt-gpgme.c:1520
+#: crypt-gpgme.c:1509
 msgid "               expires: "
 msgstr "       действительна до: "
 
-#: crypt-gpgme.c:1567 crypt-gpgme.c:1790 crypt-gpgme.c:2491
+#: crypt-gpgme.c:1556 crypt-gpgme.c:1779 crypt-gpgme.c:2483
 msgid "[-- Begin signature information --]\n"
 msgstr "[-- Начало информации о подписи --]\n"
 
-#: crypt-gpgme.c:1579
+#: crypt-gpgme.c:1568
 #, c-format
 msgid "Error: verification failed: %s\n"
 msgstr "Ошибка: проверка не удалась: %s\n"
 
-#: crypt-gpgme.c:1633
+#: crypt-gpgme.c:1622
 #, c-format
 msgid "*** Begin Notation (signature by: %s) ***\n"
 msgstr "*** Начало системы обозначения (подпись от: %s) ***\n"
 
-#: crypt-gpgme.c:1655
+#: crypt-gpgme.c:1644
 msgid "*** End Notation ***\n"
 msgstr "*** Конец системы обозначения ***\n"
 
-#: crypt-gpgme.c:1663 crypt-gpgme.c:1803 crypt-gpgme.c:2504
+#: crypt-gpgme.c:1652 crypt-gpgme.c:1792 crypt-gpgme.c:2496
 msgid ""
 "[-- End signature information --]\n"
 "\n"
@@ -1105,7 +1105,7 @@ msgstr ""
 "[-- Конец информации о подписи --]\n"
 "\n"
 
-#: crypt-gpgme.c:1758
+#: crypt-gpgme.c:1747
 #, c-format
 msgid ""
 "[-- Error: decryption failed: %s --]\n"
@@ -1114,20 +1114,20 @@ msgstr ""
 "[-- Ошибка: не удалось расшифровать: %s --]\n"
 "\n"
 
-#: crypt-gpgme.c:2281
+#: crypt-gpgme.c:2270
 msgid "Error extracting key data!\n"
 msgstr "Ошибка получения информации о ключе!\n"
 
-#: crypt-gpgme.c:2467
+#: crypt-gpgme.c:2459
 #, c-format
 msgid "Error: decryption/verification failed: %s\n"
 msgstr "Ошибка: не удалось расшифровать или проверить подпись: %s\n"
 
-#: crypt-gpgme.c:2512
+#: crypt-gpgme.c:2504
 msgid "Error: copy data failed\n"
 msgstr "Ошибка: не удалось скопировать данные\n"
 
-#: crypt-gpgme.c:2533 pgp.c:518
+#: crypt-gpgme.c:2525 pgp.c:522
 msgid ""
 "[-- BEGIN PGP MESSAGE --]\n"
 "\n"
@@ -1135,11 +1135,11 @@ msgstr ""
 "[-- Начало PGP-сообщения --]\n"
 "\n"
 
-#: crypt-gpgme.c:2535 pgp.c:520
+#: crypt-gpgme.c:2527 pgp.c:524
 msgid "[-- BEGIN PGP PUBLIC KEY BLOCK --]\n"
 msgstr "[-- Начало блока открытого PGP-ключа --]\n"
 
-#: crypt-gpgme.c:2538 pgp.c:522
+#: crypt-gpgme.c:2530 pgp.c:526
 msgid ""
 "[-- BEGIN PGP SIGNED MESSAGE --]\n"
 "\n"
@@ -1147,19 +1147,19 @@ msgstr ""
 "[-- Начало сообщения, подписанного PGP --]\n"
 "\n"
 
-#: crypt-gpgme.c:2565 pgp.c:565
+#: crypt-gpgme.c:2557 pgp.c:569
 msgid "[-- END PGP MESSAGE --]\n"
 msgstr "[-- Конец PGP-сообщения --]\n"
 
-#: crypt-gpgme.c:2567 pgp.c:572
+#: crypt-gpgme.c:2559 pgp.c:576
 msgid "[-- END PGP PUBLIC KEY BLOCK --]\n"
 msgstr "[-- Конец блока открытого PGP-ключа --]\n"
 
-#: crypt-gpgme.c:2569 pgp.c:574
+#: crypt-gpgme.c:2561 pgp.c:578
 msgid "[-- END PGP SIGNED MESSAGE --]\n"
 msgstr "[-- Конец сообщения, подписанного PGP --]\n"
 
-#: crypt-gpgme.c:2592 pgp.c:607
+#: crypt-gpgme.c:2584 pgp.c:611
 msgid ""
 "[-- Error: could not find beginning of PGP message! --]\n"
 "\n"
@@ -1167,11 +1167,11 @@ msgstr ""
 "[-- Ошибка: не удалось найти начало PGP-сообщения! --]\n"
 "\n"
 
-#: crypt-gpgme.c:2623 crypt-gpgme.c:2696 pgp.c:1090
+#: crypt-gpgme.c:2615 crypt-gpgme.c:2688 pgp.c:1094
 msgid "[-- Error: could not create temporary file! --]\n"
 msgstr "[-- Ошибка: не удалось создать временный файл! --]\n"
 
-#: crypt-gpgme.c:2635
+#: crypt-gpgme.c:2627
 msgid ""
 "[-- The following data is PGP/MIME signed and encrypted --]\n"
 "\n"
@@ -1179,7 +1179,7 @@ msgstr ""
 "[-- Начало данных, подписанных и зашифрованных в формате PGP/MIME --]\n"
 "\n"
 
-#: crypt-gpgme.c:2636 pgp.c:1099
+#: crypt-gpgme.c:2628 pgp.c:1103
 msgid ""
 "[-- The following data is PGP/MIME encrypted --]\n"
 "\n"
@@ -1187,23 +1187,23 @@ msgstr ""
 "[-- Начало данных, зашифрованных в формате PGP/MIME --]\n"
 "\n"
 
-#: crypt-gpgme.c:2658
+#: crypt-gpgme.c:2650
 msgid "[-- End of PGP/MIME signed and encrypted data --]\n"
 msgstr "[-- Конец данных, подписанных и зашифрованных в формате PGP/MIME --]\n"
 
-#: crypt-gpgme.c:2659 pgp.c:1119
+#: crypt-gpgme.c:2651 pgp.c:1123
 msgid "[-- End of PGP/MIME encrypted data --]\n"
 msgstr "[-- Конец данных, зашифрованных в формате PGP/MIME --]\n"
 
-#: crypt-gpgme.c:2664 pgp.c:569 pgp.c:1124
+#: crypt-gpgme.c:2656 pgp.c:573 pgp.c:1128
 msgid "PGP message successfully decrypted."
 msgstr "PGP-сообщение успешно расшифровано."
 
-#: crypt-gpgme.c:2668 pgp.c:504 pgp.c:567 pgp.c:1128
+#: crypt-gpgme.c:2660 pgp.c:508 pgp.c:571 pgp.c:1132
 msgid "Could not decrypt PGP message"
 msgstr "Не удалось расшифровать PGP-сообщение"
 
-#: crypt-gpgme.c:2708
+#: crypt-gpgme.c:2700
 msgid ""
 "[-- The following data is S/MIME signed --]\n"
 "\n"
@@ -1211,7 +1211,7 @@ msgstr ""
 "[-- Начало данных, подписанных в формате S/MIME --]\n"
 "\n"
 
-#: crypt-gpgme.c:2709
+#: crypt-gpgme.c:2701
 msgid ""
 "[-- The following data is S/MIME encrypted --]\n"
 "\n"
@@ -1219,173 +1219,173 @@ msgstr ""
 "[-- Начало данных, зашифрованных в формате S/MIME --]\n"
 "\n"
 
-#: crypt-gpgme.c:2739
+#: crypt-gpgme.c:2731
 msgid "[-- End of S/MIME signed data --]\n"
 msgstr "[-- Конец данных, подписанных в формате S/MIME --]\n"
 
-#: crypt-gpgme.c:2740
+#: crypt-gpgme.c:2732
 msgid "[-- End of S/MIME encrypted data --]\n"
 msgstr "[-- Конец данных, зашифрованных в формате S/MIME --]\n"
 
-#: crypt-gpgme.c:3324
+#: crypt-gpgme.c:3316
 msgid "[Can't display this user ID (unknown encoding)]"
 msgstr "[Не возможно отобразить ID этого пользователя (неизвестная кодировка)]"
 
-#: crypt-gpgme.c:3326
+#: crypt-gpgme.c:3318
 msgid "[Can't display this user ID (invalid encoding)]"
 msgstr "[Не возможно отобразить ID этого пользователя (неправильная кодировка)]"
 
-#: crypt-gpgme.c:3331
+#: crypt-gpgme.c:3323
 msgid "[Can't display this user ID (invalid DN)]"
 msgstr "[Не возможно отобразить ID этого пользователя (неправильный DN)"
 
 #. L10N: DOTFILL
-#: crypt-gpgme.c:3408
+#: crypt-gpgme.c:3400
 msgid " aka ......: "
 msgstr " aka ......: "
 
-#: crypt-gpgme.c:3408
+#: crypt-gpgme.c:3400
 msgid "Name ......: "
 msgstr "Имя .......: "
 
-#: crypt-gpgme.c:3411 crypt-gpgme.c:3561
+#: crypt-gpgme.c:3403 crypt-gpgme.c:3553
 msgid "[Invalid]"
 msgstr "[Неправильное значение]"
 
 #. L10N: DOTFILL
-#: crypt-gpgme.c:3432 crypt-gpgme.c:3586
+#: crypt-gpgme.c:3424 crypt-gpgme.c:3578
 #, c-format
 msgid "Valid From : %s\n"
 msgstr "Действ. с .: %s\n"
 
 #. L10N: DOTFILL
-#: crypt-gpgme.c:3446 crypt-gpgme.c:3600
+#: crypt-gpgme.c:3438 crypt-gpgme.c:3592
 #, c-format
 msgid "Valid To ..: %s\n"
 msgstr "Действ. до : %s\n"
 
 #. L10N: DOTFILL
-#: crypt-gpgme.c:3460 crypt-gpgme.c:3608
+#: crypt-gpgme.c:3452 crypt-gpgme.c:3600
 #, c-format
 msgid "Key Type ..: %s, %lu bit %s\n"
 msgstr "Тип ключа .: %s, %lu бит %s\n"
 
 #. L10N: DOTFILL
-#: crypt-gpgme.c:3463 crypt-gpgme.c:3611
+#: crypt-gpgme.c:3455 crypt-gpgme.c:3603
 #, c-format
 msgid "Key Usage .: "
 msgstr "Использован: "
 
-#: crypt-gpgme.c:3468 crypt-gpgme.c:3616
+#: crypt-gpgme.c:3460 crypt-gpgme.c:3608
 msgid "encryption"
 msgstr "шифрование"
 
-#: crypt-gpgme.c:3469 crypt-gpgme.c:3474 crypt-gpgme.c:3479 crypt-gpgme.c:3617
-#: crypt-gpgme.c:3622 crypt-gpgme.c:3627
+#: crypt-gpgme.c:3461 crypt-gpgme.c:3466 crypt-gpgme.c:3471 crypt-gpgme.c:3609
+#: crypt-gpgme.c:3614 crypt-gpgme.c:3619
 msgid ", "
 msgstr ", "
 
-#: crypt-gpgme.c:3473 crypt-gpgme.c:3621
+#: crypt-gpgme.c:3465 crypt-gpgme.c:3613
 msgid "signing"
 msgstr "подпись"
 
-#: crypt-gpgme.c:3478 crypt-gpgme.c:3626
+#: crypt-gpgme.c:3470 crypt-gpgme.c:3618
 msgid "certification"
 msgstr "сертификация"
 
 #. L10N: DOTFILL
-#: crypt-gpgme.c:3523
+#: crypt-gpgme.c:3515
 #, c-format
 msgid "Serial-No .: 0x%s\n"
 msgstr "Сер. номер : 0x%s\n"
 
 #. L10N: DOTFILL
-#: crypt-gpgme.c:3532
+#: crypt-gpgme.c:3524
 #, c-format
 msgid "Issued By .: "
 msgstr "Издан .....: "
 
 #. L10N: DOTFILL
-#: crypt-gpgme.c:3552
+#: crypt-gpgme.c:3544
 #, c-format
 msgid "Subkey ....: 0x%s"
 msgstr "Подключ ...: 0x%s"
 
-#: crypt-gpgme.c:3556
+#: crypt-gpgme.c:3548
 msgid "[Revoked]"
 msgstr "[Отозван]"
 
-#: crypt-gpgme.c:3566
+#: crypt-gpgme.c:3558
 msgid "[Expired]"
 msgstr "[Просрочен]"
 
-#: crypt-gpgme.c:3571
+#: crypt-gpgme.c:3563
 msgid "[Disabled]"
 msgstr "[Запрещён]"
 
-#: crypt-gpgme.c:3653
+#: crypt-gpgme.c:3645
 msgid "Collecting data..."
 msgstr "Сбор данных..."
 
-#: crypt-gpgme.c:3679
+#: crypt-gpgme.c:3671
 #, c-format
 msgid "Error finding issuer key: %s\n"
 msgstr "Ошибка поиска ключа издателя: %s\n"
 
-#: crypt-gpgme.c:3689
+#: crypt-gpgme.c:3681
 msgid "Error: certification chain too long - stopping here\n"
 msgstr "Ошибка: цепь сертификации слишком длинная - поиск прекращён\n"
 
-#: crypt-gpgme.c:3700 pgpkey.c:581
+#: crypt-gpgme.c:3692 pgpkey.c:581
 #, c-format
 msgid "Key ID: 0x%s"
 msgstr "Идентификатор ключа: 0x%s"
 
-#: crypt-gpgme.c:3783
+#: crypt-gpgme.c:3775
 #, c-format
 msgid "gpgme_new failed: %s"
 msgstr "Ошибка gpgme_new: %s"
 
-#: crypt-gpgme.c:3822 crypt-gpgme.c:3897
+#: crypt-gpgme.c:3814 crypt-gpgme.c:3889
 #, c-format
 msgid "gpgme_op_keylist_start failed: %s"
 msgstr "Ошибка gpgme_op_keylist_start: %s"
 
-#: crypt-gpgme.c:3884 crypt-gpgme.c:3928
+#: crypt-gpgme.c:3876 crypt-gpgme.c:3920
 #, c-format
 msgid "gpgme_op_keylist_next failed: %s"
 msgstr "Ошибка gpgme_op_keylist_next: %s"
 
-#: crypt-gpgme.c:3999
+#: crypt-gpgme.c:3991
 msgid "All matching keys are marked expired/revoked."
 msgstr "Все подходящие ключи помечены как просроченные или отозванные."
 
-#: crypt-gpgme.c:4028 mutt_ssl.c:1045 mutt_ssl_gnutls.c:1003 pgpkey.c:515
+#: crypt-gpgme.c:4020 mutt_ssl.c:1093 mutt_ssl_gnutls.c:1003 pgpkey.c:515
 #: smime.c:435
 msgid "Exit  "
 msgstr "Выход "
 
-#: crypt-gpgme.c:4030 pgpkey.c:517 smime.c:437
+#: crypt-gpgme.c:4022 pgpkey.c:517 smime.c:437
 msgid "Select  "
 msgstr "Выбрать "
 
-#: crypt-gpgme.c:4033 pgpkey.c:520
+#: crypt-gpgme.c:4025 pgpkey.c:520
 msgid "Check key  "
 msgstr "Тест ключа "
 
-#: crypt-gpgme.c:4049
+#: crypt-gpgme.c:4041
 msgid "PGP and S/MIME keys matching"
 msgstr "PGP и S/MIME-ключи, соответствующие"
 
-#: crypt-gpgme.c:4051
+#: crypt-gpgme.c:4043
 msgid "PGP keys matching"
 msgstr "PGP-ключи, соответствующие"
 
-#: crypt-gpgme.c:4053
+#: crypt-gpgme.c:4045
 msgid "S/MIME keys matching"
 msgstr "S/MIME-ключи, соответствующие"
 
-#: crypt-gpgme.c:4055
+#: crypt-gpgme.c:4047
 msgid "keys matching"
 msgstr "ключи, соответствующие"
 
@@ -1393,63 +1393,63 @@ msgstr "ключи, соответствующие"
 #. %1$s is one of the previous four entries.
 #. %2$s is an address.
 #. e.g. "S/MIME keys matching <me@mutt.org>."
-#: crypt-gpgme.c:4062
+#: crypt-gpgme.c:4054
 #, c-format
 msgid "%s <%s>."
 msgstr "%s <%s>."
 
 #. L10N:
 #. e.g. 'S/MIME keys matching "Michael Elkins".'
-#: crypt-gpgme.c:4066
+#: crypt-gpgme.c:4058
 #, c-format
 msgid "%s \"%s\"."
 msgstr "%s \"%s\"."
 
-#: crypt-gpgme.c:4093 pgpkey.c:601
+#: crypt-gpgme.c:4085 pgpkey.c:601
 msgid "This key can't be used: expired/disabled/revoked."
 msgstr "Этот ключ не может быть использован: просрочен, запрещен или отозван."
 
-#: crypt-gpgme.c:4107 pgpkey.c:613 smime.c:467
+#: crypt-gpgme.c:4099 pgpkey.c:613 smime.c:467
 msgid "ID is expired/disabled/revoked."
 msgstr "ID просрочен, запрещен или отозван."
 
-#: crypt-gpgme.c:4115 pgpkey.c:617 smime.c:470
+#: crypt-gpgme.c:4107 pgpkey.c:617 smime.c:470
 msgid "ID has undefined validity."
 msgstr "Степень доверия для ID не определена."
 
-#: crypt-gpgme.c:4118 pgpkey.c:620
+#: crypt-gpgme.c:4110 pgpkey.c:620
 msgid "ID is not valid."
 msgstr "ID недействителен."
 
-#: crypt-gpgme.c:4121 pgpkey.c:623
+#: crypt-gpgme.c:4113 pgpkey.c:623
 msgid "ID is only marginally valid."
 msgstr "ID действителен только частично."
 
-#: crypt-gpgme.c:4130 pgpkey.c:627 smime.c:477
+#: crypt-gpgme.c:4122 pgpkey.c:627 smime.c:477
 #, c-format
 msgid "%s Do you really want to use the key?"
 msgstr "%s Использовать этот ключ?"
 
-#: crypt-gpgme.c:4191 crypt-gpgme.c:4325 pgpkey.c:838 pgpkey.c:964
+#: crypt-gpgme.c:4183 crypt-gpgme.c:4317 pgpkey.c:838 pgpkey.c:964
 #, c-format
 msgid "Looking for keys matching \"%s\"..."
 msgstr "Поиск ключей, соответствующих \"%s\"..."
 
-#: crypt-gpgme.c:4480 pgp.c:1303
+#: crypt-gpgme.c:4472 pgp.c:1307
 #, c-format
 msgid "Use keyID = \"%s\" for %s?"
 msgstr "Использовать ключ \"%s\" для %s?"
 
-#: crypt-gpgme.c:4538 pgp.c:1352 smime.c:796 smime.c:902
+#: crypt-gpgme.c:4530 pgp.c:1356 smime.c:796 smime.c:902
 #, c-format
 msgid "Enter keyID for %s: "
 msgstr "Введите идентификатор ключа для %s: "
 
-#: crypt-gpgme.c:4615 pgpkey.c:725
+#: crypt-gpgme.c:4607 pgpkey.c:725
 msgid "Please enter the key ID: "
 msgstr "Введите, пожалуйста, идентификатор ключа: "
 
-#: crypt-gpgme.c:4628
+#: crypt-gpgme.c:4620
 #, c-format
 msgid "Error exporting key: %s\n"
 msgstr "Ошибка экспорта ключа: %s\n"
@@ -1458,94 +1458,94 @@ msgstr "Ошибка экспорта ключа: %s\n"
 #. MIME description for exported (attached) keys.
 #. You can translate this entry to a non-ASCII string (it will be encoded),
 #. but it may be safer to keep it untranslated.
-#: crypt-gpgme.c:4648
+#: crypt-gpgme.c:4640
 #, c-format
 msgid "PGP Key 0x%s."
 msgstr "PGP-ключ 0x%s."
 
-#: crypt-gpgme.c:4690
+#: crypt-gpgme.c:4682
 msgid "GPGME: OpenPGP protocol not available"
 msgstr "GPGME: Протокол OpenPGP не доступен"
 
-#: crypt-gpgme.c:4698
+#: crypt-gpgme.c:4690
 msgid "GPGME: CMS protocol not available"
 msgstr "GPGME: Протокол CMS не доступен"
 
 #. L10N: S/MIME options (opportunistic encryption is on)
-#: crypt-gpgme.c:4736
+#: crypt-gpgme.c:4728
 msgid "S/MIME (s)ign, sign (a)s, (p)gp, (c)lear, or (o)ppenc mode off? "
 msgstr "S/MIME (s)подпись, (a)подпись как, (p)gp, (c)отказаться, отключить (o)ppenc? "
 
 #. L10N: S/MIME options (opportunistic encryption is on)
 #. The 'f' is undocumented. Please DO NOT translate it.
-#: crypt-gpgme.c:4739
+#: crypt-gpgme.c:4731
 msgid "sapfco"
 msgstr "sapfco"
 
 #. L10N: PGP options (opportunistic encryption is on)
-#: crypt-gpgme.c:4745
+#: crypt-gpgme.c:4737
 msgid "PGP (s)ign, sign (a)s, s/(m)ime, (c)lear, or (o)ppenc mode off? "
 msgstr "PGP (s)подпись, (a)подпись как, s/(m)ime, (c)отказаться, отключить (o)ppenc? "
 
 #. L10N: PGP options (opportunistic encryption is on)
 #. The 'f' is undocumented. Please DO NOT translate it.
-#: crypt-gpgme.c:4748
+#: crypt-gpgme.c:4740
 msgid "samfco"
 msgstr "samfco"
 
 #. L10N: S/MIME options (opportunistic encryption is off)
-#: crypt-gpgme.c:4761
+#: crypt-gpgme.c:4753
 msgid "S/MIME (e)ncrypt, (s)ign, sign (a)s, (b)oth, (p)gp, (c)lear, or (o)ppenc mode? "
 msgstr "S/MIME (e)шифр, (s)подпись, (a)подпись как, (b)оба, (p)gp, (c)отказ, (o)ppenc? "
 
 #. L10N: S/MIME options (opportunistic encryption is off)
 #. The 'f' is undocumented. Please DO NOT translate it.
-#: crypt-gpgme.c:4764
+#: crypt-gpgme.c:4756
 msgid "esabpfco"
 msgstr "esabpfco"
 
 #. L10N: PGP options (opportunistic encryption is off)
-#: crypt-gpgme.c:4770
+#: crypt-gpgme.c:4762
 msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, s/(m)ime, (c)lear, or (o)ppenc mode? "
 msgstr "PGP (e)шифр, (s)подпись, (a)подпись как, (b)оба, s/(m)ime, (c)отказ, (o)ppenc? "
 
 #. L10N: PGP options (opportunistic encryption is off)
 #. The 'f' is undocumented. Please DO NOT translate it.
-#: crypt-gpgme.c:4773
+#: crypt-gpgme.c:4765
 msgid "esabmfco"
 msgstr "esabmfco"
 
 #. L10N: S/MIME options
-#: crypt-gpgme.c:4785
+#: crypt-gpgme.c:4777
 msgid "S/MIME (e)ncrypt, (s)ign, sign (a)s, (b)oth, (p)gp or (c)lear? "
 msgstr "S/MIME (e)шифр, (s)подпись, (a)подпись как, (b)оба, (p)gp, (c)отказаться? "
 
 #. L10N: S/MIME options
 #. The 'f' is undocumented. Please DO NOT translate it.
-#: crypt-gpgme.c:4788
+#: crypt-gpgme.c:4780
 msgid "esabpfc"
 msgstr "esabpfc"
 
 #. L10N: PGP options
-#: crypt-gpgme.c:4794
+#: crypt-gpgme.c:4786
 msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, s/(m)ime or (c)lear? "
 msgstr "PGP (e)шифр, (s)подпись, (a)подпись как, (b)оба, s/(m)ime, (c)отказаться? "
 
 #. L10N: PGP options
 #. The 'f' is undocumented. Please DO NOT translate it.
-#: crypt-gpgme.c:4797
+#: crypt-gpgme.c:4789
 msgid "esabmfc"
 msgstr "esabmfc"
 
-#: crypt-gpgme.c:4822 pgp.c:1844 smime.c:2227 smime.c:2242
+#: crypt-gpgme.c:4814 pgp.c:1849 smime.c:2231 smime.c:2246
 msgid "Sign as: "
 msgstr "Подписать как: "
 
-#: crypt-gpgme.c:4957
+#: crypt-gpgme.c:4949
 msgid "Failed to verify sender"
 msgstr "Не удалось проверить отправителя"
 
-#: crypt-gpgme.c:4960
+#: crypt-gpgme.c:4952
 msgid "Failed to figure out sender"
 msgstr "Не удалось вычислить отправителя"
 
@@ -1579,7 +1579,7 @@ msgstr "Запускается программа PGP..."
 msgid "Message can't be sent inline.  Revert to using PGP/MIME?"
 msgstr "Не удалось отправить PGP-сообщение в текстовом формате. Использовать PGP/MIME?"
 
-#: crypt.c:169 send.c:1802
+#: crypt.c:169 send.c:1805
 msgid "Mail not sent."
 msgstr "Письмо не отправлено."
 
@@ -1673,7 +1673,7 @@ msgstr "нет"
 msgid "Exit Mutt?"
 msgstr "Завершить работу с Mutt?"
 
-#: curs_lib.c:748 mutt_socket.c:589 mutt_ssl.c:477
+#: curs_lib.c:748 mutt_socket.c:597 mutt_ssl.c:521
 msgid "unknown error"
 msgstr "неизвестная ошибка"
 
@@ -1773,7 +1773,7 @@ msgstr "Ящик был изменен внешней программой."
 msgid "No tagged messages."
 msgstr "Нет отмеченных сообщений."
 
-#: curs_main.c:1104 menu.c:1002
+#: curs_main.c:1104 menu.c:1005
 msgid "Nothing to do."
 msgstr "Нет помеченных сообщений."
 
@@ -2004,7 +2004,7 @@ msgstr "Нет восстановленных сообщений."
 msgid "You are on the first message."
 msgstr "Это первое сообщение."
 
-#: curs_main.c:2358 menu.c:838 pager.c:2294 pattern.c:2004
+#: curs_main.c:2358 menu.c:841 pager.c:2294 pattern.c:2004
 msgid "Search wrapped to top."
 msgstr "Достигнут конец; продолжаем поиск с начала."
 
@@ -2185,7 +2185,7 @@ msgstr "Сообщение содержит:\n"
 #. not IN the middle of the content.
 #. So it doesn't mean "(message will continue)"
 #. but means "(press any key to continue using mutt)".
-#: edit.c:404 edit.c:461
+#: edit.c:404 edit.c:463
 msgid "(continue)\n"
 msgstr "(продолжить)\n"
 
@@ -2202,7 +2202,7 @@ msgstr "Текст сообщения отсутствует.\n"
 msgid "Bad IDN in %s: '%s'\n"
 msgstr "Некорректный IDN в %s: %s\n"
 
-#: edit.c:472
+#: edit.c:474
 #, c-format
 msgid "%s: unknown editor command (~? for help)\n"
 msgstr "%s: неизвестная команда редактора (введите ~? для справки)\n"
@@ -2249,87 +2249,87 @@ msgstr "Установить флаг"
 msgid "Clear flag"
 msgstr "Сбросить флаг"
 
-#: handler.c:75
+#: handler.c:77
 #, c-format
 msgid "[-- Alternative Type #%d: "
 msgstr ""
 
-#: handler.c:77
+#: handler.c:79
 msgid "[-- Type: "
 msgstr ""
 
-#: handler.c:78
+#: handler.c:80
 #, fuzzy, c-format
 msgid "%s/%s%s%s, Encoding: %s, Size: %s --]\n"
 msgstr "[-- Тип: %s/%s, кодировка: %s, размер: %s --]\n"
 
-#: handler.c:1182
+#: handler.c:1184
 msgid "[-- Error:  Could not display any parts of Multipart/Alternative! --]\n"
 msgstr "[-- Ошибка: не удалось показать ни одну из частей Multipart/Alternative! --]\n"
 
-#: handler.c:1296
+#: handler.c:1298
 #, c-format
 msgid "[-- Attachment #%d"
 msgstr "[-- Вложение #%d"
 
-#: handler.c:1319
+#: handler.c:1321
 msgid "One or more parts of this message could not be displayed"
 msgstr "Одна или несколько частей этого сообщения не могут быть отображены"
 
-#: handler.c:1372
+#: handler.c:1374
 #, c-format
 msgid "[-- Autoview using %s --]\n"
 msgstr "[-- Автопросмотр; используется %s --]\n"
 
-#: handler.c:1373
+#: handler.c:1375
 #, c-format
 msgid "Invoking autoview command: %s"
 msgstr "Запускается программа автопросмотра: %s"
 
-#: handler.c:1405
+#: handler.c:1407
 #, c-format
 msgid "[-- Can't run %s. --]\n"
 msgstr "[-- Не удалось выполнить %s. --]\n"
 
-#: handler.c:1424 handler.c:1445
+#: handler.c:1426 handler.c:1447
 #, c-format
 msgid "[-- Autoview stderr of %s --]\n"
 msgstr "[-- Автопросмотр стандартного потока ошибок %s --]\n"
 
-#: handler.c:1484
+#: handler.c:1486
 msgid "[-- Error: message/external-body has no access-type parameter --]\n"
 msgstr "[-- Ошибка: тип message/external требует наличие параметра access-type --]\n"
 
-#: handler.c:1505
+#: handler.c:1507
 #, c-format
 msgid "[-- This %s/%s attachment "
 msgstr "[-- Это вложение типа %s/%s "
 
-#: handler.c:1512
+#: handler.c:1514
 #, c-format
 msgid "(size %s bytes) "
 msgstr "(размер %s байтов) "
 
-#: handler.c:1514
+#: handler.c:1516
 msgid "has been deleted --]\n"
 msgstr "было удалено --]\n"
 
-#: handler.c:1519
+#: handler.c:1521
 #, c-format
 msgid "[-- on %s --]\n"
 msgstr "[-- %s --]\n"
 
-#: handler.c:1524
+#: handler.c:1526
 #, c-format
 msgid "[-- name: %s --]\n"
 msgstr "[-- имя: %s --]\n"
 
-#: handler.c:1537 handler.c:1553
+#: handler.c:1539 handler.c:1555
 #, c-format
 msgid "[-- This %s/%s attachment is not included, --]\n"
 msgstr "[-- Это вложение типа %s/%s не было включено --]\n"
 
-#: handler.c:1539
+#: handler.c:1541
 msgid ""
 "[-- and the indicated external source has --]\n"
 "[-- expired. --]\n"
@@ -2337,43 +2337,43 @@ msgstr ""
 "[-- в сообщение, и более не содержится в указанном --]\n"
 "[-- внешнем источнике. --]\n"
 
-#: handler.c:1557
+#: handler.c:1559
 #, c-format
 msgid "[-- and the indicated access-type %s is unsupported --]\n"
 msgstr "[-- в сообщение, и значение access-type %s не поддерживается --]\n"
 
-#: handler.c:1670
+#: handler.c:1672
 #, fuzzy
 msgid "Unable to open memory stream!"
 msgstr "Не удалось открыть временный файл!"
 
-#: handler.c:1678
+#: handler.c:1680
 msgid "Unable to open temporary file!"
 msgstr "Не удалось открыть временный файл!"
 
-#: handler.c:1718
+#: handler.c:1720
 msgid "failed to re-open memstream!"
 msgstr ""
 
-#: handler.c:1841
+#: handler.c:1843
 msgid "Error: multipart/signed has no protocol."
 msgstr "Ошибка: тип multipart/signed требует наличия параметра protocol."
 
-#: handler.c:1892
+#: handler.c:1894
 msgid "[-- This is an attachment "
 msgstr "[-- Это вложение "
 
-#: handler.c:1894
+#: handler.c:1896
 #, c-format
 msgid "[-- %s/%s is unsupported "
 msgstr "[-- тип %s/%s не поддерживается "
 
-#: handler.c:1901
+#: handler.c:1903
 #, c-format
 msgid "(use '%s' to view this part)"
 msgstr "(используйте \"%s\" для просмотра этой части)"
 
-#: handler.c:1903
+#: handler.c:1905
 msgid "(need 'view-attachments' bound to key!)"
 msgstr "(функция view-attachments не назначена ни одной клавише!)"
 
@@ -2686,7 +2686,7 @@ msgstr "Сообщение %d копируется в %s..."
 msgid "Continue?"
 msgstr "Продолжить?"
 
-#: init.c:63 init.c:2184 pager.c:54
+#: init.c:63 init.c:2188 pager.c:54
 #, c-format
 msgid "Not available in this menu."
 msgstr "В этом меню недоступно."
@@ -2728,11 +2728,11 @@ msgstr "%sgroup: отсутствует -rx или -addr."
 msgid "%sgroup: warning: bad IDN '%s'.\n"
 msgstr "%sgroup: предупреждение: некорректный IDN \"%s\".\n"
 
-#: init.c:1369
+#: init.c:1372
 msgid "attachments: no disposition"
 msgstr "attachments: отсутствует параметр disposition"
 
-#: init.c:1379
+#: init.c:1382
 #, fuzzy, c-format
 msgid ""
 "\n"
@@ -2740,165 +2740,165 @@ msgid ""
 "\n"
 msgstr "изменить описание вложения"
 
-#: init.c:1407
+#: init.c:1410
 msgid "attachments: invalid disposition"
 msgstr "attachments: неверное значение параметра disposition"
 
-#: init.c:1421
+#: init.c:1424
 msgid "unattachments: no disposition"
 msgstr "unattachments: отсутствует параметр disposition"
 
-#: init.c:1444
+#: init.c:1447
 msgid "unattachments: invalid disposition"
 msgstr "unattachments: неверное значение параметра disposition"
 
-#: init.c:1571
+#: init.c:1574
 msgid "alias: no address"
 msgstr "псевдоним: отсутствует адрес"
 
-#: init.c:1618
+#: init.c:1621
 #, c-format
 msgid "Warning: Bad IDN '%s' in alias '%s'.\n"
 msgstr "Предупреждение: некорректный IDN \"%s\" в псевдониме \"%s\".\n"
 
-#: init.c:1704
+#: init.c:1708
 msgid "invalid header field"
 msgstr "недопустимое поле в заголовке"
 
-#: init.c:1757
+#: init.c:1761
 #, c-format
 msgid "%s: unknown sorting method"
 msgstr "%s: неизвестный метод сортировки"
 
-#: init.c:1872
+#: init.c:1876
 #, c-format
 msgid "mutt_restore_default(%s): error in regexp: %s\n"
 msgstr "mutt_restore_default(%s): ошибка в регулярном выражении: %s\n"
 
-#: init.c:2039 init.c:2232
+#: init.c:2043 init.c:2236
 #, c-format
 msgid "%s is unset"
 msgstr "%s: значение не определено"
 
-#: init.c:2161 init.c:2277
+#: init.c:2165 init.c:2281
 #, c-format
 msgid "%s: unknown variable"
 msgstr "%s: неизвестная переменная"
 
-#: init.c:2170
+#: init.c:2174
 #, c-format
 msgid "prefix is illegal with reset"
 msgstr "префикс недопустим при сбросе значений"
 
-#: init.c:2176
+#: init.c:2180
 #, c-format
 msgid "value is illegal with reset"
 msgstr "значение недопустимо при сбросе значений"
 
-#: init.c:2212 init.c:2224
+#: init.c:2216 init.c:2228
 #, c-format
 msgid "Usage: set variable=yes|no"
 msgstr "Использование: set variable=yes|no"
 
-#: init.c:2232
+#: init.c:2236
 #, c-format
 msgid "%s is set"
 msgstr "%s: значение установлено"
 
-#: init.c:2343 init.c:2356
+#: init.c:2347 init.c:2360
 #, c-format
 msgid "Invalid value for option %s: \"%s\""
 msgstr "Неверное значение для параметра %s: \"%s\""
 
-#: init.c:2493
+#: init.c:2497
 #, c-format
 msgid "%s: invalid mailbox type"
 msgstr "%s: недопустимый тип почтового ящика"
 
-#: init.c:2524
+#: init.c:2528
 #, c-format
 msgid "%s: invalid value (%s)"
 msgstr "%s: недопустимое значение (%s)"
 
-#: init.c:2525
+#: init.c:2529
 msgid "format error"
 msgstr "ошибка формата"
 
-#: init.c:2525
+#: init.c:2529
 msgid "number overflow"
 msgstr "переполнение числового значения"
 
-#: init.c:2585
+#: init.c:2589
 #, c-format
 msgid "%s: invalid value"
 msgstr "%s: недопустимое значение"
 
-#: init.c:2629
+#: init.c:2633
 #, c-format
 msgid "%s: Unknown type."
 msgstr "%s: неизвестный тип."
 
-#: init.c:2676
+#: init.c:2680
 #, fuzzy, c-format
 msgid "%s: invalid backend"
 msgstr "%s: недопустимое значение"
 
-#: init.c:2684
+#: init.c:2688
 #, c-format
 msgid "%s: unknown type"
 msgstr "%s: неизвестный тип"
 
-#: init.c:2823
+#: init.c:2827
 #, c-format
 msgid "Error in %s, line %d: %s"
 msgstr "Ошибка в %s: строка %d: %s"
 
-#: init.c:2846
+#: init.c:2850
 #, c-format
 msgid "source: errors in %s"
 msgstr "source: ошибки в %s"
 
-#: init.c:2847
+#: init.c:2851
 #, c-format
 msgid "source: reading aborted due to too many errors in %s"
 msgstr "source: чтение прервано из-за большого количества ошибок в %s"
 
-#: init.c:2864
+#: init.c:2868
 #, c-format
 msgid "source: error at %s"
 msgstr "source: ошибка в %s"
 
-#: init.c:2869
+#: init.c:2873
 msgid "source: too many arguments"
 msgstr "source: слишком много аргументов"
 
-#: init.c:2925
+#: init.c:2929
 #, c-format
 msgid "%s: unknown command"
 msgstr "%s: неизвестная команда"
 
-#: init.c:3598
+#: init.c:3602
 #, c-format
 msgid "Error in command line: %s\n"
 msgstr "Ошибка в командной строке: %s\n"
 
-#: init.c:3703
+#: init.c:3708
 msgid "unable to determine home directory"
 msgstr "не удалось определить домашний каталог"
 
-#: init.c:3711
+#: init.c:3716
 msgid "unable to determine username"
 msgstr "не удалось определить имя пользователя"
 
-#: init.c:3737
+#: init.c:3742
 msgid "unable to determine nodename via uname()"
 msgstr "не удалось определить имя узла с помощью uname()"
 
-#: init.c:4031
+#: init.c:4039
 msgid "-group: no group name"
 msgstr "-group: имя группы отсутствует"
 
-#: init.c:4041
+#: init.c:4049
 msgid "out of arguments"
 msgstr "слишком мало аргументов"
 
@@ -3147,7 +3147,7 @@ msgstr "Ошибка записи сообщения"
 msgid "Mailbox was corrupted!"
 msgstr "Почтовый ящик был поврежден!"
 
-#: mbox.c:861 mbox.c:1121
+#: mbox.c:861 mbox.c:1125
 msgid "Fatal error!  Could not reopen mailbox!"
 msgstr "Критическая ошибка!  Не удалось заново открыть почтовый ящик!"
 
@@ -3160,85 +3160,85 @@ msgstr "sync: почтовый ящик изменен, но измененны�
 msgid "Writing %s..."
 msgstr "Пишется %s..."
 
-#: mbox.c:1072
+#: mbox.c:1074
 msgid "Committing changes..."
 msgstr "Сохранение изменений..."
 
-#: mbox.c:1107
+#: mbox.c:1109
 #, c-format
 msgid "Write failed!  Saved partial mailbox to %s"
 msgstr "Запись не удалась!  Неполный почтовый ящик сохранен в %s"
 
-#: mbox.c:1176
+#: mbox.c:1182
 msgid "Could not reopen mailbox!"
 msgstr "Не удалось заново открыть почтовый ящик!"
 
-#: mbox.c:1203
+#: mbox.c:1209
 msgid "Reopening mailbox..."
 msgstr "Повторное открытие почтового ящика..."
 
-#: menu.c:495
+#: menu.c:498
 msgid "Jump to: "
 msgstr "Перейти к: "
 
-#: menu.c:504
+#: menu.c:507
 msgid "Invalid index number."
 msgstr "Неверный индекс."
 
-#: menu.c:508 menu.c:529 menu.c:594 menu.c:637 menu.c:653 menu.c:664 menu.c:675
-#: menu.c:686 menu.c:699 menu.c:712 menu.c:1139
+#: menu.c:511 menu.c:532 menu.c:597 menu.c:640 menu.c:656 menu.c:667 menu.c:678
+#: menu.c:689 menu.c:702 menu.c:715 menu.c:1142
 msgid "No entries."
 msgstr "Записи отсутствуют."
 
-#: menu.c:526
+#: menu.c:529
 msgid "You cannot scroll down farther."
 msgstr "Дальнейшая прокрутка невозможна."
 
-#: menu.c:544
+#: menu.c:547
 msgid "You cannot scroll up farther."
 msgstr "Дальнейшая прокрутка невозможна."
 
-#: menu.c:587
+#: menu.c:590
 msgid "You are on the first page."
 msgstr "Вы уже на первой странице."
 
-#: menu.c:588
+#: menu.c:591
 msgid "You are on the last page."
 msgstr "Вы уже на последней странице."
 
-#: menu.c:723
+#: menu.c:726
 msgid "You are on the last entry."
 msgstr "Вы уже на последней записи."
 
-#: menu.c:734
+#: menu.c:737
 msgid "You are on the first entry."
 msgstr "Вы уже на первой записи."
 
-#: menu.c:812 pager.c:2338 pattern.c:1943
+#: menu.c:815 pager.c:2338 pattern.c:1943
 msgid "Search for: "
 msgstr "Поиск: "
 
-#: menu.c:812 pager.c:2338 pattern.c:1943
+#: menu.c:815 pager.c:2338 pattern.c:1943
 msgid "Reverse search for: "
 msgstr "Обратный поиск: "
 
-#: menu.c:856 pager.c:2291 pager.c:2313 pager.c:2433 pattern.c:2058
+#: menu.c:859 pager.c:2291 pager.c:2313 pager.c:2433 pattern.c:2058
 msgid "Not found."
 msgstr "Не найдено."
 
-#: menu.c:996
+#: menu.c:999
 msgid "No tagged entries."
 msgstr "Нет отмеченных записей."
 
-#: menu.c:1096
+#: menu.c:1099
 msgid "Search is not implemented for this menu."
 msgstr "В этом меню поиск не реализован."
 
-#: menu.c:1101
+#: menu.c:1104
 msgid "Jumping is not implemented for dialogs."
 msgstr "Для диалогов переход по номеру сообщения не реализован."
 
-#: menu.c:1142
+#: menu.c:1145
 msgid "Tagging is not supported."
 msgstr "Возможность пометки не поддерживается."
 
@@ -3402,163 +3402,173 @@ msgstr "SSL-протокол недоступен."
 msgid "Preconnect command failed."
 msgstr "Команда, предшествующая соединению, завершилась с ошибкой."
 
-#: mutt_socket.c:402 mutt_socket.c:407 mutt_socket.c:423 mutt_socket.c:428
+#: mutt_socket.c:402 mutt_socket.c:427
 #, c-format
 msgid "Error talking to %s (%s)"
 msgstr "Ошибка при взаимодействии с %s (%s)"
 
-#: mutt_socket.c:482 mutt_socket.c:541
+#: mutt_socket.c:411 mutt_socket.c:436
+#, fuzzy, c-format
+msgid "Connection to %s has been aborted"
+msgstr "Соединение с %s закрыто"
+
+#: mutt_socket.c:490 mutt_socket.c:549
 #, c-format
 msgid "Bad IDN \"%s\"."
 msgstr "Некорректный IDN \"%s\"."
 
-#: mutt_socket.c:490 mutt_socket.c:549
+#: mutt_socket.c:498 mutt_socket.c:557
 #, c-format
 msgid "Looking up %s..."
 msgstr "Определяется адрес сервера %s..."
 
-#: mutt_socket.c:500 mutt_socket.c:558
+#: mutt_socket.c:508 mutt_socket.c:566
 #, c-format
 msgid "Could not find the host \"%s\""
 msgstr "Не удалось определить адрес сервера \"%s\""
 
-#: mutt_socket.c:506 mutt_socket.c:564
+#: mutt_socket.c:514 mutt_socket.c:572
 #, c-format
 msgid "Connecting to %s..."
 msgstr "Устанавливается соединение с %s..."
 
-#: mutt_socket.c:588
+#: mutt_socket.c:596
 #, c-format
 msgid "Could not connect to %s (%s)."
 msgstr "Не удалось установить соединение с %s (%s)."
 
-#: mutt_ssl.c:235
+#: mutt_ssl.c:279
 msgid "Failed to find enough entropy on your system"
 msgstr "Недостаточно энтропии"
 
-#: mutt_ssl.c:259
+#: mutt_ssl.c:303
 #, c-format
 msgid "Filling entropy pool: %s...\n"
 msgstr "Накопление энтропии: %s...\n"
 
-#: mutt_ssl.c:267
+#: mutt_ssl.c:311
 #, c-format
 msgid "%s has insecure permissions!"
 msgstr "%s имеет небезопасный режим доступа!"
 
-#: mutt_ssl.c:286
+#: mutt_ssl.c:330
 msgid "SSL disabled due to the lack of entropy"
 msgstr "Использование SSL-протокола невозможно из-за недостатка энтропии"
 
 #. L10N: an SSL context is a data structure returned by the OpenSSL
 #. function SSL_CTX_new().  In this case it returned NULL: an
 #. error condition.
-#: mutt_ssl.c:361
+#: mutt_ssl.c:405
 msgid "Unable to create SSL context"
 msgstr "Не удалось создать SSL контекст"
 
-#: mutt_ssl.c:471
+#: mutt_ssl.c:515
 msgid "I/O error"
 msgstr "ошибка ввода/вывода"
 
-#: mutt_ssl.c:480
+#: mutt_ssl.c:524
 #, c-format
 msgid "SSL failed: %s"
 msgstr "Не удалось установить SSL-соединение: %s"
 
-#: mutt_ssl.c:609
+#: mutt_ssl.c:653
 msgid "Unknown"
 msgstr "Неизвестно"
 
-#: mutt_ssl.c:622 mutt_ssl_gnutls.c:600
+#: mutt_ssl.c:666 mutt_ssl_gnutls.c:600
 #, c-format
 msgid "[unable to calculate]"
 msgstr "[ошибка вычислений]"
 
-#: mutt_ssl.c:640 mutt_ssl_gnutls.c:623
+#: mutt_ssl.c:684 mutt_ssl_gnutls.c:623
 msgid "[invalid date]"
 msgstr "[недопустимая дата]"
 
-#: mutt_ssl.c:714
+#: mutt_ssl.c:758
 msgid "Server certificate is not yet valid"
 msgstr "Сертификат все еще недействителен"
 
-#: mutt_ssl.c:721
+#: mutt_ssl.c:765
 msgid "Server certificate has expired"
 msgstr "Срок действия сертификата истек"
 
-#: mutt_ssl.c:843
+#: mutt_ssl.c:887
 msgid "cannot get certificate subject"
 msgstr "не удалось получить subject сертификата"
 
-#: mutt_ssl.c:853 mutt_ssl.c:862
+#: mutt_ssl.c:897 mutt_ssl.c:906
 msgid "cannot get certificate common name"
 msgstr "не удалось получить common name сертификата"
 
-#: mutt_ssl.c:876
+#: mutt_ssl.c:920
 #, c-format
 msgid "certificate owner does not match hostname %s"
 msgstr "владелец сертификата не соответствует имени хоста %s"
 
-#: mutt_ssl.c:941
+#: mutt_ssl.c:985
 #, c-format
 msgid "Certificate host check failed: %s"
 msgstr "Не удалось выполнить проверку хоста сертификата: %s"
 
-#: mutt_ssl.c:999 mutt_ssl_gnutls.c:862
+#: mutt_ssl.c:1044 mutt_ssl_gnutls.c:862
 msgid "This certificate belongs to:"
 msgstr "Данный сертификат принадлежит:"
 
-#: mutt_ssl.c:1007 mutt_ssl_gnutls.c:901
+#: mutt_ssl.c:1052 mutt_ssl_gnutls.c:901
 msgid "This certificate was issued by:"
 msgstr "Данный сертификат был выдан:"
 
-#: mutt_ssl.c:1015 mutt_ssl_gnutls.c:940
+#: mutt_ssl.c:1060 mutt_ssl_gnutls.c:940
 #, c-format
 msgid "This certificate is valid"
 msgstr "Данный сертификат действителен"
 
-#: mutt_ssl.c:1016 mutt_ssl_gnutls.c:943
+#: mutt_ssl.c:1061 mutt_ssl_gnutls.c:943
 #, c-format
 msgid "   from %s"
 msgstr "      с %s"
 
-#: mutt_ssl.c:1018 mutt_ssl_gnutls.c:947
+#: mutt_ssl.c:1063 mutt_ssl_gnutls.c:947
 #, c-format
 msgid "     to %s"
 msgstr "     по %s"
 
-#: mutt_ssl.c:1024
+#: mutt_ssl.c:1069 mutt_ssl_gnutls.c:952
 #, c-format
-msgid "Fingerprint: %s"
-msgstr "Отпечаток пальца: %s"
+msgid "SHA1 Fingerprint: %s"
+msgstr "SHA1-отпечаток пальца: %s"
 
-#: mutt_ssl.c:1027 mutt_ssl_gnutls.c:984
+#: mutt_ssl.c:1072 mutt_ssl_gnutls.c:955
+#, c-format
+msgid "MD5 Fingerprint: %s"
+msgstr "MD5-отпечаток пальца: %s"
+
+#: mutt_ssl.c:1075 mutt_ssl_gnutls.c:984
 #, c-format
 msgid "SSL Certificate check (certificate %d of %d in chain)"
 msgstr "Проверка SSL-сертификата (сертификат %d из %d в цепочке)"
 
-#: mutt_ssl.c:1035 mutt_ssl_gnutls.c:993
+#: mutt_ssl.c:1083 mutt_ssl_gnutls.c:993
 msgid "(r)eject, accept (o)nce, (a)ccept always"
 msgstr "(r)отвергнуть, (o)принять, (a)принять и сохранить"
 
-#: mutt_ssl.c:1036 mutt_ssl_gnutls.c:994
+#: mutt_ssl.c:1084 mutt_ssl_gnutls.c:994
 msgid "roa"
 msgstr "roa"
 
-#: mutt_ssl.c:1040 mutt_ssl_gnutls.c:998
+#: mutt_ssl.c:1088 mutt_ssl_gnutls.c:998
 msgid "(r)eject, accept (o)nce"
 msgstr "(r)отвергнуть, (o)принять"
 
-#: mutt_ssl.c:1041 mutt_ssl_gnutls.c:999
+#: mutt_ssl.c:1089 mutt_ssl_gnutls.c:999
 msgid "ro"
 msgstr "ro"
 
-#: mutt_ssl.c:1072 mutt_ssl_gnutls.c:1048
+#: mutt_ssl.c:1120 mutt_ssl_gnutls.c:1048
 msgid "Warning: Couldn't save certificate"
 msgstr "Предупреждение: не удалось сохранить сертификат"
 
-#: mutt_ssl.c:1077 mutt_ssl_gnutls.c:1053
+#: mutt_ssl.c:1125 mutt_ssl_gnutls.c:1053
 msgid "Certificate saved"
 msgstr "Сертификат сохранен"
 
@@ -3590,16 +3600,6 @@ msgstr "Ошибка обработки данных сертификата"
 #: mutt_ssl_gnutls.c:833
 msgid "Warning: Server certificate was signed using an insecure algorithm"
 msgstr "Предупреждение: сертификат подписан с использованием небезопасного алгоритма"
-
-#: mutt_ssl_gnutls.c:952
-#, c-format
-msgid "SHA1 Fingerprint: %s"
-msgstr "SHA1-отпечаток пальца: %s"
-
-#: mutt_ssl_gnutls.c:955
-#, c-format
-msgid "MD5 Fingerprint: %s"
-msgstr "MD5-отпечаток пальца: %s"
 
 #: mutt_ssl_gnutls.c:960
 msgid "WARNING: Server certificate is not yet valid"
@@ -4023,11 +4023,11 @@ msgstr "Введите PGP фразу-пароль:"
 msgid "PGP passphrase forgotten."
 msgstr "PGP фраза-пароль удалена из памяти."
 
-#: pgp.c:448
+#: pgp.c:452
 msgid "[-- Error: unable to create PGP subprocess! --]\n"
 msgstr "[-- Ошибка: не удалось создать PGP-подпроцесс! --]\n"
 
-#: pgp.c:482 pgp.c:751 pgp.c:963
+#: pgp.c:486 pgp.c:755 pgp.c:967
 msgid ""
 "[-- End of PGP output --]\n"
 "\n"
@@ -4035,11 +4035,11 @@ msgstr ""
 "[-- Конец вывода программы PGP --]\n"
 "\n"
 
-#: pgp.c:859
+#: pgp.c:863
 msgid "Internal error.  Please submit a bug report."
 msgstr "Внутренняя ошибка. Пожалуйста, сообщите о ней разработчикам."
 
-#: pgp.c:920
+#: pgp.c:924
 msgid ""
 "[-- Error: could not create a PGP subprocess! --]\n"
 "\n"
@@ -4047,32 +4047,32 @@ msgstr ""
 "[-- Ошибка: не удалось создать PGP-подпроцесс! --]\n"
 "\n"
 
-#: pgp.c:951 pgp.c:975
+#: pgp.c:955 pgp.c:979
 msgid "Decryption failed"
 msgstr "Расшифровать не удалась"
 
-#: pgp.c:1181
+#: pgp.c:1185
 msgid "Can't open PGP subprocess!"
 msgstr "Не удалось открыть PGP-подпроцесс!"
 
-#: pgp.c:1615
+#: pgp.c:1620
 msgid "Can't invoke PGP"
 msgstr "Не удалось запустить программу PGP"
 
 #. L10N: These next string MUST have the same highlighed letter
 #. One of them will appear in each of the three strings marked "(inline"), below.
-#: pgp.c:1723
+#: pgp.c:1728
 msgid "PGP/M(i)ME"
 msgstr "PGP/M(i)ME"
 
 #. L10N: These previous string MUST have the same highlighed letter
 #. One of them will appear in each of the three strings marked "(inline"), below.
-#: pgp.c:1729
+#: pgp.c:1734
 msgid "(i)nline"
 msgstr "(i)PGP/текст"
 
 #. L10N: PGP options (inline) (opportunistic encryption is on)
-#: pgp.c:1743
+#: pgp.c:1748
 #, c-format
 msgid "PGP (s)ign, sign (a)s, %s format, (c)lear, or (o)ppenc mode off? "
 msgstr "PGP (s)подпись, (a)подпись как, %s, (c)отказаться, отключить (o)ppenc? "
@@ -4080,23 +4080,23 @@ msgstr "PGP (s)подпись, (a)подпись как, %s, (c)отказать
 #. L10N: PGP options (inline) (opportunistic encryption is on)
 #. The 'i' is from the "PGP/M(i)ME" or "(i)nline", above.
 #. The 'f' is undocumented. Please DO NOT translate it.
-#: pgp.c:1748
+#: pgp.c:1753
 msgid "safcoi"
 msgstr "safcoi"
 
 #. L10N: PGP options (opportunistic encryption is on)
-#: pgp.c:1754
+#: pgp.c:1759
 msgid "PGP (s)ign, sign (a)s, (c)lear, or (o)ppenc mode off? "
 msgstr "PGP (s)подпись, (a)подпись как, (c)отказаться, отключить (o)ppenc? "
 
 #. L10N: PGP options (opportunistic encryption is on)
 #. The 'f' is undocumented. Please DO NOT translate it.
-#: pgp.c:1757
+#: pgp.c:1762
 msgid "safco"
 msgstr "safco"
 
 #. L10N: PGP options (inline) (opportunistic encryption is off)
-#: pgp.c:1775
+#: pgp.c:1780
 #, c-format
 msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, %s format, (c)lear, or (o)ppenc mode? "
 msgstr "PGP (e)шифр, (s)подпись, (a)подпись как, (b)оба, %s, (c)отказ, (o)ppenc?"
@@ -4104,23 +4104,23 @@ msgstr "PGP (e)шифр, (s)подпись, (a)подпись как, (b)оба,
 #. L10N: PGP options (inline) (opportunistic encryption is off)
 #. The 'i' is from the "PGP/M(i)ME" or "(i)nline", above.
 #. The 'f' is undocumented. Please DO NOT translate it.
-#: pgp.c:1780
+#: pgp.c:1785
 msgid "esabfcoi"
 msgstr "esabfcoi"
 
 #. L10N: PGP options (opportunistic encryption is off)
-#: pgp.c:1786
+#: pgp.c:1791
 msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, (c)lear, or (o)ppenc mode? "
 msgstr "PGP (e)шифр, (s)подпись, (a)подпись как, (b)оба, (c)отказ, (o)ppenc? "
 
 #. L10N: PGP options (opportunistic encryption is off)
 #. The 'f' is undocumented. Please DO NOT translate it.
-#: pgp.c:1789
+#: pgp.c:1794
 msgid "esabfco"
 msgstr "esabfco"
 
 #. L10N: PGP options (inline)
-#: pgp.c:1803
+#: pgp.c:1808
 #, c-format
 msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, %s format, or (c)lear? "
 msgstr "PGP (e)шифр, (s)подпись, (a)подпись как, (b)оба, %s, (c)отказаться? "
@@ -4128,18 +4128,18 @@ msgstr "PGP (e)шифр, (s)подпись, (a)подпись как, (b)оба,
 #. L10N: PGP options (inline)
 #. The 'i' is from the "PGP/M(i)ME" or "(i)nline", above.
 #. The 'f' is undocumented. Please DO NOT translate it.
-#: pgp.c:1808
+#: pgp.c:1813
 msgid "esabfci"
 msgstr "esabfci"
 
 #. L10N: PGP options
-#: pgp.c:1814
+#: pgp.c:1819
 msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, or (c)lear? "
 msgstr "PGP (e)шифр, (s)подпись, (a)подпись как, (b)оба, (c)отказаться? "
 
 #. L10N: PGP options
 #. The 'f' is undocumented. Please DO NOT translate it.
-#: pgp.c:1817
+#: pgp.c:1822
 msgid "esabfc"
 msgstr "esabfc"
 
@@ -4433,32 +4433,32 @@ msgstr "Ошибка перенаправления сообщений!"
 msgid "Can't open temporary file %s."
 msgstr "Не удалось открыть временный файл %s."
 
-#: recvcmd.c:472
+#: recvcmd.c:473
 msgid "Forward as attachments?"
 msgstr "Переслать как вложения?"
 
-#: recvcmd.c:486
+#: recvcmd.c:487
 msgid "Can't decode all tagged attachments.  MIME-forward the others?"
 msgstr "Удалось раскодировать не все вложения. Переслать остальные в виде MIME?"
 
-#: recvcmd.c:611
+#: recvcmd.c:612
 msgid "Forward MIME encapsulated?"
 msgstr "Переслать инкапсулированным в MIME?"
 
-#: recvcmd.c:619 recvcmd.c:888
+#: recvcmd.c:620 recvcmd.c:889
 #, c-format
 msgid "Can't create %s."
 msgstr "Не удалось создать %s."
 
-#: recvcmd.c:752
+#: recvcmd.c:753
 msgid "Can't find any tagged messages."
 msgstr "Помеченные сообщения отсутствуют."
 
-#: recvcmd.c:784 send.c:806
+#: recvcmd.c:785 send.c:806
 msgid "No mailing lists found!"
 msgstr "Списков рассылки не найдено!"
 
-#: recvcmd.c:867
+#: recvcmd.c:868
 msgid "Can't decode all tagged attachments.  MIME-encapsulate the others?"
 msgstr "Удалось раскодировать не все вложения. Инкапсулировать остальные в MIME?"
 
@@ -4600,82 +4600,82 @@ msgstr "Переслать как вложение?"
 msgid "Preparing forwarded message..."
 msgstr "Подготовка пересылаемого сообщения..."
 
-#: send.c:1319
+#: send.c:1322
 msgid "Recall postponed message?"
 msgstr "Продолжить отложенное сообщение?"
 
-#: send.c:1614
+#: send.c:1617
 msgid "Edit forwarded message?"
 msgstr "Редактировать пересылаемое сообщение?"
 
-#: send.c:1663
+#: send.c:1666
 msgid "Abort unmodified message?"
 msgstr "Отказаться от неизмененного сообщения?"
 
-#: send.c:1665
+#: send.c:1668
 msgid "Aborted unmodified message."
 msgstr "Сообщение не изменилось, отказ."
 
-#: send.c:1799
+#: send.c:1802
 #, fuzzy
 msgid "Article not posted."
 msgstr "Письмо не отправлено."
 
-#: send.c:1853
+#: send.c:1856
 msgid "Message postponed."
 msgstr "Сообщение отложено."
 
-#: send.c:1867
+#: send.c:1870
 msgid "No recipients are specified!"
 msgstr "Не указано ни одного адресата!"
 
-#: send.c:1872
+#: send.c:1875
 msgid "No recipients were specified."
 msgstr "Не было указано ни одного адресата."
 
-#: send.c:1888
+#: send.c:1891
 msgid "No subject, abort sending?"
 msgstr "Нет темы сообщения, прервать отправку?"
 
-#: send.c:1892 send.c:1898
+#: send.c:1895 send.c:1901
 msgid "No subject specified."
 msgstr "Тема сообщения не указана."
 
-#: send.c:1904
+#: send.c:1907
 #, fuzzy
 msgid "No newsgroup specified."
 msgstr "Тема сообщения не указана."
 
-#: send.c:1912
+#: send.c:1915
 #, fuzzy
 msgid "No attachments, cancel sending?"
 msgstr "изменить транспортную кодировку для вложения"
 
-#: send.c:1917
+#: send.c:1920
 msgid "Message contains text matching \"$attach_keyword\". Not sending."
 msgstr ""
 
-#: send.c:1981 smtp.c:192
+#: send.c:1984 smtp.c:192
 msgid "Sending message..."
 msgstr "Сообщение отправляется..."
 
-#: send.c:2014
+#: send.c:2017
 msgid "Save attachments in Fcc?"
 msgstr "Сохранить вложения в Fcc?"
 
-#: send.c:2125
+#: send.c:2128
 msgid "Could not send the message."
 msgstr "Сообщение отправить не удалось."
 
-#: send.c:2130
+#: send.c:2133
 msgid "Sending in background."
 msgstr "Сообщение отправляется в фоновом режиме."
 
-#: send.c:2132
+#: send.c:2135
 msgid "Article posted."
 msgstr ""
 
-#: send.c:2132 send.c:2134
+#: send.c:2135 send.c:2137
 msgid "Mail sent."
 msgstr "Сообщение отправлено."
 
@@ -4698,20 +4698,20 @@ msgstr "%s не является файлом."
 msgid "Could not open %s"
 msgstr "Не удалось открыть %s"
 
-#: sendlib.c:2424
+#: sendlib.c:2435
 msgid "$sendmail must be set in order to send mail."
 msgstr "Для отправки почты должна быть установлена переменная $sendmail."
 
-#: sendlib.c:2523
+#: sendlib.c:2534
 #, c-format
 msgid "Error sending message, child exited %d (%s)."
 msgstr "Сообщение отправить не удалось, процесс-потомок вернул %d (%s)."
 
-#: sendlib.c:2529
+#: sendlib.c:2540
 msgid "Output of the delivery process"
 msgstr "Результат работы программы доставки почты"
 
-#: sendlib.c:2708
+#: sendlib.c:2719
 #, c-format
 msgid "Bad IDN %s while preparing resent-from."
 msgstr "Некорректный IDN %s при подготовке Resent-From."
@@ -4797,19 +4797,19 @@ msgstr "нет файла сертификата"
 msgid "no mbox"
 msgstr "нет почтового ящика"
 
-#: smime.c:1467 smime.c:1624
+#: smime.c:1468 smime.c:1625
 msgid "No output from OpenSSL..."
 msgstr "Нет вывода от программы OpenSSL..."
 
-#: smime.c:1534
+#: smime.c:1535
 msgid "Can't sign: No key specified. Use Sign As."
 msgstr "Не удалось подписать: не указан ключ. Используйте \"подписать как\"."
 
-#: smime.c:1586
+#: smime.c:1587
 msgid "Can't open OpenSSL subprocess!"
 msgstr "Не удалось открыть OpenSSL-подпроцесс!"
 
-#: smime.c:1792 smime.c:1915
+#: smime.c:1793 smime.c:1918
 msgid ""
 "[-- End of OpenSSL output --]\n"
 "\n"
@@ -4817,19 +4817,19 @@ msgstr ""
 "[-- Конец вывода программы OpenSSL --]\n"
 "\n"
 
-#: smime.c:1874 smime.c:1885
+#: smime.c:1875 smime.c:1887
 msgid "[-- Error: unable to create OpenSSL subprocess! --]\n"
 msgstr "[-- Ошибка: не удалось создать OpenSSL-подпроцесс! --]\n"
 
-#: smime.c:1919
+#: smime.c:1922
 msgid "[-- The following data is S/MIME encrypted --]\n"
 msgstr "[-- Начало данных, зашифрованных в формате S/MIME --]\n"
 
-#: smime.c:1922
+#: smime.c:1925
 msgid "[-- The following data is S/MIME signed --]\n"
 msgstr "[-- Начало данных, подписанных в формате S/MIME --]\n"
 
-#: smime.c:1986
+#: smime.c:1990
 msgid ""
 "\n"
 "[-- End of S/MIME encrypted data. --]\n"
@@ -4837,7 +4837,7 @@ msgstr ""
 "\n"
 "[-- Конец данных, зашифрованных в формате S/MIME --]\n"
 
-#: smime.c:1988
+#: smime.c:1992
 msgid ""
 "\n"
 "[-- End of S/MIME signed data. --]\n"
@@ -4846,67 +4846,67 @@ msgstr ""
 "[-- Конец данных, подписанных в формате S/MIME --]\n"
 
 #. L10N: S/MIME options (opportunistic encryption is on)
-#: smime.c:2111
+#: smime.c:2115
 msgid "S/MIME (s)ign, encrypt (w)ith, sign (a)s, (c)lear, or (o)ppenc mode off? "
 msgstr "S/MIME (s)подпись, (w)шифр как, (a)подпись как, (c)отказ, отключить (o)ppenc? "
 
 #. L10N: S/MIME options (opportunistic encryption is on)
 #. The 'f' is undocumented. Please DO NOT translate it.
-#: smime.c:2114
+#: smime.c:2118
 msgid "swafco"
 msgstr "swafco"
 
 #. L10N: S/MIME options (opportunistic encryption is off)
-#: smime.c:2124
+#: smime.c:2128
 msgid "S/MIME (e)ncrypt, (s)ign, encrypt (w)ith, sign (a)s, (b)oth, (c)lear, or (o)ppenc mode? "
 msgstr "S/MIME (e)шифр, (s)подпись, (w)шифр как, (a)подпись как, (b)оба, (c)отказ, (o)ppenc? "
 
 #. L10N: S/MIME options (opportunistic encryption is off)
 #. The 'f' is undocumented. Please DO NOT translate it.
-#: smime.c:2127
+#: smime.c:2131
 msgid "eswabfco"
 msgstr "eswabfco"
 
 #. L10N: S/MIME options
-#: smime.c:2136
+#: smime.c:2140
 msgid "S/MIME (e)ncrypt, (s)ign, encrypt (w)ith, sign (a)s, (b)oth, or (c)lear? "
 msgstr "S/MIME (e)шифр, (s)подпись, (w)шифр как, (a)подпись как, (b)оба, (c)отказ? "
 
 #. L10N: S/MIME options
 #. The 'f' is undocumented. Please DO NOT translate it.
-#: smime.c:2139
+#: smime.c:2143
 msgid "eswabfc"
 msgstr "eswabfc"
 
-#: smime.c:2160
+#: smime.c:2164
 msgid "Choose algorithm family: 1: DES, 2: RC2, 3: AES, or (c)lear? "
 msgstr "Выберите семейство алгоритмов: 1: DES, 2: RC2, 3: AES, (c)отказ? "
 
-#: smime.c:2163
+#: smime.c:2167
 msgid "drac"
 msgstr "drac"
 
-#: smime.c:2166
+#: smime.c:2170
 msgid "1: DES, 2: Triple-DES "
 msgstr "1: DES, 2: Triple-DES "
 
-#: smime.c:2167
+#: smime.c:2171
 msgid "dt"
 msgstr "dt"
 
-#: smime.c:2179
+#: smime.c:2183
 msgid "1: RC2-40, 2: RC2-64, 3: RC2-128 "
 msgstr "1: RC2-40, 2: RC2-64, 3: RC2-128 "
 
-#: smime.c:2180
+#: smime.c:2184
 msgid "468"
 msgstr "468"
 
-#: smime.c:2195
+#: smime.c:2199
 msgid "1: AES128, 2: AES192, 3: AES256 "
 msgstr "1: AES128, 2: AES192, 3: AES256 "
 
-#: smime.c:2196
+#: smime.c:2200
 msgid "895"
 msgstr "895"
 
@@ -6065,6 +6065,9 @@ msgstr "извлечь поддерживаемые открытые ключи"
 #: ../keymap_alldefs.h:247
 msgid "show S/MIME options"
 msgstr "вывести параметры S/MIME"
+
+#~ msgid "Fingerprint: %s"
+#~ msgstr "Отпечаток пальца: %s"
 
 #~ msgid "[-- Type: %s/%s, Encoding: %s, Size: %s --]\n"
 #~ msgstr "[-- Тип: %s/%s, кодировка: %s, размер: %s --]\n"
