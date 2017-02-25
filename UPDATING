@@ -1,8 +1,56 @@
 This file lists incompatible changes and additional/new features made to
 mutt. Please read this file carefully when upgrading your installation.
 
+The description of changes are intentionally brief.  For a more detailed
+explanation of features, please refer to the manual at
+http://www.mutt.org/doc/manual/
+
 The keys used are:
   !: modified feature, -: deleted feature, +: new feature
+
+1.8.0 (2017-02-24):
+
+  - $locale has been removed.  Mutt now respects the LC_TIME setting
+    instead.  See also $attribution_locale.
+  + $attribution_locale can be used to override the date formatting in
+    attribution strings.  When unset, Mutt will use the locale
+    environment, but note the default value of $date_format has a
+    leading '!' which says to use the C-locale.
+  ! Message-id and mail-followup-to headers are now preserved for recalled
+    messages.
+  + <unsidebar_whitelist> added to complement <sidebar_whitelist>.
+  ! The pager position is reset to the top when toggling header-weed.
+  ! IMAP messages moved to $trash via server-side copy are marked as read.
+  + <root-message> jumps to the root message of a thread.
+  ! Piped text attachments are charset converted.
+  + Added %F to $attach_format, to show the content-disposition filename.
+    %d will fall back to %F which will fall back to %f.
+  + <rename-attachment> allows an attachment name to be changed, without
+    modifying the underlying file's name.
+  ! Mutt will look for the user's muttrc additionally in
+    $XDG_CONFIG_HOME/mutt/.
+  + Compressed mbox and mmdf files are now supported via open-hook,
+    close-hook, and append-hook.  See contrib/sample.muttrc-compress
+    for suggested settings.  Note this is a compile-time option:
+    --enable-compressed.
+  + When $flag_safe is set, flagged messages cannot be deleted.
+  + The '@' pattern modifier can be used to limit matches to known aliases.
+  + <mark-message> creates a hotkey binding to a specific message.  The hotkey
+    prefix is specified via $mark_macro_prefix.
+  + <setenv> and <unsetenv> can be used to add/remove environment variables
+    passed to children.
+  ! Mutt will now use the built-in OpenSSL SSL_set_verify() callback
+    to verify certificates.  This allows better support for verifying
+    chains, including alternative chain support.
+  + $uncollapse_new controls whether a thread will be uncollapsed when a new
+    message arrives.
+  ! $to_chars and $status_chars now accept multibyte characters.
+  + <subjectrx> allows replacing matching subjects with something else.
+    This can be used to declutter subject lines in the index.
+  + <edit-label> can be used to add, change, or delete a message's X-Label.
+  ! Pattern expressions with ~y support label tab completion.
+  + The header cache now also supports Kyoto Cabinet and LMDB as
+    backend databases.
 
 1.7.2 (2016-12-04):
 
