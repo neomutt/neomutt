@@ -83,7 +83,6 @@ check_build_dir() {
 #  BUILD_DIR: path to where the build shall be done
 #  SOURCE_DIR: path to where the sources are
 #  LUAC_PATH: path to the luac prefix
-#  LUAJ_PATH: path to the luajit prefix
 check_env() {
 
   if [ -z "${LUAC_PATH}" ]; then
@@ -95,17 +94,6 @@ check_env() {
     fi
   else
     export LUAC_PATH=$(readlink -f ${WORK_DIR}/${LUAC_PATH})
-  fi
-
-  if [ -f "$(which luajit)" ]; then
-    export LUAJ_PATH="/usr"
-  else
-    if [ -z "${LUAJ_PATH}" ]; then
-      echo "Error: missing LUAJIT_PATH environment variable"
-      exit 1
-    else
-      export LUAJ_PATH=$(readlink -f ${WORK_DIR}/${LUAJ_PATH}})
-    fi
   fi
 
   if [ -z "${CONFIG_DIR}" ]; then

@@ -10,6 +10,7 @@ source $(dirname $0)/common.sh
 #      @rm -f libmutt.so
 #      $(AM_V_CCLD)\$(CCLD) $(AM_CFLAGS) \$(CFLAGS) $(AM_LDFLAGS) $(LDFLAGS) -shared -Wl,-soname,$@ -o $@
 function patch_with_so_target() {
+  backup_file $1/Makefile
 
   sed -i '/^mutt\$(EXEEXT)/i\
 libmutt.so: \$(BUILT_SOURCES) config.h all-recursive \$(mutt_OBJECTS) \$(mutt_DEPENDENCIES) \$(EXTRA_mutt_DEPENDENCIES)\

@@ -47,17 +47,12 @@ env:
     - SOURCE_DIR="."
     - CONFIG_DIR="config"
     - LUAC_PATH="lua53"
-    - LUAJ_PATH="luajit"
 
 before_install:
   - pip install hererocks cpp-coveralls
   - hererocks lua53 -l5.3 -rlatest --no-readline --cflags="-fPIC"
-  - hererocks luajit -j2.1 -rlatest --no-readline
-  - for luarocks in luajit/bin/luarocks lua53/bin/luarocks; do
-      for pkg in busted luassert lpeg; do
-        $luarocks install $pkg;
-      done;
-    done
+  - lua53/bin/luarocks install busted
+  - lua53/bin/luarocks install luassert
 
 install:
   - git clone --depth 1 https://github.com/neomutt/travis-build.git ${TRAVIS_BUILD_DIR}/config
