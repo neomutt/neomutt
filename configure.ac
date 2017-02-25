@@ -7,12 +7,12 @@ dnl !!! TO DUMP THEIR RESULTS WHEN MUTT -V IS CALLED               !!!
 CFLAGS=$CFLAGS
 LDFLAGS=$LDFLAGS
 
-AC_INIT([NeoMutt], [20170206], [neomutt-devel@neomutt.org], [mutt], [https://www.neomutt.org])
+AC_INIT([NeoMutt], [20170225], [neomutt-devel@neomutt.org], [mutt], [https://www.neomutt.org])
 AC_CONFIG_SRCDIR(mutt.h)
 AM_INIT_AUTOMAKE
 AC_CONFIG_HEADERS([config.h])
 
-AC_DEFINE(MUTT_VERSION, "1.7.2", [Version of upstream Mutt])
+AC_DEFINE(MUTT_VERSION, "1.8.0", [Version of upstream Mutt])
 
 AC_USE_SYSTEM_EXTENSIONS
 

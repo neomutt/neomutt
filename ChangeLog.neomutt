@@ -1,3 +1,101 @@
+2017-02-25  Richard Russon  <rich@flatcap.org>
+* Features
+  - Add option $show_multipart_alternative
+  - notmuch: Allow to use untransformed tag for color
+  - Use getaddrinfo_a if possible (#420)
+* Bug Fixes
+  - handle sigint within socket operations (#411)
+  - Avoid browsing the remote spoolfile by setting MUTT_SELECT_MULTI attach
+  - notmuch: fix crash when completing tags (#395)
+  - Fixes missing failure return of notmuch msg open (#401)
+  - Fix latest Coverity issues (#387)
+  - Advance by the correct number of position even for unknown characters (#368)
+  - Release KyotoCabinet data with kcfree() (#384)
+  - 22 resource leaks
+* Translations
+  - Update translations
+  - Update the german translation (#397)
+* Docs
+  - fix typo in notmuch example
+  - remove duplicate "default" in the sidebar intro
+  - fix confusing description of notmuch operators (#371)
+  - correct spelling mistakes (#412)
+* Website
+  - link to clang-format config in main repo (#28)
+  - updated list of useful programs
+  - update/improve list of useful programs
+  - sidebar_format has a single default value
+  - fix name of GNU Guix
+  - added guix distro
+  - added link to new afew maintainers
+  - add code of conduct
+  - add mutt-addressbook to useful
+  - remove unnecessary unicode non-breaking spaces
+  - github merging
+* Build
+  - Enable and run unit-tests on the feature/unit-test branch
+  - add notmuch to default, feature
+  - new dbs for mutt
+  - master is now the main branch
+  - streamline builds
+  - fix doc generator
+  - add a few includes (prelude to clang-format)
+  - slcurses.h defines its own bool type
+  - travis: use container build
+  - add clang-format file
+  - Remove ugly macros and casts from crypt-gpgme.c
+  - fix minor reflow issues in some comments
+  - editorconfig: use spaces to indent in *.[ch] files
+  - added comment-blocks for clang-format to ignore
+  - fix 80 column limit, align statements
+  - Remove snprintf.c from EXTRA_DIST (#406)
+  - Kill homebrew (v)snprintf implementations, as they are C99 (#402)
+  - Display charset + small refactoring
+  - Do not cast or check returns from safe_calloc (#396)
+  - refactor: create a generic base64 encode/decode
+  - debug: remove dprint in favor of mutt_debug (#375)
+  - Fix dubious use macro for _() / gettext() (#376)
+  - Use mutt_buffer_init instead of memset
+  - Make the heap method and datatype a plain list
+  - Reverts making AliasFile into a list_t (#379)
+  - Turn mutt_new_* macros into inline functions
+  - Do not cast return values from malloc (et similia)
+* Upstream
+  - Simplify mutt_label_complete().
+  - Permit tab completion of pattern expressions with ~y (labels).
+  - Fix the mutt_label_complete() pos parameter.
+  - Fix the x-label update code check location.
+  - Improve the label completion hash table usage.
+  - Adds label completion.
+  - Add hash_find_elem to get the hash element.
+  - Minor fixes to the x-label patch from David.
+  - Adds capability to edit x-labels inside mutt, and to sort by label.
+  - Allow "unsubjectrc *" to remove all patterns.
+  - Add subjectrx command to replace matching subjects with something else.
+  - Abstract the SPAM_LIST as a generic REPLACE_LIST
+  - Improve Reply-to vs From comparison when replying. (closes #3909)
+  - Fix sidebar references to the "new count" to be "unread". (closes #3908)
+  - Fix several alias hashtable issues.
+  - Add casecmp and strdup_key flags to hash_create()
+  - Improve error handling in mbox magic detection.
+  - Allow initial blank lines in local mailboxes.
+  - Fix minor documentation issues.
+  - Convert cmd_parse_search to use the uid hash. (closes #3905)
+  - Create a uid hash for imap. (see #3905)
+  - Convert HASH to be indexable by unsigned int. (see #3905)
+  - Fix imap server-side search to call uid2msgno() only once. (see #3905)
+  - Add a pattern_cache_t to speed up a few repeated matches.
+  - Canonicalize line endings for GPGME S/MIME encryption. (closes #3904)
+  - Fix build for bdb.
+  - Create function to free header cache data.
+  - Add Kyoto Cabinet support to the header cache.
+  - Prevent null pointer exception for h->ai_canonname
+  - Show SHA1 fp in interactive cert check menu.
+  - Fix potential cert memory leak in check_certificate_by_digest().
+  - Plug memory leak in weed-expired-certs code.
+  - Filter expired local certs for OpenSSL verification.
+  - Change "allow_dups" into a flag at hash creation.
+
 2017-02-06  Richard Russon  <rich@flatcap.org>
 * Bug Fixes
   - Unicode 0x202F is a non-break space too (#358) (@gahr)
