@@ -219,7 +219,6 @@ int imap_read_literal (FILE* fp, IMAP_DATA* idata, long bytes, progress_t* pbar)
       return -1;
     }
 
-#if 1
     if (r == 1 && c != '\n')
       fputc ('\r', fp);
 
@@ -230,7 +229,7 @@ int imap_read_literal (FILE* fp, IMAP_DATA* idata, long bytes, progress_t* pbar)
     }
     else
       r = 0;
-#endif
+
     fputc (c, fp);
 
     if (pbar && !(pos % 1024))
