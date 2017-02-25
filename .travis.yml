@@ -63,6 +63,7 @@ install:
   - git clone --depth 1 https://github.com/neomutt/travis-build.git ${TRAVIS_BUILD_DIR}/config
 
 script:
+  - bash .ci/run_tests_c_unit.sh
   - bash .ci/run_tests_unit.sh
   - bash .ci/run_tests_func.sh
   - bash .ci/run_tests_build.sh
