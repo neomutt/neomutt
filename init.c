@@ -2066,6 +2066,13 @@ static void restore_default(struct Option *p)
     mutt_set_current_menu_redraw_full();
 }
 
+static void ESC_char(char c, char *p, char *dst, size_t len)
+{
+  *p++ = '\\';
+  if (p - dst < len)
+    *p++ = c;
+}
+
 static size_t escape_string(char *dst, size_t len, const char *src)
 {
   char *p = dst;
@@ -2073,25 +2080,18 @@ static size_t escape_string(char *dst, size_t len, const char *src)
   if (!len)
     return 0;
   len--; /* save room for \0 */
-#define ESC_CHAR(C)                                                            \
-  do                                                                           \
-  {                                                                            \
-    *p++ = '\\';                                                               \
-    if (p - dst < len)                                                         \
-      *p++ = C;                                                                \
-  } while (0)
   while (p - dst < len && src && *src)
   {
     switch (*src)
     {
       case '\n':
-        ESC_CHAR('n');
+        ESC_char('n', p, dst, len);
         break;
       case '\r':
-        ESC_CHAR('r');
+        ESC_char('r', p, dst, len);
         break;
       case '\t':
-        ESC_CHAR('t');
+        ESC_char('t', p, dst, len);
         break;
       default:
         if ((*src == '\\' || *src == '"') && p - dst < len - 1)
@@ -2100,7 +2100,6 @@ static size_t escape_string(char *dst, size_t len, const char *src)
     }
     src++;
   }
-#undef ESC_CHAR
   *p = '\0';
   return p - dst;
 }

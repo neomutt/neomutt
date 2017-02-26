@@ -1047,7 +1047,9 @@ int mutt_check_traditional_pgp(struct Header *h, int *redraw)
     for (i = 0; i < Context->vcount; i++)
       if (Context->hdrs[Context->v2r[i]]->tagged &&
           !(Context->hdrs[Context->v2r[i]]->security & PGP_TRADITIONAL_CHECKED))
+      {
         rv = _mutt_check_traditional_pgp(Context->hdrs[Context->v2r[i]], redraw) || rv;
+      }
   }
   return rv;
 }
