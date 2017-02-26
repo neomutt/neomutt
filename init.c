@@ -69,12 +69,18 @@
 #include "mutt_notmuch.h"
 #endif
 
-#define CHECK_PAGER                                                                  \
-  if ((CurrentMenu == MENU_PAGER) && (idx >= 0) && (MuttVars[idx].flags & R_RESORT)) \
-  {                                                                                  \
-    snprintf(err->data, err->dsize, _("Not available in this menu."));               \
-    return -1;                                                                       \
+static int check_pager(int idx, struct Buffer *err)
+{
+  if ((CurrentMenu == MENU_PAGER) && (idx >= 0) && (MuttVars[idx].flags & R_RESORT))
+  {
+    snprintf(err->data, err->dsize, _("Not available in this menu."));
+    return (-1);
   }
+  else
+  {
+    return 0;
+  }
+}
 
 struct MyVar
 {
@@ -2451,7 +2457,7 @@ static int parse_set(struct Buffer *tmp, struct Buffer *s, unsigned long data,
       }
       else
       {
-        CHECK_PAGER;
+        check_pager(idx, err);
         if (myvar)
           myvar_del(myvar);
         else
@@ -2489,7 +2495,7 @@ static int parse_set(struct Buffer *tmp, struct Buffer *s, unsigned long data,
         return 0;
       }
 
-      CHECK_PAGER;
+      check_pager(idx, err);
       if (unset)
         unset_option(MuttVars[idx].data);
       else if (inv)
@@ -2503,7 +2509,7 @@ static int parse_set(struct Buffer *tmp, struct Buffer *s, unsigned long data,
     {
       if (unset)
       {
-        CHECK_PAGER;
+        check_pager(idx, err);
         if (myvar)
           myvar_del(myvar);
         else if (DTYPE(MuttVars[idx].type) == DT_ADDR)
@@ -2561,7 +2567,7 @@ static int parse_set(struct Buffer *tmp, struct Buffer *s, unsigned long data,
       }
       else
       {
-        CHECK_PAGER;
+        check_pager(idx, err);
         s->dptr++;
 
         if (myvar)
@@ -2661,7 +2667,7 @@ static int parse_set(struct Buffer *tmp, struct Buffer *s, unsigned long data,
         break;
       }
 
-      CHECK_PAGER;
+      check_pager(idx, err);
       s->dptr++;
 
       /* copy the value of the string */
@@ -2715,7 +2721,7 @@ static int parse_set(struct Buffer *tmp, struct Buffer *s, unsigned long data,
         break;
       }
 
-      CHECK_PAGER;
+      check_pager(idx, err);
       s->dptr++;
 
       /* copy the value of the string */
@@ -2745,7 +2751,7 @@ static int parse_set(struct Buffer *tmp, struct Buffer *s, unsigned long data,
         break;
       }
 
-      CHECK_PAGER;
+      check_pager(idx, err);
       s->dptr++;
 
       mutt_extract_token(tmp, s, 0);
@@ -2815,7 +2821,7 @@ static int parse_set(struct Buffer *tmp, struct Buffer *s, unsigned long data,
         break;
       }
 
-      CHECK_PAGER;
+      check_pager(idx, err);
       if (*s->dptr == '=')
       {
         s->dptr++;
@@ -2888,7 +2894,7 @@ static int parse_set(struct Buffer *tmp, struct Buffer *s, unsigned long data,
                  (*((short *) MuttVars[idx].data) & SORT_LAST) ? "last-" : "", p);
         return 0;
       }
-      CHECK_PAGER;
+      check_pager(idx, err);
       s->dptr++;
       mutt_extract_token(tmp, s, 0);
 
@@ -2908,7 +2914,7 @@ static int parse_set(struct Buffer *tmp, struct Buffer *s, unsigned long data,
         break;
       }
 
-      CHECK_PAGER;
+      check_pager(idx, err);
       s->dptr++;
 
       /* copy the value of the string */
