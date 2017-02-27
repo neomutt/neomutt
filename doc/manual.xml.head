@@ -10411,7 +10411,7 @@ set pgp_encrypt_self = &quot;no&quot;
 
   <sect2 id="fmemopen-known-bugs">
     <title>Known Bugs</title>
-    <para>None</para>
+    <para><ulink url="https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=834408"> debian bug 834408 </ulink></para>
   </sect2>
 
   <sect2 id="fmemopen-credits">
