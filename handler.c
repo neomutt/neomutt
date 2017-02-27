@@ -1701,6 +1701,13 @@ static int run_decode_and_handler (BODY *b, STATE *s, handler_t handler, int pla
 
     mutt_decode_attachment (b, s);
 
+#ifdef USE_FMEMOPEN
+    /* When running under torify, safe_fclose(&s->fpout) does not seem to
+     * update tempsize. On the other hand, fflush does.  See
+     * https://github.com/neomutt/neomutt/issues/440 */
+    fflush (s->fpout);
+#endif
+
     if (decode)
     {
       b->length = ftello (s->fpout);
