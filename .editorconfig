@@ -4,18 +4,18 @@ root = true
 end_of_line = lf
 insert_final_newline = true
 charset = utf8
-trim_trailing_whitespace = true
+trim_trailing_whitespace = false
 
-[*.{c,h}]
+# those two settings may be overwritten below.
 indent_size = 2
 indent_style = space
 
+
+
 [ChangeLog.neomutt]
-indent_style = space
 indent_size = 1
 
 
-[configure]
-indent_size = 2
-indent_style = space
-
+[{[mM]akefile*,*.am}]
+indent_size = 4
+indent_style = tab
