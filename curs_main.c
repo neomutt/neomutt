@@ -231,7 +231,7 @@ short mutt_ts_capability(void)
   /* If XT (boolean) is set, then this terminal supports the standard escape. */
   /* Beware: tigetflag returns -1 if XT is invalid or not a boolean. */
 #ifdef HAVE_USE_EXTENDED_NAMES
-  use_extended_names (TRUE);
+  use_extended_names (true);
   tcapi = tigetflag("XT");
   if (tcapi == 1)
     return 1;
@@ -1048,7 +1048,7 @@ int mutt_index_menu (void)
 	 * force a real complete redraw.  clrtobot() doesn't seem to be able
 	 * to handle every case without this.
 	 */
-	clearok(stdscr,TRUE);
+	clearok(stdscr,true);
 	continue;
       }
 #endif
@@ -1560,7 +1560,7 @@ int mutt_index_menu (void)
 
       case OP_REDRAW:
 
-	clearok (stdscr, TRUE);
+	clearok (stdscr, true);
 	menu->redraw = REDRAW_FULL;
 	break;
 
@@ -1758,12 +1758,12 @@ int mutt_index_menu (void)
 	if (tag) {
 	  for (j = 0; j < Context->vcount; j++) {
 	    if (Context->hdrs[Context->v2r[j]]->tagged) {
-	      Context->hdrs[Context->v2r[j]]->quasi_deleted = TRUE;
-	      Context->changed = TRUE;
+	      Context->hdrs[Context->v2r[j]]->quasi_deleted = true;
+	      Context->changed = true;
 	    }
 	  }
 	} else {
-	  CURHDR->quasi_deleted = TRUE;
+	  CURHDR->quasi_deleted = true;
 	  Context->changed = 1;
 	}
 	break;
@@ -1829,7 +1829,7 @@ int mutt_index_menu (void)
 	    mutt_progress_init(&progress, msgbuf, MUTT_PROGRESS_MSG,
 				   1, Context->tagged);
 	  }
-	  nm_longrun_init(Context, TRUE);
+	  nm_longrun_init(Context, true);
 	  for (px = 0, j = 0; j < Context->vcount; j++) {
 	    if (Context->hdrs[Context->v2r[j]]->tagged) {
 	      if (!Context->quiet)
@@ -1837,8 +1837,8 @@ int mutt_index_menu (void)
 	      nm_modify_message_tags(Context, Context->hdrs[Context->v2r[j]], buf);
 	      if (op == OP_MAIN_MODIFY_LABELS_THEN_HIDE)
 	      {
-		Context->hdrs[Context->v2r[j]]->quasi_deleted = TRUE;
-	        Context->changed = TRUE;
+		Context->hdrs[Context->v2r[j]]->quasi_deleted = true;
+	        Context->changed = true;
 	      }
 	    }
 	  }
@@ -1853,8 +1853,8 @@ int mutt_index_menu (void)
 	  }
 	  if (op == OP_MAIN_MODIFY_LABELS_THEN_HIDE)
 	  {
-	    CURHDR->quasi_deleted = TRUE;
-	    Context->changed = TRUE;
+	    CURHDR->quasi_deleted = true;
+	    Context->changed = true;
 	  }
 	  if (menu->menu == MENU_PAGER)
 	  {

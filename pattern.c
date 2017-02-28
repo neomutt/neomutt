@@ -501,7 +501,7 @@ is_context_available(BUFFER *s, regmatch_t pmatch[], int kind, BUFFER *err)
     return 1;
 
   /* We need a current message.  Do we actually have one? */
-  if (Context->menu)
+  if (Context && Context->menu)
     return 1;
 
   /* Nope. */
@@ -509,26 +509,38 @@ is_context_available(BUFFER *s, regmatch_t pmatch[], int kind, BUFFER *err)
   return 0;
 }
 
+#ifdef USE_GNU_REGEX
+/* The old version of Gnu Regex doesn't interpret the character classes
+ * correctly.  Keep them separate, just in case we drop Gnu altogether. */
+#define RANGE_NUM_RX "([0-9]+|0x[0-9a-fA-F]+)[MmKk]?"
+#define RANGE_REL_SLOT_RX "[ \t]*([.^$]|-?" RANGE_NUM_RX ")?[ \t]*"
+#define RANGE_REL_RX "^" RANGE_REL_SLOT_RX "," RANGE_REL_SLOT_RX
+#define RANGE_ABS_SLOT_RX "[ \t]*([.^$]|" RANGE_NUM_RX ")?[ \t]*"
+#define RANGE_ABS_RX "^" RANGE_ABS_SLOT_RX "-" RANGE_ABS_SLOT_RX
+#define RANGE_LT_RX "^()[ \t]*(<[ \t]*" RANGE_NUM_RX ")[ \t]*"
+#define RANGE_GT_RX "^()[ \t]*(>[ \t]*" RANGE_NUM_RX ")[ \t]*"
+#define RANGE_BARE_RX "^[ \t]*([.^$]|" RANGE_NUM_RX ")[ \t]*"
+#else
+/* The regexes in a modern format */
 #define RANGE_NUM_RX "([[:digit:]]+|0x[[:xdigit:]]+)[MmKk]?"
 
-#define RANGE_REL_SLOT_RX \
-    "[[:blank:]]*([.^$]|-?" RANGE_NUM_RX ")?[[:blank:]]*"
+#define RANGE_REL_SLOT_RX "[[:blank:]]*([.^$]|-?" RANGE_NUM_RX ")?[[:blank:]]*"
 
 #define RANGE_REL_RX "^" RANGE_REL_SLOT_RX "," RANGE_REL_SLOT_RX
 
 /* Almost the same, but no negative numbers allowed */
-#define RANGE_ABS_SLOT_RX \
-    "[[:blank:]]*([.^$]|" RANGE_NUM_RX ")?[[:blank:]]*"
+#define RANGE_ABS_SLOT_RX "[[:blank:]]*([.^$]|" RANGE_NUM_RX ")?[[:blank:]]*"
 
 #define RANGE_ABS_RX "^" RANGE_ABS_SLOT_RX "-" RANGE_ABS_SLOT_RX
 
-/* Frist group is intentionally empty */
+/* First group is intentionally empty */
 #define RANGE_LT_RX "^()[[:blank:]]*(<[[:blank:]]*" RANGE_NUM_RX ")[[:blank:]]*"
 
 #define RANGE_GT_RX "^()[[:blank:]]*(>[[:blank:]]*" RANGE_NUM_RX ")[[:blank:]]*"
 
 /* Single group for min and max */
 #define RANGE_BARE_RX "^[[:blank:]]*([.^$]|" RANGE_NUM_RX ")[[:blank:]]*"
+#endif
 
 #define RANGE_RX_GROUPS 5
 
@@ -987,8 +999,8 @@ static int eat_date (pattern_t *pat, BUFFER *s, BUFFER *err)
   {
     const char *pc = buffer.data;
 
-    int haveMin = FALSE;
-    int untilNow = FALSE;
+    int haveMin = false;
+    int untilNow = false;
     if (isdigit ((unsigned char)*pc))
     {
       /* minimum date specified */
@@ -997,7 +1009,7 @@ static int eat_date (pattern_t *pat, BUFFER *s, BUFFER *err)
 	FREE (&buffer.data);
 	return (-1);
       }
-      haveMin = TRUE;
+      haveMin = true;
       SKIPWS (pc);
       if (*pc == '-')
       {

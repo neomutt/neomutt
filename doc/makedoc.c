@@ -49,11 +49,6 @@
 #include "makedoc-defs.h"
 
 #ifndef HAVE_STRERROR
-#ifndef STDC_HEADERS
-extern int sys_nerr;
-extern char *sys_errlist[];
-#endif
-
 #define strerror(x) ((x) > 0 && (x) < sys_nerr) ? sys_errlist[(x)] : 0
 #endif /* !HAVE_STRERROR */
 

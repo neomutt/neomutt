@@ -57,7 +57,6 @@ enum
 #ifndef _SENDLIB_C
 extern const int Index_hex[];
 extern const int Index_64[];
-extern const char B64Chars[];
 #endif
 
 #define hexval(c) Index_hex[(unsigned int)(c)]

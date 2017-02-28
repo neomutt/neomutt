@@ -234,7 +234,7 @@ int mutt_display_message (HEADER *cur)
       mutt_error (_("Error running \"%s\"!"), buf);
     unlink (tempfile);
     if (!option (OPTNOCURSES))
-      keypad (stdscr, TRUE);
+      keypad (stdscr, true);
     if (r != -1)
       mutt_set_flag (Context, cur, MUTT_READ, 1);
     if (r != -1 && option (OPTPROMPTAFTER))
@@ -620,7 +620,8 @@ void mutt_shell_escape (void)
       mutt_endwin (NULL);
       fflush (stdout);
       if (mutt_system (buf) != 0 || option (OPTWAITKEY))
-	mutt_any_key_to_continue (NULL);
+        mutt_any_key_to_continue (NULL);
+      mutt_buffy_check(1);
     }
   }
 }
@@ -889,7 +890,7 @@ int mutt_save_message (HEADER *h, int delete,
 
 #ifdef USE_NOTMUCH
       if (Context->magic == MUTT_NOTMUCH)
-        nm_longrun_init(Context, TRUE);
+        nm_longrun_init(Context, true);
 #endif
       for (i = 0; i < Context->vcount; i++)
       {

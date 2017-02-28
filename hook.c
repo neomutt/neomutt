@@ -59,7 +59,7 @@ int mutt_parse_hook (BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err)
   mutt_buffer_init (&pattern);
   mutt_buffer_init (&command);
 
-  if (~data & MUTT_GLOBALHOOK)
+  if (~data & MUTT_GLOBALHOOK) /* NOT a global hook */
   {
     if (*s->dptr == '!')
     {
@@ -75,10 +75,6 @@ int mutt_parse_hook (BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err)
        strfcpy (err->data, _("too few arguments"), err->dsize);
        goto error;
     }
-  }
-  else
-  {
-    mutt_extract_token (&pattern, s, 0);
   }
 
   mutt_extract_token (&command, s, (data & (MUTT_FOLDERHOOK | MUTT_SENDHOOK | MUTT_SEND2HOOK | MUTT_ACCOUNTHOOK | MUTT_REPLYHOOK)) ?  MUTT_TOKEN_SPACE : 0);
@@ -128,7 +124,8 @@ int mutt_parse_hook (BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err)
     }
   }
 #endif
-  else if (DefaultHook && !(data & (MUTT_CHARSETHOOK | MUTT_ICONVHOOK | MUTT_ACCOUNTHOOK))
+  else if (DefaultHook && (~data & MUTT_GLOBALHOOK) &&
+           !(data & (MUTT_CHARSETHOOK | MUTT_ICONVHOOK | MUTT_ACCOUNTHOOK))
            && (!WithCrypto || !(data & MUTT_CRYPTHOOK))
       )
   {
@@ -157,7 +154,16 @@ int mutt_parse_hook (BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err)
   /* check to make sure that a matching hook doesn't already exist */
   for (ptr = Hooks; ptr; ptr = ptr->next)
   {
-    if (ptr->type == data &&
+    if (data & MUTT_GLOBALHOOK)
+    {
+      /* Ignore duplicate global hooks */
+      if (mutt_strcmp (ptr->command, command.data) == 0)
+      {
+        FREE (&command.data);
+        return 0;
+      }
+    }
+    else if (ptr->type == data &&
 	ptr->rx.not == not &&
 	!mutt_strcmp (pattern.data, ptr->rx.pattern))
     {
@@ -197,7 +203,7 @@ int mutt_parse_hook (BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err)
 				  err)) == NULL)
       goto error;
   }
-  else
+  else if (~data & MUTT_GLOBALHOOK) /* NOT a global hook */
   {
     /* Hooks not allowing full patterns: Check syntax of regexp */
     rx = safe_malloc (sizeof (regex_t));
@@ -229,7 +235,8 @@ int mutt_parse_hook (BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err)
   return 0;
 
 error:
-  FREE (&pattern.data);
+  if (~data & MUTT_GLOBALHOOK) /* NOT a global hook */
+    FREE (&pattern.data);
   FREE (&command.data);
   return (-1);
 }
@@ -580,7 +587,6 @@ void mutt_timeout_hook (void)
 
     if (mutt_parse_rc_line (hook->command, &token, &err) == -1)
     {
-      FREE (&token.data);
       mutt_error ("%s", err.data);
       mutt_sleep (1);
 
@@ -588,6 +594,7 @@ void mutt_timeout_hook (void)
        * failed, we'll carry on with the others. */
     }
   }
+  FREE (&token.data);
 }
 
 /**
@@ -615,11 +622,11 @@ void mutt_startup_shutdown_hook (int type)
 
     if (mutt_parse_rc_line (hook->command, &token, &err) == -1)
     {
-      FREE (&token.data);
       mutt_error ("%s", err.data);
       mutt_sleep (1);
 
     }
   }
+  FREE (&token.data);
 }
 

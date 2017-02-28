@@ -98,8 +98,8 @@ void mutt_refresh (void)
    customize this is of course the Mutt way.  */
 void mutt_need_hard_redraw (void)
 {
-  keypad (stdscr, TRUE);
-  clearok (stdscr, TRUE);
+  keypad (stdscr, true);
+  clearok (stdscr, true);
   set_option (OPTNEEDREDRAW);
 }
 
@@ -216,8 +216,8 @@ void mutt_edit_file (const char *editor, const char *data)
   /* the terminal may have been resized while the editor owned it */
   mutt_resize_screen ();
 #endif
-  keypad (stdscr, TRUE);
-  clearok (stdscr, TRUE);
+  keypad (stdscr, true);
+  clearok (stdscr, true);
 }
 
 int mutt_yesorno (const char *msg, int def)

@@ -693,7 +693,7 @@ static notmuch_database_t *get_db(struct nm_ctxdata *data, int writable)
     const char *db_filename = get_db_filename(data);
 
     if (db_filename)
-      data->db = do_database_open(db_filename, writable, TRUE);
+      data->db = do_database_open(db_filename, writable, true);
   }
   return data->db;
 }
@@ -1243,20 +1243,20 @@ static void append_thread(CONTEXT *ctx, notmuch_query_t *q,
   }
 }
 
-static void read_mesgs_query(CONTEXT *ctx, notmuch_query_t *q, int dedup)
+static bool read_mesgs_query(CONTEXT *ctx, notmuch_query_t *q, int dedup)
 {
   struct nm_ctxdata *data = get_ctxdata(ctx);
   int limit;
   notmuch_messages_t *msgs;
 
   if (!data)
-    return;
+    return false;
 
   limit = get_limit(data);
 
 #if LIBNOTMUCH_CHECK_VERSION(4,3,0)
   if (notmuch_query_search_messages_st(q, &msgs) != NOTMUCH_STATUS_SUCCESS)
-    return;
+    return false;
 #else
   msgs = notmuch_query_search_messages(q);
 #endif
@@ -1264,24 +1264,30 @@ static void read_mesgs_query(CONTEXT *ctx, notmuch_query_t *q, int dedup)
   for (; notmuch_messages_valid(msgs) && ((limit == 0) || (ctx->msgcount < limit));
        notmuch_messages_move_to_next(msgs))
   {
+    if (SigInt == 1)
+    {
+      SigInt = 0;
+      return false;
+    }
     notmuch_message_t *m = notmuch_messages_get(msgs);
     append_message(ctx, q, m, dedup);
     notmuch_message_destroy(m);
   }
+  return true;
 }
 
-static void read_threads_query(CONTEXT *ctx, notmuch_query_t *q, int dedup,
+static bool read_threads_query(CONTEXT *ctx, notmuch_query_t *q, int dedup,
                                int limit)
 {
   struct nm_ctxdata *data = get_ctxdata(ctx);
   notmuch_threads_t *threads;
 
   if (!data)
-    return;
+    return false;
 
 #if LIBNOTMUCH_CHECK_VERSION(4,3,0)
   if (notmuch_query_search_threads_st(q, &threads) != NOTMUCH_STATUS_SUCCESS)
-    return;
+    return false;
 #else
   threads = notmuch_query_search_threads(q);
 #endif
@@ -1290,10 +1296,16 @@ static void read_threads_query(CONTEXT *ctx, notmuch_query_t *q, int dedup,
          ((limit == 0) || (ctx->msgcount < limit));
        notmuch_threads_move_to_next(threads))
   {
+    if (SigInt == 1)
+    {
+      SigInt = 0;
+      return false;
+    }
     notmuch_thread_t *thread = notmuch_threads_get(threads);
     append_thread(ctx, q, thread, dedup);
     notmuch_thread_destroy(thread);
   }
+  return true;
 }
 
 static notmuch_message_t *get_nm_message(notmuch_database_t *db, HEADER *hdr)
@@ -1307,6 +1319,23 @@ static notmuch_message_t *get_nm_message(notmuch_database_t *db, HEADER *hdr)
     notmuch_database_find_message(db, id, &msg);
 
   return msg;
+}
+
+static bool nm_message_has_tag(notmuch_message_t *msg, char *tag)
+{
+  const char *possible_match_tag;
+  notmuch_tags_t *tags;
+
+  for (tags = notmuch_message_get_tags(msg); notmuch_tags_valid(tags);
+       notmuch_tags_move_to_next(tags))
+  {
+    possible_match_tag = notmuch_tags_get(tags);
+    if (mutt_strcmp(possible_match_tag, tag) == 0)
+    {
+      return true;
+    }
+  }
+  return false;
 }
 
 static int update_tags(notmuch_message_t *msg, const char *tags)
@@ -1340,6 +1369,18 @@ static int update_tags(notmuch_message_t *msg, const char *tags)
     {
       dprint(1, (debugfile, "nm: remove tag: '%s'\n", tag + 1));
       notmuch_message_remove_tag(msg, tag + 1);
+    }
+    else if (*tag == '!')
+    {
+      dprint(1, (debugfile, "nm: toggle tag: '%s'\n", tag + 1));
+      if (nm_message_has_tag (msg, tag + 1))
+      {
+        notmuch_message_remove_tag (msg, tag + 1);
+      }
+      else
+      {
+        notmuch_message_add_tag (msg, tag + 1);
+      }
     }
     else
     {
@@ -1459,7 +1500,7 @@ static int remove_filename(struct nm_ctxdata *data, const char *path)
   notmuch_status_t st;
   notmuch_filenames_t *ls;
   notmuch_message_t *msg = NULL;
-  notmuch_database_t *db = get_db(data, TRUE);
+  notmuch_database_t *db = get_db(data, true);
   int trans;
 
   dprint(2, (debugfile, "nm: remove filename '%s'\n", path));
@@ -1517,7 +1558,7 @@ static int rename_filename(struct nm_ctxdata *data, const char *old,
   notmuch_status_t st;
   notmuch_filenames_t *ls;
   notmuch_message_t *msg;
-  notmuch_database_t *db = get_db(data, TRUE);
+  notmuch_database_t *db = get_db(data, true);
   int trans;
 
   if (!db || !new || !old || (access(new, F_OK) != 0))
@@ -1693,7 +1734,7 @@ int nm_read_entire_thread(CONTEXT *ctx, HEADER *h)
 
   if (!data)
     return -1;
-  if (!(db = get_db(data, FALSE)) || !(msg = get_nm_message(db, h)))
+  if (!(db = get_db(data, false)) || !(msg = get_nm_message(db, h)))
     goto done;
 
   dprint(1, (debugfile,
@@ -1861,7 +1902,7 @@ int nm_modify_message_tags(CONTEXT *ctx, HEADER *hdr, char *buf)
   if (!buf || !*buf || !data)
     return -1;
 
-  if (!(db = get_db(data, TRUE)) || !(msg = get_nm_message(db, hdr)))
+  if (!(db = get_db(data, true)) || !(msg = get_nm_message(db, hdr)))
     goto done;
 
   dprint(1, (debugfile, "nm: tags modify: '%s'\n", buf));
@@ -1872,7 +1913,7 @@ int nm_modify_message_tags(CONTEXT *ctx, HEADER *hdr, char *buf)
   mutt_set_header_color(ctx, hdr);
 
   rc = 0;
-  hdr->changed = TRUE;
+  hdr->changed = true;
 done:
   if (!is_longrun(data))
     release_db(data);
@@ -1951,7 +1992,7 @@ int nm_nonctx_get_count(char *path, int *all, int *new)
 
   /* don't be verbose about connection, as we're called from
    * sidebar/buffy very often */
-  db = do_database_open(db_filename, FALSE, FALSE);
+  db = do_database_open(db_filename, false, false);
   if (!db)
     goto done;
 
@@ -2027,7 +2068,7 @@ int nm_record_message(CONTEXT *ctx, char *path, HEADER *h)
 
   if (!path || !data || (access(path, F_OK) != 0))
     return 0;
-  db = get_db(data, TRUE);
+  db = get_db(data, true);
   if (!db)
     return -1;
 
@@ -2075,7 +2116,7 @@ int nm_get_all_tags(CONTEXT *ctx, char **tag_list, int *tag_count)
   if (!data)
     return -1;
 
-  if (!(db = get_db(data, FALSE)) ||
+  if (!(db = get_db(data, false)) ||
       !(tags = notmuch_database_get_all_tags(db)))
     goto done;
 
@@ -2124,20 +2165,22 @@ static int nm_open_mailbox(CONTEXT *ctx)
 
   progress_reset(ctx);
 
-  q = get_query(data, FALSE);
+  q = get_query(data, false);
   if (q)
   {
+    rc = 0;
     switch (get_query_type(data))
     {
       case NM_QUERY_TYPE_MESGS:
-        read_mesgs_query(ctx, q, 0);
+        if (!read_mesgs_query(ctx, q, 0))
+          rc = -2;
         break;
       case NM_QUERY_TYPE_THREADS:
-        read_threads_query(ctx, q, 0, get_limit(data));
+        if (!read_threads_query(ctx, q, 0, get_limit(data)))
+          rc = -2;
         break;
     }
     notmuch_query_destroy(q);
-    rc = 0;
   }
 
   if (!is_longrun(data))
@@ -2196,7 +2239,7 @@ static int nm_check_mailbox(CONTEXT *ctx, int *index_hint)
 
   dprint(1, (debugfile, "nm: checking (db=%d ctx=%d)\n", mtime, ctx->mtime));
 
-  q = get_query(data, FALSE);
+  q = get_query(data, false);
   if (!q)
     goto done;
 
