@@ -22,6 +22,7 @@
 
 #include "mutt.h"
 #include "mutt_curses.h"
+#include "filter.h"
 
 #include <unistd.h>
 #include <stdlib.h>

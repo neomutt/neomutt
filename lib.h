@@ -37,6 +37,7 @@
 # include <stdarg.h>
 # include <stdbool.h>
 # include <signal.h>
+# include <ctype.h>
 
 # ifndef _POSIX_PATH_MAX
 #  include <limits.h>

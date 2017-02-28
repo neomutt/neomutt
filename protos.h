@@ -44,12 +44,6 @@ typedef enum {
 
 void mutt_make_string_info (char *, size_t, int, const char *, struct hdr_format_info *, format_flag);
 
-int mutt_extract_token (BUFFER *, BUFFER *, int);
-BUFFER *mutt_buffer_new (void);
-BUFFER * mutt_buffer_init (BUFFER *);
-BUFFER * mutt_buffer_from (char *);
-void mutt_buffer_free(BUFFER **);
-int mutt_buffer_printf (BUFFER*, const char*, ...);
 void mutt_buffer_add (BUFFER*, const char*, size_t);
 void mutt_buffer_addstr (BUFFER*, const char*);
 void mutt_buffer_addch (BUFFER*, char);
@@ -388,7 +382,6 @@ int mutt_compose_menu (HEADER *, char *, size_t, HEADER *, int);
 int mutt_thread_set_flag (HEADER *, int, int, int);
 int mutt_user_is_recipient (HEADER *);
 void mutt_update_num_postponed (void);
-int mutt_wait_filter (pid_t);
 int mutt_which_case (const char *);
 int mutt_write_fcc (const char *path, HEADER *hdr, const char *msgid, int, char *, char **);
 int mutt_write_multiple_fcc (const char *path, HEADER *hdr, const char *msgid, int, char *, char **);
@@ -412,9 +405,6 @@ uint32_t mutt_rand32(void);
 uint64_t mutt_rand64(void);
 
 int mh_valid_message (const char *);
-
-pid_t mutt_create_filter (const char *, FILE **, FILE **, FILE **);
-pid_t mutt_create_filter_fd (const char *, FILE **, FILE **, FILE **, int, int, int);
 
 ADDRESS *alias_reverse_lookup (ADDRESS *);
 

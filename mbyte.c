@@ -27,6 +27,7 @@
 #include "mutt.h"
 #include "mbyte.h"
 #include "charset.h"
+#include "buffer.h"
 
 #include <errno.h>
 

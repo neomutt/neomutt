@@ -28,6 +28,7 @@
 #include "rfc2231.h"
 #include "mutt_crypt.h"
 #include "url.h"
+#include "buffer.h"
 
 #include <string.h>
 #include <ctype.h>

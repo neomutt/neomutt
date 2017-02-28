@@ -38,6 +38,7 @@
 #include <time.h>
 
 #include "mutt.h"
+#include "filter.h"
 #include "mutt_curses.h"
 #include "mutt_idna.h"
 #include "pgp.h"

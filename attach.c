@@ -23,6 +23,7 @@
 
 #include "mutt.h"
 #include "mutt_menu.h"
+#include "filter.h"
 #include "attach.h"
 #include "mutt_curses.h"
 #include "keymap.h"
