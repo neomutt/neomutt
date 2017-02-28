@@ -1,4 +1,4 @@
-- **bug reports**
+* **bug reports**
 
     * Expected behavior
     * Actual behavior
@@ -6,7 +6,7 @@
     * Used program versions
     * Operating System and its version
 
-2. **feature requests**
+* **feature requests**
 
     * Why do you not like the current state?
     * What would you like to see to change?
