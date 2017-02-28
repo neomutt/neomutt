@@ -5860,7 +5860,11 @@ shows several ways to select messages.
 <row><entry>~L <emphasis>EXPR</emphasis></entry><entry>messages either originated or received by <emphasis>EXPR</emphasis></entry></row>
 <row><entry>%L <emphasis>GROUP</emphasis></entry><entry>message either originated or received by any member of <emphasis>GROUP</emphasis></entry></row>
 <row><entry>~l</entry><entry>messages addressed to a known mailing list</entry></row>
-<row><entry>~m [<emphasis>MIN</emphasis>]-[<emphasis>MAX</emphasis>]</entry><entry>messages in the range <emphasis>MIN</emphasis> to <emphasis>MAX</emphasis> *)</entry></row>
+<row><entry>~m [<emphasis>MIN</emphasis>]-[<emphasis>MAX</emphasis>]</entry><entry>messages with numbers in the range <emphasis>MIN</emphasis> to <emphasis>MAX</emphasis> ***)</entry></row>
+<row><entry>~m &lt;[<emphasis>MAX</emphasis>]</entry><entry>messages with numbers less than <emphasis>MAX</emphasis> ***)</entry></row>
+<row><entry>~m &gt;[<emphasis>MIN</emphasis>]</entry><entry>messages with numbers greater than <emphasis>MIN</emphasis> ***)</entry></row>
+<row><entry>~m [<emphasis>M</emphasis>]</entry><entry>just message number <emphasis>M</emphasis> ***)</entry></row>
+<row><entry>~m [<emphasis>MIN</emphasis>],[<emphasis>MAX</emphasis>]</entry><entry>messages with offsets (from selected message) in the range <emphasis>MIN</emphasis> to <emphasis>MAX</emphasis> ***)</entry></row>
 <row><entry>~n [<emphasis>MIN</emphasis>]-[<emphasis>MAX</emphasis>]</entry><entry>messages with a score in the range <emphasis>MIN</emphasis> to <emphasis>MAX</emphasis> *)</entry></row>
 <row><entry>~N</entry><entry>new messages</entry></row>
 <row><entry>~O</entry><entry>old messages</entry></row>
@@ -5905,6 +5909,12 @@ Where <emphasis>EXPR</emphasis> is a <link linkend="regexp">regular expression</
 <para>
 **) The suffixes <quote>K</quote> and <quote>M</quote> are allowed to
 specify kilobyte and megabyte respectively.
+</para>
+
+<para>
+  ***) The message number ranges (introduced by <literal>~m</literal>)
+  are even more general and powerful than the other
+  types of ranges.  Read on and see <xref linkend="message-ranges"/> below.
 </para>
 
 <para>
@@ -5966,6 +5976,168 @@ string.  This example matches messages whose senders are known aliases.
 @~f .
 </screen>
 </example>
+
+<sect3 id="message-ranges">
+  <title>Message Ranges</title>
+
+  <para>
+    If a message number range (from now on: MNR) contains a comma (<literal>,</literal>),
+    it is a <emphasis>relative</emphasis> MNR.  That means the numbers denote
+    <emphasis>offsets</emphasis> from the highlighted message.  For example:
+  </para>
+
+  <table id="relative-mnrs">
+    <title>Relative Message Number Ranges</title>
+    <tgroup cols="2">
+      <thead>
+        <row>
+          <entry>Pattern</entry>
+          <entry>Explanation</entry>
+        </row>
+      </thead>
+      <tbody>
+        <row>
+          <entry>
+            <literal>~m -2,2</literal>
+          </entry>
+          <entry>Previous 2, highlighted and next 2 emails</entry>
+        </row>
+        <row>
+          <entry>
+            <literal>~m 0,1</literal>
+          </entry>
+          <entry>Highlighted and next email</entry>
+        </row>
+      </tbody>
+    </tgroup>
+  </table>
+
+  <para>
+    In addition to numbers, either side of the range can also contain one
+    of the special characters (shortcuts)<literal>.^$</literal>.  The meaning is:
+  </para>
+
+  <table id="mnrs-shortcuts">
+    <title>Message Number Shortcuts</title>
+    <tgroup cols="4">
+      <thead>
+        <row>
+          <entry>Shortcut</entry>
+          <entry>Explanation</entry>
+          <entry>Example</entry>
+          <entry>Meaning</entry>
+        </row>
+      </thead>
+      <tbody>
+        <row>
+          <entry>
+            <literal>.</literal>
+          </entry>
+          <entry>Current / Highlighted</entry>
+          <entry>
+            <literal>~m -3,.</literal>
+          </entry>
+          <entry>Previous 3 emails plus the highlighted one</entry>
+        </row>
+        <row>
+          <entry>
+            <literal>$</literal>
+          </entry>
+          <entry>Last</entry>
+          <entry>
+            <literal>~m .,$</literal>
+          </entry>
+          <entry>Highlighted email and all the later ones</entry>
+        </row>
+        <row>
+          <entry>
+            <literal>^</literal>
+          </entry>
+          <entry>First</entry>
+          <entry>
+            <literal>~m ^,1</literal>
+          </entry>
+          <entry>Highlighted, next and all preceding ones</entry>
+        </row>
+      </tbody>
+    </tgroup>
+  </table>
+
+  <para>
+    Lastly, you can also leave either side of the range blank, to make it
+    extend as far as possible.  For example, <literal>~m ,1</literal> has
+    the same meaning as the last example in <xref
+    linkend="mnrs-shortcuts"/>.
+  </para>
+
+  <para>
+    Otherwise, if a MNR <emphasis>doesn't</emphasis> contain a comma, the
+    meaning is similar to other ranges, except that the shortcuts are
+    still available.  Examples:
+  </para>
+
+  <table id="mnrs-absolute">
+    <title>Absolute Message Number Ranges</title>
+    <tgroup cols="2">
+      <thead>
+        <row>
+          <entry>Pattern</entry>
+          <entry>Explanation</entry>
+        </row>
+      </thead>
+      <tbody>
+        <row>
+          <entry>
+            <literal>~m 3-10</literal>
+          </entry>
+          <entry>Emails 3 to 10</entry>
+        </row>
+        <row>
+          <entry>
+            <literal>~m -10</literal>
+          </entry>
+          <entry>Emails 1 to 10</entry>
+        </row>
+        <row>
+          <entry>
+            <literal>~m 10-</literal>
+          </entry>
+          <entry>Emails 10 to last</entry>
+        </row>
+        <row>
+          <entry>
+            <literal>~m &lt;3</literal>
+          </entry>
+          <entry>First and second email</entry>
+        </row>
+        <row>
+          <entry>
+            <literal>~m ^-2</literal>
+          </entry>
+          <entry>First and second email</entry>
+        </row>
+        <row>
+          <entry>
+            <literal>~m &gt;1</literal>
+          </entry>
+          <entry>Everything but first email</entry>
+        </row>
+        <row>
+          <entry>
+            <literal>~m 2-$</literal>
+          </entry>
+          <entry>Everything but first email</entry>
+        </row>
+        <row>
+          <entry>
+            <literal>~m 2</literal>
+          </entry>
+          <entry>Just the second email</entry>
+        </row>
+      </tbody>
+    </tgroup>
+  </table>
+</sect3>
 
 </sect2>
 
@@ -12471,6 +12643,9 @@ bind index,pager + entire-thread
 
 <emphasis role="comment"># modify (notmuch) tags</emphasis>
 bind index,pager \` modify-labels
+
+<emphasis role="comment"># modify (notmuch) tag non-interactively.</emphasis>
+bind index,pager tt "&lt;modify-labels&gt;!todo\n" "Toggle the 'todo' tag"
 
 <emphasis role="comment"># generate virtual folder from query</emphasis>
 bind index,pager \eX vfolder-from-query

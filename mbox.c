@@ -126,6 +126,9 @@ int mmdf_parse_mailbox (CONTEXT *ctx)
     if (fgets (buf, sizeof (buf) - 1, ctx->fp) == NULL)
       break;
 
+    if (SigInt == 1)
+      break;
+
     if (mutt_strcmp (buf, MMDF_SEP) == 0)
     {
       loc = ftello (ctx->fp);
@@ -220,7 +223,13 @@ int mmdf_parse_mailbox (CONTEXT *ctx)
   if (ctx->msgcount > oldmsgcount)
     mx_update_context (ctx, ctx->msgcount - oldmsgcount);
 
-  return (0);
+  if (SigInt == 1)
+  {
+      SigInt = 0;
+      return -2; /* action aborted */
+  }
+
+  return 0;
 }
 
 /* Note that this function is also called when new mail is appended to the
@@ -273,7 +282,7 @@ int mbox_parse_mailbox (CONTEXT *ctx)
   }
 
   loc = ftello (ctx->fp);
-  while (fgets (buf, sizeof (buf), ctx->fp) != NULL)
+  while ((fgets (buf, sizeof (buf), ctx->fp) != NULL) && (SigInt != 1))
   {
     if (is_from (buf, return_path, sizeof (return_path), &t))
     {
@@ -408,7 +417,13 @@ int mbox_parse_mailbox (CONTEXT *ctx)
     mx_update_context (ctx, count);
   }
 
-  return (0);
+  if (SigInt == 1)
+  {
+    SigInt = 0;
+    return -2; /* action aborted */
+  }
+
+  return 0;
 }
 
 #undef PREV
@@ -466,6 +481,11 @@ static int mbox_open_mailbox_append (CONTEXT *ctx, int flags)
 
 static int mbox_close_mailbox (CONTEXT *ctx)
 {
+  if (!ctx->fp)
+  {
+    return 0;
+  }
+
   if (ctx->append)
   {
     mx_unlock_file (ctx->path, fileno (ctx->fp), 1);

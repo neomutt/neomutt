@@ -2151,7 +2151,7 @@ mutt_pager (const char *banner, const char *fname, int flags, pager_t *extra)
       }
 
       SigWinch = 0;
-      clearok(stdscr,TRUE);/*force complete redraw*/
+      clearok(stdscr,true);/*force complete redraw*/
       continue;
     }
 #endif
@@ -2545,7 +2545,7 @@ search_next:
 	break;
 
       case OP_REDRAW:
-	clearok (stdscr, TRUE);
+	clearok (stdscr, true);
 	redraw = REDRAW_FULL;
 	break;
 

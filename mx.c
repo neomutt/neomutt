@@ -672,7 +672,7 @@ CONTEXT *mx_open_mailbox (const char *path, int flags, CONTEXT *pctx)
 
   rc = ctx->mx_ops->open(ctx);
 
-  if (rc == 0)
+  if ((rc == 0) || (rc == -2))
   {
     if ((flags & MUTT_NOSORT) == 0)
     {
@@ -684,6 +684,8 @@ CONTEXT *mx_open_mailbox (const char *path, int flags, CONTEXT *pctx)
     }
     if (!ctx->quiet)
       mutt_clear_error ();
+    if (rc == -2)
+      mutt_error(_("Reading from %s interrupted..."), ctx->path);
   }
   else
   {

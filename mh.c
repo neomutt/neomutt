@@ -842,7 +842,7 @@ static int maildir_parse_dir (CONTEXT * ctx, struct maildir ***last,
   if ((dirp = opendir (buf)) == NULL)
     return -1;
 
-  while ((de = readdir (dirp)) != NULL)
+  while (((de = readdir (dirp)) != NULL) && (SigInt != 1))
   {
     if ((ctx->magic == MUTT_MH && !mh_valid_message (de->d_name))
 	|| (ctx->magic == MUTT_MAILDIR && *de->d_name == '.'))
@@ -884,6 +884,12 @@ static int maildir_parse_dir (CONTEXT * ctx, struct maildir ***last,
   }
 
   closedir (dirp);
+
+  if (SigInt == 1)
+  {
+    SigInt = 0;
+    return -2; /* action aborted */
+  }
 
   return 0;
 }

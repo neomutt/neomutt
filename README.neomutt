@@ -3,6 +3,9 @@
 [![License: GPL v2](https://img.shields.io/badge/License-GPL%20v2-blue.svg)](https://github.com/neomutt/neomutt/blob/neomutt/COPYRIGHT)
 [![Travis branch](https://api.travis-ci.org/neomutt/neomutt.svg?branch=neomutt)](https://travis-ci.org/neomutt/neomutt)
 [![Coverity Scan](https://img.shields.io/coverity/scan/8495.svg)](https://scan.coverity.com/projects/neomutt-neomutt)
+[![Backlog](https://badge.waffle.io/neomutt/neomutt.svg?label=status:backlog&title=Backlog)](http://waffle.io/neomutt/neomutt)
+[![In Progress](https://badge.waffle.io/neomutt/neomutt.svg?label=status:in-progress&title=In%20Progress)](http://waffle.io/neomutt/neomutt)
+[![Ready](https://badge.waffle.io/neomutt/neomutt.svg?label=status:ready&title=Ready)](http://waffle.io/neomutt/neomutt)
 
 ## What is NeoMutt?
 
@@ -70,17 +73,18 @@ and [neomutt-devel](mailto:neomutt-devel-request@neomutt.org?subject=subscribe)
 Here's a list of everyone who's helped NeoMutt:
 
 Adam Borowski, Alex Pearce, Ander Punnar, André Berger, Antonio Radici,
-Baptiste Daroussin, Bernard Pratz, Chris Czettel, Chris Salzberg,
-Christoph Berg, Clemens Lang, Damien Riegel, Darshit Shah, David Sterba,
-Doug Stone-Weaver, Elimar Riesebieter, Evgeni Golov, Fabian Groffen,
-Fabio Alessandro Locati, Faidon Liambotis, František Hájik, Guillaume Brogi,
-Ian Zimmerman, Ismaël Bouya, Ivan Tham, Jack Stratton, Johannes Frankenau,
-Johannes Weißl, Joshua Jordi, Karel Zak, Kevin Velghe, Kurt Jaeger, Marco Hinz,
-Matteo Vescovi, Olaf Lessenich, Philipp Marek, Pierre-Elliott Bécue,
-Pietro Cerutti, Riad Wahby, Richard Hartmann, Richard Russon, Rubén Llorente,
-Santiago Torres, Serge Gebhardt, Somini, Stephen Gilles, Steven Ragnarök,
-Sven Guckes, Thomas Adam, Thomas Klausner, Tobias Angele, Udo Schweigert,
-Vsevolod Volkov, Werner Fink, Wieland Hoffmann, Yoshiki Vázquez Baeza.
+Baptiste Daroussin, Bernard Pratz, Bryan Bennett, Christian Dröge,
+Christoph Berg, Chris Czettel, Chris Salzberg, Clemens Lang, Damien Riegel,
+Darshit Shah, David Sterba, Doug Stone-Weaver, Elimar Riesebieter,
+Evgeni Golov, Fabian Groffen, Fabio Alessandro Locati, Faidon Liambotis,
+František Hájik, Guillaume Brogi, Ian Zimmerman, Ismaël Bouya, Ivan Tham,
+Jack Stratton, Johannes Frankenau, Johannes Weißl, Joshua Jordi, Karel Zak,
+Kevin Velghe, Kurt Jaeger, Marcin Rajner, Marco Hinz, Matteo Vescovi,
+Olaf Lessenich, Philipp Marek, Pierre-Elliott Bécue, Pietro Cerutti,
+Riad Wahby, Richard Hartmann, Richard Russon, Rubén Llorente, Santiago Torres,
+Serge Gebhardt, Somini, Stephen Gilles, Steven Ragnarök, Sven Guckes,
+Thomas Adam, Thomas Klausner, Tobias Angele, Udo Schweigert, Vsevolod Volkov,
+Werner Fink, Wieland Hoffmann, Yoshiki Vázquez Baeza.
 
 ## Original Patch Authors
 

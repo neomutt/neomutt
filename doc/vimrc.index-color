@@ -9,4 +9,4 @@ syntax keyword muttrcColorField contained index_label
 syntax keyword muttrcColorField contained index_number
 syntax keyword muttrcColorField contained index_size
 syntax keyword muttrcColorField contained index_subject
-
+syn region muttrcColorLine keepend start=/^\s*color\s\+index_\%(author\|collapsed\|date\|flags\|label\|number\|size\|subject\)/ skip=+\\$+ end=+$+ contains=muttrcColorKeyword,muttrcComment,muttrcUnHighlightSpace

@@ -2607,23 +2607,94 @@ static int parse_set (BUFFER *tmp, BUFFER *s, unsigned long data, BUFFER *err)
   return (r);
 }
 
+/* Heap structure
+ * FILO designed to contain the list of config files that have been sourced
+ * and avoid cyclic sourcing */
+static HEAP *MuttrcHeap;
+
+/* Use POSIX functions to convert a path to absolute, relatively to another path
+ * Args:
+ *  - path: instance containing the relative path to the file we want the absolute
+ *     path of. Should be at least of PATH_MAX length, will contain the full result.
+ *  - reference: path to a file which directory will be set as reference for setting
+ *      up the absolute path.
+ * Returns: true (1) on success, false (0) otherwise.
+ */
+static int to_absolute_path(char *path, const char *reference)
+{
+  char *ref_tmp, *dirpath;
+  char abs_path[PATH_MAX];
+  int path_len;
+
+  /* if path is already absolute, don't do anything */
+  if ((strlen(path) > 1) && (path[0] == '/'))
+  {
+    return true;
+  }
+
+  ref_tmp = safe_strdup(reference);
+  dirpath = dirname(ref_tmp); // get directory name of
+  strncpy(abs_path, dirpath, PATH_MAX);
+  safe_strncat(abs_path, sizeof(abs_path), "/", 1); // append a / at the end of the path
+
+  FREE(&ref_tmp);
+  path_len = PATH_MAX - strlen(path);
+
+  safe_strncat(abs_path, sizeof(abs_path), path, path_len > 0 ? path_len : 0);
+
+  path = realpath(abs_path, path);
+
+  if (!path)
+  {
+    printf("Error: issue converting path to absolute (%s)", strerror(errno));
+    return false;
+  }
+
+  return true;
+}
+
 #define MAXERRS 128
 
 /* reads the specified initialization file.  returns -1 if errors were found
    so that we can pause to let the user know...  */
-static int source_rc (const char *rcfile, BUFFER *err)
+static int source_rc (const char *rcfile_path, BUFFER *err)
 {
   FILE *f;
   int line = 0, rc = 0, conv = 0, line_rc;
   BUFFER token;
   char *linebuf = NULL;
   char *currentline = NULL;
+  char rcfile[PATH_MAX];
   size_t buflen;
+  size_t rcfilelen;
+
   pid_t pid;
 
-  dprint (2, (debugfile, "Reading configuration file '%s'.\n",
-	  rcfile));
-  
+  strncpy(rcfile, rcfile_path, PATH_MAX);
+
+  rcfilelen = mutt_strlen(rcfile);
+
+  if (rcfile[rcfilelen-1] != '|')
+  {
+      if (!to_absolute_path(rcfile, mutt_front_heap(MuttrcHeap)))
+      {
+        mutt_error("Error: impossible to build path of '%s'.", rcfile_path);
+        return (-1);
+      }
+
+      if (!MuttrcHeap || mutt_find_heap(MuttrcHeap, rcfile) == NULL)
+      {
+        mutt_push_heap(&MuttrcHeap, rcfile);
+      }
+      else
+      {
+        mutt_error("Error: Cyclic sourcing of configuration file '%s'.", rcfile);
+        return (-1);
+      }
+  }
+
+  dprint(2, (debugfile, "Reading configuration file '%s'.\n", rcfile));
+
   if ((f = mutt_open_read (rcfile, &pid)) == NULL)
   {
     snprintf (err->data, err->dsize, "%s: %s", rcfile, strerror (errno));
@@ -2672,6 +2743,9 @@ static int source_rc (const char *rcfile, BUFFER *err)
       : _("source: reading aborted due to too many errors in %s"), rcfile);
     rc = -1;
   }
+
+  mutt_pop_heap(&MuttrcHeap);
+
   return (rc);
 }
 
@@ -2693,7 +2767,7 @@ static int parse_source (BUFFER *tmp, BUFFER *s, unsigned long data, BUFFER *err
   }
   strfcpy (path, tmp->data, sizeof (path));
   mutt_expand_path (path, sizeof (path));
-  return (source_rc (path, err));
+  return source_rc (path, err);
 }
 
 /* line		command to execute
@@ -3027,7 +3101,7 @@ static int complete_all_nm_tags (const char *pt)
   memset (Matches, 0, Matches_listsize);
   memset (Completed, 0, sizeof (Completed));
 
-  nm_longrun_init(Context, FALSE);
+  nm_longrun_init(Context, false);
 
   /* Work out how many tags there are. */
   if (nm_get_all_tags(Context, NULL, &tag_count_1) || tag_count_1 == 0)
@@ -3712,26 +3786,31 @@ void mutt_init (int skip_sys_rc, LIST *commands)
       xdg_cfg_home = buffer;
     }
 
-    Muttrc = mutt_find_cfg (Homedir, xdg_cfg_home);
+    char *config = mutt_find_cfg (Homedir, xdg_cfg_home);
+    if (config)
+      Muttrc = mutt_add_list (Muttrc, config);
   }
   else
   {
-    strfcpy (buffer, Muttrc, sizeof (buffer));
-    FREE (&Muttrc);
-    mutt_expand_path (buffer, sizeof (buffer));
-    Muttrc = safe_strdup (buffer);
-    if (access (Muttrc, F_OK))
+    for (LIST *config = Muttrc; config != NULL; config = config->next)
     {
-      snprintf (buffer, sizeof (buffer), "%s: %s", Muttrc, strerror (errno));
-      mutt_endwin (buffer);
-      exit (1);
+      strfcpy(buffer, config->data, sizeof(buffer));
+      FREE(&config->data);
+      mutt_expand_path(buffer, sizeof(buffer));
+      config->data = safe_strdup(buffer);
+      if (access(config->data, F_OK))
+      {
+        snprintf(buffer, sizeof(buffer), "%s: %s", config->data, strerror(errno));
+        mutt_endwin(buffer);
+        exit(1);
+      }
     }
   }
 
   if (Muttrc)
   {
-    FREE (&AliasFile);
-    AliasFile = safe_strdup (Muttrc);
+    FREE (&AliasFiles);
+    AliasFiles = mutt_copy_list(Muttrc);
   }
 
   /* Process the global rc file if it exists and the user hasn't explicity
@@ -3785,15 +3864,18 @@ void mutt_init (int skip_sys_rc, LIST *commands)
   }
 
   /* Read the user's initialization file.  */
-  if (Muttrc)
+  for (LIST *config = Muttrc; config != NULL; config = config->next)
   {
-    if (!option (OPTNOCURSES))
-      endwin ();
-    if (source_rc (Muttrc, &err) != 0)
+    if (config->data)
     {
-      fputs (err.data, stderr);
-      fputc ('\n', stderr);
-      need_pause = 1;
+      if (!option(OPTNOCURSES))
+        endwin();
+      if (source_rc(config->data, &err) != 0)
+      {
+        fputs(err.data, stderr);
+        fputc('\n', stderr);
+        need_pause = 1;
+      }
     }
   }
 
@@ -3805,6 +3887,8 @@ void mutt_init (int skip_sys_rc, LIST *commands)
     if (mutt_any_key_to_continue (NULL) == -1)
       mutt_exit(1);
   }
+
+  mutt_mkdir(Tempdir, S_IRWXU);
 
   mutt_read_histfile ();
 

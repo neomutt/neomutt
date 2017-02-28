@@ -22,6 +22,7 @@
 #endif				/* HAVE_CONFIG_H */
 
 #include <sys/types.h>
+#include <sys/stat.h>
 #include <errno.h>
 #include <dirent.h>
 #include <stdio.h>
@@ -129,38 +130,32 @@ FILE* mutt_bcache_get(body_cache_t *bcache, const char *id)
 FILE* mutt_bcache_put(body_cache_t *bcache, const char *id, int tmp)
 {
   char path[_POSIX_PATH_MAX];
-  FILE* fp;
-  char* s;
   struct stat sb;
 
   if (!id || !*id || !bcache)
     return NULL;
 
-  snprintf (path, sizeof (path), "%s%s%s", bcache->path, id,
-            tmp ? ".tmp" : "");
-
-  if ((fp = safe_fopen (path, "w+")))
-    goto out;
-
-  if (errno == EEXIST)
-    /* clean up leftover tmp file */
-    mutt_unlink (path);
-
-  s = strchr (path + 1, '/');
-  while (!(fp = safe_fopen (path, "w+")) && errno == ENOENT && s)
+  if (stat(bcache->path, &sb) == 0)
   {
-    /* create missing path components */
-    *s = '\0';
-    if (stat (path, &sb) < 0 && (errno != ENOENT || mkdir (path, 0777) < 0))
+    if (!S_ISDIR(sb.st_mode))
+    {
+      mutt_error(_("Message cache isn't a directory: %s."), bcache->path);
       return NULL;
-    *s = '/';
-    s = strchr (s + 1, '/');
+    }
+  }
+  else
+  {
+    if (mutt_mkdir(bcache->path, S_IRWXU | S_IRWXG | S_IRWXO) < 0)
+    {
+      mutt_error (_("Can't create %s %s"), bcache->path, strerror(errno));
+      return NULL;
+    }
   }
 
-  out:
+  snprintf(path, sizeof (path), "%s%s%s", bcache->path, id, tmp ? ".tmp" : "");
   dprint (3, (debugfile, "bcache: put: '%s'\n", path));
 
-  return fp;
+  return safe_fopen(path, "w+");
 }
 
 int mutt_bcache_commit(body_cache_t* bcache, const char* id)

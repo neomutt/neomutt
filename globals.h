@@ -31,7 +31,7 @@ WHERE char *MuttDotlock;
 WHERE ADDRESS *EnvFrom;
 WHERE ADDRESS *From;
 
-WHERE char *AliasFile;
+WHERE LIST *AliasFiles;
 WHERE char *AliasFmt;
 WHERE char *AssumedCharset;
 WHERE char *AttachSep;
@@ -50,6 +50,7 @@ WHERE char *DisplayFilter;
 WHERE char *DsnNotify;
 WHERE char *DsnReturn;
 WHERE char *Editor;
+WHERE char *EmptySubject;
 WHERE char *EscChar;
 WHERE char *FolderFormat;
 WHERE char *ForwFmt;
@@ -98,7 +99,7 @@ WHERE char *Mixmaster;
 WHERE char *MixEntryFormat;
 #endif
 
-WHERE char *Muttrc INITVAL (NULL);
+WHERE LIST *Muttrc INITVAL (0);
 #ifdef USE_NNTP
 WHERE char *GroupFormat;
 WHERE char *Inews;
