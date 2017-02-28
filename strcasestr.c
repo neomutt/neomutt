@@ -7,6 +7,7 @@
 #include <stdlib.h>
 #include <ctype.h>
 
+/* IBM AIX 7.1 still misses strcasestr */
 char *strcasestr(const char *s1, const char *s2)
 {
         register const char *s = s1;

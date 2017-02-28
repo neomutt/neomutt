@@ -283,6 +283,38 @@ LIST *mutt_find_list (LIST *l, const char *data)
   return NULL;
 }
 
+void mutt_push_heap(HEAP **head, const char *data)
+{
+  HEAP *tmp;
+  tmp = safe_malloc(sizeof(HEAP));
+  tmp->data = safe_strdup(data);
+  tmp->next = *head;
+  *head = tmp;
+}
+
+int mutt_pop_heap(HEAP **head)
+{
+  HEAP *elt = *head;
+  if (!elt)
+    return 0;
+  *head = elt->next;
+  FREE(&elt->data);
+  FREE(&elt);
+  return 1;
+}
+
+const char *mutt_front_heap(HEAP *head)
+{
+  if (!head || !head->data)
+    return "";
+  return head->data;
+}
+
+HEAP *mutt_find_heap(HEAP *head, const char *data)
+{
+  return (HEAP *) mutt_find_list((LIST *) head, data);
+}
+
 int mutt_remove_from_rx_list (RX_LIST **l, const char *str)
 {
   RX_LIST *p, *last = NULL;

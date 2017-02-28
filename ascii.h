@@ -29,10 +29,8 @@
 #ifndef _ASCII_H
 # define _ASCII_H
 
-int ascii_isupper (int c);
-int ascii_islower (int c);
-int ascii_toupper (int c);
-int ascii_tolower (int c);
+#include <ctype.h>
+
 int ascii_strcasecmp (const char *a, const char *b);
 int ascii_strncasecmp (const char *a, const char *b, int n);
 
@@ -43,10 +41,9 @@ static inline char* ascii_strlower (char *s)
 {
   char *p = s;
 
-  while (*p)
+  for (; *p; ++p)
   {
-    *p = ascii_tolower ((unsigned int) *p);
-    p++;
+    *p = tolower (*p);
   }
 
   return s;

@@ -872,7 +872,6 @@ NNTP_SERVER *nntp_select_server (char *server, int leave_lock)
   char file[_POSIX_PATH_MAX];
   char *p;
   int rc;
-  struct stat sb;
   ACCOUNT acct;
   NNTP_SERVER *nserv;
   NNTP_DATA *nntp_data;
@@ -956,25 +955,10 @@ NNTP_SERVER *nntp_select_server (char *server, int leave_lock)
   if (rc >= 0 && NewsCacheDir && *NewsCacheDir)
   {
     cache_expand (file, sizeof (file), &conn->account, NULL);
-    p = *file == '/' ? file + 1 : file;
-    while (1)
+    if (mutt_mkdir (file, S_IRWXU) < 0)
     {
-      p = strchr (p, '/');
-      if (p)
-	*p = '\0';
-      if ((stat (file, &sb) || (sb.st_mode & S_IFDIR) == 0) &&
-	  mkdir (file, 0700))
-      {
-	mutt_error (_("Can't create %s: %s."), file, strerror (errno));
-	mutt_sleep (2);
-	break;
-      }
-      if (!p)
-      {
-	nserv->cacheable = 1;
-	break;
-      }
-      *p++ = '/';
+      mutt_error (_("Can't create %s: %s."), file, strerror (errno));
+      mutt_sleep (2);
     }
   }
 

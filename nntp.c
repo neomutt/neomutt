@@ -338,7 +338,7 @@ static int nntp_auth (NNTP_SERVER *nserv)
     p = authenticators;
     while (*p)
     {
-      *p = ascii_toupper (*p);
+      *p = toupper (*p);
       p++;
     }
 
@@ -819,7 +819,7 @@ static int nntp_query (NNTP_DATA *nntp_data, char *line, size_t linelen)
 static int nntp_fetch_lines (NNTP_DATA *nntp_data, char *query, size_t qlen,
 			char *msg, int (*funct) (char *, void *), void *data)
 {
-  int done = FALSE;
+  int done = false;
   int rc;
 
   while (!done)
@@ -861,7 +861,7 @@ static int nntp_fetch_lines (NNTP_DATA *nntp_data, char *query, size_t qlen,
       {
 	if (buf[1] == '\0')
 	{
-	  done = TRUE;
+	  done = true;
 	  break;
 	}
 	if (buf[1] == '.')
@@ -2192,7 +2192,7 @@ int nntp_check_new_groups (NNTP_SERVER *nserv)
   char buf[LONG_STRING];
   char *msg = _("Checking for new newsgroups...");
   unsigned int i;
-  int rc, update_active = FALSE;
+  int rc, update_active = false;
 
   if (!nserv || !nserv->newgroups_time)
     return -1;
@@ -2211,7 +2211,7 @@ int nntp_check_new_groups (NNTP_SERVER *nserv)
 	if (rc < 0)
 	  return -1;
 	if (rc > 0)
-	  update_active = TRUE;
+	  update_active = true;
       }
     }
     /* select current newsgroup */
@@ -2274,7 +2274,7 @@ int nntp_check_new_groups (NNTP_SERVER *nserv)
 	mutt_progress_update (&progress, ++count, -1);
       }
     }
-    update_active = TRUE;
+    update_active = true;
     rc = 1;
   }
   if (update_active)

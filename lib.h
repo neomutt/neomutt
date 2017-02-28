@@ -35,6 +35,7 @@
 # include <time.h>
 # include <limits.h>
 # include <stdarg.h>
+# include <stdbool.h>
 # include <signal.h>
 
 # ifndef _POSIX_PATH_MAX
@@ -53,9 +54,6 @@
 #  define _(a) (a)
 #  define N_(a) a
 # endif
-
-# define TRUE 1
-# define FALSE 0
 
 # define HUGE_STRING     8192
 # define LONG_STRING     1024
@@ -212,6 +210,7 @@ int safe_symlink (const char *, const char *);
 int safe_fclose (FILE **);
 int safe_fsync_close (FILE **);
 int mutt_rmtree (const char *);
+int mutt_mkdir(const char *path, mode_t mode);
 
 size_t mutt_quote_filename (char *, size_t, const char *);
 size_t mutt_strlen (const char *);

@@ -123,7 +123,7 @@ struct option_t MuttVars[] = {
   ** check only happens after the \fIfirst\fP edit of the file).  When set
   ** to \fIno\fP, composition will never be aborted.
   */
-  { "alias_file",	DT_PATH, R_NONE, UL &AliasFile, UL "~/.muttrc" },
+  { "alias_file",	DT_PATH, R_NONE, UL &AliasFiles, UL "~/.muttrc" },
   /*
   ** .pp
   ** The default file in which to save aliases created by the
@@ -802,6 +802,12 @@ struct option_t MuttVars[] = {
   ** .te
   ** .pp
   ** where \fIstring\fP is the expansion of \fC$$editor\fP described above.
+  */
+  { "empty_subject",    DT_STR, R_NONE, UL &EmptySubject, UL "Re: your mail" },
+  /*
+  ** .pp
+  ** This variable specifies the subject to be used when replying to an email
+  ** with an empty subject.  It defaults to "Re: your mail".
   */
   { "encode_from",	DT_BOOL, R_NONE, OPTENCODEFROM, 0 },
   /*

@@ -683,7 +683,7 @@ void mutt_make_misc_reply_headers (ENVELOPE *env, CONTEXT *ctx,
     sprintf (env->subject, "Re: %s", curenv->real_subj);	/* __SPRINTF_CHECKED__ */
   }
   else if (!env->subject)
-    env->subject = safe_strdup ("Re: your mail");
+    env->subject = safe_strdup (EmptySubject);
 }
 
 void mutt_add_to_reference_headers (ENVELOPE *env, ENVELOPE *curenv, LIST ***pp, LIST ***qq)

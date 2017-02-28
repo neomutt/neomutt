@@ -489,11 +489,6 @@ extern int vsnprintf (char *, size_t, const char *, va_list);
 #endif
 
 #ifndef HAVE_STRERROR
-#ifndef STDC_HEADERS
-extern int sys_nerr;
-extern char *sys_errlist[];
-#endif
-
 #define strerror(x) ((x) > 0 && (x) < sys_nerr) ? sys_errlist[(x)] : 0
 #endif /* !HAVE_STRERROR */
 
@@ -501,62 +496,9 @@ extern char *sys_errlist[];
 #define memmove(d,s,n) bcopy((s),(d),(n))
 #endif
 
-/* AIX doesn't define these in any headers (sigh) */
-int strcasecmp (const char *, const char *);
-int strncasecmp (const char *, const char *, size_t);
-
 #ifdef _AIX
 int setegid (gid_t);
 #endif /* _AIX */
-
-#ifndef STDC_HEADERS
-extern FILE *fdopen ();
-extern int system ();
-extern int puts ();
-extern int fputs ();
-extern int fputc ();
-extern int fseek ();
-extern char *strchr ();
-extern int getopt ();
-extern int fputs ();
-extern int fputc ();
-extern int fclose ();
-extern int fprintf();
-extern int printf ();
-extern int fgetc ();
-extern int tolower ();
-extern int toupper ();
-extern int sscanf ();
-extern size_t fread ();
-extern size_t fwrite ();
-extern int system ();
-extern int rename ();
-extern time_t time ();
-extern struct tm *localtime ();
-extern char *asctime ();
-extern char *strpbrk ();
-extern int fflush ();
-extern long lrand48 ();
-extern void srand48 ();
-extern time_t mktime ();
-extern int vsprintf ();
-extern int ungetc ();
-extern int ftruncate ();
-extern void *memset ();
-extern int pclose ();
-extern int socket ();
-extern int connect ();
-extern size_t strftime ();
-extern int lstat ();
-extern void rewind ();
-extern int readlink ();
-
-/* IRIX barfs on empty var decls because the system include file uses elipsis
-   in the declaration.  So declare all the args to avoid compiler errors.  This
-   should be harmless on other systems.  */
-int ioctl (int, int, ...);
-
-#endif
 
 /* unsorted */
 void ci_bounce_message (HEADER *, int *);
@@ -564,36 +506,11 @@ int ci_send_message (int, HEADER *, char *, CONTEXT *, HEADER *);
 
 /* prototypes for compatibility functions */
 
-#ifndef HAVE_SETENV
-int setenv (const char *, const char *, int);
-#endif
-
-#ifndef HAVE_STRCASECMP
-int strcasecmp (char *, char *);
-int strncasecmp (char *, char *, size_t);
-#endif
-
-#ifndef HAVE_STRDUP
-char *strdup (const char *);
-#endif
-
-#ifndef HAVE_STRSEP
-char *strsep (char **, const char *);
-#endif
-
-#ifndef HAVE_STRTOK_R
-char *strtok_r (char *, const char *, char **);
-#endif
-
 #ifndef HAVE_WCSCASECMP
 int wcscasecmp (const wchar_t *a, const wchar_t *b);
 #endif
 
 #ifndef HAVE_STRCASESTR
 char *strcasestr (const char *, const char *);
-#endif
-
-#ifndef HAVE_MKDTEMP
-char *mkdtemp (char *tmpl);
 #endif
 
