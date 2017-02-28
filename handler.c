@@ -1647,8 +1647,8 @@ static int run_decode_and_handler (BODY *b, STATE *s, handler_t handler, int pla
   fseeko (s->fpin, b->offset, 0);
 
 #ifdef USE_FMEMOPEN
-  char *temp;
-  size_t tempsize;
+  char *temp = NULL;
+  size_t tempsize = 0;
 #endif
 
   /* see if we need to decode this part before processing it */
