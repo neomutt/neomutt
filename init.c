@@ -1913,10 +1913,17 @@ static void restore_default(struct option_t *p)
       break;
     case DT_PATH:
       FREE((char **) p->data);
-      if (p->init)
+      char *init = NULL;
+#ifdef DEBUG
+      if (mutt_strcmp(p->option, "debug_file") == 0 && debugfile_cmdline)
+        init = debugfile_cmdline;
+      else
+#endif
+        init = (char *) p->init;
+      if (init)
       {
         char path[_POSIX_PATH_MAX];
-        strfcpy(path, (char *) p->init, sizeof(path));
+        strfcpy(path, init, sizeof(path));
         mutt_expand_path(path, sizeof(path));
         *((char **) p->data) = safe_strdup(path);
       }
@@ -1938,7 +1945,12 @@ static void restore_default(struct option_t *p)
     case DT_NUM:
     case DT_SORT:
     case DT_MAGIC:
-      *((short *) p->data) = p->init;
+#ifdef DEBUG
+      if (mutt_strcmp(p->option, "debug_level") == 0 && debuglevel_cmdline)
+        *((short *) p->data) = debuglevel_cmdline;
+      else
+#endif
+        *((short *) p->data) = p->init;
       break;
     case DT_RX:
     {
@@ -2099,6 +2111,69 @@ char **mutt_envlist(void)
 {
   return envlist;
 }
+
+#ifdef DEBUG
+/**
+ * start_debug - prepare the debugging file
+ *
+ * @return nothing
+ *
+ * This method prepares and opens a new debug file for mutt_debug.
+ */
+static void start_debug(void)
+{
+  int i;
+  char buf[_POSIX_PATH_MAX];
+
+  /* rotate the old debug logs */
+  for (i = 3; i >= 0; i--)
+  {
+    snprintf(debugfilename, sizeof(debugfilename), "%s%d", DebugFile, i);
+    snprintf(buf, sizeof(buf), "%s%d", DebugFile, i + 1);
+    rename(debugfilename, buf);
+  }
+
+  if ((debugfile = safe_fopen(debugfilename, "w")) != NULL)
+  {
+    setbuf(debugfile, NULL); /* don't buffer the debugging output! */
+    mutt_debug(1, "NeoMutt/%s (%s) debugging at level %d\n", PACKAGE_VERSION,
+               MUTT_VERSION, debuglevel);
+  }
+}
+
+/**
+ * restart_debug - reload the debugging configuration
+ *
+ * @return nothing
+ *
+ * This method closes the old debug file is debug was enabled,
+ * then reconfigure the debugging system from the configuration options
+ * and start a new debug file if debug is enabled
+ */
+static void restart_debug(void)
+{
+  bool disable_debug = (debuglevel > 0 && DebugLevel == 0);
+  bool enable_debug = (debuglevel == 0 && DebugLevel > 0);
+  bool file_changed =
+      ((mutt_strlen(debugfilename) - 1) != mutt_strlen(DebugFile) ||
+       mutt_strncmp(debugfilename, DebugFile, mutt_strlen(debugfilename) - 1));
+
+  if (disable_debug || file_changed)
+  {
+    mutt_debug(1, "NeoMutt/%s (%s) stop debugging\n", PACKAGE_VERSION, MUTT_VERSION);
+    safe_fclose(&debugfile);
+  }
+
+  if (!enable_debug && !disable_debug && debuglevel != DebugLevel)
+    mutt_debug(1, "NeoMutt/%s (%s) debugging at level %d\n", PACKAGE_VERSION,
+               MUTT_VERSION, DebugLevel);
+
+  debuglevel = DebugLevel;
+
+  if (enable_debug || (file_changed && debuglevel > 0))
+    start_debug();
+}
+#endif
 
 /* Helper function for parse_setenv().
  * It's broken out because some other parts of mutt (filter.c) need
@@ -2456,6 +2531,14 @@ static int parse_set(BUFFER *tmp, BUFFER *s, unsigned long data, BUFFER *err)
         }
         else if (DTYPE(MuttVars[idx].type) == DT_PATH)
         {
+#ifdef DEBUG
+          if (mutt_strcmp(MuttVars[idx].option, "debug_file") == 0 && debugfile_cmdline)
+          {
+            mutt_message(_("set debug_file ignored, it have been overridden "
+                           "with cmdline"));
+            break;
+          }
+#endif
           /* MuttVars[idx].data is already 'char**' (or some 'void**') or...
            * so cast to 'void*' is okay */
           FREE((void *) MuttVars[idx].data);
@@ -2463,6 +2546,10 @@ static int parse_set(BUFFER *tmp, BUFFER *s, unsigned long data, BUFFER *err)
           strfcpy(scratch, tmp->data, sizeof(scratch));
           mutt_expand_path(scratch, sizeof(scratch));
           *((char **) MuttVars[idx].data) = safe_strdup(scratch);
+#ifdef DEBUG
+          if (mutt_strcmp(MuttVars[idx].option, "debug_file") == 0)
+            restart_debug();
+#endif
         }
         else if (DTYPE(MuttVars[idx].type) == DT_STR)
         {
@@ -2620,6 +2707,14 @@ static int parse_set(BUFFER *tmp, BUFFER *s, unsigned long data, BUFFER *err)
         r = -1;
         break;
       }
+#ifdef DEBUG
+      else if (mutt_strcmp(MuttVars[idx].option, "debug_level") == 0 && debuglevel_cmdline)
+      {
+        mutt_message(
+            _("set debug_level ignored, it have been overridden with cmdline"));
+        break;
+      }
+#endif
       else
         *ptr = val;
 
@@ -2630,6 +2725,14 @@ static int parse_set(BUFFER *tmp, BUFFER *s, unsigned long data, BUFFER *err)
           *ptr = 0;
         mutt_init_history();
       }
+#ifdef DEBUG
+      else if (mutt_strcmp(MuttVars[idx].option, "debug_level") == 0)
+      {
+        if (*ptr < 0)
+          *ptr = 0;
+        restart_debug();
+      }
+#endif
       else if (mutt_strcmp(MuttVars[idx].option, "pager_index_lines") == 0)
       {
         if (*ptr < 0)
@@ -3700,29 +3803,6 @@ int mutt_getvaluebyname(const char *name, const struct mapping_t *map)
   return -1;
 }
 
-#ifdef DEBUG
-static void start_debug(void)
-{
-  int i;
-  char buf[_POSIX_PATH_MAX];
-  char buf2[_POSIX_PATH_MAX];
-
-  /* rotate the old debug logs */
-  for (i = 3; i >= 0; i--)
-  {
-    snprintf(buf, sizeof(buf), "%s/.muttdebug%d", NONULL(Homedir), i);
-    snprintf(buf2, sizeof(buf2), "%s/.muttdebug%d", NONULL(Homedir), i + 1);
-    rename(buf, buf2);
-  }
-  if ((debugfile = safe_fopen(buf, "w")) != NULL)
-  {
-    setbuf(debugfile, NULL); /* don't buffer the debugging output! */
-    mutt_debug(1, "NeoMutt %s%s (%s) debugging at level %d\n", PACKAGE_VERSION,
-               GitVer, MUTT_VERSION, debuglevel);
-  }
-}
-#endif
-
 static int execute_commands(LIST *p)
 {
   BUFFER err, token;
@@ -3856,10 +3936,20 @@ void mutt_init(int skip_sys_rc, LIST *commands)
     Shell = safe_strdup((p = getenv("SHELL")) ? p : "/bin/sh");
   }
 
+  /* Set standard defaults */
+  for (i = 0; MuttVars[i].option; i++)
+  {
+    set_default(&MuttVars[i]);
+    restore_default(&MuttVars[i]);
+  }
+
 #ifdef DEBUG
-  /* Start up debugging mode if requested */
-  if (debuglevel > 0)
+  /* Start up debugging mode if requested from cmdline */
+  if (debuglevel_cmdline > 0)
+  {
+    debuglevel = debuglevel_cmdline;
     start_debug();
+  }
 #endif
 
   /* And about the host... */
@@ -3987,13 +4077,6 @@ void mutt_init(int skip_sys_rc, LIST *commands)
   mutt_set_charset(Charset);
 
   Matches = safe_calloc(Matches_listsize, sizeof(char *));
-
-  /* Set standard defaults */
-  for (i = 0; MuttVars[i].option; i++)
-  {
-    set_default(&MuttVars[i]);
-    restore_default(&MuttVars[i]);
-  }
 
   CurrentMenu = MENU_MAIN;
 
