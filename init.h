@@ -651,6 +651,23 @@ struct option_t MuttVars[] = {
   ** rest of the string are expanded in the \fIC\fP locale (that is in US
   ** English).
   */
+#ifdef DEBUG
+  { "debug_level", DT_NUM, R_NONE, UL &DebugLevel, 0 },
+  /*
+  ** .pp
+  ** The debug level. Note: to debug the early startup process (before the
+  ** configuration is loaded), ``-d'' mutt argument must be used.
+  ** debug_level/debug_file are ignored until it's read from the configuration
+  ** file.
+  */
+  { "debug_file", DT_PATH, R_NONE, UL &DebugFile, UL "~/.muttdebug" },
+  /*
+  ** .pp
+  ** The location prefix of the debug file, 0 is append to the debug file
+  ** Old debug files are renamed with the prefix 1, 2, 3 and 4.
+  ** See ``debug_level'' for more detail.
+  */
+#endif
   { "default_hook",     DT_STR,  R_NONE, UL &DefaultHook, UL "~f %s !~P | (~P ~C %s)" },
   /*
   ** .pp

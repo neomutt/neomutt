@@ -252,9 +252,10 @@ int main(int argc, char **argv, char **environ)
 
 #ifdef USE_NNTP
     if ((i = getopt(argc, argv,
-                    "+A:a:Bb:F:f:c:Dd:Ee:g:GH:s:i:hm:npQ:RSvxyzZ")) != EOF)
+                    "+A:a:Bb:F:f:c:Dd:l:Ee:g:GH:s:i:hm:npQ:RSvxyzZ")) != EOF)
 #else
-    if ((i = getopt(argc, argv, "+A:a:Bb:F:f:c:Dd:Ee:H:s:i:hm:npQ:RSvxyzZ")) != EOF)
+    if ((i = getopt(argc, argv,
+                    "+A:a:Bb:F:f:c:Dd:l:Ee:H:s:i:hm:npQ:RSvxyzZ")) != EOF)
 #endif
       switch (i)
       {
@@ -297,14 +298,14 @@ int main(int argc, char **argv, char **environ)
 
         case 'd':
 #ifdef DEBUG
-          if (mutt_atoi(optarg, &debuglevel) < 0 || debuglevel <= 0)
+          if (mutt_atoi(optarg, &debuglevel_cmdline) < 0 || debuglevel_cmdline <= 0)
           {
             fprintf(stderr, _("Error: value '%s' is invalid for -d.\n"), optarg);
             return 1;
           }
-          printf(_("Debugging at level %d.\n"), debuglevel);
+          printf(_("Debugging at level %d.\n"), debuglevel_cmdline);
 #else
-          printf(_("DEBUG was not defined during compilation.  Ignored.\n"));
+          printf(_("DEBUG was not defined during compilation. -d Ignored.\n"));
 #endif
           break;
 
@@ -322,6 +323,15 @@ int main(int argc, char **argv, char **environ)
 
         case 'i':
           includeFile = optarg;
+          break;
+
+        case 'l':
+#ifdef DEBUG
+          debugfile_cmdline = optarg;
+          printf(_("Debugging at file %s.\n"), debugfile_cmdline);
+#else
+          printf(_("DEBUG was not defined during compilation. -l Ignored.\n"));
+#endif
           break;
 
         case 'm':
