@@ -99,6 +99,7 @@ static int ssl_load_certificates (SSL_CTX *ctx)
   X509 *cert = NULL;
   X509_STORE *store;
   char buf[STRING];
+  int rv = 1;
 
   mutt_debug (2, "ssl_load_certificates: loading trusted certificates\n");
   store = SSL_CTX_get_cert_store (ctx);
@@ -124,10 +125,15 @@ static int ssl_load_certificates (SSL_CTX *ctx)
       X509_STORE_add_cert (store, cert);
     }
   }
+  /* PEM_read_X509 sets the error NO_START_LINE on eof */
+  if (ERR_GET_REASON(ERR_peek_last_error()) != PEM_R_NO_START_LINE)
+    rv = 0;
+  ERR_clear_error();
+
   X509_free (cert);
   safe_fclose (&fp);
 
-  return 1;
+  return rv;
 }
 
 /* mutt_ssl_starttls: Negotiate TLS over an already opened connection.
@@ -494,6 +500,7 @@ static int ssl_negotiate (CONNECTION *conn, sslsockdata* ssldata)
 
   SSL_set_verify (ssldata->ssl, SSL_VERIFY_PEER, ssl_verify_callback);
   SSL_set_mode (ssldata->ssl, SSL_MODE_AUTO_RETRY);
+  ERR_clear_error ();
 
 #if (OPENSSL_VERSION_NUMBER >= 0x0090806fL) && !defined(OPENSSL_NO_TLSEXT)
   /* TLS Virtual-hosting requires that the server present the correct
@@ -784,6 +791,9 @@ static int check_certificate_by_digest (X509 *peercert)
     if (pass)
       break;
   }
+  /* PEM_read_X509 sets an error on eof */
+  if (!pass)
+    ERR_clear_error();
   X509_free (cert);
   safe_fclose (&fp);
 
