@@ -886,6 +886,7 @@ static int check_host (X509 *x509cert, const char *hostname, char *err, size_t e
 	}
       }
     }
+    GENERAL_NAMES_free(subj_alt_names);
   }
 
   if (!match_found)
