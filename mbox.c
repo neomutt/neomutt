@@ -465,7 +465,7 @@ static int mbox_open_mailbox_append (CONTEXT *ctx, int flags)
 
 static int mbox_close_mailbox (CONTEXT *ctx)
 {
-  if (ctx->append)
+  if (ctx->append && ctx->fp)
   {
     mx_unlock_file (ctx->path, fileno (ctx->fp), 1);
     mutt_unblock_signals ();
