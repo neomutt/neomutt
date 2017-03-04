@@ -422,7 +422,7 @@ static char *apply_subject_mods (ENVELOPE *env)
 /* %a = address of author
  * %A = reply-to address (if present; otherwise: address of author
  * %b = filename of the originating folder
- * %B = the list to which the letter was sent
+ * %B = the list to which the letter was sent, or else the folder name (%b).
  * %c = size of message in bytes
  * %C = current message number
  * %d = date and time of message using $date_format and sender's timezone
@@ -435,6 +435,7 @@ static char *apply_subject_mods (ENVELOPE *env)
  * %g = message labels (e.g. notmuch tags)
  * %i = message-id
  * %I = initials of author
+ * %K = the list to which the letter was sent (if any; otherwise: empty)
  * %l = number of lines in the message
  * %L = like %F, except `lists' are displayed first
  * %m = number of messages in the mailbox
@@ -526,6 +527,7 @@ hdr_format_str (char *dest,
       break;
 
     case 'B':
+    case 'K':
       if (!first_mailing_list (dest, destlen, hdr->env->to) &&
 	  !first_mailing_list (dest, destlen, hdr->env->cc))
 	dest[0] = 0;
@@ -534,6 +536,13 @@ hdr_format_str (char *dest,
 	strfcpy (buf2, dest, sizeof(buf2));
 	mutt_format_s (dest, destlen, prefix, buf2);
 	break;
+      }
+      if (op == 'K')
+      {
+        if (optional)
+          optional = 0;
+        /* break if 'K' returns nothing */
+        break;
       }
       /* fall through if 'B' returns nothing */
 
