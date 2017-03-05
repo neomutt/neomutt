@@ -52,16 +52,31 @@ int getdnsdomainname (char *d, size_t len)
    * If it takes longer, the system is mis-configured and the network is not
    * working properly, so...
    */
+  int status;
   struct timespec timeout = {0, 100000000};
   struct gaicb *reqs[1];
   reqs[0] = safe_calloc(1, sizeof(*reqs[0]));
   reqs[0]->ar_name = node;
   reqs[0]->ar_request = &hints;
-  if ((getaddrinfo_a(GAI_NOWAIT, reqs, 1, NULL) == 0) &&
-      (gai_suspend((const struct gaicb * const *) reqs, 1, &timeout) == 0) &&
-      (gai_error(reqs[0]) == 0))
+  if (getaddrinfo_a(GAI_NOWAIT, reqs, 1, NULL) == 0)
   {
-    h = reqs[0]->ar_result;
+    gai_suspend((const struct gaicb * const *) reqs, 1, &timeout);
+    status = gai_error(reqs[0]);
+    if (status == 0)
+      h = reqs[0]->ar_result;
+    else if (status == EAI_INPROGRESS)
+    {
+      mutt_debug(1, "getdnsdomainname timeout\n");
+      /* request is not finish, cancel it to free it safely */
+      if (gai_cancel(reqs[0]) == EAI_NOTCANCELED)
+      {
+        while (gai_suspend ((const struct gaicb * const *) reqs, 1, NULL) != 0)
+          continue;
+      }
+    }
+    else
+      mutt_debug(1, "getdnsdomainname fail: (%d) %s\n",
+                 status, gai_strerror(status));
   }
   FREE(&reqs[0]);
 
