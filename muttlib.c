@@ -53,17 +53,6 @@
 #include <sys/types.h>
 #include <utime.h>
 
-/*
- * External definitions for inline functions in mutt.h
- */
-extern LIST *mutt_new_list();
-extern RX_LIST *mutt_new_rx_list();
-extern REPLACE_LIST *mutt_new_replace_list();
-extern PARAMETER *mutt_new_parameter();
-extern HEADER *mutt_new_header();
-extern ENVELOPE *mutt_new_envelope();
-extern ENTER_STATE *mutt_new_enter_state();
-
 static const char *xdg_env_vars[] =
 {
   [kXDGConfigHome] = "XDG_CONFIG_HOME",

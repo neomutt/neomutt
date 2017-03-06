@@ -651,17 +651,17 @@ typedef struct replace_list_t
   struct replace_list_t *next;
 } REPLACE_LIST;
 
-inline LIST *mutt_new_list()
+static inline LIST *mutt_new_list()
 {
   return safe_calloc (1, sizeof (LIST));
 }
 
-inline RX_LIST *mutt_new_rx_list()
+static inline RX_LIST *mutt_new_rx_list()
 {
   return safe_calloc (1, sizeof (RX_LIST));
 }
 
-inline REPLACE_LIST *mutt_new_replace_list()
+static inline REPLACE_LIST *mutt_new_replace_list()
 {
   return safe_calloc (1, sizeof (REPLACE_LIST));
 }
@@ -733,7 +733,7 @@ typedef struct envelope
   unsigned int refs_changed : 1; /* References changed to break thread */
 } ENVELOPE;
 
-inline ENVELOPE *mutt_new_envelope()
+static inline ENVELOPE *mutt_new_envelope()
 {
     return safe_calloc (1, sizeof (ENVELOPE));
 }
@@ -745,7 +745,7 @@ typedef struct parameter
   struct parameter *next;
 } PARAMETER;
 
-inline PARAMETER *mutt_new_parameter()
+static inline PARAMETER *mutt_new_parameter()
 {
     return safe_calloc (1, sizeof (PARAMETER));
 }
@@ -929,7 +929,7 @@ typedef struct header
   char *maildir_flags;		/* unknown maildir flags */
 } HEADER;
 
-inline HEADER *mutt_new_header()
+static inline HEADER *mutt_new_header()
 {
     return safe_calloc (1, sizeof (HEADER));
 }
@@ -1131,7 +1131,7 @@ typedef struct
   int	 tabs;
 } ENTER_STATE;
 
-inline ENTER_STATE *mutt_new_enter_state()
+static inline ENTER_STATE *mutt_new_enter_state()
 {
     return safe_calloc (1, sizeof (ENTER_STATE));
 }
