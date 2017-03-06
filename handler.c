@@ -1647,8 +1647,8 @@ static int run_decode_and_handler (BODY *b, STATE *s, handler_t handler, int pla
   fseeko (s->fpin, b->offset, 0);
 
 #ifdef USE_FMEMOPEN
-  char *temp;
-  size_t tempsize;
+  char *temp = NULL;
+  size_t tempsize = 0;
 #endif
 
   /* see if we need to decode this part before processing it */
@@ -1705,6 +1705,12 @@ static int run_decode_and_handler (BODY *b, STATE *s, handler_t handler, int pla
     {
       b->length = ftello (s->fpout);
       b->offset = 0;
+#ifdef USE_FMEMOPEN
+      /* When running under torify, safe_fclose(&s->fpout) does not seem to
+       * update tempsize. On the other hand, fflush does.  See
+       * https://github.com/neomutt/neomutt/issues/440 */
+      fflush (s->fpout);
+#endif
       safe_fclose (&s->fpout);
 
       /* restore final destination and substitute the tempfile for input */
@@ -1750,8 +1756,7 @@ static int run_decode_and_handler (BODY *b, STATE *s, handler_t handler, int pla
       /* restore the original source stream */
       safe_fclose (&s->fpin);
 #ifdef USE_FMEMOPEN
-      if (tempsize)
-        FREE(&temp);
+      FREE(&temp);
 #endif
       s->fpin = fp;
     }
