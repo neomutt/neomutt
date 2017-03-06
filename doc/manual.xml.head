@@ -2367,10 +2367,10 @@ See also the <link linkend="postpone">$postpone</link> quad-option.
   <title>Mutt config file search order</title>
   <tgroup cols="1">
     <tbody>
-      <row><entry>neomuttrc-20161126</entry></row> 
-      <row><entry>neomuttrc</entry></row>          
-      <row><entry>muttrc-1.7.2</entry></row>       
-      <row><entry>muttrc</entry></row>             
+      <row><entry>neomuttrc-20170306</entry></row>
+      <row><entry>neomuttrc</entry></row>
+      <row><entry>muttrc-1.8.0</entry></row>
+      <row><entry>muttrc</entry></row>
     </tbody>
   </tgroup>
 </table>
@@ -2410,17 +2410,17 @@ See also the <link linkend="postpone">$postpone</link> quad-option.
         </row>
       </thead>
       <tbody>
-        <row><entry>/etc/xdg/mutt/neomuttrc-20161126</entry><entry>NeoMutt release version</entry></row> 
-        <row><entry>/etc/xdg/mutt/neomuttrc</entry></row>          
-        <row><entry>/etc/xdg/mutt/Muttrc-1.7.2</entry><entry>Mutt release version, Note the case of the filename</entry></row>       
-        <row><entry>/etc/xdg/mutt/Muttrc</entry><entry>Note the case of the filename</entry></row>             
-        <row><entry>/etc/mutt/neomuttrc-20161126</entry><entry>NeoMutt release version</entry></row> 
-        <row><entry>/etc/mutt/neomuttrc</entry></row>          
-        <row><entry>/etc/mutt/Muttrc-1.7.2</entry><entry>Mutt release version, Note the case of the filename</entry></row>       
-        <row><entry>/etc/mutt/Muttrc</entry><entry>Note the case of the filename</entry></row>             
-        <row><entry>/usr/share/mutt/neomuttrc-20161126</entry><entry>NeoMutt release version</entry></row>
+        <row><entry>/etc/xdg/mutt/neomuttrc-20170306</entry><entry>NeoMutt release version</entry></row>
+        <row><entry>/etc/xdg/mutt/neomuttrc</entry></row>
+        <row><entry>/etc/xdg/mutt/Muttrc-1.8.0</entry><entry>Mutt release version, Note the case of the filename</entry></row>
+        <row><entry>/etc/xdg/mutt/Muttrc</entry><entry>Note the case of the filename</entry></row>
+        <row><entry>/etc/mutt/neomuttrc-20170306</entry><entry>NeoMutt release version</entry></row>
+        <row><entry>/etc/mutt/neomuttrc</entry></row>
+        <row><entry>/etc/mutt/Muttrc-1.8.0</entry><entry>Mutt release version, Note the case of the filename</entry></row>
+        <row><entry>/etc/mutt/Muttrc</entry><entry>Note the case of the filename</entry></row>
+        <row><entry>/usr/share/mutt/neomuttrc-20170306</entry><entry>NeoMutt release version</entry></row>
         <row><entry>/usr/share/mutt/neomuttrc</entry></row>
-        <row><entry>/usr/share/mutt/Muttrc-1.7.2</entry><entry>Mutt release version, Note the case of the filename</entry></row>
+        <row><entry>/usr/share/mutt/Muttrc-1.8.0</entry><entry>Mutt release version, Note the case of the filename</entry></row>
         <row><entry>/usr/share/mutt/Muttrc</entry><entry>Note the case of the filename</entry></row>
       </tbody>
     </tgroup>
@@ -2457,18 +2457,18 @@ See also the <link linkend="postpone">$postpone</link> quad-option.
         </row>
       </thead>
       <tbody>
-        <row><entry>~/.config/mutt/neomuttrc-20161126</entry><entry>NeoMutt release version</entry></row> 
-        <row><entry>~/.config/mutt/neomuttrc</entry></row>          
-        <row><entry>~/.config/mutt/muttrc-1.7.2</entry><entry>Mutt release version</entry></row>       
-        <row><entry>~/.config/mutt/muttrc</entry></row>             
-        <row><entry>~/.neomuttrc-20161126</entry><entry>NeoMutt release version</entry></row> 
-        <row><entry>~/.neomuttrc</entry></row>          
-        <row><entry>~/.muttrc-1.7.2</entry><entry>Mutt release version</entry></row>       
-        <row><entry>~/.muttrc</entry></row>             
-        <row><entry>~/.mutt/neomuttrc-20161126</entry><entry>NeoMutt release version</entry></row> 
-        <row><entry>~/.mutt/neomuttrc</entry></row>          
-        <row><entry>~/.mutt/muttrc-1.7.2</entry><entry>Mutt release version</entry></row>       
-        <row><entry>~/.mutt/muttrc</entry></row>             
+        <row><entry>~/.config/mutt/neomuttrc-20170306</entry><entry>NeoMutt release version</entry></row>
+        <row><entry>~/.config/mutt/neomuttrc</entry></row>
+        <row><entry>~/.config/mutt/muttrc-1.8.0</entry><entry>Mutt release version</entry></row>
+        <row><entry>~/.config/mutt/muttrc</entry></row>
+        <row><entry>~/.neomuttrc-20170306</entry><entry>NeoMutt release version</entry></row>
+        <row><entry>~/.neomuttrc</entry></row>
+        <row><entry>~/.muttrc-1.8.0</entry><entry>Mutt release version</entry></row>
+        <row><entry>~/.muttrc</entry></row>
+        <row><entry>~/.mutt/neomuttrc-20170306</entry><entry>NeoMutt release version</entry></row>
+        <row><entry>~/.mutt/neomuttrc</entry></row>
+        <row><entry>~/.mutt/muttrc-1.8.0</entry><entry>Mutt release version</entry></row>
+        <row><entry>~/.mutt/muttrc</entry></row>
       </tbody>
     </tgroup>
   </table>
@@ -8710,7 +8710,7 @@ would contain:
 Mutt may also be <quote>patched</quote> to support smaller features.
 These patches should add a free-form string to the end Mutt's version string.
 Running <literal>mutt -v</literal> might show:
-<screen>patch-1.7.1.sidebar.20160709</screen>
+<screen>patch-1.8.0.sidebar.20170306</screen>
 </para>
 </sect2>
 
@@ -12312,8 +12312,8 @@ virtual-mailboxes "My INBOX" "notmuch://?query=tag:inbox"
       </para>
 
       <para>
-	See SEARCH SYNTAX in notmuch man page. Don't forget to use operators
-	(<quote>and</quote> / <quote>or</quote>) in your queries.
+        See SEARCH SYNTAX in notmuch man page. Don't forget to use operators
+        (<quote>and</quote> / <quote>or</quote>) in your queries.
       </para>
 
       <para>
