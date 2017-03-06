@@ -1,3 +1,20 @@
+2017-03-06  Richard Russon  <rich@flatcap.org>
+* Bug Fixes
+  - Get the correct buffer size under fmemopen/torify (#441)
+  - Use static inlines to make gcc 4.2.1 happy
+  - getdnsdomainname: cancel getaddrinfo_a if needed
+  - imap: remove useless code (#434) (origin/master)
+  - Fixes missing semi-colon compilation issue (#433)
+* Docs
+  - github: added template for Pull Requests, issues and a CONTRIBUTION.md (#339)
+  - editorconfig: support for new files, fix whitespace (#439)
+  - add blocking fmemopen bug on debian to manual (#422)
+* Upstream
+  - Increase ACCOUNT.pass field size. (closes #3921)
+  - SSL: Fix memory leak in subject alternative name code. (closes #3920)
+  - Prevent segv if open-appending to an mbox fails. (closes #3918)
+  - Clear out extraneous errors before SSL_connect() (see #3916)
+
 2017-02-25  Richard Russon  <rich@flatcap.org>
 * Features
   - Add option $show_multipart_alternative
