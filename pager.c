@@ -2059,8 +2059,6 @@ mutt_pager (const char *banner, const char *fname, int flags, pager_t *extra)
 
 	  if (index && Context)
 	  {
-	    oldcount = Context->msgcount;
-	    index->max = Context->vcount;
 
 	    /* After the mailbox has been updated,
 	     * index->current might be invalid */
@@ -2071,6 +2069,8 @@ mutt_pager (const char *banner, const char *fname, int flags, pager_t *extra)
 	    Context->quiet = 1;
 	    update_index (index, Context, check, oldcount, index_hint);
 	    Context->quiet = q;
+
+	    index->max = Context->vcount;
 
 	    /* If these header pointers don't match, then our email may have
 	     * been deleted.  Make the pointer safe, then leave the pager */
