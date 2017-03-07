@@ -1823,7 +1823,7 @@ int mutt_body_handler (BODY *b, STATE *s)
     else if (ascii_strcasecmp ("enriched", b->subtype) == 0)
       handler = text_enriched_handler;
     else /* text body type without a handler */
-      plaintext = 1;
+      plaintext = 0;
   }
   else if (b->type == TYPEMESSAGE)
   {
