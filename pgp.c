@@ -31,6 +31,7 @@
 #endif
 
 #include "mutt.h"
+#include "filter.h"
 #include "mutt_crypt.h"
 #include "mutt_curses.h"
 #include "pgp.h"

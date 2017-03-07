@@ -35,7 +35,7 @@ BUILT_SOURCES = keymap_defs.h patchlist.c git-ver.h conststrings.c hcachever.sh 
 
 bin_PROGRAMS = mutt $(DOTLOCK_TARGET) $(PGPAUX_TARGET)
 mutt_SOURCES = \
-	addrbook.c alias.c attach.c base64.c browser.c buffy.c color.c \
+	addrbook.c alias.c attach.c base64.c browser.c buffer.c buffy.c color.c \
 	crypt.c cryptglue.c \
 	commands.c complete.c compose.c copy.c curs_lib.c curs_main.c date.c \
 	edit.c enter.c flags.c init.c filter.c from.c \
@@ -75,8 +75,8 @@ EXTRA_mutt_SOURCES = account.c bcache.c compress.c crypt-gpgme.c crypt-mod-pgp-c
 
 EXTRA_DIST = COPYRIGHT LICENSE.md OPS OPS.PGP OPS.CRYPT OPS.SMIME TODO UPDATING \
 	account.h \
-	attach.h buffy.h charset.h compress.h copy.h crypthash.h dotlock.h functions.h gen_defs \
-	globals.h hash.h history.h init.h keymap.h mutt_crypt.h \
+	attach.h buffer.h buffy.h charset.h compress.h copy.h crypthash.h dotlock.h functions.h gen_defs \
+	filter.h globals.h hash.h history.h init.h keymap.h mutt_crypt.h myvar.h \
 	mailbox.h mapping.h md5.h mime.h mutt.h mutt_curses.h mutt_menu.h \
 	mutt_regex.h mutt_sasl.h mutt_sasl_plain.h mutt_socket.h mutt_ssl.h \
 	mutt_tunnel.h mx.h pager.h pgp.h pop.h protos.h rfc1524.h rfc2047.h \

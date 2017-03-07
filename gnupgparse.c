@@ -46,6 +46,7 @@
 #include <ctype.h>
 
 #include "mutt.h"
+#include "filter.h"
 #include "pgp.h"
 #include "charset.h"
 

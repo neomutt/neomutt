@@ -28,6 +28,7 @@
 #include <sys/stat.h>
 
 #include "mutt.h"
+#include "filter.h"
 #include "mutt_curses.h"
 #include "rfc1524.h"
 #include "keymap.h"

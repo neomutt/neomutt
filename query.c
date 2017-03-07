@@ -21,6 +21,7 @@
 #endif
 
 #include "mutt.h"
+#include "filter.h"
 #include "mutt_menu.h"
 #include "mutt_idna.h"
 #include "mapping.h"

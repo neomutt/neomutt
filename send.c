@@ -21,6 +21,7 @@
 #endif
 
 #include "mutt.h"
+#include "filter.h"
 #include "mutt_curses.h"
 #include "rfc2047.h"
 #include "keymap.h"
