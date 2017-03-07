@@ -35,15 +35,11 @@ enum
   MUTT_MMDF,
   MUTT_MH,
   MUTT_MAILDIR,
-#ifdef USE_NNTP
   MUTT_NNTP,
-#endif
   MUTT_IMAP,
   MUTT_NOTMUCH,
-  MUTT_POP
-#ifdef USE_COMPRESSED
-  , MUTT_COMPRESSED
-#endif
+  MUTT_POP,
+  MUTT_COMPRESSED,
 };
 
 WHERE short DefaultMagic INITVAL (MUTT_MBOX);

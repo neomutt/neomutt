@@ -739,10 +739,6 @@ void mx_fastclose_mailbox (CONTEXT *ctx)
   if (ctx->mx_ops)
     ctx->mx_ops->close (ctx);
 
-#ifdef USE_COMPRESSED
-  mutt_free_compress_info (ctx);
-#endif /* USE_COMPRESSED */
-
   if (ctx->subj_hash)
     hash_destroy (&ctx->subj_hash, NULL);
   if (ctx->id_hash)
@@ -893,13 +889,7 @@ int mx_close_mailbox (CONTEXT *ctx, int *index_hint)
 #endif
   }
 
-#ifdef USE_NNTP
-  /* don't need to move articles from newsgroup */
-  if (ctx->magic == MUTT_NNTP)
-    read_msgs = 0;
-#endif
-
-  if (read_msgs && quadoption (OPT_MOVE) != MUTT_NO)
+  if (read_msgs && quadoption (OPT_MOVE) != MUTT_NO && ctx->magic != MUTT_NNTP)
   {
     char *p;
 
