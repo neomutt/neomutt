@@ -808,7 +808,36 @@ static int check_certificate_cache (X509 *peercert)
   return 0;
 }
 
-static int check_certificate_by_digest (X509 *peercert)
+static int check_certificate_expiration (X509 *peercert, int silent)
+{
+  if (option (OPTSSLVERIFYDATES) != MUTT_NO)
+  {
+    if (X509_cmp_current_time (X509_get_notBefore (peercert)) >= 0)
+    {
+      if (!silent)
+      {
+        mutt_debug (2, "Server certificate is not yet valid\n");
+        mutt_error (_("Server certificate is not yet valid"));
+        mutt_sleep (2);
+      }
+      return 0;
+    }
+    if (X509_cmp_current_time (X509_get_notAfter (peercert)) <= 0)
+    {
+      if (!silent)
+      {
+        mutt_debug (2, "Server certificate has expired\n");
+        mutt_error (_("Server certificate has expired"));
+        mutt_sleep (2);
+      }
+      return 0;
+    }
+  }
+
+  return 1;
+}
+
+static int check_certificate_file (X509 *peercert)
 {
   unsigned char peermd[EVP_MAX_MD_SIZE];
   unsigned int peermdlen;
@@ -816,24 +845,8 @@ static int check_certificate_by_digest (X509 *peercert)
   int pass = 0;
   FILE *fp;
 
-  /* expiration check */
-  if (option (OPTSSLVERIFYDATES) != MUTT_NO)
-  {
-    if (X509_cmp_current_time (X509_get_notBefore (peercert)) >= 0)
-    {
-      mutt_debug (2, "Server certificate is not yet valid\n");
-      mutt_error (_("Server certificate is not yet valid"));
-      mutt_sleep (2);
-      return 0;
-    }
-    if (X509_cmp_current_time (X509_get_notAfter (peercert)) <= 0)
-    {
-      mutt_debug (2, "Server certificate has expired\n");
-      mutt_error (_("Server certificate has expired"));
-      mutt_sleep (2);
-      return 0;
-    }
-  }
+  if (!SslCertFile)
+    return 0;
 
   if ((fp = fopen (SslCertFile, "rt")) == NULL)
     return 0;
@@ -846,10 +859,12 @@ static int check_certificate_by_digest (X509 *peercert)
 
   while (PEM_read_X509 (fp, &cert, NULL, NULL) != NULL)
   {
-    pass = compare_certificates (cert, peercert, peermd, peermdlen) ? 0 : 1;
-
-    if (pass)
+    if ((compare_certificates (cert, peercert, peermd, peermdlen) == 0) &&
+        check_certificate_expiration (cert, 1))
+    {
+      pass = 1;
       break;
+    }
   }
   /* PEM_read_X509 sets an error on eof */
   if (!pass)
@@ -858,6 +873,12 @@ static int check_certificate_by_digest (X509 *peercert)
   safe_fclose (&fp);
 
   return pass;
+}
+
+static int check_certificate_by_digest (X509 *peercert)
+{
+  return check_certificate_expiration (peercert, 0) &&
+    check_certificate_file (peercert);
 }
 
 /* port to mutt from msmtp's tls.c */
@@ -1173,10 +1194,9 @@ static int interactive_check_cert (X509 *cert, int idx, int len, SSL *ssl)
    * an OpenSSL connection.
    */
   menu->keys = _("roas");
-  if (SslCertFile
-      && (option (OPTSSLVERIFYDATES) == MUTT_NO
-	  || (X509_cmp_current_time (X509_get_notAfter (cert)) >= 0
-	      && X509_cmp_current_time (X509_get_notBefore (cert)) < 0)))
+  if (SslCertFile &&
+      check_certificate_expiration (cert, 1) &&
+      !check_certificate_file (cert))
   {
     allow_always = 1;
     if (allow_skip)
