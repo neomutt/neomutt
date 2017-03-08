@@ -19,8 +19,8 @@
 # ifndef USE_SSL_OPENSSL
 #  define USE_SSL_OPENSSL
 # endif
-# ifndef X509_V_FLAG_PARTIAL_CHAIN
-#  define X509_V_FLAG_PARTIAL_CHAIN
+# ifndef HAVE_SSL_PARTIAL_CHAIN
+#  define HAVE_SSL_PARTIAL_CHAIN
 # endif
 # ifndef USE_SSL_GNUTLS
 #  define USE_SSL_GNUTLS

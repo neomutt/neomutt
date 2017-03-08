@@ -786,6 +786,10 @@ AC_ARG_WITH(ssl, AS_HELP_STRING([--with-ssl@<:@=PFX@:>@],[Enable TLS support usi
 			AC_CHECK_DECLS([SSL_set_mode, SSL_MODE_AUTO_RETRY],,
 				AC_MSG_ERROR([Unable to find decent SSL header]), [[#include <openssl/ssl.h>]])
 
+			AC_CHECK_DECL([X509_V_FLAG_PARTIAL_CHAIN],
+				AC_DEFINE(HAVE_SSL_PARTIAL_CHAIN,1,[ Define if OpenSSL supports partial chains. ]),,
+				[[#include <openssl/x509_vfy.h>]])
+
 			AC_DEFINE(USE_SSL,1,[ Define if you want support for SSL. ])
 			AC_DEFINE(USE_SSL_OPENSSL,1,[ Define if you want support for SSL via OpenSSL. ])
 			LIBS="$saved_LIBS"

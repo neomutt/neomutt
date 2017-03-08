@@ -146,7 +146,7 @@ static int ssl_load_certificates (SSL_CTX *ctx)
 static int ssl_set_verify_partial (SSL_CTX *ctx)
 {
   int rv = 0;
-#ifdef X509_V_FLAG_PARTIAL_CHAIN
+#ifdef HAVE_SSL_PARTIAL_CHAIN
   X509_VERIFY_PARAM *param;
 
   if (option (OPTSSLVERIFYPARTIAL))
@@ -1160,7 +1160,7 @@ static int interactive_check_cert (X509 *cert, int idx, int len, SSL *ssl)
   menu->title = title;
 
   /* The leaf/host certificate can't be skipped. */
-#ifdef X509_V_FLAG_PARTIAL_CHAIN
+#ifdef HAVE_SSL_PARTIAL_CHAIN
   if ((idx != 0) &&
       (option (OPTSSLVERIFYPARTIAL)))
     allow_skip = 1;
