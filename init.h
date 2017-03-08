@@ -79,6 +79,10 @@ struct option_t
 
 #define UL (unsigned long)
 
+#ifdef USE_SSL_OPENSSL
+/* need to check X509_V_FLAG_PARTIAL_CHAIN later */
+# include <openssl/x509_vfy.h>
+#endif
 #endif /* _MAKEDOC */
 
 #ifndef ISPELL
@@ -3377,6 +3381,24 @@ struct option_t MuttVars[] = {
   ** URL. You should only unset this for particular known hosts, using
   ** the \fC$<account-hook>\fP function.
   */
+# ifdef USE_SSL_OPENSSL
+#  ifdef X509_V_FLAG_PARTIAL_CHAIN
+  { "ssl_verify_partial_chains", DT_BOOL, R_NONE, OPTSSLVERIFYPARTIAL, 0 },
+  /*
+  ** .pp
+  ** This option should not be changed from the default unless you understand
+  ** what you are doing.
+  ** .pp
+  ** Setting this variable to \fIyes\fP will permit verifying partial
+  ** certification chains, i. e. a certificate chain where not the root,
+  ** but an intermediate certificate CA, or the host certificate, are
+  ** marked trusted (in $$certificate_file), without marking the root
+  ** signing CA as trusted.
+  ** .pp
+  ** (OpenSSL 1.0.2b and newer only).
+  */
+#  endif /* defined X509_V_FLAG_PARTIAL_CHAIN */
+# endif /* defined USE_SSL_OPENSSL */
   { "ssl_ciphers", DT_STR, R_NONE, UL &SslCiphers, UL 0 },
   /*
   ** .pp
