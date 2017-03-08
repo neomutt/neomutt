@@ -78,11 +78,6 @@ struct option_t
 };
 
 #define UL (unsigned long)
-
-#ifdef USE_SSL_OPENSSL
-/* need to check X509_V_FLAG_PARTIAL_CHAIN later */
-# include <openssl/x509_vfy.h>
-#endif
 #endif /* _MAKEDOC */
 
 #ifndef ISPELL
@@ -3382,7 +3377,7 @@ struct option_t MuttVars[] = {
   ** the \fC$<account-hook>\fP function.
   */
 # ifdef USE_SSL_OPENSSL
-#  ifdef X509_V_FLAG_PARTIAL_CHAIN
+#  ifdef HAVE_SSL_PARTIAL_CHAIN
   { "ssl_verify_partial_chains", DT_BOOL, R_NONE, OPTSSLVERIFYPARTIAL, 0 },
   /*
   ** .pp
@@ -3397,7 +3392,7 @@ struct option_t MuttVars[] = {
   ** .pp
   ** (OpenSSL 1.0.2b and newer only).
   */
-#  endif /* defined X509_V_FLAG_PARTIAL_CHAIN */
+#  endif /* defined HAVE_SSL_PARTIAL_CHAIN */
 # endif /* defined USE_SSL_OPENSSL */
   { "ssl_ciphers", DT_STR, R_NONE, UL &SslCiphers, UL 0 },
   /*
