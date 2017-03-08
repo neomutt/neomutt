@@ -316,7 +316,7 @@ static void crypt_free_key (crypt_key_t **keylist)
   }
 }
 
-/* Return trute when key K is valid. */
+/* Return true when key K is valid. */
 static int crypt_key_is_valid (crypt_key_t *k)
 {
   if (k->flags & KEYFLAG_CANTUSE)
@@ -324,7 +324,7 @@ static int crypt_key_is_valid (crypt_key_t *k)
   return 1;
 }
 
-/* Return true whe validity of KEY is sufficient. */
+/* Return true when validity of KEY is sufficient. */
 static int crypt_id_is_strong (crypt_key_t *key)
 {
   unsigned int is_strong = 0;
@@ -836,7 +836,7 @@ static char *encrypt_gpgme_object (gpgme_data_t plaintext, gpgme_key_t *rset,
    operation.  Return the algorithm name as a C string in buffer BUF
    which must have been allocated by the caller with size BUFLEN.
    Returns 0 on success or -1 in case of an error.  The return string
-   is truncted to BUFLEN - 1. */
+   is truncated to BUFLEN - 1. */
 static int get_micalg (gpgme_ctx_t ctx, int use_smime, char *buf, size_t buflen)
 {
   gpgme_sign_result_t result = NULL;
@@ -3782,8 +3782,8 @@ static crypt_key_t *get_candidates (LIST * hints, unsigned int app, int secret)
   
   if ((app & APPLICATION_PGP))
     {
-      /* Its all a mess.  That old GPGME expects different things
-         depending on the protocol.  For gpg we don' t need percent
+      /* It's all a mess.  That old GPGME expects different things
+         depending on the protocol.  For gpg we don't need percent
          escaped pappert but simple strings passed in an array to the
          keylist_ext_start function. */
       LIST *l;
@@ -3948,7 +3948,7 @@ static LIST *crypt_add_string_to_hints (LIST *hints, const char *str)
 }
 
 /* Display a menu to select a key from the array KEYS. FORCED_VALID
-   will be set to true on return if the user did override the the
+   will be set to true on return if the user did override the
    key's validity. */
 static crypt_key_t *crypt_select_key (crypt_key_t *keys,
                                       ADDRESS * p, const char *s, 

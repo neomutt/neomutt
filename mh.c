@@ -242,7 +242,7 @@ static inline mode_t mh_umask (CONTEXT* ctx)
 
 /*
  * Returns 1 if the .mh_sequences last modification time is more recent than the last visit to this mailbox
- * Returns 0 if the modifcation time is older
+ * Returns 0 if the modification time is older
  * Returns -1 on error
  */
 static int mh_sequences_changed(BUFFY *b)
@@ -273,7 +273,7 @@ static int mh_already_notified(BUFFY *b, int msgno)
 }
 
 /* Checks new mail for a mh mailbox.
- * check_stats: if true, also count total, new, and flagged mesages.
+ * check_stats: if true, also count total, new, and flagged messages.
  * Returns 1 if the mailbox has new mail.
  */
 int mh_buffy (BUFFY *mailbox, int check_stats)
@@ -1086,7 +1086,7 @@ static struct maildir* maildir_sort (struct maildir* list, size_t len,
   return maildir_merge_lists (left, right, cmp);
 }
 
-/* Sorts mailbox into it's natural order.
+/* Sorts mailbox into its natural order.
  * Currently only defined for MH where files are numbered.
  */
 static void mh_sort_natural (CONTEXT *ctx, struct maildir **md)
@@ -1435,7 +1435,7 @@ void maildir_flags (char *dest, size_t destlen, HEADER * hdr)
 
   /*
    * The maildir specification requires that all files in the cur
-   * subdirectory have the :unique string appeneded, regardless of whether
+   * subdirectory have the :unique string appended, regardless of whether
    * or not there are any flags.  If .old is set, we know that this message
    * will end up in the cur directory, so we include it in the following
    * test even though there is no associated flag.
@@ -2524,7 +2524,7 @@ int maildir_check_empty (const char *path)
   /* Strategy here is to look for any file not beginning with a period */
 
   do {
-    /* we do "cur" on the first iteration since its more likely that we'll
+    /* we do "cur" on the first iteration since it's more likely that we'll
      * find old messages without having to scan both subdirs
      */
     snprintf (realpath, sizeof (realpath), "%s/%s", path,

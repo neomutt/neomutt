@@ -771,7 +771,7 @@ int rfc822_write_address (char *buf, size_t buflen, ADDRESS *addr, int display)
     pbuf += len;
     buflen -= len;
 
-    /* if there is another address, and its not a group mailbox name or
+    /* if there is another address, and it's not a group mailbox name or
        group terminator, add a comma to separate the addresses */
     if (addr->next && addr->next->mailbox && !addr->group)
     {

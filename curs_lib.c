@@ -1190,7 +1190,7 @@ void mutt_paddstr (int n, const char *s)
     addch (' ');
 }
 
-/* See how many bytes to copy from string so its at most maxlen bytes
+/* See how many bytes to copy from string so it's at most maxlen bytes
  * long and maxwid columns wide */
 size_t mutt_wstr_trunc (const char *src, size_t maxlen, size_t maxwid, size_t *width)
 {

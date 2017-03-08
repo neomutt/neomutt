@@ -1724,13 +1724,13 @@ int pgp_send_menu (HEADER *msg, int *redraw)
   char *mime_inline;
   if (msg->security & INLINE)
   {
-    /* L10N: These next string MUST have the same highlighed letter
+    /* L10N: These next string MUST have the same highlighted letter
              One of them will appear in each of the three strings marked "(inline"), below. */
     mime_inline = _("PGP/M(i)ME");
   }
   else
   {
-    /* L10N: These previous string MUST have the same highlighed letter
+    /* L10N: These previous string MUST have the same highlighted letter
              One of them will appear in each of the three strings marked "(inline"), below. */
     mime_inline = _("(i)nline");
   }

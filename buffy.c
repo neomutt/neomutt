@@ -313,7 +313,7 @@ int mutt_parse_mailboxes (BUFFER *path, BUFFER *s, unsigned long data, BUFFER *e
 
 /* Checks the specified maildir subdir (cur or new) for new mail or mail counts.
  * check_new:   if true, check for new mail.
- * check_stats: if true, count total, new, and flagged mesages.
+ * check_stats: if true, count total, new, and flagged messages.
  * Returns 1 if the dir has new mail.
  */
 static int buffy_maildir_check_dir (BUFFY* mailbox, const char *dir_name, int check_new,
@@ -393,7 +393,7 @@ static int buffy_maildir_check_dir (BUFFY* mailbox, const char *dir_name, int ch
 }
 
 /* Checks new mail for a maildir mailbox.
- * check_stats: if true, also count total, new, and flagged mesages.
+ * check_stats: if true, also count total, new, and flagged messages.
  * Returns 1 if the mailbox has new mail.
  */
 static int buffy_maildir_check (BUFFY* mailbox, int check_stats)
@@ -418,7 +418,7 @@ static int buffy_maildir_check (BUFFY* mailbox, int check_stats)
 }
 
 /* Checks new mail for an mbox mailbox
- * check_stats: if true, also count total, new, and flagged mesages.
+ * check_stats: if true, also count total, new, and flagged messages.
  * Returns 1 if the mailbox has new mail.
  */
 static int buffy_mbox_check (BUFFY* mailbox, struct stat *sb, int check_stats)

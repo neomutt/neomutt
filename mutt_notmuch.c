@@ -158,7 +158,7 @@ struct nm_ctxdata
 
   unsigned int noprogress     : 1;  /**< Don't show the progress bar */
   unsigned int longrun        : 1;  /**< A long-lived action is in progress */
-  unsigned int trans          : 1;  /**< Atomic transacion in progress */
+  unsigned int trans          : 1;  /**< Atomic transaction in progress */
   unsigned int progress_ready : 1;  /**< A progress bar has been initialised */
 };
 

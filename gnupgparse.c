@@ -367,7 +367,7 @@ static pgp_key_t parse_pub_line (char *buf, int *is_subkey, pgp_key_t k)
   if (!(is_uid || is_fpr || (*is_subkey && option (OPTPGPIGNORESUB))))
     k = safe_malloc (sizeof (*k));
   memcpy (k, &tmp, sizeof (*k));
-  /* fixup parentship of uids after mering the temp key into
+  /* fixup parentship of uids after merging the temp key into
    * the real key */
   if (tmp.address)
   {

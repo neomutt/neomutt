@@ -69,7 +69,7 @@ typedef void (*crypt_func_init_t) (void);
 typedef void (*crypt_func_set_sender_t) (const char *sender);
 
 /*
-   A structure to keep all crypto module fucntions together.
+   A structure to keep all crypto module functions together.
  */
 typedef struct crypt_module_functions
 {

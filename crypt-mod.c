@@ -22,7 +22,7 @@
 
 #include "crypt-mod.h"
 
-/* A type an a variable to keep track of registered crypto modules. */
+/* A type of a variable to keep track of registered crypto modules. */
 typedef struct crypt_module *crypt_module_t;
 
 struct crypt_module

@@ -308,7 +308,7 @@ int mutt_get_postponed (CONTEXT *ctx, HEADER *hdr, HEADER **cur, char *fcc, size
     {
       if (ctx)
       {
-	/* if a mailbox is currently open, look to see if the orignal message
+	/* if a mailbox is currently open, look to see if the original message
 	   the user attempted to reply to is in this mailbox */
 	p = skip_email_wsp(tmp->data + 18);
 	if (!ctx->id_hash)

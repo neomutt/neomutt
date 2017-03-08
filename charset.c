@@ -375,7 +375,7 @@ iconv_t mutt_iconv_open (const char *tocode, const char *fromcode, int flags)
   mutt_canonical_charset (fromcode1, sizeof (fromcode1), fromcode);
 
   /* maybe apply charset-hooks and recanonicalise fromcode,
-   * but only when caller asked us to sanitize a potentialy wrong
+   * but only when caller asked us to sanitize a potentially wrong
    * charset name incoming from the wild exterior. */
   if ((flags & MUTT_ICONV_HOOK_FROM) && (tmp = mutt_charset_hook (fromcode1)))
     mutt_canonical_charset (fromcode1, sizeof (fromcode1), tmp);

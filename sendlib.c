@@ -2892,7 +2892,7 @@ int mutt_write_fcc (const char *path, HEADER *hdr, const char *msgid,
    * */
   mutt_write_rfc822_header (msg->fp, hdr->env, hdr->content, post ? -post : 0, 0);
 
-  /* (postponment) if this was a reply of some sort, <msgid> contains the
+  /* (postponement) if this was a reply of some sort, <msgid> contains the
    * Message-ID: of message replied to.  Save it using a special X-Mutt-
    * header so it can be picked up if the message is recalled at a later
    * point in time.  This will allow the message to be marked as replied if
@@ -2901,7 +2901,7 @@ int mutt_write_fcc (const char *path, HEADER *hdr, const char *msgid,
   if (post && msgid)
     fprintf (msg->fp, "X-Mutt-References: %s\n", msgid);
 
-  /* (postponment) save the Fcc: using a special X-Mutt- header so that
+  /* (postponement) save the Fcc: using a special X-Mutt- header so that
    * it can be picked up when the message is recalled
    */
   if (post && fcc)
@@ -2911,11 +2911,11 @@ int mutt_write_fcc (const char *path, HEADER *hdr, const char *msgid,
     fprintf (msg->fp, "Status: RO\n");
 
   /* mutt_write_rfc822_header() only writes out a Date: header with
-   * mode == 0, i.e. _not_ postponment; so write out one ourself */
+   * mode == 0, i.e. _not_ postponement; so write out one ourself */
   if (post)
     fprintf (msg->fp, "%s", mutt_make_date (buf, sizeof (buf)));
 
-  /* (postponment) if the mail is to be signed or encrypted, save this info */
+  /* (postponement) if the mail is to be signed or encrypted, save this info */
   if ((WithCrypto & APPLICATION_PGP)
       && post && (hdr->security & APPLICATION_PGP))
   {
@@ -2935,7 +2935,7 @@ int mutt_write_fcc (const char *path, HEADER *hdr, const char *msgid,
     fputc ('\n', msg->fp);
   }
 
-  /* (postponment) if the mail is to be signed or encrypted, save this info */
+  /* (postponement) if the mail is to be signed or encrypted, save this info */
   if ((WithCrypto & APPLICATION_SMIME)
       && post && (hdr->security & APPLICATION_SMIME))
   {

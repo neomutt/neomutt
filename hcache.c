@@ -557,7 +557,7 @@ static int create_hcache_dir(const char *path)
 /**
  * mutt_hcache_per_folder - Generate the hcache pathname
  * @param path   Base directory, from $header_cache
- * @paran folder Mailbox name (including protocol)
+ * @param folder Mailbox name (including protocol)
  * @param namer  Callback to generate database filename
  *
  * @return Full pathname to the database (to be generated)

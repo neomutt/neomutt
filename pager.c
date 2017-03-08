@@ -179,7 +179,7 @@ static void
 resolve_color (struct line_t *lineInfo, int n, int cnt, int flags, int special,
     ansi_attr *a)
 {
-  int def_color;		/* color without syntax hilight */
+  int def_color;		/* color without syntax highlight */
   int color;			/* final color */
   static int last_color;	/* last color set */
   int search = 0, i, m;
@@ -1405,7 +1405,7 @@ display_line (FILE *f, LOFF_T *last_pos, struct line_t **lineInfo, int n,
     }
   }
 
-  /* only do color hiliting if we are viewing a message */
+  /* only do color highlighting if we are viewing a message */
   if (flags & (MUTT_SHOWCOLOR | MUTT_TYPES))
   {
     if ((*lineInfo)[n].type == -1)
@@ -1852,7 +1852,7 @@ mutt_pager (const char *banner, const char *fname, int flags, pager_t *extra)
 	NORMAL_COLOR;
 	index->pagelen = index_window->rows;;
 
-	/* some fudge to work out where abouts the indicator should go */
+	/* some fudge to work out whereabouts the indicator should go */
 	if (index->current - indicator < 0)
 	  index->top = 0;
 	else if (index->max - index->current < index->pagelen - indicator)

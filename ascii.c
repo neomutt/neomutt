@@ -49,7 +49,7 @@ int ascii_strcasecmp (const char *a, const char *b)
   {
     if ((i = tolower (*a) - tolower (*b)))
       return i;
-    /* test for NUL here rather that in the for loop in order to detect unqual
+    /* test for NUL here rather that in the for loop in order to detect unequal
      * length strings (see http://dev.mutt.org/trac/ticket/3601)
      */
     if (!*a)

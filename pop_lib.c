@@ -548,7 +548,7 @@ static int check_uidl (char *line, void *data)
   return 0;
 }
 
-/* reconnect and verify idnexes if connection was lost */
+/* reconnect and verify indexes if connection was lost */
 int pop_reconnect (CONTEXT *ctx)
 {
   int ret;

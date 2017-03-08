@@ -160,7 +160,7 @@ void crypt_forget_passphrase (void);
 /* Check that we have a usable passphrase, ask if not. */
 int crypt_valid_passphrase (int);
 
-/* Write the message body/part A described by state S to a the given
+/* Write the message body/part A described by state S to the given
    TEMPFILE.  */
 int crypt_write_signed(BODY *a, STATE *s, const char *tempf);
 

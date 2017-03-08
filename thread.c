@@ -408,7 +408,7 @@ static LIST *make_subject_list (THREAD *cur, time_t *dateptr)
   return (subjects);
 }
 
-/* find the best possible match for a parent mesage based upon subject.
+/* find the best possible match for a parent message based upon subject.
  * if there are multiple matches, the one which was sent the latest, but
  * before the current message, is used. 
  */

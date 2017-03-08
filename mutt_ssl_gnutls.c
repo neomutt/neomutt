@@ -330,7 +330,7 @@ static int tls_set_priority(tlssockdata *data)
 #else
 /* This array needs to be large enough to hold all the possible values support
  * by Mutt.  The initialized values are just placeholders--the array gets
- * overwrriten in tls_negotiate() depending on the $ssl_use_* options.
+ * overwritten in tls_negotiate() depending on the $ssl_use_* options.
  */
 static int protocol_priority[] = {GNUTLS_TLS1_2, GNUTLS_TLS1_1, GNUTLS_TLS1, GNUTLS_SSL3, 0};
 

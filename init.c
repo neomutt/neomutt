@@ -2434,7 +2434,7 @@ static int parse_set (BUFFER *tmp, BUFFER *s, unsigned long data, BUFFER *err)
       mutt_extract_token (tmp, s, 0);
 
       if (parse_regex(idx, tmp, err))
-	/* $reply_regexp and $alterantes require special treatment */
+	/* $reply_regexp and $alternates require special treatment */
 	if (Context && Context->msgcount &&
 	    mutt_strcmp (MuttVars[idx].option, "reply_regexp") == 0)
 	{
@@ -3313,7 +3313,7 @@ int mutt_nm_query_complete (char *buffer, size_t len, int pos, int numtabs)
     if (Completed[0] == 0 && User_typed[0])
       return 0;
 
-    /* Num_matched will _always_ be atleast 1 since the initial
+    /* Num_matched will _always_ be at least 1 since the initial
      * user-typed string is always stored */
     if (numtabs == 1 && Num_matched == 2)
       snprintf(Completed, sizeof(Completed),"%s", Matches[0]);
@@ -3363,7 +3363,7 @@ int mutt_nm_tag_complete (char *buffer, size_t len, int pos, int numtabs)
   if (Completed[0] == 0 && User_typed[0])
     return 0;
 
-  /* Num_matched will _always_ be atleast 1 since the initial
+  /* Num_matched will _always_ be at least 1 since the initial
     * user-typed string is always stored */
   if (numtabs == 1 && Num_matched == 2)
     snprintf(Completed, sizeof(Completed),"%s", Matches[0]);
@@ -3940,7 +3940,7 @@ void mutt_init (int skip_sys_rc, LIST *commands)
     AliasFile = safe_strdup (Muttrc->data);
   }
 
-  /* Process the global rc file if it exists and the user hasn't explicity
+  /* Process the global rc file if it exists and the user hasn't explicitly
      requested not to via "-n".  */
   if (!skip_sys_rc)
   {
@@ -4212,7 +4212,7 @@ int mutt_label_complete (char *buffer, size_t len, int numtabs)
     Matches[Num_matched++] = User_typed;
 
     /* All matches are stored. Longest non-ambiguous string is ""
-     * i.e. dont change 'buffer'. Fake successful return this time */
+     * i.e. don't change 'buffer'. Fake successful return this time */
     if (User_typed[0] == 0)
       return 1;
   }
@@ -4220,7 +4220,7 @@ int mutt_label_complete (char *buffer, size_t len, int numtabs)
   if (Completed[0] == 0 && User_typed[0])
     return 0;
 
-   /* Num_matched will _always_ be atleast 1 since the initial
+   /* Num_matched will _always_ be at least 1 since the initial
     * user-typed string is always stored */
   if (numtabs == 1 && Num_matched == 2)
     snprintf(Completed, sizeof(Completed), "%s", Matches[0]);

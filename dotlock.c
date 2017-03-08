@@ -391,7 +391,7 @@ usage (const char *av0)
  *
  * Return values:
  * 
- * 0 - Evereything's fine.  The program's new current
+ * 0 - Everything's fine.  The program's new current
  *     directory is the contains the file to be locked.
  *     The string pointed to by bn contains the name of
  *     the file to be locked.

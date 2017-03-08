@@ -559,7 +559,7 @@ int rfc1524_expand_filename (char *nametemplate,
 }
 
 /* If rfc1524_expand_command() is used on a recv'd message, then
- * the filename doesn't exist yet, but if its used while sending a message,
+ * the filename doesn't exist yet, but if it's used while sending a message,
  * then we need to rename the existing file.
  *
  * This function returns 0 on successful move, 1 on old file doesn't exist,

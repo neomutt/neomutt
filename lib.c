@@ -958,7 +958,7 @@ void mutt_remove_trailing_ws (char *s)
 }
 
 /*
- * Write the concatened pathname (dir + "/" + fname) into dst.
+ * Write the concatenated pathname (dir + "/" + fname) into dst.
  * The slash is omitted when dir or fname is of 0 length.
  * Returns NULL on error or a pointer to dst otherwise.
  */
@@ -1192,7 +1192,7 @@ char * strfcpy (char *dest, const char *src, size_t dlen)
  * Create a directory, creating the parents if necessary. (like mkdir -p)
  *
  * Note: The permissions are only set on the final directory.
- *       The permissions of any parent directoies are determined by the umask.
+ *       The permissions of any parent directories are determined by the umask.
  *       (This is how "mkdir -p" behaves)
  */
 int mutt_mkdir(const char *path, mode_t mode)

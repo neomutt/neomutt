@@ -555,7 +555,7 @@ static int nntp_auth (NNTP_SERVER *nserv)
 	  return 0;
 	}
 
-	/* terminate SASL sessoin */
+	/* terminate SASL session */
 	sasl_dispose (&saslconn);
 	if (conn->fd < 0)
 	  break;
@@ -1135,7 +1135,7 @@ static int parse_overview_line (char *line, void *data)
       }
     }
 
-    /* not chached yet, store header */
+    /* not cached yet, store header */
     else
     {
       mutt_debug (2, "parse_overview_line: mutt_hcache_store %s\n", buf);

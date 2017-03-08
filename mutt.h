@@ -737,7 +737,7 @@ static inline PARAMETER *mutt_new_parameter()
     return safe_calloc (1, sizeof (PARAMETER));
 }
 
-/* Information that helps in determing the Content-* of an attachment */
+/* Information that helps in determining the Content-* of an attachment */
 typedef struct content
 {
   long hibin;              /* 8-bit characters */
@@ -796,7 +796,7 @@ typedef struct body
   unsigned int encoding : 3;    /* content-transfer-encoding */
   unsigned int disposition : 2; /* content-disposition */
   unsigned int use_disp : 1;    /* Content-Disposition uses filename= ? */
-  unsigned int unlink : 1;      /* flag to indicate the the file named by
+  unsigned int unlink : 1;      /* flag to indicate the file named by
 				 * "filename" should be unlink()ed before
 				 * free()ing this structure
 				 */
