@@ -21,7 +21,7 @@ IMAP_SUBDIR = imap
 IMAP_INCLUDES = -I$(top_srcdir)/imap
 endif
 
-SUBDIRS = m4 intl $(DOC_SUBDIR) $(PO_SUBDIR) contrib $(IMAP_SUBDIR)
+SUBDIRS = m4 $(DOC_SUBDIR) $(PO_SUBDIR) contrib $(IMAP_SUBDIR)
 
 bin_SCRIPTS = $(SMIMEAUX_TARGET)
 
@@ -52,7 +52,7 @@ mutt_SOURCES = \
 nodist_mutt_SOURCES = $(BUILT_SOURCES)
 
 mutt_LDADD = $(MUTT_LIB_OBJECTS) $(LIBOBJS) $(LIBIMAP) $(MUTTLIBS) \
-	$(INTLLIBS) $(LIBICONV)  $(GPGME_LIBS)
+	$(INTLLIBS) $(LIBICONV) $(GPGME_LIBS)
 
 mutt_DEPENDENCIES = $(MUTT_LIB_OBJECTS) $(LIBOBJS) $(LIBIMAPDEPS) \
 	$(INTLDEPS)
@@ -61,7 +61,7 @@ DEFS=-DPKGDATADIR=\"$(pkgdatadir)\" -DSYSCONFDIR=\"$(sysconfdir)\" \
 	-DBINDIR=\"$(bindir)\" -DMUTTLOCALEDIR=\"$(datadir)/locale\" \
 	-DHAVE_CONFIG_H=1
 
-AM_CPPFLAGS=-I. -I$(top_srcdir) $(IMAP_INCLUDES) $(GPGME_CFLAGS) -Iintl
+AM_CPPFLAGS=-I. -I$(top_srcdir) $(IMAP_INCLUDES) $(GPGME_CFLAGS)
 
 EXTRA_mutt_SOURCES = account.c bcache.c compress.c crypt-gpgme.c crypt-mod-pgp-classic.c \
 	crypt-mod-pgp-gpgme.c crypt-mod-smime-classic.c \
@@ -73,7 +73,7 @@ EXTRA_mutt_SOURCES = account.c bcache.c compress.c crypt-gpgme.c crypt-mod-pgp-c
 	sidebar.c smime.c smtp.c utf8.c wcwidth.c \
 	bcache.h browser.h hcache.h mbyte.h mutt_idna.h remailer.h url.h
 
-EXTRA_DIST = COPYRIGHT LICENSE.md OPS OPS.PGP OPS.CRYPT OPS.SMIME TODO UPDATING \
+EXTRA_DIST = config.rpath  COPYRIGHT LICENSE.md OPS OPS.PGP OPS.CRYPT OPS.SMIME TODO UPDATING \
 	account.h \
 	attach.h buffer.h buffy.h charset.h compress.h copy.h crypthash.h dotlock.h functions.h gen_defs \
 	filter.h globals.h hash.h history.h init.h keymap.h mutt_crypt.h myvar.h \

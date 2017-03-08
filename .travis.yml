@@ -36,6 +36,7 @@ addons:
       - gettext
       - lua5.2
       - liblua5.2-dev
+      - autopoint
 
 git:
   depth: 3

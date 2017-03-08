@@ -1189,11 +1189,15 @@ AC_ARG_ENABLE(iconv, AS_HELP_STRING([--disable-iconv],[Disable iconv support]),
 	fi
 ])
 
-MUTT_AM_GNU_GETTEXT
+AM_GNU_GETTEXT_VERSION([0.18])
+AM_GNU_GETTEXT([external])
+AC_CHECK_HEADERS([locale.h])
 
-if test "$am_cv_func_iconv" != "yes"; then
+if test "$am_cv_func_iconv" = "no"; then
 	AC_MSG_WARN([Configuring without iconv support. See INSTALL for details])
 else
+
+AM_ICONV
 
 AC_CHECK_HEADERS(iconv.h,
 	[AC_MSG_CHECKING(whether iconv.h defines iconv_t)
@@ -1260,18 +1264,6 @@ if test "$mutt_cv_iconv_nontrans" = yes; then
 	AC_DEFINE(ICONV_NONTRANS, 1)
 else
 	AC_DEFINE(ICONV_NONTRANS, 0)
-fi
-
-CPPFLAGS="$CPPFLAGS -I\$(top_srcdir)/intl"
-
-if test "$BUILD_INCLUDED_LIBINTL" = "yes"; then
-	AC_DEFINE(HAVE_BIND_TEXTDOMAIN_CODESET,1,
-		[ Define if your gettext has bind_textdomain_codeset. ])
-else
-	mutt_save_LIBS="$LIBS"
-	LIBS="$LIBS $INTLLIBS"
-	AC_CHECK_FUNCS(bind_textdomain_codeset)
-	LIBS="$mutt_save_LIBS"
 fi
 
 fi # libiconv
@@ -1482,7 +1474,7 @@ if test x$full_doc != xno; then
 fi
 
 AC_CONFIG_FILES(Makefile contrib/Makefile doc/Makefile imap/Makefile
-	intl/Makefile m4/Makefile po/Makefile.in
+	m4/Makefile po/Makefile.in
 	hcachever.sh doc/instdoc.sh)
 AC_OUTPUT
 
