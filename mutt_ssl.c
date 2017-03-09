@@ -551,6 +551,16 @@ static int ssl_negotiate (CONNECTION *conn, sslsockdata* ssldata)
 
   SSL_set_verify (ssldata->ssl, SSL_VERIFY_PEER, ssl_verify_callback);
   SSL_set_mode (ssldata->ssl, SSL_MODE_AUTO_RETRY);
+
+  if (!SSL_set_tlsext_host_name (ssldata->ssl, conn->account.host))
+  {
+    /* L10N: This is a warning when trying to set the host name for
+     * TLS Server Name Indication (SNI).  This allows the server to present
+     * the correct certificate if it supports multiple hosts. */
+    mutt_error _("Warning: unable to set TLS SNI host name");
+    mutt_sleep (1);
+  }
+
   ERR_clear_error ();
 
   if ((err = SSL_connect (ssldata->ssl)) != 1)
