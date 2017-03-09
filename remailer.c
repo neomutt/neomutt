@@ -32,6 +32,7 @@
 #include "mutt_menu.h"
 #include "mutt_regex.h"
 #include "mapping.h"
+#include "filter.h"
 
 #include "remailer.h"
 
