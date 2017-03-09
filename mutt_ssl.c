@@ -1029,6 +1029,12 @@ static int ssl_verify_callback (int preverify_ok, X509_STORE_CTX *ctx)
   X509 *cert;
   SSL *ssl;
   int skip_mode;
+#ifdef HAVE_SSL_PARTIAL_CHAIN
+  static int last_pos = 0;
+  static X509 *last_cert = NULL;
+  unsigned char last_cert_md[EVP_MAX_MD_SIZE];
+  unsigned int last_cert_mdlen;
+#endif
 
   if (! (ssl = X509_STORE_CTX_get_ex_data (ctx, SSL_get_ex_data_X509_STORE_CTX_idx ())))
   {
@@ -1057,6 +1063,31 @@ static int ssl_verify_callback (int preverify_ok, X509_STORE_CTX *ctx)
               "ssl_verify_callback: checking cert chain entry %s (preverify: %d skipmode: %d)\n",
               X509_NAME_oneline (X509_get_subject_name (cert), buf, sizeof (buf)),
               preverify_ok, skip_mode));
+
+#ifdef HAVE_SSL_PARTIAL_CHAIN
+  /* Sometimes, when a certificate is (s)kipped, OpenSSL will pass it
+   * a second time with preverify_ok = 1.  Don't show it or the user
+   * will think their "s" key is broken.
+   */
+  if (option (OPTSSLVERIFYPARTIAL))
+  {
+    if (skip_mode && preverify_ok && (pos == last_pos) && last_cert)
+    {
+      if (X509_digest (last_cert, EVP_sha1(), last_cert_md, &last_cert_mdlen) &&
+          !compare_certificates (cert, last_cert, last_cert_md, last_cert_mdlen))
+      {
+        dprint (2, (debugfile,
+                    "ssl_verify_callback: ignoring duplicate skipped certificate.\n"));
+        return 1;
+      }
+    }
+
+    last_pos = pos;
+    if (last_cert)
+      X509_free (last_cert);
+    last_cert = X509_dup (cert);
+  }
+#endif
 
   /* check session cache first */
   if (check_certificate_cache (cert))
