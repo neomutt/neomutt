@@ -417,6 +417,13 @@ static int tls_negotiate (CONNECTION * conn)
   /* set socket */
   gnutls_transport_set_ptr (data->state, (gnutls_transport_ptr_t)(long)conn->fd);
 
+  if (gnutls_server_name_set (data->state, GNUTLS_NAME_DNS, conn->account.host,
+                              mutt_strlen (conn->account.host)))
+  {
+    mutt_error(_("Warning: unable to set TLS SNI host name"));
+    mutt_sleep (1);
+  }
+
   if (tls_set_priority(data) < 0) {
     goto fail;
   }
