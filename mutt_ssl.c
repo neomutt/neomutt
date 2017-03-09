@@ -89,7 +89,7 @@ static void ssl_err (sslsockdata *data, int err);
 static void ssl_dprint_err_stack (void);
 static int ssl_cache_trusted_cert (X509 *cert);
 static int ssl_verify_callback (int preverify_ok, X509_STORE_CTX *ctx);
-static int interactive_check_cert (X509 *cert, int idx, int len, SSL *ssl);
+static int interactive_check_cert (X509 *cert, int idx, int len, SSL *ssl, int allow_always);
 static void ssl_get_client_cert(sslsockdata *ssldata, CONNECTION *conn);
 static int ssl_passwd_cb(char *buf, int size, int rwflag, void *userdata);
 static int ssl_negotiate (CONNECTION *conn, sslsockdata*);
@@ -1105,7 +1105,9 @@ static int ssl_verify_callback (int preverify_ok, X509_STORE_CTX *ctx)
     {
       mutt_error (_("Certificate host check failed: %s"), buf);
       mutt_sleep (2);
-      return interactive_check_cert (cert, pos, len, ssl);
+      /* we disallow (a)ccept always in the prompt, because it will have no effect
+       * for hostname mismatches. */
+      return interactive_check_cert (cert, pos, len, ssl, 0);
     }
     dprint (2, (debugfile, "ssl_verify_callback: hostname check passed\n"));
   }
@@ -1131,13 +1133,13 @@ static int ssl_verify_callback (int preverify_ok, X509_STORE_CTX *ctx)
 #endif
 
    /* prompt user */
-    return interactive_check_cert (cert, pos, len, ssl);
+    return interactive_check_cert (cert, pos, len, ssl, 1);
   }
 
   return 1;
 }
 
-static int interactive_check_cert (X509 *cert, int idx, int len, SSL *ssl)
+static int interactive_check_cert (X509 *cert, int idx, int len, SSL *ssl, int allow_always)
 {
   static const int part[] =
     { NID_commonName,             /* CN */
@@ -1156,7 +1158,7 @@ static int interactive_check_cert (X509 *cert, int idx, int len, SSL *ssl)
   int done, row, i;
   unsigned u;
   FILE *fp;
-  int allow_always = 0, allow_skip = 0;
+  int allow_skip = 0;
 
   menu->max = mutt_array_size (part) * 2 + 10;
   menu->dialog = (char **) safe_calloc (1, menu->max * sizeof (char *));
@@ -1206,6 +1208,15 @@ static int interactive_check_cert (X509 *cert, int idx, int len, SSL *ssl)
     allow_skip = 1;
 #endif
 
+  /* Inside ssl_verify_callback(), this function is guarded by a call to
+   * check_certificate_by_digest().  This means if check_certificate_expiration() is
+   * true, then check_certificate_file() must be false.  Therefore we don't need
+   * to also scan the certificate file here.
+   */
+  allow_always = allow_always &&
+                 SslCertFile &&
+                 check_certificate_expiration (cert, 1);
+
   /* L10N:
    * These four letters correspond to the choices in the next four strings:
    * (r)eject, accept (o)nce, (a)ccept always, (s)kip.
@@ -1213,11 +1224,8 @@ static int interactive_check_cert (X509 *cert, int idx, int len, SSL *ssl)
    * an OpenSSL connection.
    */
   menu->keys = _("roas");
-  if (SslCertFile &&
-      check_certificate_expiration (cert, 1) &&
-      !check_certificate_file (cert))
+  if (allow_always)
   {
-    allow_always = 1;
     if (allow_skip)
       menu->prompt = _("(r)eject, accept (o)nce, (a)ccept always, (s)kip");
     else
