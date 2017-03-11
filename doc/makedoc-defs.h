@@ -19,6 +19,9 @@
 # ifndef USE_SSL_OPENSSL
 #  define USE_SSL_OPENSSL
 # endif
+# ifndef HAVE_SSL_PARTIAL_CHAIN
+#  define HAVE_SSL_PARTIAL_CHAIN
+# endif
 # ifndef USE_SSL_GNUTLS
 #  define USE_SSL_GNUTLS
 # endif
