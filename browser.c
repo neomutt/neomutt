@@ -1577,9 +1577,12 @@ void _mutt_select_file (char *f, size_t flen, int flags, char ***files, int *num
 #endif
 	{
 	  /* add '/' at the end of the directory name if not already there */
-	  int len=mutt_strlen(LastDir);
-	  if (len && LastDir[len-1] != '/' && sizeof (buf) > len)
-	    buf[len]='/';
+	  int len = mutt_strlen(buf);
+	  if ((len > 0) && (buf[len - 1] != '/') && (sizeof(buf) > (len + 1)))
+	  {
+	    buf[len] = '/';
+	    buf[len + 1] = '\0';
+	  }
 	}
 
 	if (mutt_get_field (_("Chdir to: "), buf, sizeof (buf), MUTT_FILE) == 0 &&
