@@ -34,6 +34,8 @@ addons:
       - docbook-xsl
       - libxml2-utils
       - gettext
+      - lua5.2
+      - liblua5.2-dev
 
 git:
   depth: 3

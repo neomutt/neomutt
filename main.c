@@ -89,6 +89,7 @@ static void mutt_usage (void)
        mutt [<options>] -p\n\
        mutt [<options>] -A <alias> [...]\n\
        mutt [<options>] -Q <query> [...]\n\
+       mutt [<options>] -B\n\
        mutt [<options>] -D [-S]\n\
        mutt -v[v]\n"));
 
@@ -100,7 +101,8 @@ options:\n\
   -b <address>\tspecify a blind carbon-copy (BCC) address\n\
   -c <address>\tspecify a carbon-copy (CC) address\n\
   -D\t\tprint the value of all variables to stdout\n\
-  -D -S\t\tlike -D, but hide the value of sensitive variables"));
+  -D -S\t\tlike -D, but hide the value of sensitive variables\n\
+  -B\t\trun in batch mode (do not start the ncurses UI)"));
 #if DEBUG
   puts (_("  -d <level>\tlog debugging output to ~/.muttdebug0"));
 #endif
@@ -199,6 +201,7 @@ int main (int argc, char **argv, char **environ)
   int explicit_folder = 0;
   int dump_variables = 0;
   int hide_sensitive = 0;
+  int batch_mode = 0;
   int edit_infile = 0;
   extern char *optarg;
   extern int optind;
@@ -264,9 +267,9 @@ int main (int argc, char **argv, char **environ)
     }
 
 #ifdef USE_NNTP
-    if ((i = getopt (argc, argv, "+A:a:b:F:f:c:Dd:Ee:g:GH:s:i:hm:npQ:RSvxyzZ")) != EOF)
+    if ((i = getopt (argc, argv, "+A:a:Bb:F:f:c:Dd:Ee:g:GH:s:i:hm:npQ:RSvxyzZ")) != EOF)
 #else
-    if ((i = getopt (argc, argv, "+A:a:b:F:f:c:Dd:Ee:H:s:i:hm:npQ:RSvxyzZ")) != EOF)
+    if ((i = getopt (argc, argv, "+A:a:Bb:F:f:c:Dd:Ee:H:s:i:hm:npQ:RSvxyzZ")) != EOF)
 #endif
       switch (i)
       {
@@ -302,6 +305,10 @@ int main (int argc, char **argv, char **environ)
       case 'D':
 	dump_variables = 1;
 	break;
+
+      case 'B':
+        batch_mode = 1;
+        break;
 
       case 'd':
 #ifdef DEBUG
@@ -419,7 +426,7 @@ int main (int argc, char **argv, char **environ)
   }
 
   /* Check for a batch send. */
-  if (!isatty (0) || queries || alias_queries || dump_variables)
+  if (!isatty (0) || queries || alias_queries || dump_variables || batch_mode)
   {
     set_option (OPTNOCURSES);
     sendflags = SENDBATCH;
@@ -512,6 +519,9 @@ int main (int argc, char **argv, char **environ)
       }
     }
   }
+
+  if (batch_mode)
+      exit(0);
 
   if (sendflags & SENDPOSTPONED)
   {

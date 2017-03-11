@@ -132,7 +132,7 @@ int query_quadoption (int opt, const char *prompt)
 
 /* given the variable ``s'', return the index into the rc_vars array which
    matches, or -1 if the variable is not found.  */
-int mutt_option_index (char *s)
+int mutt_option_index (const char *s)
 {
   int i;
 
@@ -141,6 +141,240 @@ int mutt_option_index (char *s)
       return (MuttVars[i].type == DT_SYN ?  mutt_option_index ((char *) MuttVars[i].data) : i);
   return (-1);
 }
+
+#ifdef USE_LUA
+int mutt_option_to_string(const struct option_t *opt, char *val, size_t len)
+{
+  mutt_debug(2, " * mutt_option_to_string(%s)\n",
+             NONULL((char *) opt->data));
+  int idx = mutt_option_index((const char *) opt->option);
+  if (idx != -1)
+    return var_to_string(idx, val, len);
+  return 0;
+}
+
+const struct option_t *mutt_option_get(const char *s)
+{
+  mutt_debug(2, " * mutt_option_get(%s)\n", s);
+  int idx = mutt_option_index(s);
+  if (idx != -1)
+    return &MuttVars[idx];
+  else if (!mutt_strncmp("my_", s, 3))
+  {
+    struct option_t *opt = safe_malloc(sizeof(struct option_t));
+    if (!myvar_get(s))
+        return NULL;
+    opt->data = (unsigned long) safe_strdup(myvar_get(s));
+    if (*((char **) opt->data))
+    {
+      opt->option = safe_strdup(s);
+      opt->type = DT_STR;
+      return opt;
+    }
+    FREE(&opt);
+  }
+  return NULL;
+}
+#endif
+
+static int parse_regex(int idx, BUFFER *tmp, BUFFER *err)
+{
+  int e, flags = 0;
+  const char *p;
+  regex_t *rx;
+  REGEXP *ptr = (REGEXP *) MuttVars[idx].data;
+
+  if (!ptr->pattern || (mutt_strcmp(ptr->pattern, tmp->data) != 0))
+  {
+    int not = 0;
+
+    /* $mask is case-sensitive */
+    if (mutt_strcmp(MuttVars[idx].option, "mask") != 0)
+      flags |= mutt_which_case(tmp->data);
+
+    p = tmp->data;
+    if (mutt_strcmp(MuttVars[idx].option, "mask") == 0)
+    {
+      if (*p == '!')
+      {
+        not = 1;
+        p++;
+      }
+    }
+
+    rx = safe_malloc(sizeof(regex_t));
+    if ((e = REGCOMP(rx, p, flags)) != 0)
+    {
+      regerror(e, rx, err->data, err->dsize);
+      FREE(&rx);
+      return 0;
+    }
+
+    /* get here only if everything went smoothly */
+    if (ptr->pattern)
+    {
+      FREE(&ptr->pattern);
+      regfree((regex_t *) ptr->rx);
+      FREE(&ptr->rx);
+    }
+
+    ptr->pattern = safe_strdup(tmp->data);
+    ptr->rx = rx;
+    ptr->not = not;
+
+    return 1;
+  }
+  return 0;
+}
+
+#ifdef USE_LUA
+static void free_mbchar_table(mbchar_table **t);
+static mbchar_table *parse_mbchar_table(const char *s);
+static int parse_sort(short *val, const char *s, const struct mapping_t *map,
+                      BUFFER *err);
+
+int mutt_option_set(const struct option_t *val, BUFFER *err)
+{
+  mutt_debug(2, " * mutt_option_set()\n");
+  int idx = mutt_option_index(val->option);
+  if (idx != -1)
+  {
+    switch (DTYPE(MuttVars[idx].type))
+    {
+      case DT_RX:
+      {
+        BUFFER *err = safe_malloc(sizeof(BUFFER));
+        BUFFER tmp;
+        tmp.data = safe_strdup((char *) val->data);
+        tmp.dsize = strlen((char *) val->data);
+
+        if (parse_regex(idx, &tmp, err))
+        {
+          /* $reply_regexp and $alternates require special treatment */
+          if (Context && Context->msgcount &&
+              mutt_strcmp(MuttVars[idx].option, "reply_regexp") == 0)
+          {
+            regmatch_t pmatch[1];
+            int i;
+
+#define CUR_ENV Context->hdrs[i]->env
+            for (i = 0; i < Context->msgcount; i++)
+            {
+              if (CUR_ENV && CUR_ENV->subject)
+              {
+                CUR_ENV->real_subj =
+                    (regexec(ReplyRegexp.rx, CUR_ENV->subject, 1, pmatch, 0)) ?
+                        CUR_ENV->subject :
+                        CUR_ENV->subject + pmatch[0].rm_eo;
+              }
+            }
+#undef CUR_ENV
+          }
+        }
+        else
+        {
+          snprintf(err->data, err->dsize, _("%s: Unknown type."),
+                   MuttVars[idx].option);
+          return -1;
+        }
+        FREE(&tmp.data);
+        break;
+      }
+      case DT_SORT:
+      {
+        const struct mapping_t *map = NULL;
+        BUFFER *err = safe_malloc(sizeof(BUFFER));
+
+        switch (MuttVars[idx].type & DT_SUBTYPE_MASK)
+        {
+          case DT_SORT_ALIAS:
+            map = SortAliasMethods;
+            break;
+          case DT_SORT_BROWSER:
+            map = SortBrowserMethods;
+            break;
+          case DT_SORT_KEYS:
+            if ((WithCrypto & APPLICATION_PGP))
+              map = SortKeyMethods;
+            break;
+          case DT_SORT_AUX:
+            map = SortAuxMethods;
+            break;
+          case DT_SORT_SIDEBAR:
+            map = SortSidebarMethods;
+            break;
+          default:
+            map = SortMethods;
+            break;
+        }
+
+        if (!map)
+        {
+          snprintf(err->data, err->dsize, _("%s: Unknown type."),
+                   MuttVars[idx].option);
+          return -1;
+        }
+
+        if (parse_sort((short *) MuttVars[idx].data, (const char *) val->data,
+                       map, err) == -1)
+          return -1;
+      }
+      break;
+      case DT_MBCHARTBL:
+      {
+        mbchar_table **tbl = (mbchar_table **) MuttVars[idx].data;
+        free_mbchar_table(tbl);
+        *tbl = parse_mbchar_table((const char *) val->data);
+      }
+      break;
+      case DT_ADDR:
+        rfc822_free_address((ADDRESS **) MuttVars[idx].data);
+        *((ADDRESS **) MuttVars[idx].data) =
+            rfc822_parse_adrlist(NULL, (const char *) val->data);
+        break;
+      case DT_PATH:
+      {
+        char scratch[LONG_STRING];
+        strfcpy(scratch, (const char *) val->data, sizeof(scratch));
+        mutt_expand_path(scratch, sizeof(scratch));
+        /* MuttVars[idx].data is already 'char**' (or some 'void**') or...
+        * so cast to 'void*' is okay */
+        FREE((void *) MuttVars[idx].data); /* __FREE_CHECKED__ */
+        *((char **) MuttVars[idx].data) = safe_strdup(scratch);
+        break;
+      }
+      case DT_STR:
+      {
+        /* MuttVars[idx].data is already 'char**' (or some 'void**') or...
+          * so cast to 'void*' is okay */
+        FREE((void *) MuttVars[idx].data); /* __FREE_CHECKED__ */
+        *((char **) MuttVars[idx].data) = safe_strdup((char *) val->data);
+      }
+      break;
+      case DT_BOOL:
+        if (val->data)
+          set_option(MuttVars[idx].data);
+        else
+          unset_option(MuttVars[idx].data);
+        break;
+      case DT_QUAD:
+        set_quadoption(MuttVars[idx].data, val->data);
+        break;
+      case DT_NUM:
+        *((short *) MuttVars[idx].data) = val->data;
+        break;
+      default:
+        return -1;
+    }
+  }
+  /* set the string as a myvar if it's one */
+  if (!mutt_strncmp("my_", val->option, 3))
+  {
+    myvar_set(val->option, (const char *) val->data);
+  }
+  return 0;
+}
+#endif
 
 static void mutt_free_opt (struct option_t* p)
 {
@@ -2178,13 +2412,10 @@ static int parse_set (BUFFER *tmp, BUFFER *s, unsigned long data, BUFFER *err)
     }
     else if (DTYPE(MuttVars[idx].type) == DT_RX)
     {
-      REGEXP *ptr = (REGEXP *) MuttVars[idx].data;
-      regex_t *rx;
-      int e, flags = 0;
-
       if (query || *s->dptr != '=')
       {
 	/* user requested the value of this variable */
+        REGEXP *ptr = (REGEXP *) MuttVars[idx].data;
 	pretty_var (err->data, err->dsize, MuttVars[idx].option, NONULL(ptr->pattern));
 	break;
       }
@@ -2202,46 +2433,8 @@ static int parse_set (BUFFER *tmp, BUFFER *s, unsigned long data, BUFFER *err)
       /* copy the value of the string */
       mutt_extract_token (tmp, s, 0);
 
-      if (!ptr->pattern || mutt_strcmp (ptr->pattern, tmp->data) != 0)
-      {
-	int not = 0;
-
-	/* $mask is case-sensitive */
-	if (mutt_strcmp (MuttVars[idx].option, "mask") != 0)
-	  flags |= mutt_which_case (tmp->data);
-
-	p = tmp->data;
-	if (mutt_strcmp (MuttVars[idx].option, "mask") == 0)
-	{
-	  if (*p == '!')
-	  {
-	    not = 1;
-	    p++;
-	  }
-	}
-	  
-	rx = safe_malloc (sizeof (regex_t));
-	if ((e = REGCOMP (rx, p, flags)) != 0)
-	{
-	  regerror (e, rx, err->data, err->dsize);
-	  FREE (&rx);
-	  break;
-	}
-
-	/* get here only if everything went smootly */
-	if (ptr->pattern)
-	{
-	  FREE (&ptr->pattern);
-	  regfree ((regex_t *) ptr->rx);
-	  FREE (&ptr->rx);
-	}
-
-	ptr->pattern = safe_strdup (tmp->data);
-	ptr->rx = rx;
-	ptr->not = not;
-
+      if (parse_regex(idx, tmp, err))
 	/* $reply_regexp and $alterantes require special treatment */
-	
 	if (Context && Context->msgcount &&
 	    mutt_strcmp (MuttVars[idx].option, "reply_regexp") == 0)
 	{
@@ -2261,7 +2454,6 @@ static int parse_set (BUFFER *tmp, BUFFER *s, unsigned long data, BUFFER *err)
 	  }
 #undef CUR_ENV
 	}
-      }
     }
     else if (DTYPE(MuttVars[idx].type) == DT_MAGIC)
     {
@@ -2794,6 +2986,23 @@ static void candidate (char *dest, char *try, const char *src, int len)
       dest[l] = 0;
     }
   }
+}
+
+#ifdef USE_LUA
+const struct command_t *mutt_command_get(const char *s)
+{
+  for (int i = 0; Commands[i].name; i++)
+    if (mutt_strcmp(s, Commands[i].name) == 0)
+      return &Commands[i];
+  return NULL;
+}
+#endif
+
+void mutt_commands_apply(void *data,
+                         void (*application)(void *, const struct command_t *))
+{
+  for (int i = 0; Commands[i].name; i++)
+    application(data, &Commands[i]);
 }
 
 int mutt_command_complete (char *buffer, size_t len, int pos, int numtabs)

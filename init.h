@@ -25,32 +25,15 @@
 # include "mx.h"
 #endif
 
+#ifdef USE_LUA
+#include "mutt_lua.h"
+#endif
+
 #include "buffy.h"
 
 #ifndef _MAKEDOC
-#define DT_MASK		0x0f
-#define DT_BOOL		1 /* boolean option */
-#define DT_NUM		2 /* a number */
-#define DT_STR		3 /* a string */
-#define DT_PATH		4 /* a pathname */
-#define DT_QUAD		5 /* quad-option (yes/no/ask-yes/ask-no) */
-#define DT_SORT		6 /* sorting methods */
-#define DT_RX		7 /* regular expressions */
-#define DT_MAGIC	8 /* mailbox type */
-#define DT_SYN		9 /* synonym for another variable */
-#define DT_ADDR		10 /* e-mail address */
-#define DT_MBCHARTBL	11 /* multibyte char table */
-#define DT_HCACHE	12 /* header cache backend */
-
-#define DTYPE(x) ((x) & DT_MASK)
-
-/* subtypes */
-#define DT_SUBTYPE_MASK	0xff0
-#define DT_SORT_ALIAS	0x10
-#define DT_SORT_BROWSER 0x20
-#define DT_SORT_KEYS	0x40
-#define DT_SORT_AUX	0x80
-#define DT_SORT_SIDEBAR	0x100
+#include "mutt_options.h"
+#include "mutt_commands.h"
 
 /* flags to parse_set() */
 #define MUTT_SET_INV	(1<<0)	/* default is to invert all vars */
@@ -74,15 +57,6 @@
 #define F_SENSITIVE	(1<<8)
 
 #define IS_SENSITIVE(x)	(((x).flags & F_SENSITIVE) == F_SENSITIVE)
-
-struct option_t
-{
-  char *option;
-  short type;
-  short flags;
-  unsigned long data;
-  unsigned long init; /* initial value */
-};
 
 #define UL (unsigned long)
 
@@ -4436,13 +4410,6 @@ static int parse_tag_transforms (BUFFER *, BUFFER *, unsigned long, BUFFER *);
 static int parse_tag_formats (BUFFER *, BUFFER *, unsigned long, BUFFER *);
 #endif
 
-struct command_t
-{
-  char *name;
-  int (*func) (BUFFER *, BUFFER *, unsigned long, BUFFER *);
-  unsigned long data;
-};
-
 const struct command_t Commands[] = {
   { "alternates",	parse_alternates,	0 },
   { "unalternates",	parse_unalternates,	0 },
@@ -4480,6 +4447,10 @@ const struct command_t Commands[] = {
 #endif
   { "ignore",		parse_ignore,		0 },
   { "lists",		parse_lists,		0 },
+#ifdef USE_LUA
+  { "lua",		mutt_lua_parse,		0 },
+  { "lua-source",	mutt_lua_source_file,	0 },
+#endif
   { "macro",		mutt_parse_macro,	0 },
   { "mailboxes",	mutt_parse_mailboxes,	MUTT_MAILBOXES },
   { "unmailboxes",	mutt_parse_mailboxes,	MUTT_UNMAILBOXES },
