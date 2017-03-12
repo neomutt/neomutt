@@ -113,7 +113,6 @@ void crypt_invoke_message (int type)
 }
 
 
-
 /* 
 
     PGP
@@ -269,7 +268,6 @@ void crypt_pgp_set_sender (const char *sender)
 }
 
 
-
 
 /* 
 

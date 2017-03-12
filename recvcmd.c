@@ -115,7 +115,7 @@ static short count_tagged_children (ATTACHPTR ** idx,
 }
 
 
-
+
 /**
  **
  ** The bounce function, from the attachment menu
@@ -242,7 +242,7 @@ void mutt_attach_bounce (FILE * fp, HEADER * hdr,
 }
 
 
-
+
 /**
  **
  ** resend-message, from the attachment menu 
@@ -268,7 +268,7 @@ void mutt_attach_resend (FILE * fp, HEADER * hdr, ATTACHPTR ** idx,
   }
 }
 
-
+
 /**
  **
  ** forward-message, from the attachment menu 
@@ -701,7 +701,7 @@ void mutt_attach_forward (FILE * fp, HEADER * hdr,
 }
 
 
-
+
 /**
  ** 
  ** the various reply functions, from the attachment menu
