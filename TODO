@@ -45,7 +45,7 @@ Problems are listed in approximate order of priority.
 
 - make patterns generic (I have patches for this -tlr), and
   introduce generic menu limiting, menu pattern searching, and the
-  like.  
+  like.
 
   Note: This still requires some thought, since we'd have to store
   per-entry data in the menu structure.  As an alternative, we could

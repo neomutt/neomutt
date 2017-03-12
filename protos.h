@@ -1,21 +1,21 @@
 /*
  * Copyright (C) 1996-2000,2007,2010,2013 Michael R. Elkins <me@mutt.org>
  * Copyright (C) 2013 Karel Zak <kzak@redhat.com>
- * 
+ *
  *     This program is free software; you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
  *     the Free Software Foundation; either version 2 of the License, or
  *     (at your option) any later version.
- * 
+ *
  *     This program is distributed in the hope that it will be useful,
  *     but WITHOUT ANY WARRANTY; without even the implied warranty of
  *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  *     GNU General Public License for more details.
- * 
+ *
  *     You should have received a copy of the GNU General Public License
  *     along with this program; if not, write to the Free Software
  *     Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
- */ 
+ */
 
 
 #ifdef HAVE_INTTYPES_H
@@ -60,7 +60,7 @@ int _mutt_aside_thread (HEADER *, short, short);
 
 #define mutt_collapse_thread(x,y) _mutt_traverse_thread (x,y,MUTT_THREAD_COLLAPSE)
 #define mutt_uncollapse_thread(x,y) _mutt_traverse_thread (x,y,MUTT_THREAD_UNCOLLAPSE)
-#define mutt_get_hidden(x,y)_mutt_traverse_thread (x,y,MUTT_THREAD_GET_HIDDEN) 
+#define mutt_get_hidden(x,y)_mutt_traverse_thread (x,y,MUTT_THREAD_GET_HIDDEN)
 #define mutt_thread_contains_unread(x,y) _mutt_traverse_thread (x,y,MUTT_THREAD_UNREAD)
 #define mutt_thread_next_unread(x,y) _mutt_traverse_thread(x,y,MUTT_THREAD_NEXT_UNREAD)
 int _mutt_traverse_thread (CONTEXT *ctx, HEADER *hdr, int flag);
@@ -363,7 +363,7 @@ int mutt_parse_score (BUFFER *, BUFFER *, unsigned long, BUFFER *);
 int mutt_parse_unscore (BUFFER *, BUFFER *, unsigned long, BUFFER *);
 int mutt_parse_unhook (BUFFER *, BUFFER *, unsigned long, BUFFER *);
 int mutt_pattern_func (int, char *);
-int mutt_pipe_attachment (FILE *, BODY *, const char *, char *); 
+int mutt_pipe_attachment (FILE *, BODY *, const char *, char *);
 int mutt_print_attachment (FILE *, BODY *);
 int mutt_query_complete (char *, size_t);
 int mutt_query_variables (LIST *queries);

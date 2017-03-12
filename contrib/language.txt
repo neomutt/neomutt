@@ -1227,7 +1227,7 @@ soll ein 'absolut vertrauenswürdiger Einführer' werden, aber er befindet\n\
 sich nicht im privaten Schlüsselbund. Soll ich diesen Schlüssel trotzdem\n\
 als 'absolut vertrauenswürdigen Einführer' behandeln? (j/N) "
 es: "\nLa clave del usuario \"%s\"\n\
-está designada como referencia \"fundamentalmente fiable\", pero 
+está designada como referencia \"fundamentalmente fiable\", pero
 la clave no aparece en el anillo de claves secretas.\n\
 ¿Se utiliza como referencia fundamentalmente fiable (s/N)? "
 fr: "\nLa clef de l'utilisateur '%s' \n\

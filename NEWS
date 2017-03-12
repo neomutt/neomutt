@@ -115,7 +115,7 @@ Other changes
   verified if the output from $pgp_verify_command matches this
   regular expression.  It's suggested that you set this variable to
   the typical text message output by PGP (or GPG, or whatever)
-  produces when it encounters a good signature.  
+  produces when it encounters a good signature.
 
 - There's a new function, check-traditional-pgp, which is bound to
   esc-P by default.  It'll check whether a text parts of a message

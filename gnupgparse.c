@@ -22,12 +22,12 @@
 
 /*
  * NOTE
- * 
+ *
  * This code used to be the parser for GnuPG's output.
- * 
- * Nowadays, we are using an external pubring lister with PGP which mimics 
+ *
+ * Nowadays, we are using an external pubring lister with PGP which mimics
  * gpg's output format.
- * 
+ *
  */
 
 #if HAVE_CONFIG_H
@@ -330,7 +330,7 @@ static pgp_key_t parse_pub_line (char *buf, int *is_subkey, pgp_key_t k)
         break;
       case 12:			/* key capabilities */
 	mutt_debug (2, "capabilities info: %s\n", p);
-	
+
 	while(*p)
 	  {
 	    switch(*p++)
@@ -349,7 +349,7 @@ static pgp_key_t parse_pub_line (char *buf, int *is_subkey, pgp_key_t k)
 	      }
 	  }
 
-        if (!is_uid && 
+        if (!is_uid &&
 	    (!*is_subkey || !option (OPTPGPIGNORESUB)
 	     || !((flags & KEYFLAG_DISABLED)
 		  || (flags & KEYFLAG_REVOKED)
@@ -357,7 +357,7 @@ static pgp_key_t parse_pub_line (char *buf, int *is_subkey, pgp_key_t k)
 	  tmp.flags |= flags;
 
 	break;
-      
+
       default:
         break;
     }
@@ -395,7 +395,7 @@ pgp_key_t pgp_get_candidates (pgp_ring_t keyring, LIST * hints)
     return NULL;
 
   mutt_str_replace (&_chs, Charset);
-  
+
   thepid = pgp_invoke_list_keys (NULL, &fp, NULL, -1, -1, devnull,
 				 keyring, hints);
   if (thepid == -1)
@@ -421,7 +421,7 @@ pgp_key_t pgp_get_candidates (pgp_ring_t keyring, LIST * hints)
       if (is_sub)
       {
 	pgp_uid_t **l;
-	
+
 	k->flags  |= KEYFLAG_SUBKEY;
 	k->parent  = mainkey;
 	for (l = &k->address; *l; l = &(*l)->next)
@@ -440,7 +440,7 @@ pgp_key_t pgp_get_candidates (pgp_ring_t keyring, LIST * hints)
   mutt_wait_filter (thepid);
 
   close (devnull);
-  
+
   return db;
 }
 

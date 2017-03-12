@@ -1,4 +1,4 @@
-/* 
+/*
  * Copyright (C) 1996-2002,2004,2007 Michael R. Elkins <me@mutt.org>, and others
  *
  *     This program is free software; you can redistribute it and/or modify
@@ -353,7 +353,7 @@ void mutt_folder_hook (char *path)
   }
   FREE (&token.data);
   FREE (&err.data);
-  
+
   current_hook_type = 0;
 }
 

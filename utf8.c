@@ -13,7 +13,7 @@
 
 int mutt_wctoutf8 (char *s, unsigned int c, size_t buflen)
 {
-  if (c < (1 << 7)) 
+  if (c < (1 << 7))
   {
     if (s && buflen >= 1)
       *s++ = c;

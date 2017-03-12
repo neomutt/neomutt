@@ -41,7 +41,7 @@
 # define EILSEQ EINVAL
 #endif
 
-/* 
+/*
  * The following list has been created manually from the data under:
  * http://www.isi.edu/in-notes/iana/assignments/character-sets
  * Last update: 2000-09-07
@@ -50,7 +50,7 @@
  * MIME name is given.
  */
 
-static const struct 
+static const struct
 {
   const char *key;
   const char *pref;
@@ -223,10 +223,10 @@ void mutt_set_langinfo_charset (void)
 {
   char buff[LONG_STRING];
   char buff2[LONG_STRING];
-  
+
   strfcpy (buff, nl_langinfo (CODESET), sizeof (buff));
   mutt_canonical_charset (buff2, sizeof (buff2), buff);
-  
+
   /* finally, set $charset */
   if (!(Charset = safe_strdup (buff2)))
     Charset = safe_strdup ("iso-8859-1");
@@ -389,7 +389,7 @@ iconv_t mutt_iconv_open (const char *tocode, const char *fromcode, int flags)
   /* call system iconv with names it appreciates */
   if ((cd = iconv_open (tocode2, fromcode2)) != (iconv_t) -1)
     return cd;
-  
+
   return (iconv_t) -1;
 }
 
@@ -497,12 +497,12 @@ int mutt_convert_string (char **ps, const char *from, const char *to, int flags)
       inrepls = repls;
     else
       outrepl = "?";
-      
+
     len = strlen (s);
     ib = s, ibl = len + 1;
     obl = MB_LEN_MAX * ibl;
     ob = buf = safe_malloc (obl + 1);
-    
+
     mutt_iconv (cd, &ib, &ibl, &ob, &obl, inrepls, outrepl);
     iconv_close (cd);
 
@@ -510,7 +510,7 @@ int mutt_convert_string (char **ps, const char *from, const char *to, int flags)
 
     FREE (ps);		/* __FREE_CHECKED__ */
     *ps = buf;
-    
+
     mutt_str_adjust (ps);
     return 0;
   }
@@ -575,20 +575,20 @@ char *fgetconvs (char *buf, size_t l, FGETCONV *_fc)
 {
   int c;
   size_t r;
-  
+
   for (r = 0; r + 1 < l;)
   {
     if ((c = fgetconv (_fc)) == EOF)
       break;
     buf[r++] = (char) c;
-    if (c == '\n') 
+    if (c == '\n')
       break;
   }
   buf[r] = '\0';
-  
-  if (r) 
+
+  if (r)
     return buf;
-  else 
+  else
     return NULL;
 }
 

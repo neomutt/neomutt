@@ -47,7 +47,7 @@ using procmail, aren't you?):
 ##
 ## PGP
 ##
-  
+
 :0
 * !^Content-Type: message/
 * !^Content-Type: multipart/
@@ -82,7 +82,7 @@ EPGPS="-----END PGP SIGNATURE-----"
 
 if (!/^Content-Type: message/ && !/^Content-Type: multipart/ \
 	&& !/^Content-Type: application\/pgp/)
-{	
+{
 if (/^$BPGPM/:b && /^$EPGPM/:b)
 	xfilter "reformail -A 'Content-Type: application/pgp; format=text; \
 		x-action=encrypt'"
@@ -176,10 +176,10 @@ Command line options:
 
 	-k <key ring>	Dump the contents of the key ring specified
 			as an argument to -k.
-			
-	-2, -5	 	Use the default key ring for PGP 2 or 5, 
+
+	-2, -5	 	Use the default key ring for PGP 2 or 5,
 			respectively.
-			
+
 	-s		Dump the secret key ring.
 
 	-S		Dump signatures.
@@ -239,7 +239,7 @@ The following command formats are defined:
 
   $pgp_decode_command	Decode application/pgp messages.  This
   			command operates with and without pass phrases.
-			
+
   $pgp_verify_command	Verify a PGP/MIME signature.
 
   $pgp_decrypt_command	Decrypt a PGP/MIME encrypted MIME body.
@@ -251,14 +251,14 @@ The following command formats are defined:
 
   $pgp_encrypt_sign_command Encrypt and sign a MIME body.  This
   			command always gets a pass phrase.
-			
+
   $pgp_encrypt_only_command Encrypt a MIME body, but don't sign it.
-  
+
   $pgp_import_command	Import PGP keys from a file.
-  
+
   $pgp_export_command	Export PGP keys to a file.  The output must
   			be ASCII armored.
-			
+
   $pgp_verify_key_command Check a public key. This is used from the
   			key selection menu.
 

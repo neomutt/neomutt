@@ -52,7 +52,7 @@ elif [ "$shellInput" = 'k' ]; then
 	echo 'export PATH="$PATH:~/.mutt/keybaseMutt/scripts"' >> "$HOME/.kshrc"
 elif [ "$shellInput" = 'z' ]; then
 	echo 'export PATH="$PATH:~/.mutt/keybaseMutt/scripts"' >> "$HOME/.zshrc"
-else 
+else
 	echo "If you use something another shell, you'll need to add the path manually."
 fi
 

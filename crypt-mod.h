@@ -5,12 +5,12 @@
  *     it under the terms of the GNU General Public License as published by
  *     the Free Software Foundation; either version 2 of the License, or
  *     (at your option) any later version.
- * 
+ *
  *     This program is distributed in the hope that it will be useful,
  *     but WITHOUT ANY WARRANTY; without even the implied warranty of
  *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  *     GNU General Public License for more details.
- * 
+ *
  *     You should have received a copy of the GNU General Public License
  *     along with this program; if not, write to the Free Software
  *     Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
@@ -25,7 +25,7 @@
 #define CRYPTO_SUPPORT(identifier) (WithCrypto & APPLICATION_ ## identifier)
 
 
-/* 
+/*
     Type definitions for crypto module functions.
  */
 typedef void (*crypt_func_void_passphrase_t) (void);
@@ -50,7 +50,7 @@ typedef BODY *(*crypt_func_pgp_encrypt_message_t) (BODY *a, char *keylist,
 typedef void (*crypt_func_pgp_invoke_import_t) (const char *fname);
 typedef int (*crypt_func_verify_one_t) (BODY *sigbdy, STATE *s,
                                         const char *tempf);
-typedef void (*crypt_func_pgp_extract_keys_from_attachment_list_t) 
+typedef void (*crypt_func_pgp_extract_keys_from_attachment_list_t)
                                            (FILE *fp, int tag, BODY *top);
 
 typedef int (*crypt_func_send_menu_t) (HEADER *msg, int *redraw);
@@ -106,7 +106,7 @@ typedef struct crypt_module_functions
 
 
 /*
-   A structure to describe a crypto module. 
+   A structure to describe a crypto module.
  */
 typedef struct crypt_module_specs
 {
@@ -116,8 +116,8 @@ typedef struct crypt_module_specs
 
 
 
-/* 
-   High Level crypto module interface. 
+/*
+   High Level crypto module interface.
  */
 
 void crypto_module_register (crypt_module_specs_t specs);

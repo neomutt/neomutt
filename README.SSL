@@ -1,4 +1,4 @@
-IMAP/SSL in mutt 
+IMAP/SSL in mutt
 ================
 
 Compilation
@@ -40,7 +40,7 @@ generates unpredictable output, for example 'ps aluxww' in Linux, and
 calculating the MD5-sum from the output and saving it in a file.
 
 ** Note: The contents of the file pointed by $RANDFILE environment
-** variable (or ~/.rnd if unset) will be overwritten every time Mutt 
+** variable (or ~/.rnd if unset) will be overwritten every time Mutt
 ** is run so don't put anything you can't afford to lose in that file.
 
 The files Mutt will try to use to initialize SSL library with are files
@@ -63,7 +63,7 @@ you are asked to verify it. If you reject the certificate, the
 connection will be terminated immediately. If you accept the
 certificate, the connection will be established. Accepted certificates
 can also be saved so that further connections to the server are
-automatically accepted. 
+automatically accepted.
 
 If OpenSSL was built with support for ServerNameIndication (SNI) and TLS
 is used in the negotiation, mutt will send its idea of the server-name
@@ -105,7 +105,7 @@ each of these, you use the following:
 
 You can also combine the options until you get a successful connect.  Once
 you know which options do not work, you can set the variables for non-working
-protocols to know.  The variables for the protocols are ssl_use_tlsv1, 
+protocols to know.  The variables for the protocols are ssl_use_tlsv1,
 ssl_use_sslv2, and ssl_use_sslv3.
 
 To verify TLS SNI support by a server, you can use:
@@ -113,7 +113,7 @@ To verify TLS SNI support by a server, you can use:
         -tls1 -servername <imap server>
 
 
--- 
+--
 Tommi Komulainen
 Tommi.Komulainen@iki.fi
 

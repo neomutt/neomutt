@@ -1,21 +1,21 @@
 /*
  * Copyright (C) 1996-1999 Brandon Long <blong@fiction.net>
  * Copyright (C) 1999-2008 Brendan Cully <brendan@kublai.com>
- * 
+ *
  *     This program is free software; you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
  *     the Free Software Foundation; either version 2 of the License, or
  *     (at your option) any later version.
- * 
+ *
  *     This program is distributed in the hope that it will be useful,
  *     but WITHOUT ANY WARRANTY; without even the implied warranty of
  *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  *     GNU General Public License for more details.
- * 
+ *
  *     You should have received a copy of the GNU General Public License
  *     along with this program; if not, write to the Free Software
  *     Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
- */ 
+ */
 
 /* Mutt browser support routines */
 
@@ -122,7 +122,7 @@ int imap_browse (char* path, struct browser_state* state)
      * Note: UW-IMAP servers return folder + delimiter when asked to list
      *  folder + delimiter. Cyrus servers don't. So we ask for folder,
      *  and tack on delimiter ourselves.
-     * Further note: UW-IMAP servers return nothing when asked for 
+     * Further note: UW-IMAP servers return nothing when asked for
      *  NAMESPACES without delimiters at the end. Argh! */
     for (n--; n >= 0 && mbox[n] != list.delim ; n--);
     if (n > 0)			/* "aaaa/bbbb/" -> "aaaa" */
@@ -149,7 +149,7 @@ int imap_browse (char* path, struct browser_state* state)
         state->folder = safe_strdup (buf);
       }
       mbox[n] = ctmp;
-    } 
+    }
     /* "/bbbb/" -> add  "/", "aaaa/" -> add "" */
     else
     {
@@ -157,7 +157,7 @@ int imap_browse (char* path, struct browser_state* state)
       /* folder may be "/" */
       snprintf (relpath, sizeof (relpath), "%c" , n < 0 ? '\0' : idata->delim);
       if (showparents)
-        imap_add_folder (idata->delim, relpath, 1, 0, state, 1); 
+        imap_add_folder (idata->delim, relpath, 1, 0, state, 1);
       if (!state->folder)
       {
         imap_qualify_path (buf, sizeof (buf), &mx, relpath);
@@ -222,7 +222,7 @@ int imap_mailbox_create (const char* folder)
                 mx.account.host);
     goto fail;
   }
-  
+
   strfcpy (buf, NONULL (mx.mbox), sizeof (buf));
 
   /* append a delimiter if necessary */
@@ -232,7 +232,7 @@ int imap_mailbox_create (const char* folder)
     buf[n++] = idata->delim;
     buf[n] = '\0';
   }
-  
+
   if (mutt_get_field (_("Create mailbox: "), buf, sizeof (buf), MUTT_FILE) < 0)
     goto fail;
 
@@ -242,7 +242,7 @@ int imap_mailbox_create (const char* folder)
     mutt_sleep(1);
     goto fail;
   }
-  
+
   if (imap_create_mailbox (idata, buf) < 0)
     goto fail;
 
@@ -285,7 +285,7 @@ int imap_mailbox_rename(const char* mailbox)
 
   snprintf(buf, sizeof (buf), _("Rename mailbox %s to: "), mx.mbox);
   strfcpy (newname, mx.mbox, sizeof (newname));
-  
+
  if (mutt_get_field (buf, newname, sizeof (newname), MUTT_FILE) < 0)
     goto fail;
 
@@ -407,7 +407,7 @@ static void imap_add_folder (char delim, char *folder, int noselect,
     relpath[strlen (relpath) + 1] = '\0';
     relpath[strlen (relpath)] = delim;
   }
-  
+
   (state->entry)[state->entrylen].desc = safe_strdup (relpath);
 
   (state->entry)[state->entrylen].imap = 1;
