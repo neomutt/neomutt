@@ -2191,4 +2191,3 @@ cleanup:
   return rv;
 }
 
-/* vim: set sw=2: */

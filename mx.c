@@ -1555,4 +1555,3 @@ int mx_check_empty (const char *path)
   /* not reached */
 }
 
-/* vim: set sw=2: */
