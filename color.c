@@ -255,7 +255,7 @@ int mutt_alloc_color (int fg, int bg)
 
   /* find the smallest available index (object) */
   i = 1;
-  FOREVER
+  while (true)
   {
     p = ColorList;
     while (p)

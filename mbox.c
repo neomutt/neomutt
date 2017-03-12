@@ -123,7 +123,7 @@ static int mmdf_parse_mailbox (CONTEXT *ctx)
     mutt_progress_init (&progress, msgbuf, MUTT_PROGRESS_MSG, ReadInc, 0);
   }
 
-  FOREVER
+  while (true)
   {
     if (fgets (buf, sizeof (buf) - 1, ctx->fp) == NULL)
       break;

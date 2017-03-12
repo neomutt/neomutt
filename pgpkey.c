@@ -681,7 +681,7 @@ pgp_key_t pgp_ask_for_key (char *tag, char *whatfor,
   }
 
 
-  FOREVER
+  while (true)
   {
     resp[0] = 0;
     if (mutt_get_field (tag, resp, sizeof (resp), MUTT_CLEAR) != 0)

@@ -58,7 +58,7 @@ static pop_auth_res_t pop_auth_sasl (POP_DATA *pop_data, const char *method)
   if (!method)
     method = pop_data->auth_list;
 
-  FOREVER
+  while (true)
   {
     rc = sasl_client_start(saslconn, method, &interaction, &pc, &olen, &mech);
     if (rc != SASL_INTERACT)
@@ -90,7 +90,7 @@ static pop_auth_res_t pop_auth_sasl (POP_DATA *pop_data, const char *method)
   olen = strlen (buf);
 
   /* looping protocol */
-  FOREVER
+  while (true)
   {
     strfcpy (buf + olen, "\r\n", bufsize - olen);
     mutt_socket_write (pop_data->conn, buf);
@@ -118,7 +118,7 @@ static pop_auth_res_t pop_auth_sasl (POP_DATA *pop_data, const char *method)
     }
 
     if (!client_start)
-      FOREVER
+      while (true)
       {
 	rc = sasl_client_step (saslconn, buf, len, &interaction, &pc, &olen);
 	if (rc != SASL_INTERACT)

@@ -46,7 +46,7 @@ char *mutt_read_rfc822_line (FILE *f, char *line, size_t *linelen)
   size_t offset = 0;
   size_t len = 0;
 
-  FOREVER
+  while (true)
   {
     if (fgets (buf, *linelen - offset, f) == NULL ||	/* end of file or */
 	(ISSPACE (*line) && !offset))			/* end of headers */

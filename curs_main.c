@@ -854,7 +854,7 @@ int mutt_index_menu (void)
     menu->redraw = REDRAW_FULL;
   }
 
-  FOREVER
+  while (true)
   {
     tag = 0; /* clear the tag-prefix */
 

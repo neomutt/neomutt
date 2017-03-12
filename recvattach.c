@@ -1048,7 +1048,7 @@ void mutt_view_attachments (HEADER *hdr)
   attach_collapse (cur, 0, 1, 0);
   mutt_update_attach_index (cur, &idx, &idxlen, &idxmax, menu);
 
-  FOREVER
+  while (true)
   {
     if (op == OP_NULL)
       op = mutt_menuLoop (menu);

@@ -775,7 +775,7 @@ char *mutt_read_line (char *s, size_t *size, FILE *fp, int *line, int flags)
     *size = STRING;
   }
 
-  FOREVER
+  while (true)
   {
     if (fgets (s + offset, *size - offset, fp) == NULL)
     {

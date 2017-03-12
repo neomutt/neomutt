@@ -949,7 +949,7 @@ int mutt_menuLoop (MUTTMENU *menu)
       menu->current = last_position;
   }
 
-  FOREVER
+  while (true)
   {
     if (option (OPTMENUCALLER))
     {
