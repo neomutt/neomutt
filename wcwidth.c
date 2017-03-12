@@ -20,9 +20,7 @@
  *   unsigned short to fix compiler warnings, 2007-11-13, Rocco Rutte
  */
 
-#if HAVE_CONFIG_H
-# include "config.h"
-#endif
+#include "config.h"
 
 #ifndef HAVE_WC_FUNCS
 

@@ -20,9 +20,7 @@
     This is a crytpo module wrapping the classic pgp code.
  */
 
-#if HAVE_CONFIG_H
-# include "config.h"
-#endif
+#include "config.h"
 
 #include "crypt-mod.h"
 #include "pgp.h"

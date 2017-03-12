@@ -20,9 +20,7 @@
 
 /* Support for IMAP4rev1, with the occasional nod to IMAP 4. */
 
-#if HAVE_CONFIG_H
-# include "config.h"
-#endif
+#include "config.h"
 
 #include "mutt.h"
 #include "mx.h"

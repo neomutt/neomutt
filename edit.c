@@ -18,9 +18,7 @@
 
 /* Close approximation of the mailx(1) builtin editor for sending mail. */
 
-#if HAVE_CONFIG_H
-# include "config.h"
-#endif
+#include "config.h"
 
 #include "mutt.h"
 #include "mutt_curses.h"
