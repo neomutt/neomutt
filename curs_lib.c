@@ -1,21 +1,21 @@
 /*
  * Copyright (C) 1996-2002,2010,2012-2013 Michael R. Elkins <me@mutt.org>
  * Copyright (C) 2004 g10 Code GmbH
- * 
+ *
  *     This program is free software; you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
  *     the Free Software Foundation; either version 2 of the License, or
  *     (at your option) any later version.
- * 
+ *
  *     This program is distributed in the hope that it will be useful,
  *     but WITHOUT ANY WARRANTY; without even the implied warranty of
  *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  *     GNU General Public License for more details.
- * 
+ *
  *     You should have received a copy of the GNU General Public License
  *     along with this program; if not, write to the Free Software
  *     Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
- */ 
+ */
 
 #if HAVE_CONFIG_H
 # include "config.h"
@@ -165,7 +165,7 @@ int _mutt_get_field (const char *field, char *buf, size_t buflen, int complete, 
   int x;
 
   ENTER_STATE *es = mutt_new_enter_state();
-  
+
   do
   {
     mutt_window_clearline (MuttMessageWindow, 0);
@@ -179,7 +179,7 @@ int _mutt_get_field (const char *field, char *buf, size_t buflen, int complete, 
   while (ret == 1);
   mutt_window_clearline (MuttMessageWindow, 0);
   mutt_free_enter_state (&es);
-  
+
   return (ret);
 }
 
@@ -204,7 +204,7 @@ void mutt_clear_error (void)
 void mutt_edit_file (const char *editor, const char *data)
 {
   char cmd[LONG_STRING];
-  
+
   mutt_endwin (NULL);
   mutt_expand_file_fmt (cmd, sizeof (cmd), editor, data);
   if (mutt_system (cmd))
@@ -238,7 +238,7 @@ int mutt_yesorno (const char *msg, int def)
   char answer[2];
 
   answer[1] = 0;
-  
+
   reyes_ok = (expr = nl_langinfo (YESEXPR)) && expr[0] == '^' &&
 	     !REGCOMP (&reyes, expr, REG_NOSUB);
   reno_ok = (expr = nl_langinfo (NOEXPR)) && expr[0] == '^' &&
@@ -277,7 +277,7 @@ int mutt_yesorno (const char *msg, int def)
 
 #ifdef HAVE_LANGINFO_YESEXPR
     answer[0] = ch.ch;
-    if (reyes_ok ? 
+    if (reyes_ok ?
 	(regexec (& reyes, answer, 0, 0, 0) == 0) :
 #else
     if (
@@ -303,7 +303,7 @@ int mutt_yesorno (const char *msg, int def)
     }
   }
 
-#ifdef HAVE_LANGINFO_YESEXPR    
+#ifdef HAVE_LANGINFO_YESEXPR
   if (reyes_ok)
     regfree (& reyes);
   if (reno_ok)
@@ -710,7 +710,7 @@ void mutt_show_error (void)
 {
   if (option (OPTKEEPQUIET))
     return;
-  
+
   SETCOLOR (option (OPTMSGERR) ? MT_COLOR_ERROR : MT_COLOR_MESSAGE);
   mutt_window_mvaddstr (MuttMessageWindow, 0, 0, Errorbuf);
   NORMAL_COLOR;
@@ -729,7 +729,7 @@ void mutt_endwin (const char *msg)
     mutt_refresh();
     endwin ();
   }
-  
+
   if (msg && *msg)
   {
     puts (msg);
@@ -782,13 +782,13 @@ int mutt_do_pager (const char *banner,
 		   pager_t *info)
 {
   int rc;
-  
+
   if (!Pager || mutt_strcmp (Pager, "builtin") == 0)
     rc = mutt_pager (banner, tempfile, do_color, info);
   else
   {
     char cmd[STRING];
-    
+
     mutt_endwin (NULL);
     mutt_expand_file_fmt (cmd, sizeof(cmd), Pager, tempfile);
     if (mutt_system (cmd) == -1)
@@ -921,12 +921,12 @@ void mutt_flushinp (void)
 void mutt_curs_set (int cursor)
 {
   static int SavedCursor = 1;
-  
+
   if (cursor < 0)
     cursor = SavedCursor;
   else
     SavedCursor = cursor;
-  
+
   if (curs_set (cursor) == ERR) {
     if (cursor == 1)	/* cnorm */
       curs_set (2);	/* cvvis */

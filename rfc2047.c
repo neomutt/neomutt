@@ -1,21 +1,21 @@
 /*
  * Copyright (C) 1996-2000,2010 Michael R. Elkins <me@mutt.org>
  * Copyright (C) 2000-2002 Edmund Grimley Evans <edmundo@rano.org>
- * 
+ *
  *     This program is free software; you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
  *     the Free Software Foundation; either version 2 of the License, or
  *     (at your option) any later version.
- * 
+ *
  *     This program is distributed in the hope that it will be useful,
  *     but WITHOUT ANY WARRANTY; without even the implied warranty of
  *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  *     GNU General Public License for more details.
- * 
+ *
  *     You should have received a copy of the GNU General Public License
  *     along with this program; if not, write to the Free Software
  *     Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
- */ 
+ */
 
 #if HAVE_CONFIG_H
 # include "config.h"
@@ -77,7 +77,7 @@ static size_t convert_string (ICONV_CONST char *f, size_t flen,
     return (size_t)(-1);
   }
   *ob = '\0';
-  
+
   *tlen = ob - buf;
 
   safe_realloc (&buf, ob - buf + 1);
@@ -182,7 +182,7 @@ char *mutt_choose_charset (const char *fromcode, const char *charsets,
       *d = e;
     if (dlen)
       *dlen = elen;
-    
+
     mutt_canonical_charset (canonical_buff, sizeof (canonical_buff), tocode);
     mutt_str_replace (&tocode, canonical_buff);
   }
@@ -406,7 +406,7 @@ static int rfc2047_encode (ICONV_CONST char *d, size_t dlen, int col,
   /* Try to convert to UTF-8. */
   if (convert_string (d, dlen, fromcode, icode, &u, &ulen))
   {
-    ret = 1; 
+    ret = 1;
     icode = 0;
     safe_realloc (&u, (ulen = dlen) + 1);
     memcpy (u, d, dlen);
@@ -417,7 +417,7 @@ static int rfc2047_encode (ICONV_CONST char *d, size_t dlen, int col,
   s0 = s1 = t0 = t1 = 0;
   for (t = u; t < u + ulen; t++)
   {
-    if ((*t & 0x80) || 
+    if ((*t & 0x80) ||
 	(*t == '=' && t[1] == '?' && (t == u || HSPACE(*(t-1)))))
     {
       if (!t0) t0 = t;
@@ -457,12 +457,12 @@ static int rfc2047_encode (ICONV_CONST char *d, size_t dlen, int col,
   /* Hack to avoid labelling 8-bit data as us-ascii. */
   if (!icode && mutt_is_us_ascii (tocode))
     tocode = "unknown-8bit";
-  
+
   /* Adjust t0 for maximum length of line. */
   t = u + (ENCWORD_LEN_MAX + 1) - col - ENCWORD_LEN_MIN;
   if (t < u)  t = u;
   if (t < t0) t0 = t;
-  
+
 
   /* Adjust t0 until we can encode a character after a space. */
   for (; t0 > u; t0--)
@@ -563,7 +563,7 @@ static int rfc2047_encode (ICONV_CONST char *d, size_t dlen, int col,
   FREE (&u);
 
   buf[buflen] = '\0';
-  
+
   *e = buf;
   *elen = buflen + 1;
   return ret;
@@ -594,7 +594,7 @@ void rfc2047_encode_adrlist (ADDRESS *addr, const char *tag)
 {
   ADDRESS *ptr = addr;
   int col = tag ? strlen (tag) + 2 : 32;
-  
+
   while (ptr)
   {
     if (ptr->personal)
@@ -636,7 +636,7 @@ static int rfc2047_decode_word (char *d, const char *s, size_t len)
     switch (count)
     {
       case 2:
-	/* ignore language specification a la RFC 2231 */        
+	/* ignore language specification a la RFC 2231 */
 	t = pp1;
         if ((t1 = memchr (pp, '*', t - pp)))
 	  t = t1;
@@ -696,7 +696,7 @@ static int rfc2047_decode_word (char *d, const char *s, size_t len)
 	break;
     }
   }
-  
+
   if (charset)
     mutt_convert_string (&d0, charset, Charset, MUTT_ICONV_HOOK_FROM);
   mutt_filter_unprintable (&d0);
@@ -894,7 +894,7 @@ void rfc2047_decode_adrlist (ADDRESS *a)
 {
   while (a)
   {
-    if (a->personal && ((strstr (a->personal, "=?") != NULL) || 
+    if (a->personal && ((strstr (a->personal, "=?") != NULL) ||
 			(AssumedCharset && *AssumedCharset)))
       rfc2047_decode (&a->personal);
     else if (a->group && a->mailbox && (strstr (a->mailbox, "=?") != NULL))

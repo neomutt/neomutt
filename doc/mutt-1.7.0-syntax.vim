@@ -101,7 +101,7 @@ syn match   muttrcKeyName	contained "\\[trne]"
 syn match   muttrcKeyName	contained "\c<\%(BackSpace\|BackTab\|Delete\|Down\|End\|Enter\|Esc\|Home\|Insert\|Left\|PageDown\|PageUp\|Return\|Right\|Space\|Tab\|Up\)>"
 syn match   muttrcKeyName	contained "<F[0-9]\+>"
 
-syn keyword muttrcVarBool	skipwhite contained 
+syn keyword muttrcVarBool	skipwhite contained
 			\ allow_8bit allow_ansi arrow_cursor ascii_chars askbcc askcc attach_split
 			\ auto_tag autoedit beep beep_new bounce_delivered braille_friendly
 			\ check_mbox_size check_new collapse_unread confirmappend confirmcreate
@@ -138,7 +138,7 @@ syn keyword muttrcVarBool	skipwhite contained
 			\ use_idn use_ipv6 user_agent wait_key weed wrap_search write_bcc
 			\ nextgroup=muttrcSetBoolAssignment,muttrcVPrefix,muttrcVarBool,muttrcVarQuad,muttrcVarNum,muttrcVarStr
 
-syn keyword muttrcVarBool	skipwhite contained 
+syn keyword muttrcVarBool	skipwhite contained
 			\ noallow_8bit noallow_ansi noarrow_cursor noascii_chars noaskbcc noaskcc noattach_split
 			\ noauto_tag noautoedit nobeep nobeep_new nobounce_delivered nobraille_friendly
 			\ nocheck_mbox_size nocheck_new nocollapse_unread noconfirmappend noconfirmcreate
@@ -298,12 +298,12 @@ syn match muttrcFolderFormatConditionals contained /%?[N]?/
 " The following info was pulled from mix_entry_fmt in remailer.c
 syn match muttrcMixFormatEscapes contained /%\%(\%(-\?[0-9]\+\)\?\%(\.[0-9]\+\)\?\)\?[:_]\?[ncsa%]/
 syn match muttrcMixFormatConditionals contained /%?[ncsa]?/
-" The following info was pulled from crypt_entry_fmt in crypt-gpgme.c 
-" and pgp_entry_fmt in pgpkey.c (note that crypt_entry_fmt supports 
+" The following info was pulled from crypt_entry_fmt in crypt-gpgme.c
+" and pgp_entry_fmt in pgpkey.c (note that crypt_entry_fmt supports
 " 'p', but pgp_entry_fmt does not).
 syn match muttrcPGPFormatEscapes contained /%\%(\%(-\?[0-9]\+\)\?\%(\.[0-9]\+\)\?\)\?[:_]\?[nkualfctp%]/
 syn match muttrcPGPFormatConditionals contained /%?[nkualfct]?/
-" The following info was pulled from _mutt_fmt_pgp_command in 
+" The following info was pulled from _mutt_fmt_pgp_command in
 " pgpinvoke.c
 syn match muttrcPGPCmdFormatEscapes contained /%\%(\%(-\?[0-9]\+\)\?\%(\.[0-9]\+\)\?\)\?[:_]\?[pfsar%]/
 syn match muttrcPGPCmdFormatConditionals contained /%?[pfsar]?/ nextgroup=muttrcFormatConditionals2
@@ -311,11 +311,11 @@ syn match muttrcPGPCmdFormatConditionals contained /%?[pfsar]?/ nextgroup=muttrc
 syn match muttrcStatusFormatEscapes contained /%\%(\%(-\?[0-9]\+\)\?\%(\.[0-9]\+\)\?\)\?[:_]\?[bdfFhlLmMnopPrsStuvV%]/
 syn match muttrcStatusFormatEscapes contained /%[>|*]./
 syn match muttrcStatusFormatConditionals contained /%?[bdFlLmMnoptuV]?/ nextgroup=muttrcFormatConditionals2
-" This matches the documentation, but directly contradicts the code 
-" (according to the code, this should be identical to the 
+" This matches the documentation, but directly contradicts the code
+" (according to the code, this should be identical to the
 " muttrcPGPCmdFormatEscapes
 syn match muttrcPGPGetKeysFormatEscapes contained /%\%(\%(-\?[0-9]\+\)\?\%(\.[0-9]\+\)\?\)\?[:_]\?[r%]/
-" The following info was pulled from _mutt_fmt_smime_command in 
+" The following info was pulled from _mutt_fmt_smime_command in
 " smime.c
 syn match muttrcSmimeFormatEscapes contained /%\%(\%(-\?[0-9]\+\)\?\%(\.[0-9]\+\)\?\)\?[:_]\?[Cciskaf%]/
 syn match muttrcSmimeFormatConditionals contained /%?[Cciskaf]?/ nextgroup=muttrcFormatConditionals2

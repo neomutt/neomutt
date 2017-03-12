@@ -14,7 +14,7 @@ IMAP enhancements, by priority:
 * We should maybe add a new imap_format string for IMAP browsing, without all
   the stat variables but with tags like how many messages are in the folders,
   how many subfolders, that weird \Marked tag, etc.
- 
+
 [ -- speed -- ]
 
 * Partial index loading, using server-side threading and sorting

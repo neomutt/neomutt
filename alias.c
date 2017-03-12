@@ -1,20 +1,20 @@
 /*
  * Copyright (C) 1996-2002 Michael R. Elkins <me@mutt.org>
- * 
+ *
  *     This program is free software; you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
  *     the Free Software Foundation; either version 2 of the License, or
  *     (at your option) any later version.
- * 
+ *
  *     This program is distributed in the hope that it will be useful,
  *     but WITHOUT ANY WARRANTY; without even the implied warranty of
  *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  *     GNU General Public License for more details.
- * 
+ *
  *     You should have received a copy of the GNU General Public License
  *     along with this program; if not, write to the Free Software
  *     Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
- */ 
+ */
 
 #if HAVE_CONFIG_H
 # include "config.h"
@@ -45,7 +45,7 @@ static ADDRESS *mutt_expand_aliases_r (ADDRESS *a, LIST **expn)
   LIST *u;
   char i;
   const char *fqdn;
-  
+
   while (a)
   {
     if (!a->group && !a->personal && a->mailbox && strchr (a->mailbox, '@') == NULL)
@@ -53,7 +53,7 @@ static ADDRESS *mutt_expand_aliases_r (ADDRESS *a, LIST **expn)
       t = mutt_lookup_alias (a->mailbox);
 
       if (t)
-      {	
+      {
         i = 0;
         for (u = *expn; u; u = u->next)
 	{
@@ -94,10 +94,10 @@ static ADDRESS *mutt_expand_aliases_r (ADDRESS *a, LIST **expn)
 	if (pw)
 	{
 	  char namebuf[STRING];
-	  
+
 	  mutt_gecos_name (namebuf, sizeof (namebuf), pw);
 	  mutt_str_replace (&a->personal, namebuf);
-	  
+
 #ifdef EXACT_ADDRESS
 	  FREE (&a->val);
 #endif
@@ -146,7 +146,7 @@ void mutt_expand_aliases_env (ENVELOPE *env)
 }
 
 
-/* 
+/*
  * if someone has an address like
  *	From: Michael `/bin/rm -f ~` Elkins <me@mutt.org>
  * and the user creates an alias for this, Mutt could wind up executing
@@ -159,10 +159,10 @@ void mutt_expand_aliases_env (ENVELOPE *env)
  * since that would get aliased as
  *	alias me Michael \\`/bin/rm -f ~\\` Elkins <me@mutt.org>
  * which still gets evaluated because the double backslash is not a quote.
- * 
+ *
  * Additionally, we need to quote ' and " characters - otherwise, mutt will
  * interpret them on the wrong parsing step.
- * 
+ *
  * $ wants to be quoted since it may indicate the start of an environment
  * variable.
  */
@@ -256,7 +256,7 @@ void mutt_create_alias (ENVELOPE *cur, ADDRESS *iadr)
 
   /* Don't suggest a bad alias name in the event of a strange local part. */
   mutt_check_alias_name (tmp, buf, sizeof (buf));
-  
+
 retry_name:
   /* L10N: prompt to add a new alias */
   if (mutt_get_field (_("Alias as: "), buf, sizeof (buf), 0) != 0 || !buf[0])
@@ -268,7 +268,7 @@ retry_name:
     mutt_error (_("You already have an alias defined with that name!"));
     return;
   }
-  
+
   if (mutt_check_alias_name (buf, fixed, sizeof (fixed)))
   {
     switch (mutt_yesorno (_("Warning: This alias name may not work.  Fix it?"), MUTT_YES))
@@ -276,24 +276,24 @@ retry_name:
       case MUTT_YES:
       	strfcpy (buf, fixed, sizeof (buf));
 	goto retry_name;
-      case MUTT_ABORT: 
+      case MUTT_ABORT:
 	return;
     }
   }
-  
+
   new       = safe_calloc (1, sizeof (ALIAS));
   new->self = new;
   new->name = safe_strdup (buf);
 
   mutt_addrlist_to_local (adr);
-  
+
   if (adr)
     strfcpy (buf, adr->mailbox, sizeof (buf));
   else
     buf[0] = 0;
 
   mutt_addrlist_to_intl (adr, NULL);
-  
+
   do
   {
     if (mutt_get_field (_("Address: "), buf, sizeof (buf), 0) != 0 || !buf[0])
@@ -301,7 +301,7 @@ retry_name:
       mutt_free_alias (&new);
       return;
     }
-    
+
     if((new->addr = rfc822_parse_adrlist (new->addr, buf)) == NULL)
       BEEP ();
     if (mutt_addrlist_to_intl (new->addr, &err))
@@ -312,7 +312,7 @@ retry_name:
     }
   }
   while(new->addr == NULL);
-  
+
   if (adr && adr->personal && !mutt_is_mail_list (adr))
     strfcpy (buf, adr->personal, sizeof (buf));
   else
@@ -335,7 +335,7 @@ retry_name:
   }
 
   mutt_alias_add_reverse (new);
-  
+
   if ((t = Aliases))
   {
     while (t->next)
@@ -390,14 +390,14 @@ retry_name:
     mutt_perror (buf);
 
   return;
-  
+
   fseek_err:
   mutt_perror (_("Error seeking in alias file"));
   safe_fclose (&rc);
   return;
 }
 
-/* 
+/*
  * Sanity-check an alias name:  Only characters which are non-special to both
  * the RFC 822 and the mutt configuration parser are permitted.
  */
@@ -451,7 +451,7 @@ ADDRESS *alias_reverse_lookup (ADDRESS *a)
 {
   if (!a || !a->mailbox)
       return NULL;
-  
+
   return hash_find (ReverseAlias, a->mailbox);
 }
 
@@ -582,10 +582,10 @@ int mutt_alias_complete (char *s, size_t buflen)
 	a_list->next = a_cur->next;
       else
 	Aliases = a_cur->next;
-      
+
       a_cur->next = NULL;
       mutt_free_alias (&a_cur);
-      
+
       if (a_list)
 	a_cur = a_list;
       else
@@ -597,18 +597,18 @@ int mutt_alias_complete (char *s, size_t buflen)
       a_cur  = a_cur->next;
     }
   }
-  
+
   return 0;
 }
 
 static int string_is_address(const char *str, const char *u, const char *d)
 {
   char buf[LONG_STRING];
-  
+
   snprintf(buf, sizeof(buf), "%s@%s", NONULL(u), NONULL(d));
   if (ascii_strcasecmp(str, buf) == 0)
     return 1;
-  
+
   return 0;
 }
 
@@ -673,7 +673,7 @@ int mutt_addr_is_user (ADDRESS *addr)
     else
       return 1;
   }
-  
+
   mutt_debug (5, "mutt_addr_is_user: no, all failed.\n");
   return 0;
 }

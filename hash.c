@@ -5,16 +5,16 @@
  *     it under the terms of the GNU General Public License as published by
  *     the Free Software Foundation; either version 2 of the License, or
  *     (at your option) any later version.
- * 
+ *
  *     This program is distributed in the hope that it will be useful,
  *     but WITHOUT ANY WARRANTY; without even the implied warranty of
  *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  *     GNU General Public License for more details.
- * 
+ *
  *     You should have received a copy of the GNU General Public License
  *     along with this program; if not, write to the Free Software
  *     Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
- */ 
+ */
 
 #if HAVE_CONFIG_H
 # include "config.h"
@@ -144,7 +144,7 @@ HASH *hash_resize (HASH *ptr, int nelem, int lower)
 /* table        hash table to update
  * key          key to hash on
  * data         data to associate with `key'
- * allow_dup    if nonzero, duplicate keys are allowed in the table 
+ * allow_dup    if nonzero, duplicate keys are allowed in the table
  */
 static int union_hash_insert (HASH * table, union hash_key key, void *data)
 {
@@ -333,7 +333,7 @@ void int_hash_delete (HASH *table, unsigned int intkey, const void *data,
 }
 
 /* ptr		pointer to the hash table to be freed
- * destroy()	function to call to free the ->data member (optional) 
+ * destroy()	function to call to free the ->data member (optional)
  */
 void hash_destroy (HASH **ptr, void (*destroy) (void *))
 {
@@ -381,7 +381,7 @@ struct hash_elem *hash_walk(const HASH *table, struct hash_walk_state *state)
       return state->last;
     }
     state->index++;
-  } 
+  }
 
   state->index = 0;
   state->last = NULL;

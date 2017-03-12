@@ -13162,7 +13162,7 @@
 	(fallout from conversion from article to book).
 
 	* UPDATING: Use +/-/! instead of N/D/M in UPDATING.
-                                 
+
 2006-05-19 18:30:10  Rocco Rutte  <pdmef@gmx.net>  (brendan)
 
 	* Makefile.am, README, UPDATING: The UPDATING document is supposed
@@ -13656,7 +13656,7 @@
 	destabilised things. Time for some brave (or lazy
 	non-Changelog-reading) testers to report... next up, IDLE
 	support.
-                                 
+
 2005-12-10 07:06:44  Brendan Cully  <brendan@kublai.com>  (brendan)
 
 	* imap/browse.c, imap/command.c, imap/imap.c, imap/imap_private.h,

@@ -168,7 +168,7 @@ mono quoted bold
 #		generic		generic keymap for all of the above
 #		editor		line editor
 #		pager		text viewer
-#		
+#
 
 bind generic "\e<" first-entry	# emacs-like bindings for moving to top/bottom
 bind generic \e> last-entry

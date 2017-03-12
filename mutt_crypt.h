@@ -1,21 +1,21 @@
 /*
  * Copyright (C) 2003 Werner Koch <wk@gnupg.org>
  * Copyright (C) 2004 g10code GmbH
- * 
+ *
  *     This program is free software; you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
  *     the Free Software Foundation; either version 2 of the License, or
  *     (at your option) any later version.
- * 
+ *
  *     This program is distributed in the hope that it will be useful,
  *     but WITHOUT ANY WARRANTY; without even the implied warranty of
  *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  *     GNU General Public License for more details.
- * 
+ *
  *     You should have received a copy of the GNU General Public License
  *     along with this program; if not, write to the Free Software
  *     Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
- */ 
+ */
 
 /*
    Common definitions and prototypes for the crypt functions. They are
@@ -49,7 +49,7 @@
 #define PGPENCRYPT  (APPLICATION_PGP | ENCRYPT)
 #define PGPSIGN     (APPLICATION_PGP | SIGN)
 #define PGPGOODSIGN (APPLICATION_PGP | GOODSIGN)
-#define PGPKEY      (APPLICATION_PGP | KEYBLOCK) 
+#define PGPKEY      (APPLICATION_PGP | KEYBLOCK)
 #define PGPINLINE   (APPLICATION_PGP | INLINE)
 
 #define SMIMEENCRYPT  (APPLICATION_SMIME | ENCRYPT)
@@ -131,9 +131,9 @@ void convert_to_7bit (BODY *);
 
 
 
-/*-- crypt.c --*/ 
+/*-- crypt.c --*/
 
-/* Print the current time. */ 
+/* Print the current time. */
 void crypt_current_time(STATE *s, char *app_name);
 
 /* Check out the type of encryption used and set the cached status
@@ -144,7 +144,7 @@ int crypt_query (BODY *m);
 void crypt_extract_keys_from_messages (HEADER *h);
 
 /* Do a quick check to make sure that we can find all of the
-   encryption keys if the user has requested this service. 
+   encryption keys if the user has requested this service.
    Return the list of keys in KEYLIST.
    If oppenc_mode is true, only keys that can be determined without
    prompting will be used.  */
@@ -165,13 +165,13 @@ int crypt_valid_passphrase (int);
 int crypt_write_signed(BODY *a, STATE *s, const char *tempf);
 
 /* Obtain pointers to fingerprint or short or long key ID, if any.
- 
+
    Upon return, at most one of return, *ppl and *pps pointers is non-NULL,
    indicating the longest fingerprint or ID found, if any.
 
    Return:  Copy of fingerprint, if any, stripped of all spaces, else NULL.
             Must be FREE'd by caller.
-   *pphint  Start of string to be passed to pgp_add_string_to_hints() or 
+   *pphint  Start of string to be passed to pgp_add_string_to_hints() or
             crypt_add_string_to_hints().
    *ppl     Start of long key ID if detected, else NULL.
    *pps     Start of short key ID if detected, else NULL. */

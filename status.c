@@ -1,20 +1,20 @@
 /*
  * Copyright (C) 1996-2000,2007 Michael R. Elkins <me@mutt.org>
- * 
+ *
  *     This program is free software; you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
  *     the Free Software Foundation; either version 2 of the License, or
  *     (at your option) any later version.
- * 
+ *
  *     This program is distributed in the hope that it will be useful,
  *     but WITHOUT ANY WARRANTY; without even the implied warranty of
  *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  *     GNU General Public License for more details.
- * 
+ *
  *     You should have received a copy of the GNU General Public License
  *     along with this program; if not, write to the Free Software
  *     Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
- */ 
+ */
 
 #if HAVE_CONFIG_H
 # include "config.h"
@@ -63,7 +63,7 @@ static void _menu_status_line (char *buf, size_t buflen, size_t col, int cols, M
  * %S = current aux sorting method ($sort_aux)
  * %t = # of tagged messages [option]
  * %u = number of unread messages [option]
- * %v = Mutt version 
+ * %v = Mutt version
  * %V = currently active limit pattern [option] */
 static const char *
 status_format_str (char *buf, size_t buflen, size_t col, int cols, char op, const char *src,
@@ -240,7 +240,7 @@ status_format_str (char *buf, size_t buflen, size_t col, int cols, char op, cons
           (Context->magic != MUTT_IMAP &&
            Context->deleted)) ? 1 : 0);
       }
-      
+
       if (!StChars || !StChars->len)
 	buf[0] = 0;
       else if (i >= StChars->len)
@@ -249,7 +249,7 @@ status_format_str (char *buf, size_t buflen, size_t col, int cols, char op, cons
         snprintf (buf, buflen, "%s", StChars->chars[i]);
       break;
     }
-      
+
     case 's':
       snprintf (fmt, sizeof (fmt), "%%%ss", prefix);
       snprintf (buf, buflen, fmt,

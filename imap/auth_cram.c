@@ -1,20 +1,20 @@
 /*
  * Copyright (C) 1999-2001,2005 Brendan Cully <brendan@kublai.com>
- * 
+ *
  *     This program is free software; you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
  *     the Free Software Foundation; either version 2 of the License, or
  *     (at your option) any later version.
- * 
+ *
  *     This program is distributed in the hope that it will be useful,
  *     but WITHOUT ANY WARRANTY; without even the implied warranty of
  *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  *     GNU General Public License for more details.
- * 
+ *
  *     You should have received a copy of the GNU General Public License
  *     along with this program; if not, write to the Free Software
  *     Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
- */ 
+ */
 
 /* IMAP login/authentication code */
 
@@ -64,7 +64,7 @@ imap_auth_res_t imap_auth_cram_md5 (IMAP_DATA* idata, const char* method)
   do
     rc = imap_cmd_step (idata);
   while (rc == IMAP_CMD_CONTINUE);
-  
+
   if (rc != IMAP_CMD_RESPOND)
   {
     mutt_debug (1, "Invalid response from server: %s\n", ibuf);
@@ -85,7 +85,7 @@ imap_auth_res_t imap_auth_cram_md5 (IMAP_DATA* idata, const char* method)
    * computed by applying the keyed MD5 algorithm from [KEYED-MD5] where the
    * key is a shared secret and the digested text is the timestamp (including
    * angle-brackets).
-   * 
+   *
    * Note: The user name shouldn't be quoted. Since the digest can't contain
    *   spaces, there is no ambiguity. Some servers get this wrong, we'll work
    *   around them when the bug report comes in. Until then, we'll remain
@@ -102,10 +102,10 @@ imap_auth_res_t imap_auth_cram_md5 (IMAP_DATA* idata, const char* method)
     hmac_response[12], hmac_response[13], hmac_response[14], hmac_response[15]);
   mutt_debug (2, "CRAM response: %s\n", obuf);
 
-  /* XXX - ibuf must be long enough to store the base64 encoding of obuf, 
+  /* XXX - ibuf must be long enough to store the base64 encoding of obuf,
    * plus the additional debris
    */
-  
+
   mutt_to_base64 (ibuf, obuf, strlen (obuf), sizeof (ibuf) - 2);
   safe_strcat (ibuf, sizeof (ibuf), "\r\n");
   mutt_socket_write (idata->conn, ibuf);

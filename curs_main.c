@@ -2030,7 +2030,7 @@ int mutt_index_menu (void)
             else
               break;
           }
-          
+
           /* Selected directory is okay, let's save it.*/
           mutt_browser_select_dir (buf);
 

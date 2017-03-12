@@ -10,7 +10,7 @@
 
 LIBICONV="$1"
 test -d $LIBICONV/libcharset/tools || {
-	echo "Sorry, I can't find libiconv's source!" >&2 ; 
+	echo "Sorry, I can't find libiconv's source!" >&2 ;
 	exit 1 ;
 }
 

@@ -1,8 +1,8 @@
 # -*-muttrc-*-
 #
 # Command formats for gpg.
-# 
-# This version uses gpg-2comp from 
+#
+# This version uses gpg-2comp from
 #   http://70t.de/download/gpg-2comp.tar.gz
 #
 # $Id$

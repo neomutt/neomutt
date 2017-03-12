@@ -262,13 +262,13 @@ The keys used are:
 
   - $imap_cachedir replaced with $message_cachedir
   + Header/body caching for POP ($message_cachedir)
-  + Header caching for MH folders 
+  + Header caching for MH folders
   ! $record now defaults to ~/sent
   ! $imap_idle now defaults to "yes" instead of "no"
   + Tab-completion for $my_* variable names and values
   + Expansion of mutt variables (except shell escape)
-  + Self-defined variables with $my_* prefix 
-  + Pattern group support 
+  + Self-defined variables with $my_* prefix
+  + Pattern group support
   + $imap_cachedir
   + 'old' flag on IMAP folders
   + SASL-IR support for IMAP

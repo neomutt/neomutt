@@ -125,7 +125,7 @@ mutt_hcache_store(header_cache_t *h, const char *key, size_t keylen,
  * @return 0 on success, -1 otherwise.
  */
 int
-mutt_hcache_store_raw(header_cache_t *h, const char* key, size_t keylen, 
+mutt_hcache_store_raw(header_cache_t *h, const char* key, size_t keylen,
                       void* data, size_t dlen);
 
 /**

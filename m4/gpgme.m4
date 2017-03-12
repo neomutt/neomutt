@@ -57,7 +57,7 @@ AC_DEFUN([AM_PATH_GPGME],
                sed 's/\([[0-9]]*\)\.\([[0-9]]*\)\.\([[0-9]]*\)/\3/'`
     if test "$gpgme_version_major" -gt "$req_major"; then
         ok=yes
-    else 
+    else
         if test "$gpgme_version_major" -eq "$req_major"; then
             if test "$gpgme_version_minor" -gt "$req_minor"; then
                ok=yes
@@ -125,7 +125,7 @@ AC_DEFUN([AM_PATH_GPGME_PTH],
                sed 's/\([[0-9]]*\)\.\([[0-9]]*\)\.\([[0-9]]*\)/\3/'`
       if test "$gpgme_version_major" -gt "$req_major"; then
         ok=yes
-      else 
+      else
         if test "$gpgme_version_major" -eq "$req_major"; then
           if test "$gpgme_version_minor" -gt "$req_minor"; then
             ok=yes
@@ -195,7 +195,7 @@ AC_DEFUN([AM_PATH_GPGME_PTHREAD],
                sed 's/\([[0-9]]*\)\.\([[0-9]]*\)\.\([[0-9]]*\)/\3/'`
       if test "$gpgme_version_major" -gt "$req_major"; then
         ok=yes
-      else 
+      else
         if test "$gpgme_version_major" -eq "$req_major"; then
           if test "$gpgme_version_minor" -gt "$req_minor"; then
             ok=yes
@@ -264,7 +264,7 @@ AC_DEFUN([AM_PATH_GPGME_GLIB],
                sed 's/\([[0-9]]*\)\.\([[0-9]]*\)\.\([[0-9]]*\)/\3/'`
     if test "$gpgme_version_major" -gt "$req_major"; then
         ok=yes
-    else 
+    else
         if test "$gpgme_version_major" -eq "$req_major"; then
             if test "$gpgme_version_minor" -gt "$req_minor"; then
                ok=yes

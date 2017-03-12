@@ -1,21 +1,21 @@
 /*
  * Copyright (C) 2000-2002 Vsevolod Volkov <vvv@mutt.org.ua>
  * Copyright (C) 2006-2007,2009 Rocco Rutte <pdmef@gmx.net>
- * 
+ *
  *     This program is free software; you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
  *     the Free Software Foundation; either version 2 of the License, or
  *     (at your option) any later version.
- * 
+ *
  *     This program is distributed in the hope that it will be useful,
  *     but WITHOUT ANY WARRANTY; without even the implied warranty of
  *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  *     GNU General Public License for more details.
- * 
+ *
  *     You should have received a copy of the GNU General Public License
  *     along with this program; if not, write to the Free Software
  *     Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
- */ 
+ */
 
 #if HAVE_CONFIG_H
 # include "config.h"
@@ -334,7 +334,7 @@ static int pop_fetch_headers (CONTEXT *ctx)
 #if USE_HCACHE
       else
       {
-	mutt_hcache_store (hc, ctx->hdrs[i]->data, strlen(ctx->hdrs[i]->data), 
+	mutt_hcache_store (hc, ctx->hdrs[i]->data, strlen(ctx->hdrs[i]->data),
                        ctx->hdrs[i], 0);
       }
 #endif
@@ -544,7 +544,7 @@ static int pop_fetch_message (CONTEXT* ctx, MESSAGE* msg, int msgno)
       msg->fp = fopen (cache->path, "r");
       if (msg->fp)
 	return 0;
-      
+
       mutt_perror (cache->path);
       mutt_sleep (2);
       return -1;

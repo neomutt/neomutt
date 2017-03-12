@@ -5,16 +5,16 @@
  *     it under the terms of the GNU General Public License as published by
  *     the Free Software Foundation; either version 2 of the License, or
  *     (at your option) any later version.
- * 
+ *
  *     This program is distributed in the hope that it will be useful,
  *     but WITHOUT ANY WARRANTY; without even the implied warranty of
  *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  *     GNU General Public License for more details.
- * 
+ *
  *     You should have received a copy of the GNU General Public License
  *     along with this program; if not, write to the Free Software
  *     Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
- */ 
+ */
 
 #if HAVE_CONFIG_H
 # include "config.h"
@@ -66,7 +66,7 @@ static int need_display_subject (CONTEXT *ctx, HEADER *hdr)
 	break;
     }
   }
-  
+
   /* if there is a parent-to-child subject change anywhere between us and our
    * closest displayed ancestor, display the subject */
   for (tmp = tree->parent; tmp; tmp = tmp->parent)
@@ -196,14 +196,14 @@ static void calculate_visibility (CONTEXT *ctx, int *max_depth)
 	tree = tree->prev;
     }
   }
-  
+
   /* now fix up for the OPTHIDETOP* options if necessary */
   if (hide_top_limited || hide_top_missing)
   {
     tree = ctx->tree;
     FOREVER
     {
-      if (!tree->visible && tree->deep && tree->subtree_visible < 2 
+      if (!tree->visible && tree->deep && tree->subtree_visible < 2
 	  && ((tree->message && hide_top_limited) || (!tree->message && hide_top_missing)))
 	tree->deep = 0;
       if (!tree->deep && tree->child && tree->subtree_visible)
@@ -354,7 +354,7 @@ static LIST *make_subject_list (THREAD *cur, time_t *dateptr)
   time_t thisdate;
   LIST *curlist, *oldlist, *newlist, *subjects = NULL;
   int rc = 0;
-  
+
   FOREVER
   {
     while (!cur->message)
@@ -410,14 +410,14 @@ static LIST *make_subject_list (THREAD *cur, time_t *dateptr)
 
 /* find the best possible match for a parent message based upon subject.
  * if there are multiple matches, the one which was sent the latest, but
- * before the current message, is used. 
+ * before the current message, is used.
  */
 static THREAD *find_subject (CONTEXT *ctx, THREAD *cur)
 {
   struct hash_elem *ptr;
   THREAD *tmp, *last = NULL;
   LIST *subjects = NULL, *oldlist;
-  time_t date = 0;  
+  time_t date = 0;
 
   subjects = make_subject_list (cur, &date);
 
@@ -589,9 +589,9 @@ THREAD *mutt_sort_subthreads (THREAD *thread, int init)
   THREAD **array, *sort_key, *top, *tmp;
   HEADER *oldsort_key;
   int i, array_size, sort_top = 0;
-  
+
   /* we put things into the array backwards to save some cycles,
-   * but we want to have to move less stuff around if we're 
+   * but we want to have to move less stuff around if we're
    * resorting, so we sort backwards and then put them back
    * in reverse order so they're forwards
    */
@@ -753,14 +753,14 @@ void mutt_sort_threads (CONTEXT *ctx, int init)
   THREAD *thread, *new, *tmp, top;
   memset (&top, 0, sizeof (top));
   LIST *ref = NULL;
-  
+
   /* set Sort to the secondary method to support the set sort_aux=reverse-*
    * settings.  The sorting functions just look at the value of
    * SORT_REVERSE
    */
   oldsort = Sort;
   Sort = SortAux;
-  
+
   if (!ctx->thread_hash)
     init = 1;
 
@@ -911,13 +911,13 @@ void mutt_sort_threads (CONTEXT *ctx, int init)
 	    ref = cur->env->references;
 	  else
 	    ref = cur->env->references->next;
-	  
+
 	  using_refs = 2;
 	}
       }
       else
 	ref = ref->next; /* go on with references */
-      
+
       if (!ref)
 	break;
 
@@ -964,7 +964,7 @@ void mutt_sort_threads (CONTEXT *ctx, int init)
 
     /* restore the oldsort order. */
     Sort = oldsort;
-    
+
     /* Put the list into an array. */
     linearize_tree (ctx);
 
@@ -1053,7 +1053,7 @@ int _mutt_aside_thread (HEADER *hdr, short dir, short subthreads)
   if ((dir != 0) ^ ((Sort & SORT_REVERSE) != 0))
   {
     do
-    { 
+    {
       cur = cur->next;
       if (!cur)
 	return (-1);
@@ -1063,7 +1063,7 @@ int _mutt_aside_thread (HEADER *hdr, short dir, short subthreads)
   else
   {
     do
-    { 
+    {
       cur = cur->prev;
       if (!cur)
 	return (-1);
@@ -1202,7 +1202,7 @@ int _mutt_traverse_thread (CONTEXT *ctx, HEADER *cur, int flag)
     else if (flag & MUTT_THREAD_NEXT_UNREAD)
       return (min_unread);
   }
-  
+
   FOREVER
   {
     cur = thread->message;
@@ -1231,7 +1231,7 @@ int _mutt_traverse_thread (CONTEXT *ctx, HEADER *cur, int flag)
 	  if (cur != roothdr)
 	    cur->virtual = -1;
 	}
-	else 
+	else
 	{
 	  if (CHECK_LIMIT)
 	    cur->virtual = cur->msgno;
@@ -1314,16 +1314,16 @@ int mutt_messages_in_thread (CONTEXT *ctx, HEADER *hdr, int flag)
   {
     while (!threads[i]->message)
       threads[i] = threads[i]->child;
-  } 
+  }
 
   if (Sort & SORT_REVERSE)
     rc = threads[0]->message->msgno - (threads[1] ? threads[1]->message->msgno : -1);
   else
     rc = (threads[1] ? threads[1]->message->msgno : ctx->msgcount) - threads[0]->message->msgno;
-  
+
   if (flag)
     rc += 1;
-  
+
   return (rc);
 }
 
@@ -1419,9 +1419,9 @@ static int link_threads (HEADER *parent, HEADER *child, CONTEXT *ctx)
 
   child->env->in_reply_to = mutt_new_list ();
   child->env->in_reply_to->data = safe_strdup (parent->env->message_id);
-  
+
   mutt_set_flag (ctx, child, MUTT_TAG, 0);
-  
+
   child->env->irt_changed = child->changed = 1;
   return 1;
 }
