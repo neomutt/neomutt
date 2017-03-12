@@ -263,7 +263,7 @@ int mutt_yesorno (const char *msg, int def)
   NORMAL_COLOR;
   FREE (&answer_string);
 
-  FOREVER
+  while (true)
   {
     mutt_refresh ();
     ch = mutt_getch ();
@@ -944,7 +944,7 @@ int mutt_multi_choice (char *prompt, char *letters)
   mutt_window_mvaddstr (MuttMessageWindow, 0, 0, prompt);
   NORMAL_COLOR;
   mutt_window_clrtoeol (MuttMessageWindow);
-  FOREVER
+  while (true)
   {
     mutt_refresh ();
     ch  = mutt_getch ();

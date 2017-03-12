@@ -137,7 +137,7 @@ static void calculate_visibility (CONTEXT *ctx, int *max_depth)
     tree = tree->next;
   *max_depth = 0;
 
-  FOREVER
+  while (true)
   {
     if (depth > *max_depth)
       *max_depth = depth;
@@ -203,7 +203,7 @@ static void calculate_visibility (CONTEXT *ctx, int *max_depth)
   if (hide_top_limited || hide_top_missing)
   {
     tree = ctx->tree;
-    FOREVER
+    while (true)
     {
       if (!tree->visible && tree->deep && tree->subtree_visible < 2
 	  && ((tree->message && hide_top_limited) || (!tree->message && hide_top_missing)))
@@ -357,7 +357,7 @@ static LIST *make_subject_list (THREAD *cur, time_t *dateptr)
   LIST *curlist, *oldlist, *newlist, *subjects = NULL;
   int rc = 0;
 
-  FOREVER
+  while (true)
   {
     while (!cur->message)
       cur = cur->child;
@@ -508,7 +508,7 @@ static void pseudo_threads (CONTEXT *ctx)
       insert_message (&parent->child, parent, cur);
       parent->sort_children = 1;
       tmp = cur;
-      FOREVER
+      while (true)
       {
 	while (!tmp->message)
 	  tmp = tmp->child;
@@ -989,7 +989,7 @@ static HEADER *find_virtual (THREAD *cur, int reverse)
   while (reverse && cur->next)
     cur = cur->next;
 
-  FOREVER
+  while (true)
   {
     if (cur->message && cur->message->virtual >= 0)
       return (cur->message);
@@ -1205,7 +1205,7 @@ int _mutt_traverse_thread (CONTEXT *ctx, HEADER *cur, int flag)
       return (min_unread);
   }
 
-  FOREVER
+  while (true)
   {
     cur = thread->message;
 

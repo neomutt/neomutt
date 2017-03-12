@@ -317,7 +317,7 @@ int mutt_thread_set_flag (HEADER *hdr, int flag, int bf, int subthread)
   if ((cur = cur->child) == NULL)
     return (0);
 
-  FOREVER
+  while (true)
   {
     if (cur->message)
       mutt_set_flag (Context, cur->message, flag, bf);

@@ -362,7 +362,7 @@ static int mh_mkstemp (CONTEXT * dest, FILE ** fp, char **tgt)
   mode_t omask;
 
   omask = umask (mh_umask (dest));
-  FOREVER
+  while (true)
   {
     snprintf (path, _POSIX_PATH_MAX, "%s/.mutt-%s-%d-%" PRIu64,
 	      dest->path, NONULL (Hostname), (int) getpid (), mutt_rand64());
@@ -1529,7 +1529,7 @@ static int maildir_open_new_message (MESSAGE * msg, CONTEXT * dest, HEADER * hdr
     strfcpy (subdir, "new", sizeof (subdir));
 
   omask = umask (mh_umask (dest));
-  FOREVER
+  while (true)
   {
     snprintf (path, _POSIX_PATH_MAX, "%s/tmp/%s.%lld.R%" PRIu64 ".%s%s",
 	      dest->path, subdir, (long long)time (NULL), mutt_rand64(),
@@ -1614,7 +1614,7 @@ static int _maildir_commit_message (CONTEXT * ctx, MESSAGE * msg, HEADER * hdr)
     suffix[0] = '\0';
 
   /* construct a new file name. */
-  FOREVER
+  while (true)
   {
     snprintf (path, _POSIX_PATH_MAX, "%s/%lld.R%" PRIu64 ".%s%s", subdir,
 	      (long long)time (NULL), mutt_rand64(),
@@ -1729,7 +1729,7 @@ static int _mh_commit_message (CONTEXT * ctx, MESSAGE * msg, HEADER * hdr,
    * slot.
    */
 
-  FOREVER
+  while (true)
   {
     hi++;
     snprintf (tmp, sizeof (tmp), "%d", hi);

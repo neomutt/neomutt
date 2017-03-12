@@ -478,7 +478,7 @@ int pop_fetch_data (POP_DATA *pop_data, char *query, progress_t *progressbar,
 
   inbuf = safe_malloc (sizeof (buf));
 
-  FOREVER
+  while (true)
   {
     chunk = mutt_socket_readln_d (buf, sizeof (buf), pop_data->conn, MUTT_SOCK_LOG_HDR);
     if (chunk < 0)
@@ -560,7 +560,7 @@ int pop_reconnect (CONTEXT *ctx)
   if (pop_data->status == POP_BYE)
     return -1;
 
-  FOREVER
+  while (true)
   {
     mutt_socket_close (pop_data->conn);
 

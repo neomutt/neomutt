@@ -94,8 +94,6 @@
 #define FMT_RIGHT	1
 #define FMT_CENTER	-1
 
-#define FOREVER while (1)
-
 /* this macro must check for *c == 0 since isspace(0) has unreliable behavior
    on some systems */
 # define SKIPWS(c) while (*(c) && isspace ((unsigned char) *(c))) c++;

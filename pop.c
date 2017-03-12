@@ -445,7 +445,7 @@ static int pop_open_mailbox (CONTEXT *ctx)
   mutt_bit_set (ctx->rights, MUTT_ACL_WRITE);
 #endif
 
-  FOREVER
+  while (true)
   {
     if (pop_reconnect (ctx) < 0)
       return -1;
@@ -557,7 +557,7 @@ static int pop_fetch_message (CONTEXT* ctx, MESSAGE* msg, int msgno)
     }
   }
 
-  FOREVER
+  while (true)
   {
     if (pop_reconnect (ctx) < 0)
       return -1;
@@ -678,7 +678,7 @@ static int pop_sync_mailbox (CONTEXT *ctx, int *index_hint)
 
   pop_data->check_time = 0;
 
-  FOREVER
+  while (true)
   {
     if (pop_reconnect (ctx) < 0)
       return -1;

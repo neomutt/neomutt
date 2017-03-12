@@ -428,7 +428,7 @@ int km_dokey (int menu)
   if (!map)
     return (retry_generic (menu, NULL, 0, 0));
 
-  FOREVER
+  while (true)
   {
     i = Timeout > 0 ? Timeout : 60;
 #ifdef USE_IMAP
@@ -601,7 +601,7 @@ int km_expand_key (char *s, size_t len, struct keymap_t *map)
   if (!map)
     return (0);
 
-  FOREVER
+  while (true)
   {
     strfcpy (s, km_keyname (map->keys[p]), len);
     len -= (l = mutt_strlen (s));

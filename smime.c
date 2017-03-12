@@ -764,7 +764,7 @@ static smime_key_t *smime_ask_for_key(char *prompt, short abilities, short publi
 
   mutt_clear_error ();
 
-  FOREVER
+  while (true)
   {
     resp[0] = 0;
     if (mutt_get_field (prompt, resp, sizeof (resp), MUTT_CLEAR) != 0)
