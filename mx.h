@@ -47,10 +47,6 @@ WHERE short DefaultMagic INITVAL (MUTT_MBOX);
 #define MMDF_SEP "\001\001\001\001\n"
 #define MAXLOCKATTEMPT 5
 
-int mbox_lock_mailbox (CONTEXT *, int, int);
-int mbox_parse_mailbox (CONTEXT *);
-int mmdf_parse_mailbox (CONTEXT *);
-void mbox_unlock_mailbox (CONTEXT *);
 int mbox_check_empty (const char *);
 void mbox_reset_atime (CONTEXT *, struct stat *);
 
@@ -64,8 +60,8 @@ void maildir_parse_flags (HEADER * h, const char *path);
 void maildir_update_flags (CONTEXT *ctx, HEADER *o, HEADER *n);
 void maildir_flags(char *dest, size_t destlen, HEADER * hdr);
 
-#if USE_HCACHE
-#include <hcache.h>
+#ifdef USE_HCACHE
+#include "hcache.h"
 int mh_sync_mailbox_message (CONTEXT * ctx, int msgno, header_cache_t *hc);
 #else
 int mh_sync_mailbox_message (CONTEXT * ctx, int msgno);
@@ -78,7 +74,6 @@ int mx_is_notmuch(const char *p);
 FILE *maildir_open_find_message (const char *, const char *, char **);
 
 int mbox_strict_cmp_headers (const HEADER *, const HEADER *);
-int mutt_reopen_mailbox (CONTEXT *, int *);
 
 void mx_alloc_memory (CONTEXT *);
 void mx_update_context (CONTEXT *, int);

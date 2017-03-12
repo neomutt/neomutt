@@ -44,9 +44,6 @@ typedef enum {
 
 void mutt_make_string_info (char *, size_t, int, const char *, struct hdr_format_info *, format_flag);
 
-void mutt_buffer_add (BUFFER*, const char*, size_t);
-void mutt_buffer_addstr (BUFFER*, const char*);
-void mutt_buffer_addch (BUFFER*, char);
 void mutt_free_opts (void);
 
 #define mutt_system(x) _mutt_system(x,0)
@@ -106,14 +103,9 @@ BODY *mutt_read_mime_header (FILE *, int);
 CONTENT *mutt_get_content_info (const char *fname, BODY *b);
 
 HASH *mutt_make_id_hash (CONTEXT *);
-HASH *mutt_make_subj_hash (CONTEXT *);
-
-LIST *mutt_make_references(ENVELOPE *e);
-LIST *mutt_parse_references (char *, int);
 
 char *mutt_read_rfc822_line (FILE *, char *, size_t *);
 ENVELOPE *mutt_read_rfc822_header (FILE *, HEADER *, short, short);
-HEADER *mutt_dup_header (HEADER *);
 
 void mutt_set_mtime (const char *from, const char *to);
 time_t mutt_decrease_mtime (const char *, struct stat *);
@@ -143,7 +135,6 @@ char *mutt_expand_path (char *, size_t);
 char *_mutt_expand_path (char *, size_t, int);
 char *mutt_find_hook (int, const char *);
 char *mutt_gecos_name (char *, size_t, struct passwd *);
-char *mutt_gen_msgid (void);
 char *mutt_get_body_charset (char *, size_t, BODY *);
 const char *mutt_get_name (ADDRESS *);
 char *mutt_get_parameter (const char *, PARAMETER *);
@@ -184,7 +175,6 @@ void mutt_decode_attachment (BODY *, STATE *);
 void mutt_decode_base64 (STATE *s, long len, int istext, iconv_t cd);
 void mutt_default_save (char *, size_t, HEADER *);
 void mutt_display_address (ENVELOPE *);
-void mutt_display_sanitize (char *);
 void mutt_draw_statusline (int cols, const char *buf, int buflen);
 void mutt_edit_content_type (HEADER *, BODY *, FILE *);
 void mutt_edit_file (const char *, const char *);
@@ -203,7 +193,6 @@ void mutt_enter_command (void);
 void mutt_expand_aliases_env (ENVELOPE *);
 void mutt_expand_file_fmt (char *, size_t, const char *, const char *);
 void mutt_expand_fmt (char *, size_t, const char *, const char *);
-void mutt_expand_link (char *, const char *, const char *);
 void mutt_fix_reply_recipients (ENVELOPE *env);
 void mutt_folder_hook (char *);
 void mutt_format_string (char *, size_t, int, int, int, char, const char *, size_t, int);
@@ -286,7 +275,6 @@ int mutt_buffy_notify (void);
 int mutt_builtin_editor (const char *, HEADER *, HEADER *);
 int mutt_can_decode (BODY *);
 int mutt_change_flag (HEADER *, int);
-int mutt_check_alias_name (const char *, char *, size_t);
 int mutt_check_encoding (const char *);
 int mutt_check_key (const char *);
 int mutt_check_menu (const char *);
@@ -380,7 +368,6 @@ int mutt_charlen (const char *s, int *);
 int mutt_strwidth (const char *);
 int mutt_compose_menu (HEADER *, char *, size_t, HEADER *, int);
 int mutt_thread_set_flag (HEADER *, int, int, int);
-int mutt_user_is_recipient (HEADER *);
 void mutt_update_num_postponed (void);
 int mutt_which_case (const char *);
 int mutt_write_fcc (const char *path, HEADER *hdr, const char *msgid, int, char *, char **);
@@ -394,7 +381,6 @@ int mutt_yesorno (const char *, int);
 void mutt_set_header_color(CONTEXT *, HEADER *);
 void mutt_sleep (short);
 int mutt_save_confirm (const char  *, struct stat *);
-void mutt_randbuf(void *out, size_t len);
 
 void mutt_browser_select_dir (char *f);
 void mutt_get_parent_path (char *output, char *path, size_t olen);
@@ -404,7 +390,6 @@ void mutt_rand_base32(void *out, size_t len);
 uint32_t mutt_rand32(void);
 uint64_t mutt_rand64(void);
 
-int mh_valid_message (const char *);
 
 ADDRESS *alias_reverse_lookup (ADDRESS *);
 

@@ -95,7 +95,7 @@ char *mutt_read_rfc822_line (FILE *f, char *line, size_t *linelen)
   /* not reached */
 }
 
-LIST *mutt_parse_references (char *s, int in_reply_to)
+static LIST *mutt_parse_references (char *s, int in_reply_to)
 {
   LIST *t, *lst = NULL;
   char *m;

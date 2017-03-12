@@ -307,7 +307,7 @@ static int edit_envelope (ENVELOPE *en, int flags)
 }
 
 #ifdef USE_NNTP
-char *nntp_get_header (const char *s)
+static char *nntp_get_header (const char *s)
 {
   SKIPWS (s);
   return safe_strdup (s);
@@ -620,7 +620,7 @@ int mutt_fetch_recips (ENVELOPE *out, ENVELOPE *in, int flags)
   return 0;
 }
 
-LIST *mutt_make_references(ENVELOPE *e)
+static LIST *mutt_make_references(ENVELOPE *e)
 {
   LIST *t = NULL, *l = NULL;
 
@@ -1248,7 +1248,7 @@ static int has_recips (ADDRESS *a)
 }
 
 int
-mutt_search_attach_keyword (char *filename)
+static mutt_search_attach_keyword (char *filename)
 {
   /* Search for the regex in AttachKeyword within a file */
   if (!AttachKeyword.rx)

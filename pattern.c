@@ -655,7 +655,7 @@ eat_message_range (pattern_t *pat, BUFFER *s, BUFFER *err)
   return -1;
 }
 
-int eat_range (pattern_t *pat, BUFFER *s, BUFFER *err)
+static int eat_range (pattern_t *pat, BUFFER *s, BUFFER *err)
 {
   char *tmp;
   int do_exclusive = 0;

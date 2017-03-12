@@ -34,6 +34,8 @@
 
 #include "lib.h"
 
+static int mutt_bcache_move(body_cache_t* bcache, const char* id, const char* newid);
+
 struct body_cache {
   char path[_POSIX_PATH_MAX];
   size_t pathlen;
@@ -167,7 +169,7 @@ int mutt_bcache_commit(body_cache_t* bcache, const char* id)
   return mutt_bcache_move (bcache, tmpid, id);
 }
 
-int mutt_bcache_move(body_cache_t* bcache, const char* id, const char* newid)
+static int mutt_bcache_move(body_cache_t* bcache, const char* id, const char* newid)
 {
   char path[_POSIX_PATH_MAX];
   char newpath[_POSIX_PATH_MAX];

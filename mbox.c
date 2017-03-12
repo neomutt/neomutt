@@ -38,6 +38,8 @@
 #include <unistd.h>
 #include <fcntl.h>
 
+static int mutt_reopen_mailbox (CONTEXT *ctx, int *index_hint);
+
 /* struct used by mutt_sync_mailbox() to store new offsets */
 struct m_update_t
 {
@@ -53,7 +55,7 @@ struct m_update_t
  * excl - exclusive lock?
  * retry - should retry if unable to lock?
  */
-int mbox_lock_mailbox (CONTEXT *ctx, int excl, int retry)
+static int mbox_lock_mailbox (CONTEXT *ctx, int excl, int retry)
 {
   int r;
 
@@ -68,7 +70,7 @@ int mbox_lock_mailbox (CONTEXT *ctx, int excl, int retry)
   return (r);
 }
 
-void mbox_unlock_mailbox (CONTEXT *ctx)
+static void mbox_unlock_mailbox (CONTEXT *ctx)
 {
   if (ctx->locked)
   {
@@ -79,7 +81,7 @@ void mbox_unlock_mailbox (CONTEXT *ctx)
   }
 }
 
-int mmdf_parse_mailbox (CONTEXT *ctx)
+static int mmdf_parse_mailbox (CONTEXT *ctx)
 {
   char buf[HUGE_STRING];
   char return_path[LONG_STRING];
@@ -238,7 +240,7 @@ int mmdf_parse_mailbox (CONTEXT *ctx)
  * NOTE: it is assumed that the mailbox being read has been locked before
  * this routine gets called.  Strange things could happen if it's not!
  */
-int mbox_parse_mailbox (CONTEXT *ctx)
+static int mbox_parse_mailbox (CONTEXT *ctx)
 {
   struct stat sb;
   char buf[HUGE_STRING], return_path[STRING];
@@ -1192,7 +1194,7 @@ bail:  /* Come here in case of disaster */
   return rc;
 }
 
-int mutt_reopen_mailbox (CONTEXT *ctx, int *index_hint)
+static int mutt_reopen_mailbox (CONTEXT *ctx, int *index_hint)
 {
   int (*cmp_headers) (const HEADER *, const HEADER *) = NULL;
   HEADER **old_hdrs;

@@ -47,6 +47,8 @@
 #include <dirent.h>
 #include <errno.h>
 
+void nntp_group_unread_stat (NNTP_DATA *nntp_data);
+
 /* Find NNTP_DATA for given newsgroup or add it */
 static NNTP_DATA *nntp_data_find (NNTP_SERVER *nserv, const char *group)
 {

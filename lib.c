@@ -50,6 +50,7 @@
 
 #include "lib.h"
 
+static int mutt_atol (const char *str, long *dst);
 
 static const struct sysexits
 {
@@ -405,7 +406,7 @@ int mutt_copy_stream (FILE *fin, FILE *fout)
   return 0;
 }
 
-int
+static int
 compare_stat (struct stat *osb, struct stat *nsb)
 {
   if (osb->st_dev != nsb->st_dev || osb->st_ino != nsb->st_ino ||
@@ -1096,7 +1097,7 @@ int mutt_atoi (const char *str, int *dst)
   return 0;
 }
 
-int mutt_atol (const char *str, long *dst)
+static int mutt_atol (const char *str, long *dst)
 {
   long r;
   long *res = dst ? dst : &r;

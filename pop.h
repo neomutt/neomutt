@@ -102,10 +102,8 @@ int pop_query_d (POP_DATA *, char *, size_t, char *);
 int pop_fetch_data (POP_DATA *, char *, progress_t *, int (*funct) (char *, void *), void *);
 int pop_reconnect (CONTEXT *);
 void pop_logout (CONTEXT *);
-void pop_error (POP_DATA *, char *);
 
 /* pop.c */
-int pop_close_mailbox (CONTEXT *);
 void pop_fetch_mail (void);
 
 extern struct mx_ops mx_pop_ops;

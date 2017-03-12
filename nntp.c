@@ -61,6 +61,8 @@
 #include "mutt_sasl.h"
 #endif
 
+static int nntp_check_mailbox (CONTEXT *ctx, int *index_hint);
+
 static int nntp_connect_error (NNTP_SERVER *nserv)
 {
   nserv->status = NNTP_NONE;
@@ -1410,7 +1412,7 @@ static int nntp_fetch_headers (CONTEXT *ctx, void *hc,
 }
 
 /* Open newsgroup */
-int nntp_open_mailbox (CONTEXT *ctx)
+static int nntp_open_mailbox (CONTEXT *ctx)
 {
   NNTP_SERVER *nserv;
   NNTP_DATA *nntp_data;
@@ -1548,7 +1550,7 @@ int nntp_open_mailbox (CONTEXT *ctx)
 }
 
 /* Fetch message */
-int nntp_fetch_message (CONTEXT *ctx, MESSAGE *msg, int msgno)
+static int nntp_fetch_message (CONTEXT *ctx, MESSAGE *msg, int msgno)
 {
   NNTP_DATA *nntp_data = ctx->data;
   NNTP_ACACHE *acache;
@@ -1744,7 +1746,7 @@ int nntp_post (const char *msg) {
 }
 
 /* Save changes to .newsrc and cache */
-int nntp_sync_mailbox (CONTEXT *ctx, int *index_hint)
+static int nntp_sync_mailbox (CONTEXT *ctx, int *index_hint)
 {
   NNTP_DATA *nntp_data = ctx->data;
   int rc, i;
@@ -1803,7 +1805,7 @@ int nntp_sync_mailbox (CONTEXT *ctx, int *index_hint)
 }
 
 /* Free up memory associated with the newsgroup context */
-int nntp_fastclose_mailbox (CONTEXT *ctx)
+static int nntp_fastclose_mailbox (CONTEXT *ctx)
 {
   NNTP_DATA *nntp_data = ctx->data, *nntp_tmp;
 
@@ -1821,7 +1823,7 @@ int nntp_fastclose_mailbox (CONTEXT *ctx)
 }
 
 /* Get date and time from server */
-int nntp_date (NNTP_SERVER *nserv, time_t *now)
+static int nntp_date (NNTP_SERVER *nserv, time_t *now)
 {
   if (nserv->hasDATE)
   {
@@ -1949,7 +1951,7 @@ static int nntp_group_poll (NNTP_DATA *nntp_data, int update_stat)
  *  MUTT_NEW_MAIL	- new articles found
  *  0		- no change
  * -1		- lost connection */
-int nntp_check_mailbox (CONTEXT *ctx, int *index_hint)
+static int nntp_check_mailbox (CONTEXT *ctx, int *index_hint)
 {
   NNTP_DATA *nntp_data = ctx->data;
   NNTP_SERVER *nserv = nntp_data->nserv;

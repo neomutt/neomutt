@@ -291,7 +291,7 @@ void km_bind (char *s, int menu, int op, char *macro, char *descr)
     Keymaps[menu] = map;
 }
 
-void km_bindkey (char *s, int menu, int op)
+static void km_bindkey (char *s, int menu, int op)
 {
   km_bind (s, menu, op, NULL, NULL);
 }
@@ -878,7 +878,7 @@ int mutt_parse_push (BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err)
 }
 
 /* expects to see: <menu-string>,<menu-string>,... <key-string> */
-static char *parse_keymap (int *menu, BUFFER *s, int maxmenus, int *nummenus, BUFFER *err)
+char *parse_keymap (int *menu, BUFFER *s, int maxmenus, int *nummenus, BUFFER *err)
 {
   BUFFER buf;
   int i=0;

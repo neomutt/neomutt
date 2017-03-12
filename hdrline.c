@@ -292,7 +292,7 @@ static int user_in_addr (ADDRESS *a)
  * 4: user is originator
  * 5: sent to a subscribed mailinglist
  */
-int mutt_user_is_recipient (HEADER *h)
+static int mutt_user_is_recipient (HEADER *h)
 {
   if (!h || !h->env)
     return 0;
@@ -392,7 +392,7 @@ static int get_initials(const char *name, char *buf, int buflen)
  * If the index is invalid, then a space character will be returned.
  * If the character selected is '\n' (Ctrl-M), then "" will be returned.
  */
-char *get_nth_wchar (mbchar_table *table, int index)
+static char *get_nth_wchar (mbchar_table *table, int index)
 {
   if (!table || !table->chars || (index < 0) || (index >= table->len))
     return " ";

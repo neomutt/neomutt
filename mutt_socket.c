@@ -86,7 +86,8 @@ int mutt_socket_close (CONNECTION* conn)
   return rc;
 }
 
-int mutt_socket_read (CONNECTION* conn, char* buf, size_t len)
+#if 0
+static int mutt_socket_read (CONNECTION* conn, char* buf, size_t len)
 {
   int rc;
 
@@ -108,6 +109,7 @@ int mutt_socket_read (CONNECTION* conn, char* buf, size_t len)
 
   return rc;
 }
+#endif
 
 int mutt_socket_write_d (CONNECTION *conn, const char *buf, int len, int dbg)
 {

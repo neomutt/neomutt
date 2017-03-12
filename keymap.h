@@ -28,7 +28,6 @@
 typedef short keycode_t;
 
 void km_bind (char *, int, int, char *, char *);
-void km_bindkey (char *, int, int);
 int km_dokey (int);
 
 void init_extended_keys(void);

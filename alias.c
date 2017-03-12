@@ -29,6 +29,8 @@
 #include <ctype.h>
 #include <errno.h>
 
+int mutt_check_alias_name (const char *s, char *dest, size_t destlen);
+
 ADDRESS *mutt_lookup_alias (const char *s)
 {
   ALIAS *t = Aliases;
