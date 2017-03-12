@@ -100,20 +100,6 @@ url_scheme_t url_check_scheme (const char *s)
     return (url_scheme_t) i;
 }
 
-#if 0
-static int url_parse_file (char *d, const char *src, size_t dl)
-{
-  if (ascii_strncasecmp (src, "file:", 5))
-    return -1;
-  else if (!ascii_strncasecmp (src, "file://", 7))	/* we don't support remote files */
-    return -1;
-  else
-    strfcpy (d, src + 5, dl);
-
-  return url_pct_decode (d);
-}
-#endif
-
 /* ciss_parse_userhost: fill in components of ciss with info from src. Note
  *   these are pointers into src, which is altered with '\0's. Port of 0
  *   means no port given. */
