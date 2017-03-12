@@ -64,4 +64,7 @@
 # ifndef USE_COMPRESSED
 #  define USE_COMPRESSED
 # endif
+# ifndef USE_LUA
+#  define USE_LUA
+# endif
 #endif

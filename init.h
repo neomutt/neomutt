@@ -23,11 +23,11 @@
 #else
 # include "sort.h"
 # include "mx.h"
+# ifdef USE_LUA
+#  include "mutt_lua.h"
+# endif
 #endif
 
-#ifdef USE_LUA
-#include "mutt_lua.h"
-#endif
 
 #include "buffy.h"
 
