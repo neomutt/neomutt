@@ -382,17 +382,6 @@ LIST *mutt_copy_list (LIST *p)
   return (l);
 }
 
-#if 0
-static HEADER *mutt_dup_header(HEADER *h)
-{
-  HEADER *hnew;
-
-  hnew = mutt_new_header();
-  memcpy(hnew, h, sizeof (HEADER));
-  return hnew;
-}
-#endif
-
 void mutt_free_header (HEADER **h)
 {
   if(!h || !*h) return;
@@ -428,33 +417,6 @@ int mutt_matches_ignore (const char *s)
 {
     return mutt_matches_list (s, Ignore) && !mutt_matches_list (s, UnIgnore);
 }
-
-#if 0
-/* prepend the path part of *path to *link */
-static void mutt_expand_link (char *newpath, const char *path, const char *link)
-{
-  const char *lb = NULL;
-  size_t len;
-
-  /* link is full path */
-  if (*link == '/')
-  {
-    strfcpy (newpath, link, _POSIX_PATH_MAX);
-    return;
-  }
-
-  if ((lb = strrchr (path, '/')) == NULL)
-  {
-    /* no path in link */
-    strfcpy (newpath, link, _POSIX_PATH_MAX);
-    return;
-  }
-
-  len = lb - path + 1;
-  memcpy (newpath, path, len);
-  strfcpy (newpath + len, link, _POSIX_PATH_MAX - len);
-}
-#endif
 
 char *mutt_expand_path (char *s, size_t slen)
 {
@@ -1966,17 +1928,6 @@ int state_putws (const wchar_t *ws, STATE *s)
   }
   return 0;
 }
-
-#if 0
-static void mutt_display_sanitize (char *s)
-{
-  for (; *s; s++)
-  {
-    if (!IsPrint (*s))
-      *s = '?';
-  }
-}
-#endif
 
 void mutt_sleep (short s)
 {

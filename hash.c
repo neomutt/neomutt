@@ -220,25 +220,6 @@ static struct hash_elem *union_hash_find_elem (const HASH *table, union hash_key
   return NULL;
 }
 
-#if 0
-static void hash_set_data (HASH *table, const char *key, void *data)
-{
-  if (!table)
-    return;
-
-  union hash_key k;
-  k.strkey = key;
-
-  unsigned int hash = table->gen_hash (k, table->nelem);
-
-  struct hash_elem *ptr = table->table[hash];
-  if (!ptr)
-    return;
-
-  ptr->data = data;
-}
-#endif
-
 static void *union_hash_find (const HASH *table, union hash_key key)
 {
   struct hash_elem *ptr = union_hash_find_elem (table, key);
