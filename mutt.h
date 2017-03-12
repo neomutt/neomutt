@@ -1142,7 +1142,6 @@ void state_mark_attach (STATE *);
 void state_attach_puts (const char *, STATE *);
 void state_prefix_putc (char, STATE *);
 int  state_printf(STATE *, const char *, ...);
-int state_putwc (wchar_t, STATE *);
 int state_putws (const wchar_t *, STATE *);
 
 /* for attachment counter */

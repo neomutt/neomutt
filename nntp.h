@@ -124,7 +124,6 @@ typedef struct
 int nntp_add_group (char *, void *);
 int nntp_active_save_cache (NNTP_SERVER *);
 int nntp_check_new_groups (NNTP_SERVER *);
-int nntp_fastclose_mailbox (CONTEXT *);
 int nntp_open_connection (NNTP_SERVER *);
 void nntp_newsrc_gen_entries (CONTEXT *);
 void nntp_bcache_update (NNTP_DATA *);
@@ -142,10 +141,6 @@ NNTP_DATA *mutt_newsgroup_catchup (NNTP_SERVER *, char *);
 NNTP_DATA *mutt_newsgroup_uncatchup (NNTP_SERVER *, char *);
 int nntp_active_fetch (NNTP_SERVER *);
 int nntp_newsrc_update (NNTP_SERVER *);
-int nntp_open_mailbox (CONTEXT *);
-int nntp_sync_mailbox (CONTEXT *ctx, int *index_hint);
-int nntp_check_mailbox (CONTEXT *, int*);
-int nntp_fetch_message (CONTEXT *, MESSAGE *, int);
 int nntp_post (const char *);
 int nntp_check_msgid (CONTEXT *, const char *);
 int nntp_check_children (CONTEXT *, const char *);

@@ -228,7 +228,7 @@ static int compare_spam (const void *a, const void *b)
   return (SORTCODE(result));
 }
 
-int compare_label (const void *a, const void *b)
+static int compare_label (const void *a, const void *b)
 {
   HEADER **ppa = (HEADER **) a;
   HEADER **ppb = (HEADER **) b;

@@ -74,14 +74,6 @@ int mutt_copy_message (FILE *fpout,
 		       int flags,
 		       int chflags);
 
-int _mutt_append_message (CONTEXT *dest,
-			  FILE *fpin,
-			  CONTEXT *src,
-			  HEADER *hdr,
-			  BODY *body,
-			  int flags,
-			  int chflags);
-
 int mutt_append_message (CONTEXT *dest,
 			 CONTEXT *src,
 			 HEADER *hdr,

@@ -68,6 +68,7 @@
 
 static int maildir_check_mailbox (CONTEXT * ctx, int *index_hint);
 static int mh_check_mailbox (CONTEXT * ctx, int *index_hint);
+static int mh_valid_message (const char *s);
 
 struct maildir
 {
@@ -810,7 +811,7 @@ HEADER *maildir_parse_message (int magic, const char *fname,
  * it.
  */
 
-int mh_valid_message (const char *s)
+static int mh_valid_message (const char *s)
 {
   for (; *s; s++)
   {
@@ -1998,7 +1999,7 @@ int mh_sync_mailbox_message (CONTEXT * ctx, int msgno)
     return 0;
 }
 
-int mh_sync_mailbox (CONTEXT * ctx, int *index_hint)
+static int mh_sync_mailbox (CONTEXT * ctx, int *index_hint)
 {
   int i, j;
 #if USE_HCACHE

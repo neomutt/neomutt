@@ -175,12 +175,10 @@ char *strfcpy (char *dest, const char *src, size_t dlen);
  */
 int mutt_atos (const char *, short *);
 int mutt_atoi (const char *, int *);
-int mutt_atol (const char *, long *);
 
 const char *mutt_stristr (const char *, const char *);
 const char *mutt_basename (const char *);
 
-int compare_stat (struct stat *, struct stat *);
 int mutt_copy_stream (FILE *, FILE *);
 int mutt_copy_bytes (FILE *, FILE *, size_t);
 int mutt_rx_sanitize_string (char *, size_t, const char *);

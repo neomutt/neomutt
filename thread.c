@@ -26,6 +26,8 @@
 #include <string.h>
 #include <ctype.h>
 
+static HASH *mutt_make_subj_hash (CONTEXT *ctx);
+
 #define VISIBLE(hdr, ctx) (hdr->virtual >= 0 || (hdr->collapsed && (!ctx->pattern || hdr->limited)))
 
 /* determine whether a is a descendant of b */
@@ -1346,7 +1348,7 @@ HASH *mutt_make_id_hash (CONTEXT *ctx)
   return hash;
 }
 
-HASH *mutt_make_subj_hash (CONTEXT *ctx)
+static HASH *mutt_make_subj_hash (CONTEXT *ctx)
 {
   int i;
   HEADER *hdr;

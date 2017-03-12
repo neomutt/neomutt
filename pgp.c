@@ -100,11 +100,13 @@ int pgp_valid_passphrase (void)
   return 0;
 }
 
-void pgp_forget_passphrase (void)
+#if 0
+static void pgp_forget_passphrase (void)
 {
   pgp_void_passphrase ();
   mutt_message (_("PGP passphrase forgotten."));
 }
+#endif
 
 int pgp_use_gpg_agent (void)
 {
@@ -157,7 +159,7 @@ char *_pgp_keyid(pgp_key_t k)
     return (k->keyid + 8);
 }
 
-char *pgp_fingerprint(pgp_key_t k)
+static char *pgp_fingerprint(pgp_key_t k)
 {
   k = _pgp_parent(k);
 
@@ -766,7 +768,8 @@ int pgp_verify_one (BODY *sigbdy, STATE *s, const char *tempfile)
 
 /* Extract pgp public keys from messages or attachments */
 
-void pgp_extract_keys_from_messages (HEADER *h)
+#if 0
+static void pgp_extract_keys_from_messages (HEADER *h)
 {
   int i;
   char tempfname[_POSIX_PATH_MAX];
@@ -828,6 +831,7 @@ void pgp_extract_keys_from_messages (HEADER *h)
   unset_option (OPTDONTHANDLEPGPKEYS);
 
 }
+#endif
 
 static void pgp_extract_keys_from_attachment (FILE *fp, BODY *top)
 {
@@ -880,7 +884,7 @@ void pgp_extract_keys_from_attachment_list (FILE *fp, int tag, BODY *top)
   unset_option(OPTDONTHANDLEPGPKEYS);
 }
 
-BODY *pgp_decrypt_part (BODY *a, STATE *s, FILE *fpout, BODY *p)
+static BODY *pgp_decrypt_part (BODY *a, STATE *s, FILE *fpout, BODY *p)
 {
   char buf[LONG_STRING];
   FILE *pgpin, *pgpout, *pgperr, *pgptmp;

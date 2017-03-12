@@ -33,6 +33,8 @@
 #include <sys/socket.h>
 #include <netinet/in.h>
 
+static sasl_callback_t* mutt_sasl_get_callbacks (ACCOUNT* account);
+
 static int getnameinfo_err(int ret)
 {
   int err;
@@ -132,7 +134,7 @@ static int iptostring(const struct sockaddr *addr, socklen_t addrlen,
 
 /* mutt_sasl_start: called before doing a SASL exchange - initialises library
  *   (if necessary). */
-int mutt_sasl_start (void)
+static int mutt_sasl_start (void)
 {
   static unsigned char sasl_init = 0;
 
@@ -270,7 +272,7 @@ int mutt_sasl_client_new (CONNECTION* conn, sasl_conn_t** saslconn)
   return 0;
 }
 
-sasl_callback_t* mutt_sasl_get_callbacks (ACCOUNT* account)
+static sasl_callback_t* mutt_sasl_get_callbacks (ACCOUNT* account)
 {
   sasl_callback_t* callback;
 

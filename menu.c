@@ -486,7 +486,7 @@ void menu_check_recenter (MUTTMENU *menu)
     menu->redraw |= REDRAW_INDEX;
 }
 
-void menu_jump (MUTTMENU *menu)
+static void menu_jump (MUTTMENU *menu)
 {
   int n;
   char buf[SHORT_STRING];

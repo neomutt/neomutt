@@ -272,7 +272,6 @@ void crypt_smime_getkeys (ENVELOPE *env);
 int crypt_smime_verify_sender(HEADER *h);
 
 /* Ask for an SMIME key. */
-char *crypt_smime_ask_for_key (char *prompt, char *mailbox, short public);
 
 /* This routine attempts to find the keyids of the recipients of a
    message.  It returns NULL if any of the keys can not be found.

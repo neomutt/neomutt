@@ -74,7 +74,7 @@ static char SmimeCertToUse[_POSIX_PATH_MAX];
 static char SmimeIntermediateToUse[_POSIX_PATH_MAX];
 
 
-void smime_free_key (smime_key_t **keylist)
+static void smime_free_key (smime_key_t **keylist)
 {
   smime_key_t *key;
 
@@ -755,7 +755,7 @@ static smime_key_t *smime_get_key_by_str(char *str, short abilities, short publi
 }
 
 
-smime_key_t *smime_ask_for_key(char *prompt, short abilities, short public)
+static smime_key_t *smime_ask_for_key(char *prompt, short abilities, short public)
 {
   smime_key_t *key;
   char resp[SHORT_STRING];
@@ -784,7 +784,7 @@ smime_key_t *smime_ask_for_key(char *prompt, short abilities, short public)
    the required key is different from SmimeDefaultKey.
 */
 
-void _smime_getkeys (char *mailbox)
+static void _smime_getkeys (char *mailbox)
 {
   smime_key_t *key = NULL;
   char *k = NULL;

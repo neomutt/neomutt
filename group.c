@@ -105,7 +105,7 @@ void mutt_group_context_destroy (group_context_t **ctx)
   }
 }
 
-void mutt_group_add_adrlist (group_t *g, ADDRESS *a)
+static void mutt_group_add_adrlist (group_t *g, ADDRESS *a)
 {
   ADDRESS **p, *q;
 

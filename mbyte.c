@@ -153,7 +153,9 @@ size_t wcrtomb (char *s, wchar_t wc, mbstate_t *ps)
   }
 }
 
-size_t mbrtowc_iconv (wchar_t *pwc, const char *s, size_t n,
+static size_t utf8rtowc (wchar_t *pwc, const char *s, size_t n, mbstate_t *_ps);
+
+static size_t mbrtowc_iconv (wchar_t *pwc, const char *s, size_t n,
 		      mbstate_t *ps, iconv_t cd)
 {
   static mbstate_t mbstate;
@@ -391,7 +393,7 @@ int iswupper (wint_t wc)
  *   Symbols, Greek and Cyrillic in JIS X 0208, Japanese Kanji
  *   Character Set, have a column width of 2.
  */
-int wcwidth_ja (wchar_t ucs)
+static int wcwidth_ja (wchar_t ucs)
 {
   if (ucs >= 0x3021)
     return -1; /* continue with the normal check */
@@ -432,7 +434,7 @@ int wcwidth (wchar_t wc)
   return wcwidth_ucs (wc);
 }
 
-size_t utf8rtowc (wchar_t *pwc, const char *s, size_t n, mbstate_t *_ps)
+static size_t utf8rtowc (wchar_t *pwc, const char *s, size_t n, mbstate_t *_ps)
 {
   static wchar_t mbstate;
   wchar_t *ps = (wchar_t *)_ps;

@@ -75,7 +75,7 @@ int pop_parse_path (const char* path, ACCOUNT* acct)
 }
 
 /* Copy error message to err_msg buffer */
-void pop_error (POP_DATA *pop_data, char *msg)
+static void pop_error (POP_DATA *pop_data, char *msg)
 {
   char *t, *c, *c2;
 

@@ -488,7 +488,7 @@ static void pop_clear_cache (POP_DATA *pop_data)
 }
 
 /* close POP mailbox */
-int pop_close_mailbox (CONTEXT *ctx)
+static int pop_close_mailbox (CONTEXT *ctx)
 {
   POP_DATA *pop_data = (POP_DATA *)ctx->data;
 

@@ -382,7 +382,8 @@ LIST *mutt_copy_list (LIST *p)
   return (l);
 }
 
-HEADER *mutt_dup_header(HEADER *h)
+#if 0
+static HEADER *mutt_dup_header(HEADER *h)
 {
   HEADER *hnew;
 
@@ -390,6 +391,7 @@ HEADER *mutt_dup_header(HEADER *h)
   memcpy(hnew, h, sizeof (HEADER));
   return hnew;
 }
+#endif
 
 void mutt_free_header (HEADER **h)
 {
@@ -427,8 +429,9 @@ int mutt_matches_ignore (const char *s)
     return mutt_matches_list (s, Ignore) && !mutt_matches_list (s, UnIgnore);
 }
 
+#if 0
 /* prepend the path part of *path to *link */
-void mutt_expand_link (char *newpath, const char *path, const char *link)
+static void mutt_expand_link (char *newpath, const char *path, const char *link)
 {
   const char *lb = NULL;
   size_t len;
@@ -451,6 +454,7 @@ void mutt_expand_link (char *newpath, const char *path, const char *link)
   memcpy (newpath, path, len);
   strfcpy (newpath + len, link, _POSIX_PATH_MAX - len);
 }
+#endif
 
 char *mutt_expand_path (char *s, size_t slen)
 {
@@ -869,7 +873,7 @@ void mutt_merge_envelopes(ENVELOPE* base, ENVELOPE** extra)
 
 static FILE *frandom;
 
-void mutt_randbuf(void *out, size_t len)
+static void mutt_randbuf(void *out, size_t len)
 {
   if (len > 1048576) {
     mutt_error (_("mutt_randbuf len=%zu"), len);
@@ -1938,7 +1942,7 @@ void state_attach_puts (const char *t, STATE *s)
   }
 }
 
-int state_putwc (wchar_t wc, STATE *s)
+static int state_putwc (wchar_t wc, STATE *s)
 {
   char mb[MB_LEN_MAX] = "";
   int rc;
@@ -1963,7 +1967,8 @@ int state_putws (const wchar_t *ws, STATE *s)
   return 0;
 }
 
-void mutt_display_sanitize (char *s)
+#if 0
+static void mutt_display_sanitize (char *s)
 {
   for (; *s; s++)
   {
@@ -1971,6 +1976,7 @@ void mutt_display_sanitize (char *s)
       *s = '?';
   }
 }
+#endif
 
 void mutt_sleep (short s)
 {

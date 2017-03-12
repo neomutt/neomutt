@@ -953,12 +953,13 @@ static void pgpring_dump_keyblock (pgp_key_t p)
   }
 }
 
+#if 0
 /*
  * The mutt_gettext () defined in gettext.c requires iconv,
  * so we do without charset conversion here.
  */
-
-char *mutt_gettext (const char *message)
+static char *mutt_gettext (const char *message)
 {
   return (char *)message;
 }
+#endif

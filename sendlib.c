@@ -2181,7 +2181,7 @@ const char *mutt_fqdn(short may_hide_host)
   return p;
 }
 
-char *mutt_gen_msgid (void)
+static char *mutt_gen_msgid (void)
 {
   char buf[SHORT_STRING];
   time_t now;

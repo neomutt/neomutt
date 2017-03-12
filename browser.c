@@ -889,7 +889,7 @@ static void vfolder_entry (char *s, size_t slen, MUTTMENU *menu, int num)
  * This function takes a menu and a state and defines the current
  * entry that should be highlighted.
  */
-void mutt_browser_highlight_default (struct browser_state *state, MUTTMENU *menu)
+static void mutt_browser_highlight_default (struct browser_state *state, MUTTMENU *menu)
 {
   menu->top = 0;
   /* Reset menu position to 1.
