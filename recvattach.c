@@ -839,10 +839,6 @@ mutt_attach_display_loop (MUTTMENU *menu, int op, FILE *fp, HEADER *hdr,
 			  int recv)
 {
   ATTACHPTR **idx = *idxp;
-#if 0
-  int old_optweed = option (OPTWEED);
-  set_option (OPTWEED);
-#endif
 
   do
   {
@@ -905,10 +901,6 @@ mutt_attach_display_loop (MUTTMENU *menu, int op, FILE *fp, HEADER *hdr,
   }
   while (op != OP_NULL);
 
-#if 0
-  if (option (OPTWEED) != old_optweed)
-    toggle_option (OPTWEED);
-#endif
   return op;
 }
 

@@ -3832,28 +3832,6 @@ static crypt_key_t *get_candidates (LIST * hints, unsigned int app, int secret)
           if (key->disabled)
             flags |= KEYFLAG_DISABLED;
 
-#if 0 /* DISABLED code */
-          if (!flags)
-            {
-	      /* Bug in gpg.  Capabilities are not listed for secret
-		 keys.  Try to deduce them from the algorithm. */
-
-	      switch (key->subkeys[0].pubkey_algo)
-                {
-                case GPGME_PK_RSA:
-                  flags |= KEYFLAG_CANENCRYPT;
-                  flags |= KEYFLAG_CANSIGN;
-                  break;
-                case GPGME_PK_ELG_E:
-                  flags |= KEYFLAG_CANENCRYPT;
-                  break;
-                case GPGME_PK_DSA:
-                  flags |= KEYFLAG_CANSIGN;
-                  break;
-                }
-            }
-#endif /* DISABLED code */
-
 	  for (idx = 0, uid = key->uids; uid; idx++, uid = uid->next)
             {
               k = safe_calloc (1, sizeof *k);
@@ -4447,10 +4425,6 @@ static char *find_keys (ADDRESS *adrlist, unsigned int app, int oppenc_mode)
   int r;
   int key_selected;
 
-#if 0
-  *r_application = APPLICATION_PGP|APPLICATION_SMIME;
-#endif
-
   for (p = adrlist; p ; p = p->next)
     {
       key_selected = 0;
@@ -4491,13 +4465,8 @@ static char *find_keys (ADDRESS *adrlist, unsigned int app, int oppenc_mode)
                   }
                 else if (! oppenc_mode)
                   {
-#if 0
-                    k_info = crypt_getkeybystr (crypt_hook_val, KEYFLAG_CANENCRYPT,
-                                                *r_application, &forced_valid);
-#else
                     k_info = crypt_getkeybystr (crypt_hook_val, KEYFLAG_CANENCRYPT,
                                                 app, &forced_valid);
-#endif
                   }
               }
             else if (r == MUTT_NO)
@@ -4529,11 +4498,7 @@ static char *find_keys (ADDRESS *adrlist, unsigned int app, int oppenc_mode)
 
             k_info = crypt_ask_for_key (buf, q->mailbox,
                                         KEYFLAG_CANENCRYPT,
-#if 0
-                                        *r_application,
-#else
                                         app,
-#endif
                                         &forced_valid);
           }
 
@@ -4547,13 +4512,6 @@ static char *find_keys (ADDRESS *adrlist, unsigned int app, int oppenc_mode)
 
 
         keyID = crypt_fpr_or_lkeyid (k_info);
-
-#if 0
-        if (k_info->flags & KEYFLAG_ISX509)
-          *r_application &= ~APPLICATION_PGP;
-        if (!(k_info->flags & KEYFLAG_ISX509))
-          *r_application &= ~APPLICATION_SMIME;
-#endif
 
     bypass_selection:
         keylist_size += mutt_strlen (keyID) + 4 + 1;

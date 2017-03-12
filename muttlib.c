@@ -1735,18 +1735,6 @@ void mutt_FormatString (char *dest,		/* output buffer */
     }
   }
   *wptr = 0;
-
-#if 0
-  if (flags & MUTT_FORMAT_MAKEPRINT)
-  {
-    /* Make sure that the string is printable by changing all non-printable
-       chars to dots, or spaces for non-printable whitespace */
-    for (cp = dest ; *cp ; cp++)
-      if (!IsPrint (*cp) &&
-	  !((flags & MUTT_FORMAT_TREE) && (*cp <= MUTT_TREE_MAX)))
-	*cp = isspace ((unsigned char) *cp) ? ' ' : '.';
-  }
-#endif
 }
 
 /* This function allows the user to specify a command to read stdout from in

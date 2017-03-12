@@ -633,11 +633,7 @@ static pgp_key_t pgp_select_key (pgp_key_t keys,
 	}
       }
 
-# if 0
-      kp = pgp_principal_key (KeyTable[menu->current]->parent);
-# else
       kp = KeyTable[menu->current]->parent;
-# endif
       done = 1;
       break;
 

@@ -139,19 +139,6 @@ static short mhs_set (struct mh_sequences *mhs, int i, short f)
   return mhs->flags[i];
 }
 
-#if 0
-
-/* unused */
-
-static short mhs_unset (struct mh_sequences *mhs, int i, short f)
-{
-  mhs_alloc (mhs, i);
-  mhs->flags[i] &= ~f;
-  return mhs->flags[i];
-}
-
-#endif
-
 static int mh_read_token (char *t, int *first, int *last)
 {
   char *p;

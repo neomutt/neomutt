@@ -38,15 +38,6 @@
  * the use of alloca.  So let's disable it for AIX.
  */
 
-#if 0
-
-/* AIX requires this to be the first thing in the file. */
-# if defined (_AIX) && !defined (REGEX_MALLOC)
-#  pragma alloca
-# endif
-
-#endif
-
 #undef	_GNU_SOURCE
 #define _GNU_SOURCE
 
@@ -300,11 +291,6 @@ init_syntax_once ()
 #if HAVE_ALLOCA_H
 #include <alloca.h>
 #else /* not __GNUC__ or HAVE_ALLOCA_H */
-#if 0 /* It is a bad idea to declare alloca.  We always cast the result.  */
-#ifndef _AIX /* Already did AIX, up at the top.  */
-char *alloca ();
-#endif /* not _AIX */
-#endif
 #endif /* not HAVE_ALLOCA_H */
 #endif /* not __GNUC__ */
 
@@ -3652,15 +3638,6 @@ re_search_2 (bufp, string1, size1, string2, size2, startpos, range, regs, stop)
            : (d) == string2 - 1 ? *(end1 - 1) : *(d))			\
    == Sword)
 
-/* Disabled due to a compiler bug -- see comment at case wordbound */
-#if 0
-/* Test if the character before D and the one at D differ with respect
-   to being word-constituent.  */
-#define AT_WORD_BOUNDARY(d)						\
-  (AT_STRINGS_BEG (d) || AT_STRINGS_END (d)				\
-   || WORDCHAR_P (d - 1) != WORDCHAR_P (d))
-#endif
-
 /* Free everything we malloc.  */
 #ifdef MATCH_MAY_ALLOCATE
 #define FREE_VAR(var) if (var) REGEX_FREE (var); var = NULL
@@ -4743,17 +4720,10 @@ re_match_2_internal (bufp, string1, size1, string2, size2, pos, regs, stop)
                   = *p2 == (unsigned char) endline ? '\n' : p2[2];
 #endif
 
-#if 0
-                if ((re_opcode_t) p1[3] == exactn
-		    && ! ((int) p2[1] * BYTEWIDTH > (int) p1[5]
-			  && (p2[2 + p1[5] / BYTEWIDTH]
-			      & (1 << (p1[5] % BYTEWIDTH)))))
-#else
                 if ((re_opcode_t) p1[3] == exactn
 		    && ! ((int) p2[1] * BYTEWIDTH > (int) p1[4]
 			  && (p2[2 + p1[4] / BYTEWIDTH]
 			      & (1 << (p1[4] % BYTEWIDTH)))))
-#endif
                   {
   		    p[-3] = (unsigned char) pop_failure_jump;
                     DEBUG_PRINT3 ("  %c != %c => pop_failure_jump.\n",
@@ -4954,24 +4924,6 @@ re_match_2_internal (bufp, string1, size1, string2, size2, pos, regs, stop)
             break;
           }
 
-#if 0
-	/* The DEC Alpha C compiler 3.x generates incorrect code for the
-	   test  WORDCHAR_P (d - 1) != WORDCHAR_P (d)  in the expansion of
-	   AT_WORD_BOUNDARY, so this code is disabled.  Expanding the
-	   macro and introducing temporary variables works around the bug.  */
-
-	case wordbound:
-	  DEBUG_PRINT1 ("EXECUTING wordbound.\n");
-	  if (AT_WORD_BOUNDARY (d))
-	    break;
-	  goto fail;
-
-	case notwordbound:
-	  DEBUG_PRINT1 ("EXECUTING notwordbound.\n");
-	  if (AT_WORD_BOUNDARY (d))
-	    goto fail;
-	  break;
-#else
 	case wordbound:
 	{
 	  boolean prevchar, thischar;
@@ -5001,7 +4953,6 @@ re_match_2_internal (bufp, string1, size1, string2, size2, pos, regs, stop)
 	    goto fail;
 	  break;
 	}
-#endif
 
 	case wordbeg:
           DEBUG_PRINT1 ("EXECUTING wordbeg.\n");

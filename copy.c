@@ -289,11 +289,6 @@ mutt_copy_hdr (FILE *in, FILE *out, LOFF_T off_start, LOFF_T off_end, int flags,
   {
     if (headers[x])
     {
-#if 0
-      if (flags & CH_DECODE)
-	rfc2047_decode (&headers[x]);
-#endif
-
       /* We couldn't do the prefixing when reading because RFC 2047
        * decoding may have concatenated lines.
        */

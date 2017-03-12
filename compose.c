@@ -1150,14 +1150,6 @@ int mutt_compose_menu (HEADER *msg,   /* structure for new message */
 	CHECK_COUNT;
 	idx[menu->current]->content->unlink = !idx[menu->current]->content->unlink;
 
-#if 0
-        /* OPTRESOLVE is otherwise ignored on this menu.
-	 * Where's the bug?
-	 */
-
-        if (option (OPTRESOLVE) && menu->current + 1 < menu->max)
-	  menu->current++;
-# endif
 	menu->redraw = REDRAW_INDEX;
         /* No send2hook since this doesn't change the message. */
 	break;
