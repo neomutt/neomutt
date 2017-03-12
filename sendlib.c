@@ -1195,10 +1195,6 @@ static void mutt_set_encoding (BODY *b, CONTENT *info)
   else if (b->type == TYPEAPPLICATION && ascii_strcasecmp (b->subtype, "pgp-keys") == 0)
     b->encoding = ENC7BIT;
   else
-#if 0
-    if (info->lobin || info->hibin || info->binary || info->linemax > 990
-	   || info->cr || (/* option (OPTENCODEFROM) && */ info->from))
-#endif
   {
     /* Determine which encoding is smaller  */
     if (1.33 * (float)(info->lobin+info->hibin+info->ascii) <
@@ -1207,10 +1203,6 @@ static void mutt_set_encoding (BODY *b, CONTENT *info)
     else
       b->encoding = ENCQUOTEDPRINTABLE;
   }
-#if 0
-  else
-    b->encoding = ENC7BIT;
-#endif
 }
 
 void mutt_stamp_attachment(BODY *a)
@@ -1365,21 +1357,7 @@ BODY *mutt_make_file_attach (const char *path)
    * suffix.
    */
 
-#if 0
-
-  if ((n = mutt_lookup_mime_type (buf, sizeof (buf), xbuf, sizeof (xbuf), path)) != TYPEOTHER
-      || *xbuf != '\0')
-  {
-    att->type = n;
-    att->subtype = safe_strdup (buf);
-    att->xtype = safe_strdup (xbuf);
-  }
-
-#else
-
   mutt_lookup_mime_type (att, path);
-
-#endif
 
   if ((info = mutt_get_content_info (path, att)) == NULL)
   {

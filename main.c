@@ -152,10 +152,8 @@ static void start_curses (void)
     puts (_("Error initializing terminal."));
     exit (1);
   }
-#if 1 /* USE_SLANG_CURSES  - commenting out suggested in #455. */
   /* slang requires the signal handlers to be set after initializing */
   mutt_signal_init ();
-#endif
   ci_start_color ();
   keypad (stdscr, true);
   cbreak ();

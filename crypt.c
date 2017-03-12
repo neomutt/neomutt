@@ -513,13 +513,9 @@ int mutt_is_application_smime (BODY *m)
     {
       len++;
       if (!ascii_strcasecmp ((t+len), "p7m"))
-#if 0
-       return SMIMEENCRYPT;
-#else
       /* Not sure if this is the correct thing to do, but
          it's required for compatibility with Outlook */
        return (SMIMESIGN|SMIMEOPAQUE);
-#endif
       else if (!ascii_strcasecmp ((t+len), "p7s"))
 	return (SMIMESIGN|SMIMEOPAQUE);
     }

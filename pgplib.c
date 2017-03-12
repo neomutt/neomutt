@@ -54,31 +54,6 @@ const char *pgp_pkalgbytype (unsigned char type)
   }
 }
 
-
-
-/* unused */
-
-#if 0
-
-static const char *hashalgbytype (unsigned char type)
-{
-  switch (type)
-  {
-  case 1:
-    return "MD5";
-  case 2:
-    return "SHA1";
-  case 3:
-    return "RIPE-MD/160";
-  case 4:
-    return "HAVAL";
-  default:
-    return "unknown";
-  }
-}
-
-#endif
-
 short pgp_canencrypt (unsigned char type)
 {
   switch (type)

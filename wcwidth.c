@@ -167,17 +167,3 @@ int wcwidth_ucs(wchar_t ucs)
 
 #endif /* !HAVE_WC_FUNCS */
 
-#if 0 /* original */
-int wcswidth(const wchar_t *pwcs, size_t n)
-{
-  int w, width = 0;
-
-  for (;*pwcs && n-- > 0; pwcs++)
-    if ((w = wcwidth(*pwcs)) < 0)
-      return -1;
-    else
-      width += w;
-
-  return width;
-}
-#endif

@@ -4022,10 +4022,6 @@ void mutt_init (int skip_sys_rc, LIST *commands)
     mutt_str_replace(&Spoolfile, VirtIncoming->path);
 #endif
 
-#if 0
-  set_option (OPTWEED); /* turn weeding on by default */
-#endif
-
   FREE (&err.data);
 }
 

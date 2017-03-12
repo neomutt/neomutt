@@ -323,12 +323,6 @@ static int eat_regexp (pattern_t *pat, BUFFER *s, BUFFER *err)
     return (-1);
   }
 
-#if 0
-  /* If there are no RE metacharacters, use simple search anyway */
-  if (!pat->stringmatch && !strpbrk (buf.data, "|[{.*+?^$"))
-    pat->stringmatch = 1;
-#endif
-
   if (pat->stringmatch)
   {
     pat->p.str = safe_strdup (buf.data);

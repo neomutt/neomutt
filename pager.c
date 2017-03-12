@@ -765,13 +765,8 @@ resolve_types (char *buf, char *raw, struct line_t *lineInfo, int n, int last,
   }
   else if (mutt_strncmp ("\033[0m", raw, 4) == 0)	/* a little hack... */
     lineInfo[n].type = MT_COLOR_NORMAL;
-#if 0
-  else if (mutt_strncmp ("[-- ", buf, 4) == 0)
-    lineInfo[n].type = MT_COLOR_ATTACHMENT;
-#else
   else if (check_attachment_marker ((char *) raw) == 0)
     lineInfo[n].type = MT_COLOR_ATTACHMENT;
-#endif
   else if (mutt_strcmp ("-- \n", buf) == 0 || mutt_strcmp ("-- \r\n", buf) == 0)
   {
     i = n + 1;

@@ -1609,16 +1609,6 @@ BODY *pgp_traditional_encryptsign (BODY *a, int flags, char *keylist)
 
   b->filename = safe_strdup (pgpoutfile);
 
-#if 0
-  /* The following is intended to give a clue to some completely brain-dead
-   * "mail environments" which are typically used by large corporations.
-   */
-
-  b->d_filename = safe_strdup ("msg.pgp");
-  b->use_disp = 1;
-
-#endif
-
   b->disposition = DISPNONE;
   b->unlink   = 1;
 
