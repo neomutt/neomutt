@@ -183,7 +183,7 @@ static int _lua_mutt_set(lua_State *l)
   }
   else
   {
-    mutt_debug(2, " * _lua_mutt_get(%s) → error\n", param);
+    mutt_debug(2, " * _lua_mutt_get(%s) -> error\n", param);
     luaL_error(l, "Mutt parameter not found %s", param);
     rv = -1;
   }
@@ -255,7 +255,7 @@ static int _lua_mutt_get(lua_State *l)
         luaL_error(l, "Mutt parameter type %d unknown for %s", opt->type, param);
         return -1;
     }
-  mutt_debug(2, " * _lua_mutt_get() → error");
+  mutt_debug(2, " * _lua_mutt_get() -> error");
   luaL_error(l, "Mutt parameter not found %s", param);
   return -1;
 }
@@ -386,13 +386,13 @@ int mutt_lua_parse(BUFFER *tmp, BUFFER *s, unsigned long data, BUFFER *err)
 
   if (luaL_dostring(Lua, s->dptr))
   {
-    mutt_debug(2, " * mutt_lua_parse(%s) → failure\n", s->dptr);
+    mutt_debug(2, " * mutt_lua_parse(%s) -> failure\n", s->dptr);
     snprintf(err->data, err->dsize, _("%s: %s"), s->dptr, lua_tostring(Lua, -1));
     /* pop error message from the stack */
     lua_pop(Lua, 1);
     return -1;
   }
-  mutt_debug(2, " * mutt_lua_parse(%s) → success\n", s->dptr);
+  mutt_debug(2, " * mutt_lua_parse(%s) -> success\n", s->dptr);
   return 2;
 }
 
