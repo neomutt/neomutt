@@ -27,9 +27,7 @@
 #define WHERE
 #define _EXTLIB_C
 
-#if HAVE_CONFIG_H
-# include "config.h"
-#endif
+#include "config.h"
 
 #include <stdlib.h>
 #include "lib.h"

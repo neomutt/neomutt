@@ -19,9 +19,7 @@
  *     Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-#if HAVE_CONFIG_H
 #include "config.h"
-#endif				/* HAVE_CONFIG_H */
 
 #if !(HAVE_BDB || HAVE_GDBM || HAVE_KC || HAVE_LMDB || HAVE_QDBM || HAVE_TC)
 #error "No hcache backend defined"

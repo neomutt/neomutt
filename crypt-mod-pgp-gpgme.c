@@ -20,9 +20,7 @@
     This is a crytpo module wrapping the gpgme based pgp code.
  */
 
-#if HAVE_CONFIG_H
-# include "config.h"
-#endif
+#include "config.h"
 
 #ifdef CRYPT_BACKEND_GPGME
 
