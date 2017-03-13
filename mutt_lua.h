@@ -15,10 +15,12 @@
  *     Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111, USA.
  */
 
-#pragma once
+#ifndef _MUTT_LUA_H
+#define _MUTT_LUA_H
 
 #include "mutt.h"
 
 int mutt_lua_parse(BUFFER *tmp, BUFFER *s, unsigned long data, BUFFER *err);
 int mutt_lua_source_file(BUFFER *tmp, BUFFER *s, unsigned long data, BUFFER *err);
 
+#endif /* _MUTT_LUA_H */
