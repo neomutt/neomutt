@@ -81,7 +81,7 @@ int _mutt_system (const char *cmd, int flags)
       switch (fork ())
       {
 	case 0:
-#if defined(OPEN_MAX)
+#ifdef OPEN_MAX
 	  for (fd = 0; fd < OPEN_MAX; fd++)
 	    close (fd);
 #elif defined(_POSIX_OPEN_MAX)

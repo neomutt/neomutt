@@ -1953,7 +1953,7 @@ void _mutt_select_file (char *f, size_t flen, int flags, char ***files, int *num
 	break;
 #endif /* USE_NNTP */
 
-#if defined USE_IMAP || defined USE_NNTP
+#if defined(USE_IMAP) || defined(USE_NNTP)
       case OP_BROWSER_SUBSCRIBE:
       case OP_BROWSER_UNSUBSCRIBE:
 #endif

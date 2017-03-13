@@ -2249,7 +2249,7 @@ send_msg (const char *path, char **args, const char *msg, char **tempfile)
 
     /* next we close all open files */
     close (0);
-#if defined(OPEN_MAX)
+#ifdef OPEN_MAX
     for (fd = tempfile ? 1 : 3; fd < OPEN_MAX; fd++)
       close (fd);
 #elif defined(_POSIX_OPEN_MAX)
@@ -2671,7 +2671,7 @@ static int _mutt_bounce_message (FILE *fp, HEADER *h, ADDRESS *to, const char *r
       unlink(tempfile);
       return -1;
     }
-#if USE_SMTP
+#ifdef USE_SMTP
     if (SmtpUrl)
       ret = mutt_smtp_send (env_from, to, NULL, NULL, tempfile,
                             h->content->encoding == ENC8BIT);

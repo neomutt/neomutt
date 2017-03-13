@@ -25,7 +25,7 @@
 #include "pop.h"
 #include "mutt_crypt.h"
 #include "bcache.h"
-#if USE_HCACHE
+#ifdef USE_HCACHE
 #include "hcache.h"
 #endif
 
@@ -300,7 +300,7 @@ static int pop_fetch_headers (CONTEXT *ctx)
     {
       if (!ctx->quiet)
 	mutt_progress_update (&progress, i + 1 - old_count, -1);
-#if USE_HCACHE
+#ifdef USE_HCACHE
       if ((data = mutt_hcache_fetch (hc, ctx->hdrs[i]->data, strlen(ctx->hdrs[i]->data))))
       {
 	char *uidl = safe_strdup (ctx->hdrs[i]->data);
@@ -329,7 +329,7 @@ static int pop_fetch_headers (CONTEXT *ctx)
 #endif
       if ((ret = pop_read_header (pop_data, ctx->hdrs[i])) < 0)
 	break;
-#if USE_HCACHE
+#ifdef USE_HCACHE
       else
       {
 	mutt_hcache_store (hc, ctx->hdrs[i]->data, strlen(ctx->hdrs[i]->data),
@@ -372,7 +372,7 @@ static int pop_fetch_headers (CONTEXT *ctx)
       mx_update_context (ctx, i - old_count);
   }
 
-#if USE_HCACHE
+#ifdef USE_HCACHE
     mutt_hcache_close (hc);
 #endif
 
@@ -437,7 +437,7 @@ static int pop_open_mailbox (CONTEXT *ctx)
   memset (ctx->rights, 0, sizeof (ctx->rights));
   mutt_bit_set (ctx->rights, MUTT_ACL_SEEN);
   mutt_bit_set (ctx->rights, MUTT_ACL_DELETE);
-#if USE_HCACHE
+#ifdef USE_HCACHE
   /* flags are managed using header cache, so it only makes sense to
    * enable them in that case */
   mutt_bit_set (ctx->rights, MUTT_ACL_WRITE);
@@ -684,7 +684,7 @@ static int pop_sync_mailbox (CONTEXT *ctx, int *index_hint)
     mutt_progress_init (&progress, _("Marking messages deleted..."),
 			MUTT_PROGRESS_MSG, WriteInc, ctx->deleted);
 
-#if USE_HCACHE
+#ifdef USE_HCACHE
     hc = pop_hcache_open (pop_data, ctx->path);
 #endif
 
@@ -699,13 +699,13 @@ static int pop_sync_mailbox (CONTEXT *ctx, int *index_hint)
 	if ((ret = pop_query (pop_data, buf, sizeof (buf))) == 0)
 	{
 	  mutt_bcache_del (pop_data->bcache, ctx->hdrs[i]->data);
-#if USE_HCACHE
+#ifdef USE_HCACHE
 	  mutt_hcache_delete (hc, ctx->hdrs[i]->data, strlen(ctx->hdrs[i]->data));
 #endif
 	}
       }
 
-#if USE_HCACHE
+#ifdef USE_HCACHE
       if (ctx->hdrs[i]->changed)
       {
 	mutt_hcache_store (hc, ctx->hdrs[i]->data, strlen(ctx->hdrs[i]->data),
@@ -715,7 +715,7 @@ static int pop_sync_mailbox (CONTEXT *ctx, int *index_hint)
 
     }
 
-#if USE_HCACHE
+#ifdef USE_HCACHE
     mutt_hcache_close (hc);
 #endif
 

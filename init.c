@@ -33,11 +33,11 @@
 #include "group.h"
 #include "version.h"
 
-#if defined(USE_SSL)
+#ifdef USE_SSL
 #include "mutt_ssl.h"
 #endif
 
-#if USE_NOTMUCH
+#ifdef USE_NOTMUCH
 #include "mutt_notmuch.h"
 #endif
 
@@ -76,7 +76,7 @@ static myvar_t* MyVars;
 static void myvar_set (const char* var, const char* val);
 static void myvar_del (const char* var);
 
-#if USE_NOTMUCH
+#ifdef USE_NOTMUCH
 /* List of tags found in last call to mutt_nm_query_complete(). */
 static char **nm_tags;
 #endif
@@ -3205,7 +3205,7 @@ int mutt_var_value_complete (char *buffer, size_t len, int pos)
   return 0;
 }
 
-#if USE_NOTMUCH
+#ifdef USE_NOTMUCH
 
 /* Fetch a list of all notmuch tags and insert them into the completion
  * machinery.

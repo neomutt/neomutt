@@ -31,7 +31,7 @@
 #include "mutt_crypt.h"
 #include "nntp.h"
 
-#if defined(USE_SSL)
+#ifdef USE_SSL
 #include "mutt_ssl.h"
 #endif
 
@@ -43,7 +43,7 @@
 #include "smime.h"
 #endif
 
-#if USE_HCACHE
+#ifdef USE_HCACHE
 #include "hcache.h"
 #endif
 
@@ -663,7 +663,7 @@ int nntp_open_connection (NNTP_SERVER *nserv)
 		posting ? _("Posting is ok.") : _("Posting is NOT ok."));
   mutt_sleep (1);
 
-#if defined(USE_SSL)
+#ifdef USE_SSL
   /* Attempt STARTTLS if available and desired. */
   if (nserv->use_tls != 1 && (nserv->hasSTARTTLS || option (OPTSSLFORCETLS)))
   {

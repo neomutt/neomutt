@@ -110,7 +110,7 @@
 #define  MUTT_COMMAND (1<<6) /* do command completion */
 #define  MUTT_PATTERN (1<<7) /* pattern mode - only used for history classes */
 #define  MUTT_LABEL   (1<<8) /* do label completion */
-#if USE_NOTMUCH
+#ifdef USE_NOTMUCH
 #define  MUTT_NM_QUERY (1<<9) /* Notmuch query mode. */
 #define  MUTT_NM_TAG   (1<<10) /* Notmuch tag +/- mode. */
 #endif
@@ -300,7 +300,7 @@ enum
   OPT_QUIT,
   OPT_REPLYTO,
   OPT_RECALL,
-#if defined(USE_SSL)
+#ifdef USE_SSL
   OPT_SSLSTARTTLS,
 #endif
   OPT_SUBJECT,
@@ -413,7 +413,7 @@ enum
   OPTIMAPPEEK,
   OPTIMAPSERVERNOISE,
 #endif
-#if defined(USE_SSL)
+#ifdef USE_SSL
 # ifndef USE_SSL_GNUTLS
   OPTSSLSYSTEMCERTS,
   OPTSSLV2,
@@ -908,7 +908,7 @@ typedef struct header
   int refno;			/* message number on server */
 #endif
 
-#if defined USE_POP || defined USE_IMAP || defined USE_NNTP || defined USE_NOTMUCH
+#if defined(USE_POP) || defined(USE_IMAP) || defined(USE_NNTP) || defined(USE_NOTMUCH)
   void *data;            	/* driver-specific data */
   void (*free_cb)(struct header *); /* driver-specific data free function */
 #endif

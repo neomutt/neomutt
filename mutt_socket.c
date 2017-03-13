@@ -23,7 +23,7 @@
 #include "mutt.h"
 #include "mutt_socket.h"
 #include "mutt_tunnel.h"
-#if defined(USE_SSL)
+#ifdef USE_SSL
 # include "mutt_ssl.h"
 #endif
 
@@ -263,7 +263,7 @@ CONNECTION* mutt_conn_find (const CONNECTION* start, const ACCOUNT* account)
     mutt_tunnel_socket_setup (conn);
   else if (account->flags & MUTT_ACCT_SSL)
   {
-#if defined(USE_SSL)
+#ifdef USE_SSL
     if (mutt_ssl_socket_setup (conn) < 0)
     {
       mutt_socket_free (conn);

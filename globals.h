@@ -75,10 +75,10 @@ WHERE char *Maildir;
 #if defined(USE_IMAP) || defined(USE_POP) || defined(USE_NNTP)
 WHERE char *MessageCachedir;
 #endif
-#if USE_HCACHE
+#ifdef USE_HCACHE
 WHERE char *HeaderCache;
 WHERE char *HeaderCacheBackend;
-#if HAVE_GDBM || HAVE_BDB
+#if defined(HAVE_GDBM) || defined(HAVE_BDB)
 WHERE char *HeaderCachePageSize;
 #endif /* HAVE_GDBM || HAVE_BDB */
 #endif /* USE_HCACHE */
@@ -144,14 +144,14 @@ WHERE char *SidebarIndentString;
 #endif
 WHERE char *Signature;
 WHERE char *SimpleSearch;
-#if USE_SMTP
+#ifdef USE_SMTP
 WHERE char *SmtpAuthenticators INITVAL (NULL);
 WHERE char *SmtpPass INITVAL (NULL);
 WHERE char *SmtpUrl INITVAL (NULL);
 #endif /* USE_SMTP */
 WHERE char *Spoolfile;
 WHERE char *SpamSep;
-#if defined(USE_SSL)
+#ifdef USE_SSL
 WHERE char *SslCertFile INITVAL (NULL);
 WHERE char *SslClientCert INITVAL (NULL);
 WHERE char *SslEntropyFile INITVAL (NULL);

@@ -665,7 +665,7 @@ int _mutt_enter_string (char *buf, size_t buflen, int col,
 	      BEEP (); /* let the user know that nothing matched */
 	    replace_part (state, 0, buf);
 	  }
-#if USE_NOTMUCH
+#ifdef USE_NOTMUCH
 	  else if (flags & MUTT_NM_QUERY)
 	  {
 	    my_wcstombs (buf, buflen, state->wbuf, state->curpos);

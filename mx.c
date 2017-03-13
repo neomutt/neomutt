@@ -1078,7 +1078,7 @@ int mx_close_mailbox (CONTEXT *ctx, int *index_hint)
   return 0;
 }
 
-#if USE_NOTMUCH
+#ifdef USE_NOTMUCH
 #include "mutt_notmuch.h"
 #endif
 

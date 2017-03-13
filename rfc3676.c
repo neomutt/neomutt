@@ -335,7 +335,7 @@ int rfc3676_handler (BODY * a, STATE * s)
  */
 void rfc3676_space_stuff (HEADER* hdr)
 {
-#if DEBUG
+#ifdef DEBUG
   int lc = 0;
   size_t len = 0;
   unsigned char c = '\0';
@@ -363,7 +363,7 @@ void rfc3676_space_stuff (HEADER* hdr)
   {
     if (ascii_strncmp ("From ", buf, 5) == 0 || buf[0] == ' ') {
       fputc (' ', out);
-#if DEBUG
+#ifdef DEBUG
       lc++;
       len = mutt_strlen (buf);
       if (len > 0)

@@ -1108,7 +1108,7 @@ static int send_message (HEADER *msg)
     return mix_send_message (msg->chain, tempfile);
 #endif
 
-#if USE_SMTP
+#ifdef USE_SMTP
 #ifdef USE_NNTP
   if (!option (OPTNEWSSEND))
 #endif
