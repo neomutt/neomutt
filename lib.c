@@ -379,7 +379,6 @@ int mutt_copy_bytes (FILE *in, FILE *out, size_t size)
       break;
     if (fwrite (buf, 1, chunk, out) != chunk)
     {
-      /* mutt_debug (1, "mutt_copy_bytes(): fwrite() returned short byte count\n"); */
       return (-1);
     }
     size -= chunk;
@@ -684,7 +683,6 @@ int safe_open (const char *path, int flags)
   if (lstat (path, &osb) < 0 || fstat (fd, &nsb) < 0 ||
       compare_stat(&osb, &nsb) == -1)
   {
-/*    mutt_debug (1, "safe_open(): %s is a symlink!\n", path); */
     close (fd);
     return (-1);
   }

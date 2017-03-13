@@ -1494,8 +1494,6 @@ void mx_update_context (CONTEXT *ctx, int new_messages)
 	ctx->id_hash = mutt_make_id_hash (ctx);
 
       h2 = hash_find (ctx->id_hash, h->env->supersedes);
-
-      /* FREE (&h->env->supersedes); should I ? */
       if (h2)
       {
 	h2->superseded = 1;

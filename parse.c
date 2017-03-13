@@ -1555,7 +1555,6 @@ static int count_body_parts_check(LIST **checklist, BODY *b, int dflt)
   /* If list is null, use default behavior. */
   if (! *checklist)
   {
-    /*return dflt;*/
     return 0;
   }
 

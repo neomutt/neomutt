@@ -971,7 +971,6 @@ static void cmd_parse_status (IMAP_DATA* idata, char* s)
       mutt_debug (1, "Error parsing mailbox %s, skipping\n", inc->path);
       continue;
     }
-    /* mutt_debug (2, "Buffy entry: [%s] mbox: [%s]\n", inc->path, NONULL(mx.mbox)); */
 
     if (imap_account_match (&idata->conn->account, &mx.account))
     {

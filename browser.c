@@ -619,7 +619,6 @@ static int examine_directory (MUTTMENU *menu, struct browser_state *state,
     NNTP_SERVER *nserv = CurrentNewsSrv;
     unsigned int i;
 
-/*  mutt_buffy_check (0); */
     init_state (state, menu);
 
     for (i = 0; i < nserv->groups_num; i++)
@@ -750,7 +749,6 @@ static int examine_mailboxes (MUTTMENU *menu, struct browser_state *state)
     NNTP_SERVER *nserv = CurrentNewsSrv;
     unsigned int i;
 
-/*  mutt_buffy_check (0); */
     init_state (state, menu);
 
     for (i = 0; i < nserv->groups_num; i++)
@@ -1899,20 +1897,6 @@ void _mutt_select_file (char *f, size_t flen, int flags, char ***files, int *num
 
 	  if (nntp_data)
 	  {
-/*	    FOLDER folder;
-	    struct folder_file ff;
-	    char buffer[_POSIX_PATH_MAX + SHORT_STRING];
-
-	    folder.ff = &ff;
-	    folder.ff->name = f->name;
-	    folder.ff->st = NULL;
-	    folder.ff->is_new = nntp_data->new;
-	    folder.ff->nntp_data = nntp_data;
-	    FREE (&f->desc);
-	    mutt_FormatString (buffer, sizeof (buffer), 0, NONULL(GroupFormat),
-		  newsgroup_format_str, (unsigned long) &folder,
-		  MUTT_FORMAT_ARROWCURSOR);
-	    f->desc = safe_strdup (buffer); */
 	    nntp_newsrc_update (CurrentNewsSrv);
 	    if (menu->current + 1 < menu->max)
 	      menu->current++;
@@ -2017,21 +2001,6 @@ void _mutt_select_file (char *f, size_t flen, int flags, char ***files, int *num
 		nntp_data = mutt_newsgroup_subscribe (nserv, f->name);
 	      else
 		nntp_data = mutt_newsgroup_unsubscribe (nserv, f->name);
-/*	      if (nntp_data)
-	      {
-		FOLDER folder;
-		char buffer[_POSIX_PATH_MAX + SHORT_STRING];
-
-		folder.name = f->name;
-		folder.f = NULL;
-		folder.new = nntp_data->new;
-		folder.nd = nntp_data;
-		FREE (&f->desc);
-		mutt_FormatString (buffer, sizeof (buffer), 0, NONULL(GroupFormat),
-			newsgroup_format_str, (unsigned long) &folder,
-			MUTT_FORMAT_ARROWCURSOR);
-		f->desc = safe_strdup (buffer);
-	      } */
 	    }
 	    if (i == OP_BROWSER_SUBSCRIBE || i == OP_BROWSER_UNSUBSCRIBE)
 	    {

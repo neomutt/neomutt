@@ -124,7 +124,6 @@ int mutt_display_message (HEADER *cur)
   {
     fpfilterout = fpout;
     fpout = NULL;
-    /* mutt_endwin (NULL); */
     filterpid = mutt_create_filter_fd (DisplayFilter, &fpout, NULL, NULL,
 				       -1, fileno(fpfilterout), -1);
     if (filterpid < 0)
@@ -399,12 +398,6 @@ static int _mutt_pipe_message (HEADER *h, char *cmd,
   pid_t thepid;
   FILE *fpout;
 
-/*   mutt_endwin (NULL);
-
-     is this really needed here ?
-     it makes the screen flicker on pgp and s/mime messages,
-     before asking for a passphrase...
-                                     Oliver Ehli */
   if (h)
   {
 

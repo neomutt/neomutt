@@ -693,7 +693,6 @@ int _mutt_enter_string (char *buf, size_t buflen, int col,
 	case OP_EDITOR_QUOTE_CHAR:
 	  {
 	    event_t event;
-	    /*ADDCH (LastKey);*/
 	    event = mutt_getch ();
 	    if (event.ch >= 0)
 	    {
