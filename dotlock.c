@@ -287,7 +287,6 @@ BEGIN_PRIVILEGED (void)
   {
     if (SETEGID (MailGid) != 0)
     {
-      /* perror ("setegid"); */
       exit (DL_EX_ERROR);
     }
   }
@@ -311,7 +310,6 @@ END_PRIVILEGED (void)
   {
     if (SETEGID (UserGid) != 0)
     {
-      /* perror ("setegid"); */
       exit (DL_EX_ERROR);
     }
   }
@@ -534,7 +532,6 @@ dotlock_deference_symlink (char *d, size_t l, const char *path)
   {
     if (lstat (pathptr, &sb) == -1)
     {
-      /* perror (pathptr); */
       return -1;
     }
 
@@ -546,7 +543,6 @@ dotlock_deference_symlink (char *d, size_t l, const char *path)
 
       if ((len = readlink (pathptr, linkfile, sizeof (linkfile) - 1)) == -1)
       {
-	/* perror (pathptr); */
 	return -1;
       }
 
@@ -608,7 +604,6 @@ dotlock_lock (const char *realpath)
 
     if (errno != EAGAIN)
     {
-      /* perror ("cannot open NFS lock file"); */
       return DL_EX_ERROR;
     }
 
@@ -630,7 +625,6 @@ dotlock_lock (const char *realpath)
 
     if (stat (nfslockfile, &sb) != 0)
     {
-      /* perror ("stat"); */
       return DL_EX_ERROR;
     }
 

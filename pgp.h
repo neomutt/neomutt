@@ -43,9 +43,6 @@ int mutt_check_pgp (HEADER * h);
 
 int pgp_decrypt_mime (FILE *, FILE **, BODY *, BODY **);
 
-/* int pgp_string_matches_hint (const char *s, LIST * hints); */
-
-/* pgp_key_t gpg_get_candidates (struct pgp_vinfo *, pgp_ring_t, LIST *); */
 pgp_key_t pgp_ask_for_key (char *, char *, short, pgp_ring_t);
 pgp_key_t pgp_get_candidates (pgp_ring_t, LIST *);
 pgp_key_t pgp_getkeybyaddr (ADDRESS *, short, pgp_ring_t, int);

@@ -398,7 +398,6 @@ static char *header_get_id(HEADER *h)
 static char *header_get_fullpath(HEADER *h, char *buf, size_t bufsz)
 {
   snprintf(buf, bufsz, "%s/%s", nm_header_get_folder(h), h->path);
-  /*mutt_debug (2, "nm: returns fullpath '%s'\n", buf);*/
   return buf;
 }
 

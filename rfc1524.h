@@ -20,7 +20,6 @@
 #define _RFC1524_H
 
 typedef struct rfc1524_mailcap_entry {
-/*  char *contenttype; */ /* we don't need this, as we search for it */
   char *command;
   char *testcommand;
   char *composecommand;
@@ -29,7 +28,6 @@ typedef struct rfc1524_mailcap_entry {
   char *printcommand;
   char *nametemplate;
   char *convert;
-/*  char *description; */ /* we don't need this */
   unsigned int needsterminal : 1;  /* endwin() and system */
   unsigned int copiousoutput : 1;  /* needs pager, basically */
 } rfc1524_entry;

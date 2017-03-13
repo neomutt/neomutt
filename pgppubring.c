@@ -800,8 +800,6 @@ static void pgpring_find_candidates (char *ringfile, const char *hints[], int nh
       memcpy (tmp, buff + 1, l - 1);
       tmp[l - 1] = '\0';
 
-      /* mutt_decode_utf8_string (tmp, chs); */
-
       if (pgpring_string_matches_hint (tmp, hints, nhints))
       {
 	pgp_key_t p;
