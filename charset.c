@@ -74,14 +74,15 @@ PreferredMIMENames[] =
   { "csISO2022JP",           "iso-2022-jp"   },
   { "csISO2022JP2",          "iso-2022-jp-2" },
 
-  { "ISO_8859-1:1987",       "iso-8859-1"    },
-  { "iso-ir-100",            "iso-8859-1"    },
-  { "iso_8859-1",            "iso-8859-1"    },
-  { "latin1",                "iso-8859-1"    },
-  { "l1",                    "iso-8859-1"    },
-  { "IBM819",                "iso-8859-1"    },
-  { "CP819",                 "iso-8859-1"    },
-  { "csISOLatin1",           "iso-8859-1"    },
+  { "ISO_8859-1:1987",       "cp1252"        },
+  { "iso-ir-100",            "cp1252"        },
+  { "iso_8859-1",            "cp1252"        },
+  { "latin1",                "cp1252"        },
+  { "l1",                    "cp1252"        },
+  { "IBM819",                "cp1252"        },
+  { "CP819",                 "cp1252"        },
+  { "csISOLatin1",           "cp1252"        },
+  { "iso-8859-1",            "cp1252"        },
 
   { "ISO_8859-2:1987",       "iso-8859-2"    },
   { "iso-ir-101",            "iso-8859-2"    },
@@ -215,6 +216,7 @@ PreferredMIMENames[] =
 };
 // clang-format on
 
+static const char * const DefaultCharset = "cp1252";
 #ifdef HAVE_LANGINFO_CODESET
 # include <langinfo.h>
 
@@ -229,14 +231,14 @@ void mutt_set_langinfo_charset (void)
   
   /* finally, set $charset */
   if (!(Charset = safe_strdup (buff2)))
-    Charset = safe_strdup ("iso-8859-1");
+    Charset = safe_strdup (DefaultCharset);
 }
 
 #else
 
 void mutt_set_langinfo_charset (void)
 {
-  Charset = safe_strdup ("iso-8859-1");
+  Charset = safe_strdup (DefaultCharset);
 }
 
 #endif
