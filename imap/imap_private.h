@@ -307,7 +307,7 @@ int imap_wordcasecmp(const char *a, const char *b);
 void imap_utf_encode (IMAP_DATA *idata, char **s);
 void imap_utf_decode (IMAP_DATA *idata, char **s);
 
-#if USE_HCACHE
+#ifdef USE_HCACHE
 /* typedef size_t (*hcache_keylen_t)(const char* fn); */
 #define imap_hcache_keylen mutt_strlen
 #endif /* USE_HCACHE */

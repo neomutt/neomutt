@@ -101,7 +101,7 @@ options:\n\
   -D\t\tprint the value of all variables to stdout\n\
   -D -S\t\tlike -D, but hide the value of sensitive variables\n\
   -B\t\trun in batch mode (do not start the ncurses UI)"));
-#if DEBUG
+#ifdef DEBUG
   puts (_("  -d <level>\tlog debugging output to ~/.muttdebug0"));
 #endif
   puts (_(
@@ -161,10 +161,10 @@ static void start_curses (void)
   cbreak ();
   noecho ();
   nonl ();
-#if HAVE_TYPEAHEAD
+#ifdef HAVE_TYPEAHEAD
   typeahead (-1);       /* simulate smooth scrolling */
 #endif
-#if HAVE_META
+#ifdef HAVE_META
   meta (stdscr, true);
 #endif
 init_extended_keys();

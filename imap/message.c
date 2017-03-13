@@ -34,7 +34,7 @@
 #include "pgp.h"
 #endif
 
-#if USE_HCACHE
+#ifdef USE_HCACHE
 #include "hcache.h"
 #endif
 
@@ -88,7 +88,7 @@ int imap_read_headers (IMAP_DATA* idata, int msgbegin, int msgend)
   progress_t progress;
   int retval = -1;
 
-#if USE_HCACHE
+#ifdef USE_HCACHE
   char buf[LONG_STRING];
   void *uid_validity = NULL;
   void *puidnext = NULL;
@@ -134,7 +134,7 @@ int imap_read_headers (IMAP_DATA* idata, int msgbegin, int msgend)
   idata->reopen &= ~(IMAP_REOPEN_ALLOW|IMAP_NEWMAIL_PENDING);
   idata->newMailCount = 0;
 
-#if USE_HCACHE
+#ifdef USE_HCACHE
   idata->hcache = imap_hcache_open (idata, NULL);
 
   if (idata->hcache && !msgbegin)
@@ -340,7 +340,7 @@ int imap_read_headers (IMAP_DATA* idata, int msgbegin, int msgend)
       ctx->hdrs[idx]->content->length = h.content_length;
       ctx->size += h.content_length;
 
-#if USE_HCACHE
+#ifdef USE_HCACHE
       imap_hcache_put (idata, ctx->hdrs[idx]);
 #endif /* USE_HCACHE */
 
@@ -352,7 +352,7 @@ int imap_read_headers (IMAP_DATA* idata, int msgbegin, int msgend)
     if ((mfhrc < -1) || ((rc != IMAP_CMD_CONTINUE) && (rc != IMAP_CMD_OK)))
     {
       imap_free_header_data (&h.data);
-#if USE_HCACHE
+#ifdef USE_HCACHE
       imap_hcache_close (idata);
 #endif
       goto error_out_1;
@@ -373,7 +373,7 @@ int imap_read_headers (IMAP_DATA* idata, int msgbegin, int msgend)
       (status->uidnext < maxuid + 1))
     status->uidnext = maxuid + 1;
 
-#if USE_HCACHE
+#ifdef USE_HCACHE
   mutt_hcache_store_raw (idata->hcache, "/UIDVALIDITY", 12,
           &idata->uid_validity, sizeof (idata->uid_validity));
   if (maxuid && idata->uidnext < maxuid + 1)

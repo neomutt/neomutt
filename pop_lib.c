@@ -22,7 +22,7 @@
 #include "mx.h"
 #include "url.h"
 #include "pop.h"
-#if defined(USE_SSL)
+#ifdef USE_SSL
 # include "mutt_ssl.h"
 #endif
 
@@ -281,7 +281,7 @@ int pop_open_connection (POP_DATA *pop_data)
     return -2;
   }
 
-#if defined(USE_SSL)
+#ifdef USE_SSL
   /* Attempt STLS if available and desired. */
   if (!pop_data->conn->ssf && (pop_data->cmd_stls || option(OPTSSLFORCETLS)))
   {

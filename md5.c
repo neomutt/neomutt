@@ -27,13 +27,13 @@
 #include <stddef.h>
 #include <string.h>
 
-#if USE_UNLOCKED_IO
+#ifdef USE_UNLOCKED_IO
 # include "unlocked-io.h"
 #endif
 
 #ifdef _LIBC
 # include <endian.h>
-# if __BYTE_ORDER == __BIG_ENDIAN
+# if (__BYTE_ORDER == __BIG_ENDIAN)
 #  define WORDS_BIGENDIAN 1
 # endif
 /* We need to keep the namespace clean so define the MD5 function
@@ -55,7 +55,7 @@
 #endif
 
 #define BLOCKSIZE 4096
-#if BLOCKSIZE % 64 != 0
+#if ((BLOCKSIZE % 64) != 0)
 # error "invalid BLOCKSIZE"
 #endif
 
@@ -244,7 +244,7 @@ md5_process_bytes (const void *buffer, size_t len, struct md5_ctx *ctx)
   /* Process available complete blocks.  */
   if (len >= 64)
     {
-#if !_STRING_ARCH_unaligned
+#if !defined(_STRING_ARCH_unaligned)
 # define alignof(type) offsetof (struct { char c; type x; }, x)
 # define UNALIGNED_P(p) (((size_t) p) % alignof (md5_uint32) != 0)
       if (UNALIGNED_P (buffer))

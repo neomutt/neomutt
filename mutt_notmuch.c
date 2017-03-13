@@ -2378,7 +2378,7 @@ static int nm_sync_mailbox(CONTEXT *ctx, int *index_hint)
 
     ctx->path = hd->folder;
     ctx->magic = hd->magic;
-#if USE_HCACHE
+#ifdef USE_HCACHE
     rc = mh_sync_mailbox_message(ctx, i, NULL);
 #else
     rc = mh_sync_mailbox_message(ctx, i);

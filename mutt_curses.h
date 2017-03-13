@@ -39,7 +39,7 @@
 
 #else /* USE_SLANG_CURSES */
 
-#if HAVE_NCURSESW_NCURSES_H
+#ifdef HAVE_NCURSESW_NCURSES_H
 # include <ncursesw/ncurses.h>
 #elif HAVE_NCURSES_NCURSES_H
 # include <ncurses/ncurses.h>
@@ -62,7 +62,7 @@
 #define CENTERLINE(win,x,y) mutt_window_move(win, y, (win->cols-strlen(x))/2), addstr(x)
 #define BEEP() do { if (option (OPTBEEP)) beep(); } while (0)
 
-#if ! (defined(USE_SLANG_CURSES) || defined(HAVE_CURS_SET))
+#if !(defined(USE_SLANG_CURSES) || defined(HAVE_CURS_SET))
 #define curs_set(x)
 #endif
 
@@ -248,7 +248,7 @@ void ci_start_color (void);
  * functions will properly set the background attributes all the way to the
  * right column.
  */
-#if defined(HAVE_BKGDSET)
+#ifdef HAVE_BKGDSET
 #define SETCOLOR(X) bkgdset(ColorDefs[X] | ' ')
 #define ATTRSET(X) bkgdset(X | ' ')
 #else

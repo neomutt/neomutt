@@ -31,7 +31,7 @@ int getdnsdomainname (char *d, size_t len)
 {
   int ret = -1;
 
-#if defined HAVE_GETADDRINFO || defined HAVE_GETADDRINFO_A
+#if defined(HAVE_GETADDRINFO) || defined(HAVE_GETADDRINFO_A)
   char node[STRING];
   if (gethostname(node, sizeof(node)))
     return ret;

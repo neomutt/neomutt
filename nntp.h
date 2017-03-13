@@ -25,7 +25,7 @@
 #include "mailbox.h"
 #include "bcache.h"
 
-#if USE_HCACHE
+#ifdef USE_HCACHE
 #include "hcache.h"
 #endif
 

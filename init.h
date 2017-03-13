@@ -362,7 +362,7 @@ struct option_t MuttVars[] = {
   ** as read when you quit the newsgroup (catchup newsgroup).
   */
 #endif
-#if defined(USE_SSL)
+#ifdef USE_SSL
   { "certificate_file",	DT_PATH, R_NONE, UL &SslCertFile, UL "~/.mutt_certificates" },
   /*
   ** .pp
@@ -792,7 +792,7 @@ struct option_t MuttVars[] = {
   ** agents tend to do with messages (in order to prevent tools from
   ** misinterpreting the line as a mbox message separator).
   */
-#if defined(USE_SSL_OPENSSL)
+#ifdef USE_SSL_OPENSSL
   { "entropy_file",	DT_PATH, R_NONE, UL &SslEntropyFile, 0 },
   /*
   ** .pp
@@ -3697,7 +3697,7 @@ struct option_t MuttVars[] = {
   ** initially set this variable to the value of the environment
   ** variable \fC$$$MAIL\fP or \fC$$$MAILDIR\fP if either is defined.
   */
-#if defined(USE_SSL)
+#ifdef USE_SSL
 #ifdef USE_SSL_GNUTLS
   { "ssl_ca_certificates_file", DT_PATH, R_NONE, UL &SslCACertFile, 0 },
   /*

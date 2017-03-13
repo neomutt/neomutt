@@ -30,7 +30,7 @@
 #include "mx.h"
 #include "copy.h"
 #include "sort.h"
-#if USE_HCACHE
+#ifdef USE_HCACHE
 #include "hcache.h"
 #endif
 #include "mutt_curses.h"
@@ -50,7 +50,7 @@
 #include <string.h>
 #include <utime.h>
 
-#if HAVE_SYS_TIME_H
+#ifdef HAVE_SYS_TIME_H
 #include <sys/time.h>
 #endif
 
@@ -939,7 +939,7 @@ static int maildir_move_to_context (CONTEXT * ctx, struct maildir **md)
   return r;
 }
 
-#if USE_HCACHE
+#ifdef USE_HCACHE
 static size_t maildir_hcache_keylen (const char *fn)
 {
   const char * p = strrchr (fn, ':');
@@ -947,7 +947,7 @@ static size_t maildir_hcache_keylen (const char *fn)
 }
 #endif
 
-#if HAVE_DIRENT_D_INO
+#ifdef HAVE_DIRENT_D_INO
 static int md_cmp_inode (struct maildir *a, struct maildir *b)
 {
   return a->inode - b->inode;
@@ -1096,7 +1096,7 @@ static void mh_sort_natural (CONTEXT *ctx, struct maildir **md)
   *md = maildir_sort (*md, (size_t) -1, md_cmp_path);
 }
 
-#if HAVE_DIRENT_D_INO
+#ifdef HAVE_DIRENT_D_INO
 static struct maildir *skip_duplicates (struct maildir *p, struct maildir **last)
 {
   /*
@@ -1126,10 +1126,10 @@ static void maildir_delayed_parsing (CONTEXT * ctx, struct maildir **md,
   struct maildir *p, *last = NULL;
   char fn[_POSIX_PATH_MAX];
   int count;
-#if HAVE_DIRENT_D_INO
+#ifdef HAVE_DIRENT_D_INO
   int sort = 0;
 #endif
-#if USE_HCACHE
+#ifdef USE_HCACHE
   header_cache_t *hc = NULL;
   void *data;
   const char *key;
@@ -1139,7 +1139,7 @@ static void maildir_delayed_parsing (CONTEXT * ctx, struct maildir **md,
   int ret;
 #endif
 
-#if HAVE_DIRENT_D_INO
+#ifdef HAVE_DIRENT_D_INO
 #define DO_SORT()	do { \
   if (!sort) \
   { \
@@ -1158,7 +1158,7 @@ static void maildir_delayed_parsing (CONTEXT * ctx, struct maildir **md,
 #define DO_SORT()	/* nothing */
 #endif
 
-#if USE_HCACHE
+#ifdef USE_HCACHE
   hc = mutt_hcache_open (HeaderCache, ctx->path, NULL);
 #endif
 
@@ -1177,7 +1177,7 @@ static void maildir_delayed_parsing (CONTEXT * ctx, struct maildir **md,
 
     snprintf (fn, sizeof (fn), "%s/%s", ctx->path, p->h->path);
 
-#if USE_HCACHE
+#ifdef USE_HCACHE
     if (option(OPTHCACHEVERIFY))
     {
        ret = stat(fn, &lastchanged);
@@ -1218,7 +1218,7 @@ static void maildir_delayed_parsing (CONTEXT * ctx, struct maildir **md,
     if (maildir_parse_message (ctx->magic, fn, p->h->old, p->h))
     {
       p->header_parsed = 1;
-#if USE_HCACHE
+#ifdef USE_HCACHE
       if (ctx->magic == MUTT_MH)
       {
         key = p->h->path;
@@ -1233,13 +1233,13 @@ static void maildir_delayed_parsing (CONTEXT * ctx, struct maildir **md,
 #endif
     } else
       mutt_free_header (&p->h);
-#if USE_HCACHE
+#ifdef USE_HCACHE
     }
     mutt_hcache_free(hc, &data);
 #endif
     last = p;
    }
-#if USE_HCACHE
+#ifdef USE_HCACHE
   mutt_hcache_close (hc);
 #endif
 
@@ -1910,13 +1910,13 @@ static int maildir_sync_message (CONTEXT * ctx, int msgno)
   return (0);
 }
 
-#if USE_HCACHE
+#ifdef USE_HCACHE
 int mh_sync_mailbox_message (CONTEXT * ctx, int msgno, header_cache_t *hc)
 #else
 int mh_sync_mailbox_message (CONTEXT * ctx, int msgno)
 #endif
 {
-#if USE_HCACHE
+#ifdef USE_HCACHE
     const char *key;
     size_t keylen;
 #endif
@@ -1929,7 +1929,7 @@ int mh_sync_mailbox_message (CONTEXT * ctx, int msgno)
       if (ctx->magic == MUTT_MAILDIR
 	  || (option (OPTMHPURGE) && ctx->magic == MUTT_MH))
       {
-#if USE_HCACHE
+#ifdef USE_HCACHE
         if (hc)
         {
           if (ctx->magic == MUTT_MH)
@@ -1977,7 +1977,7 @@ int mh_sync_mailbox_message (CONTEXT * ctx, int msgno)
       }
     }
 
-#if USE_HCACHE
+#ifdef USE_HCACHE
     if (hc && h->changed)
     {
       if (ctx->magic == MUTT_MH)
@@ -2000,7 +2000,7 @@ int mh_sync_mailbox_message (CONTEXT * ctx, int msgno)
 static int mh_sync_mailbox (CONTEXT * ctx, int *index_hint)
 {
   int i, j;
-#if USE_HCACHE
+#ifdef USE_HCACHE
   header_cache_t *hc = NULL;
 #endif /* USE_HCACHE */
   char msgbuf[STRING];
@@ -2014,7 +2014,7 @@ static int mh_sync_mailbox (CONTEXT * ctx, int *index_hint)
   if (i != 0)
     return i;
 
-#if USE_HCACHE
+#ifdef USE_HCACHE
   if (ctx->magic == MUTT_MAILDIR || ctx->magic == MUTT_MH)
     hc = mutt_hcache_open(HeaderCache, ctx->path, NULL);
 #endif /* USE_HCACHE */
@@ -2030,7 +2030,7 @@ static int mh_sync_mailbox (CONTEXT * ctx, int *index_hint)
     if (!ctx->quiet)
       mutt_progress_update (&progress, i, -1);
 
-#if USE_HCACHE
+#ifdef USE_HCACHE
     if (mh_sync_mailbox_message (ctx, i, hc) == -1)
       goto err;
 #else
@@ -2039,7 +2039,7 @@ static int mh_sync_mailbox (CONTEXT * ctx, int *index_hint)
 #endif
   }
 
-#if USE_HCACHE
+#ifdef USE_HCACHE
   if (ctx->magic == MUTT_MAILDIR || ctx->magic == MUTT_MH)
     mutt_hcache_close (hc);
 #endif /* USE_HCACHE */
@@ -2066,7 +2066,7 @@ static int mh_sync_mailbox (CONTEXT * ctx, int *index_hint)
   return 0;
 
 err:
-#if USE_HCACHE
+#ifdef USE_HCACHE
   if (ctx->magic == MUTT_MAILDIR || ctx->magic == MUTT_MH)
     mutt_hcache_close (hc);
 #endif /* USE_HCACHE */
