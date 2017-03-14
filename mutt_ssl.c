@@ -767,7 +767,7 @@ static int compare_certificates (X509 *cert, X509 *peercert,
       X509_issuer_name_cmp (cert, peercert) != 0)
     return -1;
 
-  if (!X509_digest (cert, EVP_sha1(), md, &mdlen) || peermdlen != mdlen)
+  if (!X509_digest (cert, EVP_sha256(), md, &mdlen) || peermdlen != mdlen)
     return -1;
 
   if (memcmp(peermd, md, mdlen) != 0)
@@ -783,7 +783,7 @@ static int check_certificate_cache (X509 *peercert)
   X509 *cert;
   int i;
 
-  if (!X509_digest (peercert, EVP_sha1(), peermd, &peermdlen)
+  if (!X509_digest (peercert, EVP_sha256(), peermd, &peermdlen)
       || !SslSessionCerts)
   {
     return 0;
@@ -844,7 +844,7 @@ static int check_certificate_file (X509 *peercert)
   if ((fp = fopen (SslCertFile, "rt")) == NULL)
     return 0;
 
-  if (!X509_digest (peercert, EVP_sha1(), peermd, &peermdlen))
+  if (!X509_digest (peercert, EVP_sha256(), peermd, &peermdlen))
   {
     safe_fclose (&fp);
     return 0;
@@ -1078,7 +1078,7 @@ static int ssl_verify_callback (int preverify_ok, X509_STORE_CTX *ctx)
   {
     if (skip_mode && preverify_ok && (pos == last_pos) && last_cert)
     {
-      if (X509_digest (last_cert, EVP_sha1(), last_cert_md, &last_cert_mdlen) &&
+      if (X509_digest (last_cert, EVP_sha256(), last_cert_md, &last_cert_mdlen) &&
           !compare_certificates (cert, last_cert, last_cert_md, last_cert_mdlen))
       {
         mutt_debug (2, "ssl_verify_callback: ignoring duplicate skipped certificate.\n");
