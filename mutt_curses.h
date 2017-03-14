@@ -88,15 +88,15 @@ typedef struct
 
 event_t mutt_getch (void);
 
-void mutt_endwin (const char *);
-void mutt_flushinp (void);
-void mutt_refresh (void);
-void mutt_resize_screen (void);
-void mutt_unget_event (int, int);
-void mutt_unget_string (char *);
-void mutt_push_macro_event (int, int);
-void mutt_flush_macro_to_endcond (void);
-void mutt_need_hard_redraw (void);
+void mutt_endwin(const char *msg);
+void mutt_flushinp(void);
+void mutt_refresh(void);
+void mutt_resize_screen(void);
+void mutt_unget_event(int ch, int op);
+void mutt_unget_string(char *s);
+void mutt_push_macro_event(int ch, int op);
+void mutt_flush_macro_to_endcond(void);
+void mutt_need_hard_redraw(void);
 
 /* ----------------------------------------------------------------------------
  * Support for color
@@ -178,13 +178,12 @@ typedef struct
   char sizestr[SHORT_STRING];
 } progress_t;
 
-void mutt_progress_init (progress_t* progress, const char *msg,
-			 unsigned short flags, unsigned short inc,
-			 long size);
+void mutt_progress_init(progress_t *progress, const char *msg,
+                        unsigned short flags, unsigned short inc, long size);
 /* If percent is positive, it is displayed as percentage, otherwise
  * percentage is calculated from progress->size and pos if progress
  * was initialized with positive size, otherwise no percentage is shown */
-void mutt_progress_update (progress_t* progress, long pos, int percent);
+void mutt_progress_update(progress_t *progress, long pos, int percent);
 
 /* Windows for different parts of the screen */
 typedef struct
@@ -203,16 +202,16 @@ extern mutt_window_t *MuttMessageWindow;
 extern mutt_window_t *MuttSidebarWindow;
 #endif
 
-void mutt_init_windows (void);
-void mutt_free_windows (void);
-void mutt_reflow_windows (void);
-int mutt_window_move (mutt_window_t *, int row, int col);
-int mutt_window_mvaddch (mutt_window_t *, int row, int col, const chtype ch);
-int mutt_window_mvaddstr (mutt_window_t *, int row, int col, const char *str);
-int mutt_window_mvprintw (mutt_window_t *, int row, int col, const char *fmt, ...);
-void mutt_window_clrtoeol (mutt_window_t *);
-void mutt_window_clearline (mutt_window_t *, int row);
-void mutt_window_getyx (mutt_window_t *, int *y, int *x);
+void mutt_init_windows(void);
+void mutt_free_windows(void);
+void mutt_reflow_windows(void);
+int mutt_window_move(mutt_window_t *win, int row, int col);
+int mutt_window_mvaddch(mutt_window_t *win, int row, int col, const chtype ch);
+int mutt_window_mvaddstr(mutt_window_t *win, int row, int col, const char *str);
+int mutt_window_mvprintw(mutt_window_t *win, int row, int col, const char *fmt, ...);
+void mutt_window_clrtoeol(mutt_window_t *win);
+void mutt_window_clearline(mutt_window_t *win, int row);
+void mutt_window_getyx(mutt_window_t *win, int *y, int *x);
 
 
 static inline int mutt_window_wrap_cols(mutt_window_t *win, short wrap)
@@ -241,7 +240,6 @@ extern COLOR_LINE *ColorIndexSubjectList;
 extern COLOR_LINE *ColorIndexTagList;
 #endif
 
-void ci_init_color (void);
 void ci_start_color (void);
 
 /* If the system has bkgdset() use it rather than attrset() so that the clr*()

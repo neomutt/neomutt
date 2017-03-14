@@ -59,34 +59,34 @@ typedef struct _message
   time_t received;	/* the time at which this message was received */
 } MESSAGE;
 
-CONTEXT *mx_open_mailbox (const char *, int, CONTEXT *);
+CONTEXT *mx_open_mailbox(const char *path, int flags, CONTEXT *pctx);
 
-MESSAGE *mx_open_message (CONTEXT *, int);
-MESSAGE *mx_open_new_message (CONTEXT *, HEADER *, int);
+MESSAGE *mx_open_message(CONTEXT *ctx, int msgno);
+MESSAGE *mx_open_new_message(CONTEXT *dest, HEADER *hdr, int flags);
 
-void mx_fastclose_mailbox (CONTEXT *);
+void mx_fastclose_mailbox(CONTEXT *ctx);
 
-int mx_close_mailbox (CONTEXT *, int *);
-int mx_sync_mailbox (CONTEXT *, int *);
-int mx_commit_message (MESSAGE *, CONTEXT *);
-int mx_close_message (CONTEXT *, MESSAGE **);
-int mx_get_magic (const char *);
-int mx_set_magic (const char *);
-int mx_check_mailbox (CONTEXT *, int *);
+int mx_close_mailbox(CONTEXT *ctx, int *index_hint);
+int mx_sync_mailbox(CONTEXT *ctx, int *index_hint);
+int mx_commit_message(MESSAGE *msg, CONTEXT *ctx);
+int mx_close_message(CONTEXT *ctx, MESSAGE **msg);
+int mx_get_magic(const char *path);
+int mx_set_magic(const char *s);
+int mx_check_mailbox(CONTEXT *ctx, int *index_hint);
 #ifdef USE_IMAP
-int mx_is_imap (const char *);
+int mx_is_imap(const char *p);
 #endif
 #ifdef USE_POP
-int mx_is_pop (const char *);
+int mx_is_pop(const char *p);
 #endif
 #ifdef USE_NNTP
-int mx_is_nntp (const char *);
+int mx_is_nntp(const char *p);
 #endif
 
-int mx_access (const char*, int);
-int mx_check_empty (const char *);
+int mx_access(const char *path, int flags);
+int mx_check_empty(const char *path);
 
-int mx_is_maildir (const char *);
-int mx_is_mh (const char *);
+int mx_is_maildir(const char *path);
+int mx_is_mh(const char *path);
 
 #endif

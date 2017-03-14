@@ -56,26 +56,14 @@
 #define CH_UPDATE_LABEL   (1<<19) /* update X-Label: from hdr->env->x_label? */
 #define CH_VIRTUAL	  (1<<20) /* write virtual header lines too */
 
+int mutt_copy_hdr(FILE *in, FILE *out, LOFF_T off_start, LOFF_T off_end,
+                  int flags, const char *prefix);
 
-int mutt_copy_hdr (FILE *, FILE *, LOFF_T, LOFF_T, int, const char *);
+int mutt_copy_header(FILE *in, HEADER *h, FILE *out, int flags, const char *prefix);
 
-int mutt_copy_header (FILE *, HEADER *, FILE *, int, const char *);
+int _mutt_copy_message(FILE *fpout, FILE *fpin, HEADER *hdr, BODY *body,
+                       int flags, int chflags);
 
-int _mutt_copy_message (FILE *fpout,
-			FILE *fpin,
-			HEADER *hdr,
-			BODY *body,
-			int flags,
-			int chflags);
+int mutt_copy_message(FILE *fpout, CONTEXT *src, HEADER *hdr, int flags, int chflags);
 
-int mutt_copy_message (FILE *fpout,
-		       CONTEXT *src,
-		       HEADER *hdr,
-		       int flags,
-		       int chflags);
-
-int mutt_append_message (CONTEXT *dest,
-			 CONTEXT *src,
-			 HEADER *hdr,
-			 int cmflags,
-			 int chflags);
+int mutt_append_message(CONTEXT *dest, CONTEXT *src, HEADER *hdr, int cmflags, int chflags);

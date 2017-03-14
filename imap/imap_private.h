@@ -231,23 +231,22 @@ typedef struct
 
 /* -- private IMAP functions -- */
 /* imap.c */
-int imap_check (IMAP_DATA* idata, int force);
-int imap_create_mailbox (IMAP_DATA* idata, char* mailbox);
-int imap_rename_mailbox (IMAP_DATA* idata, IMAP_MBOX* mx, const char* newname);
-IMAP_STATUS* imap_mboxcache_get (IMAP_DATA* idata, const char* mbox,
-                                 int create);
-void imap_mboxcache_free (IMAP_DATA* idata);
-int imap_exec_msgset (IMAP_DATA* idata, const char* pre, const char* post,
-                      int flag, int changed, int invert);
-int imap_open_connection (IMAP_DATA* idata);
-void imap_close_connection (IMAP_DATA* idata);
-IMAP_DATA* imap_conn_find (const ACCOUNT* account, int flags);
-int imap_read_literal (FILE* fp, IMAP_DATA* idata, long bytes, progress_t*);
-void imap_expunge_mailbox (IMAP_DATA* idata);
-void imap_logout (IMAP_DATA** idata);
-int imap_sync_message (IMAP_DATA *idata, HEADER *hdr, BUFFER *cmd,
-  int *err_continue);
-int imap_has_flag (LIST* flag_list, const char* flag);
+int imap_check(IMAP_DATA *idata, int force);
+int imap_create_mailbox(IMAP_DATA *idata, char *mailbox);
+int imap_rename_mailbox(IMAP_DATA *idata, IMAP_MBOX *mx, const char *newname);
+IMAP_STATUS *imap_mboxcache_get(IMAP_DATA *idata, const char *mbox, int create);
+void imap_mboxcache_free(IMAP_DATA *idata);
+int imap_exec_msgset(IMAP_DATA *idata, const char *pre, const char *post,
+                     int flag, int changed, int invert);
+int imap_open_connection(IMAP_DATA *idata);
+void imap_close_connection(IMAP_DATA *idata);
+IMAP_DATA *imap_conn_find(const ACCOUNT *account, int flags);
+int imap_read_literal(FILE *fp, IMAP_DATA *idata, long bytes,
+                      progress_t *pbar);
+void imap_expunge_mailbox(IMAP_DATA *idata);
+void imap_logout(IMAP_DATA **idata);
+int imap_sync_message(IMAP_DATA *idata, HEADER *hdr, BUFFER *cmd, int *err_continue);
+int imap_has_flag(LIST *flag_list, const char *flag);
 
 /* auth.c */
 int imap_authenticate (IMAP_DATA* idata);

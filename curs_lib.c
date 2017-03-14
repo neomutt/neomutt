@@ -554,7 +554,7 @@ out:
     mutt_clear_error ();
 }
 
-void mutt_init_windows ()
+void mutt_init_windows (void)
 {
   MuttHelpWindow = safe_calloc (sizeof (mutt_window_t), 1);
   MuttIndexWindow = safe_calloc (sizeof (mutt_window_t), 1);
@@ -565,7 +565,7 @@ void mutt_init_windows ()
 #endif
 }
 
-void mutt_free_windows ()
+void mutt_free_windows (void)
 {
   FREE (&MuttHelpWindow);
   FREE (&MuttIndexWindow);

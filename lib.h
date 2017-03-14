@@ -134,7 +134,7 @@ void mutt_exit (int);
 #ifdef DEBUG
 extern FILE *debugfile;
 extern int debuglevel;
-void mutt_debug (int level, const char *, ...);
+void mutt_debug (int level, const char *fmt, ...);
 #else
 #define mutt_debug(...) do { } while (0)
 #endif
@@ -150,20 +150,21 @@ void mutt_debug (int level, const char *, ...);
 
 /* The actual library functions. */
 
-FILE *safe_fopen (const char *, const char *);
+FILE *safe_fopen(const char *path, const char *mode);
 
-char *mutt_concatn_path (char *, size_t, const char *, size_t, const char *, size_t);
-char *mutt_concat_path (char *, const char *, const char *, size_t);
-char *mutt_read_line (char *, size_t *, FILE *, int *, int);
-char *mutt_skip_whitespace (char *);
-char *mutt_strlower (char *);
-const char *mutt_strchrnul (const char *, char);
-char *mutt_substrcpy (char *, const char *, const char *, size_t);
-char *mutt_substrdup (const char *, const char *);
-char *safe_strcat (char *, size_t, const char *);
-char *safe_strncat (char *, size_t, const char *, size_t);
-char *safe_strdup (const char *);
-char *strfcpy (char *dest, const char *src, size_t dlen);
+char *mutt_concatn_path(char *dst, size_t dstlen, const char *dir,
+                        size_t dirlen, const char *fname, size_t fnamelen);
+char *mutt_concat_path(char *d, const char *dir, const char *fname, size_t l);
+char *mutt_read_line(char *s, size_t *size, FILE *fp, int *line, int flags);
+char *mutt_skip_whitespace(char *p);
+char *mutt_strlower(char *s);
+const char *mutt_strchrnul(const char *s, char c);
+char *mutt_substrcpy(char *dest, const char *beg, const char *end, size_t destlen);
+char *mutt_substrdup(const char *begin, const char *end);
+char *safe_strcat(char *d, size_t l, const char *s);
+char *safe_strncat(char *d, size_t l, const char *s, size_t sl);
+char *safe_strdup(const char *s);
+char *strfcpy(char *dest, const char *src, size_t dlen);
 
 /* strtol() wrappers with range checking; they return
  * 	 0 success

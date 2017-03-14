@@ -28,7 +28,6 @@ struct command_t
 };
 
 const struct command_t *mutt_command_get(const char *s);
-void mutt_commands_apply(void *data,
-                         void (*application)(void *, const struct command_t *));
+void mutt_commands_apply(void *data, void (*application)(void *, const struct command_t *));
 
 #endif

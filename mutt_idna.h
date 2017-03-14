@@ -45,11 +45,11 @@
 #endif /* HAVE_LIBIDN */
 
 
-int mutt_addrlist_to_intl (ADDRESS *, char **);
-int mutt_addrlist_to_local (ADDRESS *);
+int mutt_addrlist_to_intl(ADDRESS *a, char **err);
+int mutt_addrlist_to_local(ADDRESS *a);
 
-void mutt_env_to_local (ENVELOPE *);
-int mutt_env_to_intl (ENVELOPE *, char **, char **);
+void mutt_env_to_local(ENVELOPE *e);
+int mutt_env_to_intl(ENVELOPE *env, char **tag, char **err);
 
 const char *mutt_addr_for_display (ADDRESS *a);
 

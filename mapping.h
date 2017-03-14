@@ -25,9 +25,9 @@ struct mapping_t
   int value;
 };
 
-const char *mutt_getnamebyvalue (int, const struct mapping_t *);
-char *mutt_compile_help (char *, size_t, int, const struct mapping_t *);
+const char *mutt_getnamebyvalue(int val, const struct mapping_t *map);
+char *mutt_compile_help(char *buf, size_t buflen, int menu, const struct mapping_t *items);
 
-int mutt_getvaluebyname (const char *, const struct mapping_t *);
+int mutt_getvaluebyname(const char *name, const struct mapping_t *map);
 
 #endif

@@ -38,11 +38,11 @@ typedef enum history_class history_class_t;
 
 void mutt_init_history(void);
 void mutt_read_histfile(void);
-void mutt_history_add(history_class_t, const char *, int);
-char *mutt_history_next(history_class_t);
-char *mutt_history_prev(history_class_t);
-void mutt_reset_history_state (history_class_t);
-int mutt_history_at_scratch (history_class_t);
-void mutt_history_save_scratch (history_class_t, const char *);
+void mutt_history_add(history_class_t hclass, const char *s, int save);
+char *mutt_history_next(history_class_t hclass);
+char *mutt_history_prev(history_class_t hclass);
+void mutt_reset_history_state(history_class_t hclass);
+int mutt_history_at_scratch(history_class_t hclass);
+void mutt_history_save_scratch(history_class_t hclass, const char *s);
 
 #endif

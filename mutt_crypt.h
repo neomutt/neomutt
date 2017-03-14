@@ -108,26 +108,25 @@ typedef struct pgp_keyinfo *pgp_key_t;
 
 /* Some prototypes -- old crypt.h. */
 
-int mutt_protect (HEADER *, char *);
+int mutt_protect(HEADER *msg, char *keylist);
 
-int mutt_is_multipart_encrypted (BODY *);
+int mutt_is_multipart_encrypted(BODY *b);
 
-int mutt_is_valid_multipart_pgp_encrypted (BODY *b);
+int mutt_is_valid_multipart_pgp_encrypted(BODY *b);
 
-int mutt_is_malformed_multipart_pgp_encrypted (BODY *b);
+int mutt_is_malformed_multipart_pgp_encrypted(BODY *b);
 
-int mutt_is_multipart_signed (BODY *);
+int mutt_is_multipart_signed(BODY *b);
 
-int mutt_is_application_pgp (BODY *);
+int mutt_is_application_pgp(BODY *m);
 
-int mutt_is_application_smime (BODY *);
+int mutt_is_application_smime(BODY *m);
 
-int mutt_signed_handler (BODY *, STATE *);
+int mutt_signed_handler(BODY *a, STATE *s);
 
-int mutt_parse_crypt_hdr (const char *, int, int);
+int mutt_parse_crypt_hdr(const char *p, int set_empty_signas, int crypt_app);
 
-
-void convert_to_7bit (BODY *);
+void convert_to_7bit(BODY *a);
 
 
 
@@ -138,31 +137,31 @@ void crypt_current_time(STATE *s, char *app_name);
 
 /* Check out the type of encryption used and set the cached status
    values if there are any. */
-int crypt_query (BODY *m);
+int crypt_query(BODY *m);
 
 /* Fixme: To be documented. */
-void crypt_extract_keys_from_messages (HEADER *h);
+void crypt_extract_keys_from_messages(HEADER *h);
 
 /* Do a quick check to make sure that we can find all of the
    encryption keys if the user has requested this service.
    Return the list of keys in KEYLIST.
    If oppenc_mode is true, only keys that can be determined without
    prompting will be used.  */
-int crypt_get_keys (HEADER *msg, char **keylist, int oppenc_mode);
+int crypt_get_keys(HEADER *msg, char **keylist, int oppenc_mode);
 
 /* Check if all recipients keys can be automatically determined.
  * Enable encryption if they can, otherwise disable encryption.  */
 void crypt_opportunistic_encrypt(HEADER *msg);
 
 /* Forget a passphrase and display a message. */
-void crypt_forget_passphrase (void);
+void crypt_forget_passphrase(void);
 
 /* Check that we have a usable passphrase, ask if not. */
-int crypt_valid_passphrase (int);
+int crypt_valid_passphrase(int flags);
 
 /* Write the message body/part A described by state S to the given
    TEMPFILE.  */
-int crypt_write_signed(BODY *a, STATE *s, const char *tempf);
+int crypt_write_signed(BODY *a, STATE *s, const char *tempfile);
 
 /* Obtain pointers to fingerprint or short or long key ID, if any.
 
@@ -175,11 +174,11 @@ int crypt_write_signed(BODY *a, STATE *s, const char *tempf);
             crypt_add_string_to_hints().
    *ppl     Start of long key ID if detected, else NULL.
    *pps     Start of short key ID if detected, else NULL. */
-const char* crypt_get_fingerprint_or_id (char *p, const char **pphint,
-    const char **ppl, const char **pps);
+const char *crypt_get_fingerprint_or_id(char *p, const char **pphint,
+                                        const char **ppl, const char **pps);
 
 /* Check if a string contains a numerical key */
-short crypt_is_numerical_keyid (const char *s);
+short crypt_is_numerical_keyid(const char *s);
 
 
 
@@ -207,18 +206,11 @@ int crypt_pgp_encrypted_handler (BODY *a, STATE *s);
 /* fixme: needs documentation. */
 void crypt_pgp_invoke_getkeys (ADDRESS *addr);
 
-/* Ask for a PGP key. */
-pgp_key_t crypt_pgp_ask_for_key (char *tag, char *whatfor,
-                                 short abilities, pgp_ring_t keyring);
-
 /* Check for a traditional PGP message in body B. */
 int crypt_pgp_check_traditional (FILE *fp, BODY *b, int tagged_only);
 
 /* fixme: needs documentation. */
 BODY *crypt_pgp_traditional_encryptsign (BODY *a, int flags, char *keylist);
-
-/* Release the PGP key KPP (note, that we pass a pointer to it). */
-void crypt_pgp_free_key (pgp_key_t *kpp);
 
 /* Generate a PGP public key attachment. */
 BODY *crypt_pgp_make_key_attachment (char *tempf);
@@ -243,9 +235,6 @@ int crypt_pgp_send_menu (HEADER *msg, int *redraw);
 
 /* fixme: needs documentation */
 int crypt_pgp_verify_one (BODY *sigbdy, STATE *s, const char *tempf);
-
-/* Access the keyID in K. */
-char *crypt_pgp_keyid (pgp_key_t k);
 
 /* fixme: needs documentation */
 void crypt_pgp_extract_keys_from_attachment_list (FILE *fp, int tag,BODY *top);

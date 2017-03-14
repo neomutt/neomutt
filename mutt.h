@@ -650,25 +650,25 @@ static inline REPLACE_LIST *mutt_new_replace_list()
   return safe_calloc (1, sizeof (REPLACE_LIST));
 }
 
-void mutt_free_list (LIST **);
-void mutt_free_rx_list (RX_LIST **);
-void mutt_free_replace_list (REPLACE_LIST **);
-LIST *mutt_copy_list (LIST *);
-int mutt_matches_ignore (const char *);
-int mutt_matches_list (const char *, LIST *);
+void mutt_free_list(LIST **list);
+void mutt_free_rx_list(RX_LIST **list);
+void mutt_free_replace_list(REPLACE_LIST **list);
+LIST *mutt_copy_list(LIST *p);
+int mutt_matches_ignore(const char *s);
+int mutt_matches_list(const char *s, LIST *t);
 
 /* add an element to a list */
-LIST *mutt_add_list (LIST *, const char *);
-LIST *mutt_add_list_n (LIST*, const void *, size_t);
-LIST *mutt_find_list (LIST *, const char *);
-int mutt_remove_from_rx_list (RX_LIST **l, const char *str);
+LIST *mutt_add_list(LIST *head, const char *data);
+LIST *mutt_add_list_n(LIST *head, const void *data, size_t len);
+LIST *mutt_find_list(LIST *l, const char *data);
+int mutt_remove_from_rx_list(RX_LIST **l, const char *str);
 
 /* handle stack */
 void mutt_push_list(LIST **head, const char *data);
 int mutt_pop_list(LIST **head);
 const char *mutt_front_list(LIST *head);
 
-void mutt_init (int, LIST *);
+void mutt_init (int skip_sys_rc, LIST *commands);
 
 typedef struct alias
 {
@@ -1028,15 +1028,15 @@ struct _message;
  */
 struct mx_ops
 {
-  int (*open) (struct _context *);
-  int (*open_append) (struct _context *, int flags);
-  int (*close) (struct _context *);
+  int (*open) (struct _context *ctx);
+  int (*open_append) (struct _context *ctx, int flags);
+  int (*close) (struct _context *ctx);
   int (*check) (struct _context *ctx, int *index_hint);
   int (*sync) (struct _context *ctx, int *index_hint);
-  int (*open_msg) (struct _context *, struct _message *, int msgno);
-  int (*close_msg) (struct _context *, struct _message *);
-  int (*commit_msg) (struct _context *, struct _message *);
-  int (*open_new_msg) (struct _message *, struct _context *, HEADER *);
+  int (*open_msg) (struct _context *ctx, struct _message *msg, int msgno);
+  int (*close_msg) (struct _context *ctx, struct _message *msg);
+  int (*commit_msg) (struct _context *ctx, struct _message *msg);
+  int (*open_new_msg) (struct _message *msg, struct _context *ctx, HEADER *hdr);
 };
 
 #include "mutt_menu.h"
@@ -1135,11 +1135,11 @@ static inline ENTER_STATE *mutt_new_enter_state(void)
 #define state_puts(x,y) fputs(x,(y)->fpout)
 #define state_putc(x,y) fputc(x,(y)->fpout)
 
-void state_mark_attach (STATE *);
-void state_attach_puts (const char *, STATE *);
-void state_prefix_putc (char, STATE *);
-int  state_printf(STATE *, const char *, ...);
-int state_putws (const wchar_t *, STATE *);
+void state_mark_attach(STATE *s);
+void state_attach_puts(const char *t, STATE *s);
+void state_prefix_putc(char c, STATE *s);
+int state_printf(STATE *s, const char *fmt, ...);
+int state_putws(const wchar_t *ws, STATE *s);
 
 /* for attachment counter */
 typedef struct

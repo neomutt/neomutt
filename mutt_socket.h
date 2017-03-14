@@ -51,25 +51,25 @@ typedef struct _connection
   int (*conn_poll) (struct _connection *conn);
 } CONNECTION;
 
-int mutt_socket_open (CONNECTION* conn);
-int mutt_socket_close (CONNECTION* conn);
-int mutt_socket_poll (CONNECTION* conn);
-int mutt_socket_readchar (CONNECTION *conn, char *c);
+int mutt_socket_open(CONNECTION *conn);
+int mutt_socket_close(CONNECTION *conn);
+int mutt_socket_poll(CONNECTION *conn);
+int mutt_socket_readchar(CONNECTION *conn, char *c);
 #define mutt_socket_readln(A,B,C) mutt_socket_readln_d(A,B,C,MUTT_SOCK_LOG_CMD)
-int mutt_socket_readln_d (char *buf, size_t buflen, CONNECTION *conn, int dbg);
+int mutt_socket_readln_d(char *buf, size_t buflen, CONNECTION *conn, int dbg);
 #define mutt_socket_write(A,B) mutt_socket_write_d(A,B,-1,MUTT_SOCK_LOG_CMD)
 #define mutt_socket_write_n(A,B,C) mutt_socket_write_d(A,B,C,MUTT_SOCK_LOG_CMD)
-int mutt_socket_write_d (CONNECTION *conn, const char *buf, int len, int dbg);
+int mutt_socket_write_d(CONNECTION *conn, const char *buf, int len, int dbg);
 
 /* stupid hack for imap_logout_all */
-CONNECTION* mutt_socket_head (void);
-void mutt_socket_free (CONNECTION* conn);
-CONNECTION* mutt_conn_find (const CONNECTION* start, const ACCOUNT* account);
+CONNECTION *mutt_socket_head(void);
+void mutt_socket_free(CONNECTION *conn);
+CONNECTION *mutt_conn_find(const CONNECTION *start, const ACCOUNT *account);
 
-int raw_socket_read (CONNECTION* conn, char* buf, size_t len);
-int raw_socket_write (CONNECTION* conn, const char* buf, size_t count);
-int raw_socket_open (CONNECTION *conn);
-int raw_socket_close (CONNECTION *conn);
-int raw_socket_poll (CONNECTION* conn);
+int raw_socket_read(CONNECTION *conn, char *buf, size_t len);
+int raw_socket_write(CONNECTION *conn, const char *buf, size_t count);
+int raw_socket_open(CONNECTION *conn);
+int raw_socket_close(CONNECTION *conn);
+int raw_socket_poll(CONNECTION *conn);
 
 #endif /* _MUTT_SOCKET_H_ */

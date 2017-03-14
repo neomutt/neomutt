@@ -46,6 +46,6 @@ typedef struct
   short idxlen;
 } pager_t;
 
-int mutt_do_pager (const char *, const char *, int, pager_t *);
-int mutt_pager (const char *, const char *, int, pager_t *);
-void update_index (MUTTMENU *menu, CONTEXT *ctx, int check, int oldcount, int index_hint);
+int mutt_do_pager(const char *banner, const char *tempfile, int do_color, pager_t *info);
+int mutt_pager(const char *banner, const char *fname, int flags, pager_t *extra);
+void update_index(MUTTMENU *menu, CONTEXT *ctx, int check, int oldcount, int index_hint);

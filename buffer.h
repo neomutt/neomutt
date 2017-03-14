@@ -36,14 +36,14 @@ typedef struct
 #define MUTT_TOKEN_COMMENT    (1<<5)  /* don't reap comments */
 #define MUTT_TOKEN_SEMICOLON  (1<<6)  /* don't treat ; as special */
 
-BUFFER *mutt_buffer_new (void);
-BUFFER * mutt_buffer_init (BUFFER *);
-BUFFER * mutt_buffer_from (char *);
-void mutt_buffer_free(BUFFER **);
-int mutt_buffer_printf (BUFFER*, const char*, ...);
-void mutt_buffer_addstr (BUFFER* buf, const char* s);
-void mutt_buffer_addch (BUFFER* buf, char c);
-int mutt_extract_token (BUFFER *, BUFFER *, int);
+BUFFER *mutt_buffer_new(void);
+BUFFER *mutt_buffer_init(BUFFER *b);
+BUFFER *mutt_buffer_from(char *seed);
+void mutt_buffer_free(BUFFER **p);
+int mutt_buffer_printf(BUFFER *buf, const char *fmt, ...);
+void mutt_buffer_addstr(BUFFER *buf, const char *s);
+void mutt_buffer_addch(BUFFER *buf, char c);
+int mutt_extract_token(BUFFER *dest, BUFFER *tok, int flags);
 
 #endif
 

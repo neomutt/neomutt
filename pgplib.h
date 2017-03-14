@@ -68,16 +68,16 @@ enum pgp_version
 
 /* prototypes */
 
-const char *pgp_pkalgbytype (unsigned char);
+const char *pgp_pkalgbytype(unsigned char type);
 
-pgp_key_t pgp_remove_key (pgp_key_t *, pgp_key_t );
-pgp_uid_t *pgp_copy_uids (pgp_uid_t *, pgp_key_t );
+pgp_key_t pgp_remove_key(pgp_key_t *klist, pgp_key_t key);
+pgp_uid_t *pgp_copy_uids(pgp_uid_t *up, pgp_key_t parent);
 
-short pgp_canencrypt (unsigned char);
-short pgp_cansign (unsigned char);
-short pgp_get_abilities (unsigned char);
+short pgp_canencrypt(unsigned char type);
+short pgp_cansign(unsigned char type);
+short pgp_get_abilities(unsigned char type);
 
-void pgp_free_key (pgp_key_t *kpp);
+void pgp_free_key(pgp_key_t *kpp);
 
 static inline pgp_key_t pgp_new_keyinfo(void)
 {

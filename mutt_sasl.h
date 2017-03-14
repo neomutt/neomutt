@@ -25,10 +25,10 @@
 
 #include "mutt_socket.h"
 
-int mutt_sasl_client_new (CONNECTION*, sasl_conn_t**);
-int mutt_sasl_interact (sasl_interact_t*);
-void mutt_sasl_setup_conn (CONNECTION*, sasl_conn_t*);
-void mutt_sasl_done (void);
+int mutt_sasl_client_new(CONNECTION *conn, sasl_conn_t **saslconn);
+int mutt_sasl_interact(sasl_interact_t *interaction);
+void mutt_sasl_setup_conn(CONNECTION *conn, sasl_conn_t *saslconn);
+void mutt_sasl_done(void);
 
 typedef struct
 {

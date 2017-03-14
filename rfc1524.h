@@ -32,11 +32,11 @@ typedef struct rfc1524_mailcap_entry {
   unsigned int copiousoutput : 1;  /* needs pager, basically */
 } rfc1524_entry;
 
-rfc1524_entry *rfc1524_new_entry (void);
-void rfc1524_free_entry (rfc1524_entry **);
-int rfc1524_expand_command (BODY *, char *, char *, char *, int);
-int rfc1524_expand_filename (char *, char *, char *, size_t);
-int rfc1524_mailcap_lookup (BODY *, char *, rfc1524_entry *, int);
-int mutt_rename_file (char *, char *);
+rfc1524_entry *rfc1524_new_entry(void);
+void rfc1524_free_entry(rfc1524_entry **entry);
+int rfc1524_expand_command(BODY *a, char *filename, char *_type, char *command, int clen);
+int rfc1524_expand_filename(char *nametemplate, char *oldfile, char *newfile, size_t nflen);
+int rfc1524_mailcap_lookup(BODY *a, char *type, rfc1524_entry *entry, int opt);
+int mutt_rename_file(char *oldfile, char *newfile);
 
 #endif /* _RFC1524_H */

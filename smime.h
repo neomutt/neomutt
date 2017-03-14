@@ -33,33 +33,30 @@ typedef struct smime_key {
 } smime_key_t;
 
 
-void smime_void_passphrase (void);
-int smime_valid_passphrase (void);
+void smime_void_passphrase(void);
+int smime_valid_passphrase(void);
 
-int   smime_decrypt_mime (FILE *, FILE **, BODY *, BODY **);
+int smime_decrypt_mime(FILE *fpin, FILE **fpout, BODY *b, BODY **cur);
 
-int  smime_application_smime_handler (BODY *, STATE *);
-
-
-BODY* smime_sign_message (BODY *);
-
-BODY* smime_build_smime_entity (BODY *, char *);
-
-int   smime_verify_one(BODY *, STATE *, const char *);
+int smime_application_smime_handler(BODY *m, STATE *s);
 
 
-int   smime_verify_sender(HEADER *);
+BODY *smime_sign_message(BODY *a);
+
+BODY *smime_build_smime_entity(BODY *a, char *certlist);
+
+int smime_verify_one(BODY *sigbdy, STATE *s, const char *tempfile);
 
 
-char* smime_get_field_from_db (char *, char *, short, short);
+int smime_verify_sender(HEADER *h);
 
-void  smime_getkeys (ENVELOPE *);
+void smime_getkeys(ENVELOPE *env);
 
-char *smime_findKeys (ADDRESS *adrlist, int oppenc_mode);
+char *smime_findKeys(ADDRESS *adrlist, int oppenc_mode);
 
-void  smime_invoke_import (char *, char *);
+void smime_invoke_import(char *infile, char *mailbox);
 
-int smime_send_menu (HEADER *msg, int *redraw);
+int smime_send_menu(HEADER *msg, int *redraw);
 
 #endif
 

@@ -21,17 +21,19 @@
 
 #include <iconv.h>
 
-int mutt_convert_string (char **, const char *, const char *, int);
+int mutt_convert_string (char **ps, const char *from, const char *to, int flags);
 
-iconv_t mutt_iconv_open (const char *, const char *, int);
-size_t mutt_iconv (iconv_t, ICONV_CONST char **, size_t *, char **, size_t *, ICONV_CONST char **, const char *);
+iconv_t mutt_iconv_open (const char *tocode, const char *fromcode, int flags);
+size_t mutt_iconv (iconv_t cd, ICONV_CONST char **inbuf, size_t *inbytesleft,
+		   char **outbuf, size_t *outbytesleft,
+		   ICONV_CONST char **inrepls, const char *outrepl);
 
 typedef void * FGETCONV;
 
-FGETCONV *fgetconv_open (FILE *, const char *, const char *, int);
-int fgetconv (FGETCONV *);
-char * fgetconvs (char *, size_t, FGETCONV *);
-void fgetconv_close (FGETCONV **);
+FGETCONV *fgetconv_open (FILE *file, const char *from, const char *to, int flags);
+int fgetconv (FGETCONV *_fc);
+char *fgetconvs (char *buf, size_t l, FGETCONV *_fc);
+void fgetconv_close (FGETCONV **_fc);
 
 void mutt_set_langinfo_charset (void);
 char *mutt_get_default_charset (void);
