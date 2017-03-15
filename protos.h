@@ -414,7 +414,10 @@ int mutt_wctoutf8 (char *s, unsigned int c, size_t buflen);
 	(option (OPTLOCALES) ? 0 : (wc >= 0xa0)))
 #endif
 
-#define new_pattern() safe_calloc(1, sizeof (pattern_t))
+static inline pattern_t *new_pattern (void)
+{
+  return safe_calloc (1, sizeof (pattern_t));
+}
 
 int mutt_pattern_exec (struct pattern_t *pat, pattern_exec_flag flags, CONTEXT *ctx, HEADER *h, pattern_cache_t *);
 pattern_t *mutt_pattern_comp (/* const */ char *s, int flags, BUFFER *err);

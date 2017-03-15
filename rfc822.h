@@ -65,6 +65,10 @@ extern int RFC822Error;
 extern const char * const RFC822Errors[];
 
 #define rfc822_error(x) RFC822Errors[x]
-#define rfc822_new_address() safe_calloc(1,sizeof(ADDRESS))
+
+static inline ADDRESS *rfc822_new_address (void)
+{
+  return safe_calloc (1, sizeof (ADDRESS));
+}
 
 #endif /* rfc822_h */
