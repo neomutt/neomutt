@@ -243,17 +243,26 @@ void km_bind(char *s, int menu, int op, char *macro, char *descr)
   {
     if (pos >= len || pos >= tmp->len)
     {
-      /* map and tmp match, but have different lengths, so overwrite */
+      /* map and tmp match so overwrite */
       do
       {
+        if (tmp->len != len) {
+          /* Overwrite with the different lengths, warn*/
+          char old_binding[MAX_SEQ];
+          char new_binding[MAX_SEQ];
+          km_expand_key( old_binding, MAX_SEQ, map );
+          km_expand_key( new_binding, MAX_SEQ, tmp );
+          mutt_error (_("Warning: For menu '%s', binding '%s' will alias '%s'"), mutt_getnamebyvalue(menu, Menus), old_binding, new_binding);
+        }
         len = tmp->eq;
         next = tmp->next;
-        FREE(&tmp->macro);
-        FREE(&tmp->keys);
-        FREE(&tmp->descr);
-        FREE(&tmp);
+        FREE (&tmp->macro);
+        FREE (&tmp->keys);
+        FREE (&tmp->descr);
+        FREE (&tmp);
         tmp = next;
-      } while (tmp && len >= pos);
+      }
+      while (tmp && len >= pos);
       map->eq = len;
       break;
     }
