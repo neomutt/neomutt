@@ -190,6 +190,309 @@ static void collapse_all(MUTTMENU *menu, int toggle)
   menu->redraw = REDRAW_INDEX | REDRAW_STATUS;
 }
 
+static int ci_next_undeleted (int msgno)
+{
+  int i;
+
+  for (i=msgno+1; i < Context->vcount; i++)
+    if (! Context->hdrs[Context->v2r[i]]->deleted)
+      return (i);
+  return (-1);
+}
+
+static int ci_previous_undeleted (int msgno)
+{
+  int i;
+
+  for (i=msgno-1; i>=0; i--)
+    if (! Context->hdrs[Context->v2r[i]]->deleted)
+      return (i);
+  return (-1);
+}
+
+/* Return the index of the first new message, or failing that, the first
+ * unread message.
+ */
+static int ci_first_message (void)
+{
+  int old = -1, i;
+
+  if (Context && Context->msgcount)
+  {
+    for (i=0; i < Context->vcount; i++)
+    {
+      if (! Context->hdrs[Context->v2r[i]]->read &&
+	  ! Context->hdrs[Context->v2r[i]]->deleted)
+      {
+	if (! Context->hdrs[Context->v2r[i]]->old)
+	  return (i);
+	else if (old == -1)
+	  old = i;
+      }
+    }
+    if (old != -1)
+      return (old);
+
+    /* If Sort is reverse and not threaded, the latest message is first.
+     * If Sort is threaded, the latest message is first iff exactly one
+     * of Sort and SortAux are reverse.
+     */
+    if (((Sort & SORT_REVERSE) && (Sort & SORT_MASK) != SORT_THREADS) ||
+	((Sort & SORT_MASK) == SORT_THREADS &&
+	 ((Sort ^ SortAux) & SORT_REVERSE)))
+      return 0;
+    else
+      return (Context->vcount ? Context->vcount - 1 : 0);
+  }
+  return 0;
+}
+
+/* This should be in mx.c, but it only gets used here. */
+static int mx_toggle_write (CONTEXT *ctx)
+{
+  if (!ctx)
+    return -1;
+
+  if (ctx->readonly)
+  {
+    mutt_error (_("Cannot toggle write on a readonly mailbox!"));
+    return -1;
+  }
+
+  if (ctx->dontwrite)
+  {
+    ctx->dontwrite = 0;
+    mutt_message (_("Changes to folder will be written on folder exit."));
+  }
+  else
+  {
+    ctx->dontwrite = 1;
+    mutt_message (_("Changes to folder will not be written."));
+  }
+
+  return 0;
+}
+
+static void resort_index (MUTTMENU *menu)
+{
+  int i;
+  HEADER *current = CURHDR;
+
+  menu->current = -1;
+  mutt_sort_headers (Context, 0);
+  /* Restore the current message */
+
+  for (i = 0; i < Context->vcount; i++)
+  {
+    if (Context->hdrs[Context->v2r[i]] == current)
+    {
+      menu->current = i;
+      break;
+    }
+  }
+
+  if ((Sort & SORT_MASK) == SORT_THREADS && menu->current < 0)
+    menu->current = mutt_parent_message (Context, current, 0);
+
+  if (menu->current < 0)
+    menu->current = ci_first_message ();
+
+  menu->redraw = REDRAW_INDEX | REDRAW_STATUS;
+}
+
+void update_index (MUTTMENU *menu, CONTEXT *ctx, int check,
+			  int oldcount, int index_hint)
+{
+  /* store pointers to the newly added messages */
+  HEADER  **save_new = NULL;
+  int j;
+
+  if (!menu || !ctx)
+    return;
+
+  /* take note of the current message */
+  if (oldcount)
+  {
+    if (menu->current < ctx->vcount)
+      menu->oldcurrent = index_hint;
+    else
+      oldcount = 0; /* invalid message number! */
+  }
+
+  /* We are in a limited view. Check if the new message(s) satisfy
+   * the limit criteria. If they do, set their virtual msgno so that
+   * they will be visible in the limited view */
+  if (ctx->pattern)
+  {
+#define THIS_BODY ctx->hdrs[j]->content
+    for (j = (check == MUTT_REOPENED) ? 0 : oldcount; j < ctx->msgcount; j++)
+    {
+      if (!j)
+	ctx->vcount = 0;
+
+      if (mutt_pattern_exec (ctx->limit_pattern,
+			     MUTT_MATCH_FULL_ADDRESS,
+			     ctx, ctx->hdrs[j], NULL))
+      {
+	assert (ctx->vcount < ctx->msgcount);
+	ctx->hdrs[j]->virtual = ctx->vcount;
+	ctx->v2r[ctx->vcount] = j;
+	ctx->hdrs[j]->limited = 1;
+	ctx->vcount++;
+	ctx->vsize += THIS_BODY->length + THIS_BODY->offset - THIS_BODY->hdr_offset;
+      }
+    }
+#undef THIS_BODY
+  }
+
+  /* save the list of new messages */
+  if (option(OPTUNCOLLAPSENEW) && oldcount && check != MUTT_REOPENED
+      && ((Sort & SORT_MASK) == SORT_THREADS))
+  {
+    save_new = safe_malloc (sizeof (HEADER *) * (ctx->msgcount - oldcount));
+    for (j = oldcount; j < ctx->msgcount; j++)
+      save_new[j-oldcount] = ctx->hdrs[j];
+  }
+
+  /* if the mailbox was reopened, need to rethread from scratch */
+  mutt_sort_headers (ctx, (check == MUTT_REOPENED));
+
+  /* uncollapse threads with new mail */
+  if (option(OPTUNCOLLAPSENEW) && ((Sort & SORT_MASK) == SORT_THREADS))
+  {
+    if (check == MUTT_REOPENED)
+    {
+      THREAD *h, *j;
+
+      ctx->collapsed = 0;
+
+      for (h = ctx->tree; h; h = h->next)
+      {
+	for (j = h; !j->message; j = j->child)
+	  ;
+	mutt_uncollapse_thread (ctx, j->message);
+      }
+      mutt_set_virtual (ctx);
+    }
+    else if (oldcount)
+    {
+      for (j = 0; j < ctx->msgcount - oldcount; j++)
+      {
+	int k;
+
+	for (k = 0; k < ctx->msgcount; k++)
+	{
+	  HEADER *h = ctx->hdrs[k];
+	  if (h == save_new[j] && (!ctx->pattern || h->limited))
+	    mutt_uncollapse_thread (ctx, h);
+	}
+      }
+      FREE (&save_new);
+      mutt_set_virtual (ctx);
+    }
+  }
+
+  menu->current = -1;
+  if (oldcount)
+  {
+    /* restore the current message to the message it was pointing to */
+    for (j = 0; j < ctx->vcount; j++)
+    {
+      if (ctx->hdrs[ctx->v2r[j]]->index == menu->oldcurrent)
+      {
+	menu->current = j;
+	break;
+      }
+    }
+  }
+
+  if (menu->current < 0)
+    menu->current = ci_first_message ();
+
+}
+
+static int main_change_folder(MUTTMENU *menu, int op, char *buf, size_t bufsz,
+			  int *oldcount, int *index_hint, int flags)
+{
+#ifdef USE_NNTP
+  if (option (OPTNEWS))
+  {
+    unset_option (OPTNEWS);
+    nntp_expand_path (buf, bufsz, &CurrentNewsSrv->conn->account);
+  }
+  else
+#endif
+  mutt_expand_path (buf, bufsz);
+  if (mx_get_magic (buf) <= 0)
+  {
+    mutt_error (_("%s is not a mailbox."), buf);
+    return -1;
+  }
+  mutt_str_replace (&CurrentFolder, buf);
+
+  /* keepalive failure in mutt_enter_fname may kill connection. #3028 */
+  if (Context && !Context->path)
+    FREE (&Context);
+
+  if (Context)
+  {
+    int check;
+
+#ifdef USE_COMPRESSED
+	  if (Context->compress_info && Context->realpath)
+	    mutt_str_replace (&LastFolder, Context->realpath);
+	  else
+#endif
+    mutt_str_replace (&LastFolder, Context->path);
+    *oldcount = Context ? Context->msgcount : 0;
+
+    if ((check = mx_close_mailbox (Context, index_hint)) != 0)
+    {
+      if (check == MUTT_NEW_MAIL || check == MUTT_REOPENED)
+        update_index (menu, Context, check, *oldcount, *index_hint);
+
+      set_option (OPTSEARCHINVALID);
+      menu->redraw = REDRAW_INDEX | REDRAW_STATUS;
+      return 0;
+    }
+    FREE (&Context);
+  }
+
+  mutt_sleep (0);
+
+  /* Set CurrentMenu to MENU_MAIN before executing any folder
+   * hooks so that all the index menu functions are available to
+   * the exec command.
+   */
+
+  CurrentMenu = MENU_MAIN;
+  mutt_folder_hook (buf);
+
+  if ((Context = mx_open_mailbox (buf,
+		(option (OPTREADONLY) || op == OP_MAIN_CHANGE_FOLDER_READONLY) ?
+		MUTT_READONLY : 0, NULL)) != NULL)
+  {
+    menu->current = ci_first_message ();
+  }
+  else
+    menu->current = 0;
+
+  if (((Sort & SORT_MASK) == SORT_THREADS) && option (OPTCOLLAPSEALL))
+    collapse_all (menu, 0);
+
+#ifdef USE_SIDEBAR
+        mutt_sb_set_open_buffy ();
+#endif
+
+  mutt_clear_error ();
+  mutt_buffy_check(1); /* force the buffy check after we have changed the folder */
+  menu->redraw = REDRAW_FULL;
+  set_option (OPTSEARCHINVALID);
+
+  return 0;
+}
+
+
 /* terminal status capability check. terminfo must have been initialized. */
 short mutt_ts_capability(void)
 {
@@ -350,227 +653,6 @@ int index_color (int index_no)
   return 0;
 }
 
-static int ci_next_undeleted (int msgno)
-{
-  int i;
-
-  for (i=msgno+1; i < Context->vcount; i++)
-    if (! Context->hdrs[Context->v2r[i]]->deleted)
-      return (i);
-  return (-1);
-}
-
-static int ci_previous_undeleted (int msgno)
-{
-  int i;
-
-  for (i=msgno-1; i>=0; i--)
-    if (! Context->hdrs[Context->v2r[i]]->deleted)
-      return (i);
-  return (-1);
-}
-
-/* Return the index of the first new message, or failing that, the first
- * unread message.
- */
-static int ci_first_message (void)
-{
-  int old = -1, i;
-
-  if (Context && Context->msgcount)
-  {
-    for (i=0; i < Context->vcount; i++)
-    {
-      if (! Context->hdrs[Context->v2r[i]]->read &&
-	  ! Context->hdrs[Context->v2r[i]]->deleted)
-      {
-	if (! Context->hdrs[Context->v2r[i]]->old)
-	  return (i);
-	else if (old == -1)
-	  old = i;
-      }
-    }
-    if (old != -1)
-      return (old);
-
-    /* If Sort is reverse and not threaded, the latest message is first.
-     * If Sort is threaded, the latest message is first iff exactly one
-     * of Sort and SortAux are reverse.
-     */
-    if (((Sort & SORT_REVERSE) && (Sort & SORT_MASK) != SORT_THREADS) ||
-	((Sort & SORT_MASK) == SORT_THREADS &&
-	 ((Sort ^ SortAux) & SORT_REVERSE)))
-      return 0;
-    else
-      return (Context->vcount ? Context->vcount - 1 : 0);
-  }
-  return 0;
-}
-
-/* This should be in mx.c, but it only gets used here. */
-static int mx_toggle_write (CONTEXT *ctx)
-{
-  if (!ctx)
-    return -1;
-
-  if (ctx->readonly)
-  {
-    mutt_error (_("Cannot toggle write on a readonly mailbox!"));
-    return -1;
-  }
-
-  if (ctx->dontwrite)
-  {
-    ctx->dontwrite = 0;
-    mutt_message (_("Changes to folder will be written on folder exit."));
-  }
-  else
-  {
-    ctx->dontwrite = 1;
-    mutt_message (_("Changes to folder will not be written."));
-  }
-
-  return 0;
-}
-
-void update_index (MUTTMENU *menu, CONTEXT *ctx, int check,
-			  int oldcount, int index_hint)
-{
-  /* store pointers to the newly added messages */
-  HEADER  **save_new = NULL;
-  int j;
-
-  if (!menu || !ctx)
-    return;
-
-  /* take note of the current message */
-  if (oldcount)
-  {
-    if (menu->current < ctx->vcount)
-      menu->oldcurrent = index_hint;
-    else
-      oldcount = 0; /* invalid message number! */
-  }
-
-  /* We are in a limited view. Check if the new message(s) satisfy
-   * the limit criteria. If they do, set their virtual msgno so that
-   * they will be visible in the limited view */
-  if (ctx->pattern)
-  {
-#define THIS_BODY ctx->hdrs[j]->content
-    for (j = (check == MUTT_REOPENED) ? 0 : oldcount; j < ctx->msgcount; j++)
-    {
-      if (!j)
-	ctx->vcount = 0;
-
-      if (mutt_pattern_exec (ctx->limit_pattern,
-			     MUTT_MATCH_FULL_ADDRESS,
-			     ctx, ctx->hdrs[j], NULL))
-      {
-	assert (ctx->vcount < ctx->msgcount);
-	ctx->hdrs[j]->virtual = ctx->vcount;
-	ctx->v2r[ctx->vcount] = j;
-	ctx->hdrs[j]->limited = 1;
-	ctx->vcount++;
-	ctx->vsize += THIS_BODY->length + THIS_BODY->offset - THIS_BODY->hdr_offset;
-      }
-    }
-#undef THIS_BODY
-  }
-
-  /* save the list of new messages */
-  if (option(OPTUNCOLLAPSENEW) && oldcount && check != MUTT_REOPENED
-      && ((Sort & SORT_MASK) == SORT_THREADS))
-  {
-    save_new = safe_malloc (sizeof (HEADER *) * (ctx->msgcount - oldcount));
-    for (j = oldcount; j < ctx->msgcount; j++)
-      save_new[j-oldcount] = ctx->hdrs[j];
-  }
-
-  /* if the mailbox was reopened, need to rethread from scratch */
-  mutt_sort_headers (ctx, (check == MUTT_REOPENED));
-
-  /* uncollapse threads with new mail */
-  if (option(OPTUNCOLLAPSENEW) && ((Sort & SORT_MASK) == SORT_THREADS))
-  {
-    if (check == MUTT_REOPENED)
-    {
-      THREAD *h, *j;
-
-      ctx->collapsed = 0;
-
-      for (h = ctx->tree; h; h = h->next)
-      {
-	for (j = h; !j->message; j = j->child)
-	  ;
-	mutt_uncollapse_thread (ctx, j->message);
-      }
-      mutt_set_virtual (ctx);
-    }
-    else if (oldcount)
-    {
-      for (j = 0; j < ctx->msgcount - oldcount; j++)
-      {
-	int k;
-
-	for (k = 0; k < ctx->msgcount; k++)
-	{
-	  HEADER *h = ctx->hdrs[k];
-	  if (h == save_new[j] && (!ctx->pattern || h->limited))
-	    mutt_uncollapse_thread (ctx, h);
-	}
-      }
-      FREE (&save_new);
-      mutt_set_virtual (ctx);
-    }
-  }
-
-  menu->current = -1;
-  if (oldcount)
-  {
-    /* restore the current message to the message it was pointing to */
-    for (j = 0; j < ctx->vcount; j++)
-    {
-      if (ctx->hdrs[ctx->v2r[j]]->index == menu->oldcurrent)
-      {
-	menu->current = j;
-	break;
-      }
-    }
-  }
-
-  if (menu->current < 0)
-    menu->current = ci_first_message ();
-
-}
-
-static void resort_index (MUTTMENU *menu)
-{
-  int i;
-  HEADER *current = CURHDR;
-
-  menu->current = -1;
-  mutt_sort_headers (Context, 0);
-  /* Restore the current message */
-
-  for (i = 0; i < Context->vcount; i++)
-  {
-    if (Context->hdrs[Context->v2r[i]] == current)
-    {
-      menu->current = i;
-      break;
-    }
-  }
-
-  if ((Sort & SORT_MASK) == SORT_THREADS && menu->current < 0)
-    menu->current = mutt_parent_message (Context, current, 0);
-
-  if (menu->current < 0)
-    menu->current = ci_first_message ();
-
-  menu->redraw = REDRAW_INDEX | REDRAW_STATUS;
-}
-
 /**
  * mutt_draw_statusline - Draw a highlighted status bar
  * @cols:  Maximum number of screen columns
@@ -703,87 +785,6 @@ mutt_draw_statusline (int cols, const char *buf, int buflen)
   }
 dsl_finish:
   FREE(&syntax);
-}
-
-static int main_change_folder(MUTTMENU *menu, int op, char *buf, size_t bufsz,
-			  int *oldcount, int *index_hint, int flags)
-{
-#ifdef USE_NNTP
-  if (option (OPTNEWS))
-  {
-    unset_option (OPTNEWS);
-    nntp_expand_path (buf, bufsz, &CurrentNewsSrv->conn->account);
-  }
-  else
-#endif
-  mutt_expand_path (buf, bufsz);
-  if (mx_get_magic (buf) <= 0)
-  {
-    mutt_error (_("%s is not a mailbox."), buf);
-    return -1;
-  }
-  mutt_str_replace (&CurrentFolder, buf);
-
-  /* keepalive failure in mutt_enter_fname may kill connection. #3028 */
-  if (Context && !Context->path)
-    FREE (&Context);
-
-  if (Context)
-  {
-    int check;
-
-#ifdef USE_COMPRESSED
-	  if (Context->compress_info && Context->realpath)
-	    mutt_str_replace (&LastFolder, Context->realpath);
-	  else
-#endif
-    mutt_str_replace (&LastFolder, Context->path);
-    *oldcount = Context ? Context->msgcount : 0;
-
-    if ((check = mx_close_mailbox (Context, index_hint)) != 0)
-    {
-      if (check == MUTT_NEW_MAIL || check == MUTT_REOPENED)
-        update_index (menu, Context, check, *oldcount, *index_hint);
-
-      set_option (OPTSEARCHINVALID);
-      menu->redraw = REDRAW_INDEX | REDRAW_STATUS;
-      return 0;
-    }
-    FREE (&Context);
-  }
-
-  mutt_sleep (0);
-
-  /* Set CurrentMenu to MENU_MAIN before executing any folder
-   * hooks so that all the index menu functions are available to
-   * the exec command.
-   */
-
-  CurrentMenu = MENU_MAIN;
-  mutt_folder_hook (buf);
-
-  if ((Context = mx_open_mailbox (buf,
-		(option (OPTREADONLY) || op == OP_MAIN_CHANGE_FOLDER_READONLY) ?
-		MUTT_READONLY : 0, NULL)) != NULL)
-  {
-    menu->current = ci_first_message ();
-  }
-  else
-    menu->current = 0;
-
-  if (((Sort & SORT_MASK) == SORT_THREADS) && option (OPTCOLLAPSEALL))
-    collapse_all (menu, 0);
-
-#ifdef USE_SIDEBAR
-        mutt_sb_set_open_buffy ();
-#endif
-
-  mutt_clear_error ();
-  mutt_buffy_check(1); /* force the buffy check after we have changed the folder */
-  menu->redraw = REDRAW_FULL;
-  set_option (OPTSEARCHINVALID);
-
-  return 0;
 }
 
 static const struct mapping_t IndexHelp[] = {

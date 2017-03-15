@@ -73,8 +73,43 @@ typedef struct myvar
 
 static myvar_t* MyVars;
 
-static void myvar_set (const char* var, const char* val);
-static void myvar_del (const char* var);
+static void myvar_set (const char* var, const char* val)
+{
+  myvar_t** cur;
+
+  for (cur = &MyVars; *cur; cur = &((*cur)->next))
+    if (!mutt_strcmp ((*cur)->name, var))
+      break;
+
+  if (!*cur)
+    *cur = safe_calloc (1, sizeof (myvar_t));
+
+  if (!(*cur)->name)
+    (*cur)->name = safe_strdup (var);
+
+  mutt_str_replace (&(*cur)->value, val);
+}
+
+static void myvar_del (const char* var)
+{
+  myvar_t **cur;
+  myvar_t *tmp;
+
+
+  for (cur = &MyVars; *cur; cur = &((*cur)->next))
+    if (!mutt_strcmp ((*cur)->name, var))
+      break;
+
+  if (*cur)
+  {
+    tmp = (*cur)->next;
+    FREE (&(*cur)->name);
+    FREE (&(*cur)->value);
+    FREE (cur);		/* __FREE_CHECKED__ */
+    *cur = tmp;
+  }
+}
+
 
 #ifdef USE_NOTMUCH
 /* List of tags found in last call to mutt_nm_query_complete(). */
@@ -91,6 +126,57 @@ static void toggle_quadoption (int opt)
 
   QuadOptions[n] ^= (1 << b);
 }
+
+static int parse_regex(int idx, BUFFER *tmp, BUFFER *err)
+{
+  int e, flags = 0;
+  const char *p;
+  regex_t *rx;
+  REGEXP *ptr = (REGEXP *) MuttVars[idx].data;
+
+  if (!ptr->pattern || (mutt_strcmp(ptr->pattern, tmp->data) != 0))
+  {
+    int not = 0;
+
+    /* $mask is case-sensitive */
+    if (mutt_strcmp(MuttVars[idx].option, "mask") != 0)
+      flags |= mutt_which_case(tmp->data);
+
+    p = tmp->data;
+    if (mutt_strcmp(MuttVars[idx].option, "mask") == 0)
+    {
+      if (*p == '!')
+      {
+        not = 1;
+        p++;
+      }
+    }
+
+    rx = safe_malloc(sizeof(regex_t));
+    if ((e = REGCOMP(rx, p, flags)) != 0)
+    {
+      regerror(e, rx, err->data, err->dsize);
+      FREE(&rx);
+      return 0;
+    }
+
+    /* get here only if everything went smoothly */
+    if (ptr->pattern)
+    {
+      FREE(&ptr->pattern);
+      regfree((regex_t *) ptr->rx);
+      FREE(&ptr->rx);
+    }
+
+    ptr->pattern = safe_strdup(tmp->data);
+    ptr->rx = rx;
+    ptr->not = not;
+
+    return 1;
+  }
+  return 0;
+}
+
 
 void set_quadoption (int opt, int flag)
 {
@@ -175,62 +261,87 @@ const struct option_t *mutt_option_get(const char *s)
 }
 #endif
 
-static int parse_regex(int idx, BUFFER *tmp, BUFFER *err)
+static void free_mbchar_table (mbchar_table **t)
 {
-  int e, flags = 0;
-  const char *p;
-  regex_t *rx;
-  REGEXP *ptr = (REGEXP *) MuttVars[idx].data;
+  if (!t || !*t)
+    return;
 
-  if (!ptr->pattern || (mutt_strcmp(ptr->pattern, tmp->data) != 0))
+  FREE (&(*t)->chars);
+  FREE (&(*t)->segmented_str);
+  FREE (&(*t)->orig_str);
+  FREE (t);		/* __FREE_CHECKED__ */
+}
+
+static mbchar_table *parse_mbchar_table (const char *s)
+{
+  mbchar_table *t;
+  size_t slen, k;
+  mbstate_t mbstate;
+  char *d;
+
+  t = safe_calloc (1, sizeof (mbchar_table));
+  slen = mutt_strlen (s);
+  if (!slen)
+    return t;
+
+  t->orig_str = safe_strdup (s);
+  /* This could be more space efficient.  However, being used on tiny
+   * strings (Tochars and StChars), the overhead is not great. */
+  t->chars = safe_calloc (slen, sizeof (char *));
+  d = t->segmented_str = safe_calloc (slen * 2, sizeof (char));
+
+  memset (&mbstate, 0, sizeof (mbstate));
+  while (slen && (k = mbrtowc (NULL, s, slen, &mbstate)))
   {
-    int not = 0;
-
-    /* $mask is case-sensitive */
-    if (mutt_strcmp(MuttVars[idx].option, "mask") != 0)
-      flags |= mutt_which_case(tmp->data);
-
-    p = tmp->data;
-    if (mutt_strcmp(MuttVars[idx].option, "mask") == 0)
+    if (k == (size_t)(-1) || k == (size_t)(-2))
     {
-      if (*p == '!')
-      {
-        not = 1;
-        p++;
-      }
+      mutt_debug (1,
+                  "parse_mbchar_table: mbrtowc returned %d converting %s in %s\n",
+                  (k == (size_t)(-1)) ? -1 : -2, s, t->orig_str);
+      if (k == (size_t)(-1))
+        memset (&mbstate, 0, sizeof (mbstate));
+      k = (k == (size_t)(-1)) ? 1 : slen;
     }
 
-    rx = safe_malloc(sizeof(regex_t));
-    if ((e = REGCOMP(rx, p, flags)) != 0)
-    {
-      regerror(e, rx, err->data, err->dsize);
-      FREE(&rx);
-      return 0;
-    }
-
-    /* get here only if everything went smoothly */
-    if (ptr->pattern)
-    {
-      FREE(&ptr->pattern);
-      regfree((regex_t *) ptr->rx);
-      FREE(&ptr->rx);
-    }
-
-    ptr->pattern = safe_strdup(tmp->data);
-    ptr->rx = rx;
-    ptr->not = not;
-
-    return 1;
+    slen -= k;
+    t->chars[t->len++] = d;
+    while (k--)
+      *d++ = *s++;
+    *d++ = '\0';
   }
+
+  return t;
+}
+
+static int
+parse_sort (short *val, const char *s, const struct mapping_t *map, BUFFER *err)
+{
+  int i, flags = 0;
+
+  if (mutt_strncmp ("reverse-", s, 8) == 0)
+  {
+    s += 8;
+    flags = SORT_REVERSE;
+  }
+
+  if (mutt_strncmp ("last-", s, 5) == 0)
+  {
+    s += 5;
+    flags |= SORT_LAST;
+  }
+
+  if ((i = mutt_getvaluebyname (s, map)) == -1)
+  {
+    snprintf (err->data, err->dsize, _("%s: unknown sorting method"), s);
+    return (-1);
+  }
+
+  *val = i | flags;
+
   return 0;
 }
 
 #ifdef USE_LUA
-static void free_mbchar_table(mbchar_table **t);
-static mbchar_table *parse_mbchar_table(const char *s);
-static int parse_sort(short *val, const char *s, const struct mapping_t *map,
-                      BUFFER *err);
-
 int mutt_option_set(const struct option_t *val, BUFFER *err)
 {
   mutt_debug(2, " * mutt_option_set()\n");
@@ -496,7 +607,42 @@ int mutt_add_to_rx_list (RX_LIST **list, const char *s, int flags, BUFFER *err)
   return 0;
 }
 
-static int remove_from_replace_list (REPLACE_LIST **list, const char *pat);
+static int remove_from_replace_list (REPLACE_LIST **list, const char *pat)
+{
+  REPLACE_LIST *cur, *prev;
+  int nremoved = 0;
+
+  /* Being first is a special case. */
+  cur = *list;
+  if (!cur)
+    return 0;
+  if (cur->rx && !mutt_strcmp(cur->rx->pattern, pat))
+  {
+    *list = cur->next;
+    mutt_free_regexp(&cur->rx);
+    FREE(&cur->template);
+    FREE(&cur);
+    return 1;
+  }
+
+  prev = cur;
+  for (cur = prev->next; cur;)
+  {
+    if (!mutt_strcmp(cur->rx->pattern, pat))
+    {
+      prev->next = cur->next;
+      mutt_free_regexp(&cur->rx);
+      FREE(&cur->template);
+      FREE(&cur);
+      cur = prev->next;
+      ++nremoved;
+    }
+    else
+      cur = cur->next;
+  }
+
+  return nremoved;
+}
 
 static int add_to_replace_list (REPLACE_LIST **list, const char *pat, const char *templ, BUFFER *err)
 {
@@ -579,43 +725,6 @@ static int add_to_replace_list (REPLACE_LIST **list, const char *pat, const char
   t->nmatch++;         /* match 0 is always the whole expr */
 
   return 0;
-}
-
-static int remove_from_replace_list (REPLACE_LIST **list, const char *pat)
-{
-  REPLACE_LIST *cur, *prev;
-  int nremoved = 0;
-
-  /* Being first is a special case. */
-  cur = *list;
-  if (!cur)
-    return 0;
-  if (cur->rx && !mutt_strcmp(cur->rx->pattern, pat))
-  {
-    *list = cur->next;
-    mutt_free_regexp(&cur->rx);
-    FREE(&cur->template);
-    FREE(&cur);
-    return 1;
-  }
-
-  prev = cur;
-  for (cur = prev->next; cur;)
-  {
-    if (!mutt_strcmp(cur->rx->pattern, pat))
-    {
-      prev->next = cur->next;
-      mutt_free_regexp(&cur->rx);
-      FREE(&cur->template);
-      FREE(&cur);
-      cur = prev->next;
-      ++nremoved;
-    }
-    else
-      cur = cur->next;
-  }
-
-  return nremoved;
 }
 
 
@@ -766,58 +875,6 @@ static int parse_ifdef (BUFFER *tmp, BUFFER *s, unsigned long data, BUFFER *err)
                 return rc;
   }
   return 0;
-}
-
-static void free_mbchar_table (mbchar_table **t)
-{
-  if (!t || !*t)
-    return;
-
-  FREE (&(*t)->chars);
-  FREE (&(*t)->segmented_str);
-  FREE (&(*t)->orig_str);
-  FREE (t);		/* __FREE_CHECKED__ */
-}
-
-static mbchar_table *parse_mbchar_table (const char *s)
-{
-  mbchar_table *t;
-  size_t slen, k;
-  mbstate_t mbstate;
-  char *d;
-
-  t = safe_calloc (1, sizeof (mbchar_table));
-  slen = mutt_strlen (s);
-  if (!slen)
-    return t;
-
-  t->orig_str = safe_strdup (s);
-  /* This could be more space efficient.  However, being used on tiny
-   * strings (Tochars and StChars), the overhead is not great. */
-  t->chars = safe_calloc (slen, sizeof (char *));
-  d = t->segmented_str = safe_calloc (slen * 2, sizeof (char));
-
-  memset (&mbstate, 0, sizeof (mbstate));
-  while (slen && (k = mbrtowc (NULL, s, slen, &mbstate)))
-  {
-    if (k == (size_t)(-1) || k == (size_t)(-2))
-    {
-      mutt_debug (1,
-                  "parse_mbchar_table: mbrtowc returned %d converting %s in %s\n",
-                  (k == (size_t)(-1)) ? -1 : -2, s, t->orig_str);
-      if (k == (size_t)(-1))
-        memset (&mbstate, 0, sizeof (mbstate));
-      k = (k == (size_t)(-1)) ? 1 : slen;
-    }
-
-    slen -= k;
-    t->chars[t->len++] = d;
-    while (k--)
-      *d++ = *s++;
-    *d++ = '\0';
-  }
-
-  return t;
 }
 
 static int parse_unignore (BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err)
@@ -1773,35 +1830,7 @@ static int parse_my_hdr (BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err
   return 0;
 }
 
-static int
-parse_sort (short *val, const char *s, const struct mapping_t *map, BUFFER *err)
-{
-  int i, flags = 0;
-
-  if (mutt_strncmp ("reverse-", s, 8) == 0)
-  {
-    s += 8;
-    flags = SORT_REVERSE;
-  }
-
-  if (mutt_strncmp ("last-", s, 5) == 0)
-  {
-    s += 5;
-    flags |= SORT_LAST;
-  }
-
-  if ((i = mutt_getvaluebyname (s, map)) == -1)
-  {
-    snprintf (err->data, err->dsize, _("%s: unknown sorting method"), s);
-    return (-1);
-  }
-
-  *val = i | flags;
-
-  return 0;
-}
-
-static void mutt_set_default (struct option_t *p)
+static void set_default (struct option_t *p)
 {
   switch (p->type & DT_MASK)
   {
@@ -3881,7 +3910,7 @@ void mutt_init (int skip_sys_rc, LIST *commands)
   /* Set standard defaults */
   for (i = 0; MuttVars[i].option; i++)
   {
-    mutt_set_default (&MuttVars[i]);
+    set_default (&MuttVars[i]);
     mutt_restore_default (&MuttVars[i]);
   }
 
@@ -4144,43 +4173,6 @@ static int parse_tag_formats (BUFFER *b, BUFFER *s, unsigned long data, BUFFER *
   return 0;
 }
 #endif
-
-static void myvar_set (const char* var, const char* val)
-{
-  myvar_t** cur;
-
-  for (cur = &MyVars; *cur; cur = &((*cur)->next))
-    if (!mutt_strcmp ((*cur)->name, var))
-      break;
-
-  if (!*cur)
-    *cur = safe_calloc (1, sizeof (myvar_t));
-
-  if (!(*cur)->name)
-    (*cur)->name = safe_strdup (var);
-
-  mutt_str_replace (&(*cur)->value, val);
-}
-
-static void myvar_del (const char* var)
-{
-  myvar_t **cur;
-  myvar_t *tmp;
-
-
-  for (cur = &MyVars; *cur; cur = &((*cur)->next))
-    if (!mutt_strcmp ((*cur)->name, var))
-      break;
-
-  if (*cur)
-  {
-    tmp = (*cur)->next;
-    FREE (&(*cur)->name);
-    FREE (&(*cur)->value);
-    FREE (cur);		/* __FREE_CHECKED__ */
-    *cur = tmp;
-  }
-}
 
 const char* myvar_get (const char* var)
 {

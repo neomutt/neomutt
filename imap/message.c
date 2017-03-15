@@ -40,16 +40,6 @@
 
 #include "bcache.h"
 
-static FILE* msg_cache_get (IMAP_DATA* idata, HEADER* h);
-static FILE* msg_cache_put (IMAP_DATA* idata, HEADER* h);
-static int msg_cache_commit (IMAP_DATA* idata, HEADER* h);
-
-static void flush_buffer(char* buf, size_t* len, CONNECTION* conn);
-static int msg_fetch_header (CONTEXT* ctx, IMAP_HEADER* h, char* buf,
-  FILE* fp);
-static int msg_parse_fetch (IMAP_HEADER* h, char* s);
-static char* msg_parse_flags (IMAP_HEADER* h, char* s);
-
 static void imap_update_context (IMAP_DATA *idata, int oldmsgcount)
 {
   CONTEXT *ctx;
@@ -65,6 +55,303 @@ static void imap_update_context (IMAP_DATA *idata, int oldmsgcount)
     h = ctx->hdrs[msgno];
     int_hash_insert (idata->uid_hash, HEADER_DATA(h)->uid, h);
   }
+}
+
+static body_cache_t *msg_cache_open (IMAP_DATA *idata)
+{
+  char mailbox[_POSIX_PATH_MAX];
+
+  if (idata->bcache)
+    return idata->bcache;
+
+  imap_cachepath (idata, idata->mailbox, mailbox, sizeof (mailbox));
+
+  return mutt_bcache_open (&idata->conn->account, mailbox);
+}
+
+static FILE* msg_cache_get (IMAP_DATA* idata, HEADER* h)
+{
+  char id[_POSIX_PATH_MAX];
+
+  if (!idata || !h)
+    return NULL;
+
+  idata->bcache = msg_cache_open (idata);
+  snprintf (id, sizeof (id), "%u-%u", idata->uid_validity, HEADER_DATA(h)->uid);
+  return mutt_bcache_get (idata->bcache, id);
+}
+
+static FILE* msg_cache_put (IMAP_DATA* idata, HEADER* h)
+{
+  char id[_POSIX_PATH_MAX];
+
+  if (!idata || !h)
+    return NULL;
+
+  idata->bcache = msg_cache_open (idata);
+  snprintf (id, sizeof (id), "%u-%u", idata->uid_validity, HEADER_DATA(h)->uid);
+  return mutt_bcache_put (idata->bcache, id, 1);
+}
+
+static int msg_cache_commit (IMAP_DATA* idata, HEADER* h)
+{
+  char id[_POSIX_PATH_MAX];
+
+  if (!idata || !h)
+    return -1;
+
+  idata->bcache = msg_cache_open (idata);
+  snprintf (id, sizeof (id), "%u-%u", idata->uid_validity, HEADER_DATA(h)->uid);
+
+  return mutt_bcache_commit (idata->bcache, id);
+}
+
+static int msg_cache_clean_cb (const char* id, body_cache_t* bcache, void* data)
+{
+  unsigned int uv, uid, n;
+  IMAP_DATA* idata = data;
+
+  if (sscanf (id, "%u-%u", &uv, &uid) != 2)
+    return 0;
+
+  /* bad UID */
+  if (uv != idata->uid_validity)
+    mutt_bcache_del (bcache, id);
+
+  /* TODO: presort UIDs, walk in order */
+  for (n = 0; n < idata->ctx->msgcount; n++)
+  {
+    if (uid == HEADER_DATA(idata->ctx->hdrs[n])->uid)
+      return 0;
+  }
+  mutt_bcache_del (bcache, id);
+
+  return 0;
+}
+
+/* msg_parse_flags: read a FLAGS token into an IMAP_HEADER */
+static char* msg_parse_flags (IMAP_HEADER* h, char* s)
+{
+  IMAP_HEADER_DATA* hd = h->data;
+
+  /* sanity-check string */
+  if (ascii_strncasecmp ("FLAGS", s, 5) != 0)
+  {
+    mutt_debug (1, "msg_parse_flags: not a FLAGS response: %s\n", s);
+    return NULL;
+  }
+  s += 5;
+  SKIPWS(s);
+  if (*s != '(')
+  {
+    mutt_debug (1, "msg_parse_flags: bogus FLAGS response: %s\n", s);
+    return NULL;
+  }
+  s++;
+
+  mutt_free_list (&hd->keywords);
+  hd->deleted = hd->flagged = hd->replied = hd->read = hd->old = 0;
+
+  /* start parsing */
+  while (*s && *s != ')')
+  {
+    if (ascii_strncasecmp ("\\deleted", s, 8) == 0)
+    {
+      s += 8;
+      hd->deleted = 1;
+    }
+    else if (ascii_strncasecmp ("\\flagged", s, 8) == 0)
+    {
+      s += 8;
+      hd->flagged = 1;
+    }
+    else if (ascii_strncasecmp ("\\answered", s, 9) == 0)
+    {
+      s += 9;
+      hd->replied = 1;
+    }
+    else if (ascii_strncasecmp ("\\seen", s, 5) == 0)
+    {
+      s += 5;
+      hd->read = 1;
+    }
+    else if (ascii_strncasecmp ("\\recent", s, 7) == 0)
+      s += 7;
+    else if (ascii_strncasecmp ("old", s, 3) == 0)
+    {
+      s += 3;
+      hd->old = 1;
+    }
+    else
+    {
+      /* store custom flags as well */
+      char ctmp;
+      char* flag_word = s;
+
+      if (!hd->keywords)
+        hd->keywords = mutt_new_list ();
+
+      while (*s && !ISSPACE (*s) && *s != ')')
+        s++;
+      ctmp = *s;
+      *s = '\0';
+      mutt_add_list (hd->keywords, flag_word);
+      *s = ctmp;
+    }
+    SKIPWS(s);
+  }
+
+  /* wrap up, or note bad flags response */
+  if (*s == ')')
+    s++;
+  else
+  {
+    mutt_debug (1, "msg_parse_flags: Unterminated FLAGS response: %s\n", s);
+    return NULL;
+  }
+
+  return s;
+}
+
+/* msg_parse_fetch: handle headers returned from header fetch */
+static int msg_parse_fetch (IMAP_HEADER *h, char *s)
+{
+  char tmp[SHORT_STRING];
+  char *ptmp;
+
+  if (!s)
+    return -1;
+
+  while (*s)
+  {
+    SKIPWS (s);
+
+    if (ascii_strncasecmp ("FLAGS", s, 5) == 0)
+    {
+      if ((s = msg_parse_flags (h, s)) == NULL)
+        return -1;
+    }
+    else if (ascii_strncasecmp ("UID", s, 3) == 0)
+    {
+      s += 3;
+      SKIPWS (s);
+      h->data->uid = (unsigned int) atoi (s);
+
+      s = imap_next_word (s);
+    }
+    else if (ascii_strncasecmp ("INTERNALDATE", s, 12) == 0)
+    {
+      s += 12;
+      SKIPWS (s);
+      if (*s != '\"')
+      {
+        mutt_debug (1, "msg_parse_fetch(): bogus INTERNALDATE entry: %s\n", s);
+        return -1;
+      }
+      s++;
+      ptmp = tmp;
+      while (*s && *s != '\"')
+        *ptmp++ = *s++;
+      if (*s != '\"')
+        return -1;
+      s++; /* skip past the trailing " */
+      *ptmp = 0;
+      h->received = imap_parse_date (tmp);
+    }
+    else if (ascii_strncasecmp ("RFC822.SIZE", s, 11) == 0)
+    {
+      s += 11;
+      SKIPWS (s);
+      ptmp = tmp;
+      while (isdigit ((unsigned char) *s))
+        *ptmp++ = *s++;
+      *ptmp = 0;
+      h->content_length = atoi (tmp);
+    }
+    else if (!ascii_strncasecmp ("BODY", s, 4) ||
+      !ascii_strncasecmp ("RFC822.HEADER", s, 13))
+    {
+      /* handle above, in msg_fetch_header */
+      return -2;
+    }
+    else if (*s == ')')
+      s++; /* end of request */
+    else if (*s)
+    {
+      /* got something i don't understand */
+      imap_error ("msg_parse_fetch", s);
+      return -1;
+    }
+  }
+
+  return 0;
+}
+
+/* msg_fetch_header: import IMAP FETCH response into an IMAP_HEADER.
+ *   Expects string beginning with * n FETCH.
+ *   Returns:
+ *      0 on success
+ *     -1 if the string is not a fetch response
+ *     -2 if the string is a corrupt fetch response */
+static int msg_fetch_header (CONTEXT* ctx, IMAP_HEADER* h, char* buf, FILE* fp)
+{
+  IMAP_DATA* idata;
+  long bytes;
+  int rc = -1; /* default now is that string isn't FETCH response*/
+
+  idata = ctx->data;
+
+  if (buf[0] != '*')
+    return rc;
+
+  /* skip to message number */
+  buf = imap_next_word (buf);
+  h->sid = atoi (buf);
+
+  /* find FETCH tag */
+  buf = imap_next_word (buf);
+  if (ascii_strncasecmp ("FETCH", buf, 5))
+    return rc;
+
+  rc = -2; /* we've got a FETCH response, for better or worse */
+  if (!(buf = strchr (buf, '(')))
+    return rc;
+  buf++;
+
+  /* FIXME: current implementation - call msg_parse_fetch - if it returns -2,
+   *   read header lines and call it again. Silly. */
+  if ((rc = msg_parse_fetch (h, buf)) != -2 || !fp)
+    return rc;
+
+  if (imap_get_literal_count (buf, &bytes) == 0)
+  {
+    imap_read_literal (fp, idata, bytes, NULL);
+
+    /* we may have other fields of the FETCH _after_ the literal
+     * (eg Domino puts FLAGS here). Nothing wrong with that, either.
+     * This all has to go - we should accept literals and nonliterals
+     * interchangeably at any time. */
+    if (imap_cmd_step (idata) != IMAP_CMD_CONTINUE)
+      return rc;
+
+    if (msg_parse_fetch (h, idata->buf) == -1)
+      return rc;
+  }
+
+  rc = 0; /* success */
+
+  /* subtract headers from message size - unfortunately only the subset of
+   * headers we've requested. */
+  h->content_length -= bytes;
+
+  return rc;
+}
+
+static void flush_buffer(char *buf, size_t *len, CONNECTION *conn)
+{
+  buf[*len] = '\0';
+  mutt_socket_write_n(conn, buf, *len);
+  *len = 0;
 }
 
 /* imap_read_headers:
@@ -943,55 +1230,6 @@ int imap_copy_messages (CONTEXT* ctx, HEADER* h, char* dest, int delete)
   return rc < 0 ? -1 : rc;
 }
 
-static body_cache_t *msg_cache_open (IMAP_DATA *idata)
-{
-  char mailbox[_POSIX_PATH_MAX];
-
-  if (idata->bcache)
-    return idata->bcache;
-
-  imap_cachepath (idata, idata->mailbox, mailbox, sizeof (mailbox));
-
-  return mutt_bcache_open (&idata->conn->account, mailbox);
-}
-
-static FILE* msg_cache_get (IMAP_DATA* idata, HEADER* h)
-{
-  char id[_POSIX_PATH_MAX];
-
-  if (!idata || !h)
-    return NULL;
-
-  idata->bcache = msg_cache_open (idata);
-  snprintf (id, sizeof (id), "%u-%u", idata->uid_validity, HEADER_DATA(h)->uid);
-  return mutt_bcache_get (idata->bcache, id);
-}
-
-static FILE* msg_cache_put (IMAP_DATA* idata, HEADER* h)
-{
-  char id[_POSIX_PATH_MAX];
-
-  if (!idata || !h)
-    return NULL;
-
-  idata->bcache = msg_cache_open (idata);
-  snprintf (id, sizeof (id), "%u-%u", idata->uid_validity, HEADER_DATA(h)->uid);
-  return mutt_bcache_put (idata->bcache, id, 1);
-}
-
-static int msg_cache_commit (IMAP_DATA* idata, HEADER* h)
-{
-  char id[_POSIX_PATH_MAX];
-
-  if (!idata || !h)
-    return -1;
-
-  idata->bcache = msg_cache_open (idata);
-  snprintf (id, sizeof (id), "%u-%u", idata->uid_validity, HEADER_DATA(h)->uid);
-
-  return mutt_bcache_commit (idata->bcache, id);
-}
-
 int imap_cache_del (IMAP_DATA* idata, HEADER* h)
 {
   char id[_POSIX_PATH_MAX];
@@ -1002,29 +1240,6 @@ int imap_cache_del (IMAP_DATA* idata, HEADER* h)
   idata->bcache = msg_cache_open (idata);
   snprintf (id, sizeof (id), "%u-%u", idata->uid_validity, HEADER_DATA(h)->uid);
   return mutt_bcache_del (idata->bcache, id);
-}
-
-static int msg_cache_clean_cb (const char* id, body_cache_t* bcache, void* data)
-{
-  unsigned int uv, uid, n;
-  IMAP_DATA* idata = data;
-
-  if (sscanf (id, "%u-%u", &uv, &uid) != 2)
-    return 0;
-
-  /* bad UID */
-  if (uv != idata->uid_validity)
-    mutt_bcache_del (bcache, id);
-
-  /* TODO: presort UIDs, walk in order */
-  for (n = 0; n < idata->ctx->msgcount; n++)
-  {
-    if (uid == HEADER_DATA(idata->ctx->hdrs[n])->uid)
-      return 0;
-  }
-  mutt_bcache_del (bcache, id);
-
-  return 0;
 }
 
 int imap_cache_clean (IMAP_DATA* idata)
@@ -1109,227 +1324,3 @@ char* imap_set_flags (IMAP_DATA* idata, HEADER* h, char* s)
 }
 
 
-/* msg_fetch_header: import IMAP FETCH response into an IMAP_HEADER.
- *   Expects string beginning with * n FETCH.
- *   Returns:
- *      0 on success
- *     -1 if the string is not a fetch response
- *     -2 if the string is a corrupt fetch response */
-static int msg_fetch_header (CONTEXT* ctx, IMAP_HEADER* h, char* buf, FILE* fp)
-{
-  IMAP_DATA* idata;
-  long bytes;
-  int rc = -1; /* default now is that string isn't FETCH response*/
-
-  idata = ctx->data;
-
-  if (buf[0] != '*')
-    return rc;
-
-  /* skip to message number */
-  buf = imap_next_word (buf);
-  h->sid = atoi (buf);
-
-  /* find FETCH tag */
-  buf = imap_next_word (buf);
-  if (ascii_strncasecmp ("FETCH", buf, 5))
-    return rc;
-
-  rc = -2; /* we've got a FETCH response, for better or worse */
-  if (!(buf = strchr (buf, '(')))
-    return rc;
-  buf++;
-
-  /* FIXME: current implementation - call msg_parse_fetch - if it returns -2,
-   *   read header lines and call it again. Silly. */
-  if ((rc = msg_parse_fetch (h, buf)) != -2 || !fp)
-    return rc;
-
-  if (imap_get_literal_count (buf, &bytes) == 0)
-  {
-    imap_read_literal (fp, idata, bytes, NULL);
-
-    /* we may have other fields of the FETCH _after_ the literal
-     * (eg Domino puts FLAGS here). Nothing wrong with that, either.
-     * This all has to go - we should accept literals and nonliterals
-     * interchangeably at any time. */
-    if (imap_cmd_step (idata) != IMAP_CMD_CONTINUE)
-      return rc;
-
-    if (msg_parse_fetch (h, idata->buf) == -1)
-      return rc;
-  }
-
-  rc = 0; /* success */
-
-  /* subtract headers from message size - unfortunately only the subset of
-   * headers we've requested. */
-  h->content_length -= bytes;
-
-  return rc;
-}
-
-/* msg_parse_fetch: handle headers returned from header fetch */
-static int msg_parse_fetch (IMAP_HEADER *h, char *s)
-{
-  char tmp[SHORT_STRING];
-  char *ptmp;
-
-  if (!s)
-    return -1;
-
-  while (*s)
-  {
-    SKIPWS (s);
-
-    if (ascii_strncasecmp ("FLAGS", s, 5) == 0)
-    {
-      if ((s = msg_parse_flags (h, s)) == NULL)
-        return -1;
-    }
-    else if (ascii_strncasecmp ("UID", s, 3) == 0)
-    {
-      s += 3;
-      SKIPWS (s);
-      h->data->uid = (unsigned int) atoi (s);
-
-      s = imap_next_word (s);
-    }
-    else if (ascii_strncasecmp ("INTERNALDATE", s, 12) == 0)
-    {
-      s += 12;
-      SKIPWS (s);
-      if (*s != '\"')
-      {
-        mutt_debug (1, "msg_parse_fetch(): bogus INTERNALDATE entry: %s\n", s);
-        return -1;
-      }
-      s++;
-      ptmp = tmp;
-      while (*s && *s != '\"')
-        *ptmp++ = *s++;
-      if (*s != '\"')
-        return -1;
-      s++; /* skip past the trailing " */
-      *ptmp = 0;
-      h->received = imap_parse_date (tmp);
-    }
-    else if (ascii_strncasecmp ("RFC822.SIZE", s, 11) == 0)
-    {
-      s += 11;
-      SKIPWS (s);
-      ptmp = tmp;
-      while (isdigit ((unsigned char) *s))
-        *ptmp++ = *s++;
-      *ptmp = 0;
-      h->content_length = atoi (tmp);
-    }
-    else if (!ascii_strncasecmp ("BODY", s, 4) ||
-      !ascii_strncasecmp ("RFC822.HEADER", s, 13))
-    {
-      /* handle above, in msg_fetch_header */
-      return -2;
-    }
-    else if (*s == ')')
-      s++; /* end of request */
-    else if (*s)
-    {
-      /* got something i don't understand */
-      imap_error ("msg_parse_fetch", s);
-      return -1;
-    }
-  }
-
-  return 0;
-}
-
-/* msg_parse_flags: read a FLAGS token into an IMAP_HEADER */
-static char* msg_parse_flags (IMAP_HEADER* h, char* s)
-{
-  IMAP_HEADER_DATA* hd = h->data;
-
-  /* sanity-check string */
-  if (ascii_strncasecmp ("FLAGS", s, 5) != 0)
-  {
-    mutt_debug (1, "msg_parse_flags: not a FLAGS response: %s\n", s);
-    return NULL;
-  }
-  s += 5;
-  SKIPWS(s);
-  if (*s != '(')
-  {
-    mutt_debug (1, "msg_parse_flags: bogus FLAGS response: %s\n", s);
-    return NULL;
-  }
-  s++;
-
-  mutt_free_list (&hd->keywords);
-  hd->deleted = hd->flagged = hd->replied = hd->read = hd->old = 0;
-
-  /* start parsing */
-  while (*s && *s != ')')
-  {
-    if (ascii_strncasecmp ("\\deleted", s, 8) == 0)
-    {
-      s += 8;
-      hd->deleted = 1;
-    }
-    else if (ascii_strncasecmp ("\\flagged", s, 8) == 0)
-    {
-      s += 8;
-      hd->flagged = 1;
-    }
-    else if (ascii_strncasecmp ("\\answered", s, 9) == 0)
-    {
-      s += 9;
-      hd->replied = 1;
-    }
-    else if (ascii_strncasecmp ("\\seen", s, 5) == 0)
-    {
-      s += 5;
-      hd->read = 1;
-    }
-    else if (ascii_strncasecmp ("\\recent", s, 7) == 0)
-      s += 7;
-    else if (ascii_strncasecmp ("old", s, 3) == 0)
-    {
-      s += 3;
-      hd->old = 1;
-    }
-    else
-    {
-      /* store custom flags as well */
-      char ctmp;
-      char* flag_word = s;
-
-      if (!hd->keywords)
-        hd->keywords = mutt_new_list ();
-
-      while (*s && !ISSPACE (*s) && *s != ')')
-        s++;
-      ctmp = *s;
-      *s = '\0';
-      mutt_add_list (hd->keywords, flag_word);
-      *s = ctmp;
-    }
-    SKIPWS(s);
-  }
-
-  /* wrap up, or note bad flags response */
-  if (*s == ')')
-    s++;
-  else
-  {
-    mutt_debug (1, "msg_parse_flags: Unterminated FLAGS response: %s\n", s);
-    return NULL;
-  }
-
-  return s;
-}
-
-static void flush_buffer(char *buf, size_t *len, CONNECTION *conn)
-{
-  buf[*len] = '\0';
-  mutt_socket_write_n(conn, buf, *len);
-  *len = 0;
-}

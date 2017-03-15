@@ -45,11 +45,752 @@
 #include "mutt_notmuch.h"
 #endif
 
-static int eat_regexp (pattern_t *pat, BUFFER *, BUFFER *);
-static int eat_date (pattern_t *pat, BUFFER *, BUFFER *);
-static int eat_range (pattern_t *pat, BUFFER *, BUFFER *);
-static int eat_message_range (pattern_t *pat, BUFFER *s, BUFFER *err);
-static int patmatch (const pattern_t *pat, const char *buf);
+/* Error codes for eat_range_by_regexp */
+enum
+{
+  RANGE_E_OK,
+  RANGE_E_SYNTAX,
+  RANGE_E_CTX,
+};
+
+static int eat_regexp (pattern_t *pat, BUFFER *s, BUFFER *err)
+{
+  BUFFER buf;
+  char errmsg[STRING];
+  int r;
+  char *pexpr;
+
+  mutt_buffer_init (&buf);
+  pexpr = s->dptr;
+  if (mutt_extract_token (&buf, s, MUTT_TOKEN_PATTERN | MUTT_TOKEN_COMMENT) != 0 ||
+      !buf.data)
+  {
+    snprintf (err->data, err->dsize, _("Error in expression: %s"), pexpr);
+    return (-1);
+  }
+  if (!*buf.data)
+  {
+    snprintf (err->data, err->dsize, _("Empty expression"));
+    return (-1);
+  }
+
+  if (pat->stringmatch)
+  {
+    pat->p.str = safe_strdup (buf.data);
+    pat->ign_case = mutt_which_case (buf.data) == REG_ICASE;
+    FREE (&buf.data);
+  }
+  else if (pat->groupmatch)
+  {
+    pat->p.g = mutt_pattern_group (buf.data);
+    FREE (&buf.data);
+  }
+  else
+  {
+    pat->p.rx = safe_malloc (sizeof (regex_t));
+    r = REGCOMP (pat->p.rx, buf.data, REG_NEWLINE | REG_NOSUB | mutt_which_case (buf.data));
+    if (r)
+    {
+      regerror (r, pat->p.rx, errmsg, sizeof (errmsg));
+      mutt_buffer_printf (err, "'%s': %s", buf.data, errmsg);
+      FREE (&buf.data);
+      FREE (&pat->p.rx);
+      return (-1);
+    }
+    FREE (&buf.data);
+  }
+
+  return 0;
+}
+
+/* Ny	years
+   Nm	months
+   Nw	weeks
+   Nd	days */
+static const char *get_offset (struct tm *tm, const char *s, int sign)
+{
+  char *ps;
+  int offset = strtol (s, &ps, 0);
+  if ((sign < 0 && offset > 0) || (sign > 0 && offset < 0))
+    offset = -offset;
+
+  switch (*ps)
+  {
+    case 'y':
+      tm->tm_year += offset;
+      break;
+    case 'm':
+      tm->tm_mon += offset;
+      break;
+    case 'w':
+      tm->tm_mday += 7 * offset;
+      break;
+    case 'd':
+      tm->tm_mday += offset;
+      break;
+    default:
+      return s;
+  }
+  mutt_normalize_time (tm);
+  return (ps + 1);
+}
+
+static const char *getDate (const char *s, struct tm *t, BUFFER *err)
+{
+  char *p;
+  time_t now = time (NULL);
+  struct tm *tm = localtime (&now);
+
+  t->tm_mday = strtol (s, &p, 10);
+  if (t->tm_mday < 1 || t->tm_mday > 31)
+  {
+    snprintf (err->data, err->dsize, _("Invalid day of month: %s"), s);
+    return NULL;
+  }
+  if (*p != '/')
+  {
+    /* fill in today's month and year */
+    t->tm_mon = tm->tm_mon;
+    t->tm_year = tm->tm_year;
+    return p;
+  }
+  p++;
+  t->tm_mon = strtol (p, &p, 10) - 1;
+  if (t->tm_mon < 0 || t->tm_mon > 11)
+  {
+    snprintf (err->data, err->dsize, _("Invalid month: %s"), p);
+    return NULL;
+  }
+  if (*p != '/')
+  {
+    t->tm_year = tm->tm_year;
+    return p;
+  }
+  p++;
+  t->tm_year = strtol (p, &p, 10);
+  if (t->tm_year < 70) /* year 2000+ */
+    t->tm_year += 100;
+  else if (t->tm_year > 1900)
+    t->tm_year -= 1900;
+  return p;
+}
+
+/* The regexes in a modern format */
+#define RANGE_NUM_RX "([[:digit:]]+|0x[[:xdigit:]]+)[MmKk]?"
+
+#define RANGE_REL_SLOT_RX "[[:blank:]]*([.^$]|-?" RANGE_NUM_RX ")?[[:blank:]]*"
+
+#define RANGE_REL_RX "^" RANGE_REL_SLOT_RX "," RANGE_REL_SLOT_RX
+
+/* Almost the same, but no negative numbers allowed */
+#define RANGE_ABS_SLOT_RX "[[:blank:]]*([.^$]|" RANGE_NUM_RX ")?[[:blank:]]*"
+
+#define RANGE_ABS_RX "^" RANGE_ABS_SLOT_RX "-" RANGE_ABS_SLOT_RX
+
+/* First group is intentionally empty */
+#define RANGE_LT_RX "^()[[:blank:]]*(<[[:blank:]]*" RANGE_NUM_RX ")[[:blank:]]*"
+
+#define RANGE_GT_RX "^()[[:blank:]]*(>[[:blank:]]*" RANGE_NUM_RX ")[[:blank:]]*"
+
+/* Single group for min and max */
+#define RANGE_BARE_RX "^[[:blank:]]*([.^$]|" RANGE_NUM_RX ")[[:blank:]]*"
+
+#define RANGE_RX_GROUPS 5
+
+struct range_regexp
+{
+  const char* raw;              /* regexp as string */
+  int lgrp;                     /* paren group matching the left side */
+  int rgrp;                     /* paren group matching the right side */
+  int ready;                    /* compiled yet? */
+  regex_t cooked;               /* compiled form */
+};
+
+enum
+{
+  RANGE_K_REL,
+  RANGE_K_ABS,
+  RANGE_K_LT,
+  RANGE_K_GT,
+  RANGE_K_BARE,
+  /* add new ones HERE */
+  RANGE_K_INVALID
+};
+
+static struct range_regexp range_regexps[] =
+{
+  [RANGE_K_REL] = {.raw = RANGE_REL_RX, .lgrp = 1, .rgrp = 3, .ready = 0},
+  [RANGE_K_ABS] = {.raw = RANGE_ABS_RX, .lgrp = 1, .rgrp = 3, .ready = 0},
+  [RANGE_K_LT] = {.raw = RANGE_LT_RX, .lgrp = 1, .rgrp = 2, .ready = 0},
+  [RANGE_K_GT] = {.raw = RANGE_GT_RX, .lgrp = 2, .rgrp = 1, .ready = 0},
+  [RANGE_K_BARE] = {.raw = RANGE_BARE_RX, .lgrp = 1, .rgrp = 1, .ready = 0},
+};
+
+#define KILO 1024
+#define MEGA 1048576
+#define HMSG(h) (((h)->msgno) + 1)
+#define CTX_MSGNO(c) (HMSG((c)->hdrs[(c)->v2r[(c)->menu->current]]))
+
+#define MUTT_MAXRANGE -1
+
+/* constants for parse_date_range() */
+#define MUTT_PDR_NONE	0x0000
+#define MUTT_PDR_MINUS	0x0001
+#define MUTT_PDR_PLUS	0x0002
+#define MUTT_PDR_WINDOW	0x0004
+#define MUTT_PDR_ABSOLUTE	0x0008
+#define MUTT_PDR_DONE	0x0010
+#define MUTT_PDR_ERROR	0x0100
+#define MUTT_PDR_ERRORDONE	(MUTT_PDR_ERROR | MUTT_PDR_DONE)
+
+#define RANGE_DOT '.'
+#define RANGE_CIRCUM '^'
+#define RANGE_DOLLAR '$'
+#define RANGE_LT '<'
+#define RANGE_GT '>'
+
+/* range sides: left or right */
+enum
+{
+  RANGE_S_LEFT,
+  RANGE_S_RIGHT
+};
+
+static const char * parse_date_range (const char* pc, struct tm *min,
+    struct tm *max, int haveMin, struct tm *baseMin, BUFFER *err)
+{
+  int flag = MUTT_PDR_NONE;
+  while (*pc && ((flag & MUTT_PDR_DONE) == 0))
+  {
+    const char *pt;
+    char ch = *pc++;
+    SKIPWS (pc);
+    switch (ch)
+    {
+      case '-':
+      {
+	/* try a range of absolute date minus offset of Ndwmy */
+	pt = get_offset (min, pc, -1);
+	if (pc == pt)
+	{
+	  if (flag == MUTT_PDR_NONE)
+	  { /* nothing yet and no offset parsed => absolute date? */
+	    if (!getDate (pc, max, err))
+	      flag |= (MUTT_PDR_ABSOLUTE | MUTT_PDR_ERRORDONE);  /* done bad */
+	    else
+	    {
+	      /* reestablish initial base minimum if not specified */
+	      if (!haveMin)
+		memcpy (min, baseMin, sizeof(struct tm));
+	      flag |= (MUTT_PDR_ABSOLUTE | MUTT_PDR_DONE);  /* done good */
+	    }
+	  }
+	  else
+	    flag |= MUTT_PDR_ERRORDONE;
+	}
+	else
+	{
+	  pc = pt;
+	  if (flag == MUTT_PDR_NONE && !haveMin)
+	  { /* the very first "-3d" without a previous absolute date */
+	    max->tm_year = min->tm_year;
+	    max->tm_mon = min->tm_mon;
+	    max->tm_mday = min->tm_mday;
+	  }
+	  flag |= MUTT_PDR_MINUS;
+	}
+      }
+      break;
+      case '+':
+      { /* enlarge plusRange */
+	pt = get_offset (max, pc, 1);
+	if (pc == pt)
+	  flag |= MUTT_PDR_ERRORDONE;
+	else
+	{
+	  pc = pt;
+	  flag |= MUTT_PDR_PLUS;
+	}
+      }
+      break;
+      case '*':
+      { /* enlarge window in both directions */
+	pt = get_offset (min, pc, -1);
+	if (pc == pt)
+	  flag |= MUTT_PDR_ERRORDONE;
+	else
+	{
+	  pc = get_offset (max, pc, 1);
+	  flag |= MUTT_PDR_WINDOW;
+	}
+      }
+      break;
+      default:
+	flag |= MUTT_PDR_ERRORDONE;
+    }
+    SKIPWS (pc);
+  }
+  if ((flag & MUTT_PDR_ERROR) && !(flag & MUTT_PDR_ABSOLUTE))
+  { /* getDate has its own error message, don't overwrite it here */
+    snprintf (err->data, err->dsize, _("Invalid relative date: %s"), pc-1);
+  }
+  return ((flag & MUTT_PDR_ERROR) ? NULL : pc);
+}
+
+static void adjust_date_range (struct tm *min, struct tm *max)
+{
+  if (min->tm_year > max->tm_year
+      || (min->tm_year == max->tm_year && min->tm_mon > max->tm_mon)
+      || (min->tm_year == max->tm_year && min->tm_mon == max->tm_mon
+	&& min->tm_mday > max->tm_mday))
+  {
+    int tmp;
+
+    tmp = min->tm_year;
+    min->tm_year = max->tm_year;
+    max->tm_year = tmp;
+
+    tmp = min->tm_mon;
+    min->tm_mon = max->tm_mon;
+    max->tm_mon = tmp;
+
+    tmp = min->tm_mday;
+    min->tm_mday = max->tm_mday;
+    max->tm_mday = tmp;
+
+    min->tm_hour = min->tm_min = min->tm_sec = 0;
+    max->tm_hour = 23;
+    max->tm_min = max->tm_sec = 59;
+  }
+}
+
+static int eat_date (pattern_t *pat, BUFFER *s, BUFFER *err)
+{
+  BUFFER buffer;
+  struct tm min, max;
+  char *pexpr;
+
+  mutt_buffer_init (&buffer);
+  pexpr = s->dptr;
+  if (mutt_extract_token (&buffer, s, MUTT_TOKEN_COMMENT | MUTT_TOKEN_PATTERN) != 0
+      || !buffer.data)
+  {
+    snprintf (err->data, err->dsize, _("Error in expression: %s"), pexpr);
+    return (-1);
+  }
+  if (!*buffer.data)
+  {
+    snprintf (err->data, err->dsize, _("Empty expression"));
+    return (-1);
+  }
+
+  memset (&min, 0, sizeof (min));
+  /* the `0' time is Jan 1, 1970 UTC, so in order to prevent a negative time
+     when doing timezone conversion, we use Jan 2, 1970 UTC as the base
+     here */
+  min.tm_mday = 2;
+  min.tm_year = 70;
+
+  memset (&max, 0, sizeof (max));
+
+  /* Arbitrary year in the future.  Don't set this too high
+     or mutt_mktime() returns something larger than will
+     fit in a time_t on some systems */
+  max.tm_year = 130;
+  max.tm_mon = 11;
+  max.tm_mday = 31;
+  max.tm_hour = 23;
+  max.tm_min = 59;
+  max.tm_sec = 59;
+
+  if (strchr ("<>=", buffer.data[0]))
+  {
+    /* offset from current time
+       <3d	less than three days ago
+       >3d	more than three days ago
+       =3d	exactly three days ago */
+    time_t now = time (NULL);
+    struct tm *tm = localtime (&now);
+    int exact = 0;
+
+    if (buffer.data[0] == '<')
+    {
+      memcpy (&min, tm, sizeof (min));
+      tm = &min;
+    }
+    else
+    {
+      memcpy (&max, tm, sizeof (max));
+      tm = &max;
+
+      if (buffer.data[0] == '=')
+	exact++;
+    }
+    tm->tm_hour = 23;
+    tm->tm_min = tm->tm_sec = 59;
+
+    /* force negative offset */
+    get_offset (tm, buffer.data + 1, -1);
+
+    if (exact)
+    {
+      /* start at the beginning of the day in question */
+      memcpy (&min, &max, sizeof (max));
+      min.tm_hour = min.tm_sec = min.tm_min = 0;
+    }
+  }
+  else
+  {
+    const char *pc = buffer.data;
+
+    int haveMin = false;
+    int untilNow = false;
+    if (isdigit ((unsigned char)*pc))
+    {
+      /* minimum date specified */
+      if ((pc = getDate (pc, &min, err)) == NULL)
+      {
+	FREE (&buffer.data);
+	return (-1);
+      }
+      haveMin = true;
+      SKIPWS (pc);
+      if (*pc == '-')
+      {
+        const char *pt = pc + 1;
+	SKIPWS (pt);
+	untilNow = (*pt == '\0');
+      }
+    }
+
+    if (!untilNow)
+    { /* max date or relative range/window */
+
+      struct tm baseMin;
+
+      if (!haveMin)
+      { /* save base minimum and set current date, e.g. for "-3d+1d" */
+	time_t now = time (NULL);
+	struct tm *tm = localtime (&now);
+	memcpy (&baseMin, &min, sizeof(baseMin));
+	memcpy (&min, tm, sizeof (min));
+	min.tm_hour = min.tm_sec = min.tm_min = 0;
+      }
+
+      /* preset max date for relative offsets,
+	 if nothing follows we search for messages on a specific day */
+      max.tm_year = min.tm_year;
+      max.tm_mon = min.tm_mon;
+      max.tm_mday = min.tm_mday;
+
+      if (!parse_date_range (pc, &min, &max, haveMin, &baseMin, err))
+      { /* bail out on any parsing error */
+	FREE (&buffer.data);
+	return (-1);
+      }
+    }
+  }
+
+  /* Since we allow two dates to be specified we'll have to adjust that. */
+  adjust_date_range (&min, &max);
+
+  pat->min = mutt_mktime (&min, 1);
+  pat->max = mutt_mktime (&max, 1);
+
+  FREE (&buffer.data);
+
+  return 0;
+}
+
+static int eat_range (pattern_t *pat, BUFFER *s, BUFFER *err)
+{
+  char *tmp;
+  int do_exclusive = 0;
+  int skip_quote = 0;
+
+  /*
+   * If simple_search is set to "~m %s", the range will have double quotes
+   * around it...
+   */
+  if (*s->dptr == '"')
+  {
+    s->dptr++;
+    skip_quote = 1;
+  }
+  if (*s->dptr == '<')
+    do_exclusive = 1;
+  if ((*s->dptr != '-') && (*s->dptr != '<'))
+  {
+    /* range minimum */
+    if (*s->dptr == '>')
+    {
+      pat->max = MUTT_MAXRANGE;
+      pat->min = strtol (s->dptr + 1, &tmp, 0) + 1; /* exclusive range */
+    }
+    else
+      pat->min = strtol (s->dptr, &tmp, 0);
+    if (toupper ((unsigned char) *tmp) == 'K') /* is there a prefix? */
+    {
+      pat->min *= 1024;
+      tmp++;
+    }
+    else if (toupper ((unsigned char) *tmp) == 'M')
+    {
+      pat->min *= 1048576;
+      tmp++;
+    }
+    if (*s->dptr == '>')
+    {
+      s->dptr = tmp;
+      return 0;
+    }
+    if (*tmp != '-')
+    {
+      /* exact value */
+      pat->max = pat->min;
+      s->dptr = tmp;
+      return 0;
+    }
+    tmp++;
+  }
+  else
+  {
+    s->dptr++;
+    tmp = s->dptr;
+  }
+
+  if (isdigit ((unsigned char) *tmp))
+  {
+    /* range maximum */
+    pat->max = strtol (tmp, &tmp, 0);
+    if (toupper ((unsigned char) *tmp) == 'K')
+    {
+      pat->max *= 1024;
+      tmp++;
+    }
+    else if (toupper ((unsigned char) *tmp) == 'M')
+    {
+      pat->max *= 1048576;
+      tmp++;
+    }
+    if (do_exclusive)
+      (pat->max)--;
+  }
+  else
+    pat->max = MUTT_MAXRANGE;
+
+  if (skip_quote && *tmp == '"')
+    tmp++;
+
+  SKIPWS (tmp);
+  s->dptr = tmp;
+  return 0;
+}
+
+static int
+report_regerror(int regerr, regex_t *preg, BUFFER *err)
+{
+  size_t ds = err->dsize;
+
+  if (regerror(regerr, preg, err->data, ds) > ds)
+    mutt_debug (2, "warning: buffer too small for regerror\n");
+  /* The return value is fixed, exists only to shorten code at callsite */
+  return RANGE_E_SYNTAX;
+}
+
+static int
+is_context_available(BUFFER *s, regmatch_t pmatch[], int kind, BUFFER *err)
+{
+  char *context_loc;
+  const char *context_req_chars[] =
+  {
+    [RANGE_K_REL] = ".0123456789",
+    [RANGE_K_ABS] = ".",
+    [RANGE_K_LT] = "",
+    [RANGE_K_GT] = "",
+    [RANGE_K_BARE] = ".",
+  };
+
+  /* First decide if we're going to need the context at all.
+   * Relative patterns need it iff they contain a dot or a number.
+   * Absolute patterns only need it if they contain a dot. */
+  context_loc = strpbrk(s->dptr+pmatch[0].rm_so, context_req_chars[kind]);
+  if ((context_loc == NULL) || (context_loc >= &s->dptr[pmatch[0].rm_eo]))
+    return 1;
+
+  /* We need a current message.  Do we actually have one? */
+  if (Context && Context->menu)
+    return 1;
+
+  /* Nope. */
+  strfcpy(err->data, _("No current message"), err->dsize);
+  return 0;
+}
+
+static int
+scan_range_num (BUFFER *s, regmatch_t pmatch[], int group, int kind)
+{
+  int num;
+  unsigned char c;
+
+  /* this cast looks dangerous, but is already all over this code
+   * (explicit or not) */
+  num = (int)strtol(&s->dptr[pmatch[group].rm_so], NULL, 0);
+  c = (unsigned char)(s->dptr[pmatch[group].rm_eo - 1]);
+  if (toupper(c) == 'K')
+    num *= KILO;
+  else if (toupper(c) == 'M')
+    num *= MEGA;
+  switch (kind)
+  {
+  case RANGE_K_REL:
+    return num + CTX_MSGNO(Context);
+  case RANGE_K_LT:
+    return num - 1;
+  case RANGE_K_GT:
+    return num + 1;
+  default:
+    return num;
+  }
+}
+
+static int
+scan_range_slot (BUFFER *s, regmatch_t pmatch[], int grp,
+                 int side, int kind)
+{
+  unsigned char c;
+
+  /* This means the left or right subpattern was empty, e.g. ",." */
+  if ((pmatch[grp].rm_so == -1) || (pmatch[grp].rm_so == pmatch[grp].rm_eo))
+  {
+    if (side == RANGE_S_LEFT)
+      return 1;
+    else if (side == RANGE_S_RIGHT)
+      return Context->msgcount;
+  }
+  /* We have something, so determine what */
+  c = (unsigned char)(s->dptr[pmatch[grp].rm_so]);
+  switch (c)
+  {
+  case RANGE_CIRCUM:
+    return 1;
+  case RANGE_DOLLAR:
+    return Context->msgcount;
+  case RANGE_DOT:
+    return CTX_MSGNO(Context);
+  case RANGE_LT:
+  case RANGE_GT:
+    return scan_range_num(s, pmatch, grp+1, kind);
+  default:
+    /* Only other possibility: a number */
+    return scan_range_num(s, pmatch, grp, kind);
+  }
+}
+
+static void
+order_range (pattern_t *pat)
+{
+  int num;
+
+  if (pat->min <= pat->max)
+    return;
+  num = pat->min;
+  pat->min = pat->max;
+  pat->max = num;
+}
+
+static int
+eat_range_by_regexp (pattern_t *pat, BUFFER *s, int kind, BUFFER *err)
+{
+  int regerr;
+  regmatch_t pmatch[RANGE_RX_GROUPS];
+  struct range_regexp *pspec = &range_regexps[kind];
+
+  /* First time through, compile the big regexp */
+  if (!pspec->ready)
+  {
+    regerr = regcomp(&pspec->cooked, pspec->raw, REG_EXTENDED);
+    if (regerr)
+      return report_regerror(regerr, &pspec->cooked, err);
+    pspec->ready = 1;
+  }
+
+  /* Match the pattern buffer against the compiled regexp.
+   * No match means syntax error. */
+  regerr = regexec(&pspec->cooked, s->dptr, RANGE_RX_GROUPS, pmatch, 0);
+  if (regerr)
+    return report_regerror(regerr, &pspec->cooked, err);
+
+  if (!is_context_available(s, pmatch, kind, err))
+    return RANGE_E_CTX;
+
+  /* Snarf the contents of the two sides of the range. */
+  pat->min = scan_range_slot(s, pmatch, pspec->lgrp, RANGE_S_LEFT, kind);
+  pat->max = scan_range_slot(s, pmatch, pspec->rgrp, RANGE_S_RIGHT, kind);
+  mutt_debug (1, "pat->min=%d pat->max=%d\n", pat->min, pat->max);
+
+  /* Special case for a bare 0. */
+  if ((kind == RANGE_K_BARE) && (pat->min == 0) && (pat->max == 0))
+  {
+    if (!Context->menu)
+    {
+      strfcpy(err->data, _("No current message"), err->dsize);
+      return RANGE_E_CTX;
+    }
+    pat->min = pat->max = CTX_MSGNO(Context);
+  }
+
+  /* Since we don't enforce order, we must swap bounds if they're backward */
+  order_range(pat);
+
+  /* Slide pointer past the entire match. */
+  s->dptr += pmatch[0].rm_eo;
+  return RANGE_E_OK;
+}
+
+static int
+eat_message_range (pattern_t *pat, BUFFER *s, BUFFER *err)
+{
+  int skip_quote = 0;
+  int i_kind;
+
+  /* We need a Context for pretty much anything. */
+  if (!Context)
+  {
+    strfcpy(err->data, _("No Context"), err->dsize);
+    return -1;
+  }
+
+  /*
+   * If simple_search is set to "~m %s", the range will have double quotes
+   * around it...
+   */
+  if (*s->dptr == '"')
+  {
+    s->dptr++;
+    skip_quote = 1;
+  }
+
+  for (i_kind = 0; i_kind != RANGE_K_INVALID; ++i_kind)
+  {
+    switch (eat_range_by_regexp(pat, s, i_kind, err))
+    {
+    case RANGE_E_CTX:
+      /* This means it matched syntactically but lacked context.
+       * No point in continuing. */
+      break;
+    case RANGE_E_SYNTAX:
+      /* Try another syntax, then */
+      continue;
+    case RANGE_E_OK:
+      if (skip_quote && (*s->dptr == '"'))
+        s->dptr++;
+      SKIPWS (s->dptr);
+      return 0;
+    }
+  }
+  return -1;
+}
 
 static const struct pattern_flags
 {
@@ -116,18 +857,6 @@ static char LastSearch[STRING] = { 0 };	/* last pattern searched for */
 static char LastSearchExpn[LONG_STRING] = { 0 }; /* expanded version of
 						    LastSearch */
 
-#define MUTT_MAXRANGE -1
-
-/* constants for parse_date_range() */
-#define MUTT_PDR_NONE	0x0000
-#define MUTT_PDR_MINUS	0x0001
-#define MUTT_PDR_PLUS	0x0002
-#define MUTT_PDR_WINDOW	0x0004
-#define MUTT_PDR_ABSOLUTE	0x0008
-#define MUTT_PDR_DONE	0x0010
-#define MUTT_PDR_ERROR	0x0100
-#define MUTT_PDR_ERRORDONE	(MUTT_PDR_ERROR | MUTT_PDR_DONE)
-
 
 /* if no uppercase letters are given, do a case-insensitive search */
 int mutt_which_case (const char *s)
@@ -149,6 +878,17 @@ int mutt_which_case (const char *s)
   }
 
   return REG_ICASE; /* case-insensitive */
+}
+
+static int patmatch (const pattern_t* pat, const char* buf)
+{
+  if (pat->stringmatch)
+    return pat->ign_case ? !strcasestr (buf, pat->p.str) :
+			   !strstr (buf, pat->p.str);
+  else if (pat->groupmatch)
+    return !mutt_group_match (pat->p.g, buf);
+  else
+    return regexec (pat->p.rx, buf, 0, NULL, 0);
 }
 
 static int
@@ -300,752 +1040,6 @@ msg_search (CONTEXT *ctx, pattern_t* pat, int msgno)
   }
 
   return match;
-}
-
-static int eat_regexp (pattern_t *pat, BUFFER *s, BUFFER *err)
-{
-  BUFFER buf;
-  char errmsg[STRING];
-  int r;
-  char *pexpr;
-
-  mutt_buffer_init (&buf);
-  pexpr = s->dptr;
-  if (mutt_extract_token (&buf, s, MUTT_TOKEN_PATTERN | MUTT_TOKEN_COMMENT) != 0 ||
-      !buf.data)
-  {
-    snprintf (err->data, err->dsize, _("Error in expression: %s"), pexpr);
-    return (-1);
-  }
-  if (!*buf.data)
-  {
-    snprintf (err->data, err->dsize, _("Empty expression"));
-    return (-1);
-  }
-
-  if (pat->stringmatch)
-  {
-    pat->p.str = safe_strdup (buf.data);
-    pat->ign_case = mutt_which_case (buf.data) == REG_ICASE;
-    FREE (&buf.data);
-  }
-  else if (pat->groupmatch)
-  {
-    pat->p.g = mutt_pattern_group (buf.data);
-    FREE (&buf.data);
-  }
-  else
-  {
-    pat->p.rx = safe_malloc (sizeof (regex_t));
-    r = REGCOMP (pat->p.rx, buf.data, REG_NEWLINE | REG_NOSUB | mutt_which_case (buf.data));
-    if (r)
-    {
-      regerror (r, pat->p.rx, errmsg, sizeof (errmsg));
-      mutt_buffer_printf (err, "'%s': %s", buf.data, errmsg);
-      FREE (&buf.data);
-      FREE (&pat->p.rx);
-      return (-1);
-    }
-    FREE (&buf.data);
-  }
-
-  return 0;
-}
-
-#define KILO 1024
-#define MEGA 1048576
-#define HMSG(h) (((h)->msgno) + 1)
-#define CTX_MSGNO(c) (HMSG((c)->hdrs[(c)->v2r[(c)->menu->current]]))
-
-enum
-{
-  RANGE_K_REL,
-  RANGE_K_ABS,
-  RANGE_K_LT,
-  RANGE_K_GT,
-  RANGE_K_BARE,
-  /* add new ones HERE */
-  RANGE_K_INVALID
-};
-
-static int
-scan_range_num (BUFFER *s, regmatch_t pmatch[], int group, int kind)
-{
-  int num;
-  unsigned char c;
-
-  /* this cast looks dangerous, but is already all over this code
-   * (explicit or not) */
-  num = (int)strtol(&s->dptr[pmatch[group].rm_so], NULL, 0);
-  c = (unsigned char)(s->dptr[pmatch[group].rm_eo - 1]);
-  if (toupper(c) == 'K')
-    num *= KILO;
-  else if (toupper(c) == 'M')
-    num *= MEGA;
-  switch (kind)
-  {
-  case RANGE_K_REL:
-    return num + CTX_MSGNO(Context);
-  case RANGE_K_LT:
-    return num - 1;
-  case RANGE_K_GT:
-    return num + 1;
-  default:
-    return num;
-  }
-}
-
-#define RANGE_DOT '.'
-#define RANGE_CIRCUM '^'
-#define RANGE_DOLLAR '$'
-#define RANGE_LT '<'
-#define RANGE_GT '>'
-
-/* range sides: left or right */
-enum
-{
-  RANGE_S_LEFT,
-  RANGE_S_RIGHT
-};
-
-static int
-scan_range_slot (BUFFER *s, regmatch_t pmatch[], int grp,
-                 int side, int kind)
-{
-  unsigned char c;
-
-  /* This means the left or right subpattern was empty, e.g. ",." */
-  if ((pmatch[grp].rm_so == -1) || (pmatch[grp].rm_so == pmatch[grp].rm_eo))
-  {
-    if (side == RANGE_S_LEFT)
-      return 1;
-    else if (side == RANGE_S_RIGHT)
-      return Context->msgcount;
-  }
-  /* We have something, so determine what */
-  c = (unsigned char)(s->dptr[pmatch[grp].rm_so]);
-  switch (c)
-  {
-  case RANGE_CIRCUM:
-    return 1;
-  case RANGE_DOLLAR:
-    return Context->msgcount;
-  case RANGE_DOT:
-    return CTX_MSGNO(Context);
-  case RANGE_LT:
-  case RANGE_GT:
-    return scan_range_num(s, pmatch, grp+1, kind);
-  default:
-    /* Only other possibility: a number */
-    return scan_range_num(s, pmatch, grp, kind);
-  }
-}
-
-static void
-order_range (pattern_t *pat)
-{
-  int num;
-
-  if (pat->min <= pat->max)
-    return;
-  num = pat->min;
-  pat->min = pat->max;
-  pat->max = num;
-}
-
-/* Error codes for eat_range_by_regexp */
-enum
-{
-  RANGE_E_OK,
-  RANGE_E_SYNTAX,
-  RANGE_E_CTX,
-};
-
-static int
-report_regerror(int regerr, regex_t *preg, BUFFER *err)
-{
-  size_t ds = err->dsize;
-
-  if (regerror(regerr, preg, err->data, ds) > ds)
-    mutt_debug (2, "warning: buffer too small for regerror\n");
-  /* The return value is fixed, exists only to shorten code at callsite */
-  return RANGE_E_SYNTAX;
-}
-
-static int
-is_context_available(BUFFER *s, regmatch_t pmatch[], int kind, BUFFER *err)
-{
-  char *context_loc;
-  const char *context_req_chars[] =
-  {
-    [RANGE_K_REL] = ".0123456789",
-    [RANGE_K_ABS] = ".",
-    [RANGE_K_LT] = "",
-    [RANGE_K_GT] = "",
-    [RANGE_K_BARE] = ".",
-  };
-
-  /* First decide if we're going to need the context at all.
-   * Relative patterns need it iff they contain a dot or a number.
-   * Absolute patterns only need it if they contain a dot. */
-  context_loc = strpbrk(s->dptr+pmatch[0].rm_so, context_req_chars[kind]);
-  if ((context_loc == NULL) || (context_loc >= &s->dptr[pmatch[0].rm_eo]))
-    return 1;
-
-  /* We need a current message.  Do we actually have one? */
-  if (Context && Context->menu)
-    return 1;
-
-  /* Nope. */
-  strfcpy(err->data, _("No current message"), err->dsize);
-  return 0;
-}
-
-/* The regexes in a modern format */
-#define RANGE_NUM_RX "([[:digit:]]+|0x[[:xdigit:]]+)[MmKk]?"
-
-#define RANGE_REL_SLOT_RX "[[:blank:]]*([.^$]|-?" RANGE_NUM_RX ")?[[:blank:]]*"
-
-#define RANGE_REL_RX "^" RANGE_REL_SLOT_RX "," RANGE_REL_SLOT_RX
-
-/* Almost the same, but no negative numbers allowed */
-#define RANGE_ABS_SLOT_RX "[[:blank:]]*([.^$]|" RANGE_NUM_RX ")?[[:blank:]]*"
-
-#define RANGE_ABS_RX "^" RANGE_ABS_SLOT_RX "-" RANGE_ABS_SLOT_RX
-
-/* First group is intentionally empty */
-#define RANGE_LT_RX "^()[[:blank:]]*(<[[:blank:]]*" RANGE_NUM_RX ")[[:blank:]]*"
-
-#define RANGE_GT_RX "^()[[:blank:]]*(>[[:blank:]]*" RANGE_NUM_RX ")[[:blank:]]*"
-
-/* Single group for min and max */
-#define RANGE_BARE_RX "^[[:blank:]]*([.^$]|" RANGE_NUM_RX ")[[:blank:]]*"
-
-#define RANGE_RX_GROUPS 5
-
-struct range_regexp
-{
-  const char* raw;              /* regexp as string */
-  int lgrp;                     /* paren group matching the left side */
-  int rgrp;                     /* paren group matching the right side */
-  int ready;                    /* compiled yet? */
-  regex_t cooked;               /* compiled form */
-};
-
-static struct range_regexp range_regexps[] =
-{
-  [RANGE_K_REL] = {.raw = RANGE_REL_RX, .lgrp = 1, .rgrp = 3, .ready = 0},
-  [RANGE_K_ABS] = {.raw = RANGE_ABS_RX, .lgrp = 1, .rgrp = 3, .ready = 0},
-  [RANGE_K_LT] = {.raw = RANGE_LT_RX, .lgrp = 1, .rgrp = 2, .ready = 0},
-  [RANGE_K_GT] = {.raw = RANGE_GT_RX, .lgrp = 2, .rgrp = 1, .ready = 0},
-  [RANGE_K_BARE] = {.raw = RANGE_BARE_RX, .lgrp = 1, .rgrp = 1, .ready = 0},
-};
-
-static int
-eat_range_by_regexp (pattern_t *pat, BUFFER *s, int kind, BUFFER *err)
-{
-  int regerr;
-  regmatch_t pmatch[RANGE_RX_GROUPS];
-  struct range_regexp *pspec = &range_regexps[kind];
-
-  /* First time through, compile the big regexp */
-  if (!pspec->ready)
-  {
-    regerr = regcomp(&pspec->cooked, pspec->raw, REG_EXTENDED);
-    if (regerr)
-      return report_regerror(regerr, &pspec->cooked, err);
-    pspec->ready = 1;
-  }
-
-  /* Match the pattern buffer against the compiled regexp.
-   * No match means syntax error. */
-  regerr = regexec(&pspec->cooked, s->dptr, RANGE_RX_GROUPS, pmatch, 0);
-  if (regerr)
-    return report_regerror(regerr, &pspec->cooked, err);
-
-  if (!is_context_available(s, pmatch, kind, err))
-    return RANGE_E_CTX;
-
-  /* Snarf the contents of the two sides of the range. */
-  pat->min = scan_range_slot(s, pmatch, pspec->lgrp, RANGE_S_LEFT, kind);
-  pat->max = scan_range_slot(s, pmatch, pspec->rgrp, RANGE_S_RIGHT, kind);
-  mutt_debug (1, "pat->min=%d pat->max=%d\n", pat->min, pat->max);
-
-  /* Special case for a bare 0. */
-  if ((kind == RANGE_K_BARE) && (pat->min == 0) && (pat->max == 0))
-  {
-    if (!Context->menu)
-    {
-      strfcpy(err->data, _("No current message"), err->dsize);
-      return RANGE_E_CTX;
-    }
-    pat->min = pat->max = CTX_MSGNO(Context);
-  }
-
-  /* Since we don't enforce order, we must swap bounds if they're backward */
-  order_range(pat);
-
-  /* Slide pointer past the entire match. */
-  s->dptr += pmatch[0].rm_eo;
-  return RANGE_E_OK;
-}
-
-static int
-eat_message_range (pattern_t *pat, BUFFER *s, BUFFER *err)
-{
-  int skip_quote = 0;
-  int i_kind;
-
-  /* We need a Context for pretty much anything. */
-  if (!Context)
-  {
-    strfcpy(err->data, _("No Context"), err->dsize);
-    return -1;
-  }
-
-  /*
-   * If simple_search is set to "~m %s", the range will have double quotes
-   * around it...
-   */
-  if (*s->dptr == '"')
-  {
-    s->dptr++;
-    skip_quote = 1;
-  }
-
-  for (i_kind = 0; i_kind != RANGE_K_INVALID; ++i_kind)
-  {
-    switch (eat_range_by_regexp(pat, s, i_kind, err))
-    {
-    case RANGE_E_CTX:
-      /* This means it matched syntactically but lacked context.
-       * No point in continuing. */
-      break;
-    case RANGE_E_SYNTAX:
-      /* Try another syntax, then */
-      continue;
-    case RANGE_E_OK:
-      if (skip_quote && (*s->dptr == '"'))
-        s->dptr++;
-      SKIPWS (s->dptr);
-      return 0;
-    }
-  }
-  return -1;
-}
-
-static int eat_range (pattern_t *pat, BUFFER *s, BUFFER *err)
-{
-  char *tmp;
-  int do_exclusive = 0;
-  int skip_quote = 0;
-
-  /*
-   * If simple_search is set to "~m %s", the range will have double quotes
-   * around it...
-   */
-  if (*s->dptr == '"')
-  {
-    s->dptr++;
-    skip_quote = 1;
-  }
-  if (*s->dptr == '<')
-    do_exclusive = 1;
-  if ((*s->dptr != '-') && (*s->dptr != '<'))
-  {
-    /* range minimum */
-    if (*s->dptr == '>')
-    {
-      pat->max = MUTT_MAXRANGE;
-      pat->min = strtol (s->dptr + 1, &tmp, 0) + 1; /* exclusive range */
-    }
-    else
-      pat->min = strtol (s->dptr, &tmp, 0);
-    if (toupper ((unsigned char) *tmp) == 'K') /* is there a prefix? */
-    {
-      pat->min *= 1024;
-      tmp++;
-    }
-    else if (toupper ((unsigned char) *tmp) == 'M')
-    {
-      pat->min *= 1048576;
-      tmp++;
-    }
-    if (*s->dptr == '>')
-    {
-      s->dptr = tmp;
-      return 0;
-    }
-    if (*tmp != '-')
-    {
-      /* exact value */
-      pat->max = pat->min;
-      s->dptr = tmp;
-      return 0;
-    }
-    tmp++;
-  }
-  else
-  {
-    s->dptr++;
-    tmp = s->dptr;
-  }
-
-  if (isdigit ((unsigned char) *tmp))
-  {
-    /* range maximum */
-    pat->max = strtol (tmp, &tmp, 0);
-    if (toupper ((unsigned char) *tmp) == 'K')
-    {
-      pat->max *= 1024;
-      tmp++;
-    }
-    else if (toupper ((unsigned char) *tmp) == 'M')
-    {
-      pat->max *= 1048576;
-      tmp++;
-    }
-    if (do_exclusive)
-      (pat->max)--;
-  }
-  else
-    pat->max = MUTT_MAXRANGE;
-
-  if (skip_quote && *tmp == '"')
-    tmp++;
-
-  SKIPWS (tmp);
-  s->dptr = tmp;
-  return 0;
-}
-
-static const char *getDate (const char *s, struct tm *t, BUFFER *err)
-{
-  char *p;
-  time_t now = time (NULL);
-  struct tm *tm = localtime (&now);
-
-  t->tm_mday = strtol (s, &p, 10);
-  if (t->tm_mday < 1 || t->tm_mday > 31)
-  {
-    snprintf (err->data, err->dsize, _("Invalid day of month: %s"), s);
-    return NULL;
-  }
-  if (*p != '/')
-  {
-    /* fill in today's month and year */
-    t->tm_mon = tm->tm_mon;
-    t->tm_year = tm->tm_year;
-    return p;
-  }
-  p++;
-  t->tm_mon = strtol (p, &p, 10) - 1;
-  if (t->tm_mon < 0 || t->tm_mon > 11)
-  {
-    snprintf (err->data, err->dsize, _("Invalid month: %s"), p);
-    return NULL;
-  }
-  if (*p != '/')
-  {
-    t->tm_year = tm->tm_year;
-    return p;
-  }
-  p++;
-  t->tm_year = strtol (p, &p, 10);
-  if (t->tm_year < 70) /* year 2000+ */
-    t->tm_year += 100;
-  else if (t->tm_year > 1900)
-    t->tm_year -= 1900;
-  return p;
-}
-
-/* Ny	years
-   Nm	months
-   Nw	weeks
-   Nd	days */
-static const char *get_offset (struct tm *tm, const char *s, int sign)
-{
-  char *ps;
-  int offset = strtol (s, &ps, 0);
-  if ((sign < 0 && offset > 0) || (sign > 0 && offset < 0))
-    offset = -offset;
-
-  switch (*ps)
-  {
-    case 'y':
-      tm->tm_year += offset;
-      break;
-    case 'm':
-      tm->tm_mon += offset;
-      break;
-    case 'w':
-      tm->tm_mday += 7 * offset;
-      break;
-    case 'd':
-      tm->tm_mday += offset;
-      break;
-    default:
-      return s;
-  }
-  mutt_normalize_time (tm);
-  return (ps + 1);
-}
-
-static void adjust_date_range (struct tm *min, struct tm *max)
-{
-  if (min->tm_year > max->tm_year
-      || (min->tm_year == max->tm_year && min->tm_mon > max->tm_mon)
-      || (min->tm_year == max->tm_year && min->tm_mon == max->tm_mon
-	&& min->tm_mday > max->tm_mday))
-  {
-    int tmp;
-
-    tmp = min->tm_year;
-    min->tm_year = max->tm_year;
-    max->tm_year = tmp;
-
-    tmp = min->tm_mon;
-    min->tm_mon = max->tm_mon;
-    max->tm_mon = tmp;
-
-    tmp = min->tm_mday;
-    min->tm_mday = max->tm_mday;
-    max->tm_mday = tmp;
-
-    min->tm_hour = min->tm_min = min->tm_sec = 0;
-    max->tm_hour = 23;
-    max->tm_min = max->tm_sec = 59;
-  }
-}
-
-static const char * parse_date_range (const char* pc, struct tm *min,
-    struct tm *max, int haveMin, struct tm *baseMin, BUFFER *err)
-{
-  int flag = MUTT_PDR_NONE;
-  while (*pc && ((flag & MUTT_PDR_DONE) == 0))
-  {
-    const char *pt;
-    char ch = *pc++;
-    SKIPWS (pc);
-    switch (ch)
-    {
-      case '-':
-      {
-	/* try a range of absolute date minus offset of Ndwmy */
-	pt = get_offset (min, pc, -1);
-	if (pc == pt)
-	{
-	  if (flag == MUTT_PDR_NONE)
-	  { /* nothing yet and no offset parsed => absolute date? */
-	    if (!getDate (pc, max, err))
-	      flag |= (MUTT_PDR_ABSOLUTE | MUTT_PDR_ERRORDONE);  /* done bad */
-	    else
-	    {
-	      /* reestablish initial base minimum if not specified */
-	      if (!haveMin)
-		memcpy (min, baseMin, sizeof(struct tm));
-	      flag |= (MUTT_PDR_ABSOLUTE | MUTT_PDR_DONE);  /* done good */
-	    }
-	  }
-	  else
-	    flag |= MUTT_PDR_ERRORDONE;
-	}
-	else
-	{
-	  pc = pt;
-	  if (flag == MUTT_PDR_NONE && !haveMin)
-	  { /* the very first "-3d" without a previous absolute date */
-	    max->tm_year = min->tm_year;
-	    max->tm_mon = min->tm_mon;
-	    max->tm_mday = min->tm_mday;
-	  }
-	  flag |= MUTT_PDR_MINUS;
-	}
-      }
-      break;
-      case '+':
-      { /* enlarge plusRange */
-	pt = get_offset (max, pc, 1);
-	if (pc == pt)
-	  flag |= MUTT_PDR_ERRORDONE;
-	else
-	{
-	  pc = pt;
-	  flag |= MUTT_PDR_PLUS;
-	}
-      }
-      break;
-      case '*':
-      { /* enlarge window in both directions */
-	pt = get_offset (min, pc, -1);
-	if (pc == pt)
-	  flag |= MUTT_PDR_ERRORDONE;
-	else
-	{
-	  pc = get_offset (max, pc, 1);
-	  flag |= MUTT_PDR_WINDOW;
-	}
-      }
-      break;
-      default:
-	flag |= MUTT_PDR_ERRORDONE;
-    }
-    SKIPWS (pc);
-  }
-  if ((flag & MUTT_PDR_ERROR) && !(flag & MUTT_PDR_ABSOLUTE))
-  { /* getDate has its own error message, don't overwrite it here */
-    snprintf (err->data, err->dsize, _("Invalid relative date: %s"), pc-1);
-  }
-  return ((flag & MUTT_PDR_ERROR) ? NULL : pc);
-}
-
-static int eat_date (pattern_t *pat, BUFFER *s, BUFFER *err)
-{
-  BUFFER buffer;
-  struct tm min, max;
-  char *pexpr;
-
-  mutt_buffer_init (&buffer);
-  pexpr = s->dptr;
-  if (mutt_extract_token (&buffer, s, MUTT_TOKEN_COMMENT | MUTT_TOKEN_PATTERN) != 0
-      || !buffer.data)
-  {
-    snprintf (err->data, err->dsize, _("Error in expression: %s"), pexpr);
-    return (-1);
-  }
-  if (!*buffer.data)
-  {
-    snprintf (err->data, err->dsize, _("Empty expression"));
-    return (-1);
-  }
-
-  memset (&min, 0, sizeof (min));
-  /* the `0' time is Jan 1, 1970 UTC, so in order to prevent a negative time
-     when doing timezone conversion, we use Jan 2, 1970 UTC as the base
-     here */
-  min.tm_mday = 2;
-  min.tm_year = 70;
-
-  memset (&max, 0, sizeof (max));
-
-  /* Arbitrary year in the future.  Don't set this too high
-     or mutt_mktime() returns something larger than will
-     fit in a time_t on some systems */
-  max.tm_year = 130;
-  max.tm_mon = 11;
-  max.tm_mday = 31;
-  max.tm_hour = 23;
-  max.tm_min = 59;
-  max.tm_sec = 59;
-
-  if (strchr ("<>=", buffer.data[0]))
-  {
-    /* offset from current time
-       <3d	less than three days ago
-       >3d	more than three days ago
-       =3d	exactly three days ago */
-    time_t now = time (NULL);
-    struct tm *tm = localtime (&now);
-    int exact = 0;
-
-    if (buffer.data[0] == '<')
-    {
-      memcpy (&min, tm, sizeof (min));
-      tm = &min;
-    }
-    else
-    {
-      memcpy (&max, tm, sizeof (max));
-      tm = &max;
-
-      if (buffer.data[0] == '=')
-	exact++;
-    }
-    tm->tm_hour = 23;
-    tm->tm_min = tm->tm_sec = 59;
-
-    /* force negative offset */
-    get_offset (tm, buffer.data + 1, -1);
-
-    if (exact)
-    {
-      /* start at the beginning of the day in question */
-      memcpy (&min, &max, sizeof (max));
-      min.tm_hour = min.tm_sec = min.tm_min = 0;
-    }
-  }
-  else
-  {
-    const char *pc = buffer.data;
-
-    int haveMin = false;
-    int untilNow = false;
-    if (isdigit ((unsigned char)*pc))
-    {
-      /* minimum date specified */
-      if ((pc = getDate (pc, &min, err)) == NULL)
-      {
-	FREE (&buffer.data);
-	return (-1);
-      }
-      haveMin = true;
-      SKIPWS (pc);
-      if (*pc == '-')
-      {
-        const char *pt = pc + 1;
-	SKIPWS (pt);
-	untilNow = (*pt == '\0');
-      }
-    }
-
-    if (!untilNow)
-    { /* max date or relative range/window */
-
-      struct tm baseMin;
-
-      if (!haveMin)
-      { /* save base minimum and set current date, e.g. for "-3d+1d" */
-	time_t now = time (NULL);
-	struct tm *tm = localtime (&now);
-	memcpy (&baseMin, &min, sizeof(baseMin));
-	memcpy (&min, tm, sizeof (min));
-	min.tm_hour = min.tm_sec = min.tm_min = 0;
-      }
-
-      /* preset max date for relative offsets,
-	 if nothing follows we search for messages on a specific day */
-      max.tm_year = min.tm_year;
-      max.tm_mon = min.tm_mon;
-      max.tm_mday = min.tm_mday;
-
-      if (!parse_date_range (pc, &min, &max, haveMin, &baseMin, err))
-      { /* bail out on any parsing error */
-	FREE (&buffer.data);
-	return (-1);
-      }
-    }
-  }
-
-  /* Since we allow two dates to be specified we'll have to adjust that. */
-  adjust_date_range (&min, &max);
-
-  pat->min = mutt_mktime (&min, 1);
-  pat->max = mutt_mktime (&max, 1);
-
-  FREE (&buffer.data);
-
-  return 0;
-}
-
-static int patmatch (const pattern_t* pat, const char* buf)
-{
-  if (pat->stringmatch)
-    return pat->ign_case ? !strcasestr (buf, pat->p.str) :
-			   !strstr (buf, pat->p.str);
-  else if (pat->groupmatch)
-    return !mutt_group_match (pat->p.g, buf);
-  else
-    return regexec (pat->p.rx, buf, 0, NULL, 0);
 }
 
 static const struct pattern_flags *lookup_tag (char tag)

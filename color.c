@@ -391,31 +391,6 @@ parse_color_name (const char *s, int *col, int *attr, int is_fg, BUFFER *err)
 #endif
 
 
-/* usage: uncolor index pattern [pattern...]
- * 	  unmono  index pattern [pattern...]
- */
-
-static int
-_mutt_parse_uncolor (BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err,
-			 short parse_uncolor);
-
-
-#ifdef HAVE_COLOR
-
-int mutt_parse_uncolor (BUFFER *buf, BUFFER *s, unsigned long data,
-			BUFFER *err)
-{
-  return _mutt_parse_uncolor(buf, s, data, err, 1);
-}
-
-#endif
-
-int mutt_parse_unmono (BUFFER *buf, BUFFER *s, unsigned long data,
-		       BUFFER *err)
-{
-  return _mutt_parse_uncolor(buf, s, data, err, 0);
-}
-
 void
 mutt_do_uncolor (BUFFER *buf, BUFFER *s, COLOR_LINE **ColorList,
                  int *do_cache, int parse_uncolor)
@@ -466,6 +441,10 @@ mutt_do_uncolor (BUFFER *buf, BUFFER *s, COLOR_LINE **ColorList,
     }
   } while (MoreArgs (s));
 }
+
+/* usage: uncolor index pattern [pattern...]
+ * 	  unmono  index pattern [pattern...]
+ */
 
 static int _mutt_parse_uncolor (BUFFER *buf, BUFFER *s, unsigned long data,
 				BUFFER *err, short parse_uncolor)
@@ -553,6 +532,22 @@ static int _mutt_parse_uncolor (BUFFER *buf, BUFFER *s, unsigned long data,
       Context->hdrs[i]->pair = 0;
   }
   return (0);
+}
+
+#ifdef HAVE_COLOR
+
+int mutt_parse_uncolor (BUFFER *buf, BUFFER *s, unsigned long data,
+			BUFFER *err)
+{
+  return _mutt_parse_uncolor(buf, s, data, err, 1);
+}
+
+#endif
+
+int mutt_parse_unmono (BUFFER *buf, BUFFER *s, unsigned long data,
+		       BUFFER *err)
+{
+  return _mutt_parse_uncolor(buf, s, data, err, 0);
 }
 
 

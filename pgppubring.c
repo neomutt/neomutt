@@ -69,108 +69,143 @@ extern int optind;
 static short dump_signatures = 0;
 static short dump_fingerprints = 0;
 
-
-static void pgpring_find_candidates (char *ringfile, const char *hints[], int nhints);
-static void pgpring_dump_keyblock (pgp_key_t p);
-
-int main (int argc, char * const argv[])
+static char gnupg_trustletter (int t)
 {
-  int c;
-
-  short version = 2;
-  short secring = 0;
-
-  const char *_kring = NULL;
-  char *env_pgppath, *env_home;
-
-  char pgppath[_POSIX_PATH_MAX];
-  char kring[_POSIX_PATH_MAX];
-
-  while ((c = getopt (argc, argv, "f25sk:S")) != EOF)
+  switch (t)
   {
-    switch (c)
+    case 1: return 'n';
+    case 2: return 'm';
+    case 3: return 'f';
+  }
+  return 'q';
+}
+
+static void print_userid (const char *id)
+{
+  for (; id && *id; id++)
+  {
+    if (*id >= ' ' && *id <= 'z' && *id != ':')
+      putchar (*id);
+    else
+      printf ("\\x%02x", (*id) & 0xff);
+  }
+}
+
+static void print_fingerprint (pgp_key_t p)
+{
+  if (!p->fingerprint)
+    return;
+
+  printf ("fpr:::::::::%s:\n", p->fingerprint);
+} /* print_fingerprint() */
+
+static void pgpring_dump_signatures (pgp_sig_t *sig)
+{
+  for (; sig; sig = sig->next)
+  {
+    if (sig->sigtype == 0x10 || sig->sigtype == 0x11 ||
+	sig->sigtype == 0x12 || sig->sigtype == 0x13)
+      printf ("sig::::%08lX%08lX::::::%X:\n",
+	      sig->sid1, sig->sid2, sig->sigtype);
+    else if (sig->sigtype == 0x20)
+      printf ("rev::::%08lX%08lX::::::%X:\n",
+	      sig->sid1, sig->sid2, sig->sigtype);
+  }
+}
+
+static void pgpring_dump_keyblock (pgp_key_t p)
+{
+  pgp_uid_t *uid;
+  short first;
+  struct tm *tp;
+  time_t t;
+
+  for (; p; p = p->next)
+  {
+    first = 1;
+
+    if (p->flags & KEYFLAG_SECRET)
     {
-      case 'S':
+      if (p->flags & KEYFLAG_SUBKEY)
+	printf ("ssb:");
+      else
+	printf ("sec:");
+    }
+    else
+    {
+      if (p->flags & KEYFLAG_SUBKEY)
+	printf ("sub:");
+      else
+	printf ("pub:");
+    }
+
+    if (p->flags & KEYFLAG_REVOKED)
+      putchar ('r');
+    if (p->flags & KEYFLAG_EXPIRED)
+      putchar ('e');
+    if (p->flags & KEYFLAG_DISABLED)
+      putchar ('d');
+
+    for (uid = p->address; uid; uid = uid->next, first = 0)
+    {
+      if (!first)
       {
-	dump_signatures = 1;
-	break;
+	printf ("uid:%c::::::::", gnupg_trustletter (uid->trust));
+	print_userid (uid->addr);
+	printf (":\n");
+      }
+      else
+      {
+	if (p->flags & KEYFLAG_SECRET)
+	  putchar ('u');
+	else
+	  putchar (gnupg_trustletter (uid->trust));
+
+	t = p->gen_time;
+	tp = gmtime (&t);
+
+	printf (":%d:%d:%s:%04d-%02d-%02d::::", p->keylen, p->numalg, p->keyid,
+		1900 + tp->tm_year, tp->tm_mon + 1, tp->tm_mday);
+
+	print_userid (uid->addr);
+	printf ("::");
+
+	if(pgp_canencrypt(p->numalg))
+	  putchar ('e');
+	if(pgp_cansign(p->numalg))
+	  putchar ('s');
+	if (p->flags & KEYFLAG_DISABLED)
+	  putchar ('D');
+	printf (":\n");
+
+	if (dump_fingerprints)
+          print_fingerprint (p);
       }
 
-      case 'f':
+      if (dump_signatures)
       {
-	dump_fingerprints = 1;
-	break;
-      }
-
-      case 'k':
-      {
-	_kring = optarg;
-	break;
-      }
-
-      case '2': case '5':
-      {
-	version = c - '0';
-	break;
-      }
-
-      case 's':
-      {
-	secring = 1;
-	break;
-      }
-
-      default:
-      {
-	fprintf (stderr, "usage: %s [-k <key ring> | [-2 | -5] [ -s] [-S] [-f]] [hints]\n",
-		 argv[0]);
-	exit (1);
+	if (first) pgpring_dump_signatures (p->sigs);
+	pgpring_dump_signatures (uid->sigs);
       }
     }
   }
+}
 
-  if (_kring)
-    strfcpy (kring, _kring, sizeof (kring));
-  else
+static int pgpring_string_matches_hint (const char *s, const char *hints[], int nhints)
+{
+  int i;
+
+  if (!hints || !nhints)
+    return 1;
+
+  for (i = 0; i < nhints; i++)
   {
-    if ((env_pgppath = getenv ("PGPPATH")))
-      strfcpy (pgppath, env_pgppath, sizeof (pgppath));
-    else if ((env_home = getenv ("HOME")))
-      snprintf (pgppath, sizeof (pgppath), "%s/.pgp", env_home);
-    else
-    {
-      fprintf (stderr, "%s: Can't determine your PGPPATH.\n", argv[0]);
-      exit (1);
-    }
-
-    if (secring)
-      snprintf (kring, sizeof (kring), "%s/secring.%s", pgppath, version == 2 ? "pgp" : "skr");
-    else
-      snprintf (kring, sizeof (kring), "%s/pubring.%s", pgppath, version == 2 ? "pgp" : "pkr");
+    if (mutt_stristr (s, hints[i]) != NULL)
+      return 1;
   }
-
-  pgpring_find_candidates (kring, (const char**) argv + optind, argc - optind);
 
   return 0;
 }
-
-static char *binary_fingerprint_to_string (unsigned char *buff, size_t length)
-{
-  int i;
-  char *fingerprint, *pf;
-
-  pf = fingerprint = safe_malloc ((length * 2) + 1);
-
-  for (i = 0; i < length; i++)
-  {
-    sprintf (pf, "%02X", buff[i]);
-    pf += 2;
-  }
-  *pf = 0;
-
-  return fingerprint;
-}
-
 
 /* The actual key ring parser */
 static void pgp_make_pgp2_fingerprint (unsigned char *buff,
@@ -197,6 +232,23 @@ static void pgp_make_pgp2_fingerprint (unsigned char *buff,
 
   md5_finish_ctx (&ctx, digest);
 } /* pgp_make_pgp2_fingerprint() */
+
+static char *binary_fingerprint_to_string (unsigned char *buff, size_t length)
+{
+  int i;
+  char *fingerprint, *pf;
+
+  pf = fingerprint = safe_malloc ((length * 2) + 1);
+
+  for (i = 0; i < length; i++)
+  {
+    sprintf (pf, "%02X", buff[i]);
+    pf += 2;
+  }
+  *pf = 0;
+
+  return fingerprint;
+}
 
 static pgp_key_t pgp_parse_pgp2_key (unsigned char *buff, size_t l)
 {
@@ -311,7 +363,6 @@ static void skip_bignum (unsigned char *buff, size_t l, size_t j,
   if (toff)
     *toff = j;
 }
-
 
 static pgp_key_t pgp_parse_pgp3_key (unsigned char *buff, size_t l)
 {
@@ -568,7 +619,6 @@ static int pgp_parse_pgp3_sig (unsigned char *buff, size_t l,
 
 }
 
-
 static int pgp_parse_sig (unsigned char *buff, size_t l,
                           pgp_key_t p, pgp_sig_t *sig)
 {
@@ -730,22 +780,6 @@ static pgp_key_t pgp_parse_keyblock (FILE * fp)
   return root;
 }
 
-static int pgpring_string_matches_hint (const char *s, const char *hints[], int nhints)
-{
-  int i;
-
-  if (!hints || !nhints)
-    return 1;
-
-  for (i = 0; i < nhints; i++)
-  {
-    if (mutt_stristr (s, hints[i]) != NULL)
-      return 1;
-  }
-
-  return 0;
-}
-
 /*
  * Go through the key ring file and look for keys with
  * matching IDs.
@@ -825,127 +859,86 @@ static void pgpring_find_candidates (char *ringfile, const char *hints[], int nh
 
 }
 
-static void print_userid (const char *id)
+int main (int argc, char * const argv[])
 {
-  for (; id && *id; id++)
+  int c;
+
+  short version = 2;
+  short secring = 0;
+
+  const char *_kring = NULL;
+  char *env_pgppath, *env_home;
+
+  char pgppath[_POSIX_PATH_MAX];
+  char kring[_POSIX_PATH_MAX];
+
+  while ((c = getopt (argc, argv, "f25sk:S")) != EOF)
   {
-    if (*id >= ' ' && *id <= 'z' && *id != ':')
-      putchar (*id);
+    switch (c)
+    {
+      case 'S':
+      {
+	dump_signatures = 1;
+	break;
+      }
+
+      case 'f':
+      {
+	dump_fingerprints = 1;
+	break;
+      }
+
+      case 'k':
+      {
+	_kring = optarg;
+	break;
+      }
+
+      case '2': case '5':
+      {
+	version = c - '0';
+	break;
+      }
+
+      case 's':
+      {
+	secring = 1;
+	break;
+      }
+
+      default:
+      {
+	fprintf (stderr, "usage: %s [-k <key ring> | [-2 | -5] [ -s] [-S] [-f]] [hints]\n",
+		 argv[0]);
+	exit (1);
+      }
+    }
+  }
+
+  if (_kring)
+    strfcpy (kring, _kring, sizeof (kring));
+  else
+  {
+    if ((env_pgppath = getenv ("PGPPATH")))
+      strfcpy (pgppath, env_pgppath, sizeof (pgppath));
+    else if ((env_home = getenv ("HOME")))
+      snprintf (pgppath, sizeof (pgppath), "%s/.pgp", env_home);
     else
-      printf ("\\x%02x", (*id) & 0xff);
-  }
-}
-
-static void print_fingerprint (pgp_key_t p)
-{
-  if (!p->fingerprint)
-    return;
-
-  printf ("fpr:::::::::%s:\n", p->fingerprint);
-} /* print_fingerprint() */
-
-
-static void pgpring_dump_signatures (pgp_sig_t *sig)
-{
-  for (; sig; sig = sig->next)
-  {
-    if (sig->sigtype == 0x10 || sig->sigtype == 0x11 ||
-	sig->sigtype == 0x12 || sig->sigtype == 0x13)
-      printf ("sig::::%08lX%08lX::::::%X:\n",
-	      sig->sid1, sig->sid2, sig->sigtype);
-    else if (sig->sigtype == 0x20)
-      printf ("rev::::%08lX%08lX::::::%X:\n",
-	      sig->sid1, sig->sid2, sig->sigtype);
-  }
-}
-
-
-static char gnupg_trustletter (int t)
-{
-  switch (t)
-  {
-    case 1: return 'n';
-    case 2: return 'm';
-    case 3: return 'f';
-  }
-  return 'q';
-}
-
-static void pgpring_dump_keyblock (pgp_key_t p)
-{
-  pgp_uid_t *uid;
-  short first;
-  struct tm *tp;
-  time_t t;
-
-  for (; p; p = p->next)
-  {
-    first = 1;
-
-    if (p->flags & KEYFLAG_SECRET)
     {
-      if (p->flags & KEYFLAG_SUBKEY)
-	printf ("ssb:");
-      else
-	printf ("sec:");
+      fprintf (stderr, "%s: Can't determine your PGPPATH.\n", argv[0]);
+      exit (1);
     }
+
+    if (secring)
+      snprintf (kring, sizeof (kring), "%s/secring.%s", pgppath, version == 2 ? "pgp" : "skr");
     else
-    {
-      if (p->flags & KEYFLAG_SUBKEY)
-	printf ("sub:");
-      else
-	printf ("pub:");
-    }
-
-    if (p->flags & KEYFLAG_REVOKED)
-      putchar ('r');
-    if (p->flags & KEYFLAG_EXPIRED)
-      putchar ('e');
-    if (p->flags & KEYFLAG_DISABLED)
-      putchar ('d');
-
-    for (uid = p->address; uid; uid = uid->next, first = 0)
-    {
-      if (!first)
-      {
-	printf ("uid:%c::::::::", gnupg_trustletter (uid->trust));
-	print_userid (uid->addr);
-	printf (":\n");
-      }
-      else
-      {
-	if (p->flags & KEYFLAG_SECRET)
-	  putchar ('u');
-	else
-	  putchar (gnupg_trustletter (uid->trust));
-
-	t = p->gen_time;
-	tp = gmtime (&t);
-
-	printf (":%d:%d:%s:%04d-%02d-%02d::::", p->keylen, p->numalg, p->keyid,
-		1900 + tp->tm_year, tp->tm_mon + 1, tp->tm_mday);
-
-	print_userid (uid->addr);
-	printf ("::");
-
-	if(pgp_canencrypt(p->numalg))
-	  putchar ('e');
-	if(pgp_cansign(p->numalg))
-	  putchar ('s');
-	if (p->flags & KEYFLAG_DISABLED)
-	  putchar ('D');
-	printf (":\n");
-
-	if (dump_fingerprints)
-          print_fingerprint (p);
-      }
-
-      if (dump_signatures)
-      {
-	if (first) pgpring_dump_signatures (p->sigs);
-	pgpring_dump_signatures (uid->sigs);
-      }
-    }
+      snprintf (kring, sizeof (kring), "%s/pubring.%s", pgppath, version == 2 ? "pgp" : "pkr");
   }
+
+  pgpring_find_candidates (kring, (const char**) argv + optind, argc - optind);
+
+  return 0;
 }
+
+
 

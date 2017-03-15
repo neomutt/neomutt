@@ -702,7 +702,14 @@ classify_quote (struct q_class_t **QuoteList, const char *qptr,
 static int brailleLine = -1;
 static int brailleCol = -1;
 
-static int check_attachment_marker (char *);
+static int check_attachment_marker (char *p)
+{
+  char *q = AttachmentMarker;
+
+  for (;*p == *q && *q && *p && *q != '\a' && *p != '\a'; p++, q++)
+    ;
+  return (int) (*p - *q);
+}
 
 static void
 resolve_types (char *buf, char *raw, struct line_t *lineInfo, int n, int last,
@@ -970,15 +977,6 @@ static int is_ansi (unsigned char *buf)
   while (*buf && (isdigit(*buf) || *buf == ';'))
     buf++;
   return (*buf == 'm');
-}
-
-static int check_attachment_marker (char *p)
-{
-  char *q = AttachmentMarker;
-
-  for (;*p == *q && *q && *p && *q != '\a' && *p != '\a'; p++, q++)
-    ;
-  return (int) (*p - *q);
 }
 
 static int grok_ansi(unsigned char *buf, int pos, ansi_attr *a)

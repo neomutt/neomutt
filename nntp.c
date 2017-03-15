@@ -59,8 +59,6 @@
 #include "mutt_sasl.h"
 #endif
 
-static int nntp_check_mailbox (CONTEXT *ctx, int *index_hint);
-
 static int nntp_connect_error (NNTP_SERVER *nserv)
 {
   nserv->status = NNTP_NONE;
@@ -1743,165 +1741,6 @@ int nntp_post (const char *msg) {
   return 0;
 }
 
-/* Save changes to .newsrc and cache */
-static int nntp_sync_mailbox (CONTEXT *ctx, int *index_hint)
-{
-  NNTP_DATA *nntp_data = ctx->data;
-  int rc, i;
-#ifdef USE_HCACHE
-  header_cache_t *hc;
-#endif
-
-  /* check for new articles */
-  nntp_data->nserv->check_time = 0;
-  rc = nntp_check_mailbox (ctx, index_hint);
-  if (rc)
-    return rc;
-
-#ifdef USE_HCACHE
-  nntp_data->lastCached = 0;
-  hc = nntp_hcache_open (nntp_data);
-#endif
-
-  nntp_data->unread = ctx->unread;
-  for (i = 0; i < ctx->msgcount; i++)
-  {
-    HEADER *hdr = ctx->hdrs[i];
-    char buf[16];
-
-    snprintf (buf, sizeof (buf), "%d", NHDR (hdr)->article_num);
-    if (nntp_data->bcache && hdr->deleted)
-    {
-      mutt_debug (2, "nntp_sync_mailbox: mutt_bcache_del %s\n", buf);
-      mutt_bcache_del (nntp_data->bcache, buf);
-    }
-
-#ifdef USE_HCACHE
-    if (hc && (hdr->changed || hdr->deleted))
-    {
-      if (hdr->deleted && !hdr->read)
-	nntp_data->unread--;
-      mutt_debug (2, "nntp_sync_mailbox: mutt_hcache_store %s\n", buf);
-      mutt_hcache_store (hc, buf, strlen(buf), hdr, 0);
-    }
-#endif
-  }
-
-#ifdef USE_HCACHE
-  if (hc)
-  {
-    mutt_hcache_close (hc);
-    nntp_data->lastCached = nntp_data->lastLoaded;
-  }
-#endif
-
-  /* save .newsrc entries */
-  nntp_newsrc_gen_entries (ctx);
-  nntp_newsrc_update (nntp_data->nserv);
-  nntp_newsrc_close (nntp_data->nserv);
-  return 0;
-}
-
-/* Free up memory associated with the newsgroup context */
-static int nntp_fastclose_mailbox (CONTEXT *ctx)
-{
-  NNTP_DATA *nntp_data = ctx->data, *nntp_tmp;
-
-  if (!nntp_data)
-    return 0;
-
-  nntp_acache_free (nntp_data);
-  if (!nntp_data->nserv || !nntp_data->nserv->groups_hash || !nntp_data->group)
-    return 0;
-
-  nntp_tmp = hash_find (nntp_data->nserv->groups_hash, nntp_data->group);
-  if (nntp_tmp == NULL || nntp_tmp != nntp_data)
-    nntp_data_free (nntp_data);
-  return 0;
-}
-
-/* Get date and time from server */
-static int nntp_date (NNTP_SERVER *nserv, time_t *now)
-{
-  if (nserv->hasDATE)
-  {
-    NNTP_DATA nntp_data;
-    char buf[LONG_STRING];
-    struct tm tm;
-
-    nntp_data.nserv = nserv;
-    nntp_data.group = NULL;
-    strfcpy (buf, "DATE\r\n", sizeof (buf));
-    if (nntp_query (&nntp_data, buf, sizeof (buf)) < 0)
-      return -1;
-
-    if (sscanf (buf, "111 %4d%2d%2d%2d%2d%2d%*s", &tm.tm_year, &tm.tm_mon,
-		&tm.tm_mday, &tm.tm_hour, &tm.tm_min, &tm.tm_sec) == 6)
-    {
-      tm.tm_year -= 1900;
-      tm.tm_mon--;
-      *now = timegm (&tm);
-      if (*now >= 0)
-      {
-	mutt_debug (1, "nntp_date: server time is %d\n", *now);
-	return 0;
-      }
-    }
-  }
-  time (now);
-  return 0;
-}
-
-/* Fetch list of all newsgroups from server */
-int nntp_active_fetch (NNTP_SERVER *nserv)
-{
-  NNTP_DATA nntp_data;
-  char msg[SHORT_STRING];
-  char buf[LONG_STRING];
-  unsigned int i;
-  int rc;
-
-  snprintf (msg, sizeof (msg), _("Loading list of groups from server %s..."),
-	    nserv->conn->account.host);
-  mutt_message (msg);
-  if (nntp_date (nserv, &nserv->newgroups_time) < 0)
-    return -1;
-
-  nntp_data.nserv = nserv;
-  nntp_data.group = NULL;
-  strfcpy (buf, "LIST\r\n", sizeof (buf));
-  rc = nntp_fetch_lines (&nntp_data, buf, sizeof (buf), msg,
-			 nntp_add_group, nserv);
-  if (rc)
-  {
-    if (rc > 0)
-    {
-      mutt_error ("LIST: %s", buf);
-      mutt_sleep (2);
-    }
-    return -1;
-  }
-
-  if (option (OPTLOADDESC) &&
-      get_description (&nntp_data, "*", _("Loading descriptions...")) < 0)
-    return -1;
-
-  for (i = 0; i < nserv->groups_num; i++)
-  {
-    NNTP_DATA *nntp_data = nserv->groups_list[i];
-
-    if (nntp_data && nntp_data->deleted && !nntp_data->newsrc_ent)
-    {
-      nntp_delete_group_cache (nntp_data);
-      hash_delete (nserv->groups_hash, nntp_data->group, NULL, nntp_data_free);
-      nserv->groups_list[i] = NULL;
-    }
-  }
-  nntp_active_save_cache (nserv);
-  mutt_clear_error ();
-  return 0;
-}
-
 /* Check newsgroup for new articles:
  *  1 - new articles found
  *  0 - no change
@@ -2161,6 +2000,165 @@ static int nntp_check_mailbox (CONTEXT *ctx, int *index_hint)
     nntp_newsrc_close (nserv);
   mutt_clear_error ();
   return ret;
+}
+
+/* Save changes to .newsrc and cache */
+static int nntp_sync_mailbox (CONTEXT *ctx, int *index_hint)
+{
+  NNTP_DATA *nntp_data = ctx->data;
+  int rc, i;
+#ifdef USE_HCACHE
+  header_cache_t *hc;
+#endif
+
+  /* check for new articles */
+  nntp_data->nserv->check_time = 0;
+  rc = nntp_check_mailbox (ctx, index_hint);
+  if (rc)
+    return rc;
+
+#ifdef USE_HCACHE
+  nntp_data->lastCached = 0;
+  hc = nntp_hcache_open (nntp_data);
+#endif
+
+  nntp_data->unread = ctx->unread;
+  for (i = 0; i < ctx->msgcount; i++)
+  {
+    HEADER *hdr = ctx->hdrs[i];
+    char buf[16];
+
+    snprintf (buf, sizeof (buf), "%d", NHDR (hdr)->article_num);
+    if (nntp_data->bcache && hdr->deleted)
+    {
+      mutt_debug (2, "nntp_sync_mailbox: mutt_bcache_del %s\n", buf);
+      mutt_bcache_del (nntp_data->bcache, buf);
+    }
+
+#ifdef USE_HCACHE
+    if (hc && (hdr->changed || hdr->deleted))
+    {
+      if (hdr->deleted && !hdr->read)
+	nntp_data->unread--;
+      mutt_debug (2, "nntp_sync_mailbox: mutt_hcache_store %s\n", buf);
+      mutt_hcache_store (hc, buf, strlen(buf), hdr, 0);
+    }
+#endif
+  }
+
+#ifdef USE_HCACHE
+  if (hc)
+  {
+    mutt_hcache_close (hc);
+    nntp_data->lastCached = nntp_data->lastLoaded;
+  }
+#endif
+
+  /* save .newsrc entries */
+  nntp_newsrc_gen_entries (ctx);
+  nntp_newsrc_update (nntp_data->nserv);
+  nntp_newsrc_close (nntp_data->nserv);
+  return 0;
+}
+
+/* Free up memory associated with the newsgroup context */
+static int nntp_fastclose_mailbox (CONTEXT *ctx)
+{
+  NNTP_DATA *nntp_data = ctx->data, *nntp_tmp;
+
+  if (!nntp_data)
+    return 0;
+
+  nntp_acache_free (nntp_data);
+  if (!nntp_data->nserv || !nntp_data->nserv->groups_hash || !nntp_data->group)
+    return 0;
+
+  nntp_tmp = hash_find (nntp_data->nserv->groups_hash, nntp_data->group);
+  if (nntp_tmp == NULL || nntp_tmp != nntp_data)
+    nntp_data_free (nntp_data);
+  return 0;
+}
+
+/* Get date and time from server */
+static int nntp_date (NNTP_SERVER *nserv, time_t *now)
+{
+  if (nserv->hasDATE)
+  {
+    NNTP_DATA nntp_data;
+    char buf[LONG_STRING];
+    struct tm tm;
+
+    nntp_data.nserv = nserv;
+    nntp_data.group = NULL;
+    strfcpy (buf, "DATE\r\n", sizeof (buf));
+    if (nntp_query (&nntp_data, buf, sizeof (buf)) < 0)
+      return -1;
+
+    if (sscanf (buf, "111 %4d%2d%2d%2d%2d%2d%*s", &tm.tm_year, &tm.tm_mon,
+		&tm.tm_mday, &tm.tm_hour, &tm.tm_min, &tm.tm_sec) == 6)
+    {
+      tm.tm_year -= 1900;
+      tm.tm_mon--;
+      *now = timegm (&tm);
+      if (*now >= 0)
+      {
+	mutt_debug (1, "nntp_date: server time is %d\n", *now);
+	return 0;
+      }
+    }
+  }
+  time (now);
+  return 0;
+}
+
+/* Fetch list of all newsgroups from server */
+int nntp_active_fetch (NNTP_SERVER *nserv)
+{
+  NNTP_DATA nntp_data;
+  char msg[SHORT_STRING];
+  char buf[LONG_STRING];
+  unsigned int i;
+  int rc;
+
+  snprintf (msg, sizeof (msg), _("Loading list of groups from server %s..."),
+	    nserv->conn->account.host);
+  mutt_message (msg);
+  if (nntp_date (nserv, &nserv->newgroups_time) < 0)
+    return -1;
+
+  nntp_data.nserv = nserv;
+  nntp_data.group = NULL;
+  strfcpy (buf, "LIST\r\n", sizeof (buf));
+  rc = nntp_fetch_lines (&nntp_data, buf, sizeof (buf), msg,
+			 nntp_add_group, nserv);
+  if (rc)
+  {
+    if (rc > 0)
+    {
+      mutt_error ("LIST: %s", buf);
+      mutt_sleep (2);
+    }
+    return -1;
+  }
+
+  if (option (OPTLOADDESC) &&
+      get_description (&nntp_data, "*", _("Loading descriptions...")) < 0)
+    return -1;
+
+  for (i = 0; i < nserv->groups_num; i++)
+  {
+    NNTP_DATA *nntp_data = nserv->groups_list[i];
+
+    if (nntp_data && nntp_data->deleted && !nntp_data->newsrc_ent)
+    {
+      nntp_delete_group_cache (nntp_data);
+      hash_delete (nserv->groups_hash, nntp_data->group, NULL, nntp_data_free);
+      nserv->groups_list[i] = NULL;
+    }
+  }
+  nntp_active_save_cache (nserv);
+  mutt_clear_error ();
+  return 0;
 }
 
 /* Check for new groups and new articles in subscribed groups:

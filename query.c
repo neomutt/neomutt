@@ -53,8 +53,6 @@ static const struct mapping_t QueryHelp[] = {
   { NULL,	  0 }
 };
 
-static void query_menu (char *buf, size_t buflen, QUERY *results, int retbuf);
-
 static ADDRESS *result_to_addr (QUERY *r)
 {
   static ADDRESS *tmp;
@@ -252,58 +250,6 @@ static int query_tag (MUTTMENU *menu, int n, int m)
 
   cur->tagged = m >= 0 ? m : !cur->tagged;
   return cur->tagged - ot;
-}
-
-int mutt_query_complete (char *buf, size_t buflen)
-{
-  QUERY *results = NULL;
-  ADDRESS *tmpa;
-
-  if (!QueryCmd)
-  {
-    mutt_error (_("Query command not defined."));
-    return 0;
-  }
-
-  results = run_query (buf, 1);
-  if (results)
-  {
-    /* only one response? */
-    if (results->next == NULL)
-    {
-      tmpa = result_to_addr (results);
-      mutt_addrlist_to_local (tmpa);
-      buf[0] = '\0';
-      rfc822_write_address (buf, buflen, tmpa, 0);
-      rfc822_free_address (&tmpa);
-      free_query (&results);
-      mutt_clear_error ();
-      return (0);
-    }
-    /* multiple results, choose from query menu */
-    query_menu (buf, buflen, results, 1);
-  }
-  return (0);
-}
-
-void mutt_query_menu (char *buf, size_t buflen)
-{
-  if (!QueryCmd)
-  {
-    mutt_error (_("Query command not defined."));
-    return;
-  }
-
-  if (buf == NULL)
-  {
-    char buffer[STRING] = "";
-
-    query_menu (buffer, sizeof (buffer), NULL, 0);
-  }
-  else
-  {
-    query_menu (buf, buflen, NULL, 1);
-  }
 }
 
 static void query_menu (char *buf, size_t buflen, QUERY *results, int retbuf)
@@ -539,3 +485,55 @@ static void query_menu (char *buf, size_t buflen, QUERY *results, int retbuf)
 
   mutt_menuDestroy (&menu);
 }
+int mutt_query_complete (char *buf, size_t buflen)
+{
+  QUERY *results = NULL;
+  ADDRESS *tmpa;
+
+  if (!QueryCmd)
+  {
+    mutt_error (_("Query command not defined."));
+    return 0;
+  }
+
+  results = run_query (buf, 1);
+  if (results)
+  {
+    /* only one response? */
+    if (results->next == NULL)
+    {
+      tmpa = result_to_addr (results);
+      mutt_addrlist_to_local (tmpa);
+      buf[0] = '\0';
+      rfc822_write_address (buf, buflen, tmpa, 0);
+      rfc822_free_address (&tmpa);
+      free_query (&results);
+      mutt_clear_error ();
+      return (0);
+    }
+    /* multiple results, choose from query menu */
+    query_menu (buf, buflen, results, 1);
+  }
+  return (0);
+}
+
+void mutt_query_menu (char *buf, size_t buflen)
+{
+  if (!QueryCmd)
+  {
+    mutt_error (_("Query command not defined."));
+    return;
+  }
+
+  if (buf == NULL)
+  {
+    char buffer[STRING] = "";
+
+    query_menu (buffer, sizeof (buffer), NULL, 0);
+  }
+  else
+  {
+    query_menu (buf, buflen, NULL, 1);
+  }
+}
+

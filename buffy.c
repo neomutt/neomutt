@@ -53,8 +53,6 @@ time_t BuffyDoneTime = 0;	/* last time we knew for sure how much mail there was.
 static short BuffyCount = 0;	/* how many boxes with new mail */
 static short BuffyNotify = 0;	/* # of unnotified new boxes */
 
-static BUFFY* buffy_get (const char *path);
-
 /* Find the last message in the file.
  * upon success return 0. If no message found - return -1 */
 
@@ -144,63 +142,6 @@ static int test_new_folder (const char *path)
   return rc;
 }
 
-void mutt_buffy_cleanup (const char *buf, struct stat *st)
-{
-  struct utimbuf ut;
-  BUFFY *tmp;
-
-  if (option(OPTCHECKMBOXSIZE))
-  {
-    tmp = mutt_find_mailbox (buf);
-    if (tmp && !tmp->new)
-      mutt_update_mailbox (tmp);
-  }
-  else
-  {
-    /* fix up the times so buffy won't get confused */
-    if (st->st_mtime > st->st_atime)
-    {
-      ut.actime = st->st_atime;
-      ut.modtime = time (NULL);
-      utime (buf, &ut);
-    }
-    else
-      utime (buf, NULL);
-  }
-}
-
-BUFFY *mutt_find_mailbox (const char *path)
-{
-  BUFFY *tmp = NULL;
-  struct stat sb;
-  struct stat tmp_sb;
-
-  if (stat (path,&sb) != 0)
-    return NULL;
-
-  for (tmp = Incoming; tmp; tmp = tmp->next)
-  {
-    if (stat (tmp->path,&tmp_sb) ==0 &&
-	sb.st_dev == tmp_sb.st_dev && sb.st_ino == tmp_sb.st_ino)
-      break;
-  }
-  return tmp;
-}
-
-void mutt_update_mailbox (BUFFY * b)
-{
-  struct stat sb;
-
-  if (!b)
-    return;
-
-  if (stat (b->path, &sb) == 0)
-    b->size = (off_t) sb.st_size;
-  else
-    b->size = 0;
-  return;
-}
-
 static BUFFY *buffy_new (const char *path)
 {
   BUFFY* buffy;
@@ -222,91 +163,6 @@ static void buffy_free (BUFFY **mailbox)
   if (mailbox && *mailbox)
     FREE (&(*mailbox)->desc);
   FREE (mailbox); /* __FREE_CHECKED__ */
-}
-
-int mutt_parse_mailboxes (BUFFER *path, BUFFER *s, unsigned long data, BUFFER *err)
-{
-  BUFFY **tmp,*tmp1;
-  char buf[_POSIX_PATH_MAX];
-  struct stat sb;
-  char f1[PATH_MAX];
-  char *p;
-
-  while (MoreArgs (s))
-  {
-    mutt_extract_token (path, s, 0);
-    strfcpy (buf, path->data, sizeof (buf));
-
-    if(data == MUTT_UNMAILBOXES && mutt_strcmp(buf,"*") == 0)
-    {
-      for (tmp = &Incoming; *tmp;)
-      {
-        tmp1=(*tmp)->next;
-#ifdef USE_SIDEBAR
-	mutt_sb_notify_mailbox (*tmp, 0);
-#endif
-        buffy_free (tmp);
-        *tmp=tmp1;
-      }
-      return 0;
-    }
-
-    mutt_expand_path (buf, sizeof (buf));
-
-    /* Skip empty tokens. */
-    if(!*buf) continue;
-
-    /* avoid duplicates */
-    p = realpath (buf, f1);
-    for (tmp = &Incoming; *tmp; tmp = &((*tmp)->next))
-    {
-      if (mutt_strcmp (p ? p : buf, (*tmp)->realpath) == 0)
-      {
-        mutt_debug (3, "mailbox '%s' already registered as '%s'\n",
-                    buf, (*tmp)->path);
-	break;
-      }
-    }
-
-    if(data == MUTT_UNMAILBOXES)
-    {
-      if(*tmp)
-      {
-        tmp1=(*tmp)->next;
-#ifdef USE_SIDEBAR
-	mutt_sb_notify_mailbox (*tmp, 0);
-#endif
-        buffy_free (tmp);
-        *tmp=tmp1;
-      }
-      continue;
-    }
-
-    if (!*tmp) {
-      *tmp = buffy_new (buf);
-#ifdef USE_SIDEBAR
-      mutt_sb_notify_mailbox (*tmp, 1);
-#endif
-    }
-
-    (*tmp)->new = 0;
-    (*tmp)->notified = 1;
-    (*tmp)->newly_created = 0;
-
-    /* for check_mbox_size, it is important that if the folder is new (tested by
-     * reading it), the size is set to 0 so that later when we check we see
-     * that it increased .  without check_mbox_size we probably don't care.
-     */
-    if (option(OPTCHECKMBOXSIZE) &&
-	stat ((*tmp)->path, &sb) == 0 && !test_new_folder ((*tmp)->path))
-    {
-      /* some systems out there don't have an off_t type */
-      (*tmp)->size = (off_t) sb.st_size;
-    }
-    else
-      (*tmp)->size = 0;
-  }
-  return 0;
 }
 
 /* Checks the specified maildir subdir (cur or new) for new mail or mail counts.
@@ -467,109 +323,6 @@ static int buffy_mbox_check (BUFFY* mailbox, struct stat *sb, int check_stats)
   return rc;
 }
 
-#ifdef USE_NOTMUCH
-int mutt_parse_virtual_mailboxes (BUFFER *path, BUFFER *s, unsigned long data, BUFFER *err)
-{
-  BUFFY **tmp;
-  char buf[_POSIX_PATH_MAX + LONG_STRING + 32];   /* path to DB + query + URI "decoration" */
-
-  while (MoreArgs (s))
-  {
-    char *desc;
-
-    mutt_extract_token (path, s, 0);
-    if (path->data && *path->data)
-      desc = safe_strdup( path->data);
-    else
-      continue;
-
-    mutt_extract_token (path, s, 0);
-    nm_normalize_uri(buf, path->data, sizeof(buf));
-
-    /* Skip empty tokens. */
-    if(!*buf) {
-	    FREE(&desc);
-	    continue;
-    }
-
-    /* avoid duplicates */
-    for (tmp = &VirtIncoming; *tmp; tmp = &((*tmp)->next))
-    {
-      if (mutt_strcmp (buf, (*tmp)->path) == 0)
-      {
-        mutt_debug (3, "virtual mailbox '%s' already registered as '%s'\n",
-                    buf, (*tmp)->path);
-	break;
-      }
-    }
-
-    if (!*tmp)
-      *tmp = buffy_new (buf);
-
-    (*tmp)->magic = MUTT_NOTMUCH;
-    (*tmp)->new = 0;
-    (*tmp)->notified = 1;
-    (*tmp)->newly_created = 0;
-    (*tmp)->size = 0;
-    (*tmp)->desc = desc;
-#ifdef USE_SIDEBAR
-    mutt_sb_notify_mailbox (*tmp, 1);
-#endif
-  }
-#ifdef USE_SIDEBAR
-  mutt_sb_draw();
-#endif
-  return 0;
-}
-
-int mutt_parse_unvirtual_mailboxes (BUFFER *path, BUFFER *s, unsigned long data, BUFFER *err)
-{
-  BUFFY **tmp, *tmp1;
-
-  while (MoreArgs (s))
-  {
-    mutt_extract_token (path, s, 0);
-
-    if (mutt_strcmp (path->data, "*") == 0)
-    {
-      for (tmp = &VirtIncoming; *tmp;)
-      {
-        tmp1 = (*tmp)->next;
-#ifdef USE_SIDEBAR
-        mutt_sb_notify_mailbox (*tmp, 0);
-#endif
-        buffy_free (tmp);
-        *tmp = tmp1;
-      }
-#ifdef USE_SIDEBAR
-      mutt_sb_draw();
-#endif
-      return 0;
-    }
-
-    for (tmp = &VirtIncoming; *tmp; tmp = &((*tmp)->next))
-    {
-      if ((mutt_strcasecmp (path->data, (*tmp)->path) == 0) ||
-          (mutt_strcasecmp (path->data, (*tmp)->desc) == 0))
-      {
-        tmp1 = (*tmp)->next;
-#ifdef USE_SIDEBAR
-        mutt_sb_notify_mailbox (*tmp, 0);
-#endif
-        buffy_free (tmp);
-        *tmp = tmp1;
-        break;
-      }
-    }
-  }
-
-#ifdef USE_SIDEBAR
-  mutt_sb_draw();
-#endif
-  return 0;
-}
-#endif
-
 static void buffy_check (BUFFY *tmp, struct stat *contex_sb, int check_stats)
 {
     struct stat sb;
@@ -677,6 +430,278 @@ static void buffy_check (BUFFY *tmp, struct stat *contex_sb, int check_stats)
     else if (!tmp->notified)
       BuffyNotify++;
 }
+
+/* fetch buffy object for given path, if present */
+static BUFFY* buffy_get (const char *path)
+{
+  BUFFY *cur;
+  char *epath;
+
+  if (!path)
+    return NULL;
+
+  epath = safe_strdup(path);
+  mutt_expand_path(epath, mutt_strlen(epath));
+
+  for (cur = Incoming; cur; cur = cur->next)
+  {
+    /* must be done late because e.g. IMAP delimiter may change */
+    mutt_expand_path (cur->path, sizeof (cur->path));
+    if (!mutt_strcmp(cur->path, path))
+    {
+      FREE (&epath);
+      return cur;
+    }
+  }
+
+  FREE (&epath);
+  return NULL;
+}
+
+void mutt_buffy_cleanup (const char *buf, struct stat *st)
+{
+  struct utimbuf ut;
+  BUFFY *tmp;
+
+  if (option(OPTCHECKMBOXSIZE))
+  {
+    tmp = mutt_find_mailbox (buf);
+    if (tmp && !tmp->new)
+      mutt_update_mailbox (tmp);
+  }
+  else
+  {
+    /* fix up the times so buffy won't get confused */
+    if (st->st_mtime > st->st_atime)
+    {
+      ut.actime = st->st_atime;
+      ut.modtime = time (NULL);
+      utime (buf, &ut);
+    }
+    else
+      utime (buf, NULL);
+  }
+}
+
+BUFFY *mutt_find_mailbox (const char *path)
+{
+  BUFFY *tmp = NULL;
+  struct stat sb;
+  struct stat tmp_sb;
+
+  if (stat (path,&sb) != 0)
+    return NULL;
+
+  for (tmp = Incoming; tmp; tmp = tmp->next)
+  {
+    if (stat (tmp->path,&tmp_sb) ==0 &&
+	sb.st_dev == tmp_sb.st_dev && sb.st_ino == tmp_sb.st_ino)
+      break;
+  }
+  return tmp;
+}
+
+void mutt_update_mailbox (BUFFY * b)
+{
+  struct stat sb;
+
+  if (!b)
+    return;
+
+  if (stat (b->path, &sb) == 0)
+    b->size = (off_t) sb.st_size;
+  else
+    b->size = 0;
+  return;
+}
+
+int mutt_parse_mailboxes (BUFFER *path, BUFFER *s, unsigned long data, BUFFER *err)
+{
+  BUFFY **tmp,*tmp1;
+  char buf[_POSIX_PATH_MAX];
+  struct stat sb;
+  char f1[PATH_MAX];
+  char *p;
+
+  while (MoreArgs (s))
+  {
+    mutt_extract_token (path, s, 0);
+    strfcpy (buf, path->data, sizeof (buf));
+
+    if(data == MUTT_UNMAILBOXES && mutt_strcmp(buf,"*") == 0)
+    {
+      for (tmp = &Incoming; *tmp;)
+      {
+        tmp1=(*tmp)->next;
+#ifdef USE_SIDEBAR
+	mutt_sb_notify_mailbox (*tmp, 0);
+#endif
+        buffy_free (tmp);
+        *tmp=tmp1;
+      }
+      return 0;
+    }
+
+    mutt_expand_path (buf, sizeof (buf));
+
+    /* Skip empty tokens. */
+    if(!*buf) continue;
+
+    /* avoid duplicates */
+    p = realpath (buf, f1);
+    for (tmp = &Incoming; *tmp; tmp = &((*tmp)->next))
+    {
+      if (mutt_strcmp (p ? p : buf, (*tmp)->realpath) == 0)
+      {
+        mutt_debug (3, "mailbox '%s' already registered as '%s'\n",
+                    buf, (*tmp)->path);
+	break;
+      }
+    }
+
+    if(data == MUTT_UNMAILBOXES)
+    {
+      if(*tmp)
+      {
+        tmp1=(*tmp)->next;
+#ifdef USE_SIDEBAR
+	mutt_sb_notify_mailbox (*tmp, 0);
+#endif
+        buffy_free (tmp);
+        *tmp=tmp1;
+      }
+      continue;
+    }
+
+    if (!*tmp) {
+      *tmp = buffy_new (buf);
+#ifdef USE_SIDEBAR
+      mutt_sb_notify_mailbox (*tmp, 1);
+#endif
+    }
+
+    (*tmp)->new = 0;
+    (*tmp)->notified = 1;
+    (*tmp)->newly_created = 0;
+
+    /* for check_mbox_size, it is important that if the folder is new (tested by
+     * reading it), the size is set to 0 so that later when we check we see
+     * that it increased .  without check_mbox_size we probably don't care.
+     */
+    if (option(OPTCHECKMBOXSIZE) &&
+	stat ((*tmp)->path, &sb) == 0 && !test_new_folder ((*tmp)->path))
+    {
+      /* some systems out there don't have an off_t type */
+      (*tmp)->size = (off_t) sb.st_size;
+    }
+    else
+      (*tmp)->size = 0;
+  }
+  return 0;
+}
+
+#ifdef USE_NOTMUCH
+int mutt_parse_virtual_mailboxes (BUFFER *path, BUFFER *s, unsigned long data, BUFFER *err)
+{
+  BUFFY **tmp;
+  char buf[_POSIX_PATH_MAX + LONG_STRING + 32];   /* path to DB + query + URI "decoration" */
+
+  while (MoreArgs (s))
+  {
+    char *desc;
+
+    mutt_extract_token (path, s, 0);
+    if (path->data && *path->data)
+      desc = safe_strdup( path->data);
+    else
+      continue;
+
+    mutt_extract_token (path, s, 0);
+    nm_normalize_uri(buf, path->data, sizeof(buf));
+
+    /* Skip empty tokens. */
+    if(!*buf) {
+	    FREE(&desc);
+	    continue;
+    }
+
+    /* avoid duplicates */
+    for (tmp = &VirtIncoming; *tmp; tmp = &((*tmp)->next))
+    {
+      if (mutt_strcmp (buf, (*tmp)->path) == 0)
+      {
+        mutt_debug (3, "virtual mailbox '%s' already registered as '%s'\n",
+                    buf, (*tmp)->path);
+	break;
+      }
+    }
+
+    if (!*tmp)
+      *tmp = buffy_new (buf);
+
+    (*tmp)->magic = MUTT_NOTMUCH;
+    (*tmp)->new = 0;
+    (*tmp)->notified = 1;
+    (*tmp)->newly_created = 0;
+    (*tmp)->size = 0;
+    (*tmp)->desc = desc;
+#ifdef USE_SIDEBAR
+    mutt_sb_notify_mailbox (*tmp, 1);
+#endif
+  }
+#ifdef USE_SIDEBAR
+  mutt_sb_draw();
+#endif
+  return 0;
+}
+
+int mutt_parse_unvirtual_mailboxes (BUFFER *path, BUFFER *s, unsigned long data, BUFFER *err)
+{
+  BUFFY **tmp, *tmp1;
+
+  while (MoreArgs (s))
+  {
+    mutt_extract_token (path, s, 0);
+
+    if (mutt_strcmp (path->data, "*") == 0)
+    {
+      for (tmp = &VirtIncoming; *tmp;)
+      {
+        tmp1 = (*tmp)->next;
+#ifdef USE_SIDEBAR
+        mutt_sb_notify_mailbox (*tmp, 0);
+#endif
+        buffy_free (tmp);
+        *tmp = tmp1;
+      }
+#ifdef USE_SIDEBAR
+      mutt_sb_draw();
+#endif
+      return 0;
+    }
+
+    for (tmp = &VirtIncoming; *tmp; tmp = &((*tmp)->next))
+    {
+      if ((mutt_strcasecmp (path->data, (*tmp)->path) == 0) ||
+          (mutt_strcasecmp (path->data, (*tmp)->desc) == 0))
+      {
+        tmp1 = (*tmp)->next;
+#ifdef USE_SIDEBAR
+        mutt_sb_notify_mailbox (*tmp, 0);
+#endif
+        buffy_free (tmp);
+        *tmp = tmp1;
+        break;
+      }
+    }
+  }
+
+#ifdef USE_SIDEBAR
+  mutt_sb_draw();
+#endif
+  return 0;
+}
+#endif
 
 /* Check all Incoming for new mail and total/new/flagged messages
  * force: if true, ignore BuffyTimeout and check for new mail anyway
@@ -886,29 +911,3 @@ void mutt_buffy_vfolder (char *s, size_t slen)
 }
 #endif
 
-/* fetch buffy object for given path, if present */
-static BUFFY* buffy_get (const char *path)
-{
-  BUFFY *cur;
-  char *epath;
-
-  if (!path)
-    return NULL;
-
-  epath = safe_strdup(path);
-  mutt_expand_path(epath, mutt_strlen(epath));
-
-  for (cur = Incoming; cur; cur = cur->next)
-  {
-    /* must be done late because e.g. IMAP delimiter may change */
-    mutt_expand_path (cur->path, sizeof (cur->path));
-    if (!mutt_strcmp(cur->path, path))
-    {
-      FREE (&epath);
-      return cur;
-    }
-  }
-
-  FREE (&epath);
-  return NULL;
-}

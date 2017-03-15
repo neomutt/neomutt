@@ -49,20 +49,6 @@ struct coord
   short r, c;
 };
 
-static REMAILER **mix_type2_list (size_t *l);
-static REMAILER *mix_new_remailer (void);
-static const char *mix_format_caps (REMAILER *r);
-static int mix_chain_add (MIXCHAIN *chain, const char *s, REMAILER **type2_list);
-static int mix_get_caps (const char *capstr);
-static void mix_add_entry (REMAILER ***, REMAILER *, size_t *, size_t *);
-static void mix_entry (char *b, size_t blen, MUTTMENU *menu, int num);
-static void mix_free_remailer (REMAILER **r);
-static void mix_free_type2_list (REMAILER ***ttlp);
-static void mix_redraw_ce (REMAILER **type2_list, struct coord *coords, MIXCHAIN *chain, int i, short selected);
-static void mix_redraw_chain (REMAILER **type2_list, struct coord *coords, MIXCHAIN *chain, int cur);
-static void mix_redraw_head (MIXCHAIN *);
-static void mix_screen_coordinates (REMAILER **type2_list, struct coord **, MIXCHAIN *, int);
-
 static int mix_get_caps (const char *capstr)
 {
   int caps = 0;

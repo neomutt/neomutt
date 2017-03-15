@@ -55,8 +55,6 @@ static int OpnIndex = -1;    /* Current (open) mailbox */
 static int HilIndex = -1;    /* Highlighted mailbox */
 static int BotIndex = -1;    /* Last mailbox visible in sidebar */
 
-static int select_next (void);
-
 /* The source of the sidebar divider character. */
 enum div_type
 {
@@ -426,6 +424,172 @@ static void sort_entries (void)
   else if ((ssm == SORT_ORDER) &&
            (SidebarSortMethod != PreviousSort))
     unsort_entries ();
+}
+
+/**
+ * select_next - Selects the next unhidden mailbox
+ *
+ * Returns:
+ *      1: Success
+ *      0: Failure
+ */
+static int select_next (void)
+{
+  int entry = HilIndex;
+
+  if (!EntryCount || HilIndex < 0)
+    return 0;
+
+  do
+  {
+    entry++;
+    if (entry == EntryCount)
+      return 0;
+  } while (Entries[entry]->is_hidden);
+
+  HilIndex = entry;
+  return 1;
+}
+
+/**
+ * select_next_new - Selects the next new mailbox
+ *
+ * Search down the list of mail folders for one containing new mail.
+ *
+ * Returns:
+ *      1: Success
+ *      0: Failure
+ */
+static int select_next_new (void)
+{
+  int entry = HilIndex;
+
+  if (!EntryCount || HilIndex < 0)
+    return 0;
+
+  do
+  {
+    entry++;
+    if (entry == EntryCount)
+    {
+      if (option (OPTSIDEBARNEXTNEWWRAP))
+        entry = 0;
+      else
+        return 0;
+    }
+    if (entry == HilIndex)
+      return 0;
+  } while (!Entries[entry]->buffy->new &&
+           !Entries[entry]->buffy->msg_unread);
+
+  HilIndex = entry;
+  return 1;
+}
+
+/**
+ * select_prev - Selects the previous unhidden mailbox
+ *
+ * Returns:
+ *      1: Success
+ *      0: Failure
+ */
+static int select_prev (void)
+{
+  int entry = HilIndex;
+
+  if (!EntryCount || HilIndex < 0)
+    return 0;
+
+  do
+  {
+    entry--;
+    if (entry < 0)
+      return 0;
+  } while (Entries[entry]->is_hidden);
+
+  HilIndex = entry;
+  return 1;
+}
+
+/**
+ * select_prev_new - Selects the previous new mailbox
+ *
+ * Search up the list of mail folders for one containing new mail.
+ *
+ * Returns:
+ *      1: Success
+ *      0: Failure
+ */
+static int select_prev_new (void)
+{
+  int entry = HilIndex;
+
+  if (!EntryCount || HilIndex < 0)
+    return 0;
+
+  do
+  {
+    entry--;
+    if (entry < 0)
+    {
+      if (option (OPTSIDEBARNEXTNEWWRAP))
+        entry = EntryCount - 1;
+      else
+        return 0;
+    }
+    if (entry == HilIndex)
+      return 0;
+  } while (!Entries[entry]->buffy->new &&
+           !Entries[entry]->buffy->msg_unread);
+
+  HilIndex = entry;
+  return 1;
+}
+
+/**
+ * select_page_down - Selects the first entry in the next page of mailboxes
+ *
+ * Returns:
+ *      1: Success
+ *      0: Failure
+ */
+static int select_page_down (void)
+{
+  int orig_hil_index = HilIndex;
+
+  if (!EntryCount || BotIndex < 0)
+    return 0;
+
+  HilIndex = BotIndex;
+  select_next ();
+  /* If the rest of the entries are hidden, go up to the last unhidden one */
+  if (Entries[HilIndex]->is_hidden)
+    select_prev ();
+
+  return (orig_hil_index != HilIndex);
+}
+
+/**
+ * select_page_up - Selects the last entry in the previous page of mailboxes
+ *
+ * Returns:
+ *      1: Success
+ *      0: Failure
+ */
+static int select_page_up (void)
+{
+  int orig_hil_index = HilIndex;
+
+  if (!EntryCount || TopIndex < 0)
+    return 0;
+
+  HilIndex = TopIndex;
+  select_prev ();
+  /* If the rest of the entries are hidden, go down to the last unhidden one */
+  if (Entries[HilIndex]->is_hidden)
+    select_next ();
+
+  return (orig_hil_index != HilIndex);
 }
 
 /**
@@ -838,172 +1002,6 @@ void mutt_sb_draw (void)
 
   draw_sidebar (num_rows, num_cols, div_width);
   move (y, x);
-}
-
-/**
- * select_next - Selects the next unhidden mailbox
- *
- * Returns:
- *      1: Success
- *      0: Failure
- */
-static int select_next (void)
-{
-  int entry = HilIndex;
-
-  if (!EntryCount || HilIndex < 0)
-    return 0;
-
-  do
-  {
-    entry++;
-    if (entry == EntryCount)
-      return 0;
-  } while (Entries[entry]->is_hidden);
-
-  HilIndex = entry;
-  return 1;
-}
-
-/**
- * select_next_new - Selects the next new mailbox
- *
- * Search down the list of mail folders for one containing new mail.
- *
- * Returns:
- *      1: Success
- *      0: Failure
- */
-static int select_next_new (void)
-{
-  int entry = HilIndex;
-
-  if (!EntryCount || HilIndex < 0)
-    return 0;
-
-  do
-  {
-    entry++;
-    if (entry == EntryCount)
-    {
-      if (option (OPTSIDEBARNEXTNEWWRAP))
-        entry = 0;
-      else
-        return 0;
-    }
-    if (entry == HilIndex)
-      return 0;
-  } while (!Entries[entry]->buffy->new &&
-           !Entries[entry]->buffy->msg_unread);
-
-  HilIndex = entry;
-  return 1;
-}
-
-/**
- * select_prev - Selects the previous unhidden mailbox
- *
- * Returns:
- *      1: Success
- *      0: Failure
- */
-static int select_prev (void)
-{
-  int entry = HilIndex;
-
-  if (!EntryCount || HilIndex < 0)
-    return 0;
-
-  do
-  {
-    entry--;
-    if (entry < 0)
-      return 0;
-  } while (Entries[entry]->is_hidden);
-
-  HilIndex = entry;
-  return 1;
-}
-
-/**
- * select_prev_new - Selects the previous new mailbox
- *
- * Search up the list of mail folders for one containing new mail.
- *
- * Returns:
- *      1: Success
- *      0: Failure
- */
-static int select_prev_new (void)
-{
-  int entry = HilIndex;
-
-  if (!EntryCount || HilIndex < 0)
-    return 0;
-
-  do
-  {
-    entry--;
-    if (entry < 0)
-    {
-      if (option (OPTSIDEBARNEXTNEWWRAP))
-        entry = EntryCount - 1;
-      else
-        return 0;
-    }
-    if (entry == HilIndex)
-      return 0;
-  } while (!Entries[entry]->buffy->new &&
-           !Entries[entry]->buffy->msg_unread);
-
-  HilIndex = entry;
-  return 1;
-}
-
-/**
- * select_page_down - Selects the first entry in the next page of mailboxes
- *
- * Returns:
- *      1: Success
- *      0: Failure
- */
-static int select_page_down (void)
-{
-  int orig_hil_index = HilIndex;
-
-  if (!EntryCount || BotIndex < 0)
-    return 0;
-
-  HilIndex = BotIndex;
-  select_next ();
-  /* If the rest of the entries are hidden, go up to the last unhidden one */
-  if (Entries[HilIndex]->is_hidden)
-    select_prev ();
-
-  return (orig_hil_index != HilIndex);
-}
-
-/**
- * select_page_up - Selects the last entry in the previous page of mailboxes
- *
- * Returns:
- *      1: Success
- *      0: Failure
- */
-static int select_page_up (void)
-{
-  int orig_hil_index = HilIndex;
-
-  if (!EntryCount || TopIndex < 0)
-    return 0;
-
-  HilIndex = TopIndex;
-  select_prev ();
-  /* If the rest of the entries are hidden, go down to the last unhidden one */
-  if (Entries[HilIndex]->is_hidden)
-    select_next ();
-
-  return (orig_hil_index != HilIndex);
 }
 
 /**

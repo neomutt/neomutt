@@ -48,8 +48,6 @@
 
 #include "lib.h"
 
-static int mutt_atol (const char *str, long *dst);
-
 static const struct sysexits
 {
   int v;
@@ -1057,6 +1055,26 @@ void mutt_debug (int level, const char *fmt, ...)
 }
 #endif
 
+static int mutt_atol (const char *str, long *dst)
+{
+  long r;
+  long *res = dst ? dst : &r;
+  char *e = NULL;
+
+  /* no input: 0 */
+  if (!str || !*str)
+  {
+    *res = 0;
+    return 0;
+  }
+
+  *res = strtol (str, &e, 10);
+  if ((*res == LONG_MAX && errno == ERANGE) ||
+      (e && *e != '\0'))
+    return -1;
+  return 0;
+}
+
 int mutt_atos (const char *str, short *dst)
 {
   int rc;
@@ -1090,26 +1108,6 @@ int mutt_atoi (const char *str, int *dst)
     return -2;
 
   *t = (int) res;
-  return 0;
-}
-
-static int mutt_atol (const char *str, long *dst)
-{
-  long r;
-  long *res = dst ? dst : &r;
-  char *e = NULL;
-
-  /* no input: 0 */
-  if (!str || !*str)
-  {
-    *res = 0;
-    return 0;
-  }
-
-  *res = strtol (str, &e, 10);
-  if ((*res == LONG_MAX && errno == ERANGE) ||
-      (e && *e != '\0'))
-    return -1;
   return 0;
 }
 
