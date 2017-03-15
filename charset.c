@@ -311,7 +311,7 @@ int mutt_chscmp (const char *s, const char *chs)
 			     a > b ? chs : buffer, MIN(a,b));
 }
 
-char *mutt_get_default_charset ()
+char *mutt_get_default_charset (void)
 {
   static char fcharset[SHORT_STRING];
   const char *c = AssumedCharset;

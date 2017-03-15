@@ -912,7 +912,7 @@ mutt_hcache_delete(header_cache_t *h, const char *key, size_t keylen)
 }
 
 const char *
-mutt_hcache_backend_list()
+mutt_hcache_backend_list(void)
 {
   char tmp[STRING] = {0};
   const hcache_ops_t **ops = hcache_ops;
