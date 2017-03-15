@@ -1183,29 +1183,14 @@ AC_SUBST(NOTMUCH_LIBS)
 
 dnl -- iconv/gettext --
 
-AC_ARG_ENABLE(iconv, AS_HELP_STRING([--disable-iconv],[Disable iconv support]),
-	[if test x$enableval = xno; then
-		am_cv_func_iconv=no
-	fi
-])
-
 AM_GNU_GETTEXT_VERSION([0.18])
 AM_GNU_GETTEXT([external])
 AC_CHECK_HEADERS([locale.h])
 
-if test "$am_cv_func_iconv" = "no"; then
-	AC_MSG_WARN([Configuring without iconv support. See INSTALL for details])
-else
-
 AM_ICONV
-
-AC_CHECK_HEADERS(iconv.h,
-	[AC_MSG_CHECKING(whether iconv.h defines iconv_t)
-	AC_EGREP_HEADER([typedef.*iconv_t],iconv.h,
-		[AC_MSG_RESULT(yes)
-		AC_DEFINE(HAVE_ICONV_T_DEF, 1,
-			[Define if <iconv.h> defines iconv_t.])],
-		AC_MSG_RESULT(no))])
+if test "$am_cv_func_iconv" != yes; then
+    AC_MSG_ERROR([An iconv implementation is required])
+fi
 
 dnl (1) Some implementations of iconv won't convert from UTF-8 to UTF-8.
 dnl (2) In glibc-2.1.2 and earlier there is a bug that messes up ob and
@@ -1266,17 +1251,6 @@ else
 	AC_DEFINE(ICONV_NONTRANS, 0)
 fi
 
-fi # libiconv
-
-dnl -- IDN depends on iconv
-
-dnl mutt_idna.c will perform charset transformations (for smtputf8
-dnl support) as long as at least iconv is installed.  If there is no
-dnl iconv, then it doesn't need to be included in the build.
-if test "$am_cv_func_iconv" = yes; then
-	MUTT_LIB_OBJECTS="$MUTT_LIB_OBJECTS mutt_idna.o"
-fi
-
 AC_ARG_WITH(idn, AS_HELP_STRING([--with-idn=@<:@PFX@:>@],[Use GNU libidn for internationalized domain names]),
 		[
 		if test "$with_idn" != "no"; then
@@ -1289,41 +1263,35 @@ AC_ARG_WITH(idn, AS_HELP_STRING([--with-idn=@<:@PFX@:>@],[Use GNU libidn for int
 		[with_idn=auto])
 
 if test "x$with_idn" != "xno"; then
-	if test "$am_cv_func_iconv" != "yes"; then
-		if test "$with_idn" != "auto"; then
-			AC_MSG_ERROR([IDN requested but iconv is disabled or unavailable])
-		fi
-	else
-		dnl Solaris 11 has /usr/include/idn
-		have_stringprep_h=no
-		AC_CHECK_HEADERS([stringprep.h idn/stringprep.h], [
-					have_stringprep_h=yes
-					break])
-		have_idna_h=no
-		AC_CHECK_HEADERS([idna.h idn/idna.h], [
-					have_idna_h=yes
-					break])
+    dnl Solaris 11 has /usr/include/idn
+    have_stringprep_h=no
+    AC_CHECK_HEADERS([stringprep.h idn/stringprep.h], [
+                have_stringprep_h=yes
+                break])
+    have_idna_h=no
+    AC_CHECK_HEADERS([idna.h idn/idna.h], [
+                have_idna_h=yes
+                break])
 
-		mutt_save_LIBS="$LIBS"
-		LIBS=
+    mutt_save_LIBS="$LIBS"
+    LIBS=
 
-		AC_SEARCH_LIBS([stringprep_check_version], [idn], [
-			AC_DEFINE([HAVE_LIBIDN], 1, [Define to 1 if you have the GNU idn library])
-			MUTTLIBS="$MUTTLIBS $LIBS"
+    AC_SEARCH_LIBS([stringprep_check_version], [idn], [
+        AC_DEFINE([HAVE_LIBIDN], 1, [Define to 1 if you have the GNU idn library])
+        MUTTLIBS="$MUTTLIBS $LIBS"
 
-			LIBS="$LIBS $LIBICONV"
-			AC_CHECK_FUNCS(idna_to_unicode_utf8_from_utf8 idna_to_unicode_8z8z)
-			AC_CHECK_FUNCS(idna_to_ascii_from_utf8 idna_to_ascii_8z)
-			AC_CHECK_FUNCS(idna_to_ascii_lz idna_to_ascii_from_locale)
-		])
+        LIBS="$LIBS $LIBICONV"
+        AC_CHECK_FUNCS(idna_to_unicode_utf8_from_utf8 idna_to_unicode_8z8z)
+        AC_CHECK_FUNCS(idna_to_ascii_from_utf8 idna_to_ascii_8z)
+        AC_CHECK_FUNCS(idna_to_ascii_lz idna_to_ascii_from_locale)
+    ])
 
-		LIBS="$mutt_save_LIBS"
+    LIBS="$mutt_save_LIBS"
 
-		if test "$with_idn" != auto; then
-			if test $have_stringprep_h = no || test $have_idna_h = no || test $ac_cv_search_stringprep_check_version = no; then
-				AC_MSG_ERROR([IDN was requested, but libidn was not usable on this system])
-			fi
-		fi
+    if test "$with_idn" != auto; then
+        if test $have_stringprep_h = no || test $have_idna_h = no || test $ac_cv_search_stringprep_check_version = no; then
+            AC_MSG_ERROR([IDN was requested, but libidn was not usable on this system])
+        fi
 	fi
 fi
 

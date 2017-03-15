@@ -637,7 +637,6 @@ static size_t convert_file_to (FILE *file, const char *fromcode,
 			       int ncodes, const char **tocodes,
 			       int *tocode, CONTENT *info)
 {
-#ifdef HAVE_ICONV
   iconv_t cd1, *cd;
   char bufi[256], bufu[512], bufo[4 * sizeof (bufi)];
   ICONV_CONST char *ib, *ub;
@@ -762,9 +761,6 @@ static size_t convert_file_to (FILE *file, const char *fromcode,
   FREE (&states);
 
   return ret;
-#else
-  return -1;
-#endif /* !HAVE_ICONV */
 }
 
 /*

@@ -184,11 +184,6 @@ static struct compile_options comp_opts[] =
 #else
   { "HAVE_GETSID", 0 },
 #endif
-#ifdef HAVE_ICONV
-  { "HAVE_ICONV", 1 },
-#else
-  { "HAVE_ICONV", 0 },
-#endif
 #ifdef HAVE_LANGINFO_CODESET
   { "HAVE_LANGINFO_CODESET", 1 },
 #else

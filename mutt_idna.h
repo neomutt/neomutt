@@ -45,7 +45,6 @@
 #endif /* HAVE_LIBIDN */
 
 
-#ifdef HAVE_ICONV
 int mutt_addrlist_to_intl (ADDRESS *, char **);
 int mutt_addrlist_to_local (ADDRESS *);
 
@@ -53,32 +52,5 @@ void mutt_env_to_local (ENVELOPE *);
 int mutt_env_to_intl (ENVELOPE *, char **, char **);
 
 const char *mutt_addr_for_display (ADDRESS *a);
-#else
-static inline int mutt_addrlist_to_intl (ADDRESS *addr, char **err)
-{
-  return 0;
-}
-
-static inline int mutt_addrlist_to_local (ADDRESS *addr)
-{
-  return 0;
-}
-
-static inline void mutt_env_to_local (ENVELOPE *env)
-{
-  return;
-}
-
-static inline int mutt_env_to_intl (ENVELOPE *env, char **tag, char **err)
-{
-  return 0;
-}
-
-static inline const char *mutt_addr_for_display (ADDRESS *a)
-{
-  return a->mailbox;
-}
-#endif /* HAVE_LIBICONV */
-
 
 #endif

@@ -588,11 +588,6 @@ static const char *mutt_hcache_per_folder(const char *path, const char *folder,
   int ret = stat(path, &sb);
   int slash = (path[plen - 1] == '/');
 
-#ifndef HAVE_ICONV
-  snprintf(suffix, sizeof(suffix), "-%s",
-      Charset && *Charset ? Charset : mutt_get_default_charset());
-#endif
-
   if (((ret == 0) && !S_ISDIR(sb.st_mode)) || ((ret == -1) && !slash))
   {
       /* An existing file or a non-existing path not ending with a slash */

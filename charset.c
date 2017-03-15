@@ -325,27 +325,6 @@ char *mutt_get_default_charset ()
   return strcpy (fcharset, "us-ascii"); /* __STRCPY_CHECKED__ */
 }
 
-#ifndef HAVE_ICONV
-
-iconv_t iconv_open (const char *tocode, const char *fromcode)
-{
-  return (iconv_t)(-1);
-}
-
-size_t iconv (iconv_t cd, ICONV_CONST char **inbuf, size_t *inbytesleft,
-	      char **outbuf, size_t *outbytesleft)
-{
-  return 0;
-}
-
-int iconv_close (iconv_t cd)
-{
-  return 0;
-}
-
-#endif /* !HAVE_ICONV */
-
-
 /*
  * Like iconv_open, but canonicalises the charsets, applies charset-hooks,
  * recanonicalises, and finally applies iconv-hooks. Parameter flags=0 skips

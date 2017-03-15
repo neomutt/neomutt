@@ -4459,9 +4459,7 @@ const struct command_t Commands[] = {
   { "ifdef",		parse_ifdef,		0 },
   { "ifndef",		parse_ifdef,		1 },
   { "finish",		finish_source,		0 },
-#ifdef HAVE_ICONV
   { "iconv-hook",	mutt_parse_hook,	MUTT_ICONVHOOK },
-#endif
   { "ignore",		parse_ignore,		0 },
   { "lists",		parse_lists,		0 },
 #ifdef USE_LUA
