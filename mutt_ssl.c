@@ -103,8 +103,10 @@ static int ssl_load_certificates (SSL_CTX *ctx)
   FILE *fp;
   X509 *cert = NULL;
   X509_STORE *store;
-  char buf[STRING];
   int rv = 1;
+#ifdef DEBUG
+  char buf[STRING];
+#endif
 
   mutt_debug (2, "ssl_load_certificates: loading trusted certificates\n");
   store = SSL_CTX_get_cert_store (ctx);

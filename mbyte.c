@@ -42,6 +42,10 @@ static iconv_t charset_to_utf8 = (iconv_t)(-1);
 static iconv_t charset_from_utf8 = (iconv_t)(-1);
 #endif
 
+#ifndef HAVE_WC_FUNCS
+static size_t utf8rtowc (wchar_t *pwc, const char *s, size_t n, mbstate_t *_ps);
+#endif
+
 void mutt_set_charset (char *charset)
 {
   char buffer[STRING];

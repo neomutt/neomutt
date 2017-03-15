@@ -708,8 +708,8 @@ static int imap_open_mailbox (CONTEXT* ctx)
     goto fail;
 
   /* check for READ-ONLY notification */
-  if (!ascii_strncasecmp (imap_get_qualifier (idata->buf), "[READ-ONLY]", 11)  \
-  && !mutt_bit_isset (idata->capabilities, ACL))
+  if (!ascii_strncasecmp(imap_get_qualifier(idata->buf), "[READ-ONLY]", 11) &&
+      !mutt_bit_isset(idata->capabilities, ACL))
   {
     mutt_debug (2, "Mailbox is read-only.\n");
     ctx->readonly = 1;
