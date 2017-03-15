@@ -485,7 +485,7 @@ int mutt_option_set(const struct option_t *val, BUFFER *err)
 }
 #endif
 
-static void mutt_free_opt (struct option_t* p)
+static void free_opt (struct option_t* p)
 {
   REGEXP* pp;
 
@@ -516,7 +516,7 @@ void mutt_free_opts (void)
   int i;
 
   for (i = 0; MuttVars[i].option; i++)
-    mutt_free_opt (MuttVars + i);
+    free_opt (MuttVars + i);
 
   mutt_free_rx_list (&Alternates);
   mutt_free_rx_list (&UnAlternates);
@@ -562,6 +562,11 @@ static void add_to_list (LIST **list, const char *str)
   }
 }
 
+static RX_LIST *new_rx_list(void)
+{
+  return safe_calloc (1, sizeof (RX_LIST));
+}
+
 int mutt_add_to_rx_list (RX_LIST **list, const char *s, int flags, BUFFER *err)
 {
   RX_LIST *t, *last = NULL;
@@ -591,7 +596,7 @@ int mutt_add_to_rx_list (RX_LIST **list, const char *s, int flags, BUFFER *err)
 
   if (!*list || last)
   {
-    t = mutt_new_rx_list();
+    t = new_rx_list();
     t->rx = rx;
     if (last)
     {
@@ -644,6 +649,11 @@ static int remove_from_replace_list (REPLACE_LIST **list, const char *pat)
   return nremoved;
 }
 
+static REPLACE_LIST *new_replace_list(void)
+{
+  return safe_calloc (1, sizeof (REPLACE_LIST));
+}
+
 static int add_to_replace_list (REPLACE_LIST **list, const char *pat, const char *templ, BUFFER *err)
 {
   REPLACE_LIST *t = NULL, *last = NULL;
@@ -684,7 +694,7 @@ static int add_to_replace_list (REPLACE_LIST **list, const char *pat, const char
    */
   if (!t)
   {
-    t = mutt_new_replace_list();
+    t = new_replace_list();
     t->rx = rx;
     rx = NULL;
     if (last)
@@ -1865,7 +1875,7 @@ static void set_default (struct option_t *p)
   }
 }
 
-static void mutt_restore_default (struct option_t *p)
+static void restore_default (struct option_t *p)
 {
   switch (p->type & DT_MASK)
   {
@@ -1936,7 +1946,7 @@ static void mutt_restore_default (struct option_t *p)
 	  {
 	    char msgbuf[STRING];
 	    regerror (retval, pp->rx, msgbuf, sizeof (msgbuf));
-	    fprintf (stderr, _("mutt_restore_default(%s): error in regexp: %s\n"),
+	    fprintf (stderr, _("restore_default(%s): error in regexp: %s\n"),
 		     p->option, pp->pattern);
 	    fprintf (stderr, "%s\n", msgbuf);
 	    mutt_sleep (0);
@@ -2268,7 +2278,7 @@ static int parse_set (BUFFER *tmp, BUFFER *s, unsigned long data, BUFFER *err)
 	  return (-1);
 	}
 	for (idx = 0; MuttVars[idx].option; idx++)
-	  mutt_restore_default (&MuttVars[idx]);
+	  restore_default (&MuttVars[idx]);
 	set_option (OPTFORCEREDRAWINDEX);
 	set_option (OPTFORCEREDRAWPAGER);
 	set_option (OPTSORTSUBTHREADS);
@@ -2283,7 +2293,7 @@ static int parse_set (BUFFER *tmp, BUFFER *s, unsigned long data, BUFFER *err)
         if (myvar)
           myvar_del (myvar);
         else
-          mutt_restore_default (&MuttVars[idx]);
+          restore_default (&MuttVars[idx]);
       }
     }
     else if (!myvar && DTYPE (MuttVars[idx].type) == DT_BOOL)
@@ -3641,7 +3651,7 @@ static void start_debug (void)
 }
 #endif
 
-static int mutt_execute_commands (LIST *p)
+static int execute_commands (LIST *p)
 {
   BUFFER err, token;
 
@@ -3666,7 +3676,7 @@ static int mutt_execute_commands (LIST *p)
   return 0;
 }
 
-static char* mutt_find_cfg (const char *home, const char *xdg_cfg_home)
+static char* find_cfg (const char *home, const char *xdg_cfg_home)
 {
   const char* names[] =
   {
@@ -3911,7 +3921,7 @@ void mutt_init (int skip_sys_rc, LIST *commands)
   for (i = 0; MuttVars[i].option; i++)
   {
     set_default (&MuttVars[i]);
-    mutt_restore_default (&MuttVars[i]);
+    restore_default (&MuttVars[i]);
   }
 
   CurrentMenu = MENU_MAIN;
@@ -3953,7 +3963,7 @@ void mutt_init (int skip_sys_rc, LIST *commands)
       xdg_cfg_home = buffer;
     }
 
-    char *config = mutt_find_cfg (Homedir, xdg_cfg_home);
+    char *config = find_cfg (Homedir, xdg_cfg_home);
     if (config)
     {
       Muttrc = mutt_add_list (Muttrc, config);
@@ -4049,7 +4059,7 @@ void mutt_init (int skip_sys_rc, LIST *commands)
     }
   }
 
-  if (mutt_execute_commands (commands) != 0)
+  if (execute_commands (commands) != 0)
     need_pause = 1;
 
   if (need_pause && !option (OPTNOCURSES))

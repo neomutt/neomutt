@@ -553,7 +553,7 @@ static int create_hcache_dir(const char *path)
 }
 
 /**
- * mutt_hcache_per_folder - Generate the hcache pathname
+ * hcache_per_folder - Generate the hcache pathname
  * @param path   Base directory, from $header_cache
  * @param folder Mailbox name (including protocol)
  * @param namer  Callback to generate database filename
@@ -577,7 +577,7 @@ static int create_hcache_dir(const char *path)
  * If ICONV isn't being used, then a suffix is added to the path, e.g. '-utf-8'.
  * Otherise @path is assumed to be a file.
  */
-static const char *mutt_hcache_per_folder(const char *path, const char *folder,
+static const char *hcache_per_folder(const char *path, const char *folder,
                                           hcache_namer_t namer)
 {
   static char hcpath[_POSIX_PATH_MAX];
@@ -631,7 +631,7 @@ static const char *mutt_hcache_per_folder(const char *path, const char *folder,
  * db_store.
  */
 static void *
-mutt_hcache_dump(header_cache_t *h, HEADER * header, int *off,
+hcache_dump(header_cache_t *h, HEADER * header, int *off,
                  unsigned int uidvalidity)
 {
   unsigned char *d = NULL;
@@ -786,7 +786,7 @@ mutt_hcache_open(const char *path, const char *folder, hcache_namer_t namer)
     return NULL;
   }
 
-  path = mutt_hcache_per_folder(path, h->folder, namer);
+  path = hcache_per_folder(path, h->folder, namer);
 
   h->ctx = ops->open(path);
   if (h->ctx)
@@ -874,7 +874,7 @@ mutt_hcache_store(header_cache_t *h, const char *key, size_t keylen,
   if (!h)
     return -1;
 
-  data = mutt_hcache_dump(h, header, &dlen, uidvalidity);
+  data = hcache_dump(h, header, &dlen, uidvalidity);
   ret = mutt_hcache_store_raw (h, key, keylen, data, dlen);
 
   FREE(&data);

@@ -76,7 +76,7 @@ void mutt_exit (int code)
   exit (code);
 }
 
-static void mutt_usage (void)
+static void usage (void)
 {
   puts (mutt_make_version ());
 
@@ -399,7 +399,7 @@ int main (int argc, char **argv, char **environ)
 	break;
 
       default:
-	mutt_usage ();
+	usage ();
       }
   }
 

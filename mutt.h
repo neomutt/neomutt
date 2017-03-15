@@ -640,16 +640,6 @@ static inline LIST *mutt_new_list(void)
   return safe_calloc (1, sizeof (LIST));
 }
 
-static inline RX_LIST *mutt_new_rx_list()
-{
-  return safe_calloc (1, sizeof (RX_LIST));
-}
-
-static inline REPLACE_LIST *mutt_new_replace_list()
-{
-  return safe_calloc (1, sizeof (REPLACE_LIST));
-}
-
 void mutt_free_list(LIST **list);
 void mutt_free_rx_list(RX_LIST **list);
 void mutt_free_replace_list(REPLACE_LIST **list);

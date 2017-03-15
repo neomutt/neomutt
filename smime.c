@@ -295,12 +295,12 @@ static const char *_mutt_fmt_smime_command (char *dest,
 
 
 
-static void mutt_smime_command (char *d, size_t dlen,
+static void smime_command (char *d, size_t dlen,
 				struct smime_command_context *cctx, const char *fmt)
 {
   mutt_FormatString (d, dlen, 0, MuttIndexWindow->cols, NONULL(fmt), _mutt_fmt_smime_command,
 		    (unsigned long) cctx, 0);
-  mutt_debug (2, "mutt_smime_command: %s\n", d);
+  mutt_debug (2, "smime_command: %s\n", d);
 }
 
 
@@ -333,7 +333,7 @@ static pid_t smime_invoke (FILE **smimein, FILE **smimeout, FILE **smimeerr,
   cctx.certificates    = certificates;
   cctx.intermediates   = intermediates;
 
-  mutt_smime_command (cmd, sizeof (cmd), &cctx, format);
+  smime_command (cmd, sizeof (cmd), &cctx, format);
 
   return mutt_create_filter_fd (cmd, smimein, smimeout, smimeerr,
 				smimeinfd, smimeoutfd, smimeerrfd);

@@ -664,7 +664,7 @@ int mbox_strict_cmp_headers (const HEADER *h1, const HEADER *h2)
   }
 }
 
-static int mutt_reopen_mailbox (CONTEXT *ctx, int *index_hint)
+static int reopen_mailbox (CONTEXT *ctx, int *index_hint)
 {
   int (*cmp_headers) (const HEADER *, const HEADER *) = NULL;
   HEADER **old_hdrs;
@@ -936,7 +936,7 @@ static int mbox_check_mailbox (CONTEXT *ctx, int *index_hint)
 
   if (modified)
   {
-    if (mutt_reopen_mailbox (ctx, index_hint) != -1)
+    if (reopen_mailbox (ctx, index_hint) != -1)
     {
       if (unlock)
       {

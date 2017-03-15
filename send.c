@@ -74,7 +74,7 @@ static void append_signature (FILE *f)
 }
 
 /* compare two e-mail addresses and return 1 if they are equivalent */
-static int mutt_addrcmp (ADDRESS *a, ADDRESS *b)
+static int addrcmp (ADDRESS *a, ADDRESS *b)
 {
   if (!a->mailbox || !b->mailbox)
     return 0;
@@ -84,11 +84,11 @@ static int mutt_addrcmp (ADDRESS *a, ADDRESS *b)
 }
 
 /* search an e-mail address in a list */
-static int mutt_addrsrc (ADDRESS *a, ADDRESS *lst)
+static int addrsrc (ADDRESS *a, ADDRESS *lst)
 {
   for (; lst; lst = lst->next)
   {
-    if (mutt_addrcmp (a, lst))
+    if (addrcmp (a, lst))
       return (1);
   }
   return (0);
@@ -104,7 +104,7 @@ ADDRESS *mutt_remove_xrefs (ADDRESS *a, ADDRESS *b)
   {
     for (p = a; p; p = p->next)
     {
-      if (mutt_addrcmp (p, b))
+      if (addrcmp (p, b))
 	break;
     }
     if (p)
@@ -522,12 +522,12 @@ static int default_to (ADDRESS **to, ENVELOPE *env, int flags, int hmfupto)
   }
   else if (env->reply_to)
   {
-    if ((mutt_addrcmp (env->from, env->reply_to) && !env->reply_to->next &&
+    if ((addrcmp (env->from, env->reply_to) && !env->reply_to->next &&
          !env->reply_to->personal) ||
 	(option (OPTIGNORELISTREPLYTO) &&
 	mutt_is_mail_list (env->reply_to) &&
-	(mutt_addrsrc (env->reply_to, env->to) ||
-	mutt_addrsrc (env->reply_to, env->cc))))
+	(addrsrc (env->reply_to, env->to) ||
+	addrsrc (env->reply_to, env->cc))))
     {
       /* If the Reply-To: address is a mailing list, assume that it was
        * put there by the mailing list, and use the From: address
@@ -539,7 +539,7 @@ static int default_to (ADDRESS **to, ENVELOPE *env, int flags, int hmfupto)
        */
       rfc822_append (to, env->from, 0);
     }
-    else if (!(mutt_addrcmp (env->from, env->reply_to) &&
+    else if (!(addrcmp (env->from, env->reply_to) &&
 	       !env->reply_to->next) &&
 	     quadoption (OPT_REPLYTO) != MUTT_YES)
     {
@@ -618,7 +618,7 @@ int mutt_fetch_recips (ENVELOPE *out, ENVELOPE *in, int flags)
   return 0;
 }
 
-static LIST *mutt_make_references(ENVELOPE *e)
+static LIST *make_references(ENVELOPE *e)
 {
   LIST *t = NULL, *l = NULL;
 
@@ -699,7 +699,7 @@ void mutt_add_to_reference_headers (ENVELOPE *env, ENVELOPE *curenv, LIST ***pp,
   while (*p) p = &(*p)->next;
   while (*q) q = &(*q)->next;
 
-  *p = mutt_make_references (curenv);
+  *p = make_references (curenv);
 
   if (curenv->message_id)
   {
@@ -717,7 +717,7 @@ void mutt_add_to_reference_headers (ENVELOPE *env, ENVELOPE *curenv, LIST ***pp,
 }
 
 static void
-mutt_make_reference_headers (ENVELOPE *curenv, ENVELOPE *env, CONTEXT *ctx)
+make_reference_headers (ENVELOPE *curenv, ENVELOPE *env, CONTEXT *ctx)
 {
   env->references = NULL;
   env->in_reply_to = NULL;
@@ -807,13 +807,13 @@ envelope_defaults (ENVELOPE *env, CONTEXT *ctx, HEADER *cur, int flags)
     }
 
     mutt_make_misc_reply_headers (env, ctx, cur, curenv);
-    mutt_make_reference_headers (tag ? NULL : curenv, env, ctx);
+    make_reference_headers (tag ? NULL : curenv, env, ctx);
   }
   else if (flags & SENDFORWARD)
   {
     mutt_make_forward_subject (env, ctx, cur);
     if (option (OPTFORWREF))
-      mutt_make_reference_headers (tag ? NULL : curenv, env, ctx);
+      make_reference_headers (tag ? NULL : curenv, env, ctx);
   }
 
   return (0);
@@ -1245,8 +1245,8 @@ static int has_recips (ADDRESS *a)
   return c;
 }
 
-int
-static mutt_search_attach_keyword (char *filename)
+static int
+mutt_search_attach_keyword (char *filename)
 {
   /* Search for the regex in AttachKeyword within a file */
   if (!AttachKeyword.rx)

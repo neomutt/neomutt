@@ -272,11 +272,11 @@ set_compress_info (CONTEXT *ctx)
 }
 
 /**
- * mutt_free_compress_info - Frees the compress info members and structure.
+ * free_compress_info - Frees the compress info members and structure.
  * @ctx: Mailbox to free compress_info for.
  */
 static void
-mutt_free_compress_info (CONTEXT *ctx)
+free_compress_info (CONTEXT *ctx)
 {
   COMPRESS_INFO *ci;
 
@@ -505,7 +505,7 @@ open_mailbox (CONTEXT *ctx)
 or_fail:
   /* remove the partial uncompressed file */
   remove (ctx->path);
-  mutt_free_compress_info (ctx);
+  free_compress_info (ctx);
   return -1;
 }
 
@@ -588,7 +588,7 @@ oa_fail2:
   remove (ctx->path);
 oa_fail1:
   /* Free the compress_info to prevent close from trying to recompress */
-  mutt_free_compress_info (ctx);
+  free_compress_info (ctx);
 
   return -1;
 }
@@ -617,7 +617,7 @@ close_mailbox (CONTEXT *ctx)
   struct mx_ops *ops = ci->child_ops;
   if (!ops)
   {
-    mutt_free_compress_info (ctx);
+    free_compress_info (ctx);
     return -1;
   }
 
@@ -665,7 +665,7 @@ close_mailbox (CONTEXT *ctx)
     unlock_realpath (ctx);
   }
 
-  mutt_free_compress_info (ctx);
+  free_compress_info (ctx);
 
   return 0;
 }

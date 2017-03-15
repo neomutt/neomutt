@@ -39,7 +39,7 @@ ADDRESS *mutt_lookup_alias (const char *s)
   return (NULL);   /* no such alias */
 }
 
-static ADDRESS *mutt_expand_aliases_r (ADDRESS *a, LIST **expn)
+static ADDRESS *expand_aliases_r (ADDRESS *a, LIST **expn)
 {
   ADDRESS *head = NULL, *last = NULL, *t, *w;
   LIST *u;
@@ -59,7 +59,7 @@ static ADDRESS *mutt_expand_aliases_r (ADDRESS *a, LIST **expn)
 	{
 	  if (mutt_strcmp (a->mailbox, u->data) == 0) /* alias already found */
 	  {
-	    mutt_debug (1, "mutt_expand_aliases_r(): loop in alias found for '%s'\n",
+	    mutt_debug (1, "expand_aliases_r(): loop in alias found for '%s'\n",
 		        a->mailbox);
 	    i = 1;
 	    break;
@@ -73,7 +73,7 @@ static ADDRESS *mutt_expand_aliases_r (ADDRESS *a, LIST **expn)
           u->next = *expn;
           *expn = u;
 	  w = rfc822_cpy_adr (t, 0);
-	  w = mutt_expand_aliases_r (w, expn);
+	  w = expand_aliases_r (w, expn);
 	  if (head)
 	    last->next = w;
 	  else
@@ -130,7 +130,7 @@ ADDRESS *mutt_expand_aliases (ADDRESS *a)
   ADDRESS *t;
   LIST *expn = NULL; /* previously expanded aliases to avoid loops */
 
-  t = mutt_expand_aliases_r (a, &expn);
+  t = expand_aliases_r (a, &expn);
   mutt_free_list (&expn);
   return (mutt_remove_duplicates (t));
 }

@@ -429,7 +429,7 @@ static void prepend_curdir (char *dst, size_t dstlen)
   dst[l + 2] = 0;
 }
 
-static int mutt_query_save_attachment (FILE *fp, BODY *body, HEADER *hdr, char **directory)
+static int query_save_attachment (FILE *fp, BODY *body, HEADER *hdr, char **directory)
 {
   char *prompt;
   char buf[_POSIX_PATH_MAX], tfile[_POSIX_PATH_MAX];
@@ -571,7 +571,7 @@ void mutt_save_attachment_list (FILE *fp, int tag, BODY *top, HEADER *hdr, MUTTM
 
 	  menu_redraw (menu);
 	}
-	if (mutt_query_save_attachment (fp, top, hdr, &directory) == -1)
+	if (query_save_attachment (fp, top, hdr, &directory) == -1)
 	  break;
       }
     }
@@ -596,7 +596,7 @@ void mutt_save_attachment_list (FILE *fp, int tag, BODY *top, HEADER *hdr, MUTTM
 }
 
 static void
-mutt_query_pipe_attachment (char *command, FILE *fp, BODY *body, int filter)
+query_pipe_attachment (char *command, FILE *fp, BODY *body, int filter)
 {
   char tfile[_POSIX_PATH_MAX];
   char warning[STRING+_POSIX_PATH_MAX];
@@ -668,7 +668,7 @@ pipe_attachment_list (char *command, FILE *fp, int tag, BODY *top, int filter,
       if (!filter && !option (OPTATTACHSPLIT))
 	pipe_attachment (fp, top, state);
       else
-	mutt_query_pipe_attachment (command, fp, top, filter);
+	query_pipe_attachment (command, fp, top, filter);
     }
     else if (top->parts)
       pipe_attachment_list (command, fp, tag, top->parts, filter, state);
@@ -811,7 +811,7 @@ void mutt_print_attachment_list (FILE *fp, int tag, BODY *top)
 }
 
 static void
-mutt_update_attach_index (BODY *cur, ATTACHPTR ***idxp,
+update_attach_index (BODY *cur, ATTACHPTR ***idxp,
 				      short *idxlen, short *idxmax,
 				      MUTTMENU *menu)
 {
@@ -879,7 +879,7 @@ mutt_attach_display_loop (MUTTMENU *menu, int op, FILE *fp, HEADER *hdr,
 	mutt_edit_content_type (hdr, idx[menu->current]->content, fp);
         if (idxmax)
         {
-	  mutt_update_attach_index (cur, idxp, idxlen, idxmax, menu);
+	  update_attach_index (cur, idxp, idxlen, idxmax, menu);
 	  idx = *idxp;
 	}
         op = OP_VIEW_ATTACH;
@@ -1036,7 +1036,7 @@ void mutt_view_attachments (HEADER *hdr)
 
   mutt_attach_init (cur);
   attach_collapse (cur, 0, 1, 0);
-  mutt_update_attach_index (cur, &idx, &idxlen, &idxmax, menu);
+  update_attach_index (cur, &idx, &idxlen, &idxmax, menu);
 
   while (true)
   {
@@ -1074,7 +1074,7 @@ void mutt_view_attachments (HEADER *hdr)
 	  attach_collapse (idx[menu->current]->content, 1, 0, 1);
         else
 	  attach_collapse (idx[menu->current]->content, 0, 1, 1);
-        mutt_update_attach_index (cur, &idx, &idxlen, &idxmax, menu);
+        update_attach_index (cur, &idx, &idxlen, &idxmax, menu);
         break;
 
       case OP_FORGET_PASSPHRASE:
@@ -1279,7 +1279,7 @@ void mutt_view_attachments (HEADER *hdr)
 
       case OP_EDIT_TYPE:
 	mutt_edit_content_type (hdr, idx[menu->current]->content, fp);
-        mutt_update_attach_index (cur, &idx, &idxlen, &idxmax, menu);
+        update_attach_index (cur, &idx, &idxlen, &idxmax, menu);
 	break;
 
       case OP_EXIT:

@@ -92,7 +92,7 @@ static void state_prefix_put (const char *d, size_t dlen, STATE *s)
     fwrite (d, dlen, 1, s->fpout);
 }
 
-static void mutt_convert_to_state(iconv_t cd, char *bufi, size_t *l, STATE *s)
+static void convert_to_state(iconv_t cd, char *bufi, size_t *l, STATE *s)
 {
   char bufo[BUFO_SIZE];
   ICONV_CONST char *ib;
@@ -131,7 +131,7 @@ static void mutt_convert_to_state(iconv_t cd, char *bufi, size_t *l, STATE *s)
   *l = ibl;
 }
 
-static void mutt_decode_xbit (STATE *s, long len, int istext, iconv_t cd)
+static void decode_xbit (STATE *s, long len, int istext, iconv_t cd)
 {
   int c, ch;
   char bufi[BUFI_SIZE];
@@ -156,11 +156,11 @@ static void mutt_decode_xbit (STATE *s, long len, int istext, iconv_t cd)
 
       bufi[l++] = c;
       if (l == sizeof (bufi))
-	mutt_convert_to_state (cd, bufi, &l, s);
+	convert_to_state (cd, bufi, &l, s);
     }
 
-    mutt_convert_to_state (cd, bufi, &l, s);
-    mutt_convert_to_state (cd, 0, 0, s);
+    convert_to_state (cd, bufi, &l, s);
+    convert_to_state (cd, 0, 0, s);
 
     state_reset_prefix (s);
   }
@@ -238,7 +238,7 @@ static void qp_decode_line (char *dest, char *src, size_t *l,
  * result of qp_decode_line.
  *
  * Finally, at soft line breaks, some part of a multibyte character
- * may have been left over by mutt_convert_to_state().  This shouldn't
+ * may have been left over by convert_to_state().  This shouldn't
  * be more than 6 characters, so STRING + 7 should be sufficient
  * memory to store the decoded data.
  *
@@ -247,7 +247,7 @@ static void qp_decode_line (char *dest, char *src, size_t *l,
  *
  */
 
-static void mutt_decode_quoted (STATE *s, long len, int istext, iconv_t cd)
+static void decode_quoted (STATE *s, long len, int istext, iconv_t cd)
 {
   char line[STRING];
   char decline[2*STRING];
@@ -294,10 +294,10 @@ static void mutt_decode_quoted (STATE *s, long len, int istext, iconv_t cd)
     /* decode and do character set conversion */
     qp_decode_line (decline + l, line, &l3, last);
     l += l3;
-    mutt_convert_to_state (cd, decline, &l, s);
+    convert_to_state (cd, decline, &l, s);
   }
 
-  mutt_convert_to_state (cd, 0, 0, s);
+  convert_to_state (cd, 0, 0, s);
   state_reset_prefix(s);
 }
 
@@ -374,13 +374,13 @@ void mutt_decode_base64 (STATE *s, long len, int istext, iconv_t cd)
       bufi[l++] = ch;
 
     if (l + 8 >= sizeof (bufi))
-      mutt_convert_to_state (cd, bufi, &l, s);
+      convert_to_state (cd, bufi, &l, s);
   }
 
   if (cr) bufi[l++] = '\r';
 
-  mutt_convert_to_state (cd, bufi, &l, s);
-  mutt_convert_to_state (cd, 0, 0, s);
+  convert_to_state (cd, bufi, &l, s);
+  convert_to_state (cd, 0, 0, s);
 
   state_reset_prefix(s);
 }
@@ -392,7 +392,7 @@ static unsigned char decode_byte (char ch)
   return ch - 32;
 }
 
-static void mutt_decode_uuencoded (STATE *s, long len, int istext, iconv_t cd)
+static void decode_uuencoded (STATE *s, long len, int istext, iconv_t cd)
 {
   char tmps[SHORT_STRING];
   char linelen, c, l, out;
@@ -433,13 +433,13 @@ static void mutt_decode_uuencoded (STATE *s, long len, int istext, iconv_t cd)
 	if (c == linelen)
 	  break;
       }
-      mutt_convert_to_state (cd, bufi, &k, s);
+      convert_to_state (cd, bufi, &k, s);
       pt++;
     }
   }
 
-  mutt_convert_to_state (cd, bufi, &k, s);
-  mutt_convert_to_state (cd, 0, 0, s);
+  convert_to_state (cd, bufi, &k, s);
+  convert_to_state (cd, 0, 0, s);
 
   state_reset_prefix(s);
 }
@@ -971,17 +971,17 @@ static int is_mmnoask (const char *buf)
  *
  * 0    otherwise
  */
-static int mutt_is_autoview (BODY *b)
+static int is_autoview (BODY *b)
 {
   char type[SHORT_STRING];
-  int is_autoview = 0;
+  int is_av = 0;
 
   snprintf (type, sizeof (type), "%s/%s", TYPE (b), b->subtype);
 
   if (option(OPTIMPLICITAUTOVIEW))
   {
     /* $implicit_autoview is essentially the same as "auto_view *" */
-    is_autoview = 1;
+    is_av = 1;
   }
   else
   {
@@ -994,17 +994,17 @@ static int mutt_is_autoview (BODY *b)
       if ((i > 0 && t->data[i-1] == '/' && t->data[i] == '*' &&
             ascii_strncasecmp (type, t->data, i) == 0) ||
           ascii_strcasecmp (type, t->data) == 0)
-        is_autoview = 1;
+        is_av = 1;
     }
 
     if (is_mmnoask (type))
-      is_autoview = 1;
+      is_av = 1;
   }
 
   /* determine if there is a mailcap entry suitable for auto_view
    *
    * WARNING: type is altered by this call as a result of `mime_lookup' support */
-  if (is_autoview)
+  if (is_av)
     return rfc1524_mailcap_lookup(b, type, NULL, MUTT_AUTOVIEW);
 
   return 0;
@@ -1090,7 +1090,7 @@ static int alternative_handler (BODY *a, STATE *s)
       b = a;
     while (b)
     {
-      if (mutt_is_autoview (b))
+      if (is_autoview (b))
 	choice = b;
       b = b->next;
     }
@@ -1234,7 +1234,7 @@ static int message_handler (BODY *a, STATE *s)
 /* returns 1 if decoding the attachment will produce output */
 int mutt_can_decode (BODY *a)
 {
-  if (mutt_is_autoview (a))
+  if (is_autoview (a))
     return 1;
   else if (a->type == TYPETEXT)
     return (1);
@@ -1586,16 +1586,16 @@ void mutt_decode_attachment (BODY *b, STATE *s)
   switch (b->encoding)
   {
     case ENCQUOTEDPRINTABLE:
-      mutt_decode_quoted (s, b->length, istext || ((WithCrypto & APPLICATION_PGP) && mutt_is_application_pgp (b)), cd);
+      decode_quoted (s, b->length, istext || ((WithCrypto & APPLICATION_PGP) && mutt_is_application_pgp (b)), cd);
       break;
     case ENCBASE64:
       mutt_decode_base64 (s, b->length, istext || ((WithCrypto & APPLICATION_PGP) && mutt_is_application_pgp (b)), cd);
       break;
     case ENCUUENCODED:
-      mutt_decode_uuencoded (s, b->length, istext || ((WithCrypto & APPLICATION_PGP) && mutt_is_application_pgp (b)), cd);
+      decode_uuencoded (s, b->length, istext || ((WithCrypto & APPLICATION_PGP) && mutt_is_application_pgp (b)), cd);
       break;
     default:
-      mutt_decode_xbit (s, b->length, istext || ((WithCrypto & APPLICATION_PGP) && mutt_is_application_pgp (b)), cd);
+      decode_xbit (s, b->length, istext || ((WithCrypto & APPLICATION_PGP) && mutt_is_application_pgp (b)), cd);
       break;
   }
 
@@ -1800,7 +1800,7 @@ int mutt_body_handler (BODY *b, STATE *s)
 
   /* first determine which handler to use to process this part */
 
-  if (mutt_is_autoview (b))
+  if (is_autoview (b))
   {
     handler = autoview_handler;
     s->flags &= ~MUTT_CHARCONV;

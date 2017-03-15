@@ -562,7 +562,7 @@ int safe_rename (const char *src, const char *target)
 
 /* Create a temporary directory next to a file name */
 
-static int mutt_mkwrapdir (const char *path, char *newfile, size_t nflen,
+static int mkwrapdir (const char *path, char *newfile, size_t nflen,
 		    char *newdir, size_t ndlen)
 {
   const char *basename;
@@ -585,14 +585,14 @@ static int mutt_mkwrapdir (const char *path, char *newfile, size_t nflen,
   snprintf (newdir, ndlen, "%s/%s", parent, ".muttXXXXXX");
   if (mkdtemp(newdir) == NULL)
   {
-      mutt_debug (1, "mutt_mkwrapdir: mkdtemp() failed\n");
+      mutt_debug (1, "mkwrapdir: mkdtemp() failed\n");
       return -1;
   }
 
   if (snprintf (newfile, nflen, "%s/%s", newdir, NONULL(basename)) >= nflen)
   {
       rmdir(newdir);
-      mutt_debug (1, "mutt_mkwrapdir: string was truncated\n");
+      mutt_debug (1, "mkwrapdir: string was truncated\n");
       return -1;
   }
   return 0;
@@ -638,7 +638,7 @@ int mutt_rmtree (const char* path)
   return rc;
 }
 
-static int mutt_put_file_in_place (const char *path, const char *safe_file, const char *safe_dir)
+static int put_file_in_place (const char *path, const char *safe_file, const char *safe_dir)
 {
   int rv;
 
@@ -658,7 +658,7 @@ int safe_open (const char *path, int flags)
     char safe_file[_POSIX_PATH_MAX];
     char safe_dir[_POSIX_PATH_MAX];
 
-    if (mutt_mkwrapdir (path, safe_file, sizeof (safe_file),
+    if (mkwrapdir (path, safe_file, sizeof (safe_file),
 			safe_dir, sizeof (safe_dir)) == -1)
       return -1;
 
@@ -670,7 +670,7 @@ int safe_open (const char *path, int flags)
 
     /* NFS and I believe cygwin do not handle movement of open files well */
     close (fd);
-    if (mutt_put_file_in_place (path, safe_file, safe_dir) == -1)
+    if (put_file_in_place (path, safe_file, safe_dir) == -1)
       return -1;
   }
 

@@ -880,12 +880,11 @@ static void vfolder_entry (char *s, size_t slen, MUTTMENU *menu, int num)
 }
 #endif
 
-/* Public function
- *
+/*
  * This function takes a menu and a state and defines the current
  * entry that should be highlighted.
  */
-static void mutt_browser_highlight_default (struct browser_state *state, MUTTMENU *menu)
+static void browser_highlight_default (struct browser_state *state, MUTTMENU *menu)
 {
   menu->top = 0;
   /* Reset menu position to 1.
@@ -981,10 +980,10 @@ static void init_menu (struct browser_state *state, MUTTMENU *menu, char *title,
       }
     }
     if (!matched)
-      mutt_browser_highlight_default(state, menu);
+      browser_highlight_default(state, menu);
   }
   else
-    mutt_browser_highlight_default(state, menu);
+    browser_highlight_default(state, menu);
 
   menu->redraw = REDRAW_FULL;
 }
@@ -1388,7 +1387,7 @@ void _mutt_select_file (char *f, size_t flen, int flags, char ***files, int *num
 		goto bail;
 	      }
 	    }
-            mutt_browser_highlight_default (&state, menu);
+            browser_highlight_default (&state, menu);
 	    init_menu (&state, menu, title, sizeof (title), buffy);
             if (GotoSwapper[0])
               GotoSwapper[0] = '\0';
@@ -1488,7 +1487,7 @@ void _mutt_select_file (char *f, size_t flen, int flags, char ***files, int *num
 	  imap_browse (LastDir, &state);
 	  browser_sort (&state);
 	  menu->data = state.entry;
-          mutt_browser_highlight_default (&state, menu);
+          browser_highlight_default (&state, menu);
 	  init_menu (&state, menu, title, sizeof (title), buffy);
 	  MAYBE_REDRAW (menu->redraw);
 	}
@@ -1510,7 +1509,7 @@ void _mutt_select_file (char *f, size_t flen, int flags, char ***files, int *num
 	    imap_browse (LastDir, &state);
 	    browser_sort (&state);
 	    menu->data = state.entry;
-            mutt_browser_highlight_default (&state, menu);
+            browser_highlight_default (&state, menu);
 	    init_menu (&state, menu, title, sizeof (title), buffy);
 	    MAYBE_REDRAW (menu->redraw);
 	  }
@@ -1596,7 +1595,7 @@ void _mutt_select_file (char *f, size_t flen, int flags, char ***files, int *num
 	    imap_browse (LastDir, &state);
 	    browser_sort (&state);
 	    menu->data = state.entry;
-            mutt_browser_highlight_default (&state, menu);
+            browser_highlight_default (&state, menu);
 	    init_menu (&state, menu, title, sizeof (title), buffy);
 	  }
 	  else
@@ -1626,7 +1625,7 @@ void _mutt_select_file (char *f, size_t flen, int flags, char ***files, int *num
 		    goto bail;
 		  }
 		}
-                mutt_browser_highlight_default (&state, menu);
+                browser_highlight_default (&state, menu);
 		init_menu (&state, menu, title, sizeof (title), buffy);
 	      }
 	      else
@@ -1758,7 +1757,7 @@ void _mutt_select_file (char *f, size_t flen, int flags, char ***files, int *num
 	  {
 	    BrowserSort |= reverse ? SORT_REVERSE : 0;
 	    browser_sort (&state);
-            mutt_browser_highlight_default (&state, menu);
+            browser_highlight_default (&state, menu);
 	    menu->redraw = REDRAW_FULL;
 	  }
 	  break;

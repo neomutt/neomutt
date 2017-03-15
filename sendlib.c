@@ -1160,7 +1160,7 @@ void mutt_message_to_7bit (BODY *a, FILE *fp)
 }
 
 /* determine which Content-Transfer-Encoding to use */
-static void mutt_set_encoding (BODY *b, CONTENT *info)
+static void set_encoding (BODY *b, CONTENT *info)
 {
   char send_charset[SHORT_STRING];
 
@@ -1241,7 +1241,7 @@ void mutt_update_encoding (BODY *a)
   if ((info = mutt_get_content_info (a->filename, a)) == NULL)
     return;
 
-  mutt_set_encoding (a, info);
+  set_encoding (a, info);
   mutt_stamp_attachment(a);
 
   FREE (&a->content);
@@ -1398,14 +1398,14 @@ static int get_toplevel_encoding (BODY *a)
 }
 
 /* check for duplicate boundary. return 1 if duplicate */
-static int mutt_check_boundary (const char* boundary, BODY *b)
+static int check_boundary (const char* boundary, BODY *b)
 {
   char* p;
 
-  if (b->parts && mutt_check_boundary (boundary, b->parts))
+  if (b->parts && check_boundary (boundary, b->parts))
     return 1;
 
-  if (b->next && mutt_check_boundary (boundary, b->next))
+  if (b->next && check_boundary (boundary, b->next))
     return 1;
 
   if ((p = mutt_get_parameter ("boundary", b->parameter))
@@ -1425,7 +1425,7 @@ BODY *mutt_make_multipart (BODY *b)
   do
   {
     mutt_generate_boundary (&new->parameter);
-    if (mutt_check_boundary (mutt_get_parameter ("boundary", new->parameter),
+    if (check_boundary (mutt_get_parameter ("boundary", new->parameter),
 			     b))
       mutt_delete_parameter ("boundary", &new->parameter);
   }
@@ -2151,7 +2151,7 @@ const char *mutt_fqdn(short may_hide_host)
   return p;
 }
 
-static char *mutt_gen_msgid (void)
+static char *gen_msgid (void)
 {
   char buf[SHORT_STRING];
   time_t now;
@@ -2556,7 +2556,7 @@ void mutt_prepare_envelope (ENVELOPE *env, int final)
     mutt_set_followup_to (env);
 
     if (!env->message_id)
-      env->message_id = mutt_gen_msgid ();
+      env->message_id = gen_msgid ();
   }
 
   /* Take care of 8-bit => 7-bit conversion. */
@@ -2630,7 +2630,7 @@ static int _mutt_bounce_message (FILE *fp, HEADER *h, ADDRESS *to, const char *r
     fseeko (fp, h->offset, 0);
     fprintf (f, "Resent-From: %s", resent_from);
     fprintf (f, "\nResent-%s", mutt_make_date (date, sizeof(date)));
-    msgid_str = mutt_gen_msgid();
+    msgid_str = gen_msgid();
     fprintf (f, "Resent-Message-ID: %s\n", msgid_str);
     fputs ("Resent-To: ", f);
     mutt_write_address_list (to, f, 11, 0);

@@ -484,7 +484,7 @@ static void insert_message (THREAD **new, THREAD *newparent, THREAD *cur)
   *new = cur;
 }
 
-static HASH *mutt_make_subj_hash (CONTEXT *ctx)
+static HASH *make_subj_hash (CONTEXT *ctx)
 {
   int i;
   HEADER *hdr;
@@ -509,7 +509,7 @@ static void pseudo_threads (CONTEXT *ctx)
   THREAD *tmp, *cur, *parent, *curchild, *nextchild;
 
   if (!ctx->subj_hash)
-    ctx->subj_hash = mutt_make_subj_hash (ctx);
+    ctx->subj_hash = make_subj_hash (ctx);
 
   while (tree)
   {

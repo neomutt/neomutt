@@ -51,7 +51,7 @@ group_t *mutt_pattern_group (const char *k)
   return p;
 }
 
-static void mutt_group_remove (group_t *g)
+static void group_remove (group_t *g)
 {
   if (!g)
     return;
@@ -67,7 +67,7 @@ int mutt_group_context_clear (group_context_t **ctx)
   group_context_t *t;
   for ( ; ctx && *ctx; (*ctx) = t)
   {
-    mutt_group_remove ((*ctx)->g);
+    group_remove ((*ctx)->g);
     t = (*ctx)->next;
     FREE(ctx);				/* __FREE_CHECKED__ */
   }
@@ -103,7 +103,7 @@ void mutt_group_context_destroy (group_context_t **ctx)
   }
 }
 
-static void mutt_group_add_adrlist (group_t *g, ADDRESS *a)
+static void group_add_adrlist (group_t *g, ADDRESS *a)
 {
   ADDRESS **p, *q;
 
@@ -120,7 +120,7 @@ static void mutt_group_add_adrlist (group_t *g, ADDRESS *a)
   *p = q;
 }
 
-static int mutt_group_remove_adrlist (group_t *g, ADDRESS *a)
+static int group_remove_adrlist (group_t *g, ADDRESS *a)
 {
   ADDRESS *p;
 
@@ -135,12 +135,12 @@ static int mutt_group_remove_adrlist (group_t *g, ADDRESS *a)
   return 0;
 }
 
-static int mutt_group_add_rx (group_t *g, const char *s, int flags, BUFFER *err)
+static int group_add_rx (group_t *g, const char *s, int flags, BUFFER *err)
 {
   return mutt_add_to_rx_list (&g->rs, s, flags, err);
 }
 
-static int mutt_group_remove_rx (group_t *g, const char *s)
+static int group_remove_rx (group_t *g, const char *s)
 {
   return mutt_remove_from_rx_list (&g->rs, s);
 }
@@ -148,7 +148,7 @@ static int mutt_group_remove_rx (group_t *g, const char *s)
 void mutt_group_context_add_adrlist (group_context_t *ctx, ADDRESS *a)
 {
   for (; ctx; ctx = ctx->next)
-    mutt_group_add_adrlist (ctx->g, a);
+    group_add_adrlist (ctx->g, a);
 }
 
 int mutt_group_context_remove_adrlist (group_context_t *ctx, ADDRESS * a)
@@ -157,9 +157,9 @@ int mutt_group_context_remove_adrlist (group_context_t *ctx, ADDRESS * a)
 
   for (; (!rv) && ctx; ctx = ctx->next)
   {
-    rv = mutt_group_remove_adrlist (ctx->g, a);
+    rv = group_remove_adrlist (ctx->g, a);
     if (empty_group (ctx->g))
-      mutt_group_remove (ctx->g);
+      group_remove (ctx->g);
   }
 
   return rv;
@@ -170,7 +170,7 @@ int mutt_group_context_add_rx (group_context_t *ctx, const char *s, int flags, B
   int rv = 0;
 
   for (; (!rv) && ctx; ctx = ctx->next)
-    rv = mutt_group_add_rx (ctx->g, s, flags, err);
+    rv = group_add_rx (ctx->g, s, flags, err);
 
   return rv;
 }
@@ -181,9 +181,9 @@ int mutt_group_context_remove_rx (group_context_t *ctx, const char *s)
 
   for (; (!rv) && ctx; ctx = ctx->next)
   {
-    rv = mutt_group_remove_rx (ctx->g, s);
+    rv = group_remove_rx (ctx->g, s);
     if (empty_group (ctx->g))
-      mutt_group_remove (ctx->g);
+      group_remove (ctx->g);
   }
 
   return rv;

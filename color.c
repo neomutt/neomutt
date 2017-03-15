@@ -128,7 +128,7 @@ static const struct mapping_t Fields[] =
 
 #define COLOR_QUOTE_INIT	8
 
-static COLOR_LINE *mutt_new_color_line (void)
+static COLOR_LINE *new_color_line (void)
 {
   COLOR_LINE *p = safe_calloc (1, sizeof (COLOR_LINE));
 
@@ -137,7 +137,7 @@ static COLOR_LINE *mutt_new_color_line (void)
   return (p);
 }
 
-static void mutt_free_color_line(COLOR_LINE **l,
+static void free_color_line(COLOR_LINE **l,
 				 int free_colors)
 {
   COLOR_LINE *tmp;
@@ -391,8 +391,8 @@ parse_color_name (const char *s, int *col, int *attr, int is_fg, BUFFER *err)
 #endif
 
 
-void
-mutt_do_uncolor (BUFFER *buf, BUFFER *s, COLOR_LINE **ColorList,
+static void
+do_uncolor (BUFFER *buf, BUFFER *s, COLOR_LINE **ColorList,
                  int *do_cache, int parse_uncolor)
 {
   COLOR_LINE *tmp, *last = NULL;
@@ -410,7 +410,7 @@ mutt_do_uncolor (BUFFER *buf, BUFFER *s, COLOR_LINE **ColorList,
         }
         last = tmp;
         tmp = tmp->next;
-        mutt_free_color_line (&last, parse_uncolor);
+        free_color_line (&last, parse_uncolor);
       }
       *ColorList = NULL;
     }
@@ -434,7 +434,7 @@ mutt_do_uncolor (BUFFER *buf, BUFFER *s, COLOR_LINE **ColorList,
 	  {
             *ColorList = tmp->next;
           }
-          mutt_free_color_line (&tmp, parse_uncolor);
+          free_color_line (&tmp, parse_uncolor);
           break;
         }
       }
@@ -505,22 +505,22 @@ static int _mutt_parse_uncolor (BUFFER *buf, BUFFER *s, unsigned long data,
   }
 
   if (object == MT_COLOR_BODY)
-    mutt_do_uncolor (buf, s, &ColorBodyList, &do_cache, parse_uncolor);
+    do_uncolor (buf, s, &ColorBodyList, &do_cache, parse_uncolor);
   else if (object == MT_COLOR_HEADER)
-    mutt_do_uncolor (buf, s, &ColorHdrList, &do_cache, parse_uncolor);
+    do_uncolor (buf, s, &ColorHdrList, &do_cache, parse_uncolor);
   else if (object == MT_COLOR_ATTACH_HEADERS)
-    mutt_do_uncolor (buf, s, &ColorAttachList, &do_cache, parse_uncolor);
+    do_uncolor (buf, s, &ColorAttachList, &do_cache, parse_uncolor);
   else if (object == MT_COLOR_INDEX)
-    mutt_do_uncolor (buf, s, &ColorIndexList, &do_cache, parse_uncolor);
+    do_uncolor (buf, s, &ColorIndexList, &do_cache, parse_uncolor);
   else if (object == MT_COLOR_INDEX_AUTHOR)
-    mutt_do_uncolor (buf, s, &ColorIndexAuthorList, &do_cache, parse_uncolor);
+    do_uncolor (buf, s, &ColorIndexAuthorList, &do_cache, parse_uncolor);
   else if (object == MT_COLOR_INDEX_FLAGS)
-    mutt_do_uncolor (buf, s, &ColorIndexFlagsList, &do_cache, parse_uncolor);
+    do_uncolor (buf, s, &ColorIndexFlagsList, &do_cache, parse_uncolor);
   else if (object == MT_COLOR_INDEX_SUBJECT)
-    mutt_do_uncolor (buf, s, &ColorIndexSubjectList, &do_cache, parse_uncolor);
+    do_uncolor (buf, s, &ColorIndexSubjectList, &do_cache, parse_uncolor);
 #ifdef USE_NOTMUCH
   else if (object == MT_COLOR_INDEX_TAG)
-    mutt_do_uncolor(buf, s, &ColorIndexTagList, &do_cache, parse_uncolor);
+    do_uncolor(buf, s, &ColorIndexTagList, &do_cache, parse_uncolor);
 #endif
 
   if (do_cache && !option (OPTNOCURSES))
@@ -601,7 +601,7 @@ add_pattern (COLOR_LINE **top, const char *s, int sensitive,
     int r;
     char buf[LONG_STRING];
 
-    tmp = mutt_new_color_line ();
+    tmp = new_color_line ();
     if (is_index)
     {
       int i;
@@ -610,7 +610,7 @@ add_pattern (COLOR_LINE **top, const char *s, int sensitive,
       mutt_check_simple (buf, sizeof (buf), NONULL(SimpleSearch));
       if((tmp->color_pattern = mutt_pattern_comp (buf, MUTT_FULL_MSG, err)) == NULL)
       {
-	mutt_free_color_line(&tmp, 1);
+	free_color_line(&tmp, 1);
 	return -1;
       }
       /* force re-caching of index colors */
@@ -620,7 +620,7 @@ add_pattern (COLOR_LINE **top, const char *s, int sensitive,
     else if ((r = REGCOMP (&tmp->rx, s, (sensitive ? mutt_which_case (s) : REG_ICASE))) != 0)
     {
       regerror (r, &tmp->rx, err->data, err->dsize);
-      mutt_free_color_line(&tmp, 1);
+      free_color_line(&tmp, 1);
       return (-1);
     }
     tmp->next = *top;
