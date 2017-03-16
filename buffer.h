@@ -13,8 +13,8 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef BUFFER_INCLUDED
-#define BUFFER_INCLUDED
+#ifndef _MUTT_BUFFER_H
+#define _MUTT_BUFFER_H 1
 
 #include <sys/types.h>
 
@@ -44,5 +44,4 @@ void mutt_buffer_addstr(BUFFER *buf, const char *s);
 void mutt_buffer_addch(BUFFER *buf, char c);
 int mutt_extract_token(BUFFER *dest, BUFFER *tok, int flags);
 
-#endif
-
+#endif /* _MUTT_BUFFER_H */

@@ -15,8 +15,8 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _HASH_H
-#define _HASH_H
+#ifndef _MUTT_HASH_H
+#define _MUTT_HASH_H 1
 
 union hash_key
 {
@@ -74,4 +74,4 @@ struct hash_walk_state {
 
 struct hash_elem *hash_walk(const HASH *table, struct hash_walk_state *state);
 
-#endif
+#endif /* _MUTT_HASH_H */

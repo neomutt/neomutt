@@ -15,8 +15,8 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _RFC1524_H
-#define _RFC1524_H
+#ifndef _MUTT_RFC1524_H
+#define _MUTT_RFC1524_H 1
 
 typedef struct rfc1524_mailcap_entry {
   char *command;
@@ -38,4 +38,4 @@ int rfc1524_expand_filename(char *nametemplate, char *oldfile, char *newfile, si
 int rfc1524_mailcap_lookup(BODY *a, char *type, rfc1524_entry *entry, int opt);
 int mutt_rename_file(char *oldfile, char *newfile);
 
-#endif /* _RFC1524_H */
+#endif /* _MUTT_RFC1524_H */

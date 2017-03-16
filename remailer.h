@@ -1,6 +1,3 @@
-#ifndef _REMAILER_H
-#define _REMAILER_H
-
 /**
  * Copyright (C) 1999-2000 Thomas Roessler <roessler@does-not-exist.org>
  *
@@ -21,6 +18,9 @@
 /*
  * Mixmaster support for Mutt
  */
+
+#ifndef _MUTT_REMAILER_H
+#define _MUTT_REMAILER_H 1
 
 #ifdef MIXMASTER
 
@@ -59,4 +59,4 @@ void mix_make_chain(LIST **chainp, int *redraw);
 
 #endif /* MIXMASTER */
 
-#endif /* _REMAILER_H */
+#endif /* _MUTT_REMAILER_H */

@@ -18,8 +18,8 @@
 /* common defs for authenticators. A good place to set up a generic callback
  * system */
 
-#ifndef _IMAP_AUTH_H
-#define _IMAP_AUTH_H 1
+#ifndef _MUTT_IMAP_AUTH_H
+#define _MUTT_IMAP_AUTH_H 1
 
 typedef enum
 {
@@ -52,4 +52,4 @@ imap_auth_res_t imap_auth_gss (IMAP_DATA* idata, const char* method);
 imap_auth_res_t imap_auth_sasl (IMAP_DATA* idata, const char* method);
 #endif
 
-#endif /* _IMAP_AUTH_H */
+#endif /* _MUTT_IMAP_AUTH_H */

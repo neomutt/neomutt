@@ -17,8 +17,8 @@
 
 /* remote host account manipulation (POP/IMAP) */
 
-#ifndef _MUTT_ACCOUNT_H_
-#define _MUTT_ACCOUNT_H_ 1
+#ifndef _MUTT_ACCOUNT_H
+#define _MUTT_ACCOUNT_H 1
 
 #include "url.h"
 
@@ -58,4 +58,4 @@ int mutt_account_getlogin (ACCOUNT* account);
 int mutt_account_getpass (ACCOUNT* account);
 void mutt_account_unsetpass (ACCOUNT* account);
 
-#endif /* _MUTT_ACCOUNT_H_ */
+#endif /* _MUTT_ACCOUNT_H */

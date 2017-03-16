@@ -15,6 +15,9 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#ifndef _MUTT_GLOBALS_H
+#define _MUTT_GLOBALS_H 1
+
 WHERE void (*mutt_error) (const char *, ...);
 WHERE void (*mutt_message) (const char *, ...);
 
@@ -350,3 +353,5 @@ extern const char * const Months[];
 #include "mutt_crypt.h"
 #include "git-ver.h"
 #endif /* MAIN_C */
+
+#endif /* _MUTT_GLOBALS_H */

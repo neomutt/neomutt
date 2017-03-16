@@ -15,8 +15,9 @@
  * You should have received a copy of the GNU General Public License along with
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef _BCACHE_H_
-#define _BCACHE_H_ 1
+
+#ifndef _MUTT_BCACHE_H
+#define _MUTT_BCACHE_H 1
 
 #include "account.h"
 
@@ -75,4 +76,4 @@ int mutt_bcache_list(body_cache_t *bcache,
 		     int (*want_id)(const char *id, body_cache_t *bcache,
 				    void *data), void *data);
 
-#endif /* _BCACHE_H_ */
+#endif /* _MUTT_BCACHE_H */

@@ -20,7 +20,7 @@
 /* This file was originally part of mutt-ng */
 
 #ifndef _MUTT_RFC3676_H
-#define _MUTT_RFC3676_H
+#define _MUTT_RFC3676_H 1
 
 #include "mutt.h"
 
@@ -30,4 +30,4 @@ int rfc3676_handler(BODY *a, STATE *s);
 /* this does the space-stuffing for RfC3676 style messages */
 void rfc3676_space_stuff(HEADER *hdr);
 
-#endif /* !_MUTT_RFC3676_H */
+#endif /* _MUTT_RFC3676_H */

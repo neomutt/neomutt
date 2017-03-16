@@ -16,6 +16,8 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#ifndef _MUTT_PROTOS_H
+#define _MUTT_PROTOS_H 1
 
 #ifdef HAVE_INTTYPES_H
 # include <inttypes.h>
@@ -495,3 +497,4 @@ int wcscasecmp(const wchar_t *a, const wchar_t *b);
 char *strcasestr(const char *s1, const char *s2);
 #endif
 
+#endif /* _MUTT_PROTOS_H */

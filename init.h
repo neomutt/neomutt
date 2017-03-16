@@ -16,6 +16,9 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#ifndef _MUTT_INIT_H
+#define _MUTT_INIT_H 1
+
 #ifdef _MAKEDOC
 # include "config.h"
 # include "doc/makedoc-defs.h"
@@ -4525,3 +4528,5 @@ const struct command_t Commands[] = {
   { "unsubscribe",	parse_unsubscribe,	0 },
   { NULL,		NULL,			0 }
 };
+
+#endif /* _MUTT_INIT_H */

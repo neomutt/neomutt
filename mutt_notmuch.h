@@ -16,7 +16,7 @@
  */
 
 #ifndef _MUTT_NOTMUCH_H
-#define _MUTT_NOTMUCH_H
+#define _MUTT_NOTMUCH_H 1
 
 #include <stdbool.h>
 

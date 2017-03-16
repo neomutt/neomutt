@@ -16,8 +16,8 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _MUTT_CURSES_H_
-#define _MUTT_CURSES_H_ 1
+#ifndef _MUTT_CURSES_H
+#define _MUTT_CURSES_H 1
 
 #ifdef USE_SLANG_CURSES
 
@@ -258,4 +258,4 @@ void ci_start_color (void);
 
 #define MAYBE_REDRAW(x) if (option (OPTNEEDREDRAW)) { unset_option (OPTNEEDREDRAW); x = REDRAW_FULL; }
 
-#endif /* _MUTT_CURSES_H_ */
+#endif /* _MUTT_CURSES_H */

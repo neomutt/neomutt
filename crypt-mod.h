@@ -15,8 +15,8 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef CRYPTOGRAPHY_H
-#define CRYPTOGRAPHY_H
+#ifndef _MUTT_CRYPT_MOD_H
+#define _MUTT_CRYPT_MOD_H 1
 
 #include "mutt.h"
 #include "mutt_crypt.h"
@@ -134,4 +134,4 @@ crypt_module_specs_t crypto_module_lookup (int identifier);
 #define CRYPT_MOD_CALL(identifier, func) \
   *(crypto_module_lookup (APPLICATION_ ## identifier))->functions.func
 
-#endif
+#endif /* _MUTT_CRYPT_MOD_H */

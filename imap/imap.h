@@ -16,8 +16,8 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _IMAP_H
-#define _IMAP_H 1
+#ifndef _MUTT_IMAP_H
+#define _MUTT_IMAP_H 1
 
 #include "account.h"
 #include "browser.h"
@@ -73,4 +73,4 @@ void imap_get_parent (char *output, const char *mbox, size_t olen, char delim);
 void imap_get_parent_path (char *output, const char *path, size_t olen);
 void imap_clean_path (char *path, size_t plen);
 
-#endif
+#endif /* _MUTT_IMAP_H */

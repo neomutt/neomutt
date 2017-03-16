@@ -16,8 +16,8 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef MUTT_H
-#define MUTT_H
+#ifndef _MUTT_H
+#define _MUTT_H 1
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -1157,8 +1157,4 @@ typedef struct
 #include "lib.h"
 #include "globals.h"
 
-#endif /*MUTT_H*/
-
-
-
-
+#endif /* _MUTT_H */

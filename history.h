@@ -15,8 +15,8 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _HISTORY_H
-#define _HISTORY_H
+#ifndef _MUTT_HISTORY_H
+#define _MUTT_HISTORY_H 1
 
 enum history_class
 {
@@ -44,4 +44,4 @@ void mutt_reset_history_state(history_class_t hclass);
 int mutt_history_at_scratch(history_class_t hclass);
 void mutt_history_save_scratch(history_class_t hclass, const char *s);
 
-#endif
+#endif /* _MUTT_HISTORY_H */

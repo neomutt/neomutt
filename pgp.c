@@ -55,8 +55,6 @@
 # include <sys/resource.h>
 #endif
 
-#ifdef CRYPT_BACKEND_CLASSIC_PGP
-
 #include "mutt_crypt.h"
 #include "mutt_menu.h"
 
@@ -1806,5 +1804,3 @@ int pgp_send_menu (HEADER *msg, int *redraw)
   return (msg->security);
 }
 
-
-#endif /* CRYPT_BACKEND_CLASSIC_PGP */

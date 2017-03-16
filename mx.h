@@ -21,8 +21,8 @@
  * generic mailbox api.  None of these functions should be called directly.
  */
 
-#ifndef _MX_H
-#define _MX_H
+#ifndef _MUTT_MX_H
+#define _MUTT_MX_H 1
 
 #include "mailbox.h"
 #include "buffy.h"
@@ -89,4 +89,4 @@ extern struct mx_ops mx_mbox_ops;
 extern struct mx_ops mx_mh_ops;
 extern struct mx_ops mx_mmdf_ops;
 
-#endif
+#endif /* _MUTT_MX_H */

@@ -15,14 +15,13 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-
 /*
  * Versions of the string comparison functions which are
  * locale-insensitive.
  */
 
-#ifndef _ASCII_H
-# define _ASCII_H
+#ifndef _MUTT_ASCII_H
+#define _MUTT_ASCII_H 1
 
 #include <ctype.h>
 
@@ -44,4 +43,4 @@ static inline char* ascii_strlower (char *s)
   return s;
 }
 
-#endif
+#endif /* _MUTT_ASCII_H */

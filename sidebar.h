@@ -17,8 +17,8 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef SIDEBAR_H
-#define SIDEBAR_H
+#ifndef _MUTT_SIDEBAR_H
+#define _MUTT_SIDEBAR_H 1
 
 #include "mutt.h"
 #include "buffy.h"
@@ -31,4 +31,4 @@ void         mutt_sb_set_buffystats (const CONTEXT *ctx);
 void         mutt_sb_set_open_buffy (void);
 void         mutt_sb_toggle_virtual (void);
 
-#endif /* SIDEBAR_H */
+#endif /* _MUTT_SIDEBAR_H */

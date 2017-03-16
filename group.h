@@ -16,8 +16,8 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _MUTT_GROUP_H_
-#define _MUTT_GROUP_H_ 1
+#ifndef _MUTT_GROUP_H
+#define _MUTT_GROUP_H 1
 
 #define MUTT_GROUP   0
 #define MUTT_UNGROUP 1
@@ -33,4 +33,4 @@ int mutt_group_context_clear(group_context_t **ctx);
 int mutt_group_context_remove_rx(group_context_t *ctx, const char *s);
 int mutt_group_context_remove_adrlist(group_context_t *ctx, ADDRESS *a);
 
-#endif /* _MUTT_GROUP_H_ */
+#endif /* _MUTT_GROUP_H */

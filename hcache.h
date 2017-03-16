@@ -18,8 +18,8 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _HCACHE_H_
-#define _HCACHE_H_ 1
+#ifndef _MUTT_HCACHE_H
+#define _MUTT_HCACHE_H 1
 
 #include "mutt.h"
 
@@ -157,4 +157,4 @@ int
 mutt_hcache_is_valid_backend(const char *s);
 
 
-#endif /* _HCACHE_H_ */
+#endif /* _MUTT_HCACHE_H */

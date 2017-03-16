@@ -17,6 +17,9 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#ifndef _MUTT_PGP_H
+#define _MUTT_PGP_H 1
+
 #ifdef CRYPT_BACKEND_CLASSIC_PGP
 
 #include "mutt_crypt.h"
@@ -90,3 +93,5 @@ BODY *pgp_sign_message(BODY *a);
 int pgp_send_menu(HEADER *msg, int *redraw);
 
 #endif /* CRYPT_BACKEND_CLASSIC_PGP */
+
+#endif /* _MUTT_PGP_H */

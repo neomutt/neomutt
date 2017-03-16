@@ -15,6 +15,9 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#ifndef _MUTT_MIME_H
+#define _MUTT_MIME_H 1
+
 /* Content-Type */
 enum
 {
@@ -76,3 +79,5 @@ extern const char *BodyEncodings[];
 #ifndef _SENDLIB_C
 extern char MimeSpecials[];
 #endif
+
+#endif /* _MUTT_MIME_H */

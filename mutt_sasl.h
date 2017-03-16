@@ -17,8 +17,8 @@
 
 /* common SASL helper routines */
 
-#ifndef _MUTT_SASL_H_
-#define _MUTT_SASL_H_ 1
+#ifndef _MUTT_SASL_H
+#define _MUTT_SASL_H 1
 
 #include <sasl/sasl.h>
 
@@ -50,4 +50,4 @@ typedef struct
 }
 SASL_DATA;
 
-#endif /* _MUTT_SASL_H_ */
+#endif /* _MUTT_SASL_H */

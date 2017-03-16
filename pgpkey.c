@@ -36,8 +36,6 @@
 
 #include <locale.h>
 
-#ifdef CRYPT_BACKEND_CLASSIC_PGP
-
 struct pgp_cache
 {
   char *what;
@@ -1030,4 +1028,3 @@ out:
   return NULL;
 }
 
-#endif /* CRYPT_BACKEND_CLASSIC_PGP */

@@ -16,8 +16,8 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _IMAP_PRIVATE_H
-#define _IMAP_PRIVATE_H 1
+#ifndef _MUTT_IMAP_PRIVATE_H
+#define _MUTT_IMAP_PRIVATE_H 1
 
 #include "account.h"
 #include "imap.h"
@@ -309,4 +309,4 @@ void imap_utf_decode (IMAP_DATA *idata, char **s);
 #define imap_hcache_keylen mutt_strlen
 #endif /* USE_HCACHE */
 
-#endif
+#endif /* _MUTT_IMAP_PRIVATE_H */

@@ -15,8 +15,8 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _MAILBOX_H
-#define _MAILBOX_H
+#ifndef _MUTT_MAILBOX_H
+#define _MUTT_MAILBOX_H 1
 
 /* flags for mutt_open_mailbox() */
 #define MUTT_NOSORT     (1<<0) /* do not sort the mailbox after opening it */
@@ -88,4 +88,4 @@ int mx_check_empty(const char *path);
 int mx_is_maildir(const char *path);
 int mx_is_mh(const char *path);
 
-#endif
+#endif /* _MUTT_MAILBOX_H */

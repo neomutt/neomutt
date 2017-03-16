@@ -15,6 +15,9 @@
 
 /* build complete documentation */
 
+#ifndef _MUTT_MAKEDOC_DEFS_H
+#define _MUTT_MAKEDOC_DEFS_H 1
+
 #ifdef MAKEDOC_FULL
 # ifndef CRYPT_BACKEND_GPGME
 #  define CRYPT_BACKEND_GPGME
@@ -83,3 +86,5 @@
 #  define USE_LUA
 # endif
 #endif
+
+#endif /* _MUTT_MAKEDOC_DEFS_H */

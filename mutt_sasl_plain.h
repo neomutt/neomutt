@@ -15,8 +15,8 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _MUTT_SASL_PLAIN_H_
-#define _MUTT_SASL_PLAIN_H_
+#ifndef _MUTT_SASL_PLAIN_H
+#define _MUTT_SASL_PLAIN_H 1
 
 #include <stdlib.h> /* for size_t */
 
@@ -42,4 +42,4 @@
 size_t mutt_sasl_plain_msg(char *buf, size_t buflen, const char *cmd,
                            const char *authz, const char *user, const char *pass);
 
-#endif /* _MUTT_SASL_PLAIN_H_ */
+#endif /* _MUTT_SASL_PLAIN_H */

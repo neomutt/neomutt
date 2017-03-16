@@ -13,11 +13,11 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _MUTT_TUNNEL_H_
-#define _MUTT_TUNNEL_H_ 1
+#ifndef _MUTT_TUNNEL_H
+#define _MUTT_TUNNEL_H 1
 
 #include "mutt_socket.h"
 
 int mutt_tunnel_socket_setup(CONNECTION *conn);
 
-#endif /* _MUTT_TUNNEL_H_ */
+#endif /* _MUTT_TUNNEL_H */

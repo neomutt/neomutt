@@ -16,8 +16,8 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _COMPRESS_H_
-#define _COMPRESS_H_
+#ifndef _MUTT_COMPRESS_H
+#define _MUTT_COMPRESS_H 1
 
 int mutt_comp_can_append    (CONTEXT *ctx);
 int mutt_comp_can_read      (const char *path);
@@ -25,4 +25,4 @@ int mutt_comp_valid_command (const char *cmd);
 
 extern struct mx_ops mx_comp_ops;
 
-#endif /* _COMPRESS_H_ */
+#endif /* _MUTT_COMPRESS_H */

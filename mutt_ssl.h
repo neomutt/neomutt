@@ -15,8 +15,8 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _MUTT_SSL_H_
-#define _MUTT_SSL_H_ 1
+#ifndef _MUTT_SSL_H
+#define _MUTT_SSL_H 1
 
 #include "mutt_socket.h"
 
@@ -25,4 +25,4 @@ int mutt_ssl_starttls (CONNECTION* conn);
 int mutt_ssl_socket_setup (CONNECTION *conn);
 #endif
 
-#endif /* _MUTT_SSL_H_ */
+#endif /* _MUTT_SSL_H */

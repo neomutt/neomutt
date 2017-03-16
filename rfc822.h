@@ -16,8 +16,8 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef rfc822_h
-#define rfc822_h
+#ifndef _MUTT_RFC822_H
+#define _MUTT_RFC822_H 1
 
 #include "lib.h"
 
@@ -70,4 +70,4 @@ static inline ADDRESS *rfc822_new_address (void)
   return safe_calloc (1, sizeof (ADDRESS));
 }
 
-#endif /* rfc822_h */
+#endif /* _MUTT_RFC822_H */

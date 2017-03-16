@@ -18,8 +18,8 @@
 
 /* message.c data structures */
 
-#ifndef MESSAGE_H
-#define MESSAGE_H 1
+#ifndef _MUTT_IMAP_MESSAGE_H
+#define _MUTT_IMAP_MESSAGE_H 1
 
 /* -- data structures -- */
 /* IMAP-specific header data, stored as HEADER->data */
@@ -52,4 +52,4 @@ typedef struct
 /* -- macros -- */
 #define HEADER_DATA(ph) ((IMAP_HEADER_DATA*) ((ph)->data))
 
-#endif /* MESSAGE_H */
+#endif /* _MUTT_IMAP_MESSAGE_H */

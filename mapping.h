@@ -15,8 +15,8 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef MAPPING_H
-#define MAPPING_H
+#ifndef _MUTT_MAPPING_H
+#define _MUTT_MAPPING_H 1
 
 struct mapping_t
 {
@@ -29,4 +29,4 @@ char *mutt_compile_help(char *buf, size_t buflen, int menu, const struct mapping
 
 int mutt_getvaluebyname(const char *name, const struct mapping_t *map);
 
-#endif
+#endif /* _MUTT_MAPPING_H */

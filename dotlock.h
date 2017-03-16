@@ -16,8 +16,8 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _DOTLOCK_H
-#define _DOTLOCK_H
+#ifndef _MUTT_DOTLOCK_H
+#define _MUTT_DOTLOCK_H 1
 
 /* exit values */
 
@@ -42,4 +42,4 @@
 int dotlock_invoke (const char *, int, int, int);
 #endif
 
-#endif
+#endif /* _MUTT_DOTLOCK_H */

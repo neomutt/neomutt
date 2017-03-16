@@ -15,6 +15,9 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#ifndef _MUTT_FUNCTIONS_H
+#define _MUTT_FUNCTIONS_H 1
+
 /*
  * This file contains the structures needed to parse ``bind'' commands, as
  * well as the default bindings for each menu.
@@ -565,3 +568,5 @@ const struct binding_t OpMix[] = { /* map: mixmaster */
 };
 #endif /* MIXMASTER */
 // clang-format on
+
+#endif /* _MUTT_FUNCTIONS_H */

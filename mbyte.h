@@ -13,8 +13,8 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _MBYTE_H
-# define _MBYTE_H
+#ifndef _MUTT_MBYTE_H
+#define _MUTT_MBYTE_H 1
 
 # ifdef HAVE_WC_FUNCS
 #  ifdef HAVE_WCHAR_H
@@ -65,4 +65,4 @@ extern int Charset_is_utf8;
 wchar_t replacement_char(void);
 int is_display_corrupting_utf8(wchar_t wc);
 
-#endif /* _MBYTE_H */
+#endif /* _MUTT_MBYTE_H */

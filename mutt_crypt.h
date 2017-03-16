@@ -21,8 +21,8 @@
    all defined in crypt.c and cryptglue.c
 */
 
-#ifndef MUTT_CRYPT_H
-#define MUTT_CRYPT_H
+#ifndef _MUTT_CRYPT_H
+#define _MUTT_CRYPT_H 1
 
 #include "mutt.h"        /* Need this to declare BODY, ADDRESS. STATE etc. */
 /* FIXME: They should be pointer to anonymous structures for better
@@ -285,4 +285,4 @@ int crypt_smime_verify_one (BODY *sigbdy, STATE *s, const char *tempf);
 
 void crypt_init (void);
 
-#endif /*MUTT_CRYPT_H*/
+#endif /* _MUTT_CRYPT_H */

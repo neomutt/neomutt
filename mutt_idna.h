@@ -16,7 +16,7 @@
  */
 
 #ifndef _MUTT_IDNA_H
-# define _MUTT_IDNA_H
+#define _MUTT_IDNA_H 1
 
 #include "rfc822.h"
 #include "charset.h"
@@ -52,4 +52,4 @@ int mutt_env_to_intl(ENVELOPE *env, char **tag, char **err);
 
 const char *mutt_addr_for_display (ADDRESS *a);
 
-#endif
+#endif /* _MUTT_IDNA_H */

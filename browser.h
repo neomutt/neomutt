@@ -15,8 +15,8 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _BROWSER_H
-#define _BROWSER_H 1
+#ifndef _MUTT_BROWSER_H
+#define _MUTT_BROWSER_H 1
 
 #ifdef USE_NNTP
 #include "nntp.h"
@@ -66,4 +66,5 @@ struct browser_state
   unsigned unmarked : 1;
 #endif
 };
-#endif /* _BROWSER_H */
+
+#endif /* _MUTT_BROWSER_H */

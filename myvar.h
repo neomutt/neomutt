@@ -13,8 +13,8 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef MYVAR_INCLUDED
-#define MYVAR_INCLUDED
+#ifndef _MUTT_MYVAR_H
+#define _MUTT_MYVAR_H 1
 
 #include <sys/types.h>
 
@@ -22,5 +22,4 @@ const char *myvar_get(const char *var);
 int var_to_string(int idx, char *val, size_t len);
 int mutt_option_index(const char *s);
 
-#endif
-
+#endif /* _MUTT_MYVAR_H */

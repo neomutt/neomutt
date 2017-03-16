@@ -19,8 +19,8 @@
  * This file is named mutt_menu.h so it doesn't collide with ncurses menu.h
  */
 
-#ifndef _MUTT_MENU_H_
-#define _MUTT_MENU_H_ 1
+#ifndef _MUTT_MENU_H
+#define _MUTT_MENU_H 1
 
 #include "keymap.h"
 #include "mutt_regex.h"
@@ -127,4 +127,4 @@ int index_color(int index_no);
 
 int mutt_limit_current_thread (HEADER *h);
 
-#endif /* _MUTT_MENU_H_ */
+#endif /* _MUTT_MENU_H */

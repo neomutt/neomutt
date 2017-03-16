@@ -15,8 +15,8 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef MUTT_OPTIONS_H
-#define MUTT_OPTIONS_H
+#ifndef _MUTT_OPTIONS_H
+#define _MUTT_OPTIONS_H 1
 
 #include "mutt.h"
 
@@ -58,4 +58,4 @@ int mutt_option_to_string(const struct option_t *opt, char *val, size_t len);
 const struct option_t *mutt_option_get(const char *s);
 int mutt_option_set(const struct option_t *val, BUFFER *err);
 
-#endif
+#endif /* _MUTT_OPTIONS_H */

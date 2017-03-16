@@ -15,6 +15,9 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#ifndef _MUTT_SORT_H
+#define _MUTT_SORT_H 1
+
 #define SORT_DATE	1   /* the date the mail was sent. */
 #define SORT_SIZE	2
 #define SORT_SUBJECT	3
@@ -73,3 +76,5 @@ WHERE short PgpSortKeys INITVAL (SORT_ADDRESS);
 
 #include "mapping.h"
 extern const struct mapping_t SortMethods[];
+
+#endif /* _MUTT_SORT_H */

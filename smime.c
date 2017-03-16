@@ -47,8 +47,6 @@
 # include <sys/resource.h>
 #endif
 
-#ifdef CRYPT_BACKEND_CLASSIC_SMIME
-
 #include "mutt_crypt.h"
 
 struct smime_command_context {
@@ -2278,5 +2276,3 @@ int smime_send_menu (HEADER *msg, int *redraw)
   return (msg->security);
 }
 
-
-#endif /* CRYPT_BACKEND_CLASSIC_SMIME */

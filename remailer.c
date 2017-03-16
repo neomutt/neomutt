@@ -38,8 +38,6 @@
 #include <sys/file.h>
 #include <fcntl.h>
 
-#ifdef MIXMASTER
-
 struct coord
 {
   short r, c;
@@ -753,5 +751,3 @@ int mix_send_message (LIST *chain, const char *tempfile)
   return i;
 }
 
-
-#endif

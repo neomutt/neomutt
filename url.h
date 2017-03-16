@@ -13,8 +13,8 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _URL_H
-# define _URL_H
+#ifndef _MUTT_URL_H
+#define _MUTT_URL_H 1
 
 #include "mutt.h"
 
@@ -57,4 +57,4 @@ int url_ciss_tostring(ciss_url_t *ciss, char *dest, size_t len, int flags);
 int url_parse_mailto(ENVELOPE *e, char **body, const char *src);
 int url_pct_decode(char *s);
 
-#endif
+#endif /* _MUTT_URL_H */

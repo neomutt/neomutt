@@ -15,11 +15,11 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _VERSION_H_
-#define _VERSION_H_
+#ifndef _MUTT_VERSION_H
+#define _MUTT_VERSION_H 1
 
 void print_version (void);
 void print_copyright (void);
 int feature_enabled (const char *name);
 
-#endif /* _VERSION_H_ */
+#endif /* _MUTT_VERSION_H */

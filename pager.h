@@ -15,6 +15,9 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#ifndef _MUTT_PAGER_H
+#define _MUTT_PAGER_H 1
+
 #include "attach.h"
 
 /* dynamic internal flags */
@@ -48,3 +51,5 @@ typedef struct
 int mutt_do_pager(const char *banner, const char *tempfile, int do_color, pager_t *info);
 int mutt_pager(const char *banner, const char *fname, int flags, pager_t *extra);
 void update_index(MUTTMENU *menu, CONTEXT *ctx, int check, int oldcount, int index_hint);
+
+#endif /* _MUTT_PAGER_H */

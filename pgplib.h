@@ -16,6 +16,9 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#ifndef _MUTT_PGPLIB_H
+#define _MUTT_PGPLIB_H 1
+
 #ifdef CRYPT_BACKEND_CLASSIC_PGP
 
 #include "mutt_crypt.h"
@@ -84,3 +87,5 @@ static inline pgp_key_t pgp_new_keyinfo(void)
 }
 
 #endif /* CRYPT_BACKEND_CLASSIC_PGP */
+
+#endif /* _MUTT_PGPLIB_H */

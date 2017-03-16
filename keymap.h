@@ -15,8 +15,8 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef KEYMAP_H
-#define KEYMAP_H
+#ifndef _MUTT_KEYMAP_H
+#define _MUTT_KEYMAP_H 1
 
 #include "mapping.h"
 
@@ -118,4 +118,4 @@ extern const struct binding_t OpMix[];
 
 #include "keymap_defs.h"
 
-#endif /* KEYMAP_H */
+#endif /* _MUTT_KEYMAP_H */

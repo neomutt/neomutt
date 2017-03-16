@@ -18,8 +18,8 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _HCACHE_BACKEND_H_
-#define _HCACHE_BACKEND_H_
+#ifndef _MUTT_HCACHE_BACKEND_H
+#define _MUTT_HCACHE_BACKEND_H 1
 
 #include <stdlib.h> /* for size_t */
 
@@ -128,4 +128,4 @@ typedef struct
     .backend = hcache_##_name##_backend       \
   };
 
-#endif /* _HCACHE_BACKEND_H_ */
+#endif /* _MUTT_HCACHE_BACKEND_H */

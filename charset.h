@@ -15,8 +15,8 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _CHARSET_H
-#define _CHARSET_H
+#ifndef _MUTT_CHARSET_H
+#define _MUTT_CHARSET_H 1
 
 #include <iconv.h>
 
@@ -50,4 +50,4 @@ char *mutt_get_default_charset (void);
  */
 int mutt_check_charset (const char *s, int strict);
 
-#endif /* _CHARSET_H */
+#endif /* _MUTT_CHARSET_H */

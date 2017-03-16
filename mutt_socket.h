@@ -16,8 +16,8 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _MUTT_SOCKET_H_
-#define _MUTT_SOCKET_H_ 1
+#ifndef _MUTT_SOCKET_H
+#define _MUTT_SOCKET_H 1
 
 #include "account.h"
 #include "lib.h"
@@ -71,4 +71,4 @@ int raw_socket_open(CONNECTION *conn);
 int raw_socket_close(CONNECTION *conn);
 int raw_socket_poll(CONNECTION *conn);
 
-#endif /* _MUTT_SOCKET_H_ */
+#endif /* _MUTT_SOCKET_H */

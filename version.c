@@ -29,7 +29,7 @@
 #include <idn/stringprep.h>
 #endif
 #ifdef USE_SLANG_CURSES
-#include "slang.h"
+#include <slang.h>
 #endif
 
 #include "lib.h"

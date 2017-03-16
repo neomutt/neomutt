@@ -16,7 +16,7 @@
  */
 
 #ifndef _MUTT_LUA_H
-#define _MUTT_LUA_H
+#define _MUTT_LUA_H 1
 
 #include "mutt.h"
 

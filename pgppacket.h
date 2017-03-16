@@ -20,8 +20,8 @@
  * by mutt proper and the PGP public key ring lister.
  */
 
-#ifndef _PGPPACKET_H
-# define _PGPPACKET_H
+#ifndef _MUTT_PGPPACKET_H
+#define _MUTT_PGPPACKET_H 1
 
 enum packet_tags
 {
@@ -47,4 +47,4 @@ enum packet_tags
 unsigned char *pgp_read_packet(FILE *fp, size_t *len);
 void pgp_release_packet(void);
 
-#endif
+#endif /* _MUTT_PGPPACKET_H */

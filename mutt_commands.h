@@ -15,8 +15,8 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef MUTT_COMMANDS_H
-#define MUTT_COMMANDS_H
+#ifndef _MUTT_COMMANDS_H
+#define _MUTT_COMMANDS_H 1
 
 #include "mutt.h"
 
@@ -30,4 +30,4 @@ struct command_t
 const struct command_t *mutt_command_get(const char *s);
 void mutt_commands_apply(void *data, void (*application)(void *, const struct command_t *));
 
-#endif
+#endif /* _MUTT_COMMANDS_H */

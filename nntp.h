@@ -17,8 +17,8 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _NNTP_H_
-#define _NNTP_H_ 1
+#ifndef _MUTT_NNTP_H
+#define _MUTT_NNTP_H 1
 
 #include "mutt_socket.h"
 #include "mailbox.h"
@@ -162,4 +162,4 @@ void nntp_hcache_update(NNTP_DATA *nntp_data, header_cache_t *hc);
 
 extern struct mx_ops mx_nntp_ops;
 
-#endif /* _NNTP_H_ */
+#endif /* _MUTT_NNTP_H */

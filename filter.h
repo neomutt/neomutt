@@ -13,8 +13,8 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef FILTER_INCLUDED
-#define FILTER_INCLUDED
+#ifndef _MUTT_FILTER_H
+#define _MUTT_FILTER_H 1
 
 #include <unistd.h>
 #include <stdio.h>
@@ -24,5 +24,4 @@ pid_t mutt_create_filter_fd(const char *cmd, FILE **in, FILE **out, FILE **err,
 pid_t mutt_create_filter(const char *s, FILE **in, FILE **out, FILE **err);
 int mutt_wait_filter(pid_t pid);
 
-#endif
-
+#endif /* _MUTT_FILTER_H */

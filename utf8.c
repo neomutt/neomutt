@@ -15,8 +15,6 @@
 
 #include "config.h"
 
-#ifndef HAVE_WC_FUNCS
-
 #include <sys/types.h>
 #include <errno.h>
 
@@ -91,4 +89,3 @@ int mutt_wctoutf8 (char *s, unsigned int c, size_t buflen)
   return -1;
 }
 
-#endif /* !HAVE_WC_FUNCS */

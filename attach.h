@@ -17,8 +17,8 @@
 
 /* common protos for compose / attach menus */
 
-#ifndef _ATTACH_H_
-#define _ATTACH_H_ 1
+#ifndef _MUTT_ATTACH_H
+#define _MUTT_ATTACH_H 1
 
 #include "mutt_menu.h"
 
@@ -52,4 +52,5 @@ void mutt_attach_forward(FILE *fp, HEADER *hdr, ATTACHPTR **idx, short idxlen,
                          BODY *cur, int flags);
 void mutt_attach_reply(FILE *fp, HEADER *hdr, ATTACHPTR **idx, short idxlen,
                        BODY *cur, int flags);
-#endif /* _ATTACH_H_ */
+
+#endif /* _MUTT_ATTACH_H */

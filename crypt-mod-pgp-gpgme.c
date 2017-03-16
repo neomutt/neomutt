@@ -21,8 +21,6 @@
 
 #include "config.h"
 
-#ifdef CRYPT_BACKEND_GPGME
-
 #include "crypt-mod.h"
 #include "crypt-gpgme.h"
 
@@ -140,4 +138,3 @@ struct crypt_module_specs crypt_mod_pgp_gpgme =
     }
   };
 
-#endif

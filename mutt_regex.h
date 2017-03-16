@@ -19,8 +19,8 @@
  * A (more) generic interface to regular expression matching
  */
 
-#ifndef MUTT_REGEX_H
-#define MUTT_REGEX_H
+#ifndef _MUTT_REGEX_H
+#define _MUTT_REGEX_H 1
 
 #include <regex.h>
 
@@ -47,4 +47,4 @@ WHERE REGEXP ReplyRegexp;
 WHERE REGEXP Smileys;
 WHERE REGEXP GecosMask;
 
-#endif /* MUTT_REGEX_H */
+#endif /* _MUTT_REGEX_H */

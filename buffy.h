@@ -15,8 +15,8 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _BUFFY_H
-#define _BUFFY_H
+#ifndef _MUTT_BUFFY_H
+#define _MUTT_BUFFY_H 1
 
 /*parameter to mutt_parse_mailboxes*/
 #define MUTT_MAILBOXES   1
@@ -68,4 +68,4 @@ void mutt_buffy_setnotified (const char *path);
 
 int mh_buffy (BUFFY *mailbox, int check_stats);
 
-#endif /* _BUFFY_H */
+#endif /* _MUTT_BUFFY_H */

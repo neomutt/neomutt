@@ -15,6 +15,9 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#ifndef _MUTT_COPY_H
+#define _MUTT_COPY_H 1
+
 /* flags to _mutt_copy_message */
 #define MUTT_CM_NOHEADER        1       /* don't copy the message header */
 #define MUTT_CM_PREFIX          (1<<1)  /* quote the message */
@@ -66,3 +69,5 @@ int _mutt_copy_message(FILE *fpout, FILE *fpin, HEADER *hdr, BODY *body,
 int mutt_copy_message(FILE *fpout, CONTEXT *src, HEADER *hdr, int flags, int chflags);
 
 int mutt_append_message(CONTEXT *dest, CONTEXT *src, HEADER *hdr, int cmflags, int chflags);
+
+#endif /* _MUTT_COPY_H */

@@ -15,8 +15,8 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _POP_H
-#define _POP_H 1
+#ifndef _MUTT_POP_H
+#define _MUTT_POP_H 1
 
 #include "mailbox.h"
 #include "mutt_socket.h"
@@ -108,4 +108,4 @@ void pop_fetch_mail(void);
 
 extern struct mx_ops mx_pop_ops;
 
-#endif
+#endif /* _MUTT_POP_H */

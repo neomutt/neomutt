@@ -18,8 +18,8 @@
 
 /* mutt functions which are generally useful. */
 
-#ifndef _LIB_H
-# define _LIB_H
+#ifndef _MUTT_LIB_H
+#define _MUTT_LIB_H 1
 
 # include <stdio.h>
 # include <string.h>
@@ -206,4 +206,5 @@ void safe_realloc (void *, size_t);
 int  mutt_inbox_cmp (const char *a, const char *b);
 
 const char *mutt_strsysexit(int e);
-#endif
+
+#endif /* _MUTT_LIB_H */

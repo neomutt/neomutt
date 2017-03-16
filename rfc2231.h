@@ -15,6 +15,11 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#ifndef _MUTT_RFC2231_H
+#define _MUTT_RFC2231_H 1
+
 void rfc2231_decode_parameters(PARAMETER **headp);
 int rfc2231_encode_string(char **pd);
 
+
+#endif /* _MUTT_RFC2231_H */

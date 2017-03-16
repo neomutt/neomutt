@@ -16,6 +16,8 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#ifndef _MUTT_SMIME_H
+#define _MUTT_SMIME_H 1
 
 #ifdef CRYPT_BACKEND_CLASSIC_SMIME
 
@@ -59,4 +61,4 @@ int smime_send_menu(HEADER *msg, int *redraw);
 
 #endif
 
-
+#endif /* _MUTT_SMIME_H */

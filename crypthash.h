@@ -13,8 +13,8 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _CRYPTHASH_H
-# define _CRYPTHASH_H
+#ifndef _MUTT_CRYPTHASH_H
+#define _MUTT_CRYPTHASH_H 1
 
 
 # include <sys/types.h>
@@ -29,4 +29,4 @@
 /* POINTER defines a generic pointer type */
 typedef unsigned char *POINTER;
 
-#endif
+#endif /* _MUTT_CRYPTHASH_H */

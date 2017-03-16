@@ -15,6 +15,9 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#ifndef _MUTT_RFC2047_H
+#define _MUTT_RFC2047_H 1
+
 char *mutt_choose_charset(const char *fromcode, const char *charsets, char *u,
                           size_t ulen, char **d, size_t *dlen);
 int convert_nonmime_string(char **ps);
@@ -26,3 +29,5 @@ void rfc2047_encode_adrlist(ADDRESS *addr, const char *tag);
 
 void rfc2047_decode(char **pd);
 void rfc2047_decode_adrlist(ADDRESS *a);
+
+#endif /* _MUTT_RFC2047_H */

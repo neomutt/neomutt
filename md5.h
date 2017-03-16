@@ -22,8 +22,8 @@
  * Library.  Bugs can be reported to bug-glibc@prep.ai.mit.edu.
  */
 
-#ifndef _MD5_H
-#define _MD5_H 1
+#ifndef _MUTT_MD5_H
+#define _MUTT_MD5_H 1
 
 #include <stdio.h>
 
@@ -127,4 +127,4 @@ extern int __md5_stream (FILE *stream, void *resblock) __THROW;
 extern void *__md5_buffer (const char *buffer, size_t len,
 			   void *resblock) __THROW;
 
-#endif /* md5.h */
+#endif /* _MUTT_MD5_H */
