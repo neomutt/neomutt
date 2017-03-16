@@ -448,7 +448,7 @@ execute_command (CONTEXT *ctx, const char *command, const char *progress)
 }
 
 /**
- * open_mailbox - Open a compressed mailbox
+ * comp_open_mailbox - Open a compressed mailbox
  * @ctx: Mailbox to open
  *
  * Set up a compressed mailbox to be read.
@@ -457,7 +457,7 @@ execute_command (CONTEXT *ctx, const char *command, const char *progress)
  * messages.
  */
 static int
-open_mailbox (CONTEXT *ctx)
+comp_open_mailbox (CONTEXT *ctx)
 {
   if (!ctx || (ctx->magic != MUTT_COMPRESSED))
     return -1;
@@ -510,7 +510,7 @@ or_fail:
 }
 
 /**
- * open_append_mailbox - Open a compressed mailbox for appending
+ * comp_open_append_mailbox - Open a compressed mailbox for appending
  * @ctx:   Mailbox to open
  * @flags: e.g. Does the file already exist?
  *
@@ -522,7 +522,7 @@ or_fail:
  *      -1: Failure
  */
 static int
-open_append_mailbox (CONTEXT *ctx, int flags)
+comp_open_append_mailbox (CONTEXT *ctx, int flags)
 {
   if (!ctx)
     return -1;
@@ -594,7 +594,7 @@ oa_fail1:
 }
 
 /**
- * close_mailbox - Close a compressed mailbox
+ * comp_close_mailbox - Close a compressed mailbox
  * @ctx: Mailbox to close
  *
  * If the mailbox has been changed then re-compress the tmp file.
@@ -605,7 +605,7 @@ oa_fail1:
  *      -1: Failure
  */
 static int
-close_mailbox (CONTEXT *ctx)
+comp_close_mailbox (CONTEXT *ctx)
 {
   if (!ctx)
     return -1;
@@ -671,7 +671,7 @@ close_mailbox (CONTEXT *ctx)
 }
 
 /**
- * check_mailbox - Check for changes in the compressed file
+ * comp_check_mailbox - Check for changes in the compressed file
  * @ctx: Mailbox
  *
  * If the compressed file changes in size but the mailbox hasn't been changed
@@ -687,7 +687,7 @@ close_mailbox (CONTEXT *ctx)
  *      -1:             Mailbox bad
  */
 static int
-check_mailbox (CONTEXT *ctx, int *index_hint)
+comp_check_mailbox (CONTEXT *ctx, int *index_hint)
 {
   if (!ctx)
     return -1;
@@ -721,10 +721,10 @@ check_mailbox (CONTEXT *ctx, int *index_hint)
 
 
 /**
- * open_message - Delegated to mbox handler
+ * comp_open_message - Delegated to mbox handler
  */
 static int
-open_message (CONTEXT *ctx,  MESSAGE *msg, int msgno)
+comp_open_message (CONTEXT *ctx,  MESSAGE *msg, int msgno)
 {
   if (!ctx)
     return -1;
@@ -742,10 +742,10 @@ open_message (CONTEXT *ctx,  MESSAGE *msg, int msgno)
 }
 
 /**
- * close_message - Delegated to mbox handler
+ * comp_close_message - Delegated to mbox handler
  */
 static int
-close_message (CONTEXT *ctx, MESSAGE *msg)
+comp_close_message (CONTEXT *ctx, MESSAGE *msg)
 {
   if (!ctx)
     return -1;
@@ -763,10 +763,10 @@ close_message (CONTEXT *ctx, MESSAGE *msg)
 }
 
 /**
- * commit_message - Delegated to mbox handler
+ * comp_commit_message - Delegated to mbox handler
  */
 static int
-commit_message (CONTEXT *ctx, MESSAGE *msg)
+comp_commit_message (CONTEXT *ctx, MESSAGE *msg)
 {
   if (!ctx)
     return -1;
@@ -784,10 +784,10 @@ commit_message (CONTEXT *ctx, MESSAGE *msg)
 }
 
 /**
- * open_new_message - Delegated to mbox handler
+ * comp_open_new_message - Delegated to mbox handler
  */
 static int
-open_new_message (MESSAGE *msg, CONTEXT *ctx, HEADER *hdr)
+comp_open_new_message (MESSAGE *msg, CONTEXT *ctx, HEADER *hdr)
 {
   if (!ctx)
     return -1;
@@ -863,10 +863,10 @@ mutt_comp_can_read (const char *path)
 }
 
 /**
- * sync_mailbox - Save changes to the compressed mailbox file
+ * comp_sync_mailbox - Save changes to the compressed mailbox file
  * @ctx: Mailbox to sync
  *
- * Changes in Mutt only affect the tmp file.  Calling sync_mailbox()
+ * Changes in Mutt only affect the tmp file.  Calling comp_sync_mailbox()
  * will commit them to the compressed file.
  *
  * Returns:
@@ -874,7 +874,7 @@ mutt_comp_can_read (const char *path)
  *      -1: Failure
  */
 static int
-sync_mailbox (CONTEXT *ctx, int *index_hint)
+comp_sync_mailbox (CONTEXT *ctx, int *index_hint)
 {
   if (!ctx)
     return -1;
@@ -899,7 +899,7 @@ sync_mailbox (CONTEXT *ctx, int *index_hint)
     return -1;
   }
 
-  int rc = check_mailbox (ctx, index_hint);
+  int rc = comp_check_mailbox (ctx, index_hint);
   if (rc != 0)
     goto sync_cleanup;
 
@@ -951,14 +951,14 @@ mutt_comp_valid_command (const char *cmd)
  */
 struct mx_ops mx_comp_ops =
 {
-  .open         = open_mailbox,
-  .open_append  = open_append_mailbox,
-  .close        = close_mailbox,
-  .check        = check_mailbox,
-  .sync         = sync_mailbox,
-  .open_msg     = open_message,
-  .close_msg    = close_message,
-  .commit_msg   = commit_message,
-  .open_new_msg = open_new_message
+  .open         = comp_open_mailbox,
+  .open_append  = comp_open_append_mailbox,
+  .close        = comp_close_mailbox,
+  .check        = comp_check_mailbox,
+  .sync         = comp_sync_mailbox,
+  .open_msg     = comp_open_message,
+  .close_msg    = comp_close_message,
+  .commit_msg   = comp_commit_message,
+  .open_new_msg = comp_open_new_message
 };
 
