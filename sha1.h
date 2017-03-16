@@ -1,10 +1,9 @@
-/*
- SHA-1 in C
-
- By Steve Reid <steve@edmweb.com>, with small changes to make it
- fit into mutt by Thomas Roessler <roessler@does-not-exist.org>.
-
-*/
+/**
+ * SHA-1 in C
+ *
+ * By Steve Reid <steve@edmweb.com>, with small changes to make it
+ * fit into mutt by Thomas Roessler <roessler@does-not-exist.org>.
+ */
 
 #ifndef _SHA1_H
 # define _SHA1_H
