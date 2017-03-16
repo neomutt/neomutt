@@ -243,7 +243,7 @@ static void cmd_parse_fetch (IMAP_DATA* idata, char* s)
 
   if (*s != '(')
   {
-    mutt_debug (1, "Malformed FETCH response");
+    mutt_debug (1, "Malformed FETCH response\n");
     return;
   }
   s++;
@@ -689,7 +689,7 @@ static int cmd_handle_untagged (IMAP_DATA* idata)
       {
         /* Notes 6.0.3 has a tendency to report fewer messages exist than
          * it should. */
-	mutt_debug (1, "Message count is out of sync");
+	mutt_debug (1, "Message count is out of sync\n");
 	return 0;
       }
       /* at least the InterChange server sends EXISTS messages freely,
@@ -888,7 +888,7 @@ const char* imap_cmd_trailer (IMAP_DATA* idata)
 
   if (!s)
   {
-    mutt_debug (2, "imap_cmd_trailer: not a tagged response");
+    mutt_debug (2, "imap_cmd_trailer: not a tagged response\n");
     return notrailer;
   }
 
@@ -897,7 +897,7 @@ const char* imap_cmd_trailer (IMAP_DATA* idata)
 	     ascii_strncasecmp (s, "NO", 2) &&
 	     ascii_strncasecmp (s, "BAD", 3)))
   {
-    mutt_debug (2, "imap_cmd_trailer: not a command completion: %s",
+    mutt_debug (2, "imap_cmd_trailer: not a command completion: %s\n",
                 idata->buf);
     return notrailer;
   }

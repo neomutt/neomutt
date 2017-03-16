@@ -4164,7 +4164,7 @@ static crypt_key_t *crypt_getkeybyaddr (ADDRESS * a, short abilities,
   if (!keys)
     return NULL;
 
-  mutt_debug (5, "crypt_getkeybyaddr: looking for %s <%s>.",
+  mutt_debug (5, "crypt_getkeybyaddr: looking for %s <%s>.\n",
               a->personal, a->mailbox);
 
   for (k = keys; k; k = k->next)
@@ -4325,6 +4325,10 @@ static crypt_key_t *crypt_getkeybystr (char *p, short abilities,
 
           *matches_endp = tmp = crypt_copy_key (k);
           matches_endp = &tmp->next;
+        }
+      else
+        {
+          mutt_debug(5, "no match.\n");
         }
     }
 

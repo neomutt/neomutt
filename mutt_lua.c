@@ -253,7 +253,7 @@ static int _lua_mutt_get(lua_State *l)
         luaL_error(l, "Mutt parameter type %d unknown for %s", opt->type, param);
         return -1;
     }
-  mutt_debug(2, " * _lua_mutt_get() -> error");
+  mutt_debug(2, " * _lua_mutt_get() -> error\n");
   luaL_error(l, "Mutt parameter not found %s", param);
   return -1;
 }

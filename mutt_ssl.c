@@ -140,14 +140,14 @@ static int ssl_set_verify_partial (SSL_CTX *ctx)
       X509_VERIFY_PARAM_set_flags(param, X509_V_FLAG_PARTIAL_CHAIN);
       if (0 == SSL_CTX_set1_param(ctx, param))
       {
-        mutt_debug (2, "ssl_set_verify_partial: SSL_CTX_set1_param() failed.");
+        mutt_debug (2, "ssl_set_verify_partial: SSL_CTX_set1_param() failed.\n");
         rv = -1;
       }
       X509_VERIFY_PARAM_free(param);
     }
     else
     {
-      mutt_debug (2, "ssl_set_verify_partial: X509_VERIFY_PARAM_new() failed.");
+      mutt_debug (2, "ssl_set_verify_partial: X509_VERIFY_PARAM_new() failed.\n");
       rv = -1;
     }
   }

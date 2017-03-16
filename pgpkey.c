@@ -838,7 +838,7 @@ pgp_key_t pgp_getkeybyaddr (ADDRESS * a, short abilities, pgp_ring_t keyring,
   if (!keys)
     return NULL;
 
-  mutt_debug (5, "pgp_getkeybyaddr: looking for %s <%s>.",
+  mutt_debug (5, "pgp_getkeybyaddr: looking for %s <%s>.\n",
               a->personal, a->mailbox);
 
 

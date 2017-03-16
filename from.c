@@ -74,7 +74,7 @@ int is_from (const char *s, char *path, size_t pathlen, time_t *tp)
   if (!*s)
     return 0;
 
-  mutt_debug (3, "\nis_from(): parsing: %s", s);
+  mutt_debug (3, "\nis_from(): parsing: %s\n", s);
 
   if (!is_day_name (s))
   {

@@ -104,7 +104,7 @@ static QUERY *run_query (char *s, int quiet)
 
   if ((thepid = mutt_create_filter (cmd, NULL, &fp, NULL)) < 0)
   {
-    mutt_debug (1, "unable to fork command: %s", cmd);
+    mutt_debug (1, "unable to fork command: %s\n", cmd);
     return 0;
   }
   if (!quiet)

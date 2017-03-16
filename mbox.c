@@ -1230,7 +1230,7 @@ static int mbox_sync_mailbox (CONTEXT *ctx, int *index_hint)
       (ctx->magic == MUTT_MBOX && mutt_strncmp ("From ", buf, 5) != 0) ||
       (ctx->magic == MUTT_MMDF && mutt_strcmp (MMDF_SEP, buf) != 0))
   {
-    mutt_debug (1, "mbox_sync_mailbox: message not in expected position.");
+    mutt_debug (1, "mbox_sync_mailbox: message not in expected position.\n");
     mutt_debug (1, "\tLINE: %s\n", buf);
     i = -1;
   }
