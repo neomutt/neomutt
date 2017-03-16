@@ -506,7 +506,7 @@ void mutt_parse_part (FILE *fp, BODY *b)
       {
 	fseeko (fp, b->offset, SEEK_SET);
 	if (mutt_is_message_type(b->type, b->subtype))
-	  b->parts = mutt_parse_messageRFC822 (fp, b);
+	  b->parts = mutt_parse_message_rfc822 (fp, b);
 	else if (ascii_strcasecmp (b->subtype, "external-body") == 0)
 	  b->parts = mutt_read_mime_header (fp, 0);
 	else
@@ -537,7 +537,7 @@ void mutt_parse_part (FILE *fp, BODY *b)
  * NOTE: this assumes that `parent->length' has been set!
  */
 
-BODY *mutt_parse_messageRFC822 (FILE *fp, BODY *parent)
+BODY *mutt_parse_message_rfc822 (FILE *fp, BODY *parent)
 {
   BODY *msg;
 

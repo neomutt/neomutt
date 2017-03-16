@@ -1041,7 +1041,7 @@ void mutt_view_attachments (HEADER *hdr)
   while (true)
   {
     if (op == OP_NULL)
-      op = mutt_menuLoop (menu);
+      op = mutt_menu_loop (menu);
     if (!Context)
       return;
     switch (op)
@@ -1307,7 +1307,7 @@ void mutt_view_attachments (HEADER *hdr)
 	  mutt_free_body (&cur);
 	}
 
-	mutt_menuDestroy  (&menu);
+	mutt_menu_destroy  (&menu);
 	return;
     }
 

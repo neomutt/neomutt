@@ -453,7 +453,7 @@ static smime_key_t *smime_select_key (smime_key_t *keys, char *query)
   done = 0;
   while (!done)
   {
-    switch (mutt_menuLoop (menu))
+    switch (mutt_menu_loop (menu))
     {
       case OP_GENERIC_SELECT_ENTRY:
         if (table[menu->current]->trust != 't')
@@ -492,7 +492,7 @@ static smime_key_t *smime_select_key (smime_key_t *keys, char *query)
     }
   }
 
-  mutt_menuDestroy (&menu);
+  mutt_menu_destroy (&menu);
   FREE (&table);
   set_option (OPTNEEDREDRAW);
 
@@ -880,7 +880,7 @@ void smime_getkeys (ENVELOPE *env)
  * prompting will be used.
  */
 
-char *smime_findKeys (ADDRESS *adrlist, int oppenc_mode)
+char *smime_find_keys (ADDRESS *adrlist, int oppenc_mode)
 {
   smime_key_t *key = NULL;
   char *keyID, *keylist = NULL;

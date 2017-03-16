@@ -1203,7 +1203,7 @@ BODY *pgp_sign_message (BODY *a)
  * If oppenc_mode is true, only keys that can be determined without
  * prompting will be used.
  */
-char *pgp_findKeys (ADDRESS *adrlist, int oppenc_mode)
+char *pgp_find_keys (ADDRESS *adrlist, int oppenc_mode)
 {
   LIST *crypt_hook_list, *crypt_hook = NULL;
   char *keyID, *keylist = NULL;

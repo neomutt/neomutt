@@ -105,7 +105,7 @@ BODY *mutt_remove_multipart(BODY *b);
 BODY *mutt_make_multipart(BODY *b);
 BODY *mutt_new_body(void);
 BODY *mutt_parse_multipart(FILE *fp, const char *boundary, LOFF_T end_off, int digest);
-BODY *mutt_parse_messageRFC822(FILE *fp, BODY *parent);
+BODY *mutt_parse_message_rfc822(FILE *fp, BODY *parent);
 BODY *mutt_read_mime_header(FILE *fp, int digest);
 
 CONTENT *mutt_get_content_info(const char *fname, BODY *b);

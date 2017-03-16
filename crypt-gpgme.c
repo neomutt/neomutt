@@ -4040,7 +4040,7 @@ static crypt_key_t *crypt_select_key (crypt_key_t *keys,
   while (!done)
     {
       *forced_valid = 0;
-      switch (mutt_menuLoop (menu))
+      switch (mutt_menu_loop (menu))
         {
         case OP_VERIFY_KEY:
           verify_key (key_table[menu->current]);
@@ -4117,7 +4117,7 @@ static crypt_key_t *crypt_select_key (crypt_key_t *keys,
         }
     }
 
-  mutt_menuDestroy (&menu);
+  mutt_menu_destroy (&menu);
   FREE (&key_table);
 
   set_option (OPTNEEDREDRAW);

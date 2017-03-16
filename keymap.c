@@ -126,7 +126,7 @@ int LastKey;
 
 struct keymap_t *Keymaps[MENU_MAX];
 
-static struct keymap_t *allocKeys (int len, keycode_t *keys)
+static struct keymap_t *alloc_keys (int len, keycode_t *keys)
 {
   struct keymap_t *p;
 
@@ -235,7 +235,7 @@ void km_bind (char *s, int menu, int op, char *macro, char *descr)
 
   len = parsekeys (s, buf, MAX_SEQ);
 
-  map = allocKeys (len, buf);
+  map = alloc_keys (len, buf);
   map->op = op;
   map->macro = safe_strdup (macro);
   map->descr = safe_strdup (descr);

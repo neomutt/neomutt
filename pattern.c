@@ -135,7 +135,7 @@ static const char *get_offset (struct tm *tm, const char *s, int sign)
   return (ps + 1);
 }
 
-static const char *getDate (const char *s, struct tm *t, BUFFER *err)
+static const char *get_date (const char *s, struct tm *t, BUFFER *err)
 {
   char *p;
   time_t now = time (NULL);
@@ -275,7 +275,7 @@ static const char * parse_date_range (const char* pc, struct tm *min,
 	{
 	  if (flag == MUTT_PDR_NONE)
 	  { /* nothing yet and no offset parsed => absolute date? */
-	    if (!getDate (pc, max, err))
+	    if (!get_date (pc, max, err))
 	      flag |= (MUTT_PDR_ABSOLUTE | MUTT_PDR_ERRORDONE);  /* done bad */
 	    else
 	    {
@@ -331,7 +331,7 @@ static const char * parse_date_range (const char* pc, struct tm *min,
     SKIPWS (pc);
   }
   if ((flag & MUTT_PDR_ERROR) && !(flag & MUTT_PDR_ABSOLUTE))
-  { /* getDate has its own error message, don't overwrite it here */
+  { /* get_date has its own error message, don't overwrite it here */
     snprintf (err->data, err->dsize, _("Invalid relative date: %s"), pc-1);
   }
   return ((flag & MUTT_PDR_ERROR) ? NULL : pc);
@@ -448,7 +448,7 @@ static int eat_date (pattern_t *pat, BUFFER *s, BUFFER *err)
     if (isdigit ((unsigned char)*pc))
     {
       /* minimum date specified */
-      if ((pc = getDate (pc, &min, err)) == NULL)
+      if ((pc = get_date (pc, &min, err)) == NULL)
       {
 	FREE (&buffer.data);
 	return (-1);

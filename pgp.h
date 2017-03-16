@@ -45,7 +45,7 @@ pgp_key_t pgp_get_candidates(pgp_ring_t keyring, LIST *hints);
 pgp_key_t pgp_getkeybyaddr(ADDRESS *a, short abilities, pgp_ring_t keyring, int oppenc_mode);
 pgp_key_t pgp_getkeybystr(char *p, short abilities, pgp_ring_t keyring);
 
-char *pgp_findKeys(ADDRESS *adrlist, int oppenc_mode);
+char *pgp_find_keys(ADDRESS *adrlist, int oppenc_mode);
 
 int pgp_application_pgp_handler(BODY *m, STATE *s);
 int pgp_encrypted_handler(BODY *a, STATE *s);

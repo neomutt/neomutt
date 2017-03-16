@@ -81,7 +81,7 @@ typedef struct menu_t
    */
   int (*color) (int i);
 
-  /* the following are used only by mutt_menuLoop() */
+  /* the following are used only by mutt_menu_loop() */
   int top;		/* entry that is the top of the current page */
   int oldcurrent;	/* for driver use only. */
   int searchDir;	/* direction of search */
@@ -119,8 +119,8 @@ void mutt_ts_status(char *str);
 void mutt_ts_icon(char *str);
 
 MUTTMENU *mutt_new_menu(int menu);
-void mutt_menuDestroy(MUTTMENU **p);
-int mutt_menuLoop(MUTTMENU *menu);
+void mutt_menu_destroy(MUTTMENU **p);
+int mutt_menu_loop(MUTTMENU *menu);
 
 /* used in both the index and pager index to make an entry. */
 void index_make_entry(char *s, size_t l, MUTTMENU *menu, int num);

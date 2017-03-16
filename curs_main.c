@@ -3230,7 +3230,7 @@ int mutt_index_menu (void)
     if (done) break;
   }
 
-  mutt_menuDestroy (&menu);
+  mutt_menu_destroy (&menu);
   return (close);
 }
 

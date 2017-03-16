@@ -52,7 +52,7 @@ int smime_verify_sender(HEADER *h);
 
 void smime_getkeys(ENVELOPE *env);
 
-char *smime_findKeys(ADDRESS *adrlist, int oppenc_mode);
+char *smime_find_keys(ADDRESS *adrlist, int oppenc_mode);
 
 void smime_invoke_import(char *infile, char *mailbox);
 

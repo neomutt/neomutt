@@ -46,7 +46,7 @@ static int crypt_mod_pgp_application_handler (BODY *m, STATE *s)
 
 static char *crypt_mod_pgp_findkeys (ADDRESS *adrlist, int oppenc_mode)
 {
-  return pgp_findKeys (adrlist, oppenc_mode);
+  return pgp_find_keys (adrlist, oppenc_mode);
 }
 
 static BODY *crypt_mod_pgp_sign_message (BODY *a)

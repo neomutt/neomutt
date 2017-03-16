@@ -856,7 +856,7 @@ static int interactive_check_cert (X509 *cert, int idx, int len, SSL *ssl, int a
   set_option(OPTIGNOREMACROEVENTS);
   while (!done)
   {
-    switch (mutt_menuLoop (menu))
+    switch (mutt_menu_loop (menu))
     {
       case -1:			/* abort */
       case OP_MAX + 1:		/* reject */
@@ -898,7 +898,7 @@ static int interactive_check_cert (X509 *cert, int idx, int len, SSL *ssl, int a
     }
   }
   unset_option(OPTIGNOREMACROEVENTS);
-  mutt_menuDestroy (&menu);
+  mutt_menu_destroy (&menu);
   set_option (OPTNEEDREDRAW);
   mutt_debug (2, "ssl interactive_check_cert: done=%d\n", done);
   return (done == 2);

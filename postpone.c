@@ -184,7 +184,7 @@ static HEADER *select_msg (void)
 
   while (!done)
   {
-    switch (i = mutt_menuLoop (menu))
+    switch (i = mutt_menu_loop (menu))
     {
       case OP_DELETE:
       case OP_UNDELETE:
@@ -219,7 +219,7 @@ static HEADER *select_msg (void)
   }
 
   Sort = orig_sort;
-  mutt_menuDestroy (&menu);
+  mutt_menu_destroy (&menu);
   return (r > -1 ? PostContext->hdrs[r] : NULL);
 }
 

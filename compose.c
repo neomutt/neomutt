@@ -582,7 +582,7 @@ int mutt_compose_menu (HEADER *msg,   /* structure for new message */
 #ifdef USE_NNTP
     unset_option (OPTNEWS);	/* for any case */
 #endif
-    switch (op = mutt_menuLoop (menu))
+    switch (op = mutt_menu_loop (menu))
     {
       case OP_REDRAW:
 	draw_envelope (msg, fcc);
@@ -1497,7 +1497,7 @@ int mutt_compose_menu (HEADER *msg,   /* structure for new message */
     }
   }
 
-  mutt_menuDestroy (&menu);
+  mutt_menu_destroy (&menu);
 
   if (idxlen)
   {

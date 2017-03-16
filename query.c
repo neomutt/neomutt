@@ -296,7 +296,7 @@ static void query_menu (char *buf, size_t buflen, QUERY *results, int retbuf)
 
     while (!done)
     {
-      switch ((op = mutt_menuLoop (menu)))
+      switch ((op = mutt_menu_loop (menu)))
       {
 	case OP_QUERY_APPEND:
 	case OP_QUERY:
@@ -327,7 +327,7 @@ static void query_menu (char *buf, size_t buflen, QUERY *results, int retbuf)
 
 
 	      menu->current = 0;
-	      mutt_menuDestroy (&menu);
+	      mutt_menu_destroy (&menu);
 	      menu = mutt_new_menu (MENU_QUERY);
 	      menu->make_entry = query_entry;
 	      menu->search = query_search;
@@ -483,7 +483,7 @@ static void query_menu (char *buf, size_t buflen, QUERY *results, int retbuf)
     set_option (OPTNEEDREDRAW);
   }
 
-  mutt_menuDestroy (&menu);
+  mutt_menu_destroy (&menu);
 }
 int mutt_query_complete (char *buf, size_t buflen)
 {

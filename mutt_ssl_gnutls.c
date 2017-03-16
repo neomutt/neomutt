@@ -723,7 +723,7 @@ static int tls_check_one_certificate (const gnutls_datum_t *certdata,
   set_option (OPTIGNOREMACROEVENTS);
   while (!done)
   {
-    switch (mutt_menuLoop (menu))
+    switch (mutt_menu_loop (menu))
     {
       case -1:			/* abort */
       case OP_MAX + 1:		/* reject */
@@ -773,7 +773,7 @@ static int tls_check_one_certificate (const gnutls_datum_t *certdata,
     }
   }
   unset_option (OPTIGNOREMACROEVENTS);
-  mutt_menuDestroy (&menu);
+  mutt_menu_destroy (&menu);
   gnutls_x509_crt_deinit (cert);
 
   return (done == 2);

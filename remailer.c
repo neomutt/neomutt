@@ -546,7 +546,7 @@ void mix_make_chain (LIST **chainp, int *redraw)
 
     c_old = c_cur;
 
-    switch ((op = mutt_menuLoop (menu)))
+    switch ((op = mutt_menu_loop (menu)))
     {
       case OP_REDRAW:
       {
@@ -658,7 +658,7 @@ void mix_make_chain (LIST **chainp, int *redraw)
     }
   }
 
-  mutt_menuDestroy (&menu);
+  mutt_menu_destroy (&menu);
 
   /* construct the remailer list */
 

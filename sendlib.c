@@ -1120,7 +1120,7 @@ void mutt_message_to_7bit (BODY *a, FILE *fp)
   }
 
   fseeko (fpin, a->offset, 0);
-  a->parts = mutt_parse_messageRFC822 (fpin, a);
+  a->parts = mutt_parse_message_rfc822 (fpin, a);
 
   transform_to_7bit (a->parts, fpin);
 

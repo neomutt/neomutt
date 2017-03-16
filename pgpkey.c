@@ -541,7 +541,7 @@ static pgp_key_t pgp_select_key (pgp_key_t keys,
 
   while (!done)
   {
-    switch (mutt_menuLoop (menu))
+    switch (mutt_menu_loop (menu))
     {
 
     case OP_VERIFY_KEY:
@@ -645,7 +645,7 @@ static pgp_key_t pgp_select_key (pgp_key_t keys,
     }
   }
 
-  mutt_menuDestroy (&menu);
+  mutt_menu_destroy (&menu);
   FREE (&KeyTable);
 
   set_option (OPTNEEDREDRAW);
