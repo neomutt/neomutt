@@ -296,9 +296,11 @@ AS_IF([test x$use_compressed = "xyes"], [
 AM_CONDITIONAL(BUILD_COMPRESS, test x$enable_compressed = xyes)
 
 dnl --enable-lua
-AX_PROG_LUA([5.2],[],:,enable_lua=no)
-AX_LUA_HEADERS(:,enable_lua=no)
-AX_LUA_LIBS(:,enable_lua=no)
+AS_IF([test x$use_lua = "xyes"], [
+	AX_PROG_LUA([5.2],[],:,enable_lua=no)
+	AX_LUA_HEADERS(:,enable_lua=no)
+	AX_LUA_LIBS(:,enable_lua=no)
+])
 
 AS_IF([test x$enable_lua = "xyes"], [
 	AC_DEFINE(USE_LUA, 1, [Define if you want support for LUA.])
