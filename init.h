@@ -1460,6 +1460,7 @@ struct option_t MuttVars[] = {
   ** .dt %g .dd message labels (e.g. notmuch tags)
   ** .dt %H .dd spam attribute(s) of this message
   ** .dt %i .dd message-id of the current message
+  ** .dt %K .dd the list to which the letter was sent (if any; otherwise: empty).
   ** .dt %l .dd number of lines in the message (does not work with maildir,
   **            mh, and possibly IMAP folders)
   ** .dt %L .dd If an address in the ``To:'' or ``Cc:'' header field matches an address
