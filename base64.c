@@ -4,44 +4,42 @@
  *     License as published by the Free Software Foundation; either
  *     version 2 of the License, or (at your option) any later
  *     version.
- * 
+ *
  *     This program is distributed in the hope that it will be
  *     useful, but WITHOUT ANY WARRANTY; without even the implied
  *     warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR
  *     PURPOSE.  See the GNU General Public License for more
  *     details.
- * 
+ *
  *     You should have received a copy of the GNU General Public
  *     License along with this program; if not, write to the Free
- *     Software Foundation, Inc., 51 Franklin Street, Fifth Floor, 
+ *     Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
  *     Boston, MA  02110-1301, USA.
- * 
+ *
  */
 
-/* 
+/*
  * Base64 handling elsewhere in mutt should be modified to call
  * these routines. These routines were written because IMAP's
  * AUTHENTICATE protocol required them, and base64 handling
  * elsewhere wasn't sufficiently generic.
- * 
+ *
  */
 
-/* 
+/*
  * This code is heavily modified from fetchmail (also GPL'd, of
  * course) by Brendan Cully <brendan@kublai.com>.
- * 
+ *
  * Original copyright notice:
- * 
+ *
  * The code in the fetchmail distribution is Copyright 1997 by Eric
  * S. Raymond.  Portions are also copyrighted by Carl Harris, 1993
  * and 1995.  Copyright retained for the purpose of protecting free
- * redistribution of source. 
- * 
+ * redistribution of source.
+ *
  */
 
-#if HAVE_CONFIG_H
-# include "config.h"
-#endif
+#include "config.h"
 
 #include "mutt.h"
 #include "mime.h"

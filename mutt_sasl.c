@@ -1,26 +1,24 @@
 /*
  * Copyright (C) 2000-2008,2012,2014 Brendan Cully <brendan@kublai.com>
- * 
+ *
  *     This program is free software; you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
  *     the Free Software Foundation; either version 2 of the License, or
  *     (at your option) any later version.
- * 
+ *
  *     This program is distributed in the hope that it will be useful,
  *     but WITHOUT ANY WARRANTY; without even the implied warranty of
  *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  *     GNU General Public License for more details.
- * 
+ *
  *     You should have received a copy of the GNU General Public License
  *     along with this program; if not, write to the Free Software
  *     Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
- */ 
+ */
 
 /* common SASL helper routines */
 
-#if HAVE_CONFIG_H
-# include "config.h"
-#endif
+#include "config.h"
 
 #include "mutt.h"
 #include "account.h"
@@ -32,6 +30,8 @@
 #include <sasl/sasl.h>
 #include <sys/socket.h>
 #include <netinet/in.h>
+
+static sasl_callback_t* mutt_sasl_get_callbacks (ACCOUNT* account);
 
 static int getnameinfo_err(int ret)
 {
@@ -77,7 +77,7 @@ static int getnameinfo_err(int ret)
 
 /* arbitrary. SASL will probably use a smaller buffer anyway. OTOH it's
  * been a while since I've had access to an SASL server which negotiated
- * a protection buffer. */ 
+ * a protection buffer. */
 #define MUTT_SASL_MAXBUF 65536
 
 #define IP_PORT_BUFLEN 1024
@@ -132,7 +132,7 @@ static int iptostring(const struct sockaddr *addr, socklen_t addrlen,
 
 /* mutt_sasl_start: called before doing a SASL exchange - initialises library
  *   (if necessary). */
-int mutt_sasl_start (void)
+static int mutt_sasl_start (void)
 {
   static unsigned char sasl_init = 0;
 
@@ -212,7 +212,7 @@ int mutt_sasl_client_new (CONNECTION* conn, sasl_conn_t** saslconn)
   }
   else
     mutt_debug (2, "SASL failed to get local IP address\n");
-  
+
   size = sizeof (remote);
   if (!getpeername (conn->fd, (struct sockaddr *)&remote, &size)){
     if (iptostring((struct sockaddr *)&remote, size, ipremoteport,
@@ -226,7 +226,7 @@ int mutt_sasl_client_new (CONNECTION* conn, sasl_conn_t** saslconn)
 
   mutt_debug (2, "SASL local ip: %s, remote ip:%s\n", NONULL(plp),
 	      NONULL(prp));
-  
+
   rc = sasl_client_new (service, conn->account.host, plp, prp,
     mutt_sasl_get_callbacks (&conn->account), 0, saslconn);
 
@@ -270,7 +270,7 @@ int mutt_sasl_client_new (CONNECTION* conn, sasl_conn_t** saslconn)
   return 0;
 }
 
-sasl_callback_t* mutt_sasl_get_callbacks (ACCOUNT* account)
+static sasl_callback_t* mutt_sasl_get_callbacks (ACCOUNT* account)
 {
   sasl_callback_t* callback;
 
@@ -340,7 +340,7 @@ int mutt_sasl_interact (sasl_interact_t* interaction)
  * abstraction problem is that there is more in CONNECTION than there
  * needs to be. Ideally it would have only (void*)data and methods. */
 
-/* mutt_sasl_setup_conn: replace connection methods, sockdata with 
+/* mutt_sasl_setup_conn: replace connection methods, sockdata with
  *   SASL wrappers, for protection layers. Also get ssf, as a fastpath
  *   for the read/write methods. */
 void mutt_sasl_setup_conn (CONNECTION* conn, sasl_conn_t* saslconn)
@@ -427,7 +427,7 @@ static int mutt_sasl_cb_authname (void* context, int id, const char** result,
       return SASL_FAIL;
     *result = account->user;
   }
-  
+
   if (len)
     *len = strlen (*result);
 
@@ -523,7 +523,7 @@ static int mutt_sasl_conn_read (CONNECTION* conn, char* buf, size_t len)
 
     return olen;
   }
-  
+
   conn->sockdata = sasldata->sockdata;
 
   sasldata->bpos = 0;
@@ -607,7 +607,7 @@ static int mutt_sasl_conn_write (CONNECTION* conn, const char* buf,
   else
   /* just write using the underlying socket function */
     rc = (sasldata->msasl_write) (conn, buf, len);
-  
+
   conn->sockdata = sasldata;
 
   return rc;

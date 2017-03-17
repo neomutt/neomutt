@@ -1,25 +1,23 @@
 /*
  * Copyright (C) 1996-2000 Michael R. Elkins <me@mutt.org>
  * Copyright (C) 2011-2013 Michael R. Elkins <me@mutt.org>
- * 
+ *
  *     This program is free software; you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
  *     the Free Software Foundation; either version 2 of the License, or
  *     (at your option) any later version.
- * 
+ *
  *     This program is distributed in the hope that it will be useful,
  *     but WITHOUT ANY WARRANTY; without even the implied warranty of
  *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  *     GNU General Public License for more details.
- * 
+ *
  *     You should have received a copy of the GNU General Public License
  *     along with this program; if not, write to the Free Software
  *     Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
- */ 
+ */
 
-#if HAVE_CONFIG_H
-# include "config.h"
-#endif
+#include "config.h"
 
 #include <string.h>
 #include <stdlib.h>
@@ -141,7 +139,7 @@ parse_comment (const char *s,
 	       char *comment, size_t *commentlen, size_t commentmax)
 {
   int level = 1;
-  
+
   while (*s && level)
   {
     if (*s == '(')
@@ -356,7 +354,7 @@ add_addrspec (ADDRESS **top, ADDRESS **last, const char *phrase,
 	      char *comment, size_t *commentlen, size_t commentmax)
 {
   ADDRESS *cur = rfc822_new_address ();
-  
+
   if (parse_addr_spec (phrase, comment, commentlen, commentmax, cur) == NULL)
   {
     rfc822_free_address (&cur);
@@ -380,7 +378,7 @@ ADDRESS *rfc822_parse_adrlist (ADDRESS *top, const char *s)
   char comment[LONG_STRING], phrase[LONG_STRING];
   size_t phraselen = 0, commentlen = 0;
   ADDRESS *cur, *last = NULL;
-  
+
   RFC822Error = 0;
 
   last = top;
@@ -390,7 +388,7 @@ ADDRESS *rfc822_parse_adrlist (ADDRESS *top, const char *s)
   ws_pending = is_email_wsp (*s);
   if ((nl = mutt_strlen (s)))
     nl = s[nl - 1] == '\n';
-  
+
   s = skip_email_wsp(s);
 #ifdef EXACT_ADDRESS
   begin = s;
@@ -536,7 +534,7 @@ ADDRESS *rfc822_parse_adrlist (ADDRESS *top, const char *s)
     ws_pending = is_email_wsp(*s);
     s = skip_email_wsp(s);
   }
-  
+
   if (phraselen)
   {
     terminate_buffer (phrase, phraselen);
@@ -603,7 +601,7 @@ void rfc822_write_address_single (char *buf, size_t buflen, ADDRESS *addr,
   size_t len;
   char *pbuf = buf;
   char *pc;
-  
+
   if (!addr)
     return;
 
@@ -739,7 +737,7 @@ int rfc822_write_address (char *buf, size_t buflen, ADDRESS *addr, int display)
 {
   char *pbuf = buf;
   size_t len = mutt_strlen (buf);
-  
+
   buflen--; /* save room for the terminal nul */
 
   if (len > 0)
@@ -810,7 +808,7 @@ ADDRESS *rfc822_cpy_adr_real (ADDRESS *addr)
 ADDRESS *rfc822_cpy_adr (ADDRESS *addr, int prune)
 {
   ADDRESS *top = NULL, *last = NULL;
-  
+
   for (; addr; addr = addr->next)
   {
     if (prune && addr->group && (!addr->next || !addr->next->mailbox))
@@ -902,12 +900,8 @@ int main (int argc, char **argv)
 {
   ADDRESS *list;
   char buf[256];
-# if 0
-  char *str = "michael, Michael Elkins <me@mutt.org>, testing a really complex address: this example <@contains.a.source.route,@with.multiple.hosts:address@example.com>;, lothar@of.the.hillpeople (lothar)";
-# else
   char *str = "a b c ";
-# endif
-  
+
   list = rfc822_parse_adrlist (NULL, str);
   buf[0] = 0;
   rfc822_write_address (buf, sizeof (buf), list);

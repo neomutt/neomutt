@@ -4,16 +4,15 @@
  * This code is in the public domain.
  *
  */
-#ifdef HAVE_CONFIG_H
+
 #include "config.h"
-#endif
 
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
 #include <string.h>
 
-void print_usage(const char *progname) {
+static void print_usage(const char *progname) {
 	fprintf(stderr, "Command line usage: %s [flags] -- prefix [recipients]\n", progname);
 	exit(1);
 }

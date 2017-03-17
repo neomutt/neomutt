@@ -6,12 +6,12 @@
  *     it under the terms of the GNU General Public License as published by
  *     the Free Software Foundation; either version 2 of the License, or
  *     (at your option) any later version.
- * 
+ *
  *     This program is distributed in the hope that it will be useful,
  *     but WITHOUT ANY WARRANTY; without even the implied warranty of
  *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  *     GNU General Public License for more details.
- * 
+ *
  *     You should have received a copy of the GNU General Public License
  *     along with this program; if not, write to the Free Software
  *     Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
@@ -32,8 +32,6 @@ typedef struct smime_key {
   struct smime_key *next;
 } smime_key_t;
 
-
-void smime_free_key (smime_key_t **);
 
 void smime_void_passphrase (void);
 int smime_valid_passphrase (void);
@@ -56,8 +54,6 @@ int   smime_verify_sender(HEADER *);
 char* smime_get_field_from_db (char *, char *, short, short);
 
 void  smime_getkeys (ENVELOPE *);
-
-smime_key_t *smime_ask_for_key(char *, short, short);
 
 char *smime_findKeys (ADDRESS *adrlist, int oppenc_mode);
 

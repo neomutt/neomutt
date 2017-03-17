@@ -1,25 +1,23 @@
 /*
  * Copyright (C) 2000-2002 Vsevolod Volkov <vvv@mutt.org.ua>
  * Copyright (C) 2006-2007,2009 Rocco Rutte <pdmef@gmx.net>
- * 
+ *
  *     This program is free software; you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
  *     the Free Software Foundation; either version 2 of the License, or
  *     (at your option) any later version.
- * 
+ *
  *     This program is distributed in the hope that it will be useful,
  *     but WITHOUT ANY WARRANTY; without even the implied warranty of
  *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  *     GNU General Public License for more details.
- * 
+ *
  *     You should have received a copy of the GNU General Public License
  *     along with this program; if not, write to the Free Software
  *     Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
- */ 
+ */
 
-#if HAVE_CONFIG_H
-# include "config.h"
-#endif
+#include "config.h"
 
 #include "mutt.h"
 #include "mutt_curses.h"
@@ -27,7 +25,7 @@
 #include "pop.h"
 #include "mutt_crypt.h"
 #include "bcache.h"
-#if USE_HCACHE
+#ifdef USE_HCACHE
 #include "hcache.h"
 #endif
 
@@ -302,7 +300,7 @@ static int pop_fetch_headers (CONTEXT *ctx)
     {
       if (!ctx->quiet)
 	mutt_progress_update (&progress, i + 1 - old_count, -1);
-#if USE_HCACHE
+#ifdef USE_HCACHE
       if ((data = mutt_hcache_fetch (hc, ctx->hdrs[i]->data, strlen(ctx->hdrs[i]->data))))
       {
 	char *uidl = safe_strdup (ctx->hdrs[i]->data);
@@ -331,10 +329,10 @@ static int pop_fetch_headers (CONTEXT *ctx)
 #endif
       if ((ret = pop_read_header (pop_data, ctx->hdrs[i])) < 0)
 	break;
-#if USE_HCACHE
+#ifdef USE_HCACHE
       else
       {
-	mutt_hcache_store (hc, ctx->hdrs[i]->data, strlen(ctx->hdrs[i]->data), 
+	mutt_hcache_store (hc, ctx->hdrs[i]->data, strlen(ctx->hdrs[i]->data),
                        ctx->hdrs[i], 0);
       }
 #endif
@@ -374,7 +372,7 @@ static int pop_fetch_headers (CONTEXT *ctx)
       mx_update_context (ctx, i - old_count);
   }
 
-#if USE_HCACHE
+#ifdef USE_HCACHE
     mutt_hcache_close (hc);
 #endif
 
@@ -439,13 +437,13 @@ static int pop_open_mailbox (CONTEXT *ctx)
   memset (ctx->rights, 0, sizeof (ctx->rights));
   mutt_bit_set (ctx->rights, MUTT_ACL_SEEN);
   mutt_bit_set (ctx->rights, MUTT_ACL_DELETE);
-#if USE_HCACHE
+#ifdef USE_HCACHE
   /* flags are managed using header cache, so it only makes sense to
    * enable them in that case */
   mutt_bit_set (ctx->rights, MUTT_ACL_WRITE);
 #endif
 
-  FOREVER
+  while (true)
   {
     if (pop_reconnect (ctx) < 0)
       return -1;
@@ -488,7 +486,7 @@ static void pop_clear_cache (POP_DATA *pop_data)
 }
 
 /* close POP mailbox */
-int pop_close_mailbox (CONTEXT *ctx)
+static int pop_close_mailbox (CONTEXT *ctx)
 {
   POP_DATA *pop_data = (POP_DATA *)ctx->data;
 
@@ -544,7 +542,7 @@ static int pop_fetch_message (CONTEXT* ctx, MESSAGE* msg, int msgno)
       msg->fp = fopen (cache->path, "r");
       if (msg->fp)
 	return 0;
-      
+
       mutt_perror (cache->path);
       mutt_sleep (2);
       return -1;
@@ -557,7 +555,7 @@ static int pop_fetch_message (CONTEXT* ctx, MESSAGE* msg, int msgno)
     }
   }
 
-  FOREVER
+  while (true)
   {
     if (pop_reconnect (ctx) < 0)
       return -1;
@@ -678,7 +676,7 @@ static int pop_sync_mailbox (CONTEXT *ctx, int *index_hint)
 
   pop_data->check_time = 0;
 
-  FOREVER
+  while (true)
   {
     if (pop_reconnect (ctx) < 0)
       return -1;
@@ -686,7 +684,7 @@ static int pop_sync_mailbox (CONTEXT *ctx, int *index_hint)
     mutt_progress_init (&progress, _("Marking messages deleted..."),
 			MUTT_PROGRESS_MSG, WriteInc, ctx->deleted);
 
-#if USE_HCACHE
+#ifdef USE_HCACHE
     hc = pop_hcache_open (pop_data, ctx->path);
 #endif
 
@@ -701,13 +699,13 @@ static int pop_sync_mailbox (CONTEXT *ctx, int *index_hint)
 	if ((ret = pop_query (pop_data, buf, sizeof (buf))) == 0)
 	{
 	  mutt_bcache_del (pop_data->bcache, ctx->hdrs[i]->data);
-#if USE_HCACHE
+#ifdef USE_HCACHE
 	  mutt_hcache_delete (hc, ctx->hdrs[i]->data, strlen(ctx->hdrs[i]->data));
 #endif
 	}
       }
 
-#if USE_HCACHE
+#ifdef USE_HCACHE
       if (ctx->hdrs[i]->changed)
       {
 	mutt_hcache_store (hc, ctx->hdrs[i]->data, strlen(ctx->hdrs[i]->data),
@@ -717,7 +715,7 @@ static int pop_sync_mailbox (CONTEXT *ctx, int *index_hint)
 
     }
 
-#if USE_HCACHE
+#ifdef USE_HCACHE
     mutt_hcache_close (hc);
 #endif
 

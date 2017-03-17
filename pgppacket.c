@@ -1,25 +1,23 @@
 /*
  * Copyright (C) 2001-2002,2007 Thomas Roessler <roessler@does-not-exist.org>
- * 
+ *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
  * published by the Free Software Foundation; either version 2 of
  * the License, or (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public
  * License along with this program; if not, write to the Free
  * Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
 
-#if HAVE_CONFIG_H
-# include "config.h"
-#endif
+#include "config.h"
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -114,7 +112,6 @@ unsigned char *pgp_read_packet (FILE * fp, size_t * len)
       {
 	material = b;
 	partial = 0;
-	/* material -= 1; */
       }
       else if (192 <= b && b <= 223)
       {
@@ -126,13 +123,11 @@ unsigned char *pgp_read_packet (FILE * fp, size_t * len)
 	}
 	material += b + 192;
 	partial = 0;
-	/* material -= 2; */
       }
       else if (b < 255)
       {
 	material = 1 << (b & 0x1f);
 	partial = 1;
-	/* material -= 1; */
       }
       else
 	/* b == 255 */
@@ -143,13 +138,11 @@ unsigned char *pgp_read_packet (FILE * fp, size_t * len)
 	  perror ("fread");
 	  goto bail;
 	}
-	/*assert( sizeof(material) >= 4 ); */
 	material = buf[0] << 24;
 	material |= buf[1] << 16;
 	material |= buf[2] << 8;
 	material |= buf[3];
 	partial = 0;
-	/* material -= 5; */
       }
 
       if (read_material (material, &used, fp) == -1)

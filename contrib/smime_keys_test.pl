@@ -42,8 +42,8 @@ close OUT;
 open OUT, '>demoCA/index.txt' or die;
 close OUT;
 
-# make the CA 
-run 'openssl req -new -x509 -keyout demoCA/private/cakey.pem -out demoCA/cacert.pem -days 7300 -nodes', 
+# make the CA
+run 'openssl req -new -x509 -keyout demoCA/private/cakey.pem -out demoCA/cacert.pem -days 7300 -nodes',
     "\n\nx\n\nx\nx\n\n";
 
 # trust it
@@ -102,7 +102,7 @@ unlink 'list' or die;
 run "openssl smime -sign -signer certificates/$keyid -inkey user.key -in /etc/passwd -certfile certificates/37adefc3.0  > signed";
 unlink 'user.key' or die;
 
-# verify it 
+# verify it
 run 'openssl smime -verify -out /dev/null -in signed -CAfile ca-bundle.crt';
 unlink 'signed' or die;
 
@@ -122,7 +122,7 @@ rmdir  $tmpdir or die;
 sub run ($;$) {
     my $cmd = shift or die;
     my $input = shift;
-    
+
     print "\n\nRunning [$cmd]\n";
 
     my $exp = Expect->spawn ($cmd);

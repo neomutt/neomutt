@@ -6,12 +6,12 @@
  *     it under the terms of the GNU General Public License as published by
  *     the Free Software Foundation; either version 2 of the License, or
  *     (at your option) any later version.
- * 
+ *
  *     This program is distributed in the hope that it will be useful,
  *     but WITHOUT ANY WARRANTY; without even the implied warranty of
  *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  *     GNU General Public License for more details.
- * 
+ *
  *     You should have received a copy of the GNU General Public License
  *     along with this program; if not, write to the Free Software
  *     Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
@@ -28,9 +28,7 @@
    contained in this file and the functions implemented by the crypto
    modules.  */
 
-#if HAVE_CONFIG_H
-# include "config.h"
-#endif
+#include "config.h"
 
 #include "mutt.h"
 #include "mutt_crypt.h"
@@ -38,7 +36,7 @@
 #include "crypt-mod.h"
 
 /*
-    
+
     Generic
 
 */
@@ -93,7 +91,7 @@ void crypt_init (void)
 #endif
     }
 
-#if defined CRYPT_BACKEND_CLASSIC_PGP || defined CRYPT_BACKEND_CLASSIC_SMIME || defined CRYPT_BACKEND_GPGME
+#if defined(CRYPT_BACKEND_CLASSIC_PGP) || defined(CRYPT_BACKEND_CLASSIC_SMIME) || defined(CRYPT_BACKEND_GPGME)
   if (CRYPT_MOD_CALL_CHECK (PGP, init))
     (CRYPT_MOD_CALL (PGP, init)) ();
 
@@ -113,8 +111,7 @@ void crypt_invoke_message (int type)
 }
 
 
-
-/* 
+/*
 
     PGP
 
@@ -151,7 +148,7 @@ int crypt_pgp_application_pgp_handler (BODY *m, STATE *s)
 {
   if (CRYPT_MOD_CALL_CHECK (PGP, application_handler))
     return (CRYPT_MOD_CALL (PGP, application_handler)) (m, s);
-  
+
   return -1;
 }
 
@@ -160,7 +157,7 @@ int crypt_pgp_encrypted_handler (BODY *a, STATE *s)
 {
   if (CRYPT_MOD_CALL_CHECK (PGP, encrypted_handler))
     return (CRYPT_MOD_CALL (PGP, encrypted_handler)) (a, s);
-  
+
   return -1;
 }
 
@@ -269,11 +266,10 @@ void crypt_pgp_set_sender (const char *sender)
 }
 
 
-
 
-/* 
+/*
 
-   S/MIME 
+   S/MIME
 
 */
 
@@ -307,7 +303,7 @@ int crypt_smime_application_smime_handler (BODY *m, STATE *s)
 {
   if (CRYPT_MOD_CALL_CHECK (SMIME, application_handler))
     return (CRYPT_MOD_CALL (SMIME, application_handler)) (m, s);
-  
+
   return -1;
 }
 

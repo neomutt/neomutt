@@ -23,8 +23,6 @@
 #define MUTT_GROUP   0
 #define MUTT_UNGROUP 1
 
-void mutt_group_add_adrlist (group_t *g, ADDRESS *a);
-
 void mutt_group_context_add (group_context_t **ctx, group_t *group);
 void mutt_group_context_destroy (group_context_t **ctx);
 void mutt_group_context_add_adrlist (group_context_t *ctx, ADDRESS *a);

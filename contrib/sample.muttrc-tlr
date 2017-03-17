@@ -9,7 +9,7 @@
 # using it won't make you send messages with my name in the header.
 #
 # Things to change: You probably want to change the "priv.rc" source
-# command in the end of this file.  Also, it's likely you want to have 
+# command in the end of this file.  Also, it's likely you want to have
 # a look at the the $editor and $tmpdir variables.
 #
 
@@ -19,7 +19,7 @@
 
 # auto_view application/ms-tnef text/x-vcard
 # auto_view application/x-chess application/x-lotus-notes
-# auto_view text/html application/x-gzip application/x-gunzip 
+# auto_view text/html application/x-gzip application/x-gunzip
 # auto_view application/rtf application/x-rath
 # auto_view application/msword
 
@@ -141,7 +141,7 @@ macro   pager	";"	"<exit><limit>"
 
 # emulate the old POP-feature bindings
 
-macro 	index	G	"!fetchmail\n"	
+macro 	index	G	"!fetchmail\n"
 macro 	pager	G	"!fetchmail\n"
 
 # razor-report: Report spam.
@@ -203,7 +203,7 @@ unset confirmappend			# Don't ask me about appending to files
 set   delete=yes			# Don't ask me whether or not I meant to delete messages
 # set   display_filter="tr '\240\204\223\226' ' \"\"-'" # fix some funny characters
 set   edit_hdrs				# I want to edit the headers.
-set   editor="/usr/bin/jed %s -f 'mail_mode();'"	
+set   editor="/usr/bin/jed %s -f 'mail_mode();'"
  					# Invoke jed with mail_mode.  This may
 	                                # or may not work for you.
 set   noenvelope_from			# set messages' envelope-from header.
@@ -242,7 +242,7 @@ set   record="+archive/now"		# Put copies of most outgoing messages to ~/Mail/ar
 set   reply_to=ask-yes			# Ask me whether I want to honor users' reply-to headers.
 set   reverse_alias			# Use aliases to display real names on the index.
 set   save_name				# Save copies by name.  Together with $record and $save_name,
-					# this means that when a folder exists, copies of outgoing 
+					# this means that when a folder exists, copies of outgoing
 					# messages are written to ~/Mail/<name>, otherwise they go to
 					# ~/Mail/archive/now
 set   signature=~/.signature		# Silly signature

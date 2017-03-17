@@ -18,9 +18,7 @@
 
 #define _SENDLIB_C 1
 
-#if HAVE_CONFIG_H
-# include "config.h"
-#endif
+#include "config.h"
 
 #include "mutt.h"
 #include "mutt_curses.h"
@@ -1197,10 +1195,6 @@ static void mutt_set_encoding (BODY *b, CONTENT *info)
   else if (b->type == TYPEAPPLICATION && ascii_strcasecmp (b->subtype, "pgp-keys") == 0)
     b->encoding = ENC7BIT;
   else
-#if 0
-    if (info->lobin || info->hibin || info->binary || info->linemax > 990
-	   || info->cr || (/* option (OPTENCODEFROM) && */ info->from))
-#endif
   {
     /* Determine which encoding is smaller  */
     if (1.33 * (float)(info->lobin+info->hibin+info->ascii) <
@@ -1209,10 +1203,6 @@ static void mutt_set_encoding (BODY *b, CONTENT *info)
     else
       b->encoding = ENCQUOTEDPRINTABLE;
   }
-#if 0
-  else
-    b->encoding = ENC7BIT;
-#endif
 }
 
 void mutt_stamp_attachment(BODY *a)
@@ -1367,21 +1357,7 @@ BODY *mutt_make_file_attach (const char *path)
    * suffix.
    */
 
-#if 0
-
-  if ((n = mutt_lookup_mime_type (buf, sizeof (buf), xbuf, sizeof (xbuf), path)) != TYPEOTHER
-      || *xbuf != '\0')
-  {
-    att->type = n;
-    att->subtype = safe_strdup (buf);
-    att->xtype = safe_strdup (xbuf);
-  }
-
-#else
-
   mutt_lookup_mime_type (att, path);
-
-#endif
 
   if ((info = mutt_get_content_info (path, att)) == NULL)
   {
@@ -2181,7 +2157,7 @@ const char *mutt_fqdn(short may_hide_host)
   return p;
 }
 
-char *mutt_gen_msgid (void)
+static char *mutt_gen_msgid (void)
 {
   char buf[SHORT_STRING];
   time_t now;
@@ -2251,7 +2227,7 @@ send_msg (const char *path, char **args, const char *msg, char **tempfile)
 
     /* next we close all open files */
     close (0);
-#if defined(OPEN_MAX)
+#ifdef OPEN_MAX
     for (fd = tempfile ? 1 : 3; fd < OPEN_MAX; fd++)
       close (fd);
 #elif defined(_POSIX_OPEN_MAX)
@@ -2673,7 +2649,7 @@ static int _mutt_bounce_message (FILE *fp, HEADER *h, ADDRESS *to, const char *r
       unlink(tempfile);
       return -1;
     }
-#if USE_SMTP
+#ifdef USE_SMTP
     if (SmtpUrl)
       ret = mutt_smtp_send (env_from, to, NULL, NULL, tempfile,
                             h->content->encoding == ENC8BIT);

@@ -18,9 +18,7 @@
  *     Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  */
 
-#if HAVE_CONFIG_H
 #include "config.h"
-#endif
 
 #include "mutt.h"
 #include "mutt_curses.h"
@@ -34,7 +32,7 @@
 #include "rfc2047.h"
 #include "bcache.h"
 
-#if USE_HCACHE
+#ifdef USE_HCACHE
 #include "hcache.h"
 #endif
 
@@ -46,6 +44,8 @@
 #include <sys/types.h>
 #include <dirent.h>
 #include <errno.h>
+
+void nntp_group_unread_stat (NNTP_DATA *nntp_data);
 
 /* Find NNTP_DATA for given newsgroup or add it */
 static NNTP_DATA *nntp_data_find (NNTP_SERVER *nserv, const char *group)

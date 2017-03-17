@@ -2,24 +2,24 @@
 /*
  * Copyright (C) 1996-2002,2010,2013 Michael R. Elkins <me@mutt.org>
  * Copyright (C) 2004 g10 Code GmbH
- * 
+ *
  *     This program is free software; you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
  *     the Free Software Foundation; either version 2 of the License, or
  *     (at your option) any later version.
- * 
+ *
  *     This program is distributed in the hope that it will be useful,
  *     but WITHOUT ANY WARRANTY; without even the implied warranty of
  *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  *     GNU General Public License for more details.
- * 
+ *
  *     You should have received a copy of the GNU General Public License
  *     along with this program; if not, write to the Free Software
  *     Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
- */ 
+ */
 
 #ifndef MUTT_H
-#define MUTT_H 
+#define MUTT_H
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -88,11 +88,11 @@
 
 /* nifty trick I stole from ELM 2.5alpha. */
 #ifdef MAIN_C
-#define WHERE 
+#define WHERE
 #define INITVAL(x) = x
 #else
 #define WHERE extern
-#define INITVAL(x) 
+#define INITVAL(x)
 #endif
 
 #define WHERE_DEFINED 1
@@ -110,7 +110,7 @@
 #define  MUTT_COMMAND (1<<6) /* do command completion */
 #define  MUTT_PATTERN (1<<7) /* pattern mode - only used for history classes */
 #define  MUTT_LABEL   (1<<8) /* do label completion */
-#if USE_NOTMUCH
+#ifdef USE_NOTMUCH
 #define  MUTT_NM_QUERY (1<<9) /* Notmuch query mode. */
 #define  MUTT_NM_TAG   (1<<10) /* Notmuch tag +/- mode. */
 #endif
@@ -246,7 +246,7 @@ enum
 #ifdef USE_NNTP
   MUTT_NEWSGROUPS,
 #endif
-  
+
   /* Options for Mailcap lookup */
   MUTT_EDIT,
   MUTT_COMPOSE,
@@ -300,7 +300,7 @@ enum
   OPT_QUIT,
   OPT_REPLYTO,
   OPT_RECALL,
-#if defined(USE_SSL)
+#ifdef USE_SSL
   OPT_SSLSTARTTLS,
 #endif
   OPT_SUBJECT,
@@ -413,7 +413,7 @@ enum
   OPTIMAPPEEK,
   OPTIMAPSERVERNOISE,
 #endif
-#if defined(USE_SSL)
+#ifdef USE_SSL
 # ifndef USE_SSL_GNUTLS
   OPTSSLSYSTEMCERTS,
   OPTSSLV2,
@@ -525,7 +525,7 @@ enum
   OPTCRYPTUSEPKA,
 
   /* PGP options */
-  
+
   OPTCRYPTAUTOSIGN,
   OPTCRYPTAUTOENCRYPT,
   OPTCRYPTAUTOPGP,
@@ -543,9 +543,6 @@ enum
   OPTPGPCHECKEXIT,
   OPTPGPLONGIDS,
   OPTPGPAUTODEC,
-#if 0
-  OPTPGPENCRYPTSELF,
-#endif
   OPTPGPRETAINABLESIG,
   OPTPGPSTRICTENC,
   OPTFORWDECRYPT,
@@ -769,9 +766,9 @@ typedef struct body
   char *filename;               /* when sending a message, this is the file
 				 * to which this structure refers
 				 */
-  char *d_filename;		/* filename to be used for the 
+  char *d_filename;		/* filename to be used for the
 				 * content-disposition header.
-				 * If NULL, filename is used 
+				 * If NULL, filename is used
 				 * instead.
 				 */
   char *charset;                /* charset of attached file */
@@ -791,7 +788,7 @@ typedef struct body
   time_t stamp;			/* time stamp of last
 				 * encoding update.
 				 */
-  
+
   unsigned int type : 4;        /* content-type primary type */
   unsigned int encoding : 3;    /* content-transfer-encoding */
   unsigned int disposition : 2; /* content-disposition */
@@ -804,7 +801,7 @@ typedef struct body
   unsigned int deleted : 1;	/* attachment marked for deletion */
 
   unsigned int noconv : 1;	/* don't do character set conversion */
-  unsigned int force_charset : 1; 
+  unsigned int force_charset : 1;
   				/* send mode: don't adjust the character
 				 * set when in send-mode.
 				 */
@@ -860,7 +857,7 @@ typedef struct header
 					 * option.
 					 */
   unsigned int xlabel_changed : 1;	/* editable - used for syncing */
-  
+
   /* timezone of the sender of this message */
   unsigned int zhours : 5;
   unsigned int zminutes : 6;
@@ -879,7 +876,7 @@ typedef struct header
   size_t num_hidden;          	/* number of hidden messages in this view */
 
   short recipient;		/* user_is_recipient()'s return value, cached */
-  
+
   int pair; 			/* color-pair to use when displaying in the index */
 
   time_t date_sent;     	/* time when the message was sent (UTC) */
@@ -893,7 +890,7 @@ typedef struct header
   ENVELOPE *env;		/* envelope information */
   BODY *content;		/* list of MIME parts */
   char *path;
-  
+
   char *tree;           	/* character string to print thread tree */
   THREAD *thread;
 
@@ -908,11 +905,11 @@ typedef struct header
   int refno;			/* message number on server */
 #endif
 
-#if defined USE_POP || defined USE_IMAP || defined USE_NNTP || defined USE_NOTMUCH
+#if defined(USE_POP) || defined(USE_IMAP) || defined(USE_NNTP) || defined(USE_NOTMUCH)
   void *data;            	/* driver-specific data */
   void (*free_cb)(struct header *); /* driver-specific data free function */
 #endif
-  
+
   char *maildir_flags;		/* unknown maildir flags */
 } HEADER;
 
@@ -973,7 +970,7 @@ typedef struct pattern_t
   int max;
   struct pattern_t *next;
   struct pattern_t *child;		/* arguments to logical op */
-  union 
+  union
   {
     regex_t *rx;
     group_t *g;
@@ -1142,7 +1139,6 @@ void state_mark_attach (STATE *);
 void state_attach_puts (const char *, STATE *);
 void state_prefix_putc (char, STATE *);
 int  state_printf(STATE *, const char *, ...);
-int state_putwc (wchar_t, STATE *);
 int state_putws (const wchar_t *, STATE *);
 
 /* for attachment counter */

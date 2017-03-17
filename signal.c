@@ -1,24 +1,22 @@
 /*
  * Copyright (C) 1996-2000,2012 Michael R. Elkins <me@mutt.org>
- * 
+ *
  *     This program is free software; you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
  *     the Free Software Foundation; either version 2 of the License, or
  *     (at your option) any later version.
- * 
+ *
  *     This program is distributed in the hope that it will be useful,
  *     but WITHOUT ANY WARRANTY; without even the implied warranty of
  *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  *     GNU General Public License for more details.
- * 
+ *
  *     You should have received a copy of the GNU General Public License
  *     along with this program; if not, write to the Free Software
  *     Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
- */ 
+ */
 
-#if HAVE_CONFIG_H
-# include "config.h"
-#endif
+#include "config.h"
 
 #include "mutt.h"
 #include "mutt_curses.h"
@@ -39,13 +37,13 @@ static void exit_handler (int sig)
 {
   curs_set (1);
   endwin (); /* just to be safe */
-#if SYS_SIGLIST_DECLARED
+#ifdef SYS_SIGLIST_DECLARED
   printf(_("%s...  Exiting.\n"), sys_siglist[sig]);
 #else
-#if (__sun__ && __svr4__)
+#if (defined(__sun__) && defined(__svr4__))
   printf(_("Caught %s...  Exiting.\n"), _sys_siglist[sig]);
 #else
-#if (__alpha && __osf__)
+#if (defined(__alpha) && defined(__osf__))
   printf(_("Caught %s...  Exiting.\n"), __sys_siglist[sig]);
 #else
   printf(_("Caught signal %d...  Exiting.\n"), sig);
@@ -101,7 +99,7 @@ static void sighandler (int sig)
 }
 
 #ifdef USE_SLANG_CURSES
-int mutt_intr_hook (void)
+static int mutt_intr_hook (void)
 {
   return (-1);
 }
@@ -242,7 +240,7 @@ void mutt_unblock_signals_system (int catch)
 void mutt_allow_interrupt (int disposition)
 {
   struct sigaction sa;
-  
+
   memset (&sa, 0, sizeof sa);
   sa.sa_handler = sighandler;
 #ifdef SA_RESTART

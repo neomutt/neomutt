@@ -59,28 +59,28 @@ typedef struct menu_t
   mutt_window_t *helpwin;
   mutt_window_t *messagewin;
 
-  /* Setting dialog != NULL overrides normal menu behavior. 
+  /* Setting dialog != NULL overrides normal menu behavior.
    * In dialog mode menubar is hidden and prompt keys are checked before
-   * normal menu movement keys. This can cause problems with scrolling, if 
+   * normal menu movement keys. This can cause problems with scrolling, if
    * prompt keys override movement keys.
    */
   char **dialog;	/* dialog lines themselves */
   char *prompt;		/* prompt for user, similar to mutt_multi_choice */
   char *keys;		/* keys used in the prompt */
-  
+
   /* callback to generate an index line for the requested element */
   void (*make_entry) (char *, size_t, struct menu_t *, int);
-  
+
   /* how to search the menu */
   int (*search) (struct menu_t *, regex_t *re, int n);
 
   int (*tag) (struct menu_t *, int i, int m);
 
-  /* color pair to be used for the requested element 
+  /* color pair to be used for the requested element
    * (default function returns ColorDefs[MT_COLOR_NORMAL])
    */
   int (*color) (int i);
-   
+
   /* the following are used only by mutt_menuLoop() */
   int top;		/* entry that is the top of the current page */
   int oldcurrent;	/* for driver use only. */
@@ -89,7 +89,6 @@ typedef struct menu_t
 } MUTTMENU;
 
 void mutt_menu_init (void);
-void menu_jump (MUTTMENU *);
 void menu_redraw_full (MUTTMENU *);
 #ifdef USE_SIDEBAR
 void menu_redraw_sidebar (MUTTMENU *);

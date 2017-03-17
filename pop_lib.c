@@ -1,30 +1,28 @@
 /*
  * Copyright (C) 2000-2003 Vsevolod Volkov <vvv@mutt.org.ua>
- * 
+ *
  *     This program is free software; you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
  *     the Free Software Foundation; either version 2 of the License, or
  *     (at your option) any later version.
- * 
+ *
  *     This program is distributed in the hope that it will be useful,
  *     but WITHOUT ANY WARRANTY; without even the implied warranty of
  *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  *     GNU General Public License for more details.
- * 
+ *
  *     You should have received a copy of the GNU General Public License
  *     along with this program; if not, write to the Free Software
  *     Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-#if HAVE_CONFIG_H
-# include "config.h"
-#endif
+#include "config.h"
 
 #include "mutt.h"
 #include "mx.h"
 #include "url.h"
 #include "pop.h"
-#if defined(USE_SSL)
+#ifdef USE_SSL
 # include "mutt_ssl.h"
 #endif
 
@@ -75,7 +73,7 @@ int pop_parse_path (const char* path, ACCOUNT* acct)
 }
 
 /* Copy error message to err_msg buffer */
-void pop_error (POP_DATA *pop_data, char *msg)
+static void pop_error (POP_DATA *pop_data, char *msg)
 {
   char *t, *c, *c2;
 
@@ -283,7 +281,7 @@ int pop_open_connection (POP_DATA *pop_data)
     return -2;
   }
 
-#if defined(USE_SSL)
+#ifdef USE_SSL
   /* Attempt STLS if available and desired. */
   if (!pop_data->conn->ssf && (pop_data->cmd_stls || option(OPTSSLFORCETLS)))
   {
@@ -478,7 +476,7 @@ int pop_fetch_data (POP_DATA *pop_data, char *query, progress_t *progressbar,
 
   inbuf = safe_malloc (sizeof (buf));
 
-  FOREVER
+  while (true)
   {
     chunk = mutt_socket_readln_d (buf, sizeof (buf), pop_data->conn, MUTT_SOCK_LOG_HDR);
     if (chunk < 0)
@@ -560,7 +558,7 @@ int pop_reconnect (CONTEXT *ctx)
   if (pop_data->status == POP_BYE)
     return -1;
 
-  FOREVER
+  while (true)
   {
     mutt_socket_close (pop_data->conn);
 

@@ -1,20 +1,20 @@
 /*
  * Copyright (C) 1996-2002,2010,2016 Michael R. Elkins <me@mutt.org>
- * 
+ *
  *     This program is free software; you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
  *     the Free Software Foundation; either version 2 of the License, or
  *     (at your option) any later version.
- * 
+ *
  *     This program is distributed in the hope that it will be useful,
  *     but WITHOUT ANY WARRANTY; without even the implied warranty of
  *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  *     GNU General Public License for more details.
- * 
+ *
  *     You should have received a copy of the GNU General Public License
  *     along with this program; if not, write to the Free Software
  *     Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
- */ 
+ */
 
 WHERE void (*mutt_error) (const char *, ...);
 WHERE void (*mutt_message) (const char *, ...);
@@ -75,10 +75,10 @@ WHERE char *Maildir;
 #if defined(USE_IMAP) || defined(USE_POP) || defined(USE_NNTP)
 WHERE char *MessageCachedir;
 #endif
-#if USE_HCACHE
+#ifdef USE_HCACHE
 WHERE char *HeaderCache;
 WHERE char *HeaderCacheBackend;
-#if HAVE_GDBM || HAVE_BDB
+#if defined(HAVE_GDBM) || defined(HAVE_BDB)
 WHERE char *HeaderCachePageSize;
 #endif /* HAVE_GDBM || HAVE_BDB */
 #endif /* USE_HCACHE */
@@ -144,14 +144,14 @@ WHERE char *SidebarIndentString;
 #endif
 WHERE char *Signature;
 WHERE char *SimpleSearch;
-#if USE_SMTP
+#ifdef USE_SMTP
 WHERE char *SmtpAuthenticators INITVAL (NULL);
 WHERE char *SmtpPass INITVAL (NULL);
 WHERE char *SmtpUrl INITVAL (NULL);
 #endif /* USE_SMTP */
 WHERE char *Spoolfile;
 WHERE char *SpamSep;
-#if defined(USE_SSL)
+#ifdef USE_SSL
 WHERE char *SslCertFile INITVAL (NULL);
 WHERE char *SslClientCert INITVAL (NULL);
 WHERE char *SslEntropyFile INITVAL (NULL);
@@ -343,7 +343,7 @@ extern const char * const Months[];
 #endif
 
 #ifdef MAIN_C
-/* so that global vars get included */ 
+/* so that global vars get included */
 #include "mx.h"
 #include "mutt_regex.h"
 #include "buffy.h"

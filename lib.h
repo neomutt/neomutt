@@ -1,24 +1,24 @@
 /*
  * Copyright (C) 1996-2000,2007,2010,2012 Michael R. Elkins <me@mutt.org>
  * Copyright (C) 1999-2005,2007 Thomas Roessler <roessler@does-not-exist.org>
- * 
+ *
  *     This program is free software; you can redistribute it
  *     and/or modify it under the terms of the GNU General Public
  *     License as published by the Free Software Foundation; either
  *     version 2 of the License, or (at your option) any later
  *     version.
- * 
+ *
  *     This program is distributed in the hope that it will be
  *     useful, but WITHOUT ANY WARRANTY; without even the implied
  *     warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR
  *     PURPOSE.  See the GNU General Public License for more
  *     details.
- * 
+ *
  *     You should have received a copy of the GNU General Public
  *     License along with this program; if not, write to the Free
  *     Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
  *     Boston, MA  02110-1301, USA.
- */ 
+ */
 
 /* mutt functions which are generally useful. */
 
@@ -64,7 +64,7 @@
 /*
  * Create a format string to be used with scanf.
  * To use it, write, for instance, MUTT_FORMAT(HUGE_STRING).
- * 
+ *
  * See K&R 2nd ed, p. 231 for an explanation.
  */
 # define _MUTT_FORMAT_2(a,b)	"%" a  b
@@ -93,8 +93,6 @@
 #define FMT_LEFT	0
 #define FMT_RIGHT	1
 #define FMT_CENTER	-1
-
-#define FOREVER while (1)
 
 /* this macro must check for *c == 0 since isspace(0) has unreliable behavior
    on some systems */
@@ -175,12 +173,10 @@ char *strfcpy (char *dest, const char *src, size_t dlen);
  */
 int mutt_atos (const char *, short *);
 int mutt_atoi (const char *, int *);
-int mutt_atol (const char *, long *);
 
 const char *mutt_stristr (const char *, const char *);
 const char *mutt_basename (const char *);
 
-int compare_stat (struct stat *, struct stat *);
 int mutt_copy_stream (FILE *, FILE *);
 int mutt_copy_bytes (FILE *, FILE *, size_t);
 int mutt_rx_sanitize_string (char *, size_t, const char *);

@@ -19,9 +19,7 @@
 
 /* This file contains code for direct SMTP delivery of email messages. */
 
-#if HAVE_CONFIG_H
 #include "config.h"
-#endif
 
 #include "mutt.h"
 #include "mutt_curses.h"
@@ -531,7 +529,7 @@ static int smtp_auth (CONNECTION* conn)
       mutt_debug (2, "smtp_authenticate: Trying method %s\n", method);
 
       r = smtp_auth_sasl (conn, method);
-      
+
       if (r == SMTP_AUTH_FAIL && delim)
       {
         mutt_error (_("%s authentication failed, trying next method"), method);

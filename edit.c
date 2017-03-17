@@ -1,26 +1,24 @@
 /*
  * Copyright (C) 1996-2000 Michael R. Elkins <me@mutt.org>
- * 
+ *
  *     This program is free software; you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
  *     the Free Software Foundation; either version 2 of the License, or
  *     (at your option) any later version.
- * 
+ *
  *     This program is distributed in the hope that it will be useful,
  *     but WITHOUT ANY WARRANTY; without even the implied warranty of
  *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  *     GNU General Public License for more details.
- * 
+ *
  *     You should have received a copy of the GNU General Public License
  *     along with this program; if not, write to the Free Software
  *     Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
- */ 
+ */
 
 /* Close approximation of the mailx(1) builtin editor for sending mail. */
 
-#if HAVE_CONFIG_H
-# include "config.h"
-#endif
+#include "config.h"
 
 #include "mutt.h"
 #include "mutt_curses.h"
@@ -100,7 +98,7 @@ be_snarf_file (const char *path, char **buf, int *max, int *len, int verbose)
   FILE *f;
   char tmp[LONG_STRING];
   struct stat sb;
-  
+
   if ((f = fopen (path, "r")))
   {
     fstat (fileno (f), &sb);
@@ -124,7 +122,7 @@ static int be_barf_file (const char *path, char **buf, int buflen)
 {
   FILE *f;
   int i;
-  
+
   if ((f = fopen (path, "w")) == NULL)		/* __FOPEN_CHECKED__ */
   {
     addstr (strerror (errno));
@@ -324,7 +322,7 @@ int mutt_builtin_editor (const char *path, HEADER *msg, HEADER *cur)
   int done = 0;
   int i;
   char *p;
-  
+
   scrollok (stdscr, true);
 
   be_edit_header (msg->env, 0);
@@ -484,7 +482,7 @@ int mutt_builtin_editor (const char *path, HEADER *msg, HEADER *cur)
 	safe_realloc (&buf, sizeof (char *) * (bufmax += 25));
       buf[buflen++] = safe_strdup (tmp[1] == '~' ? tmp + 1 : tmp);
     }
-    
+
     tmp[0] = 0;
   }
 

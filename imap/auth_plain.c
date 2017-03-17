@@ -19,9 +19,7 @@
 
 /* SASL PLAIN support */
 
-#if HAVE_CONFIG_H
 #include "config.h"
-#endif
 
 #include "mutt.h"
 #include "imap_private.h"
@@ -50,7 +48,7 @@ imap_auth_res_t imap_auth_plain(IMAP_DATA *idata, const char *method)
   do
     rc = imap_cmd_step(idata);
   while (rc == IMAP_CMD_CONTINUE);
-  
+
   if (rc == IMAP_CMD_BAD)
   {
     res = IMAP_AUTH_UNAVAIL;

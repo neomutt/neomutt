@@ -1,24 +1,22 @@
 /*
  * Copyright (C) 1996-2000,2002,2014 Michael R. Elkins <me@mutt.org>
- * 
+ *
  *     This program is free software; you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
  *     the Free Software Foundation; either version 2 of the License, or
  *     (at your option) any later version.
- * 
+ *
  *     This program is distributed in the hope that it will be useful,
  *     but WITHOUT ANY WARRANTY; without even the implied warranty of
  *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  *     GNU General Public License for more details.
- * 
+ *
  *     You should have received a copy of the GNU General Public License
  *     along with this program; if not, write to the Free Software
  *     Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
- */ 
+ */
 
-#if HAVE_CONFIG_H
-# include "config.h"
-#endif
+#include "config.h"
 
 #include "mutt.h"
 #include "mailbox.h"
@@ -170,7 +168,7 @@ mutt_copy_hdr (FILE *in, FILE *out, LOFF_T off_start, LOFF_T off_end, int flags,
       /* Do we have anything pending? */
       if (this_one)
       {
-	if (flags & CH_DECODE) 
+	if (flags & CH_DECODE)
 	{
 	  if (!address_header_decode (&this_one))
 	    rfc2047_decode (&this_one);
@@ -179,7 +177,7 @@ mutt_copy_hdr (FILE *in, FILE *out, LOFF_T off_start, LOFF_T off_end, int flags,
 
 	if (!headers[x])
 	  headers[x] = this_one;
-	else 
+	else
 	{
 	  int hlen = mutt_strlen (headers[x]);
 
@@ -265,16 +263,16 @@ mutt_copy_hdr (FILE *in, FILE *out, LOFF_T off_start, LOFF_T off_end, int flags,
   /* Do we have anything pending?  -- XXX, same code as in above in the loop. */
   if (this_one)
   {
-    if (flags & CH_DECODE) 
+    if (flags & CH_DECODE)
     {
       if (!address_header_decode (&this_one))
 	rfc2047_decode (&this_one);
       this_one_len = mutt_strlen (this_one);
     }
-    
+
     if (!headers[x])
       headers[x] = this_one;
-    else 
+    else
     {
       int hlen = mutt_strlen (headers[x]);
 
@@ -291,18 +289,13 @@ mutt_copy_hdr (FILE *in, FILE *out, LOFF_T off_start, LOFF_T off_end, int flags,
   {
     if (headers[x])
     {
-#if 0
-      if (flags & CH_DECODE)
-	rfc2047_decode (&headers[x]);
-#endif
-
       /* We couldn't do the prefixing when reading because RFC 2047
        * decoding may have concatenated lines.
        */
-      
+
       if (flags & (CH_DECODE|CH_PREFIX))
       {
-	if (mutt_write_one_header (out, 0, headers[x], 
+	if (mutt_write_one_header (out, 0, headers[x],
 				   flags & CH_PREFIX ? prefix : 0,
                                    mutt_window_wrap_cols (MuttIndexWindow, Wrap), flags) == -1)
 	{
@@ -311,7 +304,7 @@ mutt_copy_hdr (FILE *in, FILE *out, LOFF_T off_start, LOFF_T off_end, int flags,
 	}
       }
       else
-      {      
+      {
 	if (fputs (headers[x], out) == EOF)
 	{
 	  error = true;
@@ -473,7 +466,7 @@ mutt_copy_header (FILE *in, HEADER *h, FILE *out, int flags, const char *prefix)
 
   if (ferror (out) || feof (out))
     return -1;
-  
+
   return 0;
 }
 
@@ -510,7 +503,7 @@ static int count_delete_lines (FILE *fp, BODY *b, LOFF_T *length, size_t datelen
 }
 
 /* make a copy of a message
- * 
+ *
  * fpout	where to write output
  * fpin		where to get input
  * hdr		header of message being copied
@@ -523,7 +516,7 @@ static int count_delete_lines (FILE *fp, BODY *b, LOFF_T *length, size_t datelen
  *      MUTT_CM_PRINTING   printing the message
  *	MUTT_CM_UPDATE	update structures in memory after syncing
  *	MUTT_CM_DECODE_PGP	used for decoding PGP messages
- *	MUTT_CM_CHARCONV	perform character set conversion 
+ *	MUTT_CM_CHARCONV	perform character set conversion
  * chflags	flags to mutt_copy_header()
  */
 
@@ -599,7 +592,7 @@ _mutt_copy_message (FILE *fpout, FILE *fpin, HEADER *hdr, BODY *body,
       }
 #endif
 
-      /* Update original message if we are sync'ing a mailfolder */ 
+      /* Update original message if we are sync'ing a mailfolder */
       if (flags & MUTT_CM_UPDATE)
       {
 	hdr->attach_del = 0;
@@ -647,7 +640,7 @@ _mutt_copy_message (FILE *fpout, FILE *fpin, HEADER *hdr, BODY *body,
       s.flags |= MUTT_CHARCONV;
     if (flags & MUTT_CM_REPLYING)
       s.flags |= MUTT_REPLYING;
-    
+
     if (WithCrypto && flags & MUTT_CM_VERIFY)
       s.flags |= MUTT_VERIFY;
 
@@ -702,9 +695,9 @@ _mutt_copy_message (FILE *fpout, FILE *fpin, HEADER *hdr, BODY *body,
     {
       int c;
       size_t bytes = body->length;
-      
+
       fputs(prefix, fpout);
-      
+
       while((c = fgetc(fpin)) != EOF && bytes--)
       {
 	fputc(c, fpout);
@@ -712,13 +705,13 @@ _mutt_copy_message (FILE *fpout, FILE *fpin, HEADER *hdr, BODY *body,
 	{
 	  fputs(prefix, fpout);
 	}
-      } 
+      }
     }
     else if (mutt_copy_bytes (fpin, fpout, body->length) == -1)
       return -1;
   }
 
-  if ((flags & MUTT_CM_UPDATE) && (flags & MUTT_CM_NOHEADER) == 0 
+  if ((flags & MUTT_CM_UPDATE) && (flags & MUTT_CM_NOHEADER) == 0
       && new_offset != -1)
   {
     body->offset = new_offset;
@@ -739,7 +732,7 @@ mutt_copy_message (FILE *fpout, CONTEXT *src, HEADER *hdr, int flags,
 
   if ((msg = mx_open_message (src, hdr->msgno)) == NULL)
     return -1;
-  if ((r = _mutt_copy_message (fpout, msg->fp, hdr, hdr->content, flags, chflags)) == 0 
+  if ((r = _mutt_copy_message (fpout, msg->fp, hdr, hdr->content, flags, chflags)) == 0
       && (ferror (fpout) || feof (fpout)))
   {
     mutt_debug (1, "_mutt_copy_message failed to detect EOF!\n");
@@ -760,7 +753,7 @@ mutt_copy_message (FILE *fpout, CONTEXT *src, HEADER *hdr, int flags,
  * chflags	mutt_copy_header() flags
  */
 
-int
+static int
 _mutt_append_message (CONTEXT *dest, FILE *fpin, CONTEXT *src, HEADER *hdr,
 		      BODY *body, int flags, int chflags)
 {
@@ -854,13 +847,13 @@ static int copy_delete_attach (BODY *b, FILE *fpin, FILE *fpout, char *date)
   return 0;
 }
 
-/* 
+/*
  * This function is the equivalent of mutt_write_address_list(),
  * but writes to a buffer instead of writing to a stream.
  * mutt_write_address_list could be re-used if we wouldn't store
- * all the decoded headers in a huge array, first. 
+ * all the decoded headers in a huge array, first.
  *
- * XXX - fix that. 
+ * XXX - fix that.
  */
 
 static void format_address_header (char **h, ADDRESS *a)
@@ -883,8 +876,8 @@ static void format_address_header (char **h, ADDRESS *a)
     *buf = *cbuf = *c2buf = '\0';
     l = rfc822_write_address (buf, sizeof (buf), a, 0);
     a->next = tmp;
-    
-    if (count && linelen + l > 74) 
+
+    if (count && linelen + l > 74)
     {
       strcpy (cbuf, "\n\t");  	/* __STRCPY_CHECKED__ */
       linelen = l + 8;
@@ -917,7 +910,7 @@ static void format_address_header (char **h, ADDRESS *a)
     strcat (p + plen, c2buf);		/* __STRCAT_CHECKED__ */
     plen += c2buflen;
   }
-  
+
   /* Space for this was allocated in the beginning of this function. */
   strcat (p + plen, "\n");		/* __STRCAT_CHECKED__ */
 }
@@ -932,7 +925,7 @@ static int address_header_decode (char **h)
 
   switch (tolower ((unsigned char) *s))
   {
-    case 'r': 
+    case 'r':
     {
       if (ascii_strncasecmp (s, "return-path:", 12) == 0)
       {
@@ -947,10 +940,10 @@ static int address_header_decode (char **h)
       }
       return 0;
     }
-    case 'f': 
+    case 'f':
     {
-      if (ascii_strncasecmp (s, "from:", 5)) 
-	return 0; 
+      if (ascii_strncasecmp (s, "from:", 5))
+	return 0;
       l = 5;
       break;
     }
@@ -960,7 +953,7 @@ static int address_header_decode (char **h)
 	return 0;
       l = 3;
       break;
-      
+
     }
     case 'b':
     {
@@ -990,12 +983,12 @@ static int address_header_decode (char **h)
       l = 17;
       break;
     }
-    default: return 0;    
+    default: return 0;
   }
 
   if ((a = rfc822_parse_adrlist (a, s + l)) == NULL)
     return 0;
-  
+
   mutt_addrlist_to_local (a);
   rfc2047_decode_adrlist (a);
   for (cur = a; cur; cur = cur->next)

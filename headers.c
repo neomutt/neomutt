@@ -1,24 +1,22 @@
-/* 
+/*
  * Copyright (C) 1996-2009,2012 Michael R. Elkins <me@mutt.org>
- * 
+ *
  *     This program is free software; you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
  *     the Free Software Foundation; either version 2 of the License, or
  *     (at your option) any later version.
- * 
+ *
  *     This program is distributed in the hope that it will be useful,
  *     but WITHOUT ANY WARRANTY; without even the implied warranty of
  *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  *     GNU General Public License for more details.
- * 
+ *
  *     You should have received a copy of the GNU General Public License
  *     along with this program; if not, write to the Free Software
  *     Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-#if HAVE_CONFIG_H
-# include "config.h"
-#endif
+#include "config.h"
 
 #include "mutt.h"
 #include "mutt_crypt.h"
@@ -51,7 +49,7 @@ void mutt_edit_headers (const char *editor,
     mutt_perror (path);
     return;
   }
-  
+
   mutt_env_to_local (msg->env);
   mutt_write_rfc822_header (ofp, msg->env, NULL, 1, 0);
   fputc ('\n', ofp);	/* tie off the header. */
@@ -95,7 +93,7 @@ void mutt_edit_headers (const char *editor,
     mutt_perror (path);
     return;
   }
-  
+
   if ((ofp = safe_fopen (body, "w")) == NULL)
   {
     /* intentionally leak a possible temporary file here */
@@ -103,7 +101,7 @@ void mutt_edit_headers (const char *editor,
     mutt_perror (body);
     return;
   }
-  
+
   n = mutt_read_rfc822_header (ifp, NULL, 1, 0);
   while ((i = fread (buffer, 1, sizeof (buffer), ifp)) > 0)
     fwrite (buffer, 1, i, ofp);
@@ -133,7 +131,7 @@ void mutt_edit_headers (const char *editor,
 
   mutt_expand_aliases_env (msg->env);
 
-  /* search through the user defined headers added to see if 
+  /* search through the user defined headers added to see if
    * fcc: or attach: or pgp: was specified
    */
 

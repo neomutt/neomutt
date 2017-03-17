@@ -1,21 +1,21 @@
 /*
  * Copyright (C) 1996-2000,2012 Michael R. Elkins <me@mutt.org>
  * Copyright (C) 2004 g10 Code GmbH
- * 
+ *
  *     This program is free software; you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
  *     the Free Software Foundation; either version 2 of the License, or
  *     (at your option) any later version.
- * 
+ *
  *     This program is distributed in the hope that it will be useful,
  *     but WITHOUT ANY WARRANTY; without even the implied warranty of
  *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  *     GNU General Public License for more details.
- * 
+ *
  *     You should have received a copy of the GNU General Public License
  *     along with this program; if not, write to the Free Software
  *     Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
- */ 
+ */
 
 #ifndef _MUTT_CURSES_H_
 #define _MUTT_CURSES_H_ 1
@@ -39,7 +39,7 @@
 
 #else /* USE_SLANG_CURSES */
 
-#if HAVE_NCURSESW_NCURSES_H
+#ifdef HAVE_NCURSESW_NCURSES_H
 # include <ncursesw/ncurses.h>
 #elif HAVE_NCURSES_NCURSES_H
 # include <ncurses/ncurses.h>
@@ -62,7 +62,7 @@
 #define CENTERLINE(win,x,y) mutt_window_move(win, y, (win->cols-strlen(x))/2), addstr(x)
 #define BEEP() do { if (option (OPTBEEP)) beep(); } while (0)
 
-#if ! (defined(USE_SLANG_CURSES) || defined(HAVE_CURS_SET))
+#if !(defined(USE_SLANG_CURSES) || defined(HAVE_CURS_SET))
 #define curs_set(x)
 #endif
 
@@ -248,7 +248,7 @@ void ci_start_color (void);
  * functions will properly set the background attributes all the way to the
  * right column.
  */
-#if defined(HAVE_BKGDSET)
+#ifdef HAVE_BKGDSET
 #define SETCOLOR(X) bkgdset(ColorDefs[X] | ' ')
 #define ATTRSET(X) bkgdset(X | ' ')
 #else

@@ -25,18 +25,18 @@
 
 #include <stdio.h>
 
-#if HAVE_INTTYPES_H
+#ifdef HAVE_INTTYPES_H
 # include <inttypes.h>
 #endif
-#if HAVE_STDINT_H || _LIBC
+#if defined(HAVE_STDINT_H) || defined(_LIBC)
 # include <stdint.h>
 #endif
-#if HAVE_SYS_TYPES_H
+#ifdef HAVE_SYS_TYPES_H
 # include <sys/types.h>
 #endif
 
 #ifndef __GNUC_PREREQ
-# if defined __GNUC__ && defined __GNUC_MINOR__
+# if defined(__GNUC__) && defined(__GNUC_MINOR__)
 #  define __GNUC_PREREQ(maj, min) \
 	((__GNUC__ << 16) + __GNUC_MINOR__ >= ((maj) << 16) + (min))
 # else
@@ -45,7 +45,7 @@
 #endif
 
 #ifndef __THROW
-# if defined __cplusplus && __GNUC_PREREQ (2,8)
+# if defined(__cplusplus) && __GNUC_PREREQ (2,8)
 #  define __THROW	throw ()
 # else
 #  define __THROW

@@ -20,9 +20,7 @@
  *   unsigned short to fix compiler warnings, 2007-11-13, Rocco Rutte
  */
 
-#if HAVE_CONFIG_H
-# include "config.h"
-#endif
+#include "config.h"
 
 #ifndef HAVE_WC_FUNCS
 
@@ -169,17 +167,3 @@ int wcwidth_ucs(wchar_t ucs)
 
 #endif /* !HAVE_WC_FUNCS */
 
-#if 0 /* original */
-int wcswidth(const wchar_t *pwcs, size_t n)
-{
-  int w, width = 0;
-
-  for (;*pwcs && n-- > 0; pwcs++)
-    if ((w = wcwidth(*pwcs)) < 0)
-      return -1;
-    else
-      width += w;
-
-  return width;
-}
-#endif

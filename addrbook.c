@@ -1,24 +1,22 @@
 /*
  * Copyright (C) 1996-2000,2007 Michael R. Elkins <me@mutt.org>
- * 
+ *
  *     This program is free software; you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
  *     the Free Software Foundation; either version 2 of the License, or
  *     (at your option) any later version.
- * 
+ *
  *     This program is distributed in the hope that it will be useful,
  *     but WITHOUT ANY WARRANTY; without even the implied warranty of
  *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  *     GNU General Public License for more details.
- * 
+ *
  *     You should have received a copy of the GNU General Public License
  *     along with this program; if not, write to the Free Software
  *     Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
- */ 
+ */
 
-#if HAVE_CONFIG_H
-# include "config.h"
-#endif
+#include "config.h"
 
 #include "mutt.h"
 #include "mutt_menu.h"
@@ -87,9 +85,9 @@ static int alias_tag (MUTTMENU *menu, int n, int m)
 {
   ALIAS *cur = ((ALIAS **) menu->data)[n];
   int ot = cur->tagged;
-  
+
   cur->tagged = (m >= 0 ? m : !cur->tagged);
-  
+
   return cur->tagged - ot;
 }
 
@@ -115,7 +113,7 @@ static int alias_SortAddress (const void *a, const void *b)
   else if (pb == NULL)
     r = 1;
   else if (pa->personal)
-  { 
+  {
     if (pb->personal)
       r = mutt_strcasecmp (pa->personal, pb->personal);
     else
@@ -139,16 +137,16 @@ void mutt_alias_menu (char *buf, size_t buflen, ALIAS *aliases)
   char helpstr[LONG_STRING];
 
   int omax;
-  
+
   if (!aliases)
   {
     mutt_error (_("You have no aliases!"));
     return;
   }
-  
+
   /* tell whoever called me to redraw the screen when I return */
   set_option (OPTNEEDREDRAW);
-  
+
   menu = mutt_new_menu (MENU_ALIAS);
   menu->make_entry = alias_entry;
   menu->tag = alias_tag;
@@ -158,7 +156,7 @@ void mutt_alias_menu (char *buf, size_t buflen, ALIAS *aliases)
 new_aliases:
 
   omax = menu->max;
-  
+
   /* count the number of aliases */
   for (aliasp = aliases; aliasp; aliasp = aliasp->next)
   {
@@ -192,7 +190,7 @@ new_aliases:
       aliases       = aliases->next;
       goto new_aliases;
     }
-    
+
     switch ((op = mutt_menuLoop (menu)))
     {
       case OP_DELETE:
@@ -239,5 +237,5 @@ new_aliases:
 
   mutt_menuDestroy (&menu);
   FREE (&AliasTable);
-  
+
 }

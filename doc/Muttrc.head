@@ -86,7 +86,7 @@ attachments   -A application/x-pkcs7-.*
 ## message flow?)
 ##
 attachments   +I text/plain
-  
+
 ## These two lines make Mutt qualify MIME containers.  (So, for example,
 ## a message/rfc822 forward will count as an attachment.)  The first
 ## line is unnecessary if you already have "attach-allow */.*", of

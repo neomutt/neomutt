@@ -3,12 +3,12 @@
  *     it under the terms of the GNU General Public License as published by
  *     the Free Software Foundation; either version 2 of the License, or
  *     (at your option) any later version.
- * 
+ *
  *     This program is distributed in the hope that it will be useful,
  *     but WITHOUT ANY WARRANTY; without even the implied warranty of
  *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  *     GNU General Public License for more details.
- * 
+ *
  *     You should have received a copy of the GNU General Public License
  *     along with this program; if not, write to the Free Software
  *     Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
@@ -64,7 +64,7 @@ BUFFER *mutt_buffer_from (char *seed) {
 
 void mutt_buffer_free (BUFFER **p)
 {
-  if (!p || !*p) 
+  if (!p || !*p)
     return;
 
    FREE(&(*p)->data);
@@ -76,7 +76,7 @@ int mutt_buffer_printf (BUFFER* buf, const char* fmt, ...)
 {
   va_list ap, ap_retry;
   int len, blen, doff;
-  
+
   va_start (ap, fmt);
   va_copy (ap_retry, ap);
 
@@ -271,7 +271,7 @@ int mutt_extract_token (BUFFER *dest, BUFFER *tok, int flags)
 
       /* if we got output, make a new string consisting of the shell output
 	 plus whatever else was left on the original line */
-      /* BUT: If this is inside a quoted string, directly add output to 
+      /* BUT: If this is inside a quoted string, directly add output to
        * the token */
       if (expn.data && qc)
       {

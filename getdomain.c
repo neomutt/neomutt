@@ -16,9 +16,7 @@
  *     Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-#if HAVE_CONFIG_H
-# include "config.h"
-#endif
+#include "config.h"
 
 #include <string.h>
 #include <unistd.h>
@@ -33,7 +31,7 @@ int getdnsdomainname (char *d, size_t len)
 {
   int ret = -1;
 
-#if defined HAVE_GETADDRINFO || defined HAVE_GETADDRINFO_A
+#if defined(HAVE_GETADDRINFO) || defined(HAVE_GETADDRINFO_A)
   char node[STRING];
   if (gethostname(node, sizeof(node)))
     return ret;

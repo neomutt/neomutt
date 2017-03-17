@@ -44,7 +44,7 @@ You'll need several GNU development utilities for working on mutt:
 --- gettext.m4.bak	Thu Jul  2 18:46:08 1998
 +++ gettext.m4	Mon Oct  5 23:32:54 1998
 @@ -46,12 +46,13 @@
- 
+
  	   if test "$gt_cv_func_gettext_libc" != "yes"; then
  	     AC_CHECK_LIB(intl, bindtextdomain,
 -	       [AC_CACHE_CHECK([for gettext in libintl],
@@ -60,7 +60,7 @@ You'll need several GNU development utilities for working on mutt:
 +	   if test "$gt_cv_func_gettext_libintl" = "yes" ; then
 +	     LIBS="-lintl $LIBS"
  	   fi
- 
+
  	   if test "$gt_cv_func_gettext_libc" = "yes" \
 
 

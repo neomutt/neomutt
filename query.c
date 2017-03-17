@@ -1,24 +1,22 @@
 /*
  * Copyright (C) 1996-2000,2003,2013 Michael R. Elkins <me@mutt.org>
- * 
+ *
  *     This program is free software; you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
  *     the Free Software Foundation; either version 2 of the License, or
  *     (at your option) any later version.
- * 
+ *
  *     This program is distributed in the hope that it will be useful,
  *     but WITHOUT ANY WARRANTY; without even the implied warranty of
  *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  *     GNU General Public License for more details.
- * 
+ *
  *     You should have received a copy of the GNU General Public License
  *     along with this program; if not, write to the Free Software
  *     Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
- */ 
+ */
 
-#if HAVE_CONFIG_H
-# include "config.h"
-#endif
+#include "config.h"
 
 #include "mutt.h"
 #include "filter.h"
@@ -60,13 +58,13 @@ static void query_menu (char *buf, size_t buflen, QUERY *results, int retbuf);
 static ADDRESS *result_to_addr (QUERY *r)
 {
   static ADDRESS *tmp;
-  
+
   if (!(tmp = rfc822_cpy_adr (r->addr, 0)))
     return NULL;
-  
+
   if(!tmp->next && !tmp->personal)
     tmp->personal = safe_strdup (r->name);
-  
+
   mutt_addrlist_to_intl (tmp, NULL);
   return tmp;
 }
@@ -154,7 +152,7 @@ static QUERY *run_query (char *s, int quiet)
     if (!quiet)
       mutt_message ("%s", msg);
   }
-  
+
   return first;
 }
 
@@ -168,7 +166,7 @@ static int query_search (MUTTMENU *m, regex_t *re, int n)
     return 0;
   if (table[n].data->addr)
   {
-    if (table[n].data->addr->personal && 
+    if (table[n].data->addr->personal &&
 	!regexec (re, table[n].data->addr->personal, 0, NULL, 0))
       return 0;
     if (table[n].data->addr->mailbox &&
@@ -180,7 +178,7 @@ static int query_search (MUTTMENU *m, regex_t *re, int n)
       return 0;
 #endif
   }
-  
+
   return REG_NOMATCH;
 }
 
@@ -251,7 +249,7 @@ static int query_tag (MUTTMENU *menu, int n, int m)
 {
   ENTRY *cur = &((ENTRY *) menu->data)[n];
   int ot = cur->tagged;
-  
+
   cur->tagged = m >= 0 ? m : !cur->tagged;
   return cur->tagged - ot;
 }
@@ -399,7 +397,7 @@ static void query_menu (char *buf, size_t buflen, QUERY *results, int retbuf)
 	      {
 		menu->data = QueryTable = safe_calloc (menu->max, sizeof (ENTRY));
 
-		for (i = 0, queryp = results; queryp; 
+		for (i = 0, queryp = results; queryp;
 		     queryp = queryp->next, i++)
 		  QueryTable[i].data = queryp;
 	      }
@@ -412,7 +410,7 @@ static void query_menu (char *buf, size_t buflen, QUERY *results, int retbuf)
 
 		menu->data = QueryTable;
 
-		for (i = 0, queryp = results; queryp; 
+		for (i = 0, queryp = results; queryp;
 		     queryp = queryp->next, i++)
 		{
 		  /* once we hit new entries, clear/init the tag */
@@ -493,7 +491,7 @@ static void query_menu (char *buf, size_t buflen, QUERY *results, int retbuf)
       int tagged = 0;
       size_t curpos = 0;
 
-      memset (buf, 0, buflen); 
+      memset (buf, 0, buflen);
 
       /* check for tagged entries */
       for (i = 0; i < menu->max; i++)
@@ -529,12 +527,12 @@ static void query_menu (char *buf, size_t buflen, QUERY *results, int retbuf)
 	rfc822_write_address (buf, buflen, tmpa, 0);
 	rfc822_free_address (&tmpa);
       }
-      
+
     }
 
     free_query (&results);
     FREE (&QueryTable);
-    
+
     /* tell whoever called me to redraw the screen when I return */
     set_option (OPTNEEDREDRAW);
   }

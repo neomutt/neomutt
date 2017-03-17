@@ -20,9 +20,7 @@
 
 /* Support for IMAP4rev1, with the occasional nod to IMAP 4. */
 
-#if HAVE_CONFIG_H
-# include "config.h"
-#endif
+#include "config.h"
 
 #include "mutt.h"
 #include "mx.h"
@@ -31,11 +29,11 @@
 #include "sort.h"
 #include "browser.h"
 #include "imap_private.h"
-#if defined(USE_SSL)
+#ifdef USE_SSL
 # include "mutt_ssl.h"
 #endif
 #include "buffy.h"
-#if USE_HCACHE
+#ifdef USE_HCACHE
 #include "hcache.h"
 #endif
 
@@ -267,7 +265,7 @@ void imap_expunge_mailbox (IMAP_DATA* idata)
       idata->ctx->size -= h->content->length;
 
       imap_cache_del (idata, h);
-#if USE_HCACHE
+#ifdef USE_HCACHE
       imap_hcache_del (idata, HEADER_DATA(h)->uid);
 #endif
 
@@ -286,7 +284,7 @@ void imap_expunge_mailbox (IMAP_DATA* idata)
     }
   }
 
-#if USE_HCACHE
+#ifdef USE_HCACHE
   imap_hcache_close (idata);
 #endif
 
@@ -423,7 +421,7 @@ int imap_open_connection (IMAP_DATA* idata)
     if (ascii_strncasecmp ("* OK [CAPABILITY", idata->buf, 16)
         && imap_check_capabilities (idata))
       goto bail;
-#if defined(USE_SSL)
+#ifdef USE_SSL
     /* Attempt STARTTLS if available and desired. */
     if (!idata->conn->ssf && (option(OPTSSLFORCETLS) ||
                               mutt_bit_isset (idata->capabilities, STARTTLS)))
@@ -479,7 +477,7 @@ int imap_open_connection (IMAP_DATA* idata)
 
   return 0;
 
-#if defined(USE_SSL)
+#ifdef USE_SSL
  err_close_conn:
   imap_close_connection (idata);
 #endif
@@ -1213,7 +1211,7 @@ int imap_sync_mailbox (CONTEXT* ctx, int expunge)
     }
   }
 
-#if USE_HCACHE
+#ifdef USE_HCACHE
   idata->hcache = imap_hcache_open (idata, NULL);
 #endif
 
@@ -1225,14 +1223,14 @@ int imap_sync_mailbox (CONTEXT* ctx, int expunge)
     if (h->deleted)
     {
       imap_cache_del (idata, h);
-#if USE_HCACHE
+#ifdef USE_HCACHE
       imap_hcache_del (idata, HEADER_DATA(h)->uid);
 #endif
     }
 
     if (h->active && h->changed)
     {
-#if USE_HCACHE
+#ifdef USE_HCACHE
       imap_hcache_put (idata, h);
 #endif
       /* if the message has been rethreaded or attachments have been deleted
@@ -1254,7 +1252,7 @@ int imap_sync_mailbox (CONTEXT* ctx, int expunge)
     }
   }
 
-#if USE_HCACHE
+#ifdef USE_HCACHE
   imap_hcache_close (idata);
 #endif
 

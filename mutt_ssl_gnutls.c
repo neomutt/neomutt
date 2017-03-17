@@ -16,9 +16,7 @@
  *     Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-#if HAVE_CONFIG_H
-# include "config.h"
-#endif
+#include "config.h"
 
 #include <gnutls/gnutls.h>
 #include <gnutls/x509.h>
@@ -271,7 +269,7 @@ err_crt:
   gnutls_x509_crt_deinit (clientcrt);
 }
 
-#if HAVE_GNUTLS_PRIORITY_SET_DIRECT
+#ifdef HAVE_GNUTLS_PRIORITY_SET_DIRECT
 static int tls_set_priority(tlssockdata *data)
 {
   size_t nproto = 4;
@@ -403,7 +401,7 @@ static int tls_negotiate (CONNECTION * conn)
                                           SslClientCert, GNUTLS_X509_FMT_PEM);
   }
 
-#if HAVE_DECL_GNUTLS_VERIFY_DISABLE_TIME_CHECKS
+#ifdef HAVE_DECL_GNUTLS_VERIFY_DISABLE_TIME_CHECKS
   /* disable checking certificate activation/expiration times
      in gnutls, we do the checks ourselves */
   gnutls_certificate_set_verify_flags(data->xcred, GNUTLS_VERIFY_DISABLE_TIME_CHECKS);

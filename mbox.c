@@ -1,26 +1,24 @@
 /*
  * Copyright (C) 1996-2002,2010,2013 Michael R. Elkins <me@mutt.org>
- * 
+ *
  *     This program is free software; you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
  *     the Free Software Foundation; either version 2 of the License, or
  *     (at your option) any later version.
- * 
+ *
  *     This program is distributed in the hope that it will be useful,
  *     but WITHOUT ANY WARRANTY; without even the implied warranty of
  *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  *     GNU General Public License for more details.
- * 
+ *
  *     You should have received a copy of the GNU General Public License
  *     along with this program; if not, write to the Free Software
  *     Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
- */ 
+ */
 
 /* This file contains code to parse ``mbox'' and ``mmdf'' style mailboxes */
 
-#if HAVE_CONFIG_H
-# include "config.h"
-#endif
+#include "config.h"
 
 #include "mutt.h"
 #include "mailbox.h"
@@ -38,6 +36,8 @@
 #include <unistd.h>
 #include <fcntl.h>
 
+static int mutt_reopen_mailbox (CONTEXT *ctx, int *index_hint);
+
 /* struct used by mutt_sync_mailbox() to store new offsets */
 struct m_update_t
 {
@@ -53,7 +53,7 @@ struct m_update_t
  * excl - exclusive lock?
  * retry - should retry if unable to lock?
  */
-int mbox_lock_mailbox (CONTEXT *ctx, int excl, int retry)
+static int mbox_lock_mailbox (CONTEXT *ctx, int excl, int retry)
 {
   int r;
 
@@ -64,11 +64,11 @@ int mbox_lock_mailbox (CONTEXT *ctx, int excl, int retry)
     ctx->readonly = 1;
     return 0;
   }
-  
+
   return (r);
 }
 
-void mbox_unlock_mailbox (CONTEXT *ctx)
+static void mbox_unlock_mailbox (CONTEXT *ctx)
 {
   if (ctx->locked)
   {
@@ -79,7 +79,7 @@ void mbox_unlock_mailbox (CONTEXT *ctx)
   }
 }
 
-int mmdf_parse_mailbox (CONTEXT *ctx)
+static int mmdf_parse_mailbox (CONTEXT *ctx)
 {
   char buf[HUGE_STRING];
   char return_path[LONG_STRING];
@@ -121,7 +121,7 @@ int mmdf_parse_mailbox (CONTEXT *ctx)
     mutt_progress_init (&progress, msgbuf, MUTT_PROGRESS_MSG, ReadInc, 0);
   }
 
-  FOREVER
+  while (true)
   {
     if (fgets (buf, sizeof (buf) - 1, ctx->fp) == NULL)
       break;
@@ -161,7 +161,7 @@ int mmdf_parse_mailbox (CONTEXT *ctx)
 	  mutt_error (_("Mailbox is corrupt!"));
 	  return (-1);
 	}
-      } 
+      }
       else
 	hdr->received = t - mutt_local_tz (t);
 
@@ -238,7 +238,7 @@ int mmdf_parse_mailbox (CONTEXT *ctx)
  * NOTE: it is assumed that the mailbox being read has been locked before
  * this routine gets called.  Strange things could happen if it's not!
  */
-int mbox_parse_mailbox (CONTEXT *ctx)
+static int mbox_parse_mailbox (CONTEXT *ctx)
 {
   struct stat sb;
   char buf[HUGE_STRING], return_path[STRING];
@@ -309,12 +309,12 @@ int mbox_parse_mailbox (CONTEXT *ctx)
 
       if (ctx->msgcount == ctx->hdrmax)
 	mx_alloc_memory (ctx);
-      
+
       curhdr = ctx->hdrs[ctx->msgcount] = mutt_new_header ();
       curhdr->received = t - mutt_local_tz (t);
       curhdr->offset = loc;
       curhdr->index = ctx->msgcount;
-	
+
       curhdr->env = mutt_read_rfc822_header (ctx->fp, curhdr, 0, 0);
 
       /* if we know how long this message is, either just skip over the body,
@@ -394,10 +394,10 @@ int mbox_parse_mailbox (CONTEXT *ctx)
     }
     else
       lines++;
-    
+
     loc = ftello (ctx->fp);
   }
-  
+
   /*
    * Only set the content-length of the previous message if we have read more
    * than one message during _this_ invocation.  If this routine is called
@@ -713,7 +713,7 @@ static int mbox_check_mailbox (CONTEXT *ctx, int *index_hint)
       }
 
       /*
-       * Check to make sure that the only change to the mailbox is that 
+       * Check to make sure that the only change to the mailbox is that
        * message(s) were appended to this file.  My heuristic is that we should
        * see the message separator at *exactly* what used to be the end of the
        * folder.
@@ -901,11 +901,11 @@ static int mbox_sync_mailbox (CONTEXT *ctx, int *index_hint)
   /* find the first deleted/changed message.  we save a lot of time by only
    * rewriting the mailbox from the point where it has actually changed.
    */
-  for (i = 0 ; i < ctx->msgcount && !ctx->hdrs[i]->deleted && 
+  for (i = 0 ; i < ctx->msgcount && !ctx->hdrs[i]->deleted &&
                !ctx->hdrs[i]->changed && !ctx->hdrs[i]->attach_del; i++)
     ;
   if (i == ctx->msgcount)
-  { 
+  {
     /* this means ctx->changed or ctx->deleted was set, but no
      * messages were found to be changed or deleted.  This should
      * never happen, is we presume it is a bug in mutt.
@@ -918,16 +918,16 @@ static int mbox_sync_mailbox (CONTEXT *ctx, int *index_hint)
   }
 
     /* save the index of the first changed/deleted message */
-  first = i; 
+  first = i;
   /* where to start overwriting */
-  offset = ctx->hdrs[i]->offset; 
+  offset = ctx->hdrs[i]->offset;
 
   /* the offset stored in the header does not include the MMDF_SEP, so make
    * sure we seek to the correct location
    */
   if (ctx->magic == MUTT_MMDF)
     offset -= (sizeof MMDF_SEP - 1);
-  
+
   /* allocate space for the new offsets */
   newOffset = safe_calloc (ctx->msgcount - first, sizeof (struct m_update_t));
   oldOffset = safe_calloc (ctx->msgcount - first, sizeof (struct m_update_t));
@@ -946,7 +946,7 @@ static int mbox_sync_mailbox (CONTEXT *ctx, int *index_hint)
      * back up some information which is needed to restore offsets when
      * something fails.
      */
-    
+
     oldOffset[i-first].valid  = 1;
     oldOffset[i-first].hdr    = ctx->hdrs[i]->offset;
     oldOffset[i-first].body   = ctx->hdrs[i]->content->offset;
@@ -966,7 +966,7 @@ static int mbox_sync_mailbox (CONTEXT *ctx, int *index_hint)
 	  unlink (tempfile);
 	  goto bail;
 	}
-	  
+
       }
 
       /* save the new offset for this message.  we add `offset' because the
@@ -995,17 +995,17 @@ static int mbox_sync_mailbox (CONTEXT *ctx, int *index_hint)
 
       switch(ctx->magic)
       {
-	case MUTT_MMDF: 
-	  if(fputs(MMDF_SEP, fp) == EOF) 
+	case MUTT_MMDF:
+	  if(fputs(MMDF_SEP, fp) == EOF)
 	  {
 	    mutt_perror (tempfile);
 	    mutt_sleep (5);
 	    unlink (tempfile);
-	    goto bail; 
+	    goto bail;
 	  }
 	  break;
 	default:
-	  if(fputs("\n", fp) == EOF) 
+	  if(fputs("\n", fp) == EOF)
 	  {
 	    mutt_perror (tempfile);
 	    mutt_sleep (5);
@@ -1015,7 +1015,7 @@ static int mbox_sync_mailbox (CONTEXT *ctx, int *index_hint)
       }
     }
   }
-  
+
   if (fclose (fp) != 0)
   {
     fp = NULL;
@@ -1097,9 +1097,9 @@ static int mbox_sync_mailbox (CONTEXT *ctx, int *index_hint)
     /* error occurred while writing the mailbox back, so keep the temp copy
      * around
      */
-    
+
     char savefile[_POSIX_PATH_MAX];
-    
+
     snprintf (savefile, sizeof (savefile), "%s/mutt.%s-%s-%u",
 	      NONULL (Tempdir), NONULL(Username), NONULL(Hostname), (unsigned int)getpid ());
     rename (tempfile, savefile);
@@ -1169,7 +1169,7 @@ bail:  /* Come here in case of disaster */
       ctx->hdrs[i]->content->length = oldOffset[i-first].length;
     }
   }
-  
+
   /* this is ok to call even if we haven't locked anything */
   mbox_unlock_mailbox (ctx);
 
@@ -1192,7 +1192,7 @@ bail:  /* Come here in case of disaster */
   return rc;
 }
 
-int mutt_reopen_mailbox (CONTEXT *ctx, int *index_hint)
+static int mutt_reopen_mailbox (CONTEXT *ctx, int *index_hint)
 {
   int (*cmp_headers) (const HEADER *, const HEADER *) = NULL;
   HEADER **old_hdrs;
@@ -1204,10 +1204,10 @@ int mutt_reopen_mailbox (CONTEXT *ctx, int *index_hint)
 
   /* silent operations */
   ctx->quiet = 1;
-  
+
   if (!ctx->quiet)
     mutt_message (_("Reopening mailbox..."));
-  
+
   /* our heuristics require the old mailbox to be unsorted */
   if (Sort != SORT_ORDER)
   {
@@ -1221,7 +1221,7 @@ int mutt_reopen_mailbox (CONTEXT *ctx, int *index_hint)
 
   old_hdrs = NULL;
   old_msgcount = 0;
-  
+
   /* simulate a close */
   if (ctx->id_hash)
     hash_destroy (&ctx->id_hash, NULL);
@@ -1274,7 +1274,7 @@ int mutt_reopen_mailbox (CONTEXT *ctx, int *index_hint)
       rc = -1;
       break;
   }
-  
+
   if (rc == -1)
   {
     /* free the old headers */

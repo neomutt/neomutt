@@ -1,4 +1,4 @@
-/* 
+/*
  * Copyright (C) 1996-2002,2004,2007 Michael R. Elkins <me@mutt.org>, and others
  *
  *     This program is free software; you can redistribute it and/or modify
@@ -16,9 +16,7 @@
  *     Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-#if HAVE_CONFIG_H
-# include "config.h"
-#endif
+#include "config.h"
 
 #include "mutt.h"
 #include "mailbox.h"
@@ -353,7 +351,7 @@ void mutt_folder_hook (char *path)
   }
   FREE (&token.data);
   FREE (&err.data);
-  
+
   current_hook_type = 0;
 }
 

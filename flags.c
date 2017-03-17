@@ -1,24 +1,22 @@
 /*
  * Copyright (C) 1996-2000 Michael R. Elkins <me@mutt.org>
- * 
+ *
  *     This program is free software; you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
  *     the Free Software Foundation; either version 2 of the License, or
  *     (at your option) any later version.
- * 
+ *
  *     This program is distributed in the hope that it will be useful,
  *     but WITHOUT ANY WARRANTY; without even the implied warranty of
  *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  *     GNU General Public License for more details.
- * 
+ *
  *     You should have received a copy of the GNU General Public License
  *     along with this program; if not, write to the Free Software
  *     Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
- */ 
+ */
 
-#if HAVE_CONFIG_H
-# include "config.h"
-#endif
+#include "config.h"
 
 #include "mutt.h"
 #include "mutt_curses.h"
@@ -72,19 +70,19 @@ void _mutt_set_flag (CONTEXT *ctx, HEADER *h, int flag, int bf, int upd_ctx)
 	if (upd_ctx) ctx->deleted--;
 #ifdef USE_IMAP
         /* see my comment above */
-	if (ctx->magic == MUTT_IMAP) 
+	if (ctx->magic == MUTT_IMAP)
 	{
 	  h->changed = 1;
 	  if (upd_ctx) ctx->changed = 1;
 	}
 #endif
-	/* 
+	/*
 	 * If the user undeletes a message which is marked as
 	 * "trash" in the maildir folder on disk, the folder has
 	 * been changed, and is marked accordingly.  However, we do
 	 * _not_ mark the message itself changed, because trashing
 	 * is checked in specific code in the maildir folder
-	 * driver. 
+	 * driver.
 	 */
 	if (ctx->magic == MUTT_MAILDIR && upd_ctx && h->trash)
 	  ctx->changed = 1;
@@ -299,7 +297,7 @@ void mutt_tag_set_flag (int flag, int bf)
 int mutt_thread_set_flag (HEADER *hdr, int flag, int bf, int subthread)
 {
   THREAD *start, *cur = hdr->thread;
-  
+
   if ((Sort & SORT_MASK) != SORT_THREADS)
   {
     mutt_error (_("Threading is not enabled."));
@@ -310,14 +308,14 @@ int mutt_thread_set_flag (HEADER *hdr, int flag, int bf, int subthread)
     while (cur->parent)
       cur = cur->parent;
   start = cur;
-  
+
   if (cur->message)
     mutt_set_flag (Context, cur->message, flag, bf);
 
   if ((cur = cur->child) == NULL)
     return (0);
 
-  FOREVER
+  while (true)
   {
     if (cur->message)
       mutt_set_flag (Context, cur->message, flag, bf);
@@ -326,7 +324,7 @@ int mutt_thread_set_flag (HEADER *hdr, int flag, int bf, int subthread)
       cur = cur->child;
     else if (cur->next)
       cur = cur->next;
-    else 
+    else
     {
       while (!cur->next)
       {

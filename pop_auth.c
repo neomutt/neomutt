@@ -1,24 +1,22 @@
 /*
  * Copyright (C) 2000-2001 Vsevolod Volkov <vvv@mutt.org.ua>
- * 
+ *
  *     This program is free software; you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
  *     the Free Software Foundation; either version 2 of the License, or
  *     (at your option) any later version.
- * 
+ *
  *     This program is distributed in the hope that it will be useful,
  *     but WITHOUT ANY WARRANTY; without even the implied warranty of
  *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  *     GNU General Public License for more details.
- * 
+ *
  *     You should have received a copy of the GNU General Public License
  *     along with this program; if not, write to the Free Software
  *     Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-#if HAVE_CONFIG_H
-# include "config.h"
-#endif
+#include "config.h"
 
 #include "mutt.h"
 #include "mx.h"
@@ -58,7 +56,7 @@ static pop_auth_res_t pop_auth_sasl (POP_DATA *pop_data, const char *method)
   if (!method)
     method = pop_data->auth_list;
 
-  FOREVER
+  while (true)
   {
     rc = sasl_client_start(saslconn, method, &interaction, &pc, &olen, &mech);
     if (rc != SASL_INTERACT)
@@ -90,7 +88,7 @@ static pop_auth_res_t pop_auth_sasl (POP_DATA *pop_data, const char *method)
   olen = strlen (buf);
 
   /* looping protocol */
-  FOREVER
+  while (true)
   {
     strfcpy (buf + olen, "\r\n", bufsize - olen);
     mutt_socket_write (pop_data->conn, buf);
@@ -118,7 +116,7 @@ static pop_auth_res_t pop_auth_sasl (POP_DATA *pop_data, const char *method)
     }
 
     if (!client_start)
-      FOREVER
+      while (true)
       {
 	rc = sasl_client_step (saslconn, buf, len, &interaction, &pc, &olen);
 	if (rc != SASL_INTERACT)
@@ -283,7 +281,7 @@ static pop_auth_res_t pop_auth_user (POP_DATA *pop_data, const char *method)
   if (ret == 0)
   {
     snprintf (buf, sizeof (buf), "PASS %s\r\n", pop_data->conn->account.pass);
-    ret = pop_query_d (pop_data, buf, sizeof (buf), 
+    ret = pop_query_d (pop_data, buf, sizeof (buf),
 #ifdef DEBUG
 	/* don't print the password unless we're at the ungodly debugging level */
 	debuglevel < MUTT_SOCK_LOG_FULL ? "PASS *\r\n" :

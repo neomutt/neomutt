@@ -17,9 +17,7 @@
  *     Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-#if HAVE_CONFIG_H
 #include "config.h"
-#endif				/* HAVE_CONFIG_H */
 
 #include <sys/types.h>
 #include <sys/stat.h>
@@ -33,6 +31,8 @@
 #include "bcache.h"
 
 #include "lib.h"
+
+static int mutt_bcache_move(body_cache_t* bcache, const char* id, const char* newid);
 
 struct body_cache {
   char path[_POSIX_PATH_MAX];
@@ -167,7 +167,7 @@ int mutt_bcache_commit(body_cache_t* bcache, const char* id)
   return mutt_bcache_move (bcache, tmpid, id);
 }
 
-int mutt_bcache_move(body_cache_t* bcache, const char* id, const char* newid)
+static int mutt_bcache_move(body_cache_t* bcache, const char* id, const char* newid)
 {
   char path[_POSIX_PATH_MAX];
   char newpath[_POSIX_PATH_MAX];

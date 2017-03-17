@@ -19,16 +19,14 @@
  *     Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-#if HAVE_CONFIG_H
 #include "config.h"
-#endif				/* HAVE_CONFIG_H */
 
-#if !(HAVE_BDB || HAVE_GDBM || HAVE_KC || HAVE_LMDB || HAVE_QDBM || HAVE_TC)
+#if !(defined(HAVE_BDB) || defined(HAVE_GDBM) || defined(HAVE_KC) || defined(HAVE_LMDB) || defined(HAVE_QDBM) || defined(HAVE_TC))
 #error "No hcache backend defined"
 #endif
 
 #include <errno.h>
-#if HAVE_SYS_TIME_H
+#ifdef HAVE_SYS_TIME_H
 #include <sys/time.h>
 #endif
 #include "hcache.h"
@@ -66,22 +64,22 @@ HCACHE_BACKEND_LIST
 /* Keep this list sorted as it is in configure.ac to avoid user surprise if no
  * header_cache_backend is specified. */
 const hcache_ops_t *hcache_ops[] = {
-#if defined(HAVE_TC)
+#ifdef HAVE_TC
   &hcache_tokyocabinet_ops,
 #endif
-#if defined(HAVE_KC)
+#ifdef HAVE_KC
   &hcache_kyotocabinet_ops,
 #endif
-#if defined(HAVE_QDBM)
+#ifdef HAVE_QDBM
   &hcache_qdbm_ops,
 #endif
-#if defined(HAVE_GDBM)
+#ifdef HAVE_GDBM
   &hcache_gdbm_ops,
 #endif
-#if defined(HAVE_BDB)
+#ifdef HAVE_BDB
   &hcache_bdb_ops,
 #endif
-#if defined(HAVE_LMDB)
+#ifdef HAVE_LMDB
   &hcache_lmdb_ops,
 #endif
   NULL
@@ -682,7 +680,7 @@ mutt_hcache_dump(header_cache_t *h, HEADER * header, int *off,
 #ifdef MIXMASTER
   nh.chain = NULL;
 #endif
-#if defined USE_POP || defined USE_IMAP
+#if defined(USE_POP) || defined(USE_IMAP)
   nh.data = NULL;
 #endif
 

@@ -2,7 +2,7 @@
 
 ## Introduction
 
-The shell script and the configuration file in this directory can be used to benchmark the NeoMutt hcache backends. 
+The shell script and the configuration file in this directory can be used to benchmark the NeoMutt hcache backends.
 
 ## Preparation
 

@@ -1,18 +1,18 @@
 /*
  * Copyright (C) 1997-2002 Thomas Roessler <roessler@does-not-exist.org>
- * 
+ *
  *     This program is free software; you can redistribute it
  *     and/or modify it under the terms of the GNU General Public
  *     License as published by the Free Software Foundation; either
  *     version 2 of the License, or (at your option) any later
  *     version.
- * 
+ *
  *     This program is distributed in the hope that it will be
  *     useful, but WITHOUT ANY WARRANTY; without even the implied
  *     warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR
  *     PURPOSE.  See the GNU General Public License for more
  *     details.
- * 
+ *
  *     You should have received a copy of the GNU General Public
  *     License along with this program; if not, write to the Free
  *     Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
@@ -21,9 +21,7 @@
 
 /* Generally useful, pgp-related functions. */
 
-#if HAVE_CONFIG_H
-# include "config.h"
-#endif
+#include "config.h"
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -56,31 +54,6 @@ const char *pgp_pkalgbytype (unsigned char type)
   }
 }
 
-
-
-/* unused */
-
-#if 0
-
-static const char *hashalgbytype (unsigned char type)
-{
-  switch (type)
-  {
-  case 1:
-    return "MD5";
-  case 2:
-    return "SHA1";
-  case 3:
-    return "RIPE-MD/160";
-  case 4:
-    return "HAVAL";
-  default:
-    return "unknown";
-  }
-}
-
-#endif
-
 short pgp_canencrypt (unsigned char type)
 {
   switch (type)
@@ -109,7 +82,7 @@ short pgp_cansign (unsigned char type)
   }
 }
 
-/* return values: 
+/* return values:
 
  * 1 = sign only
  * 2 = encrypt only
@@ -121,23 +94,23 @@ short pgp_get_abilities (unsigned char type)
   return (pgp_canencrypt (type) << 1) | pgp_cansign (type);
 }
 
-void pgp_free_sig (pgp_sig_t **sigp)
+static void pgp_free_sig (pgp_sig_t **sigp)
 {
   pgp_sig_t *sp, *q;
-  
+
   if (!sigp || !*sigp)
     return;
-  
+
   for (sp = *sigp; sp; sp = q)
   {
     q = sp->next;
     FREE (&sp);
   }
-  
+
   *sigp = NULL;
 }
 
-void pgp_free_uid (pgp_uid_t ** upp)
+static void pgp_free_uid (pgp_uid_t ** upp)
 {
   pgp_uid_t *up, *q;
 
@@ -225,7 +198,7 @@ void pgp_free_key (pgp_key_t *kpp)
 
   if ((*kpp)->parent && (*kpp)->parent != *kpp)
     *kpp = (*kpp)->parent;
-  
+
   /* Order is important here:
    *
    * - First free all children.

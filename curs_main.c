@@ -16,9 +16,7 @@
  *     Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-#if HAVE_CONFIG_H
-# include "config.h"
-#endif
+#include "config.h"
 
 #include "mutt.h"
 #include "mutt_curses.h"
@@ -854,7 +852,7 @@ int mutt_index_menu (void)
     menu->redraw = REDRAW_FULL;
   }
 
-  FOREVER
+  while (true)
   {
     tag = 0; /* clear the tag-prefix */
 
@@ -2030,7 +2028,7 @@ int mutt_index_menu (void)
             else
               break;
           }
-          
+
           /* Selected directory is okay, let's save it.*/
           mutt_browser_select_dir (buf);
 
@@ -3226,9 +3224,6 @@ int mutt_index_menu (void)
       mutt_clear_pager_position ();
       menu->menu = MENU_MAIN;
       menu->redraw = REDRAW_FULL;
-#if 0
-      set_option (OPTWEED); /* turn header weeding back on. */
-#endif
     }
 
     if (done) break;

@@ -118,7 +118,7 @@ to ``configure'' to help it out, or change the default behavior:
 --disable-nls
 	This switch disables mutt's native language support.
 
---with-included-gettext 
+--with-included-gettext
 	Mutt will be built using the GNU gettext library included in
 	the intl/ sub-directory.  You may need to use this switch if
 	your machine has something which looks like gettext to the
@@ -131,13 +131,13 @@ to ``configure'' to help it out, or change the default behavior:
 	routines, so this provides a way to support them.
 
 --enable-flock
-	use flock() to lock files.  
+	use flock() to lock files.
 
 --disable-fcntl
 	by default, Mutt uses fcntl() to lock files.  Over NFS this can
 	result in poor performance on read/write.  Note that using this
 	option could be dangerous if dotlocking is also disabled.
-	
+
 --enable-nfs-fix
 	some implementations of NFS do not always write the
 	atime/mtime of small files.  This means that Mutt's ``mailboxes''

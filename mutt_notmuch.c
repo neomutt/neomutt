@@ -36,9 +36,7 @@
  *   (or parse URI from another resource)
  */
 
-#if HAVE_CONFIG_H
 #include "config.h"
-#endif
 
 #include <ctype.h>
 #include <dirent.h>
@@ -400,7 +398,6 @@ static char *header_get_id(HEADER *h)
 static char *header_get_fullpath(HEADER *h, char *buf, size_t bufsz)
 {
   snprintf(buf, bufsz, "%s/%s", nm_header_get_folder(h), h->path);
-  /*mutt_debug (2, "nm: returns fullpath '%s'\n", buf);*/
   return buf;
 }
 
@@ -2380,7 +2377,7 @@ static int nm_sync_mailbox(CONTEXT *ctx, int *index_hint)
 
     ctx->path = hd->folder;
     ctx->magic = hd->magic;
-#if USE_HCACHE
+#ifdef USE_HCACHE
     rc = mh_sync_mailbox_message(ctx, i, NULL);
 #else
     rc = mh_sync_mailbox_message(ctx, i);

@@ -1,6 +1,4 @@
-#if HAVE_CONFIG_H
-# include "config.h"
-#endif
+#include "config.h"
 
 #ifndef HAVE_WC_FUNCS
 
@@ -13,7 +11,7 @@
 
 int mutt_wctoutf8 (char *s, unsigned int c, size_t buflen)
 {
-  if (c < (1 << 7)) 
+  if (c < (1 << 7))
   {
     if (s && buflen >= 1)
       *s++ = c;
