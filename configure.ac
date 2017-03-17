@@ -120,7 +120,6 @@ AH_BOTTOM([/* fseeko portability defines */
 # define OFF_T_FMT "%ld"
 #endif
 ])
-MUTT_C99_INTTYPES
 AC_TYPE_LONG_LONG_INT
 
 ac_aux_path_sendmail=/usr/sbin:/usr/lib
@@ -518,8 +517,6 @@ AC_CHECK_FUNC(getopt)
 if test $ac_cv_func_getopt = yes; then
 	AC_CHECK_HEADERS(getopt.h)
 fi
-
-XIPH_FUNC_VA_COPY
 
 dnl SCO uses chsize() instead of ftruncate()
 AC_CHECK_FUNCS(ftruncate, , [AC_CHECK_LIB(x, chsize)])
