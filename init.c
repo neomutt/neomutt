@@ -2057,16 +2057,15 @@ void mutt_envlist_set (const char *name, const char *value)
   snprintf (work, sizeof(work), "%s=%s", NONULL (name), NONULL (value));
 
   /* If slot found, overwrite */
-  if (*envp)
+  if (envp && *envp)
     *envp = safe_strdup (work);
 
   /* If not found, add new slot */
   else
   {
-    *envp = safe_strdup (work);
-    count++;
-    safe_realloc (&envlist, sizeof(char *) * (count + 1));
-    envlist[count] = NULL;
+    safe_realloc (&envlist, sizeof(char *) * (count + 2));
+    envlist[count] = safe_strdup (work);
+    envlist[count + 1] = NULL;
   }
 }
 
