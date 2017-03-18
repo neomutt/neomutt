@@ -2854,12 +2854,12 @@ static int to_absolute_path(char *path, const char *reference)
 
 #define MAXERRS 128
 
-/* reads the specified initialization file.  returns -1 if errors were found
-   so that we can pause to let the user know...  */
+/* reads the specified initialization file. 
+ * Returns negative if mutt should pause to let the user know...  */
 static int source_rc(const char *rcfile_path, BUFFER *err)
 {
   FILE *f = NULL;
-  int line = 0, rc = 0, conv = 0, line_rc;
+  int line = 0, rc = 0, conv = 0, line_rc, warnings = 0;
   BUFFER token;
   char *linebuf = NULL;
   char *currentline = NULL;
@@ -2927,6 +2927,12 @@ static int source_rc(const char *rcfile_path, BUFFER *err)
         break;
       }
     }
+    else if (line_rc == -2)
+    {
+      /* Warning */
+      mutt_error(_("Warning in %s, line %d: %s"), rcfile, line, err->data);
+      warnings++;
+    }
     else if (line_rc == 1)
     {
       break; /* Found "finish" command */
@@ -2953,6 +2959,15 @@ static int source_rc(const char *rcfile_path, BUFFER *err)
                  _("source: reading aborted due to too many errors in %s"),
              rcfile);
     rc = -1;
+  }
+  else
+  {
+    /* Don't alias errors with warnings */
+    if (warnings > 0)
+    {
+      snprintf(err->data, err->dsize, _("source: %d warnings in %s"), warnings, rcfile);
+      rc = -2;
+    }
   }
 
   mutt_pop_list(&MuttrcStack);

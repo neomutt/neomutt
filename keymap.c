@@ -224,8 +224,9 @@ static int parsekeys(const char *str, keycode_t *d, int max)
 /* insert a key sequence into the specified map.  the map is sorted by ASCII
  * value (lowest to highest)
  */
-void km_bind(char *s, int menu, int op, char *macro, char *descr)
+int km_bind_err (char *s, int menu, int op, char *macro, char *descr, BUFFER *err)
 {
+  int retval = 0;
   struct keymap_t *map = NULL, *tmp = NULL, *last = NULL, *next = NULL;
   keycode_t buf[MAX_SEQ];
   int len, pos = 0, lastpos = 0;
@@ -246,13 +247,22 @@ void km_bind(char *s, int menu, int op, char *macro, char *descr)
       /* map and tmp match so overwrite */
       do
       {
-        if (tmp->len != len) {
-          /* Overwrite with the different lengths, warn*/
+        /* Don't warn on overwriting a 'noop' binding */
+        if (tmp->len != len && tmp->op != OP_NULL) {
+          /* Overwrite with the different lengths, warn */
+          /* TODO: MAX_SEQ here is wrong */
           char old_binding[MAX_SEQ];
           char new_binding[MAX_SEQ];
           km_expand_key( old_binding, MAX_SEQ, map );
           km_expand_key( new_binding, MAX_SEQ, tmp );
-          mutt_error (_("Warning: For menu '%s', binding '%s' will alias '%s'"), mutt_getnamebyvalue(menu, Menus), old_binding, new_binding);
+          if (err) {
+            /* err was passed, put the string there */
+            snprintf (err->data, err->dsize, _("Binding '%s' will alias '%s'"), old_binding, new_binding);
+          }
+          else {
+            mutt_error (_("Warning: For menu '%s', binding '%s' will alias '%s'"), mutt_getnamebyvalue(menu, Menus), old_binding, new_binding);
+          }
+          retval = -2;
         }
         len = tmp->eq;
         next = tmp->next;
@@ -290,13 +300,26 @@ void km_bind(char *s, int menu, int op, char *macro, char *descr)
     last->next = map;
     last->eq = lastpos;
   }
-  else
+  else {
     Keymaps[menu] = map;
+  }
+
+  return retval;
 }
 
-static void km_bindkey(char *s, int menu, int op)
+int
+km_bind (char *s, int menu, int op, char *macro, char *descr)
 {
-  km_bind(s, menu, op, NULL, NULL);
+  return km_bind_err (s, menu, op, macro, descr, NULL);
+}
+
+static int km_bindkey_err (char *s, int menu, int op, BUFFER *err)
+{
+  return km_bind_err (s, menu, op, NULL, NULL, err);
+}
+static int km_bindkey (char *s, int menu, int op)
+{
+  return km_bindkey_err (s, menu, op, NULL);
 }
 
 static int get_op(const struct binding_t *bindings, const char *start, size_t len)
@@ -962,15 +985,15 @@ error:
   return NULL;
 }
 
-static int try_bind(char *key, int menu, char *func, const struct binding_t *bindings)
+static int
+try_bind (char *key, int menu, char *func, const struct binding_t *bindings, BUFFER *err)
 {
   int i;
 
   for (i = 0; bindings[i].name; i++)
     if (mutt_strcmp(func, bindings[i].name) == 0)
     {
-      km_bindkey(key, menu, bindings[i].op);
-      return 0;
+      return km_bindkey_err (key, menu, bindings[i].op, err);
     }
   return -1;
 }
@@ -1046,16 +1069,23 @@ int mutt_parse_bind(BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err)
   {
     for (i = 0; i < nummenus; ++i)
     {
-      /* First check the "generic" list of commands */
-      if (menu[i] == MENU_PAGER || menu[i] == MENU_EDITOR || menu[i] == MENU_GENERIC ||
-          try_bind(key, menu[i], buf->data, OpGeneric) != 0)
+      /* Bind first on the generic (why?), except for this menus */
+      if (menu[i] != MENU_PAGER || menu[i] != MENU_EDITOR || menu[i] != MENU_GENERIC)
       {
-        /* Now check the menu-specific list of commands (if they exist) */
-        bindings = km_get_table(menu[i]);
-        if (bindings && try_bind(key, menu[i], buf->data, bindings) != 0)
+        r = try_bind (key, menu[i], buf->data, OpGeneric, err);
+      }
+      else {
+        r = -1; /* If you don't bind on generic, bind on the actual menu*/
+      }
+      if (r != 0)
+      {
+        bindings = km_get_table (menu[i]);
+        if (bindings)
         {
-          snprintf(err->data, err->dsize, _("%s: no such function in map"), buf->data);
-          r = -1;
+          r = try_bind (key, menu[i], buf->data, bindings, err);
+          if (r == -1) {
+            snprintf (err->data, err->dsize, _("%s: no such function in map"), buf->data);
+          }
         }
       }
     }
@@ -1095,8 +1125,7 @@ int mutt_parse_macro(BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err)
       {
         for (i = 0; i < nummenus; ++i)
         {
-          km_bind(key, menu[i], OP_MACRO, seq, buf->data);
-          r = 0;
+          r = km_bind (key, menu[i], OP_MACRO, seq, buf->data);
         }
       }
 
@@ -1106,8 +1135,7 @@ int mutt_parse_macro(BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err)
     {
       for (i = 0; i < nummenus; ++i)
       {
-        km_bind(key, menu[i], OP_MACRO, buf->data, NULL);
-        r = 0;
+        r = km_bind (key, menu[i], OP_MACRO, buf->data, NULL);
       }
     }
   }
