@@ -163,9 +163,9 @@ options:\n\
   exit (0);
 }
 
-extern const char cc_version[];
-extern const char cc_cflags[];
-extern const char configure_options[];
+extern unsigned char cc_version[];
+extern unsigned char cc_cflags[];
+extern unsigned char configure_options[];
 
 static char *
 rstrip_in_place(char *s)
@@ -222,13 +222,13 @@ static void show_version (void)
 
   puts ("\n\nCompiler:");
   rstrip_in_place((char *)cc_version);
-  puts (cc_version);
+  puts ((char *)cc_version);
 
   rstrip_in_place((char *)configure_options);
-  printf ("\nConfigure options: %s\n", configure_options);
+  printf ("\nConfigure options: %s\n", (char *)configure_options);
 
   rstrip_in_place((char *)cc_cflags);
-  printf ("\nCompilation CFLAGS: %s\n", cc_cflags);
+  printf ("\nCompilation CFLAGS: %s\n", (char *)cc_cflags);
 
   puts (_("\nCompile options:"));
 
