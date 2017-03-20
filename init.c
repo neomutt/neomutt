@@ -2045,10 +2045,7 @@ void mutt_envlist_set (const char *name, const char *value)
   while (envp && *envp)
   {
     if (!mutt_strncmp (name, *envp, len) && (*envp)[len] == '=')
-    {
-      FREE (envp);     /* __FREE_CHECKED__ */
       break;
-    }
     envp++;
     count++;
   }
@@ -2058,7 +2055,7 @@ void mutt_envlist_set (const char *name, const char *value)
 
   /* If slot found, overwrite */
   if (envp && *envp)
-    *envp = safe_strdup (work);
+    mutt_str_replace (envp, work);
 
   /* If not found, add new slot */
   else
