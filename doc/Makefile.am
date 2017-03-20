@@ -5,7 +5,7 @@ AUTOMAKE_OPTIONS = 1.6 foreign
 
 subdir = doc
 
-DEFS = -DSYSCONFDIR=\"$(sysconfdir)\" -DBINDIR=\"$(bindir)\" -DHAVE_CONFIG_H=1
+DEFS = -DSYSCONFDIR=\"$(sysconfdir)\" -DBINDIR=\"$(bindir)\"
 AM_CPPFLAGS = -I. -I.. -I$(includedir) -I$(top_srcdir)
 
 MAKEDOC_CPP = $(CPP) $(AM_CPPFLAGS) $(DEFS) $(CPPFLAGS) -D_MAKEDOC -C
