@@ -1,5 +1,3 @@
-# $Id$
-
 subdir = contrib
 
 SAMPLES = Mush.rc Pine.rc gpg.rc pgp2.rc pgp5.rc pgp6.rc Tin.rc \

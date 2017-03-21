@@ -2164,7 +2164,6 @@ static int line_compare(const char *a, size_t n, const char *b)
 /*
  * Implementation of `pgp_check_traditional'.
  */
-
 static int pgp_check_traditional_one_body (FILE *fp, BODY *b, int tagged_only)
 {
   char tempfile[_POSIX_PATH_MAX];
@@ -2289,7 +2288,6 @@ void pgp_gpgme_invoke_import (const char *fname)
   (Note that we aren't worse than Outlook & Cie in this, and also
   note that we can successfully handle anything produced by any
   existing versions of mutt.)  */
-
 static void copy_clearsigned (gpgme_data_t data, STATE *s, char *charset)
 {
   char buf[HUGE_STRING];
@@ -2756,7 +2754,6 @@ int smime_gpgme_application_handler (BODY *a, STATE *s)
  * %p           protocol
  * %[...] date of key using strftime(3)
  */
-
 static const char *crypt_entry_fmt (char *dest,
                                     size_t destlen,
 				    size_t col,

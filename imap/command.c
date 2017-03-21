@@ -931,7 +931,7 @@ int imap_exec (IMAP_DATA* idata, const char* cmdstr, int flags)
   if (flags & IMAP_CMD_QUEUE)
     return 0;
 
-  // Allow interruptions, particularly useful if there are network problems.
+  /* Allow interruptions, particularly useful if there are network problems. */
   mutt_allow_interrupt (1);
   do
     rc = imap_cmd_step (idata);

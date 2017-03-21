@@ -115,7 +115,6 @@ static void mix_free_remailer (REMAILER **r)
 }
 
 /* parse the type2.list as given by mixmaster -T */
-
 static REMAILER **mix_type2_list (size_t *l)
 {
   FILE *fp;
@@ -358,7 +357,6 @@ static const char *mix_format_caps (REMAILER *r)
  * %a	address
  *
  */
-
 static const char *mix_entry_fmt (char *dest,
 				  size_t destlen,
 				  size_t col,
@@ -681,7 +679,6 @@ void mix_make_chain (LIST **chainp, int *redraw)
 }
 
 /* some safety checks before piping the message to mixmaster */
-
 int mix_check_message (HEADER *msg)
 {
   const char *fqdn;

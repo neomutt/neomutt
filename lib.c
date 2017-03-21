@@ -459,7 +459,6 @@ int safe_symlink(const char *oldpath, const char *newpath)
  *
  * Warning: We don't check whether src and target are equal.
  */
-
 int safe_rename (const char *src, const char *target)
 {
   struct stat ssb, tsb;
@@ -561,7 +560,6 @@ int safe_rename (const char *src, const char *target)
 
 
 /* Create a temporary directory next to a file name */
-
 static int mkwrapdir (const char *path, char *newfile, size_t nflen,
 		    char *newdir, size_t ndlen)
 {
@@ -848,7 +846,6 @@ char *mutt_substrdup (const char *begin, const char *end)
 /* prepare a file name to survive the shell's quoting rules.
  * From the Unix programming FAQ by way of Liviu.
  */
-
 size_t mutt_quote_filename (char *d, size_t l, const char *f)
 {
   size_t i, j = 0;

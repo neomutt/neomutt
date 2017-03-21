@@ -2,8 +2,6 @@
 #
 # PGP command formats for PGP 6.
 #
-# $Id$
-#
 
 # decode application/pgp
 set pgp_decode_command="%?p?PGPPASSFD=0; export PGPPASSFD;? cat %?p?-? %f | pgp6 +compatible   +verbose=0 +batchmode -f"

@@ -348,7 +348,6 @@ mutt_copy_hdr (FILE *in, FILE *out, LOFF_T off_start, LOFF_T off_end, int flags,
    prefix
    	string to use if CH_PREFIX is set
  */
-
 int
 mutt_copy_header (FILE *in, HEADER *h, FILE *out, int flags, const char *prefix)
 {
@@ -519,7 +518,6 @@ static int count_delete_lines (FILE *fp, BODY *b, LOFF_T *length, size_t datelen
  *	MUTT_CM_CHARCONV	perform character set conversion
  * chflags	flags to mutt_copy_header()
  */
-
 int
 _mutt_copy_message (FILE *fpout, FILE *fpin, HEADER *hdr, BODY *body,
 		    int flags, int chflags)
@@ -752,7 +750,6 @@ mutt_copy_message (FILE *fpout, CONTEXT *src, HEADER *hdr, int flags,
  * flags	mutt_copy_message() flags
  * chflags	mutt_copy_header() flags
  */
-
 static int
 _mutt_append_message (CONTEXT *dest, FILE *fpin, CONTEXT *src, HEADER *hdr,
 		      BODY *body, int flags, int chflags)
@@ -855,7 +852,6 @@ static int copy_delete_attach (BODY *b, FILE *fpin, FILE *fpout, char *date)
  *
  * XXX - fix that.
  */
-
 static void format_address_header (char **h, ADDRESS *a)
 {
   char buf[HUGE_STRING];

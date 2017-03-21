@@ -386,7 +386,6 @@ static void pipe_msg (HEADER *h, FILE *fp, int decode, int print)
 
 
 /* the following code is shared between printing and piping */
-
 static int _mutt_pipe_message (HEADER *h, char *cmd,
 			       int decode,
 			       int print,

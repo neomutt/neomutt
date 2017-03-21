@@ -424,7 +424,6 @@ int rfc1524_mailcap_lookup (BODY *a, char *type, rfc1524_entry *entry, int opt)
   return found;
 }
 
-
 /* This routine will create a _temporary_ filename matching the
  * name template given if this needs to be done.
  *
@@ -435,7 +434,6 @@ int rfc1524_mailcap_lookup (BODY *a, char *type, rfc1524_entry *entry, int opt)
  * Returns 0 if oldfile is fine as is.
  * Returns 1 if newfile specified
  */
-
 static void strnfcpy(char *d, char *s, size_t siz, size_t len)
 {
   if(len > siz)

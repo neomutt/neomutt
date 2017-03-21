@@ -246,7 +246,6 @@ static void qp_decode_line (char *dest, char *src, size_t *l,
  * above, we just use STRING*2 for the target buffer's size.
  *
  */
-
 static void decode_quoted (STATE *s, long len, int istext, iconv_t cd)
 {
   char line[STRING];

@@ -337,7 +337,6 @@ char *mutt_get_default_charset (void)
  * applied to tocode. Highlight note: The top-well-named MUTT_ICONV_HOOK_FROM
  * acts on charset-hooks, not at all on iconv-hooks.
  */
-
 iconv_t mutt_iconv_open (const char *tocode, const char *fromcode, int flags)
 {
   char tocode1[SHORT_STRING];
@@ -376,7 +375,6 @@ iconv_t mutt_iconv_open (const char *tocode, const char *fromcode, int flags)
  * If you're supplying inrepls, the source charset should be stateless;
  * if you're supplying an outrepl, the target charset should be.
  */
-
 size_t mutt_iconv (iconv_t cd, ICONV_CONST char **inbuf, size_t *inbytesleft,
 		   char **outbuf, size_t *outbytesleft,
 		   ICONV_CONST char **inrepls, const char *outrepl)
@@ -449,7 +447,6 @@ size_t mutt_iconv (iconv_t cd, ICONV_CONST char **inbuf, size_t *inbytesleft,
  * Parameter flags is given as-is to mutt_iconv_open(). See there
  * for its meaning and usage policy.
  */
-
 int mutt_convert_string (char **ps, const char *from, const char *to, int flags)
 {
   iconv_t cd;

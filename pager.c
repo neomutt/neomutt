@@ -1357,7 +1357,6 @@ static int format_line (struct line_t **lineInfo, int n, unsigned char *buf,
  *	0	normal exit, line was not displayed
  *	>0	normal exit, line was displayed
  */
-
 static int
 display_line (FILE *f, LOFF_T *last_pos, struct line_t **lineInfo, int n,
 	      int *last, int *max, int flags, struct q_class_t **QuoteList,

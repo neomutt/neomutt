@@ -455,7 +455,6 @@ static char *apply_subject_mods (ENVELOPE *env)
  * %y = `x-label:' field (if present)
  * %Y = `x-label:' field (if present, tree unfolded, and != parent's x-label)
  * %Z = status flags	*/
-
 static const char *
 hdr_format_str (char *dest,
 		size_t destlen,

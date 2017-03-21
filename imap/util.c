@@ -776,7 +776,6 @@ void imap_unquote_string (char *s)
 /*
  * Quoting and UTF-7 conversion
  */
-
 void imap_munge_mbox_name (IMAP_DATA *idata, char *dest, size_t dlen, const char *src)
 {
   char *buf;
@@ -903,7 +902,6 @@ int imap_wait_keepalive (pid_t pid)
 }
 
 /* Allow/disallow re-opening a folder upon expunge. */
-
 void imap_allow_reopen (CONTEXT *ctx)
 {
   IMAP_DATA *idata;

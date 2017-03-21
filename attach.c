@@ -903,7 +903,6 @@ int mutt_decode_save_attachment (FILE *fp, BODY *m, char *path,
  * send: BODY->filename points to the un-encoded file which contains the
  *       attachment
  */
-
 int mutt_print_attachment (FILE *fp, BODY *a)
 {
   char newfile[_POSIX_PATH_MAX] = "";

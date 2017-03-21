@@ -859,7 +859,6 @@ int crypt_get_keys (HEADER *msg, char **keylist, int oppenc_mode)
  * Check if all recipients keys can be automatically determined.
  * Enable encryption if they can, otherwise disable encryption.
  */
-
 void crypt_opportunistic_encrypt(HEADER *msg)
 {
   char *pgpkeylist = NULL;
@@ -907,7 +906,6 @@ static void crypt_fetch_signatures (BODY ***signatures, BODY *a, int *n)
 /*
  * This routine verifies a  "multipart/signed"  body.
  */
-
 int mutt_signed_handler (BODY *a, STATE *s)
 {
   char tempfile[_POSIX_PATH_MAX];
@@ -1118,7 +1116,6 @@ const char* crypt_get_fingerprint_or_id (char *p, const char **pphint,
  * Used by pgp_find_keys and find_keys to check if a crypt-hook
  * value is a key id.
  */
-
 short crypt_is_numerical_keyid (const char *s)
 {
   /* or should we require the "0x"? */

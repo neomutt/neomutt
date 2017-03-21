@@ -177,7 +177,6 @@ char *pgp_fpr_or_lkeyid(pgp_key_t k)
 
 
 /* Copy PGP output messages and look for signs of a good signature */
-
 static int pgp_copy_checksig (FILE *fpin, FILE *fpout)
 {
   int rv = -1;
@@ -267,7 +266,6 @@ static int pgp_check_decryption_okay (FILE *fpin)
  * note that we can successfully handle anything produced by any
  * existing versions of mutt.)
  */
-
 static void pgp_copy_clearsigned (FILE *fpin, STATE *s, char *charset)
 {
   char buf[HUGE_STRING];
@@ -319,7 +317,6 @@ static void pgp_copy_clearsigned (FILE *fpin, STATE *s, char *charset)
 
 
 /* Support for the Application/PGP Content Type. */
-
 int pgp_application_pgp_handler (BODY *m, STATE *s)
 {
   int could_not_decrypt = 0;
@@ -1321,7 +1318,6 @@ char *pgp_find_keys (ADDRESS *adrlist, int oppenc_mode)
 
 /* Warning: "a" is no longer freed in this routine, you need
  * to free it later.  This is necessary for $fcc_attach. */
-
 BODY *pgp_encrypt_message (BODY *a, char *keylist, int sign)
 {
   char buf[LONG_STRING];

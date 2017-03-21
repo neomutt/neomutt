@@ -1,5 +1,3 @@
-$Id$
-
 		     USING PGP FROM WITHIN MUTT
 
 

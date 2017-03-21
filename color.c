@@ -445,7 +445,6 @@ do_uncolor (BUFFER *buf, BUFFER *s, COLOR_LINE **ColorList,
 /* usage: uncolor index pattern [pattern...]
  * 	  unmono  index pattern [pattern...]
  */
-
 static int _mutt_parse_uncolor (BUFFER *buf, BUFFER *s, unsigned long data,
 				BUFFER *err, short parse_uncolor)
 {
@@ -762,7 +761,6 @@ static int fgbgattr_to_color(int fg, int bg, int attr)
 /* usage: color <object> <fg> <bg> [ <regexp> ]
  * 	  mono  <object> <attr> [ <regexp> ]
  */
-
 static int
 _mutt_parse_color (BUFFER *buf, BUFFER *s, BUFFER *err,
 		   parser_callback_t callback, short dry_run)

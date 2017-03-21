@@ -417,7 +417,6 @@ static void update_idx (MUTTMENU *menu, ATTACHPTR **idx, short idxlen)
  * applied.
  *
  */
-
 static unsigned long cum_attachs_size (MUTTMENU *menu)
 {
   size_t s;
@@ -467,7 +466,6 @@ static void compose_status_line (char *buf, size_t buflen, size_t col, int cols,
  * This function is similar to status_format_str().  Look at that function for
  * help when modifying this function.
  */
-
 static const char *
 compose_format_str (char *buf, size_t buflen, size_t col, int cols, char op, const char *src,
 		   const char *prefix, const char *ifstring,

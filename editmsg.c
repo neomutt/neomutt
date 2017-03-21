@@ -40,7 +40,6 @@
  * 0	message edited successfully
  * -1   error
  */
-
 static int edit_one_message (CONTEXT *ctx, HEADER *cur)
 {
   char tmp[_POSIX_PATH_MAX];

@@ -46,7 +46,6 @@
 
 
 /* Hash a single 512-bit block. This is the core of the algorithm. */
-
 void sha1_transform(uint32_t state[5], const unsigned char buffer[64])
 {
 uint32_t a, b, c, d, e;
@@ -107,7 +106,6 @@ CHAR64LONG16* block = (const CHAR64LONG16*)buffer;
 
 
 /* sha1_init - Initialize new context */
-
 void sha1_init(SHA1_CTX* context)
 {
     /* SHA1 initialization constants */
@@ -121,7 +119,6 @@ void sha1_init(SHA1_CTX* context)
 
 
 /* Run your data through this. */
-
 void sha1_update(SHA1_CTX* context, const unsigned char* data, uint32_t len)
 {
 uint32_t i;
@@ -146,7 +143,6 @@ uint32_t j;
 
 
 /* Add padding and return the message digest. */
-
 void sha1_final(unsigned char digest[20], SHA1_CTX* context)
 {
 unsigned i;

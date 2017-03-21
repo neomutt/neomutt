@@ -154,7 +154,6 @@ int smime_valid_passphrase (void)
  */
 
 /* This is almost identical to ppgp's invoking interface. */
-
 static const char *_mutt_fmt_smime_command (char *dest,
 					    size_t destlen,
 					    size_t col,
@@ -781,7 +780,6 @@ static smime_key_t *smime_ask_for_key(char *prompt, short abilities, short publi
    This sets the '*ToUse' variables for an upcoming decryption, where
    the required key is different from SmimeDefaultKey.
 */
-
 static void _smime_getkeys (char *mailbox)
 {
   smime_key_t *key = NULL;
@@ -879,7 +877,6 @@ void smime_getkeys (ENVELOPE *env)
  * If oppenc_mode is true, only keys that can be determined without
  * prompting will be used.
  */
-
 char *smime_find_keys (ADDRESS *adrlist, int oppenc_mode)
 {
   smime_key_t *key = NULL;
@@ -1200,7 +1197,6 @@ static char *smime_extract_signer_certificate (char *infile)
 
 
 /* Add a certificate and update index file (externally). */
-
 void smime_invoke_import (char *infile, char *mailbox)
 {
   char tmpfname[_POSIX_PATH_MAX], *certfile = NULL, buf[STRING];
@@ -1813,7 +1809,6 @@ int smime_verify_one (BODY *sigbdy, STATE *s, const char *tempfile)
   This handles application/pkcs7-mime which can either be a signed
   or an encrypted message.
 */
-
 static BODY *smime_handle_entity (BODY *m, STATE *s, FILE *outFile)
 {
   int len=0;

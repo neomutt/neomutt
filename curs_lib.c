@@ -977,7 +977,6 @@ int mutt_multi_choice (char *prompt, char *letters)
 /*
  * addwch would be provided by an up-to-date curses library
  */
-
 int mutt_addwch (wchar_t wc)
 {
   char buf[MB_LEN_MAX*2];
@@ -999,7 +998,6 @@ int mutt_addwch (wchar_t wc)
  * except that the widths refer to the number of character cells
  * when printed.
  */
-
 void mutt_format_string (char *dest, size_t destlen,
 			 int min_width, int max_width,
 			 int justify, char m_pad_char,
@@ -1105,7 +1103,6 @@ void mutt_format_string (char *dest, size_t destlen,
  * except that the numbers in the conversion specification refer to
  * the number of character cells when printed.
  */
-
 static void format_s_x (char *dest,
 			     size_t destlen,
 			     const char *prefix,
@@ -1154,7 +1151,6 @@ void mutt_format_s_tree (char *dest,
  * mutt_paddstr (n, s) is almost equivalent to
  * mutt_format_string (bigbuf, big, n, n, FMT_LEFT, ' ', s, big, 0), addstr (bigbuf)
  */
-
 void mutt_paddstr (int n, const char *s)
 {
   wchar_t wc;
@@ -1263,7 +1259,6 @@ int mutt_charlen (const char *s, int *width)
  * mutt_strwidth is like mutt_strlen except that it returns the width
  * referring to the number of character cells.
  */
-
 int mutt_strwidth (const char *s)
 {
   wchar_t wc;

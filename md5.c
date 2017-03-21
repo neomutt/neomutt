@@ -292,7 +292,6 @@ md5_process_bytes (const void *buffer, size_t len, struct md5_ctx *ctx)
 
 /* Process LEN bytes of BUFFER, accumulating context into CTX.
    It is assumed that LEN % 64 == 0.  */
-
 void
 md5_process_block (const void *buffer, size_t len, struct md5_ctx *ctx)
 {

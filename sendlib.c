@@ -927,7 +927,6 @@ CONTENT *mutt_get_content_info (const char *fname, BODY *b)
  * The longest match is used so that we can match `ps.gz' when `gz' also
  * exists.
  */
-
 int mutt_lookup_mime_type (BODY *att, const char *path)
 {
   FILE *f;
@@ -1205,7 +1204,6 @@ void mutt_stamp_attachment(BODY *a)
 }
 
 /* Get a body's character set */
-
 char *mutt_get_body_charset (char *d, size_t dlen, BODY *b)
 {
   char *p = NULL;

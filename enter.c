@@ -159,7 +159,6 @@ static size_t my_mbstowcs (wchar_t **pwbuf, size_t *pwbuflen, size_t i, char *bu
 /*
  * Replace part of the wchar_t buffer, from FROM to CURPOS, by BUF.
  */
-
 static void replace_part (ENTER_STATE *state, size_t from, char *buf)
 {
   /* Save the suffix */
@@ -207,7 +206,6 @@ static inline int is_shell_char(wchar_t ch)
  *	0 if input was given
  * 	-1 if abort.
  */
-
 int  mutt_enter_string(char *buf, size_t buflen, int col, int flags)
 {
   int rv;

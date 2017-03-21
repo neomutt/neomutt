@@ -187,7 +187,6 @@ static size_t utf8rtowc (wchar_t *pwc, const char *s, size_t n, mbstate_t *_ps)
  *     via UTF-8 using iconv.
  * Unfortunately, we can't handle non-stateless encodings.
  */
-
 static size_t wcrtomb_iconv (char *s, wchar_t wc, iconv_t cd)
 {
   char buf[MB_LEN_MAX+1];

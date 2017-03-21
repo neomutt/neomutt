@@ -258,7 +258,6 @@ static int mh_already_notified(BUFFY *b, int msgno)
  * digits.  Deleted message get moved to a filename with a comma before
  * it.
  */
-
 static int mh_valid_message (const char *s)
 {
   for (; *s; s++)
@@ -433,7 +432,6 @@ static void mhs_write_one_sequence (FILE * fp, struct mh_sequences *mhs,
 }
 
 /* XXX - we don't currently remove deleted messages from sequences we don't know.  Should we? */
-
 static void mh_update_sequences (CONTEXT * ctx)
 {
   FILE *ofp, *nfp;
@@ -639,7 +637,6 @@ static void mh_update_maildir (struct maildir *md, struct mh_sequences *mhs)
 }
 
 /* maildir support */
-
 static void maildir_free_entry (struct maildir **md)
 {
   if (!md || !*md)
@@ -1483,7 +1480,6 @@ static int mh_close_message (CONTEXT *ctx, MESSAGE *msg)
  * with a {cur,new} prefix.
  *
  */
-
 static int maildir_open_new_message (MESSAGE * msg, CONTEXT * dest, HEADER * hdr)
 {
   int fd;
@@ -1569,7 +1565,6 @@ static int maildir_open_new_message (MESSAGE * msg, CONTEXT * dest, HEADER * hdr
  * See also maildir_open_new_message().
  *
  */
-
 static int _maildir_commit_message (CONTEXT * ctx, MESSAGE * msg, HEADER * hdr)
 {
   char subdir[4];
@@ -1746,7 +1741,6 @@ static int mh_commit_message (CONTEXT * ctx, MESSAGE * msg)
  * This code is also used for attachment deletion in maildir
  * folders.
  */
-
 static int mh_rewrite_message (CONTEXT * ctx, int msgno)
 {
   HEADER *h = ctx->hdrs[msgno];
@@ -2175,7 +2169,6 @@ static int maildir_check_mailbox (CONTEXT * ctx, int *index_hint)
  * happens.
  *
  */
-
 static int mh_check_mailbox (CONTEXT * ctx, int *index_hint)
 {
   char buf[_POSIX_PATH_MAX];
@@ -2399,7 +2392,6 @@ void maildir_update_flags (CONTEXT *ctx, HEADER *o, HEADER *n)
  * has moved under our feet.  Note that this code is rather expensive, but
  * then again, it's called rarely.
  */
-
 static FILE *_maildir_open_find_message (const char *folder, const char *unique,
 				  const char *subfolder, char **newname)
 {

@@ -405,7 +405,6 @@ static void parse_content_disposition (const char *s, BODY *ct)
  *	digest	1 if reading subparts of a multipart/digest, 0
  *		otherwise
  */
-
 BODY *mutt_read_mime_header (FILE *fp, int digest)
 {
   BODY *p = mutt_new_body();
@@ -536,7 +535,6 @@ void mutt_parse_part (FILE *fp, BODY *b)
  *
  * NOTE: this assumes that `parent->length' has been set!
  */
-
 BODY *mutt_parse_message_rfc822 (FILE *fp, BODY *parent)
 {
   BODY *msg;
@@ -571,7 +569,6 @@ BODY *mutt_parse_message_rfc822 (FILE *fp, BODY *parent)
  *
  *	digest		1 if reading a multipart/digest, 0 otherwise
  */
-
 BODY *mutt_parse_multipart (FILE *fp, const char *boundary, LOFF_T end_off, int digest)
 {
 #ifdef SUN_ATTACHMENT

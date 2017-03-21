@@ -509,19 +509,18 @@ static bool windowed_query_from_query(const char *query, char *buf, size_t bufsz
   int beg = NotmuchQueryWindowDuration * (NotmuchQueryWindowCurrentPosition + 1);
   int end = NotmuchQueryWindowDuration *  NotmuchQueryWindowCurrentPosition;
 
-  // if the duration is a non positive integer, disable the window
+  /* if the duration is a non positive integer, disable the window */
   if (NotmuchQueryWindowDuration <= 0)
   {
     query_window_reset();
     return false;
   }
 
-  // if the query has changed, reset the window position
+  /* if the query has changed, reset the window position */
   if (NotmuchQueryWindowCurrentSearch == NULL ||
       strcmp(query, NotmuchQueryWindowCurrentSearch) != 0)
     query_window_reset();
 
-  //
   if (!query_window_check_timebase(NotmuchQueryWindowTimebase))
   {
     mutt_message (_("Invalid nm_query_window_timebase value (valid values are: hour, day, week, month or year)."));
@@ -594,9 +593,10 @@ static char *get_query_string(struct nm_ctxdata *data, int window)
     char buf[LONG_STRING];
     mutt_str_replace(&NotmuchQueryWindowCurrentSearch, data->db_query);
 
-    // if a date part is defined, do not apply windows (to avoid the risk of
-    // having a non-intersected date frame). A good improvement would be to
-    // accept if they intersect
+    /* if a date part is defined, do not apply windows (to avoid the risk of
+     * having a non-intersected date frame). A good improvement would be to
+     * accept if they intersect
+     */
     if (!strstr(data->db_query, "date:") &&
         windowed_query_from_query(data->db_query, buf, sizeof(buf)))
       data->db_query = safe_strdup(buf);

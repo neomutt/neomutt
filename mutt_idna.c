@@ -299,9 +299,7 @@ const char *mutt_addr_for_display (ADDRESS *a)
   FREE (&local_mailbox);
   return buff;
 }
-
 /* Convert an ENVELOPE structure */
-
 void mutt_env_to_local (ENVELOPE *e)
 {
   mutt_addrlist_to_local (e->return_path);

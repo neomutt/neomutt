@@ -1082,9 +1082,7 @@ int mx_close_mailbox (CONTEXT *ctx, int *index_hint)
 #include "mutt_notmuch.h"
 #endif
 
-
 /* update a Context structure's internal tables. */
-
 void mx_update_tables(CONTEXT *ctx, int committing)
 {
   int i, j;
@@ -1392,7 +1390,6 @@ MESSAGE *mx_open_message (CONTEXT *ctx, int msgno)
 }
 
 /* commit a message to a folder */
-
 int mx_commit_message (MESSAGE *msg, CONTEXT *ctx)
 {
   if (!ctx->mx_ops || !ctx->mx_ops->commit_msg)

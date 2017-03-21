@@ -109,7 +109,6 @@ void mutt_adv_mktemp (char *s, size_t l)
 }
 
 /* create a send-mode duplicate from a receive-mode body */
-
 int mutt_copy_body (FILE *fp, BODY **tgt, BODY *src)
 {
   char tmp[_POSIX_PATH_MAX];
@@ -602,7 +601,6 @@ char *_mutt_expand_path (char *s, size_t slen, int rx)
  * Replace "&" by a capitalized version of the user's login
  * name.
  */
-
 char *mutt_gecos_name (char *dest, size_t destlen, struct passwd *pw)
 {
   regmatch_t pat_match[1];
@@ -1924,7 +1922,6 @@ void mutt_sleep (short s)
 }
 
 /* Decrease a file's modification time by 1 second */
-
 time_t mutt_decrease_mtime (const char *f, struct stat *st)
 {
   struct utimbuf utim;

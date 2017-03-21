@@ -2828,9 +2828,9 @@ static int to_absolute_path(char *path, const char *reference)
   }
 
   ref_tmp = safe_strdup(reference);
-  dirpath = dirname(ref_tmp); // get directory name of
+  dirpath = dirname(ref_tmp); /* get directory name of */
   strncpy(abs_path, dirpath, PATH_MAX);
-  safe_strncat(abs_path, sizeof(abs_path), "/", 1); // append a / at the end of the path
+  safe_strncat(abs_path, sizeof(abs_path), "/", 1); /* append a / at the end of the path */
 
   FREE(&ref_tmp);
   path_len = PATH_MAX - strlen(path);

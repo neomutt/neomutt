@@ -32,7 +32,6 @@
 /* some helper functions to verify that we are exclusively operating
  * on message/rfc822 attachments
  */
-
 static short check_msg (BODY * b, short err)
 {
   if (!mutt_is_message_type (b->type, b->subtype))
@@ -67,7 +66,6 @@ static short check_all_msg (ATTACHPTR ** idx, short idxlen,
 
 
 /* can we decode all tagged attachments? */
-
 static short check_can_decode (ATTACHPTR ** idx, short idxlen,
 			      BODY * cur)
 {
@@ -98,7 +96,6 @@ static short count_tagged (ATTACHPTR **idx, short idxlen)
 /* count the number of tagged children below a multipart or message
  * attachment.
  */
-
 static short count_tagged_children (ATTACHPTR ** idx,
 				    short idxlen, short i)
 {
@@ -119,7 +116,6 @@ static short count_tagged_children (ATTACHPTR ** idx,
  ** The bounce function, from the attachment menu
  **
  **/
-
 void mutt_attach_bounce (FILE * fp, HEADER * hdr,
 	   ATTACHPTR ** idx, short idxlen, BODY * cur)
 {
@@ -247,7 +243,6 @@ void mutt_attach_bounce (FILE * fp, HEADER * hdr,
  **
  **
  **/
-
 void mutt_attach_resend (FILE * fp, HEADER * hdr, ATTACHPTR ** idx,
 			 short idxlen, BODY * cur)
 {
@@ -274,7 +269,6 @@ void mutt_attach_resend (FILE * fp, HEADER * hdr, ATTACHPTR ** idx,
  **/
 
 /* try to find a common parent message for the tagged attachments. */
-
 static HEADER *find_common_parent (ATTACHPTR ** idx, short idxlen,
 				   short nattach)
 {
@@ -305,7 +299,6 @@ static HEADER *find_common_parent (ATTACHPTR ** idx, short idxlen,
  * Note: This and the calling procedure could be optimized quite a
  * bit.  For now, it's not worth the effort.
  */
-
 static int is_parent (short i, ATTACHPTR **idx, short idxlen, BODY *cur)
 {
   short level = idx[i]->level;
@@ -369,7 +362,6 @@ static void include_header (int quote, FILE * ifp,
 
 /* Attach all the body parts which can't be decoded.
  * This code is shared by forwarding and replying. */
-
 static BODY ** copy_problematic_attachments (FILE *fp,
 					     BODY **last,
 					     ATTACHPTR **idx,
@@ -395,7 +387,6 @@ static BODY ** copy_problematic_attachments (FILE *fp,
  * forward one or several MIME bodies
  * (non-message types)
  */
-
 static void attach_forward_bodies (FILE * fp, HEADER * hdr,
 				   ATTACHPTR ** idx, short idxlen,
 				   BODY * cur,
@@ -571,7 +562,6 @@ _("Can't decode all tagged attachments.  MIME-forward the others?"))) == MUTT_AB
  * while, on the attachment menu, messages are referenced through
  * the attachment index.
  */
-
 static void attach_forward_msgs (FILE * fp, HEADER * hdr,
 	       ATTACHPTR ** idx, short idxlen, BODY * cur, int flags)
 {
@@ -717,7 +707,6 @@ void mutt_attach_forward (FILE * fp, HEADER * hdr,
  *
  * Note that this code is horribly similar to envelope_defaults () from send.c.
  */
-
 static int
 attach_reply_envelope_defaults (ENVELOPE *env, ATTACHPTR **idx, short idxlen,
 				HEADER *parent, int flags)
@@ -804,7 +793,6 @@ attach_reply_envelope_defaults (ENVELOPE *env, ATTACHPTR **idx, short idxlen,
 
 
 /*  This is _very_ similar to send.c's include_reply(). */
-
 static void attach_include_reply (FILE *fp, FILE *tmpfp, HEADER *cur, int flags)
 {
   int cmflags = MUTT_CM_PREFIX | MUTT_CM_DECODE | MUTT_CM_CHARCONV;

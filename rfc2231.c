@@ -119,7 +119,6 @@ static struct rfc2231_parameter *rfc2231_new_parameter (void)
  * Primary sorting key: attribute
  * Secondary sorting key: index
  */
-
 static void rfc2231_list_insert (struct rfc2231_parameter **list,
 				 struct rfc2231_parameter *par)
 {
@@ -152,7 +151,6 @@ static void rfc2231_free_parameter (struct rfc2231_parameter **p)
 }
 
 /* process continuation parameters */
-
 static void rfc2231_join_continuations (PARAMETER **head,
 					struct rfc2231_parameter *par)
 {

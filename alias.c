@@ -166,7 +166,6 @@ void mutt_expand_aliases_env (ENVELOPE *env)
  * $ wants to be quoted since it may indicate the start of an environment
  * variable.
  */
-
 static void write_safe_address (FILE *fp, char *s)
 {
   while (*s)
@@ -401,7 +400,6 @@ retry_name:
  * Sanity-check an alias name:  Only characters which are non-special to both
  * the RFC 822 and the mutt configuration parser are permitted.
  */
-
 int mutt_check_alias_name (const char *s, char *dest, size_t destlen)
 {
   wchar_t wc;

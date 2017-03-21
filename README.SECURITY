@@ -1,5 +1,3 @@
-$Id$
-
 Recently, there have been reports on security problems induced by
 the interpretation of shell meta-characters embedded in MIME
 parameters.  These reports were referring to Pine, but the problem

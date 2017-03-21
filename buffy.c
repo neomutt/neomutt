@@ -55,7 +55,6 @@ static short BuffyNotify = 0;	/* # of unnotified new boxes */
 
 /* Find the last message in the file.
  * upon success return 0. If no message found - return -1 */
-
 static int fseek_last_message (FILE * f)
 {
   LOFF_T pos;

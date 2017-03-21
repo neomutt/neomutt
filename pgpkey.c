@@ -704,7 +704,6 @@ pgp_key_t pgp_ask_for_key (char *tag, char *whatfor,
 }
 
 /* generate a public key attachment */
-
 BODY *pgp_make_key_attachment (char *tempf)
 {
   BODY *att;
