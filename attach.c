@@ -525,7 +525,7 @@ int mutt_view_attachment (FILE *fp, BODY *a, int flag, HEADER *hdr,
 	decode_state.flags = MUTT_CHARCONV;
 	mutt_decode_attachment(a, &decode_state);
 	if (fclose(decode_state.fpout) == EOF)
-	  mutt_debug (1, "mutt_view_attachment:%d fclose errno=%d %s\n",
+	  mutt_debug (1, "mutt_view_attachment:%d fclose(%s) errno=%d %s\n",
 	              __LINE__, pagerfile, errno, strerror(errno));
       }
       else

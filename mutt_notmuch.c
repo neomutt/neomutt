@@ -322,7 +322,7 @@ static void free_hdrdata(struct nm_hdrdata *data)
   if (!data)
     return;
 
-  mutt_debug (2, "nm: freeing header %p\n", data);
+  mutt_debug (2, "nm: freeing header %p\n", (void*) data);
   FREE(&data->folder);
   FREE(&data->tags);
   FREE(&data->tags_transformed);
@@ -337,7 +337,7 @@ static void free_ctxdata(struct nm_ctxdata *data)
   if (!data)
     return;
 
-  mutt_debug (1, "nm: freeing context data %p\n", data);
+  mutt_debug (1, "nm: freeing context data %p\n", (void*) data);
 
   if (data->db)
 #ifdef NOTMUCH_API_3
@@ -361,7 +361,7 @@ static struct nm_ctxdata *new_ctxdata(char *uri)
     return NULL;
 
   data = safe_calloc(1, sizeof(struct nm_ctxdata));
-  mutt_debug (1, "nm: initialize context data %p\n", data);
+  mutt_debug (1, "nm: initialize context data %p\n", (void*) data);
 
   data->db_limit = NotmuchDBLimit;
 
@@ -1014,7 +1014,7 @@ static int init_header(HEADER *h, const char *path, notmuch_message_t *msg)
   ((struct nm_hdrdata *) h->data)->virtual_id = safe_strdup(id);
 
   mutt_debug (2, "nm: initialize header data: [hdr=%p, data=%p] (%s)\n",
-             h, h->data, id);
+             (void*) h, (void*) h->data, id);
 
   if (!h->env->message_id)
     h->env->message_id = nm2mutt_message_id(id);
@@ -2231,12 +2231,12 @@ static int nm_check_mailbox(CONTEXT *ctx, int *index_hint)
 
   if (ctx->mtime >= mtime)
   {
-    mutt_debug (2, "nm: check unnecessary (db=%d ctx=%d)\n", mtime,
+    mutt_debug (2, "nm: check unnecessary (db=%lu ctx=%lu)\n", mtime,
                ctx->mtime);
     return 0;
   }
 
-  mutt_debug (1, "nm: checking (db=%d ctx=%d)\n", mtime, ctx->mtime);
+  mutt_debug (1, "nm: checking (db=%lu ctx=%lu)\n", mtime, ctx->mtime);
 
   q = get_query(data, false);
   if (!q)

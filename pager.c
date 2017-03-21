@@ -1201,7 +1201,7 @@ static int format_line (struct line_t **lineInfo, int n, unsigned char *buf,
     {
       if (k == (size_t)(-1))
         memset(&mbstate, 0, sizeof(mbstate));
-      mutt_debug (1, "%s:%d: mbrtowc returned %d; errno = %d.\n",
+      mutt_debug (1, "%s:%d: mbrtowc returned %lu; errno = %d.\n",
                   __FILE__, __LINE__, k, errno);
       if (col + 4 > wrap_cols)
 	break;

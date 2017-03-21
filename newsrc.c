@@ -670,7 +670,7 @@ void nntp_hcache_update (NNTP_DATA *nntp_data, header_cache_t *hc)
   hdata = mutt_hcache_fetch_raw (hc, "index", 5);
   if (hdata)
   {
-    mutt_debug (2, "nntp_hcache_update: mutt_hcache_fetch index: %s\n", hdata);
+    mutt_debug (2, "nntp_hcache_update: mutt_hcache_fetch index: %s\n", (char*) hdata);
     if (sscanf (hdata, ANUM " " ANUM, &first, &last) == 2)
     {
       old = 1;

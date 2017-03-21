@@ -2102,7 +2102,7 @@ static int nntp_date (NNTP_SERVER *nserv, time_t *now)
       *now = timegm (&tm);
       if (*now >= 0)
       {
-	mutt_debug (1, "nntp_date: server time is %d\n", *now);
+	mutt_debug (1, "nntp_date: server time is %lu\n", *now);
 	return 0;
       }
     }

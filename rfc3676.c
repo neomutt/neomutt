@@ -186,12 +186,12 @@ static void print_flowed_line (char *line, STATE *s, int ql,
   width = quote_width (s, ql);
   last = line[mutt_strlen (line) - 1];
 
-  mutt_debug (4, "f=f: line [%s], width = %ld, spaces = %d\n",
+  mutt_debug (4, "f=f: line [%s], width = %ld, spaces = %lu\n",
               NONULL(line), (long)width, fst->spaces);
 
   for (p = (char *)line, words = 0; (p = strsep (&line, " ")) != NULL ; )
   {
-    mutt_debug (4, "f=f: word [%s], width: %d, remaining = [%s]\n",
+    mutt_debug (4, "f=f: word [%s], width: %lu, remaining = [%s]\n",
                 p, fst->width, line);
 
     /* remember number of spaces */
@@ -214,7 +214,7 @@ static void print_flowed_line (char *line, STATE *s, int ql,
     if (!(!fst->spaces && fst->delsp && last != ' ') &&
 	w < width && w + fst->width + fst->spaces > width)
     {
-      mutt_debug (4, "f=f: break line at %d, %d spaces left\n",
+      mutt_debug (4, "f=f: break line at %lu, %lu spaces left\n",
                   fst->width, fst->spaces);
       /* only honor trailing spaces for format=flowed replies */
       if (option(OPTTEXTFLOWED))
