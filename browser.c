@@ -780,17 +780,20 @@ static int examine_mailboxes (MUTTMENU *menu, struct browser_state *state)
       tmp->msg_unread = Context->unread;
     }
 
+    strfcpy (buffer, NONULL (tmp->path), sizeof (buffer));
+    mutt_pretty_mailbox (buffer, sizeof (buffer));
+
 #ifdef USE_IMAP
     if (mx_is_imap (tmp->path))
     {
-      add_folder (menu, state, tmp->path, NULL, NULL, tmp, NULL);
+      add_folder (menu, state, buffer, NULL, NULL, tmp, NULL);
       continue;
     }
 #endif
 #ifdef USE_POP
     if (mx_is_pop (tmp->path))
     {
-      add_folder (menu, state, tmp->path, NULL, NULL, tmp, NULL);
+      add_folder (menu, state, buffer, NULL, NULL, tmp, NULL);
       continue;
     }
 #endif
@@ -822,9 +825,6 @@ static int examine_mailboxes (MUTTMENU *menu, struct browser_state *state)
       if (st2.st_mtime > s.st_mtime)
 	s.st_mtime = st2.st_mtime;
     }
-
-    strfcpy (buffer, NONULL(tmp->path), sizeof (buffer));
-    mutt_pretty_mailbox (buffer, sizeof (buffer));
 
     add_folder (menu, state, buffer, NULL, &s, tmp, NULL);
   }

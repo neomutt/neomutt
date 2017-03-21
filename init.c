@@ -2023,11 +2023,53 @@ static bool valid_show_multipart_alternative(const char *val)
           (val == NULL) || (*val == 0));
 }
 
+char **mutt_envlist (void)
+{
+  return envlist;
+}
+
+/* Helper function for parse_setenv().
+ * It's broken out because some other parts of mutt (filter.c) need
+ * to set/overwrite environment variables in envlist before execing.
+ */
+void mutt_envlist_set (const char *name, const char *value)
+{
+  char **envp = envlist;
+  char work[LONG_STRING];
+  int count, len;
+
+  len = mutt_strlen (name);
+
+  /* Look for current slot to overwrite */
+  count = 0;
+  while (envp && *envp)
+  {
+    if (!mutt_strncmp (name, *envp, len) && (*envp)[len] == '=')
+      break;
+    envp++;
+    count++;
+  }
+
+  /* Format var=value string */
+  snprintf (work, sizeof(work), "%s=%s", NONULL (name), NONULL (value));
+
+  /* If slot found, overwrite */
+  if (envp && *envp)
+    mutt_str_replace (envp, work);
+
+  /* If not found, add new slot */
+  else
+  {
+    safe_realloc (&envlist, sizeof(char *) * (count + 2));
+    envlist[count] = safe_strdup (work);
+    envlist[count + 1] = NULL;
+  }
+}
+
 static int parse_setenv(BUFFER *tmp, BUFFER *s, unsigned long data, BUFFER *err)
 {
   int query, unset, len;
-  char work[LONG_STRING];
-  char **save, **envp = envlist;
+  char *name, **save, **envp = envlist;
   int count = 0;
 
   query = 0;
@@ -2102,6 +2144,8 @@ static int parse_setenv(BUFFER *tmp, BUFFER *s, unsigned long data, BUFFER *err)
     return -1;
   }
 
+  /* set variable */
+
   if (*s->dptr == '=')
   {
     s->dptr++;
@@ -2114,38 +2158,10 @@ static int parse_setenv(BUFFER *tmp, BUFFER *s, unsigned long data, BUFFER *err)
     return -1;
   }
 
-  /* Look for current slot to overwrite */
-  count = 0;
-  while (envp && *envp)
-  {
-    if (!mutt_strncmp (tmp->data, *envp, len) && (*envp)[len] == '=')
-    {
-      FREE (envp);     /* __FREE_CHECKED__ */
-      break;
-    }
-    envp++;
-    count++;
-  }
-
-  /* Format var=value string */
-  strfcpy (work, tmp->data, sizeof(work));
-  len = strlen (work);
-  work[len++] = '=';
+  name = safe_strdup (tmp->data);
   mutt_extract_token (tmp, s, 0);
-  strfcpy (&work[len], tmp->data, sizeof(work)-len);
-
-  /* If slot found, overwrite */
-  if (*envp)
-    *envp = safe_strdup (work);
-
-  /* If not found, add new slot */
-  else
-  {
-    *envp = safe_strdup (work);
-    count++;
-    safe_realloc (&envlist, sizeof(char *) * (count + 1));
-    envlist[count] = NULL;
-  }
+  mutt_envlist_set (name, tmp->data);
+  FREE (&name);
 
   return 0;
 }

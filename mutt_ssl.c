@@ -558,19 +558,17 @@ static int ssl_negotiate (CONNECTION *conn, sslsockdata* ssldata)
 
   SSL_set_verify (ssldata->ssl, SSL_VERIFY_PEER, ssl_verify_callback);
   SSL_set_mode (ssldata->ssl, SSL_MODE_AUTO_RETRY);
-  ERR_clear_error ();
 
-#if (OPENSSL_VERSION_NUMBER >= 0x0090806fL) && !defined(OPENSSL_NO_TLSEXT)
-  /* TLS Virtual-hosting requires that the server present the correct
-   * certificate; to do this, the ServerNameIndication TLS extension is used.
-   * If TLS is negotiated, and OpenSSL is recent enough that it might have
-   * support, and support was enabled when OpenSSL was built, mutt supports
-   * sending the hostname we think we're connecting to, so a server can send
-   * back the correct certificate.
-   * This has been tested over SMTP against Exim 4.80.
-   * Not yet found an IMAP server which supports this. */
-  SSL_set_tlsext_host_name (ssldata->ssl, conn->account.host);
-#endif
+  if (!SSL_set_tlsext_host_name (ssldata->ssl, conn->account.host))
+  {
+    /* L10N: This is a warning when trying to set the host name for
+     * TLS Server Name Indication (SNI).  This allows the server to present
+     * the correct certificate if it supports multiple hosts. */
+    mutt_error(_("Warning: unable to set TLS SNI host name"));
+    mutt_sleep (1);
+  }
+
+  ERR_clear_error ();
 
   if ((err = SSL_connect (ssldata->ssl)) != 1)
   {
@@ -769,7 +767,7 @@ static int compare_certificates (X509 *cert, X509 *peercert,
       X509_issuer_name_cmp (cert, peercert) != 0)
     return -1;
 
-  if (!X509_digest (cert, EVP_sha1(), md, &mdlen) || peermdlen != mdlen)
+  if (!X509_digest (cert, EVP_sha256(), md, &mdlen) || peermdlen != mdlen)
     return -1;
 
   if (memcmp(peermd, md, mdlen) != 0)
@@ -785,7 +783,7 @@ static int check_certificate_cache (X509 *peercert)
   X509 *cert;
   int i;
 
-  if (!X509_digest (peercert, EVP_sha1(), peermd, &peermdlen)
+  if (!X509_digest (peercert, EVP_sha256(), peermd, &peermdlen)
       || !SslSessionCerts)
   {
     return 0;
@@ -846,7 +844,7 @@ static int check_certificate_file (X509 *peercert)
   if ((fp = fopen (SslCertFile, "rt")) == NULL)
     return 0;
 
-  if (!X509_digest (peercert, EVP_sha1(), peermd, &peermdlen))
+  if (!X509_digest (peercert, EVP_sha256(), peermd, &peermdlen))
   {
     safe_fclose (&fp);
     return 0;
@@ -1080,7 +1078,7 @@ static int ssl_verify_callback (int preverify_ok, X509_STORE_CTX *ctx)
   {
     if (skip_mode && preverify_ok && (pos == last_pos) && last_cert)
     {
-      if (X509_digest (last_cert, EVP_sha1(), last_cert_md, &last_cert_mdlen) &&
+      if (X509_digest (last_cert, EVP_sha256(), last_cert_md, &last_cert_mdlen) &&
           !compare_certificates (cert, last_cert, last_cert_md, last_cert_mdlen))
       {
         mutt_debug (2, "ssl_verify_callback: ignoring duplicate skipped certificate.\n");

@@ -30,8 +30,6 @@
 #include <sys/wait.h>
 #include <unistd.h>
 
-extern char **envlist;
-
 int _mutt_system (const char *cmd, int flags)
 {
   int rc = -1;
@@ -114,7 +112,7 @@ int _mutt_system (const char *cmd, int flags)
     sigaction (SIGTSTP, &act, NULL);
     sigaction (SIGCONT, &act, NULL);
 
-    execle (EXECSHELL, "sh", "-c", cmd, NULL, envlist);
+    execle (EXECSHELL, "sh", "-c", cmd, NULL, mutt_envlist ());
     _exit (127); /* execl error */
   }
   else if (thepid != -1)
