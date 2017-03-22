@@ -66,16 +66,6 @@ enum {
   CAPMAX
 };
 
-#ifdef USE_SASL
-static int smtp_auth (CONNECTION* conn);
-static int smtp_auth_sasl (CONNECTION* conn, const char* mechanisms);
-#else
-static int smtp_auth_plain (CONNECTION* conn);
-#endif
-
-static int smtp_fill_account (ACCOUNT* account);
-static int smtp_open (CONNECTION* conn);
-
 static int Esmtp = 0;
 static char* AuthMechs = NULL;
 static unsigned char Capabilities[(CAPMAX + 7)/ 8];
@@ -275,95 +265,6 @@ static int addresses_use_unicode(const ADDRESS* a)
 }
 
 
-int
-mutt_smtp_send (const ADDRESS* from, const ADDRESS* to, const ADDRESS* cc,
-                const ADDRESS* bcc, const char *msgfile, int eightbit)
-{
-  CONNECTION *conn;
-  ACCOUNT account;
-  const char* envfrom;
-  char buf[1024];
-  int ret = -1;
-
-  /* it might be better to synthesize an envelope from from user and host
-   * but this condition is most likely arrived at accidentally */
-  if (EnvFrom)
-    envfrom = EnvFrom->mailbox;
-  else if (from)
-    envfrom = from->mailbox;
-  else
-  {
-    mutt_error (_("No from address given"));
-    return -1;
-  }
-
-  if (smtp_fill_account (&account) < 0)
-    return ret;
-
-  if (!(conn = mutt_conn_find (NULL, &account)))
-    return -1;
-
-  Esmtp = eightbit;
-
-  do
-  {
-    /* send our greeting */
-    if (( ret = smtp_open (conn)))
-      break;
-    FREE (&AuthMechs);
-
-    /* send the sender's address */
-    ret = snprintf (buf, sizeof (buf), "MAIL FROM:<%s>", envfrom);
-    if (eightbit && mutt_bit_isset (Capabilities, EIGHTBITMIME))
-    {
-      safe_strncat (buf, sizeof (buf), " BODY=8BITMIME", 15);
-      ret += 14;
-    }
-    if (DsnReturn && mutt_bit_isset (Capabilities, DSN))
-      ret += snprintf (buf + ret, sizeof (buf) - ret, " RET=%s", DsnReturn);
-    if (mutt_bit_isset (Capabilities, SMTPUTF8) &&
-	(address_uses_unicode(envfrom) ||
-	 addresses_use_unicode(to) ||
-	 addresses_use_unicode(cc) ||
-	 addresses_use_unicode(bcc)))
-      ret += snprintf (buf + ret, sizeof (buf) - ret, " SMTPUTF8");
-    safe_strncat (buf, sizeof (buf), "\r\n", 3);
-    if (mutt_socket_write (conn, buf) == -1)
-    {
-      ret = smtp_err_write;
-      break;
-    }
-    if ((ret = smtp_get_resp (conn)))
-      break;
-
-    /* send the recipient list */
-    if ((ret = smtp_rcpt_to (conn, to)) || (ret = smtp_rcpt_to (conn, cc))
-        || (ret = smtp_rcpt_to (conn, bcc)))
-      break;
-
-    /* send the message data */
-    if ((ret = smtp_data (conn, msgfile)))
-      break;
-
-    mutt_socket_write (conn, "QUIT\r\n");
-
-    ret = 0;
-  }
-  while (0);
-
-  if (conn)
-    mutt_socket_close (conn);
-
-  if (ret == smtp_err_read)
-    mutt_error (_("SMTP session failed: read error"));
-  else if (ret == smtp_err_write)
-    mutt_error (_("SMTP session failed: write error"));
-  else if (ret == smtp_err_code)
-    mutt_error (_("Invalid server response"));
-
-  return ret;
-}
-
 static int smtp_fill_account (ACCOUNT* account)
 {
   static unsigned short SmtpPort = 0;
@@ -444,123 +345,7 @@ static int smtp_helo (CONNECTION* conn)
   return smtp_get_resp (conn);
 }
 
-static int smtp_open (CONNECTION* conn)
-{
-  int rc;
-
-  if (mutt_socket_open (conn))
-    return -1;
-
-  /* get greeting string */
-  if ((rc = smtp_get_resp (conn)))
-    return rc;
-
-  if ((rc = smtp_helo (conn)))
-    return rc;
-
-#ifdef USE_SSL
-  if (conn->ssf)
-    rc = MUTT_NO;
-  else if (option (OPTSSLFORCETLS))
-    rc = MUTT_YES;
-  else if (mutt_bit_isset (Capabilities, STARTTLS) &&
-           (rc = query_quadoption (OPT_SSLSTARTTLS,
-                                   _("Secure connection with TLS?"))) == MUTT_ABORT)
-    return rc;
-
-  if (rc == MUTT_YES)
-  {
-    if (mutt_socket_write (conn, "STARTTLS\r\n") < 0)
-      return smtp_err_write;
-    if ((rc = smtp_get_resp (conn)))
-      return rc;
-
-    if (mutt_ssl_starttls (conn))
-    {
-      mutt_error (_("Could not negotiate TLS connection"));
-      mutt_sleep (1);
-      return -1;
-    }
-
-    /* re-EHLO to get authentication mechanisms */
-    if ((rc = smtp_helo (conn)))
-      return rc;
-  }
-#endif
-
-  if (conn->account.flags & MUTT_ACCT_USER)
-  {
-    if (!mutt_bit_isset (Capabilities, AUTH))
-    {
-      mutt_error (_("SMTP server does not support authentication"));
-      mutt_sleep (1);
-      return -1;
-    }
-
 #ifdef USE_SASL
-    return smtp_auth (conn);
-#else
-    return smtp_auth_plain (conn);
-#endif /* USE_SASL */
-  }
-
-  return 0;
-}
-
-#ifdef USE_SASL
-static int smtp_auth (CONNECTION* conn)
-{
-  int r = SMTP_AUTH_UNAVAIL;
-
-  if (SmtpAuthenticators && *SmtpAuthenticators)
-  {
-    char* methods = safe_strdup (SmtpAuthenticators);
-    char* method;
-    char* delim;
-
-    for (method = methods; method; method = delim)
-    {
-      delim = strchr (method, ':');
-      if (delim)
-	*delim++ = '\0';
-      if (! method[0])
-	continue;
-
-      mutt_debug (2, "smtp_authenticate: Trying method %s\n", method);
-
-      r = smtp_auth_sasl (conn, method);
-
-      if (r == SMTP_AUTH_FAIL && delim)
-      {
-        mutt_error (_("%s authentication failed, trying next method"), method);
-        mutt_sleep (1);
-      }
-      else if (r != SMTP_AUTH_UNAVAIL)
-        break;
-    }
-
-    FREE (&methods);
-  }
-  else
-    r = smtp_auth_sasl (conn, AuthMechs);
-
-  if (r != SMTP_AUTH_SUCCESS)
-    mutt_account_unsetpass (&conn->account);
-
-  if (r == SMTP_AUTH_FAIL)
-  {
-    mutt_error (_("SASL authentication failed"));
-    mutt_sleep (1);
-  }
-  else if (r == SMTP_AUTH_UNAVAIL)
-  {
-    mutt_error (_("No authenticators available"));
-    mutt_sleep (1);
-  }
-
-  return r == SMTP_AUTH_SUCCESS ? 0 : -1;
-}
-
 static int smtp_auth_sasl (CONNECTION* conn, const char* mechlist)
 {
   sasl_conn_t* saslconn;
@@ -662,6 +447,60 @@ fail:
   FREE (&buf);
   return SMTP_AUTH_FAIL;
 }
+
+static int smtp_auth (CONNECTION* conn)
+{
+  int r = SMTP_AUTH_UNAVAIL;
+
+  if (SmtpAuthenticators && *SmtpAuthenticators)
+  {
+    char* methods = safe_strdup (SmtpAuthenticators);
+    char* method;
+    char* delim;
+
+    for (method = methods; method; method = delim)
+    {
+      delim = strchr (method, ':');
+      if (delim)
+	*delim++ = '\0';
+      if (! method[0])
+	continue;
+
+      mutt_debug (2, "smtp_authenticate: Trying method %s\n", method);
+
+      r = smtp_auth_sasl (conn, method);
+
+      if (r == SMTP_AUTH_FAIL && delim)
+      {
+        mutt_error (_("%s authentication failed, trying next method"), method);
+        mutt_sleep (1);
+      }
+      else if (r != SMTP_AUTH_UNAVAIL)
+        break;
+    }
+
+    FREE (&methods);
+  }
+  else
+    r = smtp_auth_sasl (conn, AuthMechs);
+
+  if (r != SMTP_AUTH_SUCCESS)
+    mutt_account_unsetpass (&conn->account);
+
+  if (r == SMTP_AUTH_FAIL)
+  {
+    mutt_error (_("SASL authentication failed"));
+    mutt_sleep (1);
+  }
+  else if (r == SMTP_AUTH_UNAVAIL)
+  {
+    mutt_error (_("No authenticators available"));
+    mutt_sleep (1);
+  }
+
+  return r == SMTP_AUTH_SUCCESS ? 0 : -1;
+}
+
 #else /* USE_SASL */
 
 static int smtp_auth_plain(CONNECTION* conn)
@@ -720,3 +559,155 @@ error:
   return -1;
 }
 #endif /* USE_SASL */
+static int smtp_open (CONNECTION* conn)
+{
+  int rc;
+
+  if (mutt_socket_open (conn))
+    return -1;
+
+  /* get greeting string */
+  if ((rc = smtp_get_resp (conn)))
+    return rc;
+
+  if ((rc = smtp_helo (conn)))
+    return rc;
+
+#ifdef USE_SSL
+  if (conn->ssf)
+    rc = MUTT_NO;
+  else if (option (OPTSSLFORCETLS))
+    rc = MUTT_YES;
+  else if (mutt_bit_isset (Capabilities, STARTTLS) &&
+           (rc = query_quadoption (OPT_SSLSTARTTLS,
+                                   _("Secure connection with TLS?"))) == MUTT_ABORT)
+    return rc;
+
+  if (rc == MUTT_YES)
+  {
+    if (mutt_socket_write (conn, "STARTTLS\r\n") < 0)
+      return smtp_err_write;
+    if ((rc = smtp_get_resp (conn)))
+      return rc;
+
+    if (mutt_ssl_starttls (conn))
+    {
+      mutt_error (_("Could not negotiate TLS connection"));
+      mutt_sleep (1);
+      return -1;
+    }
+
+    /* re-EHLO to get authentication mechanisms */
+    if ((rc = smtp_helo (conn)))
+      return rc;
+  }
+#endif
+
+  if (conn->account.flags & MUTT_ACCT_USER)
+  {
+    if (!mutt_bit_isset (Capabilities, AUTH))
+    {
+      mutt_error (_("SMTP server does not support authentication"));
+      mutt_sleep (1);
+      return -1;
+    }
+
+#ifdef USE_SASL
+    return smtp_auth (conn);
+#else
+    return smtp_auth_plain (conn);
+#endif /* USE_SASL */
+  }
+
+  return 0;
+}
+
+int
+mutt_smtp_send (const ADDRESS* from, const ADDRESS* to, const ADDRESS* cc,
+                const ADDRESS* bcc, const char *msgfile, int eightbit)
+{
+  CONNECTION *conn;
+  ACCOUNT account;
+  const char* envfrom;
+  char buf[1024];
+  int ret = -1;
+
+  /* it might be better to synthesize an envelope from from user and host
+   * but this condition is most likely arrived at accidentally */
+  if (EnvFrom)
+    envfrom = EnvFrom->mailbox;
+  else if (from)
+    envfrom = from->mailbox;
+  else
+  {
+    mutt_error (_("No from address given"));
+    return -1;
+  }
+
+  if (smtp_fill_account (&account) < 0)
+    return ret;
+
+  if (!(conn = mutt_conn_find (NULL, &account)))
+    return -1;
+
+  Esmtp = eightbit;
+
+  do
+  {
+    /* send our greeting */
+    if (( ret = smtp_open (conn)))
+      break;
+    FREE (&AuthMechs);
+
+    /* send the sender's address */
+    ret = snprintf (buf, sizeof (buf), "MAIL FROM:<%s>", envfrom);
+    if (eightbit && mutt_bit_isset (Capabilities, EIGHTBITMIME))
+    {
+      safe_strncat (buf, sizeof (buf), " BODY=8BITMIME", 15);
+      ret += 14;
+    }
+    if (DsnReturn && mutt_bit_isset (Capabilities, DSN))
+      ret += snprintf (buf + ret, sizeof (buf) - ret, " RET=%s", DsnReturn);
+    if (mutt_bit_isset (Capabilities, SMTPUTF8) &&
+	(address_uses_unicode(envfrom) ||
+	 addresses_use_unicode(to) ||
+	 addresses_use_unicode(cc) ||
+	 addresses_use_unicode(bcc)))
+      ret += snprintf (buf + ret, sizeof (buf) - ret, " SMTPUTF8");
+    safe_strncat (buf, sizeof (buf), "\r\n", 3);
+    if (mutt_socket_write (conn, buf) == -1)
+    {
+      ret = smtp_err_write;
+      break;
+    }
+    if ((ret = smtp_get_resp (conn)))
+      break;
+
+    /* send the recipient list */
+    if ((ret = smtp_rcpt_to (conn, to)) || (ret = smtp_rcpt_to (conn, cc))
+        || (ret = smtp_rcpt_to (conn, bcc)))
+      break;
+
+    /* send the message data */
+    if ((ret = smtp_data (conn, msgfile)))
+      break;
+
+    mutt_socket_write (conn, "QUIT\r\n");
+
+    ret = 0;
+  }
+  while (0);
+
+  if (conn)
+    mutt_socket_close (conn);
+
+  if (ret == smtp_err_read)
+    mutt_error (_("SMTP session failed: read error"));
+  else if (ret == smtp_err_write)
+    mutt_error (_("SMTP session failed: write error"));
+  else if (ret == smtp_err_code)
+    mutt_error (_("Invalid server response"));
+
+  return ret;
+}
+

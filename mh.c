@@ -64,10 +64,6 @@
 
 #define		INS_SORT_THRESHOLD		6
 
-static int maildir_check_mailbox (CONTEXT * ctx, int *index_hint);
-static int mh_check_mailbox (CONTEXT * ctx, int *index_hint);
-static int mh_valid_message (const char *s);
-
 struct maildir
 {
   HEADER *h;
@@ -256,6 +252,21 @@ static int mh_already_notified(BUFFY *b, int msgno)
       (stat(path, &sb) == 0))
     return (sb.st_mtime <= b->last_visited);
   return -1;
+}
+
+/* Ignore the garbage files.  A valid MH message consists of only
+ * digits.  Deleted message get moved to a filename with a comma before
+ * it.
+ */
+
+static int mh_valid_message (const char *s)
+{
+  for (; *s; s++)
+  {
+    if (!isdigit ((unsigned char) *s))
+      return 0;
+  }
+  return 1;
 }
 
 /* Checks new mail for a mh mailbox.
@@ -789,21 +800,6 @@ HEADER *maildir_parse_message (int magic, const char *fname,
     return h;
   }
   return NULL;
-}
-
-/* Ignore the garbage files.  A valid MH message consists of only
- * digits.  Deleted message get moved to a filename with a comma before
- * it.
- */
-
-static int mh_valid_message (const char *s)
-{
-  for (; *s; s++)
-  {
-    if (!isdigit ((unsigned char) *s))
-      return 0;
-  }
-  return 1;
 }
 
 static int maildir_parse_dir (CONTEXT * ctx, struct maildir ***last,
@@ -1984,82 +1980,6 @@ int mh_sync_mailbox_message (CONTEXT * ctx, int msgno)
     return 0;
 }
 
-static int mh_sync_mailbox (CONTEXT * ctx, int *index_hint)
-{
-  int i, j;
-#ifdef USE_HCACHE
-  header_cache_t *hc = NULL;
-#endif /* USE_HCACHE */
-  char msgbuf[STRING];
-  progress_t progress;
-
-  if (ctx->magic == MUTT_MH)
-    i = mh_check_mailbox (ctx, index_hint);
-  else
-    i = maildir_check_mailbox (ctx, index_hint);
-
-  if (i != 0)
-    return i;
-
-#ifdef USE_HCACHE
-  if (ctx->magic == MUTT_MAILDIR || ctx->magic == MUTT_MH)
-    hc = mutt_hcache_open(HeaderCache, ctx->path, NULL);
-#endif /* USE_HCACHE */
-
-  if (!ctx->quiet)
-  {
-    snprintf (msgbuf, sizeof (msgbuf), _("Writing %s..."), ctx->path);
-    mutt_progress_init (&progress, msgbuf, MUTT_PROGRESS_MSG, WriteInc, ctx->msgcount);
-  }
-
-  for (i = 0; i < ctx->msgcount; i++)
-  {
-    if (!ctx->quiet)
-      mutt_progress_update (&progress, i, -1);
-
-#ifdef USE_HCACHE
-    if (mh_sync_mailbox_message (ctx, i, hc) == -1)
-      goto err;
-#else
-    if (mh_sync_mailbox_message (ctx, i) == -1)
-      goto err;
-#endif
-  }
-
-#ifdef USE_HCACHE
-  if (ctx->magic == MUTT_MAILDIR || ctx->magic == MUTT_MH)
-    mutt_hcache_close (hc);
-#endif /* USE_HCACHE */
-
-  if (ctx->magic == MUTT_MH)
-    mh_update_sequences (ctx);
-
-  /* XXX race condition? */
-
-  maildir_update_mtime (ctx);
-
-  /* adjust indices */
-
-  if (ctx->deleted)
-  {
-    for (i = 0, j = 0; i < ctx->msgcount; i++)
-    {
-      if (!ctx->hdrs[i]->deleted
-	  || (ctx->magic == MUTT_MAILDIR && option (OPTMAILDIRTRASH)))
-	ctx->hdrs[i]->index = j++;
-    }
-  }
-
-  return 0;
-
-err:
-#ifdef USE_HCACHE
-  if (ctx->magic == MUTT_MAILDIR || ctx->magic == MUTT_MH)
-    mutt_hcache_close (hc);
-#endif /* USE_HCACHE */
-  return -1;
-}
-
 static char *maildir_canon_filename (char *dest, const char *src, size_t l)
 {
   char *t, *u;
@@ -2101,43 +2021,6 @@ static void maildir_update_tables (CONTEXT *ctx, int *index_hint)
   mx_update_tables (ctx, 0);
   mutt_clear_threads (ctx);
 }
-
-void maildir_update_flags (CONTEXT *ctx, HEADER *o, HEADER *n)
-{
-  /* save the global state here so we can reset it at the
-   * end of list block if required.
-   */
-  int context_changed = ctx->changed;
-
-  /* user didn't modify this message.  alter the flags to match the
-   * current state on disk.  This may not actually do
-   * anything. mutt_set_flag() will just ignore the call if the status
-   * bits are already properly set, but it is still faster not to pass
-   * through it */
-  if (o->flagged != n->flagged)
-    mutt_set_flag (ctx, o, MUTT_FLAG, n->flagged);
-  if (o->replied != n->replied)
-    mutt_set_flag (ctx, o, MUTT_REPLIED, n->replied);
-  if (o->read != n->read)
-    mutt_set_flag (ctx, o, MUTT_READ, n->read);
-  if (o->old != n->old)
-    mutt_set_flag (ctx, o, MUTT_OLD, n->old);
-
-  /* mutt_set_flag() will set this, but we don't need to
-   * sync the changes we made because we just updated the
-   * context to match the current on-disk state of the
-   * message.
-   */
-  o->changed = 0;
-
-  /* if the mailbox was not modified before we made these
-   * changes, unset the changed flag since nothing needs to
-   * be synchronized.
-   */
-  if (!context_changed)
-    ctx->changed = 0;
-}
-
 
 /* This function handles arrival of new mail and reopening of
  * maildir folders.  The basic idea here is we check to see if either
@@ -2394,6 +2277,119 @@ static int mh_check_mailbox (CONTEXT * ctx, int *index_hint)
 
   return occult ? MUTT_REOPENED : (have_new ? MUTT_NEW_MAIL : 0);
 }
+
+static int mh_sync_mailbox (CONTEXT * ctx, int *index_hint)
+{
+  int i, j;
+#ifdef USE_HCACHE
+  header_cache_t *hc = NULL;
+#endif /* USE_HCACHE */
+  char msgbuf[STRING];
+  progress_t progress;
+
+  if (ctx->magic == MUTT_MH)
+    i = mh_check_mailbox (ctx, index_hint);
+  else
+    i = maildir_check_mailbox (ctx, index_hint);
+
+  if (i != 0)
+    return i;
+
+#ifdef USE_HCACHE
+  if (ctx->magic == MUTT_MAILDIR || ctx->magic == MUTT_MH)
+    hc = mutt_hcache_open(HeaderCache, ctx->path, NULL);
+#endif /* USE_HCACHE */
+
+  if (!ctx->quiet)
+  {
+    snprintf (msgbuf, sizeof (msgbuf), _("Writing %s..."), ctx->path);
+    mutt_progress_init (&progress, msgbuf, MUTT_PROGRESS_MSG, WriteInc, ctx->msgcount);
+  }
+
+  for (i = 0; i < ctx->msgcount; i++)
+  {
+    if (!ctx->quiet)
+      mutt_progress_update (&progress, i, -1);
+
+#ifdef USE_HCACHE
+    if (mh_sync_mailbox_message (ctx, i, hc) == -1)
+      goto err;
+#else
+    if (mh_sync_mailbox_message (ctx, i) == -1)
+      goto err;
+#endif
+  }
+
+#ifdef USE_HCACHE
+  if (ctx->magic == MUTT_MAILDIR || ctx->magic == MUTT_MH)
+    mutt_hcache_close (hc);
+#endif /* USE_HCACHE */
+
+  if (ctx->magic == MUTT_MH)
+    mh_update_sequences (ctx);
+
+  /* XXX race condition? */
+
+  maildir_update_mtime (ctx);
+
+  /* adjust indices */
+
+  if (ctx->deleted)
+  {
+    for (i = 0, j = 0; i < ctx->msgcount; i++)
+    {
+      if (!ctx->hdrs[i]->deleted
+	  || (ctx->magic == MUTT_MAILDIR && option (OPTMAILDIRTRASH)))
+	ctx->hdrs[i]->index = j++;
+    }
+  }
+
+  return 0;
+
+err:
+#ifdef USE_HCACHE
+  if (ctx->magic == MUTT_MAILDIR || ctx->magic == MUTT_MH)
+    mutt_hcache_close (hc);
+#endif /* USE_HCACHE */
+  return -1;
+}
+
+void maildir_update_flags (CONTEXT *ctx, HEADER *o, HEADER *n)
+{
+  /* save the global state here so we can reset it at the
+   * end of list block if required.
+   */
+  int context_changed = ctx->changed;
+
+  /* user didn't modify this message.  alter the flags to match the
+   * current state on disk.  This may not actually do
+   * anything. mutt_set_flag() will just ignore the call if the status
+   * bits are already properly set, but it is still faster not to pass
+   * through it */
+  if (o->flagged != n->flagged)
+    mutt_set_flag (ctx, o, MUTT_FLAG, n->flagged);
+  if (o->replied != n->replied)
+    mutt_set_flag (ctx, o, MUTT_REPLIED, n->replied);
+  if (o->read != n->read)
+    mutt_set_flag (ctx, o, MUTT_READ, n->read);
+  if (o->old != n->old)
+    mutt_set_flag (ctx, o, MUTT_OLD, n->old);
+
+  /* mutt_set_flag() will set this, but we don't need to
+   * sync the changes we made because we just updated the
+   * context to match the current on-disk state of the
+   * message.
+   */
+  o->changed = 0;
+
+  /* if the mailbox was not modified before we made these
+   * changes, unset the changed flag since nothing needs to
+   * be synchronized.
+   */
+  if (!context_changed)
+    ctx->changed = 0;
+}
+
 
 
 

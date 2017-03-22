@@ -81,50 +81,50 @@ typedef struct menu_t
    */
   int (*color) (int i);
 
-  /* the following are used only by mutt_menuLoop() */
+  /* the following are used only by mutt_menu_loop() */
   int top;		/* entry that is the top of the current page */
   int oldcurrent;	/* for driver use only. */
   int searchDir;	/* direction of search */
   int tagged;		/* number of tagged entries */
 } MUTTMENU;
 
-void mutt_menu_init (void);
-void menu_redraw_full (MUTTMENU *);
+void mutt_menu_init(void);
+void menu_redraw_full(MUTTMENU *menu);
 #ifdef USE_SIDEBAR
-void menu_redraw_sidebar (MUTTMENU *);
+void menu_redraw_sidebar(MUTTMENU *menu);
 #endif
-void menu_redraw_index (MUTTMENU *);
-void menu_redraw_status (MUTTMENU *);
-void menu_redraw_motion (MUTTMENU *);
-void menu_redraw_current (MUTTMENU *);
-int  menu_redraw (MUTTMENU *);
-void menu_first_entry (MUTTMENU *);
-void menu_last_entry (MUTTMENU *);
-void menu_top_page (MUTTMENU *);
-void menu_bottom_page (MUTTMENU *);
-void menu_middle_page (MUTTMENU *);
-void menu_next_page (MUTTMENU *);
-void menu_prev_page (MUTTMENU *);
-void menu_next_line (MUTTMENU *);
-void menu_prev_line (MUTTMENU *);
-void menu_half_up (MUTTMENU *);
-void menu_half_down (MUTTMENU *);
-void menu_current_top (MUTTMENU *);
-void menu_current_middle (MUTTMENU *);
-void menu_current_bottom (MUTTMENU *);
-void menu_check_recenter (MUTTMENU *);
-void menu_status_line (char *, size_t, MUTTMENU *, const char *);
-short mutt_ts_capability (void);
-void mutt_ts_status (char *);
-void mutt_ts_icon (char *);
+void menu_redraw_index(MUTTMENU *menu);
+void menu_redraw_status(MUTTMENU *menu);
+void menu_redraw_motion(MUTTMENU *menu);
+void menu_redraw_current(MUTTMENU *menu);
+int menu_redraw(MUTTMENU *menu);
+void menu_first_entry(MUTTMENU *menu);
+void menu_last_entry(MUTTMENU *menu);
+void menu_top_page(MUTTMENU *menu);
+void menu_bottom_page(MUTTMENU *menu);
+void menu_middle_page(MUTTMENU *menu);
+void menu_next_page(MUTTMENU *menu);
+void menu_prev_page(MUTTMENU *menu);
+void menu_next_line(MUTTMENU *menu);
+void menu_prev_line(MUTTMENU *menu);
+void menu_half_up(MUTTMENU *menu);
+void menu_half_down(MUTTMENU *menu);
+void menu_current_top(MUTTMENU *menu);
+void menu_current_middle(MUTTMENU *menu);
+void menu_current_bottom(MUTTMENU *menu);
+void menu_check_recenter(MUTTMENU *menu);
+void menu_status_line(char *buf, size_t buflen, MUTTMENU *menu, const char *p);
+short mutt_ts_capability(void);
+void mutt_ts_status(char *str);
+void mutt_ts_icon(char *str);
 
-MUTTMENU *mutt_new_menu (int);
-void mutt_menuDestroy (MUTTMENU **);
-int mutt_menuLoop (MUTTMENU *);
+MUTTMENU *mutt_new_menu(int menu);
+void mutt_menu_destroy(MUTTMENU **p);
+int mutt_menu_loop(MUTTMENU *menu);
 
 /* used in both the index and pager index to make an entry. */
-void index_make_entry (char *, size_t, struct menu_t *, int);
-int index_color (int);
+void index_make_entry(char *s, size_t l, MUTTMENU *menu, int num);
+int index_color(int index_no);
 
 int mutt_limit_current_thread (HEADER *h);
 

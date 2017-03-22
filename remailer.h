@@ -54,9 +54,9 @@ struct mixchain
 
 typedef struct mixchain MIXCHAIN;
 
-int mix_send_message (LIST *, const char *);
-int mix_check_message (HEADER *msg);
-void mix_make_chain (LIST **, int *);
+int mix_send_message(LIST *chain, const char *tempfile);
+int mix_check_message(HEADER *msg);
+void mix_make_chain(LIST **chainp, int *redraw);
 
 #endif /* MIXMASTER */
 

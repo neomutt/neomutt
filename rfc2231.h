@@ -19,6 +19,6 @@
  *     Boston, MA  02110-1301, USA.
  */
 
-void rfc2231_decode_parameters (PARAMETER **);
-int rfc2231_encode_string (char **);
+void rfc2231_decode_parameters(PARAMETER **headp);
+int rfc2231_encode_string(char **pd);
 

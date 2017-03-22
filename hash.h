@@ -51,22 +51,22 @@ HASH;
 HASH *hash_create (int nelem, int flags);
 HASH *int_hash_create (int nelem, int flags);
 
-int hash_insert (HASH * table, const char *key, void *data);
-int int_hash_insert (HASH *table, unsigned int key, void *data);
-HASH *hash_resize (HASH * table, int nelem, int lower);
+int hash_insert(HASH *table, const char *strkey, void *data);
+int int_hash_insert(HASH *table, unsigned int intkey, void *data);
+HASH *hash_resize(HASH *ptr, int nelem, int lower);
 
-void *hash_find (const HASH *table, const char *key);
-struct hash_elem *hash_find_elem (const HASH *table, const char *strkey);
-void *int_hash_find (const HASH *table, unsigned int key);
+void *hash_find(const HASH *table, const char *strkey);
+struct hash_elem *hash_find_elem(const HASH *table, const char *strkey);
+void *int_hash_find(const HASH *table, unsigned int intkey);
 
-struct hash_elem *hash_find_bucket (const HASH *table, const char *key);
+struct hash_elem *hash_find_bucket(const HASH *table, const char *strkey);
 
-void hash_delete (HASH * table, const char *key, const void *data,
-                  void (*destroy) (void *));
-void int_hash_delete (HASH * table, unsigned int key, const void *data,
-                  void (*destroy) (void *));
+void hash_delete(HASH *table, const char *strkey, const void *data,
+                 void (*destroy)(void *));
+void int_hash_delete(HASH *table, unsigned int intkey, const void *data,
+                     void (*destroy)(void *));
 
-void hash_destroy (HASH ** hash, void (*destroy) (void *));
+void hash_destroy (HASH **ptr, void (*destroy) (void *));
 
 struct hash_walk_state {
   int index;

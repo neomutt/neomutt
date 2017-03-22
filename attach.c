@@ -690,7 +690,7 @@ bail:
 }
 
 static FILE *
-mutt_save_attachment_open (char *path, int flags)
+save_attachment_open (char *path, int flags)
 {
   if (flags == MUTT_SAVE_APPEND)
     return fopen (path, "a");
@@ -757,7 +757,7 @@ int mutt_save_attachment (FILE *fp, BODY *m, char *path, int flags, HEADER *hdr)
       STATE s;
 
       memset (&s, 0, sizeof (s));
-      if ((s.fpout = mutt_save_attachment_open (path, flags)) == NULL)
+      if ((s.fpout = save_attachment_open (path, flags)) == NULL)
       {
 	mutt_perror ("fopen");
 	mutt_sleep (2);
@@ -786,7 +786,7 @@ int mutt_save_attachment (FILE *fp, BODY *m, char *path, int flags, HEADER *hdr)
       return (-1);
     }
 
-    if ((nfp = mutt_save_attachment_open (path, flags)) == NULL)
+    if ((nfp = save_attachment_open (path, flags)) == NULL)
     {
       mutt_perror ("fopen");
       safe_fclose (&ofp);

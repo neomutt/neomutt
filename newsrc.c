@@ -45,8 +45,6 @@
 #include <dirent.h>
 #include <errno.h>
 
-void nntp_group_unread_stat (NNTP_DATA *nntp_data);
-
 /* Find NNTP_DATA for given newsgroup or add it */
 static NNTP_DATA *nntp_data_find (NNTP_SERVER *nserv, const char *group)
 {
@@ -116,6 +114,31 @@ void nntp_newsrc_close (NNTP_SERVER *nserv)
   mutt_debug (1, "Unlocking %s\n", nserv->newsrc_file);
   mx_unlock_file (nserv->newsrc_file, fileno (nserv->newsrc_fp), 0);
   safe_fclose (&nserv->newsrc_fp);
+}
+
+/* calculate number of unread articles using .newsrc data */
+void nntp_group_unread_stat (NNTP_DATA *nntp_data)
+{
+  unsigned int i;
+  anum_t first, last;
+
+  nntp_data->unread = 0;
+  if (nntp_data->lastMessage == 0 ||
+      nntp_data->firstMessage > nntp_data->lastMessage)
+    return;
+
+  nntp_data->unread = nntp_data->lastMessage - nntp_data->firstMessage + 1;
+  for (i = 0; i < nntp_data->newsrc_len; i++)
+  {
+    first = nntp_data->newsrc_ent[i].first;
+    if (first < nntp_data->firstMessage)
+      first = nntp_data->firstMessage;
+    last = nntp_data->newsrc_ent[i].last;
+    if (last > nntp_data->lastMessage)
+      last = nntp_data->lastMessage;
+    if (first <= last)
+      nntp_data->unread -= last - first + 1;
+  }
 }
 
 /* Parse .newsrc file:
@@ -1093,31 +1116,6 @@ void nntp_article_status (CONTEXT *ctx, HEADER *hdr, char *group, anum_t anum)
   /* article isn't read but cached, it's old */
   if (option (OPTMARKOLD))
     hdr->old = 1;
-}
-
-/* calculate number of unread articles using .newsrc data */
-void nntp_group_unread_stat (NNTP_DATA *nntp_data)
-{
-  unsigned int i;
-  anum_t first, last;
-
-  nntp_data->unread = 0;
-  if (nntp_data->lastMessage == 0 ||
-      nntp_data->firstMessage > nntp_data->lastMessage)
-    return;
-
-  nntp_data->unread = nntp_data->lastMessage - nntp_data->firstMessage + 1;
-  for (i = 0; i < nntp_data->newsrc_len; i++)
-  {
-    first = nntp_data->newsrc_ent[i].first;
-    if (first < nntp_data->firstMessage)
-      first = nntp_data->firstMessage;
-    last = nntp_data->newsrc_ent[i].last;
-    if (last > nntp_data->lastMessage)
-      last = nntp_data->lastMessage;
-    if (first <= last)
-      nntp_data->unread -= last - first + 1;
-  }
 }
 
 /* Subscribe newsgroup */

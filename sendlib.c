@@ -67,8 +67,6 @@ extern char RFC822Specials[];
 
 const char MimeSpecials[] = "@.,;:<>[]\\\"()?/= \t";
 
-static void transform_to_7bit (BODY *a, FILE *fpin);
-
 static void encode_quoted (FGETCONV * fc, FILE *fout, int istext)
 {
   int c, linelen = 0;
@@ -1034,79 +1032,6 @@ int mutt_lookup_mime_type (BODY *att, const char *path)
   return (type);
 }
 
-void mutt_message_to_7bit (BODY *a, FILE *fp)
-{
-  char temp[_POSIX_PATH_MAX];
-  char *line = NULL;
-  FILE *fpin = NULL;
-  FILE *fpout = NULL;
-  struct stat sb;
-
-  if (!a->filename && fp)
-    fpin = fp;
-  else if (!a->filename || !(fpin = fopen (a->filename, "r")))
-  {
-    mutt_error (_("Could not open %s"), a->filename ? a->filename : "(null)");
-    return;
-  }
-  else
-  {
-    a->offset = 0;
-    if (stat (a->filename, &sb) == -1)
-    {
-      mutt_perror ("stat");
-      safe_fclose (&fpin);
-    }
-    a->length = sb.st_size;
-  }
-
-  mutt_mktemp (temp, sizeof (temp));
-  if (!(fpout = safe_fopen (temp, "w+")))
-  {
-    mutt_perror ("fopen");
-    goto cleanup;
-  }
-
-  fseeko (fpin, a->offset, 0);
-  a->parts = mutt_parse_messageRFC822 (fpin, a);
-
-  transform_to_7bit (a->parts, fpin);
-
-  mutt_copy_hdr (fpin, fpout, a->offset, a->offset + a->length,
-		 CH_MIME | CH_NONEWLINE | CH_XMIT, NULL);
-
-  fputs ("MIME-Version: 1.0\n", fpout);
-  mutt_write_mime_header (a->parts, fpout);
-  fputc ('\n', fpout);
-  mutt_write_mime_body (a->parts, fpout);
-
- cleanup:
-  FREE (&line);
-
-  if (fpin && fpin != fp)
-    safe_fclose (&fpin);
-  if (fpout)
-    safe_fclose (&fpout);
-  else
-    return;
-
-  a->encoding = ENC7BIT;
-  FREE (&a->d_filename);
-  a->d_filename = a->filename;
-  if (a->filename && a->unlink)
-    unlink (a->filename);
-  a->filename = safe_strdup (temp);
-  a->unlink = 1;
-  if(stat (a->filename, &sb) == -1)
-  {
-    mutt_perror ("stat");
-    return;
-  }
-  a->length = sb.st_size;
-  mutt_free_body (&a->parts);
-  a->hdr->content = NULL;
-}
-
 static void transform_to_7bit (BODY *a, FILE *fpin)
 {
   char buff[_POSIX_PATH_MAX];
@@ -1161,8 +1086,81 @@ static void transform_to_7bit (BODY *a, FILE *fpin)
   }
 }
 
+void mutt_message_to_7bit (BODY *a, FILE *fp)
+{
+  char temp[_POSIX_PATH_MAX];
+  char *line = NULL;
+  FILE *fpin = NULL;
+  FILE *fpout = NULL;
+  struct stat sb;
+
+  if (!a->filename && fp)
+    fpin = fp;
+  else if (!a->filename || !(fpin = fopen (a->filename, "r")))
+  {
+    mutt_error (_("Could not open %s"), a->filename ? a->filename : "(null)");
+    return;
+  }
+  else
+  {
+    a->offset = 0;
+    if (stat (a->filename, &sb) == -1)
+    {
+      mutt_perror ("stat");
+      safe_fclose (&fpin);
+    }
+    a->length = sb.st_size;
+  }
+
+  mutt_mktemp (temp, sizeof (temp));
+  if (!(fpout = safe_fopen (temp, "w+")))
+  {
+    mutt_perror ("fopen");
+    goto cleanup;
+  }
+
+  fseeko (fpin, a->offset, 0);
+  a->parts = mutt_parse_message_rfc822 (fpin, a);
+
+  transform_to_7bit (a->parts, fpin);
+
+  mutt_copy_hdr (fpin, fpout, a->offset, a->offset + a->length,
+		 CH_MIME | CH_NONEWLINE | CH_XMIT, NULL);
+
+  fputs ("MIME-Version: 1.0\n", fpout);
+  mutt_write_mime_header (a->parts, fpout);
+  fputc ('\n', fpout);
+  mutt_write_mime_body (a->parts, fpout);
+
+ cleanup:
+  FREE (&line);
+
+  if (fpin && fpin != fp)
+    safe_fclose (&fpin);
+  if (fpout)
+    safe_fclose (&fpout);
+  else
+    return;
+
+  a->encoding = ENC7BIT;
+  FREE (&a->d_filename);
+  a->d_filename = a->filename;
+  if (a->filename && a->unlink)
+    unlink (a->filename);
+  a->filename = safe_strdup (temp);
+  a->unlink = 1;
+  if(stat (a->filename, &sb) == -1)
+  {
+    mutt_perror ("stat");
+    return;
+  }
+  a->length = sb.st_size;
+  mutt_free_body (&a->parts);
+  a->hdr->content = NULL;
+}
+
 /* determine which Content-Transfer-Encoding to use */
-static void mutt_set_encoding (BODY *b, CONTENT *info)
+static void set_encoding (BODY *b, CONTENT *info)
 {
   char send_charset[SHORT_STRING];
 
@@ -1243,7 +1241,7 @@ void mutt_update_encoding (BODY *a)
   if ((info = mutt_get_content_info (a->filename, a)) == NULL)
     return;
 
-  mutt_set_encoding (a, info);
+  set_encoding (a, info);
   mutt_stamp_attachment(a);
 
   FREE (&a->content);
@@ -1400,14 +1398,14 @@ static int get_toplevel_encoding (BODY *a)
 }
 
 /* check for duplicate boundary. return 1 if duplicate */
-static int mutt_check_boundary (const char* boundary, BODY *b)
+static int check_boundary (const char* boundary, BODY *b)
 {
   char* p;
 
-  if (b->parts && mutt_check_boundary (boundary, b->parts))
+  if (b->parts && check_boundary (boundary, b->parts))
     return 1;
 
-  if (b->next && mutt_check_boundary (boundary, b->next))
+  if (b->next && check_boundary (boundary, b->next))
     return 1;
 
   if ((p = mutt_get_parameter ("boundary", b->parameter))
@@ -1427,7 +1425,7 @@ BODY *mutt_make_multipart (BODY *b)
   do
   {
     mutt_generate_boundary (&new->parameter);
-    if (mutt_check_boundary (mutt_get_parameter ("boundary", new->parameter),
+    if (check_boundary (mutt_get_parameter ("boundary", new->parameter),
 			     b))
       mutt_delete_parameter ("boundary", &new->parameter);
   }
@@ -2153,7 +2151,7 @@ const char *mutt_fqdn(short may_hide_host)
   return p;
 }
 
-static char *mutt_gen_msgid (void)
+static char *gen_msgid (void)
 {
   char buf[SHORT_STRING];
   time_t now;
@@ -2558,7 +2556,7 @@ void mutt_prepare_envelope (ENVELOPE *env, int final)
     mutt_set_followup_to (env);
 
     if (!env->message_id)
-      env->message_id = mutt_gen_msgid ();
+      env->message_id = gen_msgid ();
   }
 
   /* Take care of 8-bit => 7-bit conversion. */
@@ -2632,7 +2630,7 @@ static int _mutt_bounce_message (FILE *fp, HEADER *h, ADDRESS *to, const char *r
     fseeko (fp, h->offset, 0);
     fprintf (f, "Resent-From: %s", resent_from);
     fprintf (f, "\nResent-%s", mutt_make_date (date, sizeof(date)));
-    msgid_str = mutt_gen_msgid();
+    msgid_str = gen_msgid();
     fprintf (f, "Resent-Message-ID: %s\n", msgid_str);
     fputs ("Resent-To: ", f);
     mutt_write_address_list (to, f, 11, 0);

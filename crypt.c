@@ -1115,7 +1115,7 @@ const char* crypt_get_fingerprint_or_id (char *p, const char **pphint,
 
 
 /*
- * Used by pgp_findKeys and find_keys to check if a crypt-hook
+ * Used by pgp_find_keys and find_keys to check if a crypt-hook
  * value is a key id.
  */
 

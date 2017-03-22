@@ -411,7 +411,7 @@ void mutt_message_hook (CONTEXT *ctx, HEADER *hdr, int type)
 }
 
 static int
-mutt_addr_hook (char *path, size_t pathlen, int type, CONTEXT *ctx, HEADER *hdr)
+addr_hook (char *path, size_t pathlen, int type, CONTEXT *ctx, HEADER *hdr)
 {
   HOOK *hook;
   pattern_cache_t cache;
@@ -437,7 +437,7 @@ mutt_addr_hook (char *path, size_t pathlen, int type, CONTEXT *ctx, HEADER *hdr)
 void mutt_default_save (char *path, size_t pathlen, HEADER *hdr)
 {
   *path = 0;
-  if (mutt_addr_hook (path, pathlen, MUTT_SAVEHOOK, Context, hdr) != 0)
+  if (addr_hook (path, pathlen, MUTT_SAVEHOOK, Context, hdr) != 0)
   {
     char tmp[_POSIX_PATH_MAX];
     ADDRESS *adr;
@@ -468,7 +468,7 @@ void mutt_select_fcc (char *path, size_t pathlen, HEADER *hdr)
   char buf[_POSIX_PATH_MAX];
   ENVELOPE *env = hdr->env;
 
-  if (mutt_addr_hook (path, pathlen, MUTT_FCCHOOK, NULL, hdr) != 0)
+  if (addr_hook (path, pathlen, MUTT_FCCHOOK, NULL, hdr) != 0)
   {
     if ((option (OPTSAVENAME) || option (OPTFORCENAME)) &&
 	(env->to || env->cc || env->bcc))

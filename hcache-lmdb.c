@@ -113,21 +113,21 @@ hcache_lmdb_open(const char *path)
   rc = mdb_env_open(ctx->env, path, MDB_NOSUBDIR, 0644);
   if (rc != MDB_SUCCESS)
   {
-    mutt_debug (2, "hcache_open_lmdb: mdb_env_open: %s", mdb_strerror(rc));
+    mutt_debug (2, "hcache_open_lmdb: mdb_env_open: %s\n", mdb_strerror(rc));
     goto fail_env;
   }
 
   rc = mdb_get_r_txn(ctx);
   if (rc != MDB_SUCCESS)
   {
-      mutt_debug (2, "hcache_open_lmdb: mdb_txn_begin: %s", mdb_strerror(rc));
+      mutt_debug (2, "hcache_open_lmdb: mdb_txn_begin: %s\n", mdb_strerror(rc));
       goto fail_env;
   }
 
   rc = mdb_dbi_open(ctx->txn, NULL, MDB_CREATE, &ctx->db);
   if (rc != MDB_SUCCESS)
   {
-    mutt_debug (2, "hcache_open_lmdb: mdb_dbi_open: %s", mdb_strerror(rc));
+    mutt_debug (2, "hcache_open_lmdb: mdb_dbi_open: %s\n", mdb_strerror(rc));
     goto fail_dbi;
   }
 

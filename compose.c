@@ -454,8 +454,7 @@ static unsigned long cum_attachs_size (MUTTMENU *menu)
 }
 
 /* prototype for use below */
-static void compose_status_line (char *buf, size_t buflen, size_t col, int cols, MUTTMENU *menu,
-      const char *p);
+static void compose_status_line (char *buf, size_t buflen, size_t col, int cols, MUTTMENU *menu, const char *p);
 
 /*
  * compose_format_str()
@@ -527,7 +526,6 @@ static void compose_status_line (char *buf, size_t buflen, size_t col, int cols,
         (unsigned long) menu, 0);
 }
 
-
 /* return values:
  *
  * 1	message should be postponed
@@ -584,7 +582,7 @@ int mutt_compose_menu (HEADER *msg,   /* structure for new message */
 #ifdef USE_NNTP
     unset_option (OPTNEWS);	/* for any case */
 #endif
-    switch (op = mutt_menuLoop (menu))
+    switch (op = mutt_menu_loop (menu))
     {
       case OP_REDRAW:
 	draw_envelope (msg, fcc);
@@ -1499,7 +1497,7 @@ int mutt_compose_menu (HEADER *msg,   /* structure for new message */
     }
   }
 
-  mutt_menuDestroy (&menu);
+  mutt_menu_destroy (&menu);
 
   if (idxlen)
   {

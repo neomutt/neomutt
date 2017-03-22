@@ -28,11 +28,130 @@
 #include "buffy.h"
 #include "imap_private.h"
 
-/* -- forward declarations -- */
-static int browse_add_list_result (IMAP_DATA* idata, const char* cmd,
-  struct browser_state* state, short isparent);
+/* imap_add_folder:
+ * add a folder name to the browser list, formatting it as necessary.
+ *
+ * The folder parameter should already be 'unmunged' via
+ * imap_unmunge_mbox_name().
+ */
 static void imap_add_folder (char delim, char *folder, int noselect,
-  int noinferiors, struct browser_state *state, short isparent);
+  int noinferiors, struct browser_state *state, short isparent)
+{
+  char tmp[LONG_STRING];
+  char relpath[LONG_STRING];
+  IMAP_MBOX mx;
+  BUFFY *b;
+
+  if (imap_parse_path (state->folder, &mx))
+    return;
+
+  if (state->entrylen + 1 == state->entrymax)
+  {
+    safe_realloc (&state->entry,
+      sizeof (struct folder_file) * (state->entrymax += 256));
+    memset (state->entry + state->entrylen, 0,
+      (sizeof (struct folder_file) * (state->entrymax - state->entrylen)));
+  }
+
+  /* render superiors as unix-standard ".." */
+  if (isparent)
+    strfcpy (relpath, "../", sizeof (relpath));
+  /* strip current folder from target, to render a relative path */
+  else if (!mutt_strncmp (mx.mbox, folder, mutt_strlen (mx.mbox)))
+    strfcpy (relpath, folder + mutt_strlen (mx.mbox), sizeof (relpath));
+  else
+    strfcpy (relpath, folder, sizeof (relpath));
+
+  /* apply filemask filter. This should really be done at menu setup rather
+   * than at scan, since it's so expensive to scan. But that's big changes
+   * to browser.c */
+  if (!((regexec (Mask.rx, relpath, 0, NULL, 0) == 0) ^ Mask.not))
+  {
+    FREE (&mx.mbox);
+    return;
+  }
+
+  imap_qualify_path (tmp, sizeof (tmp), &mx, folder);
+  (state->entry)[state->entrylen].name = safe_strdup (tmp);
+
+  /* mark desc with delim in browser if it can have subfolders */
+  if (!isparent && !noinferiors && strlen (relpath) < sizeof (relpath) - 1)
+  {
+    relpath[strlen (relpath) + 1] = '\0';
+    relpath[strlen (relpath)] = delim;
+  }
+
+  (state->entry)[state->entrylen].desc = safe_strdup (relpath);
+
+  (state->entry)[state->entrylen].imap = 1;
+  /* delimiter at the root is useless. */
+  if (folder[0] == '\0')
+    delim = '\0';
+  (state->entry)[state->entrylen].delim = delim;
+  (state->entry)[state->entrylen].selectable = !noselect;
+  (state->entry)[state->entrylen].inferiors = !noinferiors;
+
+  b = Incoming;
+  while (b && mutt_strcmp (tmp, b->path))
+    b = b->next;
+  if (b)
+  {
+    if (Context &&
+        !mutt_strcmp (b->realpath, Context->realpath))
+    {
+      b->msg_count = Context->msgcount;
+      b->msg_unread = Context->unread;
+    }
+    (state->entry)[state->entrylen].has_buffy = 1;
+    (state->entry)[state->entrylen].new = b->new;
+    (state->entry)[state->entrylen].msg_count = b->msg_count;
+    (state->entry)[state->entrylen].msg_unread = b->msg_unread;
+  }
+
+  (state->entrylen)++;
+
+  FREE (&mx.mbox);
+}
+
+static int browse_add_list_result (IMAP_DATA* idata, const char* cmd,
+  struct browser_state* state, short isparent)
+{
+  IMAP_LIST list;
+  IMAP_MBOX mx;
+  int rc;
+
+  if (imap_parse_path (state->folder, &mx))
+  {
+    mutt_debug (2, "browse_add_list_result: current folder %s makes no sense\n",
+                state->folder);
+    return -1;
+  }
+
+  imap_cmd_start (idata, cmd);
+  idata->cmdtype = IMAP_CT_LIST;
+  idata->cmddata = &list;
+  do
+  {
+    list.name = NULL;
+    rc = imap_cmd_step (idata);
+
+    if (rc == IMAP_CMD_CONTINUE && list.name)
+    {
+      /* Let a parent folder never be selectable for navigation */
+      if (isparent)
+        list.noselect = 1;
+      /* prune current folder from output */
+      if (isparent || mutt_strncmp (list.name, mx.mbox, strlen (list.name)))
+        imap_add_folder (list.delim, list.name, list.noselect, list.noinferiors,
+                         state, isparent);
+    }
+  }
+  while (rc == IMAP_CMD_CONTINUE);
+  idata->cmddata = NULL;
+
+  FREE (&mx.mbox);
+  return rc == IMAP_CMD_OK ? 0 : -1;
+}
 
 /* imap_browse: IMAP hook into the folder browser, fills out browser_state,
  *   given a current folder to browse */
@@ -216,7 +335,7 @@ int imap_mailbox_create (const char* folder)
 
   if (!(idata = imap_conn_find (&mx.account, MUTT_IMAP_CONN_NONEW)))
   {
-    mutt_debug (1, "imap_mailbox_create: Couldn't find open connection to %s",
+    mutt_debug (1, "imap_mailbox_create: Couldn't find open connection to %s\n",
                 mx.account.host);
     goto fail;
   }
@@ -270,7 +389,7 @@ int imap_mailbox_rename(const char* mailbox)
 
   if (!(idata = imap_conn_find (&mx.account, MUTT_IMAP_CONN_NONEW)))
   {
-    mutt_debug (1, "imap_mailbox_rename: Couldn't find open connection to %s",
+    mutt_debug (1, "imap_mailbox_rename: Couldn't find open connection to %s\n",
                 mx.account.host);
     goto fail;
   }
@@ -313,127 +432,3 @@ int imap_mailbox_rename(const char* mailbox)
   return -1;
 }
 
-static int browse_add_list_result (IMAP_DATA* idata, const char* cmd,
-  struct browser_state* state, short isparent)
-{
-  IMAP_LIST list;
-  IMAP_MBOX mx;
-  int rc;
-
-  if (imap_parse_path (state->folder, &mx))
-  {
-    mutt_debug (2, "browse_add_list_result: current folder %s makes no sense\n",
-                state->folder);
-    return -1;
-  }
-
-  imap_cmd_start (idata, cmd);
-  idata->cmdtype = IMAP_CT_LIST;
-  idata->cmddata = &list;
-  do
-  {
-    list.name = NULL;
-    rc = imap_cmd_step (idata);
-
-    if (rc == IMAP_CMD_CONTINUE && list.name)
-    {
-      /* Let a parent folder never be selectable for navigation */
-      if (isparent)
-        list.noselect = 1;
-      /* prune current folder from output */
-      if (isparent || mutt_strncmp (list.name, mx.mbox, strlen (list.name)))
-        imap_add_folder (list.delim, list.name, list.noselect, list.noinferiors,
-                         state, isparent);
-    }
-  }
-  while (rc == IMAP_CMD_CONTINUE);
-  idata->cmddata = NULL;
-
-  FREE (&mx.mbox);
-  return rc == IMAP_CMD_OK ? 0 : -1;
-}
-
-/* imap_add_folder:
- * add a folder name to the browser list, formatting it as necessary.
- *
- * The folder parameter should already be 'unmunged' via
- * imap_unmunge_mbox_name().
- */
-static void imap_add_folder (char delim, char *folder, int noselect,
-  int noinferiors, struct browser_state *state, short isparent)
-{
-  char tmp[LONG_STRING];
-  char relpath[LONG_STRING];
-  IMAP_MBOX mx;
-  BUFFY *b;
-
-  if (imap_parse_path (state->folder, &mx))
-    return;
-
-  if (state->entrylen + 1 == state->entrymax)
-  {
-    safe_realloc (&state->entry,
-      sizeof (struct folder_file) * (state->entrymax += 256));
-    memset (state->entry + state->entrylen, 0,
-      (sizeof (struct folder_file) * (state->entrymax - state->entrylen)));
-  }
-
-  /* render superiors as unix-standard ".." */
-  if (isparent)
-    strfcpy (relpath, "../", sizeof (relpath));
-  /* strip current folder from target, to render a relative path */
-  else if (!mutt_strncmp (mx.mbox, folder, mutt_strlen (mx.mbox)))
-    strfcpy (relpath, folder + mutt_strlen (mx.mbox), sizeof (relpath));
-  else
-    strfcpy (relpath, folder, sizeof (relpath));
-
-  /* apply filemask filter. This should really be done at menu setup rather
-   * than at scan, since it's so expensive to scan. But that's big changes
-   * to browser.c */
-  if (!((regexec (Mask.rx, relpath, 0, NULL, 0) == 0) ^ Mask.not))
-  {
-    FREE (&mx.mbox);
-    return;
-  }
-
-  imap_qualify_path (tmp, sizeof (tmp), &mx, folder);
-  (state->entry)[state->entrylen].name = safe_strdup (tmp);
-
-  /* mark desc with delim in browser if it can have subfolders */
-  if (!isparent && !noinferiors && strlen (relpath) < sizeof (relpath) - 1)
-  {
-    relpath[strlen (relpath) + 1] = '\0';
-    relpath[strlen (relpath)] = delim;
-  }
-
-  (state->entry)[state->entrylen].desc = safe_strdup (relpath);
-
-  (state->entry)[state->entrylen].imap = 1;
-  /* delimiter at the root is useless. */
-  if (folder[0] == '\0')
-    delim = '\0';
-  (state->entry)[state->entrylen].delim = delim;
-  (state->entry)[state->entrylen].selectable = !noselect;
-  (state->entry)[state->entrylen].inferiors = !noinferiors;
-
-  b = Incoming;
-  while (b && mutt_strcmp (tmp, b->path))
-    b = b->next;
-  if (b)
-  {
-    if (Context &&
-        !mutt_strcmp (b->realpath, Context->realpath))
-    {
-      b->msg_count = Context->msgcount;
-      b->msg_unread = Context->unread;
-    }
-    (state->entry)[state->entrylen].has_buffy = 1;
-    (state->entry)[state->entrylen].new = b->new;
-    (state->entry)[state->entrylen].msg_count = b->msg_count;
-    (state->entry)[state->entrylen].msg_unread = b->msg_unread;
-  }
-
-  (state->entrylen)++;
-
-  FREE (&mx.mbox);
-}

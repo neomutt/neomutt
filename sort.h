@@ -55,13 +55,13 @@
 #define SORT_LAST	(1<<9)
 
 typedef int sort_t (const void *, const void *);
-sort_t *mutt_get_sort_func (int);
+sort_t *mutt_get_sort_func(int method);
 
-void mutt_clear_threads (CONTEXT *);
-void mutt_sort_headers (CONTEXT *, int);
-void mutt_sort_threads (CONTEXT *, int);
-int mutt_select_sort (int);
-THREAD *mutt_sort_subthreads (THREAD *, int);
+void mutt_clear_threads(CONTEXT *ctx);
+void mutt_sort_headers(CONTEXT *ctx, int init);
+void mutt_sort_threads(CONTEXT *ctx, int init);
+int mutt_select_sort(int reverse);
+THREAD *mutt_sort_subthreads(THREAD *thread, int init);
 
 WHERE short BrowserSort INITVAL (SORT_SUBJECT);
 WHERE short Sort INITVAL (SORT_DATE);

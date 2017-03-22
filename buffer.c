@@ -255,7 +255,7 @@ int mutt_extract_token (BUFFER *dest, BUFFER *tok, int flags)
       cmd = mutt_substrdup (tok->dptr, pc);
       if ((pid = mutt_create_filter (cmd, NULL, &fp, NULL)) < 0)
       {
-	mutt_debug (1, "mutt_get_token: unable to fork command: %s", cmd);
+	mutt_debug (1, "mutt_get_token: unable to fork command: %s\n", cmd);
 	FREE (&cmd);
 	return (-1);
       }

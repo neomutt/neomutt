@@ -48,10 +48,28 @@
 /* support for multiple socket connections */
 static CONNECTION *Connections = NULL;
 
-/* forward declarations */
-static int socket_preconnect (void);
-static int socket_connect (int fd, struct sockaddr* sa);
-static CONNECTION* socket_new_conn (void);
+static int socket_preconnect (void)
+{
+  int rc;
+  int save_errno;
+
+  if (mutt_strlen (Preconnect))
+  {
+    mutt_debug (2, "Executing preconnect: %s\n", Preconnect);
+    rc = mutt_system (Preconnect);
+    mutt_debug (2, "Preconnect result: %d\n", rc);
+    if (rc)
+    {
+      save_errno = errno;
+      mutt_perror (_("Preconnect command failed."));
+      mutt_sleep (1);
+
+      return save_errno;
+    }
+  }
+
+  return 0;
+}
 
 /* Wrappers */
 int mutt_socket_open (CONNECTION* conn)
@@ -228,6 +246,17 @@ void mutt_socket_free (CONNECTION* conn)
   }
 }
 
+/* socket_new_conn: allocate and initialise a new connection. */
+static CONNECTION* socket_new_conn (void)
+{
+  CONNECTION* conn;
+
+  conn = safe_calloc (1, sizeof (CONNECTION));
+  conn->fd = -1;
+
+  return conn;
+}
+
 /* mutt_conn_find: find a connection off the list of connections whose
  *   account matches account. If start is not null, only search for
  *   connections after the given connection (allows higher level socket code
@@ -285,79 +314,6 @@ CONNECTION* mutt_conn_find (const CONNECTION* start, const ACCOUNT* account)
     conn->conn_close = raw_socket_close;
     conn->conn_poll = raw_socket_poll;
   }
-
-  return conn;
-}
-
-static int socket_preconnect (void)
-{
-  int rc;
-  int save_errno;
-
-  if (mutt_strlen (Preconnect))
-  {
-    mutt_debug (2, "Executing preconnect: %s\n", Preconnect);
-    rc = mutt_system (Preconnect);
-    mutt_debug (2, "Preconnect result: %d\n", rc);
-    if (rc)
-    {
-      save_errno = errno;
-      mutt_perror (_("Preconnect command failed."));
-      mutt_sleep (1);
-
-      return save_errno;
-    }
-  }
-
-  return 0;
-}
-
-/* socket_connect: set up to connect to a socket fd. */
-static int socket_connect (int fd, struct sockaddr* sa)
-{
-  int sa_size;
-  int save_errno;
-
-  if (sa->sa_family == AF_INET)
-    sa_size = sizeof (struct sockaddr_in);
-#ifdef HAVE_GETADDRINFO
-  else if (sa->sa_family == AF_INET6)
-    sa_size = sizeof (struct sockaddr_in6);
-#endif
-  else
-  {
-    mutt_debug (1, "Unknown address family!\n");
-    return -1;
-  }
-
-  if (ConnectTimeout > 0)
-      alarm (ConnectTimeout);
-
-  mutt_allow_interrupt (1);
-
-  save_errno = 0;
-
-  if (connect (fd, sa, sa_size) < 0)
-  {
-      save_errno = errno;
-      mutt_debug (2, "Connection failed. errno: %d...\n", errno);
-      SigInt = 0;	/* reset in case we caught SIGINTR while in connect() */
-  }
-
-  if (ConnectTimeout > 0)
-      alarm (0);
-  mutt_allow_interrupt (0);
-
-  return save_errno;
-}
-
-/* socket_new_conn: allocate and initialise a new connection. */
-static CONNECTION* socket_new_conn (void)
-{
-  CONNECTION* conn;
-
-  conn = safe_calloc (1, sizeof (CONNECTION));
-  conn->fd = -1;
 
   return conn;
 }
@@ -429,6 +385,45 @@ int raw_socket_poll (CONNECTION* conn)
   FD_SET (conn->fd, &rfds);
 
   return select (conn->fd + 1, &rfds, NULL, NULL, &tv);
+}
+
+/* socket_connect: set up to connect to a socket fd. */
+static int socket_connect (int fd, struct sockaddr* sa)
+{
+  int sa_size;
+  int save_errno;
+
+  if (sa->sa_family == AF_INET)
+    sa_size = sizeof (struct sockaddr_in);
+#ifdef HAVE_GETADDRINFO
+  else if (sa->sa_family == AF_INET6)
+    sa_size = sizeof (struct sockaddr_in6);
+#endif
+  else
+  {
+    mutt_debug (1, "Unknown address family!\n");
+    return -1;
+  }
+
+  if (ConnectTimeout > 0)
+      alarm (ConnectTimeout);
+
+  mutt_allow_interrupt (1);
+
+  save_errno = 0;
+
+  if (connect (fd, sa, sa_size) < 0)
+  {
+      save_errno = errno;
+      mutt_debug (2, "Connection failed. errno: %d...\n", errno);
+      SigInt = 0;	/* reset in case we caught SIGINTR while in connect() */
+  }
+
+  if (ConnectTimeout > 0)
+      alarm (0);
+  mutt_allow_interrupt (0);
+
+  return save_errno;
 }
 
 int raw_socket_open (CONNECTION* conn)

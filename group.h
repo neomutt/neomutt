@@ -23,15 +23,15 @@
 #define MUTT_GROUP   0
 #define MUTT_UNGROUP 1
 
-void mutt_group_context_add (group_context_t **ctx, group_t *group);
-void mutt_group_context_destroy (group_context_t **ctx);
-void mutt_group_context_add_adrlist (group_context_t *ctx, ADDRESS *a);
-int mutt_group_context_add_rx (group_context_t *ctx, const char *s, int flags, BUFFER *err);
+void mutt_group_context_add(group_context_t **ctx, group_t *group);
+void mutt_group_context_destroy(group_context_t **ctx);
+void mutt_group_context_add_adrlist(group_context_t *ctx, ADDRESS *a);
+int mutt_group_context_add_rx(group_context_t *ctx, const char *s, int flags, BUFFER *err);
 
-int mutt_group_match (group_t *g, const char *s);
+int mutt_group_match(group_t *g, const char *s);
 
-int mutt_group_context_clear (group_context_t **ctx);
-int mutt_group_context_remove_rx (group_context_t *ctx, const char *s);
-int mutt_group_context_remove_adrlist (group_context_t *ctx, ADDRESS *);
+int mutt_group_context_clear(group_context_t **ctx);
+int mutt_group_context_remove_rx(group_context_t *ctx, const char *s);
+int mutt_group_context_remove_adrlist(group_context_t *ctx, ADDRESS *a);
 
 #endif /* _MUTT_GROUP_H_ */

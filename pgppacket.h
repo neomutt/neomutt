@@ -46,7 +46,7 @@ enum packet_tags
   PT_COMMENT			/* Comment Packet */
 };
 
-unsigned char *pgp_read_packet (FILE * fp, size_t * len);
-void pgp_release_packet (void);
+unsigned char *pgp_read_packet(FILE *fp, size_t *len);
+void pgp_release_packet(void);
 
 #endif

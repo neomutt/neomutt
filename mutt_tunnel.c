@@ -38,25 +38,6 @@ typedef struct
   int writefd;
 } TUNNEL_DATA;
 
-/* forward declarations */
-static int tunnel_socket_open (CONNECTION*);
-static int tunnel_socket_close (CONNECTION*);
-static int tunnel_socket_read (CONNECTION* conn, char* buf, size_t len);
-static int tunnel_socket_write (CONNECTION* conn, const char* buf, size_t len);
-static int tunnel_socket_poll (CONNECTION* conn);
-
-/* -- public functions -- */
-int mutt_tunnel_socket_setup (CONNECTION *conn)
-{
-  conn->conn_open = tunnel_socket_open;
-  conn->conn_close = tunnel_socket_close;
-  conn->conn_read = tunnel_socket_read;
-  conn->conn_write = tunnel_socket_write;
-  conn->conn_poll = tunnel_socket_poll;
-
-  return 0;
-}
-
 static int tunnel_socket_open (CONNECTION *conn)
 {
   TUNNEL_DATA* tunnel;
@@ -199,3 +180,16 @@ static int tunnel_socket_poll (CONNECTION* conn)
 
   return rc;
 }
+
+/* -- public functions -- */
+int mutt_tunnel_socket_setup (CONNECTION *conn)
+{
+  conn->conn_open = tunnel_socket_open;
+  conn->conn_close = tunnel_socket_close;
+  conn->conn_read = tunnel_socket_read;
+  conn->conn_write = tunnel_socket_write;
+  conn->conn_poll = tunnel_socket_poll;
+
+  return 0;
+}
+

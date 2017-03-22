@@ -24,8 +24,6 @@
 #include <string.h>
 #include <ctype.h>
 
-static HASH *mutt_make_subj_hash (CONTEXT *ctx);
-
 #define VISIBLE(hdr, ctx) (hdr->virtual >= 0 || (hdr->collapsed && (!ctx->pattern || hdr->limited)))
 
 /* determine whether a is a descendant of b */
@@ -486,6 +484,24 @@ static void insert_message (THREAD **new, THREAD *newparent, THREAD *cur)
   *new = cur;
 }
 
+static HASH *make_subj_hash (CONTEXT *ctx)
+{
+  int i;
+  HEADER *hdr;
+  HASH *hash;
+
+  hash = hash_create (ctx->msgcount * 2, MUTT_HASH_ALLOW_DUPS);
+
+  for (i = 0; i < ctx->msgcount; i++)
+  {
+    hdr = ctx->hdrs[i];
+    if (hdr->env->real_subj)
+      hash_insert (hash, hdr->env->real_subj, hdr);
+  }
+
+  return hash;
+}
+
 /* thread by subject things that didn't get threaded by message-id */
 static void pseudo_threads (CONTEXT *ctx)
 {
@@ -493,7 +509,7 @@ static void pseudo_threads (CONTEXT *ctx)
   THREAD *tmp, *cur, *parent, *curchild, *nextchild;
 
   if (!ctx->subj_hash)
-    ctx->subj_hash = mutt_make_subj_hash (ctx);
+    ctx->subj_hash = make_subj_hash (ctx);
 
   while (tree)
   {
@@ -1341,24 +1357,6 @@ HASH *mutt_make_id_hash (CONTEXT *ctx)
     hdr = ctx->hdrs[i];
     if (hdr->env->message_id)
       hash_insert (hash, hdr->env->message_id, hdr);
-  }
-
-  return hash;
-}
-
-static HASH *mutt_make_subj_hash (CONTEXT *ctx)
-{
-  int i;
-  HEADER *hdr;
-  HASH *hash;
-
-  hash = hash_create (ctx->msgcount * 2, MUTT_HASH_ALLOW_DUPS);
-
-  for (i = 0; i < ctx->msgcount; i++)
-  {
-    hdr = ctx->hdrs[i];
-    if (hdr->env->real_subj)
-      hash_insert (hash, hdr->env->real_subj, hdr);
   }
 
   return hash;

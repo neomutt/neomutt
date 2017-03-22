@@ -290,7 +290,7 @@ static int user_in_addr (ADDRESS *a)
  * 4: user is originator
  * 5: sent to a subscribed mailinglist
  */
-static int mutt_user_is_recipient (HEADER *h)
+static int user_is_recipient (HEADER *h)
 {
   if (!h || !h->env)
     return 0;
@@ -1022,7 +1022,7 @@ hdr_format_str (char *dest,
     case 'T':
       snprintf (fmt, sizeof (fmt), "%%%ss", prefix);
       snprintf (dest, destlen, fmt,
-		(Tochars && ((i = mutt_user_is_recipient (hdr))) < Tochars->len) ? Tochars->chars[i] : " ");
+		(Tochars && ((i = user_is_recipient (hdr))) < Tochars->len) ? Tochars->chars[i] : " ");
       break;
 
     case 'u':
@@ -1117,7 +1117,7 @@ hdr_format_str (char *dest,
         else if (hdr->flagged)
           third = get_nth_wchar (Flagchars, FlagCharImportant);
         else
-          third = get_nth_wchar (Tochars, mutt_user_is_recipient (hdr));
+          third = get_nth_wchar (Tochars, user_is_recipient (hdr));
 
         snprintf (buf2, sizeof (buf2), "%s%s%s", first, second, third);
       }

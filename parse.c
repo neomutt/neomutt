@@ -93,7 +93,7 @@ char *mutt_read_rfc822_line (FILE *f, char *line, size_t *linelen)
   /* not reached */
 }
 
-static LIST *mutt_parse_references (char *s, int in_reply_to)
+static LIST *parse_references (char *s, int in_reply_to)
 {
   LIST *t, *lst = NULL;
   char *m;
@@ -506,7 +506,7 @@ void mutt_parse_part (FILE *fp, BODY *b)
       {
 	fseeko (fp, b->offset, SEEK_SET);
 	if (mutt_is_message_type(b->type, b->subtype))
-	  b->parts = mutt_parse_messageRFC822 (fp, b);
+	  b->parts = mutt_parse_message_rfc822 (fp, b);
 	else if (ascii_strcasecmp (b->subtype, "external-body") == 0)
 	  b->parts = mutt_read_mime_header (fp, 0);
 	else
@@ -537,7 +537,7 @@ void mutt_parse_part (FILE *fp, BODY *b)
  * NOTE: this assumes that `parent->length' has been set!
  */
 
-BODY *mutt_parse_messageRFC822 (FILE *fp, BODY *parent)
+BODY *mutt_parse_message_rfc822 (FILE *fp, BODY *parent)
 {
   BODY *msg;
 
@@ -1094,7 +1094,7 @@ int mutt_parse_rfc822_line (ENVELOPE *e, HEADER *hdr, char *line, char *p, short
     if (!ascii_strcasecmp (line+1, "n-reply-to"))
     {
       mutt_free_list (&e->in_reply_to);
-      e->in_reply_to = mutt_parse_references (p, 1);
+      e->in_reply_to = parse_references (p, 1);
       matched = 1;
     }
     break;
@@ -1195,7 +1195,7 @@ int mutt_parse_rfc822_line (ENVELOPE *e, HEADER *hdr, char *line, char *p, short
     if (!ascii_strcasecmp (line + 1, "eferences"))
     {
       mutt_free_list (&e->references);
-      e->references = mutt_parse_references (p, 0);
+      e->references = parse_references (p, 0);
       matched = 1;
     }
     else if (!ascii_strcasecmp (line + 1, "eply-to"))

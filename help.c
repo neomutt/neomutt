@@ -29,7 +29,7 @@
 #include <ctype.h>
 #include <string.h>
 
-static const struct binding_t *help_lookupFunction (int op, int menu)
+static const struct binding_t *help_lookup_function (int op, int menu)
 {
   int i;
   const struct binding_t *map;
@@ -303,7 +303,7 @@ static void dump_menu (FILE *f, int menu)
       }
       else
       {
-	b = help_lookupFunction (map->op, menu);
+	b = help_lookup_function (map->op, menu);
 	format_line (f, 0, buf, b ? b->name : "UNKNOWN",
 	      b ? _(HelpStrings[b->op]) : _("ERROR: please report this bug"));
       }

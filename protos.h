@@ -27,8 +27,8 @@
 #define MoreArgs(p) (*p->dptr && *p->dptr != ';' && *p->dptr != '#')
 
 #define mutt_make_string(A,B,C,D,E) _mutt_make_string(A,B,C,D,E,0)
-void _mutt_make_string (char *, size_t, const char *, CONTEXT *,
-	HEADER *, format_flag);
+void _mutt_make_string(char *dest, size_t destlen, const char *s, CONTEXT *ctx,
+                       HEADER *hdr, format_flag flags);
 
 struct hdr_format_info
 {
@@ -42,78 +42,86 @@ typedef enum {
   kXDGConfigDirs,  /* $XDG_CONFIG_DIRS */
 } XDGType;
 
-void mutt_make_string_info (char *, size_t, int, const char *, struct hdr_format_info *, format_flag);
+void mutt_make_string_info (char *dst, size_t dstlen, int cols, const char *s, struct hdr_format_info *hfi, format_flag flags);
 
-void mutt_free_opts (void);
+void mutt_free_opts(void);
 
 #define mutt_system(x) _mutt_system(x,0)
-int _mutt_system (const char *, int);
+int _mutt_system(const char *cmd, int flags);
 
 #define mutt_next_thread(x) _mutt_aside_thread(x,1,0)
 #define mutt_previous_thread(x) _mutt_aside_thread(x,0,0)
 #define mutt_next_subthread(x) _mutt_aside_thread(x,1,1)
 #define mutt_previous_subthread(x) _mutt_aside_thread(x,0,1)
-int _mutt_aside_thread (HEADER *, short, short);
+int _mutt_aside_thread (HEADER *hdr, short dir, short subthreads);
 
 #define mutt_collapse_thread(x,y) _mutt_traverse_thread (x,y,MUTT_THREAD_COLLAPSE)
 #define mutt_uncollapse_thread(x,y) _mutt_traverse_thread (x,y,MUTT_THREAD_UNCOLLAPSE)
 #define mutt_get_hidden(x,y)_mutt_traverse_thread (x,y,MUTT_THREAD_GET_HIDDEN)
 #define mutt_thread_contains_unread(x,y) _mutt_traverse_thread (x,y,MUTT_THREAD_UNREAD)
 #define mutt_thread_next_unread(x,y) _mutt_traverse_thread(x,y,MUTT_THREAD_NEXT_UNREAD)
-int _mutt_traverse_thread (CONTEXT *ctx, HEADER *hdr, int flag);
+int _mutt_traverse_thread(CONTEXT *ctx, HEADER *cur, int flag);
 
 typedef const char * format_t (char *, size_t, size_t, int, char, const char *, const char *, const char *, const char *, unsigned long, format_flag);
 
-void mutt_FormatString (char *, size_t, size_t, int, const char *, format_t *, unsigned long, format_flag);
-void mutt_parse_content_type (char *, BODY *);
-void mutt_generate_boundary (PARAMETER **);
-void mutt_delete_parameter (const char *attribute, PARAMETER **p);
-void mutt_set_parameter (const char *, const char *, PARAMETER **);
+void mutt_FormatString (char *dest,		/* output buffer */
+			size_t destlen,		/* output buffer len */
+			size_t col,		/* starting column (nonzero when called recursively) */
+                        int cols,               /* maximum columns */
+			const char *src,	/* template string */
+			format_t *callback,	/* callback for processing */
+			unsigned long data,	/* callback data */
+			format_flag flags);	/* callback flags */
+
+void mutt_parse_content_type(char *s, BODY *ct);
+void mutt_generate_boundary(PARAMETER **parm);
+void mutt_delete_parameter(const char *attribute, PARAMETER **p);
+void mutt_set_parameter(const char *attribute, const char *value, PARAMETER **p);
 
 #ifdef USE_NOTMUCH
-int mutt_parse_virtual_mailboxes (BUFFER *path, BUFFER *s, unsigned long data, BUFFER *err);
-int mutt_parse_unvirtual_mailboxes (BUFFER *path, BUFFER *s, unsigned long data, BUFFER *err);
+int mutt_parse_virtual_mailboxes(BUFFER *path, BUFFER *s, unsigned long data, BUFFER *err);
+int mutt_parse_unvirtual_mailboxes(BUFFER *path, BUFFER *s, unsigned long data, BUFFER *err);
 #endif
 
-FILE *mutt_open_read (const char *, pid_t *);
+FILE *mutt_open_read(const char *path, pid_t *thepid);
 
-void set_quadoption (int, int);
-int query_quadoption (int, const char *);
-int quadoption (int);
+void set_quadoption(int opt, int flag);
+int query_quadoption(int opt, const char *prompt);
+int quadoption(int opt);
 
-char* mutt_extract_message_id (const char *, const char **);
+char *mutt_extract_message_id(const char *s, const char **saveptr);
 
-ADDRESS *mutt_default_from (void);
-ADDRESS *mutt_get_address (ENVELOPE *, char **);
-ADDRESS *mutt_lookup_alias (const char *s);
-ADDRESS *mutt_remove_duplicates (ADDRESS *);
-ADDRESS *mutt_remove_xrefs (ADDRESS *, ADDRESS *);
-ADDRESS *mutt_expand_aliases (ADDRESS *);
-ADDRESS *mutt_parse_adrlist (ADDRESS *, const char *);
+ADDRESS *mutt_default_from(void);
+ADDRESS *mutt_get_address(ENVELOPE *env, char **pfxp);
+ADDRESS *mutt_lookup_alias(const char *s);
+ADDRESS *mutt_remove_duplicates(ADDRESS *addr);
+ADDRESS *mutt_remove_xrefs(ADDRESS *a, ADDRESS *b);
+ADDRESS *mutt_expand_aliases(ADDRESS *a);
+ADDRESS *mutt_parse_adrlist(ADDRESS *p, const char *s);
 
-BODY *mutt_make_file_attach (const char *);
-BODY *mutt_make_message_attach (CONTEXT *, HEADER *, int);
-BODY *mutt_remove_multipart (BODY *);
-BODY *mutt_make_multipart (BODY *);
-BODY *mutt_new_body (void);
-BODY *mutt_parse_multipart (FILE *, const char *, LOFF_T, int);
-BODY *mutt_parse_messageRFC822 (FILE *, BODY *);
-BODY *mutt_read_mime_header (FILE *, int);
+BODY *mutt_make_file_attach(const char *path);
+BODY *mutt_make_message_attach(CONTEXT *ctx, HEADER *hdr, int attach_msg);
+BODY *mutt_remove_multipart(BODY *b);
+BODY *mutt_make_multipart(BODY *b);
+BODY *mutt_new_body(void);
+BODY *mutt_parse_multipart(FILE *fp, const char *boundary, LOFF_T end_off, int digest);
+BODY *mutt_parse_message_rfc822(FILE *fp, BODY *parent);
+BODY *mutt_read_mime_header(FILE *fp, int digest);
 
-CONTENT *mutt_get_content_info (const char *fname, BODY *b);
+CONTENT *mutt_get_content_info(const char *fname, BODY *b);
 
-HASH *mutt_make_id_hash (CONTEXT *);
+HASH *mutt_make_id_hash(CONTEXT *ctx);
 
-char *mutt_read_rfc822_line (FILE *, char *, size_t *);
-ENVELOPE *mutt_read_rfc822_header (FILE *, HEADER *, short, short);
+char *mutt_read_rfc822_line(FILE *f, char *line, size_t *linelen);
+ENVELOPE *mutt_read_rfc822_header(FILE *f, HEADER *hdr, short user_hdrs, short weed);
 
-void mutt_set_mtime (const char *from, const char *to);
-time_t mutt_decrease_mtime (const char *, struct stat *);
-time_t mutt_local_tz (time_t);
-time_t mutt_mktime (struct tm *, int);
-time_t mutt_parse_date (const char *, HEADER *);
-int is_from (const char *, char *, size_t, time_t *);
-void mutt_touch_atime (int);
+void mutt_set_mtime(const char *from, const char *to);
+time_t mutt_decrease_mtime(const char *f, struct stat *st);
+time_t mutt_local_tz(time_t t);
+time_t mutt_mktime(struct tm *t, int local);
+time_t mutt_parse_date(const char *s, HEADER *h);
+int is_from(const char *s, char *path, size_t pathlen, time_t *tp);
+void mutt_touch_atime(int f);
 
 const char *mutt_attach_fmt (
 	char *dest,
@@ -129,263 +137,270 @@ const char *mutt_attach_fmt (
 	format_flag flags);
 
 
-char *mutt_charset_hook (const char *);
-char *mutt_iconv_hook (const char *);
-char *mutt_expand_path (char *, size_t);
-char *_mutt_expand_path (char *, size_t, int);
-char *mutt_find_hook (int, const char *);
-char *mutt_gecos_name (char *, size_t, struct passwd *);
-char *mutt_get_body_charset (char *, size_t, BODY *);
-const char *mutt_get_name (ADDRESS *);
-char *mutt_get_parameter (const char *, PARAMETER *);
-LIST *mutt_crypt_hook (ADDRESS *);
-char *mutt_make_date (char *, size_t);
-void mutt_timeout_hook (void);
-void mutt_startup_shutdown_hook (int);
+char *mutt_charset_hook(const char *chs);
+char *mutt_iconv_hook(const char *chs);
+char *mutt_expand_path(char *s, size_t slen);
+char *_mutt_expand_path(char *s, size_t slen, int rx);
+char *mutt_find_hook(int type, const char *pat);
+char *mutt_gecos_name(char *dest, size_t destlen, struct passwd *pw);
+char *mutt_get_body_charset(char *d, size_t dlen, BODY *b);
+const char *mutt_get_name(ADDRESS *a);
+char *mutt_get_parameter(const char *s, PARAMETER *p);
+LIST *mutt_crypt_hook(ADDRESS *adr);
+char *mutt_make_date(char *s, size_t len);
+void mutt_timeout_hook(void);
+void mutt_startup_shutdown_hook(int type);
 int mutt_set_xdg_path(const XDGType type, char *buf, size_t bufsize);
 
-const char *mutt_make_version (void);
+const char *mutt_make_version(void);
 
-const char *mutt_fqdn(short);
+const char *mutt_fqdn(short may_hide_host);
 
-group_t *mutt_pattern_group (const char *);
+group_t *mutt_pattern_group(const char *k);
 
-REGEXP *mutt_compile_regexp (const char *, int);
+REGEXP *mutt_compile_regexp(const char *s, int flags);
 
-void mutt_account_hook (const char* url);
-void mutt_add_to_reference_headers (ENVELOPE *env, ENVELOPE *curenv, LIST ***pp, LIST ***qq);
-void mutt_adv_mktemp (char *, size_t);
-void mutt_alias_menu (char *, size_t, ALIAS *);
-void mutt_allow_interrupt (int);
-void mutt_attach_init (BODY *);
-void mutt_block_signals (void);
-void mutt_block_signals_system (void);
-int mutt_body_handler (BODY *, STATE *);
-int  mutt_bounce_message (FILE *fp, HEADER *, ADDRESS *);
-void mutt_break_thread (HEADER *);
-void mutt_buffy (char *, size_t);
-int  mutt_buffy_list (void);
-void mutt_canonical_charset (char *, size_t, const char *);
-int mutt_count_body_parts (CONTEXT *, HEADER *);
-void mutt_check_rescore (CONTEXT *);
-void mutt_clear_error (void);
-void mutt_clear_pager_position (void);
-void mutt_create_alias (ENVELOPE *, ADDRESS *);
-void mutt_decode_attachment (BODY *, STATE *);
-void mutt_decode_base64 (STATE *s, long len, int istext, iconv_t cd);
-void mutt_default_save (char *, size_t, HEADER *);
-void mutt_display_address (ENVELOPE *);
-void mutt_draw_statusline (int cols, const char *buf, int buflen);
-void mutt_edit_content_type (HEADER *, BODY *, FILE *);
-void mutt_edit_file (const char *, const char *);
-void mutt_edit_headers (const char *, const char *, HEADER *, char *, size_t);
+void mutt_account_hook(const char *url);
+void mutt_add_to_reference_headers(ENVELOPE *env, ENVELOPE *curenv, LIST ***pp,
+                                   LIST ***qq);
+void mutt_adv_mktemp(char *s, size_t l);
+void mutt_alias_menu(char *buf, size_t buflen, ALIAS *aliases);
+void mutt_allow_interrupt(int disposition);
+void mutt_attach_init(BODY *b);
+void mutt_block_signals(void);
+void mutt_block_signals_system(void);
+int mutt_body_handler(BODY *b, STATE *s);
+int mutt_bounce_message(FILE *fp, HEADER *h, ADDRESS *to);
+void mutt_break_thread(HEADER *hdr);
+void mutt_buffy(char *s, size_t slen);
+int mutt_buffy_list(void);
+void mutt_canonical_charset(char *dest, size_t dlen, const char *name);
+int mutt_count_body_parts(CONTEXT *ctx, HEADER *hdr);
+void mutt_check_rescore(CONTEXT *ctx);
+void mutt_clear_error(void);
+void mutt_clear_pager_position(void);
+void mutt_create_alias(ENVELOPE *cur, ADDRESS *iadr);
+void mutt_decode_attachment(BODY *b, STATE *s);
+void mutt_decode_base64(STATE *s, long len, int istext, iconv_t cd);
+void mutt_default_save(char *path, size_t pathlen, HEADER *hdr);
+void mutt_display_address(ENVELOPE *env);
+void mutt_draw_statusline(int cols, const char *buf, int buflen);
+void mutt_edit_content_type(HEADER *h, BODY *b, FILE *fp);
+void mutt_edit_file(const char *editor, const char *data);
+void mutt_edit_headers(const char *editor, const char *body, HEADER *msg,
+                       char *fcc, size_t fcclen);
 char **mutt_envlist (void);
 void mutt_envlist_set (const char *name, const char *value);
-int mutt_filter_unprintable (char **);
-int mutt_label_message (HEADER *);
-void mutt_make_label_hash (CONTEXT *);
-void mutt_label_hash_add (CONTEXT *ctx, HEADER *hdr);
-void mutt_label_hash_remove (CONTEXT *ctx, HEADER *hdr);
-int mutt_label_complete (char *, size_t, int);
-void mutt_curses_error (const char *, ...);
-void mutt_curses_message (const char *, ...);
-void mutt_encode_descriptions (BODY *, short);
-void mutt_encode_path (char *, size_t, const char *);
-void mutt_enter_command (void);
-void mutt_expand_aliases_env (ENVELOPE *);
-void mutt_expand_file_fmt (char *, size_t, const char *, const char *);
-void mutt_expand_fmt (char *, size_t, const char *, const char *);
-void mutt_fix_reply_recipients (ENVELOPE *env);
-void mutt_folder_hook (char *);
-void mutt_format_string (char *, size_t, int, int, int, char, const char *, size_t, int);
-void mutt_format_s (char *, size_t, const char *, const char *);
-void mutt_format_s_tree (char *, size_t, const char *, const char *);
-void mutt_forward_intro (FILE *fp, HEADER *cur);
-void mutt_forward_trailer (FILE *fp);
-void mutt_free_alias (ALIAS **);
-void mutt_free_body (BODY **);
-void mutt_free_color (int fg, int bg);
-void mutt_free_enter_state (ENTER_STATE **);
-void mutt_free_envelope (ENVELOPE **);
-void mutt_free_header (HEADER **);
-void mutt_free_parameter (PARAMETER **);
-void mutt_free_regexp (REGEXP **);
-void mutt_generate_header (char *, size_t, HEADER *, int);
-void mutt_help (int);
-void mutt_draw_tree (CONTEXT *);
-void mutt_check_lookup_list (BODY *, char *, int);
-void mutt_make_attribution (CONTEXT *ctx, HEADER *cur, FILE *out);
-void mutt_make_forward_subject (ENVELOPE *env, CONTEXT *ctx, HEADER *cur);
-void mutt_make_help (char *, size_t, const char *, int, int);
-void mutt_make_misc_reply_headers (ENVELOPE *env, CONTEXT *ctx, HEADER *cur, ENVELOPE *curenv);
-void mutt_make_post_indent (CONTEXT *ctx, HEADER *cur, FILE *out);
-void mutt_merge_envelopes(ENVELOPE* base, ENVELOPE** extra);
-void mutt_message_to_7bit (BODY *, FILE *);
+int mutt_filter_unprintable(char **s);
+int mutt_label_message(HEADER *hdr);
+void mutt_make_label_hash(CONTEXT *ctx);
+void mutt_label_hash_add(CONTEXT *ctx, HEADER *hdr);
+void mutt_label_hash_remove(CONTEXT *ctx, HEADER *hdr);
+int mutt_label_complete(char *buffer, size_t len, int numtabs);
+void mutt_curses_error(const char *fmt, ...);
+void mutt_curses_message(const char *fmt, ...);
+void mutt_encode_descriptions(BODY *b, short recurse);
+void mutt_encode_path(char *dest, size_t dlen, const char *src);
+void mutt_enter_command(void);
+void mutt_expand_aliases_env(ENVELOPE *env);
+void mutt_expand_file_fmt(char *dest, size_t destlen, const char *fmt, const char *src);
+void mutt_expand_fmt(char *dest, size_t destlen, const char *fmt, const char *src);
+void mutt_fix_reply_recipients(ENVELOPE *env);
+void mutt_folder_hook(char *path);
+void mutt_format_string(char *dest, size_t destlen, int min_width, int max_width, int justify,
+                        char m_pad_char, const char *s, size_t n, int arboreal);
+void mutt_format_s(char *dest, size_t destlen, const char *prefix, const char *s);
+void mutt_format_s_tree(char *dest, size_t destlen, const char *prefix, const char *s);
+void mutt_forward_intro(FILE *fp, HEADER *cur);
+void mutt_forward_trailer(FILE *fp);
+void mutt_free_alias(ALIAS **p);
+void mutt_free_body(BODY **p);
+void mutt_free_color(int fg, int bg);
+void mutt_free_enter_state(ENTER_STATE **esp);
+void mutt_free_envelope(ENVELOPE **p);
+void mutt_free_header(HEADER **h);
+void mutt_free_parameter(PARAMETER **p);
+void mutt_free_regexp(REGEXP **pp);
+void mutt_help(int menu);
+void mutt_draw_tree(CONTEXT *ctx);
+void mutt_check_lookup_list(BODY *b, char *type, int len);
+void mutt_make_attribution(CONTEXT *ctx, HEADER *cur, FILE *out);
+void mutt_make_forward_subject(ENVELOPE *env, CONTEXT *ctx, HEADER *cur);
+void mutt_make_help(char *d, size_t dlen, const char *txt, int menu, int op);
+void mutt_make_misc_reply_headers(ENVELOPE *env, CONTEXT *ctx, HEADER *cur, ENVELOPE *curenv);
+void mutt_make_post_indent(CONTEXT *ctx, HEADER *cur, FILE *out);
+void mutt_merge_envelopes(ENVELOPE *base, ENVELOPE **extra);
+void mutt_message_to_7bit(BODY *a, FILE *fp);
 #define mutt_mktemp(a,b) mutt_mktemp_pfx_sfx (a, b, "mutt", NULL)
 #define mutt_mktemp_pfx_sfx(a,b,c,d)  _mutt_mktemp (a, b, c, d, __FILE__, __LINE__)
-void _mutt_mktemp (char *, size_t, const char *, const char *, const char *, int);
-void mutt_normalize_time (struct tm *);
-void mutt_paddstr (int, const char *);
-void mutt_parse_mime_message (CONTEXT *ctx, HEADER *);
-void mutt_parse_part (FILE *, BODY *);
-void mutt_perror (const char *);
-void mutt_prepare_envelope (ENVELOPE *, int);
-void mutt_unprepare_envelope (ENVELOPE *);
-void mutt_pretty_mailbox (char *, size_t);
-void mutt_pretty_size (char *, size_t, LOFF_T);
-void mutt_pipe_message (HEADER *);
-void mutt_print_message (HEADER *);
-void mutt_print_patchlist (void);
-void mutt_query_exit (void);
-void mutt_query_menu (char *, size_t);
-void mutt_safe_path (char *s, size_t l, ADDRESS *a);
-void mutt_save_path (char *s, size_t l, ADDRESS *a);
-void mutt_score_message (CONTEXT *, HEADER *, int);
-void mutt_select_fcc (char *, size_t, HEADER *);
+void _mutt_mktemp(char *s, size_t slen, const char *prefix, const char *suffix,
+                  const char *src, int line);
+void mutt_normalize_time(struct tm *tm);
+void mutt_paddstr(int n, const char *s);
+void mutt_parse_mime_message(CONTEXT *ctx, HEADER *cur);
+void mutt_parse_part(FILE *fp, BODY *b);
+void mutt_perror(const char *s);
+void mutt_prepare_envelope(ENVELOPE *env, int final);
+void mutt_unprepare_envelope(ENVELOPE *env);
+void mutt_pretty_mailbox(char *s, size_t buflen);
+void mutt_pretty_size(char *s, size_t len, LOFF_T n);
+void mutt_pipe_message(HEADER *h);
+void mutt_print_message(HEADER *h);
+void mutt_query_exit(void);
+void mutt_query_menu(char *buf, size_t buflen);
+void mutt_safe_path(char *s, size_t l, ADDRESS *a);
+void mutt_save_path(char *d, size_t dsize, ADDRESS *a);
+void mutt_score_message(CONTEXT *ctx, HEADER *hdr, int upd_ctx);
+void mutt_select_fcc(char *path, size_t pathlen, HEADER *hdr);
 #define mutt_select_file(A,B,C) _mutt_select_file(A,B,C,NULL,NULL)
-void _mutt_select_file (char *, size_t, int, char ***, int *);
-void mutt_message_hook (CONTEXT *, HEADER *, int);
-void _mutt_set_flag (CONTEXT *, HEADER *, int, int, int);
+void _mutt_select_file(char *f, size_t flen, int flags, char ***files, int *numfiles);
+void mutt_message_hook(CONTEXT *ctx, HEADER *hdr, int type);
+void _mutt_set_flag(CONTEXT *ctx, HEADER *h, int flag, int bf, int upd_ctx);
 #define mutt_set_flag(a,b,c,d) _mutt_set_flag(a,b,c,d,1)
-void mutt_set_followup_to (ENVELOPE *);
-void mutt_shell_escape (void);
-void mutt_show_error (void);
-void mutt_signal_init (void);
-void mutt_stamp_attachment (BODY *a);
-void mutt_tabs_to_spaces (char *);
-void mutt_tag_set_flag (int, int);
-short mutt_ts_capability (void);
-void mutt_unblock_signals (void);
-void mutt_unblock_signals_system (int);
-void mutt_update_encoding (BODY *a);
-void mutt_version (void);
-void mutt_view_attachments (HEADER *);
-void mutt_write_address_list (ADDRESS *adr, FILE *fp, int linelen, int display);
-void mutt_set_virtual (CONTEXT *);
+void mutt_set_followup_to(ENVELOPE *e);
+void mutt_shell_escape(void);
+void mutt_show_error(void);
+void mutt_signal_init(void);
+void mutt_stamp_attachment(BODY *a);
+void mutt_tag_set_flag(int flag, int bf);
+short mutt_ts_capability(void);
+void mutt_unblock_signals(void);
+void mutt_unblock_signals_system(int catch);
+void mutt_update_encoding(BODY *a);
+void mutt_version(void);
+void mutt_view_attachments(HEADER *hdr);
+void mutt_write_address_list(ADDRESS *adr, FILE *fp, int linelen, int display);
+void mutt_set_virtual(CONTEXT *ctx);
+int mutt_add_to_rx_list(RX_LIST **list, const char *s, int flags, BUFFER *err);
+int mutt_addr_is_user(ADDRESS *addr);
+int mutt_addwch(wchar_t wc);
+int mutt_alias_complete(char *s, size_t buflen);
+void mutt_alias_add_reverse(ALIAS *t);
+void mutt_alias_delete_reverse(ALIAS *t);
+int mutt_alloc_color(int fg, int bg);
+int mutt_any_key_to_continue(const char *s);
+char *mutt_apply_replace(char *dbuf, size_t dlen, char *sbuf, REPLACE_LIST *rlist);
+int mutt_buffy_check(int force);
+int mutt_buffy_notify(void);
+int mutt_builtin_editor(const char *path, HEADER *msg, HEADER *cur);
+int mutt_can_decode(BODY *a);
+int mutt_change_flag(HEADER *h, int bf);
+int mutt_check_encoding(const char *c);
 
-int mutt_add_to_rx_list (RX_LIST **list, const char *s, int flags, BUFFER *err);
-int mutt_addr_is_user (ADDRESS *);
-int mutt_addwch (wchar_t);
-int mutt_alias_complete (char *, size_t);
-void mutt_alias_add_reverse (ALIAS *t);
-void mutt_alias_delete_reverse (ALIAS *t);
-int mutt_alloc_color (int fg, int bg);
-int mutt_any_key_to_continue (const char *);
-char *mutt_apply_replace (char *, size_t, char *, REPLACE_LIST *);
-int mutt_buffy_check (int);
-int mutt_buffy_notify (void);
-int mutt_builtin_editor (const char *, HEADER *, HEADER *);
-int mutt_can_decode (BODY *);
-int mutt_change_flag (HEADER *, int);
-int mutt_check_encoding (const char *);
-int mutt_check_key (const char *);
-int mutt_check_menu (const char *);
-int mutt_check_mime_type (const char *);
-int mutt_check_month (const char *);
-int mutt_check_overwrite (const char *, const char *, char *, size_t, int *, char **);
-int mutt_check_traditional_pgp (HEADER *, int *);
-int mutt_command_complete (char *, size_t, int, int);
-int mutt_var_value_complete (char *, size_t, int);
+int mutt_check_mime_type(const char *s);
+int mutt_check_month(const char *s);
+int mutt_check_overwrite(const char *attname, const char *path, char *fname,
+                         size_t flen, int *append, char **directory);
+int mutt_check_traditional_pgp(HEADER *h, int *redraw);
+int mutt_command_complete(char *buffer, size_t len, int pos, int numtabs);
+int mutt_var_value_complete(char *buffer, size_t len, int pos);
 #ifdef USE_NOTMUCH
-int mutt_nm_query_complete (char *buffer, size_t len, int pos, int numtabs);
-int mutt_nm_tag_complete (char *buffer, size_t len, int pos, int numtabs);
+int mutt_nm_query_complete(char *buffer, size_t len, int pos, int numtabs);
+int mutt_nm_tag_complete(char *buffer, size_t len, int pos, int numtabs);
 #endif
-int mutt_complete (char *, size_t);
-int mutt_compose_attachment (BODY *a);
-int mutt_copy_body (FILE *, BODY **, BODY *);
-int mutt_decode_save_attachment (FILE *, BODY *, char *, int, int);
-int mutt_display_message (HEADER *h);
-int mutt_dump_variables (int hide_sensitive);
-int mutt_edit_attachment(BODY *);
-int mutt_edit_message (CONTEXT *, HEADER *);
-int mutt_fetch_recips (ENVELOPE *out, ENVELOPE *in, int flags);
-int mutt_chscmp (const char *s, const char *chs);
+int mutt_complete(char *s, size_t slen);
+int mutt_compose_attachment(BODY *a);
+int mutt_copy_body(FILE *fp, BODY **tgt, BODY *src);
+int mutt_decode_save_attachment(FILE *fp, BODY *m, char *path, int displaying, int flags);
+int mutt_display_message(HEADER *cur);
+int mutt_dump_variables(int hide_sensitive);
+int mutt_edit_attachment(BODY *a);
+int mutt_edit_message(CONTEXT *ctx, HEADER *hdr);
+int mutt_fetch_recips(ENVELOPE *out, ENVELOPE *in, int flags);
+int mutt_chscmp(const char *s, const char *chs);
 #define mutt_is_utf8(a) mutt_chscmp (a, "utf-8")
 #define mutt_is_us_ascii(a) mutt_chscmp (a, "us-ascii")
-int mutt_parent_message (CONTEXT *, HEADER *, int);
-int mutt_prepare_template(FILE*, CONTEXT *, HEADER *, HEADER *, short);
-int mutt_resend_message (FILE *, CONTEXT *, HEADER *);
-int mutt_compose_to_sender (HEADER *);
+int mutt_parent_message(CONTEXT *ctx, HEADER *hdr, int find_root);
+int mutt_prepare_template(FILE *fp, CONTEXT *ctx, HEADER *newhdr, HEADER *hdr, short resend);
+int mutt_resend_message(FILE *fp, CONTEXT *ctx, HEADER *cur);
+int mutt_compose_to_sender(HEADER *hdr);
 #define mutt_enter_fname(A,B,C,D,E) _mutt_enter_fname(A,B,C,D,E,0,NULL,NULL,0)
 #define mutt_enter_vfolder(A,B,C,D,E) _mutt_enter_fname(A,B,C,D,E,0,NULL,NULL,MUTT_SEL_VFOLDER)
-
-int _mutt_enter_fname (const char *, char *, size_t, int *, int, int, char ***, int *, int);
-int  mutt_enter_string (char *buf, size_t buflen, int col, int flags);
-int _mutt_enter_string (char *, size_t, int, int, int, char ***, int *, ENTER_STATE *);
+int _mutt_enter_fname(const char *prompt, char *buf, size_t blen, int *redraw, int buffy,
+                      int multiple, char ***files, int *numfiles, int flags);
+int mutt_enter_string(char *buf, size_t buflen, int col, int flags);
+int _mutt_enter_string(char *buf, size_t buflen, int col, int flags, int multiple,
+                       char ***files, int *numfiles, ENTER_STATE *state);
 #define mutt_get_field(A,B,C,D) _mutt_get_field(A,B,C,D,0,NULL,NULL)
-int _mutt_get_field (const char *, char *, size_t, int, int, char ***, int *);
-int mutt_get_hook_type (const char *);
-int mutt_get_field_unbuffered (char *, char *, size_t, int);
+int _mutt_get_field(const char *field, char *buf, size_t buflen, int complete,
+                    int multiple, char ***files, int *numfiles);
+int mutt_get_hook_type(const char *name);
+int mutt_get_field_unbuffered(char *msg, char *buf, size_t buflen, int flags);
 #define mutt_get_password(A,B,C) mutt_get_field_unbuffered(A,B,C,MUTT_PASS)
-int mutt_get_postponed (CONTEXT *, HEADER *, HEADER **, char *, size_t);
-int mutt_get_tmp_attachment (BODY *);
-int mutt_index_menu (void);
-int mutt_invoke_sendmail (ADDRESS *, ADDRESS *, ADDRESS *, ADDRESS *, const char *, int);
-int mutt_is_mail_list (ADDRESS *);
-int mutt_is_message_type(int, const char *);
-int mutt_is_list_cc (int, ADDRESS *, ADDRESS *);
-int mutt_is_list_recipient (int, ADDRESS *, ADDRESS *);
-int mutt_is_subscribed_list (ADDRESS *);
-int mutt_is_text_part (BODY *);
-int mutt_is_valid_mailbox (const char *);
-int mutt_link_threads (HEADER *, HEADER *, CONTEXT *);
-int mutt_lookup_mime_type (BODY *, const char *);
-int mutt_match_rx_list (const char *, RX_LIST *);
-int mutt_match_spam_list (const char *, REPLACE_LIST *, char *, int);
-int mutt_messages_in_thread (CONTEXT *, HEADER *, int);
-int mutt_multi_choice (char *prompt, char *letters);
-int mutt_needs_mailcap (BODY *);
-int mutt_num_postponed (int);
-int mutt_parse_bind (BUFFER *, BUFFER *, unsigned long, BUFFER *);
-int mutt_parse_exec (BUFFER *, BUFFER *, unsigned long, BUFFER *);
-int mutt_parse_color (BUFFER *, BUFFER *, unsigned long, BUFFER *);
-int mutt_parse_uncolor (BUFFER *, BUFFER *, unsigned long, BUFFER *);
-int mutt_parse_hook (BUFFER *, BUFFER *, unsigned long, BUFFER *);
-int mutt_parse_macro (BUFFER *, BUFFER *, unsigned long, BUFFER *);
-int mutt_parse_mailboxes (BUFFER *, BUFFER *, unsigned long, BUFFER *);
-int mutt_parse_mono (BUFFER *, BUFFER *, unsigned long, BUFFER *);
-int mutt_parse_unmono (BUFFER *, BUFFER *, unsigned long, BUFFER *);
-int mutt_parse_push (BUFFER *, BUFFER *, unsigned long, BUFFER *);
-int mutt_parse_rc_line (/* const */ char *, BUFFER *, BUFFER *);
-int mutt_parse_rfc822_line (ENVELOPE *e, HEADER *hdr, char *line, char *p,
-  short user_hdrs, short weed, short do_2047, LIST **lastp);
-int mutt_parse_score (BUFFER *, BUFFER *, unsigned long, BUFFER *);
-int mutt_parse_unscore (BUFFER *, BUFFER *, unsigned long, BUFFER *);
-int mutt_parse_unhook (BUFFER *, BUFFER *, unsigned long, BUFFER *);
-int mutt_pattern_func (int, char *);
-int mutt_pipe_attachment (FILE *, BODY *, const char *, char *);
-int mutt_print_attachment (FILE *, BODY *);
-int mutt_query_complete (char *, size_t);
-int mutt_query_variables (LIST *queries);
-int mutt_save_attachment (FILE *, BODY *, char *, int, HEADER *);
-int _mutt_save_message (HEADER *, CONTEXT *, int, int, int);
-int mutt_save_message (HEADER *, int, int, int, int *);
-int mutt_search_command (int, int);
-#ifdef USE_SMTP
-int mutt_smtp_send (const ADDRESS *, const ADDRESS *, const ADDRESS *,
-                    const ADDRESS *, const char *, int);
-#endif
-size_t mutt_wstr_trunc (const char *, size_t, size_t, size_t *);
-int mutt_charlen (const char *s, int *);
-int mutt_strwidth (const char *);
-int mutt_compose_menu (HEADER *, char *, size_t, HEADER *, int);
-int mutt_thread_set_flag (HEADER *, int, int, int);
-void mutt_update_num_postponed (void);
-int mutt_which_case (const char *);
-int mutt_write_fcc (const char *path, HEADER *hdr, const char *msgid, int, char *, char **);
-int mutt_write_multiple_fcc (const char *path, HEADER *hdr, const char *msgid, int, char *, char **);
-int mutt_write_mime_body (BODY *, FILE *);
-int mutt_write_mime_header (BODY *, FILE *);
-int mutt_write_one_header (FILE *fp, const char *tag, const char *value, const char *pfx, int wraplen, int flags);
-int mutt_write_rfc822_header (FILE *, ENVELOPE *, BODY *, int, int);
-void mutt_write_references (LIST *, FILE *, int);
-int mutt_yesorno (const char *, int);
-void mutt_set_header_color(CONTEXT *, HEADER *);
-void mutt_sleep (short);
-int mutt_save_confirm (const char  *, struct stat *);
 
-void mutt_browser_select_dir (char *f);
-void mutt_get_parent_path (char *output, char *path, size_t olen);
+int mutt_get_postponed(CONTEXT *ctx, HEADER *hdr, HEADER **cur, char *fcc, size_t fcclen);
+int mutt_get_tmp_attachment(BODY *a);
+int mutt_index_menu(void);
+int mutt_invoke_sendmail(ADDRESS *from, ADDRESS *to, ADDRESS *cc, ADDRESS *bcc,
+                         const char *msg, int eightbit);
+int mutt_is_mail_list(ADDRESS *addr);
+int mutt_is_message_type(int type, const char *subtype);
+int mutt_is_list_cc(int alladdr, ADDRESS *a1, ADDRESS *a2);
+int mutt_is_list_recipient(int alladdr, ADDRESS *a1, ADDRESS *a2);
+int mutt_is_subscribed_list(ADDRESS *addr);
+int mutt_is_text_part(BODY *b);
+int mutt_link_threads(HEADER *cur, HEADER *last, CONTEXT *ctx);
+int mutt_lookup_mime_type(BODY *att, const char *path);
+int mutt_match_rx_list(const char *s, RX_LIST *l);
+int mutt_match_spam_list(const char *s, REPLACE_LIST *l, char *text, int textsize);
+int mutt_messages_in_thread(CONTEXT *ctx, HEADER *hdr, int flag);
+int mutt_multi_choice(char *prompt, char *letters);
+int mutt_needs_mailcap(BODY *m);
+int mutt_num_postponed(int force);
+int mutt_parse_bind(BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err);
+int mutt_parse_exec(BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err);
+int mutt_parse_color(BUFFER *buff, BUFFER *s, unsigned long data, BUFFER *err);
+int mutt_parse_uncolor(BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err);
+int mutt_parse_hook(BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err);
+int mutt_parse_macro(BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err);
+int mutt_parse_mailboxes(BUFFER *path, BUFFER *s, unsigned long data, BUFFER *err);
+int mutt_parse_mono(BUFFER *buff, BUFFER *s, unsigned long data, BUFFER *err);
+int mutt_parse_unmono(BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err);
+int mutt_parse_push(BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err);
+int mutt_parse_rc_line(/* const */ char *line, BUFFER *token, BUFFER *err);
+int mutt_parse_rfc822_line(ENVELOPE *e, HEADER *hdr, char *line, char *p,
+                           short user_hdrs, short weed, short do_2047, LIST **lastp);
+int mutt_parse_score(BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err);
+int mutt_parse_unscore(BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err);
+int mutt_parse_unhook(BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err);
+int mutt_pattern_func(int op, char *prompt);
+int mutt_pipe_attachment(FILE *fp, BODY *b, const char *path, char *outfile);
+int mutt_print_attachment(FILE *fp, BODY *a);
+int mutt_query_complete(char *buf, size_t buflen);
+int mutt_query_variables(LIST *queries);
+int mutt_save_attachment(FILE *fp, BODY *m, char *path, int flags, HEADER *hdr);
+int _mutt_save_message(HEADER *h, CONTEXT *ctx, int delete, int decode, int decrypt);
+int mutt_save_message(HEADER *h, int delete, int decode, int decrypt, int *redraw);
+int mutt_search_command(int cur, int op);
+#ifdef USE_SMTP
+int mutt_smtp_send(const ADDRESS *from, const ADDRESS *to, const ADDRESS *cc,
+                   const ADDRESS *bcc, const char *msgfile, int eightbit);
+#endif
+
+size_t mutt_wstr_trunc(const char *src, size_t maxlen, size_t maxwid, size_t *width);
+int mutt_charlen(const char *s, int *width);
+int mutt_strwidth(const char *s);
+int mutt_compose_menu(HEADER *msg, char *fcc, size_t fcclen, HEADER *cur, int flags);
+int mutt_thread_set_flag(HEADER *hdr, int flag, int bf, int subthread);
+void mutt_update_num_postponed(void);
+int mutt_which_case(const char *s);
+int mutt_write_fcc(const char *path, HEADER *hdr, const char *msgid, int post,
+                   char *fcc, char **finalpath);
+int mutt_write_multiple_fcc(const char *path, HEADER *hdr, const char *msgid,
+                            int post, char *fcc, char **finalpath);
+int mutt_write_mime_body(BODY *a, FILE *f);
+int mutt_write_mime_header(BODY *a, FILE *f);
+int mutt_write_one_header(FILE *fp, const char *tag, const char *value,
+                          const char *pfx, int wraplen, int flags);
+int mutt_write_rfc822_header(FILE *fp, ENVELOPE *env, BODY *attach, int mode, int privacy);
+void mutt_write_references(LIST *r, FILE *f, int trim);
+int mutt_yesorno(const char *msg, int def);
+void mutt_set_header_color(CONTEXT *ctx, HEADER *curhdr);
+void mutt_sleep(short s);
+int mutt_save_confirm(const char *s, struct stat *st);
+
+void mutt_browser_select_dir(char *f);
+void mutt_get_parent_path(char *output, char *path, size_t olen);
 
 #define MUTT_RANDTAG_LEN (16)
 void mutt_rand_base32(void *out, size_t len);
@@ -393,14 +408,14 @@ uint32_t mutt_rand32(void);
 uint64_t mutt_rand64(void);
 
 
-ADDRESS *alias_reverse_lookup (ADDRESS *);
+ADDRESS *alias_reverse_lookup(ADDRESS *a);
 
 /* base64.c */
-size_t mutt_to_base64 (char*, const char*, size_t, size_t);
-int mutt_from_base64 (char*, const char*);
+size_t mutt_to_base64(char *out, const char *cin, size_t len, size_t olen);
+int mutt_from_base64(char *out, const char *in);
 
 /* utf8.c */
-int mutt_wctoutf8 (char *s, unsigned int c, size_t buflen);
+int mutt_wctoutf8(char *s, unsigned int c, size_t buflen);
 
 #ifdef LOCALES_HACK
 #define IsPrint(c) (isprint((unsigned char)(c)) || \
@@ -414,12 +429,16 @@ int mutt_wctoutf8 (char *s, unsigned int c, size_t buflen);
 	(option (OPTLOCALES) ? 0 : (wc >= 0xa0)))
 #endif
 
-#define new_pattern() safe_calloc(1, sizeof (pattern_t))
+static inline pattern_t *new_pattern (void)
+{
+  return safe_calloc (1, sizeof (pattern_t));
+}
 
-int mutt_pattern_exec (struct pattern_t *pat, pattern_exec_flag flags, CONTEXT *ctx, HEADER *h, pattern_cache_t *);
-pattern_t *mutt_pattern_comp (/* const */ char *s, int flags, BUFFER *err);
-void mutt_check_simple (char *s, size_t len, const char *simple);
-void mutt_pattern_free (pattern_t **pat);
+int mutt_pattern_exec(struct pattern_t *pat, pattern_exec_flag flags,
+                      CONTEXT *ctx, HEADER *h, pattern_cache_t *cache);
+pattern_t *mutt_pattern_comp(/* const */ char *s, int flags, BUFFER *err);
+void mutt_check_simple(char *s, size_t len, const char *simple);
+void mutt_pattern_free(pattern_t **pat);
 
 /* ----------------------------------------------------------------------------
  * Prototypes for broken systems
@@ -464,16 +483,16 @@ int setegid (gid_t);
 #endif /* _AIX */
 
 /* unsorted */
-void ci_bounce_message (HEADER *, int *);
-int ci_send_message (int, HEADER *, char *, CONTEXT *, HEADER *);
+void ci_bounce_message(HEADER *h, int *redraw);
+int ci_send_message(int flags, HEADER *msg, char *tempfile, CONTEXT *ctx, HEADER *cur);
 
 /* prototypes for compatibility functions */
 
 #ifndef HAVE_WCSCASECMP
-int wcscasecmp (const wchar_t *a, const wchar_t *b);
+int wcscasecmp(const wchar_t *a, const wchar_t *b);
 #endif
 
 #ifndef HAVE_STRCASESTR
-char *strcasestr (const char *, const char *);
+char *strcasestr(const char *s1, const char *s2);
 #endif
 

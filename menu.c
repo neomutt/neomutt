@@ -778,7 +778,7 @@ MUTTMENU *mutt_new_menu (int menu)
   return (p);
 }
 
-void mutt_menuDestroy (MUTTMENU **p)
+void mutt_menu_destroy (MUTTMENU **p)
 {
   int i;
 
@@ -934,7 +934,7 @@ int menu_redraw (MUTTMENU *menu)
   return OP_NULL;
 }
 
-int mutt_menuLoop (MUTTMENU *menu)
+int mutt_menu_loop (MUTTMENU *menu)
 {
   static int last_position = -1;
   int i = OP_NULL;

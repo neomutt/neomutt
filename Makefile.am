@@ -82,12 +82,12 @@ EXTRA_DIST = config.rpath  COPYRIGHT LICENSE.md OPS OPS.PGP OPS.CRYPT OPS.SMIME 
 	mutt_tunnel.h mx.h pager.h pgp.h pop.h protos.h rfc1524.h rfc2047.h \
 	rfc2231.h rfc822.h rfc3676.h sha1.h sort.h mime.types \
 	mutt_lua.h nntp.h ChangeLog.nntp \
-	_regex.h OPS.MIX README.SECURITY remailer.c remailer.h browser.h \
+	OPS.MIX README.SECURITY remailer.c remailer.h browser.h \
 	mbyte.h lib.h extlib.c pgpewrap.c smime_keys.pl pgplib.h \
 	README.SSL README.md README.neomutt README.notmuch smime.h group.h \
 	pgppacket.h depcomp ascii.h PATCHES patchlist.sh \
 	ChangeLog ChangeLog.neomutt mutt_idna.h sidebar.h OPS.SIDEBAR \
-	regex.c crypt-gpgme.h hcachever.sh.in \
+	crypt-gpgme.h hcachever.sh.in \
 	txt2c.c txt2c.sh version.h \
 	hcache-backend.h hcache-bdb.c hcache-gdbm.c hcache-kc.c hcache-lmdb.c \
 	hcache-qdbm.c hcache-tc.c
@@ -152,10 +152,10 @@ smime_keys: $(srcdir)/smime_keys.pl
 	cp $(srcdir)/smime_keys.pl smime_keys
 	chmod +x smime_keys
 
-keymap_defs.h: $(OPS) $(srcdir)/gen_defs
+keymap_defs.h: $(OPS) $(srcdir)/gen_defs $(srcdir)/config.h
 	$(srcdir)/gen_defs $(OPS) > keymap_defs.h
 
-keymap_alldefs.h: $(srcdir)/OPS $(srcdir)/OPS.SIDEBAR $(srcdir)/OPS.NOTMUCH $(srcdir)/OPS.MIX $(srcdir)/OPS.PGP $(srcdir)/OPS.SMIME $(srcdir)/OPS.CRYPT $(srcdir)/gen_defs
+keymap_alldefs.h: $(srcdir)/OPS $(srcdir)/OPS.SIDEBAR $(srcdir)/OPS.NOTMUCH $(srcdir)/OPS.MIX $(srcdir)/OPS.PGP $(srcdir)/OPS.SMIME $(srcdir)/OPS.CRYPT $(srcdir)/gen_defs $(srcdir)/config.h
 	rm -f $@
 	$(srcdir)/gen_defs $(srcdir)/OPS $(srcdir)/OPS.SIDEBAR $(srcdir)/OPS.NOTMUCH \
 		$(srcdir)/OPS.MIX $(srcdir)/OPS.PGP $(srcdir)/OPS.SMIME $(srcdir)/OPS.CRYPT \

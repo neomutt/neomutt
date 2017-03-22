@@ -90,21 +90,22 @@ typedef struct
 } pop_auth_t;
 
 /* pop_auth.c */
-int pop_authenticate (POP_DATA *);
-void pop_apop_timestamp (POP_DATA *, char *);
+int pop_authenticate(POP_DATA *pop_data);
+void pop_apop_timestamp(POP_DATA *pop_data, char *buf);
 
 /* pop_lib.c */
 #define pop_query(A,B,C) pop_query_d(A,B,C,NULL)
-int pop_parse_path (const char *, ACCOUNT *);
-int pop_connect (POP_DATA *);
-int pop_open_connection (POP_DATA *);
-int pop_query_d (POP_DATA *, char *, size_t, char *);
-int pop_fetch_data (POP_DATA *, char *, progress_t *, int (*funct) (char *, void *), void *);
-int pop_reconnect (CONTEXT *);
-void pop_logout (CONTEXT *);
+int pop_parse_path(const char *path, ACCOUNT *acct);
+int pop_connect(POP_DATA *pop_data);
+int pop_open_connection(POP_DATA *pop_data);
+int pop_query_d(POP_DATA *pop_data, char *buf, size_t buflen, char *msg);
+int pop_fetch_data(POP_DATA *pop_data, char *query, progress_t *progressbar,
+                   int (*funct)(char *, void *), void *data);
+int pop_reconnect(CONTEXT *ctx);
+void pop_logout(CONTEXT *ctx);
 
 /* pop.c */
-void pop_fetch_mail (void);
+void pop_fetch_mail(void);
 
 extern struct mx_ops mx_pop_ops;
 

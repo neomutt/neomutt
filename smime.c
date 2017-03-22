@@ -295,12 +295,12 @@ static const char *_mutt_fmt_smime_command (char *dest,
 
 
 
-static void mutt_smime_command (char *d, size_t dlen,
+static void smime_command (char *d, size_t dlen,
 				struct smime_command_context *cctx, const char *fmt)
 {
   mutt_FormatString (d, dlen, 0, MuttIndexWindow->cols, NONULL(fmt), _mutt_fmt_smime_command,
 		    (unsigned long) cctx, 0);
-  mutt_debug (2, "mutt_smime_command: %s\n", d);
+  mutt_debug (2, "smime_command: %s\n", d);
 }
 
 
@@ -333,7 +333,7 @@ static pid_t smime_invoke (FILE **smimein, FILE **smimeout, FILE **smimeerr,
   cctx.certificates    = certificates;
   cctx.intermediates   = intermediates;
 
-  mutt_smime_command (cmd, sizeof (cmd), &cctx, format);
+  smime_command (cmd, sizeof (cmd), &cctx, format);
 
   return mutt_create_filter_fd (cmd, smimein, smimeout, smimeerr,
 				smimeinfd, smimeoutfd, smimeerrfd);
@@ -453,7 +453,7 @@ static smime_key_t *smime_select_key (smime_key_t *keys, char *query)
   done = 0;
   while (!done)
   {
-    switch (mutt_menuLoop (menu))
+    switch (mutt_menu_loop (menu))
     {
       case OP_GENERIC_SELECT_ENTRY:
         if (table[menu->current]->trust != 't')
@@ -492,7 +492,7 @@ static smime_key_t *smime_select_key (smime_key_t *keys, char *query)
     }
   }
 
-  mutt_menuDestroy (&menu);
+  mutt_menu_destroy (&menu);
   FREE (&table);
   set_option (OPTNEEDREDRAW);
 
@@ -880,7 +880,7 @@ void smime_getkeys (ENVELOPE *env)
  * prompting will be used.
  */
 
-char *smime_findKeys (ADDRESS *adrlist, int oppenc_mode)
+char *smime_find_keys (ADDRESS *adrlist, int oppenc_mode)
 {
   smime_key_t *key = NULL;
   char *keyID, *keylist = NULL;

@@ -17,15 +17,15 @@ typedef struct {
   unsigned char buffer[64];
 } SHA1_CTX;
 
-void SHA1Transform(uint32_t state[5], const unsigned char buffer[64]);
-void SHA1Init(SHA1_CTX* context);
-void SHA1Update(SHA1_CTX* context, const unsigned char* data, uint32_t len);
-void SHA1Final(unsigned char digest[20], SHA1_CTX* context);
+void sha1_transform(uint32_t state[5], const unsigned char buffer[64]);
+void sha1_init(SHA1_CTX *context);
+void sha1_update(SHA1_CTX *context, const unsigned char *data, uint32_t len);
+void sha1_final(unsigned char digest[20], SHA1_CTX *context);
 
-# define SHA1_Transform SHA1Transform
-# define SHA1_Init SHA1Init
-# define SHA1_Update SHA1Update
-# define SHA1_Final SHA1Final
+# define SHA1_Transform sha1_transform
+# define SHA1_Init sha1_init
+# define SHA1_Update sha1_update
+# define SHA1_Final sha1_final
 
 # define SHA_DIGEST_LENGTH 20
 

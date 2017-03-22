@@ -27,8 +27,8 @@
 /* type for key storage, the rest of mutt works fine with int type */
 typedef short keycode_t;
 
-void km_bind (char *, int, int, char *, char *);
-int km_dokey (int);
+void km_bind(char *s, int menu, int op, char *macro, char *descr);
+int km_dokey(int menu);
 
 void init_extended_keys(void);
 
@@ -44,11 +44,11 @@ struct keymap_t
   keycode_t *keys;       /* key sequence */
 };
 
-int km_expand_key (char *, size_t, struct keymap_t *);
-struct keymap_t *km_find_func (int, int);
-void km_init (void);
-void km_error_key (int);
-void mutt_what_key (void);
+int km_expand_key(char *s, size_t len, struct keymap_t *map);
+struct keymap_t *km_find_func(int menu, int func);
+void km_init(void);
+void km_error_key(int menu);
+void mutt_what_key(void);
 
 enum
 {

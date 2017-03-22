@@ -702,7 +702,14 @@ classify_quote (struct q_class_t **QuoteList, const char *qptr,
 static int brailleLine = -1;
 static int brailleCol = -1;
 
-static int check_attachment_marker (char *);
+static int check_attachment_marker (char *p)
+{
+  char *q = AttachmentMarker;
+
+  for (;*p == *q && *q && *p && *q != '\a' && *p != '\a'; p++, q++)
+    ;
+  return (int) (*p - *q);
+}
 
 static void
 resolve_types (char *buf, char *raw, struct line_t *lineInfo, int n, int last,
@@ -970,15 +977,6 @@ static int is_ansi (unsigned char *buf)
   while (*buf && (isdigit(*buf) || *buf == ';'))
     buf++;
   return (*buf == 'm');
-}
-
-static int check_attachment_marker (char *p)
-{
-  char *q = AttachmentMarker;
-
-  for (;*p == *q && *q && *p && *q != '\a' && *p != '\a'; p++, q++)
-    ;
-  return (int) (*p - *q);
 }
 
 static int grok_ansi(unsigned char *buf, int pos, ansi_attr *a)
@@ -1604,7 +1602,7 @@ out:
 }
 
 static int
-upNLines (int nlines, struct line_t *info, int cur, int hiding)
+up_n_lines (int nlines, struct line_t *info, int cur, int hiding)
 {
   while (cur > 0 && nlines > 0)
   {
@@ -2177,7 +2175,7 @@ mutt_pager (const char *banner, const char *fname, int flags, pager_t *extra)
       case OP_NEXT_PAGE:
 	if (lineInfo[curline].offset < sb.st_size-1)
 	{
-	  topline = upNLines (PagerContext, lineInfo, curline, hideQuoted);
+	  topline = up_n_lines (PagerContext, lineInfo, curline, hideQuoted);
 	}
 	else if (option (OPTPAGERSTOP))
 	{
@@ -2195,7 +2193,7 @@ mutt_pager (const char *banner, const char *fname, int flags, pager_t *extra)
       case OP_PREV_PAGE:
 	if (topline != 0)
 	{
-	  topline = upNLines (pager_window->rows-PagerContext, lineInfo, topline, hideQuoted);
+	  topline = up_n_lines (pager_window->rows-PagerContext, lineInfo, topline, hideQuoted);
 	}
 	else
 	  mutt_error (_("Top of message is shown."));
@@ -2218,7 +2216,7 @@ mutt_pager (const char *banner, const char *fname, int flags, pager_t *extra)
 
       case OP_PREV_LINE:
 	if (topline)
-	  topline = upNLines (1, lineInfo, topline, hideQuoted);
+	  topline = up_n_lines (1, lineInfo, topline, hideQuoted);
 	else
 	  mutt_error (_("Top of message is shown."));
 	break;
@@ -2232,7 +2230,7 @@ mutt_pager (const char *banner, const char *fname, int flags, pager_t *extra)
 
       case OP_HALF_UP:
 	if (topline)
-	  topline = upNLines (pager_window->rows/2, lineInfo, topline, hideQuoted);
+	  topline = up_n_lines (pager_window->rows/2, lineInfo, topline, hideQuoted);
 	else
 	  mutt_error (_("Top of message is shown."));
 	break;
@@ -2240,7 +2238,7 @@ mutt_pager (const char *banner, const char *fname, int flags, pager_t *extra)
       case OP_HALF_DOWN:
 	if (lineInfo[curline].offset < sb.st_size-1)
 	{
-	  topline = upNLines (pager_window->rows/2, lineInfo, curline, hideQuoted);
+	  topline = up_n_lines (pager_window->rows/2, lineInfo, curline, hideQuoted);
 	}
 	else if (option (OPTPAGERSTOP))
 	{
@@ -2467,7 +2465,7 @@ search_next:
 	{
 	  hideQuoted ^= MUTT_HIDE;
 	  if (hideQuoted && lineInfo[topline].type == MT_COLOR_QUOTED)
-	    topline = upNLines (1, lineInfo, topline, hideQuoted);
+	    topline = up_n_lines (1, lineInfo, topline, hideQuoted);
 	  else
 	    redraw = REDRAW_BODY;
 	}
@@ -2533,7 +2531,7 @@ search_next:
 				&QuoteList, &q_level, &force_redraw,
                                &SearchRE, pager_window) == 0)
 	    i++;
-	  topline = upNLines (pager_window->rows, lineInfo, lastLine, hideQuoted);
+	  topline = up_n_lines (pager_window->rows, lineInfo, lastLine, hideQuoted);
 	}
 	else
 	  mutt_error (_("Bottom of message is shown."));
@@ -2695,7 +2693,7 @@ search_next:
 	if (old_PagerIndexLines != PagerIndexLines)
 	{
 	  if (index)
-	    mutt_menuDestroy (&index);
+	    mutt_menu_destroy (&index);
 	  index = NULL;
 	}
 
@@ -3163,7 +3161,7 @@ search_next:
   }
   FREE (&lineInfo);
   if (index)
-    mutt_menuDestroy(&index);
+    mutt_menu_destroy(&index);
 
   FREE (&index_status_window);
   FREE (&index_window);

@@ -4040,7 +4040,7 @@ static crypt_key_t *crypt_select_key (crypt_key_t *keys,
   while (!done)
     {
       *forced_valid = 0;
-      switch (mutt_menuLoop (menu))
+      switch (mutt_menu_loop (menu))
         {
         case OP_VERIFY_KEY:
           verify_key (key_table[menu->current]);
@@ -4117,7 +4117,7 @@ static crypt_key_t *crypt_select_key (crypt_key_t *keys,
         }
     }
 
-  mutt_menuDestroy (&menu);
+  mutt_menu_destroy (&menu);
   FREE (&key_table);
 
   set_option (OPTNEEDREDRAW);
@@ -4164,7 +4164,7 @@ static crypt_key_t *crypt_getkeybyaddr (ADDRESS * a, short abilities,
   if (!keys)
     return NULL;
 
-  mutt_debug (5, "crypt_getkeybyaddr: looking for %s <%s>.",
+  mutt_debug (5, "crypt_getkeybyaddr: looking for %s <%s>.\n",
               a->personal, a->mailbox);
 
   for (k = keys; k; k = k->next)
@@ -4325,6 +4325,10 @@ static crypt_key_t *crypt_getkeybystr (char *p, short abilities,
 
           *matches_endp = tmp = crypt_copy_key (k);
           matches_endp = &tmp->next;
+        }
+      else
+        {
+          mutt_debug(5, "no match.\n");
         }
     }
 

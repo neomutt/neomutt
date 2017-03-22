@@ -532,29 +532,6 @@ AC_CHECK_FUNCS(futimens)
 dnl AIX may not have fchdir()
 AC_CHECK_FUNCS(fchdir, , [mutt_cv_fchdir=no])
 
-AC_ARG_WITH(regex, AS_HELP_STRING([--with-regex],[Use the GNU regex library]),
-	[mutt_cv_regex=yes],
-	[AC_CHECK_FUNCS(regcomp, mutt_cv_regex=no, mutt_cv_regex=yes)])
-
-if test $mutt_cv_regex = no; then
-AC_CACHE_CHECK([whether your system's regexp library is completely broken],
-	[mutt_cv_regex_broken],
-	AC_RUN_IFELSE([AC_LANG_SOURCE([[
-#include <unistd.h>
-#include <regex.h>
-main() { regex_t blah ; regmatch_t p; p.rm_eo = p.rm_eo; return regcomp(&blah, "foo.*bar", REG_NOSUB) || regexec (&blah, "foobar", 0, NULL, 0); }]])],[mutt_cv_regex_broken=no],[mutt_cv_regex_broken=yes],[mutt_cv_regex_broken=yes]))
-	if test $mutt_cv_regex_broken = yes; then
-		echo "Using the included GNU regex instead." >&AS_MESSAGE_FD
-		mutt_cv_regex=yes
-	fi
-fi
-
-if test $mutt_cv_regex = yes; then
-	AC_DEFINE(USE_GNU_REGEX,1,[ Define if you want to use the included regex.c. ])
-	AC_LIBOBJ(regex)
-fi
-
-
 AC_ARG_WITH(homespool,
 	AS_HELP_STRING([--with-homespool@<:@=FILE@:>@],[File in user's directory where new mail is spooled]), with_homespool=${withval})
 if test x$with_homespool != x; then

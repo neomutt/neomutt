@@ -113,7 +113,7 @@ time_t mutt_mktime (struct tm *t, int local)
 }
 
 /* Return 1 if month is February of leap year, else 0 */
-static int isLeapYearFeb (struct tm *tm)
+static int is_leap_year_feb (struct tm *tm)
 {
   if (tm->tm_mon == 1)
   {
@@ -180,10 +180,10 @@ void mutt_normalize_time (struct tm *tm)
       tm->tm_mon = 11;
       tm->tm_year--;
     }
-    tm->tm_mday += DaysPerMonth[tm->tm_mon] + isLeapYearFeb (tm);
+    tm->tm_mday += DaysPerMonth[tm->tm_mon] + is_leap_year_feb (tm);
   }
   while (tm->tm_mday > (DaysPerMonth[tm->tm_mon] +
-	(nLeap = isLeapYearFeb (tm))))
+	(nLeap = is_leap_year_feb (tm))))
   {
     tm->tm_mday -= DaysPerMonth[tm->tm_mon] + nLeap;
     if (tm->tm_mon < 11)

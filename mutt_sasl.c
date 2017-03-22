@@ -31,8 +31,6 @@
 #include <sys/socket.h>
 #include <netinet/in.h>
 
-static sasl_callback_t* mutt_sasl_get_callbacks (ACCOUNT* account);
-
 static int getnameinfo_err(int ret)
 {
   int err;
@@ -86,23 +84,6 @@ static sasl_callback_t mutt_sasl_callbacks[5];
 
 static sasl_secret_t *secret_ptr = NULL;
 
-static int mutt_sasl_start (void);
-
-/* callbacks */
-static int mutt_sasl_cb_log (void* context, int priority, const char* message);
-static int mutt_sasl_cb_authname (void* context, int id, const char** result,
-  unsigned int* len);
-static int mutt_sasl_cb_pass (sasl_conn_t* conn, void* context, int id,
-  sasl_secret_t** psecret);
-
-/* socket wrappers for a SASL security layer */
-static int mutt_sasl_conn_open (CONNECTION* conn);
-static int mutt_sasl_conn_close (CONNECTION* conn);
-static int mutt_sasl_conn_read (CONNECTION* conn, char* buf, size_t len);
-static int mutt_sasl_conn_write (CONNECTION* conn, const char* buf,
-  size_t count);
-static int mutt_sasl_conn_poll (CONNECTION* conn);
-
 /* utility function, stolen from sasl2 sample code */
 static int iptostring(const struct sockaddr *addr, socklen_t addrlen,
                       char *out, unsigned outlen)
@@ -126,6 +107,14 @@ static int iptostring(const struct sockaddr *addr, socklen_t addrlen,
     return SASL_BUFOVER;
 
   snprintf(out, outlen, "%s;%s", hbuf, pbuf);
+
+  return SASL_OK;
+}
+
+/* mutt_sasl_cb_log: callback to log SASL messages */
+static int mutt_sasl_cb_log (void* context, int priority, const char* message)
+{
+  mutt_debug (priority, "SASL: %s\n", message);
 
   return SASL_OK;
 }
@@ -162,6 +151,103 @@ static int mutt_sasl_start (void)
   sasl_init = 1;
 
   return SASL_OK;
+}
+
+/* mutt_sasl_cb_authname: callback to retrieve authname or user from ACCOUNT */
+static int mutt_sasl_cb_authname (void* context, int id, const char** result,
+  unsigned* len)
+{
+  ACCOUNT* account = (ACCOUNT*) context;
+
+  if (!result)
+    return SASL_FAIL;
+
+  *result = NULL;
+  if (len)
+    *len = 0;
+
+  if (!account)
+    return SASL_BADPARAM;
+
+  mutt_debug (2, "mutt_sasl_cb_authname: getting %s for %s:%u\n",
+	      id == SASL_CB_AUTHNAME ? "authname" : "user",
+	      account->host, account->port);
+
+  if (id == SASL_CB_AUTHNAME)
+  {
+    if (mutt_account_getlogin (account))
+      return SASL_FAIL;
+    *result = account->login;
+  }
+  else
+  {
+    if (mutt_account_getuser (account))
+      return SASL_FAIL;
+    *result = account->user;
+  }
+
+  if (len)
+    *len = strlen (*result);
+
+  return SASL_OK;
+}
+
+static int mutt_sasl_cb_pass (sasl_conn_t* conn, void* context, int id,
+  sasl_secret_t** psecret)
+{
+  ACCOUNT* account = (ACCOUNT*) context;
+  int len;
+
+  if (!account || !psecret)
+    return SASL_BADPARAM;
+
+  mutt_debug (2, "mutt_sasl_cb_pass: getting password for %s@%s:%u\n",
+              account->login, account->host, account->port);
+
+  if (mutt_account_getpass (account))
+    return SASL_FAIL;
+
+  len = strlen (account->pass);
+
+  safe_realloc (&secret_ptr, sizeof (sasl_secret_t) + len);
+  memcpy ((char *) secret_ptr->data, account->pass, (size_t) len);
+  secret_ptr->len = len;
+  *psecret = secret_ptr;
+
+  return SASL_OK;
+}
+
+static sasl_callback_t* mutt_sasl_get_callbacks (ACCOUNT* account)
+{
+  sasl_callback_t* callback;
+
+  callback = mutt_sasl_callbacks;
+
+  callback->id = SASL_CB_USER;
+  callback->proc = (int (*)(void))mutt_sasl_cb_authname;
+  callback->context = account;
+  callback++;
+
+  callback->id = SASL_CB_AUTHNAME;
+  callback->proc = (int (*)(void))mutt_sasl_cb_authname;
+  callback->context = account;
+  callback++;
+
+  callback->id = SASL_CB_PASS;
+  callback->proc = (int (*)(void))mutt_sasl_cb_pass;
+  callback->context = account;
+  callback++;
+
+  callback->id = SASL_CB_GETREALM;
+  callback->proc = NULL;
+  callback->context = NULL;
+  callback++;
+
+  callback->id = SASL_CB_LIST_END;
+  callback->proc = NULL;
+  callback->context = NULL;
+
+  return mutt_sasl_callbacks;
 }
 
 /* mutt_sasl_client_new: wrapper for sasl_client_new which also sets various
@@ -270,39 +356,6 @@ int mutt_sasl_client_new (CONNECTION* conn, sasl_conn_t** saslconn)
   return 0;
 }
 
-static sasl_callback_t* mutt_sasl_get_callbacks (ACCOUNT* account)
-{
-  sasl_callback_t* callback;
-
-  callback = mutt_sasl_callbacks;
-
-  callback->id = SASL_CB_USER;
-  callback->proc = (int (*)(void))mutt_sasl_cb_authname;
-  callback->context = account;
-  callback++;
-
-  callback->id = SASL_CB_AUTHNAME;
-  callback->proc = (int (*)(void))mutt_sasl_cb_authname;
-  callback->context = account;
-  callback++;
-
-  callback->id = SASL_CB_PASS;
-  callback->proc = (int (*)(void))mutt_sasl_cb_pass;
-  callback->context = account;
-  callback++;
-
-  callback->id = SASL_CB_GETREALM;
-  callback->proc = NULL;
-  callback->context = NULL;
-  callback++;
-
-  callback->id = SASL_CB_LIST_END;
-  callback->proc = NULL;
-  callback->context = NULL;
-
-  return mutt_sasl_callbacks;
-}
-
 int mutt_sasl_interact (sasl_interact_t* interaction)
 {
   char prompt[SHORT_STRING];
@@ -323,138 +376,6 @@ int mutt_sasl_interact (sasl_interact_t* interaction)
 
     interaction++;
   }
-
-  return SASL_OK;
-}
-
-/* SASL can stack a protection layer on top of an existing connection.
- * To handle this, we store a saslconn_t in conn->sockdata, and write
- * wrappers which en/decode the read/write stream, then replace sockdata
- * with an embedded copy of the old sockdata and call the underlying
- * functions (which we've also preserved). I thought about trying to make
- * a general stackable connection system, but it seemed like overkill -
- * something is wrong if we have 15 filters on top of a socket. Anyway,
- * anything else which wishes to stack can use the same method. The only
- * disadvantage is we have to write wrappers for all the socket methods,
- * even if we only stack over read and write. Thinking about it, the
- * abstraction problem is that there is more in CONNECTION than there
- * needs to be. Ideally it would have only (void*)data and methods. */
-
-/* mutt_sasl_setup_conn: replace connection methods, sockdata with
- *   SASL wrappers, for protection layers. Also get ssf, as a fastpath
- *   for the read/write methods. */
-void mutt_sasl_setup_conn (CONNECTION* conn, sasl_conn_t* saslconn)
-{
-  SASL_DATA* sasldata = safe_malloc (sizeof (SASL_DATA));
-  /* work around sasl_getprop aliasing issues */
-  const void* tmp;
-
-  sasldata->saslconn = saslconn;
-  /* get ssf so we know whether we have to (en|de)code read/write */
-  sasl_getprop (saslconn, SASL_SSF, &tmp);
-  sasldata->ssf = tmp;
-  mutt_debug (3, "SASL protection strength: %u\n", *sasldata->ssf);
-  /* Add SASL SSF to transport SSF */
-  conn->ssf += *sasldata->ssf;
-  sasl_getprop (saslconn, SASL_MAXOUTBUF, &tmp);
-  sasldata->pbufsize = tmp;
-  mutt_debug (3, "SASL protection buffer size: %u\n", *sasldata->pbufsize);
-
-  /* clear input buffer */
-  sasldata->buf = NULL;
-  sasldata->bpos = 0;
-  sasldata->blen = 0;
-
-  /* preserve old functions */
-  sasldata->sockdata = conn->sockdata;
-  sasldata->msasl_open = conn->conn_open;
-  sasldata->msasl_close = conn->conn_close;
-  sasldata->msasl_read = conn->conn_read;
-  sasldata->msasl_write = conn->conn_write;
-  sasldata->msasl_poll = conn->conn_poll;
-
-  /* and set up new functions */
-  conn->sockdata = sasldata;
-  conn->conn_open = mutt_sasl_conn_open;
-  conn->conn_close = mutt_sasl_conn_close;
-  conn->conn_read = mutt_sasl_conn_read;
-  conn->conn_write = mutt_sasl_conn_write;
-  conn->conn_poll = mutt_sasl_conn_poll;
-}
-
-/* mutt_sasl_cb_log: callback to log SASL messages */
-static int mutt_sasl_cb_log (void* context, int priority, const char* message)
-{
-  mutt_debug (priority, "SASL: %s\n", message);
-
-  return SASL_OK;
-}
-
-void mutt_sasl_done (void)
-{
-  sasl_done ();
-}
-
-/* mutt_sasl_cb_authname: callback to retrieve authname or user from ACCOUNT */
-static int mutt_sasl_cb_authname (void* context, int id, const char** result,
-  unsigned* len)
-{
-  ACCOUNT* account = (ACCOUNT*) context;
-
-  if (!result)
-    return SASL_FAIL;
-
-  *result = NULL;
-  if (len)
-    *len = 0;
-
-  if (!account)
-    return SASL_BADPARAM;
-
-  mutt_debug (2, "mutt_sasl_cb_authname: getting %s for %s:%u\n",
-	      id == SASL_CB_AUTHNAME ? "authname" : "user",
-	      account->host, account->port);
-
-  if (id == SASL_CB_AUTHNAME)
-  {
-    if (mutt_account_getlogin (account))
-      return SASL_FAIL;
-    *result = account->login;
-  }
-  else
-  {
-    if (mutt_account_getuser (account))
-      return SASL_FAIL;
-    *result = account->user;
-  }
-
-  if (len)
-    *len = strlen (*result);
-
-  return SASL_OK;
-}
-
-static int mutt_sasl_cb_pass (sasl_conn_t* conn, void* context, int id,
-  sasl_secret_t** psecret)
-{
-  ACCOUNT* account = (ACCOUNT*) context;
-  int len;
-
-  if (!account || !psecret)
-    return SASL_BADPARAM;
-
-  mutt_debug (2, "mutt_sasl_cb_pass: getting password for %s@%s:%u\n",
-              account->login, account->host, account->port);
-
-  if (mutt_account_getpass (account))
-    return SASL_FAIL;
-
-  len = strlen (account->pass);
-
-  safe_realloc (&secret_ptr, sizeof (sasl_secret_t) + len);
-  memcpy ((char *) secret_ptr->data, account->pass, (size_t) len);
-  secret_ptr->len = len;
-  *psecret = secret_ptr;
 
   return SASL_OK;
 }
@@ -628,3 +549,63 @@ static int mutt_sasl_conn_poll (CONNECTION* conn)
 
   return rc;
 }
+/* SASL can stack a protection layer on top of an existing connection.
+ * To handle this, we store a saslconn_t in conn->sockdata, and write
+ * wrappers which en/decode the read/write stream, then replace sockdata
+ * with an embedded copy of the old sockdata and call the underlying
+ * functions (which we've also preserved). I thought about trying to make
+ * a general stackable connection system, but it seemed like overkill -
+ * something is wrong if we have 15 filters on top of a socket. Anyway,
+ * anything else which wishes to stack can use the same method. The only
+ * disadvantage is we have to write wrappers for all the socket methods,
+ * even if we only stack over read and write. Thinking about it, the
+ * abstraction problem is that there is more in CONNECTION than there
+ * needs to be. Ideally it would have only (void*)data and methods. */
+
+/* mutt_sasl_setup_conn: replace connection methods, sockdata with
+ *   SASL wrappers, for protection layers. Also get ssf, as a fastpath
+ *   for the read/write methods. */
+void mutt_sasl_setup_conn (CONNECTION* conn, sasl_conn_t* saslconn)
+{
+  SASL_DATA* sasldata = safe_malloc (sizeof (SASL_DATA));
+  /* work around sasl_getprop aliasing issues */
+  const void* tmp;
+
+  sasldata->saslconn = saslconn;
+  /* get ssf so we know whether we have to (en|de)code read/write */
+  sasl_getprop (saslconn, SASL_SSF, &tmp);
+  sasldata->ssf = tmp;
+  mutt_debug (3, "SASL protection strength: %u\n", *sasldata->ssf);
+  /* Add SASL SSF to transport SSF */
+  conn->ssf += *sasldata->ssf;
+  sasl_getprop (saslconn, SASL_MAXOUTBUF, &tmp);
+  sasldata->pbufsize = tmp;
+  mutt_debug (3, "SASL protection buffer size: %u\n", *sasldata->pbufsize);
+
+  /* clear input buffer */
+  sasldata->buf = NULL;
+  sasldata->bpos = 0;
+  sasldata->blen = 0;
+
+  /* preserve old functions */
+  sasldata->sockdata = conn->sockdata;
+  sasldata->msasl_open = conn->conn_open;
+  sasldata->msasl_close = conn->conn_close;
+  sasldata->msasl_read = conn->conn_read;
+  sasldata->msasl_write = conn->conn_write;
+  sasldata->msasl_poll = conn->conn_poll;
+
+  /* and set up new functions */
+  conn->sockdata = sasldata;
+  conn->conn_open = mutt_sasl_conn_open;
+  conn->conn_close = mutt_sasl_conn_close;
+  conn->conn_read = mutt_sasl_conn_read;
+  conn->conn_write = mutt_sasl_conn_write;
+  conn->conn_poll = mutt_sasl_conn_poll;
+}
+
+void mutt_sasl_done (void)
+{
+  sasl_done ();
+}
+

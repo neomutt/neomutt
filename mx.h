@@ -47,18 +47,18 @@ WHERE short DefaultMagic INITVAL (MUTT_MBOX);
 #define MMDF_SEP "\001\001\001\001\n"
 #define MAXLOCKATTEMPT 5
 
-int mbox_check_empty (const char *);
-void mbox_reset_atime (CONTEXT *, struct stat *);
+int mbox_check_empty(const char *path);
+void mbox_reset_atime(CONTEXT *ctx, struct stat *st);
 
-int mh_check_empty (const char *);
+int mh_check_empty(const char *path);
 
-int maildir_check_empty (const char *);
+int maildir_check_empty(const char *path);
 
-HEADER *maildir_parse_message (int magic, const char *fname, int is_old, HEADER * _h);
-HEADER *maildir_parse_stream (int magic, FILE *f, const char *fname, int is_old, HEADER * _h);
-void maildir_parse_flags (HEADER * h, const char *path);
-void maildir_update_flags (CONTEXT *ctx, HEADER *o, HEADER *n);
-void maildir_flags(char *dest, size_t destlen, HEADER * hdr);
+HEADER *maildir_parse_message(int magic, const char *fname, int is_old, HEADER *h);
+HEADER *maildir_parse_stream(int magic, FILE *f, const char *fname, int is_old, HEADER *_h);
+void maildir_parse_flags(HEADER *h, const char *path);
+void maildir_update_flags(CONTEXT *ctx, HEADER *o, HEADER *n);
+void maildir_flags(char *dest, size_t destlen, HEADER *hdr);
 
 #ifdef USE_HCACHE
 #include "hcache.h"
@@ -71,17 +71,18 @@ int mh_sync_mailbox_message (CONTEXT * ctx, int msgno);
 int mx_is_notmuch(const char *p);
 #endif
 
-FILE *maildir_open_find_message (const char *, const char *, char **);
+FILE *maildir_open_find_message (const char *folder, const char *msg,
+                                  char **newname);
 
-int mbox_strict_cmp_headers (const HEADER *, const HEADER *);
+int mbox_strict_cmp_headers(const HEADER *h1, const HEADER *h2);
 
-void mx_alloc_memory (CONTEXT *);
-void mx_update_context (CONTEXT *, int);
-void mx_update_tables (CONTEXT *, int);
+void mx_alloc_memory(CONTEXT *ctx);
+void mx_update_context(CONTEXT *ctx, int new_messages);
+void mx_update_tables(CONTEXT *ctx, int committing);
 
 
-int mx_lock_file (const char *, int, int, int, int);
-int mx_unlock_file (const char *path, int fd, int dot);
+int mx_lock_file(const char *path, int fd, int excl, int dot, int timeout);
+int mx_unlock_file(const char *path, int fd, int dot);
 
 struct mx_ops* mx_get_ops (int magic);
 extern struct mx_ops mx_maildir_ops;

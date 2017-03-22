@@ -91,7 +91,7 @@ static int alias_tag (MUTTMENU *menu, int n, int m)
   return cur->tagged - ot;
 }
 
-static int alias_SortAlias (const void *a, const void *b)
+static int alias_sort_alias (const void *a, const void *b)
 {
   ALIAS *pa = *(ALIAS **) a;
   ALIAS *pb = *(ALIAS **) b;
@@ -100,7 +100,7 @@ static int alias_SortAlias (const void *a, const void *b)
   return (RSORT (r));
 }
 
-static int alias_SortAddress (const void *a, const void *b)
+static int alias_sort_address (const void *a, const void *b)
 {
   ADDRESS *pa = (*(ALIAS **) a)->addr;
   ADDRESS *pb = (*(ALIAS **) b)->addr;
@@ -177,7 +177,7 @@ new_aliases:
   if ((SortAlias & SORT_MASK) != SORT_ORDER)
   {
     qsort (AliasTable, i, sizeof (ALIAS *),
-	 (SortAlias & SORT_MASK) == SORT_ADDRESS ? alias_SortAddress : alias_SortAlias);
+	 (SortAlias & SORT_MASK) == SORT_ADDRESS ? alias_sort_address : alias_sort_alias);
   }
 
   for (i=0; i<menu->max; i++) AliasTable[i]->num = i;
@@ -191,7 +191,7 @@ new_aliases:
       goto new_aliases;
     }
 
-    switch ((op = mutt_menuLoop (menu)))
+    switch ((op = mutt_menu_loop (menu)))
     {
       case OP_DELETE:
       case OP_UNDELETE:
@@ -235,7 +235,7 @@ new_aliases:
     rfc822_write_address (buf, buflen, AliasTable[t]->addr, 1);
   }
 
-  mutt_menuDestroy (&menu);
+  mutt_menu_destroy (&menu);
   FREE (&AliasTable);
 
 }

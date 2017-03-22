@@ -99,81 +99,13 @@ static gid_t UserGid;
 static gid_t MailGid;
 #endif
 
-static int dotlock_deference_symlink (char *, size_t, const char *);
-static int dotlock_prepare (char *, size_t, const char *, int fd);
-static int dotlock_check_stats (struct stat *, struct stat *);
-static int dotlock_dispatch (const char *, int fd);
-
-#ifdef DL_STANDALONE
-static int dotlock_init_privs (void);
-static void usage (const char *);
-#endif
-
-static void dotlock_expand_link (char *, const char *, const char *);
-static void BEGIN_PRIVILEGED (void);
-static void END_PRIVILEGED (void);
-
-/* These functions work on the current directory.
+/* These functions work on the current directory:
+ *   dotlock_try dotlock_unlock dotlock_unlink dotlock_lock
  * Invoke dotlock_prepare () before and check their
  * return value.
  */
 
-static int dotlock_try (void);
-static int dotlock_unlock (const char *);
-static int dotlock_unlink (const char *);
-static int dotlock_lock (const char *);
-
-
 #ifdef DL_STANDALONE
-
-#define check_flags(a) if (a & DL_FL_ACTIONS) usage (argv[0])
-
-int main (int argc, char **argv)
-{
-  int i;
-  char *p;
-
-  /* first, drop privileges */
-
-  if (dotlock_init_privs () == -1)
-    return DL_EX_ERROR;
-
-
-  /* determine the system's host name */
-
-  uname (&utsname);
-  if ((p = strchr (utsname.nodename, '.')))
-    *p = '\0';
-
-
-  /* parse the command line options. */
-  DotlockFlags = 0;
-
-  while ((i = getopt (argc, argv, "dtfupr:")) != EOF)
-  {
-    switch (i)
-    {
-      /* actions, mutually exclusive */
-      case 't': check_flags (DotlockFlags); DotlockFlags |= DL_FL_TRY; break;
-      case 'd': check_flags (DotlockFlags); DotlockFlags |= DL_FL_UNLINK; break;
-      case 'u': check_flags (DotlockFlags); DotlockFlags |= DL_FL_UNLOCK; break;
-
-      /* other flags */
-      case 'f': DotlockFlags |= DL_FL_FORCE; break;
-      case 'p': DotlockFlags |= DL_FL_USEPRIV; break;
-      case 'r': DotlockFlags |= DL_FL_RETRY; Retry = atoi (optarg); break;
-
-      default: usage (argv[0]);
-    }
-  }
-
-  if (optind == argc || Retry < 0)
-    usage (argv[0]);
-
-  return dotlock_dispatch (argv[optind], -1);
-}
-
-
 /*
  * Determine our effective group ID, and drop
  * privileges.
@@ -184,8 +116,6 @@ int main (int argc, char **argv)
  * -1 - we couldn't drop privileges.
  *
  */
-
-
 static int
 dotlock_init_privs (void)
 {
@@ -202,71 +132,7 @@ dotlock_init_privs (void)
 
   return 0;
 }
-
-
-#else  /* DL_STANDALONE */
-
-/*
- * This function is intended to be invoked from within
- * mutt instead of mx.c's invoke_dotlock ().
- */
-
-int dotlock_invoke (const char *path, int fd, int flags, int retry)
-{
-  int currdir;
-  int r;
-
-  DotlockFlags = flags;
-
-  if ((currdir = open (".", O_RDONLY)) == -1)
-    return DL_EX_ERROR;
-
-  if (!(DotlockFlags & DL_FL_RETRY) || retry)
-    Retry = MAXLOCKATTEMPT;
-  else
-    Retry = 0;
-
-  r = dotlock_dispatch (path, fd);
-
-  fchdir (currdir);
-  close (currdir);
-
-  return r;
-}
-
-#endif  /* DL_STANDALONE */
-
-
-static int dotlock_dispatch (const char *f, int fd)
-{
-  char realpath[_POSIX_PATH_MAX];
-
-  /* If dotlock_prepare () succeeds [return value == 0],
-   * realpath contains the basename of f, and we have
-   * successfully changed our working directory to
-   * `dirname $f`.  Additionally, f has been opened for
-   * reading to verify that the user has at least read
-   * permissions on that file.
-   *
-   * For a more detailed explanation of all this, see the
-   * lengthy comment below.
-   */
-
-  if (dotlock_prepare (realpath, sizeof (realpath), f, fd) != 0)
-    return DL_EX_ERROR;
-
-  /* Actually perform the locking operation. */
-
-  if (DotlockFlags & DL_FL_TRY)
-    return dotlock_try ();
-  else if (DotlockFlags & DL_FL_UNLOCK)
-    return dotlock_unlock (realpath);
-  else if (DotlockFlags & DL_FL_UNLINK)
-    return dotlock_unlink (realpath);
-  else /* lock */
-    return dotlock_lock (realpath);
-}
-
+#endif /* DL_STANDALONE */
 
 /*
  * Get privileges
@@ -278,7 +144,6 @@ static int dotlock_dispatch (const char *f, int fd)
  * BEGIN_PRIVILEGES () won't return if an error occurs.
  *
  */
-
 static void
 BEGIN_PRIVILEGED (void)
 {
@@ -301,7 +166,6 @@ BEGIN_PRIVILEGED (void)
  * END_PRIVILEGED () won't return if an error occurs.
  *
  */
-
 static void
 END_PRIVILEGED (void)
 {
@@ -317,14 +181,12 @@ END_PRIVILEGED (void)
 }
 
 #ifdef DL_STANDALONE
-
 /*
  * Usage information.
  *
  * This function doesn't return.
  *
  */
-
 static void
 usage (const char *av0)
 {
@@ -346,7 +208,6 @@ usage (const char *av0)
 
   exit (DL_EX_ERROR);
 }
-
 #endif
 
 /*
@@ -396,7 +257,6 @@ usage (const char *av0)
  *
  * tlr, Jul 15 1998
  */
-
 static int
 dotlock_check_stats (struct stat *fsb, struct stat *lsb)
 {
@@ -421,6 +281,110 @@ dotlock_check_stats (struct stat *fsb, struct stat *lsb)
     return -1;
   }
 
+  return 0;
+}
+
+/*
+ * Expand a symbolic link.
+ *
+ * This function expects newpath to have space for
+ * at least _POSIX_PATH_MAX characters.
+ *
+ */
+static void
+dotlock_expand_link (char *newpath, const char *path, const char *link)
+{
+  const char *lb = NULL;
+  size_t len;
+
+  /* link is full path */
+  if (*link == '/')
+  {
+    strfcpy (newpath, link, _POSIX_PATH_MAX);
+    return;
+  }
+
+  if ((lb = strrchr (path, '/')) == NULL)
+  {
+    /* no path in link */
+    strfcpy (newpath, link, _POSIX_PATH_MAX);
+    return;
+  }
+
+  len = lb - path + 1;
+  memcpy (newpath, path, len);
+  strfcpy (newpath + len, link, _POSIX_PATH_MAX - len);
+}
+
+/*
+ * Check if a file can be locked at all.
+ *
+ * The same comment as for dotlock_lock () applies here.
+ *
+ */
+static int
+dotlock_try (void)
+{
+#ifdef USE_SETGID
+  struct stat sb;
+#endif
+
+  if (access (".", W_OK) == 0)
+    return DL_EX_OK;
+
+#ifdef USE_SETGID
+  if (stat (".", &sb) == 0)
+  {
+    if ((sb.st_mode & S_IWGRP) == S_IWGRP && sb.st_gid == MailGid)
+      return DL_EX_NEED_PRIVS;
+  }
+#endif
+
+  return DL_EX_IMPOSSIBLE;
+}
+
+/*
+ * Deference a chain of symbolic links
+ *
+ * The final path is written to d.
+ *
+ */
+static int
+dotlock_deference_symlink (char *d, size_t l, const char *path)
+{
+  struct stat sb;
+  char realpath[_POSIX_PATH_MAX];
+  const char *pathptr = path;
+  int count = 0;
+
+  while (count++ < MAXLINKS)
+  {
+    if (lstat (pathptr, &sb) == -1)
+    {
+      return -1;
+    }
+
+    if (S_ISLNK (sb.st_mode))
+    {
+      char linkfile[_POSIX_PATH_MAX];
+      char linkpath[_POSIX_PATH_MAX];
+      int len;
+
+      if ((len = readlink (pathptr, linkfile, sizeof (linkfile) - 1)) == -1)
+      {
+	return -1;
+      }
+
+      linkfile[len] = '\0';
+      dotlock_expand_link (linkpath, pathptr, linkfile);
+      strfcpy (realpath, linkpath, sizeof (realpath));
+      pathptr = realpath;
+    }
+    else
+      break;
+  }
+
+  strfcpy (d, pathptr, l);
   return 0;
 }
 
@@ -479,85 +443,7 @@ dotlock_prepare (char *bn, size_t l, const char *f, int _fd)
   return 0;
 }
 
-/*
- * Expand a symbolic link.
- *
- * This function expects newpath to have space for
- * at least _POSIX_PATH_MAX characters.
- *
- */
-
-static void
-dotlock_expand_link (char *newpath, const char *path, const char *link)
-{
-  const char *lb = NULL;
-  size_t len;
-
-  /* link is full path */
-  if (*link == '/')
-  {
-    strfcpy (newpath, link, _POSIX_PATH_MAX);
-    return;
-  }
-
-  if ((lb = strrchr (path, '/')) == NULL)
-  {
-    /* no path in link */
-    strfcpy (newpath, link, _POSIX_PATH_MAX);
-    return;
-  }
-
-  len = lb - path + 1;
-  memcpy (newpath, path, len);
-  strfcpy (newpath + len, link, _POSIX_PATH_MAX - len);
-}
-
-
-/*
- * Deference a chain of symbolic links
- *
- * The final path is written to d.
- *
- */
-
-static int
-dotlock_deference_symlink (char *d, size_t l, const char *path)
-{
-  struct stat sb;
-  char realpath[_POSIX_PATH_MAX];
-  const char *pathptr = path;
-  int count = 0;
-
-  while (count++ < MAXLINKS)
-  {
-    if (lstat (pathptr, &sb) == -1)
-    {
-      return -1;
-    }
-
-    if (S_ISLNK (sb.st_mode))
-    {
-      char linkfile[_POSIX_PATH_MAX];
-      char linkpath[_POSIX_PATH_MAX];
-      int len;
-
-      if ((len = readlink (pathptr, linkfile, sizeof (linkfile) - 1)) == -1)
-      {
-	return -1;
-      }
-
-      linkfile[len] = '\0';
-      dotlock_expand_link (linkpath, pathptr, linkfile);
-      strfcpy (realpath, linkpath, sizeof (realpath));
-      pathptr = realpath;
-    }
-    else
-      break;
-  }
-
-  strfcpy (d, pathptr, l);
-  return 0;
-}
+#define HARDMAXATTEMPTS 10
 
 /*
  * Dotlock a file.
@@ -567,9 +453,6 @@ dotlock_deference_symlink (char *d, size_t l, const char *path)
  * dotlock_prepare () before using this function!
  *
  */
-
-#define HARDMAXATTEMPTS 10
-
 static int
 dotlock_lock (const char *realpath)
 {
@@ -592,7 +475,6 @@ dotlock_lock (const char *realpath)
        (int) getpid ());
   snprintf (lockfile, sizeof (lockfile), "%s.lock", realpath);
 
-
   BEGIN_PRIVILEGED ();
 
   unlink (nfslockfile);
@@ -601,18 +483,15 @@ dotlock_lock (const char *realpath)
   {
     END_PRIVILEGED ();
 
-
     if (errno != EAGAIN)
     {
       return DL_EX_ERROR;
     }
 
-
     BEGIN_PRIVILEGED ();
   }
 
   END_PRIVILEGED ();
-
 
   close (fd);
 
@@ -673,14 +552,12 @@ dotlock_lock (const char *realpath)
   return DL_EX_OK;
 }
 
-
 /*
  * Unlock a file.
  *
  * The same comment as for dotlock_lock () applies here.
  *
  */
-
 static int
 dotlock_unlock (const char *realpath)
 {
@@ -719,31 +596,111 @@ dotlock_unlink (const char *realpath)
   return (i == 0) ?  DL_EX_OK : DL_EX_ERROR;
 }
 
-
-/*
- * Check if a file can be locked at all.
- *
- * The same comment as for dotlock_lock () applies here.
- *
- */
-
-static int
-dotlock_try (void)
+static int dotlock_dispatch (const char *f, int fd)
 {
-#ifdef USE_SETGID
-  struct stat sb;
-#endif
+  char realpath[_POSIX_PATH_MAX];
 
-  if (access (".", W_OK) == 0)
-    return DL_EX_OK;
+  /* If dotlock_prepare () succeeds [return value == 0],
+   * realpath contains the basename of f, and we have
+   * successfully changed our working directory to
+   * `dirname $f`.  Additionally, f has been opened for
+   * reading to verify that the user has at least read
+   * permissions on that file.
+   *
+   * For a more detailed explanation of all this, see the
+   * lengthy comment below.
+   */
 
-#ifdef USE_SETGID
-  if (stat (".", &sb) == 0)
-  {
-    if ((sb.st_mode & S_IWGRP) == S_IWGRP && sb.st_gid == MailGid)
-      return DL_EX_NEED_PRIVS;
-  }
-#endif
+  if (dotlock_prepare (realpath, sizeof (realpath), f, fd) != 0)
+    return DL_EX_ERROR;
 
-  return DL_EX_IMPOSSIBLE;
+  /* Actually perform the locking operation. */
+
+  if (DotlockFlags & DL_FL_TRY)
+    return dotlock_try ();
+  else if (DotlockFlags & DL_FL_UNLOCK)
+    return dotlock_unlock (realpath);
+  else if (DotlockFlags & DL_FL_UNLINK)
+    return dotlock_unlink (realpath);
+  else /* lock */
+    return dotlock_lock (realpath);
 }
+
+#ifndef DL_STANDALONE
+/*
+ * This function is intended to be invoked from within
+ * mutt instead of mx.c's invoke_dotlock ().
+ */
+int dotlock_invoke (const char *path, int fd, int flags, int retry)
+{
+  int currdir;
+  int r;
+
+  DotlockFlags = flags;
+
+  if ((currdir = open (".", O_RDONLY)) == -1)
+    return DL_EX_ERROR;
+
+  if (!(DotlockFlags & DL_FL_RETRY) || retry)
+    Retry = MAXLOCKATTEMPT;
+  else
+    Retry = 0;
+
+  r = dotlock_dispatch (path, fd);
+
+  fchdir (currdir);
+  close (currdir);
+
+  return r;
+}
+#endif  /* !DL_STANDALONE */
+
+
+#ifdef DL_STANDALONE
+
+#define check_flags(a) if (a & DL_FL_ACTIONS) usage (argv[0])
+
+int main (int argc, char **argv)
+{
+  int i;
+  char *p;
+
+  /* first, drop privileges */
+
+  if (dotlock_init_privs () == -1)
+    return DL_EX_ERROR;
+
+  /* determine the system's host name */
+
+  uname (&utsname);
+  if ((p = strchr (utsname.nodename, '.')))
+    *p = '\0';
+
+  /* parse the command line options. */
+  DotlockFlags = 0;
+
+  while ((i = getopt (argc, argv, "dtfupr:")) != EOF)
+  {
+    switch (i)
+    {
+      /* actions, mutually exclusive */
+      case 't': check_flags (DotlockFlags); DotlockFlags |= DL_FL_TRY; break;
+      case 'd': check_flags (DotlockFlags); DotlockFlags |= DL_FL_UNLINK; break;
+      case 'u': check_flags (DotlockFlags); DotlockFlags |= DL_FL_UNLOCK; break;
+
+      /* other flags */
+      case 'f': DotlockFlags |= DL_FL_FORCE; break;
+      case 'p': DotlockFlags |= DL_FL_USEPRIV; break;
+      case 'r': DotlockFlags |= DL_FL_RETRY; Retry = atoi (optarg); break;
+
+      default: usage (argv[0]);
+    }
+  }
+
+  if (optind == argc || Retry < 0)
+    usage (argv[0]);
+
+  return dotlock_dispatch (argv[optind], -1);
+}
+#endif
+

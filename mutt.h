@@ -635,40 +635,30 @@ typedef struct replace_list_t
   struct replace_list_t *next;
 } REPLACE_LIST;
 
-static inline LIST *mutt_new_list()
+static inline LIST *mutt_new_list(void)
 {
   return safe_calloc (1, sizeof (LIST));
 }
 
-static inline RX_LIST *mutt_new_rx_list()
-{
-  return safe_calloc (1, sizeof (RX_LIST));
-}
-
-static inline REPLACE_LIST *mutt_new_replace_list()
-{
-  return safe_calloc (1, sizeof (REPLACE_LIST));
-}
-
-void mutt_free_list (LIST **);
-void mutt_free_rx_list (RX_LIST **);
-void mutt_free_replace_list (REPLACE_LIST **);
-LIST *mutt_copy_list (LIST *);
-int mutt_matches_ignore (const char *);
-int mutt_matches_list (const char *, LIST *);
+void mutt_free_list(LIST **list);
+void mutt_free_rx_list(RX_LIST **list);
+void mutt_free_replace_list(REPLACE_LIST **list);
+LIST *mutt_copy_list(LIST *p);
+int mutt_matches_ignore(const char *s);
+int mutt_matches_list(const char *s, LIST *t);
 
 /* add an element to a list */
-LIST *mutt_add_list (LIST *, const char *);
-LIST *mutt_add_list_n (LIST*, const void *, size_t);
-LIST *mutt_find_list (LIST *, const char *);
-int mutt_remove_from_rx_list (RX_LIST **l, const char *str);
+LIST *mutt_add_list(LIST *head, const char *data);
+LIST *mutt_add_list_n(LIST *head, const void *data, size_t len);
+LIST *mutt_find_list(LIST *l, const char *data);
+int mutt_remove_from_rx_list(RX_LIST **l, const char *str);
 
 /* handle stack */
 void mutt_push_list(LIST **head, const char *data);
 int mutt_pop_list(LIST **head);
 const char *mutt_front_list(LIST *head);
 
-void mutt_init (int, LIST *);
+void mutt_init (int skip_sys_rc, LIST *commands);
 
 typedef struct alias
 {
@@ -717,7 +707,7 @@ typedef struct envelope
   unsigned int refs_changed : 1; /* References changed to break thread */
 } ENVELOPE;
 
-static inline ENVELOPE *mutt_new_envelope()
+static inline ENVELOPE *mutt_new_envelope(void)
 {
     return safe_calloc (1, sizeof (ENVELOPE));
 }
@@ -729,7 +719,7 @@ typedef struct parameter
   struct parameter *next;
 } PARAMETER;
 
-static inline PARAMETER *mutt_new_parameter()
+static inline PARAMETER *mutt_new_parameter(void)
 {
     return safe_calloc (1, sizeof (PARAMETER));
 }
@@ -913,7 +903,7 @@ typedef struct header
   char *maildir_flags;		/* unknown maildir flags */
 } HEADER;
 
-static inline HEADER *mutt_new_header()
+static inline HEADER *mutt_new_header(void)
 {
     return safe_calloc (1, sizeof (HEADER));
 }
@@ -1028,15 +1018,15 @@ struct _message;
  */
 struct mx_ops
 {
-  int (*open) (struct _context *);
-  int (*open_append) (struct _context *, int flags);
-  int (*close) (struct _context *);
+  int (*open) (struct _context *ctx);
+  int (*open_append) (struct _context *ctx, int flags);
+  int (*close) (struct _context *ctx);
   int (*check) (struct _context *ctx, int *index_hint);
   int (*sync) (struct _context *ctx, int *index_hint);
-  int (*open_msg) (struct _context *, struct _message *, int msgno);
-  int (*close_msg) (struct _context *, struct _message *);
-  int (*commit_msg) (struct _context *, struct _message *);
-  int (*open_new_msg) (struct _message *, struct _context *, HEADER *);
+  int (*open_msg) (struct _context *ctx, struct _message *msg, int msgno);
+  int (*close_msg) (struct _context *ctx, struct _message *msg);
+  int (*commit_msg) (struct _context *ctx, struct _message *msg);
+  int (*open_new_msg) (struct _message *msg, struct _context *ctx, HEADER *hdr);
 };
 
 #include "mutt_menu.h"
@@ -1115,7 +1105,7 @@ typedef struct
   int	 tabs;
 } ENTER_STATE;
 
-static inline ENTER_STATE *mutt_new_enter_state()
+static inline ENTER_STATE *mutt_new_enter_state(void)
 {
     return safe_calloc (1, sizeof (ENTER_STATE));
 }
@@ -1135,11 +1125,11 @@ static inline ENTER_STATE *mutt_new_enter_state()
 #define state_puts(x,y) fputs(x,(y)->fpout)
 #define state_putc(x,y) fputc(x,(y)->fpout)
 
-void state_mark_attach (STATE *);
-void state_attach_puts (const char *, STATE *);
-void state_prefix_putc (char, STATE *);
-int  state_printf(STATE *, const char *, ...);
-int state_putws (const wchar_t *, STATE *);
+void state_mark_attach(STATE *s);
+void state_attach_puts(const char *t, STATE *s);
+void state_prefix_putc(char c, STATE *s);
+int state_printf(STATE *s, const char *fmt, ...);
+int state_putws(const wchar_t *ws, STATE *s);
 
 /* for attachment counter */
 typedef struct
