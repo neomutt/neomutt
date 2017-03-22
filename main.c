@@ -463,7 +463,7 @@ int main (int argc, char **argv, char **environ)
   if (alias_queries)
   {
     int rv = 0;
-    ADDRESS *a;
+    ADDRESS *a = NULL;
     for (; optind < argc; optind++)
       alias_queries = mutt_add_list (alias_queries, argv[optind]);
     for (; alias_queries; alias_queries = alias_queries->next)
@@ -662,7 +662,7 @@ int main (int argc, char **argv, char **environ)
         HEADER *context_hdr = NULL;
         ENVELOPE *opts_env = msg->env;
         struct stat st;
-        LIST *uh, **last_uhp;
+        LIST *uh = NULL, **last_uhp = NULL;
 
         sendflags |= SENDDRAFTFILE;
 

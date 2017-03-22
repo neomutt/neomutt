@@ -52,7 +52,7 @@
 int imap_expand_path (char* path, size_t len)
 {
   IMAP_MBOX mx;
-  IMAP_DATA* idata;
+  IMAP_DATA* idata = NULL;
   ciss_url_t url;
   char fixedpath[LONG_STRING];
   int rc;
@@ -122,7 +122,7 @@ void imap_get_parent (char *output, const char *mbox, size_t olen, char delim)
 void imap_get_parent_path (char *output, const char *path, size_t olen)
 {
   IMAP_MBOX mx;
-  IMAP_DATA *idata;
+  IMAP_DATA *idata = NULL;
   char mbox[LONG_STRING] = "";
 
   if (imap_parse_path (path, &mx) < 0)
@@ -155,7 +155,7 @@ void imap_get_parent_path (char *output, const char *path, size_t olen)
 void imap_clean_path (char *path, size_t plen)
 {
   IMAP_MBOX mx;
-  IMAP_DATA *idata;
+  IMAP_DATA *idata = NULL;
   char mbox[LONG_STRING] = "";
 
   if (imap_parse_path (path, &mx) < 0)
@@ -215,7 +215,7 @@ void imap_hcache_close (IMAP_DATA* idata)
 HEADER* imap_hcache_get (IMAP_DATA* idata, unsigned int uid)
 {
   char key[16];
-  void* uv;
+  void* uv = NULL;
   HEADER* h = NULL;
 
   if (!idata->hcache)
@@ -267,10 +267,10 @@ int imap_parse_path (const char* path, IMAP_MBOX* mx)
 {
   static unsigned short ImapPort = 0;
   static unsigned short ImapsPort = 0;
-  struct servent* service;
+  struct servent* service = NULL;
   char tmp[128];
   ciss_url_t url;
-  char *c;
+  char *c = NULL;
   int n;
 
   if (!ImapPort)
@@ -370,8 +370,8 @@ int imap_parse_path (const char* path, IMAP_MBOX* mx)
 /* silly helper for mailbox name string comparisons, because of INBOX */
 int imap_mxcmp (const char* mx1, const char* mx2)
 {
-  char* b1;
-  char* b2;
+  char* b1 = NULL;
+  char* b2 = NULL;
   int rc;
 
   if (!mx1 || !*mx1)
@@ -400,7 +400,7 @@ void imap_pretty_mailbox (char* path)
 {
   IMAP_MBOX home, target;
   ciss_url_t url;
-  char* delim;
+  char* delim = NULL;
   int tlen;
   int hlen = 0;
   char home_match = 0;
@@ -549,7 +549,7 @@ char *imap_fix_path (IMAP_DATA *idata, const char *mailbox, char *path,
 void imap_cachepath(IMAP_DATA* idata, const char* mailbox, char* dest,
                     size_t dlen)
 {
-  char* s;
+  char* s = NULL;
   const char* p = mailbox;
 
   for (s = dest; p && *p && dlen; dlen--)
@@ -576,8 +576,8 @@ void imap_cachepath(IMAP_DATA* idata, const char* mailbox, char* dest,
  *   bytes, return 0 on success, -1 on failure. */
 int imap_get_literal_count(const char *buf, long *bytes)
 {
-  char *pc;
-  char *pn;
+  char *pc = NULL;
+  char *pn = NULL;
 
   if (!buf || !(pc = strchr (buf, '{')))
     return -1;
@@ -710,8 +710,8 @@ void imap_qualify_path (char *dest, size_t len, IMAP_MBOX *mx, char* path)
 void imap_quote_string (char *dest, size_t dlen, const char *src)
 {
   static const char quote[] = "\"\\";
-  char *pt;
-  const char *s;
+  char *pt = NULL;
+  const char *s = NULL;
 
   pt = dest;
   s  = src;
@@ -777,7 +777,7 @@ void imap_unquote_string (char *s)
  */
 void imap_munge_mbox_name (IMAP_DATA *idata, char *dest, size_t dlen, const char *src)
 {
-  char *buf;
+  char *buf = NULL;
 
   buf = safe_strdup (src);
   imap_utf_encode (idata, &buf);
@@ -789,7 +789,7 @@ void imap_munge_mbox_name (IMAP_DATA *idata, char *dest, size_t dlen, const char
 
 void imap_unmunge_mbox_name (IMAP_DATA *idata, char *s)
 {
-  char *buf;
+  char *buf = NULL;
 
   imap_unquote_string(s);
 
@@ -838,8 +838,8 @@ static void alrm_handler (int sig)
 
 void imap_keepalive (void)
 {
-  CONNECTION *conn;
-  IMAP_DATA *idata;
+  CONNECTION *conn = NULL;
+  IMAP_DATA *idata = NULL;
   time_t now = time(NULL);
 
   for (conn = mutt_socket_head(); conn; conn = conn->next)
@@ -903,7 +903,7 @@ int imap_wait_keepalive (pid_t pid)
 /* Allow/disallow re-opening a folder upon expunge. */
 void imap_allow_reopen (CONTEXT *ctx)
 {
-  IMAP_DATA *idata;
+  IMAP_DATA *idata = NULL;
   if (!ctx || !ctx->data || ctx->magic != MUTT_IMAP)
       return;
 
@@ -914,7 +914,7 @@ void imap_allow_reopen (CONTEXT *ctx)
 
 void imap_disallow_reopen (CONTEXT *ctx)
 {
-  IMAP_DATA *idata;
+  IMAP_DATA *idata = NULL;
   if (!ctx || !ctx->data || ctx->magic != MUTT_IMAP)
       return;
 

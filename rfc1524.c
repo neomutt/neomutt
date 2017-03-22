@@ -79,7 +79,7 @@ int rfc1524_expand_command (BODY *a, char *filename, char *_type,
       {
 	char param[STRING];
 	char pvalue[STRING];
-	char *_pvalue;
+	char *_pvalue = NULL;
 	int z = 0;
 
 	x++;
@@ -118,7 +118,7 @@ int rfc1524_expand_command (BODY *a, char *filename, char *_type,
  * returns start of next field or NULL */
 static char *get_field (char *s)
 {
-  char *ch;
+  char *ch = NULL;
 
   if (!s)
     return NULL;
@@ -170,11 +170,11 @@ static int rfc1524_mailcap_parse (BODY *a,
 				  rfc1524_entry *entry,
 				  int opt)
 {
-  FILE *fp;
+  FILE *fp = NULL;
   char *buf = NULL;
   size_t buflen;
-  char *ch;
-  char *field;
+  char *ch = NULL;
+  char *field = NULL;
   int found = false;
   int copiousoutput;
   int composecommand;
@@ -446,7 +446,7 @@ int rfc1524_expand_filename (char *nametemplate,
 			     size_t nflen)
 {
   int i, j, k, ps;
-  char *s;
+  char *s = NULL;
   short lmatch = 0, rmatch = 0;
   char left[_POSIX_PATH_MAX];
   char right[_POSIX_PATH_MAX];
@@ -567,7 +567,7 @@ int rfc1524_expand_filename (char *nametemplate,
 
 int mutt_rename_file (char *oldfile, char *newfile)
 {
-  FILE *ofp, *nfp;
+  FILE *ofp = NULL, *nfp = NULL;
 
   if (access (oldfile, F_OK) != 0)
     return 1;

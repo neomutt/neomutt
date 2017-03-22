@@ -40,8 +40,8 @@
 
 static void imap_update_context (IMAP_DATA *idata, int oldmsgcount)
 {
-  CONTEXT *ctx;
-  HEADER *h;
+  CONTEXT *ctx = NULL;
+  HEADER *h = NULL;
   int msgno;
 
   ctx = idata->ctx;
@@ -215,7 +215,7 @@ static char* msg_parse_flags (IMAP_HEADER* h, char* s)
 static int msg_parse_fetch (IMAP_HEADER *h, char *s)
 {
   char tmp[SHORT_STRING];
-  char *ptmp;
+  char *ptmp = NULL;
 
   if (!s)
     return -1;
@@ -293,7 +293,7 @@ static int msg_parse_fetch (IMAP_HEADER *h, char *s)
  *     -2 if the string is a corrupt fetch response */
 static int msg_fetch_header (CONTEXT* ctx, IMAP_HEADER* h, char* buf, FILE* fp)
 {
-  IMAP_DATA* idata;
+  IMAP_DATA* idata = NULL;
   long bytes;
   int rc = -1; /* default now is that string isn't FETCH response*/
 
@@ -359,13 +359,13 @@ static void flush_buffer(char *buf, size_t *len, CONNECTION *conn)
  */
 int imap_read_headers (IMAP_DATA* idata, int msgbegin, int msgend)
 {
-  CONTEXT* ctx;
+  CONTEXT* ctx = NULL;
   char *hdrreq = NULL;
-  FILE *fp;
+  FILE *fp = NULL;
   char tempfile[_POSIX_PATH_MAX];
   int msgno, idx = msgbegin - 1;
   IMAP_HEADER h;
-  IMAP_STATUS* status;
+  IMAP_STATUS* status = NULL;
   int rc, mfhrc, oldmsgcount;
   int fetchlast = 0;
   int maxuid = 0;
@@ -540,7 +540,7 @@ int imap_read_headers (IMAP_DATA* idata, int msgbegin, int msgend)
     /* we may get notification of new mail while fetching headers */
     if (msgno + 1 > fetchlast)
     {
-      char *cmd;
+      char *cmd = NULL;
 
       fetchlast = msgend + 1;
       safe_asprintf (&cmd, "FETCH %d:%d (UID FLAGS INTERNALDATE RFC822.SIZE %s)",
@@ -695,17 +695,17 @@ error_out_0:
 
 int imap_fetch_message (CONTEXT *ctx, MESSAGE *msg, int msgno)
 {
-  IMAP_DATA* idata;
-  HEADER* h;
-  ENVELOPE* newenv;
+  IMAP_DATA* idata = NULL;
+  HEADER* h = NULL;
+  ENVELOPE* newenv = NULL;
   char buf[LONG_STRING];
   char path[_POSIX_PATH_MAX];
-  char *pc;
+  char *pc = NULL;
   long bytes;
   progress_t progressbar;
   int uid;
   int cacheno;
-  IMAP_CACHE *cache;
+  IMAP_CACHE *cache = NULL;
   int read;
   int rc;
 
@@ -915,8 +915,8 @@ int imap_commit_message (CONTEXT *ctx, MESSAGE *msg)
 
 int imap_append_message (CONTEXT *ctx, MESSAGE *msg)
 {
-  IMAP_DATA* idata;
-  FILE *fp;
+  IMAP_DATA* idata = NULL;
+  FILE *fp = NULL;
   char buf[LONG_STRING];
   char mbox[LONG_STRING];
   char mailbox[LONG_STRING];
@@ -988,7 +988,7 @@ int imap_append_message (CONTEXT *ctx, MESSAGE *msg)
 
   if (rc != IMAP_CMD_RESPOND)
   {
-    char *pc;
+    char *pc = NULL;
 
     mutt_debug (1, "imap_append_message(): command failed: %s\n", idata->buf);
 
@@ -1028,7 +1028,7 @@ int imap_append_message (CONTEXT *ctx, MESSAGE *msg)
 
   if (!imap_code (idata->buf))
   {
-    char *pc;
+    char *pc = NULL;
 
     mutt_debug (1, "imap_append_message(): command failed: %s\n", idata->buf);
     pc = idata->buf + SEQLEN;
@@ -1055,7 +1055,7 @@ int imap_append_message (CONTEXT *ctx, MESSAGE *msg)
  *       1: non-fatal error - try fetch/append */
 int imap_copy_messages (CONTEXT* ctx, HEADER* h, char* dest, int delete)
 {
-  IMAP_DATA* idata;
+  IMAP_DATA* idata = NULL;
   BUFFER cmd, sync_cmd;
   char mbox[LONG_STRING];
   char mmbox[LONG_STRING];
@@ -1252,7 +1252,7 @@ int imap_cache_clean (IMAP_DATA* idata)
  *   appear in the folder flags list. Why wouldn't they? */
 void imap_add_keywords (char* s, HEADER* h, LIST* mailbox_flags, size_t slen)
 {
-  LIST *keywords;
+  LIST *keywords = NULL;
 
   if (!mailbox_flags || !HEADER_DATA(h) || !HEADER_DATA(h)->keywords)
     return;
@@ -1287,7 +1287,7 @@ char* imap_set_flags (IMAP_DATA* idata, HEADER* h, char* s)
 {
   CONTEXT* ctx = idata->ctx;
   IMAP_HEADER newh;
-  IMAP_HEADER_DATA* hd;
+  IMAP_HEADER_DATA* hd = NULL;
   unsigned char readonly;
 
   memset (&newh, 0, sizeof (newh));

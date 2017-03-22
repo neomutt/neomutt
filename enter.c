@@ -122,7 +122,7 @@ static size_t my_mbstowcs (wchar_t **pwbuf, size_t *pwbuflen, size_t i, char *bu
   wchar_t wc;
   mbstate_t st;
   size_t k;
-  wchar_t *wbuf;
+  wchar_t *wbuf = NULL;
   size_t wbuflen;
 
   wbuf = *pwbuf, wbuflen = *pwbuflen;
@@ -224,7 +224,7 @@ int _mutt_enter_string (char *buf, size_t buflen, int col,
   int first = 1;
   int ch, w, r;
   size_t i;
-  wchar_t *tempbuf = 0;
+  wchar_t *tempbuf = NULL;
   size_t templen = 0;
   history_class_t hclass;
   wchar_t wc;

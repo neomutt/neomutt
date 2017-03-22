@@ -49,7 +49,7 @@ struct rfc2231_parameter
 
 static void purge_empty_parameters (PARAMETER **headp)
 {
-  PARAMETER *p, *q, **last;
+  PARAMETER *p = NULL, *q = NULL, **last = NULL;
 
   for (last = headp, p = *headp; p; p = q)
   {
@@ -68,7 +68,7 @@ static void purge_empty_parameters (PARAMETER **headp)
 
 static char *rfc2231_get_charset (char *value, char *charset, size_t chslen)
 {
-  char *t, *u;
+  char *t = NULL, *u = NULL;
 
   if (!(t = strchr (value, '\'')))
   {
@@ -87,7 +87,7 @@ static char *rfc2231_get_charset (char *value, char *charset, size_t chslen)
 
 static void rfc2231_decode_one (char *dest, char *src)
 {
-  char *d;
+  char *d = NULL;
 
   for (d = dest; *src; src++)
   {
@@ -150,12 +150,12 @@ static void rfc2231_free_parameter (struct rfc2231_parameter **p)
 static void rfc2231_join_continuations (PARAMETER **head,
 					struct rfc2231_parameter *par)
 {
-  struct rfc2231_parameter *q;
+  struct rfc2231_parameter *q = NULL;
 
   char attribute[STRING];
   char charset[STRING];
   char *value = NULL;
-  char *valp;
+  char *valp = NULL;
   int encoded;
 
   size_t l, vl;
@@ -204,12 +204,12 @@ void rfc2231_decode_parameters (PARAMETER **headp)
 {
   PARAMETER *head = NULL;
   PARAMETER **last;
-  PARAMETER *p, *q;
+  PARAMETER *p = NULL, *q = NULL;
 
   struct rfc2231_parameter *conthead = NULL;
-  struct rfc2231_parameter *conttmp;
+  struct rfc2231_parameter *conttmp = NULL;
 
-  char *s, *t;
+  char *s = NULL, *t = NULL;
   char charset[STRING];
 
   int encoded;
@@ -299,7 +299,7 @@ void rfc2231_decode_parameters (PARAMETER **headp)
 int rfc2231_encode_string (char **pd)
 {
   int ext = 0, encode = 0;
-  char *charset, *s, *t, *e, *d = 0;
+  char *charset = NULL, *s = NULL, *t = NULL, *e = NULL, *d = NULL;
   size_t slen, dlen = 0;
 
   /*

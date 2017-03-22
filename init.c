@@ -92,7 +92,7 @@ static void myvar_set (const char* var, const char* val)
 static void myvar_del (const char* var)
 {
   myvar_t **cur;
-  myvar_t *tmp;
+  myvar_t *tmp = NULL;
 
 
   for (cur = &MyVars; *cur; cur = &((*cur)->next))
@@ -129,8 +129,8 @@ static void toggle_quadoption (int opt)
 static int parse_regex(int idx, BUFFER *tmp, BUFFER *err)
 {
   int e, flags = 0;
-  const char *p;
-  regex_t *rx;
+  const char *p = NULL;
+  regex_t *rx = NULL;
   REGEXP *ptr = (REGEXP *) MuttVars[idx].data;
 
   if (!ptr->pattern || (mutt_strcmp(ptr->pattern, tmp->data) != 0))
@@ -273,10 +273,10 @@ static void free_mbchar_table (mbchar_table **t)
 
 static mbchar_table *parse_mbchar_table (const char *s)
 {
-  mbchar_table *t;
+  mbchar_table *t = NULL;
   size_t slen, k;
   mbstate_t mbstate;
-  char *d;
+  char *d = NULL;
 
   t = safe_calloc (1, sizeof (mbchar_table));
   slen = mutt_strlen (s);
@@ -486,7 +486,7 @@ int mutt_option_set(const struct option_t *val, BUFFER *err)
 
 static void free_opt (struct option_t* p)
 {
-  REGEXP* pp;
+  REGEXP* pp = NULL;
 
   switch (p->type & DT_MASK)
   {
@@ -528,7 +528,7 @@ void mutt_free_opts (void)
 
 static void add_to_list (LIST **list, const char *str)
 {
-  LIST *t, *last = NULL;
+  LIST *t = NULL, *last = NULL;
 
   /* don't add a NULL or empty string to the list */
   if (!str || *str == '\0')
@@ -568,8 +568,8 @@ static RX_LIST *new_rx_list(void)
 
 int mutt_add_to_rx_list (RX_LIST **list, const char *s, int flags, BUFFER *err)
 {
-  RX_LIST *t, *last = NULL;
-  REGEXP *rx;
+  RX_LIST *t = NULL, *last = NULL;
+  REGEXP *rx = NULL;
 
   if (!s || !*s)
     return 0;
@@ -613,7 +613,7 @@ int mutt_add_to_rx_list (RX_LIST **list, const char *s, int flags, BUFFER *err)
 
 static int remove_from_replace_list (REPLACE_LIST **list, const char *pat)
 {
-  REPLACE_LIST *cur, *prev;
+  REPLACE_LIST *cur = NULL, *prev = NULL;
   int nremoved = 0;
 
   /* Being first is a special case. */
@@ -656,9 +656,9 @@ static REPLACE_LIST *new_replace_list(void)
 static int add_to_replace_list (REPLACE_LIST **list, const char *pat, const char *templ, BUFFER *err)
 {
   REPLACE_LIST *t = NULL, *last = NULL;
-  REGEXP *rx;
+  REGEXP *rx = NULL;
   int n;
-  const char *p;
+  const char *p = NULL;
 
   if (!pat || !*pat || !templ)
     return 0;
@@ -739,7 +739,7 @@ static int add_to_replace_list (REPLACE_LIST **list, const char *pat, const char
 
 static void remove_from_list (LIST **l, const char *str)
 {
-  LIST *p, *last = NULL;
+  LIST *p = NULL, *last = NULL;
 
   if (mutt_strcmp ("*", str) == 0)
     mutt_free_list (l);    /* ``unCMD *'' means delete all current entries */
@@ -1329,10 +1329,10 @@ static void _attachments_clean (void)
 
 static int parse_attach_list (BUFFER *buf, BUFFER *s, LIST **ldata, BUFFER *err)
 {
-  ATTACH_MATCH *a;
-  LIST *listp, *lastp;
-  char *p;
-  char *tmpminor;
+  ATTACH_MATCH *a = NULL;
+  LIST *listp = NULL, *lastp = NULL;
+  char *p = NULL;
+  char *tmpminor = NULL;
   int len;
   int ret;
 
@@ -1420,11 +1420,11 @@ static int parse_attach_list (BUFFER *buf, BUFFER *s, LIST **ldata, BUFFER *err)
 
 static int parse_unattach_list (BUFFER *buf, BUFFER *s, LIST **ldata, BUFFER *err)
 {
-  ATTACH_MATCH *a;
-  LIST *lp, *lastp, *newlp;
+  ATTACH_MATCH *a = NULL;
+  LIST *lp = NULL, *lastp = NULL, *newlp = NULL;
   char *tmp = NULL;
   int major;
-  char *minor;
+  char *minor = NULL;
 
   do
   {
@@ -1504,7 +1504,7 @@ static int print_attach_list (LIST *lp, char op, char *name)
 
 static int parse_attachments (BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err)
 {
-  char op, *category;
+  char op, *category = NULL;
   LIST **listp;
 
   mutt_extract_token(buf, s, 0);
@@ -1556,7 +1556,7 @@ static int parse_attachments (BUFFER *buf, BUFFER *s, unsigned long data, BUFFER
 
 static int parse_unattachments (BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err)
 {
-  char op, *p;
+  char op, *p = NULL;
   LIST **listp;
 
   mutt_extract_token(buf, s, 0);
@@ -1657,7 +1657,7 @@ static int parse_unsubscribe (BUFFER *buf, BUFFER *s, unsigned long data, BUFFER
 
 static int parse_unalias (BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err)
 {
-  ALIAS *tmp, *last = NULL;
+  ALIAS *tmp = NULL, *last = NULL;
 
   do
   {
@@ -1770,7 +1770,7 @@ static int parse_alias (BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err)
 #ifdef DEBUG
   if (debuglevel >= 2)
   {
-    ADDRESS *a;
+    ADDRESS *a = NULL;
     /* A group is terminated with an empty address, so check a->mailbox */
     for (a = tmp->addr; a && a->mailbox; a = a->next)
     {
@@ -1794,7 +1794,7 @@ parse_unmy_hdr (BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err)
 {
   LIST *last = NULL;
   LIST *tmp = UserHeader;
-  LIST *ptr;
+  LIST *ptr = NULL;
   size_t l;
 
   do
@@ -1838,9 +1838,9 @@ parse_unmy_hdr (BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err)
 
 static int parse_my_hdr (BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err)
 {
-  LIST *tmp;
+  LIST *tmp = NULL;
   size_t keylen;
-  char *p;
+  char *p = NULL;
 
   mutt_extract_token (buf, s, MUTT_TOKEN_SPACE | MUTT_TOKEN_QUOTE);
   if ((p = strpbrk (buf->data, ": \t")) == NULL || *p != ':')
@@ -2052,7 +2052,7 @@ static size_t escape_string (char *dst, size_t len, const char* src)
 
 static void pretty_var (char *dst, size_t len, const char *option, const char *val)
 {
-  char *p;
+  char *p = NULL;
 
   if (!len)
     return;
@@ -2073,7 +2073,7 @@ static void pretty_var (char *dst, size_t len, const char *option, const char *v
 
 static int check_charset (struct option_t *opt, const char *val)
 {
-  char *p, *q = NULL, *s = safe_strdup (val);
+  char *p = NULL, *q = NULL, *s = safe_strdup (val);
   int rc = 0, strict = strcmp (opt->option, "send_charset") == 0;
 
   if (!s)
@@ -2147,7 +2147,7 @@ void mutt_envlist_set (const char *name, const char *value)
 static int parse_setenv(BUFFER *tmp, BUFFER *s, unsigned long data, BUFFER *err)
 {
   int query, unset, len;
-  char *name, **save, **envp = envlist;
+  char *name = NULL, **save = NULL, **envp = envlist;
   int count = 0;
 
   query = 0;
@@ -2248,9 +2248,9 @@ static int parse_set (BUFFER *tmp, BUFFER *s, unsigned long data, BUFFER *err)
 {
   int query, unset, inv, reset, r = 0;
   int idx = -1;
-  const char *p;
+  const char *p = NULL;
   char scratch[_POSIX_PATH_MAX];
-  char* myvar;
+  char* myvar = NULL;
 
   while (MoreArgs (s))
   {
@@ -2816,7 +2816,7 @@ static LIST *MuttrcStack;
  */
 static int to_absolute_path(char *path, const char *reference)
 {
-  char *ref_tmp, *dirpath;
+  char *ref_tmp = NULL, *dirpath = NULL;
   char abs_path[PATH_MAX];
   int path_len;
 
@@ -2853,7 +2853,7 @@ static int to_absolute_path(char *path, const char *reference)
    so that we can pause to let the user know...  */
 static int source_rc (const char *rcfile_path, BUFFER *err)
 {
-  FILE *f;
+  FILE *f = NULL;
   int line = 0, rc = 0, conv = 0, line_rc;
   BUFFER token;
   char *linebuf = NULL;
@@ -3102,7 +3102,7 @@ int mutt_command_complete (char *buffer, size_t len, int pos, int numtabs)
   char *pt = buffer;
   int num;
   int spaces; /* keep track of the number of leading spaces on the line */
-  myvar_t *myv;
+  myvar_t *myv = NULL;
 
   SKIPWS (buffer);
   spaces = buffer - pt;
@@ -3276,7 +3276,7 @@ int mutt_var_value_complete (char *buffer, size_t len, int pos)
   {
     int idx;
     char val[LONG_STRING];
-    const char *myvarval;
+    const char *myvarval = NULL;
 
     strfcpy (var, pt, sizeof (var));
     /* ignore the trailing '=' when comparing */
@@ -3363,7 +3363,7 @@ static const char* rstrnstr(const char* haystack,
 {
   int needle_length = strlen(needle);
   const char* haystack_end = haystack + haystack_length - needle_length;
-  const char* p;
+  const char* p = NULL;
 
   for (p = haystack_end; p >= haystack; --p)
   {
@@ -3509,8 +3509,8 @@ int var_to_string (int idx, char* val, size_t len)
   }
   else if (DTYPE (MuttVars[idx].type) == DT_SORT)
   {
-    const struct mapping_t *map;
-    const char *p;
+    const struct mapping_t *map = NULL;
+    const char *p = NULL;
 
     switch (MuttVars[idx].type & DT_SUBTYPE_MASK)
     {
@@ -3538,7 +3538,7 @@ int var_to_string (int idx, char* val, size_t len)
   }
   else if (DTYPE (MuttVars[idx].type) == DT_MAGIC)
   {
-    char *p;
+    char *p = NULL;
 
     switch (DefaultMagic)
     {
@@ -3572,7 +3572,7 @@ int var_to_string (int idx, char* val, size_t len)
 /* Implement the -Q command line flag */
 int mutt_query_variables (LIST *queries)
 {
-  LIST *p;
+  LIST *p = NULL;
 
   char command[STRING];
 
@@ -3759,7 +3759,7 @@ static char* find_cfg (const char *home, const char *xdg_cfg_home)
 
 void mutt_init (int skip_sys_rc, LIST *commands)
 {
-  struct passwd *pw;
+  struct passwd *pw = NULL;
   struct utsname utsname;
   char *p, buffer[STRING];
   char *domain = NULL;
@@ -3879,8 +3879,8 @@ void mutt_init (int skip_sys_rc, LIST *commands)
 
 #ifdef USE_NNTP
   {
-    FILE *f;
-    char *i;
+    FILE *f = NULL;
+    char *i = NULL;
 
     if ((f = safe_fopen (SYSCONFDIR "/nntpserver", "r")))
     {
@@ -4121,7 +4121,7 @@ void mutt_init (int skip_sys_rc, LIST *commands)
 
 int mutt_get_hook_type (const char *name)
 {
-  const struct command_t *c;
+  const struct command_t *c = NULL;
 
   for (c = Commands ; c->name ; c++)
     if (c->func == mutt_parse_hook && ascii_strcasecmp (c->name, name) == 0)
@@ -4162,11 +4162,11 @@ static int parse_group_context (group_context_t **ctx, BUFFER *buf, BUFFER *s, u
 #ifdef USE_NOTMUCH
 static int parse_tag_transforms (BUFFER *b, BUFFER *s, unsigned long data, BUFFER *err)
 {
-  char *tmp;
+  char *tmp = NULL;
 
   while (MoreArgs (s))
   {
-    char *tag, *transform;
+    char *tag = NULL, *transform = NULL;
 
     mutt_extract_token (b, s, 0);
     if (b->data && *b->data)
@@ -4193,11 +4193,11 @@ static int parse_tag_transforms (BUFFER *b, BUFFER *s, unsigned long data, BUFFE
 
 static int parse_tag_formats (BUFFER *b, BUFFER *s, unsigned long data, BUFFER *err)
 {
-  char *tmp;
+  char *tmp = NULL;
 
   while (MoreArgs (s))
   {
-    char *tag, *format;
+    char *tag = NULL, *format = NULL;
 
     mutt_extract_token (b, s, 0);
     if (b->data && *b->data)
@@ -4225,7 +4225,7 @@ static int parse_tag_formats (BUFFER *b, BUFFER *s, unsigned long data, BUFFER *
 
 const char* myvar_get (const char* var)
 {
-  myvar_t* cur;
+  myvar_t* cur = NULL;
 
   for (cur = MyVars; cur; cur = cur->next)
     if (!mutt_strcmp (cur->name, var))
@@ -4248,7 +4248,7 @@ int mutt_label_complete (char *buffer, size_t len, int numtabs)
   /* first TAB. Collect all the matches */
   if (numtabs == 1)
   {
-    struct hash_elem *entry;
+    struct hash_elem *entry = NULL;
     struct hash_walk_state state;
 
     Num_matched = 0;

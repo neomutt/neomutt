@@ -59,7 +59,7 @@ static const struct mapping_t AttachHelp[] = {
 void mutt_update_tree (ATTACHPTR **idx, short idxlen)
 {
   char buf[STRING];
-  char *s;
+  char *s = NULL;
   int x;
 
   for (x = 0; x < idxlen; x++)
@@ -104,7 +104,7 @@ ATTACHPTR **mutt_gen_attach_list (BODY *m,
 				  int level,
 				  int compose)
 {
-  ATTACHPTR *new;
+  ATTACHPTR *new = NULL;
   int i;
 
   for (; m; m = m->next)
@@ -430,7 +430,7 @@ static void prepend_curdir (char *dst, size_t dstlen)
 
 static int query_save_attachment (FILE *fp, BODY *body, HEADER *hdr, char **directory)
 {
-  char *prompt;
+  char *prompt = NULL;
   char buf[_POSIX_PATH_MAX], tfile[_POSIX_PATH_MAX];
   int is_message;
   int append = 0;
@@ -518,7 +518,7 @@ void mutt_save_attachment_list (FILE *fp, int tag, BODY *top, HEADER *hdr, MUTTM
   char *directory = NULL;
   int rc = 1;
   int last = menu ? menu->current : -1;
-  FILE *fpout;
+  FILE *fpout = NULL;
 
   buf[0] = 0;
 
@@ -633,7 +633,7 @@ query_pipe_attachment (char *command, FILE *fp, BODY *body, int filter)
 
 static void pipe_attachment (FILE *fp, BODY *b, STATE *state)
 {
-  FILE *ifp;
+  FILE *ifp = NULL;
 
   if (fp)
   {
@@ -759,7 +759,7 @@ static void print_attachment_list (FILE *fp, int tag, BODY *top, STATE *state)
 	  /* decode and print */
 
 	  char newfile[_POSIX_PATH_MAX] = "";
-	  FILE *ifp;
+	  FILE *ifp = NULL;
 
 	  mutt_mktemp (newfile, sizeof (newfile));
 	  if (mutt_decode_save_attachment (fp, top, newfile, MUTT_PRINTING, 0) == 0)
@@ -949,10 +949,10 @@ void mutt_view_attachments (HEADER *hdr)
   int need_secured = 0;
 
   char helpstr[LONG_STRING];
-  MUTTMENU *menu;
+  MUTTMENU *menu = NULL;
   BODY *cur = NULL;
-  MESSAGE *msg;
-  FILE *fp;
+  MESSAGE *msg = NULL;
+  FILE *fp = NULL;
   ATTACHPTR **idx = NULL;
   short idxlen = 0;
   short idxmax = 0;

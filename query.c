@@ -54,7 +54,7 @@ static const struct mapping_t QueryHelp[] = {
 
 static ADDRESS *result_to_addr (QUERY *r)
 {
-  static ADDRESS *tmp;
+  static ADDRESS *tmp = NULL;
 
   if (!(tmp = rfc822_cpy_adr (r->addr, 0)))
     return NULL;
@@ -68,7 +68,7 @@ static ADDRESS *result_to_addr (QUERY *r)
 
 static void free_query (QUERY **query)
 {
-  QUERY *p;
+  QUERY *p = NULL;
 
   if (!query)
     return;
@@ -87,7 +87,7 @@ static void free_query (QUERY **query)
 
 static QUERY *run_query (char *s, int quiet)
 {
-  FILE *fp;
+  FILE *fp = NULL;
   QUERY *first = NULL;
   QUERY *cur = NULL;
   char cmd[_POSIX_PATH_MAX];
@@ -95,7 +95,7 @@ static QUERY *run_query (char *s, int quiet)
   size_t buflen;
   int dummy = 0;
   char msg[STRING];
-  char *p;
+  char *p = NULL;
   pid_t thepid;
 
 
@@ -253,7 +253,7 @@ static int query_tag (MUTTMENU *menu, int n, int m)
 
 static void query_menu (char *buf, size_t buflen, QUERY *results, int retbuf)
 {
-  MUTTMENU *menu;
+  MUTTMENU *menu = NULL;
   HEADER *msg = NULL;
   ENTRY *QueryTable = NULL;
   QUERY *queryp = NULL;
@@ -487,7 +487,7 @@ static void query_menu (char *buf, size_t buflen, QUERY *results, int retbuf)
 int mutt_query_complete (char *buf, size_t buflen)
 {
   QUERY *results = NULL;
-  ADDRESS *tmpa;
+  ADDRESS *tmpa = NULL;
 
   if (!QueryCmd)
   {

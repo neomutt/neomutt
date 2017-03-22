@@ -55,7 +55,7 @@ static const char B64Chars[64] = {
 static char *utf7_to_utf8 (const char *u7, size_t u7len, char **u8,
   size_t *u8len)
 {
-  char *buf, *p;
+  char *buf = NULL, *p = NULL;
   int b, ch, k;
 
   p = buf = safe_malloc (u7len + u7len / 8 + 1);
@@ -148,7 +148,7 @@ static char *utf7_to_utf8 (const char *u7, size_t u7len, char **u8,
 static char *utf8_to_utf7 (const char *u8, size_t u8len, char **u7,
   size_t *u7len)
 {
-  char *buf, *p;
+  char *buf = NULL, *p = NULL;
   int ch;
   int n, i, b = 0, k = 0;
   int base64 = 0;
@@ -270,7 +270,7 @@ void imap_utf_encode (IMAP_DATA *idata, char **s)
 
 void imap_utf_decode (IMAP_DATA *idata, char **s)
 {
-  char *t;
+  char *t = NULL;
 
   if (Charset)
   {

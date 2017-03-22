@@ -278,7 +278,7 @@ void pgp_invoke_getkeys (ADDRESS *addr)
   char cmd[HUGE_STRING];
   int devnull;
 
-  char *personal;
+  char *personal = NULL;
 
   struct pgp_command_context cctx;
 

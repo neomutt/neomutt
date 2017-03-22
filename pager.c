@@ -335,7 +335,7 @@ static void
 shift_class_colors (struct q_class_t *QuoteList, struct q_class_t *new_class,
 		      int index, int *q_level)
 {
-  struct q_class_t * q_list;
+  struct q_class_t * q_list = NULL;
 
   q_list = QuoteList;
   new_class->index = -1;
@@ -372,7 +372,7 @@ shift_class_colors (struct q_class_t *QuoteList, struct q_class_t *new_class,
 static void
 cleanup_quote (struct q_class_t **QuoteList)
 {
-  struct q_class_t *ptr;
+  struct q_class_t *ptr = NULL;
 
   while (*QuoteList)
   {
@@ -393,8 +393,8 @@ classify_quote (struct q_class_t **QuoteList, const char *qptr,
 		int length, int *force_redraw, int *q_level)
 {
   struct q_class_t *q_list = *QuoteList;
-  struct q_class_t *class = NULL, *tmp = NULL, *ptr, *save;
-  char *tail_qptr;
+  struct q_class_t *class = NULL, *tmp = NULL, *ptr, *save = NULL;
+  char *tail_qptr = NULL;
   int offset, tail_lng;
   int index = -1;
 
@@ -715,7 +715,7 @@ resolve_types (char *buf, char *raw, struct line_t *lineInfo, int n, int last,
 		struct q_class_t **QuoteList, int *q_level, int *force_redraw,
 		int q_classify)
 {
-  COLOR_LINE *color_line;
+  COLOR_LINE *color_line = NULL;
   regmatch_t pmatch[1], smatch[1];
   int found, offset, null_rx, i;
 
@@ -1091,7 +1091,7 @@ static int
 fill_buffer (FILE *f, LOFF_T *last_pos, LOFF_T offset, unsigned char **buf,
 	     unsigned char **fmt, size_t *blen, int *buf_ready)
 {
-  unsigned char *p, *q;
+  unsigned char *p = NULL, *q = NULL;
   static int b_read;
   int l;
 
@@ -1656,7 +1656,7 @@ mutt_pager (const char *banner, const char *fname, int flags, pager_t *extra)
   char helpstr[SHORT_STRING*2];
   char tmphelp[SHORT_STRING*2];
   int maxLine, lastLine = 0;
-  struct line_t *lineInfo;
+  struct line_t *lineInfo = NULL;
   struct q_class_t *QuoteList = NULL;
   int i, j, ch = 0, rc = -1, hideQuoted = 0, q_level = 0, force_redraw = 0;
   int lines = 0, curline = 0, topline = 0, oldtopline = 0, err, first = 1;
@@ -1685,7 +1685,7 @@ mutt_pager (const char *banner, const char *fname, int flags, pager_t *extra)
   int check;
 
 #ifdef USE_NNTP
-  char *followup_to;
+  char *followup_to = NULL;
 #endif
 
   if (!(flags & MUTT_SHOWCOLOR))

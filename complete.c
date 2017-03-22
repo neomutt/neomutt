@@ -39,9 +39,9 @@
  */
 int mutt_complete (char *s, size_t slen)
 {
-  char *p;
+  char *p = NULL;
   DIR *dirp = NULL;
-  struct dirent *de;
+  struct dirent *de = NULL;
   int i ,init=0;
   size_t len;
   char dirpart[_POSIX_PATH_MAX], exp_dirpart[_POSIX_PATH_MAX];

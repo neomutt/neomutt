@@ -25,7 +25,7 @@
 
 /* creates and initializes a BUFFER */
 BUFFER *mutt_buffer_new(void) {
-  BUFFER *b;
+  BUFFER *b = NULL;
 
   b = safe_malloc(sizeof(BUFFER));
 
@@ -49,7 +49,7 @@ BUFFER *mutt_buffer_init (BUFFER *b) {
  * This is bad, but there's no apparent protocol for it.
  */
 BUFFER *mutt_buffer_from (char *seed) {
-  BUFFER *b;
+  BUFFER *b = NULL;
 
   if (!seed)
     return NULL;
@@ -232,7 +232,7 @@ int mutt_extract_token (BUFFER *dest, BUFFER *tok, int flags)
     {
       FILE	*fp;
       pid_t	pid;
-      char	*cmd, *ptr;
+      char	*cmd = NULL, *ptr = NULL;
       size_t	expnlen;
       BUFFER	expn;
       int	line = 0;

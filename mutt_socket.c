@@ -219,8 +219,8 @@ CONNECTION* mutt_socket_head (void)
 /* mutt_socket_free: remove connection from connection list and free it */
 void mutt_socket_free (CONNECTION* conn)
 {
-  CONNECTION* iter;
-  CONNECTION* tmp;
+  CONNECTION* iter = NULL;
+  CONNECTION* tmp = NULL;
 
   iter = Connections;
 
@@ -248,7 +248,7 @@ void mutt_socket_free (CONNECTION* conn)
 /* socket_new_conn: allocate and initialise a new connection. */
 static CONNECTION* socket_new_conn (void)
 {
-  CONNECTION* conn;
+  CONNECTION* conn = NULL;
 
   conn = safe_calloc (1, sizeof (CONNECTION));
   conn->fd = -1;
@@ -263,7 +263,7 @@ static CONNECTION* socket_new_conn (void)
  *   wish to find a connection which is not in IMAP_SELECTED state) */
 CONNECTION* mutt_conn_find (const CONNECTION* start, const ACCOUNT* account)
 {
-  CONNECTION* conn;
+  CONNECTION* conn = NULL;
   ciss_url_t url;
   char hook[LONG_STRING];
 
@@ -438,8 +438,8 @@ int raw_socket_open (CONNECTION* conn)
   /* "65536\0" */
   char port[6];
   struct addrinfo hints;
-  struct addrinfo* res;
-  struct addrinfo* cur;
+  struct addrinfo* res = NULL;
+  struct addrinfo* cur = NULL;
 
   /* we accept v4 or v6 STREAM sockets */
   memset (&hints, 0, sizeof (hints));
@@ -505,7 +505,7 @@ int raw_socket_open (CONNECTION* conn)
   /* --- IPv4 only --- */
 
   struct sockaddr_in sin;
-  struct hostent* he;
+  struct hostent* he = NULL;
   int i;
 
   memset (&sin, 0, sizeof (sin));

@@ -66,11 +66,11 @@
 
 /* decode the backslash-escaped user ids. */
 
-static char *_chs = 0;
+static char *_chs = NULL;
 
 static void fix_uid (char *uid)
 {
-  char *s, *d;
+  char *s = NULL, *d = NULL;
   iconv_t cd;
 
   for (s = d = uid; *s;)
@@ -88,9 +88,9 @@ static void fix_uid (char *uid)
   if (_chs && (cd = mutt_iconv_open (_chs, "utf-8", 0)) != (iconv_t)-1)
   {
     int n = s - uid + 1; /* chars available in original buffer */
-    char *buf;
-    ICONV_CONST char *ib;
-    char *ob;
+    char *buf = NULL;
+    ICONV_CONST char *ib = NULL;
+    char *ob = NULL;
     size_t ibl, obl;
 
     buf = safe_malloc (n+1);
@@ -117,7 +117,7 @@ static pgp_key_t parse_pub_line (char *buf, int *is_subkey, pgp_key_t k)
   int field = 0, is_uid = 0;
   int is_pub = 0;
   int is_fpr = 0;
-  char *pend, *p;
+  char *pend = NULL, *p = NULL;
   int trust = 0;
   int flags = 0;
   struct pgp_keyinfo tmp;
@@ -378,7 +378,7 @@ bail:
 
 pgp_key_t pgp_get_candidates (pgp_ring_t keyring, LIST * hints)
 {
-  FILE *fp;
+  FILE *fp = NULL;
   pid_t thepid;
   char buf[LONG_STRING];
   pgp_key_t db = NULL, *kend, k = NULL, kk, mainkey = NULL;

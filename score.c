@@ -62,9 +62,9 @@ void mutt_check_rescore (CONTEXT *ctx)
 
 int mutt_parse_score (BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err)
 {
-  SCORE *ptr, *last;
-  char *pattern, *pc;
-  struct pattern_t *pat;
+  SCORE *ptr = NULL, *last = NULL;
+  char *pattern = NULL, *pc = NULL;
+  struct pattern_t *pat = NULL;
 
   mutt_extract_token (buf, s, 0);
   if (!MoreArgs (s))
@@ -125,7 +125,7 @@ int mutt_parse_score (BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err)
 
 void mutt_score_message (CONTEXT *ctx, HEADER *hdr, int upd_ctx)
 {
-  SCORE *tmp;
+  SCORE *tmp = NULL;
   pattern_cache_t cache;
 
   memset (&cache, 0, sizeof (cache));
@@ -155,7 +155,7 @@ void mutt_score_message (CONTEXT *ctx, HEADER *hdr, int upd_ctx)
 
 int mutt_parse_unscore (BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err)
 {
-  SCORE *tmp, *last = NULL;
+  SCORE *tmp = NULL, *last = NULL;
 
   while (MoreArgs (s))
   {

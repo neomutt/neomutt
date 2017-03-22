@@ -747,8 +747,8 @@ mutt_hcache_open(const char *path, const char *folder, hcache_namer_t namer)
       unsigned int intval;
     } digest;
     struct md5_ctx ctx;
-    REPLACE_LIST *spam;
-    RX_LIST *nospam;
+    REPLACE_LIST *spam = NULL;
+    RX_LIST *nospam = NULL;
 
     hcachever = HCACHEVER;
 
@@ -820,7 +820,7 @@ void mutt_hcache_close(header_cache_t *h)
 void *
 mutt_hcache_fetch(header_cache_t *h, const char *key, size_t keylen)
 {
-  void* data;
+  void* data = NULL;
 
   data = mutt_hcache_fetch_raw (h, key, keylen);
   if (!data)
@@ -866,7 +866,7 @@ int
 mutt_hcache_store(header_cache_t *h, const char *key, size_t keylen,
                   HEADER * header, unsigned int uidvalidity)
 {
-  char* data;
+  char* data = NULL;
   int dlen;
   int ret;
 

@@ -97,7 +97,7 @@ int pgp_valid_passphrase (void)
 
 int pgp_use_gpg_agent (void)
 {
-  char *tty;
+  char *tty = NULL;
 
   /* GnuPG 2.1 no longer exports GPG_AGENT_INFO */
   if (!option (OPTUSEGPGAGENT))
@@ -161,7 +161,7 @@ static char *pgp_fingerprint(pgp_key_t k)
  */
 char *pgp_fpr_or_lkeyid(pgp_key_t k)
 {
-  char *fingerprint;
+  char *fingerprint = NULL;
 
   fingerprint = pgp_fingerprint (k);
   return fingerprint ? fingerprint : pgp_long_keyid (k);
@@ -268,7 +268,7 @@ static void pgp_copy_clearsigned (FILE *fpin, STATE *s, char *charset)
   char buf[HUGE_STRING];
   short complete, armor_header;
 
-  FGETCONV *fc;
+  FGETCONV *fc = NULL;
 
   rewind (fpin);
 
@@ -521,7 +521,7 @@ int pgp_application_pgp_handler (BODY *m, STATE *s)
       }
       else if (pgpout)
       {
-	FGETCONV *fc;
+	FGETCONV *fc = NULL;
 	int c;
 	char *expected_charset = gpgcharset && *gpgcharset ? gpgcharset : "utf-8";
 
@@ -606,7 +606,7 @@ static int pgp_check_traditional_one_body (FILE *fp, BODY *b, int tagged_only)
 {
   char tempfile[_POSIX_PATH_MAX];
   char buf[HUGE_STRING];
-  FILE *tfp;
+  FILE *tfp = NULL;
 
   short sgn = 0;
   short enc = 0;
@@ -689,7 +689,7 @@ int pgp_check_traditional (FILE *fp, BODY *b, int tagged_only)
 int pgp_verify_one (BODY *sigbdy, STATE *s, const char *tempfile)
 {
   char sigfile[_POSIX_PATH_MAX], pgperrfile[_POSIX_PATH_MAX];
-  FILE *fp, *pgpout, *pgperr;
+  FILE *fp = NULL, *pgpout = NULL, *pgperr = NULL;
   pid_t thepid;
   int badsig = -1;
   int rv;
@@ -754,7 +754,7 @@ int pgp_verify_one (BODY *sigbdy, STATE *s, const char *tempfile)
 static void pgp_extract_keys_from_attachment (FILE *fp, BODY *top)
 {
   STATE s;
-  FILE *tempfp;
+  FILE *tempfp = NULL;
   char tempfname[_POSIX_PATH_MAX];
 
   mutt_mktemp (tempfname, sizeof (tempfname));
@@ -805,9 +805,9 @@ void pgp_extract_keys_from_attachment_list (FILE *fp, int tag, BODY *top)
 static BODY *pgp_decrypt_part (BODY *a, STATE *s, FILE *fpout, BODY *p)
 {
   char buf[LONG_STRING];
-  FILE *pgpin, *pgpout, *pgperr, *pgptmp;
+  FILE *pgpin = NULL, *pgpout = NULL, *pgperr = NULL, *pgptmp = NULL;
   struct stat info;
-  BODY *tattach;
+  BODY *tattach = NULL;
   int len;
   char pgperrfile[_POSIX_PATH_MAX];
   char pgptmpfile[_POSIX_PATH_MAX];
@@ -1006,8 +1006,8 @@ bail:
 int pgp_encrypted_handler (BODY *a, STATE *s)
 {
   char tempfile[_POSIX_PATH_MAX];
-  FILE *fpout, *fpin;
-  BODY *tattach;
+  FILE *fpout = NULL, *fpin = NULL;
+  BODY *tattach = NULL;
   int rc = 0;
 
   mutt_mktemp (tempfile, sizeof (tempfile));
@@ -1072,10 +1072,10 @@ int pgp_encrypted_handler (BODY *a, STATE *s)
 
 BODY *pgp_sign_message (BODY *a)
 {
-  BODY *t;
+  BODY *t = NULL;
   char buffer[LONG_STRING];
   char sigfile[_POSIX_PATH_MAX], signedfile[_POSIX_PATH_MAX];
-  FILE *pgpin, *pgpout, *pgperr, *fp, *sfp;
+  FILE *pgpin = NULL, *pgpout = NULL, *pgperr = NULL, *fp = NULL, *sfp = NULL;
   int err = 0;
   int empty = 1;
   pid_t thepid;
@@ -1199,12 +1199,12 @@ BODY *pgp_sign_message (BODY *a)
  */
 char *pgp_find_keys (ADDRESS *adrlist, int oppenc_mode)
 {
-  LIST *crypt_hook_list, *crypt_hook = NULL;
-  char *keyID, *keylist = NULL;
+  LIST *crypt_hook_list = NULL, *crypt_hook = NULL;
+  char *keyID = NULL, *keylist = NULL;
   size_t keylist_size = 0;
   size_t keylist_used = 0;
   ADDRESS *addr = NULL;
-  ADDRESS *p, *q;
+  ADDRESS *p = NULL, *q = NULL;
   pgp_key_t k_info = NULL;
   char buf[LONG_STRING];
   int r;
@@ -1320,8 +1320,8 @@ BODY *pgp_encrypt_message (BODY *a, char *keylist, int sign)
   char buf[LONG_STRING];
   char tempfile[_POSIX_PATH_MAX], pgperrfile[_POSIX_PATH_MAX];
   char pgpinfile[_POSIX_PATH_MAX];
-  FILE *pgpin, *pgperr, *fpout, *fptmp;
-  BODY *t;
+  FILE *pgpin = NULL, *pgperr = NULL, *fpout = NULL, *fptmp = NULL;
+  BODY *t = NULL;
   int err = 0;
   int empty = 0;
   pid_t thepid;
@@ -1442,18 +1442,18 @@ BODY *pgp_encrypt_message (BODY *a, char *keylist, int sign)
 
 BODY *pgp_traditional_encryptsign (BODY *a, int flags, char *keylist)
 {
-  BODY *b;
+  BODY *b = NULL;
 
   char pgpoutfile[_POSIX_PATH_MAX];
   char pgperrfile[_POSIX_PATH_MAX];
   char pgpinfile[_POSIX_PATH_MAX];
 
   char body_charset[STRING];
-  char *from_charset;
-  const char *send_charset;
+  char *from_charset = NULL;
+  const char *send_charset = NULL;
 
   FILE *pgpout = NULL, *pgperr = NULL, *pgpin = NULL;
-  FILE *fp;
+  FILE *fp = NULL;
 
   int empty = 0;
   int err;
@@ -1496,7 +1496,7 @@ BODY *pgp_traditional_encryptsign (BODY *a, int flags, char *keylist)
   if (!mutt_is_us_ascii (body_charset))
   {
     int c;
-    FGETCONV *fc;
+    FGETCONV *fc = NULL;
 
     if (flags & ENCRYPT)
       send_charset = "us-ascii";
@@ -1618,7 +1618,7 @@ int pgp_send_menu (HEADER *msg, int *redraw)
 {
   pgp_key_t p;
   char input_signas[SHORT_STRING];
-  char *prompt, *letters, *choices;
+  char *prompt = NULL, *letters = NULL, *choices = NULL;
   char promptbuf[LONG_STRING];
   int choice;
 
@@ -1632,7 +1632,7 @@ int pgp_send_menu (HEADER *msg, int *redraw)
 
   msg->security |= APPLICATION_PGP;
 
-  char *mime_inline;
+  char *mime_inline = NULL;
   if (msg->security & INLINE)
   {
     /* L10N: These next string MUST have the same highlighted letter

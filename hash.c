@@ -117,8 +117,8 @@ HASH *int_hash_create (int nelem, int flags)
 
 HASH *hash_resize (HASH *ptr, int nelem, int lower)
 {
-  HASH *table;
-  struct hash_elem *elem, *tmp;
+  HASH *table = NULL;
+  struct hash_elem *elem = NULL, *tmp = NULL;
   int i;
 
   table = hash_create (nelem, lower);
@@ -145,7 +145,7 @@ HASH *hash_resize (HASH *ptr, int nelem, int lower)
  */
 static int union_hash_insert (HASH * table, union hash_key key, void *data)
 {
-  struct hash_elem *ptr;
+  struct hash_elem *ptr = NULL;
   unsigned int h;
 
   ptr = safe_malloc (sizeof (struct hash_elem));
@@ -161,7 +161,7 @@ static int union_hash_insert (HASH * table, union hash_key key, void *data)
   }
   else
   {
-    struct hash_elem *tmp, *last;
+    struct hash_elem *tmp = NULL, *last = NULL;
     int r;
 
     for (tmp = table->table[h], last = NULL; tmp; last = tmp, tmp = tmp->next)
@@ -202,7 +202,7 @@ int int_hash_insert (HASH * table, unsigned int intkey, void *data)
 static struct hash_elem *union_hash_find_elem (const HASH *table, union hash_key key)
 {
   int hash;
-  struct hash_elem *ptr;
+  struct hash_elem *ptr = NULL;
 
   if (!table)
     return NULL;
@@ -318,8 +318,8 @@ void int_hash_delete (HASH *table, unsigned int intkey, const void *data,
 void hash_destroy (HASH **ptr, void (*destroy) (void *))
 {
   int i;
-  HASH *pptr;
-  struct hash_elem *elem, *tmp;
+  HASH *pptr = NULL;
+  struct hash_elem *elem = NULL, *tmp = NULL;
 
   if (!ptr || !*ptr)
     return;

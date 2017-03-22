@@ -68,7 +68,7 @@ status_format_str (char *buf, size_t buflen, size_t col, int cols, char op, cons
 		   const char *elsestring,
 		   unsigned long data, format_flag flags)
 {
-  char fmt[SHORT_STRING], tmp[SHORT_STRING], *cp;
+  char fmt[SHORT_STRING], tmp[SHORT_STRING], *cp = NULL;
   int count, optional = (flags & MUTT_FORMAT_OPTIONAL);
   MUTTMENU *menu = (MUTTMENU *) data;
 
@@ -98,7 +98,7 @@ status_format_str (char *buf, size_t buflen, size_t col, int cols, char op, cons
     case 'f':
     {
 #ifdef USE_NOTMUCH
-      char *p;
+      char *p = NULL;
       if (Context && Context->magic == MUTT_NOTMUCH &&
                    (p = nm_get_description(Context)))
 	  strfcpy(tmp, p, sizeof (tmp));

@@ -39,7 +39,7 @@ typedef struct
 
 static int tunnel_socket_open (CONNECTION *conn)
 {
-  TUNNEL_DATA* tunnel;
+  TUNNEL_DATA* tunnel = NULL;
   int pid;
   int rc;
   int pin[2], pout[2];

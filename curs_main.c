@@ -137,8 +137,8 @@ static char *fsl = "\007";
  */
 static void collapse_all(MUTTMENU *menu, int toggle)
 {
-  HEADER *h, *base;
-  THREAD *thread, *top;
+  HEADER *h = NULL, *base = NULL;
+  THREAD *thread = NULL, *top = NULL;
   int final;
 
   if (!Context || (Context->msgcount == 0))
@@ -361,7 +361,7 @@ void update_index (MUTTMENU *menu, CONTEXT *ctx, int check,
   {
     if (check == MUTT_REOPENED)
     {
-      THREAD *h, *j;
+      THREAD *h = NULL, *j = NULL;
 
       ctx->collapsed = 0;
 
@@ -496,7 +496,7 @@ static int main_change_folder(MUTTMENU *menu, int op, char *buf, size_t bufsz,
 short mutt_ts_capability(void)
 {
   char *term = getenv("TERM");
-  char *tcaps;
+  char *tcaps = NULL;
 #ifdef HAVE_USE_EXTENDED_NAMES
   int tcapi;
 #endif
@@ -578,7 +578,7 @@ void index_make_entry (char *s, size_t l, MUTTMENU *menu, int num)
 
   format_flag flag = MUTT_FORMAT_MAKEPRINT | MUTT_FORMAT_ARROWCURSOR | MUTT_FORMAT_INDEX;
   int edgemsgno, reverse = Sort & SORT_REVERSE;
-  THREAD *tmp;
+  THREAD *tmp = NULL;
 
   if ((Sort & SORT_MASK) == SORT_THREADS && h->tree)
   {
@@ -684,7 +684,7 @@ mutt_draw_statusline (int cols, const char *buf, int buflen)
 
   do
   {
-    COLOR_LINE *cl;
+    COLOR_LINE *cl = NULL;
     found = 0;
 
     if (!buf[offset])
@@ -826,8 +826,8 @@ int mutt_index_menu (void)
   int newcount = -1;
   int oldcount = -1;
   int rc = -1;
-  MUTTMENU *menu;
-  char *cp;                    /* temporary variable. */
+  MUTTMENU *menu = NULL;
+  char *cp = NULL;                    /* temporary variable. */
   int index_hint;   /* used to restore cursor position */
   int do_buffy_notify = 1;
   int close = 0; /* did we OP_QUIT or OP_EXIT out of this menu? */
@@ -1199,7 +1199,7 @@ int mutt_index_menu (void)
 	CHECK_ATTACH;
 	if (Context->magic == MUTT_NNTP)
 	{
-	  HEADER *hdr;
+	  HEADER *hdr = NULL;
 
 	  if (op == OP_GET_MESSAGE)
 	  {
@@ -1308,7 +1308,7 @@ int mutt_index_menu (void)
 	  if (Context->msgcount > oldmsgcount)
 	  {
 	    HEADER *oldcur = CURHDR;
-	    HEADER *hdr;
+	    HEADER *hdr = NULL;
 	    int i, quiet = Context->quiet;
 
 	    if (rc < 0)
@@ -3235,7 +3235,7 @@ int mutt_index_menu (void)
 
 void mutt_set_header_color (CONTEXT *ctx, HEADER *curhdr)
 {
-  COLOR_LINE *color;
+  COLOR_LINE *color = NULL;
   pattern_cache_t cache;
 
   if (!curhdr)

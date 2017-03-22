@@ -94,9 +94,9 @@ char *mutt_read_rfc822_line (FILE *f, char *line, size_t *linelen)
 
 static LIST *parse_references (char *s, int in_reply_to)
 {
-  LIST *t, *lst = NULL;
-  char *m;
-  const char *sp;
+  LIST *t = NULL, *lst = NULL;
+  char *m = NULL;
+  const char *sp = NULL;
 
   m = mutt_extract_message_id (s, &sp);
   while (m)
@@ -136,9 +136,9 @@ int mutt_check_encoding (const char *c)
 
 static PARAMETER *parse_parameters (const char *s)
 {
-  PARAMETER *head = 0, *cur = 0, *new;
+  PARAMETER *head = NULL, *cur = NULL, *new = NULL;
   char buffer[LONG_STRING];
-  const char *p;
+  const char *p = NULL;
   size_t i;
 
   mutt_debug (2, "parse_parameters: `%s'\n", s);
@@ -290,8 +290,8 @@ int mutt_check_mime_type (const char *s)
 
 void mutt_parse_content_type (char *s, BODY *ct)
 {
-  char *pc;
-  char *subtype;
+  char *pc = NULL;
+  char *subtype = NULL;
 
   FREE (&ct->subtype);
   mutt_free_parameter(&ct->parameter);
@@ -377,7 +377,7 @@ void mutt_parse_content_type (char *s, BODY *ct)
 
 static void parse_content_disposition (const char *s, BODY *ct)
 {
-  PARAMETER *parms;
+  PARAMETER *parms = NULL;
 
   if (!ascii_strncasecmp ("inline", s, 6))
     ct->disposition = DISPINLINE;
@@ -407,7 +407,7 @@ static void parse_content_disposition (const char *s, BODY *ct)
 BODY *mutt_read_mime_header (FILE *fp, int digest)
 {
   BODY *p = mutt_new_body();
-  char *c;
+  char *c = NULL;
   char *line = safe_malloc (LONG_STRING);
   size_t linelen = LONG_STRING;
 
@@ -481,7 +481,7 @@ BODY *mutt_read_mime_header (FILE *fp, int digest)
 
 void mutt_parse_part (FILE *fp, BODY *b)
 {
-  char *bound = 0;
+  char *bound = NULL;
 
   switch (b->type)
   {
@@ -536,7 +536,7 @@ void mutt_parse_part (FILE *fp, BODY *b)
  */
 BODY *mutt_parse_message_rfc822 (FILE *fp, BODY *parent)
 {
-  BODY *msg;
+  BODY *msg = NULL;
 
   parent->hdr = mutt_new_header ();
   parent->hdr->offset = ftello (fp);
@@ -575,7 +575,7 @@ BODY *mutt_parse_multipart (FILE *fp, const char *boundary, LOFF_T end_off, int 
 #endif
   int blen, len, crlf = 0;
   char buffer[LONG_STRING];
-  BODY *head = 0, *last = 0, *new = 0;
+  BODY *head = NULL, *last = NULL, *new = NULL;
   int i;
   int final = 0; /* did we see the ending boundary? */
 
@@ -662,7 +662,7 @@ BODY *mutt_parse_multipart (FILE *fp, const char *boundary, LOFF_T end_off, int 
 
 static const char *uncomment_timezone (char *buf, size_t buflen, const char *tz)
 {
-  char *p;
+  char *p = NULL;
   size_t len;
 
   if (*tz != '(')
@@ -747,7 +747,7 @@ TimeZones[] =
 time_t mutt_parse_date (const char *s, HEADER *h)
 {
   int count = 0;
-  char *t;
+  char *t = NULL;
   int hour, min, sec;
   struct tm tm;
   int i;
@@ -755,7 +755,7 @@ time_t mutt_parse_date (const char *s, HEADER *h)
   int zhours = 0;
   int zminutes = 0;
   int zoccident = 0;
-  const char *ptz;
+  const char *ptz = NULL;
   char tzstr[SHORT_STRING];
   char scratch[SHORT_STRING];
 
@@ -836,7 +836,7 @@ time_t mutt_parse_date (const char *s, HEADER *h)
 	}
 	else
 	{
-	  struct tz_t *tz;
+	  struct tz_t *tz = NULL;
 
 	  tz = bsearch (ptz, TimeZones, sizeof TimeZones/sizeof (struct tz_t),
 			sizeof (struct tz_t),
@@ -891,7 +891,7 @@ time_t mutt_parse_date (const char *s, HEADER *h)
  */
 char *mutt_extract_message_id (const char *s, const char **saveptr)
 {
-  const char *o, *onull, *p;
+  const char *o = NULL, *onull = NULL, *p = NULL;
   char *ret = NULL;
 
   if (s)
@@ -948,7 +948,7 @@ char *mutt_extract_message_id (const char *s, const char **saveptr)
 
 void mutt_parse_mime_message (CONTEXT *ctx, HEADER *cur)
 {
-  MESSAGE *msg;
+  MESSAGE *msg = NULL;
 
   do {
     if (cur->content->type != TYPEMESSAGE &&
@@ -1115,7 +1115,7 @@ int mutt_parse_rfc822_line (ENVELOPE *e, HEADER *hdr, char *line, char *p, short
       /* RFC 2369.  FIXME: We should ignore whitespace, but don't. */
       if (strncmp (p, "NO", 2))
       {
-	char *beg, *end;
+	char *beg = NULL, *end = NULL;
 	for (beg = strchr (p, '<'); beg; beg = strchr (end, ','))
 	{
 	  ++beg;
@@ -1375,7 +1375,7 @@ ENVELOPE *mutt_read_rfc822_header (FILE *f, HEADER *hdr, short user_hdrs,
   ENVELOPE *e = mutt_new_envelope();
   LIST *last = NULL;
   char *line = safe_malloc (LONG_STRING);
-  char *p;
+  char *p = NULL;
   LOFF_T loc;
   size_t linelen = LONG_STRING;
   char buf[LONG_STRING+1];
@@ -1520,13 +1520,13 @@ ENVELOPE *mutt_read_rfc822_header (FILE *f, HEADER *hdr, short user_hdrs,
 
 ADDRESS *mutt_parse_adrlist (ADDRESS *p, const char *s)
 {
-  const char *q;
+  const char *q = NULL;
 
   /* check for a simple whitespace separated list of addresses */
   if ((q = strpbrk (s, "\"<>():;,\\")) == NULL)
   {
     char tmp[HUGE_STRING];
-    char *r;
+    char *r = NULL;
 
     strfcpy (tmp, s, sizeof (tmp));
     r = tmp;
@@ -1545,8 +1545,8 @@ ADDRESS *mutt_parse_adrlist (ADDRESS *p, const char *s)
 /* Compares mime types to the ok and except lists */
 static int count_body_parts_check(LIST **checklist, BODY *b, int dflt)
 {
-  LIST *type;
-  ATTACH_MATCH *a;
+  LIST *type = NULL;
+  ATTACH_MATCH *a = NULL;
 
   /* If list is null, use default behavior. */
   if (! *checklist)
@@ -1583,7 +1583,7 @@ static int count_body_parts (BODY *body, int flags)
 {
   int count = 0;
   int shallcount, shallrecurse;
-  BODY *bp;
+  BODY *bp = NULL;
 
   if (body == NULL)
     return 0;

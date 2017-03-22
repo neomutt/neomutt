@@ -48,7 +48,7 @@ static time_t compute_tz (time_t g, struct tm *utc)
  */
 time_t mutt_local_tz (time_t t)
 {
-  struct tm *ptm;
+  struct tm *ptm = NULL;
   struct tm utc;
 
   if (!t)

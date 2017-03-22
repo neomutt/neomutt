@@ -39,7 +39,7 @@ static void imap_add_folder (char delim, char *folder, int noselect,
   char tmp[LONG_STRING];
   char relpath[LONG_STRING];
   IMAP_MBOX mx;
-  BUFFY *b;
+  BUFFY *b = NULL;
 
   if (imap_parse_path (state->folder, &mx))
     return;
@@ -156,7 +156,7 @@ static int browse_add_list_result (IMAP_DATA* idata, const char* cmd,
  *   given a current folder to browse */
 int imap_browse (char* path, struct browser_state* state)
 {
-  IMAP_DATA* idata;
+  IMAP_DATA* idata = NULL;
   IMAP_LIST list;
   char buf[LONG_STRING];
   char mbox[LONG_STRING];
@@ -321,7 +321,7 @@ int imap_browse (char* path, struct browser_state* state)
 /* imap_mailbox_create: Prompt for a new mailbox name, and try to create it */
 int imap_mailbox_create (const char* folder)
 {
-  IMAP_DATA* idata;
+  IMAP_DATA* idata = NULL;
   IMAP_MBOX mx;
   char buf[LONG_STRING];
   short n;
@@ -375,7 +375,7 @@ int imap_mailbox_create (const char* folder)
 
 int imap_mailbox_rename(const char* mailbox)
 {
-  IMAP_DATA* idata;
+  IMAP_DATA* idata = NULL;
   IMAP_MBOX mx;
   char buf[LONG_STRING];
   char newname[SHORT_STRING];

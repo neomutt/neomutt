@@ -260,7 +260,7 @@ static int tls_check_stored_hostname (const gnutls_datum_t *cert,
                                       const char *hostname)
 {
   char buf[80];
-  FILE *fp;
+  FILE *fp = NULL;
   char *linestr = NULL;
   size_t linestrsize;
   int linenum = 0;
@@ -310,11 +310,11 @@ static int tls_check_stored_hostname (const gnutls_datum_t *cert,
 static int tls_compare_certificates (const gnutls_datum_t *peercert)
 {
   gnutls_datum_t cert;
-  unsigned char *ptr;
-  FILE *fd1;
+  unsigned char *ptr = NULL;
+  FILE *fd1 = NULL;
   int ret;
   gnutls_datum_t b64_data;
-  unsigned char *b64_data_data;
+  unsigned char *b64_data_data = NULL;
   struct stat filestat;
 
   if (stat(SslCertFile, &filestat) == -1)
@@ -527,10 +527,10 @@ static int tls_check_one_certificate (const gnutls_datum_t *certdata,
   char dn_country[SHORT_STRING];
   time_t t;
   char datestr[30];
-  MUTTMENU *menu;
+  MUTTMENU *menu = NULL;
   char helpstr[LONG_STRING];
   char title[STRING];
-  FILE *fp;
+  FILE *fp = NULL;
   gnutls_datum_t pemdata;
   int i, row, done, ret;
 
@@ -783,7 +783,7 @@ static int tls_check_certificate (CONNECTION* conn)
 {
   tlssockdata *data = conn->sockdata;
   gnutls_session_t state = data->state;
-  const gnutls_datum_t *cert_list;
+  const gnutls_datum_t *cert_list = NULL;
   unsigned int cert_list_size = 0;
   gnutls_certificate_status_t certstat;
   int certerr, i, preauthrc, savedcert, rc = 0;
@@ -859,11 +859,11 @@ static int tls_check_certificate (CONNECTION* conn)
 static void tls_get_client_cert (CONNECTION* conn)
 {
   tlssockdata *data = conn->sockdata;
-  const gnutls_datum_t* crtdata;
+  const gnutls_datum_t* crtdata = NULL;
   gnutls_x509_crt_t clientcrt;
-  char* dn;
-  char* cn;
-  char* cnend;
+  char* dn = NULL;
+  char* cn = NULL;
+  char* cnend = NULL;
   size_t dnlen;
 
   /* get our cert CN if we have one */
@@ -915,7 +915,7 @@ err_crt:
 static int tls_set_priority(tlssockdata *data)
 {
   size_t nproto = 4;
-  char *priority;
+  char *priority = NULL;
   size_t priority_size;
   int err;
 
@@ -1012,7 +1012,7 @@ static int tls_set_priority(tlssockdata *data)
  *   TLS over the wire, including certificate checks. */
 static int tls_negotiate (CONNECTION * conn)
 {
-  tlssockdata *data;
+  tlssockdata *data = NULL;
   int err;
 
   data = safe_calloc (1, sizeof (tlssockdata));

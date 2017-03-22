@@ -34,7 +34,7 @@
 
 group_t *mutt_pattern_group (const char *k)
 {
-  group_t *p;
+  group_t *p = NULL;
 
   if (!k)
     return 0;
@@ -63,7 +63,7 @@ static void group_remove (group_t *g)
 
 int mutt_group_context_clear (group_context_t **ctx)
 {
-  group_context_t *t;
+  group_context_t *t = NULL;
   for ( ; ctx && *ctx; (*ctx) = t)
   {
     group_remove ((*ctx)->g);
@@ -94,7 +94,7 @@ void mutt_group_context_add (group_context_t **ctx, group_t *group)
 
 void mutt_group_context_destroy (group_context_t **ctx)
 {
-  group_context_t *p;
+  group_context_t *p = NULL;
   for (; *ctx; *ctx = p)
   {
     p = (*ctx)->next;
@@ -104,7 +104,7 @@ void mutt_group_context_destroy (group_context_t **ctx)
 
 static void group_add_adrlist (group_t *g, ADDRESS *a)
 {
-  ADDRESS **p, *q;
+  ADDRESS **p = NULL, *q = NULL;
 
   if (!g)
     return;
@@ -121,7 +121,7 @@ static void group_add_adrlist (group_t *g, ADDRESS *a)
 
 static int group_remove_adrlist (group_t *g, ADDRESS *a)
 {
-  ADDRESS *p;
+  ADDRESS *p = NULL;
 
   if (!g)
     return -1;
@@ -190,7 +190,7 @@ int mutt_group_context_remove_rx (group_context_t *ctx, const char *s)
 
 int mutt_group_match (group_t *g, const char *s)
 {
-  ADDRESS *ap;
+  ADDRESS *ap = NULL;
 
   if (s && g)
   {

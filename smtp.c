@@ -162,7 +162,7 @@ static int
 smtp_data (CONNECTION * conn, const char *msgfile)
 {
   char buf[1024];
-  FILE *fp = 0;
+  FILE *fp = NULL;
   progress_t progress;
   struct stat st;
   int r, term = 0;
@@ -268,9 +268,9 @@ static int smtp_fill_account (ACCOUNT* account)
 {
   static unsigned short SmtpPort = 0;
 
-  struct servent* service;
+  struct servent* service = NULL;
   ciss_url_t url;
-  char* urlstr;
+  char* urlstr = NULL;
 
   account->flags = 0;
   account->port = 0;
@@ -316,7 +316,7 @@ static int smtp_fill_account (ACCOUNT* account)
 static int smtp_helo (CONNECTION* conn)
 {
   char buf[LONG_STRING];
-  const char* fqdn;
+  const char* fqdn = NULL;
 
   memset (Capabilities, 0, sizeof (Capabilities));
 
@@ -347,9 +347,9 @@ static int smtp_helo (CONNECTION* conn)
 #ifdef USE_SASL
 static int smtp_auth_sasl (CONNECTION* conn, const char* mechlist)
 {
-  sasl_conn_t* saslconn;
+  sasl_conn_t* saslconn = NULL;
   sasl_interact_t* interaction = NULL;
-  const char* mech;
+  const char* mech = NULL;
   const char* data = NULL;
   unsigned int len;
   char *buf = NULL;
@@ -454,8 +454,8 @@ static int smtp_auth (CONNECTION* conn)
   if (SmtpAuthenticators && *SmtpAuthenticators)
   {
     char* methods = safe_strdup (SmtpAuthenticators);
-    char* method;
-    char* delim;
+    char* method = NULL;
+    char* delim = NULL;
 
     for (method = methods; method; method = delim)
     {
@@ -506,8 +506,8 @@ static int smtp_auth_plain(CONNECTION* conn)
 {
   char buf[LONG_STRING];
   size_t len;
-  const char *method;
-  const char *delim;
+  const char *method = NULL;
+  const char *delim = NULL;
   const char *error = _("SASL authentication failed");
 
   if (!SmtpAuthenticators || !*SmtpAuthenticators)
@@ -625,9 +625,9 @@ int
 mutt_smtp_send (const ADDRESS* from, const ADDRESS* to, const ADDRESS* cc,
                 const ADDRESS* bcc, const char *msgfile, int eightbit)
 {
-  CONNECTION *conn;
+  CONNECTION *conn = NULL;
   ACCOUNT account;
-  const char* envfrom;
+  const char* envfrom = NULL;
   char buf[1024];
   int ret = -1;
 

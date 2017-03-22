@@ -562,7 +562,7 @@ static void attach_forward_msgs (FILE * fp, HEADER * hdr,
 	       ATTACHPTR ** idx, short idxlen, BODY * cur, int flags)
 {
   HEADER *curhdr = NULL;
-  HEADER *tmphdr;
+  HEADER *tmphdr = NULL;
   short i;
   int rc;
 
@@ -821,7 +821,7 @@ void mutt_attach_reply (FILE * fp, HEADER * hdr,
 
   STATE st;
   char tmpbody[_POSIX_PATH_MAX];
-  FILE *tmpfp;
+  FILE *tmpfp = NULL;
 
   char prefix[SHORT_STRING];
   int rc;

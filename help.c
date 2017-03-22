@@ -31,7 +31,7 @@
 static const struct binding_t *help_lookup_function (int op, int menu)
 {
   int i;
-  const struct binding_t *map;
+  const struct binding_t *map = NULL;
 
   if (menu != MENU_PAGER)
   {
@@ -282,8 +282,8 @@ static void format_line (FILE *f, int ismacro,
 
 static void dump_menu (FILE *f, int menu)
 {
-  struct keymap_t *map;
-  const struct binding_t *b;
+  struct keymap_t *map = NULL;
+  const struct binding_t *b = NULL;
   char buf[SHORT_STRING];
 
   /* browse through the keymap table */
@@ -337,9 +337,9 @@ void mutt_help (int menu)
 {
   char t[_POSIX_PATH_MAX];
   char buf[SHORT_STRING];
-  const char *desc;
-  FILE *f;
-  const struct binding_t *funcs;
+  const char *desc = NULL;
+  FILE *f = NULL;
+  const struct binding_t *funcs = NULL;
 
   mutt_mktemp (t, sizeof (t));
 

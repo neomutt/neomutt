@@ -169,7 +169,7 @@ static void print_flowed_line (char *line, STATE *s, int ql,
 			       flowed_state_t *fst, int term)
 {
   size_t width, w, words = 0;
-  char *p;
+  char *p = NULL;
   char last;
 
   if (!line || !*line)

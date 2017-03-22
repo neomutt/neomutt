@@ -125,8 +125,8 @@ static const char *pgp_entry_fmt (char *dest,
 				  format_flag flags)
 {
   char fmt[16];
-  pgp_entry_t *entry;
-  pgp_uid_t *uid;
+  pgp_entry_t *entry = NULL;
+  pgp_uid_t *uid = NULL;
   pgp_key_t key, pkey;
   int kflags = 0;
   int optional = (flags & MUTT_FORMAT_OPTIONAL);
@@ -147,10 +147,10 @@ static const char *pgp_entry_fmt (char *dest,
     case '[':
 
       {
-	const char *cp;
-	char buf2[SHORT_STRING], *p;
+	const char *cp = NULL;
+	char buf2[SHORT_STRING], *p = NULL;
 	int do_locales;
-	struct tm *tm;
+	struct tm *tm = NULL;
 	size_t len;
 
 	p = dest;
@@ -438,14 +438,14 @@ static pgp_key_t pgp_select_key (pgp_key_t keys,
 {
   int keymax;
   pgp_uid_t **KeyTable;
-  MUTTMENU *menu;
+  MUTTMENU *menu = NULL;
   int i, done = 0;
   char helpstr[LONG_STRING], buf[LONG_STRING], tmpbuf[STRING];
   char cmd[LONG_STRING], tempfile[_POSIX_PATH_MAX];
-  FILE *fp, *devnull;
+  FILE *fp = NULL, *devnull = NULL;
   pid_t thepid;
   pgp_key_t kp;
-  pgp_uid_t *a;
+  pgp_uid_t *a = NULL;
   int (*f) (const void *, const void *);
 
   int unusable = 0;
@@ -700,11 +700,11 @@ pgp_key_t pgp_ask_for_key (char *tag, char *whatfor,
 /* generate a public key attachment */
 BODY *pgp_make_key_attachment (char *tempf)
 {
-  BODY *att;
+  BODY *att = NULL;
   char buff[LONG_STRING];
   char tempfb[_POSIX_PATH_MAX], tmp[STRING];
-  FILE *tempfp;
-  FILE *devnull;
+  FILE *tempfp = NULL;
+  FILE *devnull = NULL;
   struct stat sb;
   pid_t thepid;
   pgp_key_t key;
@@ -775,8 +775,8 @@ BODY *pgp_make_key_attachment (char *tempf)
 
 static LIST *pgp_add_string_to_hints (LIST *hints, const char *str)
 {
-  char *scratch;
-  char *t;
+  char *scratch = NULL;
+  char *t = NULL;
 
   if ((scratch = safe_strdup (str)) == NULL)
     return hints;
@@ -804,7 +804,7 @@ static pgp_key_t *pgp_get_lastp (pgp_key_t p)
 pgp_key_t pgp_getkeybyaddr (ADDRESS * a, short abilities, pgp_ring_t keyring,
                             int oppenc_mode)
 {
-  ADDRESS *r, *p;
+  ADDRESS *r = NULL, *p = NULL;
   LIST *hints = NULL;
 
   int multi   = 0;
@@ -815,7 +815,7 @@ pgp_key_t pgp_getkeybyaddr (ADDRESS * a, short abilities, pgp_ring_t keyring,
   pgp_key_t a_valid_addrmatch_key = NULL;
   pgp_key_t matches = NULL;
   pgp_key_t *last = &matches;
-  pgp_uid_t *q;
+  pgp_uid_t *q = NULL;
 
   if (a && a->mailbox)
     hints = pgp_add_string_to_hints (hints, a->mailbox);
@@ -941,10 +941,10 @@ pgp_key_t pgp_getkeybystr (char *p, short abilities, pgp_ring_t keyring)
   pgp_key_t matches = NULL;
   pgp_key_t *last = &matches;
   pgp_key_t k, kn;
-  pgp_uid_t *a;
+  pgp_uid_t *a = NULL;
   short match;
   size_t l;
-  const char *ps, *pl, *pfcopy, *phint;
+  const char *ps = NULL, *pl = NULL, *pfcopy = NULL, *phint = NULL;
 
   if ((l = mutt_strlen (p)) && p[l-1] == '!')
     p[l-1] = 0;

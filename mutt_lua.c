@@ -51,7 +51,7 @@ static int _lua_mutt_call(lua_State *l)
   mutt_debug(2, " * _lua_mutt_call()\n");
   BUFFER token, expn, err;
   char buffer[LONG_STRING] = "";
-  const struct command_t *command;
+  const struct command_t *command = NULL;
   int rv = 0;
 
   mutt_buffer_init(&token);

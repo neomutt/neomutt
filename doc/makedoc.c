@@ -116,7 +116,7 @@ static int sgml_id_fputs (const char *, FILE *);
 int main (int argc, char *argv[])
 {
   int c;
-  FILE *f;
+  FILE *f = NULL;
 
   if ((Progname = strrchr (argv[0], '/')))
     Progname++;
@@ -175,7 +175,7 @@ static void makedoc (FILE *in, FILE *out)
 {
   char buffer[BUFFSIZE];
   char token[BUFFSIZE];
-  char *p;
+  char *p = NULL;
   int active = 0;
   int line = 0;
   int docstat = D_INIT;
@@ -236,7 +236,7 @@ static char single_char_tokens[] = "[]{},;|";
 
 static char *get_token (char *d, size_t l, char *s)
 {
-  char *t;
+  char *t = NULL;
   short is_quoted = 0;
   char *dd = d;
 
@@ -1290,7 +1290,7 @@ static int commit_buff (char *buff, char **d, FILE *out, int docstat)
 static int handle_docline (char *l, FILE *out, int docstat)
 {
   char buff[BUFFSIZE];
-  char *s, *d;
+  char *s = NULL, *d = NULL;
   l = skip_ws (l);
 
   if (Debug)
@@ -1374,7 +1374,7 @@ static int handle_docline (char *l, FILE *out, int docstat)
     else if (*s == '$')
     {
       int output_dollar = 0;
-      char *ref;
+      char *ref = NULL;
       char save;
 
       ++s;

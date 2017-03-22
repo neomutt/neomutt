@@ -30,7 +30,7 @@ char* SearchBuffers[MENU_MAX];
 static int
 get_color (int index, unsigned char *s)
 {
-  COLOR_LINE *color;
+  COLOR_LINE *color = NULL;
   HEADER *hdr = Context->hdrs[Context->v2r[index]];
   int type = *s;
 
@@ -879,7 +879,7 @@ static int menu_dialog_translate_op (int i)
 static int menu_dialog_dokey (MUTTMENU *menu, int *ip)
 {
   event_t ch;
-  char *p;
+  char *p = NULL;
 
   ch = mutt_getch ();
 

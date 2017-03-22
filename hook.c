@@ -46,7 +46,7 @@ static int current_hook_type = 0;
 
 int mutt_parse_hook (BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err)
 {
-  HOOK *ptr;
+  HOOK *ptr = NULL;
   BUFFER command, pattern;
   int rc, not = 0;
   regex_t *rx = NULL;
@@ -253,8 +253,8 @@ static void delete_hook (HOOK *h)
 /* Deletes all hooks of type ``type'', or all defined hooks if ``type'' is 0 */
 static void delete_hooks (int type)
 {
-  HOOK *h;
-  HOOK *prev;
+  HOOK *h = NULL;
+  HOOK *prev = NULL;
 
   while (h = Hooks, h && (type == 0 || type == h->type))
   {
@@ -370,7 +370,7 @@ char *mutt_find_hook (int type, const char *pat)
 void mutt_message_hook (CONTEXT *ctx, HEADER *hdr, int type)
 {
   BUFFER err, token;
-  HOOK *hook;
+  HOOK *hook = NULL;
   pattern_cache_t cache;
 
   current_hook_type = type;
@@ -412,7 +412,7 @@ void mutt_message_hook (CONTEXT *ctx, HEADER *hdr, int type)
 static int
 addr_hook (char *path, size_t pathlen, int type, CONTEXT *ctx, HEADER *hdr)
 {
-  HOOK *hook;
+  HOOK *hook = NULL;
   pattern_cache_t cache;
 
   memset (&cache, 0, sizeof (cache));
@@ -439,7 +439,7 @@ void mutt_default_save (char *path, size_t pathlen, HEADER *hdr)
   if (addr_hook (path, pathlen, MUTT_SAVEHOOK, Context, hdr) != 0)
   {
     char tmp[_POSIX_PATH_MAX];
-    ADDRESS *adr;
+    ADDRESS *adr = NULL;
     ENVELOPE *env = hdr->env;
     int fromMe = mutt_addr_is_user (env->from);
 
@@ -463,7 +463,7 @@ void mutt_default_save (char *path, size_t pathlen, HEADER *hdr)
 
 void mutt_select_fcc (char *path, size_t pathlen, HEADER *hdr)
 {
-  ADDRESS *adr;
+  ADDRESS *adr = NULL;
   char buf[_POSIX_PATH_MAX];
   ENVELOPE *env = hdr->env;
 
@@ -534,7 +534,7 @@ void mutt_account_hook (const char* url)
    * belong in a folder-hook -- perhaps we should warn the user. */
   static int inhook = 0;
 
-  HOOK* hook;
+  HOOK* hook = NULL;
   BUFFER token;
   BUFFER err;
 
@@ -577,7 +577,7 @@ void mutt_account_hook (const char* url)
 
 void mutt_timeout_hook (void)
 {
-  HOOK *hook;
+  HOOK *hook = NULL;
   BUFFER token;
   BUFFER err;
   char buf[STRING];
@@ -612,7 +612,7 @@ void mutt_timeout_hook (void)
  */
 void mutt_startup_shutdown_hook (int type)
 {
-  HOOK *hook;
+  HOOK *hook = NULL;
   BUFFER token;
   BUFFER err;
   char buf[STRING];

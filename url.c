@@ -50,7 +50,7 @@ static const struct mapping_t UrlMap[] =
 
 int url_pct_decode (char *s)
 {
-  char *d;
+  char *d = NULL;
 
   if (!s)
     return -1;
@@ -79,7 +79,7 @@ int url_pct_decode (char *s)
 url_scheme_t url_check_scheme (const char *s)
 {
   char sbuf[STRING];
-  char *t;
+  char *t = NULL;
   int i;
 
   if (!s || !(t = strchr (s, ':')))
@@ -102,7 +102,7 @@ url_scheme_t url_check_scheme (const char *s)
  *   means no port given. */
 static int ciss_parse_userhost (ciss_url_t *ciss, char *src)
 {
-  char *t, *p;
+  char *t = NULL, *p = NULL;
 
   ciss->user = NULL;
   ciss->pass = NULL;
@@ -167,7 +167,7 @@ static int ciss_parse_userhost (ciss_url_t *ciss, char *src)
  *   which is modified by this call (duplicate it first if you need to). */
 int url_parse_ciss (ciss_url_t *ciss, char *src)
 {
-  char *tmp;
+  char *tmp = NULL;
 
   if ((ciss->scheme = url_check_scheme (src)) == U_UNKNOWN)
     return -1;
@@ -252,10 +252,10 @@ int url_ciss_tostring (ciss_url_t* ciss, char* dest, size_t len, int flags)
 
 int url_parse_mailto (ENVELOPE *e, char **body, const char *src)
 {
-  char *t, *p;
-  char *tmp;
-  char *headers;
-  char *tag, *value;
+  char *t = NULL, *p = NULL;
+  char *tmp = NULL;
+  char *headers = NULL;
+  char *tag = NULL, *value = NULL;
 
   int rc = -1;
 
@@ -310,7 +310,7 @@ int url_parse_mailto (ENVELOPE *e, char **body, const char *src)
       }
       else
       {
-	char *scratch;
+	char *scratch = NULL;
 	size_t taglen = mutt_strlen (tag);
 
 	safe_asprintf (&scratch, "%s: %s", tag, value);

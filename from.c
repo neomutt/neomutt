@@ -76,7 +76,7 @@ int is_from (const char *s, char *path, size_t pathlen, time_t *tp)
 
   if (!is_day_name (s))
   {
-    const char *p;
+    const char *p = NULL;
     size_t len;
     short q = 0;
 

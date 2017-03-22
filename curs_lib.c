@@ -222,12 +222,12 @@ int mutt_yesorno (const char *msg, int def)
   event_t ch;
   char *yes = _("yes");
   char *no = _("no");
-  char *answer_string;
+  char *answer_string = NULL;
   size_t answer_string_len;
   size_t msglen;
 
 #ifdef HAVE_LANGINFO_YESEXPR
-  char *expr;
+  char *expr = NULL;
   regex_t reyes;
   regex_t reno;
   int reyes_ok;
@@ -935,7 +935,7 @@ int mutt_multi_choice (char *prompt, char *letters)
 {
   event_t ch;
   int choice;
-  char *p;
+  char *p = NULL;
 
   SETCOLOR (MT_COLOR_PROMPT);
   mutt_window_mvaddstr (MuttMessageWindow, 0, 0, prompt);
@@ -1003,7 +1003,7 @@ void mutt_format_string (char *dest, size_t destlen,
 			 const char *s, size_t n,
 			 int arboreal)
 {
-  char *p;
+  char *p = NULL;
   wchar_t wc;
   int w;
   size_t k, k2;
@@ -1109,7 +1109,7 @@ static void format_s_x (char *dest,
 			     int arboreal)
 {
   int justify = FMT_RIGHT;
-  char *p;
+  char *p = NULL;
   int min_width;
   int max_width = INT_MAX;
 

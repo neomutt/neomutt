@@ -136,7 +136,7 @@ static short mhs_set (struct mh_sequences *mhs, int i, short f)
 
 static int mh_read_token (char *t, int *first, int *last)
 {
-  char *p;
+  char *p = NULL;
   if ((p = strchr (t, '-')))
   {
     *p++ = '\0';
@@ -154,10 +154,10 @@ static int mh_read_token (char *t, int *first, int *last)
 
 static int mh_read_sequences (struct mh_sequences *mhs, const char *path)
 {
-  FILE *fp;
+  FILE *fp = NULL;
   int line = 1;
   char *buff = NULL;
-  char *t;
+  char *t = NULL;
   size_t sz = 0;
 
   short f;
@@ -277,8 +277,8 @@ int mh_buffy (BUFFY *mailbox, int check_stats)
   struct mh_sequences mhs;
   int check_new = 1;
   int rc = 0;
-  DIR *dirp;
-  struct dirent *de;
+  DIR *dirp = NULL;
+  struct dirent *de = NULL;
 
   /* when $mail_check_recent is set and the .mh_sequences file hasn't changed
    * since the last mailbox visit, there is no "new mail" */
@@ -433,12 +433,12 @@ static void mhs_write_one_sequence (FILE * fp, struct mh_sequences *mhs,
 /* XXX - we don't currently remove deleted messages from sequences we don't know.  Should we? */
 static void mh_update_sequences (CONTEXT * ctx)
 {
-  FILE *ofp, *nfp;
+  FILE *ofp = NULL, *nfp = NULL;
 
   char sequences[_POSIX_PATH_MAX];
-  char *tmpfname;
+  char *tmpfname = NULL;
   char *buff = NULL;
-  char *p;
+  char *p = NULL;
   size_t s;
   int l = 0;
   int i;
@@ -549,7 +549,7 @@ static void mh_sequences_add_one (CONTEXT * ctx, int n, short unseen,
 
   FILE *ofp = NULL, *nfp = NULL;
 
-  char *tmpfname;
+  char *tmpfname = NULL;
   char sequences[_POSIX_PATH_MAX];
 
   char seq_unseen[STRING];
@@ -616,7 +616,7 @@ static void mh_update_maildir (struct maildir *md, struct mh_sequences *mhs)
 {
   int i;
   short f;
-  char *p;
+  char *p = NULL;
 
   for (; md; md = md->next)
   {
@@ -650,7 +650,7 @@ static void maildir_free_entry (struct maildir **md)
 
 static void maildir_free_maildir (struct maildir **md)
 {
-  struct maildir *p, *q;
+  struct maildir *p = NULL, *q = NULL;
 
   if (!md || !*md)
     return;
@@ -664,7 +664,7 @@ static void maildir_free_maildir (struct maildir **md)
 
 void maildir_parse_flags (HEADER * h, const char *path)
 {
-  char *p, *q = NULL;
+  char *p = NULL, *q = NULL;
 
   h->flagged = 0;
   h->read = 0;
@@ -788,7 +788,7 @@ HEADER *maildir_parse_stream (int magic, FILE *f, const char *fname,
 HEADER *maildir_parse_message (int magic, const char *fname,
 				      int is_old, HEADER * h)
 {
-  FILE *f;
+  FILE *f = NULL;
 
   if ((f = fopen (fname, "r")) != NULL) {
     h = maildir_parse_stream (magic, f, fname, is_old, h);
@@ -802,12 +802,12 @@ static int maildir_parse_dir (CONTEXT * ctx, struct maildir ***last,
 			      const char *subdir, int *count,
 			      progress_t *progress)
 {
-  DIR *dirp;
-  struct dirent *de;
+  DIR *dirp = NULL;
+  struct dirent *de = NULL;
   char buf[_POSIX_PATH_MAX];
   int is_old = 0;
-  struct maildir *entry;
-  HEADER *h;
+  struct maildir *entry = NULL;
+  HEADER *h = NULL;
 
   if (subdir)
   {
@@ -946,8 +946,8 @@ static struct maildir*  maildir_merge_lists (struct maildir *left,
 					     int (*cmp) (struct maildir *,
 							 struct maildir *))
 {
-  struct maildir* head;
-  struct maildir* tail;
+  struct maildir* head = NULL;
+  struct maildir* tail = NULL;
 
   if (left && right)
   {
@@ -1003,7 +1003,7 @@ static struct maildir* maildir_ins_sort (struct maildir* list,
 					 int (*cmp) (struct maildir *,
 						     struct maildir *))
 {
-  struct maildir *tmp, *last, *ret = NULL, *back;
+  struct maildir *tmp = NULL, *last = NULL, *ret = NULL, *back = NULL;
 
   ret = list;
   list = list->next;
@@ -1110,8 +1110,8 @@ static void maildir_delayed_parsing (CONTEXT * ctx, struct maildir **md,
 #endif
 #ifdef USE_HCACHE
   header_cache_t *hc = NULL;
-  void *data;
-  const char *key;
+  void *data = NULL;
+  const char *key = NULL;
   size_t keylen;
   struct timeval *when = NULL;
   struct stat lastchanged;
@@ -1243,10 +1243,10 @@ static int mh_close_mailbox (CONTEXT *ctx)
  */
 static int mh_read_dir (CONTEXT * ctx, const char *subdir)
 {
-  struct maildir *md;
+  struct maildir *md = NULL;
   struct mh_sequences mhs;
   struct maildir **last;
-  struct mh_data *data;
+  struct mh_data *data = NULL;
   int count;
   char msgbuf[STRING];
   progress_t progress;
@@ -1570,7 +1570,7 @@ static int _maildir_commit_message (CONTEXT * ctx, MESSAGE * msg, HEADER * hdr)
   char suffix[16];
   char path[_POSIX_PATH_MAX];
   char full[_POSIX_PATH_MAX];
-  char *s;
+  char *s = NULL;
 
   if (safe_fsync_close (&msg->fp))
   {
@@ -1656,9 +1656,9 @@ static int maildir_commit_message (CONTEXT * ctx, MESSAGE * msg)
 static int _mh_commit_message (CONTEXT * ctx, MESSAGE * msg, HEADER * hdr,
 			       short updseq)
 {
-  DIR *dirp;
-  struct dirent *de;
-  char *cp, *dep;
+  DIR *dirp = NULL;
+  struct dirent *de = NULL;
+  char *cp = NULL, *dep = NULL;
   unsigned int n, hi = 0;
   char path[_POSIX_PATH_MAX];
   char tmp[16];
@@ -1743,7 +1743,7 @@ static int mh_commit_message (CONTEXT * ctx, MESSAGE * msg)
 static int mh_rewrite_message (CONTEXT * ctx, int msgno)
 {
   HEADER *h = ctx->hdrs[msgno];
-  MESSAGE *dest;
+  MESSAGE *dest = NULL;
 
   int rc;
   short restore = 1;
@@ -1845,7 +1845,7 @@ static int maildir_sync_message (CONTEXT * ctx, int msgno)
     char fullpath[_POSIX_PATH_MAX];
     char oldpath[_POSIX_PATH_MAX];
     char suffix[16];
-    char *p;
+    char *p = NULL;
 
     if ((p = strrchr (h->path, '/')) == NULL)
     {
@@ -1893,7 +1893,7 @@ int mh_sync_mailbox_message (CONTEXT * ctx, int msgno)
 #endif
 {
 #ifdef USE_HCACHE
-    const char *key;
+    const char *key = NULL;
     size_t keylen;
 #endif
     char path[_POSIX_PATH_MAX], tmp[_POSIX_PATH_MAX];
@@ -1975,7 +1975,7 @@ int mh_sync_mailbox_message (CONTEXT * ctx, int msgno)
 
 static char *maildir_canon_filename (char *dest, const char *src, size_t l)
 {
-  char *t, *u;
+  char *t = NULL, *u = NULL;
 
   if ((t = strrchr (src, '/')))
     src = t + 1;
@@ -2032,10 +2032,10 @@ static int maildir_check_mailbox (CONTEXT * ctx, int *index_hint)
 				   have changed.  0x1 = new, 0x2 = cur */
   int occult = 0;		/* messages were removed from the mailbox */
   int have_new = 0;		/* messages were added to the mailbox */
-  struct maildir *md;		/* list of messages in the mailbox */
-  struct maildir **last, *p;
+  struct maildir *md = NULL;	/* list of messages in the mailbox */
+  struct maildir **last = NULL, *p = NULL;
   int i;
-  HASH *fnames;			/* hash table for quickly looking up the base filename
+  HASH *fnames = NULL;			/* hash table for quickly looking up the base filename
 				   for a maildir message */
   struct mh_data *data = mh_data (ctx);
 
@@ -2173,10 +2173,10 @@ static int mh_check_mailbox (CONTEXT * ctx, int *index_hint)
   char buf[_POSIX_PATH_MAX];
   struct stat st, st_cur;
   short modified = 0, have_new = 0, occult = 0;
-  struct maildir *md, *p;
+  struct maildir *md = NULL, *p = NULL;
   struct maildir **last = NULL;
   struct mh_sequences mhs;
-  HASH *fnames;
+  HASH *fnames = NULL;
   int i;
   struct mh_data *data = mh_data (ctx);
 
@@ -2191,7 +2191,7 @@ static int mh_check_mailbox (CONTEXT * ctx, int *index_hint)
   snprintf (buf, sizeof (buf), "%s/.mh_sequences", ctx->path);
   if ((i = stat (buf, &st_cur)) == -1 && errno == ENOENT)
   {
-    char *tmp;
+    char *tmp = NULL;
     FILE *fp = NULL;
 
     if (mh_mkstemp (ctx, &fp, &tmp) == 0)
@@ -2398,8 +2398,8 @@ static FILE *_maildir_open_find_message (const char *folder, const char *unique,
   char tunique[_POSIX_PATH_MAX];
   char fname[_POSIX_PATH_MAX];
 
-  DIR *dp;
-  struct dirent *de;
+  DIR *dp = NULL;
+  struct dirent *de = NULL;
 
   FILE *fp = NULL;
   int oe = ENOENT;
@@ -2439,7 +2439,7 @@ FILE *maildir_open_find_message (const char *folder, const char *msg,
                                   char **newname)
 {
   char unique[_POSIX_PATH_MAX];
-  FILE *fp;
+  FILE *fp = NULL;
 
   static unsigned int new_hits = 0, cur_hits = 0;	/* simple dynamic optimization */
 
@@ -2488,8 +2488,8 @@ FILE *maildir_open_find_message (const char *folder, const char *msg,
  */
 int maildir_check_empty (const char *path)
 {
-  DIR *dp;
-  struct dirent *de;
+  DIR *dp = NULL;
+  struct dirent *de = NULL;
   int r = 1; /* assume empty until we find a message */
   char realpath[_POSIX_PATH_MAX];
   int iter = 0;
@@ -2527,8 +2527,8 @@ int maildir_check_empty (const char *path)
  */
 int mh_check_empty (const char *path)
 {
-  DIR *dp;
-  struct dirent *de;
+  DIR *dp = NULL;
+  struct dirent *de = NULL;
   int r = 1; /* assume empty until we find a message */
 
   if ((dp = opendir (path)) == NULL)

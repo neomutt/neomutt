@@ -58,7 +58,7 @@
 
 static void append_signature (FILE *f)
 {
-  FILE *tmpfp;
+  FILE *tmpfp = NULL;
   pid_t thepid;
 
   if (Signature && (tmpfp = mutt_open_read (Signature, &thepid)))
@@ -96,7 +96,7 @@ static int addrsrc (ADDRESS *a, ADDRESS *lst)
 /* removes addresses from "b" which are contained in "a" */
 ADDRESS *mutt_remove_xrefs (ADDRESS *a, ADDRESS *b)
 {
-  ADDRESS *top, *p, *prev = NULL;
+  ADDRESS *top = NULL, *p = NULL, *prev = NULL;
 
   top = b;
   while (b)
@@ -279,7 +279,7 @@ static int edit_envelope (ENVELOPE *en, int flags)
   }
   else
   {
-    const char *p;
+    const char *p = NULL;
 
     buf[0] = 0;
     for (; uh; uh = uh->next)
@@ -579,7 +579,7 @@ static int default_to (ADDRESS **to, ENVELOPE *env, int flags, int hmfupto)
 int mutt_fetch_recips (ENVELOPE *out, ENVELOPE *in, int flags)
 {
   char prompt[STRING];
-  ADDRESS *tmp;
+  ADDRESS *tmp = NULL;
   int hmfupto = -1;
 
   if ((flags & (SENDLISTREPLY|SENDGROUPREPLY)) && in->mail_followup_to)
@@ -723,7 +723,7 @@ make_reference_headers (ENVELOPE *curenv, ENVELOPE *env, CONTEXT *ctx)
 
   if (!curenv)
   {
-    HEADER *h;
+    HEADER *h = NULL;
     LIST **p = NULL, **q = NULL;
     int i;
 
@@ -787,7 +787,7 @@ envelope_defaults (ENVELOPE *env, CONTEXT *ctx, HEADER *cur, int flags)
 #endif
     if (tag)
     {
-      HEADER *h;
+      HEADER *h = NULL;
 
       for (i = 0; i < ctx->vcount; i++)
       {
@@ -826,8 +826,8 @@ generate_body (FILE *tempfp,	/* stream for outgoing message */
 	       HEADER *cur)	/* current message */
 {
   int i;
-  HEADER *h;
-  BODY *tmp;
+  HEADER *h = NULL;
+  BODY *tmp = NULL;
 
   if (flags & SENDREPLY)
   {
@@ -910,7 +910,7 @@ generate_body (FILE *tempfp,	/* stream for outgoing message */
   /* if (WithCrypto && (flags & SENDKEY)) */
   else if ((WithCrypto & APPLICATION_PGP) && (flags & SENDKEY))
   {
-    BODY *tmp;
+    BODY *tmp = NULL;
 
     if ((WithCrypto & APPLICATION_PGP)
         && (tmp = crypt_pgp_make_key_attachment (NULL)) == NULL)
@@ -928,7 +928,7 @@ generate_body (FILE *tempfp,	/* stream for outgoing message */
 void mutt_set_followup_to (ENVELOPE *e)
 {
   ADDRESS *t = NULL;
-  ADDRESS *from;
+  ADDRESS *from = NULL;
 
   /*
    * Only generate the Mail-Followup-To if the user has requested it, and
@@ -1000,7 +1000,7 @@ void mutt_set_followup_to (ENVELOPE *e)
    from field */
 static ADDRESS *set_reverse_name (ENVELOPE *env)
 {
-  ADDRESS *tmp;
+  ADDRESS *tmp = NULL;
 
   for (tmp = env->to; tmp; tmp = tmp->next)
   {
@@ -1031,7 +1031,7 @@ static ADDRESS *set_reverse_name (ENVELOPE *env)
 
 ADDRESS *mutt_default_from (void)
 {
-  ADDRESS *adr;
+  ADDRESS *adr = NULL;
   const char *fqdn = mutt_fqdn(1);
 
   /*
@@ -1059,7 +1059,7 @@ ADDRESS *mutt_default_from (void)
 static int send_message (HEADER *msg)
 {
   char tempfile[_POSIX_PATH_MAX];
-  FILE *tempfp;
+  FILE *tempfp = NULL;
   int i;
 #ifdef USE_SMTP
   short old_write_bcc;
@@ -1126,7 +1126,7 @@ static int send_message (HEADER *msg)
 /* rfc2047 encode the content-descriptions */
 void mutt_encode_descriptions (BODY *b, short recurse)
 {
-  BODY *t;
+  BODY *t = NULL;
 
   for (t = b; t; t = t->next)
   {
@@ -1142,7 +1142,7 @@ void mutt_encode_descriptions (BODY *b, short recurse)
 /* rfc2047 decode them in case of an error */
 static void decode_descriptions (BODY *b)
 {
-  BODY *t;
+  BODY *t = NULL;
 
   for (t = b; t; t = t->next)
   {
@@ -1157,7 +1157,7 @@ static void decode_descriptions (BODY *b)
 
 static void fix_end_of_file (const char *data)
 {
-  FILE *fp;
+  FILE *fp = NULL;
   int c;
 
   if ((fp = safe_fopen (data, "a+")) == NULL)
@@ -1287,7 +1287,7 @@ ci_send_message (int flags,		/* send mode */
   char buffer[LONG_STRING];
   char fcc[_POSIX_PATH_MAX] = ""; /* where to copy this message */
   FILE *tempfp = NULL;
-  BODY *pbody;
+  BODY *pbody = NULL;
   int i, killfrom = 0;
   int fcc_error = 0;
   int free_clear_content = 0;
@@ -1299,7 +1299,7 @@ ci_send_message (int flags,		/* send mode */
   char *pgp_signas = NULL;
   char *smime_default_key = NULL;
   char *tag = NULL, *err = NULL;
-  char *ctype;
+  char *ctype = NULL;
   char *finalpath = NULL;
 
   int rv = -1;

@@ -243,11 +243,11 @@ folder_format_str (char *dest, size_t destlen, size_t col, int cols, char op, co
 		   unsigned long data, format_flag flags)
 {
   char fn[SHORT_STRING], tmp[SHORT_STRING], permission[11];
-  char date[SHORT_STRING], *t_fmt;
+  char date[SHORT_STRING], *t_fmt = NULL;
   time_t tnow;
   FOLDER *folder = (FOLDER *) data;
-  struct passwd *pw;
-  struct group *gr;
+  struct passwd *pw = NULL;
+  struct group *gr = NULL;
   int optional = (flags & MUTT_FORMAT_OPTIONAL);
 
   switch (op)
@@ -288,7 +288,7 @@ folder_format_str (char *dest, size_t destlen, size_t col, int cols, char op, co
 
     case 'f':
     {
-      char *s;
+      char *s = NULL;
 
 #ifdef USE_NOTMUCH
       if (mx_is_notmuch(folder->ff->name))
@@ -637,10 +637,10 @@ static int examine_directory (MUTTMENU *menu, struct browser_state *state,
 #endif /* USE_NNTP */
   {
   struct stat s;
-  DIR *dp;
-  struct dirent *de;
+  DIR *dp = NULL;
+  struct dirent *de = NULL;
   char buffer[_POSIX_PATH_MAX + SHORT_STRING];
-  BUFFY *tmp;
+  BUFFY *tmp = NULL;
 
   while (stat (d, &s) == -1)
   {
@@ -1027,7 +1027,7 @@ void _mutt_select_file (char *f, size_t flen, int flags, char ***files, int *num
   char helpstr[LONG_STRING];
   char title[STRING];
   struct browser_state state;
-  MUTTMENU *menu;
+  MUTTMENU *menu = NULL;
   struct stat st;
   int i, killPrefix = 0;
   int multiple = (flags & MUTT_SEL_MULTI)  ? 1 : 0;
@@ -1859,7 +1859,7 @@ void _mutt_select_file (char *f, size_t flen, int flags, char ***files, int *num
 	}
 	else
 	{
-	  BODY *b;
+	  BODY *b = NULL;
 	  char buf[_POSIX_PATH_MAX];
 
 	  mutt_concat_path (buf, LastDir, state.entry[menu->current].name, sizeof (buf));
@@ -1882,7 +1882,7 @@ void _mutt_select_file (char *f, size_t flen, int flags, char ***files, int *num
 	{
 	  struct folder_file *f = &state.entry[menu->current];
 	  int rc;
-	  NNTP_DATA *nntp_data;
+	  NNTP_DATA *nntp_data = NULL;
 
 	  rc = nntp_newsrc_parse (CurrentNewsSrv);
 	  if (rc < 0)
@@ -1945,7 +1945,7 @@ void _mutt_select_file (char *f, size_t flen, int flags, char ***files, int *num
 	if (option (OPTNEWS))
 	{
 	  NNTP_SERVER *nserv = CurrentNewsSrv;
-	  NNTP_DATA *nntp_data;
+	  NNTP_DATA *nntp_data = NULL;
 	  regex_t *rx = safe_malloc (sizeof (regex_t));
 	  char *s = buf;
 	  int rc, j = menu->current;

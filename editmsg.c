@@ -50,7 +50,7 @@ static int edit_one_message (CONTEXT *ctx, HEADER *cur)
   int of, cf;
 
   CONTEXT tmpctx;
-  MESSAGE *msg;
+  MESSAGE *msg = NULL;
 
   FILE *fp = NULL;
 

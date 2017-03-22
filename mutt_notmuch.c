@@ -169,7 +169,7 @@ struct nm_ctxdata
  */
 static void debug_print_filenames(notmuch_message_t *msg)
 {
-  notmuch_filenames_t *ls;
+  notmuch_filenames_t *ls = NULL;
   const char *id = notmuch_message_get_message_id(msg);
 
   for (ls = notmuch_message_get_filenames(msg);
@@ -188,7 +188,7 @@ static void debug_print_filenames(notmuch_message_t *msg)
  */
 static void debug_print_tags(notmuch_message_t *msg)
 {
-  notmuch_tags_t *tags;
+  notmuch_tags_t *tags = NULL;
   const char *id = notmuch_message_get_message_id(msg);
 
   for (tags = notmuch_message_get_tags(msg);
@@ -235,7 +235,7 @@ static void url_free_tags(struct uri_tag *tags)
 static int url_parse_query(const char *url, char **filename, struct uri_tag **tags)
 {
   char *p = strstr(url, "://"); /* remote unsupported */
-  char *e;
+  char *e = NULL;
   struct uri_tag *tag, *last = NULL;
 
   *filename = NULL;
@@ -303,7 +303,7 @@ err:
 
 static void free_tag_list(struct nm_hdrtag **tag_list)
 {
-  struct nm_hdrtag *tmp;
+  struct nm_hdrtag *tmp = NULL;
 
   while ((tmp = *tag_list) != NULL)
   {
@@ -354,7 +354,7 @@ static void free_ctxdata(struct nm_ctxdata *data)
 
 static struct nm_ctxdata *new_ctxdata(char *uri)
 {
-  struct nm_ctxdata *data;
+  struct nm_ctxdata *data = NULL;
 
   if (!uri)
     return NULL;
@@ -560,7 +560,7 @@ static char *get_query_string(struct nm_ctxdata *data, int window)
 {
   mutt_debug (2, "nm: get_query_string(%d)\n", window);
 
-  struct uri_tag *item;
+  struct uri_tag *item = NULL;
 
   if (!data)
     return NULL;
@@ -620,7 +620,7 @@ static int get_query_type(struct nm_ctxdata *data)
 
 static const char *get_db_filename(struct nm_ctxdata *data)
 {
-  char *db_filename;
+  char *db_filename = NULL;
 
   if (!data)
     return NULL;
@@ -770,7 +770,7 @@ static int get_database_mtime(struct nm_ctxdata *data, time_t *mtime)
 
 static void apply_exclude_tags(notmuch_query_t *query)
 {
-  char *buf, *p, *end = NULL, *tag = NULL;
+  char *buf = NULL, *p = NULL, *end = NULL, *tag = NULL;
 
   if (!NotmuchExcludeTags || !*NotmuchExcludeTags)
     return;
@@ -804,7 +804,7 @@ static notmuch_query_t *get_query(struct nm_ctxdata *data, int writable)
 {
   notmuch_database_t *db = NULL;
   notmuch_query_t *q = NULL;
-  const char *str;
+  const char *str = NULL;
 
   if (!data)
     return NULL;
@@ -831,7 +831,7 @@ err:
 
 static void append_str_item(char **str, const char *item, int sep)
 {
-  char *p;
+  char *p = NULL;
   size_t sz = strlen(item);
   size_t ssz = *str ? strlen(*str) : 0;
 
@@ -845,9 +845,9 @@ static void append_str_item(char **str, const char *item, int sep)
 static int update_header_tags(HEADER *h, notmuch_message_t *msg)
 {
   struct nm_hdrdata *data = h->data;
-  notmuch_tags_t *tags;
+  notmuch_tags_t *tags = NULL;
   char *tstr = NULL, *ttstr = NULL;
-  struct nm_hdrtag *tag_list = NULL, *tmp;
+  struct nm_hdrtag *tag_list = NULL, *tmp = NULL;
 
   mutt_debug (2, "nm: tags update requested (%s)\n", data->virtual_id);
 
@@ -921,7 +921,7 @@ static int update_header_tags(HEADER *h, notmuch_message_t *msg)
 static int update_message_path(HEADER *h, const char *path)
 {
   struct nm_hdrdata *data = h->data;
-  char *p;
+  char *p = NULL;
 
   mutt_debug (2, "nm: path update requested path=%s, (%s)\n", path,
              data->virtual_id);
@@ -983,7 +983,7 @@ static void deinit_header(HEADER *h)
 static char *nm2mutt_message_id(const char *id)
 {
   size_t sz;
-  char *mid;
+  char *mid = NULL;
 
   if (!id)
     return NULL;
@@ -996,7 +996,7 @@ static char *nm2mutt_message_id(const char *id)
 
 static int init_header(HEADER *h, const char *path, notmuch_message_t *msg)
 {
-  const char *id;
+  const char *id = NULL;
 
   if (h->data)
     return 0;
@@ -1028,7 +1028,7 @@ static int init_header(HEADER *h, const char *path, notmuch_message_t *msg)
 
 static const char *get_message_last_filename(notmuch_message_t *msg)
 {
-  notmuch_filenames_t *ls;
+  notmuch_filenames_t *ls = NULL;
   const char *name = NULL;
 
   for (ls = notmuch_message_get_filenames(msg);
@@ -1042,7 +1042,7 @@ static const char *get_message_last_filename(notmuch_message_t *msg)
 
 static void progress_reset(CONTEXT *ctx)
 {
-  struct nm_ctxdata *data;
+  struct nm_ctxdata *data = NULL;
 
   if (ctx->quiet)
     return;
@@ -1089,9 +1089,9 @@ static void progress_update(CONTEXT *ctx, notmuch_query_t *q)
 
 static HEADER *get_mutt_header(CONTEXT *ctx, notmuch_message_t *msg)
 {
-  char *mid;
-  const char *id;
-  HEADER *h;
+  char *mid = NULL;
+  const char *id = NULL;
+  HEADER *h = NULL;
 
   if (!ctx || !msg)
     return NULL;
@@ -1122,7 +1122,7 @@ static void append_message(CONTEXT *ctx, notmuch_query_t *q,
                            notmuch_message_t *msg, int dedup)
 {
   char *newpath = NULL;
-  const char *path;
+  const char *path = NULL;
   HEADER *h = NULL;
 
   struct nm_ctxdata *data = get_ctxdata(ctx);
@@ -1209,7 +1209,7 @@ done:
 static void append_replies(CONTEXT *ctx, notmuch_query_t *q,
                            notmuch_message_t *top, int dedup)
 {
-  notmuch_messages_t *msgs;
+  notmuch_messages_t *msgs = NULL;
 
   for (msgs = notmuch_message_get_replies(top); notmuch_messages_valid(msgs);
        notmuch_messages_move_to_next(msgs))
@@ -1225,7 +1225,7 @@ static void append_replies(CONTEXT *ctx, notmuch_query_t *q,
 static void append_thread(CONTEXT *ctx, notmuch_query_t *q,
                           notmuch_thread_t *thread, int dedup)
 {
-  notmuch_messages_t *msgs;
+  notmuch_messages_t *msgs = NULL;
 
   for (msgs = notmuch_thread_get_toplevel_messages(thread);
        notmuch_messages_valid(msgs); notmuch_messages_move_to_next(msgs))
@@ -1241,7 +1241,7 @@ static bool read_mesgs_query(CONTEXT *ctx, notmuch_query_t *q, int dedup)
 {
   struct nm_ctxdata *data = get_ctxdata(ctx);
   int limit;
-  notmuch_messages_t *msgs;
+  notmuch_messages_t *msgs = NULL;
 
   if (!data)
     return false;
@@ -1274,7 +1274,7 @@ static bool read_threads_query(CONTEXT *ctx, notmuch_query_t *q, int dedup,
                                int limit)
 {
   struct nm_ctxdata *data = get_ctxdata(ctx);
-  notmuch_threads_t *threads;
+  notmuch_threads_t *threads = NULL;
 
   if (!data)
     return false;
@@ -1317,8 +1317,8 @@ static notmuch_message_t *get_nm_message(notmuch_database_t *db, HEADER *hdr)
 
 static bool nm_message_has_tag(notmuch_message_t *msg, char *tag)
 {
-  const char *possible_match_tag;
-  notmuch_tags_t *tags;
+  const char *possible_match_tag = NULL;
+  notmuch_tags_t *tags = NULL;
 
   for (tags = notmuch_message_get_tags(msg); notmuch_tags_valid(tags);
        notmuch_tags_move_to_next(tags))
@@ -1334,7 +1334,7 @@ static bool nm_message_has_tag(notmuch_message_t *msg, char *tag)
 
 static int update_tags(notmuch_message_t *msg, const char *tags)
 {
-  char *tag = NULL, *end = NULL, *p;
+  char *tag = NULL, *end = NULL, *p = NULL;
   char *buf = safe_strdup(tags);
 
   if (!buf)
@@ -1391,7 +1391,7 @@ static int update_tags(notmuch_message_t *msg, const char *tags)
 
 static int update_header_flags(CONTEXT *ctx, HEADER *hdr, const char *tags)
 {
-  char *tag = NULL, *end = NULL, *p;
+  char *tag = NULL, *end = NULL, *p = NULL;
   char *buf = safe_strdup(tags);
 
   if (!buf)
@@ -1447,7 +1447,7 @@ static int rename_maildir_filename(const char *old, char *newpath, size_t newsz,
   char filename[_POSIX_PATH_MAX];
   char suffix[_POSIX_PATH_MAX];
   char folder[_POSIX_PATH_MAX];
-  char *p;
+  char *p = NULL;
 
   strfcpy(folder, old, sizeof(folder));
   p = strrchr(folder, '/');
@@ -1492,7 +1492,7 @@ static int rename_maildir_filename(const char *old, char *newpath, size_t newsz,
 static int remove_filename(struct nm_ctxdata *data, const char *path)
 {
   notmuch_status_t st;
-  notmuch_filenames_t *ls;
+  notmuch_filenames_t *ls = NULL;
   notmuch_message_t *msg = NULL;
   notmuch_database_t *db = get_db(data, true);
   int trans;
@@ -1550,8 +1550,8 @@ static int rename_filename(struct nm_ctxdata *data, const char *old,
 {
   int rc = -1;
   notmuch_status_t st;
-  notmuch_filenames_t *ls;
-  notmuch_message_t *msg;
+  notmuch_filenames_t *ls = NULL;
+  notmuch_message_t *msg = NULL;
   notmuch_database_t *db = get_db(data, true);
   int trans;
 
@@ -1668,7 +1668,7 @@ char *nm_header_get_tags_transformed(HEADER *h)
 
 char *nm_header_get_tag_transformed(char *tag, HEADER *h)
 {
-  struct nm_hdrtag *tmp;
+  struct nm_hdrtag *tmp = NULL;
 
   if (!h || !h->data)
     return NULL;
@@ -1719,7 +1719,7 @@ void nm_debug_check(CONTEXT *ctx)
 int nm_read_entire_thread(CONTEXT *ctx, HEADER *h)
 {
   struct nm_ctxdata *data = get_ctxdata(ctx);
-  const char *id;
+  const char *id = NULL;
   char *qstr = NULL;
   notmuch_query_t *q = NULL;
   notmuch_database_t *db = NULL;
@@ -1943,7 +1943,7 @@ int nm_update_filename(CONTEXT *ctx, const char *old, const char *new,
 
 int nm_nonctx_get_count(char *path, int *all, int *new)
 {
-  struct uri_tag *query_items = NULL, *item;
+  struct uri_tag *query_items = NULL, *item = NULL;
   char *db_filename = NULL, *db_query = NULL;
   notmuch_database_t *db = NULL;
   int rc = -1, dflt = 0;
@@ -1997,7 +1997,7 @@ int nm_nonctx_get_count(char *path, int *all, int *new)
   /* new messages */
   if (new)
   {
-    char *qstr;
+    char *qstr = NULL;
 
     safe_asprintf(&qstr, "( %s ) tag:%s", db_query, NotmuchUnreadTag);
     *new = count_query(db, qstr);
@@ -2025,7 +2025,7 @@ done:
 
 char *nm_get_description(CONTEXT *ctx)
 {
-  BUFFY *p;
+  BUFFY *p = NULL;
 
   for (p = VirtIncoming; p; p = p->next)
     if (p->desc && (strcmp(p->path, ctx->path) == 0))
@@ -2036,7 +2036,7 @@ char *nm_get_description(CONTEXT *ctx)
 
 int nm_description_to_path(const char *desc, char *buf, size_t bufsz)
 {
-  BUFFY *p;
+  BUFFY *p = NULL;
 
   if (!desc || !buf || !bufsz)
     return -EINVAL;
@@ -2054,7 +2054,7 @@ int nm_description_to_path(const char *desc, char *buf, size_t bufsz)
 
 int nm_record_message(CONTEXT *ctx, char *path, HEADER *h)
 {
-  notmuch_database_t *db;
+  notmuch_database_t *db = NULL;
   notmuch_status_t st;
   notmuch_message_t *msg = NULL;
   int rc = -1, trans;
@@ -2105,7 +2105,7 @@ int nm_get_all_tags(CONTEXT *ctx, char **tag_list, int *tag_count)
   struct nm_ctxdata *data = get_ctxdata(ctx);
   notmuch_database_t *db = NULL;
   notmuch_tags_t *tags = NULL;
-  const char *tag;
+  const char *tag = NULL;
   int rc = -1;
 
   if (!data)
@@ -2147,8 +2147,8 @@ done:
 
 static int nm_open_mailbox(CONTEXT *ctx)
 {
-  notmuch_query_t *q;
-  struct nm_ctxdata *data;
+  notmuch_query_t *q = NULL;
+  struct nm_ctxdata *data = NULL;
   int rc = -1;
 
   if (init_context(ctx) != 0)
@@ -2221,8 +2221,8 @@ static int nm_check_mailbox(CONTEXT *ctx, int *index_hint)
 {
   struct nm_ctxdata *data = get_ctxdata(ctx);
   time_t mtime = 0;
-  notmuch_query_t *q;
-  notmuch_messages_t *msgs;
+  notmuch_query_t *q = NULL;
+  notmuch_messages_t *msgs = NULL;
   int i, limit, occult = 0, new_flags = 0;
 
   if (!data || (get_database_mtime(data, &mtime) != 0))
@@ -2261,7 +2261,7 @@ static int nm_check_mailbox(CONTEXT *ctx, int *index_hint)
        notmuch_messages_move_to_next(msgs), i++)
   {
     char old[_POSIX_PATH_MAX];
-    const char *new;
+    const char *new = NULL;
 
     notmuch_message_t *m = notmuch_messages_get(msgs);
     HEADER *h = get_mutt_header(ctx, m);

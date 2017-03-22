@@ -132,8 +132,8 @@ int mutt_compose_attachment (BODY *a)
 
 	if (r != -1 && entry->composetypecommand)
 	{
-	  BODY *b;
-	  FILE *fp, *tfp;
+	  BODY *b = NULL;
+	  FILE *fp = NULL, *tfp = NULL;
 	  char tempfile[_POSIX_PATH_MAX];
 
 	  if ((fp = safe_fopen (a->filename, "r")) == NULL)
@@ -337,7 +337,7 @@ int mutt_view_attachment (FILE *fp, BODY *a, int flag, HEADER *hdr,
   char type[STRING];
   char command[HUGE_STRING];
   char descrip[STRING];
-  char *fname;
+  char *fname = NULL;
   rfc1524_entry *entry = NULL;
   int rc = -1;
   int unlink_tempfile = 0;
@@ -640,7 +640,7 @@ int mutt_pipe_attachment (FILE *fp, BODY *b, const char *path, char *outfile)
   {
     /* send case */
 
-    FILE *ifp, *ofp;
+    FILE *ifp = NULL, *ofp = NULL;
 
     if ((ifp = fopen (b->filename, "r")) == NULL)
     {
@@ -716,9 +716,9 @@ int mutt_save_attachment (FILE *fp, BODY *m, char *path, int flags, HEADER *hdr)
       /* message type attachments are written to mail folders. */
 
       char buf[HUGE_STRING];
-      HEADER *hn;
+      HEADER *hn = NULL;
       CONTEXT ctx;
-      MESSAGE *msg;
+      MESSAGE *msg = NULL;
       int chflags = 0;
       int r = -1;
 
@@ -777,7 +777,7 @@ int mutt_save_attachment (FILE *fp, BODY *m, char *path, int flags, HEADER *hdr)
   {
     /* In send mode, just copy file */
 
-    FILE *ofp, *nfp;
+    FILE *ofp = NULL, *nfp = NULL;
 
     if ((ofp = fopen (m->filename, "r")) == NULL)
     {
@@ -907,7 +907,7 @@ int mutt_print_attachment (FILE *fp, BODY *a)
   char newfile[_POSIX_PATH_MAX] = "";
   char type[STRING];
   pid_t thepid;
-  FILE *ifp, *fpout;
+  FILE *ifp = NULL, *fpout = NULL;
   short unlink_newfile = 0;
 
   snprintf (type, sizeof (type), "%s/%s", TYPE (a), a->subtype);
@@ -915,7 +915,7 @@ int mutt_print_attachment (FILE *fp, BODY *a)
   if (rfc1524_mailcap_lookup (a, type, NULL, MUTT_PRINT))
   {
     char command[_POSIX_PATH_MAX+STRING];
-    rfc1524_entry *entry;
+    rfc1524_entry *entry = NULL;
     int piped = false;
 
     mutt_debug (2, "Using mailcap...\n");

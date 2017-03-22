@@ -59,7 +59,7 @@ static int fetch_message (char *line, void *file)
  */
 static int pop_read_header (POP_DATA *pop_data, HEADER *h)
 {
-  FILE *f;
+  FILE *f = NULL;
   int ret, index;
   long length;
   char buf[LONG_STRING];
@@ -139,7 +139,7 @@ static int fetch_uidl (char *line, void *data)
   int i, index;
   CONTEXT *ctx = (CONTEXT *)data;
   POP_DATA *pop_data = (POP_DATA *)ctx->data;
-  char *endp;
+  char *endp = NULL;
 
   errno = 0;
   index = strtol(line, &endp, 10);
@@ -175,8 +175,8 @@ static int fetch_uidl (char *line, void *data)
 
 static int msg_cache_check (const char *id, body_cache_t *bcache, void *data)
 {
-  CONTEXT *ctx;
-  POP_DATA *pop_data;
+  CONTEXT *ctx = NULL;
+  POP_DATA *pop_data = NULL;
   int i;
 
   if (!(ctx = (CONTEXT *)data))
@@ -239,7 +239,7 @@ static int pop_fetch_headers (CONTEXT *ctx)
 
 #ifdef USE_HCACHE
   header_cache_t *hc = NULL;
-  void *data;
+  void *data = NULL;
 
   hc = pop_hcache_open (pop_data, ctx->path);
 #endif
@@ -398,9 +398,9 @@ static int pop_open_mailbox (CONTEXT *ctx)
 {
   int ret;
   char buf[LONG_STRING];
-  CONNECTION *conn;
+  CONNECTION *conn = NULL;
   ACCOUNT acct;
-  POP_DATA *pop_data;
+  POP_DATA *pop_data = NULL;
   ciss_url_t url;
 
   if (pop_parse_path (ctx->path, &acct))
@@ -514,12 +514,12 @@ static int pop_close_mailbox (CONTEXT *ctx)
 static int pop_fetch_message (CONTEXT* ctx, MESSAGE* msg, int msgno)
 {
   int ret;
-  void *uidl;
+  void *uidl = NULL;
   char buf[LONG_STRING];
   char path[_POSIX_PATH_MAX];
   progress_t progressbar;
   POP_DATA *pop_data = (POP_DATA *)ctx->data;
-  POP_CACHE *cache;
+  POP_CACHE *cache = NULL;
   HEADER *h = ctx->hdrs[msgno];
   unsigned short bcache = 1;
 
@@ -778,13 +778,13 @@ void pop_fetch_mail (void)
 {
   char buffer[LONG_STRING];
   char msgbuf[SHORT_STRING];
-  char *url, *p;
+  char *url = NULL, *p = NULL;
   int i, delanswer, last = 0, msgs, bytes, rset = 0, ret;
-  CONNECTION *conn;
+  CONNECTION *conn = NULL;
   CONTEXT ctx;
   MESSAGE *msg = NULL;
   ACCOUNT acct;
-  POP_DATA *pop_data;
+  POP_DATA *pop_data = NULL;
 
   if (!PopHost)
   {

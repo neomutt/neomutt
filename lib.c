@@ -112,7 +112,7 @@ void mutt_nocurses_error (const char *fmt, ...)
 
 void *safe_calloc (size_t nmemb, size_t size)
 {
-  void *p;
+  void *p = NULL;
 
   if (!nmemb || !size)
     return NULL;
@@ -135,7 +135,7 @@ void *safe_calloc (size_t nmemb, size_t size)
 
 void *safe_malloc (size_t siz)
 {
-  void *p;
+  void *p = NULL;
 
   if (siz == 0)
     return 0;
@@ -150,7 +150,7 @@ void *safe_malloc (size_t siz)
 
 void safe_realloc (void *ptr, size_t siz)
 {
-  void *r;
+  void *r = NULL;
   void **p = (void **)ptr;
 
   if (siz == 0)
@@ -224,7 +224,7 @@ int safe_fsync_close (FILE **f)
 
 char *safe_strdup (const char *s)
 {
-  char *p;
+  char *p = NULL;
   size_t l;
 
   if (!s || !*s)
@@ -323,7 +323,7 @@ void mutt_unlink (const char *s)
 {
   int fd;
   int flags;
-  FILE *f;
+  FILE *f = NULL;
   struct stat sb, sb2;
   char buf[2048];
 
@@ -559,9 +559,9 @@ int safe_rename (const char *src, const char *target)
 static int mkwrapdir (const char *path, char *newfile, size_t nflen,
 		    char *newdir, size_t ndlen)
 {
-  const char *basename;
+  const char *basename = NULL;
   char parent[_POSIX_PATH_MAX];
-  char *p;
+  char *p = NULL;
 
   strfcpy (parent, NONULL (path), sizeof (parent));
 
@@ -595,8 +595,8 @@ static int mkwrapdir (const char *path, char *newfile, size_t nflen,
 /* remove a directory and everything under it */
 int mutt_rmtree (const char* path)
 {
-  DIR* dirp;
-  struct dirent* de;
+  DIR* dirp = NULL;
+  struct dirent* de = NULL;
   char cur[_POSIX_PATH_MAX];
   struct stat statbuf;
   int rc = 0;
@@ -755,7 +755,7 @@ int mutt_rx_sanitize_string (char *dest, size_t destlen, const char *src)
 char *mutt_read_line (char *s, size_t *size, FILE *fp, int *line, int flags)
 {
   size_t offset = 0;
-  char *ch;
+  char *ch = NULL;
 
   if (!s)
   {
@@ -826,7 +826,7 @@ mutt_substrcpy (char *dest, const char *beg, const char *end, size_t destlen)
 char *mutt_substrdup (const char *begin, const char *end)
 {
   size_t len;
-  char *p;
+  char *p = NULL;
 
   if (end)
     len = end - begin;
@@ -910,7 +910,7 @@ int mutt_strcoll(const char *a, const char *b)
 
 const char *mutt_stristr (const char *haystack, const char *needle)
 {
-  const char *p, *q;
+  const char *p = NULL, *q = NULL;
 
   if (!haystack)
     return NULL;
@@ -939,7 +939,7 @@ char *mutt_skip_whitespace (char *p)
 
 void mutt_remove_trailing_ws (char *s)
 {
-  char *p;
+  char *p = NULL;
 
   for (p = s + mutt_strlen (s) - 1 ; p >= s && ISSPACE (*p) ; p--)
     *p = 0;
@@ -1198,7 +1198,7 @@ int mutt_mkdir(const char *path, mode_t mode)
   }
 
   errno = 0;
-  char *p;
+  char *p = NULL;
   char _path[PATH_MAX];
   const size_t len = strlen(path);
 

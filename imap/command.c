@@ -62,7 +62,7 @@ static int cmd_queue_full (IMAP_DATA* idata)
  * Returns NULL if the pipeline is full. */
 static IMAP_COMMAND* cmd_new (IMAP_DATA* idata)
 {
-  IMAP_COMMAND* cmd;
+  IMAP_COMMAND* cmd = NULL;
 
   if (cmd_queue_full (idata))
   {
@@ -85,7 +85,7 @@ static IMAP_COMMAND* cmd_new (IMAP_DATA* idata)
 /* queues command. If the queue is full, attempts to drain it. */
 static int cmd_queue (IMAP_DATA* idata, const char* cmdstr)
 {
-  IMAP_COMMAND* cmd;
+  IMAP_COMMAND* cmd = NULL;
   int rc;
 
   if (cmd_queue_full (idata))
@@ -179,7 +179,7 @@ static int cmd_status (const char *s)
 static void cmd_parse_expunge (IMAP_DATA* idata, const char* s)
 {
   int expno, cur;
-  HEADER* h;
+  HEADER* h = NULL;
 
   mutt_debug (2, "Handling EXPUNGE\n");
 
@@ -267,7 +267,7 @@ static void cmd_parse_fetch (IMAP_DATA* idata, char* s)
 static void cmd_parse_capability (IMAP_DATA* idata, char* s)
 {
   int x;
-  char* bracket;
+  char* bracket = NULL;
 
   mutt_debug (3, "Handling CAPABILITY\n");
 
@@ -293,7 +293,7 @@ static void cmd_parse_capability (IMAP_DATA* idata, char* s)
 
 static void cmd_parse_list (IMAP_DATA* idata, char* s)
 {
-  IMAP_LIST* list;
+  IMAP_LIST* list = NULL;
   IMAP_LIST lb;
   char delimbuf[5]; /* worst case: "\\"\0 */
   long litlen;
@@ -478,7 +478,7 @@ static void cmd_parse_myrights (IMAP_DATA* idata, const char* s)
 static void cmd_parse_search (IMAP_DATA* idata, const char* s)
 {
   unsigned int uid;
-  HEADER *h;
+  HEADER *h = NULL;
 
   mutt_debug (2, "Handling SEARCH\n");
 
@@ -495,12 +495,12 @@ static void cmd_parse_search (IMAP_DATA* idata, const char* s)
  * mailbox information, even that not desired by buffy */
 static void cmd_parse_status (IMAP_DATA* idata, char* s)
 {
-  char* mailbox;
-  char* value;
-  BUFFY* inc;
+  char* mailbox = NULL;
+  char* value = NULL;
+  BUFFY* inc = NULL;
   IMAP_MBOX mx;
   int count;
-  IMAP_STATUS *status;
+  IMAP_STATUS *status = NULL;
   unsigned int olduv, oldun;
   long litlen;
   short new = 0;
@@ -661,8 +661,8 @@ static void cmd_parse_enabled (IMAP_DATA* idata, const char* s)
 /* cmd_handle_untagged: fallback parser for otherwise unhandled messages. */
 static int cmd_handle_untagged (IMAP_DATA* idata)
 {
-  char* s;
-  char* pn;
+  char* s = NULL;
+  char* pn = NULL;
   int count;
 
   s = imap_next_word (idata->buf);
@@ -777,7 +777,7 @@ int imap_cmd_step (IMAP_DATA* idata)
   int c;
   int rc;
   int stillrunning = 0;
-  IMAP_COMMAND* cmd;
+  IMAP_COMMAND* cmd = NULL;
 
   if (idata->status == IMAP_FATAL)
   {

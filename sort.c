@@ -94,7 +94,7 @@ static int compare_subject (const void *a, const void *b)
 
 const char *mutt_get_name (ADDRESS *a)
 {
-  ADDRESS *ali;
+  ADDRESS *ali = NULL;
 
   if (a)
   {
@@ -114,7 +114,7 @@ static int compare_to (const void *a, const void *b)
   HEADER **ppa = (HEADER **) a;
   HEADER **ppb = (HEADER **) b;
   char fa[SHORT_STRING];
-  const char *fb;
+  const char *fb = NULL;
   int result;
 
   strfcpy (fa, mutt_get_name ((*ppa)->env->to), SHORT_STRING);
@@ -129,7 +129,7 @@ static int compare_from (const void *a, const void *b)
   HEADER **ppa = (HEADER **) a;
   HEADER **ppb = (HEADER **) b;
   char fa[SHORT_STRING];
-  const char *fb;
+  const char *fb = NULL;
   int result;
 
   strfcpy (fa, mutt_get_name ((*ppa)->env->from), SHORT_STRING);
@@ -172,7 +172,7 @@ static int compare_spam (const void *a, const void *b)
 {
   HEADER **ppa = (HEADER **) a;
   HEADER **ppb = (HEADER **) b;
-  char   *aptr, *bptr;
+  char   *aptr = NULL, *bptr = NULL;
   int     ahas, bhas;
   int     result = 0;
   double  difference;
@@ -288,9 +288,9 @@ sort_t *mutt_get_sort_func (int method)
 void mutt_sort_headers (CONTEXT *ctx, int init)
 {
   int i;
-  HEADER *h;
-  THREAD *thread, *top;
-  sort_t *sortfunc;
+  HEADER *h = NULL;
+  THREAD *thread = NULL, *top = NULL;
+  sort_t *sortfunc = NULL;
 
   unset_option (OPTNEEDRESORT);
 

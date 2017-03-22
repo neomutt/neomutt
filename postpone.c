@@ -163,7 +163,7 @@ static void post_entry (char *s, size_t slen, MUTTMENU *menu, int entry)
 
 static HEADER *select_msg (void)
 {
-  MUTTMENU *menu;
+  MUTTMENU *menu = NULL;
   int i, done=0, r=-1;
   char helpstr[LONG_STRING];
   short orig_sort;
@@ -238,12 +238,12 @@ static HEADER *select_msg (void)
  */
 int mutt_get_postponed (CONTEXT *ctx, HEADER *hdr, HEADER **cur, char *fcc, size_t fcclen)
 {
-  HEADER *h;
+  HEADER *h = NULL;
   int code = SENDPOSTPONED;
-  LIST *tmp;
+  LIST *tmp = NULL;
   LIST *last = NULL;
-  LIST *next;
-  const char *p;
+  LIST *next = NULL;
+  const char *p = NULL;
   int opt_delete;
 
   if (!Postponed)
@@ -388,7 +388,7 @@ int mutt_get_postponed (CONTEXT *ctx, HEADER *hdr, HEADER **cur, char *fcc, size
 #ifdef MIXMASTER
     else if (mutt_strncmp ("X-Mutt-Mix:", tmp->data, 11) == 0)
     {
-      char *t;
+      char *t = NULL;
       mutt_free_list (&hdr->chain);
 
       t = strtok (tmp->data + 11, " \t\n");
@@ -427,7 +427,7 @@ int mutt_get_postponed (CONTEXT *ctx, HEADER *hdr, HEADER **cur, char *fcc, size
 int mutt_parse_crypt_hdr (const char *p, int set_empty_signas, int crypt_app)
 {
   char smime_cryptalg[LONG_STRING] = "\0";
-  char sign_as[LONG_STRING] = "\0", *q;
+  char sign_as[LONG_STRING] = "\0", *q = NULL;
   int flags = 0;
 
   if (!WithCrypto)
@@ -558,8 +558,8 @@ int mutt_prepare_template (FILE *fp, CONTEXT *ctx, HEADER *newhdr, HEADER *hdr,
 {
   MESSAGE *msg = NULL;
   char file[_POSIX_PATH_MAX];
-  BODY *b;
-  FILE *bfp;
+  BODY *b = NULL;
+  FILE *bfp = NULL;
   int rv = -1;
   STATE s;
   int sec_type;

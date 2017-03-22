@@ -392,8 +392,8 @@ dotlock_prepare (char *bn, size_t l, const char *f, int _fd)
 {
   struct stat fsb, lsb;
   char realpath[_POSIX_PATH_MAX];
-  char *basename, *dirname;
-  char *p;
+  char *basename = NULL, *dirname = NULL;
+  char *p = NULL;
   int fd;
   int r;
 
@@ -662,7 +662,7 @@ int dotlock_invoke (const char *path, int fd, int flags, int retry)
 int main (int argc, char **argv)
 {
   int i;
-  char *p;
+  char *p = NULL;
 
   /* first, drop privileges */
 

@@ -88,7 +88,7 @@ static void free_address (ADDRESS *a)
 
 int rfc822_remove_from_adrlist (ADDRESS **a, const char *mailbox)
 {
-  ADDRESS *p, *last = NULL, *t;
+  ADDRESS *p = NULL, *last = NULL, *t = NULL;
   int rv = -1;
 
   p = *a;
@@ -118,7 +118,7 @@ int rfc822_remove_from_adrlist (ADDRESS **a, const char *mailbox)
 
 void rfc822_free_address (ADDRESS **p)
 {
-  ADDRESS *t;
+  ADDRESS *t = NULL;
 
   while (*p)
   {
@@ -221,7 +221,7 @@ parse_mailboxdomain (const char *s, const char *nonspecial,
 		     char *mailbox, size_t *mailboxlen, size_t mailboxmax,
 		     char *comment, size_t *commentlen, size_t commentmax)
 {
-  const char *ps;
+  const char *ps = NULL;
 
   while (*s)
   {
@@ -371,12 +371,12 @@ ADDRESS *rfc822_parse_adrlist (ADDRESS *top, const char *s)
 {
   int ws_pending, nl;
 #ifdef EXACT_ADDRESS
-  const char *begin;
+  const char *begin = NULL;
 #endif
-  const char *ps;
+  const char *ps = NULL;
   char comment[LONG_STRING], phrase[LONG_STRING];
   size_t phraselen = 0, commentlen = 0;
-  ADDRESS *cur, *last = NULL;
+  ADDRESS *cur = NULL, *last = NULL;
 
   RFC822Error = 0;
 
@@ -555,7 +555,7 @@ ADDRESS *rfc822_parse_adrlist (ADDRESS *top, const char *s)
 
 void rfc822_qualify (ADDRESS *addr, const char *host)
 {
-  char *p;
+  char *p = NULL;
 
   for (; addr; addr = addr->next)
     if (!addr->group && addr->mailbox && strchr (addr->mailbox, '@') == NULL)
@@ -599,7 +599,7 @@ void rfc822_write_address_single (char *buf, size_t buflen, ADDRESS *addr,
 {
   size_t len;
   char *pbuf = buf;
-  char *pc;
+  char *pc = NULL;
 
   if (!addr)
     return;
@@ -897,7 +897,7 @@ int safe_free (void **p)	/* __SAFE_FREE_CHECKED__ */
 
 int main (int argc, char **argv)
 {
-  ADDRESS *list;
+  ADDRESS *list = NULL;
   char buf[256];
   char *str = "a b c ";
 

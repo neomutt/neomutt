@@ -430,7 +430,7 @@ int mx_get_magic (const char *path)
   struct stat st;
   int magic = 0;
   char tmp[_POSIX_PATH_MAX];
-  FILE *f;
+  FILE *f = NULL;
 
 #ifdef USE_IMAP
   if(mx_is_imap(path))
@@ -888,7 +888,7 @@ int mx_close_mailbox (CONTEXT *ctx, int *index_hint)
 
   if (read_msgs && quadoption (OPT_MOVE) != MUTT_NO && ctx->magic != MUTT_NNTP)
   {
-    char *p;
+    char *p = NULL;
 
     if ((p = mutt_find_hook (MUTT_MBOXHOOK, ctx->path)))
     {
@@ -1306,7 +1306,7 @@ int mx_sync_mailbox (CONTEXT *ctx, int *index_hint)
 MESSAGE *mx_open_new_message (CONTEXT *dest, HEADER *hdr, int flags)
 {
   ADDRESS *p = NULL;
-  MESSAGE *msg;
+  MESSAGE *msg = NULL;
 
   if (!dest->mx_ops || !dest->mx_ops->open_new_msg)
   {
@@ -1372,7 +1372,7 @@ int mx_check_mailbox (CONTEXT *ctx, int *index_hint)
 /* return a stream pointer for a message */
 MESSAGE *mx_open_message (CONTEXT *ctx, int msgno)
 {
-  MESSAGE *msg;
+  MESSAGE *msg = NULL;
 
   if (!ctx->mx_ops || !ctx->mx_ops->open_msg)
   {
@@ -1460,7 +1460,7 @@ void mx_alloc_memory (CONTEXT *ctx)
  */
 void mx_update_context (CONTEXT *ctx, int new_messages)
 {
-  HEADER *h;
+  HEADER *h = NULL;
   int msgno;
 
   for (msgno = ctx->msgcount - new_messages; msgno < ctx->msgcount; msgno++)
@@ -1484,7 +1484,7 @@ void mx_update_context (CONTEXT *ctx, int new_messages)
 
     if (h->env->supersedes)
     {
-      HEADER *h2;
+      HEADER *h2 = NULL;
 
       if (!ctx->id_hash)
 	ctx->id_hash = mutt_make_id_hash (ctx);

@@ -344,7 +344,7 @@ static int cb_qsort_sbe (const void *a, const void *b)
 static void update_entries_visibility (void)
 {
   short new_only = option (OPTSIDEBARNEWMAILONLY);
-  SBENTRY *sbe;
+  SBENTRY *sbe = NULL;
   int i;
 
   for (i = 0; i < EntryCount; i++)
@@ -380,7 +380,7 @@ static void unsort_entries (void)
 {
   BUFFY *cur = get_incoming();
   int i = 0, j;
-  SBENTRY *tmp;
+  SBENTRY *tmp = NULL;
 
   while (cur && (i < EntryCount))
   {
@@ -823,8 +823,8 @@ static void fill_empty_space (int first_row, int num_rows, int div_width, int nu
 static void draw_sidebar (int num_rows, int num_cols, int div_width)
 {
   int entryidx;
-  SBENTRY *entry;
-  BUFFY *b;
+  SBENTRY *entry = NULL;
+  BUFFY *b = NULL;
   if (TopIndex < 0)
     return;
 
@@ -898,7 +898,7 @@ static void draw_sidebar (int num_rows, int num_cols, int div_width)
 
     /* calculate depth of current folder and generate its display name with indented spaces */
     int sidebar_folder_depth = 0;
-    char *sidebar_folder_name;
+    char *sidebar_folder_name = NULL;
     int i;
     if (option (OPTSIDEBARSHORTPATH))
     {
@@ -919,7 +919,7 @@ static void draw_sidebar (int num_rows, int num_cols, int div_width)
 
     if (maildir_is_prefix && option (OPTSIDEBARFOLDERINDENT))
     {
-      const char *tmp_folder_name;
+      const char *tmp_folder_name = NULL;
       int lastsep = 0;
       tmp_folder_name = b->path + maildirlen + 1;
       int tmplen = (int) mutt_strlen (tmp_folder_name) - 1;
@@ -986,7 +986,7 @@ void mutt_sb_draw (void)
 
   int div_width = draw_divider (num_rows, num_cols);
 
-  BUFFY *b;
+  BUFFY *b = NULL;
   if (Entries == NULL)
     for (b = get_incoming(); b; b = b->next)
       mutt_sb_notify_mailbox (b, 1);
@@ -1222,7 +1222,7 @@ mutt_sb_toggle_virtual (void)
   HilIndex = -1;
   BotIndex = -1;
 
-  BUFFY *b;
+  BUFFY *b = NULL;
 
   EntryCount = 0;
   FREE(&Entries);

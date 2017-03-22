@@ -30,12 +30,12 @@
 /* imap_auth_sasl: Default authenticator if available. */
 imap_auth_res_t imap_auth_sasl (IMAP_DATA* idata, const char* method)
 {
-  sasl_conn_t* saslconn;
+  sasl_conn_t* saslconn = NULL;
   sasl_interact_t* interaction = NULL;
   int rc, irc;
   char *buf = NULL;
   size_t bufsize = 0;
-  const char* mech;
+  const char* mech = NULL;
   const char *pc = NULL;
   unsigned int len, olen;
   unsigned char client_start;

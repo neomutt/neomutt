@@ -43,7 +43,7 @@ static int check_idn (char *domain)
 static int mbox_to_udomain (const char *mbx, char **user, char **domain)
 {
   static char *buff = NULL;
-  char *p;
+  char *p = NULL;
 
   mutt_str_replace (&buff, mbx);
 

@@ -139,7 +139,7 @@ static COLOR_LINE *new_color_line (void)
 static void free_color_line(COLOR_LINE **l,
 				 int free_colors)
 {
-  COLOR_LINE *tmp;
+  COLOR_LINE *tmp = NULL;
 
   if(!l || !*l)
     return;
@@ -294,7 +294,7 @@ int mutt_alloc_color (int fg, int bg)
 
 void mutt_free_color (int fg, int bg)
 {
-  COLOR_LIST *p, *q;
+  COLOR_LIST *p = NULL, *q = NULL;
 
   p = ColorList;
   while (p)
@@ -339,7 +339,7 @@ void mutt_free_color (int fg, int bg)
 static int
 parse_color_name (const char *s, int *col, int *attr, int is_fg, BUFFER *err)
 {
-  char *eptr;
+  char *eptr = NULL;
   int is_bright = 0;
 
   if (ascii_strncasecmp (s, "bright", 6) == 0)
@@ -394,7 +394,7 @@ static void
 do_uncolor (BUFFER *buf, BUFFER *s, COLOR_LINE **ColorList,
                  int *do_cache, int parse_uncolor)
 {
-  COLOR_LINE *tmp, *last = NULL;
+  COLOR_LINE *tmp = NULL, *last = NULL;
 
   do
   {
@@ -643,7 +643,7 @@ static int
 parse_object(BUFFER *buf, BUFFER *s, int *o, int *ql, BUFFER *err)
 {
   int q_level = 0;
-  char *eptr;
+  char *eptr = NULL;
 
   if(!MoreArgs(s))
   {

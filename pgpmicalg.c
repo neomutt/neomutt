@@ -66,7 +66,7 @@ static void pgp_dearmor (FILE *in, FILE *out)
   char line[HUGE_STRING];
   LOFF_T start;
   LOFF_T end;
-  char *r;
+  char *r = NULL;
 
   STATE state;
 
@@ -161,7 +161,7 @@ static short pgp_find_hash (const char *fname)
 
   char tempfile[_POSIX_PATH_MAX];
 
-  unsigned char *p;
+  unsigned char *p = NULL;
   size_t l;
 
   short rv = -1;

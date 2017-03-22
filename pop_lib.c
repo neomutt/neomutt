@@ -36,8 +36,8 @@
 int pop_parse_path (const char* path, ACCOUNT* acct)
 {
   ciss_url_t url;
-  char *c;
-  struct servent *service;
+  char *c = NULL;
+  struct servent *service = NULL;
 
   /* Defaults */
   acct->flags = 0;
@@ -74,7 +74,7 @@ int pop_parse_path (const char* path, ACCOUNT* acct)
 /* Copy error message to err_msg buffer */
 static void pop_error (POP_DATA *pop_data, char *msg)
 {
-  char *t, *c, *c2;
+  char *t = NULL, *c = NULL, *c2 = NULL;
 
   t = strchr (pop_data->err_msg, '\0');
   c = msg;
@@ -95,7 +95,7 @@ static void pop_error (POP_DATA *pop_data, char *msg)
 static int fetch_capa (char *line, void *data)
 {
   POP_DATA *pop_data = (POP_DATA *)data;
-  char *c;
+  char *c = NULL;
 
   if (!ascii_strncasecmp (line, "SASL", 4))
   {
@@ -416,7 +416,7 @@ void pop_logout (CONTEXT *ctx)
 int pop_query_d (POP_DATA *pop_data, char *buf, size_t buflen, char *msg)
 {
   int dbg = MUTT_SOCK_LOG_CMD;
-  char *c;
+  char *c = NULL;
 
   if (pop_data->status != POP_CONNECTED)
     return -1;
@@ -462,8 +462,8 @@ int pop_fetch_data (POP_DATA *pop_data, char *query, progress_t *progressbar,
 		    int (*funct) (char *, void *), void *data)
 {
   char buf[LONG_STRING];
-  char *inbuf;
-  char *p;
+  char *inbuf = NULL;
+  char *p = NULL;
   int ret, chunk = 0;
   long pos = 0;
   size_t lenbuf = 0;
@@ -523,7 +523,7 @@ static int check_uidl (char *line, void *data)
   int i;
   unsigned int index;
   CONTEXT *ctx = (CONTEXT *)data;
-  char *endp;
+  char *endp = NULL;
 
   errno = 0;
   index = strtoul(line, &endp, 10);

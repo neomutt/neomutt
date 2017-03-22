@@ -394,7 +394,7 @@ static int _mutt_pipe_message (HEADER *h, char *cmd,
 
   int i, rc = 0;
   pid_t thepid;
-  FILE *fpout;
+  FILE *fpout = NULL;
 
   if (h)
   {
@@ -938,10 +938,10 @@ void mutt_edit_content_type (HEADER *h, BODY *b, FILE *fp)
   char buf[LONG_STRING];
   char obuf[LONG_STRING];
   char tmp[STRING];
-  PARAMETER *p;
+  PARAMETER *p = NULL;
 
   char charset[STRING];
-  char *cp;
+  char *cp = NULL;
 
   short charset_changed = 0;
   short type_changed = 0;
@@ -1029,7 +1029,7 @@ void mutt_edit_content_type (HEADER *h, BODY *b, FILE *fp)
 
 static int _mutt_check_traditional_pgp (HEADER *h, int *redraw)
 {
-  MESSAGE *msg;
+  MESSAGE *msg = NULL;
   int rv = 0;
 
   h->security |= PGP_TRADITIONAL_CHECKED;

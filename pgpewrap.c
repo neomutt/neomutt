@@ -18,7 +18,7 @@ static void print_usage(const char *progname) {
 }
 
 int main(int argc, char **argv) {
-	char **opts, **opt, *pfx;
+	char **opts = NULL, **opt = NULL, *pfx = NULL;
 	int i;
 
 	if (argc <= 1) {

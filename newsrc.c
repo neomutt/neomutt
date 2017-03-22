@@ -147,7 +147,7 @@ void nntp_group_unread_stat (NNTP_DATA *nntp_data)
 int nntp_newsrc_parse (NNTP_SERVER *nserv)
 {
   unsigned int i;
-  char *line;
+  char *line = NULL;
   struct stat sb;
 
   if (nserv->newsrc_fp)
@@ -211,9 +211,9 @@ int nntp_newsrc_parse (NNTP_SERVER *nserv)
   line = safe_malloc (sb.st_size + 1);
   while (sb.st_size && fgets (line, sb.st_size + 1, nserv->newsrc_fp))
   {
-    char *b, *h, *p;
+    char *b = NULL, *h = NULL, *p = NULL;
     unsigned int subs = 0, i = 1;
-    NNTP_DATA *nntp_data;
+    NNTP_DATA *nntp_data = NULL;
 
     /* find end of newsgroup name */
     p = strpbrk (line, ":!");
@@ -362,7 +362,7 @@ void nntp_newsrc_gen_entries (CONTEXT *ctx)
 /* Update file with new contents */
 static int update_file (char *filename, char *buf)
 {
-  FILE *fp;
+  FILE *fp = NULL;
   char tmpfile[_POSIX_PATH_MAX];
   int rc = -1;
 
@@ -409,7 +409,7 @@ static int update_file (char *filename, char *buf)
 /* Update .newsrc file */
 int nntp_newsrc_update (NNTP_SERVER *nserv)
 {
-  char *buf;
+  char *buf = NULL;
   size_t buflen, off;
   unsigned int i;
   int rc = -1;
@@ -486,7 +486,7 @@ int nntp_newsrc_update (NNTP_SERVER *nserv)
 /* Make fully qualified cache file name */
 static void cache_expand (char *dst, size_t dstlen, ACCOUNT *acct, char *src)
 {
-  char *c;
+  char *c = NULL;
   char file[_POSIX_PATH_MAX];
 
   /* server subdirectory */
@@ -525,7 +525,7 @@ void nntp_expand_path (char *line, size_t len, ACCOUNT *acct)
 int nntp_add_group (char *line, void *data)
 {
   NNTP_SERVER *nserv = data;
-  NNTP_DATA *nntp_data;
+  NNTP_DATA *nntp_data = NULL;
   char group[LONG_STRING];
   char desc[HUGE_STRING] = "";
   char mod;
@@ -560,7 +560,7 @@ static int active_get_cache (NNTP_SERVER *nserv)
   char buf[HUGE_STRING];
   char file[_POSIX_PATH_MAX];
   time_t t;
-  FILE *fp;
+  FILE *fp = NULL;
 
   cache_expand (file, sizeof (file), &nserv->conn->account, ".active");
   mutt_debug (1, "Parsing %s\n", file);
@@ -589,7 +589,7 @@ static int active_get_cache (NNTP_SERVER *nserv)
 int nntp_active_save_cache (NNTP_SERVER *nserv)
 {
   char file[_POSIX_PATH_MAX];
-  char *buf;
+  char *buf = NULL;
   size_t buflen, off;
   unsigned int i;
   int rc;
@@ -659,7 +659,7 @@ void nntp_hcache_update (NNTP_DATA *nntp_data, header_cache_t *hc)
 {
   char buf[16];
   int old = 0;
-  void *hdata;
+  void *hdata = NULL;
   anum_t first, last, current;
 
   if (!hc)
@@ -755,9 +755,9 @@ void nntp_delete_group_cache (NNTP_DATA *nntp_data)
 void nntp_clear_cache (NNTP_SERVER *nserv)
 {
   char file[_POSIX_PATH_MAX];
-  char *fp;
-  struct dirent *entry;
-  DIR *dp;
+  char *fp = NULL;
+  struct dirent *entry = NULL;
+  DIR *dp = NULL;
 
   if (!nserv || !nserv->cacheable)
     return;
@@ -772,7 +772,7 @@ void nntp_clear_cache (NNTP_SERVER *nserv)
     {
       char *group = entry->d_name;
       struct stat sb;
-      NNTP_DATA *nntp_data;
+      NNTP_DATA *nntp_data = NULL;
       NNTP_DATA nntp_tmp;
 
       if (mutt_strcmp (group, ".") == 0 ||
@@ -834,7 +834,7 @@ nntp_format_str (char *dest, size_t destlen, size_t col, int cols, char op, cons
   NNTP_SERVER *nserv = (NNTP_SERVER *)data;
   ACCOUNT *acct = &nserv->conn->account;
   ciss_url_t url;
-  char fn[SHORT_STRING], tmp[SHORT_STRING], *p;
+  char fn[SHORT_STRING], tmp[SHORT_STRING], *p = NULL;
 
   switch (op)
   {
@@ -889,12 +889,12 @@ nntp_format_str (char *dest, size_t destlen, size_t col, int cols, char op, cons
 NNTP_SERVER *nntp_select_server (char *server, int leave_lock)
 {
   char file[_POSIX_PATH_MAX];
-  char *p;
+  char *p = NULL;
   int rc;
   ACCOUNT acct;
-  NNTP_SERVER *nserv;
-  NNTP_DATA *nntp_data;
-  CONNECTION *conn;
+  NNTP_SERVER *nserv = NULL;
+  NNTP_DATA *nntp_data = NULL;
+  CONNECTION *conn = NULL;
   ciss_url_t url;
 
   if (!server || !*server)
@@ -1009,15 +1009,15 @@ NNTP_SERVER *nntp_select_server (char *server, int leave_lock)
   /* check cache files */
   if (rc >= 0 && nserv->cacheable)
   {
-    struct dirent *entry;
+    struct dirent *entry = NULL;
     DIR *dp = opendir (file);
 
     if (dp)
     {
       while ((entry = readdir (dp)))
       {
-	header_cache_t *hc;
-	void *hdata;
+	header_cache_t *hc = NULL;
+	void *hdata = NULL;
 	char *group = entry->d_name;
 
 	p = group + strlen (group) - 7;
@@ -1120,7 +1120,7 @@ void nntp_article_status (CONTEXT *ctx, HEADER *hdr, char *group, anum_t anum)
 /* Subscribe newsgroup */
 NNTP_DATA *mutt_newsgroup_subscribe (NNTP_SERVER *nserv, char *group)
 {
-  NNTP_DATA *nntp_data;
+  NNTP_DATA *nntp_data = NULL;
 
   if (!nserv || !nserv->groups_hash || !group || !*group)
     return NULL;
@@ -1140,7 +1140,7 @@ NNTP_DATA *mutt_newsgroup_subscribe (NNTP_SERVER *nserv, char *group)
 /* Unsubscribe newsgroup */
 NNTP_DATA *mutt_newsgroup_unsubscribe (NNTP_SERVER *nserv, char *group)
 {
-  NNTP_DATA *nntp_data;
+  NNTP_DATA *nntp_data = NULL;
 
   if (!nserv || !nserv->groups_hash || !group || !*group)
     return NULL;
@@ -1161,7 +1161,7 @@ NNTP_DATA *mutt_newsgroup_unsubscribe (NNTP_SERVER *nserv, char *group)
 /* Catchup newsgroup */
 NNTP_DATA *mutt_newsgroup_catchup (NNTP_SERVER *nserv, char *group)
 {
-  NNTP_DATA *nntp_data;
+  NNTP_DATA *nntp_data = NULL;
 
   if (!nserv || !nserv->groups_hash || !group || !*group)
     return NULL;
@@ -1191,7 +1191,7 @@ NNTP_DATA *mutt_newsgroup_catchup (NNTP_SERVER *nserv, char *group)
 /* Uncatchup newsgroup */
 NNTP_DATA *mutt_newsgroup_uncatchup (NNTP_SERVER *nserv, char *group)
 {
-  NNTP_DATA *nntp_data;
+  NNTP_DATA *nntp_data = NULL;
 
   if (!nserv || !nserv->groups_hash || !group || !*group)
     return NULL;

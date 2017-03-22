@@ -310,7 +310,7 @@ int mutt_protect (HEADER *msg, char *keylist)
 
 int mutt_is_multipart_signed (BODY *b)
 {
-  char *p;
+  char *p = NULL;
 
   if (!b || !(b->type == TYPEMULTIPART) ||
       !b->subtype || ascii_strcasecmp(b->subtype, "signed"))
@@ -341,7 +341,7 @@ int mutt_is_multipart_encrypted (BODY *b)
 {
   if ((WithCrypto & APPLICATION_PGP))
   {
-    char *p;
+    char *p = NULL;
 
     if (!b || b->type != TYPEMULTIPART ||
         !b->subtype || ascii_strcasecmp (b->subtype, "encrypted") ||
@@ -420,7 +420,7 @@ int mutt_is_malformed_multipart_pgp_encrypted (BODY *b)
 int mutt_is_application_pgp (BODY *m)
 {
   int t = 0;
-  char *p;
+  char *p = NULL;
 
   if (m->type == TYPEAPPLICATION)
   {
@@ -569,7 +569,7 @@ int crypt_query (BODY *m)
 
   if (m->type == TYPEMULTIPART || m->type == TYPEMESSAGE)
   {
-    BODY *p;
+    BODY *p = NULL;
     int u, v, w;
 
     u = m->parts ? 0xffffffff : 0;	/* Bits set in all parts */
@@ -594,7 +594,7 @@ int crypt_query (BODY *m)
 
 int crypt_write_signed(BODY *a, STATE *s, const char *tempfile)
 {
-  FILE *fp;
+  FILE *fp = NULL;
   int c;
   short hadcr;
   size_t bytes;
@@ -679,9 +679,9 @@ void convert_to_7bit (BODY *a)
 void crypt_extract_keys_from_messages (HEADER * h)
 {
   int i;
-  char tempfname[_POSIX_PATH_MAX], *mbox;
+  char tempfname[_POSIX_PATH_MAX], *mbox = NULL;
   ADDRESS *tmp = NULL;
-  FILE *fpout;
+  FILE *fpout = NULL;
 
   if (!WithCrypto)
     return;
@@ -1035,8 +1035,8 @@ int mutt_signed_handler (BODY *a, STATE *s)
 const char* crypt_get_fingerprint_or_id (char *p, const char **pphint,
     const char **ppl, const char **pps)
 {
-  const char *ps, *pl, *phint;
-  char *pfcopy, *pf, *s1, *s2;
+  const char *ps = NULL, *pl = NULL, *phint = NULL;
+  char *pfcopy = NULL, *pf = NULL, *s1 = NULL, *s2 = NULL;
   char c;
   int isid;
   size_t hexdigits;

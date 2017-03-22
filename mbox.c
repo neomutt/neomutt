@@ -84,7 +84,7 @@ static int mmdf_parse_mailbox (CONTEXT *ctx)
   int lines;
   time_t t;
   LOFF_T loc, tmploc;
-  HEADER *hdr;
+  HEADER *hdr = NULL;
   struct stat sb;
 #ifdef NFS_ATTRIBUTE_HACK
   struct utimbuf newtime;
@@ -239,7 +239,7 @@ static int mbox_parse_mailbox (CONTEXT *ctx)
 {
   struct stat sb;
   char buf[HUGE_STRING], return_path[STRING];
-  HEADER *curhdr;
+  HEADER *curhdr = NULL;
   time_t t;
   int count = 0, lines = 0;
   LOFF_T loc;

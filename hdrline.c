@@ -207,7 +207,7 @@ static void make_from (ENVELOPE *env, char *buf, size_t len, int do_lists)
 
   int me;
   enum FieldType disp;
-  ADDRESS *name;
+  ADDRESS *name = NULL;
 
   me = mutt_addr_is_user (env->from);
 
@@ -468,10 +468,10 @@ hdr_format_str (char *dest,
 		format_flag flags)
 {
   struct hdr_format_info *hfi = (struct hdr_format_info *) data;
-  HEADER *hdr, *htmp;
-  CONTEXT *ctx;
-  char fmt[SHORT_STRING], buf2[LONG_STRING], *p;
-  char *wch;
+  HEADER *hdr = NULL, *htmp = NULL;
+  CONTEXT *ctx = NULL;
+  char fmt[SHORT_STRING], buf2[LONG_STRING], *p = NULL;
+  char *wch = NULL;
   int do_locales, i;
   int optional = (flags & MUTT_FORMAT_OPTIONAL);
   int threads = ((Sort & SORT_MASK) == SORT_THREADS);
@@ -579,13 +579,13 @@ hdr_format_str (char *dest,
 
       /* preprocess $date_format to handle %Z */
       {
-	const char *cp;
-	struct tm *tm;
+	const char *cp = NULL;
+	struct tm *tm = NULL;
 	time_t T;
 	int i = 0, invert = 0;
 
 	if (optional && ((op == '[') || (op == '('))) {
-	  char *is;
+	  char *is = NULL;
 	  T = time (NULL);
 	  tm = localtime (&T);
 	  T -= (op == '(') ? hdr->received : hdr->date_sent;
@@ -951,7 +951,7 @@ hdr_format_str (char *dest,
 
     case 's':
       {
-	char *subj;
+	char *subj = NULL;
         if (hdr->env->disp_subj)
 	  subj = hdr->env->disp_subj;
 	else if (SubjectRxList)
@@ -1071,7 +1071,7 @@ hdr_format_str (char *dest,
     case 'Z':
       {
         /* New/Old for threads; replied; New/Old for messages */
-        char *first;
+        char *first = NULL;
         if (THREAD_NEW)
           first = get_nth_wchar (Flagchars, FlagCharNewThread);
         else if (THREAD_OLD)
@@ -1092,7 +1092,7 @@ hdr_format_str (char *dest,
         }
 
         /* Marked for deletion; deleted attachments; crypto */
-        char *second;
+        char *second = NULL;
         if (hdr->deleted)
           second = get_nth_wchar (Flagchars, FlagCharDeleted);
         else if (hdr->attach_del)
@@ -1109,7 +1109,7 @@ hdr_format_str (char *dest,
           second = " ";
 
         /* Tagged, flagged and recipient flag */
-        char *third;
+        char *third = NULL;
         if (hdr->tagged)
           third = get_nth_wchar (Flagchars, FlagCharTagged);
         else if (hdr->flagged)
@@ -1182,9 +1182,9 @@ hdr_format_str (char *dest,
 #ifdef USE_NOTMUCH
     case 'G':
     {
-      char *tag_transformed;
+      char *tag_transformed = NULL;
       char format[3];
-      char *tag;
+      char *tag = NULL;
 
       if (!optional)
       {

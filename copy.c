@@ -51,8 +51,8 @@ mutt_copy_hdr (FILE *in, FILE *out, LOFF_T off_start, LOFF_T off_end, int flags,
   int this_is_from;
   int ignore = 0;
   char buf[LONG_STRING]; /* should be long enough to get most fields in one pass */
-  char *nl;
-  LIST *t;
+  char *nl = NULL;
+  LIST *t = NULL;
   char **headers;
   int hdr_count;
   int x;
@@ -647,7 +647,7 @@ _mutt_copy_message (FILE *fpout, FILE *fpin, HEADER *hdr, BODY *body,
            && (flags & MUTT_CM_DECODE_CRYPT) && (hdr->security & ENCRYPT))
   {
     BODY *cur = NULL;
-    FILE *fp;
+    FILE *fp = NULL;
 
     if ((WithCrypto & APPLICATION_PGP)
         && (flags & MUTT_CM_DECODE_PGP) && (hdr->security & APPLICATION_PGP) &&
@@ -724,7 +724,7 @@ int
 mutt_copy_message (FILE *fpout, CONTEXT *src, HEADER *hdr, int flags,
 		   int chflags)
 {
-  MESSAGE *msg;
+  MESSAGE *msg = NULL;
   int r;
 
   if ((msg = mx_open_message (src, hdr->msgno)) == NULL)
@@ -754,7 +754,7 @@ _mutt_append_message (CONTEXT *dest, FILE *fpin, CONTEXT *src, HEADER *hdr,
 		      BODY *body, int flags, int chflags)
 {
   char buf[STRING];
-  MESSAGE *msg;
+  MESSAGE *msg = NULL;
   int r;
 
   fseeko (fpin, hdr->offset, 0);
@@ -783,7 +783,7 @@ int
 mutt_append_message (CONTEXT *dest, CONTEXT *src, HEADER *hdr, int cmflags,
 		     int chflags)
 {
-  MESSAGE *msg;
+  MESSAGE *msg = NULL;
   int r;
 
   if ((msg = mx_open_message (src, hdr->msgno)) == NULL)
@@ -802,7 +802,7 @@ mutt_append_message (CONTEXT *dest, CONTEXT *src, HEADER *hdr, int cmflags,
  */
 static int copy_delete_attach (BODY *b, FILE *fpin, FILE *fpout, char *date)
 {
-  BODY *part;
+  BODY *part = NULL;
 
   for (part = b->parts ; part ; part = part->next)
   {

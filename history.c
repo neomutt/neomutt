@@ -57,9 +57,9 @@ static void init_history (struct history *h)
 
 void mutt_read_histfile (void)
 {
-  FILE *f;
+  FILE *f = NULL;
   int line = 0, hclass, read;
-  char *linebuf = NULL, *p;
+  char *linebuf = NULL, *p = NULL;
   size_t buflen;
 
   if ((f = fopen (HistFile, "r")) == NULL)
@@ -94,7 +94,7 @@ void mutt_read_histfile (void)
 static void shrink_histfile (void)
 {
   char tmpfname[_POSIX_PATH_MAX];
-  FILE *f, *tmp = NULL;
+  FILE *f = NULL, *tmp = NULL;
   int n[HC_LAST] = { 0 };
   int line, hclass;
   char *linebuf = NULL;
@@ -165,8 +165,8 @@ cleanup:
 static void save_history (history_class_t hclass, const char *s)
 {
   static int n = 0;
-  FILE *f;
-  char *tmp, *p;
+  FILE *f = NULL;
+  char *tmp = NULL, *p = NULL;
 
   if (!s || !*s)  /* This shouldn't happen, but it's safer. */
     return;

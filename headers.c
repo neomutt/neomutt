@@ -34,13 +34,13 @@ void mutt_edit_headers (const char *editor,
 {
   char path[_POSIX_PATH_MAX];	/* tempfile used to edit headers + body */
   char buffer[LONG_STRING];
-  const char *p;
-  FILE *ifp, *ofp;
+  const char *p = NULL;
+  FILE *ifp = NULL, *ofp = NULL;
   int i, keep;
-  ENVELOPE *n;
+  ENVELOPE *n = NULL;
   time_t mtime;
   struct stat st;
-  LIST *cur, **last = NULL, *tmp;
+  LIST *cur = NULL, **last = NULL, *tmp = NULL;
 
   mutt_mktemp (path, sizeof (path));
   if ((ofp = safe_fopen (path, "w")) == NULL)
@@ -152,8 +152,8 @@ void mutt_edit_headers (const char *editor,
     }
     else if (ascii_strncasecmp ("attach:", cur->data, 7) == 0)
     {
-      BODY *body;
-      BODY *parts;
+      BODY *body = NULL;
+      BODY *parts = NULL;
       size_t l = 0;
 
       p = skip_email_wsp(cur->data + 7);
@@ -215,7 +215,7 @@ void mutt_edit_headers (const char *editor,
 
 static void label_ref_dec(CONTEXT *ctx, char *label)
 {
-  struct hash_elem *elem;
+  struct hash_elem *elem = NULL;
   uintptr_t count;
 
   elem = hash_find_elem (ctx->label_hash, label);
@@ -235,7 +235,7 @@ static void label_ref_dec(CONTEXT *ctx, char *label)
 
 static void label_ref_inc(CONTEXT *ctx, char *label)
 {
-  struct hash_elem *elem;
+  struct hash_elem *elem = NULL;
   uintptr_t count;
 
   elem = hash_find_elem (ctx->label_hash, label);
@@ -272,7 +272,7 @@ static int label_message(CONTEXT *ctx, HEADER *hdr, char *new)
 
 int mutt_label_message(HEADER *hdr)
 {
-  char buf[LONG_STRING], *new;
+  char buf[LONG_STRING], *new = NULL;
   int i;
   int changed;
 

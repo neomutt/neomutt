@@ -189,8 +189,8 @@ static size_t utf8rtowc (wchar_t *pwc, const char *s, size_t n, mbstate_t *_ps)
 static size_t wcrtomb_iconv (char *s, wchar_t wc, iconv_t cd)
 {
   char buf[MB_LEN_MAX+1];
-  ICONV_CONST char *ib;
-  char *ob;
+  ICONV_CONST char *ib = NULL;
+  char *ob = NULL;
   size_t ibl, obl;
 
   if (s)
@@ -242,8 +242,8 @@ static size_t mbrtowc_iconv (wchar_t *pwc, const char *s, size_t n,
 		      mbstate_t *ps, iconv_t cd)
 {
   static mbstate_t mbstate;
-  ICONV_CONST char *ib, *ibmax;
-  char *ob, *t;
+  ICONV_CONST char *ib = NULL, *ibmax = NULL;
+  char *ob = NULL, *t = NULL;
   size_t ibl, obl, k, r;
   char bufi[8], bufo[6];
 

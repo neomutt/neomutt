@@ -240,7 +240,7 @@ void mutt_set_langinfo_charset (void)
 void mutt_canonical_charset (char *dest, size_t dlen, const char *name)
 {
   size_t i;
-  char *p, *ext;
+  char *p = NULL, *ext = NULL;
   char in[LONG_STRING], scratch[LONG_STRING];
 
   strfcpy (in, name, sizeof (in));
@@ -311,7 +311,7 @@ char *mutt_get_default_charset (void)
 {
   static char fcharset[SHORT_STRING];
   const char *c = AssumedCharset;
-  const char *c1;
+  const char *c1 = NULL;
 
   if (c && *c) {
     c1 = strchr (c, ':');
@@ -337,8 +337,8 @@ iconv_t mutt_iconv_open (const char *tocode, const char *fromcode, int flags)
 {
   char tocode1[SHORT_STRING];
   char fromcode1[SHORT_STRING];
-  char *tocode2, *fromcode2;
-  char *tmp;
+  char *tocode2 = NULL, *fromcode2 = NULL;
+  char *tmp = NULL;
 
   iconv_t cd;
 
@@ -455,11 +455,11 @@ int mutt_convert_string (char **ps, const char *from, const char *to, int flags)
   if (to && from && (cd = mutt_iconv_open (to, from, flags)) != (iconv_t)-1)
   {
     int len;
-    ICONV_CONST char *ib;
-    char *buf, *ob;
+    ICONV_CONST char *ib = NULL;
+    char *buf = NULL, *ob = NULL;
     size_t ibl, obl;
-    ICONV_CONST char **inrepls = 0;
-    char *outrepl = 0;
+    ICONV_CONST char **inrepls = NULL;
+    char *outrepl = NULL;
 
     if (mutt_is_utf8 (to))
       outrepl = "\357\277\275";
@@ -519,7 +519,7 @@ struct fgetconv_not
  */
 FGETCONV *fgetconv_open (FILE *file, const char *from, const char *to, int flags)
 {
-  struct fgetconv_s *fc;
+  struct fgetconv_s *fc = NULL;
   iconv_t cd = (iconv_t)-1;
   static ICONV_CONST char *repls[] = { "\357\277\275", "?", 0 };
 

@@ -92,7 +92,7 @@ short pgp_get_abilities (unsigned char type)
 
 static void pgp_free_sig (pgp_sig_t **sigp)
 {
-  pgp_sig_t *sp, *q;
+  pgp_sig_t *sp = NULL, *q = NULL;
 
   if (!sigp || !*sigp)
     return;
@@ -108,7 +108,7 @@ static void pgp_free_sig (pgp_sig_t **sigp)
 
 static void pgp_free_uid (pgp_uid_t ** upp)
 {
-  pgp_uid_t *up, *q;
+  pgp_uid_t *up = NULL, *q = NULL;
 
   if (!upp || !*upp)
     return;
@@ -159,7 +159,7 @@ static void _pgp_free_key (pgp_key_t *kpp)
 
 pgp_key_t pgp_remove_key (pgp_key_t *klist, pgp_key_t key)
 {
-  pgp_key_t *last;
+  pgp_key_t *last = NULL;
   pgp_key_t p, q, r;
 
   if (!klist || !*klist || !key)

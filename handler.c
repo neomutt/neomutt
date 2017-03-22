@@ -94,8 +94,8 @@ static void state_prefix_put (const char *d, size_t dlen, STATE *s)
 static void convert_to_state(iconv_t cd, char *bufi, size_t *l, STATE *s)
 {
   char bufo[BUFO_SIZE];
-  ICONV_CONST char *ib;
-  char *ob;
+  ICONV_CONST char *ib = NULL;
+  char *ob = NULL;
   size_t ibl, obl;
 
   if (!bufi)
@@ -189,7 +189,7 @@ static int qp_decode_triple (char *s, char *d)
 static void qp_decode_line (char *dest, char *src, size_t *l,
 			    int last)
 {
-  char *d, *s;
+  char *d = NULL, *s = NULL;
   char c = 0;
 
   int kind = -1;
@@ -394,7 +394,7 @@ static void decode_uuencoded (STATE *s, long len, int istext, iconv_t cd)
 {
   char tmps[SHORT_STRING];
   char linelen, c, l, out;
-  char *pt;
+  char *pt = NULL;
   char bufi[BUFI_SIZE];
   size_t k = 0;
 
@@ -698,7 +698,7 @@ static void enriched_putwc (wchar_t c, struct enriched_state *stte)
 
 static void enriched_puts (const char *s, struct enriched_state *stte)
 {
-  const char *c;
+  const char *c = NULL;
 
   if (stte->buff_len < stte->buff_used + mutt_strlen (s))
   {
@@ -923,7 +923,7 @@ static int text_enriched_handler (BODY *a, STATE *s)
 /* for compatibility with metamail */
 static int is_mmnoask (const char *buf)
 {
-  char tmp[LONG_STRING], *p, *q;
+  char tmp[LONG_STRING], *p = NULL, *q = NULL;
   int lng;
 
   if ((p = getenv ("MM_NOASK")) != NULL && *p)
@@ -1015,8 +1015,8 @@ static int is_autoview (BODY *b)
 static int alternative_handler (BODY *a, STATE *s)
 {
   BODY *choice = NULL;
-  BODY *b;
-  LIST *t;
+  BODY *b = NULL;
+  LIST *t = NULL;
   int type = 0;
   int mustfree = 0;
   int rc = 0;
@@ -1043,7 +1043,7 @@ static int alternative_handler (BODY *a, STATE *s)
   t = AlternativeOrderList;
   while (t && !choice)
   {
-    char *c;
+    char *c = NULL;
     int btlen;  /* length of basetype */
     int wild;	/* do we have a wildcard to match all subtypes? */
 
@@ -1192,7 +1192,7 @@ static int alternative_handler (BODY *a, STATE *s)
 static int message_handler (BODY *a, STATE *s)
 {
   struct stat st;
-  BODY *b;
+  BODY *b = NULL;
   LOFF_T off_start;
   int rc = 0;
 
@@ -1240,7 +1240,7 @@ int mutt_can_decode (BODY *a)
     return (1);
   else if (a->type == TYPEMULTIPART)
   {
-    BODY *p;
+    BODY *p = NULL;
 
     if (WithCrypto)
     {
@@ -1269,7 +1269,7 @@ int mutt_can_decode (BODY *a)
 
 static int multipart_handler (BODY *a, STATE *s)
 {
-  BODY *b, *p;
+  BODY *b = NULL, *p = NULL;
   struct stat st;
   int count;
   int rc = 0;
@@ -1342,7 +1342,7 @@ static int autoview_handler (BODY *a, STATE *s)
   char type[STRING];
   char command[LONG_STRING];
   char tempfile[_POSIX_PATH_MAX] = "";
-  char *fname;
+  char *fname = NULL;
   FILE *fpin = NULL;
   FILE *fpout = NULL;
   FILE *fperr = NULL;
@@ -1470,8 +1470,8 @@ static int autoview_handler (BODY *a, STATE *s)
 
 static int external_body_handler (BODY *b, STATE *s)
 {
-  const char *access_type;
-  const char *expiration;
+  const char *access_type = NULL;
+  const char *expiration = NULL;
   time_t expire;
 
   access_type = mutt_get_parameter ("access-type", b->parameter);
@@ -1497,7 +1497,7 @@ static int external_body_handler (BODY *b, STATE *s)
   {
     if (s->flags & (MUTT_DISPLAY|MUTT_PRINTING))
     {
-      char *length;
+      char *length = NULL;
       char pretty_size[10];
 
       state_mark_attach (s);
@@ -1766,7 +1766,7 @@ static int run_decode_and_handler (BODY *b, STATE *s, handler_t handler, int pla
 static int valid_pgp_encrypted_handler (BODY *b, STATE *s)
 {
   int rc;
-  BODY *octetstream;
+  BODY *octetstream = NULL;
 
   octetstream = b->parts->next;
   rc = crypt_pgp_encrypted_handler (octetstream, s);
@@ -1778,7 +1778,7 @@ static int valid_pgp_encrypted_handler (BODY *b, STATE *s)
 static int malformed_pgp_encrypted_handler (BODY *b, STATE *s)
 {
   int rc;
-  BODY *octetstream;
+  BODY *octetstream = NULL;
 
   octetstream = b->parts->next->next;
   /* exchange encodes the octet-stream, so re-run it through the decoder */
@@ -1833,7 +1833,7 @@ int mutt_body_handler (BODY *b, STATE *s)
   }
   else if (b->type == TYPEMULTIPART)
   {
-    char *p;
+    char *p = NULL;
 
     if ((mutt_strcmp ("inline", ShowMultipartAlternative) != 0) && (ascii_strcasecmp ("alternative", b->subtype) == 0))
       handler = alternative_handler;

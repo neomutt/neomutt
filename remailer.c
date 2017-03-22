@@ -111,15 +111,15 @@ static void mix_free_remailer (REMAILER **r)
 /* parse the type2.list as given by mixmaster -T */
 static REMAILER **mix_type2_list (size_t *l)
 {
-  FILE *fp;
+  FILE *fp = NULL;
   pid_t mm_pid;
   int devnull;
 
   char cmd[HUGE_STRING + _POSIX_PATH_MAX];
   char line[HUGE_STRING];
-  char *t;
+  char *t = NULL;
 
-  REMAILER **type2_list = NULL, *p;
+  REMAILER **type2_list = NULL, *p = NULL;
   size_t slots = 0, used = 0;
 
   if (!l)
@@ -209,7 +209,7 @@ static void mix_screen_coordinates (REMAILER **type2_list,
 				    int i)
 {
   short c, r, oc;
-  struct coord *coords;
+  struct coord *coords = NULL;
 
   if (!chain->cl)
     return;
@@ -466,8 +466,8 @@ static const struct mapping_t RemailerHelp[] =
 
 void mix_make_chain (LIST **chainp, int *redraw)
 {
-  LIST *p;
-  MIXCHAIN *chain;
+  LIST *p = NULL;
+  MIXCHAIN *chain = NULL;
   int c_cur = 0, c_old = 0;
   short c_redraw = 1;
 
@@ -476,13 +476,13 @@ void mix_make_chain (LIST **chainp, int *redraw)
 
   struct coord *coords = NULL;
 
-  MUTTMENU *menu;
+  MUTTMENU *menu = NULL;
   char helpstr[LONG_STRING];
   short loop = 1;
   int op;
 
   int i, j;
-  char *t;
+  char *t = NULL;
 
   if (!(type2_list = mix_type2_list (&ttll)))
   {
@@ -675,9 +675,9 @@ void mix_make_chain (LIST **chainp, int *redraw)
 /* some safety checks before piping the message to mixmaster */
 int mix_check_message (HEADER *msg)
 {
-  const char *fqdn;
+  const char *fqdn = NULL;
   short need_hostname = 0;
-  ADDRESS *p;
+  ADDRESS *p = NULL;
 
   if (msg->env->cc || msg->env->bcc)
   {

@@ -40,7 +40,7 @@ static int is_descendant (THREAD *a, THREAD *b)
 /* Determines whether to display a message's subject. */
 static int need_display_subject (CONTEXT *ctx, HEADER *hdr)
 {
-  THREAD *tmp, *tree = hdr->thread;
+  THREAD *tmp = NULL, *tree = hdr->thread;
 
   /* if the user disabled subject hiding, display it */
   if (!option (OPTHIDETHREADSUBJECT))
@@ -122,7 +122,7 @@ static void linearize_tree (CONTEXT *ctx)
  */
 static void calculate_visibility (CONTEXT *ctx, int *max_depth)
 {
-  THREAD *tmp, *tree = ctx->tree;
+  THREAD *tmp = NULL, *tree = ctx->tree;
   int hide_top_missing = option (OPTHIDETOPMISSING) && !option (OPTHIDEMISSING);
   int hide_top_limited = option (OPTHIDETOPLIMITED) && !option (OPTHIDELIMITED);
   int depth = 0;
@@ -230,7 +230,7 @@ static void calculate_visibility (CONTEXT *ctx, int *max_depth)
  */
 void mutt_draw_tree (CONTEXT *ctx)
 {
-  char *pfx = NULL, *mypfx = NULL, *arrow = NULL, *myarrow = NULL, *new_tree;
+  char *pfx = NULL, *mypfx = NULL, *arrow = NULL, *myarrow = NULL, *new_tree = NULL;
   char corner = (Sort & SORT_REVERSE) ? MUTT_TREE_ULCORNER : MUTT_TREE_LLCORNER;
   char vtee = (Sort & SORT_REVERSE) ? MUTT_TREE_BTEE : MUTT_TREE_TTEE;
   int depth = 0, start_depth = 0, max_depth = 0, width = option (OPTNARROWTREE) ? 1 : 2;
@@ -347,9 +347,9 @@ void mutt_draw_tree (CONTEXT *ctx)
 static LIST *make_subject_list (THREAD *cur, time_t *dateptr)
 {
   THREAD *start = cur;
-  ENVELOPE *env;
+  ENVELOPE *env = NULL;
   time_t thisdate;
-  LIST *curlist, *oldlist, *newlist, *subjects = NULL;
+  LIST *curlist = NULL, *oldlist = NULL, *newlist = NULL, *subjects = NULL;
   int rc = 0;
 
   while (true)
@@ -411,9 +411,9 @@ static LIST *make_subject_list (THREAD *cur, time_t *dateptr)
  */
 static THREAD *find_subject (CONTEXT *ctx, THREAD *cur)
 {
-  struct hash_elem *ptr;
-  THREAD *tmp, *last = NULL;
-  LIST *subjects = NULL, *oldlist;
+  struct hash_elem *ptr = NULL;
+  THREAD *tmp = NULL, *last = NULL;
+  LIST *subjects = NULL, *oldlist = NULL;
   time_t date = 0;
 
   subjects = make_subject_list (cur, &date);
@@ -453,7 +453,7 @@ static THREAD *find_subject (CONTEXT *ctx, THREAD *cur)
  * fact that cur is their descendant. */
 static void unlink_message (THREAD **old, THREAD *cur)
 {
-  THREAD *tmp;
+  THREAD *tmp = NULL;
 
   if (cur->prev)
     cur->prev->next = cur->next;
@@ -486,8 +486,8 @@ static void insert_message (THREAD **new, THREAD *newparent, THREAD *cur)
 static HASH *make_subj_hash (CONTEXT *ctx)
 {
   int i;
-  HEADER *hdr;
-  HASH *hash;
+  HEADER *hdr = NULL;
+  HASH *hash = NULL;
 
   hash = hash_create (ctx->msgcount * 2, MUTT_HASH_ALLOW_DUPS);
 
@@ -505,7 +505,7 @@ static HASH *make_subj_hash (CONTEXT *ctx)
 static void pseudo_threads (CONTEXT *ctx)
 {
   THREAD *tree = ctx->tree, *top = tree;
-  THREAD *tmp, *cur, *parent, *curchild, *nextchild;
+  THREAD *tmp = NULL, *cur = NULL, *parent = NULL, *curchild = NULL, *nextchild = NULL;
 
   if (!ctx->subj_hash)
     ctx->subj_hash = make_subj_hash (ctx);
@@ -601,8 +601,8 @@ static int compare_threads (const void *a, const void *b)
 
 THREAD *mutt_sort_subthreads (THREAD *thread, int init)
 {
-  THREAD **array, *sort_key, *top, *tmp;
-  HEADER *oldsort_key;
+  THREAD **array = NULL, *sort_key = NULL, *top = NULL, *tmp = NULL;
+  HEADER *oldsort_key = NULL;
   int i, array_size, sort_top = 0;
 
   /* we put things into the array backwards to save some cycles,
@@ -731,8 +731,8 @@ THREAD *mutt_sort_subthreads (THREAD *thread, int init)
 
 static void check_subjects (CONTEXT *ctx, int init)
 {
-  HEADER *cur;
-  THREAD *tmp;
+  HEADER *cur = NULL;
+  THREAD *tmp = NULL;
   int i;
 
   for (i = 0; i < ctx->msgcount; i++)
@@ -763,9 +763,9 @@ static void check_subjects (CONTEXT *ctx, int init)
 
 void mutt_sort_threads (CONTEXT *ctx, int init)
 {
-  HEADER *cur;
+  HEADER *cur = NULL;
   int i, oldsort, using_refs = 0;
-  THREAD *thread, *new, *tmp, top;
+  THREAD *thread = NULL, *new = NULL, *tmp = NULL, top;
   memset (&top, 0, sizeof (top));
   LIST *ref = NULL;
 
@@ -990,7 +990,7 @@ void mutt_sort_threads (CONTEXT *ctx, int init)
 
 static HEADER *find_virtual (THREAD *cur, int reverse)
 {
-  THREAD *top;
+  THREAD *top = NULL;
 
   if (cur->message && cur->message->virtual >= 0)
     return (cur->message);
@@ -1035,8 +1035,8 @@ static HEADER *find_virtual (THREAD *cur, int reverse)
  */
 int _mutt_aside_thread (HEADER *hdr, short dir, short subthreads)
 {
-  THREAD *cur;
-  HEADER *tmp;
+  THREAD *cur = NULL;
+  HEADER *tmp = NULL;
 
   if ((Sort & SORT_MASK) != SORT_THREADS)
   {
@@ -1091,7 +1091,7 @@ int _mutt_aside_thread (HEADER *hdr, short dir, short subthreads)
 
 int mutt_parent_message (CONTEXT *ctx, HEADER *hdr, int find_root)
 {
-  THREAD *thread;
+  THREAD *thread = NULL;
   HEADER *parent = NULL;
 
   if ((Sort & SORT_MASK) != SORT_THREADS)
@@ -1133,7 +1133,7 @@ int mutt_parent_message (CONTEXT *ctx, HEADER *hdr, int find_root)
 void mutt_set_virtual (CONTEXT *ctx)
 {
   int i;
-  HEADER *cur;
+  HEADER *cur = NULL;
 
   ctx->vcount = 0;
   ctx->vsize = 0;
@@ -1154,7 +1154,7 @@ void mutt_set_virtual (CONTEXT *ctx)
 
 int _mutt_traverse_thread (CONTEXT *ctx, HEADER *cur, int flag)
 {
-  THREAD *thread, *top;
+  THREAD *thread = NULL, *top = NULL;
   HEADER *roothdr = NULL;
   int final, reverse = (Sort & SORT_REVERSE), minmsgno;
   int num_hidden = 0, new = 0, old = 0;
@@ -1346,8 +1346,8 @@ int mutt_messages_in_thread (CONTEXT *ctx, HEADER *hdr, int flag)
 HASH *mutt_make_id_hash (CONTEXT *ctx)
 {
   int i;
-  HEADER *hdr;
-  HASH *hash;
+  HEADER *hdr = NULL;
+  HASH *hash = NULL;
 
   hash = hash_create (ctx->msgcount * 2, 0);
 
@@ -1363,7 +1363,7 @@ HASH *mutt_make_id_hash (CONTEXT *ctx)
 
 static void clean_references (THREAD *brk, THREAD *cur)
 {
-  THREAD *p;
+  THREAD *p = NULL;
   LIST *ref = NULL;
   int done = 0;
 

@@ -36,7 +36,7 @@
 /* this routine should be called after receiving SIGWINCH */
 void mutt_resize_screen (void)
 {
-  char *cp;
+  char *cp = NULL;
   int fd;
   struct winsize w;
 #ifdef HAVE_RESIZETERM

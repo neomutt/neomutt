@@ -290,10 +290,10 @@ static void encode_8bit (FGETCONV *fc, FILE *fout, int istext)
 
 int mutt_write_mime_header (BODY *a, FILE *f)
 {
-  PARAMETER *p;
+  PARAMETER *p = NULL;
   char buffer[STRING];
-  char *t;
-  char *fn;
+  char *t = NULL;
+  char *fn = NULL;
   int len;
   int tmplen;
   int encode;
@@ -306,7 +306,7 @@ int mutt_write_mime_header (BODY *a, FILE *f)
 
     for(p = a->parameter; p; p = p->next)
     {
-      char *tmp;
+      char *tmp = NULL;
 
       if(!p->value)
 	continue;
@@ -370,7 +370,7 @@ int mutt_write_mime_header (BODY *a, FILE *f)
 
 	if (fn)
 	{
-	  char *tmp;
+	  char *tmp = NULL;
 
 	  /* Strip off the leading path... */
 	  if ((t = strrchr (fn, '/')))
@@ -410,9 +410,9 @@ int mutt_write_mime_body (BODY *a, FILE *f)
 {
   char *p, boundary[SHORT_STRING];
   char send_charset[SHORT_STRING];
-  FILE *fpin;
-  BODY *t;
-  FGETCONV *fc;
+  FILE *fpin = NULL;
+  BODY *t = NULL;
+  FGETCONV *fc = NULL;
 
   if (a->type == TYPEMULTIPART)
   {
@@ -634,15 +634,15 @@ static size_t convert_file_to (FILE *file, const char *fromcode,
 			       int ncodes, const char **tocodes,
 			       int *tocode, CONTENT *info)
 {
-  iconv_t cd1, *cd;
+  iconv_t cd1, *cd = NULL;
   char bufi[256], bufu[512], bufo[4 * sizeof (bufi)];
-  ICONV_CONST char *ib, *ub;
-  char *ob;
+  ICONV_CONST char *ib = NULL, *ub = NULL;
+  char *ob = NULL;
   size_t ibl, obl, ubl, ubl1, n, ret;
   int i;
-  CONTENT *infos;
-  CONTENT_STATE *states;
-  size_t *score;
+  CONTENT *infos = NULL;
+  CONTENT_STATE *states = NULL;
+  size_t *score = NULL;
 
   cd1 = mutt_iconv_open ("utf-8", fromcode, 0);
   if (cd1 == (iconv_t)(-1))
@@ -777,7 +777,7 @@ static size_t convert_file_from_to (FILE *file,
 {
   char *fcode = NULL;
   char **tcode;
-  const char *c, *c1;
+  const char *c = NULL, *c1 = NULL;
   size_t ret;
   int ncodes, i, cn;
 
@@ -848,11 +848,11 @@ static size_t convert_file_from_to (FILE *file,
  */
 CONTENT *mutt_get_content_info (const char *fname, BODY *b)
 {
-  CONTENT *info;
+  CONTENT *info = NULL;
   CONTENT_STATE state;
   FILE *fp = NULL;
   char *fromcode = NULL;
-  char *tocode;
+  char *tocode = NULL;
   char buffer[100];
   char chsbuf[STRING];
   size_t r;
@@ -928,8 +928,8 @@ CONTENT *mutt_get_content_info (const char *fname, BODY *b)
  */
 int mutt_lookup_mime_type (BODY *att, const char *path)
 {
-  FILE *f;
-  char *p, *q, *ct;
+  FILE *f = NULL;
+  char *p = NULL, *q = NULL, *ct = NULL;
   char buf[LONG_STRING];
   char subtype[STRING], xtype[STRING];
   int count;
@@ -1225,7 +1225,7 @@ char *mutt_get_body_charset (char *d, size_t dlen, BODY *b)
 /* Assumes called from send mode where BODY->filename points to actual file */
 void mutt_update_encoding (BODY *a)
 {
-  CONTENT *info;
+  CONTENT *info = NULL;
   char chsbuff[STRING];
 
   /* override noconv when it's us-ascii */
@@ -1249,8 +1249,8 @@ void mutt_update_encoding (BODY *a)
 BODY *mutt_make_message_attach (CONTEXT *ctx, HEADER *hdr, int attach_msg)
 {
   char buffer[LONG_STRING];
-  BODY *body;
-  FILE *fp;
+  BODY *body = NULL;
+  FILE *fp = NULL;
   int cmflags, chflags;
   int pgp = WithCrypto? hdr->security : 0;
 
@@ -1338,8 +1338,8 @@ BODY *mutt_make_message_attach (CONTEXT *ctx, HEADER *hdr, int attach_msg)
 
 BODY *mutt_make_file_attach (const char *path)
 {
-  BODY *att;
-  CONTENT *info;
+  BODY *att = NULL;
+  CONTENT *info = NULL;
 
   att = mutt_new_body ();
   att->filename = safe_strdup (path);
@@ -1397,7 +1397,7 @@ static int get_toplevel_encoding (BODY *a)
 /* check for duplicate boundary. return 1 if duplicate */
 static int check_boundary (const char* boundary, BODY *b)
 {
-  char* p;
+  char* p = NULL;
 
   if (b->parts && check_boundary (boundary, b->parts))
     return 1;
@@ -1413,7 +1413,7 @@ static int check_boundary (const char* boundary, BODY *b)
 
 BODY *mutt_make_multipart (BODY *b)
 {
-  BODY *new;
+  BODY *new = NULL;
 
   new = mutt_new_body ();
   new->type = TYPEMULTIPART;
@@ -1437,7 +1437,7 @@ BODY *mutt_make_multipart (BODY *b)
 /* remove the multipart body if it exists */
 BODY *mutt_remove_multipart (BODY *b)
 {
-  BODY *t;
+  BODY *t = NULL;
 
   if (b->parts)
   {
@@ -1468,7 +1468,7 @@ char *mutt_make_date (char *s, size_t len)
    recipient lists without needing a huge temporary buffer in memory */
 void mutt_write_address_list (ADDRESS *adr, FILE *fp, int linelen, int display)
 {
-  ADDRESS *tmp;
+  ADDRESS *tmp = NULL;
   char buf[LONG_STRING];
   int count = 0;
   int len;
@@ -1630,7 +1630,7 @@ static int print_val (FILE *fp, const char *pfx, const char *value,
 static int fold_one_header (FILE *fp, const char *tag, const char *value,
 			      const char *pfx, int wraplen, int flags)
 {
-  const char *p = value, *next, *sp;
+  const char *p = value, *next = NULL, *sp = NULL;
   char buf[HUGE_STRING] = "";
   int first = 1, enc, col = 0, w, l = 0, fold;
 
@@ -1752,7 +1752,7 @@ static int write_one_header (FILE *fp, int pfxw, int max, int wraplen,
 			     const char *pfx, const char *start, const char *end,
 			     int flags)
 {
-  char *tagbuf, *valbuf, *t;
+  char *tagbuf = NULL, *valbuf = NULL, *t = NULL;
   int is_from = ((end - start) > 5 &&
 		 ascii_strncasecmp (start, "from ", 5) == 0);
 
@@ -1832,7 +1832,7 @@ static int write_one_header (FILE *fp, int pfxw, int max, int wraplen,
 int mutt_write_one_header (FILE *fp, const char *tag, const char *value,
 			   const char *pfx, int wraplen, int flags)
 {
-  char *p = (char *)value, *last, *line;
+  char *p = (char *)value, *last = NULL, *line = NULL;
   int max = 0, w, rc = -1;
   int pfxw = mutt_strwidth (pfx);
   char *v = safe_strdup (value);
@@ -1931,7 +1931,7 @@ int mutt_write_rfc822_header (FILE *fp, ENVELOPE *env, BODY *attach,
 			      int mode, int privacy)
 {
   char buffer[LONG_STRING];
-  char *p, *q;
+  char *p = NULL, *q = NULL;
   LIST *tmp = env->userhdrs;
   int has_agent = 0; /* user defined user-agent header field exists */
 
@@ -2098,8 +2098,8 @@ int mutt_write_rfc822_header (FILE *fp, ENVELOPE *env, BODY *attach,
 
 static void encode_headers (LIST *h)
 {
-  char *tmp;
-  char *p;
+  char *tmp = NULL;
+  char *p = NULL;
   int i;
 
   for (; h; h = h->next)
@@ -2152,8 +2152,8 @@ static char *gen_msgid (void)
 {
   char buf[SHORT_STRING];
   time_t now;
-  struct tm *tm;
-  const char *fqdn;
+  struct tm *tm = NULL;
+  const char *fqdn = NULL;
   unsigned char rndid[MUTT_RANDTAG_LEN + 1];
 
   mutt_rand_base32(rndid, sizeof(rndid) - 1);
@@ -2495,7 +2495,7 @@ mutt_invoke_sendmail (ADDRESS *from,	/* the sender */
   {
     if (i != S_BKG)
     {
-      const char *e;
+      const char *e = NULL;
 
       e = mutt_strsysexit (i);
       mutt_error (_("Error sending message, child exited %d (%s)."), i, NONULL (e));
@@ -2576,7 +2576,7 @@ void mutt_prepare_envelope (ENVELOPE *env, int final)
 
 void mutt_unprepare_envelope (ENVELOPE *env)
 {
-  LIST *item;
+  LIST *item = NULL;
 
   for (item = env->userhdrs; item; item = item->next)
     rfc2047_decode (&item->data);
@@ -2596,7 +2596,7 @@ static int _mutt_bounce_message (FILE *fp, HEADER *h, ADDRESS *to, const char *r
 				  ADDRESS *env_from)
 {
   int i, ret = 0;
-  FILE *f;
+  FILE *f = NULL;
   char date[SHORT_STRING], tempfile[_POSIX_PATH_MAX];
   MESSAGE *msg = NULL;
 
@@ -2619,7 +2619,7 @@ static int _mutt_bounce_message (FILE *fp, HEADER *h, ADDRESS *to, const char *r
   if ((f = safe_fopen (tempfile, "w")) != NULL)
   {
     int ch_flags = CH_XMIT | CH_NONEWLINE | CH_NOQFROM;
-    char* msgid_str;
+    char* msgid_str = NULL;
 
     if (!option (OPTBOUNCEDELIVERED))
       ch_flags |= CH_WEED_DELIVERED;
@@ -2658,11 +2658,11 @@ static int _mutt_bounce_message (FILE *fp, HEADER *h, ADDRESS *to, const char *r
 
 int mutt_bounce_message (FILE *fp, HEADER *h, ADDRESS *to)
 {
-  ADDRESS *from, *resent_to;
+  ADDRESS *from = NULL, *resent_to = NULL;
   const char *fqdn = mutt_fqdn (1);
   char resent_from[STRING];
   int ret;
-  char *err;
+  char *err = NULL;
 
   resent_from[0] = '\0';
   from = mutt_default_from ();
@@ -2716,7 +2716,7 @@ ADDRESS *mutt_remove_duplicates (ADDRESS *addr)
 {
   ADDRESS *top = addr;
   ADDRESS **last = &top;
-  ADDRESS *tmp;
+  ADDRESS *tmp = NULL;
   int dup;
 
   while (addr)
@@ -2808,7 +2808,7 @@ int mutt_write_fcc (const char *path, HEADER *hdr, const char *msgid,
 		    int post, char *fcc, char **finalpath)
 {
   CONTEXT f;
-  MESSAGE *msg;
+  MESSAGE *msg = NULL;
   char tempfile[_POSIX_PATH_MAX];
   FILE *tempfp = NULL;
   int r, need_buffy_cleanup = 0;
@@ -2931,7 +2931,7 @@ int mutt_write_fcc (const char *path, HEADER *hdr, const char *msgid,
 
   if (post && hdr->chain && hdr->chain)
   {
-    LIST *p;
+    LIST *p = NULL;
 
     fputs ("X-Mutt-Mix:", msg->fp);
     for (p = hdr->chain; p; p = p->next)

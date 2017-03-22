@@ -94,7 +94,7 @@ be_snarf_data (FILE *f, char **buf, int *bufmax, int *buflen, LOFF_T offset,
 static char **
 be_snarf_file (const char *path, char **buf, int *max, int *len, int verbose)
 {
-  FILE *f;
+  FILE *f = NULL;
   char tmp[LONG_STRING];
   struct stat sb;
 
@@ -119,7 +119,7 @@ be_snarf_file (const char *path, char **buf, int *max, int *len, int verbose)
 
 static int be_barf_file (const char *path, char **buf, int buflen)
 {
-  FILE *f;
+  FILE *f = NULL;
   int i;
 
   if ((f = fopen (path, "w")) == NULL)		/* __FOPEN_CHECKED__ */
@@ -320,7 +320,7 @@ int mutt_builtin_editor (const char *path, HEADER *msg, HEADER *cur)
   int abort = 0;
   int done = 0;
   int i;
-  char *p;
+  char *p = NULL;
 
   scrollok (stdscr, true);
 

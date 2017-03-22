@@ -127,8 +127,8 @@ static int alias_sort_address (const void *a, const void *b)
 
 void mutt_alias_menu (char *buf, size_t buflen, ALIAS *aliases)
 {
-  ALIAS *aliasp;
-  MUTTMENU *menu;
+  ALIAS *aliasp = NULL;
+  MUTTMENU *menu = NULL;
   ALIAS **AliasTable = NULL;
   int t = -1;
   int i, done = 0;

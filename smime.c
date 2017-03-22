@@ -71,7 +71,7 @@ static char SmimeIntermediateToUse[_POSIX_PATH_MAX];
 
 static void smime_free_key (smime_key_t **keylist)
 {
-  smime_key_t *key;
+  smime_key_t *key = NULL;
 
   if (!keylist)
     return;
@@ -91,7 +91,7 @@ static void smime_free_key (smime_key_t **keylist)
 
 static smime_key_t *smime_copy_key (smime_key_t *key)
 {
-  smime_key_t *copy;
+  smime_key_t *copy = NULL;
 
   if (!key)
     return NULL;
@@ -369,7 +369,7 @@ static void smime_entry (char *s, size_t l, MUTTMENU * menu, int num)
 {
   smime_key_t **Table = (smime_key_t **) menu->data;
   smime_key_t *this = Table[num];
-  char* truststate;
+  char* truststate = NULL;
   switch(this->trust) {
     case 't':
       truststate = N_("Trusted   ");
@@ -407,7 +407,7 @@ static smime_key_t *smime_select_key (smime_key_t *keys, char *query)
   char helpstr[LONG_STRING];
   char buf[LONG_STRING];
   char title[256];
-  MUTTMENU* menu;
+  MUTTMENU* menu = NULL;
   char *s = "";
   int done = 0;
 
@@ -497,8 +497,8 @@ static smime_key_t *smime_select_key (smime_key_t *keys, char *query)
 
 static smime_key_t *smime_parse_key(char *buf)
 {
-  smime_key_t *key;
-  char *pend, *p;
+  smime_key_t *key = NULL;
+  char *pend = NULL, *p = NULL;
   int field = 0;
 
   key = safe_calloc (1, sizeof (smime_key_t));
@@ -579,9 +579,9 @@ static smime_key_t *smime_parse_key(char *buf)
 static smime_key_t *smime_get_candidates(char *search, short public)
 {
   char index_file[_POSIX_PATH_MAX];
-  FILE *fp;
+  FILE *fp = NULL;
   char buf[LONG_STRING];
-  smime_key_t *key, *results, **results_end;
+  smime_key_t *key = NULL, *results = NULL, **results_end = NULL;
 
   results = NULL;
   results_end = &results;
@@ -618,7 +618,7 @@ static smime_key_t *smime_get_candidates(char *search, short public)
  */
 static smime_key_t *smime_get_key_by_hash(char *hash, short public)
 {
-  smime_key_t *results, *result;
+  smime_key_t *results = NULL, *result = NULL;
   smime_key_t *match = NULL;
 
   results = smime_get_candidates(hash, public);
@@ -638,10 +638,10 @@ static smime_key_t *smime_get_key_by_hash(char *hash, short public)
 
 static smime_key_t *smime_get_key_by_addr(char *mailbox, short abilities, short public, short may_ask)
 {
-  smime_key_t *results, *result;
+  smime_key_t *results = NULL, *result = NULL;
   smime_key_t *matches = NULL;
   smime_key_t **matches_end = &matches;
-  smime_key_t *match;
+  smime_key_t *match = NULL;
   smime_key_t *trusted_match = NULL;
   smime_key_t *valid_match = NULL;
   smime_key_t *return_key = NULL;
@@ -710,10 +710,10 @@ static smime_key_t *smime_get_key_by_addr(char *mailbox, short abilities, short 
 
 static smime_key_t *smime_get_key_by_str(char *str, short abilities, short public)
 {
-  smime_key_t *results, *result;
+  smime_key_t *results = NULL, *result = NULL;
   smime_key_t *matches = NULL;
   smime_key_t **matches_end = &matches;
-  smime_key_t *match;
+  smime_key_t *match = NULL;
   smime_key_t *return_key = NULL;
 
   if (! str)
@@ -751,7 +751,7 @@ static smime_key_t *smime_get_key_by_str(char *str, short abilities, short publi
 
 static smime_key_t *smime_ask_for_key(char *prompt, short abilities, short public)
 {
-  smime_key_t *key;
+  smime_key_t *key = NULL;
   char resp[SHORT_STRING];
 
   if (!prompt) prompt = _("Enter keyID: ");
@@ -836,7 +836,7 @@ static void _smime_getkeys (char *mailbox)
 
 void smime_getkeys (ENVELOPE *env)
 {
-  ADDRESS *t;
+  ADDRESS *t = NULL;
   int found = 0;
 
   if (option (OPTSDEFAULTDECRYPTKEY) && SmimeDefaultKey && *SmimeDefaultKey)
@@ -877,10 +877,10 @@ void smime_getkeys (ENVELOPE *env)
 char *smime_find_keys (ADDRESS *adrlist, int oppenc_mode)
 {
   smime_key_t *key = NULL;
-  char *keyID, *keylist = NULL;
+  char *keyID = NULL, *keylist = NULL;
   size_t keylist_size = 0;
   size_t keylist_used = 0;
-  ADDRESS *p, *q;
+  ADDRESS *p = NULL, *q = NULL;
 
   for (p = adrlist; p ; p = p->next)
   {
@@ -1263,7 +1263,7 @@ void smime_invoke_import (char *infile, char *mailbox)
 int smime_verify_sender(HEADER *h)
 {
   char *mbox = NULL, *certfile, tempfname[_POSIX_PATH_MAX];
-  FILE *fpout;
+  FILE *fpout = NULL;
   int retval=1;
 
   mutt_mktemp (tempfname, sizeof (tempfname));
@@ -1367,7 +1367,7 @@ BODY *smime_build_smime_entity (BODY *a, char *certlist)
   char smimeinfile[_POSIX_PATH_MAX];
   char *cert_start = certlist, *cert_end = certlist;
   FILE *smimein = NULL, *smimeerr = NULL, *fpout = NULL, *fptmp = NULL;
-  BODY *t;
+  BODY *t = NULL;
   int err = 0, empty;
   pid_t thepid;
 
@@ -1487,7 +1487,7 @@ BODY *smime_build_smime_entity (BODY *a, char *certlist)
  */
 static char *openssl_md_to_smime_micalg(char *md)
 {
-  char *micalg;
+  char *micalg = NULL;
   size_t l;
 
   if (!md)
@@ -1511,16 +1511,16 @@ static char *openssl_md_to_smime_micalg(char *md)
 
 BODY *smime_sign_message (BODY *a )
 {
-  BODY *t;
+  BODY *t = NULL;
   char buffer[LONG_STRING];
   char signedfile[_POSIX_PATH_MAX], filetosign[_POSIX_PATH_MAX];
   FILE *smimein = NULL, *smimeout = NULL, *smimeerr = NULL, *sfp = NULL;
   int err = 0;
   int empty = 0;
   pid_t thepid;
-  smime_key_t *default_key;
-  char *intermediates;
-  char *micalg;
+  smime_key_t *default_key = NULL;
+  char *intermediates = NULL;
+  char *micalg = NULL;
 
   if (!SmimeDefaultKey)
   {
@@ -2086,8 +2086,8 @@ int smime_application_smime_handler (BODY *m, STATE *s)
 
 int smime_send_menu (HEADER *msg, int *redraw)
 {
-  smime_key_t *key;
-  char *prompt, *letters, *choices;
+  smime_key_t *key = NULL;
+  char *prompt = NULL, *letters = NULL, *choices = NULL;
   int choice;
 
   if (!(WithCrypto & APPLICATION_SMIME))

@@ -226,7 +226,7 @@ int mutt_bcache_list(body_cache_t *bcache,
 				    void *data), void *data)
 {
   DIR *d = NULL;
-  struct dirent *de;
+  struct dirent *de = NULL;
   int rc = -1;
 
   if (!bcache || !(d = opendir (bcache->path)))

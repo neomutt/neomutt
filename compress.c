@@ -146,7 +146,7 @@ setup_paths (CONTEXT *ctx)
     return -1;
 
   char tmppath[_POSIX_PATH_MAX];
-  FILE *tmpfp;
+  FILE *tmpfp = NULL;
 
   /* Setup the right paths */
   FREE(&ctx->realpath);
@@ -278,7 +278,7 @@ set_compress_info (CONTEXT *ctx)
 static void
 free_compress_info (CONTEXT *ctx)
 {
-  COMPRESS_INFO *ci;
+  COMPRESS_INFO *ci = NULL;
 
   if (!ctx || !ctx->compress_info)
     return;
@@ -638,8 +638,8 @@ comp_close_mailbox (CONTEXT *ctx)
   }
   else
   {
-    const char *append;
-    const char *msg;
+    const char *append = NULL;
+    const char *msg = NULL;
 
     /* The file exists and we can append */
     if ((access (ctx->realpath, F_OK) == 0) && ci->append)
