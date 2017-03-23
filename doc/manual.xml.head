@@ -32,34 +32,26 @@
       <ulink url="http://www.mutt.org/">http://www.mutt.org/</ulink>.</para>
     </sect1>
 
-    <sect1 id="muttlists">
+    <sect1 id="mailinglists">
       <title>Mailing Lists</title>
-      <para>To subscribe to one of the following mailing lists, send a message
-      with the word 
-      <emphasis>subscribe</emphasis>in the body to 
-      <emphasis>list-name</emphasis>
-      <literal>-request@mutt.org</literal>.</para>
       <itemizedlist>
         <listitem>
           <para>
-          <email>mutt-announce-request@mutt.org</email>— low traffic list for
-          announcements</para>
+            <email>neomutt-users@neomutt.org</email>— help, bug reports and
+            feature requests. To subscribe to this list, please send a mail to
+            <email>neomutt-users-request@neomutt.org</email> with the subject
+            "subscribe".
+          </para>
         </listitem>
         <listitem>
           <para>
-          <email>mutt-users-request@mutt.org</email>— help, bug reports and
-          feature requests</para>
-        </listitem>
-        <listitem>
-          <para>
-          <email>mutt-dev-request@mutt.org</email>— development mailing
-          list</para>
+            <email>neomutt-devel@neomutt.org</email>— development mailing list.
+            To subscribe to this list, please send a mail to
+            <email>neomutt-devel-request@neomutt.org</email> with the subject
+            "subscribe".
+          </para>
         </listitem>
       </itemizedlist>
-      <para>All messages posted to 
-      <emphasis>mutt-announce</emphasis>are automatically forwarded to 
-      <emphasis>mutt-users</emphasis>, so you do not need to be subscribed to
-      both lists.</para>
     </sect1>
 
     <sect1 id="distribution">
