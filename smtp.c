@@ -102,19 +102,19 @@ smtp_get_resp (CONNECTION * conn)
       return smtp_err_read;
     }
 
-    if (!ascii_strncasecmp ("8BITMIME", buf + 4, 8))
+    if (ascii_strncasecmp ("8BITMIME", buf + 4, 8) == 0)
       mutt_bit_set (Capabilities, EIGHTBITMIME);
-    else if (!ascii_strncasecmp ("AUTH ", buf + 4, 5))
+    else if (ascii_strncasecmp ("AUTH ", buf + 4, 5) == 0)
     {
       mutt_bit_set (Capabilities, AUTH);
       FREE (&AuthMechs);
       AuthMechs = safe_strdup (buf + 9);
     }
-    else if (!ascii_strncasecmp ("DSN", buf + 4, 3))
+    else if (ascii_strncasecmp ("DSN", buf + 4, 3) == 0)
       mutt_bit_set (Capabilities, DSN);
-    else if (!ascii_strncasecmp ("STARTTLS", buf + 4, 8))
+    else if (ascii_strncasecmp ("STARTTLS", buf + 4, 8) == 0)
       mutt_bit_set (Capabilities, STARTTLS);
-    else if (!ascii_strncasecmp ("SMTPUTF8", buf + 4, 8))
+    else if (ascii_strncasecmp ("SMTPUTF8", buf + 4, 8) == 0)
       mutt_bit_set (Capabilities, SMTPUTF8);
 
     if (smtp_code (buf, n, &n) < 0)

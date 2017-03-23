@@ -78,7 +78,7 @@ static void pgp_dearmor (FILE *in, FILE *out)
 
   while ((r = fgets (line, sizeof (line), in)) != NULL)
   {
-    if (!strncmp (line, "-----BEGIN", 10))
+    if (strncmp (line, "-----BEGIN", 10) == 0)
       break;
   }
   if (r == NULL)
@@ -107,7 +107,7 @@ static void pgp_dearmor (FILE *in, FILE *out)
 
   while ((r = fgets (line, sizeof (line), in)) != NULL)
   {
-    if (*line == '=' || !strncmp (line, "-----END", 8))
+    if (*line == '=' || (strncmp (line, "-----END", 8) == 0))
       break;
   }
   if (r == NULL)

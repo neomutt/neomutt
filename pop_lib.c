@@ -79,7 +79,7 @@ static void pop_error (POP_DATA *pop_data, char *msg)
   t = strchr (pop_data->err_msg, '\0');
   c = msg;
 
-  if (!mutt_strncmp (msg, "-ERR ", 5))
+  if (mutt_strncmp (msg, "-ERR ", 5) == 0)
   {
     c2 = skip_email_wsp(msg + 5);
 
@@ -97,23 +97,23 @@ static int fetch_capa (char *line, void *data)
   POP_DATA *pop_data = (POP_DATA *)data;
   char *c = NULL;
 
-  if (!ascii_strncasecmp (line, "SASL", 4))
+  if (ascii_strncasecmp (line, "SASL", 4) == 0)
   {
     FREE (&pop_data->auth_list);
     c = skip_email_wsp(line + 4);
     pop_data->auth_list = safe_strdup (c);
   }
 
-  else if (!ascii_strncasecmp (line, "STLS", 4))
+  else if (ascii_strncasecmp (line, "STLS", 4) == 0)
     pop_data->cmd_stls = 1;
 
-  else if (!ascii_strncasecmp (line, "USER", 4))
+  else if (ascii_strncasecmp (line, "USER", 4) == 0)
     pop_data->cmd_user = 1;
 
-  else if (!ascii_strncasecmp (line, "UIDL", 4))
+  else if (ascii_strncasecmp (line, "UIDL", 4) == 0)
     pop_data->cmd_uidl = 1;
 
-  else if (!ascii_strncasecmp (line, "TOP", 3))
+  else if (ascii_strncasecmp (line, "TOP", 3) == 0)
     pop_data->cmd_top = 1;
 
   return 0;
@@ -238,7 +238,7 @@ int pop_connect (POP_DATA *pop_data)
 
   pop_data->status = POP_CONNECTED;
 
-  if (mutt_strncmp (buf, "+OK", 3))
+  if (mutt_strncmp (buf, "+OK", 3) != 0)
   {
     *pop_data->err_msg = '\0';
     pop_error (pop_data, buf);
@@ -442,7 +442,7 @@ int pop_query_d (POP_DATA *pop_data, char *buf, size_t buflen, char *msg)
     pop_data->status = POP_DISCONNECTED;
     return -1;
   }
-  if (!mutt_strncmp (buf, "+OK", 3))
+  if (mutt_strncmp (buf, "+OK", 3) == 0)
     return 0;
 
   pop_error (pop_data, buf);
@@ -535,7 +535,7 @@ static int check_uidl (char *line, void *data)
 
   for (i = 0; i < ctx->msgcount; i++)
   {
-    if (!mutt_strcmp (ctx->hdrs[i]->data, line))
+    if (mutt_strcmp (ctx->hdrs[i]->data, line) == 0)
     {
       ctx->hdrs[i]->refno = index;
       break;

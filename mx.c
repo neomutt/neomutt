@@ -1010,7 +1010,7 @@ int mx_close_mailbox (CONTEXT *ctx, int *index_hint)
   }
 
   /* copy mails to the trash before expunging */
-  if (purge && ctx->deleted && mutt_strcmp (ctx->path, TrashPath))
+  if (purge && ctx->deleted && (mutt_strcmp (ctx->path, TrashPath) != 0))
   {
     if (trash_append (ctx) != 0)
     {
@@ -1238,7 +1238,7 @@ int mx_sync_mailbox (CONTEXT *ctx, int *index_hint)
   msgcount = ctx->msgcount;
   deleted = ctx->deleted;
 
-  if (purge && ctx->deleted && mutt_strcmp (ctx->path, TrashPath))
+  if (purge && ctx->deleted && (mutt_strcmp (ctx->path, TrashPath) != 0))
   {
     if (trash_append (ctx) != 0)
       return -1;

@@ -680,12 +680,12 @@ void rfc822_write_address_single (char *buf, size_t buflen, ADDRESS *addr,
   {
     if (!buflen)
       goto done;
-    if (ascii_strcmp (addr->mailbox, "@") && !display)
+    if ((ascii_strcmp (addr->mailbox, "@") != 0) && !display)
     {
       strfcpy (pbuf, addr->mailbox, buflen);
       len = mutt_strlen (pbuf);
     }
-    else if (ascii_strcmp (addr->mailbox, "@") && display)
+    else if ((ascii_strcmp (addr->mailbox, "@") != 0) && display)
     {
       strfcpy (pbuf, mutt_addr_for_display (addr), buflen);
       len = mutt_strlen (pbuf);

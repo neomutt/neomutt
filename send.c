@@ -77,7 +77,7 @@ static int addrcmp (ADDRESS *a, ADDRESS *b)
 {
   if (!a->mailbox || !b->mailbox)
     return 0;
-  if (ascii_strcasecmp (a->mailbox, b->mailbox))
+  if (ascii_strcasecmp (a->mailbox, b->mailbox) != 0)
     return 0;
   return 1;
 }
@@ -366,17 +366,17 @@ static void process_user_header (ENVELOPE *env)
       } else
 	FREE(&tmp);
     }
-    else if (ascii_strncasecmp ("to:", uh->data, 3) != 0 &&
-	     ascii_strncasecmp ("cc:", uh->data, 3) != 0 &&
-	     ascii_strncasecmp ("bcc:", uh->data, 4) != 0 &&
+    else if ((ascii_strncasecmp ("to:", uh->data, 3) != 0) &&
+	     (ascii_strncasecmp ("cc:", uh->data, 3) != 0) &&
+	     (ascii_strncasecmp ("bcc:", uh->data, 4) != 0) &&
 #ifdef USE_NNTP
-	     ascii_strncasecmp ("newsgroups:", uh->data, 11) != 0 &&
-	     ascii_strncasecmp ("followup-to:", uh->data, 12) != 0 &&
-	     ascii_strncasecmp ("x-comment-to:", uh->data, 13) != 0 &&
+	     (ascii_strncasecmp ("newsgroups:", uh->data, 11) != 0) &&
+	     (ascii_strncasecmp ("followup-to:", uh->data, 12) != 0) &&
+	     (ascii_strncasecmp ("x-comment-to:", uh->data, 13) != 0) &&
 #endif
-	     ascii_strncasecmp ("supersedes:", uh->data, 11) != 0 &&
-	     ascii_strncasecmp ("subject:", uh->data, 8) != 0 &&
-	     ascii_strncasecmp ("return-path:", uh->data, 12) != 0)
+	     (ascii_strncasecmp ("supersedes:", uh->data, 11) != 0) &&
+	     (ascii_strncasecmp ("subject:", uh->data, 8) != 0) &&
+	     (ascii_strncasecmp ("return-path:", uh->data, 12) != 0))
     {
       if (last)
       {
@@ -780,7 +780,7 @@ envelope_defaults (ENVELOPE *env, CONTEXT *ctx, HEADER *cur, int flags)
     {
       /* in case followup set Newsgroups: with Followup-To: if it present */
       if (!env->newsgroups && curenv &&
-	  mutt_strcasecmp (curenv->followup_to, "poster"))
+	  (mutt_strcasecmp (curenv->followup_to, "poster") != 0))
 	env->newsgroups = safe_strdup (curenv->followup_to);
     }
     else
@@ -1538,7 +1538,7 @@ ci_send_message (int flags,		/* send mode */
 
     if (! (flags & SENDKEY))
     {
-      if (option (OPTTEXTFLOWED) && msg->content->type == TYPETEXT && !ascii_strcasecmp (msg->content->subtype, "plain"))
+      if (option (OPTTEXTFLOWED) && msg->content->type == TYPETEXT && (ascii_strcasecmp (msg->content->subtype, "plain") == 0))
         mutt_set_parameter ("format", "flowed", &msg->content->parameter);
     }
 
@@ -1558,7 +1558,7 @@ ci_send_message (int flags,		/* send mode */
        mutt_copy_stream (stdin, tempfp);
 
     if (option (OPTSIGONTOP) && ! (flags & (SENDMAILX|SENDKEY|SENDBATCH))
-	&& Editor && mutt_strcmp (Editor, "builtin") != 0)
+	&& Editor && (mutt_strcmp (Editor, "builtin") != 0))
       append_signature (tempfp);
 
     /* include replies/forwarded messages, unless we are given a template */
@@ -1567,7 +1567,7 @@ ci_send_message (int flags,		/* send mode */
       goto cleanup;
 
     if (!option (OPTSIGONTOP) && ! (flags & (SENDMAILX|SENDKEY|SENDBATCH))
-	&& Editor && mutt_strcmp (Editor, "builtin") != 0)
+	&& Editor && (mutt_strcmp (Editor, "builtin") != 0))
       append_signature (tempfp);
   }
 
@@ -1620,7 +1620,7 @@ ci_send_message (int flags,		/* send mode */
 	if (!mutt_edit_attachment (msg->content))
           goto cleanup;
       }
-      else if (!Editor || mutt_strcmp ("builtin", Editor) == 0)
+      else if (!Editor || (mutt_strcmp ("builtin", Editor) == 0))
 	mutt_builtin_editor (msg->content->filename, msg, cur);
       else if (option (OPTEDITHDRS))
       {
@@ -1645,10 +1645,10 @@ ci_send_message (int flags,		/* send mode */
        * performed.  If it has already been performed, the format=flowed
        * parameter will be present.
        */
-      if (option (OPTTEXTFLOWED) && msg->content->type == TYPETEXT && !ascii_strcasecmp("plain", msg->content->subtype))
+      if (option (OPTTEXTFLOWED) && msg->content->type == TYPETEXT && (ascii_strcasecmp("plain", msg->content->subtype) == 0))
       {
 	char *p = mutt_get_parameter("format", msg->content->parameter);
-	if (ascii_strcasecmp("flowed", NONULL(p)))
+	if (ascii_strcasecmp("flowed", NONULL(p)) != 0)
 	  rfc3676_space_stuff (msg);
       }
 
@@ -2002,7 +2002,7 @@ main_loop:
     fcc[0] = '\0';
 #endif
 
-  if (*fcc && mutt_strcmp ("/dev/null", fcc) != 0)
+  if (*fcc && (mutt_strcmp ("/dev/null", fcc) != 0))
   {
     BODY *tmpbody = msg->content;
     BODY *save_sig = NULL;
@@ -2017,8 +2017,8 @@ main_loop:
     {
       if (WithCrypto
           && (msg->security & (ENCRYPT | SIGN))
-          && (mutt_strcmp (msg->content->subtype, "encrypted") == 0 ||
-              mutt_strcmp (msg->content->subtype, "signed") == 0))
+          && ((mutt_strcmp (msg->content->subtype, "encrypted") == 0) ||
+              (mutt_strcmp (msg->content->subtype, "signed") == 0)))
       {
 	if (clear_content->type == TYPEMULTIPART)
 	{

@@ -174,7 +174,7 @@ static int mmdf_parse_mailbox (CONTEXT *ctx)
 	{
 	  if (fseeko (ctx->fp, tmploc, SEEK_SET) != 0 ||
 	      fgets (buf, sizeof (buf) - 1, ctx->fp) == NULL ||
-	      mutt_strcmp (MMDF_SEP, buf) != 0)
+	      (mutt_strcmp (MMDF_SEP, buf) != 0))
 	  {
 	    if (fseeko (ctx->fp, loc, SEEK_SET) != 0)
 	      mutt_debug (1, "mmdf_parse_mailbox: fseek() failed\n");
@@ -333,7 +333,7 @@ static int mbox_parse_mailbox (CONTEXT *ctx)
 	   */
 	  if (fseeko (ctx->fp, tmploc, SEEK_SET) != 0 ||
 	      fgets (buf, sizeof (buf), ctx->fp) == NULL ||
-	      mutt_strncmp ("From ", buf, 5) != 0)
+	      (mutt_strncmp ("From ", buf, 5) != 0))
 	  {
 	    mutt_debug (1, "mbox_parse_mailbox: bad content-length in message "
 	                "%d (cl=" OFF_T_FMT ")\n",
@@ -551,8 +551,8 @@ static int strict_addrcmp (const ADDRESS *a, const ADDRESS *b)
 {
   while (a && b)
   {
-    if (mutt_strcmp (a->mailbox, b->mailbox) ||
-	mutt_strcmp (a->personal, b->personal))
+    if ((mutt_strcmp (a->mailbox, b->mailbox) != 0) ||
+	(mutt_strcmp (a->personal, b->personal) != 0))
       return (0);
 
     a = a->next;
@@ -568,7 +568,7 @@ static int strict_cmp_lists (const LIST *a, const LIST *b)
 {
   while (a && b)
   {
-    if (mutt_strcmp (a->data, b->data))
+    if (mutt_strcmp (a->data, b->data) != 0)
       return (0);
 
     a = a->next;
@@ -584,8 +584,8 @@ static int strict_cmp_envelopes (const ENVELOPE *e1, const ENVELOPE *e2)
 {
   if (e1 && e2)
   {
-    if (mutt_strcmp (e1->message_id, e2->message_id) ||
-	mutt_strcmp (e1->subject, e2->subject) ||
+    if ((mutt_strcmp (e1->message_id, e2->message_id) != 0) ||
+	(mutt_strcmp (e1->subject, e2->subject) != 0) ||
 	!strict_cmp_lists (e1->references, e2->references) ||
 	!strict_addrcmp (e1->from, e2->from) ||
 	!strict_addrcmp (e1->sender, e2->sender) ||
@@ -610,8 +610,8 @@ static int strict_cmp_parameters (const PARAMETER *p1, const PARAMETER *p2)
 {
   while (p1 && p2)
   {
-    if (mutt_strcmp (p1->attribute, p2->attribute) ||
-	mutt_strcmp (p1->value, p2->value))
+    if ((mutt_strcmp (p1->attribute, p2->attribute) != 0) ||
+	(mutt_strcmp (p1->value, p2->value) != 0))
       return (0);
 
     p1 = p1->next;
@@ -627,8 +627,8 @@ static int strict_cmp_bodies (const BODY *b1, const BODY *b2)
 {
   if (b1->type != b2->type ||
       b1->encoding != b2->encoding ||
-      mutt_strcmp (b1->subtype, b2->subtype) ||
-      mutt_strcmp (b1->description, b2->description) ||
+      (mutt_strcmp (b1->subtype, b2->subtype) != 0) ||
+      (mutt_strcmp (b1->description, b2->description) != 0) ||
       !strict_cmp_parameters (b1->parameter, b2->parameter) ||
       b1->length != b2->length)
     return (0);
@@ -897,8 +897,8 @@ static int mbox_check_mailbox (CONTEXT *ctx, int *index_hint)
         mutt_debug (1, "mbox_check_mailbox: fseek() failed\n");
       if (fgets (buffer, sizeof (buffer), ctx->fp) != NULL)
       {
-	if ((ctx->magic == MUTT_MBOX && mutt_strncmp ("From ", buffer, 5) == 0) ||
-	    (ctx->magic == MUTT_MMDF && mutt_strcmp (MMDF_SEP, buffer) == 0))
+	if ((ctx->magic == MUTT_MBOX && (mutt_strncmp ("From ", buffer, 5) == 0)) ||
+	    (ctx->magic == MUTT_MMDF && (mutt_strcmp (MMDF_SEP, buffer) == 0)))
 	{
 	  if (fseeko (ctx->fp, ctx->size, SEEK_SET) != 0)
 	    mutt_debug (1, "mbox_check_mailbox: fseek() failed\n");
@@ -1226,8 +1226,8 @@ static int mbox_sync_mailbox (CONTEXT *ctx, int *index_hint)
   if (fseeko (ctx->fp, offset, SEEK_SET) != 0 ||  /* seek the append location */
       /* do a sanity check to make sure the mailbox looks ok */
       fgets (buf, sizeof (buf), ctx->fp) == NULL ||
-      (ctx->magic == MUTT_MBOX && mutt_strncmp ("From ", buf, 5) != 0) ||
-      (ctx->magic == MUTT_MMDF && mutt_strcmp (MMDF_SEP, buf) != 0))
+      (ctx->magic == MUTT_MBOX && (mutt_strncmp ("From ", buf, 5) != 0)) ||
+      (ctx->magic == MUTT_MMDF && (mutt_strcmp (MMDF_SEP, buf) != 0)))
   {
     mutt_debug (1, "mbox_sync_mailbox: message not in expected position.\n");
     mutt_debug (1, "\tLINE: %s\n", buf);

@@ -406,7 +406,7 @@ static void decode_uuencoded (STATE *s, long len, int istext, iconv_t cd)
     if ((fgets(tmps, sizeof(tmps), s->fpin)) == NULL)
       return;
     len -= mutt_strlen(tmps);
-    if ((!mutt_strncmp (tmps, "begin", 5)) && ISSPACE (tmps[5]))
+    if ((mutt_strncmp (tmps, "begin", 5) == 0) && ISSPACE (tmps[5]))
       break;
   }
   while(len > 0)
@@ -414,7 +414,7 @@ static void decode_uuencoded (STATE *s, long len, int istext, iconv_t cd)
     if ((fgets(tmps, sizeof(tmps), s->fpin)) == NULL)
       return;
     len -= mutt_strlen(tmps);
-    if (!mutt_strncmp (tmps, "end", 3))
+    if (mutt_strncmp (tmps, "end", 3) == 0)
       break;
     pt = tmps;
     linelen = decode_byte (*pt);
@@ -740,35 +740,35 @@ static void enriched_set_flags (const wchar_t *tag, struct enriched_state *stte)
       if ((stte->s->flags & MUTT_DISPLAY) && j == RICH_PARAM && stte->tag_level[RICH_COLOR])
       {
 	stte->param[stte->param_used] = (wchar_t) '\0';
-	if (!wcscasecmp(L"black", stte->param))
+	if (wcscasecmp(L"black", stte->param) == 0)
 	{
 	  enriched_puts("\033[30m", stte);
 	}
-	else if (!wcscasecmp(L"red", stte->param))
+	else if (wcscasecmp(L"red", stte->param) == 0)
 	{
 	  enriched_puts("\033[31m", stte);
 	}
-	else if (!wcscasecmp(L"green", stte->param))
+	else if (wcscasecmp(L"green", stte->param) == 0)
 	{
 	  enriched_puts("\033[32m", stte);
 	}
-	else if (!wcscasecmp(L"yellow", stte->param))
+	else if (wcscasecmp(L"yellow", stte->param) == 0)
 	{
 	  enriched_puts("\033[33m", stte);
 	}
-	else if (!wcscasecmp(L"blue", stte->param))
+	else if (wcscasecmp(L"blue", stte->param) == 0)
 	{
 	  enriched_puts("\033[34m", stte);
 	}
-	else if (!wcscasecmp(L"magenta", stte->param))
+	else if (wcscasecmp(L"magenta", stte->param) == 0)
 	{
 	  enriched_puts("\033[35m", stte);
 	}
-	else if (!wcscasecmp(L"cyan", stte->param))
+	else if (wcscasecmp(L"cyan", stte->param) == 0)
 	{
 	  enriched_puts("\033[36m", stte);
 	}
-	else if (!wcscasecmp(L"white", stte->param))
+	else if (wcscasecmp(L"white", stte->param) == 0)
 	{
 	  enriched_puts("\033[37m", stte);
 	}
@@ -952,7 +952,7 @@ static int is_mmnoask (const char *buf)
       else
       {
 	lng = mutt_strlen (p);
-	if (buf[lng] == '/' && mutt_strncasecmp (buf, p, lng) == 0)
+	if (buf[lng] == '/' && (mutt_strncasecmp (buf, p, lng) == 0))
 	  return (1);
       }
 
@@ -990,8 +990,8 @@ static int is_autoview (BODY *b)
     for (; t; t = t->next) {
       int i = mutt_strlen (t->data) - 1;
       if ((i > 0 && t->data[i-1] == '/' && t->data[i] == '*' &&
-            ascii_strncasecmp (type, t->data, i) == 0) ||
-          ascii_strcasecmp (type, t->data) == 0)
+            (ascii_strncasecmp (type, t->data, i) == 0)) ||
+          (ascii_strcasecmp (type, t->data) == 0))
         is_av = 1;
     }
 
@@ -1032,7 +1032,7 @@ static int alternative_handler (BODY *a, STATE *s)
     b->length = (long) st.st_size;
     b->parts = mutt_parse_multipart (s->fpin,
 		  mutt_get_parameter ("boundary", a->parameter),
-		  (long) st.st_size, ascii_strcasecmp ("digest", a->subtype) == 0);
+		  (long) st.st_size, (ascii_strcasecmp ("digest", a->subtype) == 0));
   }
   else
     b = a;
@@ -1066,10 +1066,10 @@ static int alternative_handler (BODY *a, STATE *s)
     while (b)
     {
       const char *bt = TYPE(b);
-      if (!ascii_strncasecmp (bt, t->data, btlen) && bt[btlen] == 0)
+      if ((ascii_strncasecmp (bt, t->data, btlen) == 0) && (bt[btlen] == 0))
       {
 	/* the basetype matches */
-	if (wild || !ascii_strcasecmp (t->data + btlen + 1, b->subtype))
+	if (wild || (ascii_strcasecmp (t->data + btlen + 1, b->subtype) == 0))
 	{
 	  choice = b;
 	}
@@ -1105,17 +1105,17 @@ static int alternative_handler (BODY *a, STATE *s)
     {
       if (b->type == TYPETEXT)
       {
-	if (! ascii_strcasecmp ("plain", b->subtype) && type <= TXTPLAIN)
+	if ((ascii_strcasecmp ("plain", b->subtype) == 0) && type <= TXTPLAIN)
 	{
 	  choice = b;
 	  type = TXTPLAIN;
 	}
-	else if (! ascii_strcasecmp ("enriched", b->subtype) && type <= TXTENRICHED)
+	else if ((ascii_strcasecmp ("enriched", b->subtype) == 0) && type <= TXTENRICHED)
 	{
 	  choice = b;
 	  type = TXTENRICHED;
 	}
-	else if (! ascii_strcasecmp ("html", b->subtype) && type <= TXTHTML)
+	else if ((ascii_strcasecmp ("html", b->subtype) == 0) && type <= TXTHTML)
 	{
 	  choice = b;
 	  type = TXTHTML;
@@ -1244,8 +1244,8 @@ int mutt_can_decode (BODY *a)
 
     if (WithCrypto)
     {
-      if (ascii_strcasecmp (a->subtype, "signed") == 0 ||
-	  ascii_strcasecmp (a->subtype, "encrypted") == 0)
+      if ((ascii_strcasecmp (a->subtype, "signed") == 0) ||
+	  (ascii_strcasecmp (a->subtype, "encrypted") == 0))
         return (1);
     }
 
@@ -1282,7 +1282,7 @@ static int multipart_handler (BODY *a, STATE *s)
     b->length = (long) st.st_size;
     b->parts = mutt_parse_multipart (s->fpin,
 		  mutt_get_parameter ("boundary", a->parameter),
-		  (long) st.st_size, ascii_strcasecmp ("digest", a->subtype) == 0);
+		  (long) st.st_size, (ascii_strcasecmp ("digest", a->subtype) == 0));
   }
   else
     b = a;
@@ -1493,7 +1493,7 @@ static int external_body_handler (BODY *b, STATE *s)
   else
     expire = -1;
 
-  if (!ascii_strcasecmp (access_type, "x-mutt-deleted"))
+  if (ascii_strcasecmp (access_type, "x-mutt-deleted") == 0)
   {
     if (s->flags & (MUTT_DISPLAY|MUTT_PRINTING))
     {
@@ -1612,7 +1612,7 @@ static int text_plain_handler (BODY *b, STATE *s)
 
   while ((buf = mutt_read_line (buf, &sz, s->fpin, NULL, 0)))
   {
-    if (mutt_strcmp (buf, "-- ") != 0 && option (OPTTEXTFLOWED))
+    if ((mutt_strcmp (buf, "-- ") != 0) && option (OPTTEXTFLOWED))
     {
       l = mutt_strlen (buf);
       while (l > 0 && buf[l-1] == ' ')
@@ -1812,7 +1812,7 @@ int mutt_body_handler (BODY *b, STATE *s)
        */
       if ((WithCrypto & APPLICATION_PGP) && mutt_is_application_pgp (b))
 	handler = crypt_pgp_application_pgp_handler;
-      else if (option(OPTREFLOWTEXT) && ascii_strcasecmp ("flowed", mutt_get_parameter ("format", b->parameter)) == 0)
+      else if (option(OPTREFLOWTEXT) && (ascii_strcasecmp ("flowed", mutt_get_parameter ("format", b->parameter)) == 0))
 	handler = rfc3676_handler;
       else
 	handler = text_plain_handler;
@@ -1826,9 +1826,9 @@ int mutt_body_handler (BODY *b, STATE *s)
   {
     if(mutt_is_message_type(b->type, b->subtype))
       handler = message_handler;
-    else if (!ascii_strcasecmp ("delivery-status", b->subtype))
+    else if (ascii_strcasecmp ("delivery-status", b->subtype) == 0)
       plaintext = 1;
-    else if (!ascii_strcasecmp ("external-body", b->subtype))
+    else if (ascii_strcasecmp ("external-body", b->subtype) == 0)
       handler = external_body_handler;
   }
   else if (b->type == TYPEMULTIPART)
@@ -1837,7 +1837,7 @@ int mutt_body_handler (BODY *b, STATE *s)
 
     if ((mutt_strcmp ("inline", ShowMultipartAlternative) != 0) && (ascii_strcasecmp ("alternative", b->subtype) == 0))
       handler = alternative_handler;
-    else if (WithCrypto && ascii_strcasecmp ("signed", b->subtype) == 0)
+    else if (WithCrypto && (ascii_strcasecmp ("signed", b->subtype) == 0))
     {
       p = mutt_get_parameter ("protocol", b->parameter);
 
@@ -1865,7 +1865,7 @@ int mutt_body_handler (BODY *b, STATE *s)
   else if (WithCrypto && b->type == TYPEAPPLICATION)
   {
     if (option (OPTDONTHANDLEPGPKEYS)
-        && !ascii_strcasecmp("pgp-keys", b->subtype))
+        && (ascii_strcasecmp("pgp-keys", b->subtype) == 0))
     {
       /* pass raw part through for key extraction */
       plaintext = 1;

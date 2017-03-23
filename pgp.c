@@ -361,7 +361,7 @@ int pgp_application_pgp_handler (BODY *m, STATE *s)
 	clearsign = 1;
         needpass = 0;
       }
-      else if (!mutt_strcmp ("PUBLIC KEY BLOCK-----\n", buf + 15))
+      else if (mutt_strcmp ("PUBLIC KEY BLOCK-----\n", buf + 15) == 0)
       {
         needpass = 0;
         pgp_keyblock = 1;
@@ -395,10 +395,10 @@ int pgp_application_pgp_handler (BODY *m, STATE *s)
 
 	fputs (buf, tmpfp);
 
-	if ((needpass && mutt_strcmp ("-----END PGP MESSAGE-----\n", buf) == 0) ||
+	if ((needpass && (mutt_strcmp ("-----END PGP MESSAGE-----\n", buf) == 0)) ||
 	    (!needpass
-             && (mutt_strcmp ("-----END PGP SIGNATURE-----\n", buf) == 0
-                 || mutt_strcmp ("-----END PGP PUBLIC KEY BLOCK-----\n",buf) == 0)))
+             && ((mutt_strcmp ("-----END PGP SIGNATURE-----\n", buf) == 0)
+                 || (mutt_strcmp ("-----END PGP PUBLIC KEY BLOCK-----\n",buf) == 0))))
 	  break;
 	/* remember optional Charset: armor header as defined by RfC4880 */
 	if (mutt_strncmp ("Charset: ", buf, 9) == 0)
@@ -1464,7 +1464,7 @@ BODY *pgp_traditional_encryptsign (BODY *a, int flags, char *keylist)
 
   if (a->type != TYPETEXT)
     return NULL;
-  if (ascii_strcasecmp (a->subtype, "plain"))
+  if (ascii_strcasecmp (a->subtype, "plain") != 0)
     return NULL;
 
   if ((fp = fopen (a->filename, "r")) == NULL)

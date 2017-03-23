@@ -153,17 +153,17 @@ static pgp_key_t parse_pub_line (char *buf, int *is_subkey, pgp_key_t k)
       {
         mutt_debug (2, "record type: %s\n", p);
 
-	if (!mutt_strcmp (p, "pub"))
+	if (mutt_strcmp (p, "pub") == 0)
 	  is_pub = 1;
-	else if (!mutt_strcmp (p, "sub"))
+	else if (mutt_strcmp (p, "sub") == 0)
 	  *is_subkey = 1;
-	else if (!mutt_strcmp (p, "sec"))
+	else if (mutt_strcmp (p, "sec") == 0)
 	  ;
-	else if (!mutt_strcmp (p, "ssb"))
+	else if (mutt_strcmp (p, "ssb") == 0)
 	  *is_subkey = 1;
-	else if (!mutt_strcmp (p, "uid"))
+	else if (mutt_strcmp (p, "uid") == 0)
 	  is_uid = 1;
-	else if (!mutt_strcmp (p, "fpr"))
+	else if (mutt_strcmp (p, "fpr") == 0)
 	  is_fpr = 1;
 	else
 	  return NULL;

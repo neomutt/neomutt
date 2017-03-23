@@ -298,7 +298,7 @@ static size_t try_block (ICONV_CONST char *d, size_t dlen,
   len_q = len + (ob - buf1) + 2 * count;
 
   /* Apparently RFC 1468 says to use B encoding for iso-2022-jp. */
-  if (!ascii_strcasecmp (tocode, "ISO-2022-JP"))
+  if (ascii_strcasecmp (tocode, "ISO-2022-JP") == 0)
     len_q = ENCWORD_LEN_MAX + 1;
 
   if (len_b < len_q && len_b <= ENCWORD_LEN_MAX)
@@ -357,7 +357,7 @@ static size_t choose_block (char *d, size_t dlen, int col,
 			    encoder_t *encoder, size_t *wlen)
 {
   size_t n, nn;
-  int utf8 = fromcode && !ascii_strcasecmp (fromcode, "utf-8");
+  int utf8 = fromcode && (ascii_strcasecmp (fromcode, "utf-8") == 0);
 
   n = dlen;
   for (;;)

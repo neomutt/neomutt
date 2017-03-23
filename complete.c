@@ -84,7 +84,7 @@ int mutt_complete (char *s, size_t slen)
       NNTP_DATA *nntp_data = nserv->groups_list[n];
 
       if (nntp_data && nntp_data->subscribed &&
-	  mutt_strncmp (nntp_data->group, filepart, len) == 0)
+	  (mutt_strncmp (nntp_data->group, filepart, len) == 0))
       {
 	if (init)
 	{
@@ -196,7 +196,7 @@ int mutt_complete (char *s, size_t slen)
   {
     while ((de = readdir (dirp)) != NULL)
     {
-      if (mutt_strcmp (".", de->d_name) != 0 && mutt_strcmp ("..", de->d_name) != 0)
+      if ((mutt_strcmp (".", de->d_name) != 0) && (mutt_strcmp ("..", de->d_name) != 0))
       {
 	strfcpy (filepart, de->d_name, sizeof (filepart));
 	init++;
@@ -249,7 +249,7 @@ int mutt_complete (char *s, size_t slen)
   if (dirpart[0])
   {
     strfcpy (s, dirpart, slen);
-    if (mutt_strcmp ("/", dirpart) != 0 && dirpart[0] != '=' && dirpart[0] != '+')
+    if ((mutt_strcmp ("/", dirpart) != 0) && dirpart[0] != '=' && dirpart[0] != '+')
       strfcpy (s + strlen (s), "/", slen - strlen (s));
     strfcpy (s + strlen (s), filepart, slen - strlen (s));
   }

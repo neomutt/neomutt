@@ -322,7 +322,7 @@ static int _pgp_compare_keyid (const void *a, const void *b)
 			    pgp_fpr_or_lkeyid ((*t)->parent))))
     return r > 0;
   else
-    return (mutt_strcasecmp ((*s)->addr, (*t)->addr)) > 0;
+    return (mutt_strcasecmp ((*s)->addr, (*t)->addr) > 0);
 }
 
 static int pgp_compare_keyid (const void *a, const void *b)
@@ -339,7 +339,7 @@ static int _pgp_compare_date (const void *a, const void *b)
 
   if ((r = ((*s)->parent->gen_time - (*t)->parent->gen_time)))
     return r > 0;
-  return (mutt_strcasecmp ((*s)->addr, (*t)->addr)) > 0;
+  return (mutt_strcasecmp ((*s)->addr, (*t)->addr) > 0);
 }
 
 static int pgp_compare_date (const void *a, const void *b)
@@ -367,7 +367,7 @@ static int _pgp_compare_trust (const void *a, const void *b)
   if ((r = mutt_strcasecmp ((*s)->addr, (*t)->addr)))
     return r > 0;
   return (mutt_strcasecmp (pgp_fpr_or_lkeyid ((*s)->parent),
-			   pgp_fpr_or_lkeyid ((*t)->parent))) > 0;
+			   pgp_fpr_or_lkeyid ((*t)->parent)) > 0);
 }
 
 static int pgp_compare_trust (const void *a, const void *b)
@@ -423,11 +423,11 @@ static int pgp_id_matches_addr (ADDRESS *addr, ADDRESS *u_addr, pgp_uid_t *uid)
     rv |= PGP_KV_STRONGID;
 
   if (addr->mailbox && u_addr->mailbox
-      && mutt_strcasecmp (addr->mailbox, u_addr->mailbox) == 0)
+      && (mutt_strcasecmp (addr->mailbox, u_addr->mailbox) == 0))
     rv |= PGP_KV_ADDR;
 
   if (addr->personal && u_addr->personal
-      && mutt_strcasecmp (addr->personal, u_addr->personal) == 0)
+      && (mutt_strcasecmp (addr->personal, u_addr->personal) == 0))
     rv |= PGP_KV_STRING;
 
   return rv;
@@ -661,7 +661,7 @@ pgp_key_t pgp_ask_for_key (char *tag, char *whatfor,
   {
 
     for (l = id_defaults; l; l = l->next)
-      if (!mutt_strcasecmp (whatfor, l->what))
+      if (mutt_strcasecmp (whatfor, l->what) == 0)
       {
 	strfcpy (resp, NONULL (l->dflt), sizeof (resp));
 	break;
@@ -977,9 +977,9 @@ pgp_key_t pgp_getkeybystr (char *p, short abilities, pgp_ring_t keyring)
                 p, pgp_long_keyid (k));
 
     if (!*p ||
-        (pfcopy && mutt_strcasecmp (pfcopy, k->fingerprint) == 0) ||
-        (pl && mutt_strcasecmp (pl, pgp_long_keyid (k)) == 0) ||
-        (ps && mutt_strcasecmp (ps, pgp_short_keyid (k)) == 0))
+        (pfcopy && (mutt_strcasecmp (pfcopy, k->fingerprint) == 0)) ||
+        (pl && (mutt_strcasecmp (pl, pgp_long_keyid (k)) == 0)) ||
+        (ps && (mutt_strcasecmp (ps, pgp_short_keyid (k)) == 0)))
     {
       mutt_debug (5, "\t\tmatch.\n");
       match = 1;

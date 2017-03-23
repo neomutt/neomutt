@@ -303,7 +303,7 @@ int url_parse_mailto (ENVELOPE *e, char **body, const char *src)
      */
     if (mutt_matches_list (tag, MailtoAllow))
     {
-      if (!ascii_strcasecmp (tag, "body"))
+      if (ascii_strcasecmp (tag, "body") == 0)
       {
 	if (body)
 	  mutt_str_replace (body, value);

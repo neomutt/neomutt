@@ -652,7 +652,7 @@ parse_object(BUFFER *buf, BUFFER *s, int *o, int *ql, BUFFER *err)
   }
 
   mutt_extract_token(buf, s, 0);
-  if(!mutt_strncmp(buf->data, "quoted", 6))
+  if(mutt_strncmp(buf->data, "quoted", 6) == 0)
   {
     if(buf->data[6])
     {

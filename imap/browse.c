@@ -56,7 +56,7 @@ static void imap_add_folder (char delim, char *folder, int noselect,
   if (isparent)
     strfcpy (relpath, "../", sizeof (relpath));
   /* strip current folder from target, to render a relative path */
-  else if (!mutt_strncmp (mx.mbox, folder, mutt_strlen (mx.mbox)))
+  else if (mutt_strncmp (mx.mbox, folder, mutt_strlen (mx.mbox)) == 0)
     strfcpy (relpath, folder + mutt_strlen (mx.mbox), sizeof (relpath));
   else
     strfcpy (relpath, folder, sizeof (relpath));
@@ -91,12 +91,12 @@ static void imap_add_folder (char delim, char *folder, int noselect,
   (state->entry)[state->entrylen].inferiors = !noinferiors;
 
   b = Incoming;
-  while (b && mutt_strcmp (tmp, b->path))
+  while (b && (mutt_strcmp (tmp, b->path) != 0))
     b = b->next;
   if (b)
   {
     if (Context &&
-        !mutt_strcmp (b->realpath, Context->realpath))
+        (mutt_strcmp (b->realpath, Context->realpath) == 0))
     {
       b->msg_count = Context->msgcount;
       b->msg_unread = Context->unread;
@@ -140,7 +140,7 @@ static int browse_add_list_result (IMAP_DATA* idata, const char* cmd,
       if (isparent)
         list.noselect = 1;
       /* prune current folder from output */
-      if (isparent || mutt_strncmp (list.name, mx.mbox, strlen (list.name)))
+      if (isparent || (mutt_strncmp (list.name, mx.mbox, strlen (list.name)) != 0))
         imap_add_folder (list.delim, list.name, list.noselect, list.noinferiors,
                          state, isparent);
     }
@@ -214,7 +214,7 @@ int imap_browse (char* path, struct browser_state* state)
       if (rc == IMAP_CMD_CONTINUE && list.name)
       {
         if (!list.noinferiors && list.name[0] &&
-            !imap_mxcmp (list.name, mbox) &&
+            (imap_mxcmp (list.name, mbox) == 0) &&
             n < sizeof (mbox) - 1)
         {
           mbox[n++] = list.delim;

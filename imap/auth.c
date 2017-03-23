@@ -73,7 +73,7 @@ int imap_authenticate (IMAP_DATA* idata)
       while (authenticator->authenticate)
       {
 	if (!authenticator->method ||
-	    !ascii_strcasecmp (authenticator->method, method))
+	    (ascii_strcasecmp (authenticator->method, method) == 0))
 	  if ((r = authenticator->authenticate (idata, method)) !=
 	      IMAP_AUTH_UNAVAIL)
 	  {

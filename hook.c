@@ -162,14 +162,14 @@ int mutt_parse_hook (BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err)
     }
     else if (ptr->type == data &&
 	ptr->rx.not == not &&
-	!mutt_strcmp (pattern.data, ptr->rx.pattern))
+	(mutt_strcmp (pattern.data, ptr->rx.pattern) == 0))
     {
       if (data & (MUTT_FOLDERHOOK | MUTT_SENDHOOK | MUTT_SEND2HOOK | MUTT_MESSAGEHOOK | MUTT_ACCOUNTHOOK | MUTT_REPLYHOOK | MUTT_CRYPTHOOK | MUTT_TIMEOUTHOOK | MUTT_STARTUPHOOK | MUTT_SHUTDOWNHOOK))
       {
 	/* these hooks allow multiple commands with the same
 	 * pattern, so if we've already seen this pattern/command pair, just
 	 * ignore it instead of creating a duplicate */
-	if (!mutt_strcmp (ptr->command, command.data))
+	if (mutt_strcmp (ptr->command, command.data) == 0)
 	{
 	  FREE (&command.data);
 	  FREE (&pattern.data);

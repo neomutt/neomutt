@@ -95,7 +95,7 @@ hcache_get_backend_ops(const char *backend)
   }
 
   for (; *ops; ++ops)
-    if (!strcmp(backend, (*ops)->name))
+    if (strcmp(backend, (*ops)->name) == 0)
       break;
 
   return *ops;

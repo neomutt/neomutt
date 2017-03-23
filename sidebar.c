@@ -867,7 +867,7 @@ static void draw_sidebar (int num_rows, int num_cols, int div_width)
 
     mutt_window_move (MuttSidebarWindow, row, col);
     if (Context && Context->realpath &&
-        !mutt_strcmp (b->realpath, Context->realpath))
+        (mutt_strcmp (b->realpath, Context->realpath) == 0))
     {
 #ifdef USE_NOTMUCH
       if (b->magic == MUTT_NOTMUCH)
@@ -1076,7 +1076,7 @@ void mutt_sb_set_buffystats (const CONTEXT *ctx)
 
   for (; b; b = b->next)
   {
-    if (!mutt_strcmp (b->realpath, ctx->realpath))
+    if (mutt_strcmp (b->realpath, ctx->realpath) == 0)
     {
       b->msg_unread  = ctx->unread;
       b->msg_count   = ctx->msgcount;
@@ -1122,7 +1122,7 @@ void mutt_sb_set_open_buffy (void)
 
   for (entry = 0; entry < EntryCount; entry++)
   {
-    if (!mutt_strcmp (Entries[entry]->buffy->realpath, Context->realpath))
+    if (mutt_strcmp (Entries[entry]->buffy->realpath, Context->realpath) == 0)
     {
       OpnIndex = entry;
       HilIndex = entry;

@@ -128,7 +128,7 @@ static char *intl_to_local (char *orig_user, char *orig_domain, int flags)
       goto cleanup;
     }
 
-    if (ascii_strcasecmp (orig_user, reversed_user))
+    if (ascii_strcasecmp (orig_user, reversed_user) != 0)
     {
       mutt_debug (1, "intl_to_local: Not reversible. orig = '%s', reversed = '%s'.\n",
                   orig_user, reversed_user);
@@ -163,7 +163,7 @@ static char *intl_to_local (char *orig_user, char *orig_domain, int flags)
     }
 #endif /* HAVE_LIBIDN */
 
-    if (ascii_strcasecmp (orig_domain, reversed_domain))
+    if (ascii_strcasecmp (orig_domain, reversed_domain) != 0)
     {
       mutt_debug (1, "intl_to_local: Not reversible. orig = '%s', reversed = '%s'.\n",
                   orig_domain, reversed_domain);

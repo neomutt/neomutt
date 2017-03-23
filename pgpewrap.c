@@ -44,7 +44,7 @@ int main(int argc, char **argv) {
 	pfx = NULL;
 
 	for(i = 2; i < argc; ) {
-		if(!strcmp(argv[i], "--")) {
+		if(strcmp(argv[i], "--") == 0) {
 			i += 2;
 			if(i > argc) {
 				print_usage(argv[0]);

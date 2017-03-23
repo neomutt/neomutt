@@ -233,7 +233,7 @@ void mutt_history_add (history_class_t hclass, const char *s, int save)
      *  - lines beginning by a space
      *  - repeated lines
      */
-    if (*s != ' ' && (!h->hist[prev] || mutt_strcmp (h->hist[prev], s) != 0))
+    if (*s != ' ' && (!h->hist[prev] || (mutt_strcmp (h->hist[prev], s) != 0)))
     {
       if (save && SaveHist)
         save_history (hclass, s);

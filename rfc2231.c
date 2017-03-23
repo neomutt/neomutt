@@ -186,7 +186,7 @@ static void rfc2231_join_continuations (PARAMETER **head,
       rfc2231_free_parameter (&par);
       if ((par = q))
 	valp = par->value;
-    } while (par && !strcmp (par->attribute, attribute));
+    } while (par && (strcmp (par->attribute, attribute) == 0));
 
     if (value)
     {

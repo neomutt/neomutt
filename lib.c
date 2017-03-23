@@ -608,7 +608,7 @@ int mutt_rmtree (const char* path)
   }
   while ((de = readdir (dirp)))
   {
-    if (!strcmp (".", de->d_name) || !strcmp ("..", de->d_name))
+    if ((strcmp (".", de->d_name) == 0) || (strcmp ("..", de->d_name) == 0))
       continue;
 
     snprintf (cur, sizeof (cur), "%s/%s", path, de->d_name);

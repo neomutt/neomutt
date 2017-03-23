@@ -134,7 +134,7 @@ int mutt_display_message (HEADER *cur)
     }
   }
 
-  if (!Pager || mutt_strcmp (Pager, "builtin") == 0)
+  if (!Pager || (mutt_strcmp (Pager, "builtin") == 0))
     builtin = 1;
   else
   {

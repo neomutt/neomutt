@@ -266,8 +266,8 @@ static int msg_parse_fetch (IMAP_HEADER *h, char *s)
       *ptmp = 0;
       h->content_length = atoi (tmp);
     }
-    else if (!ascii_strncasecmp ("BODY", s, 4) ||
-      !ascii_strncasecmp ("RFC822.HEADER", s, 13))
+    else if ((ascii_strncasecmp ("BODY", s, 4) == 0) ||
+      (ascii_strncasecmp ("RFC822.HEADER", s, 13) == 0))
     {
       /* handle above, in msg_fetch_header */
       return -2;
@@ -308,7 +308,7 @@ static int msg_fetch_header (CONTEXT* ctx, IMAP_HEADER* h, char* buf, FILE* fp)
 
   /* find FETCH tag */
   buf = imap_next_word (buf);
-  if (ascii_strncasecmp ("FETCH", buf, 5))
+  if (ascii_strncasecmp ("FETCH", buf, 5) != 0)
     return rc;
 
   rc = -2; /* we've got a FETCH response, for better or worse */
@@ -777,7 +777,7 @@ int imap_fetch_message (CONTEXT *ctx, MESSAGE *msg, int msgno)
     pc = imap_next_word (pc);
     pc = imap_next_word (pc);
 
-    if (!ascii_strncasecmp ("FETCH", pc, 5))
+    if (ascii_strncasecmp ("FETCH", pc, 5) == 0)
     {
       while (*pc)
       {
@@ -1171,7 +1171,7 @@ int imap_copy_messages (CONTEXT* ctx, HEADER* h, char* dest, int delete)
         break;
       }
       /* bail out if command failed for reasons other than nonexistent target */
-      if (ascii_strncasecmp (imap_get_qualifier (idata->buf), "[TRYCREATE]", 11))
+      if (ascii_strncasecmp (imap_get_qualifier (idata->buf), "[TRYCREATE]", 11) != 0)
         break;
       mutt_debug (3, "imap_copy_messages: server suggests TRYCREATE\n");
       snprintf (prompt, sizeof (prompt), _("Create %s?"), mbox);

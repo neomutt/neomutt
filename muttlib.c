@@ -274,7 +274,7 @@ LIST *mutt_find_list (LIST *l, const char *data)
   {
     if (data == p->data)
       return p;
-    if (data && p->data && mutt_strcmp (p->data, data) == 0)
+    if (data && p->data && (mutt_strcmp (p->data, data) == 0))
       return p;
     p = p->next;
   }
@@ -402,7 +402,7 @@ int mutt_matches_list (const char *s, LIST *t)
 {
   for (; t; t = t->next)
   {
-    if (!ascii_strncasecmp (s, t->data, mutt_strlen (t->data)) || *t->data == '*')
+    if ((ascii_strncasecmp (s, t->data, mutt_strlen (t->data)) == 0) || *t->data == '*')
       return 1;
   }
   return 0;
@@ -697,7 +697,7 @@ int mutt_needs_mailcap (BODY *m)
   switch (m->type)
   {
     case TYPETEXT:
-      if (!ascii_strcasecmp ("plain", m->subtype))
+      if (ascii_strcasecmp ("plain", m->subtype) == 0)
         return 0;
       break;
     case TYPEAPPLICATION:
@@ -728,13 +728,13 @@ int mutt_is_text_part (BODY *b)
 
   if (t == TYPEMESSAGE)
   {
-    if (!ascii_strcasecmp ("delivery-status", s))
+    if (ascii_strcasecmp ("delivery-status", s) == 0)
       return 1;
   }
 
   if ((WithCrypto & APPLICATION_PGP) && t == TYPEAPPLICATION)
   {
-    if (!ascii_strcasecmp ("pgp-keys", s))
+    if (ascii_strcasecmp ("pgp-keys", s) == 0)
       return 1;
   }
 
@@ -948,7 +948,7 @@ void mutt_pretty_mailbox (char *s, size_t buflen)
   if (scheme != U_UNKNOWN)
   {
     p = strchr(s, ':')+1;
-    if (!strncmp (p, "//", 2))
+    if (strncmp (p, "//", 2) == 0)
       q = strchr (p+2, '/');
     if (!q)
       q = strchr (p, '\0');
@@ -983,13 +983,13 @@ void mutt_pretty_mailbox (char *s, size_t buflen)
 	   realpath (p, tmp))
     strfcpy (p, tmp, buflen - (p - s));
 
-  if (mutt_strncmp (s, Maildir, (len = mutt_strlen (Maildir))) == 0 &&
+  if ((mutt_strncmp (s, Maildir, (len = mutt_strlen (Maildir))) == 0) &&
       s[len] == '/')
   {
     *s++ = '=';
     memmove (s, s + len, mutt_strlen (s + len) + 1);
   }
-  else if (mutt_strncmp (s, Homedir, (len = mutt_strlen (Homedir))) == 0 &&
+  else if ((mutt_strncmp (s, Homedir, (len = mutt_strlen (Homedir))) == 0) &&
 	   s[len] == '/')
   {
     *s++ = '~';
@@ -1872,7 +1872,7 @@ int state_printf (STATE *s, const char *fmt, ...)
 
 void state_mark_attach (STATE *s)
 {
-  if ((s->flags & MUTT_DISPLAY) && !mutt_strcmp (Pager, "builtin"))
+  if ((s->flags & MUTT_DISPLAY) && (mutt_strcmp (Pager, "builtin") == 0))
     state_puts (AttachmentMarker, s);
 }
 

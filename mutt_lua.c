@@ -212,7 +212,7 @@ static int _lua_mutt_get(lua_State *l)
       }
       case DT_PATH:
       case DT_STR:
-        if (!mutt_strncmp("my_", param, 3))
+        if (mutt_strncmp("my_", param, 3) == 0)
         {
           char *option = (char *) opt->option;
           char *value = (char *) opt->data;

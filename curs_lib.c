@@ -780,7 +780,7 @@ int mutt_do_pager (const char *banner,
 {
   int rc;
 
-  if (!Pager || mutt_strcmp (Pager, "builtin") == 0)
+  if (!Pager || (mutt_strcmp (Pager, "builtin") == 0))
     rc = mutt_pager (banner, tempfile, do_color, info);
   else
   {
@@ -844,7 +844,7 @@ int _mutt_enter_fname (const char *prompt, char *buf, size_t blen,
     MAYBE_REDRAW (*redraw);
     FREE (&pc);
 #ifdef USE_NOTMUCH
-    if ((flags & MUTT_SEL_VFOLDER) && buf[0] && strncmp(buf, "notmuch://", 10) != 0)
+    if ((flags & MUTT_SEL_VFOLDER) && buf[0] && (strncmp(buf, "notmuch://", 10) != 0))
       nm_description_to_path(buf, buf, blen);
 #endif
   }

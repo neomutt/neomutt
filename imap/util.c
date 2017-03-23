@@ -348,7 +348,7 @@ int imap_parse_path (const char* path, IMAP_MBOX* mx)
 	mx->account.flags |= MUTT_ACCT_PORT;
       if (sscanf (tmp, "/%s", tmp) == 1)
       {
-	if (!ascii_strncmp (tmp, "ssl", 3))
+	if (ascii_strncmp (tmp, "ssl", 3) == 0)
 	  mx->account.flags |= MUTT_ACCT_SSL;
 	else
 	{
@@ -378,7 +378,7 @@ int imap_mxcmp (const char* mx1, const char* mx2)
     mx1 = "INBOX";
   if (!mx2 || !*mx2)
     mx2 = "INBOX";
-  if (!ascii_strcasecmp (mx1, "INBOX") && !ascii_strcasecmp (mx2, "INBOX"))
+  if ((ascii_strcasecmp (mx1, "INBOX") == 0) && (ascii_strcasecmp (mx2, "INBOX") == 0))
     return 0;
 
   b1 = safe_malloc (strlen (mx1) + 1);
@@ -414,7 +414,7 @@ void imap_pretty_mailbox (char* path)
   {
     hlen = mutt_strlen (home.mbox);
     if (tlen && mutt_account_match (&home.account, &target.account) &&
-	!mutt_strncmp (home.mbox, target.mbox, hlen))
+	(mutt_strncmp (home.mbox, target.mbox, hlen) == 0))
     {
       if (! hlen)
 	home_match = 1;

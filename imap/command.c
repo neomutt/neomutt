@@ -166,9 +166,9 @@ static int cmd_status (const char *s)
 {
   s = imap_next_word((char*)s);
 
-  if (!ascii_strncasecmp("OK", s, 2))
+  if (ascii_strncasecmp("OK", s, 2) == 0)
     return IMAP_CMD_OK;
-  if (!ascii_strncasecmp("NO", s, 2))
+  if (ascii_strncasecmp("NO", s, 2) == 0)
     return IMAP_CMD_NO;
 
   return IMAP_CMD_BAD;
@@ -315,12 +315,12 @@ static void cmd_parse_list (IMAP_DATA* idata, char* s)
   s++;
   while (*s)
   {
-    if (!ascii_strncasecmp (s, "\\NoSelect", 9))
+    if (ascii_strncasecmp (s, "\\NoSelect", 9) == 0)
       list->noselect = 1;
-    else if (!ascii_strncasecmp (s, "\\NoInferiors", 12))
+    else if (ascii_strncasecmp (s, "\\NoInferiors", 12) == 0)
       list->noinferiors = 1;
     /* See draft-gahrns-imap-child-mailbox-?? */
-    else if (!ascii_strncasecmp (s, "\\HasNoChildren", 14))
+    else if (ascii_strncasecmp (s, "\\HasNoChildren", 14) == 0)
       list->noinferiors = 1;
 
     s = imap_next_word (s);
@@ -329,7 +329,7 @@ static void cmd_parse_list (IMAP_DATA* idata, char* s)
   }
 
   /* Delimiter */
-  if (ascii_strncasecmp (s, "NIL", 3))
+  if (ascii_strncasecmp (s, "NIL", 3) != 0)
   {
     delimbuf[0] = '\0';
     safe_strcat (delimbuf, 5, s);
@@ -396,7 +396,7 @@ static void cmd_parse_lsub (IMAP_DATA* idata, char* s)
   imap_quote_string(errstr, sizeof (errstr), list.name);
   url.path = errstr + 1;
   url.path[strlen(url.path) - 1] = '\0';
-  if (!mutt_strcmp (url.user, ImapUser))
+  if (mutt_strcmp (url.user, ImapUser) == 0)
     url.user = NULL;
   url_ciss_tostring (&url, buf + 11, sizeof (buf) - 11, 0);
   safe_strcat (buf, sizeof (buf), "\"");
@@ -543,18 +543,18 @@ static void cmd_parse_status (IMAP_DATA* idata, char* s)
     value = imap_next_word (s);
     count = strtol (value, &value, 10);
 
-    if (!ascii_strncmp ("MESSAGES", s, 8))
+    if (ascii_strncmp ("MESSAGES", s, 8) == 0)
     {
       status->messages = count;
       new_msg_count = 1;
     }
-    else if (!ascii_strncmp ("RECENT", s, 6))
+    else if (ascii_strncmp ("RECENT", s, 6) == 0)
       status->recent = count;
-    else if (!ascii_strncmp ("UIDNEXT", s, 7))
+    else if (ascii_strncmp ("UIDNEXT", s, 7) == 0)
       status->uidnext = count;
-    else if (!ascii_strncmp ("UIDVALIDITY", s, 11))
+    else if (ascii_strncmp ("UIDVALIDITY", s, 11) == 0)
       status->uidvalidity = count;
-    else if (!ascii_strncmp ("UNSEEN", s, 6))
+    else if (ascii_strncmp ("UNSEEN", s, 6) == 0)
       status->unseen = count;
 
     s = value;
@@ -597,7 +597,7 @@ static void cmd_parse_status (IMAP_DATA* idata, char* s)
       else
 	value = safe_strdup ("INBOX");
 
-      if (value && !imap_mxcmp (mailbox, value))
+      if (value && (imap_mxcmp (mailbox, value) == 0))
       {
         mutt_debug (3, "Found %s in buffy list (OV: %d ON: %d U: %d)\n",
                     mailbox, olduv, oldun, status->unseen);
@@ -652,8 +652,8 @@ static void cmd_parse_enabled (IMAP_DATA* idata, const char* s)
 
   while ((s = imap_next_word ((char*)s)) && *s != '\0')
   {
-    if (ascii_strncasecmp(s, "UTF8=ACCEPT", 11) == 0 ||
-        ascii_strncasecmp(s, "UTF8=ONLY", 9) == 0)
+    if ((ascii_strncasecmp(s, "UTF8=ACCEPT", 11) == 0) ||
+        (ascii_strncasecmp(s, "UTF8=ONLY", 9) == 0))
       idata->unicode = 1;
   }
 }
@@ -715,9 +715,9 @@ static int cmd_handle_untagged (IMAP_DATA* idata)
   }
   else if (ascii_strncasecmp ("CAPABILITY", s, 10) == 0)
     cmd_parse_capability (idata, s);
-  else if (!ascii_strncasecmp ("OK [CAPABILITY", s, 14))
+  else if (ascii_strncasecmp ("OK [CAPABILITY", s, 14) == 0)
     cmd_parse_capability (idata, pn);
-  else if (!ascii_strncasecmp ("OK [CAPABILITY", pn, 14))
+  else if (ascii_strncasecmp ("OK [CAPABILITY", pn, 14) == 0)
     cmd_parse_capability (idata, imap_next_word (pn));
   else if (ascii_strncasecmp ("LIST", s, 4) == 0)
     cmd_parse_list (idata, s);
@@ -825,8 +825,8 @@ int imap_cmd_step (IMAP_DATA* idata)
   idata->lastread = time (NULL);
 
   /* handle untagged messages. The caller still gets its shot afterwards. */
-  if ((!ascii_strncmp (idata->buf, "* ", 2)
-       || !ascii_strncmp (imap_next_word (idata->buf), "OK [", 4))
+  if (((ascii_strncmp (idata->buf, "* ", 2) == 0)
+       || (ascii_strncmp (imap_next_word (idata->buf), "OK [", 4) == 0))
       && cmd_handle_untagged (idata))
     return IMAP_CMD_BAD;
 
@@ -842,7 +842,7 @@ int imap_cmd_step (IMAP_DATA* idata)
     cmd = &idata->cmds[c];
     if (cmd->state == IMAP_CMD_NEW)
     {
-      if (!ascii_strncmp (idata->buf, cmd->seq, SEQLEN)) {
+      if (ascii_strncmp (idata->buf, cmd->seq, SEQLEN) == 0) {
 	if (!stillrunning)
 	{
 	  /* first command in queue has finished - move queue pointer up */
@@ -892,9 +892,9 @@ const char* imap_cmd_trailer (IMAP_DATA* idata)
   }
 
   s = imap_next_word ((char *)s);
-  if (!s || (ascii_strncasecmp (s, "OK", 2) &&
-	     ascii_strncasecmp (s, "NO", 2) &&
-	     ascii_strncasecmp (s, "BAD", 3)))
+  if (!s || ((ascii_strncasecmp (s, "OK", 2) != 0) &&
+	     (ascii_strncasecmp (s, "NO", 2) != 0) &&
+	     (ascii_strncasecmp (s, "BAD", 3) != 0)))
   {
     mutt_debug (2, "imap_cmd_trailer: not a command completion: %s\n",
                 idata->buf);

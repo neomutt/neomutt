@@ -299,7 +299,7 @@ static int get_op (const struct binding_t *bindings, const char *start, size_t l
 
   for (i = 0; bindings[i].name; i++)
   {
-    if (!ascii_strncasecmp (start, bindings[i].name, len) &&
+    if ((ascii_strncasecmp (start, bindings[i].name, len) == 0) &&
 	mutt_strlen (bindings[i].name) == len)
       return bindings[i].op;
   }
@@ -350,7 +350,7 @@ static void generic_tokenize_push_string (char *s, void (*generic_push) (int, in
 	l = p - pp + 1;
 	for (i = 0; KeyNames[i].name; i++)
 	{
-	  if (!ascii_strncasecmp (pp, KeyNames[i].name, l))
+	  if (ascii_strncasecmp (pp, KeyNames[i].name, l) == 0)
 	    break;
 	}
 	if (KeyNames[i].name)

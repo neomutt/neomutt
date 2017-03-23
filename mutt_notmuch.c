@@ -517,7 +517,7 @@ static bool windowed_query_from_query(const char *query, char *buf, size_t bufsz
 
   /* if the query has changed, reset the window position */
   if (NotmuchQueryWindowCurrentSearch == NULL ||
-      strcmp(query, NotmuchQueryWindowCurrentSearch) != 0)
+      (strcmp(query, NotmuchQueryWindowCurrentSearch) != 0))
     query_window_reset();
 
   if (!query_window_check_timebase(NotmuchQueryWindowTimebase))

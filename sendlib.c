@@ -104,12 +104,12 @@ static void encode_quoted (FGETCONV * fc, FILE *fout, int istext)
     }
 
     /* Escape lines that begin with/only contain "the message separator". */
-    if (linelen == 4 && !mutt_strncmp ("From", line, 4))
+    if (linelen == 4 && (mutt_strncmp ("From", line, 4) == 0))
     {
       strfcpy (line, "=46rom", sizeof (line));
       linelen = 6;
     }
-    else if (linelen == 4 && !mutt_strncmp ("from", line, 4))
+    else if (linelen == 4 && (mutt_strncmp ("from", line, 4) == 0))
     {
       strfcpy (line, "=66rom", sizeof (line));
       linelen = 6;
@@ -323,7 +323,7 @@ int mutt_write_mime_header (BODY *a, FILE *f)
        * even when they aren't needed.
        */
 
-      if (!ascii_strcasecmp (p->attribute, "boundary") && !strcmp (buffer, tmp))
+      if ((ascii_strcasecmp (p->attribute, "boundary") == 0) && (strcmp (buffer, tmp) == 0))
 	snprintf (buffer, sizeof (buffer), "\"%s\"", tmp);
 
       FREE (&tmp);
@@ -441,7 +441,7 @@ int mutt_write_mime_body (BODY *a, FILE *f)
   /* This is pretty gross, but it's the best solution for now... */
   if ((WithCrypto & APPLICATION_PGP)
       && a->type == TYPEAPPLICATION
-      && mutt_strcmp (a->subtype, "pgp-encrypted") == 0)
+      && (mutt_strcmp (a->subtype, "pgp-encrypted") == 0))
   {
     fputs ("Version: 1\n", f);
     return 0;
@@ -654,7 +654,7 @@ static size_t convert_file_to (FILE *file, const char *fromcode,
   infos  = safe_calloc (ncodes, sizeof (CONTENT));
 
   for (i = 0; i < ncodes; i++)
-    if (ascii_strcasecmp (tocodes[i], "utf-8"))
+    if (ascii_strcasecmp (tocodes[i], "utf-8") != 0)
       cd[i] = mutt_iconv_open (tocodes[i], "utf-8", 0);
     else
       /* Special case for conversion to UTF-8 */
@@ -989,7 +989,7 @@ int mutt_lookup_mime_type (BODY *att, const char *path)
 	{
 	  sze = mutt_strlen (p);
 	  if ((sze > cur_sze) && (szf >= sze) &&
-	      (mutt_strcasecmp (path + szf - sze, p) == 0 || ascii_strcasecmp (path + szf - sze, p) == 0) &&
+	      ((mutt_strcasecmp (path + szf - sze, p) == 0) || (ascii_strcasecmp (path + szf - sze, p) == 0)) &&
 	      (szf == sze || path[szf - sze - 1] == '.'))
 	  {
 	    /* get the content-type */
@@ -1165,7 +1165,7 @@ static void set_encoding (BODY *b, CONTENT *info)
   if (b->type == TYPETEXT)
   {
     char *chsname = mutt_get_body_charset (send_charset, sizeof (send_charset), b);
-    if ((info->lobin && ascii_strncasecmp (chsname, "iso-2022", 8)) || info->linemax > 990 || (info->from && option (OPTENCODEFROM)))
+    if ((info->lobin && (ascii_strncasecmp (chsname, "iso-2022", 8) != 0)) || info->linemax > 990 || (info->from && option (OPTENCODEFROM)))
       b->encoding = ENCQUOTEDPRINTABLE;
     else if (info->hibin)
       b->encoding = option (OPTALLOW8BIT) ? ENC8BIT : ENCQUOTEDPRINTABLE;
@@ -1184,7 +1184,7 @@ static void set_encoding (BODY *b, CONTENT *info)
     else
       b->encoding = ENC7BIT;
   }
-  else if (b->type == TYPEAPPLICATION && ascii_strcasecmp (b->subtype, "pgp-keys") == 0)
+  else if (b->type == TYPEAPPLICATION && (ascii_strcasecmp (b->subtype, "pgp-keys") == 0))
     b->encoding = ENC7BIT;
   else
   {
@@ -1406,7 +1406,7 @@ static int check_boundary (const char* boundary, BODY *b)
     return 1;
 
   if ((p = mutt_get_parameter ("boundary", b->parameter))
-      && !ascii_strcmp (p, boundary))
+      && (ascii_strcmp (p, boundary) == 0))
     return 1;
   return 0;
 }
@@ -1655,7 +1655,7 @@ static int fold_one_header (FILE *fp, const char *tag, const char *value,
     /* determine width: character cells for display, bytes for sending
      * (we get pure ascii only) */
     w = my_width (buf, col, flags);
-    enc = mutt_strncmp (buf, "=?", 2) == 0;
+    enc = (mutt_strncmp (buf, "=?", 2) == 0);
 
     mutt_debug (5, "mwoh: word=[%s], col=%d, w=%d, next=[0x0%x]\n",
                 buf, col, w, *next);
@@ -1754,7 +1754,7 @@ static int write_one_header (FILE *fp, int pfxw, int max, int wraplen,
 {
   char *tagbuf = NULL, *valbuf = NULL, *t = NULL;
   int is_from = ((end - start) > 5 &&
-		 ascii_strncasecmp (start, "from ", 5) == 0);
+		 (ascii_strncasecmp (start, "from ", 5) == 0));
 
   /* only pass through folding machinery if necessary for sending,
      never wrap From_ headers on sending */
@@ -2072,7 +2072,7 @@ int mutt_write_rfc822_header (FILE *fp, ENVELOPE *env, BODY *attach,
       }
 
       /* check to see if the user has overridden the user-agent field */
-      if (!ascii_strncasecmp ("user-agent", tmp->data, 10))
+      if (ascii_strncasecmp ("user-agent", tmp->data, 10) == 0)
       {
 	has_agent = 1;
 	if (privacy)
@@ -2412,7 +2412,7 @@ mutt_invoke_sendmail (ADDRESS *from,	/* the sender */
 
     if (i)
     {
-      if (!mutt_strcmp (ps, "--"))
+      if (mutt_strcmp (ps, "--") == 0)
         break;
       args[argslen++] = ps;
     }
@@ -2724,7 +2724,7 @@ ADDRESS *mutt_remove_duplicates (ADDRESS *addr)
     for (tmp = top, dup = 0; tmp && tmp != addr; tmp = tmp->next)
     {
       if (tmp->mailbox && addr->mailbox &&
-	  !ascii_strcasecmp (addr->mailbox, tmp->mailbox))
+	  (ascii_strcasecmp (addr->mailbox, tmp->mailbox) == 0))
       {
 	dup = 1;
 	break;

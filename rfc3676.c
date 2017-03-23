@@ -262,7 +262,7 @@ int rfc3676_handler (BODY * a, STATE * s)
   /* respect DelSp of RfC3676 only with f=f parts */
   if ((t = (char *) mutt_get_parameter ("delsp", a->parameter)))
   {
-    delsp = mutt_strlen (t) == 3 && ascii_strncasecmp (t, "yes", 3) == 0;
+    delsp = mutt_strlen (t) == 3 && (ascii_strncasecmp (t, "yes", 3) == 0);
     t = NULL;
     fst.delsp = 1;
   }
@@ -288,7 +288,7 @@ int rfc3676_handler (BODY * a, STATE * s)
       buf_off++;
 
     /* test for signature separator */
-    sigsep = ascii_strcmp (buf + buf_off, "-- ") == 0;
+    sigsep = (ascii_strcmp (buf + buf_off, "-- ") == 0);
 
     /* a fixed line either has no trailing space or is the
      * signature separator */
@@ -359,7 +359,7 @@ void rfc3676_space_stuff (HEADER* hdr)
 
   while (fgets (buf, sizeof (buf), in))
   {
-    if (ascii_strncmp ("From ", buf, 5) == 0 || buf[0] == ' ') {
+    if ((ascii_strncmp ("From ", buf, 5) == 0) || buf[0] == ' ') {
       fputc (' ', out);
 #ifdef DEBUG
       lc++;

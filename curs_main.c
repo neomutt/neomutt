@@ -541,7 +541,7 @@ short mutt_ts_capability(void)
    * necessarily asserting it in terminfo. */
   for (termp = known; termp; termp++)
   {
-    if (term && *termp && mutt_strncasecmp (term, *termp, strlen(*termp)))
+    if (term && *termp && (mutt_strncasecmp (term, *termp, strlen(*termp)) != 0))
       return 1;
   }
 
@@ -1477,7 +1477,7 @@ int mutt_index_menu (void)
 	{
 	  char buf[LONG_STRING];
 
-	  if (!Context->pattern || strncmp (Context->pattern, "!~R!~D~s", 8) != 0)
+	  if (!Context->pattern || (strncmp (Context->pattern, "!~R!~D~s", 8) != 0))
 	  {
 	    snprintf (buf, sizeof (buf), "!~R!~D~s%s",
 		      Context->pattern ? Context->pattern : ".*");
@@ -1486,7 +1486,7 @@ int mutt_index_menu (void)
 	  else
 	  {
 	    strfcpy (buf, Context->pattern + 8, sizeof(buf));
-	    if (!*buf || strncmp (buf, ".*", 2) == 0)
+	    if (!*buf || (strncmp (buf, ".*", 2) == 0))
 	      snprintf (buf, sizeof(buf), "~A");
 	    unset_option (OPTHIDEREAD);
 	  }
@@ -3043,7 +3043,7 @@ int mutt_index_menu (void)
 
 	CHECK_ATTACH;
 	if (op != OP_FOLLOWUP || !CURHDR->env->followup_to ||
-	    mutt_strcasecmp (CURHDR->env->followup_to, "poster") ||
+	    (mutt_strcasecmp (CURHDR->env->followup_to, "poster") != 0) ||
 	    query_quadoption (OPT_FOLLOWUPTOPOSTER,
 	    _("Reply by mail as poster prefers?")) != MUTT_YES)
 	{

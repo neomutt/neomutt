@@ -174,11 +174,11 @@ static int mh_read_sequences (struct mh_sequences *mhs, const char *path)
     if (!(t = strtok (buff, " \t:")))
       continue;
 
-    if (!mutt_strcmp (t, MhUnseen))
+    if (mutt_strcmp (t, MhUnseen) == 0)
       f = MH_SEQ_UNSEEN;
-    else if (!mutt_strcmp (t, MhFlagged))
+    else if (mutt_strcmp (t, MhFlagged) == 0)
       f = MH_SEQ_FLAGGED;
-    else if (!mutt_strcmp (t, MhReplied))
+    else if (mutt_strcmp (t, MhReplied) == 0)
       f = MH_SEQ_REPLIED;
     else			/* unknown sequence */
       continue;
@@ -473,11 +473,11 @@ static void mh_update_sequences (CONTEXT * ctx)
   {
     while ((buff = mutt_read_line (buff, &s, ofp, &l, 0)))
     {
-      if (!mutt_strncmp (buff, seq_unseen, mutt_strlen (seq_unseen)))
+      if (mutt_strncmp (buff, seq_unseen, mutt_strlen (seq_unseen)) == 0)
 	continue;
-      if (!mutt_strncmp (buff, seq_flagged, mutt_strlen (seq_flagged)))
+      if (mutt_strncmp (buff, seq_flagged, mutt_strlen (seq_flagged)) == 0)
 	continue;
-      if (!mutt_strncmp (buff, seq_replied, mutt_strlen (seq_replied)))
+      if (mutt_strncmp (buff, seq_replied, mutt_strlen (seq_replied)) == 0)
 	continue;
 
       fprintf (nfp, "%s\n", buff);
@@ -572,19 +572,19 @@ static void mh_sequences_add_one (CONTEXT * ctx, int n, short unseen,
   {
     while ((buff = mutt_read_line (buff, &sz, ofp, &line, 0)))
     {
-      if (unseen && !strncmp (buff, seq_unseen, mutt_strlen (seq_unseen)))
+      if (unseen && (strncmp (buff, seq_unseen, mutt_strlen (seq_unseen)) == 0))
       {
 	fprintf (nfp, "%s %d\n", buff, n);
 	unseen_done = 1;
       }
       else if (flagged
-	       && !strncmp (buff, seq_flagged, mutt_strlen (seq_flagged)))
+	       && (strncmp (buff, seq_flagged, mutt_strlen (seq_flagged)) == 0))
       {
 	fprintf (nfp, "%s %d\n", buff, n);
 	flagged_done = 1;
       }
       else if (replied
-	       && !strncmp (buff, seq_replied, mutt_strlen (seq_replied)))
+	       && (strncmp (buff, seq_replied, mutt_strlen (seq_replied)) == 0))
       {
 	fprintf (nfp, "%s %d\n", buff, n);
 	replied_done = 1;
@@ -670,7 +670,7 @@ void maildir_parse_flags (HEADER * h, const char *path)
   h->read = 0;
   h->replied = 0;
 
-  if ((p = strrchr (path, ':')) != NULL && mutt_strncmp (p + 1, "2,", 2) == 0)
+  if ((p = strrchr (path, ':')) != NULL && (mutt_strncmp (p + 1, "2,", 2) == 0))
   {
     p += 3;
 
@@ -2103,7 +2103,7 @@ static int maildir_check_mailbox (CONTEXT * ctx, int *index_hint)
       /* check to see if the message has moved to a different
        * subdirectory.  If so, update the associated filename.
        */
-      if (mutt_strcmp (ctx->hdrs[i]->path, p->h->path))
+      if (mutt_strcmp (ctx->hdrs[i]->path, p->h->path) != 0)
 	mutt_str_replace (&ctx->hdrs[i]->path, p->h->path);
 
       /* if the user hasn't modified the flags on this message, update
@@ -2123,8 +2123,8 @@ static int maildir_check_mailbox (CONTEXT * ctx, int *index_hint)
      * Check to see if we have enough information to know if the
      * message has disappeared out from underneath us.
      */
-    else if (((changed & 1) && (!strncmp (ctx->hdrs[i]->path, "new/", 4))) ||
-	     ((changed & 2) && (!strncmp (ctx->hdrs[i]->path, "cur/", 4))))
+    else if (((changed & 1) && (strncmp (ctx->hdrs[i]->path, "new/", 4) == 0)) ||
+	     ((changed & 2) && (strncmp (ctx->hdrs[i]->path, "cur/", 4) == 0)))
     {
       /* This message disappeared, so we need to simulate a "reopen"
        * event.  We know it disappeared because we just scanned the
@@ -2416,7 +2416,7 @@ static FILE *_maildir_open_find_message (const char *folder, const char *unique,
   {
     maildir_canon_filename (tunique, de->d_name, sizeof (tunique));
 
-    if (!mutt_strcmp (tunique, unique))
+    if (mutt_strcmp (tunique, unique) == 0)
     {
       snprintf (fname, sizeof (fname), "%s/%s/%s", folder, subfolder,
 		de->d_name);

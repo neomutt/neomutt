@@ -60,8 +60,8 @@
 
 #define PKA_NOTATION_NAME "pka-address@gnupg.org"
 #define is_pka_notation(notation) ((notation)->name && \
-				    ! strcmp ((notation)->name, \
-					     PKA_NOTATION_NAME))
+				    (strcmp ((notation)->name, \
+					     PKA_NOTATION_NAME) == 0))
 
 /* Values used for comparing addresses. */
 #define CRYPT_KV_VALID    1
@@ -369,11 +369,11 @@ static int crypt_id_matches_addr (ADDRESS *addr, ADDRESS *u_addr,
     rv |= CRYPT_KV_STRONGID;
 
   if (addr->mailbox && u_addr->mailbox
-      && mutt_strcasecmp (addr->mailbox, u_addr->mailbox) == 0)
+      && (mutt_strcasecmp (addr->mailbox, u_addr->mailbox) == 0))
     rv |= CRYPT_KV_ADDR;
 
   if (addr->personal && u_addr->personal
-      && mutt_strcasecmp (addr->personal, u_addr->personal) == 0)
+      && (mutt_strcasecmp (addr->personal, u_addr->personal) == 0))
     rv |= CRYPT_KV_STRING;
 
   return rv;
@@ -1225,7 +1225,7 @@ static int show_sig_summary (unsigned long sum,
           state_puts (": ", s);
           if (t0)
               state_puts (t0, s);
-          if (t1 && !(t0 && !strcmp (t0, t1)))
+          if (t1 && !(t0 && (strcmp (t0, t1) == 0)))
             {
               if (t0)
                 state_puts (",", s);
@@ -2195,7 +2195,7 @@ static int pgp_check_traditional_one_body (FILE *fp, BODY *b, int tagged_only)
 
   while (fgets (buf, sizeof (buf), tfp))
   {
-    if (!mutt_strncmp ("-----BEGIN PGP ", buf, 15))
+    if (mutt_strncmp ("-----BEGIN PGP ", buf, 15) == 0)
     {
       if (MESSAGE(buf + 15))
       {
@@ -2384,7 +2384,7 @@ int pgp_gpgme_application_handler (BODY *m, STATE *s)
       bytes -= (offset - last_pos); /* don't rely on mutt_strlen(buf) */
       last_pos = offset;
 
-      if (!mutt_strncmp ("-----BEGIN PGP ", buf, 15))
+      if (mutt_strncmp ("-----BEGIN PGP ", buf, 15) == 0)
         {
           clearsign = 0;
 
@@ -2984,7 +2984,7 @@ static int _crypt_compare_address (const void *a, const void *b)
   if ((r = mutt_strcasecmp ((*s)->uid, (*t)->uid)))
     return r > 0;
   else
-    return mutt_strcasecmp (crypt_fpr_or_lkeyid (*s), crypt_fpr_or_lkeyid (*t)) > 0;
+    return (mutt_strcasecmp (crypt_fpr_or_lkeyid (*s), crypt_fpr_or_lkeyid (*t)) > 0);
 }
 
 static int crypt_compare_address (const void *a, const void *b)
@@ -3004,7 +3004,7 @@ static int _crypt_compare_keyid (const void *a, const void *b)
   if ((r = mutt_strcasecmp (crypt_fpr_or_lkeyid (*s), crypt_fpr_or_lkeyid (*t))))
     return r > 0;
   else
-    return mutt_strcasecmp ((*s)->uid, (*t)->uid) > 0;
+    return (mutt_strcasecmp ((*s)->uid, (*t)->uid) > 0);
 }
 
 static int crypt_compare_keyid (const void *a, const void *b)
@@ -3030,7 +3030,7 @@ static int _crypt_compare_date (const void *a, const void *b)
   if (ts < tt)
     return 0;
 
-  return mutt_strcasecmp ((*s)->uid, (*t)->uid) > 0;
+  return (mutt_strcasecmp ((*s)->uid, (*t)->uid) > 0);
 }
 
 static int crypt_compare_date (const void *a, const void *b)
@@ -3075,7 +3075,7 @@ static int _crypt_compare_trust (const void *a, const void *b)
 
   if ((r = mutt_strcasecmp ((*s)->uid, (*t)->uid)))
     return r > 0;
-  return (mutt_strcasecmp (crypt_fpr_or_lkeyid ((*s)), crypt_fpr_or_lkeyid ((*t)))) > 0;
+  return (mutt_strcasecmp (crypt_fpr_or_lkeyid ((*s)), crypt_fpr_or_lkeyid ((*t))) > 0);
 }
 
 static int crypt_compare_trust (const void *a, const void *b)
@@ -3093,7 +3093,7 @@ print_dn_part (FILE *fp, struct dn_array_s *dn, const char *key)
 
   for (; dn->key; dn++)
     {
-      if (!strcmp (dn->key, key))
+      if (strcmp (dn->key, key) == 0)
         {
           if (any)
             fputs (" + ", fp);
@@ -3124,7 +3124,7 @@ print_dn_parts (FILE *fp, struct dn_array_s *dn)
     {
       for (i=0; stdpart[i]; i++)
         {
-          if (!strcmp (dn->key, stdpart[i]))
+          if (strcmp (dn->key, stdpart[i]) == 0)
             break;
         }
       if (!stdpart[i])
@@ -3654,7 +3654,7 @@ verify_key (crypt_key_t *key)
 
   k = key->kobj;
   gpgme_key_ref (k);
-  while ((s = k->chain_id) && k->subkeys && strcmp (s, k->subkeys->fpr) )
+  while ((s = k->chain_id) && k->subkeys && (strcmp (s, k->subkeys->fpr) != 0) )
     {
       putc ('\n', fp);
       err = gpgme_op_keylist_start (listctx, s, 0);
@@ -4312,9 +4312,9 @@ static crypt_key_t *crypt_getkeybystr (char *p, short abilities,
                   "key %s, \"%s\": ",  p, crypt_long_keyid (k), k->uid);
 
       if (!*p
-          || (pfcopy && mutt_strcasecmp (pfcopy, crypt_fpr (k)) == 0)
-          || (pl && mutt_strcasecmp (pl, crypt_long_keyid (k)) == 0)
-          || (ps && mutt_strcasecmp (ps, crypt_short_keyid (k)) == 0)
+          || (pfcopy && (mutt_strcasecmp (pfcopy, crypt_fpr (k)) == 0))
+          || (pl && (mutt_strcasecmp (pl, crypt_long_keyid (k)) == 0))
+          || (ps && (mutt_strcasecmp (ps, crypt_short_keyid (k)) == 0))
           || mutt_stristr (k->uid, p))
         {
           crypt_key_t *tmp = NULL;
@@ -4370,7 +4370,7 @@ static crypt_key_t *crypt_ask_for_key (char *tag,
     {
 
       for (l = id_defaults; l; l = l->next)
-        if (!mutt_strcasecmp (whatfor, l->what))
+        if (mutt_strcasecmp (whatfor, l->what) == 0)
           {
             strfcpy (resp, NONULL (l->dflt), sizeof (resp));
             break;
@@ -4874,7 +4874,7 @@ static int verify_sender (HEADER *h, gpgme_protocol_t protocol)
 	  const char* at_sign = strchr(uid->email + 1, '@');
 	  if (at_sign == NULL)
 	  {
-	    if (! strncmp (uid->email + 1, sender->mailbox, sender_length))
+	    if (strncmp (uid->email + 1, sender->mailbox, sender_length) == 0)
 	      ret = 0;
 	  }
 	  else
@@ -4891,12 +4891,12 @@ static int verify_sender (HEADER *h, gpgme_protocol_t protocol)
 	    int domainname_length = sender_length - mailbox_length;
 	    int mailbox_match, domainname_match;
 
-	    mailbox_match = (! strncmp (tmp_email, tmp_sender,
-		mailbox_length));
+	    mailbox_match = (strncmp (tmp_email, tmp_sender,
+		mailbox_length) == 0);
 	    tmp_email += mailbox_length;
 	    tmp_sender += mailbox_length;
-	    domainname_match = (! strncasecmp (tmp_email, tmp_sender,
-		domainname_length));
+	    domainname_match = (strncasecmp (tmp_email, tmp_sender,
+		domainname_length) == 0);
 	    if (mailbox_match && domainname_match)
 	      ret = 0;
 	  }

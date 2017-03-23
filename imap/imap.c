@@ -76,7 +76,7 @@ int imap_access (const char* path, int flags)
     strfcpy (mailbox, "INBOX", sizeof (mailbox));
 
   /* we may already be in the folder we're checking */
-  if (!ascii_strcmp(idata->mailbox, mx.mbox))
+  if (ascii_strcmp(idata->mailbox, mx.mbox) == 0)
   {
     FREE (&mx.mbox);
     return 0;
@@ -417,7 +417,7 @@ int imap_open_connection (IMAP_DATA* idata)
 
   if (ascii_strncasecmp ("* OK", idata->buf, 4) == 0)
   {
-    if (ascii_strncasecmp ("* OK [CAPABILITY", idata->buf, 16)
+    if ((ascii_strncasecmp ("* OK [CAPABILITY", idata->buf, 16) != 0)
         && imap_check_capabilities (idata))
       goto bail;
 #ifdef USE_SSL
@@ -684,7 +684,7 @@ static int imap_open_mailbox (CONTEXT* ctx)
     else
     {
       pc = imap_next_word (pc);
-      if (!ascii_strncasecmp ("EXISTS", pc, 6))
+      if (ascii_strncasecmp ("EXISTS", pc, 6) == 0)
       {
 	count = idata->newMailCount;
 	idata->newMailCount = 0;
@@ -707,7 +707,7 @@ static int imap_open_mailbox (CONTEXT* ctx)
     goto fail;
 
   /* check for READ-ONLY notification */
-  if (!ascii_strncasecmp(imap_get_qualifier(idata->buf), "[READ-ONLY]", 11) &&
+  if ((ascii_strncasecmp(imap_get_qualifier(idata->buf), "[READ-ONLY]", 11) == 0) &&
       !mutt_bit_isset(idata->capabilities, ACL))
   {
     mutt_debug (2, "Mailbox is read-only.\n");
@@ -859,10 +859,10 @@ int imap_has_flag (LIST* flag_list, const char* flag)
   flag_list = flag_list->next;
   while (flag_list)
   {
-    if (!ascii_strncasecmp (flag_list->data, flag, strlen (flag_list->data)))
+    if (ascii_strncasecmp (flag_list->data, flag, strlen (flag_list->data)) == 0)
       return 1;
 
-    if (!ascii_strncmp (flag_list->data, "\\*", strlen (flag_list->data)))
+    if (ascii_strncmp (flag_list->data, "\\*", strlen (flag_list->data)) == 0)
       return 1;
 
     flag_list = flag_list->next;
@@ -1541,7 +1541,7 @@ int imap_buffy_check (int force, int check_stats)
      * IDLEd elsewhere.
      * idata->mailbox may be NULL for connections other than the current
      * mailbox's, and shouldn't expand to INBOX in that case. #3216. */
-    if (idata->mailbox && !imap_mxcmp (name, idata->mailbox))
+    if (idata->mailbox && (imap_mxcmp (name, idata->mailbox) == 0))
     {
       mailbox->new = 0;
       continue;
@@ -1613,7 +1613,7 @@ int imap_status (char* path, int queue)
   if (imap_get_mailbox (path, &idata, buf, sizeof (buf)) < 0)
     return -1;
 
-  if (!imap_mxcmp (buf, idata->mailbox))
+  if (imap_mxcmp (buf, idata->mailbox) == 0)
     /* We are in the folder we're polling - just return the mailbox count */
     return idata->ctx->msgcount;
   else if (mutt_bit_isset(idata->capabilities,IMAP4REV1) ||
@@ -1660,7 +1660,7 @@ IMAP_STATUS* imap_mboxcache_get (IMAP_DATA* idata, const char* mbox, int create)
   {
     status = (IMAP_STATUS*)cur->data;
 
-    if (!imap_mxcmp (mbox, status->name))
+    if (imap_mxcmp (mbox, status->name) == 0)
       return status;
   }
   status = NULL;
@@ -1949,7 +1949,7 @@ imap_complete_hosts (char *dest, size_t len)
   matchlen = mutt_strlen (dest);
   for (mailbox = Incoming; mailbox; mailbox = mailbox->next)
   {
-    if (!mutt_strncmp (dest, mailbox->path, matchlen))
+    if (mutt_strncmp (dest, mailbox->path, matchlen) == 0)
     {
       if (rc)
       {
@@ -1974,7 +1974,7 @@ imap_complete_hosts (char *dest, size_t len)
     url.user = NULL;
     url.path = NULL;
     url_ciss_tostring (&url, urlstr, sizeof (urlstr), 0);
-    if (!mutt_strncmp (dest, urlstr, matchlen))
+    if (mutt_strncmp (dest, urlstr, matchlen) == 0)
     {
       if (rc)
       {
@@ -2151,7 +2151,7 @@ int imap_fast_trash (CONTEXT* ctx, char* dest)
         break;
       }
       /* bail out if command failed for reasons other than nonexistent target */
-      if (ascii_strncasecmp (imap_get_qualifier (idata->buf), "[TRYCREATE]", 11))
+      if (ascii_strncasecmp (imap_get_qualifier (idata->buf), "[TRYCREATE]", 11) != 0)
         break;
       mutt_debug (3, "imap_fast_trash: server suggests TRYCREATE\n");
       snprintf (prompt, sizeof (prompt), _("Create %s?"), mbox);

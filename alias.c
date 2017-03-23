@@ -33,7 +33,7 @@ ADDRESS *mutt_lookup_alias (const char *s)
   ALIAS *t = Aliases;
 
   for (; t; t = t->next)
-    if (!mutt_strcasecmp (s, t->name))
+    if (mutt_strcasecmp (s, t->name) == 0)
       return (t->addr);
   return (NULL);   /* no such alias */
 }
@@ -653,7 +653,7 @@ int mutt_addr_is_user (ADDRESS *addr)
     return 1;
   }
 
-  if (From && !ascii_strcasecmp (From->mailbox, addr->mailbox))
+  if (From && (ascii_strcasecmp (From->mailbox, addr->mailbox) == 0))
   {
     mutt_debug (5, "mutt_addr_is_user: yes, %s = %s\n",
                 addr->mailbox, From->mailbox);

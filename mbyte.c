@@ -65,8 +65,8 @@ void mutt_set_charset (char *charset)
   if (mutt_is_utf8 (buffer))
     Charset_is_utf8 = 1;
 #ifndef HAVE_WC_FUNCS
-  else if (!ascii_strcasecmp(buffer, "euc-jp") || !ascii_strcasecmp(buffer, "shift_jis")
-  	|| !ascii_strcasecmp(buffer, "cp932") || !ascii_strcasecmp(buffer, "eucJP-ms"))
+  else if ((ascii_strcasecmp(buffer, "euc-jp") == 0) || (ascii_strcasecmp(buffer, "shift_jis") == 0)
+  	|| (ascii_strcasecmp(buffer, "cp932") == 0) || (ascii_strcasecmp(buffer, "eucJP-ms") == 0))
   {
     charset_is_ja = 1;
 

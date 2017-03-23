@@ -1681,8 +1681,8 @@ void mutt_check_simple (char *s, size_t len, const char *simple)
   if (do_simple) /* yup, so spoof a real request */
   {
     /* convert old tokens into the new format */
-    if (ascii_strcasecmp ("all", s) == 0 ||
-	!mutt_strcmp ("^", s) || !mutt_strcmp (".", s)) /* ~A is more efficient */
+    if ((ascii_strcasecmp ("all", s) == 0) ||
+	(mutt_strcmp ("^", s) == 0) || (mutt_strcmp (".", s) == 0)) /* ~A is more efficient */
       strfcpy (s, "~A", len);
     else if (ascii_strcasecmp ("del", s) == 0)
       strfcpy (s, "~D", len);
@@ -1927,7 +1927,7 @@ int mutt_search_command (int cur, int op)
     strfcpy (temp, buf, sizeof (temp));
     mutt_check_simple (temp, sizeof (temp), NONULL (SimpleSearch));
 
-    if (!SearchPattern || mutt_strcmp (temp, LastSearchExpn))
+    if (!SearchPattern || (mutt_strcmp (temp, LastSearchExpn) != 0))
     {
       BUFFER err;
       mutt_buffer_init (&err);

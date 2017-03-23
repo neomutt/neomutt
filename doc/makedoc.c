@@ -201,16 +201,16 @@ static void makedoc (FILE *in, FILE *out)
 	       Progname, line, token);
     }
 
-    if (!strcmp (token, "/*++*/"))
+    if (strcmp (token, "/*++*/") == 0)
       active = 1;
-    else if (!strcmp (token, "/*--*/"))
+    else if (strcmp (token, "/*--*/") == 0)
     {
       docstat = flush_doc (docstat, out);
       active = 0;
     }
-    else if (active && (!strcmp (token, "/**") || !strcmp (token, "**")))
+    else if (active && ((strcmp (token, "/**") == 0) || (strcmp (token, "**") == 0)))
       docstat = handle_docline (p, out, docstat);
-    else if (active && !strcmp (token, "{"))
+    else if (active && (strcmp (token, "{") == 0))
     {
       docstat = flush_doc (docstat, out);
       handle_confline (p, out);
@@ -382,7 +382,7 @@ static int buff2type (const char *s)
   int type;
 
   for (type = DT_NONE; types[type].machine; type++)
-    if (!strcmp (types[type].machine, s))
+    if (strcmp (types[type].machine, s) == 0)
 	return type;
 
   return DT_NONE;
@@ -417,7 +417,7 @@ static void handle_confline (char *s, FILE *out)
   /* possibly a "|" or comma */
   if (!(s = get_token (buff, sizeof (buff), s))) return;
 
-  if (!strcmp (buff, "|"))
+  if (strcmp (buff, "|") == 0)
   {
     if (Debug) fprintf (stderr, "%s: Expecting <subtype> <comma>.\n", Progname);
     /* ignore subtype and comma */
@@ -430,13 +430,13 @@ static void handle_confline (char *s, FILE *out)
   while (1)
   {
     if (!(s = get_token (buff, sizeof (buff), s))) return;
-    if (!strcmp (buff, ","))
+    if (strcmp (buff, ",") == 0)
       break;
   }
 
   /* option name or UL &address */
   if (!(s = get_token (buff, sizeof (buff), s))) return;
-  if (!strcmp (buff, "UL"))
+  if (strcmp (buff, "UL") == 0)
     if (!(s = get_token (buff, sizeof (buff), s))) return;
 
   /* comma */
@@ -446,7 +446,7 @@ static void handle_confline (char *s, FILE *out)
 
   /* <default value> or UL <default value> */
   if (!(s = get_token (buff, sizeof (buff), s))) return;
-  if (!strcmp (buff, "UL"))
+  if (strcmp (buff, "UL") == 0)
   {
     if (Debug) fprintf (stderr, "%s: Skipping UL.\n", Progname);
     if (!(s = get_token (buff, sizeof (buff), s))) return;
@@ -456,7 +456,7 @@ static void handle_confline (char *s, FILE *out)
 
   do
   {
-    if (!strcmp (buff, "}"))
+    if (strcmp (buff, "}") == 0)
       break;
 
     strncpy (tmp + strlen (tmp), buff, sizeof (tmp) - strlen (tmp));
@@ -476,10 +476,10 @@ static void pretty_default (char *t, size_t l, const char *s, int type)
   {
     case DT_QUAD:
     {
-      if (!strcasecmp (s, "MUTT_YES")) strncpy (t, "yes", l);
-      else if (!strcasecmp (s, "MUTT_NO")) strncpy (t, "no", l);
-      else if (!strcasecmp (s, "MUTT_ASKYES")) strncpy (t, "ask-yes", l);
-      else if (!strcasecmp (s, "MUTT_ASKNO")) strncpy (t, "ask-no", l);
+      if (strcasecmp (s, "MUTT_YES") == 0) strncpy (t, "yes", l);
+      else if (strcasecmp (s, "MUTT_NO") == 0) strncpy (t, "no", l);
+      else if (strcasecmp (s, "MUTT_ASKYES") == 0) strncpy (t, "ask-yes", l);
+      else if (strcasecmp (s, "MUTT_ASKNO") == 0) strncpy (t, "ask-no", l);
       break;
     }
     case DT_BOOL:
@@ -493,7 +493,7 @@ static void pretty_default (char *t, size_t l, const char *s, int type)
     case DT_SORT:
     {
       /* heuristic! */
-      if (strncmp (s, "SORT_", 5))
+      if (strncmp (s, "SORT_", 5) != 0)
         fprintf (stderr,
                  "WARNING: expected prefix of SORT_ for type DT_SORT instead of %s\n", s);
       strncpy (t, s + 5, l);
@@ -503,7 +503,7 @@ static void pretty_default (char *t, size_t l, const char *s, int type)
     case DT_MAGIC:
     {
       /* heuristic! */
-      if (strncmp (s, "MUTT_", 5))
+      if (strncmp (s, "MUTT_", 5) != 0)
         fprintf (stderr,
                  "WARNING: expected prefix of MUTT_ for type DT_MAGIC instead of %s\n", s);
       strncpy (t, s + 5, l);
@@ -516,7 +516,7 @@ static void pretty_default (char *t, size_t l, const char *s, int type)
     case DT_PATH:
     case DT_MBCHARTBL:
     {
-      if (!strcmp (s, "0"))
+      if (strcmp (s, "0") == 0)
 	break;
       /* fallthrough */
     }
@@ -1041,12 +1041,12 @@ static int print_it (int special, char *str, FILE *out, int docstat)
 		fputs ("\\\\", out);
               else if (*str == '-')
                 fputs ("\\-", out);
-	      else if (!strncmp (str, "``", 2))
+	      else if (strncmp (str, "``", 2) == 0)
 	      {
 		fputs ("\\(lq", out);
 		str++;
 	      }
-	      else if (!strncmp (str, "''", 2))
+	      else if (strncmp (str, "''", 2) == 0)
 	      {
 		fputs ("\\(rq", out);
 		str++;
@@ -1221,12 +1221,12 @@ static int print_it (int special, char *str, FILE *out, int docstat)
 	    {
 	      for (; *str; str++)
 	      {
-	        if (!strncmp (str, "``", 2))
+	        if (strncmp (str, "``", 2) == 0)
 	        {
 		  fputs ("<quote>", out);
 		  str++;
 	        }
-	        else if (!strncmp (str, "''", 2))
+	        else if (strncmp (str, "''", 2) == 0)
 	        {
 		  fputs ("</quote>", out);
 		  str++;
@@ -1296,60 +1296,60 @@ static int handle_docline (char *l, FILE *out, int docstat)
   if (Debug)
     fprintf (stderr, "%s: handle_docline `%s'\n", Progname, l);
 
-  if (!strncmp (l, ".pp", 3))
+  if (strncmp (l, ".pp", 3) == 0)
     return print_it (SP_NEWPAR, NULL, out, docstat);
-  else if (!strncmp (l, ".ts", 3))
+  else if (strncmp (l, ".ts", 3) == 0)
     return print_it (SP_START_TAB, NULL, out, docstat);
-  else if (!strncmp (l, ".te", 3))
+  else if (strncmp (l, ".te", 3) == 0)
     return print_it (SP_END_TAB, NULL, out, docstat);
-  else if (!strncmp (l, ".dl", 3))
+  else if (strncmp (l, ".dl", 3) == 0)
     return print_it (SP_START_DL, NULL, out, docstat);
-  else if (!strncmp (l, ".de", 3))
+  else if (strncmp (l, ".de", 3) == 0)
     return print_it (SP_END_DL, NULL, out, docstat);
-  else if (!strncmp (l, ".il", 3))
+  else if (strncmp (l, ".il", 3) == 0)
     return print_it (SP_START_IL, NULL, out, docstat);
-  else if (!strncmp (l, ".ie", 3))
+  else if (strncmp (l, ".ie", 3) == 0)
     return print_it (SP_END_IL, NULL, out, docstat);
-  else if (!strncmp (l, ". ", 2))
+  else if (strncmp (l, ". ", 2) == 0)
     *l = ' ';
 
   for (s = l, d = buff; *s; s++)
   {
-    if (!strncmp (s, "\\(as", 4))
+    if (strncmp (s, "\\(as", 4) == 0)
     {
       *d++ = '*';
       s += 3;
     }
-    else if (!strncmp (s, "\\(rs", 4))
+    else if (strncmp (s, "\\(rs", 4) == 0)
     {
       *d++ = '\\';
       s += 3;
     }
-    else if (!strncmp (s, "\\fI", 3))
+    else if (strncmp (s, "\\fI", 3) == 0)
     {
       docstat = commit_buff (buff, &d, out, docstat);
       docstat = print_it (SP_START_EM, NULL, out, docstat);
       s += 2;
     }
-    else if (!strncmp (s, "\\fB", 3))
+    else if (strncmp (s, "\\fB", 3) == 0)
     {
       docstat = commit_buff (buff, &d, out, docstat);
       docstat = print_it (SP_START_BF, NULL, out, docstat);
       s += 2;
     }
-    else if (!strncmp (s, "\\fC", 3))
+    else if (strncmp (s, "\\fC", 3) == 0)
     {
       docstat = commit_buff (buff, &d, out, docstat);
       docstat = print_it (SP_START_TT, NULL, out, docstat);
       s += 2;
     }
-    else if (!strncmp (s, "\\fP", 3))
+    else if (strncmp (s, "\\fP", 3) == 0)
     {
       docstat = commit_buff (buff, &d, out, docstat);
       docstat = print_it (SP_END_FT, NULL, out, docstat);
       s += 2;
     }
-    else if (!strncmp (s, ".dt", 3))
+    else if (strncmp (s, ".dt", 3) == 0)
     {
       if (docstat & D_DD)
       {
@@ -1360,7 +1360,7 @@ static int handle_docline (char *l, FILE *out, int docstat)
       docstat = print_it (SP_DT, NULL, out, docstat);
       s += 3;
     }
-    else if (!strncmp (s, ".dd", 3))
+    else if (strncmp (s, ".dd", 3) == 0)
     {
       if ((docstat & D_IL) && (docstat & D_DD))
       {

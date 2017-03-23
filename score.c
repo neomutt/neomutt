@@ -160,7 +160,7 @@ int mutt_parse_unscore (BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err)
   while (MoreArgs (s))
   {
     mutt_extract_token (buf, s, 0);
-    if (!mutt_strcmp ("*", buf->data))
+    if (mutt_strcmp ("*", buf->data) == 0)
     {
       for (tmp = Score; tmp; )
       {
@@ -175,7 +175,7 @@ int mutt_parse_unscore (BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err)
     {
       for (tmp = Score; tmp; last = tmp, tmp = tmp->next)
       {
-	if (!mutt_strcmp (buf->data, tmp->str))
+	if (mutt_strcmp (buf->data, tmp->str) == 0)
 	{
 	  if (last)
 	    last->next = tmp->next;

@@ -150,7 +150,7 @@ static int fetch_uidl (char *line, void *data)
   memmove(line, endp, strlen(endp) + 1);
 
   for (i = 0; i < ctx->msgcount; i++)
-    if (!mutt_strcmp (line, ctx->hdrs[i]->data))
+    if (mutt_strcmp (line, ctx->hdrs[i]->data) == 0)
       break;
 
   if (i == ctx->msgcount)
@@ -192,7 +192,7 @@ static int msg_cache_check (const char *id, body_cache_t *bcache, void *data)
 
   for (i = 0; i < ctx->msgcount; i++)
     /* if the id we get is known for a header: done (i.e. keep in cache) */
-    if (ctx->hdrs[i]->data && mutt_strcmp (ctx->hdrs[i]->data, id) == 0)
+    if (ctx->hdrs[i]->data && (mutt_strcmp (ctx->hdrs[i]->data, id) == 0))
       return 0;
 
   /* message not found in context -> remove it from cache

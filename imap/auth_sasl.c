@@ -63,10 +63,10 @@ imap_auth_res_t imap_auth_sasl (IMAP_DATA* idata, const char* method)
 
     if (mutt_bit_isset (idata->capabilities, AUTH_ANON) &&
 	(!idata->conn->account.user[0] ||
-	 !ascii_strncmp (idata->conn->account.user, "anonymous", 9)))
+	 (ascii_strncmp (idata->conn->account.user, "anonymous", 9) == 0)))
       rc = sasl_client_start (saslconn, "AUTH=ANONYMOUS", NULL, &pc, &olen,
                               &mech);
-  } else if (!ascii_strcasecmp ("login", method) &&
+  } else if ((ascii_strcasecmp ("login", method) == 0) &&
 	!strstr (NONULL (idata->capstr), "AUTH=LOGIN"))
     /* do not use SASL login for regular IMAP login (#3556) */
     return IMAP_AUTH_UNAVAIL;

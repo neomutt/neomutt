@@ -81,7 +81,7 @@ static int fseek_last_message (FILE * f)
     if (bytes_read == -1)
       return -1;
     for (i = bytes_read; --i >= 0;)
-      if (!mutt_strncmp (buffer + i, "\n\nFrom ", mutt_strlen ("\n\nFrom ")))
+      if (mutt_strncmp (buffer + i, "\n\nFrom ", mutt_strlen ("\n\nFrom ")) == 0)
       {				/* found it - go to the beginning of the From */
 	fseeko (f, pos + i + 2, SEEK_SET);
 	return 0;
@@ -90,7 +90,7 @@ static int fseek_last_message (FILE * f)
   }
 
   /* here we are at the beginning of the file */
-  if (!mutt_strncmp ("From ", buffer, 5))
+  if (mutt_strncmp ("From ", buffer, 5) == 0)
   {
     fseek (f, 0, 0);
     return (0);
@@ -378,7 +378,7 @@ static void buffy_check (BUFFY *tmp, struct stat *contex_sb, int check_stats)
 	  tmp->magic == MUTT_NOTMUCH ||
 #endif
 	  tmp->magic == MUTT_POP)
-	    ? mutt_strcmp (tmp->path, Context->path) :
+	    ? (mutt_strcmp (tmp->path, Context->path) != 0) :
 	      (sb.st_dev != contex_sb->st_dev || sb.st_ino != contex_sb->st_ino)))
     {
       switch (tmp->magic)
@@ -445,7 +445,7 @@ static BUFFY* buffy_get (const char *path)
   {
     /* must be done late because e.g. IMAP delimiter may change */
     mutt_expand_path (cur->path, sizeof (cur->path));
-    if (!mutt_strcmp(cur->path, path))
+    if (mutt_strcmp(cur->path, path) == 0)
     {
       FREE (&epath);
       return cur;
@@ -526,7 +526,7 @@ int mutt_parse_mailboxes (BUFFER *path, BUFFER *s, unsigned long data, BUFFER *e
     mutt_extract_token (path, s, 0);
     strfcpy (buf, path->data, sizeof (buf));
 
-    if(data == MUTT_UNMAILBOXES && mutt_strcmp(buf,"*") == 0)
+    if(data == MUTT_UNMAILBOXES && (mutt_strcmp(buf,"*") == 0))
     {
       for (tmp = &Incoming; *tmp;)
       {

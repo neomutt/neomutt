@@ -117,7 +117,7 @@ ATTACHPTR **mutt_gen_attach_list (BODY *m,
     }
 
     if (m->type == TYPEMULTIPART && m->parts
-	&& (compose || (parent_type == -1 && ascii_strcasecmp ("alternative", m->subtype)))
+	&& (compose || (parent_type == -1 && (ascii_strcasecmp ("alternative", m->subtype) != 0)))
         && (!(WithCrypto & APPLICATION_PGP) || !mutt_is_multipart_encrypted(m))
 	)
     {
@@ -407,7 +407,7 @@ int mutt_is_message_type (int type, const char *subtype)
     return 0;
 
   subtype = NONULL(subtype);
-  return (ascii_strcasecmp (subtype, "rfc822") == 0 || ascii_strcasecmp (subtype, "news") == 0);
+  return ((ascii_strcasecmp (subtype, "rfc822") == 0) || (ascii_strcasecmp (subtype, "news") == 0));
 }
 
 static void prepend_curdir (char *dst, size_t dstlen)
@@ -720,8 +720,8 @@ static int can_print (BODY *top, int tag)
     {
       if (!rfc1524_mailcap_lookup (top, type, NULL, MUTT_PRINT))
       {
-	if (ascii_strcasecmp ("text/plain", top->subtype) &&
-	    ascii_strcasecmp ("application/postscript", top->subtype))
+	if ((ascii_strcasecmp ("text/plain", top->subtype) != 0) &&
+	    (ascii_strcasecmp ("application/postscript", top->subtype) != 0))
 	{
 	  if (!mutt_can_decode (top))
 	  {
@@ -751,8 +751,8 @@ static void print_attachment_list (FILE *fp, int tag, BODY *top, STATE *state)
       snprintf (type, sizeof (type), "%s/%s", TYPE (top), top->subtype);
       if (!option (OPTATTACHSPLIT) && !rfc1524_mailcap_lookup (top, type, NULL, MUTT_PRINT))
       {
-	if (!ascii_strcasecmp ("text/plain", top->subtype) ||
-	    !ascii_strcasecmp ("application/postscript", top->subtype))
+	if ((ascii_strcasecmp ("text/plain", top->subtype) == 0) ||
+	    (ascii_strcasecmp ("application/postscript", top->subtype) == 0))
 	  pipe_attachment (fp, top, state);
 	else if (mutt_can_decode (top))
 	{
@@ -910,7 +910,7 @@ static void attach_collapse (BODY *b, short collapse, short init, short just_one
   {
     i = init || b->collapsed;
     if (i && option (OPTDIGESTCOLLAPSE) && b->type == TYPEMULTIPART
-	&& !ascii_strcasecmp (b->subtype, "digest"))
+	&& (ascii_strcasecmp (b->subtype, "digest") == 0))
       attach_collapse (b->parts, 1, 1, 0);
     else if (b->type == TYPEMULTIPART || mutt_is_message_type (b->type, b->subtype))
       attach_collapse (b->parts, collapse, i, 0);
@@ -1251,7 +1251,7 @@ void mutt_view_attachments (HEADER *hdr)
 	CHECK_ATTACH;
 
 	if (!idx[menu->current]->content->hdr->env->followup_to ||
-	    mutt_strcasecmp (idx[menu->current]->content->hdr->env->followup_to, "poster") ||
+	    (mutt_strcasecmp (idx[menu->current]->content->hdr->env->followup_to, "poster") != 0) ||
 	    query_quadoption (OPT_FOLLOWUPTOPOSTER,_("Reply by mail as poster prefers?")) != MUTT_YES)
 	{
 	  mutt_attach_reply (fp, hdr, idx, idxlen,

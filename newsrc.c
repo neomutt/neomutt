@@ -775,8 +775,8 @@ void nntp_clear_cache (NNTP_SERVER *nserv)
       NNTP_DATA *nntp_data = NULL;
       NNTP_DATA nntp_tmp;
 
-      if (mutt_strcmp (group, ".") == 0 ||
-	  mutt_strcmp (group, "..") == 0)
+      if ((mutt_strcmp (group, ".") == 0) ||
+	  (mutt_strcmp (group, "..") == 0))
 	continue;
       *fp = '\0';
       safe_strncat (file, sizeof (file), group, strlen (group));
@@ -787,7 +787,7 @@ void nntp_clear_cache (NNTP_SERVER *nserv)
       if (S_ISREG (sb.st_mode))
       {
 	char *ext = group + strlen (group) - 7;
-	if (strlen (group) < 8 || mutt_strcmp (ext, ".hcache"))
+	if (strlen (group) < 8 || (mutt_strcmp (ext, ".hcache") != 0))
 	  continue;
 	*ext = '\0';
       }
@@ -1021,7 +1021,7 @@ NNTP_SERVER *nntp_select_server (char *server, int leave_lock)
 	char *group = entry->d_name;
 
 	p = group + strlen (group) - 7;
-	if (strlen (group) < 8 || strcmp (p, ".hcache"))
+	if (strlen (group) < 8 || (strcmp (p, ".hcache") != 0))
 	  continue;
 	*p = '\0';
 	nntp_data = hash_find (nserv->groups_hash, group);
@@ -1233,7 +1233,7 @@ void nntp_buffy (char *buf, size_t len)
       continue;
 
     if (Context && Context->magic == MUTT_NNTP &&
-	!mutt_strcmp (nntp_data->group, ((NNTP_DATA *)Context->data)->group))
+	(mutt_strcmp (nntp_data->group, ((NNTP_DATA *)Context->data)->group) == 0))
     {
       unsigned int i, unread = 0;
 

@@ -66,7 +66,7 @@ int mutt_num_postponed (int force)
     force = 1;
   }
 
-  if (mutt_strcmp (Postponed, OldPostponed))
+  if (mutt_strcmp (Postponed, OldPostponed) != 0)
   {
     FREE (&OldPostponed);
     OldPostponed = safe_strdup (Postponed);
@@ -348,10 +348,10 @@ int mutt_get_postponed (CONTEXT *ctx, HEADER *hdr, HEADER **cur, char *fcc, size
       code |= SENDPOSTPONEDFCC;
     }
     else if ((WithCrypto & APPLICATION_PGP)
-             && (mutt_strncmp ("Pgp:", tmp->data, 4) == 0 /* this is generated
+             && ((mutt_strncmp ("Pgp:", tmp->data, 4) == 0) /* this is generated
 						       * by old mutt versions
 						       */
-                 || mutt_strncmp ("X-Mutt-PGP:", tmp->data, 11) == 0))
+                 || (mutt_strncmp ("X-Mutt-PGP:", tmp->data, 11) == 0)))
     {
       hdr->security = mutt_parse_crypt_hdr (strchr (tmp->data, ':') + 1, 1,
 					    APPLICATION_PGP);
@@ -368,7 +368,7 @@ int mutt_get_postponed (CONTEXT *ctx, HEADER *hdr, HEADER **cur, char *fcc, size
       tmp = next;
     }
     else if ((WithCrypto & APPLICATION_SMIME)
-             && mutt_strncmp ("X-Mutt-SMIME:", tmp->data, 13) == 0)
+             && (mutt_strncmp ("X-Mutt-SMIME:", tmp->data, 13) == 0))
     {
       hdr->security = mutt_parse_crypt_hdr (strchr (tmp->data, ':') + 1, 1,
 					    APPLICATION_SMIME);
@@ -628,7 +628,7 @@ int mutt_prepare_template (FILE *fp, CONTEXT *ctx, HEADER *newhdr, HEADER *hdr,
   {
     newhdr->security |= SIGN;
     if ((WithCrypto & APPLICATION_PGP)
-        && ascii_strcasecmp (mutt_get_parameter ("protocol", newhdr->content->parameter), "application/pgp-signature") == 0)
+        && (ascii_strcasecmp (mutt_get_parameter ("protocol", newhdr->content->parameter), "application/pgp-signature") == 0))
       newhdr->security |= APPLICATION_PGP;
     else if ((WithCrypto & APPLICATION_SMIME))
       newhdr->security |= APPLICATION_SMIME;
@@ -680,7 +680,7 @@ int mutt_prepare_template (FILE *fp, CONTEXT *ctx, HEADER *newhdr, HEADER *hdr,
 
     if (b->type == TYPETEXT)
     {
-      if (!ascii_strcasecmp ("yes", mutt_get_parameter ("x-mutt-noconv", b->parameter)))
+      if (ascii_strcasecmp ("yes", mutt_get_parameter ("x-mutt-noconv", b->parameter)) == 0)
 	b->noconv = 1;
       else
       {

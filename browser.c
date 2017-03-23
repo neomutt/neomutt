@@ -626,7 +626,7 @@ static int examine_directory (MUTTMENU *menu, struct browser_state *state,
       if (!nntp_data)
 	continue;
       if (prefix && *prefix &&
-	  strncmp (prefix, nntp_data->group, strlen (prefix)))
+	  (strncmp (prefix, nntp_data->group, strlen (prefix)) != 0))
 	continue;
       if (!((regexec (Mask.rx, nntp_data->group, 0, NULL, 0) == 0) ^ Mask.not))
 	continue;
@@ -680,7 +680,7 @@ static int examine_directory (MUTTMENU *menu, struct browser_state *state,
     if (mutt_strcmp (de->d_name, ".") == 0)
       continue;    /* we don't need . */
 
-    if (prefix && *prefix && mutt_strncmp (prefix, de->d_name, mutt_strlen (prefix)) != 0)
+    if (prefix && *prefix && (mutt_strncmp (prefix, de->d_name, mutt_strlen (prefix)) != 0))
       continue;
     if (!((regexec (Mask.rx, de->d_name, 0, NULL, 0) == 0) ^ Mask.not))
       continue;
@@ -694,10 +694,10 @@ static int examine_directory (MUTTMENU *menu, struct browser_state *state,
       continue;
 
     tmp = Incoming;
-    while (tmp && mutt_strcmp (buffer, tmp->path))
+    while (tmp && (mutt_strcmp (buffer, tmp->path) != 0))
       tmp = tmp->next;
     if (tmp && Context &&
-        !mutt_strcmp (tmp->realpath, Context->realpath))
+        (mutt_strcmp (tmp->realpath, Context->realpath) == 0))
     {
       tmp->msg_count = Context->msgcount;
       tmp->msg_unread = Context->unread;
@@ -773,7 +773,7 @@ static int examine_mailboxes (MUTTMENU *menu, struct browser_state *state)
   do
   {
     if (Context &&
-        !mutt_strcmp (tmp->realpath, Context->realpath))
+        (mutt_strcmp (tmp->realpath, Context->realpath) == 0))
     {
       tmp->msg_count = Context->msgcount;
       tmp->msg_unread = Context->unread;

@@ -514,7 +514,7 @@ classify_quote (struct q_class_t **QuoteList, const char *qptr,
       /* case 2: try subclassing the current top level node */
 
       /* tmp != NULL means we already found a shorter prefix at case 1 */
-      if (tmp == NULL && mutt_strncmp (qptr, q_list->prefix, q_list->length) == 0)
+      if (tmp == NULL && (mutt_strncmp (qptr, q_list->prefix, q_list->length) == 0))
       {
 	/* ok, it's a subclass somewhere on this branch */
 
@@ -616,8 +616,8 @@ classify_quote (struct q_class_t **QuoteList, const char *qptr,
 	  else
 	  {
 	    /* longer than the current prefix: try subclassing it */
-	    if (tmp == NULL && mutt_strncmp (tail_qptr, (q_list->prefix) + offset,
-			  q_list->length - offset) == 0)
+	    if (tmp == NULL && (mutt_strncmp (tail_qptr, (q_list->prefix) + offset,
+			  q_list->length - offset) == 0))
 	    {
 	      /* still a subclass: go down one level */
 	      ptr = q_list;
@@ -773,7 +773,7 @@ resolve_types (char *buf, char *raw, struct line_t *lineInfo, int n, int last,
     lineInfo[n].type = MT_COLOR_NORMAL;
   else if (check_attachment_marker ((char *) raw) == 0)
     lineInfo[n].type = MT_COLOR_ATTACHMENT;
-  else if (mutt_strcmp ("-- \n", buf) == 0 || mutt_strcmp ("-- \r\n", buf) == 0)
+  else if ((mutt_strcmp ("-- \n", buf) == 0) || (mutt_strcmp ("-- \r\n", buf) == 0))
   {
     i = n + 1;
 
@@ -2329,7 +2329,7 @@ search_next:
 			    MUTT_CLEAR) != 0)
 	  break;
 
-	if (!strcmp (buffer, searchbuf))
+	if (strcmp (buffer, searchbuf) == 0)
 	{
 	  if (SearchCompiled)
 	  {
@@ -2834,7 +2834,7 @@ search_next:
 	else
 	  followup_to = extra->hdr->env->followup_to;
 
-	if (!followup_to || mutt_strcasecmp (followup_to, "poster") ||
+	if (!followup_to || (mutt_strcasecmp (followup_to, "poster") != 0) ||
 	    query_quadoption (OPT_FOLLOWUPTOPOSTER,_("Reply by mail as poster prefers?")) != MUTT_YES)
 	{
 	  if (extra->ctx && extra->ctx->magic == MUTT_NNTP &&

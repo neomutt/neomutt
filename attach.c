@@ -297,8 +297,8 @@ void mutt_check_lookup_list (BODY *b, char *type, int len)
   for (; t; t = t->next) {
     i = mutt_strlen (t->data) - 1;
     if ((i > 0 && t->data[i-1] == '/' && t->data[i] == '*' &&
-	 ascii_strncasecmp (type, t->data, i) == 0) ||
-	ascii_strcasecmp (type, t->data) == 0) {
+	 (ascii_strncasecmp (type, t->data, i) == 0)) ||
+	(ascii_strcasecmp (type, t->data) == 0)) {
 
     BODY tmp = {0};
     int n;
@@ -388,7 +388,7 @@ int mutt_view_attachment (FILE *fp, BODY *a, int flag, HEADER *hdr,
     if (rfc1524_expand_filename (entry->nametemplate, fname,
 				 tempfile, sizeof (tempfile)))
     {
-      if (fp == NULL && mutt_strcmp(tempfile, a->filename))
+      if (fp == NULL && (mutt_strcmp(tempfile, a->filename) != 0))
       {
 	/* send case: the file is already there */
 	if (safe_symlink (a->filename, tempfile) == -1)
@@ -988,8 +988,8 @@ int mutt_print_attachment (FILE *fp, BODY *a)
     return (1);
   }
 
-  if (!ascii_strcasecmp ("text/plain", type) ||
-      !ascii_strcasecmp ("application/postscript", type))
+  if ((ascii_strcasecmp ("text/plain", type) == 0) ||
+      (ascii_strcasecmp ("application/postscript", type) == 0))
   {
     return (mutt_pipe_attachment (fp, a, NONULL(PrintCmd), NULL));
   }

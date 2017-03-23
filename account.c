@@ -30,7 +30,7 @@ int mutt_account_match (const ACCOUNT* a1, const ACCOUNT* a2)
 
   if (a1->type != a2->type)
     return 0;
-  if (ascii_strcasecmp (a1->host, a2->host))
+  if (ascii_strcasecmp (a1->host, a2->host) != 0)
     return 0;
   if (a1->port != a2->port)
     return 0;
@@ -54,15 +54,15 @@ int mutt_account_match (const ACCOUNT* a1, const ACCOUNT* a2)
 #endif
 
   if (a1->flags & a2->flags & MUTT_ACCT_USER)
-    return (!strcmp (a1->user, a2->user));
+    return (strcmp (a1->user, a2->user) == 0);
 #ifdef USE_NNTP
   if (a1->type == MUTT_ACCT_TYPE_NNTP)
     return a1->flags & MUTT_ACCT_USER && a1->user[0] ? 0 : 1;
 #endif
   if (a1->flags & MUTT_ACCT_USER)
-    return (!strcmp (a1->user, user));
+    return (strcmp (a1->user, user) == 0);
   if (a2->flags & MUTT_ACCT_USER)
-    return (!strcmp (a2->user, user));
+    return (strcmp (a2->user, user) == 0);
 
   return 1;
 }

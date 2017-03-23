@@ -798,7 +798,7 @@ static void _smime_getkeys (char *mailbox)
 
     /* the key used last time. */
     if (*SmimeKeyToUse &&
-        !mutt_strcasecmp (k, SmimeKeyToUse + mutt_strlen (SmimeKeys)+1))
+        (mutt_strcasecmp (k, SmimeKeyToUse + mutt_strlen (SmimeKeys)+1) == 0))
     {
       smime_free_key (&key);
       return;
@@ -811,7 +811,7 @@ static void _smime_getkeys (char *mailbox)
     snprintf (SmimeCertToUse, sizeof (SmimeCertToUse), "%s/%s",
 	      NONULL(SmimeCertificates), k);
 
-    if (mutt_strcasecmp (k, SmimeDefaultKey))
+    if (mutt_strcasecmp (k, SmimeDefaultKey) != 0)
       smime_void_passphrase ();
 
     smime_free_key (&key);
@@ -820,8 +820,8 @@ static void _smime_getkeys (char *mailbox)
 
   if (*SmimeKeyToUse)
   {
-    if (!mutt_strcasecmp (SmimeDefaultKey,
-                          SmimeKeyToUse + mutt_strlen (SmimeKeys)+1))
+    if (mutt_strcasecmp (SmimeDefaultKey,
+                          SmimeKeyToUse + mutt_strlen (SmimeKeys)+1) == 0)
       return;
 
     smime_void_passphrase ();
@@ -1561,7 +1561,7 @@ BODY *smime_sign_message (BODY *a )
 
   default_key = smime_get_key_by_hash (SmimeDefaultKey, 1);
   if ((! default_key) ||
-      (! mutt_strcmp ("?", default_key->issuer)))
+      (mutt_strcmp ("?", default_key->issuer) == 0))
     intermediates = SmimeDefaultKey; /* so openssl won't complain in any case */
   else
     intermediates = default_key->issuer;
@@ -1770,7 +1770,7 @@ int smime_verify_one (BODY *sigbdy, STATE *s, const char *tempfile)
       rewind (smimeerr);
 
       line = mutt_read_line (line, &linelen, smimeerr, &lineno, 0);
-      if (linelen && !ascii_strcasecmp (line, "verification successful"))
+      if (linelen && (ascii_strcasecmp (line, "verification successful") == 0))
 	badsig = 0;
 
       FREE (&line);
@@ -1992,7 +1992,7 @@ static BODY *smime_handle_entity (BODY *m, STATE *s, FILE *outFile)
     rewind (smimeerr);
 
     line = mutt_read_line (line, &linelen, smimeerr, &lineno, 0);
-    if (linelen && !ascii_strcasecmp (line, "verification successful"))
+    if (linelen && (ascii_strcasecmp (line, "verification successful") == 0))
       m->goodsig = 1;
     FREE (&line);
   }

@@ -116,8 +116,8 @@ void mutt_edit_headers (const char *editor,
   if (!option (OPTNEWSSEND))
 #endif
   if (msg->env->in_reply_to &&
-      (!n->in_reply_to || mutt_strcmp (n->in_reply_to->data,
-				       msg->env->in_reply_to->data) != 0))
+      (!n->in_reply_to || (mutt_strcmp (n->in_reply_to->data,
+				       msg->env->in_reply_to->data) != 0)))
     mutt_free_list (&msg->env->references);
 
   /* restore old info. */
@@ -140,7 +140,7 @@ void mutt_edit_headers (const char *editor,
   {
     keep = 1;
 
-    if (fcc && ascii_strncasecmp ("fcc:", cur->data, 4) == 0)
+    if (fcc && (ascii_strncasecmp ("fcc:", cur->data, 4) == 0))
     {
       p = skip_email_wsp(cur->data + 4);
       if (*p)
@@ -189,7 +189,7 @@ void mutt_edit_headers (const char *editor,
       keep = 0;
     }
     else if ((WithCrypto & APPLICATION_PGP)
-             && ascii_strncasecmp ("pgp:", cur->data, 4) == 0)
+             && (ascii_strncasecmp ("pgp:", cur->data, 4) == 0))
     {
       msg->security = mutt_parse_crypt_hdr (cur->data + 4, 0, APPLICATION_PGP);
       if (msg->security)
