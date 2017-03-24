@@ -1510,7 +1510,10 @@ struct option_t MuttVars[] = {
   ** .dt %Y .dd ``X-Label:'' field, if present, and \fI(1)\fP not at part of a thread tree,
   **            \fI(2)\fP at the top of a thread, or \fI(3)\fP ``X-Label:'' is different from
   **            preceding message's ``X-Label:''.
-  ** .dt %Z .dd message status flags
+  ** .dt %Z .dd Combined message flags
+  ** .dt %zs .dd message status flags
+  ** .dt %zc .dd message crypto flags
+  ** .dt %zt .dd message tag flags
   ** .dt %{fmt} .dd the date and time of the message is converted to sender's
   **                time zone, and ``fmt'' is expanded by the library function
   **                \fCstrftime(3)\fP; a leading bang disables locales
