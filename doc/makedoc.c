@@ -98,128 +98,6 @@ enum output_formats_t OutputFormat = F_NONE;
 char *Progname;
 short Debug = 0;
 
-static char *get_token (char *, size_t, char *);
-static char *skip_ws (char *);
-static const char *type2human (int);
-static int buff2type (const char *);
-static int flush_doc (int, FILE *);
-static int handle_docline (char *, FILE *, int);
-static int print_it (int, char *, FILE *, int);
-static void print_confline (const char *, int, const char *, FILE *);
-static void handle_confline (char *, FILE *);
-static void makedoc (FILE *, FILE *);
-static void pretty_default (char *, size_t, const char *, int);
-static int sgml_fputc (int, FILE *);
-static int sgml_fputs (const char *, FILE *);
-static int sgml_id_fputs (const char *, FILE *);
-
-int main (int argc, char *argv[])
-{
-  int c;
-  FILE *f = NULL;
-
-  if ((Progname = strrchr (argv[0], '/')))
-    Progname++;
-  else
-    Progname = argv[0];
-
-  while ((c = getopt (argc, argv, "cmsd")) != EOF)
-  {
-    switch (c)
-    {
-      case 'c': OutputFormat = F_CONF; break;
-      case 'm': OutputFormat = F_MAN; break;
-      case 's': OutputFormat = F_SGML; break;
-      case 'd': Debug++; break;
-      default:
-      {
-	fprintf (stderr, "%s: bad command line parameter.\n", Progname);
-	exit (1);
-      }
-    }
-  }
-
-  if (optind != argc)
-  {
-    if ((f = fopen (argv[optind], "r")) == NULL)
-    {
-      fprintf (stderr, "%s: Can't open %s (%s).\n",
-	       Progname, argv[optind], strerror (errno));
-      exit (1);
-    }
-  }
-  else
-    f = stdin;
-
-  switch (OutputFormat)
-  {
-    case F_CONF:
-    case F_MAN:
-    case F_SGML: makedoc (f, stdout); break;
-    default:
-    {
-      fprintf (stderr, "%s: No output format specified.\n",
-	       Progname);
-      exit (1);
-    }
-  }
-
-  if (f != stdin)
-    fclose (f);
-
-  return 0;
-}
-
-
-static void makedoc (FILE *in, FILE *out)
-{
-  char buffer[BUFFSIZE];
-  char token[BUFFSIZE];
-  char *p = NULL;
-  int active = 0;
-  int line = 0;
-  int docstat = D_INIT;
-
-  while ((fgets (buffer, sizeof (buffer), in)))
-  {
-    line++;
-    if ((p = strchr (buffer, '\n')) == NULL)
-    {
-      fprintf (stderr, "%s: Line %d too long.  Ask a wizard to enlarge\n"
-	               "%s: my buffer size.\n", Progname, line, Progname);
-      exit (1);
-    }
-    else
-      *p = '\0';
-
-    if (!(p = get_token (token, sizeof (token), buffer)))
-      continue;
-
-    if (Debug)
-    {
-      fprintf (stderr, "%s: line %d.  first token: \"%s\".\n",
-	       Progname, line, token);
-    }
-
-    if (strcmp (token, "/*++*/") == 0)
-      active = 1;
-    else if (strcmp (token, "/*--*/") == 0)
-    {
-      docstat = flush_doc (docstat, out);
-      active = 0;
-    }
-    else if (active && ((strcmp (token, "/**") == 0) || (strcmp (token, "**") == 0)))
-      docstat = handle_docline (p, out, docstat);
-    else if (active && (strcmp (token, "{") == 0))
-    {
-      docstat = flush_doc (docstat, out);
-      handle_confline (p, out);
-    }
-  }
-  flush_doc (docstat, out);
-  fputs ("\n", out);
-}
-
 /* skip whitespace */
 
 static char *skip_ws (char *s)
@@ -325,280 +203,6 @@ static char *get_token (char *d, size_t l, char *s)
   return t;
 }
 
-
-/**
- ** Configuration line parser
- **
- ** The following code parses a line from init.h which declares
- ** a configuration variable.
- **
- **/
-
-/* note: the following enum must be in the same order as the
- * following string definitions!
- */
-
-enum
-{
-  DT_NONE = 0,
-  DT_BOOL,
-  DT_NUM,
-  DT_STR,
-  DT_PATH,
-  DT_QUAD,
-  DT_SORT,
-  DT_RX,
-  DT_MAGIC,
-  DT_SYN,
-  DT_ADDR,
-  DT_MBCHARTBL
-};
-
-struct
-{
-  char *machine;
-  char *human;
-}
-types[] =
-{
-  { "DT_NONE",	"-none-" 	},
-  { "DT_BOOL",  "boolean"	},
-  { "DT_NUM",   "number"	},
-  { "DT_STR",	"string"	},
-  { "DT_PATH",	"path"		},
-  { "DT_QUAD",	"quadoption"	},
-  { "DT_SORT",	"sort order"	},
-  { "DT_RX",	"regular expression" },
-  { "DT_MAGIC",	"folder magic" },
-  { "DT_SYN",	NULL },
-  { "DT_ADDR",	"e-mail address" },
-  { "DT_MBCHARTBL", "string"	},
-  { NULL, NULL }
-};
-
-
-static int buff2type (const char *s)
-{
-  int type;
-
-  for (type = DT_NONE; types[type].machine; type++)
-    if (strcmp (types[type].machine, s) == 0)
-	return type;
-
-  return DT_NONE;
-}
-
-static const char *type2human (int type)
-{
-  return types[type].human;
-}
-static void handle_confline (char *s, FILE *out)
-{
-  char varname[BUFFSIZE];
-  char buff[BUFFSIZE];
-  char tmp[BUFFSIZE];
-  int type;
-
-  char val[BUFFSIZE];
-
-  /* xxx - put this into an actual state machine? */
-
-  /* variable name */
-  if (!(s = get_token (varname, sizeof (varname), s))) return;
-
-  /* comma */
-  if (!(s = get_token (buff, sizeof (buff), s))) return;
-
-  /* type */
-  if (!(s = get_token (buff, sizeof (buff), s))) return;
-
-  type = buff2type (buff);
-
-  /* possibly a "|" or comma */
-  if (!(s = get_token (buff, sizeof (buff), s))) return;
-
-  if (strcmp (buff, "|") == 0)
-  {
-    if (Debug) fprintf (stderr, "%s: Expecting <subtype> <comma>.\n", Progname);
-    /* ignore subtype and comma */
-    if (!(s = get_token (buff, sizeof (buff), s))) return;
-    if (!(s = get_token (buff, sizeof (buff), s))) return;
-  }
-
-  /* redraw, comma */
-
-  while (1)
-  {
-    if (!(s = get_token (buff, sizeof (buff), s))) return;
-    if (strcmp (buff, ",") == 0)
-      break;
-  }
-
-  /* option name or UL &address */
-  if (!(s = get_token (buff, sizeof (buff), s))) return;
-  if (strcmp (buff, "UL") == 0)
-    if (!(s = get_token (buff, sizeof (buff), s))) return;
-
-  /* comma */
-  if (!(s = get_token (buff, sizeof (buff), s))) return;
-
-  if (Debug) fprintf (stderr, "%s: Expecting default value.\n", Progname);
-
-  /* <default value> or UL <default value> */
-  if (!(s = get_token (buff, sizeof (buff), s))) return;
-  if (strcmp (buff, "UL") == 0)
-  {
-    if (Debug) fprintf (stderr, "%s: Skipping UL.\n", Progname);
-    if (!(s = get_token (buff, sizeof (buff), s))) return;
-  }
-
-  memset (tmp, 0, sizeof (tmp));
-
-  do
-  {
-    if (strcmp (buff, "}") == 0)
-      break;
-
-    strncpy (tmp + strlen (tmp), buff, sizeof (tmp) - strlen (tmp));
-  }
-  while ((s = get_token (buff, sizeof (buff), s)));
-
-  pretty_default (val, sizeof (val), tmp, type);
-  print_confline (varname, type, val, out);
-}
-
-static void pretty_default (char *t, size_t l, const char *s, int type)
-{
-  memset (t, 0, l);
-  l--;
-
-  switch (type)
-  {
-    case DT_QUAD:
-    {
-      if (strcasecmp (s, "MUTT_YES") == 0) strncpy (t, "yes", l);
-      else if (strcasecmp (s, "MUTT_NO") == 0) strncpy (t, "no", l);
-      else if (strcasecmp (s, "MUTT_ASKYES") == 0) strncpy (t, "ask-yes", l);
-      else if (strcasecmp (s, "MUTT_ASKNO") == 0) strncpy (t, "ask-no", l);
-      break;
-    }
-    case DT_BOOL:
-    {
-      if (atoi (s))
-	strncpy (t, "yes", l);
-      else
-	strncpy (t, "no", l);
-      break;
-    }
-    case DT_SORT:
-    {
-      /* heuristic! */
-      if (strncmp (s, "SORT_", 5) != 0)
-        fprintf (stderr,
-                 "WARNING: expected prefix of SORT_ for type DT_SORT instead of %s\n", s);
-      strncpy (t, s + 5, l);
-      for (; *t; t++) *t = tolower ((unsigned char) *t);
-      break;
-    }
-    case DT_MAGIC:
-    {
-      /* heuristic! */
-      if (strncmp (s, "MUTT_", 5) != 0)
-        fprintf (stderr,
-                 "WARNING: expected prefix of MUTT_ for type DT_MAGIC instead of %s\n", s);
-      strncpy (t, s + 5, l);
-      for (; *t; t++) *t = tolower ((unsigned char) *t);
-      break;
-    }
-    case DT_STR:
-    case DT_RX:
-    case DT_ADDR:
-    case DT_PATH:
-    case DT_MBCHARTBL:
-    {
-      if (strcmp (s, "0") == 0)
-	break;
-      /* fallthrough */
-    }
-    default:
-    {
-      strncpy (t, s, l);
-      break;
-    }
-  }
-}
-
-static void char_to_escape (char *dest, unsigned int c)
-{
-  switch (c)
-  {
-    case '\r': strcpy (dest, "\\r"); break;	/* __STRCPY_CHECKED__ */
-    case '\n': strcpy (dest, "\\n"); break;	/* __STRCPY_CHECKED__ */
-    case '\t': strcpy (dest, "\\t"); break;	/* __STRCPY_CHECKED__ */
-    case '\f': strcpy (dest, "\\f"); break;	/* __STRCPY_CHECKED__ */
-    default: sprintf (dest, "\\%03o", c); break;
-  }
-}
-static void conf_char_to_escape (unsigned int c , FILE *out)
-{
-  char buff[16];
-  char_to_escape (buff, c);
-  fputs (buff, out);
-}
-
-static void conf_print_strval (const char *v, FILE *out)
-{
-  for (; *v; v++)
-  {
-    if (*v < ' ' || *v & 0x80)
-    {
-      conf_char_to_escape ((unsigned int) *v, out);
-      continue;
-    }
-
-    if (*v == '"'  || *v == '\\')
-      fputc ('\\', out);
-    fputc (*v, out);
-  }
-}
-
-static void man_print_strval (const char *v, FILE *out)
-{
-  for (; *v; v++)
-  {
-    if (*v < ' ' || *v & 0x80)
-    {
-      fputc ('\\', out);
-      conf_char_to_escape ((unsigned int) *v, out);
-      continue;
-    }
-
-    if (*v == '"')
-      fputs ("\"", out);
-    else if (*v == '\\')
-      fputs ("\\\\", out);
-    else if (*v == '-')
-      fputs ("\\-", out);
-    else
-      fputc (*v, out);
-  }
-}
-
-static void sgml_print_strval (const char *v, FILE *out)
-{
-  char buff[16];
-  for (; *v; v++)
-  {
-    if (*v <  ' ' || *v & 0x80)
-    {
-      char_to_escape (buff, (unsigned int) *v);
-      sgml_fputs (buff, out);
-      continue;
-    }
-    sgml_fputc ((unsigned int) *v, out);
-  }
-}
-
 static int sgml_fputc (int c, FILE *out)
 {
   switch (c)
@@ -618,188 +222,6 @@ static int sgml_fputs (const char *s, FILE *out)
       return EOF;
 
   return 0;
-}
-
-/* reduce CDATA to ID */
-static int sgml_id_fputs (const char *s, FILE* out)
-{
-  char id;
-
-  if (*s == '<')
-    s++;
-
-  for (; *s; s++)
-  {
-    if (*s == '_')
-      id = '-';
-    else
-      id = *s;
-    if (*s == '>' && !*(s+1))
-      break;
-
-    if (fputc ((unsigned int) id, out) == EOF)
-      return EOF;
-  }
-
-  return 0;
-}
-
-static void print_confline (const char *varname, int type, const char *val, FILE *out)
-{
-  if (type == DT_SYN) return;
-
-  switch (OutputFormat)
-  {
-    /* configuration file */
-    case F_CONF:
-    {
-      if (type == DT_STR || type == DT_RX || type == DT_ADDR || type == DT_PATH ||
-          type == DT_MBCHARTBL)
-      {
-	fprintf (out, "\n# set %s=\"", varname);
-	conf_print_strval (val, out);
-	fputs ("\"", out);
-      }
-      else if (type != DT_SYN)
-	fprintf (out, "\n# set %s=%s", varname, val);
-
-      fprintf (out, "\n#\n# Name: %s", varname);
-      fprintf (out, "\n# Type: %s", type2human (type));
-      if (type == DT_STR || type == DT_RX || type == DT_ADDR || type == DT_PATH ||
-          type == DT_MBCHARTBL)
-      {
-	fputs ("\n# Default: \"", out);
-	conf_print_strval (val, out);
-	fputs ("\"", out);
-      }
-      else
-	fprintf (out, "\n# Default: %s", val);
-
-      fputs ("\n# ", out);
-      break;
-    }
-
-    /* manual page */
-    case F_MAN:
-    {
-      fprintf (out, "\n.TP\n.B %s\n", varname);
-      fputs (".nf\n", out);
-      fprintf (out, "Type: %s\n", type2human (type));
-      if (type == DT_STR || type == DT_RX || type == DT_ADDR || type == DT_PATH ||
-          type == DT_MBCHARTBL)
-      {
-	fputs ("Default: \"", out);
-	man_print_strval (val, out);
-	fputs ("\"\n", out);
-      }
-      else {
-	fputs ("Default: ", out);
-	man_print_strval (val, out);
-	fputs ("\n", out);
-      }
-
-      fputs (".fi", out);
-
-      break;
-    }
-
-    /* SGML based manual */
-    case F_SGML:
-    {
-      fputs ("\n<sect2 id=\"", out);
-      sgml_id_fputs(varname, out);
-      fputs ("\">\n<title>", out);
-      sgml_fputs (varname, out);
-      fprintf (out, "</title>\n<literallayout>Type: %s", type2human (type));
-
-
-      if (type == DT_STR || type == DT_RX || type == DT_ADDR || type == DT_PATH ||
-          type == DT_MBCHARTBL)
-      {
-	if (val && *val)
-	{
-	  fputs ("\nDefault: <quote><literal>", out);
-	  sgml_print_strval (val, out);
-	  fputs ("</literal></quote>", out);
-	}
-	else
-	{
-	  fputs ("\nDefault: (empty)", out);
-	}
-	fputs ("</literallayout>\n", out);
-      }
-      else
-	fprintf (out, "\nDefault: %s</literallayout>\n", val);
-      break;
-    }
-    /* make gcc happy */
-    default:
-      break;
-  }
-}
-
-/**
- ** Documentation line parser
- **
- ** The following code parses specially formatted documentation
- ** comments in init.h.
- **
- ** The format is very remotely inspired by nroff. Most important, it's
- ** easy to parse and convert, and it was easy to generate from the SGML
- ** source of mutt's original manual.
- **
- ** - \fI switches to italics
- ** - \fB switches to boldface
- ** - \fP switches to normal display
- ** - .dl on a line starts a definition list (name taken taken from HTML).
- ** - .dt starts a term in a definition list.
- ** - .dd starts a definition in a definition list.
- ** - .de on a line finishes a definition list.
- ** - .il on a line starts an itemized list
- ** - .dd starts an item in an itemized list
- ** - .ie on a line finishes an itemized list
- ** - .ts on a line starts a "tscreen" environment (name taken from SGML).
- ** - .te on a line finishes this environment.
- ** - .pp on a line starts a paragraph.
- ** - \$word will be converted to a reference to word, where appropriate.
- **   Note that \$$word is possible as well.
- ** - '. ' in the beginning of a line expands to two space characters.
- **   This is used to protect indentations in tables.
- **/
-
-/* close eventually-open environments. */
-
-static int fd_recurse = 0;
-
-static int flush_doc (int docstat, FILE *out)
-{
-  if (docstat & D_INIT)
-    return D_INIT;
-
-  if (fd_recurse++)
-  {
-    fprintf (stderr, "%s: Internal error, recursion in flush_doc()!\n", Progname);
-    exit (1);
-  }
-
-  if (docstat & (D_PA))
-    docstat = print_it (SP_END_PAR, NULL, out, docstat);
-
-  if (docstat & (D_TAB))
-    docstat = print_it (SP_END_TAB, NULL, out, docstat);
-
-  if (docstat & (D_DL))
-    docstat = print_it (SP_END_DL, NULL, out, docstat);
-
-  if (docstat & (D_EM | D_BF | D_TT))
-    docstat = print_it (SP_END_FT, NULL, out, docstat);
-
-  docstat = print_it (SP_END_SECT, NULL, out, docstat);
-
-  docstat = print_it (SP_NEWLINE, NULL, out, 0);
-
-  fd_recurse--;
-  return D_INIT;
 }
 
 /* print something. */
@@ -1249,6 +671,106 @@ static int print_it (int special, char *str, FILE *out, int docstat)
   return docstat;
 }
 
+/* close eventually-open environments. */
+
+static int fd_recurse = 0;
+
+static int flush_doc (int docstat, FILE *out)
+{
+  if (docstat & D_INIT)
+    return D_INIT;
+
+  if (fd_recurse++)
+  {
+    fprintf (stderr, "%s: Internal error, recursion in flush_doc()!\n", Progname);
+    exit (1);
+  }
+
+  if (docstat & (D_PA))
+    docstat = print_it (SP_END_PAR, NULL, out, docstat);
+
+  if (docstat & (D_TAB))
+    docstat = print_it (SP_END_TAB, NULL, out, docstat);
+
+  if (docstat & (D_DL))
+    docstat = print_it (SP_END_DL, NULL, out, docstat);
+
+  if (docstat & (D_EM | D_BF | D_TT))
+    docstat = print_it (SP_END_FT, NULL, out, docstat);
+
+  docstat = print_it (SP_END_SECT, NULL, out, docstat);
+
+  docstat = print_it (SP_NEWLINE, NULL, out, 0);
+
+  fd_recurse--;
+  return D_INIT;
+}
+
+static int commit_buff (char *buff, char **d, FILE *out, int docstat)
+{
+  if (*d > buff)
+  {
+    **d = '\0';
+    docstat = print_it (SP_STR, buff, out, docstat);
+    *d = buff;
+  }
+
+  return docstat;
+}
+
+/**
+ ** Documentation line parser
+ **
+ ** The following code parses specially formatted documentation
+ ** comments in init.h.
+ **
+ ** The format is very remotely inspired by nroff. Most important, it's
+ ** easy to parse and convert, and it was easy to generate from the SGML
+ ** source of mutt's original manual.
+ **
+ ** - \fI switches to italics
+ ** - \fB switches to boldface
+ ** - \fP switches to normal display
+ ** - .dl on a line starts a definition list (name taken taken from HTML).
+ ** - .dt starts a term in a definition list.
+ ** - .dd starts a definition in a definition list.
+ ** - .de on a line finishes a definition list.
+ ** - .il on a line starts an itemized list
+ ** - .dd starts an item in an itemized list
+ ** - .ie on a line finishes an itemized list
+ ** - .ts on a line starts a "tscreen" environment (name taken from SGML).
+ ** - .te on a line finishes this environment.
+ ** - .pp on a line starts a paragraph.
+ ** - \$word will be converted to a reference to word, where appropriate.
+ **   Note that \$$word is possible as well.
+ ** - '. ' in the beginning of a line expands to two space characters.
+ **   This is used to protect indentations in tables.
+ **/
+
+/* reduce CDATA to ID */
+static int sgml_id_fputs (const char *s, FILE* out)
+{
+  char id;
+
+  if (*s == '<')
+    s++;
+
+  for (; *s; s++)
+  {
+    if (*s == '_')
+      id = '-';
+    else
+      id = *s;
+    if (*s == '>' && !*(s+1))
+      break;
+
+    if (fputc ((unsigned int) id, out) == EOF)
+      return EOF;
+  }
+
+  return 0;
+}
+
 void print_ref (FILE *out, int output_dollar, const char *ref)
 {
   switch (OutputFormat)
@@ -1273,18 +795,6 @@ void print_ref (FILE *out, int output_dollar, const char *ref)
   default:
     break;
   }
-}
-
-static int commit_buff (char *buff, char **d, FILE *out, int docstat)
-{
-  if (*d > buff)
-  {
-    **d = '\0';
-    docstat = print_it (SP_STR, buff, out, docstat);
-    *d = buff;
-  }
-
-  return docstat;
 }
 
 static int handle_docline (char *l, FILE *out, int docstat)
@@ -1408,3 +918,477 @@ static int handle_docline (char *l, FILE *out, int docstat)
   docstat = commit_buff (buff, &d, out, docstat);
   return print_it (SP_NEWLINE, NULL, out, docstat);
 }
+
+/* note: the following enum must be in the same order as the
+ * following string definitions!
+ */
+
+enum
+{
+  DT_NONE = 0,
+  DT_BOOL,
+  DT_NUM,
+  DT_STR,
+  DT_PATH,
+  DT_QUAD,
+  DT_SORT,
+  DT_RX,
+  DT_MAGIC,
+  DT_SYN,
+  DT_ADDR,
+  DT_MBCHARTBL
+};
+
+struct
+{
+  char *machine;
+  char *human;
+}
+types[] =
+{
+  { "DT_NONE",	"-none-" 	},
+  { "DT_BOOL",  "boolean"	},
+  { "DT_NUM",   "number"	},
+  { "DT_STR",	"string"	},
+  { "DT_PATH",	"path"		},
+  { "DT_QUAD",	"quadoption"	},
+  { "DT_SORT",	"sort order"	},
+  { "DT_RX",	"regular expression" },
+  { "DT_MAGIC",	"folder magic" },
+  { "DT_SYN",	NULL },
+  { "DT_ADDR",	"e-mail address" },
+  { "DT_MBCHARTBL", "string"	},
+  { NULL, NULL }
+};
+
+static int buff2type (const char *s)
+{
+  int type;
+
+  for (type = DT_NONE; types[type].machine; type++)
+    if (strcmp (types[type].machine, s) == 0)
+	return type;
+
+  return DT_NONE;
+}
+
+static void pretty_default (char *t, size_t l, const char *s, int type)
+{
+  memset (t, 0, l);
+  l--;
+
+  switch (type)
+  {
+    case DT_QUAD:
+    {
+      if (strcasecmp (s, "MUTT_YES") == 0) strncpy (t, "yes", l);
+      else if (strcasecmp (s, "MUTT_NO") == 0) strncpy (t, "no", l);
+      else if (strcasecmp (s, "MUTT_ASKYES") == 0) strncpy (t, "ask-yes", l);
+      else if (strcasecmp (s, "MUTT_ASKNO") == 0) strncpy (t, "ask-no", l);
+      break;
+    }
+    case DT_BOOL:
+    {
+      if (atoi (s))
+	strncpy (t, "yes", l);
+      else
+	strncpy (t, "no", l);
+      break;
+    }
+    case DT_SORT:
+    {
+      /* heuristic! */
+      if (strncmp (s, "SORT_", 5) != 0)
+        fprintf (stderr,
+                 "WARNING: expected prefix of SORT_ for type DT_SORT instead of %s\n", s);
+      strncpy (t, s + 5, l);
+      for (; *t; t++) *t = tolower ((unsigned char) *t);
+      break;
+    }
+    case DT_MAGIC:
+    {
+      /* heuristic! */
+      if (strncmp (s, "MUTT_", 5) != 0)
+        fprintf (stderr,
+                 "WARNING: expected prefix of MUTT_ for type DT_MAGIC instead of %s\n", s);
+      strncpy (t, s + 5, l);
+      for (; *t; t++) *t = tolower ((unsigned char) *t);
+      break;
+    }
+    case DT_STR:
+    case DT_RX:
+    case DT_ADDR:
+    case DT_PATH:
+    case DT_MBCHARTBL:
+    {
+      if (strcmp (s, "0") == 0)
+	break;
+      /* fallthrough */
+    }
+    default:
+    {
+      strncpy (t, s, l);
+      break;
+    }
+  }
+}
+
+static void char_to_escape (char *dest, unsigned int c)
+{
+  switch (c)
+  {
+    case '\r': strcpy (dest, "\\r"); break;	/* __STRCPY_CHECKED__ */
+    case '\n': strcpy (dest, "\\n"); break;	/* __STRCPY_CHECKED__ */
+    case '\t': strcpy (dest, "\\t"); break;	/* __STRCPY_CHECKED__ */
+    case '\f': strcpy (dest, "\\f"); break;	/* __STRCPY_CHECKED__ */
+    default: sprintf (dest, "\\%03o", c); break;
+  }
+}
+
+static void conf_char_to_escape (unsigned int c , FILE *out)
+{
+  char buff[16];
+  char_to_escape (buff, c);
+  fputs (buff, out);
+}
+
+static void conf_print_strval (const char *v, FILE *out)
+{
+  for (; *v; v++)
+  {
+    if (*v < ' ' || *v & 0x80)
+    {
+      conf_char_to_escape ((unsigned int) *v, out);
+      continue;
+    }
+
+    if (*v == '"'  || *v == '\\')
+      fputc ('\\', out);
+    fputc (*v, out);
+  }
+}
+
+static const char *type2human (int type)
+{
+  return types[type].human;
+}
+
+/**
+ ** Configuration line parser
+ **
+ ** The following code parses a line from init.h which declares
+ ** a configuration variable.
+ **
+ **/
+
+static void man_print_strval (const char *v, FILE *out)
+{
+  for (; *v; v++)
+  {
+    if (*v < ' ' || *v & 0x80)
+    {
+      fputc ('\\', out);
+      conf_char_to_escape ((unsigned int) *v, out);
+      continue;
+    }
+
+    if (*v == '"')
+      fputs ("\"", out);
+    else if (*v == '\\')
+      fputs ("\\\\", out);
+    else if (*v == '-')
+      fputs ("\\-", out);
+    else
+      fputc (*v, out);
+  }
+}
+
+static void sgml_print_strval (const char *v, FILE *out)
+{
+  char buff[16];
+  for (; *v; v++)
+  {
+    if (*v <  ' ' || *v & 0x80)
+    {
+      char_to_escape (buff, (unsigned int) *v);
+      sgml_fputs (buff, out);
+      continue;
+    }
+    sgml_fputc ((unsigned int) *v, out);
+  }
+}
+
+static void print_confline (const char *varname, int type, const char *val, FILE *out)
+{
+  if (type == DT_SYN) return;
+
+  switch (OutputFormat)
+  {
+    /* configuration file */
+    case F_CONF:
+    {
+      if (type == DT_STR || type == DT_RX || type == DT_ADDR || type == DT_PATH ||
+          type == DT_MBCHARTBL)
+      {
+	fprintf (out, "\n# set %s=\"", varname);
+	conf_print_strval (val, out);
+	fputs ("\"", out);
+      }
+      else if (type != DT_SYN)
+	fprintf (out, "\n# set %s=%s", varname, val);
+
+      fprintf (out, "\n#\n# Name: %s", varname);
+      fprintf (out, "\n# Type: %s", type2human (type));
+      if (type == DT_STR || type == DT_RX || type == DT_ADDR || type == DT_PATH ||
+          type == DT_MBCHARTBL)
+      {
+	fputs ("\n# Default: \"", out);
+	conf_print_strval (val, out);
+	fputs ("\"", out);
+      }
+      else
+	fprintf (out, "\n# Default: %s", val);
+
+      fputs ("\n# ", out);
+      break;
+    }
+
+    /* manual page */
+    case F_MAN:
+    {
+      fprintf (out, "\n.TP\n.B %s\n", varname);
+      fputs (".nf\n", out);
+      fprintf (out, "Type: %s\n", type2human (type));
+      if (type == DT_STR || type == DT_RX || type == DT_ADDR || type == DT_PATH ||
+          type == DT_MBCHARTBL)
+      {
+	fputs ("Default: \"", out);
+	man_print_strval (val, out);
+	fputs ("\"\n", out);
+      }
+      else {
+	fputs ("Default: ", out);
+	man_print_strval (val, out);
+	fputs ("\n", out);
+      }
+
+      fputs (".fi", out);
+
+      break;
+    }
+
+    /* SGML based manual */
+    case F_SGML:
+    {
+      fputs ("\n<sect2 id=\"", out);
+      sgml_id_fputs(varname, out);
+      fputs ("\">\n<title>", out);
+      sgml_fputs (varname, out);
+      fprintf (out, "</title>\n<literallayout>Type: %s", type2human (type));
+
+      if (type == DT_STR || type == DT_RX || type == DT_ADDR || type == DT_PATH ||
+          type == DT_MBCHARTBL)
+      {
+	if (val && *val)
+	{
+	  fputs ("\nDefault: <quote><literal>", out);
+	  sgml_print_strval (val, out);
+	  fputs ("</literal></quote>", out);
+	}
+	else
+	{
+	  fputs ("\nDefault: (empty)", out);
+	}
+	fputs ("</literallayout>\n", out);
+      }
+      else
+	fprintf (out, "\nDefault: %s</literallayout>\n", val);
+      break;
+    }
+    /* make gcc happy */
+    default:
+      break;
+  }
+}
+
+static void handle_confline (char *s, FILE *out)
+{
+  char varname[BUFFSIZE];
+  char buff[BUFFSIZE];
+  char tmp[BUFFSIZE];
+  int type;
+
+  char val[BUFFSIZE];
+
+  /* xxx - put this into an actual state machine? */
+
+  /* variable name */
+  if (!(s = get_token (varname, sizeof (varname), s))) return;
+
+  /* comma */
+  if (!(s = get_token (buff, sizeof (buff), s))) return;
+
+  /* type */
+  if (!(s = get_token (buff, sizeof (buff), s))) return;
+
+  type = buff2type (buff);
+
+  /* possibly a "|" or comma */
+  if (!(s = get_token (buff, sizeof (buff), s))) return;
+
+  if (strcmp (buff, "|") == 0)
+  {
+    if (Debug) fprintf (stderr, "%s: Expecting <subtype> <comma>.\n", Progname);
+    /* ignore subtype and comma */
+    if (!(s = get_token (buff, sizeof (buff), s))) return;
+    if (!(s = get_token (buff, sizeof (buff), s))) return;
+  }
+
+  /* redraw, comma */
+
+  while (1)
+  {
+    if (!(s = get_token (buff, sizeof (buff), s))) return;
+    if (strcmp (buff, ",") == 0)
+      break;
+  }
+
+  /* option name or UL &address */
+  if (!(s = get_token (buff, sizeof (buff), s))) return;
+  if (strcmp (buff, "UL") == 0)
+    if (!(s = get_token (buff, sizeof (buff), s))) return;
+
+  /* comma */
+  if (!(s = get_token (buff, sizeof (buff), s))) return;
+
+  if (Debug) fprintf (stderr, "%s: Expecting default value.\n", Progname);
+
+  /* <default value> or UL <default value> */
+  if (!(s = get_token (buff, sizeof (buff), s))) return;
+  if (strcmp (buff, "UL") == 0)
+  {
+    if (Debug) fprintf (stderr, "%s: Skipping UL.\n", Progname);
+    if (!(s = get_token (buff, sizeof (buff), s))) return;
+  }
+
+  memset (tmp, 0, sizeof (tmp));
+
+  do
+  {
+    if (strcmp (buff, "}") == 0)
+      break;
+
+    strncpy (tmp + strlen (tmp), buff, sizeof (tmp) - strlen (tmp));
+  }
+  while ((s = get_token (buff, sizeof (buff), s)));
+
+  pretty_default (val, sizeof (val), tmp, type);
+  print_confline (varname, type, val, out);
+}
+
+static void makedoc (FILE *in, FILE *out)
+{
+  char buffer[BUFFSIZE];
+  char token[BUFFSIZE];
+  char *p = NULL;
+  int active = 0;
+  int line = 0;
+  int docstat = D_INIT;
+
+  while ((fgets (buffer, sizeof (buffer), in)))
+  {
+    line++;
+    if ((p = strchr (buffer, '\n')) == NULL)
+    {
+      fprintf (stderr, "%s: Line %d too long.  Ask a wizard to enlarge\n"
+	               "%s: my buffer size.\n", Progname, line, Progname);
+      exit (1);
+    }
+    else
+      *p = '\0';
+
+    if (!(p = get_token (token, sizeof (token), buffer)))
+      continue;
+
+    if (Debug)
+    {
+      fprintf (stderr, "%s: line %d.  first token: \"%s\".\n",
+	       Progname, line, token);
+    }
+
+    if (strcmp (token, "/*++*/") == 0)
+      active = 1;
+    else if (strcmp (token, "/*--*/") == 0)
+    {
+      docstat = flush_doc (docstat, out);
+      active = 0;
+    }
+    else if (active && ((strcmp (token, "/**") == 0) || (strcmp (token, "**") == 0)))
+      docstat = handle_docline (p, out, docstat);
+    else if (active && (strcmp (token, "{") == 0))
+    {
+      docstat = flush_doc (docstat, out);
+      handle_confline (p, out);
+    }
+  }
+  flush_doc (docstat, out);
+  fputs ("\n", out);
+}
+
+int main (int argc, char *argv[])
+{
+  int c;
+  FILE *f = NULL;
+
+  if ((Progname = strrchr (argv[0], '/')))
+    Progname++;
+  else
+    Progname = argv[0];
+
+  while ((c = getopt (argc, argv, "cmsd")) != EOF)
+  {
+    switch (c)
+    {
+      case 'c': OutputFormat = F_CONF; break;
+      case 'm': OutputFormat = F_MAN; break;
+      case 's': OutputFormat = F_SGML; break;
+      case 'd': Debug++; break;
+      default:
+      {
+	fprintf (stderr, "%s: bad command line parameter.\n", Progname);
+	exit (1);
+      }
+    }
+  }
+
+  if (optind != argc)
+  {
+    if ((f = fopen (argv[optind], "r")) == NULL)
+    {
+      fprintf (stderr, "%s: Can't open %s (%s).\n",
+	       Progname, argv[optind], strerror (errno));
+      exit (1);
+    }
+  }
+  else
+    f = stdin;
+
+  switch (OutputFormat)
+  {
+    case F_CONF:
+    case F_MAN:
+    case F_SGML: makedoc (f, stdout); break;
+    default:
+    {
+      fprintf (stderr, "%s: No output format specified.\n",
+	       Progname);
+      exit (1);
+    }
+  }
+
+  if (f != stdin)
+    fclose (f);
+
+  return 0;
+}
+
