@@ -838,7 +838,7 @@ time_t mutt_parse_date (const char *s, HEADER *h)
 	{
 	  struct tz_t *tz = NULL;
 
-	  tz = bsearch (ptz, TimeZones, sizeof TimeZones/sizeof (struct tz_t),
+	  tz = bsearch (ptz, TimeZones, sizeof (TimeZones)/sizeof (struct tz_t),
 			sizeof (struct tz_t),
 			(int (*)(const void *, const void *)) ascii_strcasecmp
 			/* This is safe to do: A pointer to a struct equals

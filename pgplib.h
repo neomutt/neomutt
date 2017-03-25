@@ -83,7 +83,7 @@ void pgp_free_key(pgp_key_t *kpp);
 
 static inline pgp_key_t pgp_new_keyinfo(void)
 {
-    return safe_calloc (1, sizeof *((pgp_key_t)0));
+    return safe_calloc (1, sizeof (*((pgp_key_t)0)));
 }
 
 #endif /* CRYPT_BACKEND_CLASSIC_PGP */

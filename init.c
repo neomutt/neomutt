@@ -3859,7 +3859,7 @@ void mutt_init (int skip_sys_rc, LIST *commands)
     Fqdn = safe_malloc (mutt_strlen (domain) + mutt_strlen (Hostname) + 2);
     sprintf (Fqdn, "%s.%s", NONULL(Hostname), domain);	/* __SPRINTF_CHECKED__ */
   }
-  else if (!(getdnsdomainname (buffer, sizeof buffer)))
+  else if (!(getdnsdomainname (buffer, sizeof (buffer))))
   {
     Fqdn = safe_malloc (mutt_strlen (buffer) + mutt_strlen (Hostname) + 2);
     sprintf (Fqdn, "%s.%s", NONULL(Hostname), buffer);	/* __SPRINTF_CHECKED__ */
@@ -4038,38 +4038,38 @@ void mutt_init (int skip_sys_rc, LIST *commands)
   {
     do
     {
-      if (mutt_set_xdg_path (kXDGConfigDirs, buffer, sizeof buffer))
+      if (mutt_set_xdg_path (kXDGConfigDirs, buffer, sizeof (buffer)))
         break;
 
-      snprintf (buffer, sizeof buffer, "%s/neomuttrc-%s", SYSCONFDIR, PACKAGE_VERSION);
+      snprintf (buffer, sizeof (buffer), "%s/neomuttrc-%s", SYSCONFDIR, PACKAGE_VERSION);
       if (access (buffer, F_OK) == 0)
         break;
 
-      snprintf (buffer, sizeof buffer, "%s/neomuttrc", SYSCONFDIR);
+      snprintf (buffer, sizeof (buffer), "%s/neomuttrc", SYSCONFDIR);
       if (access (buffer, F_OK) == 0)
         break;
 
-      snprintf (buffer, sizeof buffer, "%s/Muttrc-%s", SYSCONFDIR, MUTT_VERSION);
+      snprintf (buffer, sizeof (buffer), "%s/Muttrc-%s", SYSCONFDIR, MUTT_VERSION);
       if (access (buffer, F_OK) == 0)
         break;
 
-      snprintf (buffer, sizeof buffer, "%s/Muttrc", SYSCONFDIR);
+      snprintf (buffer, sizeof (buffer), "%s/Muttrc", SYSCONFDIR);
       if (access (buffer, F_OK) == 0)
         break;
 
-      snprintf (buffer, sizeof buffer, "%s/neomuttrc-%s", PKGDATADIR, PACKAGE_VERSION);
+      snprintf (buffer, sizeof (buffer), "%s/neomuttrc-%s", PKGDATADIR, PACKAGE_VERSION);
       if (access (buffer, F_OK) == 0)
         break;
 
-      snprintf (buffer, sizeof buffer, "%s/neomuttrc", PKGDATADIR);
+      snprintf (buffer, sizeof (buffer), "%s/neomuttrc", PKGDATADIR);
       if (access (buffer, F_OK) == 0)
         break;
 
-      snprintf (buffer, sizeof buffer, "%s/Muttrc-%s", PKGDATADIR, MUTT_VERSION);
+      snprintf (buffer, sizeof (buffer), "%s/Muttrc-%s", PKGDATADIR, MUTT_VERSION);
       if (access (buffer, F_OK) == 0)
         break;
 
-      snprintf (buffer, sizeof buffer, "%s/Muttrc", PKGDATADIR);
+      snprintf (buffer, sizeof (buffer), "%s/Muttrc", PKGDATADIR);
     } while (0);
     if (access (buffer, F_OK) == 0)
     {

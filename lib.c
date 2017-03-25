@@ -428,8 +428,8 @@ int safe_symlink(const char *oldpath, const char *newpath)
   {
     char abs_oldpath[_POSIX_PATH_MAX];
 
-    if ((getcwd (abs_oldpath, sizeof abs_oldpath) == NULL) ||
-	(strlen (abs_oldpath) + 1 + strlen (oldpath) + 1 > sizeof abs_oldpath))
+    if ((getcwd (abs_oldpath, sizeof (abs_oldpath)) == NULL) ||
+	(strlen (abs_oldpath) + 1 + strlen (oldpath) + 1 > sizeof (abs_oldpath)))
     return -1;
 
     strcat (abs_oldpath, "/");		/* __STRCAT_CHECKED__ */

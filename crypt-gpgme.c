@@ -285,7 +285,7 @@ static crypt_key_t *crypt_copy_key (crypt_key_t *key)
 {
   crypt_key_t *k = NULL;
 
-  k = safe_calloc (1, sizeof *k);
+  k = safe_calloc (1, sizeof (*k));
   k->kobj = key->kobj;
   gpgme_key_ref (key->kobj);
   k->idx = key->idx;
@@ -971,7 +971,7 @@ static BODY *sign_message (BODY *a, int use_smime)
                       &t->parameter);
   /* Get the micalg from gpgme.  Old gpgme versions don't support this
      for S/MIME so we assume sha-1 in this case. */
-  if (!get_micalg (ctx, use_smime, buf, sizeof buf))
+  if (!get_micalg (ctx, use_smime, buf, sizeof (buf)))
     mutt_set_parameter ("micalg", buf, &t->parameter);
   else if (use_smime)
     mutt_set_parameter ("micalg", "sha1", &t->parameter);
@@ -2370,7 +2370,7 @@ int pgp_gpgme_application_handler (BODY *m, STATE *s)
      but we know that this may only be text thus we assume Latin-1
      here. */
   if (!mutt_get_body_charset (body_charset, sizeof (body_charset), m))
-    strfcpy (body_charset, "iso-8859-1", sizeof body_charset);
+    strfcpy (body_charset, "iso-8859-1", sizeof (body_charset));
 
   fseeko (s->fpin, m->offset, 0);
   last_pos = m->offset;
@@ -3242,7 +3242,7 @@ parse_dn (const char *string)
   int i;
 
   arraysize = 7; /* C,ST,L,O,OU,CN,email */
-  array = safe_malloc ((arraysize+1) * sizeof *array);
+  array = safe_malloc ((arraysize+1) * sizeof (*array));
   arrayidx = 0;
   while (*string)
     {
@@ -3255,7 +3255,7 @@ parse_dn (const char *string)
           struct dn_array_s *a2 = NULL;
 
           arraysize += 5;
-          a2 = safe_malloc ((arraysize+1) * sizeof *array);
+          a2 = safe_malloc ((arraysize+1) * sizeof (*array));
           for (i=0; i < arrayidx; i++)
             {
               a2[i].key = array[i].key;
@@ -3412,9 +3412,9 @@ static void print_key_info (gpgme_key_t key, FILE *fp)
 
       tm = localtime (&tt);
 #ifdef HAVE_LANGINFO_D_T_FMT
-      strftime (shortbuf, sizeof shortbuf, nl_langinfo (D_T_FMT), tm);
+      strftime (shortbuf, sizeof (shortbuf), nl_langinfo (D_T_FMT), tm);
 #else
-      strftime (shortbuf, sizeof shortbuf, "%c", tm);
+      strftime (shortbuf, sizeof (shortbuf), "%c", tm);
 #endif
       /* L10N: DOTFILL */
       fprintf (fp, _("Valid From : %s\n"), shortbuf);
@@ -3426,9 +3426,9 @@ static void print_key_info (gpgme_key_t key, FILE *fp)
 
       tm = localtime (&tt);
 #ifdef HAVE_LANGINFO_D_T_FMT
-      strftime (shortbuf, sizeof shortbuf, nl_langinfo (D_T_FMT), tm);
+      strftime (shortbuf, sizeof (shortbuf), nl_langinfo (D_T_FMT), tm);
 #else
-      strftime (shortbuf, sizeof shortbuf, "%c", tm);
+      strftime (shortbuf, sizeof (shortbuf), "%c", tm);
 #endif
       /* L10N: DOTFILL */
       fprintf (fp, _("Valid To ..: %s\n"), shortbuf);
@@ -3566,9 +3566,9 @@ static void print_key_info (gpgme_key_t key, FILE *fp)
 
               tm = localtime (&tt);
 #ifdef HAVE_LANGINFO_D_T_FMT
-              strftime (shortbuf, sizeof shortbuf, nl_langinfo (D_T_FMT), tm);
+              strftime (shortbuf, sizeof (shortbuf), nl_langinfo (D_T_FMT), tm);
 #else
-              strftime (shortbuf, sizeof shortbuf, "%c", tm);
+              strftime (shortbuf, sizeof (shortbuf), "%c", tm);
 #endif
               /* L10N: DOTFILL */
               fprintf (fp, _("Valid From : %s\n"), shortbuf);
@@ -3580,9 +3580,9 @@ static void print_key_info (gpgme_key_t key, FILE *fp)
 
               tm = localtime (&tt);
 #ifdef HAVE_LANGINFO_D_T_FMT
-              strftime (shortbuf, sizeof shortbuf, nl_langinfo (D_T_FMT), tm);
+              strftime (shortbuf, sizeof (shortbuf), nl_langinfo (D_T_FMT), tm);
 #else
-              strftime (shortbuf, sizeof shortbuf, "%c", tm);
+              strftime (shortbuf, sizeof (shortbuf), "%c", tm);
 #endif
               /* L10N: DOTFILL */
               fprintf (fp, _("Valid To ..: %s\n"), shortbuf);
@@ -3794,7 +3794,7 @@ static crypt_key_t *get_candidates (LIST * hints, unsigned int app, int secret)
       if (!n)
         goto no_pgphints;
 
-      patarr = safe_calloc (n+1, sizeof *patarr);
+      patarr = safe_calloc (n+1, sizeof (*patarr));
       for(l=hints, n=0; l; l = l->next)
         {
           if (l->data && *l->data)
@@ -3832,7 +3832,7 @@ static crypt_key_t *get_candidates (LIST * hints, unsigned int app, int secret)
 
 	  for (idx = 0, uid = key->uids; uid; idx++, uid = uid->next)
             {
-              k = safe_calloc (1, sizeof *k);
+              k = safe_calloc (1, sizeof (*k));
               k->kobj = key;
               gpgme_key_ref (k->kobj);
               k->idx = idx;
@@ -3878,7 +3878,7 @@ static crypt_key_t *get_candidates (LIST * hints, unsigned int app, int secret)
 
 	  for (idx = 0, uid = key->uids; uid; idx++, uid = uid->next)
             {
-              k = safe_calloc (1, sizeof *k);
+              k = safe_calloc (1, sizeof (*k));
               k->kobj = key;
               gpgme_key_ref (k->kobj);
               k->idx = idx;
