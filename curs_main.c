@@ -195,8 +195,8 @@ static int ci_next_undeleted (int msgno)
 
   for (i=msgno+1; i < Context->vcount; i++)
     if (! Context->hdrs[Context->v2r[i]]->deleted)
-      return (i);
-  return (-1);
+      return i;
+  return -1;
 }
 
 static int ci_previous_undeleted (int msgno)
@@ -205,8 +205,8 @@ static int ci_previous_undeleted (int msgno)
 
   for (i=msgno-1; i>=0; i--)
     if (! Context->hdrs[Context->v2r[i]]->deleted)
-      return (i);
-  return (-1);
+      return i;
+  return -1;
 }
 
 /* Return the index of the first new message, or failing that, the first
@@ -224,13 +224,13 @@ static int ci_first_message (void)
 	  ! Context->hdrs[Context->v2r[i]]->deleted)
       {
 	if (! Context->hdrs[Context->v2r[i]]->old)
-	  return (i);
+	  return i;
 	else if (old == -1)
 	  old = i;
       }
     }
     if (old != -1)
-      return (old);
+      return old;
 
     /* If Sort is reverse and not threaded, the latest message is first.
      * If Sort is threaded, the latest message is first iff exactly one
@@ -3230,7 +3230,7 @@ int mutt_index_menu (void)
   }
 
   mutt_menu_destroy (&menu);
-  return (close);
+  return close;
 }
 
 void mutt_set_header_color (CONTEXT *ctx, HEADER *curhdr)

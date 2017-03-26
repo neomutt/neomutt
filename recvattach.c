@@ -150,7 +150,7 @@ ATTACHPTR **mutt_gen_attach_list (BODY *m,
   if (level == 0)
     mutt_update_tree (idx, *idxlen);
 
-  return (idx);
+  return idx;
 }
 
 /* %c = character set: convert?
@@ -384,7 +384,7 @@ const char *mutt_attach_fmt (char *dest,
     mutt_FormatString (dest, destlen, col, cols, ifstring, mutt_attach_fmt, data, 0);
   else if (flags & MUTT_FORMAT_OPTIONAL)
     mutt_FormatString (dest, destlen, col, cols, elsestring, mutt_attach_fmt, data, 0);
-  return (src);
+  return src;
 }
 
 static void attach_entry (char *b, size_t blen, MUTTMENU *menu, int num)
@@ -726,7 +726,7 @@ static int can_print (BODY *top, int tag)
 	  if (!mutt_can_decode (top))
 	  {
 	    mutt_error (_("I don't know how to print %s attachments!"), type);
-	    return (0);
+	    return 0;
 	  }
 	}
       }
@@ -736,7 +736,7 @@ static int can_print (BODY *top, int tag)
     if (!tag)
       break;
   }
-  return (1);
+  return 1;
 }
 
 static void print_attachment_list (FILE *fp, int tag, BODY *top, STATE *state)

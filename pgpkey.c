@@ -274,7 +274,7 @@ static const char *pgp_entry_fmt (char *dest,
     mutt_FormatString (dest, destlen, col, cols, ifstring, mutt_attach_fmt, data, 0);
   else if (flags & MUTT_FORMAT_OPTIONAL)
     mutt_FormatString (dest, destlen, col, cols, elsestring, mutt_attach_fmt, data, 0);
-  return (src);
+  return src;
 }
 
 static void pgp_entry (char *s, size_t l, MUTTMENU * menu, int num)
@@ -644,7 +644,7 @@ static pgp_key_t pgp_select_key (pgp_key_t keys,
 
   set_option (OPTNEEDREDRAW);
 
-  return (kp);
+  return kp;
 }
 
 pgp_key_t pgp_ask_for_key (char *tag, char *whatfor,

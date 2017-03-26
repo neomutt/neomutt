@@ -314,7 +314,7 @@ int rfc3676_handler (BODY * a, STATE * s)
   flush_par (s, &fst);
 
   FREE (&buf);
-  return (0);
+  return 0;
 }
 
 /*

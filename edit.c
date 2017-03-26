@@ -88,7 +88,7 @@ be_snarf_data (FILE *f, char **buf, int *bufmax, int *buflen, LOFF_T offset,
     safe_realloc (&buf, sizeof (char *) * (++*bufmax));
   }
   if (buf) buf[*buflen] = NULL;
-  return (buf);
+  return buf;
 }
 
 static char **
@@ -114,7 +114,7 @@ be_snarf_file (const char *path, char **buf, int *max, int *len, int verbose)
     snprintf(tmp, sizeof(tmp), "%s: %s\n", path, strerror(errno));
     addstr(tmp);
   }
-  return (buf);
+  return buf;
 }
 
 static int be_barf_file (const char *path, char **buf, int buflen)
@@ -126,12 +126,12 @@ static int be_barf_file (const char *path, char **buf, int buflen)
   {
     addstr (strerror (errno));
     addch ('\n');
-    return (-1);
+    return -1;
   }
   for (i = 0; i < buflen; i++) fputs (buf[i], f);
   if (fclose (f) == 0) return 0;
   printw ("fclose: %s\n", strerror (errno));
-  return (-1);
+  return -1;
 }
 
 static void be_free_memory (char **buf, int buflen)
@@ -187,7 +187,7 @@ be_include_messages (char *msg, char **buf, int *bufmax, int *buflen,
       printw (_("%d: invalid message number.\n"), n);
     msg = NULL;
   }
-  return (buf);
+  return buf;
 }
 
 static void be_print_header (ENVELOPE *env)

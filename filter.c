@@ -39,7 +39,7 @@ mutt_create_filter_fd (const char *cmd, FILE **in, FILE **out, FILE **err,
   {
     *in = 0;
     if (pipe (pin) == -1)
-      return (-1);
+      return -1;
   }
 
   if (out)
@@ -52,7 +52,7 @@ mutt_create_filter_fd (const char *cmd, FILE **in, FILE **out, FILE **err,
 	close (pin[0]);
 	close (pin[1]);
       }
-      return (-1);
+      return -1;
     }
   }
 
@@ -71,7 +71,7 @@ mutt_create_filter_fd (const char *cmd, FILE **in, FILE **out, FILE **err,
 	close (pout[0]);
 	close (pout[1]);
       }
-      return (-1);
+      return -1;
     }
   }
 
@@ -148,7 +148,7 @@ mutt_create_filter_fd (const char *cmd, FILE **in, FILE **out, FILE **err,
       close (perr[1]);
     }
 
-    return (-1);
+    return -1;
   }
 
   if (out)
@@ -169,7 +169,7 @@ mutt_create_filter_fd (const char *cmd, FILE **in, FILE **out, FILE **err,
     *err = fdopen (perr[0], "r");
   }
 
-  return (thepid);
+  return thepid;
 }
 
 pid_t mutt_create_filter (const char *s, FILE **in, FILE **out, FILE **err)

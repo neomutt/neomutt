@@ -100,7 +100,7 @@ static void sighandler (int sig)
 #ifdef USE_SLANG_CURSES
 static int mutt_intr_hook (void)
 {
-  return (-1);
+  return -1;
 }
 #endif /* USE_SLANG_CURSES */
 

@@ -48,7 +48,7 @@ static const struct binding_t *help_lookup_function (int op, int menu)
 	return (&map[i]);
   }
 
-  return (NULL);
+  return NULL;
 }
 
 void mutt_make_help (char *d, size_t dlen, const char *txt, int menu, int op)
@@ -188,7 +188,7 @@ static int pad (FILE *f, int col, int i)
   {
     snprintf (fmt, sizeof(fmt), "%%-%ds", i - col);
     fprintf (f, fmt, "");
-    return (i);
+    return i;
   }
   fputc (' ', f);
   return (col + 1);

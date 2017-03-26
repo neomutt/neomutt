@@ -154,7 +154,7 @@ static int check_sig (const char *s, struct line_t *info, int n)
   }
 
   if (count == 0)
-    return (-1);
+    return -1;
 
   if (count > NumSigLines)
   {
@@ -166,10 +166,10 @@ static int check_sig (const char *s, struct line_t *info, int n)
       s++;
     }
 
-    return (-1);
+    return -1;
   }
 
-  return (0);
+  return 0;
 }
 
 static void
@@ -408,7 +408,7 @@ classify_quote (struct q_class_t **QuoteList, const char *qptr,
       class->color = ColorQuote[0];
       *QuoteList = class;
     }
-    return (*QuoteList);
+    return *QuoteList;
   }
 
   /* Did I mention how much I like emulating Lisp in C? */
@@ -1102,7 +1102,7 @@ fill_buffer (FILE *f, LOFF_T *last_pos, LOFF_T offset, unsigned char **buf,
     if ((*buf = (unsigned char *) mutt_read_line ((char *) *buf, blen, f, &l, MUTT_EOL)) == NULL)
     {
       fmt[0] = 0;
-      return (-1);
+      return -1;
     }
     *last_pos = ftello (f);
     b_read = (int) (*last_pos - offset);
@@ -1694,14 +1694,14 @@ mutt_pager (const char *banner, const char *fname, int flags, pager_t *extra)
   if ((fp = fopen (fname, "r")) == NULL)
   {
     mutt_perror (fname);
-    return (-1);
+    return -1;
   }
 
   if (stat (fname, &sb) != 0)
   {
     mutt_perror (fname);
     safe_fclose (&fp);
-    return (-1);
+    return -1;
   }
   unlink (fname);
 

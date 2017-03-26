@@ -108,7 +108,7 @@ time_t mutt_mktime (struct tm *t, int local)
   if (local)
     g -= compute_tz (g, t);
 
-  return (g);
+  return g;
 }
 
 /* Return 1 if month is February of leap year, else 0 */
@@ -119,7 +119,7 @@ static int is_leap_year_feb (struct tm *tm)
     int y = tm->tm_year + 1900;
     return (((y & 3) == 0) && (((y % 100) != 0) || ((y % 400) == 0)));
   }
-  return (0);
+  return 0;
 }
 
 void mutt_normalize_time (struct tm *tm)

@@ -410,7 +410,7 @@ static const char *mix_entry_fmt (char *dest,
     mutt_FormatString (dest, destlen, col, cols, ifstring, mutt_attach_fmt, data, 0);
   else if (flags & MUTT_FORMAT_OPTIONAL)
     mutt_FormatString (dest, destlen, col, cols, elsestring, mutt_attach_fmt, data, 0);
-  return (src);
+  return src;
 }
 
 
@@ -706,7 +706,7 @@ int mix_check_message (HEADER *msg)
     if (!(fqdn = mutt_fqdn (1)))
     {
       mutt_error (_("Please set the hostname variable to a proper value when using mixmaster!"));
-      return (-1);
+      return -1;
     }
 
     /* Cc and Bcc are empty at this point. */

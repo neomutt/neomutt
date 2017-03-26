@@ -88,9 +88,9 @@ static int addrsrc (ADDRESS *a, ADDRESS *lst)
   for (; lst; lst = lst->next)
   {
     if (addrcmp (a, lst))
-      return (1);
+      return 1;
   }
-  return (0);
+  return 0;
 }
 
 /* removes addresses from "b" which are contained in "a" */
@@ -205,7 +205,7 @@ static int edit_address (ADDRESS **a, /* const */ char *field)
     mutt_addrlist_to_local (*a);
     rfc822_write_address (buf, sizeof (buf), *a, 0);
     if (mutt_get_field (field, buf, sizeof (buf), MUTT_ALIAS) != 0)
-      return (-1);
+      return -1;
     rfc822_free_address (a);
     *a = mutt_expand_aliases (mutt_parse_adrlist (NULL, buf));
     if ((idna_ok = mutt_addrlist_to_intl (*a, &err)) != 0)
@@ -233,7 +233,7 @@ static int edit_envelope (ENVELOPE *en, int flags)
     else
       buf[0] = 0;
     if (mutt_get_field ("Newsgroups: ", buf, sizeof (buf), 0) != 0)
-      return (-1);
+      return -1;
     FREE (&en->newsgroups);
     en->newsgroups = safe_strdup (buf);
 
@@ -242,7 +242,7 @@ static int edit_envelope (ENVELOPE *en, int flags)
     else
       buf[0] = 0;
     if (option (OPTASKFOLLOWUP) && mutt_get_field ("Followup-To: ", buf, sizeof (buf), 0) != 0)
-      return (-1);
+      return -1;
     FREE (&en->followup_to);
     en->followup_to = safe_strdup (buf);
 
@@ -251,7 +251,7 @@ static int edit_envelope (ENVELOPE *en, int flags)
     else
       buf[0] = 0;
     if (option (OPTXCOMMENTTO) && option (OPTASKXCOMMENTTO) && mutt_get_field ("X-Comment-To: ", buf, sizeof (buf), 0) != 0)
-      return (-1);
+      return -1;
     FREE (&en->x_comment_to);
     en->x_comment_to = safe_strdup (buf);
   }
@@ -259,21 +259,21 @@ static int edit_envelope (ENVELOPE *en, int flags)
 #endif
   {
     if (edit_address (&en->to, "To: ") == -1 || en->to == NULL)
-      return (-1);
+      return -1;
     if (option (OPTASKCC) && edit_address (&en->cc, "Cc: ") == -1)
-      return (-1);
+      return -1;
     if (option (OPTASKBCC) && edit_address (&en->bcc, "Bcc: ") == -1)
-      return (-1);
+      return -1;
     if (option (OPTREPLYWITHXORIG) &&
 	(flags & (SENDREPLY|SENDLISTREPLY|SENDGROUPREPLY)) &&
 	(edit_address (&en->from, "From: ") == -1))
-      return (-1);
+      return -1;
   }
 
   if (en->subject)
   {
     if (option (OPTFASTREPLY))
-      return (0);
+      return 0;
     else
       strfcpy (buf, en->subject, sizeof (buf));
   }
@@ -296,7 +296,7 @@ static int edit_envelope (ENVELOPE *en, int flags)
       (!buf[0] && query_quadoption (OPT_SUBJECT, _("No subject, abort?")) != MUTT_NO))
   {
     mutt_message (_("No subject, aborting."));
-    return (-1);
+    return -1;
   }
   mutt_str_replace (&en->subject, buf);
 
@@ -564,7 +564,7 @@ static int default_to (ADDRESS **to, ENVELOPE *env, int flags, int hmfupto)
 	break;
 
       default:
-	return (-1); /* abort */
+	return -1; /* abort */
       }
     }
     else
@@ -573,7 +573,7 @@ static int default_to (ADDRESS **to, ENVELOPE *env, int flags, int hmfupto)
   else
     rfc822_append (to, env->from, 0);
 
-  return (0);
+  return 0;
 }
 
 int mutt_fetch_recips (ENVELOPE *out, ENVELOPE *in, int flags)
@@ -600,12 +600,12 @@ int mutt_fetch_recips (ENVELOPE *out, ENVELOPE *in, int flags)
 
     if (in->mail_followup_to && hmfupto == MUTT_YES &&
         default_to (&out->cc, in, flags & SENDLISTREPLY, hmfupto) == MUTT_ABORT)
-      return (-1); /* abort */
+      return -1; /* abort */
   }
   else
   {
     if (default_to (&out->to, in, flags & SENDGROUPREPLY, hmfupto) == MUTT_ABORT)
-      return (-1); /* abort */
+      return -1; /* abort */
 
     if ((flags & SENDGROUPREPLY) && (!in->mail_followup_to || hmfupto != MUTT_YES))
     {
@@ -767,7 +767,7 @@ envelope_defaults (ENVELOPE *env, CONTEXT *ctx, HEADER *cur, int flags)
        * a limit such that none of the tagged message are visible.
        */
       mutt_error (_("No tagged messages are visible!"));
-      return (-1);
+      return -1;
     }
   }
   else
@@ -802,7 +802,7 @@ envelope_defaults (ENVELOPE *env, CONTEXT *ctx, HEADER *cur, int flags)
     if ((flags & SENDLISTREPLY) && !env->to)
     {
       mutt_error (_("No mailing lists found!"));
-      return (-1);
+      return -1;
     }
 
     mutt_make_misc_reply_headers (env, ctx, cur, curenv);
@@ -815,7 +815,7 @@ envelope_defaults (ENVELOPE *env, CONTEXT *ctx, HEADER *cur, int flags)
       make_reference_headers (tag ? NULL : curenv, env, ctx);
   }
 
-  return (0);
+  return 0;
 }
 
 static int
@@ -832,7 +832,7 @@ generate_body (FILE *tempfp,	/* stream for outgoing message */
   if (flags & SENDREPLY)
   {
     if ((i = query_quadoption (OPT_INCLUDE, _("Include message in reply?"))) == MUTT_ABORT)
-      return (-1);
+      return -1;
 
     if (i == MUTT_YES)
     {
@@ -847,7 +847,7 @@ generate_body (FILE *tempfp,	/* stream for outgoing message */
 	    if (include_reply (ctx, h, tempfp) == -1)
 	    {
 	      mutt_error (_("Could not include all requested messages!"));
-	      return (-1);
+	      return -1;
 	    }
 	    fputc ('\n', tempfp);
 	  }
@@ -922,7 +922,7 @@ generate_body (FILE *tempfp,	/* stream for outgoing message */
 
   mutt_clear_error ();
 
-  return (0);
+  return 0;
 }
 
 void mutt_set_followup_to (ENVELOPE *e)
@@ -1026,7 +1026,7 @@ static ADDRESS *set_reverse_name (ENVELOPE *env)
     if (!option (OPTREVREAL))
       FREE (&tmp->personal);
   }
-  return (tmp);
+  return tmp;
 }
 
 ADDRESS *mutt_default_from (void)
@@ -1053,7 +1053,7 @@ ADDRESS *mutt_default_from (void)
     adr->mailbox = safe_strdup (NONULL(Username));
   }
 
-  return (adr);
+  return adr;
 }
 
 static int send_message (HEADER *msg)
@@ -1068,7 +1068,7 @@ static int send_message (HEADER *msg)
   /* Write out the message in MIME form. */
   mutt_mktemp (tempfile, sizeof (tempfile));
   if ((tempfp = safe_fopen (tempfile, "w")) == NULL)
-    return (-1);
+    return -1;
 
 #ifdef USE_SMTP
   old_write_bcc = option (OPTWRITEBCC);
@@ -1092,14 +1092,14 @@ static int send_message (HEADER *msg)
   {
     safe_fclose (&tempfp);
     unlink (tempfile);
-    return (-1);
+    return -1;
   }
 
   if (fclose (tempfp) != 0)
   {
     mutt_perror (tempfile);
     unlink (tempfile);
-    return (-1);
+    return -1;
   }
 
 #ifdef MIXMASTER
@@ -1120,7 +1120,7 @@ static int send_message (HEADER *msg)
   i = mutt_invoke_sendmail (msg->env->from, msg->env->to, msg->env->cc,
 			    msg->env->bcc, tempfile,
                             (msg->content->encoding == ENC8BIT));
-  return (i);
+  return i;
 }
 
 /* rfc2047 encode the content-descriptions */

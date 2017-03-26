@@ -70,7 +70,7 @@ int mutt_parse_score (BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err)
   if (!MoreArgs (s))
   {
     strfcpy (err->data, _("score: too few arguments"), err->dsize);
-    return (-1);
+    return -1;
   }
   pattern = buf->data;
   mutt_buffer_init (buf);
@@ -79,7 +79,7 @@ int mutt_parse_score (BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err)
   {
     FREE (&pattern);
     strfcpy (err->data, _("score: too many arguments"), err->dsize);
-    return (-1);
+    return -1;
   }
 
   /* look for an existing entry and update the value, else add it to the end
@@ -92,7 +92,7 @@ int mutt_parse_score (BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err)
     if ((pat = mutt_pattern_comp (pattern, 0, err)) == NULL)
     {
       FREE (&pattern);
-      return (-1);
+      return -1;
     }
     ptr = safe_calloc (1, sizeof (SCORE));
     if (last)
@@ -117,7 +117,7 @@ int mutt_parse_score (BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err)
   {
     FREE (&pattern);
     strfcpy (err->data, _("Error: score: invalid number"), err->dsize);
-    return (-1);
+    return -1;
   }
   set_option (OPTNEEDRESCORE);
   return 0;

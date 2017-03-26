@@ -508,12 +508,12 @@ int mutt_query_complete (char *buf, size_t buflen)
       rfc822_free_address (&tmpa);
       free_query (&results);
       mutt_clear_error ();
-      return (0);
+      return 0;
     }
     /* multiple results, choose from query menu */
     query_menu (buf, buflen, results, 1);
   }
-  return (0);
+  return 0;
 }
 
 void mutt_query_menu (char *buf, size_t buflen)

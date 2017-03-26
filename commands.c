@@ -116,7 +116,7 @@ int mutt_display_message (HEADER *cur)
   if ((fpout = safe_fopen (tempfile, "w")) == NULL)
   {
     mutt_error (_("Could not create temporary file!"));
-    return (0);
+    return 0;
   }
 
   if (DisplayFilter && *DisplayFilter)
@@ -795,7 +795,7 @@ int mutt_save_message (HEADER *h, int delete,
 
   mutt_pretty_mailbox (buf, sizeof (buf));
   if (mutt_enter_fname (prompt, buf, sizeof (buf), redraw, 0) == -1)
-    return (-1);
+    return -1;
 
   if (*redraw != REDRAW_FULL)
   {
@@ -806,7 +806,7 @@ int mutt_save_message (HEADER *h, int delete,
   }
 
   if (!buf[0])
-    return (-1);
+    return -1;
 
   /* This is an undocumented feature of ELM pointed out to me by Felix von
    * Leitner <leitner@prz.fu-berlin.de>
@@ -921,7 +921,7 @@ int mutt_save_message (HEADER *h, int delete,
       mutt_buffy_cleanup (buf, &st);
 
     mutt_clear_error ();
-    return (0);
+    return 0;
   }
 
   return -1;

@@ -879,7 +879,7 @@ nntp_format_str (char *dest, size_t destlen, size_t col, int cols, char op, cons
       snprintf (dest, destlen, tmp, acct->user);
       break;
   }
-  return (src);
+  return src;
 }
 
 /* Automatically loads a newsrc into memory, if necessary.

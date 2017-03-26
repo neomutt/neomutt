@@ -503,7 +503,7 @@ static char *tls_make_date (time_t t, char *s, size_t len)
   else
     strfcpy (s, _("[invalid date]"), len);
 
-  return (s);
+  return s;
 }
 
 /*

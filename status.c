@@ -296,7 +296,7 @@ status_format_str (char *buf, size_t buflen, size_t col, int cols, char op, cons
 
     case 0:
       *buf = 0;
-      return (src);
+      return src;
 
     default:
       snprintf (buf, buflen, "%%%s%c", prefix, op);
@@ -308,7 +308,7 @@ status_format_str (char *buf, size_t buflen, size_t col, int cols, char op, cons
   else if (flags & MUTT_FORMAT_OPTIONAL)
     _menu_status_line (buf, buflen, col, cols, menu, elsestring);
 
-  return (src);
+  return src;
 }
 
 static void _menu_status_line (char *buf, size_t buflen, size_t col, int cols, MUTTMENU *menu, const char *p)

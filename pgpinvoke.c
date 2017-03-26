@@ -140,7 +140,7 @@ static const char *_mutt_fmt_pgp_command (char *dest,
   else if (flags & MUTT_FORMAT_OPTIONAL)
     mutt_FormatString (dest, destlen, col, cols, elsestring, _mutt_fmt_pgp_command, data, 0);
 
-  return (src);
+  return src;
 }
 
 static void mutt_pgp_command (char *d, size_t dlen, struct pgp_command_context *cctx, const char *fmt)

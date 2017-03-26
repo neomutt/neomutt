@@ -235,7 +235,7 @@ error:
   if (~data & MUTT_GLOBALHOOK) /* NOT a global hook */
     FREE (&pattern.data);
   FREE (&command.data);
-  return (-1);
+  return -1;
 }
 
 static void delete_hook (HOOK *h)
@@ -300,7 +300,7 @@ int mutt_parse_unhook (BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err)
       {
 	snprintf (err->data, err->dsize,
 		 _("unhook: unknown hook type: %s"), buf->data);
-	return (-1);
+	return -1;
       }
       if (current_hook_type == type)
       {
@@ -362,9 +362,9 @@ char *mutt_find_hook (int type, const char *pat)
     if (tmp->type & type)
     {
       if (regexec (tmp->rx.rx, pat, 0, NULL, 0) == 0)
-	return (tmp->command);
+	return tmp->command;
     }
-  return (NULL);
+  return NULL;
 }
 
 void mutt_message_hook (CONTEXT *ctx, HEADER *hdr, int type)
@@ -492,9 +492,9 @@ static char *_mutt_string_hook (const char *match, int hook)
   {
     if ((tmp->type & hook) && ((match &&
 	 regexec (tmp->rx.rx, match, 0, NULL, 0) == 0) ^ tmp->rx.not))
-      return (tmp->command);
+      return tmp->command;
   }
-  return (NULL);
+  return NULL;
 }
 
 static LIST *_mutt_list_hook (const char *match, int hook)
@@ -508,7 +508,7 @@ static LIST *_mutt_list_hook (const char *match, int hook)
         ((match && regexec (tmp->rx.rx, match, 0, NULL, 0) == 0) ^ tmp->rx.not))
       matches = mutt_add_list (matches, tmp->command);
   }
-  return (matches);
+  return matches;
 }
 
 char *mutt_charset_hook (const char *chs)

@@ -34,8 +34,8 @@ ADDRESS *mutt_lookup_alias (const char *s)
 
   for (; t; t = t->next)
     if (mutt_strcasecmp (s, t->name) == 0)
-      return (t->addr);
-  return (NULL);   /* no such alias */
+      return t->addr;
+  return NULL;   /* no such alias */
 }
 
 static ADDRESS *expand_aliases_r (ADDRESS *a, LIST **expn)
@@ -121,7 +121,7 @@ static ADDRESS *expand_aliases_r (ADDRESS *a, LIST **expn)
     rfc822_qualify (head, fqdn);
   }
 
-  return (head);
+  return head;
 }
 
 ADDRESS *mutt_expand_aliases (ADDRESS *a)

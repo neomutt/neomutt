@@ -49,12 +49,12 @@ char *mutt_read_rfc822_line (FILE *f, char *line, size_t *linelen)
 	(ISSPACE (*line) && !offset))			/* end of headers */
     {
       *line = 0;
-      return (line);
+      return line;
     }
 
     len = mutt_strlen (buf);
     if (! len)
-      return (line);
+      return line;
 
     buf += len - 1;
     if (*buf == '\n')
@@ -68,7 +68,7 @@ char *mutt_read_rfc822_line (FILE *f, char *line, size_t *linelen)
       if ((ch = fgetc (f)) != ' ' && ch != '\t')
       {
 	ungetc (ch, f);
-	return (line); /* next line is a separate header field or EOH */
+	return line; /* next line is a separate header field or EOH */
       }
 
       /* eat tabs and spaces from the beginning of the continuation line */
@@ -115,23 +115,23 @@ static LIST *parse_references (char *s, int in_reply_to)
 int mutt_check_encoding (const char *c)
 {
   if (ascii_strncasecmp ("7bit", c, sizeof ("7bit")-1) == 0)
-    return (ENC7BIT);
+    return ENC7BIT;
   else if (ascii_strncasecmp ("8bit", c, sizeof ("8bit")-1) == 0)
-    return (ENC8BIT);
+    return ENC8BIT;
   else if (ascii_strncasecmp ("binary", c, sizeof ("binary")-1) == 0)
-    return (ENCBINARY);
+    return ENCBINARY;
   else if (ascii_strncasecmp ("quoted-printable", c, sizeof ("quoted-printable")-1) == 0)
-    return (ENCQUOTEDPRINTABLE);
+    return ENCQUOTEDPRINTABLE;
   else if (ascii_strncasecmp ("base64", c, sizeof("base64")-1) == 0)
-    return (ENCBASE64);
+    return ENCBASE64;
   else if (ascii_strncasecmp ("x-uuencode", c, sizeof("x-uuencode")-1) == 0)
-    return (ENCUUENCODED);
+    return ENCUUENCODED;
 #ifdef SUN_ATTACHMENT
   else if (ascii_strncasecmp ("uuencode", c, sizeof("uuencode")-1) == 0)
-    return (ENCUUENCODED);
+    return ENCUUENCODED;
 #endif
   else
-    return (ENCOTHER);
+    return ENCOTHER;
 }
 
 static PARAMETER *parse_parameters (const char *s)
@@ -255,7 +255,7 @@ static PARAMETER *parse_parameters (const char *s)
 bail:
 
   rfc2231_decode_parameters (&head);
-  return (head);
+  return head;
 }
 
 int mutt_check_mime_type (const char *s)
@@ -476,7 +476,7 @@ BODY *mutt_read_mime_header (FILE *fp, int digest)
 
   FREE (&line);
 
-  return (p);
+  return p;
 }
 
 void mutt_parse_part (FILE *fp, BODY *b)
@@ -553,7 +553,7 @@ BODY *mutt_parse_message_rfc822 (FILE *fp, BODY *parent)
     msg->length = 0;
 
   mutt_parse_part(fp, msg);
-  return (msg);
+  return msg;
 }
 
 /* parse a multipart structure
@@ -582,7 +582,7 @@ BODY *mutt_parse_multipart (FILE *fp, const char *boundary, LOFF_T end_off, int 
   if (!boundary)
   {
     mutt_error (_("multipart message has no boundary parameter!"));
-    return (NULL);
+    return NULL;
   }
 
   blen = mutt_strlen (boundary);
@@ -657,7 +657,7 @@ BODY *mutt_parse_multipart (FILE *fp, const char *boundary, LOFF_T end_off, int 
   for(last = head; last; last = last->next)
     mutt_parse_part(fp, last);
 
-  return (head);
+  return head;
 }
 
 static const char *uncomment_timezone (char *buf, size_t buflen, const char *tz)
@@ -780,20 +780,20 @@ time_t mutt_parse_date (const char *s, HEADER *h)
     {
       case 0: /* day of the month */
 	if (mutt_atoi (t, &tm.tm_mday) < 0 || tm.tm_mday < 0)
-	  return (-1);
+	  return -1;
 	if (tm.tm_mday > 31)
-	  return (-1);
+	  return -1;
 	break;
 
       case 1: /* month of the year */
 	if ((i = mutt_check_month (t)) < 0)
-	  return (-1);
+	  return -1;
 	tm.tm_mon = i;
 	break;
 
       case 2: /* year */
 	if (mutt_atoi (t, &tm.tm_year) < 0 || tm.tm_year < 0)
-	  return (-1);
+	  return -1;
         if (tm.tm_year < 50)
 	  tm.tm_year += 100;
         else if (tm.tm_year >= 1900)
@@ -808,7 +808,7 @@ time_t mutt_parse_date (const char *s, HEADER *h)
 	else
 	{
 	  mutt_debug (1, "parse_date: could not process time format: %s\n", t);
-	  return(-1);
+	  return -1;
 	}
 	tm.tm_hour = hour;
 	tm.tm_min = min;
@@ -873,7 +873,7 @@ time_t mutt_parse_date (const char *s, HEADER *h)
   if (count < 4) /* don't check for missing timezone */
   {
     mutt_debug (1, "parse_date(): error parsing date format, using received time\n");
-    return (-1);
+    return -1;
   }
 
   if (h)
@@ -1515,7 +1515,7 @@ ENVELOPE *mutt_read_rfc822_header (FILE *f, HEADER *hdr, short user_hdrs,
     }
   }
 
-  return (e);
+  return e;
 }
 
 ADDRESS *mutt_parse_adrlist (ADDRESS *p, const char *s)

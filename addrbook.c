@@ -72,7 +72,7 @@ alias_format_str (char *dest, size_t destlen, size_t col, int cols, char op, con
       break;
   }
 
-  return (src);
+  return src;
 }
 
 static void alias_entry (char *s, size_t slen, MUTTMENU *m, int num)

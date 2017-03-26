@@ -300,7 +300,7 @@ int mutt_thread_set_flag (HEADER *hdr, int flag, int bf, int subthread)
   if ((Sort & SORT_MASK) != SORT_THREADS)
   {
     mutt_error (_("Threading is not enabled."));
-    return (-1);
+    return -1;
   }
 
   if (!subthread)
@@ -312,7 +312,7 @@ int mutt_thread_set_flag (HEADER *hdr, int flag, int bf, int subthread)
     mutt_set_flag (Context, cur->message, flag, bf);
 
   if ((cur = cur->child) == NULL)
-    return (0);
+    return 0;
 
   while (true)
   {
@@ -329,7 +329,7 @@ int mutt_thread_set_flag (HEADER *hdr, int flag, int bf, int subthread)
       {
 	cur = cur->parent;
 	if (cur == start)
-	  return (0);
+	  return 0;
       }
       cur = cur->next;
     }
@@ -351,7 +351,7 @@ int mutt_change_flag (HEADER *h, int bf)
   if (i < 0)
   {
     mutt_window_clearline (MuttMessageWindow, 0);
-    return (-1);
+    return -1;
   }
 
   mutt_window_clearline (MuttMessageWindow, 0);
@@ -399,7 +399,7 @@ int mutt_change_flag (HEADER *h, int bf)
 
     default:
       BEEP ();
-      return (-1);
+      return -1;
   }
 
   if (h)

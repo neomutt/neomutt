@@ -170,7 +170,7 @@ static int union_hash_insert (HASH * table, union hash_key key, void *data)
       if (r == 0)
       {
 	FREE (&ptr);
-	return (-1);
+	return -1;
       }
       if (r > 0)
 	break;
@@ -212,7 +212,7 @@ static struct hash_elem *union_hash_find_elem (const HASH *table, union hash_key
   for (; ptr; ptr = ptr->next)
   {
     if (table->cmp_key (key, ptr->key) == 0)
-      return (ptr);
+      return ptr;
   }
   return NULL;
 }

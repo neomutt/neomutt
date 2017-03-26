@@ -135,7 +135,7 @@ int mutt_protect (HEADER *msg, char *keylist)
     return 0;
 
   if ((msg->security & SIGN) && !crypt_valid_passphrase (msg->security))
-    return (-1);
+    return -1;
 
   if ((WithCrypto & APPLICATION_PGP) && ((msg->security & PGPINLINE) == PGPINLINE))
   {
@@ -242,7 +242,7 @@ int mutt_protect (HEADER *msg, char *keylist)
       if (!tmp_pbody)
       {
 	/* signed ? free it! */
-	return (-1);
+	return -1;
       }
       /* free tmp_body if messages was signed AND encrypted ... */
       if (tmp_smime_pbody != msg->content && tmp_smime_pbody != tmp_pbody)
@@ -284,7 +284,7 @@ int mutt_protect (HEADER *msg, char *keylist)
 	  mutt_free_body (&tmp_pgp_pbody->next);
 	}
 
-	return (-1);
+	return -1;
       }
 
       /* destroy temporary signature envelope when doing retainable
@@ -833,7 +833,7 @@ int crypt_get_keys (HEADER *msg, char **keylist, int oppenc_mode)
        if ((*keylist = crypt_pgp_findkeys (adrlist, oppenc_mode)) == NULL)
        {
            rfc822_free_address (&adrlist);
-           return (-1);
+           return -1;
        }
        unset_option (OPTPGPCHECKTRUST);
      }
@@ -843,14 +843,14 @@ int crypt_get_keys (HEADER *msg, char **keylist, int oppenc_mode)
        if ((*keylist = crypt_smime_findkeys (adrlist, oppenc_mode)) == NULL)
        {
            rfc822_free_address (&adrlist);
-           return (-1);
+           return -1;
        }
      }
   }
 
   rfc822_free_address (&adrlist);
 
-  return (0);
+  return 0;
 }
 
 

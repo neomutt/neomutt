@@ -107,10 +107,10 @@ event_t mutt_getch (void)
   event_t timeout = {-2, OP_NULL};
 
   if (UngetCount)
-    return (UngetKeyEvents[--UngetCount]);
+    return UngetKeyEvents[--UngetCount];
 
   if (!option(OPTIGNOREMACROEVENTS) && MacroBufferCount)
-    return (MacroEvents[--MacroBufferCount]);
+    return MacroEvents[--MacroBufferCount];
 
   SigInt = 0;
 
@@ -177,7 +177,7 @@ int _mutt_get_field (const char *field, char *buf, size_t buflen, int complete, 
   mutt_window_clearline (MuttMessageWindow, 0);
   mutt_free_enter_state (&es);
 
-  return (ret);
+  return ret;
 }
 
 int mutt_get_field_unbuffered (char *msg, char *buf, size_t buflen, int flags)
@@ -188,7 +188,7 @@ int mutt_get_field_unbuffered (char *msg, char *buf, size_t buflen, int flags)
   rc = mutt_get_field (msg, buf, buflen, flags);
   unset_option (OPTIGNOREMACROEVENTS);
 
-  return (rc);
+  return rc;
 }
 
 void mutt_clear_error (void)
@@ -318,7 +318,7 @@ int mutt_yesorno (const char *msg, int def)
      * mutt_message() so it isn't displayed when the screen is refreshed. */
     mutt_clear_error();
   }
-  return (def);
+  return def;
 }
 
 /* this function is called when the user presses the abort key */
@@ -770,7 +770,7 @@ int mutt_any_key_to_continue (const char *s)
   close (f);
   fputs ("\r\n", stdout);
   mutt_clear_error ();
-  return (ch);
+  return ch;
 }
 
 int mutt_do_pager (const char *banner,
@@ -820,7 +820,7 @@ int _mutt_enter_fname (const char *prompt, char *buf, size_t blen,
   if (ch.ch < 0)
   {
     mutt_window_clearline (MuttMessageWindow, 0);
-    return (-1);
+    return -1;
   }
   else if (ch.ch == '?')
   {

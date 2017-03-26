@@ -60,7 +60,7 @@
 	{ \
 	  snprintf (err->data, err->dsize, \
 	    _("Not available in this menu.")); \
-	  return (-1); \
+	  return -1; \
 	}
 
 typedef struct myvar
@@ -202,12 +202,12 @@ int query_quadoption (int opt, const char *prompt)
   {
     case MUTT_YES:
     case MUTT_NO:
-      return (v);
+      return v;
 
     default:
       v = mutt_yesorno (prompt, (v == MUTT_ASKYES));
       mutt_window_clearline (MuttMessageWindow, 0);
-      return (v);
+      return v;
   }
 
   /* not reached */
@@ -222,7 +222,7 @@ int mutt_option_index (const char *s)
   for (i = 0; MuttVars[i].option; i++)
     if (mutt_strcmp (s, MuttVars[i].option) == 0)
       return (MuttVars[i].type == DT_SYN ?  mutt_option_index ((char *) MuttVars[i].data) : i);
-  return (-1);
+  return -1;
 }
 
 #ifdef USE_LUA
@@ -332,7 +332,7 @@ parse_sort (short *val, const char *s, const struct mapping_t *map, BUFFER *err)
   if ((i = mutt_getvaluebyname (s, map)) == -1)
   {
     snprintf (err->data, err->dsize, _("%s: unknown sorting method"), s);
-    return (-1);
+    return -1;
   }
 
   *val = i | flags;
@@ -1712,7 +1712,7 @@ static int parse_alias (BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err)
   if (!MoreArgs (s))
   {
     strfcpy (err->data, _("alias: no address"), err->dsize);
-    return (-1);
+    return -1;
   }
 
   mutt_extract_token (buf, s, 0);
@@ -1846,7 +1846,7 @@ static int parse_my_hdr (BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err
   if ((p = strpbrk (buf->data, ": \t")) == NULL || *p != ':')
   {
     strfcpy (err->data, _("invalid header field"), err->dsize);
-    return (-1);
+    return -1;
   }
   keylen = p - buf->data + 1;
 
@@ -2291,7 +2291,7 @@ static int parse_set (BUFFER *tmp, BUFFER *s, unsigned long data, BUFFER *err)
 	!(reset && (mutt_strcmp ("all", tmp->data) == 0)))
     {
       snprintf (err->data, err->dsize, _("%s: unknown variable"), tmp->data);
-      return (-1);
+      return -1;
     }
     SKIPWS (s->dptr);
 
@@ -2300,13 +2300,13 @@ static int parse_set (BUFFER *tmp, BUFFER *s, unsigned long data, BUFFER *err)
       if (query || unset || inv)
       {
 	snprintf (err->data, err->dsize, _("prefix is illegal with reset"));
-	return (-1);
+	return -1;
       }
 
       if (s && *s->dptr == '=')
       {
 	snprintf (err->data, err->dsize, _("value is illegal with reset"));
-	return (-1);
+	return -1;
       }
 
       if (mutt_strcmp ("all", tmp->data) == 0)
@@ -2314,7 +2314,7 @@ static int parse_set (BUFFER *tmp, BUFFER *s, unsigned long data, BUFFER *err)
 	if (CurrentMenu == MENU_PAGER)
 	{
 	  snprintf (err->data, err->dsize, _("Not available in this menu."));
-	  return (-1);
+	  return -1;
 	}
 	for (idx = 0; MuttVars[idx].option; idx++)
 	  restore_default (&MuttVars[idx]);
@@ -2342,7 +2342,7 @@ static int parse_set (BUFFER *tmp, BUFFER *s, unsigned long data, BUFFER *err)
 	if (unset || inv || query)
 	{
 	  snprintf (err->data, err->dsize, _("Usage: set variable=yes|no"));
-	  return (-1);
+	  return -1;
 	}
 
 	s->dptr++;
@@ -2354,7 +2354,7 @@ static int parse_set (BUFFER *tmp, BUFFER *s, unsigned long data, BUFFER *err)
 	else
 	{
 	  snprintf (err->data, err->dsize, _("Usage: set variable=yes|no"));
-	  return (-1);
+	  return -1;
 	}
       }
 
@@ -2407,7 +2407,7 @@ static int parse_set (BUFFER *tmp, BUFFER *s, unsigned long data, BUFFER *err)
           else
           {
             snprintf (err->data, err->dsize, _("%s: unknown variable"), myvar);
-            return (-1);
+            return -1;
           }
         }
 	else if (DTYPE (MuttVars[idx].type) == DT_ADDR)
@@ -2474,7 +2474,7 @@ static int parse_set (BUFFER *tmp, BUFFER *s, unsigned long data, BUFFER *err)
 	  {
 	    snprintf (err->data, err->dsize, _("Invalid value for option %s: \"%s\""),
 		      MuttVars[idx].option, tmp->data);
-	    return (-1);
+	    return -1;
 	  }
 
 	  FREE ((void *) MuttVars[idx].data);		/* __FREE_CHECKED__ */
@@ -2798,7 +2798,7 @@ static int parse_set (BUFFER *tmp, BUFFER *s, unsigned long data, BUFFER *err)
 #endif
     }
   }
-  return (r);
+  return r;
 }
 
 /* Stack structure
@@ -2873,7 +2873,7 @@ static int source_rc (const char *rcfile_path, BUFFER *err)
       if (!to_absolute_path(rcfile, mutt_front_list(MuttrcStack)))
       {
         mutt_error("Error: impossible to build path of '%s'.", rcfile_path);
-        return (-1);
+        return -1;
       }
 
       if (!MuttrcStack || mutt_find_list(MuttrcStack, rcfile) == NULL)
@@ -2883,7 +2883,7 @@ static int source_rc (const char *rcfile_path, BUFFER *err)
       else
       {
         mutt_error("Error: Cyclic sourcing of configuration file '%s'.", rcfile);
-        return (-1);
+        return -1;
       }
   }
 
@@ -2892,7 +2892,7 @@ static int source_rc (const char *rcfile_path, BUFFER *err)
   if ((f = mutt_open_read (rcfile, &pid)) == NULL)
   {
     snprintf (err->data, err->dsize, "%s: %s", rcfile, strerror (errno));
-    return (-1);
+    return -1;
   }
 
   mutt_buffer_init (&token);
@@ -2940,7 +2940,7 @@ static int source_rc (const char *rcfile_path, BUFFER *err)
 
   mutt_pop_list(&MuttrcStack);
 
-  return (rc);
+  return rc;
 }
 
 #undef MAXERRS
@@ -2952,12 +2952,12 @@ static int parse_source (BUFFER *tmp, BUFFER *s, unsigned long data, BUFFER *err
   if (mutt_extract_token (tmp, s, 0) != 0)
   {
     snprintf (err->data, err->dsize, _("source: error at %s"), s->dptr);
-    return (-1);
+    return -1;
   }
   if (MoreArgs (s))
   {
     strfcpy (err->data, _("source: too many arguments"), err->dsize);
-    return (-1);
+    return -1;
   }
   strfcpy (path, tmp->data, sizeof (path));
   mutt_expand_path (path, sizeof (path));
@@ -3653,7 +3653,7 @@ const char *mutt_getnamebyvalue (int val, const struct mapping_t *map)
 
   for (i=0; map[i].name; i++)
     if (map[i].value == val)
-      return (map[i].name);
+      return map[i].name;
   return NULL;
 }
 
@@ -3663,8 +3663,8 @@ int mutt_getvaluebyname (const char *name, const struct mapping_t *map)
 
   for (i = 0; map[i].name; i++)
     if (ascii_strcasecmp (map[i].name, name) == 0)
-      return (map[i].value);
-  return (-1);
+      return map[i].value;
+  return -1;
 }
 
 #ifdef DEBUG

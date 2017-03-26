@@ -126,7 +126,7 @@ mutt_copy_hdr (FILE *in, FILE *out, LOFF_T off_start, LOFF_T off_end, int flags,
       }
 
       if (!ignore && fputs (buf, out) == EOF)
-	return (-1);
+	return -1;
     }
     return 0;
   }
@@ -320,8 +320,8 @@ mutt_copy_hdr (FILE *in, FILE *out, LOFF_T off_start, LOFF_T off_end, int flags,
   FREE (&headers);
 
   if (error)
-    return (-1);
-  return (0);
+    return -1;
+  return 0;
 }
 
 /* flags
@@ -654,7 +654,7 @@ _mutt_copy_message (FILE *fpout, FILE *fpin, HEADER *hdr, BODY *body,
 	hdr->content->type == TYPEMULTIPART)
     {
       if (crypt_pgp_decrypt_mime (fpin, &fp, hdr->content, &cur))
-	return (-1);
+	return -1;
       fputs ("MIME-Version: 1.0\n", fpout);
     }
 
@@ -663,7 +663,7 @@ _mutt_copy_message (FILE *fpout, FILE *fpin, HEADER *hdr, BODY *body,
 	     && hdr->content->type == TYPEAPPLICATION)
     {
       if (crypt_smime_decrypt_mime (fpin, &fp, hdr->content, &cur))
-	return (-1);
+	return -1;
     }
 
     if (!cur)
@@ -680,7 +680,7 @@ _mutt_copy_message (FILE *fpout, FILE *fpin, HEADER *hdr, BODY *body,
     {
       safe_fclose (&fp);
       mutt_free_body (&cur);
-      return (-1);
+      return -1;
     }
     mutt_free_body (&cur);
     safe_fclose (&fp);

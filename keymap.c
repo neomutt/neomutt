@@ -133,7 +133,7 @@ static struct keymap_t *alloc_keys (int len, keycode_t *keys)
   p->len = len;
   p->keys = safe_malloc (len * sizeof (keycode_t));
   memcpy (p->keys, keys, len * sizeof (keycode_t));
-  return (p);
+  return p;
 }
 
 static int parse_fkey(char *s)
@@ -587,7 +587,7 @@ static const char *km_keyname (int c)
     snprintf (buf, sizeof (buf), "%c", (unsigned char) c);
   else
     snprintf (buf, sizeof (buf), "\\x%hx", (unsigned short) c);
-  return (buf);
+  return buf;
 }
 
 int km_expand_key (char *s, size_t len, struct keymap_t *map)
@@ -596,7 +596,7 @@ int km_expand_key (char *s, size_t len, struct keymap_t *map)
   int p = 0;
 
   if (!map)
-    return (0);
+    return 0;
 
   while (true)
   {
@@ -604,7 +604,7 @@ int km_expand_key (char *s, size_t len, struct keymap_t *map)
     len -= (l = mutt_strlen (s));
 
     if (++p >= map->len || !len)
-      return (1);
+      return 1;
 
     s += l;
   }
@@ -619,7 +619,7 @@ struct keymap_t *km_find_func (int menu, int func)
   for (; map; map = map->next)
     if (map->op == func)
       break;
-  return (map);
+  return map;
 }
 
 #ifdef NCURSES_VERSION
@@ -871,7 +871,7 @@ int mutt_parse_push (BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err)
   }
   else
     tokenize_push_macro_string (buf->data);
-  return (r);
+  return r;
 }
 
 /* expects to see: <menu-string>,<menu-string>,... <key-string> */
@@ -914,7 +914,7 @@ char *parse_keymap (int *menu, BUFFER *s, int maxmenus, int *nummenus, BUFFER *e
       strfcpy (err->data, _("null key sequence"), err->dsize);
     }
     else if (MoreArgs (s))
-      return (buf.data);
+      return buf.data;
   }
   else
   {
@@ -922,7 +922,7 @@ char *parse_keymap (int *menu, BUFFER *s, int maxmenus, int *nummenus, BUFFER *e
   }
 error:
   FREE (&buf.data);
-  return (NULL);
+  return NULL;
 }
 
 static int
@@ -934,9 +934,9 @@ try_bind (char *key, int menu, char *func, const struct binding_t *bindings)
     if (mutt_strcmp (func, bindings[i].name) == 0)
     {
       km_bindkey (key, menu, bindings[i].op);
-      return (0);
+      return 0;
     }
-  return (-1);
+  return -1;
 }
 
 const struct binding_t *km_get_table (int menu)
@@ -992,7 +992,7 @@ int mutt_parse_bind (BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err)
 
   if ((key = parse_keymap (menu, s, sizeof (menu)/sizeof (menu[0]),
 			   &nummenus, err)) == NULL)
-    return (-1);
+    return -1;
 
   /* function to execute */
   mutt_extract_token (buf, s, 0);
@@ -1028,7 +1028,7 @@ int mutt_parse_bind (BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err)
     }
   }
   FREE (&key);
-  return (r);
+  return r;
 }
 
 /* macro <menu> <key> <macro> <description> */
@@ -1039,7 +1039,7 @@ int mutt_parse_macro (BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err)
   char *key = NULL;
 
   if ((key = parse_keymap (menu, s, sizeof (menu) / sizeof (menu[0]), &nummenus, err)) == NULL)
-    return (-1);
+    return -1;
 
   mutt_extract_token (buf, s, MUTT_TOKEN_CONDENSE);
   /* make sure the macro sequence is not an empty string */
@@ -1079,7 +1079,7 @@ int mutt_parse_macro (BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err)
     }
   }
   FREE (&key);
-  return (r);
+  return r;
 }
 
 /* exec function-name */
@@ -1093,7 +1093,7 @@ int mutt_parse_exec (BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err)
   if (!MoreArgs (s))
   {
     strfcpy (err->data, _("exec: no arguments"), err->dsize);
-    return (-1);
+    return -1;
   }
 
   do
@@ -1113,7 +1113,7 @@ int mutt_parse_exec (BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err)
     {
       mutt_flushinp ();
       mutt_error (_("%s: no such function"), function);
-      return (-1);
+      return -1;
     }
     nops++;
   }

@@ -1854,7 +1854,7 @@ int pgp_gpgme_decrypt_mime (FILE *fpin, FILE **fpout, BODY *b, BODY **cur)
     if ((decoded_fp = safe_fopen (tempfile, "w+")) == NULL)
     {
       mutt_perror (tempfile);
-      return (-1);
+      return -1;
     }
     unlink (tempfile);
 
@@ -2958,7 +2958,7 @@ static const char *crypt_entry_fmt (char *dest,
     mutt_FormatString (dest, destlen, col, cols, ifstring, mutt_attach_fmt, data, 0);
   else if (flags & MUTT_FORMAT_OPTIONAL)
     mutt_FormatString (dest, destlen, col, cols, elsestring, mutt_attach_fmt, data, 0);
-  return (src);
+  return src;
 }
 
 /* Used by the display function to format a line. */
@@ -4535,7 +4535,7 @@ static char *find_keys (ADDRESS *adrlist, unsigned int app, int oppenc_mode)
 
       mutt_free_list (&crypt_hook_list);
     }
-  return (keylist);
+  return keylist;
 }
 
 char *pgp_gpgme_findkeys (ADDRESS *adrlist, int oppenc_mode)
@@ -4824,7 +4824,7 @@ static int gpgme_send_menu (HEADER *msg, int *redraw, int is_smime)
     }
   }
 
-  return (msg->security);
+  return msg->security;
 }
 
 int pgp_gpgme_send_menu (HEADER *msg, int *redraw)

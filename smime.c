@@ -137,7 +137,7 @@ int smime_valid_passphrase (void)
   if (mutt_get_password (_("Enter S/MIME passphrase:"), SmimePass, sizeof (SmimePass)) == 0)
     {
       SmimeExptime = time (NULL) + SmimeTimeout;
-      return (1);
+      return 1;
     }
   else
     SmimeExptime = 0;
@@ -286,7 +286,7 @@ static const char *_mutt_fmt_smime_command (char *dest,
     mutt_FormatString (dest, destlen, col, cols, elsestring, _mutt_fmt_smime_command,
 		       data, 0);
 
-  return (src);
+  return src;
 }
 
 
@@ -912,7 +912,7 @@ char *smime_find_keys (ADDRESS *adrlist, int oppenc_mode)
 
     smime_free_key (&key);
   }
-  return (keylist);
+  return keylist;
 }
 
 
@@ -1375,7 +1375,7 @@ BODY *smime_build_smime_entity (BODY *a, char *certlist)
   if ((fpout = safe_fopen (tempfile, "w+")) == NULL)
   {
     mutt_perror (tempfile);
-    return (NULL);
+    return NULL;
   }
 
   mutt_mktemp (smimeerrfile, sizeof (smimeerrfile));
@@ -1427,7 +1427,7 @@ BODY *smime_build_smime_entity (BODY *a, char *certlist)
     mutt_unlink (smimeinfile);
     mutt_unlink (certfile);
     safe_fclose (&fpout);
-    return (NULL);
+    return NULL;
   }
 
   safe_fclose (&smimein);
@@ -1459,7 +1459,7 @@ BODY *smime_build_smime_entity (BODY *a, char *certlist)
     /* fatal error while trying to encrypt message */
     if (!err) mutt_any_key_to_continue (_("No output from OpenSSL..."));
     mutt_unlink (tempfile);
-    return (NULL);
+    return NULL;
   }
 
   t = mutt_new_body ();
@@ -1476,7 +1476,7 @@ BODY *smime_build_smime_entity (BODY *a, char *certlist)
   t->parts=0;
   t->next=0;
 
-  return (t);
+  return t;
 }
 
 
@@ -1616,7 +1616,7 @@ BODY *smime_sign_message (BODY *a )
   {
     mutt_any_key_to_continue (_("No output from OpenSSL..."));
     mutt_unlink (signedfile);
-    return (NULL); /* fatal error while signing */
+    return NULL; /* fatal error while signing */
   }
 
   t = mutt_new_body ();
@@ -1649,7 +1649,7 @@ BODY *smime_sign_message (BODY *a )
   t->encoding = ENCBASE64;
   t->unlink = 1; /* ok to remove this file after sending. */
 
-  return (a);
+  return a;
 
 }
 
@@ -2003,7 +2003,7 @@ static BODY *smime_handle_entity (BODY *m, STATE *s, FILE *outFile)
   }
   safe_fclose (&smimeerr);
 
-  return (p);
+  return p;
 }
 
 
@@ -2036,7 +2036,7 @@ int smime_decrypt_mime (FILE *fpin, FILE **fpout, BODY *b, BODY **cur)
   if ((tmpfp = safe_fopen (tempfile, "w+")) == NULL)
   {
     mutt_perror (tempfile);
-    return (-1);
+    return -1;
   }
 
   mutt_unlink (tempfile);
@@ -2273,6 +2273,6 @@ int smime_send_menu (HEADER *msg, int *redraw)
     }
   }
 
-  return (msg->security);
+  return msg->security;
 }
 

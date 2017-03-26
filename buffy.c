@@ -93,10 +93,10 @@ static int fseek_last_message (FILE * f)
   if (mutt_strncmp ("From ", buffer, 5) == 0)
   {
     fseek (f, 0, 0);
-    return (0);
+    return 0;
   }
 
-  return (-1);
+  return -1;
 }
 
 /* Return 1 if the last message is new */
@@ -107,7 +107,7 @@ static int test_last_status_new (FILE * f)
   int result = 0;
 
   if (fseek_last_message (f) == -1)
-    return (0);
+    return 0;
 
   hdr = mutt_new_header ();
   tmp_envelope = mutt_read_rfc822_header (f, hdr, 0, 0);
@@ -766,7 +766,7 @@ int mutt_buffy_check (int force)
 #endif
 
   BuffyDoneTime = BuffyTime;
-  return (BuffyCount);
+  return BuffyCount;
 }
 
 int mutt_buffy_list (void)
@@ -814,13 +814,13 @@ int mutt_buffy_list (void)
   if (!first)
   {
     mutt_message ("%s", buffylist);
-    return (1);
+    return 1;
   }
   /* there were no mailboxes needing to be notified, so clean up since
    * BuffyNotify has somehow gotten out of sync
    */
   BuffyNotify = 0;
-  return (0);
+  return 0;
 }
 
 void mutt_buffy_setnotified (const char *path)
@@ -841,7 +841,7 @@ int mutt_buffy_notify (void)
   {
     return (mutt_buffy_list ());
   }
-  return (0);
+  return 0;
 }
 
 /*

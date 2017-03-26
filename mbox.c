@@ -62,7 +62,7 @@ static int mbox_lock_mailbox (CONTEXT *ctx, int excl, int retry)
     return 0;
   }
 
-  return (r);
+  return r;
 }
 
 static void mbox_unlock_mailbox (CONTEXT *ctx)
@@ -95,7 +95,7 @@ static int mmdf_parse_mailbox (CONTEXT *ctx)
   if (stat (ctx->path, &sb) == -1)
   {
     mutt_perror (ctx->path);
-    return (-1);
+    return -1;
   }
   ctx->atime = sb.st_atime;
   ctx->mtime = sb.st_mtime;
@@ -156,7 +156,7 @@ static int mmdf_parse_mailbox (CONTEXT *ctx)
 	{
 	  mutt_debug (1, "mmdf_parse_mailbox: fseek() failed\n");
 	  mutt_error (_("Mailbox is corrupt!"));
-	  return (-1);
+	  return -1;
 	}
       }
       else
@@ -213,7 +213,7 @@ static int mmdf_parse_mailbox (CONTEXT *ctx)
     {
       mutt_debug (1, "mmdf_parse_mailbox: corrupt mailbox!\n");
       mutt_error (_("Mailbox is corrupt!"));
-      return (-1);
+      return -1;
     }
   }
 
@@ -253,7 +253,7 @@ static int mbox_parse_mailbox (CONTEXT *ctx)
   if (stat (ctx->path, &sb) == -1)
   {
     mutt_perror (ctx->path);
-    return (-1);
+    return -1;
   }
 
   ctx->size = sb.st_size;
@@ -435,13 +435,13 @@ static int mbox_open_mailbox (CONTEXT *ctx)
   if ((ctx->fp = fopen (ctx->path, "r")) == NULL)
   {
     mutt_perror (ctx->path);
-    return (-1);
+    return -1;
   }
   mutt_block_signals ();
   if (mbox_lock_mailbox (ctx, 0, 1) == -1)
   {
     mutt_unblock_signals ();
-    return (-1);
+    return -1;
   }
 
   if (ctx->magic == MUTT_MBOX)
@@ -454,7 +454,7 @@ static int mbox_open_mailbox (CONTEXT *ctx)
 
   mbox_unlock_mailbox (ctx);
   mutt_unblock_signals ();
-  return (rc);
+  return rc;
 }
 
 static int mbox_open_mailbox_append (CONTEXT *ctx, int flags)
@@ -553,15 +553,15 @@ static int strict_addrcmp (const ADDRESS *a, const ADDRESS *b)
   {
     if ((mutt_strcmp (a->mailbox, b->mailbox) != 0) ||
 	(mutt_strcmp (a->personal, b->personal) != 0))
-      return (0);
+      return 0;
 
     a = a->next;
     b = b->next;
   }
   if (a || b)
-    return (0);
+    return 0;
 
-  return (1);
+  return 1;
 }
 
 static int strict_cmp_lists (const LIST *a, const LIST *b)
@@ -569,15 +569,15 @@ static int strict_cmp_lists (const LIST *a, const LIST *b)
   while (a && b)
   {
     if (mutt_strcmp (a->data, b->data) != 0)
-      return (0);
+      return 0;
 
     a = a->next;
     b = b->next;
   }
   if (a || b)
-    return (0);
+    return 0;
 
-  return (1);
+  return 1;
 }
 
 static int strict_cmp_envelopes (const ENVELOPE *e1, const ENVELOPE *e2)
@@ -593,16 +593,16 @@ static int strict_cmp_envelopes (const ENVELOPE *e1, const ENVELOPE *e2)
 	!strict_addrcmp (e1->to, e2->to) ||
 	!strict_addrcmp (e1->cc, e2->cc) ||
 	!strict_addrcmp (e1->return_path, e2->return_path))
-      return (0);
+      return 0;
     else
-      return (1);
+      return 1;
   }
   else
   {
     if (e1 == NULL && e2 == NULL)
-      return (1);
+      return 1;
     else
-      return (0);
+      return 0;
   }
 }
 
@@ -612,15 +612,15 @@ static int strict_cmp_parameters (const PARAMETER *p1, const PARAMETER *p2)
   {
     if ((mutt_strcmp (p1->attribute, p2->attribute) != 0) ||
 	(mutt_strcmp (p1->value, p2->value) != 0))
-      return (0);
+      return 0;
 
     p1 = p1->next;
     p2 = p2->next;
   }
   if (p1 || p2)
-    return (0);
+    return 0;
 
-  return (1);
+  return 1;
 }
 
 static int strict_cmp_bodies (const BODY *b1, const BODY *b2)
@@ -631,8 +631,8 @@ static int strict_cmp_bodies (const BODY *b1, const BODY *b2)
       (mutt_strcmp (b1->description, b2->description) != 0) ||
       !strict_cmp_parameters (b1->parameter, b2->parameter) ||
       b1->length != b2->length)
-    return (0);
-  return (1);
+    return 0;
+  return 1;
 }
 
 /* return 1 if headers are strictly identical */
@@ -650,16 +650,16 @@ int mbox_strict_cmp_headers (const HEADER *h1, const HEADER *h2)
 	h1->mime != h2->mime ||
 	!strict_cmp_envelopes (h1->env, h2->env) ||
 	!strict_cmp_bodies (h1->content, h2->content))
-      return (0);
+      return 0;
     else
-      return (1);
+      return 1;
   }
   else
   {
     if (h1 == NULL && h2 == NULL)
-      return (1);
+      return 1;
     else
-      return (0);
+      return 0;
   }
 }
 
@@ -754,7 +754,7 @@ static int reopen_mailbox (CONTEXT *ctx, int *index_hint)
     FREE (&old_hdrs);
 
     ctx->quiet = 0;
-    return (-1);
+    return -1;
   }
 
   mutt_touch_atime (fileno (ctx->fp));
@@ -860,13 +860,13 @@ static int mbox_check_mailbox (CONTEXT *ctx, int *index_hint)
   if (stat (ctx->path, &st) == 0)
   {
     if (st.st_mtime == ctx->mtime && st.st_size == ctx->size)
-      return (0);
+      return 0;
 
     if (st.st_size == ctx->size)
     {
       /* the file was touched, but it is still the same length, so just exit */
       ctx->mtime = st.st_mtime;
-      return (0);
+      return 0;
     }
 
     if (st.st_size > ctx->size)
@@ -882,7 +882,7 @@ static int mbox_check_mailbox (CONTEXT *ctx, int *index_hint)
 	   * probably the new mail arrived: no reason to wait till we can
 	   * parse it: we'll get it on the next pass
 	   */
-	  return (MUTT_LOCKED);
+	  return MUTT_LOCKED;
 	}
 	unlock = 1;
       }
@@ -918,7 +918,7 @@ static int mbox_check_mailbox (CONTEXT *ctx, int *index_hint)
 	    mutt_unblock_signals ();
 	  }
 
-	  return (MUTT_NEW_MAIL); /* signal that new mail arrived */
+	  return MUTT_NEW_MAIL; /* signal that new mail arrived */
 	}
 	else
 	  modified = 1;
@@ -942,7 +942,7 @@ static int mbox_check_mailbox (CONTEXT *ctx, int *index_hint)
 	mbox_unlock_mailbox (ctx);
 	mutt_unblock_signals ();
       }
-      return (MUTT_REOPENED);
+      return MUTT_REOPENED;
     }
   }
 
@@ -952,7 +952,7 @@ static int mbox_check_mailbox (CONTEXT *ctx, int *index_hint)
   mx_fastclose_mailbox (ctx);
   mutt_unblock_signals ();
   mutt_error (_("Mailbox was corrupted!"));
-  return (-1);
+  return -1;
 }
 
 /*
@@ -1034,7 +1034,7 @@ static int mbox_sync_mailbox (CONTEXT *ctx, int *index_hint)
   {
     mx_fastclose_mailbox (ctx);
     mutt_error (_("Fatal error!  Could not reopen mailbox!"));
-    return (-1);
+    return -1;
   }
 
   mutt_block_signals ();
@@ -1056,7 +1056,7 @@ static int mbox_sync_mailbox (CONTEXT *ctx, int *index_hint)
   }
   else if (i < 0)
     /* fatal error */
-    return (-1);
+    return -1;
 
   /* Create a temporary file to write the new version of the mailbox in. */
   mutt_mktemp (tempfile, sizeof (tempfile));
@@ -1220,7 +1220,7 @@ static int mbox_sync_mailbox (CONTEXT *ctx, int *index_hint)
     mutt_sleep (5);
     FREE (&newOffset);
     FREE (&oldOffset);
-    return (-1);
+    return -1;
   }
 
   if (fseeko (ctx->fp, offset, SEEK_SET) != 0 ||  /* seek the append location */
@@ -1285,7 +1285,7 @@ static int mbox_sync_mailbox (CONTEXT *ctx, int *index_hint)
     mutt_sleep (5);
     FREE (&newOffset);
     FREE (&oldOffset);
-    return (-1);
+    return -1;
   }
 
   /* Restore the previous access/modification times */
@@ -1300,7 +1300,7 @@ static int mbox_sync_mailbox (CONTEXT *ctx, int *index_hint)
     mutt_error (_("Fatal error!  Could not reopen mailbox!"));
     FREE (&newOffset);
     FREE (&oldOffset);
-    return (-1);
+    return -1;
   }
 
   /* update the offsets of the rewritten messages */
@@ -1326,7 +1326,7 @@ static int mbox_sync_mailbox (CONTEXT *ctx, int *index_hint)
       mutt_update_mailbox (tmp);
   }
 
-  return (0); /* signal success */
+  return 0; /* signal success */
 
 bail:  /* Come here in case of disaster */
 
@@ -1356,7 +1356,7 @@ bail:  /* Come here in case of disaster */
   {
     mutt_error (_("Could not reopen mailbox!"));
     mx_fastclose_mailbox (ctx);
-    return (-1);
+    return -1;
   }
 
   if (need_sort)

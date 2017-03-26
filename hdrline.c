@@ -1231,7 +1231,7 @@ hdr_format_str (char *dest,
   else if (flags & MUTT_FORMAT_OPTIONAL)
     mutt_FormatString (dest, destlen, col, cols, elsestring, hdr_format_str, (unsigned long) hfi, flags);
 
-  return (src);
+  return src;
 #undef THREAD_NEW
 #undef THREAD_OLD
 }

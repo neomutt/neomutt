@@ -441,7 +441,7 @@ folder_format_str (char *dest, size_t destlen, size_t col, int cols, char op, co
   else if (flags & MUTT_FORMAT_OPTIONAL)
     mutt_FormatString (dest, destlen, col, cols, elsestring, folder_format_str, data, 0);
 
-  return (src);
+  return src;
 }
 
 #ifdef USE_NNTP
@@ -543,7 +543,7 @@ newsgroup_format_str (char *dest, size_t destlen, size_t col, int cols, char op,
       }
       break;
   }
-  return (src);
+  return src;
 }
 #endif /* USE_NNTP */
 
@@ -656,13 +656,13 @@ static int examine_directory (MUTTMENU *menu, struct browser_state *state,
       }
     }
     mutt_perror (d);
-    return (-1);
+    return -1;
   }
 
   if (!S_ISDIR (s.st_mode))
   {
     mutt_error (_("%s is not a directory."), d);
-    return (-1);
+    return -1;
   }
 
   mutt_buffy_check (0);
@@ -670,7 +670,7 @@ static int examine_directory (MUTTMENU *menu, struct browser_state *state,
   if ((dp = opendir (d)) == NULL)
   {
     mutt_perror (d);
-    return (-1);
+    return -1;
   }
 
   init_state (state, menu);
@@ -716,7 +716,7 @@ static int examine_vfolders (MUTTMENU *menu, struct browser_state *state)
   BUFFY *tmp = VirtIncoming;
 
   if (!VirtIncoming)
-    return (-1);
+    return -1;
   mutt_buffy_check (0);
 
   init_state (state, menu);
@@ -765,7 +765,7 @@ static int examine_mailboxes (MUTTMENU *menu, struct browser_state *state)
   BUFFY *tmp = Incoming;
 
   if (!Incoming)
-    return (-1);
+    return -1;
   mutt_buffy_check (0);
 
   init_state (state, menu);

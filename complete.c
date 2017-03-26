@@ -185,7 +185,7 @@ int mutt_complete (char *s, size_t slen)
   {
     mutt_debug (1, "mutt_complete(): %s: %s (errno %d).\n",
                 exp_dirpart, strerror (errno), errno);
-    return (-1);
+    return -1;
   }
 
   /*

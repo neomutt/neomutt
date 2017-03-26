@@ -421,7 +421,7 @@ int mutt_write_mime_body (BODY *a, FILE *f)
     {
       mutt_debug (1, "mutt_write_mime_body(): no boundary parameter found!\n");
       mutt_error (_("No boundary parameter found! [report this error]"));
-      return (-1);
+      return -1;
     }
     strfcpy (boundary, p, sizeof (boundary));
 
@@ -877,7 +877,7 @@ CONTENT *mutt_get_content_info (const char *fname, BODY *b)
   {
     mutt_debug (1, "mutt_get_content_info: %s: %s (errno %d).\n",
                 fname, strerror (errno), errno);
-    return (NULL);
+    return NULL;
   }
 
   info = safe_calloc (1, sizeof (CONTENT));
@@ -1027,7 +1027,7 @@ int mutt_lookup_mime_type (BODY *att, const char *path)
     mutt_str_replace (&att->xtype, xtype);
   }
 
-  return (type);
+  return type;
 }
 
 static void transform_to_7bit (BODY *a, FILE *fpin)
@@ -1259,7 +1259,7 @@ BODY *mutt_make_message_attach (CONTEXT *ctx, HEADER *hdr, int attach_msg)
     if ((option(OPTMIMEFORWDECODE) || option(OPTFORWDECRYPT)) &&
         (hdr->security & ENCRYPT)) {
       if (!crypt_valid_passphrase(hdr->security))
-        return (NULL);
+        return NULL;
     }
   }
 
@@ -1333,7 +1333,7 @@ BODY *mutt_make_message_attach (CONTEXT *ctx, HEADER *hdr, int attach_msg)
 
   safe_fclose (&fp);
 
-  return (body);
+  return body;
 }
 
 BODY *mutt_make_file_attach (const char *path)
@@ -1376,7 +1376,7 @@ BODY *mutt_make_file_attach (const char *path)
 
   FREE(&info);
   mutt_update_encoding (att);
-  return (att);
+  return att;
 }
 
 static int get_toplevel_encoding (BODY *a)
@@ -1386,12 +1386,12 @@ static int get_toplevel_encoding (BODY *a)
   for (; a; a = a->next)
   {
     if (a->encoding == ENCBINARY)
-      return (ENCBINARY);
+      return ENCBINARY;
     else if (a->encoding == ENC8BIT)
       e = ENC8BIT;
   }
 
-  return (e);
+  return e;
 }
 
 /* check for duplicate boundary. return 1 if duplicate */
@@ -1461,7 +1461,7 @@ char *mutt_make_date (char *s, size_t len)
 	    Weekdays[l->tm_wday], l->tm_mday, Months[l->tm_mon],
 	    l->tm_year + 1900, l->tm_hour, l->tm_min, l->tm_sec,
 	    (int) tz / 60, (int) abs ((int) tz) % 60);
-  return (s);
+  return s;
 }
 
 /* wrapper around mutt_write_address() so we can handle very large
@@ -2338,7 +2338,7 @@ send_msg (const char *path, char **args, const char *msg, char **tempfile)
 
   mutt_unblock_signals_system (1);
 
-  return (st);
+  return st;
 }
 
 static char **
@@ -2354,7 +2354,7 @@ add_args (char **args, size_t *argslen, size_t *argsmax, ADDRESS *addr)
       args[(*argslen)++] = addr->mailbox;
     }
   }
-  return (args);
+  return args;
 }
 
 static char **
@@ -2363,7 +2363,7 @@ add_option (char **args, size_t *argslen, size_t *argsmax, char *s)
   if (*argslen == *argsmax)
     safe_realloc (&args, (*argsmax += 5) * sizeof (char *));
   args[(*argslen)++] = s;
-  return (args);
+  return args;
 }
 
 int
@@ -2523,7 +2523,7 @@ mutt_invoke_sendmail (ADDRESS *from,	/* the sender */
     i = 1;
   else
     i = -1;
-  return (i);
+  return i;
 }
 
 /* For postponing (!final) do the necessary encodings only */
@@ -2749,7 +2749,7 @@ ADDRESS *mutt_remove_duplicates (ADDRESS *addr)
     }
   }
 
-  return (top);
+  return top;
 }
 
 static void set_noconv_flags (BODY *b, short flag)
@@ -2823,7 +2823,7 @@ int mutt_write_fcc (const char *path, HEADER *hdr, const char *msgid,
   {
     mutt_debug (1, "mutt_write_fcc(): unable to open mailbox %s in append-mode, aborting.\n",
                 path);
-    return (-1);
+    return -1;
   }
 
   /* We need to add a Content-Length field to avoid problems where a line in
@@ -2836,7 +2836,7 @@ int mutt_write_fcc (const char *path, HEADER *hdr, const char *msgid,
     {
       mutt_perror (tempfile);
       mx_close_mailbox (&f, NULL);
-      return (-1);
+      return -1;
     }
     /* remember new mail status before appending message */
     need_buffy_cleanup = 1;
@@ -2851,7 +2851,7 @@ int mutt_write_fcc (const char *path, HEADER *hdr, const char *msgid,
   {
     safe_fclose(&tempfp);
     mx_close_mailbox (&f, NULL);
-    return (-1);
+    return -1;
   }
 
   /* post == 1 => postpone message. Set mode = -1 in mutt_write_rfc822_header()

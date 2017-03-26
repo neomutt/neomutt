@@ -456,7 +456,7 @@ int mx_get_magic (const char *path)
   {
     mutt_debug (1, "mx_get_magic(): unable to stat %s: %s (errno %d).\n",
                 path, strerror (errno), errno);
-    return (-1);
+    return -1;
   }
 
   if (S_ISDIR (st.st_mode))
@@ -473,9 +473,9 @@ int mx_get_magic (const char *path)
   {
     /* hard to tell what zero-length files are, so assume the default magic */
     if (DefaultMagic == MUTT_MBOX || DefaultMagic == MUTT_MMDF)
-      return (DefaultMagic);
+      return DefaultMagic;
     else
-      return (MUTT_MBOX);
+      return MUTT_MBOX;
   }
   else if ((f = fopen (path, "r")) != NULL)
   {
@@ -518,7 +518,7 @@ int mx_get_magic (const char *path)
   {
     mutt_debug (1, "mx_get_magic(): unable to open file %s for reading.\n",
                 path);
-    return (-1);
+    return -1;
   }
 
 #ifdef USE_COMPRESSED
@@ -527,7 +527,7 @@ int mx_get_magic (const char *path)
   if ((magic == 0) && mutt_comp_can_read (path))
     return MUTT_COMPRESSED;
 #endif
-  return (magic);
+  return magic;
 }
 
 /*
@@ -544,7 +544,7 @@ int mx_set_magic (const char *s)
   else if (ascii_strcasecmp (s, "maildir") == 0)
     DefaultMagic = MUTT_MAILDIR;
   else
-    return (-1);
+    return -1;
 
   return 0;
 }
@@ -669,7 +669,7 @@ CONTEXT *mx_open_mailbox (const char *path, int flags, CONTEXT *pctx)
     mx_fastclose_mailbox (ctx);
     if (!pctx)
       FREE (&ctx);
-    return (NULL);
+    return NULL;
   }
 
   mutt_make_label_hash (ctx);
@@ -709,7 +709,7 @@ CONTEXT *mx_open_mailbox (const char *path, int flags, CONTEXT *pctx)
   }
 
   unset_option (OPTFORCEREFRESH);
-  return (ctx);
+  return ctx;
 }
 
 /* free up memory associated with the mailbox context */
@@ -908,7 +908,7 @@ int mx_close_mailbox (CONTEXT *ctx, int *index_hint)
       if ((move_messages = query_quadoption (OPT_MOVE, buf)) == MUTT_ABORT)
       {
 	ctx->closing = 0;
-	return (-1);
+	return -1;
       }
     }
   }
@@ -925,7 +925,7 @@ int mx_close_mailbox (CONTEXT *ctx, int *index_hint)
     if ((purge = query_quadoption (OPT_DELETE, buf)) == MUTT_ABORT)
     {
       ctx->closing = 0;
-      return (-1);
+      return -1;
     }
   }
 
@@ -1202,7 +1202,7 @@ int mx_sync_mailbox (CONTEXT *ctx, int *index_hint)
   {
     if (!ctx->quiet)
       mutt_message (_("Mailbox is unchanged."));
-    return (0);
+    return 0;
   }
 
   if (ctx->deleted)
@@ -1213,7 +1213,7 @@ int mx_sync_mailbox (CONTEXT *ctx, int *index_hint)
 	     ? _("Purge %d deleted message?") : _("Purge %d deleted messages?"),
 	      ctx->deleted);
     if ((purge = query_quadoption (OPT_DELETE, buf)) == MUTT_ABORT)
-      return (-1);
+      return -1;
     else if (purge == MUTT_NO)
     {
       if (!ctx->changed)
@@ -1295,7 +1295,7 @@ int mx_sync_mailbox (CONTEXT *ctx, int *index_hint)
     }
   }
 
-  return (rc);
+  return rc;
 }
 
 /* args:
@@ -1423,7 +1423,7 @@ int mx_close_message (CONTEXT *ctx, MESSAGE **msg)
 
   FREE (&(*msg)->commited_path);
   FREE (msg);		/* __FREE_CHECKED__ */
-  return (r);
+  return r;
 }
 
 void mx_alloc_memory (CONTEXT *ctx)

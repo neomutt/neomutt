@@ -103,7 +103,7 @@ int mutt_num_postponed (int force)
   {
      PostCount = 0;
      LastModify = 0;
-     return (0);
+     return 0;
   }
 
   if (S_ISDIR (st.st_mode))
@@ -145,7 +145,7 @@ int mutt_num_postponed (int force)
 #endif
   }
 
-  return (PostCount);
+  return PostCount;
 }
 
 void mutt_update_num_postponed (void)
@@ -247,13 +247,13 @@ int mutt_get_postponed (CONTEXT *ctx, HEADER *hdr, HEADER **cur, char *fcc, size
   int opt_delete;
 
   if (!Postponed)
-    return (-1);
+    return -1;
 
   if ((PostContext = mx_open_mailbox (Postponed, MUTT_NOSORT, NULL)) == NULL)
   {
     PostCount = 0;
     mutt_error (_("No postponed messages."));
-    return (-1);
+    return -1;
   }
 
   if (! PostContext->msgcount)
@@ -262,7 +262,7 @@ int mutt_get_postponed (CONTEXT *ctx, HEADER *hdr, HEADER **cur, char *fcc, size
     mx_close_mailbox (PostContext, NULL);
     FREE (&PostContext);
     mutt_error (_("No postponed messages."));
-    return (-1);
+    return -1;
   }
 
   if (PostContext->msgcount == 1)
@@ -274,14 +274,14 @@ int mutt_get_postponed (CONTEXT *ctx, HEADER *hdr, HEADER **cur, char *fcc, size
   {
     mx_close_mailbox (PostContext, NULL);
     FREE (&PostContext);
-    return (-1);
+    return -1;
   }
 
   if (mutt_prepare_template (NULL, PostContext, hdr, h, 0) < 0)
   {
     mx_fastclose_mailbox (PostContext);
     FREE (&PostContext);
-    return (-1);
+    return -1;
   }
 
   /* finished with this message, so delete it. */
@@ -419,7 +419,7 @@ int mutt_get_postponed (CONTEXT *ctx, HEADER *hdr, HEADER **cur, char *fcc, size
   if (option (OPTCRYPTOPPORTUNISTICENCRYPT))
     crypt_opportunistic_encrypt (hdr);
 
-  return (code);
+  return code;
 }
 
 
@@ -567,7 +567,7 @@ int mutt_prepare_template (FILE *fp, CONTEXT *ctx, HEADER *newhdr, HEADER *hdr,
   memset (&s, 0, sizeof (s));
 
   if (!fp && (msg = mx_open_message (ctx, hdr->msgno)) == NULL)
-    return (-1);
+    return -1;
 
   if (!fp) fp = msg->fp;
 

@@ -774,7 +774,7 @@ MUTTMENU *mutt_new_menu (int menu)
   p->messagewin = MuttMessageWindow;
   p->color = default_color;
   p->search = menu_search_generic;
-  return (p);
+  return p;
 }
 
 void mutt_menu_destroy (MUTTMENU **p)
@@ -811,7 +811,7 @@ static int menu_search (MUTTMENU *menu, int op)
     if (mutt_get_field ((op == OP_SEARCH || op == OP_SEARCH_NEXT)
 			? _("Search for: ") : _("Reverse search for: "),
 			buf, sizeof (buf), MUTT_CLEAR) != 0 || !buf[0])
-      return (-1);
+      return -1;
     if (menu->menu >= 0 && menu->menu < MENU_MAX)
     {
       mutt_str_replace (&SearchBuffers[menu->menu], buf);
@@ -829,7 +829,7 @@ static int menu_search (MUTTMENU *menu, int op)
   {
     regerror (r, &re, buf, sizeof (buf));
     mutt_error ("%s", buf);
-    return (-1);
+    return -1;
   }
 
   r = menu->current + searchDir;
@@ -854,7 +854,7 @@ search_next:
   }
   regfree (&re);
   mutt_error (_("Not found."));
-  return (-1);
+  return -1;
 }
 
 static int menu_dialog_translate_op (int i)
@@ -908,7 +908,7 @@ int menu_redraw (MUTTMENU *menu)
   {
     menu_redraw_full (menu);
     /* allow the caller to do any local configuration */
-    return (OP_REDRAW);
+    return OP_REDRAW;
   }
 
   if (!menu->dialog)
@@ -1171,7 +1171,7 @@ int mutt_menu_loop (MUTTMENU *menu)
       default:
         if (menu->is_mailbox_list)
           last_position = menu->current;
-	return (i);
+	return i;
     }
   }
   /* not reached */

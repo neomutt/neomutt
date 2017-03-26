@@ -382,7 +382,7 @@ static int mh_mkstemp (CONTEXT * dest, FILE ** fp, char **tgt)
     FREE (tgt);		/* __FREE_CHECKED__ */
     close (fd);
     unlink (path);
-    return (-1);
+    return -1;
   }
 
   return 0;
@@ -1305,7 +1305,7 @@ static int maildir_read_dir (CONTEXT * ctx)
    * of the main folder path from which to read messages
    */
   if (mh_read_dir (ctx, "new") == -1 || mh_read_dir (ctx, "cur") == -1)
-    return (-1);
+    return -1;
 
   return 0;
 }
@@ -1324,7 +1324,7 @@ static int maildir_open_mailbox_append (CONTEXT *ctx, int flags)
     if (mkdir (ctx->path, S_IRWXU))
     {
       mutt_perror (ctx->path);
-      return (-1);
+      return -1;
     }
 
     snprintf (tmp, sizeof (tmp), "%s/cur", ctx->path);
@@ -1332,7 +1332,7 @@ static int maildir_open_mailbox_append (CONTEXT *ctx, int flags)
     {
       mutt_perror (tmp);
       rmdir (ctx->path);
-      return (-1);
+      return -1;
     }
 
     snprintf (tmp, sizeof (tmp), "%s/new", ctx->path);
@@ -1342,7 +1342,7 @@ static int maildir_open_mailbox_append (CONTEXT *ctx, int flags)
       snprintf (tmp, sizeof (tmp), "%s/cur", ctx->path);
       rmdir (tmp);
       rmdir (ctx->path);
-      return (-1);
+      return -1;
     }
 
     snprintf (tmp, sizeof (tmp), "%s/tmp", ctx->path);
@@ -1354,7 +1354,7 @@ static int maildir_open_mailbox_append (CONTEXT *ctx, int flags)
       snprintf (tmp, sizeof (tmp), "%s/new", ctx->path);
       rmdir (tmp);
       rmdir (ctx->path);
-      return (-1);
+      return -1;
     }
   }
 
@@ -1376,7 +1376,7 @@ static int mh_open_mailbox_append (CONTEXT *ctx, int flags)
     if (mkdir (ctx->path, S_IRWXU))
     {
       mutt_perror (ctx->path);
-      return (-1);
+      return -1;
     }
 
     snprintf (tmp, sizeof (tmp), "%s/.mh_sequences", ctx->path);
@@ -1384,7 +1384,7 @@ static int mh_open_mailbox_append (CONTEXT *ctx, int flags)
     {
       mutt_perror (tmp);
       rmdir (ctx->path);
-      return (-1);
+      return -1;
     }
     close (i);
   }
@@ -1536,7 +1536,7 @@ static int maildir_open_new_message (MESSAGE * msg, CONTEXT * dest, HEADER * hdr
     FREE (&msg->path);
     close (fd);
     unlink (path);
-    return (-1);
+    return -1;
   }
 
   return 0;
@@ -1672,7 +1672,7 @@ static int _mh_commit_message (CONTEXT * ctx, MESSAGE * msg, HEADER * hdr,
   if ((dirp = opendir (ctx->path)) == NULL)
   {
     mutt_perror (ctx->path);
-    return (-1);
+    return -1;
   }
 
   /* figure out what the next message number is */
@@ -1834,7 +1834,7 @@ static int maildir_sync_message (CONTEXT * ctx, int msgno)
   {
     /* when doing attachment deletion/rethreading, fall back to the MH case. */
     if (mh_rewrite_message (ctx, msgno) != 0)
-      return (-1);
+      return -1;
   }
   else
   {
@@ -1851,7 +1851,7 @@ static int maildir_sync_message (CONTEXT * ctx, int msgno)
     {
       mutt_debug (1, "maildir_sync_message: %s: unable to find subdir!\n",
                   h->path);
-      return (-1);
+      return -1;
     }
     p++;
     strfcpy (newpath, p, sizeof (newpath));
@@ -1879,11 +1879,11 @@ static int maildir_sync_message (CONTEXT * ctx, int msgno)
     if (rename (oldpath, fullpath) != 0)
     {
       mutt_perror ("rename");
-      return (-1);
+      return -1;
     }
     mutt_str_replace (&h->path, partpath);
   }
-  return (0);
+  return 0;
 }
 
 #ifdef USE_HCACHE

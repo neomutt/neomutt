@@ -145,7 +145,7 @@ void *safe_malloc (size_t siz)
     sleep (1);
     mutt_exit (1);
   }
-  return (p);
+  return p;
 }
 
 void safe_realloc (void *ptr, size_t siz)
@@ -232,7 +232,7 @@ char *safe_strdup (const char *s)
   l = strlen (s) + 1;
   p = safe_malloc (l);
   memcpy (p, s, l);
-  return (p);
+  return p;
 }
 
 char *safe_strcat (char *d, size_t l, const char *s)
@@ -297,7 +297,7 @@ char *mutt_strlower (char *s)
     p++;
   }
 
-  return (s);
+  return s;
 }
 
 /**
@@ -373,7 +373,7 @@ int mutt_copy_bytes (FILE *in, FILE *out, size_t size)
       break;
     if (fwrite (buf, 1, chunk, out) != chunk)
     {
-      return (-1);
+      return -1;
     }
     size -= chunk;
   }
@@ -390,7 +390,7 @@ int mutt_copy_stream (FILE *fin, FILE *fout)
   while ((l = fread (buf, 1, sizeof (buf), fin)) > 0)
   {
     if (fwrite (buf, 1, l, fout) != l)
-      return (-1);
+      return -1;
   }
 
   if (fflush(fout) != 0) return -1;
@@ -676,10 +676,10 @@ int safe_open (const char *path, int flags)
       compare_stat(&osb, &nsb) == -1)
   {
     close (fd);
-    return (-1);
+    return -1;
   }
 
-  return (fd);
+  return fd;
 }
 
 /* when opening files for writing, make sure the file doesn't already exist
@@ -702,7 +702,7 @@ FILE *safe_fopen (const char *path, const char *mode)
       flags |= O_WRONLY;
 
     if ((fd = safe_open (path, flags)) < 0)
-      return (NULL);
+      return NULL;
 
     return (fdopen (fd, mode));
   }
@@ -915,7 +915,7 @@ const char *mutt_stristr (const char *haystack, const char *needle)
   if (!haystack)
     return NULL;
   if (!needle)
-    return (haystack);
+    return haystack;
 
   while (*(p = haystack))
   {
@@ -925,7 +925,7 @@ const char *mutt_stristr (const char *haystack, const char *needle)
          p++, q++)
       ;
     if (!*q)
-      return (haystack);
+      return haystack;
     haystack++;
   }
   return NULL;

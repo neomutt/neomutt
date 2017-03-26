@@ -106,7 +106,7 @@ const char *mutt_get_name (ADDRESS *a)
       return (mutt_addr_for_display (a));
   }
   /* don't return NULL to avoid segfault when printing/comparing */
-  return ("");
+  return "";
 }
 
 static int compare_to (const void *a, const void *b)
@@ -260,27 +260,27 @@ sort_t *mutt_get_sort_func (int method)
   switch (method & SORT_MASK)
   {
     case SORT_RECEIVED:
-      return (compare_date_received);
+      return compare_date_received;
     case SORT_ORDER:
-      return (compare_order);
+      return compare_order;
     case SORT_DATE:
-      return (compare_date_sent);
+      return compare_date_sent;
     case SORT_SUBJECT:
-      return (compare_subject);
+      return compare_subject;
     case SORT_FROM:
-      return (compare_from);
+      return compare_from;
     case SORT_SIZE:
-      return (compare_size);
+      return compare_size;
     case SORT_TO:
-      return (compare_to);
+      return compare_to;
     case SORT_SCORE:
-      return (compare_score);
+      return compare_score;
     case SORT_SPAM:
-      return (compare_spam);
+      return compare_spam;
     case SORT_LABEL:
-      return (compare_label);
+      return compare_label;
     default:
-      return (NULL);
+      return NULL;
   }
   /* not reached */
 }

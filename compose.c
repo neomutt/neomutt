@@ -340,7 +340,7 @@ static int edit_address_list (int line, ADDRESS **addr)
   if (option (OPTNEEDREDRAW))
   {
     unset_option (OPTNEEDREDRAW);
-    return (REDRAW_FULL);
+    return REDRAW_FULL;
   }
 
   if (mutt_addrlist_to_intl (*addr, &err) != 0)
@@ -370,7 +370,7 @@ static int delete_attachment (MUTTMENU *menu, short *idxlen, int x)
   {
     mutt_error (_("You may not delete the only attachment."));
     idx[x]->content->tagged = 0;
-    return (-1);
+    return -1;
   }
 
   for (y = 0; y < *idxlen; y++)
@@ -392,7 +392,7 @@ static int delete_attachment (MUTTMENU *menu, short *idxlen, int x)
   idx[*idxlen - 1] = NULL;
   menu->max = --(*idxlen);
 
-  return (0);
+  return 0;
 }
 
 static void update_idx (MUTTMENU *menu, ATTACHPTR **idx, short idxlen)
@@ -501,7 +501,7 @@ compose_format_str (char *buf, size_t buflen, size_t col, int cols, char op, con
 
     case 0:
       *buf = 0;
-      return (src);
+      return src;
 
     default:
       snprintf (buf, buflen, "%%%s%c", prefix, op);
@@ -513,7 +513,7 @@ compose_format_str (char *buf, size_t buflen, size_t col, int cols, char op, con
   else if (flags & MUTT_FORMAT_OPTIONAL)
     compose_status_line (buf, buflen, col, cols, menu, elsestring);
 
-  return (src);
+  return src;
 }
 
 static void compose_status_line (char *buf, size_t buflen, size_t col, int cols,
@@ -1511,6 +1511,6 @@ int mutt_compose_menu (HEADER *msg,   /* structure for new message */
 
   FREE (&idx);
 
-  return (r);
+  return r;
 }
 

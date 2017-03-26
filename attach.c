@@ -345,7 +345,7 @@ int mutt_view_attachment (FILE *fp, BODY *a, int flag, HEADER *hdr,
   is_message = mutt_is_message_type(a->type, a->subtype);
   if (WithCrypto && is_message && a->hdr && (a->hdr->security & ENCRYPT) &&
       !crypt_valid_passphrase(a->hdr->security))
-    return (rc);
+    return rc;
   use_mailcap = (flag == MUTT_MAILCAP ||
 		(flag == MUTT_REGULAR && mutt_needs_mailcap (a)));
   snprintf (type, sizeof (type), "%s/%s", TYPE (a), a->subtype);
@@ -760,7 +760,7 @@ int mutt_save_attachment (FILE *fp, BODY *m, char *path, int flags, HEADER *hdr)
       {
 	mutt_perror ("fopen");
 	mutt_sleep (2);
-	return (-1);
+	return -1;
       }
       fseeko ((s.fpin = fp), m->offset, 0);
       mutt_decode_attachment (m, &s);
@@ -769,7 +769,7 @@ int mutt_save_attachment (FILE *fp, BODY *m, char *path, int flags, HEADER *hdr)
       {
 	mutt_perror ("fclose");
 	mutt_sleep (2);
-	return (-1);
+	return -1;
       }
     }
   }
@@ -782,14 +782,14 @@ int mutt_save_attachment (FILE *fp, BODY *m, char *path, int flags, HEADER *hdr)
     if ((ofp = fopen (m->filename, "r")) == NULL)
     {
       mutt_perror ("fopen");
-      return (-1);
+      return -1;
     }
 
     if ((nfp = save_attachment_open (path, flags)) == NULL)
     {
       mutt_perror ("fopen");
       safe_fclose (&ofp);
-      return (-1);
+      return -1;
     }
 
     if (mutt_copy_stream (ofp, nfp) == -1)
@@ -797,13 +797,13 @@ int mutt_save_attachment (FILE *fp, BODY *m, char *path, int flags, HEADER *hdr)
       mutt_error (_("Write fault!"));
       safe_fclose (&ofp);
       safe_fclose (&nfp);
-      return (-1);
+      return -1;
     }
     safe_fclose (&ofp);
     if (safe_fsync_close (&nfp) != 0)
     {
       mutt_error (_("Write fault!"));
-      return (-1);
+      return -1;
     }
   }
 
@@ -833,7 +833,7 @@ int mutt_decode_save_attachment (FILE *fp, BODY *m, char *path,
   if (s.fpout == NULL)
   {
     mutt_perror ("fopen");
-    return (-1);
+    return -1;
   }
 
   if (fp == NULL)
@@ -846,13 +846,13 @@ int mutt_decode_save_attachment (FILE *fp, BODY *m, char *path,
     {
       mutt_perror ("stat");
       safe_fclose (&s.fpout);
-      return (-1);
+      return -1;
     }
 
     if ((s.fpin = fopen (m->filename, "r")) == NULL)
     {
       mutt_perror ("fopen");
-      return (-1);
+      return -1;
     }
 
     saved_encoding = m->encoding;
@@ -957,7 +957,7 @@ int mutt_print_attachment (FILE *fp, BODY *a)
       {
 	mutt_perror ("fopen");
 	rfc1524_free_entry (&entry);
-	return (0);
+	return 0;
       }
 
       if ((thepid = mutt_create_filter (command, &fpout, NULL, NULL)) < 0)
@@ -985,7 +985,7 @@ int mutt_print_attachment (FILE *fp, BODY *a)
       unlink(newfile);
 
     rfc1524_free_entry (&entry);
-    return (1);
+    return 1;
   }
 
   if ((ascii_strcasecmp ("text/plain", type) == 0) ||

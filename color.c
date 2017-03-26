@@ -133,7 +133,7 @@ static COLOR_LINE *new_color_line (void)
 
   p->fg = p->bg = -1;
 
-  return (p);
+  return p;
 }
 
 static void free_color_line(COLOR_LINE **l,
@@ -248,7 +248,7 @@ int mutt_alloc_color (int fg, int bg)
   }
 
   /* check to see if there are colors left */
-  if (++UserColors > COLOR_PAIRS) return (A_NORMAL);
+  if (++UserColors > COLOR_PAIRS) return A_NORMAL;
 
   /* find the smallest available index (object) */
   i = 1;
@@ -357,13 +357,13 @@ parse_color_name (const char *s, int *col, int *attr, int is_fg, BUFFER *err)
 	(*col >= COLORS && !option(OPTNOCURSES) && has_colors()))
     {
       snprintf (err->data, err->dsize, _("%s: color not supported by term"), s);
-      return (-1);
+      return -1;
     }
   }
   else if ((*col = mutt_getvaluebyname (s, Colors)) == -1)
   {
     snprintf (err->data, err->dsize, _("%s: no such color"), s);
-    return (-1);
+    return -1;
   }
 
   if (is_bright)
@@ -454,7 +454,7 @@ static int _mutt_parse_uncolor (BUFFER *buf, BUFFER *s, unsigned long data,
   if ((object = mutt_getvaluebyname (buf->data, Fields)) == -1)
   {
     snprintf (err->data, err->dsize, _("%s: no such object"), buf->data);
-    return (-1);
+    return -1;
   }
 
   if (object > MT_COLOR_INDEX_SUBJECT) { /* uncolor index column */
@@ -470,14 +470,14 @@ static int _mutt_parse_uncolor (BUFFER *buf, BUFFER *s, unsigned long data,
     snprintf (err->data, err->dsize,
 	      _("%s: command valid only for index, body, header objects"),
 	      parse_uncolor ? "uncolor" : "unmono");
-    return (-1);
+    return -1;
   }
 
   if (!MoreArgs (s))
   {
     snprintf (err->data, err->dsize,
 	      _("%s: too few arguments"), parse_uncolor ? "uncolor" : "unmono");
-    return (-1);
+    return -1;
   }
 
   if(
@@ -529,7 +529,7 @@ static int _mutt_parse_uncolor (BUFFER *buf, BUFFER *s, unsigned long data,
     for (i = 0; Context && i < Context->msgcount; i++)
       Context->hdrs[i]->pair = 0;
   }
-  return (0);
+  return 0;
 }
 
 #ifdef HAVE_COLOR
@@ -619,7 +619,7 @@ add_pattern (COLOR_LINE **top, const char *s, int sensitive,
     {
       regerror (r, &tmp->rx, err->data, err->dsize);
       free_color_line(&tmp, 1);
-      return (-1);
+      return -1;
     }
     tmp->next = *top;
     tmp->pattern = safe_strdup (s);
@@ -671,7 +671,7 @@ parse_object(BUFFER *buf, BUFFER *s, int *o, int *ql, BUFFER *err)
   else if ((*o = mutt_getvaluebyname (buf->data, Fields)) == -1)
   {
     snprintf (err->data, err->dsize, _("%s: no such object"), buf->data);
-    return (-1);
+    return -1;
   }
 
   return 0;
@@ -687,24 +687,24 @@ parse_color_pair(BUFFER *buf, BUFFER *s, int *fg, int *bg, int *attr, BUFFER *er
   if (! MoreArgs (s))
   {
     strfcpy (err->data, _("color: too few arguments"), err->dsize);
-    return (-1);
+    return -1;
   }
 
   mutt_extract_token (buf, s, 0);
 
   if (parse_color_name (buf->data, fg, attr, 1, err) != 0)
-    return (-1);
+    return -1;
 
   if (! MoreArgs (s))
   {
     strfcpy (err->data, _("color: too few arguments"), err->dsize);
-    return (-1);
+    return -1;
   }
 
   mutt_extract_token (buf, s, 0);
 
   if (parse_color_name (buf->data, bg, attr, 0, err) != 0)
-    return (-1);
+    return -1;
 
   return 0;
 }
@@ -721,7 +721,7 @@ parse_attr_spec(BUFFER *buf, BUFFER *s, int *fg, int *bg, int *attr, BUFFER *err
   if (! MoreArgs (s))
   {
     strfcpy (err->data, _("mono: too few arguments"), err->dsize);
-    return (-1);
+    return -1;
   }
 
   mutt_extract_token (buf, s, 0);
@@ -741,7 +741,7 @@ parse_attr_spec(BUFFER *buf, BUFFER *s, int *fg, int *bg, int *attr, BUFFER *err
   else
   {
     snprintf (err->data, err->dsize, _("%s: no such attribute"), buf->data);
-    return (-1);
+    return -1;
   }
 
   return 0;
@@ -797,7 +797,7 @@ _mutt_parse_color (BUFFER *buf, BUFFER *s, BUFFER *err,
   if (MoreArgs (s) && (object != MT_COLOR_STATUS))
   {
     strfcpy (err->data, _("too many arguments"), err->dsize);
-    return (-1);
+    return -1;
   }
 
   /* dry run? */
@@ -817,7 +817,7 @@ _mutt_parse_color (BUFFER *buf, BUFFER *s, BUFFER *err,
     && use_default_colors () != OK)
   {
     strfcpy (err->data, _("default colors not supported"), err->dsize);
-    return (-1);
+    return -1;
   }
 # endif /* HAVE_USE_DEFAULT_COLORS */
 #endif
@@ -915,7 +915,7 @@ _mutt_parse_color (BUFFER *buf, BUFFER *s, BUFFER *err,
       set_option (OPTFORCEREDRAWINDEX);
   }
 
-  return (r);
+  return r;
 }
 
 #ifdef HAVE_COLOR

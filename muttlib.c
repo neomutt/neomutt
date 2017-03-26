@@ -70,7 +70,7 @@ BODY *mutt_new_body (void)
 
   p->disposition = DISPATTACH;
   p->use_disp = 1;
-  return (p);
+  return p;
 }
 
 
@@ -341,7 +341,7 @@ int mutt_remove_from_rx_list (RX_LIST **l, const char *str)
       }
     }
   }
-  return (rv);
+  return rv;
 }
 
 void mutt_free_list (LIST **list)
@@ -375,7 +375,7 @@ LIST *mutt_copy_list (LIST *p)
     else
       l = r = t;
   }
-  return (l);
+  return l;
 }
 
 void mutt_free_header (HEADER **h)
@@ -590,7 +590,7 @@ char *_mutt_expand_path (char *s, size_t slen, int rx)
     imap_expand_path (s, slen);
 #endif
 
-  return (s);
+  return s;
 }
 
 /* Extract the real name from /etc/passwd's GECOS field.
@@ -644,7 +644,7 @@ char *mutt_get_parameter (const char *s, PARAMETER *p)
 {
   for (; p; p = p->next)
     if (ascii_strcasecmp (s, p->attribute) == 0)
-      return (p->value);
+      return p->value;
 
   return NULL;
 }
@@ -1121,7 +1121,7 @@ int mutt_check_overwrite (const char *attname, const char *path,
     strfcpy (tmp, mutt_basename (NONULL (attname)), sizeof (tmp));
     if (mutt_get_field (_("File under directory: "), tmp, sizeof (tmp),
                                     MUTT_FILE | MUTT_CLEAR) != 0 || !tmp[0])
-      return (-1);
+      return -1;
     mutt_concat_path (fname, path, tmp, flen);
   }
 
@@ -1758,16 +1758,16 @@ FILE *mutt_open_read (const char *path, pid_t *thepid)
   else
   {
     if (stat (path, &s) < 0)
-      return (NULL);
+      return NULL;
     if (S_ISDIR (s.st_mode))
     {
       errno = EINVAL;
-      return (NULL);
+      return NULL;
     }
     f = fopen (path, "r");
     *thepid = -1;
   }
-  return (f);
+  return f;
 }
 
 /* returns 0 if OK to proceed, -1 to abort, 1 to retry */
@@ -1840,7 +1840,7 @@ int mutt_save_confirm (const char *s, struct stat *st)
   }
 
   mutt_window_clearline (MuttMessageWindow, 0);
-  return (ret);
+  return ret;
 }
 
 void state_prefix_putc (char c, STATE *s)

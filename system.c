@@ -39,7 +39,7 @@ int _mutt_system (const char *cmd, int flags)
   pid_t thepid;
 
   if (!cmd || !*cmd)
-    return (0);
+    return 0;
 
   /* must ignore SIGINT and SIGQUIT */
 
@@ -137,5 +137,5 @@ int _mutt_system (const char *cmd, int flags)
 
   rc = (thepid != -1) ? (WIFEXITED (rc) ? WEXITSTATUS (rc) : -1) : -1;
 
-  return (rc);
+  return rc;
 }

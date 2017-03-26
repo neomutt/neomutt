@@ -87,7 +87,7 @@ int pgp_valid_passphrase (void)
   if (mutt_get_password (_("Enter PGP passphrase:"), PgpPass, sizeof (PgpPass)) == 0)
     {
       PgpExptime = time (NULL) + PgpTimeout;
-      return (1);
+      return 1;
     }
   else
     PgpExptime = 0;
@@ -845,7 +845,7 @@ static BODY *pgp_decrypt_part (BODY *a, STATE *s, FILE *fpout, BODY *p)
     unlink (pgptmpfile);
     if (s->flags & MUTT_DISPLAY)
       state_attach_puts (_("[-- Error: could not create a PGP subprocess! --]\n\n"), s);
-    return (NULL);
+    return NULL;
   }
 
   /* send the PGP passphrase to the subprocess.  Never do this if the
@@ -919,7 +919,7 @@ static BODY *pgp_decrypt_part (BODY *a, STATE *s, FILE *fpout, BODY *p)
     mutt_parse_part (fpout, tattach);
   }
 
-  return (tattach);
+  return tattach;
 }
 
 int pgp_decrypt_mime (FILE *fpin, FILE **fpout, BODY *b, BODY **cur)
@@ -957,7 +957,7 @@ int pgp_decrypt_mime (FILE *fpin, FILE **fpout, BODY *b, BODY **cur)
     if ((decoded_fp = safe_fopen (tempfile, "w+")) == NULL)
     {
       mutt_perror (tempfile);
-      return (-1);
+      return -1;
     }
     unlink (tempfile);
 
@@ -1085,7 +1085,7 @@ BODY *pgp_sign_message (BODY *a)
   mutt_mktemp (sigfile, sizeof (sigfile));
   if ((fp = safe_fopen (sigfile, "w")) == NULL)
   {
-    return (NULL);
+    return NULL;
   }
 
   mutt_mktemp (signedfile, sizeof (signedfile));
@@ -1151,7 +1151,7 @@ BODY *pgp_sign_message (BODY *a)
   {
     mutt_perror ("fclose");
     unlink (sigfile);
-    return (NULL);
+    return NULL;
   }
 
   if (err)
@@ -1161,7 +1161,7 @@ BODY *pgp_sign_message (BODY *a)
     unlink (sigfile);
     /* most likely error is a bad passphrase, so automatically forget it */
     pgp_void_passphrase ();
-    return (NULL); /* fatal error while signing */
+    return NULL; /* fatal error while signing */
   }
 
   t = mutt_new_body ();
@@ -1189,7 +1189,7 @@ BODY *pgp_sign_message (BODY *a)
   t->unlink = 1; /* ok to remove this file after sending. */
   mutt_set_parameter ("name", "signature.asc", &t->parameter);
 
-  return (a);
+  return a;
 }
 
 /* This routine attempts to find the keyids of the recipients of a message.
@@ -1310,7 +1310,7 @@ char *pgp_find_keys (ADDRESS *adrlist, int oppenc_mode)
 
     mutt_free_list (&crypt_hook_list);
   }
-  return (keylist);
+  return keylist;
 }
 
 /* Warning: "a" is no longer freed in this routine, you need
@@ -1330,7 +1330,7 @@ BODY *pgp_encrypt_message (BODY *a, char *keylist, int sign)
   if ((fpout = safe_fopen (tempfile, "w+")) == NULL)
   {
     mutt_perror (tempfile);
-    return (NULL);
+    return NULL;
   }
 
   mutt_mktemp (pgperrfile, sizeof (pgperrfile));
@@ -1368,7 +1368,7 @@ BODY *pgp_encrypt_message (BODY *a, char *keylist, int sign)
     safe_fclose (&fpout);
     safe_fclose (&pgperr);
     unlink(pgpinfile);
-    return (NULL);
+    return NULL;
   }
 
   if (sign)
@@ -1409,7 +1409,7 @@ BODY *pgp_encrypt_message (BODY *a, char *keylist, int sign)
     if (sign)
       pgp_void_passphrase (); /* just in case */
     unlink (tempfile);
-    return (NULL);
+    return NULL;
   }
 
   t = mutt_new_body ();
@@ -1437,7 +1437,7 @@ BODY *pgp_encrypt_message (BODY *a, char *keylist, int sign)
   t->parts->next->unlink = 1; /* delete after sending the message */
   t->parts->next->d_filename = safe_strdup ("msg.asc"); /* non pgp/mime can save */
 
-  return (t);
+  return t;
 }
 
 BODY *pgp_traditional_encryptsign (BODY *a, int flags, char *keylist)
@@ -1801,6 +1801,6 @@ int pgp_send_menu (HEADER *msg, int *redraw)
     }
   }
 
-  return (msg->security);
+  return msg->security;
 }
 

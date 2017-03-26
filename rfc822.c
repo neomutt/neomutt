@@ -113,7 +113,7 @@ int rfc822_remove_from_adrlist (ADDRESS **a, const char *mailbox)
     }
   }
 
-  return (rv);
+  return rv;
 }
 
 void rfc822_free_address (ADDRESS **p)

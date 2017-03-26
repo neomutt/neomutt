@@ -65,12 +65,12 @@ static int eat_regexp (pattern_t *pat, BUFFER *s, BUFFER *err)
       !buf.data)
   {
     snprintf (err->data, err->dsize, _("Error in expression: %s"), pexpr);
-    return (-1);
+    return -1;
   }
   if (!*buf.data)
   {
     snprintf (err->data, err->dsize, _("Empty expression"));
-    return (-1);
+    return -1;
   }
 
   if (pat->stringmatch)
@@ -94,7 +94,7 @@ static int eat_regexp (pattern_t *pat, BUFFER *s, BUFFER *err)
       mutt_buffer_printf (err, "'%s': %s", buf.data, errmsg);
       FREE (&buf.data);
       FREE (&pat->p.rx);
-      return (-1);
+      return -1;
     }
     FREE (&buf.data);
   }
@@ -375,12 +375,12 @@ static int eat_date (pattern_t *pat, BUFFER *s, BUFFER *err)
       || !buffer.data)
   {
     snprintf (err->data, err->dsize, _("Error in expression: %s"), pexpr);
-    return (-1);
+    return -1;
   }
   if (!*buffer.data)
   {
     snprintf (err->data, err->dsize, _("Empty expression"));
-    return (-1);
+    return -1;
   }
 
   memset (&min, 0, sizeof (min));
@@ -450,7 +450,7 @@ static int eat_date (pattern_t *pat, BUFFER *s, BUFFER *err)
       if ((pc = get_date (pc, &min, err)) == NULL)
       {
 	FREE (&buffer.data);
-	return (-1);
+	return -1;
       }
       haveMin = true;
       SKIPWS (pc);
@@ -485,7 +485,7 @@ static int eat_date (pattern_t *pat, BUFFER *s, BUFFER *err)
       if (!parse_date_range (pc, &min, &max, haveMin, &baseMin, err))
       { /* bail out on any parsing error */
 	FREE (&buffer.data);
-	return (-1);
+	return -1;
       }
     }
   }
@@ -928,7 +928,7 @@ msg_search (CONTEXT *ctx, pattern_t* pat, int msgno)
       if ((s.fpout = safe_fopen (tempfile, "w+")) == NULL)
       {
 	mutt_perror (tempfile);
-	return (0);
+	return 0;
       }
 #endif
 
@@ -952,7 +952,7 @@ msg_search (CONTEXT *ctx, pattern_t* pat, int msgno)
 	    unlink (tempfile);
 #endif
 	  }
-	  return (0);
+	  return 0;
 	}
 
 	fseeko (msg->fp, h->offset, 0);
@@ -1311,7 +1311,7 @@ pattern_t *mutt_pattern_comp (/* const */ char *s, int flags, BUFFER *err)
     tmp->child = curlist;
     curlist = tmp;
   }
-  return (curlist);
+  return curlist;
 }
 
 static int
@@ -1469,7 +1469,7 @@ mutt_pattern_exec (struct pattern_t *pat, pattern_exec_flag flags, CONTEXT *ctx,
     case MUTT_THREAD:
       return (pat->not ^ match_threadcomplete(pat->child, flags, ctx, h->thread, 1, 1, 1, 1));
     case MUTT_ALL:
-      return (!pat->not);
+      return !pat->not;
     case MUTT_EXPIRED:
       return (pat->not ^ h->expired);
     case MUTT_SUPERSEDED:
@@ -1509,7 +1509,7 @@ mutt_pattern_exec (struct pattern_t *pat, pattern_exec_flag flags, CONTEXT *ctx,
 #ifdef USE_IMAP
       /* IMAP search sets h->matched at search compile time */
       if (ctx->magic == MUTT_IMAP && pat->stringmatch)
-	return (h->matched);
+	return h->matched;
 #endif
       return (pat->not ^ msg_search (ctx, pat, h->msgno));
     case MUTT_SENDER:
@@ -1638,7 +1638,7 @@ mutt_pattern_exec (struct pattern_t *pat, pattern_exec_flag flags, CONTEXT *ctx,
 #endif
   }
   mutt_error (_("error: unknown op %d (report this error)."), pat->op);
-  return (-1);
+  return -1;
 }
 
 static void quote_simple(char *tmp, size_t len, const char *p)
@@ -1789,7 +1789,7 @@ int mutt_pattern_func (int op, char *prompt)
   strfcpy (buf, NONULL (Context->pattern), sizeof (buf));
   if (prompt || op != MUTT_LIMIT)
   if (mutt_get_field (prompt, buf, sizeof (buf), MUTT_PATTERN | MUTT_CLEAR) != 0 || !buf[0])
-    return (-1);
+    return -1;
 
   mutt_message (_("Compiling search pattern..."));
 
@@ -1804,7 +1804,7 @@ int mutt_pattern_func (int op, char *prompt)
     FREE (&simple);
     mutt_error ("%s", err.data);
     FREE (&err.data);
-    return (-1);
+    return -1;
   }
 
 #ifdef USE_IMAP
@@ -1915,7 +1915,7 @@ int mutt_search_command (int cur, int op)
 			_("Search for: ") : _("Reverse search for: "),
 			buf, sizeof (buf),
 		      MUTT_CLEAR | MUTT_PATTERN) != 0 || !buf[0])
-      return (-1);
+      return -1;
 
     if (op == OP_SEARCH || op == OP_SEARCH_NEXT)
       unset_option (OPTSEARCHREVERSE);
@@ -1942,7 +1942,7 @@ int mutt_search_command (int cur, int op)
 	mutt_error ("%s", err.data);
 	FREE (&err.data);
 	LastSearch[0] = '\0';
-	return (-1);
+	return -1;
       }
       mutt_clear_error ();
     }
@@ -1977,7 +1977,7 @@ int mutt_search_command (int cur, int op)
       else
       {
         mutt_message (_("Search hit bottom without finding match"));
-	return (-1);
+	return -1;
       }
     }
     else if (i < 0)
@@ -1988,7 +1988,7 @@ int mutt_search_command (int cur, int op)
       else
       {
         mutt_message (_("Search hit top without finding match"));
-	return (-1);
+	return -1;
       }
     }
 
@@ -2021,12 +2021,12 @@ int mutt_search_command (int cur, int op)
     {
       mutt_error (_("Search interrupted."));
       SigInt = 0;
-      return (-1);
+      return -1;
     }
 
     i += incr;
   }
 
   mutt_error (_("Not found."));
-  return (-1);
+  return -1;
 }

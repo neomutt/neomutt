@@ -251,7 +251,7 @@ char *mutt_history_next (history_class_t hclass)
   struct history *h = GET_HISTORY(hclass);
 
   if (!HistSize || !h)
-    return (""); /* disabled */
+    return ""; /* disabled */
 
   next = h->cur + 1;
   if (next > HistSize)
@@ -269,7 +269,7 @@ char *mutt_history_prev (history_class_t hclass)
   struct history *h = GET_HISTORY(hclass);
 
   if (!HistSize || !h)
-    return (""); /* disabled */
+    return ""; /* disabled */
 
   prev = h->cur - 1;
   if (prev < 0)
