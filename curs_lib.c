@@ -82,7 +82,8 @@ void mutt_refresh (void)
     return;
 
   /* don't refresh in the middle of macros unless necessary */
-  if (UngetCount && !option (OPTFORCEREFRESH))
+  if (MacroBufferCount && !option (OPTFORCEREFRESH) &&
+      !option (OPTIGNOREMACROEVENTS))
     return;
 
   /* else */
