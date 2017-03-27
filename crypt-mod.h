@@ -52,7 +52,7 @@ typedef int (*crypt_func_verify_one_t) (BODY *sigbdy, STATE *s,
 typedef void (*crypt_func_pgp_extract_keys_from_attachment_list_t)
                                            (FILE *fp, int tag, BODY *top);
 
-typedef int (*crypt_func_send_menu_t) (HEADER *msg, int *redraw);
+typedef int (*crypt_func_send_menu_t) (HEADER *msg);
 
  /* (SMIME) */
 typedef void (*crypt_func_smime_getkeys_t) (ENVELOPE *env);

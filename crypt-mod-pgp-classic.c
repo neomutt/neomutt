@@ -58,9 +58,9 @@ static int crypt_mod_pgp_verify_one (BODY *sigbdy, STATE *s, const char *tempf)
   return pgp_verify_one (sigbdy, s, tempf);
 }
 
-static int crypt_mod_pgp_send_menu (HEADER *msg, int *redraw)
+static int crypt_mod_pgp_send_menu (HEADER *msg)
 {
-  return pgp_send_menu (msg, redraw);
+  return pgp_send_menu (msg);
 }
 
 static BODY *crypt_mod_pgp_encrypt_message (BODY *a, char *keylist, int sign)

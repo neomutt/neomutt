@@ -242,10 +242,10 @@ int crypt_pgp_verify_one (BODY *sigbdy, STATE *s, const char *tempf)
 }
 
 
-int crypt_pgp_send_menu (HEADER *msg, int *redraw)
+int crypt_pgp_send_menu (HEADER *msg)
 {
   if (CRYPT_MOD_CALL_CHECK (PGP, send_menu))
-    return (CRYPT_MOD_CALL (PGP, send_menu)) (msg, redraw);
+    return (CRYPT_MOD_CALL (PGP, send_menu)) (msg);
 
   return 0;
 }
@@ -375,10 +375,10 @@ int crypt_smime_verify_one (BODY *sigbdy, STATE *s, const char *tempf)
   return -1;
 }
 
-int crypt_smime_send_menu (HEADER *msg, int *redraw)
+int crypt_smime_send_menu (HEADER *msg)
 {
   if (CRYPT_MOD_CALL_CHECK (SMIME, send_menu))
-    return (CRYPT_MOD_CALL (SMIME, send_menu)) (msg, redraw);
+    return (CRYPT_MOD_CALL (SMIME, send_menu)) (msg);
 
   return 0;
 }

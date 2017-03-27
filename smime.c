@@ -2085,7 +2085,7 @@ int smime_application_smime_handler (BODY *m, STATE *s)
   return smime_handle_entity (m, s, NULL) ? 0 : -1;
 }
 
-int smime_send_menu (HEADER *msg, int *redraw)
+int smime_send_menu (HEADER *msg)
 {
   smime_key_t *key = NULL;
   char *prompt = NULL, *letters = NULL, *choices = NULL;
@@ -2218,8 +2218,6 @@ int smime_send_menu (HEADER *msg, int *redraw)
     case 'S': /* (s)ign in oppenc mode */
       if(!SmimeDefaultKey)
       {
-        *redraw = REDRAW_FULL;
-
         if ((key = smime_ask_for_key (_("Sign as: "), KEYFLAG_CANSIGN, 0)))
         {
           mutt_str_replace (&SmimeDefaultKey, key->hash);
@@ -2246,7 +2244,6 @@ int smime_send_menu (HEADER *msg, int *redraw)
         crypt_smime_void_passphrase ();
       }
 
-      *redraw = REDRAW_FULL;
       break;
 
     case 'b': /* (b)oth */

@@ -65,9 +65,9 @@ static int crypt_mod_smime_verify_one (BODY *sigbdy, STATE *s, const char *tempf
   return smime_gpgme_verify_one (sigbdy, s, tempf);
 }
 
-static int crypt_mod_smime_send_menu (HEADER *msg, int *redraw)
+static int crypt_mod_smime_send_menu (HEADER *msg)
 {
-  return smime_gpgme_send_menu (msg, redraw);
+  return smime_gpgme_send_menu (msg);
 }
 
 static BODY *crypt_mod_smime_build_smime_entity (BODY *a, char *certlist)

@@ -1418,7 +1418,7 @@ int mutt_compose_menu (HEADER *msg,   /* structure for new message */
           crypt_opportunistic_encrypt (msg);
           redraw_crypt_lines (msg);
 	}
-	msg->security = crypt_pgp_send_menu (msg, &menu->redraw);
+	msg->security = crypt_pgp_send_menu (msg);
 	redraw_crypt_lines (msg);
         mutt_message_hook (NULL, msg, MUTT_SEND2HOOK);
         break;
@@ -1451,7 +1451,7 @@ int mutt_compose_menu (HEADER *msg,   /* structure for new message */
           crypt_opportunistic_encrypt (msg);
           redraw_crypt_lines (msg);
 	}
-	msg->security = crypt_smime_send_menu(msg, &menu->redraw);
+	msg->security = crypt_smime_send_menu(msg);
 	redraw_crypt_lines (msg);
         mutt_message_hook (NULL, msg, MUTT_SEND2HOOK);
         break;

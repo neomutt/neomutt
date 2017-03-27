@@ -90,7 +90,7 @@ BODY *pgp_traditional_encryptsign(BODY *a, int flags, char *keylist);
 BODY *pgp_encrypt_message(BODY *a, char *keylist, int sign);
 BODY *pgp_sign_message(BODY *a);
 
-int pgp_send_menu(HEADER *msg, int *redraw);
+int pgp_send_menu(HEADER *msg);
 
 #endif /* CRYPT_BACKEND_CLASSIC_PGP */
 
