@@ -4392,6 +4392,8 @@ const struct mapping_t SortSidebarMethods[] = {
 static int parse_list (BUFFER *, BUFFER *, unsigned long, BUFFER *);
 static int parse_spam_list (BUFFER *, BUFFER *, unsigned long, BUFFER *);
 static int parse_unlist (BUFFER *, BUFFER *, unsigned long, BUFFER *);
+static int parse_path_list (BUFFER *, BUFFER *, unsigned long, BUFFER *);
+static int parse_path_unlist (BUFFER *, BUFFER *, unsigned long, BUFFER *);
 
 static int parse_group (BUFFER *, BUFFER *, unsigned long, BUFFER *);
 
@@ -4496,8 +4498,8 @@ const struct command_t Commands[] = {
   { "set",		parse_set,		0 },
   { "setenv",		parse_setenv,		0 },
 #ifdef USE_SIDEBAR
-  { "sidebar_whitelist",parse_list,		UL &SidebarWhitelist },
-  { "unsidebar_whitelist",parse_unlist,		UL &SidebarWhitelist },
+  { "sidebar_whitelist",parse_path_list,	UL &SidebarWhitelist },
+  { "unsidebar_whitelist",parse_path_unlist,	UL &SidebarWhitelist },
 #endif
   { "source",		parse_source,		0 },
   { "spam",		parse_spam_list,	MUTT_SPAM },
