@@ -519,6 +519,7 @@ int mutt_index_menu (void)
   menu->color = index_color;
   menu->current = ci_first_message ();
   menu->help = mutt_compile_help (helpstr, sizeof (helpstr), MENU_MAIN, IndexHelp);
+  mutt_push_current_menu (menu);
 
   if (!attach_msg)
     mutt_buffy_check(1); /* force the buffy check after we enter the folder */
@@ -2454,6 +2455,7 @@ int mutt_index_menu (void)
     if (done) break;
   }
 
+  mutt_pop_current_menu (menu);
   mutt_menuDestroy (&menu);
   return (close);
 }

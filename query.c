@@ -326,6 +326,7 @@ static void query_menu (char *buf, size_t buflen, QUERY *results, int retbuf)
   menu->tag = query_tag;
   menu->title = title;
   menu->help = mutt_compile_help (helpstr, sizeof (helpstr), MENU_QUERY, QueryHelp);
+  mutt_push_current_menu (menu);
 
   if (results == NULL)
   {
@@ -382,6 +383,7 @@ static void query_menu (char *buf, size_t buflen, QUERY *results, int retbuf)
 
 
 	      menu->current = 0;
+              mutt_pop_current_menu (menu);
 	      mutt_menuDestroy (&menu);
 	      menu = mutt_new_menu (MENU_QUERY);
 	      menu->make_entry = query_entry;
@@ -389,6 +391,7 @@ static void query_menu (char *buf, size_t buflen, QUERY *results, int retbuf)
 	      menu->tag = query_tag;
 	      menu->title = title;
 	      menu->help = mutt_compile_help (helpstr, sizeof (helpstr), MENU_QUERY, QueryHelp);
+              mutt_push_current_menu (menu);
 
 	      /* count the number of results */
 	      for (queryp = results; queryp; queryp = queryp->next)
@@ -538,5 +541,6 @@ static void query_menu (char *buf, size_t buflen, QUERY *results, int retbuf)
     set_option (OPTNEEDREDRAW);
   }
 
+  mutt_pop_current_menu (menu);
   mutt_menuDestroy (&menu);
 }

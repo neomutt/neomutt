@@ -611,7 +611,7 @@ void _mutt_select_file (char *f, size_t flen, int flags, char ***files, int *num
   char helpstr[LONG_STRING];
   char title[STRING];
   struct browser_state state;
-  MUTTMENU *menu;
+  MUTTMENU *menu = NULL;
   struct stat st;
   int i, killPrefix = 0;
   int multiple = (flags & MUTT_SEL_MULTI)  ? 1 : 0;
@@ -722,6 +722,7 @@ void _mutt_select_file (char *f, size_t flen, int flags, char ***files, int *num
 
   menu->help = mutt_compile_help (helpstr, sizeof (helpstr), MENU_FOLDER,
     FolderHelp);
+  mutt_push_current_menu (menu);
 
   init_menu (&state, menu, title, sizeof (title), buffy);
 
@@ -908,7 +909,6 @@ void _mutt_select_file (char *f, size_t flen, int flags, char ***files, int *num
 	}
 
 	destroy_state (&state);
-	mutt_menuDestroy (&menu);
 	goto bail;
 
       case OP_BROWSER_TELL:
@@ -1080,7 +1080,6 @@ void _mutt_select_file (char *f, size_t flen, int flags, char ***files, int *num
 		  mutt_error _("Error scanning directory.");
 		  if (examine_directory (menu, &state, LastDir, prefix) == -1)
 		  {
-		    mutt_menuDestroy (&menu);
 		    goto bail;
 		  }
 		}
@@ -1151,7 +1150,6 @@ void _mutt_select_file (char *f, size_t flen, int flags, char ***files, int *num
 	    else
 	    {
 	      mutt_error _("Error scanning directory.");
-	      mutt_menuDestroy (&menu);
 	      goto bail;
 	    }
 	    killPrefix = 0;
@@ -1246,7 +1244,6 @@ void _mutt_select_file (char *f, size_t flen, int flags, char ***files, int *num
 	{
 	  strfcpy (f, buf, flen);
 	  destroy_state (&state);
-	  mutt_menuDestroy (&menu);
 	  goto bail;
 	}
 	MAYBE_REDRAW (menu->redraw);
@@ -1264,7 +1261,6 @@ void _mutt_select_file (char *f, size_t flen, int flags, char ***files, int *num
 	{
 	  strfcpy (f, state.entry[menu->current].name, flen);
 	  destroy_state (&state);
-	  mutt_menuDestroy (&menu);
 	  goto bail;
 	}
 	else
@@ -1296,7 +1292,13 @@ void _mutt_select_file (char *f, size_t flen, int flags, char ***files, int *num
   }
   
   bail:
-  
+
+  if (menu)
+  {
+    mutt_pop_current_menu (menu);
+    mutt_menuDestroy (&menu);
+  }
+
   if (!folder)
     strfcpy (LastDir, LastDirBackup, sizeof (LastDir));
   

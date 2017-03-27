@@ -30,6 +30,11 @@
 
 char* SearchBuffers[MENU_MAX];
 
+/* These are used to track the active menus, for redraw operations. */
+static size_t MenuStackCount = 0;
+static size_t MenuStackLen = 0;
+static MUTTMENU **MenuStack = NULL;
+
 static void print_enriched_string (int attr, unsigned char *s, int do_color)
 {
   wchar_t wc;
@@ -709,6 +714,7 @@ MUTTMENU *mutt_new_menu (int menu)
   p->messagewin = MuttMessageWindow;
   p->color = default_color;
   p->search = menu_search_generic;
+
   return (p);
 }
 
@@ -726,6 +732,30 @@ void mutt_menuDestroy (MUTTMENU **p)
 
   FREE (p);		/* __FREE_CHECKED__ */
 }
+
+void mutt_push_current_menu (MUTTMENU *menu)
+{
+  if (MenuStackCount >= MenuStackLen)
+  {
+    MenuStackLen += 5;
+    safe_realloc (&MenuStack, MenuStackLen * sizeof(MUTTMENU *));
+  }
+
+  MenuStack[MenuStackCount++] = menu;
+}
+
+void mutt_pop_current_menu (MUTTMENU *menu)
+{
+  if (!MenuStackCount ||
+      (MenuStack[MenuStackCount - 1] != menu))
+  {
+    dprint (1, (debugfile, "mutt_pop_current_menu() called with inactive menu\n"));
+    return;
+  }
+
+  MenuStackCount--;
+}
+
 
 #define MUTT_SEARCH_UP   1
 #define MUTT_SEARCH_DOWN 2

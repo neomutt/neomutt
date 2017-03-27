@@ -1595,7 +1595,6 @@ mutt_pager (const char *banner, const char *fname, int flags, pager_t *extra)
   int i, j, ch = 0, rc = -1, hideQuoted = 0, q_level = 0, force_redraw = 0;
   int lines = 0, curline = 0, topline = 0, oldtopline = 0, err, first = 1;
   int r = -1, wrapped = 0, searchctx = 0;
-  int redraw = REDRAW_FULL;
   FILE *fp = NULL;
   LOFF_T last_pos = 0, last_offset = 0;
   int old_smart_wrap, old_markers;
@@ -1609,6 +1608,7 @@ mutt_pager (const char *banner, const char *fname, int flags, pager_t *extra)
   mutt_window_t *pager_status_window = NULL;
   mutt_window_t *pager_window = NULL;
 
+  MUTTMENU *pager_menu = NULL;
   MUTTMENU *index = NULL;		/* the Pager Index (PI) */
   int indexlen = PagerIndexLines;	/* indexlen not always == PIL */
   int indicator = indexlen / 3; 	/* the indicator line of the PI */
@@ -1669,11 +1669,14 @@ mutt_pager (const char *banner, const char *fname, int flags, pager_t *extra)
   pager_status_window = safe_calloc (sizeof (mutt_window_t), 1);
   pager_window        = safe_calloc (sizeof (mutt_window_t), 1);
 
+  pager_menu = mutt_new_menu (MENU_PAGER);
+  mutt_push_current_menu (pager_menu);
+
   while (ch != -1)
   {
     mutt_curs_set (0);
 
-    if (redraw & REDRAW_FULL)
+    if (pager_menu->redraw & REDRAW_FULL)
     {
 #if ! (defined (USE_SLANG_CURSES) || defined (HAVE_RESIZETERM))
       mutt_reflow_windows ();
@@ -1740,7 +1743,7 @@ mutt_pager (const char *banner, const char *fname, int flags, pager_t *extra)
 	  SearchBack = Resize->SearchBack;
 	}
 	lines = Resize->line;
-	redraw |= REDRAW_SIGWINCH;
+	pager_menu->redraw |= REDRAW_SIGWINCH;
 
 	FREE (&Resize);
       }
@@ -1775,14 +1778,14 @@ mutt_pager (const char *banner, const char *fname, int flags, pager_t *extra)
 	menu_redraw_index(index);
       }
 
-      redraw |= REDRAW_BODY | REDRAW_INDEX | REDRAW_STATUS;
+      pager_menu->redraw |= REDRAW_BODY | REDRAW_INDEX | REDRAW_STATUS;
 #ifdef USE_SIDEBAR
-      redraw |= REDRAW_SIDEBAR;
+      pager_menu->redraw |= REDRAW_SIDEBAR;
 #endif
       mutt_show_error ();
     }
 
-    if (redraw & REDRAW_SIGWINCH)
+    if (pager_menu->redraw & REDRAW_SIGWINCH)
     {
       i = -1;
       j = -1;
@@ -1798,14 +1801,14 @@ mutt_pager (const char *banner, const char *fname, int flags, pager_t *extra)
     }
 
 #ifdef USE_SIDEBAR
-    if ((redraw & REDRAW_SIDEBAR) || SidebarNeedsRedraw)
+    if ((pager_menu->redraw & REDRAW_SIDEBAR) || SidebarNeedsRedraw)
     {
       SidebarNeedsRedraw = 0;
       mutt_sb_draw ();
     }
 #endif
 
-    if ((redraw & REDRAW_BODY) || topline != oldtopline)
+    if ((pager_menu->redraw & REDRAW_BODY) || topline != oldtopline)
     {
       do {
         mutt_window_move (pager_window, 0, 0);
@@ -1841,10 +1844,10 @@ mutt_pager (const char *banner, const char *fname, int flags, pager_t *extra)
       /* We are going to update the pager status bar, so it isn't
        * necessary to reset to normal color now. */
 
-      redraw |= REDRAW_STATUS; /* need to update the % seen */
+      pager_menu->redraw |= REDRAW_STATUS; /* need to update the % seen */
     }
 
-    if (redraw & REDRAW_STATUS)
+    if (pager_menu->redraw & REDRAW_STATUS)
     {
       struct hdr_format_info hfi;
       char pager_progress_str[4];
@@ -1885,7 +1888,7 @@ mutt_pager (const char *banner, const char *fname, int flags, pager_t *extra)
       }
     }
 
-    if ((redraw & REDRAW_INDEX) && index)
+    if ((pager_menu->redraw & REDRAW_INDEX) && index)
     {
       /* redraw the pager_index indicator, because the
        * flags for this message might have changed. */
@@ -1901,7 +1904,7 @@ mutt_pager (const char *banner, const char *fname, int flags, pager_t *extra)
       NORMAL_COLOR;
     }
 
-    redraw = 0;
+    pager_menu->redraw = 0;
 
     if (option(OPTBRAILLEFRIENDLY)) {
       if (brailleLine!=-1) {
@@ -1976,7 +1979,7 @@ mutt_pager (const char *banner, const char *fname, int flags, pager_t *extra)
 	lastLine = 0;
 	topline = 0;
 
-	redraw = REDRAW_FULL | REDRAW_SIGWINCH;
+	pager_menu->redraw = REDRAW_FULL | REDRAW_SIGWINCH;
 	ch = 0;
       }
 
@@ -2273,14 +2276,14 @@ search_next:
 	  }
 
 	}
-	redraw = REDRAW_BODY;
+	pager_menu->redraw = REDRAW_BODY;
 	break;
 
       case OP_SEARCH_TOGGLE:
 	if (SearchCompiled)
 	{
 	  SearchFlag ^= MUTT_SEARCH;
-	  redraw = REDRAW_BODY;
+	  pager_menu->redraw = REDRAW_BODY;
 	}
 	break;
 
@@ -2290,7 +2293,7 @@ search_next:
 	{
 	  InHelp = 1;
 	  mutt_help (MENU_PAGER);
-	  redraw = REDRAW_FULL;
+	  pager_menu->redraw = REDRAW_FULL;
 	  InHelp = 0;
 	}
 	else
@@ -2304,7 +2307,7 @@ search_next:
 	  if (hideQuoted && lineInfo[topline].type == MT_COLOR_QUOTED)
 	    topline = upNLines (1, lineInfo, topline, hideQuoted);
 	  else
-	    redraw = REDRAW_BODY;
+	    pager_menu->redraw = REDRAW_BODY;
 	}
 	break;
 
@@ -2361,7 +2364,7 @@ search_next:
 
       case OP_REDRAW:
 	clearok (stdscr, TRUE);
-	redraw = REDRAW_FULL;
+	pager_menu->redraw = REDRAW_FULL;
 	break;
 
       case OP_NULL:
@@ -2381,7 +2384,7 @@ search_next:
 			      extra->idx, extra->idxlen,
 			      extra->bdy);
         else
-          ci_bounce_message (extra->hdr, &redraw);
+          ci_bounce_message (extra->hdr, &pager_menu->redraw);
 	break;
 
       case OP_RESEND:
@@ -2393,7 +2396,7 @@ search_next:
 			      extra->bdy);
         else
 	  mutt_resend_message (NULL, extra->ctx, extra->hdr);
-        redraw = REDRAW_FULL;
+        pager_menu->redraw = REDRAW_FULL;
         break;
 
       case OP_CHECK_TRADITIONAL:
@@ -2413,7 +2416,7 @@ search_next:
 	  mutt_create_alias (extra->bdy->hdr->env, NULL);
         else
 	  mutt_create_alias (extra->hdr->env, NULL);
-	MAYBE_REDRAW (redraw);
+	MAYBE_REDRAW (pager_menu->redraw);
 	break;
 
       case OP_PURGE_MESSAGE:
@@ -2427,7 +2430,7 @@ search_next:
 	mutt_set_flag (Context, extra->hdr, MUTT_PURGE, (ch == OP_PURGE_MESSAGE));
         if (option (OPTDELETEUNTAG))
 	  mutt_set_flag (Context, extra->hdr, MUTT_TAG, 0);
-	redraw = REDRAW_STATUS | REDRAW_INDEX;
+	pager_menu->redraw = REDRAW_STATUS | REDRAW_INDEX;
 	if (option (OPTRESOLVE))
 	{
 	  ch = -1;
@@ -2441,7 +2444,7 @@ search_next:
 	CHECK_READONLY;
 
 	if (mutt_change_flag (extra->hdr, (ch == OP_MAIN_SET_FLAG)) == 0)
-	  redraw |= REDRAW_STATUS | REDRAW_INDEX;
+	  pager_menu->redraw |= REDRAW_STATUS | REDRAW_INDEX;
 	if (extra->hdr->deleted && option (OPTRESOLVE))
 	{
 	  ch = -1;
@@ -2471,9 +2474,9 @@ search_next:
 	  }
 
 	  if (!option (OPTRESOLVE) && PagerIndexLines)
-	    redraw = REDRAW_FULL;
+	    pager_menu->redraw = REDRAW_FULL;
 	  else
-	    redraw = REDRAW_STATUS | REDRAW_INDEX;
+	    pager_menu->redraw = REDRAW_STATUS | REDRAW_INDEX;
 	}
 	break;
 
@@ -2566,7 +2569,7 @@ search_next:
 	}
 
 	if (option (OPTFORCEREDRAWPAGER))
-	  redraw = REDRAW_FULL;
+	  pager_menu->redraw = REDRAW_FULL;
 	unset_option (OPTFORCEREDRAWINDEX);
 	unset_option (OPTFORCEREDRAWPAGER);
 	break;
@@ -2578,7 +2581,7 @@ search_next:
 	CHECK_ACL(MUTT_ACL_WRITE, "Cannot flag message");
 
 	mutt_set_flag (Context, extra->hdr, MUTT_FLAG, !extra->hdr->flagged);
-	redraw = REDRAW_STATUS | REDRAW_INDEX;
+	pager_menu->redraw = REDRAW_STATUS | REDRAW_INDEX;
 	if (option (OPTRESOLVE))
 	{
 	  ch = -1;
@@ -2592,7 +2595,7 @@ search_next:
 	  mutt_pipe_attachment_list (extra->fp, 0, extra->bdy, 0);
 	else
 	  mutt_pipe_message (extra->hdr);
-	MAYBE_REDRAW (redraw);
+	MAYBE_REDRAW (pager_menu->redraw);
 	break;
 
       case OP_PRINT:
@@ -2607,7 +2610,7 @@ search_next:
 	CHECK_MODE(IsHeader (extra) && !IsAttach (extra));
         CHECK_ATTACH;      
 	ci_send_message (0, NULL, NULL, extra->ctx, NULL);
-	redraw = REDRAW_FULL;
+	pager_menu->redraw = REDRAW_FULL;
 	break;
 
       case OP_REPLY:
@@ -2619,14 +2622,14 @@ search_next:
 			     SENDREPLY);
 	else
 	  ci_send_message (SENDREPLY, NULL, NULL, extra->ctx, extra->hdr);
-	redraw = REDRAW_FULL;
+	pager_menu->redraw = REDRAW_FULL;
 	break;
 
       case OP_RECALL_MESSAGE:
 	CHECK_MODE(IsHeader (extra) && !IsAttach(extra));
         CHECK_ATTACH;
 	ci_send_message (SENDPOSTPONED, NULL, NULL, extra->ctx, extra->hdr);
-	redraw = REDRAW_FULL;
+	pager_menu->redraw = REDRAW_FULL;
 	break;
 
       case OP_GROUP_REPLY:
@@ -2637,7 +2640,7 @@ search_next:
 			     extra->idxlen, extra->bdy, SENDREPLY|SENDGROUPREPLY);
         else
 	  ci_send_message (SENDREPLY | SENDGROUPREPLY, NULL, NULL, extra->ctx, extra->hdr);
-	redraw = REDRAW_FULL;
+	pager_menu->redraw = REDRAW_FULL;
 	break;
 
       case OP_LIST_REPLY:
@@ -2648,7 +2651,7 @@ search_next:
 			     extra->idxlen, extra->bdy, SENDREPLY|SENDLISTREPLY);
         else
 	  ci_send_message (SENDREPLY | SENDLISTREPLY, NULL, NULL, extra->ctx, extra->hdr);
-	redraw = REDRAW_FULL;
+	pager_menu->redraw = REDRAW_FULL;
 	break;
 
       case OP_FORWARD_MESSAGE:
@@ -2659,7 +2662,7 @@ search_next:
 			       extra->idxlen, extra->bdy);
         else
 	  ci_send_message (SENDFORWARD, NULL, NULL, extra->ctx, extra->hdr);
-	redraw = REDRAW_FULL;
+	pager_menu->redraw = REDRAW_FULL;
 	break;
 
       case OP_DECRYPT_SAVE:
@@ -2692,7 +2695,7 @@ search_next:
 			       (ch == OP_DECODE_SAVE) || (ch == OP_DECODE_COPY),
 			       (ch == OP_DECRYPT_SAVE) || (ch == OP_DECRYPT_COPY) ||
 			       0,
-			       &redraw) == 0 && (ch == OP_SAVE || ch == OP_DECODE_SAVE
+			       &pager_menu->redraw) == 0 && (ch == OP_SAVE || ch == OP_DECODE_SAVE
 						 || ch == OP_DECRYPT_SAVE
 						 ))
 	{
@@ -2702,14 +2705,14 @@ search_next:
 	    rc = OP_MAIN_NEXT_UNDELETED;
 	  }
 	  else
-	    redraw |= REDRAW_STATUS | REDRAW_INDEX;
+	    pager_menu->redraw |= REDRAW_STATUS | REDRAW_INDEX;
 	}
-	MAYBE_REDRAW (redraw);
+	MAYBE_REDRAW (pager_menu->redraw);
 	break;
 
       case OP_SHELL_ESCAPE:
 	mutt_shell_escape ();
-	MAYBE_REDRAW (redraw);
+	MAYBE_REDRAW (pager_menu->redraw);
 	break;
 
       case OP_TAG:
@@ -2720,7 +2723,7 @@ search_next:
 	  ((Context->last_tag == extra->hdr && !extra->hdr->tagged)
 	   ? NULL : Context->last_tag);
 
-	redraw = REDRAW_STATUS | REDRAW_INDEX;
+	pager_menu->redraw = REDRAW_STATUS | REDRAW_INDEX;
 	if (option (OPTRESOLVE))
 	{
 	  ch = -1;
@@ -2740,7 +2743,7 @@ search_next:
 	  mutt_set_flag (Context, extra->hdr, MUTT_READ, 1);
 	first = 0;
         Context->msgnotreadyet = -1;
-	redraw = REDRAW_STATUS | REDRAW_INDEX;
+	pager_menu->redraw = REDRAW_STATUS | REDRAW_INDEX;
 	if (option (OPTRESOLVE))
 	{
 	  ch = -1;
@@ -2756,7 +2759,7 @@ search_next:
 
 	mutt_set_flag (Context, extra->hdr, MUTT_DELETE, 0);
 	mutt_set_flag (Context, extra->hdr, MUTT_PURGE, 0);
-	redraw = REDRAW_STATUS | REDRAW_INDEX;
+	pager_menu->redraw = REDRAW_STATUS | REDRAW_INDEX;
 	if (option (OPTRESOLVE))
 	{
 	  ch = -1;
@@ -2786,9 +2789,9 @@ search_next:
 	  }
 
 	  if (!option (OPTRESOLVE) && PagerIndexLines)
-	    redraw = REDRAW_FULL;
+	    pager_menu->redraw = REDRAW_FULL;
 	  else
-	    redraw = REDRAW_STATUS | REDRAW_INDEX;
+	    pager_menu->redraw = REDRAW_STATUS | REDRAW_INDEX;
 	}
 	break;
 
@@ -2811,7 +2814,7 @@ search_next:
 	mutt_view_attachments (extra->hdr);
 	if (extra->hdr->attach_del)
 	  Context->changed = 1;
-	redraw = REDRAW_FULL;
+	pager_menu->redraw = REDRAW_FULL;
 	break;
 
      case OP_EDIT_LABEL:
@@ -2819,7 +2822,7 @@ search_next:
         rc = mutt_label_message(extra->hdr);
         if (rc > 0) {
           Context->changed = 1;
-          redraw = REDRAW_FULL;
+          pager_menu->redraw = REDRAW_FULL;
           mutt_message (_("%d labels changed."), rc);
         }
         else {
@@ -2836,7 +2839,7 @@ search_next:
 	CHECK_MODE(IsHeader(extra));
         CHECK_ATTACH;
 	ci_send_message (SENDKEY, NULL, NULL, extra->ctx, extra->hdr);
-	redraw = REDRAW_FULL;
+	pager_menu->redraw = REDRAW_FULL;
 	break;
 
 
@@ -2852,7 +2855,7 @@ search_next:
         }
         CHECK_MODE(IsHeader(extra));
 	crypt_extract_keys_from_messages(extra->hdr);
-        redraw = REDRAW_FULL;
+        pager_menu->redraw = REDRAW_FULL;
         break;
 
       case OP_WHAT_KEY:
@@ -2872,7 +2875,7 @@ search_next:
       case OP_SIDEBAR_TOGGLE_VISIBLE:
 	toggle_option (OPTSIDEBAR);
         mutt_reflow_windows();
-	redraw = REDRAW_FULL;
+	pager_menu->redraw = REDRAW_FULL;
 	break;
 #endif
 
@@ -2913,6 +2916,8 @@ search_next:
     SearchCompiled = 0;
   }
   FREE (&lineInfo);
+  mutt_pop_current_menu (pager_menu);
+  mutt_menuDestroy (&pager_menu);
   if (index)
     mutt_menuDestroy(&index);
 
