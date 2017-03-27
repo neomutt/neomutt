@@ -742,6 +742,7 @@ void mutt_push_current_menu (MUTTMENU *menu)
   }
 
   MenuStack[MenuStackCount++] = menu;
+  CurrentMenu = menu->menu;
 }
 
 void mutt_pop_current_menu (MUTTMENU *menu)
@@ -754,6 +755,14 @@ void mutt_pop_current_menu (MUTTMENU *menu)
   }
 
   MenuStackCount--;
+  if (MenuStackCount)
+  {
+    CurrentMenu = MenuStack[MenuStackCount - 1]->menu;
+  }
+  else
+  {
+    CurrentMenu = MENU_MAIN;
+  }
 }
 
 
@@ -1060,7 +1069,6 @@ int mutt_menuLoop (MUTTMENU *menu)
 	break;
 
       case OP_ENTER_COMMAND:
-	CurrentMenu = menu->menu;
 	mutt_enter_command ();
 	if (option (OPTFORCEREDRAWINDEX))
 	{
