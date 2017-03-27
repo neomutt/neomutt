@@ -969,14 +969,14 @@ int mutt_index_menu (void)
     if (op != -1)
       mutt_curs_set (0);
 
-    if (menu->redraw & REDRAW_FULL)
-    {
-      menu_redraw_full (menu);
-      mutt_show_error ();
-    }
-
     if (menu->menu == MENU_MAIN)
     {
+      if (menu->redraw & REDRAW_FULL)
+      {
+        menu_redraw_full (menu);
+        mutt_show_error ();
+      }
+
 #ifdef USE_SIDEBAR
       if (menu->redraw & REDRAW_SIDEBAR || SidebarNeedsRedraw)
       {
