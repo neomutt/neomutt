@@ -4701,7 +4701,7 @@ void smime_gpgme_init (void)
   init_smime ();
 }
 
-static int gpgme_send_menu (HEADER *msg, int *redraw, int is_smime)
+static int gpgme_send_menu (HEADER *msg, int is_smime)
 {
   crypt_key_t *p;
   char input_signas[SHORT_STRING];
@@ -4806,7 +4806,6 @@ static int gpgme_send_menu (HEADER *msg, int *redraw, int is_smime)
 
         msg->security |= SIGN;
       }
-      *redraw = REDRAW_FULL;
       break;
 
     case 'b': /* (b)oth */
@@ -4853,14 +4852,14 @@ static int gpgme_send_menu (HEADER *msg, int *redraw, int is_smime)
   return (msg->security);
 }
 
-int pgp_gpgme_send_menu (HEADER *msg, int *redraw)
+int pgp_gpgme_send_menu (HEADER *msg)
 {
-  return gpgme_send_menu (msg, redraw, 0);
+  return gpgme_send_menu (msg, 0);
 }
 
-int smime_gpgme_send_menu (HEADER *msg, int *redraw)
+int smime_gpgme_send_menu (HEADER *msg)
 {
-  return gpgme_send_menu (msg, redraw, 1);
+  return gpgme_send_menu (msg, 1);
 }
 
 static int verify_sender (HEADER *h, gpgme_protocol_t protocol)

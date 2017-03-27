@@ -63,7 +63,7 @@ char *smime_findKeys (ADDRESS *adrlist, int oppenc_mode);
 
 void  smime_invoke_import (char *, char *);
 
-int smime_send_menu (HEADER *msg, int *redraw);
+int smime_send_menu (HEADER *msg);
 
 #endif
 
