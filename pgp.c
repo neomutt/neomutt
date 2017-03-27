@@ -522,7 +522,7 @@ int pgp_application_pgp_handler (BODY *m, STATE *s)
       else if (pgpout)
       {
 	FGETCONV *fc = NULL;
-	int c;
+	int ch;
 	char *expected_charset = gpgcharset && *gpgcharset ? gpgcharset : "utf-8";
 
 	mutt_debug (4, "pgp: recoding inline from [%s] to [%s]\n",
@@ -531,8 +531,8 @@ int pgp_application_pgp_handler (BODY *m, STATE *s)
 	rewind (pgpout);
 	state_set_prefix (s);
 	fc = fgetconv_open (pgpout, expected_charset, Charset, MUTT_ICONV_HOOK_FROM);
-	while ((c = fgetconv (fc)) != EOF)
-	  state_prefix_putc (c, s);
+	while ((ch = fgetconv (fc)) != EOF)
+	  state_prefix_putc (ch, s);
 	fgetconv_close (&fc);
       }
 

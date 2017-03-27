@@ -599,26 +599,26 @@ static pgp_key_t pgp_select_key (pgp_key_t keys,
 	  (!pgp_id_is_valid (KeyTable[menu->current])
 	   || !pgp_id_is_strong (KeyTable[menu->current])))
       {
-	char *s = "";
+	char *str = "";
 	char buff[LONG_STRING];
 
 	if (KeyTable[menu->current]->flags & KEYFLAG_CANTUSE)
-	  s = N_("ID is expired/disabled/revoked.");
+	  str = N_("ID is expired/disabled/revoked.");
 	else switch (KeyTable[menu->current]->trust & 0x03)
 	{
 	  case 0:
-	    s = N_("ID has undefined validity.");
+	    str = N_("ID has undefined validity.");
 	    break;
 	  case 1:
-	    s = N_("ID is not valid.");
+	    str = N_("ID is not valid.");
 	    break;
 	  case 2:
-	    s = N_("ID is only marginally valid.");
+	    str = N_("ID is only marginally valid.");
 	    break;
 	}
 
-	snprintf (buff, sizeof (buff), _("%s Do you really want to use the key?"),
-		  _(s));
+	snprintf (buff, sizeof (buff), _("%str Do you really want to use the key?"),
+		  _(str));
 
 	if (mutt_yesorno (buff, MUTT_NO) != MUTT_YES)
 	{

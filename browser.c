@@ -1051,13 +1051,13 @@ void _mutt_select_file (char *f, size_t flen, int flags, char ***files, int *num
     else
     {
       NNTP_SERVER *nserv = CurrentNewsSrv;
-      unsigned int i;
+      unsigned int j;
 
       /* default state for news reader mode is browse subscribed newsgroups */
       buffy = 0;
-      for (i = 0; i < nserv->groups_num; i++)
+      for (j = 0; j < nserv->groups_num; j++)
       {
-	NNTP_DATA *nntp_data = nserv->groups_list[i];
+	NNTP_DATA *nntp_data = nserv->groups_list[j];
 	if (nntp_data && nntp_data->subscribed)
 	{
 	  buffy = 1;
@@ -1421,21 +1421,21 @@ void _mutt_select_file (char *f, size_t flen, int flags, char ***files, int *num
 	if (multiple)
 	{
 	  char **tfiles;
-	  int i, j;
+	  int j, k;
 
 	  if (menu->tagged)
 	  {
 	    *numfiles = menu->tagged;
 	    tfiles = safe_calloc (*numfiles, sizeof (char *));
-	    for (i = 0, j = 0; i < state.entrylen; i++)
+	    for (j = 0, k = 0; j < state.entrylen; j++)
 	    {
-	      struct folder_file ff = state.entry[i];
+	      struct folder_file ff = state.entry[j];
 	      char full[_POSIX_PATH_MAX];
 	      if (ff.tagged)
 	      {
 		mutt_concat_path (full, LastDir, ff.name, sizeof (full));
 		mutt_expand_path (full, sizeof (full));
-		tfiles[j++] = safe_strdup (full);
+		tfiles[k++] = safe_strdup (full);
 	      }
 	    }
 	    *files = tfiles;
@@ -1860,10 +1860,10 @@ void _mutt_select_file (char *f, size_t flen, int flags, char ***files, int *num
 	else
 	{
 	  BODY *b = NULL;
-	  char buf[_POSIX_PATH_MAX];
+	  char buf2[_POSIX_PATH_MAX];
 
-	  mutt_concat_path (buf, LastDir, state.entry[menu->current].name, sizeof (buf));
-	  b = mutt_make_file_attach (buf);
+	  mutt_concat_path (buf2, LastDir, state.entry[menu->current].name, sizeof (buf2));
+	  b = mutt_make_file_attach (buf2);
 	  if (b != NULL)
 	  {
 	    mutt_view_attachment (NULL, b, MUTT_REGULAR, NULL, NULL, 0);
@@ -1880,7 +1880,7 @@ void _mutt_select_file (char *f, size_t flen, int flags, char ***files, int *num
       case OP_UNCATCHUP:
 	if (option (OPTNEWS))
 	{
-	  struct folder_file *f = &state.entry[menu->current];
+	  struct folder_file *ff = &state.entry[menu->current];
 	  int rc;
 	  NNTP_DATA *nntp_data = NULL;
 
@@ -1889,9 +1889,9 @@ void _mutt_select_file (char *f, size_t flen, int flags, char ***files, int *num
 	    break;
 
 	  if (i == OP_CATCHUP)
-	    nntp_data = mutt_newsgroup_catchup (CurrentNewsSrv, f->name);
+	    nntp_data = mutt_newsgroup_catchup (CurrentNewsSrv, ff->name);
 	  else
-	    nntp_data = mutt_newsgroup_uncatchup (CurrentNewsSrv, f->name);
+	    nntp_data = mutt_newsgroup_uncatchup (CurrentNewsSrv, ff->name);
 
 	  if (nntp_data)
 	  {
@@ -1910,14 +1910,14 @@ void _mutt_select_file (char *f, size_t flen, int flags, char ***files, int *num
 	if (option (OPTNEWS))
 	{
 	  NNTP_SERVER *nserv = CurrentNewsSrv;
-	  unsigned int i;
+	  unsigned int j;
 
 	  if (nntp_newsrc_parse (nserv) < 0)
 	    break;
 
-	  for (i = 0; i < nserv->groups_num; i++)
+	  for (j = 0; j < nserv->groups_num; j++)
 	  {
-	    NNTP_DATA *nntp_data = nserv->groups_list[i];
+	    NNTP_DATA *nntp_data = nserv->groups_list[j];
 	    if (nntp_data)
 	      nntp_data->deleted = 1;
 	  }
@@ -1990,15 +1990,15 @@ void _mutt_select_file (char *f, size_t flen, int flags, char ***files, int *num
 
 	  for ( ; j < state.entrylen; j++)
 	  {
-	    struct folder_file *f = &state.entry[j];
+	    struct folder_file *ff = &state.entry[j];
 
 	    if (i == OP_BROWSER_SUBSCRIBE || i == OP_BROWSER_UNSUBSCRIBE ||
-		  regexec (rx, f->name, 0, NULL, 0) == 0)
+		  regexec (rx, ff->name, 0, NULL, 0) == 0)
 	    {
 	      if (i == OP_BROWSER_SUBSCRIBE || i == OP_SUBSCRIBE_PATTERN)
-		nntp_data = mutt_newsgroup_subscribe (nserv, f->name);
+		nntp_data = mutt_newsgroup_subscribe (nserv, ff->name);
 	      else
-		nntp_data = mutt_newsgroup_unsubscribe (nserv, f->name);
+		nntp_data = mutt_newsgroup_unsubscribe (nserv, ff->name);
 	    }
 	    if (i == OP_BROWSER_SUBSCRIBE || i == OP_BROWSER_UNSUBSCRIBE)
 	    {
@@ -2010,11 +2010,11 @@ void _mutt_select_file (char *f, size_t flen, int flags, char ***files, int *num
 	  }
 	  if (i == OP_SUBSCRIBE_PATTERN)
 	  {
-	    unsigned int i;
+	    unsigned int k;
 
-	    for (i = 0; nserv && i < nserv->groups_num; i++)
+	    for (k = 0; nserv && k < nserv->groups_num; k++)
 	    {
-	      nntp_data = nserv->groups_list[i];
+	      nntp_data = nserv->groups_list[k];
 	      if (nntp_data && nntp_data->group && !nntp_data->subscribed)
 	      {
 		if (regexec (rx, nntp_data->group, 0, NULL, 0) == 0)

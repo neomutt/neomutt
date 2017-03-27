@@ -910,14 +910,14 @@ generate_body (FILE *tempfp,	/* stream for outgoing message */
   /* if (WithCrypto && (flags & SENDKEY)) */
   else if ((WithCrypto & APPLICATION_PGP) && (flags & SENDKEY))
   {
-    BODY *tmp = NULL;
+    BODY *b = NULL;
 
     if ((WithCrypto & APPLICATION_PGP)
-        && (tmp = crypt_pgp_make_key_attachment (NULL)) == NULL)
+        && (b = crypt_pgp_make_key_attachment (NULL)) == NULL)
       return -1;
 
-    tmp->next = msg->content;
-    msg->content = tmp;
+    b->next = msg->content;
+    msg->content = b;
   }
 
   mutt_clear_error ();

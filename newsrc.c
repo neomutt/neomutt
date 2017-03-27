@@ -212,7 +212,7 @@ int nntp_newsrc_parse (NNTP_SERVER *nserv)
   while (sb.st_size && fgets (line, sb.st_size + 1, nserv->newsrc_fp))
   {
     char *b = NULL, *h = NULL, *p = NULL;
-    unsigned int subs = 0, i = 1;
+    unsigned int subs = 0, j = 1;
     NNTP_DATA *nntp_data = NULL;
 
     /* find end of newsgroup name */
@@ -233,12 +233,12 @@ int nntp_newsrc_parse (NNTP_SERVER *nserv)
     b = p;
     while (*b)
       if (*b++ == ',')
-	i++;
-    nntp_data->newsrc_ent = safe_calloc (i, sizeof (NEWSRC_ENTRY));
+	j++;
+    nntp_data->newsrc_ent = safe_calloc (j, sizeof (NEWSRC_ENTRY));
     nntp_data->subscribed = subs;
 
     /* parse entries */
-    i = 0;
+    j = 0;
     while (p)
     {
       b = p;
@@ -255,20 +255,20 @@ int nntp_newsrc_parse (NNTP_SERVER *nserv)
       else
 	h = b;
 
-      if (sscanf (b, ANUM, &nntp_data->newsrc_ent[i].first) == 1 &&
-	  sscanf (h, ANUM, &nntp_data->newsrc_ent[i].last) == 1)
-	i++;
+      if (sscanf (b, ANUM, &nntp_data->newsrc_ent[j].first) == 1 &&
+	  sscanf (h, ANUM, &nntp_data->newsrc_ent[j].last) == 1)
+	j++;
     }
-    if (i == 0)
+    if (j == 0)
     {
-	nntp_data->newsrc_ent[i].first = 1;
-	nntp_data->newsrc_ent[i].last = 0;
-	i++;
+	nntp_data->newsrc_ent[j].first = 1;
+	nntp_data->newsrc_ent[j].last = 0;
+	j++;
     }
     if (nntp_data->lastMessage == 0)
-      nntp_data->lastMessage = nntp_data->newsrc_ent[i - 1].last;
-    nntp_data->newsrc_len = i;
-    safe_realloc (&nntp_data->newsrc_ent, i * sizeof (NEWSRC_ENTRY));
+      nntp_data->lastMessage = nntp_data->newsrc_ent[j - 1].last;
+    nntp_data->newsrc_len = j;
+    safe_realloc (&nntp_data->newsrc_ent, j * sizeof (NEWSRC_ENTRY));
     nntp_group_unread_stat (nntp_data);
     mutt_debug (2, "nntp_newsrc_parse: %s\n", nntp_data->group);
   }
@@ -1235,10 +1235,10 @@ void nntp_buffy (char *buf, size_t len)
     if (Context && Context->magic == MUTT_NNTP &&
 	(mutt_strcmp (nntp_data->group, ((NNTP_DATA *)Context->data)->group) == 0))
     {
-      unsigned int i, unread = 0;
+      unsigned int j, unread = 0;
 
-      for (i = 0; i < Context->msgcount; i++)
-	if (!Context->hdrs[i]->read && !Context->hdrs[i]->deleted)
+      for (j = 0; j < Context->msgcount; j++)
+	if (!Context->hdrs[j]->read && !Context->hdrs[j]->deleted)
 	  unread++;
       if (!unread)
 	continue;

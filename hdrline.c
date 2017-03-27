@@ -582,7 +582,7 @@ hdr_format_str (char *dest,
 	const char *cp = NULL;
 	struct tm *tm = NULL;
 	time_t T;
-	int i = 0, invert = 0;
+	int j = 0, invert = 0;
 
 	if (optional && ((op == '[') || (op == '('))) {
 	  char *is = NULL;
@@ -664,13 +664,13 @@ hdr_format_str (char *dest,
 	      default:
 		break;
 	    }
-	    i += t;
+	    j += t;
 	  }
 
-	  if (i < 0)
-	    i *= -1;
+	  if (j < 0)
+	    j *= -1;
 
-	  if (((T > i) || (T < (-1*i))) ^ invert)
+	  if (((T > j) || (T < (-1*j))) ^ invert)
 	    optional = 0;
 	  break;
 	}
