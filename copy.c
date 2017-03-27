@@ -428,12 +428,12 @@ mutt_copy_header (FILE *in, HEADER *h, FILE *out, int flags, const char *prefix)
     char *folder = nm_header_get_folder(h);
     if (folder && !(option (OPTWEED) && mutt_matches_ignore ("folder")))
     {
-      char buffer[LONG_STRING];
-      strfcpy (buffer, folder, sizeof (buffer));
-      mutt_pretty_mailbox (buffer, sizeof (buffer));
+      char buf[LONG_STRING];
+      strfcpy (buf, folder, sizeof (buf));
+      mutt_pretty_mailbox (buf, sizeof (buf));
 
       fputs ("Folder: ", out);
-      fputs (buffer, out);
+      fputs (buf, out);
       fputc ('\n', out);
     }
     char *tags = nm_header_get_tags(h);

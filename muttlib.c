@@ -1748,12 +1748,12 @@ FILE *mutt_open_read (const char *path, pid_t *thepid)
   {
     /* read from a pipe */
 
-    char *s = safe_strdup (path);
+    char *p = safe_strdup (path);
 
-    s[len - 1] = 0;
+    p[len - 1] = 0;
     mutt_endwin (NULL);
-    *thepid = mutt_create_filter (s, NULL, &f, NULL);
-    FREE (&s);
+    *thepid = mutt_create_filter (p, NULL, &f, NULL);
+    FREE (&p);
   }
   else
   {
