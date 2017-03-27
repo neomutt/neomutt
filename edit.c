@@ -331,7 +331,7 @@ int mutt_builtin_editor (const char *path, HEADER *msg, HEADER *cur)
   buf = be_snarf_file (path, buf, &bufmax, &buflen, 0);
 
   tmp[0] = 0;
-  while (!done)
+  while (done == 0)
   {
     if (mutt_enter_string (tmp, sizeof (tmp), 0, 0) == -1)
     {
@@ -485,7 +485,7 @@ int mutt_builtin_editor (const char *path, HEADER *msg, HEADER *cur)
     tmp[0] = 0;
   }
 
-  if (!abort) be_barf_file (path, buf, buflen);
+  if (abort == 0) be_barf_file (path, buf, buflen);
   be_free_memory (buf, buflen);
 
   return (abort ? -1 : 0);

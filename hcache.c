@@ -323,7 +323,7 @@ restore_buffer(BUFFER ** b, const unsigned char *d, int *off, int convert)
   unsigned int used;
   unsigned int offset;
   restore_int(&used, d, off);
-  if (!used)
+  if (used == 0)
   {
     return;
   }
@@ -600,7 +600,7 @@ static const char *hcache_per_folder(const char *path, const char *folder,
   {
     /* We have a mailbox-specific namer function */
     snprintf(hcpath, sizeof(hcpath), "%s%s", path, slash ? "" : "/");
-    if (!slash)
+    if (slash == 0)
       plen++;
 
     ret = namer(folder, hcpath + plen, sizeof(hcpath) - plen);

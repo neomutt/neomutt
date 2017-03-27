@@ -76,7 +76,7 @@ status_format_str (char *buf, size_t buflen, size_t col, int cols, char op, cons
   switch (op)
   {
     case 'b':
-      if (!optional)
+      if (optional == 0)
       {
 	snprintf (fmt, sizeof (fmt), "%%%sd", prefix);
 	snprintf (buf, buflen, fmt, mutt_buffy_check (0));
@@ -86,7 +86,7 @@ status_format_str (char *buf, size_t buflen, size_t col, int cols, char op, cons
       break;
 
     case 'd':
-      if (!optional)
+      if (optional == 0)
       {
 	snprintf (fmt, sizeof (fmt), "%%%sd", prefix);
 	snprintf (buf, buflen, fmt, Context ? Context->deleted : 0);
@@ -123,7 +123,7 @@ status_format_str (char *buf, size_t buflen, size_t col, int cols, char op, cons
       break;
     }
     case 'F':
-      if (!optional)
+      if (optional == 0)
       {
 	snprintf (fmt, sizeof (fmt), "%%%sd", prefix);
 	snprintf (buf, buflen, fmt, Context ? Context->flagged : 0);
@@ -138,7 +138,7 @@ status_format_str (char *buf, size_t buflen, size_t col, int cols, char op, cons
       break;
 
     case 'l':
-      if (!optional)
+      if (optional == 0)
       {
 	snprintf (fmt, sizeof (fmt), "%%%ss", prefix);
 	mutt_pretty_size (tmp, sizeof (tmp), Context ? Context->size : 0);
@@ -149,7 +149,7 @@ status_format_str (char *buf, size_t buflen, size_t col, int cols, char op, cons
       break;
 
     case 'L':
-      if (!optional)
+      if (optional == 0)
       {
 	snprintf (fmt, sizeof (fmt), "%%%ss", prefix);
 	mutt_pretty_size (tmp, sizeof (tmp), Context ? Context->vsize: 0);
@@ -160,7 +160,7 @@ status_format_str (char *buf, size_t buflen, size_t col, int cols, char op, cons
       break;
 
     case 'm':
-      if (!optional)
+      if (optional == 0)
       {
 	snprintf (fmt, sizeof (fmt), "%%%sd", prefix);
 	snprintf (buf, buflen, fmt, Context ? Context->msgcount : 0);
@@ -170,7 +170,7 @@ status_format_str (char *buf, size_t buflen, size_t col, int cols, char op, cons
       break;
 
     case 'M':
-      if (!optional)
+      if (optional == 0)
       {
 	snprintf (fmt, sizeof(fmt), "%%%sd", prefix);
 	snprintf (buf, buflen, fmt, Context ? Context->vcount : 0);
@@ -180,7 +180,7 @@ status_format_str (char *buf, size_t buflen, size_t col, int cols, char op, cons
       break;
 
     case 'n':
-      if (!optional)
+      if (optional == 0)
       {
 	snprintf (fmt, sizeof (fmt), "%%%sd", prefix);
 	snprintf (buf, buflen, fmt, Context ? Context->new : 0);
@@ -190,7 +190,7 @@ status_format_str (char *buf, size_t buflen, size_t col, int cols, char op, cons
       break;
 
     case 'o':
-      if (!optional)
+      if (optional == 0)
       {
 	snprintf (fmt, sizeof (fmt), "%%%sd", prefix);
 	snprintf (buf, buflen, fmt, Context ? Context->unread - Context->new : 0);
@@ -201,12 +201,12 @@ status_format_str (char *buf, size_t buflen, size_t col, int cols, char op, cons
 
     case 'p':
       count = mutt_num_postponed (0);
-      if (!optional)
+      if (optional == 0)
       {
 	snprintf (fmt, sizeof (fmt), "%%%sd", prefix);
 	snprintf (buf, buflen, fmt, count);
       }
-      else if (!count)
+      else if (count == 0)
 	optional = 0;
       break;
 
@@ -260,7 +260,7 @@ status_format_str (char *buf, size_t buflen, size_t col, int cols, char op, cons
       break;
 
     case 't':
-      if (!optional)
+      if (optional == 0)
       {
 	snprintf (fmt, sizeof (fmt), "%%%sd", prefix);
 	snprintf (buf, buflen, fmt, Context ? Context->tagged : 0);
@@ -270,7 +270,7 @@ status_format_str (char *buf, size_t buflen, size_t col, int cols, char op, cons
       break;
 
     case 'u':
-      if (!optional)
+      if (optional == 0)
       {
 	snprintf (fmt, sizeof (fmt), "%%%sd", prefix);
 	snprintf (buf, buflen, fmt, Context ? Context->unread : 0);
@@ -285,7 +285,7 @@ status_format_str (char *buf, size_t buflen, size_t col, int cols, char op, cons
       break;
 
     case 'V':
-      if (!optional)
+      if (optional == 0)
       {
 	snprintf (fmt, sizeof(fmt), "%%%ss", prefix);
 	snprintf (buf, buflen, fmt, (Context && Context->pattern) ? Context->pattern : "");

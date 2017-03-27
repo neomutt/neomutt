@@ -181,7 +181,7 @@ new_aliases:
 
   for (i=0; i<menu->max; i++) AliasTable[i]->num = i;
 
-  while (!done)
+  while (done == 0)
   {
     if (aliases->next)
     {

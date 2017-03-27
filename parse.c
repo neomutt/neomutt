@@ -862,7 +862,7 @@ time_t mutt_parse_date (const char *s, HEADER *h)
 	  }
 	}
 	tz_offset = zhours * 3600 + zminutes * 60;
-	if (!zoccident)
+	if (zoccident == 0)
 	  tz_offset = -tz_offset;
 	break;
     }
@@ -1692,7 +1692,7 @@ int mutt_count_body_parts (CONTEXT *ctx, HEADER *hdr)
 
   hdr->attach_valid = 1;
 
-  if (!keep_parts)
+  if (keep_parts == 0)
     mutt_free_body (&hdr->content->parts);
 
   return hdr->attach_total;

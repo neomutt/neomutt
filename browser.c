@@ -274,10 +274,10 @@ folder_format_str (char *dest, size_t destlen, size_t col, int cols, char op, co
 	  t_fmt = tnow - folder->ff->mtime < 31536000 ? "%b %d %H:%M" : "%b %d  %Y";
 	}
 
-        if (!do_locales)
+        if (do_locales == 0)
           setlocale (LC_TIME, "C");
         strftime (date, sizeof (date), t_fmt, localtime (&folder->ff->mtime));
-        if (!do_locales)
+        if (do_locales == 0)
           setlocale (LC_TIME, "");
 
 	mutt_format_s (dest, destlen, fmt, date);
@@ -365,7 +365,7 @@ folder_format_str (char *dest, size_t destlen, size_t col, int cols, char op, co
       break;
 
     case 'm':
-      if (!optional)
+      if (optional == 0)
       {
         if (folder->ff->has_buffy)
         {
@@ -375,7 +375,7 @@ folder_format_str (char *dest, size_t destlen, size_t col, int cols, char op, co
         else
           mutt_format_s (dest, destlen, fmt, "");
       }
-      else if (!folder->ff->msg_count)
+      else if (folder->ff->msg_count == 0)
         optional = 0;
       break;
 
@@ -385,7 +385,7 @@ folder_format_str (char *dest, size_t destlen, size_t col, int cols, char op, co
       break;
 
     case 'n':
-      if (!optional)
+      if (optional == 0)
       {
         if (folder->ff->has_buffy)
         {
@@ -395,7 +395,7 @@ folder_format_str (char *dest, size_t destlen, size_t col, int cols, char op, co
         else
           mutt_format_s (dest, destlen, fmt, "");
       }
-      else if (!folder->ff->msg_unread)
+      else if (folder->ff->msg_unread == 0)
         optional = 0;
       break;
 
@@ -978,7 +978,7 @@ static void init_menu (struct browser_state *state, MUTTMENU *menu, char *title,
         break;
       }
     }
-    if (!matched)
+    if (matched == 0)
       browser_highlight_default(state, menu);
   }
   else
@@ -1193,7 +1193,7 @@ void _mutt_select_file (char *f, size_t flen, int flags, char ***files, int *num
       /* When browser tracking feature is disabled, shoot a 0
        * on first char of OldLastDir to make it useless.
        */
-      if (!browser_track)
+      if (browser_track == 0)
         OldLastDir[0] = '\0';
     }
 

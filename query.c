@@ -106,7 +106,7 @@ static QUERY *run_query (char *s, int quiet)
     mutt_debug (1, "unable to fork command: %s\n", cmd);
     return 0;
   }
-  if (!quiet)
+  if (quiet == 0)
     mutt_message (_("Waiting for response..."));
   fgets (msg, sizeof (msg), fp);
   if ((p = strrchr (msg, '\n')))
@@ -142,11 +142,11 @@ static QUERY *run_query (char *s, int quiet)
   if (mutt_wait_filter (thepid))
   {
     mutt_debug (1, "Error: %s\n", msg);
-    if (!quiet)  mutt_error ("%s", msg);
+    if (quiet == 0)  mutt_error ("%s", msg);
   }
   else
   {
-    if (!quiet)
+    if (quiet == 0)
       mutt_message ("%s", msg);
   }
 
@@ -203,7 +203,7 @@ static const char * query_format_str (char *dest, size_t destlen, size_t col, in
     snprintf (dest, destlen, tmp, query->num + 1);
     break;
   case 'e':
-    if (!optional)
+    if (optional == 0)
     {
       snprintf (tmp, sizeof (tmp), "%%%ss", fmt);
       snprintf (dest, destlen, tmp, NONULL (query->other));
@@ -293,7 +293,7 @@ static void query_menu (char *buf, size_t buflen, QUERY *results, int retbuf)
     for (i = 0, queryp = results; queryp; queryp = queryp->next, i++)
       QueryTable[i].data = queryp;
 
-    while (!done)
+    while (done == 0)
     {
       switch ((op = mutt_menu_loop (menu)))
       {
@@ -406,7 +406,7 @@ static void query_menu (char *buf, size_t buflen, QUERY *results, int retbuf)
 	case OP_MAIL:
 	  msg = mutt_new_header ();
 	  msg->env = mutt_new_envelope ();
-	  if (!menu->tagprefix)
+	  if (menu->tagprefix == 0)
 	  {
 	    msg->env->to = result_to_addr(QueryTable[menu->current].data);
 	  }
@@ -465,7 +465,7 @@ static void query_menu (char *buf, size_t buflen, QUERY *results, int retbuf)
 	}
       }
       /* then enter current message */
-      if (!tagged)
+      if (tagged == 0)
       {
 	ADDRESS *tmpa = result_to_addr (QueryTable[menu->current].data);
 	mutt_addrlist_to_local (tmpa);

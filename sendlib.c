@@ -220,7 +220,7 @@ static void b64_flush(struct b64_context *ctx, FILE *fout)
   char encoded[11];
   size_t ret, i;
 
-  if (!ctx->size)
+  if (ctx->size == 0)
     return;
 
   if (ctx->linelen >= 72)
@@ -454,7 +454,7 @@ int mutt_write_mime_body (BODY *a, FILE *f)
     return -1;
   }
 
-  if (a->type == TYPETEXT && (!a->noconv))
+  if (a->type == TYPETEXT && (a->noconv == 0))
     fc = fgetconv_open (fpin, a->charset,
 			mutt_get_body_charset (send_charset, sizeof (send_charset), a),
 			0);
@@ -466,7 +466,7 @@ int mutt_write_mime_body (BODY *a, FILE *f)
     encode_quoted (fc, f, write_as_text_part (a));
   else if (a->encoding == ENCBASE64)
     encode_base64 (fc, f, write_as_text_part (a));
-  else if (a->type == TYPETEXT && (!a->noconv))
+  else if (a->type == TYPETEXT && (a->noconv == 0))
     encode_8bit (fc, f, write_as_text_part (a));
   else
     mutt_copy_stream (fpin, f);
@@ -717,7 +717,7 @@ static size_t convert_file_to (FILE *file, const char *fromcode,
     }
   }
 
-  if (!ret)
+  if (ret == 0)
   {
     /* Find best score */
     ret = (size_t)(-1);
@@ -736,7 +736,7 @@ static size_t convert_file_to (FILE *file, const char *fromcode,
       {
 	*tocode = i;
 	ret = score[i];
-	if (!ret)
+	if (ret == 0)
 	  break;
       }
     }
@@ -2984,7 +2984,7 @@ int mutt_write_fcc (const char *path, HEADER *hdr, const char *msgid,
     if (fclose (tempfp) != 0)
       r = -1;
     /* if there was an error, leave the temp version */
-    if (!r)
+    if (r == 0)
       unlink (tempfile);
   }
   else

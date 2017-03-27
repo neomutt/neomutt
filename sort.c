@@ -41,7 +41,7 @@ static sort_t *AuxSort = NULL;
   code = AuxSort(a,b); \
   unset_option(OPTAUXSORT); \
 } \
-if (!code) \
+if (code == 0) \
   code = (*((HEADER **)a))->index - (*((HEADER **)b))->index;
 
 static int compare_score (const void *a, const void *b)
@@ -297,7 +297,7 @@ void mutt_sort_headers (CONTEXT *ctx, int init)
   if (!ctx)
     return;
 
-  if (!ctx->msgcount)
+  if (ctx->msgcount == 0)
   {
     /* this function gets called by mutt_sync_mailbox(), which may have just
      * deleted all the messages.  the virtual message numbers are not updated
@@ -308,7 +308,7 @@ void mutt_sort_headers (CONTEXT *ctx, int init)
     return; /* nothing to do! */
   }
 
-  if (!ctx->quiet)
+  if (ctx->quiet == 0)
     mutt_message (_("Sorting mailbox..."));
 
   if (option (OPTNEEDRESCORE) && option (OPTSCORE))
@@ -384,6 +384,6 @@ void mutt_sort_headers (CONTEXT *ctx, int init)
     mutt_set_virtual (ctx);
   }
 
-  if (!ctx->quiet)
+  if (ctx->quiet == 0)
     mutt_clear_error ();
 }

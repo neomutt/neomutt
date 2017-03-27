@@ -74,7 +74,7 @@ unsigned char *pgp_read_packet (FILE * fp, size_t * len)
 
   startpos = ftello (fp);
 
-  if (!plen)
+  if (plen == 0)
   {
     plen = CHUNKSIZE;
     pbuf = safe_malloc (plen);
@@ -177,7 +177,7 @@ unsigned char *pgp_read_packet (FILE * fp, size_t * len)
       {
 	int i;
 
-	if (!bytes)
+	if (bytes == 0)
 	  bytes = 4;
 
 	material = 0;

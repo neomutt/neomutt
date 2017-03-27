@@ -102,7 +102,7 @@ int convert_nonmime_string (char **ps)
 
     c1 = strchr (c, ':');
     n = c1 ? c1 - c : mutt_strlen (c);
-    if (!n)
+    if (n == 0)
       return 0;
     fromcode = safe_malloc (n + 1);
     strfcpy (fromcode, c, n + 1);
@@ -137,7 +137,7 @@ char *mutt_choose_charset (const char *fromcode, const char *charsets,
     q = strchr (p, ':');
 
     n = q ? q - p : strlen (p);
-    if (!n)
+    if (n == 0)
       continue;
 
     t = safe_malloc (n + 1);
@@ -164,7 +164,7 @@ char *mutt_choose_charset (const char *fromcode, const char *charsets,
       else
 	FREE (&s);
       elen = slen;
-      if (!bestn)
+      if (bestn == 0)
 	break;
     }
     else
@@ -514,7 +514,7 @@ static int rfc2047_encode (ICONV_CONST char *d, size_t dlen, int col,
 	while (CONTINUATION_BYTE(t[n]))
 	  --n;
       assert (t + n >= t);
-      if (!n)
+      if (n == 0)
       {
 	/* This should only happen in the really stupid case where the
 	   only word that needs encoding is one character long, but

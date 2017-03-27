@@ -225,7 +225,7 @@ void mutt_attach_bounce (FILE * fp, HEADER * hdr,
     }
   }
 
-  if (!ret)
+  if (ret == 0)
     mutt_message (p ? _("Message bounced.") : _("Messages bounced."));
   else
     mutt_error (p ? _("Error bouncing message!") : _("Error bouncing messages!"));
@@ -510,7 +510,7 @@ _("Can't decode all tagged attachments.  MIME-forward the others?"))) == MUTT_AB
   {
     /* multiple body case */
 
-    if (!mime_fwd_all)
+    if (mime_fwd_all == 0)
     {
       for (i = 0; i < idxlen; i++)
       {

@@ -1381,7 +1381,7 @@ static int autoview_handler (BODY *a, STATE *s)
 
     mutt_copy_bytes (s->fpin, fpin, a->length);
 
-    if(!piped)
+    if(piped == 0)
     {
       safe_fclose (&fpin);
       thepid = mutt_create_filter (command, NULL, &fpout, &fperr);
@@ -1659,7 +1659,7 @@ static int run_decode_and_handler (BODY *b, STATE *s, handler_t handler, int pla
   {
     origType = b->type;
 
-    if (!plaintext)
+    if (plaintext == 0)
     {
       /* decode to a tempfile, saving the original destination */
       fp = s->fpout;

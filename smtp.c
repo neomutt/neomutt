@@ -291,13 +291,13 @@ static int smtp_fill_account (ACCOUNT* account)
   if (url.scheme == U_SMTPS)
     account->flags |= MUTT_ACCT_SSL;
 
-  if (!account->port)
+  if (account->port == 0)
   {
     if (account->flags & MUTT_ACCT_SSL)
       account->port = SMTPS_PORT;
     else
     {
-      if (!SmtpPort)
+      if (SmtpPort == 0)
       {
         service = getservbyname ("smtp", "tcp");
         if (service)
@@ -320,7 +320,7 @@ static int smtp_helo (CONNECTION* conn)
 
   memset (Capabilities, 0, sizeof (Capabilities));
 
-  if (!Esmtp)
+  if (Esmtp == 0)
   {
     /* if TLS or AUTH are requested, use EHLO */
     if (conn->account.flags & MUTT_ACCT_USER)

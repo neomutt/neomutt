@@ -293,7 +293,7 @@ void nntp_newsrc_gen_entries (CONTEXT *ctx)
   }
 
   entries = nntp_data->newsrc_len;
-  if (!entries)
+  if (entries == 0)
   {
     entries = 5;
     nntp_data->newsrc_ent = safe_calloc (entries, sizeof (NEWSRC_ENTRY));
@@ -594,7 +594,7 @@ int nntp_active_save_cache (NNTP_SERVER *nserv)
   unsigned int i;
   int rc;
 
-  if (!nserv->cacheable)
+  if (nserv->cacheable == 0)
     return 0;
 
   buflen = 10 * LONG_STRING;
@@ -1240,7 +1240,7 @@ void nntp_buffy (char *buf, size_t len)
       for (j = 0; j < Context->msgcount; j++)
 	if (!Context->hdrs[j]->read && !Context->hdrs[j]->deleted)
 	  unread++;
-      if (!unread)
+      if (unread == 0)
 	continue;
     }
     strfcpy (buf, nntp_data->group, len);

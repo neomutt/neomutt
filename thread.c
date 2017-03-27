@@ -333,7 +333,7 @@ void mutt_draw_tree (CONTEXT *ctx)
       if (!nextdisp && tree->next_subtree_visible)
 	nextdisp = tree;
     }
-    while (!tree->deep);
+    while (tree->deep == 0);
   }
 
   FREE (&pfx);
@@ -740,7 +740,7 @@ static void check_subjects (CONTEXT *ctx, int init)
     cur = ctx->hdrs[i];
     if (cur->thread->check_subject)
       cur->thread->check_subject = 0;
-    else if (!init)
+    else if (init == 0)
       continue;
 
     /* figure out which messages have subjects different than their parents' */
@@ -1046,7 +1046,7 @@ int _mutt_aside_thread (HEADER *hdr, short dir, short subthreads)
 
   cur = hdr->thread;
 
-  if (!subthreads)
+  if (subthreads == 0)
   {
     while (cur->parent)
       cur = cur->parent;
@@ -1109,7 +1109,7 @@ int mutt_parent_message (CONTEXT *ctx, HEADER *hdr, int find_root)
     if ((hdr = thread->message) != NULL)
     {
       parent = hdr;
-      if (!find_root)
+      if (find_root == 0)
         break;
     }
   }

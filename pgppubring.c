@@ -144,7 +144,7 @@ static void pgpring_dump_keyblock (pgp_key_t p)
 
     for (uid = p->address; uid; uid = uid->next, first = 0)
     {
-      if (!first)
+      if (first == 0)
       {
 	printf ("uid:%c::::::::", gnupg_trustletter (uid->trust));
 	print_userid (uid->addr);

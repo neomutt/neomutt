@@ -467,7 +467,7 @@ int imap_read_headers (IMAP_DATA* idata, int msgbegin, int msgend)
 	}
 
         /* hole in the header cache */
-        if (!evalhc)
+        if (evalhc == 0)
           continue;
 
         if ((mfhrc = msg_fetch_header (ctx, &h, idata->buf, NULL)) == -1)
@@ -1126,7 +1126,7 @@ int imap_copy_messages (CONTEXT* ctx, HEADER* h, char* dest, int delete)
       }
 
       rc = imap_exec_msgset (idata, "UID COPY", mmbox, MUTT_TAG, 0, 0);
-      if (!rc)
+      if (rc == 0)
       {
         mutt_debug (1, "imap_copy_messages: No messages tagged\n");
         rc = -1;

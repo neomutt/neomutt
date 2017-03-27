@@ -273,7 +273,7 @@ int imap_parse_path (const char* path, IMAP_MBOX* mx)
   char *c = NULL;
   int n;
 
-  if (!ImapPort)
+  if (ImapPort == 0)
   {
     service = getservbyname ("imap", "tcp");
     if (service)
@@ -282,7 +282,7 @@ int imap_parse_path (const char* path, IMAP_MBOX* mx)
       ImapPort = IMAP_PORT;
     mutt_debug (3, "Using default IMAP port %d\n", ImapPort);
   }
-  if (!ImapsPort)
+  if (ImapsPort == 0)
   {
     service = getservbyname ("imaps", "tcp");
     if (service)
@@ -725,7 +725,7 @@ void imap_quote_string (char *dest, size_t dlen, const char *src)
     if (strchr (quote, *s))
     {
       dlen -= 2;
-      if (!dlen)
+      if (dlen == 0)
 	break;
       *pt++ = '\\';
       *pt++ = *s;
@@ -894,7 +894,7 @@ int imap_wait_keepalive (pid_t pid)
   sigprocmask (SIG_SETMASK, &oldmask, NULL);
 
   unset_option (OPTKEEPQUIET);
-  if (!imap_passive)
+  if (imap_passive == 0)
     unset_option (OPTIMAPPASSIVE);
 
   return rc;

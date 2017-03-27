@@ -149,7 +149,7 @@ static const char *cb_format_str(char *dest, size_t destlen, size_t col, int col
       break;
 
     case 'd':
-      if (!optional)
+      if (optional == 0)
       {
         snprintf (fmt, sizeof (fmt), "%%%sd", prefix);
         snprintf (dest, destlen, fmt, c ? Context->deleted : 0);
@@ -159,7 +159,7 @@ static const char *cb_format_str(char *dest, size_t destlen, size_t col, int col
       break;
 
     case 'F':
-      if (!optional)
+      if (optional == 0)
       {
         snprintf (fmt, sizeof (fmt), "%%%sd", prefix);
         snprintf (dest, destlen, fmt, b->msg_flagged);
@@ -169,7 +169,7 @@ static const char *cb_format_str(char *dest, size_t destlen, size_t col, int col
       break;
 
     case 'L':
-      if (!optional)
+      if (optional == 0)
       {
         snprintf (fmt, sizeof (fmt), "%%%sd", prefix);
         snprintf (dest, destlen, fmt, c ? Context->vcount : b->msg_count);
@@ -179,7 +179,7 @@ static const char *cb_format_str(char *dest, size_t destlen, size_t col, int col
       break;
 
     case 'N':
-      if (!optional)
+      if (optional == 0)
       {
         snprintf (fmt, sizeof (fmt), "%%%sd", prefix);
         snprintf (dest, destlen, fmt, b->msg_unread);
@@ -189,7 +189,7 @@ static const char *cb_format_str(char *dest, size_t destlen, size_t col, int col
       break;
 
     case 'n':
-      if (!optional)
+      if (optional == 0)
       {
         snprintf (fmt, sizeof (fmt), "%%%sc", prefix);
         snprintf (dest, destlen, fmt, b->new ? 'N' : ' ');
@@ -199,7 +199,7 @@ static const char *cb_format_str(char *dest, size_t destlen, size_t col, int col
       break;
 
     case 'S':
-      if (!optional)
+      if (optional == 0)
       {
         snprintf (fmt, sizeof (fmt), "%%%sd", prefix);
         snprintf (dest, destlen, fmt, b->msg_count);
@@ -209,7 +209,7 @@ static const char *cb_format_str(char *dest, size_t destlen, size_t col, int col
       break;
 
     case 't':
-      if (!optional)
+      if (optional == 0)
       {
         snprintf (fmt, sizeof (fmt), "%%%sd", prefix);
         snprintf (dest, destlen, fmt, c ? Context->tagged : 0);
@@ -353,7 +353,7 @@ static void update_entries_visibility (void)
 
     sbe->is_hidden = 0;
 
-    if (!new_only)
+    if (new_only == 0)
       continue;
 
     if ((i == OpnIndex) || (sbe->buffy->msg_unread  > 0) || sbe->buffy->new ||

@@ -239,7 +239,7 @@ char *safe_strcat (char *d, size_t l, const char *s)
 {
   char *p = d;
 
-  if (!l)
+  if (l == 0)
     return d;
 
   l--; /* Space for the trailing '\0'. */
@@ -258,7 +258,7 @@ char *safe_strncat (char *d, size_t l, const char *s, size_t sl)
 {
   char *p = d;
 
-  if (!l)
+  if (l == 0)
     return d;
 
   l--; /* Space for the trailing '\0'. */
@@ -1153,7 +1153,7 @@ int mutt_inbox_cmp (const char *a, const char *b)
              (a[min+1] != '\0') && (b[min+1] != '\0') &&
              (mutt_strncasecmp(a, b, min) == 0);
 
-  if (!same)
+  if (same == 0)
       return 0;
 
   if (mutt_strcasecmp(&a[min+1], "inbox") == 0)

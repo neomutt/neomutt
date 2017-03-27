@@ -71,7 +71,7 @@ static const char *_mutt_fmt_pgp_command (char *dest,
   {
     case 'r':
     {
-      if (!optional)
+      if (optional == 0)
       {
 	snprintf (fmt, sizeof (fmt), "%%%ss", prefix);
 	snprintf (dest, destlen, fmt, NONULL (cctx->ids));
@@ -83,7 +83,7 @@ static const char *_mutt_fmt_pgp_command (char *dest,
 
     case 'a':
     {
-      if (!optional)
+      if (optional == 0)
       {
 	snprintf (fmt, sizeof (fmt), "%%%ss", prefix);
 	snprintf (dest, destlen, fmt, NONULL (cctx->signas));
@@ -95,7 +95,7 @@ static const char *_mutt_fmt_pgp_command (char *dest,
 
     case 's':
     {
-      if (!optional)
+      if (optional == 0)
       {
 	snprintf (fmt, sizeof (fmt), "%%%ss", prefix);
 	snprintf (dest, destlen, fmt, NONULL (cctx->sig_fname));
@@ -107,7 +107,7 @@ static const char *_mutt_fmt_pgp_command (char *dest,
 
     case 'f':
     {
-      if (!optional)
+      if (optional == 0)
       {
 	snprintf (fmt, sizeof (fmt), "%%%ss", prefix);
 	snprintf (dest, destlen, fmt, NONULL (cctx->fname));
@@ -119,7 +119,7 @@ static const char *_mutt_fmt_pgp_command (char *dest,
 
     case 'p':
     {
-      if (!optional)
+      if (optional == 0)
       {
 	snprintf (fmt, sizeof (fmt), "%%%ss", prefix);
 	snprintf (dest, destlen, fmt, cctx->need_passphrase ? "PGPPASSFD=0" : "");

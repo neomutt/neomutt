@@ -1373,7 +1373,7 @@ int imap_close_mailbox (CONTEXT* ctx)
     {
       /* mx_close_mailbox won't sync if there are no deleted messages
        * and the mailbox is unchanged, so we may have to close here */
-      if (!ctx->deleted)
+      if (ctx->deleted == 0)
         imap_exec (idata, "CLOSE", IMAP_CMD_QUEUE);
       idata->state = IMAP_AUTHENTICATED;
     }
@@ -1634,7 +1634,7 @@ int imap_status (char* path, int queue)
     queued = 1;
     return 0;
   }
-  else if (!queued)
+  else if (queued == 0)
     imap_exec (idata, buf, 0);
 
   queued = 0;
@@ -1742,7 +1742,7 @@ static int do_search (const pattern_t* search, int allpats)
           rc++;
     }
 
-    if (!allpats)
+    if (allpats == 0)
       break;
   }
 
@@ -2050,7 +2050,7 @@ int imap_complete(char* dest, size_t dlen, char* path) {
         listresp.name[clen] = '\0';
       }
       /* copy in first word */
-      if (!completions)
+      if (completions == 0)
       {
         strfcpy (completion, listresp.name, sizeof(completion));
         matchlen = strlen (completion);
@@ -2127,7 +2127,7 @@ int imap_fast_trash (CONTEXT* ctx, char* dest)
     }
 
     rc = imap_exec_msgset (idata, "UID COPY", mmbox, MUTT_TRASH, 0, 0);
-    if (!rc)
+    if (rc == 0)
     {
       mutt_debug (1, "imap_fast_trash: No messages to trash\n");
       rc = -1;

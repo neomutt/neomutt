@@ -181,7 +181,7 @@ static HEADER *select_msg (void)
   orig_sort = Sort;
   Sort = SORT_ORDER;
 
-  while (!done)
+  while (done == 0)
   {
     switch (i = mutt_menu_loop (menu))
     {
@@ -430,7 +430,7 @@ int mutt_parse_crypt_hdr (const char *p, int set_empty_signas, int crypt_app)
   char sign_as[LONG_STRING] = "\0", *q = NULL;
   int flags = 0;
 
-  if (!WithCrypto)
+  if (WithCrypto == 0)
     return 0;
 
   p = skip_email_wsp(p);

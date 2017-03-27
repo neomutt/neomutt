@@ -846,7 +846,7 @@ int mutt_compose_menu (HEADER *msg,   /* structure for new message */
 	  }
 
 	  FREE (&files);
-	  if (!error) mutt_clear_error ();
+	  if (error == 0) mutt_clear_error ();
 
 	  menu->redraw |= REDRAW_INDEX | REDRAW_STATUS;
 	}
@@ -919,7 +919,7 @@ int mutt_compose_menu (HEADER *msg,   /* structure for new message */
 	    break;
 	  }
 
-	  if (!ctx->msgcount)
+	  if (ctx->msgcount == 0)
 	  {
 	    mx_close_mailbox (ctx, NULL);
 	    FREE (&ctx);

@@ -171,7 +171,7 @@ static const char *_mutt_fmt_smime_command (char *dest,
   {
     case 'C':
     {
-      if (!optional)
+      if (optional == 0)
       {
 	char path[_POSIX_PATH_MAX];
 	char buf1[LONG_STRING], buf2[LONG_STRING];
@@ -196,7 +196,7 @@ static const char *_mutt_fmt_smime_command (char *dest,
 
     case 'c':
     {           /* certificate (list) */
-      if (!optional) {
+      if (optional == 0) {
 	snprintf (fmt, sizeof (fmt), "%%%ss", prefix);
 	snprintf (dest, destlen, fmt, NONULL(cctx->certificates));
       }
@@ -207,7 +207,7 @@ static const char *_mutt_fmt_smime_command (char *dest,
 
     case 'i':
     {           /* intermediate certificates  */
-      if (!optional) {
+      if (optional == 0) {
 	snprintf (fmt, sizeof (fmt), "%%%ss", prefix);
 	snprintf (dest, destlen, fmt, NONULL(cctx->intermediates));
       }
@@ -218,7 +218,7 @@ static const char *_mutt_fmt_smime_command (char *dest,
 
     case 's':
     {           /* detached signature */
-      if (!optional)
+      if (optional == 0)
       {
 	snprintf (fmt, sizeof (fmt), "%%%ss", prefix);
 	snprintf (dest, destlen, fmt, NONULL (cctx->sig_fname));
@@ -230,7 +230,7 @@ static const char *_mutt_fmt_smime_command (char *dest,
 
     case 'k':
     {           /* private key */
-      if (!optional)
+      if (optional == 0)
       {
 	snprintf (fmt, sizeof (fmt), "%%%ss", prefix);
 	snprintf (dest, destlen, fmt, NONULL (cctx->key));
@@ -242,7 +242,7 @@ static const char *_mutt_fmt_smime_command (char *dest,
 
     case 'a':
     {           /* algorithm for encryption */
-      if (!optional) {
+      if (optional == 0) {
 	snprintf (fmt, sizeof (fmt), "%%%ss", prefix);
 	snprintf (dest, destlen, fmt, NONULL (cctx->cryptalg));
       }
@@ -253,7 +253,7 @@ static const char *_mutt_fmt_smime_command (char *dest,
 
     case 'f':
     {           /* file to process */
-      if (!optional)
+      if (optional == 0)
       {
 	snprintf (fmt, sizeof (fmt), "%%%ss", prefix);
 	snprintf (dest, destlen, fmt, NONULL (cctx->fname));
@@ -265,7 +265,7 @@ static const char *_mutt_fmt_smime_command (char *dest,
 
     case 'd':
     {           /* algorithm for the signature message digest */
-      if (!optional) {
+      if (optional == 0) {
 	snprintf (fmt, sizeof (fmt), "%%%ss", prefix);
 	snprintf (dest, destlen, fmt, NONULL (cctx->digestalg));
       }
@@ -447,7 +447,7 @@ static smime_key_t *smime_select_key (smime_key_t *keys, char *query)
   mutt_clear_error();
 
   done = 0;
-  while (!done)
+  while (done == 0)
   {
     switch (mutt_menu_loop (menu))
     {
@@ -985,7 +985,7 @@ static int smime_handle_cert_email (char *certificate, char *mailbox,
     mutt_any_key_to_continue (_("Error: unable to create OpenSSL subprocess!"));
     ret = 1;
   }
-  else if (!ret)
+  else if (ret == 0)
     ret = 1;
   else ret = 0;
 
@@ -1457,7 +1457,7 @@ BODY *smime_build_smime_entity (BODY *a, char *certlist)
   if (empty)
   {
     /* fatal error while trying to encrypt message */
-    if (!err) mutt_any_key_to_continue (_("No output from OpenSSL..."));
+    if (err == 0) mutt_any_key_to_continue (_("No output from OpenSSL..."));
     mutt_unlink (tempfile);
     return NULL;
   }

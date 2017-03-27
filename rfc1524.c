@@ -308,26 +308,26 @@ static int rfc1524_mailcap_parse (BODY *a,
 
       if (opt == MUTT_AUTOVIEW)
       {
-	if (!copiousoutput)
+	if (copiousoutput == 0)
 	  found = false;
       }
       else if (opt == MUTT_COMPOSE)
       {
-	if (!composecommand)
+	if (composecommand == 0)
 	  found = false;
       }
       else if (opt == MUTT_EDIT)
       {
-	if (!editcommand)
+	if (editcommand == 0)
 	  found = false;
       }
       else if (opt == MUTT_PRINT)
       {
-	if (!printcommand)
+	if (printcommand == 0)
 	  found = false;
       }
 
-      if (!found)
+      if (found == 0)
       {
 	/* reset */
 	if (entry)
@@ -407,7 +407,7 @@ int rfc1524_mailcap_lookup (BODY *a, char *type, rfc1524_entry *entry, int opt)
     if (*curr)
       curr++;
 
-    if (!x)
+    if (x == 0)
       continue;
 
     path[x] = '\0';

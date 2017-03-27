@@ -79,7 +79,7 @@ static const char *No_visible = N_("No visible messages.");
 		mutt_error(_(No_mailbox_is_open)); \
 		break; \
 	} \
-	else if (!Context->msgcount) \
+	else if (Context->msgcount == 0) \
 	{ \
 	  	mutt_flushinp (); \
 		mutt_error(_(There_are_no_messages)); \
@@ -326,7 +326,7 @@ void update_index (MUTTMENU *menu, CONTEXT *ctx, int check,
 #define THIS_BODY ctx->hdrs[j]->content
     for (j = (check == MUTT_REOPENED) ? 0 : oldcount; j < ctx->msgcount; j++)
     {
-      if (!j)
+      if (j == 0)
 	ctx->vcount = 0;
 
       if (mutt_pattern_exec (ctx->limit_pattern,
@@ -704,7 +704,7 @@ mutt_draw_statusline (int cols, const char *buf, int buflen)
       if (first == last)
         continue; /* ignore an empty regex */
 
-      if (!found)
+      if (found == 0)
       {
         chunks++;
         safe_realloc (&syntax, chunks * sizeof (struct syntax_t));
@@ -843,7 +843,7 @@ int mutt_index_menu (void)
 #endif
 	IndexHelp);
 
-  if (!attach_msg)
+  if (attach_msg == 0)
     mutt_buffy_check(1); /* force the buffy check after we enter the folder */
 
   if (((Sort & SORT_MASK) == SORT_THREADS) && option (OPTCOLLAPSEALL))
@@ -938,7 +938,7 @@ int mutt_index_menu (void)
       }
     }
 
-    if (!attach_msg)
+    if (attach_msg == 0)
     {
      /* check for new mail in the incoming folders */
      oldcount = newcount;
@@ -1066,7 +1066,7 @@ int mutt_index_menu (void)
 	  continue;
 	}
 
-	if (!Context->tagged)
+	if (Context->tagged == 0)
 	{
 	  mutt_error (_("No tagged messages."));
 	  continue;
@@ -1096,7 +1096,7 @@ int mutt_index_menu (void)
 	  continue;
 	}
 
-	if (!Context->tagged)
+	if (Context->tagged == 0)
 	{
 	  mutt_flush_macro_to_endcond ();
 	  mutt_message  (_("Nothing to do."));
@@ -1817,7 +1817,7 @@ int mutt_index_menu (void)
 	  progress_t progress;
 	  int px;
 
-	  if (!Context->quiet) {
+	  if (Context->quiet == 0) {
 	    snprintf(msgbuf, sizeof (msgbuf), _("Update labels..."));
 	    mutt_progress_init(&progress, msgbuf, MUTT_PROGRESS_MSG,
 				   1, Context->tagged);
@@ -1825,7 +1825,7 @@ int mutt_index_menu (void)
 	  nm_longrun_init(Context, true);
 	  for (px = 0, j = 0; j < Context->vcount; j++) {
 	    if (Context->hdrs[Context->v2r[j]]->tagged) {
-	      if (!Context->quiet)
+	      if (Context->quiet == 0)
 		mutt_progress_update(&progress, ++px, -1);
 	      nm_modify_message_tags(Context, Context->hdrs[Context->v2r[j]], buf);
 	      if (op == OP_MAIN_MODIFY_LABELS_THEN_HIDE)
@@ -2293,7 +2293,7 @@ int mutt_index_menu (void)
 
       case OP_DECRYPT_COPY:
       case OP_DECRYPT_SAVE:
-        if (!WithCrypto)
+        if (WithCrypto == 0)
           break;
         /* fall thru */
       case OP_COPY_MESSAGE:
@@ -2378,7 +2378,7 @@ int mutt_index_menu (void)
 	  {
 	    if (first_unread == -1)
 	      first_unread = i;
-	    if ((!CURHDRi->old) && first_new == -1)
+	    if ((CURHDRi->old == 0) && first_new == -1)
 	      first_new = i;
 	  }
 
@@ -2877,7 +2877,7 @@ int mutt_index_menu (void)
 
 
       case OP_EXTRACT_KEYS:
-        if (!WithCrypto)
+        if (WithCrypto == 0)
           break;
         CHECK_MSGCOUNT;
         CHECK_VISIBLE;

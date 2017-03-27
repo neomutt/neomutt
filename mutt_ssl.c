@@ -388,7 +388,7 @@ static int check_certificate_expiration (X509 *peercert, int silent)
   {
     if (X509_cmp_current_time (X509_get_notBefore (peercert)) >= 0)
     {
-      if (!silent)
+      if (silent == 0)
       {
         mutt_debug (2, "Server certificate is not yet valid\n");
         mutt_error (_("Server certificate is not yet valid"));
@@ -398,7 +398,7 @@ static int check_certificate_expiration (X509 *peercert, int silent)
     }
     if (X509_cmp_current_time (X509_get_notAfter (peercert)) <= 0)
     {
-      if (!silent)
+      if (silent == 0)
       {
         mutt_debug (2, "Server certificate has expired\n");
         mutt_error (_("Server certificate has expired"));
@@ -617,7 +617,7 @@ static int check_certificate_file (X509 *peercert)
     }
   }
   /* PEM_read_X509 sets an error on eof */
-  if (!pass)
+  if (pass == 0)
     ERR_clear_error();
   X509_free (cert);
   safe_fclose (&fp);
@@ -677,7 +677,7 @@ static int check_host (X509 *x509cert, const char *hostname, char *err, size_t e
     GENERAL_NAMES_free(subj_alt_names);
   }
 
-  if (!match_found)
+  if (match_found == 0)
   {
     /* Try the common name */
     if (!(x509_subject = X509_get_subject_name(x509cert)))
@@ -713,7 +713,7 @@ static int check_host (X509 *x509cert, const char *hostname, char *err, size_t e
     }
   }
 
-  if (!match_found)
+  if (match_found == 0)
   {
     if (err && errlen)
       snprintf (err, errlen, _("certificate owner does not match hostname %s"),
@@ -853,7 +853,7 @@ static int interactive_check_cert (X509 *cert, int idx, int len, SSL *ssl, int a
 
   done = 0;
   set_option(OPTIGNOREMACROEVENTS);
-  while (!done)
+  while (done == 0)
   {
     switch (mutt_menu_loop (menu))
     {
@@ -863,7 +863,7 @@ static int interactive_check_cert (X509 *cert, int idx, int len, SSL *ssl, int a
         done = 1;
         break;
       case OP_MAX + 3:		/* accept always */
-        if (!allow_always)
+        if (allow_always == 0)
           break;
         done = 0;
         if ((fp = fopen (SslCertFile, "a")))
@@ -872,7 +872,7 @@ static int interactive_check_cert (X509 *cert, int idx, int len, SSL *ssl, int a
 	    done = 1;
 	  safe_fclose (&fp);
 	}
-	if (!done)
+	if (done == 0)
         {
 	  mutt_error (_("Warning: Couldn't save certificate"));
 	  mutt_sleep (2);
@@ -889,7 +889,7 @@ static int interactive_check_cert (X509 *cert, int idx, int len, SSL *ssl, int a
 	ssl_cache_trusted_cert (cert);
         break;
       case OP_MAX + 4:          /* skip */
-        if (!allow_skip)
+        if (allow_skip == 0)
           break;
         done = 2;
         SSL_set_ex_data (ssl, SkipModeExDataIndex, &SkipModeExDataIndex);

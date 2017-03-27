@@ -68,12 +68,12 @@ static void sighandler (int sig)
         break;
       IsEndwin = isendwin ();
       curs_set (1);
-      if (!IsEndwin)
+      if (IsEndwin == 0)
 	endwin ();
       kill (0, SIGSTOP);
 
     case SIGCONT:
-      if (!IsEndwin)
+      if (IsEndwin == 0)
 	refresh ();
       mutt_curs_set (-1);
 #if defined (USE_SLANG_CURSES) || defined (HAVE_RESIZETERM)

@@ -55,7 +55,7 @@ void crypt_current_time(STATE *s, char *app_name)
   time_t t;
   char p[STRING], tmp[STRING];
 
-  if (!WithCrypto)
+  if (WithCrypto == 0)
     return;
 
   if (option (OPTCRYPTTIMESTAMP))
@@ -92,7 +92,7 @@ static void disable_coredumps (void)
   struct rlimit rl = {0, 0};
   static short done = 0;
 
-  if (!done)
+  if (done == 0)
   {
     setrlimit (RLIMIT_CORE, &rl);
     done = 1;
@@ -128,7 +128,7 @@ int mutt_protect (HEADER *msg, char *keylist)
   BODY *tmp_pgp_pbody = NULL;
   int flags = (WithCrypto & APPLICATION_PGP)? msg->security: 0;
 
-  if (!WithCrypto)
+  if (WithCrypto == 0)
     return -1;
 
   if (!(msg->security & (ENCRYPT | SIGN)))
@@ -434,7 +434,7 @@ int mutt_is_application_pgp (BODY *m)
 	  (ascii_strcasecmp (p, "keys-only") == 0))
 	t |= PGPKEY;
 
-      if(!t) t |= PGPENCRYPT;  /* not necessarily correct, but... */
+      if(t == 0) t |= PGPENCRYPT;  /* not necessarily correct, but... */
     }
 
     if (ascii_strcasecmp (m->subtype, "pgp-signed") == 0)
@@ -532,7 +532,7 @@ int crypt_query (BODY *m)
 {
   int t = 0;
 
-  if (!WithCrypto)
+  if (WithCrypto == 0)
     return 0;
 
   if (!m)
@@ -599,7 +599,7 @@ int crypt_write_signed(BODY *a, STATE *s, const char *tempfile)
   short hadcr;
   size_t bytes;
 
-  if (!WithCrypto)
+  if (WithCrypto == 0)
     return -1;
 
   if (!(fp = safe_fopen (tempfile, "w")))
@@ -640,7 +640,7 @@ int crypt_write_signed(BODY *a, STATE *s, const char *tempfile)
 
 void convert_to_7bit (BODY *a)
 {
-  if (!WithCrypto)
+  if (WithCrypto == 0)
     return;
 
   while (a)
@@ -683,7 +683,7 @@ void crypt_extract_keys_from_messages (HEADER * h)
   ADDRESS *tmp = NULL;
   FILE *fpout = NULL;
 
-  if (!WithCrypto)
+  if (WithCrypto == 0)
     return;
 
   mutt_mktemp (tempfname, sizeof (tempfname));
@@ -809,7 +809,7 @@ int crypt_get_keys (HEADER *msg, char **keylist, int oppenc_mode)
    * keys if the user has requested this service.
    */
 
-  if (!WithCrypto)
+  if (WithCrypto == 0)
     return 0;
 
   if ((WithCrypto & APPLICATION_PGP))
@@ -862,7 +862,7 @@ void crypt_opportunistic_encrypt(HEADER *msg)
 {
   char *pgpkeylist = NULL;
 
-  if (!WithCrypto)
+  if (WithCrypto == 0)
     return;
 
   if (! (option (OPTCRYPTOPPORTUNISTICENCRYPT) && (msg->security & OPPENCRYPT)) )
@@ -884,7 +884,7 @@ void crypt_opportunistic_encrypt(HEADER *msg)
 
 static void crypt_fetch_signatures (BODY ***signatures, BODY *a, int *n)
 {
-  if (!WithCrypto)
+  if (WithCrypto == 0)
     return;
 
   for (; a; a = a->next)
@@ -918,12 +918,12 @@ int mutt_signed_handler (BODY *a, STATE *s)
   short goodsig = 1;
   int rc = 0;
 
-  if (!WithCrypto)
+  if (WithCrypto == 0)
     return -1;
 
   a = a->parts;
   signed_type = mutt_is_multipart_signed (b);
-  if (!signed_type)
+  if (signed_type == 0)
   {
     /* A null protocol value is already checked for in mutt_body_handler() */
     state_printf (s, _("[-- Error: "

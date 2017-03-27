@@ -114,7 +114,7 @@ static pop_auth_res_t pop_auth_sasl (POP_DATA *pop_data, const char *method)
       goto bail;
     }
 
-    if (!client_start)
+    if (client_start == 0)
       while (true)
       {
 	rc = sasl_client_step (saslconn, buf, len, &interaction, &pc, &olen);
@@ -250,7 +250,7 @@ static pop_auth_res_t pop_auth_user (POP_DATA *pop_data, const char *method)
   char buf[LONG_STRING];
   int ret;
 
-  if (!pop_data->cmd_user)
+  if (pop_data->cmd_user == 0)
     return POP_A_UNAVAIL;
 
   mutt_message (_("Logging in..."));
@@ -419,7 +419,7 @@ int pop_authenticate (POP_DATA* pop_data)
     case POP_A_SOCKET:
       return -1;
     case POP_A_UNAVAIL:
-      if (!attempts)
+      if (attempts == 0)
 	mutt_error (_("No authenticators available"));
   }
 

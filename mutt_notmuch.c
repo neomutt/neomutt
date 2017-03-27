@@ -584,7 +584,7 @@ static char *get_query_string(struct nm_ctxdata *data, int window)
       data->db_query = safe_strdup(item->value);
   }
 
-  if (!data->query_type)
+  if (data->query_type == 0)
     data->query_type = string_to_query_type(NULL);
 
   if (window)
@@ -715,7 +715,7 @@ static int db_trans_begin(struct nm_ctxdata *data)
   if (!data || !data->db)
     return -1;
 
-  if (!data->trans)
+  if (data->trans == 0)
   {
     mutt_debug (2, "nm: db trans start\n");
     if (notmuch_database_begin_atomic(data->db))
@@ -2015,7 +2015,7 @@ done:
 #endif
     mutt_debug (1, "nm: count close DB\n");
   }
-  if (!dflt)
+  if (dflt == 0)
     FREE(&db_filename);
   url_free_tags(query_items);
 
@@ -2286,7 +2286,7 @@ static int nm_check_mailbox(CONTEXT *ctx, int *index_hint)
     if (mutt_strcmp(old, new) != 0)
       update_message_path(h, new);
 
-    if (!h->changed)
+    if (h->changed == 0)
     {
       /* if the user hasn't modified the flags on
        * this message, update the flags we just
@@ -2346,7 +2346,7 @@ static int nm_sync_mailbox(CONTEXT *ctx, int *index_hint)
 
   mutt_debug (1, "nm: sync start ...\n");
 
-  if (!ctx->quiet)
+  if (ctx->quiet == 0)
   {
     /* all is in this function so we don't use data->progress here */
     snprintf(msgbuf, sizeof(msgbuf), _("Writing %s..."), ctx->path);
@@ -2360,7 +2360,7 @@ static int nm_sync_mailbox(CONTEXT *ctx, int *index_hint)
     HEADER *h = ctx->hdrs[i];
     struct nm_hdrdata *hd = h->data;
 
-    if (!ctx->quiet)
+    if (ctx->quiet == 0)
       mutt_progress_update(&progress, i, -1);
 
     *old = *new = '\0';
@@ -2387,7 +2387,7 @@ static int nm_sync_mailbox(CONTEXT *ctx, int *index_hint)
     if (rc)
       break;
 
-    if (!h->deleted)
+    if (h->deleted == 0)
       header_get_fullpath(h, new, sizeof(new));
 
     if (h->deleted || (strcmp(old, new) != 0))

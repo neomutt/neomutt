@@ -96,7 +96,7 @@ static void fix_uid (char *uid)
     buf = safe_malloc (n+1);
     ib = uid, ibl = d - uid + 1, ob = buf, obl = n;
     iconv (cd, &ib, &ibl, &ob, &obl);
-    if (!ibl)
+    if (ibl == 0)
     {
       if (ob-buf < n)
       {

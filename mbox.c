@@ -112,7 +112,7 @@ static int mmdf_parse_mailbox (CONTEXT *ctx)
 
   buf[sizeof (buf) - 1] = 0;
 
-  if (!ctx->quiet)
+  if (ctx->quiet == 0)
   {
     snprintf (msgbuf, sizeof (msgbuf), _("Reading %s..."), ctx->path);
     mutt_progress_init (&progress, msgbuf, MUTT_PROGRESS_MSG, ReadInc, 0);
@@ -131,7 +131,7 @@ static int mmdf_parse_mailbox (CONTEXT *ctx)
       loc = ftello (ctx->fp);
 
       count++;
-      if (!ctx->quiet)
+      if (ctx->quiet == 0)
 	mutt_progress_update (&progress, count,
 			      (int) (loc / (ctx->size / 100 + 1)));
 
@@ -269,10 +269,10 @@ static int mbox_parse_mailbox (CONTEXT *ctx)
   }
 #endif
 
-  if (!ctx->readonly)
+  if (ctx->readonly == 0)
     ctx->readonly = access (ctx->path, W_OK) ? 1 : 0;
 
-  if (!ctx->quiet)
+  if (ctx->quiet == 0)
   {
     snprintf (msgbuf, sizeof (msgbuf), _("Reading %s..."), ctx->path);
     mutt_progress_init (&progress, msgbuf, MUTT_PROGRESS_MSG, ReadInc, 0);
@@ -294,13 +294,13 @@ static int mbox_parse_mailbox (CONTEXT *ctx)
 	  if (PREV->content->length < 0)
 	    PREV->content->length = 0;
 	}
-	if (!PREV->lines)
+	if (PREV->lines == 0)
 	  PREV->lines = lines ? lines - 1 : 0;
       }
 
       count++;
 
-      if (!ctx->quiet)
+      if (ctx->quiet == 0)
 	mutt_progress_update (&progress, count,
 			      (int)(ftello (ctx->fp) / (ctx->size / 100 + 1)));
 
@@ -410,7 +410,7 @@ static int mbox_parse_mailbox (CONTEXT *ctx)
 	PREV->content->length = 0;
     }
 
-    if (!PREV->lines)
+    if (PREV->lines == 0)
       PREV->lines = lines ? lines - 1 : 0;
 
     mx_update_context (ctx, count);
@@ -676,7 +676,7 @@ static int reopen_mailbox (CONTEXT *ctx, int *index_hint)
   /* silent operations */
   ctx->quiet = 1;
 
-  if (!ctx->quiet)
+  if (ctx->quiet == 0)
     mutt_message (_("Reopening mailbox..."));
 
   /* our heuristics require the old mailbox to be unsorted */
@@ -763,7 +763,7 @@ static int reopen_mailbox (CONTEXT *ctx, int *index_hint)
 
   index_hint_set = (index_hint == NULL);
 
-  if (!ctx->readonly)
+  if (ctx->readonly == 0)
   {
     for (i = 0; i < ctx->msgcount; i++)
     {
@@ -784,7 +784,7 @@ static int reopen_mailbox (CONTEXT *ctx, int *index_hint)
 	  break;
 	}
       }
-      if (!found)
+      if (found == 0)
       {
 	for (j = 0; j < i && j < old_msgcount; j++)
 	{
@@ -872,7 +872,7 @@ static int mbox_check_mailbox (CONTEXT *ctx, int *index_hint)
     if (st.st_size > ctx->size)
     {
       /* lock the file if it isn't already */
-      if (!ctx->locked)
+      if (ctx->locked == 0)
       {
 	mutt_block_signals ();
 	if (mbox_lock_mailbox (ctx, 0, 0) == -1)
@@ -1107,7 +1107,7 @@ static int mbox_sync_mailbox (CONTEXT *ctx, int *index_hint)
   newOffset = safe_calloc (ctx->msgcount - first, sizeof (struct m_update_t));
   oldOffset = safe_calloc (ctx->msgcount - first, sizeof (struct m_update_t));
 
-  if (!ctx->quiet)
+  if (ctx->quiet == 0)
   {
     snprintf (msgbuf, sizeof (msgbuf), _("Writing %s..."), ctx->path);
     mutt_progress_init (&progress, msgbuf, MUTT_PROGRESS_MSG, WriteInc, ctx->msgcount);
@@ -1115,7 +1115,7 @@ static int mbox_sync_mailbox (CONTEXT *ctx, int *index_hint)
 
   for (i = first, j = 0; i < ctx->msgcount; i++)
   {
-    if (!ctx->quiet)
+    if (ctx->quiet == 0)
       mutt_progress_update (&progress, i, (int)(ftello (ctx->fp) / (ctx->size / 100 + 1)));
     /*
      * back up some information which is needed to restore offsets when
@@ -1245,7 +1245,7 @@ static int mbox_sync_mailbox (CONTEXT *ctx, int *index_hint)
       /* copy the temp mailbox back into place starting at the first
        * change/deleted message
        */
-      if (!ctx->quiet)
+      if (ctx->quiet == 0)
 	mutt_message (_("Committing changes..."));
       i = mutt_copy_stream (fp, ctx->fp);
 

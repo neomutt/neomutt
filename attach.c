@@ -435,7 +435,7 @@ int mutt_view_attachment (FILE *fp, BODY *a, int flag, HEADER *hdr,
     pid_t thepid = 0;
     int tempfd = -1, pagerfd = -1;
 
-    if (!use_pager)
+    if (use_pager == 0)
       mutt_endwin (NULL);
 
     if (use_pager || use_pipe)

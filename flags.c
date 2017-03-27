@@ -123,10 +123,10 @@ void _mutt_set_flag (CONTEXT *ctx, HEADER *h, int flag, int bf, int upd_ctx)
 	  if (upd_ctx) ctx->changed = 1;
 	}
       }
-      else if (!h->read)
+      else if (h->read == 0)
       {
         update = 1;
-	if (!h->old)
+	if (h->old == 0)
 	  if (upd_ctx) ctx->new--;
 	h->read = 1;
 	if (upd_ctx) ctx->unread--;
@@ -142,11 +142,11 @@ void _mutt_set_flag (CONTEXT *ctx, HEADER *h, int flag, int bf, int upd_ctx)
 
       if (bf)
       {
-	if (!h->old)
+	if (h->old == 0)
 	{
           update = 1;
 	  h->old = 1;
-	  if (!h->read)
+	  if (h->read == 0)
 	    if (upd_ctx) ctx->new--;
 	  h->changed = 1;
 	  if (upd_ctx) ctx->changed = 1;
@@ -156,7 +156,7 @@ void _mutt_set_flag (CONTEXT *ctx, HEADER *h, int flag, int bf, int upd_ctx)
       {
         update = 1;
 	h->old = 0;
-	if (!h->read)
+	if (h->read == 0)
 	  if (upd_ctx) ctx->new++;
 	h->changed = 1;
 	if (upd_ctx) ctx->changed = 1;
@@ -170,12 +170,12 @@ void _mutt_set_flag (CONTEXT *ctx, HEADER *h, int flag, int bf, int upd_ctx)
 
       if (bf)
       {
-	if (!h->read)
+	if (h->read == 0)
 	{
           update = 1;
 	  h->read = 1;
 	  if (upd_ctx) ctx->unread--;
-	  if (!h->old)
+	  if (h->old == 0)
 	    if (upd_ctx) ctx->new--;
 	  h->changed = 1;
 	  if (upd_ctx) ctx->changed = 1;
@@ -186,7 +186,7 @@ void _mutt_set_flag (CONTEXT *ctx, HEADER *h, int flag, int bf, int upd_ctx)
         update = 1;
 	h->read = 0;
 	if (upd_ctx) ctx->unread++;
-	if (!h->old)
+	if (h->old == 0)
 	  if (upd_ctx) ctx->new++;
 	h->changed = 1;
 	if (upd_ctx) ctx->changed = 1;
@@ -200,15 +200,15 @@ void _mutt_set_flag (CONTEXT *ctx, HEADER *h, int flag, int bf, int upd_ctx)
 
       if (bf)
       {
-	if (!h->replied)
+	if (h->replied == 0)
 	{
           update = 1;
 	  h->replied = 1;
-	  if (!h->read)
+	  if (h->read == 0)
 	  {
 	    h->read = 1;
 	    if (upd_ctx) ctx->unread--;
-	    if (!h->old)
+	    if (h->old == 0)
 	      if (upd_ctx) ctx->new--;
 	  }
 	  h->changed = 1;
@@ -231,7 +231,7 @@ void _mutt_set_flag (CONTEXT *ctx, HEADER *h, int flag, int bf, int upd_ctx)
 
       if (bf)
       {
-	if (!h->flagged)
+	if (h->flagged == 0)
 	{
           update = 1;
 	  h->flagged = bf;
@@ -253,7 +253,7 @@ void _mutt_set_flag (CONTEXT *ctx, HEADER *h, int flag, int bf, int upd_ctx)
     case MUTT_TAG:
       if (bf)
       {
-	if (!h->tagged)
+	if (h->tagged == 0)
 	{
           update = 1;
 	  h->tagged = 1;
@@ -303,7 +303,7 @@ int mutt_thread_set_flag (HEADER *hdr, int flag, int bf, int subthread)
     return -1;
   }
 
-  if (!subthread)
+  if (subthread == 0)
     while (cur->parent)
       cur = cur->parent;
   start = cur;
@@ -360,7 +360,7 @@ int mutt_change_flag (HEADER *h, int bf)
   {
     case 'd':
     case 'D':
-      if (!bf)
+      if (bf == 0)
       {
         if (h)
           mutt_set_flag (Context, h, MUTT_PURGE, bf);

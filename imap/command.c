@@ -122,7 +122,7 @@ static void cmd_handle_fatal (IMAP_DATA* idata)
   }
 
   imap_close_connection (idata);
-  if (!idata->recovering)
+  if (idata->recovering == 0)
   {
     idata->recovering = 1;
     if (imap_conn_find (&idata->conn->account, 0))
@@ -843,7 +843,7 @@ int imap_cmd_step (IMAP_DATA* idata)
     if (cmd->state == IMAP_CMD_NEW)
     {
       if (ascii_strncmp (idata->buf, cmd->seq, SEQLEN) == 0) {
-	if (!stillrunning)
+	if (stillrunning == 0)
 	{
 	  /* first command in queue has finished - move queue pointer up */
 	  idata->lastcmd = (idata->lastcmd + 1) % idata->cmdslots;

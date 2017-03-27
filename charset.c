@@ -399,7 +399,7 @@ size_t mutt_iconv (iconv_t cd, ICONV_CONST char **inbuf, size_t *inbytesleft,
 	  char *ob1 = ob;
 	  size_t obl1 = obl;
 	  iconv (cd, &ib1, &ibl1, &ob1, &obl1);
-	  if (!ibl1)
+	  if (ibl1 == 0)
 	  {
 	    ++ib, --ibl;
 	    ob = ob1, obl = obl1;
@@ -632,7 +632,7 @@ int mutt_check_charset (const char *s, int strict)
   if (mutt_is_utf8 (s))
     return 0;
 
-  if (!strict)
+  if (strict == 0)
     for (i = 0; PreferredMIMENames[i].key; i++)
     {
       if ((ascii_strcasecmp (PreferredMIMENames[i].key, s) == 0) ||

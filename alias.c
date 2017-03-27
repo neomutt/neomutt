@@ -65,7 +65,7 @@ static ADDRESS *expand_aliases_r (ADDRESS *a, LIST **expn)
 	  }
 	}
 
-        if (!i)
+        if (i == 0)
 	{
           u = safe_malloc (sizeof (LIST));
           u->data = safe_strdup (a->mailbox);
@@ -408,7 +408,7 @@ int mutt_check_alias_name (const char *s, char *dest, size_t destlen)
 
   memset (&mb, 0, sizeof (mbstate_t));
 
-  if (!dry)
+  if (dry == 0)
     destlen--;
   for (; s && *s && (dry || destlen) &&
        (l = mbrtowc (&wc, s, MB_CUR_MAX, &mb)) != 0;
@@ -429,13 +429,13 @@ int mutt_check_alias_name (const char *s, char *dest, size_t destlen)
       *dest++ = '_';
       rv = -1;
     }
-    else if (!dry)
+    else if (dry == 0)
     {
       memcpy (dest, s, l);
       dest += l;
     }
   }
-  if (!dry)
+  if (dry == 0)
     *dest = 0;
   return rv;
 }

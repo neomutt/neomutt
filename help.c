@@ -226,7 +226,7 @@ static void format_line (FILE *f, int ismacro,
     fputs ("M ", f);
     col += 2;
 
-    if (!split)
+    if (split == 0)
     {
       col += print_macro (f, col_b - col - 4, &t2);
       if (mutt_strwidth (t2) > col_b - col)

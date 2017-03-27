@@ -296,7 +296,7 @@ static int user_is_recipient (HEADER *h)
 
   ENVELOPE *env = h->env;
 
-  if(!h->recip_valid)
+  if(h->recip_valid == 0)
   {
     h->recip_valid = 1;
 
@@ -749,10 +749,10 @@ hdr_format_str (char *dest,
 	  tm = gmtime (&T);
 	}
 
-        if (!do_locales)
+        if (do_locales == 0)
           setlocale (LC_TIME, "C");
         strftime (buf2, sizeof (buf2), dest, tm);
-        if (!do_locales)
+        if (do_locales == 0)
           setlocale (LC_TIME, "");
 
 	colorlen = add_index_color (dest, destlen, flags, MT_COLOR_INDEX_DATE);
@@ -770,7 +770,7 @@ hdr_format_str (char *dest,
       break;
 
     case 'E':
-      if (!optional)
+      if (optional == 0)
       {
 	snprintf (fmt, sizeof (fmt), "%%%sd", prefix);
 	snprintf (dest, destlen, fmt, mutt_messages_in_thread(ctx, hdr, 0));
@@ -786,7 +786,7 @@ hdr_format_str (char *dest,
       break;
 
     case 'F':
-      if (!optional)
+      if (optional == 0)
       {
         colorlen = add_index_color (dest, destlen, flags, MT_COLOR_INDEX_AUTHOR);
         make_from (hdr->env, buf2, sizeof (buf2), 0);
@@ -799,7 +799,7 @@ hdr_format_str (char *dest,
 
 #ifdef USE_NOTMUCH
     case 'g':
-      if (!optional)
+      if (optional == 0)
       {
         colorlen = add_index_color(dest, destlen, flags, MT_COLOR_INDEX_TAGS);
         mutt_format_s (dest+colorlen, destlen-colorlen, prefix, nm_header_get_tags_transformed(hdr));
@@ -833,7 +833,7 @@ hdr_format_str (char *dest,
       break;
 
     case 'l':
-      if (!optional)
+      if (optional == 0)
       {
 	snprintf (fmt, sizeof (fmt), "%%%sd", prefix);
 	colorlen = add_index_color (dest, destlen, flags, MT_COLOR_INDEX_SIZE);
@@ -845,7 +845,7 @@ hdr_format_str (char *dest,
       break;
 
     case 'L':
-      if (!optional)
+      if (optional == 0)
       {
 	colorlen = add_index_color (dest, destlen, flags, MT_COLOR_INDEX_AUTHOR);
 	make_from (hdr->env, buf2, sizeof (buf2), 1);
@@ -876,7 +876,7 @@ hdr_format_str (char *dest,
       break;
 
     case 'N':
-      if (!optional)
+      if (optional == 0)
       {
 	snprintf (fmt, sizeof (fmt), "%%%sd", prefix);
 	snprintf (dest, destlen, fmt, hdr->score);
@@ -889,7 +889,7 @@ hdr_format_str (char *dest,
       break;
 
     case 'O':
-      if (!optional)
+      if (optional == 0)
       {
 	make_from_addr (hdr->env, buf2, sizeof (buf2), 1);
 	if (!option (OPTSAVEADDRESS) && (p = strpbrk (buf2, "%@")))
@@ -905,7 +905,7 @@ hdr_format_str (char *dest,
 
     case 'M':
       snprintf (fmt, sizeof (fmt), "%%%sd", prefix);
-      if (!optional)
+      if (optional == 0)
       {
 	colorlen = add_index_color (dest, destlen, flags,
 				   MT_COLOR_INDEX_COLLAPSED);
@@ -1053,7 +1053,7 @@ hdr_format_str (char *dest,
       break;
 
     case 'W':
-      if (!optional)
+      if (optional == 0)
 	mutt_format_s (dest, destlen, prefix, hdr->env->organization ? hdr->env->organization : "");
       else if (!hdr->env->organization)
 	optional = 0;
@@ -1061,7 +1061,7 @@ hdr_format_str (char *dest,
 
 #ifdef USE_NNTP
     case 'x':
-      if (!optional)
+      if (optional == 0)
 	mutt_format_s (dest, destlen, prefix, hdr->env->x_comment_to ? hdr->env->x_comment_to : "");
       else if (!hdr->env->x_comment_to)
 	optional = 0;
@@ -1186,7 +1186,7 @@ hdr_format_str (char *dest,
       char format[3];
       char *tag = NULL;
 
-      if (!optional)
+      if (optional == 0)
       {
         format[0] = op;
         format[1] = *src;

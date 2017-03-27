@@ -191,10 +191,10 @@ static const char *pgp_entry_fmt (char *dest,
 
 	tm = localtime (&key->gen_time);
 
-        if (!do_locales)
+        if (do_locales == 0)
           setlocale (LC_TIME, "C");
         strftime (buf2, sizeof (buf2), dest, tm);
-        if (!do_locales)
+        if (do_locales == 0)
           setlocale (LC_TIME, "");
 
 	snprintf (fmt, sizeof (fmt), "%%%ss", prefix);
@@ -204,42 +204,42 @@ static const char *pgp_entry_fmt (char *dest,
       }
       break;
     case 'n':
-      if (!optional)
+      if (optional == 0)
       {
 	snprintf (fmt, sizeof (fmt), "%%%sd", prefix);
 	snprintf (dest, destlen, fmt, entry->num);
       }
       break;
     case 'k':
-      if (!optional)
+      if (optional == 0)
       {
 	snprintf (fmt, sizeof (fmt), "%%%ss", prefix);
 	snprintf (dest, destlen, fmt, _pgp_keyid (key));
       }
       break;
     case 'u':
-      if (!optional)
+      if (optional == 0)
       {
 	snprintf (fmt, sizeof (fmt), "%%%ss", prefix);
 	snprintf (dest, destlen, fmt, NONULL (uid->addr));
       }
       break;
     case 'a':
-      if (!optional)
+      if (optional == 0)
       {
 	snprintf (fmt, sizeof (fmt), "%%%ss", prefix);
 	snprintf (dest, destlen, fmt, key->algorithm);
       }
       break;
     case 'l':
-      if (!optional)
+      if (optional == 0)
       {
 	snprintf (fmt, sizeof (fmt), "%%%sd", prefix);
 	snprintf (dest, destlen, fmt, key->keylen);
       }
       break;
     case 'f':
-      if (!optional)
+      if (optional == 0)
       {
 	snprintf (fmt, sizeof (fmt), "%%%sc", prefix);
 	snprintf (dest, destlen, fmt, pgp_flags (kflags));
@@ -248,7 +248,7 @@ static const char *pgp_entry_fmt (char *dest,
         optional = 0;
       break;
     case 'c':
-      if (!optional)
+      if (optional == 0)
       {
 	snprintf (fmt, sizeof (fmt), "%%%ss", prefix);
 	snprintf (dest, destlen, fmt, pgp_key_abilities (kflags));
@@ -257,7 +257,7 @@ static const char *pgp_entry_fmt (char *dest,
         optional = 0;
       break;
     case 't':
-      if (!optional)
+      if (optional == 0)
       {
 	snprintf (fmt, sizeof (fmt), "%%%sc", prefix);
 	snprintf (dest, destlen, fmt, trust_flags[uid->trust & 0x03]);
@@ -533,7 +533,7 @@ static pgp_key_t pgp_select_key (pgp_key_t keys,
 
   mutt_clear_error ();
 
-  while (!done)
+  while (done == 0)
   {
     switch (mutt_menu_loop (menu))
     {

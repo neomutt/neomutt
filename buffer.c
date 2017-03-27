@@ -85,7 +85,7 @@ int mutt_buffer_printf (BUFFER* buf, const char* fmt, ...)
   doff = buf->dptr - buf->data;
   blen = buf->dsize - doff;
   /* solaris 9 vsnprintf barfs when blen is 0 */
-  if (!blen)
+  if (blen == 0)
   {
     blen = 128;
     buf->dsize += blen;
@@ -153,7 +153,7 @@ int mutt_extract_token (BUFFER *dest, BUFFER *tok, int flags)
   SKIPWS (tok->dptr);
   while ((ch = *tok->dptr))
   {
-    if (!qc)
+    if (qc == 0)
     {
       if ((ISSPACE (ch) && !(flags & MUTT_TOKEN_SPACE)) ||
 	  (ch == '#' && !(flags & MUTT_TOKEN_COMMENT)) ||

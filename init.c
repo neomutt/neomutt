@@ -280,7 +280,7 @@ static mbchar_table *parse_mbchar_table (const char *s)
 
   t = safe_calloc (1, sizeof (mbchar_table));
   slen = mutt_strlen (s);
-  if (!slen)
+  if (slen == 0)
     return t;
 
   t->orig_str = safe_strdup (s);
@@ -824,13 +824,13 @@ static int parse_ifdef (BUFFER *tmp, BUFFER *s, unsigned long data, BUFFER *err)
   res = (mutt_option_index (tmp->data) != -1);
 
   /* is the item a compiled-in feature? */
-  if (!res)
+  if (res == 0)
   {
     res = feature_enabled (tmp->data);
   }
 
   /* or a function? */
-  if (!res)
+  if (res == 0)
   {
     for (i = 0; !res && (i < MENU_MAX); i++)
     {
@@ -850,7 +850,7 @@ static int parse_ifdef (BUFFER *tmp, BUFFER *s, unsigned long data, BUFFER *err)
   }
 
   /* or a command? */
-  if (!res)
+  if (res == 0)
   {
     for (i = 0; Commands[i].name; i++)
     {
@@ -1776,7 +1776,7 @@ static int parse_alias (BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err)
     /* A group is terminated with an empty address, so check a->mailbox */
     for (a = tmp->addr; a && a->mailbox; a = a->next)
     {
-      if (!a->group)
+      if (a->group == 0)
         mutt_debug (3, "parse_alias:   %s\n", a->mailbox);
       else
         mutt_debug (3, "parse_alias:   Group %s\n", a->mailbox);
@@ -2023,7 +2023,7 @@ static size_t escape_string (char *dst, size_t len, const char* src)
 {
   char* p = dst;
 
-  if (!len)
+  if (len == 0)
     return 0;
   len--; /* save room for \0 */
 #define ESC_CHAR(C)	do { *p++ = '\\'; if (p - dst < len) *p++ = C; } while(0)
@@ -2056,7 +2056,7 @@ static void pretty_var (char *dst, size_t len, const char *option, const char *v
 {
   char *p = NULL;
 
-  if (!len)
+  if (len == 0)
     return;
 
   strfcpy (dst, option, len);
@@ -2178,7 +2178,7 @@ static int parse_setenv(BUFFER *tmp, BUFFER *s, unsigned long data, BUFFER *err)
     {
       if (mutt_strncmp (tmp->data, *envp, len) == 0)
       {
-        if (!found)
+        if (found == 0)
         {
           mutt_endwin (NULL);
           found = 1;
@@ -4036,7 +4036,7 @@ void mutt_init (int skip_sys_rc, LIST *commands)
 
   /* Process the global rc file if it exists and the user hasn't explicitly
      requested not to via "-n".  */
-  if (!skip_sys_rc)
+  if (skip_sys_rc == 0)
   {
     do
     {

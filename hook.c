@@ -296,7 +296,7 @@ int mutt_parse_unhook (BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err)
     {
       int type = mutt_get_hook_type (buf->data);
 
-      if (!type)
+      if (type == 0)
       {
 	snprintf (err->data, err->dsize,
 		 _("unhook: unknown hook type: %s"), buf->data);

@@ -554,7 +554,7 @@ int _mutt_enter_string (char *buf, size_t buflen, int col,
 	    my_wcstombs (buf, buflen, state->wbuf + i, state->curpos - i);
 	    r = mutt_alias_complete (buf, buflen);
 	    replace_part (state, i, buf);
-	    if (!r)
+	    if (r == 0)
 	    {
 	      rv = 1;
 	      goto bye;
@@ -571,7 +571,7 @@ int _mutt_enter_string (char *buf, size_t buflen, int col,
 	    my_wcstombs (buf, buflen, state->wbuf + i, state->curpos - i);
 	    r = mutt_label_complete (buf, buflen, state->tabs);
 	    replace_part (state, i, buf);
-	    if (!r)
+	    if (r == 0)
 	    {
 	      rv = 1;
 	      goto bye;
@@ -588,7 +588,7 @@ int _mutt_enter_string (char *buf, size_t buflen, int col,
               my_wcstombs (buf, buflen, state->wbuf + i, state->curpos - i);
               r = mutt_label_complete (buf, buflen, state->tabs);
               replace_part (state, i, buf);
-              if (!r)
+              if (r == 0)
               {
                 rv = 1;
                 goto bye;
@@ -641,7 +641,7 @@ int _mutt_enter_string (char *buf, size_t buflen, int col,
 	      if (*buf)
 	      {
 		mutt_pretty_mailbox (buf, buflen);
-		if (!pass)
+		if (pass == 0)
 		  mutt_history_add (hclass, buf, 1);
 		rv = 0;
 		goto bye;
@@ -760,7 +760,7 @@ self_insert:
       {
 	/* Convert from wide characters */
 	my_wcstombs (buf, buflen, state->wbuf, state->lastchar);
-	if (!pass)
+	if (pass == 0)
 	  mutt_history_add (hclass, buf, 1);
 
 	if (multiple)

@@ -580,7 +580,7 @@ static char *data_object_to_tempfile (gpgme_data_t data, char *tempf, FILE **ret
 
   err = ((gpgme_data_seek (data, 0, SEEK_SET) == -1)
          ? gpgme_error_from_errno (errno) : 0);
-  if (!err)
+  if (err == 0)
     {
       char buf[4096];
 
@@ -717,7 +717,7 @@ static int set_signer (gpgme_ctx_t ctx, int for_smime)
 
   listctx = create_gpgme_context (for_smime);
   err = gpgme_op_keylist_start (listctx, signid, 1);
-  if (!err)
+  if (err == 0)
     err = gpgme_op_keylist_next (listctx, &key);
   if (err)
     {
@@ -727,7 +727,7 @@ static int set_signer (gpgme_ctx_t ctx, int for_smime)
       return -1;
     }
   err = gpgme_op_keylist_next (listctx, &key2);
-  if (!err)
+  if (err == 0)
     {
       gpgme_key_unref (key);
       gpgme_key_unref (key2);
@@ -783,7 +783,7 @@ static char *encrypt_gpgme_object (gpgme_data_t plaintext, gpgme_key_t *rset,
   char *outfile = NULL;
 
   ctx = create_gpgme_context (use_smime);
-  if (!use_smime)
+  if (use_smime == 0)
       gpgme_set_armor (ctx, 1);
 
   ciphertext = create_gpgme_data ();
@@ -904,7 +904,7 @@ static BODY *sign_message (BODY *a, int use_smime)
   signature = create_gpgme_data ();
 
   ctx = create_gpgme_context (use_smime);
-  if (!use_smime)
+  if (use_smime == 0)
     gpgme_set_armor (ctx, 1);
 
   if (set_signer (ctx, use_smime))
@@ -1590,12 +1590,12 @@ static int verify_one (BODY *sigbdy, STATE *s,
           else if (res == 2)
             anywarn = 2;
         }
-        if (!anybad)
+        if (anybad == 0)
           badsig = 0;
       }
     }
 
-  if (!badsig)
+  if (badsig == 0)
     {
       gpgme_verify_result_t result;
       gpgme_sig_notation_t notation;
@@ -2089,7 +2089,7 @@ static int pgp_gpgme_extract_keys (gpgme_data_t keydata, FILE** fp, int dryrun)
   unlink (tmpfile);
 
   err = gpgme_op_keylist_start (tmpctx, NULL, 0);
-  while (!err)
+  while (err == 0)
   {
     if ((err = gpgme_op_keylist_next (tmpctx, &key)))
       break;
@@ -2105,7 +2105,7 @@ static int pgp_gpgme_extract_keys (gpgme_data_t keydata, FILE** fp, int dryrun)
       tt = subkey->timestamp;
       strftime (date, sizeof (date), "%Y-%m-%d", localtime (&tt));
 
-      if (!more)
+      if (more == 0)
         fprintf (*fp, "pub %5.5s %d/%8s %s %s\n",
                  gpgme_pubkey_algo_name (subkey->pubkey_algo), subkey->length,
                  shortid, date, uid->uid);
@@ -2315,9 +2315,9 @@ static void copy_clearsigned (gpgme_data_t data, STATE *s, char *charset)
        fgetconvs (buf, sizeof (buf), fc) != NULL;
        complete = strchr (buf, '\n') != NULL)
   {
-    if (!complete)
+    if (complete == 0)
     {
-      if (!armor_header)
+      if (armor_header == 0)
 	state_puts (buf, s);
       continue;
     }
@@ -2837,10 +2837,10 @@ static const char *crypt_entry_fmt (char *dest,
           tm = localtime (&tt);
         }
 
-        if (!do_locales)
+        if (do_locales == 0)
           setlocale (LC_TIME, "C");
         strftime (buf2, sizeof (buf2), dest, tm);
-        if (!do_locales)
+        if (do_locales == 0)
           setlocale (LC_TIME, "");
 
 	snprintf (fmt, sizeof (fmt), "%%%ss", prefix);
@@ -2850,14 +2850,14 @@ static const char *crypt_entry_fmt (char *dest,
       }
       break;
     case 'n':
-      if (!optional)
+      if (optional == 0)
       {
 	snprintf (fmt, sizeof (fmt), "%%%sd", prefix);
 	snprintf (dest, destlen, fmt, entry->num);
       }
       break;
     case 'k':
-      if (!optional)
+      if (optional == 0)
       {
         /* fixme: we need a way to distinguish between main and subkeys.
            Store the idx in entry? */
@@ -2866,14 +2866,14 @@ static const char *crypt_entry_fmt (char *dest,
       }
       break;
     case 'u':
-      if (!optional)
+      if (optional == 0)
       {
 	snprintf (fmt, sizeof (fmt), "%%%ss", prefix);
 	snprintf (dest, destlen, fmt, key->uid);
       }
       break;
     case 'a':
-      if (!optional)
+      if (optional == 0)
       {
 	snprintf (fmt, sizeof (fmt), "%%%s.3s", prefix);
 	if (key->kobj->subkeys)
@@ -2884,7 +2884,7 @@ static const char *crypt_entry_fmt (char *dest,
       }
       break;
     case 'l':
-      if (!optional)
+      if (optional == 0)
       {
 	snprintf (fmt, sizeof (fmt), "%%%slu", prefix);
 	if (key->kobj->subkeys)
@@ -2895,7 +2895,7 @@ static const char *crypt_entry_fmt (char *dest,
       }
       break;
     case 'f':
-      if (!optional)
+      if (optional == 0)
       {
 	snprintf (fmt, sizeof (fmt), "%%%sc", prefix);
 	snprintf (dest, destlen, fmt, crypt_flags (kflags));
@@ -2904,7 +2904,7 @@ static const char *crypt_entry_fmt (char *dest,
         optional = 0;
       break;
     case 'c':
-      if (!optional)
+      if (optional == 0)
       {
 	snprintf (fmt, sizeof (fmt), "%%%ss", prefix);
 	snprintf (dest, destlen, fmt, crypt_key_abilities (kflags));
@@ -3130,7 +3130,7 @@ print_dn_parts (FILE *fp, struct dn_array_s *dn)
         {
           if (any)
             fputs (", ", fp);
-          if (!any2)
+          if (any2 == 0)
             fputs ("(", fp);
           any = print_dn_part (fp, dn, dn->key);
           any2 = 1;
@@ -3155,7 +3155,7 @@ parse_dn_part (struct dn_array_s *array, const char *string)
   if (!*s)
     return NULL; /* error */
   n = s - string;
-  if (!n)
+  if (n == 0)
     return NULL; /* empty key */
   array->key = safe_malloc (n+1);
   p = array->key;
@@ -3659,7 +3659,7 @@ verify_key (crypt_key_t *key)
       err = gpgme_op_keylist_start (listctx, s, 0);
       gpgme_key_unref (k);
       k = NULL;
-      if (!err)
+      if (err == 0)
 	err = gpgme_op_keylist_next (listctx, &k);
       if (err)
         {
@@ -3790,7 +3790,7 @@ static crypt_key_t *get_candidates (LIST * hints, unsigned int app, int secret)
           if (l->data && *l->data)
             n++;
         }
-      if (!n)
+      if (n == 0)
         goto no_pgphints;
 
       patarr = safe_calloc (n+1, sizeof (*patarr));
@@ -4034,7 +4034,7 @@ static crypt_key_t *crypt_select_key (crypt_key_t *keys,
 
   mutt_clear_error ();
   k = NULL;
-  while (!done)
+  while (done == 0)
     {
       *forced_valid = 0;
       switch (mutt_menu_loop (menu))
@@ -4621,7 +4621,7 @@ static void init_common(void)
   /* this initialization should only run one time, but it may be called by
    * either pgp_gpgme_init or smime_gpgme_init */
   static bool has_run = 0;
-  if (!has_run) {
+  if (has_run == 0) {
     gpgme_check_version(NULL);
     gpgme_set_locale (NULL, LC_CTYPE, setlocale (LC_CTYPE, NULL));
 #ifdef ENABLE_NLS

@@ -233,7 +233,7 @@ static int buffy_maildir_check_dir (BUFFY* mailbox, const char *dir_name, int ch
         mailbox->new = 1;
         rc = 1;
         check_new = 0;
-        if (!check_stats)
+        if (check_stats == 0)
           break;
       }
     }
@@ -423,9 +423,9 @@ static void buffy_check (BUFFY *tmp, struct stat *contex_sb, int check_stats)
       SidebarNeedsRedraw = 1;
 #endif
 
-    if (!tmp->new)
+    if (tmp->new == 0)
       tmp->notified = 0;
-    else if (!tmp->notified)
+    else if (tmp->notified == 0)
       BuffyNotify++;
 }
 
@@ -794,11 +794,11 @@ int mutt_buffy_list (void)
         (pos + strlen (path) >= (size_t)MuttMessageWindow->cols - 7))
       break;
 
-    if (!first)
+    if (first == 0)
       pos += strlen (strncat(buffylist + pos, ", ", sizeof(buffylist)-1-pos)); /* __STRNCAT_CHECKED__ */
 
     /* Prepend an asterisk to mailboxes not already notified */
-    if (!tmp->notified)
+    if (tmp->notified == 0)
     {
       /* pos += strlen (strncat(buffylist + pos, "*", sizeof(buffylist)-1-pos));  __STRNCAT_CHECKED__ */
       tmp->notified = 1;
@@ -811,7 +811,7 @@ int mutt_buffy_list (void)
   {
     strncat (buffylist + pos, ", ...", sizeof (buffylist) - 1 - pos); /* __STRNCAT_CHECKED__ */
   }
-  if (!first)
+  if (first == 0)
   {
     mutt_message ("%s", buffylist);
     return 1;

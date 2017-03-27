@@ -697,7 +697,7 @@ static void set_copy_flags (HEADER *hdr, int decode, int decrypt, int *cmflags, 
     *chflags = CH_XMIT | CH_MIME | CH_TXTPLAIN;
     *cmflags = MUTT_CM_DECODE | MUTT_CM_CHARCONV;
 
-    if (!decrypt)	/* If decode doesn't kick in for decrypt, */
+    if (decrypt == 0)	/* If decode doesn't kick in for decrypt, */
     {
       *chflags |= CH_DECODE;	/* then decode RFC 2047 headers, */
 
@@ -867,7 +867,7 @@ int mutt_save_message (HEADER *h, int delete,
       if (cm)
       {
         cm->msg_count++;
-        if (!h->read)
+        if (h->read == 0)
           cm->msg_unread++;
         if (h->flagged)
           cm->msg_flagged++;
@@ -895,7 +895,7 @@ int mutt_save_message (HEADER *h, int delete,
           {
             HEADER *h2 = Context->hdrs[Context->v2r[i]];
             cm->msg_count++;
-            if (!h2->read)
+            if (h2->read == 0)
               cm->msg_unread++;
             if (h2->flagged)
               cm->msg_flagged++;

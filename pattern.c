@@ -279,7 +279,7 @@ static const char * parse_date_range (const char* pc, struct tm *min,
 	    else
 	    {
 	      /* reestablish initial base minimum if not specified */
-	      if (!haveMin)
+	      if (haveMin == 0)
 		memcpy (min, baseMin, sizeof(struct tm));
 	      flag |= (MUTT_PDR_ABSOLUTE | MUTT_PDR_DONE);  /* done good */
 	    }
@@ -462,12 +462,12 @@ static int eat_date (pattern_t *pat, BUFFER *s, BUFFER *err)
       }
     }
 
-    if (!untilNow)
+    if (untilNow == 0)
     { /* max date or relative range/window */
 
       struct tm baseMin;
 
-      if (!haveMin)
+      if (haveMin == 0)
       { /* save base minimum and set current date, e.g. for "-3d+1d" */
 	time_t now = time (NULL);
 	struct tm *tm = localtime (&now);
@@ -706,7 +706,7 @@ eat_range_by_regexp (pattern_t *pat, BUFFER *s, int kind, BUFFER *err)
   struct range_regexp *pspec = &range_regexps[kind];
 
   /* First time through, compile the big regexp */
-  if (!pspec->ready)
+  if (pspec->ready == 0)
   {
     regerr = regcomp(&pspec->cooked, pspec->raw, REG_EXTENDED);
     if (regerr)
@@ -1062,7 +1062,7 @@ static /* const */ char *find_matching_paren (/* const */ char *s)
     else if (*s == ')')
     {
       level--;
-      if (!level)
+      if (level == 0)
 	break;
     }
   }
@@ -1131,7 +1131,7 @@ pattern_t *mutt_pattern_comp (/* const */ char *s, int flags, BUFFER *err)
 	isalias = !isalias;
 	break;
       case '|':
-	if (!or)
+	if (or == 0)
 	{
 	  if (!curlist)
 	  {
@@ -1594,15 +1594,15 @@ mutt_pattern_exec (struct pattern_t *pat, pattern_exec_flag flags, CONTEXT *ctx,
     case MUTT_COLLAPSED:
       return (pat->not ^ (h->collapsed && h->num_hidden > 1));
    case MUTT_CRYPT_SIGN:
-     if (!WithCrypto)
+     if (WithCrypto == 0)
        break;
      return (pat->not ^ ((h->security & SIGN) ? 1 : 0));
    case MUTT_CRYPT_VERIFIED:
-     if (!WithCrypto)
+     if (WithCrypto == 0)
        break;
      return (pat->not ^ ((h->security & GOODSIGN) ? 1 : 0));
    case MUTT_CRYPT_ENCRYPT:
-     if (!WithCrypto)
+     if (WithCrypto == 0)
        break;
      return (pat->not ^ ((h->security & ENCRYPT) ? 1 : 0));
    case MUTT_PGP_KEY:

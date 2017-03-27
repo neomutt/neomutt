@@ -51,7 +51,7 @@ time_t mutt_local_tz (time_t t)
   struct tm *ptm = NULL;
   struct tm utc;
 
-  if (!t)
+  if (t == 0)
     t = time (NULL);
   ptm = gmtime (&t);
   /* need to make a copy because gmtime/localtime return a pointer to

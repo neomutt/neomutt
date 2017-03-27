@@ -609,7 +609,7 @@ void rfc822_write_address_single (char *buf, size_t buflen, ADDRESS *addr,
 #ifdef EXACT_ADDRESS
   if (addr->val)
   {
-    if (!buflen)
+    if (buflen == 0)
       goto done;
     strfcpy (pbuf, addr->val, buflen);
     len = mutt_strlen (pbuf);
@@ -617,7 +617,7 @@ void rfc822_write_address_single (char *buf, size_t buflen, ADDRESS *addr,
     buflen -= len;
     if (addr->group)
     {
-      if (!buflen)
+      if (buflen == 0)
 	goto done;
       *pbuf++ = ':';
       buflen--;
@@ -631,7 +631,7 @@ void rfc822_write_address_single (char *buf, size_t buflen, ADDRESS *addr,
   {
     if (strpbrk (addr->personal, RFC822Specials))
     {
-      if (!buflen)
+      if (buflen == 0)
 	goto done;
       *pbuf++ = '"';
       buflen--;
@@ -642,19 +642,19 @@ void rfc822_write_address_single (char *buf, size_t buflen, ADDRESS *addr,
 	  *pbuf++ = '\\';
 	  buflen--;
 	}
-	if (!buflen)
+	if (buflen == 0)
 	  goto done;
 	*pbuf++ = *pc;
 	buflen--;
       }
-      if (!buflen)
+      if (buflen == 0)
 	goto done;
       *pbuf++ = '"';
       buflen--;
     }
     else
     {
-      if (!buflen)
+      if (buflen == 0)
 	goto done;
       strfcpy (pbuf, addr->personal, buflen);
       len = mutt_strlen (pbuf);
@@ -662,7 +662,7 @@ void rfc822_write_address_single (char *buf, size_t buflen, ADDRESS *addr,
       buflen -= len;
     }
 
-    if (!buflen)
+    if (buflen == 0)
       goto done;
     *pbuf++ = ' ';
     buflen--;
@@ -670,7 +670,7 @@ void rfc822_write_address_single (char *buf, size_t buflen, ADDRESS *addr,
 
   if (addr->personal || (addr->mailbox && *addr->mailbox == '@'))
   {
-    if (!buflen)
+    if (buflen == 0)
       goto done;
     *pbuf++ = '<';
     buflen--;
@@ -678,7 +678,7 @@ void rfc822_write_address_single (char *buf, size_t buflen, ADDRESS *addr,
 
   if (addr->mailbox)
   {
-    if (!buflen)
+    if (buflen == 0)
       goto done;
     if ((ascii_strcmp (addr->mailbox, "@") != 0) && !display)
     {
@@ -700,7 +700,7 @@ void rfc822_write_address_single (char *buf, size_t buflen, ADDRESS *addr,
 
     if (addr->personal || (addr->mailbox && *addr->mailbox == '@'))
     {
-      if (!buflen)
+      if (buflen == 0)
 	goto done;
       *pbuf++ = '>';
       buflen--;
@@ -708,11 +708,11 @@ void rfc822_write_address_single (char *buf, size_t buflen, ADDRESS *addr,
 
     if (addr->group)
     {
-      if (!buflen)
+      if (buflen == 0)
 	goto done;
       *pbuf++ = ':';
       buflen--;
-      if (!buflen)
+      if (buflen == 0)
 	goto done;
       *pbuf++ = ' ';
       buflen--;
@@ -720,7 +720,7 @@ void rfc822_write_address_single (char *buf, size_t buflen, ADDRESS *addr,
   }
   else
   {
-    if (!buflen)
+    if (buflen == 0)
       goto done;
     *pbuf++ = ';';
     buflen--;
@@ -746,11 +746,11 @@ int rfc822_write_address (char *buf, size_t buflen, ADDRESS *addr, int display)
 
     pbuf += len;
     buflen -= len;
-    if (!buflen)
+    if (buflen == 0)
       goto done;
     *pbuf++ = ',';
     buflen--;
-    if (!buflen)
+    if (buflen == 0)
       goto done;
     *pbuf++ = ' ';
     buflen--;
@@ -772,11 +772,11 @@ int rfc822_write_address (char *buf, size_t buflen, ADDRESS *addr, int display)
        group terminator, add a comma to separate the addresses */
     if (addr->next && addr->next->mailbox && !addr->group)
     {
-      if (!buflen)
+      if (buflen == 0)
 	goto done;
       *pbuf++ = ',';
       buflen--;
-      if (!buflen)
+      if (buflen == 0)
 	goto done;
       *pbuf++ = ' ';
       buflen--;

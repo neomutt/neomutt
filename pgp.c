@@ -282,9 +282,9 @@ static void pgp_copy_clearsigned (FILE *fpin, STATE *s, char *charset)
        fgetconvs (buf, sizeof (buf), fc) != NULL;
        complete = strchr (buf, '\n') != NULL)
   {
-    if (!complete)
+    if (complete == 0)
     {
-      if (!armor_header)
+      if (armor_header == 0)
 	state_puts (buf, s);
       continue;
     }
@@ -795,7 +795,7 @@ void pgp_extract_keys_from_attachment_list (FILE *fp, int tag, BODY *top)
     if(!tag || top->tagged)
       pgp_extract_keys_from_attachment (fp, top);
 
-    if(!tag)
+    if(tag == 0)
       break;
   }
 
@@ -1386,7 +1386,7 @@ BODY *pgp_encrypt_message (BODY *a, char *keylist, int sign)
 
   fflush (fpout);
   rewind (fpout);
-  if(!empty)
+  if(empty == 0)
     empty = (fgetc (fpout) == EOF);
   safe_fclose (&fpout);
 
@@ -1564,7 +1564,7 @@ BODY *pgp_traditional_encryptsign (BODY *a, int flags, char *keylist)
   rewind (pgpout);
   rewind (pgperr);
 
-  if(!empty)
+  if(empty == 0)
     empty = (fgetc (pgpout) == EOF);
   safe_fclose (&pgpout);
 

@@ -195,7 +195,7 @@ static char *utf8_to_utf7 (const char *u8, size_t u8len, char **u7,
 
     if (ch < 0x20 || ch >= 0x7f)
     {
-      if (!base64)
+      if (base64 == 0)
       {
 	*p++ = '&';
 	base64 = 1;

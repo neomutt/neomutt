@@ -243,7 +243,7 @@ mutt_copy_hdr (FILE *in, FILE *out, LOFF_T off_start, LOFF_T off_end, int flags,
       ignore = 0;
     } /* If beginning of header */
 
-    if (!ignore)
+    if (ignore == 0)
     {
       mutt_debug (2, "Reorder: x = %d; hdr_count = %d\n", x, hdr_count);
       if (!this_one) {

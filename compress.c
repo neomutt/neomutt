@@ -118,7 +118,7 @@ unlock_realpath (CONTEXT *ctx)
   if (!ci)
     return;
 
-  if (!ci->locked)
+  if (ci->locked == 0)
     return;
 
   mx_unlock_file (ctx->realpath, fileno (ci->lockfp), 1);
@@ -426,7 +426,7 @@ execute_command (CONTEXT *ctx, const char *command, const char *progress)
   if (!ctx || !command || !progress)
     return 0;
 
-  if (!ctx->quiet)
+  if (ctx->quiet == 0)
     mutt_message (progress, ctx->realpath);
 
   mutt_block_signals();
@@ -624,7 +624,7 @@ comp_close_mailbox (CONTEXT *ctx)
   ops->close (ctx);
 
   /* sync has already been called, so we only need to delete some files */
-  if (!ctx->append)
+  if (ctx->append == 0)
   {
     /* If the file was removed, remove the compressed folder too */
     if ((access (ctx->path, F_OK) != 0) && !option (OPTSAVEEMPTY))

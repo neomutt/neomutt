@@ -468,7 +468,7 @@ static int mutt_sasl_conn_read (CONNECTION* conn, char* buf, size_t len)
 	goto out;
       }
     }
-    while (!sasldata->blen);
+    while (sasldata->blen == 0);
 
     olen = (sasldata->blen - sasldata->bpos > len) ? len :
       sasldata->blen - sasldata->bpos;

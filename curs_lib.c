@@ -407,7 +407,7 @@ void mutt_progress_init (progress_t* progress, const char *msg,
       snprintf (progress->sizestr, sizeof (progress->sizestr), "%ld",
 		progress->size);
   }
-  if (!inc)
+  if (inc == 0)
   {
     if (size)
       mutt_message ("%s (%s)", msg, progress->sizestr);
@@ -495,7 +495,7 @@ void mutt_progress_update (progress_t* progress, long pos, int percent)
   if (option(OPTNOCURSES))
     return;
 
-  if (!progress->inc)
+  if (progress->inc == 0)
     goto out;
 
   /* refresh if size > inc */
@@ -514,7 +514,7 @@ void mutt_progress_update (progress_t* progress, long pos, int percent)
   }
 
   /* always show the first update */
-  if (!pos)
+  if (pos == 0)
     update = 1;
 
   if (update)
@@ -826,7 +826,7 @@ int _mutt_enter_fname (const char *prompt, char *buf, size_t blen,
   {
     mutt_refresh ();
     buf[0] = 0;
-    if (!flags)
+    if (flags == 0)
       flags = MUTT_SEL_FOLDER | (multiple ? MUTT_SEL_MULTI : 0);
 
     _mutt_select_file (buf, blen, flags, files, numfiles);

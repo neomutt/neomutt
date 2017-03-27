@@ -105,7 +105,7 @@ static size_t utf8rtowc (wchar_t *pwc, const char *s, size_t n, mbstate_t *_ps)
     *ps = 0;
     return 0;
   }
-  if (!n)
+  if (n == 0)
     return (size_t)-2;
 
   if (!*ps)
@@ -151,7 +151,7 @@ static size_t utf8rtowc (wchar_t *pwc, const char *s, size_t n, mbstate_t *_ps)
     if (0x80 <= c && c < 0xc0)
     {
       wc |= (c & 0x3f) << (6 * count);
-      if (!count)
+      if (count == 0)
       {
 	if (pwc)
 	  *pwc = wc;
@@ -247,7 +247,7 @@ static size_t mbrtowc_iconv (wchar_t *pwc, const char *s, size_t n,
   size_t ibl, obl, k, r;
   char bufi[8], bufo[6];
 
-  if (!n)
+  if (n == 0)
     return (size_t)(-2);
 
   t = memchr (ps, 0, sizeof (*ps));
@@ -332,7 +332,7 @@ size_t mbrtowc (wchar_t *pwc, const char *s, size_t n, mbstate_t *ps)
       memset(ps, 0, sizeof(*ps));
       return 0;
     }
-    if (!n)
+    if (n == 0)
       return (size_t)-2;
     if (pwc)
       *pwc = (wchar_t)(unsigned char)*s;
@@ -494,12 +494,12 @@ int wcwidth_ucs(wchar_t ucs);
 
 int wcwidth (wchar_t wc)
 {
-  if (!Charset_is_utf8)
+  if (Charset_is_utf8 == 0)
   {
-    if (!charset_is_ja)
+    if (charset_is_ja == 0)
     {
       /* 8-bit case */
-      if (!wc)
+      if (wc == 0)
 	return 0;
       else if ((0 <= wc && wc < 256) && IsPrint (wc))
 	return 1;

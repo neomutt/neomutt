@@ -154,7 +154,7 @@ int mutt_group_context_remove_adrlist (group_context_t *ctx, ADDRESS * a)
 {
   int rv = 0;
 
-  for (; (!rv) && ctx; ctx = ctx->next)
+  for (; (rv == 0) && ctx; ctx = ctx->next)
   {
     rv = group_remove_adrlist (ctx->g, a);
     if (empty_group (ctx->g))
@@ -168,7 +168,7 @@ int mutt_group_context_add_rx (group_context_t *ctx, const char *s, int flags, B
 {
   int rv = 0;
 
-  for (; (!rv) && ctx; ctx = ctx->next)
+  for (; (rv == 0) && ctx; ctx = ctx->next)
     rv = group_add_rx (ctx->g, s, flags, err);
 
   return rv;
@@ -178,7 +178,7 @@ int mutt_group_context_remove_rx (group_context_t *ctx, const char *s)
 {
   int rv = 0;
 
-  for (; (!rv) && ctx; ctx = ctx->next)
+  for (; (rv == 0) && ctx; ctx = ctx->next)
   {
     rv = group_remove_rx (ctx->g, s);
     if (empty_group (ctx->g))

@@ -182,7 +182,7 @@ static int nntp_attempt_features (NNTP_SERVER *nserv)
   char buf[LONG_STRING];
 
   /* no CAPABILITIES, trying DATE, LISTGROUP, LIST NEWSGROUPS */
-  if (!nserv->hasCAPABILITIES)
+  if (nserv->hasCAPABILITIES == 0)
   {
     if (mutt_socket_write (conn, "DATE\r\n") < 0 ||
 	mutt_socket_readln (buf, sizeof (buf), conn) < 0)
@@ -212,7 +212,7 @@ static int nntp_attempt_features (NNTP_SERVER *nserv)
   }
 
   /* no LIST NEWSGROUPS, trying XGTITLE */
-  if (!nserv->hasLIST_NEWSGROUPS)
+  if (nserv->hasLIST_NEWSGROUPS == 0)
   {
     if (mutt_socket_write (conn, "XGTITLE\r\n") < 0 ||
 	mutt_socket_readln (buf, sizeof (buf), conn) < 0)
@@ -222,7 +222,7 @@ static int nntp_attempt_features (NNTP_SERVER *nserv)
   }
 
   /* no OVER, trying XOVER */
-  if (!nserv->hasOVER)
+  if (nserv->hasOVER == 0)
   {
     if (mutt_socket_write (conn, "XOVER\r\n") < 0 ||
 	mutt_socket_readln (buf, sizeof (buf), conn) < 0)
@@ -269,7 +269,7 @@ static int nntp_attempt_features (NNTP_SERVER *nserv)
 
 	cont = chunk >= buflen - off ? 1 : 0;
 	off += strlen (nserv->overview_fmt + off);
-	if (!cont)
+	if (cont == 0)
 	{
 	  char *colon = NULL;
 
@@ -813,7 +813,7 @@ static int nntp_fetch_lines (NNTP_DATA *nntp_data, char *query, size_t qlen,
   int done = false;
   int rc;
 
-  while (!done)
+  while (done == 0)
   {
     char buf[LONG_STRING];
     char *line = NULL;
@@ -1049,7 +1049,7 @@ static int parse_overview_line (char *line, void *data)
   if (!fc->messages[anum - fc->first])
   {
     /* progress */
-    if (!ctx->quiet)
+    if (ctx->quiet == 0)
       mutt_progress_update (&fc->progress, anum - fc->first + 1, -1);
     return 0;
   }
@@ -1154,7 +1154,7 @@ static int parse_overview_line (char *line, void *data)
     else
     {
       nntp_article_status (ctx, hdr, NULL, anum);
-      if (!hdr->read)
+      if (hdr->read == 0)
 	nntp_parse_xref (ctx, hdr);
     }
     if (anum > nntp_data->lastLoaded)
@@ -1164,7 +1164,7 @@ static int parse_overview_line (char *line, void *data)
     mutt_free_header (&hdr);
 
   /* progress */
-  if (!ctx->quiet)
+  if (ctx->quiet == 0)
     mutt_progress_update (&fc->progress, anum - fc->first + 1, -1);
   return 0;
 }
@@ -1203,7 +1203,7 @@ static int nntp_fetch_headers (CONTEXT *ctx, void *hc,
   if (option (OPTLISTGROUP) && nntp_data->nserv->hasLISTGROUP &&
       !nntp_data->deleted)
   {
-    if (!ctx->quiet)
+    if (ctx->quiet == 0)
       mutt_message (_("Fetching list of articles..."));
     if (nntp_data->nserv->hasLISTGROUPrange)
       snprintf (buf, sizeof (buf), "LISTGROUP %s %d-%d\r\n", nntp_data->group,
@@ -1246,12 +1246,12 @@ static int nntp_fetch_headers (CONTEXT *ctx, void *hc,
       fc.messages[current - first] = 1;
 
   /* fetching header from cache or server, or fallback to fetch overview */
-  if (!ctx->quiet)
+  if (ctx->quiet == 0)
     mutt_progress_init (&fc.progress, _("Fetching message headers..."),
 			MUTT_PROGRESS_MSG, ReadInc, last - first + 1);
   for (current = first; current <= last && rc == 0; current++)
   {
-    if (!ctx->quiet)
+    if (ctx->quiet == 0)
       mutt_progress_update (&fc.progress, current - first + 1, -1);
 
 #ifdef USE_HCACHE
@@ -1372,7 +1372,7 @@ static int nntp_fetch_headers (CONTEXT *ctx, void *hc,
     else
     {
       nntp_article_status (ctx, hdr, NULL, NHDR (hdr)->article_num);
-      if (!hdr->read)
+      if (hdr->read == 0)
 	nntp_parse_xref (ctx, hdr);
     }
     if (current > nntp_data->lastLoaded)
@@ -1465,7 +1465,7 @@ static int nntp_open_mailbox (CONTEXT *ctx)
   {
     mutt_error (_("Newsgroup %s has been removed from the server."),
 		nntp_data->group);
-    if (!nntp_data->deleted)
+    if (nntp_data->deleted == 0)
     {
       nntp_data->deleted = 1;
       nntp_active_save_cache (nserv);
@@ -1771,7 +1771,7 @@ static int nntp_group_poll (NNTP_DATA *nntp_data, int update_stat)
   }
   nntp_data->firstMessage = first;
   nntp_data->lastMessage = last;
-  if (!update_stat)
+  if (update_stat == 0)
     return 1;
 
   /* update counters */
@@ -1938,7 +1938,7 @@ static int nntp_check_mailbox (CONTEXT *ctx, int *index_hint)
 	hdr->data = safe_calloc (1, sizeof (NNTP_HEADER_DATA));
 	NHDR (hdr)->article_num = anum;
 	nntp_article_status (ctx, hdr, NULL, anum);
-	if (!hdr->read)
+	if (hdr->read == 0)
 	  nntp_parse_xref (ctx, hdr);
       }
     }

@@ -191,7 +191,7 @@ const char *mutt_attach_fmt (char *dest,
   switch (op)
   {
     case 'C':
-      if (!optional)
+      if (optional == 0)
       {
 	if (mutt_is_text_part (aptr->content) &&
 	    mutt_get_body_charset (charset, sizeof (charset), aptr->content))
@@ -205,7 +205,7 @@ const char *mutt_attach_fmt (char *dest,
       break;
     case 'c':
       /* XXX */
-      if (!optional)
+      if (optional == 0)
       {
 	snprintf (fmt, sizeof (fmt), "%%%sc", prefix);
 	snprintf (dest, destlen, fmt, aptr->content->type != TYPETEXT ||
@@ -215,7 +215,7 @@ const char *mutt_attach_fmt (char *dest,
         optional = 0;
       break;
     case 'd':
-      if(!optional)
+      if(optional == 0)
       {
 	if (aptr->content->description)
 	{
@@ -246,7 +246,7 @@ const char *mutt_attach_fmt (char *dest,
         break;
     /* FALLS THROUGH TO 'F' */
     case 'F':
-      if (!optional)
+      if (optional == 0)
       {
         if (aptr->content->d_filename)
         {
@@ -261,7 +261,7 @@ const char *mutt_attach_fmt (char *dest,
       }
     /* FALLS THROUGH TO 'f' */
     case 'f':
-      if(!optional)
+      if(optional == 0)
       {
 	if (aptr->content->filename && *aptr->content->filename == '/')
 	{
@@ -278,18 +278,18 @@ const char *mutt_attach_fmt (char *dest,
         optional = 0;
       break;
     case 'D':
-      if(!optional)
+      if(optional == 0)
 	snprintf (dest, destlen, "%c", aptr->content->deleted ? 'D' : ' ');
-      else if(!aptr->content->deleted)
+      else if(aptr->content->deleted == 0)
         optional = 0;
       break;
     case 'e':
-      if(!optional)
+      if(optional == 0)
 	mutt_format_s (dest, destlen, prefix,
 		      ENCODING (aptr->content->encoding));
       break;
     case 'I':
-      if (!optional)
+      if (optional == 0)
       {
 	const char dispchar[] = { 'I', 'A', 'F', '-' };
 	char ch;
@@ -306,17 +306,17 @@ const char *mutt_attach_fmt (char *dest,
       }
       break;
     case 'm':
-      if(!optional)
+      if(optional == 0)
 	mutt_format_s (dest, destlen, prefix, TYPE (aptr->content));
       break;
     case 'M':
-      if(!optional)
+      if(optional == 0)
 	mutt_format_s (dest, destlen, prefix, aptr->content->subtype);
       else if(!aptr->content->subtype)
         optional = 0;
       break;
     case 'n':
-      if(!optional)
+      if(optional == 0)
       {
 	snprintf (fmt, sizeof (fmt), "%%%sd", prefix);
 	snprintf (dest, destlen, fmt, aptr->num + 1);
@@ -340,7 +340,7 @@ const char *mutt_attach_fmt (char *dest,
       else
         l = aptr->content->length;
 
-      if(!optional)
+      if(optional == 0)
       {
 	mutt_pretty_size (tmp, sizeof(tmp), l);
 	mutt_format_s (dest, destlen, prefix, tmp);
@@ -350,21 +350,21 @@ const char *mutt_attach_fmt (char *dest,
 
       break;
     case 't':
-      if(!optional)
+      if(optional == 0)
         snprintf (dest, destlen, "%c", aptr->content->tagged ? '*' : ' ');
-      else if(!aptr->content->tagged)
+      else if(aptr->content->tagged == 0)
         optional = 0;
       break;
     case 'T':
-      if(!optional)
+      if(optional == 0)
 	mutt_format_s_tree (dest, destlen, prefix, NONULL (aptr->tree));
       else if (!aptr->tree)
         optional = 0;
       break;
     case 'u':
-      if(!optional)
+      if(optional == 0)
         snprintf (dest, destlen, "%c", aptr->content->unlink ? '-' : ' ');
-      else if (!aptr->content->unlink)
+      else if (aptr->content->unlink == 0)
         optional = 0;
       break;
     case 'X':
@@ -576,7 +576,7 @@ void mutt_save_attachment_list (FILE *fp, int tag, BODY *top, HEADER *hdr, MUTTM
     }
     else if (top->parts)
       mutt_save_attachment_list (fp, 1, top->parts, hdr, menu);
-    if (!tag)
+    if (tag == 0)
       break;
   }
 
@@ -671,7 +671,7 @@ pipe_attachment_list (char *command, FILE *fp, int tag, BODY *top, int filter,
     }
     else if (top->parts)
       pipe_attachment_list (command, fp, tag, top->parts, filter, state);
-    if (!tag)
+    if (tag == 0)
       break;
   }
 }
@@ -733,7 +733,7 @@ static int can_print (BODY *top, int tag)
     }
     else if (top->parts)
       return (can_print (top->parts, tag));
-    if (!tag)
+    if (tag == 0)
       break;
   }
   return 1;
@@ -780,7 +780,7 @@ static void print_attachment_list (FILE *fp, int tag, BODY *top, STATE *state)
     }
     else if (top->parts)
       print_attachment_list (fp, tag, top->parts, state);
-    if (!tag)
+    if (tag == 0)
       return;
   }
 }
@@ -1152,7 +1152,7 @@ void mutt_view_attachments (HEADER *hdr)
           mutt_message(_(
             "Deletion of attachments from signed messages may invalidate the signature."));
         }
-        if (!menu->tagprefix)
+        if (menu->tagprefix == 0)
         {
           if (idx[menu->current]->parent_type == TYPEMULTIPART)
           {
@@ -1192,7 +1192,7 @@ void mutt_view_attachments (HEADER *hdr)
 
       case OP_UNDELETE:
        CHECK_READONLY;
-       if (!menu->tagprefix)
+       if (menu->tagprefix == 0)
        {
 	 idx[menu->current]->content->deleted = 0;
 	 if (option (OPTRESOLVE) && menu->current < menu->max - 1)

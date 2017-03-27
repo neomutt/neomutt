@@ -274,7 +274,7 @@ static int pop_fetch_headers (CONTEXT *ctx)
     }
   }
 
-  if (!ctx->quiet)
+  if (ctx->quiet == 0)
     mutt_progress_init (&progress, _("Fetching message headers..."),
                         MUTT_PROGRESS_MSG, ReadInc, new_count - old_count);
 
@@ -297,7 +297,7 @@ static int pop_fetch_headers (CONTEXT *ctx)
 
     for (i = old_count; i < new_count; i++)
     {
-      if (!ctx->quiet)
+      if (ctx->quiet == 0)
 	mutt_progress_update (&progress, i + 1 - old_count, -1);
 #ifdef USE_HCACHE
       if ((data = mutt_hcache_fetch (hc, ctx->hdrs[i]->data, strlen(ctx->hdrs[i]->data))))
@@ -469,7 +469,7 @@ static void pop_clear_cache (POP_DATA *pop_data)
 {
   int i;
 
-  if (!pop_data->clear_cache)
+  if (pop_data->clear_cache == 0)
     return;
 
   mutt_debug (1, "pop_clear_cache: delete cached messages\n");
@@ -595,7 +595,7 @@ static int pop_fetch_message (CONTEXT* ctx, MESSAGE* msg, int msgno)
     /* if RETR failed (e.g. connection closed), be sure to remove either
      * the file in bcache or from POP's own cache since the next iteration
      * of the loop will re-attempt to put() the message */
-    if (!bcache)
+    if (bcache == 0)
       unlink (path);
 
     if (ret == -2)
@@ -648,7 +648,7 @@ static int pop_fetch_message (CONTEXT* ctx, MESSAGE* msg, int msgno)
   h->content->length = ftello (msg->fp) - h->content->offset;
 
   /* This needs to be done in case this is a multipart message */
-  if (!WithCrypto)
+  if (WithCrypto == 0)
     h->security = crypt_query (h->content);
 
   mutt_clear_error();
@@ -692,7 +692,7 @@ static int pop_sync_mailbox (CONTEXT *ctx, int *index_hint)
       if (ctx->hdrs[i]->deleted && ctx->hdrs[i]->refno != -1)
       {
 	j++;
-	if (!ctx->quiet)
+	if (ctx->quiet == 0)
 	  mutt_progress_update (&progress, j, -1);
 	snprintf (buf, sizeof (buf), "DELE %d\r\n", ctx->hdrs[i]->refno);
 	if ((ret = pop_query (pop_data, buf, sizeof (buf))) == 0)

@@ -211,7 +211,7 @@ static void mix_screen_coordinates (REMAILER **type2_list,
   short c, r, oc;
   struct coord *coords = NULL;
 
-  if (!chain->cl)
+  if (chain->cl == 0)
     return;
 
   safe_realloc (coordsp, sizeof (struct coord) * chain->cl);
@@ -370,21 +370,21 @@ static const char *mix_entry_fmt (char *dest,
   switch (op)
   {
     case 'n':
-      if (!optional)
+      if (optional == 0)
       {
 	snprintf (fmt, sizeof (fmt), "%%%sd", prefix);
 	snprintf (dest, destlen, fmt, remailer->num);
       }
       break;
     case 'c':
-      if (!optional)
+      if (optional == 0)
       {
 	snprintf (fmt, sizeof (fmt), "%%%ss", prefix);
 	snprintf (dest, destlen, fmt, mix_format_caps(remailer));
       }
       break;
     case 's':
-      if (!optional)
+      if (optional == 0)
       {
 	snprintf (fmt, sizeof (fmt), "%%%ss", prefix);
 	snprintf (dest, destlen, fmt, NONULL(remailer->shortname));
@@ -393,7 +393,7 @@ static const char *mix_entry_fmt (char *dest,
         optional = 0;
       break;
     case 'a':
-      if (!optional)
+      if (optional == 0)
       {
 	snprintf (fmt, sizeof (fmt), "%%%ss", prefix);
 	snprintf (dest, destlen, fmt, NONULL(remailer->addr));
@@ -559,7 +559,7 @@ void mix_make_chain (LIST **chainp, int *redraw)
 
       case OP_MIX_USE:
       {
-	if (!chain->cl)
+	if (chain->cl == 0)
 	{
 	  chain->cl++;
 	  chain->ch[0] = menu->current;

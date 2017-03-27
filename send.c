@@ -2100,7 +2100,7 @@ full_fcc:
   {
     if (!(flags & SENDBATCH))
     {
-      if (!WithCrypto)
+      if (WithCrypto == 0)
         ;
       else if ((msg->security & ENCRYPT) ||
                ((msg->security & SIGN)

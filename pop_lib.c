@@ -60,7 +60,7 @@ int pop_parse_path (const char* path, ACCOUNT* acct)
     acct->flags |= MUTT_ACCT_SSL;
 
   service = getservbyname (url.scheme == U_POP ? "pop3" : "pop3s", "tcp");
-  if (!acct->port) {
+  if (acct->port == 0) {
     if (service)
       acct->port = ntohs (service->s_port);
     else
@@ -201,11 +201,11 @@ static int pop_capabilities (POP_DATA *pop_data, int mode)
   {
     char *msg = NULL;
 
-    if (!pop_data->expire)
+    if (pop_data->expire == 0)
       msg = _("Unable to leave messages on server.");
-    if (!pop_data->cmd_top)
+    if (pop_data->cmd_top == 0)
       msg = _("Command TOP is not supported by server.");
-    if (!pop_data->cmd_uidl)
+    if (pop_data->cmd_uidl == 0)
       msg = _("Command UIDL is not supported by server.");
     if (msg && pop_data->cmd_capa)
     {

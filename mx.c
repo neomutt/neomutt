@@ -681,7 +681,7 @@ CONTEXT *mx_open_mailbox (const char *path, int flags, CONTEXT *pctx)
    */
   set_option (OPTFORCEREFRESH);
 
-  if (!ctx->quiet)
+  if (ctx->quiet == 0)
     mutt_message (_("Reading %s..."), ctx->path);
 
   rc = ctx->mx_ops->open(ctx);
@@ -696,7 +696,7 @@ CONTEXT *mx_open_mailbox (const char *path, int flags, CONTEXT *pctx)
       unset_option (OPTNEEDRESCORE);
       mutt_sort_headers (ctx, 1);
     }
-    if (!ctx->quiet)
+    if (ctx->quiet == 0)
       mutt_clear_error ();
     if (rc == -2)
       mutt_error(_("Reading from %s interrupted..."), ctx->path);
@@ -730,7 +730,7 @@ void mx_fastclose_mailbox (CONTEXT *ctx)
 
   /* never announce that a mailbox we've just left has new mail. #3290
    * XXX: really belongs in mx_close_mailbox, but this is a nice hook point */
-  if (!ctx->peekonly)
+  if (ctx->peekonly == 0)
     mutt_buffy_setnotified(ctx->path);
 
   if (ctx->mx_ops)
@@ -761,7 +761,7 @@ static int sync_mailbox (CONTEXT *ctx, int *index_hint)
   if (!ctx->mx_ops || !ctx->mx_ops->sync)
     return -1;
 
-  if (!ctx->quiet)
+  if (ctx->quiet == 0)
     mutt_message (_("Writing %s..."), ctx->path);
 
   return ctx->mx_ops->sync (ctx, index_hint);
@@ -940,7 +940,7 @@ int mx_close_mailbox (CONTEXT *ctx, int *index_hint)
 
   if (move_messages)
   {
-    if (!ctx->quiet)
+    if (ctx->quiet == 0)
       mutt_message (_("Moving read messages to %s..."), mbox);
 
 #ifdef USE_IMAP
@@ -1001,7 +1001,7 @@ int mx_close_mailbox (CONTEXT *ctx, int *index_hint)
   }
   else if (!ctx->changed && ctx->deleted == 0)
   {
-    if (!ctx->quiet)
+    if (ctx->quiet == 0)
       mutt_message (_("Mailbox is unchanged."));
     if (ctx->magic == MUTT_MBOX || ctx->magic == MUTT_MMDF)
       mbox_reset_atime (ctx, NULL);
@@ -1032,7 +1032,7 @@ int mx_close_mailbox (CONTEXT *ctx, int *index_hint)
   else
 #endif
   {
-    if (!purge)
+    if (purge == 0)
     {
       for (i = 0; i < ctx->msgcount; i++)
       {
@@ -1052,7 +1052,7 @@ int mx_close_mailbox (CONTEXT *ctx, int *index_hint)
     }
   }
 
-  if (!ctx->quiet)
+  if (ctx->quiet == 0)
   {
     if (move_messages)
       mutt_message (_("%d kept, %d moved, %d deleted."),
@@ -1200,7 +1200,7 @@ int mx_sync_mailbox (CONTEXT *ctx, int *index_hint)
 
   if (!ctx->changed && !ctx->deleted)
   {
-    if (!ctx->quiet)
+    if (ctx->quiet == 0)
       mutt_message (_("Mailbox is unchanged."));
     return 0;
   }
@@ -1216,7 +1216,7 @@ int mx_sync_mailbox (CONTEXT *ctx, int *index_hint)
       return -1;
     else if (purge == MUTT_NO)
     {
-      if (!ctx->changed)
+      if (ctx->changed == 0)
 	return 0; /* nothing to do! */
       /* let IMAP servers hold on to D flags */
       if (ctx->magic != MUTT_IMAP)
@@ -1255,13 +1255,13 @@ int mx_sync_mailbox (CONTEXT *ctx, int *index_hint)
 #ifdef USE_IMAP
     if (ctx->magic == MUTT_IMAP && !purge)
     {
-      if (!ctx->quiet)
+      if (ctx->quiet == 0)
         mutt_message (_("Mailbox checkpointed."));
     }
     else
 #endif
     {
-      if (!ctx->quiet)
+      if (ctx->quiet == 0)
 	mutt_message (_("%d kept, %d deleted."), msgcount - deleted,
 		      deleted);
     }
@@ -1514,10 +1514,10 @@ void mx_update_context (CONTEXT *ctx, int new_messages)
       ctx->flagged++;
     if (h->deleted)
       ctx->deleted++;
-    if (!h->read)
+    if (h->read == 0)
     {
       ctx->unread++;
-      if (!h->old)
+      if (h->old == 0)
 	ctx->new++;
     }
   }

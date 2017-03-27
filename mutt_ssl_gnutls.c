@@ -203,7 +203,7 @@ static gnutls_certificate_status_t tls_verify_peers (gnutls_session_t tlsstate)
   unsigned int status;
 
   verify_ret = gnutls_certificate_verify_peers2 (tlsstate, &status);
-  if (!verify_ret)
+  if (verify_ret == 0)
     return status;
 
   if (status == GNUTLS_E_NO_CERTIFICATE_FOUND)
@@ -721,7 +721,7 @@ static int tls_check_one_certificate (const gnutls_datum_t *certdata,
 
   done = 0;
   set_option (OPTIGNOREMACROEVENTS);
-  while (!done)
+  while (done == 0)
   {
     switch (mutt_menu_loop (menu))
     {
@@ -756,7 +756,7 @@ static int tls_check_one_certificate (const gnutls_datum_t *certdata,
 	  }
 	  safe_fclose (&fp);
 	}
-	if (!done)
+	if (done == 0)
         {
 	  mutt_error (_("Warning: Couldn't save certificate"));
 	  mutt_sleep (2);
@@ -824,7 +824,7 @@ static int tls_check_certificate (CONNECTION* conn)
 
     if (savedcert)
     {
-      if (!preauthrc)
+      if (preauthrc == 0)
         return 1;
       else
         break;

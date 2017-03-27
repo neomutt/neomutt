@@ -324,7 +324,7 @@ int mh_buffy (BUFFY *mailbox, int check_stats)
          * checking for new mail after the first unseen message.
          * Whether it resulted in "new mail" or not. */
         check_new = 0;
-        if (!check_stats)
+        if (check_stats == 0)
           break;
       }
     }
@@ -760,7 +760,7 @@ HEADER *maildir_parse_stream (int magic, FILE *f, const char *fname,
 
   fstat (fileno (f), &st);
 
-  if (!h->received)
+  if (h->received == 0)
     h->received = h->date_sent;
 
   /* always update the length since we have fresh information available. */
@@ -1120,7 +1120,7 @@ static void maildir_delayed_parsing (CONTEXT * ctx, struct maildir **md,
 
 #ifdef HAVE_DIRENT_D_INO
 #define DO_SORT()	do { \
-  if (!sort) \
+  if (sort == 0) \
   { \
     mutt_debug (4, "maildir: need to sort %s by inode\n", ctx->path); \
     p = maildir_sort (p, (size_t) -1, md_cmp_inode); \
@@ -1252,7 +1252,7 @@ static int mh_read_dir (CONTEXT * ctx, const char *subdir)
   progress_t progress;
 
   memset (&mhs, 0, sizeof (mhs));
-  if (!ctx->quiet)
+  if (ctx->quiet == 0)
   {
     snprintf (msgbuf, sizeof (msgbuf), _("Scanning %s..."), ctx->path);
     mutt_progress_init (&progress, msgbuf, MUTT_PROGRESS_MSG, ReadInc, 0);
@@ -1272,7 +1272,7 @@ static int mh_read_dir (CONTEXT * ctx, const char *subdir)
   if (maildir_parse_dir (ctx, &last, subdir, &count, &progress) == -1)
     return -1;
 
-  if (!ctx->quiet)
+  if (ctx->quiet == 0)
   {
     snprintf (msgbuf, sizeof (msgbuf), _("Reading %s..."), ctx->path);
     mutt_progress_init (&progress, msgbuf, MUTT_PROGRESS_MSG, ReadInc, count);
@@ -1292,7 +1292,7 @@ static int mh_read_dir (CONTEXT * ctx, const char *subdir)
 
   maildir_move_to_context (ctx, &md);
 
-  if (!data->mh_umask)
+  if (data->mh_umask == 0)
     data->mh_umask = mh_umask (ctx);
 
   return 0;
@@ -2059,7 +2059,7 @@ static int maildir_check_mailbox (CONTEXT * ctx, int *index_hint)
   if (st_cur.st_mtime > data->mtime_cur)
     changed |= 2;
 
-  if (!changed)
+  if (changed == 0)
     return 0;			/* nothing to do */
 
   /* update the modification times on the mailbox */
@@ -2209,7 +2209,7 @@ static int mh_check_mailbox (CONTEXT * ctx, int *index_hint)
   if (st.st_mtime > ctx->mtime || st_cur.st_mtime > data->mtime_cur)
     modified = 1;
 
-  if (!modified)
+  if (modified == 0)
     return 0;
 
   data->mtime_cur = st_cur.st_mtime;
@@ -2292,7 +2292,7 @@ static int mh_sync_mailbox (CONTEXT * ctx, int *index_hint)
     hc = mutt_hcache_open(HeaderCache, ctx->path, NULL);
 #endif /* USE_HCACHE */
 
-  if (!ctx->quiet)
+  if (ctx->quiet == 0)
   {
     snprintf (msgbuf, sizeof (msgbuf), _("Writing %s..."), ctx->path);
     mutt_progress_init (&progress, msgbuf, MUTT_PROGRESS_MSG, WriteInc, ctx->msgcount);
@@ -2300,7 +2300,7 @@ static int mh_sync_mailbox (CONTEXT * ctx, int *index_hint)
 
   for (i = 0; i < ctx->msgcount; i++)
   {
-    if (!ctx->quiet)
+    if (ctx->quiet == 0)
       mutt_progress_update (&progress, i, -1);
 
 #ifdef USE_HCACHE
@@ -2378,7 +2378,7 @@ void maildir_update_flags (CONTEXT *ctx, HEADER *o, HEADER *n)
    * changes, unset the changed flag since nothing needs to
    * be synchronized.
    */
-  if (!context_changed)
+  if (context_changed == 0)
     ctx->changed = 0;
 }
 

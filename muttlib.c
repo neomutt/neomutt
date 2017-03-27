@@ -798,11 +798,11 @@ void mutt_merge_envelopes(ENVELOPE* base, ENVELOPE** extra)
   MOVE_ELEM(date);
   MOVE_ELEM(x_label);
   MOVE_ELEM(x_original_to);
-  if (!base->refs_changed)
+  if (base->refs_changed == 0)
   {
     MOVE_ELEM(references);
   }
-  if (!base->irt_changed)
+  if (base->irt_changed == 0)
   {
     MOVE_ELEM(in_reply_to);
   }

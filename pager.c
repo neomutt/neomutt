@@ -181,7 +181,7 @@ resolve_color (struct line_t *lineInfo, int n, int cnt, int flags, int special,
   static int last_color;	/* last color set */
   int search = 0, i, m;
 
-  if (!cnt)
+  if (cnt == 0)
     last_color = -1;		/* force attrset() */
 
   if (lineInfo[n].continuation)
@@ -865,7 +865,7 @@ resolve_types (char *buf, char *raw, struct line_t *lineInfo, int n, int last,
 	{
 	  if (pmatch[0].rm_eo != pmatch[0].rm_so)
 	  {
-	    if (!found)
+	    if (found == 0)
 	    {
               /* Abort if we fill up chunks.
                * Yes, this really happened. See #3888 */
@@ -935,7 +935,7 @@ resolve_types (char *buf, char *raw, struct line_t *lineInfo, int n, int last,
 	{
 	  if (pmatch[0].rm_eo != pmatch[0].rm_so)
 	  {
-	    if (!found)
+	    if (found == 0)
 	    {
 	      if (++(lineInfo[n].chunks) > 1)
 		safe_realloc (&(lineInfo[n].syntax),
@@ -1513,7 +1513,7 @@ display_line (FILE *f, LOFF_T *last_pos, struct line_t **lineInfo, int n,
 	while (ch && (buf[ch] == ' ' || buf[ch] == '\t' || buf[ch] == '\r'))
 	  ch--;
         /* a very long word with leading spaces causes infinite wrapping */
-        if ((!ch) && (flags & MUTT_PAGER_NSKIP))
+        if ((ch == 0) && (flags & MUTT_PAGER_NSKIP))
           buf_ptr = buf + cnt;
         else
           cnt = ch + 1;
@@ -1734,7 +1734,7 @@ mutt_pager (const char *banner, const char *fname, int flags, pager_t *extra)
 	PagerHelpExtra);
     snprintf (helpstr, sizeof (helpstr), "%s %s", tmphelp, buffer);
   }
-  if (!InHelp)
+  if (InHelp == 0)
   {
     strfcpy (tmphelp, helpstr, sizeof (tmphelp));
     mutt_make_help (buffer, sizeof (buffer), _("Help"), MENU_PAGER, OP_HELP);
@@ -1869,7 +1869,7 @@ mutt_pager (const char *banner, const char *fname, int flags, pager_t *extra)
 	if (!lineInfo[i].continuation && ++j == lines)
 	{
 	  topline = i;
-	  if (!SearchFlag)
+	  if (SearchFlag == 0)
 	    break;
 	}
     }
@@ -2391,7 +2391,7 @@ search_next:
                                &force_redraw, &SearchRE, pager_window) == 0)
 	    i++;
 
-	  if (!SearchBack)
+	  if (SearchBack == 0)
 	  {
 	    /* searching forward */
 	    for (i = topline; i < lastLine; i++)
@@ -2905,7 +2905,7 @@ search_next:
 	break;
 
       case OP_DECRYPT_SAVE:
-        if (!WithCrypto)
+        if (WithCrypto == 0)
         {
           ch = -1;
           break;
@@ -2981,7 +2981,7 @@ search_next:
 
 	if (extra->hdr->read || extra->hdr->old)
 	  mutt_set_flag (Context, extra->hdr, MUTT_NEW, 1);
-	else if (!first)
+	else if (first == 0)
 	  mutt_set_flag (Context, extra->hdr, MUTT_READ, 1);
 	first = 0;
         Context->msgnotreadyet = -1;
@@ -3089,7 +3089,7 @@ search_next:
 	break;
 
       case OP_EXTRACT_KEYS:
-        if (!WithCrypto)
+        if (WithCrypto == 0)
         {
           ch = -1;
           break;

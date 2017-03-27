@@ -614,7 +614,7 @@ int main (int argc, char **argv, char **environ)
        * Note: stdin is always copied to a tempfile, ensuring draftFile
        * can stat and get the correct st_size below.
        */
-      if (!edit_infile)
+      if (edit_infile == 0)
       {
         mutt_mktemp (buf, sizeof (buf));
         tempfile = safe_strdup (buf);
