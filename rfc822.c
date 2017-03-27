@@ -160,7 +160,7 @@ parse_comment (const char *s,
       comment[(*commentlen)++] = *s;
     s++;
   }
-  if (level)
+  if (level != 0)
   {
     RFC822Error = ERR_MISMATCH_PAREN;
     return NULL;
@@ -396,7 +396,7 @@ ADDRESS *rfc822_parse_adrlist (ADDRESS *top, const char *s)
   {
     if (*s == ',')
     {
-      if (phraselen)
+      if (phraselen != 0)
       {
 	terminate_buffer (phrase, phraselen);
 	add_addrspec (&top, &last, phrase, comment, &commentlen, sizeof (comment) - 1);
@@ -466,7 +466,7 @@ ADDRESS *rfc822_parse_adrlist (ADDRESS *top, const char *s)
     }
     else if (*s == ';')
     {
-      if (phraselen)
+      if (phraselen != 0)
       {
 	terminate_buffer (phrase, phraselen);
 	add_addrspec (&top, &last, phrase, comment, &commentlen, sizeof (comment) - 1);
@@ -500,7 +500,7 @@ ADDRESS *rfc822_parse_adrlist (ADDRESS *top, const char *s)
     {
       terminate_buffer (phrase, phraselen);
       cur = rfc822_new_address ();
-      if (phraselen)
+      if (phraselen != 0)
 	cur->personal = safe_strdup (phrase);
       if ((ps = parse_route_addr (s + 1, comment, &commentlen, sizeof (comment) - 1, cur)) == NULL)
       {
@@ -534,7 +534,7 @@ ADDRESS *rfc822_parse_adrlist (ADDRESS *top, const char *s)
     s = skip_email_wsp(s);
   }
 
-  if (phraselen)
+  if (phraselen != 0)
   {
     terminate_buffer (phrase, phraselen);
     terminate_buffer (comment, commentlen);
@@ -615,7 +615,7 @@ void rfc822_write_address_single (char *buf, size_t buflen, ADDRESS *addr,
     len = mutt_strlen (pbuf);
     pbuf += len;
     buflen -= len;
-    if (addr->group)
+    if (addr->group != 0)
     {
       if (buflen == 0)
 	goto done;
@@ -706,7 +706,7 @@ void rfc822_write_address_single (char *buf, size_t buflen, ADDRESS *addr,
       buflen--;
     }
 
-    if (addr->group)
+    if (addr->group != 0)
     {
       if (buflen == 0)
 	goto done;

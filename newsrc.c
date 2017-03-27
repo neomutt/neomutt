@@ -306,7 +306,7 @@ void nntp_newsrc_gen_entries (CONTEXT *ctx)
   for (i = 0; i < ctx->msgcount; i++)
   {
     /* search for first unread */
-    if (series)
+    if (series != 0)
     {
       /* We don't actually check sequential order, since we mark
        * "missing" entries as read/deleted */
@@ -401,7 +401,7 @@ static int update_file (char *filename, char *buf)
     safe_fclose (&fp);
   if (*tmpfile)
     unlink (tmpfile);
-  if (rc)
+  if (rc != 0)
     mutt_sleep (2);
   return rc;
 }
@@ -448,7 +448,7 @@ int nntp_newsrc_update (NNTP_SERVER *nserv)
 	buflen *= 2;
 	safe_realloc (&buf, buflen);
       }
-      if (n)
+      if (n != 0)
 	buf[off++] = ',';
       if (nntp_data->newsrc_ent[n].first == nntp_data->newsrc_ent[n].last)
 	snprintf (buf + off, buflen - off, "%d", nntp_data->newsrc_ent[n].first);
@@ -1040,7 +1040,7 @@ NNTP_SERVER *nntp_select_server (char *server, int leave_lock)
 
 	  if (sscanf (hdata, ANUM " " ANUM, &first, &last) == 2)
 	  {
-	    if (nntp_data->deleted)
+	    if (nntp_data->deleted != 0)
 	    {
 	      nntp_data->firstMessage = first;
 	      nntp_data->lastMessage = last;

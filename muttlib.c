@@ -191,7 +191,7 @@ void mutt_free_body (BODY **p)
       mutt_free_parameter (&b->parameter);
     if (b->filename)
     {
-      if (b->unlink)
+      if (b->unlink != 0)
 	unlink (b->filename);
       mutt_debug (1, "mutt_free_body: %sunlinking %s.\n",
                   b->unlink ? "" : "not ", b->filename);
@@ -260,7 +260,7 @@ LIST *mutt_add_list_n (LIST *head, const void *data, size_t len)
     head = tmp = safe_malloc (sizeof (LIST));
 
   tmp->data = safe_malloc (len);
-  if (len)
+  if (len != 0)
     memcpy (tmp->data, data, len);
   tmp->next = NULL;
   return head;
@@ -1661,9 +1661,9 @@ void mutt_FormatString (char *dest,		/* output buffer */
 	/* use callback function to handle this case */
 	src = callback (buf, sizeof (buf), col, cols, ch, src, prefix, ifstring, elsestring, data, flags);
 
-	if (tolower)
+	if (tolower != 0)
 	  mutt_strlower (buf);
-	if (nodots)
+	if (nodots != 0)
 	{
 	  char *p = buf;
 	  for (; *p; p++)
@@ -1916,7 +1916,7 @@ void mutt_sleep (short s)
 {
   if (SleepTime > s)
     sleep (SleepTime);
-  else if (s)
+  else if (s != 0)
     sleep(s);
 }
 

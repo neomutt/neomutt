@@ -218,7 +218,7 @@ size_t wcrtomb (char *s, wchar_t wc, mbstate_t *ps)
 {
   /* We only handle stateless encodings, so we can ignore ps. */
 
-  if (Charset_is_utf8)
+  if (Charset_is_utf8 != 0)
     return mutt_wctoutf8 (s, wc, MB_LEN_MAX);
   else if (charset_from_utf8 != (iconv_t)(-1))
     return wcrtomb_iconv (s, wc, charset_from_utf8);
@@ -254,7 +254,7 @@ static size_t mbrtowc_iconv (wchar_t *pwc, const char *s, size_t n,
   k = t ? (t - (char *)ps) : sizeof (*ps);
   if (k > sizeof (bufi))
     k = 0;
-  if (k)
+  if (k != 0)
   {
     /* use the buffer for input */
     memcpy (bufi, ps, k);
@@ -321,7 +321,7 @@ size_t mbrtowc (wchar_t *pwc, const char *s, size_t n, mbstate_t *ps)
   if (!ps)
     ps = &mbstate;
 
-  if (Charset_is_utf8)
+  if (Charset_is_utf8 != 0)
     return utf8rtowc (pwc, s, n, ps);
   else if (charset_to_utf8 != (iconv_t)(-1))
     return mbrtowc_iconv (pwc, s, n, ps, charset_to_utf8);

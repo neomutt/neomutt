@@ -67,7 +67,7 @@ static int mbox_lock_mailbox (CONTEXT *ctx, int excl, int retry)
 
 static void mbox_unlock_mailbox (CONTEXT *ctx)
 {
-  if (ctx->locked)
+  if (ctx->locked != 0)
   {
     fflush (ctx->fp);
 
@@ -485,7 +485,7 @@ static int mbox_close_mailbox (CONTEXT *ctx)
     return 0;
   }
 
-  if (ctx->append)
+  if (ctx->append != 0)
   {
     mx_unlock_file (ctx->path, fileno (ctx->fp), 1);
     mutt_unblock_signals ();
@@ -701,7 +701,7 @@ static int reopen_mailbox (CONTEXT *ctx, int *index_hint)
   hash_destroy (&ctx->label_hash, NULL);
   mutt_clear_threads (ctx);
   FREE (&ctx->v2r);
-  if (ctx->readonly)
+  if (ctx->readonly != 0)
   {
     for (i = 0; i < ctx->msgcount; i++)
       mutt_free_header (&(ctx->hdrs[i])); /* nothing to do! */
@@ -798,7 +798,7 @@ static int reopen_mailbox (CONTEXT *ctx, int *index_hint)
 	}
       }
 
-      if (found)
+      if (found != 0)
       {
 	/* this is best done here */
 	if (!index_hint_set && *index_hint == j)
@@ -912,7 +912,7 @@ static int mbox_check_mailbox (CONTEXT *ctx, int *index_hint)
 	   * mutt_checkpoint_mailbox().
 	   */
 
-	  if (unlock)
+	  if (unlock != 0)
 	  {
 	    mbox_unlock_mailbox (ctx);
 	    mutt_unblock_signals ();
@@ -933,11 +933,11 @@ static int mbox_check_mailbox (CONTEXT *ctx, int *index_hint)
       modified = 1;
   }
 
-  if (modified)
+  if (modified != 0)
   {
     if (reopen_mailbox (ctx, index_hint) != -1)
     {
-      if (unlock)
+      if (unlock != 0)
       {
 	mbox_unlock_mailbox (ctx);
 	mutt_unblock_signals ();
@@ -1359,7 +1359,7 @@ bail:  /* Come here in case of disaster */
     return -1;
   }
 
-  if (need_sort)
+  if (need_sort != 0)
     /* if the mailbox was reopened, the thread tree will be invalid so make
      * sure to start threading from scratch.  */
     mutt_sort_headers (ctx, (need_sort == MUTT_REOPENED));

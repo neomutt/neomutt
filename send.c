@@ -730,7 +730,7 @@ make_reference_headers (ENVELOPE *curenv, ENVELOPE *env, CONTEXT *ctx)
     for(i = 0; i < ctx->vcount; i++)
     {
       h = ctx->hdrs[ctx->v2r[i]];
-      if (h->tagged)
+      if (h->tagged != 0)
 	mutt_add_to_reference_headers (env, h->env, &p, &q);
     }
   }
@@ -785,7 +785,7 @@ envelope_defaults (ENVELOPE *env, CONTEXT *ctx, HEADER *cur, int flags)
     }
     else
 #endif
-    if (tag)
+    if (tag != 0)
     {
       HEADER *h = NULL;
 
@@ -842,7 +842,7 @@ generate_body (FILE *tempfp,	/* stream for outgoing message */
 	for (i = 0; i < ctx->vcount; i++)
 	{
 	  h = ctx->hdrs[ctx->v2r[i]];
-	  if (h->tagged)
+	  if (h->tagged != 0)
 	  {
 	    if (include_reply (ctx, h, tempfp) == -1)
 	    {
@@ -1082,7 +1082,7 @@ static int send_message (HEADER *msg)
   mutt_write_rfc822_header (tempfp, msg->env, msg->content, 0, 0);
 #endif
 #ifdef USE_SMTP
-  if (old_write_bcc)
+  if (old_write_bcc != 0)
     set_option (OPTWRITEBCC);
 #endif
 
@@ -1179,7 +1179,7 @@ int mutt_compose_to_sender (HEADER *hdr)
     for (i = 0; i < Context->vcount; i++)
     {
       hdr = Context->hdrs[Context->v2r[(i)]];
-      if (hdr->tagged)
+      if (hdr->tagged != 0)
         rfc822_append (&msg->env->to, hdr->env->from, 0);
     }
   }
@@ -1199,7 +1199,7 @@ int mutt_resend_message (FILE *fp, CONTEXT *ctx, HEADER *cur)
     return -1;
   }
 
-  if (WithCrypto)
+  if (WithCrypto != 0)
   {
     /* mutt_prepare_template doesn't always flip on an application bit.
      * so fix that here */
@@ -1543,7 +1543,7 @@ ci_send_message (int flags,		/* send mode */
     }
 
     /* $use_from and/or $from might have changed in a send-hook */
-    if (killfrom)
+    if (killfrom != 0)
     {
       rfc822_free_address (&msg->env->from);
       if (option (OPTUSEFROM) && !(flags & (SENDPOSTPONED|SENDRESEND)))
@@ -1774,7 +1774,7 @@ ci_send_message (int flags,		/* send mode */
 		       a from address it would have already been set by now */
     }
     mutt_select_fcc (fcc, sizeof (fcc), msg);
-    if (killfrom)
+    if (killfrom != 0)
     {
       rfc822_free_address (&msg->env->from);
       killfrom = 0;
@@ -1813,20 +1813,20 @@ main_loop:
           && (msg->security & ENCRYPT))
       {
         int is_signed = msg->security & SIGN;
-        if (is_signed)
+        if (is_signed != 0)
           msg->security &= ~SIGN;
 
         pgpkeylist = safe_strdup (PostponeEncryptAs);
         if (mutt_protect (msg, pgpkeylist) == -1)
         {
-          if (is_signed)
+          if (is_signed != 0)
             msg->security |= SIGN;
           FREE (&pgpkeylist);
           msg->content = mutt_remove_multipart (msg->content);
           goto main_loop;
         }
 
-        if (is_signed)
+        if (is_signed != 0)
           msg->security |= SIGN;
         FREE (&pgpkeylist);
       }
@@ -1942,7 +1942,7 @@ main_loop:
   clear_content = NULL;
   free_clear_content = 0;
 
-  if (WithCrypto)
+  if (WithCrypto != 0)
   {
     if (msg->security & (ENCRYPT | SIGN))
     {

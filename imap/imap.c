@@ -374,7 +374,7 @@ IMAP_DATA* imap_conn_find (const ACCOUNT* account, int flags)
       idata->state = IMAP_AUTHENTICATED;
       FREE (&idata->capstr);
       new = 1;
-      if (idata->conn->ssf)
+      if (idata->conn->ssf != 0)
         mutt_debug (2, "Communication encrypted at %d bits\n",
                     idata->conn->ssf);
     }
@@ -1219,7 +1219,7 @@ int imap_sync_mailbox (CONTEXT* ctx, int expunge)
   {
     h = ctx->hdrs[n];
 
-    if (h->deleted)
+    if (h->deleted != 0)
     {
       imap_cache_del (idata, h);
 #ifdef USE_HCACHE
@@ -1292,7 +1292,7 @@ int imap_sync_mailbox (CONTEXT* ctx, int expunge)
 
   if (rc < 0)
   {
-    if (ctx->closing)
+    if (ctx->closing != 0)
     {
       if (mutt_yesorno (_("Error saving flags. Close anyway?"), 0) == MUTT_YES)
       {
@@ -1568,7 +1568,7 @@ int imap_buffy_check (int force, int check_stats)
       lastdata = idata;
 
     imap_munge_mbox_name (idata, munged, sizeof (munged), name);
-    if (check_stats)
+    if (check_stats != 0)
       snprintf (command, sizeof (command),
 	      "STATUS %s (UIDNEXT UIDVALIDITY UNSEEN RECENT MESSAGES)", munged);
     else
@@ -1628,7 +1628,7 @@ int imap_status (char* path, int queue)
      * There is no lightweight way to check recent arrivals */
     return -1;
 
-  if (queue)
+  if (queue != 0)
   {
     imap_exec (idata, buf, IMAP_CMD_QUEUE);
     queued = 1;
@@ -1666,7 +1666,7 @@ IMAP_STATUS* imap_mboxcache_get (IMAP_DATA* idata, const char* mbox, int create)
   status = NULL;
 
   /* lame */
-  if (create)
+  if (create != 0)
   {
     memset (&scache, 0, sizeof (scache));
     scache.name = (char*)mbox;
@@ -1734,7 +1734,7 @@ static int do_search (const pattern_t* search, int allpats)
       case MUTT_BODY:
       case MUTT_HEADER:
       case MUTT_WHOLE_MSG:
-        if (pat->stringmatch)
+        if (pat->stringmatch != 0)
           rc++;
         break;
       default:
@@ -1757,7 +1757,7 @@ static int imap_compile_search (const pattern_t* pat, BUFFER* buf)
   if (! do_search (pat, 0))
     return 0;
 
-  if (pat->not)
+  if (pat->not != 0)
     mutt_buffer_addstr (buf, "NOT ");
 
   if (pat->child)
@@ -1781,7 +1781,7 @@ static int imap_compile_search (const pattern_t* pat, BUFFER* buf)
           if (imap_compile_search (clause, buf) < 0)
             return -1;
 
-          if (clauses)
+          if (clauses != 0)
             mutt_buffer_addch (buf, ' ');
 
         }
@@ -1898,7 +1898,7 @@ int imap_subscribe (char *path, int subscribe)
     FREE (&token.data);
   }
 
-  if (subscribe)
+  if (subscribe != 0)
     mutt_message (_("Subscribing to %s..."), buf);
   else
     mutt_message (_("Unsubscribing from %s..."), buf);
@@ -1910,7 +1910,7 @@ int imap_subscribe (char *path, int subscribe)
     goto fail;
 
   imap_unmunge_mbox_name(idata, mx.mbox);
-  if (subscribe)
+  if (subscribe != 0)
     mutt_message (_("Subscribed to %s"), mx.mbox);
   else
     mutt_message (_("Unsubscribed from %s"), mx.mbox);
@@ -1951,7 +1951,7 @@ imap_complete_hosts (char *dest, size_t len)
   {
     if (mutt_strncmp (dest, mailbox->path, matchlen) == 0)
     {
-      if (rc)
+      if (rc != 0)
       {
         strfcpy (dest, mailbox->path, len);
         rc = 0;
@@ -1976,7 +1976,7 @@ imap_complete_hosts (char *dest, size_t len)
     url_ciss_tostring (&url, urlstr, sizeof (urlstr), 0);
     if (mutt_strncmp (dest, urlstr, matchlen) == 0)
     {
-      if (rc)
+      if (rc != 0)
       {
         strfcpy (dest, urlstr, len);
         rc = 0;
@@ -2065,7 +2065,7 @@ int imap_complete(char* dest, size_t dlen, char* path) {
   while (rc == IMAP_CMD_CONTINUE);
   idata->cmddata = NULL;
 
-  if (completions)
+  if (completions != 0)
   {
     /* reformat output */
     imap_qualify_path (dest, dlen, &mx, completion);
@@ -2145,7 +2145,7 @@ int imap_fast_trash (CONTEXT* ctx, char* dest)
     rc = imap_exec (idata, NULL, IMAP_CMD_FAIL_OK);
     if (rc == -2)
     {
-      if (triedcreate)
+      if (triedcreate != 0)
       {
         mutt_debug (1, "Already tried to create mailbox %s\n", mbox);
         break;

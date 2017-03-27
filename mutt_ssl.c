@@ -297,7 +297,7 @@ static int ssl_socket_close (CONNECTION * conn)
   sslsockdata *data = conn->sockdata;
   if (data)
   {
-    if (data->isopen)
+    if (data->isopen != 0)
       SSL_shutdown (data->ssl);
 
     /* hold onto this for the life of mutt, in case we want to reconnect.
@@ -463,7 +463,7 @@ static int ssl_init (void)
   char path[_POSIX_PATH_MAX];
   static unsigned char init_complete = 0;
 
-  if (init_complete)
+  if (init_complete != 0)
     return 0;
 
   if (! HAVE_ENTROPY())
@@ -829,16 +829,16 @@ static int interactive_check_cert (X509 *cert, int idx, int len, SSL *ssl, int a
    * an OpenSSL connection.
    */
   menu->keys = _("roas");
-  if (allow_always)
+  if (allow_always != 0)
   {
-    if (allow_skip)
+    if (allow_skip != 0)
       menu->prompt = _("(r)eject, accept (o)nce, (a)ccept always, (s)kip");
     else
       menu->prompt = _("(r)eject, accept (o)nce, (a)ccept always");
   }
   else
   {
-    if (allow_skip)
+    if (allow_skip != 0)
       menu->prompt = _("(r)eject, accept (o)nce, (s)kip");
     else
       menu->prompt = _("(r)eject, accept (o)nce");

@@ -279,7 +279,7 @@ static const char *_mutt_fmt_smime_command (char *dest,
       break;
   }
 
-  if (optional)
+  if (optional != 0)
     mutt_FormatString (dest, destlen, col, cols, ifstring, _mutt_fmt_smime_command,
 		       data, 0);
   else if (flags & MUTT_FORMAT_OPTIONAL)
@@ -1006,7 +1006,7 @@ static int smime_handle_cert_email (char *certificate, char *mailbox,
       count++;
     }
   }
-  else if(copy) ret = 2;
+  else if (copy != 0) ret = 2;
 
   safe_fclose (&fpout);
   safe_fclose (&fperr);
@@ -1064,7 +1064,7 @@ static char *smime_extract_certificate (char *infile)
   fflush (fperr);
   rewind (fperr);
   empty = (fgetc (fpout) == EOF);
-  if (empty)
+  if (empty != 0)
   {
     mutt_perror (pk7out);
     mutt_copy_stream (fperr, stdout);
@@ -1110,7 +1110,7 @@ static char *smime_extract_certificate (char *infile)
   fflush (fperr);
   rewind (fperr);
   empty =  (fgetc (fpout) == EOF);
-  if (empty)
+  if (empty != 0)
   {
     mutt_copy_stream (fperr, stdout);
     safe_fclose (&fpout);
@@ -1173,7 +1173,7 @@ static char *smime_extract_signer_certificate (char *infile)
   fflush (fperr);
   rewind (fperr);
   empty =  (fgetc (fpout) == EOF);
-  if (empty)
+  if (empty != 0)
   {
     mutt_endwin (NULL);
     mutt_copy_stream (fperr, stdout);
@@ -1451,10 +1451,10 @@ BODY *smime_build_smime_entity (BODY *a, char *certlist)
   safe_fclose (&smimeerr);
 
   /* pause if there is any error output from SMIME */
-  if (err)
+  if (err != 0)
     mutt_any_key_to_continue (NULL);
 
-  if (empty)
+  if (empty != 0)
   {
     /* fatal error while trying to encrypt message */
     if (err == 0) mutt_any_key_to_continue (_("No output from OpenSSL..."));
@@ -1609,10 +1609,10 @@ BODY *smime_sign_message (BODY *a )
   mutt_unlink (filetosign);
 
 
-  if (err)
+  if (err != 0)
     mutt_any_key_to_continue (NULL);
 
-  if (empty)
+  if (empty != 0)
   {
     mutt_any_key_to_continue (_("No output from OpenSSL..."));
     mutt_unlink (signedfile);

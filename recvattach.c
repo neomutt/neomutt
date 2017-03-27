@@ -40,7 +40,7 @@
 
 static const char *Mailbox_is_read_only = N_("Mailbox is read-only.");
 
-#define CHECK_READONLY if (Context->readonly) \
+#define CHECK_READONLY if (Context->readonly != 0) \
 {\
     mutt_flushinp (); \
     mutt_error(_(Mailbox_is_read_only)); \
@@ -323,7 +323,7 @@ const char *mutt_attach_fmt (char *dest,
       }
       break;
     case 'Q':
-      if (optional)
+      if (optional != 0)
         optional = aptr->content->attach_qualifies;
       else {
 	    snprintf (fmt, sizeof (fmt), "%%%sc", prefix);
@@ -368,7 +368,7 @@ const char *mutt_attach_fmt (char *dest,
         optional = 0;
       break;
     case 'X':
-      if (optional)
+      if (optional != 0)
         optional = (aptr->content->attach_count + aptr->content->attach_qualifies) != 0;
       else
       {
@@ -380,7 +380,7 @@ const char *mutt_attach_fmt (char *dest,
       *dest = 0;
   }
 
-  if (optional)
+  if (optional != 0)
     mutt_FormatString (dest, destlen, col, cols, ifstring, mutt_attach_fmt, data, 0);
   else if (flags & MUTT_FORMAT_OPTIONAL)
     mutt_FormatString (dest, destlen, col, cols, elsestring, mutt_attach_fmt, data, 0);
@@ -472,7 +472,7 @@ static int query_save_attachment (FILE *fp, BODY *body, HEADER *hdr, char **dire
 		  body->encoding != ENCQUOTEDPRINTABLE &&
 		  mutt_is_message_type (body->type, body->subtype));
 
-    if (is_message)
+    if (is_message != 0)
     {
       struct stat st;
 
@@ -600,7 +600,7 @@ query_pipe_attachment (char *command, FILE *fp, BODY *body, int filter)
   char tfile[_POSIX_PATH_MAX];
   char warning[STRING+_POSIX_PATH_MAX];
 
-  if (filter)
+  if (filter != 0)
   {
     snprintf (warning, sizeof (warning),
 	      _("WARNING!  You are about to overwrite %s, continue?"),
@@ -616,7 +616,7 @@ query_pipe_attachment (char *command, FILE *fp, BODY *body, int filter)
 
   if (mutt_pipe_attachment (fp, body, command, tfile))
   {
-    if (filter)
+    if (filter != 0)
     {
       mutt_unlink (body->filename);
       mutt_rename_file (tfile, body->filename);
@@ -892,7 +892,7 @@ mutt_attach_display_loop (MUTTMENU *menu, int op, FILE *fp, HEADER *hdr,
         }
         /* fall through */
       case OP_ATTACH_COLLAPSE:
-        if (recv)
+        if (recv != 0)
           return op;
       default:
 	op = OP_NULL;
@@ -915,7 +915,7 @@ static void attach_collapse (BODY *b, short collapse, short init, short just_one
     else if (b->type == TYPEMULTIPART || mutt_is_message_type (b->type, b->subtype))
       attach_collapse (b->parts, collapse, i, 0);
     b->collapsed = collapse;
-    if (just_one)
+    if (just_one != 0)
       return;
   }
 }
@@ -1295,7 +1295,7 @@ void mutt_view_attachments (HEADER *hdr)
 	  FREE (&idx[idxmax]->tree);
 	  FREE (&idx[idxmax]);
 	}
-	if (hdr->attach_del)
+	if (hdr->attach_del != 0)
 	  hdr->changed = 1;
 	FREE (&idx);
 	idxmax = 0;

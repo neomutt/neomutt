@@ -151,7 +151,7 @@ static int pop_capabilities (POP_DATA *pop_data, int mode)
   char buf[LONG_STRING];
 
   /* don't check capabilities on reconnect */
-  if (pop_data->capabilities)
+  if (pop_data->capabilities != 0)
     return 0;
 
   /* init capabilities */
@@ -388,7 +388,7 @@ void pop_logout (CONTEXT *ctx)
   {
     mutt_message (_("Closing connection to POP server..."));
 
-    if (ctx->readonly)
+    if (ctx->readonly != 0)
     {
       strfcpy (buf, "RSET\r\n", sizeof (buf));
       ret = pop_query (pop_data, buf, sizeof (buf));
@@ -527,7 +527,7 @@ static int check_uidl (char *line, void *data)
 
   errno = 0;
   index = strtoul(line, &endp, 10);
-  if (errno)
+  if (errno != 0)
       return -1;
   while (*endp == ' ')
       endp++;

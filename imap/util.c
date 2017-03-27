@@ -427,7 +427,7 @@ void imap_pretty_mailbox (char* path)
   }
 
   /* do the '=' substitution */
-  if (home_match) {
+  if (home_match != 0) {
     *path++ = '=';
     /* copy remaining path, skipping delimiter */
     if (! hlen)

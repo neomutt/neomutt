@@ -899,7 +899,7 @@ resolve_types (char *buf, char *raw, struct line_t *lineInfo, int n, int last,
 	color_line = color_line->next;
       }
 
-      if (null_rx)
+      if (null_rx != 0)
 	offset++; /* avoid degenerate cases */
       else
 	offset = (lineInfo[n].syntax)[i].last;
@@ -961,7 +961,7 @@ resolve_types (char *buf, char *raw, struct line_t *lineInfo, int n, int last,
 	}
       }
 
-      if (null_rx)
+      if (null_rx != 0)
 	offset++; /* avoid degenerate cases */
       else
 	offset = (lineInfo[n].syntax)[i].last;
@@ -1213,7 +1213,7 @@ static int format_line (struct line_t **lineInfo, int n, unsigned char *buf,
     if (k == 0)
       k = 1;
 
-    if (Charset_is_utf8)
+    if (Charset_is_utf8 != 0)
     {
       if (wc == 0x200B || wc == 0xFEFF)
       {
@@ -1402,7 +1402,7 @@ display_line (FILE *f, LOFF_T *last_pos, struct line_t **lineInfo, int n,
       /* determine the line class */
       if (fill_buffer (f, last_pos, (*lineInfo)[n].offset, &buf, &fmt, &buflen, &buf_ready) < 0)
       {
-	if (change_last)
+	if (change_last != 0)
 	  (*last)--;
 	goto out;
       }
@@ -1431,7 +1431,7 @@ display_line (FILE *f, LOFF_T *last_pos, struct line_t **lineInfo, int n,
   {
     if (fill_buffer (f, last_pos, (*lineInfo)[n].offset, &buf, &fmt, &buflen, &buf_ready) < 0)
     {
-      if (change_last)
+      if (change_last != 0)
 	(*last)--;
       goto out;
     }
@@ -1446,7 +1446,7 @@ display_line (FILE *f, LOFF_T *last_pos, struct line_t **lineInfo, int n,
   {
     if (fill_buffer (f, last_pos, (*lineInfo)[n].offset, &buf, &fmt, &buflen, &buf_ready) < 0)
     {
-      if (change_last)
+      if (change_last != 0)
 	(*last)--;
       goto out;
     }
@@ -1490,7 +1490,7 @@ display_line (FILE *f, LOFF_T *last_pos, struct line_t **lineInfo, int n,
   if ((b_read = fill_buffer (f, last_pos, (*lineInfo)[n].offset, &buf, &fmt,
 			     &buflen, &buf_ready)) < 0)
   {
-    if (change_last)
+    if (change_last != 0)
       (*last)--;
     goto out;
   }
@@ -2089,13 +2089,13 @@ mutt_pager (const char *banner, const char *fname, int flags, pager_t *extra)
       }
     }
 
-    if (SigInt)
+    if (SigInt != 0)
     {
       mutt_query_exit ();
       continue;
     }
 #if defined (USE_SLANG_CURSES) || defined (HAVE_RESIZETERM)
-    else if (SigWinch)
+    else if (SigWinch != 0)
     {
       mutt_resize_screen ();
 
@@ -2201,7 +2201,7 @@ mutt_pager (const char *banner, const char *fname, int flags, pager_t *extra)
 	if (lineInfo[curline].offset < sb.st_size-1)
 	{
 	  topline++;
-	  if (hideQuoted)
+	  if (hideQuoted != 0)
 	  {
 	    while (lineInfo[topline].type == MT_COLOR_QUOTED &&
 		   topline < lastLine)
@@ -2213,21 +2213,21 @@ mutt_pager (const char *banner, const char *fname, int flags, pager_t *extra)
 	break;
 
       case OP_PREV_LINE:
-	if (topline)
+	if (topline != 0)
 	  topline = up_n_lines (1, lineInfo, topline, hideQuoted);
 	else
 	  mutt_error (_("Top of message is shown."));
 	break;
 
       case OP_PAGER_TOP:
-        if (topline)
+        if (topline != 0)
 	  topline = 0;
       	else
 	  mutt_error (_("Top of message is shown."));
 	break;
 
       case OP_HALF_UP:
-	if (topline)
+	if (topline != 0)
 	  topline = up_n_lines (pager_window->rows/2, lineInfo, topline, hideQuoted);
 	else
 	  mutt_error (_("Top of message is shown."));
@@ -2253,7 +2253,7 @@ mutt_pager (const char *banner, const char *fname, int flags, pager_t *extra)
 
       case OP_SEARCH_NEXT:
       case OP_SEARCH_OPPOSITE:
-	if (SearchCompiled)
+	if (SearchCompiled != 0)
 	{
 	  wrapped = 0;
 
@@ -2331,7 +2331,7 @@ search_next:
 
 	if (strcmp (buffer, searchbuf) == 0)
 	{
-	  if (SearchCompiled)
+	  if (SearchCompiled != 0)
 	  {
 	    /* do an implicit search-next */
 	    if (ch == OP_SEARCH)
@@ -2355,7 +2355,7 @@ search_next:
 	else if (ch == OP_SEARCH_REVERSE)
 	  SearchBack = 1;
 
-	if (SearchCompiled)
+	if (SearchCompiled != 0)
 	{
 	  regfree (&SearchRE);
 	  for (i = 0; i < lastLine; i++)
@@ -2438,7 +2438,7 @@ search_next:
 	break;
 
       case OP_SEARCH_TOGGLE:
-	if (SearchCompiled)
+	if (SearchCompiled != 0)
 	{
 	  SearchFlag ^= MUTT_SEARCH;
 	  redraw = REDRAW_BODY;
@@ -2459,7 +2459,7 @@ search_next:
 	break;
 
       case OP_PAGER_HIDE_QUOTED:
-	if (has_types)
+	if (has_types != 0)
 	{
 	  hideQuoted ^= MUTT_HIDE;
 	  if (hideQuoted && lineInfo[topline].type == MT_COLOR_QUOTED)
@@ -2470,7 +2470,7 @@ search_next:
 	break;
 
       case OP_PAGER_SKIP_QUOTED:
-	if (has_types)
+	if (has_types != 0)
 	{
 	  int dretval = 0;
 	  int new_topline = topline;
@@ -2728,7 +2728,7 @@ search_next:
 		FREE (&(lineInfo[i].search));
 	  }
 
-	  if (SearchCompiled)
+	  if (SearchCompiled != 0)
 	  {
 	    regfree (&SearchRE);
 	    SearchCompiled = 0;
@@ -3152,7 +3152,7 @@ search_next:
     if (SearchCompiled && lineInfo[i].search)
       FREE (&(lineInfo[i].search));
   }
-  if (SearchCompiled)
+  if (SearchCompiled != 0)
   {
     regfree (&SearchRE);
     SearchCompiled = 0;

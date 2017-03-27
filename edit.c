@@ -67,7 +67,7 @@ be_snarf_data (FILE *f, char **buf, int *bufmax, int *buflen, LOFF_T offset,
   int tmplen = sizeof (tmp);
 
   tmp[sizeof (tmp) - 1] = 0;
-  if (prefix)
+  if (prefix != 0)
   {
     strfcpy (tmp, NONULL(Prefix), sizeof (tmp));
     tmplen = mutt_strlen (tmp);
@@ -102,7 +102,7 @@ be_snarf_file (const char *path, char **buf, int *max, int *len, int verbose)
   {
     fstat (fileno (f), &sb);
     buf = be_snarf_data (f, buf, max, len, 0, sb.st_size, 0);
-    if (verbose)
+    if (verbose != 0)
     {
       snprintf(tmp, sizeof(tmp), "\"%s\" %lu bytes\n", path, (unsigned long) sb.st_size);
       addstr(tmp);
@@ -169,7 +169,7 @@ be_include_messages (char *msg, char **buf, int *bufmax, int *buflen,
       buf[(*buflen)++] = safe_strdup (tmp);
 
       bytes = Context->hdrs[n]->content->length;
-      if (inc_hdrs)
+      if (inc_hdrs != 0)
       {
 	offset = Context->hdrs[n]->offset;
 	bytes += Context->hdrs[n]->content->offset - offset;
@@ -421,7 +421,7 @@ int mutt_builtin_editor (const char *path, HEADER *msg, HEADER *cur)
 	  msg->env->to = mutt_expand_aliases (msg->env->to);
 	  break;
 	case 'u':
-	  if (buflen)
+	  if (buflen != 0)
 	  {
 	    buflen--;
 	    strfcpy (tmp, buf[buflen], sizeof (tmp));

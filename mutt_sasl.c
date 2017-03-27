@@ -99,7 +99,7 @@ static int iptostring(const struct sockaddr *addr, socklen_t addrlen,
                     NI_WITHSCOPEID |
 #endif
                     NI_NUMERICSERV);
-  if (ret)
+  if (ret != 0)
     return getnameinfo_err(ret);
 
   if (outlen < strlen(hbuf) + strlen(pbuf) + 2)
@@ -127,7 +127,7 @@ static int mutt_sasl_start (void)
   static sasl_callback_t callbacks[2];
   int rc;
 
-  if (sasl_init)
+  if (sasl_init != 0)
     return SASL_OK;
 
   /* set up default logging callback */
@@ -332,7 +332,7 @@ int mutt_sasl_client_new (CONNECTION* conn, sasl_conn_t** saslconn)
     return -1;
   }
 
-  if (conn->ssf)
+  if (conn->ssf != 0)
   {
     /* I'm not sure this actually has an effect, at least with SASLv2 */
     mutt_debug (2, "External SSF: %d\n", conn->ssf);

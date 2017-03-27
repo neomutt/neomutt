@@ -86,7 +86,7 @@ int mutt_account_fromurl (ACCOUNT* account, ciss_url_t* url)
     strfcpy (account->pass, url->pass, sizeof (account->pass));
     account->flags |= MUTT_ACCT_PASS;
   }
-  if (url->port)
+  if (url->port != 0)
   {
     account->port = url->port;
     account->flags |= MUTT_ACCT_PORT;

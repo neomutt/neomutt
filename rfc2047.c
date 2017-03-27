@@ -368,7 +368,7 @@ static size_t choose_block (char *d, size_t dlen, int col,
       break;
     n = (nn ? nn : n) - 1;
     assert (n > 0);
-    if (utf8)
+    if (utf8 != 0)
       while (n > 1 && CONTINUATION_BYTE(d[n]))
 	--n;
   }

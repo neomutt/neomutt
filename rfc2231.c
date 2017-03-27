@@ -190,7 +190,7 @@ static void rfc2231_join_continuations (PARAMETER **head,
 
     if (value)
     {
-      if (encoded)
+      if (encoded != 0)
 	mutt_convert_string (&value, charset, Charset, MUTT_ICONV_HOOK_FROM);
       *head = mutt_new_parameter ();
       (*head)->attribute = safe_strdup (attribute);
@@ -292,7 +292,7 @@ void rfc2231_decode_parameters (PARAMETER **headp)
 
   *headp = head;
 
-  if (dirty)
+  if (dirty != 0)
     purge_empty_parameters (headp);
 }
 
@@ -334,7 +334,7 @@ int rfc2231_encode_string (char **pd)
     else if (strchr (MimeSpecials, *s) || strchr ("*'%", *s))
       ++ext;
 
-  if (encode)
+  if (encode != 0)
   {
     e = safe_malloc (dlen + 2*ext + strlen (charset) + 3);
     sprintf (e, "%s''", charset);	/* __SPRINTF_CHECKED__ */

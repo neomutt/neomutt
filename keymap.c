@@ -395,7 +395,7 @@ static int retry_generic (int menu, keycode_t *keys, int keyslen, int lastkey)
 {
   if (menu != MENU_EDITOR && menu != MENU_GENERIC && menu != MENU_PAGER)
   {
-    if (lastkey)
+    if (lastkey != 0)
       mutt_unget_event (lastkey, 0);
     for (; keyslen; keyslen--)
       mutt_unget_event (keys[keyslen - 1], 0);
@@ -430,7 +430,7 @@ int km_dokey (int menu)
     i = Timeout > 0 ? Timeout : 60;
 #ifdef USE_IMAP
     /* keepalive may need to run more frequently than Timeout allows */
-    if (ImapKeepalive)
+    if (ImapKeepalive != 0)
     {
       if (ImapKeepalive >= i)
       	imap_keepalive ();

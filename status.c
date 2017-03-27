@@ -303,7 +303,7 @@ status_format_str (char *buf, size_t buflen, size_t col, int cols, char op, cons
       break;
   }
 
-  if (optional)
+  if (optional != 0)
     _menu_status_line (buf, buflen, col, cols, menu, ifstring);
   else if (flags & MUTT_FORMAT_OPTIONAL)
     _menu_status_line (buf, buflen, col, cols, menu, elsestring);

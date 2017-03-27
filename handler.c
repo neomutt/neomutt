@@ -136,7 +136,7 @@ static void decode_xbit (STATE *s, long len, int istext, iconv_t cd)
   char bufi[BUFI_SIZE];
   size_t l = 0;
 
-  if (istext)
+  if (istext != 0)
   {
     state_set_prefix(s);
 
@@ -255,7 +255,7 @@ static void decode_quoted (STATE *s, long len, int istext, iconv_t cd)
 
   int last;    /* store the last character in the input line */
 
-  if (istext)
+  if (istext != 0)
     state_set_prefix(s);
 
   while (len > 0)
@@ -308,7 +308,7 @@ void mutt_decode_base64 (STATE *s, long len, int istext, iconv_t cd)
 
   buf[4] = 0;
 
-  if (istext)
+  if (istext != 0)
     state_set_prefix(s);
 
   while (len > 0)
@@ -375,7 +375,7 @@ void mutt_decode_base64 (STATE *s, long len, int istext, iconv_t cd)
       convert_to_state (cd, bufi, &l, s);
   }
 
-  if (cr) bufi[l++] = '\r';
+  if (cr != 0) bufi[l++] = '\r';
 
   convert_to_state (cd, bufi, &l, s);
   convert_to_state (cd, 0, 0, s);
@@ -398,7 +398,7 @@ static void decode_uuencoded (STATE *s, long len, int istext, iconv_t cd)
   char bufi[BUFI_SIZE];
   size_t k = 0;
 
-  if(istext)
+  if (istext != 0)
     state_set_prefix(s);
 
   while(len > 0)
@@ -497,7 +497,7 @@ static void enriched_wrap (struct enriched_state *stte)
   int x;
   int extra;
 
-  if (stte->line_len)
+  if (stte->line_len != 0)
   {
     if (stte->tag_level[RICH_CENTER] || stte->tag_level[RICH_FLUSHRIGHT])
     {
@@ -518,7 +518,7 @@ static void enriched_wrap (struct enriched_state *stte)
 
 	while (stte->line[y] && iswspace (stte->line[y]))
 	  y++;
-	if (y)
+	if (y != 0)
 	{
 	  size_t z;
 
@@ -609,7 +609,7 @@ static void enriched_flush (struct enriched_state *stte, int wrap)
        stte->indent_len)))
     enriched_wrap (stte);
 
-  if (stte->buff_used)
+  if (stte->buff_used != 0)
   {
     stte->buffer[stte->buff_used] = (wchar_t) '\0';
     stte->line_used += stte->buff_used;
@@ -623,7 +623,7 @@ static void enriched_flush (struct enriched_state *stte, int wrap)
     stte->word_len = 0;
     stte->buff_used = 0;
   }
-  if (wrap)
+  if (wrap != 0)
     enriched_wrap(stte);
   fflush (stte->s->fpout);
 }
@@ -1002,7 +1002,7 @@ static int is_autoview (BODY *b)
   /* determine if there is a mailcap entry suitable for auto_view
    *
    * WARNING: type is altered by this call as a result of `mime_lookup' support */
-  if (is_av)
+  if (is_av != 0)
     return rfc1524_mailcap_lookup(b, type, NULL, MUTT_AUTOVIEW);
 
   return 0;
@@ -1182,7 +1182,7 @@ static int alternative_handler (BODY *a, STATE *s)
     rc = -1;
   }
 
-  if (mustfree)
+  if (mustfree != 0)
     mutt_free_body(&a);
 
   return rc;
@@ -1242,7 +1242,7 @@ int mutt_can_decode (BODY *a)
   {
     BODY *p = NULL;
 
-    if (WithCrypto)
+    if (WithCrypto != 0)
     {
       if ((ascii_strcasecmp (a->subtype, "signed") == 0) ||
 	  (ascii_strcasecmp (a->subtype, "encrypted") == 0))
@@ -1313,7 +1313,7 @@ static int multipart_handler (BODY *a, STATE *s)
     rc = mutt_body_handler (p, s);
     state_putc ('\n', s);
 
-    if (rc)
+    if (rc != 0)
     {
       mutt_error (_("One or more parts of this message could not be displayed"));
       mutt_debug (1, "Failed on attachment #%d, type %s/%s.\n",
@@ -1455,7 +1455,7 @@ static int autoview_handler (BODY *a, STATE *s)
     safe_fclose (&fperr);
 
     mutt_wait_filter (thepid);
-    if (piped)
+    if (piped != 0)
       safe_fclose (&fpin);
     else
       mutt_unlink (tempfile);
@@ -1698,7 +1698,7 @@ static int run_decode_and_handler (BODY *b, STATE *s, handler_t handler, int pla
 
     mutt_decode_attachment (b, s);
 
-    if (decode)
+    if (decode != 0)
     {
       b->length = ftello (s->fpout);
       b->offset = 0;
@@ -1739,13 +1739,13 @@ static int run_decode_and_handler (BODY *b, STATE *s, handler_t handler, int pla
   {
     rc = handler (b, s);
 
-    if (rc)
+    if (rc != 0)
     {
       mutt_debug (1, "Failed on attachment of type %s/%s.\n",
                   TYPE(b), NONULL (b->subtype));
     }
 
-    if (decode)
+    if (decode != 0)
     {
       b->length = tmplength;
       b->offset = tmpoffset;
@@ -1910,7 +1910,7 @@ int mutt_body_handler (BODY *b, STATE *s)
   }
 
   s->flags = oflags | (s->flags & MUTT_FIRSTDONE);
-  if (rc)
+  if (rc != 0)
   {
     mutt_debug (1, "Bailing on attachment of type %s/%s.\n",
                 TYPE(b), NONULL (b->subtype));

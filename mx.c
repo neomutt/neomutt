@@ -152,7 +152,7 @@ static int dotlock_file (const char *path, int fd, int retry)
   int r;
   int flags = DL_FL_USEPRIV | DL_FL_RETRY;
 
-  if (retry) retry = 1;
+  if (retry != 0) retry = 1;
 
 retry_lock:
   if ((r = invoke_dotlock(path, fd, flags, retry)) == DL_EX_EXIST)
@@ -228,7 +228,7 @@ int mx_lock_file (const char *path, int fd, int excl, int dot, int timeout)
     /* only unlock file if it is unchanged */
     if (prev_sb.st_size == sb.st_size && ++count >= (timeout?MAXLOCKATTEMPT:0))
     {
-      if (timeout)
+      if (timeout != 0)
 	mutt_error (_("Timeout exceeded while attempting fcntl lock!"));
       return -1;
     }
@@ -261,7 +261,7 @@ int mx_lock_file (const char *path, int fd, int excl, int dot, int timeout)
     /* only unlock file if it is unchanged */
     if (prev_sb.st_size == sb.st_size && ++count >= (timeout?MAXLOCKATTEMPT:0))
     {
-      if (timeout)
+      if (timeout != 0)
 	mutt_error (_("Timeout exceeded while attempting flock lock!"));
       r = -1;
       break;
@@ -312,7 +312,7 @@ int mx_unlock_file (const char *path, int fd, int dot)
 #endif
 
 #ifdef USE_DOTLOCK
-  if (dot)
+  if (dot != 0)
     undotlock_file (path, fd);
 #endif
 
@@ -787,10 +787,10 @@ static int trash_append (CONTEXT *ctx)
 
   /* avoid the "append messages" prompt */
   opt_confappend = option (OPTCONFIRMAPPEND);
-  if (opt_confappend)
+  if (opt_confappend != 0)
     unset_option (OPTCONFIRMAPPEND);
   rc = mutt_save_confirm (TrashPath, &st);
-  if (opt_confappend)
+  if (opt_confappend != 0)
     set_option (OPTCONFIRMAPPEND);
   if (rc != 0)
   {
@@ -938,7 +938,7 @@ int mx_close_mailbox (CONTEXT *ctx, int *index_hint)
     }
   }
 
-  if (move_messages)
+  if (move_messages != 0)
   {
     if (ctx->quiet == 0)
       mutt_message (_("Moving read messages to %s..."), mbox);
@@ -1054,7 +1054,7 @@ int mx_close_mailbox (CONTEXT *ctx, int *index_hint)
 
   if (ctx->quiet == 0)
   {
-    if (move_messages)
+    if (move_messages != 0)
       mutt_message (_("%d kept, %d moved, %d deleted."),
 	ctx->msgcount - ctx->deleted, read_msgs, ctx->deleted);
     else
@@ -1117,7 +1117,7 @@ void mx_update_tables(CONTEXT *ctx, int committing)
 	  this_body->hdr_offset;
       }
 
-      if (committing)
+      if (committing != 0)
 	ctx->hdrs[j]->changed = 0;
       else if (ctx->hdrs[j]->changed)
 	ctx->changed++;
@@ -1180,7 +1180,7 @@ int mx_sync_mailbox (CONTEXT *ctx, int *index_hint)
   int purge = 1;
   int msgcount, deleted;
 
-  if (ctx->dontwrite)
+  if (ctx->dontwrite != 0)
   {
     char buf[STRING], tmp[STRING];
     if (km_expand_key (buf, sizeof(buf),
@@ -1192,7 +1192,7 @@ int mx_sync_mailbox (CONTEXT *ctx, int *index_hint)
     mutt_error (_("Mailbox is marked unwritable. %s"), tmp);
     return -1;
   }
-  else if (ctx->readonly)
+  else if (ctx->readonly != 0)
   {
     mutt_error (_("Mailbox is read-only."));
     return -1;
@@ -1205,7 +1205,7 @@ int mx_sync_mailbox (CONTEXT *ctx, int *index_hint)
     return 0;
   }
 
-  if (ctx->deleted)
+  if (ctx->deleted != 0)
   {
     char buf[SHORT_STRING];
 
@@ -1467,7 +1467,7 @@ void mx_update_context (CONTEXT *ctx, int new_messages)
   {
     h = ctx->hdrs[msgno];
 
-    if (WithCrypto)
+    if (WithCrypto != 0)
     {
       /* NOTE: this _must_ be done before the check for mailcap! */
       h->security = crypt_query (h->content);
@@ -1508,11 +1508,11 @@ void mx_update_context (CONTEXT *ctx, int new_messages)
     if (option (OPTSCORE))
       mutt_score_message (ctx, h, 0);
 
-    if (h->changed)
+    if (h->changed != 0)
       ctx->changed = 1;
-    if (h->flagged)
+    if (h->flagged != 0)
       ctx->flagged++;
-    if (h->deleted)
+    if (h->deleted != 0)
       ctx->deleted++;
     if (h->read == 0)
     {

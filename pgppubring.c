@@ -174,13 +174,13 @@ static void pgpring_dump_keyblock (pgp_key_t p)
 	  putchar ('D');
 	printf (":\n");
 
-	if (dump_fingerprints)
+	if (dump_fingerprints != 0)
           print_fingerprint (p);
       }
 
-      if (dump_signatures)
+      if (dump_signatures != 0)
       {
-	if (first) pgpring_dump_signatures (p->sigs);
+	if (first != 0) pgpring_dump_signatures (p->sigs);
 	pgpring_dump_signatures (uid->sigs);
       }
     }
@@ -281,7 +281,7 @@ static pgp_key_t pgp_parse_pgp2_key (unsigned char *buff, size_t l)
   p->algorithm = pgp_pkalgbytype (alg);
   p->flags |= pgp_get_abilities (alg);
 
-  if (dump_fingerprints)
+  if (dump_fingerprints != 0)
   {
     /* j now points to the key material, which we need for the fingerprint */
     pgp_make_pgp2_fingerprint (&buff[j], digest);
@@ -397,7 +397,7 @@ static pgp_key_t pgp_parse_pgp3_key (unsigned char *buff, size_t l)
     skip_bignum (buff, l, j, &j, 4);
 
   pgp_make_pgp3_fingerprint (buff, j, digest);
-  if (dump_fingerprints)
+  if (dump_fingerprints != 0)
   {
     p->fingerprint = binary_fingerprint_to_string (digest, SHA_DIGEST_LENGTH);
   }
@@ -600,7 +600,7 @@ static int pgp_parse_pgp3_sig (unsigned char *buff, size_t l,
     p->flags |= KEYFLAG_REVOKED;
   if (key_validity != -1 && time (NULL) > p->gen_time + key_validity)
     p->flags |= KEYFLAG_EXPIRED;
-  if (have_critical_spks)
+  if (have_critical_spks != 0)
     p->flags |= KEYFLAG_CRITICAL;
 
   if (s)
@@ -770,7 +770,7 @@ static pgp_key_t pgp_parse_keyblock (FILE * fp)
     FGETPOS(fp,pos);
   }
 
-  if (err)
+  if (err != 0)
     pgp_free_key (&root);
 
   return root;
@@ -925,7 +925,7 @@ int main (int argc, char * const argv[])
       exit (1);
     }
 
-    if (secring)
+    if (secring != 0)
       snprintf (kring, sizeof (kring), "%s/secring.%s", pgppath, version == 2 ? "pgp" : "skr");
     else
       snprintf (kring, sizeof (kring), "%s/pubring.%s", pgppath, version == 2 ? "pgp" : "pkr");

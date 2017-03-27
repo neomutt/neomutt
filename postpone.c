@@ -60,7 +60,7 @@ int mutt_num_postponed (int force)
   static time_t LastModify = 0;
   static char *OldPostponed = NULL;
 
-  if (UpdateNumPostponed)
+  if (UpdateNumPostponed != 0)
   {
     UpdateNumPostponed = 0;
     force = 1;
@@ -81,7 +81,7 @@ int mutt_num_postponed (int force)
   /* LastModify is useless for IMAP */
   if (mx_is_imap (Postponed))
   {
-    if (force)
+    if (force != 0)
     {
       short newpc;
 
@@ -131,7 +131,7 @@ int mutt_num_postponed (int force)
     if (access (Postponed, R_OK | F_OK) != 0)
       return (PostCount = 0);
 #ifdef USE_NNTP
-    if (optnews)
+    if (optnews != 0)
 	unset_option (OPTNEWS);
 #endif
     if (mx_open_mailbox (Postponed, MUTT_NOSORT | MUTT_QUIET, &ctx) == NULL)
@@ -140,7 +140,7 @@ int mutt_num_postponed (int force)
       PostCount = ctx.msgcount;
     mx_fastclose_mailbox (&ctx);
 #ifdef USE_NNTP
-    if (optnews)
+    if (optnews != 0)
 	set_option (OPTNEWS);
 #endif
   }
@@ -586,7 +586,7 @@ int mutt_prepare_template (FILE *fp, CONTEXT *ctx, HEADER *newhdr, HEADER *hdr,
    * Otherwise, we are resuming a postponed message, and want to keep those
    * headers if they exist.
    */
-  if (resend)
+  if (resend != 0)
   {
     FREE (&newhdr->env->message_id);
     FREE (&newhdr->env->mail_followup_to);

@@ -143,7 +143,7 @@ static int fetch_uidl (char *line, void *data)
 
   errno = 0;
   index = strtol(line, &endp, 10);
-  if (errno)
+  if (errno != 0)
       return -1;
   while (*endp == ' ')
       endp++;
@@ -351,16 +351,16 @@ static int pop_fetch_headers (CONTEXT *ctx)
       bcached = mutt_bcache_exists (pop_data->bcache, ctx->hdrs[i]->data) == 0;
       ctx->hdrs[i]->old = 0;
       ctx->hdrs[i]->read = 0;
-      if (hcached)
+      if (hcached != 0)
       {
-        if (bcached)
+        if (bcached != 0)
           ctx->hdrs[i]->read = 1;
         else if (option (OPTMARKOLD))
           ctx->hdrs[i]->old = 1;
       }
       else
       {
-        if (bcached)
+        if (bcached != 0)
           ctx->hdrs[i]->read = 1;
       }
 
@@ -616,7 +616,7 @@ static int pop_fetch_message (CONTEXT* ctx, MESSAGE* msg, int msgno)
   /* Update the header information.  Previously, we only downloaded a
    * portion of the headers, those required for the main display.
    */
-  if (bcache)
+  if (bcache != 0)
     mutt_bcache_commit (pop_data->bcache, h->data);
   else
   {
@@ -802,7 +802,7 @@ void pop_fetch_mail (void)
 
   ret = pop_parse_path (url, &acct);
   FREE (&url);
-  if (ret)
+  if (ret != 0)
   {
     mutt_error (_("%s is an invalid POP path"), PopHost);
     return;
@@ -912,7 +912,7 @@ void pop_fetch_mail (void)
 
   mx_close_mailbox (&ctx, NULL);
 
-  if (rset)
+  if (rset != 0)
   {
     /* make sure no messages get deleted */
     strfcpy (buffer, "RSET\r\n", sizeof (buffer));

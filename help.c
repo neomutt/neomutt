@@ -71,7 +71,7 @@ mutt_compile_help (char *buf, size_t buflen, int menu, const struct mapping_t *i
 
   for (i = 0; items[i].name && buflen > 2; i++)
   {
-    if (i)
+    if (i != 0)
     {
       *pbuf++ = ' ';
       *pbuf++ = ' ';
@@ -235,12 +235,12 @@ static void format_line (FILE *f, int ismacro,
   }
 
   col += print_macro (f, col_b - col - 1, &t2);
-  if (split)
+  if (split != 0)
     fputc ('\n', f);
   else
     col = pad (f, col, col_b);
 
-  if (split)
+  if (split != 0)
   {
     print_macro (f, LONG_STRING, &t3);
     fputc ('\n', f);

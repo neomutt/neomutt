@@ -153,7 +153,7 @@ static int union_hash_insert (HASH * table, union hash_key key, void *data)
   ptr->key = key;
   ptr->data = data;
 
-  if (table->allow_dups)
+  if (table->allow_dups != 0)
   {
     ptr->next = table->table[h];
     table->table[h] = ptr;
@@ -281,7 +281,7 @@ static void union_hash_delete (HASH *table, union hash_key key, const void *data
       *last = ptr->next;
       if (destroy)
 	destroy (ptr->data);
-      if (table->strdup_keys)
+      if (table->strdup_keys != 0)
         FREE (&ptr->key.strkey);
       FREE (&ptr);
       table->curnelem--;
@@ -333,7 +333,7 @@ void hash_destroy (HASH **ptr, void (*destroy) (void *))
       elem = elem->next;
       if (destroy)
 	destroy (tmp->data);
-      if (pptr->strdup_keys)
+      if (pptr->strdup_keys != 0)
         FREE (&tmp->key.strkey);
       FREE (&tmp);
     }

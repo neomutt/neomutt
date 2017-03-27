@@ -295,7 +295,7 @@ int mh_buffy (BUFFY *mailbox, int check_stats)
   if (mh_read_sequences (&mhs, mailbox->path) < 0)
     return 0;
 
-  if (check_stats)
+  if (check_stats != 0)
   {
     mailbox->msg_count   = 0;
     mailbox->msg_unread  = 0;
@@ -309,9 +309,9 @@ int mh_buffy (BUFFY *mailbox, int check_stats)
       mailbox->msg_flagged++;
     if (mhs_check (&mhs, i) & MH_SEQ_UNSEEN)
     {
-      if (check_stats)
+      if (check_stats != 0)
         mailbox->msg_unread++;
-      if (check_new)
+      if (check_new != 0)
       {
         /* if the first unseen message we encounter was in the mailbox during the
            last visit, don't notify about it */
@@ -331,7 +331,7 @@ int mh_buffy (BUFFY *mailbox, int check_stats)
   }
   mhs_free_sequences (&mhs);
 
-  if (check_stats)
+  if (check_stats != 0)
   {
     if ((dirp = opendir (mailbox->path)) != NULL)
     {
@@ -517,11 +517,11 @@ static void mh_update_sequences (CONTEXT * ctx)
   }
 
   /* write out the new sequences */
-  if (unseen)
+  if (unseen != 0)
     mhs_write_one_sequence (nfp, &mhs, MH_SEQ_UNSEEN, NONULL (MhUnseen));
-  if (flagged)
+  if (flagged != 0)
     mhs_write_one_sequence (nfp, &mhs, MH_SEQ_FLAGGED, NONULL (MhFlagged));
-  if (replied)
+  if (replied != 0)
     mhs_write_one_sequence (nfp, &mhs, MH_SEQ_REPLIED, NONULL (MhReplied));
 
   mhs_free_sequences (&mhs);
@@ -1607,7 +1607,7 @@ static int _maildir_commit_message (CONTEXT * ctx, MESSAGE * msg, HEADER * hdr)
        * messages between mailboxes, so we test to ensure that it is
        * actually set.
        */
-      if (msg->received)
+      if (msg->received != 0)
       {
 	struct utimbuf ut;
 
@@ -1723,7 +1723,7 @@ static int _mh_commit_message (CONTEXT * ctx, MESSAGE * msg, HEADER * hdr,
       return -1;
     }
   }
-  if (updseq)
+  if (updseq != 0)
     mh_sequences_add_one (ctx, hi, !msg->flags.read, msg->flags.flagged,
 			  msg->flags.replied);
   return 0;
@@ -2146,7 +2146,7 @@ static int maildir_check_mailbox (CONTEXT * ctx, int *index_hint)
   hash_destroy (&fnames, NULL);
 
   /* If we didn't just get new mail, update the tables. */
-  if (occult)
+  if (occult != 0)
     maildir_update_tables (ctx, index_hint);
 
   /* do any delayed parsing we need to do. */
@@ -2261,7 +2261,7 @@ static int mh_check_mailbox (CONTEXT * ctx, int *index_hint)
   hash_destroy (&fnames, NULL);
 
   /* If we didn't just get new mail, update the tables. */
-  if (occult)
+  if (occult != 0)
     maildir_update_tables (ctx, index_hint);
 
   /* Incorporate new messages */
@@ -2326,7 +2326,7 @@ static int mh_sync_mailbox (CONTEXT * ctx, int *index_hint)
 
   /* adjust indices */
 
-  if (ctx->deleted)
+  if (ctx->deleted != 0)
   {
     for (i = 0, j = 0; i < ctx->msgcount; i++)
     {

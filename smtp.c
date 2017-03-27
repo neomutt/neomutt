@@ -381,7 +381,7 @@ static int smtp_auth_sasl (CONNECTION* conn, const char* mechlist)
   buf = safe_malloc (bufsize);
 
   snprintf (buf, bufsize, "AUTH %s", mech);
-  if (len)
+  if (len != 0)
   {
     safe_strcat (buf, bufsize, " ");
     if (sasl_encode64 (data, len, buf + mutt_strlen (buf),
@@ -418,7 +418,7 @@ static int smtp_auth_sasl (CONNECTION* conn, const char* mechlist)
     }
     while (saslrc == SASL_INTERACT);
 
-    if (len)
+    if (len != 0)
     {
       if ((len * 2) > bufsize)
       {
@@ -573,7 +573,7 @@ static int smtp_open (CONNECTION* conn)
     return rc;
 
 #ifdef USE_SSL
-  if (conn->ssf)
+  if (conn->ssf != 0)
     rc = MUTT_NO;
   else if (option (OPTSSLFORCETLS))
     rc = MUTT_YES;

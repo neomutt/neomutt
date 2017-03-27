@@ -173,7 +173,7 @@ int mutt_display_message (HEADER *cur)
   safe_fclose (&fpfilterout);	/* XXX - check result? */
 
 
-  if (WithCrypto)
+  if (WithCrypto != 0)
   {
     /* update crypto information for this message */
     cur->security &= ~(GOODSIGN|BADSIGN);
@@ -184,7 +184,7 @@ int mutt_display_message (HEADER *cur)
     cur->pair = 0;
   }
 
-  if (builtin)
+  if (builtin != 0)
   {
     pager_t info;
 
@@ -346,7 +346,7 @@ void ci_bounce_message (HEADER *h, int *redraw)
 
 static void pipe_set_flags (int decode, int print, int *cmflags, int *chflags)
 {
-  if (decode)
+  if (decode != 0)
   {
     *cmflags |= MUTT_CM_DECODE | MUTT_CM_CHARCONV;
     *chflags |= CH_DECODE | CH_REORDER;
@@ -358,7 +358,7 @@ static void pipe_set_flags (int decode, int print, int *cmflags, int *chflags)
     }
   }
 
-  if (print)
+  if (print != 0)
     *cmflags |= MUTT_CM_PRINTING;
 
 }
@@ -377,7 +377,7 @@ static void pipe_msg (HEADER *h, FILE *fp, int decode, int print)
     endwin ();
   }
 
-  if (decode)
+  if (decode != 0)
     mutt_parse_mime_message (Context, h);
 
   mutt_copy_message (fp, Context, h, cmflags, chflags);
@@ -435,7 +435,7 @@ static int _mutt_pipe_message (HEADER *h, char *cmd,
 	}
     }
 
-    if (split)
+    if (split != 0)
     {
       for (i = 0; i < Context->vcount; i++)
       {
@@ -588,7 +588,7 @@ int mutt_select_sort (int reverse)
     Sort = SORT_LABEL;
     break;
   }
-  if (reverse)
+  if (reverse != 0)
     Sort |= SORT_REVERSE;
 
   return (Sort != method ? 0 : -1); /* no need to resort if it's the same */
@@ -692,7 +692,7 @@ static void set_copy_flags (HEADER *hdr, int decode, int decrypt, int *cmflags, 
     }
   }
 
-  if (decode)
+  if (decode != 0)
   {
     *chflags = CH_XMIT | CH_MIME | CH_TXTPLAIN;
     *cmflags = MUTT_CM_DECODE | MUTT_CM_CHARCONV;
@@ -723,7 +723,7 @@ int _mutt_save_message (HEADER *h, CONTEXT *ctx, int delete, int decode, int dec
   if ((rc = mutt_append_message (ctx, Context, h, cmflags, chflags)) != 0)
     return rc;
 
-  if (delete)
+  if (delete != 0)
   {
     mutt_set_flag (Context, h, MUTT_DELETE, 1);
     mutt_set_flag (Context, h, MUTT_PURGE, 1);
@@ -758,7 +758,7 @@ int mutt_save_message (HEADER *h, int delete,
 
   if (h)
   {
-    if (WithCrypto)
+    if (WithCrypto != 0)
     {
       need_passphrase = h->security & ENCRYPT;
       app = h->security;
@@ -784,7 +784,7 @@ int mutt_save_message (HEADER *h, int delete,
     {
       mutt_message_hook (Context, h, MUTT_MESSAGEHOOK);
       mutt_default_save (buf, sizeof (buf), h);
-      if (WithCrypto)
+      if (WithCrypto != 0)
       {
         need_passphrase = h->security & ENCRYPT;
         app = h->security;
@@ -869,7 +869,7 @@ int mutt_save_message (HEADER *h, int delete,
         cm->msg_count++;
         if (h->read == 0)
           cm->msg_unread++;
-        if (h->flagged)
+        if (h->flagged != 0)
           cm->msg_flagged++;
       }
 #endif
@@ -897,7 +897,7 @@ int mutt_save_message (HEADER *h, int delete,
             cm->msg_count++;
             if (h2->read == 0)
               cm->msg_unread++;
-            if (h2->flagged)
+            if (h2->flagged != 0)
               cm->msg_flagged++;
           }
 #endif
@@ -917,7 +917,7 @@ int mutt_save_message (HEADER *h, int delete,
 
     mx_close_mailbox (&ctx, NULL);
 
-    if (need_buffy_cleanup)
+    if (need_buffy_cleanup != 0)
       mutt_buffy_cleanup (buf, &st);
 
     mutt_clear_error ();
@@ -993,11 +993,11 @@ void mutt_edit_content_type (HEADER *h, BODY *b, FILE *fp)
   /* inform the user */
 
   snprintf (tmp, sizeof (tmp), "%s/%s", TYPE (b), NONULL (b->subtype));
-  if (type_changed)
+  if (type_changed != 0)
     mutt_message (_("Content-Type changed to %s."), tmp);
   if (b->type == TYPETEXT && charset_changed)
   {
-    if (type_changed)
+    if (type_changed != 0)
       mutt_sleep (1);
     mutt_message (_("Character set changed to %s; %s."),
 		  mutt_get_parameter ("charset", b->parameter),

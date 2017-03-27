@@ -420,9 +420,9 @@ int mutt_check_alias_name (const char *s, char *dest, size_t destlen)
       bad = bad || (strchr ("-_+=.", *s) == NULL && !iswalnum (wc));
     else
       bad = bad || !iswalnum (wc);
-    if (bad)
+    if (bad != 0)
     {
-      if (dry)
+      if (dry != 0)
 	return -1;
       if (l == (size_t)(-1))
         memset (&mb, 0, sizeof (mbstate_t));
@@ -573,7 +573,7 @@ int mutt_alias_complete (char *s, size_t buflen)
   a_list = NULL;
   for (a_cur = Aliases; a_cur;)
   {
-    if (a_cur->del)
+    if (a_cur->del != 0)
     {
       if (a_list)
 	a_list->next = a_cur->next;

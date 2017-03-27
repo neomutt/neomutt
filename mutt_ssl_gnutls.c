@@ -86,7 +86,7 @@ static int tls_init (void)
   static unsigned char init_complete = 0;
   int err;
 
-  if (init_complete)
+  if (init_complete != 0)
     return 0;
 
   err = gnutls_global_init();
@@ -822,7 +822,7 @@ static int tls_check_certificate (CONNECTION* conn)
       rcpeer = rc;
     }
 
-    if (savedcert)
+    if (savedcert != 0)
     {
       if (preauthrc == 0)
         return 1;

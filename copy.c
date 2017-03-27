@@ -319,7 +319,7 @@ mutt_copy_hdr (FILE *in, FILE *out, LOFF_T off_start, LOFF_T off_end, int flags,
     FREE (&headers[x]);
   FREE (&headers);
 
-  if (error)
+  if (error != 0)
     return -1;
   return 0;
 }
@@ -395,9 +395,9 @@ mutt_copy_header (FILE *in, HEADER *h, FILE *out, int flags, const char *prefix)
     if (h->old || h->read)
     {
       fputs ("Status: ", out);
-      if (h->read)
+      if (h->read != 0)
 	fputs ("RO", out);
-      else if (h->old)
+      else if (h->old != 0)
 	fputc ('O', out);
       fputc ('\n', out);
     }
@@ -405,9 +405,9 @@ mutt_copy_header (FILE *in, HEADER *h, FILE *out, int flags, const char *prefix)
     if (h->flagged || h->replied)
     {
       fputs ("X-Status: ", out);
-      if (h->replied)
+      if (h->replied != 0)
 	fputc ('A', out);
-      if (h->flagged)
+      if (h->flagged != 0)
 	fputc ('F', out);
       fputc ('\n', out);
     }
@@ -475,7 +475,7 @@ static int count_delete_lines (FILE *fp, BODY *b, LOFF_T *length, size_t datelen
   long l;
   int ch;
 
-  if (b->deleted)
+  if (b->deleted != 0)
   {
     fseeko (fp, b->offset, SEEK_SET);
     for (l = b->length ; l ; l --)
@@ -534,7 +534,7 @@ _mutt_copy_message (FILE *fpout, FILE *fpin, HEADER *hdr, BODY *body,
       _mutt_make_string (prefix, sizeof (prefix), NONULL (Prefix), Context, hdr, 0);
   }
 
-  if (hdr->xlabel_changed)
+  if (hdr->xlabel_changed != 0)
     chflags |= CH_UPDATE_LABEL;
 
   if ((flags & MUTT_CM_NOHEADER) == 0)
@@ -580,7 +580,7 @@ _mutt_copy_message (FILE *fpout, FILE *fpin, HEADER *hdr, BODY *body,
       {
 	LOFF_T fail = ((ftello (fpout) - new_offset) - new_length);
 
-	if (fail)
+	if (fail != 0)
 	{
 	  mutt_error ("The length calculation was wrong by %ld bytes", fail);
 	  new_length += fail;
@@ -812,7 +812,7 @@ static int copy_delete_attach (BODY *b, FILE *fpin, FILE *fpout, char *date)
       if (mutt_copy_bytes (fpin, fpout, part->hdr_offset - ftello (fpin)))
 	return -1;
 
-      if (part->deleted)
+      if (part->deleted != 0)
       {
 	fprintf (fpout,
 		 "Content-Type: message/external-body; access-type=x-mutt-deleted;\n"
@@ -992,7 +992,7 @@ static int address_header_decode (char **h)
 
   /* angle brackets for return path are mandated by RfC5322,
    * so leave Return-Path as-is */
-  if (rp)
+  if (rp != 0)
     *h = safe_strdup (s);
   else
   {

@@ -53,7 +53,7 @@ static void imap_add_folder (char delim, char *folder, int noselect,
   }
 
   /* render superiors as unix-standard ".." */
-  if (isparent)
+  if (isparent != 0)
     strfcpy (relpath, "../", sizeof (relpath));
   /* strip current folder from target, to render a relative path */
   else if (mutt_strncmp (mx.mbox, folder, mutt_strlen (mx.mbox)) == 0)
@@ -137,7 +137,7 @@ static int browse_add_list_result (IMAP_DATA* idata, const char* cmd,
     if (rc == IMAP_CMD_CONTINUE && list.name)
     {
       /* Let a parent folder never be selectable for navigation */
-      if (isparent)
+      if (isparent != 0)
         list.noselect = 1;
       /* prune current folder from output */
       if (isparent || (mutt_strncmp (list.name, mx.mbox, strlen (list.name)) != 0))
@@ -195,7 +195,7 @@ int imap_browse (char* path, struct browser_state* state)
     n = 0;
   }
 
-  if (n)
+  if (n != 0)
   {
     int rc;
     mutt_debug (3, "imap_browse: mbox: %s\n", mbox);
@@ -248,7 +248,7 @@ int imap_browse (char* path, struct browser_state* state)
       ctmp = mbox[n];
       mbox[n] = '\0';
 
-      if (showparents)
+      if (showparents != 0)
       {
 	mutt_debug (3, "imap_init_browse: adding parent %s\n", mbox);
 	imap_add_folder (list.delim, mbox, 1, 0, state, 1);
@@ -272,7 +272,7 @@ int imap_browse (char* path, struct browser_state* state)
       char relpath[2];
       /* folder may be "/" */
       snprintf (relpath, sizeof (relpath), "%c" , n < 0 ? '\0' : idata->delim);
-      if (showparents)
+      if (showparents != 0)
         imap_add_folder (idata->delim, relpath, 1, 0, state, 1);
       if (!state->folder)
       {
@@ -305,14 +305,14 @@ int imap_browse (char* path, struct browser_state* state)
 
   mutt_clear_error ();
 
-  if (save_lsub)
+  if (save_lsub != 0)
     set_option (OPTIMAPCHECKSUBSCRIBED);
 
   FREE (&mx.mbox);
   return 0;
 
  fail:
-  if (save_lsub)
+  if (save_lsub != 0)
     set_option (OPTIMAPCHECKSUBSCRIBED);
   FREE (&mx.mbox);
   return -1;

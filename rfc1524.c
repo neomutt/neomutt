@@ -493,7 +493,7 @@ int rfc1524_expand_filename (char *nametemplate,
 	lmatch = 0;
     }
 
-    if(ps)
+    if (ps != 0)
     {
 
       /* If we had a "%s", check the rest. */
@@ -529,10 +529,10 @@ int rfc1524_expand_filename (char *nametemplate,
       if(k >= i + 2)
 	rmatch = 0;
 
-      if(lmatch) *left = 0;
+      if (lmatch != 0) *left = 0;
       else strnfcpy(left, nametemplate, sizeof(left), i);
 
-      if(rmatch) *right = 0;
+      if (rmatch != 0) *right = 0;
       else strfcpy(right, nametemplate + i + 2, sizeof(right));
 
       snprintf(newfile, nflen, "%s%s%s", left, oldfile, right);

@@ -254,7 +254,7 @@ static void cmd_parse_fetch (IMAP_DATA* idata, char* s)
   }
 
   /* If server flags could conflict with mutt's flags, reopen the mailbox. */
-  if (h->changed)
+  if (h->changed != 0)
     idata->reopen |= IMAP_EXPUNGE_PENDING;
   else {
     imap_set_flags (idata, h, s);
@@ -625,11 +625,11 @@ static void cmd_parse_status (IMAP_DATA* idata, char* s)
           SidebarNeedsRedraw = 1;
 #endif
         inc->new = new;
-        if (new_msg_count)
+        if (new_msg_count != 0)
           inc->msg_count = status->messages;
         inc->msg_unread = status->unseen;
 
-	if (inc->new)
+	if (inc->new != 0)
 	  /* force back to keep detecting new mail until the mailbox is
 	     opened */
 	  status->uidnext = oldun;
@@ -797,7 +797,7 @@ int imap_cmd_step (IMAP_DATA* idata)
     }
 
     /* back up over '\0' */
-    if (len)
+    if (len != 0)
       len--;
     c = mutt_socket_readln (idata->buf + len, idata->blen - len, idata->conn);
     if (c <= 0)
@@ -861,7 +861,7 @@ int imap_cmd_step (IMAP_DATA* idata)
   }
   while (c != idata->nextcmd);
 
-  if (stillrunning)
+  if (stillrunning != 0)
     rc = IMAP_CMD_CONTINUE;
   else
   {

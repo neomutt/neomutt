@@ -80,7 +80,7 @@ void crypt_forget_passphrase (void)
   if ((WithCrypto & APPLICATION_SMIME))
     crypt_smime_void_passphrase ();
 
-  if (WithCrypto)
+  if (WithCrypto != 0)
     mutt_message(_("Passphrase(s) forgotten."));
 }
 
@@ -455,7 +455,7 @@ int mutt_is_application_pgp (BODY *m)
     else if (p && (ascii_strncasecmp ("pgp-keys", p, 7) == 0))
       t |= PGPKEY;
   }
-  if (t)
+  if (t != 0)
     t |= PGPINLINE;
 
   return t;
@@ -500,7 +500,7 @@ int mutt_is_application_smime (BODY *m)
     if (!t) t = m->filename;
     if (!t)
     {
-      if (complain)
+      if (complain != 0)
 	mutt_message (_("S/MIME messages with no hints on content are unsupported."));
       return 0;
     }
@@ -958,7 +958,7 @@ int mutt_signed_handler (BODY *a, STATE *s)
         inconsistent = 1;
     }
   }
-  if (inconsistent)
+  if (inconsistent != 0)
   {
     state_attach_puts (_("[-- Error: "
                          "Inconsistent multipart/signed structure! --]\n\n"),
@@ -971,7 +971,7 @@ int mutt_signed_handler (BODY *a, STATE *s)
 
     crypt_fetch_signatures (&signatures, a->next, &sigcnt);
 
-    if (sigcnt)
+    if (sigcnt != 0)
     {
       mutt_mktemp (tempfile, sizeof (tempfile));
       if (crypt_write_signed (a, s, tempfile) == 0)
@@ -1066,7 +1066,7 @@ const char* crypt_get_fingerprint_or_id (char *p, const char **pphint,
       if (isid == 2)
         isid = 1;       /* it is an ID so far */
     }
-    else if (c)
+    else if (c != 0)
     {
       isid = 0;         /* not an ID */
       if (c == ' ' && ((hexdigits % 4) == 0))

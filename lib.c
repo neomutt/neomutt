@@ -974,13 +974,13 @@ char *mutt_concatn_path (char *dst, size_t dstlen,
     return NULL;
   }
 
-  if (dirlen) { /* when dir is not empty */
+  if (dirlen != 0) { /* when dir is not empty */
     memcpy(dst, dir, dirlen);
     offset = dirlen;
-    if (fnamelen)
+    if (fnamelen != 0)
       dst[offset++] = '/';
   }
-  if (fnamelen) { /* when fname is not empty */
+  if (fnamelen != 0) { /* when fname is not empty */
     memcpy(dst + offset, fname, fnamelen);
     offset += fnamelen;
   }

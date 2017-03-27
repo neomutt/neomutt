@@ -32,7 +32,7 @@ static short check_msg (BODY * b, short err)
 {
   if (!mutt_is_message_type (b->type, b->subtype))
   {
-    if (err)
+    if (err != 0)
       mutt_error (_("You may only bounce message/rfc822 parts."));
     return -1;
   }
@@ -157,7 +157,7 @@ void mutt_attach_bounce (FILE * fp, HEADER * hdr,
     }
   }
 
-  if (p)
+  if (p != 0)
     strfcpy (prompt, _("Bounce message to: "), sizeof (prompt));
   else
     strfcpy (prompt, _("Bounce tagged messages to: "), sizeof (prompt));
@@ -324,7 +324,7 @@ static HEADER *find_parent (ATTACHPTR **idx, short idxlen, BODY *cur, short natt
 	break;
     }
   }
-  else if (nattach)
+  else if (nattach != 0)
     parent = find_common_parent (idx, idxlen, nattach);
 
   return parent;
@@ -340,7 +340,7 @@ static void include_header (int quote, FILE * ifp,
   if (option (OPTWEED))
     chflags |= CH_WEED | CH_REORDER;
 
-  if (quote)
+  if (quote != 0)
   {
     if (_prefix)
       strfcpy (prefix, _prefix, sizeof (prefix));

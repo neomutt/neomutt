@@ -436,7 +436,7 @@ int imap_read_headers (IMAP_DATA* idata, int msgbegin, int msgend)
       evalhc = 1;
     mutt_hcache_free (idata->hcache, &uid_validity);
   }
-  if (evalhc)
+  if (evalhc != 0)
   {
     /* L10N:
        Comparing the cached data with the IMAP server's data */
@@ -907,7 +907,7 @@ int imap_commit_message (CONTEXT *ctx, MESSAGE *msg)
 {
   int r = safe_fclose (&msg->fp);
 
-  if (r)
+  if (r != 0)
     return r;
 
   return imap_append_message (ctx, msg);
@@ -1016,7 +1016,7 @@ int imap_append_message (CONTEXT *ctx, MESSAGE *msg)
     }
   }
 
-  if (len)
+  if (len != 0)
     flush_buffer(buf, &len, idata->conn);
 
   mutt_socket_write (idata->conn, "\r\n");
@@ -1165,7 +1165,7 @@ int imap_copy_messages (CONTEXT* ctx, HEADER* h, char* dest, int delete)
     rc = imap_exec (idata, NULL, IMAP_CMD_FAIL_OK);
     if (rc == -2)
     {
-      if (triedcreate)
+      if (triedcreate != 0)
       {
         mutt_debug (1, "Already tried to create mailbox %s\n", mbox);
         break;
@@ -1194,7 +1194,7 @@ int imap_copy_messages (CONTEXT* ctx, HEADER* h, char* dest, int delete)
   }
 
   /* cleanup */
-  if (delete)
+  if (delete != 0)
   {
     if (!h)
       for (n = 0; n < ctx->msgcount; n++)

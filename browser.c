@@ -143,7 +143,7 @@ static int browser_compare_count (const void *a, const void *b)
   int r = 0;
   if (pa->has_buffy && pb->has_buffy)
     r = pa->msg_count - pb->msg_count;
-  else if (pa->has_buffy)
+  else if (pa->has_buffy != 0)
     r = -1;
   else
     r = 1;
@@ -159,7 +159,7 @@ static int browser_compare_count_new (const void *a, const void *b)
   int r = 0;
   if (pa->has_buffy && pb->has_buffy)
     r = pa->msg_unread - pb->msg_unread;
-  else if (pa->has_buffy)
+  else if (pa->has_buffy != 0)
     r = -1;
   else
     r = 1;
@@ -259,7 +259,7 @@ folder_format_str (char *dest, size_t destlen, size_t col, int cols, char op, co
 
     case 'd':
     case 'D':
-      if (folder->ff->local)
+      if (folder->ff->local != 0)
       {
 	int do_locales = true;
 
@@ -296,7 +296,7 @@ folder_format_str (char *dest, size_t destlen, size_t col, int cols, char op, co
       else
 #endif
 #ifdef USE_IMAP
-      if (folder->ff->imap)
+      if (folder->ff->imap != 0)
 	s = NONULL (folder->ff->desc);
       else
 #endif
@@ -311,7 +311,7 @@ folder_format_str (char *dest, size_t destlen, size_t col, int cols, char op, co
       break;
     }
     case 'F':
-      if (folder->ff->local)
+      if (folder->ff->local != 0)
       {
 	snprintf (permission, sizeof (permission), "%c%c%c%c%c%c%c%c%c%c",
 		  S_ISDIR(folder->ff->mode) ? 'd' : (S_ISLNK(folder->ff->mode) ? 'l' : '-'),
@@ -327,7 +327,7 @@ folder_format_str (char *dest, size_t destlen, size_t col, int cols, char op, co
 	mutt_format_s (dest, destlen, fmt, permission);
       }
 #ifdef USE_IMAP
-      else if (folder->ff->imap)
+      else if (folder->ff->imap != 0)
       {
 	/* mark folders with subfolders AND mail */
 	snprintf (permission, sizeof (permission), "IMAP %c",
@@ -340,7 +340,7 @@ folder_format_str (char *dest, size_t destlen, size_t col, int cols, char op, co
       break;
 
     case 'g':
-      if (folder->ff->local)
+      if (folder->ff->local != 0)
       {
 	if ((gr = getgrgid (folder->ff->gid)))
 	  mutt_format_s (dest, destlen, fmt, gr->gr_name);
@@ -355,7 +355,7 @@ folder_format_str (char *dest, size_t destlen, size_t col, int cols, char op, co
       break;
 
     case 'l':
-      if (folder->ff->local)
+      if (folder->ff->local != 0)
       {
 	snprintf (tmp, sizeof (tmp), "%%%sd", fmt);
 	snprintf (dest, destlen, tmp, folder->ff->nlink);
@@ -367,7 +367,7 @@ folder_format_str (char *dest, size_t destlen, size_t col, int cols, char op, co
     case 'm':
       if (optional == 0)
       {
-        if (folder->ff->has_buffy)
+        if (folder->ff->has_buffy != 0)
         {
           snprintf (tmp, sizeof (tmp), "%%%sd", fmt);
           snprintf (dest, destlen, tmp, folder->ff->msg_count);
@@ -387,7 +387,7 @@ folder_format_str (char *dest, size_t destlen, size_t col, int cols, char op, co
     case 'n':
       if (optional == 0)
       {
-        if (folder->ff->has_buffy)
+        if (folder->ff->has_buffy != 0)
         {
           snprintf (tmp, sizeof (tmp), "%%%sd", fmt);
           snprintf (dest, destlen, tmp, folder->ff->msg_unread);
@@ -400,7 +400,7 @@ folder_format_str (char *dest, size_t destlen, size_t col, int cols, char op, co
       break;
 
     case 's':
-      if (folder->ff->local)
+      if (folder->ff->local != 0)
       {
 	mutt_pretty_size(fn, sizeof(fn), folder->ff->size);
 	snprintf (tmp, sizeof (tmp), "%%%ss", fmt);
@@ -416,7 +416,7 @@ folder_format_str (char *dest, size_t destlen, size_t col, int cols, char op, co
       break;
 
     case 'u':
-      if (folder->ff->local)
+      if (folder->ff->local != 0)
       {
 	if ((pw = getpwuid (folder->ff->uid)))
 	  mutt_format_s (dest, destlen, fmt, pw->pw_name);
@@ -436,7 +436,7 @@ folder_format_str (char *dest, size_t destlen, size_t col, int cols, char op, co
       break;
   }
 
-  if (optional)
+  if (optional != 0)
     mutt_FormatString (dest, destlen, col, cols, ifstring, folder_format_str, data, 0);
   else if (flags & MUTT_FORMAT_OPTIONAL)
     mutt_FormatString (dest, destlen, col, cols, elsestring, folder_format_str, data, 0);
@@ -468,7 +468,7 @@ newsgroup_format_str (char *dest, size_t destlen, size_t col, int cols, char op,
 
     case 'N':
       snprintf (tmp, sizeof (tmp), "%%%sc", fmt);
-      if (folder->ff->nd->subscribed)
+      if (folder->ff->nd->subscribed != 0)
 	snprintf (dest, destlen, tmp, ' ');
       else
 	snprintf (dest, destlen, tmp, folder->ff->new ? 'N' : 'u');
@@ -476,7 +476,7 @@ newsgroup_format_str (char *dest, size_t destlen, size_t col, int cols, char op,
 
     case 'M':
       snprintf (tmp, sizeof (tmp), "%%%sc", fmt);
-      if (folder->ff->nd->deleted)
+      if (folder->ff->nd->deleted != 0)
 	snprintf (dest, destlen, tmp, 'D');
       else
 	snprintf (dest, destlen, tmp, folder->ff->nd->allowed ? ' ' : '-');
@@ -917,7 +917,7 @@ static void init_menu (struct browser_state *state, MUTTMENU *menu, char *title,
 #ifdef USE_NNTP
   if (option (OPTNEWS))
   {
-    if (buffy)
+    if (buffy != 0)
       snprintf (title, titlelen, _("Subscribed newsgroups"));
     else
       snprintf (title, titlelen, _("Newsgroups on server [%s]"),
@@ -926,7 +926,7 @@ static void init_menu (struct browser_state *state, MUTTMENU *menu, char *title,
   else
 #endif
   {
-    if (buffy)
+    if (buffy != 0)
     {
       menu->is_mailbox_list = 1;
       snprintf (title, titlelen, _("Mailboxes [%d]"), mutt_buffy_check (0));
@@ -1125,7 +1125,7 @@ void _mutt_select_file (char *f, size_t flen, int flags, char ***files, int *num
   {
     if (!*LastDir)
       getcwd (LastDir, sizeof (LastDir));
-    if (folder)
+    if (folder != 0)
     {
       /* Whether we use the tracking feature of the browser depends
        * on which sort method we chose to use. This variable is defined
@@ -1224,7 +1224,7 @@ void _mutt_select_file (char *f, size_t flen, int flags, char ***files, int *num
       goto bail;
   } else
 #endif
-  if (buffy)
+  if (buffy != 0)
   {
     if (examine_mailboxes (NULL, &state) == -1)
       goto bail;
@@ -1242,7 +1242,7 @@ void _mutt_select_file (char *f, size_t flen, int flags, char ***files, int *num
   menu->search = select_file_search;
   menu->title = title;
   menu->data = state.entry;
-  if (multiple)
+  if (multiple != 0)
     menu->tag = file_tag;
 
 #ifdef USE_NOTMUCH
@@ -1282,7 +1282,7 @@ void _mutt_select_file (char *f, size_t flen, int flags, char ***files, int *num
 	    )
 	{
 	  /* make sure this isn't a MH or maildir mailbox */
-	  if (buffy)
+	  if (buffy != 0)
 	  {
 	    strfcpy (buf, state.entry[menu->current].name, sizeof (buf));
 	    mutt_expand_path (buf, sizeof (buf));
@@ -1324,7 +1324,7 @@ void _mutt_select_file (char *f, size_t flen, int flags, char ***files, int *num
 		}
 	      }
 	    }
-	    else if (buffy)
+	    else if (buffy != 0)
 	    {
 	      strfcpy (LastDir, state.entry[menu->current].name, sizeof (LastDir));
 	      mutt_expand_path (LastDir, sizeof (LastDir));
@@ -1359,7 +1359,7 @@ void _mutt_select_file (char *f, size_t flen, int flags, char ***files, int *num
 	    }
 
 	    destroy_state (&state);
-	    if (killPrefix)
+	    if (killPrefix != 0)
 	    {
 	      prefix[0] = 0;
 	      killPrefix = 0;
@@ -1397,7 +1397,7 @@ void _mutt_select_file (char *f, size_t flen, int flags, char ***files, int *num
 #ifdef USE_NNTP
 	if (buffy || option (OPTNEWS))
 #else
-	if (buffy)
+	if (buffy != 0)
 #endif
 	{
 	  strfcpy (f, state.entry[menu->current].name, flen);
@@ -1418,12 +1418,12 @@ void _mutt_select_file (char *f, size_t flen, int flags, char ***files, int *num
 
       case OP_EXIT:
 
-	if (multiple)
+	if (multiple != 0)
 	{
 	  char **tfiles;
 	  int j, k;
 
-	  if (menu->tagged)
+	  if (menu->tagged != 0)
 	  {
 	    *numfiles = menu->tagged;
 	    tfiles = safe_calloc (*numfiles, sizeof (char *));
@@ -1752,7 +1752,7 @@ void _mutt_select_file (char *f, size_t flen, int flags, char ***files, int *num
 	      resort = 0;
 	      break;
 	  }
-	  if (resort)
+	  if (resort != 0)
 	  {
 	    BrowserSort |= reverse ? SORT_REVERSE : 0;
 	    browser_sort (&state);
@@ -1796,7 +1796,7 @@ void _mutt_select_file (char *f, size_t flen, int flags, char ***files, int *num
 	prefix[0] = 0;
 	killPrefix = 0;
 
-	if (buffy)
+	if (buffy != 0)
 	{
 	  if (examine_mailboxes (menu, &state) == -1)
 	    goto bail;
@@ -1900,7 +1900,7 @@ void _mutt_select_file (char *f, size_t flen, int flags, char ***files, int *num
 	      menu->current++;
 	    menu->redraw = REDRAW_MOTION_RESYNCH;
 	  }
-	  if (rc)
+	  if (rc != 0)
 	    menu->redraw = REDRAW_INDEX;
 	  nntp_newsrc_close (CurrentNewsSrv);
 	}
@@ -1926,7 +1926,7 @@ void _mutt_select_file (char *f, size_t flen, int flags, char ***files, int *num
 	  nntp_newsrc_close (nserv);
 
 	  destroy_state (&state);
-	  if (buffy)
+	  if (buffy != 0)
 	    examine_mailboxes (menu, &state);
 	  else
 	    examine_directory (menu, &state, NULL, NULL);
@@ -1967,7 +1967,7 @@ void _mutt_select_file (char *f, size_t flen, int flags, char ***files, int *num
 	    }
 
 	    err = REGCOMP (rx, s, REG_NOSUB);
-	    if (err)
+	    if (err != 0)
 	    {
 	      regerror (err, rx, buf, sizeof (buf));
 	      regfree (rx);

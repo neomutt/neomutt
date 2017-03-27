@@ -414,7 +414,7 @@ size_t mutt_iconv (iconv_t cd, ICONV_CONST char **inbuf, size_t *inbytesleft,
       if (!outrepl)
 	outrepl = "?";
       iconv (cd, 0, 0, &ob, &obl);
-      if (obl)
+      if (obl != 0)
       {
 	int n = strlen (outrepl);
 	if (n > obl)
@@ -556,7 +556,7 @@ char *fgetconvs (char *buf, size_t l, FGETCONV *_fc)
   }
   buf[r] = '\0';
 
-  if (r)
+  if (r != 0)
     return buf;
   else
     return NULL;
@@ -577,7 +577,7 @@ int fgetconv (FGETCONV *_fc)
 
   /* Try to convert some more */
   fc->p = fc->ob = fc->bufo;
-  if (fc->ibl)
+  if (fc->ibl != 0)
   {
     size_t obl = sizeof (fc->bufo);
     iconv (fc->cd, (ICONV_CONST char **)&fc->ib, &fc->ibl, &fc->ob, &obl);
@@ -595,13 +595,13 @@ int fgetconv (FGETCONV *_fc)
     fc->p = 0;
     return EOF;
   }
-  if (fc->ibl)
+  if (fc->ibl != 0)
     memcpy (fc->bufi, fc->ib, fc->ibl);
   fc->ib = fc->bufi;
   fc->ibl += fread (fc->ib + fc->ibl, 1, sizeof (fc->bufi) - fc->ibl, fc->file);
 
   /* Try harder this time to convert some */
-  if (fc->ibl)
+  if (fc->ibl != 0)
   {
     size_t obl = sizeof (fc->bufo);
     mutt_iconv (fc->cd, (ICONV_CONST char **)&fc->ib, &fc->ibl, &fc->ob, &obl,

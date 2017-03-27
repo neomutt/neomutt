@@ -270,7 +270,7 @@ static const char *pgp_entry_fmt (char *dest,
       *dest = '\0';
   }
 
-  if (optional)
+  if (optional != 0)
     mutt_FormatString (dest, destlen, col, cols, ifstring, mutt_attach_fmt, data, 0);
   else if (flags & MUTT_FORMAT_OPTIONAL)
     mutt_FormatString (dest, destlen, col, cols, elsestring, mutt_attach_fmt, data, 0);
@@ -880,7 +880,7 @@ pgp_key_t pgp_getkeybyaddr (ADDRESS * a, short abilities, pgp_ring_t keyring,
       rfc822_free_address (&r);
     }
 
-    if (match)
+    if (match != 0)
     {
       *last  = pgp_principal_key (k);
       kn     = pgp_remove_key (&keys, *last);
@@ -892,7 +892,7 @@ pgp_key_t pgp_getkeybyaddr (ADDRESS * a, short abilities, pgp_ring_t keyring,
 
   if (matches)
   {
-    if (oppenc_mode)
+    if (oppenc_mode != 0)
     {
       if (the_strong_valid_key)
       {
@@ -999,7 +999,7 @@ pgp_key_t pgp_getkeybystr (char *p, short abilities, pgp_ring_t keyring)
       }
     }
 
-    if (match)
+    if (match != 0)
     {
       *last = pgp_principal_key (k);
       kn    = pgp_remove_key (&keys, *last);

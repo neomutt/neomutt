@@ -192,12 +192,12 @@ void mutt_edit_headers (const char *editor,
              && (ascii_strncasecmp ("pgp:", cur->data, 4) == 0))
     {
       msg->security = mutt_parse_crypt_hdr (cur->data + 4, 0, APPLICATION_PGP);
-      if (msg->security)
+      if (msg->security != 0)
 	msg->security |= APPLICATION_PGP;
       keep = 0;
     }
 
-    if (keep)
+    if (keep != 0)
     {
       last = &cur->next;
       cur  = cur->next;

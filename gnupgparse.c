@@ -291,7 +291,7 @@ static pgp_key_t parse_pub_line (char *buf, int *is_subkey, pgp_key_t k)
         if (!(pend && (*p || is_pub)))
 	  break;
 
-        if (is_fpr)
+        if (is_fpr != 0)
         {
           /* don't let a subkey fpr overwrite an existing primary key fpr */
           if (!tmp.fingerprint)
@@ -412,7 +412,7 @@ pgp_key_t pgp_get_candidates (pgp_ring_t keyring, LIST * hints)
 	kend = &k->next;
       *kend = k = kk;
 
-      if (is_sub)
+      if (is_sub != 0)
       {
 	pgp_uid_t **l;
 

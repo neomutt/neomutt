@@ -225,7 +225,7 @@ static const char * query_format_str (char *dest, size_t destlen, size_t col, in
     break;
   }
 
-  if (optional)
+  if (optional != 0)
     mutt_FormatString (dest, destlen, col, cols, ifstring, query_format_str, data, 0);
   else if (flags & MUTT_FORMAT_OPTIONAL)
     mutt_FormatString (dest, destlen, col, cols, elsestring, query_format_str, data, 0);
@@ -363,7 +363,7 @@ static void query_menu (char *buf, size_t buflen, QUERY *results, int retbuf)
 		    clear = 1;
 
 		  QueryTable[i].data = queryp;
-		  if (clear)
+		  if (clear != 0)
 		    QueryTable[i].tagged = 0;
 		}
 	      }
@@ -372,7 +372,7 @@ static void query_menu (char *buf, size_t buflen, QUERY *results, int retbuf)
 	  break;
 
 	case OP_CREATE_ALIAS:
-	  if (menu->tagprefix)
+	  if (menu->tagprefix != 0)
 	  {
 	    ADDRESS *naddr = NULL;
 
@@ -396,7 +396,7 @@ static void query_menu (char *buf, size_t buflen, QUERY *results, int retbuf)
 	  break;
 
 	case OP_GENERIC_SELECT_ENTRY:
-	  if (retbuf)
+	  if (retbuf != 0)
 	  {
 	    done = 2;
 	    break;

@@ -120,7 +120,7 @@ static size_t print_indent (int ql, STATE *s, int add_suffix)
     if (space_quotes (s) )
       state_putc (' ', s);
   }
-  if (add_suffix)
+  if (add_suffix != 0)
     state_putc (' ', s);
 
   if (space_quotes (s))
@@ -200,7 +200,7 @@ static void print_flowed_line (char *line, STATE *s, int ql,
       continue;
     }
     /* there's exactly one space prior to every but the first word */
-    if (words)
+    if (words != 0)
       fst->spaces++;
 
     w = mutt_strwidth (p);
@@ -233,7 +233,7 @@ static void print_flowed_line (char *line, STATE *s, int ql,
     words++;
   }
 
-  if (term)
+  if (term != 0)
     flush_par (s, fst);
 }
 

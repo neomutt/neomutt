@@ -48,7 +48,7 @@ int mutt_get_tmp_attachment (BODY *a)
   FILE *fpin = NULL, *fpout = NULL;
   struct stat st;
 
-  if(a->unlink)
+  if (a->unlink != 0)
     return 0;
 
   rfc1524_entry *entry = rfc1524_new_entry();
@@ -200,7 +200,7 @@ int mutt_compose_attachment (BODY *a)
 
   bailout:
 
-  if(unlink_newfile)
+  if (unlink_newfile != 0)
     unlink(newfile);
 
   rfc1524_free_entry (&entry);
@@ -281,7 +281,7 @@ int mutt_edit_attachment (BODY *a)
 
   bailout:
 
-  if(unlink_newfile)
+  if (unlink_newfile != 0)
     unlink(newfile);
 
   rfc1524_free_entry (&entry);
@@ -350,7 +350,7 @@ int mutt_view_attachment (FILE *fp, BODY *a, int flag, HEADER *hdr,
 		(flag == MUTT_REGULAR && mutt_needs_mailcap (a)));
   snprintf (type, sizeof (type), "%s/%s", TYPE (a), a->subtype);
 
-  if (use_mailcap)
+  if (use_mailcap != 0)
   {
     entry = rfc1524_new_entry ();
     if (!rfc1524_mailcap_lookup (a, type, entry, 0))
@@ -368,7 +368,7 @@ int mutt_view_attachment (FILE *fp, BODY *a, int flag, HEADER *hdr,
     }
   }
 
-  if (use_mailcap)
+  if (use_mailcap != 0)
   {
     if (!entry->command)
     {
@@ -418,7 +418,7 @@ int mutt_view_attachment (FILE *fp, BODY *a, int flag, HEADER *hdr,
     use_pager = entry->copiousoutput;
   }
 
-  if (use_pager)
+  if (use_pager != 0)
   {
     if (fp && !use_mailcap && a->filename)
     {
@@ -430,7 +430,7 @@ int mutt_view_attachment (FILE *fp, BODY *a, int flag, HEADER *hdr,
       mutt_mktemp (pagerfile, sizeof (pagerfile));
   }
 
-  if (use_mailcap)
+  if (use_mailcap != 0)
   {
     pid_t thepid = 0;
     int tempfd = -1, pagerfd = -1;
@@ -466,7 +466,7 @@ int mutt_view_attachment (FILE *fp, BODY *a, int flag, HEADER *hdr,
 	goto return_error;
       }
 
-      if (use_pager)
+      if (use_pager != 0)
       {
 	if (a->description)
 	  snprintf (descrip, sizeof (descrip),
@@ -561,7 +561,7 @@ int mutt_view_attachment (FILE *fp, BODY *a, int flag, HEADER *hdr,
 
   /* We only reach this point if there have been no errors */
 
-  if (use_pager)
+  if (use_pager != 0)
   {
     pager_t info;
 
@@ -586,7 +586,7 @@ int mutt_view_attachment (FILE *fp, BODY *a, int flag, HEADER *hdr,
     rfc1524_free_entry (&entry);
   if (fp && tempfile[0])
     mutt_unlink (tempfile);
-  else if (unlink_tempfile)
+  else if (unlink_tempfile != 0)
     unlink(tempfile);
 
   if (pagerfile[0])
@@ -951,7 +951,7 @@ int mutt_print_attachment (FILE *fp, BODY *a)
     mutt_endwin (NULL);
 
     /* interactive program */
-    if (piped)
+    if (piped != 0)
     {
       if ((ifp = fopen (newfile, "r")) == NULL)
       {
@@ -981,7 +981,7 @@ int mutt_print_attachment (FILE *fp, BODY *a)
 
     if (fp)
       mutt_unlink (newfile);
-    else if (unlink_newfile)
+    else if (unlink_newfile != 0)
       unlink(newfile);
 
     rfc1524_free_entry (&entry);

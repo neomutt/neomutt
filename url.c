@@ -238,7 +238,7 @@ int url_ciss_tostring (ciss_url_t* ciss, char* dest, size_t len, int flags)
 
     len -= (l = strlen (dest)); dest += l;
 
-    if (ciss->port)
+    if (ciss->port != 0)
       snprintf (dest, len, ":%hu/", ciss->port);
     else
       snprintf (dest, len, "/");

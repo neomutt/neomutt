@@ -284,7 +284,7 @@ int mutt_parse_unhook (BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err)
     mutt_extract_token (buf, s, 0);
     if (mutt_strcmp ("*", buf->data) == 0)
     {
-      if (current_hook_type)
+      if (current_hook_type != 0)
       {
 	snprintf (err->data, err->dsize,
 		  _("unhook: Can't do unhook * from within a hook."));
@@ -538,7 +538,7 @@ void mutt_account_hook (const char* url)
   BUFFER token;
   BUFFER err;
 
-  if (inhook)
+  if (inhook != 0)
     return;
 
   mutt_buffer_init (&err);

@@ -164,7 +164,7 @@ static void replace_part (ENTER_STATE *state, size_t from, char *buf)
   size_t savelen = state->lastchar - state->curpos;
   wchar_t *savebuf = NULL;
 
-  if (savelen)
+  if (savelen != 0)
   {
     savebuf = safe_calloc (savelen, sizeof (wchar_t));
     memcpy (savebuf, state->wbuf + state->curpos, savelen * sizeof (wchar_t));
@@ -173,7 +173,7 @@ static void replace_part (ENTER_STATE *state, size_t from, char *buf)
   /* Convert to wide characters */
   state->curpos = my_mbstowcs (&state->wbuf, &state->wbuflen, from, buf);
 
-  if (savelen)
+  if (savelen != 0)
   {
     /* Make space for suffix */
     if (state->curpos + savelen > state->wbuflen)
@@ -334,7 +334,7 @@ int _mutt_enter_string (char *buf, size_t buflen, int col,
 	    i = state->curpos;
 	    while (i && COMB_CHAR (state->wbuf[i - 1]))
 	      --i;
-	    if (i)
+	    if (i != 0)
 	      --i;
 	    memmove (state->wbuf + i, state->wbuf + state->curpos, (state->lastchar - state->curpos) * sizeof (wchar_t));
 	    state->lastchar -= state->curpos - i;
@@ -365,7 +365,7 @@ int _mutt_enter_string (char *buf, size_t buflen, int col,
 	  {
 	    while (state->curpos && COMB_CHAR (state->wbuf[state->curpos - 1]))
 	      state->curpos--;
-	    if (state->curpos)
+	    if (state->curpos != 0)
 	      state->curpos--;
 	  }
 	  break;
@@ -455,7 +455,7 @@ int _mutt_enter_string (char *buf, size_t buflen, int col,
 	    i = state->curpos;
 	    while (i && iswspace (state->wbuf[i - 1]))
 	      --i;
-	    if (i)
+	    if (i != 0)
 	    {
 	      if (iswalnum (state->wbuf[i - 1]))
 	      {
@@ -763,7 +763,7 @@ self_insert:
 	if (pass == 0)
 	  mutt_history_add (hclass, buf, 1);
 
-	if (multiple)
+	if (multiple != 0)
 	{
 	  char **tfiles;
 	  *numfiles = 1;

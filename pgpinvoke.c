@@ -135,7 +135,7 @@ static const char *_mutt_fmt_pgp_command (char *dest,
     }
   }
 
-  if (optional)
+  if (optional != 0)
     mutt_FormatString (dest, destlen, col, cols, ifstring, _mutt_fmt_pgp_command, data, 0);
   else if (flags & MUTT_FORMAT_OPTIONAL)
     mutt_FormatString (dest, destlen, col, cols, elsestring, _mutt_fmt_pgp_command, data, 0);
@@ -230,7 +230,7 @@ pid_t pgp_invoke_encrypt (FILE **pgpin, FILE **pgpout, FILE **pgperr,
 			  int pgpinfd, int pgpoutfd, int pgperrfd,
 			  const char *fname, const char *uids, int sign)
 {
-  if (sign)
+  if (sign != 0)
     return pgp_invoke (pgpin, pgpout, pgperr, pgpinfd, pgpoutfd, pgperrfd,
 		       1, fname, NULL, PgpSignAs, uids,
 		       PgpEncryptSignCommand);

@@ -106,7 +106,7 @@ event_t mutt_getch (void)
   event_t err = {-1, OP_NULL }, ret;
   event_t timeout = {-2, OP_NULL};
 
-  if (UngetCount)
+  if (UngetCount != 0)
     return UngetKeyEvents[--UngetCount];
 
   if (!option(OPTIGNOREMACROEVENTS) && MacroBufferCount)
@@ -123,7 +123,7 @@ event_t mutt_getch (void)
     ch = getch ();
   mutt_allow_interrupt (0);
 
-  if (SigInt)
+  if (SigInt != 0)
   {
     mutt_query_exit ();
     return err;
@@ -301,9 +301,9 @@ int mutt_yesorno (const char *msg, int def)
   }
 
 #ifdef HAVE_LANGINFO_YESEXPR
-  if (reyes_ok)
+  if (reyes_ok != 0)
     regfree (& reyes);
-  if (reno_ok)
+  if (reno_ok != 0)
     regfree (& reno);
 #endif
 
@@ -326,7 +326,7 @@ void mutt_query_exit (void)
 {
   mutt_flushinp ();
   curs_set (1);
-  if (Timeout)
+  if (Timeout != 0)
     timeout (-1); /* restore blocking operation */
   if (mutt_yesorno (_("Exit Mutt?"), MUTT_YES) == MUTT_YES)
   {
@@ -350,7 +350,7 @@ static void curses_message (int error, const char *fmt, va_list ap)
 
   if (!option (OPTKEEPQUIET))
   {
-    if (error)
+    if (error != 0)
       BEEP ();
     SETCOLOR (error ? MT_COLOR_ERROR : MT_COLOR_MESSAGE);
     mutt_window_mvaddstr (MuttMessageWindow, 0, 0, Errorbuf);
@@ -359,7 +359,7 @@ static void curses_message (int error, const char *fmt, va_list ap)
     mutt_refresh ();
   }
 
-  if (error)
+  if (error != 0)
     set_option (OPTMSGERR);
   else
     unset_option (OPTMSGERR);
@@ -399,7 +399,7 @@ void mutt_progress_init (progress_t* progress, const char *msg,
   progress->flags = flags;
   progress->msg = msg;
   progress->size = size;
-  if (progress->size) {
+  if (progress->size != 0) {
     if (progress->flags & MUTT_PROGRESS_SIZE)
       mutt_pretty_size (progress->sizestr, sizeof (progress->sizestr),
 			progress->size);
@@ -409,7 +409,7 @@ void mutt_progress_init (progress_t* progress, const char *msg,
   }
   if (inc == 0)
   {
-    if (size)
+    if (size != 0)
       mutt_message ("%s (%s)", msg, progress->sizestr);
     else
       mutt_message (msg);
@@ -418,7 +418,7 @@ void mutt_progress_init (progress_t* progress, const char *msg,
   if (gettimeofday (&tv, NULL) < 0)
     mutt_debug (1, "gettimeofday failed: %d\n", errno);
   /* if timestamp is 0 no time-based suppression is done */
-  if (TimeInc)
+  if (TimeInc != 0)
     progress->timestamp = ((unsigned int) tv.tv_sec * 1000)
         + (unsigned int) (tv.tv_usec / 1000);
   mutt_progress_update (progress, 0, 0);
@@ -517,7 +517,7 @@ void mutt_progress_update (progress_t* progress, long pos, int percent)
   if (pos == 0)
     update = 1;
 
-  if (update)
+  if (update != 0)
   {
     if (progress->flags & MUTT_PROGRESS_SIZE)
     {
@@ -530,7 +530,7 @@ void mutt_progress_update (progress_t* progress, long pos, int percent)
     mutt_debug (5, "updating progress: %s\n", posstr);
 
     progress->pos = pos;
-    if (now)
+    if (now != 0)
       progress->timestamp = now;
 
     if (progress->size > 0)
@@ -1025,7 +1025,7 @@ void mutt_format_string (char *dest, size_t destlen,
       k = (k == (size_t)(-1)) ? 1 : n;
       wc = replacement_char ();
     }
-    if (escaped) {
+    if (escaped != 0) {
       escaped = 0;
       w = 0;
     } else if (arboreal && wc == MUTT_SPECIAL_INDEX) {

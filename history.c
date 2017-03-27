@@ -38,7 +38,7 @@ static void init_history (struct history *h)
 {
   int i;
 
-  if(OldSize)
+  if (OldSize != 0)
   {
     if (h->hist)
     {
@@ -48,7 +48,7 @@ static void init_history (struct history *h)
     }
   }
 
-  if (HistSize)
+  if (HistSize != 0)
     h->hist = safe_calloc (HistSize + 1, sizeof (char *));
 
   h->cur = 0;

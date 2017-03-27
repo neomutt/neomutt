@@ -962,7 +962,7 @@ void mutt_parse_mime_message (CONTEXT *ctx, HEADER *cur)
     {
       mutt_parse_part (msg->fp, cur->content);
 
-      if (WithCrypto)
+      if (WithCrypto != 0)
         cur->security = crypt_query (cur->content);
 
       mx_close_message (ctx, &msg);
@@ -1340,7 +1340,7 @@ int mutt_parse_rfc822_line (ENVELOPE *e, HEADER *hdr, char *line, char *p, short
     else
       last = e->userhdrs = mutt_new_list ();
     last->data = safe_strdup (line);
-    if (do_2047)
+    if (do_2047 != 0)
       rfc2047_decode (&last->data);
   }
 
@@ -1631,7 +1631,7 @@ static int count_body_parts (BODY *body, int flags)
     /* If this body isn't scheduled for enumeration already, don't bother
      * profiling it further.
      */
-    if (shallcount)
+    if (shallcount != 0)
     {
       /* Turn off shallcount if message type is not in ok list,
        * or if it is in except list. Check is done separately for
@@ -1654,13 +1654,13 @@ static int count_body_parts (BODY *body, int flags)
       }
     }
 
-    if (shallcount)
+    if (shallcount != 0)
       count++;
     bp->attach_qualifies = shallcount ? 1 : 0;
 
     mutt_debug (5, "cbp: %p shallcount = %d\n", (void *)bp, shallcount);
 
-    if (shallrecurse)
+    if (shallrecurse != 0)
     {
       mutt_debug (5, "cbp: %p pre count = %d\n", (void *)bp, count);
       bp->attach_count = count_body_parts(bp->parts, flags & ~MUTT_PARTS_TOPLEVEL);
@@ -1677,7 +1677,7 @@ int mutt_count_body_parts (CONTEXT *ctx, HEADER *hdr)
 {
   short keep_parts = 0;
 
-  if (hdr->attach_valid)
+  if (hdr->attach_valid != 0)
     return hdr->attach_total;
 
   if (hdr->content->parts)

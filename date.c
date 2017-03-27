@@ -105,7 +105,7 @@ time_t mutt_mktime (struct tm *t, int local)
   g *= 60;
   g += t->tm_sec;
 
-  if (local)
+  if (local != 0)
     g -= compute_tz (g, t);
 
   return g;
@@ -172,7 +172,7 @@ void mutt_normalize_time (struct tm *tm)
   }
   while (tm->tm_mday <= 0)
   {
-    if (tm->tm_mon)
+    if (tm->tm_mon != 0)
       tm->tm_mon--;
     else
     {

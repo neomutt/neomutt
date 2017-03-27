@@ -587,7 +587,7 @@ static char *get_query_string(struct nm_ctxdata *data, int window)
   if (data->query_type == 0)
     data->query_type = string_to_query_type(NULL);
 
-  if (window)
+  if (window != 0)
   {
     char buf[LONG_STRING];
     mutt_str_replace(&NotmuchQueryWindowCurrentSearch, data->db_query);
@@ -667,7 +667,7 @@ static notmuch_database_t *do_database_open(const char *filename, int writable,
     ct++;
   } while (1);
 
-  if (verbose)
+  if (verbose != 0)
   {
     if (!db)
       mutt_error(_("Cannot open notmuch database: %s: %s"), filename,
@@ -732,7 +732,7 @@ static int db_trans_end(struct nm_ctxdata *data)
   if (!data || !data->db)
     return -1;
 
-  if (data->trans)
+  if (data->trans != 0)
   {
     mutt_debug (2, "nm: db trans end\n");
     data->trans = 0;
@@ -1044,7 +1044,7 @@ static void progress_reset(CONTEXT *ctx)
 {
   struct nm_ctxdata *data = NULL;
 
-  if (ctx->quiet)
+  if (ctx->quiet != 0)
     return;
 
   data = get_ctxdata(ctx);
@@ -1081,7 +1081,7 @@ static void progress_update(CONTEXT *ctx, notmuch_query_t *q)
     data->progress_ready = 1;
   }
 
-  if (data->progress_ready)
+  if (data->progress_ready != 0)
     mutt_progress_update(&data->progress,
                          ctx->msgcount + data->ignmsgcount - data->oldmsgcount,
                          -1);
@@ -1540,7 +1540,7 @@ static int remove_filename(struct nm_ctxdata *data, const char *path)
   }
 
   notmuch_message_destroy(msg);
-  if (trans)
+  if (trans != 0)
     db_trans_end(data);
   return 0;
 }
@@ -1625,7 +1625,7 @@ static int rename_filename(struct nm_ctxdata *data, const char *old,
 done:
   if (msg)
     notmuch_message_destroy(msg);
-  if (trans)
+  if (trans != 0)
     db_trans_end(data);
   return rc;
 }
@@ -1911,7 +1911,7 @@ int nm_modify_message_tags(CONTEXT *ctx, HEADER *hdr, char *buf)
 done:
   if (!is_longrun(data))
     release_db(data);
-  if (hdr->changed)
+  if (hdr->changed != 0)
     ctx->mtime = time(NULL);
   mutt_debug (1, "nm: tags modify done [rc=%d]\n", rc);
   return rc;
@@ -2384,7 +2384,7 @@ static int nm_sync_mailbox(CONTEXT *ctx, int *index_hint)
     ctx->path = uri;
     ctx->magic = MUTT_NOTMUCH;
 
-    if (rc)
+    if (rc != 0)
       break;
 
     if (h->deleted == 0)
@@ -2406,7 +2406,7 @@ static int nm_sync_mailbox(CONTEXT *ctx, int *index_hint)
 
   if (!is_longrun(data))
     release_db(data);
-  if (changed)
+  if (changed != 0)
     ctx->mtime = time(NULL);
 
   mutt_debug (1, "nm: .... sync done [rc=%d]\n", rc);

@@ -366,9 +366,9 @@ parse_color_name (const char *s, int *col, int *attr, int is_fg, BUFFER *err)
     return -1;
   }
 
-  if (is_bright)
+  if (is_bright != 0)
   {
-    if (is_fg)
+    if (is_fg != 0)
     {
       *attr |= A_BOLD;
     }
@@ -563,7 +563,7 @@ add_pattern (COLOR_LINE **top, const char *s, int sensitive,
 
   while (tmp)
   {
-    if (sensitive)
+    if (sensitive != 0)
     {
       if (mutt_strcmp (s, tmp->pattern) == 0)
 	break;
@@ -600,7 +600,7 @@ add_pattern (COLOR_LINE **top, const char *s, int sensitive,
     char buf[LONG_STRING];
 
     tmp = new_color_line ();
-    if (is_index)
+    if (is_index != 0)
     {
       int i;
 
@@ -802,7 +802,7 @@ _mutt_parse_color (BUFFER *buf, BUFFER *s, BUFFER *err,
 
   /* dry run? */
 
-  if(dry_run)
+  if (dry_run != 0)
   {
     *s->dptr = '\0'; /* fake that we're done parsing */
     return 0;

@@ -57,7 +57,7 @@ static int socket_preconnect (void)
     mutt_debug (2, "Executing preconnect: %s\n", Preconnect);
     rc = mutt_system (Preconnect);
     mutt_debug (2, "Preconnect result: %d\n", rc);
-    if (rc)
+    if (rc != 0)
     {
       save_errno = errno;
       mutt_perror (_("Preconnect command failed."));
@@ -336,7 +336,7 @@ int raw_socket_read (CONNECTION* conn, char* buf, size_t len)
   }
   mutt_allow_interrupt (0);
 
-  if (SigInt)
+  if (SigInt != 0)
   {
     mutt_error (_("Connection to %s has been aborted"), conn->account.host);
     mutt_sleep (2);
@@ -361,7 +361,7 @@ int raw_socket_write (CONNECTION* conn, const char* buf, size_t count)
   }
   mutt_allow_interrupt (0);
 
-  if (SigInt)
+  if (SigInt != 0)
   {
     mutt_error (_("Connection to %s has been aborted"), conn->account.host);
     mutt_sleep (2);
@@ -472,7 +472,7 @@ int raw_socket_open (CONNECTION* conn)
   FREE (&host_idna);
 # endif
 
-  if (rc)
+  if (rc != 0)
   {
     mutt_error (_("Could not find the host \"%s\""), conn->account.host);
     mutt_sleep (2);
@@ -560,7 +560,7 @@ int raw_socket_open (CONNECTION* conn)
   }
 
 #endif
-  if (rc)
+  if (rc != 0)
   {
     mutt_error (_("Could not connect to %s (%s)."), conn->account.host,
 	    (rc > 0) ? strerror (rc) : _("unknown error"));

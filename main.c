@@ -457,7 +457,7 @@ int main (int argc, char **argv, char **environ)
       queries = mutt_add_list (queries, argv[optind]);
     return mutt_query_variables (queries);
   }
-  if (dump_variables)
+  if (dump_variables != 0)
     return mutt_dump_variables(hide_sensitive);
 
   if (alias_queries)
@@ -515,7 +515,7 @@ int main (int argc, char **argv, char **environ)
     }
   }
 
-  if (batch_mode)
+  if (batch_mode != 0)
       exit(0);
 
   if (sendflags & SENDPOSTPONED)
@@ -589,7 +589,7 @@ int main (int argc, char **argv, char **environ)
       {
 	if (mutt_strcmp ("-", infile) == 0)
         {
-          if (edit_infile)
+          if (edit_infile != 0)
           {
             fputs (_("Cannot use -E flag with stdin\n"), stderr);
             exit (1);
@@ -710,7 +710,7 @@ int main (int argc, char **argv, char **environ)
       /* Editing the includeFile: pass it directly in.
        * Note that SENDNOFREEHEADER is set above so it isn't unlinked.
        */
-      else if (edit_infile)
+      else if (edit_infile != 0)
         bodyfile = expanded_infile;
       /* For bodytext and unedited includeFile: use the tempfile.
        */
@@ -755,7 +755,7 @@ int main (int argc, char **argv, char **environ)
 
     rv = ci_send_message (sendflags, msg, bodyfile, NULL, NULL);
 
-    if (edit_infile)
+    if (edit_infile != 0)
     {
       if (includeFile)
         msg->content->unlink = 0;
@@ -816,7 +816,7 @@ int main (int argc, char **argv, char **environ)
     if (!option (OPTNOCURSES))
       mutt_endwin (NULL);
 
-    if (rv)
+    if (rv != 0)
       exit(1);
   }
   else

@@ -363,7 +363,7 @@ int mutt_write_mime_header (BODY *a, FILE *f)
     {
       fprintf (f, "Content-Disposition: %s", dispstr[a->disposition]);
 
-      if (a->use_disp)
+      if (a->use_disp != 0)
       {
 	if (!(fn = a->d_filename))
 	  fn = a->filename;
@@ -514,7 +514,7 @@ static void update_content_info (CONTENT *info, CONTENT_STATE *s, char *d, size_
 
   if (!d) /* This signals EOF */
   {
-    if (was_cr)
+    if (was_cr != 0)
       info->binary = 1;
     if (linelen > info->linemax)
       info->linemax = linelen;
@@ -526,7 +526,7 @@ static void update_content_info (CONTENT *info, CONTENT_STATE *s, char *d, size_
   {
     char ch = *d;
 
-    if (was_cr)
+    if (was_cr != 0)
     {
       was_cr = 0;
       if (ch != '\n')
@@ -535,8 +535,8 @@ static void update_content_info (CONTENT *info, CONTENT_STATE *s, char *d, size_
       }
       else
       {
-        if (whitespace) info->space = 1;
-	if (dot) info->dot = 1;
+        if (whitespace != 0) info->space = 1;
+	if (dot != 0) info->dot = 1;
         if (linelen > info->linemax) info->linemax = linelen;
         whitespace = 0;
 	dot = 0;
@@ -549,8 +549,8 @@ static void update_content_info (CONTENT *info, CONTENT_STATE *s, char *d, size_
     if (ch == '\n')
     {
       info->crlf++;
-      if (whitespace) info->space = 1;
-      if (dot) info->dot = 1;
+      if (whitespace != 0) info->space = 1;
+      if (dot != 0) info->dot = 1;
       if (linelen > info->linemax) info->linemax = linelen;
       whitespace = 0;
       linelen = 0;
@@ -585,7 +585,7 @@ static void update_content_info (CONTENT *info, CONTENT_STATE *s, char *d, size_
         else
           dot = 0;
       }
-      else if (from)
+      else if (from != 0)
       {
         if (linelen == 2 && ch != 'r') from = 0;
         else if (linelen == 3 && ch != 'o') from = 0;
@@ -707,7 +707,7 @@ static size_t convert_file_to (FILE *file, const char *fromcode,
 	/* Special case for conversion to UTF-8 */
 	update_content_info (&infos[i], &states[i], bufu, ubl1);
 
-    if (ibl)
+    if (ibl != 0)
       /* Save unused input */
       memmove (bufi, ib, ibl);
     else if (!ubl1 && ib < bufi + sizeof (bufi))
@@ -1167,7 +1167,7 @@ static void set_encoding (BODY *b, CONTENT *info)
     char *chsname = mutt_get_body_charset (send_charset, sizeof (send_charset), b);
     if ((info->lobin && (ascii_strncasecmp (chsname, "iso-2022", 8) != 0)) || info->linemax > 990 || (info->from && option (OPTENCODEFROM)))
       b->encoding = ENCQUOTEDPRINTABLE;
-    else if (info->hibin)
+    else if (info->hibin != 0)
       b->encoding = option (OPTALLOW8BIT) ? ENC8BIT : ENCQUOTEDPRINTABLE;
     else
       b->encoding = ENC7BIT;
@@ -1254,7 +1254,7 @@ BODY *mutt_make_message_attach (CONTEXT *ctx, HEADER *hdr, int attach_msg)
   int cmflags, chflags;
   int pgp = WithCrypto? hdr->security : 0;
 
-  if (WithCrypto)
+  if (WithCrypto != 0)
   {
     if ((option(OPTMIMEFORWDECODE) || option(OPTFORWDECRYPT)) &&
         (hdr->security & ENCRYPT)) {
@@ -1326,7 +1326,7 @@ BODY *mutt_make_message_attach (CONTEXT *ctx, HEADER *hdr, int attach_msg)
   body->hdr->offset = 0;
   /* we don't need the user headers here */
   body->hdr->env = mutt_read_rfc822_header(fp, body->hdr, 0, 0);
-  if (WithCrypto)
+  if (WithCrypto != 0)
     body->hdr->security = pgp;
   mutt_update_encoding (body);
   body->parts = body->hdr->content;
@@ -1794,7 +1794,7 @@ static int write_one_header (FILE *fp, int pfxw, int max, int wraplen,
       mutt_debug (1, "mwoh: warning: header not in 'key: value' format!\n");
       return 0;
     }
-    if (is_from)
+    if (is_from != 0)
     {
       tagbuf = NULL;
       valbuf = mutt_substrdup (start, end);
@@ -2075,7 +2075,7 @@ int mutt_write_rfc822_header (FILE *fp, ENVELOPE *env, BODY *attach,
       if (ascii_strncasecmp ("user-agent", tmp->data, 10) == 0)
       {
 	has_agent = 1;
-	if (privacy)
+	if (privacy != 0)
 	{
 	  *q = ':';
 	  continue;
@@ -2410,7 +2410,7 @@ mutt_invoke_sendmail (ADDRESS *from,	/* the sender */
     if (argslen == argsmax)
       safe_realloc (&args, sizeof (char *) * (argsmax += 5));
 
-    if (i)
+    if (i != 0)
     {
       if (mutt_strcmp (ps, "--") == 0)
         break;
@@ -2531,7 +2531,7 @@ void mutt_prepare_envelope (ENVELOPE *env, int final)
 {
   char buffer[LONG_STRING];
 
-  if (final)
+  if (final != 0)
   {
     if (env->bcc && !(env->to || env->cc))
     {
@@ -2731,7 +2731,7 @@ ADDRESS *mutt_remove_duplicates (ADDRESS *addr)
       }
     }
 
-    if (dup)
+    if (dup != 0)
     {
       mutt_debug (2, "mutt_remove_duplicates: Removing %s\n", addr->mailbox);
 
@@ -2760,7 +2760,7 @@ static void set_noconv_flags (BODY *b, short flag)
       set_noconv_flags (b->parts, flag);
     else if (b->type == TYPETEXT && b->noconv)
     {
-      if (flag)
+      if (flag != 0)
 	mutt_set_parameter ("x-mutt-noconv", "yes", &b->parameter);
       else
 	mutt_delete_parameter ("x-mutt-noconv", &b->parameter);
@@ -2816,7 +2816,7 @@ int mutt_write_fcc (const char *path, HEADER *hdr, const char *msgid,
   char buf[SHORT_STRING];
   int onm_flags;
 
-  if (post)
+  if (post != 0)
     set_noconv_flags (hdr->content, 1);
 
   if (mx_open_mailbox (path, MUTT_APPEND | MUTT_QUIET, &f) == NULL)
@@ -2845,7 +2845,7 @@ int mutt_write_fcc (const char *path, HEADER *hdr, const char *msgid,
 
   hdr->read = !post; /* make sure to put it in the `cur' directory (maildir) */
   onm_flags = MUTT_ADD_FROM;
-  if (post)
+  if (post != 0)
     onm_flags |= MUTT_SET_DRAFT;
   if ((msg = mx_open_new_message (&f, hdr, onm_flags)) == NULL)
   {
@@ -2879,7 +2879,7 @@ int mutt_write_fcc (const char *path, HEADER *hdr, const char *msgid,
 
   /* mutt_write_rfc822_header() only writes out a Date: header with
    * mode == 0, i.e. _not_ postponement; so write out one ourself */
-  if (post)
+  if (post != 0)
     fprintf (msg->fp, "%s", mutt_make_date (buf, sizeof (buf)));
 
   /* (postponement) if the mail is to be signed or encrypted, save this info */
@@ -3003,7 +3003,7 @@ int mutt_write_fcc (const char *path, HEADER *hdr, const char *msgid,
   if (!post && need_buffy_cleanup)
     mutt_buffy_cleanup (path, &st);
 
-  if (post)
+  if (post != 0)
     set_noconv_flags (hdr->content, 0);
 
   return r;

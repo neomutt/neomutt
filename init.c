@@ -460,7 +460,7 @@ int mutt_option_set(const struct option_t *val, BUFFER *err)
       }
       break;
       case DT_BOOL:
-        if (val->data)
+        if (val->data != 0)
           set_option(MuttVars[idx].data);
         else
           unset_option(MuttVars[idx].data);
@@ -1390,7 +1390,7 @@ static int parse_attach_list (BUFFER *buf, BUFFER *s, LIST **ldata, BUFFER *err)
 
     FREE(&tmpminor);
 
-    if (ret)
+    if (ret != 0)
     {
       regerror(ret, &a->minor_rx, err->data, err->dsize);
       FREE(&a->major);
@@ -1929,7 +1929,7 @@ static void restore_default (struct option_t *p)
       break;
     case DT_PATH:
       FREE((char **) p->data);		/* __FREE_CHECKED__ */
-      if (p->init)
+      if (p->init != 0)
       {
 	char path[_POSIX_PATH_MAX];
 	strfcpy (path, (char *) p->init, sizeof (path));
@@ -1939,11 +1939,11 @@ static void restore_default (struct option_t *p)
       break;
     case DT_ADDR:
       rfc822_free_address ((ADDRESS **) p->data);
-      if (p->init)
+      if (p->init != 0)
 	*((ADDRESS **) p->data) = rfc822_parse_adrlist (NULL, (char *) p->init);
       break;
     case DT_BOOL:
-      if (p->init)
+      if (p->init != 0)
 	set_option (p->data);
       else
 	unset_option (p->data);
@@ -1968,7 +1968,7 @@ static void restore_default (struct option_t *p)
 	  FREE (&pp->rx);
 	}
 
-	if (p->init)
+	if (p->init != 0)
 	{
 	  int retval;
 	  char *s = (char *) p->init;
@@ -2171,7 +2171,7 @@ static int parse_setenv(BUFFER *tmp, BUFFER *s, unsigned long data, BUFFER *err)
   mutt_extract_token (tmp, s, MUTT_TOKEN_EQUAL);
   len = strlen (tmp->data);
 
-  if (query)
+  if (query != 0)
   {
     int found = 0;
     while (envp && *envp)
@@ -2188,7 +2188,7 @@ static int parse_setenv(BUFFER *tmp, BUFFER *s, unsigned long data, BUFFER *err)
       envp++;
     }
 
-    if (found)
+    if (found != 0)
     {
       set_option (OPTFORCEREDRAWINDEX);
       set_option (OPTFORCEREDRAWPAGER);
@@ -2200,7 +2200,7 @@ static int parse_setenv(BUFFER *tmp, BUFFER *s, unsigned long data, BUFFER *err)
     return -1;
   }
 
-  if (unset)
+  if (unset != 0)
   {
     count = 0;
     while (envp && *envp)
@@ -2297,7 +2297,7 @@ static int parse_set (BUFFER *tmp, BUFFER *s, unsigned long data, BUFFER *err)
     }
     SKIPWS (s->dptr);
 
-    if (reset)
+    if (reset != 0)
     {
       if (query || unset || inv)
       {
@@ -2360,7 +2360,7 @@ static int parse_set (BUFFER *tmp, BUFFER *s, unsigned long data, BUFFER *err)
 	}
       }
 
-      if (query)
+      if (query != 0)
       {
 	snprintf (err->data, err->dsize, option (MuttVars[idx].data)
 			? _("%s is set") : _("%s is unset"), tmp->data);
@@ -2368,9 +2368,9 @@ static int parse_set (BUFFER *tmp, BUFFER *s, unsigned long data, BUFFER *err)
       }
 
       CHECK_PAGER;
-      if (unset)
+      if (unset != 0)
 	unset_option (MuttVars[idx].data);
-      else if (inv)
+      else if (inv != 0)
 	toggle_option (MuttVars[idx].data);
       else
 	set_option (MuttVars[idx].data);
@@ -2380,7 +2380,7 @@ static int parse_set (BUFFER *tmp, BUFFER *s, unsigned long data, BUFFER *err)
 	     DTYPE (MuttVars[idx].type) == DT_ADDR ||
 	     DTYPE (MuttVars[idx].type) == DT_MBCHARTBL)
     {
-      if (unset)
+      if (unset != 0)
       {
 	CHECK_PAGER;
         if (myvar)
@@ -2650,7 +2650,7 @@ static int parse_set (BUFFER *tmp, BUFFER *s, unsigned long data, BUFFER *err)
     }
     else if (DTYPE (MuttVars[idx].type) == DT_QUAD)
     {
-      if (query)
+      if (query != 0)
       {
 	static const char * const vals[] = { "no", "yes", "ask-no", "ask-yes" };
 
@@ -2681,9 +2681,9 @@ static int parse_set (BUFFER *tmp, BUFFER *s, unsigned long data, BUFFER *err)
       }
       else
       {
-	if (inv)
+	if (inv != 0)
 	  toggle_quadoption (MuttVars[idx].data);
-	else if (unset)
+	else if (unset != 0)
 	  set_quadoption (MuttVars[idx].data, MUTT_NO);
 	else
 	  set_quadoption (MuttVars[idx].data, MUTT_YES);
@@ -2901,7 +2901,7 @@ static int source_rc (const char *rcfile_path, BUFFER *err)
   while ((linebuf = mutt_read_line (linebuf, &buflen, f, &line, MUTT_CONT)) != NULL)
   {
     conv=ConfigCharset && (*ConfigCharset) && Charset;
-    if (conv)
+    if (conv != 0)
     {
       currentline=safe_strdup(linebuf);
       if (!currentline) continue;
@@ -2915,7 +2915,7 @@ static int source_rc (const char *rcfile_path, BUFFER *err)
       mutt_error (_("Error in %s, line %d: %s"), rcfile, line, err->data);
       if (--rc < -MAXERRS)
       {
-        if (conv) FREE(&currentline);
+        if (conv != 0) FREE(&currentline);
         break;
       }
     } else if (line_rc == 1) {
@@ -2924,7 +2924,7 @@ static int source_rc (const char *rcfile_path, BUFFER *err)
       if (rc < 0)
         rc = -1;
     }
-    if (conv)
+    if (conv != 0)
       FREE(&currentline);
   }
   FREE (&token.data);
@@ -2932,7 +2932,7 @@ static int source_rc (const char *rcfile_path, BUFFER *err)
   safe_fclose (&f);
   if (pid != -1)
     mutt_wait_filter (pid);
-  if (rc)
+  if (rc != 0)
   {
     /* the muttrc source keyword */
     snprintf (err->data, err->dsize, rc >= -MAXERRS ? _("source: errors in %s")

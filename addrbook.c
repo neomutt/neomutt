@@ -194,7 +194,7 @@ new_aliases:
     {
       case OP_DELETE:
       case OP_UNDELETE:
-        if (menu->tagprefix)
+        if (menu->tagprefix != 0)
         {
 	  for (i = 0; i < menu->max; i++)
 	    if (AliasTable[i]->tagged)

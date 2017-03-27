@@ -377,7 +377,7 @@ void mutt_sort_headers (CONTEXT *ctx, int init)
 	thread = thread->child;
       h = thread->message;
 
-      if (h->collapsed)
+      if (h->collapsed != 0)
 	mutt_collapse_thread (ctx, h);
       top = top->next;
     }

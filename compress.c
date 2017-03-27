@@ -75,10 +75,10 @@ lock_realpath (CONTEXT *ctx, int excl)
   if (!ci)
     return 0;
 
-  if (ci->locked)
+  if (ci->locked != 0)
     return 1;
 
-  if (excl)
+  if (excl != 0)
     ci->lockfp = fopen (ctx->realpath, "a");
   else
     ci->lockfp = fopen (ctx->realpath, "r");

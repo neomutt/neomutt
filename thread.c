@@ -47,7 +47,7 @@ static int need_display_subject (CONTEXT *ctx, HEADER *hdr)
     return 1;
 
   /* if our subject is different from our parent's, display it */
-  if (hdr->subject_changed)
+  if (hdr->subject_changed != 0)
     return 1;
 
   /* if our subject is different from that of our closest previously displayed
@@ -57,7 +57,7 @@ static int need_display_subject (CONTEXT *ctx, HEADER *hdr)
     hdr = tmp->message;
     if (hdr && VISIBLE (hdr, ctx))
     {
-      if (hdr->subject_changed)
+      if (hdr->subject_changed != 0)
 	return 1;
       else
 	break;
@@ -73,7 +73,7 @@ static int need_display_subject (CONTEXT *ctx, HEADER *hdr)
     {
       if (VISIBLE (hdr, ctx))
 	return 0;
-      else if (hdr->subject_changed)
+      else if (hdr->subject_changed != 0)
 	return 1;
     }
   }
@@ -148,7 +148,7 @@ static void calculate_visibility (CONTEXT *ctx, int *max_depth)
 	tree->message->display_subject = need_display_subject (ctx, tree->message);
 	for (tmp = tree; tmp; tmp = tmp->parent)
 	{
-	  if (tmp->subtree_visible)
+	  if (tmp->subtree_visible != 0)
 	  {
 	    tmp->deep = 1;
 	    tmp->subtree_visible = 2;
@@ -244,7 +244,7 @@ void mutt_draw_tree (CONTEXT *ctx)
   arrow = safe_malloc (width * max_depth + 2);
   while (tree)
   {
-    if (depth)
+    if (depth != 0)
     {
       myarrow = arrow + (depth - start_depth - (start_depth ? 0 : 1)) * width;
       if (depth && start_depth == depth)
@@ -258,7 +258,7 @@ void mutt_draw_tree (CONTEXT *ctx)
       if (width == 2)
 	myarrow[1] = pseudo ?  MUTT_TREE_STAR
 	                     : (tree->duplicate_thread ? MUTT_TREE_EQUALS : MUTT_TREE_HLINE);
-      if (tree->visible)
+      if (tree->visible != 0)
       {
 	myarrow[width] = MUTT_TREE_RARROW;
 	myarrow[width + 1] = 0;
@@ -288,9 +288,9 @@ void mutt_draw_tree (CONTEXT *ctx)
     {
       if (tree->child && tree->subtree_visible)
       {
-	if (tree->deep)
+	if (tree->deep != 0)
 	  depth++;
-	if (tree->visible)
+	if (tree->visible != 0)
 	  start_depth = depth;
 	tree = tree->child;
 
@@ -308,10 +308,10 @@ void mutt_draw_tree (CONTEXT *ctx)
 	    pseudo = NULL;
 	  if (tree == nextdisp)
 	    nextdisp = NULL;
-	  if (tree->visible)
+	  if (tree->visible != 0)
 	    start_depth = depth;
 	  tree = tree->parent;
-	  if (tree->deep)
+	  if (tree->deep != 0)
 	  {
 	    if (start_depth == depth)
 	      start_depth--;
@@ -322,7 +322,7 @@ void mutt_draw_tree (CONTEXT *ctx)
 	  pseudo = NULL;
 	if (tree == nextdisp)
 	  nextdisp = NULL;
-	if (tree->visible)
+	if (tree->visible != 0)
 	  start_depth = depth;
 	tree = tree->next;
 	if (!tree)
@@ -540,7 +540,7 @@ static void pseudo_threads (CONTEXT *ctx)
 	  for (curchild = tmp->child; curchild; )
 	  {
 	    nextchild = curchild->next;
-	    if (curchild->fake_thread)
+	    if (curchild->fake_thread != 0)
 	    {
 	      unlink_message (&tmp->child, curchild);
 	      insert_message (&parent->child, parent, curchild);
@@ -738,7 +738,7 @@ static void check_subjects (CONTEXT *ctx, int init)
   for (i = 0; i < ctx->msgcount; i++)
   {
     cur = ctx->hdrs[i];
-    if (cur->thread->check_subject)
+    if (cur->thread->check_subject != 0)
       cur->thread->check_subject = 0;
     else if (init == 0)
       continue;
@@ -779,7 +779,7 @@ void mutt_sort_threads (CONTEXT *ctx, int init)
   if (!ctx->thread_hash)
     init = 1;
 
-  if (init)
+  if (init != 0)
     ctx->thread_hash = hash_create (ctx->msgcount * 2, MUTT_HASH_ALLOW_DUPS);
 
   /* we want a quick way to see if things are actually attached to the top of the
@@ -856,7 +856,7 @@ void mutt_sort_threads (CONTEXT *ctx, int init)
 
 	if (new)
 	{
-	  if (new->duplicate_thread)
+	  if (new->duplicate_thread != 0)
 	    new = new->parent;
 
 	  thread = cur->thread;
@@ -875,7 +875,7 @@ void mutt_sort_threads (CONTEXT *ctx, int init)
       for (new = thread->child; new; )
       {
 	tmp = new->next;
-	if (new->fake_thread)
+	if (new->fake_thread != 0)
 	{
 	  unlink_message (&thread->child, new);
 	  insert_message (&top.child, &top, new);
@@ -890,7 +890,7 @@ void mutt_sort_threads (CONTEXT *ctx, int init)
   for (i = 0; i < ctx->msgcount; i++)
   {
     cur = ctx->hdrs[i];
-    if (cur->threaded)
+    if (cur->threaded != 0)
       continue;
     cur->threaded = 1;
 
@@ -943,7 +943,7 @@ void mutt_sort_threads (CONTEXT *ctx, int init)
       }
       else
       {
-	if (new->duplicate_thread)
+	if (new->duplicate_thread != 0)
 	  new = new->parent;
 	if (is_descendant (new, thread)) /* no loops! */
 	  continue;
@@ -1101,7 +1101,7 @@ int mutt_parent_message (CONTEXT *ctx, HEADER *hdr, int find_root)
   }
 
   /* Root may be the current message */
-  if (find_root)
+  if (find_root != 0)
     parent = hdr;
 
   for (thread = hdr->thread->parent; thread; thread = thread->parent)
@@ -1121,7 +1121,7 @@ int mutt_parent_message (CONTEXT *ctx, HEADER *hdr, int find_root)
   }
   if (!VISIBLE (parent, ctx))
   {
-    if (find_root)
+    if (find_root != 0)
       mutt_error (_("Root message is not visible in this limited view."));
     else
       mutt_error (_("Parent message is not visible in this limited view."));
@@ -1179,7 +1179,7 @@ int _mutt_traverse_thread (CONTEXT *ctx, HEADER *cur, int flag)
 
   if (!cur->read && CHECK_LIMIT)
   {
-    if (cur->old)
+    if (cur->old != 0)
       old = 2;
     else
       new = 1;
@@ -1248,7 +1248,7 @@ int _mutt_traverse_thread (CONTEXT *ctx, HEADER *cur, int flag)
 	}
 	else
 	{
-	  if (CHECK_LIMIT)
+	  if (CHECK_LIMIT != 0)
 	    cur->virtual = cur->msgno;
 	}
       }
@@ -1256,7 +1256,7 @@ int _mutt_traverse_thread (CONTEXT *ctx, HEADER *cur, int flag)
 
       if (!cur->read && CHECK_LIMIT)
       {
-	if (cur->old)
+	if (cur->old != 0)
 	  old = 2;
 	else
 	  new = 1;
@@ -1287,7 +1287,7 @@ int _mutt_traverse_thread (CONTEXT *ctx, HEADER *cur, int flag)
 	  break;
 	}
       }
-      if (done)
+      if (done != 0)
 	break;
       thread = thread->next;
     }
@@ -1336,7 +1336,7 @@ int mutt_messages_in_thread (CONTEXT *ctx, HEADER *hdr, int flag)
   else
     rc = (threads[1] ? threads[1]->message->msgno : ctx->msgcount) - threads[0]->message->msgno;
 
-  if (flag)
+  if (flag != 0)
     rc += 1;
 
   return rc;
@@ -1386,7 +1386,7 @@ static void clean_references (THREAD *brk, THREAD *cur)
 	  break;
 	}
 
-    if (done)
+    if (done != 0)
     {
       HEADER *h = cur->message;
 

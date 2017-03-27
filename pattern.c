@@ -73,13 +73,13 @@ static int eat_regexp (pattern_t *pat, BUFFER *s, BUFFER *err)
     return -1;
   }
 
-  if (pat->stringmatch)
+  if (pat->stringmatch != 0)
   {
     pat->p.str = safe_strdup (buf.data);
     pat->ign_case = mutt_which_case (buf.data) == REG_ICASE;
     FREE (&buf.data);
   }
-  else if (pat->groupmatch)
+  else if (pat->groupmatch != 0)
   {
     pat->p.g = mutt_pattern_group (buf.data);
     FREE (&buf.data);
@@ -88,7 +88,7 @@ static int eat_regexp (pattern_t *pat, BUFFER *s, BUFFER *err)
   {
     pat->p.rx = safe_malloc (sizeof (regex_t));
     r = REGCOMP (pat->p.rx, buf.data, REG_NEWLINE | REG_NOSUB | mutt_which_case (buf.data));
-    if (r)
+    if (r != 0)
     {
       regerror (r, pat->p.rx, errmsg, sizeof (errmsg));
       mutt_buffer_printf (err, "'%s': %s", buf.data, errmsg);
@@ -431,7 +431,7 @@ static int eat_date (pattern_t *pat, BUFFER *s, BUFFER *err)
     /* force negative offset */
     get_offset (tm, buffer.data + 1, -1);
 
-    if (exact)
+    if (exact != 0)
     {
       /* start at the beginning of the day in question */
       memcpy (&min, &max, sizeof (max));
@@ -572,7 +572,7 @@ static int eat_range (pattern_t *pat, BUFFER *s, BUFFER *err)
       pat->max *= 1048576;
       tmp++;
     }
-    if (do_exclusive)
+    if (do_exclusive != 0)
       (pat->max)--;
   }
   else
@@ -709,7 +709,7 @@ eat_range_by_regexp (pattern_t *pat, BUFFER *s, int kind, BUFFER *err)
   if (pspec->ready == 0)
   {
     regerr = regcomp(&pspec->cooked, pspec->raw, REG_EXTENDED);
-    if (regerr)
+    if (regerr != 0)
       return report_regerror(regerr, &pspec->cooked, err);
     pspec->ready = 1;
   }
@@ -717,7 +717,7 @@ eat_range_by_regexp (pattern_t *pat, BUFFER *s, int kind, BUFFER *err)
   /* Match the pattern buffer against the compiled regexp.
    * No match means syntax error. */
   regerr = regexec(&pspec->cooked, s->dptr, RANGE_RX_GROUPS, pmatch, 0);
-  if (regerr)
+  if (regerr != 0)
     return report_regerror(regerr, &pspec->cooked, err);
 
   if (!is_context_available(s, pmatch, kind, err))
@@ -881,10 +881,10 @@ int mutt_which_case (const char *s)
 
 static int patmatch (const pattern_t* pat, const char* buf)
 {
-  if (pat->stringmatch)
+  if (pat->stringmatch != 0)
     return pat->ign_case ? !strcasestr (buf, pat->p.str) :
 			   !strstr (buf, pat->p.str);
-  else if (pat->groupmatch)
+  else if (pat->groupmatch != 0)
     return !mutt_group_match (pat->p.g, buf);
   else
     return regexec (pat->p.rx, buf, 0, NULL, 0);
@@ -1078,9 +1078,9 @@ void mutt_pattern_free (pattern_t **pat)
     tmp = *pat;
     *pat = (*pat)->next;
 
-    if (tmp->stringmatch)
+    if (tmp->stringmatch != 0)
       FREE (&tmp->p.str);
-    else if (tmp->groupmatch)
+    else if (tmp->groupmatch != 0)
       tmp->p.g = NULL;
     else if (tmp->p.rx)
     {
@@ -1678,7 +1678,7 @@ void mutt_check_simple (char *s, size_t len, const char *simple)
    * equivalences?
    */
 
-  if (do_simple) /* yup, so spoof a real request */
+  if (do_simple != 0) /* yup, so spoof a real request */
   {
     /* convert old tokens into the new format */
     if ((ascii_strcasecmp ("all", s) == 0) ||
@@ -1993,10 +1993,10 @@ int mutt_search_command (int cur, int op)
     }
 
     h = Context->hdrs[Context->v2r[i]];
-    if (h->searched)
+    if (h->searched != 0)
     {
       /* if we've already evaluated this message, use the cached value */
-      if (h->matched)
+      if (h->matched != 0)
       {
 	mutt_clear_error();
 	if (msg && *msg)
@@ -2017,7 +2017,7 @@ int mutt_search_command (int cur, int op)
       }
     }
 
-    if (SigInt)
+    if (SigInt != 0)
     {
       mutt_error (_("Search interrupted."));
       SigInt = 0;

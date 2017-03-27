@@ -211,7 +211,7 @@ static int buffy_maildir_check_dir (BUFFY* mailbox, const char *dir_name, int ch
     if (p && strchr (p + 3, 'T'))
       continue;
 
-    if (check_stats)
+    if (check_stats != 0)
     {
       mailbox->msg_count++;
       if (p && strchr (p + 3, 'F'))
@@ -219,9 +219,9 @@ static int buffy_maildir_check_dir (BUFFY* mailbox, const char *dir_name, int ch
     }
     if (!p || !strchr (p + 3, 'S'))
     {
-      if (check_stats)
+      if (check_stats != 0)
         mailbox->msg_unread++;
-      if (check_new)
+      if (check_new != 0)
       {
         if (option(OPTMAILCHECKRECENT))
         {
@@ -252,7 +252,7 @@ static int buffy_maildir_check (BUFFY* mailbox, int check_stats)
 {
   int rc, check_new = 1;
 
-  if (check_stats)
+  if (check_stats != 0)
   {
     mailbox->msg_count   = 0;
     mailbox->msg_unread  = 0;
@@ -285,7 +285,7 @@ static int buffy_mbox_check (BUFFY* mailbox, struct stat *sb, int check_stats)
     new_or_changed = sb->st_mtime > sb->st_atime
       || (mailbox->newly_created && sb->st_ctime == sb->st_mtime && sb->st_ctime == sb->st_atime);
 
-  if (new_or_changed)
+  if (new_or_changed != 0)
   {
     if (!option(OPTMAILCHECKRECENT) || sb->st_mtime > mailbox->last_visited)
     {
@@ -715,7 +715,7 @@ int mutt_buffy_check (int force)
 
 #ifdef USE_IMAP
   /* update postponed count as well, on force */
-  if (force)
+  if (force != 0)
     mutt_update_num_postponed ();
 #endif
 

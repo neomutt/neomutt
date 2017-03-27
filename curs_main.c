@@ -94,7 +94,7 @@ static const char *No_visible = N_("No visible messages.");
 	}
 
 
-#define CHECK_READONLY if (Context->readonly) \
+#define CHECK_READONLY if (Context->readonly != 0) \
 			{ \
 			  	mutt_flushinp (); \
 				mutt_error(_(Mailbox_is_read_only)); \
@@ -166,7 +166,7 @@ static void collapse_all(MUTTMENU *menu, int toggle)
 
     if (h->collapsed != Context->collapsed)
     {
-      if (h->collapsed)
+      if (h->collapsed != 0)
         mutt_uncollapse_thread (Context, h);
       else if (option (OPTCOLLAPSEUNREAD) || !UNREAD (h))
         mutt_collapse_thread (Context, h);
@@ -252,13 +252,13 @@ static int mx_toggle_write (CONTEXT *ctx)
   if (!ctx)
     return -1;
 
-  if (ctx->readonly)
+  if (ctx->readonly != 0)
   {
     mutt_error (_("Cannot toggle write on a readonly mailbox!"));
     return -1;
   }
 
-  if (ctx->dontwrite)
+  if (ctx->dontwrite != 0)
   {
     ctx->dontwrite = 0;
     mutt_message (_("Changes to folder will be written on folder exit."));
@@ -310,7 +310,7 @@ void update_index (MUTTMENU *menu, CONTEXT *ctx, int check,
     return;
 
   /* take note of the current message */
-  if (oldcount)
+  if (oldcount != 0)
   {
     if (menu->current < ctx->vcount)
       menu->oldcurrent = index_hint;
@@ -373,7 +373,7 @@ void update_index (MUTTMENU *menu, CONTEXT *ctx, int check,
       }
       mutt_set_virtual (ctx);
     }
-    else if (oldcount)
+    else if (oldcount != 0)
     {
       for (j = 0; j < ctx->msgcount - oldcount; j++)
       {
@@ -392,7 +392,7 @@ void update_index (MUTTMENU *menu, CONTEXT *ctx, int check,
   }
 
   menu->current = -1;
-  if (oldcount)
+  if (oldcount != 0)
   {
     /* restore the current message to the message it was pointing to */
     for (j = 0; j < ctx->vcount; j++)
@@ -583,11 +583,11 @@ void index_make_entry (char *s, size_t l, MUTTMENU *menu, int num)
   if ((Sort & SORT_MASK) == SORT_THREADS && h->tree)
   {
     flag |= MUTT_FORMAT_TREE; /* display the thread tree */
-    if (h->display_subject)
+    if (h->display_subject != 0)
       flag |= MUTT_FORMAT_FORCESUBJ;
     else
     {
-      if (reverse)
+      if (reverse != 0)
       {
 	if (menu->top + menu->pagelen > menu->max)
 	  edgemsgno = Context->v2r[menu->max - 1];
@@ -944,7 +944,7 @@ int mutt_index_menu (void)
      oldcount = newcount;
      if ((newcount = mutt_buffy_check (0)) != oldcount)
        menu->redraw |= REDRAW_STATUS;
-     if (do_buffy_notify)
+     if (do_buffy_notify != 0)
      {
        if (mutt_buffy_notify())
        {
@@ -1029,7 +1029,7 @@ int mutt_index_menu (void)
       mutt_refresh ();
 
 #if defined (USE_SLANG_CURSES) || defined (HAVE_RESIZETERM)
-      if (SigWinch)
+      if (SigWinch != 0)
       {
 	mutt_flushinp ();
 	mutt_resize_screen ();
@@ -1228,7 +1228,7 @@ int mutt_index_menu (void)
 	      menu->current = hdr->virtual;
 	      menu->redraw = REDRAW_MOTION_RESYNCH;
 	    }
-	    else if (hdr->collapsed)
+	    else if (hdr->collapsed != 0)
 	    {
 	      mutt_uncollapse_thread (Context, hdr);
 	      mutt_set_virtual (Context);
@@ -1524,7 +1524,7 @@ int mutt_index_menu (void)
       case OP_QUIT:
 
 	close = op;
-	if (attach_msg)
+	if (attach_msg != 0)
 	{
 	 done = 1;
 	 break;
@@ -1699,7 +1699,7 @@ int mutt_index_menu (void)
 	    /* threads may be reordered, so figure out what header the cursor
 	     * should be on. #3092 */
 	    newidx = menu->current;
-	    if (CURHDR->deleted)
+	    if (CURHDR->deleted != 0)
 	      newidx = ci_next_undeleted (menu->current);
 	    if (newidx < 0)
 	      newidx = ci_previous_undeleted (menu->current);
@@ -1748,7 +1748,7 @@ int mutt_index_menu (void)
       case OP_MAIN_QUASI_DELETE:
 	CHECK_MSGCOUNT;
         CHECK_VISIBLE;
-	if (tag) {
+	if (tag != 0) {
 	  for (j = 0; j < Context->vcount; j++) {
 	    if (Context->hdrs[Context->v2r[j]]->tagged) {
 	      Context->hdrs[Context->v2r[j]]->quasi_deleted = true;
@@ -1811,7 +1811,7 @@ int mutt_index_menu (void)
           mutt_message (_("No label specified, aborting."));
           break;
         }
-	if (tag)
+	if (tag != 0)
 	{
 	  char msgbuf[STRING];
 	  progress_t progress;
@@ -1949,7 +1949,7 @@ int mutt_index_menu (void)
 	else
 	  flags = 0;
 
-	if (flags)
+	if (flags != 0)
           cp = _("Open mailbox in read-only mode");
 #ifdef USE_NOTMUCH
         else if (op == OP_MAIN_CHANGE_VFOLDER)
@@ -2006,7 +2006,7 @@ int mutt_index_menu (void)
 	    CurrentNewsSrv = nntp_select_server (NewsServer, 0);
 	    if (!CurrentNewsSrv)
 	      break;
-	    if (flags)
+	    if (flags != 0)
 	      cp = _("Open newsgroup in read-only mode");
 	    else
 	      cp = _("Open newsgroup");
@@ -2312,7 +2312,7 @@ int mutt_index_menu (void)
 	     (op == OP_SAVE || op == OP_DECODE_SAVE || op == OP_DECRYPT_SAVE)
 	    )
 	{
-	  if (tag)
+	  if (tag != 0)
 	    menu->redraw |= REDRAW_INDEX;
 	  else if (option (OPTRESOLVE))
 	  {
@@ -2435,7 +2435,7 @@ int mutt_index_menu (void)
         /* L10N: CHECK_ACL */
 	CHECK_ACL(MUTT_ACL_WRITE, _("Cannot flag message"));
 
-        if (tag)
+        if (tag != 0)
         {
 	  for (j = 0; j < Context->vcount; j++)
 	  {
@@ -2473,7 +2473,7 @@ int mutt_index_menu (void)
         /* L10N: CHECK_ACL */
 	CHECK_ACL(MUTT_ACL_SEEN, _("Cannot toggle new"));
 
-	if (tag)
+	if (tag != 0)
 	{
 	  for (j = 0; j < Context->vcount; j++)
 	  {
@@ -2592,7 +2592,7 @@ int mutt_index_menu (void)
 	if (mutt_change_flag (tag ? NULL : CURHDR, (op == OP_MAIN_SET_FLAG)) == 0)
 	{
 	  menu->redraw = REDRAW_STATUS;
-	  if (tag)
+	  if (tag != 0)
 	    menu->redraw |= REDRAW_INDEX;
 	  else if (option (OPTRESOLVE))
 	  {
@@ -2619,7 +2619,7 @@ int mutt_index_menu (void)
 	  break;
 	}
 
-	if (CURHDR->collapsed)
+	if (CURHDR->collapsed != 0)
 	{
 	  menu->current = mutt_uncollapse_thread (Context, CURHDR);
 	  mutt_set_virtual (Context);
@@ -2687,7 +2687,7 @@ int mutt_index_menu (void)
         /* L10N: CHECK_ACL */
 	CHECK_ACL(MUTT_ACL_DELETE, _("Cannot delete message"));
 
-	if (tag)
+	if (tag != 0)
 	{
 	  mutt_tag_set_flag (MUTT_DELETE, 1);
           mutt_tag_set_flag (MUTT_PURGE, (op == OP_PURGE_MESSAGE));
@@ -3018,7 +3018,7 @@ int mutt_index_menu (void)
         CHECK_MSGCOUNT;
         CHECK_VISIBLE;
 
-        if (tag)
+        if (tag != 0)
         {
 	  for (j = 0; j < Context->vcount; j++)
 	  {
@@ -3114,7 +3114,7 @@ int mutt_index_menu (void)
         /* L10N: CHECK_ACL */
 	CHECK_ACL(MUTT_ACL_DELETE, _("Cannot undelete message"));
 
-	if (tag)
+	if (tag != 0)
 	{
 	  mutt_tag_set_flag (MUTT_DELETE, 0);
 	  mutt_tag_set_flag (MUTT_PURGE, 0);
@@ -3226,7 +3226,7 @@ int mutt_index_menu (void)
       menu->redraw = REDRAW_FULL;
     }
 
-    if (done) break;
+    if (done != 0) break;
   }
 
   mutt_menu_destroy (&menu);

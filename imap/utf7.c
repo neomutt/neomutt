@@ -213,7 +213,7 @@ static char *utf8_to_utf7 (const char *u8, size_t u8len, char **u7,
     }
     else
     {
-      if (base64)
+      if (base64 != 0)
       {
 	if (k > 10)
 	  *p++ = B64Chars[b];
@@ -226,13 +226,13 @@ static char *utf8_to_utf7 (const char *u8, size_t u8len, char **u7,
     }
   }
 
-  if (u8len)
+  if (u8len != 0)
   {
     FREE (&buf);
     return 0;
   }
 
-  if (base64)
+  if (base64 != 0)
   {
     if (k > 10)
       *p++ = B64Chars[b];
@@ -259,7 +259,7 @@ void imap_utf_encode (IMAP_DATA *idata, char **s)
     if (t && !mutt_convert_string (&t, Charset, "utf-8", 0))
     {
       FREE (s);		/* __FREE_CHECKED__ */
-      if (idata->unicode)
+      if (idata->unicode != 0)
         *s = safe_strdup (t);
       else
         *s = utf8_to_utf7 (t, strlen (t), NULL, 0);
@@ -274,7 +274,7 @@ void imap_utf_decode (IMAP_DATA *idata, char **s)
 
   if (Charset)
   {
-    if (idata->unicode)
+    if (idata->unicode != 0)
       t = safe_strdup (*s);
     else
       t = utf7_to_utf8 (*s, strlen (*s), 0, 0);

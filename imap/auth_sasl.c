@@ -168,7 +168,7 @@ imap_auth_res_t imap_auth_sasl (IMAP_DATA* idata, const char* method)
       client_start = 0;
 
     /* send out response, or line break if none needed */
-    if (olen)
+    if (olen != 0)
     {
       if ((olen * 2) > bufsize)
       {

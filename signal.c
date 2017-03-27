@@ -216,7 +216,7 @@ void mutt_unblock_signals_system (int catch)
   if (option (OPTSYSSIGNALSBLOCKED))
   {
     sigprocmask (SIG_UNBLOCK, &SigsetSys, NULL);
-    if (catch)
+    if (catch != 0)
     {
       sigaction (SIGQUIT, &SysOldQuit, NULL);
       sigaction (SIGINT, &SysOldInt, NULL);

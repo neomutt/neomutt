@@ -151,11 +151,11 @@ static int nntp_capabilities (NNTP_SERVER *nserv)
   mutt_str_replace (&nserv->authenticators, buf);
 
   /* current mode is reader */
-  if (nserv->hasDATE)
+  if (nserv->hasDATE != 0)
     return 0;
 
   /* server is mode-switching, need to switch to reader mode */
-  if (mode_reader)
+  if (mode_reader != 0)
     return 1;
 
   mutt_socket_close (conn);
@@ -320,7 +320,7 @@ static int nntp_auth (NNTP_SERVER *nserv)
     /* get list of authenticators */
     if (NntpAuthenticators && *NntpAuthenticators)
       strfcpy (authenticators, NntpAuthenticators, sizeof (authenticators));
-    else if (nserv->hasCAPABILITIES)
+    else if (nserv->hasCAPABILITIES != 0)
     {
       strfcpy (authenticators, NONULL (nserv->authenticators),
 	       sizeof (authenticators));
@@ -356,7 +356,7 @@ static int nntp_auth (NNTP_SERVER *nserv)
 	*a++ = '\0';
 
       /* check authenticator */
-      if (nserv->hasCAPABILITIES)
+      if (nserv->hasCAPABILITIES != 0)
       {
 	char *m = NULL;
 
@@ -448,7 +448,7 @@ static int nntp_auth (NNTP_SERVER *nserv)
 	while (rc == SASL_CONTINUE || (rc == SASL_OK && client_len))
 	{
 	  /* send out client response */
-	  if (client_len)
+	  if (client_len != 0)
 	  {
 #ifdef DEBUG
 	    if (debuglevel >= MUTT_SOCK_LOG_FULL)
@@ -639,7 +639,7 @@ int nntp_open_connection (NNTP_SERVER *nserv)
     else if (mutt_strncmp ("201", buf, 3) == 0)
       posting = 0;
     /* error if has capabilities, ignore result if no capabilities */
-    else if (nserv->hasCAPABILITIES)
+    else if (nserv->hasCAPABILITIES != 0)
     {
       mutt_socket_close (conn);
       mutt_error (_("Could not switch to reader mode."));
@@ -648,7 +648,7 @@ int nntp_open_connection (NNTP_SERVER *nserv)
     }
 
     /* recheck capabilities after MODE READER */
-    if (nserv->hasCAPABILITIES)
+    if (nserv->hasCAPABILITIES != 0)
     {
       cap = nntp_capabilities (nserv);
       if (cap < 0)
@@ -922,9 +922,9 @@ static int get_description (NNTP_DATA *nntp_data, char *wildmat, char *msg)
   nserv = nntp_data->nserv;
   if (!wildmat)
     wildmat = nntp_data->group;
-  if (nserv->hasLIST_NEWSGROUPS)
+  if (nserv->hasLIST_NEWSGROUPS != 0)
     cmd = "LIST NEWSGROUPS";
-  else if (nserv->hasXGTITLE)
+  else if (nserv->hasXGTITLE != 0)
     cmd = "XGTITLE";
   else
     return 0;
@@ -1141,7 +1141,7 @@ static int parse_overview_line (char *line, void *data)
   }
 #endif
 
-  if (save)
+  if (save != 0)
   {
     hdr->index = ctx->msgcount++;
     hdr->read = 0;
@@ -1149,7 +1149,7 @@ static int parse_overview_line (char *line, void *data)
     hdr->deleted = 0;
     hdr->data = safe_calloc (1, sizeof (NNTP_HEADER_DATA));
     NHDR (hdr)->article_num = anum;
-    if (fc->restore)
+    if (fc->restore != 0)
       hdr->changed = 1;
     else
     {
@@ -1205,7 +1205,7 @@ static int nntp_fetch_headers (CONTEXT *ctx, void *hc,
   {
     if (ctx->quiet == 0)
       mutt_message (_("Fetching list of articles..."));
-    if (nntp_data->nserv->hasLISTGROUPrange)
+    if (nntp_data->nserv->hasLISTGROUPrange != 0)
       snprintf (buf, sizeof (buf), "LISTGROUP %s %d-%d\r\n", nntp_data->group,
 		first, last);
     else
@@ -1296,7 +1296,7 @@ static int nntp_fetch_headers (CONTEXT *ctx, void *hc,
 #endif
 
     /* don't try to fetch header from removed newsgroup */
-    if (nntp_data->deleted)
+    if (nntp_data->deleted != 0)
       continue;
 
     /* fallback to fetch overview */
@@ -1326,7 +1326,7 @@ static int nntp_fetch_headers (CONTEXT *ctx, void *hc,
       snprintf (buf, sizeof (buf), "HEAD %d\r\n", current);
       rc = nntp_fetch_lines (nntp_data, buf, sizeof (buf), NULL,
 			     fetch_tempfile, fp);
-      if (rc)
+      if (rc != 0)
       {
 	safe_fclose (&fp);
 	unlink (tempfile);
@@ -1367,7 +1367,7 @@ static int nntp_fetch_headers (CONTEXT *ctx, void *hc,
     hdr->deleted = 0;
     hdr->data = safe_calloc (1, sizeof (NNTP_HEADER_DATA));
     NHDR (hdr)->article_num = current;
-    if (restore)
+    if (restore != 0)
       hdr->changed = 1;
     else
     {
@@ -1582,7 +1582,7 @@ static int nntp_fetch_message (CONTEXT *ctx, MESSAGE *msg, int msgno)
   else
   {
     /* don't try to fetch article from removed newsgroup */
-    if (nntp_data->deleted)
+    if (nntp_data->deleted != 0)
       return -1;
 
     /* create new cache file */
@@ -1608,7 +1608,7 @@ static int nntp_fetch_message (CONTEXT *ctx, MESSAGE *msg, int msgno)
 	      NHDR (hdr)->article_num ? article : hdr->env->message_id);
     rc = nntp_fetch_lines (nntp_data, buf, sizeof (buf), fetch_msg,
 			   fetch_tempfile, msg->fp);
-    if (rc)
+    if (rc != 0)
     {
       safe_fclose (&msg->fp);
       if (acache->path)
@@ -1659,7 +1659,7 @@ static int nntp_fetch_message (CONTEXT *ctx, MESSAGE *msg, int msgno)
   /* these would normally be updated in mx_update_context(), but the
    * full headers aren't parsed with overview, so the information wasn't
    * available then */
-  if (WithCrypto)
+  if (WithCrypto != 0)
     hdr->security = crypt_query (hdr->content);
 
   rewind (msg->fp);
@@ -1761,7 +1761,7 @@ static int nntp_group_poll (NNTP_DATA *nntp_data, int update_stat)
   if (last < nntp_data->lastMessage)
   {
     nntp_data->lastCached = 0;
-    if (nntp_data->newsrc_len)
+    if (nntp_data->newsrc_len != 0)
     {
       safe_realloc (&nntp_data->newsrc_ent, sizeof (NEWSRC_ENTRY));
       nntp_data->newsrc_len = 1;
@@ -1810,7 +1810,7 @@ static int nntp_check_mailbox (CONTEXT *ctx, int *index_hint)
     nntp_newsrc_close (nserv);
     return -1;
   }
-  if (rc)
+  if (rc != 0)
     nntp_active_save_cache (nserv);
 
   /* articles have been renumbered, remove all headers */
@@ -1832,7 +1832,7 @@ static int nntp_check_mailbox (CONTEXT *ctx, int *index_hint)
   }
 
   /* .newsrc has been externally modified */
-  if (nserv->newsrc_modified)
+  if (nserv->newsrc_modified != 0)
   {
     anum_t anum;
 #ifdef USE_HCACHE
@@ -1878,7 +1878,7 @@ static int nntp_check_mailbox (CONTEXT *ctx, int *index_hint)
 	  mutt_free_header (&hdr);
 
 	  /* header marked as deleted, removing from context */
-	  if (deleted)
+	  if (deleted != 0)
 	  {
 	    mutt_set_flag (ctx, ctx->hdrs[i], MUTT_TAG, 0);
 	    mutt_free_header (&ctx->hdrs[i]);
@@ -1921,7 +1921,7 @@ static int nntp_check_mailbox (CONTEXT *ctx, int *index_hint)
 	hdr = mutt_hcache_restore (hdata);
 	mutt_hcache_free (hc, &hdata);
 	hdr->data = 0;
-	if (hdr->deleted)
+	if (hdr->deleted != 0)
 	{
 	  mutt_free_header (&hdr);
 	  if (nntp_data->bcache)
@@ -2013,7 +2013,7 @@ static int nntp_sync_mailbox (CONTEXT *ctx, int *index_hint)
   /* check for new articles */
   nntp_data->nserv->check_time = 0;
   rc = nntp_check_mailbox (ctx, index_hint);
-  if (rc)
+  if (rc != 0)
     return rc;
 
 #ifdef USE_HCACHE
@@ -2081,7 +2081,7 @@ static int nntp_fastclose_mailbox (CONTEXT *ctx)
 /* Get date and time from server */
 static int nntp_date (NNTP_SERVER *nserv, time_t *now)
 {
-  if (nserv->hasDATE)
+  if (nserv->hasDATE != 0)
   {
     NNTP_DATA nntp_data;
     char buf[LONG_STRING];
@@ -2130,7 +2130,7 @@ int nntp_active_fetch (NNTP_SERVER *nserv)
   strfcpy (buf, "LIST\r\n", sizeof (buf));
   rc = nntp_fetch_lines (&nntp_data, buf, sizeof (buf), msg,
 			 nntp_add_group, nserv);
-  if (rc)
+  if (rc != 0)
   {
     if (rc > 0)
     {
@@ -2202,7 +2202,7 @@ int nntp_check_new_groups (NNTP_SERVER *nserv)
 	return -1;
     }
   }
-  else if (nserv->newgroups_time)
+  else if (nserv->newgroups_time != 0)
     return 0;
 
   /* get list of new groups */
@@ -2221,7 +2221,7 @@ int nntp_check_new_groups (NNTP_SERVER *nserv)
 	    tm->tm_hour, tm->tm_min, tm->tm_sec);
   rc = nntp_fetch_lines (&nntp_data, buf, sizeof (buf), msg,
 			 nntp_add_group, nserv);
-  if (rc)
+  if (rc != 0)
   {
     if (rc > 0)
     {
@@ -2257,7 +2257,7 @@ int nntp_check_new_groups (NNTP_SERVER *nserv)
     update_active = true;
     rc = 1;
   }
-  if (update_active)
+  if (update_active != 0)
     nntp_active_save_cache (nserv);
   mutt_clear_error ();
   return rc;
@@ -2288,7 +2288,7 @@ int nntp_check_msgid (CONTEXT *ctx, const char *msgid)
   snprintf (buf, sizeof (buf), "HEAD %s\r\n", msgid);
   rc = nntp_fetch_lines (nntp_data, buf, sizeof (buf), NULL,
 			 fetch_tempfile, fp);
-  if (rc)
+  if (rc != 0)
   {
     safe_fclose (&fp);
     unlink (tempfile);
@@ -2388,7 +2388,7 @@ int nntp_check_children (CONTEXT *ctx, const char *msgid)
 	    nntp_data->firstMessage, nntp_data->lastLoaded, msgid);
   rc = nntp_fetch_lines (nntp_data, buf, sizeof (buf), NULL,
 			 fetch_children, &cc);
-  if (rc)
+  if (rc != 0)
   {
     FREE (&cc.child);
     if (rc > 0) {

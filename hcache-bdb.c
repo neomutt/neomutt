@@ -78,16 +78,16 @@ hcache_bdb_open(const char *path)
     goto fail_close;
 
   ret = db_env_create (&ctx->env, 0);
-  if (ret)
+  if (ret != 0)
     goto fail_unlock;
 
   ret = (*ctx->env->open)(ctx->env, NULL, DB_INIT_MPOOL | DB_CREATE | DB_PRIVATE, 0600);
-  if (ret)
+  if (ret != 0)
     goto fail_env;
 
   ctx->db = NULL;
   ret = db_create (&ctx->db, ctx->env, 0);
-  if (ret)
+  if (ret != 0)
     goto fail_env;
 
   if (stat(path, &sb) != 0 && errno == ENOENT)
@@ -98,7 +98,7 @@ hcache_bdb_open(const char *path)
 
   ret = (*ctx->db->open)(ctx->db, NULL, path, NULL, DB_BTREE, createflags,
                        0600);
-  if (ret)
+  if (ret != 0)
     goto fail_db;
 
   return ctx;

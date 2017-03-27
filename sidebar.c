@@ -233,7 +233,7 @@ static const char *cb_format_str(char *dest, size_t destlen, size_t col, int col
       break;
   }
 
-  if (optional)
+  if (optional != 0)
     mutt_FormatString (dest, destlen, col, SidebarWidth, ifstring,   cb_format_str, (unsigned long) sbe, flags);
   else if (flags & MUTT_FORMAT_OPTIONAL)
     mutt_FormatString (dest, destlen, col, SidebarWidth, elsestring, cb_format_str, (unsigned long) sbe, flags);
@@ -833,7 +833,7 @@ static void draw_sidebar (int num_rows, int num_cols, int div_width)
   for (entryidx = TopIndex; (entryidx < EntryCount) && (row < num_rows); entryidx++)
   {
     entry = Entries[entryidx];
-    if (entry->is_hidden)
+    if (entry->is_hidden != 0)
       continue;
     b = entry->buffy;
 
@@ -1153,7 +1153,7 @@ void mutt_sb_notify_mailbox (BUFFY *b, int created)
   /* Any new/deleted mailboxes will cause a refresh.  As long as
    * they're valid, our pointers will be updated in prepare_sidebar() */
 
-  if (created)
+  if (created != 0)
   {
     if (EntryCount >= EntryLen)
     {
