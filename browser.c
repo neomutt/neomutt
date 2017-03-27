@@ -558,7 +558,7 @@ static void add_folder (MUTTMENU *m, struct browser_state *state,
 		  sizeof (struct folder_file) * (state->entrymax += 256));
     memset (&state->entry[state->entrylen], 0,
 	    sizeof (struct folder_file) * 256);
-    if (m)
+    if (m != NULL)
       m->data = state->entry;
   }
 
@@ -576,7 +576,7 @@ static void add_folder (MUTTMENU *m, struct browser_state *state,
   else
     (state->entry)[state->entrylen].local = 0;
 
-  if (b)
+  if (b != NULL)
   {
     (state->entry)[state->entrylen].has_buffy = 1;
     (state->entry)[state->entrylen].new = b->new;
@@ -604,7 +604,7 @@ static void init_state (struct browser_state *state, MUTTMENU *menu)
 #ifdef USE_IMAP
   state->imap_browse = 0;
 #endif
-  if (menu)
+  if (menu != NULL)
     menu->data = state->entry;
 }
 
@@ -1161,7 +1161,7 @@ void _mutt_select_file (char *f, size_t flen, int flags, char ***files, int *num
        * This tracker is only used when browser_track is true,
        * meaning only with sort methods SUBJECT/DESC for now.
        */
-      if (CurrentFolder)
+      if (CurrentFolder != NULL)
       {
         if (!LastDir[0])
         {
@@ -1174,9 +1174,9 @@ void _mutt_select_file (char *f, size_t flen, int flags, char ***files, int *num
             case MUTT_MMDF:
             case MUTT_MH:
             case MUTT_MAILDIR:
-              if (Maildir)
+              if (Maildir != NULL)
                 strfcpy (LastDir, NONULL(Maildir), sizeof (LastDir));
-              else if (Spoolfile)
+              else if (Spoolfile != NULL)
                 mutt_browser_select_dir (Spoolfile);
               break;
             default:
@@ -1313,7 +1313,7 @@ void _mutt_select_file (char *f, size_t flen, int flags, char ***files, int *num
 	      {
 		char *p = strrchr (LastDir + 1, '/');
 
-		if (p)
+		if (p != NULL)
 		  *p = 0;
 		else
 		{
@@ -1770,7 +1770,7 @@ void _mutt_select_file (char *f, size_t flen, int flags, char ***files, int *num
         if (i == OP_BROWSER_GOTO_FOLDER)
         {
           /* When in mailboxes mode, disables this feature */
-          if (Maildir)
+          if (Maildir != NULL)
           {
             mutt_debug (5, "= hit! Maildir: %s, LastDir: %s\n",
                         Maildir, LastDir);
@@ -1893,7 +1893,7 @@ void _mutt_select_file (char *f, size_t flen, int flags, char ***files, int *num
 	  else
 	    nntp_data = mutt_newsgroup_uncatchup (CurrentNewsSrv, ff->name);
 
-	  if (nntp_data)
+	  if (nntp_data != NULL)
 	  {
 	    nntp_newsrc_update (CurrentNewsSrv);
 	    if (menu->current + 1 < menu->max)
@@ -1918,7 +1918,7 @@ void _mutt_select_file (char *f, size_t flen, int flags, char ***files, int *num
 	  for (j = 0; j < nserv->groups_num; j++)
 	  {
 	    NNTP_DATA *nntp_data = nserv->groups_list[j];
-	    if (nntp_data)
+	    if (nntp_data != NULL)
 	      nntp_data->deleted = 1;
 	  }
 	  nntp_active_fetch (nserv);

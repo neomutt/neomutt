@@ -117,7 +117,7 @@ int mutt_copy_body (FILE *fp, BODY **tgt, BODY *src)
 
   short use_disp;
 
-  if (src->filename)
+  if (src->filename != NULL)
   {
     use_disp = 1;
     strfcpy (tmp, src->filename, sizeof (tmp));
@@ -161,7 +161,7 @@ int mutt_copy_body (FILE *fp, BODY **tgt, BODY *src)
    * XXX - this may change in the future
    */
 
-  if (b->hdr) b->hdr = NULL;
+  if (b->hdr != NULL) b->hdr = NULL;
 
   /* copy parameters */
   for (par = b->parameter, ppar = &b->parameter; par; ppar = &(*ppar)->next, par = par->next)
@@ -187,9 +187,9 @@ void mutt_free_body (BODY **p)
     b = a;
     a = a->next;
 
-    if (b->parameter)
+    if (b->parameter != NULL)
       mutt_free_parameter (&b->parameter);
-    if (b->filename)
+    if (b->filename != NULL)
     {
       if (b->unlink != 0)
 	unlink (b->filename);
@@ -206,14 +206,14 @@ void mutt_free_body (BODY **p)
     FREE (&b->description);
     FREE (&b->form_name);
 
-    if (b->hdr)
+    if (b->hdr != NULL)
     {
       /* Don't free twice (b->hdr->content = b->parts) */
       b->hdr->content = NULL;
       mutt_free_header(&b->hdr);
     }
 
-    if (b->parts)
+    if (b->parts != NULL)
       mutt_free_body (&b->parts);
 
     FREE (&b);
@@ -251,7 +251,7 @@ LIST *mutt_add_list_n (LIST *head, const void *data, size_t len)
 
   for (tmp = head; tmp && tmp->next; tmp = tmp->next)
     ;
-  if (tmp)
+  if (tmp != NULL)
   {
     tmp->next = safe_malloc (sizeof (LIST));
     tmp = tmp->next;
@@ -327,7 +327,7 @@ int mutt_remove_from_rx_list (RX_LIST **l, const char *str)
       if (ascii_strcasecmp (str, p->rx->pattern) == 0)
       {
 	mutt_free_regexp (&p->rx);
-	if (last)
+	if (last != NULL)
 	  last->next = p->next;
 	else
 	  (*l) = p->next;
@@ -367,7 +367,7 @@ LIST *mutt_copy_list (LIST *p)
     t = safe_malloc (sizeof (LIST));
     t->data = safe_strdup (p->data);
     t->next = NULL;
-    if (l)
+    if (l != NULL)
     {
       r->next = t;
       r = r->next;
@@ -452,7 +452,7 @@ char *_mutt_expand_path (char *s, size_t slen, int rx)
 	  if ((pw = getpwnam (s + 1)))
 	  {
 	    strfcpy (p, pw->pw_dir, sizeof (p));
-	    if (t)
+	    if (t != NULL)
 	    {
 	      *t = '/';
 	      tail = t;
@@ -463,7 +463,7 @@ char *_mutt_expand_path (char *s, size_t slen, int rx)
 	  else
 	  {
 	    /* user not found! */
-	    if (t)
+	    if (t != NULL)
 	      *t = '/';
 	    *p = '\0';
 	    tail = s;
@@ -1090,7 +1090,7 @@ int mutt_check_overwrite (const char *attname, const char *path,
     return -1;
   if (S_ISDIR (st.st_mode))
   {
-    if (directory)
+    if (directory != NULL)
     {
       switch (mutt_multi_choice
       /* L10N:
@@ -1219,7 +1219,7 @@ char *mutt_apply_replace (char *dbuf, size_t dlen, char *sbuf, REPLACE_LIST *rli
       mutt_debug (5, "mutt_apply_replace: %s matches %s\n", src, l->rx->pattern);
 
       /* Copy into other twinbuf with substitutions */
-      if (l->template)
+      if (l->template != NULL)
       {
         for (p = l->template; *p && (tlen < LONG_STRING - 1); )
         {
@@ -1259,7 +1259,7 @@ char *mutt_apply_replace (char *dbuf, size_t dlen, char *sbuf, REPLACE_LIST *rli
     src = dst;
   }
 
-  if (dbuf)
+  if (dbuf != NULL)
     strfcpy(dbuf, dst, dlen);
   else
     dbuf = safe_strdup(dst);
@@ -1330,7 +1330,7 @@ void mutt_FormatString (char *dest,		/* output buffer */
 
         /* Extract the command name and copy to command line */
         mutt_debug (3, "fmtpipe +++: %s\n", srcbuf->dptr);
-        if (word->data)
+        if (word->data != NULL)
           *word->data = '\0';
         mutt_extract_token(word, srcbuf, 0);
         mutt_debug (3, "fmtpipe %2d: %s\n", i++, word->data);
@@ -1383,7 +1383,7 @@ void mutt_FormatString (char *dest,		/* output buffer */
 	    if ((n > 0) && dest[n-1] != '%')
 	    {
 	      recycler = safe_strdup(dest);
-	      if (recycler)
+	      if (recycler != NULL)
 	      {
 		/* destlen is decremented at the start of this function
 		 * to save space for the terminal nul char.  We can add
@@ -1848,7 +1848,7 @@ void state_prefix_putc (char c, STATE *s)
   if (s->flags & MUTT_PENDINGPREFIX)
   {
     state_reset_prefix (s);
-    if (s->prefix)
+    if (s->prefix != NULL)
       state_puts (s->prefix, s);
   }
 

@@ -338,7 +338,7 @@ static void free_ctxdata(struct nm_ctxdata *data)
 
   mutt_debug (1, "nm: freeing context data %p\n", (void*) data);
 
-  if (data->db)
+  if (data->db != NULL)
 #ifdef NOTMUCH_API_3
     notmuch_database_destroy(data->db);
 #else
@@ -379,7 +379,7 @@ static int init_context(CONTEXT *ctx)
   if (!ctx || (ctx->magic != MUTT_NOTMUCH))
     return -1;
 
-  if (ctx->data)
+  if (ctx->data != NULL)
     return 0;
 
   ctx->data = new_ctxdata(ctx->path);
@@ -564,7 +564,7 @@ static char *get_query_string(struct nm_ctxdata *data, int window)
 
   if (data == NULL)
     return NULL;
-  if (data->db_query)
+  if (data->db_query != NULL)
     return data->db_query;
 
   for (item = data->query_items; item; item = item->next)
@@ -686,7 +686,7 @@ static notmuch_database_t *get_db(struct nm_ctxdata *data, int writable)
   {
     const char *db_filename = get_db_filename(data);
 
-    if (db_filename)
+    if (db_filename != NULL)
       data->db = do_database_open(db_filename, writable, true);
   }
   return data->db;
@@ -762,7 +762,7 @@ static int get_database_mtime(struct nm_ctxdata *data, time_t *mtime)
   if (stat(path, &st))
     return -1;
 
-  if (mtime)
+  if (mtime != NULL)
     *mtime = st.st_mtime;
 
   return 0;
@@ -872,7 +872,7 @@ static int update_header_tags(HEADER *h, notmuch_message_t *msg)
     tag_list = tmp;
 
     /* filter out hidden tags */
-    if (NotmuchHiddenTags)
+    if (NotmuchHiddenTags != NULL)
     {
       char *p = strstr(NotmuchHiddenTags, t);
       size_t xsz = p ? strlen(t) : 0;
@@ -973,7 +973,7 @@ static char *get_folder_from_path(const char *path)
 
 static void deinit_header(HEADER *h)
 {
-  if (h)
+  if (h != NULL)
   {
     free_hdrdata(h->data);
     h->data = NULL;
@@ -998,7 +998,7 @@ static int init_header(HEADER *h, const char *path, notmuch_message_t *msg)
 {
   const char *id = NULL;
 
-  if (h->data)
+  if (h->data != NULL)
     return 0;
 
   id = notmuch_message_get_message_id(msg);
@@ -1158,10 +1158,10 @@ static void append_message(CONTEXT *ctx, notmuch_query_t *q,
     /* maybe moved try find it... */
     char *folder = get_folder_from_path(path);
 
-    if (folder)
+    if (folder != NULL)
     {
       FILE *f = maildir_open_find_message(folder, path, &newpath);
-      if (f)
+      if (f != NULL)
       {
         h = maildir_parse_stream(MUTT_MAILDIR, f, newpath, 0, NULL);
         fclose(f);
@@ -1190,12 +1190,12 @@ static void append_message(CONTEXT *ctx, notmuch_query_t *q,
   ctx->hdrs[ctx->msgcount] = h;
   ctx->msgcount++;
 
-  if (newpath)
+  if (newpath != NULL)
   {
     /* remember that file has been moved -- nm_sync_mailbox() will update the DB */
     struct nm_hdrdata *hd = (struct nm_hdrdata *) h->data;
 
-    if (hd)
+    if (hd != NULL)
     {
       mutt_debug (1, "nm: remember obsolete path: %s\n", path);
       hd->oldpath = safe_strdup(path);
@@ -1451,7 +1451,7 @@ static int rename_maildir_filename(const char *old, char *newpath, size_t newsz,
 
   strfcpy(folder, old, sizeof(folder));
   p = strrchr(folder, '/');
-  if (p)
+  if (p != NULL)
   {
     *p = '\0';
     p++;
@@ -1463,12 +1463,12 @@ static int rename_maildir_filename(const char *old, char *newpath, size_t newsz,
 
   /* remove (new,cur,...) from folder path */
   p = strrchr(folder, '/');
-  if (p)
+  if (p != NULL)
     *p = '\0';
 
   /* remove old flags from filename */
   p = strchr(filename, ':');
-  if (p)
+  if (p != NULL)
     *p = '\0';
 
   /* compose new flags */
@@ -1623,7 +1623,7 @@ static int rename_filename(struct nm_ctxdata *data, const char *old,
 
   rc = 0;
 done:
-  if (msg)
+  if (msg != NULL)
     notmuch_message_destroy(msg);
   if (trans != 0)
     db_trans_end(data);
@@ -1635,7 +1635,7 @@ static unsigned count_query(notmuch_database_t *db, const char *qstr)
   unsigned res = 0;
   notmuch_query_t *q = notmuch_query_create(db, qstr);
 
-  if (q)
+  if (q != NULL)
   {
     apply_exclude_tags(q);
 #if LIBNOTMUCH_CHECK_VERSION(4,3,0)
@@ -1709,7 +1709,7 @@ void nm_debug_check(CONTEXT *ctx)
   if (data == NULL)
     return;
 
-  if (data->db)
+  if (data->db != NULL)
   {
     mutt_debug (1, "nm: ERROR: db is open, closing\n");
     release_db(data);
@@ -1756,7 +1756,7 @@ int nm_read_entire_thread(CONTEXT *ctx, HEADER *h)
   if (ctx->msgcount > data->oldmsgcount)
     mx_update_context(ctx, ctx->msgcount - data->oldmsgcount);
 done:
-  if (q)
+  if (q != NULL)
     notmuch_query_destroy(q);
   if (!is_longrun(data))
     release_db(data);
@@ -1777,11 +1777,11 @@ char *nm_uri_from_query(CONTEXT *ctx, char *buf, size_t bufsz)
   struct nm_ctxdata *data = get_ctxdata(ctx);
   char uri[_POSIX_PATH_MAX + LONG_STRING + 32]; /* path to DB + query + URI "decoration" */
 
-  if (data)
+  if (data != NULL)
     snprintf(uri, sizeof(uri), "notmuch://%s?query=%s", get_db_filename(data), buf);
-  else if (NotmuchDefaultUri)
+  else if (NotmuchDefaultUri != NULL)
     snprintf(uri, sizeof(uri), "%s?query=%s", NotmuchDefaultUri, buf);
-  else if (Maildir)
+  else if (Maildir != NULL)
     snprintf(uri, sizeof(uri), "notmuch://%s?query=%s", Maildir, buf);
   else
     return NULL;
@@ -1972,14 +1972,14 @@ int nm_nonctx_get_count(char *path, int *all, int *new)
 
   if (db_filename == NULL)
   {
-    if (NotmuchDefaultUri)
+    if (NotmuchDefaultUri != NULL)
     {
       if (strncmp(NotmuchDefaultUri, "notmuch://", 10) == 0)
         db_filename = NotmuchDefaultUri + 10;
       else
         db_filename = NotmuchDefaultUri;
     }
-    else if (Maildir)
+    else if (Maildir != NULL)
       db_filename = Maildir;
     dflt = 1;
   }
@@ -1991,11 +1991,11 @@ int nm_nonctx_get_count(char *path, int *all, int *new)
     goto done;
 
   /* all emails */
-  if (all)
+  if (all != NULL)
     *all = count_query(db, db_query);
 
   /* new messages */
-  if (new)
+  if (new != NULL)
   {
     char *qstr = NULL;
 
@@ -2006,7 +2006,7 @@ int nm_nonctx_get_count(char *path, int *all, int *new)
 
   rc = 0;
 done:
-  if (db)
+  if (db != NULL)
   {
 #ifdef NOTMUCH_API_3
     notmuch_database_destroy(db);
@@ -2083,15 +2083,15 @@ int nm_record_message(CONTEXT *ctx, char *path, HEADER *h)
   if (st == NOTMUCH_STATUS_SUCCESS && msg)
   {
     notmuch_message_maildir_flags_to_tags(msg);
-    if (h)
+    if (h != NULL)
       update_tags(msg, nm_header_get_tags(h));
-    if (NotmuchRecordTags)
+    if (NotmuchRecordTags != NULL)
       update_tags(msg, NotmuchRecordTags);
   }
 
   rc = 0;
 done:
-  if (msg)
+  if (msg != NULL)
     notmuch_message_destroy(msg);
   if (trans == 1)
     db_trans_end(data);
@@ -2133,7 +2133,7 @@ int nm_get_all_tags(CONTEXT *ctx, char **tag_list, int *tag_count)
 
   rc = 0;
 done:
-  if (tags)
+  if (tags != NULL)
     notmuch_tags_destroy(tags);
 
   if (!is_longrun(data))
@@ -2164,7 +2164,7 @@ static int nm_open_mailbox(CONTEXT *ctx)
   progress_reset(ctx);
 
   q = get_query(data, false);
-  if (q)
+  if (q != NULL)
   {
     rc = 0;
     switch (get_query_type(data))
@@ -2205,7 +2205,7 @@ static int nm_close_mailbox(CONTEXT *ctx)
   {
     HEADER *h = ctx->hdrs[i];
 
-    if (h)
+    if (h != NULL)
     {
       free_hdrdata(h->data);
       h->data = NULL;
@@ -2316,7 +2316,7 @@ static int nm_check_mailbox(CONTEXT *ctx, int *index_hint)
   if (ctx->msgcount > data->oldmsgcount)
     mx_update_context(ctx, ctx->msgcount - data->oldmsgcount);
 done:
-  if (q)
+  if (q != NULL)
     notmuch_query_destroy(q);
 
   if (!is_longrun(data))
@@ -2365,7 +2365,7 @@ static int nm_sync_mailbox(CONTEXT *ctx, int *index_hint)
 
     *old = *new = '\0';
 
-    if (hd->oldpath)
+    if (hd->oldpath != NULL)
     {
       strncpy(old, hd->oldpath, sizeof(old));
       old[sizeof(old) - 1] = '\0';

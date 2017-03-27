@@ -160,7 +160,7 @@ static int parse_regex(int idx, BUFFER *tmp, BUFFER *err)
     }
 
     /* get here only if everything went smoothly */
-    if (ptr->pattern)
+    if (ptr->pattern != NULL)
     {
       FREE(&ptr->pattern);
       regfree((regex_t *) ptr->rx);
@@ -496,7 +496,7 @@ static void free_opt (struct option_t* p)
   case DT_RX:
     pp = (REGEXP*)p->data;
     FREE (&pp->pattern);
-    if (pp->rx)
+    if (pp->rx != NULL)
     {
       regfree (pp->rx);
       FREE (&pp->rx);
@@ -551,7 +551,7 @@ static void add_to_list (LIST **list, const char *str)
   {
     t = safe_calloc (1, sizeof (LIST));
     t->data = safe_strdup (str);
-    if (last)
+    if (last != NULL)
     {
       last->next = t;
       last = last->next;
@@ -597,7 +597,7 @@ int mutt_add_to_rx_list (RX_LIST **list, const char *s, int flags, BUFFER *err)
   {
     t = new_rx_list();
     t->rx = rx;
-    if (last)
+    if (last != NULL)
     {
       last->next = t;
       last = last->next;
@@ -696,7 +696,7 @@ static int add_to_replace_list (REPLACE_LIST **list, const char *pat, const char
     t = new_replace_list();
     t->rx = rx;
     rx = NULL;
-    if (last)
+    if (last != NULL)
       last->next = t;
     else
       *list = t;
@@ -752,7 +752,7 @@ static void remove_from_list (LIST **l, const char *str)
       if (ascii_strcasecmp (str, p->data) == 0)
       {
 	FREE (&p->data);
-	if (last)
+	if (last != NULL)
 	  last->next = p->next;
 	else
 	  (*l) = p->next;
@@ -1404,7 +1404,7 @@ static int parse_attach_list (BUFFER *buf, BUFFER *s, LIST **ldata, BUFFER *err)
     listp = safe_malloc(sizeof(LIST));
     listp->data = (char *)a;
     listp->next = NULL;
-    if (lastp)
+    if (lastp != NULL)
     {
       lastp->next = listp;
     }
@@ -1467,7 +1467,7 @@ static int parse_unattach_list (BUFFER *buf, BUFFER *s, LIST **ldata, BUFFER *er
 	FREE(&a->major);
 
 	/* Relink backward */
-	if (lastp)
+	if (lastp != NULL)
 	  lastp->next = lp->next;
 	else
 	  *ldata = lp->next;
@@ -1689,7 +1689,7 @@ static int parse_unalias (BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *er
 	    break;
 	  }
 
-	  if (last)
+	  if (last != NULL)
 	    last->next = tmp->next;
 	  else
 	    Aliases = tmp->next;
@@ -1754,7 +1754,7 @@ static int parse_alias (BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err)
 
   tmp->addr = mutt_parse_adrlist (tmp->addr, buf->data);
 
-  if (last)
+  if (last != NULL)
     last->next = tmp;
   else
     Aliases = tmp;
@@ -1818,7 +1818,7 @@ parse_unmy_hdr (BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err)
 	if ((ascii_strncasecmp (buf->data, tmp->data, l) == 0) && tmp->data[l] == ':')
 	{
 	  ptr = tmp;
-	  if (last)
+	  if (last != NULL)
 	    last->next = tmp->next;
 	  else
 	    UserHeader = tmp->next;
@@ -1852,7 +1852,7 @@ static int parse_my_hdr (BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err
   }
   keylen = p - buf->data + 1;
 
-  if (UserHeader)
+  if (UserHeader != NULL)
   {
     for (tmp = UserHeader; ; tmp = tmp->next)
     {
@@ -1962,7 +1962,7 @@ static void restore_default (struct option_t *p)
 	int flags = 0;
 
 	FREE (&pp->pattern);
-	if (pp->rx)
+	if (pp->rx != NULL)
 	{
 	  regfree (pp->rx);
 	  FREE (&pp->rx);
@@ -2331,7 +2331,7 @@ static int parse_set (BUFFER *tmp, BUFFER *s, unsigned long data, BUFFER *err)
       else
       {
 	CHECK_PAGER;
-        if (myvar)
+        if (myvar != NULL)
           myvar_del (myvar);
         else
           restore_default (&MuttVars[idx]);
@@ -2383,7 +2383,7 @@ static int parse_set (BUFFER *tmp, BUFFER *s, unsigned long data, BUFFER *err)
       if (unset != 0)
       {
 	CHECK_PAGER;
-        if (myvar)
+        if (myvar != NULL)
           myvar_del (myvar);
 	else if (DTYPE (MuttVars[idx].type) == DT_ADDR)
 	  rfc822_free_address ((ADDRESS **) MuttVars[idx].data);
@@ -2399,7 +2399,7 @@ static int parse_set (BUFFER *tmp, BUFFER *s, unsigned long data, BUFFER *err)
 	char _tmp[LONG_STRING];
 	const char *val = NULL;
 
-        if (myvar)
+        if (myvar != NULL)
         {
           if ((val = myvar_get (myvar)))
           {
@@ -2442,7 +2442,7 @@ static int parse_set (BUFFER *tmp, BUFFER *s, unsigned long data, BUFFER *err)
 	CHECK_PAGER;
         s->dptr++;
 
-        if (myvar)
+        if (myvar != NULL)
 	{
 	  /* myvar is a pointer to tmp and will be lost on extract_token */
 	  myvar = safe_strdup (myvar);
@@ -2451,7 +2451,7 @@ static int parse_set (BUFFER *tmp, BUFFER *s, unsigned long data, BUFFER *err)
 
         mutt_extract_token (tmp, s, 0);
 
-        if (myvar)
+        if (myvar != NULL)
         {
           myvar_set (myvar, tmp->data);
           FREE (&myvar);
@@ -3435,7 +3435,7 @@ int mutt_nm_tag_complete (char *buffer, size_t len, int pos, int numtabs)
 
   /* Only examine the last token */
   char *last_space = strrchr (buffer, ' ');
-  if (last_space)
+  if (last_space != NULL)
     pt = (last_space + 1);
 
   /* Skip the +/- */
@@ -3855,7 +3855,7 @@ void mutt_init (int skip_sys_rc, LIST *commands)
     Hostname = safe_strdup (utsname.nodename);
 
   /* now get FQDN.  Use configured domain first, DNS next, then uname */
-  if (domain)
+  if (domain != NULL)
   {
     /* we have a compile-time domain name, use that for Fqdn */
     Fqdn = safe_malloc (mutt_strlen (domain) + mutt_strlen (Hostname) + 2);
@@ -4005,7 +4005,7 @@ void mutt_init (int skip_sys_rc, LIST *commands)
     }
 
     char *config = find_cfg (Homedir, xdg_cfg_home);
-    if (config)
+    if (config != NULL)
     {
       Muttrc = mutt_add_list (Muttrc, config);
       FREE(&config);
@@ -4087,7 +4087,7 @@ void mutt_init (int skip_sys_rc, LIST *commands)
   /* Read the user's initialization file.  */
   for (LIST *config = Muttrc; config != NULL; config = config->next)
   {
-    if (config->data)
+    if (config->data != NULL)
     {
       if (!option(OPTNOCURSES))
         endwin();
@@ -4181,7 +4181,7 @@ static int parse_tag_transforms (BUFFER *b, BUFFER *s, unsigned long data, BUFFE
 
     /* avoid duplicates */
     tmp = hash_find(TagTransforms, tag);
-    if (tmp) {
+    if (tmp != NULL) {
       mutt_debug (3, "tag transform '%s' already registered as '%s'\n", tag, tmp);
       FREE(&tag);
       FREE(&transform);
@@ -4212,7 +4212,7 @@ static int parse_tag_formats (BUFFER *b, BUFFER *s, unsigned long data, BUFFER *
 
     /* avoid duplicates */
     tmp = hash_find(TagFormats, format);
-    if (tmp) {
+    if (tmp != NULL) {
       mutt_debug (3, "tag format '%s' already registered as '%s'\n", format, tmp);
       FREE(&tag);
       FREE(&format);

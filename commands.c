@@ -101,7 +101,7 @@ int mutt_display_message (HEADER *cur)
   {
     if (cur->security & APPLICATION_PGP)
     {
-      if (cur->env->from)
+      if (cur->env->from != NULL)
         crypt_pgp_invoke_getkeys (cur->env->from);
 
       crypt_invoke_message (APPLICATION_PGP);
@@ -257,7 +257,7 @@ void ci_bounce_message (HEADER *h, int *redraw)
 
  /* RfC 5322 mandates a From: header, so warn before bouncing
   * messages without one */
-  if (h)
+  if (h != NULL)
   {
     if (h->env->from == NULL)
     {
@@ -265,7 +265,7 @@ void ci_bounce_message (HEADER *h, int *redraw)
       mutt_sleep (2);
     }
   }
-  else if (Context)
+  else if (Context != NULL)
   {
     for (rc = 0; rc < Context->msgcount; rc++)
     {
@@ -278,7 +278,7 @@ void ci_bounce_message (HEADER *h, int *redraw)
     }
   }
 
-  if(h)
+  if (h != NULL)
     strfcpy(prompt, _("Bounce message to: "), sizeof(prompt));
   else
     strfcpy(prompt, _("Bounce tagged messages to: "), sizeof(prompt));
@@ -396,7 +396,7 @@ static int _mutt_pipe_message (HEADER *h, char *cmd,
   pid_t thepid;
   FILE *fpout = NULL;
 
-  if (h)
+  if (h != NULL)
   {
 
     mutt_message_hook (Context, h, MUTT_MESSAGEHOOK);
@@ -450,7 +450,7 @@ static int _mutt_pipe_message (HEADER *h, char *cmd,
 	  }
           pipe_msg (Context->hdrs[Context->v2r[i]], fpout, decode, print);
           /* add the message separator */
-          if (sep)  fputs (sep, fpout);
+          if (sep != NULL)  fputs (sep, fpout);
 	  safe_fclose (&fpout);
 	  if (mutt_wait_filter (thepid) != 0)
 	    rc = 1;
@@ -472,7 +472,7 @@ static int _mutt_pipe_message (HEADER *h, char *cmd,
 	  mutt_message_hook (Context, Context->hdrs[Context->v2r[i]], MUTT_MESSAGEHOOK);
           pipe_msg (Context->hdrs[Context->v2r[i]], fpout, decode, print);
           /* add the message separator */
-          if (sep) fputs (sep, fpout);
+          if (sep != NULL) fputs (sep, fpout);
         }
       }
       safe_fclose (&fpout);
@@ -756,7 +756,7 @@ int mutt_save_message (HEADER *h, int delete,
 	    h ? "" : _(" tagged"));
 
 
-  if (h)
+  if (h != NULL)
   {
     if (WithCrypto != 0)
     {
@@ -780,7 +780,7 @@ int mutt_save_message (HEADER *h, int delete,
     }
 
 
-    if (h)
+    if (h != NULL)
     {
       mutt_message_hook (Context, h, MUTT_MESSAGEHOOK);
       mutt_default_save (buf, sizeof (buf), h);
@@ -856,7 +856,7 @@ int mutt_save_message (HEADER *h, int delete,
     if (cm && (cm->msg_count == 0))
       cm = NULL;
 #endif
-    if (h)
+    if (h != NULL)
     {
       if (_mutt_save_message(h, &ctx, delete, decode, decrypt) != 0)
       {
@@ -864,7 +864,7 @@ int mutt_save_message (HEADER *h, int delete,
         return -1;
       }
 #ifdef USE_COMPRESSED
-      if (cm)
+      if (cm != NULL)
       {
         cm->msg_count++;
         if (h->read == 0)
@@ -891,7 +891,7 @@ int mutt_save_message (HEADER *h, int delete,
 			     &ctx, delete, decode, decrypt) != 0))
 	    break;
 #ifdef USE_COMPRESSED
-          if (cm)
+          if (cm != NULL)
           {
             HEADER *h2 = Context->hdrs[Context->v2r[i]];
             cm->msg_count++;
@@ -951,7 +951,7 @@ void mutt_edit_content_type (HEADER *h, BODY *b, FILE *fp)
 
   snprintf (buf, sizeof (buf), "%s/%s", TYPE (b), b->subtype);
   strfcpy (obuf, buf, sizeof (obuf));
-  if (b->parameter)
+  if (b->parameter != NULL)
   {
     size_t l;
 

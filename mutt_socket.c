@@ -147,7 +147,7 @@ int mutt_socket_poll (CONNECTION* conn)
   if (conn->bufpos < conn->available)
     return conn->available - conn->bufpos;
 
-  if (conn->conn_poll)
+  if (conn->conn_poll != NULL)
     return conn->conn_poll (conn);
 
   return -1;

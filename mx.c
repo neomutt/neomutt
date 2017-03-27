@@ -733,12 +733,12 @@ void mx_fastclose_mailbox (CONTEXT *ctx)
   if (ctx->peekonly == 0)
     mutt_buffy_setnotified(ctx->path);
 
-  if (ctx->mx_ops)
+  if (ctx->mx_ops != NULL)
     ctx->mx_ops->close (ctx);
 
-  if (ctx->subj_hash)
+  if (ctx->subj_hash != NULL)
     hash_destroy (&ctx->subj_hash, NULL);
-  if (ctx->id_hash)
+  if (ctx->id_hash != NULL)
     hash_destroy (&ctx->id_hash, NULL);
   hash_destroy (&ctx->label_hash, NULL);
   mutt_clear_threads (ctx);
@@ -749,7 +749,7 @@ void mx_fastclose_mailbox (CONTEXT *ctx)
   FREE (&ctx->path);
   FREE (&ctx->realpath);
   FREE (&ctx->pattern);
-  if (ctx->limit_pattern)
+  if (ctx->limit_pattern != NULL)
     mutt_pattern_free (&ctx->limit_pattern);
   safe_fclose (&ctx->fp);
   memset (ctx, 0, sizeof (CONTEXT));
@@ -1318,7 +1318,7 @@ MESSAGE *mx_open_new_message (CONTEXT *dest, HEADER *hdr, int flags)
   msg = safe_calloc (1, sizeof (MESSAGE));
   msg->write = 1;
 
-  if (hdr)
+  if (hdr != NULL)
   {
     msg->flags.flagged = hdr->flagged;
     msg->flags.replied = hdr->replied;
@@ -1338,11 +1338,11 @@ MESSAGE *mx_open_new_message (CONTEXT *dest, HEADER *hdr, int flags)
     if ((dest->magic == MUTT_MBOX || dest->magic ==  MUTT_MMDF) &&
 	flags & MUTT_ADD_FROM)
     {
-      if (hdr)
+      if (hdr != NULL)
       {
-	if (hdr->env->return_path)
+	if (hdr->env->return_path != NULL)
 	  p = hdr->env->return_path;
-	else if (hdr->env->sender)
+	else if (hdr->env->sender != NULL)
 	  p = hdr->env->sender;
 	else
 	  p = hdr->env->from;
@@ -1438,7 +1438,7 @@ void mx_alloc_memory (CONTEXT *ctx)
     mutt_exit (1);
   }
 
-  if (ctx->hdrs)
+  if (ctx->hdrs != NULL)
   {
     safe_realloc (&ctx->hdrs, sizeof (HEADER *) * (ctx->hdrmax += 25));
     safe_realloc (&ctx->v2r, sizeof (int) * ctx->hdrmax);
@@ -1482,7 +1482,7 @@ void mx_update_context (CONTEXT *ctx, int new_messages)
       h->virtual = -1;
     h->msgno = msgno;
 
-    if (h->env->supersedes)
+    if (h->env->supersedes != NULL)
     {
       HEADER *h2 = NULL;
 
@@ -1490,7 +1490,7 @@ void mx_update_context (CONTEXT *ctx, int new_messages)
 	ctx->id_hash = mutt_make_id_hash (ctx);
 
       h2 = hash_find (ctx->id_hash, h->env->supersedes);
-      if (h2)
+      if (h2 != NULL)
       {
 	h2->superseded = 1;
 	if (option (OPTSCORE))

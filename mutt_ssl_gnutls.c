@@ -164,7 +164,7 @@ static int tls_socket_write (CONNECTION* conn, const char* buf, size_t len)
 static int tls_socket_close (CONNECTION* conn)
 {
   tlssockdata *data = conn->sockdata;
-  if (data)
+  if (data != NULL)
   {
     /* shut down only the write half to avoid hanging waiting for the remote to respond.
      *
@@ -496,7 +496,7 @@ static char *tls_make_date (time_t t, char *s, size_t len)
 {
   struct tm *l = gmtime (&t);
 
-  if (l)
+  if (l != NULL)
     snprintf (s, len,  "%s, %d %s %d %02d:%02d:%02d UTC",
 	      Weekdays[l->tm_wday], l->tm_mday, Months[l->tm_mon],
 	      l->tm_year + 1900, l->tm_hour, l->tm_min, l->tm_sec);
@@ -923,7 +923,7 @@ static int tls_set_priority(tlssockdata *data)
   priority = safe_malloc (priority_size);
 
   priority[0] = 0;
-  if (SslCiphers)
+  if (SslCiphers != NULL)
     safe_strcat (priority, priority_size, SslCiphers);
   else
     safe_strcat (priority, priority_size, "NORMAL");
@@ -994,7 +994,7 @@ static int tls_set_priority(tlssockdata *data)
     return -1;
   }
 
-  if (SslCiphers)
+  if (SslCiphers != NULL)
   {
     mutt_error (_("Explicit ciphersuite selection via $ssl_ciphers not supported"));
     mutt_sleep (2);
@@ -1030,13 +1030,13 @@ static int tls_negotiate (CONNECTION * conn)
 					  GNUTLS_X509_FMT_PEM);
   /* ignore errors, maybe file doesn't exist yet */
 
-  if (SslCACertFile)
+  if (SslCACertFile != NULL)
   {
     gnutls_certificate_set_x509_trust_file (data->xcred, SslCACertFile,
                                             GNUTLS_X509_FMT_PEM);
   }
 
-  if (SslClientCert)
+  if (SslClientCert != NULL)
   {
     mutt_debug (2, "Using client certificate %s\n", SslClientCert);
     gnutls_certificate_set_x509_key_file (data->xcred, SslClientCert,

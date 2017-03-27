@@ -162,7 +162,7 @@ static int mutt_sasl_cb_authname (void* context, int id, const char** result,
     return SASL_FAIL;
 
   *result = NULL;
-  if (len)
+  if (len != NULL)
     *len = 0;
 
   if (account == NULL)
@@ -185,7 +185,7 @@ static int mutt_sasl_cb_authname (void* context, int id, const char** result,
     *result = account->user;
   }
 
-  if (len)
+  if (len != NULL)
     *len = strlen (*result);
 
   return SASL_OK;

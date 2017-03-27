@@ -696,9 +696,9 @@ void mutt_window_getyx (mutt_window_t *win, int *y, int *x)
   int row, col;
 
   getyx (stdscr, row, col);
-  if (y)
+  if (y != NULL)
     *y = row - win->row_offset;
-  if (x)
+  if (x != NULL)
     *x = col - win->col_offset;
 }
 
@@ -759,7 +759,7 @@ int mutt_any_key_to_continue (const char *s)
   t.c_cc[VTIME] = 0;
   tcsetattr (f, TCSADRAIN, &t);
   fflush (stdout);
-  if (s)
+  if (s != NULL)
     fputs (s, stdout);
   else
     fputs (_("Press any key to continue..."), stdout);
@@ -954,7 +954,7 @@ int mutt_multi_choice (char *prompt, char *letters)
     else
     {
       p = strchr (letters, ch.ch);
-      if (p)
+      if (p != NULL)
       {
 	choice = p - letters + 1;
 	break;
@@ -1225,7 +1225,7 @@ size_t mutt_wstr_trunc (const char *src, size_t maxlen, size_t maxwid, size_t *w
     w += cw;
   }
 out:
-  if (width)
+  if (width != NULL)
     *width = w;
   return l;
 }
@@ -1249,7 +1249,7 @@ int mutt_charlen (const char *s, int *width)
   n = mutt_strlen (s);
   memset (&mbstate, 0, sizeof (mbstate));
   k = mbrtowc (&wc, s, n, &mbstate);
-  if (width)
+  if (width != NULL)
     *width = wcwidth (wc);
   return (k == (size_t)(-1) || k == (size_t)(-2)) ? -1 : k;
 }

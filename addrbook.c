@@ -111,14 +111,14 @@ static int alias_sort_address (const void *a, const void *b)
     r = -1;
   else if (pb == NULL)
     r = 1;
-  else if (pa->personal)
+  else if (pa->personal != NULL)
   {
-    if (pb->personal)
+    if (pb->personal != NULL)
       r = mutt_strcasecmp (pa->personal, pb->personal);
     else
       r = 1;
   }
-  else if (pb->personal)
+  else if (pb->personal != NULL)
     r = -1;
   else
     r = ascii_strcasecmp (pa->mailbox, pb->mailbox);
@@ -183,7 +183,7 @@ new_aliases:
 
   while (done == 0)
   {
-    if (aliases->next)
+    if (aliases->next != NULL)
     {
       menu->redraw |= REDRAW_FULL;
       aliases       = aliases->next;

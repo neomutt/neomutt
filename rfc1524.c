@@ -148,7 +148,7 @@ static int get_field_text (char *field, char **entry,
   field = mutt_skip_whitespace (field);
   if (*field == '=')
   {
-    if (entry)
+    if (entry != NULL)
     {
       field++;
       field = mutt_skip_whitespace (field);
@@ -219,7 +219,7 @@ static int rfc1524_mailcap_parse (BODY *a,
       /* next field is the viewcommand */
       field = ch;
       ch = get_field (ch);
-      if (entry)
+      if (entry != NULL)
 	entry->command = safe_strdup (field);
 
       /* parse the optional fields */
@@ -237,13 +237,13 @@ static int rfc1524_mailcap_parse (BODY *a,
 
 	if (ascii_strcasecmp (field, "needsterminal") == 0)
 	{
-	  if (entry)
+	  if (entry != NULL)
 	    entry->needsterminal = true;
 	}
 	else if (ascii_strcasecmp (field, "copiousoutput") == 0)
 	{
 	  copiousoutput = true;
-	  if (entry)
+	  if (entry != NULL)
 	    entry->copiousoutput = true;
 	}
 	else if (ascii_strncasecmp (field, "composetyped", 12) == 0)
@@ -330,7 +330,7 @@ static int rfc1524_mailcap_parse (BODY *a,
       if (found == 0)
       {
 	/* reset */
-	if (entry)
+	if (entry != NULL)
 	{
 	  FREE (&entry->command);
 	  FREE (&entry->composecommand);
@@ -464,7 +464,7 @@ int rfc1524_expand_filename (char *nametemplate,
 
   if (nametemplate == NULL)
   {
-    if (oldfile)
+    if (oldfile != NULL)
       strfcpy (newfile, oldfile, nflen);
   }
   else if (oldfile == NULL)

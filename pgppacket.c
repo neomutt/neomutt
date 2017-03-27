@@ -203,7 +203,7 @@ unsigned char *pgp_read_packet (FILE * fp, size_t * len)
       goto bail;
   }
 
-  if (len)
+  if (len != NULL)
     *len = used;
 
   return pbuf;

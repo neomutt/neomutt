@@ -175,7 +175,7 @@ static int union_hash_insert (HASH * table, union hash_key key, void *data)
       if (r > 0)
 	break;
     }
-    if (last)
+    if (last != NULL)
       last->next = ptr;
     else
       table->table[h] = ptr;
@@ -220,7 +220,7 @@ static struct hash_elem *union_hash_find_elem (const HASH *table, union hash_key
 static void *union_hash_find (const HASH *table, union hash_key key)
 {
   struct hash_elem *ptr = union_hash_find_elem (table, key);
-  if (ptr)
+  if (ptr != NULL)
     return ptr->data;
   else
     return NULL;
@@ -279,7 +279,7 @@ static void union_hash_delete (HASH *table, union hash_key key, const void *data
 	&& table->cmp_key (ptr->key, key) == 0)
     {
       *last = ptr->next;
-      if (destroy)
+      if (destroy != NULL)
 	destroy (ptr->data);
       if (table->strdup_keys != 0)
         FREE (&ptr->key.strkey);
@@ -331,7 +331,7 @@ void hash_destroy (HASH **ptr, void (*destroy) (void *))
     {
       tmp = elem;
       elem = elem->next;
-      if (destroy)
+      if (destroy != NULL)
 	destroy (tmp->data);
       if (pptr->strdup_keys != 0)
         FREE (&tmp->key.strkey);
@@ -350,7 +350,7 @@ struct hash_elem *hash_walk(const HASH *table, struct hash_walk_state *state)
     return state->last;
   }
 
-  if (state->last)
+  if (state->last != NULL)
     state->index++;
 
   while (state->index < table->nelem)

@@ -129,7 +129,7 @@ static pgp_key_t parse_pub_line (char *buf, int *is_subkey, pgp_key_t k)
   /* if we're given a key, merge our parsing results, else
    * start with a fresh one to work with so that we don't
    * mess up the real key in case we find parsing errors. */
-  if (k)
+  if (k != NULL)
     memcpy (&tmp, k, sizeof (tmp));
   else
     memset (&tmp, 0, sizeof (tmp));
@@ -408,7 +408,7 @@ pgp_key_t pgp_get_candidates (pgp_ring_t keyring, LIST * hints)
     /* Only append kk to the list if it's new. */
     if (kk != k)
     {
-      if (k)
+      if (k != NULL)
 	kend = &k->next;
       *kend = k = kk;
 

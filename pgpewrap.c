@@ -51,7 +51,7 @@ int main(int argc, char **argv) {
 			}
 			pfx = argv[i-1];
 		}
-		if(pfx)
+		if (pfx != NULL)
 			*opt++ = pfx;
 		*opt++ = argv[i++];
 	}

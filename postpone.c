@@ -303,7 +303,7 @@ int mutt_get_postponed (CONTEXT *ctx, HEADER *hdr, HEADER **cur, char *fcc, size
   {
     if (ascii_strncasecmp ("X-Mutt-References:", tmp->data, 18) == 0)
     {
-      if (ctx)
+      if (ctx != NULL)
       {
 	/* if a mailbox is currently open, look to see if the original message
 	   the user attempted to reply to is in this mailbox */
@@ -315,7 +315,7 @@ int mutt_get_postponed (CONTEXT *ctx, HEADER *hdr, HEADER **cur, char *fcc, size
 
       /* Remove the X-Mutt-References: header field. */
       next = tmp->next;
-      if (last)
+      if (last != NULL)
 	last->next = tmp->next;
       else
 	hdr->env->userhdrs = tmp->next;
@@ -333,7 +333,7 @@ int mutt_get_postponed (CONTEXT *ctx, HEADER *hdr, HEADER **cur, char *fcc, size
 
       /* remove the X-Mutt-Fcc: header field */
       next = tmp->next;
-      if (last)
+      if (last != NULL)
 	last->next = tmp->next;
       else
 	hdr->env->userhdrs = tmp->next;
@@ -359,7 +359,7 @@ int mutt_get_postponed (CONTEXT *ctx, HEADER *hdr, HEADER **cur, char *fcc, size
 
       /* remove the pgp field */
       next = tmp->next;
-      if (last)
+      if (last != NULL)
 	last->next = tmp->next;
       else
 	hdr->env->userhdrs = tmp->next;
@@ -376,7 +376,7 @@ int mutt_get_postponed (CONTEXT *ctx, HEADER *hdr, HEADER **cur, char *fcc, size
 
       /* remove the smime field */
       next = tmp->next;
-      if (last)
+      if (last != NULL)
 	last->next = tmp->next;
       else
 	hdr->env->userhdrs = tmp->next;
@@ -399,7 +399,7 @@ int mutt_get_postponed (CONTEXT *ctx, HEADER *hdr, HEADER **cur, char *fcc, size
       }
 
       next = tmp->next;
-      if (last)
+      if (last != NULL)
 	last->next = tmp->next;
       else
 	hdr->env->userhdrs = tmp->next;
@@ -663,7 +663,7 @@ int mutt_prepare_template (FILE *fp, CONTEXT *ctx, HEADER *newhdr, HEADER *hdr,
      */
 
     file[0] = '\0';
-    if (b->filename)
+    if (b->filename != NULL)
     {
       strfcpy (file, b->filename, sizeof (file));
       b->d_filename = safe_strdup (b->filename);
@@ -728,7 +728,7 @@ int mutt_prepare_template (FILE *fp, CONTEXT *ctx, HEADER *newhdr, HEADER *hdr,
     mutt_stamp_attachment (b);
 
     mutt_free_body (&b->parts);
-    if (b->hdr) b->hdr->content = NULL; /* avoid dangling pointer */
+    if (b->hdr != NULL) b->hdr->content = NULL; /* avoid dangling pointer */
   }
 
   /* Fix encryption flags. */
@@ -755,7 +755,7 @@ int mutt_prepare_template (FILE *fp, CONTEXT *ctx, HEADER *newhdr, HEADER *hdr,
 
   /* that's it. */
   if (bfp != fp) safe_fclose (&bfp);
-  if (msg) mx_close_message (ctx, &msg);
+  if (msg != NULL) mx_close_message (ctx, &msg);
 
   if (rv == -1)
   {

@@ -185,7 +185,7 @@ header_cache_t* imap_hcache_open (IMAP_DATA* idata, const char* path)
   char cachepath[LONG_STRING];
   char mbox[LONG_STRING];
 
-  if (path)
+  if (path != NULL)
     imap_cachepath (idata, path, mbox, sizeof (mbox));
   else
   {
@@ -224,7 +224,7 @@ HEADER* imap_hcache_get (IMAP_DATA* idata, unsigned int uid)
   sprintf (key, "/%u", uid);
   uv = mutt_hcache_fetch (idata->hcache, key,
                                          imap_hcache_keylen(key));
-  if (uv)
+  if (uv != NULL)
   {
     if (*(unsigned int *)uv == idata->uid_validity)
       h = mutt_hcache_restore (uv);
@@ -276,7 +276,7 @@ int imap_parse_path (const char* path, IMAP_MBOX* mx)
   if (ImapPort == 0)
   {
     service = getservbyname ("imap", "tcp");
-    if (service)
+    if (service != NULL)
       ImapPort = ntohs (service->s_port);
     else
       ImapPort = IMAP_PORT;
@@ -285,7 +285,7 @@ int imap_parse_path (const char* path, IMAP_MBOX* mx)
   if (ImapsPort == 0)
   {
     service = getservbyname ("imaps", "tcp");
-    if (service)
+    if (service != NULL)
       ImapsPort = ntohs (service->s_port);
     else
       ImapsPort = IMAP_SSL_PORT;
@@ -418,7 +418,7 @@ void imap_pretty_mailbox (char* path)
     {
       if (! hlen)
 	home_match = 1;
-      else if (ImapDelimChars)
+      else if (ImapDelimChars != NULL)
 	for (delim = ImapDelimChars; *delim != '\0'; delim++)
 	  if (target.mbox[hlen] == *delim)
 	    home_match = 1;
@@ -514,7 +514,7 @@ char *imap_fix_path (IMAP_DATA *idata, const char *mailbox, char *path,
   int i = 0;
   char delim = '\0';
 
-  if (idata)
+  if (idata != NULL)
     delim = idata->delim;
 
   while (mailbox && *mailbox && i < plen - 1)
@@ -794,7 +794,7 @@ void imap_unmunge_mbox_name (IMAP_DATA *idata, char *s)
   imap_unquote_string(s);
 
   buf = safe_strdup (s);
-  if (buf)
+  if (buf != NULL)
   {
     imap_utf_decode (idata, &buf);
     strncpy (s, buf, strlen (s));

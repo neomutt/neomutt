@@ -69,7 +69,7 @@ static int need_display_subject (CONTEXT *ctx, HEADER *hdr)
   for (tmp = tree->parent; tmp; tmp = tmp->parent)
   {
     hdr = tmp->message;
-    if (hdr)
+    if (hdr != NULL)
     {
       if (VISIBLE (hdr, ctx))
 	return 0;
@@ -95,13 +95,13 @@ static void linearize_tree (CONTEXT *ctx)
     *array = tree->message;
     array += Sort & SORT_REVERSE ? -1 : 1;
 
-    if (tree->child)
+    if (tree->child != NULL)
       tree = tree->child;
     else
     {
       while (tree)
       {
-	if (tree->next)
+	if (tree->next != NULL)
 	{
 	  tree = tree->next;
 	  break;
@@ -138,7 +138,7 @@ static void calculate_visibility (CONTEXT *ctx, int *max_depth)
       *max_depth = depth;
 
     tree->subtree_visible = 0;
-    if (tree->message)
+    if (tree->message != NULL)
     {
       FREE (&tree->message->tree);
       if (VISIBLE (tree->message, ctx))
@@ -171,14 +171,14 @@ static void calculate_visibility (CONTEXT *ctx, int *max_depth)
     }
     tree->next_subtree_visible = tree->next && (tree->next->next_subtree_visible
 						|| tree->next->subtree_visible);
-    if (tree->child)
+    if (tree->child != NULL)
     {
       depth++;
       tree = tree->child;
       while (tree->next)
 	tree = tree->next;
     }
-    else if (tree->prev)
+    else if (tree->prev != NULL)
       tree = tree->prev;
     else
     {
@@ -205,7 +205,7 @@ static void calculate_visibility (CONTEXT *ctx, int *max_depth)
 	tree->deep = 0;
       if (!tree->deep && tree->child && tree->subtree_visible)
 	tree = tree->child;
-      else if (tree->next)
+      else if (tree->next != NULL)
 	tree = tree->next;
       else
       {
@@ -357,7 +357,7 @@ static LIST *make_subject_list (THREAD *cur, time_t *dateptr)
     while (cur->message == NULL)
       cur = cur->child;
 
-    if (dateptr)
+    if (dateptr != NULL)
     {
       thisdate = option (OPTTHREADRECEIVED)
 	? cur->message->received : cur->message->date_sent;
@@ -380,7 +380,7 @@ static LIST *make_subject_list (THREAD *cur, time_t *dateptr)
       {
 	newlist = safe_calloc (1, sizeof (LIST));
 	newlist->data = env->real_subj;
-	if (oldlist)
+	if (oldlist != NULL)
 	{
 	  newlist->next = oldlist->next;
 	  oldlist->next = newlist;
@@ -455,15 +455,15 @@ static void unlink_message (THREAD **old, THREAD *cur)
 {
   THREAD *tmp = NULL;
 
-  if (cur->prev)
+  if (cur->prev != NULL)
     cur->prev->next = cur->next;
   else
     *old = cur->next;
 
-  if (cur->next)
+  if (cur->next != NULL)
     cur->next->prev = cur->prev;
 
-  if (cur->sort_key)
+  if (cur->sort_key != NULL)
   {
     for (tmp = cur->parent; tmp && tmp->sort_key == cur->sort_key;
 	 tmp = tmp->parent)
@@ -494,7 +494,7 @@ static HASH *make_subj_hash (CONTEXT *ctx)
   for (i = 0; i < ctx->msgcount; i++)
   {
     hdr = ctx->hdrs[i];
-    if (hdr->env->real_subj)
+    if (hdr->env->real_subj != NULL)
       hash_insert (hash, hdr->env->real_subj, hdr);
   }
 
@@ -578,7 +578,7 @@ void mutt_clear_threads (CONTEXT *ctx)
   }
   ctx->tree = NULL;
 
-  if (ctx->thread_hash)
+  if (ctx->thread_hash != NULL)
     hash_destroy (&ctx->thread_hash, *free);
 }
 
@@ -623,13 +623,13 @@ THREAD *mutt_sort_subthreads (THREAD *thread, int init)
     {
       thread->sort_key = NULL;
 
-      if (thread->parent)
+      if (thread->parent != NULL)
         thread->parent->sort_children = 1;
       else
 	sort_top = 1;
     }
 
-    if (thread->child)
+    if (thread->child != NULL)
     {
       thread = thread->child;
       continue;
@@ -639,7 +639,7 @@ THREAD *mutt_sort_subthreads (THREAD *thread, int init)
       /* if it has no children, it must be real. sort it on its own merits */
       thread->sort_key = thread->message;
 
-      if (thread->next)
+      if (thread->next != NULL)
       {
 	thread = thread->next;
 	continue;
@@ -667,7 +667,7 @@ THREAD *mutt_sort_subthreads (THREAD *thread, int init)
 	thread->next = NULL;
 	array[i - 1]->prev = NULL;
 
-	if (thread->parent)
+	if (thread->parent != NULL)
 	  thread->parent->child = array[i - 1];
 	else
 	  top = array[i - 1];
@@ -679,7 +679,7 @@ THREAD *mutt_sort_subthreads (THREAD *thread, int init)
 	}
       }
 
-      if (thread->parent)
+      if (thread->parent != NULL)
       {
 	tmp = thread;
 	thread = thread->parent;
@@ -710,7 +710,7 @@ THREAD *mutt_sort_subthreads (THREAD *thread, int init)
 	  /* if its sort_key has changed, we need to resort it and siblings */
 	  if (oldsort_key != thread->sort_key)
 	  {
-	    if (thread->parent)
+	    if (thread->parent != NULL)
 	      thread->parent->sort_children = 1;
 	    else
 	      sort_top = 1;
@@ -824,7 +824,7 @@ void mutt_sort_threads (CONTEXT *ctx, int init)
 	    tmp = tmp->next;
 	}
 
-	if (thread->parent)
+	if (thread->parent != NULL)
 	{
 	  /* remove threading info above it based on its children, which we'll
 	   * recalculate based on its headers.  make sure not to leave
@@ -854,7 +854,7 @@ void mutt_sort_threads (CONTEXT *ctx, int init)
 		     cur->env->message_id ? cur->env->message_id : "",
 		     thread);
 
-	if (new)
+	if (new != NULL)
 	{
 	  if (new->duplicate_thread != 0)
 	    new = new->parent;
@@ -949,7 +949,7 @@ void mutt_sort_threads (CONTEXT *ctx, int init)
 	  continue;
       }
 
-      if (thread->parent)
+      if (thread->parent != NULL)
 	unlink_message (&top.child, thread);
       insert_message (&new->child, new, thread);
       thread = new;
@@ -973,7 +973,7 @@ void mutt_sort_threads (CONTEXT *ctx, int init)
   if (!option (OPTSTRICTTHREADS))
     pseudo_threads (ctx);
 
-  if (ctx->tree)
+  if (ctx->tree != NULL)
   {
     ctx->tree = mutt_sort_subthreads (ctx->tree, init);
 
@@ -1007,7 +1007,7 @@ static HEADER *find_virtual (THREAD *cur, int reverse)
     if (cur->message && cur->message->virtual >= 0)
       return cur->message;
 
-    if (cur->child)
+    if (cur->child != NULL)
     {
       cur = cur->child;
 
@@ -1222,7 +1222,7 @@ int _mutt_traverse_thread (CONTEXT *ctx, HEADER *cur, int flag)
   {
     cur = thread->message;
 
-    if (cur)
+    if (cur != NULL)
     {
       if (flag & (MUTT_THREAD_COLLAPSE | MUTT_THREAD_UNCOLLAPSE))
       {
@@ -1271,9 +1271,9 @@ int _mutt_traverse_thread (CONTEXT *ctx, HEADER *cur, int flag)
 	num_hidden++;
     }
 
-    if (thread->child)
+    if (thread->child != NULL)
       thread = thread->child;
-    else if (thread->next)
+    else if (thread->next != NULL)
       thread = thread->next;
     else
     {
@@ -1354,7 +1354,7 @@ HASH *mutt_make_id_hash (CONTEXT *ctx)
   for (i = 0; i < ctx->msgcount; i++)
   {
     hdr = ctx->hdrs[i];
-    if (hdr->env->message_id)
+    if (hdr->env->message_id != NULL)
       hash_insert (hash, hdr->env->message_id, hdr);
   }
 

@@ -52,7 +52,7 @@ mdb_get_r_txn(hcache_lmdb_ctx_t *ctx)
   if (ctx->txn && (ctx->txn_mode == txn_read || ctx->txn_mode == txn_write))
     return MDB_SUCCESS;
 
-  if (ctx->txn)
+  if (ctx->txn != NULL)
     rc = mdb_txn_renew(ctx->txn);
   else
     rc = mdb_txn_begin(ctx->env, NULL, MDB_RDONLY, &ctx->txn);
@@ -72,7 +72,7 @@ mdb_get_w_txn(hcache_lmdb_ctx_t *ctx)
 {
   int rc;
 
-  if (ctx->txn)
+  if (ctx->txn != NULL)
   {
     if (ctx->txn_mode == txn_write)
       return MDB_SUCCESS;

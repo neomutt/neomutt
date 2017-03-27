@@ -128,11 +128,11 @@ static QUERY *run_query (char *s, int quiet)
 
       cur->addr = rfc822_parse_adrlist (cur->addr, p);
       p = strtok(NULL, "\t\n");
-      if (p)
+      if (p != NULL)
       {
 	cur->name = safe_strdup (p);
 	p = strtok(NULL, "\t\n");
-	if (p)
+	if (p != NULL)
 	  cur->other = safe_strdup (p);
       }
     }
@@ -280,7 +280,7 @@ static void query_menu (char *buf, size_t buflen, QUERY *results, int retbuf)
     }
   }
 
-  if (results)
+  if (results != NULL)
   {
     snprintf (title, sizeof (title), _("Query '%s'"), buf);
 
@@ -306,7 +306,7 @@ static void query_menu (char *buf, size_t buflen, QUERY *results, int retbuf)
 	    newresults = run_query (buf, 0);
 
 	    menu->redraw = REDRAW_FULL;
-	    if (newresults)
+	    if (newresults != NULL)
 	    {
 	      snprintf (title, sizeof (title), _("Query '%s'"), buf);
 
@@ -496,7 +496,7 @@ int mutt_query_complete (char *buf, size_t buflen)
   }
 
   results = run_query (buf, 1);
-  if (results)
+  if (results != NULL)
   {
     /* only one response? */
     if (results->next == NULL)

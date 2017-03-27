@@ -694,9 +694,9 @@ static int reopen_mailbox (CONTEXT *ctx, int *index_hint)
   old_msgcount = 0;
 
   /* simulate a close */
-  if (ctx->id_hash)
+  if (ctx->id_hash != NULL)
     hash_destroy (&ctx->id_hash, NULL);
-  if (ctx->subj_hash)
+  if (ctx->subj_hash != NULL)
     hash_destroy (&ctx->subj_hash, NULL);
   hash_destroy (&ctx->label_hash, NULL);
   mutt_clear_threads (ctx);

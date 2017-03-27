@@ -59,7 +59,7 @@ static body_cache_t *msg_cache_open (IMAP_DATA *idata)
 {
   char mailbox[_POSIX_PATH_MAX];
 
-  if (idata->bcache)
+  if (idata->bcache != NULL)
     return idata->bcache;
 
   imap_cachepath (idata, idata->mailbox, mailbox, sizeof (mailbox));
@@ -426,7 +426,7 @@ int imap_read_headers (IMAP_DATA* idata, int msgbegin, int msgend)
   {
     uid_validity = mutt_hcache_fetch_raw (idata->hcache, "/UIDVALIDITY", 12);
     puidnext = mutt_hcache_fetch_raw (idata->hcache, "/UIDNEXT", 8);
-    if (puidnext)
+    if (puidnext != NULL)
     {
       uidnext = *(unsigned int *)puidnext;
       mutt_hcache_free (idata->hcache, &puidnext);
@@ -729,7 +729,7 @@ int imap_fetch_message (CONTEXT *ctx, MESSAGE *msg, int msgno)
   cacheno = HEADER_DATA(h)->uid % IMAP_CACHE_LEN;
   cache = &idata->cache[cacheno];
 
-  if (cache->path)
+  if (cache->path != NULL)
   {
     /* don't treat cache errors as fatal, just fall back. */
     if (cache->uid == HEADER_DATA(h)->uid &&
@@ -889,7 +889,7 @@ int imap_fetch_message (CONTEXT *ctx, MESSAGE *msg, int msgno)
 bail:
   safe_fclose (&msg->fp);
   imap_cache_del (idata, h);
-  if (cache->path)
+  if (cache->path != NULL)
   {
     unlink (cache->path);
     FREE (&cache->path);

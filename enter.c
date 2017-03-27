@@ -233,7 +233,7 @@ int _mutt_enter_string (char *buf, size_t buflen, int col,
   int rv = 0;
   memset (&mbstate, 0, sizeof (mbstate));
 
-  if (state->wbuf)
+  if (state->wbuf != NULL)
   {
     /* Coming back after return 1 */
     redraw = MUTT_REDRAW_LINE;

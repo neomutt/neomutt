@@ -300,7 +300,7 @@ int mutt_write_mime_header (BODY *a, FILE *f)
 
   fprintf (f, "Content-Type: %s/%s", TYPE (a), a->subtype);
 
-  if (a->parameter)
+  if (a->parameter != NULL)
   {
     len = 25 + mutt_strlen (a->subtype); /* approximate len. of content-type */
 
@@ -348,7 +348,7 @@ int mutt_write_mime_header (BODY *a, FILE *f)
 
   fputc ('\n', f);
 
-  if (a->description)
+  if (a->description != NULL)
     fprintf(f, "Content-Description: %s\n", a->description);
 
   if (a->disposition != DISPNONE)
@@ -368,7 +368,7 @@ int mutt_write_mime_header (BODY *a, FILE *f)
 	if (!(fn = a->d_filename))
 	  fn = a->filename;
 
-	if (fn)
+	if (fn != NULL)
 	{
 	  char *tmp = NULL;
 
@@ -800,7 +800,7 @@ static size_t convert_file_from_to (FILE *file,
   }
 
   ret = (size_t)(-1);
-  if (fromcode)
+  if (fromcode != NULL)
   {
     /* Try each fromcode in turn */
     for (c = fromcodes; c; c = c1 ? c1 + 1 : 0)
@@ -1135,7 +1135,7 @@ void mutt_message_to_7bit (BODY *a, FILE *fp)
 
   if (fpin && fpin != fp)
     safe_fclose (&fpin);
-  if (fpout)
+  if (fpout != NULL)
     safe_fclose (&fpout);
   else
     return;
@@ -1210,10 +1210,10 @@ char *mutt_get_body_charset (char *d, size_t dlen, BODY *b)
   if (b && b->type != TYPETEXT)
     return NULL;
 
-  if (b)
+  if (b != NULL)
     p = mutt_get_parameter ("charset", b->parameter);
 
-  if (p)
+  if (p != NULL)
     mutt_canonical_charset (d, dlen, NONULL(p));
   else
     strfcpy (d, "us-ascii", dlen);
@@ -1439,7 +1439,7 @@ BODY *mutt_remove_multipart (BODY *b)
 {
   BODY *t = NULL;
 
-  if (b->parts)
+  if (b->parts != NULL)
   {
     t = b;
     b = b->parts;
@@ -1742,7 +1742,7 @@ static char *unfold_header (char *s)
     }
     *q++ = *p++;
   }
-  if (q)
+  if (q != NULL)
     *q = 0;
 
   return s;
@@ -1851,7 +1851,7 @@ int mutt_write_one_header (FILE *fp, const char *tag, const char *value,
   else if (wraplen <= 0 || wraplen > MuttIndexWindow->cols)
     wraplen = MuttIndexWindow->cols;
 
-  if (tag)
+  if (tag != NULL)
   {
     /* if header is short enough, simply print it */
     if (!(flags & CH_DISPLAY) && mutt_strwidth (tag) + 2 + pfxw +
@@ -1877,11 +1877,11 @@ int mutt_write_one_header (FILE *fp, const char *tag, const char *value,
     p = strchr (p, '\n');
 
     /* find maximum line width in current header */
-    if (p)
+    if (p != NULL)
       *p = 0;
     if ((w = my_width (line, 0, flags)) > max)
       max = w;
-    if (p)
+    if (p != NULL)
       *p = '\n';
 
     if (p == NULL)
@@ -1955,7 +1955,7 @@ int mutt_write_rfc822_header (FILE *fp, ENVELOPE *env, BODY *attach,
     fprintf (fp, "Sender: %s\n", buffer);
   }
 
-  if (env->to)
+  if (env->to != NULL)
   {
     fputs ("To: ", fp);
     mutt_write_address_list (env->to, fp, 4, 0);
@@ -1966,7 +1966,7 @@ int mutt_write_rfc822_header (FILE *fp, ENVELOPE *env, BODY *attach,
 #endif
     fputs ("To: \n", fp);
 
-  if (env->cc)
+  if (env->cc != NULL)
   {
     fputs ("Cc: ", fp);
     mutt_write_address_list (env->cc, fp, 4, 0);
@@ -1977,7 +1977,7 @@ int mutt_write_rfc822_header (FILE *fp, ENVELOPE *env, BODY *attach,
 #endif
     fputs ("Cc: \n", fp);
 
-  if (env->bcc)
+  if (env->bcc != NULL)
   {
     if(mode != 0 || option(OPTWRITEBCC))
     {
@@ -1992,23 +1992,23 @@ int mutt_write_rfc822_header (FILE *fp, ENVELOPE *env, BODY *attach,
     fputs ("Bcc: \n", fp);
 
 #ifdef USE_NNTP
-  if (env->newsgroups)
+  if (env->newsgroups != NULL)
     fprintf (fp, "Newsgroups: %s\n", env->newsgroups);
   else if (mode == 1 && option (OPTNEWSSEND))
     fputs ("Newsgroups: \n", fp);
 
-  if (env->followup_to)
+  if (env->followup_to != NULL)
     fprintf (fp, "Followup-To: %s\n", env->followup_to);
   else if (mode == 1 && option (OPTNEWSSEND))
     fputs ("Followup-To: \n", fp);
 
-  if (env->x_comment_to)
+  if (env->x_comment_to != NULL)
     fprintf (fp, "X-Comment-To: %s\n", env->x_comment_to);
   else if (mode == 1 && option (OPTNEWSSEND) && option (OPTXCOMMENTTO))
     fputs ("X-Comment-To: \n", fp);
 #endif
 
-  if (env->subject)
+  if (env->subject != NULL)
     mutt_write_one_header (fp, "Subject", env->subject, NULL, 0, 0);
   else if (mode == 1)
     fputs ("Subject: \n", fp);
@@ -2017,7 +2017,7 @@ int mutt_write_rfc822_header (FILE *fp, ENVELOPE *env, BODY *attach,
   if (env->message_id && !privacy)
     fprintf (fp, "Message-ID: %s\n", env->message_id);
 
-  if (env->reply_to)
+  if (env->reply_to != NULL)
   {
     fputs ("Reply-To: ", fp);
     mutt_write_address_list (env->reply_to, fp, 10, 0);
@@ -2025,7 +2025,7 @@ int mutt_write_rfc822_header (FILE *fp, ENVELOPE *env, BODY *attach,
   else if (mode > 0)
     fputs ("Reply-To: \n", fp);
 
-  if (env->mail_followup_to)
+  if (env->mail_followup_to != NULL)
 #ifdef USE_NNTP
   if (!option (OPTNEWSSEND))
 #endif
@@ -2036,7 +2036,7 @@ int mutt_write_rfc822_header (FILE *fp, ENVELOPE *env, BODY *attach,
 
   if (mode <= 0)
   {
-    if (env->references)
+    if (env->references != NULL)
     {
       fputs ("References:", fp);
       mutt_write_references (env->references, fp, 10);
@@ -2048,7 +2048,7 @@ int mutt_write_rfc822_header (FILE *fp, ENVELOPE *env, BODY *attach,
     mutt_write_mime_header (attach, fp);
   }
 
-  if (env->in_reply_to)
+  if (env->in_reply_to != NULL)
   {
     fputs ("In-Reply-To:", fp);
     mutt_write_references (env->in_reply_to, fp, 0);
@@ -2225,7 +2225,7 @@ send_msg (const char *path, char **args, const char *msg, char **tempfile)
     for (fd = tempfile ? 1 : 3; fd < _POSIX_OPEN_MAX; fd++)
       close (fd);
 #else
-    if (tempfile)
+    if (tempfile != NULL)
     {
       close (1);
       close (2);
@@ -2252,7 +2252,7 @@ send_msg (const char *path, char **args, const char *msg, char **tempfile)
 	if (dup (1) < 0)
 	  _exit (S_ERR);
       }
-      else if (tempfile)
+      else if (tempfile != NULL)
       {
 	if (open ("/dev/null", O_WRONLY | O_APPEND) < 0)	/* stdout */
 	  _exit (S_ERR);
@@ -2266,7 +2266,7 @@ send_msg (const char *path, char **args, const char *msg, char **tempfile)
     else if (pid == -1)
     {
       unlink (msg);
-      if (tempfile)
+      if (tempfile != NULL)
 	FREE (tempfile);		/* __FREE_CHECKED__ */
       _exit (S_ERR);
     }
@@ -2420,7 +2420,7 @@ mutt_invoke_sendmail (ADDRESS *from,	/* the sender */
     {
       path = safe_strdup (ps);
       ps = strrchr (ps, '/');
-      if (ps)
+      if (ps != NULL)
 	ps++;
       else
 	ps = path;
@@ -2436,7 +2436,7 @@ mutt_invoke_sendmail (ADDRESS *from,	/* the sender */
 #endif
   /* If Sendmail contained a "--", we save the recipients to append to
    * args after other possible options added below. */
-  if (ps)
+  if (ps != NULL)
   {
     ps = NULL;
     while ((ps = strtok (ps, " ")))
@@ -2454,7 +2454,7 @@ mutt_invoke_sendmail (ADDRESS *from,	/* the sender */
 
   if (option (OPTENVFROM))
   {
-    if (EnvFrom)
+    if (EnvFrom != NULL)
     {
       args = add_option (args, &argslen, &argsmax, "-f");
       args = add_args   (args, &argslen, &argsmax, EnvFrom);
@@ -2466,12 +2466,12 @@ mutt_invoke_sendmail (ADDRESS *from,	/* the sender */
     }
   }
 
-  if (DsnNotify)
+  if (DsnNotify != NULL)
   {
     args = add_option (args, &argslen, &argsmax, "-N");
     args = add_option (args, &argslen, &argsmax, DsnNotify);
   }
-  if (DsnReturn)
+  if (DsnReturn != NULL)
   {
     args = add_option (args, &argslen, &argsmax, "-R");
     args = add_option (args, &argslen, &argsmax, DsnReturn);
@@ -2499,7 +2499,7 @@ mutt_invoke_sendmail (ADDRESS *from,	/* the sender */
 
       e = mutt_strsysexit (i);
       mutt_error (_("Error sending message, child exited %d (%s)."), i, NONULL (e));
-      if (childout)
+      if (childout != NULL)
       {
 	struct stat st;
 
@@ -2508,7 +2508,7 @@ mutt_invoke_sendmail (ADDRESS *from,	/* the sender */
       }
     }
   }
-  else if (childout)
+  else if (childout != NULL)
     unlink (childout);
 
   FREE (&childout);
@@ -2564,7 +2564,7 @@ void mutt_prepare_envelope (ENVELOPE *env, int final)
   rfc2047_encode_adrlist (env->mail_followup_to, "Mail-Followup-To");
   rfc2047_encode_adrlist (env->reply_to, "Reply-To");
 
-  if (env->subject)
+  if (env->subject != NULL)
 #ifdef USE_NNTP
   if (!option (OPTNEWSSEND) || option (OPTMIMESUBJECT))
 #endif
@@ -2641,7 +2641,7 @@ static int _mutt_bounce_message (FILE *fp, HEADER *h, ADDRESS *to, const char *r
       return -1;
     }
 #ifdef USE_SMTP
-    if (SmtpUrl)
+    if (SmtpUrl != NULL)
       ret = mutt_smtp_send (env_from, to, NULL, NULL, tempfile,
                             h->content->encoding == ENC8BIT);
     else
@@ -2650,7 +2650,7 @@ static int _mutt_bounce_message (FILE *fp, HEADER *h, ADDRESS *to, const char *r
 			  	h->content->encoding == ENC8BIT);
   }
 
-  if (msg)
+  if (msg != NULL)
     mx_close_message (Context, &msg);
 
   return ret;
@@ -2677,7 +2677,7 @@ int mutt_bounce_message (FILE *fp, HEADER *h, ADDRESS *to)
   if (! from->personal)
     from->personal = safe_strdup(Realname);
 
-  if (fqdn)
+  if (fqdn != NULL)
     rfc822_qualify (from, fqdn);
 
   rfc2047_encode_adrlist (from, "Resent-From");
@@ -2941,7 +2941,7 @@ int mutt_write_fcc (const char *path, HEADER *hdr, const char *msgid,
   }
 #endif
 
-  if (tempfp)
+  if (tempfp != NULL)
   {
     char sasha[LONG_STRING];
     int lines = 0;
@@ -2995,7 +2995,7 @@ int mutt_write_fcc (const char *path, HEADER *hdr, const char *msgid,
 
   if (mx_commit_message (msg, &f) != 0)
     r = -1;
-  else if (finalpath)
+  else if (finalpath != NULL)
     *finalpath = safe_strdup(msg->commited_path);
   mx_close_message (&f, &msg);
   mx_close_mailbox (&f, NULL);

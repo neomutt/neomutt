@@ -93,7 +93,7 @@ static void imap_add_folder (char delim, char *folder, int noselect,
   b = Incoming;
   while (b && (mutt_strcmp (tmp, b->path) != 0))
     b = b->next;
-  if (b)
+  if (b != NULL)
   {
     if (Context &&
         (mutt_strcmp (b->realpath, Context->realpath) == 0))

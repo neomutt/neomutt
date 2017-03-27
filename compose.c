@@ -226,7 +226,7 @@ static void redraw_mix_line (LIST *chain)
       break;
 
     addstr (NONULL(t));
-    if (chain->next)
+    if (chain->next != NULL)
       addstr (", ");
 
     c += mutt_strlen (t) + 2;
@@ -633,7 +633,7 @@ int mutt_compose_menu (HEADER *msg,   /* structure for new message */
       case OP_COMPOSE_EDIT_NEWSGROUPS:
 	if (news != 0)
 	{
-	  if (msg->env->newsgroups)
+	  if (msg->env->newsgroups != NULL)
 	    strfcpy (buf, msg->env->newsgroups, sizeof (buf));
 	  else
 	    buf[0] = 0;
@@ -641,7 +641,7 @@ int mutt_compose_menu (HEADER *msg,   /* structure for new message */
 	  {
 	    mutt_str_replace (&msg->env->newsgroups, buf);
 	    mutt_window_move (MuttIndexWindow, HDR_TO, HDR_XOFFSET);
-	    if (msg->env->newsgroups)
+	    if (msg->env->newsgroups != NULL)
 	      mutt_paddstr (W, msg->env->newsgroups);
 	    else
 	      clrtoeol ();
@@ -651,7 +651,7 @@ int mutt_compose_menu (HEADER *msg,   /* structure for new message */
       case OP_COMPOSE_EDIT_FOLLOWUP_TO:
 	if (news != 0)
 	{
-	  if (msg->env->followup_to)
+	  if (msg->env->followup_to != NULL)
 	    strfcpy (buf, msg->env->followup_to, sizeof (buf));
 	  else
 	    buf[0] = 0;
@@ -659,7 +659,7 @@ int mutt_compose_menu (HEADER *msg,   /* structure for new message */
 	  {
 	    mutt_str_replace (&msg->env->followup_to, buf);
 	    mutt_window_move (MuttIndexWindow, HDR_CC, HDR_XOFFSET);
-	    if (msg->env->followup_to)
+	    if (msg->env->followup_to != NULL)
 	      mutt_paddstr (W, msg->env->followup_to);
 	    else
 	      clrtoeol ();
@@ -669,7 +669,7 @@ int mutt_compose_menu (HEADER *msg,   /* structure for new message */
       case OP_COMPOSE_EDIT_X_COMMENT_TO:
 	if (news && option (OPTXCOMMENTTO))
 	{
-	  if (msg->env->x_comment_to)
+	  if (msg->env->x_comment_to != NULL)
 	    strfcpy (buf, msg->env->x_comment_to, sizeof (buf));
 	  else
 	    buf[0] = 0;
@@ -677,7 +677,7 @@ int mutt_compose_menu (HEADER *msg,   /* structure for new message */
 	  {
 	    mutt_str_replace (&msg->env->x_comment_to, buf);
 	    mutt_window_move (MuttIndexWindow, HDR_BCC, HDR_XOFFSET);
-	    if (msg->env->x_comment_to)
+	    if (msg->env->x_comment_to != NULL)
 	      mutt_paddstr (W, msg->env->x_comment_to);
 	    else
 	      clrtoeol ();
@@ -686,7 +686,7 @@ int mutt_compose_menu (HEADER *msg,   /* structure for new message */
 	break;
 #endif
       case OP_COMPOSE_EDIT_SUBJECT:
-	if (msg->env->subject)
+	if (msg->env->subject != NULL)
 	  strfcpy (buf, msg->env->subject, sizeof (buf));
 	else
 	  buf[0] = 0;
@@ -694,7 +694,7 @@ int mutt_compose_menu (HEADER *msg,   /* structure for new message */
 	{
 	  mutt_str_replace (&msg->env->subject, buf);
 	  mutt_window_move (MuttIndexWindow, HDR_SUBJECT, HDR_XOFFSET);
-	  if (msg->env->subject)
+	  if (msg->env->subject != NULL)
 	    mutt_paddstr (W, msg->env->subject);
 	  else
 	    mutt_window_clrtoeol(MuttIndexWindow);
@@ -876,7 +876,7 @@ int mutt_compose_menu (HEADER *msg,   /* structure for new message */
 	  }
 #endif
 
-	  if (Context)
+	  if (Context != NULL)
 #ifdef USE_NNTP
 	  if ((op == OP_COMPOSE_ATTACH_MESSAGE) ^ (Context->magic == MUTT_NNTP))
 #endif
@@ -1387,7 +1387,7 @@ int mutt_compose_menu (HEADER *msg,   /* structure for new message */
       case OP_COMPOSE_WRITE_MESSAGE:
 
        fname[0] = '\0';
-       if (Context)
+       if (Context != NULL)
        {
 	 strfcpy (fname, NONULL (Context->path), sizeof (fname));
 	 mutt_pretty_mailbox (fname, sizeof (fname));
@@ -1400,7 +1400,7 @@ int mutt_compose_menu (HEADER *msg,   /* structure for new message */
          mutt_message (_("Writing message to %s ..."), fname);
          mutt_expand_path (fname, sizeof (fname));
 
-         if (msg->content->next)
+         if (msg->content->next != NULL)
            msg->content = mutt_make_multipart (msg->content);
 
          if (mutt_write_fcc (fname, msg, NULL, 0, NULL, NULL) < 0)

@@ -232,7 +232,7 @@ static const char *crypt_fpr_or_lkeyid(crypt_key_t *k)
 
   if (k->kobj && k->kobj->subkeys)
   {
-    if (k->kobj->subkeys->fpr)
+    if (k->kobj->subkeys->fpr != NULL)
       s = k->kobj->subkeys->fpr;
     else
       s = k->kobj->subkeys->keyid;
@@ -595,7 +595,7 @@ static char *data_object_to_tempfile (gpgme_data_t data, char *tempf, FILE **ret
             }
         }
     }
-  if (ret_fp)
+  if (ret_fp != NULL)
     rewind (fp);
   else
     safe_fclose (&fp);
@@ -606,7 +606,7 @@ static char *data_object_to_tempfile (gpgme_data_t data, char *tempf, FILE **ret
       safe_fclose (&fp);
       return NULL;
     }
-  if (ret_fp)
+  if (ret_fp != NULL)
     *ret_fp = fp;
   return safe_strdup (tempf);
 }
@@ -697,7 +697,7 @@ static gpgme_key_t *create_recipient_set (const char *keylist,
   safe_realloc (&rset, sizeof (*rset) * (rset_n + 1));
   rset[rset_n++] = NULL;
 
-  if (context)
+  if (context != NULL)
     gpgme_release (context);
 
   return rset;
@@ -849,7 +849,7 @@ static int get_micalg (gpgme_ctx_t ctx, int use_smime, char *buf, size_t buflen)
   if (result && result->signatures)
   {
     algorithm_name = gpgme_hash_algo_name (result->signatures->hash_algo);
-    if (algorithm_name)
+    if (algorithm_name != NULL)
     {
       if (use_smime != 0)
       {
@@ -1214,7 +1214,7 @@ static int show_sig_summary (unsigned long sum,
       for (sig2 = result->signatures, i = 0; sig2 && (i < idx);
            sig2 = sig2->next, i++)
         ;
-      if (sig2)
+      if (sig2 != NULL)
 	{
 	  t0 = "";
 	  t1 = sig2->wrong_key_usage ? "Wrong_Key_Usage" : "";
@@ -1223,11 +1223,11 @@ static int show_sig_summary (unsigned long sum,
       if (t0 || t1)
         {
           state_puts (": ", s);
-          if (t0)
+          if (t0 != NULL)
               state_puts (t0, s);
           if (t1 && !(t0 && (strcmp (t0, t1) == 0)))
             {
-              if (t0)
+              if (t0 != NULL)
                 state_puts (",", s);
               state_puts (t1, s);
             }
@@ -1319,7 +1319,7 @@ static void show_one_sig_validity (gpgme_ctx_t ctx, int idx, STATE *s)
   const char *txt = NULL;
 
   result = gpgme_op_verify_result (ctx);
-  if (result)
+  if (result != NULL)
     for (sig = result->signatures; sig && (idx > 0); sig = sig->next, idx--);
 
   switch (sig ? sig->validity : 0)
@@ -1344,7 +1344,7 @@ static void show_one_sig_validity (gpgme_ctx_t ctx, int idx, STATE *s)
 	txt = NULL;
 	break;
       }
-  if (txt)
+  if (txt != NULL)
     state_puts (txt, s);
 }
 
@@ -1358,7 +1358,7 @@ static void print_smime_keyinfo (const char* msg, gpgme_signature_t sig,
   state_puts (msg, s);
   state_puts (" ", s);
   /* key is NULL when not present in the user's keyring */
-  if (key)
+  if (key != NULL)
   {
     for (uids = key->uids; uids; uids = uids->next)
     {
@@ -1420,7 +1420,7 @@ static int show_one_sig_status (gpgme_ctx_t ctx, int idx, STATE *s)
   char buf[LONG_STRING];
 
   result = gpgme_op_verify_result (ctx);
-  if (result)
+  if (result != NULL)
     {
       /* FIXME: this code should use a static variable and remember
 	 the current position in the list of signatures, IMHO.
@@ -1432,7 +1432,7 @@ static int show_one_sig_status (gpgme_ctx_t ctx, int idx, STATE *s)
       if (! sig)
 	return -1;		/* Signature not found.  */
 
-      if (signature_key)
+      if (signature_key != NULL)
 	{
 	  gpgme_key_unref (signature_key);
 	  signature_key = NULL;
@@ -1574,7 +1574,7 @@ static int verify_one (BODY *sigbdy, STATE *s,
       int anybad = 0;
       gpgme_verify_result_t verify_result;
 
-      if (signature_key)
+      if (signature_key != NULL)
 	{
 	  gpgme_key_unref (signature_key);
 	  signature_key = NULL;
@@ -1603,7 +1603,7 @@ static int verify_one (BODY *sigbdy, STATE *s,
       int non_pka_notations;
 
       result = gpgme_op_verify_result (ctx);
-      if (result)
+      if (result != NULL)
       {
 	for (sig = result->signatures; sig; sig = sig->next)
 	{
@@ -1626,12 +1626,12 @@ static int verify_one (BODY *sigbdy, STATE *s,
 	      if (is_pka_notation (notation))
 		continue;
 
-	      if (notation->name)
+	      if (notation->name != NULL)
 	      {
 		state_puts (notation->name, s);
 		state_puts ("=", s);
 	      }
-	      if (notation->value)
+	      if (notation->value != NULL)
 	      {
 		state_puts (notation->value, s);
 		if (!(*notation->value
@@ -1685,7 +1685,7 @@ static BODY *decrypt_part (BODY *a, STATE *s, FILE *fpout, int is_smime,
   int anywarn = 0;
   int sig_stat = 0;
 
-  if (r_is_signed)
+  if (r_is_signed != NULL)
     *r_is_signed = 0;
 
   ctx = create_gpgme_context (is_smime);
@@ -1709,7 +1709,7 @@ static BODY *decrypt_part (BODY *a, STATE *s, FILE *fpout, int is_smime,
       {
 	/* Check whether signatures have been verified.  */
 	gpgme_verify_result_t verify_result = gpgme_op_verify_result (ctx);
-	if (verify_result->signatures)
+	if (verify_result->signatures != NULL)
 	  sig_stat = 1;
       }
     }
@@ -1770,7 +1770,7 @@ static BODY *decrypt_part (BODY *a, STATE *s, FILE *fpout, int is_smime,
 
       if (maybe_signed != 0)
         a->is_signed_data = 1;
-      if(r_is_signed)
+      if (r_is_signed != NULL)
         *r_is_signed = -1; /* A signature exists. */
 
       if ((s->flags & MUTT_DISPLAY))
@@ -1795,7 +1795,7 @@ static BODY *decrypt_part (BODY *a, STATE *s, FILE *fpout, int is_smime,
   fflush (fpout);
   rewind (fpout);
   tattach = mutt_read_mime_header (fpout, 0);
-  if (tattach)
+  if (tattach != NULL)
     {
       /*
        * Need to set the length of this body part.
@@ -1913,7 +1913,7 @@ int smime_gpgme_decrypt_mime (FILE *fpin, FILE **fpout, BODY *b, BODY **cur)
   if (!mutt_is_application_smime (b))
     return -1;
 
-  if (b->parts)
+  if (b->parts != NULL)
     return -1;
 
   /* Decode the body - we need to pass binary CMS to the
@@ -2008,7 +2008,7 @@ int smime_gpgme_decrypt_mime (FILE *fpin, FILE **fpout, BODY *b, BODY **cur)
       mutt_unlink (tempfile);
 
       tmp_b = decrypt_part (bb, &s, *fpout, 1, &is_signed);
-      if (tmp_b)
+      if (tmp_b != NULL)
         tmp_b->goodsig = is_signed > 0;
       bb->type = saved_b_type;
       bb->length = saved_b_length;
@@ -2332,7 +2332,7 @@ static void copy_clearsigned (gpgme_data_t data, STATE *s, char *charset)
       continue;
     }
 
-    if (s->prefix)
+    if (s->prefix != NULL)
       state_puts (s->prefix, s);
 
     if (buf[0] == '-' && buf[1] == ' ')
@@ -2402,7 +2402,7 @@ int pgp_gpgme_application_handler (BODY *m, STATE *s)
           else
             {
               /* XXX - we may wish to recode here */
-              if (s->prefix)
+              if (s->prefix != NULL)
                 state_puts (s->prefix, s);
               state_puts (buf, s);
               continue;
@@ -2465,7 +2465,7 @@ int pgp_gpgme_application_handler (BODY *m, STATE *s)
 		    gpgme_verify_result_t verify_result;
 
                     verify_result = gpgme_op_verify_result (ctx);
-		    if (verify_result->signatures)
+		    if (verify_result->signatures != NULL)
 		      sig_stat = 1;
 		  }
 
@@ -2531,7 +2531,7 @@ int pgp_gpgme_application_handler (BODY *m, STATE *s)
             {
               copy_clearsigned (armored_data, s, body_charset);
             }
-          else if (pgpout)
+          else if (pgpout != NULL)
             {
               FGETCONV *fc = NULL;
               int c;
@@ -2558,7 +2558,7 @@ int pgp_gpgme_application_handler (BODY *m, STATE *s)
             }
 
           gpgme_data_release (armored_data);
-          if (pgpout)
+          if (pgpout != NULL)
             {
               safe_fclose (&pgpout);
             }
@@ -2567,7 +2567,7 @@ int pgp_gpgme_application_handler (BODY *m, STATE *s)
       {
 	/* A traditional PGP part may mix signed and unsigned content */
         /* XXX - we may wish to recode here */
-        if (s->prefix)
+        if (s->prefix != NULL)
           state_puts (s->prefix, s);
         state_puts (buf, s);
       }
@@ -2614,7 +2614,7 @@ int pgp_gpgme_encrypted_handler (BODY *a, STATE *s)
     }
 
   tattach = decrypt_part (a, s, fpout, 0, &is_signed);
-  if (tattach)
+  if (tattach != NULL)
     {
       tattach->goodsig = is_signed > 0;
 
@@ -2687,7 +2687,7 @@ int smime_gpgme_application_handler (BODY *a, STATE *s)
     }
 
   tattach = decrypt_part (a, s, fpout, 1, &is_signed);
-  if (tattach)
+  if (tattach != NULL)
     {
       tattach->goodsig = is_signed > 0;
 
@@ -2876,7 +2876,7 @@ static const char *crypt_entry_fmt (char *dest,
       if (optional == 0)
       {
 	snprintf (fmt, sizeof (fmt), "%%%s.3s", prefix);
-	if (key->kobj->subkeys)
+	if (key->kobj->subkeys != NULL)
 	  s = gpgme_pubkey_algo_name (key->kobj->subkeys->pubkey_algo);
 	else
           s = "?";
@@ -2887,7 +2887,7 @@ static const char *crypt_entry_fmt (char *dest,
       if (optional == 0)
       {
 	snprintf (fmt, sizeof (fmt), "%%%slu", prefix);
-	if (key->kobj->subkeys)
+	if (key->kobj->subkeys != NULL)
 	  val = key->kobj->subkeys->length;
 	else
 	  val = 0;
@@ -3304,7 +3304,7 @@ parse_and_print_user_id (FILE *fp, const char *userid)
   if (*userid == '<')
     {
       s = strchr (userid+1, '>');
-      if (s)
+      if (s != NULL)
         print_utf8 (fp, userid+1, s-userid-1);
     }
   else if (*userid == '(')
@@ -3433,14 +3433,14 @@ static void print_key_info (gpgme_key_t key, FILE *fp)
       fprintf (fp, _("Valid To ..: %s\n"), shortbuf);
     }
 
-  if (key->subkeys)
+  if (key->subkeys != NULL)
     s = gpgme_pubkey_algo_name (key->subkeys->pubkey_algo);
   else
     s = "?";
 
   s2 = is_pgp ? "PGP" : "X.509";
 
-  if (key->subkeys)
+  if (key->subkeys != NULL)
     aval = key->subkeys->length;
 
   /* L10N: DOTFILL */
@@ -3467,7 +3467,7 @@ static void print_key_info (gpgme_key_t key, FILE *fp)
     }
   putc ('\n', fp);
 
-  if (key->subkeys)
+  if (key->subkeys != NULL)
     {
       s = key->subkeys->fpr;
       /* L10N: DOTFILL
@@ -3502,18 +3502,18 @@ static void print_key_info (gpgme_key_t key, FILE *fp)
       fprintf (fp, "%s\n", s);
     }
 
-  if (key->issuer_serial)
+  if (key->issuer_serial != NULL)
     {
       s = key->issuer_serial;
-      if (s)
+      if (s != NULL)
         /* L10N: DOTFILL */
 	fprintf (fp, _("Serial-No .: 0x%s\n"), s);
     }
 
-  if (key->issuer_name)
+  if (key->issuer_name != NULL)
     {
       s = key->issuer_name;
-      if (s)
+      if (s != NULL)
 	{
           /* L10N: DOTFILL */
 	  fprintf (fp, _("Issued By .: "));
@@ -4019,7 +4019,7 @@ static crypt_key_t *crypt_select_key (crypt_key_t *keys,
     else
       ts = _("keys matching");
 
-    if (p)
+    if (p != NULL)
       /* L10N:
          %1$s is one of the previous four entries.
          %2$s is an address.
@@ -4237,13 +4237,13 @@ static crypt_key_t *crypt_getkeybyaddr (ADDRESS * a, short abilities,
 
   crypt_free_key (&keys);
 
-  if (matches)
+  if (matches != NULL)
     {
       if (oppenc_mode != 0)
         {
-          if (the_strong_valid_key)
+          if (the_strong_valid_key != NULL)
             k = crypt_copy_key (the_strong_valid_key);
-          else if (a_valid_addrmatch_key)
+          else if (a_valid_addrmatch_key != NULL)
             k = crypt_copy_key (a_valid_addrmatch_key);
           else
             k = NULL;
@@ -4332,7 +4332,7 @@ static crypt_key_t *crypt_getkeybystr (char *p, short abilities,
   FREE (&pfcopy);
   crypt_free_key (&keys);
 
-  if (matches)
+  if (matches != NULL)
     {
       k = crypt_select_key (matches, NULL, p, app, forced_valid);
       crypt_free_key (&matches);
@@ -4365,7 +4365,7 @@ static crypt_key_t *crypt_ask_for_key (char *tag,
 
   *forced_valid = 0;
   resp[0] = 0;
-  if (whatfor)
+  if (whatfor != NULL)
     {
 
       for (l = id_defaults; l; l = l->next)
@@ -4383,9 +4383,9 @@ static crypt_key_t *crypt_ask_for_key (char *tag,
       if (mutt_get_field (tag, resp, sizeof (resp), MUTT_CLEAR) != 0)
         return NULL;
 
-      if (whatfor)
+      if (whatfor != NULL)
         {
-          if (l)
+          if (l != NULL)
             mutt_str_replace (&l->dflt, resp);
           else
             {
@@ -4460,7 +4460,7 @@ static char *find_keys (ADDRESS *adrlist, unsigned int app, int oppenc_mode)
                 if ((t = strchr (crypt_hook_val, '@')) &&
                     (addr = rfc822_parse_adrlist (NULL, crypt_hook_val)))
                   {
-                    if (fqdn)
+                    if (fqdn != NULL)
                       rfc822_qualify (addr, fqdn);
                     q = addr;
                   }
@@ -4841,20 +4841,20 @@ static int verify_sender (HEADER *h, gpgme_protocol_t protocol)
   ADDRESS *sender = NULL;
   unsigned int ret = 1;
 
-  if (h->env->from)
+  if (h->env->from != NULL)
     {
       h->env->from = mutt_expand_aliases (h->env->from);
       sender = h->env->from;
     }
-  else if (h->env->sender)
+  else if (h->env->sender != NULL)
     {
       h->env->sender = mutt_expand_aliases (h->env->sender);
       sender = h->env->sender;
     }
 
-  if (sender)
+  if (sender != NULL)
   {
-    if (signature_key)
+    if (signature_key != NULL)
     {
       gpgme_key_t key = signature_key;
       gpgme_user_id_t uid = NULL;
@@ -4908,7 +4908,7 @@ static int verify_sender (HEADER *h, gpgme_protocol_t protocol)
   else
     mutt_any_key_to_continue (_("Failed to figure out sender"));
 
-  if (signature_key)
+  if (signature_key != NULL)
   {
     gpgme_key_unref (signature_key);
     signature_key = NULL;

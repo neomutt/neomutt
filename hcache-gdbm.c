@@ -33,7 +33,7 @@ hcache_gdbm_open(const char *path)
     pagesize = 16384;
 
   GDBM_FILE db = gdbm_open((char *) path, pagesize, GDBM_WRCREAT, 00600, NULL);
-  if (db)
+  if (db != NULL)
     return db;
 
   /* if rw failed try ro */

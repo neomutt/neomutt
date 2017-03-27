@@ -67,7 +67,7 @@ static short check_can_decode (ATTACHPTR ** idx, short idxlen,
 {
   short i;
 
-  if (cur)
+  if (cur != NULL)
     return mutt_can_decode (cur);
 
   for (i = 0; i < idxlen; i++)
@@ -131,7 +131,7 @@ void mutt_attach_bounce (FILE * fp, HEADER * hdr,
 
   /* RfC 5322 mandates a From: header, so warn before bouncing
    * messages without one */
-  if (cur)
+  if (cur != NULL)
   {
     if (cur->hdr->env->from == NULL)
     {
@@ -213,7 +213,7 @@ void mutt_attach_bounce (FILE * fp, HEADER * hdr,
 
   mutt_window_clearline (MuttMessageWindow, 0);
 
-  if (cur)
+  if (cur != NULL)
     ret = mutt_bounce_message (fp, cur->hdr, adr);
   else
   {
@@ -247,7 +247,7 @@ void mutt_attach_resend (FILE * fp, HEADER * hdr, ATTACHPTR ** idx,
   if (check_all_msg (idx, idxlen, cur, 1) == -1)
     return;
 
-  if (cur)
+  if (cur != NULL)
     mutt_resend_message (fp, Context, cur->hdr);
   else
   {
@@ -313,7 +313,7 @@ static HEADER *find_parent (ATTACHPTR **idx, short idxlen, BODY *cur, short natt
   short i;
   HEADER *parent = NULL;
 
-  if (cur)
+  if (cur != NULL)
   {
     for (i = 0; i < idxlen; i++)
     {
@@ -342,7 +342,7 @@ static void include_header (int quote, FILE * ifp,
 
   if (quote != 0)
   {
-    if (_prefix)
+    if (_prefix != NULL)
       strfcpy (prefix, _prefix, sizeof (prefix));
     else if (!option (OPTTEXTFLOWED))
       _mutt_make_string (prefix, sizeof (prefix), NONULL (Prefix),
@@ -490,7 +490,7 @@ _("Can't decode all tagged attachments.  MIME-forward the others?"))) == MUTT_AB
   /* where do we append new MIME parts? */
   last = &tmphdr->content;
 
-  if (cur)
+  if (cur != NULL)
   {
     /* single body case */
 
@@ -538,7 +538,7 @@ _("Can't decode all tagged attachments.  MIME-forward the others?"))) == MUTT_AB
 
   bail:
 
-  if (tmpfp)
+  if (tmpfp != NULL)
   {
     safe_fclose (&tmpfp);
     mutt_unlink (tmpbody);
@@ -573,7 +573,7 @@ static void attach_forward_msgs (FILE * fp, HEADER * hdr,
   int cmflags = 0;
   int chflags = CH_XMIT;
 
-  if (cur)
+  if (cur != NULL)
     curhdr = cur->hdr;
   else
   {
@@ -623,7 +623,7 @@ static void attach_forward_msgs (FILE * fp, HEADER * hdr,
     }
 
 
-    if (cur)
+    if (cur != NULL)
     {
       mutt_forward_intro (tmpfp, cur->hdr);
       _mutt_copy_message (tmpfp, fp, cur->hdr, cur->hdr->content, cmflags, chflags);
@@ -647,7 +647,7 @@ static void attach_forward_msgs (FILE * fp, HEADER * hdr,
   else if (rc == MUTT_YES)	/* do MIME encapsulation - we don't need to do much here */
   {
     last = &tmphdr->content;
-    if (cur)
+    if (cur != NULL)
       mutt_copy_body (fp, last, cur);
     else
     {
@@ -746,7 +746,7 @@ attach_reply_envelope_defaults (ENVELOPE *env, ATTACHPTR **idx, short idxlen,
   else
 #endif
   {
-    if (parent)
+    if (parent != NULL)
     {
       if (mutt_fetch_recips (env, curenv, flags) == -1)
 	return -1;
@@ -771,7 +771,7 @@ attach_reply_envelope_defaults (ENVELOPE *env, ATTACHPTR **idx, short idxlen,
   }
   mutt_make_misc_reply_headers (env, Context, curhdr, curenv);
 
-  if (parent)
+  if (parent != NULL)
     mutt_add_to_reference_headers (env, curenv, NULL, NULL);
   else
   {
@@ -871,7 +871,7 @@ void mutt_attach_reply (FILE * fp, HEADER * hdr,
 
   if (parent == NULL)
   {
-    if (cur)
+    if (cur != NULL)
       attach_include_reply (fp, tmpfp, cur->hdr, flags);
     else
     {
@@ -905,7 +905,7 @@ void mutt_attach_reply (FILE * fp, HEADER * hdr,
     if (option (OPTHEADER))
       include_header (1, fp, parent, tmpfp, prefix);
 
-    if (cur)
+    if (cur != NULL)
     {
       if (mutt_can_decode (cur))
       {

@@ -321,7 +321,7 @@ void update_index (MUTTMENU *menu, CONTEXT *ctx, int check,
   /* We are in a limited view. Check if the new message(s) satisfy
    * the limit criteria. If they do, set their virtual msgno so that
    * they will be visible in the limited view */
-  if (ctx->pattern)
+  if (ctx->pattern != NULL)
   {
 #define THIS_BODY ctx->hdrs[j]->content
     for (j = (check == MUTT_REOPENED) ? 0 : oldcount; j < ctx->msgcount; j++)
@@ -433,7 +433,7 @@ static int main_change_folder(MUTTMENU *menu, int op, char *buf, size_t bufsz,
   if (Context && !Context->path)
     FREE (&Context);
 
-  if (Context)
+  if (Context != NULL)
   {
     int check;
 
@@ -646,7 +646,7 @@ int index_color (int index_no)
     return h->pair;
 
   mutt_set_header_color (Context, h);
-  if (h)
+  if (h != NULL)
     return h->pair;
 
   return 0;
@@ -720,7 +720,7 @@ mutt_draw_statusline (int cols, const char *buf, int buflen)
       found = 1;
     }
 
-    if (syntax)
+    if (syntax != NULL)
     {
       offset = syntax[i].last;
     }
@@ -873,7 +873,7 @@ int mutt_index_menu (void)
       unset_option (OPTREDRAWTREE);
     }
 
-    if (Context)
+    if (Context != NULL)
       Context->menu = menu;
 
     if (Context && !attach_msg)
@@ -911,7 +911,7 @@ int mutt_index_menu (void)
 	      mutt_message (_("New mail in this mailbox."));
 	      if (option (OPTBEEPNEW))
 		beep ();
-	      if (NewMailCmd)
+	      if (NewMailCmd != NULL)
 	      {
 		char cmd[LONG_STRING];
 		menu_status_line(cmd, sizeof(cmd), menu, NONULL(NewMailCmd));
@@ -951,7 +951,7 @@ int mutt_index_menu (void)
          menu->redraw |= REDRAW_STATUS;
          if (option (OPTBEEPNEW))
            beep();
-         if (NewMailCmd)
+         if (NewMailCmd != NULL)
          {
            char cmd[LONG_STRING];
            menu_status_line(cmd, sizeof(cmd), menu, NONULL(NewMailCmd));
@@ -1134,7 +1134,7 @@ int mutt_index_menu (void)
 #endif
 
 #ifdef USE_NOTMUCH
-    if (Context)
+    if (Context != NULL)
       nm_debug_check(Context);
 #endif
 
@@ -1221,7 +1221,7 @@ int mutt_index_menu (void)
 	  if (Context->id_hash == NULL)
 	    Context->id_hash = mutt_make_id_hash (Context);
 	  hdr = hash_find (Context->id_hash, buf);
-	  if (hdr)
+	  if (hdr != NULL)
 	  {
 	    if (hdr->virtual != -1)
 	    {
@@ -1328,7 +1328,7 @@ int mutt_index_menu (void)
 
 	    /* if the root message was retrieved, move to it */
 	    hdr = hash_find (Context->id_hash, buf);
-	    if (hdr)
+	    if (hdr != NULL)
 	      menu->current = hdr->virtual;
 
 	    /* try to restore old position */
@@ -1517,7 +1517,7 @@ int mutt_index_menu (void)
 	    mutt_draw_tree (Context);
 	  menu->redraw = REDRAW_FULL;
 	}
-        if (Context->pattern)
+        if (Context->pattern != NULL)
 	  mutt_message (_("To view all messages, limit to \"all\"."));
 	break;
 
@@ -2084,7 +2084,7 @@ int mutt_index_menu (void)
 
 	menu->menu = MENU_PAGER;
  	menu->oldcurrent = menu->current;
-	if (Context)
+	if (Context != NULL)
 	  update_index (menu, Context, MUTT_NEW_MAIL, Context->msgcount, hint);
 
 	continue;
@@ -2102,7 +2102,7 @@ int mutt_index_menu (void)
 	    && (query_quadoption (OPT_QUIT,
 				  _("Exit NeoMutt without saving?")) == MUTT_YES))
 	{
-	  if (Context)
+	  if (Context != NULL)
 	  {
 	    mx_fastclose_mailbox (Context);
 	    FREE (&Context);
@@ -2405,14 +2405,14 @@ int mutt_index_menu (void)
 	  menu->current = menu->oldcurrent;
 	  if (op == OP_MAIN_NEXT_NEW || op == OP_MAIN_PREV_NEW)
           {
-            if (Context->pattern)
+            if (Context->pattern != NULL)
               mutt_error (_("No new messages in this limited view."));
             else
               mutt_error (_("No new messages."));
           }
           else
           {
-            if (Context->pattern)
+            if (Context->pattern != NULL)
               mutt_error (_("No unread messages in this limited view."));
             else
               mutt_error (_("No unread messages."));
@@ -2972,7 +2972,7 @@ int mutt_index_menu (void)
 
 	CHECK_MSGCOUNT;
 	CHECK_VISIBLE;
-	if (CURHDR->env->message_id)
+	if (CURHDR->env->message_id != NULL)
 	{
 	  char str[STRING], macro[STRING];
 	  char buf2[128];
@@ -3215,7 +3215,7 @@ int mutt_index_menu (void)
     }
 
 #ifdef USE_NOTMUCH
-    if (Context)
+    if (Context != NULL)
       nm_debug_check(Context);
 #endif
 

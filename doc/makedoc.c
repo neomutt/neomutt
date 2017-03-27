@@ -118,7 +118,7 @@ static char *get_token (char *d, size_t l, char *s)
   short is_quoted = 0;
   char *dd = d;
 
-  if (Debug)
+  if (Debug != NULL)
      fprintf (stderr, "%s: get_token called for `%s'.\n",
 	      Progname, s);
 
@@ -130,14 +130,14 @@ static char *get_token (char *d, size_t l, char *s)
 
   if (!*s)
   {
-    if (Debug)
+    if (Debug != NULL)
       fprintf (stderr, "%s: no more tokens on this line.\n", Progname);
     return NULL;
   }
 
   if (strchr (single_char_tokens, *s))
   {
-    if (Debug)
+    if (Debug != NULL)
     {
       fprintf (stderr, "%s: found single character token `%c'.\n",
 	       Progname, *s);
@@ -149,7 +149,7 @@ static char *get_token (char *d, size_t l, char *s)
 
   if (*s == '"')
   {
-    if (Debug)
+    if (Debug != NULL)
     {
       fprintf (stderr, "%s: found quote character.\n", Progname);
     }
@@ -192,7 +192,7 @@ static char *get_token (char *d, size_t l, char *s)
 
   *d = '\0';
 
-  if (Debug)
+  if (Debug != NULL)
   {
     fprintf (stderr, "%s: Got %stoken: `%s'.\n",
 	     Progname, is_quoted ? "quoted " : "", dd);
@@ -247,7 +247,7 @@ static int print_it (int special, char *str, FILE *out, int docstat)
         case SP_START_TT: docstat |= D_TT; break;
 	case SP_NEWLINE:
 	{
-	  if (onl)
+	  if (onl != NULL)
 	    docstat |= onl;
 	  else
 	  {
@@ -322,7 +322,7 @@ static int print_it (int special, char *str, FILE *out, int docstat)
 	}
 	case SP_STR:
 	{
-	  if (Continuation)
+	  if (Continuation != NULL)
 	  {
 	    Continuation = 0;
 	    fputs ("        ", out);
@@ -377,7 +377,7 @@ static int print_it (int special, char *str, FILE *out, int docstat)
         }
 	case SP_NEWLINE:
 	{
-	  if (onl)
+	  if (onl != NULL)
 	    docstat |= onl;
 	  else
 	  {
@@ -519,7 +519,7 @@ static int print_it (int special, char *str, FILE *out, int docstat)
         }
 	case SP_NEWLINE:
 	{
-	  if (onl)
+	  if (onl != NULL)
 	    docstat |= onl;
 	  else
 	  {
@@ -777,7 +777,7 @@ void print_ref (FILE *out, int output_dollar, const char *ref)
   {
   case F_CONF:
   case F_MAN:
-    if (output_dollar)
+    if (output_dollar != NULL)
       putc ('$', out);
     fputs (ref, out);
     break;
@@ -786,7 +786,7 @@ void print_ref (FILE *out, int output_dollar, const char *ref)
     fputs ("<link linkend=\"", out);
     sgml_id_fputs (ref, out);
     fputs ("\">", out);
-    if (output_dollar)
+    if (output_dollar != NULL)
       fputc ('$', out);
     sgml_fputs (ref, out);
     fputs ("</link>", out);
@@ -803,7 +803,7 @@ static int handle_docline (char *l, FILE *out, int docstat)
   char *s = NULL, *d = NULL;
   l = skip_ws (l);
 
-  if (Debug)
+  if (Debug != NULL)
     fprintf (stderr, "%s: handle_docline `%s'\n", Progname, l);
 
   if (strncmp (l, ".pp", 3) == 0)
@@ -1238,7 +1238,7 @@ static void handle_confline (char *s, FILE *out)
 
   if (strcmp (buff, "|") == 0)
   {
-    if (Debug) fprintf (stderr, "%s: Expecting <subtype> <comma>.\n", Progname);
+    if (Debug != NULL) fprintf (stderr, "%s: Expecting <subtype> <comma>.\n", Progname);
     /* ignore subtype and comma */
     if (!(s = get_token (buff, sizeof (buff), s))) return;
     if (!(s = get_token (buff, sizeof (buff), s))) return;
@@ -1261,13 +1261,13 @@ static void handle_confline (char *s, FILE *out)
   /* comma */
   if (!(s = get_token (buff, sizeof (buff), s))) return;
 
-  if (Debug) fprintf (stderr, "%s: Expecting default value.\n", Progname);
+  if (Debug != NULL) fprintf (stderr, "%s: Expecting default value.\n", Progname);
 
   /* <default value> or UL <default value> */
   if (!(s = get_token (buff, sizeof (buff), s))) return;
   if (strcmp (buff, "UL") == 0)
   {
-    if (Debug) fprintf (stderr, "%s: Skipping UL.\n", Progname);
+    if (Debug != NULL) fprintf (stderr, "%s: Skipping UL.\n", Progname);
     if (!(s = get_token (buff, sizeof (buff), s))) return;
   }
 
@@ -1310,7 +1310,7 @@ static void makedoc (FILE *in, FILE *out)
     if (!(p = get_token (token, sizeof (token), buffer)))
       continue;
 
-    if (Debug)
+    if (Debug != NULL)
     {
       fprintf (stderr, "%s: line %d.  first token: \"%s\".\n",
 	       Progname, line, token);

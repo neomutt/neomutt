@@ -165,7 +165,7 @@ mutt_copy_hdr (FILE *in, FILE *out, LOFF_T off_start, LOFF_T off_end, int flags,
     if (nl && buf[0] != ' ' && buf[0] != '\t')
     {
       /* Do we have anything pending? */
-      if (this_one)
+      if (this_one != NULL)
       {
 	if (flags & CH_DECODE)
 	{
@@ -260,7 +260,7 @@ mutt_copy_hdr (FILE *in, FILE *out, LOFF_T off_start, LOFF_T off_end, int flags,
   } /* while (ftello (in) < off_end) */
 
   /* Do we have anything pending?  -- XXX, same code as in above in the loop. */
-  if (this_one)
+  if (this_one != NULL)
   {
     if (flags & CH_DECODE)
     {
@@ -352,7 +352,7 @@ mutt_copy_header (FILE *in, HEADER *h, FILE *out, int flags, const char *prefix)
 {
   char buffer[SHORT_STRING];
 
-  if (h->env)
+  if (h->env != NULL)
     flags |= (h->env->irt_changed ? CH_UPDATE_IRT : 0)
       | (h->env->refs_changed ? CH_UPDATE_REFS : 0);
 
@@ -879,7 +879,7 @@ static void format_address_header (char **h, ADDRESS *a)
     }
     else
     {
-      if (a->mailbox)
+      if (a->mailbox != NULL)
       {
 	strcpy (cbuf, " ");	/* __STRCPY_CHECKED__ */
 	linelen++;
@@ -987,7 +987,7 @@ static int address_header_decode (char **h)
   mutt_addrlist_to_local (a);
   rfc2047_decode_adrlist (a);
   for (cur = a; cur; cur = cur->next)
-    if (cur->personal)
+    if (cur->personal != NULL)
       rfc822_dequote_comment (cur->personal);
 
   /* angle brackets for return path are mandated by RfC5322,

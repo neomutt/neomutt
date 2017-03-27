@@ -87,7 +87,7 @@ get_incoming (void)
     }
     break;
   case SB_SRC_VIRT:
-    if (VirtIncoming)
+    if (VirtIncoming != NULL)
     {
       return VirtIncoming;
     }
@@ -712,7 +712,7 @@ static int draw_divider (int num_rows, int num_cols)
   }
   else if (delim_len == 0)
   {
-    if (SidebarDividerChar)
+    if (SidebarDividerChar != NULL)
       return 0; /* User has set empty string */
 
     delim_len = 1; /* Unset variable */
@@ -729,7 +729,7 @@ static int draw_divider (int num_rows, int num_cols)
     {
       altchar = SB_DIV_ASCII;
     }
-    else if (SidebarDividerChar)
+    else if (SidebarDividerChar != NULL)
     {
       for (i = 0; i < delim_len; i++)
       {

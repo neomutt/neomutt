@@ -388,7 +388,7 @@ size_t mutt_iconv (iconv_t cd, ICONV_CONST char **inbuf, size_t *inbytesleft,
       ret += ret1;
     if (ibl && obl && errno == EILSEQ)
     {
-      if (inrepls)
+      if (inrepls != NULL)
       {
 	/* Try replacing the input */
 	ICONV_CONST char **t;

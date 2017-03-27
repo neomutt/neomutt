@@ -84,7 +84,7 @@ static void print_part_line (STATE *s, BODY *b, int n)
 
 static void state_prefix_put (const char *d, size_t dlen, STATE *s)
 {
-  if (s->prefix)
+  if (s->prefix != NULL)
     while (dlen--)
       state_prefix_putc (*d++, s);
   else
@@ -564,7 +564,7 @@ static void enriched_wrap (struct enriched_state *stte)
   stte->line_len = 0;
   stte->line_used = 0;
   stte->indent_len = 0;
-  if (stte->s->prefix)
+  if (stte->s->prefix != NULL)
   {
     state_puts (stte->s->prefix, stte->s);
     stte->indent_len += mutt_strlen (stte->s->prefix);
@@ -575,7 +575,7 @@ static void enriched_wrap (struct enriched_state *stte)
     x = stte->tag_level[RICH_EXCERPT];
     while (x)
     {
-      if (stte->s->prefix)
+      if (stte->s->prefix != NULL)
       {
 	state_puts (stte->s->prefix, stte->s);
 	    stte->indent_len += mutt_strlen (stte->s->prefix);
@@ -816,7 +816,7 @@ static int text_enriched_handler (BODY *a, STATE *s)
   stte.param_len = STRING;
   stte.param_used = 0;
 
-  if (s->prefix)
+  if (s->prefix != NULL)
   {
     state_puts (s->prefix, s);
     stte.indent_len += mutt_strlen (s->prefix);
@@ -1048,7 +1048,7 @@ static int alternative_handler (BODY *a, STATE *s)
     int wild;	/* do we have a wildcard to match all subtypes? */
 
     c = strchr (t->data, '/');
-    if (c)
+    if (c != NULL)
     {
       wild = (c[1] == '*' && c[2] == 0);
       btlen = c - t->data;
@@ -1140,7 +1140,7 @@ static int alternative_handler (BODY *a, STATE *s)
     }
   }
 
-  if (choice)
+  if (choice != NULL)
   {
     if (s->flags & MUTT_DISPLAY && !option (OPTWEED))
     {
@@ -1208,14 +1208,14 @@ static int message_handler (BODY *a, STATE *s)
   else
     b = a;
 
-  if (b->parts)
+  if (b->parts != NULL)
   {
     mutt_copy_hdr (s->fpin, s->fpout, off_start, b->parts->offset,
 	(((s->flags & MUTT_WEED) || ((s->flags & (MUTT_DISPLAY|MUTT_PRINTING)) && option (OPTWEED))) ? (CH_WEED | CH_REORDER) : 0) |
 	(s->prefix ? CH_PREFIX : 0) | CH_DECODE | CH_FROM |
 	((s->flags & MUTT_DISPLAY) ? CH_DISPLAY : 0), s->prefix);
 
-    if (s->prefix)
+    if (s->prefix != NULL)
       state_puts (s->prefix, s);
     state_putc ('\n', s);
 
@@ -1358,7 +1358,7 @@ static int autoview_handler (BODY *a, STATE *s)
   rfc1524_expand_filename (entry->nametemplate, fname, tempfile, sizeof (tempfile));
   FREE (&fname);
 
-  if (entry->command)
+  if (entry->command != NULL)
   {
     strfcpy (command, entry->command, sizeof (command));
 
@@ -1407,7 +1407,7 @@ static int autoview_handler (BODY *a, STATE *s)
       goto bail;
     }
 
-    if (s->prefix)
+    if (s->prefix != NULL)
     {
       while (fgets (buffer, sizeof(buffer), fpout) != NULL)
       {
@@ -1488,7 +1488,7 @@ static int external_body_handler (BODY *b, STATE *s)
   }
 
   expiration = mutt_get_parameter ("expiration", b->parameter);
-  if (expiration)
+  if (expiration != NULL)
     expire = mutt_parse_date (expiration, NULL);
   else
     expire = -1;
@@ -1504,7 +1504,7 @@ static int external_body_handler (BODY *b, STATE *s)
       state_printf (s, _("[-- This %s/%s attachment "),
 	       TYPE(b->parts), b->parts->subtype);
       length = mutt_get_parameter ("length", b->parameter);
-      if (length)
+      if (length != NULL)
       {
 	mutt_pretty_size (pretty_size, sizeof (pretty_size),
 			  strtol (length, NULL, 10));
@@ -1517,7 +1517,7 @@ static int external_body_handler (BODY *b, STATE *s)
 	state_mark_attach (s);
 	state_printf (s, _("[-- on %s --]\n"), expiration);
       }
-      if (b->parts->filename)
+      if (b->parts->filename != NULL)
       {
 	state_mark_attach (s);
 	state_printf (s, _("[-- name: %s --]\n"), b->parts->filename);
@@ -1618,7 +1618,7 @@ static int text_plain_handler (BODY *b, STATE *s)
       while (l > 0 && buf[l-1] == ' ')
 	buf[--l] = 0;
     }
-    if (s->prefix)
+    if (s->prefix != NULL)
       state_puts (s->prefix, s);
     state_puts (buf, s);
     state_putc ('\n', s);
@@ -1714,7 +1714,7 @@ static int run_decode_and_handler (BODY *b, STATE *s, handler_t handler, int pla
       s->fpout = fp;
       fp = s->fpin;
 #ifdef USE_FMEMOPEN
-      if (tempsize) {
+      if (tempsize != NULL) {
         s->fpin = fmemopen (temp, tempsize, "r");
       } else { /* fmemopen cannot handle zero-length buffers */
         s->fpin = safe_fopen ("/dev/null", "r");
@@ -1735,7 +1735,7 @@ static int run_decode_and_handler (BODY *b, STATE *s, handler_t handler, int pla
   }
 
   /* process the (decoded) body part */
-  if (handler)
+  if (handler != NULL)
   {
     rc = handler (b, s);
 

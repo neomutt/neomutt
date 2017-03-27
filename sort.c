@@ -96,13 +96,13 @@ const char *mutt_get_name (ADDRESS *a)
 {
   ADDRESS *ali = NULL;
 
-  if (a)
+  if (a != NULL)
   {
     if (option (OPTREVALIAS) && (ali = alias_reverse_lookup (a)) && ali->personal)
       return ali->personal;
-    else if (a->personal)
+    else if (a->personal != NULL)
       return a->personal;
-    else if (a->mailbox)
+    else if (a->mailbox != NULL)
       return (mutt_addr_for_display (a));
   }
   /* don't return NULL to avoid segfault when printing/comparing */
@@ -336,7 +336,7 @@ void mutt_sort_headers (CONTEXT *ctx, int init)
     {
       i = Sort;
       Sort = SortAux;
-      if (ctx->tree)
+      if (ctx->tree != NULL)
 	ctx->tree = mutt_sort_subthreads (ctx->tree, 1);
       Sort = i;
       unset_option (OPTSORTSUBTHREADS);

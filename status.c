@@ -229,7 +229,7 @@ status_format_str (char *buf, size_t buflen, size_t col, int cols, char op, cons
     {
       size_t i = 0;
 
-      if (Context)
+      if (Context != NULL)
       {
 	i = option(OPTATTACHMSG) ? 3 : ((Context->readonly ||
           Context->dontwrite) ? 2 : (Context->changed ||

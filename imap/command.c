@@ -486,7 +486,7 @@ static void cmd_parse_search (IMAP_DATA* idata, const char* s)
   {
     uid = (unsigned int)atoi (s);
     h = (HEADER *)int_hash_find (idata->uid_hash, uid);
-    if (h)
+    if (h != NULL)
       h->matched = 1;
   }
 }

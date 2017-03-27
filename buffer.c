@@ -315,7 +315,7 @@ int mutt_extract_token (BUFFER *dest, BUFFER *tok, int flags)
 	var = mutt_substrdup (tok->dptr, pc);
 	tok->dptr = pc;
       }
-      if (var)
+      if (var != NULL)
       {
         if ((env = getenv (var)) || (env = myvar_get (var)))
           mutt_buffer_addstr (dest, env);

@@ -443,7 +443,7 @@ dump_envelope(ENVELOPE * e, unsigned char *d, int *off, int convert)
   d = dump_char(e->list_post, d, off, convert);
   d = dump_char(e->subject, d, off, convert);
 
-  if (e->real_subj)
+  if (e->real_subj != NULL)
     d = dump_int(e->real_subj - e->subject, d, off);
   else
     d = dump_int(-1, d, off);
@@ -596,7 +596,7 @@ static const char *hcache_per_folder(const char *path, const char *folder,
 
   /* We have a directory - no matter whether it exists, or not */
 
-  if (namer)
+  if (namer != NULL)
   {
     /* We have a mailbox-specific namer function */
     snprintf(hcpath, sizeof(hcpath), "%s%s", path, slash ? "" : "/");
@@ -788,7 +788,7 @@ mutt_hcache_open(const char *path, const char *folder, hcache_namer_t namer)
   path = hcache_per_folder(path, h->folder, namer);
 
   h->ctx = ops->open(path);
-  if (h->ctx)
+  if (h->ctx != NULL)
     return h;
   else
   {
@@ -796,7 +796,7 @@ mutt_hcache_open(const char *path, const char *folder, hcache_namer_t namer)
     if (unlink (path) == 0)
     {
       h->ctx = ops->open(path);
-      if (h->ctx)
+      if (h->ctx != NULL)
         return h;
     }
     FREE(&h->folder);

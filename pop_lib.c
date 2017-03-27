@@ -61,7 +61,7 @@ int pop_parse_path (const char* path, ACCOUNT* acct)
 
   service = getservbyname (url.scheme == U_POP ? "pop3" : "pop3s", "tcp");
   if (acct->port == 0) {
-    if (service)
+    if (service != NULL)
       acct->port = ntohs (service->s_port);
     else
       acct->port = url.scheme == U_POP ? POP_PORT : POP_SSL_PORT;;
@@ -423,7 +423,7 @@ int pop_query_d (POP_DATA *pop_data, char *buf, size_t buflen, char *msg)
 
 #ifdef DEBUG
     /* print msg instead of real command */
-    if (msg)
+    if (msg != NULL)
     {
       dbg = MUTT_SOCK_LOG_FULL;
       mutt_debug (MUTT_SOCK_LOG_CMD, "> %s", msg);
@@ -433,7 +433,7 @@ int pop_query_d (POP_DATA *pop_data, char *buf, size_t buflen, char *msg)
   mutt_socket_write_d (pop_data->conn, buf, -1, dbg);
 
   c = strpbrk (buf, " \r\n");
-  if (c)
+  if (c != NULL)
     *c = '\0';
   snprintf (pop_data->err_msg, sizeof (pop_data->err_msg), "%s: ", buf);
 
@@ -503,7 +503,7 @@ int pop_fetch_data (POP_DATA *pop_data, char *query, progress_t *progressbar,
     }
     else
     {
-      if (progressbar)
+      if (progressbar != NULL)
 	mutt_progress_update (progressbar, pos, -1);
       if (ret == 0 && funct (inbuf, data) < 0)
 	ret = -3;

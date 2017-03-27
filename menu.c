@@ -239,7 +239,7 @@ static void print_enriched_string (int index, int attr, unsigned char *s, int do
 
 static void menu_make_entry (char *s, int l, MUTTMENU *menu, int i)
 {
-  if (menu->dialog)
+  if (menu->dialog != NULL)
   {
     strncpy (s, menu->dialog[i], l);
     menu->current = -1; /* hide menubar */
@@ -358,7 +358,7 @@ void menu_redraw_motion (MUTTMENU *menu)
 {
   char buf[LONG_STRING];
 
-  if (menu->dialog)
+  if (menu->dialog != NULL)
   {
     menu->redraw &= ~REDRAW_MOTION;
     return;
@@ -428,7 +428,7 @@ void menu_redraw_current (MUTTMENU *menu)
 
 static void menu_redraw_prompt (MUTTMENU *menu)
 {
-  if (menu->dialog)
+  if (menu->dialog != NULL)
   {
     if (option (OPTMSGERR))
     {
@@ -927,7 +927,7 @@ int menu_redraw (MUTTMENU *menu)
   else if (menu->redraw == REDRAW_CURRENT)
     menu_redraw_current (menu);
 
-  if (menu->dialog)
+  if (menu->dialog != NULL)
     menu_redraw_prompt (menu);
 
   return OP_NULL;
@@ -1027,7 +1027,7 @@ int mutt_menu_loop (MUTTMENU *menu)
       mutt_clear_error ();
 
     /* Convert menubar movement to scrolling */
-    if (menu->dialog)
+    if (menu->dialog != NULL)
       i = menu_dialog_translate_op (i);
 
     switch (i)
@@ -1097,7 +1097,7 @@ int mutt_menu_loop (MUTTMENU *menu)
 	break;
 
       case OP_JUMP:
-	if (menu->dialog)
+	if (menu->dialog != NULL)
 	  mutt_error (_("Jumping is not implemented for dialogs."));
 	else
 	  menu_jump (menu);

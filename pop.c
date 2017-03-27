@@ -533,13 +533,13 @@ static int pop_fetch_message (CONTEXT* ctx, MESSAGE* msg, int msgno)
    */
   cache = &pop_data->cache[h->index % POP_CACHE_LEN];
 
-  if (cache->path)
+  if (cache->path != NULL)
   {
     if (cache->index == h->index)
     {
       /* yes, so just return a pointer to the message */
       msg->fp = fopen (cache->path, "r");
-      if (msg->fp)
+      if (msg->fp != NULL)
 	return 0;
 
       mutt_perror (cache->path);

@@ -134,7 +134,7 @@ static int ssl_set_verify_partial (SSL_CTX *ctx)
   if (option (OPTSSLVERIFYPARTIAL))
   {
     param = X509_VERIFY_PARAM_new();
-    if (param)
+    if (param != NULL)
     {
       X509_VERIFY_PARAM_set_flags(param, X509_V_FLAG_PARTIAL_CHAIN);
       if (0 == SSL_CTX_set1_param(ctx, param))
@@ -295,7 +295,7 @@ static int ssl_socket_open_err (CONNECTION *conn)
 static int ssl_socket_close (CONNECTION * conn)
 {
   sslsockdata *data = conn->sockdata;
-  if (data)
+  if (data != NULL)
   {
     if (data->isopen != 0)
       SSL_shutdown (data->ssl);
@@ -350,7 +350,7 @@ static char *asn1time_to_string (ASN1_UTCTIME *tm)
   strfcpy (buf, _("[invalid date]"), sizeof (buf));
 
   bio = BIO_new (BIO_s_mem());
-  if (bio)
+  if (bio != NULL)
   {
     if (ASN1_TIME_print (bio, tm))
       (void) BIO_read (bio, buf, sizeof (buf));
@@ -537,7 +537,7 @@ static int ssl_socket_write (CONNECTION* conn, const char* buf, size_t len)
 
 static void ssl_get_client_cert(sslsockdata *ssldata, CONNECTION *conn)
 {
-  if (SslClientCert)
+  if (SslClientCert != NULL)
   {
     mutt_debug (2, "Using client certificate %s\n", SslClientCert);
     SSL_CTX_set_default_passwd_cb_userdata(ssldata->ctx, &conn->account);
@@ -966,7 +966,7 @@ static int ssl_verify_callback (int preverify_ok, X509_STORE_CTX *ctx)
     }
 
     last_pos = pos;
-    if (last_cert)
+    if (last_cert != NULL)
       X509_free (last_cert);
     last_cert = X509_dup (cert);
   }
@@ -1156,7 +1156,7 @@ static int ssl_socket_open (CONNECTION * conn)
 
   ssl_get_client_cert(data, conn);
 
-  if (SslCiphers) {
+  if (SslCiphers != NULL) {
     SSL_CTX_set_cipher_list (data->ctx, SslCiphers);
   }
 
@@ -1247,7 +1247,7 @@ int mutt_ssl_starttls (CONNECTION* conn)
 
   ssl_get_client_cert(ssldata, conn);
 
-  if (SslCiphers) {
+  if (SslCiphers != NULL) {
     if (!SSL_CTX_set_cipher_list (ssldata->ctx, SslCiphers)) {
       mutt_debug (1, "mutt_ssl_starttls: Could not select preferred ciphers\n");
       goto bail_ctx;

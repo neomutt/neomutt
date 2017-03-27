@@ -150,7 +150,7 @@ int nntp_newsrc_parse (NNTP_SERVER *nserv)
   char *line = NULL;
   struct stat sb;
 
-  if (nserv->newsrc_fp)
+  if (nserv->newsrc_fp != NULL)
   {
     /* if we already have a handle, close it and reopen */
     safe_fclose (&nserv->newsrc_fp);
@@ -245,12 +245,12 @@ int nntp_newsrc_parse (NNTP_SERVER *nserv)
 
       /* find end of entry */
       p = strchr (p, ',');
-      if (p)
+      if (p != NULL)
 	*p++ = '\0';
 
       /* first-last or single number */
       h = strchr (b, '-');
-      if (h)
+      if (h != NULL)
 	*h++ = '\0';
       else
 	h = b;
@@ -397,7 +397,7 @@ static int update_file (char *filename, char *buf)
     rc = 0;
     break;
   }
-  if (fp)
+  if (fp != NULL)
     safe_fclose (&fp);
   if (*tmpfile)
     unlink (tmpfile);
@@ -490,7 +490,7 @@ static void cache_expand (char *dst, size_t dstlen, ACCOUNT *acct, char *src)
   char file[_POSIX_PATH_MAX];
 
   /* server subdirectory */
-  if (acct)
+  if (acct != NULL)
   {
     ciss_url_t url;
 
@@ -667,7 +667,7 @@ void nntp_hcache_update (NNTP_DATA *nntp_data, header_cache_t *hc)
 
   /* fetch previous values of first and last */
   hdata = mutt_hcache_fetch_raw (hc, "index", 5);
-  if (hdata)
+  if (hdata != NULL)
   {
     mutt_debug (2, "nntp_hcache_update: mutt_hcache_fetch index: %s\n", (char*) hdata);
     if (sscanf (hdata, ANUM " " ANUM, &first, &last) == 2)
@@ -712,7 +712,7 @@ static int nntp_bcache_delete (const char *id, body_cache_t *bcache, void *data)
   if (!nntp_data || sscanf (id, ANUM "%c", &anum, &c) != 1 ||
       anum < nntp_data->firstMessage || anum > nntp_data->lastMessage)
   {
-    if (nntp_data)
+    if (nntp_data != NULL)
       mutt_debug (2, "nntp_bcache_delete: mutt_bcache_del %s\n", id);
     mutt_bcache_del (bcache, id);
   }
@@ -743,7 +743,7 @@ void nntp_delete_group_cache (NNTP_DATA *nntp_data)
   if (nntp_data->bcache == NULL)
     nntp_data->bcache = mutt_bcache_open (&nntp_data->nserv->conn->account,
 			nntp_data->group);
-  if (nntp_data->bcache)
+  if (nntp_data->bcache != NULL)
   {
     mutt_debug (2, "nntp_delete_group_cache: %s/*\n", nntp_data->group);
     mutt_bcache_list (nntp_data->bcache, nntp_bcache_delete, NULL);
@@ -764,7 +764,7 @@ void nntp_clear_cache (NNTP_SERVER *nserv)
 
   cache_expand (file, sizeof (file), &nserv->conn->account, NULL);
   dp = opendir (file);
-  if (dp)
+  if (dp != NULL)
   {
     safe_strncat (file, sizeof (file), "/", 1);
     fp = file + strlen (file);
@@ -842,7 +842,7 @@ nntp_format_str (char *dest, size_t destlen, size_t col, int cols, char op, cons
       mutt_account_tourl (acct, &url);
       url_ciss_tostring (&url, fn, sizeof (fn), U_PATH);
       p = strchr (fn, '/');
-      if (p)
+      if (p != NULL)
 	*p = '\0';
       snprintf (tmp, sizeof (tmp), "%%%ss", fmt);
       snprintf (dest, destlen, tmp, fn);
@@ -869,7 +869,7 @@ nntp_format_str (char *dest, size_t destlen, size_t col, int cols, char op, cons
       mutt_account_tourl (acct, &url);
       url_ciss_tostring (&url, fn, sizeof (fn), U_PATH);
       p = strchr (fn, ':');
-      if (p)
+      if (p != NULL)
 	*p = '\0';
       snprintf (tmp, sizeof (tmp), "%%%ss", fmt);
       snprintf (dest, destlen, tmp, fn);
@@ -937,7 +937,7 @@ NNTP_SERVER *nntp_select_server (char *server, int leave_lock)
 
   /* news server already exists */
   nserv = conn->data;
-  if (nserv)
+  if (nserv != NULL)
   {
     if (nserv->status == NNTP_BYE)
       nserv->status = NNTP_NONE;
@@ -1012,7 +1012,7 @@ NNTP_SERVER *nntp_select_server (char *server, int leave_lock)
     struct dirent *entry = NULL;
     DIR *dp = opendir (file);
 
-    if (dp)
+    if (dp != NULL)
     {
       while ((entry = readdir (dp)))
       {
@@ -1034,7 +1034,7 @@ NNTP_SERVER *nntp_select_server (char *server, int leave_lock)
 
 	/* fetch previous values of first and last */
 	hdata = mutt_hcache_fetch_raw (hc, "index", 5);
-	if (hdata)
+	if (hdata != NULL)
 	{
 	  anum_t first, last;
 
@@ -1090,7 +1090,7 @@ void nntp_article_status (CONTEXT *ctx, HEADER *hdr, char *group, anum_t anum)
   NNTP_DATA *nntp_data = ctx->data;
   unsigned int i;
 
-  if (group)
+  if (group != NULL)
     nntp_data = hash_find (nntp_data->nserv->groups_hash, group);
 
   if (nntp_data == NULL)
@@ -1170,7 +1170,7 @@ NNTP_DATA *mutt_newsgroup_catchup (NNTP_SERVER *nserv, char *group)
   if (nntp_data == NULL)
     return NULL;
 
-  if (nntp_data->newsrc_ent)
+  if (nntp_data->newsrc_ent != NULL)
   {
     safe_realloc (&nntp_data->newsrc_ent, sizeof (NEWSRC_ENTRY));
     nntp_data->newsrc_len = 1;
@@ -1200,7 +1200,7 @@ NNTP_DATA *mutt_newsgroup_uncatchup (NNTP_SERVER *nserv, char *group)
   if (nntp_data == NULL)
     return NULL;
 
-  if (nntp_data->newsrc_ent)
+  if (nntp_data->newsrc_ent != NULL)
   {
     safe_realloc (&nntp_data->newsrc_ent, sizeof (NEWSRC_ENTRY));
     nntp_data->newsrc_len = 1;

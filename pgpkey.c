@@ -521,7 +521,7 @@ static pgp_key_t pgp_select_key (pgp_key_t keys,
   menu->help = helpstr;
   menu->data = KeyTable;
 
-  if (p)
+  if (p != NULL)
     snprintf (buf, sizeof (buf), _("PGP keys matching <%s>."), p->mailbox);
   else
     snprintf (buf, sizeof (buf), _("PGP keys matching \"%s\"."), s);
@@ -657,7 +657,7 @@ pgp_key_t pgp_ask_for_key (char *tag, char *whatfor,
   mutt_clear_error ();
 
   resp[0] = 0;
-  if (whatfor)
+  if (whatfor != NULL)
   {
 
     for (l = id_defaults; l; l = l->next)
@@ -675,9 +675,9 @@ pgp_key_t pgp_ask_for_key (char *tag, char *whatfor,
     if (mutt_get_field (tag, resp, sizeof (resp), MUTT_CLEAR) != 0)
       return NULL;
 
-    if (whatfor)
+    if (whatfor != NULL)
     {
-      if (l)
+      if (l != NULL)
 	mutt_str_replace (&l->dflt, resp);
       else
       {
@@ -890,16 +890,16 @@ pgp_key_t pgp_getkeybyaddr (ADDRESS * a, short abilities, pgp_ring_t keyring,
 
   pgp_free_key (&keys);
 
-  if (matches)
+  if (matches != NULL)
   {
     if (oppenc_mode != 0)
     {
-      if (the_strong_valid_key)
+      if (the_strong_valid_key != NULL)
       {
         pgp_remove_key (&matches, the_strong_valid_key);
         k = the_strong_valid_key;
       }
-      else if (a_valid_addrmatch_key)
+      else if (a_valid_addrmatch_key != NULL)
       {
         pgp_remove_key (&matches, a_valid_addrmatch_key);
         k = a_valid_addrmatch_key;
@@ -1009,7 +1009,7 @@ pgp_key_t pgp_getkeybystr (char *p, short abilities, pgp_ring_t keyring)
 
   pgp_free_key (&keys);
 
-  if (matches)
+  if (matches != NULL)
   {
     if ((k = pgp_select_key (matches, NULL, p)))
       pgp_remove_key (&matches, k);

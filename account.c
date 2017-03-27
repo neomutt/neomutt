@@ -38,7 +38,7 @@ int mutt_account_match (const ACCOUNT* a1, const ACCOUNT* a2)
 #ifdef USE_IMAP
   if (a1->type == MUTT_ACCT_TYPE_IMAP)
   {
-    if (ImapUser)
+    if (ImapUser != NULL)
       user = ImapUser;
   }
 #endif
@@ -71,17 +71,17 @@ int mutt_account_match (const ACCOUNT* a1, const ACCOUNT* a2)
 int mutt_account_fromurl (ACCOUNT* account, ciss_url_t* url)
 {
   /* must be present */
-  if (url->host)
+  if (url->host != NULL)
     strfcpy (account->host, url->host, sizeof (account->host));
   else
     return -1;
 
-  if (url->user)
+  if (url->user != NULL)
   {
     strfcpy (account->user, url->user, sizeof (account->user));
     account->flags |= MUTT_ACCT_USER;
   }
-  if (url->pass)
+  if (url->pass != NULL)
   {
     strfcpy (account->pass, url->pass, sizeof (account->pass));
     account->flags |= MUTT_ACCT_PASS;
@@ -200,7 +200,7 @@ int mutt_account_getlogin (ACCOUNT* account)
 #ifdef USE_IMAP
   else if (account->type == MUTT_ACCT_TYPE_IMAP)
   {
-    if (ImapLogin)
+    if (ImapLogin != NULL)
     {
       strfcpy (account->login, ImapLogin, sizeof (account->login));
       account->flags |= MUTT_ACCT_LOGIN;

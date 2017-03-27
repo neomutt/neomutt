@@ -113,7 +113,7 @@ static size_t utf8rtowc (wchar_t *pwc, const char *s, size_t n, mbstate_t *_ps)
     c = (unsigned char)*s;
     if (c < 0x80)
     {
-      if (pwc)
+      if (pwc != NULL)
 	*pwc = c;
       return (c != 0);
     }
@@ -153,7 +153,7 @@ static size_t utf8rtowc (wchar_t *pwc, const char *s, size_t n, mbstate_t *_ps)
       wc |= (c & 0x3f) << (6 * count);
       if (count == 0)
       {
-	if (pwc)
+	if (pwc != NULL)
 	  *pwc = wc;
 	*ps = 0;
 	return wc ? k : 0;
@@ -193,7 +193,7 @@ static size_t wcrtomb_iconv (char *s, wchar_t wc, iconv_t cd)
   char *ob = NULL;
   size_t ibl, obl;
 
-  if (s)
+  if (s != NULL)
   {
     ibl = mutt_wctoutf8 (buf, wc, sizeof (buf));
     if (ibl == (size_t)(-1))
@@ -334,7 +334,7 @@ size_t mbrtowc (wchar_t *pwc, const char *s, size_t n, mbstate_t *ps)
     }
     if (n == 0)
       return (size_t)-2;
-    if (pwc)
+    if (pwc != NULL)
       *pwc = (wchar_t)(unsigned char)*s;
     return (*s != 0);
   }

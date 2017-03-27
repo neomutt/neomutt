@@ -208,7 +208,7 @@ int url_ciss_tostring (ciss_url_t* ciss, char* dest, size_t len, int flags)
 
   snprintf (dest, len, "%s:", mutt_getnamebyvalue (ciss->scheme, UrlMap));
 
-  if (ciss->host)
+  if (ciss->host != NULL)
   {
     if (!(flags & U_PATH))
       safe_strcat (dest, len, "//");
@@ -244,7 +244,7 @@ int url_ciss_tostring (ciss_url_t* ciss, char* dest, size_t len, int flags)
       snprintf (dest, len, "/");
   }
 
-  if (ciss->path)
+  if (ciss->path != NULL)
     safe_strcat (dest, len, ciss->path);
 
   return 0;
@@ -305,7 +305,7 @@ int url_parse_mailto (ENVELOPE *e, char **body, const char *src)
     {
       if (ascii_strcasecmp (tag, "body") == 0)
       {
-	if (body)
+	if (body != NULL)
 	  mutt_str_replace (body, value);
       }
       else

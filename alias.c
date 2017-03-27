@@ -51,7 +51,7 @@ static ADDRESS *expand_aliases_r (ADDRESS *a, LIST **expn)
     {
       t = mutt_lookup_alias (a->mailbox);
 
-      if (t)
+      if (t != NULL)
       {
         i = 0;
         for (u = *expn; u; u = u->next)
@@ -73,7 +73,7 @@ static ADDRESS *expand_aliases_r (ADDRESS *a, LIST **expn)
           *expn = u;
 	  w = rfc822_cpy_adr (t, 0);
 	  w = expand_aliases_r (w, expn);
-	  if (head)
+	  if (head != NULL)
 	    last->next = w;
 	  else
 	    head = last = w;
@@ -90,7 +90,7 @@ static ADDRESS *expand_aliases_r (ADDRESS *a, LIST **expn)
       {
 	struct passwd *pw = getpwnam (a->mailbox);
 
-	if (pw)
+	if (pw != NULL)
 	{
 	  char namebuf[STRING];
 
@@ -104,7 +104,7 @@ static ADDRESS *expand_aliases_r (ADDRESS *a, LIST **expn)
       }
     }
 
-    if (head)
+    if (head != NULL)
     {
       last->next = a;
       last = last->next;
@@ -206,7 +206,7 @@ ADDRESS *mutt_get_address (ENVELOPE *env, char **pfxp)
     pfx = "From";
   }
 
-  if (pfxp) *pfxp = pfx;
+  if (pfxp != NULL) *pfxp = pfx;
 
   return adr;
 }
@@ -234,11 +234,11 @@ void mutt_create_alias (ENVELOPE *cur, ADDRESS *iadr)
   FILE *rc = NULL;
   ADDRESS *adr = NULL;
 
-  if (cur)
+  if (cur != NULL)
   {
     adr = mutt_get_address (cur, NULL);
   }
-  else if (iadr)
+  else if (iadr != NULL)
   {
     adr = iadr;
   }
@@ -285,7 +285,7 @@ retry_name:
 
   mutt_addrlist_to_local (adr);
 
-  if (adr)
+  if (adr != NULL)
     strfcpy (buf, adr->mailbox, sizeof (buf));
   else
     buf[0] = 0;
@@ -575,7 +575,7 @@ int mutt_alias_complete (char *s, size_t buflen)
   {
     if (a_cur->del != 0)
     {
-      if (a_list)
+      if (a_list != NULL)
 	a_list->next = a_cur->next;
       else
 	Aliases = a_cur->next;
@@ -583,7 +583,7 @@ int mutt_alias_complete (char *s, size_t buflen)
       a_cur->next = NULL;
       mutt_free_alias (&a_cur);
 
-      if (a_list)
+      if (a_list != NULL)
 	a_cur = a_list;
       else
 	a_cur = Aliases;

@@ -1348,7 +1348,7 @@ int imap_sync_mailbox (CONTEXT* ctx, int expunge)
   rc = 0;
 
  out:
-  if (appendctx)
+  if (appendctx != NULL)
   {
     mx_fastclose_mailbox (appendctx);
     FREE (&appendctx);
@@ -1678,11 +1678,11 @@ IMAP_STATUS* imap_mboxcache_get (IMAP_DATA* idata, const char* mbox, int create)
 
 #ifdef USE_HCACHE
   hc = imap_hcache_open (idata, mbox);
-  if (hc)
+  if (hc != NULL)
   {
     uidvalidity = mutt_hcache_fetch_raw (hc, "/UIDVALIDITY", 12);
     uidnext = mutt_hcache_fetch_raw (hc, "/UIDNEXT", 8);
-    if (uidvalidity)
+    if (uidvalidity != NULL)
     {
       if (status == NULL)
       {
@@ -1760,7 +1760,7 @@ static int imap_compile_search (const pattern_t* pat, BUFFER* buf)
   if (pat->not != 0)
     mutt_buffer_addstr (buf, "NOT ");
 
-  if (pat->child)
+  if (pat->child != NULL)
   {
     int clauses;
 

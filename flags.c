@@ -308,7 +308,7 @@ int mutt_thread_set_flag (HEADER *hdr, int flag, int bf, int subthread)
       cur = cur->parent;
   start = cur;
 
-  if (cur->message)
+  if (cur->message != NULL)
     mutt_set_flag (Context, cur->message, flag, bf);
 
   if ((cur = cur->child) == NULL)
@@ -316,12 +316,12 @@ int mutt_thread_set_flag (HEADER *hdr, int flag, int bf, int subthread)
 
   while (true)
   {
-    if (cur->message)
+    if (cur->message != NULL)
       mutt_set_flag (Context, cur->message, flag, bf);
 
-    if (cur->child)
+    if (cur->child != NULL)
       cur = cur->child;
-    else if (cur->next)
+    else if (cur->next != NULL)
       cur = cur->next;
     else
     {
@@ -362,7 +362,7 @@ int mutt_change_flag (HEADER *h, int bf)
     case 'D':
       if (bf == 0)
       {
-        if (h)
+        if (h != NULL)
           mutt_set_flag (Context, h, MUTT_PURGE, bf);
         else
           mutt_tag_set_flag (MUTT_PURGE, bf);
@@ -377,7 +377,7 @@ int mutt_change_flag (HEADER *h, int bf)
 
     case 'o':
     case 'O':
-      if (h)
+      if (h != NULL)
 	mutt_set_flag (Context, h, MUTT_READ, !bf);
       else
 	mutt_tag_set_flag (MUTT_READ, !bf);
@@ -402,7 +402,7 @@ int mutt_change_flag (HEADER *h, int bf)
       return -1;
   }
 
-  if (h)
+  if (h != NULL)
     mutt_set_flag (Context, h, flag, bf);
   else
     mutt_tag_set_flag (flag, bf);

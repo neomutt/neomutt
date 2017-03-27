@@ -188,7 +188,7 @@ static void rfc2231_join_continuations (PARAMETER **head,
 	valp = par->value;
     } while (par && (strcmp (par->attribute, attribute) == 0));
 
-    if (value)
+    if (value != NULL)
     {
       if (encoded != 0)
 	mutt_convert_string (&value, charset, Charset, MUTT_ICONV_HOOK_FROM);
@@ -284,7 +284,7 @@ void rfc2231_decode_parameters (PARAMETER **headp)
     }
   }
 
-  if (conthead)
+  if (conthead != NULL)
   {
     rfc2231_join_continuations (last, conthead);
     dirty = 1;

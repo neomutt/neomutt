@@ -217,7 +217,7 @@ const char *mutt_attach_fmt (char *dest,
     case 'd':
       if(optional == 0)
       {
-	if (aptr->content->description)
+	if (aptr->content->description != NULL)
 	{
 	  mutt_format_s (dest, destlen, prefix, aptr->content->description);
 	  break;
@@ -248,7 +248,7 @@ const char *mutt_attach_fmt (char *dest,
     case 'F':
       if (optional == 0)
       {
-        if (aptr->content->d_filename)
+        if (aptr->content->d_filename != NULL)
         {
           mutt_format_s (dest, destlen, prefix, aptr->content->d_filename);
           break;
@@ -436,7 +436,7 @@ static int query_save_attachment (FILE *fp, BODY *body, HEADER *hdr, char **dire
   int append = 0;
   int rc;
 
-  if (body->filename)
+  if (body->filename != NULL)
   {
     if (directory && *directory)
       mutt_concat_path (buf, *directory, mutt_basename (body->filename), sizeof (buf));
@@ -574,7 +574,7 @@ void mutt_save_attachment_list (FILE *fp, int tag, BODY *top, HEADER *hdr, MUTTM
 	  break;
       }
     }
-    else if (top->parts)
+    else if (top->parts != NULL)
       mutt_save_attachment_list (fp, 1, top->parts, hdr, menu);
     if (tag == 0)
       break;
@@ -635,11 +635,11 @@ static void pipe_attachment (FILE *fp, BODY *b, STATE *state)
 {
   FILE *ifp = NULL;
 
-  if (fp)
+  if (fp != NULL)
   {
     state->fpin = fp;
     mutt_decode_attachment (b, state);
-    if (AttachSep)
+    if (AttachSep != NULL)
       state_puts (AttachSep, state);
   }
   else
@@ -651,7 +651,7 @@ static void pipe_attachment (FILE *fp, BODY *b, STATE *state)
     }
     mutt_copy_stream (ifp, state->fpout);
     safe_fclose (&ifp);
-    if (AttachSep)
+    if (AttachSep != NULL)
       state_puts (AttachSep, state);
   }
 }
@@ -669,7 +669,7 @@ pipe_attachment_list (char *command, FILE *fp, int tag, BODY *top, int filter,
       else
 	query_pipe_attachment (command, fp, top, filter);
     }
-    else if (top->parts)
+    else if (top->parts != NULL)
       pipe_attachment_list (command, fp, tag, top->parts, filter, state);
     if (tag == 0)
       break;
@@ -682,7 +682,7 @@ void mutt_pipe_attachment_list (FILE *fp, int tag, BODY *top, int filter)
   char buf[SHORT_STRING];
   pid_t thepid;
 
-  if (fp)
+  if (fp != NULL)
     filter = 0; /* sanity check: we can't filter in the recv case yet */
 
   buf[0] = 0;
@@ -731,7 +731,7 @@ static int can_print (BODY *top, int tag)
 	}
       }
     }
-    else if (top->parts)
+    else if (top->parts != NULL)
       return (can_print (top->parts, tag));
     if (tag == 0)
       break;
@@ -768,7 +768,7 @@ static void print_attachment_list (FILE *fp, int tag, BODY *top, STATE *state)
 	    {
 	      mutt_copy_stream (ifp, state->fpout);
 	      safe_fclose (&ifp);
-	      if (AttachSep)
+	      if (AttachSep != NULL)
 		state_puts (AttachSep, state);
 	    }
 	  }
@@ -778,7 +778,7 @@ static void print_attachment_list (FILE *fp, int tag, BODY *top, STATE *state)
       else
 	mutt_print_attachment (fp, top);
     }
-    else if (top->parts)
+    else if (top->parts != NULL)
       print_attachment_list (fp, tag, top->parts, state);
     if (tag == 0)
       return;
@@ -876,7 +876,7 @@ mutt_attach_display_loop (MUTTMENU *menu, int op, FILE *fp, HEADER *hdr,
 	/* when we edit the content-type, we should redisplay the attachment
 	   immediately */
 	mutt_edit_content_type (hdr, idx[menu->current]->content, fp);
-        if (idxmax)
+        if (idxmax != NULL)
         {
 	  update_attach_index (cur, idxp, idxlen, idxmax, menu);
 	  idx = *idxp;
@@ -926,7 +926,7 @@ void mutt_attach_init (BODY *b)
   {
     b->tagged = 0;
     b->collapsed = 0;
-    if (b->parts)
+    if (b->parts != NULL)
       mutt_attach_init (b->parts);
   }
 }
@@ -980,7 +980,7 @@ void mutt_view_attachments (HEADER *hdr)
     }
     if ((WithCrypto & APPLICATION_SMIME) && (hdr->security & APPLICATION_SMIME))
     {
-      if (hdr->env)
+      if (hdr->env != NULL)
 	  crypt_smime_getkeys (hdr->env);
 
       if (mutt_is_application_smime(hdr->content))

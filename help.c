@@ -363,7 +363,7 @@ void mutt_help (int menu)
     }
 
     fputs (_("\nUnbound functions:\n\n"), f);
-    if (funcs)
+    if (funcs != NULL)
       dump_unbound (f, funcs, Keymaps[menu], NULL);
     if (menu != MENU_PAGER)
       dump_unbound (f, OpGeneric, Keymaps[MENU_GENERIC], Keymaps[menu]);

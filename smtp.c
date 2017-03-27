@@ -300,7 +300,7 @@ static int smtp_fill_account (ACCOUNT* account)
       if (SmtpPort == 0)
       {
         service = getservbyname ("smtp", "tcp");
-        if (service)
+        if (service != NULL)
           SmtpPort = ntohs (service->s_port);
         else
           SmtpPort = SMTP_PORT;
@@ -460,7 +460,7 @@ static int smtp_auth (CONNECTION* conn)
     for (method = methods; method; method = delim)
     {
       delim = strchr (method, ':');
-      if (delim)
+      if (delim != NULL)
 	*delim++ = '\0';
       if (! method[0])
 	continue;
@@ -633,9 +633,9 @@ mutt_smtp_send (const ADDRESS* from, const ADDRESS* to, const ADDRESS* cc,
 
   /* it might be better to synthesize an envelope from from user and host
    * but this condition is most likely arrived at accidentally */
-  if (EnvFrom)
+  if (EnvFrom != NULL)
     envfrom = EnvFrom->mailbox;
-  else if (from)
+  else if (from != NULL)
     envfrom = from->mailbox;
   else
   {
@@ -697,7 +697,7 @@ mutt_smtp_send (const ADDRESS* from, const ADDRESS* to, const ADDRESS* cc,
   }
   while (0);
 
-  if (conn)
+  if (conn != NULL)
     mutt_socket_close (conn);
 
   if (ret == smtp_err_read)

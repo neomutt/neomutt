@@ -135,7 +135,7 @@ static pop_auth_res_t pop_auth_sasl (POP_DATA *pop_data, const char *method)
       break;
 
     /* send out response, or line break if none needed */
-    if (pc)
+    if (pc != NULL)
     {
       if ((olen * 2) > bufsize)
       {
@@ -341,7 +341,7 @@ int pop_authenticate (POP_DATA* pop_data)
     while (method)
     {
       comma = strchr (method, ':');
-      if (comma)
+      if (comma != NULL)
 	*comma++ = '\0';
       mutt_debug (2, "pop_authenticate: Trying method %s\n", method);
       authenticator = pop_authenticators;

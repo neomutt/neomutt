@@ -101,7 +101,7 @@ static size_t print_indent (int ql, STATE *s, int add_suffix)
   int i;
   size_t wid = 0;
 
-  if (s->prefix)
+  if (s->prefix != NULL)
   {
     /* use given prefix only for format=fixed replies to format=flowed,
      * for format=flowed replies to format=flowed, use '>' indentation

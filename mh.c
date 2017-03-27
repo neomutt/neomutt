@@ -714,7 +714,7 @@ void maildir_parse_flags (HEADER * h, const char *path)
 
   if (q == h->maildir_flags)
     FREE (&h->maildir_flags);
-  else if (q)
+  else if (q != NULL)
     *q = '\0';
 }
 
@@ -809,7 +809,7 @@ static int maildir_parse_dir (CONTEXT * ctx, struct maildir ***last,
   struct maildir *entry = NULL;
   HEADER *h = NULL;
 
-  if (subdir)
+  if (subdir != NULL)
   {
     snprintf (buf, sizeof (buf), "%s/%s", ctx->path, subdir);
     is_old = (mutt_strcmp ("cur", subdir) == 0);
@@ -835,14 +835,14 @@ static int maildir_parse_dir (CONTEXT * ctx, struct maildir ***last,
     if (ctx->magic == MUTT_MAILDIR)
       maildir_parse_flags (h, de->d_name);
 
-    if (count)
+    if (count != NULL)
     {
       (*count)++;
       if (!ctx->quiet && progress)
 	mutt_progress_update (progress, *count, -1);
     }
 
-    if (subdir)
+    if (subdir != NULL)
     {
       char tmp[_POSIX_PATH_MAX];
       snprintf (tmp, sizeof (tmp), "%s/%s", subdir, de->d_name);
@@ -881,7 +881,7 @@ static int maildir_add_to_context (CONTEXT * ctx, struct maildir *md)
     mutt_debug (2, "%s:%d maildir_add_to_context(): Considering %s\n",
                 __FILE__, __LINE__, NONULL (md->canon_fname));
 
-    if (md->h)
+    if (md->h != NULL)
     {
       mutt_debug (2, "%s:%d Adding header structure. Flags: %s%s%s%s%s\n",
                   __FILE__, __LINE__, md->h->flagged ? "f" : "",
@@ -964,7 +964,7 @@ static struct maildir*  maildir_merge_lists (struct maildir *left,
   }
   else
   {
-    if (left)
+    if (left != NULL)
       return left;
     else
       return right;
@@ -987,7 +987,7 @@ static struct maildir*  maildir_merge_lists (struct maildir *left,
     tail = tail->next;
   }
 
-  if (left)
+  if (left != NULL)
   {
     tail->next = left;
   }
@@ -1017,7 +1017,7 @@ static struct maildir* maildir_ins_sort (struct maildir* list,
       last = tmp;
 
     list->next = tmp;
-    if (last)
+    if (last != NULL)
       last->next = list;
     else
       ret = list;
@@ -1428,7 +1428,7 @@ void maildir_flags (char *dest, size_t destlen, HEADER * hdr)
 	      hdr->replied ? "R" : "",
 	      hdr->read ? "S" : "", hdr->deleted ? "T" : "",
 	      NONULL(hdr->maildir_flags));
-    if (hdr->maildir_flags)
+    if (hdr->maildir_flags != NULL)
       qsort (tmp, strlen (tmp), 1, ch_compar);
     snprintf (dest, destlen, ":2,%s", tmp);
   }
@@ -1487,7 +1487,7 @@ static int maildir_open_new_message (MESSAGE * msg, CONTEXT * dest, HEADER * hdr
   char subdir[16];
   mode_t omask;
 
-  if (hdr)
+  if (hdr != NULL)
   {
     short deleted = hdr->deleted;
     hdr->deleted = 0;
@@ -1624,7 +1624,7 @@ static int _maildir_commit_message (CONTEXT * ctx, MESSAGE * msg, HEADER * hdr)
       if (ctx->magic == MUTT_NOTMUCH)
 	nm_update_filename(ctx, hdr->path, full, hdr);
 #endif
-      if (hdr)
+      if (hdr != NULL)
 	mutt_str_replace (&hdr->path, path);
       mutt_str_replace (&msg->commited_path, full);
       FREE (&msg->path);
@@ -1711,7 +1711,7 @@ static int _mh_commit_message (CONTEXT * ctx, MESSAGE * msg, HEADER * hdr,
     snprintf (path, sizeof (path), "%s/%s", ctx->path, tmp);
     if (safe_rename (msg->path, path) == 0)
     {
-      if (hdr)
+      if (hdr != NULL)
 	mutt_str_replace (&hdr->path, tmp);
       mutt_str_replace (&msg->commited_path, path);
       FREE (&msg->path);
@@ -1906,7 +1906,7 @@ int mh_sync_mailbox_message (CONTEXT * ctx, int msgno)
 	  || (option (OPTMHPURGE) && ctx->magic == MUTT_MH))
       {
 #ifdef USE_HCACHE
-        if (hc)
+        if (hc != NULL)
         {
           if (ctx->magic == MUTT_MH)
           {

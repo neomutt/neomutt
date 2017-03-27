@@ -62,7 +62,7 @@ int is_from (const char *s, char *path, size_t pathlen, time_t *tp)
   struct tm tm;
   int yr;
 
-  if (path)
+  if (path != NULL)
     *path = 0;
 
   if (mutt_strncmp ("From ", s, 5) != 0)
@@ -107,7 +107,7 @@ int is_from (const char *s, char *path, size_t pathlen, time_t *tp)
       }
     }
 
-    if (path)
+    if (path != NULL)
     {
       len = (size_t) (p - s);
       if (len + 1 > pathlen)
@@ -190,6 +190,6 @@ int is_from (const char *s, char *path, size_t pathlen, time_t *tp)
 
   tm.tm_isdst = -1;
 
-  if (tp) *tp = mutt_mktime (&tm, 0);
+  if (tp != NULL) *tp = mutt_mktime (&tm, 0);
   return 1;
 }

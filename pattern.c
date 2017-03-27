@@ -963,7 +963,7 @@ msg_search (CONTEXT *ctx, pattern_t* pat, int msgno)
       fclose (s.fpout);
       lng = tempsize;
 
-      if (tempsize) {
+      if (tempsize != NULL) {
         fp = fmemopen (temp, tempsize, "r");
         if (fp == NULL) {
           mutt_perror (_("Error re-opening memstream"));
@@ -1030,7 +1030,7 @@ msg_search (CONTEXT *ctx, pattern_t* pat, int msgno)
     {
       safe_fclose (&fp);
 #ifdef USE_FMEMOPEN
-      if (tempsize)
+      if (tempsize != NULL)
         FREE(&temp);
 #else
       unlink (tempfile);
@@ -1088,7 +1088,7 @@ void mutt_pattern_free (pattern_t **pat)
       FREE (&tmp->p.rx);
     }
 
-    if (tmp->child)
+    if (tmp->child != NULL)
       mutt_pattern_free (&tmp->child);
     FREE (&tmp);
   }
@@ -1138,7 +1138,7 @@ pattern_t *mutt_pattern_comp (/* const */ char *s, int flags, BUFFER *err)
 	    snprintf (err->data, err->dsize, _("error in pattern at: %s"), ps.dptr);
 	    return NULL;
 	  }
-	  if (curlist->next)
+	  if (curlist->next != NULL)
 	  {
 	    /* A & B | C == (A & B) | C */
 	    tmp = new_pattern ();
@@ -1178,7 +1178,7 @@ pattern_t *mutt_pattern_comp (/* const */ char *s, int flags, BUFFER *err)
 	  }
 	  tmp = new_pattern ();
 	  tmp->op = MUTT_THREAD;
-	  if (last)
+	  if (last != NULL)
 	    last->next = tmp;
 	  else
 	    curlist = tmp;
@@ -1223,7 +1223,7 @@ pattern_t *mutt_pattern_comp (/* const */ char *s, int flags, BUFFER *err)
 	alladdr = 0;
 	isalias = 0;
 
-	if (last)
+	if (last != NULL)
 	  last->next = tmp;
 	else
 	  curlist = tmp;
@@ -1247,7 +1247,7 @@ pattern_t *mutt_pattern_comp (/* const */ char *s, int flags, BUFFER *err)
 	ps.dptr++; /* eat the operator and any optional whitespace */
 	SKIPWS (ps.dptr);
 
-	if (entry->eat_arg)
+	if (entry->eat_arg != NULL)
 	{
 	  if (!*ps.dptr)
 	  {
@@ -1280,7 +1280,7 @@ pattern_t *mutt_pattern_comp (/* const */ char *s, int flags, BUFFER *err)
 	  return NULL;
 	}
 	FREE (&buf);
-	if (last)
+	if (last != NULL)
 	  last->next = tmp;
 	else
 	  curlist = tmp;
@@ -1304,7 +1304,7 @@ pattern_t *mutt_pattern_comp (/* const */ char *s, int flags, BUFFER *err)
     strfcpy (err->data, _("empty pattern"), err->dsize);
     return NULL;
   }
-  if (curlist->next)
+  if (curlist->next != NULL)
   {
     tmp = new_pattern ();
     tmp->op = or ? MUTT_OR : MUTT_AND;
@@ -1413,7 +1413,7 @@ static int match_threadcomplete(struct pattern_t *pat, pattern_exec_flag flags, 
   if(t == NULL)
     return 0;
   h = t->message;
-  if(h)
+  if (h != NULL)
     if(mutt_pattern_exec(pat, flags, ctx, h, NULL))
       return 1;
 
@@ -1544,7 +1544,7 @@ mutt_pattern_exec (struct pattern_t *pat, pattern_exec_flag flags, CONTEXT *ctx,
            return (pat->not ^ match_adrlist (pat, flags & MUTT_MATCH_FULL_ADDRESS,
                                              2, h->env->to, h->env->cc));
     case MUTT_LIST:	/* known list, subscribed or not */
-      if (cache)
+      if (cache != NULL)
       {
         cache_entry = pat->alladdr ? &cache->list_all : &cache->list_one;
         if (!is_pattern_cache_set (*cache_entry))
@@ -1556,7 +1556,7 @@ mutt_pattern_exec (struct pattern_t *pat, pattern_exec_flag flags, CONTEXT *ctx,
         result = mutt_is_list_cc (pat->alladdr, h->env->to, h->env->cc);
       return (pat->not ^ result);
     case MUTT_SUBSCRIBED_LIST:
-      if (cache)
+      if (cache != NULL)
       {
         cache_entry = pat->alladdr ? &cache->sub_all : &cache->sub_one;
         if (!is_pattern_cache_set (*cache_entry))
@@ -1568,7 +1568,7 @@ mutt_pattern_exec (struct pattern_t *pat, pattern_exec_flag flags, CONTEXT *ctx,
         result = mutt_is_list_recipient (pat->alladdr, h->env->to, h->env->cc);
       return (pat->not ^ result);
     case MUTT_PERSONAL_RECIP:
-      if (cache)
+      if (cache != NULL)
       {
         cache_entry = pat->alladdr ? &cache->pers_recip_all : &cache->pers_recip_one;
         if (!is_pattern_cache_set (*cache_entry))
@@ -1580,7 +1580,7 @@ mutt_pattern_exec (struct pattern_t *pat, pattern_exec_flag flags, CONTEXT *ctx,
         result = match_user (pat->alladdr, h->env->to, h->env->cc);
       return (pat->not ^ result);
     case MUTT_PERSONAL_FROM:
-      if (cache)
+      if (cache != NULL)
       {
         cache_entry = pat->alladdr ? &cache->pers_from_all : &cache->pers_from_one;
         if (!is_pattern_cache_set (*cache_entry))
@@ -1877,7 +1877,7 @@ int mutt_pattern_func (int op, char *prompt)
   {
     /* drop previous limit pattern */
     FREE (&Context->pattern);
-    if (Context->limit_pattern)
+    if (Context->limit_pattern != NULL)
       mutt_pattern_free (&Context->limit_pattern);
 
     if (Context->msgcount && !Context->vcount)

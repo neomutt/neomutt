@@ -250,7 +250,7 @@ set_compress_info (CONTEXT *ctx)
   if (!ctx || !ctx->path)
     return NULL;
 
-  if (ctx->compress_info)
+  if (ctx->compress_info != NULL)
     return ctx->compress_info;
 
   /* Open is compulsory */

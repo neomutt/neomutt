@@ -772,7 +772,7 @@ char *mutt_read_line (char *s, size_t *size, FILE *fp, int *line, int flags)
     }
     if ((ch = strchr (s + offset, '\n')) != NULL)
     {
-      if (line)
+      if (line != NULL)
 	(*line)++;
       if (flags & MUTT_EOL)
 	return s;
@@ -794,7 +794,7 @@ char *mutt_read_line (char *s, size_t *size, FILE *fp, int *line, int flags)
       if (c == EOF)
       {
         /* The last line of fp isn't \n terminated */
-	if (line)
+	if (line != NULL)
 	  (*line)++;
         return s;
       }
@@ -828,7 +828,7 @@ char *mutt_substrdup (const char *begin, const char *end)
   size_t len;
   char *p = NULL;
 
-  if (end)
+  if (end != NULL)
     len = end - begin;
   else
     len = strlen (begin);
@@ -1002,7 +1002,7 @@ char *mutt_concat_path (char *d, const char *dir, const char *fname, size_t l)
 const char *mutt_basename (const char *f)
 {
   const char *p = strrchr (f, '/');
-  if (p)
+  if (p != NULL)
     return p + 1;
   else
     return f;

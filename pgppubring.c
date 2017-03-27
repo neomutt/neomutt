@@ -356,7 +356,7 @@ static void skip_bignum (unsigned char *buff, size_t l, size_t j,
   }
   while (j <= l && --n > 0);
 
-  if (toff)
+  if (toff != NULL)
     *toff = j;
 }
 
@@ -464,7 +464,7 @@ static int pgp_parse_pgp2_sig (unsigned char *buff, size_t l,
   if (sigtype == 0x20 || sigtype == 0x28)
     p->flags |= KEYFLAG_REVOKED;
 
-  if (s)
+  if (s != NULL)
   {
     s->sigtype = sigtype;
     s->sid1    = signerid1;
@@ -603,7 +603,7 @@ static int pgp_parse_pgp3_sig (unsigned char *buff, size_t l,
   if (have_critical_spks != 0)
     p->flags |= KEYFLAG_CRITICAL;
 
-  if (s)
+  if (s != NULL)
   {
     s->sigtype = sigtype;
     s->sid1    = signerid1;
@@ -707,7 +707,7 @@ static pgp_key_t pgp_parse_keyblock (FILE * fp)
 
       case PT_SIG:
       {
-	if (lsig)
+	if (lsig != NULL)
 	{
 	  pgp_sig_t *signature = safe_calloc (sizeof (pgp_sig_t), 1);
 	  *lsig = signature;
@@ -911,7 +911,7 @@ int main (int argc, char * const argv[])
     }
   }
 
-  if (_kring)
+  if (_kring != NULL)
     strfcpy (kring, _kring, sizeof (kring));
   else
   {

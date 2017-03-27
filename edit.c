@@ -87,7 +87,7 @@ be_snarf_data (FILE *f, char **buf, int *bufmax, int *buflen, LOFF_T offset,
   if (buf && *bufmax == *buflen) { /* Do not smash memory past buf */
     safe_realloc (&buf, sizeof (char *) * (++*bufmax));
   }
-  if (buf) buf[*buflen] = NULL;
+  if (buf != NULL) buf[*buflen] = NULL;
   return buf;
 }
 
@@ -138,7 +138,7 @@ static void be_free_memory (char **buf, int buflen)
 {
   while (buflen-- > 0)
     FREE (&buf[buflen]);
-  if (buf)
+  if (buf != NULL)
     FREE (&buf);
 }
 
@@ -156,7 +156,7 @@ be_include_messages (char *msg, char **buf, int *bufmax, int *buflen,
       n--;
 
       /* add the attribution */
-      if (Attribution)
+      if (Attribution != NULL)
       {
         setlocale (LC_TIME, NONULL (AttributionLocale));
 	mutt_make_string (tmp, sizeof (tmp) - 1, Attribution, Context, Context->hdrs[n]);
@@ -194,7 +194,7 @@ static void be_print_header (ENVELOPE *env)
 {
   char tmp[HUGE_STRING];
 
-  if (env->to)
+  if (env->to != NULL)
   {
     addstr ("To: ");
     tmp[0] = 0;
@@ -202,7 +202,7 @@ static void be_print_header (ENVELOPE *env)
     addstr (tmp);
     addch ('\n');
   }
-  if (env->cc)
+  if (env->cc != NULL)
   {
     addstr ("Cc: ");
     tmp[0] = 0;
@@ -210,7 +210,7 @@ static void be_print_header (ENVELOPE *env)
     addstr (tmp);
     addch ('\n');
   }
-  if (env->bcc)
+  if (env->bcc != NULL)
   {
     addstr ("Bcc: ");
     tmp[0] = 0;
@@ -218,7 +218,7 @@ static void be_print_header (ENVELOPE *env)
     addstr (tmp);
     addch ('\n');
   }
-  if (env->subject)
+  if (env->subject != NULL)
   {
     addstr ("Subject: ");
     addstr (env->subject);
@@ -371,7 +371,7 @@ int mutt_builtin_editor (const char *path, HEADER *msg, HEADER *cur)
 	case 'f':
 	case 'm':
 	case 'M':
-	  if (Context)
+	  if (Context != NULL)
 	  {
 	    if (!*p && cur)
  	    {

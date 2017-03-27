@@ -95,7 +95,7 @@ body_cache_t *mutt_bcache_open (ACCOUNT *account, const char *mailbox)
   return bcache;
 
 bail:
-  if (bcache)
+  if (bcache != NULL)
     FREE(&bcache);
   return NULL;
 }
@@ -252,7 +252,7 @@ int mutt_bcache_list(body_cache_t *bcache,
   }
 
 out:
-  if (d)
+  if (d != NULL)
   {
     if (closedir (d) < 0)
       rc = -1;

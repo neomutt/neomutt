@@ -208,7 +208,7 @@ resolve_color (struct line_t *lineInfo, int n, int cnt, int flags, int special,
   {
     struct q_class_t *class = lineInfo[m].quote;
 
-    if (class)
+    if (class != NULL)
     {
       def_color = class->color;
 
@@ -347,9 +347,9 @@ shift_class_colors (struct q_class_t *QuoteList, struct q_class_t *new_class,
       q_list->index++;
       q_list->color = ColorQuote[q_list->index % ColorQuoteUsed];
     }
-    if (q_list->down)
+    if (q_list->down != NULL)
       q_list = q_list->down;
-    else if (q_list->next)
+    else if (q_list->next != NULL)
       q_list = q_list->next;
     else
     {
@@ -359,7 +359,7 @@ shift_class_colors (struct q_class_t *QuoteList, struct q_class_t *new_class,
 	if (q_list == NULL)
 	  break;
       }
-      if (q_list)
+      if (q_list != NULL)
 	q_list = q_list->next;
     }
   }
@@ -435,12 +435,12 @@ classify_quote (struct q_class_t **QuoteList, const char *qptr,
 	  tmp->length = length;
 
 	  /* replace q_list by tmp in the top level list */
-	  if (q_list->next)
+	  if (q_list->next != NULL)
 	  {
 	    tmp->next = q_list->next;
 	    q_list->next->prev = tmp;
 	  }
-	  if (q_list->prev)
+	  if (q_list->prev != NULL)
 	  {
 	    tmp->prev = q_list->prev;
 	    q_list->prev->next = tmp;
@@ -477,9 +477,9 @@ classify_quote (struct q_class_t **QuoteList, const char *qptr,
 	  save = q_list->next;
 
 	  /* unlink q_list from the top level list */
-	  if (q_list->next)
+	  if (q_list->next != NULL)
 	    q_list->next->prev = q_list->prev;
-	  if (q_list->prev)
+	  if (q_list->prev != NULL)
 	    q_list->prev->next = q_list->next;
 
 	  /* at this point, we have a tmp->down; link q_list to it */
@@ -545,12 +545,12 @@ classify_quote (struct q_class_t **QuoteList, const char *qptr,
 		tmp->length = length;
 
 		/* replace q_list by tmp */
-		if (q_list->next)
+		if (q_list->next != NULL)
 		{
 		  tmp->next = q_list->next;
 		  q_list->next->prev = tmp;
 		}
-		if (q_list->prev)
+		if (q_list->prev != NULL)
 		{
 		  tmp->prev = q_list->prev;
 		  q_list->prev->next = tmp;
@@ -583,9 +583,9 @@ classify_quote (struct q_class_t **QuoteList, const char *qptr,
 		save = q_list->next;
 
 		/* unlink q_list from the top level list */
-		if (q_list->next)
+		if (q_list->next != NULL)
 		  q_list->next->prev = q_list->prev;
-		if (q_list->prev)
+		if (q_list->prev != NULL)
 		  q_list->prev->next = q_list->next;
 
 		/* at this point, we have a tmp->down; link q_list to it */
@@ -646,7 +646,7 @@ classify_quote (struct q_class_t **QuoteList, const char *qptr,
 	  strncpy (tmp->prefix, qptr, length);
 	  tmp->length = length;
 
-	  if (ptr->down)
+	  if (ptr->down != NULL)
 	  {
 	    tmp->next = ptr->down;
 	    ptr->down->prev = tmp;
@@ -1205,7 +1205,7 @@ static int format_line (struct line_t **lineInfo, int n, unsigned char *buf,
       if (col + 4 > wrap_cols)
 	break;
       col += 4;
-      if (pa)
+      if (pa != NULL)
 	printw ("\\%03o", buf[ch]);
       k = 1;
       continue;
@@ -1291,7 +1291,7 @@ static int format_line (struct line_t **lineInfo, int n, unsigned char *buf,
       if (col + t > wrap_cols)
 	break;
       col += t;
-      if (pa)
+      if (pa != NULL)
 	mutt_addwch (wc);
     }
     else if (wc == '\n')
@@ -1302,7 +1302,7 @@ static int format_line (struct line_t **lineInfo, int n, unsigned char *buf,
       t = (col & ~7) + 8;
       if (t > wrap_cols)
 	break;
-      if (pa)
+      if (pa != NULL)
 	for (; col < t; col++)
 	  addch (' ');
       else
@@ -1313,7 +1313,7 @@ static int format_line (struct line_t **lineInfo, int n, unsigned char *buf,
       if (col + 2 > wrap_cols)
 	break;
       col += 2;
-      if (pa)
+      if (pa != NULL)
 	printw ("^%c", ('@' + wc) & 0x7f);
     }
     else if (wc < 0x100)
@@ -1321,7 +1321,7 @@ static int format_line (struct line_t **lineInfo, int n, unsigned char *buf,
       if (col + 4 > wrap_cols)
 	break;
       col += 4;
-      if (pa)
+      if (pa != NULL)
 	printw ("\\%03o", wc);
     }
     else
@@ -1329,7 +1329,7 @@ static int format_line (struct line_t **lineInfo, int n, unsigned char *buf,
       if (col + 1 > wrap_cols)
 	break;
       col += k;
-      if (pa)
+      if (pa != NULL)
 	addch (replacement_char ());
     }
   }
@@ -2080,7 +2080,7 @@ mutt_pager (const char *banner, const char *fname, int flags, pager_t *extra)
       {
 	if (option (OPTBEEPNEW))
 	  beep();
-	if (NewMailCmd)
+	if (NewMailCmd != NULL)
 	{
 	  char cmd[LONG_STRING];
 	  menu_status_line (cmd, sizeof (cmd), index, NONULL (NewMailCmd));
@@ -2690,7 +2690,7 @@ search_next:
 
 	if (old_PagerIndexLines != PagerIndexLines)
 	{
-	  if (index)
+	  if (index != NULL)
 	    mutt_menu_destroy (&index);
 	  index = NULL;
 	}
@@ -2956,7 +2956,7 @@ search_next:
 
       case OP_TAG:
 	CHECK_MODE(IsHeader (extra));
-	if (Context)
+	if (Context != NULL)
 	{
 	  mutt_set_flag (Context, extra->hdr, MUTT_TAG, !extra->hdr->tagged);
 
@@ -3129,7 +3129,7 @@ search_next:
   safe_fclose (&fp);
   if (IsHeader (extra))
   {
-    if (Context)
+    if (Context != NULL)
       Context->msgnotreadyet = -1;
     switch (rc)
     {
@@ -3158,7 +3158,7 @@ search_next:
     SearchCompiled = 0;
   }
   FREE (&lineInfo);
-  if (index)
+  if (index != NULL)
     mutt_menu_destroy(&index);
 
   FREE (&index_status_window);

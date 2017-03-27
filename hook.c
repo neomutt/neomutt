@@ -216,7 +216,7 @@ int mutt_parse_hook (BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err)
     }
   }
 
-  if (ptr)
+  if (ptr != NULL)
   {
     ptr->next = safe_calloc (1, sizeof (HOOK));
     ptr = ptr->next;
@@ -453,7 +453,7 @@ void mutt_default_save (char *path, size_t pathlen, HEADER *hdr)
       adr = env->cc;
     else
       adr = NULL;
-    if (adr)
+    if (adr != NULL)
     {
       mutt_safe_path (tmp, sizeof (tmp), adr);
       snprintf (path, pathlen, "=%s", tmp);

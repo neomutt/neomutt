@@ -300,7 +300,7 @@ static void pgp_copy_clearsigned (FILE *fpin, STATE *s, char *charset)
       continue;
     }
 
-    if (s->prefix)
+    if (s->prefix != NULL)
       state_puts (s->prefix, s);
 
     if (buf[0] == '-' && buf[1] == ' ')
@@ -369,7 +369,7 @@ int pgp_application_pgp_handler (BODY *m, STATE *s)
       else
       {
 	/* XXX - we may wish to recode here */
-	if (s->prefix)
+	if (s->prefix != NULL)
 	  state_puts (s->prefix, s);
 	state_puts (buf, s);
 	continue;
@@ -478,7 +478,7 @@ int pgp_application_pgp_handler (BODY *m, STATE *s)
 
         /* treat empty result as sign of failure */
 	/* TODO: maybe on failure mutt should include the original undecoded text. */
-	if (pgpout)
+	if (pgpout != NULL)
 	{
 	  rewind (pgpout);
 	  c = fgetc (pgpout);
@@ -516,10 +516,10 @@ int pgp_application_pgp_handler (BODY *m, STATE *s)
       if (clearsign != 0)
       {
 	rewind (tmpfp);
-	if (tmpfp)
+	if (tmpfp != NULL)
 	  pgp_copy_clearsigned (tmpfp, s, body_charset);
       }
-      else if (pgpout)
+      else if (pgpout != NULL)
       {
 	FGETCONV *fc = NULL;
 	int ch;
@@ -542,7 +542,7 @@ int pgp_application_pgp_handler (BODY *m, STATE *s)
        */
       safe_fclose (&tmpfp);
       mutt_unlink (tmpfname);
-      if (pgpout)
+      if (pgpout != NULL)
       {
 	safe_fclose (&pgpout);
 	mutt_unlink (outfile);
@@ -569,7 +569,7 @@ int pgp_application_pgp_handler (BODY *m, STATE *s)
     {
       /* A traditional PGP part may mix signed and unsigned content */
       /* XXX - we may wish to recode here */
-      if (s->prefix)
+      if (s->prefix != NULL)
 	state_puts (s->prefix, s);
       state_puts (buf, s);
     }
@@ -580,12 +580,12 @@ int pgp_application_pgp_handler (BODY *m, STATE *s)
 out:
   m->goodsig = (maybe_goodsig && have_any_sigs);
 
-  if (tmpfp)
+  if (tmpfp != NULL)
   {
     safe_fclose (&tmpfp);
     mutt_unlink (tmpfname);
   }
-  if (pgpout)
+  if (pgpout != NULL)
   {
     safe_fclose (&pgpout);
     mutt_unlink (outfile);
@@ -1243,7 +1243,7 @@ char *pgp_find_keys (ADDRESS *adrlist, int oppenc_mode)
           if (strchr (keyID, '@') &&
               (addr = rfc822_parse_adrlist (NULL, keyID)))
           {
-            if (fqdn) rfc822_qualify (addr, fqdn);
+            if (fqdn != NULL) rfc822_qualify (addr, fqdn);
             q = addr;
           }
           else if (! oppenc_mode)
@@ -1525,7 +1525,7 @@ BODY *pgp_traditional_encryptsign (BODY *a, int flags, char *keylist)
   {
     mutt_perror (pgpout ? pgperrfile : pgpoutfile);
     unlink (pgpinfile);
-    if (pgpout)
+    if (pgpout != NULL)
     {
       safe_fclose (&pgpout);
       unlink (pgpoutfile);

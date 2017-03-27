@@ -85,7 +85,7 @@ imap_auth_res_t imap_auth_sasl (IMAP_DATA* idata, const char* method)
 
   if (rc != SASL_OK && rc != SASL_CONTINUE)
   {
-    if (method)
+    if (method != NULL)
       mutt_debug (2, "imap_auth_sasl: %s unavailable\n", method);
     else
       mutt_debug (1, "imap_auth_sasl: Failure starting authentication exchange. "
@@ -216,7 +216,7 @@ imap_auth_res_t imap_auth_sasl (IMAP_DATA* idata, const char* method)
   sasl_dispose (&saslconn);
   FREE (&buf);
 
-  if (method)
+  if (method != NULL)
   {
     mutt_debug (2, "imap_auth_sasl: %s failed\n", method);
     return IMAP_AUTH_UNAVAIL;

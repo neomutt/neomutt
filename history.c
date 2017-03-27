@@ -40,7 +40,7 @@ static void init_history (struct history *h)
 
   if (OldSize != 0)
   {
-    if (h->hist)
+    if (h->hist != NULL)
     {
       for (i = 0 ; i <= OldSize ; i ++)
 	FREE (&h->hist[i]);
@@ -79,7 +79,7 @@ void mutt_read_histfile (void)
       continue;
     *p = '\0';
     p = safe_strdup (linebuf + read);
-    if (p)
+    if (p != NULL)
     {
       mutt_convert_string (&p, "utf-8", Charset, 0);
       mutt_history_add (hclass, p, 0);

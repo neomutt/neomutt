@@ -97,7 +97,7 @@ int rfc822_remove_from_adrlist (ADDRESS **a, const char *mailbox)
   {
     if (ascii_strcasecmp (mailbox, p->mailbox) == 0)
     {
-      if (last)
+      if (last != NULL)
 	last->next = p->next;
       else
 	(*a) = p->next;
@@ -447,7 +447,7 @@ ADDRESS *rfc822_parse_adrlist (ADDRESS *top, const char *s)
       cur->mailbox = safe_strdup (phrase);
       cur->group = 1;
 
-      if (last)
+      if (last != NULL)
 	last->next = cur;
       else
 	top = cur;
@@ -483,7 +483,7 @@ ADDRESS *rfc822_parse_adrlist (ADDRESS *top, const char *s)
 
       /* add group terminator */
       cur = rfc822_new_address ();
-      if (last)
+      if (last != NULL)
       {
 	last->next = cur;
 	last = cur;
@@ -509,7 +509,7 @@ ADDRESS *rfc822_parse_adrlist (ADDRESS *top, const char *s)
 	return NULL;
       }
 
-      if (last)
+      if (last != NULL)
 	last->next = cur;
       else
 	top = cur;
@@ -546,7 +546,7 @@ ADDRESS *rfc822_parse_adrlist (ADDRESS *top, const char *s)
     last->personal = safe_strdup (comment);
   }
 #ifdef EXACT_ADDRESS
-  if (last)
+  if (last != NULL)
     last->val = mutt_substrdup (begin, s - nl < begin ? begin : s - nl);
 #endif
 
@@ -607,7 +607,7 @@ void rfc822_write_address_single (char *buf, size_t buflen, ADDRESS *addr,
   buflen--; /* save room for the terminal nul */
 
 #ifdef EXACT_ADDRESS
-  if (addr->val)
+  if (addr->val != NULL)
   {
     if (buflen == 0)
       goto done;
@@ -627,7 +627,7 @@ void rfc822_write_address_single (char *buf, size_t buflen, ADDRESS *addr,
   }
 #endif
 
-  if (addr->personal)
+  if (addr->personal != NULL)
   {
     if (strpbrk (addr->personal, RFC822Specials))
     {
@@ -676,7 +676,7 @@ void rfc822_write_address_single (char *buf, size_t buflen, ADDRESS *addr,
     buflen--;
   }
 
-  if (addr->mailbox)
+  if (addr->mailbox != NULL)
   {
     if (buflen == 0)
       goto done;
@@ -814,7 +814,7 @@ ADDRESS *rfc822_cpy_adr (ADDRESS *addr, int prune)
     {
       /* ignore this element of the list */
     }
-    else if (last)
+    else if (last != NULL)
     {
       last->next = rfc822_cpy_adr_real (addr);
       last = last->next;
@@ -834,7 +834,7 @@ ADDRESS *rfc822_append (ADDRESS **a, ADDRESS *b, int prune)
     tmp = tmp->next;
   if (b == NULL)
     return tmp;
-  if (tmp)
+  if (tmp != NULL)
     tmp->next = rfc822_cpy_adr (b, prune);
   else
     tmp = *a = rfc822_cpy_adr (b, prune);

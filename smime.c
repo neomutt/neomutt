@@ -600,7 +600,7 @@ static smime_key_t *smime_get_candidates(char *search, short public)
     if ((! *search) || mutt_stristr (buf, search))
     {
       key = smime_parse_key (buf);
-      if (key)
+      if (key != NULL)
       {
         *results_end = key;
         results_end = &key->next;
@@ -682,13 +682,13 @@ static smime_key_t *smime_get_key_by_addr(char *mailbox, short abilities, short 
 
   smime_free_key (&results);
 
-  if (matches)
+  if (matches != NULL)
   {
     if (! may_ask)
     {
-      if (trusted_match)
+      if (trusted_match != NULL)
         return_key = smime_copy_key (trusted_match);
-      else if (valid_match)
+      else if (valid_match != NULL)
         return_key = smime_copy_key (valid_match);
       else
         return_key = NULL;
@@ -739,7 +739,7 @@ static smime_key_t *smime_get_key_by_str(char *str, short abilities, short publi
 
   smime_free_key (&results);
 
-  if (matches)
+  if (matches != NULL)
   {
     return_key = smime_copy_key (smime_select_key (matches, str));
     smime_free_key (&matches);
@@ -792,7 +792,7 @@ static void _smime_getkeys (char *mailbox)
     key = smime_ask_for_key (buf, KEYFLAG_CANENCRYPT, 0);
   }
 
-  if (key)
+  if (key != NULL)
   {
     k = key->hash;
 
@@ -1283,18 +1283,18 @@ int smime_verify_sender(HEADER *h)
   fflush(fpout);
   safe_fclose (&fpout);
 
-  if (h->env->from)
+  if (h->env->from != NULL)
   {
     h->env->from = mutt_expand_aliases (h->env->from);
     mbox = h->env->from->mailbox;
   }
-  else if (h->env->sender)
+  else if (h->env->sender != NULL)
   {
     h->env->sender = mutt_expand_aliases (h->env->sender);
     mbox = h->env->sender->mailbox;
   }
 
-  if (mbox)
+  if (mbox != NULL)
   {
     if ((certfile = smime_extract_signer_certificate(tempfname)))
     {
@@ -1916,12 +1916,12 @@ static BODY *smime_handle_entity (BODY *m, STATE *s, FILE *outFile)
       state_attach_puts (_("[-- The following data is S/MIME signed --]\n"), s);
   }
 
-  if (smimeout)
+  if (smimeout != NULL)
   {
     fflush (smimeout);
     rewind (smimeout);
 
-    if (outFile) fpout = outFile;
+    if (outFile != NULL) fpout = outFile;
     else
     {
       mutt_mktemp (tmptmpfname, sizeof (tmptmpfname));
@@ -1953,7 +1953,7 @@ static BODY *smime_handle_entity (BODY *m, STATE *s, FILE *outFile)
       p->length = info.st_size - p->offset;
 
       mutt_parse_part (fpout, p);
-      if (s->fpout)
+      if (s->fpout != NULL)
       {
 	rewind (fpout);
 	tmpfp_buffer = s->fpin;
@@ -2025,7 +2025,7 @@ int smime_decrypt_mime (FILE *fpin, FILE **fpout, BODY *b, BODY **cur)
   if (!mutt_is_application_smime (b))
     return -1;
 
-  if (b->parts)
+  if (b->parts != NULL)
     return -1;
 
   memset (&s, 0, sizeof (s));

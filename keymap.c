@@ -279,7 +279,7 @@ void km_bind (char *s, int menu, int op, char *macro, char *descr)
   }
 
   map->next = tmp;
-  if (last)
+  if (last != NULL)
   {
     last->next = map;
     last->eq = lastpos;
@@ -366,7 +366,7 @@ static void generic_tokenize_push_string (char *s, void (*generic_push) (int, in
 	for (i = 0; Menus[i].name; i++)
 	{
 	  const struct binding_t *binding = km_get_table (Menus[i].value);
-	  if (binding)
+	  if (binding != NULL)
 	  {
 	    op = get_op (binding, pp + 1, l - 2);
 	    if (op != OP_NULL)
@@ -494,10 +494,10 @@ int km_dokey (int menu)
       for (i = 0; Menus[i].name; i++)
       {
 	bindings = km_get_table (Menus[i].value);
-	if (bindings)
+	if (bindings != NULL)
 	{
 	  func = get_func (bindings, tmp.op);
-	  if (func)
+	  if (func != NULL)
 	  {
 	    mutt_unget_event ('>', 0);
 	    mutt_unget_string (func);
@@ -507,7 +507,7 @@ int km_dokey (int menu)
 	}
       }
       /* continue to chew */
-      if (func)
+      if (func != NULL)
 	continue;
     }
 
@@ -698,7 +698,7 @@ void init_extended_keys(void)
     {
       const char *keyname = find_ext_name(KeyNames[j].name);
 
-      if (keyname)
+      if (keyname != NULL)
       {
         char *s = tigetstr((char *)keyname);
 	if (s && (long)(s) != -1)
@@ -891,7 +891,7 @@ char *parse_keymap (int *menu, BUFFER *s, int maxmenus, int *nummenus, BUFFER *e
     while (i < maxmenus)
     {
       q = strchr(p,',');
-      if (q)
+      if (q != NULL)
         *q = '\0';
 
       if ((menu[i] = mutt_check_menu (p)) == -1)
@@ -900,7 +900,7 @@ char *parse_keymap (int *menu, BUFFER *s, int maxmenus, int *nummenus, BUFFER *e
          goto error;
       }
       ++i;
-      if (q)
+      if (q != NULL)
         p = q+1;
       else
         break;

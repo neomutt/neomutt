@@ -425,7 +425,7 @@ do_uncolor (BUFFER *buf, BUFFER *s, COLOR_LINE **cl,
           }
           mutt_debug (1, "Freeing pattern \"%s\" from ColorList\n",
                       tmp->pattern);
-          if (last)
+          if (last != NULL)
 	  {
             last->next = tmp->next;
           }
@@ -576,7 +576,7 @@ add_pattern (COLOR_LINE **top, const char *s, int sensitive,
     tmp = tmp->next;
   }
 
-  if (tmp)
+  if (tmp != NULL)
   {
 #ifdef HAVE_COLOR
     if (fg != -1 && bg != -1)
@@ -715,8 +715,8 @@ static int
 parse_attr_spec(BUFFER *buf, BUFFER *s, int *fg, int *bg, int *attr, BUFFER *err)
 {
 
-  if(fg) *fg = -1;
-  if(bg) *bg = -1;
+  if (fg != NULL) *fg = -1;
+  if (bg != NULL) *bg = -1;
 
   if (! MoreArgs (s))
   {

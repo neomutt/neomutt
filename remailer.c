@@ -91,7 +91,7 @@ static void mix_add_entry (REMAILER ***type2_list, REMAILER *entry,
   }
 
   (*type2_list)[(*used)++] = entry;
-  if (entry) entry->num = *used;
+  if (entry != NULL) entry->num = *used;
 }
 
 static REMAILER *mix_new_remailer (void)

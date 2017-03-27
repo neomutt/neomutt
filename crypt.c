@@ -154,7 +154,7 @@ int mutt_protect (HEADER *msg, char *keylist)
       /* they really want to send it inline... go for it */
       if (!isendwin ()) mutt_endwin(_("Invoking PGP..."));
       pbody = crypt_pgp_traditional_encryptsign (msg->content, flags, keylist);
-      if (pbody)
+      if (pbody != NULL)
       {
         msg->content = pbody;
         return 0;
@@ -299,7 +299,7 @@ int mutt_protect (HEADER *msg, char *keylist)
     }
   }
 
-  if(pbody)
+  if (pbody != NULL)
       msg->content = pbody;
 
   return 0;
@@ -410,7 +410,7 @@ int mutt_is_malformed_multipart_pgp_encrypted (BODY *b)
     return 0;
 
   b = b->next;
-  if (b)
+  if (b != NULL)
     return 0;
 
   return PGPENCRYPT;
@@ -739,7 +739,7 @@ void crypt_extract_keys_from_messages (HEADER * h)
 	    tmp = mutt_expand_aliases (Context->hdrs[Context->v2r[i]]
                                                     ->env->sender);
           mbox = tmp ? tmp->mailbox : NULL;
-	  if (mbox)
+	  if (mbox != NULL)
 	  {
 	    mutt_endwin (_("Trying to extract S/MIME certificates...\n"));
 	    crypt_smime_invoke_import (tempfname, mbox);
@@ -776,10 +776,10 @@ void crypt_extract_keys_from_messages (HEADER * h)
 	  mutt_copy_message (fpout, Context, h, 0, 0);
 
 	fflush(fpout);
-	if (h->env->from) tmp = mutt_expand_aliases (h->env->from);
-	else if (h->env->sender)  tmp = mutt_expand_aliases (h->env->sender);
+	if (h->env->from != NULL) tmp = mutt_expand_aliases (h->env->from);
+	else if (h->env->sender != NULL)  tmp = mutt_expand_aliases (h->env->sender);
 	mbox = tmp ? tmp->mailbox : NULL;
-	if (mbox) /* else ? */
+	if (mbox != NULL) /* else ? */
 	{
 	  mutt_message (_("Trying to extract S/MIME certificates...\n"));
 	  crypt_smime_invoke_import (tempfname, mbox);
@@ -819,7 +819,7 @@ int crypt_get_keys (HEADER *msg, char **keylist, int oppenc_mode)
   last = rfc822_append (last ? &last : &adrlist, msg->env->cc, 0);
   rfc822_append (last ? &last : &adrlist, msg->env->bcc, 0);
 
-  if (fqdn)
+  if (fqdn != NULL)
     rfc822_qualify (adrlist, fqdn);
   adrlist = mutt_remove_duplicates (adrlist);
 
@@ -1079,7 +1079,7 @@ const char* crypt_get_fingerprint_or_id (char *p, const char **pphint,
   /* If at end of input, check for correct fingerprint length and copy if. */
   pfcopy = (!c && ((hexdigits == 40) || (hexdigits == 32)) ? safe_strdup (pf) : NULL);
 
-  if (pfcopy)
+  if (pfcopy != NULL)
   {
     /* Use pfcopy to strip all spaces from fingerprint and as hint. */
     s1 = s2 = pfcopy;

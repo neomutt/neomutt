@@ -156,7 +156,7 @@ char *mutt_choose_charset (const char *fromcode, const char *charsets,
       bestn = n;
       FREE (&tocode);
       tocode = t;
-      if (d)
+      if (d != NULL)
       {
 	FREE (&e);
 	e = s;
@@ -173,11 +173,11 @@ char *mutt_choose_charset (const char *fromcode, const char *charsets,
       FREE (&s);
     }
   }
-  if (tocode)
+  if (tocode != NULL)
   {
-    if (d)
+    if (d != NULL)
       *d = e;
-    if (dlen)
+    if (dlen != NULL)
       *dlen = elen;
 
     mutt_canonical_charset (canonical_buff, sizeof (canonical_buff), tocode);
@@ -260,7 +260,7 @@ static size_t try_block (ICONV_CONST char *d, size_t dlen,
   size_t ibl, obl;
   int count, len, len_b, len_q;
 
-  if (fromcode)
+  if (fromcode != NULL)
   {
     cd = mutt_iconv_open (tocode, fromcode, 0);
     assert (cd != (iconv_t)(-1));
@@ -331,7 +331,7 @@ static size_t encode_block (char *s, char *d, size_t dlen,
   char *ob = NULL;
   size_t ibl, obl, n1, n2;
 
-  if (fromcode)
+  if (fromcode != NULL)
   {
     cd = mutt_iconv_open (tocode, fromcode, 0);
     assert (cd != (iconv_t)(-1));
@@ -443,7 +443,7 @@ static int rfc2047_encode (ICONV_CONST char *d, size_t dlen, int col,
 
   /* Choose target charset. */
   tocode = fromcode;
-  if (icode)
+  if (icode != NULL)
   {
     if ((tocode1 = mutt_choose_charset (icode, charsets, u, ulen, 0, 0)))
       tocode = tocode1;
@@ -467,7 +467,7 @@ static int rfc2047_encode (ICONV_CONST char *d, size_t dlen, int col,
     if (!HSPACE(*(t0-1)))
       continue;
     t = t0 + 1;
-    if (icode)
+    if (icode != NULL)
       while (t < u + ulen && CONTINUATION_BYTE(*t))
 	++t;
     if (!try_block (t0, t - t0, icode, tocode, &encoder, &wlen) &&
@@ -481,7 +481,7 @@ static int rfc2047_encode (ICONV_CONST char *d, size_t dlen, int col,
     if (!HSPACE(*t1))
       continue;
     t = t1 - 1;
-    if (icode)
+    if (icode != NULL)
       while (CONTINUATION_BYTE(*t))
 	--t;
     if (!try_block (t, t1 - t, icode, tocode, &encoder, &wlen) &&
@@ -510,7 +510,7 @@ static int rfc2047_encode (ICONV_CONST char *d, size_t dlen, int col,
       if (col + wlen + (u + ulen - t1) <= ENCWORD_LEN_MAX + 1)
 	break;
       n = t1 - t - 1;
-      if (icode)
+      if (icode != NULL)
 	while (CONTINUATION_BYTE(t[n]))
 	  --n;
       assert (t + n >= t);
@@ -594,12 +594,12 @@ void rfc2047_encode_adrlist (ADDRESS *addr, const char *tag)
 
   while (ptr)
   {
-    if (ptr->personal)
+    if (ptr->personal != NULL)
       _rfc2047_encode_string (&ptr->personal, 1, col);
     else if (ptr->group && ptr->mailbox)
       _rfc2047_encode_string (&ptr->mailbox, 1, col);
 #ifdef EXACT_ADDRESS
-    if (ptr->val)
+    if (ptr->val != NULL)
       _rfc2047_encode_string (&ptr->val, 1, col);
 #endif
     ptr = ptr->next;
@@ -694,7 +694,7 @@ static int rfc2047_decode_word (char *d, const char *s, size_t len)
     }
   }
 
-  if (charset)
+  if (charset != NULL)
     mutt_convert_string (&d0, charset, Charset, MUTT_ICONV_HOOK_FROM);
   mutt_filter_unprintable (&d0);
   strfcpy (d, d0, len);

@@ -125,11 +125,11 @@ static char *utf7_to_utf8 (const char *u7, size_t u7len, char **u8,
       *p++ = *u7;
   }
   *p++ = '\0';
-  if (u8len)
+  if (u8len != NULL)
     *u8len = p - buf;
 
   safe_realloc (&buf, p - buf);
-  if (u8)
+  if (u8 != NULL)
     *u8 = buf;
   return buf;
 
@@ -240,10 +240,10 @@ static char *utf8_to_utf7 (const char *u8, size_t u8len, char **u7,
   }
 
   *p++ = '\0';
-  if (u7len)
+  if (u7len != NULL)
     *u7len = p - buf;
   safe_realloc (&buf, p - buf);
-  if (u7)  *u7 = buf;
+  if (u7 != NULL)  *u7 = buf;
   return buf;
 
  bail:
@@ -253,7 +253,7 @@ static char *utf8_to_utf7 (const char *u8, size_t u8len, char **u7,
 
 void imap_utf_encode (IMAP_DATA *idata, char **s)
 {
-  if (Charset)
+  if (Charset != NULL)
   {
     char *t = safe_strdup (*s);
     if (t && !mutt_convert_string (&t, Charset, "utf-8", 0))
@@ -272,7 +272,7 @@ void imap_utf_decode (IMAP_DATA *idata, char **s)
 {
   char *t = NULL;
 
-  if (Charset)
+  if (Charset != NULL)
   {
     if (idata->unicode != 0)
       t = safe_strdup (*s);

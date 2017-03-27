@@ -106,9 +106,9 @@ ADDRESS *mutt_remove_xrefs (ADDRESS *a, ADDRESS *b)
       if (addrcmp (p, b))
 	break;
     }
-    if (p)
+    if (p != NULL)
     {
-      if (prev)
+      if (prev != NULL)
       {
 	prev->next = b->next;
 	b->next = NULL;
@@ -143,7 +143,7 @@ static ADDRESS *remove_user (ADDRESS *a, int leave_only)
   {
     if (!mutt_addr_is_user (a))
     {
-      if (top)
+      if (top != NULL)
       {
         last->next = a;
         last = last->next;
@@ -180,7 +180,7 @@ static ADDRESS *find_mailing_lists (ADDRESS *t, ADDRESS *c)
     {
       if (mutt_is_mail_list (t) && !t->group)
       {
-	if (top)
+	if (top != NULL)
 	{
 	  ptr->next = rfc822_cpy_adr_real (t);
 	  ptr = ptr->next;
@@ -228,7 +228,7 @@ static int edit_envelope (ENVELOPE *en, int flags)
 #ifdef USE_NNTP
   if (option (OPTNEWSSEND))
   {
-    if (en->newsgroups)
+    if (en->newsgroups != NULL)
       strfcpy (buf, en->newsgroups, sizeof (buf));
     else
       buf[0] = 0;
@@ -237,7 +237,7 @@ static int edit_envelope (ENVELOPE *en, int flags)
     FREE (&en->newsgroups);
     en->newsgroups = safe_strdup (buf);
 
-    if (en->followup_to)
+    if (en->followup_to != NULL)
       strfcpy (buf, en->followup_to, sizeof (buf));
     else
       buf[0] = 0;
@@ -246,7 +246,7 @@ static int edit_envelope (ENVELOPE *en, int flags)
     FREE (&en->followup_to);
     en->followup_to = safe_strdup (buf);
 
-    if (en->x_comment_to)
+    if (en->x_comment_to != NULL)
       strfcpy (buf, en->x_comment_to, sizeof (buf));
     else
       buf[0] = 0;
@@ -270,7 +270,7 @@ static int edit_envelope (ENVELOPE *en, int flags)
       return -1;
   }
 
-  if (en->subject)
+  if (en->subject != NULL)
   {
     if (option (OPTFASTREPLY))
       return 0;
@@ -339,7 +339,7 @@ static void process_user_header (ENVELOPE *env)
   LIST *uh = UserHeader;
   LIST *last = env->userhdrs;
 
-  if (last)
+  if (last != NULL)
     while (last->next)
       last = last->next;
 
@@ -378,7 +378,7 @@ static void process_user_header (ENVELOPE *env)
 	     (ascii_strncasecmp ("subject:", uh->data, 8) != 0) &&
 	     (ascii_strncasecmp ("return-path:", uh->data, 12) != 0))
     {
-      if (last)
+      if (last != NULL)
       {
 	last->next = mutt_new_list ();
 	last = last->next;
@@ -446,7 +446,7 @@ static int include_forward (CONTEXT *ctx, HEADER *cur, FILE *out)
 void mutt_make_attribution (CONTEXT *ctx, HEADER *cur, FILE *out)
 {
   char buffer[LONG_STRING];
-  if (Attribution)
+  if (Attribution != NULL)
   {
     setlocale (LC_TIME, NONULL (AttributionLocale));
     mutt_make_string (buffer, sizeof (buffer), Attribution, ctx, cur);
@@ -459,7 +459,7 @@ void mutt_make_attribution (CONTEXT *ctx, HEADER *cur, FILE *out)
 void mutt_make_post_indent (CONTEXT *ctx, HEADER *cur, FILE *out)
 {
   char buffer[STRING];
-  if (PostIndentString)
+  if (PostIndentString != NULL)
   {
     mutt_make_string (buffer, sizeof (buffer), PostIndentString, ctx, cur);
     fputs (buffer, out);
@@ -519,7 +519,7 @@ static int default_to (ADDRESS **to, ENVELOPE *env, int flags, int hmfupto)
     /* mail is from the user, assume replying to recipients */
     rfc822_append (to, env->to, 1);
   }
-  else if (env->reply_to)
+  else if (env->reply_to != NULL)
   {
     if ((addrcmp (env->from, env->reply_to) && !env->reply_to->next &&
          !env->reply_to->personal) ||
@@ -621,12 +621,12 @@ static LIST *make_references(ENVELOPE *e)
 {
   LIST *t = NULL, *l = NULL;
 
-  if (e->references)
+  if (e->references != NULL)
     l = mutt_copy_list (e->references);
   else
     l = mutt_copy_list (e->in_reply_to);
 
-  if (e->message_id)
+  if (e->message_id != NULL)
   {
     t = mutt_new_list();
     t->data = safe_strdup(e->message_id);
@@ -675,7 +675,7 @@ void mutt_make_misc_reply_headers (ENVELOPE *env, CONTEXT *ctx,
   /* This takes precedence over a subject that might have
    * been taken from a List-Post header.  Is that correct?
    */
-  if (curenv->real_subj)
+  if (curenv->real_subj != NULL)
   {
     FREE (&env->subject);
     env->subject = safe_malloc (mutt_strlen (curenv->real_subj) + 5);
@@ -689,8 +689,8 @@ void mutt_add_to_reference_headers (ENVELOPE *env, ENVELOPE *curenv, LIST ***pp,
 {
   LIST **p = NULL, **q = NULL;
 
-  if (pp) p = *pp;
-  if (qq) q = *qq;
+  if (pp != NULL) p = *pp;
+  if (qq != NULL) q = *qq;
 
   if (p == NULL) p = &env->references;
   if (q == NULL) q = &env->in_reply_to;
@@ -700,14 +700,14 @@ void mutt_add_to_reference_headers (ENVELOPE *env, ENVELOPE *curenv, LIST ***pp,
 
   *p = make_references (curenv);
 
-  if (curenv->message_id)
+  if (curenv->message_id != NULL)
   {
     *q = mutt_new_list();
     (*q)->data = safe_strdup (curenv->message_id);
   }
 
-  if (pp) *pp = p;
-  if (qq) *qq = q;
+  if (pp != NULL) *pp = p;
+  if (qq != NULL) *qq = q;
 
 #ifdef USE_NNTP
   if (option (OPTNEWSSEND) && option (OPTXCOMMENTTO) && curenv->from)
@@ -869,10 +869,10 @@ generate_body (FILE *tempfp,	/* stream for outgoing message */
       while (last && last->next)
 	last = last->next;
 
-      if (cur)
+      if (cur != NULL)
       {
 	tmp = mutt_make_message_attach (ctx, cur, 0);
-	if (last)
+	if (last != NULL)
 	  last->next = tmp;
 	else
 	  msg->content = tmp;
@@ -884,7 +884,7 @@ generate_body (FILE *tempfp,	/* stream for outgoing message */
 	  if (ctx->hdrs[ctx->v2r[i]]->tagged)
 	  {
 	    tmp = mutt_make_message_attach (ctx, ctx->hdrs[ctx->v2r[i]], 0);
-	    if (last)
+	    if (last != NULL)
 	    {
 	      last->next = tmp;
 	      last = tmp;
@@ -897,7 +897,7 @@ generate_body (FILE *tempfp,	/* stream for outgoing message */
     }
     else if (i != -1)
     {
-      if (cur)
+      if (cur != NULL)
 	include_forward (ctx, cur, tempfp);
       else
 	for (i=0; i < ctx->vcount; i++)
@@ -971,14 +971,14 @@ void mutt_set_followup_to (ENVELOPE *e)
 
     if (e->mail_followup_to && !mutt_is_list_recipient (0, e->to, e->cc))
     {
-      if (e->reply_to)
+      if (e->reply_to != NULL)
 	from = rfc822_cpy_adr (e->reply_to, 0);
-      else if (e->from)
+      else if (e->from != NULL)
 	from = rfc822_cpy_adr (e->from, 0);
       else
 	from = mutt_default_from ();
 
-      if (from)
+      if (from != NULL)
       {
 	/* Normally, this loop will not even be entered. */
 	for (t = from; t && t->next; t = t->next)
@@ -1017,7 +1017,7 @@ static ADDRESS *set_reverse_name (ENVELOPE *env)
   }
   if (!tmp && mutt_addr_is_user (env->from))
     tmp = env->from;
-  if (tmp)
+  if (tmp != NULL)
   {
     tmp = rfc822_cpy_adr_real (tmp);
     /* when $reverse_realname is not set, clear the personal name so that it
@@ -1039,7 +1039,7 @@ ADDRESS *mutt_default_from (void)
    * thing to do?
    */
 
-  if (From)
+  if (From != NULL)
     adr = rfc822_cpy_adr_real (From);
   else if (option (OPTUSEDOMAIN))
   {
@@ -1072,7 +1072,7 @@ static int send_message (HEADER *msg)
 
 #ifdef USE_SMTP
   old_write_bcc = option (OPTWRITEBCC);
-  if (SmtpUrl)
+  if (SmtpUrl != NULL)
     unset_option (OPTWRITEBCC);
 #endif
 #ifdef MIXMASTER
@@ -1103,7 +1103,7 @@ static int send_message (HEADER *msg)
   }
 
 #ifdef MIXMASTER
-  if (msg->chain)
+  if (msg->chain != NULL)
     return mix_send_message (msg->chain, tempfile);
 #endif
 
@@ -1111,7 +1111,7 @@ static int send_message (HEADER *msg)
 #ifdef USE_NNTP
   if (!option (OPTNEWSSEND))
 #endif
-  if (SmtpUrl)
+  if (SmtpUrl != NULL)
       return mutt_smtp_send (msg->env->from, msg->env->to, msg->env->cc,
                              msg->env->bcc, tempfile,
                              (msg->content->encoding == ENC8BIT));
@@ -1130,7 +1130,7 @@ void mutt_encode_descriptions (BODY *b, short recurse)
 
   for (t = b; t; t = t->next)
   {
-    if (t->description)
+    if (t->description != NULL)
     {
       rfc2047_encode_string (&t->description);
     }
@@ -1146,11 +1146,11 @@ static void decode_descriptions (BODY *b)
 
   for (t = b; t; t = t->next)
   {
-    if (t->description)
+    if (t->description != NULL)
     {
       rfc2047_decode (&t->description);
     }
-    if (t->parts)
+    if (t->parts != NULL)
       decode_descriptions (t->parts);
   }
 }
@@ -1351,7 +1351,7 @@ ci_send_message (int flags,		/* send mode */
        * If postponed message is a news article, it have
        * a "Newsgroups:" header line, then set appropriate flag.
        */
-      if (msg->env->newsgroups)
+      if (msg->env->newsgroups != NULL)
       {
 	flags |= SENDNEWS;
 	set_option (OPTNEWSSEND);
@@ -1445,7 +1445,7 @@ ci_send_message (int flags,		/* send mode */
      * have their aliases expanded.
      */
 
-    if (msg->env->from)
+    if (msg->env->from != NULL)
         mutt_debug (5, "ci_send_message: msg->env->from before set_reverse_name: %s\n",
                     msg->env->from->mailbox);
     msg->env->from = set_reverse_name (cur->env);
@@ -1716,7 +1716,7 @@ ci_send_message (int flags,		/* send mode */
        * make much sense. Should we have an option to completely
        * disable individual mechanisms at run-time?
        */
-      if (cur)
+      if (cur != NULL)
       {
 	if ((WithCrypto & APPLICATION_PGP) && option (OPTCRYPTAUTOPGP)
 	    && (cur->security & APPLICATION_PGP))
@@ -1806,7 +1806,7 @@ main_loop:
     else if (i == 1)
     {
       /* postpone the message until later. */
-      if (msg->content->next)
+      if (msg->content->next != NULL)
 	msg->content = mutt_make_multipart (msg->content);
 
       if (WithCrypto && option (OPTPOSTPONEENCRYPT) && PostponeEncryptAs
@@ -1921,7 +1921,7 @@ main_loop:
   }
 
 
-  if (msg->content->next)
+  if (msg->content->next != NULL)
     msg->content = mutt_make_multipart (msg->content);
 
   /*
@@ -2050,7 +2050,7 @@ main_loop:
     }
 
 full_fcc:
-    if (msg->content)
+    if (msg->content != NULL)
     {
       /* update received time so that when storing to a mbox-style folder
        * the From_ line contains the current time instead of when the
@@ -2071,7 +2071,7 @@ full_fcc:
     if (WithCrypto && save_sig)
     {
       /* cleanup the second signature structures */
-      if (save_content->parts)
+      if (save_content->parts != NULL)
       {
 	mutt_free_body (&save_content->parts->next);
 	save_content->parts = NULL;

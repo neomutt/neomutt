@@ -95,7 +95,7 @@ int mutt_parse_score (BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err)
       return -1;
     }
     ptr = safe_calloc (1, sizeof (SCORE));
-    if (last)
+    if (last != NULL)
       last->next = ptr;
     else
       Score = ptr;
@@ -177,7 +177,7 @@ int mutt_parse_unscore (BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err)
       {
 	if (mutt_strcmp (buf->data, tmp->str) == 0)
 	{
-	  if (last)
+	  if (last != NULL)
 	    last->next = tmp->next;
 	  else
 	    Score = tmp->next;

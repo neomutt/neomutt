@@ -234,7 +234,7 @@ static void make_from (ENVELOPE *env, char *buf, size_t len, int do_lists)
     disp = DISP_BCC;
     name = env->bcc;
   }
-  else if (env->from)
+  else if (env->from != NULL)
   {
     disp = DISP_FROM;
     name = env->from;
@@ -267,7 +267,7 @@ static void make_from_addr (ENVELOPE *hdr, char *buf, size_t len, int do_lists)
     snprintf (buf, len, "%s", hdr->to->mailbox);
   else if (me && hdr->cc)
     snprintf (buf, len, "%s", hdr->cc->mailbox);
-  else if (hdr->from)
+  else if (hdr->from != NULL)
     strfcpy (buf, hdr->from->mailbox, len);
   else
     *buf = 0;
@@ -543,7 +543,7 @@ hdr_format_str (char *dest,
       /* fall through if 'B' returns nothing */
 
     case 'b':
-      if(ctx)
+      if (ctx != NULL)
       {
 	if ((p = strrchr (ctx->path, '/')))
 	  strfcpy (dest, p + 1, destlen);
@@ -815,7 +815,7 @@ hdr_format_str (char *dest,
       if (optional != 0)
 	optional = hdr->env->spam ? 1 : 0;
 
-       if (hdr->env->spam)
+       if (hdr->env->spam != NULL)
          mutt_format_s (dest, destlen, prefix, NONULL (hdr->env->spam->data));
        else
          mutt_format_s (dest, destlen, prefix, "");
@@ -860,7 +860,7 @@ hdr_format_str (char *dest,
       break;
 
     case 'm':
-      if(ctx)
+      if (ctx != NULL)
       {
 	snprintf (fmt, sizeof (fmt), "%%%sd", prefix);
 	snprintf (dest, destlen, fmt, ctx->msgcount);
@@ -952,9 +952,9 @@ hdr_format_str (char *dest,
     case 's':
       {
 	char *subj = NULL;
-        if (hdr->env->disp_subj)
+        if (hdr->env->disp_subj != NULL)
 	  subj = hdr->env->disp_subj;
-	else if (SubjectRxList)
+	else if (SubjectRxList != NULL)
 	  subj = apply_subject_mods(hdr->env);
 	else
 	  subj = hdr->env->subject;
@@ -1009,9 +1009,9 @@ hdr_format_str (char *dest,
       if (!check_for_mailing_list (hdr->env->to, "To ", buf2, sizeof (buf2)) &&
 	  !check_for_mailing_list (hdr->env->cc, "Cc ", buf2, sizeof (buf2)))
       {
-	if (hdr->env->to)
+	if (hdr->env->to != NULL)
 	  snprintf (buf2, sizeof (buf2), "To %s", mutt_get_name (hdr->env->to));
-	else if (hdr->env->cc)
+	else if (hdr->env->cc != NULL)
 	  snprintf (buf2, sizeof (buf2), "Cc %s", mutt_get_name (hdr->env->cc));
       }
       mutt_format_s (dest, destlen, prefix, buf2);
@@ -1038,9 +1038,9 @@ hdr_format_str (char *dest,
     case 'v':
       if (mutt_addr_is_user (hdr->env->from))
       {
-	if (hdr->env->to)
+	if (hdr->env->to != NULL)
 	  mutt_format_s (buf2, sizeof (buf2), prefix, mutt_get_name (hdr->env->to));
-	else if (hdr->env->cc)
+	else if (hdr->env->cc != NULL)
 	  mutt_format_s (buf2, sizeof (buf2), prefix, mutt_get_name (hdr->env->cc));
 	else
 	  *buf2 = 0;
@@ -1148,7 +1148,7 @@ hdr_format_str (char *dest,
        break;
 
     case 'Y':
-      if (hdr->env->x_label)
+      if (hdr->env->x_label != NULL)
       {
 	i = 1;	/* reduce reuse recycle */
 	htmp = NULL;
