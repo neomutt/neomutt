@@ -152,7 +152,7 @@ void mutt_edit_headers (const char *editor,
     }
     else if (ascii_strncasecmp ("attach:", cur->data, 7) == 0)
     {
-      BODY *body = NULL;
+      BODY *body2 = NULL;
       BODY *parts = NULL;
       size_t l = 0;
 
@@ -174,11 +174,11 @@ void mutt_edit_headers (const char *editor,
 	path[l] = 0;
 
 	mutt_expand_path (path, sizeof (path));
-	if ((body = mutt_make_file_attach (path)))
+	if ((body2 = mutt_make_file_attach (path)))
 	{
-	  body->description = safe_strdup (p);
+	  body2->description = safe_strdup (p);
 	  for (parts = msg->content; parts->next; parts = parts->next) ;
-	  parts->next = body;
+	  parts->next = body2;
 	}
 	else
 	{

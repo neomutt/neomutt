@@ -1190,9 +1190,9 @@ int mutt_menu_loop (MUTTMENU *menu)
 	  }
 	  else if (menu->max)
 	  {
-	    int i = menu->tag (menu, menu->current, -1);
-	    menu->tagged += i;
-	    if (i && option (OPTRESOLVE) && menu->current < menu->max - 1)
+	    int j = menu->tag (menu, menu->current, -1);
+	    menu->tagged += j;
+	    if (j && option (OPTRESOLVE) && menu->current < menu->max - 1)
 	    {
 	      menu->current++;
 	      menu->redraw = REDRAW_MOTION_RESYNCH;

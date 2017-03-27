@@ -351,12 +351,12 @@ int mutt_option_set(const struct option_t *val, BUFFER *err)
     {
       case DT_RX:
       {
-        BUFFER *err = safe_malloc(sizeof(BUFFER));
+        BUFFER *err2 = safe_malloc(sizeof(BUFFER));
         BUFFER tmp;
         tmp.data = safe_strdup((char *) val->data);
         tmp.dsize = strlen((char *) val->data);
 
-        if (parse_regex(idx, &tmp, err))
+        if (parse_regex(idx, &tmp, err2))
         {
           /* $reply_regexp and $alternates require special treatment */
           if (Context && Context->msgcount &&
@@ -381,7 +381,7 @@ int mutt_option_set(const struct option_t *val, BUFFER *err)
         }
         else
         {
-          snprintf(err->data, err->dsize, _("%s: Unknown type."),
+          snprintf(err2->data, err2->dsize, _("%s: Unknown type."),
                    MuttVars[idx].option);
           return -1;
         }
@@ -391,7 +391,7 @@ int mutt_option_set(const struct option_t *val, BUFFER *err)
       case DT_SORT:
       {
         const struct mapping_t *map = NULL;
-        BUFFER *err = safe_malloc(sizeof(BUFFER));
+        BUFFER *err2 = safe_malloc(sizeof(BUFFER));
 
         switch (MuttVars[idx].type & DT_SUBTYPE_MASK)
         {
@@ -418,13 +418,13 @@ int mutt_option_set(const struct option_t *val, BUFFER *err)
 
         if (!map)
         {
-          snprintf(err->data, err->dsize, _("%s: Unknown type."),
+          snprintf(err2->data, err2->dsize, _("%s: Unknown type."),
                    MuttVars[idx].option);
           return -1;
         }
 
         if (parse_sort((short *) MuttVars[idx].data, (const char *) val->data,
-                       map, err) == -1)
+                       map, err2) == -1)
           return -1;
       }
       break;
@@ -3878,7 +3878,7 @@ void mutt_init (int skip_sys_rc, LIST *commands)
 #ifdef USE_NNTP
   {
     FILE *f = NULL;
-    char *i = NULL;
+    char *c = NULL;
 
     if ((f = safe_fopen (SYSCONFDIR "/nntpserver", "r")))
     {
@@ -3886,9 +3886,9 @@ void mutt_init (int skip_sys_rc, LIST *commands)
       fgets (buffer, sizeof (buffer), f);
       p = buffer;
       SKIPWS (p);
-      i = p;
-      while (*i && (*i != ' ') && (*i != '\t') && (*i != '\r') && (*i != '\n')) i++;
-      *i = '\0';
+      c = p;
+      while (*c && (*c != ' ') && (*c != '\t') && (*c != '\r') && (*c != '\n')) c++;
+      *c = '\0';
       NewsServer = safe_strdup (p);
       fclose (f);
     }

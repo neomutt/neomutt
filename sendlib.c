@@ -133,12 +133,12 @@ static void encode_quoted (FGETCONV * fc, FILE *fout, int istext)
         }
         else
 	{
-          int savechar = line[linelen-1];
+          int savechar2 = line[linelen-1];
 
           line[linelen-1] = '=';
           line[linelen] = 0;
           fputs (line, fout);
-          fprintf (fout, "\n=%2.2X", (unsigned char) savechar);
+          fprintf (fout, "\n=%2.2X", (unsigned char) savechar2);
         }
       }
       else
@@ -1675,15 +1675,15 @@ static int fold_one_header (FILE *fp, const char *tag, const char *value,
      * and fold with tab for readability */
     if ((flags & CH_DISPLAY) && fold)
     {
-      char *p = buf;
-      while (*p && (*p == ' ' || *p == '\t'))
+      char *pc = buf;
+      while (*pc && (*pc == ' ' || *pc == '\t'))
       {
-	p++;
+	pc++;
 	col--;
       }
       if (fputc ('\t', fp) == EOF)
 	return -1;
-      if (print_val (fp, pfx, p, flags, col) < 0)
+      if (print_val (fp, pfx, pc, flags, col) < 0)
 	return -1;
       col += 8;
     }
