@@ -459,12 +459,14 @@ static int main_change_folder(MUTTMENU *menu, int op, char *buf, size_t bufsz,
 
   mutt_sleep (0);
 
-  /* Set CurrentMenu to MENU_MAIN before executing any folder
-   * hooks so that all the index menu functions are available to
-   * the exec command.
-   */
-
-  CurrentMenu = MENU_MAIN;
+  /* Note that menu->menu may be MENU_PAGER if the change folder
+   * operation originated from the pager.
+   *
+   * However, exec commands currently use CurrentMenu to determine what
+   * functions are available, which is automatically set by the
+   * mutt_push/pop_current_menu() functions.  If that changes, the menu
+   * would need to be reset here, and the pager cleanup code after the
+   * switch statement would need to be run. */
   mutt_folder_hook (buf);
 
   if ((Context = mx_open_mailbox (buf,
@@ -2077,12 +2079,21 @@ int mutt_index_menu (void)
 	if (option (OPTPGPAUTODEC) && (tag || !(CURHDR->security & PGP_TRADITIONAL_CHECKED)))
 	  mutt_check_traditional_pgp (tag ? NULL : CURHDR, &menu->redraw);
 	int index_hint = Context->hdrs[Context->v2r[menu->current]]->index;
-	if ((op = mutt_display_message (CURHDR)) == -1)
+
+        /* If we are returning to the pager via an index menu redirection, we
+         * need to reset the menu->menu.  Otherwise mutt_pop_current_menu() will
+         * set CurrentMenu incorrectly when we return back to the index menu. */
+        menu->menu = MENU_MAIN;
+
+        if ((op = mutt_display_message (CURHDR)) == -1)
 	{
 	  unset_option (OPTNEEDRESORT);
 	  break;
 	}
 
+        /* This is used to redirect a single operation back here afterwards.  If
+         * mutt_display_message() returns 0, then the menu and pager state will
+         * be cleaned up after this switch statement. */
 	menu->menu = MENU_PAGER;
  	menu->oldcurrent = menu->current;
 	if (Context)
@@ -2777,7 +2788,6 @@ int mutt_index_menu (void)
 
       case OP_ENTER_COMMAND:
 
-	CurrentMenu = MENU_MAIN;
 	mutt_enter_command ();
 	mutt_check_rescore (Context);
 	if (option (OPTFORCEREDRAWINDEX))
