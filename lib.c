@@ -139,7 +139,7 @@ void *safe_malloc (size_t siz)
 
   if (siz == 0)
     return 0;
-  if ((p = malloc (siz)) == 0)	/* __MEM_CHECKED__ */
+  if ((p = malloc (siz)) == NULL)	/* __MEM_CHECKED__ */
   {
     mutt_error (_("Out of memory!"));
     sleep (1);
