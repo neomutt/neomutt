@@ -570,6 +570,7 @@ static int tls_check_one_certificate (const gnutls_datum_t *certdata,
   menu->dialog = safe_calloc (1, menu->max * sizeof (char *));
   for (i = 0; i < menu->max; i++)
     menu->dialog[i] = safe_calloc (1, SHORT_STRING * sizeof (char));
+  mutt_push_current_menu (menu);
 
   row = 0;
   strfcpy (menu->dialog[row], _("This certificate belongs to:"), SHORT_STRING);
@@ -773,6 +774,7 @@ static int tls_check_one_certificate (const gnutls_datum_t *certdata,
     }
   }
   unset_option (OPTIGNOREMACROEVENTS);
+  mutt_pop_current_menu (menu);
   mutt_menu_destroy (&menu);
   gnutls_x509_crt_deinit (cert);
 

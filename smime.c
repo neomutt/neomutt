@@ -442,6 +442,7 @@ static smime_key_t *smime_select_key (smime_key_t *keys, char *query)
   menu->help = helpstr;
   menu->data = table;
   menu->title = title;
+  mutt_push_current_menu (menu);
   /* sorting keys might be done later - TODO */
 
   mutt_clear_error();
@@ -488,6 +489,7 @@ static smime_key_t *smime_select_key (smime_key_t *keys, char *query)
     }
   }
 
+  mutt_pop_current_menu (menu);
   mutt_menu_destroy (&menu);
   FREE (&table);
   set_option (OPTNEEDREDRAW);

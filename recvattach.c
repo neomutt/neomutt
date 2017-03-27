@@ -1032,6 +1032,7 @@ void mutt_view_attachments (HEADER *hdr)
   menu->make_entry = attach_entry;
   menu->tag = mutt_tag_attach;
   menu->help = mutt_compile_help (helpstr, sizeof (helpstr), MENU_ATTACH, AttachHelp);
+  mutt_push_current_menu (menu);
 
   mutt_attach_init (cur);
   attach_collapse (cur, 0, 1, 0);
@@ -1306,6 +1307,7 @@ void mutt_view_attachments (HEADER *hdr)
 	  mutt_free_body (&cur);
 	}
 
+        mutt_pop_current_menu (menu);
 	mutt_menu_destroy  (&menu);
 	return;
     }

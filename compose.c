@@ -573,6 +573,7 @@ int mutt_compose_menu (HEADER *msg,   /* structure for new message */
   else
 #endif
   menu->help = mutt_compile_help (helpstr, sizeof (helpstr), MENU_COMPOSE, ComposeHelp);
+  mutt_push_current_menu (menu);
 
   while (loop)
   {
@@ -1494,6 +1495,7 @@ int mutt_compose_menu (HEADER *msg,   /* structure for new message */
     }
   }
 
+  mutt_pop_current_menu (menu);
   mutt_menu_destroy (&menu);
 
   if (idxlen)

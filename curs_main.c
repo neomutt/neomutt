@@ -842,6 +842,7 @@ int mutt_index_menu (void)
 	(Context && (Context->magic == MUTT_NNTP)) ? IndexNewsHelp :
 #endif
 	IndexHelp);
+  mutt_push_current_menu (menu);
 
   if (!attach_msg)
     mutt_buffy_check(1); /* force the buffy check after we enter the folder */
@@ -3229,6 +3230,7 @@ int mutt_index_menu (void)
     if (done) break;
   }
 
+  mutt_pop_current_menu (menu);
   mutt_menu_destroy (&menu);
   return close;
 }

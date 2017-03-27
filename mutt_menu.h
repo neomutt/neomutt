@@ -119,6 +119,8 @@ void mutt_ts_icon(char *str);
 
 MUTTMENU *mutt_new_menu(int menu);
 void mutt_menu_destroy(MUTTMENU **p);
+void mutt_push_current_menu (MUTTMENU *);
+void mutt_pop_current_menu (MUTTMENU *);
 int mutt_menu_loop(MUTTMENU *menu);
 
 /* used in both the index and pager index to make an entry. */

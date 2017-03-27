@@ -765,6 +765,8 @@ static int interactive_check_cert (X509 *cert, int idx, int len, SSL *ssl, int a
   FILE *fp = NULL;
   int allow_skip = 0;
 
+  mutt_push_current_menu (menu);
+
   menu->max = mutt_array_size (part) * 2 + 10;
   menu->dialog = safe_calloc (1, menu->max * sizeof (char *));
   for (i = 0; i < menu->max; i++)
@@ -897,6 +899,7 @@ static int interactive_check_cert (X509 *cert, int idx, int len, SSL *ssl, int a
     }
   }
   unset_option(OPTIGNOREMACROEVENTS);
+  mutt_pop_current_menu (menu);
   mutt_menu_destroy (&menu);
   set_option (OPTNEEDREDRAW);
   mutt_debug (2, "ssl interactive_check_cert: done=%d\n", done);

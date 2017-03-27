@@ -4007,6 +4007,7 @@ static crypt_key_t *crypt_select_key (crypt_key_t *keys,
   menu->make_entry = crypt_entry;
   menu->help = helpstr;
   menu->data = key_table;
+  mutt_push_current_menu (menu);
 
   {
     const char *ts = NULL;
@@ -4115,6 +4116,7 @@ static crypt_key_t *crypt_select_key (crypt_key_t *keys,
         }
     }
 
+  mutt_pop_current_menu (menu);
   mutt_menu_destroy (&menu);
   FREE (&key_table);
 
