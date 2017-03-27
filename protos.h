@@ -538,7 +538,7 @@ int ioctl (int, int, ...);
 #endif
 
 /* unsorted */
-void ci_bounce_message (HEADER *, int *);
+void ci_bounce_message (HEADER *);
 int ci_send_message (int, HEADER *, char *, CONTEXT *, HEADER *);
 
 /* prototypes for compatibility functions */

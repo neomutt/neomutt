@@ -2384,7 +2384,7 @@ search_next:
 			      extra->idx, extra->idxlen,
 			      extra->bdy);
         else
-          ci_bounce_message (extra->hdr, &pager_menu->redraw);
+          ci_bounce_message (extra->hdr);
 	break;
 
       case OP_RESEND:
@@ -2416,7 +2416,6 @@ search_next:
 	  mutt_create_alias (extra->bdy->hdr->env, NULL);
         else
 	  mutt_create_alias (extra->hdr->env, NULL);
-	MAYBE_REDRAW (pager_menu->redraw);
 	break;
 
       case OP_PURGE_MESSAGE:
@@ -2594,7 +2593,6 @@ search_next:
 	  mutt_pipe_attachment_list (extra->fp, 0, extra->bdy, 0);
 	else
 	  mutt_pipe_message (extra->hdr);
-	MAYBE_REDRAW (pager_menu->redraw);
 	break;
 
       case OP_PRINT:
@@ -2706,12 +2704,10 @@ search_next:
 	  else
 	    pager_menu->redraw |= REDRAW_STATUS | REDRAW_INDEX;
 	}
-	MAYBE_REDRAW (pager_menu->redraw);
 	break;
 
       case OP_SHELL_ESCAPE:
 	mutt_shell_escape ();
-	MAYBE_REDRAW (pager_menu->redraw);
 	break;
 
       case OP_TAG:

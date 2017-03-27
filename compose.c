@@ -273,7 +273,7 @@ static void draw_envelope (HEADER *msg, char *fcc)
   NORMAL_COLOR;
 }
 
-static int edit_address_list (int line, ADDRESS **addr)
+static void edit_address_list (int line, ADDRESS **addr)
 {
   char buf[HUGE_STRING] = ""; /* needs to be large for alias expansion */
   char *err = NULL;
@@ -285,12 +285,6 @@ static int edit_address_list (int line, ADDRESS **addr)
     rfc822_free_address (addr);
     *addr = mutt_parse_adrlist (*addr, buf);
     *addr = mutt_expand_aliases (*addr);
-  }
-
-  if (option (OPTNEEDREDRAW))
-  {
-    unset_option (OPTNEEDREDRAW);
-    return (REDRAW_FULL);
   }
 
   if (mutt_addrlist_to_intl (*addr, &err) != 0)
@@ -305,8 +299,6 @@ static int edit_address_list (int line, ADDRESS **addr)
   rfc822_write_address (buf, sizeof (buf), *addr, 1);
   mutt_window_move (MuttIndexWindow, line, HDR_XOFFSET);
   mutt_paddstr (W, buf);
-  
-  return 0;
 }
 
 static int delete_attachment (MUTTMENU *menu, short *idxlen, int x)
@@ -528,11 +520,11 @@ int mutt_compose_menu (HEADER *msg,   /* structure for new message */
 	menu->pagelen = MuttIndexWindow->rows - HDR_ATTACH;
 	break;
       case OP_COMPOSE_EDIT_FROM:
-	menu->redraw = edit_address_list (HDR_FROM, &msg->env->from);
+	edit_address_list (HDR_FROM, &msg->env->from);
         mutt_message_hook (NULL, msg, MUTT_SEND2HOOK);
 	break;
       case OP_COMPOSE_EDIT_TO:
-	menu->redraw = edit_address_list (HDR_TO, &msg->env->to);
+	edit_address_list (HDR_TO, &msg->env->to);
 	if (option (OPTCRYPTOPPORTUNISTICENCRYPT))
 	{
 	  crypt_opportunistic_encrypt (msg);
@@ -541,7 +533,7 @@ int mutt_compose_menu (HEADER *msg,   /* structure for new message */
         mutt_message_hook (NULL, msg, MUTT_SEND2HOOK);
         break;
       case OP_COMPOSE_EDIT_BCC:
-	menu->redraw = edit_address_list (HDR_BCC, &msg->env->bcc);
+	edit_address_list (HDR_BCC, &msg->env->bcc);
 	if (option (OPTCRYPTOPPORTUNISTICENCRYPT))
 	{
 	  crypt_opportunistic_encrypt (msg);
@@ -550,7 +542,7 @@ int mutt_compose_menu (HEADER *msg,   /* structure for new message */
         mutt_message_hook (NULL, msg, MUTT_SEND2HOOK);
 	break;
       case OP_COMPOSE_EDIT_CC:
-	menu->redraw = edit_address_list (HDR_CC, &msg->env->cc);
+	edit_address_list (HDR_CC, &msg->env->cc);
 	if (option (OPTCRYPTOPPORTUNISTICENCRYPT))
 	{
 	  crypt_opportunistic_encrypt (msg);
@@ -575,7 +567,7 @@ int mutt_compose_menu (HEADER *msg,   /* structure for new message */
         mutt_message_hook (NULL, msg, MUTT_SEND2HOOK);
         break;
       case OP_COMPOSE_EDIT_REPLY_TO:
-	menu->redraw = edit_address_list (HDR_REPLYTO, &msg->env->reply_to);
+	edit_address_list (HDR_REPLYTO, &msg->env->reply_to);
         mutt_message_hook (NULL, msg, MUTT_SEND2HOOK);
 	break;
       case OP_COMPOSE_EDIT_FCC:
@@ -588,7 +580,6 @@ int mutt_compose_menu (HEADER *msg,   /* structure for new message */
 	  mutt_paddstr (W, fcc);
 	  fccSet = 1;
 	}
-	MAYBE_REDRAW (menu->redraw);
         mutt_message_hook (NULL, msg, MUTT_SEND2HOOK);
         break;
       case OP_COMPOSE_EDIT_MESSAGE:
@@ -667,12 +658,6 @@ int mutt_compose_menu (HEADER *msg,   /* structure for new message */
 	  FREE (&idx[idxlen]);
 
 	menu->redraw |= REDRAW_STATUS;
-
-	if (option(OPTNEEDREDRAW))
-	{
-	  menu->redraw = REDRAW_FULL;
-	  unset_option(OPTNEEDREDRAW);
-	}
 	
         mutt_message_hook (NULL, msg, MUTT_SEND2HOOK);
         break;
@@ -1164,7 +1149,6 @@ int mutt_compose_menu (HEADER *msg,   /* structure for new message */
       case OP_SAVE:
 	CHECK_COUNT;
 	mutt_save_attachment_list (NULL, menu->tagprefix, menu->tagprefix ?  msg->content : idx[menu->current]->content, NULL, menu);
-	MAYBE_REDRAW (menu->redraw);
         /* no send2hook, since this doesn't modify the message */
 	break;
 
@@ -1330,7 +1314,7 @@ int mutt_compose_menu (HEADER *msg,   /* structure for new message */
 #ifdef MIXMASTER
       case OP_COMPOSE_MIX:
       
-      	mix_make_chain (&msg->chain, &menu->redraw);
+      	mix_make_chain (&msg->chain);
         mutt_message_hook (NULL, msg, MUTT_SEND2HOOK);
         break;
 #endif

@@ -238,7 +238,7 @@ int mutt_display_message (HEADER *cur)
   return rc;
 }
 
-void ci_bounce_message (HEADER *h, int *redraw)
+void ci_bounce_message (HEADER *h)
 {
   char prompt[SHORT_STRING];
   char scratch[SHORT_STRING];
@@ -276,13 +276,6 @@ void ci_bounce_message (HEADER *h, int *redraw)
     strfcpy(prompt, _("Bounce tagged messages to: "), sizeof(prompt));
   
   rc = mutt_get_field (prompt, buf, sizeof (buf), MUTT_ALIAS);
-
-  if (option (OPTNEEDREDRAW))
-  {
-    unset_option (OPTNEEDREDRAW);
-    *redraw = REDRAW_FULL;
-  }
-
   if (rc || !buf[0])
     return;
 

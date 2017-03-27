@@ -94,7 +94,7 @@ void mutt_need_hard_redraw (void)
 {
   keypad (stdscr, TRUE);
   clearok (stdscr, TRUE);
-  set_option (OPTNEEDREDRAW);
+  mutt_set_current_menu_redraw ();
 }
 
 event_t mutt_getch (void)
@@ -769,7 +769,6 @@ int _mutt_enter_fname (const char *prompt, char *buf, size_t blen, int *redraw, 
     if (_mutt_get_field (pc, buf, blen, (buffy ? MUTT_EFILE : MUTT_FILE) | MUTT_CLEAR, multiple, files, numfiles)
 	!= 0)
       buf[0] = 0;
-    MAYBE_REDRAW (*redraw);
     FREE (&pc);
   }
 

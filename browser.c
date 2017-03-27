@@ -954,7 +954,6 @@ void _mutt_select_file (char *f, size_t flen, int flags, char ***files, int *num
 	  menu->current = 0; 
 	  menu->top = 0; 
 	  init_menu (&state, menu, title, sizeof (title), buffy);
-	  MAYBE_REDRAW (menu->redraw);
 	}
 	/* else leave error on screen */
 	break;
@@ -977,7 +976,6 @@ void _mutt_select_file (char *f, size_t flen, int flags, char ***files, int *num
 	    menu->current = 0;
 	    menu->top = 0;
 	    init_menu (&state, menu, title, sizeof (title), buffy);
-	    MAYBE_REDRAW (menu->redraw);
 	  }
 	}
 	break;
@@ -1015,7 +1013,6 @@ void _mutt_select_file (char *f, size_t flen, int flags, char ***files, int *num
 	      state.entrylen--;
 	      mutt_message _("Mailbox deleted.");
 	      init_menu (&state, menu, title, sizeof (title), buffy);
-	      MAYBE_REDRAW (menu->redraw);
 	    }
 	  }
 	  else
@@ -1094,7 +1091,6 @@ void _mutt_select_file (char *f, size_t flen, int flags, char ***files, int *num
 	      mutt_perror (buf);
 	  }
 	}
-	MAYBE_REDRAW (menu->redraw);
 	break;
 	
       case OP_ENTER_MASK:
@@ -1160,7 +1156,6 @@ void _mutt_select_file (char *f, size_t flen, int flags, char ***files, int *num
 	    }
 	  }
 	}
-	MAYBE_REDRAW (menu->redraw);
 	break;
 
       case OP_SORT:
@@ -1246,7 +1241,6 @@ void _mutt_select_file (char *f, size_t flen, int flags, char ***files, int *num
 	  destroy_state (&state);
 	  goto bail;
 	}
-	MAYBE_REDRAW (menu->redraw);
 	break;
 
       case OP_BROWSER_VIEW_FILE:

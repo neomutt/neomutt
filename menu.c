@@ -394,7 +394,7 @@ void menu_check_recenter (MUTTMENU *menu)
     if (menu->top != 0) 
     {
       menu->top = 0;
-      set_option (OPTNEEDREDRAW);
+      menu->redraw |= REDRAW_INDEX;
     }
   }
   else 
@@ -733,6 +733,11 @@ void mutt_menuDestroy (MUTTMENU **p)
   FREE (p);		/* __FREE_CHECKED__ */
 }
 
+static MUTTMENU *get_current_menu (void)
+{
+  return MenuStackCount ? MenuStack[MenuStackCount - 1] : NULL;
+}
+
 void mutt_push_current_menu (MUTTMENU *menu)
 {
   if (MenuStackCount >= MenuStackLen)
@@ -747,6 +752,8 @@ void mutt_push_current_menu (MUTTMENU *menu)
 
 void mutt_pop_current_menu (MUTTMENU *menu)
 {
+  MUTTMENU *prev_menu;
+
   if (!MenuStackCount ||
       (MenuStack[MenuStackCount - 1] != menu))
   {
@@ -755,14 +762,25 @@ void mutt_pop_current_menu (MUTTMENU *menu)
   }
 
   MenuStackCount--;
-  if (MenuStackCount)
+  prev_menu = get_current_menu ();
+  if (prev_menu)
   {
-    CurrentMenu = MenuStack[MenuStackCount - 1]->menu;
+    CurrentMenu = prev_menu->menu;
+    prev_menu->redraw = REDRAW_FULL;
   }
   else
   {
     CurrentMenu = MENU_MAIN;
   }
+}
+
+void mutt_set_current_menu_redraw (void)
+{
+  MUTTMENU *current_menu;
+
+  current_menu = get_current_menu ();
+  if (current_menu)
+    current_menu->redraw = REDRAW_FULL;
 }
 
 
@@ -1108,7 +1126,6 @@ int mutt_menuLoop (MUTTMENU *menu)
 
       case OP_SHELL_ESCAPE:
 	mutt_shell_escape ();
-	MAYBE_REDRAW (menu->redraw);
 	break;
 
       case OP_WHAT_KEY:
