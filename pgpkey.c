@@ -712,12 +712,12 @@ BODY *pgp_make_key_attachment (char *tempf)
 
   key = pgp_ask_for_key (_("Please enter the key ID: "), NULL, 0, PGP_PUBRING);
 
-  if (!key)    return NULL;
+  if (key == NULL)    return NULL;
 
   snprintf (tmp, sizeof (tmp), "0x%s", pgp_fpr_or_lkeyid (pgp_principal_key (key)));
   pgp_free_key (&key);
 
-  if (!tempf)
+  if (tempf == NULL)
   {
     mutt_mktemp (tempfb, sizeof (tempfb));
     tempf = tempfb;
@@ -795,7 +795,7 @@ static LIST *pgp_add_string_to_hints (LIST *hints, const char *str)
 static pgp_key_t *pgp_get_lastp (pgp_key_t p)
 {
   for (; p; p = p->next)
-    if (!p->next)
+    if (p->next == NULL)
       return &p->next;
 
   return NULL;
@@ -828,7 +828,7 @@ pgp_key_t pgp_getkeybyaddr (ADDRESS * a, short abilities, pgp_ring_t keyring,
 
   mutt_free_list (&hints);
 
-  if (!keys)
+  if (keys == NULL)
     return NULL;
 
   mutt_debug (5, "pgp_getkeybyaddr: looking for %s <%s>.\n",
@@ -956,7 +956,7 @@ pgp_key_t pgp_getkeybystr (char *p, short abilities, pgp_ring_t keyring)
   keys = pgp_get_candidates (keyring, hints);
   mutt_free_list (&hints);
 
-  if (!keys)
+  if (keys == NULL)
     goto out;
 
   for (k = keys; k; k = kn)
@@ -968,7 +968,7 @@ pgp_key_t pgp_getkeybystr (char *p, short abilities, pgp_ring_t keyring)
     /* This shouldn't happen, but keys without any addresses aren't selectable
      * in pgp_select_key().
      */
-    if (!k->address)
+    if (k->address == NULL)
       continue;
 
     match = 0;

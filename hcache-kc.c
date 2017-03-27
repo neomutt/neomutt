@@ -39,7 +39,7 @@ hcache_kyotocabinet_open(const char *path)
   }
 
   KCDB *db = kcdbnew();
-  if (!db)
+  if (db == NULL)
       return NULL;
 
   if (kcdbopen(db, kcdbpath, KCOWRITER | KCOCREATE))
@@ -61,7 +61,7 @@ hcache_kyotocabinet_fetch(void *ctx, const char *key, size_t keylen)
 {
   size_t sp;
 
-  if (!ctx)
+  if (ctx == NULL)
       return NULL;
 
   KCDB *db = ctx;
@@ -78,7 +78,7 @@ hcache_kyotocabinet_free(void *vctx, void **data)
 static int
 hcache_kyotocabinet_store(void *ctx, const char* key, size_t keylen, void *data, size_t dlen)
 {
-  if (!ctx)
+  if (ctx == NULL)
     return -1;
 
   KCDB *db = ctx;
@@ -88,7 +88,7 @@ hcache_kyotocabinet_store(void *ctx, const char* key, size_t keylen, void *data,
 static int
 hcache_kyotocabinet_delete(void *ctx, const char *key, size_t keylen)
 {
-  if (!ctx)
+  if (ctx == NULL)
     return -1;
 
   KCDB *db = ctx;

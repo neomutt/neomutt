@@ -287,9 +287,9 @@ int main (int argc, char **argv, char **environ)
 
       case 'b':
       case 'c':
-	if (!msg)
+	if (msg == NULL)
 	  msg = mutt_new_header ();
-	if (!msg->env)
+	if (msg->env == NULL)
 	  msg->env = mutt_new_envelope ();
 	if (i == 'b')
 	  msg->env->bcc = rfc822_parse_adrlist (msg->env->bcc, optarg);
@@ -540,9 +540,9 @@ int main (int argc, char **argv, char **environ)
     if (!option (OPTNOCURSES))
       mutt_flushinp ();
 
-    if (!msg)
+    if (msg == NULL)
       msg = mutt_new_header ();
-    if (!msg->env)
+    if (msg->env == NULL)
       msg->env = mutt_new_envelope ();
 
     for (i = optind; i < argc; i++)
@@ -740,7 +740,7 @@ int main (int argc, char **argv, char **environ)
 	}
 	else
 	  msg->content = a = mutt_make_file_attach (t->data);
-	if (!a)
+	if (a == NULL)
 	{
 	  if (!option (OPTNOCURSES))
 	    mutt_endwin (NULL);
@@ -845,7 +845,7 @@ int main (int argc, char **argv, char **environ)
       }
       else
 #endif
-      if (!Incoming) {
+      if (Incoming == NULL) {
 	mutt_endwin (_("No incoming mailboxes defined."));
 	exit (1);
       }

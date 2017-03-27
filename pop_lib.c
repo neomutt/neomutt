@@ -124,7 +124,7 @@ static int fetch_auth (char *line, void *data)
 {
   POP_DATA *pop_data = (POP_DATA *)data;
 
-  if (!pop_data->auth_list)
+  if (pop_data->auth_list == NULL)
   {
     pop_data->auth_list = safe_malloc (strlen (line) + 1);
     *pop_data->auth_list = '\0';

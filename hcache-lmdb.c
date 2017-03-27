@@ -152,7 +152,7 @@ hcache_lmdb_fetch(void *vctx, const char *key, size_t keylen)
   MDB_val data;
   int rc;
 
-  if (!vctx)
+  if (vctx == NULL)
       return NULL;
 
   hcache_lmdb_ctx_t *ctx = vctx;
@@ -195,7 +195,7 @@ hcache_lmdb_store(void *vctx, const char *key, size_t keylen, void *data, size_t
   MDB_val databuf;
   int rc;
 
-  if (!vctx)
+  if (vctx == NULL)
     return -1;
 
   hcache_lmdb_ctx_t *ctx = vctx;
@@ -228,7 +228,7 @@ hcache_lmdb_delete(void *vctx, const char *key, size_t keylen)
   MDB_val dkey;
   int rc;
 
-  if (!vctx)
+  if (vctx == NULL)
     return -1;
 
   hcache_lmdb_ctx_t *ctx = vctx;

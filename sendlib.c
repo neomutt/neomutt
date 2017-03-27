@@ -308,7 +308,7 @@ int mutt_write_mime_header (BODY *a, FILE *f)
     {
       char *tmp = NULL;
 
-      if(!p->value)
+      if(p->value == NULL)
 	continue;
 
       fputc (';', f);
@@ -512,7 +512,7 @@ static void update_content_info (CONTENT *info, CONTENT_STATE *s, char *d, size_
   int linelen = s->linelen;
   int was_cr = s->was_cr;
 
-  if (!d) /* This signals EOF */
+  if (d == NULL) /* This signals EOF */
   {
     if (was_cr != 0)
       info->binary = 1;
@@ -892,7 +892,7 @@ CONTENT *mutt_get_content_info (const char *fname, BODY *b)
         convert_file_from_to (fp, fchs, chs ? chs : SendCharset,
                               &fromcode, &tocode, info) != (size_t)(-1))
     {
-      if (!chs)
+      if (chs == NULL)
       {
 	mutt_canonical_charset (chsbuf, sizeof (chsbuf), tocode);
 	mutt_set_parameter ("charset", chsbuf, &b->parameter);
@@ -1356,7 +1356,7 @@ BODY *mutt_make_file_attach (const char *path)
     return NULL;
   }
 
-  if (!att->subtype)
+  if (att->subtype == NULL)
   {
     if (info->lobin == 0 || (info->lobin + info->hibin + info->ascii)/ info->lobin >= 10)
     {
@@ -1884,7 +1884,7 @@ int mutt_write_one_header (FILE *fp, const char *tag, const char *value,
     if (p)
       *p = '\n';
 
-    if (!p)
+    if (p == NULL)
       break;
 
     line = ++p;
@@ -2111,7 +2111,7 @@ static void encode_headers (LIST *h)
     p = skip_email_wsp(p + 1);
     tmp = safe_strdup (p);
 
-    if (!tmp)
+    if (tmp == NULL)
       continue;
 
     rfc2047_encode_string (&tmp);
@@ -2397,7 +2397,7 @@ mutt_invoke_sendmail (ADDRESS *from,	/* the sender */
 #endif
 
   /* ensure that $sendmail is set to avoid a crash. http://dev.mutt.org/trac/ticket/3548 */
-  if (!s)
+  if (s == NULL)
   {
     mutt_error(_("$sendmail must be set in order to send mail."));
     return -1;
@@ -2526,7 +2526,7 @@ mutt_invoke_sendmail (ADDRESS *from,	/* the sender */
   return i;
 }
 
-/* For postponing (!final) do the necessary encodings only */
+/* For postponing (final == NULL) do the necessary encodings only */
 void mutt_prepare_envelope (ENVELOPE *env, int final)
 {
   char buffer[LONG_STRING];
@@ -2552,7 +2552,7 @@ void mutt_prepare_envelope (ENVELOPE *env, int final)
 
     mutt_set_followup_to (env);
 
-    if (!env->message_id)
+    if (env->message_id == NULL)
       env->message_id = gen_msgid ();
   }
 
@@ -2600,7 +2600,7 @@ static int _mutt_bounce_message (FILE *fp, HEADER *h, ADDRESS *to, const char *r
   char date[SHORT_STRING], tempfile[_POSIX_PATH_MAX];
   MESSAGE *msg = NULL;
 
-  if (!h)
+  if (h == NULL)
   {
 	  /* Try to bounce each message out, aborting if we get any failures. */
     for (i=0; i<Context->msgcount; i++)
@@ -2613,7 +2613,7 @@ static int _mutt_bounce_message (FILE *fp, HEADER *h, ADDRESS *to, const char *r
   if (!fp && (msg = mx_open_message (Context, h->msgno)) == NULL)
     return -1;
 
-  if (!fp) fp = msg->fp;
+  if (fp == NULL) fp = msg->fp;
 
   mutt_mktemp (tempfile, sizeof (tempfile));
   if ((f = safe_fopen (tempfile, "w")) != NULL)

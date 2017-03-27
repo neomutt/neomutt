@@ -52,7 +52,7 @@ static pop_auth_res_t pop_auth_sasl (POP_DATA *pop_data, const char *method)
     return POP_A_FAILURE;
   }
 
-  if (!method)
+  if (method == NULL)
     method = pop_data->auth_list;
 
   while (true)
@@ -205,7 +205,7 @@ static pop_auth_res_t pop_auth_apop (POP_DATA *pop_data, const char *method)
   char buf[LONG_STRING];
   size_t i;
 
-  if (!pop_data->timestamp)
+  if (pop_data->timestamp == NULL)
     return POP_A_UNAVAIL;
 
   if (rfc822_valid_msgid (pop_data->timestamp) < 0)

@@ -731,7 +731,7 @@ eat_range_by_regexp (pattern_t *pat, BUFFER *s, int kind, BUFFER *err)
   /* Special case for a bare 0. */
   if ((kind == RANGE_K_BARE) && (pat->min == 0) && (pat->max == 0))
   {
-    if (!Context->menu)
+    if (Context->menu == NULL)
     {
       strfcpy(err->data, _("No current message"), err->dsize);
       return RANGE_E_CTX;
@@ -754,7 +754,7 @@ eat_message_range (pattern_t *pat, BUFFER *s, BUFFER *err)
   int i_kind;
 
   /* We need a Context for pretty much anything. */
-  if (!Context)
+  if (Context == NULL)
   {
     strfcpy(err->data, _("No Context"), err->dsize);
     return -1;
@@ -965,13 +965,13 @@ msg_search (CONTEXT *ctx, pattern_t* pat, int msgno)
 
       if (tempsize) {
         fp = fmemopen (temp, tempsize, "r");
-        if (!fp) {
+        if (fp == NULL) {
           mutt_perror (_("Error re-opening memstream"));
           return 0;
         }
       } else { /* fmemopen cannot handle empty buffers */
         fp = safe_fopen ("/dev/null", "r");
-        if (!fp) {
+        if (fp == NULL) {
           mutt_perror (_("Error opening /dev/null"));
           return 0;
         }
@@ -1133,7 +1133,7 @@ pattern_t *mutt_pattern_comp (/* const */ char *s, int flags, BUFFER *err)
       case '|':
 	if (or == 0)
 	{
-	  if (!curlist)
+	  if (curlist == NULL)
 	  {
 	    snprintf (err->data, err->dsize, _("error in pattern at: %s"), ps.dptr);
 	    return NULL;
@@ -1299,7 +1299,7 @@ pattern_t *mutt_pattern_comp (/* const */ char *s, int flags, BUFFER *err)
 	return NULL;
     }
   }
-  if (!curlist)
+  if (curlist == NULL)
   {
     strfcpy (err->data, _("empty pattern"), err->dsize);
     return NULL;
@@ -1410,7 +1410,7 @@ static int match_threadcomplete(struct pattern_t *pat, pattern_exec_flag flags, 
   int a;
   HEADER *h = NULL;
 
-  if(!t)
+  if(t == NULL)
     return 0;
   h = t->message;
   if(h)
@@ -1504,7 +1504,7 @@ mutt_pattern_exec (struct pattern_t *pat, pattern_exec_flag flags, CONTEXT *ctx,
        * the user has a reply-hook using "~h" (bug #2190).
        * This is also the case when message scoring.
        */
-      if (!ctx)
+      if (ctx == NULL)
 	      return 0;
 #ifdef USE_IMAP
       /* IMAP search sets h->matched at search compile time */
@@ -1623,7 +1623,7 @@ mutt_pattern_exec (struct pattern_t *pat, pattern_exec_flag flags, CONTEXT *ctx,
     case MUTT_DUPLICATED:
       return (pat->not ^ (h->thread && h->thread->duplicate_thread));
     case MUTT_MIMEATTACH:
-      if (!ctx)
+      if (ctx == NULL)
         return 0;
       {
       int count = mutt_count_body_parts (ctx, h);
@@ -1721,7 +1721,7 @@ top_of_thread (HEADER *h)
 {
   THREAD *t = NULL;
 
-  if (!h)
+  if (h == NULL)
     return NULL;
 
   t = h->thread;
@@ -1746,11 +1746,11 @@ mutt_limit_current_thread (HEADER *h)
   int i;
   THREAD *me = NULL;
 
-  if (!h)
+  if (h == NULL)
     return 0;
 
   me = top_of_thread (h);
-  if (!me)
+  if (me == NULL)
     return 0;
 
   Context->vcount    = 0;

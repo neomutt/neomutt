@@ -302,7 +302,7 @@ static void crypt_free_key (crypt_key_t **keylist)
 {
   crypt_key_t *k = NULL;
 
-  if (!keylist)
+  if (keylist == NULL)
     return;
 
   while (*keylist)
@@ -444,7 +444,7 @@ static gpgme_data_t body_to_data_object (BODY *a, int convert)
 
   mutt_mktemp (tempfile, sizeof (tempfile));
   fptmp = safe_fopen (tempfile, "w+");
-  if (!fptmp)
+  if (fptmp == NULL)
     {
       mutt_perror (tempfile);
       return NULL;
@@ -567,7 +567,7 @@ static char *data_object_to_tempfile (gpgme_data_t data, char *tempf, FILE **ret
   FILE *fp = NULL;
   size_t nread = 0;
 
-  if (!tempf)
+  if (tempf == NULL)
     {
       mutt_mktemp (tempfb, sizeof (tempfb));
       tempf = tempfb;
@@ -616,11 +616,11 @@ static void free_recipient_set (gpgme_key_t **p_rset)
 {
   gpgme_key_t *rset, k;
 
-  if (!p_rset)
+  if (p_rset == NULL)
     return;
 
   rset = *p_rset;
-  if (!rset)
+  if (rset == NULL)
     return;
 
   while (*rset)
@@ -899,7 +899,7 @@ static BODY *sign_message (BODY *a, int use_smime)
   convert_to_7bit (a); /* Signed data _must_ be in 7-bit format. */
 
   message = body_to_data_object (a, 1);
-  if (!message)
+  if (message == NULL)
      return NULL;
   signature = create_gpgme_data ();
 
@@ -941,7 +941,7 @@ static BODY *sign_message (BODY *a, int use_smime)
    * unset and there is no default key specified in ~/.gnupg/gpg.conf
    */
   sigres = gpgme_op_sign_result (ctx);
-  if (!sigres->signatures)
+  if (sigres->signatures == NULL)
   {
       gpgme_data_release (signature);
       gpgme_release (ctx);
@@ -951,7 +951,7 @@ static BODY *sign_message (BODY *a, int use_smime)
 
   sigfile = data_object_to_tempfile (signature, NULL, NULL);
   gpgme_data_release (signature);
-  if (!sigfile)
+  if (sigfile == NULL)
     {
       gpgme_release (ctx);
       return NULL;
@@ -1031,13 +1031,13 @@ BODY *pgp_gpgme_encrypt_message (BODY *a, char *keylist, int sign)
   gpgme_data_t plaintext;
 
   rset = create_recipient_set (keylist, GPGME_PROTOCOL_OpenPGP);
-  if (!rset)
+  if (rset == NULL)
     return NULL;
 
   if (sign != 0)
     convert_to_7bit (a);
   plaintext = body_to_data_object (a, 0);
-  if (!plaintext)
+  if (plaintext == NULL)
     {
       free_recipient_set (&rset);
       return NULL;
@@ -1046,7 +1046,7 @@ BODY *pgp_gpgme_encrypt_message (BODY *a, char *keylist, int sign)
   outfile = encrypt_gpgme_object (plaintext, rset, 0, sign);
   gpgme_data_release (plaintext);
   free_recipient_set (&rset);
-  if (!outfile)
+  if (outfile == NULL)
       return NULL;
 
   t = mutt_new_body ();
@@ -1092,7 +1092,7 @@ BODY *smime_gpgme_build_smime_entity (BODY *a, char *keylist)
   gpgme_data_t plaintext;
 
   rset = create_recipient_set (keylist, GPGME_PROTOCOL_CMS);
-  if (!rset)
+  if (rset == NULL)
     return NULL;
 
   /* OpenSSL converts line endings to crlf when encrypting.  Some
@@ -1100,7 +1100,7 @@ BODY *smime_gpgme_build_smime_entity (BODY *a, char *keylist)
    * convert line endings between decrypting and checking the
    * signature.  See #3904. */
   plaintext = body_to_data_object (a, 1);
-  if (!plaintext)
+  if (plaintext == NULL)
     {
       free_recipient_set (&rset);
       return NULL;
@@ -1109,7 +1109,7 @@ BODY *smime_gpgme_build_smime_entity (BODY *a, char *keylist)
   outfile = encrypt_gpgme_object (plaintext, rset, 1, 0);
   gpgme_data_release (plaintext);
   free_recipient_set (&rset);
-  if (!outfile)
+  if (outfile == NULL)
       return NULL;
 
   t = mutt_new_body ();
@@ -1267,10 +1267,10 @@ static void show_fingerprint (gpgme_key_t key, STATE *state)
   char *buf = NULL, *p = NULL;
   const char *prefix = _("Fingerprint: ");
 
-  if (!key)
+  if (key == NULL)
     return;
   s = key->subkeys ? key->subkeys->fpr : NULL;
-  if (!s)
+  if (s == NULL)
     return;
   is_pgp = (key->protocol == GPGME_PROTOCOL_OpenPGP);
 
@@ -1532,7 +1532,7 @@ static int verify_one (BODY *sigbdy, STATE *s,
   gpgme_data_t signature, message;
 
   signature = file_to_data_object (s->fpin, sigbdy->offset, sigbdy->length);
-  if (!signature)
+  if (signature == NULL)
     return -1;
 
   /* We need to tell gpgme about the encoding because the backend can't
@@ -1693,7 +1693,7 @@ static BODY *decrypt_part (BODY *a, STATE *s, FILE *fpout, int is_smime,
  restart:
   /* Make a data object from the body, create context etc. */
   ciphertext = file_to_data_object (s->fpin, a->offset, a->length);
-  if (!ciphertext)
+  if (ciphertext == NULL)
     return NULL;
   plaintext = create_gpgme_data ();
 
@@ -1729,7 +1729,7 @@ static BODY *decrypt_part (BODY *a, STATE *s, FILE *fpout, int is_smime,
 	  gpgme_decrypt_result_t result;
 
 	  result = gpgme_op_decrypt_result (ctx);
-	  if (!result->unsupported_algorithm)
+	  if (result->unsupported_algorithm == NULL)
             {
               maybe_signed = 1;
               gpgme_data_release (plaintext);
@@ -2058,7 +2058,7 @@ static int pgp_gpgme_extract_keys (gpgme_data_t keydata, FILE** fp, int dryrun)
     engineinfo = gpgme_ctx_get_engine_info (tmpctx);
     while (engineinfo && engineinfo->protocol != GPGME_PROTOCOL_OpenPGP)
       engineinfo = engineinfo->next;
-    if (!engineinfo)
+    if (engineinfo == NULL)
     {
       mutt_debug (1, "Error finding GPGME PGP engine\n");
       goto err_tmpdir;
@@ -2297,7 +2297,7 @@ static void copy_clearsigned (gpgme_data_t data, STATE *s, char *charset)
   FILE *fp = NULL;
 
   fname = data_object_to_tempfile (data, NULL, &fp);
-  if (!fname)
+  if (fname == NULL)
   {
     safe_fclose (&fp);
     return;
@@ -2494,7 +2494,7 @@ int pgp_gpgme_application_handler (BODY *m, STATE *s)
                     }
 
                   tmpfname = data_object_to_tempfile (plaintext, NULL, &pgpout);
-                  if (!tmpfname)
+                  if (tmpfname == NULL)
                     {
                       safe_fclose (&pgpout);
                       state_puts (_("Error: copy data failed\n"), s);
@@ -3267,7 +3267,7 @@ parse_dn (const char *string)
       array[arrayidx].value = NULL;
       string = parse_dn_part (array+arrayidx, string);
       arrayidx++;
-      if (!string)
+      if (string == NULL)
         goto failure;
       while (*string == ' ')
         string++;
@@ -3314,7 +3314,7 @@ parse_and_print_user_id (FILE *fp, const char *userid)
   else
     {
       struct dn_array_s *dn = parse_dn (userid);
-      if (!dn)
+      if (dn == NULL)
         fputs (_("[Can't display this user ID (invalid DN)]"), fp);
       else
         {
@@ -3761,7 +3761,7 @@ static crypt_key_t *get_candidates (LIST * hints, unsigned int app, int secret)
   gpgme_user_id_t uid = NULL;
 
   pattern = list_to_pattern (hints);
-  if (!pattern)
+  if (pattern == NULL)
     return NULL;
 
   err = gpgme_new (&ctx);
@@ -4158,7 +4158,7 @@ static crypt_key_t *crypt_getkeybyaddr (ADDRESS * a, short abilities,
 
   mutt_free_list (&hints);
 
-  if (!keys)
+  if (keys == NULL)
     return NULL;
 
   mutt_debug (5, "crypt_getkeybyaddr: looking for %s <%s>.\n",
@@ -4296,7 +4296,7 @@ static crypt_key_t *crypt_getkeybystr (char *p, short abilities,
   keys = get_candidates (hints, app, (abilities & KEYFLAG_CANSIGN));
   mutt_free_list (&hints);
 
-  if (!keys)
+  if (keys == NULL)
   {
     FREE (&pfcopy);
     return NULL;
@@ -4358,7 +4358,7 @@ static crypt_key_t *crypt_ask_for_key (char *tag,
   struct crypt_cache *l = NULL;
   int dummy;
 
-  if (!forced_valid)
+  if (forced_valid == NULL)
     forced_valid = &dummy;
 
   mutt_clear_error ();
@@ -4563,7 +4563,7 @@ BODY *pgp_gpgme_make_key_attachment (char *tempf)
 
   key = crypt_ask_for_key (_("Please enter the key ID: "), NULL, 0,
                            APPLICATION_PGP, NULL);
-  if (!key)
+  if (key == NULL)
     goto bail;
   export_keys[0] = key->kobj;
   export_keys[1] = NULL;
@@ -4580,7 +4580,7 @@ BODY *pgp_gpgme_make_key_attachment (char *tempf)
   }
 
   tempf = data_object_to_tempfile (keydata, tempf, NULL);
-  if (!tempf)
+  if (tempf == NULL)
     goto bail;
 
   att = mutt_new_body ();

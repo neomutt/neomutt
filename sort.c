@@ -294,7 +294,7 @@ void mutt_sort_headers (CONTEXT *ctx, int init)
 
   unset_option (OPTNEEDRESORT);
 
-  if (!ctx)
+  if (ctx == NULL)
     return;
 
   if (ctx->msgcount == 0)
@@ -373,7 +373,7 @@ void mutt_sort_headers (CONTEXT *ctx, int init)
     top = ctx->tree;
     while ((thread = top) != NULL)
     {
-      while (!thread->message)
+      while (thread->message == NULL)
 	thread = thread->child;
       h = thread->message;
 

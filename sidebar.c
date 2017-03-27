@@ -135,7 +135,7 @@ static const char *cb_format_str(char *dest, size_t destlen, size_t col, int col
   dest[0] = 0;  /* Just in case there's nothing to do */
 
   BUFFY *b = sbe->buffy;
-  if (!b)
+  if (b == NULL)
     return src;
 
   int c = Context && (mutt_strcmp (Context->realpath, b->realpath) == 0);
@@ -1117,7 +1117,7 @@ void mutt_sb_set_open_buffy (void)
 
   OpnIndex = -1;
 
-  if (!Context)
+  if (Context == NULL)
     return;
 
   for (entry = 0; entry < EntryCount; entry++)
@@ -1144,7 +1144,7 @@ void mutt_sb_notify_mailbox (BUFFY *b, int created)
 {
   int del_index;
 
-  if (!b)
+  if (b == NULL)
     return;
 
   if (sidebar_source == SB_SRC_NONE)

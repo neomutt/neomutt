@@ -69,7 +69,7 @@ static int _lua_mutt_call(lua_State *l)
 
   command = mutt_command_get(lua_tostring(l, 1));
 
-  if (!command)
+  if (command == NULL)
   {
     luaL_error(l, "Error command %s not found.", lua_tostring(l, 1));
     return -1;

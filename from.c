@@ -99,7 +99,7 @@ int is_from (const char *s, char *path, size_t pathlen, time_t *tp)
     if (ascii_strncasecmp(p, " at ", 4) == 0)
     {
       p = strchr(p + 4, ' ');
-      if (!p)
+      if (p == NULL)
       {
         mutt_debug (1, "is_from(): error parsing what appears to be a "
                        "pipermail-style obscured return_path: %s\n", s);

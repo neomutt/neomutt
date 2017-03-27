@@ -218,7 +218,7 @@ void rfc2231_decode_parameters (PARAMETER **headp)
 			 * empty parameters.
 			 */
 
-  if (!headp) return;
+  if (headp == NULL) return;
 
   purge_empty_parameters (headp);
 

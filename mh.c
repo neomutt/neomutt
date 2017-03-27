@@ -754,7 +754,7 @@ HEADER *maildir_parse_stream (int magic, FILE *f, const char *fname,
   HEADER *h = _h;
   struct stat st;
 
-  if (!h)
+  if (h == NULL)
     h = mutt_new_header ();
   h->env = mutt_read_rfc822_header (f, h, 0, 0);
 
@@ -1124,7 +1124,7 @@ static void maildir_delayed_parsing (CONTEXT * ctx, struct maildir **md,
   { \
     mutt_debug (4, "maildir: need to sort %s by inode\n", ctx->path); \
     p = maildir_sort (p, (size_t) -1, md_cmp_inode); \
-    if (!last) \
+    if (last == NULL) \
       *md = p; \
     else \
       last->next = p; \
@@ -1258,7 +1258,7 @@ static int mh_read_dir (CONTEXT * ctx, const char *subdir)
     mutt_progress_init (&progress, msgbuf, MUTT_PROGRESS_MSG, ReadInc, 0);
   }
 
-  if (!ctx->data)
+  if (ctx->data == NULL)
   {
     ctx->data = safe_calloc(sizeof (struct mh_data), 1);
   }
@@ -1446,7 +1446,7 @@ static int maildir_mh_open_message (CONTEXT *ctx, MESSAGE *msg, int msgno,
   if (msg->fp == NULL && errno == ENOENT && is_maildir)
     msg->fp = maildir_open_find_message (ctx->path, cur->path, NULL);
 
-  if (!msg->fp)
+  if (msg->fp == NULL)
   {
     mutt_perror (path);
     mutt_debug (1, "maildir_mh_open_message: fopen: %s: %s (errno %d).\n",

@@ -46,7 +46,7 @@ static short check_all_msg (ATTACHPTR ** idx, short idxlen,
 
   if (cur && check_msg (cur, err) == -1)
     return -1;
-  else if (!cur)
+  else if (cur == NULL)
   {
     for (i = 0; i < idxlen; i++)
     {
@@ -133,7 +133,7 @@ void mutt_attach_bounce (FILE * fp, HEADER * hdr,
    * messages without one */
   if (cur)
   {
-    if (!cur->hdr->env->from)
+    if (cur->hdr->env->from == NULL)
     {
       mutt_error (_("Warning: message contains no From: header"));
       mutt_sleep (2);
@@ -711,7 +711,7 @@ attach_reply_envelope_defaults (ENVELOPE *env, ATTACHPTR **idx, short idxlen,
   HEADER *curhdr = NULL;
   short i;
 
-  if (!parent)
+  if (parent == NULL)
   {
     for (i = 0; i < idxlen; i++)
     {
@@ -869,7 +869,7 @@ void mutt_attach_reply (FILE * fp, HEADER * hdr,
     return;
   }
 
-  if (!parent)
+  if (parent == NULL)
   {
     if (cur)
       attach_include_reply (fp, tmpfp, cur->hdr, flags);

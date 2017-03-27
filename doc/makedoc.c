@@ -274,7 +274,7 @@ static int print_it (int special, char *str, FILE *out, int docstat)
 	}
 	case SP_START_TAB:
 	{
-	  if (!onl)
+	  if (onl == NULL)
 	    fputs ("\n# ", out);
 	  docstat |= D_TAB;
 	  break;

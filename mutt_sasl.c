@@ -158,14 +158,14 @@ static int mutt_sasl_cb_authname (void* context, int id, const char** result,
 {
   ACCOUNT* account = (ACCOUNT*) context;
 
-  if (!result)
+  if (result == NULL)
     return SASL_FAIL;
 
   *result = NULL;
   if (len)
     *len = 0;
 
-  if (!account)
+  if (account == NULL)
     return SASL_BADPARAM;
 
   mutt_debug (2, "mutt_sasl_cb_authname: getting %s for %s:%u\n",

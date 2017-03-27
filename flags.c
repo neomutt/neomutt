@@ -325,7 +325,7 @@ int mutt_thread_set_flag (HEADER *hdr, int flag, int bf, int subthread)
       cur = cur->next;
     else
     {
-      while (!cur->next)
+      while (cur->next == NULL)
       {
 	cur = cur->parent;
 	if (cur == start)

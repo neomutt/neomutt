@@ -76,7 +76,7 @@ static const char *_mutt_fmt_pgp_command (char *dest,
 	snprintf (fmt, sizeof (fmt), "%%%ss", prefix);
 	snprintf (dest, destlen, fmt, NONULL (cctx->ids));
       }
-      else if (!cctx->ids)
+      else if (cctx->ids == NULL)
 	optional = 0;
       break;
     }
@@ -88,7 +88,7 @@ static const char *_mutt_fmt_pgp_command (char *dest,
 	snprintf (fmt, sizeof (fmt), "%%%ss", prefix);
 	snprintf (dest, destlen, fmt, NONULL (cctx->signas));
       }
-      else if (!cctx->signas)
+      else if (cctx->signas == NULL)
 	optional = 0;
       break;
     }
@@ -100,7 +100,7 @@ static const char *_mutt_fmt_pgp_command (char *dest,
 	snprintf (fmt, sizeof (fmt), "%%%ss", prefix);
 	snprintf (dest, destlen, fmt, NONULL (cctx->sig_fname));
       }
-      else if (!cctx->sig_fname)
+      else if (cctx->sig_fname == NULL)
 	optional = 0;
       break;
     }
@@ -112,7 +112,7 @@ static const char *_mutt_fmt_pgp_command (char *dest,
 	snprintf (fmt, sizeof (fmt), "%%%ss", prefix);
 	snprintf (dest, destlen, fmt, NONULL (cctx->fname));
       }
-      else if (!cctx->fname)
+      else if (cctx->fname == NULL)
 	optional = 0;
       break;
     }
@@ -282,7 +282,7 @@ void pgp_invoke_getkeys (ADDRESS *addr)
 
   struct pgp_command_context cctx;
 
-  if (!PgpGetkeysCommand) return;
+  if (PgpGetkeysCommand == NULL) return;
 
   memset (&cctx, 0, sizeof (cctx));
 

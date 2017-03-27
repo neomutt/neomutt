@@ -204,7 +204,7 @@ static int mmdf_parse_mailbox (CONTEXT *ctx)
       if (!hdr->env->return_path && return_path[0])
 	hdr->env->return_path = rfc822_parse_adrlist (hdr->env->return_path, return_path);
 
-      if (!hdr->env->from)
+      if (hdr->env->from == NULL)
 	hdr->env->from = rfc822_cpy_adr (hdr->env->return_path, 0);
 
       ctx->msgcount++;
@@ -384,7 +384,7 @@ static int mbox_parse_mailbox (CONTEXT *ctx)
       if (!curhdr->env->return_path && return_path[0])
 	curhdr->env->return_path = rfc822_parse_adrlist (curhdr->env->return_path, return_path);
 
-      if (!curhdr->env->from)
+      if (curhdr->env->from == NULL)
 	curhdr->env->from = rfc822_cpy_adr (curhdr->env->return_path, 0);
 
       lines = 0;
@@ -460,7 +460,7 @@ static int mbox_open_mailbox (CONTEXT *ctx)
 static int mbox_open_mailbox_append (CONTEXT *ctx, int flags)
 {
   ctx->fp = safe_fopen (ctx->path, flags & MUTT_NEWFOLDER ? "w" : "a");
-  if (!ctx->fp)
+  if (ctx->fp == NULL)
   {
     mutt_perror (ctx->path);
     return -1;
@@ -480,7 +480,7 @@ static int mbox_open_mailbox_append (CONTEXT *ctx, int flags)
 
 static int mbox_close_mailbox (CONTEXT *ctx)
 {
-  if (!ctx->fp)
+  if (ctx->fp == NULL)
   {
     return 0;
   }
@@ -976,7 +976,7 @@ void mbox_reset_atime (CONTEXT *ctx, struct stat *st)
   struct utimbuf utimebuf;
   struct stat _st;
 
-  if (!st)
+  if (st == NULL)
   {
     if (stat (ctx->path, &_st) < 0)
       return;

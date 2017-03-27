@@ -370,7 +370,7 @@ int mutt_view_attachment (FILE *fp, BODY *a, int flag, HEADER *hdr,
 
   if (use_mailcap != 0)
   {
-    if (!entry->command)
+    if (entry->command == NULL)
     {
       mutt_error (_("MIME type not defined.  Cannot view attachment."));
       goto return_error;
@@ -925,7 +925,7 @@ int mutt_print_attachment (FILE *fp, BODY *a)
     if (rfc1524_expand_filename (entry->nametemplate, a->filename,
 						  newfile, sizeof (newfile)))
     {
-      if (!fp)
+      if (fp == NULL)
       {
 	if (safe_symlink(a->filename, newfile) == -1)
 	{

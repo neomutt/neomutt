@@ -169,7 +169,7 @@ smtp_data (CONNECTION * conn, const char *msgfile)
   size_t buflen = 0;
 
   fp = fopen (msgfile, "r");
-  if (!fp)
+  if (fp == NULL)
   {
     mutt_error (_("SMTP session failed: unable to open %s"), msgfile);
     return -1;
@@ -235,7 +235,7 @@ smtp_data (CONNECTION * conn, const char *msgfile)
  */
 static int address_uses_unicode(const char *a)
 {
-  if (!a)
+  if (a == NULL)
     return 0;
 
   while (*a)

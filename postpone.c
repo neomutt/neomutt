@@ -74,7 +74,7 @@ int mutt_num_postponed (int force)
     force = 1;
   }
 
-  if (!Postponed)
+  if (Postponed == NULL)
     return 0;
 
 #ifdef USE_IMAP
@@ -246,7 +246,7 @@ int mutt_get_postponed (CONTEXT *ctx, HEADER *hdr, HEADER **cur, char *fcc, size
   const char *p = NULL;
   int opt_delete;
 
-  if (!Postponed)
+  if (Postponed == NULL)
     return -1;
 
   if ((PostContext = mx_open_mailbox (Postponed, MUTT_NOSORT, NULL)) == NULL)
@@ -308,7 +308,7 @@ int mutt_get_postponed (CONTEXT *ctx, HEADER *hdr, HEADER **cur, char *fcc, size
 	/* if a mailbox is currently open, look to see if the original message
 	   the user attempted to reply to is in this mailbox */
 	p = skip_email_wsp(tmp->data + 18);
-	if (!ctx->id_hash)
+	if (ctx->id_hash == NULL)
 	  ctx->id_hash = mutt_make_id_hash (ctx);
 	*cur = hash_find (ctx->id_hash, p);
       }
@@ -569,7 +569,7 @@ int mutt_prepare_template (FILE *fp, CONTEXT *ctx, HEADER *newhdr, HEADER *hdr,
   if (!fp && (msg = mx_open_message (ctx, hdr->msgno)) == NULL)
     return -1;
 
-  if (!fp) fp = msg->fp;
+  if (fp == NULL) fp = msg->fp;
 
   bfp = fp;
 

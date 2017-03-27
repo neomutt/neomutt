@@ -246,7 +246,7 @@ static pgp_key_t parse_pub_line (char *buf, int *is_subkey, pgp_key_t k)
 
 	mutt_debug (2, "time stamp: %s\n", p);
 
-	if (!p)
+	if (p == NULL)
 	  break;
 	time.tm_sec = 0;
 	time.tm_min = 0;

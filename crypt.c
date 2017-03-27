@@ -239,7 +239,7 @@ int mutt_protect (HEADER *msg, char *keylist)
       if (new_keylist != keylist)
         FREE (&new_keylist);
 
-      if (!tmp_pbody)
+      if (tmp_pbody == NULL)
       {
 	/* signed ? free it! */
 	return -1;
@@ -273,7 +273,7 @@ int mutt_protect (HEADER *msg, char *keylist)
                                                flags & SIGN);
       if (new_keylist != keylist)
 	FREE(&new_keylist);
-      if (!pbody)
+      if (pbody == NULL)
       {
 	/* did we perform a retainable signature? */
 	if (flags != msg->security)
@@ -466,7 +466,7 @@ int mutt_is_application_smime (BODY *m)
   char *t=NULL;
   int len, complain=0;
 
-  if(!m)
+  if(m == NULL)
     return 0;
 
   if ((m->type & TYPEAPPLICATION) && m->subtype)
@@ -496,9 +496,9 @@ int mutt_is_application_smime (BODY *m)
 
     t = mutt_get_parameter ("name", m->parameter);
 
-    if (!t) t = m->d_filename;
-    if (!t) t = m->filename;
-    if (!t)
+    if (t == NULL) t = m->d_filename;
+    if (t == NULL) t = m->filename;
+    if (t == NULL)
     {
       if (complain != 0)
 	mutt_message (_("S/MIME messages with no hints on content are unsupported."));
@@ -535,7 +535,7 @@ int crypt_query (BODY *m)
   if (WithCrypto == 0)
     return 0;
 
-  if (!m)
+  if (m == NULL)
     return 0;
 
   if (m->type == TYPEAPPLICATION)
@@ -696,7 +696,7 @@ void crypt_extract_keys_from_messages (HEADER * h)
   if ((WithCrypto & APPLICATION_PGP))
     set_option (OPTDONTHANDLEPGPKEYS);
 
-  if (!h)
+  if (h == NULL)
   {
     for (i = 0; i < Context->vcount; i++)
     {

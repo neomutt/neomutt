@@ -83,7 +83,7 @@ body_cache_t *mutt_bcache_open (ACCOUNT *account, const char *mailbox)
 {
   struct body_cache *bcache = NULL;
 
-  if (!account)
+  if (account == NULL)
     goto bail;
 
   bcache = safe_calloc (1, sizeof (struct body_cache));

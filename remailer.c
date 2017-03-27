@@ -122,7 +122,7 @@ static REMAILER **mix_type2_list (size_t *l)
   REMAILER **type2_list = NULL, *p = NULL;
   size_t slots = 0, used = 0;
 
-  if (!l)
+  if (l == NULL)
     return NULL;
 
   if ((devnull = open ("/dev/null", O_RDWR)) == -1)
@@ -389,7 +389,7 @@ static const char *mix_entry_fmt (char *dest,
 	snprintf (fmt, sizeof (fmt), "%%%ss", prefix);
 	snprintf (dest, destlen, fmt, NONULL(remailer->shortname));
       }
-      else if (!remailer->shortname)
+      else if (remailer->shortname == NULL)
         optional = 0;
       break;
     case 'a':
@@ -398,7 +398,7 @@ static const char *mix_entry_fmt (char *dest,
 	snprintf (fmt, sizeof (fmt), "%%%ss", prefix);
 	snprintf (dest, destlen, fmt, NONULL(remailer->addr));
       }
-      else if (!remailer->addr)
+      else if (remailer->addr == NULL)
         optional = 0;
       break;
 

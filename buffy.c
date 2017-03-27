@@ -435,7 +435,7 @@ static BUFFY* buffy_get (const char *path)
   BUFFY *cur = NULL;
   char *epath = NULL;
 
-  if (!path)
+  if (path == NULL)
     return NULL;
 
   epath = safe_strdup(path);
@@ -503,7 +503,7 @@ void mutt_update_mailbox (BUFFY * b)
 {
   struct stat sb;
 
-  if (!b)
+  if (b == NULL)
     return;
 
   if (stat (b->path, &sb) == 0)
@@ -724,7 +724,7 @@ int mutt_buffy_check (int force)
   if (!Incoming && !VirtIncoming)
     return 0;
 #else
-  if (!Incoming)
+  if (Incoming == NULL)
     return 0;
 #endif
   t = time (NULL);
@@ -828,7 +828,7 @@ void mutt_buffy_setnotified (const char *path)
   BUFFY *buffy = NULL;
 
   buffy = buffy_get(path);
-  if (!buffy)
+  if (buffy == NULL)
     return;
 
   buffy->notified = 1;

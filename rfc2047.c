@@ -417,12 +417,12 @@ static int rfc2047_encode (ICONV_CONST char *d, size_t dlen, int col,
     if ((*t & 0x80) ||
 	(*t == '=' && t[1] == '?' && (t == u || HSPACE(*(t-1)))))
     {
-      if (!t0) t0 = t;
+      if (t0 == NULL) t0 = t;
       t1 = t;
     }
     else if (specials && *t && strchr (specials, *t))
     {
-      if (!s0) s0 = t;
+      if (s0 == NULL) s0 = t;
       s1 = t;
     }
   }
@@ -433,7 +433,7 @@ static int rfc2047_encode (ICONV_CONST char *d, size_t dlen, int col,
   if (t1 && s1 && s1 > t1)
     t1 = s1;
 
-  if (!t0)
+  if (t0 == NULL)
   {
     /* No encoding is required. */
     *e = u;
@@ -626,7 +626,7 @@ static int rfc2047_decode_word (char *d, const char *s, size_t len)
     {
       while (pp1 && *(pp1 + 1) != '=')
 	pp1 = strchr(pp1 + 1, '?');
-      if (!pp1)
+      if (pp1 == NULL)
 	  goto error_out_0;
     }
 

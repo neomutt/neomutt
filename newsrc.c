@@ -49,7 +49,7 @@ static NNTP_DATA *nntp_data_find (NNTP_SERVER *nserv, const char *group)
 {
   NNTP_DATA *nntp_data = hash_find (nserv->groups_hash, group);
 
-  if (!nntp_data)
+  if (nntp_data == NULL)
   {
     int len = strlen (group) + 1;
     /* create NNTP_DATA structure and add it to hash */
@@ -95,7 +95,7 @@ void nntp_data_free (void *data)
 {
   NNTP_DATA *nntp_data = data;
 
-  if (!nntp_data)
+  if (nntp_data == NULL)
     return;
   nntp_acache_free (nntp_data);
   mutt_bcache_close (&nntp_data->bcache);
@@ -107,7 +107,7 @@ void nntp_data_free (void *data)
 /* Unlock and close .newsrc file */
 void nntp_newsrc_close (NNTP_SERVER *nserv)
 {
-  if (!nserv->newsrc_fp)
+  if (nserv->newsrc_fp == NULL)
     return;
 
   mutt_debug (1, "Unlocking %s\n", nserv->newsrc_file);
@@ -164,7 +164,7 @@ int nntp_newsrc_parse (NNTP_SERVER *nserv)
 
   /* open .newsrc */
   nserv->newsrc_fp = safe_fopen (nserv->newsrc_file, "r");
-  if (!nserv->newsrc_fp)
+  if (nserv->newsrc_fp == NULL)
   {
     mutt_perror (nserv->newsrc_file);
     mutt_sleep (2);
@@ -200,7 +200,7 @@ int nntp_newsrc_parse (NNTP_SERVER *nserv)
   {
     NNTP_DATA *nntp_data = nserv->groups_list[i];
 
-    if (!nntp_data)
+    if (nntp_data == NULL)
       continue;
 
     nntp_data->subscribed = 0;
@@ -217,7 +217,7 @@ int nntp_newsrc_parse (NNTP_SERVER *nserv)
 
     /* find end of newsgroup name */
     p = strpbrk (line, ":!");
-    if (!p)
+    if (p == NULL)
       continue;
 
     /* ":" - subscribed, "!" - unsubscribed */
@@ -370,7 +370,7 @@ static int update_file (char *filename, char *buf)
   {
     snprintf (tmpfile, sizeof (tmpfile), "%s.tmp", filename);
     fp = safe_fopen (tmpfile, "w");
-    if (!fp)
+    if (fp == NULL)
     {
       mutt_perror (tmpfile);
       *tmpfile = '\0';
@@ -414,7 +414,7 @@ int nntp_newsrc_update (NNTP_SERVER *nserv)
   unsigned int i;
   int rc = -1;
 
-  if (!nserv)
+  if (nserv == NULL)
     return -1;
 
   buflen = 10 * LONG_STRING;
@@ -565,7 +565,7 @@ static int active_get_cache (NNTP_SERVER *nserv)
   cache_expand (file, sizeof (file), &nserv->conn->account, ".active");
   mutt_debug (1, "Parsing %s\n", file);
   fp = safe_fopen (file, "r");
-  if (!fp)
+  if (fp == NULL)
     return -1;
 
   if (fgets (buf, sizeof (buf), fp) == NULL ||
@@ -662,7 +662,7 @@ void nntp_hcache_update (NNTP_DATA *nntp_data, header_cache_t *hc)
   void *hdata = NULL;
   anum_t first, last, current;
 
-  if (!hc)
+  if (hc == NULL)
     return;
 
   /* fetch previous values of first and last */
@@ -740,7 +740,7 @@ void nntp_delete_group_cache (NNTP_DATA *nntp_data)
   mutt_debug (2, "nntp_delete_group_cache: %s\n", file);
 #endif
 
-  if (!nntp_data->bcache)
+  if (nntp_data->bcache == NULL)
     nntp_data->bcache = mutt_bcache_open (&nntp_data->nserv->conn->account,
 			nntp_data->group);
   if (nntp_data->bcache)
@@ -797,7 +797,7 @@ void nntp_clear_cache (NNTP_SERVER *nserv)
 	continue;
 
       nntp_data = hash_find (nserv->groups_hash, group);
-      if (!nntp_data)
+      if (nntp_data == NULL)
       {
 	nntp_data = &nntp_tmp;
 	nntp_data->nserv = nserv;
@@ -927,7 +927,7 @@ NNTP_SERVER *nntp_select_server (char *server, int leave_lock)
 
   /* find connection by account */
   conn = mutt_conn_find (NULL, &acct);
-  if (!conn)
+  if (conn == NULL)
     return NULL;
   if (!(conn->account.flags & MUTT_ACCT_USER) && acct.flags & MUTT_ACCT_USER)
   {
@@ -1025,11 +1025,11 @@ NNTP_SERVER *nntp_select_server (char *server, int leave_lock)
 	  continue;
 	*p = '\0';
 	nntp_data = hash_find (nserv->groups_hash, group);
-	if (!nntp_data)
+	if (nntp_data == NULL)
 	  continue;
 
 	hc = nntp_hcache_open (nntp_data);
-	if (!hc)
+	if (hc == NULL)
 	  continue;
 
 	/* fetch previous values of first and last */
@@ -1093,7 +1093,7 @@ void nntp_article_status (CONTEXT *ctx, HEADER *hdr, char *group, anum_t anum)
   if (group)
     nntp_data = hash_find (nntp_data->nserv->groups_hash, group);
 
-  if (!nntp_data)
+  if (nntp_data == NULL)
     return;
 
   for (i = 0; i < nntp_data->newsrc_len; i++)
@@ -1127,7 +1127,7 @@ NNTP_DATA *mutt_newsgroup_subscribe (NNTP_SERVER *nserv, char *group)
 
   nntp_data = nntp_data_find (nserv, group);
   nntp_data->subscribed = 1;
-  if (!nntp_data->newsrc_ent)
+  if (nntp_data->newsrc_ent == NULL)
   {
     nntp_data->newsrc_ent = safe_calloc (1, sizeof (NEWSRC_ENTRY));
     nntp_data->newsrc_len = 1;
@@ -1146,7 +1146,7 @@ NNTP_DATA *mutt_newsgroup_unsubscribe (NNTP_SERVER *nserv, char *group)
     return NULL;
 
   nntp_data = hash_find (nserv->groups_hash, group);
-  if (!nntp_data)
+  if (nntp_data == NULL)
     return NULL;
 
   nntp_data->subscribed = 0;
@@ -1167,7 +1167,7 @@ NNTP_DATA *mutt_newsgroup_catchup (NNTP_SERVER *nserv, char *group)
     return NULL;
 
   nntp_data = hash_find (nserv->groups_hash, group);
-  if (!nntp_data)
+  if (nntp_data == NULL)
     return NULL;
 
   if (nntp_data->newsrc_ent)
@@ -1197,7 +1197,7 @@ NNTP_DATA *mutt_newsgroup_uncatchup (NNTP_SERVER *nserv, char *group)
     return NULL;
 
   nntp_data = hash_find (nserv->groups_hash, group);
-  if (!nntp_data)
+  if (nntp_data == NULL)
     return NULL;
 
   if (nntp_data->newsrc_ent)

@@ -292,7 +292,7 @@ int mutt_chscmp (const char *s, const char *chs)
   char buffer[STRING];
   int a, b;
 
-  if (!s) return 0;
+  if (s == NULL) return 0;
 
   /* charsets may have extensions mutt_canonical_charset()
      leaves intact; we expect `chs' to originate from mutt
@@ -411,7 +411,7 @@ size_t mutt_iconv (iconv_t cd, ICONV_CONST char **inbuf, size_t *inbytesleft,
 	  continue;
       }
       /* Replace the output */
-      if (!outrepl)
+      if (outrepl == NULL)
 	outrepl = "?";
       iconv (cd, 0, 0, &ob, &obl);
       if (obl != 0)
@@ -566,11 +566,11 @@ int fgetconv (FGETCONV *_fc)
 {
   struct fgetconv_s *fc = (struct fgetconv_s *)_fc;
 
-  if (!fc)
+  if (fc == NULL)
     return EOF;
   if (fc->cd == (iconv_t)-1)
     return fgetc (fc->file);
-  if (!fc->p)
+  if (fc->p == NULL)
     return EOF;
   if (fc->p < fc->ob)
     return (unsigned char)*(fc->p)++;

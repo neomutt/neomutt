@@ -1055,7 +1055,7 @@ hdr_format_str (char *dest,
     case 'W':
       if (optional == 0)
 	mutt_format_s (dest, destlen, prefix, hdr->env->organization ? hdr->env->organization : "");
-      else if (!hdr->env->organization)
+      else if (hdr->env->organization == NULL)
 	optional = 0;
       break;
 
@@ -1063,7 +1063,7 @@ hdr_format_str (char *dest,
     case 'x':
       if (optional == 0)
 	mutt_format_s (dest, destlen, prefix, hdr->env->x_comment_to ? hdr->env->x_comment_to : "");
-      else if (!hdr->env->x_comment_to)
+      else if (hdr->env->x_comment_to == NULL)
 	optional = 0;
       break;
 #endif

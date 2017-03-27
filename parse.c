@@ -517,7 +517,7 @@ void mutt_parse_part (FILE *fp, BODY *b)
   }
 
   /* try to recover from parsing error */
-  if (!b->parts)
+  if (b->parts == NULL)
   {
     b->type = TYPETEXT;
     mutt_str_replace (&b->subtype, "plain");
@@ -579,7 +579,7 @@ BODY *mutt_parse_multipart (FILE *fp, const char *boundary, LOFF_T end_off, int 
   int i;
   int final = 0; /* did we see the ending boundary? */
 
-  if (!boundary)
+  if (boundary == NULL)
   {
     mutt_error (_("multipart message has no boundary parameter!"));
     return NULL;
@@ -911,7 +911,7 @@ char *mutt_extract_message_id (const char *s, const char **saveptr)
       continue;
     }
 
-    if (!s)
+    if (s == NULL)
       continue;
 
     if (*p == '>')
@@ -1076,7 +1076,7 @@ int mutt_parse_rfc822_line (ENVELOPE *e, HEADER *hdr, char *line, char *p, short
 #ifdef USE_NNTP
     else if (ascii_strcasecmp (line+1, "ollowup-to") == 0)
     {
-      if (!e->followup_to)
+      if (e->followup_to == NULL)
       {
 	mutt_remove_trailing_ws (p);
 	e->followup_to = safe_strdup (mutt_skip_whitespace (p));
@@ -1219,7 +1219,7 @@ int mutt_parse_rfc822_line (ENVELOPE *e, HEADER *hdr, char *line, char *p, short
     case 's':
     if (ascii_strcasecmp (line + 1, "ubject") == 0)
     {
-      if (!e->subject)
+      if (e->subject == NULL)
 	e->subject = safe_strdup (p);
       matched = 1;
     }
@@ -1302,13 +1302,13 @@ int mutt_parse_rfc822_line (ENVELOPE *e, HEADER *hdr, char *line, char *p, short
 #ifdef USE_NNTP
     else if (ascii_strcasecmp (line + 1, "-comment-to") == 0)
     {
-      if (!e->x_comment_to)
+      if (e->x_comment_to == NULL)
 	e->x_comment_to = safe_strdup (p);
       matched = 1;
     }
     else if (ascii_strcasecmp (line + 1, "ref") == 0)
     {
-      if (!e->xref)
+      if (e->xref == NULL)
 	e->xref = safe_strdup (p);
       matched = 1;
     }
@@ -1453,7 +1453,7 @@ ENVELOPE *mutt_read_rfc822_header (FILE *f, HEADER *hdr, short user_hdrs,
 	}
 
 	/* match expr is empty; plug in null string if no existing tag */
-	else if (!e->spam)
+	else if (e->spam == NULL)
 	{
 	  e->spam = mutt_buffer_from("");
 	}

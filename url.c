@@ -52,7 +52,7 @@ int url_pct_decode (char *s)
 {
   char *d = NULL;
 
-  if (!s)
+  if (s == NULL)
     return -1;
 
   for (d = s; *s; s++)

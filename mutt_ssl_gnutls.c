@@ -106,7 +106,7 @@ static int tls_socket_read (CONNECTION* conn, char* buf, size_t len)
   tlssockdata *data = conn->sockdata;
   int ret;
 
-  if (!data)
+  if (data == NULL)
   {
     mutt_error (_("Error: no TLS socket open"));
     mutt_sleep (2);
@@ -135,7 +135,7 @@ static int tls_socket_write (CONNECTION* conn, const char* buf, size_t len)
   int ret;
   size_t sent = 0;
 
-  if (!data)
+  if (data == NULL)
   {
     mutt_error (_("Error: no TLS socket open"));
     mutt_sleep (2);
@@ -343,7 +343,7 @@ static int tls_compare_certificates (const gnutls_datum_t *peercert)
 
     /* find start of cert, skipping junk */
     ptr = (unsigned char *)strstr((char*)b64_data.data, CERT_SEP);
-    if (!ptr)
+    if (ptr == NULL)
     {
       gnutls_free(cert.data);
       FREE (&b64_data_data);
@@ -799,7 +799,7 @@ static int tls_check_certificate (CONNECTION* conn)
   certstat = tls_verify_peers (state);
 
   cert_list = gnutls_certificate_get_peers (state, &cert_list_size);
-  if (!cert_list)
+  if (cert_list == NULL)
   {
     mutt_error (_("Unable to get certificate from peer"));
     mutt_sleep (2);

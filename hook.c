@@ -189,7 +189,7 @@ int mutt_parse_hook (BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err)
 	return 0;
       }
     }
-    if (!ptr->next)
+    if (ptr->next == NULL)
       break;
   }
 
@@ -328,7 +328,7 @@ void mutt_folder_hook (char *path)
   mutt_buffer_init (&token);
   for (; tmp; tmp = tmp->next)
   {
-    if(!tmp->command)
+    if(tmp->command == NULL)
       continue;
 
     if (tmp->type & MUTT_FOLDERHOOK)
@@ -382,7 +382,7 @@ void mutt_message_hook (CONTEXT *ctx, HEADER *hdr, int type)
   memset (&cache, 0, sizeof (cache));
   for (hook = Hooks; hook; hook = hook->next)
   {
-    if(!hook->command)
+    if(hook->command == NULL)
       continue;
 
     if (hook->type & type)
@@ -419,7 +419,7 @@ addr_hook (char *path, size_t pathlen, int type, CONTEXT *ctx, HEADER *hdr)
   /* determine if a matching hook exists */
   for (hook = Hooks; hook; hook = hook->next)
   {
-    if(!hook->command)
+    if(hook->command == NULL)
       continue;
 
     if (hook->type & type)

@@ -623,7 +623,7 @@ static int examine_directory (MUTTMENU *menu, struct browser_state *state,
     for (i = 0; i < nserv->groups_num; i++)
     {
       NNTP_DATA *nntp_data = nserv->groups_list[i];
-      if (!nntp_data)
+      if (nntp_data == NULL)
 	continue;
       if (prefix && *prefix &&
 	  (strncmp (prefix, nntp_data->group, strlen (prefix)) != 0))
@@ -715,7 +715,7 @@ static int examine_vfolders (MUTTMENU *menu, struct browser_state *state)
 {
   BUFFY *tmp = VirtIncoming;
 
-  if (!VirtIncoming)
+  if (VirtIncoming == NULL)
     return -1;
   mutt_buffy_check (0);
 
@@ -764,7 +764,7 @@ static int examine_mailboxes (MUTTMENU *menu, struct browser_state *state)
   {
   BUFFY *tmp = Incoming;
 
-  if (!Incoming)
+  if (Incoming == NULL)
     return -1;
   mutt_buffy_check (0);
 

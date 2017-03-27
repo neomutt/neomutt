@@ -414,7 +414,7 @@ static int pop_open_mailbox (CONTEXT *ctx)
   url.path = NULL;
   url_ciss_tostring (&url, buf, sizeof (buf), 0);
   conn = mutt_conn_find (NULL, &acct);
-  if (!conn)
+  if (conn == NULL)
     return -1;
 
   FREE (&ctx->path);
@@ -489,7 +489,7 @@ static int pop_close_mailbox (CONTEXT *ctx)
 {
   POP_DATA *pop_data = (POP_DATA *)ctx->data;
 
-  if (!pop_data)
+  if (pop_data == NULL)
     return 0;
 
   pop_logout (ctx);
@@ -502,7 +502,7 @@ static int pop_close_mailbox (CONTEXT *ctx)
   pop_data->clear_cache = 1;
   pop_clear_cache (pop_data);
 
-  if (!pop_data->conn->data)
+  if (pop_data->conn->data == NULL)
     mutt_socket_free (pop_data->conn);
 
   mutt_bcache_close (&pop_data->bcache);
@@ -786,7 +786,7 @@ void pop_fetch_mail (void)
   ACCOUNT acct;
   POP_DATA *pop_data = NULL;
 
-  if (!PopHost)
+  if (PopHost == NULL)
   {
     mutt_error (_("POP host is not defined."));
     return;
@@ -809,7 +809,7 @@ void pop_fetch_mail (void)
   }
 
   conn = mutt_conn_find (NULL, &acct);
-  if (!conn)
+  if (conn == NULL)
     return;
 
   pop_data = safe_calloc (1, sizeof (POP_DATA));

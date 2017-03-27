@@ -51,7 +51,7 @@ BUFFER *mutt_buffer_init (BUFFER *b) {
 BUFFER *mutt_buffer_from (char *seed) {
   BUFFER *b = NULL;
 
-  if (!seed)
+  if (seed == NULL)
     return NULL;
 
   b = mutt_buffer_new ();
@@ -79,7 +79,7 @@ int mutt_buffer_printf (BUFFER* buf, const char* fmt, ...)
   va_start (ap, fmt);
   va_copy (ap_retry, ap);
 
-  if (!buf->dptr)
+  if (buf->dptr == NULL)
     buf->dptr = buf->data;
 
   doff = buf->dptr - buf->data;
@@ -246,7 +246,7 @@ int mutt_extract_token (BUFFER *dest, BUFFER *tok, int flags)
 	    pc += 2;
 	}
       } while (pc && *pc != '`');
-      if (!pc)
+      if (pc == NULL)
       {
 	mutt_debug (1, "mutt_get_token: mismatched backticks\n");
 	return -1;

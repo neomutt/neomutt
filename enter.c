@@ -803,7 +803,7 @@ self_insert:
 
 void mutt_free_enter_state (ENTER_STATE **esp)
 {
-  if (!esp) return;
+  if (esp == NULL) return;
 
   FREE (&(*esp)->wbuf);
   FREE (esp);		/* __FREE_CHECKED__ */

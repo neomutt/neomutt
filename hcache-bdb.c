@@ -123,7 +123,7 @@ hcache_bdb_fetch(void *vctx, const char *key, size_t keylen)
   DBT dkey;
   DBT data;
 
-  if (!vctx)
+  if (vctx == NULL)
     return NULL;
 
   hcache_db_ctx_t *ctx = vctx;
@@ -149,7 +149,7 @@ hcache_bdb_store(void *vctx, const char *key, size_t keylen, void *data, size_t 
   DBT dkey;
   DBT databuf;
 
-  if (!vctx)
+  if (vctx == NULL)
     return -1;
 
   hcache_db_ctx_t *ctx = vctx;
@@ -169,7 +169,7 @@ hcache_bdb_delete(void *vctx, const char *key, size_t keylen)
 {
   DBT dkey;
 
-  if (!vctx)
+  if (vctx == NULL)
     return -1;
 
   hcache_db_ctx_t *ctx = vctx;

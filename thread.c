@@ -89,7 +89,7 @@ static void linearize_tree (CONTEXT *ctx)
 
   while (tree)
   {
-    while (!tree->message)
+    while (tree->message == NULL)
       tree = tree->child;
 
     *array = tree->message;
@@ -187,7 +187,7 @@ static void calculate_visibility (CONTEXT *ctx, int *max_depth)
 	depth--;
 	tree = tree->parent;
       }
-      if (!tree)
+      if (tree == NULL)
 	break;
       else
 	tree = tree->prev;
@@ -211,7 +211,7 @@ static void calculate_visibility (CONTEXT *ctx, int *max_depth)
       {
 	while (tree && !tree->next)
 	  tree = tree->parent;
-	if (!tree)
+	if (tree == NULL)
 	  break;
 	else
 	  tree = tree->next;
@@ -325,7 +325,7 @@ void mutt_draw_tree (CONTEXT *ctx)
 	if (tree->visible != 0)
 	  start_depth = depth;
 	tree = tree->next;
-	if (!tree)
+	if (tree == NULL)
 	  break;
       }
       if (!pseudo && tree->fake_thread)
@@ -354,7 +354,7 @@ static LIST *make_subject_list (THREAD *cur, time_t *dateptr)
 
   while (true)
   {
-    while (!cur->message)
+    while (cur->message == NULL)
       cur = cur->child;
 
     if (dateptr)
@@ -507,7 +507,7 @@ static void pseudo_threads (CONTEXT *ctx)
   THREAD *tree = ctx->tree, *top = tree;
   THREAD *tmp = NULL, *cur = NULL, *parent = NULL, *curchild = NULL, *nextchild = NULL;
 
-  if (!ctx->subj_hash)
+  if (ctx->subj_hash == NULL)
     ctx->subj_hash = make_subj_hash (ctx);
 
   while (tree)
@@ -523,7 +523,7 @@ static void pseudo_threads (CONTEXT *ctx)
       tmp = cur;
       while (true)
       {
-	while (!tmp->message)
+	while (tmp->message == NULL)
 	  tmp = tmp->child;
 
 	/* if the message we're attaching has pseudo-children, they
@@ -646,7 +646,7 @@ THREAD *mutt_sort_subthreads (THREAD *thread, int init)
       }
     }
 
-    while (!thread->next)
+    while (thread->next == NULL)
     {
       /* if it has siblings and needs to be sorted, sort it... */
       if (thread->prev && (thread->parent ? thread->parent->sort_children : sort_top))
@@ -704,7 +704,7 @@ THREAD *mutt_sort_subthreads (THREAD *thread, int init)
 		    > 0))
 	      thread->sort_key = sort_key->sort_key;
 	  }
-	  else if (!thread->sort_key)
+	  else if (thread->sort_key == NULL)
 	    thread->sort_key = sort_key->sort_key;
 
 	  /* if its sort_key has changed, we need to resort it and siblings */
@@ -750,7 +750,7 @@ static void check_subjects (CONTEXT *ctx, int init)
       tmp = tmp->parent;
     }
 
-    if (!tmp)
+    if (tmp == NULL)
       cur->subject_changed = 1;
     else if (cur->env->real_subj && tmp->message->env->real_subj)
       cur->subject_changed = (mutt_strcmp (cur->env->real_subj,
@@ -776,7 +776,7 @@ void mutt_sort_threads (CONTEXT *ctx, int init)
   oldsort = Sort;
   Sort = SortAux;
 
-  if (!ctx->thread_hash)
+  if (ctx->thread_hash == NULL)
     init = 1;
 
   if (init != 0)
@@ -798,7 +798,7 @@ void mutt_sort_threads (CONTEXT *ctx, int init)
   {
     cur = ctx->hdrs[i];
 
-    if (!cur->thread)
+    if (cur->thread == NULL)
     {
       if ((!init || option (OPTDUPTHREADS)) && cur->env->message_id)
 	thread = hash_find (ctx->thread_hash, cur->env->message_id);
@@ -815,7 +815,7 @@ void mutt_sort_threads (CONTEXT *ctx, int init)
 	/* mark descendants as needing subject_changed checked */
 	for (tmp = (thread->child ? thread->child : thread); tmp != thread; )
 	{
-	  while (!tmp->message)
+	  while (tmp->message == NULL)
 	    tmp = tmp->child;
 	  tmp->check_subject = 1;
 	  while (!tmp->next && tmp != thread)
@@ -918,7 +918,7 @@ void mutt_sort_threads (CONTEXT *ctx, int init)
 	 * the second reference (since at least eudora puts the most
 	 * recent reference in in-reply-to and the rest in references)
 	 */
-	if (!cur->env->references)
+	if (cur->env->references == NULL)
 	  ref = ref->next;
 	else
 	{
@@ -933,7 +933,7 @@ void mutt_sort_threads (CONTEXT *ctx, int init)
       else
 	ref = ref->next; /* go on with references */
 
-      if (!ref)
+      if (ref == NULL)
 	break;
 
       if ((new = hash_find (ctx->thread_hash, ref->data)) == NULL)
@@ -957,7 +957,7 @@ void mutt_sort_threads (CONTEXT *ctx, int init)
 	break;
     }
 
-    if (!thread->parent)
+    if (thread->parent == NULL)
       insert_message (&top.child, &top, thread);
   }
 
@@ -1070,20 +1070,20 @@ int _mutt_aside_thread (HEADER *hdr, short dir, short subthreads)
     do
     {
       cur = cur->next;
-      if (!cur)
+      if (cur == NULL)
 	return -1;
       tmp = find_virtual (cur, 0);
-    } while (!tmp);
+    } while (tmp == NULL);
   }
   else
   {
     do
     {
       cur = cur->prev;
-      if (!cur)
+      if (cur == NULL)
 	return -1;
       tmp = find_virtual (cur, 1);
-    } while (!tmp);
+    } while (tmp == NULL);
   }
 
   return tmp->virtual;
@@ -1114,7 +1114,7 @@ int mutt_parent_message (CONTEXT *ctx, HEADER *hdr, int find_root)
     }
   }
 
-  if (!parent)
+  if (parent == NULL)
   {
     mutt_error (_("Parent message is not available."));
     return -1;
@@ -1172,7 +1172,7 @@ int _mutt_traverse_thread (CONTEXT *ctx, HEADER *cur, int flag)
   while (thread->parent)
     thread = thread->parent;
   top = thread;
-  while (!thread->message)
+  while (thread->message == NULL)
     thread = thread->child;
   cur = thread->message;
   minmsgno = cur->msgno;
@@ -1278,7 +1278,7 @@ int _mutt_traverse_thread (CONTEXT *ctx, HEADER *cur, int flag)
     else
     {
       int done = 0;
-      while (!thread->next)
+      while (thread->next == NULL)
       {
 	thread = thread->parent;
 	if (thread == top)
@@ -1372,7 +1372,7 @@ static void clean_references (THREAD *brk, THREAD *cur)
     /* parse subthread recursively */
     clean_references (brk, cur->child);
 
-    if (!cur->message)
+    if (cur->message == NULL)
       break; /* skip pseudo-message */
 
     /* Looking for the first bad reference according to the new threading.
@@ -1427,7 +1427,7 @@ int mutt_link_threads (HEADER *cur, HEADER *last, CONTEXT *ctx)
 {
   int i, changed = 0;
 
-  if (!last)
+  if (last == NULL)
   {
     for (i = 0; i < ctx->vcount; i++)
       if (ctx->hdrs[Context->v2r[i]]->tagged)

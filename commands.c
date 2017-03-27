@@ -259,7 +259,7 @@ void ci_bounce_message (HEADER *h, int *redraw)
   * messages without one */
   if (h)
   {
-    if (!h->env->from)
+    if (h->env->from == NULL)
     {
       mutt_error (_("Warning: message contains no From: header"));
       mutt_sleep (2);
@@ -654,7 +654,7 @@ void mutt_display_address (ENVELOPE *env)
 
   adr = mutt_get_address (env, &pfx);
 
-  if (!adr) return;
+  if (adr == NULL) return;
 
   /*
    * Note: We don't convert IDNA to local representation this time.
@@ -799,7 +799,7 @@ int mutt_save_message (HEADER *h, int delete,
 
   if (*redraw != REDRAW_FULL)
   {
-    if (!h)
+    if (h == NULL)
       *redraw = REDRAW_INDEX | REDRAW_STATUS;
     else
       *redraw = REDRAW_STATUS;

@@ -230,7 +230,7 @@ static void cmd_parse_fetch (IMAP_DATA* idata, char* s)
       h = NULL;
     }
 
-  if (!h)
+  if (h == NULL)
   {
     mutt_debug (3, "FETCH response ignored for this message\n");
     return;
@@ -885,7 +885,7 @@ const char* imap_cmd_trailer (IMAP_DATA* idata)
   static const char* notrailer = "";
   const char* s = idata->buf;
 
-  if (!s)
+  if (s == NULL)
   {
     mutt_debug (2, "imap_cmd_trailer: not a tagged response\n");
     return notrailer;
@@ -902,7 +902,7 @@ const char* imap_cmd_trailer (IMAP_DATA* idata)
   }
 
   s = imap_next_word ((char *)s);
-  if (!s)
+  if (s == NULL)
     return notrailer;
 
   return s;

@@ -240,7 +240,7 @@ parse_mailboxdomain (const char *s, const char *nonspecial,
     }
     else
       ps = next_token (s, mailbox, mailboxlen, mailboxmax);
-    if (!ps)
+    if (ps == NULL)
       return NULL;
     s = ps;
   }
@@ -257,7 +257,7 @@ parse_address (const char *s,
   s = parse_mailboxdomain (s, ".\"(\\",
 			   token, tokenlen, tokenmax,
 			   comment, commentlen, commentmax);
-  if (!s)
+  if (s == NULL)
     return NULL;
 
   if (*s == '@')
@@ -267,7 +267,7 @@ parse_address (const char *s,
     s = parse_mailboxdomain (s + 1, ".([]\\",
 			     token, tokenlen, tokenmax,
 			     comment, commentlen, commentmax);
-    if (!s)
+    if (s == NULL)
       return NULL;
   }
 
@@ -324,7 +324,7 @@ parse_route_addr (const char *s,
     return NULL;
   }
 
-  if (!addr->mailbox)
+  if (addr->mailbox == NULL)
     addr->mailbox = safe_strdup ("@");
 
   s++;
@@ -601,7 +601,7 @@ void rfc822_write_address_single (char *buf, size_t buflen, ADDRESS *addr,
   char *pbuf = buf;
   char *pc = NULL;
 
-  if (!addr)
+  if (addr == NULL)
     return;
 
   buflen--; /* save room for the terminal nul */
@@ -832,7 +832,7 @@ ADDRESS *rfc822_append (ADDRESS **a, ADDRESS *b, int prune)
 
   while (tmp && tmp->next)
     tmp = tmp->next;
-  if (!b)
+  if (b == NULL)
     return tmp;
   if (tmp)
     tmp->next = rfc822_cpy_adr (b, prune);

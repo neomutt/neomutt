@@ -120,7 +120,7 @@ static char *get_field (char *s)
 {
   char *ch = NULL;
 
-  if (!s)
+  if (s == NULL)
     return NULL;
 
   while ((ch = strpbrk (s, ";\\")) != NULL)
@@ -462,12 +462,12 @@ int rfc1524_expand_filename (char *nametemplate,
   if (oldfile && (s = strrchr (oldfile, '/')))
     oldfile = s + 1;
 
-  if (!nametemplate)
+  if (nametemplate == NULL)
   {
     if (oldfile)
       strfcpy (newfile, oldfile, nflen);
   }
-  else if (!oldfile)
+  else if (oldfile == NULL)
   {
     mutt_expand_fmt (newfile, nflen, nametemplate, "mutt");
   }

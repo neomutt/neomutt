@@ -132,7 +132,7 @@ void imap_get_parent_path (char *output, const char *path, size_t olen)
   }
 
   idata = imap_conn_find (&mx.account, MUTT_IMAP_CONN_NONEW);
-  if (!idata)
+  if (idata == NULL)
   {
     strfcpy (output, path, olen);
     return;
@@ -162,7 +162,7 @@ void imap_clean_path (char *path, size_t plen)
     return;
 
   idata = imap_conn_find (&mx.account, MUTT_IMAP_CONN_NONEW);
-  if (!idata)
+  if (idata == NULL)
     return;
 
   /* Stores a fixed path in mbox */
@@ -205,7 +205,7 @@ header_cache_t* imap_hcache_open (IMAP_DATA* idata, const char* path)
 
 void imap_hcache_close (IMAP_DATA* idata)
 {
-  if (!idata->hcache)
+  if (idata->hcache == NULL)
     return;
 
   mutt_hcache_close (idata->hcache);
@@ -218,7 +218,7 @@ HEADER* imap_hcache_get (IMAP_DATA* idata, unsigned int uid)
   void* uv = NULL;
   HEADER* h = NULL;
 
-  if (!idata->hcache)
+  if (idata->hcache == NULL)
     return NULL;
 
   sprintf (key, "/%u", uid);
@@ -240,7 +240,7 @@ int imap_hcache_put (IMAP_DATA* idata, HEADER* h)
 {
   char key[16];
 
-  if (!idata->hcache)
+  if (idata->hcache == NULL)
     return -1;
 
   sprintf (key, "/%u", HEADER_DATA (h)->uid);
@@ -252,7 +252,7 @@ int imap_hcache_del (IMAP_DATA* idata, unsigned int uid)
 {
   char key[16];
 
-  if (!idata->hcache)
+  if (idata->hcache == NULL)
     return -1;
 
   sprintf (key, "/%u", uid);
@@ -322,7 +322,7 @@ int imap_parse_path (const char* path, IMAP_MBOX* mx)
       return -1;
 
     c = strchr (path, '}');
-    if (!c)
+    if (c == NULL)
       return -1;
     else
       /* walk past closing '}' */
@@ -487,7 +487,7 @@ IMAP_DATA* imap_new_idata (void)
 /* imap_free_idata: Release and clear storage in an IMAP_DATA structure. */
 void imap_free_idata (IMAP_DATA** idata)
 {
-  if (!idata)
+  if (idata == NULL)
     return;
 
   FREE (&(*idata)->capstr);
@@ -523,7 +523,7 @@ char *imap_fix_path (IMAP_DATA *idata, const char *mailbox, char *path,
         || (delim && *mailbox == delim))
     {
       /* use connection delimiter if known. Otherwise use user delimiter */
-      if (!idata)
+      if (idata == NULL)
         delim = *mailbox;
 
       while (*mailbox

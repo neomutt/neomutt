@@ -353,7 +353,7 @@ shift_class_colors (struct q_class_t *QuoteList, struct q_class_t *new_class,
       q_list = q_list->next;
     else
     {
-      while (!q_list->next)
+      while (q_list->next == NULL)
       {
 	q_list = q_list->up;
 	if (q_list == NULL)
@@ -2020,7 +2020,7 @@ mutt_pager (const char *banner, const char *fname, int flags, pager_t *extra)
       check = mx_check_mailbox (Context, &index_hint);
       if (check < 0)
       {
-        if (!Context->path)
+        if (Context->path == NULL)
         {
           /* fatal error occurred */
           FREE (&Context);

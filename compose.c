@@ -209,7 +209,7 @@ static void redraw_mix_line (LIST *chain)
   /* L10N: "Mix" refers to the MixMaster chain for anonymous email */
   mutt_window_mvprintw (MuttIndexWindow, HDR_MIX, 0, TITLE_FMT, _("Mix: "));
 
-  if (!chain)
+  if (chain == NULL)
   {
     addstr (_("<no chain defined>"));
     mutt_window_clrtoeol (MuttIndexWindow);
@@ -428,7 +428,7 @@ static unsigned long cum_attachs_size (MUTTMENU *menu)
   {
     b = idx[i]->content;
 
-    if (!b->content)
+    if (b->content == NULL)
       b->content = mutt_get_content_info (b->filename, b);
 
     if ((info = b->content))
@@ -936,7 +936,7 @@ int mutt_compose_menu (HEADER *msg,   /* structure for new message */
 	  close = mutt_index_menu ();
 	  unset_option(OPTATTACHMSG);
 
-	  if (!Context)
+	  if (Context == NULL)
 	  {
 	    /* go back to the folder we started from */
 	    Context = this;

@@ -246,7 +246,7 @@ mutt_copy_hdr (FILE *in, FILE *out, LOFF_T off_start, LOFF_T off_end, int flags,
     if (ignore == 0)
     {
       mutt_debug (2, "Reorder: x = %d; hdr_count = %d\n", x, hdr_count);
-      if (!this_one) {
+      if (this_one == NULL) {
 	this_one = safe_strdup (buf);
 	this_one_len = mutt_strlen (this_one);
       } else {
@@ -666,7 +666,7 @@ _mutt_copy_message (FILE *fpout, FILE *fpin, HEADER *hdr, BODY *body,
 	return -1;
     }
 
-    if (!cur)
+    if (cur == NULL)
     {
       mutt_error (_("No decryption engine available for message"));
       return -1;

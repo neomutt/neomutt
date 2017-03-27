@@ -911,7 +911,7 @@ int menu_redraw (MUTTMENU *menu)
     return OP_REDRAW;
   }
 
-  if (!menu->dialog)
+  if (menu->dialog == NULL)
     menu_check_recenter (menu);
 
   if (menu->redraw & REDRAW_STATUS)
@@ -1023,7 +1023,7 @@ int mutt_menu_loop (MUTTMENU *menu)
     if (i == -1)
       continue;
 
-    if (!menu->dialog)
+    if (menu->dialog == NULL)
       mutt_clear_error ();
 
     /* Convert menubar movement to scrolling */

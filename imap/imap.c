@@ -325,7 +325,7 @@ IMAP_DATA* imap_conn_find (const ACCOUNT* account, int flags)
 
   while ((conn = mutt_conn_find (conn, account)))
   {
-    if (!creds)
+    if (creds == NULL)
       creds = &conn->account;
     else
       memcpy (&conn->account, creds, sizeof (ACCOUNT));
@@ -333,7 +333,7 @@ IMAP_DATA* imap_conn_find (const ACCOUNT* account, int flags)
     idata = conn->data;
     if (flags & MUTT_IMAP_CONN_NONEW)
     {
-      if (!idata)
+      if (idata == NULL)
       {
         /* This should only happen if we've come to the end of the list */
         mutt_socket_free (conn);
@@ -348,10 +348,10 @@ IMAP_DATA* imap_conn_find (const ACCOUNT* account, int flags)
       continue;
     break;
   }
-  if (!conn)
+  if (conn == NULL)
     return NULL; /* this happens when the initial connection fails */
 
-  if (!idata)
+  if (idata == NULL)
   {
     /* The current connection is a new connection */
     if (! (idata = imap_new_idata ()))
@@ -646,7 +646,7 @@ static int imap_open_mailbox (CONTEXT* ctx)
     if (ascii_strncasecmp ("FLAGS", pc, 5) == 0)
     {
       /* don't override PERMANENTFLAGS */
-      if (!idata->flags)
+      if (idata->flags == NULL)
       {
         mutt_debug (3, "Getting mailbox FLAGS\n");
 	if ((pc = imap_get_flags (&(idata->flags), pc)) == NULL)
@@ -718,7 +718,7 @@ static int imap_open_mailbox (CONTEXT* ctx)
   /* dump the mailbox flags we've found */
   if (debuglevel > 2)
   {
-    if (!idata->flags)
+    if (idata->flags == NULL)
       mutt_debug (3, "No folder flags found\n");
     else
     {
@@ -853,7 +853,7 @@ static void imap_set_flag (IMAP_DATA* idata, int aclbit, int flag,
 *   return 1 if found or flag list has '\*', 0 otherwise */
 int imap_has_flag (LIST* flag_list, const char* flag)
 {
-  if (!flag_list)
+  if (flag_list == NULL)
     return 0;
 
   flag_list = flag_list->next;
@@ -1136,7 +1136,7 @@ static int sync_helper (IMAP_DATA* idata, int right, int flag, const char* name)
   int rc;
   char buf[LONG_STRING];
 
-  if (!idata->ctx)
+  if (idata->ctx == NULL)
     return -1;
 
   if (!mutt_bit_isset (idata->ctx->rights, right))
@@ -1240,9 +1240,9 @@ int imap_sync_mailbox (CONTEXT* ctx, int expunge)
       {
         mutt_message (_("Saving changed messages... [%d/%d]"), n+1,
                       ctx->msgcount);
-	if (!appendctx)
+	if (appendctx == NULL)
 	  appendctx = mx_open_mailbox (ctx->path, MUTT_APPEND | MUTT_QUIET, NULL);
-	if (!appendctx)
+	if (appendctx == NULL)
 	  mutt_debug (1, "imap_sync_mailbox: Error opening mailbox in append mode\n");
 	else
 	  _mutt_save_message (h, appendctx, 1, 0, 0);
@@ -1364,7 +1364,7 @@ int imap_close_mailbox (CONTEXT* ctx)
 
   idata = ctx->data;
   /* Check to see if the mailbox is actually open */
-  if (!idata)
+  if (idata == NULL)
     return 0;
 
   if (ctx == idata->ctx)
@@ -1564,7 +1564,7 @@ int imap_buffy_check (int force, int check_stats)
       lastdata = NULL;
     }
 
-    if (!lastdata)
+    if (lastdata == NULL)
       lastdata = idata;
 
     imap_munge_mbox_name (idata, munged, sizeof (munged), name);
@@ -1684,7 +1684,7 @@ IMAP_STATUS* imap_mboxcache_get (IMAP_DATA* idata, const char* mbox, int create)
     uidnext = mutt_hcache_fetch_raw (hc, "/UIDNEXT", 8);
     if (uidvalidity)
     {
-      if (!status)
+      if (status == NULL)
       {
         mutt_hcache_free (hc, &uidvalidity);
         mutt_hcache_free (hc, &uidnext);

@@ -255,7 +255,7 @@ int imap_browse (char* path, struct browser_state* state)
       }
 
       /* if our target isn't a folder, we are in our superior */
-      if (!state->folder)
+      if (state->folder == NULL)
       {
         /* store folder with delimiter */
         mbox[n++] = ctmp;
@@ -274,7 +274,7 @@ int imap_browse (char* path, struct browser_state* state)
       snprintf (relpath, sizeof (relpath), "%c" , n < 0 ? '\0' : idata->delim);
       if (showparents != 0)
         imap_add_folder (idata->delim, relpath, 1, 0, state, 1);
-      if (!state->folder)
+      if (state->folder == NULL)
       {
         imap_qualify_path (buf, sizeof (buf), &mx, relpath);
         state->folder = safe_strdup (buf);
@@ -283,7 +283,7 @@ int imap_browse (char* path, struct browser_state* state)
   }
 
   /* no namespace, no folder: set folder to host only */
-  if (!state->folder)
+  if (state->folder == NULL)
   {
     imap_qualify_path (buf, sizeof (buf), &mx, NULL);
     state->folder = safe_strdup (buf);

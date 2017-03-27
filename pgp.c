@@ -781,7 +781,7 @@ static void pgp_extract_keys_from_attachment (FILE *fp, BODY *top)
 
 void pgp_extract_keys_from_attachment_list (FILE *fp, int tag, BODY *top)
 {
-  if(!fp)
+  if(fp == NULL)
   {
     mutt_error (_("Internal error.  Please submit a bug report."));
     return;

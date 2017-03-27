@@ -66,14 +66,14 @@ static const char *Mailbox_is_read_only = N_("Mailbox is read-only.");
 static const char *Function_not_permitted_in_attach_message_mode = N_("Function not permitted in attach-message mode.");
 static const char *No_visible = N_("No visible messages.");
 
-#define CHECK_IN_MAILBOX if (!Context) \
+#define CHECK_IN_MAILBOX if (Context == NULL) \
 	{ \
 		mutt_flushinp (); \
 		mutt_error(_(No_mailbox_is_open)); \
 		break; \
 	}
 
-#define CHECK_MSGCOUNT if (!Context) \
+#define CHECK_MSGCOUNT if (Context == NULL) \
 	{ \
 	  	mutt_flushinp (); \
 		mutt_error(_(No_mailbox_is_open)); \
@@ -160,7 +160,7 @@ static void collapse_all(MUTTMENU *menu, int toggle)
   Context->collapsed = toggle ? !Context->collapsed : 1;
   while ((thread = top) != NULL)
   {
-    while (!thread->message)
+    while (thread->message == NULL)
       thread = thread->child;
     h = thread->message;
 
@@ -249,7 +249,7 @@ static int ci_first_message (void)
 /* This should be in mx.c, but it only gets used here. */
 static int mx_toggle_write (CONTEXT *ctx)
 {
-  if (!ctx)
+  if (ctx == NULL)
     return -1;
 
   if (ctx->readonly != 0)
@@ -573,7 +573,7 @@ void index_make_entry (char *s, size_t l, MUTTMENU *menu, int num)
     return;
 
   HEADER *h = Context->hdrs[Context->v2r[num]];
-  if (!h)
+  if (h == NULL)
     return;
 
   format_flag flag = MUTT_FORMAT_MAKEPRINT | MUTT_FORMAT_ARROWCURSOR | MUTT_FORMAT_INDEX;
@@ -599,7 +599,7 @@ void index_make_entry (char *s, size_t l, MUTTMENU *menu, int num)
 
       for (tmp = h->thread->parent; tmp; tmp = tmp->parent)
       {
-	if (!tmp->message)
+	if (tmp->message == NULL)
 	  continue;
 
 	/* if no ancestor is visible on current screen, provisionally force
@@ -616,7 +616,7 @@ void index_make_entry (char *s, size_t l, MUTTMENU *menu, int num)
       {
 	for (tmp = h->thread->prev; tmp; tmp = tmp->prev)
 	{
-	  if (!tmp->message)
+	  if (tmp->message == NULL)
 	    continue;
 
 	  /* ...but if a previous sibling is available, don't force it */
@@ -679,7 +679,7 @@ mutt_draw_statusline (int cols, const char *buf, int buflen)
     int last;
   } *syntax = NULL;
 
-  if (!buf)
+  if (buf == NULL)
     return;
 
   do
@@ -888,7 +888,7 @@ int mutt_index_menu (void)
 
       if ((check = mx_check_mailbox (Context, &index_hint)) < 0)
       {
-	if (!Context->path)
+	if (Context->path == NULL)
 	{
 	  /* fatal error occurred */
 	  FREE (&Context);
@@ -1060,7 +1060,7 @@ int mutt_index_menu (void)
       /* special handling for the tag-prefix function */
       if (op == OP_TAG_PREFIX)
       {
-	if (!Context)
+	if (Context == NULL)
 	{
 	  mutt_error (_("No mailbox is open."));
 	  continue;
@@ -1090,7 +1090,7 @@ int mutt_index_menu (void)
 
       if (op == OP_TAG_PREFIX_COND)
       {
-	if (!Context)
+	if (Context == NULL)
 	{
 	  mutt_error (_("No mailbox is open."));
 	  continue;
@@ -1211,14 +1211,14 @@ int mutt_index_menu (void)
 	  else
 	  {
 	    LIST *ref = CURHDR->env->references;
-	    if (!ref)
+	    if (ref == NULL)
 	    {
 	      mutt_error (_("Article has no parent reference."));
 	      break;
 	    }
 	    strfcpy (buf, ref->data, sizeof (buf));
 	  }
-	  if (!Context->id_hash)
+	  if (Context->id_hash == NULL)
 	    Context->id_hash = mutt_make_id_hash (Context);
 	  hdr = hash_find (Context->id_hash, buf);
 	  if (hdr)
@@ -1269,14 +1269,14 @@ int mutt_index_menu (void)
 	  int oldindex = CURHDR->index;
 	  int rc2 = 0;
 
-	  if (!CURHDR->env->message_id)
+	  if (CURHDR->env->message_id == NULL)
 	  {
 	    mutt_error (_("No Message-Id. Unable to perform operation."));
 	    break;
 	  }
 
 	  mutt_message (_("Fetching message headers..."));
-	  if (!Context->id_hash)
+	  if (Context->id_hash == NULL)
 	    Context->id_hash = mutt_make_id_hash (Context);
 	  strfcpy (buf, CURHDR->env->message_id, sizeof (buf));
 
@@ -1294,7 +1294,7 @@ int mutt_index_menu (void)
 	      }
 
 	      /* the last msgid in References is the root message */
-	      if (!ref->next)
+	      if (ref->next == NULL)
 		strfcpy (buf, ref->data, sizeof (buf));
 	      ref = ref->next;
 	    }
@@ -1455,7 +1455,7 @@ int mutt_index_menu (void)
 
       case OP_MAIN_SHOW_LIMIT:
 	CHECK_IN_MAILBOX;
-	if (!Context->pattern)
+	if (Context->pattern == NULL)
 	   mutt_message (_("No limit pattern is in effect."));
 	else
 	{
@@ -1732,7 +1732,7 @@ int mutt_index_menu (void)
 	}
 
 	/* check for a fatal error, or all messages deleted */
-	if (!Context->path)
+	if (Context->path == NULL)
 	  FREE (&Context);
 
 	/* if we were in the pager, redisplay the message */
@@ -2004,7 +2004,7 @@ int mutt_index_menu (void)
 	  {
 	    set_option (OPTNEWS);
 	    CurrentNewsSrv = nntp_select_server (NewsServer, 0);
-	    if (!CurrentNewsSrv)
+	    if (CurrentNewsSrv == NULL)
 	      break;
 	    if (flags != 0)
 	      cp = _("Open newsgroup in read-only mode");
@@ -2156,7 +2156,7 @@ int mutt_index_menu (void)
 
         if ((Sort & SORT_MASK) != SORT_THREADS)
 	  mutt_error (_("Threading is not enabled."));
-	else if (!CURHDR->env->message_id)
+	else if (CURHDR->env->message_id == NULL)
 	  mutt_error (_("No Message-ID: header available to link thread"));
 	else if (!tag && (!Context->last_tag || !Context->last_tag->tagged))
 	  mutt_error (_("First, please tag a message to be linked here"));
@@ -3238,7 +3238,7 @@ void mutt_set_header_color (CONTEXT *ctx, HEADER *curhdr)
   COLOR_LINE *color = NULL;
   pattern_cache_t cache;
 
-  if (!curhdr)
+  if (curhdr == NULL)
     return;
 
   memset (&cache, 0, sizeof (cache));

@@ -97,10 +97,10 @@ static size_t utf8rtowc (wchar_t *pwc, const char *s, size_t n, mbstate_t *_ps)
   wchar_t wc;
   int count;
 
-  if (!ps)
+  if (ps == NULL)
     ps = &mbstate;
 
-  if (!s)
+  if (s == NULL)
   {
     *ps = 0;
     return 0;
@@ -224,7 +224,7 @@ size_t wcrtomb (char *s, wchar_t wc, mbstate_t *ps)
     return wcrtomb_iconv (s, wc, charset_from_utf8);
   else
   {
-    if (!s)
+    if (s == NULL)
       return 1;
     if (wc < 0x100)
     {
@@ -318,7 +318,7 @@ size_t mbrtowc (wchar_t *pwc, const char *s, size_t n, mbstate_t *ps)
 {
   static mbstate_t mbstate;
 
-  if (!ps)
+  if (ps == NULL)
     ps = &mbstate;
 
   if (Charset_is_utf8 != 0)
@@ -327,7 +327,7 @@ size_t mbrtowc (wchar_t *pwc, const char *s, size_t n, mbstate_t *ps)
     return mbrtowc_iconv (pwc, s, n, ps, charset_to_utf8);
   else
   {
-    if (!s)
+    if (s == NULL)
     {
       memset(ps, 0, sizeof(*ps));
       return 0;

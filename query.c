@@ -70,7 +70,7 @@ static void free_query (QUERY **query)
 {
   QUERY *p = NULL;
 
-  if (!query)
+  if (query == NULL)
     return;
 
   while (*query)
@@ -489,7 +489,7 @@ int mutt_query_complete (char *buf, size_t buflen)
   QUERY *results = NULL;
   ADDRESS *tmpa = NULL;
 
-  if (!QueryCmd)
+  if (QueryCmd == NULL)
   {
     mutt_error (_("Query command not defined."));
     return 0;
@@ -518,7 +518,7 @@ int mutt_query_complete (char *buf, size_t buflen)
 
 void mutt_query_menu (char *buf, size_t buflen)
 {
-  if (!QueryCmd)
+  if (QueryCmd == NULL)
   {
     mutt_error (_("Query command not defined."));
     return;

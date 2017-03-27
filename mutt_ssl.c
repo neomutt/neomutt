@@ -92,7 +92,7 @@ static int ssl_load_certificates (SSL_CTX *ctx)
 
   mutt_debug (2, "ssl_load_certificates: loading trusted certificates\n");
   store = SSL_CTX_get_cert_store (ctx);
-  if (!store)
+  if (store == NULL)
   {
     store = X509_STORE_new ();
     SSL_CTX_set_cert_store (ctx, store);
@@ -159,7 +159,7 @@ static int add_entropy (const char *file)
   struct stat st;
   int n = -1;
 
-  if (!file) return 0;
+  if (file == NULL) return 0;
 
   if (stat (file, &st) == -1)
     return errno == ENOENT ? 0 : -1;
@@ -420,7 +420,7 @@ static int hostname_match (const char *hostname, const char *certname)
   {
     cmp1 = certname + 2;
     cmp2 = strchr(hostname, '.');
-    if (!cmp2)
+    if (cmp2 == NULL)
     {
       return 0;
     }
@@ -595,7 +595,7 @@ static int check_certificate_file (X509 *peercert)
   int pass = 0;
   FILE *fp = NULL;
 
-  if (!SslCertFile)
+  if (SslCertFile == NULL)
     return 0;
 
   if ((fp = fopen (SslCertFile, "rt")) == NULL)
@@ -739,7 +739,7 @@ static int check_certificate_by_digest (X509 *peercert)
 static int ssl_cache_trusted_cert (X509 *c)
 {
   mutt_debug (1, "ssl_cache_trusted_cert: trusted\n");
-  if (!SslSessionCerts)
+  if (SslSessionCerts == NULL)
     SslSessionCerts = sk_X509_new_null();
   return (sk_X509_push (SslSessionCerts, X509_dup(c)));
 }

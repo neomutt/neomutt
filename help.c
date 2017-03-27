@@ -345,7 +345,7 @@ void mutt_help (int menu)
 
   funcs = km_get_table (menu);
   desc = mutt_getnamebyvalue (menu, Menus);
-  if (!desc)
+  if (desc == NULL)
     desc = _("<UNKNOWN>");
 
   do {

@@ -204,7 +204,7 @@ static struct hash_elem *union_hash_find_elem (const HASH *table, union hash_key
   int hash;
   struct hash_elem *ptr = NULL;
 
-  if (!table)
+  if (table == NULL)
     return NULL;
 
   hash = table->gen_hash (key, table->nelem);
@@ -252,7 +252,7 @@ struct hash_elem *hash_find_bucket (const HASH *table, const char *strkey)
   union hash_key key;
   int hash;
 
-  if (!table)
+  if (table == NULL)
     return NULL;
 
   key.strkey = strkey;
@@ -266,7 +266,7 @@ static void union_hash_delete (HASH *table, union hash_key key, const void *data
   int hash;
   struct hash_elem *ptr, **last;
 
-  if (!table)
+  if (table == NULL)
     return;
 
   hash = table->gen_hash (key, table->nelem);

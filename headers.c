@@ -219,7 +219,7 @@ static void label_ref_dec(CONTEXT *ctx, char *label)
   uintptr_t count;
 
   elem = hash_find_elem (ctx->label_hash, label);
-  if (!elem)
+  if (elem == NULL)
     return;
 
   count = (uintptr_t)elem->data;
@@ -239,7 +239,7 @@ static void label_ref_inc(CONTEXT *ctx, char *label)
   uintptr_t count;
 
   elem = hash_find_elem (ctx->label_hash, label);
-  if (!elem)
+  if (elem == NULL)
   {
     count = 1;
     hash_insert(ctx->label_hash, label, (void *)count);

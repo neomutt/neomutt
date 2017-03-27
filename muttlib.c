@@ -293,7 +293,7 @@ void mutt_push_list(LIST **head, const char *data)
 int mutt_pop_list(LIST **head)
 {
   LIST *elt = *head;
-  if (!elt)
+  if (elt == NULL)
     return 0;
   *head = elt->next;
   FREE(&elt->data);
@@ -348,7 +348,7 @@ void mutt_free_list (LIST **list)
 {
   LIST *p = NULL;
 
-  if (!list) return;
+  if (list == NULL) return;
   while (*list)
   {
     p = *list;
@@ -653,7 +653,7 @@ void mutt_set_parameter (const char *attribute, const char *value, PARAMETER **p
 {
   PARAMETER *q = NULL;
 
-  if (!value)
+  if (value == NULL)
   {
     mutt_delete_parameter (attribute, p);
     return;
@@ -783,7 +783,7 @@ void mutt_merge_envelopes(ENVELOPE* base, ENVELOPE** extra)
   /* copies each existing element if necessary, and sets the element
   * to NULL in the source so that mutt_free_envelope doesn't leave us
   * with dangling pointers. */
-#define MOVE_ELEM(h) if (!base->h) { base->h = (*extra)->h; (*extra)->h = NULL; }
+#define MOVE_ELEM(h) if (base->h == NULL) { base->h = (*extra)->h; (*extra)->h = NULL; }
   MOVE_ELEM(return_path);
   MOVE_ELEM(from);
   MOVE_ELEM(to);
@@ -808,7 +808,7 @@ void mutt_merge_envelopes(ENVELOPE* base, ENVELOPE** extra)
   }
 
   /* real_subj is subordinate to subject */
-  if (!base->subject)
+  if (base->subject == NULL)
   {
     base->subject = (*extra)->subject;
     base->real_subj = (*extra)->real_subj;
@@ -950,7 +950,7 @@ void mutt_pretty_mailbox (char *s, size_t buflen)
     p = strchr(s, ':')+1;
     if (strncmp (p, "//", 2) == 0)
       q = strchr (p+2, '/');
-    if (!q)
+    if (q == NULL)
       q = strchr (p, '\0');
     p = q;
   }
@@ -1927,7 +1927,7 @@ time_t mutt_decrease_mtime (const char *f, struct stat *st)
   struct stat _st;
   time_t mtime;
 
-  if (!st)
+  if (st == NULL)
   {
     if (stat (f, &_st) == -1)
       return -1;
@@ -2000,7 +2000,7 @@ void mutt_free_rx_list (RX_LIST **list)
 {
   RX_LIST *p = NULL;
 
-  if (!list) return;
+  if (list == NULL) return;
   while (*list)
   {
     p = *list;
@@ -2014,7 +2014,7 @@ void mutt_free_replace_list (REPLACE_LIST **list)
 {
   REPLACE_LIST *p = NULL;
 
-  if (!list) return;
+  if (list == NULL) return;
   while (*list)
   {
     p = *list;
@@ -2027,7 +2027,7 @@ void mutt_free_replace_list (REPLACE_LIST **list)
 
 int mutt_match_rx_list (const char *s, RX_LIST *l)
 {
-  if (!s)  return 0;
+  if (s == NULL)  return 0;
 
   for (; l; l = l->next)
   {
@@ -2055,7 +2055,7 @@ int mutt_match_spam_list (const char *s, REPLACE_LIST *l, char *text, int textsi
   int tlen = 0;
   char *p = NULL;
 
-  if (!s) return 0;
+  if (s == NULL) return 0;
 
   for (; l; l = l->next)
   {

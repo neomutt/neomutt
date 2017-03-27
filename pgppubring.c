@@ -89,7 +89,7 @@ static void print_userid (const char *id)
 
 static void print_fingerprint (pgp_key_t p)
 {
-  if (!p->fingerprint)
+  if (p->fingerprint == NULL)
     return;
 
   printf ("fpr:::::::::%s:\n", p->fingerprint);
@@ -739,7 +739,7 @@ static pgp_key_t pgp_parse_keyblock (FILE * fp)
 	char *chr = NULL;
 
 
-	if (!addr)
+	if (addr == NULL)
 	  break;
 
 	chr = safe_malloc (l);

@@ -98,7 +98,7 @@ static void convert_to_state(iconv_t cd, char *bufi, size_t *l, STATE *s)
   char *ob = NULL;
   size_t ibl, obl;
 
-  if (!bufi)
+  if (bufi == NULL)
   {
     if (cd != (iconv_t)(-1))
     {
@@ -1080,7 +1080,7 @@ static int alternative_handler (BODY *a, STATE *s)
   }
 
   /* Next, look for an autoviewable type */
-  if (!choice)
+  if (choice == NULL)
   {
     if (a && a->parts)
       b = a->parts;
@@ -1095,7 +1095,7 @@ static int alternative_handler (BODY *a, STATE *s)
   }
 
   /* Then, look for a text entry */
-  if (!choice)
+  if (choice == NULL)
   {
     if (a && a->parts)
       b = a->parts;
@@ -1126,7 +1126,7 @@ static int alternative_handler (BODY *a, STATE *s)
   }
 
   /* Finally, look for other possibilities */
-  if (!choice)
+  if (choice == NULL)
   {
     if (a && a->parts)
       b = a->parts;
@@ -1475,7 +1475,7 @@ static int external_body_handler (BODY *b, STATE *s)
   time_t expire;
 
   access_type = mutt_get_parameter ("access-type", b->parameter);
-  if (!access_type)
+  if (access_type == NULL)
   {
     if (s->flags & MUTT_DISPLAY)
     {
@@ -1665,7 +1665,7 @@ static int run_decode_and_handler (BODY *b, STATE *s, handler_t handler, int pla
       fp = s->fpout;
 #ifdef USE_FMEMOPEN
      s->fpout = open_memstream (&temp, &tempsize);
-     if (!s->fpout) {
+     if (s->fpout == NULL) {
        mutt_error (_("Unable to open memory stream!"));
        mutt_debug (1, "Can't open memory stream.\n");
        return -1;
@@ -1719,7 +1719,7 @@ static int run_decode_and_handler (BODY *b, STATE *s, handler_t handler, int pla
       } else { /* fmemopen cannot handle zero-length buffers */
         s->fpin = safe_fopen ("/dev/null", "r");
       }
-      if (!s->fpin) {
+      if (s->fpin == NULL) {
         mutt_perror (_("failed to re-open memstream!"));
         return -1;
       }
@@ -1841,7 +1841,7 @@ int mutt_body_handler (BODY *b, STATE *s)
     {
       p = mutt_get_parameter ("protocol", b->parameter);
 
-      if (!p)
+      if (p == NULL)
         mutt_error (_("Error: multipart/signed has no protocol."));
       else if (s->flags & MUTT_VERIFY)
 	handler = mutt_signed_handler;
@@ -1851,7 +1851,7 @@ int mutt_body_handler (BODY *b, STATE *s)
     else if (mutt_is_malformed_multipart_pgp_encrypted (b))
       handler = malformed_pgp_encrypted_handler;
 
-    if (!handler)
+    if (handler == NULL)
       handler = multipart_handler;
 
     if (b->encoding != ENC7BIT && b->encoding != ENC8BIT

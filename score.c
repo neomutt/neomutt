@@ -87,7 +87,7 @@ int mutt_parse_score (BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err)
   for (ptr = Score, last = NULL; ptr; last = ptr, ptr = ptr->next)
     if (mutt_strcmp (pattern, ptr->str) == 0)
       break;
-  if (!ptr)
+  if (ptr == NULL)
   {
     if ((pat = mutt_pattern_comp (pattern, 0, err)) == NULL)
     {

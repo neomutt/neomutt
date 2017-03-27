@@ -171,7 +171,7 @@ void safe_realloc (void *ptr, size_t siz)
     r = malloc (siz);		/* __MEM_CHECKED__ */
   }
 
-  if (!r)
+  if (r == NULL)
   {
     mutt_error (_("Out of memory!"));
     sleep (1);
@@ -714,7 +714,7 @@ static const char safe_chars[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrst
 
 void mutt_sanitize_filename (char *f, short slash)
 {
-  if (!f) return;
+  if (f == NULL) return;
 
   for (; *f; f++)
   {
@@ -757,7 +757,7 @@ char *mutt_read_line (char *s, size_t *size, FILE *fp, int *line, int flags)
   size_t offset = 0;
   char *ch = NULL;
 
-  if (!s)
+  if (s == NULL)
   {
     s = safe_malloc (STRING);
     *size = STRING;
@@ -846,7 +846,7 @@ size_t mutt_quote_filename (char *d, size_t l, const char *f)
 {
   size_t i, j = 0;
 
-  if(!f)
+  if(f == NULL)
   {
     *d = '\0';
     return 0;
@@ -912,9 +912,9 @@ const char *mutt_stristr (const char *haystack, const char *needle)
 {
   const char *p = NULL, *q = NULL;
 
-  if (!haystack)
+  if (haystack == NULL)
     return NULL;
-  if (!needle)
+  if (needle == NULL)
     return haystack;
 
   while (*(p = haystack))
@@ -1142,7 +1142,7 @@ int mutt_inbox_cmp (const char *a, const char *b)
     return 0;
 
   /* If neither path contains a '/' */
-  if (!a_end)
+  if (a_end == NULL)
     return 0;
 
   /* Compare the subpaths */

@@ -416,7 +416,7 @@ int mutt_option_set(const struct option_t *val, BUFFER *err)
             break;
         }
 
-        if (!map)
+        if (map == NULL)
         {
           snprintf(err2->data, err2->dsize, _("%s: Unknown type."),
                    MuttVars[idx].option);
@@ -543,7 +543,7 @@ static void add_to_list (LIST **list, const char *str)
       last = NULL;
       break;
     }
-    if (!last->next)
+    if (last->next == NULL)
       break;
   }
 
@@ -589,7 +589,7 @@ int mutt_add_to_rx_list (RX_LIST **list, const char *s, int flags, BUFFER *err)
       last = NULL;
       break;
     }
-    if (!last->next)
+    if (last->next == NULL)
       break;
   }
 
@@ -618,7 +618,7 @@ static int remove_from_replace_list (REPLACE_LIST **list, const char *pat)
 
   /* Being first is a special case. */
   cur = *list;
-  if (!cur)
+  if (cur == NULL)
     return 0;
   if (cur->rx && (mutt_strcmp(cur->rx->pattern, pat) == 0))
   {
@@ -684,14 +684,14 @@ static int add_to_replace_list (REPLACE_LIST **list, const char *pat, const char
       FREE(&t->template);
       break;
     }
-    if (!last->next)
+    if (last->next == NULL)
       break;
   }
 
   /* If t is set, it's pointing into an extant REPLACE_LIST* that we want to
    * update. Otherwise we want to make a new one to link at the list's end.
    */
-  if (!t)
+  if (t == NULL)
   {
     t = new_replace_list();
     t->rx = rx;
@@ -835,7 +835,7 @@ static int parse_ifdef (BUFFER *tmp, BUFFER *s, unsigned long data, BUFFER *err)
     for (i = 0; !res && (i < MENU_MAX); i++)
     {
       const struct binding_t *b = km_get_table (Menus[i].value);
-      if (!b)
+      if (b == NULL)
         continue;
 
       for (j = 0; b[j].name; j++)
@@ -1730,7 +1730,7 @@ static int parse_alias (BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err)
     last = tmp;
   }
 
-  if (!tmp)
+  if (tmp == NULL)
   {
     /* create a new alias */
     tmp = safe_calloc (1, sizeof (ALIAS));
@@ -1865,7 +1865,7 @@ static int parse_my_hdr (BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err
 	mutt_buffer_init (buf);
 	return 0;
       }
-      if (!tmp->next)
+      if (tmp->next == NULL)
 	break;
     }
     tmp->next = mutt_new_list ();
@@ -2078,7 +2078,7 @@ static int check_charset (struct option_t *opt, const char *val)
   char *p = NULL, *q = NULL, *s = safe_strdup (val);
   int rc = 0, strict = (strcmp (opt->option, "send_charset") == 0);
 
-  if (!s)
+  if (s == NULL)
     return rc;
 
   for (p = strtok_r (s, ":", &q); p; p = strtok_r (NULL, ":", &q))
@@ -2716,7 +2716,7 @@ static int parse_set (BUFFER *tmp, BUFFER *s, unsigned long data, BUFFER *err)
 	  break;
       }
 
-      if (!map)
+      if (map == NULL)
       {
 	snprintf (err->data, err->dsize, _("%s: Unknown type."), MuttVars[idx].option);
 	r = -1;
@@ -2778,7 +2778,7 @@ static int parse_set (BUFFER *tmp, BUFFER *s, unsigned long data, BUFFER *err)
       break;
     }
 
-    if (!myvar)
+    if (myvar == NULL)
     {
       if (MuttVars[idx].flags & R_INDEX)
         set_option (OPTFORCEREDRAWINDEX);
@@ -2840,7 +2840,7 @@ static int to_absolute_path(char *path, const char *reference)
 
   path = realpath(abs_path, path);
 
-  if (!path)
+  if (path == NULL)
   {
     printf("Error: issue converting path to absolute (%s)", strerror(errno));
     return false;
@@ -2904,7 +2904,7 @@ static int source_rc (const char *rcfile_path, BUFFER *err)
     if (conv != 0)
     {
       currentline=safe_strdup(linebuf);
-      if (!currentline) continue;
+      if (currentline == NULL) continue;
       mutt_convert_string(&currentline, ConfigCharset, Charset, 0);
     }
     else
@@ -3428,7 +3428,7 @@ int mutt_nm_query_complete (char *buffer, size_t len, int pos, int numtabs)
 /* Complete the nearest "+" or "-" -prefixed string previous to pos. */
 int mutt_nm_tag_complete (char *buffer, size_t len, int pos, int numtabs)
 {
-  if (!buffer)
+  if (buffer == NULL)
     return 0;
 
   char *pt = buffer;
@@ -3798,7 +3798,7 @@ void mutt_init (int skip_sys_rc, LIST *commands)
     char rnbuf[STRING];
 
     Username = safe_strdup (pw->pw_name);
-    if (!Homedir)
+    if (Homedir == NULL)
       Homedir = safe_strdup (pw->pw_dir);
 
     Realname = safe_strdup (mutt_gecos_name (rnbuf, sizeof (rnbuf), pw));
@@ -3807,7 +3807,7 @@ void mutt_init (int skip_sys_rc, LIST *commands)
   }
   else
   {
-    if (!Homedir)
+    if (Homedir == NULL)
     {
       mutt_endwin (NULL);
       fputs (_("unable to determine home directory"), stderr);
@@ -3926,10 +3926,10 @@ void mutt_init (int skip_sys_rc, LIST *commands)
   Tempdir = safe_strdup ((p = getenv ("TMPDIR")) ? p : "/tmp");
 
   p = getenv ("VISUAL");
-  if (!p)
+  if (p == NULL)
   {
     p = getenv ("EDITOR");
-    if (!p)
+    if (p == NULL)
       p = "vi";
   }
   Editor = safe_strdup (p);
@@ -3994,7 +3994,7 @@ void mutt_init (int skip_sys_rc, LIST *commands)
   add_to_list(&MailtoAllow, "body");
   add_to_list(&MailtoAllow, "subject");
 
-  if (!Muttrc)
+  if (Muttrc == NULL)
   {
     char *xdg_cfg_home = getenv ("XDG_CONFIG_HOME");
 

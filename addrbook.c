@@ -137,7 +137,7 @@ void mutt_alias_menu (char *buf, size_t buflen, ALIAS *aliases)
 
   int omax;
 
-  if (!aliases)
+  if (aliases == NULL)
   {
     mutt_error (_("You have no aliases!"));
     return;

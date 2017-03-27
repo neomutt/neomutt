@@ -389,7 +389,7 @@ void mutt_progress_init (progress_t* progress, const char *msg,
 {
   struct timeval tv = { 0, 0 };
 
-  if (!progress)
+  if (progress == NULL)
     return;
   if (option(OPTNOCURSES))
     return;
@@ -1192,7 +1192,7 @@ size_t mutt_wstr_trunc (const char *src, size_t maxlen, size_t maxwid, size_t *w
   int cw;
   mbstate_t mbstate;
 
-  if (!src)
+  if (src == NULL)
     goto out;
 
   n = mutt_strlen (src);
@@ -1265,7 +1265,7 @@ int mutt_strwidth (const char *s)
   size_t k, n;
   mbstate_t mbstate;
 
-  if (!s) return 0;
+  if (s == NULL) return 0;
 
   n = mutt_strlen (s);
 

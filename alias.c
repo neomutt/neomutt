@@ -218,7 +218,7 @@ static void recode_buf (char *buf, size_t buflen)
   if (!ConfigCharset || !*ConfigCharset || !Charset)
     return;
   s = safe_strdup (buf);
-  if (!s)
+  if (s == NULL)
     return;
   if (mutt_convert_string (&s, Charset, ConfigCharset, 0) == 0)
     strfcpy (buf, s, buflen);
@@ -455,7 +455,7 @@ ADDRESS *alias_reverse_lookup (ADDRESS *a)
 void mutt_alias_add_reverse (ALIAS *t)
 {
   ADDRESS *ap = NULL;
-  if (!t)
+  if (t == NULL)
     return;
 
   /* Note that the address mailbox should be converted to intl form
@@ -473,7 +473,7 @@ void mutt_alias_add_reverse (ALIAS *t)
 void mutt_alias_delete_reverse (ALIAS *t)
 {
   ADDRESS *ap = NULL;
-  if (!t)
+  if (t == NULL)
     return;
 
   /* If the alias addresses were converted to local form, they won't
@@ -541,7 +541,7 @@ int mutt_alias_complete (char *s, size_t buflen)
       {
 	if (a->name && (strstr (a->name, s) == a->name))
 	{
-	  if (!a_list)  /* init */
+	  if (a_list == NULL)  /* init */
 	    a_cur = a_list = safe_malloc (sizeof (ALIAS));
 	  else
 	  {
@@ -615,12 +615,12 @@ int mutt_addr_is_user (ADDRESS *addr)
   const char *fqdn = NULL;
 
   /* NULL address is assumed to be the user. */
-  if (!addr)
+  if (addr == NULL)
   {
     mutt_debug (5, "mutt_addr_is_user: yes, NULL address\n");
     return 1;
   }
-  if (!addr->mailbox)
+  if (addr->mailbox == NULL)
   {
     mutt_debug (5, "mutt_addr_is_user: no, no mailbox\n");
     return 0;

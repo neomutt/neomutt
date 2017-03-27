@@ -274,7 +274,7 @@ const char *mutt_attach_fmt (char *dest,
 	else
 	  mutt_format_s (dest, destlen, prefix, NONULL (aptr->content->filename));
       }
-      else if(!aptr->content->filename)
+      else if(aptr->content->filename == NULL)
         optional = 0;
       break;
     case 'D':
@@ -312,7 +312,7 @@ const char *mutt_attach_fmt (char *dest,
     case 'M':
       if(optional == 0)
 	mutt_format_s (dest, destlen, prefix, aptr->content->subtype);
-      else if(!aptr->content->subtype)
+      else if(aptr->content->subtype == NULL)
         optional = 0;
       break;
     case 'n':
@@ -358,7 +358,7 @@ const char *mutt_attach_fmt (char *dest,
     case 'T':
       if(optional == 0)
 	mutt_format_s_tree (dest, destlen, prefix, NONULL (aptr->tree));
-      else if (!aptr->tree)
+      else if (aptr->tree == NULL)
         optional = 0;
       break;
     case 'u':
@@ -1041,7 +1041,7 @@ void mutt_view_attachments (HEADER *hdr)
   {
     if (op == OP_NULL)
       op = mutt_menu_loop (menu);
-    if (!Context)
+    if (Context == NULL)
       return;
     switch (op)
     {

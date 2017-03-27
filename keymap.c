@@ -422,7 +422,7 @@ int km_dokey (int menu)
   int n = 0;
   int i;
 
-  if (!map)
+  if (map == NULL)
     return (retry_generic (menu, NULL, 0, 0));
 
   while (true)
@@ -595,7 +595,7 @@ int km_expand_key (char *s, size_t len, struct keymap_t *map)
   size_t l;
   int p = 0;
 
-  if (!map)
+  if (map == NULL)
     return 0;
 
   while (true)

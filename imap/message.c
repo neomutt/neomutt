@@ -45,7 +45,7 @@ static void imap_update_context (IMAP_DATA *idata, int oldmsgcount)
   int msgno;
 
   ctx = idata->ctx;
-  if (!idata->uid_hash)
+  if (idata->uid_hash == NULL)
     idata->uid_hash = int_hash_create (MAX (6 * ctx->msgcount / 5, 30), 0);
 
   for (msgno = oldmsgcount; msgno < ctx->msgcount; msgno++)
@@ -186,7 +186,7 @@ static char* msg_parse_flags (IMAP_HEADER* h, char* s)
       char ctmp;
       char* flag_word = s;
 
-      if (!hd->keywords)
+      if (hd->keywords == NULL)
         hd->keywords = mutt_new_list ();
 
       while (*s && !ISSPACE (*s) && *s != ')')
@@ -217,7 +217,7 @@ static int msg_parse_fetch (IMAP_HEADER *h, char *s)
   char tmp[SHORT_STRING];
   char *ptmp = NULL;
 
-  if (!s)
+  if (s == NULL)
     return -1;
 
   while (*s)
@@ -1100,7 +1100,7 @@ int imap_copy_messages (CONTEXT* ctx, HEADER* h, char* dest, int delete)
     mutt_buffer_init (&cmd);
 
     /* Null HEADER* means copy tagged messages */
-    if (!h)
+    if (h == NULL)
     {
       /* if any messages have attachments to delete, fall through to FETCH
        * and APPEND. TODO: Copy what we can with COPY, fall through for the
@@ -1196,7 +1196,7 @@ int imap_copy_messages (CONTEXT* ctx, HEADER* h, char* dest, int delete)
   /* cleanup */
   if (delete != 0)
   {
-    if (!h)
+    if (h == NULL)
       for (n = 0; n < ctx->msgcount; n++)
       {
         if (ctx->hdrs[n]->tagged)

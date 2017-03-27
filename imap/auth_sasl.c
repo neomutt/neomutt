@@ -49,7 +49,7 @@ imap_auth_res_t imap_auth_sasl (IMAP_DATA* idata, const char* method)
   rc = SASL_FAIL;
 
   /* If the user hasn't specified a method, use any available */
-  if (!method)
+  if (method == NULL)
   {
     method = idata->capstr;
 

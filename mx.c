@@ -360,7 +360,7 @@ int mx_is_imap(const char *p)
 {
   url_scheme_t scheme;
 
-  if (!p)
+  if (p == NULL)
     return 0;
 
   if (*p == '{')
@@ -380,7 +380,7 @@ int mx_is_pop (const char *p)
 {
   url_scheme_t scheme;
 
-  if (!p)
+  if (p == NULL)
     return 0;
 
   scheme = url_check_scheme (p);
@@ -396,7 +396,7 @@ int mx_is_nntp (const char *p)
 {
   url_scheme_t scheme;
 
-  if (!p)
+  if (p == NULL)
     return 0;
 
   scheme = url_check_scheme (p);
@@ -413,7 +413,7 @@ int mx_is_notmuch(const char *p)
 {
   url_scheme_t scheme;
 
-  if (!p)
+  if (p == NULL)
     return 0;
 
   scheme = url_check_scheme (p);
@@ -624,7 +624,7 @@ CONTEXT *mx_open_mailbox (const char *path, int flags, CONTEXT *pctx)
   if (!path || !path[0])
     return NULL;
 
-  if (!ctx)
+  if (ctx == NULL)
     ctx = safe_malloc (sizeof (CONTEXT));
   memset (ctx, 0, sizeof (CONTEXT));
   ctx->path = safe_strdup (path);
@@ -649,7 +649,7 @@ CONTEXT *mx_open_mailbox (const char *path, int flags, CONTEXT *pctx)
     if (mx_open_mailbox_append (ctx, flags) != 0)
     {
       mx_fastclose_mailbox (ctx);
-      if (!pctx)
+      if (pctx == NULL)
 	FREE (&ctx);
       return NULL;
     }
@@ -667,7 +667,7 @@ CONTEXT *mx_open_mailbox (const char *path, int flags, CONTEXT *pctx)
       mutt_perror(path);
 
     mx_fastclose_mailbox (ctx);
-    if (!pctx)
+    if (pctx == NULL)
       FREE (&ctx);
     return NULL;
   }
@@ -704,7 +704,7 @@ CONTEXT *mx_open_mailbox (const char *path, int flags, CONTEXT *pctx)
   else
   {
     mx_fastclose_mailbox (ctx);
-    if (!pctx)
+    if (pctx == NULL)
       FREE (&ctx);
   }
 
@@ -718,7 +718,7 @@ void mx_fastclose_mailbox (CONTEXT *ctx)
   int i;
   struct utimbuf ut;
 
-  if(!ctx)
+  if(ctx == NULL)
     return;
 
   /* fix up the times so buffy won't get confused */
@@ -844,7 +844,7 @@ int mx_close_mailbox (CONTEXT *ctx, int *index_hint)
   char mbox[_POSIX_PATH_MAX];
   char buf[SHORT_STRING];
 
-  if (!ctx) return 0;
+  if (ctx == NULL) return 0;
 
   ctx->closing = 1;
 
@@ -1473,7 +1473,7 @@ void mx_update_context (CONTEXT *ctx, int new_messages)
       h->security = crypt_query (h->content);
     }
 
-    if (!ctx->pattern)
+    if (ctx->pattern == NULL)
     {
       ctx->v2r[ctx->vcount] = msgno;
       h->virtual = ctx->vcount++;
@@ -1486,7 +1486,7 @@ void mx_update_context (CONTEXT *ctx, int new_messages)
     {
       HEADER *h2 = NULL;
 
-      if (!ctx->id_hash)
+      if (ctx->id_hash == NULL)
 	ctx->id_hash = mutt_make_id_hash (ctx);
 
       h2 = hash_find (ctx->id_hash, h->env->supersedes);

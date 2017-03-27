@@ -172,7 +172,7 @@ pgp_key_t pgp_remove_key (pgp_key_t *klist, pgp_key_t key)
   for (p = *klist; p && p != key; p = p->next)
     last = &p->next;
 
-  if (!p)
+  if (p == NULL)
     return NULL;
 
   for (q = p->next, r = p; q && q->parent == p; q = q->next)

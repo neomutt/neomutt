@@ -681,7 +681,7 @@ void mutt_make_misc_reply_headers (ENVELOPE *env, CONTEXT *ctx,
     env->subject = safe_malloc (mutt_strlen (curenv->real_subj) + 5);
     sprintf (env->subject, "Re: %s", curenv->real_subj);	/* __SPRINTF_CHECKED__ */
   }
-  else if (!env->subject)
+  else if (env->subject == NULL)
     env->subject = safe_strdup (EmptySubject);
 }
 
@@ -692,8 +692,8 @@ void mutt_add_to_reference_headers (ENVELOPE *env, ENVELOPE *curenv, LIST ***pp,
   if (pp) p = *pp;
   if (qq) q = *qq;
 
-  if (!p) p = &env->references;
-  if (!q) q = &env->in_reply_to;
+  if (p == NULL) p = &env->references;
+  if (q == NULL) q = &env->in_reply_to;
 
   while (*p) p = &(*p)->next;
   while (*q) q = &(*q)->next;
@@ -721,7 +721,7 @@ make_reference_headers (ENVELOPE *curenv, ENVELOPE *env, CONTEXT *ctx)
   env->references = NULL;
   env->in_reply_to = NULL;
 
-  if (!curenv)
+  if (curenv == NULL)
   {
     HEADER *h = NULL;
     LIST **p = NULL, **q = NULL;
@@ -750,7 +750,7 @@ envelope_defaults (ENVELOPE *env, CONTEXT *ctx, HEADER *cur, int flags)
   ENVELOPE *curenv = NULL;
   int i = 0, tag = 0;
 
-  if (!cur)
+  if (cur == NULL)
   {
     tag = 1;
     for (i = 0; i < ctx->vcount; i++)
@@ -761,7 +761,7 @@ envelope_defaults (ENVELOPE *env, CONTEXT *ctx, HEADER *cur, int flags)
 	break;
       }
 
-    if (!cur)
+    if (cur == NULL)
     {
       /* This could happen if the user tagged some messages and then did
        * a limit such that none of the tagged message are visible.
@@ -837,7 +837,7 @@ generate_body (FILE *tempfp,	/* stream for outgoing message */
     if (i == MUTT_YES)
     {
       mutt_message (_("Including quoted message..."));
-      if (!cur)
+      if (cur == NULL)
       {
 	for (i = 0; i < ctx->vcount; i++)
 	{
@@ -946,7 +946,7 @@ void mutt_set_followup_to (ENVELOPE *e)
   }
 #endif
 
-  if (!e->mail_followup_to)
+  if (e->mail_followup_to == NULL)
   {
     if (mutt_is_list_cc (0, e->to, e->cc))
     {
@@ -1007,7 +1007,7 @@ static ADDRESS *set_reverse_name (ENVELOPE *env)
     if (mutt_addr_is_user (tmp))
       break;
   }
-  if (!tmp)
+  if (tmp == NULL)
   {
     for (tmp = env->cc; tmp; tmp = tmp->next)
     {
@@ -1173,7 +1173,7 @@ int mutt_compose_to_sender (HEADER *hdr)
   HEADER *msg = mutt_new_header();
 
   msg->env = mutt_new_envelope();
-  if (!hdr)
+  if (hdr == NULL)
   {
     int i;
     for (i = 0; i < Context->vcount; i++)
@@ -1252,7 +1252,7 @@ mutt_search_attach_keyword (char *filename)
     return 0;
 
   FILE *attf = safe_fopen (filename, "r");
-  if (!attf)
+  if (attf == NULL)
     return 0;
 
   char *inputline = safe_malloc (LONG_STRING);
@@ -1338,7 +1338,7 @@ ci_send_message (int flags,		/* send mode */
    * send-hook.
    */
 
-  if (!msg)
+  if (msg == NULL)
   {
     msg = mutt_new_header ();
 
@@ -1373,7 +1373,7 @@ ci_send_message (int flags,		/* send mode */
       }
     }
 
-    if (!msg->env)
+    if (msg->env == NULL)
       msg->env = mutt_new_envelope ();
   }
 
@@ -1406,7 +1406,7 @@ ci_send_message (int flags,		/* send mode */
       msg->content->use_disp = 0;
       msg->content->disposition = DISPINLINE;
 
-      if (!tempfile)
+      if (tempfile == NULL)
       {
         mutt_mktemp (buffer, sizeof (buffer));
         tempfp = safe_fopen (buffer, "w+");
@@ -1421,7 +1421,7 @@ ci_send_message (int flags,		/* send mode */
     else
       tempfp = safe_fopen (msg->content->filename, "a+");
 
-    if (!tempfp)
+    if (tempfp == NULL)
     {
       mutt_debug (1, "newsend_message: can't create tempfile %s (errno=%d)\n",
                   msg->content->filename, errno);
@@ -1505,7 +1505,7 @@ ci_send_message (int flags,		/* send mode */
      * patterns will work.  if $use_from is unset, the from address is killed
      * after send-hooks are evaluated */
 
-    if (!msg->env->from)
+    if (msg->env->from == NULL)
     {
       msg->env->from = mutt_default_from ();
       killfrom = 1;
@@ -1767,7 +1767,7 @@ ci_send_message (int flags,		/* send mode */
   if (!fcc[0] && !(flags & (SENDPOSTPONEDFCC)) && (!(flags & SENDBATCH) || (quadoption (OPT_COPY) & 0x1)))
   {
     /* set the default FCC */
-    if (!msg->env->from)
+    if (msg->env->from == NULL)
     {
       msg->env->from = mutt_default_from ();
       killfrom = 1; /* no need to check $use_from because if the user specified
