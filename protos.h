@@ -484,7 +484,7 @@ int setegid (gid_t);
 #endif /* _AIX */
 
 /* unsorted */
-void ci_bounce_message(HEADER *h, int *redraw);
+void ci_bounce_message(HEADER *h);
 int ci_send_message(int flags, HEADER *msg, char *tempfile, CONTEXT *ctx, HEADER *cur);
 
 /* prototypes for compatibility functions */

@@ -2674,20 +2674,18 @@ int mutt_index_menu (void)
 	CHECK_ATTACH;
 	CHECK_MSGCOUNT;
         CHECK_VISIBLE;
-	ci_bounce_message (tag ? NULL : CURHDR, &menu->redraw);
+	ci_bounce_message (tag ? NULL : CURHDR);
 	break;
 
       case OP_CREATE_ALIAS:
 
         mutt_create_alias (Context && Context->vcount ? CURHDR->env : NULL, NULL);
-	MAYBE_REDRAW (menu->redraw);
         menu->redraw |= REDRAW_CURRENT;
 	break;
 
       case OP_QUERY:
 	CHECK_ATTACH;
 	mutt_query_menu (NULL, 0);
-	MAYBE_REDRAW (menu->redraw);
 	break;
 
       case OP_PURGE_MESSAGE:
@@ -2928,7 +2926,6 @@ int mutt_index_menu (void)
 	}
 #endif
 
-	MAYBE_REDRAW (menu->redraw);
 	break;
 
       case OP_PRINT:
@@ -3090,7 +3087,6 @@ int mutt_index_menu (void)
       case OP_SHELL_ESCAPE:
 
 	mutt_shell_escape ();
-	MAYBE_REDRAW (menu->redraw);
 	break;
 
       case OP_TAG_THREAD:

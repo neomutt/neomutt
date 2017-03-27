@@ -901,7 +901,6 @@ static int interactive_check_cert (X509 *cert, int idx, int len, SSL *ssl, int a
   unset_option(OPTIGNOREMACROEVENTS);
   mutt_pop_current_menu (menu);
   mutt_menu_destroy (&menu);
-  set_option (OPTNEEDREDRAW);
   mutt_debug (2, "ssl interactive_check_cert: done=%d\n", done);
   return (done == 2);
 }

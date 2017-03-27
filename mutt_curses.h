@@ -256,6 +256,4 @@ void ci_start_color (void);
 /* reset the color to the normal terminal color as defined by 'color normal ...' */
 #define NORMAL_COLOR SETCOLOR(MT_COLOR_NORMAL)
 
-#define MAYBE_REDRAW(x) if (option (OPTNEEDREDRAW)) { unset_option (OPTNEEDREDRAW); x = REDRAW_FULL; }
-
 #endif /* _MUTT_CURSES_H */

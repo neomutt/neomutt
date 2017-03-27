@@ -480,9 +480,6 @@ static void query_menu (char *buf, size_t buflen, QUERY *results, int retbuf)
 
     free_query (&results);
     FREE (&QueryTable);
-
-    /* tell whoever called me to redraw the screen when I return */
-    set_option (OPTNEEDREDRAW);
   }
 
   mutt_pop_current_menu (menu);

@@ -464,7 +464,7 @@ static const struct mapping_t RemailerHelp[] =
 };
 
 
-void mix_make_chain (LIST **chainp, int *redraw)
+void mix_make_chain (LIST **chainp)
 {
   LIST *p = NULL;
   MIXCHAIN *chain = NULL;
@@ -489,8 +489,6 @@ void mix_make_chain (LIST **chainp, int *redraw)
     mutt_error (_("Can't get mixmaster's type2.list!"));
     return;
   }
-
-  *redraw = REDRAW_FULL;
 
   chain = safe_calloc (sizeof (MIXCHAIN), 1);
   for (p = *chainp; p; p = p->next)

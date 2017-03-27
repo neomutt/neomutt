@@ -4120,8 +4120,6 @@ static crypt_key_t *crypt_select_key (crypt_key_t *keys,
   mutt_menu_destroy (&menu);
   FREE (&key_table);
 
-  set_option (OPTNEEDREDRAW);
-
   return k;
 }
 

@@ -644,8 +644,6 @@ static pgp_key_t pgp_select_key (pgp_key_t keys,
   mutt_menu_destroy (&menu);
   FREE (&KeyTable);
 
-  set_option (OPTNEEDREDRAW);
-
   return kp;
 }
 
