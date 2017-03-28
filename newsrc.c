@@ -443,7 +443,7 @@ int nntp_newsrc_update (NNTP_SERVER *nserv)
     /* write entries */
     for (n = 0; n < nntp_data->newsrc_len; n++)
     {
-      if (off + LONG_STRING > buflen)
+      if ((off + LONG_STRING) > buflen)
       {
 	buflen *= 2;
 	safe_realloc (&buf, buflen);

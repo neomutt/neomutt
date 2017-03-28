@@ -461,14 +461,14 @@ void menu_check_recenter (MUTTMENU *menu)
   {
     if (option (OPTMENUSCROLL) || (menu->pagelen <= 0) || (c < MenuContext))
     {
-      if (menu->current < menu->top + c)
+      if (menu->current < (menu->top + c))
 	menu->top = menu->current - c;
       else if (menu->current >= menu->top + menu->pagelen - c)
 	menu->top = menu->current - menu->pagelen + c + 1;
     }
     else
     {
-      if (menu->current < menu->top + c)
+      if (menu->current < (menu->top + c))
 	menu->top -= (menu->pagelen - c) * ((menu->top + menu->pagelen - 1 - menu->current) / (menu->pagelen - c)) - c;
       else if ((menu->current >= menu->top + menu->pagelen - c))
 	menu->top += (menu->pagelen - c) * ((menu->current - menu->top) / (menu->pagelen - c)) - c;
@@ -629,7 +629,7 @@ void menu_bottom_page (MUTTMENU *menu)
   if (menu->max != 0)
   {
     menu->current = menu->top + menu->pagelen - 1;
-    if (menu->current > menu->max - 1)
+    if (menu->current > (menu->max - 1))
       menu->current = menu->max - 1;
     menu->redraw = REDRAW_MOTION;
   }
@@ -644,7 +644,7 @@ void menu_middle_page (MUTTMENU *menu)
   if (menu->max != 0)
   {
     i = menu->top + menu->pagelen;
-    if (i > menu->max - 1)
+    if (i > (menu->max - 1))
       i = menu->max - 1;
     menu->current = menu->top + (i - menu->top) / 2;
     menu->redraw = REDRAW_MOTION;
@@ -714,7 +714,7 @@ void menu_current_bottom (MUTTMENU *menu)
 
 static void menu_next_entry (MUTTMENU *menu)
 {
-  if (menu->current < menu->max - 1)
+  if (menu->current < (menu->max - 1))
   {
     menu->current++;
     menu->redraw = REDRAW_MOTION;

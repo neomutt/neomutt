@@ -526,7 +526,7 @@ int rfc1524_expand_filename (char *nametemplate,
 
       /* Now, check if we had a full match. */
 
-      if(k >= i + 2)
+      if(k >= (i + 2))
 	rmatch = 0;
 
       if (lmatch != 0) *left = 0;

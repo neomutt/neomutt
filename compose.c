@@ -820,7 +820,7 @@ int mutt_compose_menu (HEADER *msg,   /* structure for new message */
 	      *fname == '\0')
 	    break;
 
-	  if (idxlen + numfiles >= idxmax)
+	  if ((idxlen + numfiles) >= idxmax)
 	  {
 	    safe_realloc (&idx, sizeof (ATTACHPTR *) * (idxmax += 5 + numfiles));
 	    menu->data = idx;
@@ -947,7 +947,7 @@ int mutt_compose_menu (HEADER *msg,   /* structure for new message */
 	    break;
 	  }
 
-	  if (idxlen + Context->tagged >= idxmax)
+	  if ((idxlen + Context->tagged) >= idxmax)
 	  {
 	    safe_realloc (&idx, sizeof (ATTACHPTR *) * (idxmax += 5 + Context->tagged));
 	    menu->data = idx;
@@ -995,7 +995,7 @@ int mutt_compose_menu (HEADER *msg,   /* structure for new message */
 	mutt_update_tree (idx, idxlen);
 	if (idxlen != 0)
 	{
-	  if (menu->current > idxlen - 1)
+	  if (menu->current > (idxlen - 1))
 	    menu->current = idxlen - 1;
 	}
 	else

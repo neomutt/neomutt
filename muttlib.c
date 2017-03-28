@@ -1221,7 +1221,7 @@ char *mutt_apply_replace (char *dbuf, size_t dlen, char *sbuf, REPLACE_LIST *rli
       /* Copy into other twinbuf with substitutions */
       if (l->template != NULL)
       {
-        for (p = l->template; *p && (tlen < LONG_STRING - 1); )
+        for (p = l->template; *p && (tlen < (LONG_STRING - 1)); )
         {
 	  if (*p == '%')
 	  {
@@ -1567,7 +1567,7 @@ void mutt_FormatString (char *dest,		/* output buffer */
             /* try to consume as many columns as we can, if we don't have
              * memory for that, use as much memory as possible */
             if (wlen + (pad * pl) + len > destlen)
-              pad = (destlen > wlen + len) ? ((destlen - wlen - len) / pl) : 0;
+              pad = (destlen > (wlen + len)) ? ((destlen - wlen - len) / pl) : 0;
             else
             {
               /* Add pre-spacing to make multi-column pad characters and
@@ -1601,14 +1601,14 @@ void mutt_FormatString (char *dest,		/* output buffer */
 	    wptr = dest + wlen;
             /* Multi-column characters may be truncated in the middle.
              * Add spacing so the right hand side lines up. */
-            while ((col + wid < avail_cols) && (wlen + len < destlen))
+            while (((col + wid) < avail_cols) && ((wlen + len) < destlen))
             {
               *wptr++ = ' ';
               wlen++;
               col++;
             }
 	  }
-	  if (len + wlen > destlen)
+	  if ((len + wlen) > destlen)
 	    len = mutt_wstr_trunc (buf, destlen - wlen, cols - col, NULL);
 	  memcpy (wptr, buf, len);
 	  wptr += len;
@@ -2090,7 +2090,7 @@ int mutt_match_spam_list (const char *s, REPLACE_LIST *l, char *text, int textsi
 	    /* copy as much of the substring match as will fit in the output buffer, saving space for
 	     * the terminating nul char */
 	    int idx;
-	    for (idx = pmatch[n].rm_so; (idx < pmatch[n].rm_eo) && (tlen < textsize - 1); ++idx)
+	    for (idx = pmatch[n].rm_so; (idx < pmatch[n].rm_eo) && (tlen < (textsize - 1)); ++idx)
 	      text[tlen++] = s[idx];
 	  }
 	  p = e; /* skip over the parsed integer */

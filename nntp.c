@@ -250,7 +250,7 @@ static int nntp_attempt_features (NNTP_SERVER *nserv)
 
       while (1)
       {
-	if (buflen - off < LONG_STRING)
+	if ((buflen - off) < LONG_STRING)
 	{
 	  buflen *= 2;
 	  safe_realloc (&nserv->overview_fmt, buflen);
@@ -1796,7 +1796,7 @@ static int nntp_check_mailbox (CONTEXT *ctx, int *index_hint)
   int rc, ret = 0;
   void *hc = NULL;
 
-  if (nserv->check_time + NewsPollTimeout > now)
+  if ((nserv->check_time + NewsPollTimeout) > now)
     return 0;
 
   mutt_message (_("Checking for new messages..."));

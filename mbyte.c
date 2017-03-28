@@ -285,7 +285,7 @@ static size_t mbrtowc_iconv (wchar_t *pwc, const char *s, size_t n,
     }
     else if (!r || (r == (size_t)(-1) && errno == EINVAL))
     {
-      if (ib + ibl < ibmax)
+      if ((ib + ibl) < ibmax)
 	/* try using more input */
 	++ibl;
       else if (k && ib > bufi + k && bufi + k + n > ibmax)

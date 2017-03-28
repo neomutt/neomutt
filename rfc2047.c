@@ -271,7 +271,7 @@ static size_t try_block (ICONV_CONST char *d, size_t dlen,
       assert (errno == E2BIG);
       iconv_close (cd);
       assert (ib > d);
-      return (ib - d == dlen) ? dlen : ib - d + 1;
+      return ((ib - d) == dlen) ? dlen : ib - d + 1;
     }
     iconv_close (cd);
   }
@@ -362,7 +362,7 @@ static size_t choose_block (char *d, size_t dlen, int col,
   n = dlen;
   for (;;)
   {
-    assert (d + n > d);
+    assert ((d + n) > d);
     nn = try_block (d, n, fromcode, tocode, encoder, wlen);
     if (!nn && (col + *wlen <= ENCWORD_LEN_MAX + 1 || n <= 1))
       break;
@@ -504,7 +504,7 @@ static int rfc2047_encode (ICONV_CONST char *d, size_t dlen, int col,
   {
     /* Find how much we can encode. */
     n = choose_block (t, t1 - t, col, icode, tocode, &encoder, &wlen);
-    if (n == t1 - t)
+    if (n == (t1 - t))
     {
       /* See if we can fit the us-ascii suffix, too. */
       if (col + wlen + (u + ulen - t1) <= ENCWORD_LEN_MAX + 1)
@@ -513,7 +513,7 @@ static int rfc2047_encode (ICONV_CONST char *d, size_t dlen, int col,
       if (icode != NULL)
 	while (CONTINUATION_BYTE(t[n]))
 	  --n;
-      assert (t + n >= t);
+      assert ((t + n) >= t);
       if (n == 0)
       {
 	/* This should only happen in the really stupid case where the
@@ -521,7 +521,7 @@ static int rfc2047_encode (ICONV_CONST char *d, size_t dlen, int col,
 	   there is too much us-ascii stuff after it to use a single
 	   encoded word. We add the next word to the encoded region
 	   and try again. */
-	assert (t1 < u + ulen);
+	assert (t1 < (u + ulen));
 	for (t1++; t1 < u + ulen && !HSPACE(*t1); t1++)
 	  ;
 	continue;
@@ -676,7 +676,7 @@ static int rfc2047_decode_word (char *d, const char *s, size_t len)
 	      break;
 	    if ((*pp & ~127) || (c = base64val(*pp)) == -1)
 	      continue;
-	    if (k + 6 >= 8)
+	    if ((k + 6) >= 8)
 	    {
 	      k -= 2;
 	      *pd++ = b | (c >> k);

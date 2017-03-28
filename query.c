@@ -452,7 +452,7 @@ static void query_menu (char *buf, size_t buflen, QUERY *results, int retbuf)
 	    curpos = mutt_strlen (buf);
 	    rfc822_free_address (&tmpa);
 	  }
-	  else if (curpos + 2 < buflen)
+	  else if ((curpos + 2) < buflen)
 	  {
 	    ADDRESS *tmpa = result_to_addr (QueryTable[i].data);
 	    mutt_addrlist_to_local (tmpa);

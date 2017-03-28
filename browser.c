@@ -1896,7 +1896,7 @@ void _mutt_select_file (char *f, size_t flen, int flags, char ***files, int *num
 	  if (nntp_data != NULL)
 	  {
 	    nntp_newsrc_update (CurrentNewsSrv);
-	    if (menu->current + 1 < menu->max)
+	    if ((menu->current + 1) < menu->max)
 	      menu->current++;
 	    menu->redraw = REDRAW_MOTION_RESYNCH;
 	  }
@@ -2002,7 +2002,7 @@ void _mutt_select_file (char *f, size_t flen, int flags, char ***files, int *num
 	    }
 	    if (i == OP_BROWSER_SUBSCRIBE || i == OP_BROWSER_UNSUBSCRIBE)
 	    {
-	      if (menu->current + 1 < menu->max)
+	      if ((menu->current + 1) < menu->max)
 		menu->current++;
 	      menu->redraw = REDRAW_MOTION_RESYNCH;
 	      break;

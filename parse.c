@@ -671,7 +671,7 @@ static const char *uncomment_timezone (char *buf, size_t buflen, const char *tz)
   if ((p = strpbrk (tz, " )")) == NULL)
     return tz;
   len = p - tz;
-  if (len > buflen - 1)
+  if (len > (buflen - 1))
     len = buflen - 1;
   memcpy (buf, tz, len);
   buf[len] = 0;

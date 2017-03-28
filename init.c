@@ -2026,7 +2026,7 @@ static size_t escape_string (char *dst, size_t len, const char* src)
   if (len == 0)
     return 0;
   len--; /* save room for \0 */
-#define ESC_CHAR(C)	do { *p++ = '\\'; if (p - dst < len) *p++ = C; } while(0)
+#define ESC_CHAR(C)	do { *p++ = '\\'; if ((p - dst) < len) *p++ = C; } while(0)
   while (p - dst < len && src && *src)
   {
     switch (*src)
@@ -2063,12 +2063,12 @@ static void pretty_var (char *dst, size_t len, const char *option, const char *v
   len--; /* save room for \0 */
   p = dst + mutt_strlen (dst);
 
-  if (p - dst < len)
+  if ((p - dst) < len)
     *p++ = '=';
-  if (p - dst < len)
+  if ((p - dst) < len)
     *p++ = '"';
   p += escape_string (p, len - (p - dst) + 1, val);	/* \0 terminate it */
-  if (p - dst < len)
+  if ((p - dst) < len)
     *p++ = '"';
   *p = 0;
 }
@@ -3042,7 +3042,7 @@ static void matches_ensure_morespace(int current)
 {
   int base_space, extra_space, space;
 
-  if (current > Matches_listsize - 2)
+  if (current > (Matches_listsize - 2))
   {
     base_space = MAX(NUMVARS,NUMCOMMANDS) + 1;
     extra_space = Matches_listsize - base_space;

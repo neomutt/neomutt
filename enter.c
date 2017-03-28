@@ -106,7 +106,7 @@ static void my_wcstombs (char *dest, size_t dlen, const wchar_t *src, size_t sle
     p += wcrtomb (p, 0, &st);
 
     /* If it fits into the destination buffer, we can stop now */
-    if (p - buf <= dlen) {
+    if ((p - buf) <= dlen) {
       memcpy (dest, buf, p - buf);
       return;
     }
@@ -176,7 +176,7 @@ static void replace_part (ENTER_STATE *state, size_t from, char *buf)
   if (savelen != 0)
   {
     /* Make space for suffix */
-    if (state->curpos + savelen > state->wbuflen)
+    if ((state->curpos + savelen) > state->wbuflen)
     {
       state->wbuflen = state->curpos + savelen;
       safe_realloc (&state->wbuf, state->wbuflen * sizeof (wchar_t));

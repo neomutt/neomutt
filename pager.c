@@ -1202,7 +1202,7 @@ static int format_line (struct line_t **lineInfo, int n, unsigned char *buf,
         memset(&mbstate, 0, sizeof(mbstate));
       mutt_debug (1, "%s:%d: mbrtowc returned %lu; errno = %d.\n",
                   __FILE__, __LINE__, k, errno);
-      if (col + 4 > wrap_cols)
+      if ((col + 4) > wrap_cols)
 	break;
       col += 4;
       if (pa != NULL)
@@ -1288,7 +1288,7 @@ static int format_line (struct line_t **lineInfo, int n, unsigned char *buf,
 	wc = ' ';
       }
       t = wcwidth (wc);
-      if (col + t > wrap_cols)
+      if ((col + t) > wrap_cols)
 	break;
       col += t;
       if (pa != NULL)
@@ -1310,7 +1310,7 @@ static int format_line (struct line_t **lineInfo, int n, unsigned char *buf,
     }
     else if (wc < 0x20 || wc == 0x7f)
     {
-      if (col + 2 > wrap_cols)
+      if ((col + 2) > wrap_cols)
 	break;
       col += 2;
       if (pa != NULL)
@@ -1318,7 +1318,7 @@ static int format_line (struct line_t **lineInfo, int n, unsigned char *buf,
     }
     else if (wc < 0x100)
     {
-      if (col + 4 > wrap_cols)
+      if ((col + 4) > wrap_cols)
 	break;
       col += 4;
       if (pa != NULL)
@@ -1326,7 +1326,7 @@ static int format_line (struct line_t **lineInfo, int n, unsigned char *buf,
     }
     else
     {
-      if (col + 1 > wrap_cols)
+      if ((col + 1) > wrap_cols)
 	break;
       col += k;
       if (pa != NULL)
@@ -1842,7 +1842,7 @@ mutt_pager (const char *banner, const char *fname, int flags, pager_t *extra)
 	index->pagelen = index_window->rows;;
 
 	/* some fudge to work out whereabouts the indicator should go */
-	if (index->current - indicator < 0)
+	if ((index->current - indicator) < 0)
 	  index->top = 0;
 	else if (index->max - index->current < index->pagelen - indicator)
 	  index->top = index->max - index->pagelen;
@@ -1995,7 +1995,7 @@ mutt_pager (const char *banner, const char *fname, int flags, pager_t *extra)
     if (IsHeader (extra) && OldHdr == extra->hdr && TopLine != topline
         && lineInfo[curline].offset < sb.st_size-1)
     {
-      if (TopLine - topline > lines)
+      if ((TopLine - topline) > lines)
         topline += lines;
       else
         topline = TopLine;
@@ -2312,7 +2312,7 @@ search_next:
 	  {
 	    SearchFlag = MUTT_SEARCH;
 	    /* give some context for search results */
-	    if (topline - searchctx > 0)
+	    if ((topline - searchctx) > 0)
 	      topline -= searchctx;
 	  }
 
@@ -2429,7 +2429,7 @@ search_next:
 	      searchctx = SearchContext;
 	    else
 	      searchctx = 0;
-	    if (topline - searchctx > 0)
+	    if ((topline - searchctx) > 0)
 	      topline -= searchctx;
 	  }
 

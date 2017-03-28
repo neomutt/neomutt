@@ -728,11 +728,11 @@ int mutt_buffy_check (int force)
     return 0;
 #endif
   t = time (NULL);
-  if (!force && (t - BuffyTime < BuffyTimeout))
+  if (!force && ((t - BuffyTime) < BuffyTimeout))
     return BuffyCount;
 
   if (option (OPTMAILCHECKSTATS) &&
-      (t - BuffyStatsTime >= BuffyCheckStatsInterval))
+      ((t - BuffyStatsTime) >= BuffyCheckStatsInterval))
   {
     check_stats = 1;
     BuffyStatsTime = t;

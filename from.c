@@ -110,7 +110,7 @@ int is_from (const char *s, char *path, size_t pathlen, time_t *tp)
     if (path != NULL)
     {
       len = (size_t) (p - s);
-      if (len + 1 > pathlen)
+      if ((len + 1) > pathlen)
 	len = pathlen - 1;
       memcpy (path, s, len);
       path[len] = 0;

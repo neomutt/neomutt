@@ -854,7 +854,7 @@ mutt_attach_display_loop (MUTTMENU *menu, int op, FILE *fp, HEADER *hdr,
 
       case OP_NEXT_ENTRY:
       case OP_MAIN_NEXT_UNDELETED: /* hack */
-	if (menu->current < menu->max - 1)
+	if (menu->current < (menu->max - 1))
 	{
 	  menu->current++;
 	  op = OP_VIEW_ATTACH;

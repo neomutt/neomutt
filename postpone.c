@@ -194,7 +194,7 @@ static HEADER *select_msg (void)
 	{
 	  menu->oldcurrent = menu->current;
 	  menu->current++;
-	  if (menu->current >= menu->top + menu->pagelen)
+	  if (menu->current >= (menu->top + menu->pagelen))
 	  {
 	    menu->top = menu->current;
 	    menu->redraw = REDRAW_INDEX | REDRAW_STATUS;

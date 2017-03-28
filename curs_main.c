@@ -589,7 +589,7 @@ void index_make_entry (char *s, size_t l, MUTTMENU *menu, int num)
     {
       if (reverse != 0)
       {
-	if (menu->top + menu->pagelen > menu->max)
+	if ((menu->top + menu->pagelen) > menu->max)
 	  edgemsgno = Context->v2r[menu->max - 1];
 	else
 	  edgemsgno = Context->v2r[menu->top + menu->pagelen - 1];
@@ -2207,7 +2207,7 @@ int mutt_index_menu (void)
 
 	CHECK_MSGCOUNT;
         CHECK_VISIBLE;
-	if (menu->current >= Context->vcount - 1)
+	if (menu->current >= (Context->vcount - 1))
 	{
 	  if (menu->menu == MENU_MAIN)
 	    mutt_error (_("You are on the last message."));
@@ -2232,7 +2232,7 @@ int mutt_index_menu (void)
 
 	CHECK_MSGCOUNT;
         CHECK_VISIBLE;
-	if (menu->current >= Context->vcount - 1)
+	if (menu->current >= (Context->vcount - 1))
 	{
 	  if (menu->menu == MENU_MAIN)
 	    mutt_error (_("You are on the last message."));
@@ -2351,7 +2351,7 @@ int mutt_index_menu (void)
 	  if (op == OP_MAIN_NEXT_NEW || op == OP_MAIN_NEXT_UNREAD || op == OP_MAIN_NEXT_NEW_THEN_UNREAD)
 	  {
 	    i++;
-	    if (i > Context->vcount - 1)
+	    if (i > (Context->vcount - 1))
 	    {
 	      mutt_message (_("Search wrapped to top."));
 	      i = 0;

@@ -80,7 +80,7 @@ int safe_asprintf (char **strp, const char *fmt, ...)
        */
       if (n == 0) /* convention is to use NULL for zero-length strings. */
 	FREE (strp); /* __FREE_CHECKED__ */
-      else if (n != rlen - 1)
+      else if (n != (rlen - 1))
 	safe_realloc (strp, n + 1);
       return n;
     }

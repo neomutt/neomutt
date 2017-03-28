@@ -538,7 +538,7 @@ int imap_read_headers (IMAP_DATA* idata, int msgbegin, int msgend)
     mutt_progress_update (&progress, msgno + 1, -1);
 
     /* we may get notification of new mail while fetching headers */
-    if (msgno + 1 > fetchlast)
+    if ((msgno + 1) > fetchlast)
     {
       char *cmd = NULL;
 
@@ -655,7 +655,7 @@ int imap_read_headers (IMAP_DATA* idata, int msgbegin, int msgend)
   }
 
   if (maxuid && (status = imap_mboxcache_get (idata, idata->mailbox, 0)) &&
-      (status->uidnext < maxuid + 1))
+      (status->uidnext < (maxuid + 1)))
     status->uidnext = maxuid + 1;
 
 #ifdef USE_HCACHE

@@ -1969,7 +1969,7 @@ int mutt_search_command (int cur, int op)
   for (i = cur + incr, j = 0 ; j != Context->vcount; j++)
   {
     mutt_progress_update (&progress, j, -1);
-    if (i > Context->vcount - 1)
+    if (i > (Context->vcount - 1))
     {
       i = 0;
       if (option (OPTWRAPSEARCH))

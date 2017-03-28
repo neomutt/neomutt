@@ -502,7 +502,7 @@ void mutt_progress_update (progress_t* progress, long pos, int percent)
   if (progress->flags & MUTT_PROGRESS_SIZE &&
       (pos >= progress->pos + (progress->inc << 10)))
     update = 1;
-  else if (pos >= progress->pos + progress->inc)
+  else if (pos >= (progress->pos + progress->inc))
     update = 1;
 
   /* skip refresh if not enough time has passed */
@@ -666,13 +666,13 @@ void mutt_window_clrtoeol (mutt_window_t *win)
 {
   int row, col, curcol;
 
-  if (win->col_offset + win->cols == COLS)
+  if ((win->col_offset + win->cols) == COLS)
     clrtoeol ();
   else
   {
     getyx (stdscr, row, col);
     curcol = col;
-    while (curcol < win->col_offset + win->cols)
+    while (curcol < (win->col_offset + win->cols))
     {
       addch (' ');
       curcol++;

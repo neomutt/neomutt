@@ -4868,7 +4868,7 @@ static int verify_sender (HEADER *h, gpgme_protocol_t protocol)
 	if (1
 	    && (uid->email[0] == '<')
 	    && (uid->email[uid_length - 1] == '>')
-	    && (uid_length == sender_length + 2))
+	    && (uid_length == (sender_length + 2)))
 	{
 	  const char* at_sign = strchr(uid->email + 1, '@');
 	  if (at_sign == NULL)

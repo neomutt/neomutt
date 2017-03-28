@@ -213,7 +213,7 @@ status_format_str (char *buf, size_t buflen, size_t col, int cols, char op, cons
     case 'P':
       if (menu == NULL)
 	break;
-      if (menu->top + menu->pagelen >= menu->max)
+      if ((menu->top + menu->pagelen) >= menu->max)
 	cp = menu->top ? "end" : "all";
       else
       {

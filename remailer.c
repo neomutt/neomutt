@@ -269,7 +269,7 @@ static void mix_redraw_ce (REMAILER **type2_list,
                           type2_list[chain->ch[i]]->shortname);
     NORMAL_COLOR;
 
-    if (i + 1 < chain->cl)
+    if ((i + 1) < chain->cl)
       addstr (", ");
   }
 }
@@ -518,7 +518,7 @@ void mix_make_chain (LIST **chainp, int *redraw)
 
   while (loop)
   {
-    if (menu->pagelen != MIX_VOFFSET - 1)
+    if (menu->pagelen != (MIX_VOFFSET - 1))
     {
       menu->pagelen = MIX_VOFFSET - 1;
       menu->redraw = REDRAW_FULL;

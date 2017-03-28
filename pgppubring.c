@@ -506,7 +506,7 @@ static int pgp_parse_pgp3_sig (unsigned char *buff, size_t l,
     ml = (buff[j] << 8) + buff[j + 1];
     j += 2;
 
-    if (j + ml > l)
+    if ((j + ml) > l)
       break;
 
     nextone = j;
