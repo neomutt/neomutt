@@ -134,7 +134,7 @@ void mutt_score_message (CONTEXT *ctx, HEADER *hdr, int upd_ctx)
   {
     if (mutt_pattern_exec (tmp->pat, 0, NULL, hdr, &cache) > 0)
     {
-      if (tmp->exact || tmp->val == 9999 || tmp->val == -9999)
+      if (tmp->exact || (tmp->val == 9999) || tmp->val == -9999)
       {
 	hdr->score = tmp->val;
 	break;

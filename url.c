@@ -151,7 +151,7 @@ static int ciss_parse_userhost (ciss_url_t *ciss, char *src)
   {
     int num;
     *p++ = '\0';
-    if (mutt_atoi (p, &num) < 0 || num < 0 || num > 0xffff)
+    if (mutt_atoi (p, &num) < 0 || (num < 0) || (num > 0xffff))
       return -1;
     ciss->port = (unsigned short)num;
   }
@@ -185,7 +185,7 @@ static void url_pct_encode (char *dst, size_t l, const char *src)
   l--;
   while (src && *src && l)
   {
-    if (strchr ("/:%", *src) && l > 3)
+    if (strchr ("/:%", *src) && (l > 3))
     {
       *dst++ = '%';
       *dst++ = alph[(*src >> 4) & 0xf];

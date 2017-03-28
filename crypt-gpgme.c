@@ -572,7 +572,7 @@ static char *data_object_to_tempfile (gpgme_data_t data, char *tempf, FILE **ret
       mutt_mktemp (tempfb, sizeof (tempfb));
       tempf = tempfb;
     }
-  if ((fp = safe_fopen (tempf, tempf == tempfb ? "w+" : "a+")) == NULL)
+  if ((fp = safe_fopen (tempf, (tempf == tempfb) ? "w+" : "a+")) == NULL)
     {
       mutt_perror (_("Can't create temporary file"));
       return NULL;
@@ -1239,14 +1239,14 @@ static int show_sig_summary (unsigned long sum,
 
   if (option (OPTCRYPTUSEPKA))
     {
-      if (sig->pka_trust == 1 && sig->pka_address)
+      if ((sig->pka_trust == 1) && sig->pka_address)
 	{
 	  state_puts (_("WARNING: PKA entry does not match "
 			       "signer's address: "), s);
 	  state_puts (sig->pka_address, s);
 	  state_puts ("\n", s);
 	}
-      else if (sig->pka_trust == 2 && sig->pka_address)
+      else if ((sig->pka_trust == 2) && sig->pka_address)
 	{
 	  state_puts (_("PKA verified signer's address is: "), s);
 	  state_puts (sig->pka_address, s);
@@ -1297,7 +1297,7 @@ static void show_fingerprint (gpgme_key_t key, STATE *state)
           *p++ = s[0];
           *p++ = s[1];
           *p++ = is_pgp? ' ':':';
-          if (is_pgp && i == 7)
+          if (is_pgp && (i == 7))
             *p++ = ' ';
         }
     }
@@ -2056,7 +2056,7 @@ static int pgp_gpgme_extract_keys (gpgme_data_t keydata, FILE** fp, int dryrun)
     }
 
     engineinfo = gpgme_ctx_get_engine_info (tmpctx);
-    while (engineinfo && engineinfo->protocol != GPGME_PROTOCOL_OpenPGP)
+    while (engineinfo && (engineinfo->protocol != GPGME_PROTOCOL_OpenPGP))
       engineinfo = engineinfo->next;
     if (engineinfo == NULL)
     {
@@ -2805,7 +2805,7 @@ static const char *crypt_entry_fmt (char *dest,
 	  do_locales = 1;
 
 	len = destlen - 1;
-	while (len > 0 && *cp != ']')
+	while ((len > 0) && *cp != ']')
 	{
 	  if (*cp == '%')
 	  {
@@ -3484,7 +3484,7 @@ static void print_key_info (gpgme_key_t key, FILE *fp)
               putc (s[2], fp);
               putc (s[3], fp);
               putc (is_pgp? ' ':':', fp);
-              if (is_pgp && i == 4)
+              if (is_pgp && (i == 4))
                 putc (' ', fp);
             }
         }
@@ -3495,7 +3495,7 @@ static void print_key_info (gpgme_key_t key, FILE *fp)
               putc (*s, fp);
               putc (s[1], fp);
               putc (is_pgp? ' ':':', fp);
-              if (is_pgp && i == 7)
+              if (is_pgp && (i == 7))
                 putc (' ', fp);
             }
         }
@@ -4198,7 +4198,7 @@ static crypt_key_t *crypt_getkeybyaddr (ADDRESS * a, short abilities,
                 if (validity & CRYPT_KV_STRONGID)
                 {
                   if (the_strong_valid_key
-                      && the_strong_valid_key->kobj != k->kobj)
+                      && (the_strong_valid_key->kobj != k->kobj))
                     multi             = 1;
                   this_key_has_strong = 1;
                 }

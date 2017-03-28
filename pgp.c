@@ -387,7 +387,7 @@ int pgp_application_pgp_handler (BODY *m, STATE *s)
       }
 
       fputs (buf, tmpfp);
-      while (bytes > 0 && fgets (buf, sizeof (buf) - 1, s->fpin) != NULL)
+      while ((bytes > 0) && fgets (buf, sizeof (buf) - 1, s->fpin) != NULL)
       {
 	offset = ftello (s->fpin);
 	bytes -= (offset - last_pos); /* don't rely on mutt_strlen(buf) */
@@ -484,7 +484,7 @@ int pgp_application_pgp_handler (BODY *m, STATE *s)
 	  c = fgetc (pgpout);
 	  ungetc (c, pgpout);
 	}
-        if (!clearsign && (!pgpout || c == EOF))
+        if (!clearsign && (!pgpout || (c == EOF)))
 	{
 	  could_not_decrypt = 1;
 	  pgp_void_passphrase ();
@@ -862,7 +862,7 @@ static BODY *pgp_decrypt_part (BODY *a, STATE *s, FILE *fpout, BODY *p)
   while (fgets (buf, sizeof (buf) - 1, pgpout) != NULL)
   {
     len = mutt_strlen (buf);
-    if (len > 1 && buf[len - 2] == '\r')
+    if ((len > 1) && buf[len - 2] == '\r')
       strcpy (buf + len - 2, "\n");	/* __STRCPY_CHECKED__ */
     fputs (buf, fpout);
   }

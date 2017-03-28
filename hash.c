@@ -275,7 +275,7 @@ static void union_hash_delete (HASH *table, union hash_key key, const void *data
 
   while (ptr)
   {
-    if ((data == ptr->data || !data)
+    if (((data == ptr->data) || !data)
 	&& table->cmp_key (ptr->key, key) == 0)
     {
       *last = ptr->next;

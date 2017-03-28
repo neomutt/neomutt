@@ -298,7 +298,7 @@ parse_route_addr (const char *s,
   {
     while (s && *s == '@')
     {
-      if (tokenlen < sizeof (token) - 1)
+      if (tokenlen < (sizeof(token) - 1))
 	token[tokenlen++] = '@';
       s = parse_mailboxdomain (s + 1, ",.\\[](", token,
 			       &tokenlen, sizeof (token) - 1,
@@ -310,7 +310,7 @@ parse_route_addr (const char *s,
       return NULL; /* invalid route */
     }
 
-    if (tokenlen < sizeof (token) - 1)
+    if (tokenlen < (sizeof(token) - 1))
       token[tokenlen++] = ':';
     s++;
   }
@@ -420,7 +420,7 @@ ADDRESS *rfc822_parse_adrlist (ADDRESS *top, const char *s)
     }
     else if (*s == '(')
     {
-      if (commentlen && commentlen < sizeof (comment) - 1)
+      if (commentlen && (commentlen < (sizeof(comment) - 1)))
 	comment[commentlen++] = ' ';
       if ((ps = next_token (s, comment, &commentlen, sizeof (comment) - 1)) == NULL)
       {
@@ -431,7 +431,7 @@ ADDRESS *rfc822_parse_adrlist (ADDRESS *top, const char *s)
     }
     else if (*s == '"')
     {
-      if (phraselen && phraselen < sizeof (phrase) - 1)
+      if (phraselen && (phraselen < (sizeof(phrase) - 1)))
         phrase[phraselen++] = ' ';
       if ((ps = parse_quote (s + 1, phrase, &phraselen, sizeof (phrase) - 1)) == NULL)
       {
@@ -521,7 +521,7 @@ ADDRESS *rfc822_parse_adrlist (ADDRESS *top, const char *s)
     }
     else
     {
-      if (phraselen && phraselen < sizeof (phrase) - 1 && ws_pending)
+      if (phraselen && (phraselen < (sizeof(phrase) - 1)) && ws_pending)
 	phrase[phraselen++] = ' ';
       if ((ps = next_token (s, phrase, &phraselen, sizeof (phrase) - 1)) == NULL)
       {

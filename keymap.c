@@ -168,7 +168,7 @@ static int parse_keycode (const char *s)
   while (ISSPACE(*endChar))
     ++endChar;
   /* negative keycodes don't make sense, also detect overflow */
-  if (*endChar != '>' || result < 0 || result == LONG_MAX) {
+  if (*endChar != '>' || (result < 0) || (result == LONG_MAX)) {
     return -1;
   }
 
@@ -243,7 +243,7 @@ void km_bind (char *s, int menu, int op, char *macro, char *descr)
 
   while (tmp)
   {
-    if (pos >= len || pos >= tmp->len)
+    if ((pos >= len) || (pos >= tmp->len))
     {
       /* map and tmp match, but have different lengths, so overwrite */
       do
@@ -256,7 +256,7 @@ void km_bind (char *s, int menu, int op, char *macro, char *descr)
 	FREE (&tmp);
 	tmp = next;
       }
-      while (tmp && len >= pos);
+      while (tmp && (len >= pos));
       map->eq = len;
       break;
     }
@@ -336,7 +336,7 @@ static void generic_tokenize_push_string (char *s, void (*generic_push) (int, in
        function name and return the corresponding value */
     if (*p == '>')
     {
-      for (pp = p - 1; pp >= s && *pp != '<'; pp--)
+      for (pp = p - 1; (pp >= s) && *pp != '<'; pp--)
 	;
       if (pp >= s)
       {
@@ -393,7 +393,7 @@ static void generic_tokenize_push_string (char *s, void (*generic_push) (int, in
 
 static int retry_generic (int menu, keycode_t *keys, int keyslen, int lastkey)
 {
-  if (menu != MENU_EDITOR && menu != MENU_GENERIC && menu != MENU_PAGER)
+  if ((menu != MENU_EDITOR) && (menu != MENU_GENERIC) && (menu != MENU_PAGER))
   {
     if (lastkey != 0)
       mutt_unget_event (lastkey, 0);
@@ -427,7 +427,7 @@ int km_dokey (int menu)
 
   while (true)
   {
-    i = Timeout > 0 ? Timeout : 60;
+    i = (Timeout > 0) ? Timeout : 60;
 #ifdef USE_IMAP
     /* keepalive may need to run more frequently than Timeout allows */
     if (ImapKeepalive != 0)
@@ -435,7 +435,7 @@ int km_dokey (int menu)
       if (ImapKeepalive >= i)
       	imap_keepalive ();
       else
-	while (ImapKeepalive && ImapKeepalive < i)
+	while (ImapKeepalive && (ImapKeepalive < i))
 	{
 	  timeout (ImapKeepalive * 1000);
 	  tmp = mutt_getch ();
@@ -460,7 +460,7 @@ int km_dokey (int menu)
   gotkey:
 #endif
     /* hide timeouts and window resizes from line editor. */
-    if (menu == MENU_EDITOR && tmp.ch == -2)
+    if ((menu == MENU_EDITOR) && tmp.ch == -2)
       continue;
 
     LastKey = tmp.ch;
@@ -478,10 +478,10 @@ int km_dokey (int menu)
 	  (func = get_func (bindings, tmp.op)))
 	return tmp.op;
 
-      if (menu == MENU_EDITOR && get_func (OpEditor, tmp.op))
+      if ((menu == MENU_EDITOR) && get_func (OpEditor, tmp.op))
 	return tmp.op;
 
-      if (menu != MENU_EDITOR && menu != MENU_PAGER)
+      if ((menu != MENU_EDITOR) && (menu != MENU_PAGER))
       {
 	/* check generic menu */
 	bindings = OpGeneric;
@@ -514,7 +514,7 @@ int km_dokey (int menu)
     /* Nope. Business as usual */
     while (LastKey > map->keys[pos])
     {
-      if (pos > map->eq || !map->next)
+      if ((pos > map->eq) || !map->next)
 	return (retry_generic (menu, map->keys, pos, LastKey));
       map = map->next;
     }
@@ -567,7 +567,7 @@ static const char *km_keyname (int c)
   if ((p = mutt_getnamebyvalue (c, KeyNames)))
     return p;
 
-  if (c < 256 && c > -128 && iscntrl ((unsigned char) c))
+  if ((c < 256) && c > -128 && iscntrl ((unsigned char) c))
   {
     if (c < 0)
       c += 256;
@@ -581,7 +581,7 @@ static const char *km_keyname (int c)
     else
       snprintf (buf, sizeof (buf), "\\%d%d%d", c >> 6, (c >> 3) & 7, c & 7);
   }
-  else if (c >= KEY_F0 && c < KEY_F(256)) /* this maximum is just a guess */
+  else if ((c >= KEY_F0) && c < KEY_F(256)) /* this maximum is just a guess */
     sprintf (buf, "<F%d>", c - KEY_F0);
   else if (IsPrint (c))
     snprintf (buf, sizeof (buf), "%c", (unsigned char) c);
@@ -1102,11 +1102,11 @@ int mutt_parse_exec (BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err)
     function = buf->data;
 
     if ((bindings = km_get_table (CurrentMenu)) == NULL
-	&& CurrentMenu != MENU_PAGER)
+	&& (CurrentMenu != MENU_PAGER))
       bindings = OpGeneric;
 
     ops[nops] = get_op (bindings, function, mutt_strlen(function));
-    if (ops[nops] == OP_NULL && CurrentMenu != MENU_PAGER)
+    if (ops[nops] == OP_NULL && (CurrentMenu != MENU_PAGER))
       ops[nops] = get_op (OpGeneric, function, mutt_strlen(function));
 
     if (ops[nops] == OP_NULL)
@@ -1136,13 +1136,13 @@ void mutt_what_key (void)
   mutt_window_mvprintw (MuttMessageWindow, 0, 0, _("Enter keys (^G to abort): "));
   do {
     ch = getch();
-    if (ch != ERR && ch != ctrl ('G'))
+    if ((ch != ERR) && (ch != ctrl('G')))
     {
       mutt_message(_("Char = %s, Octal = %o, Decimal = %d"),
 	       km_keyname(ch), ch, ch);
     }
   }
-  while (ch != ERR && ch != ctrl ('G'));
+  while ((ch != ERR) && (ch != ctrl('G')));
 
   mutt_flushinp();
   mutt_clear_error();

@@ -307,7 +307,7 @@ int main (int argc, char **argv, char **environ)
 
       case 'd':
 #ifdef DEBUG
-	if (mutt_atoi (optarg, &debuglevel) < 0 || debuglevel <= 0)
+	if (mutt_atoi (optarg, &debuglevel) < 0 || (debuglevel <= 0))
 	{
 	  fprintf (stderr, _("Error: value '%s' is invalid for -d.\n"), optarg);
 	  return 1;
@@ -504,12 +504,12 @@ int main (int argc, char **argv, char **environ)
     /* we're not connected yet - skip mail folder creation */
     if (!mx_is_imap (fpath))
 #endif
-    if (stat (fpath, &sb) == -1 && errno == ENOENT)
+    if (stat (fpath, &sb) == -1 && (errno == ENOENT))
     {
       snprintf (msg2, sizeof (msg2), _("%s does not exist. Create it?"), Maildir);
       if (mutt_yesorno (msg2, MUTT_YES) == MUTT_YES)
       {
-	if (mkdir (fpath, 0700) == -1 && errno != EEXIST)
+	if (mkdir (fpath, 0700) == -1 && (errno != EEXIST))
 	  mutt_error (_("Can't create %s: %s."), Maildir, strerror (errno));
       }
     }
@@ -527,7 +527,7 @@ int main (int argc, char **argv, char **environ)
     mutt_endwin (NULL);
   }
   else if (subject || msg || sendflags || draftFile || includeFile || attach ||
-	   optind < argc)
+	   (optind < argc))
   {
     FILE *fin = NULL;
     FILE *fout = NULL;

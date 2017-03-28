@@ -421,7 +421,7 @@ int mutt_wctoutf8(char *s, unsigned int c, size_t buflen);
 #ifdef LOCALES_HACK
 #define IsPrint(c) (isprint((unsigned char)(c)) || \
 	((unsigned char)(c) >= 0xa0))
-#define IsWPrint(wc) (iswprint(wc) || wc >= 0xa0)
+#define IsWPrint(wc) (iswprint(wc) || (wc >= 0xa0))
 #else
 #define IsPrint(c) (isprint((unsigned char)(c)) || \
 	(option (OPTLOCALES) ? 0 : \

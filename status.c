@@ -99,7 +99,7 @@ status_format_str (char *buf, size_t buflen, size_t col, int cols, char op, cons
     {
 #ifdef USE_NOTMUCH
       char *p = NULL;
-      if (Context && Context->magic == MUTT_NOTMUCH &&
+      if (Context && (Context->magic == MUTT_NOTMUCH) &&
                    (p = nm_get_description(Context)))
 	  strfcpy(tmp, p, sizeof (tmp));
       else
@@ -234,7 +234,7 @@ status_format_str (char *buf, size_t buflen, size_t col, int cols, char op, cons
 	i = option(OPTATTACHMSG) ? 3 : ((Context->readonly ||
           Context->dontwrite) ? 2 : (Context->changed ||
           /* deleted doesn't necessarily mean changed in IMAP */
-          (Context->magic != MUTT_IMAP &&
+          ((Context->magic != MUTT_IMAP) &&
            Context->deleted)) ? 1 : 0);
       }
 

@@ -95,7 +95,7 @@ void mutt_adv_mktemp (char *s, size_t l)
     strfcpy (prefix, s, sizeof (prefix));
     mutt_sanitize_filename (prefix, 1);
     snprintf (s, l, "%s/%s", NONULL (Tempdir), prefix);
-    if (lstat (s, &sb) == -1 && errno == ENOENT)
+    if (lstat (s, &sb) == -1 && (errno == ENOENT))
       return;
 
     if ((suffix = strrchr (prefix, '.')) != NULL)
@@ -732,7 +732,7 @@ int mutt_is_text_part (BODY *b)
       return 1;
   }
 
-  if ((WithCrypto & APPLICATION_PGP) && t == TYPEAPPLICATION)
+  if ((WithCrypto & APPLICATION_PGP) && (t == TYPEAPPLICATION))
   {
     if (ascii_strcasecmp ("pgp-keys", s) == 0)
       return 1;
@@ -901,7 +901,7 @@ void _mutt_mktemp (char *s, size_t slen, const char *prefix, const char *suffix,
                 "filename! slen=%zu but need %zu\n",
                 src, line, slen, n);
   mutt_debug (3, "%s:%d: mutt_mktemp returns \"%s\".\n", src, line, s);
-  if (unlink (s) && errno != ENOENT)
+  if (unlink (s) && (errno != ENOENT))
     mutt_debug (1, "%s:%d: ERROR: unlink(\"%s\"): %s (errno %d)\n",
                 src, line, s, strerror (errno), errno);
 }
@@ -932,7 +932,7 @@ void mutt_pretty_mailbox (char *s, size_t buflen)
   scheme = url_check_scheme (s);
 
 #ifdef USE_IMAP
-  if (scheme == U_IMAP || scheme == U_IMAPS)
+  if ((scheme == U_IMAP) || (scheme == U_IMAPS))
   {
     imap_pretty_mailbox (s);
     return;
@@ -979,7 +979,7 @@ void mutt_pretty_mailbox (char *s, size_t buflen)
     *q = 0;
   }
   else if (strstr (p, "..") &&
-	   (scheme == U_UNKNOWN || scheme == U_FILE) &&
+	   ((scheme == U_UNKNOWN) || (scheme == U_FILE)) &&
 	   realpath (p, tmp))
     strfcpy (p, tmp, buflen - (p - s));
 
@@ -1048,8 +1048,8 @@ void mutt_expand_fmt (char *dest, size_t destlen, const char *fmt, const char *s
 	case 's':
 	  found = 1;
 	  strfcpy (d, src, destlen + 1);
-	  d       += destlen > slen ? slen : destlen;
-	  destlen -= destlen > slen ? slen : destlen;
+	  d       += (destlen > slen) ? slen : destlen;
+	  destlen -= (destlen > slen) ? slen : destlen;
 	  p++;
 	  break;
 	default:
@@ -1067,7 +1067,7 @@ void mutt_expand_fmt (char *dest, size_t destlen, const char *fmt, const char *s
 
   *d = '\0';
 
-  if (!found && destlen > 0)
+  if (!found && (destlen > 0))
   {
     safe_strcat (dest, destlen, " ");
     safe_strcat (dest, destlen, src);
@@ -1191,7 +1191,7 @@ char *mutt_apply_replace (char *dbuf, size_t dlen, char *sbuf, REPLACE_LIST *rli
   if (dbuf && dlen)
     dbuf[0] = '\0';
 
-  if (sbuf == NULL || *sbuf == '\0' || (dbuf && !dlen))
+  if ((sbuf == NULL) || *sbuf == '\0' || (dbuf && !dlen))
     return dbuf;
 
   twinbuf[0][0] = '\0';
@@ -1295,17 +1295,17 @@ void mutt_FormatString (char *dest,		/* output buffer */
 
     /* Do not consider filters if no pipe at end */
     n = mutt_strlen(src);
-    if (n > 1 && src[n-1] == '|')
+    if ((n > 1) && src[n-1] == '|')
     {
       /* Scan backwards for backslashes */
       off = n;
-      while (off > 0 && src[off-2] == '\\')
+      while ((off > 0) && src[off-2] == '\\')
         off--;
     }
 
     /* If number of backslashes is even, the pipe is real. */
     /* n-off is the number of backslashes. */
-    if (off > 0 && ((n-off) % 2) == 0)
+    if ((off > 0) && ((n-off) % 2) == 0)
     {
       BUFFER *srcbuf = NULL, *word = NULL, *command = NULL;
       char    srccopy[LONG_STRING];
@@ -1417,7 +1417,7 @@ void mutt_FormatString (char *dest,		/* output buffer */
     }
   }
 
-  while (*src && wlen < destlen)
+  while (*src && (wlen < destlen))
   {
     if (*src == '%')
     {
@@ -1455,7 +1455,7 @@ void mutt_FormatString (char *dest,		/* output buffer */
 	src++;
 	cp = prefix;
 	count = 0;
-	while ((count < sizeof (prefix)) && (*src != '?')) {
+	while ((count < sizeof(prefix)) && (*src != '?')) {
 	  *cp++ = *src++;
 	  count++;
 	}
@@ -1468,8 +1468,8 @@ void mutt_FormatString (char *dest,		/* output buffer */
 	/* eat the format string */
 	cp = prefix;
 	count = 0;
-	while (count < sizeof (prefix) &&
-	       (isdigit ((unsigned char) *src) || *src == '.' || *src == '-' || *src == '='))
+	while ((count < sizeof(prefix)) &&
+	       (isdigit ((unsigned char) *src) || (*src == '.') || (*src == '-') || (*src == '=')))
 	{
 	  *cp++ = *src++;
 	  count++;
@@ -1552,7 +1552,7 @@ void mutt_FormatString (char *dest,		/* output buffer */
 	  pl = pw = 1;
 
 	/* see if there's room to add content, else ignore */
-	if ((col < cols && wlen < destlen) || soft)
+	if (((col < cols) && (wlen < destlen)) || soft)
 	{
 	  int pad;
 
@@ -1566,14 +1566,14 @@ void mutt_FormatString (char *dest,		/* output buffer */
 	  {
             /* try to consume as many columns as we can, if we don't have
              * memory for that, use as much memory as possible */
-            if (wlen + (pad * pl) + len > destlen)
+            if (wlen + (pad * pl) + (len > destlen))
               pad = (destlen > (wlen + len)) ? ((destlen - wlen - len) / pl) : 0;
             else
             {
               /* Add pre-spacing to make multi-column pad characters and
                * the contents after padding line up */
-              while ((col + (pad * pw) + wid < cols) &&
-                     (wlen + (pad * pl) + len < destlen))
+              while ((col + (pad * pw) + (wid < cols)) &&
+                     (wlen + (pad * pl) + (len < destlen)))
               {
                 *wptr++ = ' ';
                 wlen++;
@@ -1588,7 +1588,7 @@ void mutt_FormatString (char *dest,		/* output buffer */
 	      col += pw;
 	    }
 	  }
-	  else if (soft && pad < 0)
+	  else if (soft && (pad < 0))
 	  {
 	    int offset = ((flags & MUTT_FORMAT_ARROWCURSOR) && option (OPTARROWCURSOR)) ? 3 : 0;
             int avail_cols = (cols > offset) ? (cols - offset) : 0;
@@ -1626,10 +1626,10 @@ void mutt_FormatString (char *dest,		/* output buffer */
 	  pl = pw = 1;
 
 	/* see if there's room to add content, else ignore */
-	if (col < cols && wlen < destlen)
+	if ((col < cols) && (wlen < destlen))
 	{
 	  c = (cols - col) / pw;
-	  if (c > 0 && wlen + (c * pl) > destlen)
+	  if ((c > 0) && wlen + (c * pl) > destlen)
 	    c = ((signed)(destlen - wlen)) / pl;
 	  while (c > 0)
 	  {
@@ -1671,7 +1671,7 @@ void mutt_FormatString (char *dest,		/* output buffer */
 		*p = '_';
 	}
 
-	if ((len = mutt_strlen (buf)) + wlen > destlen)
+	if ((len = mutt_strlen (buf)) + (wlen > destlen))
 	  len = mutt_wstr_trunc (buf, destlen - wlen, cols - col, NULL);
 
 	memcpy (wptr, buf, len);
@@ -1716,7 +1716,7 @@ void mutt_FormatString (char *dest,		/* output buffer */
       /* in case of error, simply copy byte */
       if ((tmp = mutt_charlen (src, &w)) < 0)
 	tmp = w = 1;
-      if (tmp > 0 && (wlen + tmp) < destlen)
+      if ((tmp > 0) && (wlen + tmp) < destlen)
       {
         memcpy (wptr, src, tmp);
         wptr += tmp;
@@ -1788,7 +1788,7 @@ int mutt_save_confirm (const char *s, struct stat *st)
   }
 #endif
 
-  if (magic > 0 && !mx_access (s, W_OK))
+  if ((magic > 0) && !mx_access (s, W_OK))
   {
     if (option (OPTCONFIRMAPPEND))
     {
@@ -2086,7 +2086,7 @@ int mutt_match_spam_list (const char *s, REPLACE_LIST *l, char *text, int textsi
 	  /* Ensure that the integer conversion succeeded (e!=p) and bounds check.  The upper bound check
 	   * should not strictly be necessary since add_to_spam_list() finds the largest value, and
 	   * the static array above is always large enough based on that value. */
-	  if (e != p && n >= 0 && n <= l->nmatch && pmatch[n].rm_so != -1) {
+	  if ((e != p) && (n >= 0) && (n <= l->nmatch) && pmatch[n].rm_so != -1) {
 	    /* copy as much of the substring match as will fit in the output buffer, saving space for
 	     * the terminating nul char */
 	    int idx;

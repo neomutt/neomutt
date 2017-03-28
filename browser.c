@@ -492,7 +492,7 @@ newsgroup_format_str (char *dest, size_t destlen, size_t col, int cols, char op,
 	  mutt_FormatString (dest, destlen, col, cols, elsestring, newsgroup_format_str,
 		data, flags);
       }
-      else if (Context && Context->data == folder->ff->nd)
+      else if (Context && (Context->data == folder->ff->nd))
       {
 	snprintf (tmp, sizeof (tmp), "%%%sd", fmt);
 	snprintf (dest, destlen, tmp, Context->unread);
@@ -505,14 +505,14 @@ newsgroup_format_str (char *dest, size_t destlen, size_t col, int cols, char op,
       break;
 
     case 'n':
-      if (Context && Context->data == folder->ff->nd)
+      if (Context && (Context->data == folder->ff->nd))
       {
 	snprintf (tmp, sizeof (tmp), "%%%sd", fmt);
 	snprintf (dest, destlen, tmp, Context->new);
       }
       else if (option (OPTMARKOLD) &&
-		folder->ff->nd->lastCached >= folder->ff->nd->firstMessage &&
-		folder->ff->nd->lastCached <= folder->ff->nd->lastMessage)
+	 (folder->ff->nd->lastCached >= folder->ff->nd->firstMessage) &&
+	 (folder->ff->nd->lastCached <= folder->ff->nd->lastMessage))
       {
 	snprintf (tmp, sizeof (tmp), "%%%sd", fmt);
 	snprintf (dest, destlen, tmp, folder->ff->nd->lastMessage - folder->ff->nd->lastCached);
@@ -998,7 +998,7 @@ static int file_tag (MUTTMENU *menu, int n, int m)
   }
 
   ot = ff->tagged;
-  ff->tagged = (m >= 0 ? m : !ff->tagged);
+  ff->tagged = ((m >= 0) ? m : !ff->tagged);
 
   return ff->tagged - ot;
 }
@@ -1084,12 +1084,12 @@ void _mutt_select_file (char *f, size_t flen, int flags, char ***files, int *num
     else
     {
 #endif
-    for (i = mutt_strlen (f) - 1; i > 0 && f[i] != '/' ; i--);
+    for (i = mutt_strlen (f) - 1; (i > 0) && f[i] != '/' ; i--);
     if (i > 0)
     {
       if (f[0] == '/')
       {
-	if (i > sizeof (LastDir) - 1) i = sizeof (LastDir) - 1;
+	if (i > (sizeof(LastDir) - 1)) i = sizeof (LastDir) - 1;
 	strncpy (LastDir, f, i);
 	LastDir[i] = 0;
       }
@@ -1108,7 +1108,7 @@ void _mutt_select_file (char *f, size_t flen, int flags, char ***files, int *num
 	getcwd (LastDir, sizeof (LastDir));
     }
 
-    if (i <= 0 && f[0] != '/')
+    if ((i <= 0) && f[0] != '/')
       strfcpy (prefix, f, sizeof (prefix));
     else
       strfcpy (prefix, f + i + 1, sizeof (prefix));
@@ -1344,7 +1344,7 @@ void _mutt_select_file (char *f, size_t flen, int flags, char ***files, int *num
 	      url_parse_ciss (&url, state.entry[menu->current].name);
 	      if (url.path &&
 		  (state.entry[menu->current].delim != '\0') &&
-		  (n < sizeof (LastDir)))
+		  (n < sizeof(LastDir)))
 	      {
 		LastDir[n] = '\0';
 		LastDir[n-1] = state.entry[menu->current].delim;
@@ -1950,7 +1950,7 @@ void _mutt_select_file (char *f, size_t flen, int flags, char ***files, int *num
 	  char *s = buf;
 	  int rc, j = menu->current;
 
-	  if (i == OP_SUBSCRIBE_PATTERN || i == OP_UNSUBSCRIBE_PATTERN)
+	  if ((i == OP_SUBSCRIBE_PATTERN) || (i == OP_UNSUBSCRIBE_PATTERN))
 	  {
 	    char tmp[STRING];
 	    int err;
@@ -1992,15 +1992,15 @@ void _mutt_select_file (char *f, size_t flen, int flags, char ***files, int *num
 	  {
 	    struct folder_file *ff = &state.entry[j];
 
-	    if (i == OP_BROWSER_SUBSCRIBE || i == OP_BROWSER_UNSUBSCRIBE ||
+	    if ((i == OP_BROWSER_SUBSCRIBE) || (i == OP_BROWSER_UNSUBSCRIBE) ||
 		  regexec (rx, ff->name, 0, NULL, 0) == 0)
 	    {
-	      if (i == OP_BROWSER_SUBSCRIBE || i == OP_SUBSCRIBE_PATTERN)
+	      if ((i == OP_BROWSER_SUBSCRIBE) || (i == OP_SUBSCRIBE_PATTERN))
 		nntp_data = mutt_newsgroup_subscribe (nserv, ff->name);
 	      else
 		nntp_data = mutt_newsgroup_unsubscribe (nserv, ff->name);
 	    }
-	    if (i == OP_BROWSER_SUBSCRIBE || i == OP_BROWSER_UNSUBSCRIBE)
+	    if ((i == OP_BROWSER_SUBSCRIBE) || (i == OP_BROWSER_UNSUBSCRIBE))
 	    {
 	      if ((menu->current + 1) < menu->max)
 		menu->current++;
@@ -2031,7 +2031,7 @@ void _mutt_select_file (char *f, size_t flen, int flags, char ***files, int *num
 	  nntp_newsrc_update (nserv);
 	  nntp_clear_cache (nserv);
 	  nntp_newsrc_close (nserv);
-	  if (i != OP_BROWSER_SUBSCRIBE && i != OP_BROWSER_UNSUBSCRIBE)
+	  if ((i != OP_BROWSER_SUBSCRIBE) && (i != OP_BROWSER_UNSUBSCRIBE))
 	    regfree (rx);
 	  FREE (&rx);
 	}

@@ -155,7 +155,7 @@ int mutt_display_message (HEADER *cur)
 #endif
   res = mutt_copy_message (fpout, Context, cur, cmflags, chflags);
 
-  if ((safe_fclose (&fpout) != 0 && errno != EPIPE) || res < 0)
+  if ((safe_fclose (&fpout) != 0 && (errno != EPIPE)) || (res < 0))
   {
     mutt_error (_("Could not copy message"));
     if (fpfilterout != NULL)
@@ -167,7 +167,7 @@ int mutt_display_message (HEADER *cur)
     return 0;
   }
 
-  if (fpfilterout != NULL && mutt_wait_filter (filterpid) != 0)
+  if ((fpfilterout != NULL) && mutt_wait_filter (filterpid) != 0)
     mutt_any_key_to_continue (NULL);
 
   safe_fclose (&fpfilterout);	/* XXX - check result? */
@@ -591,7 +591,7 @@ int mutt_select_sort (int reverse)
   if (reverse != 0)
     Sort |= SORT_REVERSE;
 
-  return (Sort != method ? 0 : -1); /* no need to resort if it's the same */
+  return ((Sort != method) ? 0 : -1); /* no need to resort if it's the same */
 }
 
 /* invoke a command in a subshell */
@@ -829,7 +829,7 @@ int mutt_save_message (HEADER *h, int delete,
   mutt_message (_("Copying to %s..."), buf);
 
 #ifdef USE_IMAP
-  if (Context->magic == MUTT_IMAP &&
+  if ((Context->magic == MUTT_IMAP) &&
       !(decode || decrypt) && mx_is_imap (buf))
   {
     switch (imap_copy_messages (Context, h, buf, delete))
@@ -981,7 +981,7 @@ void mutt_edit_content_type (HEADER *h, BODY *b, FILE *fp)
 
   /* if in send mode, check for conversion - current setting is default. */
 
-  if (!h && b->type == TYPETEXT && charset_changed)
+  if (!h && (b->type == TYPETEXT) && charset_changed)
   {
     int r;
     snprintf (tmp, sizeof (tmp), _("Convert to %s upon sending?"),
@@ -995,7 +995,7 @@ void mutt_edit_content_type (HEADER *h, BODY *b, FILE *fp)
   snprintf (tmp, sizeof (tmp), "%s/%s", TYPE (b), NONULL (b->subtype));
   if (type_changed != 0)
     mutt_message (_("Content-Type changed to %s."), tmp);
-  if (b->type == TYPETEXT && charset_changed)
+  if ((b->type == TYPETEXT) && charset_changed)
   {
     if (type_changed != 0)
       mutt_sleep (1);

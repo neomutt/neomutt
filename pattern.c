@@ -110,7 +110,7 @@ static const char *get_offset (struct tm *tm, const char *s, int sign)
 {
   char *ps = NULL;
   int offset = strtol (s, &ps, 0);
-  if ((sign < 0 && offset > 0) || (sign > 0 && offset < 0))
+  if (((sign < 0) && (offset > 0)) || ((sign > 0) && (offset < 0)))
     offset = -offset;
 
   switch (*ps)
@@ -141,7 +141,7 @@ static const char *get_date (const char *s, struct tm *t, BUFFER *err)
   struct tm *tm = localtime (&now);
 
   t->tm_mday = strtol (s, &p, 10);
-  if (t->tm_mday < 1 || t->tm_mday > 31)
+  if ((t->tm_mday < 1) || (t->tm_mday > 31))
   {
     snprintf (err->data, err->dsize, _("Invalid day of month: %s"), s);
     return NULL;
@@ -155,7 +155,7 @@ static const char *get_date (const char *s, struct tm *t, BUFFER *err)
   }
   p++;
   t->tm_mon = strtol (p, &p, 10) - 1;
-  if (t->tm_mon < 0 || t->tm_mon > 11)
+  if ((t->tm_mon < 0) || (t->tm_mon > 11))
   {
     snprintf (err->data, err->dsize, _("Invalid month: %s"), p);
     return NULL;
@@ -290,7 +290,7 @@ static const char * parse_date_range (const char* pc, struct tm *min,
 	else
 	{
 	  pc = pt;
-	  if (flag == MUTT_PDR_NONE && !haveMin)
+	  if ((flag == MUTT_PDR_NONE) && !haveMin)
 	  { /* the very first "-3d" without a previous absolute date */
 	    max->tm_year = min->tm_year;
 	    max->tm_mon = min->tm_mon;
@@ -339,9 +339,9 @@ static const char * parse_date_range (const char* pc, struct tm *min,
 static void adjust_date_range (struct tm *min, struct tm *max)
 {
   if (min->tm_year > max->tm_year
-      || (min->tm_year == max->tm_year && min->tm_mon > max->tm_mon)
-      || (min->tm_year == max->tm_year && min->tm_mon == max->tm_mon
-	&& min->tm_mday > max->tm_mday))
+      || ((min->tm_year == max->tm_year) && (min->tm_mon > max->tm_mon))
+      || ((min->tm_year == max->tm_year) && min->tm_mon == max->tm_mon
+	&& (min->tm_mday > max->tm_mday)))
   {
     int tmp;
 
@@ -1493,9 +1493,9 @@ mutt_pattern_exec (struct pattern_t *pat, pattern_exec_flag flags, CONTEXT *ctx,
     case MUTT_MESSAGE:
       return (pat->not ^ ((HMSG(h) >= pat->min) && (HMSG(h) <= pat->max)));
     case MUTT_DATE:
-      return (pat->not ^ (h->date_sent >= pat->min && h->date_sent <= pat->max));
+      return (pat->not ^ ((h->date_sent >= pat->min) && (h->date_sent <= pat->max)));
     case MUTT_DATE_RECEIVED:
-      return (pat->not ^ (h->received >= pat->min && h->received <= pat->max));
+      return (pat->not ^ ((h->received >= pat->min) && (h->received <= pat->max)));
     case MUTT_BODY:
     case MUTT_HEADER:
     case MUTT_WHOLE_MSG:
@@ -1508,7 +1508,7 @@ mutt_pattern_exec (struct pattern_t *pat, pattern_exec_flag flags, CONTEXT *ctx,
 	      return 0;
 #ifdef USE_IMAP
       /* IMAP search sets h->matched at search compile time */
-      if (ctx->magic == MUTT_IMAP && pat->stringmatch)
+      if ((ctx->magic == MUTT_IMAP) && pat->stringmatch)
 	return h->matched;
 #endif
       return (pat->not ^ msg_search (ctx, pat, h->msgno));
@@ -1529,10 +1529,10 @@ mutt_pattern_exec (struct pattern_t *pat, pattern_exec_flag flags, CONTEXT *ctx,
     case MUTT_ID:
       return (pat->not ^ (h->env->message_id && patmatch (pat, h->env->message_id) == 0));
     case MUTT_SCORE:
-      return (pat->not ^ (h->score >= pat->min && (pat->max == MUTT_MAXRANGE ||
-						   h->score <= pat->max)));
+      return (pat->not ^ ((h->score >= pat->min) && ((pat->max == MUTT_MAXRANGE) ||
+						   (h->score <= pat->max))));
     case MUTT_SIZE:
-      return (pat->not ^ (h->content->length >= pat->min && (pat->max == MUTT_MAXRANGE || h->content->length <= pat->max)));
+      return (pat->not ^ ((h->content->length >= pat->min) && ((pat->max == MUTT_MAXRANGE) || (h->content->length <= pat->max))));
     case MUTT_REFERENCE:
       return (pat->not ^ (match_reference (pat, h->env->references) ||
 			  match_reference (pat, h->env->in_reply_to)));
@@ -1592,7 +1592,7 @@ mutt_pattern_exec (struct pattern_t *pat, pattern_exec_flag flags, CONTEXT *ctx,
         result = match_user (pat->alladdr, h->env->from, NULL);
       return (pat->not ^ result);
     case MUTT_COLLAPSED:
-      return (pat->not ^ (h->collapsed && h->num_hidden > 1));
+      return (pat->not ^ (h->collapsed && (h->num_hidden > 1)));
    case MUTT_CRYPT_SIGN:
      if (WithCrypto == 0)
        break;
@@ -1627,8 +1627,8 @@ mutt_pattern_exec (struct pattern_t *pat, pattern_exec_flag flags, CONTEXT *ctx,
         return 0;
       {
       int count = mutt_count_body_parts (ctx, h);
-      return (pat->not ^ (count >= pat->min && (pat->max == MUTT_MAXRANGE ||
-                                                count <= pat->max)));
+      return (pat->not ^ ((count >= pat->min) && ((pat->max == MUTT_MAXRANGE) ||
+                                                (count <= pat->max))));
       }
     case MUTT_UNREFERENCED:
       return (pat->not ^ (h->thread && !h->thread->child));
@@ -1787,7 +1787,7 @@ int mutt_pattern_func (int op, char *prompt)
   progress_t progress;
 
   strfcpy (buf, NONULL (Context->pattern), sizeof (buf));
-  if (prompt || op != MUTT_LIMIT)
+  if (prompt || (op != MUTT_LIMIT))
   if (mutt_get_field (prompt, buf, sizeof (buf), MUTT_PATTERN | MUTT_CLEAR) != 0 || !buf[0])
     return -1;
 
@@ -1808,7 +1808,7 @@ int mutt_pattern_func (int op, char *prompt)
   }
 
 #ifdef USE_IMAP
-  if (Context->magic == MUTT_IMAP && imap_search (Context, pat) < 0)
+  if ((Context->magic == MUTT_IMAP) && imap_search (Context, pat) < 0)
     return -1;
 #endif
 
@@ -1908,16 +1908,16 @@ int mutt_search_command (int cur, int op)
   progress_t progress;
   const char* msg = NULL;
 
-  if (!*LastSearch || (op != OP_SEARCH_NEXT && op != OP_SEARCH_OPPOSITE))
+  if (!*LastSearch || ((op != OP_SEARCH_NEXT) && (op != OP_SEARCH_OPPOSITE)))
   {
     strfcpy (buf, *LastSearch ? LastSearch : "", sizeof (buf));
-    if (mutt_get_field ((op == OP_SEARCH || op == OP_SEARCH_NEXT) ?
+    if (mutt_get_field (((op == OP_SEARCH) || (op == OP_SEARCH_NEXT)) ?
 			_("Search for: ") : _("Reverse search for: "),
 			buf, sizeof (buf),
 		      MUTT_CLEAR | MUTT_PATTERN) != 0 || !buf[0])
       return -1;
 
-    if (op == OP_SEARCH || op == OP_SEARCH_NEXT)
+    if ((op == OP_SEARCH) || (op == OP_SEARCH_NEXT))
       unset_option (OPTSEARCHREVERSE);
     else
       set_option (OPTSEARCHREVERSE);
@@ -1953,7 +1953,7 @@ int mutt_search_command (int cur, int op)
     for (i = 0; i < Context->msgcount; i++)
       Context->hdrs[i]->searched = 0;
 #ifdef USE_IMAP
-    if (Context->magic == MUTT_IMAP && imap_search (Context, SearchPattern) < 0)
+    if ((Context->magic == MUTT_IMAP) && imap_search (Context, SearchPattern) < 0)
       return -1;
 #endif
     unset_option (OPTSEARCHINVALID);

@@ -23,7 +23,7 @@
 #include <string.h>
 #include <ctype.h>
 
-#define VISIBLE(hdr, ctx) (hdr->virtual >= 0 || (hdr->collapsed && (!ctx->pattern || hdr->limited)))
+#define VISIBLE(hdr, ctx) ((hdr->virtual >= 0) || (hdr->collapsed && (!ctx->pattern || hdr->limited)))
 
 /* determine whether a is a descendant of b */
 static int is_descendant (THREAD *a, THREAD *b)
@@ -247,7 +247,7 @@ void mutt_draw_tree (CONTEXT *ctx)
     if (depth != 0)
     {
       myarrow = arrow + (depth - start_depth - (start_depth ? 0 : 1)) * width;
-      if (depth && start_depth == depth)
+      if (depth && (start_depth == depth))
 	myarrow[0] = nextdisp ? MUTT_TREE_LTEE : corner;
       else if (parent->message && !option (OPTHIDELIMITED))
 	myarrow[0] = MUTT_TREE_HIDDEN;
@@ -376,7 +376,7 @@ static LIST *make_subject_list (THREAD *cur, time_t *dateptr)
 	if (rc >= 0)
 	  break;
       }
-      if (!curlist || rc > 0)
+      if (!curlist || (rc > 0))
       {
 	newlist = safe_calloc (1, sizeof (LIST));
 	newlist->data = env->real_subj;
@@ -393,7 +393,7 @@ static LIST *make_subject_list (THREAD *cur, time_t *dateptr)
       }
     }
 
-    while (!cur->next && cur != start)
+    while (!cur->next && (cur != start))
     {
       cur = cur->parent;
     }
@@ -423,7 +423,7 @@ static THREAD *find_subject (CONTEXT *ctx, THREAD *cur)
     for (ptr = hash_find_bucket (ctx->subj_hash, subjects->data); ptr; ptr = ptr->next)
     {
       tmp = ((HEADER *) ptr->data)->thread;
-      if (tmp != cur &&			   /* don't match the same message */
+      if ((tmp != cur) &&			   /* don't match the same message */
 	  !tmp->fake_thread &&		   /* don't match pseudo threads */
 	  tmp->message->subject_changed && /* only match interesting replies */
 	  !is_descendant (tmp, cur) &&	   /* don't match in the same thread */
@@ -549,7 +549,7 @@ static void pseudo_threads (CONTEXT *ctx)
 	  }
 	}
 
-	while (!tmp->next && tmp != cur)
+	while (!tmp->next && (tmp != cur))
 	{
 	  tmp = tmp->parent;
 	}
@@ -818,7 +818,7 @@ void mutt_sort_threads (CONTEXT *ctx, int init)
 	  while (tmp->message == NULL)
 	    tmp = tmp->child;
 	  tmp->check_subject = 1;
-	  while (!tmp->next && tmp != thread)
+	  while (!tmp->next && (tmp != thread))
 	    tmp = tmp->parent;
 	  if (tmp != thread)
 	    tmp = tmp->next;
@@ -992,7 +992,7 @@ static HEADER *find_virtual (THREAD *cur, int reverse)
 {
   THREAD *top = NULL;
 
-  if (cur->message && cur->message->virtual >= 0)
+  if (cur->message && (cur->message->virtual >= 0))
     return cur->message;
 
   top = cur;
@@ -1004,7 +1004,7 @@ static HEADER *find_virtual (THREAD *cur, int reverse)
 
   while (true)
   {
-    if (cur->message && cur->message->virtual >= 0)
+    if (cur->message && (cur->message->virtual >= 0))
       return cur->message;
 
     if (cur->child != NULL)
@@ -1205,7 +1205,7 @@ int _mutt_traverse_thread (CONTEXT *ctx, HEADER *cur, int flag)
     }
   }
 
-  if (thread == top && (thread = thread->child) == NULL)
+  if ((thread == top) && (thread = thread->child) == NULL)
   {
     /* return value depends on action requested */
     if (flag & (MUTT_THREAD_COLLAPSE | MUTT_THREAD_UNCOLLAPSE))

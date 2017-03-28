@@ -365,7 +365,7 @@ static int nntp_auth (NNTP_SERVER *nserv)
 	m = strcasestr (nserv->authenticators, method);
 	if (m == NULL)
 	  continue;
-	if (m > nserv->authenticators && *(m - 1) != ' ')
+	if ((m > nserv->authenticators) && *(m - 1) != ' ')
 	  continue;
 	m += strlen (method);
 	if (*m != '\0' && *m != ' ')
@@ -434,7 +434,7 @@ static int nntp_auth (NNTP_SERVER *nserv)
 	    break;
 	  mutt_sasl_interact (interaction);
 	}
-	if (rc != SASL_OK && rc != SASL_CONTINUE)
+	if ((rc != SASL_OK) && (rc != SASL_CONTINUE))
 	{
 	  sasl_dispose (&saslconn);
 	  mutt_debug (1, "nntp_auth: error starting SASL authentication exchange.\n");
@@ -445,7 +445,7 @@ static int nntp_auth (NNTP_SERVER *nserv)
 	snprintf (buf, sizeof (buf), "AUTHINFO SASL %s", method);
 
 	/* looping protocol */
-	while (rc == SASL_CONTINUE || (rc == SASL_OK && client_len))
+	while ((rc == SASL_CONTINUE) || ((rc == SASL_OK) && client_len))
 	{
 	  /* send out client response */
 	  if (client_len != 0)
@@ -546,7 +546,7 @@ static int nntp_auth (NNTP_SERVER *nserv)
 	  *buf = '\0';
 	} /* looping protocol */
 
-	if (rc == SASL_OK && client_len == 0 && *inbuf == '2')
+	if ((rc == SASL_OK) && (client_len == 0) && *inbuf == '2')
 	{
 	  mutt_sasl_setup_conn (conn, saslconn);
 	  return 0;
@@ -662,7 +662,7 @@ int nntp_open_connection (NNTP_SERVER *nserv)
 
 #ifdef USE_SSL
   /* Attempt STARTTLS if available and desired. */
-  if (nserv->use_tls != 1 && (nserv->hasSTARTTLS || option (OPTSSLFORCETLS)))
+  if ((nserv->use_tls != 1) && (nserv->hasSTARTTLS || option (OPTSSLFORCETLS)))
   {
     if (nserv->use_tls == 0)
       nserv->use_tls = option (OPTSSLFORCETLS) ||
@@ -719,7 +719,7 @@ int nntp_open_connection (NNTP_SERVER *nserv)
       return -1;
 
   /* get final capabilities after authentication */
-  if (nserv->hasCAPABILITIES && (auth || cap > 0))
+  if (nserv->hasCAPABILITIES && (auth || (cap > 0)))
   {
     cap = nntp_capabilities (nserv);
     if (cap < 0)
@@ -868,7 +868,7 @@ static int nntp_fetch_lines (NNTP_DATA *nntp_data, char *query, size_t qlen,
 	if (msg != NULL)
 	  mutt_progress_update (&progress, ++lines, -1);
 
-	if (rc == 0 && funct (line, data) < 0)
+	if ((rc == 0) && funct (line, data) < 0)
 	  rc = -2;
 	off = 0;
       }
@@ -1011,7 +1011,7 @@ static int fetch_numbers (char *line, void *data)
     return 0;
   if (sscanf (line, ANUM, &anum) != 1)
     return 0;
-  if (anum < fc->first || anum > fc->last)
+  if ((anum < fc->first) || (anum > fc->last))
     return 0;
   fc->messages[anum - fc->first] = 1;
   return 0;
@@ -1042,7 +1042,7 @@ static int parse_overview_line (char *line, void *data)
   mutt_debug (2, "parse_overview_line: " ANUM "\n", anum);
 
   /* out of bounds */
-  if (anum < fc->first || anum > fc->last)
+  if ((anum < fc->first) || (anum > fc->last))
     return 0;
 
   /* not in LISTGROUP */
@@ -1186,7 +1186,7 @@ static int nntp_fetch_headers (CONTEXT *ctx, void *hc,
 #endif
 
   /* if empty group or nothing to do */
-  if (!last || first > last)
+  if (!last || (first > last))
     return 0;
 
   /* init fetch context */
@@ -1219,7 +1219,7 @@ static int nntp_fetch_headers (CONTEXT *ctx, void *hc,
     }
     if (rc == 0)
     {
-      for (current = first; current <= last && rc == 0; current++)
+      for (current = first; (current <= last) && rc == 0; current++)
       {
 	if (fc.messages[current - first])
 	  continue;
@@ -1249,7 +1249,7 @@ static int nntp_fetch_headers (CONTEXT *ctx, void *hc,
   if (ctx->quiet == 0)
     mutt_progress_init (&fc.progress, _("Fetching message headers..."),
 			MUTT_PROGRESS_MSG, ReadInc, last - first + 1);
-  for (current = first; current <= last && rc == 0; current++)
+  for (current = first; (current <= last) && rc == 0; current++)
   {
     if (ctx->quiet == 0)
       mutt_progress_update (&fc.progress, current - first + 1, -1);
@@ -1384,7 +1384,7 @@ static int nntp_fetch_headers (CONTEXT *ctx, void *hc,
     current = first_over;
 
   /* fetch overview information */
-  if (current <= last && rc == 0 && !nntp_data->deleted) {
+  if ((current <= last) && (rc == 0) && !nntp_data->deleted) {
     char *cmd = nntp_data->nserv->hasOVER ? "OVER" : "XOVER";
     snprintf (buf, sizeof (buf), "%s %d-%d\r\n", cmd, current, last);
     rc = nntp_fetch_lines (nntp_data, buf, sizeof (buf), NULL,
@@ -1680,7 +1680,7 @@ int nntp_post (const char *msg) {
   char buf[LONG_STRING];
   size_t len;
 
-  if (Context && Context->magic == MUTT_NNTP)
+  if (Context && (Context->magic == MUTT_NNTP))
     nntp_data = Context->data;
   else
   {
@@ -1754,7 +1754,7 @@ static int nntp_group_poll (NNTP_DATA *nntp_data, int update_stat)
     return -1;
   if (sscanf (buf, "211 " ANUM " " ANUM " " ANUM, &count, &first, &last) != 3)
     return 0;
-  if (first == nntp_data->firstMessage && last == nntp_data->lastMessage)
+  if ((first == nntp_data->firstMessage) && (last == nntp_data->lastMessage))
     return 0;
 
   /* articles have been renumbered */
@@ -1860,7 +1860,7 @@ static int nntp_check_mailbox (CONTEXT *ctx, int *index_hint)
       /* check hcache for flagged and deleted flags */
       if (hc != NULL)
       {
-	if (anum >= first && anum <= nntp_data->lastLoaded)
+	if ((anum >= first) && (anum <= nntp_data->lastLoaded))
 	  messages[anum - first] = 1;
 
 	snprintf (buf, sizeof (buf), "%d", anum);
@@ -1987,7 +1987,7 @@ static int nntp_check_mailbox (CONTEXT *ctx, int *index_hint)
     ctx->quiet = quiet;
     if (rc >= 0)
       nntp_data->lastLoaded = nntp_data->lastMessage;
-    if (ret == 0 && ctx->msgcount > oldmsgcount)
+    if ((ret == 0) && (ctx->msgcount > oldmsgcount))
       ret = MUTT_NEW_MAIL;
   }
 
@@ -2073,7 +2073,7 @@ static int nntp_fastclose_mailbox (CONTEXT *ctx)
     return 0;
 
   nntp_tmp = hash_find (nntp_data->nserv->groups_hash, nntp_data->group);
-  if (nntp_tmp == NULL || nntp_tmp != nntp_data)
+  if ((nntp_tmp == NULL) || (nntp_tmp != nntp_data))
     nntp_data_free (nntp_data);
   return 0;
 }
@@ -2195,7 +2195,7 @@ int nntp_check_new_groups (NNTP_SERVER *nserv)
       }
     }
     /* select current newsgroup */
-    if (Context && Context->magic == MUTT_NNTP)
+    if (Context && (Context->magic == MUTT_NNTP))
     {
       buf[0] = '\0';
       if (nntp_query ((NNTP_DATA *)Context->data, buf, sizeof (buf)) < 0)
@@ -2210,7 +2210,7 @@ int nntp_check_new_groups (NNTP_SERVER *nserv)
   if (nntp_date (nserv, &now) < 0)
     return -1;
   nntp_data.nserv = nserv;
-  if (Context && Context->magic == MUTT_NNTP)
+  if (Context && (Context->magic == MUTT_NNTP))
     nntp_data.group = ((NNTP_DATA *)Context->data)->group;
   else
     nntp_data.group = NULL;
@@ -2417,7 +2417,7 @@ int nntp_check_children (CONTEXT *ctx, const char *msgid)
 #endif
   ctx->quiet = quiet;
   FREE (&cc.child);
-  return rc < 0 ? -1 : 0;
+  return (rc < 0) ? -1 : 0;
 }
 
 struct mx_ops mx_nntp_ops = {

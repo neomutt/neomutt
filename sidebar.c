@@ -154,7 +154,7 @@ static const char *cb_format_str(char *dest, size_t destlen, size_t col, int col
         snprintf (fmt, sizeof (fmt), "%%%sd", prefix);
         snprintf (dest, destlen, fmt, c ? Context->deleted : 0);
       }
-      else if ((c && Context->deleted == 0) || !c)
+      else if ((c && (Context->deleted == 0)) || !c)
         optional = 0;
       break;
 
@@ -174,7 +174,7 @@ static const char *cb_format_str(char *dest, size_t destlen, size_t col, int col
         snprintf (fmt, sizeof (fmt), "%%%sd", prefix);
         snprintf (dest, destlen, fmt, c ? Context->vcount : b->msg_count);
       }
-      else if ((c && Context->vcount == b->msg_count) || !c)
+      else if ((c && (Context->vcount == b->msg_count)) || !c)
         optional = 0;
       break;
 
@@ -214,7 +214,7 @@ static const char *cb_format_str(char *dest, size_t destlen, size_t col, int col
         snprintf (fmt, sizeof (fmt), "%%%sd", prefix);
         snprintf (dest, destlen, fmt, c ? Context->tagged : 0);
       }
-      else if ((c && Context->tagged == 0) || !c)
+      else if ((c && (Context->tagged == 0)) || !c)
         optional = 0;
       break;
 
@@ -437,7 +437,7 @@ static int select_next (void)
 {
   int entry = HilIndex;
 
-  if (!EntryCount || HilIndex < 0)
+  if (!EntryCount || (HilIndex < 0))
     return 0;
 
   do
@@ -464,7 +464,7 @@ static int select_next_new (void)
 {
   int entry = HilIndex;
 
-  if (!EntryCount || HilIndex < 0)
+  if (!EntryCount || (HilIndex < 0))
     return 0;
 
   do
@@ -497,7 +497,7 @@ static int select_prev (void)
 {
   int entry = HilIndex;
 
-  if (!EntryCount || HilIndex < 0)
+  if (!EntryCount || (HilIndex < 0))
     return 0;
 
   do
@@ -524,7 +524,7 @@ static int select_prev_new (void)
 {
   int entry = HilIndex;
 
-  if (!EntryCount || HilIndex < 0)
+  if (!EntryCount || (HilIndex < 0))
     return 0;
 
   do
@@ -557,7 +557,7 @@ static int select_page_down (void)
 {
   int orig_hil_index = HilIndex;
 
-  if (!EntryCount || BotIndex < 0)
+  if (!EntryCount || (BotIndex < 0))
     return 0;
 
   HilIndex = BotIndex;
@@ -580,7 +580,7 @@ static int select_page_up (void)
 {
   int orig_hil_index = HilIndex;
 
-  if (!EntryCount || TopIndex < 0)
+  if (!EntryCount || (TopIndex < 0))
     return 0;
 
   HilIndex = TopIndex;
@@ -1099,7 +1099,7 @@ const char *mutt_sb_get_highlight (void)
   if (!option (OPTSIDEBAR))
     return NULL;
 
-  if (!EntryCount || HilIndex < 0)
+  if (!EntryCount || (HilIndex < 0))
     return NULL;
 
   return Entries[HilIndex]->buffy->path;
@@ -1183,15 +1183,15 @@ void mutt_sb_notify_mailbox (BUFFY *b, int created)
     FREE (&Entries[del_index]);
     EntryCount--;
 
-    if (TopIndex > del_index || TopIndex == EntryCount)
+    if ((TopIndex > del_index) || (TopIndex == EntryCount))
       TopIndex--;
     if (OpnIndex == del_index)
       OpnIndex = -1;
     else if (OpnIndex > del_index)
       OpnIndex--;
-    if (HilIndex > del_index || HilIndex == EntryCount)
+    if ((HilIndex > del_index) || (HilIndex == EntryCount))
       HilIndex--;
-    if (BotIndex > del_index || BotIndex == EntryCount)
+    if ((BotIndex > del_index) || (BotIndex == EntryCount))
       BotIndex--;
 
     for (; del_index < EntryCount; del_index++)

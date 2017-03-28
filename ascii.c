@@ -33,9 +33,9 @@ int ascii_strcasecmp (const char *a, const char *b)
 
   if (a == b)
     return 0;
-  if (a == NULL && b)
+  if ((a == NULL) && b)
     return -1;
-  if (b == NULL && a)
+  if ((b == NULL) && a)
     return 1;
 
   for (;; a++, b++)
@@ -58,9 +58,9 @@ int ascii_strncasecmp (const char *a, const char *b, int n)
 
   if (a == b)
     return 0;
-  if (a == NULL && b)
+  if ((a == NULL) && b)
     return -1;
-  if (b == NULL && a)
+  if ((b == NULL) && a)
     return 1;
 
   for (j = 0; (*a || *b) && j < n; a++, b++, j++)

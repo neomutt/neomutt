@@ -160,7 +160,7 @@ int mutt_parse_hook (BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err)
         return 0;
       }
     }
-    else if (ptr->type == data &&
+    else if ((ptr->type == data) &&
 	ptr->rx.not == not &&
 	(mutt_strcmp (pattern.data, ptr->rx.pattern) == 0))
     {
@@ -256,7 +256,7 @@ static void delete_hooks (int type)
   HOOK *h = NULL;
   HOOK *prev = NULL;
 
-  while (h = Hooks, h && (type == 0 || type == h->type))
+  while (h = Hooks, h && ((type == 0) || (type == h->type)))
   {
     Hooks = h->next;
     delete_hook (h);

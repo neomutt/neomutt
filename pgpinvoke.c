@@ -348,6 +348,6 @@ pid_t pgp_invoke_list_keys (FILE **pgpin, FILE **pgpout, FILE **pgperr,
 
   return pgp_invoke (pgpin, pgpout, pgperr, pgpinfd, pgpoutfd, pgperrfd,
 		     0, NULL, NULL, PgpSignAs, uids,
-		     keyring == PGP_SECRING ? PgpListSecringCommand :
+		     (keyring == PGP_SECRING) ? PgpListSecringCommand :
 		     PgpListPubringCommand);
 }

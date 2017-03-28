@@ -449,7 +449,7 @@ void menu_check_recenter (MUTTMENU *menu)
   int c = MIN (MenuContext, menu->pagelen / 2);
   int old_top = menu->top;
 
-  if (!option (OPTMENUMOVEOFF) && menu->max <= menu->pagelen) /* less entries than lines */
+  if (!option (OPTMENUMOVEOFF) && (menu->max <= menu->pagelen)) /* less entries than lines */
   {
     if (menu->top != 0)
     {
@@ -494,7 +494,7 @@ static void menu_jump (MUTTMENU *menu)
     buf[0] = 0;
     if (mutt_get_field (_("Jump to: "), buf, sizeof (buf), 0) == 0 && buf[0])
     {
-      if (mutt_atoi (buf, &n) == 0 && n > 0 && n < (menu->max + 1))
+      if (mutt_atoi (buf, &n) == 0 && (n > 0) && n < (menu->max + 1))
       {
 	n--;	/* msg numbers are 0-based */
 	menu->current = n;
@@ -515,7 +515,7 @@ void menu_next_line (MUTTMENU *menu)
     int c = MIN (MenuContext, menu->pagelen / 2);
 
     if ((menu->top + 1) < (menu->max - c)
-      && (option(OPTMENUMOVEOFF) || (menu->max > menu->pagelen && menu->top < (menu->max - menu->pagelen))))
+      && (option(OPTMENUMOVEOFF) || ((menu->max > menu->pagelen) && menu->top < (menu->max - menu->pagelen))))
     {
       menu->top++;
       if (menu->current < (menu->top + c) && menu->current < (menu->max - 1))
@@ -536,7 +536,7 @@ void menu_prev_line (MUTTMENU *menu)
     int c = MIN (MenuContext, menu->pagelen / 2);
 
     menu->top--;
-    if (menu->current >= (menu->top + menu->pagelen - c) && menu->current > 1)
+    if (menu->current >= (menu->top + menu->pagelen - c) && (menu->current > 1))
       menu->current--;
     menu->redraw = REDRAW_INDEX;
   }
@@ -566,7 +566,7 @@ static void menu_length_jump (MUTTMENU *menu, int jumplen)
 
       /* jumped too long? */
       if ((neg || !option (OPTMENUMOVEOFF)) &&
-	  DIRECTION * menu->top > tmp)
+	  DIRECTION * (menu->top > tmp))
 	menu->top = tmp;
 
       /* need to move the cursor? */
@@ -801,23 +801,23 @@ static int menu_search (MUTTMENU *menu, int op)
   int searchDir;
   regex_t re;
   char buf[SHORT_STRING];
-  char* searchBuf = menu->menu >= 0 && menu->menu < MENU_MAX ?
+  char* searchBuf = (menu->menu >= 0) && (menu->menu < MENU_MAX) ?
                     SearchBuffers[menu->menu] : NULL;
 
   if (!(searchBuf && *searchBuf) ||
-      (op != OP_SEARCH_NEXT && op != OP_SEARCH_OPPOSITE))
+      ((op != OP_SEARCH_NEXT) && (op != OP_SEARCH_OPPOSITE)))
   {
     strfcpy (buf, searchBuf && *searchBuf ? searchBuf : "", sizeof (buf));
-    if (mutt_get_field ((op == OP_SEARCH || op == OP_SEARCH_NEXT)
+    if (mutt_get_field (((op == OP_SEARCH) || (op == OP_SEARCH_NEXT))
 			? _("Search for: ") : _("Reverse search for: "),
 			buf, sizeof (buf), MUTT_CLEAR) != 0 || !buf[0])
       return -1;
-    if (menu->menu >= 0 && menu->menu < MENU_MAX)
+    if ((menu->menu >= 0) && (menu->menu < MENU_MAX))
     {
       mutt_str_replace (&SearchBuffers[menu->menu], buf);
       searchBuf = SearchBuffers[menu->menu];
     }
-    menu->searchDir = (op == OP_SEARCH || op == OP_SEARCH_NEXT) ?
+    menu->searchDir = ((op == OP_SEARCH) || (op == OP_SEARCH_NEXT)) ?
 		       MUTT_SEARCH_DOWN : MUTT_SEARCH_UP;
   }
 
@@ -836,7 +836,7 @@ static int menu_search (MUTTMENU *menu, int op)
 search_next:
   if (wrap != 0)
     mutt_message (_("Search wrapped to top."));
-  while (r >= 0 && r < menu->max)
+  while ((r >= 0) && (r < menu->max))
   {
     if (menu->search (menu, &re, r) == 0)
     {
@@ -849,7 +849,7 @@ search_next:
 
   if (option (OPTWRAPSEARCH) && wrap++ == 0)
   {
-    r = searchDir == 1 ? 0 : menu->max - 1;
+    r = (searchDir == 1) ? 0 : menu->max - 1;
     goto search_next;
   }
   regfree (&re);
@@ -981,7 +981,7 @@ int mutt_menu_loop (MUTTMENU *menu)
       return i;
 
     i = km_dokey (menu->menu);
-    if (i == OP_TAG_PREFIX || i == OP_TAG_PREFIX_COND)
+    if ((i == OP_TAG_PREFIX) || (i == OP_TAG_PREFIX_COND))
     {
       if (menu->tagged != 0)
       {

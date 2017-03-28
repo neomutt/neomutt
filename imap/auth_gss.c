@@ -70,7 +70,7 @@ static void print_gss_error(OM_uint32 err_maj, OM_uint32 err_min)
 			strncpy(buf_min, (char*) status_string.value, sizeof(buf_min));
 			gss_release_buffer(&min_stat, &status_string);
 		}
-	} while (!GSS_ERROR(maj_stat) && msg_ctx != 0);
+	} while (!GSS_ERROR(maj_stat) && (msg_ctx != 0));
 
 	mutt_debug (2, "((%s:%d )(%s:%d))\n", buf_maj, err_maj, buf_min, err_min);
 }
@@ -128,7 +128,7 @@ imap_auth_res_t imap_auth_gss (IMAP_DATA* idata, const char* method)
     target_name, GSS_C_NO_OID, GSS_C_MUTUAL_FLAG | GSS_C_SEQUENCE_FLAG, 0,
     GSS_C_NO_CHANNEL_BINDINGS, sec_token, NULL, &send_token,
     (unsigned int*) &cflags, NULL);
-  if (maj_stat != GSS_S_COMPLETE && maj_stat != GSS_S_CONTINUE_NEEDED)
+  if ((maj_stat != GSS_S_COMPLETE) && (maj_stat != GSS_S_CONTINUE_NEEDED))
   {
     print_gss_error(maj_stat, min_stat);
     mutt_debug (1, "Error acquiring credentials - no TGT?\n");
@@ -185,7 +185,7 @@ imap_auth_res_t imap_auth_gss (IMAP_DATA* idata, const char* method)
       target_name, GSS_C_NO_OID, GSS_C_MUTUAL_FLAG | GSS_C_SEQUENCE_FLAG, 0,
       GSS_C_NO_CHANNEL_BINDINGS, sec_token, NULL, &send_token,
       (unsigned int*) &cflags, NULL);
-    if (maj_stat != GSS_S_COMPLETE && maj_stat != GSS_S_CONTINUE_NEEDED)
+    if ((maj_stat != GSS_S_COMPLETE) && (maj_stat != GSS_S_CONTINUE_NEEDED))
     {
       print_gss_error(maj_stat, min_stat);
       mutt_debug (1, "Error exchanging credentials\n");

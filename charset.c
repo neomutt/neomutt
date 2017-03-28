@@ -303,8 +303,8 @@ int mutt_chscmp (const char *s, const char *chs)
   mutt_canonical_charset (buffer, sizeof (buffer), s);
   a = mutt_strlen (buffer);
   b = mutt_strlen (chs);
-  return (ascii_strncasecmp (a > b ? buffer : chs,
-			     a > b ? chs : buffer, MIN(a,b)) == 0);
+  return (ascii_strncasecmp ((a > b) ? buffer : chs,
+			     (a > b) ? chs : buffer, MIN(a,b)) == 0);
 }
 
 char *mutt_get_default_charset (void)
@@ -386,7 +386,7 @@ size_t mutt_iconv (iconv_t cd, ICONV_CONST char **inbuf, size_t *inbytesleft,
     ret1 = iconv (cd, &ib, &ibl, &ob, &obl);
     if (ret1 != (size_t)-1)
       ret += ret1;
-    if (ibl && obl && errno == EILSEQ)
+    if (ibl && obl && (errno == EILSEQ))
     {
       if (inrepls != NULL)
       {
@@ -589,7 +589,7 @@ int fgetconv (FGETCONV *_fc)
    * ask why it had stopped converting ... */
 
   /* Try to read some more */
-  if (fc->ibl == sizeof (fc->bufi) ||
+  if ((fc->ibl == sizeof(fc->bufi)) ||
       (fc->ibl && (fc->ib + fc->ibl) < (fc->bufi + sizeof(fc->bufi))))
   {
     fc->p = 0;

@@ -210,7 +210,7 @@ static void print_flowed_line (char *line, STATE *s, int ql,
        have a long word that we should break within (we leave that
        up to the pager or user) */
     if (!(!fst->spaces && fst->delsp && last != ' ') &&
-	w < width && (w + fst->width + fst->spaces) > width)
+ (w < width) && (w + fst->width + fst->spaces) > width)
     {
       mutt_debug (4, "f=f: break line at %lu, %lu spaces left\n",
                   fst->width, fst->spaces);
@@ -292,7 +292,7 @@ int rfc3676_handler (BODY * a, STATE * s)
 
     /* a fixed line either has no trailing space or is the
      * signature separator */
-    fixed = buf_len == buf_off || buf[buf_len - 1] != ' ' || sigsep;
+    fixed = (buf_len == buf_off) || buf[buf_len - 1] != ' ' || sigsep;
 
     /* print fixed-and-standalone, fixed-and-empty and sigsep lines as
      * fixed lines */

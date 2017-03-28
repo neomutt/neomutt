@@ -75,7 +75,7 @@ static int fseek_last_message (FILE * f)
   while ((pos -= bytes_read) >= 0)
   {
     /* we save in the buffer at the end the first 7 chars from the last read */
-    strncpy (buffer + BUFSIZ, buffer, 5+2); /* 2 == 2 * mutt_strlen(CRLF) */
+    strncpy (buffer + BUFSIZ, buffer, 5+2); /* (2 == 2) * mutt_strlen(CRLF) */
     fseeko (f, pos, SEEK_SET);
     bytes_read = fread (buffer, sizeof (char), bytes_read, f);
     if (bytes_read == -1)
@@ -128,7 +128,7 @@ static int test_new_folder (const char *path)
 
   typ = mx_get_magic (path);
 
-  if (typ != MUTT_MBOX && typ != MUTT_MMDF)
+  if ((typ != MUTT_MBOX) && (typ != MUTT_MMDF))
     return 0;
 
   if ((f = fopen (path, "rb")))
@@ -283,11 +283,11 @@ static int buffy_mbox_check (BUFFY* mailbox, struct stat *sb, int check_stats)
     new_or_changed = sb->st_size > mailbox->size;
   else
     new_or_changed = sb->st_mtime > sb->st_atime
-      || (mailbox->newly_created && sb->st_ctime == sb->st_mtime && sb->st_ctime == sb->st_atime);
+      || (mailbox->newly_created && (sb->st_ctime == sb->st_mtime) && (sb->st_ctime == sb->st_atime));
 
   if (new_or_changed != 0)
   {
-    if (!option(OPTMAILCHECKRECENT) || sb->st_mtime > mailbox->last_visited)
+    if (!option(OPTMAILCHECKRECENT) || (sb->st_mtime > mailbox->last_visited))
     {
       rc = 1;
       mailbox->new = 1;
@@ -300,7 +300,7 @@ static int buffy_mbox_check (BUFFY* mailbox, struct stat *sb, int check_stats)
   }
 
   if (mailbox->newly_created &&
-      (sb->st_ctime != sb->st_mtime || sb->st_ctime != sb->st_atime))
+      ((sb->st_ctime != sb->st_mtime) || (sb->st_ctime != sb->st_atime)))
     mailbox->newly_created = 0;
 
   if (check_stats &&
@@ -370,14 +370,14 @@ static void buffy_check (BUFFY *tmp, struct stat *contex_sb, int check_stats)
     /* check to see if the folder is the currently selected folder
      * before polling */
     if (!Context || !Context->path ||
-	((tmp->magic == MUTT_IMAP ||
+	(((tmp->magic == MUTT_IMAP) ||
 #ifdef USE_NNTP
-	  tmp->magic == MUTT_NNTP ||
+	  (tmp->magic == MUTT_NNTP) ||
 #endif
 #ifdef USE_NOTMUCH
-	  tmp->magic == MUTT_NOTMUCH ||
+	  (tmp->magic == MUTT_NOTMUCH) ||
 #endif
-	  tmp->magic == MUTT_POP)
+	  (tmp->magic == MUTT_POP))
 	    ? (mutt_strcmp (tmp->path, Context->path) != 0) :
 	      (sb.st_dev != contex_sb->st_dev || sb.st_ino != contex_sb->st_ino)))
     {
@@ -526,7 +526,7 @@ int mutt_parse_mailboxes (BUFFER *path, BUFFER *s, unsigned long data, BUFFER *e
     mutt_extract_token (path, s, 0);
     strfcpy (buf, path->data, sizeof (buf));
 
-    if(data == MUTT_UNMAILBOXES && (mutt_strcmp(buf,"*") == 0))
+    if((data == MUTT_UNMAILBOXES) && (mutt_strcmp(buf,"*") == 0))
     {
       for (tmp = &Incoming; *tmp;)
       {
@@ -747,7 +747,7 @@ int mutt_buffy_check (int force)
 #endif
 
   /* check device ID and serial number instead of comparing paths */
-  if (!Context || Context->magic == MUTT_IMAP || Context->magic == MUTT_POP
+  if (!Context || (Context->magic == MUTT_IMAP) || Context->magic == MUTT_POP
 #ifdef USE_NNTP
       || Context->magic == MUTT_NNTP
 #endif

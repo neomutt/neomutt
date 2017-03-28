@@ -99,7 +99,7 @@ void imap_get_parent (char *output, const char *mbox, size_t olen, char delim)
    * If output == '/', then n-- => n == 0, so the loop ends
    * immediately
    */
-  for (n--; n >= 0 && output[n] != delim ; n--);
+  for (n--; (n >= 0) && output[n] != delim ; n--);
 
   /* We stopped before the beginning. There is a trailing
    * slash.
@@ -881,7 +881,7 @@ int imap_wait_keepalive (pid_t pid)
   sigaction (SIGALRM, &act, &oldalrm);
 
   alarm (ImapKeepalive);
-  while (waitpid (pid, &rc, 0) < 0 && errno == EINTR)
+  while (waitpid (pid, &rc, 0) < 0 && (errno == EINTR))
   {
     alarm (0); /* cancel a possibly pending alarm */
     imap_keepalive ();
@@ -904,7 +904,7 @@ int imap_wait_keepalive (pid_t pid)
 void imap_allow_reopen (CONTEXT *ctx)
 {
   IMAP_DATA *idata = NULL;
-  if (!ctx || !ctx->data || ctx->magic != MUTT_IMAP)
+  if (!ctx || !ctx->data || (ctx->magic != MUTT_IMAP))
       return;
 
   idata = ctx->data;
@@ -915,7 +915,7 @@ void imap_allow_reopen (CONTEXT *ctx)
 void imap_disallow_reopen (CONTEXT *ctx)
 {
   IMAP_DATA *idata = NULL;
-  if (!ctx || !ctx->data || ctx->magic != MUTT_IMAP)
+  if (!ctx || !ctx->data || (ctx->magic != MUTT_IMAP))
       return;
 
   idata = ctx->data;
@@ -927,8 +927,8 @@ int imap_account_match (const ACCOUNT* a1, const ACCOUNT* a2)
 {
   IMAP_DATA* a1_idata = imap_conn_find (a1, MUTT_IMAP_CONN_NONEW);
   IMAP_DATA* a2_idata = imap_conn_find (a2, MUTT_IMAP_CONN_NONEW);
-  const ACCOUNT* a1_canon = a1_idata == NULL ? a1 : &a1_idata->conn->account;
-  const ACCOUNT* a2_canon = a2_idata == NULL ? a2 : &a2_idata->conn->account;
+  const ACCOUNT* a1_canon = (a1_idata == NULL) ? a1 : &a1_idata->conn->account;
+  const ACCOUNT* a2_canon = (a2_idata == NULL) ? a2 : &a2_idata->conn->account;
 
   return mutt_account_match (a1_canon, a2_canon);
 }

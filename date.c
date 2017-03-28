@@ -34,7 +34,7 @@ static time_t compute_tz (time_t g, struct tm *utc)
   {
     /* This code is optimized to negative timezones (West of Greenwich) */
     if (yday == -1 ||	/* UTC passed midnight before localtime */
-	yday > 1)	/* UTC passed new year before localtime */
+ (yday > 1))	/* UTC passed new year before localtime */
       t -= 24 * 60 * 60;
     else
       t += 24 * 60 * 60;
@@ -85,7 +85,7 @@ time_t mutt_mktime (struct tm *t, int local)
   /* The leap years are 1972 and every 4. year until 2096,
    * but this algorithm will fail after year 2099 */
   g += t->tm_mday;
-  if ((t->tm_year % 4) || t->tm_mon < 2)
+  if ((t->tm_year % 4) || (t->tm_mon < 2))
     g--;
   t->tm_yday = g;
 

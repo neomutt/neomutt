@@ -115,7 +115,7 @@ static int tls_socket_read (CONNECTION* conn, char* buf, size_t len)
 
   do {
     ret = gnutls_record_recv (data->state, buf, len);
-    if ((ret < 0 &&
+    if (((ret < 0) &&
          gnutls_error_is_fatal(ret) == 1) ||
         ret == GNUTLS_E_INTERRUPTED
        )
@@ -147,7 +147,7 @@ static int tls_socket_write (CONNECTION* conn, const char* buf, size_t len)
     ret = gnutls_record_send (data->state, buf + sent, len - sent);
     if (ret < 0)
     {
-      if (gnutls_error_is_fatal(ret) == 1 || ret == GNUTLS_E_INTERRUPTED)
+      if (gnutls_error_is_fatal(ret) == 1 || (ret == GNUTLS_E_INTERRUPTED))
       {
 	mutt_error ("tls_socket_write (%s)", gnutls_strerror (ret));
 	mutt_sleep (4);
@@ -407,7 +407,7 @@ static int tls_check_preauth (const gnutls_datum_t *certdata,
       *certerr |= CERTERR_NOTYETVALID;
   }
 
-  if (chainidx == 0 && option (OPTSSLVERIFYHOST) != MUTT_NO
+  if ((chainidx == 0) && option (OPTSSLVERIFYHOST) != MUTT_NO
       && !gnutls_x509_crt_check_hostname (cert, hostname)
       && !tls_check_stored_hostname (certdata, hostname))
     *certerr |= CERTERR_HOSTNAME;
@@ -417,21 +417,21 @@ static int tls_check_preauth (const gnutls_datum_t *certdata,
   {
     *savedcert = 1;
 
-    if (chainidx == 0 && (certstat & GNUTLS_CERT_INVALID))
+    if ((chainidx == 0) && (certstat & GNUTLS_CERT_INVALID))
     {
       /* doesn't matter - have decided is valid because server
        certificate is in our trusted cache */
       certstat ^= GNUTLS_CERT_INVALID;
     }
 
-    if (chainidx == 0 && (certstat & GNUTLS_CERT_SIGNER_NOT_FOUND))
+    if ((chainidx == 0) && (certstat & GNUTLS_CERT_SIGNER_NOT_FOUND))
     {
       /* doesn't matter that we haven't found the signer, since
        certificate is in our trusted cache */
       certstat ^= GNUTLS_CERT_SIGNER_NOT_FOUND;
     }
 
-    if (chainidx <= 1 && (certstat & GNUTLS_CERT_SIGNER_NOT_CA))
+    if ((chainidx <= 1) && (certstat & GNUTLS_CERT_SIGNER_NOT_CA))
     {
       /* Hmm. Not really sure how to handle this, but let's say
        that we don't care if the CA certificate hasn't got the
@@ -440,7 +440,7 @@ static int tls_check_preauth (const gnutls_datum_t *certdata,
       certstat ^= GNUTLS_CERT_SIGNER_NOT_CA;
     }
 
-    if (chainidx == 0 && (certstat & GNUTLS_CERT_INSECURE_ALGORITHM))
+    if ((chainidx == 0) && (certstat & GNUTLS_CERT_INSECURE_ALGORITHM))
     {
       /* doesn't matter that it was signed using an insecure
          algorithm, since certificate is in our trusted cache */
@@ -486,7 +486,7 @@ static int tls_check_preauth (const gnutls_datum_t *certdata,
   /* we've been zeroing the interesting bits in certstat -
    don't return OK if there are any unhandled bits we don't
    understand */
-  if (*certerr == CERTERR_VALID && certstat == 0)
+  if (*certerr == CERTERR_VALID && (certstat == 0))
     return 0;
 
   return -1;

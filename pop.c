@@ -185,7 +185,7 @@ static int msg_cache_check (const char *id, body_cache_t *bcache, void *data)
     return -1;
 
 #ifdef USE_HCACHE
-  /* keep hcache file if hcache == bcache */
+  /* keep hcache file if (hcache == bcache) */
   if (strcmp (HC_FNAME "." HC_FEXT, id) == 0)
     return 0;
 #endif
@@ -264,7 +264,7 @@ static int pop_fetch_headers (CONTEXT *ctx)
       mutt_debug (1, "pop_fetch_headers: set UIDL capability\n");
     }
 
-    if (ret == -2 && pop_data->cmd_uidl == 2)
+    if (ret == -2 && (pop_data->cmd_uidl == 2))
     {
       pop_data->cmd_uidl = 0;
 
@@ -687,7 +687,7 @@ static int pop_sync_mailbox (CONTEXT *ctx, int *index_hint)
     hc = pop_hcache_open (pop_data, ctx->path);
 #endif
 
-    for (i = 0, j = 0, ret = 0; ret == 0 && i < ctx->msgcount; i++)
+    for (i = 0, j = 0, ret = 0; (ret == 0) && i < ctx->msgcount; i++)
     {
       if (ctx->hdrs[i]->deleted && ctx->hdrs[i]->refno != -1)
       {
@@ -840,7 +840,7 @@ void pop_fetch_mail (void)
   sscanf (buffer, "+OK %d %d", &msgs, &bytes);
 
   /* only get unread messages */
-  if (msgs > 0 && option (OPTPOPLAST))
+  if ((msgs > 0) && option (OPTPOPLAST))
   {
     strfcpy (buffer, "LAST\r\n", sizeof (buffer));
     ret = pop_query (pop_data, buffer, sizeof (buffer));
@@ -864,7 +864,7 @@ void pop_fetch_mail (void)
   snprintf (msgbuf, sizeof (msgbuf), _("Reading new messages (%d bytes)..."), bytes);
   mutt_message ("%s", msgbuf);
 
-  for (i = last + 1 ; i <= msgs ; i++)
+  for (i = last + 1 ; (i <= msgs) ; i++)
   {
     if ((msg = mx_open_new_message (&ctx, NULL, MUTT_ADD_FROM)) == NULL)
       ret = -3;
@@ -875,7 +875,7 @@ void pop_fetch_mail (void)
       if (ret == -3)
 	rset = 1;
 
-      if (ret == 0 && mx_commit_message (msg, &ctx) != 0)
+      if ((ret == 0) && mx_commit_message (msg, &ctx) != 0)
       {
 	rset = 1;
 	ret = -3;
@@ -884,7 +884,7 @@ void pop_fetch_mail (void)
       mx_close_message (&ctx, &msg);
     }
 
-    if (ret == 0 && delanswer == MUTT_YES)
+    if ((ret == 0) && (delanswer == MUTT_YES))
     {
       /* delete the message on the server */
       snprintf (buffer, sizeof (buffer), "DELE %d\r\n", i);

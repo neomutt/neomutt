@@ -3164,7 +3164,7 @@ struct option_t MuttVars[] = {
   ** .dt %F  .dd * Number of Flagged messages in the mailbox
   ** .dt %!  .dd ``!'' : one flagged message;
   **             ``!!'' : two flagged messages;
-  **             ``n!'' : n flagged messages (for n > 2).
+  **             ``n!'' : n flagged messages (for (n > 2)).
   **             Otherwise prints nothing.
   ** .dt %d  .dd * @ Number of deleted messages
   ** .dt %L  .dd * @ Number of messages after limiting

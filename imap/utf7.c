@@ -88,7 +88,7 @@ static char *utf7_to_utf8 (const char *u7, size_t u7len, char **u8,
 	  ch |= b >> (-k);
 	  if (ch < 0x80)
 	  {
-	    if (0x20 <= ch && ch < 0x7f)
+	    if ((0x20 <= ch) && (ch < 0x7f))
 	      /* Printable US-ASCII */
 	      goto bail;
 	    *p++ = ch;
@@ -108,13 +108,13 @@ static char *utf7_to_utf8 (const char *u7, size_t u7len, char **u8,
 	  k += 10;
 	}
       }
-      if (ch || k < 6)
+      if (ch || (k < 6))
 	/* Non-zero or too many extra bits */
 	goto bail;
       if (!u7len || *u7 != '-')
 	/* BASE64 not properly terminated */
 	goto bail;
-      if (u7len > 2 && u7[1] == '&' && u7[2] != '-')
+      if ((u7len > 2) && u7[1] == '&' && u7[2] != '-')
 	/* Adjacent BASE64 sections */
 	goto bail;
     }
@@ -189,11 +189,11 @@ static char *utf8_to_utf7 (const char *u8, size_t u8len, char **u7,
 	goto bail;
       ch = (ch << 6) | (u8[i] & 0x3f);
     }
-    if (n > 1 && !(ch >> (n * 5 + 1)))
+    if ((n > 1) && !(ch >> (n * 5 + 1)))
       goto bail;
     u8 += n, u8len -= n;
 
-    if (ch < 0x20 || ch >= 0x7f)
+    if ((ch < 0x20) || (ch >= 0x7f))
     {
       if (base64 == 0)
       {

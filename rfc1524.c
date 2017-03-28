@@ -65,7 +65,7 @@ int rfc1524_expand_command (BODY *a, char *filename, char *_type,
   if (option (OPTMAILCAPSANITIZE))
     mutt_sanitize_filename (type, 0);
 
-  while (x < (clen - 1) && command[x] && y < sizeof (buf) - 1)
+  while (x < (clen - 1) && command[x] && (y < (sizeof(buf) - 1)))
   {
     if (command[x] == '\\')
     {
@@ -83,7 +83,7 @@ int rfc1524_expand_command (BODY *a, char *filename, char *_type,
 	int z = 0;
 
 	x++;
-	while (command[x] && command[x] != '}' && z < sizeof (param) - 1)
+	while (command[x] && (command[x] != '}') && (z < (sizeof(param) - 1)))
 	  param[z++] = command[x++];
 	param[z] = '\0';
 
@@ -94,7 +94,7 @@ int rfc1524_expand_command (BODY *a, char *filename, char *_type,
 
 	y += mutt_quote_filename (buf + y, sizeof (buf) - y, pvalue);
       }
-      else if (command[x] == 's' && filename != NULL)
+      else if (command[x] == 's' && (filename != NULL))
       {
 	y += mutt_quote_filename (buf + y, sizeof (buf) - y, filename);
 	needspipe = false;
@@ -373,7 +373,7 @@ void rfc1524_free_entry(rfc1524_entry **entry)
  * rfc1524_mailcap_lookup attempts to find the given type in the
  * list of mailcap files.  On success, this returns the entry information
  * in *entry, and returns 1.  On failure (not found), returns 0.
- * If entry == NULL just return 1 if the given type is found.
+ * If (entry == NULL) just return 1 if the given type is found.
  */
 int rfc1524_mailcap_lookup (BODY *a, char *type, rfc1524_entry *entry, int opt)
 {
@@ -399,7 +399,7 @@ int rfc1524_mailcap_lookup (BODY *a, char *type, rfc1524_entry *entry, int opt)
   while (!found && *curr)
   {
     x = 0;
-    while (*curr && *curr != ':' && x < sizeof (path) - 1)
+    while (*curr && *curr != ':' && (x < (sizeof(path) - 1)))
     {
       path[x++] = *curr;
       curr++;

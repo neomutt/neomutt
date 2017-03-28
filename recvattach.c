@@ -116,7 +116,7 @@ ATTACHPTR **mutt_gen_attach_list (BODY *m,
 	idx[i] = NULL;
     }
 
-    if (m->type == TYPEMULTIPART && m->parts
+    if ((m->type == TYPEMULTIPART) && m->parts
 	&& (compose || (parent_type == -1 && (ascii_strcasecmp ("alternative", m->subtype) != 0)))
         && (!(WithCrypto & APPLICATION_PGP) || !mutt_is_multipart_encrypted(m))
 	)
@@ -208,10 +208,10 @@ const char *mutt_attach_fmt (char *dest,
       if (optional == 0)
       {
 	snprintf (fmt, sizeof (fmt), "%%%sc", prefix);
-	snprintf (dest, destlen, fmt, aptr->content->type != TYPETEXT ||
+	snprintf (dest, destlen, fmt, (aptr->content->type != TYPETEXT) ||
 		  aptr->content->noconv ? 'n' : 'c');
       }
-      else if (aptr->content->type != TYPETEXT || aptr->content->noconv)
+      else if ((aptr->content->type != TYPETEXT) || aptr->content->noconv)
         optional = 0;
       break;
     case 'd':
@@ -397,7 +397,7 @@ int mutt_tag_attach (MUTTMENU *menu, int n, int m)
   BODY *cur = ((ATTACHPTR **) menu->data)[n]->content;
   int ot = cur->tagged;
 
-  cur->tagged = (m >= 0 ? m : !cur->tagged);
+  cur->tagged = (m >= 0) ? m : !cur->tagged;
   return cur->tagged - ot;
 }
 
@@ -414,14 +414,14 @@ static void prepend_curdir (char *dst, size_t dstlen)
 {
   size_t l;
 
-  if (!dst || !*dst || *dst == '/' || dstlen < 3 ||
+  if (!dst || !*dst || *dst == '/' || (dstlen < 3) ||
       /* XXX bad modularization, these are special to mutt_expand_path() */
       !strchr ("~=+@<>!-^", *dst))
     return;
 
   dstlen -= 3;
   l = strlen (dst) + 2;
-  l = (l > dstlen ? dstlen : l);
+  l = ((l > dstlen) ? dstlen : l);
   memmove (dst + 2, dst, l);
   dst[0] = '.';
   dst[1] = '/';
@@ -444,8 +444,8 @@ static int query_save_attachment (FILE *fp, BODY *body, HEADER *hdr, char **dire
       strfcpy (buf, body->filename, sizeof (buf));
   }
   else if(body->hdr &&
-	  body->encoding != ENCBASE64 &&
-	  body->encoding != ENCQUOTEDPRINTABLE &&
+	  (body->encoding != ENCBASE64) &&
+	  (body->encoding != ENCQUOTEDPRINTABLE) &&
 	  mutt_is_message_type(body->type, body->subtype))
     mutt_default_save(buf, sizeof(buf), body->hdr);
   else
@@ -468,8 +468,8 @@ static int query_save_attachment (FILE *fp, BODY *body, HEADER *hdr, char **dire
 
     is_message = (fp &&
 		  body->hdr &&
-		  body->encoding != ENCBASE64 &&
-		  body->encoding != ENCQUOTEDPRINTABLE &&
+		  (body->encoding != ENCBASE64) &&
+		  (body->encoding != ENCQUOTEDPRINTABLE) &&
 		  mutt_is_message_type (body->type, body->subtype));
 
     if (is_message != 0)
@@ -543,7 +543,7 @@ void mutt_save_attachment_list (FILE *fp, int tag, BODY *top, HEADER *hdr, MUTTM
 				    sizeof (tfile), &append, NULL))
 	    return;
 	  rc = mutt_save_attachment (fp, top, tfile, append, hdr);
-	  if (rc == 0 && AttachSep && (fpout = fopen (tfile,"a")) != NULL)
+	  if ((rc == 0) && AttachSep && (fpout = fopen (tfile,"a")) != NULL)
 	  {
 	    fprintf(fpout, "%s", AttachSep);
 	    safe_fclose (&fpout);
@@ -552,7 +552,7 @@ void mutt_save_attachment_list (FILE *fp, int tag, BODY *top, HEADER *hdr, MUTTM
 	else
 	{
 	  rc = mutt_save_attachment (fp, top, tfile, MUTT_SAVE_APPEND, hdr);
-	  if (rc == 0 && AttachSep && (fpout = fopen (tfile,"a")) != NULL)
+	  if ((rc == 0) && AttachSep && (fpout = fopen (tfile,"a")) != NULL)
 	  {
 	    fprintf(fpout, "%s", AttachSep);
 	    safe_fclose (&fpout);
@@ -912,7 +912,7 @@ static void attach_collapse (BODY *b, short collapse, short init, short just_one
     if (i && option (OPTDIGESTCOLLAPSE) && b->type == TYPEMULTIPART
 	&& (ascii_strcasecmp (b->subtype, "digest") == 0))
       attach_collapse (b->parts, 1, 1, 0);
-    else if (b->type == TYPEMULTIPART || mutt_is_message_type (b->type, b->subtype))
+    else if ((b->type == TYPEMULTIPART) || mutt_is_message_type (b->type, b->subtype))
       attach_collapse (b->parts, collapse, i, 0);
     b->collapsed = collapse;
     if (just_one != 0)
@@ -1269,8 +1269,8 @@ void mutt_view_attachments (HEADER *hdr)
         CHECK_ATTACH;
 
         flags = SENDREPLY |
-	  (op == OP_GROUP_REPLY ? SENDGROUPREPLY : 0) |
-	  (op == OP_LIST_REPLY ? SENDLISTREPLY : 0);
+	  ((op == OP_GROUP_REPLY) ? SENDGROUPREPLY : 0) |
+	  ((op == OP_LIST_REPLY) ? SENDLISTREPLY : 0);
         mutt_attach_reply (fp, hdr, idx, idxlen,
 			   menu->tagprefix ? NULL : idx[menu->current]->content, flags);
 	menu->redraw = REDRAW_FULL;

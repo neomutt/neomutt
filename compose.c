@@ -222,7 +222,7 @@ static void redraw_mix_line (LIST *chain)
     if (t && t[0] == '0' && t[1] == '\0')
       t = "<random>";
 
-    if (c + mutt_strlen (t) + 2 >= MuttIndexWindow->cols)
+    if (c + mutt_strlen (t) + (2 >= MuttIndexWindow->cols))
       break;
 
     addstr (NONULL(t));
@@ -366,7 +366,7 @@ static int delete_attachment (MUTTMENU *menu, short *idxlen, int x)
 
   menu->redraw = REDRAW_INDEX | REDRAW_STATUS;
 
-  if (x == 0 && menu->max == 1)
+  if ((x == 0) && (menu->max == 1))
   {
     mutt_error (_("You may not delete the only attachment."));
     idx[x]->content->tagged = 0;
@@ -730,8 +730,8 @@ int mutt_compose_menu (HEADER *msg,   /* structure for new message */
 	/* fall through */
       case OP_COMPOSE_EDIT_HEADERS:
 	if ((mutt_strcmp ("builtin", Editor) != 0) &&
-	    (op == OP_COMPOSE_EDIT_HEADERS ||
-	    (op == OP_COMPOSE_EDIT_MESSAGE && option (OPTEDITHDRS))))
+	    ((op == OP_COMPOSE_EDIT_HEADERS) ||
+	    ((op == OP_COMPOSE_EDIT_MESSAGE) && option (OPTEDITHDRS))))
 	{
 	  char *tag = NULL, *err = NULL;
 	  mutt_env_to_local (msg->env);
@@ -1090,7 +1090,7 @@ int mutt_compose_menu (HEADER *msg,   /* structure for new message */
 	if (mutt_get_field ("Content-Transfer-Encoding: ", buf,
 					    sizeof (buf), 0) == 0 && buf[0])
 	{
-	  if ((i = mutt_check_encoding (buf)) != ENCOTHER && i != ENCUUENCODED)
+	  if ((i = mutt_check_encoding (buf)) != ENCOTHER && (i != ENCUUENCODED))
 	  {
 	    idx[menu->current]->content->encoding = i;
 	    menu->redraw = REDRAW_CURRENT | REDRAW_STATUS;
@@ -1322,7 +1322,7 @@ int mutt_compose_menu (HEADER *msg,   /* structure for new message */
       case OP_PIPE:
       case OP_FILTER:
         CHECK_COUNT;
-	mutt_pipe_attachment_list (NULL, menu->tagprefix, menu->tagprefix ? msg->content : idx[menu->current]->content, op == OP_FILTER);
+	mutt_pipe_attachment_list (NULL, menu->tagprefix, menu->tagprefix ? msg->content : idx[menu->current]->content, (op == OP_FILTER));
 	if (op == OP_FILTER) /* cte might have changed */
 	  menu->redraw = menu->tagprefix ? REDRAW_FULL : REDRAW_CURRENT;
         menu->redraw |= REDRAW_STATUS;

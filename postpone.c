@@ -603,7 +603,7 @@ int mutt_prepare_template (FILE *fp, CONTEXT *ctx, HEADER *newhdr, HEADER *hdr,
 
     mutt_message (_("Decrypting message..."));
     if ((crypt_pgp_decrypt_mime (fp, &bfp, newhdr->content, &b) == -1)
-	|| b == NULL)
+	|| (b == NULL))
     {
  err:
       mx_close_message (ctx, &msg);

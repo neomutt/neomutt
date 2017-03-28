@@ -102,7 +102,7 @@ static void mhs_alloc (struct mh_sequences *mhs, int i)
   int j;
   int newmax;
 
-  if (i > mhs->max || !mhs->flags)
+  if ((i > mhs->max) || !mhs->flags)
   {
     newmax = i + 128;
     j = mhs->flags ? mhs->max + 1 : 0;
@@ -121,7 +121,7 @@ static void mhs_free_sequences (struct mh_sequences *mhs)
 
 static short mhs_check (struct mh_sequences *mhs, int i)
 {
-  if (!mhs->flags || i > mhs->max)
+  if (!mhs->flags || (i > mhs->max))
     return 0;
   else
     return mhs->flags[i];
@@ -822,8 +822,8 @@ static int maildir_parse_dir (CONTEXT * ctx, struct maildir ***last,
 
   while (((de = readdir (dirp)) != NULL) && (SigInt != 1))
   {
-    if ((ctx->magic == MUTT_MH && !mh_valid_message (de->d_name))
-	|| (ctx->magic == MUTT_MAILDIR && *de->d_name == '.'))
+    if (((ctx->magic == MUTT_MH) && !mh_valid_message (de->d_name))
+	|| ((ctx->magic == MUTT_MAILDIR) && *de->d_name == '.'))
       continue;
 
     /* FOO - really ignore the return value? */
@@ -1044,7 +1044,7 @@ static struct maildir* maildir_sort (struct maildir* list, size_t len,
     return list;
   }
 
-  if (len != (size_t)(-1) && len <= INS_SORT_THRESHOLD)
+  if (len != (size_t)(-1) && (len <= INS_SORT_THRESHOLD))
     return maildir_ins_sort (list, cmp);
 
   list = list->next;
@@ -1069,7 +1069,7 @@ static struct maildir* maildir_sort (struct maildir* list, size_t len,
  */
 static void mh_sort_natural (CONTEXT *ctx, struct maildir **md)
 {
-  if (!ctx || !md || !*md || ctx->magic != MUTT_MH || Sort != SORT_ORDER)
+  if (!ctx || !md || !*md || (ctx->magic != MUTT_MH) || (Sort != SORT_ORDER))
     return;
   mutt_debug (4, "maildir: sorting %s into natural order\n", ctx->path);
   *md = maildir_sort (*md, (size_t) -1, md_cmp_path);
@@ -1180,7 +1180,7 @@ static void maildir_delayed_parsing (CONTEXT * ctx, struct maildir **md,
     data = mutt_hcache_fetch (hc, key, keylen);
     when = (struct timeval *) data;
 
-    if (data != NULL && !ret && lastchanged.st_mtime <= when->tv_sec)
+    if ((data != NULL) && !ret && lastchanged.st_mtime <= when->tv_sec)
     {
       HEADER* h = mutt_hcache_restore((unsigned char *)data);
       h->old = p->h->old;
@@ -1443,7 +1443,7 @@ static int maildir_mh_open_message (CONTEXT *ctx, MESSAGE *msg, int msgno,
   snprintf (path, sizeof (path), "%s/%s", ctx->path, cur->path);
 
   msg->fp = fopen (path, "r");
-  if (msg->fp == NULL && errno == ENOENT && is_maildir)
+  if ((msg->fp == NULL) && (errno == ENOENT) && is_maildir)
     msg->fp = maildir_open_find_message (ctx->path, cur->path, NULL);
 
   if (msg->fp == NULL)
@@ -1792,7 +1792,7 @@ static int mh_rewrite_message (CONTEXT * ctx, int msgno)
      * lose flag modifications.
      */
 
-    if (ctx->magic == MUTT_MH && rc == 0)
+    if ((ctx->magic == MUTT_MH) && (rc == 0))
     {
       snprintf (newpath, _POSIX_PATH_MAX, "%s/%s", ctx->path, h->path);
       if ((rc = safe_rename (newpath, oldpath)) == 0)
@@ -1899,11 +1899,11 @@ int mh_sync_mailbox_message (CONTEXT * ctx, int msgno)
     char path[_POSIX_PATH_MAX], tmp[_POSIX_PATH_MAX];
     HEADER *h = ctx->hdrs[msgno];
 
-    if (h->deleted && (ctx->magic != MUTT_MAILDIR || !option (OPTMAILDIRTRASH)))
+    if (h->deleted && ((ctx->magic != MUTT_MAILDIR) || !option (OPTMAILDIRTRASH)))
     {
       snprintf (path, sizeof (path), "%s/%s", ctx->path, h->path);
       if (ctx->magic == MUTT_MAILDIR
-	  || (option (OPTMHPURGE) && ctx->magic == MUTT_MH))
+	  || (option (OPTMHPURGE) && (ctx->magic == MUTT_MH)))
       {
 #ifdef USE_HCACHE
         if (hc != NULL)
@@ -2189,7 +2189,7 @@ static int mh_check_mailbox (CONTEXT * ctx, int *index_hint)
 
   /* create .mh_sequences when there isn't one. */
   snprintf (buf, sizeof (buf), "%s/.mh_sequences", ctx->path);
-  if ((i = stat (buf, &st_cur)) == -1 && errno == ENOENT)
+  if ((i = stat (buf, &st_cur)) == -1 && (errno == ENOENT))
   {
     char *tmp = NULL;
     FILE *fp = NULL;
@@ -2288,7 +2288,7 @@ static int mh_sync_mailbox (CONTEXT * ctx, int *index_hint)
     return i;
 
 #ifdef USE_HCACHE
-  if (ctx->magic == MUTT_MAILDIR || ctx->magic == MUTT_MH)
+  if ((ctx->magic == MUTT_MAILDIR) || (ctx->magic == MUTT_MH))
     hc = mutt_hcache_open(HeaderCache, ctx->path, NULL);
 #endif /* USE_HCACHE */
 
@@ -2313,7 +2313,7 @@ static int mh_sync_mailbox (CONTEXT * ctx, int *index_hint)
   }
 
 #ifdef USE_HCACHE
-  if (ctx->magic == MUTT_MAILDIR || ctx->magic == MUTT_MH)
+  if ((ctx->magic == MUTT_MAILDIR) || (ctx->magic == MUTT_MH))
     mutt_hcache_close (hc);
 #endif /* USE_HCACHE */
 
@@ -2331,7 +2331,7 @@ static int mh_sync_mailbox (CONTEXT * ctx, int *index_hint)
     for (i = 0, j = 0; i < ctx->msgcount; i++)
     {
       if (!ctx->hdrs[i]->deleted
-	  || (ctx->magic == MUTT_MAILDIR && option (OPTMAILDIRTRASH)))
+	  || ((ctx->magic == MUTT_MAILDIR) && option (OPTMAILDIRTRASH)))
 	ctx->hdrs[i]->index = j++;
     }
   }
@@ -2340,7 +2340,7 @@ static int mh_sync_mailbox (CONTEXT * ctx, int *index_hint)
 
 err:
 #ifdef USE_HCACHE
-  if (ctx->magic == MUTT_MAILDIR || ctx->magic == MUTT_MH)
+  if ((ctx->magic == MUTT_MAILDIR) || (ctx->magic == MUTT_MH))
     mutt_hcache_close (hc);
 #endif /* USE_HCACHE */
   return -1;
@@ -2448,14 +2448,14 @@ FILE *maildir_open_find_message (const char *folder, const char *msg,
   if (
       (fp =
        _maildir_open_find_message (folder, unique,
-				   new_hits > cur_hits ? "new" : "cur",
+				   (new_hits > cur_hits) ? "new" : "cur",
 				   newname))
-      || errno != ENOENT)
+      || (errno != ENOENT))
   {
-    if (new_hits < UINT_MAX && cur_hits < UINT_MAX)
+    if ((new_hits < UINT_MAX) && (cur_hits < UINT_MAX))
     {
-      new_hits += (new_hits > cur_hits ? 1 : 0);
-      cur_hits += (new_hits > cur_hits ? 0 : 1);
+      new_hits += ((new_hits > cur_hits) ? 1 : 0);
+      cur_hits += ((new_hits > cur_hits) ? 0 : 1);
     }
 
     return fp;
@@ -2463,14 +2463,14 @@ FILE *maildir_open_find_message (const char *folder, const char *msg,
   if (
       (fp =
        _maildir_open_find_message (folder, unique,
-				   new_hits > cur_hits ? "cur" : "new",
+				   (new_hits > cur_hits) ? "cur" : "new",
 				   newname))
-      || errno != ENOENT)
+      || (errno != ENOENT))
   {
-    if (new_hits < UINT_MAX && cur_hits < UINT_MAX)
+    if ((new_hits < UINT_MAX) && (cur_hits < UINT_MAX))
     {
-      new_hits += (new_hits > cur_hits ? 0 : 1);
-      cur_hits += (new_hits > cur_hits ? 1 : 0);
+      new_hits += ((new_hits > cur_hits) ? 0 : 1);
+      cur_hits += ((new_hits > cur_hits) ? 1 : 0);
     }
 
     return fp;
@@ -2501,7 +2501,7 @@ int maildir_check_empty (const char *path)
      * find old messages without having to scan both subdirs
      */
     snprintf (realpath, sizeof (realpath), "%s/%s", path,
-	      iter == 0 ? "cur" : "new");
+	      (iter == 0) ? "cur" : "new");
     if ((dp = opendir (realpath)) == NULL)
       return -1;
     while ((de = readdir (dp)))
@@ -2514,7 +2514,7 @@ int maildir_check_empty (const char *path)
     }
     closedir (dp);
     iter++;
-  } while (r && iter < 2);
+  } while (r && (iter < 2));
 
   return r;
 }

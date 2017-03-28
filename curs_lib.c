@@ -153,7 +153,7 @@ event_t mutt_getch (void)
 
   ret.ch = ch;
   ret.op = 0;
-  return (ch == ctrl ('G') ? err : ret);
+  return ((ch == ctrl('G')) ? err : ret);
 }
 
 int _mutt_get_field (const char *field, char *buf, size_t buflen, int complete, int multiple, char ***files, int *numfiles)
@@ -250,7 +250,7 @@ int mutt_yesorno (const char *msg, int def)
    * ensure there is enough room for the answer and truncate the question
    * to fit.
    */
-  safe_asprintf (&answer_string, " ([%s]/%s): ", def == MUTT_YES ? yes : no, def == MUTT_YES ? no : yes);
+  safe_asprintf (&answer_string, " ([%s]/%s): ", (def == MUTT_YES) ? yes : no, (def == MUTT_YES) ? no : yes);
   answer_string_len = mutt_strwidth (answer_string);
   /* maxlen here is sort of arbitrary, so pick a reasonable upper bound */
   msglen = mutt_wstr_trunc (msg, 4*MuttMessageWindow->cols, MuttMessageWindow->cols - answer_string_len, NULL);
@@ -309,7 +309,7 @@ int mutt_yesorno (const char *msg, int def)
 
   if (def != MUTT_ABORT)
   {
-    addstr ((char *) (def == MUTT_YES ? yes : no));
+    addstr ((char *) ((def == MUTT_YES) ? yes : no));
     mutt_refresh ();
   }
   else
@@ -498,9 +498,9 @@ void mutt_progress_update (progress_t* progress, long pos, int percent)
   if (progress->inc == 0)
     goto out;
 
-  /* refresh if size > inc */
+  /* refresh if (size > inc) */
   if (progress->flags & MUTT_PROGRESS_SIZE &&
-      (pos >= progress->pos + (progress->inc << 10)))
+      ((pos >= progress->pos) + (progress->inc << 10)))
     update = 1;
   else if (pos >= (progress->pos + progress->inc))
     update = 1;
@@ -945,7 +945,7 @@ int mutt_multi_choice (char *prompt, char *letters)
   {
     mutt_refresh ();
     ch  = mutt_getch ();
-    /* (ch.ch == 0) is technically possible.  Treat the same as < 0 (abort) */
+    /* (ch.ch == 0) is technically possible.  Treat the same (as < 0) (abort) */
     if (ch.ch <= 0 || CI_is_return (ch.ch))
     {
       choice = -1;
@@ -962,7 +962,7 @@ int mutt_multi_choice (char *prompt, char *letters)
       else if (ch.ch <= '9' && ch.ch > '0')
       {
 	choice = ch.ch - '0';
-	if (choice <= mutt_strlen (letters))
+	if (choice <= (mutt_strlen(letters)))
 	  break;
       }
     }
@@ -1019,7 +1019,7 @@ void mutt_format_string (char *dest, size_t destlen,
   {
     if (k == (size_t)(-1) || k == (size_t)(-2))
     {
-      if (k == (size_t)(-1) && errno == EILSEQ)
+      if (k == (size_t)(-1) && (errno == EILSEQ))
 	memset (&mbstate1, 0, sizeof (mbstate1));
 
       k = (k == (size_t)(-1)) ? 1 : n;
@@ -1028,10 +1028,10 @@ void mutt_format_string (char *dest, size_t destlen,
     if (escaped != 0) {
       escaped = 0;
       w = 0;
-    } else if (arboreal && wc == MUTT_SPECIAL_INDEX) {
+    } else if (arboreal && (wc == MUTT_SPECIAL_INDEX)) {
       escaped = 1;
       w = 0;
-    } else if (arboreal && wc < MUTT_TREE_MAX) {
+    } else if (arboreal && (wc < MUTT_TREE_MAX)) {
       w = 1; /* hack */
     }
     else
@@ -1047,7 +1047,7 @@ void mutt_format_string (char *dest, size_t destlen,
     }
     if (w >= 0)
     {
-      if (w > max_width || (k2 = wcrtomb (scratch, wc, &mbstate2)) > destlen)
+      if ((w > max_width) || (k2 = wcrtomb (scratch, wc, &mbstate2)) > destlen)
 	break;
       min_width -= w;
       max_width -= w;
@@ -1215,7 +1215,7 @@ size_t mutt_wstr_trunc (const char *src, size_t maxlen, size_t maxwid, size_t *w
       cl = 2; /* skip the index coloring sequence */
       cw = 0;
     }
-    else if (cw < 0 && cl == 1 && src[0] && src[0] < MUTT_TREE_MAX)
+    else if ((cw < 0) && (cl == 1) && src[0] && src[0] < MUTT_TREE_MAX)
       cw = 1;
     else if (cw < 0)
       cw = 0;			/* unprintable wchar */

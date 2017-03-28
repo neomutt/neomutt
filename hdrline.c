@@ -408,7 +408,7 @@ static char *apply_subject_mods (ENVELOPE *env)
   if (SubjectRxList == NULL)
     return env->subject;
 
-  if (env->subject == NULL || *env->subject == '\0')
+  if ((env->subject == NULL) || *env->subject == '\0')
     return env->disp_subj = NULL;
 
   env->disp_subj = mutt_apply_replace(NULL, 0, env->subject, SubjectRxList);
@@ -476,8 +476,8 @@ hdr_format_str (char *dest,
   int optional = (flags & MUTT_FORMAT_OPTIONAL);
   int threads = ((Sort & SORT_MASK) == SORT_THREADS);
   int is_index = (flags & MUTT_FORMAT_INDEX);
-#define THREAD_NEW (threads && hdr->collapsed && hdr->num_hidden > 1 && mutt_thread_contains_unread (ctx, hdr) == 1)
-#define THREAD_OLD (threads && hdr->collapsed && hdr->num_hidden > 1 && mutt_thread_contains_unread (ctx, hdr) == 2)
+#define THREAD_NEW (threads && hdr->collapsed && (hdr->num_hidden > 1) && mutt_thread_contains_unread (ctx, hdr) == 1)
+#define THREAD_OLD (threads && hdr->collapsed && (hdr->num_hidden > 1) && mutt_thread_contains_unread (ctx, hdr) == 2)
   size_t len;
   size_t colorlen;
 
@@ -687,7 +687,7 @@ hdr_format_str (char *dest,
 	  do_locales = 1;
 
 	len = destlen - 1;
-	while (len > 0 && (((op == 'd' || op == 'D') && *cp) ||
+	while ((len > 0) && (((op == 'd' || op == 'D') && *cp) ||
 			   (op == '{' && *cp != '}') ||
 			   (op == '[' && *cp != ']') ||
 			   (op == '(' && *cp != ')') ||
@@ -759,7 +759,7 @@ hdr_format_str (char *dest,
 	mutt_format_s (dest + colorlen, destlen - colorlen, prefix, buf2);
 	add_index_color (dest + colorlen, destlen - colorlen, flags, MT_COLOR_INDEX);
 
-	if (len > 0 && op != 'd' && op != 'D') /* Skip ending op */
+	if ((len > 0) && op != 'd' && op != 'D') /* Skip ending op */
 	  src = cp + 1;
       }
       break;
@@ -909,7 +909,7 @@ hdr_format_str (char *dest,
       {
 	colorlen = add_index_color (dest, destlen, flags,
 				   MT_COLOR_INDEX_COLLAPSED);
-	if (threads && is_index && hdr->collapsed && hdr->num_hidden > 1)
+	if (threads && is_index && hdr->collapsed && (hdr->num_hidden > 1))
 	{
 	  snprintf (dest + colorlen, destlen - colorlen, fmt, hdr->num_hidden);
 	  add_index_color (dest, destlen - colorlen, flags, MT_COLOR_INDEX);
@@ -924,7 +924,7 @@ hdr_format_str (char *dest,
       }
       else
       {
-	if (!(threads && is_index && hdr->collapsed && hdr->num_hidden > 1))
+	if (!(threads && is_index && hdr->collapsed && (hdr->num_hidden > 1)))
 	  optional = 0;
       }
       break;
@@ -991,7 +991,7 @@ hdr_format_str (char *dest,
         wch = get_nth_wchar (Flagchars, FlagCharImportant);
       else if (hdr->replied != 0)
         wch = get_nth_wchar (Flagchars, FlagCharReplied);
-      else if (hdr->read && (ctx && ctx->msgnotreadyet != hdr->msgno))
+      else if (hdr->read && (ctx && (ctx->msgnotreadyet != hdr->msgno)))
         wch = get_nth_wchar (Flagchars, FlagCharSEmpty);
       else if (hdr->old != 0)
         wch = get_nth_wchar (Flagchars, FlagCharOld);

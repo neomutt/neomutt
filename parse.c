@@ -156,7 +156,7 @@ static PARAMETER *parse_parameters (const char *s)
     {
       i = p - s;
       /* remove whitespace from the end of the attribute name */
-      while (i > 0 && is_email_wsp(s[i-1]))
+      while ((i > 0) && is_email_wsp(s[i-1]))
 	--i;
 
       /* the check for the missing parameter token is here so that we can skip
@@ -179,12 +179,12 @@ static PARAMETER *parse_parameters (const char *s)
       {
         int state_ascii = 1;
 	s++;
-	for (i=0; *s && i < sizeof (buffer) - 1; i++, s++)
+	for (i=0; *s && (i < (sizeof(buffer) - 1)); i++, s++)
 	{
 	  if (AssumedCharset && *AssumedCharset) {
             /* As iso-2022-* has a character of '"' with non-ascii state,
 	     * ignore it. */
-            if (*s == 0x1b && i < sizeof (buffer) - 2)
+            if ((*s == 0x1b) && (i < (sizeof(buffer) - 2)))
             {
               if (s[1] == '(' && (s[2] == 'B' || s[2] == 'J'))
                 state_ascii = 1;
@@ -210,7 +210,7 @@ static PARAMETER *parse_parameters (const char *s)
       }
       else
       {
-	for (i=0; *s && *s != ' ' && *s != ';' && i < sizeof (buffer) - 1; i++, s++)
+	for (i=0; *s && (*s != ' ') && (*s != ';') && (i < (sizeof(buffer) - 1)); i++, s++)
 	  buffer[i] = *s;
 	buffer[i] = 0;
       }
@@ -469,9 +469,9 @@ BODY *mutt_read_mime_header (FILE *fp, int digest)
 #endif
   }
   p->offset = ftello (fp); /* Mark the start of the real data */
-  if (p->type == TYPETEXT && !p->subtype)
+  if ((p->type == TYPETEXT) && !p->subtype)
     p->subtype = safe_strdup ("plain");
-  else if (p->type == TYPEMESSAGE && !p->subtype)
+  else if ((p->type == TYPEMESSAGE) && !p->subtype)
     p->subtype = safe_strdup ("rfc822");
 
   FREE (&line);
@@ -590,7 +590,7 @@ BODY *mutt_parse_multipart (FILE *fp, const char *boundary, LOFF_T end_off, int 
   {
     len = mutt_strlen (buffer);
 
-    crlf =  (len > 1 && buffer[len - 2] == '\r') ? 1 : 0;
+    crlf =  ((len > 1) && buffer[len - 2] == '\r') ? 1 : 0;
 
     if (buffer[0] == '-' && buffer[1] == '-' &&
 	(mutt_strncmp (buffer + 2, boundary, blen) == 0))
@@ -598,7 +598,7 @@ BODY *mutt_parse_multipart (FILE *fp, const char *boundary, LOFF_T end_off, int 
       if (last != NULL)
       {
 	last->length = ftello (fp) - last->offset - len - 1 - crlf;
-	if (last->parts && last->parts->length == 0)
+	if (last->parts && (last->parts->length == 0))
 	  last->parts->length = ftello (fp) - last->parts->offset - len - 1 - crlf;
 	/* if the body is empty, we can end up with a -1 length */
 	if (last->length < 0)
@@ -650,7 +650,7 @@ BODY *mutt_parse_multipart (FILE *fp, const char *boundary, LOFF_T end_off, int 
   }
 
   /* in case of missing end boundary, set the length to something reasonable */
-  if (last && last->length == 0 && !final)
+  if (last && (last->length == 0) && !final)
     last->length = end_off - last->offset;
 
   /* parse recursive MIME parts */
@@ -951,8 +951,8 @@ void mutt_parse_mime_message (CONTEXT *ctx, HEADER *cur)
   MESSAGE *msg = NULL;
 
   do {
-    if (cur->content->type != TYPEMESSAGE &&
-        cur->content->type != TYPEMULTIPART)
+    if ((cur->content->type != TYPEMESSAGE) &&
+        (cur->content->type != TYPEMULTIPART))
       break; /* nothing to do */
 
     if (cur->content->parts != NULL)
@@ -1104,7 +1104,7 @@ int mutt_parse_rfc822_line (ENVELOPE *e, HEADER *hdr, char *line, char *p, short
 	 * HACK - mutt has, for a very short time, produced negative
 	 * Lines header values.  Ignore them.
 	 */
-	if (mutt_atoi (p, &hdr->lines) < 0 || hdr->lines < 0)
+	if (mutt_atoi (p, &hdr->lines) < 0 || (hdr->lines < 0))
 	  hdr->lines = 0;
       }
 
@@ -1561,7 +1561,7 @@ static int count_body_parts_check(LIST **checklist, BODY *b, int dflt)
                 dflt ? "[OK]   " : "[EXCL] ",
                 b->type, b->subtype ? b->subtype : "*",
                 a->major, a->minor, a->major_int);
-    if ((a->major_int == TYPEANY || a->major_int == b->type) &&
+    if (((a->major_int == TYPEANY) || (a->major_int == b->type)) &&
         (!b->subtype || !regexec(&a->minor_rx, b->subtype, 0, NULL, 0)))
     {
       mutt_debug (5, "yes\n");
@@ -1624,8 +1624,8 @@ static int count_body_parts (BODY *body, int flags)
 	AT_NOCOUNT("top-level multipart");
     }
 
-    if (bp->disposition == DISPINLINE &&
-        bp->type != TYPEMULTIPART && bp->type != TYPEMESSAGE && bp == body)
+    if ((bp->disposition == DISPINLINE) &&
+        (bp->type != TYPEMULTIPART) && (bp->type != TYPEMESSAGE) && (bp == body))
       AT_NOCOUNT("ignore fundamental inlines");
 
     /* If this body isn't scheduled for enumeration already, don't bother
@@ -1669,8 +1669,8 @@ static int count_body_parts (BODY *body, int flags)
     }
   }
 
-  mutt_debug (5, "bp: return %d\n", count < 0 ? 0 : count);
-  return count < 0 ? 0 : count;
+  mutt_debug (5, "bp: return %d\n", (count < 0) ? 0 : count);
+  return (count < 0) ? 0 : count;
 }
 
 int mutt_count_body_parts (CONTEXT *ctx, HEADER *hdr)

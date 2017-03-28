@@ -288,7 +288,7 @@ static void mix_redraw_chain (REMAILER **type2_list,
   }
 
   for (i = 0; i < chain->cl; i++)
-    mix_redraw_ce (type2_list, coords, chain, i, i == cur);
+    mix_redraw_ce (type2_list, coords, chain, i, (i == cur));
 }
 
 static void mix_redraw_head (MIXCHAIN *chain)
@@ -583,7 +583,7 @@ void mix_make_chain (LIST **chainp, int *redraw)
       case OP_GENERIC_SELECT_ENTRY:
       case OP_MIX_APPEND:
       {
-	if (chain->cl < MAXMIXES && c_cur < chain->cl)
+	if ((chain->cl < MAXMIXES) && (c_cur < chain->cl))
 	  c_cur++;
       }
       /* fallthrough */
@@ -615,7 +615,7 @@ void mix_make_chain (LIST **chainp, int *redraw)
 	  for (i = c_cur; i < chain->cl; i++)
 	    chain->ch[i] = chain->ch[i+1];
 
-	  if (c_cur == chain->cl && c_cur)
+	  if ((c_cur == chain->cl) && c_cur)
 	    c_cur--;
 
 	  mix_screen_coordinates (type2_list, &coords, chain, c_cur);

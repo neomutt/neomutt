@@ -165,7 +165,7 @@ pgp_key_t pgp_remove_key (pgp_key_t *klist, pgp_key_t key)
   if (!klist || !*klist || !key)
     return NULL;
 
-  if (key->parent && key->parent != key)
+  if (key->parent && (key->parent != key))
     key = key->parent;
 
   last = klist;

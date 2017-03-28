@@ -183,7 +183,7 @@ int is_from (const char *s, char *path, size_t pathlen, time_t *tp)
 
   /* year */
   if (sscanf (s, "%d", &yr) != 1) return 0;
-  tm.tm_year = yr > 1900 ? yr - 1900 : (yr < 70 ? yr + 100 : yr);
+  tm.tm_year = (yr > 1900) ? yr - 1900 : ((yr < 70) ? yr + 100 : yr);
 
   mutt_debug (3, "is_from(): month=%d, day=%d, hr=%d, min=%d, sec=%d, yr=%d.\n",
               tm.tm_mon, tm.tm_mday, tm.tm_hour, tm.tm_min, tm.tm_sec, tm.tm_year);

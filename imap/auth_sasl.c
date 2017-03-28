@@ -71,7 +71,7 @@ imap_auth_res_t imap_auth_sasl (IMAP_DATA* idata, const char* method)
     /* do not use SASL login for regular IMAP login (#3556) */
     return IMAP_AUTH_UNAVAIL;
 
-  if (rc != SASL_OK && rc != SASL_CONTINUE)
+  if ((rc != SASL_OK) && (rc != SASL_CONTINUE))
     do
     {
       rc = sasl_client_start (saslconn, method, &interaction,
@@ -83,7 +83,7 @@ imap_auth_res_t imap_auth_sasl (IMAP_DATA* idata, const char* method)
 
   client_start = (olen > 0);
 
-  if (rc != SASL_OK && rc != SASL_CONTINUE)
+  if ((rc != SASL_OK) && (rc != SASL_CONTINUE))
   {
     if (method != NULL)
       mutt_debug (2, "imap_auth_sasl: %s unavailable\n", method);
@@ -116,13 +116,13 @@ imap_auth_res_t imap_auth_sasl (IMAP_DATA* idata, const char* method)
   irc = IMAP_CMD_CONTINUE;
 
   /* looping protocol */
-  while (rc == SASL_CONTINUE || olen > 0)
+  while ((rc == SASL_CONTINUE) || (olen > 0))
   {
     do
       irc = imap_cmd_step (idata);
     while (irc == IMAP_CMD_CONTINUE);
 
-    if (irc == IMAP_CMD_BAD || irc == IMAP_CMD_NO)
+    if ((irc == IMAP_CMD_BAD) || (irc == IMAP_CMD_NO))
       goto bail;
 
     if (irc == IMAP_CMD_RESPOND)

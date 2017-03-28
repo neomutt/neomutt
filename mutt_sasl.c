@@ -169,7 +169,7 @@ static int mutt_sasl_cb_authname (void* context, int id, const char** result,
     return SASL_BADPARAM;
 
   mutt_debug (2, "mutt_sasl_cb_authname: getting %s for %s:%u\n",
-	      id == SASL_CB_AUTHNAME ? "authname" : "user",
+	      (id == SASL_CB_AUTHNAME) ? "authname" : "user",
 	      account->host, account->port);
 
   if (id == SASL_CB_AUTHNAME)

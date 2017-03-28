@@ -974,7 +974,7 @@ static int smime_handle_cert_email (char *certificate, char *mailbox,
     if(mutt_strncasecmp (email, mailbox, mutt_strlen (mailbox)) == 0)
       ret=1;
 
-    ret = ret < 0 ? 0 : ret;
+    ret = (ret < 0) ? 0 : ret;
     count++;
   }
 
@@ -1936,7 +1936,7 @@ static BODY *smime_handle_entity (BODY *m, STATE *s, FILE *outFile)
     while (fgets (buf, sizeof (buf) - 1, smimeout) != NULL)
     {
       len = mutt_strlen (buf);
-      if (len > 1 && buf[len - 2] == '\r')
+      if ((len > 1) && buf[len - 2] == '\r')
       {
 	buf[len-2] = '\n';
 	buf[len-1] = '\0';

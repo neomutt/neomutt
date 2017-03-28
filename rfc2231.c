@@ -125,7 +125,7 @@ static void rfc2231_list_insert (struct rfc2231_parameter **list,
   while (p)
   {
     c = strcmp (par->attribute, p->attribute);
-    if ((c < 0) || (c == 0 && par->index <= p->index))
+    if ((c < 0) || ((c == 0) && (par->index <= p->index)))
       break;
 
     last = &p->next;

@@ -729,7 +729,7 @@ attach_reply_envelope_defaults (ENVELOPE *env, ATTACHPTR **idx, short idxlen,
     curhdr = parent;
   }
 
-  if (curenv == NULL  ||  curhdr == NULL)
+  if ((curenv == NULL)  ||  (curhdr == NULL))
   {
     mutt_error (_("Can't find any tagged messages."));
     return -1;
@@ -840,7 +840,7 @@ void mutt_attach_reply (FILE * fp, HEADER * hdr,
       parent = hdr;
   }
 
-  if (nattach > 1 && !check_can_decode (idx, idxlen, cur))
+  if ((nattach > 1) && !check_can_decode (idx, idxlen, cur))
   {
     if ((rc = query_quadoption (OPT_MIMEFWDREST,
       _("Can't decode all tagged attachments.  MIME-encapsulate the others?"))) == MUTT_ABORT)

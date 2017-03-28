@@ -515,7 +515,7 @@ int imap_read_headers (IMAP_DATA* idata, int msgbegin, int msgend)
           idx--;
         }
       }
-      while (rc != IMAP_CMD_OK && mfhrc == -1);
+      while ((rc != IMAP_CMD_OK) && mfhrc == -1);
       if (rc == IMAP_CMD_OK)
         break;
       if ((mfhrc < -1) || ((rc != IMAP_CMD_CONTINUE) && (rc != IMAP_CMD_OK)))
@@ -533,7 +533,7 @@ int imap_read_headers (IMAP_DATA* idata, int msgbegin, int msgend)
   mutt_progress_init (&progress, _("Fetching message headers..."),
 		      MUTT_PROGRESS_MSG, ReadInc, msgend + 1);
 
-  for (msgno = msgbegin; msgno <= msgend ; msgno++)
+  for (msgno = msgbegin; (msgno <= msgend) ; msgno++)
   {
     mutt_progress_update (&progress, msgno + 1, -1);
 
@@ -1225,7 +1225,7 @@ int imap_copy_messages (CONTEXT* ctx, HEADER* h, char* dest, int delete)
     FREE (&sync_cmd.data);
   FREE (&mx.mbox);
 
-  return rc < 0 ? -1 : rc;
+  return (rc < 0) ? -1 : rc;
 }
 
 int imap_cache_del (IMAP_DATA* idata, HEADER* h)

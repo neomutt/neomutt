@@ -169,7 +169,7 @@ static int pop_capabilities (POP_DATA *pop_data, int mode)
   }
 
   /* Execute CAPA command */
-  if (mode == 0 || pop_data->cmd_capa)
+  if ((mode == 0) || pop_data->cmd_capa)
   {
     strfcpy (buf, "CAPA\r\n", sizeof (buf));
     switch (pop_fetch_data (pop_data, buf, NULL, fetch_capa, pop_data))
@@ -185,7 +185,7 @@ static int pop_capabilities (POP_DATA *pop_data, int mode)
   }
 
   /* CAPA not supported, use defaults */
-  if (mode == 0 && !pop_data->cmd_capa)
+  if ((mode == 0) && !pop_data->cmd_capa)
   {
     pop_data->cmd_user = 2;
     pop_data->cmd_uidl = 2;
@@ -505,7 +505,7 @@ int pop_fetch_data (POP_DATA *pop_data, char *query, progress_t *progressbar,
     {
       if (progressbar != NULL)
 	mutt_progress_update (progressbar, pos, -1);
-      if (ret == 0 && funct (inbuf, data) < 0)
+      if ((ret == 0) && funct (inbuf, data) < 0)
 	ret = -3;
       lenbuf = 0;
     }

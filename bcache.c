@@ -71,7 +71,7 @@ static int bcache_path(ACCOUNT *account, const char *mailbox,
 
   mutt_debug (3, "bcache_path: rc: %d, path: '%s'\n", len, dst);
 
-  if (len < 0 || len >= dstlen-1)
+  if ((len < 0) || len >= dstlen-1)
     return -1;
 
   mutt_debug (3, "bcache_path: directory: '%s'\n", dst);
@@ -121,7 +121,7 @@ FILE* mutt_bcache_get(body_cache_t *bcache, const char *id)
 
   fp = safe_fopen (path, "r");
 
-  mutt_debug (3, "bcache: get: '%s': %s\n", path, fp == NULL ? "no" : "yes");
+  mutt_debug (3, "bcache: get: '%s': %s\n", path, (fp == NULL) ? "no" : "yes");
 
   return fp;
 }
@@ -216,7 +216,7 @@ int mutt_bcache_exists(body_cache_t *bcache, const char *id)
   else
     rc = S_ISREG(st.st_mode) && st.st_size != 0 ? 0 : -1;
 
-  mutt_debug (3, "bcache: exists: '%s': %s\n", path, rc == 0 ? "yes" : "no");
+  mutt_debug (3, "bcache: exists: '%s': %s\n", path, (rc == 0) ? "yes" : "no");
 
   return rc;
 }

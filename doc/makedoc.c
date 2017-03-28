@@ -332,7 +332,7 @@ static int print_it (int special, char *str, FILE *out, int docstat)
 	  {
 	    int i;
 
-	    for (i = strlen (str) ; i < 8 ; i++)
+	    for (i = strlen (str) ; (i < 8) ; i++)
 	      putc (' ', out);
 	    docstat &= ~D_DT;
 	    docstat |= D_NL;
@@ -1127,8 +1127,8 @@ static void print_confline (const char *varname, int type, const char *val, FILE
     /* configuration file */
     case F_CONF:
     {
-      if (type == DT_STR || type == DT_RX || type == DT_ADDR || type == DT_PATH ||
-          type == DT_MBCHARTBL)
+      if ((type == DT_STR) || (type == DT_RX) || (type == DT_ADDR) || (type == DT_PATH) ||
+          (type == DT_MBCHARTBL))
       {
 	fprintf (out, "\n# set %s=\"", varname);
 	conf_print_strval (val, out);
@@ -1139,8 +1139,8 @@ static void print_confline (const char *varname, int type, const char *val, FILE
 
       fprintf (out, "\n#\n# Name: %s", varname);
       fprintf (out, "\n# Type: %s", type2human (type));
-      if (type == DT_STR || type == DT_RX || type == DT_ADDR || type == DT_PATH ||
-          type == DT_MBCHARTBL)
+      if ((type == DT_STR) || (type == DT_RX) || (type == DT_ADDR) || (type == DT_PATH) ||
+          (type == DT_MBCHARTBL))
       {
 	fputs ("\n# Default: \"", out);
 	conf_print_strval (val, out);
@@ -1159,8 +1159,8 @@ static void print_confline (const char *varname, int type, const char *val, FILE
       fprintf (out, "\n.TP\n.B %s\n", varname);
       fputs (".nf\n", out);
       fprintf (out, "Type: %s\n", type2human (type));
-      if (type == DT_STR || type == DT_RX || type == DT_ADDR || type == DT_PATH ||
-          type == DT_MBCHARTBL)
+      if ((type == DT_STR) || (type == DT_RX) || (type == DT_ADDR) || (type == DT_PATH) ||
+          (type == DT_MBCHARTBL))
       {
 	fputs ("Default: \"", out);
 	man_print_strval (val, out);
@@ -1186,8 +1186,8 @@ static void print_confline (const char *varname, int type, const char *val, FILE
       sgml_fputs (varname, out);
       fprintf (out, "</title>\n<literallayout>Type: %s", type2human (type));
 
-      if (type == DT_STR || type == DT_RX || type == DT_ADDR || type == DT_PATH ||
-          type == DT_MBCHARTBL)
+      if ((type == DT_STR) || (type == DT_RX) || (type == DT_ADDR) || (type == DT_PATH) ||
+          (type == DT_MBCHARTBL))
       {
 	if (val && *val)
 	{

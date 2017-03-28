@@ -1259,7 +1259,7 @@ static int parse_group (BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err)
     if (parse_group_context (&gc, buf, s, data, err) == -1)
       goto bail;
 
-    if (data == MUTT_UNGROUP && (mutt_strcasecmp (buf->data, "*") == 0))
+    if ((data == MUTT_UNGROUP) && (mutt_strcasecmp (buf->data, "*") == 0))
     {
       if (mutt_group_context_clear (&gc) < 0)
 	goto bail;
@@ -1276,14 +1276,14 @@ static int parse_group (BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err)
       {
 	case NONE:
 	  snprintf (err->data, err->dsize, _("%sgroup: missing -rx or -addr."),
-		   data == MUTT_UNGROUP ? "un" : "");
+		   (data == MUTT_UNGROUP) ? "un" : "");
 	  goto bail;
 
 	case RX:
-	  if (data == MUTT_GROUP &&
+	  if ((data == MUTT_GROUP) &&
 	      mutt_group_context_add_rx (gc, buf->data, REG_ICASE, err) != 0)
 	    goto bail;
-	  else if (data == MUTT_UNGROUP &&
+	  else if ((data == MUTT_UNGROUP) &&
 		   mutt_group_context_remove_rx (gc, buf->data) < 0)
 	    goto bail;
 	  break;
@@ -1294,7 +1294,7 @@ static int parse_group (BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err)
 	  if (mutt_addrlist_to_intl (addr, &estr))
 	  {
 	    snprintf (err->data, err->dsize, _("%sgroup: warning: bad IDN '%s'.\n"),
-		      data == 1 ? "un" : "", estr);
+		      (data == 1) ? "un" : "", estr);
             rfc822_free_address (&addr);
             FREE(&estr);
 	    goto bail;
@@ -1459,7 +1459,7 @@ static int parse_unattach_list (BUFFER *buf, BUFFER *s, LIST **ldata, BUFFER *er
       a = (ATTACH_MATCH *)lp->data;
       mutt_debug (5, "parse_unattach_list: check %s/%s [%d] : %s/%s [%d]\n",
                   a->major, a->minor, a->major_int, tmp, minor, major);
-      if (a->major_int == major && (mutt_strcasecmp(minor, a->minor) == 0))
+      if ((a->major_int == major) && (mutt_strcasecmp(minor, a->minor) == 0))
       {
         mutt_debug (5, "parse_unattach_list: removed %s/%s [%d]\n",
                     a->major, a->minor, a->major_int);
@@ -2611,7 +2611,7 @@ static int parse_set (BUFFER *tmp, BUFFER *s, unsigned long data, BUFFER *err)
       mutt_extract_token (tmp, s, 0);
       rc = mutt_atos (tmp->data, (short *) &val);
 
-      if (rc < 0 || !*tmp->data)
+      if ((rc < 0) || !*tmp->data)
       {
 	snprintf (err->data, err->dsize, _("%s: invalid value (%s)"), tmp->data,
 		  rc == -1 ? _("format error") : _("number overflow"));
@@ -2836,7 +2836,7 @@ static int to_absolute_path(char *path, const char *reference)
   FREE(&ref_tmp);
   path_len = PATH_MAX - strlen(path);
 
-  safe_strncat(abs_path, sizeof(abs_path), path, path_len > 0 ? path_len : 0);
+  safe_strncat(abs_path, sizeof(abs_path), path, (path_len > 0) ? path_len : 0);
 
   path = realpath(abs_path, path);
 
@@ -3056,10 +3056,10 @@ static void matches_ensure_morespace(int current)
 
 /* helper function for completion.  Changes the dest buffer if
    necessary/possible to aid completion.
-	dest == completion result gets here.
-	src == candidate for completion.
-	try == user entered data for completion.
-	len == length of dest buffer.
+ (dest == completion) result gets here.
+ (src == candidate) for completion.
+ (try == user) entered data for completion.
+ (len == length) of dest buffer.
 */
 static void candidate (char *dest, char *try, const char *src, int len)
 {
@@ -3138,9 +3138,9 @@ int mutt_command_complete (char *buffer, size_t len, int pos, int numtabs)
 
      /* Num_matched will _always_ be at least 1 since the initial
       * user-typed string is always stored */
-    if (numtabs == 1 && Num_matched == 2)
+    if ((numtabs == 1) && (Num_matched == 2))
       snprintf(Completed, sizeof(Completed),"%s", Matches[0]);
-    else if (numtabs > 1 && Num_matched > 2)
+    else if ((numtabs > 1) && (Num_matched > 2))
       /* cycle thru all the matches */
       snprintf(Completed, sizeof(Completed), "%s",
 	       Matches[(numtabs - 2) % Num_matched]);
@@ -3194,9 +3194,9 @@ int mutt_command_complete (char *buffer, size_t len, int pos, int numtabs)
 
     /* Num_matched will _always_ be at least 1 since the initial
      * user-typed string is always stored */
-    if (numtabs == 1 && Num_matched == 2)
+    if ((numtabs == 1) && (Num_matched == 2))
       snprintf(Completed, sizeof(Completed),"%s", Matches[0]);
-    else if (numtabs > 1 && Num_matched > 2)
+    else if ((numtabs > 1) && (Num_matched > 2))
     /* cycle thru all the matches */
       snprintf(Completed, sizeof(Completed), "%s",
 	       Matches[(numtabs - 2) % Num_matched]);
@@ -3207,7 +3207,7 @@ int mutt_command_complete (char *buffer, size_t len, int pos, int numtabs)
   {
     const struct binding_t *menu = km_get_table (CurrentMenu);
 
-    if (!menu && CurrentMenu != MENU_PAGER)
+    if (!menu && (CurrentMenu != MENU_PAGER))
       menu = OpGeneric;
 
     pt++;
@@ -3221,7 +3221,7 @@ int mutt_command_complete (char *buffer, size_t len, int pos, int numtabs)
       for (num = 0; menu[num].name; num++)
 	candidate (Completed, User_typed, menu[num].name, sizeof (Completed));
       /* try the generic menu */
-      if (Completed[0] == 0 && CurrentMenu != MENU_PAGER)
+      if (Completed[0] == 0 && (CurrentMenu != MENU_PAGER))
       {
 	menu = OpGeneric;
 	for (num = 0; menu[num].name; num++)
@@ -3241,9 +3241,9 @@ int mutt_command_complete (char *buffer, size_t len, int pos, int numtabs)
 
     /* Num_matched will _always_ be at least 1 since the initial
      * user-typed string is always stored */
-    if (numtabs == 1 && Num_matched == 2)
+    if ((numtabs == 1) && (Num_matched == 2))
       snprintf(Completed, sizeof(Completed),"%s", Matches[0]);
-    else if (numtabs > 1 && Num_matched > 2)
+    else if ((numtabs > 1) && (Num_matched > 2))
     /* cycle thru all the matches */
       snprintf(Completed, sizeof(Completed), "%s",
 	       Matches[(numtabs - 2) % Num_matched]);
@@ -3320,7 +3320,7 @@ static int complete_all_nm_tags (const char *pt)
   nm_longrun_init(Context, false);
 
   /* Work out how many tags there are. */
-  if (nm_get_all_tags(Context, NULL, &tag_count_1) || tag_count_1 == 0)
+  if (nm_get_all_tags(Context, NULL, &tag_count_1) || (tag_count_1 == 0))
     goto done;
 
   /* Free the old list, if any. */
@@ -3336,7 +3336,7 @@ static int complete_all_nm_tags (const char *pt)
 
   /* Get all the tags. */
   if (nm_get_all_tags(Context, nm_tags, &tag_count_2) ||
-      tag_count_1 != tag_count_2) {
+      (tag_count_1 != tag_count_2)) {
     FREE (&nm_tags);
     nm_tags = NULL;
     nm_longrun_done(Context);
@@ -3409,9 +3409,9 @@ int mutt_nm_query_complete (char *buffer, size_t len, int pos, int numtabs)
 
     /* Num_matched will _always_ be at least 1 since the initial
      * user-typed string is always stored */
-    if (numtabs == 1 && Num_matched == 2)
+    if ((numtabs == 1) && (Num_matched == 2))
       snprintf(Completed, sizeof(Completed),"%s", Matches[0]);
-    else if (numtabs > 1 && Num_matched > 2)
+    else if ((numtabs > 1) && (Num_matched > 2))
       /* cycle thru all the matches */
       snprintf(Completed, sizeof(Completed), "%s",
 	       Matches[(numtabs - 2) % Num_matched]);
@@ -3459,9 +3459,9 @@ int mutt_nm_tag_complete (char *buffer, size_t len, int pos, int numtabs)
 
   /* Num_matched will _always_ be at least 1 since the initial
     * user-typed string is always stored */
-  if (numtabs == 1 && Num_matched == 2)
+  if ((numtabs == 1) && (Num_matched == 2))
     snprintf(Completed, sizeof(Completed),"%s", Matches[0]);
-  else if (numtabs > 1 && Num_matched > 2)
+  else if ((numtabs > 1) && (Num_matched > 2))
     /* cycle thru all the matches */
     snprintf(Completed, sizeof(Completed), "%s",
 	      Matches[(numtabs - 2) % Num_matched]);
@@ -3505,7 +3505,7 @@ int var_to_string (int idx, char* val, size_t len)
 
     /* avert your eyes, gentle reader */
     if (mutt_strcmp (MuttVars[idx].option, "wrapmargin") == 0)
-      sval = sval > 0 ? 0 : -sval;
+      sval = (sval > 0) ? 0 : -sval;
 
     snprintf (tmp, sizeof (tmp), "%d", sval);
   }
@@ -4126,7 +4126,7 @@ int mutt_get_hook_type (const char *name)
   const struct command_t *c = NULL;
 
   for (c = Commands ; c->name ; c++)
-    if (c->func == mutt_parse_hook && (ascii_strcasecmp (c->name, name) == 0))
+    if ((c->func == mutt_parse_hook) && (ascii_strcasecmp (c->name, name) == 0))
       return c->data;
   return 0;
 }
@@ -4275,9 +4275,9 @@ int mutt_label_complete (char *buffer, size_t len, int numtabs)
 
    /* Num_matched will _always_ be at least 1 since the initial
     * user-typed string is always stored */
-  if (numtabs == 1 && Num_matched == 2)
+  if ((numtabs == 1) && (Num_matched == 2))
     snprintf(Completed, sizeof(Completed), "%s", Matches[0]);
-  else if (numtabs > 1 && Num_matched > 2)
+  else if ((numtabs > 1) && (Num_matched > 2))
     /* cycle thru all the matches */
     snprintf(Completed, sizeof(Completed), "%s",
              Matches[(numtabs - 2) % Num_matched]);

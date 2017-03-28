@@ -166,11 +166,11 @@ static int mmdf_parse_mailbox (CONTEXT *ctx)
 
       loc = ftello (ctx->fp);
 
-      if (hdr->content->length > 0 && hdr->lines > 0)
+      if ((hdr->content->length > 0) && (hdr->lines > 0))
       {
 	tmploc = loc + hdr->content->length;
 
-	if (0 < tmploc && tmploc < ctx->size)
+	if ((0 < tmploc) && (tmploc < ctx->size))
 	{
 	  if (fseeko (ctx->fp, tmploc, SEEK_SET) != 0 ||
 	      fgets (buf, sizeof (buf) - 1, ctx->fp) == NULL ||
@@ -325,7 +325,7 @@ static int mbox_parse_mailbox (CONTEXT *ctx)
 	loc = ftello (ctx->fp);
 	tmploc = loc + curhdr->content->length + 1;
 
-	if (0 < tmploc && tmploc < ctx->size)
+	if ((0 < tmploc) && (tmploc < ctx->size))
 	{
 	  /*
 	   * check to see if the content-length looks valid.  we expect to
@@ -599,7 +599,7 @@ static int strict_cmp_envelopes (const ENVELOPE *e1, const ENVELOPE *e2)
   }
   else
   {
-    if (e1 == NULL && e2 == NULL)
+    if ((e1 == NULL) && (e2 == NULL))
       return 1;
     else
       return 0;
@@ -625,12 +625,12 @@ static int strict_cmp_parameters (const PARAMETER *p1, const PARAMETER *p2)
 
 static int strict_cmp_bodies (const BODY *b1, const BODY *b2)
 {
-  if (b1->type != b2->type ||
-      b1->encoding != b2->encoding ||
+  if ((b1->type != b2->type) ||
+      (b1->encoding != b2->encoding) ||
       (mutt_strcmp (b1->subtype, b2->subtype) != 0) ||
       (mutt_strcmp (b1->description, b2->description) != 0) ||
       !strict_cmp_parameters (b1->parameter, b2->parameter) ||
-      b1->length != b2->length)
+      (b1->length != b2->length))
     return 0;
   return 1;
 }
@@ -640,14 +640,14 @@ int mbox_strict_cmp_headers (const HEADER *h1, const HEADER *h2)
 {
   if (h1 && h2)
   {
-    if (h1->received != h2->received ||
-	h1->date_sent != h2->date_sent ||
-	h1->content->length != h2->content->length ||
-	h1->lines != h2->lines ||
-	h1->zhours != h2->zhours ||
-	h1->zminutes != h2->zminutes ||
-	h1->zoccident != h2->zoccident ||
-	h1->mime != h2->mime ||
+    if ((h1->received != h2->received) ||
+ (h1->date_sent != h2->date_sent) ||
+ (h1->content->length != h2->content->length) ||
+ (h1->lines != h2->lines) ||
+ (h1->zhours != h2->zhours) ||
+ (h1->zminutes != h2->zminutes) ||
+ (h1->zoccident != h2->zoccident) ||
+ (h1->mime != h2->mime) ||
 	!strict_cmp_envelopes (h1->env, h2->env) ||
 	!strict_cmp_bodies (h1->content, h2->content))
       return 0;
@@ -656,7 +656,7 @@ int mbox_strict_cmp_headers (const HEADER *h1, const HEADER *h2)
   }
   else
   {
-    if (h1 == NULL && h2 == NULL)
+    if ((h1 == NULL) && (h2 == NULL))
       return 1;
     else
       return 0;
@@ -786,7 +786,7 @@ static int reopen_mailbox (CONTEXT *ctx, int *index_hint)
       }
       if (found == 0)
       {
-	for (j = 0; j < i && j < old_msgcount; j++)
+	for (j = 0; (j < i) && j < old_msgcount; j++)
 	{
 	  if (old_hdrs[j] == NULL)
 	    continue;
@@ -897,8 +897,8 @@ static int mbox_check_mailbox (CONTEXT *ctx, int *index_hint)
         mutt_debug (1, "mbox_check_mailbox: fseek() failed\n");
       if (fgets (buffer, sizeof (buffer), ctx->fp) != NULL)
       {
-	if ((ctx->magic == MUTT_MBOX && (mutt_strncmp ("From ", buffer, 5) == 0)) ||
-	    (ctx->magic == MUTT_MMDF && (mutt_strcmp (MMDF_SEP, buffer) == 0)))
+	if (((ctx->magic == MUTT_MBOX) && (mutt_strncmp ("From ", buffer, 5) == 0)) ||
+	    ((ctx->magic == MUTT_MMDF) && (mutt_strcmp (MMDF_SEP, buffer) == 0)))
 	{
 	  if (fseeko (ctx->fp, ctx->size, SEEK_SET) != 0)
 	    mutt_debug (1, "mbox_check_mailbox: fseek() failed\n");
@@ -969,7 +969,7 @@ static int mbox_has_new(CONTEXT *ctx)
   return 0;
 }
 
-/* if mailbox has at least 1 new message, sets mtime > atime of mailbox
+/* if mailbox has at least 1 new message, sets (mtime > atime) of mailbox
  * so buffy check reports new mail */
 void mbox_reset_atime (CONTEXT *ctx, struct stat *st)
 {
@@ -1047,7 +1047,7 @@ static int mbox_sync_mailbox (CONTEXT *ctx, int *index_hint)
   }
 
   /* Check to make sure that the file hasn't changed on disk */
-  if ((i = mbox_check_mailbox (ctx, index_hint)) == MUTT_NEW_MAIL ||  i == MUTT_REOPENED)
+  if ((i = mbox_check_mailbox (ctx, index_hint)) == MUTT_NEW_MAIL ||  (i == MUTT_REOPENED))
   {
     /* new mail arrived, or mailbox reopened */
     need_sort = i;
@@ -1076,7 +1076,7 @@ static int mbox_sync_mailbox (CONTEXT *ctx, int *index_hint)
   /* find the first deleted/changed message.  we save a lot of time by only
    * rewriting the mailbox from the point where it has actually changed.
    */
-  for (i = 0 ; i < ctx->msgcount && !ctx->hdrs[i]->deleted &&
+  for (i = 0 ; (i < ctx->msgcount) && !ctx->hdrs[i]->deleted &&
                !ctx->hdrs[i]->changed && !ctx->hdrs[i]->attach_del; i++)
     ;
   if (i == ctx->msgcount)
@@ -1226,8 +1226,8 @@ static int mbox_sync_mailbox (CONTEXT *ctx, int *index_hint)
   if (fseeko (ctx->fp, offset, SEEK_SET) != 0 ||  /* seek the append location */
       /* do a sanity check to make sure the mailbox looks ok */
       fgets (buf, sizeof (buf), ctx->fp) == NULL ||
-      (ctx->magic == MUTT_MBOX && (mutt_strncmp ("From ", buf, 5) != 0)) ||
-      (ctx->magic == MUTT_MMDF && (mutt_strcmp (MMDF_SEP, buf) != 0)))
+      ((ctx->magic == MUTT_MBOX) && (mutt_strncmp ("From ", buf, 5) != 0)) ||
+      ((ctx->magic == MUTT_MMDF) && (mutt_strcmp (MMDF_SEP, buf) != 0)))
   {
     mutt_debug (1, "mbox_sync_mailbox: message not in expected position.\n");
     mutt_debug (1, "\tLINE: %s\n", buf);
@@ -1322,7 +1322,7 @@ static int mbox_sync_mailbox (CONTEXT *ctx, int *index_hint)
   if (option(OPTCHECKMBOXSIZE))
   {
     tmp = mutt_find_mailbox (ctx->path);
-    if (tmp && tmp->new == 0)
+    if (tmp && (tmp->new == 0))
       mutt_update_mailbox (tmp);
   }
 
@@ -1333,9 +1333,9 @@ bail:  /* Come here in case of disaster */
   safe_fclose (&fp);
 
   /* restore offsets, as far as they are valid */
-  if (first >= 0 && oldOffset)
+  if ((first >= 0) && oldOffset)
   {
-    for (i = first; i < ctx->msgcount && oldOffset[i-first].valid; i++)
+    for (i = first; (i < ctx->msgcount) && oldOffset[i-first].valid; i++)
     {
       ctx->hdrs[i]->offset = oldOffset[i-first].hdr;
       ctx->hdrs[i]->content->hdr_offset = oldOffset[i-first].hdr;

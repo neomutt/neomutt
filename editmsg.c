@@ -73,7 +73,7 @@ static int edit_one_message (CONTEXT *ctx, HEADER *cur)
   }
 
   rc = mutt_append_message (&tmpctx, ctx, cur, 0, CH_NOLEN |
-	((ctx->magic == MUTT_MBOX || ctx->magic == MUTT_MMDF) ? 0 : CH_NOSTATUS));
+	(((ctx->magic == MUTT_MBOX) || (ctx->magic == MUTT_MMDF)) ? 0 : CH_NOSTATUS));
   oerrno = errno;
 
   mx_close_mailbox (&tmpctx, NULL);

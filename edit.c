@@ -151,7 +151,7 @@ be_include_messages (char *msg, char **buf, int *bufmax, int *buflen,
 
   while ((msg = strtok (msg, " ,")) != NULL)
   {
-    if (mutt_atoi (msg, &n) == 0 && n > 0 && n <= Context->msgcount)
+    if (mutt_atoi (msg, &n) == 0 && (n > 0) && (n <= Context->msgcount))
     {
       n--;
 
@@ -344,7 +344,7 @@ int mutt_builtin_editor (const char *path, HEADER *msg, HEADER *cur)
     {
       /* remove trailing whitespace from the line */
       p = tmp + mutt_strlen (tmp) - 1;
-      while (p >= tmp && ISSPACE (*p))
+      while ((p >= tmp) && ISSPACE (*p))
 	*p-- = 0;
 
       p = tmp + 2;

@@ -154,11 +154,11 @@ static int compare_order (const void *a, const void *b)
   HEADER **hb = (HEADER **) b;
 
 #ifdef USE_NNTP
-  if (Context && Context->magic == MUTT_NNTP)
+  if (Context && (Context->magic == MUTT_NNTP))
   {
     anum_t na = NHDR (*ha)->article_num;
     anum_t nb = NHDR (*hb)->article_num;
-    int result = na == nb ? 0 : na > nb ? 1 : -1;
+    int result = (na == nb) ? 0 : (na > nb) ? 1 : -1;
     AUXSORT (result, a, b);
     return (SORTCODE (result));
   }

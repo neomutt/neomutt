@@ -154,7 +154,7 @@ static void decode_xbit (STATE *s, long len, int istext, iconv_t cd)
       }
 
       bufi[l++] = c;
-      if (l == sizeof (bufi))
+      if (l == sizeof(bufi))
 	convert_to_state (cd, bufi, &l, s);
     }
 
@@ -212,7 +212,7 @@ static void qp_decode_line (char *dest, char *src, size_t *l,
     /* neither \r nor \n as part of line-terminating CRLF
      * may be qp-encoded, so remove \r and \n-terminate;
      * see RfC2045, sect. 6.7, (1): General 8bit representation */
-    if (kind == 0 && c == '\r')
+    if ((kind == 0) && c == '\r')
       *(d-1) = '\n';
     else
       *d++ = '\n';
@@ -284,7 +284,7 @@ static void decode_quoted (STATE *s, long len, int istext, iconv_t cd)
     /* chop trailing whitespace if we got the full line */
     if (last == '\n')
     {
-      while (linelen > 0 && ISSPACE (line[linelen-1]))
+      while ((linelen > 0) && ISSPACE (line[linelen-1]))
        linelen--;
       line[linelen]=0;
     }
@@ -313,11 +313,11 @@ void mutt_decode_base64 (STATE *s, long len, int istext, iconv_t cd)
 
   while (len > 0)
   {
-    for (i = 0 ; i < 4 && len > 0 ; len--)
+    for (i = 0 ; (i < 4) && (len > 0) ; len--)
     {
       if ((ch = fgetc (s->fpin)) == EOF)
 	break;
-      if (ch >= 0 && ch < 128 && (base64val(ch) != -1 || ch == '='))
+      if ((ch >= 0) && (ch < 128) && (base64val(ch) != -1 || ch == '='))
 	buf[i++] = ch;
     }
     if (i != 4)
@@ -730,14 +730,14 @@ static void enriched_set_flags (const wchar_t *tag, struct enriched_state *stte)
 
   if (j != -1)
   {
-    if (j == RICH_CENTER || j == RICH_FLUSHLEFT || j == RICH_FLUSHRIGHT)
+    if ((j == RICH_CENTER) || (j == RICH_FLUSHLEFT) || (j == RICH_FLUSHRIGHT))
       enriched_flush (stte, 1);
 
     if (*tag == (wchar_t) '/')
     {
       if (stte->tag_level[j]) /* make sure not to go negative */
 	stte->tag_level[j]--;
-      if ((stte->s->flags & MUTT_DISPLAY) && j == RICH_PARAM && stte->tag_level[RICH_COLOR])
+      if ((stte->s->flags & MUTT_DISPLAY) && (j == RICH_PARAM) && stte->tag_level[RICH_COLOR])
       {
 	stte->param[stte->param_used] = (wchar_t) '\0';
 	if (wcscasecmp(L"black", stte->param) == 0)
@@ -773,7 +773,7 @@ static void enriched_set_flags (const wchar_t *tag, struct enriched_state *stte)
 	  enriched_puts("\033[37m", stte);
 	}
       }
-      if ((stte->s->flags & MUTT_DISPLAY) && j == RICH_COLOR)
+      if ((stte->s->flags & MUTT_DISPLAY) && (j == RICH_COLOR))
       {
 	enriched_puts("\033[0m", stte);
       }
@@ -989,7 +989,7 @@ static int is_autoview (BODY *b)
     mutt_check_lookup_list (b, type, sizeof (type));
     for (; t; t = t->next) {
       int i = mutt_strlen (t->data) - 1;
-      if ((i > 0 && t->data[i-1] == '/' && t->data[i] == '*' &&
+      if (((i > 0) && t->data[i-1] == '/' && t->data[i] == '*' &&
             (ascii_strncasecmp (type, t->data, i) == 0)) ||
           (ascii_strcasecmp (type, t->data) == 0))
         is_av = 1;
@@ -1022,8 +1022,8 @@ static int alternative_handler (BODY *a, STATE *s)
   int rc = 0;
   int count = 0;
 
-  if (a->encoding == ENCBASE64 || a->encoding == ENCQUOTEDPRINTABLE ||
-      a->encoding == ENCUUENCODED)
+  if ((a->encoding == ENCBASE64) || (a->encoding == ENCQUOTEDPRINTABLE) ||
+      (a->encoding == ENCUUENCODED))
   {
     struct stat st;
     mustfree = 1;
@@ -1105,17 +1105,17 @@ static int alternative_handler (BODY *a, STATE *s)
     {
       if (b->type == TYPETEXT)
       {
-	if ((ascii_strcasecmp ("plain", b->subtype) == 0) && type <= TXTPLAIN)
+	if ((ascii_strcasecmp ("plain", b->subtype) == 0) && (type <= TXTPLAIN))
 	{
 	  choice = b;
 	  type = TXTPLAIN;
 	}
-	else if ((ascii_strcasecmp ("enriched", b->subtype) == 0) && type <= TXTENRICHED)
+	else if ((ascii_strcasecmp ("enriched", b->subtype) == 0) && (type <= TXTENRICHED))
 	{
 	  choice = b;
 	  type = TXTENRICHED;
 	}
-	else if ((ascii_strcasecmp ("html", b->subtype) == 0) && type <= TXTHTML)
+	else if ((ascii_strcasecmp ("html", b->subtype) == 0) && (type <= TXTHTML))
 	{
 	  choice = b;
 	  type = TXTHTML;
@@ -1197,8 +1197,8 @@ static int message_handler (BODY *a, STATE *s)
   int rc = 0;
 
   off_start = ftello (s->fpin);
-  if (a->encoding == ENCBASE64 || a->encoding == ENCQUOTEDPRINTABLE ||
-      a->encoding == ENCUUENCODED)
+  if ((a->encoding == ENCBASE64) || (a->encoding == ENCQUOTEDPRINTABLE) ||
+      (a->encoding == ENCUUENCODED))
   {
     fstat (fileno (s->fpin), &st);
     b = mutt_new_body ();
@@ -1222,8 +1222,8 @@ static int message_handler (BODY *a, STATE *s)
     rc = mutt_body_handler (b->parts, s);
   }
 
-  if (a->encoding == ENCBASE64 || a->encoding == ENCQUOTEDPRINTABLE ||
-      a->encoding == ENCUUENCODED)
+  if ((a->encoding == ENCBASE64) || (a->encoding == ENCQUOTEDPRINTABLE) ||
+      (a->encoding == ENCUUENCODED))
     mutt_free_body (&b);
 
   return rc;
@@ -1256,7 +1256,7 @@ int mutt_can_decode (BODY *a)
     }
 
   }
-  else if (WithCrypto && a->type == TYPEAPPLICATION)
+  else if (WithCrypto && (a->type == TYPEAPPLICATION))
   {
     if ((WithCrypto & APPLICATION_PGP) && mutt_is_application_pgp(a))
       return 1;
@@ -1274,8 +1274,8 @@ static int multipart_handler (BODY *a, STATE *s)
   int count;
   int rc = 0;
 
-  if (a->encoding == ENCBASE64 || a->encoding == ENCQUOTEDPRINTABLE ||
-      a->encoding == ENCUUENCODED)
+  if ((a->encoding == ENCBASE64) || (a->encoding == ENCQUOTEDPRINTABLE) ||
+      (a->encoding == ENCUUENCODED))
   {
     fstat (fileno (s->fpin), &st);
     b = mutt_new_body ();
@@ -1325,8 +1325,8 @@ static int multipart_handler (BODY *a, STATE *s)
       break;
   }
 
-  if (a->encoding == ENCBASE64 || a->encoding == ENCQUOTEDPRINTABLE ||
-      a->encoding == ENCUUENCODED)
+  if ((a->encoding == ENCBASE64) || (a->encoding == ENCQUOTEDPRINTABLE) ||
+      (a->encoding == ENCUUENCODED))
     mutt_free_body (&b);
 
   /* make failure of a single part non-fatal */
@@ -1615,7 +1615,7 @@ static int text_plain_handler (BODY *b, STATE *s)
     if ((mutt_strcmp (buf, "-- ") != 0) && option (OPTTEXTFLOWED))
     {
       l = mutt_strlen (buf);
-      while (l > 0 && buf[l-1] == ' ')
+      while ((l > 0) && buf[l-1] == ' ')
 	buf[--l] = 0;
     }
     if (s->prefix != NULL)
@@ -1649,8 +1649,8 @@ static int run_decode_and_handler (BODY *b, STATE *s, handler_t handler, int pla
 #endif
 
   /* see if we need to decode this part before processing it */
-  if (b->encoding == ENCBASE64 || b->encoding == ENCQUOTEDPRINTABLE ||
-      b->encoding == ENCUUENCODED || plaintext ||
+  if ((b->encoding == ENCBASE64) || (b->encoding == ENCQUOTEDPRINTABLE) ||
+      (b->encoding == ENCUUENCODED) || plaintext ||
       mutt_is_text_part (b))				/* text subtypes may
                                                         * require character
                                                         * set conversion even
@@ -1854,15 +1854,15 @@ int mutt_body_handler (BODY *b, STATE *s)
     if (handler == NULL)
       handler = multipart_handler;
 
-    if (b->encoding != ENC7BIT && b->encoding != ENC8BIT
-        && b->encoding != ENCBINARY)
+    if ((b->encoding != ENC7BIT) && b->encoding != ENC8BIT
+        && (b->encoding != ENCBINARY))
     {
       mutt_debug (1, "Bad encoding type %d for multipart entity, "
                   "assuming 7 bit\n", b->encoding);
       b->encoding = ENC7BIT;
     }
   }
-  else if (WithCrypto && b->type == TYPEAPPLICATION)
+  else if (WithCrypto && (b->type == TYPEAPPLICATION))
   {
     if (option (OPTDONTHANDLEPGPKEYS)
         && (ascii_strcasecmp("pgp-keys", b->subtype) == 0))
@@ -1876,9 +1876,9 @@ int mutt_body_handler (BODY *b, STATE *s)
       handler = crypt_smime_application_smime_handler;
   }
 
-  /* only respect disposition == attachment if we're not
+  /* only respect (disposition == attachment) if we're not
      displaying from the attachment menu (i.e. pager) */
-  if ((!option (OPTHONORDISP) || (b->disposition != DISPATTACH ||
+  if ((!option (OPTHONORDISP) || ((b->disposition != DISPATTACH) ||
 				  option(OPTVIEWATTACH))) &&
        (plaintext || handler))
   {
@@ -1886,13 +1886,13 @@ int mutt_body_handler (BODY *b, STATE *s)
   }
   /* print hint to use attachment menu for disposition == attachment
      if we're not already being called from there */
-  else if ((s->flags & MUTT_DISPLAY) || (b->disposition == DISPATTACH &&
+  else if ((s->flags & MUTT_DISPLAY) || ((b->disposition == DISPATTACH) &&
 				      !option (OPTVIEWATTACH) &&
 				      option (OPTHONORDISP) &&
 				      (plaintext || handler)))
   {
     state_mark_attach (s);
-    if (option (OPTHONORDISP) && b->disposition == DISPATTACH)
+    if (option (OPTHONORDISP) && (b->disposition == DISPATTACH))
       fputs (_("[-- This is an attachment "), s->fpout);
     else
       state_printf (s, _("[-- %s/%s is unsupported "), TYPE (b), b->subtype);

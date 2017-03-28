@@ -296,7 +296,7 @@ void mutt_check_lookup_list (BODY *b, char *type, int len)
 
   for (; t; t = t->next) {
     i = mutt_strlen (t->data) - 1;
-    if ((i > 0 && t->data[i-1] == '/' && t->data[i] == '*' &&
+    if (((i > 0) && t->data[i-1] == '/' && t->data[i] == '*' &&
 	 (ascii_strncasecmp (type, t->data, i) == 0)) ||
 	(ascii_strcasecmp (type, t->data) == 0)) {
 
@@ -304,14 +304,14 @@ void mutt_check_lookup_list (BODY *b, char *type, int len)
     int n;
     if ((n = mutt_lookup_mime_type (&tmp, b->filename)) != TYPEOTHER) {
       snprintf (type, len, "%s/%s",
-                n == TYPEAUDIO ? "audio" :
-                n == TYPEAPPLICATION ? "application" :
-                n == TYPEIMAGE ? "image" :
-                n == TYPEMESSAGE ? "message" :
-                n == TYPEMODEL ? "model" :
-                n == TYPEMULTIPART ? "multipart" :
-                n == TYPETEXT ? "text" :
-                n == TYPEVIDEO ? "video" : "other",
+                (n == TYPEAUDIO) ? "audio" :
+                (n == TYPEAPPLICATION) ? "application" :
+                (n == TYPEIMAGE) ? "image" :
+                (n == TYPEMESSAGE) ? "message" :
+                (n == TYPEMODEL) ? "model" :
+                (n == TYPEMULTIPART) ? "multipart" :
+                (n == TYPETEXT) ? "text" :
+                (n == TYPEVIDEO) ? "video" : "other",
                 tmp.subtype);
       mutt_debug (1, "mutt_check_lookup_list: \"%s\" -> %s\n",
                   b->filename, type);
@@ -346,8 +346,8 @@ int mutt_view_attachment (FILE *fp, BODY *a, int flag, HEADER *hdr,
   if (WithCrypto && is_message && a->hdr && (a->hdr->security & ENCRYPT) &&
       !crypt_valid_passphrase(a->hdr->security))
     return rc;
-  use_mailcap = (flag == MUTT_MAILCAP ||
-		(flag == MUTT_REGULAR && mutt_needs_mailcap (a)));
+  use_mailcap = ((flag == MUTT_MAILCAP) ||
+		((flag == MUTT_REGULAR) && mutt_needs_mailcap (a)));
   snprintf (type, sizeof (type), "%s/%s", TYPE (a), a->subtype);
 
   if (use_mailcap != 0)
@@ -388,7 +388,7 @@ int mutt_view_attachment (FILE *fp, BODY *a, int flag, HEADER *hdr,
     if (rfc1524_expand_filename (entry->nametemplate, fname,
 				 tempfile, sizeof (tempfile)))
     {
-      if (fp == NULL && (mutt_strcmp(tempfile, a->filename) != 0))
+      if ((fp == NULL) && (mutt_strcmp(tempfile, a->filename) != 0))
       {
 	/* send case: the file is already there */
 	if (safe_symlink (a->filename, tempfile) == -1)
@@ -683,7 +683,7 @@ bail:
   if (mutt_wait_filter (thepid) != 0)
     rv = 0;
 
-  if (rv == 0 || option (OPTWAITKEY))
+  if ((rv == 0) || option (OPTWAITKEY))
     mutt_any_key_to_continue (NULL);
   return rv;
 }
@@ -709,8 +709,8 @@ int mutt_save_attachment (FILE *fp, BODY *m, char *path, int flags, HEADER *hdr)
 
     if(hdr &&
 	m->hdr &&
-	m->encoding != ENCBASE64 &&
-	m->encoding != ENCQUOTEDPRINTABLE &&
+ (m->encoding != ENCBASE64) &&
+ (m->encoding != ENCQUOTEDPRINTABLE) &&
 	mutt_is_message_type(m->type, m->subtype))
     {
       /* message type attachments are written to mail folders. */

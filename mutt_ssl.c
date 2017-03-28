@@ -50,7 +50,7 @@
 #else
 static int entropy_byte_count = 0;
 /* OpenSSL fills the entropy pool from /dev/urandom if it exists */
-#define HAVE_ENTROPY()	(!access(DEVRANDOM, R_OK) || entropy_byte_count >= 16)
+#define HAVE_ENTROPY()	(!access(DEVRANDOM, R_OK) || (entropy_byte_count >= 16))
 #endif
 
 /* index for storing hostname as application specific data in SSL structure */
@@ -162,7 +162,7 @@ static int add_entropy (const char *file)
   if (file == NULL) return 0;
 
   if (stat (file, &st) == -1)
-    return errno == ENOENT ? 0 : -1;
+    return (errno == ENOENT) ? 0 : -1;
 
   mutt_message (_("Filling entropy pool: %s...\n"),
 		file);
@@ -373,7 +373,7 @@ static int compare_certificates (X509 *cert, X509 *peercert,
       X509_issuer_name_cmp (cert, peercert) != 0)
     return -1;
 
-  if (!X509_digest (cert, EVP_sha256(), md, &mdlen) || peermdlen != mdlen)
+  if (!X509_digest (cert, EVP_sha256(), md, &mdlen) || (peermdlen != mdlen))
     return -1;
 
   if (memcmp(peermd, md, mdlen) != 0)
@@ -505,7 +505,7 @@ static int ssl_socket_read (CONNECTION* conn, char* buf, size_t len)
   int rc;
 
   rc = SSL_read (data->ssl, buf, len);
-  if (rc <= 0 || errno == EINTR)
+  if ((rc <= 0) || (errno == EINTR))
   {
     if (errno == EINTR)
     {
@@ -524,7 +524,7 @@ static int ssl_socket_write (CONNECTION* conn, const char* buf, size_t len)
   int rc;
 
   rc = SSL_write (data->ssl, buf, len);
-  if (rc <= 0 || errno == EINTR) {
+  if ((rc <= 0) || (errno == EINTR)) {
     if (errno == EINTR)
     {
       rc = -1;
@@ -982,7 +982,7 @@ static int ssl_verify_callback (int preverify_ok, X509_STORE_CTX *ctx)
 
   /* check hostname only for the leaf certificate */
   buf[0] = 0;
-  if (pos == 0 && option (OPTSSLVERIFYHOST) != MUTT_NO)
+  if ((pos == 0) && option (OPTSSLVERIFYHOST) != MUTT_NO)
   {
     if (!check_host (cert, host, buf, sizeof (buf)))
     {

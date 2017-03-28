@@ -49,7 +49,7 @@ mdb_get_r_txn(hcache_lmdb_ctx_t *ctx)
 {
   int rc;
 
-  if (ctx->txn && (ctx->txn_mode == txn_read || ctx->txn_mode == txn_write))
+  if (ctx->txn && ((ctx->txn_mode == txn_read) || (ctx->txn_mode == txn_write)))
     return MDB_SUCCESS;
 
   if (ctx->txn != NULL)
@@ -265,7 +265,7 @@ hcache_lmdb_close(void **vctx)
 
   hcache_lmdb_ctx_t *ctx = *vctx;
 
-  if (ctx->txn && ctx->txn_mode == txn_write)
+  if (ctx->txn && (ctx->txn_mode == txn_write))
   {
     mdb_txn_commit(ctx->txn);
     ctx->txn_mode = txn_uninitialized;

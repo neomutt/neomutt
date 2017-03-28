@@ -122,7 +122,7 @@ smtp_get_resp (CONNECTION * conn)
 
   } while (buf[3] == '-');
 
-  if (smtp_success (n) || n == smtp_continue)
+  if (smtp_success (n) || (n == smtp_continue))
     return 0;
 
   mutt_error (_("SMTP session failed: %s"), buf);
@@ -195,7 +195,7 @@ smtp_data (CONNECTION * conn, const char *msgfile)
   {
     buflen = mutt_strlen (buf);
     term = buflen && buf[buflen-1] == '\n';
-    if (term && (buflen == 1 || buf[buflen - 2] != '\r'))
+    if (term && ((buflen == 1) || buf[buflen - 2] != '\r'))
       snprintf (buf + buflen - 1, sizeof (buf) - buflen + 1, "\r\n");
     if (buf[0] == '.')
     {
@@ -367,7 +367,7 @@ static int smtp_auth_sasl (CONNECTION* conn, const char* mechlist)
   }
   while (rc == SASL_INTERACT);
 
-  if (rc != SASL_OK && rc != SASL_CONTINUE)
+  if ((rc != SASL_OK) && (rc != SASL_CONTINUE))
   {
     mutt_debug (2, "smtp_auth_sasl: %s unavailable\n", mech);
     sasl_dispose (&saslconn);
@@ -432,7 +432,7 @@ static int smtp_auth_sasl (CONNECTION* conn, const char* mechlist)
       }
     }
     strfcpy (buf + len, "\r\n", bufsize - len);
-  } while (rc == smtp_ready && saslrc != SASL_FAIL);
+  } while ((rc == smtp_ready) && (saslrc != SASL_FAIL));
 
   if (smtp_success (rc))
   {
@@ -469,7 +469,7 @@ static int smtp_auth (CONNECTION* conn)
 
       r = smtp_auth_sasl (conn, method);
 
-      if (r == SMTP_AUTH_FAIL && delim)
+      if ((r == SMTP_AUTH_FAIL) && delim)
       {
         mutt_error (_("%s authentication failed, trying next method"), method);
         mutt_sleep (1);
@@ -497,7 +497,7 @@ static int smtp_auth (CONNECTION* conn)
     mutt_sleep (1);
   }
 
-  return r == SMTP_AUTH_SUCCESS ? 0 : -1;
+  return (r == SMTP_AUTH_SUCCESS) ? 0 : -1;
 }
 
 #else /* USE_SASL */

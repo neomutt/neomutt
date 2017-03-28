@@ -181,7 +181,7 @@ void imap_logout_all (void)
   {
     tmp = conn->next;
 
-    if (conn->account.type == MUTT_ACCT_TYPE_IMAP && conn->fd >= 0)
+    if (conn->account.type == MUTT_ACCT_TYPE_IMAP && (conn->fd >= 0))
     {
       mutt_message (_("Closing connection to %s..."), conn->account.host);
       imap_logout ((IMAP_DATA**) (void*) &conn->data);
@@ -216,7 +216,7 @@ int imap_read_literal (FILE* fp, IMAP_DATA* idata, long bytes, progress_t* pbar)
       return -1;
     }
 
-    if (r == 1 && c != '\n')
+    if ((r == 1) && c != '\n')
       fputc ('\r', fp);
 
     if (c == '\r')
@@ -342,9 +342,9 @@ IMAP_DATA* imap_conn_find (const ACCOUNT* account, int flags)
       else if (idata->state < IMAP_AUTHENTICATED)
         continue;
     }
-    if (flags & MUTT_IMAP_CONN_NOSELECT && idata && idata->state >= IMAP_SELECTED)
+    if (flags & MUTT_IMAP_CONN_NOSELECT && idata && (idata->state >= IMAP_SELECTED))
       continue;
-    if (idata && idata->status == IMAP_FATAL)
+    if (idata && (idata->status == IMAP_FATAL))
       continue;
     break;
   }
@@ -381,7 +381,7 @@ IMAP_DATA* imap_conn_find (const ACCOUNT* account, int flags)
     else
       mutt_account_unsetpass (&idata->conn->account);
   }
-  if (new && idata->state == IMAP_AUTHENTICATED)
+  if (new && (idata->state == IMAP_AUTHENTICATED))
   {
     /* capabilities may have changed */
     imap_exec (idata, "CAPABILITY", IMAP_CMD_QUEUE);
@@ -886,7 +886,7 @@ static int imap_make_msg_set (IMAP_DATA* idata, BUFFER* buf, int flag,
   hdrs = idata->ctx->hdrs;
 
   for (n = *pos;
-       n < idata->ctx->msgcount && (buf->dptr - buf->data) < IMAP_MAX_CMDLEN;
+       (n < idata->ctx->msgcount) && (buf->dptr - buf->data) < IMAP_MAX_CMDLEN;
        n++)
   {
     match = 0;
@@ -1142,7 +1142,7 @@ static int sync_helper (IMAP_DATA* idata, int right, int flag, const char* name)
   if (!mutt_bit_isset (idata->ctx->rights, right))
     return 0;
 
-  if (right == MUTT_ACL_WRITE && !imap_has_flag (idata->flags, name))
+  if ((right == MUTT_ACL_WRITE) && !imap_has_flag (idata->flags, name))
     return 0;
 
   snprintf (buf, sizeof(buf), "+FLAGS.SILENT (%s)", name);
@@ -1369,7 +1369,7 @@ int imap_close_mailbox (CONTEXT* ctx)
 
   if (ctx == idata->ctx)
   {
-    if (idata->status != IMAP_FATAL && idata->state >= IMAP_SELECTED)
+    if ((idata->status != IMAP_FATAL) && (idata->state >= IMAP_SELECTED))
     {
       /* mx_close_mailbox won't sync if there are no deleted messages
        * and the mailbox is unchanged, so we may have to close here */
@@ -1426,7 +1426,7 @@ int imap_check (IMAP_DATA *idata, int force)
 
   /* try IDLE first, unless force is set */
   if (!force && option (OPTIMAPIDLE) && mutt_bit_isset (idata->capabilities, IDLE)
-      && (idata->state != IMAP_IDLE || time(NULL) >= idata->lastread + ImapKeepalive))
+      && ((idata->state != IMAP_IDLE) || time(NULL) >= idata->lastread + ImapKeepalive))
   {
     if (imap_cmd_idle (idata) < 0)
       return -1;
@@ -1449,7 +1449,7 @@ int imap_check (IMAP_DATA *idata, int force)
   }
 
   if ((force ||
-       (idata->state != IMAP_IDLE && time(NULL) >= idata->lastread + Timeout))
+       ((idata->state != IMAP_IDLE) && time(NULL) >= idata->lastread + Timeout))
       && imap_exec (idata, "NOOP", 0) != 0)
     return -1;
 
@@ -1554,7 +1554,7 @@ int imap_buffy_check (int force, int check_stats)
       continue;
     }
 
-    if (lastdata && idata != lastdata)
+    if (lastdata && (idata != lastdata))
     {
       /* Send commands to previous server. Sorting the buffy list
        * may prevent some infelicitous interleavings */
@@ -1591,7 +1591,7 @@ int imap_buffy_check (int force, int check_stats)
   /* collect results */
   for (mailbox = Incoming; mailbox; mailbox = mailbox->next)
   {
-    if (mailbox->magic == MUTT_IMAP && mailbox->new)
+    if ((mailbox->magic == MUTT_IMAP) && mailbox->new)
       buffies++;
   }
 
@@ -1774,7 +1774,7 @@ static int imap_compile_search (const pattern_t* pat, BUFFER* buf)
       {
         if (do_search (clause, 0))
         {
-          if (pat->op == MUTT_OR && clauses > 1)
+          if ((pat->op == MUTT_OR) && (clauses > 1))
             mutt_buffer_addstr (buf, "OR ");
           clauses--;
 
@@ -1929,7 +1929,7 @@ longest_common_prefix (char *dest, const char* src, int start, size_t dlen)
 {
   int pos = start;
 
-  while (pos < dlen && dest[pos] && dest[pos] == src[pos])
+  while ((pos < dlen) && dest[pos] && dest[pos] == src[pos])
     pos++;
   dest[pos] = '\0';
 
@@ -2039,7 +2039,7 @@ int imap_complete(char* dest, size_t dlen, char* path) {
     listresp.name = NULL;
     rc = imap_cmd_step (idata);
 
-    if (rc == IMAP_CMD_CONTINUE && listresp.name)
+    if ((rc == IMAP_CMD_CONTINUE) && listresp.name)
     {
       /* if the folder isn't selectable, append delimiter to force browse
        * to enter it on second tab. */
@@ -2178,7 +2178,7 @@ int imap_fast_trash (CONTEXT* ctx, char* dest)
  out:
   FREE (&mx.mbox);
 
-  return rc < 0 ? -1 : rc;
+  return (rc < 0) ? -1 : rc;
 }
 
 struct mx_ops mx_imap_ops = {

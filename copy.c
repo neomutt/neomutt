@@ -417,7 +417,7 @@ mutt_copy_header (FILE *in, HEADER *h, FILE *out, int flags, const char *prefix)
       (flags & CH_NOLEN) == 0)
   {
     fprintf (out, "Content-Length: " OFF_T_FMT "\n", h->content->length);
-    if (h->lines != 0 || h->content->length == 0)
+    if ((h->lines != 0) || (h->content->length == 0))
       fprintf (out, "Lines: %d\n", h->lines);
   }
 
@@ -489,7 +489,7 @@ static int count_delete_lines (FILE *fp, BODY *b, LOFF_T *length, size_t datelen
     dellines -= 3;
     *length -= b->length - (84 + datelen);
     /* Count the number of digits exceeding the first one to write the size */
-    for (l = 10 ; b->length >= l ; l *= 10)
+    for (l = 10 ; (b->length >= l) ; l *= 10)
       (*length) ++;
   }
   else
@@ -651,7 +651,7 @@ _mutt_copy_message (FILE *fpout, FILE *fpin, HEADER *hdr, BODY *body,
 
     if ((WithCrypto & APPLICATION_PGP)
         && (flags & MUTT_CM_DECODE_PGP) && (hdr->security & APPLICATION_PGP) &&
-	hdr->content->type == TYPEMULTIPART)
+ (hdr->content->type == TYPEMULTIPART))
     {
       if (crypt_pgp_decrypt_mime (fpin, &fp, hdr->content, &cur))
 	return -1;
@@ -660,7 +660,7 @@ _mutt_copy_message (FILE *fpout, FILE *fpin, HEADER *hdr, BODY *body,
 
     if ((WithCrypto & APPLICATION_SMIME)
         && (flags & MUTT_CM_DECODE_SMIME) && (hdr->security & APPLICATION_SMIME)
-	     && hdr->content->type == TYPEAPPLICATION)
+	     && (hdr->content->type == TYPEAPPLICATION))
     {
       if (crypt_smime_decrypt_mime (fpin, &fp, hdr->content, &cur))
 	return -1;
@@ -763,15 +763,15 @@ _mutt_append_message (CONTEXT *dest, FILE *fpin, CONTEXT *src, HEADER *hdr,
 
   if ((msg = mx_open_new_message (dest, hdr, is_from (buf, NULL, 0, NULL) ? 0 : MUTT_ADD_FROM)) == NULL)
     return -1;
-  if (dest->magic == MUTT_MBOX || dest->magic == MUTT_MMDF)
+  if ((dest->magic == MUTT_MBOX) || (dest->magic == MUTT_MMDF))
     chflags |= CH_FROM | CH_FORCE_FROM;
-  chflags |= (dest->magic == MUTT_MAILDIR ? CH_NOSTATUS : CH_UPDATE);
+  chflags |= ((dest->magic == MUTT_MAILDIR) ? CH_NOSTATUS : CH_UPDATE);
   r = _mutt_copy_message (msg->fp, fpin, hdr, body, flags, chflags);
   if (mx_commit_message (msg, dest) != 0)
     r = -1;
 
 #ifdef USE_NOTMUCH
-  if (hdr && msg->commited_path && dest->magic == MUTT_MAILDIR && src->magic == MUTT_NOTMUCH)
+  if (hdr && msg->commited_path && (dest->magic == MUTT_MAILDIR) && (src->magic == MUTT_NOTMUCH))
 	  nm_update_filename(src, NULL, msg->commited_path, hdr);
 #endif
 

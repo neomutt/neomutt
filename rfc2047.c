@@ -151,7 +151,7 @@ char *mutt_choose_charset (const char *fromcode, const char *charsets,
       continue;
     }
 
-    if (!tocode || n < bestn)
+    if (!tocode || (n < bestn))
     {
       bestn = n;
       FREE (&tocode);
@@ -227,7 +227,7 @@ static size_t q_encoder (char *s, ICONV_CONST char *d, size_t dlen,
     unsigned char c = *d++;
     if (c == ' ')
       *s++ = '_';
-    else if (c >= 0x7f || c < 0x20 || c == '_' ||  strchr (MimeSpecials, c))
+    else if ((c >= 0x7f) || (c < 0x20) || c == '_' ||  strchr (MimeSpecials, c))
     {
       *s++ = '=';
       *s++ = hex[(c & 0xf0) >> 4];
@@ -277,7 +277,7 @@ static size_t try_block (ICONV_CONST char *d, size_t dlen,
   }
   else
   {
-    if (dlen > sizeof (buf1) - strlen (tocode))
+    if (dlen > (sizeof(buf1) - strlen (tocode)))
       return sizeof (buf1) - strlen (tocode) + 1;
     memcpy (buf1, d, dlen);
     ob = buf1 + dlen;
@@ -288,7 +288,7 @@ static size_t try_block (ICONV_CONST char *d, size_t dlen,
   {
     unsigned char c = *p;
     assert (strchr (MimeSpecials, '?'));
-    if (c >= 0x7f || c < 0x20 || *p == '_' ||
+    if ((c >= 0x7f) || (c < 0x20) || *p == '_' ||
 	(c != ' ' && strchr (MimeSpecials, *p)))
       ++count;
   }
@@ -301,7 +301,7 @@ static size_t try_block (ICONV_CONST char *d, size_t dlen,
   if (ascii_strcasecmp (tocode, "ISO-2022-JP") == 0)
     len_q = ENCWORD_LEN_MAX + 1;
 
-  if (len_b < len_q && len_b <= ENCWORD_LEN_MAX)
+  if ((len_b < len_q) && (len_b <= ENCWORD_LEN_MAX))
   {
     *encoder = b_encoder;
     *wlen = len_b;
@@ -364,12 +364,12 @@ static size_t choose_block (char *d, size_t dlen, int col,
   {
     assert ((d + n) > d);
     nn = try_block (d, n, fromcode, tocode, encoder, wlen);
-    if (!nn && (col + *wlen <= (ENCWORD_LEN_MAX + 1) || n <= 1))
+    if (!nn && (col + *wlen <= (ENCWORD_LEN_MAX + 1) || (n <= 1)))
       break;
     n = (nn ? nn : n) - 1;
     assert (n > 0);
     if (utf8 != 0)
-      while (n > 1 && CONTINUATION_BYTE(d[n]))
+      while ((n > 1) && CONTINUATION_BYTE(d[n]))
 	--n;
   }
   return n;
@@ -415,7 +415,7 @@ static int rfc2047_encode (ICONV_CONST char *d, size_t dlen, int col,
   for (t = u; t < (u + ulen); t++)
   {
     if ((*t & 0x80) ||
-	(*t == '=' && t[1] == '?' && (t == u || HSPACE(*(t-1)))))
+	(*t == '=' && t[1] == '?' && ((t == u) || HSPACE(*(t-1)))))
     {
       if (t0 == NULL) t0 = t;
       t1 = t;
@@ -428,9 +428,9 @@ static int rfc2047_encode (ICONV_CONST char *d, size_t dlen, int col,
   }
 
   /* If we have something to encode, include RFC822 specials */
-  if (t0 && s0 && s0 < t0)
+  if (t0 && s0 && (s0 < t0))
     t0 = s0;
-  if (t1 && s1 && s1 > t1)
+  if (t1 && s1 && (s1 > t1))
     t1 = s1;
 
   if (t0 == NULL)
@@ -799,7 +799,7 @@ void rfc2047_decode (char **pd)
   dlen = 4 * strlen (s); /* should be enough */
   d = d0 = safe_malloc (dlen + 1);
 
-  while (*s && dlen > 0)
+  while (*s && (dlen > 0))
   {
     if (!(p = find_encoded_word (s, &q)))
     {

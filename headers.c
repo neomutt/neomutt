@@ -167,7 +167,7 @@ void mutt_edit_headers (const char *editor,
 	      break;
 	    p++;
 	  }
-	  if (l < sizeof (path) - 1)
+	  if (l < (sizeof(path) - 1))
 	    path[l++] = *p;
 	}
 	p = skip_email_wsp(p);
@@ -280,7 +280,7 @@ int mutt_label_message(HEADER *hdr)
     return 0;
 
   *buf = '\0';
-  if (hdr != NULL && hdr->env->x_label != NULL) {
+  if ((hdr != NULL) && (hdr->env->x_label != NULL)) {
     strncpy(buf, hdr->env->x_label, LONG_STRING);
   }
 

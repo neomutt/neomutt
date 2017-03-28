@@ -400,8 +400,8 @@ int mutt_copy_stream (FILE *fin, FILE *fout)
 static int
 compare_stat (struct stat *osb, struct stat *nsb)
 {
-  if (osb->st_dev != nsb->st_dev || osb->st_ino != nsb->st_ino ||
-      osb->st_rdev != nsb->st_rdev)
+  if ((osb->st_dev != nsb->st_dev) || (osb->st_ino != nsb->st_ino) ||
+      (osb->st_rdev != nsb->st_rdev))
   {
     return -1;
   }
@@ -416,7 +416,7 @@ int safe_symlink(const char *oldpath, const char *newpath)
   if(!oldpath || !newpath)
     return -1;
 
-  if(unlink(newpath) == -1 && errno != ENOENT)
+  if(unlink(newpath) == -1 && (errno != ENOENT))
     return -1;
 
   if (oldpath[0] == '/')
@@ -429,7 +429,7 @@ int safe_symlink(const char *oldpath, const char *newpath)
     char abs_oldpath[_POSIX_PATH_MAX];
 
     if ((getcwd (abs_oldpath, sizeof (abs_oldpath)) == NULL) ||
-	(strlen (abs_oldpath) + 1 + strlen (oldpath) + 1 > sizeof (abs_oldpath)))
+	((strlen (abs_oldpath) + 1 + strlen (oldpath) + 1) > sizeof (abs_oldpath)))
     return -1;
 
     strcat (abs_oldpath, "/");		/* __STRCAT_CHECKED__ */
@@ -484,7 +484,7 @@ int safe_rename (const char *src, const char *target)
      * FUSE may return ENOSYS. VFAT may return EPERM. FreeBSD's
      * msdosfs may return EOPNOTSUPP.  ENOTSUP can also appear.
      */
-    if (errno == EXDEV || errno == ENOSYS || errno == EPERM
+    if ((errno == EXDEV) || (errno == ENOSYS) || errno == EPERM
 #ifdef ENOTSUP
 	|| errno == ENOTSUP
 #endif
@@ -777,9 +777,9 @@ char *mutt_read_line (char *s, size_t *size, FILE *fp, int *line, int flags)
       if (flags & MUTT_EOL)
 	return s;
       *ch = 0;
-      if (ch > s && *(ch - 1) == '\r')
+      if ((ch > s) && *(ch - 1) == '\r')
 	*--ch = 0;
-      if (!(flags & MUTT_CONT) || ch == s || *(ch - 1) != '\\')
+      if (!(flags & MUTT_CONT) || (ch == s) || *(ch - 1) != '\\')
 	return s;
       offset = ch - s - 1;
     }
@@ -857,7 +857,7 @@ size_t mutt_quote_filename (char *d, size_t l, const char *f)
 
   d[j++] = '\'';
 
-  for(i = 0; j < l && f[i]; i++)
+  for(i = 0; (j < l) && f[i]; i++)
   {
     if(f[i] == '\'' || f[i] == '`')
     {
@@ -941,7 +941,7 @@ void mutt_remove_trailing_ws (char *s)
 {
   char *p = NULL;
 
-  for (p = s + mutt_strlen (s) - 1 ; p >= s && ISSPACE (*p) ; p--)
+  for (p = s + mutt_strlen (s) - 1 ; (p >= s) && ISSPACE (*p) ; p--)
     *p = 0;
 }
 
@@ -970,7 +970,7 @@ char *mutt_concatn_path (char *dst, size_t dstlen,
      * It doesn't appear that the return value is actually checked anywhere mutt_concat_path()
      * is called, so we should just copy set dst to nul and let the calling function fail later.
      */
-    dst[0] = 0; /* safe since we bail out early if dstlen == 0 */
+    dst[0] = 0; /* safe since we bail out early if (dstlen == 0) */
     return NULL;
   }
 
@@ -1033,7 +1033,7 @@ void mutt_debug (int level, const char *fmt, ...)
   static char buf[23] = "";
   static time_t last = 0;
 
-  if (debuglevel < level || !debugfile)
+  if ((debuglevel < level) || !debugfile)
     return;
 
   if (now > last)
@@ -1062,7 +1062,7 @@ static int mutt_atol (const char *str, long *dst)
   }
 
   *res = strtol (str, &e, 10);
-  if ((*res == LONG_MAX && errno == ERANGE) ||
+  if ((*res == LONG_MAX && (errno == ERANGE)) ||
       (e && *e != '\0'))
     return -1;
   return 0;

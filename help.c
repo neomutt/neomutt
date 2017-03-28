@@ -119,7 +119,7 @@ static int print_macro (FILE *f, int maxwidth, const char **macro)
 	  fputs (buf, f);
       }
     }
-    else if (wc < 0x20 || wc == 0x7f)
+    else if ((wc < 0x20) || (wc == 0x7f))
     {
       if (2 > n)
 	break;
@@ -206,7 +206,7 @@ static void format_line (FILE *f, int ismacro,
 
   /* don't try to press string into one line with less than 40 characters.
      The double parenthesis avoids a gcc warning, sigh ... */
-  if ((split = MuttIndexWindow->cols < 40))
+  if ((split = (MuttIndexWindow->cols < 40)))
   {
     col_a = col = 0;
     col_b = LONG_STRING;
@@ -214,8 +214,8 @@ static void format_line (FILE *f, int ismacro,
   }
   else
   {
-    col_a = MuttIndexWindow->cols > 83 ? (MuttIndexWindow->cols - 32) >> 2 : 12;
-    col_b = MuttIndexWindow->cols > 49 ? (MuttIndexWindow->cols - 10) >> 1 : 19;
+    col_a = (MuttIndexWindow->cols > 83) ? (MuttIndexWindow->cols - 32) >> 2 : 12;
+    col_b = (MuttIndexWindow->cols > 49) ? (MuttIndexWindow->cols - 10) >> 1 : 19;
     col = pad (f, mutt_strwidth(t1), col_a);
   }
 
@@ -356,7 +356,7 @@ void mutt_help (int menu)
     }
 
     dump_menu (f, menu);
-    if (menu != MENU_EDITOR && menu != MENU_PAGER)
+    if ((menu != MENU_EDITOR) && (menu != MENU_PAGER))
     {
       fputs (_("\nGeneric bindings:\n\n"), f);
       dump_menu (f, MENU_GENERIC);

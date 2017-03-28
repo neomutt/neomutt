@@ -63,7 +63,7 @@ static pop_auth_res_t pop_auth_sasl (POP_DATA *pop_data, const char *method)
     mutt_sasl_interact (interaction);
   }
 
-  if (rc != SASL_OK && rc != SASL_CONTINUE)
+  if ((rc != SASL_OK) && (rc != SASL_CONTINUE))
   {
     mutt_debug (1, "pop_auth_sasl: Failure starting authentication exchange. "
                 "No shared mechanisms?\n");
@@ -104,7 +104,7 @@ static pop_auth_res_t pop_auth_sasl (POP_DATA *pop_data, const char *method)
      * need to loop at least once more to send the pc/olen returned
      * by sasl_client_start().
      */
-    if (!client_start && rc != SASL_CONTINUE)
+    if (!client_start && (rc != SASL_CONTINUE))
       break;
 
     if ((mutt_strncmp (inbuf, "+ ", 2) == 0)
@@ -131,7 +131,7 @@ static pop_auth_res_t pop_auth_sasl (POP_DATA *pop_data, const char *method)
     /* Even if sasl_client_step() returns SASL_OK, we should send at
      * least one more line to the server.  See #3862.
      */
-    if (rc != SASL_CONTINUE && rc != SASL_OK)
+    if ((rc != SASL_CONTINUE) && (rc != SASL_OK))
       break;
 
     /* send out response, or line break if none needed */
@@ -283,7 +283,7 @@ static pop_auth_res_t pop_auth_user (POP_DATA *pop_data, const char *method)
     ret = pop_query_d (pop_data, buf, sizeof (buf),
 #ifdef DEBUG
 	/* don't print the password unless we're at the ungodly debugging level */
-	debuglevel < MUTT_SOCK_LOG_FULL ? "PASS *\r\n" :
+ (debuglevel < MUTT_SOCK_LOG_FULL) ? "PASS *\r\n" :
 #endif
 	NULL);
   }
@@ -366,8 +366,8 @@ int pop_authenticate (POP_DATA* pop_data)
 
 	  if (ret != POP_A_UNAVAIL)
 	    attempts++;
-	  if (ret == POP_A_SUCCESS || ret == POP_A_SOCKET ||
-	      (ret == POP_A_FAILURE && !option (OPTPOPAUTHTRYALL)))
+	  if ((ret == POP_A_SUCCESS) || (ret == POP_A_SOCKET) ||
+	      ((ret == POP_A_FAILURE) && !option (OPTPOPAUTHTRYALL)))
 	  {
 	    comma = NULL;
 	    break;
@@ -404,8 +404,8 @@ int pop_authenticate (POP_DATA* pop_data)
 
       if (ret != POP_A_UNAVAIL)
 	attempts++;
-      if (ret == POP_A_SUCCESS || ret == POP_A_SOCKET ||
-	  (ret == POP_A_FAILURE && !option (OPTPOPAUTHTRYALL)))
+      if ((ret == POP_A_SUCCESS) || (ret == POP_A_SOCKET) ||
+	  ((ret == POP_A_FAILURE) && !option (OPTPOPAUTHTRYALL)))
 	break;
 
       authenticator++;

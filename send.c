@@ -258,7 +258,7 @@ static int edit_envelope (ENVELOPE *en, int flags)
   else
 #endif
   {
-    if (edit_address (&en->to, "To: ") == -1 || en->to == NULL)
+    if (edit_address (&en->to, "To: ") == -1 || (en->to == NULL))
       return -1;
     if (option (OPTASKCC) && edit_address (&en->cc, "Cc: ") == -1)
       return -1;
@@ -502,7 +502,7 @@ static int default_to (ADDRESS **to, ENVELOPE *env, int flags, int hmfupto)
 {
   char prompt[STRING];
 
-  if (flags && env->mail_followup_to && hmfupto == MUTT_YES)
+  if (flags && env->mail_followup_to && (hmfupto == MUTT_YES))
   {
     rfc822_append (to, env->mail_followup_to, 1);
     return 0;
@@ -598,7 +598,7 @@ int mutt_fetch_recips (ENVELOPE *out, ENVELOPE *in, int flags)
     rfc822_append (&out->to, tmp, 0);
     rfc822_free_address (&tmp);
 
-    if (in->mail_followup_to && hmfupto == MUTT_YES &&
+    if (in->mail_followup_to && (hmfupto == MUTT_YES) &&
         default_to (&out->cc, in, flags & SENDLISTREPLY, hmfupto) == MUTT_ABORT)
       return -1; /* abort */
   }
@@ -607,7 +607,7 @@ int mutt_fetch_recips (ENVELOPE *out, ENVELOPE *in, int flags)
     if (default_to (&out->to, in, flags & SENDGROUPREPLY, hmfupto) == MUTT_ABORT)
       return -1; /* abort */
 
-    if ((flags & SENDGROUPREPLY) && (!in->mail_followup_to || hmfupto != MUTT_YES))
+    if ((flags & SENDGROUPREPLY) && (!in->mail_followup_to || (hmfupto != MUTT_YES)))
     {
       /* if(!mutt_addr_is_user(in->to)) */
       rfc822_append (&out->cc, in->to, 1);
@@ -740,7 +740,7 @@ make_reference_headers (ENVELOPE *curenv, ENVELOPE *env, CONTEXT *ctx)
   /* if there's more than entry in In-Reply-To (i.e. message has
      multiple parents), don't generate a References: header as it's
      discouraged by RfC2822, sect. 3.6.4 */
-  if (ctx->tagged > 0 && env->in_reply_to && env->in_reply_to->next)
+  if ((ctx->tagged > 0) && env->in_reply_to && env->in_reply_to->next)
     mutt_free_list (&env->references);
 }
 
@@ -1488,7 +1488,7 @@ ci_send_message (int flags,		/* send mode */
       mutt_fix_reply_recipients (msg->env);
 
 #ifdef USE_NNTP
-    if ((flags & SENDNEWS) && ctx && ctx->magic == MUTT_NNTP && !msg->env->newsgroups)
+    if ((flags & SENDNEWS) && ctx && (ctx->magic == MUTT_NNTP) && !msg->env->newsgroups)
       msg->env->newsgroups = safe_strdup (((NNTP_DATA *)ctx->data)->group);
 #endif
 
@@ -1538,7 +1538,7 @@ ci_send_message (int flags,		/* send mode */
 
     if (! (flags & SENDKEY))
     {
-      if (option (OPTTEXTFLOWED) && msg->content->type == TYPETEXT && (ascii_strcasecmp (msg->content->subtype, "plain") == 0))
+      if (option (OPTTEXTFLOWED) && (msg->content->type == TYPETEXT) && (ascii_strcasecmp (msg->content->subtype, "plain") == 0))
         mutt_set_parameter ("format", "flowed", &msg->content->parameter);
     }
 
@@ -1645,7 +1645,7 @@ ci_send_message (int flags,		/* send mode */
        * performed.  If it has already been performed, the format=flowed
        * parameter will be present.
        */
-      if (option (OPTTEXTFLOWED) && msg->content->type == TYPETEXT && (ascii_strcasecmp("plain", msg->content->subtype) == 0))
+      if (option (OPTTEXTFLOWED) && (msg->content->type == TYPETEXT) && (ascii_strcasecmp("plain", msg->content->subtype) == 0))
       {
 	char *p = mutt_get_parameter("format", msg->content->parameter);
 	if (ascii_strcasecmp("flowed", NONULL(p)) != 0)
@@ -2013,7 +2013,7 @@ main_loop:
 
     /* check to see if the user wants copies of all attachments */
     if (query_quadoption (OPT_FCCATTACH, _("Save attachments in Fcc?")) != MUTT_YES &&
-	msg->content->type == TYPEMULTIPART)
+ (msg->content->type == TYPEMULTIPART))
     {
       if (WithCrypto
           && (msg->security & (ENCRYPT | SIGN))
@@ -2104,12 +2104,12 @@ full_fcc:
         ;
       else if ((msg->security & ENCRYPT) ||
                ((msg->security & SIGN)
-                && msg->content->type == TYPEAPPLICATION))
+                && (msg->content->type == TYPEAPPLICATION)))
       {
 	mutt_free_body (&msg->content); /* destroy PGP data */
 	msg->content = clear_content;	/* restore clear text. */
       }
-      else if ((msg->security & SIGN) && msg->content->type == TYPEMULTIPART)
+      else if ((msg->security & SIGN) && (msg->content->type == TYPEMULTIPART))
       {
 	mutt_free_body (&msg->content->parts->next);	     /* destroy sig */
 	msg->content = mutt_remove_multipart (msg->content);
@@ -2128,7 +2128,7 @@ full_fcc:
     }
   }
   else if (!option (OPTNOCURSES) && ! (flags & SENDMAILX)) {
-    mutt_message (i != 0 ? _("Sending in background.") :
+    mutt_message ((i != 0) ? _("Sending in background.") :
 #ifdef USE_NNTP
 		  (flags & SENDNEWS) ? _("Article posted.") : _("Mail sent."));
 #else

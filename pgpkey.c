@@ -165,7 +165,7 @@ static const char *pgp_entry_fmt (char *dest,
 	  do_locales = 1;
 
 	len = destlen - 1;
-	while (len > 0 && *cp != ']')
+	while ((len > 0) && *cp != ']')
 	{
 	  if (*cp == '%')
 	  {
@@ -723,7 +723,7 @@ BODY *pgp_make_key_attachment (char *tempf)
     tempf = tempfb;
   }
 
-  if ((tempfp = safe_fopen (tempf, tempf == tempfb ? "w" : "a")) == NULL)
+  if ((tempfp = safe_fopen (tempf, (tempf == tempfb) ? "w" : "a")) == NULL)
   {
     mutt_perror (_("Can't create temporary file"));
     return NULL;
@@ -866,7 +866,7 @@ pgp_key_t pgp_getkeybyaddr (ADDRESS * a, short abilities, pgp_ring_t keyring,
         {
           if (validity & PGP_KV_STRONGID)
           {
-            if (the_strong_valid_key && the_strong_valid_key != k)
+            if (the_strong_valid_key && (the_strong_valid_key != k))
               multi = 1;
             the_strong_valid_key = k;
           }

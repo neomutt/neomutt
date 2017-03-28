@@ -32,7 +32,7 @@
 /* Notes:
  * Any references to compressed files also apply to encrypted files.
  * ctx->path     == plaintext file
- * ctx->realpath == compressed file
+ * (ctx->realpath == compressed) file
  */
 
 /**

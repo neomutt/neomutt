@@ -111,7 +111,7 @@ unsigned char *pgp_read_packet (FILE * fp, size_t * len)
 	material = b;
 	partial = 0;
       }
-      else if (192 <= b && b <= 223)
+      else if ((192 <= b) && (b <= 223))
       {
 	material = (b - 192) * 256;
 	if (fread (&b, 1, 1, fp) < 1)
@@ -128,7 +128,7 @@ unsigned char *pgp_read_packet (FILE * fp, size_t * len)
 	partial = 1;
       }
       else
-	/* b == 255 */
+	/* (b == 255) */
       {
 	unsigned char buf[4];
 	if (fread (buf, 4, 1, fp) < 1)

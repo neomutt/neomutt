@@ -52,7 +52,7 @@ static const char * const Capabilities[] = {
 
 static int cmd_queue_full (IMAP_DATA* idata)
 {
-  if ((idata->nextcmd + 1) % idata->cmdslots == idata->lastcmd)
+  if ((idata->nextcmd + 1) % (idata->cmdslots == idata->lastcmd))
     return 1;
 
   return 0;
@@ -94,7 +94,7 @@ static int cmd_queue (IMAP_DATA* idata, const char* cmdstr)
 
     rc = imap_exec (idata, NULL, IMAP_CMD_FAIL_OK);
 
-    if (rc < 0 && rc != -2)
+    if ((rc < 0) && rc != -2)
       return rc;
   }
 
@@ -298,7 +298,7 @@ static void cmd_parse_list (IMAP_DATA* idata, char* s)
   char delimbuf[5]; /* worst case: "\\"\0 */
   long litlen;
 
-  if (idata->cmddata && idata->cmdtype == IMAP_CT_LIST)
+  if (idata->cmddata && (idata->cmdtype == IMAP_CT_LIST))
     list = (IMAP_LIST*)idata->cmddata;
   else
     list = &lb;
@@ -370,7 +370,7 @@ static void cmd_parse_lsub (IMAP_DATA* idata, char* s)
   ciss_url_t url;
   IMAP_LIST list;
 
-  if (idata->cmddata && idata->cmdtype == IMAP_CT_LIST)
+  if (idata->cmddata && (idata->cmdtype == IMAP_CT_LIST))
   {
     /* caller will handle response itself */
     cmd_parse_list (idata, s);
@@ -566,7 +566,7 @@ static void cmd_parse_status (IMAP_DATA* idata, char* s)
               status->messages, status->recent, status->unseen);
 
   /* caller is prepared to handle the result herself */
-  if (idata->cmddata && idata->cmdtype == IMAP_CT_STATUS)
+  if (idata->cmddata && (idata->cmdtype == IMAP_CT_STATUS))
   {
     memcpy (idata->cmddata, status, sizeof (IMAP_STATUS));
     return;
@@ -604,7 +604,7 @@ static void cmd_parse_status (IMAP_DATA* idata, char* s)
 
 	if (option(OPTMAILCHECKRECENT))
 	{
-	  if (olduv && olduv == status->uidvalidity)
+	  if (olduv && (olduv == status->uidvalidity))
 	  {
 	    if (oldun < status->uidnext)
 	      new = (status->unseen > 0);
@@ -684,7 +684,7 @@ static int cmd_handle_untagged (IMAP_DATA* idata)
       count = atoi (pn);
 
       if ( !(idata->reopen & IMAP_EXPUNGE_PENDING) &&
-	   count < idata->ctx->msgcount)
+	   (count < idata->ctx->msgcount))
       {
         /* Notes 6.0.3 has a tendency to report fewer messages exist than
          * it should. */
@@ -937,12 +937,12 @@ int imap_exec (IMAP_DATA* idata, const char* cmdstr, int flags)
   while (rc == IMAP_CMD_CONTINUE);
   mutt_allow_interrupt (0);
 
-  if (rc == IMAP_CMD_NO && (flags & IMAP_CMD_FAIL_OK))
+  if ((rc == IMAP_CMD_NO) && (flags & IMAP_CMD_FAIL_OK))
     return -2;
 
   if (rc != IMAP_CMD_OK)
   {
-    if ((flags & IMAP_CMD_FAIL_OK) && idata->status != IMAP_FATAL)
+    if ((flags & IMAP_CMD_FAIL_OK) && (idata->status != IMAP_FATAL))
       return -2;
 
     mutt_debug (1, "imap_exec: command failed: %s\n", idata->buf);
@@ -973,7 +973,7 @@ void imap_cmd_finish (IMAP_DATA* idata)
 
     if (!(idata->reopen & IMAP_EXPUNGE_PENDING) &&
 	(idata->reopen & IMAP_NEWMAIL_PENDING)
-	&& count > idata->ctx->msgcount)
+	&& (count > idata->ctx->msgcount))
     {
       /* read new mail messages */
       mutt_debug (2, "imap_cmd_finish: Fetching new mail\n");

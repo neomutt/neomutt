@@ -44,12 +44,12 @@ int mutt_account_match (const ACCOUNT* a1, const ACCOUNT* a2)
 #endif
 
 #ifdef USE_POP
-  if (a1->type == MUTT_ACCT_TYPE_POP && PopUser)
+  if ((a1->type == MUTT_ACCT_TYPE_POP) && PopUser)
     user = PopUser;
 #endif
 
 #ifdef USE_NNTP
-  if (a1->type == MUTT_ACCT_TYPE_NNTP && NntpUser)
+  if ((a1->type == MUTT_ACCT_TYPE_NNTP) && NntpUser)
     user = NntpUser;
 #endif
 

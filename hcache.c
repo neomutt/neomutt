@@ -117,7 +117,7 @@ lazy_realloc(void *ptr, size_t siz)
 {
   void **p = (void **) ptr;
 
-  if (p != NULL && siz < 4096)
+  if ((p != NULL) && (siz < 4096))
     return;
 
   safe_realloc(ptr, siz);

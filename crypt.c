@@ -245,7 +245,7 @@ int mutt_protect (HEADER *msg, char *keylist)
 	return -1;
       }
       /* free tmp_body if messages was signed AND encrypted ... */
-      if (tmp_smime_pbody != msg->content && tmp_smime_pbody != tmp_pbody)
+      if ((tmp_smime_pbody != msg->content) && (tmp_smime_pbody != tmp_pbody))
       {
 	/* detach and don't delete msg->content,
 	   which tmp_smime_pbody->parts after signing. */
@@ -343,7 +343,7 @@ int mutt_is_multipart_encrypted (BODY *b)
   {
     char *p = NULL;
 
-    if (!b || b->type != TYPEMULTIPART ||
+    if (!b || (b->type != TYPEMULTIPART) ||
         !b->subtype || (ascii_strcasecmp (b->subtype, "encrypted") != 0) ||
         !(p = mutt_get_parameter ("protocol", b->parameter)) ||
         (ascii_strcasecmp (p, "application/pgp-encrypted") != 0))
@@ -362,12 +362,12 @@ int mutt_is_valid_multipart_pgp_encrypted (BODY *b)
     return 0;
 
   b = b->parts;
-  if (!b || b->type != TYPEAPPLICATION ||
+  if (!b || (b->type != TYPEAPPLICATION) ||
       !b->subtype || (ascii_strcasecmp (b->subtype, "pgp-encrypted") != 0))
     return 0;
 
   b = b->next;
-  if (!b || b->type != TYPEAPPLICATION ||
+  if (!b || (b->type != TYPEAPPLICATION) ||
       !b->subtype || (ascii_strcasecmp (b->subtype, "octet-stream") != 0))
     return 0;
 
@@ -389,23 +389,23 @@ int mutt_is_malformed_multipart_pgp_encrypted (BODY *b)
   if (!(WithCrypto & APPLICATION_PGP))
     return 0;
 
-  if (!b || b->type != TYPEMULTIPART ||
+  if (!b || (b->type != TYPEMULTIPART) ||
       !b->subtype || (ascii_strcasecmp (b->subtype, "mixed") != 0))
     return 0;
 
   b = b->parts;
-  if (!b || b->type != TYPETEXT ||
+  if (!b || (b->type != TYPETEXT) ||
       !b->subtype || (ascii_strcasecmp (b->subtype, "plain") != 0) ||
-       b->length != 0)
+       (b->length != 0))
     return 0;
 
   b = b->next;
-  if (!b || b->type != TYPEAPPLICATION ||
+  if (!b || (b->type != TYPEAPPLICATION) ||
       !b->subtype || (ascii_strcasecmp (b->subtype, "pgp-encrypted") != 0))
     return 0;
 
   b = b->next;
-  if (!b || b->type != TYPEAPPLICATION ||
+  if (!b || (b->type != TYPEAPPLICATION) ||
       !b->subtype || (ascii_strcasecmp (b->subtype, "octet-stream") != 0))
     return 0;
 
@@ -443,7 +443,7 @@ int mutt_is_application_pgp (BODY *m)
     if (ascii_strcasecmp (m->subtype, "pgp-keys") == 0)
       t |= PGPKEY;
   }
-  else if (m->type == TYPETEXT && (ascii_strcasecmp ("plain", m->subtype) == 0))
+  else if ((m->type == TYPETEXT) && (ascii_strcasecmp ("plain", m->subtype) == 0))
   {
     if (((p = mutt_get_parameter ("x-mutt-action", m->parameter))
 	 || (p = mutt_get_parameter ("x-action", m->parameter))
@@ -508,7 +508,7 @@ int mutt_is_application_smime (BODY *m)
     /* no .p7c, .p10 support yet. */
 
     len = mutt_strlen (t) - 4;
-    if (len > 0 && *(t+len) == '.')
+    if ((len > 0) && *(t+len) == '.')
     {
       len++;
       if (ascii_strcasecmp ((t+len), "p7m") == 0)
@@ -550,7 +550,7 @@ int crypt_query (BODY *m)
       if (t && m->badsig) t |= BADSIGN;
     }
   }
-  else if ((WithCrypto & APPLICATION_PGP) && m->type == TYPETEXT)
+  else if ((WithCrypto & APPLICATION_PGP) && (m->type == TYPETEXT))
   {
     t |= mutt_is_application_pgp (m);
     if (t && m->goodsig)
@@ -567,7 +567,7 @@ int crypt_query (BODY *m)
       t |= GOODSIGN;
   }
 
-  if (m->type == TYPEMULTIPART || m->type == TYPEMESSAGE)
+  if ((m->type == TYPEMULTIPART) || (m->type == TYPEMESSAGE))
   {
     BODY *p = NULL;
     int u, v, w;
@@ -655,7 +655,7 @@ void convert_to_7bit (BODY *a)
       else if ((WithCrypto & APPLICATION_PGP) && option (OPTPGPSTRICTENC))
 	convert_to_7bit (a->parts);
     }
-    else if (a->type == TYPEMESSAGE &&
+    else if ((a->type == TYPEMESSAGE) &&
 	     (ascii_strcasecmp(a->subtype, "delivery-status") != 0))
     {
       if(a->encoding != ENC7BIT)
@@ -665,7 +665,7 @@ void convert_to_7bit (BODY *a)
       a->encoding = ENCQUOTEDPRINTABLE;
     else if (a->encoding == ENCBINARY)
       a->encoding = ENCBASE64;
-    else if (a->content && a->encoding != ENCBASE64 &&
+    else if (a->content && (a->encoding != ENCBASE64) &&
 	     (a->content->from || (a->content->space &&
 				   option (OPTPGPSTRICTENC))))
       a->encoding = ENCQUOTEDPRINTABLE;
@@ -869,7 +869,7 @@ void crypt_opportunistic_encrypt(HEADER *msg)
     return;
 
   crypt_get_keys (msg, &pgpkeylist, 1);
-  if (pgpkeylist != NULL )
+  if ((pgpkeylist != NULL) )
   {
     msg->security |= ENCRYPT;
     FREE (&pgpkeylist);
@@ -939,17 +939,17 @@ int mutt_signed_handler (BODY *a, STATE *s)
     switch (signed_type)
     {
       case SIGN:
-        if (a->next->type != TYPEMULTIPART ||
+        if ((a->next->type != TYPEMULTIPART) ||
             (ascii_strcasecmp (a->next->subtype, "mixed") != 0))
           inconsistent = 1;
         break;
       case PGPSIGN:
-        if (a->next->type != TYPEAPPLICATION ||
+        if ((a->next->type != TYPEAPPLICATION) ||
             (ascii_strcasecmp (a->next->subtype, "pgp-signature") != 0))
           inconsistent = 1;
         break;
       case SMIMESIGN:
-        if (a->next->type != TYPEAPPLICATION ||
+        if ((a->next->type != TYPEAPPLICATION) ||
             ((ascii_strcasecmp (a->next->subtype, "x-pkcs7-signature") != 0) &&
              (ascii_strcasecmp (a->next->subtype, "pkcs7-signature") != 0)))
           inconsistent = 1;

@@ -239,7 +239,7 @@ int mutt_alloc_color (int fg, int bg)
   /* check to see if this color is already allocated to save space */
   while (p)
   {
-    if (p->fg == fg && p->bg == bg)
+    if ((p->fg == fg) && (p->bg == bg))
     {
       (p->count)++;
       return (COLOR_PAIR (p->index));
@@ -274,7 +274,7 @@ int mutt_alloc_color (int fg, int bg)
   p->fg = fg;
 
 #ifdef USE_SLANG_CURSES
-  if (fg == COLOR_DEFAULT || bg == COLOR_DEFAULT)
+  if ((fg == COLOR_DEFAULT) || (bg == COLOR_DEFAULT))
     SLtt_set_color (i, NULL, get_color_name (fgc, sizeof (fgc), fg), get_color_name (bgc, sizeof (bgc), bg));
   else
 #elif defined (HAVE_USE_DEFAULT_COLORS)
@@ -299,7 +299,7 @@ void mutt_free_color (int fg, int bg)
   p = ColorList;
   while (p)
   {
-    if (p->fg == fg && p->bg == bg)
+    if ((p->fg == fg) && (p->bg == bg))
     {
       (p->count)--;
       if (p->count > 0) return;
@@ -581,7 +581,7 @@ add_pattern (COLOR_LINE **top, const char *s, int sensitive,
 #ifdef HAVE_COLOR
     if (fg != -1 && bg != -1)
     {
-      if (tmp->fg != fg || tmp->bg != bg)
+      if ((tmp->fg != fg) || (tmp->bg != bg))
       {
 	mutt_free_color (tmp->fg, tmp->bg);
 	tmp->fg = fg;
@@ -657,7 +657,7 @@ parse_object(BUFFER *buf, BUFFER *s, int *o, int *ql, BUFFER *err)
     if(buf->data[6])
     {
       *ql = strtol(buf->data + 6, &eptr, 10);
-      if(*eptr || q_level < 0)
+      if(*eptr || (q_level < 0))
       {
 	snprintf(err->data, err->dsize, _("%s: no such object"), buf->data);
 	return -1;
@@ -813,7 +813,7 @@ _mutt_parse_color (BUFFER *buf, BUFFER *s, BUFFER *err,
 # ifdef HAVE_USE_DEFAULT_COLORS
   if (!option (OPTNOCURSES) && has_colors()
     /* delay use_default_colors() until needed, since it initializes things */
-    && (fg == COLOR_DEFAULT || bg == COLOR_DEFAULT)
+    && ((fg == COLOR_DEFAULT) || (bg == COLOR_DEFAULT))
     && use_default_colors () != OK)
   {
     strfcpy (err->data, _("default colors not supported"), err->dsize);

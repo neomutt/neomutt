@@ -516,7 +516,7 @@ static bool windowed_query_from_query(const char *query, char *buf, size_t bufsz
   }
 
   /* if the query has changed, reset the window position */
-  if (NotmuchQueryWindowCurrentSearch == NULL ||
+  if ((NotmuchQueryWindowCurrentSearch == NULL) ||
       (strcmp(query, NotmuchQueryWindowCurrentSearch) != 0))
     query_window_reset();
 
@@ -2080,7 +2080,7 @@ int nm_record_message(CONTEXT *ctx, char *path, HEADER *h)
     goto done;
   }
 
-  if (st == NOTMUCH_STATUS_SUCCESS && msg)
+  if ((st == NOTMUCH_STATUS_SUCCESS) && msg)
   {
     notmuch_message_maildir_flags_to_tags(msg);
     if (h != NULL)
