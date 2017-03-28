@@ -1716,7 +1716,7 @@ void mutt_FormatString (char *dest,		/* output buffer */
       /* in case of error, simply copy byte */
       if ((tmp = mutt_charlen (src, &w)) < 0)
 	tmp = w = 1;
-      if (tmp > 0 && wlen + tmp < destlen)
+      if (tmp > 0 && (wlen + tmp) < destlen)
       {
         memcpy (wptr, src, tmp);
         wptr += tmp;
@@ -2073,7 +2073,7 @@ int mutt_match_spam_list (const char *s, REPLACE_LIST *l, char *text, int textsi
       mutt_debug (5, "mutt_match_spam_list: %d subs\n", (int)l->rx->rx->re_nsub);
 
       /* Copy template into text, with substitutions. */
-      for (p = l->template; *p && tlen < textsize - 1;)
+      for (p = l->template; *p && tlen < (textsize - 1);)
       {
 	/* backreference to pattern match substring, eg. %1, %2, etc) */
 	if (*p == '%')

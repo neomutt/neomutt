@@ -547,7 +547,7 @@ ADDRESS *rfc822_parse_adrlist (ADDRESS *top, const char *s)
   }
 #ifdef EXACT_ADDRESS
   if (last != NULL)
-    last->val = mutt_substrdup (begin, s - nl < begin ? begin : s - nl);
+    last->val = mutt_substrdup (begin, (s - nl) < begin ? begin : s - nl);
 #endif
 
   return top;

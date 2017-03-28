@@ -164,7 +164,7 @@ static int fetch_uidl (char *line, void *data)
     ctx->hdrs[i] = mutt_new_header ();
     ctx->hdrs[i]->data = safe_strdup (line);
   }
-  else if (ctx->hdrs[i]->index != index - 1)
+  else if (ctx->hdrs[i]->index != (index - 1))
     pop_data->clear_cache = 1;
 
   ctx->hdrs[i]->refno = index;

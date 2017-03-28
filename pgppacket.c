@@ -38,7 +38,7 @@ static size_t plen = 0;
 
 static int read_material (size_t material, size_t * used, FILE * fp)
 {
-  if (*used + material >= plen)
+  if (*(used + material) >= plen)
   {
     unsigned char *p = NULL;
     size_t nplen;

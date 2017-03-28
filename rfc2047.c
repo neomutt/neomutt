@@ -364,7 +364,7 @@ static size_t choose_block (char *d, size_t dlen, int col,
   {
     assert ((d + n) > d);
     nn = try_block (d, n, fromcode, tocode, encoder, wlen);
-    if (!nn && (col + *wlen <= ENCWORD_LEN_MAX + 1 || n <= 1))
+    if (!nn && (col + *wlen <= (ENCWORD_LEN_MAX + 1) || n <= 1))
       break;
     n = (nn ? nn : n) - 1;
     assert (n > 0);
@@ -412,7 +412,7 @@ static int rfc2047_encode (ICONV_CONST char *d, size_t dlen, int col,
 
   /* Find earliest and latest things we must encode. */
   s0 = s1 = t0 = t1 = 0;
-  for (t = u; t < u + ulen; t++)
+  for (t = u; t < (u + ulen); t++)
   {
     if ((*t & 0x80) ||
 	(*t == '=' && t[1] == '?' && (t == u || HSPACE(*(t-1)))))
@@ -468,15 +468,15 @@ static int rfc2047_encode (ICONV_CONST char *d, size_t dlen, int col,
       continue;
     t = t0 + 1;
     if (icode != NULL)
-      while (t < u + ulen && CONTINUATION_BYTE(*t))
+      while (t < (u + ulen) && CONTINUATION_BYTE(*t))
 	++t;
     if (!try_block (t0, t - t0, icode, tocode, &encoder, &wlen) &&
-	col + (t0 - u) + wlen <= ENCWORD_LEN_MAX + 1)
+	col + (t0 - u) + wlen <= (ENCWORD_LEN_MAX + 1))
       break;
   }
 
   /* Adjust t1 until we can encode a character before a space. */
-  for (; t1 < u + ulen; t1++)
+  for (; t1 < (u + ulen); t1++)
   {
     if (!HSPACE(*t1))
       continue;
@@ -522,7 +522,7 @@ static int rfc2047_encode (ICONV_CONST char *d, size_t dlen, int col,
 	   encoded word. We add the next word to the encoded region
 	   and try again. */
 	assert (t1 < (u + ulen));
-	for (t1++; t1 < u + ulen && !HSPACE(*t1); t1++)
+	for (t1++; t1 < (u + ulen) && !HSPACE(*t1); t1++)
 	  ;
 	continue;
       }
@@ -749,7 +749,7 @@ static size_t lwslen (const char *s, size_t n)
   if (n <= 0)
     return 0;
 
-  for (; p < s + n; p++)
+  for (; p < (s + n); p++)
     if (!strchr (" \t\r\n", *p))
     {
       len = (size_t)(p - s);

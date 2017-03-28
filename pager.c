@@ -1844,7 +1844,7 @@ mutt_pager (const char *banner, const char *fname, int flags, pager_t *extra)
 	/* some fudge to work out whereabouts the indicator should go */
 	if ((index->current - indicator) < 0)
 	  index->top = 0;
-	else if (index->max - index->current < index->pagelen - indicator)
+	else if ((index->max - index->current) < (index->pagelen - indicator))
 	  index->top = index->max - index->pagelen;
 	else
 	  index->top = index->current - indicator;

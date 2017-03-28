@@ -65,7 +65,7 @@ int rfc1524_expand_command (BODY *a, char *filename, char *_type,
   if (option (OPTMAILCAPSANITIZE))
     mutt_sanitize_filename (type, 0);
 
-  while (x < clen - 1 && command[x] && y < sizeof (buf) - 1)
+  while (x < (clen - 1) && command[x] && y < sizeof (buf) - 1)
   {
     if (command[x] == '\\')
     {
@@ -514,7 +514,7 @@ int rfc1524_expand_filename (char *nametemplate,
       rmatch = 1;
 
       for(j = mutt_strlen(oldfile) - 1, k = mutt_strlen(nametemplate) - 1 ;
-	  j >= (lmatch ? i : 0) && k >= i + 2;
+	  j >= (lmatch ? i : 0) && k >= (i + 2);
 	  j--, k--)
       {
 	if(nametemplate[k] != oldfile[j])

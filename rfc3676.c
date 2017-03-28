@@ -210,7 +210,7 @@ static void print_flowed_line (char *line, STATE *s, int ql,
        have a long word that we should break within (we leave that
        up to the pager or user) */
     if (!(!fst->spaces && fst->delsp && last != ' ') &&
-	w < width && w + fst->width + fst->spaces > width)
+	w < width && (w + fst->width + fst->spaces) > width)
     {
       mutt_debug (4, "f=f: break line at %lu, %lu spaces left\n",
                   fst->width, fst->spaces);

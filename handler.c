@@ -371,7 +371,7 @@ void mutt_decode_base64 (STATE *s, long len, int istext, iconv_t cd)
     else
       bufi[l++] = ch;
 
-    if (l + 8 >= sizeof (bufi))
+    if ((l + 8) >= sizeof (bufi))
       convert_to_state (cd, bufi, &l, s);
   }
 
@@ -700,7 +700,7 @@ static void enriched_puts (const char *s, struct enriched_state *stte)
 {
   const char *c = NULL;
 
-  if (stte->buff_len < stte->buff_used + mutt_strlen (s))
+  if (stte->buff_len < (stte->buff_used + mutt_strlen(s)))
   {
     stte->buff_len += LONG_STRING;
     safe_realloc (&stte->buffer, (stte->buff_len + 1) * sizeof (wchar_t));

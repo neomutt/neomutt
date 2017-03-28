@@ -271,7 +271,7 @@ folder_format_str (char *dest, size_t destlen, size_t col, int cols, char op, co
 	  }
 	} else {
 	  tnow = time (NULL);
-	  t_fmt = tnow - folder->ff->mtime < 31536000 ? "%b %d %H:%M" : "%b %d  %Y";
+	  t_fmt = (tnow - folder->ff->mtime) < 31536000 ? "%b %d %H:%M" : "%b %d  %Y";
 	}
 
         if (do_locales == 0)

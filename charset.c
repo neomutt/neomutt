@@ -546,7 +546,7 @@ char *fgetconvs (char *buf, size_t l, FGETCONV *_fc)
   int c;
   size_t r;
 
-  for (r = 0; r + 1 < l;)
+  for (r = 0; (r + 1) < l;)
   {
     if ((c = fgetconv (_fc)) == EOF)
       break;
@@ -590,7 +590,7 @@ int fgetconv (FGETCONV *_fc)
 
   /* Try to read some more */
   if (fc->ibl == sizeof (fc->bufi) ||
-      (fc->ibl && fc->ib + fc->ibl < fc->bufi + sizeof (fc->bufi)))
+      (fc->ibl && (fc->ib + fc->ibl) < (fc->bufi + sizeof(fc->bufi))))
   {
     fc->p = 0;
     return EOF;

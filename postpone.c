@@ -190,7 +190,7 @@ static HEADER *select_msg (void)
         /* should deleted draft messages be saved in the trash folder? */
 	mutt_set_flag (PostContext, PostContext->hdrs[menu->current], MUTT_DELETE, (i == OP_DELETE) ? 1 : 0);
 	PostCount = PostContext->msgcount - PostContext->deleted;
-	if (option (OPTRESOLVE) && menu->current < menu->max - 1)
+	if (option (OPTRESOLVE) && menu->current < (menu->max - 1))
 	{
 	  menu->oldcurrent = menu->current;
 	  menu->current++;
@@ -457,7 +457,7 @@ int mutt_parse_crypt_hdr (const char *p, int set_empty_signas, int crypt_app)
         if (*(p+1) == '<')
         {
           for (p += 2;
-	       *p && *p != '>' && q < sign_as + sizeof (sign_as) - 1;
+	       *p && (*p != '>') && (q < (sign_as + sizeof(sign_as) - 1));
                *q++ = *p++)
 	    ;
 
@@ -498,7 +498,7 @@ int mutt_parse_crypt_hdr (const char *p, int set_empty_signas, int crypt_app)
 
         if(*(p+1) == '<')
 	{
-	  for(p += 2; *p && *p != '>' && q < smime_cryptalg + sizeof(smime_cryptalg) - 1;
+	  for(p += 2; *p && (*p != '>') && (q < (smime_cryptalg + sizeof(smime_cryptalg) - 1));
 	      *q++ = *p++)
 	    ;
 

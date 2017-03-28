@@ -267,7 +267,7 @@ static int nntp_attempt_features (NNTP_SERVER *nserv)
 	if (!cont && (mutt_strcmp (".", nserv->overview_fmt + off) == 0))
 	  break;
 
-	cont = chunk >= buflen - off ? 1 : 0;
+	cont = chunk >= (buflen - off) ? 1 : 0;
 	off += strlen (nserv->overview_fmt + off);
 	if (cont == 0)
 	{
@@ -455,7 +455,7 @@ static int nntp_auth (NNTP_SERVER *nserv)
 	    {
 	      char tmp[LONG_STRING];
 	      memcpy (tmp, client_out, client_len);
-	      for (p = tmp; p < tmp + client_len; p++)
+	      for (p = tmp; p < (tmp + client_len); p++)
 	      {
 		if (*p == '\0')
 		  *p = '.';
@@ -522,7 +522,7 @@ static int nntp_auth (NNTP_SERVER *nserv)
 	  {
 	    char tmp[LONG_STRING];
 	    memcpy (tmp, buf, len);
-	    for (p = tmp; p < tmp + len; p++)
+	    for (p = tmp; p < (tmp + len); p++)
 	    {
 	      if (*p == '\0')
 		*p = '.';
@@ -1516,7 +1516,7 @@ static int nntp_open_mailbox (CONTEXT *ctx)
 
   /* strip off extra articles if adding context is greater than $nntp_context */
   first = nntp_data->firstMessage;
-  if (NntpContext && nntp_data->lastMessage - first + 1 > NntpContext)
+  if (NntpContext && (nntp_data->lastMessage - first + 1) > NntpContext)
     first = nntp_data->lastMessage - NntpContext + 1;
   nntp_data->lastLoaded = first ? first - 1 : 0;
   count = nntp_data->firstMessage;
@@ -1842,7 +1842,7 @@ static int nntp_check_mailbox (CONTEXT *ctx, int *index_hint)
     HEADER *hdr = NULL;
     anum_t first = nntp_data->firstMessage;
 
-    if (NntpContext && nntp_data->lastMessage - first + 1 > NntpContext)
+    if (NntpContext && (nntp_data->lastMessage - first + 1) > NntpContext)
       first = nntp_data->lastMessage - NntpContext + 1;
     messages = safe_calloc (nntp_data->lastLoaded - first + 1,
 			    sizeof (unsigned char));

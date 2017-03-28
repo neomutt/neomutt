@@ -132,7 +132,7 @@ uint32_t j;
     if ((j + len) > 63) {
         memcpy(&context->buffer[j], data, (i = 64-j));
         sha1_transform(context->state, context->buffer);
-        for ( ; i + 63 < len; i += 64) {
+        for ( ; (i + 63) < len; i += 64) {
             sha1_transform(context->state, &data[i]);
         }
         j = 0;

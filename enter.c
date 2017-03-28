@@ -100,7 +100,7 @@ static void my_wcstombs (char *dest, size_t dlen, const wchar_t *src, size_t sle
     char buf[3 * MB_LEN_MAX];
     char *p = buf;
 
-    for (; slen && p - buf < dlen; p += k, src++, slen--)
+    for (; slen && (p - buf) < dlen; p += k, src++, slen--)
       if ((k = wcrtomb (p, *src, &st)) == (size_t)(-1))
 	break;
     p += wcrtomb (p, 0, &st);
@@ -523,7 +523,7 @@ int _mutt_enter_string (char *buf, size_t buflen, int col,
 	    for (i = state->curpos; i && !is_shell_char(state->wbuf[i-1]); i--)
 	      ;
 	    my_wcstombs (buf, buflen, state->wbuf + i, state->curpos - i);
-	    if (tempbuf && templen == state->lastchar - i &&
+	    if (tempbuf && templen == (state->lastchar - i) &&
 		!memcmp (tempbuf, state->wbuf + i, (state->lastchar - i) * sizeof (wchar_t)))
 	    {
 	      mutt_select_file (buf, buflen, (flags & MUTT_EFILE) ? MUTT_SEL_FOLDER : 0);

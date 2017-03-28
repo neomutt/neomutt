@@ -259,7 +259,7 @@ static size_t mbrtowc_iconv (wchar_t *pwc, const char *s, size_t n,
     /* use the buffer for input */
     memcpy (bufi, ps, k);
     ib = bufi;
-    ibmax = bufi + (k + n < sizeof (bufi) ? k + n : sizeof (bufi));
+    ibmax = bufi + ((k + n) < sizeof (bufi) ? k + n : sizeof (bufi));
     memcpy (bufi + k, s, ibmax - bufi - k);
   }
   else
@@ -276,7 +276,7 @@ static size_t mbrtowc_iconv (wchar_t *pwc, const char *s, size_t n,
   for (;;)
   {
     r = iconv (cd, &ib, &ibl, &ob, &obl);
-    if (ob > bufo && (!k || ib > bufi + k))
+    if (ob > bufo && (!k || ib > (bufi + k)))
     {
       /* we have a character */
       memset (ps, 0, sizeof (*ps));
@@ -288,7 +288,7 @@ static size_t mbrtowc_iconv (wchar_t *pwc, const char *s, size_t n,
       if ((ib + ibl) < ibmax)
 	/* try using more input */
 	++ibl;
-      else if (k && ib > bufi + k && bufi + k + n > ibmax)
+      else if (k && ib > (bufi + k) && (bufi + k + n) > ibmax)
       {
 	/* switch to using real input */
 	ib = (ICONV_CONST char*) s + (ib - bufi - k);

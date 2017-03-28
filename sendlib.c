@@ -330,7 +330,7 @@ int mutt_write_mime_header (BODY *a, FILE *f)
 
       tmplen = mutt_strlen (buffer) + mutt_strlen (p->attribute) + 1;
 
-      if (len + tmplen + 2 > 76)
+      if ((len + tmplen + 2) > 76)
       {
 	fputs ("\n\t", f);
 	len = tmplen + 8;
@@ -710,7 +710,7 @@ static size_t convert_file_to (FILE *file, const char *fromcode,
     if (ibl != 0)
       /* Save unused input */
       memmove (bufi, ib, ibl);
-    else if (!ubl1 && ib < bufi + sizeof (bufi))
+    else if (!ubl1 && ib < (bufi + sizeof(bufi)))
     {
       ret = 0;
       break;
@@ -1480,7 +1480,7 @@ void mutt_write_address_list (ADDRESS *adr, FILE *fp, int linelen, int display)
     buf[0] = 0;
     rfc822_write_address (buf, sizeof (buf), adr, display);
     len = mutt_strlen (buf);
-    if (count && linelen + len > 74)
+    if (count && (linelen + len) > 74)
     {
       fputs ("\n\t", fp);
       linelen = len + 8; /* tab is usually about 8 spaces... */
@@ -1663,7 +1663,7 @@ static int fold_one_header (FILE *fp, const char *tag, const char *value,
     /* insert a folding \n before the current word's lwsp except for
      * header name, first word on a line (word longer than wrap width)
      * and encoded words */
-    if (!first && !enc && col && col + w >= wraplen)
+    if (!first && !enc && col && (col + w) >= wraplen)
     {
       col = mutt_strlen (pfx);
       fold = 1;
@@ -1758,7 +1758,7 @@ static int write_one_header (FILE *fp, int pfxw, int max, int wraplen,
 
   /* only pass through folding machinery if necessary for sending,
      never wrap From_ headers on sending */
-  if (!(flags & CH_DISPLAY) && (pfxw + max <= wraplen || is_from))
+  if (!(flags & CH_DISPLAY) && ((pfxw + max) <= wraplen || is_from))
   {
     valbuf = mutt_substrdup (start, end);
     mutt_debug (4, "mwoh: buf[%s%s] short enough, "

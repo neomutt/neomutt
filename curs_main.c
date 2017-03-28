@@ -375,7 +375,7 @@ void update_index (MUTTMENU *menu, CONTEXT *ctx, int check,
     }
     else if (oldcount != 0)
     {
-      for (j = 0; j < ctx->msgcount - oldcount; j++)
+      for (j = 0; j < (ctx->msgcount - oldcount); j++)
       {
 	int k;
 
@@ -1608,7 +1608,7 @@ int mutt_index_menu (void)
 	     ? NULL : Context->last_tag);
 
 	  menu->redraw = REDRAW_STATUS;
-	  if (option (OPTRESOLVE) && menu->current < Context->vcount - 1)
+	  if (option (OPTRESOLVE) && menu->current < (Context->vcount - 1))
 	  {
 	    menu->current++;
 	    menu->redraw |= REDRAW_MOTION_RESYNCH;
@@ -3124,7 +3124,7 @@ int mutt_index_menu (void)
 	{
 	  mutt_set_flag (Context, CURHDR, MUTT_DELETE, 0);
 	  mutt_set_flag (Context, CURHDR, MUTT_PURGE, 0);
-	  if (option (OPTRESOLVE) && menu->current < Context->vcount - 1)
+	  if (option (OPTRESOLVE) && menu->current < (Context->vcount - 1))
 	  {
 	    menu->current++;
 	    menu->redraw = REDRAW_MOTION_RESYNCH;

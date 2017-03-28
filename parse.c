@@ -81,7 +81,7 @@ char *mutt_read_rfc822_line (FILE *f, char *line, size_t *linelen)
 
     buf++;
     offset = buf - line;
-    if (*linelen < offset + STRING)
+    if (*linelen < (offset + STRING))
     {
       /* grow the buffer */
       *linelen += STRING;
@@ -606,7 +606,7 @@ BODY *mutt_parse_multipart (FILE *fp, const char *boundary, LOFF_T end_off, int 
       }
 
       /* Remove any trailing whitespace, up to the length of the boundary */
-      for (i = len - 1; ISSPACE (buffer[i]) && i >= blen + 2; i--)
+      for (i = len - 1; ISSPACE (buffer[i]) && i >= (blen + 2); i--)
         buffer[i] = 0;
 
       /* Check for the end boundary */

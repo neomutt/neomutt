@@ -118,7 +118,7 @@ static void mutt_buffer_add (BUFFER* buf, const char* s, size_t len)
 {
   size_t offset;
 
-  if (buf->dptr + len + 1 > buf->data + buf->dsize)
+  if ((buf->dptr + len + 1) > (buf->data + buf->dsize))
   {
     offset = buf->dptr - buf->data;
     buf->dsize += len < 128 ? 128 : len + 1;

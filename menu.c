@@ -314,7 +314,7 @@ void menu_redraw_index (MUTTMENU *menu)
   int do_color;
   int attr;
 
-  for (i = menu->top; i < menu->top + menu->pagelen; i++)
+  for (i = menu->top; i < (menu->top + menu->pagelen); i++)
   {
     if (i < menu->max)
     {
@@ -463,14 +463,14 @@ void menu_check_recenter (MUTTMENU *menu)
     {
       if (menu->current < (menu->top + c))
 	menu->top = menu->current - c;
-      else if (menu->current >= menu->top + menu->pagelen - c)
+      else if (menu->current >= (menu->top + menu->pagelen - c))
 	menu->top = menu->current - menu->pagelen + c + 1;
     }
     else
     {
       if (menu->current < (menu->top + c))
 	menu->top -= (menu->pagelen - c) * ((menu->top + menu->pagelen - 1 - menu->current) / (menu->pagelen - c)) - c;
-      else if ((menu->current >= menu->top + menu->pagelen - c))
+      else if ((menu->current >= (menu->top + menu->pagelen - c)))
 	menu->top += (menu->pagelen - c) * ((menu->current - menu->top) / (menu->pagelen - c)) - c;
     }
   }
@@ -494,7 +494,7 @@ static void menu_jump (MUTTMENU *menu)
     buf[0] = 0;
     if (mutt_get_field (_("Jump to: "), buf, sizeof (buf), 0) == 0 && buf[0])
     {
-      if (mutt_atoi (buf, &n) == 0 && n > 0 && n < menu->max + 1)
+      if (mutt_atoi (buf, &n) == 0 && n > 0 && n < (menu->max + 1))
       {
 	n--;	/* msg numbers are 0-based */
 	menu->current = n;
@@ -514,11 +514,11 @@ void menu_next_line (MUTTMENU *menu)
   {
     int c = MIN (MenuContext, menu->pagelen / 2);
 
-    if (menu->top + 1 < menu->max - c
-      && (option(OPTMENUMOVEOFF) || (menu->max > menu->pagelen && menu->top < menu->max - menu->pagelen)))
+    if ((menu->top + 1) < (menu->max - c)
+      && (option(OPTMENUMOVEOFF) || (menu->max > menu->pagelen && menu->top < (menu->max - menu->pagelen))))
     {
       menu->top++;
-      if (menu->current < menu->top + c && menu->current < menu->max - 1)
+      if (menu->current < (menu->top + c) && menu->current < (menu->max - 1))
 	menu->current++;
       menu->redraw = REDRAW_INDEX;
     }
@@ -536,7 +536,7 @@ void menu_prev_line (MUTTMENU *menu)
     int c = MIN (MenuContext, menu->pagelen / 2);
 
     menu->top--;
-    if (menu->current >= menu->top + menu->pagelen - c && menu->current > 1)
+    if (menu->current >= (menu->top + menu->pagelen - c) && menu->current > 1)
       menu->current--;
     menu->redraw = REDRAW_INDEX;
   }
@@ -1127,7 +1127,7 @@ int mutt_menu_loop (MUTTMENU *menu)
 	  {
 	    int j = menu->tag (menu, menu->current, -1);
 	    menu->tagged += j;
-	    if (j && option (OPTRESOLVE) && menu->current < menu->max - 1)
+	    if (j && option (OPTRESOLVE) && menu->current < (menu->max - 1))
 	    {
 	      menu->current++;
 	      menu->redraw = REDRAW_MOTION_RESYNCH;

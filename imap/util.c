@@ -517,7 +517,7 @@ char *imap_fix_path (IMAP_DATA *idata, const char *mailbox, char *path,
   if (idata != NULL)
     delim = idata->delim;
 
-  while (mailbox && *mailbox && i < plen - 1)
+  while (mailbox && *mailbox && i < (plen - 1))
   {
     if ((ImapDelimChars && strchr(ImapDelimChars, *mailbox))
         || (delim && *mailbox == delim))
@@ -848,7 +848,7 @@ void imap_keepalive (void)
     {
       idata = conn->data;
       if (idata->state >= IMAP_AUTHENTICATED
-          && now >= idata->lastread + ImapKeepalive)
+          && now >= (idata->lastread + ImapKeepalive))
       {
         imap_check(idata, 1);
       }

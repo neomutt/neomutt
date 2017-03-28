@@ -509,7 +509,7 @@ void mutt_progress_update (progress_t* progress, long pos, int percent)
   if (update && progress->timestamp && !gettimeofday (&tv, NULL)) {
     now = ((unsigned int) tv.tv_sec * 1000)
           + (unsigned int) (tv.tv_usec / 1000);
-    if (now && now - progress->timestamp < TimeInc)
+    if (now && (now - progress->timestamp) < TimeInc)
       update = 0;
   }
 
@@ -1219,7 +1219,7 @@ size_t mutt_wstr_trunc (const char *src, size_t maxlen, size_t maxwid, size_t *w
       cw = 1;
     else if (cw < 0)
       cw = 0;			/* unprintable wchar */
-    if (cl + l > maxlen || cw + w > maxwid)
+    if ((cl + l) > maxlen || (cw + w) > maxwid)
       break;
     l += cl;
     w += cw;

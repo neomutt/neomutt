@@ -1114,7 +1114,7 @@ void mutt_view_attachments (HEADER *hdr)
 	mutt_save_attachment_list (fp, menu->tagprefix,
 		  menu->tagprefix ?  cur : idx[menu->current]->content, hdr, menu);
 
-        if (!menu->tagprefix && option (OPTRESOLVE) && menu->current < menu->max - 1)
+        if (!menu->tagprefix && option (OPTRESOLVE) && menu->current < (menu->max - 1))
 	  menu->current++;
 
         menu->redraw = REDRAW_MOTION_RESYNCH | REDRAW_FULL;
@@ -1157,7 +1157,7 @@ void mutt_view_attachments (HEADER *hdr)
           if (idx[menu->current]->parent_type == TYPEMULTIPART)
           {
             idx[menu->current]->content->deleted = 1;
-            if (option (OPTRESOLVE) && menu->current < menu->max - 1)
+            if (option (OPTRESOLVE) && menu->current < (menu->max - 1))
             {
               menu->current++;
               menu->redraw = REDRAW_MOTION_RESYNCH;
@@ -1195,7 +1195,7 @@ void mutt_view_attachments (HEADER *hdr)
        if (menu->tagprefix == 0)
        {
 	 idx[menu->current]->content->deleted = 0;
-	 if (option (OPTRESOLVE) && menu->current < menu->max - 1)
+	 if (option (OPTRESOLVE) && menu->current < (menu->max - 1))
 	 {
 	   menu->current++;
 	   menu->redraw = REDRAW_MOTION_RESYNCH;

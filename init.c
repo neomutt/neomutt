@@ -2027,7 +2027,7 @@ static size_t escape_string (char *dst, size_t len, const char* src)
     return 0;
   len--; /* save room for \0 */
 #define ESC_CHAR(C)	do { *p++ = '\\'; if ((p - dst) < len) *p++ = C; } while(0)
-  while (p - dst < len && src && *src)
+  while ((p - dst) < len && src && *src)
   {
     switch (*src)
     {
@@ -2041,7 +2041,7 @@ static size_t escape_string (char *dst, size_t len, const char* src)
       ESC_CHAR('t');
       break;
     default:
-      if ((*src == '\\' || *src == '"') && p - dst < len - 1)
+      if ((*src == '\\' || *src == '"') && (p - dst) < (len - 1))
 	*p++ = '\\';
       *p++ = *src;
     }

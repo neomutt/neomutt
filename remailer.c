@@ -640,7 +640,7 @@ void mix_make_chain (LIST **chainp, int *redraw)
 
       case OP_MIX_CHAIN_NEXT:
       {
-	if (chain->cl && c_cur < chain->cl - 1)
+	if (chain->cl && c_cur < (chain->cl - 1))
 	  c_cur++;
 	else
 	  mutt_error (_("You already have the last chain element selected."));

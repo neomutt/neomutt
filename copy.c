@@ -872,7 +872,7 @@ static void format_address_header (char **h, ADDRESS *a)
     l = rfc822_write_address (buf, sizeof (buf), a, 0);
     a->next = tmp;
 
-    if (count && linelen + l > 74)
+    if (count && (linelen + l) > 74)
     {
       strcpy (cbuf, "\n\t");  	/* __STRCPY_CHECKED__ */
       linelen = l + 8;
