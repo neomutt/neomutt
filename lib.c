@@ -1132,7 +1132,7 @@ int mutt_atoi (const char *str, int *dst)
  *   mutt_inbox_cmp("/foo/bar",      "/foo/baz") --> 0
  *   mutt_inbox_cmp("/foo/bar/",     "/foo/bar/inbox") --> 0
  *   mutt_inbox_cmp("/foo/bar/sent", "/foo/bar/inbox") --> 1
- *   mutt_inbox_cmp("=INBOX",        "=Drafts") --> 1
+ *   mutt_inbox_cmp("=INBOX",        "=Drafts") --> -1
  */
 int mutt_inbox_cmp (const char *a, const char *b)
 {
