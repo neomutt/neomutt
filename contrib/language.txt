@@ -1,7 +1,5 @@
 # Translation file for PGP 2.6.3(i)n.
 
-# $Id$
-
 # ------------------------------------------------------------------
 # Character set:  ISO-Latin/1 (ISO 8859/1)
 # Date revised:   7 October 1997

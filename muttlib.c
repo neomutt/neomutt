@@ -1,20 +1,19 @@
-/*
+/**
  * Copyright (C) 1996-2000,2007,2010,2013 Michael R. Elkins <me@mutt.org>
  * Copyright (C) 1999-2008 Thomas Roessler <roessler@does-not-exist.org>
  *
- *     This program is free software; you can redistribute it and/or modify
- *     it under the terms of the GNU General Public License as published by
- *     the Free Software Foundation; either version 2 of the License, or
- *     (at your option) any later version.
+ * This program is free software: you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License as published by the Free Software
+ * Foundation, either version 2 of the License, or (at your option) any later
+ * version.
  *
- *     This program is distributed in the hope that it will be useful,
- *     but WITHOUT ANY WARRANTY; without even the implied warranty of
- *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *     GNU General Public License for more details.
+ * This program is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
+ * details.
  *
- *     You should have received a copy of the GNU General Public License
- *     along with this program; if not, write to the Free Software
- *     Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ * You should have received a copy of the GNU General Public License along with
+ * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -71,7 +70,7 @@ BODY *mutt_new_body (void)
 
   p->disposition = DISPATTACH;
   p->use_disp = 1;
-  return (p);
+  return p;
 }
 
 
@@ -84,7 +83,7 @@ BODY *mutt_new_body (void)
 void mutt_adv_mktemp (char *s, size_t l)
 {
   char prefix[_POSIX_PATH_MAX];
-  char *suffix;
+  char *suffix = NULL;
   struct stat sb;
 
   if (s[0] == '\0')
@@ -109,13 +108,12 @@ void mutt_adv_mktemp (char *s, size_t l)
 }
 
 /* create a send-mode duplicate from a receive-mode body */
-
 int mutt_copy_body (FILE *fp, BODY **tgt, BODY *src)
 {
   char tmp[_POSIX_PATH_MAX];
-  BODY *b;
+  BODY *b = NULL;
 
-  PARAMETER *par, **ppar;
+  PARAMETER *par = NULL, **ppar = NULL;
 
   short use_disp;
 
@@ -182,7 +180,7 @@ int mutt_copy_body (FILE *fp, BODY **tgt, BODY *src)
 
 void mutt_free_body (BODY **p)
 {
-  BODY *a = *p, *b;
+  BODY *a = *p, *b = NULL;
 
   while (a)
   {
@@ -227,7 +225,7 @@ void mutt_free_body (BODY **p)
 void mutt_free_parameter (PARAMETER **p)
 {
   PARAMETER *t = *p;
-  PARAMETER *o;
+  PARAMETER *o = NULL;
 
   while (t)
   {
@@ -249,7 +247,7 @@ LIST *mutt_add_list (LIST *head, const char *data)
 
 LIST *mutt_add_list_n (LIST *head, const void *data, size_t len)
 {
-  LIST *tmp;
+  LIST *tmp = NULL;
 
   for (tmp = head; tmp && tmp->next; tmp = tmp->next)
     ;
@@ -276,7 +274,7 @@ LIST *mutt_find_list (LIST *l, const char *data)
   {
     if (data == p->data)
       return p;
-    if (data && p->data && mutt_strcmp (p->data, data) == 0)
+    if (data && p->data && (mutt_strcmp (p->data, data) == 0))
       return p;
     p = p->next;
   }
@@ -285,7 +283,7 @@ LIST *mutt_find_list (LIST *l, const char *data)
 
 void mutt_push_list(LIST **head, const char *data)
 {
-  LIST *tmp;
+  LIST *tmp = NULL;
   tmp = safe_malloc(sizeof(LIST));
   tmp->data = safe_strdup(data);
   tmp->next = *head;
@@ -312,7 +310,7 @@ const char *mutt_front_list(LIST *head)
 
 int mutt_remove_from_rx_list (RX_LIST **l, const char *str)
 {
-  RX_LIST *p, *last = NULL;
+  RX_LIST *p = NULL, *last = NULL;
   int rv = -1;
 
   if (mutt_strcmp ("*", str) == 0)
@@ -343,12 +341,12 @@ int mutt_remove_from_rx_list (RX_LIST **l, const char *str)
       }
     }
   }
-  return (rv);
+  return rv;
 }
 
 void mutt_free_list (LIST **list)
 {
-  LIST *p;
+  LIST *p = NULL;
 
   if (!list) return;
   while (*list)
@@ -362,7 +360,7 @@ void mutt_free_list (LIST **list)
 
 LIST *mutt_copy_list (LIST *p)
 {
-  LIST *t, *r=NULL, *l=NULL;
+  LIST *t = NULL, *r = NULL, *l = NULL;
 
   for (; p; p = p->next)
   {
@@ -377,7 +375,7 @@ LIST *mutt_copy_list (LIST *p)
     else
       l = r = t;
   }
-  return (l);
+  return l;
 }
 
 void mutt_free_header (HEADER **h)
@@ -404,7 +402,7 @@ int mutt_matches_list (const char *s, LIST *t)
 {
   for (; t; t = t->next)
   {
-    if (!ascii_strncasecmp (s, t->data, mutt_strlen (t->data)) || *t->data == '*')
+    if ((ascii_strncasecmp (s, t->data, mutt_strlen (t->data)) == 0) || *t->data == '*')
       return 1;
   }
   return 0;
@@ -426,7 +424,7 @@ char *_mutt_expand_path (char *s, size_t slen, int rx)
   char p[_POSIX_PATH_MAX] = "";
   char q[_POSIX_PATH_MAX] = "";
   char tmp[_POSIX_PATH_MAX];
-  char *t;
+  char *t = NULL;
 
   char *tail = "";
 
@@ -447,7 +445,7 @@ char *_mutt_expand_path (char *s, size_t slen, int rx)
 	}
 	else
 	{
-	  struct passwd *pw;
+	  struct passwd *pw = NULL;
 	  if ((t = strchr (s + 1, '/')))
 	    *t = 0;
 
@@ -503,8 +501,8 @@ char *_mutt_expand_path (char *s, size_t slen, int rx)
 
       case '@':
       {
-	HEADER *h;
-	ADDRESS *alias;
+	HEADER *h = NULL;
+	ADDRESS *alias = NULL;
 
 	if ((alias = mutt_lookup_alias (s + 1)))
 	{
@@ -592,7 +590,7 @@ char *_mutt_expand_path (char *s, size_t slen, int rx)
     imap_expand_path (s, slen);
 #endif
 
-  return (s);
+  return s;
 }
 
 /* Extract the real name from /etc/passwd's GECOS field.
@@ -602,13 +600,12 @@ char *_mutt_expand_path (char *s, size_t slen, int rx)
  * Replace "&" by a capitalized version of the user's login
  * name.
  */
-
 char *mutt_gecos_name (char *dest, size_t destlen, struct passwd *pw)
 {
   regmatch_t pat_match[1];
   size_t pwnl;
   int idx;
-  char *p;
+  char *p = NULL;
 
   if (!pw || !pw->pw_gecos)
     return NULL;
@@ -647,14 +644,14 @@ char *mutt_get_parameter (const char *s, PARAMETER *p)
 {
   for (; p; p = p->next)
     if (ascii_strcasecmp (s, p->attribute) == 0)
-      return (p->value);
+      return p->value;
 
   return NULL;
 }
 
 void mutt_set_parameter (const char *attribute, const char *value, PARAMETER **p)
 {
-  PARAMETER *q;
+  PARAMETER *q = NULL;
 
   if (!value)
   {
@@ -680,7 +677,7 @@ void mutt_set_parameter (const char *attribute, const char *value, PARAMETER **p
 
 void mutt_delete_parameter (const char *attribute, PARAMETER **p)
 {
-  PARAMETER *q;
+  PARAMETER *q = NULL;
 
   for (q = *p; q; p = &q->next, q = q->next)
   {
@@ -700,7 +697,7 @@ int mutt_needs_mailcap (BODY *m)
   switch (m->type)
   {
     case TYPETEXT:
-      if (!ascii_strcasecmp ("plain", m->subtype))
+      if (ascii_strcasecmp ("plain", m->subtype) == 0)
         return 0;
       break;
     case TYPEAPPLICATION:
@@ -731,13 +728,13 @@ int mutt_is_text_part (BODY *b)
 
   if (t == TYPEMESSAGE)
   {
-    if (!ascii_strcasecmp ("delivery-status", s))
+    if (ascii_strcasecmp ("delivery-status", s) == 0)
       return 1;
   }
 
   if ((WithCrypto & APPLICATION_PGP) && t == TYPEAPPLICATION)
   {
-    if (!ascii_strcasecmp ("pgp-keys", s))
+    if (ascii_strcasecmp ("pgp-keys", s) == 0)
       return 1;
   }
 
@@ -911,7 +908,7 @@ void _mutt_mktemp (char *s, size_t slen, const char *prefix, const char *suffix,
 
 void mutt_free_alias (ALIAS **p)
 {
-  ALIAS *t;
+  ALIAS *t = NULL;
 
   while (*p)
   {
@@ -951,7 +948,7 @@ void mutt_pretty_mailbox (char *s, size_t buflen)
   if (scheme != U_UNKNOWN)
   {
     p = strchr(s, ':')+1;
-    if (!strncmp (p, "//", 2))
+    if (strncmp (p, "//", 2) == 0)
       q = strchr (p+2, '/');
     if (!q)
       q = strchr (p, '\0');
@@ -986,13 +983,13 @@ void mutt_pretty_mailbox (char *s, size_t buflen)
 	   realpath (p, tmp))
     strfcpy (p, tmp, buflen - (p - s));
 
-  if (mutt_strncmp (s, Maildir, (len = mutt_strlen (Maildir))) == 0 &&
+  if ((mutt_strncmp (s, Maildir, (len = mutt_strlen (Maildir))) == 0) &&
       s[len] == '/')
   {
     *s++ = '=';
     memmove (s, s + len, mutt_strlen (s + len) + 1);
   }
-  else if (mutt_strncmp (s, Homedir, (len = mutt_strlen (Homedir))) == 0 &&
+  else if ((mutt_strncmp (s, Homedir, (len = mutt_strlen (Homedir))) == 0) &&
 	   s[len] == '/')
   {
     *s++ = '~';
@@ -1030,8 +1027,8 @@ void mutt_expand_file_fmt (char *dest, size_t destlen, const char *fmt, const ch
 
 void mutt_expand_fmt (char *dest, size_t destlen, const char *fmt, const char *src)
 {
-  const char *p;
-  char *d;
+  const char *p = NULL;
+  char *d = NULL;
   size_t slen;
   int found = 0;
 
@@ -1124,7 +1121,7 @@ int mutt_check_overwrite (const char *attname, const char *path,
     strfcpy (tmp, mutt_basename (NONULL (attname)), sizeof (tmp));
     if (mutt_get_field (_("File under directory: "), tmp, sizeof (tmp),
                                     MUTT_FILE | MUTT_CLEAR) != 0 || !tmp[0])
-      return (-1);
+      return -1;
     mutt_concat_path (fname, path, tmp, flen);
   }
 
@@ -1156,7 +1153,7 @@ void mutt_save_path (char *d, size_t dsize, ADDRESS *a)
     strfcpy (d, a->mailbox, dsize);
     if (!option (OPTSAVEADDRESS))
     {
-      char *p;
+      char *p = NULL;
 
       if ((p = strpbrk (d, "%@")))
 	*p = 0;
@@ -1169,7 +1166,7 @@ void mutt_save_path (char *d, size_t dsize, ADDRESS *a)
 
 void mutt_safe_path (char *s, size_t l, ADDRESS *a)
 {
-  char *p;
+  char *p = NULL;
 
   mutt_save_path (s, l, a);
   for (p = s; *p; p++)
@@ -1181,15 +1178,15 @@ void mutt_safe_path (char *s, size_t l, ADDRESS *a)
  * should only be used for visual modifications, such as disp_subj. */
 char *mutt_apply_replace (char *dbuf, size_t dlen, char *sbuf, REPLACE_LIST *rlist)
 {
-  REPLACE_LIST *l;
+  REPLACE_LIST *l = NULL;
   static regmatch_t *pmatch = NULL;
   static int nmatch = 0;
   static char twinbuf[2][LONG_STRING];
   int switcher = 0;
-  char *p;
+  char *p = NULL;
   int i, n;
   size_t cpysize, tlen;
-  char *src, *dst;
+  char *src = NULL, *dst = NULL;
 
   if (dbuf && dlen)
     dbuf[0] = '\0';
@@ -1283,9 +1280,9 @@ void mutt_FormatString (char *dest,		/* output buffer */
   char ifstring[SHORT_STRING], elsestring[SHORT_STRING];
   size_t wlen, count, len, wid;
   pid_t pid;
-  FILE *filter;
+  FILE *filter = NULL;
   int n;
-  char *recycler;
+  char *recycler = NULL;
 
   prefix[0] = '\0';
   destlen--; /* save room for the terminal \0 */
@@ -1310,7 +1307,7 @@ void mutt_FormatString (char *dest,		/* output buffer */
     /* n-off is the number of backslashes. */
     if (off > 0 && ((n-off) % 2) == 0)
     {
-      BUFFER *srcbuf, *word, *command;
+      BUFFER *srcbuf = NULL, *word = NULL, *command = NULL;
       char    srccopy[LONG_STRING];
 #ifdef DEBUG
       int     i = 0;
@@ -1329,7 +1326,7 @@ void mutt_FormatString (char *dest,		/* output buffer */
 
       /* Iterate expansions across successive arguments */
       do {
-        char *p;
+        char *p = NULL;
 
         /* Extract the command name and copy to command line */
         mutt_debug (3, "fmtpipe +++: %s\n", srcbuf->dptr);
@@ -1742,7 +1739,7 @@ void mutt_FormatString (char *dest,		/* output buffer */
    then we assume it is a command to run instead of a normal file. */
 FILE *mutt_open_read (const char *path, pid_t *thepid)
 {
-  FILE *f;
+  FILE *f = NULL;
   struct stat s;
 
   int len = mutt_strlen (path);
@@ -1761,16 +1758,16 @@ FILE *mutt_open_read (const char *path, pid_t *thepid)
   else
   {
     if (stat (path, &s) < 0)
-      return (NULL);
+      return NULL;
     if (S_ISDIR (s.st_mode))
     {
       errno = EINVAL;
-      return (NULL);
+      return NULL;
     }
     f = fopen (path, "r");
     *thepid = -1;
   }
-  return (f);
+  return f;
 }
 
 /* returns 0 if OK to proceed, -1 to abort, 1 to retry */
@@ -1843,7 +1840,7 @@ int mutt_save_confirm (const char *s, struct stat *st)
   }
 
   mutt_window_clearline (MuttMessageWindow, 0);
-  return (ret);
+  return ret;
 }
 
 void state_prefix_putc (char c, STATE *s)
@@ -1875,7 +1872,7 @@ int state_printf (STATE *s, const char *fmt, ...)
 
 void state_mark_attach (STATE *s)
 {
-  if ((s->flags & MUTT_DISPLAY) && !mutt_strcmp (Pager, "builtin"))
+  if ((s->flags & MUTT_DISPLAY) && (mutt_strcmp (Pager, "builtin") == 0))
     state_puts (AttachmentMarker, s);
 }
 
@@ -1924,7 +1921,6 @@ void mutt_sleep (short s)
 }
 
 /* Decrease a file's modification time by 1 second */
-
 time_t mutt_decrease_mtime (const char *f, struct stat *st)
 {
   struct utimbuf utim;
@@ -2002,7 +1998,7 @@ void mutt_free_regexp (REGEXP **pp)
 
 void mutt_free_rx_list (RX_LIST **list)
 {
-  RX_LIST *p;
+  RX_LIST *p = NULL;
 
   if (!list) return;
   while (*list)
@@ -2016,7 +2012,7 @@ void mutt_free_rx_list (RX_LIST **list)
 
 void mutt_free_replace_list (REPLACE_LIST **list)
 {
-  REPLACE_LIST *p;
+  REPLACE_LIST *p = NULL;
 
   if (!list) return;
   while (*list)
@@ -2057,7 +2053,7 @@ int mutt_match_spam_list (const char *s, REPLACE_LIST *l, char *text, int textsi
   static regmatch_t *pmatch = NULL;
   static int nmatch = 0;
   int tlen = 0;
-  char *p;
+  char *p = NULL;
 
   if (!s) return 0;
 
@@ -2082,7 +2078,7 @@ int mutt_match_spam_list (const char *s, REPLACE_LIST *l, char *text, int textsi
 	/* backreference to pattern match substring, eg. %1, %2, etc) */
 	if (*p == '%')
 	{
-	  char *e; /* used as pointer to end of integer backreference in strtol() call */
+	  char *e = NULL; /* used as pointer to end of integer backreference in strtol() call */
 	  int n;
 
 	  ++p; /* skip over % char */

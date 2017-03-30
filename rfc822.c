@@ -1,20 +1,19 @@
-/*
+/**
  * Copyright (C) 1996-2000 Michael R. Elkins <me@mutt.org>
  * Copyright (C) 2011-2013 Michael R. Elkins <me@mutt.org>
  *
- *     This program is free software; you can redistribute it and/or modify
- *     it under the terms of the GNU General Public License as published by
- *     the Free Software Foundation; either version 2 of the License, or
- *     (at your option) any later version.
+ * This program is free software: you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License as published by the Free Software
+ * Foundation, either version 2 of the License, or (at your option) any later
+ * version.
  *
- *     This program is distributed in the hope that it will be useful,
- *     but WITHOUT ANY WARRANTY; without even the implied warranty of
- *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *     GNU General Public License for more details.
+ * This program is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
+ * details.
  *
- *     You should have received a copy of the GNU General Public License
- *     along with this program; if not, write to the Free Software
- *     Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ * You should have received a copy of the GNU General Public License along with
+ * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -89,7 +88,7 @@ static void free_address (ADDRESS *a)
 
 int rfc822_remove_from_adrlist (ADDRESS **a, const char *mailbox)
 {
-  ADDRESS *p, *last = NULL, *t;
+  ADDRESS *p = NULL, *last = NULL, *t = NULL;
   int rv = -1;
 
   p = *a;
@@ -114,12 +113,12 @@ int rfc822_remove_from_adrlist (ADDRESS **a, const char *mailbox)
     }
   }
 
-  return (rv);
+  return rv;
 }
 
 void rfc822_free_address (ADDRESS **p)
 {
-  ADDRESS *t;
+  ADDRESS *t = NULL;
 
   while (*p)
   {
@@ -222,7 +221,7 @@ parse_mailboxdomain (const char *s, const char *nonspecial,
 		     char *mailbox, size_t *mailboxlen, size_t mailboxmax,
 		     char *comment, size_t *commentlen, size_t commentmax)
 {
-  const char *ps;
+  const char *ps = NULL;
 
   while (*s)
   {
@@ -372,12 +371,12 @@ ADDRESS *rfc822_parse_adrlist (ADDRESS *top, const char *s)
 {
   int ws_pending, nl;
 #ifdef EXACT_ADDRESS
-  const char *begin;
+  const char *begin = NULL;
 #endif
-  const char *ps;
+  const char *ps = NULL;
   char comment[LONG_STRING], phrase[LONG_STRING];
   size_t phraselen = 0, commentlen = 0;
-  ADDRESS *cur, *last = NULL;
+  ADDRESS *cur = NULL, *last = NULL;
 
   RFC822Error = 0;
 
@@ -556,7 +555,7 @@ ADDRESS *rfc822_parse_adrlist (ADDRESS *top, const char *s)
 
 void rfc822_qualify (ADDRESS *addr, const char *host)
 {
-  char *p;
+  char *p = NULL;
 
   for (; addr; addr = addr->next)
     if (!addr->group && addr->mailbox && strchr (addr->mailbox, '@') == NULL)
@@ -600,7 +599,7 @@ void rfc822_write_address_single (char *buf, size_t buflen, ADDRESS *addr,
 {
   size_t len;
   char *pbuf = buf;
-  char *pc;
+  char *pc = NULL;
 
   if (!addr)
     return;
@@ -681,12 +680,12 @@ void rfc822_write_address_single (char *buf, size_t buflen, ADDRESS *addr,
   {
     if (!buflen)
       goto done;
-    if (ascii_strcmp (addr->mailbox, "@") && !display)
+    if ((ascii_strcmp (addr->mailbox, "@") != 0) && !display)
     {
       strfcpy (pbuf, addr->mailbox, buflen);
       len = mutt_strlen (pbuf);
     }
-    else if (ascii_strcmp (addr->mailbox, "@") && display)
+    else if ((ascii_strcmp (addr->mailbox, "@") != 0) && display)
     {
       strfcpy (pbuf, mutt_addr_for_display (addr), buflen);
       len = mutt_strlen (pbuf);
@@ -898,7 +897,7 @@ int safe_free (void **p)	/* __SAFE_FREE_CHECKED__ */
 
 int main (int argc, char **argv)
 {
-  ADDRESS *list;
+  ADDRESS *list = NULL;
   char buf[256];
   char *str = "a b c ";
 

@@ -1,19 +1,18 @@
-/*
+/**
  * Copyright (C) 2000-2003 Vsevolod Volkov <vvv@mutt.org.ua>
  *
- *     This program is free software; you can redistribute it and/or modify
- *     it under the terms of the GNU General Public License as published by
- *     the Free Software Foundation; either version 2 of the License, or
- *     (at your option) any later version.
+ * This program is free software: you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License as published by the Free Software
+ * Foundation, either version 2 of the License, or (at your option) any later
+ * version.
  *
- *     This program is distributed in the hope that it will be useful,
- *     but WITHOUT ANY WARRANTY; without even the implied warranty of
- *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *     GNU General Public License for more details.
+ * This program is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
+ * details.
  *
- *     You should have received a copy of the GNU General Public License
- *     along with this program; if not, write to the Free Software
- *     Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ * You should have received a copy of the GNU General Public License along with
+ * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -37,8 +36,8 @@
 int pop_parse_path (const char* path, ACCOUNT* acct)
 {
   ciss_url_t url;
-  char *c;
-  struct servent *service;
+  char *c = NULL;
+  struct servent *service = NULL;
 
   /* Defaults */
   acct->flags = 0;
@@ -75,12 +74,12 @@ int pop_parse_path (const char* path, ACCOUNT* acct)
 /* Copy error message to err_msg buffer */
 static void pop_error (POP_DATA *pop_data, char *msg)
 {
-  char *t, *c, *c2;
+  char *t = NULL, *c = NULL, *c2 = NULL;
 
   t = strchr (pop_data->err_msg, '\0');
   c = msg;
 
-  if (!mutt_strncmp (msg, "-ERR ", 5))
+  if (mutt_strncmp (msg, "-ERR ", 5) == 0)
   {
     c2 = skip_email_wsp(msg + 5);
 
@@ -96,25 +95,25 @@ static void pop_error (POP_DATA *pop_data, char *msg)
 static int fetch_capa (char *line, void *data)
 {
   POP_DATA *pop_data = (POP_DATA *)data;
-  char *c;
+  char *c = NULL;
 
-  if (!ascii_strncasecmp (line, "SASL", 4))
+  if (ascii_strncasecmp (line, "SASL", 4) == 0)
   {
     FREE (&pop_data->auth_list);
     c = skip_email_wsp(line + 4);
     pop_data->auth_list = safe_strdup (c);
   }
 
-  else if (!ascii_strncasecmp (line, "STLS", 4))
+  else if (ascii_strncasecmp (line, "STLS", 4) == 0)
     pop_data->cmd_stls = 1;
 
-  else if (!ascii_strncasecmp (line, "USER", 4))
+  else if (ascii_strncasecmp (line, "USER", 4) == 0)
     pop_data->cmd_user = 1;
 
-  else if (!ascii_strncasecmp (line, "UIDL", 4))
+  else if (ascii_strncasecmp (line, "UIDL", 4) == 0)
     pop_data->cmd_uidl = 1;
 
-  else if (!ascii_strncasecmp (line, "TOP", 3))
+  else if (ascii_strncasecmp (line, "TOP", 3) == 0)
     pop_data->cmd_top = 1;
 
   return 0;
@@ -239,7 +238,7 @@ int pop_connect (POP_DATA *pop_data)
 
   pop_data->status = POP_CONNECTED;
 
-  if (mutt_strncmp (buf, "+OK", 3))
+  if (mutt_strncmp (buf, "+OK", 3) != 0)
   {
     *pop_data->err_msg = '\0';
     pop_error (pop_data, buf);
@@ -417,7 +416,7 @@ void pop_logout (CONTEXT *ctx)
 int pop_query_d (POP_DATA *pop_data, char *buf, size_t buflen, char *msg)
 {
   int dbg = MUTT_SOCK_LOG_CMD;
-  char *c;
+  char *c = NULL;
 
   if (pop_data->status != POP_CONNECTED)
     return -1;
@@ -443,7 +442,7 @@ int pop_query_d (POP_DATA *pop_data, char *buf, size_t buflen, char *msg)
     pop_data->status = POP_DISCONNECTED;
     return -1;
   }
-  if (!mutt_strncmp (buf, "+OK", 3))
+  if (mutt_strncmp (buf, "+OK", 3) == 0)
     return 0;
 
   pop_error (pop_data, buf);
@@ -463,8 +462,8 @@ int pop_fetch_data (POP_DATA *pop_data, char *query, progress_t *progressbar,
 		    int (*funct) (char *, void *), void *data)
 {
   char buf[LONG_STRING];
-  char *inbuf;
-  char *p;
+  char *inbuf = NULL;
+  char *p = NULL;
   int ret, chunk = 0;
   long pos = 0;
   size_t lenbuf = 0;
@@ -524,7 +523,7 @@ static int check_uidl (char *line, void *data)
   int i;
   unsigned int index;
   CONTEXT *ctx = (CONTEXT *)data;
-  char *endp;
+  char *endp = NULL;
 
   errno = 0;
   index = strtoul(line, &endp, 10);
@@ -536,7 +535,7 @@ static int check_uidl (char *line, void *data)
 
   for (i = 0; i < ctx->msgcount; i++)
   {
-    if (!mutt_strcmp (ctx->hdrs[i]->data, line))
+    if (mutt_strcmp (ctx->hdrs[i]->data, line) == 0)
     {
       ctx->hdrs[i]->refno = index;
       break;

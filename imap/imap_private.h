@@ -1,24 +1,23 @@
-/*
+/**
  * Copyright (C) 1996-1999 Brandon Long <blong@fiction.net>
  * Copyright (C) 1999-2009 Brendan Cully <brendan@kublai.com>
  *
- *     This program is free software; you can redistribute it and/or modify
- *     it under the terms of the GNU General Public License as published by
- *     the Free Software Foundation; either version 2 of the License, or
- *     (at your option) any later version.
+ * This program is free software: you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License as published by the Free Software
+ * Foundation, either version 2 of the License, or (at your option) any later
+ * version.
  *
- *     This program is distributed in the hope that it will be useful,
- *     but WITHOUT ANY WARRANTY; without even the implied warranty of
- *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *     GNU General Public License for more details.
+ * This program is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
+ * details.
  *
- *     You should have received a copy of the GNU General Public License
- *     along with this program; if not, write to the Free Software
- *     Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ * You should have received a copy of the GNU General Public License along with
+ * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _IMAP_PRIVATE_H
-#define _IMAP_PRIVATE_H 1
+#ifndef _MUTT_IMAP_PRIVATE_H
+#define _MUTT_IMAP_PRIVATE_H 1
 
 #include "account.h"
 #include "imap.h"
@@ -310,4 +309,4 @@ void imap_utf_decode (IMAP_DATA *idata, char **s);
 #define imap_hcache_keylen mutt_strlen
 #endif /* USE_HCACHE */
 
-#endif
+#endif /* _MUTT_IMAP_PRIVATE_H */

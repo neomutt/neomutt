@@ -1,19 +1,18 @@
-/*
+/**
  * Copyright (C) 1996-2000,2002,2010-2011 Michael R. Elkins <me@mutt.org>
  *
- *     This program is free software; you can redistribute it and/or modify
- *     it under the terms of the GNU General Public License as published by
- *     the Free Software Foundation; either version 2 of the License, or
- *     (at your option) any later version.
+ * This program is free software: you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License as published by the Free Software
+ * Foundation, either version 2 of the License, or (at your option) any later
+ * version.
  *
- *     This program is distributed in the hope that it will be useful,
- *     but WITHOUT ANY WARRANTY; without even the implied warranty of
- *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *     GNU General Public License for more details.
+ * This program is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
+ * details.
  *
- *     You should have received a copy of the GNU General Public License
- *     along with this program; if not, write to the Free Software
- *     Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ * You should have received a copy of the GNU General Public License along with
+ * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -128,18 +127,18 @@ struct keymap_t *Keymaps[MENU_MAX];
 
 static struct keymap_t *alloc_keys (int len, keycode_t *keys)
 {
-  struct keymap_t *p;
+  struct keymap_t *p = NULL;
 
   p = safe_calloc (1, sizeof (struct keymap_t));
   p->len = len;
   p->keys = safe_malloc (len * sizeof (keycode_t));
   memcpy (p->keys, keys, len * sizeof (keycode_t));
-  return (p);
+  return p;
 }
 
 static int parse_fkey(char *s)
 {
-  char *t;
+  char *t = NULL;
   int n = 0;
 
   if(s[0] != '<' || tolower(s[1]) != 'f')
@@ -163,7 +162,7 @@ static int parse_fkey(char *s)
  */
 static int parse_keycode (const char *s)
 {
-  char *endChar;
+  char *endChar = NULL;
   long int result = strtol(s+1, &endChar, 8);
   /* allow trailing whitespace, eg.  < 1001 > */
   while (ISSPACE(*endChar))
@@ -181,7 +180,7 @@ static int parsekeys (const char *str, keycode_t *d, int max)
   int n, len = max;
   char buff[SHORT_STRING];
   char c;
-  char *s, *t;
+  char *s = NULL, *t = NULL;
 
   strfcpy(buff, str, sizeof(buff));
   s = buff;
@@ -229,7 +228,7 @@ static int parsekeys (const char *str, keycode_t *d, int max)
  */
 void km_bind (char *s, int menu, int op, char *macro, char *descr)
 {
-  struct keymap_t *map, *tmp, *last = NULL, *next;
+  struct keymap_t *map = NULL, *tmp = NULL, *last = NULL, *next = NULL;
   keycode_t buf[MAX_SEQ];
   int len, pos = 0, lastpos = 0;
 
@@ -300,7 +299,7 @@ static int get_op (const struct binding_t *bindings, const char *start, size_t l
 
   for (i = 0; bindings[i].name; i++)
   {
-    if (!ascii_strncasecmp (start, bindings[i].name, len) &&
+    if ((ascii_strncasecmp (start, bindings[i].name, len) == 0) &&
 	mutt_strlen (bindings[i].name) == len)
       return bindings[i].op;
   }
@@ -327,7 +326,7 @@ static char *get_func (const struct binding_t *bindings, int op)
  */
 static void generic_tokenize_push_string (char *s, void (*generic_push) (int, int))
 {
-  char *pp, *p = s + mutt_strlen (s) - 1;
+  char *pp = NULL, *p = s + mutt_strlen (s) - 1;
   size_t l;
   int i, op = OP_NULL;
 
@@ -351,7 +350,7 @@ static void generic_tokenize_push_string (char *s, void (*generic_push) (int, in
 	l = p - pp + 1;
 	for (i = 0; KeyNames[i].name; i++)
 	{
-	  if (!ascii_strncasecmp (pp, KeyNames[i].name, l))
+	  if (ascii_strncasecmp (pp, KeyNames[i].name, l) == 0)
 	    break;
 	}
 	if (KeyNames[i].name)
@@ -472,7 +471,7 @@ int km_dokey (int menu)
     if (tmp.op)
     {
       char *func = NULL;
-      const struct binding_t *bindings;
+      const struct binding_t *bindings = NULL;
 
       /* is this a valid op for this menu? */
       if ((bindings = km_get_table (menu)) &&
@@ -563,7 +562,7 @@ static void create_bindings (const struct binding_t *map, int menu)
 static const char *km_keyname (int c)
 {
   static char buf[10];
-  const char *p;
+  const char *p = NULL;
 
   if ((p = mutt_getnamebyvalue (c, KeyNames)))
     return p;
@@ -588,7 +587,7 @@ static const char *km_keyname (int c)
     snprintf (buf, sizeof (buf), "%c", (unsigned char) c);
   else
     snprintf (buf, sizeof (buf), "\\x%hx", (unsigned short) c);
-  return (buf);
+  return buf;
 }
 
 int km_expand_key (char *s, size_t len, struct keymap_t *map)
@@ -597,7 +596,7 @@ int km_expand_key (char *s, size_t len, struct keymap_t *map)
   int p = 0;
 
   if (!map)
-    return (0);
+    return 0;
 
   while (true)
   {
@@ -605,7 +604,7 @@ int km_expand_key (char *s, size_t len, struct keymap_t *map)
     len -= (l = mutt_strlen (s));
 
     if (++p >= map->len || !len)
-      return (1);
+      return 1;
 
     s += l;
   }
@@ -620,7 +619,7 @@ struct keymap_t *km_find_func (int menu, int func)
   for (; map; map = map->next)
     if (map->op == func)
       break;
-  return (map);
+  return map;
 }
 
 #ifdef NCURSES_VERSION
@@ -837,7 +836,7 @@ void km_init (void)
 void km_error_key (int menu)
 {
   char buf[SHORT_STRING];
-  struct keymap_t *key;
+  struct keymap_t *key = NULL;
 
   if(!(key = km_find_func(menu, OP_HELP)))
     key = km_find_func(MENU_GENERIC, OP_HELP);
@@ -872,7 +871,7 @@ int mutt_parse_push (BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err)
   }
   else
     tokenize_push_macro_string (buf->data);
-  return (r);
+  return r;
 }
 
 /* expects to see: <menu-string>,<menu-string>,... <key-string> */
@@ -880,7 +879,7 @@ char *parse_keymap (int *menu, BUFFER *s, int maxmenus, int *nummenus, BUFFER *e
 {
   BUFFER buf;
   int i=0;
-  char *p, *q;
+  char *p = NULL, *q = NULL;
 
   mutt_buffer_init (&buf);
 
@@ -915,7 +914,7 @@ char *parse_keymap (int *menu, BUFFER *s, int maxmenus, int *nummenus, BUFFER *e
       strfcpy (err->data, _("null key sequence"), err->dsize);
     }
     else if (MoreArgs (s))
-      return (buf.data);
+      return buf.data;
   }
   else
   {
@@ -923,7 +922,7 @@ char *parse_keymap (int *menu, BUFFER *s, int maxmenus, int *nummenus, BUFFER *e
   }
 error:
   FREE (&buf.data);
-  return (NULL);
+  return NULL;
 }
 
 static int
@@ -935,9 +934,9 @@ try_bind (char *key, int menu, char *func, const struct binding_t *bindings)
     if (mutt_strcmp (func, bindings[i].name) == 0)
     {
       km_bindkey (key, menu, bindings[i].op);
-      return (0);
+      return 0;
     }
-  return (-1);
+  return -1;
 }
 
 const struct binding_t *km_get_table (int menu)
@@ -988,12 +987,12 @@ const struct binding_t *km_get_table (int menu)
 int mutt_parse_bind (BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err)
 {
   const struct binding_t *bindings = NULL;
-  char *key;
+  char *key = NULL;
   int menu[sizeof(Menus)/sizeof(struct mapping_t)-1], r = 0, nummenus, i;
 
   if ((key = parse_keymap (menu, s, sizeof (menu)/sizeof (menu[0]),
 			   &nummenus, err)) == NULL)
-    return (-1);
+    return -1;
 
   /* function to execute */
   mutt_extract_token (buf, s, 0);
@@ -1029,7 +1028,7 @@ int mutt_parse_bind (BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err)
     }
   }
   FREE (&key);
-  return (r);
+  return r;
 }
 
 /* macro <menu> <key> <macro> <description> */
@@ -1037,10 +1036,10 @@ int mutt_parse_macro (BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err)
 {
   int menu[sizeof(Menus)/sizeof(struct mapping_t)-1], r = -1, nummenus, i;
   char *seq = NULL;
-  char *key;
+  char *key = NULL;
 
   if ((key = parse_keymap (menu, s, sizeof (menu) / sizeof (menu[0]), &nummenus, err)) == NULL)
-    return (-1);
+    return -1;
 
   mutt_extract_token (buf, s, MUTT_TOKEN_CONDENSE);
   /* make sure the macro sequence is not an empty string */
@@ -1080,7 +1079,7 @@ int mutt_parse_macro (BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err)
     }
   }
   FREE (&key);
-  return (r);
+  return r;
 }
 
 /* exec function-name */
@@ -1089,12 +1088,12 @@ int mutt_parse_exec (BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err)
   int ops[128];
   int nops = 0;
   const struct binding_t *bindings = NULL;
-  char *function;
+  char *function = NULL;
 
   if (!MoreArgs (s))
   {
     strfcpy (err->data, _("exec: no arguments"), err->dsize);
-    return (-1);
+    return -1;
   }
 
   do
@@ -1114,7 +1113,7 @@ int mutt_parse_exec (BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err)
     {
       mutt_flushinp ();
       mutt_error (_("%s: no such function"), function);
-      return (-1);
+      return -1;
     }
     nops++;
   }

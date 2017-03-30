@@ -1,19 +1,18 @@
-/*
+/**
  * Copyright (C) 1999-2001 Tommi Komulainen <Tommi.Komulainen@iki.fi>
  *
- *     This program is free software; you can redistribute it and/or modify
- *     it under the terms of the GNU General Public License as published by
- *     the Free Software Foundation; either version 2 of the License, or
- *     (at your option) any later version.
+ * This program is free software: you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License as published by the Free Software
+ * Foundation, either version 2 of the License, or (at your option) any later
+ * version.
  *
- *     This program is distributed in the hope that it will be useful,
- *     but WITHOUT ANY WARRANTY; without even the implied warranty of
- *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *     GNU General Public License for more details.
+ * This program is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
+ * details.
  *
- *     You should have received a copy of the GNU General Public License
- *     along with this program; if not, write to the Free Software
- *     Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ * You should have received a copy of the GNU General Public License along with
+ * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -83,9 +82,9 @@ sslsockdata;
  */
 static int ssl_load_certificates (SSL_CTX *ctx)
 {
-  FILE *fp;
+  FILE *fp = NULL;
   X509 *cert = NULL;
-  X509_STORE *store;
+  X509_STORE *store = NULL;
   int rv = 1;
 #ifdef DEBUG
   char buf[STRING];
@@ -130,7 +129,7 @@ static int ssl_set_verify_partial (SSL_CTX *ctx)
 {
   int rv = 0;
 #ifdef HAVE_SSL_PARTIAL_CHAIN
-  X509_VERIFY_PARAM *param;
+  X509_VERIFY_PARAM *param = NULL;
 
   if (option (OPTSSLVERIFYPARTIAL))
   {
@@ -192,7 +191,7 @@ static int add_entropy (const char *file)
 
 static void ssl_err (sslsockdata *data, int err)
 {
-  const char* errmsg;
+  const char* errmsg = NULL;
   unsigned long sslerr;
 
   switch (SSL_get_error (data->ssl, err))
@@ -250,10 +249,10 @@ static void ssl_err (sslsockdata *data, int err)
 static void ssl_dprint_err_stack (void)
 {
 #ifdef DEBUG
-  BIO *bio;
+  BIO *bio = NULL;
   char *buf = NULL;
   long buflen;
-  char *output;
+  char *output = NULL;
 
   if (! (bio = BIO_new (BIO_s_mem ())))
     return;
@@ -346,7 +345,7 @@ static void x509_fingerprint (char *s, int l, X509 * cert, const EVP_MD *(*hashf
 static char *asn1time_to_string (ASN1_UTCTIME *tm)
 {
   static char buf[64];
-  BIO *bio;
+  BIO *bio = NULL;
 
   strfcpy (buf, _("[invalid date]"), sizeof (buf));
 
@@ -415,7 +414,7 @@ static int check_certificate_expiration (X509 *peercert, int silent)
 /* port to mutt from msmtp's tls.c */
 static int hostname_match (const char *hostname, const char *certname)
 {
-  const char *cmp1, *cmp2;
+  const char *cmp1 = NULL, *cmp2 = NULL;
 
   if (strncmp(certname, "*.", 2) == 0)
   {
@@ -567,7 +566,7 @@ static int check_certificate_cache (X509 *peercert)
 {
   unsigned char peermd[EVP_MAX_MD_SIZE];
   unsigned int peermdlen;
-  X509 *cert;
+  X509 *cert = NULL;
   int i;
 
   if (!X509_digest (peercert, EVP_sha256(), peermd, &peermdlen)
@@ -594,7 +593,7 @@ static int check_certificate_file (X509 *peercert)
   unsigned int peermdlen;
   X509 *cert = NULL;
   int pass = 0;
-  FILE *fp;
+  FILE *fp = NULL;
 
   if (!SslCertFile)
     return 0;
@@ -633,13 +632,13 @@ static int check_host (X509 *x509cert, const char *hostname, char *err, size_t e
   /* hostname in ASCII format: */
   char *hostname_ascii = NULL;
   /* needed to get the common name: */
-  X509_NAME *x509_subject;
+  X509_NAME *x509_subject = NULL;
   char *buf = NULL;
   int bufsize;
   /* needed to get the DNS subjectAltNames: */
   STACK_OF(GENERAL_NAME) *subj_alt_names;
   int subj_alt_names_count;
-  GENERAL_NAME *subj_alt_name;
+  GENERAL_NAME *subj_alt_name = NULL;
   /* did we find a name matching hostname? */
   int match_found;
 
@@ -755,15 +754,15 @@ static int interactive_check_cert (X509 *cert, int idx, int len, SSL *ssl, int a
       NID_localityName,           /* L */
       NID_stateOrProvinceName,    /* ST */
       NID_countryName             /* C */ };
-  X509_NAME *x509_subject;
-  X509_NAME *x509_issuer;
+  X509_NAME *x509_subject = NULL;
+  X509_NAME *x509_issuer = NULL;
   char helpstr[LONG_STRING];
   char buf[STRING];
   char title[STRING];
   MUTTMENU *menu = mutt_new_menu (MENU_GENERIC);
   int done, row, i;
   unsigned u;
-  FILE *fp;
+  FILE *fp = NULL;
   int allow_skip = 0;
 
   menu->max = mutt_array_size (part) * 2 + 10;
@@ -910,10 +909,10 @@ static int interactive_check_cert (X509 *cert, int idx, int len, SSL *ssl, int a
 static int ssl_verify_callback (int preverify_ok, X509_STORE_CTX *ctx)
 {
   char buf[STRING];
-  const char *host;
+  const char *host = NULL;
   int len, pos;
-  X509 *cert;
-  SSL *ssl;
+  X509 *cert = NULL;
+  SSL *ssl = NULL;
   int skip_mode;
 #ifdef HAVE_SSL_PARTIAL_CHAIN
   static int last_pos = 0;
@@ -1028,7 +1027,7 @@ static int ssl_verify_callback (int preverify_ok, X509_STORE_CTX *ctx)
 static int ssl_negotiate (CONNECTION *conn, sslsockdata* ssldata)
 {
   int err;
-  const char* errmsg;
+  const char* errmsg = NULL;
 
   if ((HostExDataIndex = SSL_get_ex_new_index (0, "host", NULL, NULL, NULL)) == -1)
   {
@@ -1093,7 +1092,7 @@ static int ssl_negotiate (CONNECTION *conn, sslsockdata* ssldata)
 
 static int ssl_socket_open (CONNECTION * conn)
 {
-  sslsockdata *data;
+  sslsockdata *data = NULL;
   int maxbits;
 
   if (raw_socket_open (conn) < 0)
@@ -1188,7 +1187,7 @@ static int ssl_socket_open (CONNECTION * conn)
  *   TODO: Merge this code better with ssl_socket_open. */
 int mutt_ssl_starttls (CONNECTION* conn)
 {
-  sslsockdata* ssldata;
+  sslsockdata* ssldata = NULL;
   int maxbits;
   long ssl_options = 0;
 

@@ -6,22 +6,26 @@ AUTOMAKE_OPTIONS = 1.6 foreign
 EXTRA_PROGRAMS = mutt_dotlock pgpring pgpewrap mutt_md5
 
 # Test the .tar file by building everything
-AM_DISTCHECK_CONFIGURE_FLAGS = --enable-pop --enable-imap --enable-smtp --with-bdb --with-gdbm --with-kyotocabinet --with-lmdb --with-qdbm --with-tokyocabinet --enable-gpgme --enable-sidebar --enable-nntp --enable-notmuch --enable-compressed --enable-debug --with-gnutls --with-sasl --with-gss
+AM_DISTCHECK_CONFIGURE_FLAGS = --enable-compressed --enable-debug \
+	--enable-gpgme --enable-imap --enable-nntp --enable-notmuch \
+	--enable-pop --enable-sidebar --enable-smtp --with-bdb --with-gdbm \
+	--with-gnutls --with-gss --with-kyotocabinet --with-lmdb --with-qdbm \
+	--with-sasl --with-tokyocabinet
+
+SUBDIRS = m4 contrib
 
 if BUILD_DOC
-DOC_SUBDIR = doc
+SUBDIRS += doc
 endif
 
 if BUILD_PO
-PO_SUBDIR = po
+SUBDIRS += po
 endif
 
 if BUILD_IMAP
-IMAP_SUBDIR = imap
+SUBDIRS += imap
 IMAP_INCLUDES = -I$(top_srcdir)/imap
 endif
-
-SUBDIRS = m4 $(DOC_SUBDIR) $(PO_SUBDIR) contrib $(IMAP_SUBDIR)
 
 bin_SCRIPTS = $(SMIMEAUX_TARGET)
 
@@ -34,20 +38,16 @@ distdir = neo$(PACKAGE)-$(VERSION)
 BUILT_SOURCES = keymap_defs.h patchlist.c git-ver.h conststrings.c hcachever.sh $(HCVERSION)
 
 bin_PROGRAMS = mutt $(DOTLOCK_TARGET) $(PGPAUX_TARGET)
-mutt_SOURCES = \
-	addrbook.c alias.c attach.c base64.c browser.c buffer.c buffy.c color.c \
-	crypt.c cryptglue.c \
-	commands.c complete.c compose.c copy.c curs_lib.c curs_main.c date.c \
-	edit.c enter.c flags.c init.c filter.c from.c \
-	getdomain.c group.c \
-	handler.c hash.c hdrline.c headers.c help.c hook.c keymap.c \
-	main.c mbox.c menu.c mh.c mutt_idna.c mutt_sasl_plain.c mx.c pager.c \
-	parse.c pattern.c postpone.c query.c recvattach.c recvcmd.c \
-	rfc822.c rfc1524.c rfc2047.c rfc2231.c rfc3676.c \
-	score.c send.c sendlib.c signal.c sort.c \
-	status.c system.c thread.c charset.c history.c lib.c \
-	muttlib.c editmsg.c mbyte.c \
-	url.c ascii.c crypt-mod.c crypt-mod.h safe_asprintf.c version.c
+mutt_SOURCES = addrbook.c alias.c ascii.c attach.c base64.c browser.c buffer.c \
+	buffy.c charset.c color.c commands.c complete.c compose.c copy.c \
+	crypt-mod.c crypt-mod.h crypt.c cryptglue.c curs_lib.c curs_main.c \
+	date.c edit.c editmsg.c enter.c filter.c flags.c from.c getdomain.c \
+	group.c handler.c hash.c hdrline.c headers.c help.c history.c hook.c \
+	init.c keymap.c lib.c main.c mbox.c mbyte.c menu.c mh.c muttlib.c \
+	mutt_idna.c mutt_sasl_plain.c mx.c pager.c parse.c pattern.c \
+	postpone.c query.c recvattach.c recvcmd.c rfc1524.c rfc2047.c \
+	rfc2231.c rfc3676.c rfc822.c safe_asprintf.c score.c send.c sendlib.c \
+	signal.c sort.c status.c system.c thread.c url.c version.c
 
 nodist_mutt_SOURCES = $(BUILT_SOURCES)
 
@@ -58,39 +58,36 @@ mutt_DEPENDENCIES = $(MUTT_LIB_OBJECTS) $(LIBOBJS) $(LIBIMAPDEPS) \
 	$(INTLDEPS)
 
 DEFS=-DPKGDATADIR=\"$(pkgdatadir)\" -DSYSCONFDIR=\"$(sysconfdir)\" \
-	-DBINDIR=\"$(bindir)\" -DMUTTLOCALEDIR=\"$(datadir)/locale\" \
-	-DHAVE_CONFIG_H=1
+	-DBINDIR=\"$(bindir)\" -DMUTTLOCALEDIR=\"$(datadir)/locale\"
 
 AM_CPPFLAGS=-I. -I$(top_srcdir) $(IMAP_INCLUDES) $(GPGME_CFLAGS)
 
-EXTRA_mutt_SOURCES = account.c bcache.c compress.c crypt-gpgme.c crypt-mod-pgp-classic.c \
-	crypt-mod-pgp-gpgme.c crypt-mod-smime-classic.c \
-	crypt-mod-smime-gpgme.c dotlock.c gnupgparse.c hcache.c md5.c \
-	mutt_idna.c mutt_sasl.c mutt_socket.c mutt_ssl.c mutt_ssl_gnutls.c \
-	mutt_tunnel.c pgp.c pgpinvoke.c pgpkey.c pgplib.c pgpmicalg.c \
-	pgppacket.c pop.c pop_auth.c pop_lib.c remailer.c resize.c sha1.c \
-	mutt_lua.c nntp.c newsrc.c \
-	sidebar.c smime.c smtp.c utf8.c wcwidth.c \
-	bcache.h browser.h hcache.h mbyte.h mutt_idna.h remailer.h url.h
+EXTRA_mutt_SOURCES = account.c bcache.c bcache.h browser.h compress.c \
+	crypt-gpgme.c crypt-mod-pgp-classic.c crypt-mod-pgp-gpgme.c \
+	crypt-mod-smime-classic.c crypt-mod-smime-gpgme.c dotlock.c \
+	gnupgparse.c hcache.c hcache.h mbyte.h md5.c mutt_idna.c mutt_idna.h \
+	mutt_lua.c mutt_sasl.c mutt_socket.c mutt_ssl.c mutt_ssl_gnutls.c \
+	mutt_tunnel.c newsrc.c nntp.c pgp.c pgpinvoke.c pgpkey.c pgplib.c \
+	pgpmicalg.c pgppacket.c pop.c pop_auth.c pop_lib.c remailer.c \
+	remailer.h resize.c sha1.c sidebar.c smime.c smtp.c url.h utf8.c \
+	wcwidth.c
 
-EXTRA_DIST = config.rpath  COPYRIGHT LICENSE.md OPS OPS.PGP OPS.CRYPT OPS.SMIME TODO UPDATING \
-	account.h \
-	attach.h buffer.h buffy.h charset.h compress.h copy.h crypthash.h dotlock.h functions.h gen_defs \
-	filter.h globals.h hash.h history.h init.h keymap.h mutt_crypt.h myvar.h \
-	mailbox.h mapping.h md5.h mime.h mutt.h mutt_commands.h mutt_curses.h mutt_menu.h \
-	mutt_options.h mutt_regex.h mutt_sasl.h mutt_sasl_plain.h mutt_socket.h mutt_ssl.h \
-	mutt_tunnel.h mx.h pager.h pgp.h pop.h protos.h rfc1524.h rfc2047.h \
-	rfc2231.h rfc822.h rfc3676.h sha1.h sort.h mime.types \
-	mutt_lua.h nntp.h ChangeLog.nntp \
-	OPS.MIX README.SECURITY remailer.c remailer.h browser.h \
-	mbyte.h lib.h extlib.c pgpewrap.c smime_keys.pl pgplib.h \
-	README.SSL README.md README.neomutt README.notmuch smime.h group.h \
-	pgppacket.h depcomp ascii.h PATCHES patchlist.sh \
-	ChangeLog ChangeLog.neomutt mutt_idna.h sidebar.h OPS.SIDEBAR \
-	crypt-gpgme.h hcachever.sh.in \
-	txt2c.c txt2c.sh version.h \
+EXTRA_DIST = account.h ascii.h attach.h browser.h buffer.h buffy.h ChangeLog \
+	ChangeLog.neomutt ChangeLog.nntp charset.h compress.h config.rpath \
+	copy.h COPYRIGHT crypt-gpgme.h crypthash.h depcomp dotlock.h extlib.c \
+	filter.h functions.h gen_defs globals.h group.h hash.h \
 	hcache-backend.h hcache-bdb.c hcache-gdbm.c hcache-kc.c hcache-lmdb.c \
-	hcache-qdbm.c hcache-tc.c
+	hcache-qdbm.c hcache-tc.c hcachever.sh.in history.h init.h keymap.h \
+	lib.h LICENSE.md mailbox.h mapping.h mbyte.h md5.h mime.h mime.types \
+	mutt.h mutt_commands.h mutt_crypt.h mutt_curses.h mutt_idna.h \
+	mutt_lua.h mutt_menu.h mutt_options.h mutt_regex.h mutt_sasl.h \
+	mutt_sasl_plain.h mutt_socket.h mutt_ssl.h mutt_tunnel.h mx.h myvar.h \
+	nntp.h OPS OPS.CRYPT OPS.MIX OPS.NOTMUCH OPS.PGP OPS.SIDEBAR OPS.SMIME \
+	pager.h PATCHES patchlist.sh pgp.h pgpewrap.c pgplib.h pgppacket.h \
+	pop.h protos.h README.md README.neomutt README.notmuch README.SECURITY \
+	README.SSL remailer.c remailer.h rfc1524.h rfc2047.h rfc2231.h \
+	rfc3676.h rfc822.h sha1.h sidebar.h smime.h smime_keys.pl sort.h TODO \
+	txt2c.c txt2c.sh UPDATING UPDATING.kz version.h
 
 EXTRA_SCRIPTS = smime_keys
 
@@ -99,16 +96,12 @@ mutt_SOURCES += mutt_notmuch.c mutt_notmuch.h
 mutt_LDADD += $(NOTMUCH_LIBS)
 endif
 
-# kz
-EXTRA_DIST += UPDATING.kz OPS.NOTMUCH
-
-
-
 mutt_dotlock_SOURCES = mutt_dotlock.c
 mutt_dotlock_LDADD = $(LIBOBJS)
 mutt_dotlock_DEPENDENCIES = $(LIBOBJS)
 
-pgpring_SOURCES = pgppubring.c pgplib.c lib.c extlib.c sha1.c md5.c pgppacket.c ascii.c
+pgpring_SOURCES = ascii.c extlib.c lib.c md5.c pgplib.c pgppacket.c \
+	pgppubring.c sha1.c
 pgpring_LDADD = $(LIBOBJS) $(INTLLIBS)
 pgpring_DEPENDENCIES = $(LIBOBJS) $(INTLDEPS)
 
@@ -167,13 +160,8 @@ git-ver.h:
 	cmp -s git-ver.h.tmp git-ver.h || mv git-ver.h.tmp git-ver.h; \
 	rm -f git-ver.h.tmp
 
-# The '#undef ENABLE_NLS' is to work around an automake ordering issue:
-# BUILT_SOURCES are processed before SUBDIRS.
-# If configured with --with-included-gettext this means that intl will
-# not have generated libintl.h yet, and mutt.h -> lib.h will generate
-# an error.
 hcversion.h: $(srcdir)/mutt.h $(srcdir)/rfc822.h hcachever.sh $(MUTT_MD5)
-	( echo '#include "config.h"'; echo '#undef ENABLE_NLS'; echo '#include "mutt.h"'; ) \
+	( echo '#include "config.h"'; echo '#include "mutt.h"'; ) \
 	| $(CPP) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) - | sh ./hcachever.sh hcversion.h
 
 patchlist.c: $(srcdir)/PATCHES $(srcdir)/patchlist.sh
@@ -205,13 +193,4 @@ uninstall-local:
 		rm $(DESTDIR)$(sysconfdir)/$${i}.dist ; \
 	done
 
-pclean:
-	cat /dev/null > $(top_srcdir)/PATCHES
-
-check-security:
-	(cd $(top_srcdir) && ./check_sec.sh)
-
-update-doc:
-	(cd doc && $(MAKE) update-doc)
-
-.PHONY: commit pclean check-security git-ver.h
+.PHONY: git-ver.h

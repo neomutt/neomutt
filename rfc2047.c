@@ -1,20 +1,19 @@
-/*
+/**
  * Copyright (C) 1996-2000,2010 Michael R. Elkins <me@mutt.org>
  * Copyright (C) 2000-2002 Edmund Grimley Evans <edmundo@rano.org>
  *
- *     This program is free software; you can redistribute it and/or modify
- *     it under the terms of the GNU General Public License as published by
- *     the Free Software Foundation; either version 2 of the License, or
- *     (at your option) any later version.
+ * This program is free software: you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License as published by the Free Software
+ * Foundation, either version 2 of the License, or (at your option) any later
+ * version.
  *
- *     This program is distributed in the hope that it will be useful,
- *     but WITHOUT ANY WARRANTY; without even the implied warranty of
- *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *     GNU General Public License for more details.
+ * This program is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
+ * details.
  *
- *     You should have received a copy of the GNU General Public License
- *     along with this program; if not, write to the Free Software
- *     Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ * You should have received a copy of the GNU General Public License along with
+ * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -56,7 +55,7 @@ static size_t convert_string (ICONV_CONST char *f, size_t flen,
 			      char **t, size_t *tlen)
 {
   iconv_t cd;
-  char *buf, *ob;
+  char *buf = NULL, *ob = NULL;
   size_t obl, n;
   int e;
 
@@ -87,13 +86,13 @@ static size_t convert_string (ICONV_CONST char *f, size_t flen,
 
 int convert_nonmime_string (char **ps)
 {
-  const char *c, *c1;
+  const char *c = NULL, *c1 = NULL;
 
   for (c = AssumedCharset; c; c = c1 ? c1 + 1 : 0)
   {
     char *u = *ps;
-    char *s;
-    char *fromcode;
+    char *s = NULL;
+    char *fromcode = NULL;
     size_t m, n;
     size_t ulen = mutt_strlen (*ps);
     size_t slen;
@@ -126,13 +125,13 @@ char *mutt_choose_charset (const char *fromcode, const char *charsets,
 		      char *u, size_t ulen, char **d, size_t *dlen)
 {
   char canonical_buff[LONG_STRING];
-  char *e = 0, *tocode = 0;
+  char *e = NULL, *tocode = NULL;
   size_t elen = 0, bestn = 0;
-  const char *p, *q;
+  const char *p = NULL, *q = NULL;
 
   for (p = charsets; p; p = q ? q + 1 : 0)
   {
-    char *s, *t;
+    char *s = NULL, *t = NULL;
     size_t slen, n;
 
     q = strchr (p, ':');
@@ -256,8 +255,8 @@ static size_t try_block (ICONV_CONST char *d, size_t dlen,
 {
   char buf1[ENCWORD_LEN_MAX - ENCWORD_LEN_MIN + 1];
   iconv_t cd;
-  ICONV_CONST char *ib;
-  char *ob, *p;
+  ICONV_CONST char *ib = NULL;
+  char *ob = NULL, *p = NULL;
   size_t ibl, obl;
   int count, len, len_b, len_q;
 
@@ -299,7 +298,7 @@ static size_t try_block (ICONV_CONST char *d, size_t dlen,
   len_q = len + (ob - buf1) + 2 * count;
 
   /* Apparently RFC 1468 says to use B encoding for iso-2022-jp. */
-  if (!ascii_strcasecmp (tocode, "ISO-2022-JP"))
+  if (ascii_strcasecmp (tocode, "ISO-2022-JP") == 0)
     len_q = ENCWORD_LEN_MAX + 1;
 
   if (len_b < len_q && len_b <= ENCWORD_LEN_MAX)
@@ -328,8 +327,8 @@ static size_t encode_block (char *s, char *d, size_t dlen,
 {
   char buf1[ENCWORD_LEN_MAX - ENCWORD_LEN_MIN + 1];
   iconv_t cd;
-  ICONV_CONST char *ib;
-  char *ob;
+  ICONV_CONST char *ib = NULL;
+  char *ob = NULL;
   size_t ibl, obl, n1, n2;
 
   if (fromcode)
@@ -358,7 +357,7 @@ static size_t choose_block (char *d, size_t dlen, int col,
 			    encoder_t *encoder, size_t *wlen)
 {
   size_t n, nn;
-  int utf8 = fromcode && !ascii_strcasecmp (fromcode, "utf-8");
+  int utf8 = fromcode && (ascii_strcasecmp (fromcode, "utf-8") == 0);
 
   n = dlen;
   for (;;)
@@ -391,14 +390,14 @@ static int rfc2047_encode (ICONV_CONST char *d, size_t dlen, int col,
 			   char **e, size_t *elen, char *specials)
 {
   int ret = 0;
-  char *buf;
+  char *buf = NULL;
   size_t bufpos, buflen;
-  char *u = NULL, *t0, *t1, *t;
-  char *s0, *s1;
+  char *u = NULL, *t0 = NULL, *t1 = NULL, *t = NULL;
+  char *s0 = NULL, *s1 = NULL;
   size_t ulen, r, n, wlen;
   encoder_t encoder;
-  char *tocode1 = 0;
-  const char *tocode;
+  char *tocode1 = NULL;
+  const char *tocode = NULL;
   char *icode = "utf-8";
 
   /* Try to convert to UTF-8. */
@@ -569,9 +568,9 @@ static int rfc2047_encode (ICONV_CONST char *d, size_t dlen, int col,
 
 void _rfc2047_encode_string (char **pd, int encode_specials, int col)
 {
-  char *e;
+  char *e = NULL;
   size_t elen;
-  char *charsets;
+  char *charsets = NULL;
 
   if (!Charset || !*pd)
     return;
@@ -609,9 +608,9 @@ void rfc2047_encode_adrlist (ADDRESS *addr, const char *tag)
 
 static int rfc2047_decode_word (char *d, const char *s, size_t len)
 {
-  const char *pp, *pp1;
-  char *pd, *d0;
-  const char *t, *t1;
+  const char *pp = NULL, *pp1 = NULL;
+  char *pd = NULL, *d0 = NULL;
+  const char *t = NULL, *t1 = NULL;
   int enc = 0, count = 0;
   char *charset = NULL;
   int rv = -1;
@@ -714,7 +713,7 @@ error_out_0:
  */
 static const char *find_encoded_word (const char *s, const char **x)
 {
-  const char *p, *q;
+  const char *p = NULL, *q = NULL;
 
   q = s;
   while ((p = strstr (q, "=?")))
@@ -787,10 +786,10 @@ static size_t lwsrlen (const char *s, size_t n)
  */
 void rfc2047_decode (char **pd)
 {
-  const char *p, *q;
+  const char *p = NULL, *q = NULL;
   size_t m, n;
   int found_encoded = 0;
-  char *d0, *d;
+  char *d0 = NULL, *d = NULL;
   const char *s = *pd;
   size_t dlen;
 
@@ -817,7 +816,7 @@ void rfc2047_decode (char **pd)
       }
       if (AssumedCharset && *AssumedCharset)
       {
-	char *t;
+	char *t = NULL;
 	size_t tlen;
 
 	n = mutt_strlen (s);

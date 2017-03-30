@@ -1,20 +1,19 @@
-/*
+/**
  * Copyright (C) 1996-2000,2002,2007,2010 Michael R. Elkins <me@mutt.org>
  * Copyright (C) 1999-2006 Thomas Roessler <roessler@does-not-exist.org>
  *
- *     This program is free software; you can redistribute it and/or modify
- *     it under the terms of the GNU General Public License as published by
- *     the Free Software Foundation; either version 2 of the License, or
- *     (at your option) any later version.
+ * This program is free software: you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License as published by the Free Software
+ * Foundation, either version 2 of the License, or (at your option) any later
+ * version.
  *
- *     This program is distributed in the hope that it will be useful,
- *     but WITHOUT ANY WARRANTY; without even the implied warranty of
- *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *     GNU General Public License for more details.
+ * This program is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
+ * details.
  *
- *     You should have received a copy of the GNU General Public License
- *     along with this program; if not, write to the Free Software
- *     Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ * You should have received a copy of the GNU General Public License along with
+ * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -60,7 +59,7 @@ static const struct mapping_t AttachHelp[] = {
 void mutt_update_tree (ATTACHPTR **idx, short idxlen)
 {
   char buf[STRING];
-  char *s;
+  char *s = NULL;
   int x;
 
   for (x = 0; x < idxlen; x++)
@@ -105,7 +104,7 @@ ATTACHPTR **mutt_gen_attach_list (BODY *m,
 				  int level,
 				  int compose)
 {
-  ATTACHPTR *new;
+  ATTACHPTR *new = NULL;
   int i;
 
   for (; m; m = m->next)
@@ -118,7 +117,7 @@ ATTACHPTR **mutt_gen_attach_list (BODY *m,
     }
 
     if (m->type == TYPEMULTIPART && m->parts
-	&& (compose || (parent_type == -1 && ascii_strcasecmp ("alternative", m->subtype)))
+	&& (compose || (parent_type == -1 && (ascii_strcasecmp ("alternative", m->subtype) != 0)))
         && (!(WithCrypto & APPLICATION_PGP) || !mutt_is_multipart_encrypted(m))
 	)
     {
@@ -151,7 +150,7 @@ ATTACHPTR **mutt_gen_attach_list (BODY *m,
   if (level == 0)
     mutt_update_tree (idx, *idxlen);
 
-  return (idx);
+  return idx;
 }
 
 /* %c = character set: convert?
@@ -385,7 +384,7 @@ const char *mutt_attach_fmt (char *dest,
     mutt_FormatString (dest, destlen, col, cols, ifstring, mutt_attach_fmt, data, 0);
   else if (flags & MUTT_FORMAT_OPTIONAL)
     mutt_FormatString (dest, destlen, col, cols, elsestring, mutt_attach_fmt, data, 0);
-  return (src);
+  return src;
 }
 
 static void attach_entry (char *b, size_t blen, MUTTMENU *menu, int num)
@@ -408,7 +407,7 @@ int mutt_is_message_type (int type, const char *subtype)
     return 0;
 
   subtype = NONULL(subtype);
-  return (ascii_strcasecmp (subtype, "rfc822") == 0 || ascii_strcasecmp (subtype, "news") == 0);
+  return ((ascii_strcasecmp (subtype, "rfc822") == 0) || (ascii_strcasecmp (subtype, "news") == 0));
 }
 
 static void prepend_curdir (char *dst, size_t dstlen)
@@ -431,7 +430,7 @@ static void prepend_curdir (char *dst, size_t dstlen)
 
 static int query_save_attachment (FILE *fp, BODY *body, HEADER *hdr, char **directory)
 {
-  char *prompt;
+  char *prompt = NULL;
   char buf[_POSIX_PATH_MAX], tfile[_POSIX_PATH_MAX];
   int is_message;
   int append = 0;
@@ -519,7 +518,7 @@ void mutt_save_attachment_list (FILE *fp, int tag, BODY *top, HEADER *hdr, MUTTM
   char *directory = NULL;
   int rc = 1;
   int last = menu ? menu->current : -1;
-  FILE *fpout;
+  FILE *fpout = NULL;
 
   buf[0] = 0;
 
@@ -634,7 +633,7 @@ query_pipe_attachment (char *command, FILE *fp, BODY *body, int filter)
 
 static void pipe_attachment (FILE *fp, BODY *b, STATE *state)
 {
-  FILE *ifp;
+  FILE *ifp = NULL;
 
   if (fp)
   {
@@ -721,13 +720,13 @@ static int can_print (BODY *top, int tag)
     {
       if (!rfc1524_mailcap_lookup (top, type, NULL, MUTT_PRINT))
       {
-	if (ascii_strcasecmp ("text/plain", top->subtype) &&
-	    ascii_strcasecmp ("application/postscript", top->subtype))
+	if ((ascii_strcasecmp ("text/plain", top->subtype) != 0) &&
+	    (ascii_strcasecmp ("application/postscript", top->subtype) != 0))
 	{
 	  if (!mutt_can_decode (top))
 	  {
 	    mutt_error (_("I don't know how to print %s attachments!"), type);
-	    return (0);
+	    return 0;
 	  }
 	}
       }
@@ -737,7 +736,7 @@ static int can_print (BODY *top, int tag)
     if (!tag)
       break;
   }
-  return (1);
+  return 1;
 }
 
 static void print_attachment_list (FILE *fp, int tag, BODY *top, STATE *state)
@@ -752,15 +751,15 @@ static void print_attachment_list (FILE *fp, int tag, BODY *top, STATE *state)
       snprintf (type, sizeof (type), "%s/%s", TYPE (top), top->subtype);
       if (!option (OPTATTACHSPLIT) && !rfc1524_mailcap_lookup (top, type, NULL, MUTT_PRINT))
       {
-	if (!ascii_strcasecmp ("text/plain", top->subtype) ||
-	    !ascii_strcasecmp ("application/postscript", top->subtype))
+	if ((ascii_strcasecmp ("text/plain", top->subtype) == 0) ||
+	    (ascii_strcasecmp ("application/postscript", top->subtype) == 0))
 	  pipe_attachment (fp, top, state);
 	else if (mutt_can_decode (top))
 	{
 	  /* decode and print */
 
 	  char newfile[_POSIX_PATH_MAX] = "";
-	  FILE *ifp;
+	  FILE *ifp = NULL;
 
 	  mutt_mktemp (newfile, sizeof (newfile));
 	  if (mutt_decode_save_attachment (fp, top, newfile, MUTT_PRINTING, 0) == 0)
@@ -911,7 +910,7 @@ static void attach_collapse (BODY *b, short collapse, short init, short just_one
   {
     i = init || b->collapsed;
     if (i && option (OPTDIGESTCOLLAPSE) && b->type == TYPEMULTIPART
-	&& !ascii_strcasecmp (b->subtype, "digest"))
+	&& (ascii_strcasecmp (b->subtype, "digest") == 0))
       attach_collapse (b->parts, 1, 1, 0);
     else if (b->type == TYPEMULTIPART || mutt_is_message_type (b->type, b->subtype))
       attach_collapse (b->parts, collapse, i, 0);
@@ -950,10 +949,10 @@ void mutt_view_attachments (HEADER *hdr)
   int need_secured = 0;
 
   char helpstr[LONG_STRING];
-  MUTTMENU *menu;
+  MUTTMENU *menu = NULL;
   BODY *cur = NULL;
-  MESSAGE *msg;
-  FILE *fp;
+  MESSAGE *msg = NULL;
+  FILE *fp = NULL;
   ATTACHPTR **idx = NULL;
   short idxlen = 0;
   short idxmax = 0;
@@ -1252,7 +1251,7 @@ void mutt_view_attachments (HEADER *hdr)
 	CHECK_ATTACH;
 
 	if (!idx[menu->current]->content->hdr->env->followup_to ||
-	    mutt_strcasecmp (idx[menu->current]->content->hdr->env->followup_to, "poster") ||
+	    (mutt_strcasecmp (idx[menu->current]->content->hdr->env->followup_to, "poster") != 0) ||
 	    query_quadoption (OPT_FOLLOWUPTOPOSTER,_("Reply by mail as poster prefers?")) != MUTT_YES)
 	{
 	  mutt_attach_reply (fp, hdr, idx, idxlen,

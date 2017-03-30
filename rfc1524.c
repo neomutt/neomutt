@@ -1,19 +1,18 @@
-/*
+/**
  * Copyright (C) 1996-2000,2003,2012 Michael R. Elkins <me@mutt.org>
  *
- *     This program is free software; you can redistribute it and/or modify
- *     it under the terms of the GNU General Public License as published by
- *     the Free Software Foundation; either version 2 of the License, or
- *     (at your option) any later version.
+ * This program is free software: you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License as published by the Free Software
+ * Foundation, either version 2 of the License, or (at your option) any later
+ * version.
  *
- *     This program is distributed in the hope that it will be useful,
- *     but WITHOUT ANY WARRANTY; without even the implied warranty of
- *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *     GNU General Public License for more details.
+ * This program is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
+ * details.
  *
- *     You should have received a copy of the GNU General Public License
- *     along with this program; if not, write to the Free Software
- *     Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ * You should have received a copy of the GNU General Public License along with
+ * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 /*
@@ -80,7 +79,7 @@ int rfc1524_expand_command (BODY *a, char *filename, char *_type,
       {
 	char param[STRING];
 	char pvalue[STRING];
-	char *_pvalue;
+	char *_pvalue = NULL;
 	int z = 0;
 
 	x++;
@@ -119,7 +118,7 @@ int rfc1524_expand_command (BODY *a, char *filename, char *_type,
  * returns start of next field or NULL */
 static char *get_field (char *s)
 {
-  char *ch;
+  char *ch = NULL;
 
   if (!s)
     return NULL;
@@ -171,11 +170,11 @@ static int rfc1524_mailcap_parse (BODY *a,
 				  rfc1524_entry *entry,
 				  int opt)
 {
-  FILE *fp;
+  FILE *fp = NULL;
   char *buf = NULL;
   size_t buflen;
-  char *ch;
-  char *field;
+  char *ch = NULL;
+  char *field = NULL;
   int found = false;
   int copiousoutput;
   int composecommand;
@@ -211,10 +210,10 @@ static int rfc1524_mailcap_parse (BODY *a,
 
       /* check type */
       ch = get_field (buf);
-      if (ascii_strcasecmp (buf, type) &&
-	  (ascii_strncasecmp (buf, type, btlen) ||
+      if ((ascii_strcasecmp (buf, type) != 0) &&
+	  ((ascii_strncasecmp (buf, type, btlen) != 0) ||
 	   (buf[btlen] != 0 &&			/* implicit wild */
-	    mutt_strcmp (buf + btlen, "/*"))))	/* wildsubtype */
+	    (mutt_strcmp (buf + btlen, "/*") != 0))))	/* wildsubtype */
 	continue;
 
       /* next field is the viewcommand */
@@ -236,53 +235,53 @@ static int rfc1524_mailcap_parse (BODY *a,
 	ch = get_field (ch);
 	mutt_debug (2, "field: %s\n", field);
 
-	if (!ascii_strcasecmp (field, "needsterminal"))
+	if (ascii_strcasecmp (field, "needsterminal") == 0)
 	{
 	  if (entry)
 	    entry->needsterminal = true;
 	}
-	else if (!ascii_strcasecmp (field, "copiousoutput"))
+	else if (ascii_strcasecmp (field, "copiousoutput") == 0)
 	{
 	  copiousoutput = true;
 	  if (entry)
 	    entry->copiousoutput = true;
 	}
-	else if (!ascii_strncasecmp (field, "composetyped", 12))
+	else if (ascii_strncasecmp (field, "composetyped", 12) == 0)
 	{
 	  /* this compare most occur before compose to match correctly */
 	  if (get_field_text (field + 12, entry ? &entry->composetypecommand : NULL,
 			      type, filename, line))
 	    composecommand = true;
 	}
-	else if (!ascii_strncasecmp (field, "compose", 7))
+	else if (ascii_strncasecmp (field, "compose", 7) == 0)
 	{
 	  if (get_field_text (field + 7, entry ? &entry->composecommand : NULL,
 			      type, filename, line))
 	    composecommand = true;
 	}
-	else if (!ascii_strncasecmp (field, "print", 5))
+	else if (ascii_strncasecmp (field, "print", 5) == 0)
 	{
 	  if (get_field_text (field + 5, entry ? &entry->printcommand : NULL,
 			      type, filename, line))
 	    printcommand = true;
 	}
-	else if (!ascii_strncasecmp (field, "edit", 4))
+	else if (ascii_strncasecmp (field, "edit", 4) == 0)
 	{
 	  if (get_field_text (field + 4, entry ? &entry->editcommand : NULL,
 			      type, filename, line))
 	    editcommand = true;
 	}
-	else if (!ascii_strncasecmp (field, "nametemplate", 12))
+	else if (ascii_strncasecmp (field, "nametemplate", 12) == 0)
 	{
 	  get_field_text (field + 12, entry ? &entry->nametemplate : NULL,
 			  type, filename, line);
 	}
-	else if (!ascii_strncasecmp (field, "x-convert", 9))
+	else if (ascii_strncasecmp (field, "x-convert", 9) == 0)
 	{
 	  get_field_text (field + 9, entry ? &entry->convert : NULL,
 			  type, filename, line);
 	}
-	else if (!ascii_strncasecmp (field, "test", 4))
+	else if (ascii_strncasecmp (field, "test", 4) == 0)
 	{
 	  /*
 	   * This routine executes the given test command to determine
@@ -424,7 +423,6 @@ int rfc1524_mailcap_lookup (BODY *a, char *type, rfc1524_entry *entry, int opt)
   return found;
 }
 
-
 /* This routine will create a _temporary_ filename matching the
  * name template given if this needs to be done.
  *
@@ -435,7 +433,6 @@ int rfc1524_mailcap_lookup (BODY *a, char *type, rfc1524_entry *entry, int opt)
  * Returns 0 if oldfile is fine as is.
  * Returns 1 if newfile specified
  */
-
 static void strnfcpy(char *d, char *s, size_t siz, size_t len)
 {
   if(len > siz)
@@ -449,7 +446,7 @@ int rfc1524_expand_filename (char *nametemplate,
 			     size_t nflen)
 {
   int i, j, k, ps;
-  char *s;
+  char *s = NULL;
   short lmatch = 0, rmatch = 0;
   char left[_POSIX_PATH_MAX];
   char right[_POSIX_PATH_MAX];
@@ -570,7 +567,7 @@ int rfc1524_expand_filename (char *nametemplate,
 
 int mutt_rename_file (char *oldfile, char *newfile)
 {
-  FILE *ofp, *nfp;
+  FILE *ofp = NULL, *nfp = NULL;
 
   if (access (oldfile, F_OK) != 0)
     return 1;

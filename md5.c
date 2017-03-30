@@ -1,22 +1,25 @@
-/* md5.c - Functions to compute MD5 message digest of files or memory blocks
-   according to the definition of MD5 in RFC 1321 from April 1992.
-   Copyright (C) 1995,1996,1997,1999,2000,2001,2005,2006,2008 Free Software Foundation, Inc.
-   NOTE: The canonical source of this file is maintained with the GNU C
-   Library.  Bugs can be reported to bug-glibc@prep.ai.mit.edu.
-
-   This program is free software; you can redistribute it and/or modify it
-   under the terms of the GNU General Public License as published by the
-   Free Software Foundation; either version 2, or (at your option) any
-   later version.
-
-   This program is distributed in the hope that it will be useful,
-   but WITHOUT ANY WARRANTY; without even the implied warranty of
-   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-   GNU General Public License for more details.
-
-   You should have received a copy of the GNU General Public License
-   along with this program; if not, write to the Free Software Foundation,
-   Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.  */
+/**
+ * Copyright (C) 1995,1996,1997,1999,2000,2001,2005,2006,2008 Free Software Foundation, Inc.
+ *
+ * This program is free software: you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License as published by the Free Software
+ * Foundation, either version 2 of the License, or (at your option) any later
+ * version.
+ *
+ * This program is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
+ * details.
+ *
+ * You should have received a copy of the GNU General Public License along with
+ * this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * md5.c - Functions to compute MD5 message digest of files or memory blocks
+ * according to the definition of MD5 in RFC 1321 from April 1992.
+ *
+ * NOTE: The canonical source of this file is maintained with the GNU C
+ * Library.  Bugs can be reported to bug-glibc@prep.ai.mit.edu.
+ */
 
 /* Written by Ulrich Drepper <drepper@gnu.ai.mit.edu>, 1995.  */
 
@@ -84,7 +87,7 @@ md5_init_ctx (struct md5_ctx *ctx)
 static inline void
 set_uint32 (char *cp, md5_uint32 v)
 {
-  memcpy (cp, &v, sizeof v);
+  memcpy (cp, &v, sizeof (v));
 }
 
 /* Put result from CTX in first 16 bytes following RESBUF.  The result
@@ -93,10 +96,10 @@ void *
 md5_read_ctx (const struct md5_ctx *ctx, void *resbuf)
 {
   char *r = resbuf;
-  set_uint32 (r + 0 * sizeof ctx->A, SWAP (ctx->A));
-  set_uint32 (r + 1 * sizeof ctx->B, SWAP (ctx->B));
-  set_uint32 (r + 2 * sizeof ctx->C, SWAP (ctx->C));
-  set_uint32 (r + 3 * sizeof ctx->D, SWAP (ctx->D));
+  set_uint32 (r + 0 * sizeof (ctx->A), SWAP (ctx->A));
+  set_uint32 (r + 1 * sizeof (ctx->B), SWAP (ctx->B));
+  set_uint32 (r + 2 * sizeof (ctx->C), SWAP (ctx->C));
+  set_uint32 (r + 3 * sizeof (ctx->D), SWAP (ctx->D));
 
   return resbuf;
 }
@@ -292,7 +295,6 @@ md5_process_bytes (const void *buffer, size_t len, struct md5_ctx *ctx)
 
 /* Process LEN bytes of BUFFER, accumulating context into CTX.
    It is assumed that LEN % 64 == 0.  */
-
 void
 md5_process_block (const void *buffer, size_t len, struct md5_ctx *ctx)
 {

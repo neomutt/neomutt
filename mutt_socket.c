@@ -1,21 +1,20 @@
-/*
+/**
  * Copyright (C) 1998,2000 Michael R. Elkins <me@mutt.org>
  * Copyright (C) 1999-2006,2008 Brendan Cully <brendan@kublai.com>
  * Copyright (C) 1999-2000 Tommi Komulainen <Tommi.Komulainen@iki.fi>
  *
- *     This program is free software; you can redistribute it and/or modify
- *     it under the terms of the GNU General Public License as published by
- *     the Free Software Foundation; either version 2 of the License, or
- *     (at your option) any later version.
+ * This program is free software: you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License as published by the Free Software
+ * Foundation, either version 2 of the License, or (at your option) any later
+ * version.
  *
- *     This program is distributed in the hope that it will be useful,
- *     but WITHOUT ANY WARRANTY; without even the implied warranty of
- *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *     GNU General Public License for more details.
+ * This program is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
+ * details.
  *
- *     You should have received a copy of the GNU General Public License
- *     along with this program; if not, write to the Free Software
- *     Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ * You should have received a copy of the GNU General Public License along with
+ * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -220,8 +219,8 @@ CONNECTION* mutt_socket_head (void)
 /* mutt_socket_free: remove connection from connection list and free it */
 void mutt_socket_free (CONNECTION* conn)
 {
-  CONNECTION* iter;
-  CONNECTION* tmp;
+  CONNECTION* iter = NULL;
+  CONNECTION* tmp = NULL;
 
   iter = Connections;
 
@@ -249,7 +248,7 @@ void mutt_socket_free (CONNECTION* conn)
 /* socket_new_conn: allocate and initialise a new connection. */
 static CONNECTION* socket_new_conn (void)
 {
-  CONNECTION* conn;
+  CONNECTION* conn = NULL;
 
   conn = safe_calloc (1, sizeof (CONNECTION));
   conn->fd = -1;
@@ -264,7 +263,7 @@ static CONNECTION* socket_new_conn (void)
  *   wish to find a connection which is not in IMAP_SELECTED state) */
 CONNECTION* mutt_conn_find (const CONNECTION* start, const ACCOUNT* account)
 {
-  CONNECTION* conn;
+  CONNECTION* conn = NULL;
   ciss_url_t url;
   char hook[LONG_STRING];
 
@@ -439,8 +438,8 @@ int raw_socket_open (CONNECTION* conn)
   /* "65536\0" */
   char port[6];
   struct addrinfo hints;
-  struct addrinfo* res;
-  struct addrinfo* cur;
+  struct addrinfo* res = NULL;
+  struct addrinfo* cur = NULL;
 
   /* we accept v4 or v6 STREAM sockets */
   memset (&hints, 0, sizeof (hints));
@@ -506,7 +505,7 @@ int raw_socket_open (CONNECTION* conn)
   /* --- IPv4 only --- */
 
   struct sockaddr_in sin;
-  struct hostent* he;
+  struct hostent* he = NULL;
   int i;
 
   memset (&sin, 0, sizeof (sin));

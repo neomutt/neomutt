@@ -1,22 +1,18 @@
-/*
+/**
  * Copyright (C) 1999-2002,2007 Thomas Roessler <roessler@does-not-exist.org>
  *
- *     This program is free software; you can redistribute it
- *     and/or modify it under the terms of the GNU General Public
- *     License as published by the Free Software Foundation; either
- *     version 2 of the License, or (at your option) any later
- *     version.
+ * This program is free software: you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License as published by the Free Software
+ * Foundation, either version 2 of the License, or (at your option) any later
+ * version.
  *
- *     This program is distributed in the hope that it will be
- *     useful, but WITHOUT ANY WARRANTY; without even the implied
- *     warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR
- *     PURPOSE.  See the GNU General Public License for more
- *     details.
+ * This program is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
+ * details.
  *
- *     You should have received a copy of the GNU General Public
- *     License along with this program; if not, write to the Free
- *     Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
- *     Boston, MA  02110-1301, USA.
+ * You should have received a copy of the GNU General Public License along with
+ * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -244,34 +240,34 @@ void mutt_set_langinfo_charset (void)
 void mutt_canonical_charset (char *dest, size_t dlen, const char *name)
 {
   size_t i;
-  char *p, *ext;
+  char *p = NULL, *ext = NULL;
   char in[LONG_STRING], scratch[LONG_STRING];
 
   strfcpy (in, name, sizeof (in));
   if ((ext = strchr (in, '/')))
     *ext++ = 0;
 
-  if (!ascii_strcasecmp (in, "utf-8") || !ascii_strcasecmp (in, "utf8"))
+  if ((ascii_strcasecmp (in, "utf-8") == 0) || (ascii_strcasecmp (in, "utf8") == 0))
   {
     strfcpy (dest, "utf-8", dlen);
     goto out;
   }
 
   /* catch some common iso-8859-something misspellings */
-  if (!ascii_strncasecmp (in, "8859", 4) && in[4] != '-')
+  if ((ascii_strncasecmp (in, "8859", 4) == 0) && in[4] != '-')
     snprintf (scratch, sizeof (scratch), "iso-8859-%s", in +4);
-  else if (!ascii_strncasecmp (in, "8859-", 5))
+  else if (ascii_strncasecmp (in, "8859-", 5) == 0)
     snprintf (scratch, sizeof (scratch), "iso-8859-%s", in + 5);
-  else if (!ascii_strncasecmp (in, "iso8859", 7) && in[7] != '-')
+  else if ((ascii_strncasecmp (in, "iso8859", 7) == 0) && in[7] != '-')
     snprintf (scratch, sizeof (scratch), "iso_8859-%s", in + 7);
-  else if (!ascii_strncasecmp (in, "iso8859-", 8))
+  else if (ascii_strncasecmp (in, "iso8859-", 8) == 0)
     snprintf (scratch, sizeof (scratch), "iso_8859-%s", in + 8);
   else
     strfcpy (scratch, in, sizeof (scratch));
 
   for (i = 0; PreferredMIMENames[i].key; i++)
-    if (!ascii_strcasecmp (scratch, PreferredMIMENames[i].key) ||
-	!mutt_strcasecmp (scratch, PreferredMIMENames[i].key))
+    if ((ascii_strcasecmp (scratch, PreferredMIMENames[i].key) == 0) ||
+	(mutt_strcasecmp (scratch, PreferredMIMENames[i].key) == 0))
     {
       strfcpy (dest, PreferredMIMENames[i].pref, dlen);
       goto out;
@@ -307,15 +303,15 @@ int mutt_chscmp (const char *s, const char *chs)
   mutt_canonical_charset (buffer, sizeof (buffer), s);
   a = mutt_strlen (buffer);
   b = mutt_strlen (chs);
-  return !ascii_strncasecmp (a > b ? buffer : chs,
-			     a > b ? chs : buffer, MIN(a,b));
+  return (ascii_strncasecmp (a > b ? buffer : chs,
+			     a > b ? chs : buffer, MIN(a,b)) == 0);
 }
 
 char *mutt_get_default_charset (void)
 {
   static char fcharset[SHORT_STRING];
   const char *c = AssumedCharset;
-  const char *c1;
+  const char *c1 = NULL;
 
   if (c && *c) {
     c1 = strchr (c, ':');
@@ -337,13 +333,12 @@ char *mutt_get_default_charset (void)
  * applied to tocode. Highlight note: The top-well-named MUTT_ICONV_HOOK_FROM
  * acts on charset-hooks, not at all on iconv-hooks.
  */
-
 iconv_t mutt_iconv_open (const char *tocode, const char *fromcode, int flags)
 {
   char tocode1[SHORT_STRING];
   char fromcode1[SHORT_STRING];
-  char *tocode2, *fromcode2;
-  char *tmp;
+  char *tocode2 = NULL, *fromcode2 = NULL;
+  char *tmp = NULL;
 
   iconv_t cd;
 
@@ -376,7 +371,6 @@ iconv_t mutt_iconv_open (const char *tocode, const char *fromcode, int flags)
  * If you're supplying inrepls, the source charset should be stateless;
  * if you're supplying an outrepl, the target charset should be.
  */
-
 size_t mutt_iconv (iconv_t cd, ICONV_CONST char **inbuf, size_t *inbytesleft,
 		   char **outbuf, size_t *outbytesleft,
 		   ICONV_CONST char **inrepls, const char *outrepl)
@@ -449,7 +443,6 @@ size_t mutt_iconv (iconv_t cd, ICONV_CONST char **inbuf, size_t *inbytesleft,
  * Parameter flags is given as-is to mutt_iconv_open(). See there
  * for its meaning and usage policy.
  */
-
 int mutt_convert_string (char **ps, const char *from, const char *to, int flags)
 {
   iconv_t cd;
@@ -462,11 +455,11 @@ int mutt_convert_string (char **ps, const char *from, const char *to, int flags)
   if (to && from && (cd = mutt_iconv_open (to, from, flags)) != (iconv_t)-1)
   {
     int len;
-    ICONV_CONST char *ib;
-    char *buf, *ob;
+    ICONV_CONST char *ib = NULL;
+    char *buf = NULL, *ob = NULL;
     size_t ibl, obl;
-    ICONV_CONST char **inrepls = 0;
-    char *outrepl = 0;
+    ICONV_CONST char **inrepls = NULL;
+    char *outrepl = NULL;
 
     if (mutt_is_utf8 (to))
       outrepl = "\357\277\275";
@@ -526,7 +519,7 @@ struct fgetconv_not
  */
 FGETCONV *fgetconv_open (FILE *file, const char *from, const char *to, int flags)
 {
-  struct fgetconv_s *fc;
+  struct fgetconv_s *fc = NULL;
   iconv_t cd = (iconv_t)-1;
   static ICONV_CONST char *repls[] = { "\357\277\275", "?", 0 };
 
@@ -642,8 +635,8 @@ int mutt_check_charset (const char *s, int strict)
   if (!strict)
     for (i = 0; PreferredMIMENames[i].key; i++)
     {
-      if (ascii_strcasecmp (PreferredMIMENames[i].key, s) == 0 ||
-	  ascii_strcasecmp (PreferredMIMENames[i].pref, s) == 0)
+      if ((ascii_strcasecmp (PreferredMIMENames[i].key, s) == 0) ||
+	  (ascii_strcasecmp (PreferredMIMENames[i].pref, s) == 0))
 	return 0;
     }
 

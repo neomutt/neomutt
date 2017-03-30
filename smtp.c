@@ -1,20 +1,19 @@
-/* mutt - text oriented MIME mail user agent
+/**
  * Copyright (C) 2002 Michael R. Elkins <me@mutt.org>
  * Copyright (C) 2005-2009 Brendan Cully <brendan@kublai.com>
  *
- *     This program is free software; you can redistribute it and/or modify
- *     it under the terms of the GNU General Public License as published by
- *     the Free Software Foundation; either version 2 of the License, or
- *     (at your option) any later version.
+ * This program is free software: you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License as published by the Free Software
+ * Foundation, either version 2 of the License, or (at your option) any later
+ * version.
  *
- *     This program is distributed in the hope that it will be useful,
- *     but WITHOUT ANY WARRANTY; without even the implied warranty of
- *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *     GNU General Public License for more details.
+ * This program is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
+ * details.
  *
- *     You should have received a copy of the GNU General Public License
- *     along with this program; if not, write to the Free Software
- *     Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111, USA.
+ * You should have received a copy of the GNU General Public License along with
+ * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 /* This file contains code for direct SMTP delivery of email messages. */
@@ -103,19 +102,19 @@ smtp_get_resp (CONNECTION * conn)
       return smtp_err_read;
     }
 
-    if (!ascii_strncasecmp ("8BITMIME", buf + 4, 8))
+    if (ascii_strncasecmp ("8BITMIME", buf + 4, 8) == 0)
       mutt_bit_set (Capabilities, EIGHTBITMIME);
-    else if (!ascii_strncasecmp ("AUTH ", buf + 4, 5))
+    else if (ascii_strncasecmp ("AUTH ", buf + 4, 5) == 0)
     {
       mutt_bit_set (Capabilities, AUTH);
       FREE (&AuthMechs);
       AuthMechs = safe_strdup (buf + 9);
     }
-    else if (!ascii_strncasecmp ("DSN", buf + 4, 3))
+    else if (ascii_strncasecmp ("DSN", buf + 4, 3) == 0)
       mutt_bit_set (Capabilities, DSN);
-    else if (!ascii_strncasecmp ("STARTTLS", buf + 4, 8))
+    else if (ascii_strncasecmp ("STARTTLS", buf + 4, 8) == 0)
       mutt_bit_set (Capabilities, STARTTLS);
-    else if (!ascii_strncasecmp ("SMTPUTF8", buf + 4, 8))
+    else if (ascii_strncasecmp ("SMTPUTF8", buf + 4, 8) == 0)
       mutt_bit_set (Capabilities, SMTPUTF8);
 
     if (smtp_code (buf, n, &n) < 0)
@@ -163,7 +162,7 @@ static int
 smtp_data (CONNECTION * conn, const char *msgfile)
 {
   char buf[1024];
-  FILE *fp = 0;
+  FILE *fp = NULL;
   progress_t progress;
   struct stat st;
   int r, term = 0;
@@ -269,9 +268,9 @@ static int smtp_fill_account (ACCOUNT* account)
 {
   static unsigned short SmtpPort = 0;
 
-  struct servent* service;
+  struct servent* service = NULL;
   ciss_url_t url;
-  char* urlstr;
+  char* urlstr = NULL;
 
   account->flags = 0;
   account->port = 0;
@@ -317,7 +316,7 @@ static int smtp_fill_account (ACCOUNT* account)
 static int smtp_helo (CONNECTION* conn)
 {
   char buf[LONG_STRING];
-  const char* fqdn;
+  const char* fqdn = NULL;
 
   memset (Capabilities, 0, sizeof (Capabilities));
 
@@ -348,9 +347,9 @@ static int smtp_helo (CONNECTION* conn)
 #ifdef USE_SASL
 static int smtp_auth_sasl (CONNECTION* conn, const char* mechlist)
 {
-  sasl_conn_t* saslconn;
+  sasl_conn_t* saslconn = NULL;
   sasl_interact_t* interaction = NULL;
-  const char* mech;
+  const char* mech = NULL;
   const char* data = NULL;
   unsigned int len;
   char *buf = NULL;
@@ -455,8 +454,8 @@ static int smtp_auth (CONNECTION* conn)
   if (SmtpAuthenticators && *SmtpAuthenticators)
   {
     char* methods = safe_strdup (SmtpAuthenticators);
-    char* method;
-    char* delim;
+    char* method = NULL;
+    char* delim = NULL;
 
     for (method = methods; method; method = delim)
     {
@@ -507,8 +506,8 @@ static int smtp_auth_plain(CONNECTION* conn)
 {
   char buf[LONG_STRING];
   size_t len;
-  const char *method;
-  const char *delim;
+  const char *method = NULL;
+  const char *delim = NULL;
   const char *error = _("SASL authentication failed");
 
   if (!SmtpAuthenticators || !*SmtpAuthenticators)
@@ -626,9 +625,9 @@ int
 mutt_smtp_send (const ADDRESS* from, const ADDRESS* to, const ADDRESS* cc,
                 const ADDRESS* bcc, const char *msgfile, int eightbit)
 {
-  CONNECTION *conn;
+  CONNECTION *conn = NULL;
   ACCOUNT account;
-  const char* envfrom;
+  const char* envfrom = NULL;
   char buf[1024];
   int ret = -1;
 

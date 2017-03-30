@@ -1,19 +1,19 @@
-/* Copyright (C) 1997 Alain Penders <Alain@Finale-Dev.com>
+/**
+ * Copyright (C) 1997 Alain Penders <Alain@Finale-Dev.com>
  * Copyright (C) 2016 Richard Russon <rich@flatcap.org>
  *
- *     This program is free software; you can redistribute it and/or modify
- *     it under the terms of the GNU General Public License as published by
- *     the Free Software Foundation; either version 2 of the License, or
- *     (at your option) any later version.
+ * This program is free software: you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License as published by the Free Software
+ * Foundation, either version 2 of the License, or (at your option) any later
+ * version.
  *
- *     This program is distributed in the hope that it will be useful,
- *     but WITHOUT ANY WARRANTY; without even the implied warranty of
- *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *     GNU General Public License for more details.
+ * This program is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
+ * details.
  *
- *     You should have received a copy of the GNU General Public License
- *     along with this program; if not, write to the Free Software
- *     Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ * You should have received a copy of the GNU General Public License along with
+ * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -146,7 +146,7 @@ setup_paths (CONTEXT *ctx)
     return -1;
 
   char tmppath[_POSIX_PATH_MAX];
-  FILE *tmpfp;
+  FILE *tmpfp = NULL;
 
   /* Setup the right paths */
   FREE(&ctx->realpath);
@@ -278,7 +278,7 @@ set_compress_info (CONTEXT *ctx)
 static void
 free_compress_info (CONTEXT *ctx)
 {
-  COMPRESS_INFO *ci;
+  COMPRESS_INFO *ci = NULL;
 
   if (!ctx || !ctx->compress_info)
     return;
@@ -638,8 +638,8 @@ comp_close_mailbox (CONTEXT *ctx)
   }
   else
   {
-    const char *append;
-    const char *msg;
+    const char *append = NULL;
+    const char *msg = NULL;
 
     /* The file exists and we can append */
     if ((access (ctx->realpath, F_OK) == 0) && ci->append)

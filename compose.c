@@ -1,20 +1,19 @@
-/*
+/**
  * Copyright (C) 1996-2000,2002,2007,2010,2012 Michael R. Elkins <me@mutt.org>
  * Copyright (C) 2004 g10 Code GmbH
  *
- *     This program is free software; you can redistribute it and/or modify
- *     it under the terms of the GNU General Public License as published by
- *     the Free Software Foundation; either version 2 of the License, or
- *     (at your option) any later version.
+ * This program is free software: you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License as published by the Free Software
+ * Foundation, either version 2 of the License, or (at your option) any later
+ * version.
  *
- *     This program is distributed in the hope that it will be useful,
- *     but WITHOUT ANY WARRANTY; without even the implied warranty of
- *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *     GNU General Public License for more details.
+ * This program is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
+ * details.
  *
- *     You should have received a copy of the GNU General Public License
- *     along with this program; if not, write to the Free Software
- *     Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ * You should have received a copy of the GNU General Public License along with
+ * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -205,7 +204,7 @@ static void redraw_crypt_lines (HEADER *msg)
 static void redraw_mix_line (LIST *chain)
 {
   int c;
-  char *t;
+  char *t = NULL;
 
   /* L10N: "Mix" refers to the MixMaster chain for anonymous email */
   mutt_window_mvprintw (MuttIndexWindow, HDR_MIX, 0, TITLE_FMT, _("Mix: "));
@@ -341,7 +340,7 @@ static int edit_address_list (int line, ADDRESS **addr)
   if (option (OPTNEEDREDRAW))
   {
     unset_option (OPTNEEDREDRAW);
-    return (REDRAW_FULL);
+    return REDRAW_FULL;
   }
 
   if (mutt_addrlist_to_intl (*addr, &err) != 0)
@@ -371,7 +370,7 @@ static int delete_attachment (MUTTMENU *menu, short *idxlen, int x)
   {
     mutt_error (_("You may not delete the only attachment."));
     idx[x]->content->tagged = 0;
-    return (-1);
+    return -1;
   }
 
   for (y = 0; y < *idxlen; y++)
@@ -393,7 +392,7 @@ static int delete_attachment (MUTTMENU *menu, short *idxlen, int x)
   idx[*idxlen - 1] = NULL;
   menu->max = --(*idxlen);
 
-  return (0);
+  return 0;
 }
 
 static void update_idx (MUTTMENU *menu, ATTACHPTR **idx, short idxlen)
@@ -417,14 +416,13 @@ static void update_idx (MUTTMENU *menu, ATTACHPTR **idx, short idxlen)
  * applied.
  *
  */
-
 static unsigned long cum_attachs_size (MUTTMENU *menu)
 {
   size_t s;
   unsigned short i;
   ATTACHPTR **idx = menu->data;
-  CONTENT *info;
-  BODY *b;
+  CONTENT *info = NULL;
+  BODY *b = NULL;
 
   for (i = 0, s = 0; i < menu->max; i++)
   {
@@ -467,7 +465,6 @@ static void compose_status_line (char *buf, size_t buflen, size_t col, int cols,
  * This function is similar to status_format_str().  Look at that function for
  * help when modifying this function.
  */
-
 static const char *
 compose_format_str (char *buf, size_t buflen, size_t col, int cols, char op, const char *src,
 		   const char *prefix, const char *ifstring,
@@ -504,7 +501,7 @@ compose_format_str (char *buf, size_t buflen, size_t col, int cols, char op, con
 
     case 0:
       *buf = 0;
-      return (src);
+      return src;
 
     default:
       snprintf (buf, buflen, "%%%s%c", prefix, op);
@@ -516,7 +513,7 @@ compose_format_str (char *buf, size_t buflen, size_t col, int cols, char op, con
   else if (flags & MUTT_FORMAT_OPTIONAL)
     compose_status_line (buf, buflen, col, cols, menu, elsestring);
 
-  return (src);
+  return src;
 }
 
 static void compose_status_line (char *buf, size_t buflen, size_t col, int cols,
@@ -541,7 +538,7 @@ int mutt_compose_menu (HEADER *msg,   /* structure for new message */
   char helpstr[LONG_STRING];
   char buf[LONG_STRING];
   char fname[_POSIX_PATH_MAX];
-  MUTTMENU *menu;
+  MUTTMENU *menu = NULL;
   ATTACHPTR **idx = NULL;
   short idxlen = 0;
   short idxmax = 0;
@@ -732,7 +729,7 @@ int mutt_compose_menu (HEADER *msg,   /* structure for new message */
 	}
 	/* fall through */
       case OP_COMPOSE_EDIT_HEADERS:
-	if (mutt_strcmp ("builtin", Editor) != 0 &&
+	if ((mutt_strcmp ("builtin", Editor) != 0) &&
 	    (op == OP_COMPOSE_EDIT_HEADERS ||
 	    (op == OP_COMPOSE_EDIT_MESSAGE && option (OPTEDITHDRS))))
 	{
@@ -810,7 +807,7 @@ int mutt_compose_menu (HEADER *msg,   /* structure for new message */
 
       case OP_COMPOSE_ATTACH_FILE:
 	{
-	  char *prompt, **files;
+	  char *prompt = NULL, **files = NULL;
 	  int error, numfiles;
 
 	  fname[0] = 0;
@@ -861,8 +858,8 @@ int mutt_compose_menu (HEADER *msg,   /* structure for new message */
       case OP_COMPOSE_ATTACH_NEWS_MESSAGE:
 #endif
 	{
-	  char *prompt;
-	  HEADER *h;
+	  char *prompt = NULL;
+	  HEADER *h = NULL;
 
 	  fname[0] = 0;
 	  prompt = _("Open mailbox to attach message from");
@@ -1051,7 +1048,7 @@ int mutt_compose_menu (HEADER *msg,   /* structure for new message */
         CHECK_COUNT;
         if (menu->tagprefix)
         {
-	  BODY *top;
+	  BODY *top = NULL;
 	  for (top = msg->content; top; top = top->next)
 	  {
 	    if (top->tagged)
@@ -1156,7 +1153,7 @@ int mutt_compose_menu (HEADER *msg,   /* structure for new message */
         CHECK_COUNT;
         if(menu->tagprefix)
         {
-	  BODY *top;
+	  BODY *top = NULL;
 	  for(top = msg->content; top; top = top->next)
 	  {
 	    if(top->tagged)
@@ -1172,7 +1169,7 @@ int mutt_compose_menu (HEADER *msg,   /* structure for new message */
 
       case OP_COMPOSE_RENAME_ATTACHMENT:
         {
-          char *src;
+          char *src = NULL;
           int ret;
 
           CHECK_COUNT;
@@ -1227,9 +1224,9 @@ int mutt_compose_menu (HEADER *msg,   /* structure for new message */
       case OP_COMPOSE_NEW_MIME:
 	{
 	  char type[STRING];
-	  char *p;
+	  char *p = NULL;
 	  int itype;
-	  FILE *fp;
+	  FILE *fp = NULL;
 
           mutt_window_clearline (MuttMessageWindow, 0);
 	  fname[0] = 0;
@@ -1514,6 +1511,6 @@ int mutt_compose_menu (HEADER *msg,   /* structure for new message */
 
   FREE (&idx);
 
-  return (r);
+  return r;
 }
 

@@ -1,21 +1,20 @@
-/*
+/**
  * Copyright (C) 2001-2002 Oliver Ehli <elmy@acm.org>
  * Copyright (C) 2002 Mike Schiraldi <raldi@research.netsol.com>
  * Copyright (C) 2004 g10 Code GmbH
  *
- *     This program is free software; you can redistribute it and/or modify
- *     it under the terms of the GNU General Public License as published by
- *     the Free Software Foundation; either version 2 of the License, or
- *     (at your option) any later version.
+ * This program is free software: you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License as published by the Free Software
+ * Foundation, either version 2 of the License, or (at your option) any later
+ * version.
  *
- *     This program is distributed in the hope that it will be useful,
- *     but WITHOUT ANY WARRANTY; without even the implied warranty of
- *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *     GNU General Public License for more details.
+ * This program is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
+ * details.
  *
- *     You should have received a copy of the GNU General Public License
- *     along with this program; if not, write to the Free Software
- *     Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ * You should have received a copy of the GNU General Public License along with
+ * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -48,8 +47,6 @@
 # include <sys/resource.h>
 #endif
 
-#ifdef CRYPT_BACKEND_CLASSIC_SMIME
-
 #include "mutt_crypt.h"
 
 struct smime_command_context {
@@ -74,7 +71,7 @@ static char SmimeIntermediateToUse[_POSIX_PATH_MAX];
 
 static void smime_free_key (smime_key_t **keylist)
 {
-  smime_key_t *key;
+  smime_key_t *key = NULL;
 
   if (!keylist)
     return;
@@ -94,7 +91,7 @@ static void smime_free_key (smime_key_t **keylist)
 
 static smime_key_t *smime_copy_key (smime_key_t *key)
 {
-  smime_key_t *copy;
+  smime_key_t *copy = NULL;
 
   if (!key)
     return NULL;
@@ -140,7 +137,7 @@ int smime_valid_passphrase (void)
   if (mutt_get_password (_("Enter S/MIME passphrase:"), SmimePass, sizeof (SmimePass)) == 0)
     {
       SmimeExptime = time (NULL) + SmimeTimeout;
-      return (1);
+      return 1;
     }
   else
     SmimeExptime = 0;
@@ -154,7 +151,6 @@ int smime_valid_passphrase (void)
  */
 
 /* This is almost identical to ppgp's invoking interface. */
-
 static const char *_mutt_fmt_smime_command (char *dest,
 					    size_t destlen,
 					    size_t col,
@@ -290,7 +286,7 @@ static const char *_mutt_fmt_smime_command (char *dest,
     mutt_FormatString (dest, destlen, col, cols, elsestring, _mutt_fmt_smime_command,
 		       data, 0);
 
-  return (src);
+  return src;
 }
 
 
@@ -373,7 +369,7 @@ static void smime_entry (char *s, size_t l, MUTTMENU * menu, int num)
 {
   smime_key_t **Table = (smime_key_t **) menu->data;
   smime_key_t *this = Table[num];
-  char* truststate;
+  char* truststate = NULL;
   switch(this->trust) {
     case 't':
       truststate = N_("Trusted   ");
@@ -411,7 +407,7 @@ static smime_key_t *smime_select_key (smime_key_t *keys, char *query)
   char helpstr[LONG_STRING];
   char buf[LONG_STRING];
   char title[256];
-  MUTTMENU* menu;
+  MUTTMENU* menu = NULL;
   char *s = "";
   int done = 0;
 
@@ -501,8 +497,8 @@ static smime_key_t *smime_select_key (smime_key_t *keys, char *query)
 
 static smime_key_t *smime_parse_key(char *buf)
 {
-  smime_key_t *key;
-  char *pend, *p;
+  smime_key_t *key = NULL;
+  char *pend = NULL, *p = NULL;
   int field = 0;
 
   key = safe_calloc (1, sizeof (smime_key_t));
@@ -583,9 +579,9 @@ static smime_key_t *smime_parse_key(char *buf)
 static smime_key_t *smime_get_candidates(char *search, short public)
 {
   char index_file[_POSIX_PATH_MAX];
-  FILE *fp;
+  FILE *fp = NULL;
   char buf[LONG_STRING];
-  smime_key_t *key, *results, **results_end;
+  smime_key_t *key = NULL, *results = NULL, **results_end = NULL;
 
   results = NULL;
   results_end = &results;
@@ -622,7 +618,7 @@ static smime_key_t *smime_get_candidates(char *search, short public)
  */
 static smime_key_t *smime_get_key_by_hash(char *hash, short public)
 {
-  smime_key_t *results, *result;
+  smime_key_t *results = NULL, *result = NULL;
   smime_key_t *match = NULL;
 
   results = smime_get_candidates(hash, public);
@@ -642,10 +638,10 @@ static smime_key_t *smime_get_key_by_hash(char *hash, short public)
 
 static smime_key_t *smime_get_key_by_addr(char *mailbox, short abilities, short public, short may_ask)
 {
-  smime_key_t *results, *result;
+  smime_key_t *results = NULL, *result = NULL;
   smime_key_t *matches = NULL;
   smime_key_t **matches_end = &matches;
-  smime_key_t *match;
+  smime_key_t *match = NULL;
   smime_key_t *trusted_match = NULL;
   smime_key_t *valid_match = NULL;
   smime_key_t *return_key = NULL;
@@ -714,10 +710,10 @@ static smime_key_t *smime_get_key_by_addr(char *mailbox, short abilities, short 
 
 static smime_key_t *smime_get_key_by_str(char *str, short abilities, short public)
 {
-  smime_key_t *results, *result;
+  smime_key_t *results = NULL, *result = NULL;
   smime_key_t *matches = NULL;
   smime_key_t **matches_end = &matches;
-  smime_key_t *match;
+  smime_key_t *match = NULL;
   smime_key_t *return_key = NULL;
 
   if (! str)
@@ -755,7 +751,7 @@ static smime_key_t *smime_get_key_by_str(char *str, short abilities, short publi
 
 static smime_key_t *smime_ask_for_key(char *prompt, short abilities, short public)
 {
-  smime_key_t *key;
+  smime_key_t *key = NULL;
   char resp[SHORT_STRING];
 
   if (!prompt) prompt = _("Enter keyID: ");
@@ -781,7 +777,6 @@ static smime_key_t *smime_ask_for_key(char *prompt, short abilities, short publi
    This sets the '*ToUse' variables for an upcoming decryption, where
    the required key is different from SmimeDefaultKey.
 */
-
 static void _smime_getkeys (char *mailbox)
 {
   smime_key_t *key = NULL;
@@ -803,7 +798,7 @@ static void _smime_getkeys (char *mailbox)
 
     /* the key used last time. */
     if (*SmimeKeyToUse &&
-        !mutt_strcasecmp (k, SmimeKeyToUse + mutt_strlen (SmimeKeys)+1))
+        (mutt_strcasecmp (k, SmimeKeyToUse + mutt_strlen (SmimeKeys)+1) == 0))
     {
       smime_free_key (&key);
       return;
@@ -816,7 +811,7 @@ static void _smime_getkeys (char *mailbox)
     snprintf (SmimeCertToUse, sizeof (SmimeCertToUse), "%s/%s",
 	      NONULL(SmimeCertificates), k);
 
-    if (mutt_strcasecmp (k, SmimeDefaultKey))
+    if (mutt_strcasecmp (k, SmimeDefaultKey) != 0)
       smime_void_passphrase ();
 
     smime_free_key (&key);
@@ -825,8 +820,8 @@ static void _smime_getkeys (char *mailbox)
 
   if (*SmimeKeyToUse)
   {
-    if (!mutt_strcasecmp (SmimeDefaultKey,
-                          SmimeKeyToUse + mutt_strlen (SmimeKeys)+1))
+    if (mutt_strcasecmp (SmimeDefaultKey,
+                          SmimeKeyToUse + mutt_strlen (SmimeKeys)+1) == 0)
       return;
 
     smime_void_passphrase ();
@@ -841,7 +836,7 @@ static void _smime_getkeys (char *mailbox)
 
 void smime_getkeys (ENVELOPE *env)
 {
-  ADDRESS *t;
+  ADDRESS *t = NULL;
   int found = 0;
 
   if (option (OPTSDEFAULTDECRYPTKEY) && SmimeDefaultKey && *SmimeDefaultKey)
@@ -879,14 +874,13 @@ void smime_getkeys (ENVELOPE *env)
  * If oppenc_mode is true, only keys that can be determined without
  * prompting will be used.
  */
-
 char *smime_find_keys (ADDRESS *adrlist, int oppenc_mode)
 {
   smime_key_t *key = NULL;
-  char *keyID, *keylist = NULL;
+  char *keyID = NULL, *keylist = NULL;
   size_t keylist_size = 0;
   size_t keylist_used = 0;
-  ADDRESS *p, *q;
+  ADDRESS *p = NULL, *q = NULL;
 
   for (p = adrlist; p ; p = p->next)
   {
@@ -918,7 +912,7 @@ char *smime_find_keys (ADDRESS *adrlist, int oppenc_mode)
 
     smime_free_key (&key);
   }
-  return (keylist);
+  return keylist;
 }
 
 
@@ -1200,7 +1194,6 @@ static char *smime_extract_signer_certificate (char *infile)
 
 
 /* Add a certificate and update index file (externally). */
-
 void smime_invoke_import (char *infile, char *mailbox)
 {
   char tmpfname[_POSIX_PATH_MAX], *certfile = NULL, buf[STRING];
@@ -1270,7 +1263,7 @@ void smime_invoke_import (char *infile, char *mailbox)
 int smime_verify_sender(HEADER *h)
 {
   char *mbox = NULL, *certfile, tempfname[_POSIX_PATH_MAX];
-  FILE *fpout;
+  FILE *fpout = NULL;
   int retval=1;
 
   mutt_mktemp (tempfname, sizeof (tempfname));
@@ -1374,7 +1367,7 @@ BODY *smime_build_smime_entity (BODY *a, char *certlist)
   char smimeinfile[_POSIX_PATH_MAX];
   char *cert_start = certlist, *cert_end = certlist;
   FILE *smimein = NULL, *smimeerr = NULL, *fpout = NULL, *fptmp = NULL;
-  BODY *t;
+  BODY *t = NULL;
   int err = 0, empty;
   pid_t thepid;
 
@@ -1382,7 +1375,7 @@ BODY *smime_build_smime_entity (BODY *a, char *certlist)
   if ((fpout = safe_fopen (tempfile, "w+")) == NULL)
   {
     mutt_perror (tempfile);
-    return (NULL);
+    return NULL;
   }
 
   mutt_mktemp (smimeerrfile, sizeof (smimeerrfile));
@@ -1434,7 +1427,7 @@ BODY *smime_build_smime_entity (BODY *a, char *certlist)
     mutt_unlink (smimeinfile);
     mutt_unlink (certfile);
     safe_fclose (&fpout);
-    return (NULL);
+    return NULL;
   }
 
   safe_fclose (&smimein);
@@ -1466,7 +1459,7 @@ BODY *smime_build_smime_entity (BODY *a, char *certlist)
     /* fatal error while trying to encrypt message */
     if (!err) mutt_any_key_to_continue (_("No output from OpenSSL..."));
     mutt_unlink (tempfile);
-    return (NULL);
+    return NULL;
   }
 
   t = mutt_new_body ();
@@ -1483,7 +1476,7 @@ BODY *smime_build_smime_entity (BODY *a, char *certlist)
   t->parts=0;
   t->next=0;
 
-  return (t);
+  return t;
 }
 
 
@@ -1494,7 +1487,7 @@ BODY *smime_build_smime_entity (BODY *a, char *certlist)
  */
 static char *openssl_md_to_smime_micalg(char *md)
 {
-  char *micalg;
+  char *micalg = NULL;
   size_t l;
 
   if (!md)
@@ -1518,16 +1511,16 @@ static char *openssl_md_to_smime_micalg(char *md)
 
 BODY *smime_sign_message (BODY *a )
 {
-  BODY *t;
+  BODY *t = NULL;
   char buffer[LONG_STRING];
   char signedfile[_POSIX_PATH_MAX], filetosign[_POSIX_PATH_MAX];
   FILE *smimein = NULL, *smimeout = NULL, *smimeerr = NULL, *sfp = NULL;
   int err = 0;
   int empty = 0;
   pid_t thepid;
-  smime_key_t *default_key;
-  char *intermediates;
-  char *micalg;
+  smime_key_t *default_key = NULL;
+  char *intermediates = NULL;
+  char *micalg = NULL;
 
   if (!SmimeDefaultKey)
   {
@@ -1568,7 +1561,7 @@ BODY *smime_sign_message (BODY *a )
 
   default_key = smime_get_key_by_hash (SmimeDefaultKey, 1);
   if ((! default_key) ||
-      (! mutt_strcmp ("?", default_key->issuer)))
+      (mutt_strcmp ("?", default_key->issuer) == 0))
     intermediates = SmimeDefaultKey; /* so openssl won't complain in any case */
   else
     intermediates = default_key->issuer;
@@ -1623,7 +1616,7 @@ BODY *smime_sign_message (BODY *a )
   {
     mutt_any_key_to_continue (_("No output from OpenSSL..."));
     mutt_unlink (signedfile);
-    return (NULL); /* fatal error while signing */
+    return NULL; /* fatal error while signing */
   }
 
   t = mutt_new_body ();
@@ -1656,7 +1649,7 @@ BODY *smime_sign_message (BODY *a )
   t->encoding = ENCBASE64;
   t->unlink = 1; /* ok to remove this file after sending. */
 
-  return (a);
+  return a;
 
 }
 
@@ -1777,7 +1770,7 @@ int smime_verify_one (BODY *sigbdy, STATE *s, const char *tempfile)
       rewind (smimeerr);
 
       line = mutt_read_line (line, &linelen, smimeerr, &lineno, 0);
-      if (linelen && !ascii_strcasecmp (line, "verification successful"))
+      if (linelen && (ascii_strcasecmp (line, "verification successful") == 0))
 	badsig = 0;
 
       FREE (&line);
@@ -1813,7 +1806,6 @@ int smime_verify_one (BODY *sigbdy, STATE *s, const char *tempfile)
   This handles application/pkcs7-mime which can either be a signed
   or an encrypted message.
 */
-
 static BODY *smime_handle_entity (BODY *m, STATE *s, FILE *outFile)
 {
   int len=0;
@@ -2000,7 +1992,7 @@ static BODY *smime_handle_entity (BODY *m, STATE *s, FILE *outFile)
     rewind (smimeerr);
 
     line = mutt_read_line (line, &linelen, smimeerr, &lineno, 0);
-    if (linelen && !ascii_strcasecmp (line, "verification successful"))
+    if (linelen && (ascii_strcasecmp (line, "verification successful") == 0))
       m->goodsig = 1;
     FREE (&line);
   }
@@ -2011,7 +2003,7 @@ static BODY *smime_handle_entity (BODY *m, STATE *s, FILE *outFile)
   }
   safe_fclose (&smimeerr);
 
-  return (p);
+  return p;
 }
 
 
@@ -2044,7 +2036,7 @@ int smime_decrypt_mime (FILE *fpin, FILE **fpout, BODY *b, BODY **cur)
   if ((tmpfp = safe_fopen (tempfile, "w+")) == NULL)
   {
     mutt_perror (tempfile);
-    return (-1);
+    return -1;
   }
 
   mutt_unlink (tempfile);
@@ -2094,8 +2086,8 @@ int smime_application_smime_handler (BODY *m, STATE *s)
 
 int smime_send_menu (HEADER *msg, int *redraw)
 {
-  smime_key_t *key;
-  char *prompt, *letters, *choices;
+  smime_key_t *key = NULL;
+  char *prompt = NULL, *letters = NULL, *choices = NULL;
   int choice;
 
   if (!(WithCrypto & APPLICATION_SMIME))
@@ -2281,8 +2273,6 @@ int smime_send_menu (HEADER *msg, int *redraw)
     }
   }
 
-  return (msg->security);
+  return msg->security;
 }
 
-
-#endif /* CRYPT_BACKEND_CLASSIC_SMIME */

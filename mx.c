@@ -1,20 +1,19 @@
-/*
+/**
  * Copyright (C) 1996-2002,2010,2013 Michael R. Elkins <me@mutt.org>
  * Copyright (C) 1999-2003 Thomas Roessler <roessler@does-not-exist.org>
  *
- *     This program is free software; you can redistribute it and/or modify
- *     it under the terms of the GNU General Public License as published by
- *     the Free Software Foundation; either version 2 of the License, or
- *     (at your option) any later version.
+ * This program is free software: you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License as published by the Free Software
+ * Foundation, either version 2 of the License, or (at your option) any later
+ * version.
  *
- *     This program is distributed in the hope that it will be useful,
- *     but WITHOUT ANY WARRANTY; without even the implied warranty of
- *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *     GNU General Public License for more details.
+ * This program is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
+ * details.
  *
- *     You should have received a copy of the GNU General Public License
- *     along with this program; if not, write to the Free Software
- *     Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ * You should have received a copy of the GNU General Public License along with
+ * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -431,7 +430,7 @@ int mx_get_magic (const char *path)
   struct stat st;
   int magic = 0;
   char tmp[_POSIX_PATH_MAX];
-  FILE *f;
+  FILE *f = NULL;
 
 #ifdef USE_IMAP
   if(mx_is_imap(path))
@@ -457,7 +456,7 @@ int mx_get_magic (const char *path)
   {
     mutt_debug (1, "mx_get_magic(): unable to stat %s: %s (errno %d).\n",
                 path, strerror (errno), errno);
-    return (-1);
+    return -1;
   }
 
   if (S_ISDIR (st.st_mode))
@@ -474,9 +473,9 @@ int mx_get_magic (const char *path)
   {
     /* hard to tell what zero-length files are, so assume the default magic */
     if (DefaultMagic == MUTT_MBOX || DefaultMagic == MUTT_MMDF)
-      return (DefaultMagic);
+      return DefaultMagic;
     else
-      return (MUTT_MBOX);
+      return MUTT_MBOX;
   }
   else if ((f = fopen (path, "r")) != NULL)
   {
@@ -519,7 +518,7 @@ int mx_get_magic (const char *path)
   {
     mutt_debug (1, "mx_get_magic(): unable to open file %s for reading.\n",
                 path);
-    return (-1);
+    return -1;
   }
 
 #ifdef USE_COMPRESSED
@@ -528,7 +527,7 @@ int mx_get_magic (const char *path)
   if ((magic == 0) && mutt_comp_can_read (path))
     return MUTT_COMPRESSED;
 #endif
-  return (magic);
+  return magic;
 }
 
 /*
@@ -545,7 +544,7 @@ int mx_set_magic (const char *s)
   else if (ascii_strcasecmp (s, "maildir") == 0)
     DefaultMagic = MUTT_MAILDIR;
   else
-    return (-1);
+    return -1;
 
   return 0;
 }
@@ -670,7 +669,7 @@ CONTEXT *mx_open_mailbox (const char *path, int flags, CONTEXT *pctx)
     mx_fastclose_mailbox (ctx);
     if (!pctx)
       FREE (&ctx);
-    return (NULL);
+    return NULL;
   }
 
   mutt_make_label_hash (ctx);
@@ -710,7 +709,7 @@ CONTEXT *mx_open_mailbox (const char *path, int flags, CONTEXT *pctx)
   }
 
   unset_option (OPTFORCEREFRESH);
-  return (ctx);
+  return ctx;
 }
 
 /* free up memory associated with the mailbox context */
@@ -889,7 +888,7 @@ int mx_close_mailbox (CONTEXT *ctx, int *index_hint)
 
   if (read_msgs && quadoption (OPT_MOVE) != MUTT_NO && ctx->magic != MUTT_NNTP)
   {
-    char *p;
+    char *p = NULL;
 
     if ((p = mutt_find_hook (MUTT_MBOXHOOK, ctx->path)))
     {
@@ -909,7 +908,7 @@ int mx_close_mailbox (CONTEXT *ctx, int *index_hint)
       if ((move_messages = query_quadoption (OPT_MOVE, buf)) == MUTT_ABORT)
       {
 	ctx->closing = 0;
-	return (-1);
+	return -1;
       }
     }
   }
@@ -926,7 +925,7 @@ int mx_close_mailbox (CONTEXT *ctx, int *index_hint)
     if ((purge = query_quadoption (OPT_DELETE, buf)) == MUTT_ABORT)
     {
       ctx->closing = 0;
-      return (-1);
+      return -1;
     }
   }
 
@@ -1011,7 +1010,7 @@ int mx_close_mailbox (CONTEXT *ctx, int *index_hint)
   }
 
   /* copy mails to the trash before expunging */
-  if (purge && ctx->deleted && mutt_strcmp (ctx->path, TrashPath))
+  if (purge && ctx->deleted && (mutt_strcmp (ctx->path, TrashPath) != 0))
   {
     if (trash_append (ctx) != 0)
     {
@@ -1082,9 +1081,7 @@ int mx_close_mailbox (CONTEXT *ctx, int *index_hint)
 #include "mutt_notmuch.h"
 #endif
 
-
 /* update a Context structure's internal tables. */
-
 void mx_update_tables(CONTEXT *ctx, int committing)
 {
   int i, j;
@@ -1205,7 +1202,7 @@ int mx_sync_mailbox (CONTEXT *ctx, int *index_hint)
   {
     if (!ctx->quiet)
       mutt_message (_("Mailbox is unchanged."));
-    return (0);
+    return 0;
   }
 
   if (ctx->deleted)
@@ -1216,7 +1213,7 @@ int mx_sync_mailbox (CONTEXT *ctx, int *index_hint)
 	     ? _("Purge %d deleted message?") : _("Purge %d deleted messages?"),
 	      ctx->deleted);
     if ((purge = query_quadoption (OPT_DELETE, buf)) == MUTT_ABORT)
-      return (-1);
+      return -1;
     else if (purge == MUTT_NO)
     {
       if (!ctx->changed)
@@ -1241,7 +1238,7 @@ int mx_sync_mailbox (CONTEXT *ctx, int *index_hint)
   msgcount = ctx->msgcount;
   deleted = ctx->deleted;
 
-  if (purge && ctx->deleted && mutt_strcmp (ctx->path, TrashPath))
+  if (purge && ctx->deleted && (mutt_strcmp (ctx->path, TrashPath) != 0))
   {
     if (trash_append (ctx) != 0)
       return -1;
@@ -1298,7 +1295,7 @@ int mx_sync_mailbox (CONTEXT *ctx, int *index_hint)
     }
   }
 
-  return (rc);
+  return rc;
 }
 
 /* args:
@@ -1309,7 +1306,7 @@ int mx_sync_mailbox (CONTEXT *ctx, int *index_hint)
 MESSAGE *mx_open_new_message (CONTEXT *dest, HEADER *hdr, int flags)
 {
   ADDRESS *p = NULL;
-  MESSAGE *msg;
+  MESSAGE *msg = NULL;
 
   if (!dest->mx_ops || !dest->mx_ops->open_new_msg)
   {
@@ -1375,7 +1372,7 @@ int mx_check_mailbox (CONTEXT *ctx, int *index_hint)
 /* return a stream pointer for a message */
 MESSAGE *mx_open_message (CONTEXT *ctx, int msgno)
 {
-  MESSAGE *msg;
+  MESSAGE *msg = NULL;
 
   if (!ctx->mx_ops || !ctx->mx_ops->open_msg)
   {
@@ -1392,7 +1389,6 @@ MESSAGE *mx_open_message (CONTEXT *ctx, int msgno)
 }
 
 /* commit a message to a folder */
-
 int mx_commit_message (MESSAGE *msg, CONTEXT *ctx)
 {
   if (!ctx->mx_ops || !ctx->mx_ops->commit_msg)
@@ -1427,7 +1423,7 @@ int mx_close_message (CONTEXT *ctx, MESSAGE **msg)
 
   FREE (&(*msg)->commited_path);
   FREE (msg);		/* __FREE_CHECKED__ */
-  return (r);
+  return r;
 }
 
 void mx_alloc_memory (CONTEXT *ctx)
@@ -1464,7 +1460,7 @@ void mx_alloc_memory (CONTEXT *ctx)
  */
 void mx_update_context (CONTEXT *ctx, int new_messages)
 {
-  HEADER *h;
+  HEADER *h = NULL;
   int msgno;
 
   for (msgno = ctx->msgcount - new_messages; msgno < ctx->msgcount; msgno++)
@@ -1488,7 +1484,7 @@ void mx_update_context (CONTEXT *ctx, int new_messages)
 
     if (h->env->supersedes)
     {
-      HEADER *h2;
+      HEADER *h2 = NULL;
 
       if (!ctx->id_hash)
 	ctx->id_hash = mutt_make_id_hash (ctx);

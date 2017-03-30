@@ -1,21 +1,20 @@
-/*
+/**
  * Copyright (C) 1996-2000,2002,2007 Michael R. Elkins <me@mutt.org>
  * Copyright (C) 2016 Richard Russon <rich@flatcap.org>
  * Copyright (C) 2016 Ian Zimmerman <itz@primate.net>
  *
- *     This program is free software; you can redistribute it and/or modify
- *     it under the terms of the GNU General Public License as published by
- *     the Free Software Foundation; either version 2 of the License, or
- *     (at your option) any later version.
+ * This program is free software: you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License as published by the Free Software
+ * Foundation, either version 2 of the License, or (at your option) any later
+ * version.
  *
- *     This program is distributed in the hope that it will be useful,
- *     but WITHOUT ANY WARRANTY; without even the implied warranty of
- *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *     GNU General Public License for more details.
+ * This program is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
+ * details.
  *
- *     You should have received a copy of the GNU General Public License
- *     along with this program; if not, write to the Free Software
- *     Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ * You should have received a copy of the GNU General Public License along with
+ * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -208,7 +207,7 @@ static void make_from (ENVELOPE *env, char *buf, size_t len, int do_lists)
 
   int me;
   enum FieldType disp;
-  ADDRESS *name;
+  ADDRESS *name = NULL;
 
   me = mutt_addr_is_user (env->from);
 
@@ -455,7 +454,6 @@ static char *apply_subject_mods (ENVELOPE *env)
  * %y = `x-label:' field (if present)
  * %Y = `x-label:' field (if present, tree unfolded, and != parent's x-label)
  * %Z = status flags	*/
-
 static const char *
 hdr_format_str (char *dest,
 		size_t destlen,
@@ -470,10 +468,10 @@ hdr_format_str (char *dest,
 		format_flag flags)
 {
   struct hdr_format_info *hfi = (struct hdr_format_info *) data;
-  HEADER *hdr, *htmp;
-  CONTEXT *ctx;
-  char fmt[SHORT_STRING], buf2[LONG_STRING], *p;
-  char *wch;
+  HEADER *hdr = NULL, *htmp = NULL;
+  CONTEXT *ctx = NULL;
+  char fmt[SHORT_STRING], buf2[LONG_STRING], *p = NULL;
+  char *wch = NULL;
   int do_locales, i;
   int optional = (flags & MUTT_FORMAT_OPTIONAL);
   int threads = ((Sort & SORT_MASK) == SORT_THREADS);
@@ -581,13 +579,13 @@ hdr_format_str (char *dest,
 
       /* preprocess $date_format to handle %Z */
       {
-	const char *cp;
-	struct tm *tm;
+	const char *cp = NULL;
+	struct tm *tm = NULL;
 	time_t T;
 	int i = 0, invert = 0;
 
 	if (optional && ((op == '[') || (op == '('))) {
-	  char *is;
+	  char *is = NULL;
 	  T = time (NULL);
 	  tm = localtime (&T);
 	  T -= (op == '(') ? hdr->received : hdr->date_sent;
@@ -953,7 +951,7 @@ hdr_format_str (char *dest,
 
     case 's':
       {
-	char *subj;
+	char *subj = NULL;
         if (hdr->env->disp_subj)
 	  subj = hdr->env->disp_subj;
 	else if (SubjectRxList)
@@ -1073,7 +1071,7 @@ hdr_format_str (char *dest,
     case 'Z':
       {
         /* New/Old for threads; replied; New/Old for messages */
-        char *first;
+        char *first = NULL;
         if (THREAD_NEW)
           first = get_nth_wchar (Flagchars, FlagCharNewThread);
         else if (THREAD_OLD)
@@ -1094,7 +1092,7 @@ hdr_format_str (char *dest,
         }
 
         /* Marked for deletion; deleted attachments; crypto */
-        char *second;
+        char *second = NULL;
         if (hdr->deleted)
           second = get_nth_wchar (Flagchars, FlagCharDeleted);
         else if (hdr->attach_del)
@@ -1111,7 +1109,7 @@ hdr_format_str (char *dest,
           second = " ";
 
         /* Tagged, flagged and recipient flag */
-        char *third;
+        char *third = NULL;
         if (hdr->tagged)
           third = get_nth_wchar (Flagchars, FlagCharTagged);
         else if (hdr->flagged)
@@ -1162,8 +1160,8 @@ hdr_format_str (char *dest,
 		 && (hdr->thread->parent && hdr->thread->parent->message
 		     && hdr->thread->parent->message->env->x_label))
 	  htmp = hdr->thread->parent->message;
-	if (htmp && mutt_strcasecmp (hdr->env->x_label,
-				     htmp->env->x_label) == 0)
+	if (htmp && (mutt_strcasecmp (hdr->env->x_label,
+				     htmp->env->x_label) == 0))
 	  i = 0;
       }
       else
@@ -1184,9 +1182,9 @@ hdr_format_str (char *dest,
 #ifdef USE_NOTMUCH
     case 'G':
     {
-      char *tag_transformed;
+      char *tag_transformed = NULL;
       char format[3];
-      char *tag;
+      char *tag = NULL;
 
       if (!optional)
       {
@@ -1233,7 +1231,7 @@ hdr_format_str (char *dest,
   else if (flags & MUTT_FORMAT_OPTIONAL)
     mutt_FormatString (dest, destlen, col, cols, elsestring, hdr_format_str, (unsigned long) hfi, flags);
 
-  return (src);
+  return src;
 #undef THREAD_NEW
 #undef THREAD_OLD
 }

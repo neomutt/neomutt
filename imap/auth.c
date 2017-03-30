@@ -1,21 +1,20 @@
-/*
+/**
  * Copyright (C) 1996-1998 Michael R. Elkins <me@mutt.org>
  * Copyright (C) 1996-1999 Brandon Long <blong@fiction.net>
  * Copyright (C) 1999-2001 Brendan Cully <brendan@kublai.com>
  *
- *     This program is free software; you can redistribute it and/or modify
- *     it under the terms of the GNU General Public License as published by
- *     the Free Software Foundation; either version 2 of the License, or
- *     (at your option) any later version.
+ * This program is free software: you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License as published by the Free Software
+ * Foundation, either version 2 of the License, or (at your option) any later
+ * version.
  *
- *     This program is distributed in the hope that it will be useful,
- *     but WITHOUT ANY WARRANTY; without even the implied warranty of
- *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *     GNU General Public License for more details.
+ * This program is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
+ * details.
  *
- *     You should have received a copy of the GNU General Public License
- *     along with this program; if not, write to the Free Software
- *     Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ * You should have received a copy of the GNU General Public License along with
+ * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 /* IMAP login/authentication code */
@@ -49,10 +48,10 @@ static const imap_auth_t imap_authenticators[] = {
  *   authentication method if specified, or any. */
 int imap_authenticate (IMAP_DATA* idata)
 {
-  const imap_auth_t* authenticator;
-  char* methods;
-  char* method;
-  char* delim;
+  const imap_auth_t* authenticator = NULL;
+  char* methods = NULL;
+  char* method = NULL;
+  char* delim = NULL;
   int r = IMAP_AUTH_UNAVAIL;
 
   if (ImapAuthenticators && *ImapAuthenticators)
@@ -74,7 +73,7 @@ int imap_authenticate (IMAP_DATA* idata)
       while (authenticator->authenticate)
       {
 	if (!authenticator->method ||
-	    !ascii_strcasecmp (authenticator->method, method))
+	    (ascii_strcasecmp (authenticator->method, method) == 0))
 	  if ((r = authenticator->authenticate (idata, method)) !=
 	      IMAP_AUTH_UNAVAIL)
 	  {

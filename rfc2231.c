@@ -1,22 +1,18 @@
-/*
+/**
  * Copyright (C) 1999-2001 Thomas Roessler <roessler@does-not-exist.org>
  *
- *     This program is free software; you can redistribute it
- *     and/or modify it under the terms of the GNU General Public
- *     License as published by the Free Software Foundation; either
- *     version 2 of the License, or (at your option) any later
- *     version.
+ * This program is free software: you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License as published by the Free Software
+ * Foundation, either version 2 of the License, or (at your option) any later
+ * version.
  *
- *     This program is distributed in the hope that it will be
- *     useful, but WITHOUT ANY WARRANTY; without even the implied
- *     warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR
- *     PURPOSE.  See the GNU General Public License for more
- *     details.
+ * This program is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
+ * details.
  *
- *     You should have received a copy of the GNU General Public
- *     License along with this program; if not, write to the Free
- *     Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
- *     Boston, MA  02110-1301, USA.
+ * You should have received a copy of the GNU General Public License along with
+ * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 /*
@@ -53,7 +49,7 @@ struct rfc2231_parameter
 
 static void purge_empty_parameters (PARAMETER **headp)
 {
-  PARAMETER *p, *q, **last;
+  PARAMETER *p = NULL, *q = NULL, **last = NULL;
 
   for (last = headp, p = *headp; p; p = q)
   {
@@ -72,7 +68,7 @@ static void purge_empty_parameters (PARAMETER **headp)
 
 static char *rfc2231_get_charset (char *value, char *charset, size_t chslen)
 {
-  char *t, *u;
+  char *t = NULL, *u = NULL;
 
   if (!(t = strchr (value, '\'')))
   {
@@ -91,7 +87,7 @@ static char *rfc2231_get_charset (char *value, char *charset, size_t chslen)
 
 static void rfc2231_decode_one (char *dest, char *src)
 {
-  char *d;
+  char *d = NULL;
 
   for (d = dest; *src; src++)
   {
@@ -119,7 +115,6 @@ static struct rfc2231_parameter *rfc2231_new_parameter (void)
  * Primary sorting key: attribute
  * Secondary sorting key: index
  */
-
 static void rfc2231_list_insert (struct rfc2231_parameter **list,
 				 struct rfc2231_parameter *par)
 {
@@ -152,16 +147,15 @@ static void rfc2231_free_parameter (struct rfc2231_parameter **p)
 }
 
 /* process continuation parameters */
-
 static void rfc2231_join_continuations (PARAMETER **head,
 					struct rfc2231_parameter *par)
 {
-  struct rfc2231_parameter *q;
+  struct rfc2231_parameter *q = NULL;
 
   char attribute[STRING];
   char charset[STRING];
   char *value = NULL;
-  char *valp;
+  char *valp = NULL;
   int encoded;
 
   size_t l, vl;
@@ -192,7 +186,7 @@ static void rfc2231_join_continuations (PARAMETER **head,
       rfc2231_free_parameter (&par);
       if ((par = q))
 	valp = par->value;
-    } while (par && !strcmp (par->attribute, attribute));
+    } while (par && (strcmp (par->attribute, attribute) == 0));
 
     if (value)
     {
@@ -210,12 +204,12 @@ void rfc2231_decode_parameters (PARAMETER **headp)
 {
   PARAMETER *head = NULL;
   PARAMETER **last;
-  PARAMETER *p, *q;
+  PARAMETER *p = NULL, *q = NULL;
 
   struct rfc2231_parameter *conthead = NULL;
-  struct rfc2231_parameter *conttmp;
+  struct rfc2231_parameter *conttmp = NULL;
 
-  char *s, *t;
+  char *s = NULL, *t = NULL;
   char charset[STRING];
 
   int encoded;
@@ -305,7 +299,7 @@ void rfc2231_decode_parameters (PARAMETER **headp)
 int rfc2231_encode_string (char **pd)
 {
   int ext = 0, encode = 0;
-  char *charset, *s, *t, *e, *d = 0;
+  char *charset = NULL, *s = NULL, *t = NULL, *e = NULL, *d = NULL;
   size_t slen, dlen = 0;
 
   /*

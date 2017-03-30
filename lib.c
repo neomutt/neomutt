@@ -1,23 +1,19 @@
-/*
+/**
  * Copyright (C) 1996-2000,2007,2010 Michael R. Elkins <me@mutt.org>
  * Copyright (C) 1999-2004,2006-2007 Thomas Roessler <roessler@does-not-exist.org>
  *
- *     This program is free software; you can redistribute it
- *     and/or modify it under the terms of the GNU General Public
- *     License as published by the Free Software Foundation; either
- *     version 2 of the License, or (at your option) any later
- *     version.
+ * This program is free software: you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License as published by the Free Software
+ * Foundation, either version 2 of the License, or (at your option) any later
+ * version.
  *
- *     This program is distributed in the hope that it will be
- *     useful, but WITHOUT ANY WARRANTY; without even the implied
- *     warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR
- *     PURPOSE.  See the GNU General Public License for more
- *     details.
+ * This program is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
+ * details.
  *
- *     You should have received a copy of the GNU General Public
- *     License along with this program; if not, write to the Free
- *     Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
- *     Boston, MA  02110-1301, USA.
+ * You should have received a copy of the GNU General Public License along with
+ * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 /*
@@ -116,7 +112,7 @@ void mutt_nocurses_error (const char *fmt, ...)
 
 void *safe_calloc (size_t nmemb, size_t size)
 {
-  void *p;
+  void *p = NULL;
 
   if (!nmemb || !size)
     return NULL;
@@ -139,7 +135,7 @@ void *safe_calloc (size_t nmemb, size_t size)
 
 void *safe_malloc (size_t siz)
 {
-  void *p;
+  void *p = NULL;
 
   if (siz == 0)
     return 0;
@@ -149,12 +145,12 @@ void *safe_malloc (size_t siz)
     sleep (1);
     mutt_exit (1);
   }
-  return (p);
+  return p;
 }
 
 void safe_realloc (void *ptr, size_t siz)
 {
-  void *r;
+  void *r = NULL;
   void **p = (void **)ptr;
 
   if (siz == 0)
@@ -228,7 +224,7 @@ int safe_fsync_close (FILE **f)
 
 char *safe_strdup (const char *s)
 {
-  char *p;
+  char *p = NULL;
   size_t l;
 
   if (!s || !*s)
@@ -236,7 +232,7 @@ char *safe_strdup (const char *s)
   l = strlen (s) + 1;
   p = safe_malloc (l);
   memcpy (p, s, l);
-  return (p);
+  return p;
 }
 
 char *safe_strcat (char *d, size_t l, const char *s)
@@ -301,7 +297,7 @@ char *mutt_strlower (char *s)
     p++;
   }
 
-  return (s);
+  return s;
 }
 
 /**
@@ -327,7 +323,7 @@ void mutt_unlink (const char *s)
 {
   int fd;
   int flags;
-  FILE *f;
+  FILE *f = NULL;
   struct stat sb, sb2;
   char buf[2048];
 
@@ -377,7 +373,7 @@ int mutt_copy_bytes (FILE *in, FILE *out, size_t size)
       break;
     if (fwrite (buf, 1, chunk, out) != chunk)
     {
-      return (-1);
+      return -1;
     }
     size -= chunk;
   }
@@ -394,7 +390,7 @@ int mutt_copy_stream (FILE *fin, FILE *fout)
   while ((l = fread (buf, 1, sizeof (buf), fin)) > 0)
   {
     if (fwrite (buf, 1, l, fout) != l)
-      return (-1);
+      return -1;
   }
 
   if (fflush(fout) != 0) return -1;
@@ -432,8 +428,8 @@ int safe_symlink(const char *oldpath, const char *newpath)
   {
     char abs_oldpath[_POSIX_PATH_MAX];
 
-    if ((getcwd (abs_oldpath, sizeof abs_oldpath) == NULL) ||
-	(strlen (abs_oldpath) + 1 + strlen (oldpath) + 1 > sizeof abs_oldpath))
+    if ((getcwd (abs_oldpath, sizeof (abs_oldpath)) == NULL) ||
+	(strlen (abs_oldpath) + 1 + strlen (oldpath) + 1 > sizeof (abs_oldpath)))
     return -1;
 
     strcat (abs_oldpath, "/");		/* __STRCAT_CHECKED__ */
@@ -459,7 +455,6 @@ int safe_symlink(const char *oldpath, const char *newpath)
  *
  * Warning: We don't check whether src and target are equal.
  */
-
 int safe_rename (const char *src, const char *target)
 {
   struct stat ssb, tsb;
@@ -561,13 +556,12 @@ int safe_rename (const char *src, const char *target)
 
 
 /* Create a temporary directory next to a file name */
-
 static int mkwrapdir (const char *path, char *newfile, size_t nflen,
 		    char *newdir, size_t ndlen)
 {
-  const char *basename;
+  const char *basename = NULL;
   char parent[_POSIX_PATH_MAX];
-  char *p;
+  char *p = NULL;
 
   strfcpy (parent, NONULL (path), sizeof (parent));
 
@@ -601,8 +595,8 @@ static int mkwrapdir (const char *path, char *newfile, size_t nflen,
 /* remove a directory and everything under it */
 int mutt_rmtree (const char* path)
 {
-  DIR* dirp;
-  struct dirent* de;
+  DIR* dirp = NULL;
+  struct dirent* de = NULL;
   char cur[_POSIX_PATH_MAX];
   struct stat statbuf;
   int rc = 0;
@@ -614,7 +608,7 @@ int mutt_rmtree (const char* path)
   }
   while ((de = readdir (dirp)))
   {
-    if (!strcmp (".", de->d_name) || !strcmp ("..", de->d_name))
+    if ((strcmp (".", de->d_name) == 0) || (strcmp ("..", de->d_name) == 0))
       continue;
 
     snprintf (cur, sizeof (cur), "%s/%s", path, de->d_name);
@@ -682,10 +676,10 @@ int safe_open (const char *path, int flags)
       compare_stat(&osb, &nsb) == -1)
   {
     close (fd);
-    return (-1);
+    return -1;
   }
 
-  return (fd);
+  return fd;
 }
 
 /* when opening files for writing, make sure the file doesn't already exist
@@ -708,7 +702,7 @@ FILE *safe_fopen (const char *path, const char *mode)
       flags |= O_WRONLY;
 
     if ((fd = safe_open (path, flags)) < 0)
-      return (NULL);
+      return NULL;
 
     return (fdopen (fd, mode));
   }
@@ -761,7 +755,7 @@ int mutt_rx_sanitize_string (char *dest, size_t destlen, const char *src)
 char *mutt_read_line (char *s, size_t *size, FILE *fp, int *line, int flags)
 {
   size_t offset = 0;
-  char *ch;
+  char *ch = NULL;
 
   if (!s)
   {
@@ -832,7 +826,7 @@ mutt_substrcpy (char *dest, const char *beg, const char *end, size_t destlen)
 char *mutt_substrdup (const char *begin, const char *end)
 {
   size_t len;
-  char *p;
+  char *p = NULL;
 
   if (end)
     len = end - begin;
@@ -848,7 +842,6 @@ char *mutt_substrdup (const char *begin, const char *end)
 /* prepare a file name to survive the shell's quoting rules.
  * From the Unix programming FAQ by way of Liviu.
  */
-
 size_t mutt_quote_filename (char *d, size_t l, const char *f)
 {
   size_t i, j = 0;
@@ -917,12 +910,12 @@ int mutt_strcoll(const char *a, const char *b)
 
 const char *mutt_stristr (const char *haystack, const char *needle)
 {
-  const char *p, *q;
+  const char *p = NULL, *q = NULL;
 
   if (!haystack)
     return NULL;
   if (!needle)
-    return (haystack);
+    return haystack;
 
   while (*(p = haystack))
   {
@@ -932,7 +925,7 @@ const char *mutt_stristr (const char *haystack, const char *needle)
          p++, q++)
       ;
     if (!*q)
-      return (haystack);
+      return haystack;
     haystack++;
   }
   return NULL;
@@ -946,7 +939,7 @@ char *mutt_skip_whitespace (char *p)
 
 void mutt_remove_trailing_ws (char *s)
 {
-  char *p;
+  char *p = NULL;
 
   for (p = s + mutt_strlen (s) - 1 ; p >= s && ISSPACE (*p) ; p--)
     *p = 0;
@@ -1205,7 +1198,7 @@ int mutt_mkdir(const char *path, mode_t mode)
   }
 
   errno = 0;
-  char *p;
+  char *p = NULL;
   char _path[PATH_MAX];
   const size_t len = strlen(path);
 

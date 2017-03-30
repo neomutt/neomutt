@@ -1,19 +1,18 @@
-/*
+/**
  * Copyright (C) 1996-2000 Michael R. Elkins <me@mutt.org>
  *
- *     This program is free software; you can redistribute it and/or modify
- *     it under the terms of the GNU General Public License as published by
- *     the Free Software Foundation; either version 2 of the License, or
- *     (at your option) any later version.
+ * This program is free software: you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License as published by the Free Software
+ * Foundation, either version 2 of the License, or (at your option) any later
+ * version.
  *
- *     This program is distributed in the hope that it will be useful,
- *     but WITHOUT ANY WARRANTY; without even the implied warranty of
- *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *     GNU General Public License for more details.
+ * This program is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
+ * details.
  *
- *     You should have received a copy of the GNU General Public License
- *     along with this program; if not, write to the Free Software
- *     Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ * You should have received a copy of the GNU General Public License along with
+ * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -296,12 +295,12 @@ void mutt_tag_set_flag (int flag, int bf)
 }
 int mutt_thread_set_flag (HEADER *hdr, int flag, int bf, int subthread)
 {
-  THREAD *start, *cur = hdr->thread;
+  THREAD *start = NULL, *cur = hdr->thread;
 
   if ((Sort & SORT_MASK) != SORT_THREADS)
   {
     mutt_error (_("Threading is not enabled."));
-    return (-1);
+    return -1;
   }
 
   if (!subthread)
@@ -313,7 +312,7 @@ int mutt_thread_set_flag (HEADER *hdr, int flag, int bf, int subthread)
     mutt_set_flag (Context, cur->message, flag, bf);
 
   if ((cur = cur->child) == NULL)
-    return (0);
+    return 0;
 
   while (true)
   {
@@ -330,7 +329,7 @@ int mutt_thread_set_flag (HEADER *hdr, int flag, int bf, int subthread)
       {
 	cur = cur->parent;
 	if (cur == start)
-	  return (0);
+	  return 0;
       }
       cur = cur->next;
     }
@@ -352,7 +351,7 @@ int mutt_change_flag (HEADER *h, int bf)
   if (i < 0)
   {
     mutt_window_clearline (MuttMessageWindow, 0);
-    return (-1);
+    return -1;
   }
 
   mutt_window_clearline (MuttMessageWindow, 0);
@@ -400,7 +399,7 @@ int mutt_change_flag (HEADER *h, int bf)
 
     default:
       BEEP ();
-      return (-1);
+      return -1;
   }
 
   if (h)

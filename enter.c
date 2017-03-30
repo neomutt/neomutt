@@ -1,20 +1,19 @@
-/*
+/**
  * Copyright (C) 1996-2000,2007,2011,2013 Michael R. Elkins <me@mutt.org>
  * Copyright (C) 2000-2001 Edmund Grimley Evans <edmundo@rano.org>
  *
- *     This program is free software; you can redistribute it and/or modify
- *     it under the terms of the GNU General Public License as published by
- *     the Free Software Foundation; either version 2 of the License, or
- *     (at your option) any later version.
+ * This program is free software: you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License as published by the Free Software
+ * Foundation, either version 2 of the License, or (at your option) any later
+ * version.
  *
- *     This program is distributed in the hope that it will be useful,
- *     but WITHOUT ANY WARRANTY; without even the implied warranty of
- *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *     GNU General Public License for more details.
+ * This program is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
+ * details.
  *
- *     You should have received a copy of the GNU General Public License
- *     along with this program; if not, write to the Free Software
- *     Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ * You should have received a copy of the GNU General Public License along with
+ * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -123,7 +122,7 @@ static size_t my_mbstowcs (wchar_t **pwbuf, size_t *pwbuflen, size_t i, char *bu
   wchar_t wc;
   mbstate_t st;
   size_t k;
-  wchar_t *wbuf;
+  wchar_t *wbuf = NULL;
   size_t wbuflen;
 
   wbuf = *pwbuf, wbuflen = *pwbuflen;
@@ -159,7 +158,6 @@ static size_t my_mbstowcs (wchar_t **pwbuf, size_t *pwbuflen, size_t i, char *bu
 /*
  * Replace part of the wchar_t buffer, from FROM to CURPOS, by BUF.
  */
-
 static void replace_part (ENTER_STATE *state, size_t from, char *buf)
 {
   /* Save the suffix */
@@ -207,7 +205,6 @@ static inline int is_shell_char(wchar_t ch)
  *	0 if input was given
  * 	-1 if abort.
  */
-
 int  mutt_enter_string(char *buf, size_t buflen, int col, int flags)
 {
   int rv;
@@ -227,7 +224,7 @@ int _mutt_enter_string (char *buf, size_t buflen, int col,
   int first = 1;
   int ch, w, r;
   size_t i;
-  wchar_t *tempbuf = 0;
+  wchar_t *tempbuf = NULL;
   size_t templen = 0;
   history_class_t hclass;
   wchar_t wc;

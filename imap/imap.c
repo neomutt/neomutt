@@ -1,21 +1,20 @@
-/*
+/**
  * Copyright (C) 1996-1998,2012 Michael R. Elkins <me@mutt.org>
  * Copyright (C) 1996-1999 Brandon Long <blong@fiction.net>
  * Copyright (C) 1999-2009,2012 Brendan Cully <brendan@kublai.com>
  *
- *     This program is free software; you can redistribute it and/or modify
- *     it under the terms of the GNU General Public License as published by
- *     the Free Software Foundation; either version 2 of the License, or
- *     (at your option) any later version.
+ * This program is free software: you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License as published by the Free Software
+ * Foundation, either version 2 of the License, or (at your option) any later
+ * version.
  *
- *     This program is distributed in the hope that it will be useful,
- *     but WITHOUT ANY WARRANTY; without even the implied warranty of
- *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *     GNU General Public License for more details.
+ * This program is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
+ * details.
  *
- *     You should have received a copy of the GNU General Public License
- *     along with this program; if not, write to the Free Software
- *     Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ * You should have received a copy of the GNU General Public License along with
+ * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 /* Support for IMAP4rev1, with the occasional nod to IMAP 4. */
@@ -55,7 +54,7 @@ static void imap_set_flag (IMAP_DATA* idata, int aclbit, int flag,
  *       mess with it. */
 int imap_access (const char* path, int flags)
 {
-  IMAP_DATA* idata;
+  IMAP_DATA* idata = NULL;
   IMAP_MBOX mx;
   char buf[LONG_STRING];
   char mailbox[LONG_STRING];
@@ -77,7 +76,7 @@ int imap_access (const char* path, int flags)
     strfcpy (mailbox, "INBOX", sizeof (mailbox));
 
   /* we may already be in the folder we're checking */
-  if (!ascii_strcmp(idata->mailbox, mx.mbox))
+  if (ascii_strcmp(idata->mailbox, mx.mbox) == 0)
   {
     FREE (&mx.mbox);
     return 0;
@@ -147,7 +146,7 @@ int imap_rename_mailbox (IMAP_DATA* idata, IMAP_MBOX* mx, const char* newname)
 int imap_delete_mailbox (CONTEXT* ctx, IMAP_MBOX mx)
 {
   char buf[LONG_STRING], mbox[LONG_STRING];
-  IMAP_DATA *idata;
+  IMAP_DATA *idata = NULL;
 
   if (!ctx || !ctx->data) {
     if (!(idata = imap_conn_find (&mx.account,
@@ -173,8 +172,8 @@ int imap_delete_mailbox (CONTEXT* ctx, IMAP_MBOX mx)
  *   make sure we've got all the context we need. */
 void imap_logout_all (void)
 {
-  CONNECTION* conn;
-  CONNECTION* tmp;
+  CONNECTION* conn = NULL;
+  CONNECTION* tmp = NULL;
 
   conn = mutt_socket_head ();
 
@@ -246,7 +245,7 @@ int imap_read_literal (FILE* fp, IMAP_DATA* idata, long bytes, progress_t* pbar)
  *   (eg inside pager or editor). That is, check IMAP_REOPEN_ALLOW. */
 void imap_expunge_mailbox (IMAP_DATA* idata)
 {
-  HEADER* h;
+  HEADER* h = NULL;
   int i, cacheno;
 
 #ifdef USE_HCACHE
@@ -418,7 +417,7 @@ int imap_open_connection (IMAP_DATA* idata)
 
   if (ascii_strncasecmp ("* OK", idata->buf, 4) == 0)
   {
-    if (ascii_strncasecmp ("* OK [CAPABILITY", idata->buf, 16)
+    if ((ascii_strncasecmp ("* OK [CAPABILITY", idata->buf, 16) != 0)
         && imap_check_capabilities (idata))
       goto bail;
 #ifdef USE_SSL
@@ -501,8 +500,8 @@ void imap_close_connection(IMAP_DATA* idata)
  *   return stream following FLAGS response */
 static char* imap_get_flags (LIST** hflags, char* s)
 {
-  LIST* flags;
-  char* flag_word;
+  LIST* flags = NULL;
+  char* flag_word = NULL;
   char ctmp;
 
   /* sanity-check string */
@@ -553,8 +552,8 @@ static char* imap_get_flags (LIST** hflags, char* s)
 
 static int imap_open_mailbox (CONTEXT* ctx)
 {
-  IMAP_DATA *idata;
-  IMAP_STATUS* status;
+  IMAP_DATA *idata = NULL;
+  IMAP_STATUS* status = NULL;
   char buf[LONG_STRING];
   char bufout[LONG_STRING];
   int count = 0;
@@ -635,7 +634,7 @@ static int imap_open_mailbox (CONTEXT* ctx)
 
   do
   {
-    char *pc;
+    char *pc = NULL;
 
     if ((rc = imap_cmd_step (idata)) != IMAP_CMD_CONTINUE)
       break;
@@ -685,7 +684,7 @@ static int imap_open_mailbox (CONTEXT* ctx)
     else
     {
       pc = imap_next_word (pc);
-      if (!ascii_strncasecmp ("EXISTS", pc, 6))
+      if (ascii_strncasecmp ("EXISTS", pc, 6) == 0)
       {
 	count = idata->newMailCount;
 	idata->newMailCount = 0;
@@ -696,7 +695,7 @@ static int imap_open_mailbox (CONTEXT* ctx)
 
   if (rc == IMAP_CMD_NO)
   {
-    char *s;
+    char *s = NULL;
     s = imap_next_word (idata->buf); /* skip seq */
     s = imap_next_word (s); /* Skip response */
     mutt_error ("%s", s);
@@ -708,7 +707,7 @@ static int imap_open_mailbox (CONTEXT* ctx)
     goto fail;
 
   /* check for READ-ONLY notification */
-  if (!ascii_strncasecmp(imap_get_qualifier(idata->buf), "[READ-ONLY]", 11) &&
+  if ((ascii_strncasecmp(imap_get_qualifier(idata->buf), "[READ-ONLY]", 11) == 0) &&
       !mutt_bit_isset(idata->capabilities, ACL))
   {
     mutt_debug (2, "Mailbox is read-only.\n");
@@ -770,7 +769,7 @@ static int imap_open_mailbox (CONTEXT* ctx)
 
 static int imap_open_mailbox_append (CONTEXT *ctx, int flags)
 {
-  IMAP_DATA *idata;
+  IMAP_DATA *idata = NULL;
   char buf[LONG_STRING];
   char mailbox[LONG_STRING];
   IMAP_MBOX mx;
@@ -834,7 +833,7 @@ static int imap_open_new_message (MESSAGE *msg, CONTEXT *dest, HEADER *hdr)
   if ((msg->fp = safe_fopen (tmp, "w")) == NULL)
   {
     mutt_perror (tmp);
-    return (-1);
+    return -1;
   }
   msg->path = safe_strdup(tmp);
   return 0;
@@ -860,10 +859,10 @@ int imap_has_flag (LIST* flag_list, const char* flag)
   flag_list = flag_list->next;
   while (flag_list)
   {
-    if (!ascii_strncasecmp (flag_list->data, flag, strlen (flag_list->data)))
+    if (ascii_strncasecmp (flag_list->data, flag, strlen (flag_list->data)) == 0)
       return 1;
 
-    if (!ascii_strncmp (flag_list->data, "\\*", strlen (flag_list->data)))
+    if (ascii_strncmp (flag_list->data, "\\*", strlen (flag_list->data)) == 0)
       return 1;
 
     flag_list = flag_list->next;
@@ -974,7 +973,7 @@ int imap_exec_msgset (IMAP_DATA* idata, const char* pre, const char* post,
 {
   HEADER** hdrs = NULL;
   short oldsort;
-  BUFFER* cmd;
+  BUFFER* cmd = NULL;
   int pos;
   int rc;
   int count = 0;
@@ -1166,9 +1165,9 @@ static int sync_helper (IMAP_DATA* idata, int right, int flag, const char* name)
  */
 int imap_sync_mailbox (CONTEXT* ctx, int expunge)
 {
-  IMAP_DATA* idata;
+  IMAP_DATA* idata = NULL;
   CONTEXT* appendctx = NULL;
-  HEADER* h;
+  HEADER* h = NULL;
   HEADER** hdrs = NULL;
   int oldsort;
   int n;
@@ -1360,7 +1359,7 @@ int imap_sync_mailbox (CONTEXT* ctx, int expunge)
 /* imap_close_mailbox: clean up IMAP data in CONTEXT */
 int imap_close_mailbox (CONTEXT* ctx)
 {
-  IMAP_DATA* idata;
+  IMAP_DATA* idata = NULL;
   int i;
 
   idata = ctx->data;
@@ -1512,9 +1511,9 @@ static int imap_get_mailbox (const char* path, IMAP_DATA** hidata, char* buf, si
  * save on round trips. Returns number of mailboxes with new mail. */
 int imap_buffy_check (int force, int check_stats)
 {
-  IMAP_DATA* idata;
+  IMAP_DATA* idata = NULL;
   IMAP_DATA* lastdata = NULL;
-  BUFFY* mailbox;
+  BUFFY* mailbox = NULL;
   char name[LONG_STRING];
   char command[LONG_STRING];
   char munged[LONG_STRING];
@@ -1542,7 +1541,7 @@ int imap_buffy_check (int force, int check_stats)
      * IDLEd elsewhere.
      * idata->mailbox may be NULL for connections other than the current
      * mailbox's, and shouldn't expand to INBOX in that case. #3216. */
-    if (idata->mailbox && !imap_mxcmp (name, idata->mailbox))
+    if (idata->mailbox && (imap_mxcmp (name, idata->mailbox) == 0))
     {
       mailbox->new = 0;
       continue;
@@ -1606,15 +1605,15 @@ int imap_status (char* path, int queue)
 {
   static int queued = 0;
 
-  IMAP_DATA *idata;
+  IMAP_DATA *idata = NULL;
   char buf[LONG_STRING];
   char mbox[LONG_STRING];
-  IMAP_STATUS* status;
+  IMAP_STATUS* status = NULL;
 
   if (imap_get_mailbox (path, &idata, buf, sizeof (buf)) < 0)
     return -1;
 
-  if (!imap_mxcmp (buf, idata->mailbox))
+  if (imap_mxcmp (buf, idata->mailbox) == 0)
     /* We are in the folder we're polling - just return the mailbox count */
     return idata->ctx->msgcount;
   else if (mutt_bit_isset(idata->capabilities,IMAP4REV1) ||
@@ -1648,8 +1647,8 @@ int imap_status (char* path, int queue)
 /* return cached mailbox stats or NULL if create is 0 */
 IMAP_STATUS* imap_mboxcache_get (IMAP_DATA* idata, const char* mbox, int create)
 {
-  LIST* cur;
-  IMAP_STATUS* status;
+  LIST* cur = NULL;
+  IMAP_STATUS* status = NULL;
   IMAP_STATUS scache;
 #ifdef USE_HCACHE
   header_cache_t *hc = NULL;
@@ -1661,7 +1660,7 @@ IMAP_STATUS* imap_mboxcache_get (IMAP_DATA* idata, const char* mbox, int create)
   {
     status = (IMAP_STATUS*)cur->data;
 
-    if (!imap_mxcmp (mbox, status->name))
+    if (imap_mxcmp (mbox, status->name) == 0)
       return status;
   }
   status = NULL;
@@ -1708,8 +1707,8 @@ IMAP_STATUS* imap_mboxcache_get (IMAP_DATA* idata, const char* mbox, int create)
 
 void imap_mboxcache_free (IMAP_DATA* idata)
 {
-  LIST* cur;
-  IMAP_STATUS* status;
+  LIST* cur = NULL;
+  IMAP_STATUS* status = NULL;
 
   for (cur = idata->mboxcache; cur; cur = cur->next)
   {
@@ -1726,7 +1725,7 @@ void imap_mboxcache_free (IMAP_DATA* idata)
 static int do_search (const pattern_t* search, int allpats)
 {
   int rc = 0;
-  const pattern_t* pat;
+  const pattern_t* pat = NULL;
 
   for (pat = search; pat; pat = pat->next)
   {
@@ -1795,7 +1794,7 @@ static int imap_compile_search (const pattern_t* pat, BUFFER* buf)
   else
   {
     char term[STRING];
-    char *delim;
+    char *delim = NULL;
 
     switch (pat->op)
     {
@@ -1867,7 +1866,7 @@ int imap_search (CONTEXT* ctx, const pattern_t* pat)
 
 int imap_subscribe (char *path, int subscribe)
 {
-  IMAP_DATA *idata;
+  IMAP_DATA *idata = NULL;
   char buf[LONG_STRING];
   char mbox[LONG_STRING];
   char errstr[STRING];
@@ -1942,15 +1941,15 @@ longest_common_prefix (char *dest, const char* src, int start, size_t dlen)
 static int
 imap_complete_hosts (char *dest, size_t len)
 {
-  BUFFY* mailbox;
-  CONNECTION* conn;
+  BUFFY* mailbox = NULL;
+  CONNECTION* conn = NULL;
   int rc = -1;
   int matchlen;
 
   matchlen = mutt_strlen (dest);
   for (mailbox = Incoming; mailbox; mailbox = mailbox->next)
   {
-    if (!mutt_strncmp (dest, mailbox->path, matchlen))
+    if (mutt_strncmp (dest, mailbox->path, matchlen) == 0)
     {
       if (rc)
       {
@@ -1975,7 +1974,7 @@ imap_complete_hosts (char *dest, size_t len)
     url.user = NULL;
     url.path = NULL;
     url_ciss_tostring (&url, urlstr, sizeof (urlstr), 0);
-    if (!mutt_strncmp (dest, urlstr, matchlen))
+    if (mutt_strncmp (dest, urlstr, matchlen) == 0)
     {
       if (rc)
       {
@@ -1993,7 +1992,7 @@ imap_complete_hosts (char *dest, size_t len)
 /* imap_complete: given a partial IMAP folder path, return a string which
  *   adds as much to the path as is unique */
 int imap_complete(char* dest, size_t dlen, char* path) {
-  IMAP_DATA* idata;
+  IMAP_DATA* idata = NULL;
   char list[LONG_STRING];
   char buf[LONG_STRING];
   IMAP_LIST listresp;
@@ -2087,7 +2086,7 @@ int imap_complete(char* dest, size_t dlen, char* path) {
  *       1: non-fatal error - try fetch/append */
 int imap_fast_trash (CONTEXT* ctx, char* dest)
 {
-  IMAP_DATA* idata;
+  IMAP_DATA* idata = NULL;
   char mbox[LONG_STRING];
   char mmbox[LONG_STRING];
   char prompt[LONG_STRING];
@@ -2152,7 +2151,7 @@ int imap_fast_trash (CONTEXT* ctx, char* dest)
         break;
       }
       /* bail out if command failed for reasons other than nonexistent target */
-      if (ascii_strncasecmp (imap_get_qualifier (idata->buf), "[TRYCREATE]", 11))
+      if (ascii_strncasecmp (imap_get_qualifier (idata->buf), "[TRYCREATE]", 11) != 0)
         break;
       mutt_debug (3, "imap_fast_trash: server suggests TRYCREATE\n");
       snprintf (prompt, sizeof (prompt), _("Create %s?"), mbox);

@@ -1,19 +1,18 @@
-/*
+/**
  * Copyright (C) 1996-2002,2004,2007 Michael R. Elkins <me@mutt.org>, and others
  *
- *     This program is free software; you can redistribute it and/or modify
- *     it under the terms of the GNU General Public License as published by
- *     the Free Software Foundation; either version 2 of the License, or
- *     (at your option) any later version.
+ * This program is free software: you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License as published by the Free Software
+ * Foundation, either version 2 of the License, or (at your option) any later
+ * version.
  *
- *     This program is distributed in the hope that it will be useful,
- *     but WITHOUT ANY WARRANTY; without even the implied warranty of
- *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *     GNU General Public License for more details.
+ * This program is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
+ * details.
  *
- *     You should have received a copy of the GNU General Public License
- *     along with this program; if not, write to the Free Software
- *     Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ * You should have received a copy of the GNU General Public License along with
+ * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -47,7 +46,7 @@ static int current_hook_type = 0;
 
 int mutt_parse_hook (BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err)
 {
-  HOOK *ptr;
+  HOOK *ptr = NULL;
   BUFFER command, pattern;
   int rc, not = 0;
   regex_t *rx = NULL;
@@ -163,14 +162,14 @@ int mutt_parse_hook (BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err)
     }
     else if (ptr->type == data &&
 	ptr->rx.not == not &&
-	!mutt_strcmp (pattern.data, ptr->rx.pattern))
+	(mutt_strcmp (pattern.data, ptr->rx.pattern) == 0))
     {
       if (data & (MUTT_FOLDERHOOK | MUTT_SENDHOOK | MUTT_SEND2HOOK | MUTT_MESSAGEHOOK | MUTT_ACCOUNTHOOK | MUTT_REPLYHOOK | MUTT_CRYPTHOOK | MUTT_TIMEOUTHOOK | MUTT_STARTUPHOOK | MUTT_SHUTDOWNHOOK))
       {
 	/* these hooks allow multiple commands with the same
 	 * pattern, so if we've already seen this pattern/command pair, just
 	 * ignore it instead of creating a duplicate */
-	if (!mutt_strcmp (ptr->command, command.data))
+	if (mutt_strcmp (ptr->command, command.data) == 0)
 	{
 	  FREE (&command.data);
 	  FREE (&pattern.data);
@@ -236,7 +235,7 @@ error:
   if (~data & MUTT_GLOBALHOOK) /* NOT a global hook */
     FREE (&pattern.data);
   FREE (&command.data);
-  return (-1);
+  return -1;
 }
 
 static void delete_hook (HOOK *h)
@@ -254,8 +253,8 @@ static void delete_hook (HOOK *h)
 /* Deletes all hooks of type ``type'', or all defined hooks if ``type'' is 0 */
 static void delete_hooks (int type)
 {
-  HOOK *h;
-  HOOK *prev;
+  HOOK *h = NULL;
+  HOOK *prev = NULL;
 
   while (h = Hooks, h && (type == 0 || type == h->type))
   {
@@ -301,7 +300,7 @@ int mutt_parse_unhook (BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err)
       {
 	snprintf (err->data, err->dsize,
 		 _("unhook: unknown hook type: %s"), buf->data);
-	return (-1);
+	return -1;
       }
       if (current_hook_type == type)
       {
@@ -363,15 +362,15 @@ char *mutt_find_hook (int type, const char *pat)
     if (tmp->type & type)
     {
       if (regexec (tmp->rx.rx, pat, 0, NULL, 0) == 0)
-	return (tmp->command);
+	return tmp->command;
     }
-  return (NULL);
+  return NULL;
 }
 
 void mutt_message_hook (CONTEXT *ctx, HEADER *hdr, int type)
 {
   BUFFER err, token;
-  HOOK *hook;
+  HOOK *hook = NULL;
   pattern_cache_t cache;
 
   current_hook_type = type;
@@ -413,7 +412,7 @@ void mutt_message_hook (CONTEXT *ctx, HEADER *hdr, int type)
 static int
 addr_hook (char *path, size_t pathlen, int type, CONTEXT *ctx, HEADER *hdr)
 {
-  HOOK *hook;
+  HOOK *hook = NULL;
   pattern_cache_t cache;
 
   memset (&cache, 0, sizeof (cache));
@@ -440,7 +439,7 @@ void mutt_default_save (char *path, size_t pathlen, HEADER *hdr)
   if (addr_hook (path, pathlen, MUTT_SAVEHOOK, Context, hdr) != 0)
   {
     char tmp[_POSIX_PATH_MAX];
-    ADDRESS *adr;
+    ADDRESS *adr = NULL;
     ENVELOPE *env = hdr->env;
     int fromMe = mutt_addr_is_user (env->from);
 
@@ -464,7 +463,7 @@ void mutt_default_save (char *path, size_t pathlen, HEADER *hdr)
 
 void mutt_select_fcc (char *path, size_t pathlen, HEADER *hdr)
 {
-  ADDRESS *adr;
+  ADDRESS *adr = NULL;
   char buf[_POSIX_PATH_MAX];
   ENVELOPE *env = hdr->env;
 
@@ -493,9 +492,9 @@ static char *_mutt_string_hook (const char *match, int hook)
   {
     if ((tmp->type & hook) && ((match &&
 	 regexec (tmp->rx.rx, match, 0, NULL, 0) == 0) ^ tmp->rx.not))
-      return (tmp->command);
+      return tmp->command;
   }
-  return (NULL);
+  return NULL;
 }
 
 static LIST *_mutt_list_hook (const char *match, int hook)
@@ -509,7 +508,7 @@ static LIST *_mutt_list_hook (const char *match, int hook)
         ((match && regexec (tmp->rx.rx, match, 0, NULL, 0) == 0) ^ tmp->rx.not))
       matches = mutt_add_list (matches, tmp->command);
   }
-  return (matches);
+  return matches;
 }
 
 char *mutt_charset_hook (const char *chs)
@@ -535,7 +534,7 @@ void mutt_account_hook (const char* url)
    * belong in a folder-hook -- perhaps we should warn the user. */
   static int inhook = 0;
 
-  HOOK* hook;
+  HOOK* hook = NULL;
   BUFFER token;
   BUFFER err;
 
@@ -578,7 +577,7 @@ void mutt_account_hook (const char* url)
 
 void mutt_timeout_hook (void)
 {
-  HOOK *hook;
+  HOOK *hook = NULL;
   BUFFER token;
   BUFFER err;
   char buf[STRING];
@@ -613,7 +612,7 @@ void mutt_timeout_hook (void)
  */
 void mutt_startup_shutdown_hook (int type)
 {
-  HOOK *hook;
+  HOOK *hook = NULL;
   BUFFER token;
   BUFFER err;
   char buf[STRING];

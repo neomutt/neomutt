@@ -1,19 +1,18 @@
-/*
+/**
  * Copyright (C) 2000 Edmund Grimley Evans <edmundo@rano.org>
  *
- *     This program is free software; you can redistribute it and/or modify
- *     it under the terms of the GNU General Public License as published by
- *     the Free Software Foundation; either version 2 of the License, or
- *     (at your option) any later version.
+ * This program is free software: you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License as published by the Free Software
+ * Foundation, either version 2 of the License, or (at your option) any later
+ * version.
  *
- *     This program is distributed in the hope that it will be useful,
- *     but WITHOUT ANY WARRANTY; without even the implied warranty of
- *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *     GNU General Public License for more details.
+ * This program is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
+ * details.
  *
- *     You should have received a copy of the GNU General Public License
- *     along with this program; if not, write to the Free Software
- *     Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ * You should have received a copy of the GNU General Public License along with
+ * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 /*
@@ -66,8 +65,8 @@ void mutt_set_charset (char *charset)
   if (mutt_is_utf8 (buffer))
     Charset_is_utf8 = 1;
 #ifndef HAVE_WC_FUNCS
-  else if (!ascii_strcasecmp(buffer, "euc-jp") || !ascii_strcasecmp(buffer, "shift_jis")
-  	|| !ascii_strcasecmp(buffer, "cp932") || !ascii_strcasecmp(buffer, "eucJP-ms"))
+  else if ((ascii_strcasecmp(buffer, "euc-jp") == 0) || (ascii_strcasecmp(buffer, "shift_jis") == 0)
+  	|| (ascii_strcasecmp(buffer, "cp932") == 0) || (ascii_strcasecmp(buffer, "eucJP-ms") == 0))
   {
     charset_is_ja = 1;
 
@@ -187,12 +186,11 @@ static size_t utf8rtowc (wchar_t *pwc, const char *s, size_t n, mbstate_t *_ps)
  *     via UTF-8 using iconv.
  * Unfortunately, we can't handle non-stateless encodings.
  */
-
 static size_t wcrtomb_iconv (char *s, wchar_t wc, iconv_t cd)
 {
   char buf[MB_LEN_MAX+1];
-  ICONV_CONST char *ib;
-  char *ob;
+  ICONV_CONST char *ib = NULL;
+  char *ob = NULL;
   size_t ibl, obl;
 
   if (s)
@@ -244,8 +242,8 @@ static size_t mbrtowc_iconv (wchar_t *pwc, const char *s, size_t n,
 		      mbstate_t *ps, iconv_t cd)
 {
   static mbstate_t mbstate;
-  ICONV_CONST char *ib, *ibmax;
-  char *ob, *t;
+  ICONV_CONST char *ib = NULL, *ibmax = NULL;
+  char *ob = NULL, *t = NULL;
   size_t ibl, obl, k, r;
   char bufi[8], bufo[6];
 

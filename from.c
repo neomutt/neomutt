@@ -1,19 +1,18 @@
-/*
+/**
  * Copyright (C) 1996-2000,2013 Michael R. Elkins <me@mutt.org>
  *
- *     This program is free software; you can redistribute it and/or modify
- *     it under the terms of the GNU General Public License as published by
- *     the Free Software Foundation; either version 2 of the License, or
- *     (at your option) any later version.
+ * This program is free software: you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License as published by the Free Software
+ * Foundation, either version 2 of the License, or (at your option) any later
+ * version.
  *
- *     This program is distributed in the hope that it will be useful,
- *     but WITHOUT ANY WARRANTY; without even the implied warranty of
- *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *     GNU General Public License for more details.
+ * This program is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
+ * details.
  *
- *     You should have received a copy of the GNU General Public License
- *     along with this program; if not, write to the Free Software
- *     Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ * You should have received a copy of the GNU General Public License along with
+ * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -37,8 +36,8 @@ int mutt_check_month (const char *s)
 
   for (i = 0; i < 12; i++)
     if (mutt_strncasecmp (s, Months[i], 3) == 0)
-      return (i);
-  return (-1); /* error */
+      return i;
+  return -1; /* error */
 }
 
 static int is_day_name (const char *s)
@@ -58,7 +57,6 @@ static int is_day_name (const char *s)
  *
  * From [ <return-path> ] <weekday> <month> <day> <time> [ <timezone> ] <year>
  */
-
 int is_from (const char *s, char *path, size_t pathlen, time_t *tp)
 {
   struct tm tm;
@@ -78,7 +76,7 @@ int is_from (const char *s, char *path, size_t pathlen, time_t *tp)
 
   if (!is_day_name (s))
   {
-    const char *p;
+    const char *p = NULL;
     size_t len;
     short q = 0;
 

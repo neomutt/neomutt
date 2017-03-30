@@ -1,21 +1,20 @@
-/*
+/**
  * Copyright (C) 1998 Brandon Long <blong@fiction.net>
  * Copyright (C) 1999 Andrej Gritsenko <andrej@lucky.net>
  * Copyright (C) 2000-2012 Vsevolod Volkov <vvv@mutt.org.ua>
  *
- *     This program is free software; you can redistribute it and/or modify
- *     it under the terms of the GNU General Public License as published by
- *     the Free Software Foundation; either version 2 of the License, or
- *     (at your option) any later version.
+ * This program is free software: you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License as published by the Free Software
+ * Foundation, either version 2 of the License, or (at your option) any later
+ * version.
  *
- *     This program is distributed in the hope that it will be useful,
- *     but WITHOUT ANY WARRANTY; without even the implied warranty of
- *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *     GNU General Public License for more details.
+ * This program is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
+ * details.
  *
- *     You should have received a copy of the GNU General Public License
- *     along with this program; if not, write to the Free Software
- *     Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+ * You should have received a copy of the GNU General Public License along with
+ * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -148,7 +147,7 @@ void nntp_group_unread_stat (NNTP_DATA *nntp_data)
 int nntp_newsrc_parse (NNTP_SERVER *nserv)
 {
   unsigned int i;
-  char *line;
+  char *line = NULL;
   struct stat sb;
 
   if (nserv->newsrc_fp)
@@ -212,9 +211,9 @@ int nntp_newsrc_parse (NNTP_SERVER *nserv)
   line = safe_malloc (sb.st_size + 1);
   while (sb.st_size && fgets (line, sb.st_size + 1, nserv->newsrc_fp))
   {
-    char *b, *h, *p;
+    char *b = NULL, *h = NULL, *p = NULL;
     unsigned int subs = 0, i = 1;
-    NNTP_DATA *nntp_data;
+    NNTP_DATA *nntp_data = NULL;
 
     /* find end of newsgroup name */
     p = strpbrk (line, ":!");
@@ -363,7 +362,7 @@ void nntp_newsrc_gen_entries (CONTEXT *ctx)
 /* Update file with new contents */
 static int update_file (char *filename, char *buf)
 {
-  FILE *fp;
+  FILE *fp = NULL;
   char tmpfile[_POSIX_PATH_MAX];
   int rc = -1;
 
@@ -410,7 +409,7 @@ static int update_file (char *filename, char *buf)
 /* Update .newsrc file */
 int nntp_newsrc_update (NNTP_SERVER *nserv)
 {
-  char *buf;
+  char *buf = NULL;
   size_t buflen, off;
   unsigned int i;
   int rc = -1;
@@ -487,7 +486,7 @@ int nntp_newsrc_update (NNTP_SERVER *nserv)
 /* Make fully qualified cache file name */
 static void cache_expand (char *dst, size_t dstlen, ACCOUNT *acct, char *src)
 {
-  char *c;
+  char *c = NULL;
   char file[_POSIX_PATH_MAX];
 
   /* server subdirectory */
@@ -526,7 +525,7 @@ void nntp_expand_path (char *line, size_t len, ACCOUNT *acct)
 int nntp_add_group (char *line, void *data)
 {
   NNTP_SERVER *nserv = data;
-  NNTP_DATA *nntp_data;
+  NNTP_DATA *nntp_data = NULL;
   char group[LONG_STRING];
   char desc[HUGE_STRING] = "";
   char mod;
@@ -561,7 +560,7 @@ static int active_get_cache (NNTP_SERVER *nserv)
   char buf[HUGE_STRING];
   char file[_POSIX_PATH_MAX];
   time_t t;
-  FILE *fp;
+  FILE *fp = NULL;
 
   cache_expand (file, sizeof (file), &nserv->conn->account, ".active");
   mutt_debug (1, "Parsing %s\n", file);
@@ -590,7 +589,7 @@ static int active_get_cache (NNTP_SERVER *nserv)
 int nntp_active_save_cache (NNTP_SERVER *nserv)
 {
   char file[_POSIX_PATH_MAX];
-  char *buf;
+  char *buf = NULL;
   size_t buflen, off;
   unsigned int i;
   int rc;
@@ -660,7 +659,7 @@ void nntp_hcache_update (NNTP_DATA *nntp_data, header_cache_t *hc)
 {
   char buf[16];
   int old = 0;
-  void *hdata;
+  void *hdata = NULL;
   anum_t first, last, current;
 
   if (!hc)
@@ -670,7 +669,7 @@ void nntp_hcache_update (NNTP_DATA *nntp_data, header_cache_t *hc)
   hdata = mutt_hcache_fetch_raw (hc, "index", 5);
   if (hdata)
   {
-    mutt_debug (2, "nntp_hcache_update: mutt_hcache_fetch index: %s\n", hdata);
+    mutt_debug (2, "nntp_hcache_update: mutt_hcache_fetch index: %s\n", (char*) hdata);
     if (sscanf (hdata, ANUM " " ANUM, &first, &last) == 2)
     {
       old = 1;
@@ -756,9 +755,9 @@ void nntp_delete_group_cache (NNTP_DATA *nntp_data)
 void nntp_clear_cache (NNTP_SERVER *nserv)
 {
   char file[_POSIX_PATH_MAX];
-  char *fp;
-  struct dirent *entry;
-  DIR *dp;
+  char *fp = NULL;
+  struct dirent *entry = NULL;
+  DIR *dp = NULL;
 
   if (!nserv || !nserv->cacheable)
     return;
@@ -773,11 +772,11 @@ void nntp_clear_cache (NNTP_SERVER *nserv)
     {
       char *group = entry->d_name;
       struct stat sb;
-      NNTP_DATA *nntp_data;
+      NNTP_DATA *nntp_data = NULL;
       NNTP_DATA nntp_tmp;
 
-      if (mutt_strcmp (group, ".") == 0 ||
-	  mutt_strcmp (group, "..") == 0)
+      if ((mutt_strcmp (group, ".") == 0) ||
+	  (mutt_strcmp (group, "..") == 0))
 	continue;
       *fp = '\0';
       safe_strncat (file, sizeof (file), group, strlen (group));
@@ -788,7 +787,7 @@ void nntp_clear_cache (NNTP_SERVER *nserv)
       if (S_ISREG (sb.st_mode))
       {
 	char *ext = group + strlen (group) - 7;
-	if (strlen (group) < 8 || mutt_strcmp (ext, ".hcache"))
+	if (strlen (group) < 8 || (mutt_strcmp (ext, ".hcache") != 0))
 	  continue;
 	*ext = '\0';
       }
@@ -835,7 +834,7 @@ nntp_format_str (char *dest, size_t destlen, size_t col, int cols, char op, cons
   NNTP_SERVER *nserv = (NNTP_SERVER *)data;
   ACCOUNT *acct = &nserv->conn->account;
   ciss_url_t url;
-  char fn[SHORT_STRING], tmp[SHORT_STRING], *p;
+  char fn[SHORT_STRING], tmp[SHORT_STRING], *p = NULL;
 
   switch (op)
   {
@@ -880,7 +879,7 @@ nntp_format_str (char *dest, size_t destlen, size_t col, int cols, char op, cons
       snprintf (dest, destlen, tmp, acct->user);
       break;
   }
-  return (src);
+  return src;
 }
 
 /* Automatically loads a newsrc into memory, if necessary.
@@ -890,12 +889,12 @@ nntp_format_str (char *dest, size_t destlen, size_t col, int cols, char op, cons
 NNTP_SERVER *nntp_select_server (char *server, int leave_lock)
 {
   char file[_POSIX_PATH_MAX];
-  char *p;
+  char *p = NULL;
   int rc;
   ACCOUNT acct;
-  NNTP_SERVER *nserv;
-  NNTP_DATA *nntp_data;
-  CONNECTION *conn;
+  NNTP_SERVER *nserv = NULL;
+  NNTP_DATA *nntp_data = NULL;
+  CONNECTION *conn = NULL;
   ciss_url_t url;
 
   if (!server || !*server)
@@ -1010,19 +1009,19 @@ NNTP_SERVER *nntp_select_server (char *server, int leave_lock)
   /* check cache files */
   if (rc >= 0 && nserv->cacheable)
   {
-    struct dirent *entry;
+    struct dirent *entry = NULL;
     DIR *dp = opendir (file);
 
     if (dp)
     {
       while ((entry = readdir (dp)))
       {
-	header_cache_t *hc;
-	void *hdata;
+	header_cache_t *hc = NULL;
+	void *hdata = NULL;
 	char *group = entry->d_name;
 
 	p = group + strlen (group) - 7;
-	if (strlen (group) < 8 || strcmp (p, ".hcache"))
+	if (strlen (group) < 8 || (strcmp (p, ".hcache") != 0))
 	  continue;
 	*p = '\0';
 	nntp_data = hash_find (nserv->groups_hash, group);
@@ -1121,7 +1120,7 @@ void nntp_article_status (CONTEXT *ctx, HEADER *hdr, char *group, anum_t anum)
 /* Subscribe newsgroup */
 NNTP_DATA *mutt_newsgroup_subscribe (NNTP_SERVER *nserv, char *group)
 {
-  NNTP_DATA *nntp_data;
+  NNTP_DATA *nntp_data = NULL;
 
   if (!nserv || !nserv->groups_hash || !group || !*group)
     return NULL;
@@ -1141,7 +1140,7 @@ NNTP_DATA *mutt_newsgroup_subscribe (NNTP_SERVER *nserv, char *group)
 /* Unsubscribe newsgroup */
 NNTP_DATA *mutt_newsgroup_unsubscribe (NNTP_SERVER *nserv, char *group)
 {
-  NNTP_DATA *nntp_data;
+  NNTP_DATA *nntp_data = NULL;
 
   if (!nserv || !nserv->groups_hash || !group || !*group)
     return NULL;
@@ -1162,7 +1161,7 @@ NNTP_DATA *mutt_newsgroup_unsubscribe (NNTP_SERVER *nserv, char *group)
 /* Catchup newsgroup */
 NNTP_DATA *mutt_newsgroup_catchup (NNTP_SERVER *nserv, char *group)
 {
-  NNTP_DATA *nntp_data;
+  NNTP_DATA *nntp_data = NULL;
 
   if (!nserv || !nserv->groups_hash || !group || !*group)
     return NULL;
@@ -1192,7 +1191,7 @@ NNTP_DATA *mutt_newsgroup_catchup (NNTP_SERVER *nserv, char *group)
 /* Uncatchup newsgroup */
 NNTP_DATA *mutt_newsgroup_uncatchup (NNTP_SERVER *nserv, char *group)
 {
-  NNTP_DATA *nntp_data;
+  NNTP_DATA *nntp_data = NULL;
 
   if (!nserv || !nserv->groups_hash || !group || !*group)
     return NULL;
@@ -1234,7 +1233,7 @@ void nntp_buffy (char *buf, size_t len)
       continue;
 
     if (Context && Context->magic == MUTT_NNTP &&
-	!mutt_strcmp (nntp_data->group, ((NNTP_DATA *)Context->data)->group))
+	(mutt_strcmp (nntp_data->group, ((NNTP_DATA *)Context->data)->group) == 0))
     {
       unsigned int i, unread = 0;
 

@@ -1,19 +1,18 @@
-/*
+/**
  * Copyright (C) 1996-2000,2007 Michael R. Elkins <me@mutt.org>
  *
- *     This program is free software; you can redistribute it and/or modify
- *     it under the terms of the GNU General Public License as published by
- *     the Free Software Foundation; either version 2 of the License, or
- *     (at your option) any later version.
+ * This program is free software: you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License as published by the Free Software
+ * Foundation, either version 2 of the License, or (at your option) any later
+ * version.
  *
- *     This program is distributed in the hope that it will be useful,
- *     but WITHOUT ANY WARRANTY; without even the implied warranty of
- *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *     GNU General Public License for more details.
+ * This program is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
+ * details.
  *
- *     You should have received a copy of the GNU General Public License
- *     along with this program; if not, write to the Free Software
- *     Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ * You should have received a copy of the GNU General Public License along with
+ * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -40,9 +39,9 @@
  */
 int mutt_complete (char *s, size_t slen)
 {
-  char *p;
+  char *p = NULL;
   DIR *dirp = NULL;
-  struct dirent *de;
+  struct dirent *de = NULL;
   int i ,init=0;
   size_t len;
   char dirpart[_POSIX_PATH_MAX], exp_dirpart[_POSIX_PATH_MAX];
@@ -85,7 +84,7 @@ int mutt_complete (char *s, size_t slen)
       NNTP_DATA *nntp_data = nserv->groups_list[n];
 
       if (nntp_data && nntp_data->subscribed &&
-	  mutt_strncmp (nntp_data->group, filepart, len) == 0)
+	  (mutt_strncmp (nntp_data->group, filepart, len) == 0))
       {
 	if (init)
 	{
@@ -186,7 +185,7 @@ int mutt_complete (char *s, size_t slen)
   {
     mutt_debug (1, "mutt_complete(): %s: %s (errno %d).\n",
                 exp_dirpart, strerror (errno), errno);
-    return (-1);
+    return -1;
   }
 
   /*
@@ -197,7 +196,7 @@ int mutt_complete (char *s, size_t slen)
   {
     while ((de = readdir (dirp)) != NULL)
     {
-      if (mutt_strcmp (".", de->d_name) != 0 && mutt_strcmp ("..", de->d_name) != 0)
+      if ((mutt_strcmp (".", de->d_name) != 0) && (mutt_strcmp ("..", de->d_name) != 0))
       {
 	strfcpy (filepart, de->d_name, sizeof (filepart));
 	init++;
@@ -250,7 +249,7 @@ int mutt_complete (char *s, size_t slen)
   if (dirpart[0])
   {
     strfcpy (s, dirpart, slen);
-    if (mutt_strcmp ("/", dirpart) != 0 && dirpart[0] != '=' && dirpart[0] != '+')
+    if ((mutt_strcmp ("/", dirpart) != 0) && dirpart[0] != '=' && dirpart[0] != '+')
       strfcpy (s + strlen (s), "/", slen - strlen (s));
     strfcpy (s + strlen (s), filepart, slen - strlen (s));
   }

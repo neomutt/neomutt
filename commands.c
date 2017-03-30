@@ -1,20 +1,19 @@
-/*
+/**
  * Copyright (C) 1996-2000 Michael R. Elkins <me@mutt.org>
  * Copyright (C) 2000-2004,2006 Thomas Roessler <roessler@does-not-exist.org>
  *
- *     This program is free software; you can redistribute it and/or modify
- *     it under the terms of the GNU General Public License as published by
- *     the Free Software Foundation; either version 2 of the License, or
- *     (at your option) any later version.
+ * This program is free software: you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License as published by the Free Software
+ * Foundation, either version 2 of the License, or (at your option) any later
+ * version.
  *
- *     This program is distributed in the hope that it will be useful,
- *     but WITHOUT ANY WARRANTY; without even the implied warranty of
- *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *     GNU General Public License for more details.
+ * This program is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
+ * details.
  *
- *     You should have received a copy of the GNU General Public License
- *     along with this program; if not, write to the Free Software
- *     Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ * You should have received a copy of the GNU General Public License along with
+ * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -117,7 +116,7 @@ int mutt_display_message (HEADER *cur)
   if ((fpout = safe_fopen (tempfile, "w")) == NULL)
   {
     mutt_error (_("Could not create temporary file!"));
-    return (0);
+    return 0;
   }
 
   if (DisplayFilter && *DisplayFilter)
@@ -135,7 +134,7 @@ int mutt_display_message (HEADER *cur)
     }
   }
 
-  if (!Pager || mutt_strcmp (Pager, "builtin") == 0)
+  if (!Pager || (mutt_strcmp (Pager, "builtin") == 0))
     builtin = 1;
   else
   {
@@ -386,7 +385,6 @@ static void pipe_msg (HEADER *h, FILE *fp, int decode, int print)
 
 
 /* the following code is shared between printing and piping */
-
 static int _mutt_pipe_message (HEADER *h, char *cmd,
 			       int decode,
 			       int print,
@@ -396,7 +394,7 @@ static int _mutt_pipe_message (HEADER *h, char *cmd,
 
   int i, rc = 0;
   pid_t thepid;
-  FILE *fpout;
+  FILE *fpout = NULL;
 
   if (h)
   {
@@ -797,7 +795,7 @@ int mutt_save_message (HEADER *h, int delete,
 
   mutt_pretty_mailbox (buf, sizeof (buf));
   if (mutt_enter_fname (prompt, buf, sizeof (buf), redraw, 0) == -1)
-    return (-1);
+    return -1;
 
   if (*redraw != REDRAW_FULL)
   {
@@ -808,7 +806,7 @@ int mutt_save_message (HEADER *h, int delete,
   }
 
   if (!buf[0])
-    return (-1);
+    return -1;
 
   /* This is an undocumented feature of ELM pointed out to me by Felix von
    * Leitner <leitner@prz.fu-berlin.de>
@@ -923,7 +921,7 @@ int mutt_save_message (HEADER *h, int delete,
       mutt_buffy_cleanup (buf, &st);
 
     mutt_clear_error ();
-    return (0);
+    return 0;
   }
 
   return -1;
@@ -940,10 +938,10 @@ void mutt_edit_content_type (HEADER *h, BODY *b, FILE *fp)
   char buf[LONG_STRING];
   char obuf[LONG_STRING];
   char tmp[STRING];
-  PARAMETER *p;
+  PARAMETER *p = NULL;
 
   char charset[STRING];
-  char *cp;
+  char *cp = NULL;
 
   short charset_changed = 0;
   short type_changed = 0;
@@ -1031,7 +1029,7 @@ void mutt_edit_content_type (HEADER *h, BODY *b, FILE *fp)
 
 static int _mutt_check_traditional_pgp (HEADER *h, int *redraw)
 {
-  MESSAGE *msg;
+  MESSAGE *msg = NULL;
   int rv = 0;
 
   h->security |= PGP_TRADITIONAL_CHECKED;

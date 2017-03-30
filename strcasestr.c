@@ -1,4 +1,4 @@
-/*
+/**
  * Copyright (C) 2002     Manuel Novoa III
  * Copyright (C) 2000-2005 Erik Andersen <andersen@uclibc.org>
  *

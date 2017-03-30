@@ -1,19 +1,18 @@
-/*
+/**
  * Copyright (C) 1996-2009 Michael R. Elkins <me@mutt.org>
  *
- *     This program is free software; you can redistribute it and/or modify
- *     it under the terms of the GNU General Public License as published by
- *     the Free Software Foundation; either version 2 of the License, or
- *     (at your option) any later version.
+ * This program is free software: you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License as published by the Free Software
+ * Foundation, either version 2 of the License, or (at your option) any later
+ * version.
  *
- *     This program is distributed in the hope that it will be useful,
- *     but WITHOUT ANY WARRANTY; without even the implied warranty of
- *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *     GNU General Public License for more details.
+ * This program is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
+ * details.
  *
- *     You should have received a copy of the GNU General Public License
- *     along with this program; if not, write to the Free Software
- *     Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ * You should have received a copy of the GNU General Public License along with
+ * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -118,8 +117,8 @@ HASH *int_hash_create (int nelem, int flags)
 
 HASH *hash_resize (HASH *ptr, int nelem, int lower)
 {
-  HASH *table;
-  struct hash_elem *elem, *tmp;
+  HASH *table = NULL;
+  struct hash_elem *elem = NULL, *tmp = NULL;
   int i;
 
   table = hash_create (nelem, lower);
@@ -146,7 +145,7 @@ HASH *hash_resize (HASH *ptr, int nelem, int lower)
  */
 static int union_hash_insert (HASH * table, union hash_key key, void *data)
 {
-  struct hash_elem *ptr;
+  struct hash_elem *ptr = NULL;
   unsigned int h;
 
   ptr = safe_malloc (sizeof (struct hash_elem));
@@ -162,7 +161,7 @@ static int union_hash_insert (HASH * table, union hash_key key, void *data)
   }
   else
   {
-    struct hash_elem *tmp, *last;
+    struct hash_elem *tmp = NULL, *last = NULL;
     int r;
 
     for (tmp = table->table[h], last = NULL; tmp; last = tmp, tmp = tmp->next)
@@ -171,7 +170,7 @@ static int union_hash_insert (HASH * table, union hash_key key, void *data)
       if (r == 0)
       {
 	FREE (&ptr);
-	return (-1);
+	return -1;
       }
       if (r > 0)
 	break;
@@ -203,7 +202,7 @@ int int_hash_insert (HASH * table, unsigned int intkey, void *data)
 static struct hash_elem *union_hash_find_elem (const HASH *table, union hash_key key)
 {
   int hash;
-  struct hash_elem *ptr;
+  struct hash_elem *ptr = NULL;
 
   if (!table)
     return NULL;
@@ -213,7 +212,7 @@ static struct hash_elem *union_hash_find_elem (const HASH *table, union hash_key
   for (; ptr; ptr = ptr->next)
   {
     if (table->cmp_key (key, ptr->key) == 0)
-      return (ptr);
+      return ptr;
   }
   return NULL;
 }
@@ -319,8 +318,8 @@ void int_hash_delete (HASH *table, unsigned int intkey, const void *data,
 void hash_destroy (HASH **ptr, void (*destroy) (void *))
 {
   int i;
-  HASH *pptr;
-  struct hash_elem *elem, *tmp;
+  HASH *pptr = NULL;
+  struct hash_elem *elem = NULL, *tmp = NULL;
 
   if (!ptr || !*ptr)
     return;

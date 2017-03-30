@@ -1,19 +1,18 @@
-/*
+/**
  * Copyright (C) 1996-2000,2002,2012 Michael R. Elkins <me@mutt.org>
  *
- *     This program is free software; you can redistribute it and/or modify
- *     it under the terms of the GNU General Public License as published by
- *     the Free Software Foundation; either version 2 of the License, or
- *     (at your option) any later version.
+ * This program is free software: you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License as published by the Free Software
+ * Foundation, either version 2 of the License, or (at your option) any later
+ * version.
  *
- *     This program is distributed in the hope that it will be useful,
- *     but WITHOUT ANY WARRANTY; without even the implied warranty of
- *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *     GNU General Public License for more details.
+ * This program is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
+ * details.
  *
- *     You should have received a copy of the GNU General Public License
- *     along with this program; if not, write to the Free Software
- *     Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ * You should have received a copy of the GNU General Public License along with
+ * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -31,7 +30,7 @@ char* SearchBuffers[MENU_MAX];
 static int
 get_color (int index, unsigned char *s)
 {
-  COLOR_LINE *color;
+  COLOR_LINE *color = NULL;
   HEADER *hdr = Context->hdrs[Context->v2r[index]];
   int type = *s;
 
@@ -775,7 +774,7 @@ MUTTMENU *mutt_new_menu (int menu)
   p->messagewin = MuttMessageWindow;
   p->color = default_color;
   p->search = menu_search_generic;
-  return (p);
+  return p;
 }
 
 void mutt_menu_destroy (MUTTMENU **p)
@@ -812,7 +811,7 @@ static int menu_search (MUTTMENU *menu, int op)
     if (mutt_get_field ((op == OP_SEARCH || op == OP_SEARCH_NEXT)
 			? _("Search for: ") : _("Reverse search for: "),
 			buf, sizeof (buf), MUTT_CLEAR) != 0 || !buf[0])
-      return (-1);
+      return -1;
     if (menu->menu >= 0 && menu->menu < MENU_MAX)
     {
       mutt_str_replace (&SearchBuffers[menu->menu], buf);
@@ -830,7 +829,7 @@ static int menu_search (MUTTMENU *menu, int op)
   {
     regerror (r, &re, buf, sizeof (buf));
     mutt_error ("%s", buf);
-    return (-1);
+    return -1;
   }
 
   r = menu->current + searchDir;
@@ -855,7 +854,7 @@ search_next:
   }
   regfree (&re);
   mutt_error (_("Not found."));
-  return (-1);
+  return -1;
 }
 
 static int menu_dialog_translate_op (int i)
@@ -880,7 +879,7 @@ static int menu_dialog_translate_op (int i)
 static int menu_dialog_dokey (MUTTMENU *menu, int *ip)
 {
   event_t ch;
-  char *p;
+  char *p = NULL;
 
   ch = mutt_getch ();
 
@@ -909,7 +908,7 @@ int menu_redraw (MUTTMENU *menu)
   {
     menu_redraw_full (menu);
     /* allow the caller to do any local configuration */
-    return (OP_REDRAW);
+    return OP_REDRAW;
   }
 
   if (!menu->dialog)
@@ -1172,7 +1171,7 @@ int mutt_menu_loop (MUTTMENU *menu)
       default:
         if (menu->is_mailbox_list)
           last_position = menu->current;
-	return (i);
+	return i;
     }
   }
   /* not reached */

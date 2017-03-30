@@ -1,21 +1,21 @@
-/* Copyright (C) 2004 Justin Hibbits <jrh29@po.cwru.edu>
+/**
+ * Copyright (C) 2004 Justin Hibbits <jrh29@po.cwru.edu>
  * Copyright (C) 2004 Thomer M. Gil <mutt@thomer.com>
  * Copyright (C) 2015-2016 Richard Russon <rich@flatcap.org>
  * Copyright (C) 2016 Kevin J. McCarthy <kevin@8t8.us>
  *
- *     This program is free software; you can redistribute it and/or modify
- *     it under the terms of the GNU General Public License as published by
- *     the Free Software Foundation; either version 2 of the License, or
- *     (at your option) any later version.
+ * This program is free software: you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License as published by the Free Software
+ * Foundation, either version 2 of the License, or (at your option) any later
+ * version.
  *
- *     This program is distributed in the hope that it will be useful,
- *     but WITHOUT ANY WARRANTY; without even the implied warranty of
- *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *     GNU General Public License for more details.
+ * This program is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
+ * details.
  *
- *     You should have received a copy of the GNU General Public License
- *     along with this program; if not, write to the Free Software
- *     Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111, USA.
+ * You should have received a copy of the GNU General Public License along with
+ * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -344,7 +344,7 @@ static int cb_qsort_sbe (const void *a, const void *b)
 static void update_entries_visibility (void)
 {
   short new_only = option (OPTSIDEBARNEWMAILONLY);
-  SBENTRY *sbe;
+  SBENTRY *sbe = NULL;
   int i;
 
   for (i = 0; i < EntryCount; i++)
@@ -380,7 +380,7 @@ static void unsort_entries (void)
 {
   BUFFY *cur = get_incoming();
   int i = 0, j;
-  SBENTRY *tmp;
+  SBENTRY *tmp = NULL;
 
   while (cur && (i < EntryCount))
   {
@@ -823,8 +823,8 @@ static void fill_empty_space (int first_row, int num_rows, int div_width, int nu
 static void draw_sidebar (int num_rows, int num_cols, int div_width)
 {
   int entryidx;
-  SBENTRY *entry;
-  BUFFY *b;
+  SBENTRY *entry = NULL;
+  BUFFY *b = NULL;
   if (TopIndex < 0)
     return;
 
@@ -867,7 +867,7 @@ static void draw_sidebar (int num_rows, int num_cols, int div_width)
 
     mutt_window_move (MuttSidebarWindow, row, col);
     if (Context && Context->realpath &&
-        !mutt_strcmp (b->realpath, Context->realpath))
+        (mutt_strcmp (b->realpath, Context->realpath) == 0))
     {
 #ifdef USE_NOTMUCH
       if (b->magic == MUTT_NOTMUCH)
@@ -898,7 +898,7 @@ static void draw_sidebar (int num_rows, int num_cols, int div_width)
 
     /* calculate depth of current folder and generate its display name with indented spaces */
     int sidebar_folder_depth = 0;
-    char *sidebar_folder_name;
+    char *sidebar_folder_name = NULL;
     int i;
     if (option (OPTSIDEBARSHORTPATH))
     {
@@ -919,7 +919,7 @@ static void draw_sidebar (int num_rows, int num_cols, int div_width)
 
     if (maildir_is_prefix && option (OPTSIDEBARFOLDERINDENT))
     {
-      const char *tmp_folder_name;
+      const char *tmp_folder_name = NULL;
       int lastsep = 0;
       tmp_folder_name = b->path + maildirlen + 1;
       int tmplen = (int) mutt_strlen (tmp_folder_name) - 1;
@@ -986,7 +986,7 @@ void mutt_sb_draw (void)
 
   int div_width = draw_divider (num_rows, num_cols);
 
-  BUFFY *b;
+  BUFFY *b = NULL;
   if (Entries == NULL)
     for (b = get_incoming(); b; b = b->next)
       mutt_sb_notify_mailbox (b, 1);
@@ -1076,7 +1076,7 @@ void mutt_sb_set_buffystats (const CONTEXT *ctx)
 
   for (; b; b = b->next)
   {
-    if (!mutt_strcmp (b->realpath, ctx->realpath))
+    if (mutt_strcmp (b->realpath, ctx->realpath) == 0)
     {
       b->msg_unread  = ctx->unread;
       b->msg_count   = ctx->msgcount;
@@ -1122,7 +1122,7 @@ void mutt_sb_set_open_buffy (void)
 
   for (entry = 0; entry < EntryCount; entry++)
   {
-    if (!mutt_strcmp (Entries[entry]->buffy->realpath, Context->realpath))
+    if (mutt_strcmp (Entries[entry]->buffy->realpath, Context->realpath) == 0)
     {
       OpnIndex = entry;
       HilIndex = entry;
@@ -1222,7 +1222,7 @@ mutt_sb_toggle_virtual (void)
   HilIndex = -1;
   BotIndex = -1;
 
-  BUFFY *b;
+  BUFFY *b = NULL;
 
   EntryCount = 0;
   FREE(&Entries);

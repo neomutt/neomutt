@@ -1,19 +1,18 @@
-/*
+/**
  * Copyright (C) 2000-2001 Vsevolod Volkov <vvv@mutt.org.ua>
  *
- *     This program is free software; you can redistribute it and/or modify
- *     it under the terms of the GNU General Public License as published by
- *     the Free Software Foundation; either version 2 of the License, or
- *     (at your option) any later version.
+ * This program is free software: you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License as published by the Free Software
+ * Foundation, either version 2 of the License, or (at your option) any later
+ * version.
  *
- *     This program is distributed in the hope that it will be useful,
- *     but WITHOUT ANY WARRANTY; without even the implied warranty of
- *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *     GNU General Public License for more details.
+ * This program is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
+ * details.
  *
- *     You should have received a copy of the GNU General Public License
- *     along with this program; if not, write to the Free Software
- *     Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ * You should have received a copy of the GNU General Public License along with
+ * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -37,13 +36,13 @@
 /* SASL authenticator */
 static pop_auth_res_t pop_auth_sasl (POP_DATA *pop_data, const char *method)
 {
-  sasl_conn_t *saslconn;
+  sasl_conn_t *saslconn = NULL;
   sasl_interact_t *interaction = NULL;
   int rc;
   char *buf = NULL;
   size_t bufsize = 0;
   char inbuf[LONG_STRING];
-  const char* mech;
+  const char* mech = NULL;
   const char *pc = NULL;
   unsigned int len, olen, client_start;
 
@@ -108,7 +107,7 @@ static pop_auth_res_t pop_auth_sasl (POP_DATA *pop_data, const char *method)
     if (!client_start && rc != SASL_CONTINUE)
       break;
 
-    if (!mutt_strncmp (inbuf, "+ ", 2)
+    if ((mutt_strncmp (inbuf, "+ ", 2) == 0)
         && sasl_decode64 (inbuf+2, strlen (inbuf+2), buf, bufsize - 1, &len) != SASL_OK)
     {
       mutt_debug (1, "pop_auth_sasl: error base64-decoding server response.\n");
@@ -154,7 +153,7 @@ static pop_auth_res_t pop_auth_sasl (POP_DATA *pop_data, const char *method)
   if (rc != SASL_OK)
     goto bail;
 
-  if (!mutt_strncmp (inbuf, "+OK", 3))
+  if (mutt_strncmp (inbuf, "+OK", 3) == 0)
   {
     mutt_sasl_setup_conn (pop_data->conn, saslconn);
     FREE (&buf);
@@ -165,7 +164,7 @@ bail:
   sasl_dispose (&saslconn);
 
   /* terminate SASL session if the last response is not +OK nor -ERR */
-  if (!mutt_strncmp (inbuf, "+ ", 2))
+  if (mutt_strncmp (inbuf, "+ ", 2) == 0)
   {
     snprintf (buf, bufsize, "*\r\n");
     if (pop_query (pop_data, buf, sizeof (buf)) == -1)
@@ -186,7 +185,7 @@ bail:
 /* Get the server timestamp for APOP authentication */
 void pop_apop_timestamp (POP_DATA *pop_data, char *buf)
 {
-  char *p1, *p2;
+  char *p1 = NULL, *p2 = NULL;
 
   FREE (&pop_data->timestamp);
 
@@ -322,10 +321,10 @@ static const pop_auth_t pop_authenticators[] = {
 int pop_authenticate (POP_DATA* pop_data)
 {
   ACCOUNT *acct = &pop_data->conn->account;
-  const pop_auth_t* authenticator;
-  char* methods;
-  char* comma;
-  char* method;
+  const pop_auth_t* authenticator = NULL;
+  char* methods = NULL;
+  char* comma = NULL;
+  char* method = NULL;
   int attempts = 0;
   int ret = POP_A_UNAVAIL;
 
@@ -350,7 +349,7 @@ int pop_authenticate (POP_DATA* pop_data)
       while (authenticator->authenticate)
       {
 	if (!authenticator->method ||
-	    !ascii_strcasecmp (authenticator->method, method))
+	    (ascii_strcasecmp (authenticator->method, method) == 0))
 	{
 	  ret = authenticator->authenticate (pop_data, method);
 	  if (ret == POP_A_SOCKET)

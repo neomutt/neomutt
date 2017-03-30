@@ -1,19 +1,18 @@
-/*
+/**
  * Copyright (C) 1996-2000,2002,2010,2012-2013 Michael R. Elkins <me@mutt.org>
  *
- *     This program is free software; you can redistribute it and/or modify
- *     it under the terms of the GNU General Public License as published by
- *     the Free Software Foundation; either version 2 of the License, or
- *     (at your option) any later version.
+ * This program is free software: you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License as published by the Free Software
+ * Foundation, either version 2 of the License, or (at your option) any later
+ * version.
  *
- *     This program is distributed in the hope that it will be useful,
- *     but WITHOUT ANY WARRANTY; without even the implied warranty of
- *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *     GNU General Public License for more details.
+ * This program is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
+ * details.
  *
- *     You should have received a copy of the GNU General Public License
- *     along with this program; if not, write to the Free Software
- *     Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ * You should have received a copy of the GNU General Public License along with
+ * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -138,8 +137,8 @@ static char *fsl = "\007";
  */
 static void collapse_all(MUTTMENU *menu, int toggle)
 {
-  HEADER *h, *base;
-  THREAD *thread, *top;
+  HEADER *h = NULL, *base = NULL;
+  THREAD *thread = NULL, *top = NULL;
   int final;
 
   if (!Context || (Context->msgcount == 0))
@@ -196,8 +195,8 @@ static int ci_next_undeleted (int msgno)
 
   for (i=msgno+1; i < Context->vcount; i++)
     if (! Context->hdrs[Context->v2r[i]]->deleted)
-      return (i);
-  return (-1);
+      return i;
+  return -1;
 }
 
 static int ci_previous_undeleted (int msgno)
@@ -206,8 +205,8 @@ static int ci_previous_undeleted (int msgno)
 
   for (i=msgno-1; i>=0; i--)
     if (! Context->hdrs[Context->v2r[i]]->deleted)
-      return (i);
-  return (-1);
+      return i;
+  return -1;
 }
 
 /* Return the index of the first new message, or failing that, the first
@@ -225,13 +224,13 @@ static int ci_first_message (void)
 	  ! Context->hdrs[Context->v2r[i]]->deleted)
       {
 	if (! Context->hdrs[Context->v2r[i]]->old)
-	  return (i);
+	  return i;
 	else if (old == -1)
 	  old = i;
       }
     }
     if (old != -1)
-      return (old);
+      return old;
 
     /* If Sort is reverse and not threaded, the latest message is first.
      * If Sort is threaded, the latest message is first iff exactly one
@@ -362,7 +361,7 @@ void update_index (MUTTMENU *menu, CONTEXT *ctx, int check,
   {
     if (check == MUTT_REOPENED)
     {
-      THREAD *h, *j;
+      THREAD *h = NULL, *j = NULL;
 
       ctx->collapsed = 0;
 
@@ -497,7 +496,7 @@ static int main_change_folder(MUTTMENU *menu, int op, char *buf, size_t bufsz,
 short mutt_ts_capability(void)
 {
   char *term = getenv("TERM");
-  char *tcaps;
+  char *tcaps = NULL;
 #ifdef HAVE_USE_EXTENDED_NAMES
   int tcapi;
 #endif
@@ -542,7 +541,7 @@ short mutt_ts_capability(void)
    * necessarily asserting it in terminfo. */
   for (termp = known; termp; termp++)
   {
-    if (term && *termp && mutt_strncasecmp (term, *termp, strlen(*termp)))
+    if (term && *termp && (mutt_strncasecmp (term, *termp, strlen(*termp)) != 0))
       return 1;
   }
 
@@ -579,7 +578,7 @@ void index_make_entry (char *s, size_t l, MUTTMENU *menu, int num)
 
   format_flag flag = MUTT_FORMAT_MAKEPRINT | MUTT_FORMAT_ARROWCURSOR | MUTT_FORMAT_INDEX;
   int edgemsgno, reverse = Sort & SORT_REVERSE;
-  THREAD *tmp;
+  THREAD *tmp = NULL;
 
   if ((Sort & SORT_MASK) == SORT_THREADS && h->tree)
   {
@@ -685,7 +684,7 @@ mutt_draw_statusline (int cols, const char *buf, int buflen)
 
   do
   {
-    COLOR_LINE *cl;
+    COLOR_LINE *cl = NULL;
     found = 0;
 
     if (!buf[offset])
@@ -827,8 +826,8 @@ int mutt_index_menu (void)
   int newcount = -1;
   int oldcount = -1;
   int rc = -1;
-  MUTTMENU *menu;
-  char *cp;                    /* temporary variable. */
+  MUTTMENU *menu = NULL;
+  char *cp = NULL;                    /* temporary variable. */
   int index_hint;   /* used to restore cursor position */
   int do_buffy_notify = 1;
   int close = 0; /* did we OP_QUIT or OP_EXIT out of this menu? */
@@ -1200,7 +1199,7 @@ int mutt_index_menu (void)
 	CHECK_ATTACH;
 	if (Context->magic == MUTT_NNTP)
 	{
-	  HEADER *hdr;
+	  HEADER *hdr = NULL;
 
 	  if (op == OP_GET_MESSAGE)
 	  {
@@ -1309,7 +1308,7 @@ int mutt_index_menu (void)
 	  if (Context->msgcount > oldmsgcount)
 	  {
 	    HEADER *oldcur = CURHDR;
-	    HEADER *hdr;
+	    HEADER *hdr = NULL;
 	    int i, quiet = Context->quiet;
 
 	    if (rc < 0)
@@ -1478,7 +1477,7 @@ int mutt_index_menu (void)
 	{
 	  char buf[LONG_STRING];
 
-	  if (!Context->pattern || strncmp (Context->pattern, "!~R!~D~s", 8) != 0)
+	  if (!Context->pattern || (strncmp (Context->pattern, "!~R!~D~s", 8) != 0))
 	  {
 	    snprintf (buf, sizeof (buf), "!~R!~D~s%s",
 		      Context->pattern ? Context->pattern : ".*");
@@ -1487,7 +1486,7 @@ int mutt_index_menu (void)
 	  else
 	  {
 	    strfcpy (buf, Context->pattern + 8, sizeof(buf));
-	    if (!*buf || strncmp (buf, ".*", 2) == 0)
+	    if (!*buf || (strncmp (buf, ".*", 2) == 0))
 	      snprintf (buf, sizeof(buf), "~A");
 	    unset_option (OPTHIDEREAD);
 	  }
@@ -3044,7 +3043,7 @@ int mutt_index_menu (void)
 
 	CHECK_ATTACH;
 	if (op != OP_FOLLOWUP || !CURHDR->env->followup_to ||
-	    mutt_strcasecmp (CURHDR->env->followup_to, "poster") ||
+	    (mutt_strcasecmp (CURHDR->env->followup_to, "poster") != 0) ||
 	    query_quadoption (OPT_FOLLOWUPTOPOSTER,
 	    _("Reply by mail as poster prefers?")) != MUTT_YES)
 	{
@@ -3231,12 +3230,12 @@ int mutt_index_menu (void)
   }
 
   mutt_menu_destroy (&menu);
-  return (close);
+  return close;
 }
 
 void mutt_set_header_color (CONTEXT *ctx, HEADER *curhdr)
 {
-  COLOR_LINE *color;
+  COLOR_LINE *color = NULL;
   pattern_cache_t cache;
 
   if (!curhdr)

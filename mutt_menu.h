@@ -1,27 +1,26 @@
-/*
+/**
  * Copyright (C) 1996-2000 Michael R. Elkins <me@mutt.org>
  *
- *     This program is free software; you can redistribute it and/or modify
- *     it under the terms of the GNU General Public License as published by
- *     the Free Software Foundation; either version 2 of the License, or
- *     (at your option) any later version.
+ * This program is free software: you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License as published by the Free Software
+ * Foundation, either version 2 of the License, or (at your option) any later
+ * version.
  *
- *     This program is distributed in the hope that it will be useful,
- *     but WITHOUT ANY WARRANTY; without even the implied warranty of
- *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *     GNU General Public License for more details.
+ * This program is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
+ * details.
  *
- *     You should have received a copy of the GNU General Public License
- *     along with this program; if not, write to the Free Software
- *     Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ * You should have received a copy of the GNU General Public License along with
+ * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 /*
  * This file is named mutt_menu.h so it doesn't collide with ncurses menu.h
  */
 
-#ifndef _MUTT_MENU_H_
-#define _MUTT_MENU_H_ 1
+#ifndef _MUTT_MENU_H
+#define _MUTT_MENU_H 1
 
 #include "keymap.h"
 #include "mutt_regex.h"
@@ -128,4 +127,4 @@ int index_color(int index_no);
 
 int mutt_limit_current_thread (HEADER *h);
 
-#endif /* _MUTT_MENU_H_ */
+#endif /* _MUTT_MENU_H */

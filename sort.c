@@ -1,19 +1,18 @@
-/*
+/**
  * Copyright (C) 1996-2000 Michael R. Elkins <me@mutt.org>
  *
- *     This program is free software; you can redistribute it and/or modify
- *     it under the terms of the GNU General Public License as published by
- *     the Free Software Foundation; either version 2 of the License, or
- *     (at your option) any later version.
+ * This program is free software: you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License as published by the Free Software
+ * Foundation, either version 2 of the License, or (at your option) any later
+ * version.
  *
- *     This program is distributed in the hope that it will be useful,
- *     but WITHOUT ANY WARRANTY; without even the implied warranty of
- *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *     GNU General Public License for more details.
+ * This program is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
+ * details.
  *
- *     You should have received a copy of the GNU General Public License
- *     along with this program; if not, write to the Free Software
- *     Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ * You should have received a copy of the GNU General Public License along with
+ * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -95,7 +94,7 @@ static int compare_subject (const void *a, const void *b)
 
 const char *mutt_get_name (ADDRESS *a)
 {
-  ADDRESS *ali;
+  ADDRESS *ali = NULL;
 
   if (a)
   {
@@ -107,7 +106,7 @@ const char *mutt_get_name (ADDRESS *a)
       return (mutt_addr_for_display (a));
   }
   /* don't return NULL to avoid segfault when printing/comparing */
-  return ("");
+  return "";
 }
 
 static int compare_to (const void *a, const void *b)
@@ -115,7 +114,7 @@ static int compare_to (const void *a, const void *b)
   HEADER **ppa = (HEADER **) a;
   HEADER **ppb = (HEADER **) b;
   char fa[SHORT_STRING];
-  const char *fb;
+  const char *fb = NULL;
   int result;
 
   strfcpy (fa, mutt_get_name ((*ppa)->env->to), SHORT_STRING);
@@ -130,7 +129,7 @@ static int compare_from (const void *a, const void *b)
   HEADER **ppa = (HEADER **) a;
   HEADER **ppb = (HEADER **) b;
   char fa[SHORT_STRING];
-  const char *fb;
+  const char *fb = NULL;
   int result;
 
   strfcpy (fa, mutt_get_name ((*ppa)->env->from), SHORT_STRING);
@@ -173,7 +172,7 @@ static int compare_spam (const void *a, const void *b)
 {
   HEADER **ppa = (HEADER **) a;
   HEADER **ppb = (HEADER **) b;
-  char   *aptr, *bptr;
+  char   *aptr = NULL, *bptr = NULL;
   int     ahas, bhas;
   int     result = 0;
   double  difference;
@@ -261,27 +260,27 @@ sort_t *mutt_get_sort_func (int method)
   switch (method & SORT_MASK)
   {
     case SORT_RECEIVED:
-      return (compare_date_received);
+      return compare_date_received;
     case SORT_ORDER:
-      return (compare_order);
+      return compare_order;
     case SORT_DATE:
-      return (compare_date_sent);
+      return compare_date_sent;
     case SORT_SUBJECT:
-      return (compare_subject);
+      return compare_subject;
     case SORT_FROM:
-      return (compare_from);
+      return compare_from;
     case SORT_SIZE:
-      return (compare_size);
+      return compare_size;
     case SORT_TO:
-      return (compare_to);
+      return compare_to;
     case SORT_SCORE:
-      return (compare_score);
+      return compare_score;
     case SORT_SPAM:
-      return (compare_spam);
+      return compare_spam;
     case SORT_LABEL:
-      return (compare_label);
+      return compare_label;
     default:
-      return (NULL);
+      return NULL;
   }
   /* not reached */
 }
@@ -289,9 +288,9 @@ sort_t *mutt_get_sort_func (int method)
 void mutt_sort_headers (CONTEXT *ctx, int init)
 {
   int i;
-  HEADER *h;
-  THREAD *thread, *top;
-  sort_t *sortfunc;
+  HEADER *h = NULL;
+  THREAD *thread = NULL, *top = NULL;
+  sort_t *sortfunc = NULL;
 
   unset_option (OPTNEEDRESORT);
 

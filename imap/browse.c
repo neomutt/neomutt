@@ -1,20 +1,19 @@
-/*
+/**
  * Copyright (C) 1996-1999 Brandon Long <blong@fiction.net>
  * Copyright (C) 1999-2008 Brendan Cully <brendan@kublai.com>
  *
- *     This program is free software; you can redistribute it and/or modify
- *     it under the terms of the GNU General Public License as published by
- *     the Free Software Foundation; either version 2 of the License, or
- *     (at your option) any later version.
+ * This program is free software: you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License as published by the Free Software
+ * Foundation, either version 2 of the License, or (at your option) any later
+ * version.
  *
- *     This program is distributed in the hope that it will be useful,
- *     but WITHOUT ANY WARRANTY; without even the implied warranty of
- *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *     GNU General Public License for more details.
+ * This program is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
+ * details.
  *
- *     You should have received a copy of the GNU General Public License
- *     along with this program; if not, write to the Free Software
- *     Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ * You should have received a copy of the GNU General Public License along with
+ * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 /* Mutt browser support routines */
@@ -40,7 +39,7 @@ static void imap_add_folder (char delim, char *folder, int noselect,
   char tmp[LONG_STRING];
   char relpath[LONG_STRING];
   IMAP_MBOX mx;
-  BUFFY *b;
+  BUFFY *b = NULL;
 
   if (imap_parse_path (state->folder, &mx))
     return;
@@ -57,7 +56,7 @@ static void imap_add_folder (char delim, char *folder, int noselect,
   if (isparent)
     strfcpy (relpath, "../", sizeof (relpath));
   /* strip current folder from target, to render a relative path */
-  else if (!mutt_strncmp (mx.mbox, folder, mutt_strlen (mx.mbox)))
+  else if (mutt_strncmp (mx.mbox, folder, mutt_strlen (mx.mbox)) == 0)
     strfcpy (relpath, folder + mutt_strlen (mx.mbox), sizeof (relpath));
   else
     strfcpy (relpath, folder, sizeof (relpath));
@@ -92,12 +91,12 @@ static void imap_add_folder (char delim, char *folder, int noselect,
   (state->entry)[state->entrylen].inferiors = !noinferiors;
 
   b = Incoming;
-  while (b && mutt_strcmp (tmp, b->path))
+  while (b && (mutt_strcmp (tmp, b->path) != 0))
     b = b->next;
   if (b)
   {
     if (Context &&
-        !mutt_strcmp (b->realpath, Context->realpath))
+        (mutt_strcmp (b->realpath, Context->realpath) == 0))
     {
       b->msg_count = Context->msgcount;
       b->msg_unread = Context->unread;
@@ -141,7 +140,7 @@ static int browse_add_list_result (IMAP_DATA* idata, const char* cmd,
       if (isparent)
         list.noselect = 1;
       /* prune current folder from output */
-      if (isparent || mutt_strncmp (list.name, mx.mbox, strlen (list.name)))
+      if (isparent || (mutt_strncmp (list.name, mx.mbox, strlen (list.name)) != 0))
         imap_add_folder (list.delim, list.name, list.noselect, list.noinferiors,
                          state, isparent);
     }
@@ -157,7 +156,7 @@ static int browse_add_list_result (IMAP_DATA* idata, const char* cmd,
  *   given a current folder to browse */
 int imap_browse (char* path, struct browser_state* state)
 {
-  IMAP_DATA* idata;
+  IMAP_DATA* idata = NULL;
   IMAP_LIST list;
   char buf[LONG_STRING];
   char mbox[LONG_STRING];
@@ -215,7 +214,7 @@ int imap_browse (char* path, struct browser_state* state)
       if (rc == IMAP_CMD_CONTINUE && list.name)
       {
         if (!list.noinferiors && list.name[0] &&
-            !imap_mxcmp (list.name, mbox) &&
+            (imap_mxcmp (list.name, mbox) == 0) &&
             n < sizeof (mbox) - 1)
         {
           mbox[n++] = list.delim;
@@ -322,7 +321,7 @@ int imap_browse (char* path, struct browser_state* state)
 /* imap_mailbox_create: Prompt for a new mailbox name, and try to create it */
 int imap_mailbox_create (const char* folder)
 {
-  IMAP_DATA* idata;
+  IMAP_DATA* idata = NULL;
   IMAP_MBOX mx;
   char buf[LONG_STRING];
   short n;
@@ -376,7 +375,7 @@ int imap_mailbox_create (const char* folder)
 
 int imap_mailbox_rename(const char* mailbox)
 {
-  IMAP_DATA* idata;
+  IMAP_DATA* idata = NULL;
   IMAP_MBOX mx;
   char buf[LONG_STRING];
   char newname[SHORT_STRING];

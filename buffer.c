@@ -1,17 +1,16 @@
-/*
- *     This program is free software; you can redistribute it and/or modify
- *     it under the terms of the GNU General Public License as published by
- *     the Free Software Foundation; either version 2 of the License, or
- *     (at your option) any later version.
+/**
+ * This program is free software: you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License as published by the Free Software
+ * Foundation, either version 2 of the License, or (at your option) any later
+ * version.
  *
- *     This program is distributed in the hope that it will be useful,
- *     but WITHOUT ANY WARRANTY; without even the implied warranty of
- *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *     GNU General Public License for more details.
+ * This program is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
+ * details.
  *
- *     You should have received a copy of the GNU General Public License
- *     along with this program; if not, write to the Free Software
- *     Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ * You should have received a copy of the GNU General Public License along with
+ * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include <string.h>
@@ -26,7 +25,7 @@
 
 /* creates and initializes a BUFFER */
 BUFFER *mutt_buffer_new(void) {
-  BUFFER *b;
+  BUFFER *b = NULL;
 
   b = safe_malloc(sizeof(BUFFER));
 
@@ -50,7 +49,7 @@ BUFFER *mutt_buffer_init (BUFFER *b) {
  * This is bad, but there's no apparent protocol for it.
  */
 BUFFER *mutt_buffer_from (char *seed) {
-  BUFFER *b;
+  BUFFER *b = NULL;
 
   if (!seed)
     return NULL;
@@ -233,7 +232,7 @@ int mutt_extract_token (BUFFER *dest, BUFFER *tok, int flags)
     {
       FILE	*fp;
       pid_t	pid;
-      char	*cmd, *ptr;
+      char	*cmd = NULL, *ptr = NULL;
       size_t	expnlen;
       BUFFER	expn;
       int	line = 0;
@@ -250,14 +249,14 @@ int mutt_extract_token (BUFFER *dest, BUFFER *tok, int flags)
       if (!pc)
       {
 	mutt_debug (1, "mutt_get_token: mismatched backticks\n");
-	return (-1);
+	return -1;
       }
       cmd = mutt_substrdup (tok->dptr, pc);
       if ((pid = mutt_create_filter (cmd, NULL, &fp, NULL)) < 0)
       {
 	mutt_debug (1, "mutt_get_token: unable to fork command: %s\n", cmd);
 	FREE (&cmd);
-	return (-1);
+	return -1;
       }
       FREE (&cmd);
 

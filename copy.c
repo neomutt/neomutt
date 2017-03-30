@@ -1,19 +1,18 @@
-/*
+/**
  * Copyright (C) 1996-2000,2002,2014 Michael R. Elkins <me@mutt.org>
  *
- *     This program is free software; you can redistribute it and/or modify
- *     it under the terms of the GNU General Public License as published by
- *     the Free Software Foundation; either version 2 of the License, or
- *     (at your option) any later version.
+ * This program is free software: you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License as published by the Free Software
+ * Foundation, either version 2 of the License, or (at your option) any later
+ * version.
  *
- *     This program is distributed in the hope that it will be useful,
- *     but WITHOUT ANY WARRANTY; without even the implied warranty of
- *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *     GNU General Public License for more details.
+ * This program is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
+ * details.
  *
- *     You should have received a copy of the GNU General Public License
- *     along with this program; if not, write to the Free Software
- *     Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ * You should have received a copy of the GNU General Public License along with
+ * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -52,8 +51,8 @@ mutt_copy_hdr (FILE *in, FILE *out, LOFF_T off_start, LOFF_T off_end, int flags,
   int this_is_from;
   int ignore = 0;
   char buf[LONG_STRING]; /* should be long enough to get most fields in one pass */
-  char *nl;
-  LIST *t;
+  char *nl = NULL;
+  LIST *t = NULL;
   char **headers;
   int hdr_count;
   int x;
@@ -83,35 +82,35 @@ mutt_copy_hdr (FILE *in, FILE *out, LOFF_T off_start, LOFF_T off_end, int flags,
       if (nl && buf[0] != ' ' && buf[0] != '\t')
       {
 	ignore = 1;
-	if (!from && mutt_strncmp ("From ", buf, 5) == 0)
+	if (!from && (mutt_strncmp ("From ", buf, 5) == 0))
 	{
 	  if ((flags & CH_FROM) == 0)
 	    continue;
 	  from = 1;
 	}
 	else if (flags & (CH_NOQFROM) &&
-			ascii_strncasecmp (">From ", buf, 6) == 0)
+			(ascii_strncasecmp (">From ", buf, 6) == 0))
 		continue;
 
 	else if (buf[0] == '\n' || (buf[0] == '\r' && buf[1] == '\n'))
 	  break; /* end of header */
 
 	if ((flags & (CH_UPDATE | CH_XMIT | CH_NOSTATUS)) &&
-	    (ascii_strncasecmp ("Status:", buf, 7) == 0 ||
-	     ascii_strncasecmp ("X-Status:", buf, 9) == 0))
+	    ((ascii_strncasecmp ("Status:", buf, 7) == 0) ||
+	     (ascii_strncasecmp ("X-Status:", buf, 9) == 0)))
 	  continue;
 	if ((flags & (CH_UPDATE_LEN | CH_XMIT | CH_NOLEN)) &&
-	    (ascii_strncasecmp ("Content-Length:", buf, 15) == 0 ||
-	     ascii_strncasecmp ("Lines:", buf, 6) == 0))
+	    ((ascii_strncasecmp ("Content-Length:", buf, 15) == 0) ||
+	     (ascii_strncasecmp ("Lines:", buf, 6) == 0)))
 	  continue;
 	if ((flags & CH_UPDATE_REFS) &&
-	    ascii_strncasecmp ("References:", buf, 11) == 0)
+	    (ascii_strncasecmp ("References:", buf, 11) == 0))
 	  continue;
 	if ((flags & CH_UPDATE_IRT) &&
-	    ascii_strncasecmp ("In-Reply-To:", buf, 12) == 0)
+	    (ascii_strncasecmp ("In-Reply-To:", buf, 12) == 0))
 	  continue;
 	if (flags & CH_UPDATE_LABEL &&
-	    ascii_strncasecmp ("X-Label:", buf, 8) == 0)
+	    (ascii_strncasecmp ("X-Label:", buf, 8) == 0))
 	  continue;
 
 	ignore = 0;
@@ -127,7 +126,7 @@ mutt_copy_hdr (FILE *in, FILE *out, LOFF_T off_start, LOFF_T off_end, int flags,
       }
 
       if (!ignore && fputs (buf, out) == EOF)
-	return (-1);
+	return -1;
     }
     return 0;
   }
@@ -191,7 +190,7 @@ mutt_copy_hdr (FILE *in, FILE *out, LOFF_T off_start, LOFF_T off_end, int flags,
 
       ignore = 1;
       this_is_from = 0;
-      if (!from && mutt_strncmp ("From ", buf, 5) == 0)
+      if (!from && (mutt_strncmp ("From ", buf, 5) == 0))
       {
 	if ((flags & CH_FROM) == 0)
 	  continue;
@@ -205,27 +204,27 @@ mutt_copy_hdr (FILE *in, FILE *out, LOFF_T off_start, LOFF_T off_end, int flags,
 	  (flags & CH_WEED) && mutt_matches_ignore (buf))
 	continue;
       if ((flags & CH_WEED_DELIVERED) &&
-	  ascii_strncasecmp ("Delivered-To:", buf, 13) == 0)
+	  (ascii_strncasecmp ("Delivered-To:", buf, 13) == 0))
 	continue;
       if ((flags & (CH_UPDATE | CH_XMIT | CH_NOSTATUS)) &&
-	  (ascii_strncasecmp ("Status:", buf, 7) == 0 ||
-	   ascii_strncasecmp ("X-Status:", buf, 9) == 0))
+	  ((ascii_strncasecmp ("Status:", buf, 7) == 0) ||
+	   (ascii_strncasecmp ("X-Status:", buf, 9) == 0)))
 	continue;
       if ((flags & (CH_UPDATE_LEN | CH_XMIT | CH_NOLEN)) &&
-	  (ascii_strncasecmp ("Content-Length:", buf, 15) == 0 ||
-	   ascii_strncasecmp ("Lines:", buf, 6) == 0))
+	  ((ascii_strncasecmp ("Content-Length:", buf, 15) == 0) ||
+	   (ascii_strncasecmp ("Lines:", buf, 6) == 0)))
 	continue;
       if ((flags & CH_MIME) &&
-	  ((ascii_strncasecmp ("content-", buf, 8) == 0 &&
-	    (ascii_strncasecmp ("transfer-encoding:", buf + 8, 18) == 0 ||
-	     ascii_strncasecmp ("type:", buf + 8, 5) == 0)) ||
-	   ascii_strncasecmp ("mime-version:", buf, 13) == 0))
+	  (((ascii_strncasecmp ("content-", buf, 8) == 0) &&
+	    ((ascii_strncasecmp ("transfer-encoding:", buf + 8, 18) == 0) ||
+	     (ascii_strncasecmp ("type:", buf + 8, 5) == 0))) ||
+	   (ascii_strncasecmp ("mime-version:", buf, 13) == 0)))
 	continue;
       if ((flags & CH_UPDATE_REFS) &&
-	  ascii_strncasecmp ("References:", buf, 11) == 0)
+	  (ascii_strncasecmp ("References:", buf, 11) == 0))
 	continue;
       if ((flags & CH_UPDATE_IRT) &&
-	  ascii_strncasecmp ("In-Reply-To:", buf, 12) == 0)
+	  (ascii_strncasecmp ("In-Reply-To:", buf, 12) == 0))
 	continue;
 
       /* Find x -- the array entry where this header is to be saved */
@@ -233,7 +232,7 @@ mutt_copy_hdr (FILE *in, FILE *out, LOFF_T off_start, LOFF_T off_end, int flags,
       {
 	for (t = HeaderOrderList, x = 0 ; (t) ; t = t->next, x++)
 	{
-	  if (!ascii_strncasecmp (buf, t->data, mutt_strlen (t->data)))
+	  if (ascii_strncasecmp (buf, t->data, mutt_strlen (t->data)) == 0)
 	  {
 	    mutt_debug (2, "Reorder: %s matches %s\n", t->data, buf);
 	    break;
@@ -321,8 +320,8 @@ mutt_copy_hdr (FILE *in, FILE *out, LOFF_T off_start, LOFF_T off_end, int flags,
   FREE (&headers);
 
   if (error)
-    return (-1);
-  return (0);
+    return -1;
+  return 0;
 }
 
 /* flags
@@ -348,7 +347,6 @@ mutt_copy_hdr (FILE *in, FILE *out, LOFF_T off_start, LOFF_T off_end, int flags,
    prefix
    	string to use if CH_PREFIX is set
  */
-
 int
 mutt_copy_header (FILE *in, HEADER *h, FILE *out, int flags, const char *prefix)
 {
@@ -519,7 +517,6 @@ static int count_delete_lines (FILE *fp, BODY *b, LOFF_T *length, size_t datelen
  *	MUTT_CM_CHARCONV	perform character set conversion
  * chflags	flags to mutt_copy_header()
  */
-
 int
 _mutt_copy_message (FILE *fpout, FILE *fpin, HEADER *hdr, BODY *body,
 		    int flags, int chflags)
@@ -650,14 +647,14 @@ _mutt_copy_message (FILE *fpout, FILE *fpin, HEADER *hdr, BODY *body,
            && (flags & MUTT_CM_DECODE_CRYPT) && (hdr->security & ENCRYPT))
   {
     BODY *cur = NULL;
-    FILE *fp;
+    FILE *fp = NULL;
 
     if ((WithCrypto & APPLICATION_PGP)
         && (flags & MUTT_CM_DECODE_PGP) && (hdr->security & APPLICATION_PGP) &&
 	hdr->content->type == TYPEMULTIPART)
     {
       if (crypt_pgp_decrypt_mime (fpin, &fp, hdr->content, &cur))
-	return (-1);
+	return -1;
       fputs ("MIME-Version: 1.0\n", fpout);
     }
 
@@ -666,7 +663,7 @@ _mutt_copy_message (FILE *fpout, FILE *fpin, HEADER *hdr, BODY *body,
 	     && hdr->content->type == TYPEAPPLICATION)
     {
       if (crypt_smime_decrypt_mime (fpin, &fp, hdr->content, &cur))
-	return (-1);
+	return -1;
     }
 
     if (!cur)
@@ -683,7 +680,7 @@ _mutt_copy_message (FILE *fpout, FILE *fpin, HEADER *hdr, BODY *body,
     {
       safe_fclose (&fp);
       mutt_free_body (&cur);
-      return (-1);
+      return -1;
     }
     mutt_free_body (&cur);
     safe_fclose (&fp);
@@ -727,7 +724,7 @@ int
 mutt_copy_message (FILE *fpout, CONTEXT *src, HEADER *hdr, int flags,
 		   int chflags)
 {
-  MESSAGE *msg;
+  MESSAGE *msg = NULL;
   int r;
 
   if ((msg = mx_open_message (src, hdr->msgno)) == NULL)
@@ -752,13 +749,12 @@ mutt_copy_message (FILE *fpout, CONTEXT *src, HEADER *hdr, int flags,
  * flags	mutt_copy_message() flags
  * chflags	mutt_copy_header() flags
  */
-
 static int
 _mutt_append_message (CONTEXT *dest, FILE *fpin, CONTEXT *src, HEADER *hdr,
 		      BODY *body, int flags, int chflags)
 {
   char buf[STRING];
-  MESSAGE *msg;
+  MESSAGE *msg = NULL;
   int r;
 
   fseeko (fpin, hdr->offset, 0);
@@ -787,7 +783,7 @@ int
 mutt_append_message (CONTEXT *dest, CONTEXT *src, HEADER *hdr, int cmflags,
 		     int chflags)
 {
-  MESSAGE *msg;
+  MESSAGE *msg = NULL;
   int r;
 
   if ((msg = mx_open_message (src, hdr->msgno)) == NULL)
@@ -806,7 +802,7 @@ mutt_append_message (CONTEXT *dest, CONTEXT *src, HEADER *hdr, int cmflags,
  */
 static int copy_delete_attach (BODY *b, FILE *fpin, FILE *fpout, char *date)
 {
-  BODY *part;
+  BODY *part = NULL;
 
   for (part = b->parts ; part ; part = part->next)
   {
@@ -855,7 +851,6 @@ static int copy_delete_attach (BODY *b, FILE *fpin, FILE *fpout, char *date)
  *
  * XXX - fix that.
  */
-
 static void format_address_header (char **h, ADDRESS *a)
 {
   char buf[HUGE_STRING];
@@ -942,14 +937,14 @@ static int address_header_decode (char **h)
     }
     case 'f':
     {
-      if (ascii_strncasecmp (s, "from:", 5))
+      if (ascii_strncasecmp (s, "from:", 5) != 0)
 	return 0;
       l = 5;
       break;
     }
     case 'c':
     {
-      if (ascii_strncasecmp (s, "cc:", 3))
+      if (ascii_strncasecmp (s, "cc:", 3) != 0)
 	return 0;
       l = 3;
       break;
@@ -957,28 +952,28 @@ static int address_header_decode (char **h)
     }
     case 'b':
     {
-      if (ascii_strncasecmp (s, "bcc:", 4))
+      if (ascii_strncasecmp (s, "bcc:", 4) != 0)
 	return 0;
       l = 4;
       break;
     }
     case 's':
     {
-      if (ascii_strncasecmp (s, "sender:", 7))
+      if (ascii_strncasecmp (s, "sender:", 7) != 0)
 	return 0;
       l = 7;
       break;
     }
     case 't':
     {
-      if (ascii_strncasecmp (s, "to:", 3))
+      if (ascii_strncasecmp (s, "to:", 3) != 0)
 	return 0;
       l = 3;
       break;
     }
     case 'm':
     {
-      if (ascii_strncasecmp (s, "mail-followup-to:", 17))
+      if (ascii_strncasecmp (s, "mail-followup-to:", 17) != 0)
 	return 0;
       l = 17;
       break;

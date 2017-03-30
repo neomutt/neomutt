@@ -1,22 +1,18 @@
-/*
+/**
  * Copyright (C) 1999-2001 Thomas Roessler <roessler@does-not-exist.org>
  *
- *     This program is free software; you can redistribute it
- *     and/or modify it under the terms of the GNU General Public
- *     License as published by the Free Software Foundation; either
- *     version 2 of the License, or (at your option) any later
- *     version.
+ * This program is free software: you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License as published by the Free Software
+ * Foundation, either version 2 of the License, or (at your option) any later
+ * version.
  *
- *     This program is distributed in the hope that it will be
- *     useful, but WITHOUT ANY WARRANTY; without even the implied
- *     warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR
- *     PURPOSE.  See the GNU General Public License for more
- *     details.
+ * This program is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
+ * details.
  *
- *     You should have received a copy of the GNU General Public
- *     License along with this program; if not, write to the Free
- *     Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
- *     Boston, MA  02110-1301, USA.
+ * You should have received a copy of the GNU General Public License along with
+ * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 /*
@@ -41,8 +37,6 @@
 #include <sys/types.h>
 #include <sys/file.h>
 #include <fcntl.h>
-
-#ifdef MIXMASTER
 
 struct coord
 {
@@ -115,18 +109,17 @@ static void mix_free_remailer (REMAILER **r)
 }
 
 /* parse the type2.list as given by mixmaster -T */
-
 static REMAILER **mix_type2_list (size_t *l)
 {
-  FILE *fp;
+  FILE *fp = NULL;
   pid_t mm_pid;
   int devnull;
 
   char cmd[HUGE_STRING + _POSIX_PATH_MAX];
   char line[HUGE_STRING];
-  char *t;
+  char *t = NULL;
 
-  REMAILER **type2_list = NULL, *p;
+  REMAILER **type2_list = NULL, *p = NULL;
   size_t slots = 0, used = 0;
 
   if (!l)
@@ -216,7 +209,7 @@ static void mix_screen_coordinates (REMAILER **type2_list,
 				    int i)
 {
   short c, r, oc;
-  struct coord *coords;
+  struct coord *coords = NULL;
 
   if (!chain->cl)
     return;
@@ -358,7 +351,6 @@ static const char *mix_format_caps (REMAILER *r)
  * %a	address
  *
  */
-
 static const char *mix_entry_fmt (char *dest,
 				  size_t destlen,
 				  size_t col,
@@ -418,7 +410,7 @@ static const char *mix_entry_fmt (char *dest,
     mutt_FormatString (dest, destlen, col, cols, ifstring, mutt_attach_fmt, data, 0);
   else if (flags & MUTT_FORMAT_OPTIONAL)
     mutt_FormatString (dest, destlen, col, cols, elsestring, mutt_attach_fmt, data, 0);
-  return (src);
+  return src;
 }
 
 
@@ -438,7 +430,7 @@ static int mix_chain_add (MIXCHAIN *chain, const char *s,
   if (chain->cl >= MAXMIXES)
     return -1;
 
-  if (!mutt_strcmp (s, "0") || !ascii_strcasecmp (s, "<random>"))
+  if ((mutt_strcmp (s, "0") == 0) || (ascii_strcasecmp (s, "<random>") == 0))
   {
     chain->ch[chain->cl++] = 0;
     return 0;
@@ -446,7 +438,7 @@ static int mix_chain_add (MIXCHAIN *chain, const char *s,
 
   for (i = 0; type2_list[i]; i++)
   {
-    if (!ascii_strcasecmp (s, type2_list[i]->shortname))
+    if (ascii_strcasecmp (s, type2_list[i]->shortname) == 0)
     {
       chain->ch[chain->cl++] = i;
       return 0;
@@ -474,8 +466,8 @@ static const struct mapping_t RemailerHelp[] =
 
 void mix_make_chain (LIST **chainp, int *redraw)
 {
-  LIST *p;
-  MIXCHAIN *chain;
+  LIST *p = NULL;
+  MIXCHAIN *chain = NULL;
   int c_cur = 0, c_old = 0;
   short c_redraw = 1;
 
@@ -484,13 +476,13 @@ void mix_make_chain (LIST **chainp, int *redraw)
 
   struct coord *coords = NULL;
 
-  MUTTMENU *menu;
+  MUTTMENU *menu = NULL;
   char helpstr[LONG_STRING];
   short loop = 1;
   int op;
 
   int i, j;
-  char *t;
+  char *t = NULL;
 
   if (!(type2_list = mix_type2_list (&ttll)))
   {
@@ -681,12 +673,11 @@ void mix_make_chain (LIST **chainp, int *redraw)
 }
 
 /* some safety checks before piping the message to mixmaster */
-
 int mix_check_message (HEADER *msg)
 {
-  const char *fqdn;
+  const char *fqdn = NULL;
   short need_hostname = 0;
-  ADDRESS *p;
+  ADDRESS *p = NULL;
 
   if (msg->env->cc || msg->env->bcc)
   {
@@ -715,7 +706,7 @@ int mix_check_message (HEADER *msg)
     if (!(fqdn = mutt_fqdn (1)))
     {
       mutt_error (_("Please set the hostname variable to a proper value when using mixmaster!"));
-      return (-1);
+      return -1;
     }
 
     /* Cc and Bcc are empty at this point. */
@@ -760,5 +751,3 @@ int mix_send_message (LIST *chain, const char *tempfile)
   return i;
 }
 
-
-#endif

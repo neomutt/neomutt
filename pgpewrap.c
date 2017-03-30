@@ -1,4 +1,4 @@
-/*
+/**
  * C version by Wessel Dankers <wsl@fruit.eu.org>
  *
  * This code is in the public domain.
@@ -18,7 +18,7 @@ static void print_usage(const char *progname) {
 }
 
 int main(int argc, char **argv) {
-	char **opts, **opt, *pfx;
+	char **opts = NULL, **opt = NULL, *pfx = NULL;
 	int i;
 
 	if (argc <= 1) {
@@ -44,7 +44,7 @@ int main(int argc, char **argv) {
 	pfx = NULL;
 
 	for(i = 2; i < argc; ) {
-		if(!strcmp(argv[i], "--")) {
+		if(strcmp(argv[i], "--") == 0) {
 			i += 2;
 			if(i > argc) {
 				print_usage(argv[0]);

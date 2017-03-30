@@ -1,19 +1,18 @@
-/*
+/**
  * Copyright (C) 1996-2000 Michael R. Elkins <me@mutt.org>
  *
- *     This program is free software; you can redistribute it and/or modify
- *     it under the terms of the GNU General Public License as published by
- *     the Free Software Foundation; either version 2 of the License, or
- *     (at your option) any later version.
+ * This program is free software: you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License as published by the Free Software
+ * Foundation, either version 2 of the License, or (at your option) any later
+ * version.
  *
- *     This program is distributed in the hope that it will be useful,
- *     but WITHOUT ANY WARRANTY; without even the implied warranty of
- *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *     GNU General Public License for more details.
+ * This program is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
+ * details.
  *
- *     You should have received a copy of the GNU General Public License
- *     along with this program; if not, write to the Free Software
- *     Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ * You should have received a copy of the GNU General Public License along with
+ * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -63,15 +62,15 @@ void mutt_check_rescore (CONTEXT *ctx)
 
 int mutt_parse_score (BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err)
 {
-  SCORE *ptr, *last;
-  char *pattern, *pc;
-  struct pattern_t *pat;
+  SCORE *ptr = NULL, *last = NULL;
+  char *pattern = NULL, *pc = NULL;
+  struct pattern_t *pat = NULL;
 
   mutt_extract_token (buf, s, 0);
   if (!MoreArgs (s))
   {
     strfcpy (err->data, _("score: too few arguments"), err->dsize);
-    return (-1);
+    return -1;
   }
   pattern = buf->data;
   mutt_buffer_init (buf);
@@ -80,7 +79,7 @@ int mutt_parse_score (BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err)
   {
     FREE (&pattern);
     strfcpy (err->data, _("score: too many arguments"), err->dsize);
-    return (-1);
+    return -1;
   }
 
   /* look for an existing entry and update the value, else add it to the end
@@ -93,7 +92,7 @@ int mutt_parse_score (BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err)
     if ((pat = mutt_pattern_comp (pattern, 0, err)) == NULL)
     {
       FREE (&pattern);
-      return (-1);
+      return -1;
     }
     ptr = safe_calloc (1, sizeof (SCORE));
     if (last)
@@ -118,7 +117,7 @@ int mutt_parse_score (BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err)
   {
     FREE (&pattern);
     strfcpy (err->data, _("Error: score: invalid number"), err->dsize);
-    return (-1);
+    return -1;
   }
   set_option (OPTNEEDRESCORE);
   return 0;
@@ -126,7 +125,7 @@ int mutt_parse_score (BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err)
 
 void mutt_score_message (CONTEXT *ctx, HEADER *hdr, int upd_ctx)
 {
-  SCORE *tmp;
+  SCORE *tmp = NULL;
   pattern_cache_t cache;
 
   memset (&cache, 0, sizeof (cache));
@@ -156,12 +155,12 @@ void mutt_score_message (CONTEXT *ctx, HEADER *hdr, int upd_ctx)
 
 int mutt_parse_unscore (BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err)
 {
-  SCORE *tmp, *last = NULL;
+  SCORE *tmp = NULL, *last = NULL;
 
   while (MoreArgs (s))
   {
     mutt_extract_token (buf, s, 0);
-    if (!mutt_strcmp ("*", buf->data))
+    if (mutt_strcmp ("*", buf->data) == 0)
     {
       for (tmp = Score; tmp; )
       {
@@ -176,7 +175,7 @@ int mutt_parse_unscore (BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err)
     {
       for (tmp = Score; tmp; last = tmp, tmp = tmp->next)
       {
-	if (!mutt_strcmp (buf->data, tmp->str))
+	if (mutt_strcmp (buf->data, tmp->str) == 0)
 	{
 	  if (last)
 	    last->next = tmp->next;

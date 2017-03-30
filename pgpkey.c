@@ -1,23 +1,19 @@
-/*
+/**
  * Copyright (C) 1996-1997,2007 Michael R. Elkins <me@mutt.org>
  * Copyright (c) 1998-2003 Thomas Roessler <roessler@does-not-exist.org>
  *
- *     This program is free software; you can redistribute it
- *     and/or modify it under the terms of the GNU General Public
- *     License as published by the Free Software Foundation; either
- *     version 2 of the License, or (at your option) any later
- *     version.
+ * This program is free software: you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License as published by the Free Software
+ * Foundation, either version 2 of the License, or (at your option) any later
+ * version.
  *
- *     This program is distributed in the hope that it will be
- *     useful, but WITHOUT ANY WARRANTY; without even the implied
- *     warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR
- *     PURPOSE.  See the GNU General Public License for more
- *     details.
+ * This program is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
+ * details.
  *
- *     You should have received a copy of the GNU General Public
- *     License along with this program; if not, write to the Free
- *     Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
- *     Boston, MA  02110-1301, USA.
+ * You should have received a copy of the GNU General Public License along with
+ * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -39,8 +35,6 @@
 #include <sys/wait.h>
 
 #include <locale.h>
-
-#ifdef CRYPT_BACKEND_CLASSIC_PGP
 
 struct pgp_cache
 {
@@ -131,8 +125,8 @@ static const char *pgp_entry_fmt (char *dest,
 				  format_flag flags)
 {
   char fmt[16];
-  pgp_entry_t *entry;
-  pgp_uid_t *uid;
+  pgp_entry_t *entry = NULL;
+  pgp_uid_t *uid = NULL;
   pgp_key_t key, pkey;
   int kflags = 0;
   int optional = (flags & MUTT_FORMAT_OPTIONAL);
@@ -153,10 +147,10 @@ static const char *pgp_entry_fmt (char *dest,
     case '[':
 
       {
-	const char *cp;
-	char buf2[SHORT_STRING], *p;
+	const char *cp = NULL;
+	char buf2[SHORT_STRING], *p = NULL;
 	int do_locales;
-	struct tm *tm;
+	struct tm *tm = NULL;
 	size_t len;
 
 	p = dest;
@@ -280,7 +274,7 @@ static const char *pgp_entry_fmt (char *dest,
     mutt_FormatString (dest, destlen, col, cols, ifstring, mutt_attach_fmt, data, 0);
   else if (flags & MUTT_FORMAT_OPTIONAL)
     mutt_FormatString (dest, destlen, col, cols, elsestring, mutt_attach_fmt, data, 0);
-  return (src);
+  return src;
 }
 
 static void pgp_entry (char *s, size_t l, MUTTMENU * menu, int num)
@@ -328,7 +322,7 @@ static int _pgp_compare_keyid (const void *a, const void *b)
 			    pgp_fpr_or_lkeyid ((*t)->parent))))
     return r > 0;
   else
-    return (mutt_strcasecmp ((*s)->addr, (*t)->addr)) > 0;
+    return (mutt_strcasecmp ((*s)->addr, (*t)->addr) > 0);
 }
 
 static int pgp_compare_keyid (const void *a, const void *b)
@@ -345,7 +339,7 @@ static int _pgp_compare_date (const void *a, const void *b)
 
   if ((r = ((*s)->parent->gen_time - (*t)->parent->gen_time)))
     return r > 0;
-  return (mutt_strcasecmp ((*s)->addr, (*t)->addr)) > 0;
+  return (mutt_strcasecmp ((*s)->addr, (*t)->addr) > 0);
 }
 
 static int pgp_compare_date (const void *a, const void *b)
@@ -373,7 +367,7 @@ static int _pgp_compare_trust (const void *a, const void *b)
   if ((r = mutt_strcasecmp ((*s)->addr, (*t)->addr)))
     return r > 0;
   return (mutt_strcasecmp (pgp_fpr_or_lkeyid ((*s)->parent),
-			   pgp_fpr_or_lkeyid ((*t)->parent))) > 0;
+			   pgp_fpr_or_lkeyid ((*t)->parent)) > 0);
 }
 
 static int pgp_compare_trust (const void *a, const void *b)
@@ -429,11 +423,11 @@ static int pgp_id_matches_addr (ADDRESS *addr, ADDRESS *u_addr, pgp_uid_t *uid)
     rv |= PGP_KV_STRONGID;
 
   if (addr->mailbox && u_addr->mailbox
-      && mutt_strcasecmp (addr->mailbox, u_addr->mailbox) == 0)
+      && (mutt_strcasecmp (addr->mailbox, u_addr->mailbox) == 0))
     rv |= PGP_KV_ADDR;
 
   if (addr->personal && u_addr->personal
-      && mutt_strcasecmp (addr->personal, u_addr->personal) == 0)
+      && (mutt_strcasecmp (addr->personal, u_addr->personal) == 0))
     rv |= PGP_KV_STRING;
 
   return rv;
@@ -444,14 +438,14 @@ static pgp_key_t pgp_select_key (pgp_key_t keys,
 {
   int keymax;
   pgp_uid_t **KeyTable;
-  MUTTMENU *menu;
+  MUTTMENU *menu = NULL;
   int i, done = 0;
   char helpstr[LONG_STRING], buf[LONG_STRING], tmpbuf[STRING];
   char cmd[LONG_STRING], tempfile[_POSIX_PATH_MAX];
-  FILE *fp, *devnull;
+  FILE *fp = NULL, *devnull = NULL;
   pid_t thepid;
   pgp_key_t kp;
-  pgp_uid_t *a;
+  pgp_uid_t *a = NULL;
   int (*f) (const void *, const void *);
 
   int unusable = 0;
@@ -650,7 +644,7 @@ static pgp_key_t pgp_select_key (pgp_key_t keys,
 
   set_option (OPTNEEDREDRAW);
 
-  return (kp);
+  return kp;
 }
 
 pgp_key_t pgp_ask_for_key (char *tag, char *whatfor,
@@ -667,7 +661,7 @@ pgp_key_t pgp_ask_for_key (char *tag, char *whatfor,
   {
 
     for (l = id_defaults; l; l = l->next)
-      if (!mutt_strcasecmp (whatfor, l->what))
+      if (mutt_strcasecmp (whatfor, l->what) == 0)
       {
 	strfcpy (resp, NONULL (l->dflt), sizeof (resp));
 	break;
@@ -704,14 +698,13 @@ pgp_key_t pgp_ask_for_key (char *tag, char *whatfor,
 }
 
 /* generate a public key attachment */
-
 BODY *pgp_make_key_attachment (char *tempf)
 {
-  BODY *att;
+  BODY *att = NULL;
   char buff[LONG_STRING];
   char tempfb[_POSIX_PATH_MAX], tmp[STRING];
-  FILE *tempfp;
-  FILE *devnull;
+  FILE *tempfp = NULL;
+  FILE *devnull = NULL;
   struct stat sb;
   pid_t thepid;
   pgp_key_t key;
@@ -782,8 +775,8 @@ BODY *pgp_make_key_attachment (char *tempf)
 
 static LIST *pgp_add_string_to_hints (LIST *hints, const char *str)
 {
-  char *scratch;
-  char *t;
+  char *scratch = NULL;
+  char *t = NULL;
 
   if ((scratch = safe_strdup (str)) == NULL)
     return hints;
@@ -811,7 +804,7 @@ static pgp_key_t *pgp_get_lastp (pgp_key_t p)
 pgp_key_t pgp_getkeybyaddr (ADDRESS * a, short abilities, pgp_ring_t keyring,
                             int oppenc_mode)
 {
-  ADDRESS *r, *p;
+  ADDRESS *r = NULL, *p = NULL;
   LIST *hints = NULL;
 
   int multi   = 0;
@@ -822,7 +815,7 @@ pgp_key_t pgp_getkeybyaddr (ADDRESS * a, short abilities, pgp_ring_t keyring,
   pgp_key_t a_valid_addrmatch_key = NULL;
   pgp_key_t matches = NULL;
   pgp_key_t *last = &matches;
-  pgp_uid_t *q;
+  pgp_uid_t *q = NULL;
 
   if (a && a->mailbox)
     hints = pgp_add_string_to_hints (hints, a->mailbox);
@@ -948,10 +941,10 @@ pgp_key_t pgp_getkeybystr (char *p, short abilities, pgp_ring_t keyring)
   pgp_key_t matches = NULL;
   pgp_key_t *last = &matches;
   pgp_key_t k, kn;
-  pgp_uid_t *a;
+  pgp_uid_t *a = NULL;
   short match;
   size_t l;
-  const char *ps, *pl, *pfcopy, *phint;
+  const char *ps = NULL, *pl = NULL, *pfcopy = NULL, *phint = NULL;
 
   if ((l = mutt_strlen (p)) && p[l-1] == '!')
     p[l-1] = 0;
@@ -984,9 +977,9 @@ pgp_key_t pgp_getkeybystr (char *p, short abilities, pgp_ring_t keyring)
                 p, pgp_long_keyid (k));
 
     if (!*p ||
-        (pfcopy && mutt_strcasecmp (pfcopy, k->fingerprint) == 0) ||
-        (pl && mutt_strcasecmp (pl, pgp_long_keyid (k)) == 0) ||
-        (ps && mutt_strcasecmp (ps, pgp_short_keyid (k)) == 0))
+        (pfcopy && (mutt_strcasecmp (pfcopy, k->fingerprint) == 0)) ||
+        (pl && (mutt_strcasecmp (pl, pgp_long_keyid (k)) == 0)) ||
+        (ps && (mutt_strcasecmp (ps, pgp_short_keyid (k)) == 0)))
     {
       mutt_debug (5, "\t\tmatch.\n");
       match = 1;
@@ -1035,4 +1028,3 @@ out:
   return NULL;
 }
 
-#endif /* CRYPT_BACKEND_CLASSIC_PGP */

@@ -1,13 +1,12 @@
-/*
- SHA-1 in C
+/**
+ * SHA-1 in C
+ *
+ * By Steve Reid <steve@edmweb.com>, with small changes to make it
+ * fit into mutt by Thomas Roessler <roessler@does-not-exist.org>.
+ */
 
- By Steve Reid <steve@edmweb.com>, with small changes to make it
- fit into mutt by Thomas Roessler <roessler@does-not-exist.org>.
-
-*/
-
-#ifndef _SHA1_H
-# define _SHA1_H
+#ifndef _MUTT_SHA1_H
+#define _MUTT_SHA1_H 1
 
 #include "crypthash.h"
 
@@ -29,4 +28,4 @@ void sha1_final(unsigned char digest[20], SHA1_CTX *context);
 
 # define SHA_DIGEST_LENGTH 20
 
-#endif
+#endif /* _MUTT_SHA1_H */

@@ -1,22 +1,18 @@
-/*
+/**
  * Copyright (C) 1997-2002 Thomas Roessler <roessler@does-not-exist.org>
  *
- *     This program is free software; you can redistribute it
- *     and/or modify it under the terms of the GNU General Public
- *     License as published by the Free Software Foundation; either
- *     version 2 of the License, or (at your option) any later
- *     version.
+ * This program is free software: you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License as published by the Free Software
+ * Foundation, either version 2 of the License, or (at your option) any later
+ * version.
  *
- *     This program is distributed in the hope that it will be
- *     useful, but WITHOUT ANY WARRANTY; without even the implied
- *     warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR
- *     PURPOSE.  See the GNU General Public License for more
- *     details.
+ * This program is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
+ * details.
  *
- *     You should have received a copy of the GNU General Public
- *     License along with this program; if not, write to the Free
- *     Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
- *     Boston, MA  02110-1301, USA.
+ * You should have received a copy of the GNU General Public License along with
+ * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 /* Generally useful, pgp-related functions. */
@@ -96,7 +92,7 @@ short pgp_get_abilities (unsigned char type)
 
 static void pgp_free_sig (pgp_sig_t **sigp)
 {
-  pgp_sig_t *sp, *q;
+  pgp_sig_t *sp = NULL, *q = NULL;
 
   if (!sigp || !*sigp)
     return;
@@ -112,7 +108,7 @@ static void pgp_free_sig (pgp_sig_t **sigp)
 
 static void pgp_free_uid (pgp_uid_t ** upp)
 {
-  pgp_uid_t *up, *q;
+  pgp_uid_t *up = NULL, *q = NULL;
 
   if (!upp || !*upp)
     return;
@@ -163,7 +159,7 @@ static void _pgp_free_key (pgp_key_t *kpp)
 
 pgp_key_t pgp_remove_key (pgp_key_t *klist, pgp_key_t key)
 {
-  pgp_key_t *last;
+  pgp_key_t *last = NULL;
   pgp_key_t p, q, r;
 
   if (!klist || !*klist || !key)

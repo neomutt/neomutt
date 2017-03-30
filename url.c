@@ -1,19 +1,18 @@
-/*
+/**
  * Copyright (C) 2000-2002,2004 Thomas Roessler <roessler@does-not-exist.org>
  *
- *     This program is free software; you can redistribute it and/or modify
- *     it under the terms of the GNU General Public License as published by
- *     the Free Software Foundation; either version 2 of the License, or
- *     (at your option) any later version.
+ * This program is free software: you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License as published by the Free Software
+ * Foundation, either version 2 of the License, or (at your option) any later
+ * version.
  *
- *     This program is distributed in the hope that it will be useful,
- *     but WITHOUT ANY WARRANTY; without even the implied warranty of
- *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *     GNU General Public License for more details.
+ * This program is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
+ * details.
  *
- *     You should have received a copy of the GNU General Public License
- *     along with this program; if not, write to the Free Software
- *     Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ * You should have received a copy of the GNU General Public License along with
+ * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 /*
@@ -51,7 +50,7 @@ static const struct mapping_t UrlMap[] =
 
 int url_pct_decode (char *s)
 {
-  char *d;
+  char *d = NULL;
 
   if (!s)
     return -1;
@@ -80,7 +79,7 @@ int url_pct_decode (char *s)
 url_scheme_t url_check_scheme (const char *s)
 {
   char sbuf[STRING];
-  char *t;
+  char *t = NULL;
   int i;
 
   if (!s || !(t = strchr (s, ':')))
@@ -103,7 +102,7 @@ url_scheme_t url_check_scheme (const char *s)
  *   means no port given. */
 static int ciss_parse_userhost (ciss_url_t *ciss, char *src)
 {
-  char *t, *p;
+  char *t = NULL, *p = NULL;
 
   ciss->user = NULL;
   ciss->pass = NULL;
@@ -168,7 +167,7 @@ static int ciss_parse_userhost (ciss_url_t *ciss, char *src)
  *   which is modified by this call (duplicate it first if you need to). */
 int url_parse_ciss (ciss_url_t *ciss, char *src)
 {
-  char *tmp;
+  char *tmp = NULL;
 
   if ((ciss->scheme = url_check_scheme (src)) == U_UNKNOWN)
     return -1;
@@ -253,10 +252,10 @@ int url_ciss_tostring (ciss_url_t* ciss, char* dest, size_t len, int flags)
 
 int url_parse_mailto (ENVELOPE *e, char **body, const char *src)
 {
-  char *t, *p;
-  char *tmp;
-  char *headers;
-  char *tag, *value;
+  char *t = NULL, *p = NULL;
+  char *tmp = NULL;
+  char *headers = NULL;
+  char *tag = NULL, *value = NULL;
 
   int rc = -1;
 
@@ -304,14 +303,14 @@ int url_parse_mailto (ENVELOPE *e, char **body, const char *src)
      */
     if (mutt_matches_list (tag, MailtoAllow))
     {
-      if (!ascii_strcasecmp (tag, "body"))
+      if (ascii_strcasecmp (tag, "body") == 0)
       {
 	if (body)
 	  mutt_str_replace (body, value);
       }
       else
       {
-	char *scratch;
+	char *scratch = NULL;
 	size_t taglen = mutt_strlen (tag);
 
 	safe_asprintf (&scratch, "%s: %s", tag, value);

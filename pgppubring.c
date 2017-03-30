@@ -1,22 +1,18 @@
-/*
+/**
  * Copyright (C) 1997-2003 Thomas Roessler <roessler@does-not-exist.org>
  *
- *     This program is free software; you can redistribute it
- *     and/or modify it under the terms of the GNU General Public
- *     License as published by the Free Software Foundation; either
- *     version 2 of the License, or (at your option) any later
- *     version.
+ * This program is free software: you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License as published by the Free Software
+ * Foundation, either version 2 of the License, or (at your option) any later
+ * version.
  *
- *     This program is distributed in the hope that it will be
- *     useful, but WITHOUT ANY WARRANTY; without even the implied
- *     warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR
- *     PURPOSE.  See the GNU General Public License for more
- *     details.
+ * This program is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
+ * details.
  *
- *     You should have received a copy of the GNU General Public
- *     License along with this program; if not, write to the Free
- *     Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
- *     Boston, MA  02110-1301, USA.
+ * You should have received a copy of the GNU General Public License along with
+ * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 /*
@@ -115,9 +111,9 @@ static void pgpring_dump_signatures (pgp_sig_t *sig)
 
 static void pgpring_dump_keyblock (pgp_key_t p)
 {
-  pgp_uid_t *uid;
+  pgp_uid_t *uid = NULL;
   short first;
-  struct tm *tp;
+  struct tm *tp = NULL;
   time_t t;
 
   for (; p; p = p->next)
@@ -236,7 +232,7 @@ static void pgp_make_pgp2_fingerprint (unsigned char *buff,
 static char *binary_fingerprint_to_string (unsigned char *buff, size_t length)
 {
   int i;
-  char *fingerprint, *pf;
+  char *fingerprint = NULL, *pf = NULL;
 
   pf = fingerprint = safe_malloc ((length * 2) + 1);
 
@@ -641,7 +637,7 @@ static int pgp_parse_sig (unsigned char *buff, size_t l,
 
 static pgp_key_t pgp_parse_keyblock (FILE * fp)
 {
-  unsigned char *buff;
+  unsigned char *buff = NULL;
   unsigned char pt = 0;
   unsigned char last_pt;
   size_t l;
@@ -740,7 +736,7 @@ static pgp_key_t pgp_parse_keyblock (FILE * fp)
       }
       case PT_NAME:
       {
-	char *chr;
+	char *chr = NULL;
 
 
 	if (!addr)
@@ -787,7 +783,7 @@ static pgp_key_t pgp_parse_keyblock (FILE * fp)
 
 static void pgpring_find_candidates (char *ringfile, const char *hints[], int nhints)
 {
-  FILE *rfp;
+  FILE *rfp = NULL;
 #ifdef HAVE_FGETPOS
   fpos_t pos, keypos;
 #else
@@ -802,7 +798,7 @@ static void pgpring_find_candidates (char *ringfile, const char *hints[], int nh
 
   if ((rfp = fopen (ringfile, "r")) == NULL)
   {
-    char *error_buf;
+    char *error_buf = NULL;
     size_t error_buf_len;
 
     error_buf_len = sizeof ("fopen: ") - 1 + strlen (ringfile) + 1;
@@ -867,7 +863,7 @@ int main (int argc, char * const argv[])
   short secring = 0;
 
   const char *_kring = NULL;
-  char *env_pgppath, *env_home;
+  char *env_pgppath = NULL, *env_home = NULL;
 
   char pgppath[_POSIX_PATH_MAX];
   char kring[_POSIX_PATH_MAX];

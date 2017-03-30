@@ -1,19 +1,18 @@
-/*
+/**
  * Copyright (C) 1996-2000,2007 Michael R. Elkins <me@mutt.org>
  *
- *     This program is free software; you can redistribute it and/or modify
- *     it under the terms of the GNU General Public License as published by
- *     the Free Software Foundation; either version 2 of the License, or
- *     (at your option) any later version.
+ * This program is free software: you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License as published by the Free Software
+ * Foundation, either version 2 of the License, or (at your option) any later
+ * version.
  *
- *     This program is distributed in the hope that it will be useful,
- *     but WITHOUT ANY WARRANTY; without even the implied warranty of
- *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *     GNU General Public License for more details.
+ * This program is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
+ * details.
  *
- *     You should have received a copy of the GNU General Public License
- *     along with this program; if not, write to the Free Software
- *     Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ * You should have received a copy of the GNU General Public License along with
+ * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -69,7 +68,7 @@ status_format_str (char *buf, size_t buflen, size_t col, int cols, char op, cons
 		   const char *elsestring,
 		   unsigned long data, format_flag flags)
 {
-  char fmt[SHORT_STRING], tmp[SHORT_STRING], *cp;
+  char fmt[SHORT_STRING], tmp[SHORT_STRING], *cp = NULL;
   int count, optional = (flags & MUTT_FORMAT_OPTIONAL);
   MUTTMENU *menu = (MUTTMENU *) data;
 
@@ -99,7 +98,7 @@ status_format_str (char *buf, size_t buflen, size_t col, int cols, char op, cons
     case 'f':
     {
 #ifdef USE_NOTMUCH
-      char *p;
+      char *p = NULL;
       if (Context && Context->magic == MUTT_NOTMUCH &&
                    (p = nm_get_description(Context)))
 	  strfcpy(tmp, p, sizeof (tmp));
@@ -297,7 +296,7 @@ status_format_str (char *buf, size_t buflen, size_t col, int cols, char op, cons
 
     case 0:
       *buf = 0;
-      return (src);
+      return src;
 
     default:
       snprintf (buf, buflen, "%%%s%c", prefix, op);
@@ -309,7 +308,7 @@ status_format_str (char *buf, size_t buflen, size_t col, int cols, char op, cons
   else if (flags & MUTT_FORMAT_OPTIONAL)
     _menu_status_line (buf, buflen, col, cols, menu, elsestring);
 
-  return (src);
+  return src;
 }
 
 static void _menu_status_line (char *buf, size_t buflen, size_t col, int cols, MUTTMENU *menu, const char *p)

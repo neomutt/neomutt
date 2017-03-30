@@ -1,23 +1,19 @@
-/*
+/**
  * Copyright (C) 1998-2000,2003 Werner Koch <werner.koch@guug.de>
  * Copyright (C) 1999-2003 Thomas Roessler <roessler@does-not-exist.org>
  *
- *     This program is free software; you can redistribute it
- *     and/or modify it under the terms of the GNU General Public
- *     License as published by the Free Software Foundation; either
- *     version 2 of the License, or (at your option) any later
- *     version.
+ * This program is free software: you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License as published by the Free Software
+ * Foundation, either version 2 of the License, or (at your option) any later
+ * version.
  *
- *     This program is distributed in the hope that it will be
- *     useful, but WITHOUT ANY WARRANTY; without even the implied
- *     warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR
- *     PURPOSE.  See the GNU General Public License for more
- *     details.
+ * This program is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
+ * details.
  *
- *     You should have received a copy of the GNU General Public
- *     License along with this program; if not, write to the Free
- *     Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
- *     Boston, MA  02110-1301, USA.
+ * You should have received a copy of the GNU General Public License along with
+ * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 /*
@@ -70,11 +66,11 @@
 
 /* decode the backslash-escaped user ids. */
 
-static char *_chs = 0;
+static char *_chs = NULL;
 
 static void fix_uid (char *uid)
 {
-  char *s, *d;
+  char *s = NULL, *d = NULL;
   iconv_t cd;
 
   for (s = d = uid; *s;)
@@ -92,9 +88,9 @@ static void fix_uid (char *uid)
   if (_chs && (cd = mutt_iconv_open (_chs, "utf-8", 0)) != (iconv_t)-1)
   {
     int n = s - uid + 1; /* chars available in original buffer */
-    char *buf;
-    ICONV_CONST char *ib;
-    char *ob;
+    char *buf = NULL;
+    ICONV_CONST char *ib = NULL;
+    char *ob = NULL;
     size_t ibl, obl;
 
     buf = safe_malloc (n+1);
@@ -121,7 +117,7 @@ static pgp_key_t parse_pub_line (char *buf, int *is_subkey, pgp_key_t k)
   int field = 0, is_uid = 0;
   int is_pub = 0;
   int is_fpr = 0;
-  char *pend, *p;
+  char *pend = NULL, *p = NULL;
   int trust = 0;
   int flags = 0;
   struct pgp_keyinfo tmp;
@@ -157,17 +153,17 @@ static pgp_key_t parse_pub_line (char *buf, int *is_subkey, pgp_key_t k)
       {
         mutt_debug (2, "record type: %s\n", p);
 
-	if (!mutt_strcmp (p, "pub"))
+	if (mutt_strcmp (p, "pub") == 0)
 	  is_pub = 1;
-	else if (!mutt_strcmp (p, "sub"))
+	else if (mutt_strcmp (p, "sub") == 0)
 	  *is_subkey = 1;
-	else if (!mutt_strcmp (p, "sec"))
+	else if (mutt_strcmp (p, "sec") == 0)
 	  ;
-	else if (!mutt_strcmp (p, "ssb"))
+	else if (mutt_strcmp (p, "ssb") == 0)
 	  *is_subkey = 1;
-	else if (!mutt_strcmp (p, "uid"))
+	else if (mutt_strcmp (p, "uid") == 0)
 	  is_uid = 1;
-	else if (!mutt_strcmp (p, "fpr"))
+	else if (mutt_strcmp (p, "fpr") == 0)
 	  is_fpr = 1;
 	else
 	  return NULL;
@@ -382,7 +378,7 @@ bail:
 
 pgp_key_t pgp_get_candidates (pgp_ring_t keyring, LIST * hints)
 {
-  FILE *fp;
+  FILE *fp = NULL;
   pid_t thepid;
   char buf[LONG_STRING];
   pgp_key_t db = NULL, *kend, k = NULL, kk, mainkey = NULL;

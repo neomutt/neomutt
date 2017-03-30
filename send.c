@@ -1,19 +1,18 @@
-/*
+/**
  * Copyright (C) 1996-2002,2004,2010,2012-2013 Michael R. Elkins <me@mutt.org>
  *
- *     This program is free software; you can redistribute it and/or modify
- *     it under the terms of the GNU General Public License as published by
- *     the Free Software Foundation; either version 2 of the License, or
- *     (at your option) any later version.
+ * This program is free software: you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License as published by the Free Software
+ * Foundation, either version 2 of the License, or (at your option) any later
+ * version.
  *
- *     This program is distributed in the hope that it will be useful,
- *     but WITHOUT ANY WARRANTY; without even the implied warranty of
- *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *     GNU General Public License for more details.
+ * This program is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
+ * details.
  *
- *     You should have received a copy of the GNU General Public License
- *     along with this program; if not, write to the Free Software
- *     Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ * You should have received a copy of the GNU General Public License along with
+ * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -59,7 +58,7 @@
 
 static void append_signature (FILE *f)
 {
-  FILE *tmpfp;
+  FILE *tmpfp = NULL;
   pid_t thepid;
 
   if (Signature && (tmpfp = mutt_open_read (Signature, &thepid)))
@@ -78,7 +77,7 @@ static int addrcmp (ADDRESS *a, ADDRESS *b)
 {
   if (!a->mailbox || !b->mailbox)
     return 0;
-  if (ascii_strcasecmp (a->mailbox, b->mailbox))
+  if (ascii_strcasecmp (a->mailbox, b->mailbox) != 0)
     return 0;
   return 1;
 }
@@ -89,15 +88,15 @@ static int addrsrc (ADDRESS *a, ADDRESS *lst)
   for (; lst; lst = lst->next)
   {
     if (addrcmp (a, lst))
-      return (1);
+      return 1;
   }
-  return (0);
+  return 0;
 }
 
 /* removes addresses from "b" which are contained in "a" */
 ADDRESS *mutt_remove_xrefs (ADDRESS *a, ADDRESS *b)
 {
-  ADDRESS *top, *p, *prev = NULL;
+  ADDRESS *top = NULL, *p = NULL, *prev = NULL;
 
   top = b;
   while (b)
@@ -206,7 +205,7 @@ static int edit_address (ADDRESS **a, /* const */ char *field)
     mutt_addrlist_to_local (*a);
     rfc822_write_address (buf, sizeof (buf), *a, 0);
     if (mutt_get_field (field, buf, sizeof (buf), MUTT_ALIAS) != 0)
-      return (-1);
+      return -1;
     rfc822_free_address (a);
     *a = mutt_expand_aliases (mutt_parse_adrlist (NULL, buf));
     if ((idna_ok = mutt_addrlist_to_intl (*a, &err)) != 0)
@@ -234,7 +233,7 @@ static int edit_envelope (ENVELOPE *en, int flags)
     else
       buf[0] = 0;
     if (mutt_get_field ("Newsgroups: ", buf, sizeof (buf), 0) != 0)
-      return (-1);
+      return -1;
     FREE (&en->newsgroups);
     en->newsgroups = safe_strdup (buf);
 
@@ -243,7 +242,7 @@ static int edit_envelope (ENVELOPE *en, int flags)
     else
       buf[0] = 0;
     if (option (OPTASKFOLLOWUP) && mutt_get_field ("Followup-To: ", buf, sizeof (buf), 0) != 0)
-      return (-1);
+      return -1;
     FREE (&en->followup_to);
     en->followup_to = safe_strdup (buf);
 
@@ -252,7 +251,7 @@ static int edit_envelope (ENVELOPE *en, int flags)
     else
       buf[0] = 0;
     if (option (OPTXCOMMENTTO) && option (OPTASKXCOMMENTTO) && mutt_get_field ("X-Comment-To: ", buf, sizeof (buf), 0) != 0)
-      return (-1);
+      return -1;
     FREE (&en->x_comment_to);
     en->x_comment_to = safe_strdup (buf);
   }
@@ -260,27 +259,27 @@ static int edit_envelope (ENVELOPE *en, int flags)
 #endif
   {
     if (edit_address (&en->to, "To: ") == -1 || en->to == NULL)
-      return (-1);
+      return -1;
     if (option (OPTASKCC) && edit_address (&en->cc, "Cc: ") == -1)
-      return (-1);
+      return -1;
     if (option (OPTASKBCC) && edit_address (&en->bcc, "Bcc: ") == -1)
-      return (-1);
+      return -1;
     if (option (OPTREPLYWITHXORIG) &&
 	(flags & (SENDREPLY|SENDLISTREPLY|SENDGROUPREPLY)) &&
 	(edit_address (&en->from, "From: ") == -1))
-      return (-1);
+      return -1;
   }
 
   if (en->subject)
   {
     if (option (OPTFASTREPLY))
-      return (0);
+      return 0;
     else
       strfcpy (buf, en->subject, sizeof (buf));
   }
   else
   {
-    const char *p;
+    const char *p = NULL;
 
     buf[0] = 0;
     for (; uh; uh = uh->next)
@@ -297,7 +296,7 @@ static int edit_envelope (ENVELOPE *en, int flags)
       (!buf[0] && query_quadoption (OPT_SUBJECT, _("No subject, abort?")) != MUTT_NO))
   {
     mutt_message (_("No subject, aborting."));
-    return (-1);
+    return -1;
   }
   mutt_str_replace (&en->subject, buf);
 
@@ -367,17 +366,17 @@ static void process_user_header (ENVELOPE *env)
       } else
 	FREE(&tmp);
     }
-    else if (ascii_strncasecmp ("to:", uh->data, 3) != 0 &&
-	     ascii_strncasecmp ("cc:", uh->data, 3) != 0 &&
-	     ascii_strncasecmp ("bcc:", uh->data, 4) != 0 &&
+    else if ((ascii_strncasecmp ("to:", uh->data, 3) != 0) &&
+	     (ascii_strncasecmp ("cc:", uh->data, 3) != 0) &&
+	     (ascii_strncasecmp ("bcc:", uh->data, 4) != 0) &&
 #ifdef USE_NNTP
-	     ascii_strncasecmp ("newsgroups:", uh->data, 11) != 0 &&
-	     ascii_strncasecmp ("followup-to:", uh->data, 12) != 0 &&
-	     ascii_strncasecmp ("x-comment-to:", uh->data, 13) != 0 &&
+	     (ascii_strncasecmp ("newsgroups:", uh->data, 11) != 0) &&
+	     (ascii_strncasecmp ("followup-to:", uh->data, 12) != 0) &&
+	     (ascii_strncasecmp ("x-comment-to:", uh->data, 13) != 0) &&
 #endif
-	     ascii_strncasecmp ("supersedes:", uh->data, 11) != 0 &&
-	     ascii_strncasecmp ("subject:", uh->data, 8) != 0 &&
-	     ascii_strncasecmp ("return-path:", uh->data, 12) != 0)
+	     (ascii_strncasecmp ("supersedes:", uh->data, 11) != 0) &&
+	     (ascii_strncasecmp ("subject:", uh->data, 8) != 0) &&
+	     (ascii_strncasecmp ("return-path:", uh->data, 12) != 0))
     {
       if (last)
       {
@@ -565,7 +564,7 @@ static int default_to (ADDRESS **to, ENVELOPE *env, int flags, int hmfupto)
 	break;
 
       default:
-	return (-1); /* abort */
+	return -1; /* abort */
       }
     }
     else
@@ -574,13 +573,13 @@ static int default_to (ADDRESS **to, ENVELOPE *env, int flags, int hmfupto)
   else
     rfc822_append (to, env->from, 0);
 
-  return (0);
+  return 0;
 }
 
 int mutt_fetch_recips (ENVELOPE *out, ENVELOPE *in, int flags)
 {
   char prompt[STRING];
-  ADDRESS *tmp;
+  ADDRESS *tmp = NULL;
   int hmfupto = -1;
 
   if ((flags & (SENDLISTREPLY|SENDGROUPREPLY)) && in->mail_followup_to)
@@ -601,12 +600,12 @@ int mutt_fetch_recips (ENVELOPE *out, ENVELOPE *in, int flags)
 
     if (in->mail_followup_to && hmfupto == MUTT_YES &&
         default_to (&out->cc, in, flags & SENDLISTREPLY, hmfupto) == MUTT_ABORT)
-      return (-1); /* abort */
+      return -1; /* abort */
   }
   else
   {
     if (default_to (&out->to, in, flags & SENDGROUPREPLY, hmfupto) == MUTT_ABORT)
-      return (-1); /* abort */
+      return -1; /* abort */
 
     if ((flags & SENDGROUPREPLY) && (!in->mail_followup_to || hmfupto != MUTT_YES))
     {
@@ -724,7 +723,7 @@ make_reference_headers (ENVELOPE *curenv, ENVELOPE *env, CONTEXT *ctx)
 
   if (!curenv)
   {
-    HEADER *h;
+    HEADER *h = NULL;
     LIST **p = NULL, **q = NULL;
     int i;
 
@@ -768,7 +767,7 @@ envelope_defaults (ENVELOPE *env, CONTEXT *ctx, HEADER *cur, int flags)
        * a limit such that none of the tagged message are visible.
        */
       mutt_error (_("No tagged messages are visible!"));
-      return (-1);
+      return -1;
     }
   }
   else
@@ -781,14 +780,14 @@ envelope_defaults (ENVELOPE *env, CONTEXT *ctx, HEADER *cur, int flags)
     {
       /* in case followup set Newsgroups: with Followup-To: if it present */
       if (!env->newsgroups && curenv &&
-	  mutt_strcasecmp (curenv->followup_to, "poster"))
+	  (mutt_strcasecmp (curenv->followup_to, "poster") != 0))
 	env->newsgroups = safe_strdup (curenv->followup_to);
     }
     else
 #endif
     if (tag)
     {
-      HEADER *h;
+      HEADER *h = NULL;
 
       for (i = 0; i < ctx->vcount; i++)
       {
@@ -803,7 +802,7 @@ envelope_defaults (ENVELOPE *env, CONTEXT *ctx, HEADER *cur, int flags)
     if ((flags & SENDLISTREPLY) && !env->to)
     {
       mutt_error (_("No mailing lists found!"));
-      return (-1);
+      return -1;
     }
 
     mutt_make_misc_reply_headers (env, ctx, cur, curenv);
@@ -816,7 +815,7 @@ envelope_defaults (ENVELOPE *env, CONTEXT *ctx, HEADER *cur, int flags)
       make_reference_headers (tag ? NULL : curenv, env, ctx);
   }
 
-  return (0);
+  return 0;
 }
 
 static int
@@ -827,13 +826,13 @@ generate_body (FILE *tempfp,	/* stream for outgoing message */
 	       HEADER *cur)	/* current message */
 {
   int i;
-  HEADER *h;
-  BODY *tmp;
+  HEADER *h = NULL;
+  BODY *tmp = NULL;
 
   if (flags & SENDREPLY)
   {
     if ((i = query_quadoption (OPT_INCLUDE, _("Include message in reply?"))) == MUTT_ABORT)
-      return (-1);
+      return -1;
 
     if (i == MUTT_YES)
     {
@@ -848,7 +847,7 @@ generate_body (FILE *tempfp,	/* stream for outgoing message */
 	    if (include_reply (ctx, h, tempfp) == -1)
 	    {
 	      mutt_error (_("Could not include all requested messages!"));
-	      return (-1);
+	      return -1;
 	    }
 	    fputc ('\n', tempfp);
 	  }
@@ -911,7 +910,7 @@ generate_body (FILE *tempfp,	/* stream for outgoing message */
   /* if (WithCrypto && (flags & SENDKEY)) */
   else if ((WithCrypto & APPLICATION_PGP) && (flags & SENDKEY))
   {
-    BODY *tmp;
+    BODY *tmp = NULL;
 
     if ((WithCrypto & APPLICATION_PGP)
         && (tmp = crypt_pgp_make_key_attachment (NULL)) == NULL)
@@ -923,13 +922,13 @@ generate_body (FILE *tempfp,	/* stream for outgoing message */
 
   mutt_clear_error ();
 
-  return (0);
+  return 0;
 }
 
 void mutt_set_followup_to (ENVELOPE *e)
 {
   ADDRESS *t = NULL;
-  ADDRESS *from;
+  ADDRESS *from = NULL;
 
   /*
    * Only generate the Mail-Followup-To if the user has requested it, and
@@ -1001,7 +1000,7 @@ void mutt_set_followup_to (ENVELOPE *e)
    from field */
 static ADDRESS *set_reverse_name (ENVELOPE *env)
 {
-  ADDRESS *tmp;
+  ADDRESS *tmp = NULL;
 
   for (tmp = env->to; tmp; tmp = tmp->next)
   {
@@ -1027,12 +1026,12 @@ static ADDRESS *set_reverse_name (ENVELOPE *env)
     if (!option (OPTREVREAL))
       FREE (&tmp->personal);
   }
-  return (tmp);
+  return tmp;
 }
 
 ADDRESS *mutt_default_from (void)
 {
-  ADDRESS *adr;
+  ADDRESS *adr = NULL;
   const char *fqdn = mutt_fqdn(1);
 
   /*
@@ -1054,13 +1053,13 @@ ADDRESS *mutt_default_from (void)
     adr->mailbox = safe_strdup (NONULL(Username));
   }
 
-  return (adr);
+  return adr;
 }
 
 static int send_message (HEADER *msg)
 {
   char tempfile[_POSIX_PATH_MAX];
-  FILE *tempfp;
+  FILE *tempfp = NULL;
   int i;
 #ifdef USE_SMTP
   short old_write_bcc;
@@ -1069,7 +1068,7 @@ static int send_message (HEADER *msg)
   /* Write out the message in MIME form. */
   mutt_mktemp (tempfile, sizeof (tempfile));
   if ((tempfp = safe_fopen (tempfile, "w")) == NULL)
-    return (-1);
+    return -1;
 
 #ifdef USE_SMTP
   old_write_bcc = option (OPTWRITEBCC);
@@ -1093,14 +1092,14 @@ static int send_message (HEADER *msg)
   {
     safe_fclose (&tempfp);
     unlink (tempfile);
-    return (-1);
+    return -1;
   }
 
   if (fclose (tempfp) != 0)
   {
     mutt_perror (tempfile);
     unlink (tempfile);
-    return (-1);
+    return -1;
   }
 
 #ifdef MIXMASTER
@@ -1121,13 +1120,13 @@ static int send_message (HEADER *msg)
   i = mutt_invoke_sendmail (msg->env->from, msg->env->to, msg->env->cc,
 			    msg->env->bcc, tempfile,
                             (msg->content->encoding == ENC8BIT));
-  return (i);
+  return i;
 }
 
 /* rfc2047 encode the content-descriptions */
 void mutt_encode_descriptions (BODY *b, short recurse)
 {
-  BODY *t;
+  BODY *t = NULL;
 
   for (t = b; t; t = t->next)
   {
@@ -1143,7 +1142,7 @@ void mutt_encode_descriptions (BODY *b, short recurse)
 /* rfc2047 decode them in case of an error */
 static void decode_descriptions (BODY *b)
 {
-  BODY *t;
+  BODY *t = NULL;
 
   for (t = b; t; t = t->next)
   {
@@ -1158,7 +1157,7 @@ static void decode_descriptions (BODY *b)
 
 static void fix_end_of_file (const char *data)
 {
-  FILE *fp;
+  FILE *fp = NULL;
   int c;
 
   if ((fp = safe_fopen (data, "a+")) == NULL)
@@ -1288,7 +1287,7 @@ ci_send_message (int flags,		/* send mode */
   char buffer[LONG_STRING];
   char fcc[_POSIX_PATH_MAX] = ""; /* where to copy this message */
   FILE *tempfp = NULL;
-  BODY *pbody;
+  BODY *pbody = NULL;
   int i, killfrom = 0;
   int fcc_error = 0;
   int free_clear_content = 0;
@@ -1300,7 +1299,7 @@ ci_send_message (int flags,		/* send mode */
   char *pgp_signas = NULL;
   char *smime_default_key = NULL;
   char *tag = NULL, *err = NULL;
-  char *ctype;
+  char *ctype = NULL;
   char *finalpath = NULL;
 
   int rv = -1;
@@ -1539,7 +1538,7 @@ ci_send_message (int flags,		/* send mode */
 
     if (! (flags & SENDKEY))
     {
-      if (option (OPTTEXTFLOWED) && msg->content->type == TYPETEXT && !ascii_strcasecmp (msg->content->subtype, "plain"))
+      if (option (OPTTEXTFLOWED) && msg->content->type == TYPETEXT && (ascii_strcasecmp (msg->content->subtype, "plain") == 0))
         mutt_set_parameter ("format", "flowed", &msg->content->parameter);
     }
 
@@ -1559,7 +1558,7 @@ ci_send_message (int flags,		/* send mode */
        mutt_copy_stream (stdin, tempfp);
 
     if (option (OPTSIGONTOP) && ! (flags & (SENDMAILX|SENDKEY|SENDBATCH))
-	&& Editor && mutt_strcmp (Editor, "builtin") != 0)
+	&& Editor && (mutt_strcmp (Editor, "builtin") != 0))
       append_signature (tempfp);
 
     /* include replies/forwarded messages, unless we are given a template */
@@ -1568,7 +1567,7 @@ ci_send_message (int flags,		/* send mode */
       goto cleanup;
 
     if (!option (OPTSIGONTOP) && ! (flags & (SENDMAILX|SENDKEY|SENDBATCH))
-	&& Editor && mutt_strcmp (Editor, "builtin") != 0)
+	&& Editor && (mutt_strcmp (Editor, "builtin") != 0))
       append_signature (tempfp);
   }
 
@@ -1621,7 +1620,7 @@ ci_send_message (int flags,		/* send mode */
 	if (!mutt_edit_attachment (msg->content))
           goto cleanup;
       }
-      else if (!Editor || mutt_strcmp ("builtin", Editor) == 0)
+      else if (!Editor || (mutt_strcmp ("builtin", Editor) == 0))
 	mutt_builtin_editor (msg->content->filename, msg, cur);
       else if (option (OPTEDITHDRS))
       {
@@ -1646,10 +1645,10 @@ ci_send_message (int flags,		/* send mode */
        * performed.  If it has already been performed, the format=flowed
        * parameter will be present.
        */
-      if (option (OPTTEXTFLOWED) && msg->content->type == TYPETEXT && !ascii_strcasecmp("plain", msg->content->subtype))
+      if (option (OPTTEXTFLOWED) && msg->content->type == TYPETEXT && (ascii_strcasecmp("plain", msg->content->subtype) == 0))
       {
 	char *p = mutt_get_parameter("format", msg->content->parameter);
-	if (ascii_strcasecmp("flowed", NONULL(p)))
+	if (ascii_strcasecmp("flowed", NONULL(p)) != 0)
 	  rfc3676_space_stuff (msg);
       }
 
@@ -2003,7 +2002,7 @@ main_loop:
     fcc[0] = '\0';
 #endif
 
-  if (*fcc && mutt_strcmp ("/dev/null", fcc) != 0)
+  if (*fcc && (mutt_strcmp ("/dev/null", fcc) != 0))
   {
     BODY *tmpbody = msg->content;
     BODY *save_sig = NULL;
@@ -2018,8 +2017,8 @@ main_loop:
     {
       if (WithCrypto
           && (msg->security & (ENCRYPT | SIGN))
-          && (mutt_strcmp (msg->content->subtype, "encrypted") == 0 ||
-              mutt_strcmp (msg->content->subtype, "signed") == 0))
+          && ((mutt_strcmp (msg->content->subtype, "encrypted") == 0) ||
+              (mutt_strcmp (msg->content->subtype, "signed") == 0)))
       {
 	if (clear_content->type == TYPEMULTIPART)
 	{

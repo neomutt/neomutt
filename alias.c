@@ -1,19 +1,18 @@
-/*
+/**
  * Copyright (C) 1996-2002 Michael R. Elkins <me@mutt.org>
  *
- *     This program is free software; you can redistribute it and/or modify
- *     it under the terms of the GNU General Public License as published by
- *     the Free Software Foundation; either version 2 of the License, or
- *     (at your option) any later version.
+ * This program is free software: you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License as published by the Free Software
+ * Foundation, either version 2 of the License, or (at your option) any later
+ * version.
  *
- *     This program is distributed in the hope that it will be useful,
- *     but WITHOUT ANY WARRANTY; without even the implied warranty of
- *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *     GNU General Public License for more details.
+ * This program is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
+ * details.
  *
- *     You should have received a copy of the GNU General Public License
- *     along with this program; if not, write to the Free Software
- *     Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ * You should have received a copy of the GNU General Public License along with
+ * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -34,17 +33,17 @@ ADDRESS *mutt_lookup_alias (const char *s)
   ALIAS *t = Aliases;
 
   for (; t; t = t->next)
-    if (!mutt_strcasecmp (s, t->name))
-      return (t->addr);
-  return (NULL);   /* no such alias */
+    if (mutt_strcasecmp (s, t->name) == 0)
+      return t->addr;
+  return NULL;   /* no such alias */
 }
 
 static ADDRESS *expand_aliases_r (ADDRESS *a, LIST **expn)
 {
-  ADDRESS *head = NULL, *last = NULL, *t, *w;
-  LIST *u;
+  ADDRESS *head = NULL, *last = NULL, *t = NULL, *w = NULL;
+  LIST *u = NULL;
   char i;
-  const char *fqdn;
+  const char *fqdn = NULL;
 
   while (a)
   {
@@ -122,12 +121,12 @@ static ADDRESS *expand_aliases_r (ADDRESS *a, LIST **expn)
     rfc822_qualify (head, fqdn);
   }
 
-  return (head);
+  return head;
 }
 
 ADDRESS *mutt_expand_aliases (ADDRESS *a)
 {
-  ADDRESS *t;
+  ADDRESS *t = NULL;
   LIST *expn = NULL; /* previously expanded aliases to avoid loops */
 
   t = expand_aliases_r (a, &expn);
@@ -166,7 +165,6 @@ void mutt_expand_aliases_env (ENVELOPE *env)
  * $ wants to be quoted since it may indicate the start of an environment
  * variable.
  */
-
 static void write_safe_address (FILE *fp, char *s)
 {
   while (*s)
@@ -181,7 +179,7 @@ static void write_safe_address (FILE *fp, char *s)
 
 ADDRESS *mutt_get_address (ENVELOPE *env, char **pfxp)
 {
-  ADDRESS *adr;
+  ADDRESS *adr = NULL;
   char *pfx = NULL;
 
   if (mutt_addr_is_user (env->from))
@@ -215,7 +213,7 @@ ADDRESS *mutt_get_address (ENVELOPE *env, char **pfxp)
 
 static void recode_buf (char *buf, size_t buflen)
 {
-  char *s;
+  char *s = NULL;
 
   if (!ConfigCharset || !*ConfigCharset || !Charset)
     return;
@@ -229,11 +227,11 @@ static void recode_buf (char *buf, size_t buflen)
 
 void mutt_create_alias (ENVELOPE *cur, ADDRESS *iadr)
 {
-  ALIAS *new, *t;
-  char buf[LONG_STRING], tmp[LONG_STRING], prompt[SHORT_STRING], *pc;
+  ALIAS *new = NULL, *t = NULL;
+  char buf[LONG_STRING], tmp[LONG_STRING], prompt[SHORT_STRING], *pc = NULL;
   char *err = NULL;
   char fixed[LONG_STRING];
-  FILE *rc;
+  FILE *rc = NULL;
   ADDRESS *adr = NULL;
 
   if (cur)
@@ -401,7 +399,6 @@ retry_name:
  * Sanity-check an alias name:  Only characters which are non-special to both
  * the RFC 822 and the mutt configuration parser are permitted.
  */
-
 int mutt_check_alias_name (const char *s, char *dest, size_t destlen)
 {
   wchar_t wc;
@@ -457,7 +454,7 @@ ADDRESS *alias_reverse_lookup (ADDRESS *a)
 
 void mutt_alias_add_reverse (ALIAS *t)
 {
-  ADDRESS *ap;
+  ADDRESS *ap = NULL;
   if (!t)
     return;
 
@@ -475,7 +472,7 @@ void mutt_alias_add_reverse (ALIAS *t)
 
 void mutt_alias_delete_reverse (ALIAS *t)
 {
-  ADDRESS *ap;
+  ADDRESS *ap = NULL;
   if (!t)
     return;
 
@@ -615,7 +612,7 @@ static int string_is_address(const char *str, const char *u, const char *d)
 /* returns true if the given address belongs to the user. */
 int mutt_addr_is_user (ADDRESS *addr)
 {
-  const char *fqdn;
+  const char *fqdn = NULL;
 
   /* NULL address is assumed to be the user. */
   if (!addr)
@@ -656,7 +653,7 @@ int mutt_addr_is_user (ADDRESS *addr)
     return 1;
   }
 
-  if (From && !ascii_strcasecmp (From->mailbox, addr->mailbox))
+  if (From && (ascii_strcasecmp (From->mailbox, addr->mailbox) == 0))
   {
     mutt_debug (5, "mutt_addr_is_user: yes, %s = %s\n",
                 addr->mailbox, From->mailbox);

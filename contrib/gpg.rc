@@ -5,8 +5,6 @@
 # This version uses gpg-2comp from
 #   http://70t.de/download/gpg-2comp.tar.gz
 #
-# $Id$
-#
 # %p    The empty string when no passphrase is needed,
 #       the string "PGPPASSFD=0" if one is needed.
 #

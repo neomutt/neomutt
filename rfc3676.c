@@ -1,23 +1,21 @@
-/*
+/**
  * Copyright (C) 2005 Andreas Krennmair <ak@synflood.at>
  * Copyright (C) 2005 Peter J. Holzer <hjp@hjp.net>
  * Copyright (C) 2005-2009 Rocco Rutte <pdmef@gmx.net>
  * Copyright (C) 2010 Michael R. Elkins <me@mutt.org>
  *
- *     This program is free software; you can redistribute it and/or modify
- *     it under the terms of the GNU General Public License as published by
- *     the Free Software Foundation; either version 2 of the License, or
- *     (at your option) any later version.
+ * This program is free software: you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License as published by the Free Software
+ * Foundation, either version 2 of the License, or (at your option) any later
+ * version.
  *
- *     This program is distributed in the hope that it will be useful,
- *     but WITHOUT ANY WARRANTY; without even the implied warranty of
- *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *     GNU General Public License for more details.
+ * This program is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
+ * details.
  *
- *     You should have received a copy of the GNU General Public License
- *     along with this program; if not, write to the Free Software
- *     Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
- *
+ * You should have received a copy of the GNU General Public License along with
+ * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 /* This file was originally part of mutt-ng */
@@ -171,7 +169,7 @@ static void print_flowed_line (char *line, STATE *s, int ql,
 			       flowed_state_t *fst, int term)
 {
   size_t width, w, words = 0;
-  char *p;
+  char *p = NULL;
   char last;
 
   if (!line || !*line)
@@ -186,12 +184,12 @@ static void print_flowed_line (char *line, STATE *s, int ql,
   width = quote_width (s, ql);
   last = line[mutt_strlen (line) - 1];
 
-  mutt_debug (4, "f=f: line [%s], width = %ld, spaces = %d\n",
+  mutt_debug (4, "f=f: line [%s], width = %ld, spaces = %lu\n",
               NONULL(line), (long)width, fst->spaces);
 
   for (p = (char *)line, words = 0; (p = strsep (&line, " ")) != NULL ; )
   {
-    mutt_debug (4, "f=f: word [%s], width: %d, remaining = [%s]\n",
+    mutt_debug (4, "f=f: word [%s], width: %lu, remaining = [%s]\n",
                 p, fst->width, line);
 
     /* remember number of spaces */
@@ -214,7 +212,7 @@ static void print_flowed_line (char *line, STATE *s, int ql,
     if (!(!fst->spaces && fst->delsp && last != ' ') &&
 	w < width && w + fst->width + fst->spaces > width)
     {
-      mutt_debug (4, "f=f: break line at %d, %d spaces left\n",
+      mutt_debug (4, "f=f: break line at %lu, %lu spaces left\n",
                   fst->width, fst->spaces);
       /* only honor trailing spaces for format=flowed replies */
       if (option(OPTTEXTFLOWED))
@@ -264,7 +262,7 @@ int rfc3676_handler (BODY * a, STATE * s)
   /* respect DelSp of RfC3676 only with f=f parts */
   if ((t = (char *) mutt_get_parameter ("delsp", a->parameter)))
   {
-    delsp = mutt_strlen (t) == 3 && ascii_strncasecmp (t, "yes", 3) == 0;
+    delsp = mutt_strlen (t) == 3 && (ascii_strncasecmp (t, "yes", 3) == 0);
     t = NULL;
     fst.delsp = 1;
   }
@@ -290,7 +288,7 @@ int rfc3676_handler (BODY * a, STATE * s)
       buf_off++;
 
     /* test for signature separator */
-    sigsep = ascii_strcmp (buf + buf_off, "-- ") == 0;
+    sigsep = (ascii_strcmp (buf + buf_off, "-- ") == 0);
 
     /* a fixed line either has no trailing space or is the
      * signature separator */
@@ -316,7 +314,7 @@ int rfc3676_handler (BODY * a, STATE * s)
   flush_par (s, &fst);
 
   FREE (&buf);
-  return (0);
+  return 0;
 }
 
 /*
@@ -361,7 +359,7 @@ void rfc3676_space_stuff (HEADER* hdr)
 
   while (fgets (buf, sizeof (buf), in))
   {
-    if (ascii_strncmp ("From ", buf, 5) == 0 || buf[0] == ' ') {
+    if ((ascii_strncmp ("From ", buf, 5) == 0) || buf[0] == ' ') {
       fputc (' ', out);
 #ifdef DEBUG
       lc++;

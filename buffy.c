@@ -1,20 +1,19 @@
-/*
+/**
  * Copyright (C) 1996-2000,2010,2013 Michael R. Elkins <me@mutt.org>
  * Copyright (C) 2016 Kevin J. McCarthy <kevin@8t8.us>
  *
- *     This program is free software; you can redistribute it and/or modify
- *     it under the terms of the GNU General Public License as published by
- *     the Free Software Foundation; either version 2 of the License, or
- *     (at your option) any later version.
+ * This program is free software: you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License as published by the Free Software
+ * Foundation, either version 2 of the License, or (at your option) any later
+ * version.
  *
- *     This program is distributed in the hope that it will be useful,
- *     but WITHOUT ANY WARRANTY; without even the implied warranty of
- *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *     GNU General Public License for more details.
+ * This program is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
+ * details.
  *
- *     You should have received a copy of the GNU General Public License
- *     along with this program; if not, write to the Free Software
- *     Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ * You should have received a copy of the GNU General Public License along with
+ * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -55,7 +54,6 @@ static short BuffyNotify = 0;	/* # of unnotified new boxes */
 
 /* Find the last message in the file.
  * upon success return 0. If no message found - return -1 */
-
 static int fseek_last_message (FILE * f)
 {
   LOFF_T pos;
@@ -83,7 +81,7 @@ static int fseek_last_message (FILE * f)
     if (bytes_read == -1)
       return -1;
     for (i = bytes_read; --i >= 0;)
-      if (!mutt_strncmp (buffer + i, "\n\nFrom ", mutt_strlen ("\n\nFrom ")))
+      if (mutt_strncmp (buffer + i, "\n\nFrom ", mutt_strlen ("\n\nFrom ")) == 0)
       {				/* found it - go to the beginning of the From */
 	fseeko (f, pos + i + 2, SEEK_SET);
 	return 0;
@@ -92,24 +90,24 @@ static int fseek_last_message (FILE * f)
   }
 
   /* here we are at the beginning of the file */
-  if (!mutt_strncmp ("From ", buffer, 5))
+  if (mutt_strncmp ("From ", buffer, 5) == 0)
   {
     fseek (f, 0, 0);
-    return (0);
+    return 0;
   }
 
-  return (-1);
+  return -1;
 }
 
 /* Return 1 if the last message is new */
 static int test_last_status_new (FILE * f)
 {
-  HEADER *hdr;
-  ENVELOPE* tmp_envelope;
+  HEADER *hdr = NULL;
+  ENVELOPE* tmp_envelope = NULL;
   int result = 0;
 
   if (fseek_last_message (f) == -1)
-    return (0);
+    return 0;
 
   hdr = mutt_new_header ();
   tmp_envelope = mutt_read_rfc822_header (f, hdr, 0, 0);
@@ -124,7 +122,7 @@ static int test_last_status_new (FILE * f)
 
 static int test_new_folder (const char *path)
 {
-  FILE *f;
+  FILE *f = NULL;
   int rc = 0;
   int typ;
 
@@ -144,7 +142,7 @@ static int test_new_folder (const char *path)
 
 static BUFFY *buffy_new (const char *path)
 {
-  BUFFY* buffy;
+  BUFFY* buffy = NULL;
   char rp[PATH_MAX] = "";
   char *r = NULL;
 
@@ -175,9 +173,9 @@ static int buffy_maildir_check_dir (BUFFY* mailbox, const char *dir_name, int ch
 {
   char path[_POSIX_PATH_MAX];
   char msgpath[_POSIX_PATH_MAX];
-  DIR *dirp;
-  struct dirent *de;
-  char *p;
+  DIR *dirp = NULL;
+  struct dirent *de = NULL;
+  char *p = NULL;
   int rc = 0;
   struct stat sb;
 
@@ -380,7 +378,7 @@ static void buffy_check (BUFFY *tmp, struct stat *contex_sb, int check_stats)
 	  tmp->magic == MUTT_NOTMUCH ||
 #endif
 	  tmp->magic == MUTT_POP)
-	    ? mutt_strcmp (tmp->path, Context->path) :
+	    ? (mutt_strcmp (tmp->path, Context->path) != 0) :
 	      (sb.st_dev != contex_sb->st_dev || sb.st_ino != contex_sb->st_ino)))
     {
       switch (tmp->magic)
@@ -434,8 +432,8 @@ static void buffy_check (BUFFY *tmp, struct stat *contex_sb, int check_stats)
 /* fetch buffy object for given path, if present */
 static BUFFY* buffy_get (const char *path)
 {
-  BUFFY *cur;
-  char *epath;
+  BUFFY *cur = NULL;
+  char *epath = NULL;
 
   if (!path)
     return NULL;
@@ -447,7 +445,7 @@ static BUFFY* buffy_get (const char *path)
   {
     /* must be done late because e.g. IMAP delimiter may change */
     mutt_expand_path (cur->path, sizeof (cur->path));
-    if (!mutt_strcmp(cur->path, path))
+    if (mutt_strcmp(cur->path, path) == 0)
     {
       FREE (&epath);
       return cur;
@@ -461,7 +459,7 @@ static BUFFY* buffy_get (const char *path)
 void mutt_buffy_cleanup (const char *buf, struct stat *st)
 {
   struct utimbuf ut;
-  BUFFY *tmp;
+  BUFFY *tmp = NULL;
 
   if (option(OPTCHECKMBOXSIZE))
   {
@@ -517,18 +515,18 @@ void mutt_update_mailbox (BUFFY * b)
 
 int mutt_parse_mailboxes (BUFFER *path, BUFFER *s, unsigned long data, BUFFER *err)
 {
-  BUFFY **tmp,*tmp1;
+  BUFFY **tmp = NULL, *tmp1 = NULL;
   char buf[_POSIX_PATH_MAX];
   struct stat sb;
   char f1[PATH_MAX];
-  char *p;
+  char *p = NULL;
 
   while (MoreArgs (s))
   {
     mutt_extract_token (path, s, 0);
     strfcpy (buf, path->data, sizeof (buf));
 
-    if(data == MUTT_UNMAILBOXES && mutt_strcmp(buf,"*") == 0)
+    if(data == MUTT_UNMAILBOXES && (mutt_strcmp(buf,"*") == 0))
     {
       for (tmp = &Incoming; *tmp;)
       {
@@ -608,7 +606,7 @@ int mutt_parse_virtual_mailboxes (BUFFER *path, BUFFER *s, unsigned long data, B
 
   while (MoreArgs (s))
   {
-    char *desc;
+    char *desc = NULL;
 
     mutt_extract_token (path, s, 0);
     if (path->data && *path->data)
@@ -657,7 +655,7 @@ int mutt_parse_virtual_mailboxes (BUFFER *path, BUFFER *s, unsigned long data, B
 
 int mutt_parse_unvirtual_mailboxes (BUFFER *path, BUFFER *s, unsigned long data, BUFFER *err)
 {
-  BUFFY **tmp, *tmp1;
+  BUFFY **tmp = NULL, *tmp1 = NULL;
 
   while (MoreArgs (s))
   {
@@ -708,7 +706,7 @@ int mutt_parse_unvirtual_mailboxes (BUFFER *path, BUFFER *s, unsigned long data,
  */
 int mutt_buffy_check (int force)
 {
-  BUFFY *tmp;
+  BUFFY *tmp = NULL;
   struct stat contex_sb;
   time_t t;
   int check_stats = 0;
@@ -768,12 +766,12 @@ int mutt_buffy_check (int force)
 #endif
 
   BuffyDoneTime = BuffyTime;
-  return (BuffyCount);
+  return BuffyCount;
 }
 
 int mutt_buffy_list (void)
 {
-  BUFFY *tmp;
+  BUFFY *tmp = NULL;
   char path[_POSIX_PATH_MAX];
   char buffylist[2*STRING];
   size_t pos = 0;
@@ -816,18 +814,18 @@ int mutt_buffy_list (void)
   if (!first)
   {
     mutt_message ("%s", buffylist);
-    return (1);
+    return 1;
   }
   /* there were no mailboxes needing to be notified, so clean up since
    * BuffyNotify has somehow gotten out of sync
    */
   BuffyNotify = 0;
-  return (0);
+  return 0;
 }
 
 void mutt_buffy_setnotified (const char *path)
 {
-  BUFFY *buffy;
+  BUFFY *buffy = NULL;
 
   buffy = buffy_get(path);
   if (!buffy)
@@ -843,7 +841,7 @@ int mutt_buffy_notify (void)
   {
     return (mutt_buffy_list ());
   }
-  return (0);
+  return 0;
 }
 
 /*
@@ -885,7 +883,7 @@ void mutt_buffy (char *s, size_t slen)
 #ifdef USE_NOTMUCH
 void mutt_buffy_vfolder (char *s, size_t slen)
 {
-  BUFFY *tmp;
+  BUFFY *tmp = NULL;
   int pass, found = 0;
 
   if (mutt_buffy_check (0))

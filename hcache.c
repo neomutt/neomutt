@@ -1,22 +1,21 @@
-/*
+/**
  * Copyright (C) 2004 Thomas Glanzmann <sithglan@stud.uni-erlangen.de>
  * Copyright (C) 2004 Tobias Werth <sitowert@stud.uni-erlangen.de>
  * Copyright (C) 2004 Brian Fundakowski Feldman <green@FreeBSD.org>
  * Copyright (C) 2016 Pietro Cerutti <gahr@gahr.ch>
  *
- *     This program is free software; you can redistribute it and/or modify
- *     it under the terms of the GNU General Public License as published by
- *     the Free Software Foundation; either version 2 of the License, or
- *     (at your option) any later version.
+ * This program is free software: you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License as published by the Free Software
+ * Foundation, either version 2 of the License, or (at your option) any later
+ * version.
  *
- *     This program is distributed in the hope that it will be useful,
- *     but WITHOUT ANY WARRANTY; without even the implied warranty of
- *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *     GNU General Public License for more details.
+ * This program is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
+ * details.
  *
- *     You should have received a copy of the GNU General Public License
- *     along with this program; if not, write to the Free Software
- *     Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ * You should have received a copy of the GNU General Public License along with
+ * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -96,7 +95,7 @@ hcache_get_backend_ops(const char *backend)
   }
 
   for (; *ops; ++ops)
-    if (!strcmp(backend, (*ops)->name))
+    if (strcmp(backend, (*ops)->name) == 0)
       break;
 
   return *ops;
@@ -748,8 +747,8 @@ mutt_hcache_open(const char *path, const char *folder, hcache_namer_t namer)
       unsigned int intval;
     } digest;
     struct md5_ctx ctx;
-    REPLACE_LIST *spam;
-    RX_LIST *nospam;
+    REPLACE_LIST *spam = NULL;
+    RX_LIST *nospam = NULL;
 
     hcachever = HCACHEVER;
 
@@ -821,7 +820,7 @@ void mutt_hcache_close(header_cache_t *h)
 void *
 mutt_hcache_fetch(header_cache_t *h, const char *key, size_t keylen)
 {
-  void* data;
+  void* data = NULL;
 
   data = mutt_hcache_fetch_raw (h, key, keylen);
   if (!data)
@@ -867,7 +866,7 @@ int
 mutt_hcache_store(header_cache_t *h, const char *key, size_t keylen,
                   HEADER * header, unsigned int uidvalidity)
 {
-  char* data;
+  char* data = NULL;
   int dlen;
   int ret;
 

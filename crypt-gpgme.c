@@ -1,24 +1,25 @@
-/* crypt-gpgme.c - GPGME based crypto operations
+/**
  * Copyright (C) 1996-1997,2007 Michael R. Elkins <me@cs.hmc.edu>
  * Copyright (C) 1998-2000 Thomas Roessler <roessler@does-not-exist.org>
  * Copyright (C) 2001 Thomas Roessler <roessler@does-not-exist.org>
- *                     Oliver Ehli <elmy@acm.org>
+ * Copyright (C) 2001 Oliver Ehli <elmy@acm.org>
  * Copyright (C) 2002-2004 g10 Code GmbH
  * Copyright (C) 2010,2012-2013 Michael R. Elkins <me@sigpipe.org>
  *
- *     This program is free software; you can redistribute it and/or modify
- *     it under the terms of the GNU General Public License as published by
- *     the Free Software Foundation; either version 2 of the License, or
- *     (at your option) any later version.
+ * This program is free software: you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License as published by the Free Software
+ * Foundation, either version 2 of the License, or (at your option) any later
+ * version.
  *
- *     This program is distributed in the hope that it will be useful,
- *     but WITHOUT ANY WARRANTY; without even the implied warranty of
- *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *     GNU General Public License for more details.
+ * This program is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
+ * details.
  *
- *     You should have received a copy of the GNU General Public License
- *     along with this program; if not, write to the Free Software
- *     Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ * You should have received a copy of the GNU General Public License along with
+ * this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * crypt-gpgme.c - GPGME based crypto operations
  */
 
 #include "config.h"
@@ -59,8 +60,8 @@
 
 #define PKA_NOTATION_NAME "pka-address@gnupg.org"
 #define is_pka_notation(notation) ((notation)->name && \
-				    ! strcmp ((notation)->name, \
-					     PKA_NOTATION_NAME))
+				    (strcmp ((notation)->name, \
+					     PKA_NOTATION_NAME) == 0))
 
 /* Values used for comparing addresses. */
 #define CRYPT_KV_VALID    1
@@ -147,7 +148,7 @@ digit_or_letter (const unsigned char *s)
 static void
 print_utf8 (FILE *fp, const char *buf, size_t len)
 {
-  char *tstr;
+  char *tstr = NULL;
 
   tstr = safe_malloc (len+1);
   memcpy (tstr, buf, len);
@@ -282,9 +283,9 @@ static char crypt_flags (int flags)
 /* Return a copy of KEY. */
 static crypt_key_t *crypt_copy_key (crypt_key_t *key)
 {
-  crypt_key_t *k;
+  crypt_key_t *k = NULL;
 
-  k = safe_calloc (1, sizeof *k);
+  k = safe_calloc (1, sizeof (*k));
   k->kobj = key->kobj;
   gpgme_key_ref (key->kobj);
   k->idx = key->idx;
@@ -299,7 +300,7 @@ static crypt_key_t *crypt_copy_key (crypt_key_t *key)
    to NULL. */
 static void crypt_free_key (crypt_key_t **keylist)
 {
-  crypt_key_t *k;
+  crypt_key_t *k = NULL;
 
   if (!keylist)
     return;
@@ -368,11 +369,11 @@ static int crypt_id_matches_addr (ADDRESS *addr, ADDRESS *u_addr,
     rv |= CRYPT_KV_STRONGID;
 
   if (addr->mailbox && u_addr->mailbox
-      && mutt_strcasecmp (addr->mailbox, u_addr->mailbox) == 0)
+      && (mutt_strcasecmp (addr->mailbox, u_addr->mailbox) == 0))
     rv |= CRYPT_KV_ADDR;
 
   if (addr->personal && u_addr->personal
-      && mutt_strcasecmp (addr->personal, u_addr->personal) == 0)
+      && (mutt_strcasecmp (addr->personal, u_addr->personal) == 0))
     rv |= CRYPT_KV_STRING;
 
   return rv;
@@ -437,7 +438,7 @@ static gpgme_data_t create_gpgme_data (void)
 static gpgme_data_t body_to_data_object (BODY *a, int convert)
 {
   char tempfile[_POSIX_PATH_MAX];
-  FILE *fptmp;
+  FILE *fptmp = NULL;
   int err = 0;
   gpgme_data_t data;
 
@@ -518,7 +519,7 @@ static gpgme_data_t file_to_data_object (FILE *fp, long offset, long length)
 static int data_object_to_stream (gpgme_data_t data, FILE *fp)
 {
   int err;
-  char buf[4096], *p;
+  char buf[4096], *p = NULL;
   ssize_t nread;
 
   err = ((gpgme_data_seek (data, 0, SEEK_SET) == -1)
@@ -563,7 +564,7 @@ static char *data_object_to_tempfile (gpgme_data_t data, char *tempf, FILE **ret
 {
   int err;
   char tempfb[_POSIX_PATH_MAX];
-  FILE *fp;
+  FILE *fp = NULL;
   size_t nread = 0;
 
   if (!tempf)
@@ -639,7 +640,7 @@ static gpgme_key_t *create_recipient_set (const char *keylist,
                                           gpgme_protocol_t protocol)
 {
   int err;
-  const char *s;
+  const char *s = NULL;
   char buf[100];
   int i;
   gpgme_key_t *rset = NULL;
@@ -779,7 +780,7 @@ static char *encrypt_gpgme_object (gpgme_data_t plaintext, gpgme_key_t *rset,
   gpgme_error_t err;
   gpgme_ctx_t ctx;
   gpgme_data_t ciphertext;
-  char *outfile;
+  char *outfile = NULL;
 
   ctx = create_gpgme_context (use_smime);
   if (!use_smime)
@@ -887,8 +888,8 @@ static void print_time(time_t t, STATE *s)
    error. */
 static BODY *sign_message (BODY *a, int use_smime)
 {
-  BODY *t;
-  char *sigfile;
+  BODY *t = NULL;
+  char *sigfile = NULL;
   int err = 0;
   char buf[100];
   gpgme_ctx_t ctx;
@@ -970,7 +971,7 @@ static BODY *sign_message (BODY *a, int use_smime)
                       &t->parameter);
   /* Get the micalg from gpgme.  Old gpgme versions don't support this
      for S/MIME so we assume sha-1 in this case. */
-  if (!get_micalg (ctx, use_smime, buf, sizeof buf))
+  if (!get_micalg (ctx, use_smime, buf, sizeof (buf)))
     mutt_set_parameter ("micalg", buf, &t->parameter);
   else if (use_smime)
     mutt_set_parameter ("micalg", "sha1", &t->parameter);
@@ -1025,7 +1026,7 @@ BODY *smime_gpgme_sign_message (BODY *a)
 BODY *pgp_gpgme_encrypt_message (BODY *a, char *keylist, int sign)
 {
   char *outfile = NULL;
-  BODY *t;
+  BODY *t = NULL;
   gpgme_key_t *rset = NULL;
   gpgme_data_t plaintext;
 
@@ -1086,7 +1087,7 @@ BODY *pgp_gpgme_encrypt_message (BODY *a, char *keylist, int sign)
 BODY *smime_gpgme_build_smime_entity (BODY *a, char *keylist)
 {
   char *outfile = NULL;
-  BODY *t;
+  BODY *t = NULL;
   gpgme_key_t *rset = NULL;
   gpgme_data_t plaintext;
 
@@ -1224,7 +1225,7 @@ static int show_sig_summary (unsigned long sum,
           state_puts (": ", s);
           if (t0)
               state_puts (t0, s);
-          if (t1 && !(t0 && !strcmp (t0, t1)))
+          if (t1 && !(t0 && (strcmp (t0, t1) == 0)))
             {
               if (t0)
                 state_puts (",", s);
@@ -1261,9 +1262,9 @@ static int show_sig_summary (unsigned long sum,
 
 static void show_fingerprint (gpgme_key_t key, STATE *state)
 {
-  const char *s;
+  const char *s = NULL;
   int i, is_pgp;
-  char *buf, *p;
+  char *buf = NULL, *p = NULL;
   const char *prefix = _("Fingerprint: ");
 
   if (!key)
@@ -1409,7 +1410,7 @@ static void print_smime_keyinfo (const char* msg, gpgme_signature_t sig,
    2 for a signature with a warning or -1 for no more signature.  */
 static int show_one_sig_status (gpgme_ctx_t ctx, int idx, STATE *s)
 {
-  const char *fpr;
+  const char *fpr = NULL;
   gpgme_key_t key = NULL;
   int i, anybad = 0, anywarn = 0;
   unsigned int sum;
@@ -1677,7 +1678,7 @@ static BODY *decrypt_part (BODY *a, STATE *s, FILE *fpout, int is_smime,
                            int *r_is_signed)
 {
   struct stat info;
-  BODY *tattach;
+  BODY *tattach = NULL;
   int err = 0;
   gpgme_ctx_t ctx;
   gpgme_data_t ciphertext, plaintext;
@@ -1853,7 +1854,7 @@ int pgp_gpgme_decrypt_mime (FILE *fpin, FILE **fpout, BODY *b, BODY **cur)
     if ((decoded_fp = safe_fopen (tempfile, "w+")) == NULL)
     {
       mutt_perror (tempfile);
-      return (-1);
+      return -1;
     }
     unlink (tempfile);
 
@@ -1972,7 +1973,7 @@ int smime_gpgme_decrypt_mime (FILE *fpin, FILE **fpout, BODY *b, BODY **cur)
          ever be a need to decrypt again.  This needs a partial
          rewrite of the MIME engine. */
       BODY *bb = *cur;
-      BODY *tmp_b;
+      BODY *tmp_b = NULL;
 
       saved_b_type = bb->type;
       saved_b_offset = bb->offset;
@@ -2033,7 +2034,7 @@ static int pgp_gpgme_extract_keys (gpgme_data_t keydata, FILE** fp, int dryrun)
   gpgme_key_t key;
   gpgme_user_id_t uid;
   gpgme_subkey_t subkey;
-  const char* shortid;
+  const char* shortid = NULL;
   int len;
   char date[STRING];
   int more;
@@ -2164,12 +2165,11 @@ static int line_compare(const char *a, size_t n, const char *b)
 /*
  * Implementation of `pgp_check_traditional'.
  */
-
 static int pgp_check_traditional_one_body (FILE *fp, BODY *b, int tagged_only)
 {
   char tempfile[_POSIX_PATH_MAX];
   char buf[HUGE_STRING];
-  FILE *tfp;
+  FILE *tfp = NULL;
 
   short sgn = 0;
   short enc = 0;
@@ -2195,7 +2195,7 @@ static int pgp_check_traditional_one_body (FILE *fp, BODY *b, int tagged_only)
 
   while (fgets (buf, sizeof (buf), tfp))
   {
-    if (!mutt_strncmp ("-----BEGIN PGP ", buf, 15))
+    if (mutt_strncmp ("-----BEGIN PGP ", buf, 15) == 0)
     {
       if (MESSAGE(buf + 15))
       {
@@ -2247,8 +2247,8 @@ void pgp_gpgme_invoke_import (const char *fname)
 {
   gpgme_data_t keydata;
   gpgme_error_t err;
-  FILE* in;
-  FILE* out;
+  FILE* in = NULL;
+  FILE* out = NULL;
 
   if (!(in = safe_fopen (fname, "r")))
     return;
@@ -2289,13 +2289,12 @@ void pgp_gpgme_invoke_import (const char *fname)
   (Note that we aren't worse than Outlook & Cie in this, and also
   note that we can successfully handle anything produced by any
   existing versions of mutt.)  */
-
 static void copy_clearsigned (gpgme_data_t data, STATE *s, char *charset)
 {
   char buf[HUGE_STRING];
   short complete, armor_header;
-  FGETCONV *fc;
-  char *fname;
+  FGETCONV *fc = NULL;
+  char *fname = NULL;
   FILE *fp = NULL;
 
   fname = data_object_to_tempfile (data, NULL, &fp);
@@ -2371,7 +2370,7 @@ int pgp_gpgme_application_handler (BODY *m, STATE *s)
      but we know that this may only be text thus we assume Latin-1
      here. */
   if (!mutt_get_body_charset (body_charset, sizeof (body_charset), m))
-    strfcpy (body_charset, "iso-8859-1", sizeof body_charset);
+    strfcpy (body_charset, "iso-8859-1", sizeof (body_charset));
 
   fseeko (s->fpin, m->offset, 0);
   last_pos = m->offset;
@@ -2385,7 +2384,7 @@ int pgp_gpgme_application_handler (BODY *m, STATE *s)
       bytes -= (offset - last_pos); /* don't rely on mutt_strlen(buf) */
       last_pos = offset;
 
-      if (!mutt_strncmp ("-----BEGIN PGP ", buf, 15))
+      if (mutt_strncmp ("-----BEGIN PGP ", buf, 15) == 0)
         {
           clearsign = 0;
 
@@ -2460,7 +2459,7 @@ int pgp_gpgme_application_handler (BODY *m, STATE *s)
                 }
               else
                 { /* Decryption/Verification succeeded */
-                  char *tmpfname;
+                  char *tmpfname = NULL;
 
 		  {
 		    /* Check whether signatures have been verified.  */
@@ -2535,7 +2534,7 @@ int pgp_gpgme_application_handler (BODY *m, STATE *s)
             }
           else if (pgpout)
             {
-              FGETCONV *fc;
+              FGETCONV *fc = NULL;
               int c;
               rewind (pgpout);
               fc = fgetconv_open (pgpout, "utf-8", Charset, 0);
@@ -2599,8 +2598,8 @@ int pgp_gpgme_application_handler (BODY *m, STATE *s)
 int pgp_gpgme_encrypted_handler (BODY *a, STATE *s)
 {
   char tempfile[_POSIX_PATH_MAX];
-  FILE *fpout;
-  BODY *tattach;
+  FILE *fpout = NULL;
+  BODY *tattach = NULL;
   int is_signed;
   int rc = 0;
 
@@ -2671,8 +2670,8 @@ int pgp_gpgme_encrypted_handler (BODY *a, STATE *s)
 int smime_gpgme_application_handler (BODY *a, STATE *s)
 {
   char tempfile[_POSIX_PATH_MAX];
-  FILE *fpout;
-  BODY *tattach;
+  FILE *fpout = NULL;
+  BODY *tattach = NULL;
   int is_signed;
   int rc = 0;
 
@@ -2756,7 +2755,6 @@ int smime_gpgme_application_handler (BODY *a, STATE *s)
  * %p           protocol
  * %[...] date of key using strftime(3)
  */
-
 static const char *crypt_entry_fmt (char *dest,
                                     size_t destlen,
 				    size_t col,
@@ -2770,8 +2768,8 @@ static const char *crypt_entry_fmt (char *dest,
                                     format_flag flags)
 {
   char fmt[16];
-  crypt_entry_t *entry;
-  crypt_key_t *key;
+  crypt_entry_t *entry = NULL;
+  crypt_key_t *key = NULL;
   int kflags = 0;
   int optional = (flags & MUTT_FORMAT_OPTIONAL);
   const char *s = NULL;
@@ -2790,10 +2788,10 @@ static const char *crypt_entry_fmt (char *dest,
     {
     case '[':
       {
-	const char *cp;
-	char buf2[SHORT_STRING], *p;
+	const char *cp = NULL;
+	char buf2[SHORT_STRING], *p = NULL;
 	int do_locales;
-	struct tm *tm;
+	struct tm *tm = NULL;
 	size_t len;
 
 	p = dest;
@@ -2960,7 +2958,7 @@ static const char *crypt_entry_fmt (char *dest,
     mutt_FormatString (dest, destlen, col, cols, ifstring, mutt_attach_fmt, data, 0);
   else if (flags & MUTT_FORMAT_OPTIONAL)
     mutt_FormatString (dest, destlen, col, cols, elsestring, mutt_attach_fmt, data, 0);
-  return (src);
+  return src;
 }
 
 /* Used by the display function to format a line. */
@@ -2986,7 +2984,7 @@ static int _crypt_compare_address (const void *a, const void *b)
   if ((r = mutt_strcasecmp ((*s)->uid, (*t)->uid)))
     return r > 0;
   else
-    return mutt_strcasecmp (crypt_fpr_or_lkeyid (*s), crypt_fpr_or_lkeyid (*t)) > 0;
+    return (mutt_strcasecmp (crypt_fpr_or_lkeyid (*s), crypt_fpr_or_lkeyid (*t)) > 0);
 }
 
 static int crypt_compare_address (const void *a, const void *b)
@@ -3006,7 +3004,7 @@ static int _crypt_compare_keyid (const void *a, const void *b)
   if ((r = mutt_strcasecmp (crypt_fpr_or_lkeyid (*s), crypt_fpr_or_lkeyid (*t))))
     return r > 0;
   else
-    return mutt_strcasecmp ((*s)->uid, (*t)->uid) > 0;
+    return (mutt_strcasecmp ((*s)->uid, (*t)->uid) > 0);
 }
 
 static int crypt_compare_keyid (const void *a, const void *b)
@@ -3032,7 +3030,7 @@ static int _crypt_compare_date (const void *a, const void *b)
   if (ts < tt)
     return 0;
 
-  return mutt_strcasecmp ((*s)->uid, (*t)->uid) > 0;
+  return (mutt_strcasecmp ((*s)->uid, (*t)->uid) > 0);
 }
 
 static int crypt_compare_date (const void *a, const void *b)
@@ -3077,7 +3075,7 @@ static int _crypt_compare_trust (const void *a, const void *b)
 
   if ((r = mutt_strcasecmp ((*s)->uid, (*t)->uid)))
     return r > 0;
-  return (mutt_strcasecmp (crypt_fpr_or_lkeyid ((*s)), crypt_fpr_or_lkeyid ((*t)))) > 0;
+  return (mutt_strcasecmp (crypt_fpr_or_lkeyid ((*s)), crypt_fpr_or_lkeyid ((*t))) > 0);
 }
 
 static int crypt_compare_trust (const void *a, const void *b)
@@ -3095,7 +3093,7 @@ print_dn_part (FILE *fp, struct dn_array_s *dn, const char *key)
 
   for (; dn->key; dn++)
     {
-      if (!strcmp (dn->key, key))
+      if (strcmp (dn->key, key) == 0)
         {
           if (any)
             fputs (" + ", fp);
@@ -3126,7 +3124,7 @@ print_dn_parts (FILE *fp, struct dn_array_s *dn)
     {
       for (i=0; stdpart[i]; i++)
         {
-          if (!strcmp (dn->key, stdpart[i]))
+          if (strcmp (dn->key, stdpart[i]) == 0)
             break;
         }
       if (!stdpart[i])
@@ -3148,9 +3146,9 @@ print_dn_parts (FILE *fp, struct dn_array_s *dn)
 static const char *
 parse_dn_part (struct dn_array_s *array, const char *string)
 {
-  const char *s, *s1;
+  const char *s = NULL, *s1 = NULL;
   size_t n;
-  char *p;
+  char *p = NULL;
 
   /* parse attributeType */
   for (s = string+1; *s && *s != '='; s++)
@@ -3239,12 +3237,12 @@ parse_dn_part (struct dn_array_s *array, const char *string)
 static struct dn_array_s *
 parse_dn (const char *string)
 {
-  struct dn_array_s *array;
+  struct dn_array_s *array = NULL;
   size_t arrayidx, arraysize;
   int i;
 
   arraysize = 7; /* C,ST,L,O,OU,CN,email */
-  array = safe_malloc ((arraysize+1) * sizeof *array);
+  array = safe_malloc ((arraysize+1) * sizeof (*array));
   arrayidx = 0;
   while (*string)
     {
@@ -3254,10 +3252,10 @@ parse_dn (const char *string)
         break; /* ready */
       if (arrayidx >= arraysize)
         { /* mutt lacks a real safe_realoc - so we need to copy */
-          struct dn_array_s *a2;
+          struct dn_array_s *a2 = NULL;
 
           arraysize += 5;
-          a2 = safe_malloc ((arraysize+1) * sizeof *array);
+          a2 = safe_malloc ((arraysize+1) * sizeof (*array));
           for (i=0; i < arrayidx; i++)
             {
               a2[i].key = array[i].key;
@@ -3301,7 +3299,7 @@ parse_dn (const char *string)
 static void
 parse_and_print_user_id (FILE *fp, const char *userid)
 {
-  const char *s;
+  const char *s = NULL;
   int i;
 
   if (*userid == '<')
@@ -3378,10 +3376,10 @@ static void print_key_info (gpgme_key_t key, FILE *fp)
   int idx;
   const char *s = NULL, *s2 = NULL;
   time_t tt = 0;
-  struct tm *tm;
+  struct tm *tm = NULL;
   char shortbuf[SHORT_STRING];
   unsigned long aval = 0;
-  const char *delim;
+  const char *delim = NULL;
   int is_pgp = 0;
   int i;
   gpgme_user_id_t uid = NULL;
@@ -3414,9 +3412,9 @@ static void print_key_info (gpgme_key_t key, FILE *fp)
 
       tm = localtime (&tt);
 #ifdef HAVE_LANGINFO_D_T_FMT
-      strftime (shortbuf, sizeof shortbuf, nl_langinfo (D_T_FMT), tm);
+      strftime (shortbuf, sizeof (shortbuf), nl_langinfo (D_T_FMT), tm);
 #else
-      strftime (shortbuf, sizeof shortbuf, "%c", tm);
+      strftime (shortbuf, sizeof (shortbuf), "%c", tm);
 #endif
       /* L10N: DOTFILL */
       fprintf (fp, _("Valid From : %s\n"), shortbuf);
@@ -3428,9 +3426,9 @@ static void print_key_info (gpgme_key_t key, FILE *fp)
 
       tm = localtime (&tt);
 #ifdef HAVE_LANGINFO_D_T_FMT
-      strftime (shortbuf, sizeof shortbuf, nl_langinfo (D_T_FMT), tm);
+      strftime (shortbuf, sizeof (shortbuf), nl_langinfo (D_T_FMT), tm);
 #else
-      strftime (shortbuf, sizeof shortbuf, "%c", tm);
+      strftime (shortbuf, sizeof (shortbuf), "%c", tm);
 #endif
       /* L10N: DOTFILL */
       fprintf (fp, _("Valid To ..: %s\n"), shortbuf);
@@ -3568,9 +3566,9 @@ static void print_key_info (gpgme_key_t key, FILE *fp)
 
               tm = localtime (&tt);
 #ifdef HAVE_LANGINFO_D_T_FMT
-              strftime (shortbuf, sizeof shortbuf, nl_langinfo (D_T_FMT), tm);
+              strftime (shortbuf, sizeof (shortbuf), nl_langinfo (D_T_FMT), tm);
 #else
-              strftime (shortbuf, sizeof shortbuf, "%c", tm);
+              strftime (shortbuf, sizeof (shortbuf), "%c", tm);
 #endif
               /* L10N: DOTFILL */
               fprintf (fp, _("Valid From : %s\n"), shortbuf);
@@ -3582,9 +3580,9 @@ static void print_key_info (gpgme_key_t key, FILE *fp)
 
               tm = localtime (&tt);
 #ifdef HAVE_LANGINFO_D_T_FMT
-              strftime (shortbuf, sizeof shortbuf, nl_langinfo (D_T_FMT), tm);
+              strftime (shortbuf, sizeof (shortbuf), nl_langinfo (D_T_FMT), tm);
 #else
-              strftime (shortbuf, sizeof shortbuf, "%c", tm);
+              strftime (shortbuf, sizeof (shortbuf), "%c", tm);
 #endif
               /* L10N: DOTFILL */
               fprintf (fp, _("Valid To ..: %s\n"), shortbuf);
@@ -3626,9 +3624,9 @@ static void print_key_info (gpgme_key_t key, FILE *fp)
 static void
 verify_key (crypt_key_t *key)
 {
-  FILE *fp;
+  FILE *fp = NULL;
   char cmd[LONG_STRING], tempfile[_POSIX_PATH_MAX];
-  const char *s;
+  const char *s = NULL;
   gpgme_ctx_t listctx = NULL;
   gpgme_error_t err;
   gpgme_key_t k = NULL;
@@ -3656,7 +3654,7 @@ verify_key (crypt_key_t *key)
 
   k = key->kobj;
   gpgme_key_ref (k);
-  while ((s = k->chain_id) && k->subkeys && strcmp (s, k->subkeys->fpr) )
+  while ((s = k->chain_id) && k->subkeys && (strcmp (s, k->subkeys->fpr) != 0) )
     {
       putc ('\n', fp);
       err = gpgme_op_keylist_start (listctx, s, 0);
@@ -3701,9 +3699,9 @@ verify_key (crypt_key_t *key)
    "%25". */
 static char *list_to_pattern (LIST *list)
 {
-  LIST *l;
-  char *pattern, *p;
-  const char *s;
+  LIST *l = NULL;
+  char *pattern = NULL, *p = NULL;
+  const char *s = NULL;
   size_t n;
 
   n = 0;
@@ -3755,8 +3753,8 @@ static char *list_to_pattern (LIST *list)
    Select by looking at the HINTS list. */
 static crypt_key_t *get_candidates (LIST * hints, unsigned int app, int secret)
 {
-  crypt_key_t *db, *k, **kend;
-  char *pattern;
+  crypt_key_t *db = NULL, *k = NULL, **kend = NULL;
+  char *pattern = NULL;
   gpgme_error_t err;
   gpgme_ctx_t ctx;
   gpgme_key_t key;
@@ -3784,7 +3782,7 @@ static crypt_key_t *get_candidates (LIST * hints, unsigned int app, int secret)
          depending on the protocol.  For gpg we don't need percent
          escaped pappert but simple strings passed in an array to the
          keylist_ext_start function. */
-      LIST *l;
+      LIST *l = NULL;
       size_t n;
       char **patarr;
 
@@ -3796,7 +3794,7 @@ static crypt_key_t *get_candidates (LIST * hints, unsigned int app, int secret)
       if (!n)
         goto no_pgphints;
 
-      patarr = safe_calloc (n+1, sizeof *patarr);
+      patarr = safe_calloc (n+1, sizeof (*patarr));
       for(l=hints, n=0; l; l = l->next)
         {
           if (l->data && *l->data)
@@ -3834,7 +3832,7 @@ static crypt_key_t *get_candidates (LIST * hints, unsigned int app, int secret)
 
 	  for (idx = 0, uid = key->uids; uid; idx++, uid = uid->next)
             {
-              k = safe_calloc (1, sizeof *k);
+              k = safe_calloc (1, sizeof (*k));
               k->kobj = key;
               gpgme_key_ref (k->kobj);
               k->idx = idx;
@@ -3880,7 +3878,7 @@ static crypt_key_t *get_candidates (LIST * hints, unsigned int app, int secret)
 
 	  for (idx = 0, uid = key->uids; uid; idx++, uid = uid->next)
             {
-              k = safe_calloc (1, sizeof *k);
+              k = safe_calloc (1, sizeof (*k));
               k->kobj = key;
               gpgme_key_ref (k->kobj);
               k->idx = idx;
@@ -3906,8 +3904,8 @@ static crypt_key_t *get_candidates (LIST * hints, unsigned int app, int secret)
    match addresses. */
 static LIST *crypt_add_string_to_hints (LIST *hints, const char *str)
 {
-  char *scratch;
-  char *t;
+  char *scratch = NULL;
+  char *t = NULL;
 
   if ((scratch = safe_strdup (str)) == NULL)
     return hints;
@@ -3932,10 +3930,10 @@ static crypt_key_t *crypt_select_key (crypt_key_t *keys,
 {
   int keymax;
   crypt_key_t **key_table;
-  MUTTMENU *menu;
+  MUTTMENU *menu = NULL;
   int i, done = 0;
   char helpstr[LONG_STRING], buf[LONG_STRING];
-  crypt_key_t *k;
+  crypt_key_t *k = NULL;
   int (*f) (const void *, const void *);
   int menu_to_use = 0;
   int unusable = 0;
@@ -4011,7 +4009,7 @@ static crypt_key_t *crypt_select_key (crypt_key_t *keys,
   menu->data = key_table;
 
   {
-    const char *ts;
+    const char *ts = NULL;
 
     if ((app & APPLICATION_PGP) && (app &  APPLICATION_SMIME))
       ts = _("PGP and S/MIME keys matching");
@@ -4068,7 +4066,7 @@ static crypt_key_t *crypt_select_key (crypt_key_t *keys,
               (!crypt_id_is_valid (key_table[menu->current])
                || !crypt_id_is_strong (key_table[menu->current])))
             {
-              const char *warn_s;
+              const char *warn_s = NULL;
               char buff[LONG_STRING];
 
               if (key_table[menu->current]->flags & KEYFLAG_CANTUSE)
@@ -4129,7 +4127,7 @@ static crypt_key_t *crypt_getkeybyaddr (ADDRESS * a, short abilities,
 					unsigned int app, int *forced_valid,
 					int oppenc_mode)
 {
-  ADDRESS *r, *p;
+  ADDRESS *r = NULL, *p = NULL;
   LIST *hints = NULL;
 
   int weak    = 0;
@@ -4142,7 +4140,7 @@ static crypt_key_t *crypt_getkeybyaddr (ADDRESS * a, short abilities,
   int this_key_has_invalid;
   int match;
 
-  crypt_key_t *keys, *k;
+  crypt_key_t *keys = NULL, *k = NULL;
   crypt_key_t *the_strong_valid_key = NULL;
   crypt_key_t *a_valid_addrmatch_key = NULL;
   crypt_key_t *matches = NULL;
@@ -4219,7 +4217,7 @@ static crypt_key_t *crypt_getkeybyaddr (ADDRESS * a, short abilities,
 
       if (match)
         {
-          crypt_key_t *tmp;
+          crypt_key_t *tmp = NULL;
 
           *matches_endp = tmp = crypt_copy_key (k);
           matches_endp = &tmp->next;
@@ -4284,11 +4282,11 @@ static crypt_key_t *crypt_getkeybystr (char *p, short abilities,
 				       unsigned int app, int *forced_valid)
 {
   LIST *hints = NULL;
-  crypt_key_t *keys;
+  crypt_key_t *keys = NULL;
   crypt_key_t *matches = NULL;
   crypt_key_t **matches_endp = &matches;
-  crypt_key_t *k;
-  const char *ps, *pl, *pfcopy, *phint;
+  crypt_key_t *k = NULL;
+  const char *ps = NULL, *pl = NULL, *pfcopy = NULL, *phint = NULL;
 
   mutt_message (_("Looking for keys matching \"%s\"..."), p);
 
@@ -4314,12 +4312,12 @@ static crypt_key_t *crypt_getkeybystr (char *p, short abilities,
                   "key %s, \"%s\": ",  p, crypt_long_keyid (k), k->uid);
 
       if (!*p
-          || (pfcopy && mutt_strcasecmp (pfcopy, crypt_fpr (k)) == 0)
-          || (pl && mutt_strcasecmp (pl, crypt_long_keyid (k)) == 0)
-          || (ps && mutt_strcasecmp (ps, crypt_short_keyid (k)) == 0)
+          || (pfcopy && (mutt_strcasecmp (pfcopy, crypt_fpr (k)) == 0))
+          || (pl && (mutt_strcasecmp (pl, crypt_long_keyid (k)) == 0))
+          || (ps && (mutt_strcasecmp (ps, crypt_short_keyid (k)) == 0))
           || mutt_stristr (k->uid, p))
         {
-          crypt_key_t *tmp;
+          crypt_key_t *tmp = NULL;
 
           mutt_debug (5, "match.\n");
 
@@ -4356,7 +4354,7 @@ static crypt_key_t *crypt_ask_for_key (char *tag,
 				       unsigned int app,
                                        int *forced_valid)
 {
-  crypt_key_t *key;
+  crypt_key_t *key = NULL;
   char resp[SHORT_STRING];
   struct crypt_cache *l = NULL;
   int dummy;
@@ -4372,7 +4370,7 @@ static crypt_key_t *crypt_ask_for_key (char *tag,
     {
 
       for (l = id_defaults; l; l = l->next)
-        if (!mutt_strcasecmp (whatfor, l->what))
+        if (mutt_strcasecmp (whatfor, l->what) == 0)
           {
             strfcpy (resp, NONULL (l->dflt), sizeof (resp));
             break;
@@ -4414,15 +4412,15 @@ static crypt_key_t *crypt_ask_for_key (char *tag,
    prompting will be used.  */
 static char *find_keys (ADDRESS *adrlist, unsigned int app, int oppenc_mode)
 {
-  LIST *crypt_hook_list, *crypt_hook = NULL;
+  LIST *crypt_hook_list = NULL, *crypt_hook = NULL;
   char *crypt_hook_val = NULL;
   const char *keyID = NULL;
-  char *keylist = NULL, *t;
+  char *keylist = NULL, *t = NULL;
   size_t keylist_size = 0;
   size_t keylist_used = 0;
   ADDRESS *addr = NULL;
-  ADDRESS *p, *q;
-  crypt_key_t *k_info;
+  ADDRESS *p = NULL, *q = NULL;
+  crypt_key_t *k_info = NULL;
   const char *fqdn = mutt_fqdn (1);
   char buf[LONG_STRING];
   int forced_valid;
@@ -4537,7 +4535,7 @@ static char *find_keys (ADDRESS *adrlist, unsigned int app, int oppenc_mode)
 
       mutt_free_list (&crypt_hook_list);
     }
-  return (keylist);
+  return keylist;
 }
 
 char *pgp_gpgme_findkeys (ADDRESS *adrlist, int oppenc_mode)
@@ -4665,9 +4663,9 @@ void smime_gpgme_init (void)
 
 static int gpgme_send_menu (HEADER *msg, int *redraw, int is_smime)
 {
-  crypt_key_t *p;
+  crypt_key_t *p = NULL;
   char input_signas[SHORT_STRING];
-  char *prompt, *letters, *choices;
+  char *prompt = NULL, *letters = NULL, *choices = NULL;
   int choice;
 
   if (is_smime)
@@ -4826,7 +4824,7 @@ static int gpgme_send_menu (HEADER *msg, int *redraw, int is_smime)
     }
   }
 
-  return (msg->security);
+  return msg->security;
 }
 
 int pgp_gpgme_send_menu (HEADER *msg, int *redraw)
@@ -4876,7 +4874,7 @@ static int verify_sender (HEADER *h, gpgme_protocol_t protocol)
 	  const char* at_sign = strchr(uid->email + 1, '@');
 	  if (at_sign == NULL)
 	  {
-	    if (! strncmp (uid->email + 1, sender->mailbox, sender_length))
+	    if (strncmp (uid->email + 1, sender->mailbox, sender_length) == 0)
 	      ret = 0;
 	  }
 	  else
@@ -4893,12 +4891,12 @@ static int verify_sender (HEADER *h, gpgme_protocol_t protocol)
 	    int domainname_length = sender_length - mailbox_length;
 	    int mailbox_match, domainname_match;
 
-	    mailbox_match = (! strncmp (tmp_email, tmp_sender,
-		mailbox_length));
+	    mailbox_match = (strncmp (tmp_email, tmp_sender,
+		mailbox_length) == 0);
 	    tmp_email += mailbox_length;
 	    tmp_sender += mailbox_length;
-	    domainname_match = (! strncasecmp (tmp_email, tmp_sender,
-		domainname_length));
+	    domainname_match = (strncasecmp (tmp_email, tmp_sender,
+		domainname_length) == 0);
 	    if (mailbox_match && domainname_match)
 	      ret = 0;
 	  }

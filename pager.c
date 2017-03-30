@@ -1,19 +1,18 @@
-/*
+/**
  * Copyright (C) 1996-2002,2007,2010,2012-2013 Michael R. Elkins <me@mutt.org>
  *
- *     This program is free software; you can redistribute it and/or modify
- *     it under the terms of the GNU General Public License as published by
- *     the Free Software Foundation; either version 2 of the License, or
- *     (at your option) any later version.
+ * This program is free software: you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License as published by the Free Software
+ * Foundation, either version 2 of the License, or (at your option) any later
+ * version.
  *
- *     This program is distributed in the hope that it will be useful,
- *     but WITHOUT ANY WARRANTY; without even the implied warranty of
- *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *     GNU General Public License for more details.
+ * This program is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
+ * details.
  *
- *     You should have received a copy of the GNU General Public License
- *     along with this program; if not, write to the Free Software
- *     Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ * You should have received a copy of the GNU General Public License along with
+ * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -155,7 +154,7 @@ static int check_sig (const char *s, struct line_t *info, int n)
   }
 
   if (count == 0)
-    return (-1);
+    return -1;
 
   if (count > NumSigLines)
   {
@@ -167,10 +166,10 @@ static int check_sig (const char *s, struct line_t *info, int n)
       s++;
     }
 
-    return (-1);
+    return -1;
   }
 
-  return (0);
+  return 0;
 }
 
 static void
@@ -336,7 +335,7 @@ static void
 shift_class_colors (struct q_class_t *QuoteList, struct q_class_t *new_class,
 		      int index, int *q_level)
 {
-  struct q_class_t * q_list;
+  struct q_class_t * q_list = NULL;
 
   q_list = QuoteList;
   new_class->index = -1;
@@ -373,7 +372,7 @@ shift_class_colors (struct q_class_t *QuoteList, struct q_class_t *new_class,
 static void
 cleanup_quote (struct q_class_t **QuoteList)
 {
-  struct q_class_t *ptr;
+  struct q_class_t *ptr = NULL;
 
   while (*QuoteList)
   {
@@ -394,8 +393,8 @@ classify_quote (struct q_class_t **QuoteList, const char *qptr,
 		int length, int *force_redraw, int *q_level)
 {
   struct q_class_t *q_list = *QuoteList;
-  struct q_class_t *class = NULL, *tmp = NULL, *ptr, *save;
-  char *tail_qptr;
+  struct q_class_t *class = NULL, *tmp = NULL, *ptr, *save = NULL;
+  char *tail_qptr = NULL;
   int offset, tail_lng;
   int index = -1;
 
@@ -409,7 +408,7 @@ classify_quote (struct q_class_t **QuoteList, const char *qptr,
       class->color = ColorQuote[0];
       *QuoteList = class;
     }
-    return (*QuoteList);
+    return *QuoteList;
   }
 
   /* Did I mention how much I like emulating Lisp in C? */
@@ -515,7 +514,7 @@ classify_quote (struct q_class_t **QuoteList, const char *qptr,
       /* case 2: try subclassing the current top level node */
 
       /* tmp != NULL means we already found a shorter prefix at case 1 */
-      if (tmp == NULL && mutt_strncmp (qptr, q_list->prefix, q_list->length) == 0)
+      if (tmp == NULL && (mutt_strncmp (qptr, q_list->prefix, q_list->length) == 0))
       {
 	/* ok, it's a subclass somewhere on this branch */
 
@@ -617,8 +616,8 @@ classify_quote (struct q_class_t **QuoteList, const char *qptr,
 	  else
 	  {
 	    /* longer than the current prefix: try subclassing it */
-	    if (tmp == NULL && mutt_strncmp (tail_qptr, (q_list->prefix) + offset,
-			  q_list->length - offset) == 0)
+	    if (tmp == NULL && (mutt_strncmp (tail_qptr, (q_list->prefix) + offset,
+			  q_list->length - offset) == 0))
 	    {
 	      /* still a subclass: go down one level */
 	      ptr = q_list;
@@ -716,7 +715,7 @@ resolve_types (char *buf, char *raw, struct line_t *lineInfo, int n, int last,
 		struct q_class_t **QuoteList, int *q_level, int *force_redraw,
 		int q_classify)
 {
-  COLOR_LINE *color_line;
+  COLOR_LINE *color_line = NULL;
   regmatch_t pmatch[1], smatch[1];
   int found, offset, null_rx, i;
 
@@ -774,7 +773,7 @@ resolve_types (char *buf, char *raw, struct line_t *lineInfo, int n, int last,
     lineInfo[n].type = MT_COLOR_NORMAL;
   else if (check_attachment_marker ((char *) raw) == 0)
     lineInfo[n].type = MT_COLOR_ATTACHMENT;
-  else if (mutt_strcmp ("-- \n", buf) == 0 || mutt_strcmp ("-- \r\n", buf) == 0)
+  else if ((mutt_strcmp ("-- \n", buf) == 0) || (mutt_strcmp ("-- \r\n", buf) == 0))
   {
     i = n + 1;
 
@@ -1092,7 +1091,7 @@ static int
 fill_buffer (FILE *f, LOFF_T *last_pos, LOFF_T offset, unsigned char **buf,
 	     unsigned char **fmt, size_t *blen, int *buf_ready)
 {
-  unsigned char *p, *q;
+  unsigned char *p = NULL, *q = NULL;
   static int b_read;
   int l;
 
@@ -1103,7 +1102,7 @@ fill_buffer (FILE *f, LOFF_T *last_pos, LOFF_T offset, unsigned char **buf,
     if ((*buf = (unsigned char *) mutt_read_line ((char *) *buf, blen, f, &l, MUTT_EOL)) == NULL)
     {
       fmt[0] = 0;
-      return (-1);
+      return -1;
     }
     *last_pos = ftello (f);
     b_read = (int) (*last_pos - offset);
@@ -1201,7 +1200,7 @@ static int format_line (struct line_t **lineInfo, int n, unsigned char *buf,
     {
       if (k == (size_t)(-1))
         memset(&mbstate, 0, sizeof(mbstate));
-      mutt_debug (1, "%s:%d: mbrtowc returned %d; errno = %d.\n",
+      mutt_debug (1, "%s:%d: mbrtowc returned %lu; errno = %d.\n",
                   __FILE__, __LINE__, k, errno);
       if (col + 4 > wrap_cols)
 	break;
@@ -1357,7 +1356,6 @@ static int format_line (struct line_t **lineInfo, int n, unsigned char *buf,
  *	0	normal exit, line was not displayed
  *	>0	normal exit, line was displayed
  */
-
 static int
 display_line (FILE *f, LOFF_T *last_pos, struct line_t **lineInfo, int n,
 	      int *last, int *max, int flags, struct q_class_t **QuoteList,
@@ -1658,7 +1656,7 @@ mutt_pager (const char *banner, const char *fname, int flags, pager_t *extra)
   char helpstr[SHORT_STRING*2];
   char tmphelp[SHORT_STRING*2];
   int maxLine, lastLine = 0;
-  struct line_t *lineInfo;
+  struct line_t *lineInfo = NULL;
   struct q_class_t *QuoteList = NULL;
   int i, j, ch = 0, rc = -1, hideQuoted = 0, q_level = 0, force_redraw = 0;
   int lines = 0, curline = 0, topline = 0, oldtopline = 0, err, first = 1;
@@ -1687,7 +1685,7 @@ mutt_pager (const char *banner, const char *fname, int flags, pager_t *extra)
   int check;
 
 #ifdef USE_NNTP
-  char *followup_to;
+  char *followup_to = NULL;
 #endif
 
   if (!(flags & MUTT_SHOWCOLOR))
@@ -1696,14 +1694,14 @@ mutt_pager (const char *banner, const char *fname, int flags, pager_t *extra)
   if ((fp = fopen (fname, "r")) == NULL)
   {
     mutt_perror (fname);
-    return (-1);
+    return -1;
   }
 
   if (stat (fname, &sb) != 0)
   {
     mutt_perror (fname);
     safe_fclose (&fp);
-    return (-1);
+    return -1;
   }
   unlink (fname);
 
@@ -2331,7 +2329,7 @@ search_next:
 			    MUTT_CLEAR) != 0)
 	  break;
 
-	if (!strcmp (buffer, searchbuf))
+	if (strcmp (buffer, searchbuf) == 0)
 	{
 	  if (SearchCompiled)
 	  {
@@ -2836,7 +2834,7 @@ search_next:
 	else
 	  followup_to = extra->hdr->env->followup_to;
 
-	if (!followup_to || mutt_strcasecmp (followup_to, "poster") ||
+	if (!followup_to || (mutt_strcasecmp (followup_to, "poster") != 0) ||
 	    query_quadoption (OPT_FOLLOWUPTOPOSTER,_("Reply by mail as poster prefers?")) != MUTT_YES)
 	{
 	  if (extra->ctx && extra->ctx->magic == MUTT_NNTP &&

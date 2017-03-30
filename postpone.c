@@ -1,20 +1,19 @@
-/*
+/**
  * Copyright (C) 1996-2002,2012-2013 Michael R. Elkins <me@mutt.org>
  * Copyright (C) 1999-2002,2004 Thomas Roessler <roessler@does-not-exist.org>
  *
- *     This program is free software; you can redistribute it and/or modify
- *     it under the terms of the GNU General Public License as published by
- *     the Free Software Foundation; either version 2 of the License, or
- *     (at your option) any later version.
+ * This program is free software: you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License as published by the Free Software
+ * Foundation, either version 2 of the License, or (at your option) any later
+ * version.
  *
- *     This program is distributed in the hope that it will be useful,
- *     but WITHOUT ANY WARRANTY; without even the implied warranty of
- *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *     GNU General Public License for more details.
+ * This program is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
+ * details.
  *
- *     You should have received a copy of the GNU General Public License
- *     along with this program; if not, write to the Free Software
- *     Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ * You should have received a copy of the GNU General Public License along with
+ * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -67,7 +66,7 @@ int mutt_num_postponed (int force)
     force = 1;
   }
 
-  if (mutt_strcmp (Postponed, OldPostponed))
+  if (mutt_strcmp (Postponed, OldPostponed) != 0)
   {
     FREE (&OldPostponed);
     OldPostponed = safe_strdup (Postponed);
@@ -104,7 +103,7 @@ int mutt_num_postponed (int force)
   {
      PostCount = 0;
      LastModify = 0;
-     return (0);
+     return 0;
   }
 
   if (S_ISDIR (st.st_mode))
@@ -146,7 +145,7 @@ int mutt_num_postponed (int force)
 #endif
   }
 
-  return (PostCount);
+  return PostCount;
 }
 
 void mutt_update_num_postponed (void)
@@ -164,7 +163,7 @@ static void post_entry (char *s, size_t slen, MUTTMENU *menu, int entry)
 
 static HEADER *select_msg (void)
 {
-  MUTTMENU *menu;
+  MUTTMENU *menu = NULL;
   int i, done=0, r=-1;
   char helpstr[LONG_STRING];
   short orig_sort;
@@ -239,22 +238,22 @@ static HEADER *select_msg (void)
  */
 int mutt_get_postponed (CONTEXT *ctx, HEADER *hdr, HEADER **cur, char *fcc, size_t fcclen)
 {
-  HEADER *h;
+  HEADER *h = NULL;
   int code = SENDPOSTPONED;
-  LIST *tmp;
+  LIST *tmp = NULL;
   LIST *last = NULL;
-  LIST *next;
-  const char *p;
+  LIST *next = NULL;
+  const char *p = NULL;
   int opt_delete;
 
   if (!Postponed)
-    return (-1);
+    return -1;
 
   if ((PostContext = mx_open_mailbox (Postponed, MUTT_NOSORT, NULL)) == NULL)
   {
     PostCount = 0;
     mutt_error (_("No postponed messages."));
-    return (-1);
+    return -1;
   }
 
   if (! PostContext->msgcount)
@@ -263,7 +262,7 @@ int mutt_get_postponed (CONTEXT *ctx, HEADER *hdr, HEADER **cur, char *fcc, size
     mx_close_mailbox (PostContext, NULL);
     FREE (&PostContext);
     mutt_error (_("No postponed messages."));
-    return (-1);
+    return -1;
   }
 
   if (PostContext->msgcount == 1)
@@ -275,14 +274,14 @@ int mutt_get_postponed (CONTEXT *ctx, HEADER *hdr, HEADER **cur, char *fcc, size
   {
     mx_close_mailbox (PostContext, NULL);
     FREE (&PostContext);
-    return (-1);
+    return -1;
   }
 
   if (mutt_prepare_template (NULL, PostContext, hdr, h, 0) < 0)
   {
     mx_fastclose_mailbox (PostContext);
     FREE (&PostContext);
-    return (-1);
+    return -1;
   }
 
   /* finished with this message, so delete it. */
@@ -349,10 +348,10 @@ int mutt_get_postponed (CONTEXT *ctx, HEADER *hdr, HEADER **cur, char *fcc, size
       code |= SENDPOSTPONEDFCC;
     }
     else if ((WithCrypto & APPLICATION_PGP)
-             && (mutt_strncmp ("Pgp:", tmp->data, 4) == 0 /* this is generated
+             && ((mutt_strncmp ("Pgp:", tmp->data, 4) == 0) /* this is generated
 						       * by old mutt versions
 						       */
-                 || mutt_strncmp ("X-Mutt-PGP:", tmp->data, 11) == 0))
+                 || (mutt_strncmp ("X-Mutt-PGP:", tmp->data, 11) == 0)))
     {
       hdr->security = mutt_parse_crypt_hdr (strchr (tmp->data, ':') + 1, 1,
 					    APPLICATION_PGP);
@@ -369,7 +368,7 @@ int mutt_get_postponed (CONTEXT *ctx, HEADER *hdr, HEADER **cur, char *fcc, size
       tmp = next;
     }
     else if ((WithCrypto & APPLICATION_SMIME)
-             && mutt_strncmp ("X-Mutt-SMIME:", tmp->data, 13) == 0)
+             && (mutt_strncmp ("X-Mutt-SMIME:", tmp->data, 13) == 0))
     {
       hdr->security = mutt_parse_crypt_hdr (strchr (tmp->data, ':') + 1, 1,
 					    APPLICATION_SMIME);
@@ -389,7 +388,7 @@ int mutt_get_postponed (CONTEXT *ctx, HEADER *hdr, HEADER **cur, char *fcc, size
 #ifdef MIXMASTER
     else if (mutt_strncmp ("X-Mutt-Mix:", tmp->data, 11) == 0)
     {
-      char *t;
+      char *t = NULL;
       mutt_free_list (&hdr->chain);
 
       t = strtok (tmp->data + 11, " \t\n");
@@ -420,7 +419,7 @@ int mutt_get_postponed (CONTEXT *ctx, HEADER *hdr, HEADER **cur, char *fcc, size
   if (option (OPTCRYPTOPPORTUNISTICENCRYPT))
     crypt_opportunistic_encrypt (hdr);
 
-  return (code);
+  return code;
 }
 
 
@@ -428,7 +427,7 @@ int mutt_get_postponed (CONTEXT *ctx, HEADER *hdr, HEADER **cur, char *fcc, size
 int mutt_parse_crypt_hdr (const char *p, int set_empty_signas, int crypt_app)
 {
   char smime_cryptalg[LONG_STRING] = "\0";
-  char sign_as[LONG_STRING] = "\0", *q;
+  char sign_as[LONG_STRING] = "\0", *q = NULL;
   int flags = 0;
 
   if (!WithCrypto)
@@ -559,8 +558,8 @@ int mutt_prepare_template (FILE *fp, CONTEXT *ctx, HEADER *newhdr, HEADER *hdr,
 {
   MESSAGE *msg = NULL;
   char file[_POSIX_PATH_MAX];
-  BODY *b;
-  FILE *bfp;
+  BODY *b = NULL;
+  FILE *bfp = NULL;
   int rv = -1;
   STATE s;
   int sec_type;
@@ -568,7 +567,7 @@ int mutt_prepare_template (FILE *fp, CONTEXT *ctx, HEADER *newhdr, HEADER *hdr,
   memset (&s, 0, sizeof (s));
 
   if (!fp && (msg = mx_open_message (ctx, hdr->msgno)) == NULL)
-    return (-1);
+    return -1;
 
   if (!fp) fp = msg->fp;
 
@@ -629,7 +628,7 @@ int mutt_prepare_template (FILE *fp, CONTEXT *ctx, HEADER *newhdr, HEADER *hdr,
   {
     newhdr->security |= SIGN;
     if ((WithCrypto & APPLICATION_PGP)
-        && ascii_strcasecmp (mutt_get_parameter ("protocol", newhdr->content->parameter), "application/pgp-signature") == 0)
+        && (ascii_strcasecmp (mutt_get_parameter ("protocol", newhdr->content->parameter), "application/pgp-signature") == 0))
       newhdr->security |= APPLICATION_PGP;
     else if ((WithCrypto & APPLICATION_SMIME))
       newhdr->security |= APPLICATION_SMIME;
@@ -681,7 +680,7 @@ int mutt_prepare_template (FILE *fp, CONTEXT *ctx, HEADER *newhdr, HEADER *hdr,
 
     if (b->type == TYPETEXT)
     {
-      if (!ascii_strcasecmp ("yes", mutt_get_parameter ("x-mutt-noconv", b->parameter)))
+      if (ascii_strcasecmp ("yes", mutt_get_parameter ("x-mutt-noconv", b->parameter)) == 0)
 	b->noconv = 1;
       else
       {

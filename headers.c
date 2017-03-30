@@ -1,19 +1,18 @@
-/*
+/**
  * Copyright (C) 1996-2009,2012 Michael R. Elkins <me@mutt.org>
  *
- *     This program is free software; you can redistribute it and/or modify
- *     it under the terms of the GNU General Public License as published by
- *     the Free Software Foundation; either version 2 of the License, or
- *     (at your option) any later version.
+ * This program is free software: you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License as published by the Free Software
+ * Foundation, either version 2 of the License, or (at your option) any later
+ * version.
  *
- *     This program is distributed in the hope that it will be useful,
- *     but WITHOUT ANY WARRANTY; without even the implied warranty of
- *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *     GNU General Public License for more details.
+ * This program is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
+ * details.
  *
- *     You should have received a copy of the GNU General Public License
- *     along with this program; if not, write to the Free Software
- *     Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ * You should have received a copy of the GNU General Public License along with
+ * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -35,13 +34,13 @@ void mutt_edit_headers (const char *editor,
 {
   char path[_POSIX_PATH_MAX];	/* tempfile used to edit headers + body */
   char buffer[LONG_STRING];
-  const char *p;
-  FILE *ifp, *ofp;
+  const char *p = NULL;
+  FILE *ifp = NULL, *ofp = NULL;
   int i, keep;
-  ENVELOPE *n;
+  ENVELOPE *n = NULL;
   time_t mtime;
   struct stat st;
-  LIST *cur, **last = NULL, *tmp;
+  LIST *cur = NULL, **last = NULL, *tmp = NULL;
 
   mutt_mktemp (path, sizeof (path));
   if ((ofp = safe_fopen (path, "w")) == NULL)
@@ -117,8 +116,8 @@ void mutt_edit_headers (const char *editor,
   if (!option (OPTNEWSSEND))
 #endif
   if (msg->env->in_reply_to &&
-      (!n->in_reply_to || mutt_strcmp (n->in_reply_to->data,
-				       msg->env->in_reply_to->data) != 0))
+      (!n->in_reply_to || (mutt_strcmp (n->in_reply_to->data,
+				       msg->env->in_reply_to->data) != 0)))
     mutt_free_list (&msg->env->references);
 
   /* restore old info. */
@@ -141,7 +140,7 @@ void mutt_edit_headers (const char *editor,
   {
     keep = 1;
 
-    if (fcc && ascii_strncasecmp ("fcc:", cur->data, 4) == 0)
+    if (fcc && (ascii_strncasecmp ("fcc:", cur->data, 4) == 0))
     {
       p = skip_email_wsp(cur->data + 4);
       if (*p)
@@ -153,8 +152,8 @@ void mutt_edit_headers (const char *editor,
     }
     else if (ascii_strncasecmp ("attach:", cur->data, 7) == 0)
     {
-      BODY *body;
-      BODY *parts;
+      BODY *body = NULL;
+      BODY *parts = NULL;
       size_t l = 0;
 
       p = skip_email_wsp(cur->data + 7);
@@ -190,7 +189,7 @@ void mutt_edit_headers (const char *editor,
       keep = 0;
     }
     else if ((WithCrypto & APPLICATION_PGP)
-             && ascii_strncasecmp ("pgp:", cur->data, 4) == 0)
+             && (ascii_strncasecmp ("pgp:", cur->data, 4) == 0))
     {
       msg->security = mutt_parse_crypt_hdr (cur->data + 4, 0, APPLICATION_PGP);
       if (msg->security)
@@ -216,7 +215,7 @@ void mutt_edit_headers (const char *editor,
 
 static void label_ref_dec(CONTEXT *ctx, char *label)
 {
-  struct hash_elem *elem;
+  struct hash_elem *elem = NULL;
   uintptr_t count;
 
   elem = hash_find_elem (ctx->label_hash, label);
@@ -236,7 +235,7 @@ static void label_ref_dec(CONTEXT *ctx, char *label)
 
 static void label_ref_inc(CONTEXT *ctx, char *label)
 {
-  struct hash_elem *elem;
+  struct hash_elem *elem = NULL;
   uintptr_t count;
 
   elem = hash_find_elem (ctx->label_hash, label);
@@ -273,7 +272,7 @@ static int label_message(CONTEXT *ctx, HEADER *hdr, char *new)
 
 int mutt_label_message(HEADER *hdr)
 {
-  char buf[LONG_STRING], *new;
+  char buf[LONG_STRING], *new = NULL;
   int i;
   int changed;
 

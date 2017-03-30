@@ -1,19 +1,18 @@
-/*
+/**
  * Copyright (C) 2000-2008,2012,2014 Brendan Cully <brendan@kublai.com>
  *
- *     This program is free software; you can redistribute it and/or modify
- *     it under the terms of the GNU General Public License as published by
- *     the Free Software Foundation; either version 2 of the License, or
- *     (at your option) any later version.
+ * This program is free software: you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License as published by the Free Software
+ * Foundation, either version 2 of the License, or (at your option) any later
+ * version.
  *
- *     This program is distributed in the hope that it will be useful,
- *     but WITHOUT ANY WARRANTY; without even the implied warranty of
- *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *     GNU General Public License for more details.
+ * This program is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
+ * details.
  *
- *     You should have received a copy of the GNU General Public License
- *     along with this program; if not, write to the Free Software
- *     Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ * You should have received a copy of the GNU General Public License along with
+ * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 /* common SASL helper routines */
@@ -219,7 +218,7 @@ static int mutt_sasl_cb_pass (sasl_conn_t* conn, void* context, int id,
 
 static sasl_callback_t* mutt_sasl_get_callbacks (ACCOUNT* account)
 {
-  sasl_callback_t* callback;
+  sasl_callback_t* callback = NULL;
 
   callback = mutt_sasl_callbacks;
 
@@ -261,7 +260,7 @@ int mutt_sasl_client_new (CONNECTION* conn, sasl_conn_t** saslconn)
   char iplocalport[IP_PORT_BUFLEN], ipremoteport[IP_PORT_BUFLEN];
   char* plp = NULL;
   char* prp = NULL;
-  const char* service;
+  const char* service = NULL;
   int rc;
 
   if (mutt_sasl_start () != SASL_OK)
@@ -386,7 +385,7 @@ int mutt_sasl_interact (sasl_interact_t* interaction)
  *   is successful, using mutt_sasl_setup_conn */
 static int mutt_sasl_conn_open (CONNECTION* conn)
 {
-  SASL_DATA* sasldata;
+  SASL_DATA* sasldata = NULL;
   int rc;
 
   sasldata = (SASL_DATA*) conn->sockdata;
@@ -401,7 +400,7 @@ static int mutt_sasl_conn_open (CONNECTION* conn)
  *   the sasl_conn_t object, then restores connection to pre-sasl state */
 static int mutt_sasl_conn_close (CONNECTION* conn)
 {
-  SASL_DATA* sasldata;
+  SASL_DATA* sasldata = NULL;
   int rc;
 
   sasldata = (SASL_DATA*) conn->sockdata;
@@ -426,7 +425,7 @@ static int mutt_sasl_conn_close (CONNECTION* conn)
 
 static int mutt_sasl_conn_read (CONNECTION* conn, char* buf, size_t len)
 {
-  SASL_DATA* sasldata;
+  SASL_DATA* sasldata = NULL;
   int rc;
 
   unsigned int olen;
@@ -491,10 +490,10 @@ static int mutt_sasl_conn_read (CONNECTION* conn, char* buf, size_t len)
 static int mutt_sasl_conn_write (CONNECTION* conn, const char* buf,
   size_t len)
 {
-  SASL_DATA* sasldata;
+  SASL_DATA* sasldata = NULL;
   int rc;
 
-  const char *pbuf;
+  const char *pbuf = NULL;
   unsigned int olen, plen;
 
   sasldata = (SASL_DATA*) conn->sockdata;
@@ -569,7 +568,7 @@ void mutt_sasl_setup_conn (CONNECTION* conn, sasl_conn_t* saslconn)
 {
   SASL_DATA* sasldata = safe_malloc (sizeof (SASL_DATA));
   /* work around sasl_getprop aliasing issues */
-  const void* tmp;
+  const void* tmp = NULL;
 
   sasldata->saslconn = saslconn;
   /* get ssf so we know whether we have to (en|de)code read/write */

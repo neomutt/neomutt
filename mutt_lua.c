@@ -1,19 +1,19 @@
-/* Copyright (C) 2016 Richard Russon <rich@flatcap.org>
+/**
+ * Copyright (C) 2016 Richard Russon <rich@flatcap.org>
  * Copyright (C) 2016 Bernard Pratz <z+mutt+pub@m0g.net>
  *
- *     This program is free software; you can redistribute it and/or modify
- *     it under the terms of the GNU General Public License as published by
- *     the Free Software Foundation; either version 2 of the License, or
- *     (at your option) any later version.
+ * This program is free software: you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License as published by the Free Software
+ * Foundation, either version 2 of the License, or (at your option) any later
+ * version.
  *
- *     This program is distributed in the hope that it will be useful,
- *     but WITHOUT ANY WARRANTY; without even the implied warranty of
- *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *     GNU General Public License for more details.
+ * This program is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
+ * details.
  *
- *     You should have received a copy of the GNU General Public License
- *     along with this program; if not, write to the Free Software
- *     Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111, USA.
+ * You should have received a copy of the GNU General Public License along with
+ * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -33,14 +33,14 @@
 
 static int _handle_panic(lua_State *l)
 {
-  mutt_debug(1, "lua runtime panic: \n", lua_tostring(l, -1));
+  mutt_debug(1, "lua runtime panic: %s\n", lua_tostring(l, -1));
   mutt_error("Lua runtime panic: %s\n", lua_tostring(l, -1));
   lua_pop(l, 1);
   return -1;
 }
 static int _handle_error(lua_State *l)
 {
-  mutt_debug(1, "lua runtime error: \n", lua_tostring(l, -1));
+  mutt_debug(1, "lua runtime error: %s\n", lua_tostring(l, -1));
   mutt_error("Lua runtime error: %s\n", lua_tostring(l, -1));
   lua_pop(l, 1);
   return -1;
@@ -51,7 +51,7 @@ static int _lua_mutt_call(lua_State *l)
   mutt_debug(2, " * _lua_mutt_call()\n");
   BUFFER token, expn, err;
   char buffer[LONG_STRING] = "";
-  const struct command_t *command;
+  const struct command_t *command = NULL;
   int rv = 0;
 
   mutt_buffer_init(&token);
@@ -212,7 +212,7 @@ static int _lua_mutt_get(lua_State *l)
       }
       case DT_PATH:
       case DT_STR:
-        if (!mutt_strncmp("my_", param, 3))
+        if (mutt_strncmp("my_", param, 3) == 0)
         {
           char *option = (char *) opt->option;
           char *value = (char *) opt->data;
@@ -373,7 +373,7 @@ static bool _lua_init(lua_State **l)
   return true;
 }
 
-// Public API -------------------------------------------------------------------
+/* Public API ----------------------------------------------------------------*/
 
 lua_State *Lua = NULL;
 
@@ -405,12 +405,12 @@ int mutt_lua_source_file(BUFFER *tmp, BUFFER *s, unsigned long data, BUFFER *err
   if (mutt_extract_token(tmp, s, 0) != 0)
   {
     snprintf(err->data, err->dsize, _("source: error at %s"), s->dptr);
-    return (-1);
+    return -1;
   }
   if (MoreArgs(s))
   {
     strfcpy(err->data, _("source: too many arguments"), err->dsize);
-    return (-1);
+    return -1;
   }
   strfcpy(path, tmp->data, sizeof(path));
   mutt_expand_path(path, sizeof(path));

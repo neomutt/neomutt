@@ -1,19 +1,18 @@
-/*
+/**
  * Copyright (C) 1996-2000 Michael R. Elkins <me@mutt.org>
  *
- *     This program is free software; you can redistribute it and/or modify
- *     it under the terms of the GNU General Public License as published by
- *     the Free Software Foundation; either version 2 of the License, or
- *     (at your option) any later version.
+ * This program is free software: you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License as published by the Free Software
+ * Foundation, either version 2 of the License, or (at your option) any later
+ * version.
  *
- *     This program is distributed in the hope that it will be useful,
- *     but WITHOUT ANY WARRANTY; without even the implied warranty of
- *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *     GNU General Public License for more details.
+ * This program is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
+ * details.
  *
- *     You should have received a copy of the GNU General Public License
- *     along with this program; if not, write to the Free Software
- *     Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ * You should have received a copy of the GNU General Public License along with
+ * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 /* Close approximation of the mailx(1) builtin editor for sending mail. */
@@ -89,13 +88,13 @@ be_snarf_data (FILE *f, char **buf, int *bufmax, int *buflen, LOFF_T offset,
     safe_realloc (&buf, sizeof (char *) * (++*bufmax));
   }
   if (buf) buf[*buflen] = NULL;
-  return (buf);
+  return buf;
 }
 
 static char **
 be_snarf_file (const char *path, char **buf, int *max, int *len, int verbose)
 {
-  FILE *f;
+  FILE *f = NULL;
   char tmp[LONG_STRING];
   struct stat sb;
 
@@ -115,24 +114,24 @@ be_snarf_file (const char *path, char **buf, int *max, int *len, int verbose)
     snprintf(tmp, sizeof(tmp), "%s: %s\n", path, strerror(errno));
     addstr(tmp);
   }
-  return (buf);
+  return buf;
 }
 
 static int be_barf_file (const char *path, char **buf, int buflen)
 {
-  FILE *f;
+  FILE *f = NULL;
   int i;
 
   if ((f = fopen (path, "w")) == NULL)		/* __FOPEN_CHECKED__ */
   {
     addstr (strerror (errno));
     addch ('\n');
-    return (-1);
+    return -1;
   }
   for (i = 0; i < buflen; i++) fputs (buf[i], f);
   if (fclose (f) == 0) return 0;
   printw ("fclose: %s\n", strerror (errno));
-  return (-1);
+  return -1;
 }
 
 static void be_free_memory (char **buf, int buflen)
@@ -188,7 +187,7 @@ be_include_messages (char *msg, char **buf, int *bufmax, int *buflen,
       printw (_("%d: invalid message number.\n"), n);
     msg = NULL;
   }
-  return (buf);
+  return buf;
 }
 
 static void be_print_header (ENVELOPE *env)
@@ -321,7 +320,7 @@ int mutt_builtin_editor (const char *path, HEADER *msg, HEADER *cur)
   int abort = 0;
   int done = 0;
   int i;
-  char *p;
+  char *p = NULL;
 
   scrollok (stdscr, true);
 

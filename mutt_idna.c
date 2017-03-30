@@ -1,19 +1,18 @@
-/*
+/**
  * Copyright (C) 2003,2005,2008-2009 Thomas Roessler <roessler@does-not-exist.org>
  *
- *     This program is free software; you can redistribute it and/or modify
- *     it under the terms of the GNU General Public License as published by
- *     the Free Software Foundation; either version 2 of the License, or
- *     (at your option) any later version.
+ * This program is free software: you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License as published by the Free Software
+ * Foundation, either version 2 of the License, or (at your option) any later
+ * version.
  *
- *     This program is distributed in the hope that it will be useful,
- *     but WITHOUT ANY WARRANTY; without even the implied warranty of
- *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *     GNU General Public License for more details.
+ * This program is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
+ * details.
  *
- *     You should have received a copy of the GNU General Public License
- *     along with this program; if not, write to the Free Software
- *     Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ * You should have received a copy of the GNU General Public License along with
+ * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -44,7 +43,7 @@ static int check_idn (char *domain)
 static int mbox_to_udomain (const char *mbx, char **user, char **domain)
 {
   static char *buff = NULL;
-  char *p;
+  char *p = NULL;
 
   mutt_str_replace (&buff, mbx);
 
@@ -129,7 +128,7 @@ static char *intl_to_local (char *orig_user, char *orig_domain, int flags)
       goto cleanup;
     }
 
-    if (ascii_strcasecmp (orig_user, reversed_user))
+    if (ascii_strcasecmp (orig_user, reversed_user) != 0)
     {
       mutt_debug (1, "intl_to_local: Not reversible. orig = '%s', reversed = '%s'.\n",
                   orig_user, reversed_user);
@@ -164,7 +163,7 @@ static char *intl_to_local (char *orig_user, char *orig_domain, int flags)
     }
 #endif /* HAVE_LIBIDN */
 
-    if (ascii_strcasecmp (orig_domain, reversed_domain))
+    if (ascii_strcasecmp (orig_domain, reversed_domain) != 0)
     {
       mutt_debug (1, "intl_to_local: Not reversible. orig = '%s', reversed = '%s'.\n",
                   orig_domain, reversed_domain);
@@ -299,9 +298,7 @@ const char *mutt_addr_for_display (ADDRESS *a)
   FREE (&local_mailbox);
   return buff;
 }
-
 /* Convert an ENVELOPE structure */
-
 void mutt_env_to_local (ENVELOPE *e)
 {
   mutt_addrlist_to_local (e->return_path);

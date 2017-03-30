@@ -1,19 +1,18 @@
-/*
+/**
  * Copyright (C) 1996-2000,2009 Michael R. Elkins <me@mutt.org>
  *
- *     This program is free software; you can redistribute it and/or modify
- *     it under the terms of the GNU General Public License as published by
- *     the Free Software Foundation; either version 2 of the License, or
- *     (at your option) any later version.
+ * This program is free software: you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License as published by the Free Software
+ * Foundation, either version 2 of the License, or (at your option) any later
+ * version.
  *
- *     This program is distributed in the hope that it will be useful,
- *     but WITHOUT ANY WARRANTY; without even the implied warranty of
- *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *     GNU General Public License for more details.
+ * This program is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
+ * details.
  *
- *     You should have received a copy of the GNU General Public License
- *     along with this program; if not, write to the Free Software
- *     Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ * You should have received a copy of the GNU General Public License along with
+ * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #define HELP_C
@@ -32,7 +31,7 @@
 static const struct binding_t *help_lookup_function (int op, int menu)
 {
   int i;
-  const struct binding_t *map;
+  const struct binding_t *map = NULL;
 
   if (menu != MENU_PAGER)
   {
@@ -49,7 +48,7 @@ static const struct binding_t *help_lookup_function (int op, int menu)
 	return (&map[i]);
   }
 
-  return (NULL);
+  return NULL;
 }
 
 void mutt_make_help (char *d, size_t dlen, const char *txt, int menu, int op)
@@ -189,7 +188,7 @@ static int pad (FILE *f, int col, int i)
   {
     snprintf (fmt, sizeof(fmt), "%%-%ds", i - col);
     fprintf (f, fmt, "");
-    return (i);
+    return i;
   }
   fputc (' ', f);
   return (col + 1);
@@ -222,7 +221,7 @@ static void format_line (FILE *f, int ismacro,
 
   if (ismacro > 0)
   {
-    if (!mutt_strcmp (Pager, "builtin"))
+    if (mutt_strcmp (Pager, "builtin") == 0)
       fputs ("_\010", f);
     fputs ("M ", f);
     col += 2;
@@ -262,7 +261,7 @@ static void format_line (FILE *f, int ismacro,
 
       if (*t3)
       {
-        if (mutt_strcmp (Pager, "builtin"))
+        if (mutt_strcmp (Pager, "builtin") != 0)
 	{
 	  fputc ('\n', f);
 	  n = 0;
@@ -283,8 +282,8 @@ static void format_line (FILE *f, int ismacro,
 
 static void dump_menu (FILE *f, int menu)
 {
-  struct keymap_t *map;
-  const struct binding_t *b;
+  struct keymap_t *map = NULL;
+  const struct binding_t *b = NULL;
   char buf[SHORT_STRING];
 
   /* browse through the keymap table */
@@ -338,9 +337,9 @@ void mutt_help (int menu)
 {
   char t[_POSIX_PATH_MAX];
   char buf[SHORT_STRING];
-  const char *desc;
-  FILE *f;
-  const struct binding_t *funcs;
+  const char *desc = NULL;
+  FILE *f = NULL;
+  const struct binding_t *funcs = NULL;
 
   mutt_mktemp (t, sizeof (t));
 

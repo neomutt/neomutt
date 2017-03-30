@@ -1,22 +1,18 @@
-/*
+/**
  * Copyright (C) 1999-2004 Thomas Roessler <roessler@does-not-exist.org>
  *
- *     This program is free software; you can redistribute it
- *     and/or modify it under the terms of the GNU General Public
- *     License as published by the Free Software Foundation; either
- *     version 2 of the License, or (at your option) any later
- *     version.
+ * This program is free software: you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License as published by the Free Software
+ * Foundation, either version 2 of the License, or (at your option) any later
+ * version.
  *
- *     This program is distributed in the hope that it will be
- *     useful, but WITHOUT ANY WARRANTY; without even the implied
- *     warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR
- *     PURPOSE.  See the GNU General Public License for more
- *     details.
+ * This program is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
+ * details.
  *
- *     You should have received a copy of the GNU General Public
- *     License along with this program; if not, write to the Free
- *     Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
- *     Boston, MA  02110-1301, USA.
+ * You should have received a copy of the GNU General Public License along with
+ * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -32,7 +28,6 @@
 /* some helper functions to verify that we are exclusively operating
  * on message/rfc822 attachments
  */
-
 static short check_msg (BODY * b, short err)
 {
   if (!mutt_is_message_type (b->type, b->subtype))
@@ -67,7 +62,6 @@ static short check_all_msg (ATTACHPTR ** idx, short idxlen,
 
 
 /* can we decode all tagged attachments? */
-
 static short check_can_decode (ATTACHPTR ** idx, short idxlen,
 			      BODY * cur)
 {
@@ -98,7 +92,6 @@ static short count_tagged (ATTACHPTR **idx, short idxlen)
 /* count the number of tagged children below a multipart or message
  * attachment.
  */
-
 static short count_tagged_children (ATTACHPTR ** idx,
 				    short idxlen, short i)
 {
@@ -119,7 +112,6 @@ static short count_tagged_children (ATTACHPTR ** idx,
  ** The bounce function, from the attachment menu
  **
  **/
-
 void mutt_attach_bounce (FILE * fp, HEADER * hdr,
 	   ATTACHPTR ** idx, short idxlen, BODY * cur)
 {
@@ -247,7 +239,6 @@ void mutt_attach_bounce (FILE * fp, HEADER * hdr,
  **
  **
  **/
-
 void mutt_attach_resend (FILE * fp, HEADER * hdr, ATTACHPTR ** idx,
 			 short idxlen, BODY * cur)
 {
@@ -274,7 +265,6 @@ void mutt_attach_resend (FILE * fp, HEADER * hdr, ATTACHPTR ** idx,
  **/
 
 /* try to find a common parent message for the tagged attachments. */
-
 static HEADER *find_common_parent (ATTACHPTR ** idx, short idxlen,
 				   short nattach)
 {
@@ -305,7 +295,6 @@ static HEADER *find_common_parent (ATTACHPTR ** idx, short idxlen,
  * Note: This and the calling procedure could be optimized quite a
  * bit.  For now, it's not worth the effort.
  */
-
 static int is_parent (short i, ATTACHPTR **idx, short idxlen, BODY *cur)
 {
   short level = idx[i]->level;
@@ -369,7 +358,6 @@ static void include_header (int quote, FILE * ifp,
 
 /* Attach all the body parts which can't be decoded.
  * This code is shared by forwarding and replying. */
-
 static BODY ** copy_problematic_attachments (FILE *fp,
 					     BODY **last,
 					     ATTACHPTR **idx,
@@ -395,7 +383,6 @@ static BODY ** copy_problematic_attachments (FILE *fp,
  * forward one or several MIME bodies
  * (non-message types)
  */
-
 static void attach_forward_bodies (FILE * fp, HEADER * hdr,
 				   ATTACHPTR ** idx, short idxlen,
 				   BODY * cur,
@@ -571,12 +558,11 @@ _("Can't decode all tagged attachments.  MIME-forward the others?"))) == MUTT_AB
  * while, on the attachment menu, messages are referenced through
  * the attachment index.
  */
-
 static void attach_forward_msgs (FILE * fp, HEADER * hdr,
 	       ATTACHPTR ** idx, short idxlen, BODY * cur, int flags)
 {
   HEADER *curhdr = NULL;
-  HEADER *tmphdr;
+  HEADER *tmphdr = NULL;
   short i;
   int rc;
 
@@ -717,7 +703,6 @@ void mutt_attach_forward (FILE * fp, HEADER * hdr,
  *
  * Note that this code is horribly similar to envelope_defaults () from send.c.
  */
-
 static int
 attach_reply_envelope_defaults (ENVELOPE *env, ATTACHPTR **idx, short idxlen,
 				HEADER *parent, int flags)
@@ -755,7 +740,7 @@ attach_reply_envelope_defaults (ENVELOPE *env, ATTACHPTR **idx, short idxlen,
   {
     /* in case followup set Newsgroups: with Followup-To: if it present */
     if (!env->newsgroups && curenv &&
-	mutt_strcasecmp (curenv->followup_to, "poster"))
+	(mutt_strcasecmp (curenv->followup_to, "poster") != 0))
       env->newsgroups = safe_strdup (curenv->followup_to);
   }
   else
@@ -779,7 +764,7 @@ attach_reply_envelope_defaults (ENVELOPE *env, ATTACHPTR **idx, short idxlen,
     if ((flags & SENDLISTREPLY) && !env->to)
     {
       mutt_error (_("No mailing lists found!"));
-      return (-1);
+      return -1;
     }
 
     mutt_fix_reply_recipients (env);
@@ -804,7 +789,6 @@ attach_reply_envelope_defaults (ENVELOPE *env, ATTACHPTR **idx, short idxlen,
 
 
 /*  This is _very_ similar to send.c's include_reply(). */
-
 static void attach_include_reply (FILE *fp, FILE *tmpfp, HEADER *cur, int flags)
 {
   int cmflags = MUTT_CM_PREFIX | MUTT_CM_DECODE | MUTT_CM_CHARCONV;
@@ -837,7 +821,7 @@ void mutt_attach_reply (FILE * fp, HEADER * hdr,
 
   STATE st;
   char tmpbody[_POSIX_PATH_MAX];
-  FILE *tmpfp;
+  FILE *tmpfp = NULL;
 
   char prefix[SHORT_STRING];
   int rc;

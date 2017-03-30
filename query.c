@@ -1,19 +1,18 @@
-/*
+/**
  * Copyright (C) 1996-2000,2003,2013 Michael R. Elkins <me@mutt.org>
  *
- *     This program is free software; you can redistribute it and/or modify
- *     it under the terms of the GNU General Public License as published by
- *     the Free Software Foundation; either version 2 of the License, or
- *     (at your option) any later version.
+ * This program is free software: you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License as published by the Free Software
+ * Foundation, either version 2 of the License, or (at your option) any later
+ * version.
  *
- *     This program is distributed in the hope that it will be useful,
- *     but WITHOUT ANY WARRANTY; without even the implied warranty of
- *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *     GNU General Public License for more details.
+ * This program is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
+ * details.
  *
- *     You should have received a copy of the GNU General Public License
- *     along with this program; if not, write to the Free Software
- *     Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ * You should have received a copy of the GNU General Public License along with
+ * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -55,7 +54,7 @@ static const struct mapping_t QueryHelp[] = {
 
 static ADDRESS *result_to_addr (QUERY *r)
 {
-  static ADDRESS *tmp;
+  static ADDRESS *tmp = NULL;
 
   if (!(tmp = rfc822_cpy_adr (r->addr, 0)))
     return NULL;
@@ -69,7 +68,7 @@ static ADDRESS *result_to_addr (QUERY *r)
 
 static void free_query (QUERY **query)
 {
-  QUERY *p;
+  QUERY *p = NULL;
 
   if (!query)
     return;
@@ -88,7 +87,7 @@ static void free_query (QUERY **query)
 
 static QUERY *run_query (char *s, int quiet)
 {
-  FILE *fp;
+  FILE *fp = NULL;
   QUERY *first = NULL;
   QUERY *cur = NULL;
   char cmd[_POSIX_PATH_MAX];
@@ -96,7 +95,7 @@ static QUERY *run_query (char *s, int quiet)
   size_t buflen;
   int dummy = 0;
   char msg[STRING];
-  char *p;
+  char *p = NULL;
   pid_t thepid;
 
 
@@ -254,7 +253,7 @@ static int query_tag (MUTTMENU *menu, int n, int m)
 
 static void query_menu (char *buf, size_t buflen, QUERY *results, int retbuf)
 {
-  MUTTMENU *menu;
+  MUTTMENU *menu = NULL;
   HEADER *msg = NULL;
   ENTRY *QueryTable = NULL;
   QUERY *queryp = NULL;
@@ -488,7 +487,7 @@ static void query_menu (char *buf, size_t buflen, QUERY *results, int retbuf)
 int mutt_query_complete (char *buf, size_t buflen)
 {
   QUERY *results = NULL;
-  ADDRESS *tmpa;
+  ADDRESS *tmpa = NULL;
 
   if (!QueryCmd)
   {
@@ -509,12 +508,12 @@ int mutt_query_complete (char *buf, size_t buflen)
       rfc822_free_address (&tmpa);
       free_query (&results);
       mutt_clear_error ();
-      return (0);
+      return 0;
     }
     /* multiple results, choose from query menu */
     query_menu (buf, buflen, results, 1);
   }
-  return (0);
+  return 0;
 }
 
 void mutt_query_menu (char *buf, size_t buflen)

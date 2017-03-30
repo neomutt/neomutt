@@ -1,20 +1,19 @@
-/*
+/**
  * Copyright (C) 1996-2002,2010,2012-2013 Michael R. Elkins <me@mutt.org>
  * Copyright (C) 2004 g10 Code GmbH
  *
- *     This program is free software; you can redistribute it and/or modify
- *     it under the terms of the GNU General Public License as published by
- *     the Free Software Foundation; either version 2 of the License, or
- *     (at your option) any later version.
+ * This program is free software: you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License as published by the Free Software
+ * Foundation, either version 2 of the License, or (at your option) any later
+ * version.
  *
- *     This program is distributed in the hope that it will be useful,
- *     but WITHOUT ANY WARRANTY; without even the implied warranty of
- *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *     GNU General Public License for more details.
+ * This program is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
+ * details.
  *
- *     You should have received a copy of the GNU General Public License
- *     along with this program; if not, write to the Free Software
- *     Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ * You should have received a copy of the GNU General Public License along with
+ * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -108,10 +107,10 @@ event_t mutt_getch (void)
   event_t timeout = {-2, OP_NULL};
 
   if (UngetCount)
-    return (UngetKeyEvents[--UngetCount]);
+    return UngetKeyEvents[--UngetCount];
 
   if (!option(OPTIGNOREMACROEVENTS) && MacroBufferCount)
-    return (MacroEvents[--MacroBufferCount]);
+    return MacroEvents[--MacroBufferCount];
 
   SigInt = 0;
 
@@ -178,7 +177,7 @@ int _mutt_get_field (const char *field, char *buf, size_t buflen, int complete, 
   mutt_window_clearline (MuttMessageWindow, 0);
   mutt_free_enter_state (&es);
 
-  return (ret);
+  return ret;
 }
 
 int mutt_get_field_unbuffered (char *msg, char *buf, size_t buflen, int flags)
@@ -189,7 +188,7 @@ int mutt_get_field_unbuffered (char *msg, char *buf, size_t buflen, int flags)
   rc = mutt_get_field (msg, buf, buflen, flags);
   unset_option (OPTIGNOREMACROEVENTS);
 
-  return (rc);
+  return rc;
 }
 
 void mutt_clear_error (void)
@@ -223,12 +222,12 @@ int mutt_yesorno (const char *msg, int def)
   event_t ch;
   char *yes = _("yes");
   char *no = _("no");
-  char *answer_string;
+  char *answer_string = NULL;
   size_t answer_string_len;
   size_t msglen;
 
 #ifdef HAVE_LANGINFO_YESEXPR
-  char *expr;
+  char *expr = NULL;
   regex_t reyes;
   regex_t reno;
   int reyes_ok;
@@ -319,7 +318,7 @@ int mutt_yesorno (const char *msg, int def)
      * mutt_message() so it isn't displayed when the screen is refreshed. */
     mutt_clear_error();
   }
-  return (def);
+  return def;
 }
 
 /* this function is called when the user presses the abort key */
@@ -771,7 +770,7 @@ int mutt_any_key_to_continue (const char *s)
   close (f);
   fputs ("\r\n", stdout);
   mutt_clear_error ();
-  return (ch);
+  return ch;
 }
 
 int mutt_do_pager (const char *banner,
@@ -781,7 +780,7 @@ int mutt_do_pager (const char *banner,
 {
   int rc;
 
-  if (!Pager || mutt_strcmp (Pager, "builtin") == 0)
+  if (!Pager || (mutt_strcmp (Pager, "builtin") == 0))
     rc = mutt_pager (banner, tempfile, do_color, info);
   else
   {
@@ -821,7 +820,7 @@ int _mutt_enter_fname (const char *prompt, char *buf, size_t blen,
   if (ch.ch < 0)
   {
     mutt_window_clearline (MuttMessageWindow, 0);
-    return (-1);
+    return -1;
   }
   else if (ch.ch == '?')
   {
@@ -845,7 +844,7 @@ int _mutt_enter_fname (const char *prompt, char *buf, size_t blen,
     MAYBE_REDRAW (*redraw);
     FREE (&pc);
 #ifdef USE_NOTMUCH
-    if ((flags & MUTT_SEL_VFOLDER) && buf[0] && strncmp(buf, "notmuch://", 10) != 0)
+    if ((flags & MUTT_SEL_VFOLDER) && buf[0] && (strncmp(buf, "notmuch://", 10) != 0))
       nm_description_to_path(buf, buf, blen);
 #endif
   }
@@ -936,7 +935,7 @@ int mutt_multi_choice (char *prompt, char *letters)
 {
   event_t ch;
   int choice;
-  char *p;
+  char *p = NULL;
 
   SETCOLOR (MT_COLOR_PROMPT);
   mutt_window_mvaddstr (MuttMessageWindow, 0, 0, prompt);
@@ -977,7 +976,6 @@ int mutt_multi_choice (char *prompt, char *letters)
 /*
  * addwch would be provided by an up-to-date curses library
  */
-
 int mutt_addwch (wchar_t wc)
 {
   char buf[MB_LEN_MAX*2];
@@ -999,14 +997,13 @@ int mutt_addwch (wchar_t wc)
  * except that the widths refer to the number of character cells
  * when printed.
  */
-
 void mutt_format_string (char *dest, size_t destlen,
 			 int min_width, int max_width,
 			 int justify, char m_pad_char,
 			 const char *s, size_t n,
 			 int arboreal)
 {
-  char *p;
+  char *p = NULL;
   wchar_t wc;
   int w;
   size_t k, k2;
@@ -1105,7 +1102,6 @@ void mutt_format_string (char *dest, size_t destlen,
  * except that the numbers in the conversion specification refer to
  * the number of character cells when printed.
  */
-
 static void format_s_x (char *dest,
 			     size_t destlen,
 			     const char *prefix,
@@ -1113,7 +1109,7 @@ static void format_s_x (char *dest,
 			     int arboreal)
 {
   int justify = FMT_RIGHT;
-  char *p;
+  char *p = NULL;
   int min_width;
   int max_width = INT_MAX;
 
@@ -1154,7 +1150,6 @@ void mutt_format_s_tree (char *dest,
  * mutt_paddstr (n, s) is almost equivalent to
  * mutt_format_string (bigbuf, big, n, n, FMT_LEFT, ' ', s, big, 0), addstr (bigbuf)
  */
-
 void mutt_paddstr (int n, const char *s)
 {
   wchar_t wc;
@@ -1263,7 +1258,6 @@ int mutt_charlen (const char *s, int *width)
  * mutt_strwidth is like mutt_strlen except that it returns the width
  * referring to the number of character cells.
  */
-
 int mutt_strwidth (const char *s)
 {
   wchar_t wc;

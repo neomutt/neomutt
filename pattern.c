@@ -1,19 +1,18 @@
-/*
+/**
  * Copyright (C) 1996-2000,2006-2007,2010 Michael R. Elkins <me@mutt.org>, and others
  *
- *     This program is free software; you can redistribute it and/or modify
- *     it under the terms of the GNU General Public License as published by
- *     the Free Software Foundation; either version 2 of the License, or
- *     (at your option) any later version.
+ * This program is free software: you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License as published by the Free Software
+ * Foundation, either version 2 of the License, or (at your option) any later
+ * version.
  *
- *     This program is distributed in the hope that it will be useful,
- *     but WITHOUT ANY WARRANTY; without even the implied warranty of
- *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *     GNU General Public License for more details.
+ * This program is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
+ * details.
  *
- *     You should have received a copy of the GNU General Public License
- *     along with this program; if not, write to the Free Software
- *     Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ * You should have received a copy of the GNU General Public License along with
+ * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "config.h"
@@ -58,7 +57,7 @@ static int eat_regexp (pattern_t *pat, BUFFER *s, BUFFER *err)
   BUFFER buf;
   char errmsg[STRING];
   int r;
-  char *pexpr;
+  char *pexpr = NULL;
 
   mutt_buffer_init (&buf);
   pexpr = s->dptr;
@@ -66,12 +65,12 @@ static int eat_regexp (pattern_t *pat, BUFFER *s, BUFFER *err)
       !buf.data)
   {
     snprintf (err->data, err->dsize, _("Error in expression: %s"), pexpr);
-    return (-1);
+    return -1;
   }
   if (!*buf.data)
   {
     snprintf (err->data, err->dsize, _("Empty expression"));
-    return (-1);
+    return -1;
   }
 
   if (pat->stringmatch)
@@ -95,7 +94,7 @@ static int eat_regexp (pattern_t *pat, BUFFER *s, BUFFER *err)
       mutt_buffer_printf (err, "'%s': %s", buf.data, errmsg);
       FREE (&buf.data);
       FREE (&pat->p.rx);
-      return (-1);
+      return -1;
     }
     FREE (&buf.data);
   }
@@ -109,7 +108,7 @@ static int eat_regexp (pattern_t *pat, BUFFER *s, BUFFER *err)
    Nd	days */
 static const char *get_offset (struct tm *tm, const char *s, int sign)
 {
-  char *ps;
+  char *ps = NULL;
   int offset = strtol (s, &ps, 0);
   if ((sign < 0 && offset > 0) || (sign > 0 && offset < 0))
     offset = -offset;
@@ -137,7 +136,7 @@ static const char *get_offset (struct tm *tm, const char *s, int sign)
 
 static const char *get_date (const char *s, struct tm *t, BUFFER *err)
 {
-  char *p;
+  char *p = NULL;
   time_t now = time (NULL);
   struct tm *tm = localtime (&now);
 
@@ -262,7 +261,7 @@ static const char * parse_date_range (const char* pc, struct tm *min,
   int flag = MUTT_PDR_NONE;
   while (*pc && ((flag & MUTT_PDR_DONE) == 0))
   {
-    const char *pt;
+    const char *pt = NULL;
     char ch = *pc++;
     SKIPWS (pc);
     switch (ch)
@@ -368,7 +367,7 @@ static int eat_date (pattern_t *pat, BUFFER *s, BUFFER *err)
 {
   BUFFER buffer;
   struct tm min, max;
-  char *pexpr;
+  char *pexpr = NULL;
 
   mutt_buffer_init (&buffer);
   pexpr = s->dptr;
@@ -376,12 +375,12 @@ static int eat_date (pattern_t *pat, BUFFER *s, BUFFER *err)
       || !buffer.data)
   {
     snprintf (err->data, err->dsize, _("Error in expression: %s"), pexpr);
-    return (-1);
+    return -1;
   }
   if (!*buffer.data)
   {
     snprintf (err->data, err->dsize, _("Empty expression"));
-    return (-1);
+    return -1;
   }
 
   memset (&min, 0, sizeof (min));
@@ -451,7 +450,7 @@ static int eat_date (pattern_t *pat, BUFFER *s, BUFFER *err)
       if ((pc = get_date (pc, &min, err)) == NULL)
       {
 	FREE (&buffer.data);
-	return (-1);
+	return -1;
       }
       haveMin = true;
       SKIPWS (pc);
@@ -486,7 +485,7 @@ static int eat_date (pattern_t *pat, BUFFER *s, BUFFER *err)
       if (!parse_date_range (pc, &min, &max, haveMin, &baseMin, err))
       { /* bail out on any parsing error */
 	FREE (&buffer.data);
-	return (-1);
+	return -1;
       }
     }
   }
@@ -504,7 +503,7 @@ static int eat_date (pattern_t *pat, BUFFER *s, BUFFER *err)
 
 static int eat_range (pattern_t *pat, BUFFER *s, BUFFER *err)
 {
-  char *tmp;
+  char *tmp = NULL;
   int do_exclusive = 0;
   int skip_quote = 0;
 
@@ -601,7 +600,7 @@ report_regerror(int regerr, regex_t *preg, BUFFER *err)
 static int
 is_context_available(BUFFER *s, regmatch_t pmatch[], int kind, BUFFER *err)
 {
-  char *context_loc;
+  char *context_loc = NULL;
   const char *context_req_chars[] =
   {
     [RANGE_K_REL] = ".0123456789",
@@ -900,10 +899,10 @@ msg_search (CONTEXT *ctx, pattern_t* pat, int msgno)
   long lng = 0;
   int match = 0;
   HEADER *h = ctx->hdrs[msgno];
-  char *buf;
+  char *buf = NULL;
   size_t blen;
 #ifdef USE_FMEMOPEN
-  char *temp;
+  char *temp = NULL;
   size_t tempsize;
 #else
   char tempfile[_POSIX_PATH_MAX];
@@ -929,7 +928,7 @@ msg_search (CONTEXT *ctx, pattern_t* pat, int msgno)
       if ((s.fpout = safe_fopen (tempfile, "w+")) == NULL)
       {
 	mutt_perror (tempfile);
-	return (0);
+	return 0;
       }
 #endif
 
@@ -953,7 +952,7 @@ msg_search (CONTEXT *ctx, pattern_t* pat, int msgno)
 	    unlink (tempfile);
 #endif
 	  }
-	  return (0);
+	  return 0;
 	}
 
 	fseeko (msg->fp, h->offset, 0);
@@ -1072,7 +1071,7 @@ static /* const */ char *find_matching_paren (/* const */ char *s)
 
 void mutt_pattern_free (pattern_t **pat)
 {
-  pattern_t *tmp;
+  pattern_t *tmp = NULL;
 
   while (*pat)
   {
@@ -1098,16 +1097,16 @@ void mutt_pattern_free (pattern_t **pat)
 pattern_t *mutt_pattern_comp (/* const */ char *s, int flags, BUFFER *err)
 {
   pattern_t *curlist = NULL;
-  pattern_t *tmp, *tmp2;
+  pattern_t *tmp = NULL, *tmp2 = NULL;
   pattern_t *last = NULL;
   int not = 0;
   int alladdr = 0;
   int or = 0;
   int implicit = 1;	/* used to detect logical AND operator */
   int isalias = 0;
-  const struct pattern_flags *entry;
-  char *p;
-  char *buf;
+  const struct pattern_flags *entry = NULL;
+  char *p = NULL;
+  char *buf = NULL;
   BUFFER ps;
 
   mutt_buffer_init (&ps);
@@ -1312,7 +1311,7 @@ pattern_t *mutt_pattern_comp (/* const */ char *s, int flags, BUFFER *err)
     tmp->child = curlist;
     curlist = tmp;
   }
-  return (curlist);
+  return curlist;
 }
 
 static int
@@ -1336,7 +1335,7 @@ perform_or (struct pattern_t *pat, pattern_exec_flag flags, CONTEXT *ctx, HEADER
 static int match_adrlist (pattern_t *pat, int match_personal, int n, ...)
 {
   va_list ap;
-  ADDRESS *a;
+  ADDRESS *a = NULL;
 
   va_start (ap, n);
   for ( ; n ; n --)
@@ -1409,7 +1408,7 @@ static int match_user (int alladdr, ADDRESS *a1, ADDRESS *a2)
 static int match_threadcomplete(struct pattern_t *pat, pattern_exec_flag flags, CONTEXT *ctx, THREAD *t,int left,int up,int right,int down)
 {
   int a;
-  HEADER *h;
+  HEADER *h = NULL;
 
   if(!t)
     return 0;
@@ -1459,7 +1458,7 @@ mutt_pattern_exec (struct pattern_t *pat, pattern_exec_flag flags, CONTEXT *ctx,
                    pattern_cache_t *cache)
 {
   int result;
-  int *cache_entry;
+  int *cache_entry = NULL;
 
   switch (pat->op)
   {
@@ -1470,7 +1469,7 @@ mutt_pattern_exec (struct pattern_t *pat, pattern_exec_flag flags, CONTEXT *ctx,
     case MUTT_THREAD:
       return (pat->not ^ match_threadcomplete(pat->child, flags, ctx, h->thread, 1, 1, 1, 1));
     case MUTT_ALL:
-      return (!pat->not);
+      return !pat->not;
     case MUTT_EXPIRED:
       return (pat->not ^ h->expired);
     case MUTT_SUPERSEDED:
@@ -1510,7 +1509,7 @@ mutt_pattern_exec (struct pattern_t *pat, pattern_exec_flag flags, CONTEXT *ctx,
 #ifdef USE_IMAP
       /* IMAP search sets h->matched at search compile time */
       if (ctx->magic == MUTT_IMAP && pat->stringmatch)
-	return (h->matched);
+	return h->matched;
 #endif
       return (pat->not ^ msg_search (ctx, pat, h->msgno));
     case MUTT_SENDER:
@@ -1639,7 +1638,7 @@ mutt_pattern_exec (struct pattern_t *pat, pattern_exec_flag flags, CONTEXT *ctx,
 #endif
   }
   mutt_error (_("error: unknown op %d (report this error)."), pat->op);
-  return (-1);
+  return -1;
 }
 
 static void quote_simple(char *tmp, size_t len, const char *p)
@@ -1662,7 +1661,7 @@ void mutt_check_simple (char *s, size_t len, const char *simple)
 {
   char tmp[LONG_STRING];
   int do_simple = 1;
-  char *p;
+  char *p = NULL;
 
   for (p = s; p && *p; p++)
   {
@@ -1682,8 +1681,8 @@ void mutt_check_simple (char *s, size_t len, const char *simple)
   if (do_simple) /* yup, so spoof a real request */
   {
     /* convert old tokens into the new format */
-    if (ascii_strcasecmp ("all", s) == 0 ||
-	!mutt_strcmp ("^", s) || !mutt_strcmp (".", s)) /* ~A is more efficient */
+    if ((ascii_strcasecmp ("all", s) == 0) ||
+	(mutt_strcmp ("^", s) == 0) || (mutt_strcmp (".", s) == 0)) /* ~A is more efficient */
       strfcpy (s, "~A", len);
     else if (ascii_strcasecmp ("del", s) == 0)
       strfcpy (s, "~D", len);
@@ -1720,7 +1719,7 @@ void mutt_check_simple (char *s, size_t len, const char *simple)
 static THREAD *
 top_of_thread (HEADER *h)
 {
-  THREAD *t;
+  THREAD *t = NULL;
 
   if (!h)
     return NULL;
@@ -1745,7 +1744,7 @@ int
 mutt_limit_current_thread (HEADER *h)
 {
   int i;
-  THREAD *me;
+  THREAD *me = NULL;
 
   if (!h)
     return 0;
@@ -1781,8 +1780,8 @@ mutt_limit_current_thread (HEADER *h)
 
 int mutt_pattern_func (int op, char *prompt)
 {
-  pattern_t *pat;
-  char buf[LONG_STRING] = "", *simple;
+  pattern_t *pat = NULL;
+  char buf[LONG_STRING] = "", *simple = NULL;
   BUFFER err;
   int i;
   progress_t progress;
@@ -1790,7 +1789,7 @@ int mutt_pattern_func (int op, char *prompt)
   strfcpy (buf, NONULL (Context->pattern), sizeof (buf));
   if (prompt || op != MUTT_LIMIT)
   if (mutt_get_field (prompt, buf, sizeof (buf), MUTT_PATTERN | MUTT_CLEAR) != 0 || !buf[0])
-    return (-1);
+    return -1;
 
   mutt_message (_("Compiling search pattern..."));
 
@@ -1805,7 +1804,7 @@ int mutt_pattern_func (int op, char *prompt)
     FREE (&simple);
     mutt_error ("%s", err.data);
     FREE (&err.data);
-    return (-1);
+    return -1;
   }
 
 #ifdef USE_IMAP
@@ -1905,7 +1904,7 @@ int mutt_search_command (int cur, int op)
   char buf[STRING];
   char temp[LONG_STRING];
   int incr;
-  HEADER *h;
+  HEADER *h = NULL;
   progress_t progress;
   const char* msg = NULL;
 
@@ -1916,7 +1915,7 @@ int mutt_search_command (int cur, int op)
 			_("Search for: ") : _("Reverse search for: "),
 			buf, sizeof (buf),
 		      MUTT_CLEAR | MUTT_PATTERN) != 0 || !buf[0])
-      return (-1);
+      return -1;
 
     if (op == OP_SEARCH || op == OP_SEARCH_NEXT)
       unset_option (OPTSEARCHREVERSE);
@@ -1928,7 +1927,7 @@ int mutt_search_command (int cur, int op)
     strfcpy (temp, buf, sizeof (temp));
     mutt_check_simple (temp, sizeof (temp), NONULL (SimpleSearch));
 
-    if (!SearchPattern || mutt_strcmp (temp, LastSearchExpn))
+    if (!SearchPattern || (mutt_strcmp (temp, LastSearchExpn) != 0))
     {
       BUFFER err;
       mutt_buffer_init (&err);
@@ -1943,7 +1942,7 @@ int mutt_search_command (int cur, int op)
 	mutt_error ("%s", err.data);
 	FREE (&err.data);
 	LastSearch[0] = '\0';
-	return (-1);
+	return -1;
       }
       mutt_clear_error ();
     }
@@ -1978,7 +1977,7 @@ int mutt_search_command (int cur, int op)
       else
       {
         mutt_message (_("Search hit bottom without finding match"));
-	return (-1);
+	return -1;
       }
     }
     else if (i < 0)
@@ -1989,7 +1988,7 @@ int mutt_search_command (int cur, int op)
       else
       {
         mutt_message (_("Search hit top without finding match"));
-	return (-1);
+	return -1;
       }
     }
 
@@ -2022,12 +2021,12 @@ int mutt_search_command (int cur, int op)
     {
       mutt_error (_("Search interrupted."));
       SigInt = 0;
-      return (-1);
+      return -1;
     }
 
     i += incr;
   }
 
   mutt_error (_("Not found."));
-  return (-1);
+  return -1;
 }
