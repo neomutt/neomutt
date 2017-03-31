@@ -1171,6 +1171,7 @@ static int parse_unlist (BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err
   return 0;
 }
 
+#ifdef USE_SIDEBAR
 static int parse_path_list (BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err)
 {
   char path[_POSIX_PATH_MAX];
@@ -1210,6 +1211,7 @@ static int parse_path_unlist (BUFFER *buf, BUFFER *s, unsigned long data, BUFFER
 
   return 0;
 }
+#endif
 
 static int parse_lists (BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err)
 {
