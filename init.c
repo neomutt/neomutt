@@ -3688,8 +3688,8 @@ static void start_debug (void)
   if ((debugfile = safe_fopen(buf, "w")) != NULL)
   {
     setbuf (debugfile, NULL); /* don't buffer the debugging output! */
-    mutt_debug (1, "NeoMutt/%s (%s) debugging at level %d\n",
-                PACKAGE_VERSION, MUTT_VERSION, debuglevel);
+    mutt_debug (1, "NeoMutt %s%s (%s) debugging at level %d\n",
+                PACKAGE_VERSION, GitVer, MUTT_VERSION, debuglevel);
   }
 }
 #endif
