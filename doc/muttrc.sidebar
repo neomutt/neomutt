@@ -43,7 +43,6 @@ set sidebar_on_right = no
 
 # The character to use as the divider between the Sidebar and the other Mutt
 # panels.
-# Note: Only the first character of this string is used.
 set sidebar_divider_char = '|'
 
 # Enable extended buffy mode to calculate total, new, and flagged
