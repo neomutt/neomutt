@@ -909,7 +909,7 @@ void mutt_sb_change_mailbox (int op)
     default:
       return;
   }
-  SidebarNeedsRedraw = 1;
+  mutt_set_current_menu_redraw (REDRAW_SIDEBAR);
 }
 
 /**
@@ -1048,5 +1048,5 @@ void mutt_sb_notify_mailbox (BUFFY *b, int created)
       Entries[del_index] = Entries[del_index + 1];
   }
 
-  SidebarNeedsRedraw = 1;
+  mutt_set_current_menu_redraw (REDRAW_SIDEBAR);
 }

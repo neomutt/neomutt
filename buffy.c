@@ -27,6 +27,7 @@
 #include "mx.h"
 
 #include "mutt_curses.h"
+#include "mutt_menu.h"
 
 #ifdef USE_SIDEBAR
 #include "sidebar.h"
@@ -580,7 +581,7 @@ int mutt_buffy_check (int force)
         (orig_count != tmp->msg_count) ||
         (orig_unread != tmp->msg_unread) ||
         (orig_flagged != tmp->msg_flagged))
-      SidebarNeedsRedraw = 1;
+      mutt_set_current_menu_redraw (REDRAW_SIDEBAR);
 #endif
 
     if (!tmp->new)

@@ -22,6 +22,7 @@
 
 #include "mutt.h"
 #include "mutt_curses.h"
+#include "mutt_menu.h"
 #include "sort.h"
 #include "mx.h"
 
@@ -273,7 +274,7 @@ void _mutt_set_flag (CONTEXT *ctx, HEADER *h, int flag, int bf, int upd_ctx)
   {
     mutt_set_header_color(ctx, h);
 #ifdef USE_SIDEBAR
-    SidebarNeedsRedraw = 1;
+    mutt_set_current_menu_redraw (REDRAW_SIDEBAR);
 #endif
   }
 

@@ -242,7 +242,7 @@ void menu_redraw_status (MUTTMENU *menu)
 #ifdef USE_SIDEBAR
 void menu_redraw_sidebar (MUTTMENU *menu)
 {
-  SidebarNeedsRedraw = 0;
+  menu->redraw &= ~REDRAW_SIDEBAR;
   mutt_sb_draw ();
 }
 #endif
@@ -924,7 +924,7 @@ int menu_redraw (MUTTMENU *menu)
   if (menu->redraw & REDRAW_STATUS)
     menu_redraw_status (menu);
 #ifdef USE_SIDEBAR
-  if (menu->redraw & REDRAW_SIDEBAR || SidebarNeedsRedraw)
+  if (menu->redraw & REDRAW_SIDEBAR)
     menu_redraw_sidebar (menu);
 #endif
   if (menu->redraw & REDRAW_INDEX)

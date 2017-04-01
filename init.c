@@ -1804,7 +1804,7 @@ static void mutt_restore_default (struct option_t *p)
     mutt_reflow_windows ();
 #ifdef USE_SIDEBAR
   if (p->flags & R_SIDEBAR)
-    SidebarNeedsRedraw = 1;
+    mutt_set_current_menu_redraw (REDRAW_SIDEBAR);
 #endif
 }
 
@@ -2582,7 +2582,7 @@ static int parse_set (BUFFER *tmp, BUFFER *s, unsigned long data, BUFFER *err)
         mutt_reflow_windows ();
 #ifdef USE_SIDEBAR
       if (MuttVars[idx].flags & R_SIDEBAR)
-        SidebarNeedsRedraw = 1;
+        mutt_set_current_menu_redraw (REDRAW_SIDEBAR);
 #endif
     }
   }
