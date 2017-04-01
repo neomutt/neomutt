@@ -805,8 +805,7 @@ int mutt_do_pager (const char *banner,
 }
 
 int _mutt_enter_fname (const char *prompt, char *buf, size_t blen,
-		int *redraw, int buffy, int multiple,
-		char ***files, int *numfiles, int flags)
+		int buffy, int multiple, char ***files, int *numfiles, int flags)
 {
   event_t ch;
 
@@ -833,7 +832,6 @@ int _mutt_enter_fname (const char *prompt, char *buf, size_t blen,
       flags = MUTT_SEL_FOLDER | (multiple ? MUTT_SEL_MULTI : 0);
 
     _mutt_select_file (buf, blen, flags, files, numfiles);
-    *redraw = REDRAW_FULL;
   }
   else
   {

@@ -2928,8 +2928,7 @@ search_next:
 			       (ch == OP_SAVE) || (ch == OP_DECODE_SAVE),
 			       (ch == OP_DECODE_SAVE) || (ch == OP_DECODE_COPY),
 			       (ch == OP_DECRYPT_SAVE) || (ch == OP_DECRYPT_COPY) ||
-			       0,
-			       &pager_menu->redraw) == 0 && (ch == OP_SAVE || ch == OP_DECODE_SAVE
+			       0) == 0 && (ch == OP_SAVE || ch == OP_DECODE_SAVE
 						 || ch == OP_DECRYPT_SAVE
 						 ))
 	{

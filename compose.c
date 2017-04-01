@@ -801,8 +801,7 @@ int mutt_compose_menu (HEADER *msg,   /* structure for new message */
 	  numfiles = 0;
 	  files = NULL;
 
-	  if (_mutt_enter_fname (prompt, fname, sizeof (fname),
-			&menu->redraw, 0, 1, &files, &numfiles, MUTT_SEL_MULTI) == -1 ||
+	  if (_mutt_enter_fname (prompt, fname, sizeof (fname), 0, 1, &files, &numfiles, MUTT_SEL_MULTI) == -1 ||
 	      *fname == '\0')
 	    break;
 
@@ -871,7 +870,7 @@ int mutt_compose_menu (HEADER *msg,   /* structure for new message */
 	    mutt_pretty_mailbox (fname, sizeof (fname));
 	  }
 
-	  if (mutt_enter_fname (prompt, fname, sizeof (fname), &menu->redraw, 1) == -1 || !fname[0])
+	  if (mutt_enter_fname (prompt, fname, sizeof (fname), 1) == -1 || !fname[0])
 	    break;
 
 #ifdef USE_NNTP
@@ -1380,7 +1379,7 @@ int mutt_compose_menu (HEADER *msg,   /* structure for new message */
        if (idxlen)
          msg->content = idx[0]->content;
        if (mutt_enter_fname (_("Write message to mailbox"), fname, sizeof (fname),
-                             &menu->redraw, 1) != -1 && fname[0])
+                             1) != -1 && fname[0])
        {
          mutt_message (_("Writing message to %s ..."), fname);
          mutt_expand_path (fname, sizeof (fname));

@@ -1991,7 +1991,7 @@ int mutt_index_menu (void)
 		  strfcpy(buf, Context->path, sizeof (buf));
 		  mutt_buffy_vfolder (buf, sizeof (buf));
 	  }
-	  mutt_enter_vfolder (cp, buf, sizeof (buf), &menu->redraw, 1);
+	  mutt_enter_vfolder (cp, buf, sizeof (buf), 1);
 	  if (!buf[0])
 	  {
             mutt_window_clearline (MuttMessageWindow, 0);
@@ -2021,7 +2021,7 @@ int mutt_index_menu (void)
 	   * mail */
 	  mutt_buffy (buf, sizeof (buf));
 
-          if (mutt_enter_fname (cp, buf, sizeof (buf), &menu->redraw, 1) == -1)
+          if (mutt_enter_fname (cp, buf, sizeof (buf), 1) == -1)
           {
             if (menu->menu == MENU_PAGER)
             {
@@ -2319,11 +2319,11 @@ int mutt_index_menu (void)
 			       (op == OP_SAVE) || (op == OP_DECODE_SAVE),
 			       (op == OP_DECODE_SAVE) || (op == OP_DECODE_COPY),
 			       (op == OP_DECRYPT_SAVE) || (op == OP_DECRYPT_COPY) ||
-			       0,
-			       &menu->redraw) == 0 &&
+			       0) == 0 &&
 	     (op == OP_SAVE || op == OP_DECODE_SAVE || op == OP_DECRYPT_SAVE)
 	    )
 	{
+          menu->redraw |= REDRAW_STATUS;
 	  if (tag)
 	    menu->redraw |= REDRAW_INDEX;
 	  else if (option (OPTRESOLVE))
