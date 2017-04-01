@@ -1216,7 +1216,7 @@ int mutt_index_menu (void)
 	{
 	  mutt_buffy (buf, sizeof (buf));
 
-          if (mutt_enter_fname (cp, buf, sizeof (buf), &menu->redraw, 1) == -1)
+          if (mutt_enter_fname (cp, buf, sizeof (buf), 1) == -1)
           {
             if (menu->menu == MENU_PAGER)
             {
@@ -1561,11 +1561,11 @@ int mutt_index_menu (void)
 			       (op == OP_SAVE) || (op == OP_DECODE_SAVE),
 			       (op == OP_DECODE_SAVE) || (op == OP_DECODE_COPY),
 			       (op == OP_DECRYPT_SAVE) || (op == OP_DECRYPT_COPY) ||
-			       0,
-			       &menu->redraw) == 0 &&
+			       0) == 0 &&
 	     (op == OP_SAVE || op == OP_DECODE_SAVE || op == OP_DECRYPT_SAVE)
 	    )
 	{
+          menu->redraw |= REDRAW_STATUS;
 	  if (tag)
 	    menu->redraw |= REDRAW_INDEX;
 	  else if (option (OPTRESOLVE))

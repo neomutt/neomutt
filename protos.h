@@ -309,8 +309,8 @@ int mutt_chscmp (const char *s, const char *chs);
 int mutt_parent_message (CONTEXT *, HEADER *, int);
 int mutt_prepare_template(FILE*, CONTEXT *, HEADER *, HEADER *, short);
 int mutt_resend_message (FILE *, CONTEXT *, HEADER *);
-#define mutt_enter_fname(A,B,C,D,E) _mutt_enter_fname(A,B,C,D,E,0,NULL,NULL)
-int _mutt_enter_fname (const char *, char *, size_t, int *, int, int, char ***, int *);
+#define mutt_enter_fname(A,B,C,D) _mutt_enter_fname(A,B,C,D,0,NULL,NULL)
+int _mutt_enter_fname (const char *, char *, size_t, int, int, char ***, int *);
 int  mutt_enter_string (char *buf, size_t buflen, int col, int flags);
 int _mutt_enter_string (char *, size_t, int, int, int, char ***, int *, ENTER_STATE *);
 #define mutt_get_field(A,B,C,D) _mutt_get_field(A,B,C,D,0,NULL,NULL)
@@ -360,7 +360,7 @@ int mutt_query_complete (char *, size_t);
 int mutt_query_variables (LIST *queries);
 int mutt_save_attachment (FILE *, BODY *, char *, int, HEADER *);
 int _mutt_save_message (HEADER *, CONTEXT *, int, int, int);
-int mutt_save_message (HEADER *, int, int, int, int *);
+int mutt_save_message (HEADER *, int, int, int);
 int mutt_search_command (int, int);
 #ifdef USE_SMTP
 int mutt_smtp_send (const ADDRESS *, const ADDRESS *, const ADDRESS *,

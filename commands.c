@@ -727,8 +727,7 @@ int _mutt_save_message (HEADER *h, CONTEXT *ctx, int delete, int decode, int dec
 }
 
 /* returns 0 if the copy/save was successful, or -1 on error/abort */
-int mutt_save_message (HEADER *h, int delete, 
-		       int decode, int decrypt, int *redraw)
+int mutt_save_message (HEADER *h, int delete, int decode, int decrypt)
 {
   int i, need_buffy_cleanup;
   int need_passphrase = 0, app=0;
@@ -736,9 +735,6 @@ int mutt_save_message (HEADER *h, int delete,
   CONTEXT ctx;
   struct stat st;
 
-  *redraw = 0;
-
-  
   snprintf (prompt, sizeof (prompt),
 	    decode  ? (delete ? _("Decode-save%s to mailbox") :
 		       _("Decode-copy%s to mailbox")) :
@@ -786,16 +782,8 @@ int mutt_save_message (HEADER *h, int delete,
   }
 
   mutt_pretty_mailbox (buf, sizeof (buf));
-  if (mutt_enter_fname (prompt, buf, sizeof (buf), redraw, 0) == -1)
+  if (mutt_enter_fname (prompt, buf, sizeof (buf), 0) == -1)
     return (-1);
-
-  if (*redraw != REDRAW_FULL)
-  {
-    if (!h)
-      *redraw = REDRAW_INDEX | REDRAW_STATUS;
-    else
-      *redraw = REDRAW_STATUS;
-  }
 
   if (!buf[0])
     return (-1);
