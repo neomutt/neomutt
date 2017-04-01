@@ -67,7 +67,7 @@ be_snarf_data (FILE *f, char **buf, int *bufmax, int *buflen, LOFF_T offset,
   int tmplen = sizeof (tmp);
 
   tmp[sizeof (tmp) - 1] = 0;
-  if (prefix)
+  if (prefix != 0)
   {
     strfcpy (tmp, NONULL(Prefix), sizeof (tmp));
     tmplen = mutt_strlen (tmp);
@@ -87,7 +87,7 @@ be_snarf_data (FILE *f, char **buf, int *bufmax, int *buflen, LOFF_T offset,
   if (buf && *bufmax == *buflen) { /* Do not smash memory past buf */
     safe_realloc (&buf, sizeof (char *) * (++*bufmax));
   }
-  if (buf) buf[*buflen] = NULL;
+  if (buf != NULL) buf[*buflen] = NULL;
   return buf;
 }
 
@@ -102,7 +102,7 @@ be_snarf_file (const char *path, char **buf, int *max, int *len, int verbose)
   {
     fstat (fileno (f), &sb);
     buf = be_snarf_data (f, buf, max, len, 0, sb.st_size, 0);
-    if (verbose)
+    if (verbose != 0)
     {
       snprintf(tmp, sizeof(tmp), "\"%s\" %lu bytes\n", path, (unsigned long) sb.st_size);
       addstr(tmp);
@@ -138,7 +138,7 @@ static void be_free_memory (char **buf, int buflen)
 {
   while (buflen-- > 0)
     FREE (&buf[buflen]);
-  if (buf)
+  if (buf != NULL)
     FREE (&buf);
 }
 
@@ -151,12 +151,12 @@ be_include_messages (char *msg, char **buf, int *bufmax, int *buflen,
 
   while ((msg = strtok (msg, " ,")) != NULL)
   {
-    if (mutt_atoi (msg, &n) == 0 && n > 0 && n <= Context->msgcount)
+    if (mutt_atoi (msg, &n) == 0 && (n > 0) && (n <= Context->msgcount))
     {
       n--;
 
       /* add the attribution */
-      if (Attribution)
+      if (Attribution != NULL)
       {
         setlocale (LC_TIME, NONULL (AttributionLocale));
 	mutt_make_string (tmp, sizeof (tmp) - 1, Attribution, Context, Context->hdrs[n]);
@@ -169,7 +169,7 @@ be_include_messages (char *msg, char **buf, int *bufmax, int *buflen,
       buf[(*buflen)++] = safe_strdup (tmp);
 
       bytes = Context->hdrs[n]->content->length;
-      if (inc_hdrs)
+      if (inc_hdrs != 0)
       {
 	offset = Context->hdrs[n]->offset;
 	bytes += Context->hdrs[n]->content->offset - offset;
@@ -194,7 +194,7 @@ static void be_print_header (ENVELOPE *env)
 {
   char tmp[HUGE_STRING];
 
-  if (env->to)
+  if (env->to != NULL)
   {
     addstr ("To: ");
     tmp[0] = 0;
@@ -202,7 +202,7 @@ static void be_print_header (ENVELOPE *env)
     addstr (tmp);
     addch ('\n');
   }
-  if (env->cc)
+  if (env->cc != NULL)
   {
     addstr ("Cc: ");
     tmp[0] = 0;
@@ -210,7 +210,7 @@ static void be_print_header (ENVELOPE *env)
     addstr (tmp);
     addch ('\n');
   }
-  if (env->bcc)
+  if (env->bcc != NULL)
   {
     addstr ("Bcc: ");
     tmp[0] = 0;
@@ -218,7 +218,7 @@ static void be_print_header (ENVELOPE *env)
     addstr (tmp);
     addch ('\n');
   }
-  if (env->subject)
+  if (env->subject != NULL)
   {
     addstr ("Subject: ");
     addstr (env->subject);
@@ -331,7 +331,7 @@ int mutt_builtin_editor (const char *path, HEADER *msg, HEADER *cur)
   buf = be_snarf_file (path, buf, &bufmax, &buflen, 0);
 
   tmp[0] = 0;
-  while (!done)
+  while (done == 0)
   {
     if (mutt_enter_string (tmp, sizeof (tmp), 0, 0) == -1)
     {
@@ -344,7 +344,7 @@ int mutt_builtin_editor (const char *path, HEADER *msg, HEADER *cur)
     {
       /* remove trailing whitespace from the line */
       p = tmp + mutt_strlen (tmp) - 1;
-      while (p >= tmp && ISSPACE (*p))
+      while ((p >= tmp) && ISSPACE (*p))
 	*p-- = 0;
 
       p = tmp + 2;
@@ -371,7 +371,7 @@ int mutt_builtin_editor (const char *path, HEADER *msg, HEADER *cur)
 	case 'f':
 	case 'm':
 	case 'M':
-	  if (Context)
+	  if (Context != NULL)
 	  {
 	    if (!*p && cur)
  	    {
@@ -421,7 +421,7 @@ int mutt_builtin_editor (const char *path, HEADER *msg, HEADER *cur)
 	  msg->env->to = mutt_expand_aliases (msg->env->to);
 	  break;
 	case 'u':
-	  if (buflen)
+	  if (buflen != 0)
 	  {
 	    buflen--;
 	    strfcpy (tmp, buf[buflen], sizeof (tmp));
@@ -485,7 +485,7 @@ int mutt_builtin_editor (const char *path, HEADER *msg, HEADER *cur)
     tmp[0] = 0;
   }
 
-  if (!abort) be_barf_file (path, buf, buflen);
+  if (abort == 0) be_barf_file (path, buf, buflen);
   be_free_memory (buf, buflen);
 
   return (abort ? -1 : 0);

@@ -165,7 +165,7 @@ mutt_copy_hdr (FILE *in, FILE *out, LOFF_T off_start, LOFF_T off_end, int flags,
     if (nl && buf[0] != ' ' && buf[0] != '\t')
     {
       /* Do we have anything pending? */
-      if (this_one)
+      if (this_one != NULL)
       {
 	if (flags & CH_DECODE)
 	{
@@ -243,10 +243,10 @@ mutt_copy_hdr (FILE *in, FILE *out, LOFF_T off_start, LOFF_T off_end, int flags,
       ignore = 0;
     } /* If beginning of header */
 
-    if (!ignore)
+    if (ignore == 0)
     {
       mutt_debug (2, "Reorder: x = %d; hdr_count = %d\n", x, hdr_count);
-      if (!this_one) {
+      if (this_one == NULL) {
 	this_one = safe_strdup (buf);
 	this_one_len = mutt_strlen (this_one);
       } else {
@@ -260,7 +260,7 @@ mutt_copy_hdr (FILE *in, FILE *out, LOFF_T off_start, LOFF_T off_end, int flags,
   } /* while (ftello (in) < off_end) */
 
   /* Do we have anything pending?  -- XXX, same code as in above in the loop. */
-  if (this_one)
+  if (this_one != NULL)
   {
     if (flags & CH_DECODE)
     {
@@ -319,7 +319,7 @@ mutt_copy_hdr (FILE *in, FILE *out, LOFF_T off_start, LOFF_T off_end, int flags,
     FREE (&headers[x]);
   FREE (&headers);
 
-  if (error)
+  if (error != 0)
     return -1;
   return 0;
 }
@@ -352,7 +352,7 @@ mutt_copy_header (FILE *in, HEADER *h, FILE *out, int flags, const char *prefix)
 {
   char buffer[SHORT_STRING];
 
-  if (h->env)
+  if (h->env != NULL)
     flags |= (h->env->irt_changed ? CH_UPDATE_IRT : 0)
       | (h->env->refs_changed ? CH_UPDATE_REFS : 0);
 
@@ -395,9 +395,9 @@ mutt_copy_header (FILE *in, HEADER *h, FILE *out, int flags, const char *prefix)
     if (h->old || h->read)
     {
       fputs ("Status: ", out);
-      if (h->read)
+      if (h->read != 0)
 	fputs ("RO", out);
-      else if (h->old)
+      else if (h->old != 0)
 	fputc ('O', out);
       fputc ('\n', out);
     }
@@ -405,9 +405,9 @@ mutt_copy_header (FILE *in, HEADER *h, FILE *out, int flags, const char *prefix)
     if (h->flagged || h->replied)
     {
       fputs ("X-Status: ", out);
-      if (h->replied)
+      if (h->replied != 0)
 	fputc ('A', out);
-      if (h->flagged)
+      if (h->flagged != 0)
 	fputc ('F', out);
       fputc ('\n', out);
     }
@@ -417,7 +417,7 @@ mutt_copy_header (FILE *in, HEADER *h, FILE *out, int flags, const char *prefix)
       (flags & CH_NOLEN) == 0)
   {
     fprintf (out, "Content-Length: " OFF_T_FMT "\n", h->content->length);
-    if (h->lines != 0 || h->content->length == 0)
+    if ((h->lines != 0) || (h->content->length == 0))
       fprintf (out, "Lines: %d\n", h->lines);
   }
 
@@ -428,12 +428,12 @@ mutt_copy_header (FILE *in, HEADER *h, FILE *out, int flags, const char *prefix)
     char *folder = nm_header_get_folder(h);
     if (folder && !(option (OPTWEED) && mutt_matches_ignore ("folder")))
     {
-      char buffer[LONG_STRING];
-      strfcpy (buffer, folder, sizeof (buffer));
-      mutt_pretty_mailbox (buffer, sizeof (buffer));
+      char buf[LONG_STRING];
+      strfcpy (buf, folder, sizeof (buf));
+      mutt_pretty_mailbox (buf, sizeof (buf));
 
       fputs ("Folder: ", out);
-      fputs (buffer, out);
+      fputs (buf, out);
       fputc ('\n', out);
     }
     char *tags = nm_header_get_tags(h);
@@ -475,7 +475,7 @@ static int count_delete_lines (FILE *fp, BODY *b, LOFF_T *length, size_t datelen
   long l;
   int ch;
 
-  if (b->deleted)
+  if (b->deleted != 0)
   {
     fseeko (fp, b->offset, SEEK_SET);
     for (l = b->length ; l ; l --)
@@ -489,7 +489,7 @@ static int count_delete_lines (FILE *fp, BODY *b, LOFF_T *length, size_t datelen
     dellines -= 3;
     *length -= b->length - (84 + datelen);
     /* Count the number of digits exceeding the first one to write the size */
-    for (l = 10 ; b->length >= l ; l *= 10)
+    for (l = 10 ; (b->length >= l) ; l *= 10)
       (*length) ++;
   }
   else
@@ -534,7 +534,7 @@ _mutt_copy_message (FILE *fpout, FILE *fpin, HEADER *hdr, BODY *body,
       _mutt_make_string (prefix, sizeof (prefix), NONULL (Prefix), Context, hdr, 0);
   }
 
-  if (hdr->xlabel_changed)
+  if (hdr->xlabel_changed != 0)
     chflags |= CH_UPDATE_LABEL;
 
   if ((flags & MUTT_CM_NOHEADER) == 0)
@@ -580,7 +580,7 @@ _mutt_copy_message (FILE *fpout, FILE *fpin, HEADER *hdr, BODY *body,
       {
 	LOFF_T fail = ((ftello (fpout) - new_offset) - new_length);
 
-	if (fail)
+	if (fail != 0)
 	{
 	  mutt_error ("The length calculation was wrong by %ld bytes", fail);
 	  new_length += fail;
@@ -651,7 +651,7 @@ _mutt_copy_message (FILE *fpout, FILE *fpin, HEADER *hdr, BODY *body,
 
     if ((WithCrypto & APPLICATION_PGP)
         && (flags & MUTT_CM_DECODE_PGP) && (hdr->security & APPLICATION_PGP) &&
-	hdr->content->type == TYPEMULTIPART)
+ (hdr->content->type == TYPEMULTIPART))
     {
       if (crypt_pgp_decrypt_mime (fpin, &fp, hdr->content, &cur))
 	return -1;
@@ -660,13 +660,13 @@ _mutt_copy_message (FILE *fpout, FILE *fpin, HEADER *hdr, BODY *body,
 
     if ((WithCrypto & APPLICATION_SMIME)
         && (flags & MUTT_CM_DECODE_SMIME) && (hdr->security & APPLICATION_SMIME)
-	     && hdr->content->type == TYPEAPPLICATION)
+	     && (hdr->content->type == TYPEAPPLICATION))
     {
       if (crypt_smime_decrypt_mime (fpin, &fp, hdr->content, &cur))
 	return -1;
     }
 
-    if (!cur)
+    if (cur == NULL)
     {
       mutt_error (_("No decryption engine available for message"));
       return -1;
@@ -763,15 +763,15 @@ _mutt_append_message (CONTEXT *dest, FILE *fpin, CONTEXT *src, HEADER *hdr,
 
   if ((msg = mx_open_new_message (dest, hdr, is_from (buf, NULL, 0, NULL) ? 0 : MUTT_ADD_FROM)) == NULL)
     return -1;
-  if (dest->magic == MUTT_MBOX || dest->magic == MUTT_MMDF)
+  if ((dest->magic == MUTT_MBOX) || (dest->magic == MUTT_MMDF))
     chflags |= CH_FROM | CH_FORCE_FROM;
-  chflags |= (dest->magic == MUTT_MAILDIR ? CH_NOSTATUS : CH_UPDATE);
+  chflags |= ((dest->magic == MUTT_MAILDIR) ? CH_NOSTATUS : CH_UPDATE);
   r = _mutt_copy_message (msg->fp, fpin, hdr, body, flags, chflags);
   if (mx_commit_message (msg, dest) != 0)
     r = -1;
 
 #ifdef USE_NOTMUCH
-  if (hdr && msg->commited_path && dest->magic == MUTT_MAILDIR && src->magic == MUTT_NOTMUCH)
+  if (hdr && msg->commited_path && (dest->magic == MUTT_MAILDIR) && (src->magic == MUTT_NOTMUCH))
 	  nm_update_filename(src, NULL, msg->commited_path, hdr);
 #endif
 
@@ -812,7 +812,7 @@ static int copy_delete_attach (BODY *b, FILE *fpin, FILE *fpout, char *date)
       if (mutt_copy_bytes (fpin, fpout, part->hdr_offset - ftello (fpin)))
 	return -1;
 
-      if (part->deleted)
+      if (part->deleted != 0)
       {
 	fprintf (fpout,
 		 "Content-Type: message/external-body; access-type=x-mutt-deleted;\n"
@@ -872,14 +872,14 @@ static void format_address_header (char **h, ADDRESS *a)
     l = rfc822_write_address (buf, sizeof (buf), a, 0);
     a->next = tmp;
 
-    if (count && linelen + l > 74)
+    if (count && (linelen + l) > 74)
     {
       strcpy (cbuf, "\n\t");  	/* __STRCPY_CHECKED__ */
       linelen = l + 8;
     }
     else
     {
-      if (a->mailbox)
+      if (a->mailbox != NULL)
       {
 	strcpy (cbuf, " ");	/* __STRCPY_CHECKED__ */
 	linelen++;
@@ -987,12 +987,12 @@ static int address_header_decode (char **h)
   mutt_addrlist_to_local (a);
   rfc2047_decode_adrlist (a);
   for (cur = a; cur; cur = cur->next)
-    if (cur->personal)
+    if (cur->personal != NULL)
       rfc822_dequote_comment (cur->personal);
 
   /* angle brackets for return path are mandated by RfC5322,
    * so leave Return-Path as-is */
-  if (rp)
+  if (rp != 0)
     *h = safe_strdup (s);
   else
   {

@@ -122,7 +122,7 @@ smtp_get_resp (CONNECTION * conn)
 
   } while (buf[3] == '-');
 
-  if (smtp_success (n) || n == smtp_continue)
+  if (smtp_success (n) || (n == smtp_continue))
     return 0;
 
   mutt_error (_("SMTP session failed: %s"), buf);
@@ -169,7 +169,7 @@ smtp_data (CONNECTION * conn, const char *msgfile)
   size_t buflen = 0;
 
   fp = fopen (msgfile, "r");
-  if (!fp)
+  if (fp == NULL)
   {
     mutt_error (_("SMTP session failed: unable to open %s"), msgfile);
     return -1;
@@ -195,7 +195,7 @@ smtp_data (CONNECTION * conn, const char *msgfile)
   {
     buflen = mutt_strlen (buf);
     term = buflen && buf[buflen-1] == '\n';
-    if (term && (buflen == 1 || buf[buflen - 2] != '\r'))
+    if (term && ((buflen == 1) || buf[buflen - 2] != '\r'))
       snprintf (buf + buflen - 1, sizeof (buf) - buflen + 1, "\r\n");
     if (buf[0] == '.')
     {
@@ -235,7 +235,7 @@ smtp_data (CONNECTION * conn, const char *msgfile)
  */
 static int address_uses_unicode(const char *a)
 {
-  if (!a)
+  if (a == NULL)
     return 0;
 
   while (*a)
@@ -291,16 +291,16 @@ static int smtp_fill_account (ACCOUNT* account)
   if (url.scheme == U_SMTPS)
     account->flags |= MUTT_ACCT_SSL;
 
-  if (!account->port)
+  if (account->port == 0)
   {
     if (account->flags & MUTT_ACCT_SSL)
       account->port = SMTPS_PORT;
     else
     {
-      if (!SmtpPort)
+      if (SmtpPort == 0)
       {
         service = getservbyname ("smtp", "tcp");
-        if (service)
+        if (service != NULL)
           SmtpPort = ntohs (service->s_port);
         else
           SmtpPort = SMTP_PORT;
@@ -320,7 +320,7 @@ static int smtp_helo (CONNECTION* conn)
 
   memset (Capabilities, 0, sizeof (Capabilities));
 
-  if (!Esmtp)
+  if (Esmtp == 0)
   {
     /* if TLS or AUTH are requested, use EHLO */
     if (conn->account.flags & MUTT_ACCT_USER)
@@ -367,7 +367,7 @@ static int smtp_auth_sasl (CONNECTION* conn, const char* mechlist)
   }
   while (rc == SASL_INTERACT);
 
-  if (rc != SASL_OK && rc != SASL_CONTINUE)
+  if ((rc != SASL_OK) && (rc != SASL_CONTINUE))
   {
     mutt_debug (2, "smtp_auth_sasl: %s unavailable\n", mech);
     sasl_dispose (&saslconn);
@@ -381,7 +381,7 @@ static int smtp_auth_sasl (CONNECTION* conn, const char* mechlist)
   buf = safe_malloc (bufsize);
 
   snprintf (buf, bufsize, "AUTH %s", mech);
-  if (len)
+  if (len != 0)
   {
     safe_strcat (buf, bufsize, " ");
     if (sasl_encode64 (data, len, buf + mutt_strlen (buf),
@@ -418,7 +418,7 @@ static int smtp_auth_sasl (CONNECTION* conn, const char* mechlist)
     }
     while (saslrc == SASL_INTERACT);
 
-    if (len)
+    if (len != 0)
     {
       if ((len * 2) > bufsize)
       {
@@ -432,7 +432,7 @@ static int smtp_auth_sasl (CONNECTION* conn, const char* mechlist)
       }
     }
     strfcpy (buf + len, "\r\n", bufsize - len);
-  } while (rc == smtp_ready && saslrc != SASL_FAIL);
+  } while ((rc == smtp_ready) && (saslrc != SASL_FAIL));
 
   if (smtp_success (rc))
   {
@@ -460,7 +460,7 @@ static int smtp_auth (CONNECTION* conn)
     for (method = methods; method; method = delim)
     {
       delim = strchr (method, ':');
-      if (delim)
+      if (delim != NULL)
 	*delim++ = '\0';
       if (! method[0])
 	continue;
@@ -469,7 +469,7 @@ static int smtp_auth (CONNECTION* conn)
 
       r = smtp_auth_sasl (conn, method);
 
-      if (r == SMTP_AUTH_FAIL && delim)
+      if ((r == SMTP_AUTH_FAIL) && delim)
       {
         mutt_error (_("%s authentication failed, trying next method"), method);
         mutt_sleep (1);
@@ -497,7 +497,7 @@ static int smtp_auth (CONNECTION* conn)
     mutt_sleep (1);
   }
 
-  return r == SMTP_AUTH_SUCCESS ? 0 : -1;
+  return (r == SMTP_AUTH_SUCCESS) ? 0 : -1;
 }
 
 #else /* USE_SASL */
@@ -573,7 +573,7 @@ static int smtp_open (CONNECTION* conn)
     return rc;
 
 #ifdef USE_SSL
-  if (conn->ssf)
+  if (conn->ssf != 0)
     rc = MUTT_NO;
   else if (option (OPTSSLFORCETLS))
     rc = MUTT_YES;
@@ -633,9 +633,9 @@ mutt_smtp_send (const ADDRESS* from, const ADDRESS* to, const ADDRESS* cc,
 
   /* it might be better to synthesize an envelope from from user and host
    * but this condition is most likely arrived at accidentally */
-  if (EnvFrom)
+  if (EnvFrom != NULL)
     envfrom = EnvFrom->mailbox;
-  else if (from)
+  else if (from != NULL)
     envfrom = from->mailbox;
   else
   {
@@ -697,7 +697,7 @@ mutt_smtp_send (const ADDRESS* from, const ADDRESS* to, const ADDRESS* cc,
   }
   while (0);
 
-  if (conn)
+  if (conn != NULL)
     mutt_socket_close (conn);
 
   if (ret == smtp_err_read)

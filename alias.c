@@ -51,7 +51,7 @@ static ADDRESS *expand_aliases_r (ADDRESS *a, LIST **expn)
     {
       t = mutt_lookup_alias (a->mailbox);
 
-      if (t)
+      if (t != NULL)
       {
         i = 0;
         for (u = *expn; u; u = u->next)
@@ -65,7 +65,7 @@ static ADDRESS *expand_aliases_r (ADDRESS *a, LIST **expn)
 	  }
 	}
 
-        if (!i)
+        if (i == 0)
 	{
           u = safe_malloc (sizeof (LIST));
           u->data = safe_strdup (a->mailbox);
@@ -73,7 +73,7 @@ static ADDRESS *expand_aliases_r (ADDRESS *a, LIST **expn)
           *expn = u;
 	  w = rfc822_cpy_adr (t, 0);
 	  w = expand_aliases_r (w, expn);
-	  if (head)
+	  if (head != NULL)
 	    last->next = w;
 	  else
 	    head = last = w;
@@ -90,7 +90,7 @@ static ADDRESS *expand_aliases_r (ADDRESS *a, LIST **expn)
       {
 	struct passwd *pw = getpwnam (a->mailbox);
 
-	if (pw)
+	if (pw != NULL)
 	{
 	  char namebuf[STRING];
 
@@ -104,7 +104,7 @@ static ADDRESS *expand_aliases_r (ADDRESS *a, LIST **expn)
       }
     }
 
-    if (head)
+    if (head != NULL)
     {
       last->next = a;
       last = last->next;
@@ -206,7 +206,7 @@ ADDRESS *mutt_get_address (ENVELOPE *env, char **pfxp)
     pfx = "From";
   }
 
-  if (pfxp) *pfxp = pfx;
+  if (pfxp != NULL) *pfxp = pfx;
 
   return adr;
 }
@@ -218,7 +218,7 @@ static void recode_buf (char *buf, size_t buflen)
   if (!ConfigCharset || !*ConfigCharset || !Charset)
     return;
   s = safe_strdup (buf);
-  if (!s)
+  if (s == NULL)
     return;
   if (mutt_convert_string (&s, Charset, ConfigCharset, 0) == 0)
     strfcpy (buf, s, buflen);
@@ -234,11 +234,11 @@ void mutt_create_alias (ENVELOPE *cur, ADDRESS *iadr)
   FILE *rc = NULL;
   ADDRESS *adr = NULL;
 
-  if (cur)
+  if (cur != NULL)
   {
     adr = mutt_get_address (cur, NULL);
   }
-  else if (iadr)
+  else if (iadr != NULL)
   {
     adr = iadr;
   }
@@ -285,7 +285,7 @@ retry_name:
 
   mutt_addrlist_to_local (adr);
 
-  if (adr)
+  if (adr != NULL)
     strfcpy (buf, adr->mailbox, sizeof (buf));
   else
     buf[0] = 0;
@@ -408,34 +408,34 @@ int mutt_check_alias_name (const char *s, char *dest, size_t destlen)
 
   memset (&mb, 0, sizeof (mbstate_t));
 
-  if (!dry)
+  if (dry == 0)
     destlen--;
   for (; s && *s && (dry || destlen) &&
        (l = mbrtowc (&wc, s, MB_CUR_MAX, &mb)) != 0;
        s += l, destlen -= l)
   {
     bad = l == (size_t)(-1) || l == (size_t)(-2); /* conversion error */
-    bad = bad || (!dry && l > destlen);		/* too few room for mb char */
+    bad = bad || (!dry && (l > destlen));		/* too few room for mb char */
     if (l == 1)
       bad = bad || (strchr ("-_+=.", *s) == NULL && !iswalnum (wc));
     else
       bad = bad || !iswalnum (wc);
-    if (bad)
+    if (bad != 0)
     {
-      if (dry)
+      if (dry != 0)
 	return -1;
       if (l == (size_t)(-1))
         memset (&mb, 0, sizeof (mbstate_t));
       *dest++ = '_';
       rv = -1;
     }
-    else if (!dry)
+    else if (dry == 0)
     {
       memcpy (dest, s, l);
       dest += l;
     }
   }
-  if (!dry)
+  if (dry == 0)
     *dest = 0;
   return rv;
 }
@@ -455,7 +455,7 @@ ADDRESS *alias_reverse_lookup (ADDRESS *a)
 void mutt_alias_add_reverse (ALIAS *t)
 {
   ADDRESS *ap = NULL;
-  if (!t)
+  if (t == NULL)
     return;
 
   /* Note that the address mailbox should be converted to intl form
@@ -473,7 +473,7 @@ void mutt_alias_add_reverse (ALIAS *t)
 void mutt_alias_delete_reverse (ALIAS *t)
 {
   ADDRESS *ap = NULL;
-  if (!t)
+  if (t == NULL)
     return;
 
   /* If the alias addresses were converted to local form, they won't
@@ -541,7 +541,7 @@ int mutt_alias_complete (char *s, size_t buflen)
       {
 	if (a->name && (strstr (a->name, s) == a->name))
 	{
-	  if (!a_list)  /* init */
+	  if (a_list == NULL)  /* init */
 	    a_cur = a_list = safe_malloc (sizeof (ALIAS));
 	  else
 	  {
@@ -573,9 +573,9 @@ int mutt_alias_complete (char *s, size_t buflen)
   a_list = NULL;
   for (a_cur = Aliases; a_cur;)
   {
-    if (a_cur->del)
+    if (a_cur->del != 0)
     {
-      if (a_list)
+      if (a_list != NULL)
 	a_list->next = a_cur->next;
       else
 	Aliases = a_cur->next;
@@ -583,7 +583,7 @@ int mutt_alias_complete (char *s, size_t buflen)
       a_cur->next = NULL;
       mutt_free_alias (&a_cur);
 
-      if (a_list)
+      if (a_list != NULL)
 	a_cur = a_list;
       else
 	a_cur = Aliases;
@@ -615,12 +615,12 @@ int mutt_addr_is_user (ADDRESS *addr)
   const char *fqdn = NULL;
 
   /* NULL address is assumed to be the user. */
-  if (!addr)
+  if (addr == NULL)
   {
     mutt_debug (5, "mutt_addr_is_user: yes, NULL address\n");
     return 1;
   }
-  if (!addr->mailbox)
+  if (addr->mailbox == NULL)
   {
     mutt_debug (5, "mutt_addr_is_user: no, no mailbox\n");
     return 0;

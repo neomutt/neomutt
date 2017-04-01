@@ -52,7 +52,7 @@ int url_pct_decode (char *s)
 {
   char *d = NULL;
 
-  if (!s)
+  if (s == NULL)
     return -1;
 
   for (d = s; *s; s++)
@@ -149,11 +149,11 @@ static int ciss_parse_userhost (ciss_url_t *ciss, char *src)
 
   if ((p = strchr (t, ':')))
   {
-    int t;
+    int num;
     *p++ = '\0';
-    if (mutt_atoi (p, &t) < 0 || t < 0 || t > 0xffff)
+    if (mutt_atoi (p, &num) < 0 || (num < 0) || (num > 0xffff))
       return -1;
-    ciss->port = (unsigned short)t;
+    ciss->port = (unsigned short)num;
   }
   else
     ciss->port = 0;
@@ -185,7 +185,7 @@ static void url_pct_encode (char *dst, size_t l, const char *src)
   l--;
   while (src && *src && l)
   {
-    if (strchr ("/:%", *src) && l > 3)
+    if (strchr ("/:%", *src) && (l > 3))
     {
       *dst++ = '%';
       *dst++ = alph[(*src >> 4) & 0xf];
@@ -208,7 +208,7 @@ int url_ciss_tostring (ciss_url_t* ciss, char* dest, size_t len, int flags)
 
   snprintf (dest, len, "%s:", mutt_getnamebyvalue (ciss->scheme, UrlMap));
 
-  if (ciss->host)
+  if (ciss->host != NULL)
   {
     if (!(flags & U_PATH))
       safe_strcat (dest, len, "//");
@@ -238,13 +238,13 @@ int url_ciss_tostring (ciss_url_t* ciss, char* dest, size_t len, int flags)
 
     len -= (l = strlen (dest)); dest += l;
 
-    if (ciss->port)
+    if (ciss->port != 0)
       snprintf (dest, len, ":%hu/", ciss->port);
     else
       snprintf (dest, len, "/");
   }
 
-  if (ciss->path)
+  if (ciss->path != NULL)
     safe_strcat (dest, len, ciss->path);
 
   return 0;
@@ -305,7 +305,7 @@ int url_parse_mailto (ENVELOPE *e, char **body, const char *src)
     {
       if (ascii_strcasecmp (tag, "body") == 0)
       {
-	if (body)
+	if (body != NULL)
 	  mutt_str_replace (body, value);
       }
       else

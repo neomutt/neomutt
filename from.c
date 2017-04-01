@@ -62,7 +62,7 @@ int is_from (const char *s, char *path, size_t pathlen, time_t *tp)
   struct tm tm;
   int yr;
 
-  if (path)
+  if (path != NULL)
     *path = 0;
 
   if (mutt_strncmp ("From ", s, 5) != 0)
@@ -99,7 +99,7 @@ int is_from (const char *s, char *path, size_t pathlen, time_t *tp)
     if (ascii_strncasecmp(p, " at ", 4) == 0)
     {
       p = strchr(p + 4, ' ');
-      if (!p)
+      if (p == NULL)
       {
         mutt_debug (1, "is_from(): error parsing what appears to be a "
                        "pipermail-style obscured return_path: %s\n", s);
@@ -107,10 +107,10 @@ int is_from (const char *s, char *path, size_t pathlen, time_t *tp)
       }
     }
 
-    if (path)
+    if (path != NULL)
     {
       len = (size_t) (p - s);
-      if (len + 1 > pathlen)
+      if ((len + 1) > pathlen)
 	len = pathlen - 1;
       memcpy (path, s, len);
       path[len] = 0;
@@ -183,13 +183,13 @@ int is_from (const char *s, char *path, size_t pathlen, time_t *tp)
 
   /* year */
   if (sscanf (s, "%d", &yr) != 1) return 0;
-  tm.tm_year = yr > 1900 ? yr - 1900 : (yr < 70 ? yr + 100 : yr);
+  tm.tm_year = (yr > 1900) ? yr - 1900 : ((yr < 70) ? yr + 100 : yr);
 
   mutt_debug (3, "is_from(): month=%d, day=%d, hr=%d, min=%d, sec=%d, yr=%d.\n",
               tm.tm_mon, tm.tm_mday, tm.tm_hour, tm.tm_min, tm.tm_sec, tm.tm_year);
 
   tm.tm_isdst = -1;
 
-  if (tp) *tp = mutt_mktime (&tm, 0);
+  if (tp != NULL) *tp = mutt_mktime (&tm, 0);
   return 1;
 }

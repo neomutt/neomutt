@@ -70,7 +70,7 @@ static void free_query (QUERY **query)
 {
   QUERY *p = NULL;
 
-  if (!query)
+  if (query == NULL)
     return;
 
   while (*query)
@@ -106,7 +106,7 @@ static QUERY *run_query (char *s, int quiet)
     mutt_debug (1, "unable to fork command: %s\n", cmd);
     return 0;
   }
-  if (!quiet)
+  if (quiet == 0)
     mutt_message (_("Waiting for response..."));
   fgets (msg, sizeof (msg), fp);
   if ((p = strrchr (msg, '\n')))
@@ -128,11 +128,11 @@ static QUERY *run_query (char *s, int quiet)
 
       cur->addr = rfc822_parse_adrlist (cur->addr, p);
       p = strtok(NULL, "\t\n");
-      if (p)
+      if (p != NULL)
       {
 	cur->name = safe_strdup (p);
 	p = strtok(NULL, "\t\n");
-	if (p)
+	if (p != NULL)
 	  cur->other = safe_strdup (p);
       }
     }
@@ -142,11 +142,11 @@ static QUERY *run_query (char *s, int quiet)
   if (mutt_wait_filter (thepid))
   {
     mutt_debug (1, "Error: %s\n", msg);
-    if (!quiet)  mutt_error ("%s", msg);
+    if (quiet == 0)  mutt_error ("%s", msg);
   }
   else
   {
-    if (!quiet)
+    if (quiet == 0)
       mutt_message ("%s", msg);
   }
 
@@ -203,7 +203,7 @@ static const char * query_format_str (char *dest, size_t destlen, size_t col, in
     snprintf (dest, destlen, tmp, query->num + 1);
     break;
   case 'e':
-    if (!optional)
+    if (optional == 0)
     {
       snprintf (tmp, sizeof (tmp), "%%%ss", fmt);
       snprintf (dest, destlen, tmp, NONULL (query->other));
@@ -225,7 +225,7 @@ static const char * query_format_str (char *dest, size_t destlen, size_t col, in
     break;
   }
 
-  if (optional)
+  if (optional != 0)
     mutt_FormatString (dest, destlen, col, cols, ifstring, query_format_str, data, 0);
   else if (flags & MUTT_FORMAT_OPTIONAL)
     mutt_FormatString (dest, destlen, col, cols, elsestring, query_format_str, data, 0);
@@ -247,7 +247,7 @@ static int query_tag (MUTTMENU *menu, int n, int m)
   ENTRY *cur = &((ENTRY *) menu->data)[n];
   int ot = cur->tagged;
 
-  cur->tagged = m >= 0 ? m : !cur->tagged;
+  cur->tagged = (m >= 0) ? m : !cur->tagged;
   return cur->tagged - ot;
 }
 
@@ -280,7 +280,7 @@ static void query_menu (char *buf, size_t buflen, QUERY *results, int retbuf)
     }
   }
 
-  if (results)
+  if (results != NULL)
   {
     snprintf (title, sizeof (title), _("Query '%s'"), buf);
 
@@ -293,7 +293,7 @@ static void query_menu (char *buf, size_t buflen, QUERY *results, int retbuf)
     for (i = 0, queryp = results; queryp; queryp = queryp->next, i++)
       QueryTable[i].data = queryp;
 
-    while (!done)
+    while (done == 0)
     {
       switch ((op = mutt_menu_loop (menu)))
       {
@@ -306,7 +306,7 @@ static void query_menu (char *buf, size_t buflen, QUERY *results, int retbuf)
 	    newresults = run_query (buf, 0);
 
 	    menu->redraw = REDRAW_FULL;
-	    if (newresults)
+	    if (newresults != NULL)
 	    {
 	      snprintf (title, sizeof (title), _("Query '%s'"), buf);
 
@@ -363,7 +363,7 @@ static void query_menu (char *buf, size_t buflen, QUERY *results, int retbuf)
 		    clear = 1;
 
 		  QueryTable[i].data = queryp;
-		  if (clear)
+		  if (clear != 0)
 		    QueryTable[i].tagged = 0;
 		}
 	      }
@@ -372,7 +372,7 @@ static void query_menu (char *buf, size_t buflen, QUERY *results, int retbuf)
 	  break;
 
 	case OP_CREATE_ALIAS:
-	  if (menu->tagprefix)
+	  if (menu->tagprefix != 0)
 	  {
 	    ADDRESS *naddr = NULL;
 
@@ -396,7 +396,7 @@ static void query_menu (char *buf, size_t buflen, QUERY *results, int retbuf)
 	  break;
 
 	case OP_GENERIC_SELECT_ENTRY:
-	  if (retbuf)
+	  if (retbuf != 0)
 	  {
 	    done = 2;
 	    break;
@@ -406,7 +406,7 @@ static void query_menu (char *buf, size_t buflen, QUERY *results, int retbuf)
 	case OP_MAIL:
 	  msg = mutt_new_header ();
 	  msg->env = mutt_new_envelope ();
-	  if (!menu->tagprefix)
+	  if (menu->tagprefix == 0)
 	  {
 	    msg->env->to = result_to_addr(QueryTable[menu->current].data);
 	  }
@@ -452,7 +452,7 @@ static void query_menu (char *buf, size_t buflen, QUERY *results, int retbuf)
 	    curpos = mutt_strlen (buf);
 	    rfc822_free_address (&tmpa);
 	  }
-	  else if (curpos + 2 < buflen)
+	  else if ((curpos + 2) < buflen)
 	  {
 	    ADDRESS *tmpa = result_to_addr (QueryTable[i].data);
 	    mutt_addrlist_to_local (tmpa);
@@ -465,7 +465,7 @@ static void query_menu (char *buf, size_t buflen, QUERY *results, int retbuf)
 	}
       }
       /* then enter current message */
-      if (!tagged)
+      if (tagged == 0)
       {
 	ADDRESS *tmpa = result_to_addr (QueryTable[menu->current].data);
 	mutt_addrlist_to_local (tmpa);
@@ -489,14 +489,14 @@ int mutt_query_complete (char *buf, size_t buflen)
   QUERY *results = NULL;
   ADDRESS *tmpa = NULL;
 
-  if (!QueryCmd)
+  if (QueryCmd == NULL)
   {
     mutt_error (_("Query command not defined."));
     return 0;
   }
 
   results = run_query (buf, 1);
-  if (results)
+  if (results != NULL)
   {
     /* only one response? */
     if (results->next == NULL)
@@ -518,7 +518,7 @@ int mutt_query_complete (char *buf, size_t buflen)
 
 void mutt_query_menu (char *buf, size_t buflen)
 {
-  if (!QueryCmd)
+  if (QueryCmd == NULL)
   {
     mutt_error (_("Query command not defined."));
     return;

@@ -73,13 +73,13 @@ static int eat_regexp (pattern_t *pat, BUFFER *s, BUFFER *err)
     return -1;
   }
 
-  if (pat->stringmatch)
+  if (pat->stringmatch != 0)
   {
     pat->p.str = safe_strdup (buf.data);
     pat->ign_case = mutt_which_case (buf.data) == REG_ICASE;
     FREE (&buf.data);
   }
-  else if (pat->groupmatch)
+  else if (pat->groupmatch != 0)
   {
     pat->p.g = mutt_pattern_group (buf.data);
     FREE (&buf.data);
@@ -88,7 +88,7 @@ static int eat_regexp (pattern_t *pat, BUFFER *s, BUFFER *err)
   {
     pat->p.rx = safe_malloc (sizeof (regex_t));
     r = REGCOMP (pat->p.rx, buf.data, REG_NEWLINE | REG_NOSUB | mutt_which_case (buf.data));
-    if (r)
+    if (r != 0)
     {
       regerror (r, pat->p.rx, errmsg, sizeof (errmsg));
       mutt_buffer_printf (err, "'%s': %s", buf.data, errmsg);
@@ -110,7 +110,7 @@ static const char *get_offset (struct tm *tm, const char *s, int sign)
 {
   char *ps = NULL;
   int offset = strtol (s, &ps, 0);
-  if ((sign < 0 && offset > 0) || (sign > 0 && offset < 0))
+  if (((sign < 0) && (offset > 0)) || ((sign > 0) && (offset < 0)))
     offset = -offset;
 
   switch (*ps)
@@ -141,7 +141,7 @@ static const char *get_date (const char *s, struct tm *t, BUFFER *err)
   struct tm *tm = localtime (&now);
 
   t->tm_mday = strtol (s, &p, 10);
-  if (t->tm_mday < 1 || t->tm_mday > 31)
+  if ((t->tm_mday < 1) || (t->tm_mday > 31))
   {
     snprintf (err->data, err->dsize, _("Invalid day of month: %s"), s);
     return NULL;
@@ -155,7 +155,7 @@ static const char *get_date (const char *s, struct tm *t, BUFFER *err)
   }
   p++;
   t->tm_mon = strtol (p, &p, 10) - 1;
-  if (t->tm_mon < 0 || t->tm_mon > 11)
+  if ((t->tm_mon < 0) || (t->tm_mon > 11))
   {
     snprintf (err->data, err->dsize, _("Invalid month: %s"), p);
     return NULL;
@@ -279,7 +279,7 @@ static const char * parse_date_range (const char* pc, struct tm *min,
 	    else
 	    {
 	      /* reestablish initial base minimum if not specified */
-	      if (!haveMin)
+	      if (haveMin == 0)
 		memcpy (min, baseMin, sizeof(struct tm));
 	      flag |= (MUTT_PDR_ABSOLUTE | MUTT_PDR_DONE);  /* done good */
 	    }
@@ -290,7 +290,7 @@ static const char * parse_date_range (const char* pc, struct tm *min,
 	else
 	{
 	  pc = pt;
-	  if (flag == MUTT_PDR_NONE && !haveMin)
+	  if ((flag == MUTT_PDR_NONE) && !haveMin)
 	  { /* the very first "-3d" without a previous absolute date */
 	    max->tm_year = min->tm_year;
 	    max->tm_mon = min->tm_mon;
@@ -339,9 +339,9 @@ static const char * parse_date_range (const char* pc, struct tm *min,
 static void adjust_date_range (struct tm *min, struct tm *max)
 {
   if (min->tm_year > max->tm_year
-      || (min->tm_year == max->tm_year && min->tm_mon > max->tm_mon)
-      || (min->tm_year == max->tm_year && min->tm_mon == max->tm_mon
-	&& min->tm_mday > max->tm_mday))
+      || ((min->tm_year == max->tm_year) && (min->tm_mon > max->tm_mon))
+      || ((min->tm_year == max->tm_year) && min->tm_mon == max->tm_mon
+	&& (min->tm_mday > max->tm_mday)))
   {
     int tmp;
 
@@ -431,7 +431,7 @@ static int eat_date (pattern_t *pat, BUFFER *s, BUFFER *err)
     /* force negative offset */
     get_offset (tm, buffer.data + 1, -1);
 
-    if (exact)
+    if (exact != 0)
     {
       /* start at the beginning of the day in question */
       memcpy (&min, &max, sizeof (max));
@@ -462,12 +462,12 @@ static int eat_date (pattern_t *pat, BUFFER *s, BUFFER *err)
       }
     }
 
-    if (!untilNow)
+    if (untilNow == 0)
     { /* max date or relative range/window */
 
       struct tm baseMin;
 
-      if (!haveMin)
+      if (haveMin == 0)
       { /* save base minimum and set current date, e.g. for "-3d+1d" */
 	time_t now = time (NULL);
 	struct tm *tm = localtime (&now);
@@ -572,7 +572,7 @@ static int eat_range (pattern_t *pat, BUFFER *s, BUFFER *err)
       pat->max *= 1048576;
       tmp++;
     }
-    if (do_exclusive)
+    if (do_exclusive != 0)
       (pat->max)--;
   }
   else
@@ -706,10 +706,10 @@ eat_range_by_regexp (pattern_t *pat, BUFFER *s, int kind, BUFFER *err)
   struct range_regexp *pspec = &range_regexps[kind];
 
   /* First time through, compile the big regexp */
-  if (!pspec->ready)
+  if (pspec->ready == 0)
   {
     regerr = regcomp(&pspec->cooked, pspec->raw, REG_EXTENDED);
-    if (regerr)
+    if (regerr != 0)
       return report_regerror(regerr, &pspec->cooked, err);
     pspec->ready = 1;
   }
@@ -717,7 +717,7 @@ eat_range_by_regexp (pattern_t *pat, BUFFER *s, int kind, BUFFER *err)
   /* Match the pattern buffer against the compiled regexp.
    * No match means syntax error. */
   regerr = regexec(&pspec->cooked, s->dptr, RANGE_RX_GROUPS, pmatch, 0);
-  if (regerr)
+  if (regerr != 0)
     return report_regerror(regerr, &pspec->cooked, err);
 
   if (!is_context_available(s, pmatch, kind, err))
@@ -731,7 +731,7 @@ eat_range_by_regexp (pattern_t *pat, BUFFER *s, int kind, BUFFER *err)
   /* Special case for a bare 0. */
   if ((kind == RANGE_K_BARE) && (pat->min == 0) && (pat->max == 0))
   {
-    if (!Context->menu)
+    if (Context->menu == NULL)
     {
       strfcpy(err->data, _("No current message"), err->dsize);
       return RANGE_E_CTX;
@@ -754,7 +754,7 @@ eat_message_range (pattern_t *pat, BUFFER *s, BUFFER *err)
   int i_kind;
 
   /* We need a Context for pretty much anything. */
-  if (!Context)
+  if (Context == NULL)
   {
     strfcpy(err->data, _("No Context"), err->dsize);
     return -1;
@@ -881,10 +881,10 @@ int mutt_which_case (const char *s)
 
 static int patmatch (const pattern_t* pat, const char* buf)
 {
-  if (pat->stringmatch)
+  if (pat->stringmatch != 0)
     return pat->ign_case ? !strcasestr (buf, pat->p.str) :
 			   !strstr (buf, pat->p.str);
-  else if (pat->groupmatch)
+  else if (pat->groupmatch != 0)
     return !mutt_group_match (pat->p.g, buf);
   else
     return regexec (pat->p.rx, buf, 0, NULL, 0);
@@ -963,15 +963,15 @@ msg_search (CONTEXT *ctx, pattern_t* pat, int msgno)
       fclose (s.fpout);
       lng = tempsize;
 
-      if (tempsize) {
+      if (tempsize != NULL) {
         fp = fmemopen (temp, tempsize, "r");
-        if (!fp) {
+        if (fp == NULL) {
           mutt_perror (_("Error re-opening memstream"));
           return 0;
         }
       } else { /* fmemopen cannot handle empty buffers */
         fp = safe_fopen ("/dev/null", "r");
-        if (!fp) {
+        if (fp == NULL) {
           mutt_perror (_("Error opening /dev/null"));
           return 0;
         }
@@ -1030,7 +1030,7 @@ msg_search (CONTEXT *ctx, pattern_t* pat, int msgno)
     {
       safe_fclose (&fp);
 #ifdef USE_FMEMOPEN
-      if (tempsize)
+      if (tempsize != NULL)
         FREE(&temp);
 #else
       unlink (tempfile);
@@ -1062,7 +1062,7 @@ static /* const */ char *find_matching_paren (/* const */ char *s)
     else if (*s == ')')
     {
       level--;
-      if (!level)
+      if (level == 0)
 	break;
     }
   }
@@ -1078,9 +1078,9 @@ void mutt_pattern_free (pattern_t **pat)
     tmp = *pat;
     *pat = (*pat)->next;
 
-    if (tmp->stringmatch)
+    if (tmp->stringmatch != 0)
       FREE (&tmp->p.str);
-    else if (tmp->groupmatch)
+    else if (tmp->groupmatch != 0)
       tmp->p.g = NULL;
     else if (tmp->p.rx)
     {
@@ -1088,7 +1088,7 @@ void mutt_pattern_free (pattern_t **pat)
       FREE (&tmp->p.rx);
     }
 
-    if (tmp->child)
+    if (tmp->child != NULL)
       mutt_pattern_free (&tmp->child);
     FREE (&tmp);
   }
@@ -1131,14 +1131,14 @@ pattern_t *mutt_pattern_comp (/* const */ char *s, int flags, BUFFER *err)
 	isalias = !isalias;
 	break;
       case '|':
-	if (!or)
+	if (or == 0)
 	{
-	  if (!curlist)
+	  if (curlist == NULL)
 	  {
 	    snprintf (err->data, err->dsize, _("error in pattern at: %s"), ps.dptr);
 	    return NULL;
 	  }
-	  if (curlist->next)
+	  if (curlist->next != NULL)
 	  {
 	    /* A & B | C == (A & B) | C */
 	    tmp = new_pattern ();
@@ -1178,7 +1178,7 @@ pattern_t *mutt_pattern_comp (/* const */ char *s, int flags, BUFFER *err)
 	  }
 	  tmp = new_pattern ();
 	  tmp->op = MUTT_THREAD;
-	  if (last)
+	  if (last != NULL)
 	    last->next = tmp;
 	  else
 	    curlist = tmp;
@@ -1223,7 +1223,7 @@ pattern_t *mutt_pattern_comp (/* const */ char *s, int flags, BUFFER *err)
 	alladdr = 0;
 	isalias = 0;
 
-	if (last)
+	if (last != NULL)
 	  last->next = tmp;
 	else
 	  curlist = tmp;
@@ -1247,7 +1247,7 @@ pattern_t *mutt_pattern_comp (/* const */ char *s, int flags, BUFFER *err)
 	ps.dptr++; /* eat the operator and any optional whitespace */
 	SKIPWS (ps.dptr);
 
-	if (entry->eat_arg)
+	if (entry->eat_arg != NULL)
 	{
 	  if (!*ps.dptr)
 	  {
@@ -1280,7 +1280,7 @@ pattern_t *mutt_pattern_comp (/* const */ char *s, int flags, BUFFER *err)
 	  return NULL;
 	}
 	FREE (&buf);
-	if (last)
+	if (last != NULL)
 	  last->next = tmp;
 	else
 	  curlist = tmp;
@@ -1299,12 +1299,12 @@ pattern_t *mutt_pattern_comp (/* const */ char *s, int flags, BUFFER *err)
 	return NULL;
     }
   }
-  if (!curlist)
+  if (curlist == NULL)
   {
     strfcpy (err->data, _("empty pattern"), err->dsize);
     return NULL;
   }
-  if (curlist->next)
+  if (curlist->next != NULL)
   {
     tmp = new_pattern ();
     tmp->op = or ? MUTT_OR : MUTT_AND;
@@ -1410,10 +1410,10 @@ static int match_threadcomplete(struct pattern_t *pat, pattern_exec_flag flags, 
   int a;
   HEADER *h = NULL;
 
-  if(!t)
+  if(t == NULL)
     return 0;
   h = t->message;
-  if(h)
+  if (h != NULL)
     if(mutt_pattern_exec(pat, flags, ctx, h, NULL))
       return 1;
 
@@ -1493,9 +1493,9 @@ mutt_pattern_exec (struct pattern_t *pat, pattern_exec_flag flags, CONTEXT *ctx,
     case MUTT_MESSAGE:
       return (pat->not ^ ((HMSG(h) >= pat->min) && (HMSG(h) <= pat->max)));
     case MUTT_DATE:
-      return (pat->not ^ (h->date_sent >= pat->min && h->date_sent <= pat->max));
+      return (pat->not ^ ((h->date_sent >= pat->min) && (h->date_sent <= pat->max)));
     case MUTT_DATE_RECEIVED:
-      return (pat->not ^ (h->received >= pat->min && h->received <= pat->max));
+      return (pat->not ^ ((h->received >= pat->min) && (h->received <= pat->max)));
     case MUTT_BODY:
     case MUTT_HEADER:
     case MUTT_WHOLE_MSG:
@@ -1504,11 +1504,11 @@ mutt_pattern_exec (struct pattern_t *pat, pattern_exec_flag flags, CONTEXT *ctx,
        * the user has a reply-hook using "~h" (bug #2190).
        * This is also the case when message scoring.
        */
-      if (!ctx)
+      if (ctx == NULL)
 	      return 0;
 #ifdef USE_IMAP
       /* IMAP search sets h->matched at search compile time */
-      if (ctx->magic == MUTT_IMAP && pat->stringmatch)
+      if ((ctx->magic == MUTT_IMAP) && pat->stringmatch)
 	return h->matched;
 #endif
       return (pat->not ^ msg_search (ctx, pat, h->msgno));
@@ -1529,10 +1529,10 @@ mutt_pattern_exec (struct pattern_t *pat, pattern_exec_flag flags, CONTEXT *ctx,
     case MUTT_ID:
       return (pat->not ^ (h->env->message_id && patmatch (pat, h->env->message_id) == 0));
     case MUTT_SCORE:
-      return (pat->not ^ (h->score >= pat->min && (pat->max == MUTT_MAXRANGE ||
-						   h->score <= pat->max)));
+      return (pat->not ^ ((h->score >= pat->min) && ((pat->max == MUTT_MAXRANGE) ||
+						   (h->score <= pat->max))));
     case MUTT_SIZE:
-      return (pat->not ^ (h->content->length >= pat->min && (pat->max == MUTT_MAXRANGE || h->content->length <= pat->max)));
+      return (pat->not ^ ((h->content->length >= pat->min) && ((pat->max == MUTT_MAXRANGE) || (h->content->length <= pat->max))));
     case MUTT_REFERENCE:
       return (pat->not ^ (match_reference (pat, h->env->references) ||
 			  match_reference (pat, h->env->in_reply_to)));
@@ -1544,7 +1544,7 @@ mutt_pattern_exec (struct pattern_t *pat, pattern_exec_flag flags, CONTEXT *ctx,
            return (pat->not ^ match_adrlist (pat, flags & MUTT_MATCH_FULL_ADDRESS,
                                              2, h->env->to, h->env->cc));
     case MUTT_LIST:	/* known list, subscribed or not */
-      if (cache)
+      if (cache != NULL)
       {
         cache_entry = pat->alladdr ? &cache->list_all : &cache->list_one;
         if (!is_pattern_cache_set (*cache_entry))
@@ -1556,7 +1556,7 @@ mutt_pattern_exec (struct pattern_t *pat, pattern_exec_flag flags, CONTEXT *ctx,
         result = mutt_is_list_cc (pat->alladdr, h->env->to, h->env->cc);
       return (pat->not ^ result);
     case MUTT_SUBSCRIBED_LIST:
-      if (cache)
+      if (cache != NULL)
       {
         cache_entry = pat->alladdr ? &cache->sub_all : &cache->sub_one;
         if (!is_pattern_cache_set (*cache_entry))
@@ -1568,7 +1568,7 @@ mutt_pattern_exec (struct pattern_t *pat, pattern_exec_flag flags, CONTEXT *ctx,
         result = mutt_is_list_recipient (pat->alladdr, h->env->to, h->env->cc);
       return (pat->not ^ result);
     case MUTT_PERSONAL_RECIP:
-      if (cache)
+      if (cache != NULL)
       {
         cache_entry = pat->alladdr ? &cache->pers_recip_all : &cache->pers_recip_one;
         if (!is_pattern_cache_set (*cache_entry))
@@ -1580,7 +1580,7 @@ mutt_pattern_exec (struct pattern_t *pat, pattern_exec_flag flags, CONTEXT *ctx,
         result = match_user (pat->alladdr, h->env->to, h->env->cc);
       return (pat->not ^ result);
     case MUTT_PERSONAL_FROM:
-      if (cache)
+      if (cache != NULL)
       {
         cache_entry = pat->alladdr ? &cache->pers_from_all : &cache->pers_from_one;
         if (!is_pattern_cache_set (*cache_entry))
@@ -1592,17 +1592,17 @@ mutt_pattern_exec (struct pattern_t *pat, pattern_exec_flag flags, CONTEXT *ctx,
         result = match_user (pat->alladdr, h->env->from, NULL);
       return (pat->not ^ result);
     case MUTT_COLLAPSED:
-      return (pat->not ^ (h->collapsed && h->num_hidden > 1));
+      return (pat->not ^ (h->collapsed && (h->num_hidden > 1)));
    case MUTT_CRYPT_SIGN:
-     if (!WithCrypto)
+     if (WithCrypto == 0)
        break;
      return (pat->not ^ ((h->security & SIGN) ? 1 : 0));
    case MUTT_CRYPT_VERIFIED:
-     if (!WithCrypto)
+     if (WithCrypto == 0)
        break;
      return (pat->not ^ ((h->security & GOODSIGN) ? 1 : 0));
    case MUTT_CRYPT_ENCRYPT:
-     if (!WithCrypto)
+     if (WithCrypto == 0)
        break;
      return (pat->not ^ ((h->security & ENCRYPT) ? 1 : 0));
    case MUTT_PGP_KEY:
@@ -1623,12 +1623,12 @@ mutt_pattern_exec (struct pattern_t *pat, pattern_exec_flag flags, CONTEXT *ctx,
     case MUTT_DUPLICATED:
       return (pat->not ^ (h->thread && h->thread->duplicate_thread));
     case MUTT_MIMEATTACH:
-      if (!ctx)
+      if (ctx == NULL)
         return 0;
       {
       int count = mutt_count_body_parts (ctx, h);
-      return (pat->not ^ (count >= pat->min && (pat->max == MUTT_MAXRANGE ||
-                                                count <= pat->max)));
+      return (pat->not ^ ((count >= pat->min) && ((pat->max == MUTT_MAXRANGE) ||
+                                                (count <= pat->max))));
       }
     case MUTT_UNREFERENCED:
       return (pat->not ^ (h->thread && !h->thread->child));
@@ -1646,7 +1646,7 @@ static void quote_simple(char *tmp, size_t len, const char *p)
   int i = 0;
 
   tmp[i++] = '"';
-  while (*p && i < len - 3)
+  while (*p && i < (len - 3))
   {
     if (*p == '\\' || *p == '"')
       tmp[i++] = '\\';
@@ -1678,7 +1678,7 @@ void mutt_check_simple (char *s, size_t len, const char *simple)
    * equivalences?
    */
 
-  if (do_simple) /* yup, so spoof a real request */
+  if (do_simple != 0) /* yup, so spoof a real request */
   {
     /* convert old tokens into the new format */
     if ((ascii_strcasecmp ("all", s) == 0) ||
@@ -1721,7 +1721,7 @@ top_of_thread (HEADER *h)
 {
   THREAD *t = NULL;
 
-  if (!h)
+  if (h == NULL)
     return NULL;
 
   t = h->thread;
@@ -1746,11 +1746,11 @@ mutt_limit_current_thread (HEADER *h)
   int i;
   THREAD *me = NULL;
 
-  if (!h)
+  if (h == NULL)
     return 0;
 
   me = top_of_thread (h);
-  if (!me)
+  if (me == NULL)
     return 0;
 
   Context->vcount    = 0;
@@ -1787,7 +1787,7 @@ int mutt_pattern_func (int op, char *prompt)
   progress_t progress;
 
   strfcpy (buf, NONULL (Context->pattern), sizeof (buf));
-  if (prompt || op != MUTT_LIMIT)
+  if (prompt || (op != MUTT_LIMIT))
   if (mutt_get_field (prompt, buf, sizeof (buf), MUTT_PATTERN | MUTT_CLEAR) != 0 || !buf[0])
     return -1;
 
@@ -1808,7 +1808,7 @@ int mutt_pattern_func (int op, char *prompt)
   }
 
 #ifdef USE_IMAP
-  if (Context->magic == MUTT_IMAP && imap_search (Context, pat) < 0)
+  if ((Context->magic == MUTT_IMAP) && imap_search (Context, pat) < 0)
     return -1;
 #endif
 
@@ -1877,7 +1877,7 @@ int mutt_pattern_func (int op, char *prompt)
   {
     /* drop previous limit pattern */
     FREE (&Context->pattern);
-    if (Context->limit_pattern)
+    if (Context->limit_pattern != NULL)
       mutt_pattern_free (&Context->limit_pattern);
 
     if (Context->msgcount && !Context->vcount)
@@ -1908,16 +1908,16 @@ int mutt_search_command (int cur, int op)
   progress_t progress;
   const char* msg = NULL;
 
-  if (!*LastSearch || (op != OP_SEARCH_NEXT && op != OP_SEARCH_OPPOSITE))
+  if (!*LastSearch || ((op != OP_SEARCH_NEXT) && (op != OP_SEARCH_OPPOSITE)))
   {
     strfcpy (buf, *LastSearch ? LastSearch : "", sizeof (buf));
-    if (mutt_get_field ((op == OP_SEARCH || op == OP_SEARCH_NEXT) ?
+    if (mutt_get_field (((op == OP_SEARCH) || (op == OP_SEARCH_NEXT)) ?
 			_("Search for: ") : _("Reverse search for: "),
 			buf, sizeof (buf),
 		      MUTT_CLEAR | MUTT_PATTERN) != 0 || !buf[0])
       return -1;
 
-    if (op == OP_SEARCH || op == OP_SEARCH_NEXT)
+    if ((op == OP_SEARCH) || (op == OP_SEARCH_NEXT))
       unset_option (OPTSEARCHREVERSE);
     else
       set_option (OPTSEARCHREVERSE);
@@ -1953,7 +1953,7 @@ int mutt_search_command (int cur, int op)
     for (i = 0; i < Context->msgcount; i++)
       Context->hdrs[i]->searched = 0;
 #ifdef USE_IMAP
-    if (Context->magic == MUTT_IMAP && imap_search (Context, SearchPattern) < 0)
+    if ((Context->magic == MUTT_IMAP) && imap_search (Context, SearchPattern) < 0)
       return -1;
 #endif
     unset_option (OPTSEARCHINVALID);
@@ -1969,7 +1969,7 @@ int mutt_search_command (int cur, int op)
   for (i = cur + incr, j = 0 ; j != Context->vcount; j++)
   {
     mutt_progress_update (&progress, j, -1);
-    if (i > Context->vcount - 1)
+    if (i > (Context->vcount - 1))
     {
       i = 0;
       if (option (OPTWRAPSEARCH))
@@ -1993,10 +1993,10 @@ int mutt_search_command (int cur, int op)
     }
 
     h = Context->hdrs[Context->v2r[i]];
-    if (h->searched)
+    if (h->searched != 0)
     {
       /* if we've already evaluated this message, use the cached value */
-      if (h->matched)
+      if (h->matched != 0)
       {
 	mutt_clear_error();
 	if (msg && *msg)
@@ -2017,7 +2017,7 @@ int mutt_search_command (int cur, int op)
       }
     }
 
-    if (SigInt)
+    if (SigInt != 0)
     {
       mutt_error (_("Search interrupted."));
       SigInt = 0;

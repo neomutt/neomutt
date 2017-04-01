@@ -81,7 +81,7 @@ char *mutt_read_rfc822_line (FILE *f, char *line, size_t *linelen)
 
     buf++;
     offset = buf - line;
-    if (*linelen < offset + STRING)
+    if (*linelen < (offset + STRING))
     {
       /* grow the buffer */
       *linelen += STRING;
@@ -156,7 +156,7 @@ static PARAMETER *parse_parameters (const char *s)
     {
       i = p - s;
       /* remove whitespace from the end of the attribute name */
-      while (i > 0 && is_email_wsp(s[i-1]))
+      while ((i > 0) && is_email_wsp(s[i-1]))
 	--i;
 
       /* the check for the missing parameter token is here so that we can skip
@@ -179,12 +179,12 @@ static PARAMETER *parse_parameters (const char *s)
       {
         int state_ascii = 1;
 	s++;
-	for (i=0; *s && i < sizeof (buffer) - 1; i++, s++)
+	for (i=0; *s && (i < (sizeof(buffer) - 1)); i++, s++)
 	{
 	  if (AssumedCharset && *AssumedCharset) {
             /* As iso-2022-* has a character of '"' with non-ascii state,
 	     * ignore it. */
-            if (*s == 0x1b && i < sizeof (buffer) - 2)
+            if ((*s == 0x1b) && (i < (sizeof(buffer) - 2)))
             {
               if (s[1] == '(' && (s[2] == 'B' || s[2] == 'J'))
                 state_ascii = 1;
@@ -210,13 +210,13 @@ static PARAMETER *parse_parameters (const char *s)
       }
       else
       {
-	for (i=0; *s && *s != ' ' && *s != ';' && i < sizeof (buffer) - 1; i++, s++)
+	for (i=0; *s && (*s != ' ') && (*s != ';') && (i < (sizeof(buffer) - 1)); i++, s++)
 	  buffer[i] = *s;
 	buffer[i] = 0;
       }
 
       /* if the attribute token was missing, 'new' will be NULL */
-      if (new)
+      if (new != NULL)
       {
 	new->value = safe_strdup (buffer);
 
@@ -225,7 +225,7 @@ static PARAMETER *parse_parameters (const char *s)
 	            new->value ? new->value : "");
 
 	/* Add this parameter to the list */
-	if (head)
+	if (head != NULL)
 	{
 	  cur->next = new;
 	  cur = cur->next;
@@ -469,9 +469,9 @@ BODY *mutt_read_mime_header (FILE *fp, int digest)
 #endif
   }
   p->offset = ftello (fp); /* Mark the start of the real data */
-  if (p->type == TYPETEXT && !p->subtype)
+  if ((p->type == TYPETEXT) && !p->subtype)
     p->subtype = safe_strdup ("plain");
-  else if (p->type == TYPEMESSAGE && !p->subtype)
+  else if ((p->type == TYPEMESSAGE) && !p->subtype)
     p->subtype = safe_strdup ("rfc822");
 
   FREE (&line);
@@ -500,7 +500,7 @@ void mutt_parse_part (FILE *fp, BODY *b)
       break;
 
     case TYPEMESSAGE:
-      if (b->subtype)
+      if (b->subtype != NULL)
       {
 	fseeko (fp, b->offset, SEEK_SET);
 	if (mutt_is_message_type(b->type, b->subtype))
@@ -517,7 +517,7 @@ void mutt_parse_part (FILE *fp, BODY *b)
   }
 
   /* try to recover from parsing error */
-  if (!b->parts)
+  if (b->parts == NULL)
   {
     b->type = TYPETEXT;
     mutt_str_replace (&b->subtype, "plain");
@@ -579,7 +579,7 @@ BODY *mutt_parse_multipart (FILE *fp, const char *boundary, LOFF_T end_off, int 
   int i;
   int final = 0; /* did we see the ending boundary? */
 
-  if (!boundary)
+  if (boundary == NULL)
   {
     mutt_error (_("multipart message has no boundary parameter!"));
     return NULL;
@@ -590,15 +590,15 @@ BODY *mutt_parse_multipart (FILE *fp, const char *boundary, LOFF_T end_off, int 
   {
     len = mutt_strlen (buffer);
 
-    crlf =  (len > 1 && buffer[len - 2] == '\r') ? 1 : 0;
+    crlf =  ((len > 1) && buffer[len - 2] == '\r') ? 1 : 0;
 
     if (buffer[0] == '-' && buffer[1] == '-' &&
 	(mutt_strncmp (buffer + 2, boundary, blen) == 0))
     {
-      if (last)
+      if (last != NULL)
       {
 	last->length = ftello (fp) - last->offset - len - 1 - crlf;
-	if (last->parts && last->parts->length == 0)
+	if (last->parts && (last->parts->length == 0))
 	  last->parts->length = ftello (fp) - last->parts->offset - len - 1 - crlf;
 	/* if the body is empty, we can end up with a -1 length */
 	if (last->length < 0)
@@ -606,7 +606,7 @@ BODY *mutt_parse_multipart (FILE *fp, const char *boundary, LOFF_T end_off, int 
       }
 
       /* Remove any trailing whitespace, up to the length of the boundary */
-      for (i = len - 1; ISSPACE (buffer[i]) && i >= blen + 2; i--)
+      for (i = len - 1; ISSPACE (buffer[i]) && i >= (blen + 2); i--)
         buffer[i] = 0;
 
       /* Check for the end boundary */
@@ -638,7 +638,7 @@ BODY *mutt_parse_multipart (FILE *fp, const char *boundary, LOFF_T end_off, int 
 	  mutt_free_body(&new);
 	  break;
 	}
-	if (head)
+	if (head != NULL)
 	{
 	  last->next = new;
 	  last = new;
@@ -650,7 +650,7 @@ BODY *mutt_parse_multipart (FILE *fp, const char *boundary, LOFF_T end_off, int 
   }
 
   /* in case of missing end boundary, set the length to something reasonable */
-  if (last && last->length == 0 && !final)
+  if (last && (last->length == 0) && !final)
     last->length = end_off - last->offset;
 
   /* parse recursive MIME parts */
@@ -671,7 +671,7 @@ static const char *uncomment_timezone (char *buf, size_t buflen, const char *tz)
   if ((p = strpbrk (tz, " )")) == NULL)
     return tz;
   len = p - tz;
-  if (len > buflen - 1)
+  if (len > (buflen - 1))
     len = buflen - 1;
   memcpy (buf, tz, len);
   buf[len] = 0;
@@ -844,7 +844,7 @@ time_t mutt_parse_date (const char *s, HEADER *h)
 			/* This is safe to do: A pointer to a struct equals
 			 * a pointer to its first element*/);
 
-	  if (tz)
+	  if (tz != NULL)
 	  {
 	    zhours = tz->zhours;
 	    zminutes = tz->zminutes;
@@ -862,7 +862,7 @@ time_t mutt_parse_date (const char *s, HEADER *h)
 	  }
 	}
 	tz_offset = zhours * 3600 + zminutes * 60;
-	if (!zoccident)
+	if (zoccident == 0)
 	  tz_offset = -tz_offset;
 	break;
     }
@@ -876,7 +876,7 @@ time_t mutt_parse_date (const char *s, HEADER *h)
     return -1;
   }
 
-  if (h)
+  if (h != NULL)
   {
     h->zhours = zhours;
     h->zminutes = zminutes;
@@ -894,9 +894,9 @@ char *mutt_extract_message_id (const char *s, const char **saveptr)
   const char *o = NULL, *onull = NULL, *p = NULL;
   char *ret = NULL;
 
-  if (s)
+  if (s != NULL)
     p = s;
-  else if (saveptr)
+  else if (saveptr != NULL)
     p = *saveptr;
   else
     return NULL;
@@ -911,18 +911,18 @@ char *mutt_extract_message_id (const char *s, const char **saveptr)
       continue;
     }
 
-    if (!s)
+    if (s == NULL)
       continue;
 
     if (*p == '>')
     {
       size_t olen = onull - o, slen = p - s + 1;
       ret = safe_malloc (olen + slen + 1);
-      if (o)
+      if (o != NULL)
 	memcpy (ret, o, olen);
       memcpy (ret + olen, s, slen);
       ret[olen + slen] = '\0';
-      if (saveptr)
+      if (saveptr != NULL)
 	*saveptr = p + 1; /* next call starts after '>' */
       return ret;
     }
@@ -931,7 +931,7 @@ char *mutt_extract_message_id (const char *s, const char **saveptr)
     if (s == p)
       /* step past another whitespace */
       s = p + 1;
-    else if (o)
+    else if (o != NULL)
       /* more than two lines, give up */
       s = o = onull = NULL;
     else
@@ -951,18 +951,18 @@ void mutt_parse_mime_message (CONTEXT *ctx, HEADER *cur)
   MESSAGE *msg = NULL;
 
   do {
-    if (cur->content->type != TYPEMESSAGE &&
-        cur->content->type != TYPEMULTIPART)
+    if ((cur->content->type != TYPEMESSAGE) &&
+        (cur->content->type != TYPEMULTIPART))
       break; /* nothing to do */
 
-    if (cur->content->parts)
+    if (cur->content->parts != NULL)
       break; /* The message was parsed earlier. */
 
     if ((msg = mx_open_message (ctx, cur->msgno)))
     {
       mutt_parse_part (msg->fp, cur->content);
 
-      if (WithCrypto)
+      if (WithCrypto != 0)
         cur->security = crypt_query (cur->content);
 
       mx_close_message (ctx, &msg);
@@ -978,7 +978,7 @@ int mutt_parse_rfc822_line (ENVELOPE *e, HEADER *hdr, char *line, char *p, short
   int matched = 0;
   LIST *last = NULL;
 
-  if (lastp)
+  if (lastp != NULL)
     last = *lastp;
 
   switch (tolower (line[0]))
@@ -1014,19 +1014,19 @@ int mutt_parse_rfc822_line (ENVELOPE *e, HEADER *hdr, char *line, char *p, short
     {
       if (ascii_strcasecmp (line+8, "type") == 0)
       {
-	if (hdr)
+	if (hdr != NULL)
 	  mutt_parse_content_type (p, hdr->content);
 	matched = 1;
       }
       else if (ascii_strcasecmp (line+8, "transfer-encoding") == 0)
       {
-	if (hdr)
+	if (hdr != NULL)
 	  hdr->content->encoding = mutt_check_encoding (p);
 	matched = 1;
       }
       else if (ascii_strcasecmp (line+8, "length") == 0)
       {
-	if (hdr)
+	if (hdr != NULL)
 	{
 	  if ((hdr->content->length = atol (p)) < 0)
 	    hdr->content->length = -1;
@@ -1035,7 +1035,7 @@ int mutt_parse_rfc822_line (ENVELOPE *e, HEADER *hdr, char *line, char *p, short
       }
       else if (ascii_strcasecmp (line+8, "description") == 0)
       {
-	if (hdr)
+	if (hdr != NULL)
 	{
 	  mutt_str_replace (&hdr->content->description, p);
 	  rfc2047_decode (&hdr->content->description);
@@ -1044,7 +1044,7 @@ int mutt_parse_rfc822_line (ENVELOPE *e, HEADER *hdr, char *line, char *p, short
       }
       else if (ascii_strcasecmp (line+8, "disposition") == 0)
       {
-	if (hdr)
+	if (hdr != NULL)
 	  parse_content_disposition (p, hdr->content);
 	matched = 1;
       }
@@ -1055,7 +1055,7 @@ int mutt_parse_rfc822_line (ENVELOPE *e, HEADER *hdr, char *line, char *p, short
     if (ascii_strcasecmp ("ate", line + 1) == 0)
     {
       mutt_str_replace (&e->date, p);
-      if (hdr)
+      if (hdr != NULL)
 	hdr->date_sent = mutt_parse_date (p, hdr);
       matched = 1;
     }
@@ -1076,7 +1076,7 @@ int mutt_parse_rfc822_line (ENVELOPE *e, HEADER *hdr, char *line, char *p, short
 #ifdef USE_NNTP
     else if (ascii_strcasecmp (line+1, "ollowup-to") == 0)
     {
-      if (!e->followup_to)
+      if (e->followup_to == NULL)
       {
 	mutt_remove_trailing_ws (p);
 	e->followup_to = safe_strdup (mutt_skip_whitespace (p));
@@ -1098,13 +1098,13 @@ int mutt_parse_rfc822_line (ENVELOPE *e, HEADER *hdr, char *line, char *p, short
     case 'l':
     if (ascii_strcasecmp (line + 1, "ines") == 0)
     {
-      if (hdr)
+      if (hdr != NULL)
       {
 	/*
 	 * HACK - mutt has, for a very short time, produced negative
 	 * Lines header values.  Ignore them.
 	 */
-	if (mutt_atoi (p, &hdr->lines) < 0 || hdr->lines < 0)
+	if (mutt_atoi (p, &hdr->lines) < 0 || (hdr->lines < 0))
 	  hdr->lines = 0;
       }
 
@@ -1138,7 +1138,7 @@ int mutt_parse_rfc822_line (ENVELOPE *e, HEADER *hdr, char *line, char *p, short
     case 'm':
     if (ascii_strcasecmp (line + 1, "ime-version") == 0)
     {
-      if (hdr)
+      if (hdr != NULL)
 	hdr->mime = 1;
       matched = 1;
     }
@@ -1210,7 +1210,7 @@ int mutt_parse_rfc822_line (ENVELOPE *e, HEADER *hdr, char *line, char *p, short
       {
 	char *d = strrchr (p, ';');
 
-	if (d)
+	if (d != NULL)
 	  hdr->received = mutt_parse_date (d + 1, NULL);
       }
     }
@@ -1219,7 +1219,7 @@ int mutt_parse_rfc822_line (ENVELOPE *e, HEADER *hdr, char *line, char *p, short
     case 's':
     if (ascii_strcasecmp (line + 1, "ubject") == 0)
     {
-      if (!e->subject)
+      if (e->subject == NULL)
 	e->subject = safe_strdup (p);
       matched = 1;
     }
@@ -1230,7 +1230,7 @@ int mutt_parse_rfc822_line (ENVELOPE *e, HEADER *hdr, char *line, char *p, short
     }
     else if (ascii_strcasecmp (line + 1, "tatus") == 0)
     {
-      if (hdr)
+      if (hdr != NULL)
       {
 	while (*p)
 	{
@@ -1270,7 +1270,7 @@ int mutt_parse_rfc822_line (ENVELOPE *e, HEADER *hdr, char *line, char *p, short
     case 'x':
     if (ascii_strcasecmp (line+1, "-status") == 0)
     {
-      if (hdr)
+      if (hdr != NULL)
       {
 	while (*p)
 	{
@@ -1302,13 +1302,13 @@ int mutt_parse_rfc822_line (ENVELOPE *e, HEADER *hdr, char *line, char *p, short
 #ifdef USE_NNTP
     else if (ascii_strcasecmp (line + 1, "-comment-to") == 0)
     {
-      if (!e->x_comment_to)
+      if (e->x_comment_to == NULL)
 	e->x_comment_to = safe_strdup (p);
       matched = 1;
     }
     else if (ascii_strcasecmp (line + 1, "ref") == 0)
     {
-      if (!e->xref)
+      if (e->xref == NULL)
 	e->xref = safe_strdup (p);
       matched = 1;
     }
@@ -1332,7 +1332,7 @@ int mutt_parse_rfc822_line (ENVELOPE *e, HEADER *hdr, char *line, char *p, short
     if (weed && option (OPTWEED) && mutt_matches_ignore (line))
       goto done;
 
-    if (last)
+    if (last != NULL)
     {
       last->next = mutt_new_list ();
       last = last->next;
@@ -1340,7 +1340,7 @@ int mutt_parse_rfc822_line (ENVELOPE *e, HEADER *hdr, char *line, char *p, short
     else
       last = e->userhdrs = mutt_new_list ();
     last->data = safe_strdup (line);
-    if (do_2047)
+    if (do_2047 != 0)
       rfc2047_decode (&last->data);
   }
 
@@ -1380,7 +1380,7 @@ ENVELOPE *mutt_read_rfc822_header (FILE *f, HEADER *hdr, short user_hdrs,
   size_t linelen = LONG_STRING;
   char buf[LONG_STRING+1];
 
-  if (hdr)
+  if (hdr != NULL)
   {
     if (hdr->content == NULL)
     {
@@ -1431,7 +1431,7 @@ ENVELOPE *mutt_read_rfc822_header (FILE *f, HEADER *hdr, short user_hdrs,
 	if (e->spam && *buf)
 	{
 	  /* If SpamSep defined, append with separator */
-	  if (SpamSep)
+	  if (SpamSep != NULL)
 	  {
 	    mutt_buffer_addstr(e->spam, SpamSep);
 	    mutt_buffer_addstr(e->spam, buf);
@@ -1453,7 +1453,7 @@ ENVELOPE *mutt_read_rfc822_header (FILE *f, HEADER *hdr, short user_hdrs,
 	}
 
 	/* match expr is empty; plug in null string if no existing tag */
-	else if (!e->spam)
+	else if (e->spam == NULL)
 	{
 	  e->spam = mutt_buffer_from("");
 	}
@@ -1473,7 +1473,7 @@ ENVELOPE *mutt_read_rfc822_header (FILE *f, HEADER *hdr, short user_hdrs,
 
   FREE (&line);
 
-  if (hdr)
+  if (hdr != NULL)
   {
     hdr->content->hdr_offset = hdr->offset;
     hdr->content->offset = ftello (f);
@@ -1489,7 +1489,7 @@ ENVELOPE *mutt_read_rfc822_header (FILE *f, HEADER *hdr, short user_hdrs,
     rfc2047_decode_adrlist (e->sender);
     rfc2047_decode_adrlist (e->x_original_to);
 
-    if (e->subject)
+    if (e->subject != NULL)
     {
       regmatch_t pmatch[1];
 
@@ -1561,7 +1561,7 @@ static int count_body_parts_check(LIST **checklist, BODY *b, int dflt)
                 dflt ? "[OK]   " : "[EXCL] ",
                 b->type, b->subtype ? b->subtype : "*",
                 a->major, a->minor, a->major_int);
-    if ((a->major_int == TYPEANY || a->major_int == b->type) &&
+    if (((a->major_int == TYPEANY) || (a->major_int == b->type)) &&
         (!b->subtype || !regexec(&a->minor_rx, b->subtype, 0, NULL, 0)))
     {
       mutt_debug (5, "yes\n");
@@ -1624,14 +1624,14 @@ static int count_body_parts (BODY *body, int flags)
 	AT_NOCOUNT("top-level multipart");
     }
 
-    if (bp->disposition == DISPINLINE &&
-        bp->type != TYPEMULTIPART && bp->type != TYPEMESSAGE && bp == body)
+    if ((bp->disposition == DISPINLINE) &&
+        (bp->type != TYPEMULTIPART) && (bp->type != TYPEMESSAGE) && (bp == body))
       AT_NOCOUNT("ignore fundamental inlines");
 
     /* If this body isn't scheduled for enumeration already, don't bother
      * profiling it further.
      */
-    if (shallcount)
+    if (shallcount != 0)
     {
       /* Turn off shallcount if message type is not in ok list,
        * or if it is in except list. Check is done separately for
@@ -1654,13 +1654,13 @@ static int count_body_parts (BODY *body, int flags)
       }
     }
 
-    if (shallcount)
+    if (shallcount != 0)
       count++;
     bp->attach_qualifies = shallcount ? 1 : 0;
 
     mutt_debug (5, "cbp: %p shallcount = %d\n", (void *)bp, shallcount);
 
-    if (shallrecurse)
+    if (shallrecurse != 0)
     {
       mutt_debug (5, "cbp: %p pre count = %d\n", (void *)bp, count);
       bp->attach_count = count_body_parts(bp->parts, flags & ~MUTT_PARTS_TOPLEVEL);
@@ -1669,18 +1669,18 @@ static int count_body_parts (BODY *body, int flags)
     }
   }
 
-  mutt_debug (5, "bp: return %d\n", count < 0 ? 0 : count);
-  return count < 0 ? 0 : count;
+  mutt_debug (5, "bp: return %d\n", (count < 0) ? 0 : count);
+  return (count < 0) ? 0 : count;
 }
 
 int mutt_count_body_parts (CONTEXT *ctx, HEADER *hdr)
 {
   short keep_parts = 0;
 
-  if (hdr->attach_valid)
+  if (hdr->attach_valid != 0)
     return hdr->attach_total;
 
-  if (hdr->content->parts)
+  if (hdr->content->parts != NULL)
     keep_parts = 1;
   else
     mutt_parse_mime_message (ctx, hdr);
@@ -1692,7 +1692,7 @@ int mutt_count_body_parts (CONTEXT *ctx, HEADER *hdr)
 
   hdr->attach_valid = 1;
 
-  if (!keep_parts)
+  if (keep_parts == 0)
     mutt_free_body (&hdr->content->parts);
 
   return hdr->attach_total;

@@ -48,7 +48,7 @@ int mutt_get_tmp_attachment (BODY *a)
   FILE *fpin = NULL, *fpout = NULL;
   struct stat st;
 
-  if(a->unlink)
+  if (a->unlink != 0)
     return 0;
 
   rfc1524_entry *entry = rfc1524_new_entry();
@@ -74,8 +74,8 @@ int mutt_get_tmp_attachment (BODY *a)
   else
     mutt_perror(fpin ? tempfile : a->filename);
 
-  if(fpin)  safe_fclose (&fpin);
-  if(fpout) safe_fclose (&fpout);
+  if (fpin != NULL)  safe_fclose (&fpin);
+  if (fpout != NULL) safe_fclose (&fpout);
 
   return a->unlink ? 0 : -1;
 }
@@ -97,7 +97,7 @@ int mutt_compose_attachment (BODY *a)
     if (entry->composecommand || entry->composetypecommand)
     {
 
-      if (entry->composetypecommand)
+      if (entry->composetypecommand != NULL)
 	strfcpy (command, entry->composetypecommand, sizeof (command));
       else
 	strfcpy (command, entry->composecommand, sizeof (command));
@@ -143,20 +143,20 @@ int mutt_compose_attachment (BODY *a)
 	  }
 
 	  b = mutt_read_mime_header (fp, 0);
-	  if (b)
+	  if (b != NULL)
 	  {
-	    if (b->parameter)
+	    if (b->parameter != NULL)
 	    {
 	      mutt_free_parameter (&a->parameter);
 	      a->parameter = b->parameter;
 	      b->parameter = NULL;
 	    }
-	    if (b->description) {
+	    if (b->description != NULL) {
 	      FREE (&a->description);
 	      a->description = b->description;
 	      b->description = NULL;
 	    }
-	    if (b->form_name)
+	    if (b->form_name != NULL)
 	    {
 	      FREE (&a->form_name);
 	      a->form_name = b->form_name;
@@ -200,7 +200,7 @@ int mutt_compose_attachment (BODY *a)
 
   bailout:
 
-  if(unlink_newfile)
+  if (unlink_newfile != 0)
     unlink(newfile);
 
   rfc1524_free_entry (&entry);
@@ -228,7 +228,7 @@ int mutt_edit_attachment (BODY *a)
   snprintf (type, sizeof (type), "%s/%s", TYPE (a), a->subtype);
   if (rfc1524_mailcap_lookup (a, type, entry, MUTT_EDIT))
   {
-    if (entry->editcommand)
+    if (entry->editcommand != NULL)
     {
 
       strfcpy (command, entry->editcommand, sizeof (command));
@@ -281,7 +281,7 @@ int mutt_edit_attachment (BODY *a)
 
   bailout:
 
-  if(unlink_newfile)
+  if (unlink_newfile != 0)
     unlink(newfile);
 
   rfc1524_free_entry (&entry);
@@ -296,7 +296,7 @@ void mutt_check_lookup_list (BODY *b, char *type, int len)
 
   for (; t; t = t->next) {
     i = mutt_strlen (t->data) - 1;
-    if ((i > 0 && t->data[i-1] == '/' && t->data[i] == '*' &&
+    if (((i > 0) && t->data[i-1] == '/' && t->data[i] == '*' &&
 	 (ascii_strncasecmp (type, t->data, i) == 0)) ||
 	(ascii_strcasecmp (type, t->data) == 0)) {
 
@@ -304,14 +304,14 @@ void mutt_check_lookup_list (BODY *b, char *type, int len)
     int n;
     if ((n = mutt_lookup_mime_type (&tmp, b->filename)) != TYPEOTHER) {
       snprintf (type, len, "%s/%s",
-                n == TYPEAUDIO ? "audio" :
-                n == TYPEAPPLICATION ? "application" :
-                n == TYPEIMAGE ? "image" :
-                n == TYPEMESSAGE ? "message" :
-                n == TYPEMODEL ? "model" :
-                n == TYPEMULTIPART ? "multipart" :
-                n == TYPETEXT ? "text" :
-                n == TYPEVIDEO ? "video" : "other",
+                (n == TYPEAUDIO) ? "audio" :
+                (n == TYPEAPPLICATION) ? "application" :
+                (n == TYPEIMAGE) ? "image" :
+                (n == TYPEMESSAGE) ? "message" :
+                (n == TYPEMODEL) ? "model" :
+                (n == TYPEMULTIPART) ? "multipart" :
+                (n == TYPETEXT) ? "text" :
+                (n == TYPEVIDEO) ? "video" : "other",
                 tmp.subtype);
       mutt_debug (1, "mutt_check_lookup_list: \"%s\" -> %s\n",
                   b->filename, type);
@@ -346,11 +346,11 @@ int mutt_view_attachment (FILE *fp, BODY *a, int flag, HEADER *hdr,
   if (WithCrypto && is_message && a->hdr && (a->hdr->security & ENCRYPT) &&
       !crypt_valid_passphrase(a->hdr->security))
     return rc;
-  use_mailcap = (flag == MUTT_MAILCAP ||
-		(flag == MUTT_REGULAR && mutt_needs_mailcap (a)));
+  use_mailcap = ((flag == MUTT_MAILCAP) ||
+		((flag == MUTT_REGULAR) && mutt_needs_mailcap (a)));
   snprintf (type, sizeof (type), "%s/%s", TYPE (a), a->subtype);
 
-  if (use_mailcap)
+  if (use_mailcap != 0)
   {
     entry = rfc1524_new_entry ();
     if (!rfc1524_mailcap_lookup (a, type, entry, 0))
@@ -368,16 +368,16 @@ int mutt_view_attachment (FILE *fp, BODY *a, int flag, HEADER *hdr,
     }
   }
 
-  if (use_mailcap)
+  if (use_mailcap != 0)
   {
-    if (!entry->command)
+    if (entry->command == NULL)
     {
       mutt_error (_("MIME type not defined.  Cannot view attachment."));
       goto return_error;
     }
     strfcpy (command, entry->command, sizeof (command));
 
-    if (fp)
+    if (fp != NULL)
     {
       fname = safe_strdup (a->filename);
       mutt_sanitize_filename (fname, 1);
@@ -388,7 +388,7 @@ int mutt_view_attachment (FILE *fp, BODY *a, int flag, HEADER *hdr,
     if (rfc1524_expand_filename (entry->nametemplate, fname,
 				 tempfile, sizeof (tempfile)))
     {
-      if (fp == NULL && (mutt_strcmp(tempfile, a->filename) != 0))
+      if ((fp == NULL) && (mutt_strcmp(tempfile, a->filename) != 0))
       {
 	/* send case: the file is already there */
 	if (safe_symlink (a->filename, tempfile) == -1)
@@ -405,7 +405,7 @@ int mutt_view_attachment (FILE *fp, BODY *a, int flag, HEADER *hdr,
     else if (fp == NULL) /* send case */
       strfcpy (tempfile, a->filename, sizeof (tempfile));
 
-    if (fp)
+    if (fp != NULL)
     {
       /* recv case: we need to save the attachment to a file */
       FREE (&fname);
@@ -418,7 +418,7 @@ int mutt_view_attachment (FILE *fp, BODY *a, int flag, HEADER *hdr,
     use_pager = entry->copiousoutput;
   }
 
-  if (use_pager)
+  if (use_pager != 0)
   {
     if (fp && !use_mailcap && a->filename)
     {
@@ -430,12 +430,12 @@ int mutt_view_attachment (FILE *fp, BODY *a, int flag, HEADER *hdr,
       mutt_mktemp (pagerfile, sizeof (pagerfile));
   }
 
-  if (use_mailcap)
+  if (use_mailcap != 0)
   {
     pid_t thepid = 0;
     int tempfd = -1, pagerfd = -1;
 
-    if (!use_pager)
+    if (use_pager == 0)
       mutt_endwin (NULL);
 
     if (use_pager || use_pipe)
@@ -466,9 +466,9 @@ int mutt_view_attachment (FILE *fp, BODY *a, int flag, HEADER *hdr,
 	goto return_error;
       }
 
-      if (use_pager)
+      if (use_pager != 0)
       {
-	if (a->description)
+	if (a->description != NULL)
 	  snprintf (descrip, sizeof (descrip),
 		    _("---Command: %-20.20s Description: %s"),
 		    command, a->description);
@@ -501,7 +501,7 @@ int mutt_view_attachment (FILE *fp, BODY *a, int flag, HEADER *hdr,
     if (flag == MUTT_AS_TEXT)
     {
       /* just let me see the raw data */
-      if (fp)
+      if (fp != NULL)
       {
 	/* Viewing from a received message.
 	 *
@@ -550,9 +550,9 @@ int mutt_view_attachment (FILE *fp, BODY *a, int flag, HEADER *hdr,
       unset_option (OPTVIEWATTACH);
     }
 
-    if (a->description)
+    if (a->description != NULL)
       strfcpy (descrip, a->description, sizeof (descrip));
-    else if (a->filename)
+    else if (a->filename != NULL)
       snprintf (descrip, sizeof (descrip), _("---Attachment: %s: %s"),
 	  a->filename, type);
     else
@@ -561,7 +561,7 @@ int mutt_view_attachment (FILE *fp, BODY *a, int flag, HEADER *hdr,
 
   /* We only reach this point if there have been no errors */
 
-  if (use_pager)
+  if (use_pager != 0)
   {
     pager_t info;
 
@@ -582,11 +582,11 @@ int mutt_view_attachment (FILE *fp, BODY *a, int flag, HEADER *hdr,
 
   return_error:
 
-  if (entry)
+  if (entry != NULL)
     rfc1524_free_entry (&entry);
   if (fp && tempfile[0])
     mutt_unlink (tempfile);
-  else if (unlink_tempfile)
+  else if (unlink_tempfile != 0)
     unlink(tempfile);
 
   if (pagerfile[0])
@@ -611,7 +611,7 @@ int mutt_pipe_attachment (FILE *fp, BODY *b, const char *path, char *outfile)
 
   mutt_endwin (NULL);
 
-  if (fp)
+  if (fp != NULL)
   {
     /* recv case */
 
@@ -683,7 +683,7 @@ bail:
   if (mutt_wait_filter (thepid) != 0)
     rv = 0;
 
-  if (rv == 0 || option (OPTWAITKEY))
+  if ((rv == 0) || option (OPTWAITKEY))
     mutt_any_key_to_continue (NULL);
   return rv;
 }
@@ -702,15 +702,15 @@ save_attachment_open (char *path, int flags)
 /* returns 0 on success, -1 on error */
 int mutt_save_attachment (FILE *fp, BODY *m, char *path, int flags, HEADER *hdr)
 {
-  if (fp)
+  if (fp != NULL)
   {
 
     /* recv mode */
 
     if(hdr &&
 	m->hdr &&
-	m->encoding != ENCBASE64 &&
-	m->encoding != ENCQUOTEDPRINTABLE &&
+ (m->encoding != ENCBASE64) &&
+ (m->encoding != ENCQUOTEDPRINTABLE) &&
 	mutt_is_message_type(m->type, m->subtype))
     {
       /* message type attachments are written to mail folders. */
@@ -884,7 +884,7 @@ int mutt_decode_save_attachment (FILE *fp, BODY *m, char *path,
   {
     m->length = 0;
     m->encoding = saved_encoding;
-    if (saved_parts)
+    if (saved_parts != NULL)
     {
       mutt_free_header (&m->hdr);
       m->parts = saved_parts;
@@ -925,7 +925,7 @@ int mutt_print_attachment (FILE *fp, BODY *a)
     if (rfc1524_expand_filename (entry->nametemplate, a->filename,
 						  newfile, sizeof (newfile)))
     {
-      if (!fp)
+      if (fp == NULL)
       {
 	if (safe_symlink(a->filename, newfile) == -1)
 	{
@@ -942,7 +942,7 @@ int mutt_print_attachment (FILE *fp, BODY *a)
     }
 
     /* in recv mode, save file to newfile first */
-    if (fp)
+    if (fp != NULL)
       mutt_save_attachment (fp, a, newfile, 0, NULL);
 
     strfcpy (command, entry->printcommand, sizeof (command));
@@ -951,7 +951,7 @@ int mutt_print_attachment (FILE *fp, BODY *a)
     mutt_endwin (NULL);
 
     /* interactive program */
-    if (piped)
+    if (piped != 0)
     {
       if ((ifp = fopen (newfile, "r")) == NULL)
       {
@@ -979,9 +979,9 @@ int mutt_print_attachment (FILE *fp, BODY *a)
 	mutt_any_key_to_continue (NULL);
     }
 
-    if (fp)
+    if (fp != NULL)
       mutt_unlink (newfile);
-    else if (unlink_newfile)
+    else if (unlink_newfile != 0)
       unlink(newfile);
 
     rfc1524_free_entry (&entry);

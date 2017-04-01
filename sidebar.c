@@ -87,7 +87,7 @@ get_incoming (void)
     }
     break;
   case SB_SRC_VIRT:
-    if (VirtIncoming)
+    if (VirtIncoming != NULL)
     {
       return VirtIncoming;
     }
@@ -135,7 +135,7 @@ static const char *cb_format_str(char *dest, size_t destlen, size_t col, int col
   dest[0] = 0;  /* Just in case there's nothing to do */
 
   BUFFY *b = sbe->buffy;
-  if (!b)
+  if (b == NULL)
     return src;
 
   int c = Context && (mutt_strcmp (Context->realpath, b->realpath) == 0);
@@ -149,17 +149,17 @@ static const char *cb_format_str(char *dest, size_t destlen, size_t col, int col
       break;
 
     case 'd':
-      if (!optional)
+      if (optional == 0)
       {
         snprintf (fmt, sizeof (fmt), "%%%sd", prefix);
         snprintf (dest, destlen, fmt, c ? Context->deleted : 0);
       }
-      else if ((c && Context->deleted == 0) || !c)
+      else if ((c && (Context->deleted == 0)) || !c)
         optional = 0;
       break;
 
     case 'F':
-      if (!optional)
+      if (optional == 0)
       {
         snprintf (fmt, sizeof (fmt), "%%%sd", prefix);
         snprintf (dest, destlen, fmt, b->msg_flagged);
@@ -169,17 +169,17 @@ static const char *cb_format_str(char *dest, size_t destlen, size_t col, int col
       break;
 
     case 'L':
-      if (!optional)
+      if (optional == 0)
       {
         snprintf (fmt, sizeof (fmt), "%%%sd", prefix);
         snprintf (dest, destlen, fmt, c ? Context->vcount : b->msg_count);
       }
-      else if ((c && Context->vcount == b->msg_count) || !c)
+      else if ((c && (Context->vcount == b->msg_count)) || !c)
         optional = 0;
       break;
 
     case 'N':
-      if (!optional)
+      if (optional == 0)
       {
         snprintf (fmt, sizeof (fmt), "%%%sd", prefix);
         snprintf (dest, destlen, fmt, b->msg_unread);
@@ -189,7 +189,7 @@ static const char *cb_format_str(char *dest, size_t destlen, size_t col, int col
       break;
 
     case 'n':
-      if (!optional)
+      if (optional == 0)
       {
         snprintf (fmt, sizeof (fmt), "%%%sc", prefix);
         snprintf (dest, destlen, fmt, b->new ? 'N' : ' ');
@@ -199,7 +199,7 @@ static const char *cb_format_str(char *dest, size_t destlen, size_t col, int col
       break;
 
     case 'S':
-      if (!optional)
+      if (optional == 0)
       {
         snprintf (fmt, sizeof (fmt), "%%%sd", prefix);
         snprintf (dest, destlen, fmt, b->msg_count);
@@ -209,12 +209,12 @@ static const char *cb_format_str(char *dest, size_t destlen, size_t col, int col
       break;
 
     case 't':
-      if (!optional)
+      if (optional == 0)
       {
         snprintf (fmt, sizeof (fmt), "%%%sd", prefix);
         snprintf (dest, destlen, fmt, c ? Context->tagged : 0);
       }
-      else if ((c && Context->tagged == 0) || !c)
+      else if ((c && (Context->tagged == 0)) || !c)
         optional = 0;
       break;
 
@@ -233,7 +233,7 @@ static const char *cb_format_str(char *dest, size_t destlen, size_t col, int col
       break;
   }
 
-  if (optional)
+  if (optional != 0)
     mutt_FormatString (dest, destlen, col, SidebarWidth, ifstring,   cb_format_str, (unsigned long) sbe, flags);
   else if (flags & MUTT_FORMAT_OPTIONAL)
     mutt_FormatString (dest, destlen, col, SidebarWidth, elsestring, cb_format_str, (unsigned long) sbe, flags);
@@ -353,7 +353,7 @@ static void update_entries_visibility (void)
 
     sbe->is_hidden = 0;
 
-    if (!new_only)
+    if (new_only == 0)
       continue;
 
     if ((i == OpnIndex) || (sbe->buffy->msg_unread  > 0) || sbe->buffy->new ||
@@ -437,7 +437,7 @@ static int select_next (void)
 {
   int entry = HilIndex;
 
-  if (!EntryCount || HilIndex < 0)
+  if (!EntryCount || (HilIndex < 0))
     return 0;
 
   do
@@ -464,7 +464,7 @@ static int select_next_new (void)
 {
   int entry = HilIndex;
 
-  if (!EntryCount || HilIndex < 0)
+  if (!EntryCount || (HilIndex < 0))
     return 0;
 
   do
@@ -497,7 +497,7 @@ static int select_prev (void)
 {
   int entry = HilIndex;
 
-  if (!EntryCount || HilIndex < 0)
+  if (!EntryCount || (HilIndex < 0))
     return 0;
 
   do
@@ -524,7 +524,7 @@ static int select_prev_new (void)
 {
   int entry = HilIndex;
 
-  if (!EntryCount || HilIndex < 0)
+  if (!EntryCount || (HilIndex < 0))
     return 0;
 
   do
@@ -557,7 +557,7 @@ static int select_page_down (void)
 {
   int orig_hil_index = HilIndex;
 
-  if (!EntryCount || BotIndex < 0)
+  if (!EntryCount || (BotIndex < 0))
     return 0;
 
   HilIndex = BotIndex;
@@ -580,7 +580,7 @@ static int select_page_up (void)
 {
   int orig_hil_index = HilIndex;
 
-  if (!EntryCount || TopIndex < 0)
+  if (!EntryCount || (TopIndex < 0))
     return 0;
 
   HilIndex = TopIndex;
@@ -712,7 +712,7 @@ static int draw_divider (int num_rows, int num_cols)
   }
   else if (delim_len == 0)
   {
-    if (SidebarDividerChar)
+    if (SidebarDividerChar != NULL)
       return 0; /* User has set empty string */
 
     delim_len = 1; /* Unset variable */
@@ -729,7 +729,7 @@ static int draw_divider (int num_rows, int num_cols)
     {
       altchar = SB_DIV_ASCII;
     }
-    else if (SidebarDividerChar)
+    else if (SidebarDividerChar != NULL)
     {
       for (i = 0; i < delim_len; i++)
       {
@@ -833,7 +833,7 @@ static void draw_sidebar (int num_rows, int num_cols, int div_width)
   for (entryidx = TopIndex; (entryidx < EntryCount) && (row < num_rows); entryidx++)
   {
     entry = Entries[entryidx];
-    if (entry->is_hidden)
+    if (entry->is_hidden != 0)
       continue;
     b = entry->buffy;
 
@@ -1099,7 +1099,7 @@ const char *mutt_sb_get_highlight (void)
   if (!option (OPTSIDEBAR))
     return NULL;
 
-  if (!EntryCount || HilIndex < 0)
+  if (!EntryCount || (HilIndex < 0))
     return NULL;
 
   return Entries[HilIndex]->buffy->path;
@@ -1117,7 +1117,7 @@ void mutt_sb_set_open_buffy (void)
 
   OpnIndex = -1;
 
-  if (!Context)
+  if (Context == NULL)
     return;
 
   for (entry = 0; entry < EntryCount; entry++)
@@ -1144,7 +1144,7 @@ void mutt_sb_notify_mailbox (BUFFY *b, int created)
 {
   int del_index;
 
-  if (!b)
+  if (b == NULL)
     return;
 
   if (sidebar_source == SB_SRC_NONE)
@@ -1153,7 +1153,7 @@ void mutt_sb_notify_mailbox (BUFFY *b, int created)
   /* Any new/deleted mailboxes will cause a refresh.  As long as
    * they're valid, our pointers will be updated in prepare_sidebar() */
 
-  if (created)
+  if (created != 0)
   {
     if (EntryCount >= EntryLen)
     {
@@ -1183,15 +1183,15 @@ void mutt_sb_notify_mailbox (BUFFY *b, int created)
     FREE (&Entries[del_index]);
     EntryCount--;
 
-    if (TopIndex > del_index || TopIndex == EntryCount)
+    if ((TopIndex > del_index) || (TopIndex == EntryCount))
       TopIndex--;
     if (OpnIndex == del_index)
       OpnIndex = -1;
     else if (OpnIndex > del_index)
       OpnIndex--;
-    if (HilIndex > del_index || HilIndex == EntryCount)
+    if ((HilIndex > del_index) || (HilIndex == EntryCount))
       HilIndex--;
-    if (BotIndex > del_index || BotIndex == EntryCount)
+    if ((BotIndex > del_index) || (BotIndex == EntryCount))
       BotIndex--;
 
     for (; del_index < EntryCount; del_index++)

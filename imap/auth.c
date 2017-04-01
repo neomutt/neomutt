@@ -62,7 +62,7 @@ int imap_authenticate (IMAP_DATA* idata)
     for (method = methods; method; method = delim)
     {
       delim = strchr (method, ':');
-      if (delim)
+      if (delim != NULL)
 	*delim++ = '\0';
       if (! method[0])
 	continue;

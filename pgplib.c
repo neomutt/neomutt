@@ -165,20 +165,20 @@ pgp_key_t pgp_remove_key (pgp_key_t *klist, pgp_key_t key)
   if (!klist || !*klist || !key)
     return NULL;
 
-  if (key->parent && key->parent != key)
+  if (key->parent && (key->parent != key))
     key = key->parent;
 
   last = klist;
   for (p = *klist; p && p != key; p = p->next)
     last = &p->next;
 
-  if (!p)
+  if (p == NULL)
     return NULL;
 
   for (q = p->next, r = p; q && q->parent == p; q = q->next)
     r = q;
 
-  if (r)
+  if (r != NULL)
     r->next = NULL;
 
   *last = q;
@@ -210,7 +210,7 @@ void pgp_free_key (pgp_key_t *kpp)
       r = q->next;
       _pgp_free_key (&q);
     }
-    if (p->parent)
+    if (p->parent != NULL)
       _pgp_free_key (&p->parent);
 
     _pgp_free_key (&p);

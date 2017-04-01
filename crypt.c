@@ -55,7 +55,7 @@ void crypt_current_time(STATE *s, char *app_name)
   time_t t;
   char p[STRING], tmp[STRING];
 
-  if (!WithCrypto)
+  if (WithCrypto == 0)
     return;
 
   if (option (OPTCRYPTTIMESTAMP))
@@ -80,7 +80,7 @@ void crypt_forget_passphrase (void)
   if ((WithCrypto & APPLICATION_SMIME))
     crypt_smime_void_passphrase ();
 
-  if (WithCrypto)
+  if (WithCrypto != 0)
     mutt_message(_("Passphrase(s) forgotten."));
 }
 
@@ -92,7 +92,7 @@ static void disable_coredumps (void)
   struct rlimit rl = {0, 0};
   static short done = 0;
 
-  if (!done)
+  if (done == 0)
   {
     setrlimit (RLIMIT_CORE, &rl);
     done = 1;
@@ -128,7 +128,7 @@ int mutt_protect (HEADER *msg, char *keylist)
   BODY *tmp_pgp_pbody = NULL;
   int flags = (WithCrypto & APPLICATION_PGP)? msg->security: 0;
 
-  if (!WithCrypto)
+  if (WithCrypto == 0)
     return -1;
 
   if (!(msg->security & (ENCRYPT | SIGN)))
@@ -154,7 +154,7 @@ int mutt_protect (HEADER *msg, char *keylist)
       /* they really want to send it inline... go for it */
       if (!isendwin ()) mutt_endwin(_("Invoking PGP..."));
       pbody = crypt_pgp_traditional_encryptsign (msg->content, flags, keylist);
-      if (pbody)
+      if (pbody != NULL)
       {
         msg->content = pbody;
         return 0;
@@ -239,13 +239,13 @@ int mutt_protect (HEADER *msg, char *keylist)
       if (new_keylist != keylist)
         FREE (&new_keylist);
 
-      if (!tmp_pbody)
+      if (tmp_pbody == NULL)
       {
 	/* signed ? free it! */
 	return -1;
       }
       /* free tmp_body if messages was signed AND encrypted ... */
-      if (tmp_smime_pbody != msg->content && tmp_smime_pbody != tmp_pbody)
+      if ((tmp_smime_pbody != msg->content) && (tmp_smime_pbody != tmp_pbody))
       {
 	/* detach and don't delete msg->content,
 	   which tmp_smime_pbody->parts after signing. */
@@ -273,7 +273,7 @@ int mutt_protect (HEADER *msg, char *keylist)
                                                flags & SIGN);
       if (new_keylist != keylist)
 	FREE(&new_keylist);
-      if (!pbody)
+      if (pbody == NULL)
       {
 	/* did we perform a retainable signature? */
 	if (flags != msg->security)
@@ -299,7 +299,7 @@ int mutt_protect (HEADER *msg, char *keylist)
     }
   }
 
-  if(pbody)
+  if (pbody != NULL)
       msg->content = pbody;
 
   return 0;
@@ -343,7 +343,7 @@ int mutt_is_multipart_encrypted (BODY *b)
   {
     char *p = NULL;
 
-    if (!b || b->type != TYPEMULTIPART ||
+    if (!b || (b->type != TYPEMULTIPART) ||
         !b->subtype || (ascii_strcasecmp (b->subtype, "encrypted") != 0) ||
         !(p = mutt_get_parameter ("protocol", b->parameter)) ||
         (ascii_strcasecmp (p, "application/pgp-encrypted") != 0))
@@ -362,12 +362,12 @@ int mutt_is_valid_multipart_pgp_encrypted (BODY *b)
     return 0;
 
   b = b->parts;
-  if (!b || b->type != TYPEAPPLICATION ||
+  if (!b || (b->type != TYPEAPPLICATION) ||
       !b->subtype || (ascii_strcasecmp (b->subtype, "pgp-encrypted") != 0))
     return 0;
 
   b = b->next;
-  if (!b || b->type != TYPEAPPLICATION ||
+  if (!b || (b->type != TYPEAPPLICATION) ||
       !b->subtype || (ascii_strcasecmp (b->subtype, "octet-stream") != 0))
     return 0;
 
@@ -389,28 +389,28 @@ int mutt_is_malformed_multipart_pgp_encrypted (BODY *b)
   if (!(WithCrypto & APPLICATION_PGP))
     return 0;
 
-  if (!b || b->type != TYPEMULTIPART ||
+  if (!b || (b->type != TYPEMULTIPART) ||
       !b->subtype || (ascii_strcasecmp (b->subtype, "mixed") != 0))
     return 0;
 
   b = b->parts;
-  if (!b || b->type != TYPETEXT ||
+  if (!b || (b->type != TYPETEXT) ||
       !b->subtype || (ascii_strcasecmp (b->subtype, "plain") != 0) ||
-       b->length != 0)
+       (b->length != 0))
     return 0;
 
   b = b->next;
-  if (!b || b->type != TYPEAPPLICATION ||
+  if (!b || (b->type != TYPEAPPLICATION) ||
       !b->subtype || (ascii_strcasecmp (b->subtype, "pgp-encrypted") != 0))
     return 0;
 
   b = b->next;
-  if (!b || b->type != TYPEAPPLICATION ||
+  if (!b || (b->type != TYPEAPPLICATION) ||
       !b->subtype || (ascii_strcasecmp (b->subtype, "octet-stream") != 0))
     return 0;
 
   b = b->next;
-  if (b)
+  if (b != NULL)
     return 0;
 
   return PGPENCRYPT;
@@ -434,7 +434,7 @@ int mutt_is_application_pgp (BODY *m)
 	  (ascii_strcasecmp (p, "keys-only") == 0))
 	t |= PGPKEY;
 
-      if(!t) t |= PGPENCRYPT;  /* not necessarily correct, but... */
+      if(t == 0) t |= PGPENCRYPT;  /* not necessarily correct, but... */
     }
 
     if (ascii_strcasecmp (m->subtype, "pgp-signed") == 0)
@@ -443,7 +443,7 @@ int mutt_is_application_pgp (BODY *m)
     if (ascii_strcasecmp (m->subtype, "pgp-keys") == 0)
       t |= PGPKEY;
   }
-  else if (m->type == TYPETEXT && (ascii_strcasecmp ("plain", m->subtype) == 0))
+  else if ((m->type == TYPETEXT) && (ascii_strcasecmp ("plain", m->subtype) == 0))
   {
     if (((p = mutt_get_parameter ("x-mutt-action", m->parameter))
 	 || (p = mutt_get_parameter ("x-action", m->parameter))
@@ -455,7 +455,7 @@ int mutt_is_application_pgp (BODY *m)
     else if (p && (ascii_strncasecmp ("pgp-keys", p, 7) == 0))
       t |= PGPKEY;
   }
-  if (t)
+  if (t != 0)
     t |= PGPINLINE;
 
   return t;
@@ -466,7 +466,7 @@ int mutt_is_application_smime (BODY *m)
   char *t=NULL;
   int len, complain=0;
 
-  if(!m)
+  if(m == NULL)
     return 0;
 
   if ((m->type & TYPEAPPLICATION) && m->subtype)
@@ -496,11 +496,11 @@ int mutt_is_application_smime (BODY *m)
 
     t = mutt_get_parameter ("name", m->parameter);
 
-    if (!t) t = m->d_filename;
-    if (!t) t = m->filename;
-    if (!t)
+    if (t == NULL) t = m->d_filename;
+    if (t == NULL) t = m->filename;
+    if (t == NULL)
     {
-      if (complain)
+      if (complain != 0)
 	mutt_message (_("S/MIME messages with no hints on content are unsupported."));
       return 0;
     }
@@ -508,7 +508,7 @@ int mutt_is_application_smime (BODY *m)
     /* no .p7c, .p10 support yet. */
 
     len = mutt_strlen (t) - 4;
-    if (len > 0 && *(t+len) == '.')
+    if ((len > 0) && *(t+len) == '.')
     {
       len++;
       if (ascii_strcasecmp ((t+len), "p7m") == 0)
@@ -532,10 +532,10 @@ int crypt_query (BODY *m)
 {
   int t = 0;
 
-  if (!WithCrypto)
+  if (WithCrypto == 0)
     return 0;
 
-  if (!m)
+  if (m == NULL)
     return 0;
 
   if (m->type == TYPEAPPLICATION)
@@ -550,7 +550,7 @@ int crypt_query (BODY *m)
       if (t && m->badsig) t |= BADSIGN;
     }
   }
-  else if ((WithCrypto & APPLICATION_PGP) && m->type == TYPETEXT)
+  else if ((WithCrypto & APPLICATION_PGP) && (m->type == TYPETEXT))
   {
     t |= mutt_is_application_pgp (m);
     if (t && m->goodsig)
@@ -567,7 +567,7 @@ int crypt_query (BODY *m)
       t |= GOODSIGN;
   }
 
-  if (m->type == TYPEMULTIPART || m->type == TYPEMESSAGE)
+  if ((m->type == TYPEMULTIPART) || (m->type == TYPEMESSAGE))
   {
     BODY *p = NULL;
     int u, v, w;
@@ -599,7 +599,7 @@ int crypt_write_signed(BODY *a, STATE *s, const char *tempfile)
   short hadcr;
   size_t bytes;
 
-  if (!WithCrypto)
+  if (WithCrypto == 0)
     return -1;
 
   if (!(fp = safe_fopen (tempfile, "w")))
@@ -640,7 +640,7 @@ int crypt_write_signed(BODY *a, STATE *s, const char *tempfile)
 
 void convert_to_7bit (BODY *a)
 {
-  if (!WithCrypto)
+  if (WithCrypto == 0)
     return;
 
   while (a)
@@ -655,7 +655,7 @@ void convert_to_7bit (BODY *a)
       else if ((WithCrypto & APPLICATION_PGP) && option (OPTPGPSTRICTENC))
 	convert_to_7bit (a->parts);
     }
-    else if (a->type == TYPEMESSAGE &&
+    else if ((a->type == TYPEMESSAGE) &&
 	     (ascii_strcasecmp(a->subtype, "delivery-status") != 0))
     {
       if(a->encoding != ENC7BIT)
@@ -665,7 +665,7 @@ void convert_to_7bit (BODY *a)
       a->encoding = ENCQUOTEDPRINTABLE;
     else if (a->encoding == ENCBINARY)
       a->encoding = ENCBASE64;
-    else if (a->content && a->encoding != ENCBASE64 &&
+    else if (a->content && (a->encoding != ENCBASE64) &&
 	     (a->content->from || (a->content->space &&
 				   option (OPTPGPSTRICTENC))))
       a->encoding = ENCQUOTEDPRINTABLE;
@@ -683,7 +683,7 @@ void crypt_extract_keys_from_messages (HEADER * h)
   ADDRESS *tmp = NULL;
   FILE *fpout = NULL;
 
-  if (!WithCrypto)
+  if (WithCrypto == 0)
     return;
 
   mutt_mktemp (tempfname, sizeof (tempfname));
@@ -696,7 +696,7 @@ void crypt_extract_keys_from_messages (HEADER * h)
   if ((WithCrypto & APPLICATION_PGP))
     set_option (OPTDONTHANDLEPGPKEYS);
 
-  if (!h)
+  if (h == NULL)
   {
     for (i = 0; i < Context->vcount; i++)
     {
@@ -739,7 +739,7 @@ void crypt_extract_keys_from_messages (HEADER * h)
 	    tmp = mutt_expand_aliases (Context->hdrs[Context->v2r[i]]
                                                     ->env->sender);
           mbox = tmp ? tmp->mailbox : NULL;
-	  if (mbox)
+	  if (mbox != NULL)
 	  {
 	    mutt_endwin (_("Trying to extract S/MIME certificates...\n"));
 	    crypt_smime_invoke_import (tempfname, mbox);
@@ -776,10 +776,10 @@ void crypt_extract_keys_from_messages (HEADER * h)
 	  mutt_copy_message (fpout, Context, h, 0, 0);
 
 	fflush(fpout);
-	if (h->env->from) tmp = mutt_expand_aliases (h->env->from);
-	else if (h->env->sender)  tmp = mutt_expand_aliases (h->env->sender);
+	if (h->env->from != NULL) tmp = mutt_expand_aliases (h->env->from);
+	else if (h->env->sender != NULL)  tmp = mutt_expand_aliases (h->env->sender);
 	mbox = tmp ? tmp->mailbox : NULL;
-	if (mbox) /* else ? */
+	if (mbox != NULL) /* else ? */
 	{
 	  mutt_message (_("Trying to extract S/MIME certificates...\n"));
 	  crypt_smime_invoke_import (tempfname, mbox);
@@ -809,7 +809,7 @@ int crypt_get_keys (HEADER *msg, char **keylist, int oppenc_mode)
    * keys if the user has requested this service.
    */
 
-  if (!WithCrypto)
+  if (WithCrypto == 0)
     return 0;
 
   if ((WithCrypto & APPLICATION_PGP))
@@ -819,7 +819,7 @@ int crypt_get_keys (HEADER *msg, char **keylist, int oppenc_mode)
   last = rfc822_append (last ? &last : &adrlist, msg->env->cc, 0);
   rfc822_append (last ? &last : &adrlist, msg->env->bcc, 0);
 
-  if (fqdn)
+  if (fqdn != NULL)
     rfc822_qualify (adrlist, fqdn);
   adrlist = mutt_remove_duplicates (adrlist);
 
@@ -862,14 +862,14 @@ void crypt_opportunistic_encrypt(HEADER *msg)
 {
   char *pgpkeylist = NULL;
 
-  if (!WithCrypto)
+  if (WithCrypto == 0)
     return;
 
   if (! (option (OPTCRYPTOPPORTUNISTICENCRYPT) && (msg->security & OPPENCRYPT)) )
     return;
 
   crypt_get_keys (msg, &pgpkeylist, 1);
-  if (pgpkeylist != NULL )
+  if ((pgpkeylist != NULL) )
   {
     msg->security |= ENCRYPT;
     FREE (&pgpkeylist);
@@ -884,7 +884,7 @@ void crypt_opportunistic_encrypt(HEADER *msg)
 
 static void crypt_fetch_signatures (BODY ***signatures, BODY *a, int *n)
 {
-  if (!WithCrypto)
+  if (WithCrypto == 0)
     return;
 
   for (; a; a = a->next)
@@ -918,12 +918,12 @@ int mutt_signed_handler (BODY *a, STATE *s)
   short goodsig = 1;
   int rc = 0;
 
-  if (!WithCrypto)
+  if (WithCrypto == 0)
     return -1;
 
   a = a->parts;
   signed_type = mutt_is_multipart_signed (b);
-  if (!signed_type)
+  if (signed_type == 0)
   {
     /* A null protocol value is already checked for in mutt_body_handler() */
     state_printf (s, _("[-- Error: "
@@ -939,17 +939,17 @@ int mutt_signed_handler (BODY *a, STATE *s)
     switch (signed_type)
     {
       case SIGN:
-        if (a->next->type != TYPEMULTIPART ||
+        if ((a->next->type != TYPEMULTIPART) ||
             (ascii_strcasecmp (a->next->subtype, "mixed") != 0))
           inconsistent = 1;
         break;
       case PGPSIGN:
-        if (a->next->type != TYPEAPPLICATION ||
+        if ((a->next->type != TYPEAPPLICATION) ||
             (ascii_strcasecmp (a->next->subtype, "pgp-signature") != 0))
           inconsistent = 1;
         break;
       case SMIMESIGN:
-        if (a->next->type != TYPEAPPLICATION ||
+        if ((a->next->type != TYPEAPPLICATION) ||
             ((ascii_strcasecmp (a->next->subtype, "x-pkcs7-signature") != 0) &&
              (ascii_strcasecmp (a->next->subtype, "pkcs7-signature") != 0)))
           inconsistent = 1;
@@ -958,7 +958,7 @@ int mutt_signed_handler (BODY *a, STATE *s)
         inconsistent = 1;
     }
   }
-  if (inconsistent)
+  if (inconsistent != 0)
   {
     state_attach_puts (_("[-- Error: "
                          "Inconsistent multipart/signed structure! --]\n\n"),
@@ -971,7 +971,7 @@ int mutt_signed_handler (BODY *a, STATE *s)
 
     crypt_fetch_signatures (&signatures, a->next, &sigcnt);
 
-    if (sigcnt)
+    if (sigcnt != 0)
     {
       mutt_mktemp (tempfile, sizeof (tempfile));
       if (crypt_write_signed (a, s, tempfile) == 0)
@@ -1066,7 +1066,7 @@ const char* crypt_get_fingerprint_or_id (char *p, const char **pphint,
       if (isid == 2)
         isid = 1;       /* it is an ID so far */
     }
-    else if (c)
+    else if (c != 0)
     {
       isid = 0;         /* not an ID */
       if (c == ' ' && ((hexdigits % 4) == 0))
@@ -1079,7 +1079,7 @@ const char* crypt_get_fingerprint_or_id (char *p, const char **pphint,
   /* If at end of input, check for correct fingerprint length and copy if. */
   pfcopy = (!c && ((hexdigits == 40) || (hexdigits == 32)) ? safe_strdup (pf) : NULL);
 
-  if (pfcopy)
+  if (pfcopy != NULL)
   {
     /* Use pfcopy to strip all spaces from fingerprint and as hint. */
     s1 = s2 = pfcopy;

@@ -41,7 +41,7 @@ static sort_t *AuxSort = NULL;
   code = AuxSort(a,b); \
   unset_option(OPTAUXSORT); \
 } \
-if (!code) \
+if (code == 0) \
   code = (*((HEADER **)a))->index - (*((HEADER **)b))->index;
 
 static int compare_score (const void *a, const void *b)
@@ -96,13 +96,13 @@ const char *mutt_get_name (ADDRESS *a)
 {
   ADDRESS *ali = NULL;
 
-  if (a)
+  if (a != NULL)
   {
     if (option (OPTREVALIAS) && (ali = alias_reverse_lookup (a)) && ali->personal)
       return ali->personal;
-    else if (a->personal)
+    else if (a->personal != NULL)
       return a->personal;
-    else if (a->mailbox)
+    else if (a->mailbox != NULL)
       return (mutt_addr_for_display (a));
   }
   /* don't return NULL to avoid segfault when printing/comparing */
@@ -154,11 +154,11 @@ static int compare_order (const void *a, const void *b)
   HEADER **hb = (HEADER **) b;
 
 #ifdef USE_NNTP
-  if (Context && Context->magic == MUTT_NNTP)
+  if (Context && (Context->magic == MUTT_NNTP))
   {
     anum_t na = NHDR (*ha)->article_num;
     anum_t nb = NHDR (*hb)->article_num;
-    int result = na == nb ? 0 : na > nb ? 1 : -1;
+    int result = (na == nb) ? 0 : (na > nb) ? 1 : -1;
     AUXSORT (result, a, b);
     return (SORTCODE (result));
   }
@@ -294,10 +294,10 @@ void mutt_sort_headers (CONTEXT *ctx, int init)
 
   unset_option (OPTNEEDRESORT);
 
-  if (!ctx)
+  if (ctx == NULL)
     return;
 
-  if (!ctx->msgcount)
+  if (ctx->msgcount == 0)
   {
     /* this function gets called by mutt_sync_mailbox(), which may have just
      * deleted all the messages.  the virtual message numbers are not updated
@@ -308,7 +308,7 @@ void mutt_sort_headers (CONTEXT *ctx, int init)
     return; /* nothing to do! */
   }
 
-  if (!ctx->quiet)
+  if (ctx->quiet == 0)
     mutt_message (_("Sorting mailbox..."));
 
   if (option (OPTNEEDRESCORE) && option (OPTSCORE))
@@ -336,7 +336,7 @@ void mutt_sort_headers (CONTEXT *ctx, int init)
     {
       i = Sort;
       Sort = SortAux;
-      if (ctx->tree)
+      if (ctx->tree != NULL)
 	ctx->tree = mutt_sort_subthreads (ctx->tree, 1);
       Sort = i;
       unset_option (OPTSORTSUBTHREADS);
@@ -373,17 +373,17 @@ void mutt_sort_headers (CONTEXT *ctx, int init)
     top = ctx->tree;
     while ((thread = top) != NULL)
     {
-      while (!thread->message)
+      while (thread->message == NULL)
 	thread = thread->child;
       h = thread->message;
 
-      if (h->collapsed)
+      if (h->collapsed != 0)
 	mutt_collapse_thread (ctx, h);
       top = top->next;
     }
     mutt_set_virtual (ctx);
   }
 
-  if (!ctx->quiet)
+  if (ctx->quiet == 0)
     mutt_clear_error ();
 }

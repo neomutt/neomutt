@@ -165,7 +165,7 @@ static const char *pgp_entry_fmt (char *dest,
 	  do_locales = 1;
 
 	len = destlen - 1;
-	while (len > 0 && *cp != ']')
+	while ((len > 0) && *cp != ']')
 	{
 	  if (*cp == '%')
 	  {
@@ -191,10 +191,10 @@ static const char *pgp_entry_fmt (char *dest,
 
 	tm = localtime (&key->gen_time);
 
-        if (!do_locales)
+        if (do_locales == 0)
           setlocale (LC_TIME, "C");
         strftime (buf2, sizeof (buf2), dest, tm);
-        if (!do_locales)
+        if (do_locales == 0)
           setlocale (LC_TIME, "");
 
 	snprintf (fmt, sizeof (fmt), "%%%ss", prefix);
@@ -204,42 +204,42 @@ static const char *pgp_entry_fmt (char *dest,
       }
       break;
     case 'n':
-      if (!optional)
+      if (optional == 0)
       {
 	snprintf (fmt, sizeof (fmt), "%%%sd", prefix);
 	snprintf (dest, destlen, fmt, entry->num);
       }
       break;
     case 'k':
-      if (!optional)
+      if (optional == 0)
       {
 	snprintf (fmt, sizeof (fmt), "%%%ss", prefix);
 	snprintf (dest, destlen, fmt, _pgp_keyid (key));
       }
       break;
     case 'u':
-      if (!optional)
+      if (optional == 0)
       {
 	snprintf (fmt, sizeof (fmt), "%%%ss", prefix);
 	snprintf (dest, destlen, fmt, NONULL (uid->addr));
       }
       break;
     case 'a':
-      if (!optional)
+      if (optional == 0)
       {
 	snprintf (fmt, sizeof (fmt), "%%%ss", prefix);
 	snprintf (dest, destlen, fmt, key->algorithm);
       }
       break;
     case 'l':
-      if (!optional)
+      if (optional == 0)
       {
 	snprintf (fmt, sizeof (fmt), "%%%sd", prefix);
 	snprintf (dest, destlen, fmt, key->keylen);
       }
       break;
     case 'f':
-      if (!optional)
+      if (optional == 0)
       {
 	snprintf (fmt, sizeof (fmt), "%%%sc", prefix);
 	snprintf (dest, destlen, fmt, pgp_flags (kflags));
@@ -248,7 +248,7 @@ static const char *pgp_entry_fmt (char *dest,
         optional = 0;
       break;
     case 'c':
-      if (!optional)
+      if (optional == 0)
       {
 	snprintf (fmt, sizeof (fmt), "%%%ss", prefix);
 	snprintf (dest, destlen, fmt, pgp_key_abilities (kflags));
@@ -257,7 +257,7 @@ static const char *pgp_entry_fmt (char *dest,
         optional = 0;
       break;
     case 't':
-      if (!optional)
+      if (optional == 0)
       {
 	snprintf (fmt, sizeof (fmt), "%%%sc", prefix);
 	snprintf (dest, destlen, fmt, trust_flags[uid->trust & 0x03]);
@@ -270,7 +270,7 @@ static const char *pgp_entry_fmt (char *dest,
       *dest = '\0';
   }
 
-  if (optional)
+  if (optional != 0)
     mutt_FormatString (dest, destlen, col, cols, ifstring, mutt_attach_fmt, data, 0);
   else if (flags & MUTT_FORMAT_OPTIONAL)
     mutt_FormatString (dest, destlen, col, cols, elsestring, mutt_attach_fmt, data, 0);
@@ -521,7 +521,7 @@ static pgp_key_t pgp_select_key (pgp_key_t keys,
   menu->help = helpstr;
   menu->data = KeyTable;
 
-  if (p)
+  if (p != NULL)
     snprintf (buf, sizeof (buf), _("PGP keys matching <%s>."), p->mailbox);
   else
     snprintf (buf, sizeof (buf), _("PGP keys matching \"%s\"."), s);
@@ -533,7 +533,7 @@ static pgp_key_t pgp_select_key (pgp_key_t keys,
 
   mutt_clear_error ();
 
-  while (!done)
+  while (done == 0)
   {
     switch (mutt_menu_loop (menu))
     {
@@ -599,26 +599,26 @@ static pgp_key_t pgp_select_key (pgp_key_t keys,
 	  (!pgp_id_is_valid (KeyTable[menu->current])
 	   || !pgp_id_is_strong (KeyTable[menu->current])))
       {
-	char *s = "";
+	char *str = "";
 	char buff[LONG_STRING];
 
 	if (KeyTable[menu->current]->flags & KEYFLAG_CANTUSE)
-	  s = N_("ID is expired/disabled/revoked.");
+	  str = N_("ID is expired/disabled/revoked.");
 	else switch (KeyTable[menu->current]->trust & 0x03)
 	{
 	  case 0:
-	    s = N_("ID has undefined validity.");
+	    str = N_("ID has undefined validity.");
 	    break;
 	  case 1:
-	    s = N_("ID is not valid.");
+	    str = N_("ID is not valid.");
 	    break;
 	  case 2:
-	    s = N_("ID is only marginally valid.");
+	    str = N_("ID is only marginally valid.");
 	    break;
 	}
 
-	snprintf (buff, sizeof (buff), _("%s Do you really want to use the key?"),
-		  _(s));
+	snprintf (buff, sizeof (buff), _("%str Do you really want to use the key?"),
+		  _(str));
 
 	if (mutt_yesorno (buff, MUTT_NO) != MUTT_YES)
 	{
@@ -657,7 +657,7 @@ pgp_key_t pgp_ask_for_key (char *tag, char *whatfor,
   mutt_clear_error ();
 
   resp[0] = 0;
-  if (whatfor)
+  if (whatfor != NULL)
   {
 
     for (l = id_defaults; l; l = l->next)
@@ -675,9 +675,9 @@ pgp_key_t pgp_ask_for_key (char *tag, char *whatfor,
     if (mutt_get_field (tag, resp, sizeof (resp), MUTT_CLEAR) != 0)
       return NULL;
 
-    if (whatfor)
+    if (whatfor != NULL)
     {
-      if (l)
+      if (l != NULL)
 	mutt_str_replace (&l->dflt, resp);
       else
       {
@@ -712,18 +712,18 @@ BODY *pgp_make_key_attachment (char *tempf)
 
   key = pgp_ask_for_key (_("Please enter the key ID: "), NULL, 0, PGP_PUBRING);
 
-  if (!key)    return NULL;
+  if (key == NULL)    return NULL;
 
   snprintf (tmp, sizeof (tmp), "0x%s", pgp_fpr_or_lkeyid (pgp_principal_key (key)));
   pgp_free_key (&key);
 
-  if (!tempf)
+  if (tempf == NULL)
   {
     mutt_mktemp (tempfb, sizeof (tempfb));
     tempf = tempfb;
   }
 
-  if ((tempfp = safe_fopen (tempf, tempf == tempfb ? "w" : "a")) == NULL)
+  if ((tempfp = safe_fopen (tempf, (tempf == tempfb) ? "w" : "a")) == NULL)
   {
     mutt_perror (_("Can't create temporary file"));
     return NULL;
@@ -795,7 +795,7 @@ static LIST *pgp_add_string_to_hints (LIST *hints, const char *str)
 static pgp_key_t *pgp_get_lastp (pgp_key_t p)
 {
   for (; p; p = p->next)
-    if (!p->next)
+    if (p->next == NULL)
       return &p->next;
 
   return NULL;
@@ -828,7 +828,7 @@ pgp_key_t pgp_getkeybyaddr (ADDRESS * a, short abilities, pgp_ring_t keyring,
 
   mutt_free_list (&hints);
 
-  if (!keys)
+  if (keys == NULL)
     return NULL;
 
   mutt_debug (5, "pgp_getkeybyaddr: looking for %s <%s>.\n",
@@ -866,7 +866,7 @@ pgp_key_t pgp_getkeybyaddr (ADDRESS * a, short abilities, pgp_ring_t keyring,
         {
           if (validity & PGP_KV_STRONGID)
           {
-            if (the_strong_valid_key && the_strong_valid_key != k)
+            if (the_strong_valid_key && (the_strong_valid_key != k))
               multi = 1;
             the_strong_valid_key = k;
           }
@@ -880,7 +880,7 @@ pgp_key_t pgp_getkeybyaddr (ADDRESS * a, short abilities, pgp_ring_t keyring,
       rfc822_free_address (&r);
     }
 
-    if (match)
+    if (match != 0)
     {
       *last  = pgp_principal_key (k);
       kn     = pgp_remove_key (&keys, *last);
@@ -890,16 +890,16 @@ pgp_key_t pgp_getkeybyaddr (ADDRESS * a, short abilities, pgp_ring_t keyring,
 
   pgp_free_key (&keys);
 
-  if (matches)
+  if (matches != NULL)
   {
-    if (oppenc_mode)
+    if (oppenc_mode != 0)
     {
-      if (the_strong_valid_key)
+      if (the_strong_valid_key != NULL)
       {
         pgp_remove_key (&matches, the_strong_valid_key);
         k = the_strong_valid_key;
       }
-      else if (a_valid_addrmatch_key)
+      else if (a_valid_addrmatch_key != NULL)
       {
         pgp_remove_key (&matches, a_valid_addrmatch_key);
         k = a_valid_addrmatch_key;
@@ -956,7 +956,7 @@ pgp_key_t pgp_getkeybystr (char *p, short abilities, pgp_ring_t keyring)
   keys = pgp_get_candidates (keyring, hints);
   mutt_free_list (&hints);
 
-  if (!keys)
+  if (keys == NULL)
     goto out;
 
   for (k = keys; k; k = kn)
@@ -968,7 +968,7 @@ pgp_key_t pgp_getkeybystr (char *p, short abilities, pgp_ring_t keyring)
     /* This shouldn't happen, but keys without any addresses aren't selectable
      * in pgp_select_key().
      */
-    if (!k->address)
+    if (k->address == NULL)
       continue;
 
     match = 0;
@@ -999,7 +999,7 @@ pgp_key_t pgp_getkeybystr (char *p, short abilities, pgp_ring_t keyring)
       }
     }
 
-    if (match)
+    if (match != 0)
     {
       *last = pgp_principal_key (k);
       kn    = pgp_remove_key (&keys, *last);
@@ -1009,7 +1009,7 @@ pgp_key_t pgp_getkeybystr (char *p, short abilities, pgp_ring_t keyring)
 
   pgp_free_key (&keys);
 
-  if (matches)
+  if (matches != NULL)
   {
     if ((k = pgp_select_key (matches, NULL, p)))
       pgp_remove_key (&matches, k);

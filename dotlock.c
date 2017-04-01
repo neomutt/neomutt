@@ -412,7 +412,7 @@ dotlock_prepare (char *bn, size_t l, const char *f, int _fd)
     dirname = ".";
   }
 
-  if (strlen (basename) + 1 > l)
+  if (strlen (basename) + (1 > l))
     return -1;
 
   strfcpy (bn, basename, l);
@@ -696,7 +696,7 @@ int main (int argc, char **argv)
     }
   }
 
-  if (optind == argc || Retry < 0)
+  if ((optind == argc) || (Retry < 0))
     usage (argv[0]);
 
   return dotlock_dispatch (argv[optind], -1);

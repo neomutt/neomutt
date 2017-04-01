@@ -87,7 +87,7 @@ int mutt_parse_score (BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err)
   for (ptr = Score, last = NULL; ptr; last = ptr, ptr = ptr->next)
     if (mutt_strcmp (pattern, ptr->str) == 0)
       break;
-  if (!ptr)
+  if (ptr == NULL)
   {
     if ((pat = mutt_pattern_comp (pattern, 0, err)) == NULL)
     {
@@ -95,7 +95,7 @@ int mutt_parse_score (BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err)
       return -1;
     }
     ptr = safe_calloc (1, sizeof (SCORE));
-    if (last)
+    if (last != NULL)
       last->next = ptr;
     else
       Score = ptr;
@@ -134,7 +134,7 @@ void mutt_score_message (CONTEXT *ctx, HEADER *hdr, int upd_ctx)
   {
     if (mutt_pattern_exec (tmp->pat, 0, NULL, hdr, &cache) > 0)
     {
-      if (tmp->exact || tmp->val == 9999 || tmp->val == -9999)
+      if (tmp->exact || (tmp->val == 9999) || tmp->val == -9999)
       {
 	hdr->score = tmp->val;
 	break;
@@ -177,7 +177,7 @@ int mutt_parse_unscore (BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err)
       {
 	if (mutt_strcmp (buf->data, tmp->str) == 0)
 	{
-	  if (last)
+	  if (last != NULL)
 	    last->next = tmp->next;
 	  else
 	    Score = tmp->next;

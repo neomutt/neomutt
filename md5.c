@@ -224,7 +224,7 @@ md5_process_bytes (const void *buffer, size_t len, struct md5_ctx *ctx)
   if (ctx->buflen != 0)
     {
       size_t left_over = ctx->buflen;
-      size_t add = 128 - left_over > len ? len : 128 - left_over;
+      size_t add = (128 - left_over) > len ? len : 128 - left_over;
 
       memcpy (&((char *) ctx->buffer)[left_over], buffer, add);
       ctx->buflen += add;

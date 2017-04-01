@@ -88,7 +88,7 @@ static char *utf7_to_utf8 (const char *u7, size_t u7len, char **u8,
 	  ch |= b >> (-k);
 	  if (ch < 0x80)
 	  {
-	    if (0x20 <= ch && ch < 0x7f)
+	    if ((0x20 <= ch) && (ch < 0x7f))
 	      /* Printable US-ASCII */
 	      goto bail;
 	    *p++ = ch;
@@ -108,13 +108,13 @@ static char *utf7_to_utf8 (const char *u7, size_t u7len, char **u8,
 	  k += 10;
 	}
       }
-      if (ch || k < 6)
+      if (ch || (k < 6))
 	/* Non-zero or too many extra bits */
 	goto bail;
       if (!u7len || *u7 != '-')
 	/* BASE64 not properly terminated */
 	goto bail;
-      if (u7len > 2 && u7[1] == '&' && u7[2] != '-')
+      if ((u7len > 2) && u7[1] == '&' && u7[2] != '-')
 	/* Adjacent BASE64 sections */
 	goto bail;
     }
@@ -125,11 +125,11 @@ static char *utf7_to_utf8 (const char *u7, size_t u7len, char **u8,
       *p++ = *u7;
   }
   *p++ = '\0';
-  if (u8len)
+  if (u8len != NULL)
     *u8len = p - buf;
 
   safe_realloc (&buf, p - buf);
-  if (u8)
+  if (u8 != NULL)
     *u8 = buf;
   return buf;
 
@@ -189,13 +189,13 @@ static char *utf8_to_utf7 (const char *u8, size_t u8len, char **u7,
 	goto bail;
       ch = (ch << 6) | (u8[i] & 0x3f);
     }
-    if (n > 1 && !(ch >> (n * 5 + 1)))
+    if ((n > 1) && !(ch >> (n * 5 + 1)))
       goto bail;
     u8 += n, u8len -= n;
 
-    if (ch < 0x20 || ch >= 0x7f)
+    if ((ch < 0x20) || (ch >= 0x7f))
     {
-      if (!base64)
+      if (base64 == 0)
       {
 	*p++ = '&';
 	base64 = 1;
@@ -213,7 +213,7 @@ static char *utf8_to_utf7 (const char *u8, size_t u8len, char **u7,
     }
     else
     {
-      if (base64)
+      if (base64 != 0)
       {
 	if (k > 10)
 	  *p++ = B64Chars[b];
@@ -226,13 +226,13 @@ static char *utf8_to_utf7 (const char *u8, size_t u8len, char **u7,
     }
   }
 
-  if (u8len)
+  if (u8len != 0)
   {
     FREE (&buf);
     return 0;
   }
 
-  if (base64)
+  if (base64 != 0)
   {
     if (k > 10)
       *p++ = B64Chars[b];
@@ -240,10 +240,10 @@ static char *utf8_to_utf7 (const char *u8, size_t u8len, char **u7,
   }
 
   *p++ = '\0';
-  if (u7len)
+  if (u7len != NULL)
     *u7len = p - buf;
   safe_realloc (&buf, p - buf);
-  if (u7)  *u7 = buf;
+  if (u7 != NULL)  *u7 = buf;
   return buf;
 
  bail:
@@ -253,13 +253,13 @@ static char *utf8_to_utf7 (const char *u8, size_t u8len, char **u7,
 
 void imap_utf_encode (IMAP_DATA *idata, char **s)
 {
-  if (Charset)
+  if (Charset != NULL)
   {
     char *t = safe_strdup (*s);
     if (t && !mutt_convert_string (&t, Charset, "utf-8", 0))
     {
       FREE (s);		/* __FREE_CHECKED__ */
-      if (idata->unicode)
+      if (idata->unicode != 0)
         *s = safe_strdup (t);
       else
         *s = utf8_to_utf7 (t, strlen (t), NULL, 0);
@@ -272,9 +272,9 @@ void imap_utf_decode (IMAP_DATA *idata, char **s)
 {
   char *t = NULL;
 
-  if (Charset)
+  if (Charset != NULL)
   {
-    if (idata->unicode)
+    if (idata->unicode != 0)
       t = safe_strdup (*s);
     else
       t = utf7_to_utf8 (*s, strlen (*s), 0, 0);

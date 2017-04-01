@@ -292,7 +292,7 @@ int mutt_chscmp (const char *s, const char *chs)
   char buffer[STRING];
   int a, b;
 
-  if (!s) return 0;
+  if (s == NULL) return 0;
 
   /* charsets may have extensions mutt_canonical_charset()
      leaves intact; we expect `chs' to originate from mutt
@@ -303,8 +303,8 @@ int mutt_chscmp (const char *s, const char *chs)
   mutt_canonical_charset (buffer, sizeof (buffer), s);
   a = mutt_strlen (buffer);
   b = mutt_strlen (chs);
-  return (ascii_strncasecmp (a > b ? buffer : chs,
-			     a > b ? chs : buffer, MIN(a,b)) == 0);
+  return (ascii_strncasecmp ((a > b) ? buffer : chs,
+			     (a > b) ? chs : buffer, MIN(a,b)) == 0);
 }
 
 char *mutt_get_default_charset (void)
@@ -386,9 +386,9 @@ size_t mutt_iconv (iconv_t cd, ICONV_CONST char **inbuf, size_t *inbytesleft,
     ret1 = iconv (cd, &ib, &ibl, &ob, &obl);
     if (ret1 != (size_t)-1)
       ret += ret1;
-    if (ibl && obl && errno == EILSEQ)
+    if (ibl && obl && (errno == EILSEQ))
     {
-      if (inrepls)
+      if (inrepls != NULL)
       {
 	/* Try replacing the input */
 	ICONV_CONST char **t;
@@ -399,7 +399,7 @@ size_t mutt_iconv (iconv_t cd, ICONV_CONST char **inbuf, size_t *inbytesleft,
 	  char *ob1 = ob;
 	  size_t obl1 = obl;
 	  iconv (cd, &ib1, &ibl1, &ob1, &obl1);
-	  if (!ibl1)
+	  if (ibl1 == 0)
 	  {
 	    ++ib, --ibl;
 	    ob = ob1, obl = obl1;
@@ -411,10 +411,10 @@ size_t mutt_iconv (iconv_t cd, ICONV_CONST char **inbuf, size_t *inbytesleft,
 	  continue;
       }
       /* Replace the output */
-      if (!outrepl)
+      if (outrepl == NULL)
 	outrepl = "?";
       iconv (cd, 0, 0, &ob, &obl);
-      if (obl)
+      if (obl != 0)
       {
 	int n = strlen (outrepl);
 	if (n > obl)
@@ -546,7 +546,7 @@ char *fgetconvs (char *buf, size_t l, FGETCONV *_fc)
   int c;
   size_t r;
 
-  for (r = 0; r + 1 < l;)
+  for (r = 0; (r + 1) < l;)
   {
     if ((c = fgetconv (_fc)) == EOF)
       break;
@@ -556,7 +556,7 @@ char *fgetconvs (char *buf, size_t l, FGETCONV *_fc)
   }
   buf[r] = '\0';
 
-  if (r)
+  if (r != 0)
     return buf;
   else
     return NULL;
@@ -566,18 +566,18 @@ int fgetconv (FGETCONV *_fc)
 {
   struct fgetconv_s *fc = (struct fgetconv_s *)_fc;
 
-  if (!fc)
+  if (fc == NULL)
     return EOF;
   if (fc->cd == (iconv_t)-1)
     return fgetc (fc->file);
-  if (!fc->p)
+  if (fc->p == NULL)
     return EOF;
   if (fc->p < fc->ob)
     return (unsigned char)*(fc->p)++;
 
   /* Try to convert some more */
   fc->p = fc->ob = fc->bufo;
-  if (fc->ibl)
+  if (fc->ibl != 0)
   {
     size_t obl = sizeof (fc->bufo);
     iconv (fc->cd, (ICONV_CONST char **)&fc->ib, &fc->ibl, &fc->ob, &obl);
@@ -589,19 +589,19 @@ int fgetconv (FGETCONV *_fc)
    * ask why it had stopped converting ... */
 
   /* Try to read some more */
-  if (fc->ibl == sizeof (fc->bufi) ||
-      (fc->ibl && fc->ib + fc->ibl < fc->bufi + sizeof (fc->bufi)))
+  if ((fc->ibl == sizeof(fc->bufi)) ||
+      (fc->ibl && (fc->ib + fc->ibl) < (fc->bufi + sizeof(fc->bufi))))
   {
     fc->p = 0;
     return EOF;
   }
-  if (fc->ibl)
+  if (fc->ibl != 0)
     memcpy (fc->bufi, fc->ib, fc->ibl);
   fc->ib = fc->bufi;
   fc->ibl += fread (fc->ib + fc->ibl, 1, sizeof (fc->bufi) - fc->ibl, fc->file);
 
   /* Try harder this time to convert some */
-  if (fc->ibl)
+  if (fc->ibl != 0)
   {
     size_t obl = sizeof (fc->bufo);
     mutt_iconv (fc->cd, (ICONV_CONST char **)&fc->ib, &fc->ibl, &fc->ob, &obl,
@@ -632,7 +632,7 @@ int mutt_check_charset (const char *s, int strict)
   if (mutt_is_utf8 (s))
     return 0;
 
-  if (!strict)
+  if (strict == 0)
     for (i = 0; PreferredMIMENames[i].key; i++)
     {
       if ((ascii_strcasecmp (PreferredMIMENames[i].key, s) == 0) ||

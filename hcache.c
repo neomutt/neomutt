@@ -117,7 +117,7 @@ lazy_realloc(void *ptr, size_t siz)
 {
   void **p = (void **) ptr;
 
-  if (p != NULL && siz < 4096)
+  if ((p != NULL) && (siz < 4096))
     return;
 
   safe_realloc(ptr, siz);
@@ -301,7 +301,7 @@ restore_list(LIST ** l, const unsigned char *d, int *off, int convert)
 static unsigned char *
 dump_buffer(BUFFER * b, unsigned char *d, int *off, int convert)
 {
-  if (!b)
+  if (b == NULL)
   {
     d = dump_int(0, d, off);
     return d;
@@ -323,7 +323,7 @@ restore_buffer(BUFFER ** b, const unsigned char *d, int *off, int convert)
   unsigned int used;
   unsigned int offset;
   restore_int(&used, d, off);
-  if (!used)
+  if (used == 0)
   {
     return;
   }
@@ -443,7 +443,7 @@ dump_envelope(ENVELOPE * e, unsigned char *d, int *off, int convert)
   d = dump_char(e->list_post, d, off, convert);
   d = dump_char(e->subject, d, off, convert);
 
-  if (e->real_subj)
+  if (e->real_subj != NULL)
     d = dump_int(e->real_subj - e->subject, d, off);
   else
     d = dump_int(-1, d, off);
@@ -515,7 +515,7 @@ crc_matches(const char *d, unsigned int crc)
   int off = sizeof (validate);
   unsigned int mycrc = 0;
 
-  if (!d)
+  if (d == NULL)
     return 0;
 
   restore_int(&mycrc, (unsigned char *) d, &off);
@@ -532,14 +532,14 @@ crc_matches(const char *d, unsigned int crc)
  */
 static int create_hcache_dir(const char *path)
 {
-  if (!path)
+  if (path == NULL)
     return 0;
 
   static char dir[_POSIX_PATH_MAX];
   strfcpy (dir, path, sizeof(dir));
 
   char *p = strrchr (dir, '/');
-  if (!p)
+  if (p == NULL)
     return 1;
 
   *p = 0;
@@ -596,11 +596,11 @@ static const char *hcache_per_folder(const char *path, const char *folder,
 
   /* We have a directory - no matter whether it exists, or not */
 
-  if (namer)
+  if (namer != NULL)
   {
     /* We have a mailbox-specific namer function */
     snprintf(hcpath, sizeof(hcpath), "%s%s", path, slash ? "" : "/");
-    if (!slash)
+    if (slash == 0)
       plen++;
 
     ret = namer(folder, hcpath + plen, sizeof(hcpath) - plen);
@@ -735,7 +735,7 @@ header_cache_t *
 mutt_hcache_open(const char *path, const char *folder, hcache_namer_t namer)
 {
   const hcache_ops_t *ops = hcache_get_ops();
-  if (!ops)
+  if (ops == NULL)
     return NULL;
 
   header_cache_t *h = safe_calloc(1, sizeof (header_cache_t));
@@ -788,7 +788,7 @@ mutt_hcache_open(const char *path, const char *folder, hcache_namer_t namer)
   path = hcache_per_folder(path, h->folder, namer);
 
   h->ctx = ops->open(path);
-  if (h->ctx)
+  if (h->ctx != NULL)
     return h;
   else
   {
@@ -796,7 +796,7 @@ mutt_hcache_open(const char *path, const char *folder, hcache_namer_t namer)
     if (unlink (path) == 0)
     {
       h->ctx = ops->open(path);
-      if (h->ctx)
+      if (h->ctx != NULL)
         return h;
     }
     FREE(&h->folder);
@@ -823,7 +823,7 @@ mutt_hcache_fetch(header_cache_t *h, const char *key, size_t keylen)
   void* data = NULL;
 
   data = mutt_hcache_fetch_raw (h, key, keylen);
-  if (!data)
+  if (data == NULL)
   {
     return NULL;
   }
@@ -870,7 +870,7 @@ mutt_hcache_store(header_cache_t *h, const char *key, size_t keylen,
   int dlen;
   int ret;
 
-  if (!h)
+  if (h == NULL)
     return -1;
 
   data = hcache_dump(h, header, &dlen, uidvalidity);
@@ -902,7 +902,7 @@ mutt_hcache_delete(header_cache_t *h, const char *key, size_t keylen)
   char path[_POSIX_PATH_MAX];
   const hcache_ops_t *ops = hcache_get_ops();
 
-  if (!h)
+  if (h == NULL)
     return -1;
 
   keylen = snprintf(path, sizeof(path), "%s%s", h->folder, key);

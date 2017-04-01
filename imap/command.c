@@ -52,7 +52,7 @@ static const char * const Capabilities[] = {
 
 static int cmd_queue_full (IMAP_DATA* idata)
 {
-  if ((idata->nextcmd + 1) % idata->cmdslots == idata->lastcmd)
+  if ((idata->nextcmd + 1) % (idata->cmdslots == idata->lastcmd))
     return 1;
 
   return 0;
@@ -94,7 +94,7 @@ static int cmd_queue (IMAP_DATA* idata, const char* cmdstr)
 
     rc = imap_exec (idata, NULL, IMAP_CMD_FAIL_OK);
 
-    if (rc < 0 && rc != -2)
+    if ((rc < 0) && rc != -2)
       return rc;
   }
 
@@ -122,7 +122,7 @@ static void cmd_handle_fatal (IMAP_DATA* idata)
   }
 
   imap_close_connection (idata);
-  if (!idata->recovering)
+  if (idata->recovering == 0)
   {
     idata->recovering = 1;
     if (imap_conn_find (&idata->conn->account, 0))
@@ -230,7 +230,7 @@ static void cmd_parse_fetch (IMAP_DATA* idata, char* s)
       h = NULL;
     }
 
-  if (!h)
+  if (h == NULL)
   {
     mutt_debug (3, "FETCH response ignored for this message\n");
     return;
@@ -254,7 +254,7 @@ static void cmd_parse_fetch (IMAP_DATA* idata, char* s)
   }
 
   /* If server flags could conflict with mutt's flags, reopen the mailbox. */
-  if (h->changed)
+  if (h->changed != 0)
     idata->reopen |= IMAP_EXPUNGE_PENDING;
   else {
     imap_set_flags (idata, h, s);
@@ -298,7 +298,7 @@ static void cmd_parse_list (IMAP_DATA* idata, char* s)
   char delimbuf[5]; /* worst case: "\\"\0 */
   long litlen;
 
-  if (idata->cmddata && idata->cmdtype == IMAP_CT_LIST)
+  if (idata->cmddata && (idata->cmdtype == IMAP_CT_LIST))
     list = (IMAP_LIST*)idata->cmddata;
   else
     list = &lb;
@@ -370,7 +370,7 @@ static void cmd_parse_lsub (IMAP_DATA* idata, char* s)
   ciss_url_t url;
   IMAP_LIST list;
 
-  if (idata->cmddata && idata->cmdtype == IMAP_CT_LIST)
+  if (idata->cmddata && (idata->cmdtype == IMAP_CT_LIST))
   {
     /* caller will handle response itself */
     cmd_parse_list (idata, s);
@@ -486,7 +486,7 @@ static void cmd_parse_search (IMAP_DATA* idata, const char* s)
   {
     uid = (unsigned int)atoi (s);
     h = (HEADER *)int_hash_find (idata->uid_hash, uid);
-    if (h)
+    if (h != NULL)
       h->matched = 1;
   }
 }
@@ -566,7 +566,7 @@ static void cmd_parse_status (IMAP_DATA* idata, char* s)
               status->messages, status->recent, status->unseen);
 
   /* caller is prepared to handle the result herself */
-  if (idata->cmddata && idata->cmdtype == IMAP_CT_STATUS)
+  if (idata->cmddata && (idata->cmdtype == IMAP_CT_STATUS))
   {
     memcpy (idata->cmddata, status, sizeof (IMAP_STATUS));
     return;
@@ -604,7 +604,7 @@ static void cmd_parse_status (IMAP_DATA* idata, char* s)
 
 	if (option(OPTMAILCHECKRECENT))
 	{
-	  if (olduv && olduv == status->uidvalidity)
+	  if (olduv && (olduv == status->uidvalidity))
 	  {
 	    if (oldun < status->uidnext)
 	      new = (status->unseen > 0);
@@ -625,11 +625,11 @@ static void cmd_parse_status (IMAP_DATA* idata, char* s)
           SidebarNeedsRedraw = 1;
 #endif
         inc->new = new;
-        if (new_msg_count)
+        if (new_msg_count != 0)
           inc->msg_count = status->messages;
         inc->msg_unread = status->unseen;
 
-	if (inc->new)
+	if (inc->new != 0)
 	  /* force back to keep detecting new mail until the mailbox is
 	     opened */
 	  status->uidnext = oldun;
@@ -684,7 +684,7 @@ static int cmd_handle_untagged (IMAP_DATA* idata)
       count = atoi (pn);
 
       if ( !(idata->reopen & IMAP_EXPUNGE_PENDING) &&
-	   count < idata->ctx->msgcount)
+	   (count < idata->ctx->msgcount))
       {
         /* Notes 6.0.3 has a tendency to report fewer messages exist than
          * it should. */
@@ -797,7 +797,7 @@ int imap_cmd_step (IMAP_DATA* idata)
     }
 
     /* back up over '\0' */
-    if (len)
+    if (len != 0)
       len--;
     c = mutt_socket_readln (idata->buf + len, idata->blen - len, idata->conn);
     if (c <= 0)
@@ -843,7 +843,7 @@ int imap_cmd_step (IMAP_DATA* idata)
     if (cmd->state == IMAP_CMD_NEW)
     {
       if (ascii_strncmp (idata->buf, cmd->seq, SEQLEN) == 0) {
-	if (!stillrunning)
+	if (stillrunning == 0)
 	{
 	  /* first command in queue has finished - move queue pointer up */
 	  idata->lastcmd = (idata->lastcmd + 1) % idata->cmdslots;
@@ -861,7 +861,7 @@ int imap_cmd_step (IMAP_DATA* idata)
   }
   while (c != idata->nextcmd);
 
-  if (stillrunning)
+  if (stillrunning != 0)
     rc = IMAP_CMD_CONTINUE;
   else
   {
@@ -885,7 +885,7 @@ const char* imap_cmd_trailer (IMAP_DATA* idata)
   static const char* notrailer = "";
   const char* s = idata->buf;
 
-  if (!s)
+  if (s == NULL)
   {
     mutt_debug (2, "imap_cmd_trailer: not a tagged response\n");
     return notrailer;
@@ -902,7 +902,7 @@ const char* imap_cmd_trailer (IMAP_DATA* idata)
   }
 
   s = imap_next_word ((char *)s);
-  if (!s)
+  if (s == NULL)
     return notrailer;
 
   return s;
@@ -937,12 +937,12 @@ int imap_exec (IMAP_DATA* idata, const char* cmdstr, int flags)
   while (rc == IMAP_CMD_CONTINUE);
   mutt_allow_interrupt (0);
 
-  if (rc == IMAP_CMD_NO && (flags & IMAP_CMD_FAIL_OK))
+  if ((rc == IMAP_CMD_NO) && (flags & IMAP_CMD_FAIL_OK))
     return -2;
 
   if (rc != IMAP_CMD_OK)
   {
-    if ((flags & IMAP_CMD_FAIL_OK) && idata->status != IMAP_FATAL)
+    if ((flags & IMAP_CMD_FAIL_OK) && (idata->status != IMAP_FATAL))
       return -2;
 
     mutt_debug (1, "imap_exec: command failed: %s\n", idata->buf);
@@ -973,7 +973,7 @@ void imap_cmd_finish (IMAP_DATA* idata)
 
     if (!(idata->reopen & IMAP_EXPUNGE_PENDING) &&
 	(idata->reopen & IMAP_NEWMAIL_PENDING)
-	&& count > idata->ctx->msgcount)
+	&& (count > idata->ctx->msgcount))
     {
       /* read new mail messages */
       mutt_debug (2, "imap_cmd_finish: Fetching new mail\n");

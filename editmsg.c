@@ -73,7 +73,7 @@ static int edit_one_message (CONTEXT *ctx, HEADER *cur)
   }
 
   rc = mutt_append_message (&tmpctx, ctx, cur, 0, CH_NOLEN |
-	((ctx->magic == MUTT_MBOX || ctx->magic == MUTT_MMDF) ? 0 : CH_NOSTATUS));
+	(((ctx->magic == MUTT_MBOX) || (ctx->magic == MUTT_MMDF)) ? 0 : CH_NOSTATUS));
   oerrno = errno;
 
   mx_close_mailbox (&tmpctx, NULL);
@@ -185,7 +185,7 @@ static int edit_one_message (CONTEXT *ctx, HEADER *cur)
   mx_close_mailbox (&tmpctx, NULL);
 
   bail:
-  if (fp) safe_fclose (&fp);
+  if (fp != NULL) safe_fclose (&fp);
 
   if (rc >= 0)
     unlink (tmp);
@@ -210,7 +210,7 @@ int mutt_edit_message (CONTEXT *ctx, HEADER *hdr)
 {
   int i, j;
 
-  if (hdr)
+  if (hdr != NULL)
     return edit_one_message (ctx, hdr);
 
 

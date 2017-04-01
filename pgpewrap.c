@@ -26,7 +26,7 @@ int main(int argc, char **argv) {
         }
 
 	opts = malloc((2 * argc + 1) * sizeof (* opts));	/* __MEM_CHECKED__ */
-	if(!opts) {
+	if(opts == NULL) {
 		perror(argv[0]);
 		exit(2);
 	}
@@ -51,7 +51,7 @@ int main(int argc, char **argv) {
 			}
 			pfx = argv[i-1];
 		}
-		if(pfx)
+		if (pfx != NULL)
 			*opt++ = pfx;
 		*opt++ = argv[i++];
 	}

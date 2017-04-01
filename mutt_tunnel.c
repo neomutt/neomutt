@@ -70,7 +70,7 @@ static int tunnel_socket_open (CONNECTION *conn)
   {
     mutt_unblock_signals_system (0);
     devnull = open ("/dev/null", O_RDWR);
-    if (devnull < 0 ||
+    if ((devnull < 0) ||
         dup2 (pout[0], STDIN_FILENO) < 0 ||
         dup2 (pin[1], STDOUT_FILENO) < 0 ||
         dup2 (devnull, STDERR_FILENO) < 0)

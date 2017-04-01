@@ -209,7 +209,7 @@ static void redraw_mix_line (LIST *chain)
   /* L10N: "Mix" refers to the MixMaster chain for anonymous email */
   mutt_window_mvprintw (MuttIndexWindow, HDR_MIX, 0, TITLE_FMT, _("Mix: "));
 
-  if (!chain)
+  if (chain == NULL)
   {
     addstr (_("<no chain defined>"));
     mutt_window_clrtoeol (MuttIndexWindow);
@@ -222,11 +222,11 @@ static void redraw_mix_line (LIST *chain)
     if (t && t[0] == '0' && t[1] == '\0')
       t = "<random>";
 
-    if (c + mutt_strlen (t) + 2 >= MuttIndexWindow->cols)
+    if (c + mutt_strlen (t) + (2 >= MuttIndexWindow->cols))
       break;
 
     addstr (NONULL(t));
-    if (chain->next)
+    if (chain->next != NULL)
       addstr (", ");
 
     c += mutt_strlen (t) + 2;
@@ -309,7 +309,7 @@ static void draw_envelope (HEADER *msg, char *fcc)
   mutt_window_mvprintw (MuttIndexWindow, HDR_FCC, 0, TITLE_FMT, Prompts[HDR_FCC]);
   mutt_paddstr (W, fcc);
 
-  if (WithCrypto)
+  if (WithCrypto != 0)
     redraw_crypt_lines (msg);
 
 #ifdef MIXMASTER
@@ -366,7 +366,7 @@ static int delete_attachment (MUTTMENU *menu, short *idxlen, int x)
 
   menu->redraw = REDRAW_INDEX | REDRAW_STATUS;
 
-  if (x == 0 && menu->max == 1)
+  if ((x == 0) && (menu->max == 1))
   {
     mutt_error (_("You may not delete the only attachment."));
     idx[x]->content->tagged = 0;
@@ -398,7 +398,7 @@ static int delete_attachment (MUTTMENU *menu, short *idxlen, int x)
 static void update_idx (MUTTMENU *menu, ATTACHPTR **idx, short idxlen)
 {
   idx[idxlen]->level = (idxlen > 0) ? idx[idxlen-1]->level : 0;
-  if (idxlen)
+  if (idxlen != 0)
     idx[idxlen - 1]->content->next = idx[idxlen]->content;
   idx[idxlen]->content->aptr = idx[idxlen];
   menu->current = idxlen++;
@@ -428,7 +428,7 @@ static unsigned long cum_attachs_size (MUTTMENU *menu)
   {
     b = idx[i]->content;
 
-    if (!b->content)
+    if (b->content == NULL)
       b->content = mutt_get_content_info (b->filename, b);
 
     if ((info = b->content))
@@ -508,7 +508,7 @@ compose_format_str (char *buf, size_t buflen, size_t col, int cols, char op, con
       break;
   }
 
-  if (optional)
+  if (optional != 0)
     compose_status_line (buf, buflen, col, cols, menu, ifstring);
   else if (flags & MUTT_FORMAT_OPTIONAL)
     compose_status_line (buf, buflen, col, cols, menu, elsestring);
@@ -568,7 +568,7 @@ int mutt_compose_menu (HEADER *msg,   /* structure for new message */
   menu->tag = mutt_tag_attach;
   menu->data = idx;
 #ifdef USE_NNTP
-  if (news)
+  if (news != 0)
     menu->help = mutt_compile_help (helpstr, sizeof (helpstr), MENU_COMPOSE, ComposeNewsHelp);
   else
 #endif
@@ -592,7 +592,7 @@ int mutt_compose_menu (HEADER *msg,   /* structure for new message */
 	break;
       case OP_COMPOSE_EDIT_TO:
 #ifdef USE_NNTP
-	if (news)
+	if (news != 0)
 	  break;
 #endif
 	menu->redraw = edit_address_list (HDR_TO, &msg->env->to);
@@ -605,7 +605,7 @@ int mutt_compose_menu (HEADER *msg,   /* structure for new message */
         break;
       case OP_COMPOSE_EDIT_BCC:
 #ifdef USE_NNTP
-	if (news)
+	if (news != 0)
 	  break;
 #endif
 	menu->redraw = edit_address_list (HDR_BCC, &msg->env->bcc);
@@ -618,7 +618,7 @@ int mutt_compose_menu (HEADER *msg,   /* structure for new message */
 	break;
       case OP_COMPOSE_EDIT_CC:
 #ifdef USE_NNTP
-	if (news)
+	if (news != 0)
 	  break;
 #endif
 	menu->redraw = edit_address_list (HDR_CC, &msg->env->cc);
@@ -631,9 +631,9 @@ int mutt_compose_menu (HEADER *msg,   /* structure for new message */
         break;
 #ifdef USE_NNTP
       case OP_COMPOSE_EDIT_NEWSGROUPS:
-	if (news)
+	if (news != 0)
 	{
-	  if (msg->env->newsgroups)
+	  if (msg->env->newsgroups != NULL)
 	    strfcpy (buf, msg->env->newsgroups, sizeof (buf));
 	  else
 	    buf[0] = 0;
@@ -641,7 +641,7 @@ int mutt_compose_menu (HEADER *msg,   /* structure for new message */
 	  {
 	    mutt_str_replace (&msg->env->newsgroups, buf);
 	    mutt_window_move (MuttIndexWindow, HDR_TO, HDR_XOFFSET);
-	    if (msg->env->newsgroups)
+	    if (msg->env->newsgroups != NULL)
 	      mutt_paddstr (W, msg->env->newsgroups);
 	    else
 	      clrtoeol ();
@@ -649,9 +649,9 @@ int mutt_compose_menu (HEADER *msg,   /* structure for new message */
 	}
 	break;
       case OP_COMPOSE_EDIT_FOLLOWUP_TO:
-	if (news)
+	if (news != 0)
 	{
-	  if (msg->env->followup_to)
+	  if (msg->env->followup_to != NULL)
 	    strfcpy (buf, msg->env->followup_to, sizeof (buf));
 	  else
 	    buf[0] = 0;
@@ -659,7 +659,7 @@ int mutt_compose_menu (HEADER *msg,   /* structure for new message */
 	  {
 	    mutt_str_replace (&msg->env->followup_to, buf);
 	    mutt_window_move (MuttIndexWindow, HDR_CC, HDR_XOFFSET);
-	    if (msg->env->followup_to)
+	    if (msg->env->followup_to != NULL)
 	      mutt_paddstr (W, msg->env->followup_to);
 	    else
 	      clrtoeol ();
@@ -669,7 +669,7 @@ int mutt_compose_menu (HEADER *msg,   /* structure for new message */
       case OP_COMPOSE_EDIT_X_COMMENT_TO:
 	if (news && option (OPTXCOMMENTTO))
 	{
-	  if (msg->env->x_comment_to)
+	  if (msg->env->x_comment_to != NULL)
 	    strfcpy (buf, msg->env->x_comment_to, sizeof (buf));
 	  else
 	    buf[0] = 0;
@@ -677,7 +677,7 @@ int mutt_compose_menu (HEADER *msg,   /* structure for new message */
 	  {
 	    mutt_str_replace (&msg->env->x_comment_to, buf);
 	    mutt_window_move (MuttIndexWindow, HDR_BCC, HDR_XOFFSET);
-	    if (msg->env->x_comment_to)
+	    if (msg->env->x_comment_to != NULL)
 	      mutt_paddstr (W, msg->env->x_comment_to);
 	    else
 	      clrtoeol ();
@@ -686,7 +686,7 @@ int mutt_compose_menu (HEADER *msg,   /* structure for new message */
 	break;
 #endif
       case OP_COMPOSE_EDIT_SUBJECT:
-	if (msg->env->subject)
+	if (msg->env->subject != NULL)
 	  strfcpy (buf, msg->env->subject, sizeof (buf));
 	else
 	  buf[0] = 0;
@@ -694,7 +694,7 @@ int mutt_compose_menu (HEADER *msg,   /* structure for new message */
 	{
 	  mutt_str_replace (&msg->env->subject, buf);
 	  mutt_window_move (MuttIndexWindow, HDR_SUBJECT, HDR_XOFFSET);
-	  if (msg->env->subject)
+	  if (msg->env->subject != NULL)
 	    mutt_paddstr (W, msg->env->subject);
 	  else
 	    mutt_window_clrtoeol(MuttIndexWindow);
@@ -730,8 +730,8 @@ int mutt_compose_menu (HEADER *msg,   /* structure for new message */
 	/* fall through */
       case OP_COMPOSE_EDIT_HEADERS:
 	if ((mutt_strcmp ("builtin", Editor) != 0) &&
-	    (op == OP_COMPOSE_EDIT_HEADERS ||
-	    (op == OP_COMPOSE_EDIT_MESSAGE && option (OPTEDITHDRS))))
+	    ((op == OP_COMPOSE_EDIT_HEADERS) ||
+	    ((op == OP_COMPOSE_EDIT_MESSAGE) && option (OPTEDITHDRS))))
 	{
 	  char *tag = NULL, *err = NULL;
 	  mutt_env_to_local (msg->env);
@@ -820,7 +820,7 @@ int mutt_compose_menu (HEADER *msg,   /* structure for new message */
 	      *fname == '\0')
 	    break;
 
-	  if (idxlen + numfiles >= idxmax)
+	  if ((idxlen + numfiles) >= idxmax)
 	  {
 	    safe_realloc (&idx, sizeof (ATTACHPTR *) * (idxmax += 5 + numfiles));
 	    menu->data = idx;
@@ -846,7 +846,7 @@ int mutt_compose_menu (HEADER *msg,   /* structure for new message */
 	  }
 
 	  FREE (&files);
-	  if (!error) mutt_clear_error ();
+	  if (error == 0) mutt_clear_error ();
 
 	  menu->redraw |= REDRAW_INDEX | REDRAW_STATUS;
 	}
@@ -876,7 +876,7 @@ int mutt_compose_menu (HEADER *msg,   /* structure for new message */
 	  }
 #endif
 
-	  if (Context)
+	  if (Context != NULL)
 #ifdef USE_NNTP
 	  if ((op == OP_COMPOSE_ATTACH_MESSAGE) ^ (Context->magic == MUTT_NNTP))
 #endif
@@ -919,7 +919,7 @@ int mutt_compose_menu (HEADER *msg,   /* structure for new message */
 	    break;
 	  }
 
-	  if (!ctx->msgcount)
+	  if (ctx->msgcount == 0)
 	  {
 	    mx_close_mailbox (ctx, NULL);
 	    FREE (&ctx);
@@ -936,7 +936,7 @@ int mutt_compose_menu (HEADER *msg,   /* structure for new message */
 	  close = mutt_index_menu ();
 	  unset_option(OPTATTACHMSG);
 
-	  if (!Context)
+	  if (Context == NULL)
 	  {
 	    /* go back to the folder we started from */
 	    Context = this;
@@ -947,7 +947,7 @@ int mutt_compose_menu (HEADER *msg,   /* structure for new message */
 	    break;
 	  }
 
-	  if (idxlen + Context->tagged >= idxmax)
+	  if ((idxlen + Context->tagged) >= idxmax)
 	  {
 	    safe_realloc (&idx, sizeof (ATTACHPTR *) * (idxmax += 5 + Context->tagged));
 	    menu->data = idx;
@@ -956,7 +956,7 @@ int mutt_compose_menu (HEADER *msg,   /* structure for new message */
 	  for (i = 0; i < Context->msgcount; i++)
 	  {
 	    h = Context->hdrs[i];
-	    if (h->tagged)
+	    if (h->tagged != 0)
 	    {
 	      idx[idxlen] = safe_calloc (1, sizeof (ATTACHPTR));
 	      idx[idxlen]->content = mutt_make_message_attach (Context, h, 1);
@@ -993,9 +993,9 @@ int mutt_compose_menu (HEADER *msg,   /* structure for new message */
 	if (delete_attachment (menu, &idxlen, menu->current) == -1)
 	  break;
 	mutt_update_tree (idx, idxlen);
-	if (idxlen)
+	if (idxlen != 0)
 	{
-	  if (menu->current > idxlen - 1)
+	  if (menu->current > (idxlen - 1))
 	    menu->current = idxlen - 1;
 	}
 	else
@@ -1019,7 +1019,7 @@ int mutt_compose_menu (HEADER *msg,   /* structure for new message */
 	  break;
 	}
         CURRENT->noconv = !CURRENT->noconv;
-        if (CURRENT->noconv)
+        if (CURRENT->noconv != 0)
 	  mutt_message (_("The current attachment won't be converted."));
         else
 	  mutt_message (_("The current attachment will be converted."));
@@ -1046,12 +1046,12 @@ int mutt_compose_menu (HEADER *msg,   /* structure for new message */
 
       case OP_COMPOSE_UPDATE_ENCODING:
         CHECK_COUNT;
-        if (menu->tagprefix)
+        if (menu->tagprefix != 0)
         {
 	  BODY *top = NULL;
 	  for (top = msg->content; top; top = top->next)
 	  {
-	    if (top->tagged)
+	    if (top->tagged != 0)
 	      mutt_update_encoding (top);
 	  }
 	  menu->redraw = REDRAW_FULL;
@@ -1090,7 +1090,7 @@ int mutt_compose_menu (HEADER *msg,   /* structure for new message */
 	if (mutt_get_field ("Content-Transfer-Encoding: ", buf,
 					    sizeof (buf), 0) == 0 && buf[0])
 	{
-	  if ((i = mutt_check_encoding (buf)) != ENCOTHER && i != ENCUUENCODED)
+	  if ((i = mutt_check_encoding (buf)) != ENCOTHER && (i != ENCUUENCODED))
 	  {
 	    idx[menu->current]->content->encoding = i;
 	    menu->redraw = REDRAW_CURRENT | REDRAW_STATUS;
@@ -1151,12 +1151,12 @@ int mutt_compose_menu (HEADER *msg,   /* structure for new message */
 
       case OP_COMPOSE_GET_ATTACHMENT:
         CHECK_COUNT;
-        if(menu->tagprefix)
+        if (menu->tagprefix != 0)
         {
 	  BODY *top = NULL;
 	  for(top = msg->content; top; top = top->next)
 	  {
-	    if(top->tagged)
+	    if (top->tagged != 0)
 	      mutt_get_tmp_attachment(top);
 	  }
 	  menu->redraw = REDRAW_FULL;
@@ -1322,7 +1322,7 @@ int mutt_compose_menu (HEADER *msg,   /* structure for new message */
       case OP_PIPE:
       case OP_FILTER:
         CHECK_COUNT;
-	mutt_pipe_attachment_list (NULL, menu->tagprefix, menu->tagprefix ? msg->content : idx[menu->current]->content, op == OP_FILTER);
+	mutt_pipe_attachment_list (NULL, menu->tagprefix, menu->tagprefix ? msg->content : idx[menu->current]->content, (op == OP_FILTER));
 	if (op == OP_FILTER) /* cte might have changed */
 	  menu->redraw = menu->tagprefix ? REDRAW_FULL : REDRAW_CURRENT;
         menu->redraw |= REDRAW_STATUS;
@@ -1387,12 +1387,12 @@ int mutt_compose_menu (HEADER *msg,   /* structure for new message */
       case OP_COMPOSE_WRITE_MESSAGE:
 
        fname[0] = '\0';
-       if (Context)
+       if (Context != NULL)
        {
 	 strfcpy (fname, NONULL (Context->path), sizeof (fname));
 	 mutt_pretty_mailbox (fname, sizeof (fname));
        }
-       if (idxlen)
+       if (idxlen != 0)
          msg->content = idx[0]->content;
        if (mutt_enter_fname (_("Write message to mailbox"), fname, sizeof (fname),
                              &menu->redraw, 1) != -1 && fname[0])
@@ -1400,7 +1400,7 @@ int mutt_compose_menu (HEADER *msg,   /* structure for new message */
          mutt_message (_("Writing message to %s ..."), fname);
          mutt_expand_path (fname, sizeof (fname));
 
-         if (msg->content->next)
+         if (msg->content->next != NULL)
            msg->content = mutt_make_multipart (msg->content);
 
          if (mutt_write_fcc (fname, msg, NULL, 0, NULL, NULL) < 0)
@@ -1496,7 +1496,7 @@ int mutt_compose_menu (HEADER *msg,   /* structure for new message */
 
   mutt_menu_destroy (&menu);
 
-  if (idxlen)
+  if (idxlen != 0)
   {
     msg->content = idx[0]->content;
     for (i = 0; i < idxlen; i++)

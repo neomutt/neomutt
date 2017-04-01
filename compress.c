@@ -32,7 +32,7 @@
 /* Notes:
  * Any references to compressed files also apply to encrypted files.
  * ctx->path     == plaintext file
- * ctx->realpath == compressed file
+ * (ctx->realpath == compressed) file
  */
 
 /**
@@ -68,21 +68,21 @@ typedef struct
 static int
 lock_realpath (CONTEXT *ctx, int excl)
 {
-  if (!ctx)
+  if (ctx == NULL)
     return 0;
 
   COMPRESS_INFO *ci = ctx->compress_info;
-  if (!ci)
+  if (ci == NULL)
     return 0;
 
-  if (ci->locked)
+  if (ci->locked != 0)
     return 1;
 
-  if (excl)
+  if (excl != 0)
     ci->lockfp = fopen (ctx->realpath, "a");
   else
     ci->lockfp = fopen (ctx->realpath, "r");
-  if (!ci->lockfp)
+  if (ci->lockfp == NULL)
   {
     mutt_perror (ctx->realpath);
     return 0;
@@ -111,14 +111,14 @@ lock_realpath (CONTEXT *ctx, int excl)
 static void
 unlock_realpath (CONTEXT *ctx)
 {
-  if (!ctx)
+  if (ctx == NULL)
     return;
 
   COMPRESS_INFO *ci = ctx->compress_info;
-  if (!ci)
+  if (ci == NULL)
     return;
 
-  if (!ci->locked)
+  if (ci->locked == 0)
     return;
 
   mx_unlock_file (ctx->realpath, fileno (ci->lockfp), 1);
@@ -142,7 +142,7 @@ unlock_realpath (CONTEXT *ctx)
 static int
 setup_paths (CONTEXT *ctx)
 {
-  if (!ctx)
+  if (ctx == NULL)
     return -1;
 
   char tmppath[_POSIX_PATH_MAX];
@@ -174,7 +174,7 @@ setup_paths (CONTEXT *ctx)
 static int
 get_size (const char *path)
 {
-  if (!path)
+  if (path == NULL)
     return 0;
 
   struct stat sb;
@@ -193,11 +193,11 @@ get_size (const char *path)
 static void
 store_size (const CONTEXT *ctx)
 {
-  if (!ctx)
+  if (ctx == NULL)
     return;
 
   COMPRESS_INFO *ci = ctx->compress_info;
-  if (!ci)
+  if (ci == NULL)
     return;
 
   ci->size = get_size (ctx->realpath);
@@ -224,7 +224,7 @@ store_size (const CONTEXT *ctx)
 static const char *
 find_hook (int type, const char *path)
 {
-  if (!path)
+  if (path == NULL)
     return NULL;
 
   const char *c = mutt_find_hook (type, path);
@@ -250,12 +250,12 @@ set_compress_info (CONTEXT *ctx)
   if (!ctx || !ctx->path)
     return NULL;
 
-  if (ctx->compress_info)
+  if (ctx->compress_info != NULL)
     return ctx->compress_info;
 
   /* Open is compulsory */
   const char *o = find_hook (MUTT_OPENHOOK,   ctx->path);
-  if (!o)
+  if (o == NULL)
     return NULL;
 
   const char *c = find_hook (MUTT_CLOSEHOOK,  ctx->path);
@@ -306,7 +306,7 @@ escape_path (char *src)
   char *destp = dest;
   int destsize = 0;
 
-  if (!src)
+  if (src == NULL)
     return NULL;
 
   while (*src && (destsize < sizeof(dest) - 1))
@@ -319,7 +319,7 @@ escape_path (char *src)
     else
     {
       /* convert ' into '\'' */
-      if (destsize + 4 < sizeof(dest))
+      if ((destsize + 4) < sizeof(dest))
       {
         *destp++ = *src++;
         *destp++ = '\\';
@@ -426,7 +426,7 @@ execute_command (CONTEXT *ctx, const char *command, const char *progress)
   if (!ctx || !command || !progress)
     return 0;
 
-  if (!ctx->quiet)
+  if (ctx->quiet == 0)
     mutt_message (progress, ctx->realpath);
 
   mutt_block_signals();
@@ -463,7 +463,7 @@ comp_open_mailbox (CONTEXT *ctx)
     return -1;
 
   COMPRESS_INFO *ci = set_compress_info (ctx);
-  if (!ci)
+  if (ci == NULL)
     return -1;
 
   /* If there's no close-hook, or the file isn't writable */
@@ -494,7 +494,7 @@ comp_open_mailbox (CONTEXT *ctx)
   }
 
   ci->child_ops = mx_get_ops (ctx->magic);
-  if (!ci->child_ops)
+  if (ci->child_ops == NULL)
   {
     mutt_error (_("Can't find mailbox ops for mailbox type %d"), ctx->magic);
     goto or_fail;
@@ -524,12 +524,12 @@ or_fail:
 static int
 comp_open_append_mailbox (CONTEXT *ctx, int flags)
 {
-  if (!ctx)
+  if (ctx == NULL)
     return -1;
 
   /* If this succeeds, we know there's an open-hook */
   COMPRESS_INFO *ci = set_compress_info (ctx);
-  if (!ci)
+  if (ci == NULL)
     return -1;
 
   /* To append we need an append-hook or a close-hook */
@@ -572,7 +572,7 @@ comp_open_append_mailbox (CONTEXT *ctx, int flags)
   }
 
   ci->child_ops = mx_get_ops (ctx->magic);
-  if (!ci->child_ops)
+  if (ci->child_ops == NULL)
   {
     mutt_error (_("Can't find mailbox ops for mailbox type %d"), ctx->magic);
     goto oa_fail2;
@@ -607,15 +607,15 @@ oa_fail1:
 static int
 comp_close_mailbox (CONTEXT *ctx)
 {
-  if (!ctx)
+  if (ctx == NULL)
     return -1;
 
   COMPRESS_INFO *ci = ctx->compress_info;
-  if (!ci)
+  if (ci == NULL)
     return -1;
 
   struct mx_ops *ops = ci->child_ops;
-  if (!ops)
+  if (ops == NULL)
   {
     free_compress_info (ctx);
     return -1;
@@ -624,7 +624,7 @@ comp_close_mailbox (CONTEXT *ctx)
   ops->close (ctx);
 
   /* sync has already been called, so we only need to delete some files */
-  if (!ctx->append)
+  if (ctx->append == 0)
   {
     /* If the file was removed, remove the compressed folder too */
     if ((access (ctx->path, F_OK) != 0) && !option (OPTSAVEEMPTY))
@@ -689,15 +689,15 @@ comp_close_mailbox (CONTEXT *ctx)
 static int
 comp_check_mailbox (CONTEXT *ctx, int *index_hint)
 {
-  if (!ctx)
+  if (ctx == NULL)
     return -1;
 
   COMPRESS_INFO *ci = ctx->compress_info;
-  if (!ci)
+  if (ci == NULL)
     return -1;
 
   struct mx_ops *ops = ci->child_ops;
-  if (!ops)
+  if (ops == NULL)
     return -1;
 
   int size = get_size (ctx->realpath);
@@ -726,15 +726,15 @@ comp_check_mailbox (CONTEXT *ctx, int *index_hint)
 static int
 comp_open_message (CONTEXT *ctx,  MESSAGE *msg, int msgno)
 {
-  if (!ctx)
+  if (ctx == NULL)
     return -1;
 
   COMPRESS_INFO *ci = ctx->compress_info;
-  if (!ci)
+  if (ci == NULL)
     return -1;
 
   struct mx_ops *ops = ci->child_ops;
-  if (!ops)
+  if (ops == NULL)
     return -1;
 
   /* Delegate */
@@ -747,15 +747,15 @@ comp_open_message (CONTEXT *ctx,  MESSAGE *msg, int msgno)
 static int
 comp_close_message (CONTEXT *ctx, MESSAGE *msg)
 {
-  if (!ctx)
+  if (ctx == NULL)
     return -1;
 
   COMPRESS_INFO *ci = ctx->compress_info;
-  if (!ci)
+  if (ci == NULL)
     return -1;
 
   struct mx_ops *ops = ci->child_ops;
-  if (!ops)
+  if (ops == NULL)
     return -1;
 
   /* Delegate */
@@ -768,15 +768,15 @@ comp_close_message (CONTEXT *ctx, MESSAGE *msg)
 static int
 comp_commit_message (CONTEXT *ctx, MESSAGE *msg)
 {
-  if (!ctx)
+  if (ctx == NULL)
     return -1;
 
   COMPRESS_INFO *ci = ctx->compress_info;
-  if (!ci)
+  if (ci == NULL)
     return -1;
 
   struct mx_ops *ops = ci->child_ops;
-  if (!ops)
+  if (ops == NULL)
     return -1;
 
   /* Delegate */
@@ -789,15 +789,15 @@ comp_commit_message (CONTEXT *ctx, MESSAGE *msg)
 static int
 comp_open_new_message (MESSAGE *msg, CONTEXT *ctx, HEADER *hdr)
 {
-  if (!ctx)
+  if (ctx == NULL)
     return -1;
 
   COMPRESS_INFO *ci = ctx->compress_info;
-  if (!ci)
+  if (ci == NULL)
     return -1;
 
   struct mx_ops *ops = ci->child_ops;
-  if (!ops)
+  if (ops == NULL)
     return -1;
 
   /* Delegate */
@@ -821,12 +821,12 @@ comp_open_new_message (MESSAGE *msg, CONTEXT *ctx, HEADER *hdr)
 int
 mutt_comp_can_append (CONTEXT *ctx)
 {
-  if (!ctx)
+  if (ctx == NULL)
     return 0;
 
   /* If this succeeds, we know there's an open-hook */
   COMPRESS_INFO *ci = set_compress_info (ctx);
-  if (!ci)
+  if (ci == NULL)
     return 0;
 
   /* We have an open-hook, so to append we need an append-hook,
@@ -853,7 +853,7 @@ mutt_comp_can_append (CONTEXT *ctx)
 int
 mutt_comp_can_read (const char *path)
 {
-  if (!path)
+  if (path == NULL)
     return 0;
 
   if (find_hook (MUTT_OPENHOOK, path))
@@ -876,21 +876,21 @@ mutt_comp_can_read (const char *path)
 static int
 comp_sync_mailbox (CONTEXT *ctx, int *index_hint)
 {
-  if (!ctx)
+  if (ctx == NULL)
     return -1;
 
   COMPRESS_INFO *ci = ctx->compress_info;
-  if (!ci)
+  if (ci == NULL)
     return -1;
 
-  if (!ci->close)
+  if (ci->close == NULL)
   {
     mutt_error (_("Can't sync a compressed file without a close-hook"));
     return -1;
   }
 
   struct mx_ops *ops = ci->child_ops;
-  if (!ops)
+  if (ops == NULL)
     return -1;
 
   if (!lock_realpath (ctx, 1))
@@ -936,7 +936,7 @@ sync_cleanup:
 int
 mutt_comp_valid_command (const char *cmd)
 {
-  if (!cmd)
+  if (cmd == NULL)
     return 0;
 
   return (strstr (cmd, "%f") && strstr (cmd, "%t"));

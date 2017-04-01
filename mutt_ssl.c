@@ -50,7 +50,7 @@
 #else
 static int entropy_byte_count = 0;
 /* OpenSSL fills the entropy pool from /dev/urandom if it exists */
-#define HAVE_ENTROPY()	(!access(DEVRANDOM, R_OK) || entropy_byte_count >= 16)
+#define HAVE_ENTROPY()	(!access(DEVRANDOM, R_OK) || (entropy_byte_count >= 16))
 #endif
 
 /* index for storing hostname as application specific data in SSL structure */
@@ -92,7 +92,7 @@ static int ssl_load_certificates (SSL_CTX *ctx)
 
   mutt_debug (2, "ssl_load_certificates: loading trusted certificates\n");
   store = SSL_CTX_get_cert_store (ctx);
-  if (!store)
+  if (store == NULL)
   {
     store = X509_STORE_new ();
     SSL_CTX_set_cert_store (ctx, store);
@@ -134,7 +134,7 @@ static int ssl_set_verify_partial (SSL_CTX *ctx)
   if (option (OPTSSLVERIFYPARTIAL))
   {
     param = X509_VERIFY_PARAM_new();
-    if (param)
+    if (param != NULL)
     {
       X509_VERIFY_PARAM_set_flags(param, X509_V_FLAG_PARTIAL_CHAIN);
       if (0 == SSL_CTX_set1_param(ctx, param))
@@ -159,10 +159,10 @@ static int add_entropy (const char *file)
   struct stat st;
   int n = -1;
 
-  if (!file) return 0;
+  if (file == NULL) return 0;
 
   if (stat (file, &st) == -1)
-    return errno == ENOENT ? 0 : -1;
+    return (errno == ENOENT) ? 0 : -1;
 
   mutt_message (_("Filling entropy pool: %s...\n"),
 		file);
@@ -295,9 +295,9 @@ static int ssl_socket_open_err (CONNECTION *conn)
 static int ssl_socket_close (CONNECTION * conn)
 {
   sslsockdata *data = conn->sockdata;
-  if (data)
+  if (data != NULL)
   {
-    if (data->isopen)
+    if (data->isopen != 0)
       SSL_shutdown (data->ssl);
 
     /* hold onto this for the life of mutt, in case we want to reconnect.
@@ -350,7 +350,7 @@ static char *asn1time_to_string (ASN1_UTCTIME *tm)
   strfcpy (buf, _("[invalid date]"), sizeof (buf));
 
   bio = BIO_new (BIO_s_mem());
-  if (bio)
+  if (bio != NULL)
   {
     if (ASN1_TIME_print (bio, tm))
       (void) BIO_read (bio, buf, sizeof (buf));
@@ -373,7 +373,7 @@ static int compare_certificates (X509 *cert, X509 *peercert,
       X509_issuer_name_cmp (cert, peercert) != 0)
     return -1;
 
-  if (!X509_digest (cert, EVP_sha256(), md, &mdlen) || peermdlen != mdlen)
+  if (!X509_digest (cert, EVP_sha256(), md, &mdlen) || (peermdlen != mdlen))
     return -1;
 
   if (memcmp(peermd, md, mdlen) != 0)
@@ -388,7 +388,7 @@ static int check_certificate_expiration (X509 *peercert, int silent)
   {
     if (X509_cmp_current_time (X509_get_notBefore (peercert)) >= 0)
     {
-      if (!silent)
+      if (silent == 0)
       {
         mutt_debug (2, "Server certificate is not yet valid\n");
         mutt_error (_("Server certificate is not yet valid"));
@@ -398,7 +398,7 @@ static int check_certificate_expiration (X509 *peercert, int silent)
     }
     if (X509_cmp_current_time (X509_get_notAfter (peercert)) <= 0)
     {
-      if (!silent)
+      if (silent == 0)
       {
         mutt_debug (2, "Server certificate has expired\n");
         mutt_error (_("Server certificate has expired"));
@@ -420,7 +420,7 @@ static int hostname_match (const char *hostname, const char *certname)
   {
     cmp1 = certname + 2;
     cmp2 = strchr(hostname, '.');
-    if (!cmp2)
+    if (cmp2 == NULL)
     {
       return 0;
     }
@@ -463,7 +463,7 @@ static int ssl_init (void)
   char path[_POSIX_PATH_MAX];
   static unsigned char init_complete = 0;
 
-  if (init_complete)
+  if (init_complete != 0)
     return 0;
 
   if (! HAVE_ENTROPY())
@@ -505,7 +505,7 @@ static int ssl_socket_read (CONNECTION* conn, char* buf, size_t len)
   int rc;
 
   rc = SSL_read (data->ssl, buf, len);
-  if (rc <= 0 || errno == EINTR)
+  if ((rc <= 0) || (errno == EINTR))
   {
     if (errno == EINTR)
     {
@@ -524,7 +524,7 @@ static int ssl_socket_write (CONNECTION* conn, const char* buf, size_t len)
   int rc;
 
   rc = SSL_write (data->ssl, buf, len);
-  if (rc <= 0 || errno == EINTR) {
+  if ((rc <= 0) || (errno == EINTR)) {
     if (errno == EINTR)
     {
       rc = -1;
@@ -537,7 +537,7 @@ static int ssl_socket_write (CONNECTION* conn, const char* buf, size_t len)
 
 static void ssl_get_client_cert(sslsockdata *ssldata, CONNECTION *conn)
 {
-  if (SslClientCert)
+  if (SslClientCert != NULL)
   {
     mutt_debug (2, "Using client certificate %s\n", SslClientCert);
     SSL_CTX_set_default_passwd_cb_userdata(ssldata->ctx, &conn->account);
@@ -595,7 +595,7 @@ static int check_certificate_file (X509 *peercert)
   int pass = 0;
   FILE *fp = NULL;
 
-  if (!SslCertFile)
+  if (SslCertFile == NULL)
     return 0;
 
   if ((fp = fopen (SslCertFile, "rt")) == NULL)
@@ -617,7 +617,7 @@ static int check_certificate_file (X509 *peercert)
     }
   }
   /* PEM_read_X509 sets an error on eof */
-  if (!pass)
+  if (pass == 0)
     ERR_clear_error();
   X509_free (cert);
   safe_fclose (&fp);
@@ -677,7 +677,7 @@ static int check_host (X509 *x509cert, const char *hostname, char *err, size_t e
     GENERAL_NAMES_free(subj_alt_names);
   }
 
-  if (!match_found)
+  if (match_found == 0)
   {
     /* Try the common name */
     if (!(x509_subject = X509_get_subject_name(x509cert)))
@@ -713,7 +713,7 @@ static int check_host (X509 *x509cert, const char *hostname, char *err, size_t e
     }
   }
 
-  if (!match_found)
+  if (match_found == 0)
   {
     if (err && errlen)
       snprintf (err, errlen, _("certificate owner does not match hostname %s"),
@@ -739,7 +739,7 @@ static int check_certificate_by_digest (X509 *peercert)
 static int ssl_cache_trusted_cert (X509 *c)
 {
   mutt_debug (1, "ssl_cache_trusted_cert: trusted\n");
-  if (!SslSessionCerts)
+  if (SslSessionCerts == NULL)
     SslSessionCerts = sk_X509_new_null();
   return (sk_X509_push (SslSessionCerts, X509_dup(c)));
 }
@@ -829,16 +829,16 @@ static int interactive_check_cert (X509 *cert, int idx, int len, SSL *ssl, int a
    * an OpenSSL connection.
    */
   menu->keys = _("roas");
-  if (allow_always)
+  if (allow_always != 0)
   {
-    if (allow_skip)
+    if (allow_skip != 0)
       menu->prompt = _("(r)eject, accept (o)nce, (a)ccept always, (s)kip");
     else
       menu->prompt = _("(r)eject, accept (o)nce, (a)ccept always");
   }
   else
   {
-    if (allow_skip)
+    if (allow_skip != 0)
       menu->prompt = _("(r)eject, accept (o)nce, (s)kip");
     else
       menu->prompt = _("(r)eject, accept (o)nce");
@@ -853,7 +853,7 @@ static int interactive_check_cert (X509 *cert, int idx, int len, SSL *ssl, int a
 
   done = 0;
   set_option(OPTIGNOREMACROEVENTS);
-  while (!done)
+  while (done == 0)
   {
     switch (mutt_menu_loop (menu))
     {
@@ -863,7 +863,7 @@ static int interactive_check_cert (X509 *cert, int idx, int len, SSL *ssl, int a
         done = 1;
         break;
       case OP_MAX + 3:		/* accept always */
-        if (!allow_always)
+        if (allow_always == 0)
           break;
         done = 0;
         if ((fp = fopen (SslCertFile, "a")))
@@ -872,7 +872,7 @@ static int interactive_check_cert (X509 *cert, int idx, int len, SSL *ssl, int a
 	    done = 1;
 	  safe_fclose (&fp);
 	}
-	if (!done)
+	if (done == 0)
         {
 	  mutt_error (_("Warning: Couldn't save certificate"));
 	  mutt_sleep (2);
@@ -889,7 +889,7 @@ static int interactive_check_cert (X509 *cert, int idx, int len, SSL *ssl, int a
 	ssl_cache_trusted_cert (cert);
         break;
       case OP_MAX + 4:          /* skip */
-        if (!allow_skip)
+        if (allow_skip == 0)
           break;
         done = 2;
         SSL_set_ex_data (ssl, SkipModeExDataIndex, &SkipModeExDataIndex);
@@ -966,7 +966,7 @@ static int ssl_verify_callback (int preverify_ok, X509_STORE_CTX *ctx)
     }
 
     last_pos = pos;
-    if (last_cert)
+    if (last_cert != NULL)
       X509_free (last_cert);
     last_cert = X509_dup (cert);
   }
@@ -982,7 +982,7 @@ static int ssl_verify_callback (int preverify_ok, X509_STORE_CTX *ctx)
 
   /* check hostname only for the leaf certificate */
   buf[0] = 0;
-  if (pos == 0 && option (OPTSSLVERIFYHOST) != MUTT_NO)
+  if ((pos == 0) && option (OPTSSLVERIFYHOST) != MUTT_NO)
   {
     if (!check_host (cert, host, buf, sizeof (buf)))
     {
@@ -1156,7 +1156,7 @@ static int ssl_socket_open (CONNECTION * conn)
 
   ssl_get_client_cert(data, conn);
 
-  if (SslCiphers) {
+  if (SslCiphers != NULL) {
     SSL_CTX_set_cipher_list (data->ctx, SslCiphers);
   }
 
@@ -1247,7 +1247,7 @@ int mutt_ssl_starttls (CONNECTION* conn)
 
   ssl_get_client_cert(ssldata, conn);
 
-  if (SslCiphers) {
+  if (SslCiphers != NULL) {
     if (!SSL_CTX_set_cipher_list (ssldata->ctx, SslCiphers)) {
       mutt_debug (1, "mutt_ssl_starttls: Could not select preferred ciphers\n");
       goto bail_ctx;

@@ -132,7 +132,7 @@ uint32_t j;
     if ((j + len) > 63) {
         memcpy(&context->buffer[j], data, (i = 64-j));
         sha1_transform(context->state, context->buffer);
-        for ( ; i + 63 < len; i += 64) {
+        for ( ; (i + 63) < len; i += 64) {
             sha1_transform(context->state, &data[i]);
         }
         j = 0;
@@ -150,7 +150,7 @@ unsigned char finalcount[8];
 unsigned char c;
 
     for (i = 0; i < 8; i++) {
-        finalcount[i] = (unsigned char)((context->count[(i >= 4 ? 0 : 1)]
+        finalcount[i] = (unsigned char)((context->count[((i >= 4) ? 0 : 1)]
          >> ((3-(i & 3)) * 8) ) & 255);  /* Endian independent */
     }
 

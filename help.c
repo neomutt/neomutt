@@ -71,7 +71,7 @@ mutt_compile_help (char *buf, size_t buflen, int menu, const struct mapping_t *i
 
   for (i = 0; items[i].name && buflen > 2; i++)
   {
-    if (i)
+    if (i != 0)
     {
       *pbuf++ = ' ';
       *pbuf++ = ' ';
@@ -119,7 +119,7 @@ static int print_macro (FILE *f, int maxwidth, const char **macro)
 	  fputs (buf, f);
       }
     }
-    else if (wc < 0x20 || wc == 0x7f)
+    else if ((wc < 0x20) || (wc == 0x7f))
     {
       if (2 > n)
 	break;
@@ -206,7 +206,7 @@ static void format_line (FILE *f, int ismacro,
 
   /* don't try to press string into one line with less than 40 characters.
      The double parenthesis avoids a gcc warning, sigh ... */
-  if ((split = MuttIndexWindow->cols < 40))
+  if ((split = (MuttIndexWindow->cols < 40)))
   {
     col_a = col = 0;
     col_b = LONG_STRING;
@@ -214,8 +214,8 @@ static void format_line (FILE *f, int ismacro,
   }
   else
   {
-    col_a = MuttIndexWindow->cols > 83 ? (MuttIndexWindow->cols - 32) >> 2 : 12;
-    col_b = MuttIndexWindow->cols > 49 ? (MuttIndexWindow->cols - 10) >> 1 : 19;
+    col_a = (MuttIndexWindow->cols > 83) ? (MuttIndexWindow->cols - 32) >> 2 : 12;
+    col_b = (MuttIndexWindow->cols > 49) ? (MuttIndexWindow->cols - 10) >> 1 : 19;
     col = pad (f, mutt_strwidth(t1), col_a);
   }
 
@@ -226,7 +226,7 @@ static void format_line (FILE *f, int ismacro,
     fputs ("M ", f);
     col += 2;
 
-    if (!split)
+    if (split == 0)
     {
       col += print_macro (f, col_b - col - 4, &t2);
       if (mutt_strwidth (t2) > col_b - col)
@@ -235,12 +235,12 @@ static void format_line (FILE *f, int ismacro,
   }
 
   col += print_macro (f, col_b - col - 1, &t2);
-  if (split)
+  if (split != 0)
     fputc ('\n', f);
   else
     col = pad (f, col, col_b);
 
-  if (split)
+  if (split != 0)
   {
     print_macro (f, LONG_STRING, &t3);
     fputc ('\n', f);
@@ -345,7 +345,7 @@ void mutt_help (int menu)
 
   funcs = km_get_table (menu);
   desc = mutt_getnamebyvalue (menu, Menus);
-  if (!desc)
+  if (desc == NULL)
     desc = _("<UNKNOWN>");
 
   do {
@@ -356,14 +356,14 @@ void mutt_help (int menu)
     }
 
     dump_menu (f, menu);
-    if (menu != MENU_EDITOR && menu != MENU_PAGER)
+    if ((menu != MENU_EDITOR) && (menu != MENU_PAGER))
     {
       fputs (_("\nGeneric bindings:\n\n"), f);
       dump_menu (f, MENU_GENERIC);
     }
 
     fputs (_("\nUnbound functions:\n\n"), f);
-    if (funcs)
+    if (funcs != NULL)
       dump_unbound (f, funcs, Keymaps[menu], NULL);
     if (menu != MENU_PAGER)
       dump_unbound (f, OpGeneric, Keymaps[MENU_GENERIC], Keymaps[menu]);

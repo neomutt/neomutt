@@ -71,55 +71,55 @@ static const char *_mutt_fmt_pgp_command (char *dest,
   {
     case 'r':
     {
-      if (!optional)
+      if (optional == 0)
       {
 	snprintf (fmt, sizeof (fmt), "%%%ss", prefix);
 	snprintf (dest, destlen, fmt, NONULL (cctx->ids));
       }
-      else if (!cctx->ids)
+      else if (cctx->ids == NULL)
 	optional = 0;
       break;
     }
 
     case 'a':
     {
-      if (!optional)
+      if (optional == 0)
       {
 	snprintf (fmt, sizeof (fmt), "%%%ss", prefix);
 	snprintf (dest, destlen, fmt, NONULL (cctx->signas));
       }
-      else if (!cctx->signas)
+      else if (cctx->signas == NULL)
 	optional = 0;
       break;
     }
 
     case 's':
     {
-      if (!optional)
+      if (optional == 0)
       {
 	snprintf (fmt, sizeof (fmt), "%%%ss", prefix);
 	snprintf (dest, destlen, fmt, NONULL (cctx->sig_fname));
       }
-      else if (!cctx->sig_fname)
+      else if (cctx->sig_fname == NULL)
 	optional = 0;
       break;
     }
 
     case 'f':
     {
-      if (!optional)
+      if (optional == 0)
       {
 	snprintf (fmt, sizeof (fmt), "%%%ss", prefix);
 	snprintf (dest, destlen, fmt, NONULL (cctx->fname));
       }
-      else if (!cctx->fname)
+      else if (cctx->fname == NULL)
 	optional = 0;
       break;
     }
 
     case 'p':
     {
-      if (!optional)
+      if (optional == 0)
       {
 	snprintf (fmt, sizeof (fmt), "%%%ss", prefix);
 	snprintf (dest, destlen, fmt, cctx->need_passphrase ? "PGPPASSFD=0" : "");
@@ -135,7 +135,7 @@ static const char *_mutt_fmt_pgp_command (char *dest,
     }
   }
 
-  if (optional)
+  if (optional != 0)
     mutt_FormatString (dest, destlen, col, cols, ifstring, _mutt_fmt_pgp_command, data, 0);
   else if (flags & MUTT_FORMAT_OPTIONAL)
     mutt_FormatString (dest, destlen, col, cols, elsestring, _mutt_fmt_pgp_command, data, 0);
@@ -230,7 +230,7 @@ pid_t pgp_invoke_encrypt (FILE **pgpin, FILE **pgpout, FILE **pgperr,
 			  int pgpinfd, int pgpoutfd, int pgperrfd,
 			  const char *fname, const char *uids, int sign)
 {
-  if (sign)
+  if (sign != 0)
     return pgp_invoke (pgpin, pgpout, pgperr, pgpinfd, pgpoutfd, pgperrfd,
 		       1, fname, NULL, PgpSignAs, uids,
 		       PgpEncryptSignCommand);
@@ -282,7 +282,7 @@ void pgp_invoke_getkeys (ADDRESS *addr)
 
   struct pgp_command_context cctx;
 
-  if (!PgpGetkeysCommand) return;
+  if (PgpGetkeysCommand == NULL) return;
 
   memset (&cctx, 0, sizeof (cctx));
 
@@ -348,6 +348,6 @@ pid_t pgp_invoke_list_keys (FILE **pgpin, FILE **pgpout, FILE **pgperr,
 
   return pgp_invoke (pgpin, pgpout, pgperr, pgpinfd, pgpoutfd, pgperrfd,
 		     0, NULL, NULL, PgpSignAs, uids,
-		     keyring == PGP_SECRING ? PgpListSecringCommand :
+		     (keyring == PGP_SECRING) ? PgpListSecringCommand :
 		     PgpListPubringCommand);
 }

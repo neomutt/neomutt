@@ -228,7 +228,7 @@ int mutt_addrlist_to_intl (ADDRESS *a, char **err)
   char *intl_mailbox = NULL;
   int rv = 0;
 
-  if (err)
+  if (err != NULL)
     *err = NULL;
 
   for (; a; a = a->next)
@@ -268,7 +268,7 @@ int mutt_addrlist_to_local (ADDRESS *a)
       continue;
 
     local_mailbox = intl_to_local (user, domain, 0);
-    if (local_mailbox)
+    if (local_mailbox != NULL)
       set_local_mailbox (a, local_mailbox);
   }
 
@@ -318,7 +318,7 @@ void mutt_env_to_local (ENVELOPE *e)
 #define H_TO_INTL(a)	\
   if (mutt_addrlist_to_intl (env->a, err) && !e) \
   { \
-     if (tag) *tag = #a; e = 1; err = NULL; \
+     if (tag != NULL) *tag = #a; e = 1; err = NULL; \
   }
 
 int mutt_env_to_intl (ENVELOPE *env, char **tag, char **err)

@@ -45,7 +45,7 @@ static void imap_update_context (IMAP_DATA *idata, int oldmsgcount)
   int msgno;
 
   ctx = idata->ctx;
-  if (!idata->uid_hash)
+  if (idata->uid_hash == NULL)
     idata->uid_hash = int_hash_create (MAX (6 * ctx->msgcount / 5, 30), 0);
 
   for (msgno = oldmsgcount; msgno < ctx->msgcount; msgno++)
@@ -59,7 +59,7 @@ static body_cache_t *msg_cache_open (IMAP_DATA *idata)
 {
   char mailbox[_POSIX_PATH_MAX];
 
-  if (idata->bcache)
+  if (idata->bcache != NULL)
     return idata->bcache;
 
   imap_cachepath (idata, idata->mailbox, mailbox, sizeof (mailbox));
@@ -186,7 +186,7 @@ static char* msg_parse_flags (IMAP_HEADER* h, char* s)
       char ctmp;
       char* flag_word = s;
 
-      if (!hd->keywords)
+      if (hd->keywords == NULL)
         hd->keywords = mutt_new_list ();
 
       while (*s && !ISSPACE (*s) && *s != ')')
@@ -217,7 +217,7 @@ static int msg_parse_fetch (IMAP_HEADER *h, char *s)
   char tmp[SHORT_STRING];
   char *ptmp = NULL;
 
-  if (!s)
+  if (s == NULL)
     return -1;
 
   while (*s)
@@ -426,7 +426,7 @@ int imap_read_headers (IMAP_DATA* idata, int msgbegin, int msgend)
   {
     uid_validity = mutt_hcache_fetch_raw (idata->hcache, "/UIDVALIDITY", 12);
     puidnext = mutt_hcache_fetch_raw (idata->hcache, "/UIDNEXT", 8);
-    if (puidnext)
+    if (puidnext != NULL)
     {
       uidnext = *(unsigned int *)puidnext;
       mutt_hcache_free (idata->hcache, &puidnext);
@@ -436,7 +436,7 @@ int imap_read_headers (IMAP_DATA* idata, int msgbegin, int msgend)
       evalhc = 1;
     mutt_hcache_free (idata->hcache, &uid_validity);
   }
-  if (evalhc)
+  if (evalhc != 0)
   {
     /* L10N:
        Comparing the cached data with the IMAP server's data */
@@ -467,7 +467,7 @@ int imap_read_headers (IMAP_DATA* idata, int msgbegin, int msgend)
 	}
 
         /* hole in the header cache */
-        if (!evalhc)
+        if (evalhc == 0)
           continue;
 
         if ((mfhrc = msg_fetch_header (ctx, &h, idata->buf, NULL)) == -1)
@@ -515,7 +515,7 @@ int imap_read_headers (IMAP_DATA* idata, int msgbegin, int msgend)
           idx--;
         }
       }
-      while (rc != IMAP_CMD_OK && mfhrc == -1);
+      while ((rc != IMAP_CMD_OK) && mfhrc == -1);
       if (rc == IMAP_CMD_OK)
         break;
       if ((mfhrc < -1) || ((rc != IMAP_CMD_CONTINUE) && (rc != IMAP_CMD_OK)))
@@ -533,12 +533,12 @@ int imap_read_headers (IMAP_DATA* idata, int msgbegin, int msgend)
   mutt_progress_init (&progress, _("Fetching message headers..."),
 		      MUTT_PROGRESS_MSG, ReadInc, msgend + 1);
 
-  for (msgno = msgbegin; msgno <= msgend ; msgno++)
+  for (msgno = msgbegin; (msgno <= msgend) ; msgno++)
   {
     mutt_progress_update (&progress, msgno + 1, -1);
 
     /* we may get notification of new mail while fetching headers */
-    if (msgno + 1 > fetchlast)
+    if ((msgno + 1) > fetchlast)
     {
       char *cmd = NULL;
 
@@ -655,13 +655,13 @@ int imap_read_headers (IMAP_DATA* idata, int msgbegin, int msgend)
   }
 
   if (maxuid && (status = imap_mboxcache_get (idata, idata->mailbox, 0)) &&
-      (status->uidnext < maxuid + 1))
+      (status->uidnext < (maxuid + 1)))
     status->uidnext = maxuid + 1;
 
 #ifdef USE_HCACHE
   mutt_hcache_store_raw (idata->hcache, "/UIDVALIDITY", 12,
           &idata->uid_validity, sizeof (idata->uid_validity));
-  if (maxuid && idata->uidnext < maxuid + 1)
+  if (maxuid && idata->uidnext < (maxuid + 1))
   {
     mutt_debug (2, "Overriding UIDNEXT: %u -> %u\n", idata->uidnext, maxuid + 1);
     idata->uidnext = maxuid + 1;
@@ -729,7 +729,7 @@ int imap_fetch_message (CONTEXT *ctx, MESSAGE *msg, int msgno)
   cacheno = HEADER_DATA(h)->uid % IMAP_CACHE_LEN;
   cache = &idata->cache[cacheno];
 
-  if (cache->path)
+  if (cache->path != NULL)
   {
     /* don't treat cache errors as fatal, just fall back. */
     if (cache->uid == HEADER_DATA(h)->uid &&
@@ -889,7 +889,7 @@ int imap_fetch_message (CONTEXT *ctx, MESSAGE *msg, int msgno)
 bail:
   safe_fclose (&msg->fp);
   imap_cache_del (idata, h);
-  if (cache->path)
+  if (cache->path != NULL)
   {
     unlink (cache->path);
     FREE (&cache->path);
@@ -907,7 +907,7 @@ int imap_commit_message (CONTEXT *ctx, MESSAGE *msg)
 {
   int r = safe_fclose (&msg->fp);
 
-  if (r)
+  if (r != 0)
     return r;
 
   return imap_append_message (ctx, msg);
@@ -1016,7 +1016,7 @@ int imap_append_message (CONTEXT *ctx, MESSAGE *msg)
     }
   }
 
-  if (len)
+  if (len != 0)
     flush_buffer(buf, &len, idata->conn);
 
   mutt_socket_write (idata->conn, "\r\n");
@@ -1100,7 +1100,7 @@ int imap_copy_messages (CONTEXT* ctx, HEADER* h, char* dest, int delete)
     mutt_buffer_init (&cmd);
 
     /* Null HEADER* means copy tagged messages */
-    if (!h)
+    if (h == NULL)
     {
       /* if any messages have attachments to delete, fall through to FETCH
        * and APPEND. TODO: Copy what we can with COPY, fall through for the
@@ -1126,7 +1126,7 @@ int imap_copy_messages (CONTEXT* ctx, HEADER* h, char* dest, int delete)
       }
 
       rc = imap_exec_msgset (idata, "UID COPY", mmbox, MUTT_TAG, 0, 0);
-      if (!rc)
+      if (rc == 0)
       {
         mutt_debug (1, "imap_copy_messages: No messages tagged\n");
         rc = -1;
@@ -1165,7 +1165,7 @@ int imap_copy_messages (CONTEXT* ctx, HEADER* h, char* dest, int delete)
     rc = imap_exec (idata, NULL, IMAP_CMD_FAIL_OK);
     if (rc == -2)
     {
-      if (triedcreate)
+      if (triedcreate != 0)
       {
         mutt_debug (1, "Already tried to create mailbox %s\n", mbox);
         break;
@@ -1194,9 +1194,9 @@ int imap_copy_messages (CONTEXT* ctx, HEADER* h, char* dest, int delete)
   }
 
   /* cleanup */
-  if (delete)
+  if (delete != 0)
   {
-    if (!h)
+    if (h == NULL)
       for (n = 0; n < ctx->msgcount; n++)
       {
         if (ctx->hdrs[n]->tagged)
@@ -1225,7 +1225,7 @@ int imap_copy_messages (CONTEXT* ctx, HEADER* h, char* dest, int delete)
     FREE (&sync_cmd.data);
   FREE (&mx.mbox);
 
-  return rc < 0 ? -1 : rc;
+  return (rc < 0) ? -1 : rc;
 }
 
 int imap_cache_del (IMAP_DATA* idata, HEADER* h)

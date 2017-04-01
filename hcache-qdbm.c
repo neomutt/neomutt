@@ -40,7 +40,7 @@ hcache_qdbm_open(const char *path)
 static void *
 hcache_qdbm_fetch(void *ctx, const char *key, size_t keylen)
 {
-  if (!ctx)
+  if (ctx == NULL)
     return NULL;
 
   VILLA *db = ctx;
@@ -56,7 +56,7 @@ hcache_qdbm_free(void *ctx, void **data)
 static int
 hcache_qdbm_store(void *ctx, const char *key, size_t keylen, void *data, size_t dlen)
 {
-  if (!ctx)
+  if (ctx == NULL)
     return -1;
 
   VILLA *db = ctx;
@@ -66,7 +66,7 @@ hcache_qdbm_store(void *ctx, const char *key, size_t keylen, void *data, size_t 
 static int
 hcache_qdbm_delete(void *ctx, const char *key, size_t keylen)
 {
-  if (!ctx)
+  if (ctx == NULL)
     return -1;
 
   VILLA *db = ctx;

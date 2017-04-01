@@ -97,15 +97,15 @@ static size_t utf8rtowc (wchar_t *pwc, const char *s, size_t n, mbstate_t *_ps)
   wchar_t wc;
   int count;
 
-  if (!ps)
+  if (ps == NULL)
     ps = &mbstate;
 
-  if (!s)
+  if (s == NULL)
   {
     *ps = 0;
     return 0;
   }
-  if (!n)
+  if (n == 0)
     return (size_t)-2;
 
   if (!*ps)
@@ -113,7 +113,7 @@ static size_t utf8rtowc (wchar_t *pwc, const char *s, size_t n, mbstate_t *_ps)
     c = (unsigned char)*s;
     if (c < 0x80)
     {
-      if (pwc)
+      if (pwc != NULL)
 	*pwc = c;
       return (c != 0);
     }
@@ -142,18 +142,18 @@ static size_t utf8rtowc (wchar_t *pwc, const char *s, size_t n, mbstate_t *_ps)
   else
   {
     wc = *ps & 0x7fffffff;
-    count = wc & 7; /* if count > 4 it will be caught below */
+    count = wc & 7; /* if (count > 4) it will be caught below */
   }
 
   for (; n; ++s, --n, ++k)
   {
     c = (unsigned char)*s;
-    if (0x80 <= c && c < 0xc0)
+    if ((0x80 <= c) && (c < 0xc0))
     {
       wc |= (c & 0x3f) << (6 * count);
-      if (!count)
+      if (count == 0)
       {
-	if (pwc)
+	if (pwc != NULL)
 	  *pwc = wc;
 	*ps = 0;
 	return wc ? k : 0;
@@ -161,7 +161,7 @@ static size_t utf8rtowc (wchar_t *pwc, const char *s, size_t n, mbstate_t *_ps)
       --count, --wc;
       if (!(wc >> (11+count*5)))
       {
-	errno = count < 4 ? EILSEQ : EINVAL;
+	errno = (count < 4) ? EILSEQ : EINVAL;
 	return (size_t)-1;
       }
     }
@@ -193,7 +193,7 @@ static size_t wcrtomb_iconv (char *s, wchar_t wc, iconv_t cd)
   char *ob = NULL;
   size_t ibl, obl;
 
-  if (s)
+  if (s != NULL)
   {
     ibl = mutt_wctoutf8 (buf, wc, sizeof (buf));
     if (ibl == (size_t)(-1))
@@ -218,13 +218,13 @@ size_t wcrtomb (char *s, wchar_t wc, mbstate_t *ps)
 {
   /* We only handle stateless encodings, so we can ignore ps. */
 
-  if (Charset_is_utf8)
+  if (Charset_is_utf8 != 0)
     return mutt_wctoutf8 (s, wc, MB_LEN_MAX);
   else if (charset_from_utf8 != (iconv_t)(-1))
     return wcrtomb_iconv (s, wc, charset_from_utf8);
   else
   {
-    if (!s)
+    if (s == NULL)
       return 1;
     if (wc < 0x100)
     {
@@ -247,19 +247,19 @@ static size_t mbrtowc_iconv (wchar_t *pwc, const char *s, size_t n,
   size_t ibl, obl, k, r;
   char bufi[8], bufo[6];
 
-  if (!n)
+  if (n == 0)
     return (size_t)(-2);
 
   t = memchr (ps, 0, sizeof (*ps));
   k = t ? (t - (char *)ps) : sizeof (*ps);
   if (k > sizeof (bufi))
     k = 0;
-  if (k)
+  if (k != 0)
   {
     /* use the buffer for input */
     memcpy (bufi, ps, k);
     ib = bufi;
-    ibmax = bufi + (k + n < sizeof (bufi) ? k + n : sizeof (bufi));
+    ibmax = bufi + ((k + n) < sizeof (bufi) ? k + n : sizeof (bufi));
     memcpy (bufi + k, s, ibmax - bufi - k);
   }
   else
@@ -276,19 +276,19 @@ static size_t mbrtowc_iconv (wchar_t *pwc, const char *s, size_t n,
   for (;;)
   {
     r = iconv (cd, &ib, &ibl, &ob, &obl);
-    if (ob > bufo && (!k || ib > bufi + k))
+    if ((ob > bufo) && (!k || ib > (bufi + k)))
     {
       /* we have a character */
       memset (ps, 0, sizeof (*ps));
       utf8rtowc (pwc, bufo, ob - bufo, &mbstate);
       return (pwc && *pwc) ? (ib - (k ? bufi + k : s)) : 0;
     }
-    else if (!r || (r == (size_t)(-1) && errno == EINVAL))
+    else if (!r || (r == (size_t)(-1) && (errno == EINVAL)))
     {
-      if (ib + ibl < ibmax)
+      if ((ib + ibl) < ibmax)
 	/* try using more input */
 	++ibl;
-      else if (k && ib > bufi + k && bufi + k + n > ibmax)
+      else if (k && ib > (bufi + k) && (bufi + k + n) > ibmax)
       {
 	/* switch to using real input */
 	ib = (ICONV_CONST char*) s + (ib - bufi - k);
@@ -318,23 +318,23 @@ size_t mbrtowc (wchar_t *pwc, const char *s, size_t n, mbstate_t *ps)
 {
   static mbstate_t mbstate;
 
-  if (!ps)
+  if (ps == NULL)
     ps = &mbstate;
 
-  if (Charset_is_utf8)
+  if (Charset_is_utf8 != 0)
     return utf8rtowc (pwc, s, n, ps);
   else if (charset_to_utf8 != (iconv_t)(-1))
     return mbrtowc_iconv (pwc, s, n, ps, charset_to_utf8);
   else
   {
-    if (!s)
+    if (s == NULL)
     {
       memset(ps, 0, sizeof(*ps));
       return 0;
     }
-    if (!n)
+    if (n == 0)
       return (size_t)-2;
-    if (pwc)
+    if (pwc != NULL)
       *pwc = (wchar_t)(unsigned char)*s;
     return (*s != 0);
   }
@@ -343,25 +343,25 @@ size_t mbrtowc (wchar_t *pwc, const char *s, size_t n, mbstate_t *ps)
 int iswprint (wint_t wc)
 {
   if (Charset_is_utf8 || charset_is_ja)
-    return ((0x20 <= wc && wc < 0x7f) || 0xa0 <= wc);
+    return (((0x20 <= wc) && (wc < 0x7f)) || (0xa0 <= wc));
   else
-    return (0 <= wc && wc < 256) ? IsPrint (wc) : 0;
+    return ((0 <= wc) && (wc < 256)) ? IsPrint (wc) : 0;
 }
 
 int iswspace (wint_t wc)
 {
   if (Charset_is_utf8 || charset_is_ja)
-    return (9 <= wc && wc <= 13) || wc == 32;
+    return ((9 <= wc) && (wc <= 13)) || wc == 32;
   else
-    return (0 <= wc && wc < 256) ? isspace (wc) : 0;
+    return ((0 <= wc) && (wc < 256)) ? isspace (wc) : 0;
 }
 
 static wint_t towupper_ucs (wint_t x)
 {
-  /* Only works for x < 0x130 */
-  if ((0x60 < x && x < 0x7b) || (0xe0 <= x && x < 0xff && x != 0xf7))
+  /* Only works for (x < 0x130) */
+  if (((0x60 < x) && (x < 0x7b)) || ((0xe0 <= x) && (x < 0xff) && (x != 0xf7)))
     return x - 32;
-  else if (0x100 <= x && x < 0x130)
+  else if ((0x100 <= x) && (x < 0x130))
     return x & ~1;
   else if (x == 0xb5)
     return 0x39c;
@@ -373,12 +373,12 @@ static wint_t towupper_ucs (wint_t x)
 
 static int iswupper_ucs (wint_t x)
 {
-  /* Only works for x < 0x130 */
-  if ((0x60 < x && x < 0x7b) || (0xe0 <= x && x < 0xff && x != 0xf7))
+  /* Only works for (x < 0x130) */
+  if (((0x60 < x) && (x < 0x7b)) || ((0xe0 <= x) && (x < 0xff) && (x != 0xf7)))
     return 0;
-  else if ((0x40 < x && x < 0x5b) || (0xbf < x && x < 0xde))
+  else if (((0x40 < x) && (x < 0x5b)) || ((0xbf < x) && (x < 0xde)))
     return 1;
-  else if (0x100 <= x && x < 0x130)
+  else if ((0x100 <= x) && (x < 0x130))
     return 1;
   else if (x == 0xb5)
     return 1;
@@ -390,10 +390,10 @@ static int iswupper_ucs (wint_t x)
 
 static wint_t towlower_ucs (wint_t x)
 {
-  /* Only works for x < 0x130 */
-  if ((0x40 < x && x < 0x5b) || (0xc0 <= x && x < 0xdf && x != 0xd7))
+  /* Only works for (x < 0x130) */
+  if (((0x40 < x) && (x < 0x5b)) || ((0xc0 <= x) && (x < 0xdf) && (x != 0xd7)))
     return x + 32;
-  else if (0x100 <= x && x < 0x130)
+  else if ((0x100 <= x) && (x < 0x130))
     return x | 1;
   else
     return x;
@@ -401,7 +401,7 @@ static wint_t towlower_ucs (wint_t x)
 
 static int iswalnum_ucs (wint_t wc)
 {
-  /* Only works for x < 0x220 */
+  /* Only works for (x < 0x220) */
   if (wc >= 0x100)
     return 1;
   else if (wc < 0x30)
@@ -411,14 +411,14 @@ static int iswalnum_ucs (wint_t wc)
   else if (wc < 0xa0)
     return (0x40 < (wc & ~0x20) && (wc & ~0x20) < 0x5b);
   else if (wc < 0xc0)
-    return (wc == 0xaa || wc == 0xb5 || wc == 0xba);
+    return ((wc == 0xaa) || (wc == 0xb5) || (wc == 0xba));
   else
-    return !(wc == 0xd7 || wc == 0xf7);
+    return !((wc == 0xd7) || (wc == 0xf7));
 }
 
 static int iswalpha_ucs (wint_t wc)
 {
-  /* Only works for x < 0x220 */
+  /* Only works for (x < 0x220) */
   if (wc >= 0x100)
     return 1;
   else if (wc < 0x3a)
@@ -426,9 +426,9 @@ static int iswalpha_ucs (wint_t wc)
   else if (wc < 0xa0)
     return (0x40 < (wc & ~0x20) && (wc & ~0x20) < 0x5b);
   else if (wc < 0xc0)
-    return (wc == 0xaa || wc == 0xb5 || wc == 0xba);
+    return ((wc == 0xaa) || (wc == 0xb5) || (wc == 0xba));
   else
-    return !(wc == 0xd7 || wc == 0xf7);
+    return !((wc == 0xd7) || (wc == 0xf7));
 }
 
 wint_t towupper (wint_t wc)
@@ -436,7 +436,7 @@ wint_t towupper (wint_t wc)
   if (Charset_is_utf8 || charset_is_ja)
     return towupper_ucs (wc);
   else
-    return (0 <= wc && wc < 256) ? toupper (wc) : wc;
+    return ((0 <= wc) && (wc < 256)) ? toupper (wc) : wc;
 }
 
 wint_t towlower (wint_t wc)
@@ -444,7 +444,7 @@ wint_t towlower (wint_t wc)
   if (Charset_is_utf8 || charset_is_ja)
     return towlower_ucs (wc);
   else
-    return (0 <= wc && wc < 256) ? tolower (wc) : wc;
+    return ((0 <= wc) && (wc < 256)) ? tolower (wc) : wc;
 }
 
 int iswalnum (wint_t wc)
@@ -452,7 +452,7 @@ int iswalnum (wint_t wc)
   if (Charset_is_utf8 || charset_is_ja)
     return iswalnum_ucs (wc);
   else
-    return (0 <= wc && wc < 256) ? isalnum (wc) : 0;
+    return ((0 <= wc) && (wc < 256)) ? isalnum (wc) : 0;
 }
 
 int iswalpha (wint_t wc)
@@ -460,7 +460,7 @@ int iswalpha (wint_t wc)
   if (Charset_is_utf8 || charset_is_ja)
     return iswalpha_ucs (wc);
   else
-    return (0 <= wc && wc < 256) ? isalpha (wc) : 0;
+    return ((0 <= wc) && (wc < 256)) ? isalpha (wc) : 0;
 }
 
 int iswupper (wint_t wc)
@@ -468,7 +468,7 @@ int iswupper (wint_t wc)
   if (Charset_is_utf8 || charset_is_ja)
     return iswupper_ucs (wc);
   else
-    return (0 <= wc && wc < 256) ? isupper (wc) : 0;
+    return ((0 <= wc) && (wc < 256)) ? isupper (wc) : 0;
 }
 
 /*
@@ -481,10 +481,10 @@ static int wcwidth_ja (wchar_t ucs)
   if (ucs >= 0x3021)
     return -1; /* continue with the normal check */
   /* a rough range for quick check */
-  if ((ucs >= 0x00a1 && ucs <= 0x00fe) || /* Latin-1 Supplement */
-      (ucs >= 0x0391 && ucs <= 0x0451) || /* Greek and Cyrillic */
-      (ucs >= 0x2010 && ucs <= 0x266f) || /* Symbols */
-      (ucs >= 0x3000 && ucs <= 0x3020))   /* CJK Symbols and Punctuation */
+  if (((ucs >= 0x00a1) && (ucs <= 0x00fe)) || /* Latin-1 Supplement */
+      ((ucs >= 0x0391) && (ucs <= 0x0451)) || /* Greek and Cyrillic */
+      ((ucs >= 0x2010) && (ucs <= 0x266f)) || /* Symbols */
+      ((ucs >= 0x3000) && (ucs <= 0x3020)))   /* CJK Symbols and Punctuation */
     return 2;
   else
     return -1;
@@ -494,14 +494,14 @@ int wcwidth_ucs(wchar_t ucs);
 
 int wcwidth (wchar_t wc)
 {
-  if (!Charset_is_utf8)
+  if (Charset_is_utf8 == 0)
   {
-    if (!charset_is_ja)
+    if (charset_is_ja == 0)
     {
       /* 8-bit case */
-      if (!wc)
+      if (wc == 0)
 	return 0;
-      else if ((0 <= wc && wc < 256) && IsPrint (wc))
+      else if (((0 <= wc) && (wc < 256)) && IsPrint (wc))
 	return 1;
       else
 	return -1;

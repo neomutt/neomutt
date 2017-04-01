@@ -255,7 +255,7 @@ int main (int argc, char **argv, char **environ)
       }
 
       /* non-option, either an attachment or address */
-      if (attach)
+      if (attach != NULL)
         attach = mutt_add_list (attach, argv[optind]);
       else
         argv[nargc++] = argv[optind];
@@ -287,9 +287,9 @@ int main (int argc, char **argv, char **environ)
 
       case 'b':
       case 'c':
-	if (!msg)
+	if (msg == NULL)
 	  msg = mutt_new_header ();
-	if (!msg->env)
+	if (msg->env == NULL)
 	  msg->env = mutt_new_envelope ();
 	if (i == 'b')
 	  msg->env->bcc = rfc822_parse_adrlist (msg->env->bcc, optarg);
@@ -307,7 +307,7 @@ int main (int argc, char **argv, char **environ)
 
       case 'd':
 #ifdef DEBUG
-	if (mutt_atoi (optarg, &debuglevel) < 0 || debuglevel <= 0)
+	if (mutt_atoi (optarg, &debuglevel) < 0 || (debuglevel <= 0))
 	{
 	  fprintf (stderr, _("Error: value '%s' is invalid for -d.\n"), optarg);
 	  return 1;
@@ -448,19 +448,19 @@ int main (int argc, char **argv, char **environ)
   /* Initialize crypto backends.  */
   crypt_init ();
 
-  if (newMagic)
+  if (newMagic != NULL)
     mx_set_magic (newMagic);
 
-  if (queries)
+  if (queries != NULL)
   {
     for (; optind < argc; optind++)
       queries = mutt_add_list (queries, argv[optind]);
     return mutt_query_variables (queries);
   }
-  if (dump_variables)
+  if (dump_variables != 0)
     return mutt_dump_variables(hide_sensitive);
 
-  if (alias_queries)
+  if (alias_queries != NULL)
   {
     int rv = 0;
     ADDRESS *a = NULL;
@@ -496,7 +496,7 @@ int main (int argc, char **argv, char **environ)
   {
     struct stat sb;
     char fpath[_POSIX_PATH_MAX];
-    char msg[STRING];
+    char msg2[STRING];
 
     strfcpy (fpath, Maildir, sizeof (fpath));
     mutt_expand_path (fpath, sizeof (fpath));
@@ -504,18 +504,18 @@ int main (int argc, char **argv, char **environ)
     /* we're not connected yet - skip mail folder creation */
     if (!mx_is_imap (fpath))
 #endif
-    if (stat (fpath, &sb) == -1 && errno == ENOENT)
+    if (stat (fpath, &sb) == -1 && (errno == ENOENT))
     {
-      snprintf (msg, sizeof (msg), _("%s does not exist. Create it?"), Maildir);
-      if (mutt_yesorno (msg, MUTT_YES) == MUTT_YES)
+      snprintf (msg2, sizeof (msg2), _("%s does not exist. Create it?"), Maildir);
+      if (mutt_yesorno (msg2, MUTT_YES) == MUTT_YES)
       {
-	if (mkdir (fpath, 0700) == -1 && errno != EEXIST)
+	if (mkdir (fpath, 0700) == -1 && (errno != EEXIST))
 	  mutt_error (_("Can't create %s: %s."), Maildir, strerror (errno));
       }
     }
   }
 
-  if (batch_mode)
+  if (batch_mode != 0)
       exit(0);
 
   if (sendflags & SENDPOSTPONED)
@@ -527,7 +527,7 @@ int main (int argc, char **argv, char **environ)
     mutt_endwin (NULL);
   }
   else if (subject || msg || sendflags || draftFile || includeFile || attach ||
-	   optind < argc)
+	   (optind < argc))
   {
     FILE *fin = NULL;
     FILE *fout = NULL;
@@ -540,9 +540,9 @@ int main (int argc, char **argv, char **environ)
     if (!option (OPTNOCURSES))
       mutt_flushinp ();
 
-    if (!msg)
+    if (msg == NULL)
       msg = mutt_new_header ();
-    if (!msg->env)
+    if (msg->env == NULL)
       msg->env = mutt_new_envelope ();
 
     for (i = optind; i < argc; i++)
@@ -569,15 +569,15 @@ int main (int argc, char **argv, char **environ)
       exit (1);
     }
 
-    if (subject)
+    if (subject != NULL)
       msg->env->subject = safe_strdup (subject);
 
-    if (draftFile)
+    if (draftFile != NULL)
     {
       infile = draftFile;
       includeFile = NULL;
     }
-    else if (includeFile)
+    else if (includeFile != NULL)
       infile = includeFile;
     else
       edit_infile = 0;
@@ -585,11 +585,11 @@ int main (int argc, char **argv, char **environ)
     if (infile || bodytext)
     {
       /* Prepare fin and expanded_infile. */
-      if (infile)
+      if (infile != NULL)
       {
 	if (mutt_strcmp ("-", infile) == 0)
         {
-          if (edit_infile)
+          if (edit_infile != 0)
           {
             fputs (_("Cannot use -E flag with stdin\n"), stderr);
             exit (1);
@@ -614,7 +614,7 @@ int main (int argc, char **argv, char **environ)
        * Note: stdin is always copied to a tempfile, ensuring draftFile
        * can stat and get the correct st_size below.
        */
-      if (!edit_infile)
+      if (edit_infile == 0)
       {
         mutt_mktemp (buf, sizeof (buf));
         tempfile = safe_strdup (buf);
@@ -628,13 +628,13 @@ int main (int argc, char **argv, char **environ)
           FREE (&tempfile);
           exit (1);
         }
-        if (fin)
+        if (fin != NULL)
         {
           mutt_copy_stream (fin, fout);
           if (fin != stdin)
             safe_fclose (&fin);
         }
-        else if (bodytext)
+        else if (bodytext != NULL)
           fputs (bodytext, fout);
         safe_fclose (&fout);
 
@@ -657,7 +657,7 @@ int main (int argc, char **argv, char **environ)
        * Set SENDDRAFTFILE so ci_send_message doesn't overwrite
        * our msg->content.
        */
-      if (draftFile)
+      if (draftFile != NULL)
       {
         HEADER *context_hdr = NULL;
         ENVELOPE *opts_env = msg->env;
@@ -701,7 +701,7 @@ int main (int argc, char **argv, char **environ)
         rfc822_append (&msg->env->to, opts_env->to, 0);
         rfc822_append (&msg->env->cc, opts_env->cc, 0);
         rfc822_append (&msg->env->bcc, opts_env->bcc, 0);
-        if (opts_env->subject)
+        if (opts_env->subject != NULL)
           mutt_str_replace (&msg->env->subject, opts_env->subject);
 
         mutt_free_envelope (&opts_env);
@@ -710,20 +710,20 @@ int main (int argc, char **argv, char **environ)
       /* Editing the includeFile: pass it directly in.
        * Note that SENDNOFREEHEADER is set above so it isn't unlinked.
        */
-      else if (edit_infile)
+      else if (edit_infile != 0)
         bodyfile = expanded_infile;
       /* For bodytext and unedited includeFile: use the tempfile.
        */
       else
         bodyfile = tempfile;
 
-      if (fin)
+      if (fin != NULL)
         safe_fclose (&fin);
     }
 
     FREE (&bodytext);
 
-    if (attach)
+    if (attach != NULL)
     {
       LIST *t = attach;
       BODY *a = msg->content;
@@ -733,14 +733,14 @@ int main (int argc, char **argv, char **environ)
 
       while (t)
       {
-	if (a)
+	if (a != NULL)
 	{
 	  a->next = mutt_make_file_attach (t->data);
 	  a = a->next;
 	}
 	else
 	  msg->content = a = mutt_make_file_attach (t->data);
-	if (!a)
+	if (a == NULL)
 	{
 	  if (!option (OPTNOCURSES))
 	    mutt_endwin (NULL);
@@ -755,11 +755,11 @@ int main (int argc, char **argv, char **environ)
 
     rv = ci_send_message (sendflags, msg, bodyfile, NULL, NULL);
 
-    if (edit_infile)
+    if (edit_infile != 0)
     {
-      if (includeFile)
+      if (includeFile != NULL)
         msg->content->unlink = 0;
-      else if (draftFile)
+      else if (draftFile != NULL)
       {
         if (truncate (expanded_infile, 0) == -1)
         {
@@ -781,7 +781,7 @@ int main (int argc, char **argv, char **environ)
          */
         if (rv < 0)
         {
-          if (msg->content->next)
+          if (msg->content->next != NULL)
             msg->content = mutt_make_multipart (msg->content);
           mutt_encode_descriptions (msg->content, 1);
           mutt_prepare_envelope (msg->env, 0);
@@ -806,7 +806,7 @@ int main (int argc, char **argv, char **environ)
     }
 
     /* !edit_infile && draftFile will leave the tempfile around */
-    if (tempfile)
+    if (tempfile != NULL)
     {
       unlink (tempfile);
       FREE (&tempfile);
@@ -816,7 +816,7 @@ int main (int argc, char **argv, char **environ)
     if (!option (OPTNOCURSES))
       mutt_endwin (NULL);
 
-    if (rv)
+    if (rv != 0)
       exit(1);
   }
   else
@@ -845,7 +845,7 @@ int main (int argc, char **argv, char **environ)
       }
       else
 #endif
-      if (!Incoming) {
+      if (Incoming == NULL) {
 	mutt_endwin (_("No incoming mailboxes defined."));
 	exit (1);
       }
@@ -860,9 +860,9 @@ int main (int argc, char **argv, char **environ)
 
     if (!folder[0])
     {
-      if (Spoolfile)
+      if (Spoolfile != NULL)
         strfcpy (folder, NONULL(Spoolfile), sizeof (folder));
-      else if (Maildir)
+      else if (Maildir != NULL)
         strfcpy (folder, NONULL(Maildir), sizeof (folder));
       /* else no folder */
     }
@@ -904,7 +904,7 @@ int main (int argc, char **argv, char **environ)
       mutt_sb_set_open_buffy ();
 #endif
       mutt_index_menu ();
-      if (Context)
+      if (Context != NULL)
 	FREE (&Context);
     }
 #ifdef USE_IMAP

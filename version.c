@@ -369,7 +369,7 @@ print_compile_options (void)
 static char *
 rstrip_in_place (char *s)
 {
-  if (!s)
+  if (s == NULL)
     return NULL;
 
   char *p = NULL;
@@ -511,7 +511,7 @@ print_copyright (void)
 int
 feature_enabled (const char *name)
 {
-  if (!name)
+  if (name == NULL)
     return 0;
 
   int i;

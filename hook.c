@@ -160,7 +160,7 @@ int mutt_parse_hook (BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err)
         return 0;
       }
     }
-    else if (ptr->type == data &&
+    else if ((ptr->type == data) &&
 	ptr->rx.not == not &&
 	(mutt_strcmp (pattern.data, ptr->rx.pattern) == 0))
     {
@@ -189,7 +189,7 @@ int mutt_parse_hook (BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err)
 	return 0;
       }
     }
-    if (!ptr->next)
+    if (ptr->next == NULL)
       break;
   }
 
@@ -216,7 +216,7 @@ int mutt_parse_hook (BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err)
     }
   }
 
-  if (ptr)
+  if (ptr != NULL)
   {
     ptr->next = safe_calloc (1, sizeof (HOOK));
     ptr = ptr->next;
@@ -256,7 +256,7 @@ static void delete_hooks (int type)
   HOOK *h = NULL;
   HOOK *prev = NULL;
 
-  while (h = Hooks, h && (type == 0 || type == h->type))
+  while (h = Hooks, h && ((type == 0) || (type == h->type)))
   {
     Hooks = h->next;
     delete_hook (h);
@@ -284,7 +284,7 @@ int mutt_parse_unhook (BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err)
     mutt_extract_token (buf, s, 0);
     if (mutt_strcmp ("*", buf->data) == 0)
     {
-      if (current_hook_type)
+      if (current_hook_type != 0)
       {
 	snprintf (err->data, err->dsize,
 		  _("unhook: Can't do unhook * from within a hook."));
@@ -296,7 +296,7 @@ int mutt_parse_unhook (BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err)
     {
       int type = mutt_get_hook_type (buf->data);
 
-      if (!type)
+      if (type == 0)
       {
 	snprintf (err->data, err->dsize,
 		 _("unhook: unknown hook type: %s"), buf->data);
@@ -328,7 +328,7 @@ void mutt_folder_hook (char *path)
   mutt_buffer_init (&token);
   for (; tmp; tmp = tmp->next)
   {
-    if(!tmp->command)
+    if(tmp->command == NULL)
       continue;
 
     if (tmp->type & MUTT_FOLDERHOOK)
@@ -382,7 +382,7 @@ void mutt_message_hook (CONTEXT *ctx, HEADER *hdr, int type)
   memset (&cache, 0, sizeof (cache));
   for (hook = Hooks; hook; hook = hook->next)
   {
-    if(!hook->command)
+    if(hook->command == NULL)
       continue;
 
     if (hook->type & type)
@@ -419,7 +419,7 @@ addr_hook (char *path, size_t pathlen, int type, CONTEXT *ctx, HEADER *hdr)
   /* determine if a matching hook exists */
   for (hook = Hooks; hook; hook = hook->next)
   {
-    if(!hook->command)
+    if(hook->command == NULL)
       continue;
 
     if (hook->type & type)
@@ -453,7 +453,7 @@ void mutt_default_save (char *path, size_t pathlen, HEADER *hdr)
       adr = env->cc;
     else
       adr = NULL;
-    if (adr)
+    if (adr != NULL)
     {
       mutt_safe_path (tmp, sizeof (tmp), adr);
       snprintf (path, pathlen, "=%s", tmp);
@@ -538,7 +538,7 @@ void mutt_account_hook (const char* url)
   BUFFER token;
   BUFFER err;
 
-  if (inhook)
+  if (inhook != 0)
     return;
 
   mutt_buffer_init (&err);

@@ -99,7 +99,7 @@ void imap_get_parent (char *output, const char *mbox, size_t olen, char delim)
    * If output == '/', then n-- => n == 0, so the loop ends
    * immediately
    */
-  for (n--; n >= 0 && output[n] != delim ; n--);
+  for (n--; (n >= 0) && output[n] != delim ; n--);
 
   /* We stopped before the beginning. There is a trailing
    * slash.
@@ -132,7 +132,7 @@ void imap_get_parent_path (char *output, const char *path, size_t olen)
   }
 
   idata = imap_conn_find (&mx.account, MUTT_IMAP_CONN_NONEW);
-  if (!idata)
+  if (idata == NULL)
   {
     strfcpy (output, path, olen);
     return;
@@ -162,7 +162,7 @@ void imap_clean_path (char *path, size_t plen)
     return;
 
   idata = imap_conn_find (&mx.account, MUTT_IMAP_CONN_NONEW);
-  if (!idata)
+  if (idata == NULL)
     return;
 
   /* Stores a fixed path in mbox */
@@ -185,7 +185,7 @@ header_cache_t* imap_hcache_open (IMAP_DATA* idata, const char* path)
   char cachepath[LONG_STRING];
   char mbox[LONG_STRING];
 
-  if (path)
+  if (path != NULL)
     imap_cachepath (idata, path, mbox, sizeof (mbox));
   else
   {
@@ -205,7 +205,7 @@ header_cache_t* imap_hcache_open (IMAP_DATA* idata, const char* path)
 
 void imap_hcache_close (IMAP_DATA* idata)
 {
-  if (!idata->hcache)
+  if (idata->hcache == NULL)
     return;
 
   mutt_hcache_close (idata->hcache);
@@ -218,13 +218,13 @@ HEADER* imap_hcache_get (IMAP_DATA* idata, unsigned int uid)
   void* uv = NULL;
   HEADER* h = NULL;
 
-  if (!idata->hcache)
+  if (idata->hcache == NULL)
     return NULL;
 
   sprintf (key, "/%u", uid);
   uv = mutt_hcache_fetch (idata->hcache, key,
                                          imap_hcache_keylen(key));
-  if (uv)
+  if (uv != NULL)
   {
     if (*(unsigned int *)uv == idata->uid_validity)
       h = mutt_hcache_restore (uv);
@@ -240,7 +240,7 @@ int imap_hcache_put (IMAP_DATA* idata, HEADER* h)
 {
   char key[16];
 
-  if (!idata->hcache)
+  if (idata->hcache == NULL)
     return -1;
 
   sprintf (key, "/%u", HEADER_DATA (h)->uid);
@@ -252,7 +252,7 @@ int imap_hcache_del (IMAP_DATA* idata, unsigned int uid)
 {
   char key[16];
 
-  if (!idata->hcache)
+  if (idata->hcache == NULL)
     return -1;
 
   sprintf (key, "/%u", uid);
@@ -273,19 +273,19 @@ int imap_parse_path (const char* path, IMAP_MBOX* mx)
   char *c = NULL;
   int n;
 
-  if (!ImapPort)
+  if (ImapPort == 0)
   {
     service = getservbyname ("imap", "tcp");
-    if (service)
+    if (service != NULL)
       ImapPort = ntohs (service->s_port);
     else
       ImapPort = IMAP_PORT;
     mutt_debug (3, "Using default IMAP port %d\n", ImapPort);
   }
-  if (!ImapsPort)
+  if (ImapsPort == 0)
   {
     service = getservbyname ("imaps", "tcp");
-    if (service)
+    if (service != NULL)
       ImapsPort = ntohs (service->s_port);
     else
       ImapsPort = IMAP_SSL_PORT;
@@ -322,7 +322,7 @@ int imap_parse_path (const char* path, IMAP_MBOX* mx)
       return -1;
 
     c = strchr (path, '}');
-    if (!c)
+    if (c == NULL)
       return -1;
     else
       /* walk past closing '}' */
@@ -418,7 +418,7 @@ void imap_pretty_mailbox (char* path)
     {
       if (! hlen)
 	home_match = 1;
-      else if (ImapDelimChars)
+      else if (ImapDelimChars != NULL)
 	for (delim = ImapDelimChars; *delim != '\0'; delim++)
 	  if (target.mbox[hlen] == *delim)
 	    home_match = 1;
@@ -427,7 +427,7 @@ void imap_pretty_mailbox (char* path)
   }
 
   /* do the '=' substitution */
-  if (home_match) {
+  if (home_match != 0) {
     *path++ = '=';
     /* copy remaining path, skipping delimiter */
     if (! hlen)
@@ -487,7 +487,7 @@ IMAP_DATA* imap_new_idata (void)
 /* imap_free_idata: Release and clear storage in an IMAP_DATA structure. */
 void imap_free_idata (IMAP_DATA** idata)
 {
-  if (!idata)
+  if (idata == NULL)
     return;
 
   FREE (&(*idata)->capstr);
@@ -514,16 +514,16 @@ char *imap_fix_path (IMAP_DATA *idata, const char *mailbox, char *path,
   int i = 0;
   char delim = '\0';
 
-  if (idata)
+  if (idata != NULL)
     delim = idata->delim;
 
-  while (mailbox && *mailbox && i < plen - 1)
+  while (mailbox && *mailbox && i < (plen - 1))
   {
     if ((ImapDelimChars && strchr(ImapDelimChars, *mailbox))
         || (delim && *mailbox == delim))
     {
       /* use connection delimiter if known. Otherwise use user delimiter */
-      if (!idata)
+      if (idata == NULL)
         delim = *mailbox;
 
       while (*mailbox
@@ -725,7 +725,7 @@ void imap_quote_string (char *dest, size_t dlen, const char *src)
     if (strchr (quote, *s))
     {
       dlen -= 2;
-      if (!dlen)
+      if (dlen == 0)
 	break;
       *pt++ = '\\';
       *pt++ = *s;
@@ -794,7 +794,7 @@ void imap_unmunge_mbox_name (IMAP_DATA *idata, char *s)
   imap_unquote_string(s);
 
   buf = safe_strdup (s);
-  if (buf)
+  if (buf != NULL)
   {
     imap_utf_decode (idata, &buf);
     strncpy (s, buf, strlen (s));
@@ -848,7 +848,7 @@ void imap_keepalive (void)
     {
       idata = conn->data;
       if (idata->state >= IMAP_AUTHENTICATED
-          && now >= idata->lastread + ImapKeepalive)
+          && now >= (idata->lastread + ImapKeepalive))
       {
         imap_check(idata, 1);
       }
@@ -881,7 +881,7 @@ int imap_wait_keepalive (pid_t pid)
   sigaction (SIGALRM, &act, &oldalrm);
 
   alarm (ImapKeepalive);
-  while (waitpid (pid, &rc, 0) < 0 && errno == EINTR)
+  while (waitpid (pid, &rc, 0) < 0 && (errno == EINTR))
   {
     alarm (0); /* cancel a possibly pending alarm */
     imap_keepalive ();
@@ -894,7 +894,7 @@ int imap_wait_keepalive (pid_t pid)
   sigprocmask (SIG_SETMASK, &oldmask, NULL);
 
   unset_option (OPTKEEPQUIET);
-  if (!imap_passive)
+  if (imap_passive == 0)
     unset_option (OPTIMAPPASSIVE);
 
   return rc;
@@ -904,7 +904,7 @@ int imap_wait_keepalive (pid_t pid)
 void imap_allow_reopen (CONTEXT *ctx)
 {
   IMAP_DATA *idata = NULL;
-  if (!ctx || !ctx->data || ctx->magic != MUTT_IMAP)
+  if (!ctx || !ctx->data || (ctx->magic != MUTT_IMAP))
       return;
 
   idata = ctx->data;
@@ -915,7 +915,7 @@ void imap_allow_reopen (CONTEXT *ctx)
 void imap_disallow_reopen (CONTEXT *ctx)
 {
   IMAP_DATA *idata = NULL;
-  if (!ctx || !ctx->data || ctx->magic != MUTT_IMAP)
+  if (!ctx || !ctx->data || (ctx->magic != MUTT_IMAP))
       return;
 
   idata = ctx->data;
@@ -927,8 +927,8 @@ int imap_account_match (const ACCOUNT* a1, const ACCOUNT* a2)
 {
   IMAP_DATA* a1_idata = imap_conn_find (a1, MUTT_IMAP_CONN_NONEW);
   IMAP_DATA* a2_idata = imap_conn_find (a2, MUTT_IMAP_CONN_NONEW);
-  const ACCOUNT* a1_canon = a1_idata == NULL ? a1 : &a1_idata->conn->account;
-  const ACCOUNT* a2_canon = a2_idata == NULL ? a2 : &a2_idata->conn->account;
+  const ACCOUNT* a1_canon = (a1_idata == NULL) ? a1 : &a1_idata->conn->account;
+  const ACCOUNT* a2_canon = (a2_idata == NULL) ? a2 : &a2_idata->conn->account;
 
   return mutt_account_match (a1_canon, a2_canon);
 }

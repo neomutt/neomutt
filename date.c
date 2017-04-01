@@ -34,7 +34,7 @@ static time_t compute_tz (time_t g, struct tm *utc)
   {
     /* This code is optimized to negative timezones (West of Greenwich) */
     if (yday == -1 ||	/* UTC passed midnight before localtime */
-	yday > 1)	/* UTC passed new year before localtime */
+ (yday > 1))	/* UTC passed new year before localtime */
       t -= 24 * 60 * 60;
     else
       t += 24 * 60 * 60;
@@ -51,7 +51,7 @@ time_t mutt_local_tz (time_t t)
   struct tm *ptm = NULL;
   struct tm utc;
 
-  if (!t)
+  if (t == 0)
     t = time (NULL);
   ptm = gmtime (&t);
   /* need to make a copy because gmtime/localtime return a pointer to
@@ -85,7 +85,7 @@ time_t mutt_mktime (struct tm *t, int local)
   /* The leap years are 1972 and every 4. year until 2096,
    * but this algorithm will fail after year 2099 */
   g += t->tm_mday;
-  if ((t->tm_year % 4) || t->tm_mon < 2)
+  if ((t->tm_year % 4) || (t->tm_mon < 2))
     g--;
   t->tm_yday = g;
 
@@ -105,7 +105,7 @@ time_t mutt_mktime (struct tm *t, int local)
   g *= 60;
   g += t->tm_sec;
 
-  if (local)
+  if (local != 0)
     g -= compute_tz (g, t);
 
   return g;
@@ -172,7 +172,7 @@ void mutt_normalize_time (struct tm *tm)
   }
   while (tm->tm_mday <= 0)
   {
-    if (tm->tm_mon)
+    if (tm->tm_mon != 0)
       tm->tm_mon--;
     else
     {

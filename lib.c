@@ -139,7 +139,7 @@ void *safe_malloc (size_t siz)
 
   if (siz == 0)
     return 0;
-  if ((p = malloc (siz)) == 0)	/* __MEM_CHECKED__ */
+  if ((p = malloc (siz)) == NULL)	/* __MEM_CHECKED__ */
   {
     mutt_error (_("Out of memory!"));
     sleep (1);
@@ -171,7 +171,7 @@ void safe_realloc (void *ptr, size_t siz)
     r = malloc (siz);		/* __MEM_CHECKED__ */
   }
 
-  if (!r)
+  if (r == NULL)
   {
     mutt_error (_("Out of memory!"));
     sleep (1);
@@ -239,7 +239,7 @@ char *safe_strcat (char *d, size_t l, const char *s)
 {
   char *p = d;
 
-  if (!l)
+  if (l == 0)
     return d;
 
   l--; /* Space for the trailing '\0'. */
@@ -258,7 +258,7 @@ char *safe_strncat (char *d, size_t l, const char *s, size_t sl)
 {
   char *p = d;
 
-  if (!l)
+  if (l == 0)
     return d;
 
   l--; /* Space for the trailing '\0'. */
@@ -400,8 +400,8 @@ int mutt_copy_stream (FILE *fin, FILE *fout)
 static int
 compare_stat (struct stat *osb, struct stat *nsb)
 {
-  if (osb->st_dev != nsb->st_dev || osb->st_ino != nsb->st_ino ||
-      osb->st_rdev != nsb->st_rdev)
+  if ((osb->st_dev != nsb->st_dev) || (osb->st_ino != nsb->st_ino) ||
+      (osb->st_rdev != nsb->st_rdev))
   {
     return -1;
   }
@@ -416,7 +416,7 @@ int safe_symlink(const char *oldpath, const char *newpath)
   if(!oldpath || !newpath)
     return -1;
 
-  if(unlink(newpath) == -1 && errno != ENOENT)
+  if(unlink(newpath) == -1 && (errno != ENOENT))
     return -1;
 
   if (oldpath[0] == '/')
@@ -429,7 +429,7 @@ int safe_symlink(const char *oldpath, const char *newpath)
     char abs_oldpath[_POSIX_PATH_MAX];
 
     if ((getcwd (abs_oldpath, sizeof (abs_oldpath)) == NULL) ||
-	(strlen (abs_oldpath) + 1 + strlen (oldpath) + 1 > sizeof (abs_oldpath)))
+	((strlen (abs_oldpath) + 1 + strlen (oldpath) + 1) > sizeof (abs_oldpath)))
     return -1;
 
     strcat (abs_oldpath, "/");		/* __STRCAT_CHECKED__ */
@@ -484,7 +484,7 @@ int safe_rename (const char *src, const char *target)
      * FUSE may return ENOSYS. VFAT may return EPERM. FreeBSD's
      * msdosfs may return EOPNOTSUPP.  ENOTSUP can also appear.
      */
-    if (errno == EXDEV || errno == ENOSYS || errno == EPERM
+    if ((errno == EXDEV) || (errno == ENOSYS) || errno == EPERM
 #ifdef ENOTSUP
 	|| errno == ENOTSUP
 #endif
@@ -714,7 +714,7 @@ static const char safe_chars[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrst
 
 void mutt_sanitize_filename (char *f, short slash)
 {
-  if (!f) return;
+  if (f == NULL) return;
 
   for (; *f; f++)
   {
@@ -757,7 +757,7 @@ char *mutt_read_line (char *s, size_t *size, FILE *fp, int *line, int flags)
   size_t offset = 0;
   char *ch = NULL;
 
-  if (!s)
+  if (s == NULL)
   {
     s = safe_malloc (STRING);
     *size = STRING;
@@ -772,14 +772,14 @@ char *mutt_read_line (char *s, size_t *size, FILE *fp, int *line, int flags)
     }
     if ((ch = strchr (s + offset, '\n')) != NULL)
     {
-      if (line)
+      if (line != NULL)
 	(*line)++;
       if (flags & MUTT_EOL)
 	return s;
       *ch = 0;
-      if (ch > s && *(ch - 1) == '\r')
+      if ((ch > s) && *(ch - 1) == '\r')
 	*--ch = 0;
-      if (!(flags & MUTT_CONT) || ch == s || *(ch - 1) != '\\')
+      if (!(flags & MUTT_CONT) || (ch == s) || *(ch - 1) != '\\')
 	return s;
       offset = ch - s - 1;
     }
@@ -794,7 +794,7 @@ char *mutt_read_line (char *s, size_t *size, FILE *fp, int *line, int flags)
       if (c == EOF)
       {
         /* The last line of fp isn't \n terminated */
-	if (line)
+	if (line != NULL)
 	  (*line)++;
         return s;
       }
@@ -816,7 +816,7 @@ mutt_substrcpy (char *dest, const char *beg, const char *end, size_t destlen)
   size_t len;
 
   len = end - beg;
-  if (len > destlen - 1)
+  if (len > (destlen - 1))
     len = destlen - 1;
   memcpy (dest, beg, len);
   dest[len] = 0;
@@ -828,7 +828,7 @@ char *mutt_substrdup (const char *begin, const char *end)
   size_t len;
   char *p = NULL;
 
-  if (end)
+  if (end != NULL)
     len = end - begin;
   else
     len = strlen (begin);
@@ -846,7 +846,7 @@ size_t mutt_quote_filename (char *d, size_t l, const char *f)
 {
   size_t i, j = 0;
 
-  if(!f)
+  if(f == NULL)
   {
     *d = '\0';
     return 0;
@@ -857,7 +857,7 @@ size_t mutt_quote_filename (char *d, size_t l, const char *f)
 
   d[j++] = '\'';
 
-  for(i = 0; j < l && f[i]; i++)
+  for(i = 0; (j < l) && f[i]; i++)
   {
     if(f[i] == '\'' || f[i] == '`')
     {
@@ -912,9 +912,9 @@ const char *mutt_stristr (const char *haystack, const char *needle)
 {
   const char *p = NULL, *q = NULL;
 
-  if (!haystack)
+  if (haystack == NULL)
     return NULL;
-  if (!needle)
+  if (needle == NULL)
     return haystack;
 
   while (*(p = haystack))
@@ -941,7 +941,7 @@ void mutt_remove_trailing_ws (char *s)
 {
   char *p = NULL;
 
-  for (p = s + mutt_strlen (s) - 1 ; p >= s && ISSPACE (*p) ; p--)
+  for (p = s + mutt_strlen (s) - 1 ; (p >= s) && ISSPACE (*p) ; p--)
     *p = 0;
 }
 
@@ -970,17 +970,17 @@ char *mutt_concatn_path (char *dst, size_t dstlen,
      * It doesn't appear that the return value is actually checked anywhere mutt_concat_path()
      * is called, so we should just copy set dst to nul and let the calling function fail later.
      */
-    dst[0] = 0; /* safe since we bail out early if dstlen == 0 */
+    dst[0] = 0; /* safe since we bail out early if (dstlen == 0) */
     return NULL;
   }
 
-  if (dirlen) { /* when dir is not empty */
+  if (dirlen != 0) { /* when dir is not empty */
     memcpy(dst, dir, dirlen);
     offset = dirlen;
-    if (fnamelen)
+    if (fnamelen != 0)
       dst[offset++] = '/';
   }
-  if (fnamelen) { /* when fname is not empty */
+  if (fnamelen != 0) { /* when fname is not empty */
     memcpy(dst + offset, fname, fnamelen);
     offset += fnamelen;
   }
@@ -1002,7 +1002,7 @@ char *mutt_concat_path (char *d, const char *dir, const char *fname, size_t l)
 const char *mutt_basename (const char *f)
 {
   const char *p = strrchr (f, '/');
-  if (p)
+  if (p != NULL)
     return p + 1;
   else
     return f;
@@ -1033,7 +1033,7 @@ void mutt_debug (int level, const char *fmt, ...)
   static char buf[23] = "";
   static time_t last = 0;
 
-  if (debuglevel < level || !debugfile)
+  if ((debuglevel < level) || !debugfile)
     return;
 
   if (now > last)
@@ -1062,7 +1062,7 @@ static int mutt_atol (const char *str, long *dst)
   }
 
   *res = strtol (str, &e, 10);
-  if ((*res == LONG_MAX && errno == ERANGE) ||
+  if ((*res == LONG_MAX && (errno == ERANGE)) ||
       (e && *e != '\0'))
     return -1;
   return 0;
@@ -1142,7 +1142,7 @@ int mutt_inbox_cmp (const char *a, const char *b)
     return 0;
 
   /* If neither path contains a '/' */
-  if (!a_end)
+  if (a_end == NULL)
     return 0;
 
   /* Compare the subpaths */
@@ -1153,7 +1153,7 @@ int mutt_inbox_cmp (const char *a, const char *b)
              (a[min+1] != '\0') && (b[min+1] != '\0') &&
              (mutt_strncasecmp(a, b, min) == 0);
 
-  if (!same)
+  if (same == 0)
       return 0;
 
   if (mutt_strcasecmp(&a[min+1], "inbox") == 0)

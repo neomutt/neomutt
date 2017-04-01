@@ -96,14 +96,14 @@ static void fix_uid (char *uid)
     buf = safe_malloc (n+1);
     ib = uid, ibl = d - uid + 1, ob = buf, obl = n;
     iconv (cd, &ib, &ibl, &ob, &obl);
-    if (!ibl)
+    if (ibl == 0)
     {
       if (ob-buf < n)
       {
 	memcpy (uid, buf, ob-buf);
 	uid[ob-buf] = '\0';
       }
-      else if (n >= 0 && ob-buf == n && (buf[n] = 0, strlen (buf) < (size_t)n))
+      else if ((n >= 0) && ob-buf == n && (buf[n] = 0, strlen (buf) < (size_t)n))
 	memcpy (uid, buf, n);
     }
     FREE (&buf);
@@ -129,7 +129,7 @@ static pgp_key_t parse_pub_line (char *buf, int *is_subkey, pgp_key_t k)
   /* if we're given a key, merge our parsing results, else
    * start with a fresh one to work with so that we don't
    * mess up the real key in case we find parsing errors. */
-  if (k)
+  if (k != NULL)
     memcpy (&tmp, k, sizeof (tmp));
   else
     memset (&tmp, 0, sizeof (tmp));
@@ -246,7 +246,7 @@ static pgp_key_t parse_pub_line (char *buf, int *is_subkey, pgp_key_t k)
 
 	mutt_debug (2, "time stamp: %s\n", p);
 
-	if (!p)
+	if (p == NULL)
 	  break;
 	time.tm_sec = 0;
 	time.tm_min = 0;
@@ -291,7 +291,7 @@ static pgp_key_t parse_pub_line (char *buf, int *is_subkey, pgp_key_t k)
         if (!(pend && (*p || is_pub)))
 	  break;
 
-        if (is_fpr)
+        if (is_fpr != 0)
         {
           /* don't let a subkey fpr overwrite an existing primary key fpr */
           if (!tmp.fingerprint)
@@ -408,11 +408,11 @@ pgp_key_t pgp_get_candidates (pgp_ring_t keyring, LIST * hints)
     /* Only append kk to the list if it's new. */
     if (kk != k)
     {
-      if (k)
+      if (k != NULL)
 	kend = &k->next;
       *kend = k = kk;
 
-      if (is_sub)
+      if (is_sub != 0)
       {
 	pgp_uid_t **l;
 

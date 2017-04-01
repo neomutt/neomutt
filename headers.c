@@ -152,7 +152,7 @@ void mutt_edit_headers (const char *editor,
     }
     else if (ascii_strncasecmp ("attach:", cur->data, 7) == 0)
     {
-      BODY *body = NULL;
+      BODY *body2 = NULL;
       BODY *parts = NULL;
       size_t l = 0;
 
@@ -167,18 +167,18 @@ void mutt_edit_headers (const char *editor,
 	      break;
 	    p++;
 	  }
-	  if (l < sizeof (path) - 1)
+	  if (l < (sizeof(path) - 1))
 	    path[l++] = *p;
 	}
 	p = skip_email_wsp(p);
 	path[l] = 0;
 
 	mutt_expand_path (path, sizeof (path));
-	if ((body = mutt_make_file_attach (path)))
+	if ((body2 = mutt_make_file_attach (path)))
 	{
-	  body->description = safe_strdup (p);
+	  body2->description = safe_strdup (p);
 	  for (parts = msg->content; parts->next; parts = parts->next) ;
-	  parts->next = body;
+	  parts->next = body2;
 	}
 	else
 	{
@@ -192,12 +192,12 @@ void mutt_edit_headers (const char *editor,
              && (ascii_strncasecmp ("pgp:", cur->data, 4) == 0))
     {
       msg->security = mutt_parse_crypt_hdr (cur->data + 4, 0, APPLICATION_PGP);
-      if (msg->security)
+      if (msg->security != 0)
 	msg->security |= APPLICATION_PGP;
       keep = 0;
     }
 
-    if (keep)
+    if (keep != 0)
     {
       last = &cur->next;
       cur  = cur->next;
@@ -219,7 +219,7 @@ static void label_ref_dec(CONTEXT *ctx, char *label)
   uintptr_t count;
 
   elem = hash_find_elem (ctx->label_hash, label);
-  if (!elem)
+  if (elem == NULL)
     return;
 
   count = (uintptr_t)elem->data;
@@ -239,7 +239,7 @@ static void label_ref_inc(CONTEXT *ctx, char *label)
   uintptr_t count;
 
   elem = hash_find_elem (ctx->label_hash, label);
-  if (!elem)
+  if (elem == NULL)
   {
     count = 1;
     hash_insert(ctx->label_hash, label, (void *)count);
@@ -280,7 +280,7 @@ int mutt_label_message(HEADER *hdr)
     return 0;
 
   *buf = '\0';
-  if (hdr != NULL && hdr->env->x_label != NULL) {
+  if ((hdr != NULL) && (hdr->env->x_label != NULL)) {
     strncpy(buf, hdr->env->x_label, LONG_STRING);
   }
 
@@ -322,7 +322,7 @@ void mutt_label_hash_add (CONTEXT *ctx, HEADER *hdr)
 {
   if (!ctx || !ctx->label_hash)
     return;
-  if (hdr->env->x_label)
+  if (hdr->env->x_label != NULL)
     label_ref_inc (ctx, hdr->env->x_label);
 }
 
@@ -330,6 +330,6 @@ void mutt_label_hash_remove (CONTEXT *ctx, HEADER *hdr)
 {
   if (!ctx || !ctx->label_hash)
     return;
-  if (hdr->env->x_label)
+  if (hdr->env->x_label != NULL)
     label_ref_dec (ctx, hdr->env->x_label);
 }

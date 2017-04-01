@@ -99,7 +99,7 @@ static int iptostring(const struct sockaddr *addr, socklen_t addrlen,
                     NI_WITHSCOPEID |
 #endif
                     NI_NUMERICSERV);
-  if (ret)
+  if (ret != 0)
     return getnameinfo_err(ret);
 
   if (outlen < strlen(hbuf) + strlen(pbuf) + 2)
@@ -127,7 +127,7 @@ static int mutt_sasl_start (void)
   static sasl_callback_t callbacks[2];
   int rc;
 
-  if (sasl_init)
+  if (sasl_init != 0)
     return SASL_OK;
 
   /* set up default logging callback */
@@ -158,18 +158,18 @@ static int mutt_sasl_cb_authname (void* context, int id, const char** result,
 {
   ACCOUNT* account = (ACCOUNT*) context;
 
-  if (!result)
+  if (result == NULL)
     return SASL_FAIL;
 
   *result = NULL;
-  if (len)
+  if (len != NULL)
     *len = 0;
 
-  if (!account)
+  if (account == NULL)
     return SASL_BADPARAM;
 
   mutt_debug (2, "mutt_sasl_cb_authname: getting %s for %s:%u\n",
-	      id == SASL_CB_AUTHNAME ? "authname" : "user",
+	      (id == SASL_CB_AUTHNAME) ? "authname" : "user",
 	      account->host, account->port);
 
   if (id == SASL_CB_AUTHNAME)
@@ -185,7 +185,7 @@ static int mutt_sasl_cb_authname (void* context, int id, const char** result,
     *result = account->user;
   }
 
-  if (len)
+  if (len != NULL)
     *len = strlen (*result);
 
   return SASL_OK;
@@ -332,7 +332,7 @@ int mutt_sasl_client_new (CONNECTION* conn, sasl_conn_t** saslconn)
     return -1;
   }
 
-  if (conn->ssf)
+  if (conn->ssf != 0)
   {
     /* I'm not sure this actually has an effect, at least with SASLv2 */
     mutt_debug (2, "External SSF: %d\n", conn->ssf);
@@ -435,7 +435,7 @@ static int mutt_sasl_conn_read (CONNECTION* conn, char* buf, size_t len)
   /* if we still have data in our read buffer, copy it into buf */
   if (sasldata->blen > sasldata->bpos)
   {
-    olen = (sasldata->blen - sasldata->bpos > len) ? len :
+    olen = ((sasldata->blen - sasldata->bpos) > len) ? len :
       sasldata->blen - sasldata->bpos;
 
     memcpy (buf, sasldata->buf+sasldata->bpos, olen);
@@ -468,9 +468,9 @@ static int mutt_sasl_conn_read (CONNECTION* conn, char* buf, size_t len)
 	goto out;
       }
     }
-    while (!sasldata->blen);
+    while (sasldata->blen == 0);
 
-    olen = (sasldata->blen - sasldata->bpos > len) ? len :
+    olen = ((sasldata->blen - sasldata->bpos) > len) ? len :
       sasldata->blen - sasldata->bpos;
 
     memcpy (buf, sasldata->buf, olen);

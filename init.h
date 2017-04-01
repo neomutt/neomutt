@@ -3164,7 +3164,7 @@ struct option_t MuttVars[] = {
   ** .dt %F  .dd * Number of Flagged messages in the mailbox
   ** .dt %!  .dd ``!'' : one flagged message;
   **             ``!!'' : two flagged messages;
-  **             ``n!'' : n flagged messages (for n > 2).
+  **             ``n!'' : n flagged messages (for (n > 2)).
   **             Otherwise prints nothing.
   ** .dt %d  .dd * @ Number of deleted messages
   ** .dt %L  .dd * @ Number of messages after limiting
@@ -4394,8 +4394,10 @@ const struct mapping_t SortSidebarMethods[] = {
 static int parse_list (BUFFER *, BUFFER *, unsigned long, BUFFER *);
 static int parse_spam_list (BUFFER *, BUFFER *, unsigned long, BUFFER *);
 static int parse_unlist (BUFFER *, BUFFER *, unsigned long, BUFFER *);
+#ifdef USE_SIDEBAR
 static int parse_path_list (BUFFER *, BUFFER *, unsigned long, BUFFER *);
 static int parse_path_unlist (BUFFER *, BUFFER *, unsigned long, BUFFER *);
+#endif
 
 static int parse_group (BUFFER *, BUFFER *, unsigned long, BUFFER *);
 

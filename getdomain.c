@@ -84,7 +84,7 @@ int getdnsdomainname (char *d, size_t len)
 #endif
 
   char *p = NULL;
-  if (h != NULL && h->ai_canonname && (p = strchr(h->ai_canonname, '.')))
+  if ((h != NULL) && h->ai_canonname && (p = strchr(h->ai_canonname, '.')))
   {
     strfcpy(d, ++p, len);
     ret = 0;

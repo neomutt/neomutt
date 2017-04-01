@@ -52,7 +52,7 @@ static pop_auth_res_t pop_auth_sasl (POP_DATA *pop_data, const char *method)
     return POP_A_FAILURE;
   }
 
-  if (!method)
+  if (method == NULL)
     method = pop_data->auth_list;
 
   while (true)
@@ -63,7 +63,7 @@ static pop_auth_res_t pop_auth_sasl (POP_DATA *pop_data, const char *method)
     mutt_sasl_interact (interaction);
   }
 
-  if (rc != SASL_OK && rc != SASL_CONTINUE)
+  if ((rc != SASL_OK) && (rc != SASL_CONTINUE))
   {
     mutt_debug (1, "pop_auth_sasl: Failure starting authentication exchange. "
                 "No shared mechanisms?\n");
@@ -104,7 +104,7 @@ static pop_auth_res_t pop_auth_sasl (POP_DATA *pop_data, const char *method)
      * need to loop at least once more to send the pc/olen returned
      * by sasl_client_start().
      */
-    if (!client_start && rc != SASL_CONTINUE)
+    if (!client_start && (rc != SASL_CONTINUE))
       break;
 
     if ((mutt_strncmp (inbuf, "+ ", 2) == 0)
@@ -114,7 +114,7 @@ static pop_auth_res_t pop_auth_sasl (POP_DATA *pop_data, const char *method)
       goto bail;
     }
 
-    if (!client_start)
+    if (client_start == 0)
       while (true)
       {
 	rc = sasl_client_step (saslconn, buf, len, &interaction, &pc, &olen);
@@ -131,11 +131,11 @@ static pop_auth_res_t pop_auth_sasl (POP_DATA *pop_data, const char *method)
     /* Even if sasl_client_step() returns SASL_OK, we should send at
      * least one more line to the server.  See #3862.
      */
-    if (rc != SASL_CONTINUE && rc != SASL_OK)
+    if ((rc != SASL_CONTINUE) && (rc != SASL_OK))
       break;
 
     /* send out response, or line break if none needed */
-    if (pc)
+    if (pc != NULL)
     {
       if ((olen * 2) > bufsize)
       {
@@ -205,7 +205,7 @@ static pop_auth_res_t pop_auth_apop (POP_DATA *pop_data, const char *method)
   char buf[LONG_STRING];
   size_t i;
 
-  if (!pop_data->timestamp)
+  if (pop_data->timestamp == NULL)
     return POP_A_UNAVAIL;
 
   if (rfc822_valid_msgid (pop_data->timestamp) < 0)
@@ -250,7 +250,7 @@ static pop_auth_res_t pop_auth_user (POP_DATA *pop_data, const char *method)
   char buf[LONG_STRING];
   int ret;
 
-  if (!pop_data->cmd_user)
+  if (pop_data->cmd_user == 0)
     return POP_A_UNAVAIL;
 
   mutt_message (_("Logging in..."));
@@ -283,7 +283,7 @@ static pop_auth_res_t pop_auth_user (POP_DATA *pop_data, const char *method)
     ret = pop_query_d (pop_data, buf, sizeof (buf),
 #ifdef DEBUG
 	/* don't print the password unless we're at the ungodly debugging level */
-	debuglevel < MUTT_SOCK_LOG_FULL ? "PASS *\r\n" :
+ (debuglevel < MUTT_SOCK_LOG_FULL) ? "PASS *\r\n" :
 #endif
 	NULL);
   }
@@ -341,7 +341,7 @@ int pop_authenticate (POP_DATA* pop_data)
     while (method)
     {
       comma = strchr (method, ':');
-      if (comma)
+      if (comma != NULL)
 	*comma++ = '\0';
       mutt_debug (2, "pop_authenticate: Trying method %s\n", method);
       authenticator = pop_authenticators;
@@ -366,8 +366,8 @@ int pop_authenticate (POP_DATA* pop_data)
 
 	  if (ret != POP_A_UNAVAIL)
 	    attempts++;
-	  if (ret == POP_A_SUCCESS || ret == POP_A_SOCKET ||
-	      (ret == POP_A_FAILURE && !option (OPTPOPAUTHTRYALL)))
+	  if ((ret == POP_A_SUCCESS) || (ret == POP_A_SOCKET) ||
+	      ((ret == POP_A_FAILURE) && !option (OPTPOPAUTHTRYALL)))
 	  {
 	    comma = NULL;
 	    break;
@@ -404,8 +404,8 @@ int pop_authenticate (POP_DATA* pop_data)
 
       if (ret != POP_A_UNAVAIL)
 	attempts++;
-      if (ret == POP_A_SUCCESS || ret == POP_A_SOCKET ||
-	  (ret == POP_A_FAILURE && !option (OPTPOPAUTHTRYALL)))
+      if ((ret == POP_A_SUCCESS) || (ret == POP_A_SOCKET) ||
+	  ((ret == POP_A_FAILURE) && !option (OPTPOPAUTHTRYALL)))
 	break;
 
       authenticator++;
@@ -419,7 +419,7 @@ int pop_authenticate (POP_DATA* pop_data)
     case POP_A_SOCKET:
       return -1;
     case POP_A_UNAVAIL:
-      if (!attempts)
+      if (attempts == 0)
 	mutt_error (_("No authenticators available"));
   }
 

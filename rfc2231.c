@@ -125,7 +125,7 @@ static void rfc2231_list_insert (struct rfc2231_parameter **list,
   while (p)
   {
     c = strcmp (par->attribute, p->attribute);
-    if ((c < 0) || (c == 0 && par->index <= p->index))
+    if ((c < 0) || ((c == 0) && (par->index <= p->index)))
       break;
 
     last = &p->next;
@@ -188,9 +188,9 @@ static void rfc2231_join_continuations (PARAMETER **head,
 	valp = par->value;
     } while (par && (strcmp (par->attribute, attribute) == 0));
 
-    if (value)
+    if (value != NULL)
     {
-      if (encoded)
+      if (encoded != 0)
 	mutt_convert_string (&value, charset, Charset, MUTT_ICONV_HOOK_FROM);
       *head = mutt_new_parameter ();
       (*head)->attribute = safe_strdup (attribute);
@@ -218,7 +218,7 @@ void rfc2231_decode_parameters (PARAMETER **headp)
 			 * empty parameters.
 			 */
 
-  if (!headp) return;
+  if (headp == NULL) return;
 
   purge_empty_parameters (headp);
 
@@ -284,7 +284,7 @@ void rfc2231_decode_parameters (PARAMETER **headp)
     }
   }
 
-  if (conthead)
+  if (conthead != NULL)
   {
     rfc2231_join_continuations (last, conthead);
     dirty = 1;
@@ -292,7 +292,7 @@ void rfc2231_decode_parameters (PARAMETER **headp)
 
   *headp = head;
 
-  if (dirty)
+  if (dirty != 0)
     purge_empty_parameters (headp);
 }
 
@@ -334,7 +334,7 @@ int rfc2231_encode_string (char **pd)
     else if (strchr (MimeSpecials, *s) || strchr ("*'%", *s))
       ++ext;
 
-  if (encode)
+  if (encode != 0)
   {
     e = safe_malloc (dlen + 2*ext + strlen (charset) + 3);
     sprintf (e, "%s''", charset);	/* __SPRINTF_CHECKED__ */

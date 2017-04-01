@@ -69,7 +69,7 @@ static int _lua_mutt_call(lua_State *l)
 
   command = mutt_command_get(lua_tostring(l, 1));
 
-  if (!command)
+  if (command == NULL)
   {
     luaL_error(l, "Error command %s not found.", lua_tostring(l, 1));
     return -1;
@@ -119,7 +119,7 @@ static int _lua_mutt_set(lua_State *l)
   }
 
   memcpy(value, tmp, sizeof(struct option_t));
-  if (value)
+  if (value != NULL)
   {
     rv = 0;
     switch (DTYPE(value->type))
@@ -194,7 +194,7 @@ static int _lua_mutt_get(lua_State *l)
   const char *param = lua_tostring(l, -1);
   mutt_debug(2, " * _lua_mutt_get(%s)\n", param);
   const struct option_t *opt = mutt_option_get(param);
-  if (opt)
+  if (opt != NULL)
     switch (opt->type & DT_MASK)
     {
       case DT_ADDR:

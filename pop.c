@@ -143,7 +143,7 @@ static int fetch_uidl (char *line, void *data)
 
   errno = 0;
   index = strtol(line, &endp, 10);
-  if (errno)
+  if (errno != 0)
       return -1;
   while (*endp == ' ')
       endp++;
@@ -164,7 +164,7 @@ static int fetch_uidl (char *line, void *data)
     ctx->hdrs[i] = mutt_new_header ();
     ctx->hdrs[i]->data = safe_strdup (line);
   }
-  else if (ctx->hdrs[i]->index != index - 1)
+  else if (ctx->hdrs[i]->index != (index - 1))
     pop_data->clear_cache = 1;
 
   ctx->hdrs[i]->refno = index;
@@ -185,7 +185,7 @@ static int msg_cache_check (const char *id, body_cache_t *bcache, void *data)
     return -1;
 
 #ifdef USE_HCACHE
-  /* keep hcache file if hcache == bcache */
+  /* keep hcache file if (hcache == bcache) */
   if (strcmp (HC_FNAME "." HC_FEXT, id) == 0)
     return 0;
 #endif
@@ -264,7 +264,7 @@ static int pop_fetch_headers (CONTEXT *ctx)
       mutt_debug (1, "pop_fetch_headers: set UIDL capability\n");
     }
 
-    if (ret == -2 && pop_data->cmd_uidl == 2)
+    if (ret == -2 && (pop_data->cmd_uidl == 2))
     {
       pop_data->cmd_uidl = 0;
 
@@ -274,7 +274,7 @@ static int pop_fetch_headers (CONTEXT *ctx)
     }
   }
 
-  if (!ctx->quiet)
+  if (ctx->quiet == 0)
     mutt_progress_init (&progress, _("Fetching message headers..."),
                         MUTT_PROGRESS_MSG, ReadInc, new_count - old_count);
 
@@ -297,7 +297,7 @@ static int pop_fetch_headers (CONTEXT *ctx)
 
     for (i = old_count; i < new_count; i++)
     {
-      if (!ctx->quiet)
+      if (ctx->quiet == 0)
 	mutt_progress_update (&progress, i + 1 - old_count, -1);
 #ifdef USE_HCACHE
       if ((data = mutt_hcache_fetch (hc, ctx->hdrs[i]->data, strlen(ctx->hdrs[i]->data))))
@@ -351,16 +351,16 @@ static int pop_fetch_headers (CONTEXT *ctx)
       bcached = mutt_bcache_exists (pop_data->bcache, ctx->hdrs[i]->data) == 0;
       ctx->hdrs[i]->old = 0;
       ctx->hdrs[i]->read = 0;
-      if (hcached)
+      if (hcached != 0)
       {
-        if (bcached)
+        if (bcached != 0)
           ctx->hdrs[i]->read = 1;
         else if (option (OPTMARKOLD))
           ctx->hdrs[i]->old = 1;
       }
       else
       {
-        if (bcached)
+        if (bcached != 0)
           ctx->hdrs[i]->read = 1;
       }
 
@@ -414,7 +414,7 @@ static int pop_open_mailbox (CONTEXT *ctx)
   url.path = NULL;
   url_ciss_tostring (&url, buf, sizeof (buf), 0);
   conn = mutt_conn_find (NULL, &acct);
-  if (!conn)
+  if (conn == NULL)
     return -1;
 
   FREE (&ctx->path);
@@ -469,7 +469,7 @@ static void pop_clear_cache (POP_DATA *pop_data)
 {
   int i;
 
-  if (!pop_data->clear_cache)
+  if (pop_data->clear_cache == 0)
     return;
 
   mutt_debug (1, "pop_clear_cache: delete cached messages\n");
@@ -489,7 +489,7 @@ static int pop_close_mailbox (CONTEXT *ctx)
 {
   POP_DATA *pop_data = (POP_DATA *)ctx->data;
 
-  if (!pop_data)
+  if (pop_data == NULL)
     return 0;
 
   pop_logout (ctx);
@@ -502,7 +502,7 @@ static int pop_close_mailbox (CONTEXT *ctx)
   pop_data->clear_cache = 1;
   pop_clear_cache (pop_data);
 
-  if (!pop_data->conn->data)
+  if (pop_data->conn->data == NULL)
     mutt_socket_free (pop_data->conn);
 
   mutt_bcache_close (&pop_data->bcache);
@@ -533,13 +533,13 @@ static int pop_fetch_message (CONTEXT* ctx, MESSAGE* msg, int msgno)
    */
   cache = &pop_data->cache[h->index % POP_CACHE_LEN];
 
-  if (cache->path)
+  if (cache->path != NULL)
   {
     if (cache->index == h->index)
     {
       /* yes, so just return a pointer to the message */
       msg->fp = fopen (cache->path, "r");
-      if (msg->fp)
+      if (msg->fp != NULL)
 	return 0;
 
       mutt_perror (cache->path);
@@ -595,7 +595,7 @@ static int pop_fetch_message (CONTEXT* ctx, MESSAGE* msg, int msgno)
     /* if RETR failed (e.g. connection closed), be sure to remove either
      * the file in bcache or from POP's own cache since the next iteration
      * of the loop will re-attempt to put() the message */
-    if (!bcache)
+    if (bcache == 0)
       unlink (path);
 
     if (ret == -2)
@@ -616,7 +616,7 @@ static int pop_fetch_message (CONTEXT* ctx, MESSAGE* msg, int msgno)
   /* Update the header information.  Previously, we only downloaded a
    * portion of the headers, those required for the main display.
    */
-  if (bcache)
+  if (bcache != 0)
     mutt_bcache_commit (pop_data->bcache, h->data);
   else
   {
@@ -648,7 +648,7 @@ static int pop_fetch_message (CONTEXT* ctx, MESSAGE* msg, int msgno)
   h->content->length = ftello (msg->fp) - h->content->offset;
 
   /* This needs to be done in case this is a multipart message */
-  if (!WithCrypto)
+  if (WithCrypto == 0)
     h->security = crypt_query (h->content);
 
   mutt_clear_error();
@@ -687,12 +687,12 @@ static int pop_sync_mailbox (CONTEXT *ctx, int *index_hint)
     hc = pop_hcache_open (pop_data, ctx->path);
 #endif
 
-    for (i = 0, j = 0, ret = 0; ret == 0 && i < ctx->msgcount; i++)
+    for (i = 0, j = 0, ret = 0; (ret == 0) && i < ctx->msgcount; i++)
     {
       if (ctx->hdrs[i]->deleted && ctx->hdrs[i]->refno != -1)
       {
 	j++;
-	if (!ctx->quiet)
+	if (ctx->quiet == 0)
 	  mutt_progress_update (&progress, j, -1);
 	snprintf (buf, sizeof (buf), "DELE %d\r\n", ctx->hdrs[i]->refno);
 	if ((ret = pop_query (pop_data, buf, sizeof (buf))) == 0)
@@ -786,7 +786,7 @@ void pop_fetch_mail (void)
   ACCOUNT acct;
   POP_DATA *pop_data = NULL;
 
-  if (!PopHost)
+  if (PopHost == NULL)
   {
     mutt_error (_("POP host is not defined."));
     return;
@@ -802,14 +802,14 @@ void pop_fetch_mail (void)
 
   ret = pop_parse_path (url, &acct);
   FREE (&url);
-  if (ret)
+  if (ret != 0)
   {
     mutt_error (_("%s is an invalid POP path"), PopHost);
     return;
   }
 
   conn = mutt_conn_find (NULL, &acct);
-  if (!conn)
+  if (conn == NULL)
     return;
 
   pop_data = safe_calloc (1, sizeof (POP_DATA));
@@ -840,7 +840,7 @@ void pop_fetch_mail (void)
   sscanf (buffer, "+OK %d %d", &msgs, &bytes);
 
   /* only get unread messages */
-  if (msgs > 0 && option (OPTPOPLAST))
+  if ((msgs > 0) && option (OPTPOPLAST))
   {
     strfcpy (buffer, "LAST\r\n", sizeof (buffer));
     ret = pop_query (pop_data, buffer, sizeof (buffer));
@@ -864,7 +864,7 @@ void pop_fetch_mail (void)
   snprintf (msgbuf, sizeof (msgbuf), _("Reading new messages (%d bytes)..."), bytes);
   mutt_message ("%s", msgbuf);
 
-  for (i = last + 1 ; i <= msgs ; i++)
+  for (i = last + 1 ; (i <= msgs) ; i++)
   {
     if ((msg = mx_open_new_message (&ctx, NULL, MUTT_ADD_FROM)) == NULL)
       ret = -3;
@@ -875,7 +875,7 @@ void pop_fetch_mail (void)
       if (ret == -3)
 	rset = 1;
 
-      if (ret == 0 && mx_commit_message (msg, &ctx) != 0)
+      if ((ret == 0) && mx_commit_message (msg, &ctx) != 0)
       {
 	rset = 1;
 	ret = -3;
@@ -884,7 +884,7 @@ void pop_fetch_mail (void)
       mx_close_message (&ctx, &msg);
     }
 
-    if (ret == 0 && delanswer == MUTT_YES)
+    if ((ret == 0) && (delanswer == MUTT_YES))
     {
       /* delete the message on the server */
       snprintf (buffer, sizeof (buffer), "DELE %d\r\n", i);
@@ -912,7 +912,7 @@ void pop_fetch_mail (void)
 
   mx_close_mailbox (&ctx, NULL);
 
-  if (rset)
+  if (rset != 0)
   {
     /* make sure no messages get deleted */
     strfcpy (buffer, "RSET\r\n", sizeof (buffer));

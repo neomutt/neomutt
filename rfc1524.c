@@ -65,7 +65,7 @@ int rfc1524_expand_command (BODY *a, char *filename, char *_type,
   if (option (OPTMAILCAPSANITIZE))
     mutt_sanitize_filename (type, 0);
 
-  while (x < clen - 1 && command[x] && y < sizeof (buf) - 1)
+  while (x < (clen - 1) && command[x] && (y < (sizeof(buf) - 1)))
   {
     if (command[x] == '\\')
     {
@@ -83,7 +83,7 @@ int rfc1524_expand_command (BODY *a, char *filename, char *_type,
 	int z = 0;
 
 	x++;
-	while (command[x] && command[x] != '}' && z < sizeof (param) - 1)
+	while (command[x] && (command[x] != '}') && (z < (sizeof(param) - 1)))
 	  param[z++] = command[x++];
 	param[z] = '\0';
 
@@ -94,7 +94,7 @@ int rfc1524_expand_command (BODY *a, char *filename, char *_type,
 
 	y += mutt_quote_filename (buf + y, sizeof (buf) - y, pvalue);
       }
-      else if (command[x] == 's' && filename != NULL)
+      else if (command[x] == 's' && (filename != NULL))
       {
 	y += mutt_quote_filename (buf + y, sizeof (buf) - y, filename);
 	needspipe = false;
@@ -120,7 +120,7 @@ static char *get_field (char *s)
 {
   char *ch = NULL;
 
-  if (!s)
+  if (s == NULL)
     return NULL;
 
   while ((ch = strpbrk (s, ";\\")) != NULL)
@@ -148,7 +148,7 @@ static int get_field_text (char *field, char **entry,
   field = mutt_skip_whitespace (field);
   if (*field == '=')
   {
-    if (entry)
+    if (entry != NULL)
     {
       field++;
       field = mutt_skip_whitespace (field);
@@ -219,7 +219,7 @@ static int rfc1524_mailcap_parse (BODY *a,
       /* next field is the viewcommand */
       field = ch;
       ch = get_field (ch);
-      if (entry)
+      if (entry != NULL)
 	entry->command = safe_strdup (field);
 
       /* parse the optional fields */
@@ -237,13 +237,13 @@ static int rfc1524_mailcap_parse (BODY *a,
 
 	if (ascii_strcasecmp (field, "needsterminal") == 0)
 	{
-	  if (entry)
+	  if (entry != NULL)
 	    entry->needsterminal = true;
 	}
 	else if (ascii_strcasecmp (field, "copiousoutput") == 0)
 	{
 	  copiousoutput = true;
-	  if (entry)
+	  if (entry != NULL)
 	    entry->copiousoutput = true;
 	}
 	else if (ascii_strncasecmp (field, "composetyped", 12) == 0)
@@ -308,29 +308,29 @@ static int rfc1524_mailcap_parse (BODY *a,
 
       if (opt == MUTT_AUTOVIEW)
       {
-	if (!copiousoutput)
+	if (copiousoutput == 0)
 	  found = false;
       }
       else if (opt == MUTT_COMPOSE)
       {
-	if (!composecommand)
+	if (composecommand == 0)
 	  found = false;
       }
       else if (opt == MUTT_EDIT)
       {
-	if (!editcommand)
+	if (editcommand == 0)
 	  found = false;
       }
       else if (opt == MUTT_PRINT)
       {
-	if (!printcommand)
+	if (printcommand == 0)
 	  found = false;
       }
 
-      if (!found)
+      if (found == 0)
       {
 	/* reset */
-	if (entry)
+	if (entry != NULL)
 	{
 	  FREE (&entry->command);
 	  FREE (&entry->composecommand);
@@ -373,7 +373,7 @@ void rfc1524_free_entry(rfc1524_entry **entry)
  * rfc1524_mailcap_lookup attempts to find the given type in the
  * list of mailcap files.  On success, this returns the entry information
  * in *entry, and returns 1.  On failure (not found), returns 0.
- * If entry == NULL just return 1 if the given type is found.
+ * If (entry == NULL) just return 1 if the given type is found.
  */
 int rfc1524_mailcap_lookup (BODY *a, char *type, rfc1524_entry *entry, int opt)
 {
@@ -399,7 +399,7 @@ int rfc1524_mailcap_lookup (BODY *a, char *type, rfc1524_entry *entry, int opt)
   while (!found && *curr)
   {
     x = 0;
-    while (*curr && *curr != ':' && x < sizeof (path) - 1)
+    while (*curr && *curr != ':' && (x < (sizeof(path) - 1)))
     {
       path[x++] = *curr;
       curr++;
@@ -407,7 +407,7 @@ int rfc1524_mailcap_lookup (BODY *a, char *type, rfc1524_entry *entry, int opt)
     if (*curr)
       curr++;
 
-    if (!x)
+    if (x == 0)
       continue;
 
     path[x] = '\0';
@@ -462,12 +462,12 @@ int rfc1524_expand_filename (char *nametemplate,
   if (oldfile && (s = strrchr (oldfile, '/')))
     oldfile = s + 1;
 
-  if (!nametemplate)
+  if (nametemplate == NULL)
   {
-    if (oldfile)
+    if (oldfile != NULL)
       strfcpy (newfile, oldfile, nflen);
   }
-  else if (!oldfile)
+  else if (oldfile == NULL)
   {
     mutt_expand_fmt (newfile, nflen, nametemplate, "mutt");
   }
@@ -493,7 +493,7 @@ int rfc1524_expand_filename (char *nametemplate,
 	lmatch = 0;
     }
 
-    if(ps)
+    if (ps != 0)
     {
 
       /* If we had a "%s", check the rest. */
@@ -514,7 +514,7 @@ int rfc1524_expand_filename (char *nametemplate,
       rmatch = 1;
 
       for(j = mutt_strlen(oldfile) - 1, k = mutt_strlen(nametemplate) - 1 ;
-	  j >= (lmatch ? i : 0) && k >= i + 2;
+	  j >= (lmatch ? i : 0) && k >= (i + 2);
 	  j--, k--)
       {
 	if(nametemplate[k] != oldfile[j])
@@ -526,13 +526,13 @@ int rfc1524_expand_filename (char *nametemplate,
 
       /* Now, check if we had a full match. */
 
-      if(k >= i + 2)
+      if(k >= (i + 2))
 	rmatch = 0;
 
-      if(lmatch) *left = 0;
+      if (lmatch != 0) *left = 0;
       else strnfcpy(left, nametemplate, sizeof(left), i);
 
-      if(rmatch) *right = 0;
+      if (rmatch != 0) *right = 0;
       else strfcpy(right, nametemplate + i + 2, sizeof(right));
 
       snprintf(newfile, nflen, "%s%s%s", left, oldfile, right);

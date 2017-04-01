@@ -60,8 +60,8 @@ int pop_parse_path (const char* path, ACCOUNT* acct)
     acct->flags |= MUTT_ACCT_SSL;
 
   service = getservbyname (url.scheme == U_POP ? "pop3" : "pop3s", "tcp");
-  if (!acct->port) {
-    if (service)
+  if (acct->port == 0) {
+    if (service != NULL)
       acct->port = ntohs (service->s_port);
     else
       acct->port = url.scheme == U_POP ? POP_PORT : POP_SSL_PORT;;
@@ -124,7 +124,7 @@ static int fetch_auth (char *line, void *data)
 {
   POP_DATA *pop_data = (POP_DATA *)data;
 
-  if (!pop_data->auth_list)
+  if (pop_data->auth_list == NULL)
   {
     pop_data->auth_list = safe_malloc (strlen (line) + 1);
     *pop_data->auth_list = '\0';
@@ -151,7 +151,7 @@ static int pop_capabilities (POP_DATA *pop_data, int mode)
   char buf[LONG_STRING];
 
   /* don't check capabilities on reconnect */
-  if (pop_data->capabilities)
+  if (pop_data->capabilities != 0)
     return 0;
 
   /* init capabilities */
@@ -169,7 +169,7 @@ static int pop_capabilities (POP_DATA *pop_data, int mode)
   }
 
   /* Execute CAPA command */
-  if (mode == 0 || pop_data->cmd_capa)
+  if ((mode == 0) || pop_data->cmd_capa)
   {
     strfcpy (buf, "CAPA\r\n", sizeof (buf));
     switch (pop_fetch_data (pop_data, buf, NULL, fetch_capa, pop_data))
@@ -185,7 +185,7 @@ static int pop_capabilities (POP_DATA *pop_data, int mode)
   }
 
   /* CAPA not supported, use defaults */
-  if (mode == 0 && !pop_data->cmd_capa)
+  if ((mode == 0) && !pop_data->cmd_capa)
   {
     pop_data->cmd_user = 2;
     pop_data->cmd_uidl = 2;
@@ -201,11 +201,11 @@ static int pop_capabilities (POP_DATA *pop_data, int mode)
   {
     char *msg = NULL;
 
-    if (!pop_data->expire)
+    if (pop_data->expire == 0)
       msg = _("Unable to leave messages on server.");
-    if (!pop_data->cmd_top)
+    if (pop_data->cmd_top == 0)
       msg = _("Command TOP is not supported by server.");
-    if (!pop_data->cmd_uidl)
+    if (pop_data->cmd_uidl == 0)
       msg = _("Command UIDL is not supported by server.");
     if (msg && pop_data->cmd_capa)
     {
@@ -388,7 +388,7 @@ void pop_logout (CONTEXT *ctx)
   {
     mutt_message (_("Closing connection to POP server..."));
 
-    if (ctx->readonly)
+    if (ctx->readonly != 0)
     {
       strfcpy (buf, "RSET\r\n", sizeof (buf));
       ret = pop_query (pop_data, buf, sizeof (buf));
@@ -423,7 +423,7 @@ int pop_query_d (POP_DATA *pop_data, char *buf, size_t buflen, char *msg)
 
 #ifdef DEBUG
     /* print msg instead of real command */
-    if (msg)
+    if (msg != NULL)
     {
       dbg = MUTT_SOCK_LOG_FULL;
       mutt_debug (MUTT_SOCK_LOG_CMD, "> %s", msg);
@@ -433,7 +433,7 @@ int pop_query_d (POP_DATA *pop_data, char *buf, size_t buflen, char *msg)
   mutt_socket_write_d (pop_data->conn, buf, -1, dbg);
 
   c = strpbrk (buf, " \r\n");
-  if (c)
+  if (c != NULL)
     *c = '\0';
   snprintf (pop_data->err_msg, sizeof (pop_data->err_msg), "%s: ", buf);
 
@@ -503,9 +503,9 @@ int pop_fetch_data (POP_DATA *pop_data, char *query, progress_t *progressbar,
     }
     else
     {
-      if (progressbar)
+      if (progressbar != NULL)
 	mutt_progress_update (progressbar, pos, -1);
-      if (ret == 0 && funct (inbuf, data) < 0)
+      if ((ret == 0) && funct (inbuf, data) < 0)
 	ret = -3;
       lenbuf = 0;
     }
@@ -527,7 +527,7 @@ static int check_uidl (char *line, void *data)
 
   errno = 0;
   index = strtoul(line, &endp, 10);
-  if (errno)
+  if (errno != 0)
       return -1;
   while (*endp == ' ')
       endp++;

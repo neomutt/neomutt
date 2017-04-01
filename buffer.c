@@ -51,7 +51,7 @@ BUFFER *mutt_buffer_init (BUFFER *b) {
 BUFFER *mutt_buffer_from (char *seed) {
   BUFFER *b = NULL;
 
-  if (!seed)
+  if (seed == NULL)
     return NULL;
 
   b = mutt_buffer_new ();
@@ -79,13 +79,13 @@ int mutt_buffer_printf (BUFFER* buf, const char* fmt, ...)
   va_start (ap, fmt);
   va_copy (ap_retry, ap);
 
-  if (!buf->dptr)
+  if (buf->dptr == NULL)
     buf->dptr = buf->data;
 
   doff = buf->dptr - buf->data;
   blen = buf->dsize - doff;
   /* solaris 9 vsnprintf barfs when blen is 0 */
-  if (!blen)
+  if (blen == 0)
   {
     blen = 128;
     buf->dsize += blen;
@@ -118,10 +118,10 @@ static void mutt_buffer_add (BUFFER* buf, const char* s, size_t len)
 {
   size_t offset;
 
-  if (buf->dptr + len + 1 > buf->data + buf->dsize)
+  if ((buf->dptr + len + 1) > (buf->data + buf->dsize))
   {
     offset = buf->dptr - buf->data;
-    buf->dsize += len < 128 ? 128 : len + 1;
+    buf->dsize += (len < 128) ? 128 : len + 1;
     /* suppress compiler aliasing warning */
     safe_realloc ((void**) (void*) &buf->data, buf->dsize);
     buf->dptr = buf->data + offset;
@@ -153,7 +153,7 @@ int mutt_extract_token (BUFFER *dest, BUFFER *tok, int flags)
   SKIPWS (tok->dptr);
   while ((ch = *tok->dptr))
   {
-    if (!qc)
+    if (qc == 0)
     {
       if ((ISSPACE (ch) && !(flags & MUTT_TOKEN_SPACE)) ||
 	  (ch == '#' && !(flags & MUTT_TOKEN_COMMENT)) ||
@@ -246,7 +246,7 @@ int mutt_extract_token (BUFFER *dest, BUFFER *tok, int flags)
 	    pc += 2;
 	}
       } while (pc && *pc != '`');
-      if (!pc)
+      if (pc == NULL)
       {
 	mutt_debug (1, "mutt_get_token: mismatched backticks\n");
 	return -1;
@@ -284,7 +284,7 @@ int mutt_extract_token (BUFFER *dest, BUFFER *tok, int flags)
 	ptr = safe_malloc (tok->dsize);
 	memcpy (ptr, expn.data, expnlen);
 	strcpy (ptr + expnlen, tok->dptr);	/* __STRCPY_CHECKED__ */
-	if (tok->destroy)
+	if (tok->destroy != 0)
 	  FREE (&tok->data);
 	tok->data = ptr;
 	tok->dptr = ptr;
@@ -315,7 +315,7 @@ int mutt_extract_token (BUFFER *dest, BUFFER *tok, int flags)
 	var = mutt_substrdup (tok->dptr, pc);
 	tok->dptr = pc;
       }
-      if (var)
+      if (var != NULL)
       {
         if ((env = getenv (var)) || (env = myvar_get (var)))
           mutt_buffer_addstr (dest, env);

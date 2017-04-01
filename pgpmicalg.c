@@ -141,10 +141,10 @@ static short pgp_mic_from_packet (unsigned char *p, size_t len)
     return -1;
   }
 
-  if (len >= 18 && p[1] == 3)
+  if ((len >= 18) && p[1] == 3)
     /* version 3 signature */
     return (short) p[17];
-  else if (len >= 5 && p[1] == 4)
+  else if ((len >= 5) && p[1] == 4)
     /* version 4 signature */
     return (short) p[4];
   else

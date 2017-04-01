@@ -58,7 +58,7 @@ typedef struct menu_t
   mutt_window_t *helpwin;
   mutt_window_t *messagewin;
 
-  /* Setting dialog != NULL overrides normal menu behavior.
+  /* Setting (dialog != NULL) overrides normal menu behavior.
    * In dialog mode menubar is hidden and prompt keys are checked before
    * normal menu movement keys. This can cause problems with scrolling, if
    * prompt keys override movement keys.

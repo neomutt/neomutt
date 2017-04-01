@@ -152,7 +152,7 @@ static int dotlock_file (const char *path, int fd, int retry)
   int r;
   int flags = DL_FL_USEPRIV | DL_FL_RETRY;
 
-  if (retry) retry = 1;
+  if (retry != 0) retry = 1;
 
 retry_lock:
   if ((r = invoke_dotlock(path, fd, flags, retry)) == DL_EX_EXIST)
@@ -176,7 +176,7 @@ retry_lock:
       mutt_error (_("Can't dotlock %s.\n"), path);
     }
   }
-  return (r == DL_EX_OK ? 0 : -1);
+  return ((r == DL_EX_OK) ? 0 : -1);
 }
 
 static int undotlock_file (const char *path, int fd)
@@ -213,7 +213,7 @@ int mx_lock_file (const char *path, int fd, int excl, int dot, int timeout)
   while (fcntl (fd, F_SETLK, &lck) == -1)
   {
     mutt_debug (1, "mx_lock_file(): fcntl errno %d.\n", errno);
-    if (errno != EAGAIN && errno != EACCES)
+    if ((errno != EAGAIN) && (errno != EACCES))
     {
       mutt_perror ("fcntl");
       return -1;
@@ -228,7 +228,7 @@ int mx_lock_file (const char *path, int fd, int excl, int dot, int timeout)
     /* only unlock file if it is unchanged */
     if (prev_sb.st_size == sb.st_size && ++count >= (timeout?MAXLOCKATTEMPT:0))
     {
-      if (timeout)
+      if (timeout != 0)
 	mutt_error (_("Timeout exceeded while attempting fcntl lock!"));
       return -1;
     }
@@ -261,7 +261,7 @@ int mx_lock_file (const char *path, int fd, int excl, int dot, int timeout)
     /* only unlock file if it is unchanged */
     if (prev_sb.st_size == sb.st_size && ++count >= (timeout?MAXLOCKATTEMPT:0))
     {
-      if (timeout)
+      if (timeout != 0)
 	mutt_error (_("Timeout exceeded while attempting flock lock!"));
       r = -1;
       break;
@@ -275,7 +275,7 @@ int mx_lock_file (const char *path, int fd, int excl, int dot, int timeout)
 #endif /* USE_FLOCK */
 
 #ifdef USE_DOTLOCK
-  if (r == 0 && dot)
+  if ((r == 0) && dot)
     r = dotlock_file (path, fd, timeout);
 #endif /* USE_DOTLOCK */
 
@@ -312,7 +312,7 @@ int mx_unlock_file (const char *path, int fd, int dot)
 #endif
 
 #ifdef USE_DOTLOCK
-  if (dot)
+  if (dot != 0)
     undotlock_file (path, fd);
 #endif
 
@@ -360,14 +360,14 @@ int mx_is_imap(const char *p)
 {
   url_scheme_t scheme;
 
-  if (!p)
+  if (p == NULL)
     return 0;
 
   if (*p == '{')
     return 1;
 
   scheme = url_check_scheme (p);
-  if (scheme == U_IMAP || scheme == U_IMAPS)
+  if ((scheme == U_IMAP) || (scheme == U_IMAPS))
     return 1;
 
   return 0;
@@ -380,11 +380,11 @@ int mx_is_pop (const char *p)
 {
   url_scheme_t scheme;
 
-  if (!p)
+  if (p == NULL)
     return 0;
 
   scheme = url_check_scheme (p);
-  if (scheme == U_POP || scheme == U_POPS)
+  if ((scheme == U_POP) || (scheme == U_POPS))
     return 1;
 
   return 0;
@@ -396,11 +396,11 @@ int mx_is_nntp (const char *p)
 {
   url_scheme_t scheme;
 
-  if (!p)
+  if (p == NULL)
     return 0;
 
   scheme = url_check_scheme (p);
-  if (scheme == U_NNTP || scheme == U_NNTPS)
+  if ((scheme == U_NNTP) || (scheme == U_NNTPS))
     return 1;
 
   return 0;
@@ -413,7 +413,7 @@ int mx_is_notmuch(const char *p)
 {
   url_scheme_t scheme;
 
-  if (!p)
+  if (p == NULL)
     return 0;
 
   scheme = url_check_scheme (p);
@@ -472,7 +472,7 @@ int mx_get_magic (const char *path)
   else if (st.st_size == 0)
   {
     /* hard to tell what zero-length files are, so assume the default magic */
-    if (DefaultMagic == MUTT_MBOX || DefaultMagic == MUTT_MMDF)
+    if ((DefaultMagic == MUTT_MBOX) || (DefaultMagic == MUTT_MMDF))
       return DefaultMagic;
     else
       return MUTT_MBOX;
@@ -624,7 +624,7 @@ CONTEXT *mx_open_mailbox (const char *path, int flags, CONTEXT *pctx)
   if (!path || !path[0])
     return NULL;
 
-  if (!ctx)
+  if (ctx == NULL)
     ctx = safe_malloc (sizeof (CONTEXT));
   memset (ctx, 0, sizeof (CONTEXT));
   ctx->path = safe_strdup (path);
@@ -649,7 +649,7 @@ CONTEXT *mx_open_mailbox (const char *path, int flags, CONTEXT *pctx)
     if (mx_open_mailbox_append (ctx, flags) != 0)
     {
       mx_fastclose_mailbox (ctx);
-      if (!pctx)
+      if (pctx == NULL)
 	FREE (&ctx);
       return NULL;
     }
@@ -659,15 +659,15 @@ CONTEXT *mx_open_mailbox (const char *path, int flags, CONTEXT *pctx)
   ctx->magic = mx_get_magic (path);
   ctx->mx_ops = mx_get_ops (ctx->magic);
 
-  if (ctx->magic <= 0 || !ctx->mx_ops)
+  if ((ctx->magic <= 0) || !ctx->mx_ops)
   {
-    if (ctx->magic == 0 || !ctx->mx_ops)
+    if ((ctx->magic == 0) || !ctx->mx_ops)
       mutt_error (_("%s is not a mailbox."), path);
     else if (ctx->magic == -1)
       mutt_perror(path);
 
     mx_fastclose_mailbox (ctx);
-    if (!pctx)
+    if (pctx == NULL)
       FREE (&ctx);
     return NULL;
   }
@@ -681,7 +681,7 @@ CONTEXT *mx_open_mailbox (const char *path, int flags, CONTEXT *pctx)
    */
   set_option (OPTFORCEREFRESH);
 
-  if (!ctx->quiet)
+  if (ctx->quiet == 0)
     mutt_message (_("Reading %s..."), ctx->path);
 
   rc = ctx->mx_ops->open(ctx);
@@ -696,7 +696,7 @@ CONTEXT *mx_open_mailbox (const char *path, int flags, CONTEXT *pctx)
       unset_option (OPTNEEDRESCORE);
       mutt_sort_headers (ctx, 1);
     }
-    if (!ctx->quiet)
+    if (ctx->quiet == 0)
       mutt_clear_error ();
     if (rc == -2)
       mutt_error(_("Reading from %s interrupted..."), ctx->path);
@@ -704,7 +704,7 @@ CONTEXT *mx_open_mailbox (const char *path, int flags, CONTEXT *pctx)
   else
   {
     mx_fastclose_mailbox (ctx);
-    if (!pctx)
+    if (pctx == NULL)
       FREE (&ctx);
   }
 
@@ -718,7 +718,7 @@ void mx_fastclose_mailbox (CONTEXT *ctx)
   int i;
   struct utimbuf ut;
 
-  if(!ctx)
+  if(ctx == NULL)
     return;
 
   /* fix up the times so buffy won't get confused */
@@ -730,15 +730,15 @@ void mx_fastclose_mailbox (CONTEXT *ctx)
 
   /* never announce that a mailbox we've just left has new mail. #3290
    * XXX: really belongs in mx_close_mailbox, but this is a nice hook point */
-  if (!ctx->peekonly)
+  if (ctx->peekonly == 0)
     mutt_buffy_setnotified(ctx->path);
 
-  if (ctx->mx_ops)
+  if (ctx->mx_ops != NULL)
     ctx->mx_ops->close (ctx);
 
-  if (ctx->subj_hash)
+  if (ctx->subj_hash != NULL)
     hash_destroy (&ctx->subj_hash, NULL);
-  if (ctx->id_hash)
+  if (ctx->id_hash != NULL)
     hash_destroy (&ctx->id_hash, NULL);
   hash_destroy (&ctx->label_hash, NULL);
   mutt_clear_threads (ctx);
@@ -749,7 +749,7 @@ void mx_fastclose_mailbox (CONTEXT *ctx)
   FREE (&ctx->path);
   FREE (&ctx->realpath);
   FREE (&ctx->pattern);
-  if (ctx->limit_pattern)
+  if (ctx->limit_pattern != NULL)
     mutt_pattern_free (&ctx->limit_pattern);
   safe_fclose (&ctx->fp);
   memset (ctx, 0, sizeof (CONTEXT));
@@ -761,7 +761,7 @@ static int sync_mailbox (CONTEXT *ctx, int *index_hint)
   if (!ctx->mx_ops || !ctx->mx_ops->sync)
     return -1;
 
-  if (!ctx->quiet)
+  if (ctx->quiet == 0)
     mutt_message (_("Writing %s..."), ctx->path);
 
   return ctx->mx_ops->sync (ctx, index_hint);
@@ -776,7 +776,7 @@ static int trash_append (CONTEXT *ctx)
   int opt_confappend, rc;
 
   if (!TrashPath || !ctx->deleted ||
-      (ctx->magic == MUTT_MAILDIR && option (OPTMAILDIRTRASH)))
+      ((ctx->magic == MUTT_MAILDIR) && option (OPTMAILDIRTRASH)))
     return 0;
 
   for (i = 0; i < ctx->msgcount; i++)
@@ -787,10 +787,10 @@ static int trash_append (CONTEXT *ctx)
 
   /* avoid the "append messages" prompt */
   opt_confappend = option (OPTCONFIRMAPPEND);
-  if (opt_confappend)
+  if (opt_confappend != 0)
     unset_option (OPTCONFIRMAPPEND);
   rc = mutt_save_confirm (TrashPath, &st);
-  if (opt_confappend)
+  if (opt_confappend != 0)
     set_option (OPTCONFIRMAPPEND);
   if (rc != 0)
   {
@@ -803,7 +803,7 @@ static int trash_append (CONTEXT *ctx)
     return 0;  /* we are in the trash folder: simple sync */
 
 #ifdef USE_IMAP
-  if (Context->magic == MUTT_IMAP && mx_is_imap (TrashPath))
+  if ((Context->magic == MUTT_IMAP) && mx_is_imap (TrashPath))
   {
     if (!imap_fast_trash (Context, TrashPath))
       return 0;
@@ -813,7 +813,7 @@ static int trash_append (CONTEXT *ctx)
   if (mx_open_mailbox (TrashPath, MUTT_APPEND, &ctx_trash) != NULL)
   {
     /* continue from initial scan above */
-    for (; i < ctx->msgcount ; i++)
+    for (; (i < ctx->msgcount) ; i++)
       if (ctx->hdrs[i]->deleted  && (!ctx->hdrs[i]->purge))
       {
         if (mutt_append_message (&ctx_trash, ctx, ctx->hdrs[i], 0, 0) == -1)
@@ -844,7 +844,7 @@ int mx_close_mailbox (CONTEXT *ctx, int *index_hint)
   char mbox[_POSIX_PATH_MAX];
   char buf[SHORT_STRING];
 
-  if (!ctx) return 0;
+  if (ctx == NULL) return 0;
 
   ctx->closing = 1;
 
@@ -855,7 +855,7 @@ int mx_close_mailbox (CONTEXT *ctx, int *index_hint)
   }
 
 #ifdef USE_NNTP
-  if (ctx->unread && ctx->magic == MUTT_NNTP)
+  if (ctx->unread && (ctx->magic == MUTT_NNTP))
   {
     NNTP_DATA *nntp_data = ctx->data;
 
@@ -886,7 +886,7 @@ int mx_close_mailbox (CONTEXT *ctx, int *index_hint)
 #endif
   }
 
-  if (read_msgs && quadoption (OPT_MOVE) != MUTT_NO && ctx->magic != MUTT_NNTP)
+  if (read_msgs && quadoption (OPT_MOVE) != MUTT_NO && (ctx->magic != MUTT_NNTP))
   {
     char *p = NULL;
 
@@ -917,7 +917,7 @@ int mx_close_mailbox (CONTEXT *ctx, int *index_hint)
    * There is no point in asking whether or not to purge if we are
    * just marking messages as "trash".
    */
-  if (ctx->deleted && !(ctx->magic == MUTT_MAILDIR && option (OPTMAILDIRTRASH)))
+  if (ctx->deleted && !((ctx->magic == MUTT_MAILDIR) && option (OPTMAILDIRTRASH)))
   {
     snprintf (buf, sizeof (buf), ctx->deleted == 1
 	     ? _("Purge %d deleted message?") : _("Purge %d deleted messages?"),
@@ -938,16 +938,16 @@ int mx_close_mailbox (CONTEXT *ctx, int *index_hint)
     }
   }
 
-  if (move_messages)
+  if (move_messages != 0)
   {
-    if (!ctx->quiet)
+    if (ctx->quiet == 0)
       mutt_message (_("Moving read messages to %s..."), mbox);
 
 #ifdef USE_IMAP
     /* try to use server-side copy first */
     i = 1;
 
-    if (ctx->magic == MUTT_IMAP && mx_is_imap (mbox))
+    if ((ctx->magic == MUTT_IMAP) && mx_is_imap (mbox))
     {
       /* tag messages for moving, and clear old tags, if any */
       for (i = 0; i < ctx->msgcount; i++)
@@ -999,11 +999,11 @@ int mx_close_mailbox (CONTEXT *ctx, int *index_hint)
     }
 
   }
-  else if (!ctx->changed && ctx->deleted == 0)
+  else if (!ctx->changed && (ctx->deleted == 0))
   {
-    if (!ctx->quiet)
+    if (ctx->quiet == 0)
       mutt_message (_("Mailbox is unchanged."));
-    if (ctx->magic == MUTT_MBOX || ctx->magic == MUTT_MMDF)
+    if ((ctx->magic == MUTT_MBOX) || (ctx->magic == MUTT_MMDF))
       mbox_reset_atime (ctx, NULL);
     mx_fastclose_mailbox (ctx);
     return 0;
@@ -1032,7 +1032,7 @@ int mx_close_mailbox (CONTEXT *ctx, int *index_hint)
   else
 #endif
   {
-    if (!purge)
+    if (purge == 0)
     {
       for (i = 0; i < ctx->msgcount; i++)
       {
@@ -1052,9 +1052,9 @@ int mx_close_mailbox (CONTEXT *ctx, int *index_hint)
     }
   }
 
-  if (!ctx->quiet)
+  if (ctx->quiet == 0)
   {
-    if (move_messages)
+    if (move_messages != 0)
       mutt_message (_("%d kept, %d moved, %d deleted."),
 	ctx->msgcount - ctx->deleted, read_msgs, ctx->deleted);
     else
@@ -1062,8 +1062,8 @@ int mx_close_mailbox (CONTEXT *ctx, int *index_hint)
 	ctx->msgcount - ctx->deleted, ctx->deleted);
   }
 
-  if (ctx->msgcount == ctx->deleted &&
-      (ctx->magic == MUTT_MMDF || ctx->magic == MUTT_MBOX) &&
+  if ((ctx->msgcount == ctx->deleted) &&
+      ((ctx->magic == MUTT_MMDF) || (ctx->magic == MUTT_MBOX)) &&
       !mutt_is_spool(ctx->path) && !option (OPTSAVEEMPTY))
     mx_unlink_empty (ctx->path);
 
@@ -1100,7 +1100,7 @@ void mx_update_tables(CONTEXT *ctx, int committing)
   {
     if (!ctx->hdrs[i]->quasi_deleted &&
 	((committing && (!ctx->hdrs[i]->deleted ||
-			(ctx->magic == MUTT_MAILDIR && option (OPTMAILDIRTRASH)))) ||
+			((ctx->magic == MUTT_MAILDIR) && option (OPTMAILDIRTRASH)))) ||
 	(!committing && ctx->hdrs[i]->active)))
     {
       if (i != j)
@@ -1117,12 +1117,12 @@ void mx_update_tables(CONTEXT *ctx, int committing)
 	  this_body->hdr_offset;
       }
 
-      if (committing)
+      if (committing != 0)
 	ctx->hdrs[j]->changed = 0;
       else if (ctx->hdrs[j]->changed)
 	ctx->changed++;
 
-      if (!committing || (ctx->magic == MUTT_MAILDIR && option (OPTMAILDIRTRASH)))
+      if (!committing || ((ctx->magic == MUTT_MAILDIR) && option (OPTMAILDIRTRASH)))
       {
 	if (ctx->hdrs[j]->deleted)
 	  ctx->deleted++;
@@ -1143,7 +1143,7 @@ void mx_update_tables(CONTEXT *ctx, int committing)
     }
     else
     {
-      if (ctx->magic == MUTT_MH || ctx->magic == MUTT_MAILDIR)
+      if ((ctx->magic == MUTT_MH) || (ctx->magic == MUTT_MAILDIR))
 	ctx->size -= (ctx->hdrs[i]->content->length +
 		      ctx->hdrs[i]->content->offset -
 		      ctx->hdrs[i]->content->hdr_offset);
@@ -1180,7 +1180,7 @@ int mx_sync_mailbox (CONTEXT *ctx, int *index_hint)
   int purge = 1;
   int msgcount, deleted;
 
-  if (ctx->dontwrite)
+  if (ctx->dontwrite != 0)
   {
     char buf[STRING], tmp[STRING];
     if (km_expand_key (buf, sizeof(buf),
@@ -1192,7 +1192,7 @@ int mx_sync_mailbox (CONTEXT *ctx, int *index_hint)
     mutt_error (_("Mailbox is marked unwritable. %s"), tmp);
     return -1;
   }
-  else if (ctx->readonly)
+  else if (ctx->readonly != 0)
   {
     mutt_error (_("Mailbox is read-only."));
     return -1;
@@ -1200,12 +1200,12 @@ int mx_sync_mailbox (CONTEXT *ctx, int *index_hint)
 
   if (!ctx->changed && !ctx->deleted)
   {
-    if (!ctx->quiet)
+    if (ctx->quiet == 0)
       mutt_message (_("Mailbox is unchanged."));
     return 0;
   }
 
-  if (ctx->deleted)
+  if (ctx->deleted != 0)
   {
     char buf[SHORT_STRING];
 
@@ -1216,12 +1216,12 @@ int mx_sync_mailbox (CONTEXT *ctx, int *index_hint)
       return -1;
     else if (purge == MUTT_NO)
     {
-      if (!ctx->changed)
+      if (ctx->changed == 0)
 	return 0; /* nothing to do! */
       /* let IMAP servers hold on to D flags */
       if (ctx->magic != MUTT_IMAP)
       {
-        for (i = 0 ; i < ctx->msgcount ; i++)
+        for (i = 0 ; (i < ctx->msgcount) ; i++)
         {
           ctx->hdrs[i]->deleted = 0;
           ctx->hdrs[i]->purge = 0;
@@ -1253,23 +1253,23 @@ int mx_sync_mailbox (CONTEXT *ctx, int *index_hint)
   if (rc == 0)
   {
 #ifdef USE_IMAP
-    if (ctx->magic == MUTT_IMAP && !purge)
+    if ((ctx->magic == MUTT_IMAP) && !purge)
     {
-      if (!ctx->quiet)
+      if (ctx->quiet == 0)
         mutt_message (_("Mailbox checkpointed."));
     }
     else
 #endif
     {
-      if (!ctx->quiet)
+      if (ctx->quiet == 0)
 	mutt_message (_("%d kept, %d deleted."), msgcount - deleted,
 		      deleted);
     }
 
     mutt_sleep (0);
 
-    if (ctx->msgcount == ctx->deleted &&
-	(ctx->magic == MUTT_MBOX || ctx->magic == MUTT_MMDF) &&
+    if ((ctx->msgcount == ctx->deleted) &&
+	((ctx->magic == MUTT_MBOX) || (ctx->magic == MUTT_MMDF)) &&
 	!mutt_is_spool (ctx->path) && !option (OPTSAVEEMPTY))
     {
       unlink (ctx->path);
@@ -1284,7 +1284,7 @@ int mx_sync_mailbox (CONTEXT *ctx, int *index_hint)
      * MH and maildir are safe.  mbox-style seems to need re-sorting,
      * at least with the new threading code.
      */
-    if (purge || (ctx->magic != MUTT_MAILDIR && ctx->magic != MUTT_MH))
+    if (purge || ((ctx->magic != MUTT_MAILDIR) && (ctx->magic != MUTT_MH)))
     {
       /* IMAP does this automatically after handling EXPUNGE */
       if (ctx->magic != MUTT_IMAP)
@@ -1318,7 +1318,7 @@ MESSAGE *mx_open_new_message (CONTEXT *dest, HEADER *hdr, int flags)
   msg = safe_calloc (1, sizeof (MESSAGE));
   msg->write = 1;
 
-  if (hdr)
+  if (hdr != NULL)
   {
     msg->flags.flagged = hdr->flagged;
     msg->flags.replied = hdr->replied;
@@ -1335,14 +1335,14 @@ MESSAGE *mx_open_new_message (CONTEXT *dest, HEADER *hdr, int flags)
     if (dest->magic == MUTT_MMDF)
       fputs (MMDF_SEP, msg->fp);
 
-    if ((dest->magic == MUTT_MBOX || dest->magic ==  MUTT_MMDF) &&
+    if (((dest->magic == MUTT_MBOX) || dest->magic ==  MUTT_MMDF) &&
 	flags & MUTT_ADD_FROM)
     {
-      if (hdr)
+      if (hdr != NULL)
       {
-	if (hdr->env->return_path)
+	if (hdr->env->return_path != NULL)
 	  p = hdr->env->return_path;
-	else if (hdr->env->sender)
+	else if (hdr->env->sender != NULL)
 	  p = hdr->env->sender;
 	else
 	  p = hdr->env->from;
@@ -1431,14 +1431,14 @@ void mx_alloc_memory (CONTEXT *ctx)
   int i;
   size_t s = MAX (sizeof (HEADER *), sizeof (int));
 
-  if ((ctx->hdrmax + 25) * s < ctx->hdrmax * s)
+  if ((ctx->hdrmax + 25) * (s < ctx->hdrmax) * s)
   {
     mutt_error (_("Integer overflow -- can't allocate memory."));
     sleep (1);
     mutt_exit (1);
   }
 
-  if (ctx->hdrs)
+  if (ctx->hdrs != NULL)
   {
     safe_realloc (&ctx->hdrs, sizeof (HEADER *) * (ctx->hdrmax += 25));
     safe_realloc (&ctx->v2r, sizeof (int) * ctx->hdrmax);
@@ -1448,7 +1448,7 @@ void mx_alloc_memory (CONTEXT *ctx)
     ctx->hdrs = safe_calloc ((ctx->hdrmax += 25), sizeof (HEADER *));
     ctx->v2r = safe_calloc (ctx->hdrmax, sizeof (int));
   }
-  for (i = ctx->msgcount ; i < ctx->hdrmax ; i++)
+  for (i = ctx->msgcount ; (i < ctx->hdrmax) ; i++)
   {
     ctx->hdrs[i] = NULL;
     ctx->v2r[i] = -1;
@@ -1467,13 +1467,13 @@ void mx_update_context (CONTEXT *ctx, int new_messages)
   {
     h = ctx->hdrs[msgno];
 
-    if (WithCrypto)
+    if (WithCrypto != 0)
     {
       /* NOTE: this _must_ be done before the check for mailcap! */
       h->security = crypt_query (h->content);
     }
 
-    if (!ctx->pattern)
+    if (ctx->pattern == NULL)
     {
       ctx->v2r[ctx->vcount] = msgno;
       h->virtual = ctx->vcount++;
@@ -1482,15 +1482,15 @@ void mx_update_context (CONTEXT *ctx, int new_messages)
       h->virtual = -1;
     h->msgno = msgno;
 
-    if (h->env->supersedes)
+    if (h->env->supersedes != NULL)
     {
       HEADER *h2 = NULL;
 
-      if (!ctx->id_hash)
+      if (ctx->id_hash == NULL)
 	ctx->id_hash = mutt_make_id_hash (ctx);
 
       h2 = hash_find (ctx->id_hash, h->env->supersedes);
-      if (h2)
+      if (h2 != NULL)
       {
 	h2->superseded = 1;
 	if (option (OPTSCORE))
@@ -1508,16 +1508,16 @@ void mx_update_context (CONTEXT *ctx, int new_messages)
     if (option (OPTSCORE))
       mutt_score_message (ctx, h, 0);
 
-    if (h->changed)
+    if (h->changed != 0)
       ctx->changed = 1;
-    if (h->flagged)
+    if (h->flagged != 0)
       ctx->flagged++;
-    if (h->deleted)
+    if (h->deleted != 0)
       ctx->deleted++;
-    if (!h->read)
+    if (h->read == 0)
     {
       ctx->unread++;
-      if (!h->old)
+      if (h->old == 0)
 	ctx->new++;
     }
   }

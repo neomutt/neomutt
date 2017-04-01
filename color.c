@@ -239,7 +239,7 @@ int mutt_alloc_color (int fg, int bg)
   /* check to see if this color is already allocated to save space */
   while (p)
   {
-    if (p->fg == fg && p->bg == bg)
+    if ((p->fg == fg) && (p->bg == bg))
     {
       (p->count)++;
       return (COLOR_PAIR (p->index));
@@ -274,7 +274,7 @@ int mutt_alloc_color (int fg, int bg)
   p->fg = fg;
 
 #ifdef USE_SLANG_CURSES
-  if (fg == COLOR_DEFAULT || bg == COLOR_DEFAULT)
+  if ((fg == COLOR_DEFAULT) || (bg == COLOR_DEFAULT))
     SLtt_set_color (i, NULL, get_color_name (fgc, sizeof (fgc), fg), get_color_name (bgc, sizeof (bgc), bg));
   else
 #elif defined (HAVE_USE_DEFAULT_COLORS)
@@ -299,7 +299,7 @@ void mutt_free_color (int fg, int bg)
   p = ColorList;
   while (p)
   {
-    if (p->fg == fg && p->bg == bg)
+    if ((p->fg == fg) && (p->bg == bg))
     {
       (p->count)--;
       if (p->count > 0) return;
@@ -366,9 +366,9 @@ parse_color_name (const char *s, int *col, int *attr, int is_fg, BUFFER *err)
     return -1;
   }
 
-  if (is_bright)
+  if (is_bright != 0)
   {
-    if (is_fg)
+    if (is_fg != 0)
     {
       *attr |= A_BOLD;
     }
@@ -391,7 +391,7 @@ parse_color_name (const char *s, int *col, int *attr, int is_fg, BUFFER *err)
 
 
 static void
-do_uncolor (BUFFER *buf, BUFFER *s, COLOR_LINE **ColorList,
+do_uncolor (BUFFER *buf, BUFFER *s, COLOR_LINE **cl,
                  int *do_cache, int parse_uncolor)
 {
   COLOR_LINE *tmp = NULL, *last = NULL;
@@ -401,7 +401,7 @@ do_uncolor (BUFFER *buf, BUFFER *s, COLOR_LINE **ColorList,
     mutt_extract_token (buf, s, 0);
     if (mutt_strcmp ("*", buf->data) == 0)
     {
-      for (tmp = *ColorList; tmp; )
+      for (tmp = *cl; tmp; )
       {
         if (!*do_cache)
 	{
@@ -411,11 +411,11 @@ do_uncolor (BUFFER *buf, BUFFER *s, COLOR_LINE **ColorList,
         tmp = tmp->next;
         free_color_line (&last, parse_uncolor);
       }
-      *ColorList = NULL;
+      *cl = NULL;
     }
     else
     {
-      for (last = NULL, tmp = *ColorList; tmp; last = tmp, tmp = tmp->next)
+      for (last = NULL, tmp = *cl; tmp; last = tmp, tmp = tmp->next)
       {
         if (mutt_strcmp (buf->data, tmp->pattern) == 0)
 	{
@@ -425,13 +425,13 @@ do_uncolor (BUFFER *buf, BUFFER *s, COLOR_LINE **ColorList,
           }
           mutt_debug (1, "Freeing pattern \"%s\" from ColorList\n",
                       tmp->pattern);
-          if (last)
+          if (last != NULL)
 	  {
             last->next = tmp->next;
           }
 	  else
 	  {
-            *ColorList = tmp->next;
+            *cl = tmp->next;
           }
           free_color_line (&tmp, parse_uncolor);
           break;
@@ -563,7 +563,7 @@ add_pattern (COLOR_LINE **top, const char *s, int sensitive,
 
   while (tmp)
   {
-    if (sensitive)
+    if (sensitive != 0)
     {
       if (mutt_strcmp (s, tmp->pattern) == 0)
 	break;
@@ -576,12 +576,12 @@ add_pattern (COLOR_LINE **top, const char *s, int sensitive,
     tmp = tmp->next;
   }
 
-  if (tmp)
+  if (tmp != NULL)
   {
 #ifdef HAVE_COLOR
     if (fg != -1 && bg != -1)
     {
-      if (tmp->fg != fg || tmp->bg != bg)
+      if ((tmp->fg != fg) || (tmp->bg != bg))
       {
 	mutt_free_color (tmp->fg, tmp->bg);
 	tmp->fg = fg;
@@ -600,7 +600,7 @@ add_pattern (COLOR_LINE **top, const char *s, int sensitive,
     char buf[LONG_STRING];
 
     tmp = new_color_line ();
-    if (is_index)
+    if (is_index != 0)
     {
       int i;
 
@@ -657,7 +657,7 @@ parse_object(BUFFER *buf, BUFFER *s, int *o, int *ql, BUFFER *err)
     if(buf->data[6])
     {
       *ql = strtol(buf->data + 6, &eptr, 10);
-      if(*eptr || q_level < 0)
+      if(*eptr || (q_level < 0))
       {
 	snprintf(err->data, err->dsize, _("%s: no such object"), buf->data);
 	return -1;
@@ -715,8 +715,8 @@ static int
 parse_attr_spec(BUFFER *buf, BUFFER *s, int *fg, int *bg, int *attr, BUFFER *err)
 {
 
-  if(fg) *fg = -1;
-  if(bg) *bg = -1;
+  if (fg != NULL) *fg = -1;
+  if (bg != NULL) *bg = -1;
 
   if (! MoreArgs (s))
   {
@@ -802,7 +802,7 @@ _mutt_parse_color (BUFFER *buf, BUFFER *s, BUFFER *err,
 
   /* dry run? */
 
-  if(dry_run)
+  if (dry_run != 0)
   {
     *s->dptr = '\0'; /* fake that we're done parsing */
     return 0;
@@ -813,7 +813,7 @@ _mutt_parse_color (BUFFER *buf, BUFFER *s, BUFFER *err,
 # ifdef HAVE_USE_DEFAULT_COLORS
   if (!option (OPTNOCURSES) && has_colors()
     /* delay use_default_colors() until needed, since it initializes things */
-    && (fg == COLOR_DEFAULT || bg == COLOR_DEFAULT)
+    && ((fg == COLOR_DEFAULT) || (bg == COLOR_DEFAULT))
     && use_default_colors () != OK)
   {
     strfcpy (err->data, _("default colors not supported"), err->dsize);

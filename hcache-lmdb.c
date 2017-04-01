@@ -49,10 +49,10 @@ mdb_get_r_txn(hcache_lmdb_ctx_t *ctx)
 {
   int rc;
 
-  if (ctx->txn && (ctx->txn_mode == txn_read || ctx->txn_mode == txn_write))
+  if (ctx->txn && ((ctx->txn_mode == txn_read) || (ctx->txn_mode == txn_write)))
     return MDB_SUCCESS;
 
-  if (ctx->txn)
+  if (ctx->txn != NULL)
     rc = mdb_txn_renew(ctx->txn);
   else
     rc = mdb_txn_begin(ctx->env, NULL, MDB_RDONLY, &ctx->txn);
@@ -72,7 +72,7 @@ mdb_get_w_txn(hcache_lmdb_ctx_t *ctx)
 {
   int rc;
 
-  if (ctx->txn)
+  if (ctx->txn != NULL)
   {
     if (ctx->txn_mode == txn_write)
       return MDB_SUCCESS;
@@ -152,7 +152,7 @@ hcache_lmdb_fetch(void *vctx, const char *key, size_t keylen)
   MDB_val data;
   int rc;
 
-  if (!vctx)
+  if (vctx == NULL)
       return NULL;
 
   hcache_lmdb_ctx_t *ctx = vctx;
@@ -195,7 +195,7 @@ hcache_lmdb_store(void *vctx, const char *key, size_t keylen, void *data, size_t
   MDB_val databuf;
   int rc;
 
-  if (!vctx)
+  if (vctx == NULL)
     return -1;
 
   hcache_lmdb_ctx_t *ctx = vctx;
@@ -228,7 +228,7 @@ hcache_lmdb_delete(void *vctx, const char *key, size_t keylen)
   MDB_val dkey;
   int rc;
 
-  if (!vctx)
+  if (vctx == NULL)
     return -1;
 
   hcache_lmdb_ctx_t *ctx = vctx;
@@ -265,7 +265,7 @@ hcache_lmdb_close(void **vctx)
 
   hcache_lmdb_ctx_t *ctx = *vctx;
 
-  if (ctx->txn && ctx->txn_mode == txn_write)
+  if (ctx->txn && (ctx->txn_mode == txn_write))
   {
     mdb_txn_commit(ctx->txn);
     ctx->txn_mode = txn_uninitialized;

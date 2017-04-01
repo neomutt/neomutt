@@ -85,7 +85,7 @@ static int alias_tag (MUTTMENU *menu, int n, int m)
   ALIAS *cur = ((ALIAS **) menu->data)[n];
   int ot = cur->tagged;
 
-  cur->tagged = (m >= 0 ? m : !cur->tagged);
+  cur->tagged = ((m >= 0) ? m : !cur->tagged);
 
   return cur->tagged - ot;
 }
@@ -111,14 +111,14 @@ static int alias_sort_address (const void *a, const void *b)
     r = -1;
   else if (pb == NULL)
     r = 1;
-  else if (pa->personal)
+  else if (pa->personal != NULL)
   {
-    if (pb->personal)
+    if (pb->personal != NULL)
       r = mutt_strcasecmp (pa->personal, pb->personal);
     else
       r = 1;
   }
-  else if (pb->personal)
+  else if (pb->personal != NULL)
     r = -1;
   else
     r = ascii_strcasecmp (pa->mailbox, pb->mailbox);
@@ -137,7 +137,7 @@ void mutt_alias_menu (char *buf, size_t buflen, ALIAS *aliases)
 
   int omax;
 
-  if (!aliases)
+  if (aliases == NULL)
   {
     mutt_error (_("You have no aliases!"));
     return;
@@ -181,9 +181,9 @@ new_aliases:
 
   for (i=0; i<menu->max; i++) AliasTable[i]->num = i;
 
-  while (!done)
+  while (done == 0)
   {
-    if (aliases->next)
+    if (aliases->next != NULL)
     {
       menu->redraw |= REDRAW_FULL;
       aliases       = aliases->next;
@@ -194,7 +194,7 @@ new_aliases:
     {
       case OP_DELETE:
       case OP_UNDELETE:
-        if (menu->tagprefix)
+        if (menu->tagprefix != 0)
         {
 	  for (i = 0; i < menu->max; i++)
 	    if (AliasTable[i]->tagged)
@@ -205,7 +205,7 @@ new_aliases:
         {
 	  AliasTable[menu->current]->self->del = (op == OP_DELETE) ? 1 : 0;
 	  menu->redraw |= REDRAW_CURRENT;
-	  if (option (OPTRESOLVE) && menu->current < menu->max - 1)
+	  if (option (OPTRESOLVE) && menu->current < (menu->max - 1))
 	  {
 	    menu->current++;
 	    menu->redraw |= REDRAW_INDEX;

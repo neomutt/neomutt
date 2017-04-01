@@ -36,7 +36,7 @@ group_t *mutt_pattern_group (const char *k)
 {
   group_t *p = NULL;
 
-  if (!k)
+  if (k == NULL)
     return 0;
 
   if (!(p = hash_find (Groups, k)))
@@ -52,7 +52,7 @@ group_t *mutt_pattern_group (const char *k)
 
 static void group_remove (group_t *g)
 {
-  if (!g)
+  if (g == NULL)
     return;
   hash_delete (Groups, g->name, g, NULL);
   rfc822_free_address (&g->as);
@@ -75,7 +75,7 @@ int mutt_group_context_clear (group_context_t **ctx)
 
 static int empty_group (group_t *g)
 {
-  if (!g)
+  if (g == NULL)
     return -1;
   return !g->as && !g->rs;
 }
@@ -106,9 +106,9 @@ static void group_add_adrlist (group_t *g, ADDRESS *a)
 {
   ADDRESS **p = NULL, *q = NULL;
 
-  if (!g)
+  if (g == NULL)
     return;
-  if (!a)
+  if (a == NULL)
     return;
 
   for (p = &g->as; *p; p = &((*p)->next))
@@ -123,9 +123,9 @@ static int group_remove_adrlist (group_t *g, ADDRESS *a)
 {
   ADDRESS *p = NULL;
 
-  if (!g)
+  if (g == NULL)
     return -1;
-  if (!a)
+  if (a == NULL)
     return -1;
 
   for (p = a; p; p = p->next)
@@ -154,7 +154,7 @@ int mutt_group_context_remove_adrlist (group_context_t *ctx, ADDRESS * a)
 {
   int rv = 0;
 
-  for (; (!rv) && ctx; ctx = ctx->next)
+  for (; (rv == 0) && ctx; ctx = ctx->next)
   {
     rv = group_remove_adrlist (ctx->g, a);
     if (empty_group (ctx->g))
@@ -168,7 +168,7 @@ int mutt_group_context_add_rx (group_context_t *ctx, const char *s, int flags, B
 {
   int rv = 0;
 
-  for (; (!rv) && ctx; ctx = ctx->next)
+  for (; (rv == 0) && ctx; ctx = ctx->next)
     rv = group_add_rx (ctx->g, s, flags, err);
 
   return rv;
@@ -178,7 +178,7 @@ int mutt_group_context_remove_rx (group_context_t *ctx, const char *s)
 {
   int rv = 0;
 
-  for (; (!rv) && ctx; ctx = ctx->next)
+  for (; (rv == 0) && ctx; ctx = ctx->next)
   {
     rv = group_remove_rx (ctx->g, s);
     if (empty_group (ctx->g))

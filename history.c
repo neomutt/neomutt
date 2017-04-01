@@ -38,17 +38,17 @@ static void init_history (struct history *h)
 {
   int i;
 
-  if(OldSize)
+  if (OldSize != 0)
   {
-    if (h->hist)
+    if (h->hist != NULL)
     {
-      for (i = 0 ; i <= OldSize ; i ++)
+      for (i = 0 ; (i <= OldSize) ; i ++)
 	FREE (&h->hist[i]);
       FREE (&h->hist);
     }
   }
 
-  if (HistSize)
+  if (HistSize != 0)
     h->hist = safe_calloc (HistSize + 1, sizeof (char *));
 
   h->cur = 0;
@@ -68,8 +68,8 @@ void mutt_read_histfile (void)
   while ((linebuf = mutt_read_line (linebuf, &buflen, f, &line, 0)) != NULL)
   {
     read = 0;
-    if (sscanf (linebuf, "%d:%n", &hclass, &read) < 1 || read == 0 ||
-        *(p = linebuf + strlen (linebuf) - 1) != '|' || hclass < 0)
+    if (sscanf (linebuf, "%d:%n", &hclass, &read) < 1 || (read == 0) ||
+        *(p = linebuf + strlen (linebuf) - 1) != '|' || (hclass < 0))
     {
       mutt_error (_("Bad history file format (line %d)"), line);
       break;
@@ -79,7 +79,7 @@ void mutt_read_histfile (void)
       continue;
     *p = '\0';
     p = safe_strdup (linebuf + read);
-    if (p)
+    if (p != NULL)
     {
       mutt_convert_string (&p, "utf-8", Charset, 0);
       mutt_history_add (hclass, p, 0);
@@ -106,7 +106,7 @@ static void shrink_histfile (void)
   line = 0;
   while ((linebuf = mutt_read_line (linebuf, &buflen, f, &line, 0)) != NULL)
   {
-    if (sscanf (linebuf, "%d", &hclass) < 1 || hclass < 0)
+    if (sscanf (linebuf, "%d", &hclass) < 1 || (hclass < 0))
     {
       mutt_error (_("Bad history file format (line %d)"), line);
       goto cleanup;
@@ -132,7 +132,7 @@ static void shrink_histfile (void)
     line = 0;
     while ((linebuf = mutt_read_line (linebuf, &buflen, f, &line, 0)) != NULL)
     {
-      if (sscanf (linebuf, "%d", &hclass) < 1 || hclass < 0)
+      if (sscanf (linebuf, "%d", &hclass) < 1 || (hclass < 0))
       {
         mutt_error (_("Bad history file format (line %d)"), line);
         goto cleanup;

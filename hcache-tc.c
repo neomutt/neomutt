@@ -28,7 +28,7 @@ static void *
 hcache_tokyocabinet_open(const char *path)
 {
   TCBDB *db = tcbdbnew();
-  if (!db)
+  if (db == NULL)
       return NULL;
   if (option(OPTHCACHECOMPRESS))
     tcbdbtune(db, 0, 0, 0, -1, -1, BDBTDEFLATE);
@@ -51,7 +51,7 @@ hcache_tokyocabinet_fetch(void *ctx, const char *key, size_t keylen)
 {
   int sp;
 
-  if (!ctx)
+  if (ctx == NULL)
     return NULL;
 
   TCBDB *db = ctx;
@@ -67,7 +67,7 @@ hcache_tokyocabinet_free(void *ctx, void **data)
 static int
 hcache_tokyocabinet_store(void *ctx, const char *key, size_t keylen, void *data, size_t dlen)
 {
-  if (!ctx)
+  if (ctx == NULL)
     return -1;
 
   TCBDB *db = ctx;
@@ -77,7 +77,7 @@ hcache_tokyocabinet_store(void *ctx, const char *key, size_t keylen, void *data,
 static int
 hcache_tokyocabinet_delete(void *ctx, const char *key, size_t keylen)
 {
-  if (!ctx)
+  if (ctx == NULL)
     return -1;
 
   TCBDB *db = ctx;

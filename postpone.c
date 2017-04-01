@@ -60,7 +60,7 @@ int mutt_num_postponed (int force)
   static time_t LastModify = 0;
   static char *OldPostponed = NULL;
 
-  if (UpdateNumPostponed)
+  if (UpdateNumPostponed != 0)
   {
     UpdateNumPostponed = 0;
     force = 1;
@@ -74,14 +74,14 @@ int mutt_num_postponed (int force)
     force = 1;
   }
 
-  if (!Postponed)
+  if (Postponed == NULL)
     return 0;
 
 #ifdef USE_IMAP
   /* LastModify is useless for IMAP */
   if (mx_is_imap (Postponed))
   {
-    if (force)
+    if (force != 0)
     {
       short newpc;
 
@@ -131,7 +131,7 @@ int mutt_num_postponed (int force)
     if (access (Postponed, R_OK | F_OK) != 0)
       return (PostCount = 0);
 #ifdef USE_NNTP
-    if (optnews)
+    if (optnews != 0)
 	unset_option (OPTNEWS);
 #endif
     if (mx_open_mailbox (Postponed, MUTT_NOSORT | MUTT_QUIET, &ctx) == NULL)
@@ -140,7 +140,7 @@ int mutt_num_postponed (int force)
       PostCount = ctx.msgcount;
     mx_fastclose_mailbox (&ctx);
 #ifdef USE_NNTP
-    if (optnews)
+    if (optnews != 0)
 	set_option (OPTNEWS);
 #endif
   }
@@ -181,7 +181,7 @@ static HEADER *select_msg (void)
   orig_sort = Sort;
   Sort = SORT_ORDER;
 
-  while (!done)
+  while (done == 0)
   {
     switch (i = mutt_menu_loop (menu))
     {
@@ -190,11 +190,11 @@ static HEADER *select_msg (void)
         /* should deleted draft messages be saved in the trash folder? */
 	mutt_set_flag (PostContext, PostContext->hdrs[menu->current], MUTT_DELETE, (i == OP_DELETE) ? 1 : 0);
 	PostCount = PostContext->msgcount - PostContext->deleted;
-	if (option (OPTRESOLVE) && menu->current < menu->max - 1)
+	if (option (OPTRESOLVE) && menu->current < (menu->max - 1))
 	{
 	  menu->oldcurrent = menu->current;
 	  menu->current++;
-	  if (menu->current >= menu->top + menu->pagelen)
+	  if (menu->current >= (menu->top + menu->pagelen))
 	  {
 	    menu->top = menu->current;
 	    menu->redraw = REDRAW_INDEX | REDRAW_STATUS;
@@ -246,7 +246,7 @@ int mutt_get_postponed (CONTEXT *ctx, HEADER *hdr, HEADER **cur, char *fcc, size
   const char *p = NULL;
   int opt_delete;
 
-  if (!Postponed)
+  if (Postponed == NULL)
     return -1;
 
   if ((PostContext = mx_open_mailbox (Postponed, MUTT_NOSORT, NULL)) == NULL)
@@ -303,19 +303,19 @@ int mutt_get_postponed (CONTEXT *ctx, HEADER *hdr, HEADER **cur, char *fcc, size
   {
     if (ascii_strncasecmp ("X-Mutt-References:", tmp->data, 18) == 0)
     {
-      if (ctx)
+      if (ctx != NULL)
       {
 	/* if a mailbox is currently open, look to see if the original message
 	   the user attempted to reply to is in this mailbox */
 	p = skip_email_wsp(tmp->data + 18);
-	if (!ctx->id_hash)
+	if (ctx->id_hash == NULL)
 	  ctx->id_hash = mutt_make_id_hash (ctx);
 	*cur = hash_find (ctx->id_hash, p);
       }
 
       /* Remove the X-Mutt-References: header field. */
       next = tmp->next;
-      if (last)
+      if (last != NULL)
 	last->next = tmp->next;
       else
 	hdr->env->userhdrs = tmp->next;
@@ -333,7 +333,7 @@ int mutt_get_postponed (CONTEXT *ctx, HEADER *hdr, HEADER **cur, char *fcc, size
 
       /* remove the X-Mutt-Fcc: header field */
       next = tmp->next;
-      if (last)
+      if (last != NULL)
 	last->next = tmp->next;
       else
 	hdr->env->userhdrs = tmp->next;
@@ -359,7 +359,7 @@ int mutt_get_postponed (CONTEXT *ctx, HEADER *hdr, HEADER **cur, char *fcc, size
 
       /* remove the pgp field */
       next = tmp->next;
-      if (last)
+      if (last != NULL)
 	last->next = tmp->next;
       else
 	hdr->env->userhdrs = tmp->next;
@@ -376,7 +376,7 @@ int mutt_get_postponed (CONTEXT *ctx, HEADER *hdr, HEADER **cur, char *fcc, size
 
       /* remove the smime field */
       next = tmp->next;
-      if (last)
+      if (last != NULL)
 	last->next = tmp->next;
       else
 	hdr->env->userhdrs = tmp->next;
@@ -399,7 +399,7 @@ int mutt_get_postponed (CONTEXT *ctx, HEADER *hdr, HEADER **cur, char *fcc, size
       }
 
       next = tmp->next;
-      if (last)
+      if (last != NULL)
 	last->next = tmp->next;
       else
 	hdr->env->userhdrs = tmp->next;
@@ -430,7 +430,7 @@ int mutt_parse_crypt_hdr (const char *p, int set_empty_signas, int crypt_app)
   char sign_as[LONG_STRING] = "\0", *q = NULL;
   int flags = 0;
 
-  if (!WithCrypto)
+  if (WithCrypto == 0)
     return 0;
 
   p = skip_email_wsp(p);
@@ -457,7 +457,7 @@ int mutt_parse_crypt_hdr (const char *p, int set_empty_signas, int crypt_app)
         if (*(p+1) == '<')
         {
           for (p += 2;
-	       *p && *p != '>' && q < sign_as + sizeof (sign_as) - 1;
+	       *p && (*p != '>') && (q < (sign_as + sizeof(sign_as) - 1));
                *q++ = *p++)
 	    ;
 
@@ -498,7 +498,7 @@ int mutt_parse_crypt_hdr (const char *p, int set_empty_signas, int crypt_app)
 
         if(*(p+1) == '<')
 	{
-	  for(p += 2; *p && *p != '>' && q < smime_cryptalg + sizeof(smime_cryptalg) - 1;
+	  for(p += 2; *p && (*p != '>') && (q < (smime_cryptalg + sizeof(smime_cryptalg) - 1));
 	      *q++ = *p++)
 	    ;
 
@@ -569,7 +569,7 @@ int mutt_prepare_template (FILE *fp, CONTEXT *ctx, HEADER *newhdr, HEADER *hdr,
   if (!fp && (msg = mx_open_message (ctx, hdr->msgno)) == NULL)
     return -1;
 
-  if (!fp) fp = msg->fp;
+  if (fp == NULL) fp = msg->fp;
 
   bfp = fp;
 
@@ -586,7 +586,7 @@ int mutt_prepare_template (FILE *fp, CONTEXT *ctx, HEADER *newhdr, HEADER *hdr,
    * Otherwise, we are resuming a postponed message, and want to keep those
    * headers if they exist.
    */
-  if (resend)
+  if (resend != 0)
   {
     FREE (&newhdr->env->message_id);
     FREE (&newhdr->env->mail_followup_to);
@@ -603,7 +603,7 @@ int mutt_prepare_template (FILE *fp, CONTEXT *ctx, HEADER *newhdr, HEADER *hdr,
 
     mutt_message (_("Decrypting message..."));
     if ((crypt_pgp_decrypt_mime (fp, &bfp, newhdr->content, &b) == -1)
-	|| b == NULL)
+	|| (b == NULL))
     {
  err:
       mx_close_message (ctx, &msg);
@@ -663,7 +663,7 @@ int mutt_prepare_template (FILE *fp, CONTEXT *ctx, HEADER *newhdr, HEADER *hdr,
      */
 
     file[0] = '\0';
-    if (b->filename)
+    if (b->filename != NULL)
     {
       strfcpy (file, b->filename, sizeof (file));
       b->d_filename = safe_strdup (b->filename);
@@ -728,7 +728,7 @@ int mutt_prepare_template (FILE *fp, CONTEXT *ctx, HEADER *newhdr, HEADER *hdr,
     mutt_stamp_attachment (b);
 
     mutt_free_body (&b->parts);
-    if (b->hdr) b->hdr->content = NULL; /* avoid dangling pointer */
+    if (b->hdr != NULL) b->hdr->content = NULL; /* avoid dangling pointer */
   }
 
   /* Fix encryption flags. */
@@ -755,7 +755,7 @@ int mutt_prepare_template (FILE *fp, CONTEXT *ctx, HEADER *newhdr, HEADER *hdr,
 
   /* that's it. */
   if (bfp != fp) safe_fclose (&bfp);
-  if (msg) mx_close_message (ctx, &msg);
+  if (msg != NULL) mx_close_message (ctx, &msg);
 
   if (rv == -1)
   {

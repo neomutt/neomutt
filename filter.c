@@ -35,19 +35,19 @@ mutt_create_filter_fd (const char *cmd, FILE **in, FILE **out, FILE **err,
   int pin[2], pout[2], perr[2], thepid;
   char columns[11];
 
-  if (in)
+  if (in != NULL)
   {
     *in = 0;
     if (pipe (pin) == -1)
       return -1;
   }
 
-  if (out)
+  if (out != NULL)
   {
     *out = 0;
     if (pipe (pout) == -1)
     {
-      if (in)
+      if (in != NULL)
       {
 	close (pin[0]);
 	close (pin[1]);
@@ -56,17 +56,17 @@ mutt_create_filter_fd (const char *cmd, FILE **in, FILE **out, FILE **err,
     }
   }
 
-  if (err)
+  if (err != NULL)
   {
     *err = 0;
     if (pipe (perr) == -1)
     {
-      if (in)
+      if (in != NULL)
       {
 	close (pin[0]);
 	close (pin[1]);
       }
-      if (out)
+      if (out != NULL)
       {
 	close (pout[0]);
 	close (pout[1]);
@@ -81,7 +81,7 @@ mutt_create_filter_fd (const char *cmd, FILE **in, FILE **out, FILE **err,
   {
     mutt_unblock_signals_system (0);
 
-    if (in)
+    if (in != NULL)
     {
       close (pin[1]);
       dup2 (pin[0], 0);
@@ -93,7 +93,7 @@ mutt_create_filter_fd (const char *cmd, FILE **in, FILE **out, FILE **err,
       close (fdin);
     }
 
-    if (out)
+    if (out != NULL)
     {
       close (pout[0]);
       dup2 (pout[1], 1);
@@ -105,7 +105,7 @@ mutt_create_filter_fd (const char *cmd, FILE **in, FILE **out, FILE **err,
       close (fdout);
     }
 
-    if (err)
+    if (err != NULL)
     {
       close (perr[0]);
       dup2 (perr[1], 2);
@@ -130,19 +130,19 @@ mutt_create_filter_fd (const char *cmd, FILE **in, FILE **out, FILE **err,
   {
     mutt_unblock_signals_system (1);
 
-    if (in)
+    if (in != NULL)
     {
       close (pin[0]);
       close (pin[1]);
     }
 
-    if (out)
+    if (out != NULL)
     {
       close (pout[0]);
       close (pout[1]);
     }
 
-    if (err)
+    if (err != NULL)
     {
       close (perr[0]);
       close (perr[1]);
@@ -151,19 +151,19 @@ mutt_create_filter_fd (const char *cmd, FILE **in, FILE **out, FILE **err,
     return -1;
   }
 
-  if (out)
+  if (out != NULL)
   {
     close (pout[1]);
     *out = fdopen (pout[0], "r");
   }
 
-  if (in)
+  if (in != NULL)
   {
     close (pin[0]);
     *in = fdopen (pin[1], "w");
   }
 
-  if (err)
+  if (err != NULL)
   {
     close (perr[1]);
     *err = fdopen (perr[0], "r");

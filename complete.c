@@ -86,7 +86,7 @@ int mutt_complete (char *s, size_t slen)
       if (nntp_data && nntp_data->subscribed &&
 	  (mutt_strncmp (nntp_data->group, filepart, len) == 0))
       {
-	if (init)
+	if (init != 0)
 	{
 	  for (i = 0; filepart[i] && nntp_data->group[i]; i++)
 	  {
@@ -209,7 +209,7 @@ int mutt_complete (char *s, size_t slen)
   {
     if (mutt_strncmp (de->d_name, filepart, len) == 0)
     {
-      if (init)
+      if (init != 0)
       {
 	for (i=0; filepart[i] && de->d_name[i]; i++)
 	{

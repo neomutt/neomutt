@@ -153,7 +153,7 @@ static int union_hash_insert (HASH * table, union hash_key key, void *data)
   ptr->key = key;
   ptr->data = data;
 
-  if (table->allow_dups)
+  if (table->allow_dups != 0)
   {
     ptr->next = table->table[h];
     table->table[h] = ptr;
@@ -175,7 +175,7 @@ static int union_hash_insert (HASH * table, union hash_key key, void *data)
       if (r > 0)
 	break;
     }
-    if (last)
+    if (last != NULL)
       last->next = ptr;
     else
       table->table[h] = ptr;
@@ -204,7 +204,7 @@ static struct hash_elem *union_hash_find_elem (const HASH *table, union hash_key
   int hash;
   struct hash_elem *ptr = NULL;
 
-  if (!table)
+  if (table == NULL)
     return NULL;
 
   hash = table->gen_hash (key, table->nelem);
@@ -220,7 +220,7 @@ static struct hash_elem *union_hash_find_elem (const HASH *table, union hash_key
 static void *union_hash_find (const HASH *table, union hash_key key)
 {
   struct hash_elem *ptr = union_hash_find_elem (table, key);
-  if (ptr)
+  if (ptr != NULL)
     return ptr->data;
   else
     return NULL;
@@ -252,7 +252,7 @@ struct hash_elem *hash_find_bucket (const HASH *table, const char *strkey)
   union hash_key key;
   int hash;
 
-  if (!table)
+  if (table == NULL)
     return NULL;
 
   key.strkey = strkey;
@@ -266,7 +266,7 @@ static void union_hash_delete (HASH *table, union hash_key key, const void *data
   int hash;
   struct hash_elem *ptr, **last;
 
-  if (!table)
+  if (table == NULL)
     return;
 
   hash = table->gen_hash (key, table->nelem);
@@ -275,13 +275,13 @@ static void union_hash_delete (HASH *table, union hash_key key, const void *data
 
   while (ptr)
   {
-    if ((data == ptr->data || !data)
+    if (((data == ptr->data) || !data)
 	&& table->cmp_key (ptr->key, key) == 0)
     {
       *last = ptr->next;
-      if (destroy)
+      if (destroy != NULL)
 	destroy (ptr->data);
-      if (table->strdup_keys)
+      if (table->strdup_keys != 0)
         FREE (&ptr->key.strkey);
       FREE (&ptr);
       table->curnelem--;
@@ -331,9 +331,9 @@ void hash_destroy (HASH **ptr, void (*destroy) (void *))
     {
       tmp = elem;
       elem = elem->next;
-      if (destroy)
+      if (destroy != NULL)
 	destroy (tmp->data);
-      if (pptr->strdup_keys)
+      if (pptr->strdup_keys != 0)
         FREE (&tmp->key.strkey);
       FREE (&tmp);
     }
@@ -350,7 +350,7 @@ struct hash_elem *hash_walk(const HASH *table, struct hash_walk_state *state)
     return state->last;
   }
 
-  if (state->last)
+  if (state->last != NULL)
     state->index++;
 
   while (state->index < table->nelem)

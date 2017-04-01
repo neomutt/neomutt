@@ -91,7 +91,7 @@ static void mix_add_entry (REMAILER ***type2_list, REMAILER *entry,
   }
 
   (*type2_list)[(*used)++] = entry;
-  if (entry) entry->num = *used;
+  if (entry != NULL) entry->num = *used;
 }
 
 static REMAILER *mix_new_remailer (void)
@@ -122,7 +122,7 @@ static REMAILER **mix_type2_list (size_t *l)
   REMAILER **type2_list = NULL, *p = NULL;
   size_t slots = 0, used = 0;
 
-  if (!l)
+  if (l == NULL)
     return NULL;
 
   if ((devnull = open ("/dev/null", O_RDWR)) == -1)
@@ -211,14 +211,14 @@ static void mix_screen_coordinates (REMAILER **type2_list,
   short c, r, oc;
   struct coord *coords = NULL;
 
-  if (!chain->cl)
+  if (chain->cl == 0)
     return;
 
   safe_realloc (coordsp, sizeof (struct coord) * chain->cl);
 
   coords = *coordsp;
 
-  if (i)
+  if (i != 0)
   {
     c = coords[i-1].c + strlen (type2_list[chain->ch[i-1]]->shortname) + 2;
     r = coords[i-1].r;
@@ -260,7 +260,7 @@ static void mix_redraw_ce (REMAILER **type2_list,
   if (coords[i].r < MIX_MAXROW)
   {
 
-    if (selected)
+    if (selected != 0)
       SETCOLOR (MT_COLOR_INDICATOR);
     else
       NORMAL_COLOR;
@@ -269,7 +269,7 @@ static void mix_redraw_ce (REMAILER **type2_list,
                           type2_list[chain->ch[i]]->shortname);
     NORMAL_COLOR;
 
-    if (i + 1 < chain->cl)
+    if ((i + 1) < chain->cl)
       addstr (", ");
   }
 }
@@ -288,7 +288,7 @@ static void mix_redraw_chain (REMAILER **type2_list,
   }
 
   for (i = 0; i < chain->cl; i++)
-    mix_redraw_ce (type2_list, coords, chain, i, i == cur);
+    mix_redraw_ce (type2_list, coords, chain, i, (i == cur));
 }
 
 static void mix_redraw_head (MIXCHAIN *chain)
@@ -370,35 +370,35 @@ static const char *mix_entry_fmt (char *dest,
   switch (op)
   {
     case 'n':
-      if (!optional)
+      if (optional == 0)
       {
 	snprintf (fmt, sizeof (fmt), "%%%sd", prefix);
 	snprintf (dest, destlen, fmt, remailer->num);
       }
       break;
     case 'c':
-      if (!optional)
+      if (optional == 0)
       {
 	snprintf (fmt, sizeof (fmt), "%%%ss", prefix);
 	snprintf (dest, destlen, fmt, mix_format_caps(remailer));
       }
       break;
     case 's':
-      if (!optional)
+      if (optional == 0)
       {
 	snprintf (fmt, sizeof (fmt), "%%%ss", prefix);
 	snprintf (dest, destlen, fmt, NONULL(remailer->shortname));
       }
-      else if (!remailer->shortname)
+      else if (remailer->shortname == NULL)
         optional = 0;
       break;
     case 'a':
-      if (!optional)
+      if (optional == 0)
       {
 	snprintf (fmt, sizeof (fmt), "%%%ss", prefix);
 	snprintf (dest, destlen, fmt, NONULL(remailer->addr));
       }
-      else if (!remailer->addr)
+      else if (remailer->addr == NULL)
         optional = 0;
       break;
 
@@ -406,7 +406,7 @@ static const char *mix_entry_fmt (char *dest,
       *dest = '\0';
   }
 
-  if (optional)
+  if (optional != 0)
     mutt_FormatString (dest, destlen, col, cols, ifstring, mutt_attach_fmt, data, 0);
   else if (flags & MUTT_FORMAT_OPTIONAL)
     mutt_FormatString (dest, destlen, col, cols, elsestring, mutt_attach_fmt, data, 0);
@@ -518,13 +518,13 @@ void mix_make_chain (LIST **chainp, int *redraw)
 
   while (loop)
   {
-    if (menu->pagelen != MIX_VOFFSET - 1)
+    if (menu->pagelen != (MIX_VOFFSET - 1))
     {
       menu->pagelen = MIX_VOFFSET - 1;
       menu->redraw = REDRAW_FULL;
     }
 
-    if (c_redraw)
+    if (c_redraw != 0)
     {
       mix_redraw_head (chain);
       mix_redraw_chain (type2_list, coords, chain, c_cur);
@@ -559,7 +559,7 @@ void mix_make_chain (LIST **chainp, int *redraw)
 
       case OP_MIX_USE:
       {
-	if (!chain->cl)
+	if (chain->cl == 0)
 	{
 	  chain->cl++;
 	  chain->ch[0] = menu->current;
@@ -583,7 +583,7 @@ void mix_make_chain (LIST **chainp, int *redraw)
       case OP_GENERIC_SELECT_ENTRY:
       case OP_MIX_APPEND:
       {
-	if (chain->cl < MAXMIXES && c_cur < chain->cl)
+	if ((chain->cl < MAXMIXES) && (c_cur < chain->cl))
 	  c_cur++;
       }
       /* fallthrough */
@@ -608,14 +608,14 @@ void mix_make_chain (LIST **chainp, int *redraw)
 
       case OP_MIX_DELETE:
       {
-	if (chain->cl)
+	if (chain->cl != 0)
 	{
 	  chain->cl--;
 
 	  for (i = c_cur; i < chain->cl; i++)
 	    chain->ch[i] = chain->ch[i+1];
 
-	  if (c_cur == chain->cl && c_cur)
+	  if ((c_cur == chain->cl) && c_cur)
 	    c_cur--;
 
 	  mix_screen_coordinates (type2_list, &coords, chain, c_cur);
@@ -630,7 +630,7 @@ void mix_make_chain (LIST **chainp, int *redraw)
 
       case OP_MIX_CHAIN_PREV:
       {
-	if (c_cur)
+	if (c_cur != 0)
 	  c_cur--;
 	else
 	  mutt_error (_("You already have the first chain element selected."));
@@ -640,7 +640,7 @@ void mix_make_chain (LIST **chainp, int *redraw)
 
       case OP_MIX_CHAIN_NEXT:
       {
-	if (chain->cl && c_cur < chain->cl - 1)
+	if (chain->cl && c_cur < (chain->cl - 1))
 	  c_cur++;
 	else
 	  mutt_error (_("You already have the last chain element selected."));
@@ -654,7 +654,7 @@ void mix_make_chain (LIST **chainp, int *redraw)
 
   /* construct the remailer list */
 
-  if (chain->cl)
+  if (chain->cl != 0)
   {
     for (i = 0; i < chain->cl; i++)
     {
@@ -700,7 +700,7 @@ int mix_check_message (HEADER *msg)
     }
   }
 
-  if (need_hostname)
+  if (need_hostname != 0)
   {
 
     if (!(fqdn = mutt_fqdn (1)))

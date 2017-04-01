@@ -106,7 +106,7 @@ event_t mutt_getch (void)
   event_t err = {-1, OP_NULL }, ret;
   event_t timeout = {-2, OP_NULL};
 
-  if (UngetCount)
+  if (UngetCount != 0)
     return UngetKeyEvents[--UngetCount];
 
   if (!option(OPTIGNOREMACROEVENTS) && MacroBufferCount)
@@ -123,7 +123,7 @@ event_t mutt_getch (void)
     ch = getch ();
   mutt_allow_interrupt (0);
 
-  if (SigInt)
+  if (SigInt != 0)
   {
     mutt_query_exit ();
     return err;
@@ -153,7 +153,7 @@ event_t mutt_getch (void)
 
   ret.ch = ch;
   ret.op = 0;
-  return (ch == ctrl ('G') ? err : ret);
+  return ((ch == ctrl('G')) ? err : ret);
 }
 
 int _mutt_get_field (const char *field, char *buf, size_t buflen, int complete, int multiple, char ***files, int *numfiles)
@@ -250,7 +250,7 @@ int mutt_yesorno (const char *msg, int def)
    * ensure there is enough room for the answer and truncate the question
    * to fit.
    */
-  safe_asprintf (&answer_string, " ([%s]/%s): ", def == MUTT_YES ? yes : no, def == MUTT_YES ? no : yes);
+  safe_asprintf (&answer_string, " ([%s]/%s): ", (def == MUTT_YES) ? yes : no, (def == MUTT_YES) ? no : yes);
   answer_string_len = mutt_strwidth (answer_string);
   /* maxlen here is sort of arbitrary, so pick a reasonable upper bound */
   msglen = mutt_wstr_trunc (msg, 4*MuttMessageWindow->cols, MuttMessageWindow->cols - answer_string_len, NULL);
@@ -301,15 +301,15 @@ int mutt_yesorno (const char *msg, int def)
   }
 
 #ifdef HAVE_LANGINFO_YESEXPR
-  if (reyes_ok)
+  if (reyes_ok != 0)
     regfree (& reyes);
-  if (reno_ok)
+  if (reno_ok != 0)
     regfree (& reno);
 #endif
 
   if (def != MUTT_ABORT)
   {
-    addstr ((char *) (def == MUTT_YES ? yes : no));
+    addstr ((char *) ((def == MUTT_YES) ? yes : no));
     mutt_refresh ();
   }
   else
@@ -326,7 +326,7 @@ void mutt_query_exit (void)
 {
   mutt_flushinp ();
   curs_set (1);
-  if (Timeout)
+  if (Timeout != 0)
     timeout (-1); /* restore blocking operation */
   if (mutt_yesorno (_("Exit Mutt?"), MUTT_YES) == MUTT_YES)
   {
@@ -350,7 +350,7 @@ static void curses_message (int error, const char *fmt, va_list ap)
 
   if (!option (OPTKEEPQUIET))
   {
-    if (error)
+    if (error != 0)
       BEEP ();
     SETCOLOR (error ? MT_COLOR_ERROR : MT_COLOR_MESSAGE);
     mutt_window_mvaddstr (MuttMessageWindow, 0, 0, Errorbuf);
@@ -359,7 +359,7 @@ static void curses_message (int error, const char *fmt, va_list ap)
     mutt_refresh ();
   }
 
-  if (error)
+  if (error != 0)
     set_option (OPTMSGERR);
   else
     unset_option (OPTMSGERR);
@@ -389,7 +389,7 @@ void mutt_progress_init (progress_t* progress, const char *msg,
 {
   struct timeval tv = { 0, 0 };
 
-  if (!progress)
+  if (progress == NULL)
     return;
   if (option(OPTNOCURSES))
     return;
@@ -399,7 +399,7 @@ void mutt_progress_init (progress_t* progress, const char *msg,
   progress->flags = flags;
   progress->msg = msg;
   progress->size = size;
-  if (progress->size) {
+  if (progress->size != 0) {
     if (progress->flags & MUTT_PROGRESS_SIZE)
       mutt_pretty_size (progress->sizestr, sizeof (progress->sizestr),
 			progress->size);
@@ -407,9 +407,9 @@ void mutt_progress_init (progress_t* progress, const char *msg,
       snprintf (progress->sizestr, sizeof (progress->sizestr), "%ld",
 		progress->size);
   }
-  if (!inc)
+  if (inc == 0)
   {
-    if (size)
+    if (size != 0)
       mutt_message ("%s (%s)", msg, progress->sizestr);
     else
       mutt_message (msg);
@@ -418,7 +418,7 @@ void mutt_progress_init (progress_t* progress, const char *msg,
   if (gettimeofday (&tv, NULL) < 0)
     mutt_debug (1, "gettimeofday failed: %d\n", errno);
   /* if timestamp is 0 no time-based suppression is done */
-  if (TimeInc)
+  if (TimeInc != 0)
     progress->timestamp = ((unsigned int) tv.tv_sec * 1000)
         + (unsigned int) (tv.tv_usec / 1000);
   mutt_progress_update (progress, 0, 0);
@@ -495,29 +495,29 @@ void mutt_progress_update (progress_t* progress, long pos, int percent)
   if (option(OPTNOCURSES))
     return;
 
-  if (!progress->inc)
+  if (progress->inc == 0)
     goto out;
 
-  /* refresh if size > inc */
+  /* refresh if (size > inc) */
   if (progress->flags & MUTT_PROGRESS_SIZE &&
-      (pos >= progress->pos + (progress->inc << 10)))
+      ((pos >= progress->pos) + (progress->inc << 10)))
     update = 1;
-  else if (pos >= progress->pos + progress->inc)
+  else if (pos >= (progress->pos + progress->inc))
     update = 1;
 
   /* skip refresh if not enough time has passed */
   if (update && progress->timestamp && !gettimeofday (&tv, NULL)) {
     now = ((unsigned int) tv.tv_sec * 1000)
           + (unsigned int) (tv.tv_usec / 1000);
-    if (now && now - progress->timestamp < TimeInc)
+    if (now && (now - progress->timestamp) < TimeInc)
       update = 0;
   }
 
   /* always show the first update */
-  if (!pos)
+  if (pos == 0)
     update = 1;
 
-  if (update)
+  if (update != 0)
   {
     if (progress->flags & MUTT_PROGRESS_SIZE)
     {
@@ -530,7 +530,7 @@ void mutt_progress_update (progress_t* progress, long pos, int percent)
     mutt_debug (5, "updating progress: %s\n", posstr);
 
     progress->pos = pos;
-    if (now)
+    if (now != 0)
       progress->timestamp = now;
 
     if (progress->size > 0)
@@ -666,13 +666,13 @@ void mutt_window_clrtoeol (mutt_window_t *win)
 {
   int row, col, curcol;
 
-  if (win->col_offset + win->cols == COLS)
+  if ((win->col_offset + win->cols) == COLS)
     clrtoeol ();
   else
   {
     getyx (stdscr, row, col);
     curcol = col;
-    while (curcol < win->col_offset + win->cols)
+    while (curcol < (win->col_offset + win->cols))
     {
       addch (' ');
       curcol++;
@@ -696,9 +696,9 @@ void mutt_window_getyx (mutt_window_t *win, int *y, int *x)
   int row, col;
 
   getyx (stdscr, row, col);
-  if (y)
+  if (y != NULL)
     *y = row - win->row_offset;
-  if (x)
+  if (x != NULL)
     *x = col - win->col_offset;
 }
 
@@ -759,7 +759,7 @@ int mutt_any_key_to_continue (const char *s)
   t.c_cc[VTIME] = 0;
   tcsetattr (f, TCSADRAIN, &t);
   fflush (stdout);
-  if (s)
+  if (s != NULL)
     fputs (s, stdout);
   else
     fputs (_("Press any key to continue..."), stdout);
@@ -826,7 +826,7 @@ int _mutt_enter_fname (const char *prompt, char *buf, size_t blen,
   {
     mutt_refresh ();
     buf[0] = 0;
-    if (!flags)
+    if (flags == 0)
       flags = MUTT_SEL_FOLDER | (multiple ? MUTT_SEL_MULTI : 0);
 
     _mutt_select_file (buf, blen, flags, files, numfiles);
@@ -945,7 +945,7 @@ int mutt_multi_choice (char *prompt, char *letters)
   {
     mutt_refresh ();
     ch  = mutt_getch ();
-    /* (ch.ch == 0) is technically possible.  Treat the same as < 0 (abort) */
+    /* (ch.ch == 0) is technically possible.  Treat the same (as < 0) (abort) */
     if (ch.ch <= 0 || CI_is_return (ch.ch))
     {
       choice = -1;
@@ -954,7 +954,7 @@ int mutt_multi_choice (char *prompt, char *letters)
     else
     {
       p = strchr (letters, ch.ch);
-      if (p)
+      if (p != NULL)
       {
 	choice = p - letters + 1;
 	break;
@@ -962,7 +962,7 @@ int mutt_multi_choice (char *prompt, char *letters)
       else if (ch.ch <= '9' && ch.ch > '0')
       {
 	choice = ch.ch - '0';
-	if (choice <= mutt_strlen (letters))
+	if (choice <= (mutt_strlen(letters)))
 	  break;
       }
     }
@@ -1019,19 +1019,19 @@ void mutt_format_string (char *dest, size_t destlen,
   {
     if (k == (size_t)(-1) || k == (size_t)(-2))
     {
-      if (k == (size_t)(-1) && errno == EILSEQ)
+      if (k == (size_t)(-1) && (errno == EILSEQ))
 	memset (&mbstate1, 0, sizeof (mbstate1));
 
       k = (k == (size_t)(-1)) ? 1 : n;
       wc = replacement_char ();
     }
-    if (escaped) {
+    if (escaped != 0) {
       escaped = 0;
       w = 0;
-    } else if (arboreal && wc == MUTT_SPECIAL_INDEX) {
+    } else if (arboreal && (wc == MUTT_SPECIAL_INDEX)) {
       escaped = 1;
       w = 0;
-    } else if (arboreal && wc < MUTT_TREE_MAX) {
+    } else if (arboreal && (wc < MUTT_TREE_MAX)) {
       w = 1; /* hack */
     }
     else
@@ -1047,7 +1047,7 @@ void mutt_format_string (char *dest, size_t destlen,
     }
     if (w >= 0)
     {
-      if (w > max_width || (k2 = wcrtomb (scratch, wc, &mbstate2)) > destlen)
+      if ((w > max_width) || (k2 = wcrtomb (scratch, wc, &mbstate2)) > destlen)
 	break;
       min_width -= w;
       max_width -= w;
@@ -1192,7 +1192,7 @@ size_t mutt_wstr_trunc (const char *src, size_t maxlen, size_t maxwid, size_t *w
   int cw;
   mbstate_t mbstate;
 
-  if (!src)
+  if (src == NULL)
     goto out;
 
   n = mutt_strlen (src);
@@ -1215,17 +1215,17 @@ size_t mutt_wstr_trunc (const char *src, size_t maxlen, size_t maxwid, size_t *w
       cl = 2; /* skip the index coloring sequence */
       cw = 0;
     }
-    else if (cw < 0 && cl == 1 && src[0] && src[0] < MUTT_TREE_MAX)
+    else if ((cw < 0) && (cl == 1) && src[0] && src[0] < MUTT_TREE_MAX)
       cw = 1;
     else if (cw < 0)
       cw = 0;			/* unprintable wchar */
-    if (cl + l > maxlen || cw + w > maxwid)
+    if ((cl + l) > maxlen || (cw + w) > maxwid)
       break;
     l += cl;
     w += cw;
   }
 out:
-  if (width)
+  if (width != NULL)
     *width = w;
   return l;
 }
@@ -1249,7 +1249,7 @@ int mutt_charlen (const char *s, int *width)
   n = mutt_strlen (s);
   memset (&mbstate, 0, sizeof (mbstate));
   k = mbrtowc (&wc, s, n, &mbstate);
-  if (width)
+  if (width != NULL)
     *width = wcwidth (wc);
   return (k == (size_t)(-1) || k == (size_t)(-2)) ? -1 : k;
 }
@@ -1265,7 +1265,7 @@ int mutt_strwidth (const char *s)
   size_t k, n;
   mbstate_t mbstate;
 
-  if (!s) return 0;
+  if (s == NULL) return 0;
 
   n = mutt_strlen (s);
 

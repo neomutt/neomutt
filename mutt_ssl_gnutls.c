@@ -86,7 +86,7 @@ static int tls_init (void)
   static unsigned char init_complete = 0;
   int err;
 
-  if (init_complete)
+  if (init_complete != 0)
     return 0;
 
   err = gnutls_global_init();
@@ -106,7 +106,7 @@ static int tls_socket_read (CONNECTION* conn, char* buf, size_t len)
   tlssockdata *data = conn->sockdata;
   int ret;
 
-  if (!data)
+  if (data == NULL)
   {
     mutt_error (_("Error: no TLS socket open"));
     mutt_sleep (2);
@@ -115,7 +115,7 @@ static int tls_socket_read (CONNECTION* conn, char* buf, size_t len)
 
   do {
     ret = gnutls_record_recv (data->state, buf, len);
-    if ((ret < 0 &&
+    if (((ret < 0) &&
          gnutls_error_is_fatal(ret) == 1) ||
         ret == GNUTLS_E_INTERRUPTED
        )
@@ -135,7 +135,7 @@ static int tls_socket_write (CONNECTION* conn, const char* buf, size_t len)
   int ret;
   size_t sent = 0;
 
-  if (!data)
+  if (data == NULL)
   {
     mutt_error (_("Error: no TLS socket open"));
     mutt_sleep (2);
@@ -147,7 +147,7 @@ static int tls_socket_write (CONNECTION* conn, const char* buf, size_t len)
     ret = gnutls_record_send (data->state, buf + sent, len - sent);
     if (ret < 0)
     {
-      if (gnutls_error_is_fatal(ret) == 1 || ret == GNUTLS_E_INTERRUPTED)
+      if (gnutls_error_is_fatal(ret) == 1 || (ret == GNUTLS_E_INTERRUPTED))
       {
 	mutt_error ("tls_socket_write (%s)", gnutls_strerror (ret));
 	mutt_sleep (4);
@@ -164,7 +164,7 @@ static int tls_socket_write (CONNECTION* conn, const char* buf, size_t len)
 static int tls_socket_close (CONNECTION* conn)
 {
   tlssockdata *data = conn->sockdata;
-  if (data)
+  if (data != NULL)
   {
     /* shut down only the write half to avoid hanging waiting for the remote to respond.
      *
@@ -203,7 +203,7 @@ static gnutls_certificate_status_t tls_verify_peers (gnutls_session_t tlsstate)
   unsigned int status;
 
   verify_ret = gnutls_certificate_verify_peers2 (tlsstate, &status);
-  if (!verify_ret)
+  if (verify_ret == 0)
     return status;
 
   if (status == GNUTLS_E_NO_CERTIFICATE_FOUND)
@@ -343,7 +343,7 @@ static int tls_compare_certificates (const gnutls_datum_t *peercert)
 
     /* find start of cert, skipping junk */
     ptr = (unsigned char *)strstr((char*)b64_data.data, CERT_SEP);
-    if (!ptr)
+    if (ptr == NULL)
     {
       gnutls_free(cert.data);
       FREE (&b64_data_data);
@@ -407,7 +407,7 @@ static int tls_check_preauth (const gnutls_datum_t *certdata,
       *certerr |= CERTERR_NOTYETVALID;
   }
 
-  if (chainidx == 0 && option (OPTSSLVERIFYHOST) != MUTT_NO
+  if ((chainidx == 0) && option (OPTSSLVERIFYHOST) != MUTT_NO
       && !gnutls_x509_crt_check_hostname (cert, hostname)
       && !tls_check_stored_hostname (certdata, hostname))
     *certerr |= CERTERR_HOSTNAME;
@@ -417,21 +417,21 @@ static int tls_check_preauth (const gnutls_datum_t *certdata,
   {
     *savedcert = 1;
 
-    if (chainidx == 0 && (certstat & GNUTLS_CERT_INVALID))
+    if ((chainidx == 0) && (certstat & GNUTLS_CERT_INVALID))
     {
       /* doesn't matter - have decided is valid because server
        certificate is in our trusted cache */
       certstat ^= GNUTLS_CERT_INVALID;
     }
 
-    if (chainidx == 0 && (certstat & GNUTLS_CERT_SIGNER_NOT_FOUND))
+    if ((chainidx == 0) && (certstat & GNUTLS_CERT_SIGNER_NOT_FOUND))
     {
       /* doesn't matter that we haven't found the signer, since
        certificate is in our trusted cache */
       certstat ^= GNUTLS_CERT_SIGNER_NOT_FOUND;
     }
 
-    if (chainidx <= 1 && (certstat & GNUTLS_CERT_SIGNER_NOT_CA))
+    if ((chainidx <= 1) && (certstat & GNUTLS_CERT_SIGNER_NOT_CA))
     {
       /* Hmm. Not really sure how to handle this, but let's say
        that we don't care if the CA certificate hasn't got the
@@ -440,7 +440,7 @@ static int tls_check_preauth (const gnutls_datum_t *certdata,
       certstat ^= GNUTLS_CERT_SIGNER_NOT_CA;
     }
 
-    if (chainidx == 0 && (certstat & GNUTLS_CERT_INSECURE_ALGORITHM))
+    if ((chainidx == 0) && (certstat & GNUTLS_CERT_INSECURE_ALGORITHM))
     {
       /* doesn't matter that it was signed using an insecure
          algorithm, since certificate is in our trusted cache */
@@ -486,7 +486,7 @@ static int tls_check_preauth (const gnutls_datum_t *certdata,
   /* we've been zeroing the interesting bits in certstat -
    don't return OK if there are any unhandled bits we don't
    understand */
-  if (*certerr == CERTERR_VALID && certstat == 0)
+  if (*certerr == CERTERR_VALID && (certstat == 0))
     return 0;
 
   return -1;
@@ -496,7 +496,7 @@ static char *tls_make_date (time_t t, char *s, size_t len)
 {
   struct tm *l = gmtime (&t);
 
-  if (l)
+  if (l != NULL)
     snprintf (s, len,  "%s, %d %s %d %02d:%02d:%02d UTC",
 	      Weekdays[l->tm_wday], l->tm_mday, Months[l->tm_mon],
 	      l->tm_year + 1900, l->tm_hour, l->tm_min, l->tm_sec);
@@ -721,7 +721,7 @@ static int tls_check_one_certificate (const gnutls_datum_t *certdata,
 
   done = 0;
   set_option (OPTIGNOREMACROEVENTS);
-  while (!done)
+  while (done == 0)
   {
     switch (mutt_menu_loop (menu))
     {
@@ -756,7 +756,7 @@ static int tls_check_one_certificate (const gnutls_datum_t *certdata,
 	  }
 	  safe_fclose (&fp);
 	}
-	if (!done)
+	if (done == 0)
         {
 	  mutt_error (_("Warning: Couldn't save certificate"));
 	  mutt_sleep (2);
@@ -799,7 +799,7 @@ static int tls_check_certificate (CONNECTION* conn)
   certstat = tls_verify_peers (state);
 
   cert_list = gnutls_certificate_get_peers (state, &cert_list_size);
-  if (!cert_list)
+  if (cert_list == NULL)
   {
     mutt_error (_("Unable to get certificate from peer"));
     mutt_sleep (2);
@@ -822,9 +822,9 @@ static int tls_check_certificate (CONNECTION* conn)
       rcpeer = rc;
     }
 
-    if (savedcert)
+    if (savedcert != 0)
     {
-      if (!preauthrc)
+      if (preauthrc == 0)
         return 1;
       else
         break;
@@ -923,7 +923,7 @@ static int tls_set_priority(tlssockdata *data)
   priority = safe_malloc (priority_size);
 
   priority[0] = 0;
-  if (SslCiphers)
+  if (SslCiphers != NULL)
     safe_strcat (priority, priority_size, SslCiphers);
   else
     safe_strcat (priority, priority_size, "NORMAL");
@@ -994,7 +994,7 @@ static int tls_set_priority(tlssockdata *data)
     return -1;
   }
 
-  if (SslCiphers)
+  if (SslCiphers != NULL)
   {
     mutt_error (_("Explicit ciphersuite selection via $ssl_ciphers not supported"));
     mutt_sleep (2);
@@ -1030,13 +1030,13 @@ static int tls_negotiate (CONNECTION * conn)
 					  GNUTLS_X509_FMT_PEM);
   /* ignore errors, maybe file doesn't exist yet */
 
-  if (SslCACertFile)
+  if (SslCACertFile != NULL)
   {
     gnutls_certificate_set_x509_trust_file (data->xcred, SslCACertFile,
                                             GNUTLS_X509_FMT_PEM);
   }
 
-  if (SslClientCert)
+  if (SslClientCert != NULL)
   {
     mutt_debug (2, "Using client certificate %s\n", SslClientCert);
     gnutls_certificate_set_x509_key_file (data->xcred, SslClientCert,

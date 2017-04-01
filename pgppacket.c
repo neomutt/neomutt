@@ -38,7 +38,7 @@ static size_t plen = 0;
 
 static int read_material (size_t material, size_t * used, FILE * fp)
 {
-  if (*used + material >= plen)
+  if (*(used + material) >= plen)
   {
     unsigned char *p = NULL;
     size_t nplen;
@@ -74,7 +74,7 @@ unsigned char *pgp_read_packet (FILE * fp, size_t * len)
 
   startpos = ftello (fp);
 
-  if (!plen)
+  if (plen == 0)
   {
     plen = CHUNKSIZE;
     pbuf = safe_malloc (plen);
@@ -111,7 +111,7 @@ unsigned char *pgp_read_packet (FILE * fp, size_t * len)
 	material = b;
 	partial = 0;
       }
-      else if (192 <= b && b <= 223)
+      else if ((192 <= b) && (b <= 223))
       {
 	material = (b - 192) * 256;
 	if (fread (&b, 1, 1, fp) < 1)
@@ -128,7 +128,7 @@ unsigned char *pgp_read_packet (FILE * fp, size_t * len)
 	partial = 1;
       }
       else
-	/* b == 255 */
+	/* (b == 255) */
       {
 	unsigned char buf[4];
 	if (fread (buf, 4, 1, fp) < 1)
@@ -177,7 +177,7 @@ unsigned char *pgp_read_packet (FILE * fp, size_t * len)
       {
 	int i;
 
-	if (!bytes)
+	if (bytes == 0)
 	  bytes = 4;
 
 	material = 0;
@@ -203,7 +203,7 @@ unsigned char *pgp_read_packet (FILE * fp, size_t * len)
       goto bail;
   }
 
-  if (len)
+  if (len != NULL)
     *len = used;
 
   return pbuf;
