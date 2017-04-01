@@ -3205,7 +3205,6 @@ int mutt_index_menu (void)
       case OP_SIDEBAR_TOGGLE_VISIBLE:
 	toggle_option (OPTSIDEBAR);
         mutt_reflow_windows();
-	menu->redraw = REDRAW_FULL;
 	break;
 
       case OP_SIDEBAR_TOGGLE_VIRTUAL:

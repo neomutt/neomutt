@@ -3109,7 +3109,6 @@ search_next:
       case OP_SIDEBAR_TOGGLE_VISIBLE:
 	toggle_option (OPTSIDEBAR);
         mutt_reflow_windows();
-	pager_menu->redraw = REDRAW_FULL;
 	break;
 #endif
 
