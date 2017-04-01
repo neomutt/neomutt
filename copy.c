@@ -448,7 +448,7 @@ mutt_copy_header (FILE *in, HEADER *h, FILE *out, int flags, const char *prefix)
 
   if (flags & CH_UPDATE_LABEL)
   {
-    h->xlabel_changed = 0;
+    h->xlabel_changed = false;
     if (h->env->x_label != NULL)
       if (fprintf(out, "X-Label: %s\n", h->env->x_label) !=
 		  10 + strlen(h->env->x_label))
@@ -592,7 +592,7 @@ _mutt_copy_message (FILE *fpout, FILE *fpin, HEADER *hdr, BODY *body,
       /* Update original message if we are sync'ing a mailfolder */
       if (flags & MUTT_CM_UPDATE)
       {
-	hdr->attach_del = 0;
+	hdr->attach_del = false;
 	hdr->lines = new_lines;
 	body->offset = new_offset;
 

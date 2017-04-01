@@ -683,58 +683,58 @@ static const struct tz_t
   char tzname[5];
   unsigned char zhours;
   unsigned char zminutes;
-  unsigned char zoccident; /* west of UTC? */
+  bool zoccident; /* west of UTC? */
 }
 TimeZones[] =
 {
-  { "aat",   1,  0, 1 }, /* Atlantic Africa Time */
-  { "adt",   4,  0, 0 }, /* Arabia DST */
-  { "ast",   3,  0, 0 }, /* Arabia */
-/*{ "ast",   4,  0, 1 },*/ /* Atlantic */
-  { "bst",   1,  0, 0 }, /* British DST */
-  { "cat",   1,  0, 0 }, /* Central Africa */
-  { "cdt",   5,  0, 1 },
-  { "cest",  2,  0, 0 }, /* Central Europe DST */
-  { "cet",   1,  0, 0 }, /* Central Europe */
-  { "cst",   6,  0, 1 },
-/*{ "cst",   8,  0, 0 },*/ /* China */
-/*{ "cst",   9, 30, 0 },*/ /* Australian Central Standard Time */
-  { "eat",   3,  0, 0 }, /* East Africa */
-  { "edt",   4,  0, 1 },
-  { "eest",  3,  0, 0 }, /* Eastern Europe DST */
-  { "eet",   2,  0, 0 }, /* Eastern Europe */
-  { "egst",  0,  0, 0 }, /* Eastern Greenland DST */
-  { "egt",   1,  0, 1 }, /* Eastern Greenland */
-  { "est",   5,  0, 1 },
-  { "gmt",   0,  0, 0 },
-  { "gst",   4,  0, 0 }, /* Presian Gulf */
-  { "hkt",   8,  0, 0 }, /* Hong Kong */
-  { "ict",   7,  0, 0 }, /* Indochina */
-  { "idt",   3,  0, 0 }, /* Israel DST */
-  { "ist",   2,  0, 0 }, /* Israel */
-/*{ "ist",   5, 30, 0 },*/ /* India */
-  { "jst",   9,  0, 0 }, /* Japan */
-  { "kst",   9,  0, 0 }, /* Korea */
-  { "mdt",   6,  0, 1 },
-  { "met",   1,  0, 0 }, /* this is now officially CET */
-  { "msd",   4,  0, 0 }, /* Moscow DST */
-  { "msk",   3,  0, 0 }, /* Moscow */
-  { "mst",   7,  0, 1 },
-  { "nzdt", 13,  0, 0 }, /* New Zealand DST */
-  { "nzst", 12,  0, 0 }, /* New Zealand */
-  { "pdt",   7,  0, 1 },
-  { "pst",   8,  0, 1 },
-  { "sat",   2,  0, 0 }, /* South Africa */
-  { "smt",   4,  0, 0 }, /* Seychelles */
-  { "sst",  11,  0, 1 }, /* Samoa */
-/*{ "sst",   8,  0, 0 },*/ /* Singapore */
-  { "utc",   0,  0, 0 },
-  { "wat",   0,  0, 0 }, /* West Africa */
-  { "west",  1,  0, 0 }, /* Western Europe DST */
-  { "wet",   0,  0, 0 }, /* Western Europe */
-  { "wgst",  2,  0, 1 }, /* Western Greenland DST */
-  { "wgt",   3,  0, 1 }, /* Western Greenland */
-  { "wst",   8,  0, 0 }, /* Western Australia */
+  { "aat",   1,  0, true  }, /* Atlantic Africa Time */
+  { "adt",   4,  0, false }, /* Arabia DST */
+  { "ast",   3,  0, false }, /* Arabia */
+/*{ "ast",   4,  0, true  },*/ /* Atlantic */
+  { "bst",   1,  0, false }, /* British DST */
+  { "cat",   1,  0, false }, /* Central Africa */
+  { "cdt",   5,  0, true  },
+  { "cest",  2,  0, false }, /* Central Europe DST */
+  { "cet",   1,  0, false }, /* Central Europe */
+  { "cst",   6,  0, true  },
+/*{ "cst",   8,  0, false },*/ /* China */
+/*{ "cst",   9, 30, false },*/ /* Australian Central Standard Time */
+  { "eat",   3,  0, false }, /* East Africa */
+  { "edt",   4,  0, true  },
+  { "eest",  3,  0, false }, /* Eastern Europe DST */
+  { "eet",   2,  0, false }, /* Eastern Europe */
+  { "egst",  0,  0, false }, /* Eastern Greenland DST */
+  { "egt",   1,  0, true  }, /* Eastern Greenland */
+  { "est",   5,  0, true  },
+  { "gmt",   0,  0, false },
+  { "gst",   4,  0, false }, /* Presian Gulf */
+  { "hkt",   8,  0, false }, /* Hong Kong */
+  { "ict",   7,  0, false }, /* Indochina */
+  { "idt",   3,  0, false }, /* Israel DST */
+  { "ist",   2,  0, false }, /* Israel */
+/*{ "ist",   5, 30, false },*/ /* India */
+  { "jst",   9,  0, false }, /* Japan */
+  { "kst",   9,  0, false }, /* Korea */
+  { "mdt",   6,  0, true  },
+  { "met",   1,  0, false }, /* this is now officially CET */
+  { "msd",   4,  0, false }, /* Moscow DST */
+  { "msk",   3,  0, false }, /* Moscow */
+  { "mst",   7,  0, true  },
+  { "nzdt", 13,  0, false }, /* New Zealand DST */
+  { "nzst", 12,  0, false }, /* New Zealand */
+  { "pdt",   7,  0, true  },
+  { "pst",   8,  0, true  },
+  { "sat",   2,  0, false }, /* South Africa */
+  { "smt",   4,  0, false }, /* Seychelles */
+  { "sst",  11,  0, true  }, /* Samoa */
+/*{ "sst",   8,  0, false },*/ /* Singapore */
+  { "utc",   0,  0, false },
+  { "wat",   0,  0, false }, /* West Africa */
+  { "west",  1,  0, false }, /* Western Europe DST */
+  { "wet",   0,  0, false }, /* Western Europe */
+  { "wgst",  2,  0, true  }, /* Western Greenland DST */
+  { "wgt",   3,  0, true  }, /* Western Greenland */
+  { "wst",   8,  0, false }, /* Western Australia */
 };
 
 /* parses a date string in RFC822 format:
@@ -754,7 +754,7 @@ time_t mutt_parse_date (const char *s, HEADER *h)
   int tz_offset = 0;
   int zhours = 0;
   int zminutes = 0;
-  int zoccident = 0;
+  bool zoccident = false;
   const char *ptz = NULL;
   char tzstr[SHORT_STRING];
   char scratch[SHORT_STRING];
@@ -831,7 +831,7 @@ time_t mutt_parse_date (const char *s, HEADER *h)
 	    zminutes = (ptz[3] - '0') * 10 + (ptz[4] - '0');
 
 	    if (ptz[0] == '-')
-	      zoccident = 1;
+	      zoccident = true;
 	  }
 	}
 	else
@@ -969,7 +969,7 @@ void mutt_parse_mime_message (CONTEXT *ctx, HEADER *cur)
     }
   } while (0);
 
-  cur->attach_valid = 0;
+  cur->attach_valid = false;
 }
 
 int mutt_parse_rfc822_line (ENVELOPE *e, HEADER *hdr, char *line, char *p, short user_hdrs, short weed,
@@ -1064,7 +1064,7 @@ int mutt_parse_rfc822_line (ENVELOPE *e, HEADER *hdr, char *line, char *p, short
     case 'e':
     if ((ascii_strcasecmp ("xpires", line + 1) == 0) &&
 	hdr && mutt_parse_date (p, NULL) < time (NULL))
-      hdr->expired = 1;
+      hdr->expired = true;
     break;
 
     case 'f':
@@ -1139,7 +1139,7 @@ int mutt_parse_rfc822_line (ENVELOPE *e, HEADER *hdr, char *line, char *p, short
     if (ascii_strcasecmp (line + 1, "ime-version") == 0)
     {
       if (hdr)
-	hdr->mime = 1;
+	hdr->mime = true;
       matched = 1;
     }
     else if (ascii_strcasecmp (line + 1, "essage-id") == 0)
@@ -1237,13 +1237,13 @@ int mutt_parse_rfc822_line (ENVELOPE *e, HEADER *hdr, char *line, char *p, short
 	  switch(*p)
 	  {
 	    case 'r':
-	    hdr->replied = 1;
+	    hdr->replied = true;
 	    break;
 	    case 'O':
-	      hdr->old = 1;
+	      hdr->old = true;
 	    break;
 	    case 'R':
-	    hdr->read = 1;
+	    hdr->read = true;
 	    break;
 	  }
 	  p++;
@@ -1277,13 +1277,13 @@ int mutt_parse_rfc822_line (ENVELOPE *e, HEADER *hdr, char *line, char *p, short
 	  switch (*p)
 	  {
 	    case 'A':
-	    hdr->replied = 1;
+	    hdr->replied = true;
 	    break;
 	    case 'D':
-	    hdr->deleted = 1;
+	    hdr->deleted = true;
 	    break;
 	    case 'F':
-	    hdr->flagged = 1;
+	    hdr->flagged = true;
 	    break;
 	    default:
 	    break;
@@ -1576,13 +1576,13 @@ static int count_body_parts_check(LIST **checklist, BODY *b, int dflt)
   return 0;
 }
 
-#define AT_COUNT(why)   { shallcount = 1; }
-#define AT_NOCOUNT(why) { shallcount = 0; }
+#define AT_COUNT(why)   { shallcount = true; }
+#define AT_NOCOUNT(why) { shallcount = false; }
 
 static int count_body_parts (BODY *body, int flags)
 {
   int count = 0;
-  int shallcount, shallrecurse;
+  bool shallcount, shallrecurse;
   BODY *bp = NULL;
 
   if (body == NULL)
@@ -1592,7 +1592,7 @@ static int count_body_parts (BODY *body, int flags)
   {
     /* Initial disposition is to count and not to recurse this part. */
     AT_COUNT("default");
-    shallrecurse = 0;
+    shallrecurse = false;
 
     mutt_debug (5, "bp: desc=\"%s\"; fn=\"%s\", type=\"%d/%s\"\n",
                 bp->description ? bp->description : ("none"),
@@ -1602,11 +1602,11 @@ static int count_body_parts (BODY *body, int flags)
 
     if (bp->type == TYPEMESSAGE)
     {
-      shallrecurse = 1;
+      shallrecurse = true;
 
       /* If it's an external body pointer, don't recurse it. */
       if (ascii_strcasecmp (bp->subtype, "external-body") == 0)
-	shallrecurse = 0;
+	shallrecurse = false;
 
       /* Don't count containers if they're top-level. */
       if (flags & MUTT_PARTS_TOPLEVEL)
@@ -1615,9 +1615,9 @@ static int count_body_parts (BODY *body, int flags)
     else if (bp->type == TYPEMULTIPART)
     {
       /* Always recurse multiparts, except multipart/alternative. */
-      shallrecurse = 1;
+      shallrecurse = true;
       if (ascii_strcasecmp(bp->subtype, "alternative") == 0)
-        shallrecurse = 0;
+        shallrecurse = false;
 
       /* Don't count containers if they're top-level. */
       if (flags & MUTT_PARTS_TOPLEVEL)
@@ -1656,7 +1656,7 @@ static int count_body_parts (BODY *body, int flags)
 
     if (shallcount)
       count++;
-    bp->attach_qualifies = shallcount ? 1 : 0;
+    bp->attach_qualifies = shallcount ? true : false;
 
     mutt_debug (5, "cbp: %p shallcount = %d\n", (void *)bp, shallcount);
 
@@ -1690,7 +1690,7 @@ int mutt_count_body_parts (CONTEXT *ctx, HEADER *hdr)
   else
     hdr->attach_total = 0;
 
-  hdr->attach_valid = 1;
+  hdr->attach_valid = true;
 
   if (!keep_parts)
     mutt_free_body (&hdr->content->parts);

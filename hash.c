@@ -99,9 +99,9 @@ HASH *hash_create (int nelem, int flags)
     table->cmp_key = cmp_string_key;
   }
   if (flags & MUTT_HASH_STRDUP_KEYS)
-    table->strdup_keys = 1;
+    table->strdup_keys = true;
   if (flags & MUTT_HASH_ALLOW_DUPS)
-    table->allow_dups = 1;
+    table->allow_dups = true;
   return table;
 }
 
@@ -111,7 +111,7 @@ HASH *int_hash_create (int nelem, int flags)
   table->gen_hash = gen_int_hash;
   table->cmp_key = cmp_int_key;
   if (flags & MUTT_HASH_ALLOW_DUPS)
-    table->allow_dups = 1;
+    table->allow_dups = true;
   return table;
 }
 

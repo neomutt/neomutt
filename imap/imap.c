@@ -260,7 +260,7 @@ void imap_expunge_mailbox (IMAP_DATA* idata)
     {
       mutt_debug (2, "Expunging message UID %d.\n", HEADER_DATA (h)->uid);
 
-      h->active = 0;
+      h->active = false;
       idata->ctx->size -= h->content->length;
 
       imap_cache_del (idata, h);
@@ -492,7 +492,7 @@ void imap_close_connection(IMAP_DATA* idata)
     mutt_socket_close (idata->conn);
     idata->state = IMAP_DISCONNECTED;
   }
-  idata->seqno = idata->nextcmd = idata->lastcmd = idata->status = 0;
+  idata->seqno = idata->nextcmd = idata->lastcmd = idata->status = false;
   memset (idata->cmds, 0, sizeof (IMAP_COMMAND) * idata->cmdslots);
 }
 
@@ -591,7 +591,7 @@ static int imap_open_mailbox (CONTEXT* ctx)
   idata->ctx = ctx;
 
   /* clear mailbox status */
-  idata->status = 0;
+  idata->status = false;
   memset (idata->ctx->rights, 0, sizeof (idata->ctx->rights));
   idata->newMailCount = 0;
 
@@ -711,7 +711,7 @@ static int imap_open_mailbox (CONTEXT* ctx)
       !mutt_bit_isset(idata->capabilities, ACL))
   {
     mutt_debug (2, "Mailbox is read-only.\n");
-    ctx->readonly = 1;
+    ctx->readonly = true;
   }
 
 #ifdef DEBUG
@@ -741,7 +741,7 @@ static int imap_open_mailbox (CONTEXT* ctx)
         mutt_bit_isset(idata->ctx->rights, MUTT_ACL_SEEN) ||
         mutt_bit_isset(idata->ctx->rights, MUTT_ACL_WRITE) ||
         mutt_bit_isset(idata->ctx->rights, MUTT_ACL_INSERT)))
-     ctx->readonly = 1;
+     ctx->readonly = true;
 
   ctx->hdrmax = count;
   ctx->hdrs = safe_calloc (count, sizeof (HEADER *));
@@ -1059,11 +1059,11 @@ int imap_sync_message (IMAP_DATA *idata, HEADER *hdr, BUFFER *cmd,
   char flags[LONG_STRING];
   char uid[11];
 
-  hdr->changed = 0;
+  hdr->changed = false;
 
   if (!compare_flags (hdr))
   {
-    idata->ctx->changed--;
+    idata->ctx->changed = false;
     return 0;
   }
 
@@ -1111,7 +1111,7 @@ int imap_sync_message (IMAP_DATA *idata, HEADER *hdr, BUFFER *cmd,
   mutt_buffer_addstr (cmd, ")");
 
   /* dumb hack for bad UW-IMAP 4.7 servers spurious FLAGS updates */
-  hdr->active = 0;
+  hdr->active = false;
 
   /* after all this it's still possible to have no flags, if you
    * have no ACL rights */
@@ -1124,8 +1124,8 @@ int imap_sync_message (IMAP_DATA *idata, HEADER *hdr, BUFFER *cmd,
       return -1;
   }
 
-  hdr->active = 1;
-  idata->ctx->changed--;
+  hdr->active = true;
+  idata->ctx->changed = false;
 
   return 0;
 }
@@ -1205,7 +1205,7 @@ int imap_sync_mailbox (CONTEXT* ctx, int expunge)
        * here so BOGUS UW-IMAP 4.7 SILENT FLAGS updates are ignored. */
       for (n = 0; n < ctx->msgcount; n++)
         if (ctx->hdrs[n]->deleted && ctx->hdrs[n]->changed)
-          ctx->hdrs[n]->active = 0;
+          ctx->hdrs[n]->active = false;
       mutt_message (_("Marking %d messages deleted..."), rc);
     }
   }
@@ -1246,7 +1246,7 @@ int imap_sync_mailbox (CONTEXT* ctx, int expunge)
 	  mutt_debug (1, "imap_sync_mailbox: Error opening mailbox in append mode\n");
 	else
 	  _mutt_save_message (h, appendctx, 1, 0, 0);
-	h->xlabel_changed = 0;
+	h->xlabel_changed = false;
       }
     }
   }
@@ -1317,9 +1317,9 @@ int imap_sync_mailbox (CONTEXT* ctx, int expunge)
     HEADER_DATA(ctx->hdrs[n])->old = ctx->hdrs[n]->old;
     HEADER_DATA(ctx->hdrs[n])->read = ctx->hdrs[n]->read;
     HEADER_DATA(ctx->hdrs[n])->replied = ctx->hdrs[n]->replied;
-    ctx->hdrs[n]->changed = 0;
+    ctx->hdrs[n]->changed = false;
   }
-  ctx->changed = 0;
+  ctx->changed = false;
 
   /* We must send an EXPUNGE command if we're not closing. */
   if (expunge && !(ctx->closing) &&
@@ -1533,7 +1533,7 @@ int imap_buffy_check (int force, int check_stats)
 
     if (imap_get_mailbox (mailbox->path, &idata, name, sizeof (name)) < 0)
     {
-      mailbox->new = 0;
+      mailbox->new = false;
       continue;
     }
 
@@ -1543,7 +1543,7 @@ int imap_buffy_check (int force, int check_stats)
      * mailbox's, and shouldn't expand to INBOX in that case. #3216. */
     if (idata->mailbox && (imap_mxcmp (name, idata->mailbox) == 0))
     {
-      mailbox->new = 0;
+      mailbox->new = false;
       continue;
     }
 
@@ -1842,7 +1842,7 @@ int imap_search (CONTEXT* ctx, const pattern_t* pat)
   int i;
 
   for (i = 0; i < ctx->msgcount; i++)
-    ctx->hdrs[i]->matched = 0;
+    ctx->hdrs[i]->matched = false;
 
   if (!do_search (pat, 1))
     return 0;

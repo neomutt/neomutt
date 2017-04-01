@@ -564,7 +564,7 @@ static int mx_open_mailbox_append (CONTEXT *ctx, int flags)
 {
   struct stat sb;
 
-  ctx->append = 1;
+  ctx->append = true;
   ctx->magic = mx_get_magic (ctx->path);
   if (ctx->magic == 0)
   {
@@ -630,17 +630,17 @@ CONTEXT *mx_open_mailbox (const char *path, int flags, CONTEXT *pctx)
     ctx->realpath = safe_strdup (ctx->path);
 
   ctx->msgnotreadyet = -1;
-  ctx->collapsed = 0;
+  ctx->collapsed = false;
 
   for (rc=0; rc < RIGHTSMAX; rc++)
     mutt_bit_set(ctx->rights,rc);
 
   if (flags & MUTT_QUIET)
-    ctx->quiet = 1;
+    ctx->quiet = true;
   if (flags & MUTT_READONLY)
-    ctx->readonly = 1;
+    ctx->readonly = true;
   if (flags & MUTT_PEEK)
-    ctx->peekonly = 1;
+    ctx->peekonly = true;
 
   if (flags & (MUTT_APPEND|MUTT_NEWFOLDER))
   {
@@ -844,7 +844,7 @@ int mx_close_mailbox (CONTEXT *ctx, int *index_hint)
 
   if (!ctx) return 0;
 
-  ctx->closing = 1;
+  ctx->closing = true;
 
   if (ctx->readonly || ctx->dontwrite || ctx->append)
   {
@@ -862,7 +862,7 @@ int mx_close_mailbox (CONTEXT *ctx, int *index_hint)
       int rc = query_quadoption (OPT_CATCHUP, _("Mark all articles read?"));
       if (rc == MUTT_ABORT)
       {
-	ctx->closing = 0;
+	ctx->closing = false;
 	return -1;
       }
       else if (rc == MUTT_YES)
@@ -905,7 +905,7 @@ int mx_close_mailbox (CONTEXT *ctx, int *index_hint)
       snprintf (buf, sizeof (buf), _("Move read messages to %s?"), mbox);
       if ((move_messages = query_quadoption (OPT_MOVE, buf)) == MUTT_ABORT)
       {
-	ctx->closing = 0;
+	ctx->closing = false;
 	return -1;
       }
     }
@@ -922,7 +922,7 @@ int mx_close_mailbox (CONTEXT *ctx, int *index_hint)
 	      ctx->deleted);
     if ((purge = query_quadoption (OPT_DELETE, buf)) == MUTT_ABORT)
     {
-      ctx->closing = 0;
+      ctx->closing = false;
       return -1;
     }
   }
@@ -951,9 +951,9 @@ int mx_close_mailbox (CONTEXT *ctx, int *index_hint)
       for (i = 0; i < ctx->msgcount; i++)
 	if (ctx->hdrs[i]->read && !ctx->hdrs[i]->deleted
             && !(ctx->hdrs[i]->flagged && option (OPTKEEPFLAGGED)))
-	  ctx->hdrs[i]->tagged = 1;
+	  ctx->hdrs[i]->tagged = true;
 	else
-	  ctx->hdrs[i]->tagged = 0;
+	  ctx->hdrs[i]->tagged = false;
 
       i = imap_copy_messages (ctx, NULL, mbox, 1);
     }
@@ -962,7 +962,7 @@ int mx_close_mailbox (CONTEXT *ctx, int *index_hint)
       mutt_clear_error ();
     else if (i == -1) /* horrible error, bail */
     {
-      ctx->closing=0;
+      ctx->closing=false;
       return -1;
     }
     else /* use regular append-copy mode */
@@ -970,7 +970,7 @@ int mx_close_mailbox (CONTEXT *ctx, int *index_hint)
     {
       if (mx_open_mailbox (mbox, MUTT_APPEND, &f) == NULL)
       {
-	ctx->closing = 0;
+	ctx->closing = false;
 	return -1;
       }
 
@@ -987,7 +987,7 @@ int mx_close_mailbox (CONTEXT *ctx, int *index_hint)
 	  else
 	  {
 	    mx_close_mailbox (&f, NULL);
-	    ctx->closing = 0;
+	    ctx->closing = false;
 	    return -1;
 	  }
 	}
@@ -1012,7 +1012,7 @@ int mx_close_mailbox (CONTEXT *ctx, int *index_hint)
   {
     if (trash_append (ctx) != 0)
     {
-      ctx->closing = 0;
+      ctx->closing = false;
       return -1;
     }
   }
@@ -1023,7 +1023,7 @@ int mx_close_mailbox (CONTEXT *ctx, int *index_hint)
   {
     if ((check = imap_sync_mailbox (ctx, purge)) != 0)
     {
-      ctx->closing = 0;
+      ctx->closing = false;
       return check;
     }
   }
@@ -1034,8 +1034,8 @@ int mx_close_mailbox (CONTEXT *ctx, int *index_hint)
     {
       for (i = 0; i < ctx->msgcount; i++)
       {
-        ctx->hdrs[i]->deleted = 0;
-        ctx->hdrs[i]->purge = 0;
+        ctx->hdrs[i]->deleted = false;
+        ctx->hdrs[i]->purge = false;
       }
       ctx->deleted = 0;
     }
@@ -1044,7 +1044,7 @@ int mx_close_mailbox (CONTEXT *ctx, int *index_hint)
     {
       if ((check = sync_mailbox (ctx, index_hint)) != 0)
       {
-	ctx->closing = 0;
+	ctx->closing = false;
 	return check;
       }
     }
@@ -1091,7 +1091,7 @@ void mx_update_tables(CONTEXT *ctx, int committing)
   ctx->deleted = 0;
   ctx->new = 0;
   ctx->unread = 0;
-  ctx->changed = 0;
+  ctx->changed = false;
   ctx->flagged = 0;
 #define this_body ctx->hdrs[j]->content
   for (i = 0, j = 0; i < ctx->msgcount; i++)
@@ -1116,9 +1116,9 @@ void mx_update_tables(CONTEXT *ctx, int committing)
       }
 
       if (committing)
-	ctx->hdrs[j]->changed = 0;
+	ctx->hdrs[j]->changed = false;
       else if (ctx->hdrs[j]->changed)
-	ctx->changed++;
+	ctx->changed = true;
 
       if (!committing || (ctx->magic == MUTT_MAILDIR && option (OPTMAILDIRTRASH)))
       {
@@ -1221,8 +1221,8 @@ int mx_sync_mailbox (CONTEXT *ctx, int *index_hint)
       {
         for (i = 0 ; i < ctx->msgcount ; i++)
         {
-          ctx->hdrs[i]->deleted = 0;
-          ctx->hdrs[i]->purge = 0;
+          ctx->hdrs[i]->deleted = false;
+          ctx->hdrs[i]->purge = false;
         }
         ctx->deleted = 0;
       }
@@ -1314,14 +1314,14 @@ MESSAGE *mx_open_new_message (CONTEXT *dest, HEADER *hdr, int flags)
   }
 
   msg = safe_calloc (1, sizeof (MESSAGE));
-  msg->write = 1;
+  msg->write = true;
 
   if (hdr)
   {
     msg->flags.flagged = hdr->flagged;
     msg->flags.replied = hdr->replied;
     msg->flags.read    = hdr->read;
-    msg->flags.draft   = (flags & MUTT_SET_DRAFT) ? 1 : 0;
+    msg->flags.draft   = (flags & MUTT_SET_DRAFT) ? true : false;
     msg->received = hdr->received;
   }
 
@@ -1490,7 +1490,7 @@ void mx_update_context (CONTEXT *ctx, int new_messages)
       h2 = hash_find (ctx->id_hash, h->env->supersedes);
       if (h2)
       {
-	h2->superseded = 1;
+	h2->superseded = true;
 	if (option (OPTSCORE))
 	  mutt_score_message (ctx, h2, 1);
       }
@@ -1507,7 +1507,7 @@ void mx_update_context (CONTEXT *ctx, int new_messages)
       mutt_score_message (ctx, h, 0);
 
     if (h->changed)
-      ctx->changed = 1;
+      ctx->changed = true;
     if (h->flagged)
       ctx->flagged++;
     if (h->deleted)

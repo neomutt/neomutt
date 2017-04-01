@@ -194,7 +194,7 @@ static const char *cb_format_str(char *dest, size_t destlen, size_t col, int col
         snprintf (fmt, sizeof (fmt), "%%%sc", prefix);
         snprintf (dest, destlen, fmt, b->new ? 'N' : ' ');
       }
-      else if (b->new == 0)
+      else if (b->new == false)
         optional = 0;
       break;
 

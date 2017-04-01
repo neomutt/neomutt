@@ -673,7 +673,7 @@ int mutt_prepare_template (FILE *fp, CONTEXT *ctx, HEADER *newhdr, HEADER *hdr,
     else
     {
       /* avoid Content-Disposition: header with temporary filename */
-      b->use_disp = 0;
+      b->use_disp = false;
     }
 
     /* set up state flags */
@@ -683,11 +683,11 @@ int mutt_prepare_template (FILE *fp, CONTEXT *ctx, HEADER *newhdr, HEADER *hdr,
     if (b->type == TYPETEXT)
     {
       if (ascii_strcasecmp ("yes", mutt_get_parameter ("x-mutt-noconv", b->parameter)) == 0)
-	b->noconv = 1;
+	b->noconv = true;
       else
       {
 	s.flags |= MUTT_CHARCONV;
-	b->noconv = 0;
+	b->noconv = false;
       }
 
       mutt_delete_parameter ("x-mutt-noconv", &b->parameter);
@@ -725,7 +725,7 @@ int mutt_prepare_template (FILE *fp, CONTEXT *ctx, HEADER *newhdr, HEADER *hdr,
       goto bail;
 
     mutt_str_replace (&b->filename, file);
-    b->unlink = 1;
+    b->unlink = true;
 
     mutt_stamp_attachment (b);
 

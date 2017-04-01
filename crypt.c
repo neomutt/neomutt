@@ -915,7 +915,7 @@ int mutt_signed_handler (BODY *a, STATE *s)
   BODY **signatures = NULL;
   int sigcnt = 0;
   int i;
-  short goodsig = 1;
+  bool goodsig = true;
   int rc = 0;
 
   if (!WithCrypto)
@@ -983,7 +983,7 @@ int mutt_signed_handler (BODY *a, STATE *s)
 	      && (ascii_strcasecmp (signatures[i]->subtype, "pgp-signature") == 0))
 	  {
 	    if (crypt_pgp_verify_one (signatures[i], s, tempfile) != 0)
-	      goodsig = 0;
+	      goodsig = false;
 
 	    continue;
 	  }
@@ -994,7 +994,7 @@ int mutt_signed_handler (BODY *a, STATE *s)
 		  || (ascii_strcasecmp(signatures[i]->subtype, "pkcs7-signature") == 0)))
 	  {
 	    if (crypt_smime_verify_one (signatures[i], s, tempfile) != 0)
-	      goodsig = 0;
+	      goodsig = false;
 
 	    continue;
 	  }

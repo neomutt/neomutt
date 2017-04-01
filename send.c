@@ -1402,8 +1402,8 @@ ci_send_message (int flags,		/* send mode */
         ctype = safe_strdup ("text/plain");
       mutt_parse_content_type (ctype, msg->content);
       FREE (&ctype);
-      msg->content->unlink = 1;
-      msg->content->use_disp = 0;
+      msg->content->unlink = true;
+      msg->content->use_disp = false;
       msg->content->disposition = DISPINLINE;
 
       if (!tempfile)
@@ -1521,7 +1521,7 @@ ci_send_message (int flags,		/* send mode */
        * user can use ~Q in a send-hook to know when reply-hook's are also
        * being used.
        */
-      msg->replied = 1;
+      msg->replied = true;
     }
 
     /* change settings based upon recipients */
@@ -1534,7 +1534,7 @@ ci_send_message (int flags,		/* send mode */
      * this message was erroneously get the 'R'eplied flag when stored in
      * a maildir-style mailbox.
      */
-    msg->replied = 0;
+    msg->replied = false;
 
     if (! (flags & SENDKEY))
     {
@@ -1835,7 +1835,7 @@ main_loop:
        * make sure the message is written to the right part of a maildir
        * postponed folder.
        */
-      msg->read = 0; msg->old = 0;
+      msg->read = false; msg->old = false;
 
       mutt_encode_descriptions (msg->content, 1);
       mutt_prepare_envelope (msg->env, 0);

@@ -148,7 +148,7 @@ static char* msg_parse_flags (IMAP_HEADER* h, char* s)
   s++;
 
   mutt_free_list (&hd->keywords);
-  hd->deleted = hd->flagged = hd->replied = hd->read = hd->old = 0;
+  hd->deleted = hd->flagged = hd->replied = hd->read = hd->old = false;
 
   /* start parsing */
   while (*s && *s != ')')
@@ -156,29 +156,29 @@ static char* msg_parse_flags (IMAP_HEADER* h, char* s)
     if (ascii_strncasecmp ("\\deleted", s, 8) == 0)
     {
       s += 8;
-      hd->deleted = 1;
+      hd->deleted = true;
     }
     else if (ascii_strncasecmp ("\\flagged", s, 8) == 0)
     {
       s += 8;
-      hd->flagged = 1;
+      hd->flagged = true;
     }
     else if (ascii_strncasecmp ("\\answered", s, 9) == 0)
     {
       s += 9;
-      hd->replied = 1;
+      hd->replied = true;
     }
     else if (ascii_strncasecmp ("\\seen", s, 5) == 0)
     {
       s += 5;
-      hd->read = 1;
+      hd->read = true;
     }
     else if (ascii_strncasecmp ("\\recent", s, 7) == 0)
       s += 7;
     else if (ascii_strncasecmp ("old", s, 3) == 0)
     {
       s += 3;
-      hd->old = 1;
+      hd->old = true;
     }
     else
     {
@@ -493,7 +493,7 @@ int imap_read_headers (IMAP_DATA* idata, int msgbegin, int msgend)
   	  ctx->hdrs[idx]->index = idx;
   	  /* messages which have not been expunged are ACTIVE (borrowed from mh
   	   * folders) */
-  	  ctx->hdrs[idx]->active = 1;
+  	  ctx->hdrs[idx]->active = true;
           ctx->hdrs[idx]->read = h.data->read;
           ctx->hdrs[idx]->old = h.data->old;
           ctx->hdrs[idx]->deleted = h.data->deleted;
@@ -603,7 +603,7 @@ int imap_read_headers (IMAP_DATA* idata, int msgbegin, int msgend)
       ctx->hdrs[idx]->index = h.sid - 1;
       /* messages which have not been expunged are ACTIVE (borrowed from mh
        * folders) */
-      ctx->hdrs[idx]->active = 1;
+      ctx->hdrs[idx]->active = true;
       ctx->hdrs[idx]->read = h.data->read;
       ctx->hdrs[idx]->old = h.data->old;
       ctx->hdrs[idx]->deleted = h.data->deleted;
@@ -706,7 +706,7 @@ int imap_fetch_message (CONTEXT *ctx, MESSAGE *msg, int msgno)
   int uid;
   int cacheno;
   IMAP_CACHE *cache = NULL;
-  int read;
+  bool read;
   int rc;
 
   /* Sam's weird courier server returns an OK response even when FETCH
@@ -760,7 +760,7 @@ int imap_fetch_message (CONTEXT *ctx, MESSAGE *msg, int msgno)
   /* mark this header as currently inactive so the command handler won't
    * also try to update it. HACK until all this code can be moved into the
    * command handler */
-  h->active = 0;
+  h->active = false;
 
   snprintf (buf, sizeof (buf), "UID FETCH %u %s", HEADER_DATA(h)->uid,
 	    (mutt_bit_isset (idata->capabilities, IMAP4REV1) ?
@@ -826,7 +826,7 @@ int imap_fetch_message (CONTEXT *ctx, MESSAGE *msg, int msgno)
   while (rc == IMAP_CMD_CONTINUE);
 
   /* see comment before command start. */
-  h->active = 1;
+  h->active = true;
 
   fflush (msg->fp);
   if (ferror (msg->fp))
@@ -882,7 +882,7 @@ int imap_fetch_message (CONTEXT *ctx, MESSAGE *msg, int msgno)
 
   mutt_clear_error();
   rewind (msg->fp);
-  HEADER_DATA(h)->parsed = 1;
+  HEADER_DATA(h)->parsed = true;
 
   return 0;
 
@@ -1288,7 +1288,7 @@ char* imap_set_flags (IMAP_DATA* idata, HEADER* h, char* s)
   CONTEXT* ctx = idata->ctx;
   IMAP_HEADER newh;
   IMAP_HEADER_DATA* hd = NULL;
-  unsigned char readonly;
+  bool readonly;
 
   memset (&newh, 0, sizeof (newh));
   hd = h->data;
@@ -1303,7 +1303,7 @@ char* imap_set_flags (IMAP_DATA* idata, HEADER* h, char* s)
    * flags can be processed by mutt_set_flag. ctx->changed must
    * be restored afterwards */
   readonly = ctx->readonly;
-  ctx->readonly = 0;
+  ctx->readonly = false;
 
   mutt_set_flag (ctx, h, MUTT_NEW, !(hd->read || hd->old));
   mutt_set_flag (ctx, h, MUTT_OLD, hd->old);
@@ -1314,7 +1314,7 @@ char* imap_set_flags (IMAP_DATA* idata, HEADER* h, char* s)
 
   /* this message is now definitively *not* changed (mutt_set_flag
    * marks things changed as a side-effect) */
-  h->changed = 0;
+  h->changed = false;
   ctx->changed &= ~readonly;
   ctx->readonly = readonly;
 

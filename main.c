@@ -758,7 +758,7 @@ int main (int argc, char **argv, char **environ)
     if (edit_infile)
     {
       if (includeFile)
-        msg->content->unlink = 0;
+        msg->content->unlink = false;
       else if (draftFile)
       {
         if (truncate (expanded_infile, 0) == -1)

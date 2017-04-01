@@ -1099,11 +1099,11 @@ pattern_t *mutt_pattern_comp (/* const */ char *s, int flags, BUFFER *err)
   pattern_t *curlist = NULL;
   pattern_t *tmp = NULL, *tmp2 = NULL;
   pattern_t *last = NULL;
-  int not = 0;
-  int alladdr = 0;
-  int or = 0;
-  int implicit = 1;	/* used to detect logical AND operator */
-  int isalias = 0;
+  bool not = false;
+  bool alladdr = false;
+  bool or = false;
+  bool implicit = true;	/* used to detect logical AND operator */
+  bool isalias = false;
   const struct pattern_flags *entry = NULL;
   char *p = NULL;
   char *buf = NULL;
@@ -1149,13 +1149,13 @@ pattern_t *mutt_pattern_comp (/* const */ char *s, int flags, BUFFER *err)
 	    last = curlist;
 	  }
 
-	  or = 1;
+	  or = true;
 	}
 	ps.dptr++;
-	implicit = 0;
-	not = 0;
-	alladdr = 0;
-	isalias = 0;
+	implicit = false;
+	not = false;
+	alladdr = false;
+	isalias = false;
 	break;
       case '%':
       case '=':
@@ -1186,9 +1186,9 @@ pattern_t *mutt_pattern_comp (/* const */ char *s, int flags, BUFFER *err)
 	  tmp->not ^= not;
 	  tmp->alladdr |= alladdr;
 	  tmp->isalias |= isalias;
-	  not = 0;
-	  alladdr = 0;
-	  isalias = 0;
+	  not = false;
+	  alladdr = false;
+	  isalias = false;
 	  /* compile the sub-expression */
 	  buf = mutt_substrdup (ps.dptr + 1, p);
 	  if ((tmp2 = mutt_pattern_comp (buf, flags, err)) == NULL)
@@ -1210,18 +1210,18 @@ pattern_t *mutt_pattern_comp (/* const */ char *s, int flags, BUFFER *err)
 	  tmp->child = curlist;
 	  curlist = tmp;
 	  last = tmp;
-	  or = 0;
+	  or = false;
 	}
 
 	tmp = new_pattern ();
 	tmp->not = not;
 	tmp->alladdr = alladdr;
 	tmp->isalias = isalias;
-        tmp->stringmatch = (*ps.dptr == '=') ? 1 : 0;
-        tmp->groupmatch  = (*ps.dptr == '%') ? 1 : 0;
-	not = 0;
-	alladdr = 0;
-	isalias = 0;
+        tmp->stringmatch = (*ps.dptr == '=') ? true : false;
+        tmp->groupmatch  = (*ps.dptr == '%') ? true : false;
+	not = false;
+	alladdr = false;
+	isalias = false;
 
 	if (last)
 	  last->next = tmp;
@@ -1261,7 +1261,7 @@ pattern_t *mutt_pattern_comp (/* const */ char *s, int flags, BUFFER *err)
 	    return NULL;
 	  }
 	}
-	implicit = 1;
+	implicit = true;
 	break;
       case '(':
 	p = find_matching_paren (ps.dptr + 1);
@@ -1288,9 +1288,9 @@ pattern_t *mutt_pattern_comp (/* const */ char *s, int flags, BUFFER *err)
 	tmp->not ^= not;
 	tmp->alladdr |= alladdr;
 	tmp->isalias |= isalias;
-	not = 0;
-	alladdr = 0;
-	isalias = 0;
+	not = false;
+	alladdr = false;
+	isalias = false;
 	ps.dptr = p + 1; /* restore location */
 	break;
       default:
@@ -1755,13 +1755,13 @@ mutt_limit_current_thread (HEADER *h)
 
   Context->vcount    = 0;
   Context->vsize     = 0;
-  Context->collapsed = 0;
+  Context->collapsed = false;
 
   for (i = 0; i < Context->msgcount; i++)
   {
     Context->hdrs[i]->virtual    = -1;
-    Context->hdrs[i]->limited    = 0;
-    Context->hdrs[i]->collapsed  = 0;
+    Context->hdrs[i]->limited    = false;
+    Context->hdrs[i]->collapsed  = false;
     Context->hdrs[i]->num_hidden = 0;
 
     if (top_of_thread (Context->hdrs[i]) == me)
@@ -1769,7 +1769,7 @@ mutt_limit_current_thread (HEADER *h)
       BODY *body = Context->hdrs[i]->content;
 
       Context->hdrs[i]->virtual = Context->vcount;
-      Context->hdrs[i]->limited = 1;
+      Context->hdrs[i]->limited = true;
       Context->v2r[Context->vcount] = i;
       Context->vcount++;
       Context->vsize += (body->length + body->offset - body->hdr_offset);
@@ -1822,20 +1822,20 @@ int mutt_pattern_func (int op, char *prompt)
   {
     Context->vcount    = 0;
     Context->vsize     = 0;
-    Context->collapsed = 0;
+    Context->collapsed = false;
 
     for (i = 0; i < Context->msgcount; i++)
     {
       mutt_progress_update (&progress, i, -1);
       /* new limit pattern implicitly uncollapses all threads */
       Context->hdrs[i]->virtual = -1;
-      Context->hdrs[i]->limited = 0;
-      Context->hdrs[i]->collapsed = 0;
+      Context->hdrs[i]->limited = false;
+      Context->hdrs[i]->collapsed = false;
       Context->hdrs[i]->num_hidden = 0;
       if (mutt_pattern_exec (pat, MUTT_MATCH_FULL_ADDRESS, Context, Context->hdrs[i], NULL))
       {
 	Context->hdrs[i]->virtual = Context->vcount;
-	Context->hdrs[i]->limited = 1;
+	Context->hdrs[i]->limited = true;
 	Context->v2r[Context->vcount] = i;
 	Context->vcount++;
 	Context->vsize+=THIS_BODY->length + THIS_BODY->offset -
@@ -1951,7 +1951,7 @@ int mutt_search_command (int cur, int op)
   if (option (OPTSEARCHINVALID))
   {
     for (i = 0; i < Context->msgcount; i++)
-      Context->hdrs[i]->searched = 0;
+      Context->hdrs[i]->searched = false;
 #ifdef USE_IMAP
     if (Context->magic == MUTT_IMAP && imap_search (Context, SearchPattern) < 0)
       return -1;
@@ -2007,7 +2007,7 @@ int mutt_search_command (int cur, int op)
     else
     {
       /* remember that we've already searched this message */
-      h->searched = 1;
+      h->searched = true;
       if ((h->matched = (mutt_pattern_exec (SearchPattern, MUTT_MATCH_FULL_ADDRESS, Context, h, NULL) > 0)))
       {
 	mutt_clear_error();

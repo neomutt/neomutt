@@ -44,8 +44,8 @@ static int edit_one_message (CONTEXT *ctx, HEADER *cur)
   int oerrno;
   int rc;
 
-  unsigned short o_read;
-  unsigned short o_old;
+  bool o_read;
+  bool o_old;
 
   int of, cf;
 
@@ -162,7 +162,7 @@ static int edit_one_message (CONTEXT *ctx, HEADER *cur)
    */
 
   o_read = cur->read; o_old = cur->old;
-  cur->read = cur->old = 0;
+  cur->read = cur->old = false;
   msg = mx_open_new_message (&tmpctx, cur, of);
   cur->read = o_read; cur->old = o_old;
 

@@ -317,7 +317,7 @@ int mh_buffy (BUFFY *mailbox, int check_stats)
            last visit, don't notify about it */
         if (!option(OPTMAILCHECKRECENT) || mh_already_notified(mailbox, i) == 0)
         {
-          mailbox->new = 1;
+          mailbox->new = true;
           rc = 1;
         }
         /* Because we are traversing from high to low, we can stop
@@ -629,9 +629,9 @@ static void mh_update_maildir (struct maildir *md, struct mh_sequences *mhs)
       continue;
     f = mhs_check (mhs, i);
 
-    md->h->read = (f & MH_SEQ_UNSEEN) ? 0 : 1;
-    md->h->flagged = (f & MH_SEQ_FLAGGED) ? 1 : 0;
-    md->h->replied = (f & MH_SEQ_REPLIED) ? 1 : 0;
+    md->h->read = (f & MH_SEQ_UNSEEN) ? false : true;
+    md->h->flagged = (f & MH_SEQ_FLAGGED) ? true : false;
+    md->h->replied = (f & MH_SEQ_REPLIED) ? true : false;
   }
 }
 
@@ -666,9 +666,9 @@ void maildir_parse_flags (HEADER * h, const char *path)
 {
   char *p = NULL, *q = NULL;
 
-  h->flagged = 0;
-  h->read = 0;
-  h->replied = 0;
+  h->flagged = false;
+  h->read = false;
+  h->replied = false;
 
   if ((p = strrchr (path, ':')) != NULL && (mutt_strncmp (p + 1, "2,", 2) == 0))
   {
@@ -683,24 +683,24 @@ void maildir_parse_flags (HEADER * h, const char *path)
       {
       case 'F':
 
-	h->flagged = 1;
+	h->flagged = true;
 	break;
 
       case 'S':		/* seen */
 
-	h->read = 1;
+	h->read = true;
 	break;
 
       case 'R':		/* replied */
 
-	h->replied = 1;
+	h->replied = true;
 	break;
 
       case 'T':		/* trashed */
 	if (!h->flagged || !option(OPTFLAGSAFE))
 	{
-	  h->trash = 1;
-	  h->deleted = 1;
+	  h->trash = true;
+	  h->deleted = true;
 	}
 	break;
 
@@ -1489,8 +1489,8 @@ static int maildir_open_new_message (MESSAGE * msg, CONTEXT * dest, HEADER * hdr
 
   if (hdr)
   {
-    short deleted = hdr->deleted;
-    hdr->deleted = 0;
+    bool deleted = hdr->deleted;
+    hdr->deleted = false;
 
     maildir_flags (suffix, sizeof (suffix), hdr);
 
@@ -2092,13 +2092,13 @@ static int maildir_check_mailbox (CONTEXT * ctx, int *index_hint)
   /* check for modifications and adjust flags */
   for (i = 0; i < ctx->msgcount; i++)
   {
-    ctx->hdrs[i]->active = 0;
+    ctx->hdrs[i]->active = false;
     maildir_canon_filename (buf, ctx->hdrs[i]->path, sizeof (buf));
     p = hash_find (fnames, buf);
     if (p && p->h)
     {
       /* message already exists, merge flags */
-      ctx->hdrs[i]->active = 1;
+      ctx->hdrs[i]->active = true;
 
       /* check to see if the message has moved to a different
        * subdirectory.  If so, update the associated filename.
@@ -2138,7 +2138,7 @@ static int maildir_check_mailbox (CONTEXT * ctx, int *index_hint)
        * modified, so we assume that it is still present and
        * unchanged.
        */
-      ctx->hdrs[i]->active = 1;
+      ctx->hdrs[i]->active = true;
     }
   }
 
@@ -2240,12 +2240,12 @@ static int mh_check_mailbox (CONTEXT * ctx, int *index_hint)
 
   for (i = 0; i < ctx->msgcount; i++)
   {
-    ctx->hdrs[i]->active = 0;
+    ctx->hdrs[i]->active = false;
 
     if ((p = hash_find (fnames, ctx->hdrs[i]->path)) && p->h &&
 	(mbox_strict_cmp_headers (ctx->hdrs[i], p->h)))
     {
-      ctx->hdrs[i]->active = 1;
+      ctx->hdrs[i]->active = true;
       /* found the right message */
       if (!ctx->hdrs[i]->changed)
 	maildir_update_flags (ctx, ctx->hdrs[i], p->h);
@@ -2351,7 +2351,7 @@ void maildir_update_flags (CONTEXT *ctx, HEADER *o, HEADER *n)
   /* save the global state here so we can reset it at the
    * end of list block if required.
    */
-  int context_changed = ctx->changed;
+  bool context_changed = ctx->changed;
 
   /* user didn't modify this message.  alter the flags to match the
    * current state on disk.  This may not actually do
@@ -2372,14 +2372,14 @@ void maildir_update_flags (CONTEXT *ctx, HEADER *o, HEADER *n)
    * context to match the current on-disk state of the
    * message.
    */
-  o->changed = 0;
+  o->changed = false;
 
   /* if the mailbox was not modified before we made these
    * changes, unset the changed flag since nothing needs to
    * be synchronized.
    */
   if (!context_changed)
-    ctx->changed = 0;
+    ctx->changed = false;
 }
 
 

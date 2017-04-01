@@ -41,8 +41,8 @@ typedef struct address_t
   char *mailbox;	/* mailbox and host address */
   int group;		/* group mailbox? */
   struct address_t *next;
-  unsigned is_intl      : 1;
-  unsigned intl_checked : 1;
+  bool is_intl      : 1;
+  bool intl_checked : 1;
 }
 ADDRESS;
 

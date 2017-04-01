@@ -298,7 +298,7 @@ static int user_is_recipient (HEADER *h)
 
   if(!h->recip_valid)
   {
-    h->recip_valid = 1;
+    h->recip_valid = true;
 
     if (mutt_addr_is_user (env->from))
       h->recipient = 4;

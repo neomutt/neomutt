@@ -55,10 +55,10 @@ static int mbox_lock_mailbox (CONTEXT *ctx, int excl, int retry)
   int r;
 
   if ((r = mx_lock_file (ctx->path, fileno (ctx->fp), excl, 1, retry)) == 0)
-    ctx->locked = 1;
+    ctx->locked = true;
   else if (retry && !excl)
   {
-    ctx->readonly = 1;
+    ctx->readonly = true;
     return 0;
   }
 
@@ -72,7 +72,7 @@ static void mbox_unlock_mailbox (CONTEXT *ctx)
     fflush (ctx->fp);
 
     mx_unlock_file (ctx->path, fileno (ctx->fp), 1);
-    ctx->locked = 0;
+    ctx->locked = false;
   }
 }
 
@@ -270,7 +270,7 @@ static int mbox_parse_mailbox (CONTEXT *ctx)
 #endif
 
   if (!ctx->readonly)
-    ctx->readonly = access (ctx->path, W_OK) ? 1 : 0;
+    ctx->readonly = access (ctx->path, W_OK) ? true : false;
 
   if (!ctx->quiet)
   {
@@ -674,7 +674,7 @@ static int reopen_mailbox (CONTEXT *ctx, int *index_hint)
   int rc = -1;
 
   /* silent operations */
-  ctx->quiet = 1;
+  ctx->quiet = true;
 
   if (!ctx->quiet)
     mutt_message (_("Reopening mailbox..."));
@@ -723,7 +723,7 @@ static int reopen_mailbox (CONTEXT *ctx, int *index_hint)
   ctx->new = 0;
   ctx->unread = 0;
   ctx->flagged = 0;
-  ctx->changed = 0;
+  ctx->changed = false;
   ctx->id_hash = NULL;
   ctx->subj_hash = NULL;
   mutt_make_label_hash (ctx);
@@ -753,7 +753,7 @@ static int reopen_mailbox (CONTEXT *ctx, int *index_hint)
       mutt_free_header (&(old_hdrs[j]));
     FREE (&old_hdrs);
 
-    ctx->quiet = 0;
+    ctx->quiet = false;
     return -1;
   }
 
@@ -836,7 +836,7 @@ static int reopen_mailbox (CONTEXT *ctx, int *index_hint)
     FREE (&old_hdrs);
   }
 
-  ctx->quiet = 0;
+  ctx->quiet = false;
 
   return ((ctx->changed || msg_mod) ? MUTT_REOPENED : MUTT_NEW_MAIL);
 }
@@ -1322,7 +1322,7 @@ static int mbox_sync_mailbox (CONTEXT *ctx, int *index_hint)
   if (option(OPTCHECKMBOXSIZE))
   {
     tmp = mutt_find_mailbox (ctx->path);
-    if (tmp && tmp->new == 0)
+    if (tmp && tmp->new == false)
       mutt_update_mailbox (tmp);
   }
 

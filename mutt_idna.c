@@ -70,16 +70,16 @@ static void set_local_mailbox (ADDRESS *a, char *local_mailbox)
 {
   FREE (&a->mailbox);
   a->mailbox = local_mailbox;
-  a->intl_checked = 1;
-  a->is_intl = 0;
+  a->intl_checked = true;
+  a->is_intl = false;
 }
 
 static void set_intl_mailbox (ADDRESS *a, char *intl_mailbox)
 {
   FREE (&a->mailbox);
   a->mailbox = intl_mailbox;
-  a->intl_checked = 1;
-  a->is_intl = 1;
+  a->intl_checked = true;
+  a->is_intl = true;
 }
 
 static char *intl_to_local (char *orig_user, char *orig_domain, int flags)

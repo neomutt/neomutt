@@ -26,14 +26,14 @@
 typedef struct imap_header_data
 {
   /* server-side flags */
-  unsigned int read : 1;
-  unsigned int old : 1;
-  unsigned int deleted : 1;
-  unsigned int flagged : 1;
-  unsigned int replied : 1;
-  unsigned int changed : 1;
+  bool read : 1;
+  bool old : 1;
+  bool deleted : 1;
+  bool flagged : 1;
+  bool replied : 1;
+  bool changed : 1;
 
-  unsigned int parsed : 1;
+  bool parsed : 1;
 
   unsigned int uid;	/* 32-bit Message UID */
   LIST *keywords;

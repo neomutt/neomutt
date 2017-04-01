@@ -884,9 +884,9 @@ static BODY *pgp_decrypt_part (BODY *a, STATE *s, FILE *fpout, BODY *p)
   {
     rewind (pgperr);
     if (pgp_copy_checksig (pgperr, s->fpout) == 0 && !rv && p)
-      p->goodsig = 1;
+      p->goodsig = true;
     else
-      p->goodsig = 0;
+      p->goodsig = false;
     state_attach_puts (_("[-- End of PGP output --]\n\n"), s);
   }
   safe_fclose (&pgperr);
@@ -1168,7 +1168,7 @@ BODY *pgp_sign_message (BODY *a)
   t->type = TYPEMULTIPART;
   t->subtype = safe_strdup ("signed");
   t->encoding = ENC7BIT;
-  t->use_disp = 0;
+  t->use_disp = false;
   t->disposition = DISPINLINE;
 
   mutt_generate_boundary (&t->parameter);
@@ -1183,10 +1183,10 @@ BODY *pgp_sign_message (BODY *a)
   t->type = TYPEAPPLICATION;
   t->subtype = safe_strdup ("pgp-signature");
   t->filename = safe_strdup (sigfile);
-  t->use_disp = 0;
+  t->use_disp = false;
   t->disposition = DISPNONE;
   t->encoding = ENC7BIT;
-  t->unlink = 1; /* ok to remove this file after sending. */
+  t->unlink = true; /* ok to remove this file after sending. */
   mutt_set_parameter ("name", "signature.asc", &t->parameter);
 
   return a;
@@ -1416,7 +1416,7 @@ BODY *pgp_encrypt_message (BODY *a, char *keylist, int sign)
   t->type = TYPEMULTIPART;
   t->subtype = safe_strdup ("encrypted");
   t->encoding = ENC7BIT;
-  t->use_disp = 0;
+  t->use_disp = false;
   t->disposition = DISPINLINE;
 
   mutt_generate_boundary(&t->parameter);
@@ -1432,9 +1432,9 @@ BODY *pgp_encrypt_message (BODY *a, char *keylist, int sign)
   t->parts->next->subtype = safe_strdup ("octet-stream");
   t->parts->next->encoding = ENC7BIT;
   t->parts->next->filename = safe_strdup (tempfile);
-  t->parts->next->use_disp = 1;
+  t->parts->next->use_disp = true;
   t->parts->next->disposition = DISPATTACH;
-  t->parts->next->unlink = 1; /* delete after sending the message */
+  t->parts->next->unlink = true; /* delete after sending the message */
   t->parts->next->d_filename = safe_strdup ("msg.asc"); /* non pgp/mime can save */
 
   return t;
@@ -1603,10 +1603,10 @@ BODY *pgp_traditional_encryptsign (BODY *a, int flags, char *keylist)
   b->filename = safe_strdup (pgpoutfile);
 
   b->disposition = DISPNONE;
-  b->unlink   = 1;
+  b->unlink   = true;
 
-  b->noconv = 1;
-  b->use_disp = 0;
+  b->noconv = true;
+  b->use_disp = false;
 
   if (!(flags & ENCRYPT))
     b->encoding = a->encoding;

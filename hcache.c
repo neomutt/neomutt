@@ -656,18 +656,18 @@ hcache_dump(header_cache_t *h, HEADER * header, int *off,
   memcpy(&nh, header, sizeof (HEADER));
 
   /* some fields are not safe to cache */
-  nh.tagged = 0;
-  nh.changed = 0;
-  nh.threaded = 0;
-  nh.recip_valid = 0;
-  nh.searched = 0;
-  nh.matched = 0;
-  nh.collapsed = 0;
-  nh.limited = 0;
+  nh.tagged = false;
+  nh.changed = false;
+  nh.threaded = false;
+  nh.recip_valid = false;
+  nh.searched = false;
+  nh.matched = false;
+  nh.collapsed = false;
+  nh.limited = false;
   nh.num_hidden = 0;
   nh.recipient = 0;
   nh.pair = 0;
-  nh.attach_valid = 0;
+  nh.attach_valid = false;
   nh.path = NULL;
   nh.tree = NULL;
   nh.thread = NULL;

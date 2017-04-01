@@ -69,7 +69,7 @@ BODY *mutt_new_body (void)
   BODY *p = safe_calloc (1, sizeof (BODY));
 
   p->disposition = DISPATTACH;
-  p->use_disp = 1;
+  p->use_disp = true;
   return p;
 }
 
@@ -115,16 +115,16 @@ int mutt_copy_body (FILE *fp, BODY **tgt, BODY *src)
 
   PARAMETER *par = NULL, **ppar = NULL;
 
-  short use_disp;
+  bool use_disp;
 
   if (src->filename)
   {
-    use_disp = 1;
+    use_disp = true;
     strfcpy (tmp, src->filename, sizeof (tmp));
   }
   else
   {
-    use_disp = 0;
+    use_disp = false;
     tmp[0] = '\0';
   }
 
@@ -141,10 +141,10 @@ int mutt_copy_body (FILE *fp, BODY **tgt, BODY *src)
 
   b->filename = safe_strdup (tmp);
   b->use_disp = use_disp;
-  b->unlink = 1;
+  b->unlink = true;
 
   if (mutt_is_text_part (b))
-    b->noconv = 1;
+    b->noconv = true;
 
   b->xtype = safe_strdup (b->xtype);
   b->subtype = safe_strdup (b->subtype);

@@ -339,8 +339,8 @@ static int rfc1524_mailcap_parse (BODY *a,
 	  FREE (&entry->printcommand);
 	  FREE (&entry->nametemplate);
 	  FREE (&entry->convert);
-	  entry->needsterminal = 0;
-	  entry->copiousoutput = 0;
+	  entry->needsterminal = false;
+	  entry->copiousoutput = false;
 	}
       }
     } /* while (!found && (buf = mutt_read_line ())) */

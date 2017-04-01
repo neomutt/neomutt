@@ -153,10 +153,10 @@ struct nm_ctxdata
   int oldmsgcount;
   int ignmsgcount;              /**< Ignored messages */
 
-  unsigned int noprogress     : 1;  /**< Don't show the progress bar */
-  unsigned int longrun        : 1;  /**< A long-lived action is in progress */
-  unsigned int trans          : 1;  /**< Atomic transaction in progress */
-  unsigned int progress_ready : 1;  /**< A progress bar has been initialised */
+  bool noprogress     : 1;      /**< Don't show the progress bar */
+  bool longrun        : 1;      /**< A long-lived action is in progress */
+  bool trans          : 1;      /**< Atomic transaction in progress */
+  bool progress_ready : 1;      /**< A progress bar has been initialised */
 };
 
 
@@ -703,7 +703,7 @@ static int release_db(struct nm_ctxdata *data)
     notmuch_database_close(data->db);
 #endif
     data->db = NULL;
-    data->longrun = 0;
+    data->longrun = false;
     return 0;
   }
 
@@ -720,7 +720,7 @@ static int db_trans_begin(struct nm_ctxdata *data)
     mutt_debug (2, "nm: db trans start\n");
     if (notmuch_database_begin_atomic(data->db))
       return -1;
-    data->trans = 1;
+    data->trans = true;
     return 1;
   }
 
@@ -735,7 +735,7 @@ static int db_trans_end(struct nm_ctxdata *data)
   if (data->trans)
   {
     mutt_debug (2, "nm: db trans end\n");
-    data->trans = 0;
+    data->trans = false;
     if (notmuch_database_end_atomic(data->db))
       return -1;
   }
@@ -1054,8 +1054,8 @@ static void progress_reset(CONTEXT *ctx)
   memset(&data->progress, 0, sizeof(data->progress));
   data->oldmsgcount = ctx->msgcount;
   data->ignmsgcount = 0;
-  data->noprogress = 0;
-  data->progress_ready = 0;
+  data->noprogress = false;
+  data->progress_ready = false;
 }
 
 static void progress_update(CONTEXT *ctx, notmuch_query_t *q)
@@ -1078,7 +1078,7 @@ static void progress_update(CONTEXT *ctx, notmuch_query_t *q)
     count = notmuch_query_count_messages(q);
 #endif
     mutt_progress_init(&data->progress, msg, MUTT_PROGRESS_MSG, ReadInc, count);
-    data->progress_ready = 1;
+    data->progress_ready = true;
   }
 
   if (data->progress_ready)
@@ -1184,7 +1184,7 @@ static void append_message(CONTEXT *ctx, notmuch_query_t *q,
     goto done;
   }
 
-  h->active = 1;
+  h->active = true;
   h->index = ctx->msgcount;
   ctx->size += h->content->length + h->content->offset - h->content->hdr_offset;
   ctx->hdrs[ctx->msgcount] = h;
@@ -1690,7 +1690,7 @@ void nm_longrun_init(CONTEXT *ctx, int writable)
 
   if (data && get_db(data, writable))
   {
-    data->longrun = 1;
+    data->longrun = true;
     mutt_debug (2, "nm: long run initialized\n");
   }
 }
@@ -2243,10 +2243,10 @@ static int nm_check_mailbox(CONTEXT *ctx, int *index_hint)
 
   mutt_debug (1, "nm: start checking (count=%d)\n", ctx->msgcount);
   data->oldmsgcount = ctx->msgcount;
-  data->noprogress = 1;
+  data->noprogress = true;
 
   for (i = 0; i < ctx->msgcount; i++)
-    ctx->hdrs[i]->active = 0;
+    ctx->hdrs[i]->active = false;
 
   limit = get_limit(data);
 
@@ -2275,7 +2275,7 @@ static int nm_check_mailbox(CONTEXT *ctx, int *index_hint)
     }
 
     /* message already exists, merge flags */
-    h->active = 1;
+    h->active = true;
 
     /* check to see if the message has moved to a different
      * subdirectory.  If so, update the associated filename.
@@ -2306,7 +2306,7 @@ static int nm_check_mailbox(CONTEXT *ctx, int *index_hint)
 
   for (i = 0; i < ctx->msgcount; i++)
   {
-    if (ctx->hdrs[i]->active == 0)
+    if (!ctx->hdrs[i]->active)
     {
       occult = 1;
       break;

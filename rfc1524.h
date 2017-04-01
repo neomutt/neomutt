@@ -27,8 +27,8 @@ typedef struct rfc1524_mailcap_entry {
   char *printcommand;
   char *nametemplate;
   char *convert;
-  unsigned int needsterminal : 1;  /* endwin() and system */
-  unsigned int copiousoutput : 1;  /* needs pager, basically */
+  bool needsterminal : 1;  /* endwin() and system */
+  bool copiousoutput : 1;  /* needs pager, basically */
 } rfc1524_entry;
 
 rfc1524_entry *rfc1524_new_entry(void);

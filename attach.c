@@ -66,7 +66,7 @@ int mutt_get_tmp_attachment (BODY *a)
   {
     mutt_copy_stream (fpin, fpout);
     mutt_str_replace (&a->filename, tempfile);
-    a->unlink = 1;
+    a->unlink = true;
 
     if(a->stamp >= st.st_mtime)
       mutt_stamp_attachment(a);
@@ -724,7 +724,7 @@ int mutt_save_attachment (FILE *fp, BODY *m, char *path, int flags, HEADER *hdr)
 
       hn = m->hdr;
       hn->msgno = hdr->msgno; /* required for MH/maildir */
-      hn->read = 1;
+      hn->read = true;
 
       fseeko (fp, m->offset, SEEK_SET);
       if (fgets (buf, sizeof (buf), fp) == NULL)

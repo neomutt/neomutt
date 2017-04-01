@@ -51,19 +51,19 @@ enum
 
 typedef struct
 {
-  unsigned int hasCAPABILITIES : 1;
-  unsigned int hasSTARTTLS : 1;
-  unsigned int hasDATE : 1;
-  unsigned int hasLIST_NEWSGROUPS : 1;
-  unsigned int hasXGTITLE : 1;
-  unsigned int hasLISTGROUP : 1;
-  unsigned int hasLISTGROUPrange : 1;
-  unsigned int hasOVER : 1;
-  unsigned int hasXOVER : 1;
+  bool hasCAPABILITIES : 1;
+  bool hasSTARTTLS : 1;
+  bool hasDATE : 1;
+  bool hasLIST_NEWSGROUPS : 1;
+  bool hasXGTITLE : 1;
+  bool hasLISTGROUP : 1;
+  bool hasLISTGROUPrange : 1;
+  bool hasOVER : 1;
+  bool hasXOVER : 1;
   unsigned int use_tls : 3;
   unsigned int status : 3;
-  unsigned int cacheable : 1;
-  unsigned int newsrc_modified : 1;
+  bool cacheable : 1;
+  bool newsrc_modified : 1;
   FILE *newsrc_fp;
   char *newsrc_file;
   char *authenticators;
@@ -100,10 +100,10 @@ typedef struct
   anum_t lastLoaded;
   anum_t lastCached;
   anum_t unread;
-  unsigned int subscribed : 1;
-  unsigned int new : 1;
-  unsigned int allowed : 1;
-  unsigned int deleted : 1;
+  bool subscribed : 1;
+  bool new : 1;
+  bool allowed : 1;
+  bool deleted : 1;
   unsigned int newsrc_len;
   NEWSRC_ENTRY *newsrc_ent;
   NNTP_SERVER *nserv;
@@ -114,7 +114,7 @@ typedef struct
 typedef struct
 {
   anum_t article_num;
-  unsigned int parsed : 1;
+  bool parsed : 1;
 } NNTP_HEADER_DATA;
 
 #define NHDR(hdr) ((NNTP_HEADER_DATA*)((hdr)->data))

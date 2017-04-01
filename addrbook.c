@@ -83,7 +83,7 @@ static void alias_entry (char *s, size_t slen, MUTTMENU *m, int num)
 static int alias_tag (MUTTMENU *menu, int n, int m)
 {
   ALIAS *cur = ((ALIAS **) menu->data)[n];
-  int ot = cur->tagged;
+  bool ot = cur->tagged;
 
   cur->tagged = (m >= 0 ? m : !cur->tagged);
 
@@ -157,8 +157,8 @@ new_aliases:
   /* count the number of aliases */
   for (aliasp = aliases; aliasp; aliasp = aliasp->next)
   {
-    aliasp->self->del    = 0;
-    aliasp->self->tagged = 0;
+    aliasp->self->del    = false;
+    aliasp->self->tagged = false;
     menu->max++;
   }
 
@@ -196,12 +196,12 @@ new_aliases:
         {
 	  for (i = 0; i < menu->max; i++)
 	    if (AliasTable[i]->tagged)
-	      AliasTable[i]->del = (op == OP_DELETE) ? 1 : 0;
+	      AliasTable[i]->del = (op == OP_DELETE);
 	  menu->redraw |= REDRAW_INDEX;
 	}
         else
         {
-	  AliasTable[menu->current]->self->del = (op == OP_DELETE) ? 1 : 0;
+	  AliasTable[menu->current]->self->del = (op == OP_DELETE);
 	  menu->redraw |= REDRAW_CURRENT;
 	  if (option (OPTRESOLVE) && menu->current < menu->max - 1)
 	  {

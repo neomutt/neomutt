@@ -571,14 +571,14 @@ static void add_folder (MUTTMENU *m, struct browser_state *state,
     (state->entry)[state->entrylen].uid = s->st_uid;
     (state->entry)[state->entrylen].nlink = s->st_nlink;
 
-    (state->entry)[state->entrylen].local = 1;
+    (state->entry)[state->entrylen].local = true;
   }
   else
-    (state->entry)[state->entrylen].local = 0;
+    (state->entry)[state->entrylen].local = false;
 
   if (b)
   {
-    (state->entry)[state->entrylen].has_buffy = 1;
+    (state->entry)[state->entrylen].has_buffy = true;
     (state->entry)[state->entrylen].new = b->new;
     (state->entry)[state->entrylen].msg_count = b->msg_count;
     (state->entry)[state->entrylen].msg_unread = b->msg_unread;
@@ -587,7 +587,7 @@ static void add_folder (MUTTMENU *m, struct browser_state *state,
   (state->entry)[state->entrylen].name = safe_strdup (name);
   (state->entry)[state->entrylen].desc = safe_strdup(desc ? desc : name);
 #ifdef USE_IMAP
-  (state->entry)[state->entrylen].imap = 0;
+  (state->entry)[state->entrylen].imap = false;
 #endif
 #ifdef USE_NNTP
   if (option (OPTNEWS))
@@ -602,7 +602,7 @@ static void init_state (struct browser_state *state, MUTTMENU *menu)
   state->entrymax = 256;
   state->entry = safe_calloc (state->entrymax, sizeof (struct folder_file));
 #ifdef USE_IMAP
-  state->imap_browse = 0;
+  state->imap_browse = false;
 #endif
   if (menu)
     menu->data = state->entry;
@@ -990,14 +990,13 @@ static void init_menu (struct browser_state *state, MUTTMENU *menu, char *title,
 static int file_tag (MUTTMENU *menu, int n, int m)
 {
   struct folder_file *ff = &(((struct folder_file *)menu->data)[n]);
-  int ot;
   if (S_ISDIR (ff->mode) || (S_ISLNK (ff->mode) && link_is_dir (LastDir, ff->name)))
   {
     mutt_error (_("Can't attach a directory!"));
     return 0;
   }
 
-  ot = ff->tagged;
+  bool ot = ff->tagged;
   ff->tagged = (m >= 0 ? m : !ff->tagged);
 
   return ff->tagged - ot;
@@ -1075,7 +1074,7 @@ void _mutt_select_file (char *f, size_t flen, int flags, char ***files, int *num
     if (mx_is_imap (f))
     {
       init_state (&state, NULL);
-      state.imap_browse = 1;
+      state.imap_browse = true;
       if (!imap_browse (f, &state))
         strfcpy (LastDir, state.folder, sizeof (LastDir));
       else
@@ -1201,7 +1200,7 @@ void _mutt_select_file (char *f, size_t flen, int flags, char ***files, int *num
     if (!buffy && mx_is_imap (LastDir))
     {
       init_state (&state, NULL);
-      state.imap_browse = 1;
+      state.imap_browse = true;
       imap_browse (LastDir, &state);
       browser_sort (&state);
     }
@@ -1370,7 +1369,7 @@ void _mutt_select_file (char *f, size_t flen, int flags, char ***files, int *num
 	    if (state.imap_browse)
 	    {
 	      init_state (&state, NULL);
-	      state.imap_browse = 1;
+	      state.imap_browse = true;
 	      imap_browse (LastDir, &state);
 	      browser_sort (&state);
 	      menu->data = state.entry;
@@ -1482,7 +1481,7 @@ void _mutt_select_file (char *f, size_t flen, int flags, char ***files, int *num
 	   *   this window, and insert it without starting over. */
 	  destroy_state (&state);
 	  init_state (&state, NULL);
-	  state.imap_browse = 1;
+	  state.imap_browse = true;
 	  imap_browse (LastDir, &state);
 	  browser_sort (&state);
 	  menu->data = state.entry;
@@ -1503,7 +1502,7 @@ void _mutt_select_file (char *f, size_t flen, int flags, char ***files, int *num
 	  {
 	    destroy_state (&state);
 	    init_state (&state, NULL);
-	    state.imap_browse = 1;
+	    state.imap_browse = true;
 	    imap_browse (LastDir, &state);
 	    browser_sort (&state);
 	    menu->data = state.entry;
@@ -1587,7 +1586,7 @@ void _mutt_select_file (char *f, size_t flen, int flags, char ***files, int *num
 	    strfcpy (LastDir, buf, sizeof (LastDir));
 	    destroy_state (&state);
 	    init_state (&state, NULL);
-	    state.imap_browse = 1;
+	    state.imap_browse = true;
 	    imap_browse (LastDir, &state);
 	    browser_sort (&state);
 	    menu->data = state.entry;
@@ -1672,7 +1671,7 @@ void _mutt_select_file (char *f, size_t flen, int flags, char ***files, int *num
 	    if (state.imap_browse)
 	    {
 	      init_state (&state, NULL);
-	      state.imap_browse = 1;
+	      state.imap_browse = true;
 	      imap_browse (LastDir, &state);
 	      browser_sort (&state);
 	      menu->data = state.entry;
@@ -1798,7 +1797,7 @@ void _mutt_select_file (char *f, size_t flen, int flags, char ***files, int *num
 	else if (mx_is_imap (LastDir))
 	{
 	  init_state (&state, NULL);
-	  state.imap_browse = 1;
+	  state.imap_browse = true;
 	  imap_browse (LastDir, &state);
 	  browser_sort (&state);
 	  menu->data = state.entry;
@@ -1909,7 +1908,7 @@ void _mutt_select_file (char *f, size_t flen, int flags, char ***files, int *num
 	  {
 	    NNTP_DATA *nntp_data = nserv->groups_list[j];
 	    if (nntp_data)
-	      nntp_data->deleted = 1;
+	      nntp_data->deleted = true;
 	  }
 	  nntp_active_fetch (nserv);
 	  nntp_newsrc_update (nserv);

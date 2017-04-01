@@ -143,14 +143,14 @@ static void calculate_visibility (CONTEXT *ctx, int *max_depth)
       FREE (&tree->message->tree);
       if (VISIBLE (tree->message, ctx))
       {
-	tree->deep = 1;
-	tree->visible = 1;
+	tree->deep = true;
+	tree->visible = true;
 	tree->message->display_subject = need_display_subject (ctx, tree->message);
 	for (tmp = tree; tmp; tmp = tmp->parent)
 	{
 	  if (tmp->subtree_visible)
 	  {
-	    tmp->deep = 1;
+	    tmp->deep = true;
 	    tmp->subtree_visible = 2;
 	    break;
 	  }
@@ -160,13 +160,13 @@ static void calculate_visibility (CONTEXT *ctx, int *max_depth)
       }
       else
       {
-	tree->visible = 0;
+	tree->visible = false;
 	tree->deep = !option (OPTHIDELIMITED);
       }
     }
     else
     {
-      tree->visible = 0;
+      tree->visible = false;
       tree->deep = !option (OPTHIDEMISSING);
     }
     tree->next_subtree_visible = tree->next && (tree->next->next_subtree_visible
@@ -202,7 +202,7 @@ static void calculate_visibility (CONTEXT *ctx, int *max_depth)
     {
       if (!tree->visible && tree->deep && tree->subtree_visible < 2
 	  && ((tree->message && hide_top_limited) || (!tree->message && hide_top_missing)))
-	tree->deep = 0;
+	tree->deep = false;
       if (!tree->deep && tree->child && tree->subtree_visible)
 	tree = tree->child;
       else if (tree->next)
@@ -516,10 +516,10 @@ static void pseudo_threads (CONTEXT *ctx)
     tree = tree->next;
     if ((parent = find_subject (ctx, cur)) != NULL)
     {
-      cur->fake_thread = 1;
+      cur->fake_thread = true;
       unlink_message (&top, cur);
       insert_message (&parent->child, parent, cur);
-      parent->sort_children = 1;
+      parent->sort_children = true;
       tmp = cur;
       while (true)
       {
@@ -535,7 +535,7 @@ static void pseudo_threads (CONTEXT *ctx)
 	    || (mutt_strcmp (tmp->message->env->real_subj,
 			     parent->message->env->real_subj) == 0))
 	{
-	  tmp->message->subject_changed = 0;
+	  tmp->message->subject_changed = false;
 
 	  for (curchild = tmp->child; curchild; )
 	  {
@@ -573,7 +573,7 @@ void mutt_clear_threads (CONTEXT *ctx)
     if (ctx->hdrs[i])
     {
       ctx->hdrs[i]->thread = NULL;
-      ctx->hdrs[i]->threaded = 0;
+      ctx->hdrs[i]->threaded = false;
     }
   }
   ctx->tree = NULL;
@@ -624,7 +624,7 @@ THREAD *mutt_sort_subthreads (THREAD *thread, int init)
       thread->sort_key = NULL;
 
       if (thread->parent)
-        thread->parent->sort_children = 1;
+        thread->parent->sort_children = true;
       else
 	sort_top = 1;
     }
@@ -690,7 +690,7 @@ THREAD *mutt_sort_subthreads (THREAD *thread, int init)
 	  sort_key = (!(Sort & SORT_LAST) ^ !(Sort & SORT_REVERSE)) ? thread->child : tmp;
 
 	  /* we just sorted its children */
-	  thread->sort_children = 0;
+	  thread->sort_children = false;
 
 	  oldsort_key = thread->sort_key;
 	  thread->sort_key = thread->message;
@@ -711,7 +711,7 @@ THREAD *mutt_sort_subthreads (THREAD *thread, int init)
 	  if (oldsort_key != thread->sort_key)
 	  {
 	    if (thread->parent)
-	      thread->parent->sort_children = 1;
+	      thread->parent->sort_children = true;
 	    else
 	      sort_top = 1;
 	  }
@@ -739,7 +739,7 @@ static void check_subjects (CONTEXT *ctx, int init)
   {
     cur = ctx->hdrs[i];
     if (cur->thread->check_subject)
-      cur->thread->check_subject = 0;
+      cur->thread->check_subject = false;
     else if (!init)
       continue;
 
@@ -751,13 +751,13 @@ static void check_subjects (CONTEXT *ctx, int init)
     }
 
     if (!tmp)
-      cur->subject_changed = 1;
+      cur->subject_changed = true;
     else if (cur->env->real_subj && tmp->message->env->real_subj)
       cur->subject_changed = (mutt_strcmp (cur->env->real_subj,
-					  tmp->message->env->real_subj) != 0) ? 1 : 0;
+					  tmp->message->env->real_subj) != 0) ? true : false;
     else
       cur->subject_changed = (cur->env->real_subj
-			      || tmp->message->env->real_subj) ? 1 : 0;
+			      || tmp->message->env->real_subj) ? true : false;
   }
 }
 
@@ -810,14 +810,14 @@ void mutt_sort_threads (CONTEXT *ctx, int init)
 	/* this is a message which was missing before */
 	thread->message = cur;
 	cur->thread = thread;
-	thread->check_subject = 1;
+	thread->check_subject = true;
 
 	/* mark descendants as needing subject_changed checked */
 	for (tmp = (thread->child ? thread->child : thread); tmp != thread; )
 	{
 	  while (!tmp->message)
 	    tmp = tmp->child;
-	  tmp->check_subject = 1;
+	  tmp->check_subject = true;
 	  while (!tmp->next && tmp != thread)
 	    tmp = tmp->parent;
 	  if (tmp != thread)
@@ -837,7 +837,7 @@ void mutt_sort_threads (CONTEXT *ctx, int init)
 	    unlink_message (&tmp->child, thread);
 	    thread->parent = NULL;
 	    thread->sort_key = NULL;
-	    thread->fake_thread = 0;
+	    thread->fake_thread = false;
 	    thread = tmp;
 	  } while (thread != &top && !thread->child && !thread->message);
 	}
@@ -848,7 +848,7 @@ void mutt_sort_threads (CONTEXT *ctx, int init)
 
 	thread = safe_calloc (1, sizeof (THREAD));
 	thread->message = cur;
-	thread->check_subject = 1;
+	thread->check_subject = true;
 	cur->thread = thread;
 	hash_insert (ctx->thread_hash,
 		     cur->env->message_id ? cur->env->message_id : "",
@@ -862,8 +862,8 @@ void mutt_sort_threads (CONTEXT *ctx, int init)
 	  thread = cur->thread;
 
 	  insert_message (&new->child, new, thread);
-	  thread->duplicate_thread = 1;
-	  thread->message->threaded = 1;
+	  thread->duplicate_thread = true;
+	  thread->message->threaded = true;
 	}
       }
     }
@@ -879,7 +879,7 @@ void mutt_sort_threads (CONTEXT *ctx, int init)
 	{
 	  unlink_message (&thread->child, new);
 	  insert_message (&top.child, &top, new);
-	  new->fake_thread = 0;
+	  new->fake_thread = false;
 	}
 	new = tmp;
       }
@@ -892,7 +892,7 @@ void mutt_sort_threads (CONTEXT *ctx, int init)
     cur = ctx->hdrs[i];
     if (cur->threaded)
       continue;
-    cur->threaded = 1;
+    cur->threaded = true;
 
     thread = cur->thread;
     using_refs = 0;
@@ -1393,7 +1393,7 @@ static void clean_references (THREAD *brk, THREAD *cur)
       /* clearing the References: header from obsolete Message-ID(s) */
       mutt_free_list (&ref->next);
 
-      h->env->refs_changed = h->changed = 1;
+      h->env->refs_changed = h->changed = true;
     }
   }
 }
@@ -1402,7 +1402,7 @@ void mutt_break_thread (HEADER *hdr)
 {
   mutt_free_list (&hdr->env->in_reply_to);
   mutt_free_list (&hdr->env->references);
-  hdr->env->irt_changed = hdr->env->refs_changed = hdr->changed = 1;
+  hdr->env->irt_changed = hdr->env->refs_changed = hdr->changed = true;
 
   clean_references (hdr->thread, hdr->thread->child);
 }
@@ -1419,7 +1419,7 @@ static int link_threads (HEADER *parent, HEADER *child, CONTEXT *ctx)
 
   mutt_set_flag (ctx, child, MUTT_TAG, 0);
 
-  child->env->irt_changed = child->changed = 1;
+  child->env->irt_changed = child->changed = true;
   return 1;
 }
 

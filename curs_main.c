@@ -156,7 +156,7 @@ static void collapse_all(MUTTMENU *menu, int toggle)
 
   /* Iterate all threads, perform collapse/uncollapse as needed */
   top = Context->tree;
-  Context->collapsed = toggle ? !Context->collapsed : 1;
+  Context->collapsed = toggle ? !Context->collapsed : true;
   while ((thread = top) != NULL)
   {
     while (!thread->message)
@@ -259,12 +259,12 @@ static int mx_toggle_write (CONTEXT *ctx)
 
   if (ctx->dontwrite)
   {
-    ctx->dontwrite = 0;
+    ctx->dontwrite = false;
     mutt_message (_("Changes to folder will be written on folder exit."));
   }
   else
   {
-    ctx->dontwrite = 1;
+    ctx->dontwrite = true;
     mutt_message (_("Changes to folder will not be written."));
   }
 
@@ -335,7 +335,7 @@ void update_index (MUTTMENU *menu, CONTEXT *ctx, int check,
 	assert (ctx->vcount < ctx->msgcount);
 	ctx->hdrs[j]->virtual = ctx->vcount;
 	ctx->v2r[ctx->vcount] = j;
-	ctx->hdrs[j]->limited = 1;
+	ctx->hdrs[j]->limited = true;
 	ctx->vcount++;
 	ctx->vsize += THIS_BODY->length + THIS_BODY->offset - THIS_BODY->hdr_offset;
       }
@@ -362,7 +362,7 @@ void update_index (MUTTMENU *menu, CONTEXT *ctx, int check,
     {
       THREAD *h = NULL, *k = NULL;
 
-      ctx->collapsed = 0;
+      ctx->collapsed = false;
 
       for (h = ctx->tree; h; h = h->next)
       {
@@ -908,7 +908,7 @@ int mutt_index_menu (void)
 	{
 	  for (i = oldcount; i < Context->msgcount; i++)
 	  {
-	    if (Context->hdrs[i]->read == 0)
+	    if (!Context->hdrs[i]->read)
 	    {
 	      mutt_message (_("New mail in this mailbox."));
 	      if (option (OPTBEEPNEW))
@@ -928,8 +928,8 @@ int mutt_index_menu (void)
 	/* avoid the message being overwritten by buffy */
 	do_buffy_notify = 0;
 
-	int q = Context->quiet;
-	Context->quiet = 1;
+	bool q = Context->quiet;
+	Context->quiet = true;
 	update_index (menu, Context, check, oldcount, index_hint);
 	Context->quiet = q;
 
@@ -1311,10 +1311,11 @@ int mutt_index_menu (void)
 	  {
 	    HEADER *oldcur = CURHDR;
 	    HEADER *hdr = NULL;
-	    int k, quiet = Context->quiet;
+	    int k;
+            bool quiet = Context->quiet;
 
 	    if (rc2 < 0)
-	      Context->quiet = 1;
+	      Context->quiet = true;
 	    mutt_sort_headers (Context, (op == OP_RECONSTRUCT_THREAD));
 	    Context->quiet = quiet;
 
@@ -1759,7 +1760,7 @@ int mutt_index_menu (void)
 	  }
 	} else {
 	  CURHDR->quasi_deleted = true;
-	  Context->changed = 1;
+	  Context->changed = true;
 	}
 	break;
 
@@ -2141,7 +2142,7 @@ int mutt_index_menu (void)
 	    menu->current = oldcur->virtual;
 	  }
 
-	  Context->changed = 1;
+	  Context->changed = true;
 	  mutt_message (_("Thread broken"));
 
 	  if (menu->menu == MENU_PAGER)
@@ -2181,7 +2182,7 @@ int mutt_index_menu (void)
 	    mutt_sort_headers (Context, 1);
 	    menu->current = oldcur->virtual;
 
-	    Context->changed = 1;
+	    Context->changed = true;
 	    mutt_message (_("Threads linked"));
 	  }
 	  else
@@ -2839,7 +2840,7 @@ int mutt_index_menu (void)
 	CHECK_READONLY;
 	rc = mutt_label_message(tag ? NULL : CURHDR);
 	if (rc > 0) {
-	  Context->changed = 1;
+	  Context->changed = true;
 	  menu->redraw = REDRAW_FULL;
           /* L10N: This is displayed when the x-label on one or more
            * messages is edited. */
@@ -3180,7 +3181,7 @@ int mutt_index_menu (void)
         CHECK_VISIBLE;
 	mutt_view_attachments (CURHDR);
 	if (Context && CURHDR->attach_del)
-	  Context->changed = 1;
+	  Context->changed = true;
 	menu->redraw = REDRAW_FULL;
 	break;
 

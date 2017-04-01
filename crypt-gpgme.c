@@ -961,7 +961,7 @@ static BODY *sign_message (BODY *a, int use_smime)
   t->type = TYPEMULTIPART;
   t->subtype = safe_strdup ("signed");
   t->encoding = ENC7BIT;
-  t->use_disp = 0;
+  t->use_disp = false;
   t->disposition = DISPINLINE;
 
   mutt_generate_boundary (&t->parameter);
@@ -988,7 +988,7 @@ static BODY *sign_message (BODY *a, int use_smime)
       t->subtype = safe_strdup ("pkcs7-signature");
       mutt_set_parameter ("name", "smime.p7s", &t->parameter);
       t->encoding = ENCBASE64;
-      t->use_disp = 1;
+      t->use_disp = true;
       t->disposition = DISPATTACH;
       t->d_filename = safe_strdup ("smime.p7s");
     }
@@ -996,12 +996,12 @@ static BODY *sign_message (BODY *a, int use_smime)
     {
       t->subtype = safe_strdup ("pgp-signature");
       mutt_set_parameter ("name", "signature.asc", &t->parameter);
-      t->use_disp = 0;
+      t->use_disp = false;
       t->disposition = DISPNONE;
       t->encoding = ENC7BIT;
     }
   t->filename = sigfile;
-  t->unlink = 1; /* ok to remove this file after sending. */
+  t->unlink = true; /* ok to remove this file after sending. */
 
   return a;
 }
@@ -1053,7 +1053,7 @@ BODY *pgp_gpgme_encrypt_message (BODY *a, char *keylist, int sign)
   t->type = TYPEMULTIPART;
   t->subtype = safe_strdup ("encrypted");
   t->encoding = ENC7BIT;
-  t->use_disp = 0;
+  t->use_disp = false;
   t->disposition = DISPINLINE;
 
   mutt_generate_boundary(&t->parameter);
@@ -1069,9 +1069,9 @@ BODY *pgp_gpgme_encrypt_message (BODY *a, char *keylist, int sign)
   t->parts->next->subtype = safe_strdup ("octet-stream");
   t->parts->next->encoding = ENC7BIT;
   t->parts->next->filename = outfile;
-  t->parts->next->use_disp = 1;
+  t->parts->next->use_disp = true;
   t->parts->next->disposition = DISPATTACH;
-  t->parts->next->unlink = 1; /* delete after sending the message */
+  t->parts->next->unlink = true; /* delete after sending the message */
   t->parts->next->d_filename = safe_strdup ("msg.asc"); /* non pgp/mime
                                                            can save */
 
@@ -1118,11 +1118,11 @@ BODY *smime_gpgme_build_smime_entity (BODY *a, char *keylist)
   mutt_set_parameter ("name", "smime.p7m", &t->parameter);
   mutt_set_parameter ("smime-type", "enveloped-data", &t->parameter);
   t->encoding = ENCBASE64;  /* The output of OpenSSL SHOULD be binary */
-  t->use_disp = 1;
+  t->use_disp = true;
   t->disposition = DISPATTACH;
   t->d_filename = safe_strdup ("smime.p7m");
   t->filename = outfile;
-  t->unlink = 1; /*delete after sending the message */
+  t->unlink = true; /*delete after sending the message */
   t->parts=0;
   t->next=0;
 
@@ -1681,8 +1681,8 @@ static BODY *decrypt_part (BODY *a, STATE *s, FILE *fpout, int is_smime,
   int err = 0;
   gpgme_ctx_t ctx;
   gpgme_data_t ciphertext, plaintext;
-  int maybe_signed = 0;
-  int anywarn = 0;
+  bool maybe_signed = false;
+  bool anywarn = false;
   int sig_stat = 0;
 
   if (r_is_signed)
@@ -1731,7 +1731,7 @@ static BODY *decrypt_part (BODY *a, STATE *s, FILE *fpout, int is_smime,
 	  result = gpgme_op_decrypt_result (ctx);
 	  if (!result->unsupported_algorithm)
             {
-              maybe_signed = 1;
+              maybe_signed = true;
               gpgme_data_release (plaintext);
               goto restart;
             }
@@ -1762,14 +1762,14 @@ static BODY *decrypt_part (BODY *a, STATE *s, FILE *fpout, int is_smime,
     }
   gpgme_data_release (plaintext);
 
-  a->is_signed_data = 0;
+  a->is_signed_data = false;
   if (sig_stat)
     {
       int res, idx;
       int anybad = 0;
 
       if (maybe_signed)
-        a->is_signed_data = 1;
+        a->is_signed_data = true;
       if(r_is_signed)
         *r_is_signed = -1; /* A signature exists. */
 
@@ -1781,7 +1781,7 @@ static BODY *decrypt_part (BODY *a, STATE *s, FILE *fpout, int is_smime,
           if (res == 1)
             anybad = 1;
           else if (res == 2)
-            anywarn = 1;
+            anywarn = true;
         }
       if (!anybad && idx && r_is_signed && *r_is_signed)
         *r_is_signed = anywarn? 2:1; /* Good signature. */
@@ -1827,8 +1827,8 @@ int pgp_gpgme_decrypt_mime (FILE *fpin, FILE **fpout, BODY *b, BODY **cur)
   FILE *decoded_fp = NULL;
   int rv = 0;
 
-  first_part->goodsig = 0;
-  first_part->warnsig = 0;
+  first_part->goodsig = false;
+  first_part->warnsig = false;
 
   if (mutt_is_valid_multipart_pgp_encrypted (b))
     b = b->parts->next;
@@ -1883,7 +1883,7 @@ int pgp_gpgme_decrypt_mime (FILE *fpin, FILE **fpout, BODY *b, BODY **cur)
     rv = -1;
   rewind (*fpout);
   if (is_signed > 0)
-    first_part->goodsig = 1;
+    first_part->goodsig = true;
 
 bail:
   if (need_decode)
@@ -2358,8 +2358,8 @@ int pgp_gpgme_application_handler (BODY *m, STATE *s)
   gpgme_error_t err = 0;
   gpgme_data_t armored_data = NULL;
 
-  short maybe_goodsig = 1;
-  short have_any_sigs = 0;
+  bool maybe_goodsig = true;
+  bool have_any_sigs = false;
 
   char body_charset[STRING];  /* Only used for clearsigned messages. */
 
@@ -2469,8 +2469,8 @@ int pgp_gpgme_application_handler (BODY *m, STATE *s)
 		      sig_stat = 1;
 		  }
 
-                  have_any_sigs = 0;
-                  maybe_goodsig = 0;
+                  have_any_sigs = false;
+                  maybe_goodsig = false;
                   if ((s->flags & MUTT_DISPLAY) && sig_stat)
                     {
                       int res, idx;
@@ -2478,7 +2478,7 @@ int pgp_gpgme_application_handler (BODY *m, STATE *s)
 
                       state_attach_puts (_("[-- Begin signature "
                                            "information --]\n"), s);
-                      have_any_sigs = 1;
+                      have_any_sigs = true;
                       for(idx=0;
                           (res = show_one_sig_status (ctx, idx, s)) != -1;
                           idx++)
@@ -2487,7 +2487,7 @@ int pgp_gpgme_application_handler (BODY *m, STATE *s)
                             anybad = 1;
                         }
                       if (!anybad && idx)
-                        maybe_goodsig = 1;
+                        maybe_goodsig = true;
 
                       state_attach_puts (_("[-- End signature "
                                            "information --]\n\n"), s);
@@ -2676,7 +2676,7 @@ int smime_gpgme_application_handler (BODY *a, STATE *s)
 
   mutt_debug (2, "Entering smime_encrypted handler\n");
 
-  a->warnsig = 0;
+  a->warnsig = false;
   mutt_mktemp (tempfile, sizeof (tempfile));
   if (!(fpout = safe_fopen (tempfile, "w+")))
     {
@@ -2716,7 +2716,7 @@ int smime_gpgme_application_handler (BODY *a, STATE *s)
         }
       else if (tattach->goodsig)
         {
-          a->goodsig = 1;
+          a->goodsig = true;
           a->warnsig = tattach->warnsig;
         }
 
@@ -4586,8 +4586,8 @@ BODY *pgp_gpgme_make_key_attachment (char *tempf)
   att = mutt_new_body ();
   /* tempf is a newly allocated string, so this is correct: */
   att->filename = tempf;
-  att->unlink = 1;
-  att->use_disp = 0;
+  att->unlink = true;
+  att->use_disp = false;
   att->type = TYPEAPPLICATION;
   att->subtype = safe_strdup ("pgp-keys");
   /* L10N:

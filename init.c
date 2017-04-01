@@ -934,7 +934,7 @@ static void _alternates_clean (void)
   if (Context && Context->msgcount)
   {
     for (i = 0; i < Context->msgcount; i++)
-      Context->hdrs[i]->recip_valid = 0;
+      Context->hdrs[i]->recip_valid = false;
   }
 }
 
@@ -1325,7 +1325,7 @@ static void _attachments_clean (void)
   if (Context && Context->msgcount)
   {
     for (i = 0; i < Context->msgcount; i++)
-      Context->hdrs[i]->attach_valid = 0;
+      Context->hdrs[i]->attach_valid = false;
   }
 }
 
@@ -1670,7 +1670,7 @@ static int parse_unalias (BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *er
       if (CurrentMenu == MENU_ALIAS)
       {
 	for (tmp = Aliases; tmp ; tmp = tmp->next)
-	  tmp->del = 1;
+	  tmp->del = true;
 	mutt_set_current_menu_redraw_full ();
       }
       else
@@ -1684,7 +1684,7 @@ static int parse_unalias (BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *er
 	{
 	  if (CurrentMenu == MENU_ALIAS)
 	  {
-	    tmp->del = 1;
+	    tmp->del = true;
 	    mutt_set_current_menu_redraw_full ();
 	    break;
 	  }

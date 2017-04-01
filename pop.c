@@ -165,7 +165,7 @@ static int fetch_uidl (char *line, void *data)
     ctx->hdrs[i]->data = safe_strdup (line);
   }
   else if (ctx->hdrs[i]->index != index - 1)
-    pop_data->clear_cache = 1;
+    pop_data->clear_cache = true;
 
   ctx->hdrs[i]->refno = index;
   ctx->hdrs[i]->index = index - 1;
@@ -245,7 +245,7 @@ static int pop_fetch_headers (CONTEXT *ctx)
 #endif
 
   time (&pop_data->check_time);
-  pop_data->clear_cache = 0;
+  pop_data->clear_cache = false;
 
   for (i = 0; i < ctx->msgcount; i++)
     ctx->hdrs[i]->refno = -1;
@@ -284,7 +284,7 @@ static int pop_fetch_headers (CONTEXT *ctx)
     {
       if (ctx->hdrs[i]->refno == -1)
       {
-	ctx->hdrs[i]->deleted = 1;
+	ctx->hdrs[i]->deleted = true;
 	deleted++;
       }
     }
@@ -349,19 +349,19 @@ static int pop_fetch_headers (CONTEXT *ctx)
        *        - if we don't have a body: new
        */
       bcached = mutt_bcache_exists (pop_data->bcache, ctx->hdrs[i]->data) == 0;
-      ctx->hdrs[i]->old = 0;
-      ctx->hdrs[i]->read = 0;
+      ctx->hdrs[i]->old = false;
+      ctx->hdrs[i]->read = false;
       if (hcached)
       {
         if (bcached)
-          ctx->hdrs[i]->read = 1;
+          ctx->hdrs[i]->read = true;
         else if (option (OPTMARKOLD))
-          ctx->hdrs[i]->old = 1;
+          ctx->hdrs[i]->old = true;
       }
       else
       {
         if (bcached)
-          ctx->hdrs[i]->read = 1;
+          ctx->hdrs[i]->read = true;
       }
 
       ctx->msgcount++;
@@ -499,7 +499,7 @@ static int pop_close_mailbox (CONTEXT *ctx)
 
   pop_data->status = POP_NONE;
 
-  pop_data->clear_cache = 1;
+  pop_data->clear_cache = true;
   pop_clear_cache (pop_data);
 
   if (!pop_data->conn->data)
@@ -726,7 +726,7 @@ static int pop_sync_mailbox (CONTEXT *ctx, int *index_hint)
 
     if (ret == 0)
     {
-      pop_data->clear_cache = 1;
+      pop_data->clear_cache = true;
       pop_clear_cache (pop_data);
       pop_data->status = POP_DISCONNECTED;
       return 0;

@@ -267,7 +267,7 @@ static int label_message(CONTEXT *ctx, HEADER *hdr, char *new)
   if (hdr->env->x_label != NULL)
     label_ref_inc(ctx, hdr->env->x_label);
 
-  return hdr->changed = hdr->xlabel_changed = 1;
+  return hdr->changed = hdr->xlabel_changed = true;
 }
 
 int mutt_label_message(HEADER *hdr)

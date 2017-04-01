@@ -125,10 +125,10 @@ static void cmd_handle_fatal (IMAP_DATA* idata)
   imap_close_connection (idata);
   if (!idata->recovering)
   {
-    idata->recovering = 1;
+    idata->recovering = true;
     if (imap_conn_find (&idata->conn->account, 0))
       mutt_clear_error ();
-    idata->recovering = 0;
+    idata->recovering = false;
   }
 }
 
@@ -317,12 +317,12 @@ static void cmd_parse_list (IMAP_DATA* idata, char* s)
   while (*s)
   {
     if (ascii_strncasecmp (s, "\\NoSelect", 9) == 0)
-      list->noselect = 1;
+      list->noselect = true;
     else if (ascii_strncasecmp (s, "\\NoInferiors", 12) == 0)
-      list->noinferiors = 1;
+      list->noinferiors = true;
     /* See draft-gahrns-imap-child-mailbox-?? */
     else if (ascii_strncasecmp (s, "\\HasNoChildren", 14) == 0)
-      list->noinferiors = 1;
+      list->noinferiors = true;
 
     s = imap_next_word (s);
     if (*(s - 2) == ')')
@@ -488,7 +488,7 @@ static void cmd_parse_search (IMAP_DATA* idata, const char* s)
     uid = (unsigned int)atoi (s);
     h = (HEADER *)int_hash_find (idata->uid_hash, uid);
     if (h)
-      h->matched = 1;
+      h->matched = true;
   }
 }
 
@@ -996,7 +996,7 @@ void imap_cmd_finish (IMAP_DATA* idata)
     }
   }
 
-  idata->status = 0;
+  idata->status = false;
 }
 
 /* imap_cmd_idle: Enter the IDLE state. */

@@ -515,7 +515,7 @@ static void update_content_info (CONTENT *info, CONTENT_STATE *s, char *d, size_
   if (!d) /* This signals EOF */
   {
     if (was_cr)
-      info->binary = 1;
+      info->binary = true;
     if (linelen > info->linemax)
       info->linemax = linelen;
 
@@ -531,12 +531,12 @@ static void update_content_info (CONTENT *info, CONTENT_STATE *s, char *d, size_
       was_cr = 0;
       if (ch != '\n')
       {
-        info->binary = 1;
+        info->binary = true;
       }
       else
       {
-        if (whitespace) info->space = 1;
-	if (dot) info->dot = 1;
+        if (whitespace) info->space = true;
+	if (dot) info->dot = true;
         if (linelen > info->linemax) info->linemax = linelen;
         whitespace = 0;
 	dot = 0;
@@ -549,8 +549,8 @@ static void update_content_info (CONTENT *info, CONTENT_STATE *s, char *d, size_
     if (ch == '\n')
     {
       info->crlf++;
-      if (whitespace) info->space = 1;
-      if (dot) info->dot = 1;
+      if (whitespace) info->space = true;
+      if (dot) info->dot = true;
       if (linelen > info->linemax) info->linemax = linelen;
       whitespace = 0;
       linelen = 0;
@@ -559,7 +559,7 @@ static void update_content_info (CONTENT *info, CONTENT_STATE *s, char *d, size_
     else if (ch == '\r')
     {
       info->crlf++;
-      info->cr = 1;
+      info->cr = true;
       was_cr = 1;
       continue;
     }
@@ -591,7 +591,7 @@ static void update_content_info (CONTENT *info, CONTENT_STATE *s, char *d, size_
         else if (linelen == 3 && ch != 'o') from = 0;
         else if (linelen == 4)
 	{
-          if (ch == 'm') info->from = 1;
+          if (ch == 'm') info->from = true;
           from = 0;
         }
       }
@@ -1052,8 +1052,8 @@ static void transform_to_7bit (BODY *a, FILE *fpin)
     }
     else
     {
-      a->noconv = 1;
-      a->force_charset = 1;
+      a->noconv = true;
+      a->force_charset = true;
 
       mutt_mktemp (buff, sizeof (buff));
       if ((s.fpout = safe_fopen (buff, "w")) == NULL)
@@ -1067,7 +1067,7 @@ static void transform_to_7bit (BODY *a, FILE *fpin)
       FREE (&a->d_filename);
       a->d_filename = a->filename;
       a->filename = safe_strdup (buff);
-      a->unlink = 1;
+      a->unlink = true;
       if (stat (a->filename, &sb) == -1)
       {
 	mutt_perror ("stat");
@@ -1146,7 +1146,7 @@ void mutt_message_to_7bit (BODY *a, FILE *fp)
   if (a->filename && a->unlink)
     unlink (a->filename);
   a->filename = safe_strdup (temp);
-  a->unlink = 1;
+  a->unlink = true;
   if(stat (a->filename, &sb) == -1)
   {
     mutt_perror ("stat");
@@ -1230,7 +1230,7 @@ void mutt_update_encoding (BODY *a)
 
   /* override noconv when it's us-ascii */
   if (mutt_is_us_ascii (mutt_get_body_charset (chsbuff, sizeof (chsbuff), a)))
-    a->noconv = 0;
+    a->noconv = false;
 
   if (!a->force_charset && !a->noconv)
     mutt_delete_parameter ("charset", &a->parameter);
@@ -1271,10 +1271,10 @@ BODY *mutt_make_message_attach (CONTEXT *ctx, HEADER *hdr, int attach_msg)
   body->type = TYPEMESSAGE;
   body->subtype = safe_strdup ("rfc822");
   body->filename = safe_strdup (buffer);
-  body->unlink = 1;
-  body->use_disp = 0;
+  body->unlink = true;
+  body->use_disp = false;
   body->disposition = DISPINLINE;
-  body->noconv = 1;
+  body->noconv = true;
 
   mutt_parse_mime_message (ctx, hdr);
 
@@ -1427,7 +1427,7 @@ BODY *mutt_make_multipart (BODY *b)
       mutt_delete_parameter ("boundary", &new->parameter);
   }
   while (!mutt_get_parameter ("boundary", new->parameter));
-  new->use_disp = 0;
+  new->use_disp = false;
   new->disposition = DISPINLINE;
   new->parts = b;
 

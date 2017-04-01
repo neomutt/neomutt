@@ -231,7 +231,7 @@ static int buffy_maildir_check_dir (BUFFY* mailbox, const char *dir_name, int ch
           if (stat(msgpath, &sb) == 0 && (sb.st_ctime <= mailbox->last_visited))
             continue;
         }
-        mailbox->new = 1;
+        mailbox->new = true;
         rc = 1;
         check_new = 0;
         if (!check_stats)
@@ -291,7 +291,7 @@ static int buffy_mbox_check (BUFFY* mailbox, struct stat *sb, int check_stats)
     if (!option(OPTMAILCHECKRECENT) || sb->st_mtime > mailbox->last_visited)
     {
       rc = 1;
-      mailbox->new = 1;
+      mailbox->new = true;
     }
   }
   else if (option(OPTCHECKMBOXSIZE))
@@ -302,7 +302,7 @@ static int buffy_mbox_check (BUFFY* mailbox, struct stat *sb, int check_stats)
 
   if (mailbox->newly_created &&
       (sb->st_ctime != sb->st_mtime || sb->st_ctime != sb->st_atime))
-    mailbox->newly_created = 0;
+    mailbox->newly_created = false;
 
   if (check_stats &&
       (mailbox->stats_last_checked < sb->st_mtime))
@@ -341,7 +341,7 @@ static void buffy_check (BUFFY *tmp, struct stat *contex_sb, int check_stats)
 
     if (tmp->magic != MUTT_IMAP)
     {
-      tmp->new = 0;
+      tmp->new = false;
 #ifdef USE_POP
       if (mx_is_pop (tmp->path))
 	tmp->magic = MUTT_POP;
@@ -361,7 +361,7 @@ static void buffy_check (BUFFY *tmp, struct stat *contex_sb, int check_stats)
       {
 	/* if the mailbox still doesn't exist, set the newly created flag to
 	 * be ready for when it does. */
-	tmp->newly_created = 1;
+	tmp->newly_created = true;
 	tmp->magic = 0;
 	tmp->size = 0;
 	return;
@@ -407,7 +407,7 @@ static void buffy_check (BUFFY *tmp, struct stat *contex_sb, int check_stats)
           nm_nonctx_get_count(tmp->path, &tmp->msg_count, &tmp->msg_unread);
           if (tmp->msg_unread > 0) {
             BuffyCount++;
-            tmp->new = 1;
+            tmp->new = true;
           }
           break;
 #endif
@@ -425,7 +425,7 @@ static void buffy_check (BUFFY *tmp, struct stat *contex_sb, int check_stats)
 #endif
 
     if (!tmp->new)
-      tmp->notified = 0;
+      tmp->notified = false;
     else if (!tmp->notified)
       BuffyNotify++;
 }
@@ -579,9 +579,9 @@ int mutt_parse_mailboxes (BUFFER *path, BUFFER *s, unsigned long data, BUFFER *e
 #endif
     }
 
-    (*tmp)->new = 0;
-    (*tmp)->notified = 1;
-    (*tmp)->newly_created = 0;
+    (*tmp)->new = false;
+    (*tmp)->notified = true;
+    (*tmp)->newly_created = false;
 
     /* for check_mbox_size, it is important that if the folder is new (tested by
      * reading it), the size is set to 0 so that later when we check we see
@@ -639,9 +639,9 @@ int mutt_parse_virtual_mailboxes (BUFFER *path, BUFFER *s, unsigned long data, B
       *tmp = buffy_new (buf);
 
     (*tmp)->magic = MUTT_NOTMUCH;
-    (*tmp)->new = 0;
-    (*tmp)->notified = 1;
-    (*tmp)->newly_created = 0;
+    (*tmp)->new = false;
+    (*tmp)->notified = true;
+    (*tmp)->newly_created = false;
     (*tmp)->size = 0;
     (*tmp)->desc = desc;
 #ifdef USE_SIDEBAR
@@ -802,7 +802,7 @@ int mutt_buffy_list (void)
     if (!tmp->notified)
     {
       /* pos += strlen (strncat(buffylist + pos, "*", sizeof(buffylist)-1-pos));  __STRNCAT_CHECKED__ */
-      tmp->notified = 1;
+      tmp->notified = true;
       BuffyNotify--;
     }
     pos += strlen (strncat(buffylist + pos, path, sizeof(buffylist)-1-pos)); /* __STRNCAT_CHECKED__ */
@@ -832,7 +832,7 @@ void mutt_buffy_setnotified (const char *path)
   if (!buffy)
     return;
 
-  buffy->notified = 1;
+  buffy->notified = true;
   time(&buffy->last_visited);
 }
 

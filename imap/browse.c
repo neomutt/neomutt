@@ -82,7 +82,7 @@ static void imap_add_folder (char delim, char *folder, int noselect,
 
   (state->entry)[state->entrylen].desc = safe_strdup (relpath);
 
-  (state->entry)[state->entrylen].imap = 1;
+  (state->entry)[state->entrylen].imap = true;
   /* delimiter at the root is useless. */
   if (folder[0] == '\0')
     delim = '\0';
@@ -101,7 +101,7 @@ static void imap_add_folder (char delim, char *folder, int noselect,
       b->msg_count = Context->msgcount;
       b->msg_unread = Context->unread;
     }
-    (state->entry)[state->entrylen].has_buffy = 1;
+    (state->entry)[state->entrylen].has_buffy = true;
     (state->entry)[state->entrylen].new = b->new;
     (state->entry)[state->entrylen].msg_count = b->msg_count;
     (state->entry)[state->entrylen].msg_unread = b->msg_unread;
@@ -138,7 +138,7 @@ static int browse_add_list_result (IMAP_DATA* idata, const char* cmd,
     {
       /* Let a parent folder never be selectable for navigation */
       if (isparent)
-        list.noselect = 1;
+        list.noselect = true;
       /* prune current folder from output */
       if (isparent || (mutt_strncmp (list.name, mx.mbox, strlen (list.name)) != 0))
         imap_add_folder (list.delim, list.name, list.noselect, list.noinferiors,

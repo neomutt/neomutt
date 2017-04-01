@@ -361,7 +361,7 @@ static int delete_attachment (MUTTMENU *menu, short *idxlen, int x)
   if (x == 0 && menu->max == 1)
   {
     mutt_error (_("You may not delete the only attachment."));
-    idx[x]->content->tagged = 0;
+    idx[x]->content->tagged = false;
     return -1;
   }
 
@@ -818,7 +818,7 @@ int mutt_compose_menu (HEADER *msg,   /* structure for new message */
 	  {
 	    char *att = files[i];
 	    idx[idxlen] = safe_calloc (1, sizeof (ATTACHPTR));
-            idx[idxlen]->unowned = 1;
+            idx[idxlen]->unowned = true;
 	    idx[idxlen]->content = mutt_make_file_attach (att);
 	    if (idx[idxlen]->content != NULL)
 	      update_idx (menu, idx, idxlen++);
@@ -974,7 +974,7 @@ int mutt_compose_menu (HEADER *msg,   /* structure for new message */
       case OP_DELETE:
 	CHECK_COUNT;
         if (idx[menu->current]->unowned)
-          idx[menu->current]->content->unlink = 0;
+          idx[menu->current]->content->unlink = false;
 	if (delete_attachment (menu, &idxlen, menu->current) == -1)
 	  break;
 	mutt_update_tree (idx, idxlen);
@@ -1261,7 +1261,7 @@ int mutt_compose_menu (HEADER *msg,   /* structure for new message */
 
 	  idx[menu->current]->content->type = itype;
 	  mutt_str_replace (&idx[menu->current]->content->subtype, p);
-	  idx[menu->current]->content->unlink = 1;
+	  idx[menu->current]->content->unlink = true;
 	  menu->redraw |= REDRAW_INDEX | REDRAW_STATUS;
 
 	  if (mutt_compose_attachment (idx[menu->current]->content))
@@ -1318,7 +1318,7 @@ int mutt_compose_menu (HEADER *msg,   /* structure for new message */
 	{
           for (i = 0; i < idxlen; i++)
             if (idx[i]->unowned)
-              idx[i]->content->unlink = 0;
+              idx[i]->content->unlink = false;
 
           if (!(flags & MUTT_COMPOSE_NOFREEHEADER))
           {

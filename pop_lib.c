@@ -105,7 +105,7 @@ static int fetch_capa (char *line, void *data)
   }
 
   else if (ascii_strncasecmp (line, "STLS", 4) == 0)
-    pop_data->cmd_stls = 1;
+    pop_data->cmd_stls = true;
 
   else if (ascii_strncasecmp (line, "USER", 4) == 0)
     pop_data->cmd_user = 1;
@@ -157,13 +157,13 @@ static int pop_capabilities (POP_DATA *pop_data, int mode)
   /* init capabilities */
   if (mode == 0)
   {
-    pop_data->cmd_capa = 0;
-    pop_data->cmd_stls = 0;
+    pop_data->cmd_capa = false;
+    pop_data->cmd_stls = false;
     pop_data->cmd_user = 0;
     pop_data->cmd_uidl = 0;
     pop_data->cmd_top = 0;
-    pop_data->resp_codes = 0;
-    pop_data->expire = 1;
+    pop_data->resp_codes = false;
+    pop_data->expire = true;
     pop_data->login_delay = 0;
     FREE (&pop_data->auth_list);
   }
@@ -176,7 +176,7 @@ static int pop_capabilities (POP_DATA *pop_data, int mode)
     {
       case 0:
       {
-	pop_data->cmd_capa = 1;
+	pop_data->cmd_capa = true;
 	break;
       }
       case -1:
@@ -212,7 +212,7 @@ static int pop_capabilities (POP_DATA *pop_data, int mode)
       mutt_error (msg);
       return -2;
     }
-    pop_data->capabilities = 1;
+    pop_data->capabilities = true;
   }
 
   return 0;

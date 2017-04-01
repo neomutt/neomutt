@@ -661,8 +661,8 @@ typedef struct alias
   char *name;
   ADDRESS *addr;
   struct alias *next;
-  short tagged;
-  short del;
+  bool tagged;
+  bool del;
   short num;
 } ALIAS;
 
@@ -698,8 +698,8 @@ typedef struct envelope
   LIST *userhdrs;		/* user defined headers */
   int kwtypes;
 
-  unsigned int irt_changed : 1; /* In-Reply-To changed to link/break threads */
-  unsigned int refs_changed : 1; /* References changed to break thread */
+  bool irt_changed : 1; /* In-Reply-To changed to link/break threads */
+  bool refs_changed : 1; /* References changed to break thread */
 } ENVELOPE;
 
 static inline ENVELOPE *mutt_new_envelope(void)
@@ -727,11 +727,11 @@ typedef struct content
   long crlf;		   /* '\r' and '\n' characters */
   long ascii;              /* number of ascii chars */
   long linemax;            /* length of the longest line in the file */
-  unsigned int space : 1;  /* whitespace at the end of lines? */
-  unsigned int binary : 1; /* long lines, or CR not in CRLF pair */
-  unsigned int from : 1;   /* has a line beginning with "From "? */
-  unsigned int dot : 1;    /* has a line consisting of a single dot? */
-  unsigned int cr : 1;     /* has CR, even when in a CRLF pair */
+  bool space : 1;          /* whitespace at the end of lines? */
+  bool binary : 1;         /* long lines, or CR not in CRLF pair */
+  bool from : 1;           /* has a line beginning with "From "? */
+  bool dot : 1;            /* has a line consisting of a single dot? */
+  bool cr : 1;             /* has CR, even when in a CRLF pair */
 } CONTENT;
 
 typedef struct body
@@ -777,20 +777,20 @@ typedef struct body
   unsigned int type : 4;        /* content-type primary type */
   unsigned int encoding : 3;    /* content-transfer-encoding */
   unsigned int disposition : 2; /* content-disposition */
-  unsigned int use_disp : 1;    /* Content-Disposition uses filename= ? */
-  unsigned int unlink : 1;      /* flag to indicate the file named by
+  bool use_disp : 1;            /* Content-Disposition uses filename= ? */
+  bool unlink : 1;              /* flag to indicate the file named by
 				 * "filename" should be unlink()ed before
 				 * free()ing this structure
 				 */
-  unsigned int tagged : 1;
-  unsigned int deleted : 1;	/* attachment marked for deletion */
+  bool tagged : 1;
+  bool deleted : 1;	        /* attachment marked for deletion */
 
-  unsigned int noconv : 1;	/* don't do character set conversion */
-  unsigned int force_charset : 1;
+  bool noconv : 1;	        /* don't do character set conversion */
+  bool force_charset : 1;
   				/* send mode: don't adjust the character
 				 * set when in send-mode.
 				 */
-  unsigned int is_signed_data : 1; /* A lot of MUAs don't indicate
+  bool is_signed_data : 1; /* A lot of MUAs don't indicate
                                       S/MIME signed-data correctly,
                                       e.g. they use foo.p7m even for
                                       the name of signed data.  This
@@ -802,12 +802,12 @@ typedef struct body
                                       function to figure the type of
                                       the message. */
 
-  unsigned int goodsig : 1;	/* good cryptographic signature */
-  unsigned int warnsig : 1;     /* maybe good signature */
-  unsigned int badsig : 1;	/* bad cryptographic signature (needed to check encrypted s/mime-signatures) */
+  bool goodsig : 1;	/* good cryptographic signature */
+  bool warnsig : 1;     /* maybe good signature */
+  bool badsig : 1;	/* bad cryptographic signature (needed to check encrypted s/mime-signatures) */
 
-  unsigned int collapsed : 1;	/* used by recvattach */
-  unsigned int attach_qualifies : 1;
+  bool collapsed : 1;	/* used by recvattach */
+  bool attach_qualifies : 1;
 
 } BODY;
 
@@ -819,45 +819,45 @@ typedef struct header
   unsigned int security : 12;  /* bit 0-8: flags, bit 9,10: application.
 				 see: mutt_crypt.h pgplib.h, smime.h */
 
-  unsigned int mime : 1;    		/* has a MIME-Version header? */
-  unsigned int flagged : 1; 		/* marked important? */
-  unsigned int tagged : 1;
-  unsigned int deleted : 1;
-  unsigned int purge : 1;               /* skip trash folder when deleting */
-  unsigned int quasi_deleted : 1;	/* deleted from mutt, but not modified on disk */
-  unsigned int changed : 1;
-  unsigned int attach_del : 1; 		/* has an attachment marked for deletion */
-  unsigned int old : 1;
-  unsigned int read : 1;
-  unsigned int expired : 1; 		/* already expired? */
-  unsigned int superseded : 1; 		/* got superseded? */
-  unsigned int replied : 1;
-  unsigned int subject_changed : 1; 	/* used for threading */
-  unsigned int threaded : 1;	    	/* used for threading */
-  unsigned int display_subject : 1; 	/* used for threading */
-  unsigned int recip_valid : 1;  	/* is_recipient is valid */
-  unsigned int active : 1;	    	/* message is not to be removed */
-  unsigned int trash : 1;		/* message is marked as trashed on disk.
-					 * This flag is used by the maildir_trash
-					 * option.
-					 */
-  unsigned int xlabel_changed : 1;	/* editable - used for syncing */
+  bool mime : 1;		/* has a MIME-Version header? */
+  bool flagged : 1;		/* marked important? */
+  bool tagged : 1;
+  bool deleted : 1;
+  bool purge : 1;		/* skip trash folder when deleting */
+  bool quasi_deleted : 1;	/* deleted from mutt, but not modified on disk */
+  bool changed : 1;
+  bool attach_del : 1;		/* has an attachment marked for deletion */
+  bool old : 1;
+  bool read : 1;
+  bool expired : 1;		/* already expired? */
+  bool superseded : 1;		/* got superseded? */
+  bool replied : 1;
+  bool subject_changed : 1;	/* used for threading */
+  bool threaded : 1;		/* used for threading */
+  bool display_subject : 1;	/* used for threading */
+  bool recip_valid : 1;		/* is_recipient is valid */
+  bool active : 1;		/* message is not to be removed */
+  bool trash : 1;		/* message is marked as trashed on disk.
+				 * This flag is used by the maildir_trash
+				 * option.
+				 */
+  bool xlabel_changed : 1;	/* editable - used for syncing */
 
   /* timezone of the sender of this message */
   unsigned int zhours : 5;
   unsigned int zminutes : 6;
-  unsigned int zoccident : 1;
+  bool zoccident : 1;
 
   /* bits used for caching when searching */
-  unsigned int searched : 1;
-  unsigned int matched : 1;
+  bool searched : 1;
+  bool matched : 1;
 
   /* tells whether the attachment count is valid */
-  unsigned int attach_valid : 1;
+  bool attach_valid : 1;
 
   /* the following are used to support collapsing threads  */
-  unsigned int collapsed : 1; 	/* is this message part of a collapsed thread? */
-  unsigned int limited : 1;   	/* is this message in a limited view?  */
+  bool collapsed : 1;		/* is this message part of a collapsed thread? */
+  bool limited : 1;		/* is this message in a limited view?  */
   size_t num_hidden;          	/* number of hidden messages in this view */
 
   short recipient;		/* user_is_recipient()'s return value, cached */
@@ -905,14 +905,14 @@ static inline HEADER *mutt_new_header(void)
 
 struct mutt_thread
 {
-  unsigned int fake_thread : 1;
-  unsigned int duplicate_thread : 1;
-  unsigned int sort_children : 1;
-  unsigned int check_subject : 1;
-  unsigned int visible : 1;
-  unsigned int deep : 1;
+  bool fake_thread : 1;
+  bool duplicate_thread : 1;
+  bool sort_children : 1;
+  bool check_subject : 1;
+  bool visible : 1;
+  bool deep : 1;
   unsigned int subtree_visible : 2;
-  unsigned int next_subtree_visible : 1;
+  bool next_subtree_visible : 1;
   THREAD *parent;
   THREAD *child;
   THREAD *next;
@@ -945,12 +945,12 @@ typedef struct group_context_t
 typedef struct pattern_t
 {
   short op;
-  unsigned int not : 1;
-  unsigned int alladdr : 1;
-  unsigned int stringmatch : 1;
-  unsigned int groupmatch : 1;
-  unsigned int ign_case : 1;		/* ignore case for local stringmatch searches */
-  unsigned int isalias : 1;
+  bool not : 1;
+  bool alladdr : 1;
+  bool stringmatch : 1;
+  bool groupmatch : 1;
+  bool ign_case : 1;		/* ignore case for local stringmatch searches */
+  bool isalias : 1;
   int min;
   int max;
   struct pattern_t *next;
@@ -1061,15 +1061,15 @@ typedef struct _context
 
   unsigned char rights[(RIGHTSMAX + 7)/8];	/* ACL bits */
 
-  unsigned int locked : 1;	/* is the mailbox locked? */
-  unsigned int changed : 1;	/* mailbox has been modified */
-  unsigned int readonly : 1;    /* don't allow changes to the mailbox */
-  unsigned int dontwrite : 1;   /* don't write the mailbox on close */
-  unsigned int append : 1;	/* mailbox is opened in append mode */
-  unsigned int quiet : 1;	/* inhibit status messages? */
-  unsigned int collapsed : 1;   /* are all threads collapsed? */
-  unsigned int closing : 1;	/* mailbox is being closed */
-  unsigned int peekonly : 1;	/* just taking a glance, revert atime */
+  bool locked : 1;		/* is the mailbox locked? */
+  bool changed : 1;		/* mailbox has been modified */
+  bool readonly : 1;		/* don't allow changes to the mailbox */
+  bool dontwrite : 1;		/* don't write the mailbox on close */
+  bool append : 1;		/* mailbox is opened in append mode */
+  bool quiet : 1;		/* inhibit status messages? */
+  bool collapsed : 1;		/* are all threads collapsed? */
+  bool closing : 1;		/* mailbox is being closed */
+  bool peekonly : 1;		/* just taking a glance, revert atime */
 
 #ifdef USE_COMPRESSED
   void *compress_info;		/* compressed mbox module private data */

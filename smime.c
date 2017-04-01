@@ -1469,11 +1469,11 @@ BODY *smime_build_smime_entity (BODY *a, char *certlist)
   mutt_set_parameter ("name", "smime.p7m", &t->parameter);
   mutt_set_parameter ("smime-type", "enveloped-data", &t->parameter);
   t->encoding = ENCBASE64;  /* The output of OpenSSL SHOULD be binary */
-  t->use_disp = 1;
+  t->use_disp = true;
   t->disposition = DISPATTACH;
   t->d_filename = safe_strdup ("smime.p7m");
   t->filename = safe_strdup (tempfile);
-  t->unlink = 1; /*delete after sending the message */
+  t->unlink = true; /*delete after sending the message */
   t->parts=0;
   t->next=0;
 
@@ -1624,7 +1624,7 @@ BODY *smime_sign_message (BODY *a )
   t->type = TYPEMULTIPART;
   t->subtype = safe_strdup ("signed");
   t->encoding = ENC7BIT;
-  t->use_disp = 0;
+  t->use_disp = false;
   t->disposition = DISPINLINE;
 
   mutt_generate_boundary (&t->parameter);
@@ -1645,10 +1645,10 @@ BODY *smime_sign_message (BODY *a )
   t->subtype = safe_strdup ("x-pkcs7-signature");
   t->filename = safe_strdup (signedfile);
   t->d_filename = safe_strdup ("smime.p7s");
-  t->use_disp = 1;
+  t->use_disp = true;
   t->disposition = DISPATTACH;
   t->encoding = ENCBASE64;
-  t->unlink = 1; /* ok to remove this file after sending. */
+  t->unlink = true; /* ok to remove this file after sending. */
 
   return a;
 
@@ -1994,7 +1994,7 @@ static BODY *smime_handle_entity (BODY *m, STATE *s, FILE *outFile)
 
     line = mutt_read_line (line, &linelen, smimeerr, &lineno, 0);
     if (linelen && (ascii_strcasecmp (line, "verification successful") == 0))
-      m->goodsig = 1;
+      m->goodsig = true;
     FREE (&line);
   }
   else

@@ -148,8 +148,8 @@ typedef struct
 
   char delim;
   /* if we end up storing a lot of these we could turn this into a bitfield */
-  unsigned char noselect;
-  unsigned char noinferiors;
+  bool noselect;
+  bool noinferiors;
 } IMAP_LIST;
 
 /* IMAP command structure */
@@ -170,7 +170,7 @@ typedef struct
 {
   /* This data is specific to a CONNECTION to an IMAP server */
   CONNECTION *conn;
-  unsigned char recovering;
+  bool recovering;
   unsigned char state;
   unsigned char status;
   /* let me explain capstr: SASL needs the capability string (not bits).

@@ -59,16 +59,16 @@ typedef struct
 {
   CONNECTION *conn;
   unsigned int status : 2;
-  unsigned int capabilities : 1;
+  bool capabilities : 1;
   unsigned int use_stls : 2;
-  unsigned int cmd_capa : 1;	/* optional command CAPA */
-  unsigned int cmd_stls : 1;	/* optional command STLS */
+  bool cmd_capa : 1;		/* optional command CAPA */
+  bool cmd_stls : 1;		/* optional command STLS */
   unsigned int cmd_user : 2;	/* optional command USER */
   unsigned int cmd_uidl : 2;	/* optional command UIDL */
   unsigned int cmd_top : 2;	/* optional command TOP */
-  unsigned int resp_codes : 1;	/* server supports extended response codes */
-  unsigned int expire : 1;	/* expire is greater than 0 */
-  unsigned int clear_cache : 1;
+  bool resp_codes : 1;		/* server supports extended response codes */
+  bool expire : 1;		/* expire is greater than 0 */
+  bool clear_cache : 1;
   size_t size;
   time_t check_time;
   time_t login_delay;		/* minimal login delay  capability */

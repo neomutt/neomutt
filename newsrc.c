@@ -57,7 +57,7 @@ static NNTP_DATA *nntp_data_find (NNTP_SERVER *nserv, const char *group)
     nntp_data->group = (char *)nntp_data + sizeof (NNTP_DATA);
     strfcpy (nntp_data->group, group, len);
     nntp_data->nserv = nserv;
-    nntp_data->deleted = 1;
+    nntp_data->deleted = true;
     if (nserv->groups_hash->nelem < nserv->groups_hash->curnelem * 2)
       nserv->groups_hash = hash_resize (nserv->groups_hash,
 			   nserv->groups_hash->nelem * 2, 0);
@@ -192,7 +192,7 @@ int nntp_newsrc_parse (NNTP_SERVER *nserv)
 
   nserv->size = sb.st_size;
   nserv->mtime = sb.st_mtime;
-  nserv->newsrc_modified = 1;
+  nserv->newsrc_modified = true;
   mutt_debug (1, "Parsing %s\n", nserv->newsrc_file);
 
   /* .newsrc has been externally modified or hasn't been loaded yet */
@@ -203,7 +203,7 @@ int nntp_newsrc_parse (NNTP_SERVER *nserv)
     if (!nntp_data)
       continue;
 
-    nntp_data->subscribed = 0;
+    nntp_data->subscribed = false;
     nntp_data->newsrc_len = 0;
     FREE (&nntp_data->newsrc_ent);
   }
@@ -212,7 +212,8 @@ int nntp_newsrc_parse (NNTP_SERVER *nserv)
   while (sb.st_size && fgets (line, sb.st_size + 1, nserv->newsrc_fp))
   {
     char *b = NULL, *h = NULL, *p = NULL;
-    unsigned int subs = 0, j = 1;
+    unsigned int j = 1;
+    bool subs = false;
     NNTP_DATA *nntp_data = NULL;
 
     /* find end of newsgroup name */
@@ -222,7 +223,7 @@ int nntp_newsrc_parse (NNTP_SERVER *nserv)
 
     /* ":" - subscribed, "!" - unsubscribed */
     if (*p == ':')
-      subs++;
+      subs = true;
     *p++ = '\0';
 
     /* get newsgroup data */
@@ -539,10 +540,10 @@ int nntp_add_group (char *line, void *data)
     return 0;
 
   nntp_data = nntp_data_find (nserv, group);
-  nntp_data->deleted = 0;
+  nntp_data->deleted = false;
   nntp_data->firstMessage = first;
   nntp_data->lastMessage = last;
-  nntp_data->allowed = mod == 'y' || mod == 'm' ? 1 : 0;
+  nntp_data->allowed = (mod == 'y') || (mod == 'm') ? true : false;
   mutt_str_replace (&nntp_data->desc, desc);
   if (nntp_data->newsrc_ent || nntp_data->lastCached)
     nntp_group_unread_stat (nntp_data);
@@ -970,7 +971,7 @@ NNTP_SERVER *nntp_select_server (char *server, int leave_lock)
   rc = nntp_open_connection (nserv);
 
   /* try to create cache directory and enable caching */
-  nserv->cacheable = 0;
+  nserv->cacheable = false;
   if (rc >= 0 && NewsCacheDir && *NewsCacheDir)
   {
     cache_expand (file, sizeof (file), &conn->account, NULL);
@@ -979,7 +980,7 @@ NNTP_SERVER *nntp_select_server (char *server, int leave_lock)
       mutt_error (_("Can't create %s: %s."), file, strerror (errno));
       mutt_sleep (2);
     }
-    nserv->cacheable = 1;
+    nserv->cacheable = true;
   }
 
   /* load .newsrc */
@@ -1103,7 +1104,7 @@ void nntp_article_status (CONTEXT *ctx, HEADER *hdr, char *group, anum_t anum)
     {
       /* can't use mutt_set_flag() because mx_update_context()
 	 didn't called yet */
-      hdr->read = 1;
+      hdr->read = true;
       return;
     }
   }
@@ -1114,7 +1115,7 @@ void nntp_article_status (CONTEXT *ctx, HEADER *hdr, char *group, anum_t anum)
 
   /* article isn't read but cached, it's old */
   if (option (OPTMARKOLD))
-    hdr->old = 1;
+    hdr->old = true;
 }
 
 /* Subscribe newsgroup */
@@ -1126,7 +1127,7 @@ NNTP_DATA *mutt_newsgroup_subscribe (NNTP_SERVER *nserv, char *group)
     return NULL;
 
   nntp_data = nntp_data_find (nserv, group);
-  nntp_data->subscribed = 1;
+  nntp_data->subscribed = true;
   if (!nntp_data->newsrc_ent)
   {
     nntp_data->newsrc_ent = safe_calloc (1, sizeof (NEWSRC_ENTRY));
@@ -1149,7 +1150,7 @@ NNTP_DATA *mutt_newsgroup_unsubscribe (NNTP_SERVER *nserv, char *group)
   if (!nntp_data)
     return NULL;
 
-  nntp_data->subscribed = 0;
+  nntp_data->subscribed = false;
   if (!option (OPTSAVEUNSUB))
   {
     nntp_data->newsrc_len = 0;

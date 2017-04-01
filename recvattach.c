@@ -395,7 +395,7 @@ static void attach_entry (char *b, size_t blen, MUTTMENU *menu, int num)
 int mutt_tag_attach (MUTTMENU *menu, int n, int m)
 {
   BODY *cur = ((ATTACHPTR **) menu->data)[n]->content;
-  int ot = cur->tagged;
+  bool ot = cur->tagged;
 
   cur->tagged = (m >= 0 ? m : !cur->tagged);
   return cur->tagged - ot;
@@ -924,8 +924,8 @@ void mutt_attach_init (BODY *b)
 {
   for (; b; b = b->next)
   {
-    b->tagged = 0;
-    b->collapsed = 0;
+    b->tagged = false;
+    b->collapsed = false;
     if (b->parts)
       mutt_attach_init (b->parts);
   }
@@ -1157,7 +1157,7 @@ void mutt_view_attachments (HEADER *hdr)
         {
           if (idx[menu->current]->parent_type == TYPEMULTIPART)
           {
-            idx[menu->current]->content->deleted = 1;
+            idx[menu->current]->content->deleted = true;
             if (option (OPTRESOLVE) && menu->current < menu->max - 1)
             {
               menu->current++;
@@ -1180,7 +1180,7 @@ void mutt_view_attachments (HEADER *hdr)
             {
               if (idx[x]->parent_type == TYPEMULTIPART)
               {
-                idx[x]->content->deleted = 1;
+                idx[x]->content->deleted = true;
                 menu->redraw = REDRAW_INDEX;
               }
               else
@@ -1195,7 +1195,7 @@ void mutt_view_attachments (HEADER *hdr)
        CHECK_READONLY;
        if (!menu->tagprefix)
        {
-	 idx[menu->current]->content->deleted = 0;
+	 idx[menu->current]->content->deleted = false;
 	 if (option (OPTRESOLVE) && menu->current < menu->max - 1)
 	 {
 	   menu->current++;
@@ -1212,7 +1212,7 @@ void mutt_view_attachments (HEADER *hdr)
 	 {
 	   if (idx[x]->content->tagged)
 	   {
-	     idx[x]->content->deleted = 0;
+	     idx[x]->content->deleted = false;
 	     menu->redraw = REDRAW_INDEX;
 	   }
 	 }
@@ -1284,20 +1284,20 @@ void mutt_view_attachments (HEADER *hdr)
 
       case OP_EXIT:
 	mx_close_message (Context, &msg);
-	hdr->attach_del = 0;
+	hdr->attach_del = false;
 	while (idxmax-- > 0)
 	{
 	  if (!idx[idxmax])
 	    continue;
 	  if (idx[idxmax]->content && idx[idxmax]->content->deleted)
-	    hdr->attach_del = 1;
+	    hdr->attach_del = true;
 	  if (idx[idxmax]->content)
 	    idx[idxmax]->content->aptr = NULL;
 	  FREE (&idx[idxmax]->tree);
 	  FREE (&idx[idxmax]);
 	}
 	if (hdr->attach_del)
-	  hdr->changed = 1;
+	  hdr->changed = true;
 	FREE (&idx);
 	idxmax = 0;
 

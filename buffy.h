@@ -30,16 +30,16 @@ typedef struct buffy_t
   char *desc;
   off_t size;
   struct buffy_t *next;
-  short new;			/* mailbox has new mail */
+  bool new;			/* mailbox has new mail */
 
   /* These next three are only set when OPTMAILCHECKSTATS is set */
   int msg_count;		/* total number of messages */
   int msg_unread;		/* number of unread messages */
   int msg_flagged;		/* number of flagged messages */
 
-  short notified;		/* user has been notified */
+  bool notified;		/* user has been notified */
   short magic;			/* mailbox type */
-  short newly_created;		/* mbox or mmdf just popped into existence */
+  bool newly_created;		/* mbox or mmdf just popped into existence */
   time_t last_visited;		/* time of last exit from this mailbox */
   time_t stats_last_checked;	/* mtime of mailbox the last time stats where checked. */
 }

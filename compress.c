@@ -95,7 +95,7 @@ lock_realpath (CONTEXT *ctx, int excl)
   else if (excl == 0)
   {
     safe_fclose (&ci->lockfp);
-    ctx->readonly = 1;
+    ctx->readonly = true;
     return 1;
   }
 
@@ -468,7 +468,7 @@ comp_open_mailbox (CONTEXT *ctx)
 
   /* If there's no close-hook, or the file isn't writable */
   if (!ci->close || (access (ctx->path, W_OK) != 0))
-    ctx->readonly = 1;
+    ctx->readonly = true;
 
   if (setup_paths (ctx) != 0)
     goto or_fail;

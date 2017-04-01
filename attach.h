@@ -29,7 +29,7 @@ typedef struct attachptr
   char *tree;
   int level;
   int num;
-  unsigned int unowned : 1;   /* don't unlink on detach */
+  bool unowned : 1;   /* don't unlink on detach */
 } ATTACHPTR;
 
 ATTACHPTR **mutt_gen_attach_list(BODY *m, int parent_type, ATTACHPTR **idx,

@@ -38,7 +38,7 @@ typedef struct query
 
 typedef struct entry
 {
-  int tagged;
+  bool tagged;
   QUERY *data;
 } ENTRY;
 
@@ -245,7 +245,7 @@ static void query_entry (char *s, size_t slen, MUTTMENU *m, int num)
 static int query_tag (MUTTMENU *menu, int n, int m)
 {
   ENTRY *cur = &((ENTRY *) menu->data)[n];
-  int ot = cur->tagged;
+  bool ot = cur->tagged;
 
   cur->tagged = m >= 0 ? m : !cur->tagged;
   return cur->tagged - ot;
@@ -367,7 +367,7 @@ static void query_menu (char *buf, size_t buflen, QUERY *results, int retbuf)
 
 		  QueryTable[i].data = queryp;
 		  if (clear)
-		    QueryTable[i].tagged = 0;
+		    QueryTable[i].tagged = false;
 		}
 	      }
 	    }

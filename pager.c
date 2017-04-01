@@ -2040,7 +2040,7 @@ mutt_pager (const char *banner, const char *fname, int flags, pager_t *extra)
 	  {
 	    HEADER *h = Context->hdrs[i];
 
-	    if (h && (h->read == 0))
+	    if (h && !h->read)
 	    {
 	      mutt_message (_("New mail in this mailbox."));
 	      do_new_mail = 1;
@@ -2056,8 +2056,8 @@ mutt_pager (const char *banner, const char *fname, int flags, pager_t *extra)
 	    index->current = MIN(index->current, (Context->msgcount - 1));
 	    index_hint = Context->hdrs[Context->v2r[index->current]]->index;
 
-	    int q = Context->quiet;
-	    Context->quiet = 1;
+	    bool q = Context->quiet;
+	    Context->quiet = true;
 	    update_index (index, Context, check, oldcount, index_hint);
 	    Context->quiet = q;
 
@@ -3047,7 +3047,7 @@ search_next:
 	CHECK_MODE(IsHeader (extra));
 	mutt_view_attachments (extra->hdr);
 	if (Context && extra->hdr->attach_del)
-	  Context->changed = 1;
+	  Context->changed = true;
 	pager_menu->redraw = REDRAW_FULL;
 	break;
 
@@ -3067,7 +3067,7 @@ search_next:
         CHECK_MODE(IsHeader (extra));
         rc = mutt_label_message(extra->hdr);
         if (rc > 0) {
-          Context->changed = 1;
+          Context->changed = true;
           pager_menu->redraw = REDRAW_FULL;
           mutt_message (_("%d labels changed."), rc);
         }

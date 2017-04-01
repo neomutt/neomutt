@@ -34,23 +34,23 @@ struct folder_file
   char *name;
   char *desc;
 
-  short new;               /* true if mailbox has "new mail" */
+  bool new;               /* true if mailbox has "new mail" */
   int msg_count;           /* total number of messages */
   int msg_unread;          /* number of unread messages */
 
 #ifdef USE_IMAP
   char delim;
 
-  unsigned imap : 1;
-  unsigned selectable : 1;
-  unsigned inferiors : 1;
+  bool imap : 1;
+  bool selectable : 1;
+  bool inferiors : 1;
 #endif
-  unsigned has_buffy : 1;
+  bool has_buffy : 1;
 #ifdef USE_NNTP
   NNTP_DATA *nd;
 #endif
-  unsigned local : 1; /* folder is on local filesystem */
-  unsigned tagged : 1;
+  bool local : 1; /* folder is on local filesystem */
+  bool tagged : 1;
 };
 
 struct browser_state
@@ -59,11 +59,11 @@ struct browser_state
   unsigned int entrylen;	/* number of real entries */
   unsigned int entrymax;	/* max entry */
 #ifdef USE_IMAP
-  short imap_browse;
+  bool imap_browse;
   char *folder;
-  unsigned noselect : 1;
-  unsigned marked : 1;
-  unsigned unmarked : 1;
+  bool noselect : 1;
+  bool marked : 1;
+  bool unmarked : 1;
 #endif
 };
 
