@@ -548,6 +548,8 @@ void mutt_reflow_windows (void)
     MuttIndexWindow->col_offset += SidebarWidth;
   }
 #endif
+
+  mutt_set_current_menu_redraw_full ();
 }
 
 int mutt_window_move (mutt_window_t *win, int row, int col)
