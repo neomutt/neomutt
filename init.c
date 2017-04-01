@@ -2015,6 +2015,8 @@ static void restore_default (struct option_t *p)
   if (p->flags & R_SIDEBAR)
     mutt_set_current_menu_redraw (REDRAW_SIDEBAR);
 #endif
+  if (p->flags & R_MENU)
+    mutt_set_current_menu_redraw_full ();
 }
 
 static size_t escape_string (char *dst, size_t len, const char* src)
@@ -2794,6 +2796,8 @@ static int parse_set (BUFFER *tmp, BUFFER *s, unsigned long data, BUFFER *err)
       if (MuttVars[idx].flags & R_SIDEBAR)
         mutt_set_current_menu_redraw (REDRAW_SIDEBAR);
 #endif
+      if (MuttVars[idx].flags & R_MENU)
+        mutt_set_current_menu_redraw_full ();
     }
   }
   return r;
