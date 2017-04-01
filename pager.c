@@ -1878,10 +1878,9 @@ mutt_pager (const char *banner, const char *fname, int flags, pager_t *extra)
     }
 
 #ifdef USE_SIDEBAR
-    if ((pager_menu->redraw & REDRAW_SIDEBAR) || SidebarNeedsRedraw)
+    if (pager_menu->redraw & REDRAW_SIDEBAR)
     {
-      SidebarNeedsRedraw = 0;
-      mutt_sb_draw ();
+      menu_redraw_sidebar (pager_menu);
     }
 #endif
 

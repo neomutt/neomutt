@@ -257,7 +257,6 @@ WHERE short ScoreThresholdFlag;
 #ifdef USE_SIDEBAR
 WHERE short SidebarWidth INITVAL(0);
 WHERE LIST *SidebarWhitelist INITVAL(0);
-WHERE int SidebarNeedsRedraw INITVAL (0);
 #endif
 
 #ifdef USE_IMAP

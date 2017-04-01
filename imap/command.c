@@ -23,6 +23,7 @@
 #include "config.h"
 
 #include "mutt.h"
+#include "mutt_menu.h"
 #include "imap_private.h"
 #include "mx.h"
 #include "buffy.h"
@@ -622,7 +623,7 @@ static void cmd_parse_status (IMAP_DATA* idata, char* s)
         if ((inc->new != new) ||
             (inc->msg_count != status->messages) ||
             (inc->msg_unread != status->unseen))
-          SidebarNeedsRedraw = 1;
+          mutt_set_current_menu_redraw (REDRAW_SIDEBAR);
 #endif
         inc->new = new;
         if (new_msg_count)

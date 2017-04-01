@@ -978,7 +978,7 @@ int mutt_index_menu (void)
       }
 
 #ifdef USE_SIDEBAR
-      if (menu->redraw & REDRAW_SIDEBAR || SidebarNeedsRedraw)
+      if (menu->redraw & REDRAW_SIDEBAR)
       {
         mutt_sb_set_buffystats (Context);
         menu_redraw_sidebar (menu);
