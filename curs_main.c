@@ -2788,10 +2788,6 @@ int mutt_index_menu (void)
 
 	mutt_enter_command ();
 	mutt_check_rescore (Context);
-	if (option (OPTFORCEREDRAWINDEX))
-	  menu->redraw = REDRAW_FULL;
-	unset_option (OPTFORCEREDRAWINDEX);
-	unset_option (OPTFORCEREDRAWPAGER);
 	break;
 
       case OP_EDIT_MESSAGE:

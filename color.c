@@ -19,6 +19,7 @@
 
 #include "mutt.h"
 #include "mutt_curses.h"
+#include "mutt_menu.h"
 #include "mapping.h"
 
 #include <string.h>
@@ -459,7 +460,7 @@ static int _mutt_parse_uncolor (BUFFER *buf, BUFFER *s, unsigned long data,
 
   if (object > MT_COLOR_INDEX_SUBJECT) { /* uncolor index column */
     ColorDefs[object] = 0;
-    set_option (OPTFORCEREDRAWINDEX);
+    mutt_set_menu_redraw_full (MENU_MAIN);
     return 0;
   }
 
@@ -524,7 +525,7 @@ static int _mutt_parse_uncolor (BUFFER *buf, BUFFER *s, unsigned long data,
   if (do_cache && !option (OPTNOCURSES))
   {
     int i;
-    set_option (OPTFORCEREDRAWINDEX);
+    mutt_set_menu_redraw_full (MENU_MAIN);
     /* force re-caching of index colors */
     for (i = 0; Context && i < Context->msgcount; i++)
       Context->hdrs[i]->pair = 0;
@@ -856,32 +857,32 @@ _mutt_parse_color (BUFFER *buf, BUFFER *s, BUFFER *err,
   {
     r = add_pattern (&ColorIndexList, buf->data, 1,
 		    fg, bg, attr, err, 1, match);
-    set_option (OPTFORCEREDRAWINDEX);
+    mutt_set_menu_redraw_full (MENU_MAIN);
   }
   else if (object == MT_COLOR_INDEX_AUTHOR)
   {
     r = add_pattern (&ColorIndexAuthorList, buf->data, 1,
 		    fg, bg, attr, err, 1, match);
-    set_option (OPTFORCEREDRAWINDEX);
+    mutt_set_menu_redraw_full (MENU_MAIN);
   }
   else if (object == MT_COLOR_INDEX_FLAGS)
   {
     r = add_pattern (&ColorIndexFlagsList, buf->data, 1,
 		    fg, bg, attr, err, 1, match);
-    set_option (OPTFORCEREDRAWINDEX);
+    mutt_set_menu_redraw_full (MENU_MAIN);
   }
   else if (object == MT_COLOR_INDEX_SUBJECT)
   {
     r = add_pattern (&ColorIndexSubjectList, buf->data, 1,
 		    fg, bg, attr, err, 1, match);
-    set_option (OPTFORCEREDRAWINDEX);
+    mutt_set_menu_redraw_full (MENU_MAIN);
   }
 #ifdef USE_NOTMUCH
   else if (object == MT_COLOR_INDEX_TAG)
   {
     r = add_pattern (&ColorIndexTagList, buf->data, 1,
 		    fg, bg, attr, err, 1, match);
-    set_option (OPTFORCEREDRAWINDEX);
+    mutt_set_menu_redraw_full (MENU_MAIN);
   }
 #endif
   else if (object == MT_COLOR_QUOTED)
@@ -912,7 +913,7 @@ _mutt_parse_color (BUFFER *buf, BUFFER *s, BUFFER *err,
   {
     ColorDefs[object] = fgbgattr_to_color(fg, bg, attr);
     if (object > MT_COLOR_INDEX_AUTHOR)
-      set_option (OPTFORCEREDRAWINDEX);
+      mutt_set_menu_redraw_full (MENU_MAIN);
   }
 
   return r;

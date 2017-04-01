@@ -573,8 +573,6 @@ enum
   OPTNEEDRESORT,	/* (pseudo) used to force a re-sort */
   OPTRESORTINIT,	/* (pseudo) used to force the next resort to be from scratch */
   OPTVIEWATTACH,	/* (pseudo) signals that we are viewing attachments */
-  OPTFORCEREDRAWINDEX,	/* (pseudo) used to force a redraw in the main index */
-  OPTFORCEREDRAWPAGER,	/* (pseudo) used to force a redraw in the pager */
   OPTSORTSUBTHREADS,	/* (pseudo) used when $sort_aux changes */
   OPTNEEDRESCORE,	/* (pseudo) set when the `score' command is used */
   OPTATTACHMSG,		/* (pseudo) used by attach-message */

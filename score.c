@@ -18,6 +18,7 @@
 #include "config.h"
 
 #include "mutt.h"
+#include "mutt_menu.h"
 #include "sort.h"
 #include <string.h>
 #include <stdlib.h>
@@ -48,8 +49,8 @@ void mutt_check_rescore (CONTEXT *ctx)
     }
 
     /* must redraw the index since the user might have %N in it */
-    set_option (OPTFORCEREDRAWINDEX);
-    set_option (OPTFORCEREDRAWPAGER);
+    mutt_set_menu_redraw_full (MENU_MAIN);
+    mutt_set_menu_redraw_full (MENU_PAGER);
 
     for (i = 0; ctx && i < ctx->msgcount; i++)
     {

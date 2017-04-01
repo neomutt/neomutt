@@ -121,7 +121,9 @@ MUTTMENU *mutt_new_menu(int menu);
 void mutt_menu_destroy(MUTTMENU **p);
 void mutt_push_current_menu (MUTTMENU *);
 void mutt_pop_current_menu (MUTTMENU *);
-void mutt_set_current_menu_redraw (void);
+void mutt_set_current_menu_redraw (int redraw);
+void mutt_set_current_menu_redraw_full ();
+void mutt_set_menu_redraw_full (int);
 int mutt_menu_loop(MUTTMENU *menu);
 
 /* used in both the index and pager index to make an entry. */

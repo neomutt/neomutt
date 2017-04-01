@@ -98,7 +98,7 @@ void mutt_need_hard_redraw (void)
 {
   keypad (stdscr, true);
   clearok (stdscr, true);
-  mutt_set_current_menu_redraw ();
+  mutt_set_current_menu_redraw_full ();
 }
 
 event_t mutt_getch (void)

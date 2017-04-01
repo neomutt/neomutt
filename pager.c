@@ -2754,10 +2754,6 @@ search_next:
 	  ch = 0;
 	}
 
-	if (option (OPTFORCEREDRAWPAGER))
-	  pager_menu->redraw = REDRAW_FULL;
-	unset_option (OPTFORCEREDRAWINDEX);
-	unset_option (OPTFORCEREDRAWPAGER);
 	break;
 
       case OP_FLAG_MESSAGE:
