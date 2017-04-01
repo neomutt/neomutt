@@ -774,13 +774,28 @@ void mutt_pop_current_menu (MUTTMENU *menu)
   }
 }
 
-void mutt_set_current_menu_redraw (void)
+void mutt_set_current_menu_redraw (int redraw)
+{
+  MUTTMENU *current_menu;
+
+  current_menu = get_current_menu ();
+  if (current_menu)
+    current_menu->redraw |= redraw;
+}
+
+void mutt_set_current_menu_redraw_full (void)
 {
   MUTTMENU *current_menu;
 
   current_menu = get_current_menu ();
   if (current_menu)
     current_menu->redraw = REDRAW_FULL;
+}
+
+void mutt_set_menu_redraw_full (int menu_type)
+{
+  if (CurrentMenu == menu_type)
+    mutt_set_current_menu_redraw_full ();
 }
 
 
@@ -1088,12 +1103,6 @@ int mutt_menuLoop (MUTTMENU *menu)
 
       case OP_ENTER_COMMAND:
 	mutt_enter_command ();
-	if (option (OPTFORCEREDRAWINDEX))
-	{
-	  menu->redraw = REDRAW_FULL;
-	  unset_option (OPTFORCEREDRAWINDEX);
-	  unset_option (OPTFORCEREDRAWPAGER);
-	}
 	break;
 
       case OP_TAG:
