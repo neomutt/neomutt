@@ -82,7 +82,8 @@ void mutt_refresh (void)
     return;
 
   /* don't refresh in the middle of macros unless necessary */
-  if (UngetCount && !option (OPTFORCEREFRESH))
+  if (MacroBufferCount && !option (OPTFORCEREFRESH) &&
+      !option (OPTIGNOREMACROEVENTS))
     return;
 
   /* else */
@@ -97,7 +98,7 @@ void mutt_need_hard_redraw (void)
 {
   keypad (stdscr, true);
   clearok (stdscr, true);
-  set_option (OPTNEEDREDRAW);
+  mutt_set_current_menu_redraw_full ();
 }
 
 event_t mutt_getch (void)
@@ -616,6 +617,8 @@ void mutt_reflow_windows (void)
     }
   }
 #endif
+
+  mutt_set_current_menu_redraw_full ();
 }
 
 int mutt_window_move (mutt_window_t *win, int row, int col)
@@ -802,8 +805,7 @@ int mutt_do_pager (const char *banner,
 }
 
 int _mutt_enter_fname (const char *prompt, char *buf, size_t blen,
-		int *redraw, int buffy, int multiple,
-		char ***files, int *numfiles, int flags)
+		int buffy, int multiple, char ***files, int *numfiles, int flags)
 {
   event_t ch;
 
@@ -830,7 +832,6 @@ int _mutt_enter_fname (const char *prompt, char *buf, size_t blen,
       flags = MUTT_SEL_FOLDER | (multiple ? MUTT_SEL_MULTI : 0);
 
     _mutt_select_file (buf, blen, flags, files, numfiles);
-    *redraw = REDRAW_FULL;
   }
   else
   {
@@ -841,7 +842,6 @@ int _mutt_enter_fname (const char *prompt, char *buf, size_t blen,
     if (_mutt_get_field (pc, buf, blen, (buffy ? MUTT_EFILE : MUTT_FILE) | MUTT_CLEAR, multiple, files, numfiles)
 	!= 0)
       buf[0] = 0;
-    MAYBE_REDRAW (*redraw);
     FREE (&pc);
 #ifdef USE_NOTMUCH
     if ((flags & MUTT_SEL_VFOLDER) && buf[0] && (strncmp(buf, "notmuch://", 10) != 0))

@@ -520,6 +520,7 @@ static pgp_key_t pgp_select_key (pgp_key_t keys,
   menu->make_entry = pgp_entry;
   menu->help = helpstr;
   menu->data = KeyTable;
+  mutt_push_current_menu (menu);
 
   if (p)
     snprintf (buf, sizeof (buf), _("PGP keys matching <%s>."), p->mailbox);
@@ -639,10 +640,9 @@ static pgp_key_t pgp_select_key (pgp_key_t keys,
     }
   }
 
+  mutt_pop_current_menu (menu);
   mutt_menu_destroy (&menu);
   FREE (&KeyTable);
-
-  set_option (OPTNEEDREDRAW);
 
   return kp;
 }

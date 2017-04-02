@@ -459,12 +459,14 @@ static int main_change_folder(MUTTMENU *menu, int op, char *buf, size_t bufsz,
 
   mutt_sleep (0);
 
-  /* Set CurrentMenu to MENU_MAIN before executing any folder
-   * hooks so that all the index menu functions are available to
-   * the exec command.
-   */
-
-  CurrentMenu = MENU_MAIN;
+  /* Note that menu->menu may be MENU_PAGER if the change folder
+   * operation originated from the pager.
+   *
+   * However, exec commands currently use CurrentMenu to determine what
+   * functions are available, which is automatically set by the
+   * mutt_push/pop_current_menu() functions.  If that changes, the menu
+   * would need to be reset here, and the pager cleanup code after the
+   * switch statement would need to be run. */
   mutt_folder_hook (buf);
 
   if ((Context = mx_open_mailbox (buf,
@@ -842,6 +844,7 @@ int mutt_index_menu (void)
 	(Context && (Context->magic == MUTT_NNTP)) ? IndexNewsHelp :
 #endif
 	IndexHelp);
+  mutt_push_current_menu (menu);
 
   if (!attach_msg)
     mutt_buffy_check(1); /* force the buffy check after we enter the folder */
@@ -966,16 +969,16 @@ int mutt_index_menu (void)
     if (op != -1)
       mutt_curs_set (0);
 
-    if (menu->redraw & REDRAW_FULL)
-    {
-      menu_redraw_full (menu);
-      mutt_show_error ();
-    }
-
     if (menu->menu == MENU_MAIN)
     {
+      if (menu->redraw & REDRAW_FULL)
+      {
+        menu_redraw_full (menu);
+        mutt_show_error ();
+      }
+
 #ifdef USE_SIDEBAR
-      if (menu->redraw & REDRAW_SIDEBAR || SidebarNeedsRedraw)
+      if (menu->redraw & REDRAW_SIDEBAR)
       {
         mutt_sb_set_buffystats (Context);
         menu_redraw_sidebar (menu);
@@ -1988,7 +1991,7 @@ int mutt_index_menu (void)
 		  strfcpy(buf, Context->path, sizeof (buf));
 		  mutt_buffy_vfolder (buf, sizeof (buf));
 	  }
-	  mutt_enter_vfolder (cp, buf, sizeof (buf), &menu->redraw, 1);
+	  mutt_enter_vfolder (cp, buf, sizeof (buf), 1);
 	  if (!buf[0])
 	  {
             mutt_window_clearline (MuttMessageWindow, 0);
@@ -2018,7 +2021,7 @@ int mutt_index_menu (void)
 	   * mail */
 	  mutt_buffy (buf, sizeof (buf));
 
-          if (mutt_enter_fname (cp, buf, sizeof (buf), &menu->redraw, 1) == -1)
+          if (mutt_enter_fname (cp, buf, sizeof (buf), 1) == -1)
           {
             if (menu->menu == MENU_PAGER)
             {
@@ -2076,12 +2079,21 @@ int mutt_index_menu (void)
 	if (option (OPTPGPAUTODEC) && (tag || !(CURHDR->security & PGP_TRADITIONAL_CHECKED)))
 	  mutt_check_traditional_pgp (tag ? NULL : CURHDR, &menu->redraw);
 	int index_hint = Context->hdrs[Context->v2r[menu->current]]->index;
-	if ((op = mutt_display_message (CURHDR)) == -1)
+
+        /* If we are returning to the pager via an index menu redirection, we
+         * need to reset the menu->menu.  Otherwise mutt_pop_current_menu() will
+         * set CurrentMenu incorrectly when we return back to the index menu. */
+        menu->menu = MENU_MAIN;
+
+        if ((op = mutt_display_message (CURHDR)) == -1)
 	{
 	  unset_option (OPTNEEDRESORT);
 	  break;
 	}
 
+        /* This is used to redirect a single operation back here afterwards.  If
+         * mutt_display_message() returns 0, then the menu and pager state will
+         * be cleaned up after this switch statement. */
 	menu->menu = MENU_PAGER;
  	menu->oldcurrent = menu->current;
 	if (Context)
@@ -2307,11 +2319,11 @@ int mutt_index_menu (void)
 			       (op == OP_SAVE) || (op == OP_DECODE_SAVE),
 			       (op == OP_DECODE_SAVE) || (op == OP_DECODE_COPY),
 			       (op == OP_DECRYPT_SAVE) || (op == OP_DECRYPT_COPY) ||
-			       0,
-			       &menu->redraw) == 0 &&
+			       0) == 0 &&
 	     (op == OP_SAVE || op == OP_DECODE_SAVE || op == OP_DECRYPT_SAVE)
 	    )
 	{
+          menu->redraw |= REDRAW_STATUS;
 	  if (tag)
 	    menu->redraw |= REDRAW_INDEX;
 	  else if (option (OPTRESOLVE))
@@ -2662,20 +2674,18 @@ int mutt_index_menu (void)
 	CHECK_ATTACH;
 	CHECK_MSGCOUNT;
         CHECK_VISIBLE;
-	ci_bounce_message (tag ? NULL : CURHDR, &menu->redraw);
+	ci_bounce_message (tag ? NULL : CURHDR);
 	break;
 
       case OP_CREATE_ALIAS:
 
         mutt_create_alias (Context && Context->vcount ? CURHDR->env : NULL, NULL);
-	MAYBE_REDRAW (menu->redraw);
         menu->redraw |= REDRAW_CURRENT;
 	break;
 
       case OP_QUERY:
 	CHECK_ATTACH;
 	mutt_query_menu (NULL, 0);
-	MAYBE_REDRAW (menu->redraw);
 	break;
 
       case OP_PURGE_MESSAGE:
@@ -2776,13 +2786,8 @@ int mutt_index_menu (void)
 
       case OP_ENTER_COMMAND:
 
-	CurrentMenu = MENU_MAIN;
 	mutt_enter_command ();
 	mutt_check_rescore (Context);
-	if (option (OPTFORCEREDRAWINDEX))
-	  menu->redraw = REDRAW_FULL;
-	unset_option (OPTFORCEREDRAWINDEX);
-	unset_option (OPTFORCEREDRAWPAGER);
 	break;
 
       case OP_EDIT_MESSAGE:
@@ -2917,7 +2922,6 @@ int mutt_index_menu (void)
 	}
 #endif
 
-	MAYBE_REDRAW (menu->redraw);
 	break;
 
       case OP_PRINT:
@@ -3079,7 +3083,6 @@ int mutt_index_menu (void)
       case OP_SHELL_ESCAPE:
 
 	mutt_shell_escape ();
-	MAYBE_REDRAW (menu->redraw);
 	break;
 
       case OP_TAG_THREAD:
@@ -3202,7 +3205,6 @@ int mutt_index_menu (void)
       case OP_SIDEBAR_TOGGLE_VISIBLE:
 	toggle_option (OPTSIDEBAR);
         mutt_reflow_windows();
-	menu->redraw = REDRAW_FULL;
 	break;
 
       case OP_SIDEBAR_TOGGLE_VIRTUAL:
@@ -3229,6 +3231,7 @@ int mutt_index_menu (void)
     if (done) break;
   }
 
+  mutt_pop_current_menu (menu);
   mutt_menu_destroy (&menu);
   return close;
 }

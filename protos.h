@@ -315,9 +315,9 @@ int mutt_parent_message(CONTEXT *ctx, HEADER *hdr, int find_root);
 int mutt_prepare_template(FILE *fp, CONTEXT *ctx, HEADER *newhdr, HEADER *hdr, short resend);
 int mutt_resend_message(FILE *fp, CONTEXT *ctx, HEADER *cur);
 int mutt_compose_to_sender(HEADER *hdr);
-#define mutt_enter_fname(A,B,C,D,E) _mutt_enter_fname(A,B,C,D,E,0,NULL,NULL,0)
-#define mutt_enter_vfolder(A,B,C,D,E) _mutt_enter_fname(A,B,C,D,E,0,NULL,NULL,MUTT_SEL_VFOLDER)
-int _mutt_enter_fname(const char *prompt, char *buf, size_t blen, int *redraw, int buffy,
+#define mutt_enter_fname(A,B,C,D) _mutt_enter_fname(A,B,C,D,0,NULL,NULL,0)
+#define mutt_enter_vfolder(A,B,C,D) _mutt_enter_fname(A,B,C,D,0,NULL,NULL,MUTT_SEL_VFOLDER)
+int _mutt_enter_fname(const char *prompt, char *buf, size_t blen, int buffy,
                       int multiple, char ***files, int *numfiles, int flags);
 int mutt_enter_string(char *buf, size_t buflen, int col, int flags);
 int _mutt_enter_string(char *buf, size_t buflen, int col, int flags, int multiple,
@@ -371,7 +371,7 @@ int mutt_query_complete(char *buf, size_t buflen);
 int mutt_query_variables(LIST *queries);
 int mutt_save_attachment(FILE *fp, BODY *m, char *path, int flags, HEADER *hdr);
 int _mutt_save_message(HEADER *h, CONTEXT *ctx, int delete, int decode, int decrypt);
-int mutt_save_message(HEADER *h, int delete, int decode, int decrypt, int *redraw);
+int mutt_save_message(HEADER *h, int delete, int decode, int decrypt);
 int mutt_search_command(int cur, int op);
 #ifdef USE_SMTP
 int mutt_smtp_send(const ADDRESS *from, const ADDRESS *to, const ADDRESS *cc,
@@ -484,7 +484,7 @@ int setegid (gid_t);
 #endif /* _AIX */
 
 /* unsorted */
-void ci_bounce_message(HEADER *h, int *redraw);
+void ci_bounce_message(HEADER *h);
 int ci_send_message(int flags, HEADER *msg, char *tempfile, CONTEXT *ctx, HEADER *cur);
 
 /* prototypes for compatibility functions */

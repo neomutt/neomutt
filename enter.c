@@ -527,7 +527,6 @@ int _mutt_enter_string (char *buf, size_t buflen, int col,
 		!memcmp (tempbuf, state->wbuf + i, (state->lastchar - i) * sizeof (wchar_t)))
 	    {
 	      mutt_select_file (buf, buflen, (flags & MUTT_EFILE) ? MUTT_SEL_FOLDER : 0);
-	      set_option (OPTNEEDREDRAW);
 	      if (*buf)
 		replace_part (state, i, buf);
 	      rv = 1;
@@ -637,7 +636,6 @@ int _mutt_enter_string (char *buf, size_t buflen, int col,
 	      _mutt_select_file (buf, buflen,
 				 ((flags & MUTT_EFILE) ? MUTT_SEL_FOLDER : 0) | (multiple ? MUTT_SEL_MULTI : 0),
 				 files, numfiles);
-	      set_option (OPTNEEDREDRAW);
 	      if (*buf)
 	      {
 		mutt_pretty_mailbox (buf, buflen);

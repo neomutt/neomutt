@@ -143,14 +143,12 @@ void mutt_alias_menu (char *buf, size_t buflen, ALIAS *aliases)
     return;
   }
 
-  /* tell whoever called me to redraw the screen when I return */
-  set_option (OPTNEEDREDRAW);
-
   menu = mutt_new_menu (MENU_ALIAS);
   menu->make_entry = alias_entry;
   menu->tag = alias_tag;
   menu->title = _("Aliases");
   menu->help = mutt_compile_help (helpstr, sizeof (helpstr), MENU_ALIAS, AliasHelp);
+  mutt_push_current_menu (menu);
 
 new_aliases:
 
@@ -234,6 +232,7 @@ new_aliases:
     rfc822_write_address (buf, buflen, AliasTable[t]->addr, 1);
   }
 
+  mutt_pop_current_menu (menu);
   mutt_menu_destroy (&menu);
   FREE (&AliasTable);
 

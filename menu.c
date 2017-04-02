@@ -27,6 +27,11 @@
 
 char* SearchBuffers[MENU_MAX];
 
+/* These are used to track the active menus, for redraw operations. */
+static size_t MenuStackCount = 0;
+static size_t MenuStackLen = 0;
+static MUTTMENU **MenuStack = NULL;
+
 static int
 get_color (int index, unsigned char *s)
 {
@@ -302,7 +307,7 @@ void menu_redraw_status (MUTTMENU *menu)
 #ifdef USE_SIDEBAR
 void menu_redraw_sidebar (MUTTMENU *menu)
 {
-  SidebarNeedsRedraw = 0;
+  menu->redraw &= ~REDRAW_SIDEBAR;
   mutt_sb_draw ();
 }
 #endif
@@ -454,7 +459,7 @@ void menu_check_recenter (MUTTMENU *menu)
     if (menu->top != 0)
     {
       menu->top = 0;
-      set_option (OPTNEEDREDRAW);
+      menu->redraw |= REDRAW_INDEX;
     }
   }
   else
@@ -774,6 +779,7 @@ MUTTMENU *mutt_new_menu (int menu)
   p->messagewin = MuttMessageWindow;
   p->color = default_color;
   p->search = menu_search_generic;
+
   return p;
 }
 
@@ -791,6 +797,72 @@ void mutt_menu_destroy (MUTTMENU **p)
 
   FREE (p);		/* __FREE_CHECKED__ */
 }
+
+static MUTTMENU *get_current_menu (void)
+{
+  return MenuStackCount ? MenuStack[MenuStackCount - 1] : NULL;
+}
+
+void mutt_push_current_menu (MUTTMENU *menu)
+{
+  if (MenuStackCount >= MenuStackLen)
+  {
+    MenuStackLen += 5;
+    safe_realloc (&MenuStack, MenuStackLen * sizeof(MUTTMENU *));
+  }
+
+  MenuStack[MenuStackCount++] = menu;
+  CurrentMenu = menu->menu;
+}
+
+void mutt_pop_current_menu (MUTTMENU *menu)
+{
+  MUTTMENU *prev_menu;
+
+  if (!MenuStackCount ||
+      (MenuStack[MenuStackCount - 1] != menu))
+  {
+    mutt_debug (1, "mutt_pop_current_menu() called with inactive menu\n");
+    return;
+  }
+
+  MenuStackCount--;
+  prev_menu = get_current_menu ();
+  if (prev_menu)
+  {
+    CurrentMenu = prev_menu->menu;
+    prev_menu->redraw = REDRAW_FULL;
+  }
+  else
+  {
+    CurrentMenu = MENU_MAIN;
+  }
+}
+
+void mutt_set_current_menu_redraw (int redraw)
+{
+  MUTTMENU *current_menu;
+
+  current_menu = get_current_menu ();
+  if (current_menu)
+    current_menu->redraw |= redraw;
+}
+
+void mutt_set_current_menu_redraw_full (void)
+{
+  MUTTMENU *current_menu;
+
+  current_menu = get_current_menu ();
+  if (current_menu)
+    current_menu->redraw = REDRAW_FULL;
+}
+
+void mutt_set_menu_redraw_full (int menu_type)
+{
+  if (CurrentMenu == menu_type)
+    mutt_set_current_menu_redraw_full ();
+}
+
 
 #define MUTT_SEARCH_UP   1
 #define MUTT_SEARCH_DOWN 2
@@ -917,7 +989,7 @@ int menu_redraw (MUTTMENU *menu)
   if (menu->redraw & REDRAW_STATUS)
     menu_redraw_status (menu);
 #ifdef USE_SIDEBAR
-  if (menu->redraw & REDRAW_SIDEBAR || SidebarNeedsRedraw)
+  if (menu->redraw & REDRAW_SIDEBAR)
     menu_redraw_sidebar (menu);
 #endif
   if (menu->redraw & REDRAW_INDEX)
@@ -1104,14 +1176,7 @@ int mutt_menu_loop (MUTTMENU *menu)
 	break;
 
       case OP_ENTER_COMMAND:
-	CurrentMenu = menu->menu;
 	mutt_enter_command ();
-	if (option (OPTFORCEREDRAWINDEX))
-	{
-	  menu->redraw = REDRAW_FULL;
-	  unset_option (OPTFORCEREDRAWINDEX);
-	  unset_option (OPTFORCEREDRAWPAGER);
-	}
 	break;
 
       case OP_TAG:
@@ -1144,7 +1209,6 @@ int mutt_menu_loop (MUTTMENU *menu)
 
       case OP_SHELL_ESCAPE:
 	mutt_shell_escape ();
-	MAYBE_REDRAW (menu->redraw);
 	break;
 
       case OP_WHAT_KEY:

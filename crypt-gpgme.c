@@ -4007,6 +4007,7 @@ static crypt_key_t *crypt_select_key (crypt_key_t *keys,
   menu->make_entry = crypt_entry;
   menu->help = helpstr;
   menu->data = key_table;
+  mutt_push_current_menu (menu);
 
   {
     const char *ts = NULL;
@@ -4115,10 +4116,9 @@ static crypt_key_t *crypt_select_key (crypt_key_t *keys,
         }
     }
 
+  mutt_pop_current_menu (menu);
   mutt_menu_destroy (&menu);
   FREE (&key_table);
-
-  set_option (OPTNEEDREDRAW);
 
   return k;
 }
@@ -4661,7 +4661,7 @@ void smime_gpgme_init (void)
   init_smime ();
 }
 
-static int gpgme_send_menu (HEADER *msg, int *redraw, int is_smime)
+static int gpgme_send_menu (HEADER *msg, int is_smime)
 {
   crypt_key_t *p = NULL;
   char input_signas[SHORT_STRING];
@@ -4780,7 +4780,6 @@ static int gpgme_send_menu (HEADER *msg, int *redraw, int is_smime)
 
         msg->security |= SIGN;
       }
-      *redraw = REDRAW_FULL;
       break;
 
     case 'b': /* (b)oth */
@@ -4827,14 +4826,14 @@ static int gpgme_send_menu (HEADER *msg, int *redraw, int is_smime)
   return msg->security;
 }
 
-int pgp_gpgme_send_menu (HEADER *msg, int *redraw)
+int pgp_gpgme_send_menu (HEADER *msg)
 {
-  return gpgme_send_menu (msg, redraw, 0);
+  return gpgme_send_menu (msg, 0);
 }
 
-int smime_gpgme_send_menu (HEADER *msg, int *redraw)
+int smime_gpgme_send_menu (HEADER *msg)
 {
-  return gpgme_send_menu (msg, redraw, 1);
+  return gpgme_send_menu (msg, 1);
 }
 
 static int verify_sender (HEADER *h, gpgme_protocol_t protocol)

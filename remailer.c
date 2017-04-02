@@ -464,7 +464,7 @@ static const struct mapping_t RemailerHelp[] =
 };
 
 
-void mix_make_chain (LIST **chainp, int *redraw)
+void mix_make_chain (LIST **chainp)
 {
   LIST *p = NULL;
   MIXCHAIN *chain = NULL;
@@ -490,8 +490,6 @@ void mix_make_chain (LIST **chainp, int *redraw)
     return;
   }
 
-  *redraw = REDRAW_FULL;
-
   chain = safe_calloc (sizeof (MIXCHAIN), 1);
   for (p = *chainp; p; p = p->next)
     mix_chain_add (chain, (char *) p->data, type2_list);
@@ -515,6 +513,7 @@ void mix_make_chain (LIST **chainp, int *redraw)
   menu->data = type2_list;
   menu->help = mutt_compile_help (helpstr, sizeof (helpstr), MENU_MIX, RemailerHelp);
   menu->pagelen = MIX_VOFFSET - 1;
+  mutt_push_current_menu (menu);
 
   while (loop)
   {
@@ -650,6 +649,7 @@ void mix_make_chain (LIST **chainp, int *redraw)
     }
   }
 
+  mutt_pop_current_menu (menu);
   mutt_menu_destroy (&menu);
 
   /* construct the remailer list */

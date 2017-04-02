@@ -1258,6 +1258,7 @@ void _mutt_select_file (char *f, size_t flen, int flags, char ***files, int *num
     option (OPTNEWS) ? FolderNewsHelp :
 #endif
     FolderHelp);
+  mutt_push_current_menu (menu);
 
   init_menu (&state, menu, title, sizeof (title), buffy);
 
@@ -1451,7 +1452,6 @@ void _mutt_select_file (char *f, size_t flen, int flags, char ***files, int *num
 	}
 
 	destroy_state (&state);
-	mutt_menu_destroy (&menu);
 	goto bail;
 
       case OP_BROWSER_TELL:
@@ -1488,7 +1488,6 @@ void _mutt_select_file (char *f, size_t flen, int flags, char ***files, int *num
 	  menu->data = state.entry;
           browser_highlight_default (&state, menu);
 	  init_menu (&state, menu, title, sizeof (title), buffy);
-	  MAYBE_REDRAW (menu->redraw);
 	}
 	/* else leave error on screen */
 	break;
@@ -1510,7 +1509,6 @@ void _mutt_select_file (char *f, size_t flen, int flags, char ***files, int *num
 	    menu->data = state.entry;
             browser_highlight_default (&state, menu);
 	    init_menu (&state, menu, title, sizeof (title), buffy);
-	    MAYBE_REDRAW (menu->redraw);
 	  }
 	}
 	break;
@@ -1548,7 +1546,6 @@ void _mutt_select_file (char *f, size_t flen, int flags, char ***files, int *num
 	      state.entrylen--;
 	      mutt_message (_("Mailbox deleted."));
 	      init_menu (&state, menu, title, sizeof (title), buffy);
-	      MAYBE_REDRAW (menu->redraw);
 	    }
 	  }
 	  else
@@ -1620,7 +1617,6 @@ void _mutt_select_file (char *f, size_t flen, int flags, char ***files, int *num
 		  mutt_error (_("Error scanning directory."));
 		  if (examine_directory (menu, &state, LastDir, prefix) == -1)
 		  {
-		    mutt_menu_destroy (&menu);
 		    goto bail;
 		  }
 		}
@@ -1634,7 +1630,6 @@ void _mutt_select_file (char *f, size_t flen, int flags, char ***files, int *num
 	      mutt_perror (buf);
 	  }
 	}
-	MAYBE_REDRAW (menu->redraw);
 	break;
 
       case OP_ENTER_MASK:
@@ -1690,7 +1685,6 @@ void _mutt_select_file (char *f, size_t flen, int flags, char ***files, int *num
 	    else
 	    {
 	      mutt_error (_("Error scanning directory."));
-	      mutt_menu_destroy (&menu);
 	      goto bail;
 	    }
 	    killPrefix = 0;
@@ -1701,7 +1695,6 @@ void _mutt_select_file (char *f, size_t flen, int flags, char ***files, int *num
 	    }
 	  }
 	}
-	MAYBE_REDRAW (menu->redraw);
 	break;
 
       case OP_SORT:
@@ -1827,10 +1820,8 @@ void _mutt_select_file (char *f, size_t flen, int flags, char ***files, int *num
 	{
 	  strfcpy (f, buf, flen);
 	  destroy_state (&state);
-	  mutt_menu_destroy (&menu);
 	  goto bail;
 	}
-	MAYBE_REDRAW (menu->redraw);
 	break;
 
       case OP_BROWSER_VIEW_FILE:
@@ -1845,7 +1836,6 @@ void _mutt_select_file (char *f, size_t flen, int flags, char ***files, int *num
 	{
 	  strfcpy (f, state.entry[menu->current].name, flen);
 	  destroy_state (&state);
-	  mutt_menu_destroy (&menu);
 	  goto bail;
 	}
 	else
@@ -2051,6 +2041,12 @@ void _mutt_select_file (char *f, size_t flen, int flags, char ***files, int *num
   }
 
   bail:
+
+  if (menu)
+  {
+    mutt_pop_current_menu (menu);
+    mutt_menu_destroy (&menu);
+  }
 
   if (GotoSwapper[0])
     GotoSwapper[0] = '\0';

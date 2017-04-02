@@ -174,6 +174,7 @@ static HEADER *select_msg (void)
   menu->title = _("Postponed Messages");
   menu->data = PostContext;
   menu->help = mutt_compile_help (helpstr, sizeof (helpstr), MENU_POST, PostponeHelp);
+  mutt_push_current_menu (menu);
 
   /* The postponed mailbox is setup to have sorting disabled, but the global
    * Sort variable may indicate something different.   Sorting has to be
@@ -218,6 +219,7 @@ static HEADER *select_msg (void)
   }
 
   Sort = orig_sort;
+  mutt_pop_current_menu (menu);
   mutt_menu_destroy (&menu);
   return (r > -1 ? PostContext->hdrs[r] : NULL);
 }

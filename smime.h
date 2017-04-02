@@ -57,7 +57,7 @@ char *smime_find_keys(ADDRESS *adrlist, int oppenc_mode);
 
 void smime_invoke_import(char *infile, char *mailbox);
 
-int smime_send_menu(HEADER *msg, int *redraw);
+int smime_send_menu(HEADER *msg);
 
 #endif
 
