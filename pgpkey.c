@@ -376,33 +376,33 @@ static int pgp_compare_trust (const void *a, const void *b)
 				       : _pgp_compare_trust (a, b));
 }
 
-static int pgp_key_is_valid (pgp_key_t k)
+static bool pgp_key_is_valid (pgp_key_t k)
 {
   pgp_key_t pk = pgp_principal_key (k);
   if (k->flags & KEYFLAG_CANTUSE)
-    return 0;
+    return false;
   if (pk->flags & KEYFLAG_CANTUSE)
-    return 0;
+    return false;
 
-  return 1;
+  return true;
 }
 
-static int pgp_id_is_strong (pgp_uid_t *uid)
+static bool pgp_id_is_strong (pgp_uid_t *uid)
 {
   if ((uid->trust & 3) < 3)
-    return 0;
+    return false;
   /* else */
-  return 1;
+  return true;
 }
 
-static int pgp_id_is_valid (pgp_uid_t *uid)
+static bool pgp_id_is_valid (pgp_uid_t *uid)
 {
   if (!pgp_key_is_valid (uid->parent))
-    return 0;
+    return false;
   if (uid->flags & KEYFLAG_CANTUSE)
-    return 0;
+    return false;
   /* else */
-  return 1;
+  return true;
 }
 
 #define PGP_KV_VALID  	1
