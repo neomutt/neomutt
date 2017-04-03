@@ -85,7 +85,7 @@ int mx_is_nntp(const char *p);
 int mx_access(const char *path, int flags);
 int mx_check_empty(const char *path);
 
-int mx_is_maildir(const char *path);
-int mx_is_mh(const char *path);
+bool mx_is_maildir(const char *path);
+bool mx_is_mh(const char *path);
 
 #endif /* _MUTT_MAILBOX_H */
