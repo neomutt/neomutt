@@ -93,7 +93,7 @@ check_for_mailing_list (ADDRESS *adr, const char *pfx, char *buf, int buflen)
  * If one is found, print the address of the list into buf, then return 1.
  * Otherwise, simply return 0.
  */
-static int
+static bool
 check_for_mailing_list_addr (ADDRESS *adr, char *buf, int buflen)
 {
   for (; adr; adr = adr->next)
@@ -101,25 +101,25 @@ check_for_mailing_list_addr (ADDRESS *adr, char *buf, int buflen)
     if (mutt_is_subscribed_list (adr))
     {
       if (buf && buflen)
-	snprintf (buf, buflen, "%s", adr->mailbox);
-      return 1;
+        snprintf (buf, buflen, "%s", adr->mailbox);
+      return true;
     }
   }
-  return 0;
+  return false;
 }
 
 
-static int first_mailing_list (char *buf, size_t buflen, ADDRESS *a)
+static bool first_mailing_list (char *buf, size_t buflen, ADDRESS *a)
 {
   for (; a; a = a->next)
   {
     if (mutt_is_subscribed_list (a))
     {
       mutt_save_path (buf, buflen, a);
-      return 1;
+      return true;
     }
   }
-  return 0;
+  return false;
 }
 
 /**
