@@ -52,7 +52,7 @@ enum
   RANGE_E_CTX,
 };
 
-static int eat_regexp (pattern_t *pat, BUFFER *s, BUFFER *err)
+static bool eat_regexp (pattern_t *pat, BUFFER *s, BUFFER *err)
 {
   BUFFER buf;
   char errmsg[STRING];
@@ -65,12 +65,12 @@ static int eat_regexp (pattern_t *pat, BUFFER *s, BUFFER *err)
       !buf.data)
   {
     snprintf (err->data, err->dsize, _("Error in expression: %s"), pexpr);
-    return -1;
+    return false;
   }
   if (!*buf.data)
   {
     snprintf (err->data, err->dsize, _("Empty expression"));
-    return -1;
+    return false;
   }
 
   if (pat->stringmatch)
@@ -94,12 +94,12 @@ static int eat_regexp (pattern_t *pat, BUFFER *s, BUFFER *err)
       mutt_buffer_printf (err, "'%s': %s", buf.data, errmsg);
       FREE (&buf.data);
       FREE (&pat->p.rx);
-      return -1;
+      return false;
     }
     FREE (&buf.data);
   }
 
-  return 0;
+  return true;
 }
 
 /* Ny	years
@@ -363,7 +363,7 @@ static void adjust_date_range (struct tm *min, struct tm *max)
   }
 }
 
-static int eat_date (pattern_t *pat, BUFFER *s, BUFFER *err)
+static bool eat_date (pattern_t *pat, BUFFER *s, BUFFER *err)
 {
   BUFFER buffer;
   struct tm min, max;
@@ -375,12 +375,12 @@ static int eat_date (pattern_t *pat, BUFFER *s, BUFFER *err)
       || !buffer.data)
   {
     snprintf (err->data, err->dsize, _("Error in expression: %s"), pexpr);
-    return -1;
+    return false;
   }
   if (!*buffer.data)
   {
     snprintf (err->data, err->dsize, _("Empty expression"));
-    return -1;
+    return false;
   }
 
   memset (&min, 0, sizeof (min));
@@ -450,7 +450,7 @@ static int eat_date (pattern_t *pat, BUFFER *s, BUFFER *err)
       if ((pc = get_date (pc, &min, err)) == NULL)
       {
 	FREE (&buffer.data);
-	return -1;
+	return false;
       }
       haveMin = true;
       SKIPWS (pc);
@@ -485,7 +485,7 @@ static int eat_date (pattern_t *pat, BUFFER *s, BUFFER *err)
       if (!parse_date_range (pc, &min, &max, haveMin, &baseMin, err))
       { /* bail out on any parsing error */
 	FREE (&buffer.data);
-	return -1;
+	return false;
       }
     }
   }
@@ -498,10 +498,10 @@ static int eat_date (pattern_t *pat, BUFFER *s, BUFFER *err)
 
   FREE (&buffer.data);
 
-  return 0;
+  return true;
 }
 
-static int eat_range (pattern_t *pat, BUFFER *s, BUFFER *err)
+static bool eat_range (pattern_t *pat, BUFFER *s, BUFFER *err)
 {
   char *tmp = NULL;
   int do_exclusive = 0;
@@ -541,14 +541,14 @@ static int eat_range (pattern_t *pat, BUFFER *s, BUFFER *err)
     if (*s->dptr == '>')
     {
       s->dptr = tmp;
-      return 0;
+      return true;
     }
     if (*tmp != '-')
     {
       /* exact value */
       pat->max = pat->min;
       s->dptr = tmp;
-      return 0;
+      return true;
     }
     tmp++;
   }
@@ -583,7 +583,7 @@ static int eat_range (pattern_t *pat, BUFFER *s, BUFFER *err)
 
   SKIPWS (tmp);
   s->dptr = tmp;
-  return 0;
+  return true;
 }
 
 static int
@@ -747,7 +747,7 @@ eat_range_by_regexp (pattern_t *pat, BUFFER *s, int kind, BUFFER *err)
   return RANGE_E_OK;
 }
 
-static int
+static bool
 eat_message_range (pattern_t *pat, BUFFER *s, BUFFER *err)
 {
   int skip_quote = 0;
@@ -757,7 +757,7 @@ eat_message_range (pattern_t *pat, BUFFER *s, BUFFER *err)
   if (!Context)
   {
     strfcpy(err->data, _("No Context"), err->dsize);
-    return -1;
+    return false;
   }
 
   /*
@@ -785,10 +785,10 @@ eat_message_range (pattern_t *pat, BUFFER *s, BUFFER *err)
       if (skip_quote && (*s->dptr == '"'))
         s->dptr++;
       SKIPWS (s->dptr);
-      return 0;
+      return true;
     }
   }
-  return -1;
+  return false;
 }
 
 static const struct pattern_flags
@@ -796,7 +796,7 @@ static const struct pattern_flags
   int tag;	/* character used to represent this op */
   int op;	/* operation to perform */
   int class;
-  int (*eat_arg) (pattern_t *, BUFFER *, BUFFER *);
+  bool (*eat_arg) (pattern_t *, BUFFER *, BUFFER *);
 }
 Flags[] =
 {
@@ -1255,7 +1255,7 @@ pattern_t *mutt_pattern_comp (/* const */ char *s, int flags, BUFFER *err)
 	    mutt_pattern_free (&curlist);
 	    return NULL;
 	  }
-	  if (entry->eat_arg (tmp, &ps, err) == -1)
+	  if (!entry->eat_arg (tmp, &ps, err))
 	  {
 	    mutt_pattern_free (&curlist);
 	    return NULL;
