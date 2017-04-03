@@ -356,73 +356,71 @@ static void mx_unlink_empty (const char *path)
 
 #ifdef USE_IMAP
 
-int mx_is_imap(const char *p)
+bool mx_is_imap(const char *p)
 {
   url_scheme_t scheme;
 
   if (!p)
-    return 0;
+    return false;
 
   if (*p == '{')
-    return 1;
+    return true;
 
   scheme = url_check_scheme (p);
   if (scheme == U_IMAP || scheme == U_IMAPS)
-    return 1;
+    return true;
 
-  return 0;
+  return false;
 }
 
 #endif
 
 #ifdef USE_POP
-int mx_is_pop (const char *p)
+bool mx_is_pop (const char *p)
 {
   url_scheme_t scheme;
 
   if (!p)
-    return 0;
+    return false;
 
   scheme = url_check_scheme (p);
   if (scheme == U_POP || scheme == U_POPS)
-    return 1;
+    return true;
 
-  return 0;
+  return false;
 }
 #endif
 
 #ifdef USE_NNTP
-int mx_is_nntp (const char *p)
+bool mx_is_nntp (const char *p)
 {
   url_scheme_t scheme;
 
   if (!p)
-    return 0;
+    return false;
 
   scheme = url_check_scheme (p);
   if (scheme == U_NNTP || scheme == U_NNTPS)
-    return 1;
+    return true;
 
-  return 0;
+  return false;
 }
 #endif
 
 #ifdef USE_NOTMUCH
-
-int mx_is_notmuch(const char *p)
+bool mx_is_notmuch(const char *p)
 {
   url_scheme_t scheme;
 
   if (!p)
-    return 0;
+    return false;
 
   scheme = url_check_scheme (p);
   if (scheme == U_NOTMUCH)
-    return 1;
+    return true;
 
-  return 0;
+  return false;
 }
-
 #endif
 
 int mx_get_magic (const char *path)

@@ -67,7 +67,7 @@ int mh_sync_mailbox_message (CONTEXT * ctx, int msgno);
 #endif
 
 #ifdef USE_NOTMUCH
-int mx_is_notmuch(const char *p);
+bool mx_is_notmuch(const char *p);
 #endif
 
 FILE *maildir_open_find_message (const char *folder, const char *msg,
