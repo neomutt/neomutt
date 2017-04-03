@@ -50,7 +50,7 @@ const char *pgp_pkalgbytype (unsigned char type)
   }
 }
 
-short pgp_canencrypt (unsigned char type)
+bool pgp_canencrypt (unsigned char type)
 {
   switch (type)
   {
@@ -58,13 +58,13 @@ short pgp_canencrypt (unsigned char type)
   case 2:
   case 16:
   case 20:
-    return 1;
+    return true;
   default:
-    return 0;
+    return false;
   }
 }
 
-short pgp_cansign (unsigned char type)
+bool pgp_cansign (unsigned char type)
 {
   switch (type)
   {
@@ -72,9 +72,9 @@ short pgp_cansign (unsigned char type)
   case 3:
   case 17:
   case 20:
-    return 1;
+    return true;
   default:
-    return 0;
+    return false;
   }
 }
 
