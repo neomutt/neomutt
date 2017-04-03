@@ -295,7 +295,7 @@ static HEADER *find_common_parent (ATTACHPTR ** idx, short idxlen,
  * Note: This and the calling procedure could be optimized quite a
  * bit.  For now, it's not worth the effort.
  */
-static int is_parent (short i, ATTACHPTR **idx, short idxlen, BODY *cur)
+static bool is_parent (short i, ATTACHPTR **idx, short idxlen, BODY *cur)
 {
   short level = idx[i]->level;
 
