@@ -296,8 +296,8 @@ int mutt_check_traditional_pgp(HEADER *h, int *redraw);
 int mutt_command_complete(char *buffer, size_t len, int pos, int numtabs);
 int mutt_var_value_complete(char *buffer, size_t len, int pos);
 #ifdef USE_NOTMUCH
-int mutt_nm_query_complete(char *buffer, size_t len, int pos, int numtabs);
-int mutt_nm_tag_complete(char *buffer, size_t len, int pos, int numtabs);
+bool mutt_nm_query_complete(char *buffer, size_t len, int pos, int numtabs);
+bool mutt_nm_tag_complete(char *buffer, size_t len, int pos, int numtabs);
 #endif
 int mutt_complete(char *s, size_t slen);
 int mutt_compose_attachment(BODY *a);
