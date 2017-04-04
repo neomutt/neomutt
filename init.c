@@ -3766,7 +3766,6 @@ void mutt_init (int skip_sys_rc, LIST *commands)
   struct passwd *pw = NULL;
   struct utsname utsname;
   char *p, buffer[STRING];
-  char *domain = NULL;
   int i, need_pause = 0;
   BUFFER err;
 
@@ -3834,10 +3833,6 @@ void mutt_init (int skip_sys_rc, LIST *commands)
 
   /* And about the host... */
 
-#ifdef DOMAIN
-  domain = safe_strdup (DOMAIN);
-#endif /* DOMAIN */
-
   /*
    * The call to uname() shouldn't fail, but if it does, the system is horribly
    * broken, and the system's networking configuration is in an unreliable
@@ -3857,13 +3852,12 @@ void mutt_init (int skip_sys_rc, LIST *commands)
     Hostname = safe_strdup (utsname.nodename);
 
   /* now get FQDN.  Use configured domain first, DNS next, then uname */
-  if (domain)
-  {
-    /* we have a compile-time domain name, use that for Fqdn */
-    Fqdn = safe_malloc (mutt_strlen (domain) + mutt_strlen (Hostname) + 2);
-    sprintf (Fqdn, "%s.%s", NONULL(Hostname), domain);	/* __SPRINTF_CHECKED__ */
-  }
-  else if (!(getdnsdomainname (buffer, sizeof (buffer))))
+#ifdef DOMAIN
+  /* we have a compile-time domain name, use that for Fqdn */
+  Fqdn = safe_malloc (mutt_strlen (DOMAIN) + mutt_strlen (Hostname) + 2);
+  sprintf (Fqdn, "%s.%s", NONULL(Hostname), DOMAIN);	/* __SPRINTF_CHECKED__ */
+#else
+  if (!(getdnsdomainname (buffer, sizeof (buffer))))
   {
     Fqdn = safe_malloc (mutt_strlen (buffer) + mutt_strlen (Hostname) + 2);
     sprintf (Fqdn, "%s.%s", NONULL(Hostname), buffer);	/* __SPRINTF_CHECKED__ */
@@ -3879,7 +3873,7 @@ void mutt_init (int skip_sys_rc, LIST *commands)
      * network.
      */
     Fqdn = safe_strdup(utsname.nodename);
-
+#endif
 
 #ifdef USE_NNTP
   {
