@@ -1291,8 +1291,6 @@ static int parse_attachments (BUFFER *buf, BUFFER *s, unsigned long data, BUFFER
     print_attach_list(AttachExclude, '-', "A");
     print_attach_list(InlineAllow,   '+', "I");
     print_attach_list(InlineExclude, '-', "I");
-    mutt_set_menu_redraw_full (MENU_MAIN);
-    mutt_set_menu_redraw_full (MENU_PAGER);
     mutt_any_key_to_continue (NULL);
     return 0;
   }
@@ -1974,7 +1972,6 @@ static int parse_setenv(BUFFER *tmp, BUFFER *s, unsigned long data, BUFFER *err)
 
     if (found)
     {
-      mutt_set_current_menu_redraw_full ();
       mutt_any_key_to_continue (NULL);
       return 0;
     }
