@@ -417,7 +417,8 @@ static int include_forward (CONTEXT *ctx, HEADER *cur, FILE *out)
   if (WithCrypto && (cur->security & ENCRYPT) && option (OPTFORWDECODE))
   {
     /* make sure we have the user's passphrase before proceeding... */
-    crypt_valid_passphrase (cur->security);
+    if (!crypt_valid_passphrase (cur->security))
+      return -1;
   }
 
   mutt_forward_intro (out, cur);
@@ -475,7 +476,8 @@ static int include_reply (CONTEXT *ctx, HEADER *cur, FILE *out)
   if (WithCrypto && (cur->security & ENCRYPT))
   {
     /* make sure we have the user's passphrase before proceeding... */
-    crypt_valid_passphrase (cur->security);
+    if (!crypt_valid_passphrase (cur->security))
+      return -1;
   }
 
   mutt_parse_mime_message (ctx, cur);
@@ -1158,13 +1160,15 @@ static void decode_descriptions (BODY *b)
 static void fix_end_of_file (const char *data)
 {
   FILE *fp = NULL;
-  int c;
 
   if ((fp = safe_fopen (data, "a+")) == NULL)
     return;
-  fseek (fp,-1,SEEK_END);
-  if ((c = fgetc(fp)) != '\n')
-    fputc ('\n', fp);
+  if (fseek (fp,-1,SEEK_END) >= 0)
+  {
+    int c = fgetc(fp);
+    if (c != '\n')
+      fputc ('\n', fp);
+  }
   safe_fclose (&fp);
 }
 

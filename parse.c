@@ -621,7 +621,8 @@ BODY *mutt_parse_multipart (FILE *fp, const char *boundary, LOFF_T end_off, int 
 
 #ifdef SUN_ATTACHMENT
         if (mutt_get_parameter ("content-lines", new->parameter)) {
-	  mutt_atoi (mutt_get_parameter ("content-lines", new->parameter), &lines);
+	  if (mutt_atoi (mutt_get_parameter ("content-lines", new->parameter), &lines) < 0)
+            lines = 0;
 	  for ( ; lines; lines-- )
 	     if (ftello (fp) >= end_off || fgets (buffer, LONG_STRING, fp) == NULL)
 	       break;

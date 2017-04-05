@@ -530,7 +530,7 @@ static int data_object_to_stream (gpgme_data_t data, FILE *fp)
       return -1;
     }
 
-  while ((nread = gpgme_data_read (data, buf, sizeof (buf))))
+  while ((nread = gpgme_data_read (data, buf, sizeof (buf))) >= 0)
     {
       /* fixme: we are not really converting CRLF to LF but just
          skipping CR. Doing it correctly needs a more complex logic */
@@ -565,7 +565,7 @@ static char *data_object_to_tempfile (gpgme_data_t data, char *tempf, FILE **ret
   int err;
   char tempfb[_POSIX_PATH_MAX];
   FILE *fp = NULL;
-  size_t nread = 0;
+  ssize_t nread = 0;
 
   if (!tempf)
     {
@@ -584,7 +584,7 @@ static char *data_object_to_tempfile (gpgme_data_t data, char *tempf, FILE **ret
     {
       char buf[4096];
 
-      while ((nread = gpgme_data_read (data, buf, sizeof (buf))))
+      while ((nread = gpgme_data_read (data, buf, sizeof (buf))) >= 0)
         {
           if (fwrite (buf, nread, 1, fp) != 1)
             {

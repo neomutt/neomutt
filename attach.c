@@ -729,7 +729,8 @@ int mutt_save_attachment (FILE *fp, BODY *m, char *path, int flags, HEADER *hdr)
       hn->msgno = hdr->msgno; /* required for MH/maildir */
       hn->read = true;
 
-      fseeko (fp, m->offset, SEEK_SET);
+      if (fseeko (fp, m->offset, SEEK_SET) < 0)
+        return -1;
       if (fgets (buf, sizeof (buf), fp) == NULL)
 	return -1;
       if (mx_open_mailbox(path, MUTT_APPEND | MUTT_QUIET, &ctx) == NULL)

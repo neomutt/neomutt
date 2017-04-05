@@ -397,8 +397,11 @@ void pop_logout (CONTEXT *ctx)
     if (ret != -1)
     {
       strfcpy (buf, "QUIT\r\n", sizeof (buf));
-      pop_query (pop_data, buf, sizeof (buf));
+      ret = pop_query (pop_data, buf, sizeof (buf));
     }
+
+    if (ret < 0)
+      mutt_debug(1, "Error closing POP connection\n");
 
     mutt_clear_error ();
   }

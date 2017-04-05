@@ -64,7 +64,8 @@ mutt_copy_hdr (FILE *in, FILE *out, LOFF_T off_start, LOFF_T off_end, int flags,
     return -1;
 
   if (ftello (in) != off_start)
-    fseeko (in, off_start, SEEK_SET);
+    if (fseeko (in, off_start, SEEK_SET) < 0)
+      return -1;
 
   buf[0] = '\n';
   buf[1] = 0;
@@ -575,7 +576,8 @@ _mutt_copy_message (FILE *fpout, FILE *fpin, HEADER *hdr, BODY *body,
       new_offset = ftello (fpout);
 
       /* Copy the body */
-      fseeko (fpin, body->offset, SEEK_SET);
+      if (fseeko (fpin, body->offset, SEEK_SET) < 0)
+	return -1;
       if (copy_delete_attach (body, fpin, fpout, date))
 	return -1;
 
@@ -678,7 +680,8 @@ _mutt_copy_message (FILE *fpout, FILE *fpin, HEADER *hdr, BODY *body,
     mutt_write_mime_header (cur, fpout);
     fputc ('\n', fpout);
 
-    fseeko (fp, cur->offset, SEEK_SET);
+    if (fseeko (fp, cur->offset, SEEK_SET) < 0)
+      return -1;
     if (mutt_copy_bytes (fp, fpout, cur->length) == -1)
     {
       safe_fclose (&fp);
@@ -690,7 +693,8 @@ _mutt_copy_message (FILE *fpout, FILE *fpin, HEADER *hdr, BODY *body,
   }
   else
   {
-    fseeko (fpin, body->offset, SEEK_SET);
+    if (fseeko (fpin, body->offset, SEEK_SET) < 0)
+      return -1;
     if (flags & MUTT_CM_PREFIX)
     {
       int c;
@@ -760,7 +764,8 @@ _mutt_append_message (CONTEXT *dest, FILE *fpin, CONTEXT *src, HEADER *hdr,
   MESSAGE *msg = NULL;
   int r;
 
-  fseeko (fpin, hdr->offset, SEEK_SET);
+  if (fseeko (fpin, hdr->offset, SEEK_SET) < 0)
+    return -1;
   if (fgets (buf, sizeof (buf), fpin) == NULL)
     return -1;
 
