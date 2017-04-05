@@ -318,16 +318,6 @@ static void query_menu (char *buf, size_t buflen, QUERY *results, int retbuf)
   char helpstr[LONG_STRING];
   char title[STRING];
 
-  snprintf (title, sizeof (title), _("Query")); /* FIXME */
-
-  menu = mutt_new_menu (MENU_QUERY);
-  menu->make_entry = query_entry;
-  menu->search = query_search;
-  menu->tag = query_tag;
-  menu->title = title;
-  menu->help = mutt_compile_help (helpstr, sizeof (helpstr), MENU_QUERY, QueryHelp);
-  mutt_push_current_menu (menu);
-
   if (results == NULL)
   {
     /* Prompt for Query */
@@ -340,6 +330,14 @@ static void query_menu (char *buf, size_t buflen, QUERY *results, int retbuf)
   if (results)
   {
     snprintf (title, sizeof (title), _("Query '%s'"), buf);
+
+    menu = mutt_new_menu (MENU_QUERY);
+    menu->make_entry = query_entry;
+    menu->search = query_search;
+    menu->tag = query_tag;
+    menu->title = title;
+    menu->help = mutt_compile_help (helpstr, sizeof (helpstr), MENU_QUERY, QueryHelp);
+    mutt_push_current_menu (menu);
 
     /* count the number of results */
     for (queryp = results; queryp; queryp = queryp->next)
@@ -536,8 +534,8 @@ static void query_menu (char *buf, size_t buflen, QUERY *results, int retbuf)
 
     free_query (&results);
     FREE (&QueryTable);
-  }
 
-  mutt_pop_current_menu (menu);
-  mutt_menuDestroy (&menu);
+    mutt_pop_current_menu (menu);
+    mutt_menuDestroy (&menu);
+  }
 }
