@@ -1858,7 +1858,7 @@ int pgp_gpgme_decrypt_mime (FILE *fpin, FILE **fpout, BODY *b, BODY **cur)
     }
     unlink (tempfile);
 
-    fseeko (s.fpin, b->offset, 0);
+    fseeko (s.fpin, b->offset, SEEK_SET);
     s.fpout = decoded_fp;
 
     mutt_decode_attachment (b, &s);
@@ -1926,7 +1926,7 @@ int smime_gpgme_decrypt_mime (FILE *fpin, FILE **fpout, BODY *b, BODY **cur)
   saved_b_length = b->length;
   memset (&s, 0, sizeof (s));
   s.fpin = fpin;
-  fseeko (s.fpin, b->offset, 0);
+  fseeko (s.fpin, b->offset, SEEK_SET);
   mutt_mktemp (tempfile, sizeof (tempfile));
   if (!(tmpfp = safe_fopen (tempfile, "w+")))
     {
@@ -1980,7 +1980,7 @@ int smime_gpgme_decrypt_mime (FILE *fpin, FILE **fpout, BODY *b, BODY **cur)
       saved_b_length = bb->length;
       memset (&s, 0, sizeof (s));
       s.fpin = *fpout;
-      fseeko (s.fpin, bb->offset, 0);
+      fseeko (s.fpin, bb->offset, SEEK_SET);
       mutt_mktemp (tempfile, sizeof (tempfile));
       if (!(tmpfp = safe_fopen (tempfile, "w+")))
         {
@@ -2372,7 +2372,7 @@ int pgp_gpgme_application_handler (BODY *m, STATE *s)
   if (!mutt_get_body_charset (body_charset, sizeof (body_charset), m))
     strfcpy (body_charset, "iso-8859-1", sizeof (body_charset));
 
-  fseeko (s->fpin, m->offset, 0);
+  fseeko (s->fpin, m->offset, SEEK_SET);
   last_pos = m->offset;
 
   for (bytes = m->length; bytes > 0;)

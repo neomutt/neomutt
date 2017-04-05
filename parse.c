@@ -1416,7 +1416,7 @@ ENVELOPE *mutt_read_rfc822_header (FILE *f, HEADER *hdr, short user_hdrs,
 	continue;
       }
 
-      fseeko (f, loc, 0);
+      fseeko (f, loc, SEEK_SET);
       break; /* end of header */
     }
 
