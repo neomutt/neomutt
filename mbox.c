@@ -473,7 +473,7 @@ static int mbox_open_mailbox_append (CONTEXT *ctx, int flags)
     return -1;
   }
 
-  fseek (ctx->fp, 0, 2);
+  fseek (ctx->fp, 0, SEEK_END);
 
   return 0;
 }

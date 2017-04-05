@@ -93,7 +93,7 @@ static int fseek_last_message (FILE * f)
   /* here we are at the beginning of the file */
   if (mutt_strncmp ("From ", buffer, 5) == 0)
   {
-    fseek (f, 0, 0);
+    fseek (f, 0, SEEK_SET);
     return 0;
   }
 

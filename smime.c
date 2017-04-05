@@ -1850,7 +1850,7 @@ static BODY *smime_handle_entity (BODY *m, STATE *s, FILE *outFile)
     return NULL;
   }
 
-  fseeko (s->fpin, m->offset, 0);
+  fseeko (s->fpin, m->offset, SEEK_SET);
 
   mutt_copy_bytes (s->fpin, tmpfp,  m->length);
 
@@ -2031,7 +2031,7 @@ int smime_decrypt_mime (FILE *fpin, FILE **fpout, BODY *b, BODY **cur)
 
   memset (&s, 0, sizeof (s));
   s.fpin = fpin;
-  fseeko (s.fpin, b->offset, 0);
+  fseeko (s.fpin, b->offset, SEEK_SET);
 
   mutt_mktemp (tempfile, sizeof (tempfile));
   if ((tmpfp = safe_fopen (tempfile, "w+")) == NULL)

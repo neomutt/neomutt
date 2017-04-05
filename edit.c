@@ -75,7 +75,7 @@ be_snarf_data (FILE *f, char **buf, int *bufmax, int *buflen, LOFF_T offset,
     tmplen = sizeof (tmp) - tmplen;
   }
 
-  fseeko (f, offset, 0);
+  fseeko (f, offset, SEEK_SET);
   while (bytes > 0)
   {
     if (fgets (p, tmplen - 1, f) == NULL) break;
