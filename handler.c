@@ -1059,7 +1059,7 @@ static int alternative_handler (BODY *a, STATE *s)
       btlen = mutt_strlen (t->data);
     }
 
-    if (a && a->parts)
+    if (a->parts)
       b = a->parts;
     else
       b = a;
@@ -1082,7 +1082,7 @@ static int alternative_handler (BODY *a, STATE *s)
   /* Next, look for an autoviewable type */
   if (!choice)
   {
-    if (a && a->parts)
+    if (a->parts)
       b = a->parts;
     else
       b = a;
@@ -1097,7 +1097,7 @@ static int alternative_handler (BODY *a, STATE *s)
   /* Then, look for a text entry */
   if (!choice)
   {
-    if (a && a->parts)
+    if (a->parts)
       b = a->parts;
     else
       b = a;
@@ -1128,7 +1128,7 @@ static int alternative_handler (BODY *a, STATE *s)
   /* Finally, look for other possibilities */
   if (!choice)
   {
-    if (a && a->parts)
+    if (a->parts)
       b = a->parts;
     else
       b = a;
@@ -1156,7 +1156,7 @@ static int alternative_handler (BODY *a, STATE *s)
 
     if (mutt_strcmp ("info", ShowMultipartAlternative) == 0)
     {
-      if (a && a->parts)
+      if (a->parts)
         b = a->parts;
       else
         b = a;

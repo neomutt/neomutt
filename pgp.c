@@ -886,7 +886,7 @@ static BODY *pgp_decrypt_part (BODY *a, STATE *s, FILE *fpout, BODY *p)
   if (s->flags & MUTT_DISPLAY)
   {
     rewind (pgperr);
-    if (pgp_copy_checksig (pgperr, s->fpout) == 0 && !rv && p)
+    if (pgp_copy_checksig (pgperr, s->fpout) == 0 && !rv)
       p->goodsig = true;
     else
       p->goodsig = false;

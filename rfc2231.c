@@ -188,15 +188,12 @@ static void rfc2231_join_continuations (PARAMETER **head,
 	valp = par->value;
     } while (par && (strcmp (par->attribute, attribute) == 0));
 
-    if (value)
-    {
-      if (encoded)
-	mutt_convert_string (&value, charset, Charset, MUTT_ICONV_HOOK_FROM);
-      *head = mutt_new_parameter ();
-      (*head)->attribute = safe_strdup (attribute);
-      (*head)->value = value;
-      head = &(*head)->next;
-    }
+    if (encoded)
+      mutt_convert_string (&value, charset, Charset, MUTT_ICONV_HOOK_FROM);
+    *head = mutt_new_parameter ();
+    (*head)->attribute = safe_strdup (attribute);
+    (*head)->value = value;
+    head = &(*head)->next;
   }
 }
 

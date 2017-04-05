@@ -823,7 +823,7 @@ pgp_key_t pgp_getkeybyaddr (ADDRESS * a, short abilities, pgp_ring_t keyring,
     hints = pgp_add_string_to_hints (hints, a->personal);
 
   if (! oppenc_mode )
-    mutt_message (_("Looking for keys matching \"%s\"..."), a->mailbox);
+    mutt_message (_("Looking for keys matching \"%s\"..."), a ? a->mailbox : "");
   keys = pgp_get_candidates (keyring, hints);
 
   mutt_free_list (&hints);

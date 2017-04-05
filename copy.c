@@ -774,7 +774,7 @@ _mutt_append_message (CONTEXT *dest, FILE *fpin, CONTEXT *src, HEADER *hdr,
     r = -1;
 
 #ifdef USE_NOTMUCH
-  if (hdr && msg->commited_path && dest->magic == MUTT_MAILDIR && src->magic == MUTT_NOTMUCH)
+  if (msg->commited_path && dest->magic == MUTT_MAILDIR && src->magic == MUTT_NOTMUCH)
 	  nm_update_filename(src, NULL, msg->commited_path, hdr);
 #endif
 

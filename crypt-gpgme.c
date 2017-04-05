@@ -2947,7 +2947,7 @@ static const char *crypt_entry_fmt (char *dest,
             }
 	}
       snprintf (fmt, sizeof (fmt), "%%%sc", prefix);
-      snprintf (dest, destlen, fmt, s? *s: 'B');
+      snprintf (dest, destlen, fmt, *s);
       break;
     case 'p':
       snprintf (fmt, sizeof (fmt), "%%%ss", prefix);
@@ -4159,7 +4159,7 @@ static crypt_key_t *crypt_getkeybyaddr (ADDRESS * a, short abilities,
     hints = crypt_add_string_to_hints (hints, a->personal);
 
   if (! oppenc_mode )
-    mutt_message (_("Looking for keys matching \"%s\"..."), a->mailbox);
+    mutt_message (_("Looking for keys matching \"%s\"..."), a ? a->mailbox : "");
   keys = get_candidates (hints, app, (abilities & KEYFLAG_CANSIGN) );
 
   mutt_free_list (&hints);

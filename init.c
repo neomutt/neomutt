@@ -2303,7 +2303,7 @@ static int parse_set (BUFFER *tmp, BUFFER *s, unsigned long data, BUFFER *err)
 	return -1;
       }
 
-      if (s && *s->dptr == '=')
+      if (*s->dptr == '=')
       {
 	snprintf (err->data, err->dsize, _("value is illegal with reset"));
 	return -1;
@@ -2340,7 +2340,7 @@ static int parse_set (BUFFER *tmp, BUFFER *s, unsigned long data, BUFFER *err)
     }
     else if (!myvar && DTYPE (MuttVars[idx].type) == DT_BOOL)
     {
-      if (s && *s->dptr == '=')
+      if (*s->dptr == '=')
       {
 	if (unset || inv || query)
 	{
