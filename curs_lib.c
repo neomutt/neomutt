@@ -162,6 +162,13 @@ int _mutt_get_field (const char *field, char *buf, size_t buflen, int complete, 
   
   do
   {
+    if (SigWinch)
+    {
+      SigWinch = 0;
+      mutt_resize_screen ();
+      clearok(stdscr, TRUE);
+      mutt_current_menu_redraw ();
+    }
     mutt_window_clearline (MuttMessageWindow, 0);
     SETCOLOR (MT_COLOR_PROMPT);
     addstr ((char *)field); /* cast to get around bad prototypes */
@@ -173,7 +180,7 @@ int _mutt_get_field (const char *field, char *buf, size_t buflen, int complete, 
   while (ret == 1);
   mutt_window_clearline (MuttMessageWindow, 0);
   mutt_free_enter_state (&es);
-  
+
   return (ret);
 }
 
