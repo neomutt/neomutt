@@ -1221,7 +1221,14 @@ void smime_invoke_import (char *infile, char *mailbox)
 
   buf[0] = '\0';
   if (option (OPTASKCERTLABEL))
-    mutt_get_field (_("Label for certificate: "), buf, sizeof (buf), 0);
+  {
+    if ((mutt_get_field (_("Label for certificate: "), buf, sizeof (buf), 0) != 0) || (buf[0] == 0))
+    {
+      safe_fclose (&fpout);
+      safe_fclose (&fperr);
+      return;
+    }
+  }
 
   mutt_endwin (NULL);
   if ((certfile = smime_extract_certificate(infile)))
