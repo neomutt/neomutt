@@ -166,6 +166,9 @@ int _mutt_get_field (const char *field, char *buf, size_t buflen, int complete, 
     {
       SigWinch = 0;
       mutt_resize_screen ();
+      /* mutt_resize_screen sets REDRAW_FULL, but the pager also
+       * requires SIGWINCH. */
+      mutt_set_current_menu_redraw (REDRAW_SIGWINCH);
       clearok(stdscr, TRUE);
       mutt_current_menu_redraw ();
     }
