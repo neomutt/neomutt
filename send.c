@@ -287,7 +287,7 @@ static int edit_envelope (ENVELOPE *en, int flags)
       if (ascii_strncasecmp ("subject:", uh->data, 8) == 0)
       {
 	p = skip_email_wsp(uh->data + 8);
-	strncpy (buf, p, sizeof (buf));
+	strfcpy (buf, p, sizeof (buf));
       }
     }
   }

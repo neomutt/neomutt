@@ -2829,7 +2829,7 @@ static int to_absolute_path(char *path, const char *reference)
 
   ref_tmp = safe_strdup(reference);
   dirpath = dirname(ref_tmp); /* get directory name of */
-  strncpy(abs_path, dirpath, PATH_MAX);
+  strfcpy(abs_path, dirpath, PATH_MAX);
   safe_strncat(abs_path, sizeof(abs_path), "/", 1); /* append a / at the end of the path */
 
   FREE(&ref_tmp);
@@ -2865,7 +2865,7 @@ static int source_rc (const char *rcfile_path, BUFFER *err)
 
   pid_t pid;
 
-  strncpy(rcfile, rcfile_path, PATH_MAX);
+  strfcpy(rcfile, rcfile_path, PATH_MAX);
 
   rcfilelen = mutt_strlen(rcfile);
 

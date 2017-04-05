@@ -281,7 +281,7 @@ int mutt_label_message(HEADER *hdr)
 
   *buf = '\0';
   if (hdr != NULL && hdr->env->x_label != NULL) {
-    strncpy(buf, hdr->env->x_label, LONG_STRING);
+    strfcpy(buf, hdr->env->x_label, sizeof(buf));
   }
 
   if (mutt_get_field("Label: ", buf, sizeof(buf), MUTT_LABEL /* | MUTT_CLEAR */) != 0)

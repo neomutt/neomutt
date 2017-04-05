@@ -56,7 +56,7 @@ static void print_gss_error(OM_uint32 err_maj, OM_uint32 err_min)
 					       &status_string);
 		if (GSS_ERROR(maj_stat))
 			break;
-		strncpy(buf_maj, (char*) status_string.value, sizeof(buf_maj));
+		strfcpy(buf_maj, (char*) status_string.value, sizeof(buf_maj));
 		gss_release_buffer(&min_stat, &status_string);
 
 		maj_stat = gss_display_status (&min_stat,
@@ -67,7 +67,7 @@ static void print_gss_error(OM_uint32 err_maj, OM_uint32 err_min)
 					       &status_string);
 		if (!GSS_ERROR(maj_stat))
 		{
-			strncpy(buf_min, (char*) status_string.value, sizeof(buf_min));
+			strfcpy(buf_min, (char*) status_string.value, sizeof(buf_min));
 			gss_release_buffer(&min_stat, &status_string);
 		}
 	} while (!GSS_ERROR(maj_stat) && msg_ctx != 0);

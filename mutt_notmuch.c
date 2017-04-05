@@ -1840,7 +1840,7 @@ bool nm_normalize_uri(char *new_uri, const char *orig_uri, size_t new_uri_sz)
 
   mutt_debug (2, "nm_normalize_uri #2 () -> db_query: %s\n", tmp_ctxdata.db_query);
 
-  strncpy(buf, tmp_ctxdata.db_query, sizeof(buf));
+  strfcpy(buf, tmp_ctxdata.db_query, sizeof(buf));
 
   if (nm_uri_from_query(&tmp_ctx, buf, sizeof(buf)) == NULL)
   {
