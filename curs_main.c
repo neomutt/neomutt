@@ -813,6 +813,59 @@ struct mapping_t IndexNewsHelp[] = {
 };
 #endif
 
+static void index_menu_redraw (MUTTMENU *menu)
+{
+  char buf[LONG_STRING];
+
+  if (menu->redraw & REDRAW_FULL)
+  {
+    menu_redraw_full (menu);
+    mutt_show_error ();
+  }
+
+#ifdef USE_SIDEBAR
+  if (menu->redraw & REDRAW_SIDEBAR)
+  {
+    mutt_sb_set_buffystats (Context);
+    menu_redraw_sidebar (menu);
+  }
+#endif
+
+  if (Context && Context->hdrs && !(menu->current >= Context->vcount))
+  {
+    menu_check_recenter (menu);
+
+    if (menu->redraw & REDRAW_INDEX)
+    {
+      menu_redraw_index (menu);
+      menu->redraw |= REDRAW_STATUS;
+    }
+    else if (menu->redraw & (REDRAW_MOTION_RESYNCH | REDRAW_MOTION))
+      menu_redraw_motion (menu);
+    else if (menu->redraw & REDRAW_CURRENT)
+      menu_redraw_current (menu);
+  }
+
+  if (menu->redraw & REDRAW_STATUS)
+  {
+    menu_status_line (buf, sizeof (buf), menu, NONULL (Status));
+    mutt_window_move (MuttStatusWindow, 0, 0);
+    SETCOLOR (MT_COLOR_STATUS);
+    mutt_paddstr (MuttStatusWindow->cols, buf);
+    NORMAL_COLOR;
+    menu->redraw &= ~REDRAW_STATUS;
+    if (option(OPTTSENABLED) && TSSupported)
+    {
+      menu_status_line (buf, sizeof (buf), menu, NONULL (TSStatusFormat));
+      mutt_ts_status(buf);
+      menu_status_line (buf, sizeof (buf), menu, NONULL (TSIconFormat));
+      mutt_ts_icon(buf);
+    }
+  }
+
+  menu->redraw = 0;
+}
+
 /* This function handles the message index window as well as commands returned
  * from the pager (MENU_PAGER).
  */
@@ -843,6 +896,7 @@ int mutt_index_menu (void)
 	(Context && (Context->magic == MUTT_NNTP)) ? IndexNewsHelp :
 #endif
 	IndexHelp);
+  menu->custom_menu_redraw = index_menu_redraw;
   mutt_push_current_menu (menu);
 
   if (!attach_msg)
@@ -970,63 +1024,19 @@ int mutt_index_menu (void)
 
     if (menu->menu == MENU_MAIN)
     {
-      if (menu->redraw & REDRAW_FULL)
-      {
-        menu_redraw_full (menu);
-        mutt_show_error ();
-      }
+      index_menu_redraw (menu);
 
-#ifdef USE_SIDEBAR
-      if (menu->redraw & REDRAW_SIDEBAR)
-      {
-        mutt_sb_set_buffystats (Context);
-        menu_redraw_sidebar (menu);
-      }
-#endif
-      if (Context && Context->hdrs && !(menu->current >= Context->vcount))
-      {
-	menu_check_recenter (menu);
-
-	if (menu->redraw & REDRAW_INDEX)
-	{
-	  menu_redraw_index (menu);
-	  menu->redraw |= REDRAW_STATUS;
-	}
-	else if (menu->redraw & (REDRAW_MOTION_RESYNCH | REDRAW_MOTION))
-	  menu_redraw_motion (menu);
-	else if (menu->redraw & REDRAW_CURRENT)
-	  menu_redraw_current (menu);
-      }
-
-      if (menu->redraw & REDRAW_STATUS)
-      {
-	menu_status_line (buf, sizeof (buf), menu, NONULL (Status));
-        mutt_window_move (MuttStatusWindow, 0, 0);
-	SETCOLOR (MT_COLOR_STATUS);
-	mutt_draw_statusline (MuttStatusWindow->cols, buf, sizeof (buf));
-	NORMAL_COLOR;
-	menu->redraw &= ~REDRAW_STATUS;
-	if (option(OPTTSENABLED) && TSSupported)
-	{
-	  menu_status_line (buf, sizeof (buf), menu, NONULL (TSStatusFormat));
-	  mutt_ts_status(buf);
-	  menu_status_line (buf, sizeof (buf), menu, NONULL (TSIconFormat));
-	  mutt_ts_icon(buf);
-	}
-      }
-
-      menu->redraw = 0;
       if (menu->current < menu->max)
-	menu->oldcurrent = menu->current;
+        menu->oldcurrent = menu->current;
       else
-	menu->oldcurrent = -1;
+        menu->oldcurrent = -1;
 
       if (option (OPTARROWCURSOR))
-	mutt_window_move (MuttIndexWindow, menu->current - menu->top + menu->offset, 2);
+        mutt_window_move (MuttIndexWindow, menu->current - menu->top + menu->offset, 2);
       else if (option (OPTBRAILLEFRIENDLY))
-	mutt_window_move (MuttIndexWindow, menu->current - menu->top + menu->offset, 0);
+        mutt_window_move (MuttIndexWindow, menu->current - menu->top + menu->offset, 0);
       else
-	mutt_window_move (MuttIndexWindow, menu->current - menu->top + menu->offset,
+        mutt_window_move (MuttIndexWindow, menu->current - menu->top + menu->offset,
                           MuttIndexWindow->cols - 1);
       mutt_refresh ();
 
@@ -1035,8 +1045,6 @@ int mutt_index_menu (void)
       {
 	mutt_flushinp ();
 	mutt_resize_screen ();
-	menu->redraw = REDRAW_FULL;
-	menu->menu = MENU_MAIN;
 	SigWinch = 0;
 	menu->top = 0; /* so we scroll the right amount */
 	/*
