@@ -640,7 +640,7 @@ static pgp_key_t pgp_parse_keyblock (FILE * fp)
   unsigned char *buff = NULL;
   unsigned char pt = 0;
   unsigned char last_pt;
-  size_t l;
+  size_t l = 0;
   short err = 0;
 
 #ifdef HAVE_FGETPOS
