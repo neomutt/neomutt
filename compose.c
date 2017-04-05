@@ -399,6 +399,57 @@ static void update_idx (MUTTMENU *menu, ATTACHPTR **idx, short idxlen)
   return;
 }
 
+typedef struct
+{
+  HEADER *msg;
+  char *fcc;
+} compose_redraw_data_t;
+
+/* prototype for use below */
+static void compose_status_line (char *buf, size_t buflen, size_t col, int cols, MUTTMENU *menu, const char *p);
+
+static void compose_menu_redraw (MUTTMENU *menu)
+{
+  char buf[LONG_STRING];
+  compose_redraw_data_t *rd = menu->redraw_data;
+
+  if (!rd)
+    return;
+
+  if (menu->redraw & REDRAW_FULL)
+  {
+    menu_redraw_full (menu);
+
+    draw_envelope (rd->msg, rd->fcc);
+    menu->offset = HDR_ATTACH;
+    menu->pagelen = MuttIndexWindow->rows - HDR_ATTACH;
+  }
+
+  menu_check_recenter (menu);
+
+  if (menu->redraw & REDRAW_STATUS)
+  {
+    compose_status_line (buf, sizeof (buf), 0, MuttStatusWindow->cols, menu, NONULL(ComposeFormat));
+    mutt_window_move (MuttStatusWindow, 0, 0);
+    SETCOLOR (MT_COLOR_STATUS);
+    mutt_paddstr (MuttStatusWindow->cols, buf);
+    NORMAL_COLOR;
+    menu->redraw &= ~REDRAW_STATUS;
+  }
+
+#ifdef USE_SIDEBAR
+  if (menu->redraw & REDRAW_SIDEBAR)
+    menu_redraw_sidebar (menu);
+#endif
+
+  if (menu->redraw & REDRAW_INDEX)
+    menu_redraw_index (menu);
+  else if (menu->redraw & (REDRAW_MOTION | REDRAW_MOTION_RESYNCH))
+    menu_redraw_motion (menu);
+  else if (menu->redraw == REDRAW_CURRENT)
+    menu_redraw_current (menu);
+}
+
 
 /*
  * cum_attachs_size: Cumulative Attachments Size
@@ -442,9 +493,6 @@ static unsigned long cum_attachs_size (MUTTMENU *menu)
 
   return s;
 }
-
-/* prototype for use below */
-static void compose_status_line (char *buf, size_t buflen, size_t col, int cols, MUTTMENU *menu, const char *p);
 
 /*
  * compose_format_str()
@@ -543,12 +591,16 @@ int mutt_compose_menu (HEADER *msg,   /* structure for new message */
   /* Sort, SortAux could be changed in mutt_index_menu() */
   int oldSort, oldSortAux;
   struct stat st;
+  compose_redraw_data_t rd;
 #ifdef USE_NNTP
   int news = 0;		/* is it a news article ? */
 
   if (option (OPTNEWSSEND))
     news++;
 #endif
+
+  rd.msg = msg;
+  rd.fcc = fcc;
 
   mutt_attach_init (msg->content);
   idx = mutt_gen_attach_list (msg->content, -1, idx, &idxlen, &idxmax, 0, 1);
@@ -565,6 +617,8 @@ int mutt_compose_menu (HEADER *msg,   /* structure for new message */
   else
 #endif
   menu->help = mutt_compile_help (helpstr, sizeof (helpstr), MENU_COMPOSE, ComposeHelp);
+  menu->custom_menu_redraw = compose_menu_redraw;
+  menu->redraw_data = &rd;
   mutt_push_current_menu (menu);
 
   while (loop)
@@ -574,11 +628,6 @@ int mutt_compose_menu (HEADER *msg,   /* structure for new message */
 #endif
     switch (op = mutt_menu_loop (menu))
     {
-      case OP_REDRAW:
-	draw_envelope (msg, fcc);
-	menu->offset = HDR_ATTACH;
-	menu->pagelen = MuttIndexWindow->rows - HDR_ATTACH;
-	break;
       case OP_COMPOSE_EDIT_FROM:
 	edit_address_list (HDR_FROM, &msg->env->from);
         mutt_message_hook (NULL, msg, MUTT_SEND2HOOK);
@@ -1464,17 +1513,6 @@ int mutt_compose_menu (HEADER *msg,   /* structure for new message */
         break;
 #endif
 
-    }
-
-    /* Draw formatted compose status line */
-    if (menu->redraw & REDRAW_STATUS)
-    {
-        compose_status_line (buf, sizeof (buf), 0, MuttStatusWindow->cols, menu, NONULL(ComposeFormat));
-	mutt_window_move (MuttStatusWindow, 0, 0);
-	SETCOLOR (MT_COLOR_STATUS);
-	mutt_paddstr (MuttStatusWindow->cols, buf);
-	NORMAL_COLOR;
-	menu->redraw &= ~REDRAW_STATUS;
     }
   }
 
