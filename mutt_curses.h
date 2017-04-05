@@ -33,6 +33,19 @@
 
 #include <slcurses.h>
 
+/* The prototypes for these four functions use "(char*)",
+ * whereas the ncurses versions use "(const char*)" */
+#undef addnstr
+#undef addstr
+#undef mvaddnstr
+#undef mvaddstr
+
+/* We redefine the helper macros to hide the compiler warnings */
+#define addnstr(s,n)            waddnstr(stdscr,((char*)s),(n))
+#define addstr(x)               waddstr(stdscr, ((char*)x))
+#define mvaddnstr(y,x,s,n)      mvwaddnstr(stdscr,(y),(x),((char*)s),(n))
+#define mvaddstr(y,x,s)         mvwaddstr(stdscr,(y),(x),((char*)s))
+
 #define KEY_DC SL_KEY_DELETE
 #define KEY_IC SL_KEY_IC
 
