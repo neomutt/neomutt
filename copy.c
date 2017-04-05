@@ -553,12 +553,16 @@ _mutt_copy_message (FILE *fpout, FILE *fpin, HEADER *hdr, BODY *body,
       char date[SHORT_STRING];
 
       mutt_make_date (date, sizeof (date));
-      date[5] = date[mutt_strlen (date) - 1] = '\"';
+      int dlen = mutt_strlen(date);
+      if (dlen == 0)
+        return -1;
+
+      date[5] = '\"';
+      date[dlen - 1] = '\"';
 
       /* Count the number of lines and bytes to be deleted */
       fseeko (fpin, body->offset, SEEK_SET);
-      new_lines = hdr->lines -
-	count_delete_lines (fpin, body, &new_length, mutt_strlen (date));
+      new_lines = hdr->lines - count_delete_lines(fpin, body, &new_length, dlen);
 
       /* Copy the headers */
       if (mutt_copy_header (fpin, hdr, fpout,

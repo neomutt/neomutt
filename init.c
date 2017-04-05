@@ -3287,7 +3287,11 @@ int mutt_var_value_complete (char *buffer, size_t len, int pos)
 
     strfcpy (var, pt, sizeof (var));
     /* ignore the trailing '=' when comparing */
-    var[mutt_strlen (var) - 1] = 0;
+    int vlen = mutt_strlen(var);
+    if (vlen == 0)
+      return 0;
+
+    var[vlen - 1] = 0;
     if ((idx = mutt_option_index (var)) == -1)
     {
       if ((myvarval = myvar_get(var)) != NULL)
