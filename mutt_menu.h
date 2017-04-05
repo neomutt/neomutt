@@ -75,6 +75,10 @@ typedef struct menu_t
 
   int (*tag) (struct menu_t *, int i, int m);
 
+  /* these are used for custom redrawing callbacks */
+  void (*custom_menu_redraw) (struct menu_t *);
+  void *redraw_data;
+
   /* color pair to be used for the requested element 
    * (default function returns ColorDefs[MT_COLOR_NORMAL])
    */

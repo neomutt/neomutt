@@ -926,6 +926,12 @@ static int menu_dialog_dokey (MUTTMENU *menu, int *ip)
 
 int menu_redraw (MUTTMENU *menu)
 {
+  if (menu->custom_menu_redraw)
+  {
+    menu->custom_menu_redraw (menu);
+    return OP_NULL;
+  }
+
   /* See if all or part of the screen needs to be updated.  */
   if (menu->redraw & REDRAW_FULL)
   {
