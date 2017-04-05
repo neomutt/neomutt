@@ -1755,10 +1755,11 @@ void _mutt_select_file (char *f, size_t flen, int flags, char ***files, int *num
 	}
 
       case OP_TOGGLE_MAILBOXES:
-	buffy = 1 - buffy;
-
       case OP_BROWSER_GOTO_FOLDER:
       case OP_CHECK_NEW:
+        if (i == OP_TOGGLE_MAILBOXES)
+          buffy = 1 - buffy;
+
         if (i == OP_BROWSER_GOTO_FOLDER)
         {
           /* When in mailboxes mode, disables this feature */

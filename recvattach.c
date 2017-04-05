@@ -894,6 +894,7 @@ mutt_attach_display_loop (MUTTMENU *menu, int op, FILE *fp, HEADER *hdr,
       case OP_ATTACH_COLLAPSE:
         if (recv)
           return op;
+        /* fall through */
       default:
 	op = OP_NULL;
     }

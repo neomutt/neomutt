@@ -214,6 +214,8 @@ new_aliases:
         break;
       case OP_GENERIC_SELECT_ENTRY:
         t = menu->current;
+	done = 1;
+	break;
       case OP_EXIT:
 	done = 1;
 	break;
