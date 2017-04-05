@@ -1787,11 +1787,35 @@ mutt_pager (const char *banner, const char *fname, int flags, pager_t *extra)
 
     if (pager_menu->redraw & REDRAW_SIGWINCH)
     {
+      if (!(flags & MUTT_PAGER_RETWINCH))
+      {
+        lines = -1;
+        for (i = 0; i <= topline; i++)
+          if (!lineInfo[i].continuation)
+            lines++;
+        for (i = 0; i < maxLine; i++)
+        {
+          lineInfo[i].offset = 0;
+          lineInfo[i].type = -1;
+          lineInfo[i].continuation = 0;
+          lineInfo[i].chunks = 0;
+          lineInfo[i].search_cnt = -1;
+          lineInfo[i].quote = NULL;
+
+          safe_realloc (&(lineInfo[i].syntax),
+                        sizeof (struct syntax_t));
+          if (SearchCompiled && lineInfo[i].search)
+            FREE (&(lineInfo[i].search));
+        }
+
+        lastLine = 0;
+        topline = 0;
+      }
       i = -1;
       j = -1;
       while (display_line (fp, &last_pos, &lineInfo, ++i, &lastLine, &maxLine,
-	     has_types | SearchFlag | (flags & MUTT_PAGER_NOWRAP), &QuoteList, &q_level, &force_redraw,
-             &SearchRE, pager_window) == 0)
+                           has_types | SearchFlag | (flags & MUTT_PAGER_NOWRAP), &QuoteList, &q_level, &force_redraw,
+                           &SearchRE, pager_window) == 0)
 	if (!lineInfo[i].continuation && ++j == lines)
 	{
 	  topline = i;
@@ -1931,24 +1955,21 @@ mutt_pager (const char *banner, const char *fname, int flags, pager_t *extra)
       mutt_clear_error ();
     mutt_curs_set (1);
 
-    if (SigInt)
-    {
-      mutt_query_exit ();
-      continue;
-    }
 #if defined (USE_SLANG_CURSES) || defined (HAVE_RESIZETERM)
-    else if (SigWinch)
+    if (SigWinch)
     {
+      SigWinch = 0;
       mutt_resize_screen ();
-
-      /* Store current position. */
-      lines = -1;
-      for (i = 0; i <= topline; i++)
-	if (!lineInfo[i].continuation)
-	  lines++;
+      clearok(stdscr,TRUE);/*force complete redraw*/
 
       if (flags & MUTT_PAGER_RETWINCH)
       {
+        /* Store current position. */
+        lines = -1;
+        for (i = 0; i <= topline; i++)
+          if (!lineInfo[i].continuation)
+            lines++;
+
 	Resize = safe_malloc (sizeof (struct resize));
 
 	Resize->line = lines;
@@ -1960,34 +1981,13 @@ mutt_pager (const char *banner, const char *fname, int flags, pager_t *extra)
       }
       else
       {
-	for (i = 0; i < maxLine; i++)
-	{
-	  lineInfo[i].offset = 0;
-	  lineInfo[i].type = -1;
-	  lineInfo[i].continuation = 0;
-	  lineInfo[i].chunks = 0;
-	  lineInfo[i].search_cnt = -1;
-	  lineInfo[i].quote = NULL;
-
-	  safe_realloc (&(lineInfo[i].syntax),
-			sizeof (struct syntax_t));
-	  if (SearchCompiled && lineInfo[i].search)
-	      FREE (&(lineInfo[i].search));
-	}
-
-	lastLine = 0;
-	topline = 0;
-
 	pager_menu->redraw = REDRAW_FULL | REDRAW_SIGWINCH;
 	ch = 0;
       }
-
-      SigWinch = 0;
-      clearok(stdscr,TRUE);/*force complete redraw*/
       continue;
     }
 #endif
-    else if (ch == -1)
+    if (ch == -1)
     {
       ch = 0;
       continue;
