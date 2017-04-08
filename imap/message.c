@@ -428,6 +428,7 @@ int imap_fetch_message (CONTEXT *ctx, MESSAGE *msg, int msgno)
   /* Sam's weird courier server returns an OK response even when FETCH
    * fails. Thanks Sam. */
   short fetched = 0;
+  int output_progress;
 
   idata = (IMAP_DATA*) ctx->data;
   h = ctx->hdrs[msgno];
@@ -458,7 +459,10 @@ int imap_fetch_message (CONTEXT *ctx, MESSAGE *msg, int msgno)
     }
   }
 
-  if (!isendwin())
+  /* This function is called in a few places after endwin()
+   * e.g. _mutt_pipe_message(). */
+  output_progress = !isendwin ();
+  if (output_progress)
     mutt_message _("Fetching message...");
 
   if (!(msg->fp = msg_cache_put (idata, h)))
@@ -516,9 +520,13 @@ int imap_fetch_message (CONTEXT *ctx, MESSAGE *msg, int msgno)
 	    imap_error ("imap_fetch_message()", buf);
 	    goto bail;
 	  }
-	  mutt_progress_init (&progressbar, _("Fetching message..."),
-			      MUTT_PROGRESS_SIZE, NetInc, bytes);
-	  if (imap_read_literal (msg->fp, idata, bytes, &progressbar) < 0)
+          if (output_progress)
+          {
+            mutt_progress_init (&progressbar, _("Fetching message..."),
+                                MUTT_PROGRESS_SIZE, NetInc, bytes);
+          }
+	  if (imap_read_literal (msg->fp, idata, bytes,
+                                 output_progress ? &progressbar : NULL) < 0)
 	    goto bail;
 	  /* pick up trailing line */
 	  if ((rc = imap_cmd_step (idata)) != IMAP_CMD_CONTINUE)
