@@ -296,8 +296,8 @@ int mutt_check_traditional_pgp(HEADER *h, int *redraw);
 int mutt_command_complete(char *buffer, size_t len, int pos, int numtabs);
 int mutt_var_value_complete(char *buffer, size_t len, int pos);
 #ifdef USE_NOTMUCH
-int mutt_nm_query_complete(char *buffer, size_t len, int pos, int numtabs);
-int mutt_nm_tag_complete(char *buffer, size_t len, int pos, int numtabs);
+bool mutt_nm_query_complete(char *buffer, size_t len, int pos, int numtabs);
+bool mutt_nm_tag_complete(char *buffer, size_t len, int pos, int numtabs);
 #endif
 int mutt_complete(char *s, size_t slen);
 int mutt_compose_attachment(BODY *a);
@@ -334,15 +334,15 @@ int mutt_get_tmp_attachment(BODY *a);
 int mutt_index_menu(void);
 int mutt_invoke_sendmail(ADDRESS *from, ADDRESS *to, ADDRESS *cc, ADDRESS *bcc,
                          const char *msg, int eightbit);
-int mutt_is_mail_list(ADDRESS *addr);
-int mutt_is_message_type(int type, const char *subtype);
+bool mutt_is_mail_list(ADDRESS *addr);
+bool mutt_is_message_type(int type, const char *subtype);
 int mutt_is_list_cc(int alladdr, ADDRESS *a1, ADDRESS *a2);
 int mutt_is_list_recipient(int alladdr, ADDRESS *a1, ADDRESS *a2);
-int mutt_is_subscribed_list(ADDRESS *addr);
-int mutt_is_text_part(BODY *b);
+bool mutt_is_subscribed_list(ADDRESS *addr);
+bool mutt_is_text_part(BODY *b);
 int mutt_link_threads(HEADER *cur, HEADER *last, CONTEXT *ctx);
 int mutt_lookup_mime_type(BODY *att, const char *path);
-int mutt_match_rx_list(const char *s, RX_LIST *l);
+bool mutt_match_rx_list(const char *s, RX_LIST *l);
 int mutt_match_spam_list(const char *s, REPLACE_LIST *l, char *text, int textsize);
 int mutt_messages_in_thread(CONTEXT *ctx, HEADER *hdr, int flag);
 int mutt_multi_choice(char *prompt, char *letters);

@@ -715,30 +715,30 @@ int mutt_needs_mailcap (BODY *m)
   return 1;
 }
 
-int mutt_is_text_part (BODY *b)
+bool mutt_is_text_part (BODY *b)
 {
   int t = b->type;
   char *s = b->subtype;
 
   if ((WithCrypto & APPLICATION_PGP) && mutt_is_application_pgp (b))
-    return 0;
+    return false;
 
   if (t == TYPETEXT)
-    return 1;
+    return true;
 
   if (t == TYPEMESSAGE)
   {
     if (ascii_strcasecmp ("delivery-status", s) == 0)
-      return 1;
+      return true;
   }
 
   if ((WithCrypto & APPLICATION_PGP) && t == TYPEAPPLICATION)
   {
     if (ascii_strcasecmp ("pgp-keys", s) == 0)
-      return 1;
+      return true;
   }
 
-  return 0;
+  return false;
 }
 
 void mutt_free_envelope (ENVELOPE **p)
@@ -2025,7 +2025,7 @@ void mutt_free_replace_list (REPLACE_LIST **list)
   }
 }
 
-int mutt_match_rx_list (const char *s, RX_LIST *l)
+bool mutt_match_rx_list (const char *s, RX_LIST *l)
 {
   if (!s)  return 0;
 
@@ -2034,11 +2034,11 @@ int mutt_match_rx_list (const char *s, RX_LIST *l)
     if (regexec (l->rx->rx, s, (size_t) 0, (regmatch_t *) 0, (int) 0) == 0)
     {
       mutt_debug (5, "mutt_match_rx_list: %s matches %s\n", s, l->rx->pattern);
-      return 1;
+      return true;
     }
   }
 
-  return 0;
+  return false;
 }
 
 /* Match a string against the patterns defined by the 'spam' command and output

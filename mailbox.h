@@ -73,19 +73,19 @@ int mx_get_magic(const char *path);
 int mx_set_magic(const char *s);
 int mx_check_mailbox(CONTEXT *ctx, int *index_hint);
 #ifdef USE_IMAP
-int mx_is_imap(const char *p);
+bool mx_is_imap(const char *p);
 #endif
 #ifdef USE_POP
-int mx_is_pop(const char *p);
+bool mx_is_pop(const char *p);
 #endif
 #ifdef USE_NNTP
-int mx_is_nntp(const char *p);
+bool mx_is_nntp(const char *p);
 #endif
 
 int mx_access(const char *path, int flags);
 int mx_check_empty(const char *path);
 
-int mx_is_maildir(const char *path);
-int mx_is_mh(const char *path);
+bool mx_is_maildir(const char *path);
+bool mx_is_mh(const char *path);
 
 #endif /* _MUTT_MAILBOX_H */

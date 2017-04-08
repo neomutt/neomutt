@@ -3384,7 +3384,7 @@ static const char* rstrnstr(const char* haystack,
 }
 
 /* Complete the nearest "tag:"-prefixed string previous to pos. */
-int mutt_nm_query_complete (char *buffer, size_t len, int pos, int numtabs)
+bool mutt_nm_query_complete (char *buffer, size_t len, int pos, int numtabs)
 {
   char *pt = buffer;
   int spaces;
@@ -3403,11 +3403,11 @@ int mutt_nm_query_complete (char *buffer, size_t len, int pos, int numtabs)
        * i.e. don't change 'buffer'. Fake successful return this time.
        */
       if (User_typed[0] == 0)
-	return 1;
+	return true;
     }
 
     if (Completed[0] == 0 && User_typed[0])
-      return 0;
+      return false;
 
     /* Num_matched will _always_ be at least 1 since the initial
      * user-typed string is always stored */
@@ -3422,16 +3422,16 @@ int mutt_nm_query_complete (char *buffer, size_t len, int pos, int numtabs)
     strncpy (pt, Completed, buffer + len - pt - spaces);
   }
   else
-    return 0;
+    return false;
 
-  return 1;
+  return true;
 }
 
 /* Complete the nearest "+" or "-" -prefixed string previous to pos. */
-int mutt_nm_tag_complete (char *buffer, size_t len, int pos, int numtabs)
+bool mutt_nm_tag_complete (char *buffer, size_t len, int pos, int numtabs)
 {
   if (!buffer)
-    return 0;
+    return false;
 
   char *pt = buffer;
 
@@ -3453,11 +3453,11 @@ int mutt_nm_tag_complete (char *buffer, size_t len, int pos, int numtabs)
       * i.e. don't change 'buffer'. Fake successful return this time.
       */
     if (User_typed[0] == 0)
-      return 1;
+      return true;
   }
 
   if (Completed[0] == 0 && User_typed[0])
-    return 0;
+    return false;
 
   /* Num_matched will _always_ be at least 1 since the initial
     * user-typed string is always stored */
@@ -3471,7 +3471,7 @@ int mutt_nm_tag_complete (char *buffer, size_t len, int pos, int numtabs)
   /* return the completed query */
   strncpy (pt, Completed, buffer + len - pt);
 
-  return 1;
+  return true;
 }
 #endif
 

@@ -75,8 +75,8 @@ const char *pgp_pkalgbytype(unsigned char type);
 pgp_key_t pgp_remove_key(pgp_key_t *klist, pgp_key_t key);
 pgp_uid_t *pgp_copy_uids(pgp_uid_t *up, pgp_key_t parent);
 
-short pgp_canencrypt(unsigned char type);
-short pgp_cansign(unsigned char type);
+bool pgp_canencrypt(unsigned char type);
+bool pgp_cansign(unsigned char type);
 short pgp_get_abilities(unsigned char type);
 
 void pgp_free_key(pgp_key_t *kpp);
