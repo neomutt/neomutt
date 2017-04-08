@@ -2146,12 +2146,12 @@ int nntp_active_fetch (NNTP_SERVER *nserv)
 
   for (i = 0; i < nserv->groups_num; i++)
   {
-    NNTP_DATA *nntp_data = nserv->groups_list[i];
+    NNTP_DATA *data = nserv->groups_list[i];
 
-    if (nntp_data && nntp_data->deleted && !nntp_data->newsrc_ent)
+    if (data && data->deleted && !data->newsrc_ent)
     {
-      nntp_delete_group_cache (nntp_data);
-      hash_delete (nserv->groups_hash, nntp_data->group, NULL, nntp_data_free);
+      nntp_delete_group_cache (data);
+      hash_delete (nserv->groups_hash, data->group, NULL, nntp_data_free);
       nserv->groups_list[i] = NULL;
     }
   }
@@ -2183,11 +2183,11 @@ int nntp_check_new_groups (NNTP_SERVER *nserv)
     mutt_message (_("Checking for new messages..."));
     for (i = 0; i < nserv->groups_num; i++)
     {
-      NNTP_DATA *nntp_data = nserv->groups_list[i];
+      NNTP_DATA *data = nserv->groups_list[i];
 
-      if (nntp_data && nntp_data->subscribed)
+      if (data && data->subscribed)
       {
-	rc = nntp_group_poll (nntp_data, 1);
+	rc = nntp_group_poll (data, 1);
 	if (rc < 0)
 	  return -1;
 	if (rc > 0)
@@ -2247,9 +2247,9 @@ int nntp_check_new_groups (NNTP_SERVER *nserv)
 			  MUTT_PROGRESS_MSG, ReadInc, nserv->groups_num - i);
       for (; i < nserv->groups_num; i++)
       {
-	NNTP_DATA *nntp_data = nserv->groups_list[i];
+	NNTP_DATA *data = nserv->groups_list[i];
 
-	if (get_description (nntp_data, NULL, NULL) < 0)
+	if (get_description (data, NULL, NULL) < 0)
 	  return -1;
 	mutt_progress_update (&progress, ++count, -1);
       }

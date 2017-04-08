@@ -117,7 +117,6 @@ static const char *No_visible = N_("No visible messages.");
 		     }
 
 #define CURHDR Context->hdrs[Context->v2r[menu->current]]
-#define OLDHDR Context->hdrs[Context->v2r[menu->oldcurrent]]
 #define UNREAD(h) mutt_thread_contains_unread (Context, h)
 
 /* de facto standard escapes for tsl/fsl */
@@ -361,15 +360,15 @@ void update_index (MUTTMENU *menu, CONTEXT *ctx, int check,
   {
     if (check == MUTT_REOPENED)
     {
-      THREAD *h = NULL, *j = NULL;
+      THREAD *h = NULL, *k = NULL;
 
       ctx->collapsed = 0;
 
       for (h = ctx->tree; h; h = h->next)
       {
-	for (j = h; !j->message; j = j->child)
+	for (k = h; !k->message; k = k->child)
 	  ;
-	mutt_uncollapse_thread (ctx, j->message);
+	mutt_uncollapse_thread (ctx, k->message);
       }
       mutt_set_virtual (ctx);
     }
@@ -1243,18 +1242,18 @@ int mutt_index_menu (void)
 	  }
 	  else
 	  {
-	    int rc;
+	    int rc2;
 
 	    mutt_message (_("Fetching %s from server..."), buf);
-	    rc = nntp_check_msgid (Context, buf);
-	    if (rc == 0)
+	    rc2 = nntp_check_msgid (Context, buf);
+	    if (rc2 == 0)
 	    {
 	      hdr = Context->hdrs[Context->msgcount - 1];
 	      mutt_sort_headers (Context, 0);
 	      menu->current = hdr->virtual;
 	      menu->redraw = REDRAW_FULL;
 	    }
-	    else if (rc > 0)
+	    else if (rc2 > 0)
 	      mutt_error (_("Article %s not found on the server."), buf);
 	  }
 	}
@@ -1270,7 +1269,7 @@ int mutt_index_menu (void)
 	{
 	  int oldmsgcount = Context->msgcount;
 	  int oldindex = CURHDR->index;
-	  int rc = 0;
+	  int rc2 = 0;
 
 	  if (!CURHDR->env->message_id)
 	  {
@@ -1291,8 +1290,8 @@ int mutt_index_menu (void)
 	    {
 	      if (hash_find (Context->id_hash, ref->data) == NULL)
 	      {
-		rc = nntp_check_msgid (Context, ref->data);
-		if (rc < 0)
+		rc2 = nntp_check_msgid (Context, ref->data);
+		if (rc2 < 0)
 		  break;
 	      }
 
@@ -1304,17 +1303,17 @@ int mutt_index_menu (void)
 	  }
 
 	  /* fetching all child messages */
-	  if (rc >= 0)
-	    rc = nntp_check_children (Context, buf);
+	  if (rc2 >= 0)
+	    rc2 = nntp_check_children (Context, buf);
 
 	  /* at least one message has been loaded */
 	  if (Context->msgcount > oldmsgcount)
 	  {
 	    HEADER *oldcur = CURHDR;
 	    HEADER *hdr = NULL;
-	    int i, quiet = Context->quiet;
+	    int k, quiet = Context->quiet;
 
-	    if (rc < 0)
+	    if (rc2 < 0)
 	      Context->quiet = 1;
 	    mutt_sort_headers (Context, (op == OP_RECONSTRUCT_THREAD));
 	    Context->quiet = quiet;
@@ -1337,11 +1336,11 @@ int mutt_index_menu (void)
 	    /* try to restore old position */
 	    else
 	    {
-	      for (i = 0; i < Context->msgcount; i++)
+	      for (k = 0; k < Context->msgcount; k++)
 	      {
-		if (Context->hdrs[i]->index == oldindex)
+		if (Context->hdrs[k]->index == oldindex)
 		{
-		  menu->current = Context->hdrs[i]->virtual;
+		  menu->current = Context->hdrs[k]->virtual;
 		  /* as an added courtesy, recenter the menu
 		   * with the current entry at the middle of the screen */
 		  menu_check_recenter (menu);
@@ -1351,7 +1350,7 @@ int mutt_index_menu (void)
 	    }
 	    menu->redraw = REDRAW_FULL;
 	  }
-	  else if (rc >= 0)
+	  else if (rc2 >= 0)
 	  {
 	    mutt_error (_("No deleted messages found in the thread."));
 	    /* Similar to OP_MAIN_ENTIRE_THREAD, keep displaying the old message, but
@@ -1462,10 +1461,10 @@ int mutt_index_menu (void)
 	   mutt_message (_("No limit pattern is in effect."));
 	else
 	{
-	   char buf[STRING];
+	   char buf2[STRING];
 	   /* L10N: ask for a limit to apply */
-	   snprintf (buf, sizeof(buf), _("Limit: %s"),Context->pattern);
-           mutt_message ("%s", buf);
+	   snprintf (buf2, sizeof(buf2), _("Limit: %s"),Context->pattern);
+           mutt_message ("%s", buf2);
 	}
         break;
 
@@ -1478,23 +1477,23 @@ int mutt_index_menu (void)
 		CURHDR->index : -1;
 	if (op == OP_TOGGLE_READ)
 	{
-	  char buf[LONG_STRING];
+	  char buf2[LONG_STRING];
 
 	  if (!Context->pattern || (strncmp (Context->pattern, "!~R!~D~s", 8) != 0))
 	  {
-	    snprintf (buf, sizeof (buf), "!~R!~D~s%s",
+	    snprintf (buf2, sizeof (buf2), "!~R!~D~s%s",
 		      Context->pattern ? Context->pattern : ".*");
 	    set_option (OPTHIDEREAD);
 	  }
 	  else
 	  {
-	    strfcpy (buf, Context->pattern + 8, sizeof(buf));
-	    if (!*buf || (strncmp (buf, ".*", 2) == 0))
-	      snprintf (buf, sizeof(buf), "~A");
+	    strfcpy (buf2, Context->pattern + 8, sizeof(buf2));
+	    if (!*buf2 || (strncmp (buf2, ".*", 2) == 0))
+	      snprintf (buf2, sizeof(buf2), "~A");
 	    unset_option (OPTHIDEREAD);
 	  }
 	  FREE (&Context->pattern);
-	  Context->pattern = safe_strdup (buf);
+	  Context->pattern = safe_strdup (buf2);
 	}
 
 	if (((op == OP_LIMIT_CURRENT_THREAD) && mutt_limit_current_thread(CURHDR)) ||
@@ -1691,8 +1690,8 @@ int mutt_index_menu (void)
 	CHECK_MSGCOUNT;
 	CHECK_READONLY;
 	{
-	  int oldvcount = Context->vcount;
-	  int oldcount  = Context->msgcount;
+	  int ovc = Context->vcount;
+	  int oc  = Context->msgcount;
 	  int check, newidx;
 	  HEADER *newhdr = NULL;
 
@@ -1712,7 +1711,7 @@ int mutt_index_menu (void)
 
 	  if ((check = mx_sync_mailbox (Context, &index_hint)) == 0)
 	  {
-	    if (newhdr && Context->vcount != oldvcount)
+	    if (newhdr && Context->vcount != ovc)
 	      for (j = 0; j < Context->vcount; j++)
 	      {
 		if (Context->hdrs[Context->v2r[j]] == newhdr)
@@ -1724,7 +1723,7 @@ int mutt_index_menu (void)
 	    set_option (OPTSEARCHINVALID);
 	  }
 	  else if (check == MUTT_NEW_MAIL || check == MUTT_REOPENED)
-	    update_index (menu, Context, check, oldcount, index_hint);
+	    update_index (menu, Context, check, oc, index_hint);
 
 	  /*
 	   * do a sanity check even if mx_sync_mailbox failed.
@@ -1767,18 +1766,18 @@ int mutt_index_menu (void)
 #ifdef USE_NOTMUCH
       case OP_MAIN_ENTIRE_THREAD:
       {
-	int oldcount  = Context->msgcount;
 	if (Context->magic != MUTT_NOTMUCH) {
 	  mutt_message (_("No virtual folder, aborting."));
 	  break;
 	}
 	CHECK_MSGCOUNT;
         CHECK_VISIBLE;
+	int oc  = Context->msgcount;
 	if (nm_read_entire_thread(Context, CURHDR) < 0) {
 	   mutt_message (_("Failed to read thread, aborting."));
 	   break;
 	}
-	if (oldcount < Context->msgcount) {
+	if (oc < Context->msgcount) {
 		HEADER *oldcur = CURHDR;
 
 		if ((Sort & SORT_MASK) == SORT_THREADS)
@@ -2078,7 +2077,7 @@ int mutt_index_menu (void)
 
 	if (option (OPTPGPAUTODEC) && (tag || !(CURHDR->security & PGP_TRADITIONAL_CHECKED)))
 	  mutt_check_traditional_pgp (tag ? NULL : CURHDR, &menu->redraw);
-	int index_hint = Context->hdrs[Context->v2r[menu->current]]->index;
+	int hint = Context->hdrs[Context->v2r[menu->current]]->index;
 
         /* If we are returning to the pager via an index menu redirection, we
          * need to reset the menu->menu.  Otherwise mutt_pop_current_menu() will
@@ -2097,7 +2096,7 @@ int mutt_index_menu (void)
 	menu->menu = MENU_PAGER;
  	menu->oldcurrent = menu->current;
 	if (Context)
-	  update_index (menu, Context, MUTT_NEW_MAIL, Context->msgcount, index_hint);
+	  update_index (menu, Context, MUTT_NEW_MAIL, Context->msgcount, hint);
 
 	continue;
 
@@ -2979,16 +2978,16 @@ int mutt_index_menu (void)
 	if (CURHDR->env->message_id)
 	{
 	  char str[STRING], macro[STRING];
-	  char buf[128];
+	  char buf2[128];
 
-	  buf[0] = '\0';
+	  buf2[0] = '\0';
           /* L10N: This is the prompt for <mark-message>.  Whatever they
              enter will be prefixed by $mark_macro_prefix and will become
              a macro hotkey to jump to the currently selected message. */
-	  if (!mutt_get_field (_("Enter macro stroke: "), buf, sizeof(buf),
-	  		       MUTT_CLEAR) && buf[0])
+	  if (!mutt_get_field (_("Enter macro stroke: "), buf2, sizeof(buf2),
+	  		       MUTT_CLEAR) && buf2[0])
 	  {
-	    snprintf(str, sizeof(str), "%s%s", MarkMacroPrefix, buf);
+	    snprintf(str, sizeof(str), "%s%s", MarkMacroPrefix, buf2);
 	    snprintf(macro, sizeof(macro),
 		     "<search>~i \"%s\"\n", CURHDR->env->message_id);
             /* L10N: "message hotkey" is the key bindings menu description of a
@@ -2998,8 +2997,8 @@ int mutt_index_menu (void)
             /* L10N: This is echoed after <mark-message> creates a new hotkey
                macro.  %s is the hotkey string ($mark_macro_prefix followed
                by whatever they typed at the prompt.) */
-	    snprintf(buf, sizeof(buf), _("Message bound to %s."), str);
-	    mutt_message(buf);
+	    snprintf(buf2, sizeof(buf2), _("Message bound to %s."), str);
+	    mutt_message(buf2);
 	    mutt_debug (1, "Mark: %s => %s\n", str, macro);
 	  }
 	}

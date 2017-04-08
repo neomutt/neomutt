@@ -165,7 +165,7 @@ int mutt_compose_attachment (BODY *a)
 
 	    /* Remove headers by copying out data to another file, then
 	     * copying the file back */
-	    fseeko (fp, b->offset, 0);
+	    fseeko (fp, b->offset, SEEK_SET);
 	    mutt_mktemp (tempfile, sizeof (tempfile));
 	    if ((tfp = safe_fopen (tempfile, "w")) == NULL)
 	    {
@@ -726,7 +726,7 @@ int mutt_save_attachment (FILE *fp, BODY *m, char *path, int flags, HEADER *hdr)
       hn->msgno = hdr->msgno; /* required for MH/maildir */
       hn->read = 1;
 
-      fseeko (fp, m->offset, 0);
+      fseeko (fp, m->offset, SEEK_SET);
       if (fgets (buf, sizeof (buf), fp) == NULL)
 	return -1;
       if (mx_open_mailbox(path, MUTT_APPEND | MUTT_QUIET, &ctx) == NULL)
@@ -762,7 +762,7 @@ int mutt_save_attachment (FILE *fp, BODY *m, char *path, int flags, HEADER *hdr)
 	mutt_sleep (2);
 	return -1;
       }
-      fseeko ((s.fpin = fp), m->offset, 0);
+      fseeko ((s.fpin = fp), m->offset, SEEK_SET);
       mutt_decode_attachment (m, &s);
 
       if (safe_fsync_close (&s.fpout) != 0)

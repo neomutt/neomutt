@@ -496,7 +496,7 @@ int main (int argc, char **argv, char **environ)
   {
     struct stat sb;
     char fpath[_POSIX_PATH_MAX];
-    char msg[STRING];
+    char msg2[STRING];
 
     strfcpy (fpath, Maildir, sizeof (fpath));
     mutt_expand_path (fpath, sizeof (fpath));
@@ -506,8 +506,8 @@ int main (int argc, char **argv, char **environ)
 #endif
     if (stat (fpath, &sb) == -1 && errno == ENOENT)
     {
-      snprintf (msg, sizeof (msg), _("%s does not exist. Create it?"), Maildir);
-      if (mutt_yesorno (msg, MUTT_YES) == MUTT_YES)
+      snprintf (msg2, sizeof (msg2), _("%s does not exist. Create it?"), Maildir);
+      if (mutt_yesorno (msg2, MUTT_YES) == MUTT_YES)
       {
 	if (mkdir (fpath, 0700) == -1 && errno != EEXIST)
 	  mutt_error (_("Can't create %s: %s."), Maildir, strerror (errno));

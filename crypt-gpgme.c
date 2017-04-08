@@ -1167,17 +1167,17 @@ static int show_sig_summary (unsigned long sum,
   if ((sum & GPGME_SIGSUM_SIG_EXPIRED))
     {
       gpgme_verify_result_t result;
-      gpgme_signature_t sig;
+      gpgme_signature_t sig2;
       unsigned int i;
 
       result = gpgme_op_verify_result (ctx);
 
-      for (sig = result->signatures, i = 0; sig && (i < idx);
-           sig = sig->next, i++)
+      for (sig2 = result->signatures, i = 0; sig2 && (i < idx);
+           sig2 = sig2->next, i++)
         ;
 
       state_puts (_("Warning: The signature expired at: "), s);
-      print_time (sig ? sig->exp_timestamp : 0, s);
+      print_time (sig2 ? sig2->exp_timestamp : 0, s);
       state_puts ("\n", s);
     }
 
@@ -1204,20 +1204,20 @@ static int show_sig_summary (unsigned long sum,
     {
       const char *t0 = NULL, *t1 = NULL;
       gpgme_verify_result_t result;
-      gpgme_signature_t sig;
+      gpgme_signature_t sig2;
       unsigned int i;
 
       state_puts (_("A system error occurred"), s );
 
       /* Try to figure out some more detailed system error information. */
       result = gpgme_op_verify_result (ctx);
-      for (sig = result->signatures, i = 0; sig && (i < idx);
-           sig = sig->next, i++)
+      for (sig2 = result->signatures, i = 0; sig2 && (i < idx);
+           sig2 = sig2->next, i++)
         ;
-      if (sig)
+      if (sig2)
 	{
 	  t0 = "";
-	  t1 = sig->wrong_key_usage ? "Wrong_Key_Usage" : "";
+	  t1 = sig2->wrong_key_usage ? "Wrong_Key_Usage" : "";
 	}
 
       if (t0 || t1)
@@ -1599,17 +1599,16 @@ static int verify_one (BODY *sigbdy, STATE *s,
     {
       gpgme_verify_result_t result;
       gpgme_sig_notation_t notation;
-      gpgme_signature_t signature;
+      gpgme_signature_t sig;
       int non_pka_notations;
 
       result = gpgme_op_verify_result (ctx);
       if (result)
       {
-	for (signature = result->signatures; signature;
-             signature = signature->next)
+	for (sig = result->signatures; sig; sig = sig->next)
 	{
 	  non_pka_notations = 0;
-	  for (notation = signature->notations; notation;
+	  for (notation = sig->notations; notation;
 	       notation = notation->next)
 	    if (! is_pka_notation (notation))
 	      non_pka_notations++;
@@ -1619,9 +1618,9 @@ static int verify_one (BODY *sigbdy, STATE *s,
 	    char buf[SHORT_STRING];
 	    snprintf (buf, sizeof (buf),
 		      _("*** Begin Notation (signature by: %s) ***\n"),
-		      signature->fpr);
+		      sig->fpr);
 	    state_puts (buf, s);
-	    for (notation = signature->notations; notation;
+	    for (notation = sig->notations; notation;
                  notation = notation->next)
 	    {
 	      if (is_pka_notation (notation))
@@ -1858,7 +1857,7 @@ int pgp_gpgme_decrypt_mime (FILE *fpin, FILE **fpout, BODY *b, BODY **cur)
     }
     unlink (tempfile);
 
-    fseeko (s.fpin, b->offset, 0);
+    fseeko (s.fpin, b->offset, SEEK_SET);
     s.fpout = decoded_fp;
 
     mutt_decode_attachment (b, &s);
@@ -1926,7 +1925,7 @@ int smime_gpgme_decrypt_mime (FILE *fpin, FILE **fpout, BODY *b, BODY **cur)
   saved_b_length = b->length;
   memset (&s, 0, sizeof (s));
   s.fpin = fpin;
-  fseeko (s.fpin, b->offset, 0);
+  fseeko (s.fpin, b->offset, SEEK_SET);
   mutt_mktemp (tempfile, sizeof (tempfile));
   if (!(tmpfp = safe_fopen (tempfile, "w+")))
     {
@@ -1980,7 +1979,7 @@ int smime_gpgme_decrypt_mime (FILE *fpin, FILE **fpout, BODY *b, BODY **cur)
       saved_b_length = bb->length;
       memset (&s, 0, sizeof (s));
       s.fpin = *fpout;
-      fseeko (s.fpin, bb->offset, 0);
+      fseeko (s.fpin, bb->offset, SEEK_SET);
       mutt_mktemp (tempfile, sizeof (tempfile));
       if (!(tmpfp = safe_fopen (tempfile, "w+")))
         {
@@ -2372,7 +2371,7 @@ int pgp_gpgme_application_handler (BODY *m, STATE *s)
   if (!mutt_get_body_charset (body_charset, sizeof (body_charset), m))
     strfcpy (body_charset, "iso-8859-1", sizeof (body_charset));
 
-  fseeko (s->fpin, m->offset, 0);
+  fseeko (s->fpin, m->offset, SEEK_SET);
   last_pos = m->offset;
 
   for (bytes = m->length; bytes > 0;)

@@ -14153,9 +14153,7 @@ set sidebar_next_new_wrap = no
 <emphasis role="comment"># Show the Sidebar on the right-hand side of the screen</emphasis>
 set sidebar_on_right = no
 <emphasis role="comment"># The character to use as the divider between the Sidebar and the other Mutt
-# panels.
-
-# Note: Only the first character of this string is used.</emphasis>
+# panels.</emphasis>
 set sidebar_divider_char = '|'
 <emphasis role="comment"># Enable extended buffy mode to calculate total, new, and flagged
 # message counts for each mailbox.</emphasis>

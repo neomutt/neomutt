@@ -133,12 +133,12 @@ static void encode_quoted (FGETCONV * fc, FILE *fout, int istext)
         }
         else
 	{
-          int savechar = line[linelen-1];
+          int savechar2 = line[linelen-1];
 
           line[linelen-1] = '=';
           line[linelen] = 0;
           fputs (line, fout);
-          fprintf (fout, "\n=%2.2X", (unsigned char) savechar);
+          fprintf (fout, "\n=%2.2X", (unsigned char) savechar2);
         }
       }
       else
@@ -1117,7 +1117,7 @@ void mutt_message_to_7bit (BODY *a, FILE *fp)
     goto cleanup;
   }
 
-  fseeko (fpin, a->offset, 0);
+  fseeko (fpin, a->offset, SEEK_SET);
   a->parts = mutt_parse_message_rfc822 (fpin, a);
 
   transform_to_7bit (a->parts, fpin);
@@ -1675,15 +1675,15 @@ static int fold_one_header (FILE *fp, const char *tag, const char *value,
      * and fold with tab for readability */
     if ((flags & CH_DISPLAY) && fold)
     {
-      char *p = buf;
-      while (*p && (*p == ' ' || *p == '\t'))
+      char *pc = buf;
+      while (*pc && (*pc == ' ' || *pc == '\t'))
       {
-	p++;
+	pc++;
 	col--;
       }
       if (fputc ('\t', fp) == EOF)
 	return -1;
-      if (print_val (fp, pfx, p, flags, col) < 0)
+      if (print_val (fp, pfx, pc, flags, col) < 0)
 	return -1;
       col += 8;
     }
@@ -2624,7 +2624,7 @@ static int _mutt_bounce_message (FILE *fp, HEADER *h, ADDRESS *to, const char *r
     if (!option (OPTBOUNCEDELIVERED))
       ch_flags |= CH_WEED_DELIVERED;
 
-    fseeko (fp, h->offset, 0);
+    fseeko (fp, h->offset, SEEK_SET);
     fprintf (f, "Resent-From: %s", resent_from);
     fprintf (f, "\nResent-%s", mutt_make_date (date, sizeof(date)));
     msgid_str = gen_msgid();
@@ -2952,10 +2952,10 @@ int mutt_write_fcc (const char *path, HEADER *hdr, const char *msgid,
      * this will happen, and it can cause problems parsing the mailbox
      * later.
      */
-    fseek (tempfp, -1, 2);
+    fseek (tempfp, -1, SEEK_END);
     if (fgetc (tempfp) != '\n')
     {
-      fseek (tempfp, 0, 2);
+      fseek (tempfp, 0, SEEK_END);
       fputc ('\n', tempfp);
     }
 

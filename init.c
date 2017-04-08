@@ -351,12 +351,12 @@ int mutt_option_set(const struct option_t *val, BUFFER *err)
     {
       case DT_RX:
       {
-        BUFFER *err = safe_malloc(sizeof(BUFFER));
+        BUFFER *err2 = safe_malloc(sizeof(BUFFER));
         BUFFER tmp;
         tmp.data = safe_strdup((char *) val->data);
         tmp.dsize = strlen((char *) val->data);
 
-        if (parse_regex(idx, &tmp, err))
+        if (parse_regex(idx, &tmp, err2))
         {
           /* $reply_regexp and $alternates require special treatment */
           if (Context && Context->msgcount &&
@@ -381,7 +381,7 @@ int mutt_option_set(const struct option_t *val, BUFFER *err)
         }
         else
         {
-          snprintf(err->data, err->dsize, _("%s: Unknown type."),
+          snprintf(err2->data, err2->dsize, _("%s: Unknown type."),
                    MuttVars[idx].option);
           return -1;
         }
@@ -391,7 +391,7 @@ int mutt_option_set(const struct option_t *val, BUFFER *err)
       case DT_SORT:
       {
         const struct mapping_t *map = NULL;
-        BUFFER *err = safe_malloc(sizeof(BUFFER));
+        BUFFER *err2 = safe_malloc(sizeof(BUFFER));
 
         switch (MuttVars[idx].type & DT_SUBTYPE_MASK)
         {
@@ -418,13 +418,13 @@ int mutt_option_set(const struct option_t *val, BUFFER *err)
 
         if (!map)
         {
-          snprintf(err->data, err->dsize, _("%s: Unknown type."),
+          snprintf(err2->data, err2->dsize, _("%s: Unknown type."),
                    MuttVars[idx].option);
           return -1;
         }
 
         if (parse_sort((short *) MuttVars[idx].data, (const char *) val->data,
-                       map, err) == -1)
+                       map, err2) == -1)
           return -1;
       }
       break;
@@ -1171,6 +1171,7 @@ static int parse_unlist (BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err
   return 0;
 }
 
+#ifdef USE_SIDEBAR
 static int parse_path_list (BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err)
 {
   char path[_POSIX_PATH_MAX];
@@ -1210,6 +1211,7 @@ static int parse_path_unlist (BUFFER *buf, BUFFER *s, unsigned long data, BUFFER
 
   return 0;
 }
+#endif
 
 static int parse_lists (BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err)
 {
@@ -3686,8 +3688,8 @@ static void start_debug (void)
   if ((debugfile = safe_fopen(buf, "w")) != NULL)
   {
     setbuf (debugfile, NULL); /* don't buffer the debugging output! */
-    mutt_debug (1, "NeoMutt/%s (%s) debugging at level %d\n",
-                PACKAGE_VERSION, MUTT_VERSION, debuglevel);
+    mutt_debug (1, "NeoMutt %s%s (%s) debugging at level %d\n",
+                PACKAGE_VERSION, GitVer, MUTT_VERSION, debuglevel);
   }
 }
 #endif
@@ -3764,7 +3766,6 @@ void mutt_init (int skip_sys_rc, LIST *commands)
   struct passwd *pw = NULL;
   struct utsname utsname;
   char *p, buffer[STRING];
-  char *domain = NULL;
   int i, need_pause = 0;
   BUFFER err;
 
@@ -3832,10 +3833,6 @@ void mutt_init (int skip_sys_rc, LIST *commands)
 
   /* And about the host... */
 
-#ifdef DOMAIN
-  domain = safe_strdup (DOMAIN);
-#endif /* DOMAIN */
-
   /*
    * The call to uname() shouldn't fail, but if it does, the system is horribly
    * broken, and the system's networking configuration is in an unreliable
@@ -3855,13 +3852,12 @@ void mutt_init (int skip_sys_rc, LIST *commands)
     Hostname = safe_strdup (utsname.nodename);
 
   /* now get FQDN.  Use configured domain first, DNS next, then uname */
-  if (domain)
-  {
-    /* we have a compile-time domain name, use that for Fqdn */
-    Fqdn = safe_malloc (mutt_strlen (domain) + mutt_strlen (Hostname) + 2);
-    sprintf (Fqdn, "%s.%s", NONULL(Hostname), domain);	/* __SPRINTF_CHECKED__ */
-  }
-  else if (!(getdnsdomainname (buffer, sizeof (buffer))))
+#ifdef DOMAIN
+  /* we have a compile-time domain name, use that for Fqdn */
+  Fqdn = safe_malloc (mutt_strlen (DOMAIN) + mutt_strlen (Hostname) + 2);
+  sprintf (Fqdn, "%s.%s", NONULL(Hostname), DOMAIN);	/* __SPRINTF_CHECKED__ */
+#else
+  if (!(getdnsdomainname (buffer, sizeof (buffer))))
   {
     Fqdn = safe_malloc (mutt_strlen (buffer) + mutt_strlen (Hostname) + 2);
     sprintf (Fqdn, "%s.%s", NONULL(Hostname), buffer);	/* __SPRINTF_CHECKED__ */
@@ -3877,12 +3873,12 @@ void mutt_init (int skip_sys_rc, LIST *commands)
      * network.
      */
     Fqdn = safe_strdup(utsname.nodename);
-
+#endif
 
 #ifdef USE_NNTP
   {
     FILE *f = NULL;
-    char *i = NULL;
+    char *c = NULL;
 
     if ((f = safe_fopen (SYSCONFDIR "/nntpserver", "r")))
     {
@@ -3890,9 +3886,9 @@ void mutt_init (int skip_sys_rc, LIST *commands)
       fgets (buffer, sizeof (buffer), f);
       p = buffer;
       SKIPWS (p);
-      i = p;
-      while (*i && (*i != ' ') && (*i != '\t') && (*i != '\r') && (*i != '\n')) i++;
-      *i = '\0';
+      c = p;
+      while (*c && (*c != ' ') && (*c != '\t') && (*c != '\r') && (*c != '\n')) c++;
+      *c = '\0';
       NewsServer = safe_strdup (p);
       fclose (f);
     }

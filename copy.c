@@ -61,7 +61,7 @@ mutt_copy_hdr (FILE *in, FILE *out, LOFF_T off_start, LOFF_T off_end, int flags,
   int error;
 
   if (ftello (in) != off_start)
-    fseeko (in, off_start, 0);
+    fseeko (in, off_start, SEEK_SET);
 
   buf[0] = '\n';
   buf[1] = 0;
@@ -428,12 +428,12 @@ mutt_copy_header (FILE *in, HEADER *h, FILE *out, int flags, const char *prefix)
     char *folder = nm_header_get_folder(h);
     if (folder && !(option (OPTWEED) && mutt_matches_ignore ("folder")))
     {
-      char buffer[LONG_STRING];
-      strfcpy (buffer, folder, sizeof (buffer));
-      mutt_pretty_mailbox (buffer, sizeof (buffer));
+      char buf[LONG_STRING];
+      strfcpy (buf, folder, sizeof (buf));
+      mutt_pretty_mailbox (buf, sizeof (buf));
 
       fputs ("Folder: ", out);
-      fputs (buffer, out);
+      fputs (buf, out);
       fputc ('\n', out);
     }
     char *tags = nm_header_get_tags(h);
@@ -675,7 +675,7 @@ _mutt_copy_message (FILE *fpout, FILE *fpin, HEADER *hdr, BODY *body,
     mutt_write_mime_header (cur, fpout);
     fputc ('\n', fpout);
 
-    fseeko (fp, cur->offset, 0);
+    fseeko (fp, cur->offset, SEEK_SET);
     if (mutt_copy_bytes (fp, fpout, cur->length) == -1)
     {
       safe_fclose (&fp);
@@ -687,7 +687,7 @@ _mutt_copy_message (FILE *fpout, FILE *fpin, HEADER *hdr, BODY *body,
   }
   else
   {
-    fseeko (fpin, body->offset, 0);
+    fseeko (fpin, body->offset, SEEK_SET);
     if (flags & MUTT_CM_PREFIX)
     {
       int c;
@@ -757,7 +757,7 @@ _mutt_append_message (CONTEXT *dest, FILE *fpin, CONTEXT *src, HEADER *hdr,
   MESSAGE *msg = NULL;
   int r;
 
-  fseeko (fpin, hdr->offset, 0);
+  fseeko (fpin, hdr->offset, SEEK_SET);
   if (fgets (buf, sizeof (buf), fpin) == NULL)
     return -1;
 

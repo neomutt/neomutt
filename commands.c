@@ -874,11 +874,11 @@ int mutt_save_message (HEADER *h, int delete, int decode, int decrypt)
 #ifdef USE_COMPRESSED
           if (cm)
           {
-            HEADER *h = Context->hdrs[Context->v2r[i]];
+            HEADER *h2 = Context->hdrs[Context->v2r[i]];
             cm->msg_count++;
-            if (!h->read)
+            if (!h2->read)
               cm->msg_unread++;
-            if (h->flagged)
+            if (h2->flagged)
               cm->msg_flagged++;
           }
 #endif

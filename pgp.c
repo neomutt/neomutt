@@ -338,7 +338,7 @@ int pgp_application_pgp_handler (BODY *m, STATE *s)
 
   rc = 0;	/* silence false compiler warning if (s->flags & MUTT_DISPLAY) */
 
-  fseeko (s->fpin, m->offset, 0);
+  fseeko (s->fpin, m->offset, SEEK_SET);
   last_pos = m->offset;
 
   for (bytes = m->length; bytes > 0;)
@@ -522,7 +522,7 @@ int pgp_application_pgp_handler (BODY *m, STATE *s)
       else if (pgpout)
       {
 	FGETCONV *fc = NULL;
-	int c;
+	int ch;
 	char *expected_charset = gpgcharset && *gpgcharset ? gpgcharset : "utf-8";
 
 	mutt_debug (4, "pgp: recoding inline from [%s] to [%s]\n",
@@ -531,8 +531,8 @@ int pgp_application_pgp_handler (BODY *m, STATE *s)
 	rewind (pgpout);
 	state_set_prefix (s);
 	fc = fgetconv_open (pgpout, expected_charset, Charset, MUTT_ICONV_HOOK_FROM);
-	while ((c = fgetconv (fc)) != EOF)
-	  state_prefix_putc (c, s);
+	while ((ch = fgetconv (fc)) != EOF)
+	  state_prefix_putc (ch, s);
 	fgetconv_close (&fc);
       }
 
@@ -702,7 +702,7 @@ int pgp_verify_one (BODY *sigbdy, STATE *s, const char *tempfile)
     return -1;
   }
 
-  fseeko (s->fpin, sigbdy->offset, 0);
+  fseeko (s->fpin, sigbdy->offset, SEEK_SET);
   mutt_copy_bytes (s->fpin, fp, sigbdy->length);
   safe_fclose (&fp);
 
@@ -834,7 +834,7 @@ static BODY *pgp_decrypt_part (BODY *a, STATE *s, FILE *fpout, BODY *p)
    * the temporary file.
    */
 
-  fseeko (s->fpin, a->offset, 0);
+  fseeko (s->fpin, a->offset, SEEK_SET);
   mutt_copy_bytes (s->fpin, pgptmp, a->length);
   safe_fclose (&pgptmp);
 
@@ -961,7 +961,7 @@ int pgp_decrypt_mime (FILE *fpin, FILE **fpout, BODY *b, BODY **cur)
     }
     unlink (tempfile);
 
-    fseeko (s.fpin, b->offset, 0);
+    fseeko (s.fpin, b->offset, SEEK_SET);
     s.fpout = decoded_fp;
 
     mutt_decode_attachment (b, &s);

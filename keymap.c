@@ -59,8 +59,6 @@ const struct mapping_t Menus[] = {
  { NULL,	0 }
 };
 
-#define mutt_check_menu(s) mutt_getvaluebyname(s, Menus)
-
 static struct mapping_t KeyNames[] = {
   { "<PageUp>",	KEY_PPAGE },
   { "<PageDown>",	KEY_NPAGE },
@@ -894,7 +892,8 @@ char *parse_keymap (int *menu, BUFFER *s, int maxmenus, int *nummenus, BUFFER *e
       if (q)
         *q = '\0';
 
-      if ((menu[i] = mutt_check_menu (p)) == -1)
+      menu[i] = mutt_getvaluebyname(p, Menus);
+      if (menu[i] == -1)
       {
          snprintf (err->data, err->dsize, _("%s: no such menu"), p);
          goto error;

@@ -33,6 +33,19 @@
 
 #include <slcurses.h>
 
+/* The prototypes for these four functions use "(char*)",
+ * whereas the ncurses versions use "(const char*)" */
+#undef addnstr
+#undef addstr
+#undef mvaddnstr
+#undef mvaddstr
+
+/* We redefine the helper macros to hide the compiler warnings */
+#define addnstr(s,n)            waddnstr(stdscr,((char*)s),(n))
+#define addstr(x)               waddstr(stdscr, ((char*)x))
+#define mvaddnstr(y,x,s,n)      mvwaddnstr(stdscr,(y),(x),((char*)s),(n))
+#define mvaddstr(y,x,s)         mvwaddstr(stdscr,(y),(x),((char*)s))
+
 #define KEY_DC SL_KEY_DELETE
 #define KEY_IC SL_KEY_IC
 
@@ -136,6 +149,9 @@ enum
   MT_COLOR_INDEX,
   MT_COLOR_INDEX_AUTHOR,
   MT_COLOR_INDEX_FLAGS,
+#ifdef USE_NOTMUCH
+  MT_COLOR_INDEX_TAG,
+#endif
   MT_COLOR_INDEX_SUBJECT,
   /* below here - only index coloring stuff that doesn't have a pattern */
   MT_COLOR_INDEX_COLLAPSED,
@@ -144,7 +160,6 @@ enum
   MT_COLOR_INDEX_NUMBER,
   MT_COLOR_INDEX_SIZE,
 #ifdef USE_NOTMUCH
-  MT_COLOR_INDEX_TAG,
   MT_COLOR_INDEX_TAGS,
 #endif
   MT_COLOR_MAX

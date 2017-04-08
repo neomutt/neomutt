@@ -392,7 +392,7 @@ parse_color_name (const char *s, int *col, int *attr, int is_fg, BUFFER *err)
 
 
 static void
-do_uncolor (BUFFER *buf, BUFFER *s, COLOR_LINE **ColorList,
+do_uncolor (BUFFER *buf, BUFFER *s, COLOR_LINE **cl,
                  int *do_cache, int parse_uncolor)
 {
   COLOR_LINE *tmp = NULL, *last = NULL;
@@ -402,7 +402,7 @@ do_uncolor (BUFFER *buf, BUFFER *s, COLOR_LINE **ColorList,
     mutt_extract_token (buf, s, 0);
     if (mutt_strcmp ("*", buf->data) == 0)
     {
-      for (tmp = *ColorList; tmp; )
+      for (tmp = *cl; tmp; )
       {
         if (!*do_cache)
 	{
@@ -412,11 +412,11 @@ do_uncolor (BUFFER *buf, BUFFER *s, COLOR_LINE **ColorList,
         tmp = tmp->next;
         free_color_line (&last, parse_uncolor);
       }
-      *ColorList = NULL;
+      *cl = NULL;
     }
     else
     {
-      for (last = NULL, tmp = *ColorList; tmp; last = tmp, tmp = tmp->next)
+      for (last = NULL, tmp = *cl; tmp; last = tmp, tmp = tmp->next)
       {
         if (mutt_strcmp (buf->data, tmp->pattern) == 0)
 	{
@@ -432,7 +432,7 @@ do_uncolor (BUFFER *buf, BUFFER *s, COLOR_LINE **ColorList,
           }
 	  else
 	  {
-            *ColorList = tmp->next;
+            *cl = tmp->next;
           }
           free_color_line (&tmp, parse_uncolor);
           break;

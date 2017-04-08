@@ -695,6 +695,7 @@ int _mutt_enter_string (char *buf, size_t buflen, int col,
 	      goto self_insert;
 	    }
 	  }
+          break;
 
 	case OP_EDITOR_TRANSPOSE_CHARS:
 	  if (state->lastchar < 2)

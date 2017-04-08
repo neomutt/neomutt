@@ -44,7 +44,7 @@ static pop_auth_res_t pop_auth_sasl (POP_DATA *pop_data, const char *method)
   char inbuf[LONG_STRING];
   const char* mech = NULL;
   const char *pc = NULL;
-  unsigned int len, olen, client_start;
+  unsigned int len = 0, olen = 0, client_start;
 
   if (mutt_sasl_client_new (pop_data->conn, &saslconn) < 0)
   {
@@ -167,7 +167,7 @@ bail:
   if (mutt_strncmp (inbuf, "+ ", 2) == 0)
   {
     snprintf (buf, bufsize, "*\r\n");
-    if (pop_query (pop_data, buf, sizeof (buf)) == -1)
+    if (pop_query (pop_data, buf, bufsize) == -1)
     {
       FREE (&buf);
       return POP_A_SOCKET;
