@@ -408,9 +408,11 @@ static int _mutt_pipe_message (HEADER *h, char *cmd,
       return 1;
     }
 
+    set_option (OPTKEEPQUIET);
     pipe_msg (h, fpout, decode, print);
     safe_fclose (&fpout);
     rc = mutt_wait_filter (thepid);
+    unset_option (OPTKEEPQUIET);
   }
   else
   { /* handle tagged messages */
@@ -441,12 +443,14 @@ static int _mutt_pipe_message (HEADER *h, char *cmd,
 	    mutt_perror (_("Can't create filter process"));
 	    return 1;
 	  }
+          set_option (OPTKEEPQUIET);
           pipe_msg (Context->hdrs[Context->v2r[i]], fpout, decode, print);
           /* add the message separator */
           if (sep)  fputs (sep, fpout);
 	  safe_fclose (&fpout);
 	  if (mutt_wait_filter (thepid) != 0)
 	    rc = 1;
+          unset_option (OPTKEEPQUIET);
         }
       }
     }
@@ -458,6 +462,7 @@ static int _mutt_pipe_message (HEADER *h, char *cmd,
 	mutt_perror (_("Can't create filter process"));
 	return 1;
       }
+      set_option (OPTKEEPQUIET);
       for (i = 0; i < Context->vcount; i++)
       {
         if (Context->hdrs[Context->v2r[i]]->tagged)
@@ -471,6 +476,7 @@ static int _mutt_pipe_message (HEADER *h, char *cmd,
       safe_fclose (&fpout);
       if (mutt_wait_filter (thepid) != 0)
 	rc = 1;
+      unset_option (OPTKEEPQUIET);
     }
   }
 

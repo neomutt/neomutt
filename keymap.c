@@ -457,8 +457,8 @@ int km_dokey (int menu)
 #ifdef USE_IMAP
   gotkey:
 #endif
-    /* hide timeouts and window resizes from line editor. */
-    if (menu == MENU_EDITOR && tmp.ch == -2)
+    /* hide timeouts, but not window resizes, from the line editor. */
+    if (menu == MENU_EDITOR && tmp.ch == -2 && !SigWinch)
       continue;
 
     LastKey = tmp.ch;
