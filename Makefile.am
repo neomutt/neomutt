@@ -83,10 +83,9 @@ EXTRA_DIST = account.h ascii.h attach.h browser.h buffer.h buffy.h ChangeLog \
 	mutt_sasl_plain.h mutt_socket.h mutt_ssl.h mutt_tunnel.h mx.h myvar.h \
 	nntp.h OPS OPS.CRYPT OPS.MIX OPS.NOTMUCH OPS.PGP OPS.SIDEBAR OPS.SMIME \
 	pager.h PATCHES patchlist.sh pgp.h pgpewrap.c pgplib.h pgppacket.h \
-	pop.h protos.h README.md README.neomutt README.notmuch README.SECURITY \
-	README.SSL remailer.c remailer.h rfc1524.h rfc2047.h rfc2231.h \
-	rfc3676.h rfc822.h sha1.h sidebar.h smime.h smime_keys.pl sort.h TODO \
-	txt2c.c txt2c.sh UPDATING UPDATING.kz version.h keymap_alldefs.h
+	pop.h protos.h README.md README.SECURITY README.SSL remailer.c remailer.h \
+	rfc1524.h rfc2047.h rfc2231.h rfc3676.h rfc822.h sha1.h sidebar.h smime.h \ 
+	smime_keys.pl sort.h txt2c.c txt2c.sh UPDATING version.h keymap_alldefs.h
 
 EXTRA_SCRIPTS = smime_keys
 
