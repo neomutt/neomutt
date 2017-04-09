@@ -1357,26 +1357,6 @@ AS_IF([test $have_fmemopen = "yes" && test $use_fmemopen = "yes"],
 	[use_fmemopen=no]
 )
 
-dnl Documentation tools
-have_openjade="no"
-AC_PATH_PROG([OSPCAT], [ospcat], [none])
-if test "$OSPCAT" != "none"; then
-	AC_MSG_CHECKING([for openjade docbook stylesheets])
-	dslosfile=`ospcat --public-id="-//Norman Walsh//DOCUMENT DocBook Print Stylesheet//EN"`
-	DSLROOT=`echo $dslosfile | sed -n -e "s/.*SOIBASE='\(@<:@^'@:>@*\)\/catalog'.*/\1/p"`
-	# ospcat may spit out an absolute path without an SOIBASE
-	if test -z "$DSLROOT"; then
-		DSLROOT=`echo $dslosfile | sed -e 's|<OSFILE>\(.*\)/print/docbook.dsl|\1|'`
-	fi
-	if test -f $DSLROOT/print/docbook.dsl; then
-		AC_MSG_RESULT([in $DSLROOT])
-		have_openjade="yes"
-	else
-		AC_MSG_RESULT([not found: PDF documentation will not be built.])
-	fi
-fi
-AC_SUBST(DSLROOT)
-
 AC_ARG_ENABLE(doc, AS_HELP_STRING([--disable-doc],[Do not build the documentation]),
 [	if test x$enableval = xno; then
 		do_build_doc=no

@@ -149,14 +149,6 @@ stamp-doc-chunked: $(srcdir)/chunk.xsl $(srcdir)/mutt.xsl stamp-doc-xml $(srcdir
 
 $(CHUNKED_DOCFILES): stamp-doc-chunked
 
-manual.pdf: manual.tex
-	-if test -f manual.tex; then pdfjadetex manual.tex; fi
-
-manual.tex: stamp-doc-xml
-	-if test -n "$(DSLROOT)"; then \
-	  openjade -t tex -D $(DSLROOT) -d print/docbook.dsl dtds/decls/xml.dcl manual.xml; \
-	fi
-
 neomutt-syntax.vim: mutt-1.7.0-syntax.vim $(SAMPLE_VIMRC)
 	( \
 		sed -e '/vim:/d' -e "/This file covers/s/$$/ and NeoMutt $(VERSION)/" $(srcdir)/mutt-1.7.0-syntax.vim; \
