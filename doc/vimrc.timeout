@@ -1,4 +1,0 @@
-" Vim syntax file for the NeoMutt timeout feature.
-
-syntax keyword muttrcCommand    timeout-hook
-

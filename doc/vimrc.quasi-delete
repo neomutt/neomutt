@@ -1,4 +1,0 @@
-" Vim syntax file for the NeoMutt quasi-delete feature.
-
-syntax match muttrcFunction     contained "\<quasi-delete\>"
-

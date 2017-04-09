@@ -34,7 +34,7 @@ EXTRA_DIST = dotlock.man		\
 	makedoc.c makedoc_defs.h 	\
 	mutt.css mutt.xsl html.xsl chunk.xsl \
 	$(BUILT_DISTFILES) $(SAMPLE_MUTTRC) $(SAMPLE_VIMRC) \
-	mutt-1.7.0-syntax.vim neomutt-syntax.vim
+	mutt-1.7.0-syntax.vim 
 
 SAMPLE_MUTTRC = muttrc.attach-headers-color muttrc.compress muttrc.cond-date \
 	muttrc.encrypt-to-self muttrc.forgotten-attachment muttrc.ifdef \
@@ -148,16 +148,6 @@ stamp-doc-chunked: $(srcdir)/chunk.xsl $(srcdir)/mutt.xsl stamp-doc-xml $(srcdir
 	touch stamp-doc-chunked
 
 $(CHUNKED_DOCFILES): stamp-doc-chunked
-
-neomutt-syntax.vim: mutt-1.7.0-syntax.vim $(SAMPLE_VIMRC)
-	( \
-		sed -e '/vim:/d' -e "/This file covers/s/$$/ and NeoMutt $(VERSION)/" $(srcdir)/mutt-1.7.0-syntax.vim; \
-		echo; \
-		for f in $(SAMPLE_VIMRC) ; do \
-			cat $(srcdir)/$$f; \
-		done; \
-		grep "vim:" $(srcdir)/mutt-1.7.0-syntax.vim; \
-	) > $@
 
 validate: stamp-doc-xml
 	xmllint --noout --noblanks --postvalid manual.xml

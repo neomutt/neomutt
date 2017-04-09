@@ -1,4 +1,0 @@
-" Vim syntax file for the NeoMutt reply-with-xorig feature.
-
-syntax keyword muttrcVarBool    skipwhite contained reply_with_xorig         nextgroup=muttrcSetBoolAssignment,muttrcVPrefix,muttrcVarBool,muttrcVarQuad,muttrcVarNum,muttrcVarStr
-
