@@ -203,7 +203,7 @@ static int mutt_sasl_cb_pass (sasl_conn_t* conn, void* context, int id,
   mutt_debug (2, "mutt_sasl_cb_pass: getting password for %s@%s:%u\n",
               account->login, account->host, account->port);
 
-  if (mutt_account_getpass (account))
+  if (!mutt_account_getpass (account))
     return SASL_FAIL;
 
   len = strlen (account->pass);

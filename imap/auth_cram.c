@@ -47,7 +47,7 @@ imap_auth_res_t imap_auth_cram_md5 (IMAP_DATA* idata, const char* method)
   /* get auth info */
   if (mutt_account_getlogin (&idata->conn->account))
     return IMAP_AUTH_FAILURE;
-  if (mutt_account_getpass (&idata->conn->account))
+  if (!mutt_account_getpass (&idata->conn->account))
     return IMAP_AUTH_FAILURE;
 
   imap_cmd_start (idata, "AUTHENTICATE CRAM-MD5");

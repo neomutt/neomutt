@@ -34,7 +34,7 @@ imap_auth_res_t imap_auth_plain(IMAP_DATA *idata, const char *method)
 
   if (mutt_account_getuser(&idata->conn->account))
     return IMAP_AUTH_FAILURE;
-  if (mutt_account_getpass(&idata->conn->account))
+  if (!mutt_account_getpass(&idata->conn->account))
     return IMAP_AUTH_FAILURE;
 
   mutt_message(_("Logging in..."));

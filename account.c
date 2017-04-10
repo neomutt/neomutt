@@ -220,12 +220,12 @@ int mutt_account_getlogin (ACCOUNT* account)
 }
 
 /* mutt_account_getpass: fetch password into ACCOUNT, if necessary */
-int mutt_account_getpass (ACCOUNT* account)
+bool mutt_account_getpass (ACCOUNT* account)
 {
   char prompt[SHORT_STRING];
 
   if (account->flags & MUTT_ACCT_PASS)
-    return 0;
+    return true;
 #ifdef USE_IMAP
   else if ((account->type == MUTT_ACCT_TYPE_IMAP) && ImapPass)
     strfcpy (account->pass, ImapPass, sizeof (account->pass));
@@ -243,7 +243,7 @@ int mutt_account_getpass (ACCOUNT* account)
     strfcpy (account->pass, NntpPass, sizeof (account->pass));
 #endif
   else if (option (OPTNOCURSES))
-    return -1;
+    return false;
   else
   {
     snprintf (prompt, sizeof (prompt), _("Password for %s@%s: "),
@@ -251,12 +251,12 @@ int mutt_account_getpass (ACCOUNT* account)
               account->host);
     account->pass[0] = '\0';
     if (mutt_get_password (prompt, account->pass, sizeof (account->pass)))
-      return -1;
+      return false;
   }
 
   account->flags |= MUTT_ACCT_PASS;
 
-  return 0;
+  return true;
 }
 
 void mutt_account_unsetpass (ACCOUNT* account)
