@@ -556,7 +556,7 @@ int safe_rename (const char *src, const char *target)
 
 
 /* Create a temporary directory next to a file name */
-static int mkwrapdir (const char *path, char *newfile, size_t nflen,
+static bool mkwrapdir (const char *path, char *newfile, size_t nflen,
 		    char *newdir, size_t ndlen)
 {
   const char *basename = NULL;
@@ -580,16 +580,16 @@ static int mkwrapdir (const char *path, char *newfile, size_t nflen,
   if (mkdtemp(newdir) == NULL)
   {
       mutt_debug (1, "mkwrapdir: mkdtemp() failed\n");
-      return -1;
+      return false;
   }
 
   if (snprintf (newfile, nflen, "%s/%s", newdir, NONULL(basename)) >= nflen)
   {
       rmdir(newdir);
       mutt_debug (1, "mkwrapdir: string was truncated\n");
-      return -1;
+      return false;
   }
-  return 0;
+  return true;
 }
 
 /* remove a directory and everything under it */
@@ -652,8 +652,8 @@ int safe_open (const char *path, int flags)
     char safe_file[_POSIX_PATH_MAX];
     char safe_dir[_POSIX_PATH_MAX];
 
-    if (mkwrapdir (path, safe_file, sizeof (safe_file),
-			safe_dir, sizeof (safe_dir)) == -1)
+    if (!mkwrapdir (path, safe_file, sizeof (safe_file),
+			safe_dir, sizeof (safe_dir)))
       return -1;
 
     if ((fd = open (safe_file, flags, 0600)) < 0)
