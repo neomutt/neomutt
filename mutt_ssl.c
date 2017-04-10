@@ -382,7 +382,7 @@ static int compare_certificates (X509 *cert, X509 *peercert,
   return 0;
 }
 
-static int check_certificate_expiration (X509 *peercert, int silent)
+static bool check_certificate_expiration (X509 *peercert, bool silent)
 {
   if (option (OPTSSLVERIFYDATES) != MUTT_NO)
   {
@@ -394,7 +394,7 @@ static int check_certificate_expiration (X509 *peercert, int silent)
         mutt_error (_("Server certificate is not yet valid"));
         mutt_sleep (2);
       }
-      return 0;
+      return false;
     }
     if (X509_cmp_current_time (X509_get_notAfter (peercert)) <= 0)
     {
@@ -404,11 +404,11 @@ static int check_certificate_expiration (X509 *peercert, int silent)
         mutt_error (_("Server certificate has expired"));
         mutt_sleep (2);
       }
-      return 0;
+      return false;
     }
   }
 
-  return 1;
+  return true;
 }
 
 /* port to mutt from msmtp's tls.c */
@@ -610,7 +610,7 @@ static int check_certificate_file (X509 *peercert)
   while (PEM_read_X509 (fp, &cert, NULL, NULL) != NULL)
   {
     if ((compare_certificates (cert, peercert, peermd, peermdlen) == 0) &&
-        check_certificate_expiration (cert, 1))
+        check_certificate_expiration (cert, true))
     {
       pass = 1;
       break;
@@ -732,7 +732,7 @@ out:
 
 static int check_certificate_by_digest (X509 *peercert)
 {
-  return check_certificate_expiration (peercert, 0) &&
+  return check_certificate_expiration (peercert, false) &&
     check_certificate_file (peercert);
 }
 
@@ -822,7 +822,7 @@ static int interactive_check_cert (X509 *cert, int idx, int len, SSL *ssl, int a
    */
   allow_always = allow_always &&
                  SslCertFile &&
-                 check_certificate_expiration (cert, 1);
+                 check_certificate_expiration (cert, true);
 
   /* L10N:
    * These four letters correspond to the choices in the next four strings:
