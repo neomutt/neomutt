@@ -78,22 +78,22 @@ static int space_quotes (STATE *s)
  * as opposed to
  *    >>>foo
  */
-static int add_quote_suffix (STATE *s, int ql)
+static bool add_quote_suffix (STATE *s, int ql)
 {
   if (s->flags & MUTT_REPLYING)
-    return 0;
+    return false;
 
   if (space_quotes (s))
-    return 0;
+    return false;
 
   if (!ql && !s->prefix)
-    return 0;
+    return false;
 
   /* The prefix will add its own space */
   if (!option (OPTTEXTFLOWED) && !ql && s->prefix)
-    return 0;
+    return false;
 
-  return 1;
+  return true;
 }
 
 static size_t print_indent (int ql, STATE *s, int add_suffix)
