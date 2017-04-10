@@ -409,7 +409,7 @@ void update_index (MUTTMENU *menu, CONTEXT *ctx, int check,
 
 }
 
-static int main_change_folder(MUTTMENU *menu, int op, char *buf, size_t bufsz,
+static bool main_change_folder(MUTTMENU *menu, int op, char *buf, size_t bufsz,
 			  int *oldcount, int *index_hint, int flags)
 {
 #ifdef USE_NNTP
@@ -424,7 +424,7 @@ static int main_change_folder(MUTTMENU *menu, int op, char *buf, size_t bufsz,
   if (mx_get_magic (buf) <= 0)
   {
     mutt_error (_("%s is not a mailbox."), buf);
-    return -1;
+    return false;
   }
   mutt_str_replace (&CurrentFolder, buf);
 
@@ -451,7 +451,7 @@ static int main_change_folder(MUTTMENU *menu, int op, char *buf, size_t bufsz,
 
       set_option (OPTSEARCHINVALID);
       menu->redraw = REDRAW_INDEX | REDRAW_STATUS;
-      return 0;
+      return true;
     }
     FREE (&Context);
   }
@@ -489,7 +489,7 @@ static int main_change_folder(MUTTMENU *menu, int op, char *buf, size_t bufsz,
   menu->redraw = REDRAW_FULL;
   set_option (OPTSEARCHINVALID);
 
-  return 0;
+  return true;
 }
 
 
