@@ -653,7 +653,7 @@ static REPLACE_LIST *new_replace_list(void)
   return safe_calloc (1, sizeof (REPLACE_LIST));
 }
 
-static int add_to_replace_list (REPLACE_LIST **list, const char *pat, const char *templ, BUFFER *err)
+static bool add_to_replace_list (REPLACE_LIST **list, const char *pat, const char *templ, BUFFER *err)
 {
   REPLACE_LIST *t = NULL, *last = NULL;
   REGEXP *rx = NULL;
@@ -661,12 +661,12 @@ static int add_to_replace_list (REPLACE_LIST **list, const char *pat, const char
   const char *p = NULL;
 
   if (!pat || !*pat || !templ)
-    return 0;
+    return true;
 
   if (!(rx = mutt_compile_regexp (pat, REG_ICASE)))
   {
     snprintf (err->data, err->dsize, _("Bad regexp: %s"), pat);
-    return -1;
+    return false;
   }
 
   /* check to make sure the item is not already on this list */
@@ -728,12 +728,12 @@ static int add_to_replace_list (REPLACE_LIST **list, const char *pat, const char
     snprintf (err->data, err->dsize, _("Not enough subexpressions for "
                                        "template"));
     remove_from_replace_list(list, pat);
-    return -1;
+    return false;
   }
 
   t->nmatch++;         /* match 0 is always the whole expr */
 
-  return 0;
+  return true;
 }
 
 
@@ -1010,7 +1010,7 @@ static int parse_replace_list (BUFFER *buf, BUFFER *s, unsigned long data, BUFFE
   }
   mutt_extract_token(&templ, s, 0);
 
-  if (add_to_replace_list(list, buf->data, templ.data, err) != 0) {
+  if (!add_to_replace_list(list, buf->data, templ.data, err)) {
     FREE(&templ.data);
     return -1;
   }
@@ -1105,7 +1105,7 @@ static int parse_spam_list (BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *
       mutt_extract_token (&templ, s, 0);
 
       /* Add to the spam list. */
-      if (add_to_replace_list (&SpamList, buf->data, templ.data, err) != 0) {
+      if (!add_to_replace_list (&SpamList, buf->data, templ.data, err)) {
 	  FREE(&templ.data);
           return -1;
       }
