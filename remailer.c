@@ -422,18 +422,18 @@ static void mix_entry (char *b, size_t blen, MUTTMENU *menu, int num)
 		     (unsigned long) type2_list[num], MUTT_FORMAT_ARROWCURSOR);
 }
 
-static int mix_chain_add (MIXCHAIN *chain, const char *s,
+static bool mix_chain_add (MIXCHAIN *chain, const char *s,
 			  REMAILER **type2_list)
 {
   int i;
 
   if (chain->cl >= MAXMIXES)
-    return -1;
+    return false;
 
   if ((mutt_strcmp (s, "0") == 0) || (ascii_strcasecmp (s, "<random>") == 0))
   {
     chain->ch[chain->cl++] = 0;
-    return 0;
+    return true;
   }
 
   for (i = 0; type2_list[i]; i++)
@@ -441,7 +441,7 @@ static int mix_chain_add (MIXCHAIN *chain, const char *s,
     if (ascii_strcasecmp (s, type2_list[i]->shortname) == 0)
     {
       chain->ch[chain->cl++] = i;
-      return 0;
+      return true;
     }
   }
 
@@ -450,7 +450,7 @@ static int mix_chain_add (MIXCHAIN *chain, const char *s,
   if (!type2_list[i])
     chain->ch[chain->cl++] = 0;
 
-  return 0;
+  return true;
 }
 
 static const struct mapping_t RemailerHelp[] =
