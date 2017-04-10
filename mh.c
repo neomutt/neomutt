@@ -257,14 +257,14 @@ static int mh_already_notified(BUFFY *b, int msgno)
  * digits.  Deleted message get moved to a filename with a comma before
  * it.
  */
-static int mh_valid_message (const char *s)
+static bool mh_valid_message (const char *s)
 {
   for (; *s; s++)
   {
     if (!isdigit ((unsigned char) *s))
-      return 0;
+      return false;
   }
-  return 1;
+  return true;
 }
 
 /* Checks new mail for a mh mailbox.
