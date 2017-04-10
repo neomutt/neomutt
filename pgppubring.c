@@ -691,7 +691,7 @@ static pgp_key_t pgp_parse_keyblock (FILE * fp)
 	if (pt == PT_SUBKEY || pt == PT_SUBSECKEY)
 	{
 	  p->flags |= KEYFLAG_SUBKEY;
-	  if (p != root)
+	  if (root && (p != root))
 	  {
 	    p->parent  = root;
 	    p->address = pgp_copy_uids (root->address, p);

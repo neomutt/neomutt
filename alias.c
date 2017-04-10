@@ -285,7 +285,7 @@ retry_name:
 
   mutt_addrlist_to_local (adr);
 
-  if (adr)
+  if (adr && adr->mailbox)
     strfcpy (buf, adr->mailbox, sizeof (buf));
   else
     buf[0] = 0;
