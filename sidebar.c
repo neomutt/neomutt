@@ -490,25 +490,25 @@ static int select_next_new (void)
  * select_prev - Selects the previous unhidden mailbox
  *
  * Returns:
- *      1: Success
- *      0: Failure
+ *      true: Success
+ *      false: Failure
  */
-static int select_prev (void)
+static bool select_prev (void)
 {
   int entry = HilIndex;
 
   if (!EntryCount || HilIndex < 0)
-    return 0;
+    return false;
 
   do
   {
     entry--;
     if (entry < 0)
-      return 0;
+      return false;
   } while (Entries[entry]->is_hidden);
 
   HilIndex = entry;
-  return 1;
+  return true;
 }
 
 /**
