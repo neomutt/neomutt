@@ -695,27 +695,27 @@ void mutt_delete_parameter (const char *attribute, PARAMETER **p)
 }
 
 /* returns 1 if Mutt can't display this type of data, 0 otherwise */
-int mutt_needs_mailcap (BODY *m)
+bool mutt_needs_mailcap (BODY *m)
 {
   switch (m->type)
   {
     case TYPETEXT:
       if (ascii_strcasecmp ("plain", m->subtype) == 0)
-        return 0;
+        return false;
       break;
     case TYPEAPPLICATION:
       if((WithCrypto & APPLICATION_PGP) && mutt_is_application_pgp(m))
-	return 0;
+	return false;
       if((WithCrypto & APPLICATION_SMIME) && mutt_is_application_smime(m))
-	return 0;
+	return false;
       break;
 
     case TYPEMULTIPART:
     case TYPEMESSAGE:
-      return 0;
+      return false;
   }
 
-  return 1;
+  return true;
 }
 
 bool mutt_is_text_part (BODY *b)

@@ -346,7 +346,7 @@ bool mutt_match_rx_list(const char *s, RX_LIST *l);
 bool mutt_match_spam_list(const char *s, REPLACE_LIST *l, char *text, int textsize);
 int mutt_messages_in_thread(CONTEXT *ctx, HEADER *hdr, int flag);
 int mutt_multi_choice(char *prompt, char *letters);
-int mutt_needs_mailcap(BODY *m);
+bool mutt_needs_mailcap(BODY *m);
 int mutt_num_postponed(int force);
 int mutt_parse_bind(BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err);
 int mutt_parse_exec(BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err);
