@@ -252,15 +252,15 @@ static int address_uses_unicode(const char *a)
 /* Returns 1 if any address in a contains at least one 8-bit
  * character, 0 if none do.
  */
-static int addresses_use_unicode(const ADDRESS* a)
+static bool addresses_use_unicode(const ADDRESS* a)
 {
   while (a)
   {
     if(a->mailbox && !a->group && address_uses_unicode(a->mailbox))
-      return 1;
+      return true;
     a = a->next;
   }
-  return 0;
+  return false;
 }
 
 
