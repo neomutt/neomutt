@@ -38,7 +38,7 @@ struct body_cache {
   size_t pathlen;
 };
 
-static int bcache_path(ACCOUNT *account, const char *mailbox,
+static bool bcache_path(ACCOUNT *account, const char *mailbox,
 		       char *dst, size_t dstlen)
 {
   char host[STRING];
@@ -47,7 +47,7 @@ static int bcache_path(ACCOUNT *account, const char *mailbox,
   int len;
 
   if (!account || !MessageCachedir || !*MessageCachedir || !dst || !dstlen)
-    return -1;
+    return false;
 
   /* make up a ciss_url_t we can turn into a string */
   memset (&url, 0, sizeof (ciss_url_t));
@@ -60,7 +60,7 @@ static int bcache_path(ACCOUNT *account, const char *mailbox,
   if (url_ciss_tostring (&url, host, sizeof (host), U_PATH) < 0)
   {
     mutt_debug (1, "bcache_path: URL to string failed\n");
-    return -1;
+    return false;
   }
 
   mutt_encode_path (path, sizeof (path), NONULL (mailbox));
@@ -72,11 +72,11 @@ static int bcache_path(ACCOUNT *account, const char *mailbox,
   mutt_debug (3, "bcache_path: rc: %d, path: '%s'\n", len, dst);
 
   if (len < 0 || len >= dstlen-1)
-    return -1;
+    return false;
 
   mutt_debug (3, "bcache_path: directory: '%s'\n", dst);
 
-  return 0;
+  return true;
 }
 
 body_cache_t *mutt_bcache_open (ACCOUNT *account, const char *mailbox)
@@ -87,8 +87,8 @@ body_cache_t *mutt_bcache_open (ACCOUNT *account, const char *mailbox)
     goto bail;
 
   bcache = safe_calloc (1, sizeof (struct body_cache));
-  if (bcache_path (account, mailbox, bcache->path,
-		   sizeof (bcache->path)) < 0)
+  if (!bcache_path (account, mailbox, bcache->path,
+		   sizeof (bcache->path)))
     goto bail;
   bcache->pathlen = mutt_strlen (bcache->path);
 
