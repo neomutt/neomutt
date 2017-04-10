@@ -412,7 +412,7 @@ static bool check_certificate_expiration (X509 *peercert, bool silent)
 }
 
 /* port to mutt from msmtp's tls.c */
-static int hostname_match (const char *hostname, const char *certname)
+static bool hostname_match (const char *hostname, const char *certname)
 {
   const char *cmp1 = NULL, *cmp2 = NULL;
 
@@ -422,7 +422,7 @@ static int hostname_match (const char *hostname, const char *certname)
     cmp2 = strchr(hostname, '.');
     if (!cmp2)
     {
-      return 0;
+      return false;
     }
     else
     {
@@ -437,15 +437,15 @@ static int hostname_match (const char *hostname, const char *certname)
 
   if (*cmp1 == '\0' || *cmp2 == '\0')
   {
-    return 0;
+    return false;
   }
 
   if (strcasecmp(cmp1, cmp2) != 0)
   {
-    return 0;
+    return false;
   }
 
-  return 1;
+  return true;
 }
 
 /*
@@ -640,7 +640,7 @@ static int check_host (X509 *x509cert, const char *hostname, char *err, size_t e
   int subj_alt_names_count;
   GENERAL_NAME *subj_alt_name = NULL;
   /* did we find a name matching hostname? */
-  int match_found;
+  bool match_found;
 
   /* Check if 'hostname' matches the one of the subjectAltName extensions of
    * type DNS or the Common Name (CN). */
