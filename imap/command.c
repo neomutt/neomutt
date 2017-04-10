@@ -51,12 +51,12 @@ static const char * const Capabilities[] = {
   NULL
 };
 
-static int cmd_queue_full (IMAP_DATA* idata)
+static bool cmd_queue_full (IMAP_DATA* idata)
 {
   if ((idata->nextcmd + 1) % idata->cmdslots == idata->lastcmd)
-    return 1;
+    return true;
 
-  return 0;
+  return false;
 }
 
 /* sets up a new command control block and adds it to the queue.
