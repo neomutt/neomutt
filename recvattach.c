@@ -428,7 +428,7 @@ static void prepend_curdir (char *dst, size_t dstlen)
   dst[l + 2] = 0;
 }
 
-static int query_save_attachment (FILE *fp, BODY *body, HEADER *hdr, char **directory)
+static bool query_save_attachment (FILE *fp, BODY *body, HEADER *hdr, char **directory)
 {
   char *prompt = NULL;
   char buf[_POSIX_PATH_MAX], tfile[_POSIX_PATH_MAX];
@@ -460,7 +460,7 @@ static int query_save_attachment (FILE *fp, BODY *body, HEADER *hdr, char **dire
 	|| !buf[0])
     {
       mutt_clear_error ();
-      return -1;
+      return false;
     }
 
     prompt = NULL;
@@ -483,13 +483,13 @@ static int query_save_attachment (FILE *fp, BODY *body, HEADER *hdr, char **dire
 	continue;
       }
       else if (rc == -1)
-	return -1;
+	return false;
       strfcpy(tfile, buf, sizeof(tfile));
     }
     else
     {
       if ((rc = mutt_check_overwrite (body->filename, buf, tfile, sizeof (tfile), &append, directory)) == -1)
-	return -1;
+	return false;
       else if (rc == 1)
       {
 	prompt = _("Save to file: ");
@@ -501,7 +501,7 @@ static int query_save_attachment (FILE *fp, BODY *body, HEADER *hdr, char **dire
     if (mutt_save_attachment (fp, body, tfile, append, (hdr || !is_message) ? hdr : body->hdr) == 0)
     {
       mutt_message (_("Attachment saved."));
-      return 0;
+      return true;
     }
     else
     {
@@ -509,7 +509,7 @@ static int query_save_attachment (FILE *fp, BODY *body, HEADER *hdr, char **dire
       continue;
     }
   }
-  return 0;
+  return true;
 }
 
 void mutt_save_attachment_list (FILE *fp, int tag, BODY *top, HEADER *hdr, MUTTMENU *menu)
@@ -570,7 +570,7 @@ void mutt_save_attachment_list (FILE *fp, int tag, BODY *top, HEADER *hdr, MUTTM
 
 	  menu_redraw (menu);
 	}
-	if (query_save_attachment (fp, top, hdr, &directory) == -1)
+	if (!query_save_attachment (fp, top, hdr, &directory))
 	  break;
       }
     }
