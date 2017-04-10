@@ -1482,20 +1482,20 @@ static int imap_check_mailbox_reopen (CONTEXT *ctx, int *index_hint)
 }
 
 /* split path into (idata,mailbox name) */
-static int imap_get_mailbox (const char* path, IMAP_DATA** hidata, char* buf, size_t blen)
+static bool imap_get_mailbox (const char* path, IMAP_DATA** hidata, char* buf, size_t blen)
 {
   IMAP_MBOX mx;
 
   if (imap_parse_path (path, &mx))
   {
     mutt_debug (1, "imap_get_mailbox: Error parsing %s\n", path);
-    return -1;
+    return false;
   }
   if (!(*hidata = imap_conn_find (&(mx.account), option (OPTIMAPPASSIVE) ? MUTT_IMAP_CONN_NONEW : 0))
       || (*hidata)->state < IMAP_AUTHENTICATED)
   {
     FREE (&mx.mbox);
-    return -1;
+    return false;
   }
 
   imap_fix_path (*hidata, mx.mbox, buf, blen);
@@ -1503,7 +1503,7 @@ static int imap_get_mailbox (const char* path, IMAP_DATA** hidata, char* buf, si
     strfcpy (buf, "INBOX", blen);
   FREE (&mx.mbox);
 
-  return 0;
+  return true;
 }
 
 /* check for new mail in any subscribed mailboxes. Given a list of mailboxes
@@ -1531,7 +1531,7 @@ int imap_buffy_check (int force, int check_stats)
     if (mailbox->magic != MUTT_IMAP)
       continue;
 
-    if (imap_get_mailbox (mailbox->path, &idata, name, sizeof (name)) < 0)
+    if (!imap_get_mailbox (mailbox->path, &idata, name, sizeof (name)))
     {
       mailbox->new = false;
       continue;
@@ -1610,7 +1610,7 @@ int imap_status (char* path, int queue)
   char mbox[LONG_STRING];
   IMAP_STATUS* status = NULL;
 
-  if (imap_get_mailbox (path, &idata, buf, sizeof (buf)) < 0)
+  if (!imap_get_mailbox (path, &idata, buf, sizeof (buf)))
     return -1;
 
   if (imap_mxcmp (buf, idata->mailbox) == 0)
