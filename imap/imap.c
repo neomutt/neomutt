@@ -850,25 +850,25 @@ static void imap_set_flag (IMAP_DATA* idata, int aclbit, int flag,
 }
 
 /* imap_has_flag: do a caseless comparison of the flag against a flag list,
-*   return 1 if found or flag list has '\*', 0 otherwise */
-int imap_has_flag (LIST* flag_list, const char* flag)
+*   return true if found or flag list has '\*', false otherwise */
+bool imap_has_flag (LIST* flag_list, const char* flag)
 {
   if (!flag_list)
-    return 0;
+    return false;
 
   flag_list = flag_list->next;
   while (flag_list)
   {
     if (ascii_strncasecmp (flag_list->data, flag, strlen (flag_list->data)) == 0)
-      return 1;
+      return true;
 
     if (ascii_strncmp (flag_list->data, "\\*", strlen (flag_list->data)) == 0)
-      return 1;
+      return true;
 
     flag_list = flag_list->next;
   }
 
-  return 0;
+  return false;
 }
 
 /* Note: headers must be in SORT_ORDER. See imap_exec_msgset for args.
