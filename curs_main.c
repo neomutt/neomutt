@@ -1658,9 +1658,11 @@ int mutt_index_menu (void)
 	break;
 
       case OP_COMPOSE_TO_SENDER:
-
-	mutt_compose_to_sender (tag ? NULL : CURHDR);
-	menu->redraw = REDRAW_FULL;
+        if (Context)
+        {
+          mutt_compose_to_sender (tag ? NULL : CURHDR);
+          menu->redraw = REDRAW_FULL;
+        }
 	break;
 
 	/* --------------------------------------------------------------------
@@ -1775,7 +1777,8 @@ int mutt_index_menu (void)
 #ifdef USE_NOTMUCH
       case OP_MAIN_ENTIRE_THREAD:
       {
-	if (Context->magic != MUTT_NOTMUCH) {
+	if (!Context || (Context->magic != MUTT_NOTMUCH))
+        {
 	  mutt_message (_("No virtual folder, aborting."));
 	  break;
 	}
@@ -1810,7 +1813,7 @@ int mutt_index_menu (void)
       case OP_MAIN_MODIFY_LABELS:
       case OP_MAIN_MODIFY_LABELS_THEN_HIDE:
       {
-	if (Context->magic != MUTT_NOTMUCH) {
+	if (!Context || (Context->magic != MUTT_NOTMUCH)) {
 	  mutt_message (_("No virtual folder, aborting."));
 	  break;
 	}
@@ -1995,7 +1998,7 @@ int mutt_index_menu (void)
 #endif
 #ifdef USE_NOTMUCH
 	else if (op == OP_MAIN_CHANGE_VFOLDER) {
-	  if (Context->magic == MUTT_NOTMUCH) {
+	  if (Context && (Context->magic == MUTT_NOTMUCH)) {
 		  strfcpy(buf, Context->path, sizeof (buf));
 		  mutt_buffy_vfolder (buf, sizeof (buf));
 	  }
