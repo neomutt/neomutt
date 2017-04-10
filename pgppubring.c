@@ -743,9 +743,11 @@ static pgp_key_t pgp_parse_keyblock (FILE * fp)
 	  break;
 
 	chr = safe_malloc (l);
-	memcpy (chr, buff + 1, l - 1);
-	chr[l - 1] = '\0';
-
+        if (l > 0)
+        {
+          memcpy (chr, buff + 1, l - 1);
+          chr[l - 1] = '\0';
+        }
 
 	*addr = uid = safe_calloc (1, sizeof (pgp_uid_t)); /* XXX */
 	uid->addr = chr;

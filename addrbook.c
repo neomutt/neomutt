@@ -164,6 +164,8 @@ new_aliases:
 
   safe_realloc (&AliasTable, menu->max * sizeof (ALIAS *));
   menu->data = AliasTable;
+  if (!AliasTable)
+    return;
 
   for (i = omax, aliasp = aliases; aliasp; aliasp = aliasp->next, i++)
   {

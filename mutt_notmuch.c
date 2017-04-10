@@ -584,6 +584,9 @@ static char *get_query_string(struct nm_ctxdata *data, int window)
       data->db_query = safe_strdup(item->value);
   }
 
+  if (!data->db_query)
+    return NULL;
+
   if (!data->query_type)
     data->query_type = string_to_query_type(NULL);
 
