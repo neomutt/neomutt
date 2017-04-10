@@ -1489,7 +1489,7 @@ static int rename_maildir_filename(const char *old, char *newpath, size_t newsz,
   return 0;
 }
 
-static int remove_filename(struct nm_ctxdata *data, const char *path)
+static bool remove_filename(struct nm_ctxdata *data, const char *path)
 {
   notmuch_status_t st;
   notmuch_filenames_t *ls = NULL;
@@ -1500,13 +1500,13 @@ static int remove_filename(struct nm_ctxdata *data, const char *path)
   mutt_debug (2, "nm: remove filename '%s'\n", path);
 
   if (!db)
-    return -1;
+    return false;
   st = notmuch_database_find_message_by_filename(db, path, &msg);
   if (st || !msg)
-    return -1;
+    return false;
   trans = db_trans_begin(data);
   if (trans < 0)
-    return -1;
+    return false;
 
   /*
    * note that unlink() is probably unnecessary here, it's already removed
@@ -1542,7 +1542,7 @@ static int remove_filename(struct nm_ctxdata *data, const char *path)
   notmuch_message_destroy(msg);
   if (trans)
     db_trans_end(data);
-  return 0;
+  return true;
 }
 
 static int rename_filename(struct nm_ctxdata *data, const char *old,
@@ -2392,7 +2392,7 @@ static int nm_sync_mailbox(CONTEXT *ctx, int *index_hint)
 
     if (h->deleted || (strcmp(old, new) != 0))
     {
-      if (h->deleted && (remove_filename(data, old) == 0))
+      if (h->deleted && remove_filename(data, old))
         changed = 1;
       else if (*new && *old && (rename_filename(data, old, new, h) == 0))
         changed = 1;
