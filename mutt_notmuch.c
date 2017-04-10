@@ -692,7 +692,7 @@ static notmuch_database_t *get_db(struct nm_ctxdata *data, int writable)
   return data->db;
 }
 
-static int release_db(struct nm_ctxdata *data)
+static bool release_db(struct nm_ctxdata *data)
 {
   if (data && data->db)
   {
@@ -704,10 +704,10 @@ static int release_db(struct nm_ctxdata *data)
 #endif
     data->db = NULL;
     data->longrun = false;
-    return 0;
+    return true;
   }
 
-  return -1;
+  return false;
 }
 
 static int db_trans_begin(struct nm_ctxdata *data)
@@ -1699,7 +1699,7 @@ void nm_longrun_done(CONTEXT *ctx)
 {
   struct nm_ctxdata *data = get_ctxdata(ctx);
 
-  if (data && (release_db(data) == 0))
+  if (data && release_db(data))
     mutt_debug (2, "nm: long run deinitialized\n");
 }
 
