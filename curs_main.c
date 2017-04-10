@@ -246,15 +246,15 @@ static int ci_first_message (void)
 }
 
 /* This should be in mx.c, but it only gets used here. */
-static int mx_toggle_write (CONTEXT *ctx)
+static bool mx_toggle_write (CONTEXT *ctx)
 {
   if (!ctx)
-    return -1;
+    return false;
 
   if (ctx->readonly)
   {
     mutt_error (_("Cannot toggle write on a readonly mailbox!"));
-    return -1;
+    return false;
   }
 
   if (ctx->dontwrite)
@@ -268,7 +268,7 @@ static int mx_toggle_write (CONTEXT *ctx)
     mutt_message (_("Changes to folder will not be written."));
   }
 
-  return 0;
+  return true;
 }
 
 static void resort_index (MUTTMENU *menu)
@@ -2534,7 +2534,7 @@ int mutt_index_menu (void)
       case OP_TOGGLE_WRITE:
 
 	CHECK_IN_MAILBOX;
-	if (mx_toggle_write (Context) == 0)
+	if (mx_toggle_write (Context))
 	  menu->redraw |= REDRAW_STATUS;
 	break;
 
