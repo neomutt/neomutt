@@ -458,13 +458,13 @@ static bool hostname_match (const char *hostname, const char *certname)
  * versions also. (That's the reason for the ugly #ifdefs and macros,
  * otherwise I could have simply #ifdef'd the whole ssl_init funcion)
  */
-static int ssl_init (void)
+static bool ssl_init (void)
 {
   char path[_POSIX_PATH_MAX];
   static unsigned char init_complete = 0;
 
   if (init_complete)
-    return 0;
+    return true;
 
   if (! HAVE_ENTROPY())
   {
@@ -487,7 +487,7 @@ static int ssl_init (void)
     {
       mutt_error (_("Failed to find enough entropy on your system"));
       mutt_sleep (2);
-      return -1;
+      return false;
     }
   }
 
@@ -496,7 +496,7 @@ static int ssl_init (void)
   SSL_load_error_strings();
   SSL_library_init();
   init_complete = 1;
-  return 0;
+  return true;
 }
 
 static int ssl_socket_read (CONNECTION* conn, char* buf, size_t len)
@@ -1193,7 +1193,7 @@ int mutt_ssl_starttls (CONNECTION* conn)
   int maxbits;
   long ssl_options = 0;
 
-  if (ssl_init())
+  if (!ssl_init())
     goto bail;
 
   ssldata = safe_calloc (1, sizeof (sslsockdata));
@@ -1302,7 +1302,7 @@ int mutt_ssl_starttls (CONNECTION* conn)
 
 int mutt_ssl_socket_setup (CONNECTION * conn)
 {
-  if (ssl_init() < 0)
+  if (!ssl_init())
   {
     conn->conn_open = ssl_socket_open_err;
     return -1;
