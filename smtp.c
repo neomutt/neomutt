@@ -523,7 +523,7 @@ static int smtp_auth_plain(CONNECTION* conn)
     if (ascii_strncasecmp(method, "plain", 5) == 0)
     {
       /* Get username and password. Bail out of any cannot be retrieved. */
-      if (mutt_account_getuser(&conn->account) ||
+      if (!mutt_account_getuser(&conn->account) ||
           !mutt_account_getpass(&conn->account))
       {
         goto error;

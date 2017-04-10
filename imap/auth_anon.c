@@ -31,7 +31,7 @@ imap_auth_res_t imap_auth_anon (IMAP_DATA* idata, const char* method)
   if (!mutt_bit_isset (idata->capabilities, AUTH_ANON))
     return IMAP_AUTH_UNAVAIL;
 
-  if (mutt_account_getuser (&idata->conn->account))
+  if (!mutt_account_getuser (&idata->conn->account))
     return IMAP_AUTH_FAILURE;
 
   if (idata->conn->account.user[0] != '\0')

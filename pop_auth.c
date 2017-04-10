@@ -328,7 +328,7 @@ int pop_authenticate (POP_DATA* pop_data)
   int attempts = 0;
   int ret = POP_A_UNAVAIL;
 
-  if (mutt_account_getuser (acct) || !acct->user[0] ||
+  if (!mutt_account_getuser (acct) || !acct->user[0] ||
       !mutt_account_getpass (acct) || !acct->pass[0])
     return -3;
 

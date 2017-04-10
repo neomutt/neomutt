@@ -273,7 +273,7 @@ static int ssl_passwd_cb(char *buf, int size, int rwflag, void *userdata)
 {
   ACCOUNT *account = (ACCOUNT*)userdata;
 
-  if (mutt_account_getuser (account))
+  if (!mutt_account_getuser (account))
     return 0;
 
   mutt_debug (2, "ssl_passwd_cb: getting password for %s@%s:%u\n",

@@ -313,7 +313,7 @@ static int nntp_auth (NNTP_SERVER *nserv)
   while (1)
   {
     /* get login and password */
-    if (mutt_account_getuser (&conn->account) || !conn->account.user[0] ||
+    if (!mutt_account_getuser (&conn->account) || !conn->account.user[0] ||
 	!mutt_account_getpass (&conn->account) || !conn->account.pass[0])
       break;
 

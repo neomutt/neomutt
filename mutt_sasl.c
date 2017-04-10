@@ -180,7 +180,7 @@ static int mutt_sasl_cb_authname (void* context, int id, const char** result,
   }
   else
   {
-    if (mutt_account_getuser (account))
+    if (!mutt_account_getuser (account))
       return SASL_FAIL;
     *result = account->user;
   }
