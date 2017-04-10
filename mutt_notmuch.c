@@ -1332,13 +1332,13 @@ static bool nm_message_has_tag(notmuch_message_t *msg, char *tag)
   return false;
 }
 
-static int update_tags(notmuch_message_t *msg, const char *tags)
+static bool update_tags(notmuch_message_t *msg, const char *tags)
 {
   char *tag = NULL, *end = NULL, *p = NULL;
   char *buf = safe_strdup(tags);
 
   if (!buf)
-    return -1;
+    return false;
 
   notmuch_message_freeze(msg);
 
@@ -1386,7 +1386,7 @@ static int update_tags(notmuch_message_t *msg, const char *tags)
 
   notmuch_message_thaw(msg);
   FREE(&buf);
-  return 0;
+  return true;
 }
 
 static int update_header_flags(CONTEXT *ctx, HEADER *hdr, const char *tags)
