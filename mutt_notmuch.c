@@ -842,7 +842,7 @@ static void append_str_item(char **str, const char *item, int sep)
   memcpy(p, item, sz + 1);
 }
 
-static int update_header_tags(HEADER *h, notmuch_message_t *msg)
+static bool update_header_tags(HEADER *h, notmuch_message_t *msg)
 {
   struct nm_hdrdata *data = h->data;
   notmuch_tags_t *tags = NULL;
@@ -901,7 +901,7 @@ static int update_header_tags(HEADER *h, notmuch_message_t *msg)
     FREE(&tstr);
     FREE(&ttstr);
     mutt_debug (2, "nm: tags unchanged\n");
-    return 1;
+    return false;
   }
 
   /* free old version */
@@ -915,7 +915,7 @@ static int update_header_tags(HEADER *h, notmuch_message_t *msg)
   data->tags_transformed = ttstr;
   mutt_debug (2, "nm: new tag transforms: '%s'\n", ttstr);
 
-  return 0;
+  return true;
 }
 
 static int update_message_path(HEADER *h, const char *path)
@@ -2298,7 +2298,7 @@ static int nm_check_mailbox(CONTEXT *ctx, int *index_hint)
       maildir_update_flags(ctx, h, &tmp);
     }
 
-    if (update_header_tags(h, m) == 0)
+    if (update_header_tags(h, m))
       new_flags++;
 
     notmuch_message_destroy(m);
