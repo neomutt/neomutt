@@ -28,7 +28,7 @@
 
 /* prototypes */
 
-int pgp_use_gpg_agent(void);
+bool pgp_use_gpg_agent(void);
 
 int pgp_check_traditional(FILE *fp, BODY *b, int tagged_only);
 BODY *pgp_make_key_attachment(char *tempf);
