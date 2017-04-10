@@ -748,24 +748,24 @@ static int is_longrun(struct nm_ctxdata *data)
   return data && data->longrun;
 }
 
-static int get_database_mtime(struct nm_ctxdata *data, time_t *mtime)
+static bool get_database_mtime(struct nm_ctxdata *data, time_t *mtime)
 {
   char path[_POSIX_PATH_MAX];
   struct stat st;
 
   if (!data)
-    return -1;
+    return false;
 
   snprintf(path, sizeof(path), "%s/.notmuch/xapian", get_db_filename(data));
   mutt_debug (2, "nm: checking '%s' mtime\n", path);
 
   if (stat(path, &st))
-    return -1;
+    return false;
 
   if (mtime)
     *mtime = st.st_mtime;
 
-  return 0;
+  return true;
 }
 
 static void apply_exclude_tags(notmuch_query_t *query)
@@ -2225,7 +2225,7 @@ static int nm_check_mailbox(CONTEXT *ctx, int *index_hint)
   notmuch_messages_t *msgs = NULL;
   int i, limit, occult = 0, new_flags = 0;
 
-  if (!data || (get_database_mtime(data, &mtime) != 0))
+  if (!data || !get_database_mtime(data, &mtime))
     return -1;
 
   if (ctx->mtime >= mtime)
