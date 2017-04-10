@@ -234,7 +234,7 @@ static void redraw_mix_line (LIST *chain)
 }
 #endif /* MIXMASTER */
 
-static int
+static bool
 check_attachments(ATTACHPTR **idx, short idxlen)
 {
   int i, r;
@@ -249,7 +249,7 @@ check_attachments(ATTACHPTR **idx, short idxlen)
       mutt_pretty_mailbox(pretty, sizeof (pretty));
       mutt_error(_("%s [#%d] no longer exists!"),
 		 pretty, i+1);
-      return -1;
+      return false;
     }
 
     if(idx[i]->content->stamp < st.st_mtime)
@@ -261,11 +261,11 @@ check_attachments(ATTACHPTR **idx, short idxlen)
       if((r = mutt_yesorno(msg, MUTT_YES)) == MUTT_YES)
 	mutt_update_encoding(idx[i]->content);
       else if(r == MUTT_ABORT)
-	return -1;
+	return false;
     }
   }
 
-  return 0;
+  return true;
 }
 
 static void draw_envelope_addr (int line, ADDRESS *addr)
@@ -1142,7 +1142,7 @@ int mutt_compose_menu (HEADER *msg,   /* structure for new message */
 	 * users an opportunity to change settings from the ":" prompt.
 	 */
 
-        if(check_attachments(idx, idxlen) != 0)
+        if (!check_attachments(idx, idxlen))
         {
 	  menu->redraw = REDRAW_FULL;
 	  break;
@@ -1395,7 +1395,7 @@ int mutt_compose_menu (HEADER *msg,   /* structure for new message */
 
       case OP_COMPOSE_POSTPONE_MESSAGE:
 
-        if(check_attachments(idx, idxlen) != 0)
+        if (!check_attachments(idx, idxlen))
         {
 	  menu->redraw = REDRAW_FULL;
 	  break;
