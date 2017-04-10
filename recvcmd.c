@@ -28,15 +28,15 @@
 /* some helper functions to verify that we are exclusively operating
  * on message/rfc822 attachments
  */
-static short check_msg (BODY * b, short err)
+static bool check_msg (BODY * b, bool err)
 {
   if (!mutt_is_message_type (b->type, b->subtype))
   {
     if (err)
       mutt_error (_("You may only bounce message/rfc822 parts."));
-    return -1;
+    return false;
   }
-  return 0;
+  return true;
 }
 
 static bool check_all_msg (ATTACHPTR ** idx, short idxlen,
@@ -44,7 +44,7 @@ static bool check_all_msg (ATTACHPTR ** idx, short idxlen,
 {
   short i;
 
-  if (cur && check_msg (cur, err) == -1)
+  if (cur && !check_msg (cur, err))
     return false;
   else if (!cur)
   {
@@ -52,7 +52,7 @@ static bool check_all_msg (ATTACHPTR ** idx, short idxlen,
     {
       if (idx[i]->content->tagged)
       {
-	if (check_msg (idx[i]->content, err) == -1)
+	if (!check_msg (idx[i]->content, err))
 	  return false;
       }
     }
