@@ -264,7 +264,7 @@ static bool addresses_use_unicode(const ADDRESS* a)
 }
 
 
-static int smtp_fill_account (ACCOUNT* account)
+static bool smtp_fill_account (ACCOUNT* account)
 {
   static unsigned short SmtpPort = 0;
 
@@ -284,7 +284,7 @@ static int smtp_fill_account (ACCOUNT* account)
     FREE (&urlstr);
     mutt_error (_("Invalid SMTP URL: %s"), SmtpUrl);
     mutt_sleep (1);
-    return -1;
+    return false;
   }
   FREE (&urlstr);
 
@@ -310,7 +310,7 @@ static int smtp_fill_account (ACCOUNT* account)
     }
   }
 
-  return 0;
+  return true;
 }
 
 static int smtp_helo (CONNECTION* conn)
@@ -643,7 +643,7 @@ mutt_smtp_send (const ADDRESS* from, const ADDRESS* to, const ADDRESS* cc,
     return -1;
   }
 
-  if (smtp_fill_account (&account) < 0)
+  if (!smtp_fill_account (&account))
     return ret;
 
   if (!(conn = mutt_conn_find (NULL, &account)))
