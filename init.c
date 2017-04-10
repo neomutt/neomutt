@@ -2334,6 +2334,10 @@ static int parse_set (BUFFER *tmp, BUFFER *s, unsigned long data, BUFFER *err)
           restore_default (&MuttVars[idx]);
       }
     }
+    else if (idx < 0)
+    {
+      return -1;
+    }
     else if (!myvar && DTYPE (MuttVars[idx].type) == DT_BOOL)
     {
       if (s && *s->dptr == '=')
@@ -2868,6 +2872,8 @@ static int source_rc (const char *rcfile_path, BUFFER *err)
   strfcpy(rcfile, rcfile_path, PATH_MAX);
 
   rcfilelen = mutt_strlen(rcfile);
+  if (rcfilelen == 0)
+    return -1;
 
   if (rcfile[rcfilelen-1] != '|')
   {

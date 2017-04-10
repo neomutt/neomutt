@@ -1197,6 +1197,9 @@ static int message_handler (BODY *a, STATE *s)
   int rc = 0;
 
   off_start = ftello (s->fpin);
+  if (off_start < 0)
+    return -1;
+
   if (a->encoding == ENCBASE64 || a->encoding == ENCQUOTEDPRINTABLE ||
       a->encoding == ENCUUENCODED)
   {

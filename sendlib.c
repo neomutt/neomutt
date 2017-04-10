@@ -1117,6 +1117,9 @@ void mutt_message_to_7bit (BODY *a, FILE *fp)
     goto cleanup;
   }
 
+  if (!fpin)
+    goto cleanup;
+
   fseeko (fpin, a->offset, SEEK_SET);
   a->parts = mutt_parse_message_rfc822 (fpin, a);
 

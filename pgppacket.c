@@ -73,6 +73,8 @@ unsigned char *pgp_read_packet (FILE * fp, size_t * len)
   size_t material;
 
   startpos = ftello (fp);
+  if (startpos < 0)
+    return NULL;
 
   if (!plen)
   {

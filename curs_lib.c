@@ -765,6 +765,8 @@ int mutt_any_key_to_continue (const char *s)
   int f, ch;
 
   f = open ("/dev/tty", O_RDONLY);
+  if (f < 0)
+    return EOF;
   tcgetattr (f, &t);
   memcpy ((void *)&old, (void *)&t, sizeof(struct termios)); /* save original state */
   t.c_lflag &= ~(ICANON | ECHO);
