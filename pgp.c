@@ -804,6 +804,9 @@ void pgp_extract_keys_from_attachment_list (FILE *fp, int tag, BODY *top)
 
 static BODY *pgp_decrypt_part (BODY *a, STATE *s, FILE *fpout, BODY *p)
 {
+  if (!a || !s || !fpout || !p)
+    return NULL;
+
   char buf[LONG_STRING];
   FILE *pgpin = NULL, *pgpout = NULL, *pgperr = NULL, *pgptmp = NULL;
   struct stat info;

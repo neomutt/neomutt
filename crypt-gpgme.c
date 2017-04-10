@@ -1141,6 +1141,9 @@ static int show_sig_summary (unsigned long sum,
                               gpgme_ctx_t ctx, gpgme_key_t key, int idx,
                               STATE *s, gpgme_signature_t sig)
 {
+  if (!key)
+    return 1;
+
   int severe = 0;
 
   if ((sum & GPGME_SIGSUM_KEY_REVOKED))
@@ -1676,6 +1679,9 @@ int smime_gpgme_verify_one (BODY *sigbdy, STATE *s, const char *tempfile)
 static BODY *decrypt_part (BODY *a, STATE *s, FILE *fpout, int is_smime,
                            int *r_is_signed)
 {
+  if (!a || !s || !fpout)
+    return NULL;
+
   struct stat info;
   BODY *tattach = NULL;
   int err = 0;

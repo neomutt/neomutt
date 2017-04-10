@@ -4157,6 +4157,9 @@ static int parse_group_context (group_context_t **ctx, BUFFER *buf, BUFFER *s, u
 #ifdef USE_NOTMUCH
 static int parse_tag_transforms (BUFFER *b, BUFFER *s, unsigned long data, BUFFER *err)
 {
+  if (!b || !s)
+    return -1;
+
   char *tmp = NULL;
 
   while (MoreArgs (s))
@@ -4188,6 +4191,9 @@ static int parse_tag_transforms (BUFFER *b, BUFFER *s, unsigned long data, BUFFE
 
 static int parse_tag_formats (BUFFER *b, BUFFER *s, unsigned long data, BUFFER *err)
 {
+  if (!b || !s)
+    return -1;
+
   char *tmp = NULL;
 
   while (MoreArgs (s))

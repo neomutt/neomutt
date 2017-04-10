@@ -183,6 +183,8 @@ void safe_realloc (void *ptr, size_t siz)
 
 void safe_free (void *ptr)	/* __SAFE_FREE_CHECKED__ */
 {
+  if (!ptr)
+    return;
   void **p = (void **)ptr;
   if (*p)
   {

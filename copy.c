@@ -60,6 +60,9 @@ mutt_copy_hdr (FILE *in, FILE *out, LOFF_T off_start, LOFF_T off_end, int flags,
   size_t this_one_len = 0;
   int error;
 
+  if (off_start < 0)
+    return -1;
+
   if (ftello (in) != off_start)
     fseeko (in, off_start, SEEK_SET);
 

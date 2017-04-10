@@ -1790,6 +1790,9 @@ static int malformed_pgp_encrypted_handler (BODY *b, STATE *s)
 
 int mutt_body_handler (BODY *b, STATE *s)
 {
+  if (!b || !s)
+    return -1;
+
   int plaintext = 0;
   handler_t handler = NULL;
   int rc = 0;

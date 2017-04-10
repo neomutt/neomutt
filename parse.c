@@ -1346,7 +1346,8 @@ int mutt_parse_rfc822_line (ENVELOPE *e, HEADER *hdr, char *line, char *p, short
 
   done:
 
-  *lastp = last;
+  if (lastp)
+    *lastp = last;
   return matched;
 }
 

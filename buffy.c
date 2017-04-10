@@ -602,6 +602,9 @@ int mutt_parse_mailboxes (BUFFER *path, BUFFER *s, unsigned long data, BUFFER *e
 #ifdef USE_NOTMUCH
 int mutt_parse_virtual_mailboxes (BUFFER *path, BUFFER *s, unsigned long data, BUFFER *err)
 {
+  if (!path || !s)
+    return -1;
+
   BUFFY **tmp;
   char buf[_POSIX_PATH_MAX + LONG_STRING + 32];   /* path to DB + query + URI "decoration" */
 

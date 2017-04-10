@@ -702,6 +702,9 @@ save_attachment_open (char *path, int flags)
 /* returns 0 on success, -1 on error */
 int mutt_save_attachment (FILE *fp, BODY *m, char *path, int flags, HEADER *hdr)
 {
+  if (!m)
+    return -1;
+
   if (fp)
   {
 
@@ -775,6 +778,9 @@ int mutt_save_attachment (FILE *fp, BODY *m, char *path, int flags, HEADER *hdr)
   }
   else
   {
+    if (!m->filename)
+      return -1;
+
     /* In send mode, just copy file */
 
     FILE *ofp = NULL, *nfp = NULL;
