@@ -273,7 +273,7 @@ void mutt_view_attachments(HEADER *hdr);
 void mutt_write_address_list(ADDRESS *adr, FILE *fp, int linelen, int display);
 void mutt_set_virtual(CONTEXT *ctx);
 int mutt_add_to_rx_list(RX_LIST **list, const char *s, int flags, BUFFER *err);
-int mutt_addr_is_user(ADDRESS *addr);
+bool mutt_addr_is_user(ADDRESS *addr);
 int mutt_addwch(wchar_t wc);
 int mutt_alias_complete(char *s, size_t buflen);
 void mutt_alias_add_reverse(ALIAS *t);

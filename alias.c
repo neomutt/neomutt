@@ -610,7 +610,7 @@ static int string_is_address(const char *str, const char *u, const char *d)
 }
 
 /* returns true if the given address belongs to the user. */
-int mutt_addr_is_user (ADDRESS *addr)
+bool mutt_addr_is_user (ADDRESS *addr)
 {
   const char *fqdn = NULL;
 
@@ -618,46 +618,46 @@ int mutt_addr_is_user (ADDRESS *addr)
   if (!addr)
   {
     mutt_debug (5, "mutt_addr_is_user: yes, NULL address\n");
-    return 1;
+    return true;
   }
   if (!addr->mailbox)
   {
     mutt_debug (5, "mutt_addr_is_user: no, no mailbox\n");
-    return 0;
+    return false;
   }
 
   if (ascii_strcasecmp (addr->mailbox, Username) == 0)
   {
     mutt_debug (5, "mutt_addr_is_user: yes, %s = %s\n",
                 addr->mailbox, Username);
-    return 1;
+    return true;
   }
   if (string_is_address(addr->mailbox, Username, Hostname))
   {
     mutt_debug (5, "mutt_addr_is_user: yes, %s = %s @ %s \n",
                 addr->mailbox, Username, Hostname);
-    return 1;
+    return true;
   }
   fqdn = mutt_fqdn (0);
   if (string_is_address(addr->mailbox, Username, fqdn))
   {
     mutt_debug (5, "mutt_addr_is_user: yes, %s = %s @ %s \n",
                 addr->mailbox, Username, NONULL(fqdn));
-    return 1;
+    return true;
   }
   fqdn = mutt_fqdn (1);
   if (string_is_address(addr->mailbox, Username, fqdn))
   {
     mutt_debug (5, "mutt_addr_is_user: yes, %s = %s @ %s \n",
                 addr->mailbox, Username, NONULL(fqdn));
-    return 1;
+    return true;
   }
 
   if (From && (ascii_strcasecmp (From->mailbox, addr->mailbox) == 0))
   {
     mutt_debug (5, "mutt_addr_is_user: yes, %s = %s\n",
                 addr->mailbox, From->mailbox);
-    return 1;
+    return true;
   }
 
   if (mutt_match_rx_list (addr->mailbox, Alternates))
@@ -668,9 +668,9 @@ int mutt_addr_is_user (ADDRESS *addr)
       mutt_debug (5, "mutt_addr_is_user: but, %s matched by unalternates.\n",
                   addr->mailbox);
     else
-      return 1;
+      return true;
   }
 
   mutt_debug (5, "mutt_addr_is_user: no, all failed.\n");
-  return 0;
+  return false;
 }
