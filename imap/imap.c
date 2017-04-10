@@ -45,7 +45,7 @@
 
 /* imap forward declarations */
 static char* imap_get_flags (LIST** hflags, char* s);
-static int imap_check_capabilities (IMAP_DATA* idata);
+static bool imap_check_capabilities (IMAP_DATA* idata);
 static void imap_set_flag (IMAP_DATA* idata, int aclbit, int flag,
 			   const char* str, char* flags, size_t flsize);
 
@@ -294,12 +294,12 @@ void imap_expunge_mailbox (IMAP_DATA* idata)
 }
 
 /* imap_check_capabilities: make sure we can log in to this server. */
-static int imap_check_capabilities (IMAP_DATA* idata)
+static bool imap_check_capabilities (IMAP_DATA* idata)
 {
   if (imap_exec (idata, "CAPABILITY", 0) != 0)
   {
     imap_error ("imap_check_capabilities", idata->buf);
-    return -1;
+    return false;
   }
 
   if (!(mutt_bit_isset(idata->capabilities,IMAP4)
@@ -308,10 +308,10 @@ static int imap_check_capabilities (IMAP_DATA* idata)
     mutt_error (_("This IMAP server is ancient. NeoMutt does not work with it."));
     mutt_sleep (2);	/* pause a moment to let the user see the error */
 
-    return -1;
+    return false;
   }
 
-  return 0;
+  return true;
 }
 
 /* imap_conn_find: Find an open IMAP connection matching account, or open
@@ -418,7 +418,7 @@ int imap_open_connection (IMAP_DATA* idata)
   if (ascii_strncasecmp ("* OK", idata->buf, 4) == 0)
   {
     if ((ascii_strncasecmp ("* OK [CAPABILITY", idata->buf, 16) != 0)
-        && imap_check_capabilities (idata))
+        && !imap_check_capabilities (idata))
       goto bail;
 #ifdef USE_SSL
     /* Attempt STARTTLS if available and desired. */
@@ -464,7 +464,7 @@ int imap_open_connection (IMAP_DATA* idata)
   else if (ascii_strncasecmp ("* PREAUTH", idata->buf, 9) == 0)
   {
     idata->state = IMAP_AUTHENTICATED;
-    if (imap_check_capabilities (idata) != 0)
+    if (!imap_check_capabilities (idata))
       goto bail;
     FREE (&idata->capstr);
   }
