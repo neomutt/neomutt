@@ -562,7 +562,7 @@ static int tls_close (CONNECTION* conn)
   return rc;
 }
 
-static int check_certificate_cache (X509 *peercert)
+static bool check_certificate_cache (X509 *peercert)
 {
   unsigned char peermd[EVP_MAX_MD_SIZE];
   unsigned int peermdlen;
@@ -572,7 +572,7 @@ static int check_certificate_cache (X509 *peercert)
   if (!X509_digest (peercert, EVP_sha256(), peermd, &peermdlen)
       || !SslSessionCerts)
   {
-    return 0;
+    return false;
   }
 
   for (i = sk_X509_num (SslSessionCerts); i-- > 0;)
@@ -580,11 +580,11 @@ static int check_certificate_cache (X509 *peercert)
     cert = sk_X509_value (SslSessionCerts, i);
     if (!compare_certificates (cert, peercert, peermd, peermdlen))
     {
-      return 1;
+      return true;
     }
   }
 
-  return 0;
+  return false;
 }
 
 static int check_certificate_file (X509 *peercert)
