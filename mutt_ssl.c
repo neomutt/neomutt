@@ -382,7 +382,7 @@ static int compare_certificates (X509 *cert, X509 *peercert,
   return 0;
 }
 
-static int check_certificate_expiration (X509 *peercert, int silent)
+static bool check_certificate_expiration (X509 *peercert, bool silent)
 {
   if (option (OPTSSLVERIFYDATES) != MUTT_NO)
   {
@@ -394,7 +394,7 @@ static int check_certificate_expiration (X509 *peercert, int silent)
         mutt_error (_("Server certificate is not yet valid"));
         mutt_sleep (2);
       }
-      return 0;
+      return false;
     }
     if (X509_cmp_current_time (X509_get_notAfter (peercert)) <= 0)
     {
@@ -404,15 +404,15 @@ static int check_certificate_expiration (X509 *peercert, int silent)
         mutt_error (_("Server certificate has expired"));
         mutt_sleep (2);
       }
-      return 0;
+      return false;
     }
   }
 
-  return 1;
+  return true;
 }
 
 /* port to mutt from msmtp's tls.c */
-static int hostname_match (const char *hostname, const char *certname)
+static bool hostname_match (const char *hostname, const char *certname)
 {
   const char *cmp1 = NULL, *cmp2 = NULL;
 
@@ -422,7 +422,7 @@ static int hostname_match (const char *hostname, const char *certname)
     cmp2 = strchr(hostname, '.');
     if (!cmp2)
     {
-      return 0;
+      return false;
     }
     else
     {
@@ -437,15 +437,15 @@ static int hostname_match (const char *hostname, const char *certname)
 
   if (*cmp1 == '\0' || *cmp2 == '\0')
   {
-    return 0;
+    return false;
   }
 
   if (strcasecmp(cmp1, cmp2) != 0)
   {
-    return 0;
+    return false;
   }
 
-  return 1;
+  return true;
 }
 
 /*
@@ -562,7 +562,7 @@ static int tls_close (CONNECTION* conn)
   return rc;
 }
 
-static int check_certificate_cache (X509 *peercert)
+static bool check_certificate_cache (X509 *peercert)
 {
   unsigned char peermd[EVP_MAX_MD_SIZE];
   unsigned int peermdlen;
@@ -572,7 +572,7 @@ static int check_certificate_cache (X509 *peercert)
   if (!X509_digest (peercert, EVP_sha256(), peermd, &peermdlen)
       || !SslSessionCerts)
   {
-    return 0;
+    return false;
   }
 
   for (i = sk_X509_num (SslSessionCerts); i-- > 0;)
@@ -580,11 +580,11 @@ static int check_certificate_cache (X509 *peercert)
     cert = sk_X509_value (SslSessionCerts, i);
     if (!compare_certificates (cert, peercert, peermd, peermdlen))
     {
-      return 1;
+      return true;
     }
   }
 
-  return 0;
+  return false;
 }
 
 static int check_certificate_file (X509 *peercert)
@@ -610,7 +610,7 @@ static int check_certificate_file (X509 *peercert)
   while (PEM_read_X509 (fp, &cert, NULL, NULL) != NULL)
   {
     if ((compare_certificates (cert, peercert, peermd, peermdlen) == 0) &&
-        check_certificate_expiration (cert, 1))
+        check_certificate_expiration (cert, true))
     {
       pass = 1;
       break;
@@ -640,7 +640,7 @@ static int check_host (X509 *x509cert, const char *hostname, char *err, size_t e
   int subj_alt_names_count;
   GENERAL_NAME *subj_alt_name = NULL;
   /* did we find a name matching hostname? */
-  int match_found;
+  bool match_found;
 
   /* Check if 'hostname' matches the one of the subjectAltName extensions of
    * type DNS or the Common Name (CN). */
@@ -732,7 +732,7 @@ out:
 
 static int check_certificate_by_digest (X509 *peercert)
 {
-  return check_certificate_expiration (peercert, 0) &&
+  return check_certificate_expiration (peercert, false) &&
     check_certificate_file (peercert);
 }
 
@@ -822,7 +822,7 @@ static int interactive_check_cert (X509 *cert, int idx, int len, SSL *ssl, int a
    */
   allow_always = allow_always &&
                  SslCertFile &&
-                 check_certificate_expiration (cert, 1);
+                 check_certificate_expiration (cert, true);
 
   /* L10N:
    * These four letters correspond to the choices in the next four strings:

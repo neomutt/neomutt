@@ -74,7 +74,7 @@ bool mutt_is_subscribed_list (ADDRESS *addr)
  * If one is found, print pfx and the name of the list into buf, then
  * return 1.  Otherwise, simply return 0.
  */
-static int
+static bool
 check_for_mailing_list (ADDRESS *adr, const char *pfx, char *buf, int buflen)
 {
   for (; adr; adr = adr->next)
@@ -83,10 +83,10 @@ check_for_mailing_list (ADDRESS *adr, const char *pfx, char *buf, int buflen)
     {
       if (pfx && buf && buflen)
 	snprintf (buf, buflen, "%s%s", pfx, mutt_get_name (adr));
-      return 1;
+      return true;
     }
   }
-  return 0;
+  return false;
 }
 
 /* Search for a mailing list in the list of addresses pointed to by adr.
@@ -205,7 +205,7 @@ static void make_from (ENVELOPE *env, char *buf, size_t len, int do_lists)
   if (!env || !buf)
     return;
 
-  int me;
+  bool me;
   enum FieldType disp;
   ADDRESS *name = NULL;
 
@@ -253,7 +253,7 @@ static void make_from_addr (ENVELOPE *hdr, char *buf, size_t len, int do_lists)
   if (!hdr || !buf)
     return;
 
-  int me = mutt_addr_is_user (hdr->from);
+  bool me = mutt_addr_is_user (hdr->from);
 
   if (do_lists || me)
   {
@@ -333,17 +333,17 @@ static int user_is_recipient (HEADER *h)
  * The function saves the first character from each word.  Words are delimited
  * by whitespace, or hyphens (so "Jean-Pierre" becomes "JP").
  */
-static int get_initials(const char *name, char *buf, int buflen)
+static bool get_initials(const char *name, char *buf, int buflen)
 {
   if (!name || !buf)
-    return 0;
+    return false;
 
   while (*name)
   {
     /* Char's length in bytes */
     int clen = mutt_charlen(name, NULL);
     if (clen < 1)
-      return 0;
+      return false;
 
     /* Ignore punctuation at the beginning of a word */
     if ((clen == 1) && ispunct (*name))
@@ -353,7 +353,7 @@ static int get_initials(const char *name, char *buf, int buflen)
     }
 
     if (clen >= buflen)
-      return 0;
+      return false;
 
     /* Copy one multibyte character */
     buflen -= clen;
@@ -365,7 +365,7 @@ static int get_initials(const char *name, char *buf, int buflen)
     {
       clen = mutt_charlen(name, NULL);
       if (clen < 1)
-        return 0;
+        return false;
       else if ((clen == 1) && (isspace(*name) || (*name == '-')))
         break;
     }
@@ -376,7 +376,7 @@ static int get_initials(const char *name, char *buf, int buflen)
   }
 
   *buf = 0;
-  return 1;
+  return true;
 }
 
 /**

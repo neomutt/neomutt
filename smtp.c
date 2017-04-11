@@ -231,36 +231,36 @@ smtp_data (CONNECTION * conn, const char *msgfile)
 }
 
 
-/* Returns 1 if a contains at least one 8-bit character, 0 if none do.
+/* Returns true if a contains at least one 8-bit character, false if none do.
  */
-static int address_uses_unicode(const char *a)
+static bool address_uses_unicode(const char *a)
 {
   if (!a)
-    return 0;
+    return false;
 
   while (*a)
   {
     if ((unsigned char) *a & (1<<7))
-      return 1;
+      return true;
     a++;
   }
 
-  return 0;
+  return false;
 }
 
 
 /* Returns 1 if any address in a contains at least one 8-bit
  * character, 0 if none do.
  */
-static int addresses_use_unicode(const ADDRESS* a)
+static bool addresses_use_unicode(const ADDRESS* a)
 {
   while (a)
   {
     if(a->mailbox && !a->group && address_uses_unicode(a->mailbox))
-      return 1;
+      return true;
     a = a->next;
   }
-  return 0;
+  return false;
 }
 
 

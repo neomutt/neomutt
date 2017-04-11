@@ -640,7 +640,7 @@ void mutt_free_rx_list(RX_LIST **list);
 void mutt_free_replace_list(REPLACE_LIST **list);
 LIST *mutt_copy_list(LIST *p);
 int mutt_matches_ignore(const char *s);
-int mutt_matches_list(const char *s, LIST *t);
+bool mutt_matches_list(const char *s, LIST *t);
 
 /* add an element to a list */
 LIST *mutt_add_list(LIST *head, const char *data);
@@ -650,7 +650,7 @@ int mutt_remove_from_rx_list(RX_LIST **l, const char *str);
 
 /* handle stack */
 void mutt_push_list(LIST **head, const char *data);
-int mutt_pop_list(LIST **head);
+bool mutt_pop_list(LIST **head);
 const char *mutt_front_list(LIST *head);
 
 void mutt_init (int skip_sys_rc, LIST *commands);

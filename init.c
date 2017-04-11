@@ -814,7 +814,8 @@ static int finish_source (BUFFER *tmp, BUFFER *s, unsigned long data, BUFFER *er
  */
 static int parse_ifdef (BUFFER *tmp, BUFFER *s, unsigned long data, BUFFER *err)
 {
-  int i, j, res = 0;
+  int i, j;
+  bool res = 0;
   BUFFER token;
 
   memset (&token, 0, sizeof (token));
@@ -842,7 +843,7 @@ static int parse_ifdef (BUFFER *tmp, BUFFER *s, unsigned long data, BUFFER *err)
       {
         if (mutt_strcmp (tmp->data, b[j].name) == 0)
         {
-          res = 1;
+          res = true;
           break;
         }
       }
@@ -856,7 +857,7 @@ static int parse_ifdef (BUFFER *tmp, BUFFER *s, unsigned long data, BUFFER *err)
     {
       if (mutt_strcmp (tmp->data, Commands[i].name) == 0)
       {
-        res = 1;
+        res = true;
         break;
       }
     }

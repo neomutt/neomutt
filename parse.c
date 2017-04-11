@@ -1545,7 +1545,7 @@ ADDRESS *mutt_parse_adrlist (ADDRESS *p, const char *s)
 }
 
 /* Compares mime types to the ok and except lists */
-static int count_body_parts_check(LIST **checklist, BODY *b, int dflt)
+static bool count_body_parts_check(LIST **checklist, BODY *b, bool dflt)
 {
   LIST *type = NULL;
   ATTACH_MATCH *a = NULL;
@@ -1553,7 +1553,7 @@ static int count_body_parts_check(LIST **checklist, BODY *b, int dflt)
   /* If list is null, use default behavior. */
   if (! *checklist)
   {
-    return 0;
+    return false;
   }
 
   for (type = *checklist; type; type = type->next)
@@ -1567,7 +1567,7 @@ static int count_body_parts_check(LIST **checklist, BODY *b, int dflt)
         (!b->subtype || !regexec(&a->minor_rx, b->subtype, 0, NULL, 0)))
     {
       mutt_debug (5, "yes\n");
-      return 1;
+      return true;
     }
     else
     {
@@ -1575,7 +1575,7 @@ static int count_body_parts_check(LIST **checklist, BODY *b, int dflt)
     }
   }
 
-  return 0;
+  return false;
 }
 
 #define AT_COUNT(why)   { shallcount = true; }
@@ -1642,16 +1642,16 @@ static int count_body_parts (BODY *body, int flags)
 
       if (bp->disposition == DISPATTACH)
       {
-        if (!count_body_parts_check(&AttachAllow, bp, 1))
+        if (!count_body_parts_check(&AttachAllow, bp, true))
 	  AT_NOCOUNT("attach not allowed");
-        if (count_body_parts_check(&AttachExclude, bp, 0))
+        if (count_body_parts_check(&AttachExclude, bp, false))
 	  AT_NOCOUNT("attach excluded");
       }
       else
       {
-        if (!count_body_parts_check(&InlineAllow, bp, 1))
+        if (!count_body_parts_check(&InlineAllow, bp, true))
 	  AT_NOCOUNT("inline not allowed");
-        if (count_body_parts_check(&InlineExclude, bp, 0))
+        if (count_body_parts_check(&InlineExclude, bp, false))
 	  AT_NOCOUNT("excluded");
       }
     }

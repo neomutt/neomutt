@@ -1115,18 +1115,18 @@ const char* crypt_get_fingerprint_or_id (char *p, const char **pphint,
  * Used by pgp_find_keys and find_keys to check if a crypt-hook
  * value is a key id.
  */
-short crypt_is_numerical_keyid (const char *s)
+bool crypt_is_numerical_keyid (const char *s)
 {
   /* or should we require the "0x"? */
   if (strncmp (s, "0x", 2) == 0)
     s += 2;
   if (strlen (s) % 8)
-    return 0;
+    return false;
   while (*s)
     if (strchr ("0123456789ABCDEFabcdef", *s++) == NULL)
-      return 0;
+      return false;
 
-  return 1;
+  return true;
 }
 
 

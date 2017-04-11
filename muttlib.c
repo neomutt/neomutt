@@ -293,15 +293,15 @@ void mutt_push_list(LIST **head, const char *data)
   *head = tmp;
 }
 
-int mutt_pop_list(LIST **head)
+bool mutt_pop_list(LIST **head)
 {
   LIST *elt = *head;
   if (!elt)
-    return 0;
+    return false;
   *head = elt->next;
   FREE(&elt->data);
   FREE(&elt);
-  return 1;
+  return true;
 }
 
 const char *mutt_front_list(LIST *head)
@@ -401,14 +401,14 @@ void mutt_free_header (HEADER **h)
 }
 
 /* returns true if the header contained in "s" is in list "t" */
-int mutt_matches_list (const char *s, LIST *t)
+bool mutt_matches_list (const char *s, LIST *t)
 {
   for (; t; t = t->next)
   {
     if ((ascii_strncasecmp (s, t->data, mutt_strlen (t->data)) == 0) || *t->data == '*')
-      return 1;
+      return true;
   }
-  return 0;
+  return false;
 }
 
 /* checks Ignore and UnIgnore using mutt_matches_list */
@@ -695,27 +695,27 @@ void mutt_delete_parameter (const char *attribute, PARAMETER **p)
 }
 
 /* returns 1 if Mutt can't display this type of data, 0 otherwise */
-int mutt_needs_mailcap (BODY *m)
+bool mutt_needs_mailcap (BODY *m)
 {
   switch (m->type)
   {
     case TYPETEXT:
       if (ascii_strcasecmp ("plain", m->subtype) == 0)
-        return 0;
+        return false;
       break;
     case TYPEAPPLICATION:
       if((WithCrypto & APPLICATION_PGP) && mutt_is_application_pgp(m))
-	return 0;
+	return false;
       if((WithCrypto & APPLICATION_SMIME) && mutt_is_application_smime(m))
-	return 0;
+	return false;
       break;
 
     case TYPEMULTIPART:
     case TYPEMESSAGE:
-      return 0;
+      return false;
   }
 
-  return 1;
+  return true;
 }
 
 bool mutt_is_text_part (BODY *b)
@@ -2054,16 +2054,16 @@ bool mutt_match_rx_list (const char *s, RX_LIST *l)
  * match is performed but the format is not expanded and no assumptions are made
  * about the value of `text` so it may be NULL.
  *
- * Returns 1 if the argument `s` matches a pattern in the spam list, otherwise
- * 0. */
-int mutt_match_spam_list (const char *s, REPLACE_LIST *l, char *text, int textsize)
+ * Returns true if the argument `s` matches a pattern in the spam list, otherwise
+ * false. */
+bool mutt_match_spam_list (const char *s, REPLACE_LIST *l, char *text, int textsize)
 {
   static regmatch_t *pmatch = NULL;
   static int nmatch = 0;
   int tlen = 0;
   char *p = NULL;
 
-  if (!s) return 0;
+  if (!s) return false;
 
   for (; l; l = l->next)
   {
@@ -2117,11 +2117,11 @@ int mutt_match_spam_list (const char *s, REPLACE_LIST *l, char *text, int textsi
 	text[tlen] = '\0';
 	mutt_debug (5, "mutt_match_spam_list: \"%s\"\n", text);
       }
-      return 1;
+      return true;
     }
   }
 
-  return 0;
+  return false;
 }
 
 void mutt_encode_path (char *dest, size_t dlen, const char *src)

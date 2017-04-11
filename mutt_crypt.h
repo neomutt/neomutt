@@ -177,7 +177,7 @@ const char *crypt_get_fingerprint_or_id(char *p, const char **pphint,
                                         const char **ppl, const char **pps);
 
 /* Check if a string contains a numerical key */
-short crypt_is_numerical_keyid(const char *s);
+bool crypt_is_numerical_keyid(const char *s);
 
 
 

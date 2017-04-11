@@ -815,27 +815,27 @@ comp_open_new_message (MESSAGE *msg, CONTEXT *ctx, HEADER *hdr)
  * A match means it's our responsibility to append to the file.
  *
  * Returns:
- *      1: Yes, we can append to the file
- *      0: No, appending isn't possible
+ *      true: Yes, we can append to the file
+ *      false: No, appending isn't possible
  */
-int
+bool
 mutt_comp_can_append (CONTEXT *ctx)
 {
   if (!ctx)
-    return 0;
+    return false;
 
   /* If this succeeds, we know there's an open-hook */
   COMPRESS_INFO *ci = set_compress_info (ctx);
   if (!ci)
-    return 0;
+    return false;
 
   /* We have an open-hook, so to append we need an append-hook,
    * or a close-hook. */
   if (ci->append || ci->close)
-    return 1;
+    return true;
 
   mutt_error (_("Cannot append without an append-hook or close-hook : %s"), ctx->path);
-  return 0;
+  return false;
 }
 
 /**
@@ -847,19 +847,19 @@ mutt_comp_can_append (CONTEXT *ctx)
  * A match means it's our responsibility to open the file.
  *
  * Returns:
- *      1: Yes, we can read the file
- *      0: No, we cannot read the file
+ *      true: Yes, we can read the file
+ *      false: No, we cannot read the file
  */
-int
+bool
 mutt_comp_can_read (const char *path)
 {
   if (!path)
-    return 0;
+    return false;
 
   if (find_hook (MUTT_OPENHOOK, path))
-    return 1;
+    return true;
   else
-    return 0;
+    return false;
 }
 
 /**

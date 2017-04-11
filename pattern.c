@@ -597,7 +597,7 @@ report_regerror(int regerr, regex_t *preg, BUFFER *err)
   return RANGE_E_SYNTAX;
 }
 
-static int
+static bool
 is_context_available(BUFFER *s, regmatch_t pmatch[], int kind, BUFFER *err)
 {
   char *context_loc = NULL;
@@ -615,15 +615,15 @@ is_context_available(BUFFER *s, regmatch_t pmatch[], int kind, BUFFER *err)
    * Absolute patterns only need it if they contain a dot. */
   context_loc = strpbrk(s->dptr+pmatch[0].rm_so, context_req_chars[kind]);
   if ((context_loc == NULL) || (context_loc >= &s->dptr[pmatch[0].rm_eo]))
-    return 1;
+    return true;
 
   /* We need a current message.  Do we actually have one? */
   if (Context && Context->menu)
-    return 1;
+    return true;
 
   /* Nope. */
   strfcpy(err->data, _("No current message"), err->dsize);
-  return 0;
+  return false;
 }
 
 static int
@@ -1314,13 +1314,13 @@ pattern_t *mutt_pattern_comp (/* const */ char *s, int flags, BUFFER *err)
   return curlist;
 }
 
-static int
+static bool
 perform_and (pattern_t *pat, pattern_exec_flag flags, CONTEXT *ctx, HEADER *hdr, pattern_cache_t *cache)
 {
   for (; pat; pat = pat->next)
     if (mutt_pattern_exec (pat, flags, ctx, hdr, cache) <= 0)
-      return 0;
-  return 1;
+      return false;
+  return true;
 }
 
 static int
@@ -1328,8 +1328,8 @@ perform_or (struct pattern_t *pat, pattern_exec_flag flags, CONTEXT *ctx, HEADER
 {
   for (; pat; pat = pat->next)
     if (mutt_pattern_exec (pat, flags, ctx, hdr, cache) > 0)
-      return 1;
-  return 0;
+      return true;
+  return false;
 }
 
 static int match_adrlist (pattern_t *pat, int match_personal, int n, ...)
@@ -1356,12 +1356,12 @@ static int match_adrlist (pattern_t *pat, int match_personal, int n, ...)
   return pat->alladdr; /* No matches, or all matches if alladdr */
 }
 
-static int match_reference (pattern_t *pat, LIST *refs)
+static bool match_reference (pattern_t *pat, LIST *refs)
 {
   for (; refs; refs = refs->next)
     if (patmatch (pat, refs->data) == 0)
-      return 1;
-  return 0;
+      return true;
+  return false;
 }
 
 /*
@@ -1737,21 +1737,21 @@ top_of_thread (HEADER *h)
  * @h: Header of current email
  *
  * Returns:
- *  1: Success
- *  0: Failure
+ *  true: Success
+ *  false: Failure
  */
-int
+bool
 mutt_limit_current_thread (HEADER *h)
 {
   int i;
   THREAD *me = NULL;
 
   if (!h)
-    return 0;
+    return false;
 
   me = top_of_thread (h);
   if (!me)
-    return 0;
+    return false;
 
   Context->vcount    = 0;
   Context->vsize     = 0;
@@ -1775,7 +1775,7 @@ mutt_limit_current_thread (HEADER *h)
       Context->vsize += (body->length + body->offset - body->hdr_offset);
     }
   }
-  return 1;
+  return true;
 }
 
 int mutt_pattern_func (int op, char *prompt)

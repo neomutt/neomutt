@@ -117,7 +117,7 @@ void menu_current_middle(MUTTMENU *menu);
 void menu_current_bottom(MUTTMENU *menu);
 void menu_check_recenter(MUTTMENU *menu);
 void menu_status_line(char *buf, size_t buflen, MUTTMENU *menu, const char *p);
-short mutt_ts_capability(void);
+bool mutt_ts_capability(void);
 void mutt_ts_status(char *str);
 void mutt_ts_icon(char *str);
 
@@ -135,6 +135,6 @@ int mutt_menu_loop(MUTTMENU *menu);
 void index_make_entry(char *s, size_t l, MUTTMENU *menu, int num);
 int index_color(int index_no);
 
-int mutt_limit_current_thread (HEADER *h);
+bool mutt_limit_current_thread (HEADER *h);
 
 #endif /* _MUTT_MENU_H */

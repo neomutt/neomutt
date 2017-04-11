@@ -505,23 +505,23 @@ print_copyright (void)
  * These symbols are also seen in the output of "mutt -v".
  *
  * Returns:
- *      1: Feature enables
- *      0: Feature not enabled, or not compiled in
+ *      true:  Feature enabled
+ *      false: Feature not enabled, or not compiled in
  */
-int
+bool
 feature_enabled (const char *name)
 {
   if (!name)
-    return 0;
+    return false;
 
   int i;
   for (i = 0; comp_opts[i].name; i++)
   {
     if (mutt_strcmp (name, comp_opts[i].name) == 0)
     {
-      return 1;
+      return true;
     }
   }
-  return 0;
+  return false;
 }
 

@@ -494,7 +494,7 @@ static int main_change_folder(MUTTMENU *menu, int op, char *buf, size_t bufsz,
 
 
 /* terminal status capability check. terminfo must have been initialized. */
-short mutt_ts_capability(void)
+bool mutt_ts_capability(void)
 {
   char *term = getenv("TERM");
   char *tcaps = NULL;
@@ -526,7 +526,7 @@ short mutt_ts_capability(void)
     if (tcaps && tcaps != (char *)-1 && *tcaps)
       fsl = safe_strdup(tcaps);
 
-    return 1;
+    return true;
   }
 
   /* If XT (boolean) is set, then this terminal supports the standard escape. */
@@ -535,7 +535,7 @@ short mutt_ts_capability(void)
   use_extended_names (true);
   tcapi = tigetflag("XT");
   if (tcapi == 1)
-    return 1;
+    return true;
 #endif /* HAVE_USE_EXTENDED_NAMES */
 
   /* Check term types that are known to support the standard escape without
@@ -543,11 +543,11 @@ short mutt_ts_capability(void)
   for (termp = known; termp; termp++)
   {
     if (term && *termp && (mutt_strncasecmp (term, *termp, strlen(*termp)) != 0))
-      return 1;
+      return true;
   }
 
   /* not supported */
-  return 0;
+  return false;
 }
 
 void mutt_ts_status(char *str)

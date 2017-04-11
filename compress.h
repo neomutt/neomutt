@@ -19,8 +19,8 @@
 #ifndef _MUTT_COMPRESS_H
 #define _MUTT_COMPRESS_H 1
 
-int mutt_comp_can_append    (CONTEXT *ctx);
-int mutt_comp_can_read      (const char *path);
+bool mutt_comp_can_append   (CONTEXT *ctx);
+bool mutt_comp_can_read     (const char *path);
 int mutt_comp_valid_command (const char *cmd);
 
 extern struct mx_ops mx_comp_ops;

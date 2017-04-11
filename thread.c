@@ -1407,10 +1407,10 @@ void mutt_break_thread (HEADER *hdr)
   clean_references (hdr->thread, hdr->thread->child);
 }
 
-static int link_threads (HEADER *parent, HEADER *child, CONTEXT *ctx)
+static bool link_threads (HEADER *parent, HEADER *child, CONTEXT *ctx)
 {
   if (child == parent)
-    return 0;
+    return false;
 
   mutt_break_thread (child);
 
@@ -1420,12 +1420,13 @@ static int link_threads (HEADER *parent, HEADER *child, CONTEXT *ctx)
   mutt_set_flag (ctx, child, MUTT_TAG, 0);
 
   child->env->irt_changed = child->changed = true;
-  return 1;
+  return true;
 }
 
 int mutt_link_threads (HEADER *cur, HEADER *last, CONTEXT *ctx)
 {
-  int i, changed = 0;
+  int i;
+  bool changed = false;
 
   if (!last)
   {

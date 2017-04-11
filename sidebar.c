@@ -430,25 +430,25 @@ static void sort_entries (void)
  * select_next - Selects the next unhidden mailbox
  *
  * Returns:
- *      1: Success
- *      0: Failure
+ *      true: Success
+ *      false: Failure
  */
-static int select_next (void)
+static bool select_next (void)
 {
   int entry = HilIndex;
 
   if (!EntryCount || HilIndex < 0)
-    return 0;
+    return false;
 
   do
   {
     entry++;
     if (entry == EntryCount)
-      return 0;
+      return false;
   } while (Entries[entry]->is_hidden);
 
   HilIndex = entry;
-  return 1;
+  return true;
 }
 
 /**
@@ -457,15 +457,15 @@ static int select_next (void)
  * Search down the list of mail folders for one containing new mail.
  *
  * Returns:
- *      1: Success
- *      0: Failure
+ *      true: Success
+ *      false: Failure
  */
 static int select_next_new (void)
 {
   int entry = HilIndex;
 
   if (!EntryCount || HilIndex < 0)
-    return 0;
+    return false;
 
   do
   {
@@ -475,40 +475,40 @@ static int select_next_new (void)
       if (option (OPTSIDEBARNEXTNEWWRAP))
         entry = 0;
       else
-        return 0;
+        return false;
     }
     if (entry == HilIndex)
-      return 0;
+      return false;
   } while (!Entries[entry]->buffy->new &&
            !Entries[entry]->buffy->msg_unread);
 
   HilIndex = entry;
-  return 1;
+  return true;
 }
 
 /**
  * select_prev - Selects the previous unhidden mailbox
  *
  * Returns:
- *      1: Success
- *      0: Failure
+ *      true: Success
+ *      false: Failure
  */
-static int select_prev (void)
+static bool select_prev (void)
 {
   int entry = HilIndex;
 
   if (!EntryCount || HilIndex < 0)
-    return 0;
+    return false;
 
   do
   {
     entry--;
     if (entry < 0)
-      return 0;
+      return false;
   } while (Entries[entry]->is_hidden);
 
   HilIndex = entry;
-  return 1;
+  return true;
 }
 
 /**
@@ -517,15 +517,15 @@ static int select_prev (void)
  * Search up the list of mail folders for one containing new mail.
  *
  * Returns:
- *      1: Success
- *      0: Failure
+ *      true: Success
+ *      false: Failure
  */
-static int select_prev_new (void)
+static bool select_prev_new (void)
 {
   int entry = HilIndex;
 
   if (!EntryCount || HilIndex < 0)
-    return 0;
+    return false;
 
   do
   {
@@ -535,15 +535,15 @@ static int select_prev_new (void)
       if (option (OPTSIDEBARNEXTNEWWRAP))
         entry = EntryCount - 1;
       else
-        return 0;
+        return false;
     }
     if (entry == HilIndex)
-      return 0;
+      return false;
   } while (!Entries[entry]->buffy->new &&
            !Entries[entry]->buffy->msg_unread);
 
   HilIndex = entry;
-  return 1;
+  return true;
 }
 
 /**
@@ -603,17 +603,17 @@ static int select_page_up (void)
  * can change outside of the sidebar that we don't hear about.
  *
  * Returns:
- *      0: No, don't draw the sidebar
- *      1: Yes, draw the sidebar
+ *      false: No, don't draw the sidebar
+ *      true: Yes, draw the sidebar
  */
-static int prepare_sidebar (int page_size)
+static bool prepare_sidebar (int page_size)
 {
   int i;
   SBENTRY *opn_entry = NULL, *hil_entry = NULL;
   int page_entries;
 
   if (!EntryCount || (page_size <= 0))
-    return 0;
+    return false;
 
   if (OpnIndex >= 0)
     opn_entry = Entries[OpnIndex];
@@ -676,7 +676,7 @@ static int prepare_sidebar (int page_size)
     BotIndex = EntryCount - 1;
 
   PreviousSort = SidebarSortMethod;
-  return 1;
+  return true;
 }
 
 /**

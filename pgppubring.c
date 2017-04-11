@@ -187,20 +187,20 @@ static void pgpring_dump_keyblock (pgp_key_t p)
   }
 }
 
-static int pgpring_string_matches_hint (const char *s, const char *hints[], int nhints)
+static bool pgpring_string_matches_hint (const char *s, const char *hints[], int nhints)
 {
   int i;
 
   if (!hints || !nhints)
-    return 1;
+    return true;
 
   for (i = 0; i < nhints; i++)
   {
     if (mutt_stristr (s, hints[i]) != NULL)
-      return 1;
+      return true;
   }
 
-  return 0;
+  return false;
 }
 
 /* The actual key ring parser */

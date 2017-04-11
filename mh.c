@@ -257,14 +257,14 @@ static int mh_already_notified(BUFFY *b, int msgno)
  * digits.  Deleted message get moved to a filename with a comma before
  * it.
  */
-static int mh_valid_message (const char *s)
+static bool mh_valid_message (const char *s)
 {
   for (; *s; s++)
   {
     if (!isdigit ((unsigned char) *s))
-      return 0;
+      return false;
   }
-  return 1;
+  return true;
 }
 
 /* Checks new mail for a mh mailbox.
@@ -871,7 +871,7 @@ static int maildir_parse_dir (CONTEXT * ctx, struct maildir ***last,
   return 0;
 }
 
-static int maildir_add_to_context (CONTEXT * ctx, struct maildir *md)
+static bool maildir_add_to_context (CONTEXT * ctx, struct maildir *md)
 {
   int oldmsgcount = ctx->msgcount;
 
@@ -905,9 +905,9 @@ static int maildir_add_to_context (CONTEXT * ctx, struct maildir *md)
   if (ctx->msgcount > oldmsgcount)
   {
     mx_update_context (ctx, ctx->msgcount - oldmsgcount);
-    return 1;
+    return true;
   }
-  return 0;
+  return false;
 }
 
 static int maildir_move_to_context (CONTEXT * ctx, struct maildir **md)

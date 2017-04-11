@@ -966,14 +966,14 @@ static int mbox_check_mailbox (CONTEXT *ctx, int *index_hint)
  * Returns 1 if the mailbox has at least 1 new messages (not old)
  * otherwise returns 0.
  */
-static int mbox_has_new(CONTEXT *ctx)
+static bool mbox_has_new(CONTEXT *ctx)
 {
   int i;
 
   for (i = 0; i < ctx->msgcount; i++)
     if (!ctx->hdrs[i]->deleted && !ctx->hdrs[i]->read && !ctx->hdrs[i]->old)
-      return 1;
-  return 0;
+      return true;
+  return false;
 }
 
 /* if mailbox has at least 1 new message, sets mtime > atime of mailbox

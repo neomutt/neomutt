@@ -1398,20 +1398,20 @@ static int get_toplevel_encoding (BODY *a)
 }
 
 /* check for duplicate boundary. return 1 if duplicate */
-static int check_boundary (const char* boundary, BODY *b)
+static bool check_boundary (const char* boundary, BODY *b)
 {
   char* p = NULL;
 
   if (b->parts && check_boundary (boundary, b->parts))
-    return 1;
+    return true;
 
   if (b->next && check_boundary (boundary, b->next))
-    return 1;
+    return true;
 
   if ((p = mutt_get_parameter ("boundary", b->parameter))
       && (ascii_strcmp (p, boundary) == 0))
-    return 1;
-  return 0;
+    return true;
+  return false;
 }
 
 BODY *mutt_make_multipart (BODY *b)

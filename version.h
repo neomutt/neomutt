@@ -20,6 +20,6 @@
 
 void print_version (void);
 void print_copyright (void);
-int feature_enabled (const char *name);
+bool feature_enabled (const char *name);
 
 #endif /* _MUTT_VERSION_H */
