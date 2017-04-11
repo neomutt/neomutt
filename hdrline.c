@@ -333,17 +333,17 @@ static int user_is_recipient (HEADER *h)
  * The function saves the first character from each word.  Words are delimited
  * by whitespace, or hyphens (so "Jean-Pierre" becomes "JP").
  */
-static int get_initials(const char *name, char *buf, int buflen)
+static bool get_initials(const char *name, char *buf, int buflen)
 {
   if (!name || !buf)
-    return 0;
+    return false;
 
   while (*name)
   {
     /* Char's length in bytes */
     int clen = mutt_charlen(name, NULL);
     if (clen < 1)
-      return 0;
+      return false;
 
     /* Ignore punctuation at the beginning of a word */
     if ((clen == 1) && ispunct (*name))
@@ -353,7 +353,7 @@ static int get_initials(const char *name, char *buf, int buflen)
     }
 
     if (clen >= buflen)
-      return 0;
+      return false;
 
     /* Copy one multibyte character */
     buflen -= clen;
@@ -365,7 +365,7 @@ static int get_initials(const char *name, char *buf, int buflen)
     {
       clen = mutt_charlen(name, NULL);
       if (clen < 1)
-        return 0;
+        return false;
       else if ((clen == 1) && (isspace(*name) || (*name == '-')))
         break;
     }
@@ -376,7 +376,7 @@ static int get_initials(const char *name, char *buf, int buflen)
   }
 
   *buf = 0;
-  return 1;
+  return true;
 }
 
 /**
