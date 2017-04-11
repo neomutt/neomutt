@@ -208,7 +208,7 @@ static pop_auth_res_t pop_auth_apop (POP_DATA *pop_data, const char *method)
   if (!pop_data->timestamp)
     return POP_A_UNAVAIL;
 
-  if (rfc822_valid_msgid (pop_data->timestamp) < 0)
+  if (!rfc822_valid_msgid (pop_data->timestamp))
   {
     mutt_error (_("POP timestamp is invalid!"));
     mutt_sleep (2);

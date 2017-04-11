@@ -844,7 +844,7 @@ ADDRESS *rfc822_append (ADDRESS **a, ADDRESS *b, int prune)
 }
 
 /* incomplete. Only used to thwart the APOP MD5 attack (#2846). */
-int rfc822_valid_msgid (const char *msgid)
+bool rfc822_valid_msgid (const char *msgid)
 {
   /* msg-id         = "<" addr-spec ">"
    * addr-spec      = local-part "@" domain
@@ -870,22 +870,22 @@ int rfc822_valid_msgid (const char *msgid)
   unsigned int l, i;
 
   if (!msgid || !*msgid)
-    return -1;
+    return false;
 
   l = mutt_strlen (msgid);
   if (l < 5) /* <atom@atom> */
-    return -1;
+    return false;
   if (msgid[0] != '<' || msgid[l-1] != '>')
-    return -1;
+    return false;
   if (!(strrchr (msgid, '@')))
-    return -1;
+    return false;
 
   /* TODO: complete parser */
   for (i = 0; i < l; i++)
     if ((unsigned char)msgid[i] > 127)
-      return -1;
+      return false;
 
-  return 0;
+  return true;
 }
 
 #ifdef TESTING
