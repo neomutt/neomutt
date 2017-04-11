@@ -264,7 +264,7 @@ void mutt_show_error(void);
 void mutt_signal_init(void);
 void mutt_stamp_attachment(BODY *a);
 void mutt_tag_set_flag(int flag, int bf);
-short mutt_ts_capability(void);
+bool mutt_ts_capability(void);
 void mutt_unblock_signals(void);
 void mutt_unblock_signals_system(int catch);
 void mutt_update_encoding(BODY *a);

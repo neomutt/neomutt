@@ -117,7 +117,7 @@ void menu_current_middle(MUTTMENU *menu);
 void menu_current_bottom(MUTTMENU *menu);
 void menu_check_recenter(MUTTMENU *menu);
 void menu_status_line(char *buf, size_t buflen, MUTTMENU *menu, const char *p);
-short mutt_ts_capability(void);
+bool mutt_ts_capability(void);
 void mutt_ts_status(char *str);
 void mutt_ts_icon(char *str);
 
