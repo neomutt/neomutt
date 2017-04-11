@@ -310,12 +310,12 @@ static void dump_menu (FILE *f, int menu)
   }
 }
 
-static int is_bound (struct keymap_t *map, int op)
+static bool is_bound (struct keymap_t *map, int op)
 {
   for (; map; map = map->next)
     if (map->op == op)
-      return 1;
-  return 0;
+      return true;
+  return false;
 }
 
 static void dump_unbound (FILE *f,
