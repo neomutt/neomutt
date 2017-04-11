@@ -871,7 +871,7 @@ static int maildir_parse_dir (CONTEXT * ctx, struct maildir ***last,
   return 0;
 }
 
-static int maildir_add_to_context (CONTEXT * ctx, struct maildir *md)
+static bool maildir_add_to_context (CONTEXT * ctx, struct maildir *md)
 {
   int oldmsgcount = ctx->msgcount;
 
@@ -905,9 +905,9 @@ static int maildir_add_to_context (CONTEXT * ctx, struct maildir *md)
   if (ctx->msgcount > oldmsgcount)
   {
     mx_update_context (ctx, ctx->msgcount - oldmsgcount);
-    return 1;
+    return true;
   }
-  return 0;
+  return false;
 }
 
 static int maildir_move_to_context (CONTEXT * ctx, struct maildir **md)
