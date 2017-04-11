@@ -640,7 +640,7 @@ void mutt_free_rx_list(RX_LIST **list);
 void mutt_free_replace_list(REPLACE_LIST **list);
 LIST *mutt_copy_list(LIST *p);
 int mutt_matches_ignore(const char *s);
-int mutt_matches_list(const char *s, LIST *t);
+bool mutt_matches_list(const char *s, LIST *t);
 
 /* add an element to a list */
 LIST *mutt_add_list(LIST *head, const char *data);

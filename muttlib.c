@@ -401,14 +401,14 @@ void mutt_free_header (HEADER **h)
 }
 
 /* returns true if the header contained in "s" is in list "t" */
-int mutt_matches_list (const char *s, LIST *t)
+bool mutt_matches_list (const char *s, LIST *t)
 {
   for (; t; t = t->next)
   {
     if ((ascii_strncasecmp (s, t->data, mutt_strlen (t->data)) == 0) || *t->data == '*')
-      return 1;
+      return true;
   }
-  return 0;
+  return false;
 }
 
 /* checks Ignore and UnIgnore using mutt_matches_list */
