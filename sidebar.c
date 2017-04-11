@@ -517,15 +517,15 @@ static bool select_prev (void)
  * Search up the list of mail folders for one containing new mail.
  *
  * Returns:
- *      1: Success
- *      0: Failure
+ *      true: Success
+ *      false: Failure
  */
-static int select_prev_new (void)
+static bool select_prev_new (void)
 {
   int entry = HilIndex;
 
   if (!EntryCount || HilIndex < 0)
-    return 0;
+    return false;
 
   do
   {
@@ -535,15 +535,15 @@ static int select_prev_new (void)
       if (option (OPTSIDEBARNEXTNEWWRAP))
         entry = EntryCount - 1;
       else
-        return 0;
+        return false;
     }
     if (entry == HilIndex)
-      return 0;
+      return false;
   } while (!Entries[entry]->buffy->new &&
            !Entries[entry]->buffy->msg_unread);
 
   HilIndex = entry;
-  return 1;
+  return true;
 }
 
 /**
