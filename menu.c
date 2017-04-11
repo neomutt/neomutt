@@ -964,7 +964,7 @@ static int menu_dialog_translate_op (int i)
   return i;
 }
 
-static int menu_dialog_dokey (MUTTMENU *menu, int *ip)
+static bool menu_dialog_dokey (MUTTMENU *menu, int *ip)
 {
   event_t ch;
   char *p = NULL;
@@ -974,18 +974,18 @@ static int menu_dialog_dokey (MUTTMENU *menu, int *ip)
   if (ch.ch < 0)
   {
     *ip = -1;
-    return 0;
+    return true;
   }
 
   if (ch.ch && (p = strchr (menu->keys, ch.ch)))
   {
     *ip = OP_MAX + (p - menu->keys + 1);
-    return 0;
+    return true;
   }
   else
   {
     mutt_unget_event (ch.op ? 0 : ch.ch, ch.op ? ch.op : 0);
-    return -1;
+    return false;
   }
 }
 
@@ -1071,7 +1071,7 @@ int mutt_menu_loop (MUTTMENU *menu)
     mutt_refresh ();
 
     /* try to catch dialog keys before ops */
-    if (menu->dialog && menu_dialog_dokey (menu, &i) == 0)
+    if (menu->dialog && menu_dialog_dokey (menu, &i))
       return i;
 
     i = km_dokey (menu->menu);

@@ -246,15 +246,15 @@ static int ci_first_message (void)
 }
 
 /* This should be in mx.c, but it only gets used here. */
-static int mx_toggle_write (CONTEXT *ctx)
+static bool mx_toggle_write (CONTEXT *ctx)
 {
   if (!ctx)
-    return -1;
+    return false;
 
   if (ctx->readonly)
   {
     mutt_error (_("Cannot toggle write on a readonly mailbox!"));
-    return -1;
+    return false;
   }
 
   if (ctx->dontwrite)
@@ -268,7 +268,7 @@ static int mx_toggle_write (CONTEXT *ctx)
     mutt_message (_("Changes to folder will not be written."));
   }
 
-  return 0;
+  return true;
 }
 
 static void resort_index (MUTTMENU *menu)
@@ -409,7 +409,7 @@ void update_index (MUTTMENU *menu, CONTEXT *ctx, int check,
 
 }
 
-static int main_change_folder(MUTTMENU *menu, int op, char *buf, size_t bufsz,
+static bool main_change_folder(MUTTMENU *menu, int op, char *buf, size_t bufsz,
 			  int *oldcount, int *index_hint, int flags)
 {
 #ifdef USE_NNTP
@@ -424,7 +424,7 @@ static int main_change_folder(MUTTMENU *menu, int op, char *buf, size_t bufsz,
   if (mx_get_magic (buf) <= 0)
   {
     mutt_error (_("%s is not a mailbox."), buf);
-    return -1;
+    return false;
   }
   mutt_str_replace (&CurrentFolder, buf);
 
@@ -451,7 +451,7 @@ static int main_change_folder(MUTTMENU *menu, int op, char *buf, size_t bufsz,
 
       set_option (OPTSEARCHINVALID);
       menu->redraw = REDRAW_INDEX | REDRAW_STATUS;
-      return 0;
+      return true;
     }
     FREE (&Context);
   }
@@ -489,7 +489,7 @@ static int main_change_folder(MUTTMENU *menu, int op, char *buf, size_t bufsz,
   menu->redraw = REDRAW_FULL;
   set_option (OPTSEARCHINVALID);
 
-  return 0;
+  return true;
 }
 
 
@@ -2534,7 +2534,7 @@ int mutt_index_menu (void)
       case OP_TOGGLE_WRITE:
 
 	CHECK_IN_MAILBOX;
-	if (mx_toggle_write (Context) == 0)
+	if (mx_toggle_write (Context))
 	  menu->redraw |= REDRAW_STATUS;
 	break;
 

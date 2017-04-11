@@ -441,7 +441,7 @@ void mutt_default_save (char *path, size_t pathlen, HEADER *hdr)
     char tmp[_POSIX_PATH_MAX];
     ADDRESS *adr = NULL;
     ENVELOPE *env = hdr->env;
-    int fromMe = mutt_addr_is_user (env->from);
+    bool fromMe = mutt_addr_is_user (env->from);
 
     if (!fromMe && env->reply_to && env->reply_to->mailbox)
       adr = env->reply_to;

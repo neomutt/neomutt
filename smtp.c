@@ -69,19 +69,19 @@ static int Esmtp = 0;
 static char* AuthMechs = NULL;
 static unsigned char Capabilities[(CAPMAX + 7)/ 8];
 
-static int smtp_code (char *buf, size_t len, int *n)
+static bool smtp_code (char *buf, size_t len, int *n)
 {
   char code[4];
 
   if (len < 4)
-    return -1;
+    return false;
   code[0] = buf[0];
   code[1] = buf[1];
   code[2] = buf[2];
   code[3] = 0;
   if (mutt_atoi (code, n) < 0)
-    return -1;
-  return 0;
+    return false;
+  return true;
 }
 
 /* Reads a command response from the SMTP server.
@@ -117,7 +117,7 @@ smtp_get_resp (CONNECTION * conn)
     else if (ascii_strncasecmp ("SMTPUTF8", buf + 4, 8) == 0)
       mutt_bit_set (Capabilities, SMTPUTF8);
 
-    if (smtp_code (buf, n, &n) < 0)
+    if (!smtp_code (buf, n, &n))
       return smtp_err_code;
 
   } while (buf[3] == '-');
@@ -252,19 +252,19 @@ static int address_uses_unicode(const char *a)
 /* Returns 1 if any address in a contains at least one 8-bit
  * character, 0 if none do.
  */
-static int addresses_use_unicode(const ADDRESS* a)
+static bool addresses_use_unicode(const ADDRESS* a)
 {
   while (a)
   {
     if(a->mailbox && !a->group && address_uses_unicode(a->mailbox))
-      return 1;
+      return true;
     a = a->next;
   }
-  return 0;
+  return false;
 }
 
 
-static int smtp_fill_account (ACCOUNT* account)
+static bool smtp_fill_account (ACCOUNT* account)
 {
   static unsigned short SmtpPort = 0;
 
@@ -284,7 +284,7 @@ static int smtp_fill_account (ACCOUNT* account)
     FREE (&urlstr);
     mutt_error (_("Invalid SMTP URL: %s"), SmtpUrl);
     mutt_sleep (1);
-    return -1;
+    return false;
   }
   FREE (&urlstr);
 
@@ -310,7 +310,7 @@ static int smtp_fill_account (ACCOUNT* account)
     }
   }
 
-  return 0;
+  return true;
 }
 
 static int smtp_helo (CONNECTION* conn)
@@ -398,7 +398,7 @@ static int smtp_auth_sasl (CONNECTION* conn, const char* mechlist)
       goto fail;
     if ((rc = mutt_socket_readln (buf, bufsize, conn)) < 0)
       goto fail;
-    if (smtp_code (buf, rc, &rc) < 0)
+    if (!smtp_code (buf, rc, &rc))
       goto fail;
 
     if (rc != smtp_ready)
@@ -523,8 +523,8 @@ static int smtp_auth_plain(CONNECTION* conn)
     if (ascii_strncasecmp(method, "plain", 5) == 0)
     {
       /* Get username and password. Bail out of any cannot be retrieved. */
-      if (mutt_account_getuser(&conn->account) ||
-          mutt_account_getpass(&conn->account))
+      if (!mutt_account_getuser(&conn->account) ||
+          !mutt_account_getpass(&conn->account))
       {
         goto error;
       }
@@ -643,7 +643,7 @@ mutt_smtp_send (const ADDRESS* from, const ADDRESS* to, const ADDRESS* cc,
     return -1;
   }
 
-  if (smtp_fill_account (&account) < 0)
+  if (!smtp_fill_account (&account))
     return ret;
 
   if (!(conn = mutt_conn_find (NULL, &account)))

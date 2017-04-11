@@ -205,7 +205,7 @@ static void make_from (ENVELOPE *env, char *buf, size_t len, int do_lists)
   if (!env || !buf)
     return;
 
-  int me;
+  bool me;
   enum FieldType disp;
   ADDRESS *name = NULL;
 
@@ -253,7 +253,7 @@ static void make_from_addr (ENVELOPE *hdr, char *buf, size_t len, int do_lists)
   if (!hdr || !buf)
     return;
 
-  int me = mutt_addr_is_user (hdr->from);
+  bool me = mutt_addr_is_user (hdr->from);
 
   if (do_lists || me)
   {
@@ -273,12 +273,12 @@ static void make_from_addr (ENVELOPE *hdr, char *buf, size_t len, int do_lists)
     *buf = 0;
 }
 
-static int user_in_addr (ADDRESS *a)
+static bool user_in_addr (ADDRESS *a)
 {
   for (; a; a = a->next)
     if (mutt_addr_is_user (a))
-      return 1;
-  return 0;
+      return true;
+  return false;
 }
 
 /* Return values:

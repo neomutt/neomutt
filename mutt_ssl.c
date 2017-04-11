@@ -273,13 +273,13 @@ static int ssl_passwd_cb(char *buf, int size, int rwflag, void *userdata)
 {
   ACCOUNT *account = (ACCOUNT*)userdata;
 
-  if (mutt_account_getuser (account))
+  if (!mutt_account_getuser (account))
     return 0;
 
   mutt_debug (2, "ssl_passwd_cb: getting password for %s@%s:%u\n",
               account->user, account->host, account->port);
 
-  if (mutt_account_getpass (account))
+  if (!mutt_account_getpass (account))
     return 0;
 
   return snprintf(buf, size, "%s", account->pass);
@@ -382,7 +382,7 @@ static int compare_certificates (X509 *cert, X509 *peercert,
   return 0;
 }
 
-static int check_certificate_expiration (X509 *peercert, int silent)
+static bool check_certificate_expiration (X509 *peercert, bool silent)
 {
   if (option (OPTSSLVERIFYDATES) != MUTT_NO)
   {
@@ -394,7 +394,7 @@ static int check_certificate_expiration (X509 *peercert, int silent)
         mutt_error (_("Server certificate is not yet valid"));
         mutt_sleep (2);
       }
-      return 0;
+      return false;
     }
     if (X509_cmp_current_time (X509_get_notAfter (peercert)) <= 0)
     {
@@ -404,15 +404,15 @@ static int check_certificate_expiration (X509 *peercert, int silent)
         mutt_error (_("Server certificate has expired"));
         mutt_sleep (2);
       }
-      return 0;
+      return false;
     }
   }
 
-  return 1;
+  return true;
 }
 
 /* port to mutt from msmtp's tls.c */
-static int hostname_match (const char *hostname, const char *certname)
+static bool hostname_match (const char *hostname, const char *certname)
 {
   const char *cmp1 = NULL, *cmp2 = NULL;
 
@@ -422,7 +422,7 @@ static int hostname_match (const char *hostname, const char *certname)
     cmp2 = strchr(hostname, '.');
     if (!cmp2)
     {
-      return 0;
+      return false;
     }
     else
     {
@@ -437,15 +437,15 @@ static int hostname_match (const char *hostname, const char *certname)
 
   if (*cmp1 == '\0' || *cmp2 == '\0')
   {
-    return 0;
+    return false;
   }
 
   if (strcasecmp(cmp1, cmp2) != 0)
   {
-    return 0;
+    return false;
   }
 
-  return 1;
+  return true;
 }
 
 /*
@@ -458,13 +458,13 @@ static int hostname_match (const char *hostname, const char *certname)
  * versions also. (That's the reason for the ugly #ifdefs and macros,
  * otherwise I could have simply #ifdef'd the whole ssl_init funcion)
  */
-static int ssl_init (void)
+static bool ssl_init (void)
 {
   char path[_POSIX_PATH_MAX];
   static unsigned char init_complete = 0;
 
   if (init_complete)
-    return 0;
+    return true;
 
   if (! HAVE_ENTROPY())
   {
@@ -487,7 +487,7 @@ static int ssl_init (void)
     {
       mutt_error (_("Failed to find enough entropy on your system"));
       mutt_sleep (2);
-      return -1;
+      return false;
     }
   }
 
@@ -496,7 +496,7 @@ static int ssl_init (void)
   SSL_load_error_strings();
   SSL_library_init();
   init_complete = 1;
-  return 0;
+  return true;
 }
 
 static int ssl_socket_read (CONNECTION* conn, char* buf, size_t len)
@@ -610,7 +610,7 @@ static int check_certificate_file (X509 *peercert)
   while (PEM_read_X509 (fp, &cert, NULL, NULL) != NULL)
   {
     if ((compare_certificates (cert, peercert, peermd, peermdlen) == 0) &&
-        check_certificate_expiration (cert, 1))
+        check_certificate_expiration (cert, true))
     {
       pass = 1;
       break;
@@ -640,7 +640,7 @@ static int check_host (X509 *x509cert, const char *hostname, char *err, size_t e
   int subj_alt_names_count;
   GENERAL_NAME *subj_alt_name = NULL;
   /* did we find a name matching hostname? */
-  int match_found;
+  bool match_found;
 
   /* Check if 'hostname' matches the one of the subjectAltName extensions of
    * type DNS or the Common Name (CN). */
@@ -732,7 +732,7 @@ out:
 
 static int check_certificate_by_digest (X509 *peercert)
 {
-  return check_certificate_expiration (peercert, 0) &&
+  return check_certificate_expiration (peercert, false) &&
     check_certificate_file (peercert);
 }
 
@@ -822,7 +822,7 @@ static int interactive_check_cert (X509 *cert, int idx, int len, SSL *ssl, int a
    */
   allow_always = allow_always &&
                  SslCertFile &&
-                 check_certificate_expiration (cert, 1);
+                 check_certificate_expiration (cert, true);
 
   /* L10N:
    * These four letters correspond to the choices in the next four strings:
@@ -1193,7 +1193,7 @@ int mutt_ssl_starttls (CONNECTION* conn)
   int maxbits;
   long ssl_options = 0;
 
-  if (ssl_init())
+  if (!ssl_init())
     goto bail;
 
   ssldata = safe_calloc (1, sizeof (sslsockdata));
@@ -1302,7 +1302,7 @@ int mutt_ssl_starttls (CONNECTION* conn)
 
 int mutt_ssl_socket_setup (CONNECTION * conn)
 {
-  if (ssl_init() < 0)
+  if (!ssl_init())
   {
     conn->conn_open = ssl_socket_open_err;
     return -1;

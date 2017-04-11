@@ -28,36 +28,36 @@
 /* some helper functions to verify that we are exclusively operating
  * on message/rfc822 attachments
  */
-static short check_msg (BODY * b, short err)
+static bool check_msg (BODY * b, bool err)
 {
   if (!mutt_is_message_type (b->type, b->subtype))
   {
     if (err)
       mutt_error (_("You may only bounce message/rfc822 parts."));
-    return -1;
+    return false;
   }
-  return 0;
+  return true;
 }
 
-static short check_all_msg (ATTACHPTR ** idx, short idxlen,
-			    BODY * cur, short err)
+static bool check_all_msg (ATTACHPTR ** idx, short idxlen,
+			    BODY * cur, bool err)
 {
   short i;
 
-  if (cur && check_msg (cur, err) == -1)
-    return -1;
+  if (cur && !check_msg (cur, err))
+    return false;
   else if (!cur)
   {
     for (i = 0; i < idxlen; i++)
     {
       if (idx[i]->content->tagged)
       {
-	if (check_msg (idx[i]->content, err) == -1)
-	  return -1;
+	if (!check_msg (idx[i]->content, err))
+	  return false;
       }
     }
   }
-  return 0;
+  return true;
 }
 
 
@@ -123,7 +123,7 @@ void mutt_attach_bounce (FILE * fp, HEADER * hdr,
   int ret = 0;
   int p   = 0;
 
-  if (check_all_msg (idx, idxlen, cur, 1) == -1)
+  if (!check_all_msg (idx, idxlen, cur, true))
     return;
 
   /* one or more messages? */
@@ -244,7 +244,7 @@ void mutt_attach_resend (FILE * fp, HEADER * hdr, ATTACHPTR ** idx,
 {
   short i;
 
-  if (check_all_msg (idx, idxlen, cur, 1) == -1)
+  if (!check_all_msg (idx, idxlen, cur, true))
     return;
 
   if (cur)
@@ -673,7 +673,7 @@ void mutt_attach_forward (FILE * fp, HEADER * hdr,
   short nattach;
 
 
-  if (check_all_msg (idx, idxlen, cur, 0) == 0)
+  if (check_all_msg (idx, idxlen, cur, false))
     attach_forward_msgs (fp, hdr, idx, idxlen, cur, flags);
   else
   {
@@ -833,7 +833,7 @@ void mutt_attach_reply (FILE * fp, HEADER * hdr,
     unset_option (OPTNEWSSEND);
 #endif
 
-  if (check_all_msg (idx, idxlen, cur, 0) == -1)
+  if (!check_all_msg (idx, idxlen, cur, false))
   {
     nattach = count_tagged (idx, idxlen);
     if ((parent = find_parent (idx, idxlen, cur, nattach)) == NULL)

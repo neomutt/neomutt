@@ -96,7 +96,7 @@ imap_auth_res_t imap_auth_gss (IMAP_DATA* idata, const char* method)
   if (!mutt_bit_isset (idata->capabilities, AGSSAPI))
     return IMAP_AUTH_UNAVAIL;
 
-  if (mutt_account_getuser (&idata->conn->account))
+  if (!mutt_account_getuser (&idata->conn->account))
     return IMAP_AUTH_FAILURE;
 
   /* get an IMAP service ticket for the server */

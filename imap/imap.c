@@ -45,7 +45,7 @@
 
 /* imap forward declarations */
 static char* imap_get_flags (LIST** hflags, char* s);
-static int imap_check_capabilities (IMAP_DATA* idata);
+static bool imap_check_capabilities (IMAP_DATA* idata);
 static void imap_set_flag (IMAP_DATA* idata, int aclbit, int flag,
 			   const char* str, char* flags, size_t flsize);
 
@@ -294,12 +294,12 @@ void imap_expunge_mailbox (IMAP_DATA* idata)
 }
 
 /* imap_check_capabilities: make sure we can log in to this server. */
-static int imap_check_capabilities (IMAP_DATA* idata)
+static bool imap_check_capabilities (IMAP_DATA* idata)
 {
   if (imap_exec (idata, "CAPABILITY", 0) != 0)
   {
     imap_error ("imap_check_capabilities", idata->buf);
-    return -1;
+    return false;
   }
 
   if (!(mutt_bit_isset(idata->capabilities,IMAP4)
@@ -308,10 +308,10 @@ static int imap_check_capabilities (IMAP_DATA* idata)
     mutt_error (_("This IMAP server is ancient. NeoMutt does not work with it."));
     mutt_sleep (2);	/* pause a moment to let the user see the error */
 
-    return -1;
+    return false;
   }
 
-  return 0;
+  return true;
 }
 
 /* imap_conn_find: Find an open IMAP connection matching account, or open
@@ -418,7 +418,7 @@ int imap_open_connection (IMAP_DATA* idata)
   if (ascii_strncasecmp ("* OK", idata->buf, 4) == 0)
   {
     if ((ascii_strncasecmp ("* OK [CAPABILITY", idata->buf, 16) != 0)
-        && imap_check_capabilities (idata))
+        && !imap_check_capabilities (idata))
       goto bail;
 #ifdef USE_SSL
     /* Attempt STARTTLS if available and desired. */
@@ -464,7 +464,7 @@ int imap_open_connection (IMAP_DATA* idata)
   else if (ascii_strncasecmp ("* PREAUTH", idata->buf, 9) == 0)
   {
     idata->state = IMAP_AUTHENTICATED;
-    if (imap_check_capabilities (idata) != 0)
+    if (!imap_check_capabilities (idata))
       goto bail;
     FREE (&idata->capstr);
   }
@@ -850,25 +850,25 @@ static void imap_set_flag (IMAP_DATA* idata, int aclbit, int flag,
 }
 
 /* imap_has_flag: do a caseless comparison of the flag against a flag list,
-*   return 1 if found or flag list has '\*', 0 otherwise */
-int imap_has_flag (LIST* flag_list, const char* flag)
+*   return true if found or flag list has '\*', false otherwise */
+bool imap_has_flag (LIST* flag_list, const char* flag)
 {
   if (!flag_list)
-    return 0;
+    return false;
 
   flag_list = flag_list->next;
   while (flag_list)
   {
     if (ascii_strncasecmp (flag_list->data, flag, strlen (flag_list->data)) == 0)
-      return 1;
+      return true;
 
     if (ascii_strncmp (flag_list->data, "\\*", strlen (flag_list->data)) == 0)
-      return 1;
+      return true;
 
     flag_list = flag_list->next;
   }
 
-  return 0;
+  return false;
 }
 
 /* Note: headers must be in SORT_ORDER. See imap_exec_msgset for args.
@@ -1482,20 +1482,20 @@ static int imap_check_mailbox_reopen (CONTEXT *ctx, int *index_hint)
 }
 
 /* split path into (idata,mailbox name) */
-static int imap_get_mailbox (const char* path, IMAP_DATA** hidata, char* buf, size_t blen)
+static bool imap_get_mailbox (const char* path, IMAP_DATA** hidata, char* buf, size_t blen)
 {
   IMAP_MBOX mx;
 
   if (imap_parse_path (path, &mx))
   {
     mutt_debug (1, "imap_get_mailbox: Error parsing %s\n", path);
-    return -1;
+    return false;
   }
   if (!(*hidata = imap_conn_find (&(mx.account), option (OPTIMAPPASSIVE) ? MUTT_IMAP_CONN_NONEW : 0))
       || (*hidata)->state < IMAP_AUTHENTICATED)
   {
     FREE (&mx.mbox);
-    return -1;
+    return false;
   }
 
   imap_fix_path (*hidata, mx.mbox, buf, blen);
@@ -1503,7 +1503,7 @@ static int imap_get_mailbox (const char* path, IMAP_DATA** hidata, char* buf, si
     strfcpy (buf, "INBOX", blen);
   FREE (&mx.mbox);
 
-  return 0;
+  return true;
 }
 
 /* check for new mail in any subscribed mailboxes. Given a list of mailboxes
@@ -1531,7 +1531,7 @@ int imap_buffy_check (int force, int check_stats)
     if (mailbox->magic != MUTT_IMAP)
       continue;
 
-    if (imap_get_mailbox (mailbox->path, &idata, name, sizeof (name)) < 0)
+    if (!imap_get_mailbox (mailbox->path, &idata, name, sizeof (name)))
     {
       mailbox->new = false;
       continue;
@@ -1610,7 +1610,7 @@ int imap_status (char* path, int queue)
   char mbox[LONG_STRING];
   IMAP_STATUS* status = NULL;
 
-  if (imap_get_mailbox (path, &idata, buf, sizeof (buf)) < 0)
+  if (!imap_get_mailbox (path, &idata, buf, sizeof (buf)))
     return -1;
 
   if (imap_mxcmp (buf, idata->mailbox) == 0)

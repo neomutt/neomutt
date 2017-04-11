@@ -692,7 +692,7 @@ static notmuch_database_t *get_db(struct nm_ctxdata *data, int writable)
   return data->db;
 }
 
-static int release_db(struct nm_ctxdata *data)
+static bool release_db(struct nm_ctxdata *data)
 {
   if (data && data->db)
   {
@@ -704,10 +704,10 @@ static int release_db(struct nm_ctxdata *data)
 #endif
     data->db = NULL;
     data->longrun = false;
-    return 0;
+    return true;
   }
 
-  return -1;
+  return false;
 }
 
 static int db_trans_begin(struct nm_ctxdata *data)
@@ -748,24 +748,24 @@ static int is_longrun(struct nm_ctxdata *data)
   return data && data->longrun;
 }
 
-static int get_database_mtime(struct nm_ctxdata *data, time_t *mtime)
+static bool get_database_mtime(struct nm_ctxdata *data, time_t *mtime)
 {
   char path[_POSIX_PATH_MAX];
   struct stat st;
 
   if (!data)
-    return -1;
+    return false;
 
   snprintf(path, sizeof(path), "%s/.notmuch/xapian", get_db_filename(data));
   mutt_debug (2, "nm: checking '%s' mtime\n", path);
 
   if (stat(path, &st))
-    return -1;
+    return false;
 
   if (mtime)
     *mtime = st.st_mtime;
 
-  return 0;
+  return true;
 }
 
 static void apply_exclude_tags(notmuch_query_t *query)
@@ -842,7 +842,7 @@ static void append_str_item(char **str, const char *item, int sep)
   memcpy(p, item, sz + 1);
 }
 
-static int update_header_tags(HEADER *h, notmuch_message_t *msg)
+static bool update_header_tags(HEADER *h, notmuch_message_t *msg)
 {
   struct nm_hdrdata *data = h->data;
   notmuch_tags_t *tags = NULL;
@@ -901,7 +901,7 @@ static int update_header_tags(HEADER *h, notmuch_message_t *msg)
     FREE(&tstr);
     FREE(&ttstr);
     mutt_debug (2, "nm: tags unchanged\n");
-    return 1;
+    return false;
   }
 
   /* free old version */
@@ -915,7 +915,7 @@ static int update_header_tags(HEADER *h, notmuch_message_t *msg)
   data->tags_transformed = ttstr;
   mutt_debug (2, "nm: new tag transforms: '%s'\n", ttstr);
 
-  return 0;
+  return true;
 }
 
 static int update_message_path(HEADER *h, const char *path)
@@ -1332,13 +1332,13 @@ static bool nm_message_has_tag(notmuch_message_t *msg, char *tag)
   return false;
 }
 
-static int update_tags(notmuch_message_t *msg, const char *tags)
+static bool update_tags(notmuch_message_t *msg, const char *tags)
 {
   char *tag = NULL, *end = NULL, *p = NULL;
   char *buf = safe_strdup(tags);
 
   if (!buf)
-    return -1;
+    return false;
 
   notmuch_message_freeze(msg);
 
@@ -1386,7 +1386,7 @@ static int update_tags(notmuch_message_t *msg, const char *tags)
 
   notmuch_message_thaw(msg);
   FREE(&buf);
-  return 0;
+  return true;
 }
 
 static int update_header_flags(CONTEXT *ctx, HEADER *hdr, const char *tags)
@@ -1489,7 +1489,7 @@ static int rename_maildir_filename(const char *old, char *newpath, size_t newsz,
   return 0;
 }
 
-static int remove_filename(struct nm_ctxdata *data, const char *path)
+static bool remove_filename(struct nm_ctxdata *data, const char *path)
 {
   notmuch_status_t st;
   notmuch_filenames_t *ls = NULL;
@@ -1500,13 +1500,13 @@ static int remove_filename(struct nm_ctxdata *data, const char *path)
   mutt_debug (2, "nm: remove filename '%s'\n", path);
 
   if (!db)
-    return -1;
+    return false;
   st = notmuch_database_find_message_by_filename(db, path, &msg);
   if (st || !msg)
-    return -1;
+    return false;
   trans = db_trans_begin(data);
   if (trans < 0)
-    return -1;
+    return false;
 
   /*
    * note that unlink() is probably unnecessary here, it's already removed
@@ -1542,7 +1542,7 @@ static int remove_filename(struct nm_ctxdata *data, const char *path)
   notmuch_message_destroy(msg);
   if (trans)
     db_trans_end(data);
-  return 0;
+  return true;
 }
 
 static int rename_filename(struct nm_ctxdata *data, const char *old,
@@ -1699,7 +1699,7 @@ void nm_longrun_done(CONTEXT *ctx)
 {
   struct nm_ctxdata *data = get_ctxdata(ctx);
 
-  if (data && (release_db(data) == 0))
+  if (data && release_db(data))
     mutt_debug (2, "nm: long run deinitialized\n");
 }
 
@@ -2225,7 +2225,7 @@ static int nm_check_mailbox(CONTEXT *ctx, int *index_hint)
   notmuch_messages_t *msgs = NULL;
   int i, limit, occult = 0, new_flags = 0;
 
-  if (!data || (get_database_mtime(data, &mtime) != 0))
+  if (!data || !get_database_mtime(data, &mtime))
     return -1;
 
   if (ctx->mtime >= mtime)
@@ -2298,7 +2298,7 @@ static int nm_check_mailbox(CONTEXT *ctx, int *index_hint)
       maildir_update_flags(ctx, h, &tmp);
     }
 
-    if (update_header_tags(h, m) == 0)
+    if (update_header_tags(h, m))
       new_flags++;
 
     notmuch_message_destroy(m);
@@ -2392,7 +2392,7 @@ static int nm_sync_mailbox(CONTEXT *ctx, int *index_hint)
 
     if (h->deleted || (strcmp(old, new) != 0))
     {
-      if (h->deleted && (remove_filename(data, old) == 0))
+      if (h->deleted && remove_filename(data, old))
         changed = 1;
       else if (*new && *old && (rename_filename(data, old, new, h) == 0))
         changed = 1;
