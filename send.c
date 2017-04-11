@@ -73,13 +73,13 @@ static void append_signature (FILE *f)
 }
 
 /* compare two e-mail addresses and return 1 if they are equivalent */
-static int addrcmp (ADDRESS *a, ADDRESS *b)
+static bool addrcmp (ADDRESS *a, ADDRESS *b)
 {
   if (!a->mailbox || !b->mailbox)
-    return 0;
+    return false;
   if (ascii_strcasecmp (a->mailbox, b->mailbox) != 0)
-    return 0;
-  return 1;
+    return false;
+  return true;
 }
 
 /* search an e-mail address in a list */
