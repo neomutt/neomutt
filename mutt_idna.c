@@ -22,21 +22,21 @@
 #include "mutt_idna.h"
 
 #ifdef HAVE_LIBIDN
-static int check_idn (char *domain)
+static bool check_idn (char *domain)
 {
   if (! domain)
-    return 0;
+    return false;
 
   if (ascii_strncasecmp (domain, "xn--", 4) == 0)
-    return 1;
+    return true;
 
   while ((domain = strchr (domain, '.')) != NULL)
   {
     if (ascii_strncasecmp (++domain, "xn--", 4) == 0)
-      return 1;
+      return true;
   }
 
-  return 0;
+  return false;
 }
 #endif /* HAVE_LIBIDN */
 
@@ -88,7 +88,7 @@ static char *intl_to_local (char *orig_user, char *orig_domain, int flags)
   char *reversed_user = NULL, *reversed_domain = NULL;
   char *tmp = NULL;
 #ifdef HAVE_LIBIDN
-  int is_idn_encoded = 0;
+  bool is_idn_encoded = false;
 #endif /* HAVE_LIBIDN */
 
   local_user = safe_strdup (orig_user);
