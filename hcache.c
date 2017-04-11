@@ -527,28 +527,28 @@ crc_matches(const char *d, unsigned int crc)
  * create_hcache_dir - Create parent dirs for the hcache database
  * @path: Database filename
  *
- * @retval 1 Success
- * @retval 0 Failure (errno set)
+ * @retval true Success
+ * @retval false Failure (errno set)
  */
-static int create_hcache_dir(const char *path)
+static bool create_hcache_dir(const char *path)
 {
   if (!path)
-    return 0;
+    return false;
 
   static char dir[_POSIX_PATH_MAX];
   strfcpy (dir, path, sizeof(dir));
 
   char *p = strrchr (dir, '/');
   if (!p)
-    return 1;
+    return true;
 
   *p = 0;
   if (mutt_mkdir (dir, S_IRWXU | S_IRWXG | S_IRWXO) == 0)
-    return 1;
+    return true;
 
   mutt_error (_("Can't create %s: %s."), dir, strerror (errno));
   mutt_sleep (2);
-  return 0;
+  return false;
 }
 
 /**
