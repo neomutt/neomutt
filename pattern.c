@@ -1356,12 +1356,12 @@ static int match_adrlist (pattern_t *pat, int match_personal, int n, ...)
   return pat->alladdr; /* No matches, or all matches if alladdr */
 }
 
-static int match_reference (pattern_t *pat, LIST *refs)
+static bool match_reference (pattern_t *pat, LIST *refs)
 {
   for (; refs; refs = refs->next)
     if (patmatch (pat, refs->data) == 0)
-      return 1;
-  return 0;
+      return true;
+  return false;
 }
 
 /*
