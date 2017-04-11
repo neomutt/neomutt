@@ -624,27 +624,27 @@ void fgetconv_close (FGETCONV **_fc)
   FREE (_fc);		/* __FREE_CHECKED__ */
 }
 
-int mutt_check_charset (const char *s, int strict)
+bool mutt_check_charset (const char *s, bool strict)
 {
   int i;
   iconv_t cd;
 
   if (mutt_is_utf8 (s))
-    return 0;
+    return true;
 
   if (!strict)
     for (i = 0; PreferredMIMENames[i].key; i++)
     {
       if ((ascii_strcasecmp (PreferredMIMENames[i].key, s) == 0) ||
 	  (ascii_strcasecmp (PreferredMIMENames[i].pref, s) == 0))
-	return 0;
+	return true;
     }
 
   if ((cd = mutt_iconv_open (s, s, 0)) != (iconv_t)(-1))
   {
     iconv_close (cd);
-    return 0;
+    return true;
   }
 
-  return -1;
+  return false;
 }

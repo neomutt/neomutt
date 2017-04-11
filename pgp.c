@@ -408,7 +408,7 @@ int pgp_application_pgp_handler (BODY *m, STATE *s)
 	  gpgcharset = safe_strdup (buf + 9);
 	  if ((l = mutt_strlen (gpgcharset)) > 0 && gpgcharset[l-1] == '\n')
 	    gpgcharset[l-1] = 0;
-	  if (mutt_check_charset (gpgcharset, 0) < 0)
+	  if (!mutt_check_charset (gpgcharset, 0))
 	    mutt_str_replace (&gpgcharset, "UTF-8");
 	}
       }
