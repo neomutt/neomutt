@@ -1737,21 +1737,21 @@ top_of_thread (HEADER *h)
  * @h: Header of current email
  *
  * Returns:
- *  1: Success
- *  0: Failure
+ *  true: Success
+ *  false: Failure
  */
-int
+bool
 mutt_limit_current_thread (HEADER *h)
 {
   int i;
   THREAD *me = NULL;
 
   if (!h)
-    return 0;
+    return false;
 
   me = top_of_thread (h);
   if (!me)
-    return 0;
+    return false;
 
   Context->vcount    = 0;
   Context->vsize     = 0;
@@ -1775,7 +1775,7 @@ mutt_limit_current_thread (HEADER *h)
       Context->vsize += (body->length + body->offset - body->hdr_offset);
     }
   }
-  return 1;
+  return true;
 }
 
 int mutt_pattern_func (int op, char *prompt)
