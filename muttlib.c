@@ -293,15 +293,15 @@ void mutt_push_list(LIST **head, const char *data)
   *head = tmp;
 }
 
-int mutt_pop_list(LIST **head)
+bool mutt_pop_list(LIST **head)
 {
   LIST *elt = *head;
   if (!elt)
-    return 0;
+    return false;
   *head = elt->next;
   FREE(&elt->data);
   FREE(&elt);
-  return 1;
+  return true;
 }
 
 const char *mutt_front_list(LIST *head)

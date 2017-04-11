@@ -650,7 +650,7 @@ int mutt_remove_from_rx_list(RX_LIST **l, const char *str);
 
 /* handle stack */
 void mutt_push_list(LIST **head, const char *data);
-int mutt_pop_list(LIST **head);
+bool mutt_pop_list(LIST **head);
 const char *mutt_front_list(LIST *head);
 
 void mutt_init (int skip_sys_rc, LIST *commands);
