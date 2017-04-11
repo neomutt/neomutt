@@ -188,18 +188,18 @@ int mutt_group_context_remove_rx (group_context_t *ctx, const char *s)
   return rv;
 }
 
-int mutt_group_match (group_t *g, const char *s)
+bool mutt_group_match (group_t *g, const char *s)
 {
   ADDRESS *ap = NULL;
 
   if (s && g)
   {
     if (mutt_match_rx_list (s, g->rs))
-      return 1;
+      return true;
     for (ap = g->as; ap; ap = ap->next)
       if (ap->mailbox && (mutt_strcasecmp (s, ap->mailbox) == 0))
-	return 1;
+	return true;
   }
-  return 0;
+  return false;
 }
 
