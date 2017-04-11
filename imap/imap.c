@@ -1034,22 +1034,22 @@ out:
 }
 
 /* returns 0 if mutt's flags match cached server flags */
-static int compare_flags (HEADER* h)
+static bool compare_flags (HEADER* h)
 {
   IMAP_HEADER_DATA* hd = (IMAP_HEADER_DATA*)h->data;
 
   if (h->read != hd->read)
-    return 1;
+    return true;
   if (h->old != hd->old)
-    return 1;
+    return true;
   if (h->flagged != hd->flagged)
-    return 1;
+    return true;
   if (h->replied != hd->replied)
-    return 1;
+    return true;
   if (h->deleted != hd->deleted)
-    return 1;
+    return true;
 
-  return 0;
+  return false;
 }
 
 /* Update the IMAP server to reflect the flags a single message.  */
