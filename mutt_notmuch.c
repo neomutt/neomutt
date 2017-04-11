@@ -222,8 +222,8 @@ static void url_free_tags(struct uri_tag *tags)
  * @param[out] filename Save the filename
  * @param[out] tags     Save the list of tags
  *
- * @retval  0 Success
- * @retval -1 Error: Bad format
+ * @retval true  Success
+ * @retval false Error: Bad format
  *
  * Parse a NotMuch URI, such as:
  * *    notmuch:///path/to/db?query=tag:lkml&limit=1000
@@ -232,7 +232,7 @@ static void url_free_tags(struct uri_tag *tags)
  * Extract the database filename (optional) and any search parameters (tags).
  * The tags will be saved in a linked list (#uri_tag).
  */
-static int url_parse_query(const char *url, char **filename, struct uri_tag **tags)
+static bool url_parse_query(const char *url, char **filename, struct uri_tag **tags)
 {
   char *p = strstr(url, "://"); /* remote unsupported */
   char *e = NULL;
@@ -242,7 +242,7 @@ static int url_parse_query(const char *url, char **filename, struct uri_tag **ta
   *tags = NULL;
 
   if (!p || !*(p + 3))
-    return -1;
+    return false;
 
   p += 3;
   *filename = p;
@@ -251,7 +251,7 @@ static int url_parse_query(const char *url, char **filename, struct uri_tag **ta
 
   *filename = e ? (e == p) ? NULL : mutt_substrdup(p, e) : safe_strdup(p);
   if (!e)
-    return 0; /* only filename */
+    return true; /* only filename */
 
   if (*filename && (url_pct_decode(*filename) < 0))
     goto err;
@@ -294,11 +294,11 @@ static int url_parse_query(const char *url, char **filename, struct uri_tag **ta
     p = e + 1;
   }
 
-  return 0;
+  return true;
 err:
   FREE(&(*filename));
   url_free_tags(*tags);
-  return -1;
+  return false;
 }
 
 static void free_tag_list(struct nm_hdrtag **tag_list)
@@ -364,7 +364,7 @@ static struct nm_ctxdata *new_ctxdata(char *uri)
 
   data->db_limit = NotmuchDBLimit;
 
-  if (url_parse_query(uri, &data->db_filename, &data->query_items))
+  if (!url_parse_query(uri, &data->db_filename, &data->query_items))
   {
     mutt_error(_("failed to parse notmuch uri: %s"), uri);
     FREE(&data);
@@ -1825,7 +1825,7 @@ bool nm_normalize_uri(char *new_uri, const char *orig_uri, size_t new_uri_sz)
   tmp_ctx.data = &tmp_ctxdata;
   tmp_ctxdata.db_query = NULL;
 
-  if (url_parse_query(orig_uri, &tmp_ctxdata.db_filename, &tmp_ctxdata.query_items))
+  if (!url_parse_query(orig_uri, &tmp_ctxdata.db_filename, &tmp_ctxdata.query_items))
   {
     mutt_error(_("failed to parse notmuch uri: %s"), orig_uri);
     mutt_debug (2, "nm_normalize_uri () -> error #1\n");
@@ -1953,7 +1953,7 @@ int nm_nonctx_get_count(char *path, int *all, int *new)
 
   mutt_debug (1, "nm: count\n");
 
-  if (url_parse_query(path, &db_filename, &query_items))
+  if (!url_parse_query(path, &db_filename, &query_items))
   {
     mutt_error(_("failed to parse notmuch uri: %s"), path);
     goto done;
