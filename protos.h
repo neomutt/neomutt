@@ -343,7 +343,7 @@ bool mutt_is_text_part(BODY *b);
 int mutt_link_threads(HEADER *cur, HEADER *last, CONTEXT *ctx);
 int mutt_lookup_mime_type(BODY *att, const char *path);
 bool mutt_match_rx_list(const char *s, RX_LIST *l);
-int mutt_match_spam_list(const char *s, REPLACE_LIST *l, char *text, int textsize);
+bool mutt_match_spam_list(const char *s, REPLACE_LIST *l, char *text, int textsize);
 int mutt_messages_in_thread(CONTEXT *ctx, HEADER *hdr, int flag);
 int mutt_multi_choice(char *prompt, char *letters);
 int mutt_needs_mailcap(BODY *m);

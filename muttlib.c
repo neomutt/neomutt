@@ -2054,16 +2054,16 @@ bool mutt_match_rx_list (const char *s, RX_LIST *l)
  * match is performed but the format is not expanded and no assumptions are made
  * about the value of `text` so it may be NULL.
  *
- * Returns 1 if the argument `s` matches a pattern in the spam list, otherwise
- * 0. */
-int mutt_match_spam_list (const char *s, REPLACE_LIST *l, char *text, int textsize)
+ * Returns true if the argument `s` matches a pattern in the spam list, otherwise
+ * false. */
+bool mutt_match_spam_list (const char *s, REPLACE_LIST *l, char *text, int textsize)
 {
   static regmatch_t *pmatch = NULL;
   static int nmatch = 0;
   int tlen = 0;
   char *p = NULL;
 
-  if (!s) return 0;
+  if (!s) return false;
 
   for (; l; l = l->next)
   {
@@ -2117,11 +2117,11 @@ int mutt_match_spam_list (const char *s, REPLACE_LIST *l, char *text, int textsi
 	text[tlen] = '\0';
 	mutt_debug (5, "mutt_match_spam_list: \"%s\"\n", text);
       }
-      return 1;
+      return true;
     }
   }
 
-  return 0;
+  return false;
 }
 
 void mutt_encode_path (char *dest, size_t dlen, const char *src)
