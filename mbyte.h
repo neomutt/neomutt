@@ -63,6 +63,6 @@ int wcwidth (wchar_t wc);
 void mutt_set_charset(char *charset);
 extern int Charset_is_utf8;
 wchar_t replacement_char(void);
-int is_display_corrupting_utf8(wchar_t wc);
+bool is_display_corrupting_utf8(wchar_t wc);
 
 #endif /* _MUTT_MBYTE_H */

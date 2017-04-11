@@ -524,7 +524,7 @@ wchar_t replacement_char (void)
   return Charset_is_utf8 ? 0xfffd : '?';
 }
 
-int is_display_corrupting_utf8 (wchar_t wc)
+bool is_display_corrupting_utf8 (wchar_t wc)
 {
   if (wc == (wchar_t)0x200f ||   /* bidi markers: #3827 */
       wc == (wchar_t)0x200e ||
@@ -534,9 +534,9 @@ int is_display_corrupting_utf8 (wchar_t wc)
        wc <= (wchar_t)0x2069) ||
       (wc >= (wchar_t)0x202a &&  /* misc directional markers: #3854 */
        wc <= (wchar_t)0x202e))
-    return 1;
+    return true;
   else
-    return 0;
+    return false;
 }
 
 int mutt_filter_unprintable (char **s)
