@@ -877,6 +877,7 @@ int mutt_compose_menu (HEADER *msg,   /* structure for new message */
 	      mutt_error (_("Unable to attach %s!"), att);
 	      FREE (&idx[idxlen]);
 	    }
+            FREE (&files[i]);
 	  }
 
 	  FREE (&files);
