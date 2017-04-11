@@ -597,7 +597,7 @@ report_regerror(int regerr, regex_t *preg, BUFFER *err)
   return RANGE_E_SYNTAX;
 }
 
-static int
+static bool
 is_context_available(BUFFER *s, regmatch_t pmatch[], int kind, BUFFER *err)
 {
   char *context_loc = NULL;
@@ -615,15 +615,15 @@ is_context_available(BUFFER *s, regmatch_t pmatch[], int kind, BUFFER *err)
    * Absolute patterns only need it if they contain a dot. */
   context_loc = strpbrk(s->dptr+pmatch[0].rm_so, context_req_chars[kind]);
   if ((context_loc == NULL) || (context_loc >= &s->dptr[pmatch[0].rm_eo]))
-    return 1;
+    return true;
 
   /* We need a current message.  Do we actually have one? */
   if (Context && Context->menu)
-    return 1;
+    return true;
 
   /* Nope. */
   strfcpy(err->data, _("No current message"), err->dsize);
-  return 0;
+  return false;
 }
 
 static int
