@@ -603,17 +603,17 @@ static int select_page_up (void)
  * can change outside of the sidebar that we don't hear about.
  *
  * Returns:
- *      0: No, don't draw the sidebar
- *      1: Yes, draw the sidebar
+ *      false: No, don't draw the sidebar
+ *      true: Yes, draw the sidebar
  */
-static int prepare_sidebar (int page_size)
+static bool prepare_sidebar (int page_size)
 {
   int i;
   SBENTRY *opn_entry = NULL, *hil_entry = NULL;
   int page_entries;
 
   if (!EntryCount || (page_size <= 0))
-    return 0;
+    return false;
 
   if (OpnIndex >= 0)
     opn_entry = Entries[OpnIndex];
@@ -676,7 +676,7 @@ static int prepare_sidebar (int page_size)
     BotIndex = EntryCount - 1;
 
   PreviousSort = SidebarSortMethod;
-  return 1;
+  return true;
 }
 
 /**
