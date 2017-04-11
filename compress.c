@@ -847,19 +847,19 @@ mutt_comp_can_append (CONTEXT *ctx)
  * A match means it's our responsibility to open the file.
  *
  * Returns:
- *      1: Yes, we can read the file
- *      0: No, we cannot read the file
+ *      true: Yes, we can read the file
+ *      false: No, we cannot read the file
  */
-int
+bool
 mutt_comp_can_read (const char *path)
 {
   if (!path)
-    return 0;
+    return false;
 
   if (find_hook (MUTT_OPENHOOK, path))
-    return 1;
+    return true;
   else
-    return 0;
+    return false;
 }
 
 /**
