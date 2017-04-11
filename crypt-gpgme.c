@@ -316,11 +316,11 @@ static void crypt_free_key (crypt_key_t **keylist)
 }
 
 /* Return true when key K is valid. */
-static int crypt_key_is_valid (crypt_key_t *k)
+static bool crypt_key_is_valid (crypt_key_t *k)
 {
   if (k->flags & KEYFLAG_CANTUSE)
-    return 0;
-  return 1;
+    return false;
+  return true;
 }
 
 /* Return true when validity of KEY is sufficient. */
