@@ -1328,8 +1328,8 @@ perform_or (struct pattern_t *pat, pattern_exec_flag flags, CONTEXT *ctx, HEADER
 {
   for (; pat; pat = pat->next)
     if (mutt_pattern_exec (pat, flags, ctx, hdr, cache) > 0)
-      return 1;
-  return 0;
+      return true;
+  return false;
 }
 
 static int match_adrlist (pattern_t *pat, int match_personal, int n, ...)
