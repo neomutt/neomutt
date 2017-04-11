@@ -1059,7 +1059,7 @@ static int alternative_handler (BODY *a, STATE *s)
       btlen = mutt_strlen (t->data);
     }
 
-    if (a && a->parts)
+    if (a->parts)
       b = a->parts;
     else
       b = a;
@@ -1082,7 +1082,7 @@ static int alternative_handler (BODY *a, STATE *s)
   /* Next, look for an autoviewable type */
   if (!choice)
   {
-    if (a && a->parts)
+    if (a->parts)
       b = a->parts;
     else
       b = a;
@@ -1097,7 +1097,7 @@ static int alternative_handler (BODY *a, STATE *s)
   /* Then, look for a text entry */
   if (!choice)
   {
-    if (a && a->parts)
+    if (a->parts)
       b = a->parts;
     else
       b = a;
@@ -1128,7 +1128,7 @@ static int alternative_handler (BODY *a, STATE *s)
   /* Finally, look for other possibilities */
   if (!choice)
   {
-    if (a && a->parts)
+    if (a->parts)
       b = a->parts;
     else
       b = a;
@@ -1156,7 +1156,7 @@ static int alternative_handler (BODY *a, STATE *s)
 
     if (mutt_strcmp ("info", ShowMultipartAlternative) == 0)
     {
-      if (a && a->parts)
+      if (a->parts)
         b = a->parts;
       else
         b = a;
@@ -1197,6 +1197,9 @@ static int message_handler (BODY *a, STATE *s)
   int rc = 0;
 
   off_start = ftello (s->fpin);
+  if (off_start < 0)
+    return -1;
+
   if (a->encoding == ENCBASE64 || a->encoding == ENCQUOTEDPRINTABLE ||
       a->encoding == ENCUUENCODED)
   {
@@ -1790,6 +1793,9 @@ static int malformed_pgp_encrypted_handler (BODY *b, STATE *s)
 
 int mutt_body_handler (BODY *b, STATE *s)
 {
+  if (!b || !s)
+    return -1;
+
   int plaintext = 0;
   handler_t handler = NULL;
   int rc = 0;

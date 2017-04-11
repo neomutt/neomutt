@@ -116,16 +116,18 @@ int mutt_buffer_printf (BUFFER* buf, const char* fmt, ...)
  * the buffer is always null-terminated */
 static void mutt_buffer_add (BUFFER* buf, const char* s, size_t len)
 {
-  size_t offset;
+  if (!buf || !s)
+    return;
 
-  if (buf->dptr + len + 1 > buf->data + buf->dsize)
+  if ((buf->dptr + len + 1) > (buf->data + buf->dsize))
   {
-    offset = buf->dptr - buf->data;
-    buf->dsize += len < 128 ? 128 : len + 1;
-    /* suppress compiler aliasing warning */
-    safe_realloc ((void**) (void*) &buf->data, buf->dsize);
+    size_t offset = buf->dptr - buf->data;
+    buf->dsize += (len < 128) ? 128 : len + 1;
+    safe_realloc (&buf->data, buf->dsize);
     buf->dptr = buf->data + offset;
   }
+  if (!buf->dptr)
+    return;
   memcpy (buf->dptr, s, len);
   buf->dptr += len;
   *(buf->dptr) = '\0';
@@ -143,6 +145,9 @@ void mutt_buffer_addch (BUFFER* buf, char c)
 
 int mutt_extract_token (BUFFER *dest, BUFFER *tok, int flags)
 {
+  if (!dest || !tok)
+    return -1;
+
   char		ch;
   char		qc = 0; /* quote char */
   char		*pc;

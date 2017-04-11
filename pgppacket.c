@@ -73,6 +73,8 @@ unsigned char *pgp_read_packet (FILE * fp, size_t * len)
   size_t material;
 
   startpos = ftello (fp);
+  if (startpos < 0)
+    return NULL;
 
   if (!plen)
   {
@@ -136,7 +138,7 @@ unsigned char *pgp_read_packet (FILE * fp, size_t * len)
 	  perror ("fread");
 	  goto bail;
 	}
-	material = buf[0] << 24;
+	material = (size_t) buf[0] << 24;
 	material |= buf[1] << 16;
 	material |= buf[2] << 8;
 	material |= buf[3];
@@ -171,7 +173,8 @@ unsigned char *pgp_read_packet (FILE * fp, size_t * len)
       }
 
       case 1:
-      bytes = 2;
+        bytes = 2;
+        /* fall through */
 
       case 2:
       {

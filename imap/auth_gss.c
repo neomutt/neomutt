@@ -56,7 +56,7 @@ static void print_gss_error(OM_uint32 err_maj, OM_uint32 err_min)
 					       &status_string);
 		if (GSS_ERROR(maj_stat))
 			break;
-		strncpy(buf_maj, (char*) status_string.value, sizeof(buf_maj));
+		strfcpy(buf_maj, (char*) status_string.value, sizeof(buf_maj));
 		gss_release_buffer(&min_stat, &status_string);
 
 		maj_stat = gss_display_status (&min_stat,
@@ -67,7 +67,7 @@ static void print_gss_error(OM_uint32 err_maj, OM_uint32 err_min)
 					       &status_string);
 		if (!GSS_ERROR(maj_stat))
 		{
-			strncpy(buf_min, (char*) status_string.value, sizeof(buf_min));
+			strfcpy(buf_min, (char*) status_string.value, sizeof(buf_min));
 			gss_release_buffer(&min_stat, &status_string);
 		}
 	} while (!GSS_ERROR(maj_stat) && msg_ctx != 0);
@@ -113,10 +113,9 @@ imap_auth_res_t imap_auth_gss (IMAP_DATA* idata, const char* method)
 #ifdef DEBUG
   else if (debuglevel >= 2)
   {
-    maj_stat = gss_display_name (&min_stat, target_name, &request_buf,
-      &mech_name);
+    gss_display_name (&min_stat, target_name, &request_buf, &mech_name);
     mutt_debug (2, "Using service name [%s]\n", (char*) request_buf.value);
-    maj_stat = gss_release_buffer (&min_stat, &request_buf);
+    gss_release_buffer (&min_stat, &request_buf);
   }
 #endif
   /* Acquire initial credentials - without a TGT GSSAPI is UNAVAIL */

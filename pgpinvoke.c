@@ -308,7 +308,8 @@ void pgp_invoke_getkeys (ADDRESS *addr)
 
   if (!isendwin ()) mutt_clear_error ();
 
-  close (devnull);
+  if (devnull >= 0)
+    close (devnull);
 }
 
 pid_t pgp_invoke_export (FILE **pgpin, FILE **pgpout, FILE **pgperr,

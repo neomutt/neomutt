@@ -584,6 +584,9 @@ static char *get_query_string(struct nm_ctxdata *data, int window)
       data->db_query = safe_strdup(item->value);
   }
 
+  if (!data->db_query)
+    return NULL;
+
   if (!data->query_type)
     data->query_type = string_to_query_type(NULL);
 
@@ -1840,7 +1843,7 @@ bool nm_normalize_uri(char *new_uri, const char *orig_uri, size_t new_uri_sz)
 
   mutt_debug (2, "nm_normalize_uri #2 () -> db_query: %s\n", tmp_ctxdata.db_query);
 
-  strncpy(buf, tmp_ctxdata.db_query, sizeof(buf));
+  strfcpy(buf, tmp_ctxdata.db_query, sizeof(buf));
 
   if (nm_uri_from_query(&tmp_ctx, buf, sizeof(buf)) == NULL)
   {

@@ -102,6 +102,8 @@ static void pgp_dearmor (FILE *in, FILE *out)
 
   /* actual data starts here */
   start = ftello (in);
+  if (start < 0)
+    return;
 
   /* find the checksum */
 

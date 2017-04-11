@@ -60,8 +60,12 @@ mutt_copy_hdr (FILE *in, FILE *out, LOFF_T off_start, LOFF_T off_end, int flags,
   size_t this_one_len = 0;
   int error;
 
+  if (off_start < 0)
+    return -1;
+
   if (ftello (in) != off_start)
-    fseeko (in, off_start, SEEK_SET);
+    if (fseeko (in, off_start, SEEK_SET) < 0)
+      return -1;
 
   buf[0] = '\n';
   buf[1] = 0;
@@ -549,12 +553,16 @@ _mutt_copy_message (FILE *fpout, FILE *fpin, HEADER *hdr, BODY *body,
       char date[SHORT_STRING];
 
       mutt_make_date (date, sizeof (date));
-      date[5] = date[mutt_strlen (date) - 1] = '\"';
+      int dlen = mutt_strlen(date);
+      if (dlen == 0)
+        return -1;
+
+      date[5] = '\"';
+      date[dlen - 1] = '\"';
 
       /* Count the number of lines and bytes to be deleted */
       fseeko (fpin, body->offset, SEEK_SET);
-      new_lines = hdr->lines -
-	count_delete_lines (fpin, body, &new_length, mutt_strlen (date));
+      new_lines = hdr->lines - count_delete_lines(fpin, body, &new_length, dlen);
 
       /* Copy the headers */
       if (mutt_copy_header (fpin, hdr, fpout,
@@ -572,7 +580,8 @@ _mutt_copy_message (FILE *fpout, FILE *fpin, HEADER *hdr, BODY *body,
       new_offset = ftello (fpout);
 
       /* Copy the body */
-      fseeko (fpin, body->offset, SEEK_SET);
+      if (fseeko (fpin, body->offset, SEEK_SET) < 0)
+	return -1;
       if (copy_delete_attach (body, fpin, fpout, date))
 	return -1;
 
@@ -675,7 +684,8 @@ _mutt_copy_message (FILE *fpout, FILE *fpin, HEADER *hdr, BODY *body,
     mutt_write_mime_header (cur, fpout);
     fputc ('\n', fpout);
 
-    fseeko (fp, cur->offset, SEEK_SET);
+    if (fseeko (fp, cur->offset, SEEK_SET) < 0)
+      return -1;
     if (mutt_copy_bytes (fp, fpout, cur->length) == -1)
     {
       safe_fclose (&fp);
@@ -687,7 +697,8 @@ _mutt_copy_message (FILE *fpout, FILE *fpin, HEADER *hdr, BODY *body,
   }
   else
   {
-    fseeko (fpin, body->offset, SEEK_SET);
+    if (fseeko (fpin, body->offset, SEEK_SET) < 0)
+      return -1;
     if (flags & MUTT_CM_PREFIX)
     {
       int c;
@@ -757,7 +768,8 @@ _mutt_append_message (CONTEXT *dest, FILE *fpin, CONTEXT *src, HEADER *hdr,
   MESSAGE *msg = NULL;
   int r;
 
-  fseeko (fpin, hdr->offset, SEEK_SET);
+  if (fseeko (fpin, hdr->offset, SEEK_SET) < 0)
+    return -1;
   if (fgets (buf, sizeof (buf), fpin) == NULL)
     return -1;
 
@@ -771,7 +783,7 @@ _mutt_append_message (CONTEXT *dest, FILE *fpin, CONTEXT *src, HEADER *hdr,
     r = -1;
 
 #ifdef USE_NOTMUCH
-  if (hdr && msg->commited_path && dest->magic == MUTT_MAILDIR && src->magic == MUTT_NOTMUCH)
+  if (msg->commited_path && dest->magic == MUTT_MAILDIR && src->magic == MUTT_NOTMUCH)
 	  nm_update_filename(src, NULL, msg->commited_path, hdr);
 #endif
 

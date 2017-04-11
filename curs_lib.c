@@ -765,6 +765,8 @@ int mutt_any_key_to_continue (const char *s)
   int f, ch;
 
   f = open ("/dev/tty", O_RDONLY);
+  if (f < 0)
+    return EOF;
   tcgetattr (f, &t);
   memcpy ((void *)&old, (void *)&t, sizeof(struct termios)); /* save original state */
   t.c_lflag &= ~(ICANON | ECHO);
@@ -783,7 +785,7 @@ int mutt_any_key_to_continue (const char *s)
   close (f);
   fputs ("\r\n", stdout);
   mutt_clear_error ();
-  return ch;
+  return (ch >= 0) ? ch : EOF;
 }
 
 int mutt_do_pager (const char *banner,

@@ -2303,7 +2303,7 @@ static int parse_set (BUFFER *tmp, BUFFER *s, unsigned long data, BUFFER *err)
 	return -1;
       }
 
-      if (s && *s->dptr == '=')
+      if (*s->dptr == '=')
       {
 	snprintf (err->data, err->dsize, _("value is illegal with reset"));
 	return -1;
@@ -2334,9 +2334,13 @@ static int parse_set (BUFFER *tmp, BUFFER *s, unsigned long data, BUFFER *err)
           restore_default (&MuttVars[idx]);
       }
     }
+    else if (idx < 0)
+    {
+      return -1;
+    }
     else if (!myvar && DTYPE (MuttVars[idx].type) == DT_BOOL)
     {
-      if (s && *s->dptr == '=')
+      if (*s->dptr == '=')
       {
 	if (unset || inv || query)
 	{
@@ -2829,7 +2833,7 @@ static int to_absolute_path(char *path, const char *reference)
 
   ref_tmp = safe_strdup(reference);
   dirpath = dirname(ref_tmp); /* get directory name of */
-  strncpy(abs_path, dirpath, PATH_MAX);
+  strfcpy(abs_path, dirpath, PATH_MAX);
   safe_strncat(abs_path, sizeof(abs_path), "/", 1); /* append a / at the end of the path */
 
   FREE(&ref_tmp);
@@ -2865,9 +2869,11 @@ static int source_rc (const char *rcfile_path, BUFFER *err)
 
   pid_t pid;
 
-  strncpy(rcfile, rcfile_path, PATH_MAX);
+  strfcpy(rcfile, rcfile_path, PATH_MAX);
 
   rcfilelen = mutt_strlen(rcfile);
+  if (rcfilelen == 0)
+    return -1;
 
   if (rcfile[rcfilelen-1] != '|')
   {
@@ -3281,7 +3287,11 @@ int mutt_var_value_complete (char *buffer, size_t len, int pos)
 
     strfcpy (var, pt, sizeof (var));
     /* ignore the trailing '=' when comparing */
-    var[mutt_strlen (var) - 1] = 0;
+    int vlen = mutt_strlen(var);
+    if (vlen == 0)
+      return 0;
+
+    var[vlen - 1] = 0;
     if ((idx = mutt_option_index (var)) == -1)
     {
       if ((myvarval = myvar_get(var)) != NULL)
@@ -4157,6 +4167,9 @@ static int parse_group_context (group_context_t **ctx, BUFFER *buf, BUFFER *s, u
 #ifdef USE_NOTMUCH
 static int parse_tag_transforms (BUFFER *b, BUFFER *s, unsigned long data, BUFFER *err)
 {
+  if (!b || !s)
+    return -1;
+
   char *tmp = NULL;
 
   while (MoreArgs (s))
@@ -4188,6 +4201,9 @@ static int parse_tag_transforms (BUFFER *b, BUFFER *s, unsigned long data, BUFFE
 
 static int parse_tag_formats (BUFFER *b, BUFFER *s, unsigned long data, BUFFER *err)
 {
+  if (!b || !s)
+    return -1;
+
   char *tmp = NULL;
 
   while (MoreArgs (s))

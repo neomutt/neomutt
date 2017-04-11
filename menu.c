@@ -885,7 +885,7 @@ void mutt_current_menu_redraw ()
 
 static int menu_search (MUTTMENU *menu, int op)
 {
-  int r, wrap = 0;
+  int r = 0, wrap = 0;
   int searchDir;
   regex_t re;
   char buf[SHORT_STRING];
@@ -913,7 +913,10 @@ static int menu_search (MUTTMENU *menu, int op)
   if (op == OP_SEARCH_OPPOSITE)
     searchDir = -searchDir;
 
-  if ((r = REGCOMP (&re, searchBuf, REG_NOSUB | mutt_which_case (searchBuf))) != 0)
+  if (searchBuf)
+    r = REGCOMP (&re, searchBuf, REG_NOSUB | mutt_which_case (searchBuf));
+
+  if (r != 0)
   {
     regerror (r, &re, buf, sizeof (buf));
     mutt_error ("%s", buf);

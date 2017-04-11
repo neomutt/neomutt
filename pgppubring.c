@@ -640,7 +640,7 @@ static pgp_key_t pgp_parse_keyblock (FILE * fp)
   unsigned char *buff = NULL;
   unsigned char pt = 0;
   unsigned char last_pt;
-  size_t l;
+  size_t l = 0;
   short err = 0;
 
 #ifdef HAVE_FGETPOS
@@ -691,7 +691,7 @@ static pgp_key_t pgp_parse_keyblock (FILE * fp)
 	if (pt == PT_SUBKEY || pt == PT_SUBSECKEY)
 	{
 	  p->flags |= KEYFLAG_SUBKEY;
-	  if (p != root)
+	  if (root && (p != root))
 	  {
 	    p->parent  = root;
 	    p->address = pgp_copy_uids (root->address, p);
@@ -743,9 +743,11 @@ static pgp_key_t pgp_parse_keyblock (FILE * fp)
 	  break;
 
 	chr = safe_malloc (l);
-	memcpy (chr, buff + 1, l - 1);
-	chr[l - 1] = '\0';
-
+        if (l > 0)
+        {
+          memcpy (chr, buff + 1, l - 1);
+          chr[l - 1] = '\0';
+        }
 
 	*addr = uid = safe_calloc (1, sizeof (pgp_uid_t)); /* XXX */
 	uid->addr = chr;

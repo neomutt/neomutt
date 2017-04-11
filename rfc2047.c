@@ -615,7 +615,7 @@ static int rfc2047_decode_word (char *d, const char *s, size_t len)
   char *charset = NULL;
   int rv = -1;
 
-  pd = d0 = safe_malloc (strlen (s));
+  pd = d0 = safe_malloc (strlen (s) + 1);
 
   for (pp = s; (pp1 = strchr (pp, '?')); pp = pp1 + 1)
   {

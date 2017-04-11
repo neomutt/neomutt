@@ -129,6 +129,8 @@ static int mmdf_parse_mailbox (CONTEXT *ctx)
     if (mutt_strcmp (buf, MMDF_SEP) == 0)
     {
       loc = ftello (ctx->fp);
+      if (loc < 0)
+        return -1;
 
       count++;
       if (!ctx->quiet)
@@ -165,6 +167,8 @@ static int mmdf_parse_mailbox (CONTEXT *ctx)
       hdr->env = mutt_read_rfc822_header (ctx->fp, hdr, 0, 0);
 
       loc = ftello (ctx->fp);
+      if (loc < 0)
+        return -1;
 
       if (hdr->content->length > 0 && hdr->lines > 0)
       {
@@ -192,6 +196,8 @@ static int mmdf_parse_mailbox (CONTEXT *ctx)
 	lines = -1;
 	do {
 	  loc = ftello (ctx->fp);
+          if (loc < 0)
+            return -1;
 	  if (fgets (buf, sizeof (buf) - 1, ctx->fp) == NULL)
 	    break;
 	  lines++;
@@ -339,7 +345,8 @@ static int mbox_parse_mailbox (CONTEXT *ctx)
 	                "%d (cl=" OFF_T_FMT ")\n",
 	                curhdr->index, curhdr->content->length);
 	    mutt_debug (1, "\tLINE: %s", buf);
-	    if (fseeko (ctx->fp, loc, SEEK_SET) != 0) /* nope, return the previous position */
+            /* nope, return the previous position */
+            if ((loc < 0) || (fseeko (ctx->fp, loc, SEEK_SET) != 0))
 	    {
 	      mutt_debug (1, "mbox_parse_mailbox: fseek() failed\n");
 	    }
@@ -364,7 +371,7 @@ static int mbox_parse_mailbox (CONTEXT *ctx)
 	    int cl = curhdr->content->length;
 
 	    /* count the number of lines in this message */
-	    if (fseeko (ctx->fp, loc, SEEK_SET) != 0)
+	    if ((loc < 0) || (fseeko (ctx->fp, loc, SEEK_SET) != 0))
 	      mutt_debug (1, "mbox_parse_mailbox: fseek() failed\n");
 	    while (cl-- > 0)
 	    {
@@ -1255,7 +1262,7 @@ static int mbox_sync_mailbox (CONTEXT *ctx, int *index_hint)
     if (i == 0)
     {
       ctx->size = ftello (ctx->fp); /* update the size of the mailbox */
-      if (ftruncate (fileno (ctx->fp), ctx->size) != 0)
+      if ((ctx->size < 0) || (ftruncate (fileno (ctx->fp), ctx->size) != 0))
       {
         i = -1;
         mutt_debug (1, "mbox_sync_mailbox: ftruncate() failed\n");

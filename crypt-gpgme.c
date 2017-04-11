@@ -530,7 +530,7 @@ static int data_object_to_stream (gpgme_data_t data, FILE *fp)
       return -1;
     }
 
-  while ((nread = gpgme_data_read (data, buf, sizeof (buf))))
+  while ((nread = gpgme_data_read (data, buf, sizeof (buf))) >= 0)
     {
       /* fixme: we are not really converting CRLF to LF but just
          skipping CR. Doing it correctly needs a more complex logic */
@@ -565,7 +565,7 @@ static char *data_object_to_tempfile (gpgme_data_t data, char *tempf, FILE **ret
   int err;
   char tempfb[_POSIX_PATH_MAX];
   FILE *fp = NULL;
-  size_t nread = 0;
+  ssize_t nread = 0;
 
   if (!tempf)
     {
@@ -584,7 +584,7 @@ static char *data_object_to_tempfile (gpgme_data_t data, char *tempf, FILE **ret
     {
       char buf[4096];
 
-      while ((nread = gpgme_data_read (data, buf, sizeof (buf))))
+      while ((nread = gpgme_data_read (data, buf, sizeof (buf))) >= 0)
         {
           if (fwrite (buf, nread, 1, fp) != 1)
             {
@@ -1141,6 +1141,9 @@ static int show_sig_summary (unsigned long sum,
                               gpgme_ctx_t ctx, gpgme_key_t key, int idx,
                               STATE *s, gpgme_signature_t sig)
 {
+  if (!key)
+    return 1;
+
   int severe = 0;
 
   if ((sum & GPGME_SIGSUM_KEY_REVOKED))
@@ -1676,6 +1679,9 @@ int smime_gpgme_verify_one (BODY *sigbdy, STATE *s, const char *tempfile)
 static BODY *decrypt_part (BODY *a, STATE *s, FILE *fpout, int is_smime,
                            int *r_is_signed)
 {
+  if (!a || !s || !fpout)
+    return NULL;
+
   struct stat info;
   BODY *tattach = NULL;
   int err = 0;
@@ -2941,7 +2947,7 @@ static const char *crypt_entry_fmt (char *dest,
             }
 	}
       snprintf (fmt, sizeof (fmt), "%%%sc", prefix);
-      snprintf (dest, destlen, fmt, s? *s: 'B');
+      snprintf (dest, destlen, fmt, *s);
       break;
     case 'p':
       snprintf (fmt, sizeof (fmt), "%%%ss", prefix);
@@ -4153,7 +4159,7 @@ static crypt_key_t *crypt_getkeybyaddr (ADDRESS * a, short abilities,
     hints = crypt_add_string_to_hints (hints, a->personal);
 
   if (! oppenc_mode )
-    mutt_message (_("Looking for keys matching \"%s\"..."), a->mailbox);
+    mutt_message (_("Looking for keys matching \"%s\"..."), a ? a->mailbox : "");
   keys = get_candidates (hints, app, (abilities & KEYFLAG_CANSIGN) );
 
   mutt_free_list (&hints);

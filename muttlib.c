@@ -110,6 +110,9 @@ void mutt_adv_mktemp (char *s, size_t l)
 /* create a send-mode duplicate from a receive-mode body */
 int mutt_copy_body (FILE *fp, BODY **tgt, BODY *src)
 {
+  if (!tgt || !src)
+    return -1;
+
   char tmp[_POSIX_PATH_MAX];
   BODY *b = NULL;
 
@@ -1872,12 +1875,17 @@ int state_printf (STATE *s, const char *fmt, ...)
 
 void state_mark_attach (STATE *s)
 {
+  if (!s || !s->fpout)
+    return;
   if ((s->flags & MUTT_DISPLAY) && (mutt_strcmp (Pager, "builtin") == 0))
     state_puts (AttachmentMarker, s);
 }
 
 void state_attach_puts (const char *t, STATE *s)
 {
+  if (!t || !s || !s->fpout)
+    return;
+
   if (*t != '\n') state_mark_attach (s);
   while (*t)
   {

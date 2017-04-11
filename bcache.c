@@ -65,9 +65,13 @@ static int bcache_path(ACCOUNT *account, const char *mailbox,
 
   mutt_encode_path (path, sizeof (path), NONULL (mailbox));
 
+  int plen = mutt_strlen(path);
+  if (plen == 0)
+    return -1;
+
   len = snprintf (dst, dstlen-1, "%s/%s%s%s", MessageCachedir,
 		  host, path,
-		  (*path && path[mutt_strlen (path) - 1] == '/') ? "" : "/");
+		  (*path && path[plen - 1] == '/') ? "" : "/");
 
   mutt_debug (3, "bcache_path: rc: %d, path: '%s'\n", len, dst);
 

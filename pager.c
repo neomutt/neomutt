@@ -1435,7 +1435,8 @@ display_line (FILE *f, LOFF_T *last_pos, struct line_t **lineInfo, int n,
 	(*last)--;
       goto out;
     }
-    regexec ((regex_t *) QuoteRegexp.rx, (char *) fmt, 1, pmatch, 0);
+    if (regexec ((regex_t *) QuoteRegexp.rx, (char *) fmt, 1, pmatch, 0) != 0)
+      goto out;
     (*lineInfo)[n].quote = classify_quote (QuoteList,
 			    (char *) fmt + pmatch[0].rm_so,
 			    pmatch[0].rm_eo - pmatch[0].rm_so,
