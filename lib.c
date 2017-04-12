@@ -399,16 +399,16 @@ int mutt_copy_stream (FILE *fin, FILE *fout)
   return 0;
 }
 
-static int
+static bool
 compare_stat (struct stat *osb, struct stat *nsb)
 {
   if (osb->st_dev != nsb->st_dev || osb->st_ino != nsb->st_ino ||
       osb->st_rdev != nsb->st_rdev)
   {
-    return -1;
+    return false;
   }
 
-  return 0;
+  return true;
 }
 
 int safe_symlink(const char *oldpath, const char *newpath)
@@ -441,7 +441,7 @@ int safe_symlink(const char *oldpath, const char *newpath)
   }
 
   if(stat(oldpath, &osb) == -1 || stat(newpath, &nsb) == -1
-     || compare_stat(&osb, &nsb) == -1)
+     || !compare_stat(&osb, &nsb))
   {
     unlink(newpath);
     return -1;
@@ -533,7 +533,7 @@ int safe_rename (const char *src, const char *target)
    * did already exist.
    */
 
-  if (compare_stat (&ssb, &tsb) == -1)
+  if (!compare_stat (&ssb, &tsb))
   {
     mutt_debug (1, "safe_rename: stat blocks for %s and %s diverge; "
                 "pretending EEXIST.\n", src, target);
@@ -675,7 +675,7 @@ int safe_open (const char *path, int flags)
 
   /* make sure the file is not symlink */
   if (lstat (path, &osb) < 0 || fstat (fd, &nsb) < 0 ||
-      compare_stat(&osb, &nsb) == -1)
+      !compare_stat(&osb, &nsb))
   {
     close (fd);
     return -1;

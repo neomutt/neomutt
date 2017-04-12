@@ -48,6 +48,6 @@ char *mutt_get_default_charset (void);
  * known to local iconv implementation). If strict is non-zero, check
  * against iconv only. Returns 0 if known and negative otherwise.
  */
-int mutt_check_charset (const char *s, int strict);
+bool mutt_check_charset (const char *s, bool strict);
 
 #endif /* _MUTT_CHARSET_H */

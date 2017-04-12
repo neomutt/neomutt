@@ -2077,7 +2077,8 @@ static void pretty_var (char *dst, size_t len, const char *option, const char *v
 static int check_charset (struct option_t *opt, const char *val)
 {
   char *p = NULL, *q = NULL, *s = safe_strdup (val);
-  int rc = 0, strict = (strcmp (opt->option, "send_charset") == 0);
+  int rc = 0;
+  bool strict = (strcmp (opt->option, "send_charset") == 0);
 
   if (!s)
     return rc;
@@ -2086,7 +2087,7 @@ static int check_charset (struct option_t *opt, const char *val)
   {
     if (!*p)
       continue;
-    if (mutt_check_charset (p, strict) < 0)
+    if (!mutt_check_charset (p, strict))
     {
       rc = -1;
       break;

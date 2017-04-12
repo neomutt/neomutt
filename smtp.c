@@ -69,19 +69,19 @@ static int Esmtp = 0;
 static char* AuthMechs = NULL;
 static unsigned char Capabilities[(CAPMAX + 7)/ 8];
 
-static int smtp_code (char *buf, size_t len, int *n)
+static bool valid_smtp_code (char *buf, size_t len, int *n)
 {
   char code[4];
 
   if (len < 4)
-    return -1;
+    return false;
   code[0] = buf[0];
   code[1] = buf[1];
   code[2] = buf[2];
   code[3] = 0;
   if (mutt_atoi (code, n) < 0)
-    return -1;
-  return 0;
+    return false;
+  return true;
 }
 
 /* Reads a command response from the SMTP server.
@@ -117,7 +117,7 @@ smtp_get_resp (CONNECTION * conn)
     else if (ascii_strncasecmp ("SMTPUTF8", buf + 4, 8) == 0)
       mutt_bit_set (Capabilities, SMTPUTF8);
 
-    if (smtp_code (buf, n, &n) < 0)
+    if (!valid_smtp_code (buf, n, &n))
       return smtp_err_code;
 
   } while (buf[3] == '-');
@@ -398,7 +398,7 @@ static int smtp_auth_sasl (CONNECTION* conn, const char* mechlist)
       goto fail;
     if ((rc = mutt_socket_readln (buf, bufsize, conn)) < 0)
       goto fail;
-    if (smtp_code (buf, rc, &rc) < 0)
+    if (!valid_smtp_code (buf, rc, &rc))
       goto fail;
 
     if (rc != smtp_ready)

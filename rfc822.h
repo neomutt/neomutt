@@ -57,7 +57,7 @@ int rfc822_write_address(char *buf, size_t buflen, ADDRESS *addr, int display);
 void rfc822_write_address_single(char *buf, size_t buflen, ADDRESS *addr, int display);
 void rfc822_free_address(ADDRESS **p);
 void rfc822_cat(char *buf, size_t buflen, const char *value, const char *specials);
-int rfc822_valid_msgid(const char *msgid);
+bool rfc822_valid_msgid(const char *msgid);
 int rfc822_remove_from_adrlist(ADDRESS **a, const char *mailbox);
 
 extern int RFC822Error;

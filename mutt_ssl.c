@@ -360,7 +360,7 @@ static char *asn1time_to_string (ASN1_UTCTIME *tm)
   return buf;
 }
 
-static int compare_certificates (X509 *cert, X509 *peercert,
+static bool compare_certificates (X509 *cert, X509 *peercert,
   unsigned char *peermd, unsigned int peermdlen)
 {
   unsigned char md[EVP_MAX_MD_SIZE];
@@ -371,15 +371,15 @@ static int compare_certificates (X509 *cert, X509 *peercert,
     */
   if (X509_subject_name_cmp (cert, peercert) != 0 ||
       X509_issuer_name_cmp (cert, peercert) != 0)
-    return -1;
+    return false;
 
   if (!X509_digest (cert, EVP_sha256(), md, &mdlen) || peermdlen != mdlen)
-    return -1;
+    return false;
 
   if (memcmp(peermd, md, mdlen) != 0)
-    return -1;
+    return false;
 
-  return 0;
+  return true;
 }
 
 static bool check_certificate_expiration (X509 *peercert, bool silent)
@@ -578,7 +578,7 @@ static bool check_certificate_cache (X509 *peercert)
   for (i = sk_X509_num (SslSessionCerts); i-- > 0;)
   {
     cert = sk_X509_value (SslSessionCerts, i);
-    if (!compare_certificates (cert, peercert, peermd, peermdlen))
+    if (compare_certificates (cert, peercert, peermd, peermdlen))
     {
       return true;
     }
@@ -609,7 +609,7 @@ static int check_certificate_file (X509 *peercert)
 
   while (PEM_read_X509 (fp, &cert, NULL, NULL) != NULL)
   {
-    if ((compare_certificates (cert, peercert, peermd, peermdlen) == 0) &&
+    if (compare_certificates (cert, peercert, peermd, peermdlen) &&
         check_certificate_expiration (cert, true))
     {
       pass = 1;
@@ -960,7 +960,7 @@ static int ssl_verify_callback (int preverify_ok, X509_STORE_CTX *ctx)
     if (skip_mode && preverify_ok && (pos == last_pos) && last_cert)
     {
       if (X509_digest (last_cert, EVP_sha256(), last_cert_md, &last_cert_mdlen) &&
-          !compare_certificates (cert, last_cert, last_cert_md, last_cert_mdlen))
+          compare_certificates (cert, last_cert, last_cert_md, last_cert_mdlen))
       {
         mutt_debug (2, "ssl_verify_callback: ignoring duplicate skipped certificate.\n");
         return 1;

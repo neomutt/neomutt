@@ -316,11 +316,11 @@ static void crypt_free_key (crypt_key_t **keylist)
 }
 
 /* Return true when key K is valid. */
-static int crypt_key_is_valid (crypt_key_t *k)
+static bool crypt_key_is_valid (crypt_key_t *k)
 {
   if (k->flags & KEYFLAG_CANTUSE)
-    return 0;
-  return 1;
+    return false;
+  return true;
 }
 
 /* Return true when validity of KEY is sufficient. */
@@ -2156,12 +2156,12 @@ static int line_compare(const char *a, size_t n, const char *b)
   {
     /* at this point we know that 'b' is at least 'n' chars long */
     if (b[n] == '\n' || (b[n] == '\r' && b[n+1] == '\n'))
-      return 0;
+      return true;
   }
-  return -1;
+  return false;
 }
 
-#define _LINE_COMPARE(_x,_y) !line_compare(_x, sizeof(_x)-1, _y)
+#define _LINE_COMPARE(_x,_y) line_compare(_x, sizeof(_x)-1, _y)
 #define MESSAGE(_y) _LINE_COMPARE("MESSAGE-----", _y)
 #define SIGNED_MESSAGE(_y) _LINE_COMPARE("SIGNED MESSAGE-----", _y)
 #define PUBLIC_KEY_BLOCK(_y) _LINE_COMPARE("PUBLIC KEY BLOCK-----", _y)
