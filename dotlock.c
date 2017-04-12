@@ -50,7 +50,7 @@
 #endif
 
 #ifdef DL_STANDALONE
-#include "git-ver.h"
+#include "git_ver.h"
 #endif
 
 #define MAXLINKS 1024 /* maximum link depth */

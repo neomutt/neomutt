@@ -263,7 +263,7 @@ AS_IF([test x$use_gpgme = "xyes"], [
 		LIBS="$LIBS $GPGME_LIBS"
 		AC_CHECK_FUNCS([gpgme_op_export_keys])
 		LIBS="$saved_LIBS"
-		MUTT_LIB_OBJECTS="$MUTT_LIB_OBJECTS crypt-gpgme.o crypt-mod-pgp-gpgme.o crypt-mod-smime-gpgme.o"
+		MUTT_LIB_OBJECTS="$MUTT_LIB_OBJECTS crypt_gpgme.o crypt_mod_pgp_gpgme.o crypt_mod_smime_gpgme.o"
 	])
 ])
 
@@ -271,13 +271,13 @@ dnl --enable-pgp
 AS_IF([test x$use_pgp != "xno"], [
 	AC_DEFINE(CRYPT_BACKEND_CLASSIC_PGP, 1, [Define if you want classic PGP Support.])
 	PGPAUX_TARGET="pgpring\$(EXEEXT) pgpewrap\$(EXEEXT)"
-	MUTT_LIB_OBJECTS="$MUTT_LIB_OBJECTS pgp.o pgpinvoke.o pgpkey.o pgplib.o gnupgparse.o pgpmicalg.o pgppacket.o crypt-mod-pgp-classic.o"
+	MUTT_LIB_OBJECTS="$MUTT_LIB_OBJECTS pgp.o pgpinvoke.o pgpkey.o pgplib.o gnupgparse.o pgpmicalg.o pgppacket.o crypt_mod_pgp_classic.o"
 ])
 
 dnl --enable-smime
 AS_IF([test x$use_smime != "xno"], [
 	AC_DEFINE(CRYPT_BACKEND_CLASSIC_SMIME, 1, [Define if you want classic S/MIME support.])
-	MUTT_LIB_OBJECTS="$MUTT_LIB_OBJECTS smime.o crypt-mod-smime-classic.o"
+	MUTT_LIB_OBJECTS="$MUTT_LIB_OBJECTS smime.o crypt_mod_smime_classic.o"
 	SMIMEAUX_TARGET="smime_keys"
 ])
 
@@ -970,7 +970,7 @@ if test -n "$hcache_tokyocabinet" && test "$hcache_tokyocabinet" != "no"; then
 		[
 			MUTTLIBS="$MUTTLIBS -ltokyocabinet"
 			AC_DEFINE(HAVE_TC, 1, [Tokyo Cabinet Support])
-			MUTT_LIB_OBJECTS="$MUTT_LIB_OBJECTS hcache-tc.o"
+			MUTT_LIB_OBJECTS="$MUTT_LIB_OBJECTS hcache_tc.o"
 			hcache_db_used="tokyocabinet $hcache_db_used"
 		],[
 			CPPFLAGS="$OLDCPPFLAGS"
@@ -993,7 +993,7 @@ if test -n "$hcache_kyotocabinet" && test "$hcache_kyotocabinet" != "no"; then
 		[
 			MUTTLIBS="$MUTTLIBS -lkyotocabinet"
 			AC_DEFINE(HAVE_KC, 1, [Kyoto Cabinet Support])
-			MUTT_LIB_OBJECTS="$MUTT_LIB_OBJECTS hcache-kc.o"
+			MUTT_LIB_OBJECTS="$MUTT_LIB_OBJECTS hcache_kc.o"
 			hcache_db_used="kyotocabinet $hcache_db_used"
 		],[
 			CPPFLAGS="$OLDCPPFLAGS"
@@ -1019,7 +1019,7 @@ if test -n "$hcache_gdbm" && test "$hcache_gdbm" != "no"; then
 	AC_CHECK_LIB(gdbm, gdbm_open,
 		[
 			MUTTLIBS="$MUTTLIBS -lgdbm"
-			MUTT_LIB_OBJECTS="$MUTT_LIB_OBJECTS hcache-gdbm.o"
+			MUTT_LIB_OBJECTS="$MUTT_LIB_OBJECTS hcache_gdbm.o"
 			AC_DEFINE(HAVE_GDBM, 1, [GDBM Support])
 			hcache_db_used="gdbm $hcache_db_used"
 		],[
@@ -1050,7 +1050,7 @@ if test -n "$hcache_qdbm" && test "$hcache_qdbm" != "no"; then
 	AC_CHECK_LIB(qdbm, vlopen,
 		[
 			MUTTLIBS="$MUTTLIBS -lqdbm"
-			MUTT_LIB_OBJECTS="$MUTT_LIB_OBJECTS hcache-qdbm.o"
+			MUTT_LIB_OBJECTS="$MUTT_LIB_OBJECTS hcache_qdbm.o"
 			AC_DEFINE(HAVE_QDBM, 1, [QDBM Support])
 			hcache_db_used="qdbm $hcache_db_used"
 		],[
@@ -1092,7 +1092,7 @@ if test -n "$hcache_bdb" && test "$hcache_bdb" != "no"; then
 				AC_CHECK_LIB($BDB_LIB_NAME, db_env_create,
 					[
 						MUTTLIBS="$MUTTLIBS -l$BDB_LIB_NAME"
-						MUTT_LIB_OBJECTS="$MUTT_LIB_OBJECTS hcache-bdb.o"
+						MUTT_LIB_OBJECTS="$MUTT_LIB_OBJECTS hcache_bdb.o"
 						AC_DEFINE(HAVE_BDB, 1, [Berkeley DB Support])
 						hcache_db_used="bdb $hcache_db_used"
 						BDB_FOUND=yes
@@ -1125,7 +1125,7 @@ if test -n "$hcache_lmdb" && test "$hcache_lmdb" != "no"; then
 		[
 			AC_DEFINE(HAVE_LMDB, 1, [LMDB Support])
 			MUTTLIBS="$MUTTLIBS -llmdb"
-			MUTT_LIB_OBJECTS="$MUTT_LIB_OBJECTS hcache-lmdb.o"
+			MUTT_LIB_OBJECTS="$MUTT_LIB_OBJECTS hcache_lmdb.o"
 			hcache_db_used="lmdb $hcache_db_used"
 		],[
 			CPPFLAGS="$OLDCPPFLAGS"

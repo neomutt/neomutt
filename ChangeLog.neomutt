@@ -60,7 +60,7 @@
   - slcurses.h defines its own bool type
   - travis: use container build
   - add clang-format file
-  - Remove ugly macros and casts from crypt-gpgme.c
+  - Remove ugly macros and casts from crypt_gpgme.c
   - fix minor reflow issues in some comments
   - editorconfig: use spaces to indent in *.[ch] files
   - added comment-blocks for clang-format to ignore
@@ -409,7 +409,7 @@
 * Docs
   - doc: Removes bug entry in new-mail docs
     Santiago Torres
-  - fix some translations in crypt-gpgme.c
+  - fix some translations in crypt_gpgme.c
     Antonio Radici
   - docs: mass tidy up
 * Upstream

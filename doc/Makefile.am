@@ -31,7 +31,7 @@ EXTRA_DIST = dotlock.man		\
 	patch-notes.txt			\
 	smime-notes.txt			\
 	Muttrc Muttrc.head stamp-doc-rc \
-	makedoc.c makedoc-defs.h 	\
+	makedoc.c makedoc_defs.h 	\
 	mutt.css mutt.xsl html.xsl chunk.xsl \
 	$(BUILT_DISTFILES) $(SAMPLE_MUTTRC) $(SAMPLE_VIMRC) \
 	mutt-1.7.0-syntax.vim neomutt-syntax.vim

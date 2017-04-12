@@ -21,7 +21,7 @@
 
 #ifdef _MAKEDOC
 # include "config.h"
-# include "doc/makedoc-defs.h"
+# include "doc/makedoc_defs.h"
 #else
 # include "sort.h"
 # include "mx.h"

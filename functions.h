@@ -34,7 +34,7 @@
 
 #ifdef _MAKEDOC
 # include "config.h"
-# include "doc/makedoc-defs.h"
+# include "doc/makedoc_defs.h"
 #endif
 
 // clang-format off

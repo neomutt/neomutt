@@ -29,7 +29,7 @@
 #include <sys/time.h>
 #endif
 #include "hcache.h"
-#include "hcache-backend.h"
+#include "hcache_backend.h"
 #include "hcversion.h"
 #include "md5.h"
 

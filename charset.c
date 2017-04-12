@@ -439,7 +439,7 @@ size_t mutt_iconv (iconv_t cd, ICONV_CONST char **inbuf, size_t *inbytesleft,
 
 /*
  * Convert a string
- * Used in rfc2047.c, rfc2231.c, crypt-gpgme.c, mutt_idna.c, and more.
+ * Used in rfc2047.c, rfc2231.c, crypt_gpgme.c, mutt_idna.c, and more.
  * Parameter flags is given as-is to mutt_iconv_open(). See there
  * for its meaning and usage policy.
  */

@@ -20,7 +20,7 @@
 
 #include "config.h"
 
-#include "hcache-backend.h"
+#include "hcache_backend.h"
 #include "mutt.h"
 #include <depot.h>
 #include <cabin.h>

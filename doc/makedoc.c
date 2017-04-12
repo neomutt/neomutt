@@ -43,7 +43,7 @@
 # include <getopt.h>
 #endif
 
-#include "makedoc-defs.h"
+#include "makedoc_defs.h"
 
 #ifndef HAVE_STRERROR
 #define strerror(x) ((x) > 0 && (x) < sys_nerr) ? sys_errlist[(x)] : 0

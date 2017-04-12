@@ -35,12 +35,12 @@ endif
 
 distdir = neo$(PACKAGE)-$(VERSION)
 
-BUILT_SOURCES = keymap_defs.h patchlist.c git-ver.h conststrings.c hcachever.sh $(HCVERSION)
+BUILT_SOURCES = keymap_defs.h patchlist.c git_ver.h conststrings.c hcachever.sh $(HCVERSION)
 
 bin_PROGRAMS = mutt $(DOTLOCK_TARGET) $(PGPAUX_TARGET)
 mutt_SOURCES = addrbook.c alias.c ascii.c attach.c base64.c browser.c buffer.c \
 	buffy.c charset.c color.c commands.c complete.c compose.c copy.c \
-	crypt-mod.c crypt-mod.h crypt.c cryptglue.c curs_lib.c curs_main.c \
+	crypt_mod.c crypt_mod.h crypt.c cryptglue.c curs_lib.c curs_main.c \
 	date.c edit.c editmsg.c enter.c filter.c flags.c from.c getdomain.c \
 	group.c handler.c hash.c hdrline.c headers.c help.c history.c hook.c \
 	init.c keymap.c lib.c main.c mbox.c mbyte.c menu.c mh.c muttlib.c \
@@ -63,8 +63,8 @@ DEFS=-DPKGDATADIR=\"$(pkgdatadir)\" -DSYSCONFDIR=\"$(sysconfdir)\" \
 AM_CPPFLAGS=-I. -I$(top_srcdir) $(IMAP_INCLUDES) $(GPGME_CFLAGS)
 
 EXTRA_mutt_SOURCES = account.c bcache.c bcache.h browser.h compress.c \
-	crypt-gpgme.c crypt-mod-pgp-classic.c crypt-mod-pgp-gpgme.c \
-	crypt-mod-smime-classic.c crypt-mod-smime-gpgme.c dotlock.c \
+	crypt_gpgme.c crypt_mod_pgp_classic.c crypt_mod_pgp_gpgme.c \
+	crypt_mod_smime_classic.c crypt_mod_smime_gpgme.c dotlock.c \
 	gnupgparse.c hcache.c hcache.h mbyte.h md5.c mutt_idna.c mutt_idna.h \
 	mutt_lua.c mutt_sasl.c mutt_socket.c mutt_ssl.c mutt_ssl_gnutls.c \
 	mutt_tunnel.c newsrc.c nntp.c pgp.c pgpinvoke.c pgpkey.c pgplib.c \
@@ -74,10 +74,10 @@ EXTRA_mutt_SOURCES = account.c bcache.c bcache.h browser.h compress.c \
 
 EXTRA_DIST = account.h ascii.h attach.h browser.h buffer.h buffy.h ChangeLog \
 	ChangeLog.neomutt ChangeLog.nntp charset.h compress.h config.rpath \
-	copy.h COPYRIGHT crypt-gpgme.h crypthash.h depcomp dotlock.h extlib.c \
+	copy.h COPYRIGHT crypt_gpgme.h crypthash.h depcomp dotlock.h extlib.c \
 	filter.h functions.h gen_defs globals.h group.h hash.h \
-	hcache-backend.h hcache-bdb.c hcache-gdbm.c hcache-kc.c hcache-lmdb.c \
-	hcache-qdbm.c hcache-tc.c hcachever.sh.in history.h init.h keymap.h \
+	hcache_backend.h hcache_bdb.c hcache_gdbm.c hcache_kc.c hcache_lmdb.c \
+	hcache_qdbm.c hcache_tc.c hcachever.sh.in history.h init.h keymap.h \
 	lib.h LICENSE.md mailbox.h mapping.h mbyte.h md5.h mime.h mime.types \
 	mutt.h mutt_commands.h mutt_crypt.h mutt_curses.h mutt_idna.h \
 	mutt_lua.h mutt_menu.h mutt_options.h mutt_regex.h mutt_sasl.h \
@@ -154,11 +154,11 @@ keymap_alldefs.h: $(srcdir)/OPS $(srcdir)/OPS.SIDEBAR $(srcdir)/OPS.NOTMUCH $(sr
 		$(srcdir)/OPS.MIX $(srcdir)/OPS.PGP $(srcdir)/OPS.SMIME $(srcdir)/OPS.CRYPT \
 		> keymap_alldefs.h
 
-git-ver.h:
+git_ver.h:
 	@version=`git describe --dirty --abbrev=6 --match "neomutt-*" 2> /dev/null | sed -e 's/^neomutt-[0-9]\{8\}//' -e 's/g//'`; \
-	echo 'const char *GitVer = "'$$version'";' > git-ver.h.tmp; \
-	cmp -s git-ver.h.tmp git-ver.h || mv git-ver.h.tmp git-ver.h; \
-	rm -f git-ver.h.tmp
+	echo 'const char *GitVer = "'$$version'";' > git_ver.h.tmp; \
+	cmp -s git_ver.h.tmp git_ver.h || mv git_ver.h.tmp git_ver.h; \
+	rm -f git_ver.h.tmp
 
 hcversion.h: $(srcdir)/mutt.h $(srcdir)/rfc822.h hcachever.sh $(MUTT_MD5)
 	( echo '#include "config.h"'; echo '#include "mutt.h"'; ) \
@@ -193,4 +193,4 @@ uninstall-local:
 		rm $(DESTDIR)$(sysconfdir)/$${i}.dist ; \
 	done
 
-.PHONY: git-ver.h
+.PHONY: git_ver.h

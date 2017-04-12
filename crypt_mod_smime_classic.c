@@ -21,7 +21,7 @@
 
 #include "config.h"
 
-#include "crypt-mod.h"
+#include "crypt_mod.h"
 #include "smime.h"
 
 static void crypt_mod_smime_void_passphrase (void)

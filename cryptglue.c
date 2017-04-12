@@ -32,7 +32,7 @@
 #include "mutt.h"
 #include "mutt_crypt.h"
 
-#include "crypt-mod.h"
+#include "crypt_mod.h"
 
 /*
 

@@ -350,7 +350,7 @@ extern const char * const Months[];
 #include "buffy.h"
 #include "sort.h"
 #include "mutt_crypt.h"
-#include "git-ver.h"
+#include "git_ver.h"
 #endif /* MAIN_C */
 
 #endif /* _MUTT_GLOBALS_H */

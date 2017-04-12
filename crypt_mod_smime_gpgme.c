@@ -21,8 +21,8 @@
 
 #include "config.h"
 
-#include "crypt-mod.h"
-#include "crypt-gpgme.h"
+#include "crypt_mod.h"
+#include "crypt_gpgme.h"
 
 static void crypt_mod_smime_init (void)
 {

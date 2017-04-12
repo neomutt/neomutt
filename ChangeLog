@@ -499,7 +499,7 @@
 
 2016-12-31 19:57 -0800  Kevin McCarthy  <kevin@8t8.us>  (2bc2ec9ac664)
 
-	* crypt-gpgme.c: Canonicalize line endings for GPGME S/MIME
+	* crypt_gpgme.c: Canonicalize line endings for GPGME S/MIME
 	encryption. (closes #3904)
 
 	This matches the behavior for S/MIME classic mode: OpenSSL converts
@@ -604,11 +604,11 @@
 
 2016-12-04 15:41 -0800  Kevin McCarthy  <kevin@8t8.us>  (a17189b58284)
 
-	* crypt-gpgme.c, mutt_ssl.c: merge stable
+	* crypt_gpgme.c, mutt_ssl.c: merge stable
 
 2016-11-26 00:57 +0100  Vincent Lefevre  <vincent@vinc17.net>  (a0a970530a8b)
 
-	* crypt-gpgme.c, crypt-gpgme.h, crypt-mod-pgp-gpgme.c: Fix build
+	* crypt_gpgme.c, crypt_gpgme.h, crypt_mod_pgp_gpgme.c: Fix build
 	failure with GPGME 1.8: do not steal the gpgme_ prefix.
 
 2016-11-19 19:35 -0800  Kevin McCarthy  <kevin@8t8.us>  (10c4761cea89)
@@ -671,7 +671,7 @@
 
 2016-11-26 00:57 +0100  Vincent Lefevre  <vincent@vinc17.net>  (84ad86e8b8ab)
 
-	* crypt-gpgme.c, crypt-gpgme.h, crypt-mod-pgp-gpgme.c: Fix build
+	* crypt_gpgme.c, crypt_gpgme.h, crypt_mod_pgp_gpgme.c: Fix build
 	failure with GPGME 1.8: do not steal the gpgme_ prefix.
 
 2016-11-22 03:48 +0100  Vincent Lefevre  <vincent@vinc17.net>  (b22c5d0e299d)
@@ -840,10 +840,10 @@
 
 2016-11-14 11:02 -0800  Kevin McCarthy  <kevin@8t8.us>  (c78753f98e34)
 
-	* doc/makedoc-defs.h: Ensure the compressed documentation is always
+	* doc/makedoc_defs.h: Ensure the compressed documentation is always
 	built.
 
-	Add USE_COMPRESSED to makedoc-defs.h so any conditional
+	Add USE_COMPRESSED to makedoc_defs.h so any conditional
 	documentation will always be built.
 
 2016-11-13 20:02 -0800  Kevin McCarthy  <kevin@8t8.us>  (99a3ff6555d9)
@@ -1189,11 +1189,11 @@
 
 2016-10-17 11:23 -0700  Kevin McCarthy  <kevin@8t8.us>  (1acabd35d9a3)
 
-	* crypt-gpgme.c: merge stable
+	* crypt_gpgme.c: merge stable
 
 2016-10-17 11:22 -0700  Kevin McCarthy  <kevin@8t8.us>  (113b73b0b616)
 
-	* crypt-gpgme.c: Actually fix gpgme segfault in
+	* crypt_gpgme.c: Actually fix gpgme segfault in
 	create_recipient_set().
 
 	Changeset 6e44bfa16096 did not fix the segv. (Sorry, I made the fix
@@ -1228,11 +1228,11 @@
 
 2016-10-16 14:17 -0700  Kevin McCarthy  <kevin@8t8.us>  (023181b27fb6)
 
-	* crypt-gpgme.c: merge stable
+	* crypt_gpgme.c: merge stable
 
 2016-10-16 14:16 -0700  Kevin McCarthy  <kevin@8t8.us>  (6e44bfa16096)
 
-	* crypt-gpgme.c: Fix gpgme segfault in create_recipient_set().
+	* crypt_gpgme.c: Fix gpgme segfault in create_recipient_set().
 
 	If gpgme_get_key() errors on the first key, the rset will not be
 	allocated yet. Attempting to null-terminate (and then free) the
@@ -1262,7 +1262,7 @@
 
 2016-10-11 19:42 -0700  TAKAHASHI Tamotsu  <ttakah@lapis.plala.or.jp>  (7c0995a61268)
 
-	* crypt-gpgme.c: Fix GPGME signature zero timestamp and locale
+	* crypt_gpgme.c: Fix GPGME signature zero timestamp and locale
 	awareness issues. (closes #3882)
 
 	GPGME signature information has two minor problems.
@@ -1353,7 +1353,7 @@
 
 2016-10-01 16:21 -0700  Kevin McCarthy  <kevin@8t8.us>  (8963e77577ad)
 
-	* crypt-gpgme.c: Ensure signatures exist when verifying
+	* crypt_gpgme.c: Ensure signatures exist when verifying
 	multipart/signed emails. (closes #3881).
 
 	TAKAHASHI Tamotsu reported that when gpg2 isn't in PATH, the
@@ -1442,7 +1442,7 @@
 	* po/de.po, po/es.po, po/it.po: Mark some gpgme pgp menu keybinding
 	translations as fuzzy. (closes #3874)
 
-	Some translations for crypt-gpgme.c are marked as fuzzy but the
+	Some translations for crypt_gpgme.c are marked as fuzzy but the
 	keybindings attached to these translations are not, this creates
 	confusions for the users who see the english message but have the
 	keybindings for a message in their own language available.
@@ -1467,22 +1467,22 @@
 
 2016-09-20 15:51 -0700  Antonio Radici  <antonio@dyne.org>  (405cbc43c3ac)
 
-	* crypt-gpgme.c: Use body color for gpgme output. (closes #3872)
+	* crypt_gpgme.c: Use body color for gpgme output. (closes #3872)
 
 	When switching from pgp_* commands to crypt_use_gpgme=yes, Peter
 	Colberg noticed that the output was colored 'brightyellow'.
 
-	The issue is that crypt-gpgme.c uses state_attach_puts in various
+	The issue is that crypt_gpgme.c uses state_attach_puts in various
 	places where it should use state_puts to maintain compatibility with
 	the previous behavior in pgp.c.
 
 2016-09-20 14:01 -0700  Kevin McCarthy  <kevin@8t8.us>  (c41562a8118b)
 
-	* crypt-gpgme.c: merge stable
+	* crypt_gpgme.c: merge stable
 
 2016-09-20 13:58 -0700  Antonio Radici  <antonio@dyne.org>  (8ed017079800)
 
-	* crypt-gpgme.c: Fix gpgme segfault when querying candidates with a
+	* crypt_gpgme.c: Fix gpgme segfault when querying candidates with a
 	'+' in the address. (closes #3873)
 
 	list_to_pattern() was not allocating enough space for the '+' to
@@ -1661,7 +1661,7 @@
 
 2016-08-22 20:04 -0700  Kevin McCarthy  <kevin@8t8.us>  (d1ddea6099cd)
 
-	* browser.c, crypt-gpgme.c, crypt.c, globals.h, hdrline.c, init.h,
+	* browser.c, crypt_gpgme.c, crypt.c, globals.h, hdrline.c, init.h,
 	main.c, pgpkey.c: Remove the $locale configuration variable.
 
 	$locale was only used to set the LC_TIME locale. Unfortunately, Mutt
@@ -1703,7 +1703,7 @@
 
 2016-11-26 00:57 +0100  Vincent Lefevre  <vincent@vinc17.net>  (a0a970530a8b)
 
-	* crypt-gpgme.c, crypt-gpgme.h, crypt-mod-pgp-gpgme.c: Fix build
+	* crypt_gpgme.c, crypt_gpgme.h, crypt_mod_pgp_gpgme.c: Fix build
 	failure with GPGME 1.8: do not steal the gpgme_ prefix.
 
 2016-11-19 19:35 -0800  Kevin McCarthy  <kevin@8t8.us>  (10c4761cea89)
@@ -1750,7 +1750,7 @@
 
 2016-10-17 11:22 -0700  Kevin McCarthy  <kevin@8t8.us>  (113b73b0b616)
 
-	* crypt-gpgme.c: Actually fix gpgme segfault in
+	* crypt_gpgme.c: Actually fix gpgme segfault in
 	create_recipient_set().
 
 	Changeset 6e44bfa16096 did not fix the segv. (Sorry, I made the fix
@@ -1772,7 +1772,7 @@
 
 2016-10-16 14:16 -0700  Kevin McCarthy  <kevin@8t8.us>  (6e44bfa16096)
 
-	* crypt-gpgme.c: Fix gpgme segfault in create_recipient_set().
+	* crypt_gpgme.c: Fix gpgme segfault in create_recipient_set().
 
 	If gpgme_get_key() errors on the first key, the rset will not be
 	allocated yet. Attempting to null-terminate (and then free) the
@@ -1824,7 +1824,7 @@
 	* po/de.po, po/es.po, po/it.po: Mark some gpgme pgp menu keybinding
 	translations as fuzzy. (closes #3874)
 
-	Some translations for crypt-gpgme.c are marked as fuzzy but the
+	Some translations for crypt_gpgme.c are marked as fuzzy but the
 	keybindings attached to these translations are not, this creates
 	confusions for the users who see the english message but have the
 	keybindings for a message in their own language available.
@@ -1845,7 +1845,7 @@
 
 2016-09-20 13:58 -0700  Antonio Radici  <antonio@dyne.org>  (8ed017079800)
 
-	* crypt-gpgme.c: Fix gpgme segfault when querying candidates with a
+	* crypt_gpgme.c: Fix gpgme segfault when querying candidates with a
 	'+' in the address. (closes #3873)
 
 	list_to_pattern() was not allocating enough space for the '+' to
@@ -2408,10 +2408,10 @@
 
 2016-06-30 12:57 -0700  Kevin McCarthy  <kevin@8t8.us>  (6b147a411f68)
 
-	* doc/makedoc-defs.h: Fix missing sidebar documentation links. (closes
+	* doc/makedoc_defs.h: Fix missing sidebar documentation links. (closes
 	#3847)
 
-	USE_SIDEBAR needed to be set in doc/makedoc-defs.h so that the
+	USE_SIDEBAR needed to be set in doc/makedoc_defs.h so that the
 	sidebar option documentation is generated whether mutt is configured
 	with the sidebar or not.
 
@@ -3007,7 +3007,7 @@
 
 	* account.c, account.h, addrbook.c, alias.c, attach.c, browser.c,
 	buffy.c, buffy.h, charset.c, charset.h, color.c, commands.c,
-	compose.c, copy.c, copy.h, crypt-gpgme.c, crypt.c, curs_lib.c,
+	compose.c, copy.c, copy.h, crypt_gpgme.c, crypt.c, curs_lib.c,
 	curs_main.c, doc/makedoc.c, editmsg.c, enter.c, flags.c,
 	functions.h, group.h, handler.c, hcache.c, hcache.h, hdrline.c,
 	help.c, hook.c, imap/browse.c, imap/command.c, imap/imap.c,
@@ -3100,7 +3100,7 @@
 
 2016-04-27 17:56 -0700  Kevin McCarthy  <kevin@8t8.us>  (efa6f7910c94)
 
-	* addrbook.c, browser.c, compose.c, crypt-gpgme.c, hdrline.c,
+	* addrbook.c, browser.c, compose.c, crypt_gpgme.c, hdrline.c,
 	muttlib.c, pgpinvoke.c, pgpkey.c, protos.h, query.c, recvattach.c,
 	remailer.c, smime.c, status.c: Add cols parameter to
 	mutt_FormatString()
@@ -3696,7 +3696,7 @@
 
 2016-03-19 06:08 -0700  Kevin McCarthy  <kevin@8t8.us>  (36f855a4a2cc)
 
-	* crypt-gpgme.c, init.c, mutt_ssl.c, pgp.c: Fix a few typos in
+	* crypt_gpgme.c, init.c, mutt_ssl.c, pgp.c: Fix a few typos in
 	translation messages.
 
 	Thanks to Moritz Barsnick for reporting these.
@@ -3847,7 +3847,7 @@
 
 2016-03-02 15:08 -0800  Kevin McCarthy  <kevin@8t8.us>  (6034900d1636)
 
-	* crypt-gpgme.c: Add hard redraw for the gpgme application/pgp
+	* crypt_gpgme.c: Add hard redraw for the gpgme application/pgp
 	handler.
 
 	Will Yardley reported display artifacts and keyboard issues after
@@ -3868,7 +3868,7 @@
 
 2016-02-15 19:44 -0800  Kevin McCarthy  <kevin@8t8.us>  (909cf6dd067c)
 
-	* contrib/gpg.rc, crypt-gpgme.c, globals.h, init.h, pgp.c: Add
+	* contrib/gpg.rc, crypt_gpgme.c, globals.h, init.h, pgp.c: Add
 	$pgp_decryption_okay to verify multipart/encrypted are actually
 	encrypted. (closes #3770)
 
@@ -3888,7 +3888,7 @@
 
 2016-02-11 15:12 -0800  Kevin McCarthy  <kevin@8t8.us>  (b55c6a64a07b)
 
-	* crypt-gpgme.c: Update the status message after decryption using
+	* crypt_gpgme.c: Update the status message after decryption using
 	gpgpme.
 
 	Change gpgme to behave the same as classic pgp mode: after a
@@ -4019,7 +4019,7 @@
 2016-01-01 12:07 -0800  Kevin McCarthy  <kevin@8t8.us>  (b74ce90c7ba1)
 
 	* account.c, account.h, ascii.h, bcache.c, bcache.h, commands.c,
-	crypt-gpgme.c, crypt.c, cryptglue.c, curs_lib.c, curs_main.c,
+	crypt_gpgme.c, crypt.c, cryptglue.c, curs_lib.c, curs_main.c,
 	enter.c, globals.h, imap/auth.c, imap/auth.h, imap/auth_sasl.c,
 	imap/browse.c, imap/command.c, imap/imap.c, imap/imap.h,
 	imap/imap_private.h, imap/message.c, imap/message.h, imap/util.c,
@@ -4036,7 +4036,7 @@
 2016-01-01 12:07 -0800  Kevin McCarthy  <kevin@8t8.us>  (fdd3fdd6f708)
 
 	* COPYRIGHT, account.h, attach.c, bcache.c, browser.c, buffy.c,
-	buffy.h, color.c, compose.c, copy.c, crypt-gpgme.c, curs_lib.c,
+	buffy.h, color.c, compose.c, copy.c, crypt_gpgme.c, curs_lib.c,
 	curs_main.c, enter.c, from.c, handler.c, headers.c,
 	imap/auth_login.c, imap/command.c, imap/imap.c, imap/imap_private.h,
 	imap/util.c, init.c, init.h, keymap.c, keymap.h, lib.c, lib.h,
@@ -4492,7 +4492,7 @@
 
 2015-09-13 11:47 +0800  Kevin McCarthy  <kevin@8t8.us>  (6eb6b41f5d45)
 
-	* compose.c, crypt-gpgme.c, curs_main.c, edit.c, editmsg.c,
+	* compose.c, crypt_gpgme.c, curs_main.c, edit.c, editmsg.c,
 	imap/message.c, mutt_ssl.c, muttlib.c, pgp.c, send.c, smime.c: Add
 	translation comments and improvements.
 
@@ -4500,7 +4500,7 @@
 
 2015-09-12 11:25 +0800  Kevin McCarthy  <kevin@8t8.us>  (1a281a527cb7)
 
-	* crypt-gpgme.c: Improve translation string in crypt-gpgme.c
+	* crypt_gpgme.c: Improve translation string in crypt_gpgme.c
 
 	Combine into a single buffer to make the translation easier. Also,
 	mark a couple todos for alignment problems.
@@ -4562,11 +4562,11 @@
 
 2015-09-02 18:14 -0700  Kevin McCarthy  <kevin@8t8.us>  (5700b43f1e5b)
 
-	* crypt-gpgme.c: merge stable
+	* crypt_gpgme.c: merge stable
 
 2015-09-02 18:11 -0700  Kevin McCarthy  <kevin@8t8.us>  (f675e853af12)
 
-	* crypt-gpgme.c: Add time_t conversion to fix gpgme segfault on
+	* crypt_gpgme.c: Add time_t conversion to fix gpgme segfault on
 	OpenBSD.
 
 	time_t isn't the same size as gpgme_subkey_t->timestamp on OpenBSD.
@@ -4577,7 +4577,7 @@
 
 2015-09-02 15:02 -0700  Kevin McCarthy  <kevin@8t8.us>  (8bbcfa2af7b6)
 
-	* crypt-gpgme.c, pgp.c, smime.c: Add L10N messages for the pgp/smime
+	* crypt_gpgme.c, pgp.c, smime.c: Add L10N messages for the pgp/smime
 	send menus.
 
 	This documents the 'f' "forget it" choice for translators.
@@ -4742,7 +4742,7 @@
 
 2015-07-26 14:48 -0700  Kevin McCarthy  <kevin@8t8.us>  (21a08f9abc80)
 
-	* crypt-gpgme.c, crypt.c, handler.c, mutt_crypt.h, pgp.c,
+	* crypt_gpgme.c, crypt.c, handler.c, mutt_crypt.h, pgp.c,
 	recvattach.c: Handle malformed ms-exchange pgp-encrypted block.
 	(closes #3742)
 
@@ -4859,7 +4859,7 @@
 
 2015-07-05 13:38 -0700  Kevin McCarthy  <kevin@8t8.us>  (79cd2f34961d)
 
-	* crypt-gpgme.c: Remove 'hit enter' prompt for GPGME initialization
+	* crypt_gpgme.c: Remove 'hit enter' prompt for GPGME initialization
 	errors.
 
 	Older GPGMEs are missing CMS (S/MIME) support. Don't force the poor
@@ -4919,7 +4919,7 @@
 
 2015-06-26 11:38 -0700  Kevin McCarthy  <kevin@8t8.us>  (b4be5796a458)
 
-	* crypt-gpgme.c, pgp.c, smime.c: Add comment about "(f)orget it"
+	* crypt_gpgme.c, pgp.c, smime.c: Add comment about "(f)orget it"
 	choice in pgp/smime send menus.
 
 2015-06-26 12:28 +0200  Vincent Lefevre  <vincent@vinc17.net>  (b640b23e64a8)
@@ -5057,7 +5057,7 @@
 
 2015-04-19 13:15 -0700  Kevin McCarthy  <kevin@8t8.us>  (067a3ac42c3b)
 
-	* crypt-gpgme.c, doc/manual.xml.head, init.h, mutt.h, pgp.c: Add
+	* crypt_gpgme.c, doc/manual.xml.head, init.h, mutt.h, pgp.c: Add
 	$crypt_confirmhook option. (see #3727)
 
 	Allow the confirmation prompt for crypt-hooks to be disabled. This
@@ -5069,7 +5069,7 @@
 
 2015-04-19 13:15 -0700  Kevin McCarthy  <kevin@8t8.us>  (b4c57d3fd7e8)
 
-	* crypt-gpgme.c, doc/manual.xml.head, doc/muttrc.man.head, hook.c,
+	* crypt_gpgme.c, doc/manual.xml.head, doc/muttrc.man.head, hook.c,
 	pgp.c, protos.h: Allow multiple crypt-hooks with the same regexp.
 	(closes #3727).
 
@@ -5100,7 +5100,7 @@
 
 2015-04-15 18:57 -0700  Kevin McCarthy  <kevin@8t8.us>  (d12cb775b779)
 
-	* crypt-gpgme.c, doc/manual.xml.head, init.h, pgp.c, pgp.h, pgpkey.c:
+	* crypt_gpgme.c, doc/manual.xml.head, init.h, pgp.c, pgp.h, pgpkey.c:
 	Use fingerprints instead of keyIDs internally. (see #3695)
 
 	Add a helper function, pgp_fpr_or_lkeyid(), that returns the
@@ -5144,7 +5144,7 @@
 
 2015-03-30 15:45 -0700  Kevin McCarthy  <kevin@8t8.us>  (1bd26d871d76)
 
-	* crypt-gpgme.c: Fix const errors caused by find_keys() changes.
+	* crypt_gpgme.c: Fix const errors caused by find_keys() changes.
 
 	Part 4 of the oppenc series changed the keyID type to const as part
 	of some cleanup changes. At the time, that only propagated to
@@ -5156,7 +5156,7 @@
 
 2015-03-30 15:45 -0700  Kevin McCarthy  <kevin@8t8.us>  (b8ead28d8e84)
 
-	* compose.c, crypt-gpgme.c, pgp.c, smime.c: Add ui elements for oppenc
+	* compose.c, crypt_gpgme.c, pgp.c, smime.c: Add ui elements for oppenc
 	mode.
 
 	Add a status message to the Security line when oppenc is enabled.
@@ -5211,7 +5211,7 @@
 
 2015-03-30 15:45 -0700  Kevin McCarthy  <kevin@8t8.us>  (db2abe57adb5)
 
-	* crypt-gpgme.c, pgp.c, pgp.h, pgpkey.c, smime.c: Implement
+	* crypt_gpgme.c, pgp.c, pgp.h, pgpkey.c, smime.c: Implement
 	oppenc_mode in the find_keys methods.
 
 	oppenc_mode is used by crypt_opportunistic_encrypt to determine
@@ -5242,9 +5242,9 @@
 
 2015-03-30 15:45 -0700  Kevin McCarthy  <kevin@8t8.us>  (04eb395d80a7)
 
-	* crypt-gpgme.c, crypt-gpgme.h, crypt-mod-pgp-classic.c, crypt-mod-
-	pgp-gpgme.c, crypt-mod-smime-classic.c, crypt-mod-smime-gpgme.c,
-	crypt-mod.h, crypt.c, cryptglue.c, mutt_crypt.h, pgp.c, pgp.h,
+	* crypt_gpgme.c, crypt_gpgme.h, crypt_mod_pgp_classic.c, crypt-mod-
+	pgp-gpgme.c, crypt_mod_smime_classic.c, crypt_mod_smime_gpgme.c,
+	crypt_mod.h, crypt.c, cryptglue.c, mutt_crypt.h, pgp.c, pgp.h,
 	smime.c, smime.h: Introduce an oppenc_mode parameter
 
 	It's added to the parameter lists through the call stack down to the
@@ -5255,9 +5255,9 @@
 
 2015-03-30 15:45 -0700  Kevin McCarthy  <kevin@8t8.us>  (5b443e7da81b)
 
-	* crypt-gpgme.c, crypt-gpgme.h, crypt-mod-pgp-classic.c, crypt-mod-
-	pgp-gpgme.c, crypt-mod-smime-classic.c, crypt-mod-smime-gpgme.c,
-	crypt-mod.h, crypt.c, cryptglue.c, mutt_crypt.h, pgp.c, pgp.h,
+	* crypt_gpgme.c, crypt_gpgme.h, crypt_mod_pgp_classic.c, crypt-mod-
+	pgp-gpgme.c, crypt_mod_smime_classic.c, crypt_mod_smime_gpgme.c,
+	crypt_mod.h, crypt.c, cryptglue.c, mutt_crypt.h, pgp.c, pgp.h,
 	smime.c, smime.h: Refactor the address list generation out of the
 	find_keys routines.
 
@@ -5317,7 +5317,7 @@
 
 2015-02-11 21:38 +0100  Eike Rathke  <erack@erack.de>  (f5b1b75c5958)
 
-	* crypt-gpgme.c, crypt.c, mutt_crypt.h, pgpkey.c: Allow fingerprint
+	* crypt_gpgme.c, crypt.c, mutt_crypt.h, pgpkey.c: Allow fingerprint
 	user input for key selection. (see #3695)
 
 	Accept and check input of a fingerprint and find the matching key.
@@ -5361,7 +5361,7 @@
 
 2015-02-08 14:19 -0800  Kevin McCarthy  <kevin@8t8.us>  (addd7cea01d4)
 
-	* crypt-gpgme.c: Cache uid validity in crypt_key_t.
+	* crypt_gpgme.c: Cache uid validity in crypt_key_t.
 
 	In order to find the validity for a crypt_key_t, the code has to
 	loop through the key->kobj->uids list up to the correct index. This
@@ -5376,7 +5376,7 @@
 
 2015-02-08 13:44 -0800  Kevin McCarthy  <kevin@8t8.us>  (7162033d1fb8)
 
-	* crypt-gpgme.c: Fix pgp-gpgme to set revoke/expired/disabled flags.
+	* crypt_gpgme.c: Fix pgp-gpgme to set revoke/expired/disabled flags.
 
 	The code wasn't settings those flags in get_candidates(). This patch
 	adds it to the pgp path. I don't know if these flags apply to SMIME
@@ -5452,11 +5452,11 @@
 
 2015-01-31 11:53 -0800  Brendan Cully  <brendan@kublai.com>  (200185ed86bc)
 
-	* crypt-mod-pgp-gpgme.c: gpgme: typo in previous commit
+	* crypt_mod_pgp_gpgme.c: gpgme: typo in previous commit
 
 2015-01-31 11:21 -0800  Brendan Cully  <brendan@kublai.com>  (20e46d7bc453)
 
-	* configure.ac, crypt-gpgme.c, crypt-mod-pgp-gpgme.c: gpgme: guard
+	* configure.ac, crypt_gpgme.c, crypt_mod_pgp_gpgme.c: gpgme: guard
 	mail-key on presence of gpgme_op_export_keys
 
 	This function is too new to be assumed present.
@@ -5498,7 +5498,7 @@
 
 2015-01-25 18:09 -0800  Kevin McCarthy  <kevin@8t8.us>  (df55f14f4585)
 
-	* crypt-gpgme.c, init.h, pgp.c: Remove GPG_AGENT_INFO check for GnuPG
+	* crypt_gpgme.c, init.h, pgp.c: Remove GPG_AGENT_INFO check for GnuPG
 	2.1 compatibility. (closes #3715)
 
 	GnuPG version 2.1 stops exporting the GPG_AGENT_INFO environment
@@ -5523,7 +5523,7 @@
 
 2015-01-23 10:33 -0800  Kevin McCarthy  <kevin@8t8.us>  (ec93761e3e12)
 
-	* crypt-gpgme.c, crypt-mod-pgp-gpgme.c: Implement mail-key, Esc-K, for
+	* crypt_gpgme.c, crypt_mod_pgp_gpgme.c: Implement mail-key, Esc-K, for
 	gpgme. (closes #3488)
 
 	This patch implements the make-key-attachment function for gpgme,
@@ -5556,7 +5556,7 @@
 
 2015-01-18 17:50 +0100  Eike Rathke  <erack@erack.de>  (6e5a62946141)
 
-	* crypt-gpgme.c: Allow short and long key ID user input in
+	* crypt_gpgme.c: Allow short and long key ID user input in
 	crypt_getkeybystr()
 
 	The following did not work, e.g. when leaving a key list, and at the
@@ -5602,7 +5602,7 @@
 
 2015-01-17 14:34 -0800  Kevin McCarthy  <kevin@8t8.us>  (58a9dbfd0d25)
 
-	* crypt-gpgme.c: Fix some context, data, and key memory leaks in
+	* crypt_gpgme.c: Fix some context, data, and key memory leaks in
 	gpgme.
 
 	The context and data cleanup just involved adding missing
@@ -5690,7 +5690,7 @@
 
 2013-10-29 18:25 -0700  Kevin McCarthy  <kevin@8t8.us>  (789501922727)
 
-	* crypt-gpgme.c, pgp.c: Add gpg signature name. (closes #3478)
+	* crypt_gpgme.c, pgp.c: Add gpg signature name. (closes #3478)
 
 	Some mail clients display "noname" for the gpg signature attachment.
 	This patch sets the mime name to "signature.asc".
@@ -5706,7 +5706,7 @@
 
 2014-12-31 20:35 -0800  Kevin McCarthy  <kevin@8t8.us>  (31ce789af3df)
 
-	* crypt-gpgme.c: Fix segfault of extract-keys (^K) under gpgme.
+	* crypt_gpgme.c: Fix segfault of extract-keys (^K) under gpgme.
 	(closes #3698)
 
 	This patch is based on the patch by Ben Price, which relocated the
@@ -5789,7 +5789,7 @@
 
 2014-12-31 20:35 -0800  Kevin McCarthy  <kevin@8t8.us>  (5530e9fb17d9)
 
-	* crypt-gpgme.c: Fix segfault of extract-keys (^K) under gpgme.
+	* crypt_gpgme.c: Fix segfault of extract-keys (^K) under gpgme.
 	(closes #3698)
 
 	This patch is based on the patch by Ben Price, which relocated the
@@ -6062,7 +6062,7 @@
 
 2013-10-23 11:11 -0700  Michael Elkins  <me@sigpipe.org>  (331d48da153b)
 
-	* crypt-gpgme.c: Ensure that at least one signature was generated to
+	* crypt_gpgme.c: Ensure that at least one signature was generated to
 	catch the case where $pgp_sign_as is unset and no default key is
 	specified in ~/.gnupg/gpg.conf
 
@@ -6077,7 +6077,7 @@
 
 2013-10-04 18:04 +0000  Michael Elkins  <me@sigpipe.org>  (dd67e8649ea4)
 
-	* crypt-gpgme.c: Display the KeyID when the pubkey is not found in the
+	* crypt_gpgme.c: Display the KeyID when the pubkey is not found in the
 	user's keyring during signature verification.
 
 	closes #3654
@@ -6108,7 +6108,7 @@
 
 2013-10-19 11:23 -0700  Michael Elkins  <me@sigpipe.org>  (84acf5f0ce92)
 
-	* crypt-gpgme.c: remove <stdbool.h> and use "1" instead of "true".
+	* crypt_gpgme.c: remove <stdbool.h> and use "1" instead of "true".
 	closes #3657
 
 	see #3642 for the change that caused this bug.
@@ -6196,7 +6196,7 @@
 
 2013-10-06 09:31 -0700  nihilhill  <nihilhill@gmail.com>  (24bb691dcde7)
 
-	* crypt-gpgme.c: include <stdbool.h> for definition 'true'
+	* crypt_gpgme.c: include <stdbool.h> for definition 'true'
 
 	closes #3642
 
@@ -6234,11 +6234,11 @@
 
 2013-10-04 16:47 +0000  Michael Elkins  <me@sigpipe.org>  (0beba37c336b)
 
-	* crypt-gpgme.c, handler.c, init.c, pop_auth.c: fix more comment typos
+	* crypt_gpgme.c, handler.c, init.c, pop_auth.c: fix more comment typos
 
 2013-07-23 14:07 +0200  Ondřej Bílka  <neleai@seznam.cz>  (bc7e7cf0fed3)
 
-	* compose.c, crypt-gpgme.c, crypt-mod.h, curs_lib.c, date.c,
+	* compose.c, crypt_gpgme.c, crypt_mod.h, curs_lib.c, date.c,
 	doc/makedoc.c, editmsg.c, handler.c, imap/util.c, init.c,
 	intl/gettextP.h, intl/plural.c, keymap.c, lib.c, mbox.c, mkdtemp.c,
 	mutt.h, mutt_menu.h, mutt_ssl.c, mutt_ssl_gnutls.c, muttlib.c, mx.c,
@@ -6637,7 +6637,7 @@
 
 2012-12-19 15:26 -0800  Michael Elkins  <me@sigpipe.org>  (879c9516154c)
 
-	* crypt-gpgme.c: allow for CRLF line endings when comparing for the
+	* crypt_gpgme.c: allow for CRLF line endings when comparing for the
 	OpenPGP block identifiers
 
 	adapted from http://svnweb.freebsd.org/ports/head/mail/mutt/files
@@ -6756,7 +6756,7 @@
 
 2012-12-17 16:47 -0800  Petr Pisar  <petr.pisar@atlas.cz>  (9f8e41dd4e1d)
 
-	* crypt-gpgme.c: Fix NULL pointer dereference in notation name
+	* crypt_gpgme.c: Fix NULL pointer dereference in notation name
 
 	closes #3574
 
@@ -6820,7 +6820,7 @@
 
 2012-12-07 09:51 -0800  Michael Elkins  <me@sigpipe.org>  (d626fb87c489)
 
-	* crypt-gpgme.c: invoke gpgme_check_version() as required to
+	* crypt_gpgme.c: invoke gpgme_check_version() as required to
 	initialize the library.
 
 	move locale code to initialization function.
@@ -6969,7 +6969,7 @@
 
 2011-12-03 11:13 -0800  Dan Fandrich  <dan@coneharvesters.com>  (9e756d1adb76)
 
-	* addrbook.c, browser.c, charset.c, color.c, compose.c, crypt-gpgme.c,
+	* addrbook.c, browser.c, charset.c, color.c, compose.c, crypt_gpgme.c,
 	curs_lib.c, curs_main.c, date.c, enter.c, functions.h, globals.h,
 	handler.c, help.c, imap/auth.c, imap/command.c, imap/message.c,
 	imap/utf7.c, imap/util.c, init.c, init.h, keymap.c, keymap.h, lib.c,
@@ -7146,17 +7146,17 @@
 
 	Signed-off-by: Olaf Hering <olaf@aepfle.de>
 
-	* crypt-gpgme.c: fix gcc 4.6 warning -Wunused-but-set-variable in
-	crypt-gpgme.c
+	* crypt_gpgme.c: fix gcc 4.6 warning -Wunused-but-set-variable in
+	crypt_gpgme.c
 
-	crypt-gpgme.c: In function 'show_one_sig_status': crypt-
+	crypt_gpgme.c: In function 'show_one_sig_status': crypt-
 	gpgme.c:1311:21: warning: variable 'uid' set but not used [-Wunused-
-	but-set-variable] crypt-gpgme.c: In function
-	'pgp_gpgme_application_handler': crypt-gpgme.c:2285:27: warning:
+	but-set-variable] crypt_gpgme.c: In function
+	'pgp_gpgme_application_handler': crypt_gpgme.c:2285:27: warning:
 	variable 'anywarn' set but not used [-Wunused-but-set-variable]
-	crypt-gpgme.c:2159:8: warning: variable 'start_pos' set but not used
-	[-Wunused-but-set-variable] crypt-gpgme.c: In function
-	'crypt_getkeybystr': crypt-gpgme.c:4094:7: warning: variable 'match'
+	crypt_gpgme.c:2159:8: warning: variable 'start_pos' set but not used
+	[-Wunused-but-set-variable] crypt_gpgme.c: In function
+	'crypt_getkeybystr': crypt_gpgme.c:4094:7: warning: variable 'match'
 	set but not used [-Wunused-but-set-variable]
 
 	Signed-off-by: Olaf Hering <olaf@aepfle.de>
@@ -7275,7 +7275,7 @@
 
 2010-09-30 18:11 -0700  Roman Kagan  <rkagan@mail.ru>  (c10f8863e979)
 
-	* crypt-gpgme.c: use gpgme_strerror() in lieu of gpg_strerror()
+	* crypt_gpgme.c: use gpgme_strerror() in lieu of gpg_strerror()
 
 2010-09-29 14:17 -0700  Michael Elkins  <me@mutt.org>  (a23835db228d)
 
@@ -7374,7 +7374,7 @@
 
 	* keymap.c: allow octal codes with more than three digits
 
-	* crypt-gpgme.c, mime.h, pgp.c, recvattach.c, sendlib.c: add DISPNONE
+	* crypt_gpgme.c, mime.h, pgp.c, recvattach.c, sendlib.c: add DISPNONE
 	to mean no preferred Content-Disposition; make pgp-signature parts
 	DISPNONE for multipart/signed
 
@@ -7790,7 +7790,7 @@
 
 2010-02-28 17:00 -0800  ludwig  <ludwig@fh-worms.de>  (2c78b28027cc)
 
-	* crypt-gpgme.c: GPGME: Sender verification should be canse-
+	* crypt_gpgme.c: GPGME: Sender verification should be canse-
 	insensitive for domain names. Closes #2180
 
 2010-02-26 18:18 -0800  Brendan Cully  <brendan@kublai.com>  (40eca68c394a)
@@ -8291,7 +8291,7 @@
 
 2009-06-23 00:20 -0700  Brendan Cully  <brendan@kublai.com>  (f5849c72a274)
 
-	* crypt-gpgme.c: Update crypt-gpgme for mutt_mktemp change
+	* crypt_gpgme.c: Update crypt_gpgme for mutt_mktemp change
 	in [ed7eb5de7536]
 
 2009-06-22 17:36 +0200  Rocco Rutte  <pdmef@gmx.net>  (54bc1ef602e7)
@@ -8397,7 +8397,7 @@
 
 2009-06-17 11:09 -0700  Brendan Cully  <brendan@kublai.com>  (7f37d0a57d83)
 
-	* crypt-gpgme.c, pgp.c: Display unsigned part of traditional PGP
+	* crypt_gpgme.c, pgp.c: Display unsigned part of traditional PGP
 	messages. Unbreaks [e2780a423d96], closes #3269
 
 2009-06-17 19:29 +0200  Antonio Radici  <antonio@dyne.org>  (a2a868fc40ea)
@@ -8839,7 +8839,7 @@
 
 	* mutt.h, muttlib.c: Add mutt_find_list() to lookup data in lists
 
-	* alias.c, crypt-gpgme.c, group.c, mbox.c, pgp.c, query.c,
+	* alias.c, crypt_gpgme.c, group.c, mbox.c, pgp.c, query.c,
 	rfc822.c, rfc822.h, send.c, smime.c: Prune empty address groups
 	when preparing replies. Closes #2875.
 
@@ -9270,7 +9270,7 @@
 2009-03-15 13:46 +0100  Rocco Rutte  <pdmef@gmx.net>  (1238dff54a15)
 
 	* alias.c, attach.c, buffy.c, check_sec.sh, commands.c, compose.c,
-	copy.c, crypt-gpgme.c, crypt.c, edit.c, editmsg.c, gnupgparse.c,
+	copy.c, crypt_gpgme.c, crypt.c, edit.c, editmsg.c, gnupgparse.c,
 	handler.c, headers.c, help.c, history.c, imap/message.c, init.c,
 	lib.c, main.c, mbox.c, mh.c, mutt_ssl.c, mutt_ssl_gnutls.c,
 	muttlib.c, pager.c, pattern.c, pgp.c, pgpkey.c, pgppubring.c,
@@ -9489,7 +9489,7 @@
 
 	* addrbook.c, ascii.h, attach.c, bcache.c, bcache.h, browser.c,
 	browser.h, charset.c, charset.h, commands.c, complete.c,
-	compose.c, crypt-gpgme.c, crypt.c, curs_main.c, dotlock.c,
+	compose.c, crypt_gpgme.c, crypt.c, curs_main.c, dotlock.c,
 	editmsg.c, enter.c, functions.h, gnupgparse.c, handler.c,
 	hdrline.c, hook.c, init.h, lib.c, lib.h, menu.c, mh.c,
 	mutt_idna.c, mutt_idna.h, mutt_sasl.h, mutt_socket.c, muttlib.c,
@@ -9707,7 +9707,7 @@
 
 2008-11-30 20:28 +0100  Rocco Rutte  <pdmef@gmx.net>  (cb251bde7fc1)
 
-	* addrbook.c, browser.c, compose.c, crypt-gpgme.c, curs_main.c,
+	* addrbook.c, browser.c, compose.c, crypt_gpgme.c, curs_main.c,
 	init.c, menu.c, mutt_menu.h, mutt_ssl.c, mutt_ssl_gnutls.c, pager.c,
 	pgpkey.c, postpone.c, query.c, recvattach.c, remailer.c, smime.c:
 	Manage last search pattern outside of menu lifecycle
@@ -9773,7 +9773,7 @@
 	* snprintf.c: Add support for %ll to the bundled snprintf
 	replacement.
 
-	* configure.ac, doc/makedoc-defs.h: Add --disable-full-doc flag to
+	* configure.ac, doc/makedoc_defs.h: Add --disable-full-doc flag to
 	only build documentation for enabled features
 
 2008-11-15 20:24 -0800  Brendan Cully  <brendan@kublai.com>  (8087be7178cd)
@@ -10350,7 +10350,7 @@
 
 2008-07-02 08:56 -0700  Brendan Cully  <brendan@kublai.com>  (c51c16db46cc)
 
-	* crypt-gpgme.c: Only make LC_MESSAGES conditional on NLS in GPGME
+	* crypt_gpgme.c: Only make LC_MESSAGES conditional on NLS in GPGME
 	locale support.
 
 2008-07-02 11:19 +0200  Rocco Rutte  <pdmef@gmx.net>  (8b783c916893)
@@ -10374,22 +10374,22 @@
 
 2008-07-01 18:29 -0700  Brendan Cully  <brendan@kublai.com>  (f9af0501d2dd)
 
-	* crypt-gpgme.c: Set GPGME locale on first attempt to create context.
+	* crypt_gpgme.c: Set GPGME locale on first attempt to create context.
 	Closes #2913.
 
-	* crypt-gpgme.c, crypt-gpgme.h, crypt-mod-pgp-gpgme.c: Stub in a
+	* crypt_gpgme.c, crypt_gpgme.h, crypt_mod_pgp_gpgme.c: Stub in a
 	gpgme version of extract-keys. It doesn't currently work right
 	because apparently while gpg on the command line can parse a whole
 	message, we'll have to do it for gpgme. I really wonder about the
 	'ME' part of GPGME sometimes.
 
-	* crypt-gpgme.c, lib.c, lib.h: Support displaying application/pgp-keys
+	* crypt_gpgme.c, lib.c, lib.h: Support displaying application/pgp-keys
 	with GPGME. This was pretty convoluted because GPGME provides no way
 	to examine a key block without importing it. This code creates a
 	temporary GPG home in which to import the key in order to display
 	it.
 
-	* crypt-gpgme.c, handler.c, pgp.c: Handle DONTHANDLEPGPKEYS in
+	* crypt_gpgme.c, handler.c, pgp.c: Handle DONTHANDLEPGPKEYS in
 	handler instead of crypto modules. This lets gpgme and classic pgp
 	share a bit of logic, and unbreaks key extraction at least for
 	classic PGP.
@@ -10405,10 +10405,10 @@
 
 2008-06-29 01:09 -0700  Brendan Cully  <brendan@kublai.com>  (677e7712d735)
 
-	* crypt-gpgme.c: Improve gpgme SMIME uid display: align each line by
+	* crypt_gpgme.c: Improve gpgme SMIME uid display: align each line by
 	the length of the first.
 
-	* crypt-gpgme.c: Show more information about problematic SMIME
+	* crypt_gpgme.c: Show more information about problematic SMIME
 	signatures under gpgme. Also warn if the key is not known to be
 	good. For some reason expired keys in my environment are not
 	flagged as expired in sig->status or sig->summary.
@@ -10450,7 +10450,7 @@
 	* doc/manual.xml.head: Document difference between index and pager
 	search. Closes #2886.
 
-	* commands.c, copy.c, crypt-gpgme.c, handler.c, mbox.c, pgp.c: Make
+	* commands.c, copy.c, crypt_gpgme.c, handler.c, mbox.c, pgp.c: Make
 	mutt_copy_message distinguish between fatal and non-fatal errors.
 	Non-fatal errors should prevent moving messages, since they indicate
 	data loss. But mutt should still attempt to display them, since
@@ -10612,7 +10612,7 @@
 
 2008-05-17 19:31 -0700  Andreas  <Andreas Jobs>  (aaeee8f868c4)
 
-	* crypt-gpgme.c: Fix GPGME S/MIME micalg generation, broken
+	* crypt_gpgme.c: Fix GPGME S/MIME micalg generation, broken
 	in [e6f958b093b6]. Closes #2994.
 
 2008-05-17 18:34 -0700  Brendan Cully  <brendan@kublai.com>  (f9545d5ec15f)
@@ -10949,7 +10949,7 @@
 
 2007-11-15 13:17 +0100  Rocco Rutte  <pdmef@gmx.net>  (a0161768f631)
 
-	* doc/makedoc-defs.h, doc/makedoc.c: Fix more documentation build
+	* doc/makedoc_defs.h, doc/makedoc.c: Fix more documentation build
 	issues. Define USE_SASL (for $smtp_authenticators) in makedoc-
 	defs.h, include it in makedoc.c to force doc rebuild if makedoc-
 	defs.h changes.
@@ -11027,7 +11027,7 @@
 2007-11-07 12:03 +0100  Rocco Rutte  <pdmef@gmx.net>  (fce40f3a1aec)
 
 	* Makefile.am, Muttrc.head, doc/Makefile.am, doc/Muttrc.head, doc
-	/makedoc-defs.h, doc/makedoc.c, functions.h, init.h, makedoc-defs.h,
+	/makedoc_defs.h, doc/makedoc.c, functions.h, init.h, makedoc_defs.h,
 	makedoc.c: Try to fix parallel build problems by moving makedoc to
 	doc/. This also requires to move Muttrc into doc/.
 
@@ -11437,7 +11437,7 @@
 
 2007-07-14 17:26 -0700  Brendan Cully  <brendan@kublai.com>  (f4b2c6eba5fd)
 
-	* crypt-gpgme.c: GPGME: do not attempt to extract signatures
+	* crypt_gpgme.c: GPGME: do not attempt to extract signatures
 	unless gpgme_op_verify returned success.
 
 2007-07-09 11:32 -0400  Aron Griffis  <agriffis@n01se.net>  (4e8e3db418ea)
@@ -11478,14 +11478,14 @@
 
 2007-07-04 17:36 -0700  Brendan Cully  <brendan@kublai.com>  (f24fa301493f)
 
-	* crypt-gpgme.c: Fix some compiler warnings in GPGME. Closes #2919.
+	* crypt_gpgme.c: Fix some compiler warnings in GPGME. Closes #2919.
 
-	* crypt-gpgme.c: GPGME: Stop parsing message as soon as PGP header
+	* crypt_gpgme.c: GPGME: Stop parsing message as soon as PGP header
 	is found. Use file_to_data_object to build data for inline
 	signature verification instead of doing it by hand. This fixes
 	inline verification for me.
 
-	TODO: crypt-gpgme helper functions seem to return lots of pointers
+	TODO: crypt_gpgme helper functions seem to return lots of pointers
 	off the stack in very dubious ways.
 
 2007-06-27 10:38 -0700  Dan Fandrich  <dan@coneharvesters.com>  (3354ac2e79c7)
@@ -11538,7 +11538,7 @@
 
 2007-06-09 20:26 -0700  Brendan Cully  <brendan@kublai.com>  (4b5b42ddfe42)
 
-	* ascii.h, crypt-gpgme.c: Make GPGME backend generate a
+	* ascii.h, crypt_gpgme.c: Make GPGME backend generate a
 	RFC3156-compliant micalg parameter (blush). Based on a patch by
 	Stefan Haun. Closes #2901.
 
@@ -11618,7 +11618,7 @@
 
 2007-04-23 12:12 -0700  Michael Elkins  <me@mutt.org>  (1bae5dcd7292)
 
-	* crypt-gpgme.c: Fix compilation error related to change in
+	* crypt_gpgme.c: Fix compilation error related to change in
 	mutt_FormatString()
 
 2007-04-21 13:05 -0700  Brendan Cully  <brendan@kublai.com>  (4c70812b3104)
@@ -11976,7 +11976,7 @@
 
 2007-04-01 15:40 -0700  TAKAHASHI Tamotsu  <ttakah@lapis.plala.or.jp>  (6dcb53bc679c)
 
-	* crypt-gpgme.c: gpgme: check result for signatures pointer
+	* crypt_gpgme.c: gpgme: check result for signatures pointer
 	(closes: #2199)
 
 2007-04-01 15:33 -0700  Brendan Cully  <brendan@kublai.com>  (3a81b3793f77)
@@ -12085,8 +12085,8 @@
 2007-03-21 10:08 -0700  Christoph Berg  <cb@df7cb.de>  (92a0a184005d)
 
 	* Makefile.am, doc/Makefile.am, doc/gen-map-doc, doc/manual.xml.tail,
-	functions.h, init.h, makedoc-defs.h: Pipe functions.h through cpp -C
-	for the manual generation; factor out makedoc-defs.h from init.h for
+	functions.h, init.h, makedoc_defs.h: Pipe functions.h through cpp -C
+	for the manual generation; factor out makedoc_defs.h from init.h for
 	use in functions.h.
 
 2007-03-21 09:29 -0700  Rocco Rutte  <pdmef@gmx.net>  (6216dd07b6be)
@@ -12104,7 +12104,7 @@
 
 2007-03-20 13:17 -0700  Rocco Rutte  <pdmef@gmx.net>  (2fbc65f3feb6)
 
-	* addrbook.c, browser.c, compose.c, crypt-gpgme.c, curs_main.c,
+	* addrbook.c, browser.c, compose.c, crypt_gpgme.c, curs_main.c,
 	mutt_ssl.c, mutt_ssl_gnutls.c, pgpkey.c, postpone.c, query.c,
 	recvattach.c, remailer.c: Enlarge help string buffers Even on 80x25
 	terminals, SHORT_STRING (128 byte) may not be enough so use
@@ -12291,7 +12291,7 @@
 
 2007-03-11 11:54 +0100  Thomas Roessler  <roessler@does-not-exist.org>  (8a640badfb60)
 
-	* COPYRIGHT, build-release, crypt-gpgme.c, doc/applying-patches.txt,
+	* COPYRIGHT, build-release, crypt_gpgme.c, doc/applying-patches.txt,
 	doc/dotlock.man, doc/manual.xml.head, doc/muttrc.man.head,
 	muttbug.sh.in, po/bg.po, po/da.po, po/eo.po, po/es.po, po/et.po,
 	po/gl.po, po/it.po, po/lt.po, po/pt_BR.po, po/sk.po, po/zh_CN.po,
@@ -12329,13 +12329,13 @@
 
 2007-03-06 18:13 -0800  Alain Bench  <veronatif@free.fr>  (5fc8c7cee1dd)
 
-	* charset.c, charset.h, crypt-gpgme.c, imap/utf7.c, mbyte.c,
+	* charset.c, charset.h, crypt_gpgme.c, imap/utf7.c, mbyte.c,
 	mutt_idna.c, pgp.c, rfc2047.c, sendlib.c: Remove buggy usage
 	of M_ICONV_HOOK_TO flag in mutt_idna.c:mutt_idna_to_local().
 	Wipe unwanted code depending on M_ICONV_HOOK_TO in
 	charset.c:mutt_iconv_open(). Totally wipe M_ICONV_HOOK_TO symbol.
 	Remove misusages of M_ICONV_HOOK_FROM flag in:
-	 - crypt-gpgme.c:print_utf8().
+	 - crypt_gpgme.c:print_utf8().
 	 - mutt_idna.c:mutt_idna_to_local() and mutt_local_to_idna().
 	 - pgp.c:pgp_traditional_encryptsign(). Document usage policy of
 	M_ICONV_HOOK_FROM flag. Cosmetic downcasing of some constant charset
@@ -12526,10 +12526,10 @@
 
 2007-02-24 06:12:20  Moritz Schulte  <Moritz.Schulte@ruhr-uni-bochum.de>  (brendan)
 
-	* UPDATING, configure.in, crypt-gpgme.c, crypt-gpgme.h,
-	crypt-mod-pgp-classic.c, crypt-mod-pgp-gpgme.c,
-	crypt-mod-smime-classic.c, crypt-mod-smime-gpgme.c,
-	crypt-mod.h, crypt.c, cryptglue.c, init.h, mutt.h, mutt_crypt.h,
+	* UPDATING, configure.in, crypt_gpgme.c, crypt_gpgme.h,
+	crypt_mod_pgp_classic.c, crypt_mod_pgp_gpgme.c,
+	crypt_mod_smime_classic.c, crypt_mod_smime_gpgme.c,
+	crypt_mod.h, crypt.c, cryptglue.c, init.h, mutt.h, mutt_crypt.h,
 	Makefile.am: PKA signature verification via GPGME, controlled
 	by $crypt_use_pka.
 
@@ -13712,7 +13712,7 @@
 
 2005-10-21 04:35:38  Brendan Cully  <brendan@kublai.com>  (brendan)
 
-	* smime.c, attach.c, buffy.c, copy.c, copy.h, crypt-gpgme.c,
+	* smime.c, attach.c, buffy.c, copy.c, copy.h, crypt_gpgme.c,
 	crypt.c, edit.c, handler.c, mbox.c, mutt.h, pager.c, parse.c,
 	pattern.c, pgp.c, pgpmicalg.c, pgppacket.c, pgppubring.c, pop.c,
 	postpone.c, protos.h, sendlib.c: Full large file support. Keep a
@@ -14013,10 +14013,10 @@
 	signal.c, smime.c, smime.h, smime_keys.pl, sort.c, sort.h,
 	status.c, system.c, thread.c, url.c, browser.h, buffy.c, buffy.h,
 	charset.c, charset.h, color.c, commands.c, complete.c, compose.c,
-	config.guess, config.sub, copy.c, copy.h, crypt-gpgme.c,
-	crypt-gpgme.h, crypt-mod-pgp-classic.c, crypt-mod-pgp-gpgme.c,
-	crypt-mod-smime-classic.c, crypt-mod-smime-gpgme.c, crypt-mod.c,
-	crypt-mod.h, crypt.c, cryptglue.c, curs_lib.c, curs_main.c,
+	config.guess, config.sub, copy.c, copy.h, crypt_gpgme.c,
+	crypt_gpgme.h, crypt_mod_pgp_classic.c, crypt_mod_pgp_gpgme.c,
+	crypt_mod_smime_classic.c, crypt_mod_smime_gpgme.c, crypt_mod.c,
+	crypt_mod.h, crypt.c, cryptglue.c, curs_lib.c, curs_main.c,
 	date.c, depcomp, dotlock.c, dotlock.h, edit.c, editmsg.c,
 	enter.c, extlib.c, filter.c, flags.c, from.c, functions.h,
 	globals.h, gnupgparse.c, handler.c, hash.c, hash.h, hcache.c,
@@ -14071,10 +14071,10 @@
 	hash.h, hcache.c, hdrline.c, headers.c, help.c, history.c,
 	history.h, hook.c, init.c, init.h, keymap.c, keymap.h, lib.c,
 	lib.h, mailbox.h, main.c, makedoc.c, mapping.h, mbox.c,
-	dotlock.h, edit.c, editmsg.c, enter.c, copy.h, crypt-gpgme.c,
-	crypt-gpgme.h, crypt-mod-pgp-classic.c, crypt-mod-pgp-gpgme.c,
-	crypt-mod-smime-classic.c, crypt-mod-smime-gpgme.c, crypt-mod.c,
-	crypt-mod.h, crypt.c, cryptglue.c, curs_lib.c, curs_main.c,
+	dotlock.h, edit.c, editmsg.c, enter.c, copy.h, crypt_gpgme.c,
+	crypt_gpgme.h, crypt_mod_pgp_classic.c, crypt_mod_pgp_gpgme.c,
+	crypt_mod_smime_classic.c, crypt_mod_smime_gpgme.c, crypt_mod.c,
+	crypt_mod.h, crypt.c, cryptglue.c, curs_lib.c, curs_main.c,
 	date.c, depcomp, dotlock.c, COPYRIGHT, GPL, _regex.h, account.c,
 	account.h, addrbook.c, alias.c, ascii.c, ascii.h, attach.c,
 	attach.h, base64.c, browser.c, browser.h, buffy.c, buffy.h,
@@ -14445,9 +14445,9 @@
 
 2005-08-11 21:16:38  Brendan Cully  <brendan@kublai.com>  (brendan)
 
-	* copy.c, crypt-gpgme.c, crypt-gpgme.h, crypt-mod-pgp-classic.c,
-	crypt-mod-pgp-gpgme.c, crypt-mod-smime-classic.c,
-	crypt-mod-smime-gpgme.c, crypt-mod.h, crypt.c, cryptglue.c,
+	* copy.c, crypt_gpgme.c, crypt_gpgme.h, crypt_mod_pgp_classic.c,
+	crypt_mod_pgp_gpgme.c, crypt_mod_smime_classic.c,
+	crypt_mod_smime_gpgme.c, crypt_mod.h, crypt.c, cryptglue.c,
 	handler.c, mutt_crypt.h, pgp.c, pgp.h, protos.h, smime.c, smime.h:
 	Add error results to mutt_body_handlers, and check them when
 	doing decode-save. Closes: #1919.
@@ -14488,7 +14488,7 @@
 2005-08-09 16:24:15  TAKAHASHI Tamotsu	<ttakah@lapis.plala.or.jp>
 (brendan)
 
-	* crypt-gpgme.c: Improve translatability of crypt-gpgme. Closes:
+	* crypt_gpgme.c: Improve translatability of crypt-gpgme. Closes:
 	#2020.
 
 2005-08-09 16:10:40  Mads Martin Joergensen  <mmj@suse.de>  (brendan)
@@ -14720,7 +14720,7 @@
 
 2005-07-28 20:42:45  ttakah@lapis.plala.or.jp  (roessler)
 
-	* crypt-gpgme.c: Fix mutt/2004; S/MIME user interface differences
+	* crypt_gpgme.c: Fix mutt/2004; S/MIME user interface differences
 	between GPGME and classic.
 
 2005-07-28 19:47:40  Brendan Cully  <brendan@kublai.com>  (brendan)
@@ -14732,7 +14732,7 @@
 
 2005-07-27 15:08:43  Vincent Lefevre  <vincent@vinc17.org>  (brendan)
 
-	* crypt-gpgme.c: Correct two typos in GPGME error messages.
+	* crypt_gpgme.c: Correct two typos in GPGME error messages.
 
 2005-07-27 05:53:27  Brendan Cully  <brendan@kublai.com>  (brendan)
 
@@ -14758,7 +14758,7 @@
 2005-07-26 18:45:01  TAKAHASHI Tamotsu	<ttakah@lapis.plala.or.jp>
 (brendan)
 
-	* crypt-gpgme.c, mutt_ssl_gnutls.c, po/POTFILES.in: Partial
+	* crypt_gpgme.c, mutt_ssl_gnutls.c, po/POTFILES.in: Partial
 	application of Tamo's translation patch for gpgme and gnutls.
 
 2005-07-26 16:44:20  Brendan Cully  <brendan@kublai.com>  (brendan)
@@ -15135,7 +15135,7 @@
 2005-02-13 09:53:07  Thomas Roessler  <roessler@does-not-exist.org>
 (roessler)
 
-	* Makefile.am: Include crypt-gpgme.h with the distribution.
+	* Makefile.am: Include crypt_gpgme.h with the distribution.
 
 2005-02-13 00:25:37  Brendan Cully  <brendan@kublai.com>  (brendan)
 
@@ -15276,8 +15276,8 @@
 	resize.c, rfc1524.c, rfc2047.c, rfc2231.c, rfc822.c, score.c,
 	send.c, sendlib.c, sha1.c, signal.c, smime.c, snprintf.c,
 	sort.c, status.c, system.c, thread.c, url.c, utf8.c,
-	wcwidth.c, crypt-mod-pgp-classic.c, crypt-mod-pgp-gpgme.c,
-	crypt-mod-smime-classic.c, crypt-mod-smime-gpgme.c, crypt-mod.c,
+	wcwidth.c, crypt_mod_pgp_classic.c, crypt_mod_pgp_gpgme.c,
+	crypt_mod_smime_classic.c, crypt_mod_smime_gpgme.c, crypt_mod.c,
 	crypt.c, cryptglue.c, curs_lib.c, curs_main.c, date.c,
 	dotlock.c, edit.c, editmsg.c, enter.c, extlib.c, filter.c,
 	flags.c, from.c, getdomain.c, gnupgparse.c, handler.c, hash.c,
@@ -15288,7 +15288,7 @@
 	mx.c, pager.c, parse.c, pattern.c, pgp.c, pgpinvoke.c, account.c,
 	addrbook.c, alias.c, ascii.c, attach.c, base64.c, browser.c,
 	buffy.c, charset.c, color.c, commands.c, complete.c, compose.c,
-	copy.c, crypt-gpgme.c: Add config.h to the top of every C file
+	copy.c, crypt_gpgme.c: Add config.h to the top of every C file
 	that could possibly want it.  Remove it from mutt.h
 
 2005-02-01 03:36:39  Brendan Cully  <brendan@kublai.com>  (brendan)
@@ -15332,8 +15332,8 @@
 
 2005-01-28 13:17:22  Werner Koch  <wk@gnupg.org>  (roessler)
 
-	* Makefile.am, configure.in, crypt-gpgme.c, crypt-gpgme.h,
-	crypt-mod-pgp-gpgme.c, crypt-mod-smime-gpgme.c, cryptglue.c,
+	* Makefile.am, configure.in, crypt_gpgme.c, crypt_gpgme.h,
+	crypt_mod_pgp_gpgme.c, crypt_mod_smime_gpgme.c, cryptglue.c,
 	functions.h: gpgme integration.  See documentation for
 	$crypt_use_gpgme, and http://www.gnupg.org/aegypten2/.
 
@@ -15839,8 +15839,8 @@
 
 2004-06-17 20:36:13  Moritz Schulte  <moritz@g10code.com>  (roessler)
 
-	* Makefile.am, compose.c, configure.in, crypt-mod-pgp-classic.c,
-	crypt-mod-smime-classic.c, crypt-mod.c, crypt-mod.h, crypt.c,
+	* Makefile.am, compose.c, configure.in, crypt_mod_pgp_classic.c,
+	crypt_mod_smime_classic.c, crypt_mod.c, crypt_mod.h, crypt.c,
 	cryptglue.c, curs_lib.c, init.h, keymap.c, keymap.h, main.c,
 	mutt.h, mutt_crypt.h, mutt_curses.h, pgp.c, pgp.h, smime.c,
 	smime.h: This is the sequel to the crypto modularization changes
@@ -15850,8 +15850,8 @@
 	but is now in a really good shape for part III, the Return of
 	the GnuPG Easy Makers. -wk
 
-	* crypt-mod-pgp-classic.c, crypt-mod-smime-classic.c, crypt-mod.c,
-	crypt-mod.h: New files.
+	* crypt_mod_pgp_classic.c, crypt_mod_smime_classic.c, crypt_mod.c,
+	crypt_mod.h: New files.
 
 	* smime.c (smime_valid_passphrase, smime_send_menu): New
 	functions.  * smime.h: Removed macro: smime_valid_passphrase.

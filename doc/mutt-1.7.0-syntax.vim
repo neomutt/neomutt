@@ -298,7 +298,7 @@ syn match muttrcFolderFormatConditionals contained /%?[N]?/
 " The following info was pulled from mix_entry_fmt in remailer.c
 syn match muttrcMixFormatEscapes contained /%\%(\%(-\?[0-9]\+\)\?\%(\.[0-9]\+\)\?\)\?[:_]\?[ncsa%]/
 syn match muttrcMixFormatConditionals contained /%?[ncsa]?/
-" The following info was pulled from crypt_entry_fmt in crypt-gpgme.c
+" The following info was pulled from crypt_entry_fmt in crypt_gpgme.c
 " and pgp_entry_fmt in pgpkey.c (note that crypt_entry_fmt supports
 " 'p', but pgp_entry_fmt does not).
 syn match muttrcPGPFormatEscapes contained /%\%(\%(-\?[0-9]\+\)\?\%(\.[0-9]\+\)\?\)\?[:_]\?[nkualfctp%]/
