@@ -19,17 +19,15 @@
  */
 
 #include "config.h"
-
-#include "hcache_backend.h"
-#include "mutt.h"
 #include <tcbdb.h>
+#include "mutt.h"
+#include "hcache_backend.h"
 
-static void *
-hcache_tokyocabinet_open(const char *path)
+static void *hcache_tokyocabinet_open(const char *path)
 {
   TCBDB *db = tcbdbnew();
   if (!db)
-      return NULL;
+    return NULL;
   if (option(OPTHCACHECOMPRESS))
     tcbdbtune(db, 0, 0, 0, -1, -1, BDBTDEFLATE);
   if (tcbdbopen(db, path, BDBOWRITER | BDBOCREAT))
@@ -37,17 +35,16 @@ hcache_tokyocabinet_open(const char *path)
   else
   {
 #ifdef DEBUG
-    int ecode = tcbdbecode (db);
-    mutt_debug (2, "tcbdbopen failed for %s: %s (ecode %d)\n",
-                path, tcbdberrmsg (ecode), ecode);
+    int ecode = tcbdbecode(db);
+    mutt_debug(2, "tcbdbopen failed for %s: %s (ecode %d)\n", path,
+               tcbdberrmsg(ecode), ecode);
 #endif
     tcbdbdel(db);
     return NULL;
   }
 }
 
-static void *
-hcache_tokyocabinet_fetch(void *ctx, const char *key, size_t keylen)
+static void *hcache_tokyocabinet_fetch(void *ctx, const char *key, size_t keylen)
 {
   int sp;
 
@@ -58,14 +55,13 @@ hcache_tokyocabinet_fetch(void *ctx, const char *key, size_t keylen)
   return tcbdbget(db, key, keylen, &sp);
 }
 
-static void
-hcache_tokyocabinet_free(void *ctx, void **data)
+static void hcache_tokyocabinet_free(void *ctx, void **data)
 {
-    FREE(data); /* __FREE_CHECKED__ */
+  FREE(data); /* __FREE_CHECKED__ */
 }
 
-static int
-hcache_tokyocabinet_store(void *ctx, const char *key, size_t keylen, void *data, size_t dlen)
+static int hcache_tokyocabinet_store(void *ctx, const char *key, size_t keylen,
+                                     void *data, size_t dlen)
 {
   if (!ctx)
     return -1;
@@ -74,8 +70,7 @@ hcache_tokyocabinet_store(void *ctx, const char *key, size_t keylen, void *data,
   return tcbdbput(db, key, keylen, data, dlen);
 }
 
-static int
-hcache_tokyocabinet_delete(void *ctx, const char *key, size_t keylen)
+static int hcache_tokyocabinet_delete(void *ctx, const char *key, size_t keylen)
 {
   if (!ctx)
     return -1;
@@ -84,8 +79,7 @@ hcache_tokyocabinet_delete(void *ctx, const char *key, size_t keylen)
   return tcbdbout(db, key, keylen);
 }
 
-static void
-hcache_tokyocabinet_close(void **ctx)
+static void hcache_tokyocabinet_close(void **ctx)
 {
   if (!ctx || !*ctx)
     return;
@@ -94,19 +88,16 @@ hcache_tokyocabinet_close(void **ctx)
   if (!tcbdbclose(db))
   {
 #ifdef DEBUG
-    int ecode = tcbdbecode (db);
-    mutt_debug (2, "tcbdbclose failed: %s (ecode %d)\n",
-                tcbdberrmsg (ecode), ecode);
+    int ecode = tcbdbecode(db);
+    mutt_debug(2, "tcbdbclose failed: %s (ecode %d)\n", tcbdberrmsg(ecode), ecode);
 #endif
   }
   tcbdbdel(db);
 }
 
-static const char *
-hcache_tokyocabinet_backend(void)
+static const char *hcache_tokyocabinet_backend(void)
 {
   return "tokyocabinet " _TC_VERSION;
 }
 
 HCACHE_BACKEND_OPS(tokyocabinet)
-

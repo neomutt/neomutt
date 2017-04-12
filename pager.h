@@ -21,30 +21,30 @@
 #include "attach.h"
 
 /* dynamic internal flags */
-#define MUTT_SHOWFLAT   (1<<0)
-#define MUTT_SHOWCOLOR  (1<<1)
-#define MUTT_HIDE       (1<<2)
-#define MUTT_SEARCH     (1<<3)
-#define MUTT_TYPES      (1<<4)
-#define MUTT_SHOW       (MUTT_SHOWCOLOR | MUTT_SHOWFLAT)
+#define MUTT_SHOWFLAT  (1 << 0)
+#define MUTT_SHOWCOLOR (1 << 1)
+#define MUTT_HIDE      (1 << 2)
+#define MUTT_SEARCH    (1 << 3)
+#define MUTT_TYPES     (1 << 4)
+#define MUTT_SHOW      (MUTT_SHOWCOLOR | MUTT_SHOWFLAT)
 
 /* exported flags for mutt_(do_)?pager */
-#define MUTT_PAGER_NSKIP       (1<<5)  /* preserve whitespace with smartwrap */
-#define MUTT_PAGER_MARKER      (1<<6)  /* use markers if option is set */
-#define MUTT_PAGER_RETWINCH    (1<<7)  /* need reformatting on SIGWINCH */
-#define MUTT_PAGER_MESSAGE     (MUTT_SHOWCOLOR | MUTT_PAGER_MARKER)
-#define MUTT_PAGER_ATTACHMENT  (1<<8)
-#define MUTT_PAGER_NOWRAP      (1<<9)  /* format for term width, ignore $wrap */
+#define MUTT_PAGER_NSKIP      (1 << 5)    /* preserve whitespace with smartwrap */
+#define MUTT_PAGER_MARKER     (1 << 6)    /* use markers if option is set */
+#define MUTT_PAGER_RETWINCH   (1 << 7)    /* need reformatting on SIGWINCH */
+#define MUTT_PAGER_MESSAGE    (MUTT_SHOWCOLOR | MUTT_PAGER_MARKER)
+#define MUTT_PAGER_ATTACHMENT (1 << 8)
+#define MUTT_PAGER_NOWRAP     (1 << 9)    /* format for term width, ignore $wrap */
 
-#define MUTT_DISPLAYFLAGS      (MUTT_SHOW | MUTT_PAGER_NSKIP | MUTT_PAGER_MARKER)
+#define MUTT_DISPLAYFLAGS (MUTT_SHOW | MUTT_PAGER_NSKIP | MUTT_PAGER_MARKER)
 
 typedef struct
 {
-  CONTEXT *ctx;	/* current mailbox */
-  HEADER *hdr;	/* current message */
-  BODY *bdy;	/* current attachment */
-  FILE *fp;	/* source stream */
-  ATTACHPTR **idx;	/* attachment information */
+  CONTEXT *ctx;    /* current mailbox */
+  HEADER *hdr;     /* current message */
+  BODY *bdy;       /* current attachment */
+  FILE *fp;        /* source stream */
+  ATTACHPTR **idx; /* attachment information */
   short idxlen;
 } pager_t;
 

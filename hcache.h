@@ -26,7 +26,7 @@
 struct header_cache;
 typedef struct header_cache header_cache_t;
 
-typedef int (*hcache_namer_t)(const char* path, char* dest, size_t dlen);
+typedef int (*hcache_namer_t)(const char *path, char *dest, size_t dlen);
 
 /**
  * mutt_hcache_open - open the connection to the header cache.
@@ -37,16 +37,14 @@ typedef int (*hcache_namer_t)(const char* path, char* dest, size_t dlen);
  * final name of the hcache database file.
  * @return Pointer to a header_cache_t struct on success, NULL otherwise.
  */
-header_cache_t *
-mutt_hcache_open(const char *path, const char *folder, hcache_namer_t namer);
+header_cache_t *mutt_hcache_open(const char *path, const char *folder, hcache_namer_t namer);
 
 /**
  * mutt_hcache_close - close the connection to the header cache.
  *
  * @param h Pointer to the header_cache_t structure got by mutt_hcache_open.
  */
-void
-mutt_hcache_close(header_cache_t *h);
+void mutt_hcache_close(header_cache_t *h);
 
 /**
  * mutt_hcache_fetch - fetch and validate a  message's header from the cache.
@@ -60,8 +58,7 @@ mutt_hcache_close(header_cache_t *h);
  * @note The returned pointer must be freed by calling mutt_hcache_free. This
  * must be done before closing the header cache with mutt_hcache_close.
  */
-void *
-mutt_hcache_fetch(header_cache_t *h, const char *key, size_t keylen);
+void *mutt_hcache_fetch(header_cache_t *h, const char *key, size_t keylen);
 
 /**
  * mutt_hcache_fetch_raw - fetch a message's header from the cache.
@@ -75,8 +72,7 @@ mutt_hcache_fetch(header_cache_t *h, const char *key, size_t keylen);
  * @note The returned pointer must be freed by calling mutt_hcache_free. This
  * must be done before closing the header cache with mutt_hcache_close.
  */
-void *
-mutt_hcache_fetch_raw(header_cache_t *h, const char *key, size_t keylen);
+void *mutt_hcache_fetch_raw(header_cache_t *h, const char *key, size_t keylen);
 
 /**
  * mutt_hcache_free - free previously fetched data.
@@ -84,8 +80,7 @@ mutt_hcache_fetch_raw(header_cache_t *h, const char *key, size_t keylen);
  * @param h Pointer to the header_cache_t structure got by mutt_hcache_open.
  * @param data Pointer to the data got using hcache_fetch or hcache_fetch_raw.
  */
-void
-mutt_hcache_free(header_cache_t *h, void **data);
+void mutt_hcache_free(header_cache_t *h, void **data);
 
 /**
  * mutt_hcache_restore - restore a HEADER from data retrieved from the cache.
@@ -95,8 +90,7 @@ mutt_hcache_free(header_cache_t *h, void **data);
  * @note The returned HEADER must be free'd by caller code with
  * mutt_free_header.
  */
-HEADER *
-mutt_hcache_restore(const unsigned char *d);
+HEADER *mutt_hcache_restore(const unsigned char *d);
 
 /**
  * mutt_hcache_store - store a HEADER along with a validity datum.
@@ -109,9 +103,8 @@ mutt_hcache_restore(const unsigned char *d);
  * time.
  * @return 0 on success, -1 otherwise.
  */
-int
-mutt_hcache_store(header_cache_t *h, const char *key, size_t keylen,
-                  HEADER *header, unsigned int uidvalidity);
+int mutt_hcache_store(header_cache_t *h, const char *key, size_t keylen,
+                      HEADER *header, unsigned int uidvalidity);
 
 /**
  * mutt_hcache_store_raw - store a key / data pair.
@@ -123,9 +116,8 @@ mutt_hcache_store(header_cache_t *h, const char *key, size_t keylen,
  * @param dlen Length of the buffer pointed to by the @data parameter.
  * @return 0 on success, -1 otherwise.
  */
-int
-mutt_hcache_store_raw(header_cache_t *h, const char* key, size_t keylen,
-                      void* data, size_t dlen);
+int mutt_hcache_store_raw(header_cache_t *h, const char *key, size_t keylen,
+                          void *data, size_t dlen);
 
 /**
  * mutt_hcache_delete - delete a key / data pair.
@@ -135,8 +127,7 @@ mutt_hcache_store_raw(header_cache_t *h, const char* key, size_t keylen,
  * @param keylen Length of the string pointed to by key.
  * @return 0 on success, -1 otherwise.
  */
-int
-mutt_hcache_delete(header_cache_t *h, const char *key, size_t keylen);
+int mutt_hcache_delete(header_cache_t *h, const char *key, size_t keylen);
 
 /**
  * mutt_hcache_backend_list - get a list of backend identification strings.
@@ -144,8 +135,7 @@ mutt_hcache_delete(header_cache_t *h, const char *key, size_t keylen);
  * @return Comma separated string describing the compiled-in backends.
  * @note The returned string must be free'd by the caller.
  */
-const char *
-mutt_hcache_backend_list(void);
+const char *mutt_hcache_backend_list(void);
 
 /**
  * mutt_hcache_is_valid_backend
@@ -153,8 +143,7 @@ mutt_hcache_backend_list(void);
  * @param s String identifying a backend.
  * @return 1 if s is recognized as a valid backend, 0 otherwise.
  */
-int
-mutt_hcache_is_valid_backend(const char *s);
+int mutt_hcache_is_valid_backend(const char *s);
 
 
 #endif /* _MUTT_HCACHE_H */

@@ -18,10 +18,10 @@
 #ifndef _MUTT_POP_H
 #define _MUTT_POP_H 1
 
-#include "mailbox.h"
-#include "mutt_socket.h"
-#include "mutt_curses.h"
 #include "bcache.h"
+#include "mailbox.h"
+#include "mutt_curses.h"
+#include "mutt_socket.h"
 
 #define POP_PORT 110
 #define POP_SSL_PORT 995
@@ -41,8 +41,7 @@ enum
   POP_BYE
 };
 
-typedef enum
-{
+typedef enum {
   POP_A_SUCCESS = 0,
   POP_A_SOCKET,
   POP_A_FAILURE,
@@ -61,20 +60,20 @@ typedef struct
   unsigned int status : 2;
   bool capabilities : 1;
   unsigned int use_stls : 2;
-  bool cmd_capa : 1;		/* optional command CAPA */
-  bool cmd_stls : 1;		/* optional command STLS */
-  unsigned int cmd_user : 2;	/* optional command USER */
-  unsigned int cmd_uidl : 2;	/* optional command UIDL */
-  unsigned int cmd_top : 2;	/* optional command TOP */
-  bool resp_codes : 1;		/* server supports extended response codes */
-  bool expire : 1;		/* expire is greater than 0 */
+  bool cmd_capa : 1;         /* optional command CAPA */
+  bool cmd_stls : 1;         /* optional command STLS */
+  unsigned int cmd_user : 2; /* optional command USER */
+  unsigned int cmd_uidl : 2; /* optional command UIDL */
+  unsigned int cmd_top : 2;  /* optional command TOP */
+  bool resp_codes : 1;       /* server supports extended response codes */
+  bool expire : 1;           /* expire is greater than 0 */
   bool clear_cache : 1;
   size_t size;
   time_t check_time;
-  time_t login_delay;		/* minimal login delay  capability */
-  char *auth_list;		/* list of auth mechanisms */
+  time_t login_delay; /* minimal login delay  capability */
+  char *auth_list;    /* list of auth mechanisms */
   char *timestamp;
-  body_cache_t *bcache;		/* body cache */
+  body_cache_t *bcache; /* body cache */
   char err_msg[POP_CMD_RESPONSE];
   POP_CACHE cache[POP_CACHE_LEN];
 } POP_DATA;
@@ -82,10 +81,10 @@ typedef struct
 typedef struct
 {
   /* do authentication, using named method or any available if method is NULL */
-  pop_auth_res_t (*authenticate) (POP_DATA *, const char *);
+  pop_auth_res_t (*authenticate)(POP_DATA *, const char *);
   /* name of authentication method supported, NULL means variable. If this
    * is not null, authenticate may ignore the second parameter. */
-  const char* method;
+  const char *method;
 } pop_auth_t;
 
 /* pop_auth.c */
@@ -93,7 +92,7 @@ int pop_authenticate(POP_DATA *pop_data);
 void pop_apop_timestamp(POP_DATA *pop_data, char *buf);
 
 /* pop_lib.c */
-#define pop_query(A,B,C) pop_query_d(A,B,C,NULL)
+#define pop_query(A, B, C) pop_query_d(A, B, C, NULL)
 int pop_parse_path(const char *path, ACCOUNT *acct);
 int pop_connect(POP_DATA *pop_data);
 int pop_open_connection(POP_DATA *pop_data);

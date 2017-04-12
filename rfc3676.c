@@ -21,18 +21,16 @@
 /* This file was originally part of mutt-ng */
 
 #include "config.h"
-
+#include <ctype.h>
 #include <stdlib.h>
 #include <string.h>
-#include <unistd.h>
-#include <ctype.h>
-#include <sys/wait.h>
 #include <sys/stat.h>
-
+#include <sys/wait.h>
+#include <unistd.h>
 #include "mutt.h"
-#include "mutt_curses.h"
 #include "ascii.h"
 #include "lib.h"
+#include "mutt_curses.h"
 
 #define FLOWED_MAX 72
 
@@ -43,7 +41,7 @@ typedef struct flowed_state
   int delsp;
 } flowed_state_t;
 
-static int get_quote_level (const char *line)
+static int get_quote_level(const char *line)
 {
   int quoted = 0;
   char *p = (char *) line;
@@ -62,15 +60,15 @@ static int get_quote_level (const char *line)
  * becomes
  *    > > > foo
  */
-static int space_quotes (STATE *s)
+static int space_quotes(STATE *s)
 {
   /* Allow quote spacing in the pager even for OPTTEXTFLOWED,
    * but obviously not when replying.
    */
-  if (option (OPTTEXTFLOWED) && (s->flags & MUTT_REPLYING))
+  if (option(OPTTEXTFLOWED) && (s->flags & MUTT_REPLYING))
     return 0;
 
-  return option (OPTREFLOWSPACEQUOTES);
+  return option(OPTREFLOWSPACEQUOTES);
 }
 
 /* Determines whether to add a trailing space to quotes:
@@ -78,25 +76,25 @@ static int space_quotes (STATE *s)
  * as opposed to
  *    >>>foo
  */
-static bool add_quote_suffix (STATE *s, int ql)
+static bool add_quote_suffix(STATE *s, int ql)
 {
   if (s->flags & MUTT_REPLYING)
     return false;
 
-  if (space_quotes (s))
+  if (space_quotes(s))
     return false;
 
   if (!ql && !s->prefix)
     return false;
 
   /* The prefix will add its own space */
-  if (!option (OPTTEXTFLOWED) && !ql && s->prefix)
+  if (!option(OPTTEXTFLOWED) && !ql && s->prefix)
     return false;
 
   return true;
 }
 
-static size_t print_indent (int ql, STATE *s, int add_suffix)
+static size_t print_indent(int ql, STATE *s, int add_suffix)
 {
   int i;
   size_t wid = 0;
@@ -106,34 +104,34 @@ static size_t print_indent (int ql, STATE *s, int add_suffix)
     /* use given prefix only for format=fixed replies to format=flowed,
      * for format=flowed replies to format=flowed, use '>' indentation
      */
-    if (option (OPTTEXTFLOWED))
+    if (option(OPTTEXTFLOWED))
       ql++;
     else
     {
-      state_puts (s->prefix, s);
-      wid = mutt_strwidth (s->prefix);
+      state_puts(s->prefix, s);
+      wid = mutt_strwidth(s->prefix);
     }
   }
   for (i = 0; i < ql; i++)
   {
-    state_putc ('>', s);
-    if (space_quotes (s) )
-      state_putc (' ', s);
+    state_putc('>', s);
+    if (space_quotes(s))
+      state_putc(' ', s);
   }
   if (add_suffix)
-    state_putc (' ', s);
+    state_putc(' ', s);
 
-  if (space_quotes (s))
+  if (space_quotes(s))
     ql *= 2;
 
   return ql + add_suffix + wid;
 }
 
-static void flush_par (STATE *s, flowed_state_t *fst)
+static void flush_par(STATE *s, flowed_state_t *fst)
 {
   if (fst->width > 0)
   {
-    state_putc ('\n', s);
+    state_putc('\n', s);
     fst->width = 0;
   }
   fst->spaces = 0;
@@ -142,9 +140,9 @@ static void flush_par (STATE *s, flowed_state_t *fst)
 /* Calculate the paragraph width based upon the current quote level. The start
  * of a quoted line will be ">>> ", so we need to subtract the space required
  * for the prefix from the terminal width. */
-static int quote_width (STATE *s, int ql)
+static int quote_width(STATE *s, int ql)
 {
-  int width = mutt_window_wrap_cols (MuttIndexWindow, ReflowWrap);
+  int width = mutt_window_wrap_cols(MuttIndexWindow, ReflowWrap);
   if (option(OPTTEXTFLOWED) && (s->flags & MUTT_REPLYING))
   {
     /* When replying, force a wrap at FLOWED_MAX to comply with RFC3676
@@ -154,10 +152,10 @@ static int quote_width (STATE *s, int ql)
     ++ql; /* When replying, we will add an additional quote level */
   }
   /* adjust the paragraph width subtracting the number of prefix chars */
-  width -= space_quotes (s) ? ql*2 : ql;
+  width -= space_quotes(s) ? ql * 2 : ql;
   /* When displaying (not replying), there may be a space between the prefix
    * string and the paragraph */
-  if (add_quote_suffix (s, ql))
+  if (add_quote_suffix(s, ql))
     --width;
   /* failsafe for really long quotes */
   if (width <= 0)
@@ -165,8 +163,7 @@ static int quote_width (STATE *s, int ql)
   return width;
 }
 
-static void print_flowed_line (char *line, STATE *s, int ql,
-			       flowed_state_t *fst, int term)
+static void print_flowed_line(char *line, STATE *s, int ql, flowed_state_t *fst, int term)
 {
   size_t width, w, words = 0;
   char *p = NULL;
@@ -175,27 +172,26 @@ static void print_flowed_line (char *line, STATE *s, int ql,
   if (!line || !*line)
   {
     /* flush current paragraph (if any) first */
-    flush_par (s, fst);
-    print_indent (ql, s, 0);
-    state_putc ('\n', s);
+    flush_par(s, fst);
+    print_indent(ql, s, 0);
+    state_putc('\n', s);
     return;
   }
 
-  width = quote_width (s, ql);
-  last = line[mutt_strlen (line) - 1];
+  width = quote_width(s, ql);
+  last = line[mutt_strlen(line) - 1];
 
-  mutt_debug (4, "f=f: line [%s], width = %ld, spaces = %lu\n",
-              NONULL(line), (long)width, fst->spaces);
+  mutt_debug(4, "f=f: line [%s], width = %ld, spaces = %lu\n", NONULL(line),
+             (long) width, fst->spaces);
 
-  for (p = (char *)line, words = 0; (p = strsep (&line, " ")) != NULL ; )
+  for (p = (char *) line, words = 0; (p = strsep(&line, " ")) != NULL;)
   {
-    mutt_debug (4, "f=f: word [%s], width: %lu, remaining = [%s]\n",
-                p, fst->width, line);
+    mutt_debug(4, "f=f: word [%s], width: %lu, remaining = [%s]\n", p, fst->width, line);
 
     /* remember number of spaces */
     if (!*p)
     {
-      mutt_debug (4, "f=f: additional space\n");
+      mutt_debug(4, "f=f: additional space\n");
       fst->spaces++;
       continue;
     }
@@ -203,53 +199,51 @@ static void print_flowed_line (char *line, STATE *s, int ql,
     if (words)
       fst->spaces++;
 
-    w = mutt_strwidth (p);
+    w = mutt_strwidth(p);
     /* see if we need to break the line but make sure the first
        word is put on the line regardless;
        if for DelSp=yes only one trailing space is used, we probably
        have a long word that we should break within (we leave that
        up to the pager or user) */
-    if (!(!fst->spaces && fst->delsp && last != ' ') &&
-	w < width && w + fst->width + fst->spaces > width)
+    if (!(!fst->spaces && fst->delsp && last != ' ') && w < width &&
+        w + fst->width + fst->spaces > width)
     {
-      mutt_debug (4, "f=f: break line at %lu, %lu spaces left\n",
-                  fst->width, fst->spaces);
+      mutt_debug(4, "f=f: break line at %lu, %lu spaces left\n", fst->width, fst->spaces);
       /* only honor trailing spaces for format=flowed replies */
       if (option(OPTTEXTFLOWED))
-	for ( ; fst->spaces; fst->spaces--)
-	  state_putc (' ', s);
-      state_putc ('\n', s);
+        for (; fst->spaces; fst->spaces--)
+          state_putc(' ', s);
+      state_putc('\n', s);
       fst->width = 0;
       fst->spaces = 0;
       words = 0;
     }
 
     if (!words && !fst->width)
-      fst->width = print_indent (ql, s, add_quote_suffix (s, ql));
+      fst->width = print_indent(ql, s, add_quote_suffix(s, ql));
     fst->width += w + fst->spaces;
-    for ( ; fst->spaces; fst->spaces--)
-      state_putc (' ', s);
-    state_puts (p, s);
+    for (; fst->spaces; fst->spaces--)
+      state_putc(' ', s);
+    state_puts(p, s);
     words++;
   }
 
   if (term)
-    flush_par (s, fst);
+    flush_par(s, fst);
 }
 
-static void print_fixed_line (const char *line, STATE *s, int ql,
-			      flowed_state_t *fst)
+static void print_fixed_line(const char *line, STATE *s, int ql, flowed_state_t *fst)
 {
-  print_indent (ql, s, add_quote_suffix (s, ql));
+  print_indent(ql, s, add_quote_suffix(s, ql));
   if (line && *line)
-    state_puts (line, s);
-  state_putc ('\n', s);
+    state_puts(line, s);
+  state_putc('\n', s);
 
   fst->width = 0;
   fst->spaces = 0;
 }
 
-int rfc3676_handler (BODY * a, STATE * s)
+int rfc3676_handler(BODY *a, STATE *s)
 {
   char *buf = NULL, *t = NULL;
   unsigned int quotelevel = 0, newql = 0, sigsep = 0;
@@ -257,28 +251,28 @@ int rfc3676_handler (BODY * a, STATE * s)
   size_t buf_len = 0, sz = 0;
   flowed_state_t fst;
 
-  memset (&fst, 0, sizeof (fst));
+  memset(&fst, 0, sizeof(fst));
 
   /* respect DelSp of RfC3676 only with f=f parts */
-  if ((t = (char *) mutt_get_parameter ("delsp", a->parameter)))
+  if ((t = (char *) mutt_get_parameter("delsp", a->parameter)))
   {
-    delsp = mutt_strlen (t) == 3 && (ascii_strncasecmp (t, "yes", 3) == 0);
+    delsp = mutt_strlen(t) == 3 && (ascii_strncasecmp(t, "yes", 3) == 0);
     t = NULL;
     fst.delsp = 1;
   }
 
-  mutt_debug (4, "f=f: DelSp: %s\n", delsp ? "yes" : "no");
+  mutt_debug(4, "f=f: DelSp: %s\n", delsp ? "yes" : "no");
 
-  while ((buf = mutt_read_line (buf, &sz, s->fpin, NULL, 0)))
+  while ((buf = mutt_read_line(buf, &sz, s->fpin, NULL, 0)))
   {
-    buf_len = mutt_strlen (buf);
-    newql = get_quote_level (buf);
+    buf_len = mutt_strlen(buf);
+    newql = get_quote_level(buf);
 
     /* end flowed paragraph (if we're within one) if quoting level
      * changes (should not but can happen, see RFC 3676, sec. 4.5.)
      */
     if (newql != quotelevel)
-      flush_par (s, &fst);
+      flush_par(s, &fst);
 
     quotelevel = newql;
     buf_off = newql;
@@ -288,7 +282,7 @@ int rfc3676_handler (BODY * a, STATE * s)
       buf_off++;
 
     /* test for signature separator */
-    sigsep = (ascii_strcmp (buf + buf_off, "-- ") == 0);
+    sigsep = (ascii_strcmp(buf + buf_off, "-- ") == 0);
 
     /* a fixed line either has no trailing space or is the
      * signature separator */
@@ -299,8 +293,8 @@ int rfc3676_handler (BODY * a, STATE * s)
     if ((fixed && (!fst.width || !buf_len)) || sigsep)
     {
       /* if we're within a flowed paragraph, terminate it */
-      flush_par (s, &fst);
-      print_fixed_line (buf + buf_off, s, quotelevel, &fst);
+      flush_par(s, &fst);
+      print_fixed_line(buf + buf_off, s, quotelevel, &fst);
       continue;
     }
 
@@ -308,12 +302,12 @@ int rfc3676_handler (BODY * a, STATE * s)
     if (delsp && !fixed)
       buf[--buf_len] = '\0';
 
-    print_flowed_line (buf + buf_off, s, quotelevel, &fst, fixed);
+    print_flowed_line(buf + buf_off, s, quotelevel, &fst, fixed);
   }
 
-  flush_par (s, &fst);
+  flush_par(s, &fst);
 
-  FREE (&buf);
+  FREE(&buf);
   return 0;
 }
 
@@ -331,7 +325,7 @@ int rfc3676_handler (BODY * a, STATE * s)
  * a freshly created copy in a tempfile and modifies the file's mtime
  * so we don't trigger code paths watching for mtime changes
  */
-void rfc3676_space_stuff (HEADER* hdr)
+void rfc3676_space_stuff(HEADER *hdr)
 {
 #ifdef DEBUG
   int lc = 0;
@@ -345,41 +339,41 @@ void rfc3676_space_stuff (HEADER* hdr)
   if (!hdr || !hdr->content || !hdr->content->filename)
     return;
 
-  mutt_debug (2, "f=f: postprocess %s\n", hdr->content->filename);
+  mutt_debug(2, "f=f: postprocess %s\n", hdr->content->filename);
 
-  if ((in = safe_fopen (hdr->content->filename, "r")) == NULL)
+  if ((in = safe_fopen(hdr->content->filename, "r")) == NULL)
     return;
 
-  mutt_mktemp (tmpfile, sizeof (tmpfile));
-  if ((out = safe_fopen (tmpfile, "w+")) == NULL)
+  mutt_mktemp(tmpfile, sizeof(tmpfile));
+  if ((out = safe_fopen(tmpfile, "w+")) == NULL)
   {
-    safe_fclose (&in);
+    safe_fclose(&in);
     return;
   }
 
-  while (fgets (buf, sizeof (buf), in))
+  while (fgets(buf, sizeof(buf), in))
   {
-    if ((ascii_strncmp ("From ", buf, 5) == 0) || buf[0] == ' ') {
-      fputc (' ', out);
+    if ((ascii_strncmp("From ", buf, 5) == 0) || buf[0] == ' ')
+    {
+      fputc(' ', out);
 #ifdef DEBUG
       lc++;
-      len = mutt_strlen (buf);
+      len = mutt_strlen(buf);
       if (len > 0)
       {
-        c = buf[len-1];
-        buf[len-1] = '\0';
+        c = buf[len - 1];
+        buf[len - 1] = '\0';
       }
-      mutt_debug (4, "f=f: line %d needs space-stuffing: '%s'\n",
-                  lc, buf);
+      mutt_debug(4, "f=f: line %d needs space-stuffing: '%s'\n", lc, buf);
       if (len > 0)
-        buf[len-1] = c;
+        buf[len - 1] = c;
 #endif
     }
-    fputs (buf, out);
+    fputs(buf, out);
   }
-  safe_fclose (&in);
-  safe_fclose (&out);
-  mutt_set_mtime (hdr->content->filename, tmpfile);
-  unlink (hdr->content->filename);
-  mutt_str_replace (&hdr->content->filename, tmpfile);
+  safe_fclose(&in);
+  safe_fclose(&out);
+  mutt_set_mtime(hdr->content->filename, tmpfile);
+  unlink(hdr->content->filename);
+  mutt_str_replace(&hdr->content->filename, tmpfile);
 }

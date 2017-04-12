@@ -22,12 +22,11 @@
  */
 
 #include "config.h"
-
 #include <stdio.h>
 #include <stdlib.h>
 #include "ascii.h"
 
-int ascii_strcasecmp (const char *a, const char *b)
+int ascii_strcasecmp(const char *a, const char *b)
 {
   int i;
 
@@ -40,7 +39,7 @@ int ascii_strcasecmp (const char *a, const char *b)
 
   for (;; a++, b++)
   {
-    if ((i = tolower (*a) - tolower (*b)))
+    if ((i = tolower(*a) - tolower(*b)))
       return i;
     /* test for NUL here rather that in the for loop in order to detect unequal
      * length strings (see http://dev.mutt.org/trac/ticket/3601)
@@ -52,7 +51,7 @@ int ascii_strcasecmp (const char *a, const char *b)
   return 0;
 }
 
-int ascii_strncasecmp (const char *a, const char *b, int n)
+int ascii_strncasecmp(const char *a, const char *b, int n)
 {
   int i, j;
 
@@ -65,7 +64,7 @@ int ascii_strncasecmp (const char *a, const char *b, int n)
 
   for (j = 0; (*a || *b) && j < n; a++, b++, j++)
   {
-    if ((i = tolower (*a) - tolower (*b)))
+    if ((i = tolower(*a) - tolower(*b)))
       return i;
   }
 

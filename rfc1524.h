@@ -18,7 +18,8 @@
 #ifndef _MUTT_RFC1524_H
 #define _MUTT_RFC1524_H 1
 
-typedef struct rfc1524_mailcap_entry {
+typedef struct rfc1524_mailcap_entry
+{
   char *command;
   char *testcommand;
   char *composecommand;
@@ -27,8 +28,8 @@ typedef struct rfc1524_mailcap_entry {
   char *printcommand;
   char *nametemplate;
   char *convert;
-  bool needsterminal : 1;  /* endwin() and system */
-  bool copiousoutput : 1;  /* needs pager, basically */
+  bool needsterminal : 1; /* endwin() and system */
+  bool copiousoutput : 1; /* needs pager, basically */
 } rfc1524_entry;
 
 rfc1524_entry *rfc1524_new_entry(void);

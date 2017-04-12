@@ -18,50 +18,47 @@
  */
 
 #include "config.h"
-
+#include <errno.h>
+#include <fcntl.h>
+#include <netdb.h>
+#include <netinet/in.h>
+#include <stdlib.h>
+#include <string.h>
+#include <sys/socket.h>
+#include <sys/types.h>
+#include <unistd.h>
 #include "mutt.h"
 #include "mutt_socket.h"
-#include "mutt_tunnel.h"
-#ifdef USE_SSL
-# include "mutt_ssl.h"
-#endif
-
 #include "mutt_idna.h"
-
-#include <unistd.h>
-#include <netinet/in.h>
-#include <netdb.h>
-#include <stdlib.h>
-#include <fcntl.h>
-#include <sys/types.h>
+#include "mutt_tunnel.h"
 #ifdef HAVE_SYS_TIME_H
 #include <sys/time.h>
 #endif
-#include <sys/socket.h>
 #ifdef HAVE_SYS_SELECT_H
 #include <sys/select.h>
 #endif
-#include <string.h>
-#include <errno.h>
+#ifdef USE_SSL
+#include "mutt_ssl.h"
+#endif
 
 /* support for multiple socket connections */
 static CONNECTION *Connections = NULL;
 
-static int socket_preconnect (void)
+static int socket_preconnect(void)
 {
   int rc;
   int save_errno;
 
-  if (mutt_strlen (Preconnect))
+  if (mutt_strlen(Preconnect))
   {
-    mutt_debug (2, "Executing preconnect: %s\n", Preconnect);
-    rc = mutt_system (Preconnect);
-    mutt_debug (2, "Preconnect result: %d\n", rc);
+    mutt_debug(2, "Executing preconnect: %s\n", Preconnect);
+    rc = mutt_system(Preconnect);
+    mutt_debug(2, "Preconnect result: %d\n", rc);
     if (rc)
     {
       save_errno = errno;
-      mutt_perror (_("Preconnect command failed."));
-      mutt_sleep (1);
+      mutt_perror(_("Preconnect command failed."));
+      mutt_sleep(1);
 
       return save_errno;
     }
@@ -71,29 +68,29 @@ static int socket_preconnect (void)
 }
 
 /* Wrappers */
-int mutt_socket_open (CONNECTION* conn)
+int mutt_socket_open(CONNECTION *conn)
 {
   int rc;
 
-  if (socket_preconnect ())
+  if (socket_preconnect())
     return -1;
 
-  rc = conn->conn_open (conn);
+  rc = conn->conn_open(conn);
 
-  mutt_debug (2, "Connected to %s:%d on fd=%d\n",
-	      NONULL (conn->account.host), conn->account.port, conn->fd);
+  mutt_debug(2, "Connected to %s:%d on fd=%d\n", NONULL(conn->account.host),
+             conn->account.port, conn->fd);
 
   return rc;
 }
 
-int mutt_socket_close (CONNECTION* conn)
+int mutt_socket_close(CONNECTION *conn)
 {
   int rc = -1;
 
   if (conn->fd < 0)
-    mutt_debug (1, "mutt_socket_close: Attempt to close closed connection.\n");
+    mutt_debug(1, "mutt_socket_close: Attempt to close closed connection.\n");
   else
-    rc = conn->conn_close (conn);
+    rc = conn->conn_close(conn);
 
   conn->fd = -1;
   conn->ssf = 0;
@@ -101,36 +98,35 @@ int mutt_socket_close (CONNECTION* conn)
   return rc;
 }
 
-int mutt_socket_write_d (CONNECTION *conn, const char *buf, int len, int dbg)
+int mutt_socket_write_d(CONNECTION *conn, const char *buf, int len, int dbg)
 {
   int rc;
   int sent = 0;
 
-  mutt_debug (dbg, "%d> %s", conn->fd, buf);
+  mutt_debug(dbg, "%d> %s", conn->fd, buf);
 
   if (conn->fd < 0)
   {
-    mutt_debug (1, "mutt_socket_write: attempt to write to closed connection\n");
+    mutt_debug(1, "mutt_socket_write: attempt to write to closed connection\n");
     return -1;
   }
 
   if (len < 0)
-    len = mutt_strlen (buf);
+    len = mutt_strlen(buf);
 
   while (sent < len)
   {
-    if ((rc = conn->conn_write (conn, buf + sent, len - sent)) < 0)
+    if ((rc = conn->conn_write(conn, buf + sent, len - sent)) < 0)
     {
-      mutt_debug (1, "mutt_socket_write: error writing (%s), closing socket\n",
-                  strerror(errno));
-      mutt_socket_close (conn);
+      mutt_debug(1, "mutt_socket_write: error writing (%s), closing socket\n",
+                 strerror(errno));
+      mutt_socket_close(conn);
 
       return -1;
     }
 
     if (rc < len - sent)
-      mutt_debug (3, "mutt_socket_write: short write (%d of %d bytes)\n",
-                  rc, len - sent);
+      mutt_debug(3, "mutt_socket_write: short write (%d of %d bytes)\n", rc, len - sent);
 
     sent += rc;
   }
@@ -142,38 +138,39 @@ int mutt_socket_write_d (CONNECTION *conn, const char *buf, int len, int dbg)
  *   Returns: >0 if there is data to read,
  *            0 if a read would block,
  *            -1 if this connection doesn't support polling */
-int mutt_socket_poll (CONNECTION* conn)
+int mutt_socket_poll(CONNECTION *conn)
 {
   if (conn->bufpos < conn->available)
     return conn->available - conn->bufpos;
 
   if (conn->conn_poll)
-    return conn->conn_poll (conn);
+    return conn->conn_poll(conn);
 
   return -1;
 }
 
 /* simple read buffering to speed things up. */
-int mutt_socket_readchar (CONNECTION *conn, char *c)
+int mutt_socket_readchar(CONNECTION *conn, char *c)
 {
   if (conn->bufpos >= conn->available)
   {
     if (conn->fd >= 0)
-      conn->available = conn->conn_read (conn, conn->inbuf, sizeof (conn->inbuf));
+      conn->available = conn->conn_read(conn, conn->inbuf, sizeof(conn->inbuf));
     else
     {
-      mutt_debug (1, "mutt_socket_readchar: attempt to read from closed connection.\n");
+      mutt_debug(
+          1, "mutt_socket_readchar: attempt to read from closed connection.\n");
       return -1;
     }
     conn->bufpos = 0;
     if (conn->available == 0)
     {
-      mutt_error (_("Connection to %s closed"), conn->account.host);
-      mutt_sleep (2);
+      mutt_error(_("Connection to %s closed"), conn->account.host);
+      mutt_sleep(2);
     }
     if (conn->available <= 0)
     {
-      mutt_socket_close (conn);
+      mutt_socket_close(conn);
       return -1;
     }
   }
@@ -182,14 +179,14 @@ int mutt_socket_readchar (CONNECTION *conn, char *c)
   return 1;
 }
 
-int mutt_socket_readln_d (char* buf, size_t buflen, CONNECTION* conn, int dbg)
+int mutt_socket_readln_d(char *buf, size_t buflen, CONNECTION *conn, int dbg)
 {
   char ch;
   int i;
 
-  for (i = 0; i < buflen-1; i++)
+  for (i = 0; i < buflen - 1; i++)
   {
-    if (mutt_socket_readchar (conn, &ch) != 1)
+    if (mutt_socket_readchar(conn, &ch) != 1)
     {
       buf[i] = '\0';
       return -1;
@@ -201,26 +198,26 @@ int mutt_socket_readln_d (char* buf, size_t buflen, CONNECTION* conn, int dbg)
   }
 
   /* strip \r from \r\n termination */
-  if (i && buf[i-1] == '\r')
+  if (i && buf[i - 1] == '\r')
     i--;
   buf[i] = '\0';
 
-  mutt_debug (dbg, "%d< %s\n", conn->fd, buf);
+  mutt_debug(dbg, "%d< %s\n", conn->fd, buf);
 
   /* number of bytes read, not strlen */
   return i + 1;
 }
 
-CONNECTION* mutt_socket_head (void)
+CONNECTION *mutt_socket_head(void)
 {
   return Connections;
 }
 
 /* mutt_socket_free: remove connection from connection list and free it */
-void mutt_socket_free (CONNECTION* conn)
+void mutt_socket_free(CONNECTION *conn)
 {
-  CONNECTION* iter = NULL;
-  CONNECTION* tmp = NULL;
+  CONNECTION *iter = NULL;
+  CONNECTION *tmp = NULL;
 
   iter = Connections;
 
@@ -228,7 +225,7 @@ void mutt_socket_free (CONNECTION* conn)
   if (iter == conn)
   {
     Connections = iter->next;
-    FREE (&iter);
+    FREE(&iter);
     return;
   }
 
@@ -238,7 +235,7 @@ void mutt_socket_free (CONNECTION* conn)
     {
       tmp = iter->next;
       iter->next = tmp->next;
-      FREE (&tmp);
+      FREE(&tmp);
       return;
     }
     iter = iter->next;
@@ -246,11 +243,11 @@ void mutt_socket_free (CONNECTION* conn)
 }
 
 /* socket_new_conn: allocate and initialise a new connection. */
-static CONNECTION* socket_new_conn (void)
+static CONNECTION *socket_new_conn(void)
 {
-  CONNECTION* conn = NULL;
+  CONNECTION *conn = NULL;
 
-  conn = safe_calloc (1, sizeof (CONNECTION));
+  conn = safe_calloc(1, sizeof(CONNECTION));
   conn->fd = -1;
 
   return conn;
@@ -261,46 +258,46 @@ static CONNECTION* socket_new_conn (void)
  *   connections after the given connection (allows higher level socket code
  *   to make more fine-grained searches than account info - eg in IMAP we may
  *   wish to find a connection which is not in IMAP_SELECTED state) */
-CONNECTION* mutt_conn_find (const CONNECTION* start, const ACCOUNT* account)
+CONNECTION *mutt_conn_find(const CONNECTION *start, const ACCOUNT *account)
 {
-  CONNECTION* conn = NULL;
+  CONNECTION *conn = NULL;
   ciss_url_t url;
   char hook[LONG_STRING];
 
   /* account isn't actually modified, since url isn't either */
-  mutt_account_tourl ((ACCOUNT*) account, &url);
+  mutt_account_tourl((ACCOUNT *) account, &url);
   url.path = NULL;
-  url_ciss_tostring (&url, hook, sizeof (hook), 0);
-  mutt_account_hook (hook);
+  url_ciss_tostring(&url, hook, sizeof(hook), 0);
+  mutt_account_hook(hook);
 
   conn = start ? start->next : Connections;
   while (conn)
   {
-    if (mutt_account_match (account, &(conn->account)))
+    if (mutt_account_match(account, &(conn->account)))
       return conn;
     conn = conn->next;
   }
 
-  conn = socket_new_conn ();
-  memcpy (&conn->account, account, sizeof (ACCOUNT));
+  conn = socket_new_conn();
+  memcpy(&conn->account, account, sizeof(ACCOUNT));
 
   conn->next = Connections;
   Connections = conn;
 
   if (Tunnel && *Tunnel)
-    mutt_tunnel_socket_setup (conn);
+    mutt_tunnel_socket_setup(conn);
   else if (account->flags & MUTT_ACCT_SSL)
   {
 #ifdef USE_SSL
-    if (mutt_ssl_socket_setup (conn) < 0)
+    if (mutt_ssl_socket_setup(conn) < 0)
     {
-      mutt_socket_free (conn);
+      mutt_socket_free(conn);
       return NULL;
     }
 #else
-    mutt_error (_("SSL is unavailable."));
-    mutt_sleep (2);
-    mutt_socket_free (conn);
+    mutt_error(_("SSL is unavailable."));
+    mutt_sleep(2);
+    mutt_socket_free(conn);
 
     return NULL;
 #endif
@@ -317,29 +314,28 @@ CONNECTION* mutt_conn_find (const CONNECTION* start, const ACCOUNT* account)
   return conn;
 }
 
-int raw_socket_close (CONNECTION *conn)
+int raw_socket_close(CONNECTION *conn)
 {
-  return close (conn->fd);
+  return close(conn->fd);
 }
 
-int raw_socket_read (CONNECTION* conn, char* buf, size_t len)
+int raw_socket_read(CONNECTION *conn, char *buf, size_t len)
 {
   int rc;
 
-  mutt_allow_interrupt (1);
-  if ((rc = read (conn->fd, buf, len)) == -1)
+  mutt_allow_interrupt(1);
+  if ((rc = read(conn->fd, buf, len)) == -1)
   {
-    mutt_error (_("Error talking to %s (%s)"), conn->account.host,
-		strerror (errno));
-    mutt_sleep (2);
+    mutt_error(_("Error talking to %s (%s)"), conn->account.host, strerror(errno));
+    mutt_sleep(2);
     SigInt = 0;
   }
-  mutt_allow_interrupt (0);
+  mutt_allow_interrupt(0);
 
   if (SigInt)
   {
-    mutt_error (_("Connection to %s has been aborted"), conn->account.host);
-    mutt_sleep (2);
+    mutt_error(_("Connection to %s has been aborted"), conn->account.host);
+    mutt_sleep(2);
     SigInt = 0;
     rc = -1;
   }
@@ -347,24 +343,23 @@ int raw_socket_read (CONNECTION* conn, char* buf, size_t len)
   return rc;
 }
 
-int raw_socket_write (CONNECTION* conn, const char* buf, size_t count)
+int raw_socket_write(CONNECTION *conn, const char *buf, size_t count)
 {
   int rc;
 
-  mutt_allow_interrupt (1);
-  if ((rc = write (conn->fd, buf, count)) == -1)
+  mutt_allow_interrupt(1);
+  if ((rc = write(conn->fd, buf, count)) == -1)
   {
-    mutt_error (_("Error talking to %s (%s)"), conn->account.host,
-		strerror (errno));
-    mutt_sleep (2);
+    mutt_error(_("Error talking to %s (%s)"), conn->account.host, strerror(errno));
+    mutt_sleep(2);
     SigInt = 0;
   }
-  mutt_allow_interrupt (0);
+  mutt_allow_interrupt(0);
 
   if (SigInt)
   {
-    mutt_error (_("Connection to %s has been aborted"), conn->account.host);
-    mutt_sleep (2);
+    mutt_error(_("Connection to %s has been aborted"), conn->account.host);
+    mutt_sleep(2);
     SigInt = 0;
     rc = -1;
   }
@@ -372,60 +367,60 @@ int raw_socket_write (CONNECTION* conn, const char* buf, size_t count)
   return rc;
 }
 
-int raw_socket_poll (CONNECTION* conn)
+int raw_socket_poll(CONNECTION *conn)
 {
   fd_set rfds;
-  struct timeval tv = { 0, 0 };
+  struct timeval tv = {0, 0};
 
   if (conn->fd < 0)
     return -1;
 
-  FD_ZERO (&rfds);
-  FD_SET (conn->fd, &rfds);
+  FD_ZERO(&rfds);
+  FD_SET(conn->fd, &rfds);
 
-  return select (conn->fd + 1, &rfds, NULL, NULL, &tv);
+  return select(conn->fd + 1, &rfds, NULL, NULL, &tv);
 }
 
 /* socket_connect: set up to connect to a socket fd. */
-static int socket_connect (int fd, struct sockaddr* sa)
+static int socket_connect(int fd, struct sockaddr *sa)
 {
   int sa_size;
   int save_errno;
 
   if (sa->sa_family == AF_INET)
-    sa_size = sizeof (struct sockaddr_in);
+    sa_size = sizeof(struct sockaddr_in);
 #ifdef HAVE_GETADDRINFO
   else if (sa->sa_family == AF_INET6)
-    sa_size = sizeof (struct sockaddr_in6);
+    sa_size = sizeof(struct sockaddr_in6);
 #endif
   else
   {
-    mutt_debug (1, "Unknown address family!\n");
+    mutt_debug(1, "Unknown address family!\n");
     return -1;
   }
 
   if (ConnectTimeout > 0)
-      alarm (ConnectTimeout);
+    alarm(ConnectTimeout);
 
-  mutt_allow_interrupt (1);
+  mutt_allow_interrupt(1);
 
   save_errno = 0;
 
-  if (connect (fd, sa, sa_size) < 0)
+  if (connect(fd, sa, sa_size) < 0)
   {
-      save_errno = errno;
-      mutt_debug (2, "Connection failed. errno: %d...\n", errno);
-      SigInt = 0;	/* reset in case we caught SIGINTR while in connect() */
+    save_errno = errno;
+    mutt_debug(2, "Connection failed. errno: %d...\n", errno);
+    SigInt = 0; /* reset in case we caught SIGINTR while in connect() */
   }
 
   if (ConnectTimeout > 0)
-      alarm (0);
-  mutt_allow_interrupt (0);
+    alarm(0);
+  mutt_allow_interrupt(0);
 
   return save_errno;
 }
 
-int raw_socket_open (CONNECTION* conn)
+int raw_socket_open(CONNECTION *conn)
 {
   int rc;
   int fd;
@@ -433,138 +428,139 @@ int raw_socket_open (CONNECTION* conn)
   char *host_idna = NULL;
 
 #ifdef HAVE_GETADDRINFO
-/* --- IPv4/6 --- */
+  /* --- IPv4/6 --- */
 
   /* "65536\0" */
   char port[6];
   struct addrinfo hints;
-  struct addrinfo* res = NULL;
-  struct addrinfo* cur = NULL;
+  struct addrinfo *res = NULL;
+  struct addrinfo *cur = NULL;
 
   /* we accept v4 or v6 STREAM sockets */
-  memset (&hints, 0, sizeof (hints));
+  memset(&hints, 0, sizeof(hints));
 
-  if (option (OPTUSEIPV6))
+  if (option(OPTUSEIPV6))
     hints.ai_family = AF_UNSPEC;
   else
     hints.ai_family = AF_INET;
 
   hints.ai_socktype = SOCK_STREAM;
 
-  snprintf (port, sizeof (port), "%d", conn->account.port);
+  snprintf(port, sizeof(port), "%d", conn->account.port);
 
-# ifdef HAVE_LIBIDN
-  if (idna_to_ascii_lz (conn->account.host, &host_idna, 1) != IDNA_SUCCESS)
+#ifdef HAVE_LIBIDN
+  if (idna_to_ascii_lz(conn->account.host, &host_idna, 1) != IDNA_SUCCESS)
   {
-    mutt_error (_("Bad IDN \"%s\"."), conn->account.host);
+    mutt_error(_("Bad IDN \"%s\"."), conn->account.host);
     return -1;
   }
-# else
+#else
   host_idna = conn->account.host;
-# endif
+#endif
 
   if (!option(OPTNOCURSES))
-    mutt_message (_("Looking up %s..."), conn->account.host);
+    mutt_message(_("Looking up %s..."), conn->account.host);
 
-  rc = getaddrinfo (host_idna, port, &hints, &res);
+  rc = getaddrinfo(host_idna, port, &hints, &res);
 
-# ifdef HAVE_LIBIDN
-  FREE (&host_idna);
-# endif
+#ifdef HAVE_LIBIDN
+  FREE(&host_idna);
+#endif
 
   if (rc)
   {
-    mutt_error (_("Could not find the host \"%s\""), conn->account.host);
-    mutt_sleep (2);
+    mutt_error(_("Could not find the host \"%s\""), conn->account.host);
+    mutt_sleep(2);
     return -1;
   }
 
   if (!option(OPTNOCURSES))
-    mutt_message (_("Connecting to %s..."), conn->account.host);
+    mutt_message(_("Connecting to %s..."), conn->account.host);
 
   rc = -1;
   for (cur = res; cur != NULL; cur = cur->ai_next)
   {
-    fd = socket (cur->ai_family, cur->ai_socktype, cur->ai_protocol);
+    fd = socket(cur->ai_family, cur->ai_socktype, cur->ai_protocol);
     if (fd >= 0)
     {
-      if ((rc = socket_connect (fd, cur->ai_addr)) == 0)
+      if ((rc = socket_connect(fd, cur->ai_addr)) == 0)
       {
-	fcntl (fd, F_SETFD, FD_CLOEXEC);
-	conn->fd = fd;
-	break;
+        fcntl(fd, F_SETFD, FD_CLOEXEC);
+        conn->fd = fd;
+        break;
       }
       else
-	close (fd);
+        close(fd);
     }
   }
 
-  freeaddrinfo (res);
+  freeaddrinfo(res);
 
 #else
   /* --- IPv4 only --- */
 
   struct sockaddr_in sin;
-  struct hostent* he = NULL;
+  struct hostent *he = NULL;
   int i;
 
-  memset (&sin, 0, sizeof (sin));
-  sin.sin_port = htons (conn->account.port);
+  memset(&sin, 0, sizeof(sin));
+  sin.sin_port = htons(conn->account.port);
   sin.sin_family = AF_INET;
 
-# ifdef HAVE_LIBIDN
-  if (idna_to_ascii_lz (conn->account.host, &host_idna, 1) != IDNA_SUCCESS)
+#ifdef HAVE_LIBIDN
+  if (idna_to_ascii_lz(conn->account.host, &host_idna, 1) != IDNA_SUCCESS)
   {
-    mutt_error (_("Bad IDN \"%s\"."), conn->account.host);
+    mutt_error(_("Bad IDN \"%s\"."), conn->account.host);
     return -1;
   }
-# else
+#else
   host_idna = conn->account.host;
-# endif
+#endif
 
   if (!option(OPTNOCURSES))
-    mutt_message (_("Looking up %s..."), conn->account.host);
+    mutt_message(_("Looking up %s..."), conn->account.host);
 
-  he = gethostbyname (host_idna);
+  he = gethostbyname(host_idna);
 
-# ifdef HAVE_LIBIDN
-    FREE (&host_idna);
-# endif
+#ifdef HAVE_LIBIDN
+  FREE(&host_idna);
+#endif
 
-  if (! he) {
-    mutt_error (_("Could not find the host \"%s\""), conn->account.host);
+  if (!he)
+  {
+    mutt_error(_("Could not find the host \"%s\""), conn->account.host);
 
     return -1;
   }
 
   if (!option(OPTNOCURSES))
-    mutt_message (_("Connecting to %s..."), conn->account.host);
+    mutt_message(_("Connecting to %s..."), conn->account.host);
 
   rc = -1;
   for (i = 0; he->h_addr_list[i] != NULL; i++)
   {
-    memcpy (&sin.sin_addr, he->h_addr_list[i], he->h_length);
-    fd = socket (PF_INET, SOCK_STREAM, IPPROTO_IP);
+    memcpy(&sin.sin_addr, he->h_addr_list[i], he->h_length);
+    fd = socket(PF_INET, SOCK_STREAM, IPPROTO_IP);
 
     if (fd >= 0)
     {
-      if ((rc = socket_connect (fd, (struct sockaddr*) &sin)) == 0)
+      if ((rc = socket_connect(fd, (struct sockaddr *) &sin)) == 0)
       {
-        fcntl (fd, F_SETFD, FD_CLOEXEC);
-	conn->fd = fd;
-	break;
+        fcntl(fd, F_SETFD, FD_CLOEXEC);
+        conn->fd = fd;
+        break;
       }
       else
-	close (fd);
+        close(fd);
     }
   }
 
 #endif
   if (rc)
   {
-    mutt_error (_("Could not connect to %s (%s)."), conn->account.host,
-	    (rc > 0) ? strerror (rc) : _("unknown error"));
-    mutt_sleep (2);
+    mutt_error(_("Could not connect to %s (%s)."), conn->account.host,
+               (rc > 0) ? strerror(rc) : _("unknown error"));
+    mutt_sleep(2);
     return -1;
   }
 

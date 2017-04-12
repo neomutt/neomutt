@@ -19,11 +19,10 @@
 /* SASL PLAIN support */
 
 #include "config.h"
-
-#include "mutt.h"
 #include "imap_private.h"
-#include "mutt_sasl_plain.h"
+#include "mutt.h"
 #include "auth.h"
+#include "mutt_sasl_plain.h"
 
 /* imap_auth_plain: SASL PLAIN support */
 imap_auth_res_t imap_auth_plain(IMAP_DATA *idata, const char *method)
@@ -39,9 +38,8 @@ imap_auth_res_t imap_auth_plain(IMAP_DATA *idata, const char *method)
 
   mutt_message(_("Logging in..."));
 
-  mutt_sasl_plain_msg(buf, STRING, "AUTHENTICATE PLAIN",
-                      idata->conn->account.user, idata->conn->account.user,
-                      idata->conn->account.pass);
+  mutt_sasl_plain_msg(buf, STRING, "AUTHENTICATE PLAIN", idata->conn->account.user,
+                      idata->conn->account.user, idata->conn->account.pass);
 
   imap_cmd_start(idata, buf);
   do
@@ -62,4 +60,3 @@ imap_auth_res_t imap_auth_plain(IMAP_DATA *idata, const char *method)
   mutt_clear_error(); /* clear "Logging in...".  fixes #3524 */
   return res;
 }
-

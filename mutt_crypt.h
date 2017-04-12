@@ -24,11 +24,9 @@
 #ifndef _MUTT_CRYPT_H
 #define _MUTT_CRYPT_H 1
 
-#include "mutt.h"        /* Need this to declare BODY, ADDRESS. STATE etc. */
+#include "mutt.h"
 /* FIXME: They should be pointer to anonymous structures for better
    information hiding. */
-
-
 
 #define ENCRYPT    (1 << 0)
 #define SIGN       (1 << 1)
@@ -40,8 +38,8 @@
 #define INLINE     (1 << 7)
 #define OPPENCRYPT (1 << 8) /* Opportunistic encrypt mode */
 
-#define APPLICATION_PGP    (1 << 9)
-#define APPLICATION_SMIME  (1 << 10)
+#define APPLICATION_PGP   (1 << 9)
+#define APPLICATION_SMIME (1 << 10)
 
 #define PGP_TRADITIONAL_CHECKED (1 << 11)
 
@@ -64,33 +62,34 @@
    effectively as a conditional compile directive. It is set to false
    if no crypto backend is configures or to a bit vector denoting the
    configured backends. */
-#if (defined(CRYPT_BACKEND_CLASSIC_PGP) && defined(CRYPT_BACKEND_CLASSIC_SMIME)) || defined (CRYPT_BACKEND_GPGME)
-# define WithCrypto (APPLICATION_PGP | APPLICATION_SMIME)
+#if (defined(CRYPT_BACKEND_CLASSIC_PGP) && defined(CRYPT_BACKEND_CLASSIC_SMIME)) || \
+    defined(CRYPT_BACKEND_GPGME)
+#define WithCrypto (APPLICATION_PGP | APPLICATION_SMIME)
 #elif defined(CRYPT_BACKEND_CLASSIC_PGP)
-# define WithCrypto  APPLICATION_PGP
+#define WithCrypto APPLICATION_PGP
 #elif defined(CRYPT_BACKEND_CLASSIC_SMIME)
-# define WithCrypto  APPLICATION_SMIME
+#define WithCrypto APPLICATION_SMIME
 #else
-# define WithCrypto 0
+#define WithCrypto 0
 #endif
 
 
-#define KEYFLAG_CANSIGN 		(1 <<  0)
-#define KEYFLAG_CANENCRYPT 		(1 <<  1)
-#define KEYFLAG_ISX509                  (1 <<  2)
-#define KEYFLAG_SECRET			(1 <<  7)
-#define KEYFLAG_EXPIRED 		(1 <<  8)
-#define KEYFLAG_REVOKED 		(1 <<  9)
-#define KEYFLAG_DISABLED 		(1 << 10)
-#define KEYFLAG_SUBKEY 			(1 << 11)
-#define KEYFLAG_CRITICAL 		(1 << 12)
-#define KEYFLAG_PREFER_ENCRYPTION 	(1 << 13)
-#define KEYFLAG_PREFER_SIGNING 		(1 << 14)
+#define KEYFLAG_CANSIGN           (1 << 0)
+#define KEYFLAG_CANENCRYPT        (1 << 1)
+#define KEYFLAG_ISX509            (1 << 2)
+#define KEYFLAG_SECRET            (1 << 7)
+#define KEYFLAG_EXPIRED           (1 << 8)
+#define KEYFLAG_REVOKED           (1 << 9)
+#define KEYFLAG_DISABLED          (1 << 10)
+#define KEYFLAG_SUBKEY            (1 << 11)
+#define KEYFLAG_CRITICAL          (1 << 12)
+#define KEYFLAG_PREFER_ENCRYPTION (1 << 13)
+#define KEYFLAG_PREFER_SIGNING    (1 << 14)
 
-#define KEYFLAG_CANTUSE (KEYFLAG_DISABLED|KEYFLAG_REVOKED|KEYFLAG_EXPIRED)
-#define KEYFLAG_RESTRICTIONS (KEYFLAG_CANTUSE|KEYFLAG_CRITICAL)
+#define KEYFLAG_CANTUSE (KEYFLAG_DISABLED | KEYFLAG_REVOKED | KEYFLAG_EXPIRED)
+#define KEYFLAG_RESTRICTIONS (KEYFLAG_CANTUSE | KEYFLAG_CRITICAL)
 
-#define KEYFLAG_ABILITIES (KEYFLAG_CANSIGN|KEYFLAG_CANENCRYPT|KEYFLAG_PREFER_ENCRYPTION|KEYFLAG_PREFER_SIGNING)
+#define KEYFLAG_ABILITIES (KEYFLAG_CANSIGN | KEYFLAG_CANENCRYPT | KEYFLAG_PREFER_ENCRYPTION | KEYFLAG_PREFER_SIGNING)
 
 enum pgp_ring
 {
@@ -102,8 +101,6 @@ typedef enum pgp_ring pgp_ring_t;
 
 struct pgp_keyinfo;
 typedef struct pgp_keyinfo *pgp_key_t;
-
-
 
 /* Some prototypes -- old crypt.h. */
 
@@ -126,8 +123,6 @@ int mutt_signed_handler(BODY *a, STATE *s);
 int mutt_parse_crypt_hdr(const char *p, int set_empty_signas, int crypt_app);
 
 void convert_to_7bit(BODY *a);
-
-
 
 /*-- crypt.c --*/
 
@@ -179,82 +174,78 @@ const char *crypt_get_fingerprint_or_id(char *p, const char **pphint,
 /* Check if a string contains a numerical key */
 bool crypt_is_numerical_keyid(const char *s);
 
-
-
 /*-- cryptglue.c --*/
 
 /* Show a message that a backend will be invoked. */
-void crypt_invoke_message (int type);
+void crypt_invoke_message(int type);
 
 
 /* Silently forget about a passphrase. */
-void crypt_pgp_void_passphrase (void);
+void crypt_pgp_void_passphrase(void);
 
-int crypt_pgp_valid_passphrase (void);
+int crypt_pgp_valid_passphrase(void);
 
 
 /* Decrypt a PGP/MIME message. */
-int crypt_pgp_decrypt_mime (FILE *a, FILE **b, BODY *c, BODY **d);
+int crypt_pgp_decrypt_mime(FILE *a, FILE **b, BODY *c, BODY **d);
 
 /* MIME handler for the application/pgp content-type. */
-int crypt_pgp_application_pgp_handler (BODY *m, STATE *s);
+int crypt_pgp_application_pgp_handler(BODY *m, STATE *s);
 
 /* MIME handler for an PGP/MIME encrypted message. */
-int crypt_pgp_encrypted_handler (BODY *a, STATE *s);
+int crypt_pgp_encrypted_handler(BODY *a, STATE *s);
 
 /* fixme: needs documentation. */
-void crypt_pgp_invoke_getkeys (ADDRESS *addr);
+void crypt_pgp_invoke_getkeys(ADDRESS *addr);
 
 /* Check for a traditional PGP message in body B. */
-int crypt_pgp_check_traditional (FILE *fp, BODY *b, int tagged_only);
+int crypt_pgp_check_traditional(FILE *fp, BODY *b, int tagged_only);
 
 /* fixme: needs documentation. */
-BODY *crypt_pgp_traditional_encryptsign (BODY *a, int flags, char *keylist);
+BODY *crypt_pgp_traditional_encryptsign(BODY *a, int flags, char *keylist);
 
 /* Generate a PGP public key attachment. */
-BODY *crypt_pgp_make_key_attachment (char *tempf);
+BODY *crypt_pgp_make_key_attachment(char *tempf);
 
 /* This routine attempts to find the keyids of the recipients of a
    message.  It returns NULL if any of the keys can not be found.
    If oppenc_mode is true, only keys that can be determined without
    prompting will be used.  */
-char *crypt_pgp_findkeys (ADDRESS *adrlist, int oppenc_mode);
+char *crypt_pgp_findkeys(ADDRESS *adrlist, int oppenc_mode);
 
 /* Create a new body with a PGP signed message from A. */
-BODY *crypt_pgp_sign_message (BODY *a);
+BODY *crypt_pgp_sign_message(BODY *a);
 
 /* Warning: A is no longer freed in this routine, you need to free it
    later.  This is necessary for $fcc_attach. */
-BODY *crypt_pgp_encrypt_message (BODY *a, char *keylist, int sign);
+BODY *crypt_pgp_encrypt_message(BODY *a, char *keylist, int sign);
 
 /* Invoke the PGP command to import a key. */
-void crypt_pgp_invoke_import (const char *fname);
+void crypt_pgp_invoke_import(const char *fname);
 
-int crypt_pgp_send_menu (HEADER *msg);
-
-/* fixme: needs documentation */
-int crypt_pgp_verify_one (BODY *sigbdy, STATE *s, const char *tempf);
+int crypt_pgp_send_menu(HEADER *msg);
 
 /* fixme: needs documentation */
-void crypt_pgp_extract_keys_from_attachment_list (FILE *fp, int tag,BODY *top);
+int crypt_pgp_verify_one(BODY *sigbdy, STATE *s, const char *tempf);
 
-void crypt_pgp_set_sender (const char *sender);
+/* fixme: needs documentation */
+void crypt_pgp_extract_keys_from_attachment_list(FILE *fp, int tag, BODY *top);
 
-
+void crypt_pgp_set_sender(const char *sender);
 
 /* Silently forget about a passphrase. */
-void crypt_smime_void_passphrase (void);
+void crypt_smime_void_passphrase(void);
 
-int crypt_smime_valid_passphrase (void);
+int crypt_smime_valid_passphrase(void);
 
 /* Decrypt an S/MIME message. */
-int crypt_smime_decrypt_mime (FILE *a, FILE **b, BODY *c, BODY **d);
+int crypt_smime_decrypt_mime(FILE *a, FILE **b, BODY *c, BODY **d);
 
 /* MIME handler for the application/smime content-type. */
-int crypt_smime_application_smime_handler (BODY *m, STATE *s);
+int crypt_smime_application_smime_handler(BODY *m, STATE *s);
 
 /* fixme: Needs documentation. */
-void crypt_smime_getkeys (ENVELOPE *env);
+void crypt_smime_getkeys(ENVELOPE *env);
 
 /* Check that the sender matches. */
 int crypt_smime_verify_sender(HEADER *h);
@@ -265,24 +256,24 @@ int crypt_smime_verify_sender(HEADER *h);
    message.  It returns NULL if any of the keys can not be found.
    If oppenc_mode is true, only keys that can be determined without
    prompting will be used.  */
-char *crypt_smime_findkeys (ADDRESS *adrlist, int oppenc_mode);
+char *crypt_smime_findkeys(ADDRESS *adrlist, int oppenc_mode);
 
 /* fixme: Needs documentation. */
-BODY *crypt_smime_sign_message (BODY *a);
+BODY *crypt_smime_sign_message(BODY *a);
 
 /* fixme: needs documentation. */
-BODY *crypt_smime_build_smime_entity (BODY *a, char *certlist);
+BODY *crypt_smime_build_smime_entity(BODY *a, char *certlist);
 
 /* Add a certificate and update index file (externally). */
-void crypt_smime_invoke_import (char *infile, char *mailbox);
+void crypt_smime_invoke_import(char *infile, char *mailbox);
 
-int crypt_smime_send_menu (HEADER *msg);
+int crypt_smime_send_menu(HEADER *msg);
 
-void crypt_smime_set_sender (const char *sender);
+void crypt_smime_set_sender(const char *sender);
 
 /* fixme: needs documentation */
-int crypt_smime_verify_one (BODY *sigbdy, STATE *s, const char *tempf);
+int crypt_smime_verify_one(BODY *sigbdy, STATE *s, const char *tempf);
 
-void crypt_init (void);
+void crypt_init(void);
 
 #endif /* _MUTT_CRYPT_H */

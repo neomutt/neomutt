@@ -16,48 +16,48 @@
 #ifndef _MUTT_MBYTE_H
 #define _MUTT_MBYTE_H 1
 
-# ifdef HAVE_WC_FUNCS
-#  ifdef HAVE_WCHAR_H
-#   include <wchar.h>
-#  endif
-#  ifdef HAVE_WCTYPE_H
-#   include <wctype.h>
-#  endif
-# endif
+#ifdef HAVE_WC_FUNCS
+#ifdef HAVE_WCHAR_H
+#include <wchar.h>
+#endif
+#ifdef HAVE_WCTYPE_H
+#include <wctype.h>
+#endif
+#endif
 
-# ifndef HAVE_WC_FUNCS
+#ifndef HAVE_WC_FUNCS
 #ifdef towupper
-# undef towupper
+#undef towupper
 #endif
 #ifdef towlower
-# undef towlower
+#undef towlower
 #endif
 #ifdef iswprint
-# undef iswprint
+#undef iswprint
 #endif
 #ifdef iswspace
-# undef iswspace
+#undef iswspace
 #endif
 #ifdef iswalnum
-# undef iswalnum
+#undef iswalnum
 #endif
 #ifdef iswalpha
-# undef iswalpha
+#undef iswalpha
 #endif
 #ifdef iswupper
-# undef iswupper
+#undef iswupper
 #endif
-size_t wcrtomb (char *s, wchar_t wc, mbstate_t *ps);
-size_t mbrtowc (wchar_t *pwc, const char *s, size_t n, mbstate_t *ps);
-int iswprint (wint_t wc);
-int iswspace (wint_t wc);
-int iswalnum (wint_t wc);
-int iswalpha (wint_t wc);
-int iswupper (wint_t wc);
-wint_t towupper (wint_t wc);
-wint_t towlower (wint_t wc);
-int wcwidth (wchar_t wc);
-# endif /* !HAVE_WC_FUNCS */
+size_t wcrtomb(char *s, wchar_t wc, mbstate_t *ps);
+size_t mbrtowc(wchar_t *pwc, const char *s, size_t n, mbstate_t *ps);
+int iswprint(wint_t wc);
+int iswspace(wint_t wc);
+int iswalnum(wint_t wc);
+int iswalpha(wint_t wc);
+int iswupper(wint_t wc);
+wint_t towupper(wint_t wc);
+wint_t towlower(wint_t wc);
+int wcwidth(wchar_t wc);
+#endif /* !HAVE_WC_FUNCS */
 
 
 void mutt_set_charset(char *charset);

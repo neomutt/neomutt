@@ -43,21 +43,21 @@ typedef struct _connection
   struct _connection *next;
 
   void *sockdata;
-  int (*conn_read) (struct _connection* conn, char* buf, size_t len);
-  int (*conn_write) (struct _connection *conn, const char *buf, size_t count);
-  int (*conn_open) (struct _connection *conn);
-  int (*conn_close) (struct _connection *conn);
-  int (*conn_poll) (struct _connection *conn);
+  int (*conn_read)(struct _connection *conn, char *buf, size_t len);
+  int (*conn_write)(struct _connection *conn, const char *buf, size_t count);
+  int (*conn_open)(struct _connection *conn);
+  int (*conn_close)(struct _connection *conn);
+  int (*conn_poll)(struct _connection *conn);
 } CONNECTION;
 
 int mutt_socket_open(CONNECTION *conn);
 int mutt_socket_close(CONNECTION *conn);
 int mutt_socket_poll(CONNECTION *conn);
 int mutt_socket_readchar(CONNECTION *conn, char *c);
-#define mutt_socket_readln(A,B,C) mutt_socket_readln_d(A,B,C,MUTT_SOCK_LOG_CMD)
+#define mutt_socket_readln(A, B, C) mutt_socket_readln_d(A, B, C, MUTT_SOCK_LOG_CMD)
 int mutt_socket_readln_d(char *buf, size_t buflen, CONNECTION *conn, int dbg);
-#define mutt_socket_write(A,B) mutt_socket_write_d(A,B,-1,MUTT_SOCK_LOG_CMD)
-#define mutt_socket_write_n(A,B,C) mutt_socket_write_d(A,B,C,MUTT_SOCK_LOG_CMD)
+#define mutt_socket_write(A, B) mutt_socket_write_d(A, B, -1, MUTT_SOCK_LOG_CMD)
+#define mutt_socket_write_n(A, B, C) mutt_socket_write_d(A, B, C, MUTT_SOCK_LOG_CMD)
 int mutt_socket_write_d(CONNECTION *conn, const char *buf, int len, int dbg);
 
 /* stupid hack for imap_logout_all */

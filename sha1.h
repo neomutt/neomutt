@@ -10,7 +10,8 @@
 
 #include "crypthash.h"
 
-typedef struct {
+typedef struct
+{
   uint32_t state[5];
   uint32_t count[2];
   unsigned char buffer[64];
@@ -21,11 +22,11 @@ void sha1_init(SHA1_CTX *context);
 void sha1_update(SHA1_CTX *context, const unsigned char *data, uint32_t len);
 void sha1_final(unsigned char digest[20], SHA1_CTX *context);
 
-# define SHA1_Transform sha1_transform
-# define SHA1_Init sha1_init
-# define SHA1_Update sha1_update
-# define SHA1_Final sha1_final
+#define SHA1_Transform sha1_transform
+#define SHA1_Init sha1_init
+#define SHA1_Update sha1_update
+#define SHA1_Final sha1_final
 
-# define SHA_DIGEST_LENGTH 20
+#define SHA_DIGEST_LENGTH 20
 
 #endif /* _MUTT_SHA1_H */

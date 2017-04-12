@@ -31,9 +31,9 @@ void mutt_sasl_done(void);
 
 typedef struct
 {
-  sasl_conn_t* saslconn;
-  const sasl_ssf_t* ssf;
-  const unsigned int* pbufsize;
+  sasl_conn_t *saslconn;
+  const sasl_ssf_t *ssf;
+  const unsigned int *pbufsize;
 
   /* read buffer */
   const char *buf;
@@ -41,13 +41,12 @@ typedef struct
   unsigned int bpos;
 
   /* underlying socket data */
-  void* sockdata;
-  int (*msasl_open) (CONNECTION* conn);
-  int (*msasl_close) (CONNECTION* conn);
-  int (*msasl_read) (CONNECTION* conn, char* buf, size_t len);
-  int (*msasl_write) (CONNECTION* conn, const char* buf, size_t count);
-  int (*msasl_poll) (CONNECTION* conn);
-}
-SASL_DATA;
+  void *sockdata;
+  int (*msasl_open)(CONNECTION *conn);
+  int (*msasl_close)(CONNECTION *conn);
+  int (*msasl_read)(CONNECTION *conn, char *buf, size_t len);
+  int (*msasl_write)(CONNECTION *conn, const char *buf, size_t count);
+  int (*msasl_poll)(CONNECTION *conn);
+} SASL_DATA;
 
 #endif /* _MUTT_SASL_H */

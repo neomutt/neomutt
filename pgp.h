@@ -34,8 +34,8 @@ int pgp_check_traditional(FILE *fp, BODY *b, int tagged_only);
 BODY *pgp_make_key_attachment(char *tempf);
 const char *pgp_micalg(const char *fname);
 
-char *_pgp_keyid (pgp_key_t);
-char *pgp_keyid (pgp_key_t);
+char *_pgp_keyid(pgp_key_t);
+char *pgp_keyid(pgp_key_t);
 char *pgp_short_keyid(pgp_key_t k);
 char *pgp_long_keyid(pgp_key_t k);
 char *pgp_fpr_or_lkeyid(pgp_key_t k);

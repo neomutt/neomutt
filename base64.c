@@ -35,19 +35,17 @@
  */
 
 #include "config.h"
-
 #include "mutt.h"
 #include "mime.h"
 
-#define BAD     -1
+#define BAD -1
 
 static const char B64Chars[64] = {
-  'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O',
-  'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', 'a', 'b', 'c', 'd',
-  'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's',
-  't', 'u', 'v', 'w', 'x', 'y', 'z', '0', '1', '2', '3', '4', '5', '6', '7',
-  '8', '9', '+', '/'
-};
+    'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M',
+    'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z',
+    'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm',
+    'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z',
+    '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '+', '/'};
 
 /**
  * mutt_to_base64 - convert raw bytes to null-terminated base64 string.
@@ -63,19 +61,19 @@ static const char B64Chars[64] = {
  * null-byte is returned (equivalent to calling strlen() on the output buffer
  * after this function returns).
  */
-size_t mutt_to_base64 (char *out, const char *cin, size_t len, size_t olen)
+size_t mutt_to_base64(char *out, const char *cin, size_t len, size_t olen)
 {
-  unsigned char *begin = (unsigned char *)out;
-  const unsigned char *in = (const unsigned char *)cin;
+  unsigned char *begin = (unsigned char *) out;
+  const unsigned char *in = (const unsigned char *) cin;
   while (len >= 3 && olen > 10)
   {
     *out++ = B64Chars[in[0] >> 2];
     *out++ = B64Chars[((in[0] << 4) & 0x30) | (in[1] >> 4)];
     *out++ = B64Chars[((in[1] << 2) & 0x3c) | (in[2] >> 6)];
     *out++ = B64Chars[in[2] & 0x3f];
-    olen  -= 4;
-    len   -= 3;
-    in    += 3;
+    olen -= 4;
+    len -= 3;
+    in += 3;
   }
 
   /* clean up remainder */
@@ -92,7 +90,7 @@ size_t mutt_to_base64 (char *out, const char *cin, size_t len, size_t olen)
     *out++ = '=';
   }
   *out = '\0';
-  return out - (char *)begin;
+  return out - (char *) begin;
 }
 
 /**
@@ -106,7 +104,7 @@ size_t mutt_to_base64 (char *out, const char *cin, size_t len, size_t olen)
  * null-terminated. If the input buffer contains invalid base64 characters,
  * this function returns -1.
  */
-int mutt_from_base64 (char *out, const char *in)
+int mutt_from_base64(char *out, const char *in)
 {
   int len = 0;
   register unsigned char digit1, digit2, digit3, digit4;
@@ -114,16 +112,16 @@ int mutt_from_base64 (char *out, const char *in)
   do
   {
     digit1 = in[0];
-    if (digit1 > 127 || base64val (digit1) == BAD)
+    if (digit1 > 127 || base64val(digit1) == BAD)
       return -1;
     digit2 = in[1];
-    if (digit2 > 127 || base64val (digit2) == BAD)
+    if (digit2 > 127 || base64val(digit2) == BAD)
       return -1;
     digit3 = in[2];
-    if (digit3 > 127 || ((digit3 != '=') && (base64val (digit3) == BAD)))
+    if (digit3 > 127 || ((digit3 != '=') && (base64val(digit3) == BAD)))
       return -1;
     digit4 = in[3];
-    if (digit4 > 127 || ((digit4 != '=') && (base64val (digit4) == BAD)))
+    if (digit4 > 127 || ((digit4 != '=') && (base64val(digit4) == BAD)))
       return -1;
     in += 4;
 
@@ -136,12 +134,11 @@ int mutt_from_base64 (char *out, const char *in)
       len++;
       if (digit4 != '=')
       {
-	*out++ = ((base64val(digit3) << 6) & 0xc0) | base64val(digit4);
-	len++;
+        *out++ = ((base64val(digit3) << 6) & 0xc0) | base64val(digit4);
+        len++;
       }
     }
-  }
-  while (*in && digit4 != '=');
+  } while (*in && digit4 != '=');
 
   return len;
 }

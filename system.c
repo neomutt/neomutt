@@ -16,20 +16,18 @@
  */
 
 #include "config.h"
-
-#include "mutt.h"
-#ifdef USE_IMAP
-# include "imap.h"
-# include <errno.h>
-#endif
-
-#include <stdlib.h>
 #include <signal.h>
+#include <stdlib.h>
 #include <string.h>
 #include <sys/wait.h>
 #include <unistd.h>
+#include "mutt.h"
+#ifdef USE_IMAP
+#include <errno.h>
+#include "imap.h"
+#endif
 
-int _mutt_system (const char *cmd, int flags)
+int _mutt_system(const char *cmd, int flags)
 {
   int rc = -1;
   struct sigaction act;
@@ -43,28 +41,28 @@ int _mutt_system (const char *cmd, int flags)
 
   /* must ignore SIGINT and SIGQUIT */
 
-  mutt_block_signals_system ();
+  mutt_block_signals_system();
 
   /* also don't want to be stopped right now */
   if (flags & MUTT_DETACH_PROCESS)
   {
-    sigemptyset (&set);
-    sigaddset (&set, SIGTSTP);
-    sigprocmask (SIG_BLOCK, &set, NULL);
+    sigemptyset(&set);
+    sigaddset(&set, SIGTSTP);
+    sigprocmask(SIG_BLOCK, &set, NULL);
   }
   else
   {
     act.sa_handler = SIG_DFL;
-    /* we want to restart the waitpid() below */
+/* we want to restart the waitpid() below */
 #ifdef SA_RESTART
     act.sa_flags = SA_RESTART;
 #endif
-    sigemptyset (&act.sa_mask);
-    sigaction (SIGTSTP, &act, &oldtstp);
-    sigaction (SIGCONT, &act, &oldcont);
+    sigemptyset(&act.sa_mask);
+    sigaction(SIGTSTP, &act, &oldtstp);
+    sigaction(SIGCONT, &act, &oldcont);
   }
 
-  if ((thepid = fork ()) == 0)
+  if ((thepid = fork()) == 0)
   {
     act.sa_flags = 0;
 
@@ -73,70 +71,70 @@ int _mutt_system (const char *cmd, int flags)
       int fd;
 
       /* give up controlling terminal */
-      setsid ();
+      setsid();
 
-      switch (fork ())
+      switch (fork())
       {
-	case 0:
+        case 0:
 #ifdef OPEN_MAX
-	  for (fd = 0; fd < OPEN_MAX; fd++)
-	    close (fd);
+          for (fd = 0; fd < OPEN_MAX; fd++)
+            close(fd);
 #elif defined(_POSIX_OPEN_MAX)
-	  for (fd = 0; fd < _POSIX_OPEN_MAX; fd++)
-	    close (fd);
+          for (fd = 0; fd < _POSIX_OPEN_MAX; fd++)
+            close(fd);
 #else
-	  close (0);
-	  close (1);
-	  close (2);
+          close(0);
+          close(1);
+          close(2);
 #endif
-	  chdir ("/");
-	  act.sa_handler = SIG_DFL;
-          sigemptyset (&act.sa_mask);
-	  sigaction (SIGCHLD, &act, NULL);
-	  break;
+          chdir("/");
+          act.sa_handler = SIG_DFL;
+          sigemptyset(&act.sa_mask);
+          sigaction(SIGCHLD, &act, NULL);
+          break;
 
-	case -1:
-	  _exit (127);
+        case -1:
+          _exit(127);
 
-	default:
-	  _exit (0);
+        default:
+          _exit(0);
       }
     }
 
     /* reset signals for the child; not really needed, but... */
-    mutt_unblock_signals_system (0);
+    mutt_unblock_signals_system(0);
     act.sa_handler = SIG_DFL;
     act.sa_flags = 0;
-    sigemptyset (&act.sa_mask);
-    sigaction (SIGTERM, &act, NULL);
-    sigaction (SIGTSTP, &act, NULL);
-    sigaction (SIGCONT, &act, NULL);
+    sigemptyset(&act.sa_mask);
+    sigaction(SIGTERM, &act, NULL);
+    sigaction(SIGTSTP, &act, NULL);
+    sigaction(SIGCONT, &act, NULL);
 
-    execle (EXECSHELL, "sh", "-c", cmd, NULL, mutt_envlist ());
-    _exit (127); /* execl error */
+    execle(EXECSHELL, "sh", "-c", cmd, NULL, mutt_envlist());
+    _exit(127); /* execl error */
   }
   else if (thepid != -1)
   {
 #ifndef USE_IMAP
     /* wait for the (first) child process to finish */
-    waitpid (thepid, &rc, 0);
+    waitpid(thepid, &rc, 0);
 #else
-    rc = imap_wait_keepalive (thepid);
+    rc = imap_wait_keepalive(thepid);
 #endif
   }
 
   if (!(flags & MUTT_DETACH_PROCESS))
   {
-    sigaction (SIGCONT, &oldcont, NULL);
-    sigaction (SIGTSTP, &oldtstp, NULL);
+    sigaction(SIGCONT, &oldcont, NULL);
+    sigaction(SIGTSTP, &oldtstp, NULL);
   }
 
   /* reset SIGINT, SIGQUIT and SIGCHLD */
-  mutt_unblock_signals_system (1);
+  mutt_unblock_signals_system(1);
   if (flags & MUTT_DETACH_PROCESS)
-    sigprocmask (SIG_UNBLOCK, &set, NULL);
+    sigprocmask(SIG_UNBLOCK, &set, NULL);
 
-  rc = (thepid != -1) ? (WIFEXITED (rc) ? WEXITSTATUS (rc) : -1) : -1;
+  rc = (thepid != -1) ? (WIFEXITED(rc) ? WEXITSTATUS(rc) : -1) : -1;
 
   return rc;
 }

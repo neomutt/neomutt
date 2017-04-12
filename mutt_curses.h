@@ -25,8 +25,8 @@
 #define unix
 #endif /* unix */
 
-#include <slang.h>	/* in addition to slcurses.h, we need slang.h for the version
-			   number to test for 2.x having UTF-8 support in main.c */
+#include <slang.h> /* in addition to slcurses.h, we need slang.h for the version
+                      number to test for 2.x having UTF-8 support in main.c */
 #ifdef bool
 #undef bool
 #endif
@@ -46,10 +46,10 @@
 #undef mvaddstr
 
 /* We redefine the helper macros to hide the compiler warnings */
-#define addnstr(s,n)            waddnstr(stdscr,((char*)s),(n))
-#define addstr(x)               waddstr(stdscr, ((char*)x))
-#define mvaddnstr(y,x,s,n)      mvwaddnstr(stdscr,(y),(x),((char*)s),(n))
-#define mvaddstr(y,x,s)         mvwaddstr(stdscr,(y),(x),((char*)s))
+#define addnstr(s, n)         waddnstr(stdscr, ((char *) s), (n))
+#define addstr(x)             waddstr(stdscr, ((char *) x))
+#define mvaddnstr(y, x, s, n) mvwaddnstr(stdscr, (y), (x), ((char *) s), (n))
+#define mvaddstr(y, x, s)     mvwaddstr(stdscr, (y), (x), ((char *) s))
 
 #define KEY_DC SL_KEY_DELETE
 #define KEY_IC SL_KEY_IC
@@ -57,16 +57,18 @@
 #else /* USE_SLANG_CURSES */
 
 #ifdef HAVE_NCURSESW_NCURSES_H
-# include <ncursesw/ncurses.h>
+#include <ncursesw/ncurses.h>
 #elif HAVE_NCURSES_NCURSES_H
-# include <ncurses/ncurses.h>
+#include <ncurses/ncurses.h>
 #elif HAVE_NCURSES_H
-# include <ncurses.h>
+#include <ncurses.h>
 #else
-# include <curses.h>
+#include <curses.h>
 #endif
 
 #endif /* USE_SLANG_CURSES */
+
+#include "lib.h"
 
 /* AIX defines ``lines'' in <term.h>, but it's used as a var name in
  * various places in Mutt
@@ -75,21 +77,27 @@
 #undef lines
 #endif /* lines */
 
-#define CLEARLINE(win,x) mutt_window_clearline(win, x)
-#define CENTERLINE(win,x,y) mutt_window_move(win, y, (win->cols-strlen(x))/2), addstr(x)
-#define BEEP() do { if (option (OPTBEEP)) beep(); } while (0)
+#define CLEARLINE(win, x) mutt_window_clearline(win, x)
+#define CENTERLINE(win, x, y)                                                  \
+  mutt_window_move(win, y, (win->cols - strlen(x)) / 2), addstr(x)
+#define BEEP()                                                                 \
+  do                                                                           \
+  {                                                                            \
+    if (option(OPTBEEP))                                                       \
+      beep();                                                                  \
+  } while (0)
 
 #if !(defined(USE_SLANG_CURSES) || defined(HAVE_CURS_SET))
 #define curs_set(x)
 #endif
 
 #if (defined(USE_SLANG_CURSES) || defined(HAVE_CURS_SET))
-void mutt_curs_set (int);
+void mutt_curs_set(int);
 #else
 #define mutt_curs_set(x)
 #endif
 
-#define ctrl(c) ((c)-'@')
+#define ctrl(c) ((c) - '@')
 
 #ifdef KEY_ENTER
 #define CI_is_return(c) ((c) == '\r' || (c) == '\n' || (c) == KEY_ENTER)
@@ -103,7 +111,7 @@ typedef struct
   int op; /* function op */
 } event_t;
 
-event_t mutt_getch (void);
+event_t mutt_getch(void);
 
 void mutt_endwin(const char *msg);
 void mutt_flushinp(void);
@@ -183,14 +191,14 @@ typedef struct color_line
   struct color_line *next;
 } COLOR_LINE;
 
-#define MUTT_PROGRESS_SIZE      (1<<0)  /* traffic-based progress */
-#define MUTT_PROGRESS_MSG       (1<<1)  /* message-based progress */
+#define MUTT_PROGRESS_SIZE (1 << 0) /* traffic-based progress */
+#define MUTT_PROGRESS_MSG  (1 << 1) /* message-based progress */
 
 typedef struct
 {
   unsigned short inc;
   unsigned short flags;
-  const char* msg;
+  const char *msg;
   long pos;
   long size;
   unsigned int timestamp;
@@ -259,7 +267,7 @@ extern COLOR_LINE *ColorIndexSubjectList;
 extern COLOR_LINE *ColorIndexTagList;
 #endif
 
-void ci_start_color (void);
+void ci_start_color(void);
 
 /* If the system has bkgdset() use it rather than attrset() so that the clr*()
  * functions will properly set the background attributes all the way to the

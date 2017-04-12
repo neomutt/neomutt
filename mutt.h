@@ -19,18 +19,29 @@
 #ifndef _MUTT_H
 #define _MUTT_H 1
 
-#include <stdio.h>
-#include <stdlib.h>
-#ifdef HAVE_UNISTD_H
-# include <unistd.h> /* needed for SEEK_SET */
-#endif
-#include <sys/types.h>
-#include <sys/stat.h>
-#include <time.h>
+#include <grp.h>
+#include <libgen.h>
 #include <limits.h>
+#include <pwd.h>
+#include <signal.h>
 #include <stdarg.h>
 #include <stdbool.h>
-#include <signal.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <sys/stat.h>
+#include <sys/types.h>
+#include <time.h>
+#include "charset.h"
+#include "hash.h"
+#include "rfc822.h"
+
+#ifdef HAVE_UNISTD_H
+#include <unistd.h>
+#endif
+#ifndef _POSIX_PATH_MAX
+#include <limits.h>
+#endif
+
 /* On OS X 10.5.x, wide char functions are inlined by default breaking
  * --without-wc-funcs compilation
  */
@@ -38,14 +49,10 @@
 #define _DONT_USE_CTYPE_INLINE_
 #endif
 #ifdef HAVE_WCHAR_H
-# include <wchar.h>
+#include <wchar.h>
 #endif
 #if defined(HAVE_WCTYPE_H) && defined(HAVE_WC_FUNCS)
-# include <wctype.h>
-#endif
-
-#ifndef _POSIX_PATH_MAX
-#include <limits.h>
+#include <wctype.h>
 #endif
 
 /* PATH_MAX is undefined on the hurd */
@@ -53,35 +60,27 @@
 #define PATH_MAX _POSIX_PATH_MAX
 #endif
 
-#include <libgen.h>
-#include <pwd.h>
-#include <grp.h>
-
-#include "rfc822.h"
-#include "hash.h"
-#include "charset.h"
-
 #ifndef __bool_true_false_are_defined
-# define boot int
-# define _Bool int
-# define false 0
-# define true (!false)
-# define __bool_true_false_are_defined 1
+#define boot int
+#define _Bool int
+#define false 0
+#define true(!false)
+#define __bool_true_false_are_defined 1
 #endif
 
 #ifndef HAVE_WC_FUNCS
-# ifdef MB_LEN_MAX
-#  undef MB_LEN_MAX
-# endif
-# define MB_LEN_MAX 16
+#ifdef MB_LEN_MAX
+#undef MB_LEN_MAX
+#endif
+#define MB_LEN_MAX 16
 #endif
 
 #ifdef HAVE_FGETS_UNLOCKED
-# define fgets fgets_unlocked
+#define fgets fgets_unlocked
 #endif
 
 #ifdef HAVE_FGETC_UNLOCKED
-# define fgetc fgetc_unlocked
+#define fgetc fgetc_unlocked
 #endif
 
 /* nifty trick I stole from ELM 2.5alpha. */
@@ -93,88 +92,85 @@
 #define INITVAL(x)
 #endif
 
-#define WHERE_DEFINED 1
-
 #include "buffer.h"
 #include "mutt_regex.h"
 
 /* flags for mutt_enter_string() */
-#define  MUTT_ALIAS   1      /* do alias "completion" by calling up the alias-menu */
-#define  MUTT_FILE    (1<<1) /* do file completion */
-#define  MUTT_EFILE   (1<<2) /* do file completion, plus incoming folders */
-#define  MUTT_CMD     (1<<3) /* do completion on previous word */
-#define  MUTT_PASS    (1<<4) /* password mode (no echo) */
-#define  MUTT_CLEAR   (1<<5) /* clear input if printable character is pressed */
-#define  MUTT_COMMAND (1<<6) /* do command completion */
-#define  MUTT_PATTERN (1<<7) /* pattern mode - only used for history classes */
-#define  MUTT_LABEL   (1<<8) /* do label completion */
+#define MUTT_ALIAS 1            /* do alias "completion" by calling up the alias-menu */
+#define MUTT_FILE     (1 << 1)  /* do file completion */
+#define MUTT_EFILE    (1 << 2)  /* do file completion, plus incoming folders */
+#define MUTT_CMD      (1 << 3)  /* do completion on previous word */
+#define MUTT_PASS     (1 << 4)  /* password mode (no echo) */
+#define MUTT_CLEAR    (1 << 5)  /* clear input if printable character is pressed */
+#define MUTT_COMMAND  (1 << 6)  /* do command completion */
+#define MUTT_PATTERN  (1 << 7)  /* pattern mode - only used for history classes */
+#define MUTT_LABEL    (1 << 8)  /* do label completion */
 #ifdef USE_NOTMUCH
-#define  MUTT_NM_QUERY (1<<9) /* Notmuch query mode. */
-#define  MUTT_NM_TAG   (1<<10) /* Notmuch tag +/- mode. */
+#define MUTT_NM_QUERY (1 << 9)  /* Notmuch query mode. */
+#define MUTT_NM_TAG   (1 << 10) /* Notmuch tag +/- mode. */
 #endif
 
 /* flags for _mutt_system() */
-#define MUTT_DETACH_PROCESS	1	/* detach subprocess from group */
+#define MUTT_DETACH_PROCESS 1 /* detach subprocess from group */
 
 /* flags for mutt_FormatString() */
-typedef enum
-{
-  MUTT_FORMAT_FORCESUBJ   = (1<<0), /* print the subject even if unchanged */
-  MUTT_FORMAT_TREE        = (1<<1), /* draw the thread tree */
-  MUTT_FORMAT_MAKEPRINT   = (1<<2), /* make sure that all chars are printable */
-  MUTT_FORMAT_OPTIONAL    = (1<<3),
-  MUTT_FORMAT_STAT_FILE   = (1<<4), /* used by mutt_attach_fmt */
-  MUTT_FORMAT_ARROWCURSOR = (1<<5), /* reserve space for arrow_cursor */
-  MUTT_FORMAT_INDEX       = (1<<6), /* this is a main index entry */
-  MUTT_FORMAT_NOFILTER    = (1<<7)  /* do not allow filtering on this pass */
+typedef enum {
+  MUTT_FORMAT_FORCESUBJ   = (1 << 0), /* print the subject even if unchanged */
+  MUTT_FORMAT_TREE        = (1 << 1), /* draw the thread tree */
+  MUTT_FORMAT_MAKEPRINT   = (1 << 2), /* make sure that all chars are printable */
+  MUTT_FORMAT_OPTIONAL    = (1 << 3),
+  MUTT_FORMAT_STAT_FILE   = (1 << 4), /* used by mutt_attach_fmt */
+  MUTT_FORMAT_ARROWCURSOR = (1 << 5), /* reserve space for arrow_cursor */
+  MUTT_FORMAT_INDEX       = (1 << 6), /* this is a main index entry */
+  MUTT_FORMAT_NOFILTER    = (1 << 7)  /* do not allow filtering on this pass */
 } format_flag;
 
 /* types for mutt_add_hook() */
-#define MUTT_FOLDERHOOK  1
-#define MUTT_MBOXHOOK    (1<<1)
-#define MUTT_SENDHOOK    (1<<2)
-#define MUTT_FCCHOOK     (1<<3)
-#define MUTT_SAVEHOOK    (1<<4)
-#define MUTT_CHARSETHOOK (1<<5)
-#define MUTT_ICONVHOOK   (1<<6)
-#define MUTT_MESSAGEHOOK (1<<7)
-#define MUTT_CRYPTHOOK   (1<<8)
-#define MUTT_ACCOUNTHOOK (1<<9)
-#define MUTT_REPLYHOOK   (1<<10)
-#define MUTT_SEND2HOOK   (1<<11)
+#define MUTT_FOLDERHOOK   (1 << 0)
+#define MUTT_MBOXHOOK     (1 << 1)
+#define MUTT_SENDHOOK     (1 << 2)
+#define MUTT_FCCHOOK      (1 << 3)
+#define MUTT_SAVEHOOK     (1 << 4)
+#define MUTT_CHARSETHOOK  (1 << 5)
+#define MUTT_ICONVHOOK    (1 << 6)
+#define MUTT_MESSAGEHOOK  (1 << 7)
+#define MUTT_CRYPTHOOK    (1 << 8)
+#define MUTT_ACCOUNTHOOK  (1 << 9)
+#define MUTT_REPLYHOOK    (1 << 10)
+#define MUTT_SEND2HOOK    (1 << 11)
 #ifdef USE_COMPRESSED
-#define MUTT_OPENHOOK    (1<<12)
-#define MUTT_APPENDHOOK  (1<<13)
-#define MUTT_CLOSEHOOK   (1<<14)
+#define MUTT_OPENHOOK     (1 << 12)
+#define MUTT_APPENDHOOK   (1 << 13)
+#define MUTT_CLOSEHOOK    (1 << 14)
 #endif
-#define MUTT_TIMEOUTHOOK (1<<15)
-#define MUTT_STARTUPHOOK (1<<16)
-#define MUTT_SHUTDOWNHOOK (1<<17)
-#define MUTT_GLOBALHOOK   (1<<18)
+#define MUTT_TIMEOUTHOOK  (1 << 15)
+#define MUTT_STARTUPHOOK  (1 << 16)
+#define MUTT_SHUTDOWNHOOK (1 << 17)
+#define MUTT_GLOBALHOOK   (1 << 18)
 
 /* tree characters for linearize_tree and print_enriched_string */
-#define MUTT_TREE_LLCORNER      1
-#define MUTT_TREE_ULCORNER      2
-#define MUTT_TREE_LTEE          3
-#define MUTT_TREE_HLINE         4
-#define MUTT_TREE_VLINE         5
-#define MUTT_TREE_SPACE         6
-#define MUTT_TREE_RARROW        7
-#define MUTT_TREE_STAR          8
-#define MUTT_TREE_HIDDEN        9
-#define MUTT_TREE_EQUALS        10
-#define MUTT_TREE_TTEE          11
-#define MUTT_TREE_BTEE          12
-#define MUTT_TREE_MISSING       13
-#define MUTT_TREE_MAX           14
+#define MUTT_TREE_LLCORNER 1
+#define MUTT_TREE_ULCORNER 2
+#define MUTT_TREE_LTEE     3
+#define MUTT_TREE_HLINE    4
+#define MUTT_TREE_VLINE    5
+#define MUTT_TREE_SPACE    6
+#define MUTT_TREE_RARROW   7
+#define MUTT_TREE_STAR     8
+#define MUTT_TREE_HIDDEN   9
+#define MUTT_TREE_EQUALS   10
+#define MUTT_TREE_TTEE     11
+#define MUTT_TREE_BTEE     12
+#define MUTT_TREE_MISSING  13
+#define MUTT_TREE_MAX      14
 
-#define MUTT_SPECIAL_INDEX		MUTT_TREE_MAX
+#define MUTT_SPECIAL_INDEX MUTT_TREE_MAX
 
-#define MUTT_THREAD_COLLAPSE    (1<<0)
-#define MUTT_THREAD_UNCOLLAPSE  (1<<1)
-#define MUTT_THREAD_GET_HIDDEN  (1<<2)
-#define MUTT_THREAD_UNREAD      (1<<3)
-#define MUTT_THREAD_NEXT_UNREAD (1<<4)
+#define MUTT_THREAD_COLLAPSE    (1 << 0)
+#define MUTT_THREAD_UNCOLLAPSE  (1 << 1)
+#define MUTT_THREAD_GET_HIDDEN  (1 << 2)
+#define MUTT_THREAD_UNREAD      (1 << 3)
+#define MUTT_THREAD_NEXT_UNREAD (1 << 4)
 
 enum
 {
@@ -286,7 +282,7 @@ enum
   OPT_MIMEFWD,
   OPT_MIMEFWDREST,
   OPT_MOVE,
-  OPT_PGPMIMEAUTO,     /* ask to revert to PGP/MIME when inline fails */
+  OPT_PGPMIMEAUTO, /* ask to revert to PGP/MIME when inline fails */
   OPT_SMIMEENCRYPTSELF,
   OPT_PGPENCRYPTSELF,
 #ifdef USE_POP
@@ -302,7 +298,7 @@ enum
   OPT_SSLSTARTTLS,
 #endif
   OPT_SUBJECT,
-  OPT_VERIFYSIG,      /* verify PGP signatures */
+  OPT_VERIFYSIG, /* verify PGP signatures */
 #ifdef USE_NNTP
   OPT_TOMODERATED,
   OPT_CATCHUP,
@@ -314,38 +310,38 @@ enum
 };
 
 /* flags to ci_send_message() */
-#define SENDREPLY	(1<<0)
-#define SENDGROUPREPLY	(1<<1)
-#define SENDLISTREPLY	(1<<2)
-#define SENDFORWARD	(1<<3)
-#define SENDPOSTPONED	(1<<4)
-#define SENDBATCH	(1<<5)
-#define SENDMAILX	(1<<6)
-#define SENDKEY		(1<<7)
-#define SENDRESEND	(1<<8)
-#define SENDPOSTPONEDFCC	(1<<9) /* used by mutt_get_postponed() to signal that the x-mutt-fcc header field was present */
-#define SENDNOFREEHEADER	(1<<10)   /* Used by the -E flag */
-#define SENDDRAFTFILE		(1<<11)   /* Used by the -H flag */
-#define SENDNEWS	(1<<12)
+#define SENDREPLY        (1 << 0)
+#define SENDGROUPREPLY   (1 << 1)
+#define SENDLISTREPLY    (1 << 2)
+#define SENDFORWARD      (1 << 3)
+#define SENDPOSTPONED    (1 << 4)
+#define SENDBATCH        (1 << 5)
+#define SENDMAILX        (1 << 6)
+#define SENDKEY          (1 << 7)
+#define SENDRESEND       (1 << 8)
+#define SENDPOSTPONEDFCC (1 << 9)  /* used by mutt_get_postponed() to signal that the x-mutt-fcc header field was present */
+#define SENDNOFREEHEADER (1 << 10) /* Used by the -E flag */
+#define SENDDRAFTFILE    (1 << 11) /* Used by the -H flag */
+#define SENDNEWS         (1 << 12)
 
 /* flags for mutt_compose_menu() */
-#define MUTT_COMPOSE_NOFREEHEADER (1<<0)
+#define MUTT_COMPOSE_NOFREEHEADER (1 << 0)
 
 /* flags to _mutt_select_file() */
-#define MUTT_SEL_BUFFY  (1<<0)
-#define MUTT_SEL_MULTI  (1<<1)
-#define MUTT_SEL_FOLDER (1<<2)
-#define MUTT_SEL_VFOLDER	(1<<3)
+#define MUTT_SEL_BUFFY   (1 << 0)
+#define MUTT_SEL_MULTI   (1 << 1)
+#define MUTT_SEL_FOLDER  (1 << 2)
+#define MUTT_SEL_VFOLDER (1 << 3)
 
 /* flags for parse_spam_list */
-#define MUTT_SPAM          1
-#define MUTT_NOSPAM        2
+#define MUTT_SPAM   1
+#define MUTT_NOSPAM 2
 
 /* flags for keywords headers */
-#define MUTT_X_LABEL         (1<<0)  /* introduced to mutt in 2000 */
-#define MUTT_X_KEYWORDS      (1<<1)  /* used in c-client, dovecot */
-#define MUTT_X_MOZILLA_KEYS  (1<<2)  /* tbird */
-#define MUTT_KEYWORDS        (1<<3)  /* rfc2822 */
+#define MUTT_X_LABEL        (1 << 0) /* introduced to mutt in 2000 */
+#define MUTT_X_KEYWORDS     (1 << 1) /* used in c-client, dovecot */
+#define MUTT_X_MOZILLA_KEYS (1 << 2) /* tbird */
+#define MUTT_KEYWORDS       (1 << 3) /* rfc2822 */
 
 /* boolean vars */
 enum
@@ -412,10 +408,10 @@ enum
   OPTIMAPSERVERNOISE,
 #endif
 #ifdef USE_SSL
-# ifndef USE_SSL_GNUTLS
+#ifndef USE_SSL_GNUTLS
   OPTSSLSYSTEMCERTS,
   OPTSSLV2,
-# endif /* USE_SSL_GNUTLS */
+#endif /* USE_SSL_GNUTLS */
   OPTSSLV3,
   OPTTLSV1,
   OPTTLSV1_1,
@@ -423,9 +419,9 @@ enum
   OPTSSLFORCETLS,
   OPTSSLVERIFYDATES,
   OPTSSLVERIFYHOST,
-# if defined(USE_SSL_OPENSSL) && defined(HAVE_SSL_PARTIAL_CHAIN)
+#if defined(USE_SSL_OPENSSL) && defined(HAVE_SSL_PARTIAL_CHAIN)
   OPTSSLVERIFYPARTIAL,
-# endif /* USE_SSL_OPENSSL */
+#endif /* USE_SSL_OPENSSL */
 #endif /* defined(USE_SSL) */
   OPTIMPLICITAUTOVIEW,
   OPTINCLUDEONLYFIRST,
@@ -439,17 +435,17 @@ enum
   OPTMAILDIRCHECKCUR,
   OPTMARKERS,
   OPTMARKOLD,
-  OPTMENUSCROLL,	/* scroll menu instead of implicit next-page */
-  OPTMENUMOVEOFF,	/* allow menu to scroll past last entry */
+  OPTMENUSCROLL,  /* scroll menu instead of implicit next-page */
+  OPTMENUMOVEOFF, /* allow menu to scroll past last entry */
 #if defined(USE_IMAP) || defined(USE_POP)
   OPTMESSAGECACHECLEAN,
 #endif
-  OPTMETAKEY,		/* interpret ALT-x as ESC-x */
+  OPTMETAKEY, /* interpret ALT-x as ESC-x */
   OPTMETOO,
   OPTMHPURGE,
   OPTMIMEFORWDECODE,
 #ifdef USE_NNTP
-  OPTMIMESUBJECT,	/* encode subject line with RFC2047 */
+  OPTMIMESUBJECT, /* encode subject line with RFC2047 */
 #endif
   OPTNARROWTREE,
   OPTPAGERSTOP,
@@ -516,7 +512,7 @@ enum
   OPTWEED,
   OPTWRAP,
   OPTWRAPSEARCH,
-  OPTWRITEBCC,		/* write out a bcc header? */
+  OPTWRITEBCC, /* write out a bcc header? */
   OPTXMAILER,
 
   OPTCRYPTUSEGPGME,
@@ -548,7 +544,7 @@ enum
   OPTPGPAUTOINLINE,
   OPTPGPREPLYINLINE,
 
-  /* news options */
+/* news options */
 
 #ifdef USE_NNTP
   OPTSHOWNEWNEWS,
@@ -561,35 +557,35 @@ enum
 
   /* pseudo options */
 
-  OPTAUXSORT,		/* (pseudo) using auxiliary sort function */
-  OPTFORCEREFRESH,	/* (pseudo) refresh even during macros */
-  OPTLOCALES,		/* (pseudo) set if user has valid locale definition */
-  OPTNOCURSES,		/* (pseudo) when sending in batch mode */
-  OPTSEARCHREVERSE,	/* (pseudo) used by ci_search_command */
-  OPTMSGERR,		/* (pseudo) used by mutt_error/mutt_message */
-  OPTSEARCHINVALID,	/* (pseudo) used to invalidate the search pat */
-  OPTSIGNALSBLOCKED,	/* (pseudo) using by mutt_block_signals () */
-  OPTSYSSIGNALSBLOCKED,	/* (pseudo) using by mutt_block_signals_system () */
-  OPTNEEDRESORT,	/* (pseudo) used to force a re-sort */
-  OPTRESORTINIT,	/* (pseudo) used to force the next resort to be from scratch */
-  OPTVIEWATTACH,	/* (pseudo) signals that we are viewing attachments */
-  OPTSORTSUBTHREADS,	/* (pseudo) used when $sort_aux changes */
-  OPTNEEDRESCORE,	/* (pseudo) set when the `score' command is used */
-  OPTATTACHMSG,		/* (pseudo) used by attach-message */
-  OPTHIDEREAD,		/* (pseudo) whether or not hide read messages */
-  OPTKEEPQUIET,		/* (pseudo) shut up the message and refresh
-			 * 	    functions while we are executing an
-			 * 	    external program.
-			 */
-  OPTMENUCALLER,	/* (pseudo) tell menu to give caller a take */
-  OPTREDRAWTREE,	/* (pseudo) redraw the thread tree */
-  OPTPGPCHECKTRUST,	/* (pseudo) used by pgp_select_key () */
-  OPTDONTHANDLEPGPKEYS,	/* (pseudo) used to extract PGP keys */
+  OPTAUXSORT,           /* (pseudo) using auxiliary sort function */
+  OPTFORCEREFRESH,      /* (pseudo) refresh even during macros */
+  OPTLOCALES,           /* (pseudo) set if user has valid locale definition */
+  OPTNOCURSES,          /* (pseudo) when sending in batch mode */
+  OPTSEARCHREVERSE,     /* (pseudo) used by ci_search_command */
+  OPTMSGERR,            /* (pseudo) used by mutt_error/mutt_message */
+  OPTSEARCHINVALID,     /* (pseudo) used to invalidate the search pat */
+  OPTSIGNALSBLOCKED,    /* (pseudo) using by mutt_block_signals () */
+  OPTSYSSIGNALSBLOCKED, /* (pseudo) using by mutt_block_signals_system () */
+  OPTNEEDRESORT,        /* (pseudo) used to force a re-sort */
+  OPTRESORTINIT,        /* (pseudo) used to force the next resort to be from scratch */
+  OPTVIEWATTACH,        /* (pseudo) signals that we are viewing attachments */
+  OPTSORTSUBTHREADS,    /* (pseudo) used when $sort_aux changes */
+  OPTNEEDRESCORE,       /* (pseudo) set when the `score' command is used */
+  OPTATTACHMSG,         /* (pseudo) used by attach-message */
+  OPTHIDEREAD,          /* (pseudo) whether or not hide read messages */
+  OPTKEEPQUIET,         /* (pseudo) shut up the message and refresh
+                         *          functions while we are executing an
+                         *          external program.
+                         */
+  OPTMENUCALLER,        /* (pseudo) tell menu to give caller a take */
+  OPTREDRAWTREE,        /* (pseudo) redraw the thread tree */
+  OPTPGPCHECKTRUST,     /* (pseudo) used by pgp_select_key () */
+  OPTDONTHANDLEPGPKEYS, /* (pseudo) used to extract PGP keys */
   OPTIGNOREMACROEVENTS, /* (pseudo) don't process macro/push/exec events while set */
 
 #ifdef USE_NNTP
-  OPTNEWS,		/* (pseudo) used to change reader mode */
-  OPTNEWSSEND,		/* (pseudo) used to change behavior when posting */
+  OPTNEWS,              /* (pseudo) used to change reader mode */
+  OPTNEWSSEND,          /* (pseudo) used to change behavior when posting */
 #endif
 #ifdef USE_NOTMUCH
   OPTVIRTSPOOLFILE,
@@ -599,16 +595,16 @@ enum
   OPTMAX
 };
 
-#define mutt_bit_alloc(n) calloc ((n + 7) / 8, sizeof (char))
-#define mutt_bit_set(v,n) v[n/8] |= (1 << (n % 8))
-#define mutt_bit_unset(v,n) v[n/8] &= ~(1 << (n % 8))
-#define mutt_bit_toggle(v,n) v[n/8] ^= (1 << (n % 8))
-#define mutt_bit_isset(v,n) (v[n/8] & (1 << (n % 8)))
+#define mutt_bit_alloc(n)     calloc((n + 7) / 8, sizeof(char))
+#define mutt_bit_set(v, n)    v[n / 8] |= (1 << (n % 8))
+#define mutt_bit_unset(v, n)  v[n / 8] &= ~(1 << (n % 8))
+#define mutt_bit_toggle(v, n) v[n / 8] ^= (1 << (n % 8))
+#define mutt_bit_isset(v, n)  (v[n / 8] & (1 << (n % 8)))
 
-#define set_option(x) mutt_bit_set(Options,x)
-#define unset_option(x) mutt_bit_unset(Options,x)
-#define toggle_option(x) mutt_bit_toggle(Options,x)
-#define option(x) mutt_bit_isset(Options,x)
+#define set_option(x) mutt_bit_set(Options, x)
+#define unset_option(x) mutt_bit_unset(Options, x)
+#define toggle_option(x) mutt_bit_toggle(Options, x)
+#define option(x) mutt_bit_isset(Options, x)
 
 typedef struct list_t
 {
@@ -625,14 +621,14 @@ typedef struct rx_list_t
 typedef struct replace_list_t
 {
   REGEXP *rx;
-  int     nmatch;
-  char   *template;
+  int nmatch;
+  char *template;
   struct replace_list_t *next;
 } REPLACE_LIST;
 
 static inline LIST *mutt_new_list(void)
 {
-  return safe_calloc (1, sizeof (LIST));
+  return safe_calloc(1, sizeof(LIST));
 }
 
 void mutt_free_list(LIST **list);
@@ -653,11 +649,11 @@ void mutt_push_list(LIST **head, const char *data);
 bool mutt_pop_list(LIST **head);
 const char *mutt_front_list(LIST *head);
 
-void mutt_init (int skip_sys_rc, LIST *commands);
+void mutt_init(int skip_sys_rc, LIST *commands);
 
 typedef struct alias
 {
-  struct alias *self;		/* XXX - ugly hack */
+  struct alias *self; /* XXX - ugly hack */
   char *name;
   ADDRESS *addr;
   struct alias *next;
@@ -677,10 +673,10 @@ typedef struct envelope
   ADDRESS *reply_to;
   ADDRESS *mail_followup_to;
   ADDRESS *x_original_to;
-  char *list_post;		/* this stores a mailto URL, or nothing */
+  char *list_post; /* this stores a mailto URL, or nothing */
   char *subject;
-  char *real_subj;		/* offset of the real subject */
-  char *disp_subj;		/* display subject (modified copy of subject) */
+  char *real_subj; /* offset of the real subject */
+  char *disp_subj; /* display subject (modified copy of subject) */
   char *message_id;
   char *supersedes;
   char *date;
@@ -693,18 +689,18 @@ typedef struct envelope
   char *x_comment_to;
 #endif
   BUFFER *spam;
-  LIST *references;		/* message references (in reverse order) */
-  LIST *in_reply_to;		/* in-reply-to header content */
-  LIST *userhdrs;		/* user defined headers */
+  LIST *references;  /* message references (in reverse order) */
+  LIST *in_reply_to; /* in-reply-to header content */
+  LIST *userhdrs;    /* user defined headers */
   int kwtypes;
 
-  bool irt_changed : 1; /* In-Reply-To changed to link/break threads */
+  bool irt_changed : 1;  /* In-Reply-To changed to link/break threads */
   bool refs_changed : 1; /* References changed to break thread */
 } ENVELOPE;
 
 static inline ENVELOPE *mutt_new_envelope(void)
 {
-    return safe_calloc (1, sizeof (ENVELOPE));
+  return safe_calloc(1, sizeof(ENVELOPE));
 }
 
 typedef struct parameter
@@ -716,80 +712,80 @@ typedef struct parameter
 
 static inline PARAMETER *mutt_new_parameter(void)
 {
-    return safe_calloc (1, sizeof (PARAMETER));
+  return safe_calloc(1, sizeof(PARAMETER));
 }
 
 /* Information that helps in determining the Content-* of an attachment */
 typedef struct content
 {
-  long hibin;              /* 8-bit characters */
-  long lobin;              /* unprintable 7-bit chars (eg., control chars) */
-  long crlf;		   /* '\r' and '\n' characters */
-  long ascii;              /* number of ascii chars */
-  long linemax;            /* length of the longest line in the file */
-  bool space : 1;          /* whitespace at the end of lines? */
-  bool binary : 1;         /* long lines, or CR not in CRLF pair */
-  bool from : 1;           /* has a line beginning with "From "? */
-  bool dot : 1;            /* has a line consisting of a single dot? */
-  bool cr : 1;             /* has CR, even when in a CRLF pair */
+  long hibin;      /* 8-bit characters */
+  long lobin;      /* unprintable 7-bit chars (eg., control chars) */
+  long crlf;       /* '\r' and '\n' characters */
+  long ascii;      /* number of ascii chars */
+  long linemax;    /* length of the longest line in the file */
+  bool space : 1;  /* whitespace at the end of lines? */
+  bool binary : 1; /* long lines, or CR not in CRLF pair */
+  bool from : 1;   /* has a line beginning with "From "? */
+  bool dot : 1;    /* has a line consisting of a single dot? */
+  bool cr : 1;     /* has CR, even when in a CRLF pair */
 } CONTENT;
 
 typedef struct body
 {
-  char *xtype;			/* content-type if x-unknown */
-  char *subtype;                /* content-type subtype */
-  PARAMETER *parameter;         /* parameters of the content-type */
-  char *description;            /* content-description */
-  char *form_name;		/* Content-Disposition form-data name param */
-  long hdr_offset;              /* offset in stream where the headers begin.
-				 * this info is used when invoking metamail,
-				 * where we need to send the headers of the
-				 * attachment
-				 */
-  LOFF_T offset;                /* offset where the actual data begins */
-  LOFF_T length;                /* length (in bytes) of attachment */
-  char *filename;               /* when sending a message, this is the file
-				 * to which this structure refers
-				 */
-  char *d_filename;		/* filename to be used for the
-				 * content-disposition header.
-				 * If NULL, filename is used
-				 * instead.
-				 */
-  char *charset;                /* charset of attached file */
-  CONTENT *content;             /* structure used to store detailed info about
-				 * the content of the attachment.  this is used
-				 * to determine what content-transfer-encoding
-				 * is required when sending mail.
-				 */
-  struct body *next;            /* next attachment in the list */
-  struct body *parts;           /* parts of a multipart or message/rfc822 */
-  struct header *hdr;		/* header information for message/rfc822 */
+  char *xtype;          /* content-type if x-unknown */
+  char *subtype;        /* content-type subtype */
+  PARAMETER *parameter; /* parameters of the content-type */
+  char *description;    /* content-description */
+  char *form_name;      /* Content-Disposition form-data name param */
+  long hdr_offset;      /* offset in stream where the headers begin.
+                         * this info is used when invoking metamail,
+                         * where we need to send the headers of the
+                         * attachment
+                         */
+  LOFF_T offset;        /* offset where the actual data begins */
+  LOFF_T length;        /* length (in bytes) of attachment */
+  char *filename;       /* when sending a message, this is the file
+                         * to which this structure refers
+                         */
+  char *d_filename;     /* filename to be used for the
+                         * content-disposition header.
+                         * If NULL, filename is used
+                         * instead.
+                         */
+  char *charset;        /* charset of attached file */
+  CONTENT *content;     /* structure used to store detailed info about
+                         * the content of the attachment.  this is used
+                         * to determine what content-transfer-encoding
+                         * is required when sending mail.
+                         */
+  struct body *next;    /* next attachment in the list */
+  struct body *parts;   /* parts of a multipart or message/rfc822 */
+  struct header *hdr;   /* header information for message/rfc822 */
 
-  struct attachptr *aptr;	/* Menu information, used in recvattach.c */
+  struct attachptr *aptr; /* Menu information, used in recvattach.c */
 
   signed short attach_count;
 
-  time_t stamp;			/* time stamp of last
-				 * encoding update.
-				 */
+  time_t stamp; /* time stamp of last
+                 * encoding update.
+                 */
 
   unsigned int type : 4;        /* content-type primary type */
   unsigned int encoding : 3;    /* content-transfer-encoding */
   unsigned int disposition : 2; /* content-disposition */
   bool use_disp : 1;            /* Content-Disposition uses filename= ? */
   bool unlink : 1;              /* flag to indicate the file named by
-				 * "filename" should be unlink()ed before
-				 * free()ing this structure
-				 */
+                                 * "filename" should be unlink()ed before
+                                 * free()ing this structure
+                                 */
   bool tagged : 1;
-  bool deleted : 1;	        /* attachment marked for deletion */
+  bool deleted : 1; /* attachment marked for deletion */
 
-  bool noconv : 1;	        /* don't do character set conversion */
+  bool noconv : 1; /* don't do character set conversion */
   bool force_charset : 1;
-  				/* send mode: don't adjust the character
-				 * set when in send-mode.
-				 */
+  /* send mode: don't adjust the character
+   * set when in send-mode.
+   */
   bool is_signed_data : 1; /* A lot of MUAs don't indicate
                                       S/MIME signed-data correctly,
                                       e.g. they use foo.p7m even for
@@ -802,11 +798,11 @@ typedef struct body
                                       function to figure the type of
                                       the message. */
 
-  bool goodsig : 1;	/* good cryptographic signature */
-  bool warnsig : 1;     /* maybe good signature */
-  bool badsig : 1;	/* bad cryptographic signature (needed to check encrypted s/mime-signatures) */
+  bool goodsig : 1; /* good cryptographic signature */
+  bool warnsig : 1; /* maybe good signature */
+  bool badsig : 1; /* bad cryptographic signature (needed to check encrypted s/mime-signatures) */
 
-  bool collapsed : 1;	/* used by recvattach */
+  bool collapsed : 1; /* used by recvattach */
   bool attach_qualifies : 1;
 
 } BODY;
@@ -816,32 +812,32 @@ typedef struct mutt_thread THREAD;
 
 typedef struct header
 {
-  unsigned int security : 12;  /* bit 0-8: flags, bit 9,10: application.
-				 see: mutt_crypt.h pgplib.h, smime.h */
+  unsigned int security : 12; /* bit 0-8: flags, bit 9,10: application.
+                                 see: mutt_crypt.h pgplib.h, smime.h */
 
-  bool mime : 1;		/* has a MIME-Version header? */
-  bool flagged : 1;		/* marked important? */
-  bool tagged : 1;
-  bool deleted : 1;
-  bool purge : 1;		/* skip trash folder when deleting */
-  bool quasi_deleted : 1;	/* deleted from mutt, but not modified on disk */
-  bool changed : 1;
-  bool attach_del : 1;		/* has an attachment marked for deletion */
-  bool old : 1;
-  bool read : 1;
-  bool expired : 1;		/* already expired? */
-  bool superseded : 1;		/* got superseded? */
-  bool replied : 1;
-  bool subject_changed : 1;	/* used for threading */
-  bool threaded : 1;		/* used for threading */
-  bool display_subject : 1;	/* used for threading */
-  bool recip_valid : 1;		/* is_recipient is valid */
-  bool active : 1;		/* message is not to be removed */
-  bool trash : 1;		/* message is marked as trashed on disk.
-				 * This flag is used by the maildir_trash
-				 * option.
-				 */
-  bool xlabel_changed : 1;	/* editable - used for syncing */
+  bool mime            : 1; /* has a MIME-Version header? */
+  bool flagged         : 1; /* marked important? */
+  bool tagged          : 1;
+  bool deleted         : 1;
+  bool purge           : 1; /* skip trash folder when deleting */
+  bool quasi_deleted   : 1; /* deleted from mutt, but not modified on disk */
+  bool changed         : 1;
+  bool attach_del      : 1; /* has an attachment marked for deletion */
+  bool old             : 1;
+  bool read            : 1;
+  bool expired         : 1; /* already expired? */
+  bool superseded      : 1; /* got superseded? */
+  bool replied         : 1;
+  bool subject_changed : 1; /* used for threading */
+  bool threaded        : 1; /* used for threading */
+  bool display_subject : 1; /* used for threading */
+  bool recip_valid     : 1; /* is_recipient is valid */
+  bool active          : 1; /* message is not to be removed */
+  bool trash           : 1; /* message is marked as trashed on disk.
+                             * This flag is used by the maildir_trash
+                             * option.
+                             */
+  bool xlabel_changed  : 1; /* editable - used for syncing */
 
   /* timezone of the sender of this message */
   unsigned int zhours : 5;
@@ -856,27 +852,27 @@ typedef struct header
   bool attach_valid : 1;
 
   /* the following are used to support collapsing threads  */
-  bool collapsed : 1;		/* is this message part of a collapsed thread? */
-  bool limited : 1;		/* is this message in a limited view?  */
-  size_t num_hidden;          	/* number of hidden messages in this view */
+  bool collapsed : 1; /* is this message part of a collapsed thread? */
+  bool limited : 1;   /* is this message in a limited view?  */
+  size_t num_hidden;  /* number of hidden messages in this view */
 
-  short recipient;		/* user_is_recipient()'s return value, cached */
+  short recipient;    /* user_is_recipient()'s return value, cached */
 
-  int pair; 			/* color-pair to use when displaying in the index */
+  int pair;           /* color-pair to use when displaying in the index */
 
-  time_t date_sent;     	/* time when the message was sent (UTC) */
-  time_t received;      	/* time when the message was placed in the mailbox */
-  LOFF_T offset;          	/* where in the stream does this message begin? */
-  int lines;			/* how many lines in the body of this message? */
-  int index;			/* the absolute (unsorted) message number */
-  int msgno;			/* number displayed to the user */
-  int virtual;			/* virtual message number */
+  time_t date_sent;   /* time when the message was sent (UTC) */
+  time_t received;    /* time when the message was placed in the mailbox */
+  LOFF_T offset;      /* where in the stream does this message begin? */
+  int lines;          /* how many lines in the body of this message? */
+  int index;          /* the absolute (unsorted) message number */
+  int msgno;          /* number displayed to the user */
+  int virtual;        /* virtual message number */
   int score;
-  ENVELOPE *env;		/* envelope information */
-  BODY *content;		/* list of MIME parts */
+  ENVELOPE *env;      /* envelope information */
+  BODY *content;      /* list of MIME parts */
   char *path;
 
-  char *tree;           	/* character string to print thread tree */
+  char *tree; /* character string to print thread tree */
   THREAD *thread;
 
   /* Number of qualifying attachments in message, if attach_valid */
@@ -887,20 +883,20 @@ typedef struct header
 #endif
 
 #ifdef USE_POP
-  int refno;			/* message number on server */
+  int refno; /* message number on server */
 #endif
 
 #if defined(USE_POP) || defined(USE_IMAP) || defined(USE_NNTP) || defined(USE_NOTMUCH)
-  void *data;            	/* driver-specific data */
+  void *data;                       /* driver-specific data */
   void (*free_cb)(struct header *); /* driver-specific data free function */
 #endif
 
-  char *maildir_flags;		/* unknown maildir flags */
+  char *maildir_flags; /* unknown maildir flags */
 } HEADER;
 
 static inline HEADER *mutt_new_header(void)
 {
-    return safe_calloc (1, sizeof (HEADER));
+  return safe_calloc(1, sizeof(HEADER));
 }
 
 struct mutt_thread
@@ -923,7 +919,7 @@ struct mutt_thread
 
 
 /* flag to mutt_pattern_comp() */
-#define MUTT_FULL_MSG	(1<<0)	/* enable body and header matching */
+#define MUTT_FULL_MSG (1 << 0) /* enable body and header matching */
 
 typedef enum {
   MUTT_MATCH_FULL_ADDRESS = 1
@@ -949,14 +945,13 @@ typedef struct pattern_t
   bool alladdr : 1;
   bool stringmatch : 1;
   bool groupmatch : 1;
-  bool ign_case : 1;		/* ignore case for local stringmatch searches */
+  bool ign_case : 1; /* ignore case for local stringmatch searches */
   bool isalias : 1;
   int min;
   int max;
   struct pattern_t *next;
-  struct pattern_t *child;		/* arguments to logical op */
-  union
-  {
+  struct pattern_t *child; /* arguments to logical op */
+  union {
     regex_t *rx;
     group_t *g;
     char *str;
@@ -970,14 +965,14 @@ typedef struct pattern_t
  */
 typedef struct
 {
-  int list_all;          /* ^~l */
-  int list_one;          /*  ~l */
-  int sub_all;           /* ^~u */
-  int sub_one;           /*  ~u */
-  int pers_recip_all;    /* ^~p */
-  int pers_recip_one;    /*  ~p */
-  int pers_from_all;     /* ^~P */
-  int pers_from_one;     /*  ~P */
+  int list_all;       /* ^~l */
+  int list_one;       /*  ~l */
+  int sub_all;        /* ^~u */
+  int sub_one;        /*  ~u */
+  int pers_recip_all; /* ^~p */
+  int pers_recip_one; /*  ~p */
+  int pers_from_all;  /* ^~P */
+  int pers_from_one;  /*  ~P */
 } pattern_cache_t;
 
 /* ACL Rights */
@@ -1013,15 +1008,15 @@ struct _message;
  */
 struct mx_ops
 {
-  int (*open) (struct _context *ctx);
-  int (*open_append) (struct _context *ctx, int flags);
-  int (*close) (struct _context *ctx);
-  int (*check) (struct _context *ctx, int *index_hint);
-  int (*sync) (struct _context *ctx, int *index_hint);
-  int (*open_msg) (struct _context *ctx, struct _message *msg, int msgno);
-  int (*close_msg) (struct _context *ctx, struct _message *msg);
-  int (*commit_msg) (struct _context *ctx, struct _message *msg);
-  int (*open_new_msg) (struct _message *msg, struct _context *ctx, HEADER *hdr);
+  int (*open)(struct _context *ctx);
+  int (*open_append)(struct _context *ctx, int flags);
+  int (*close)(struct _context *ctx);
+  int (*check)(struct _context *ctx, int *index_hint);
+  int (*sync)(struct _context *ctx, int *index_hint);
+  int (*open_msg)(struct _context *ctx, struct _message *msg, int msgno);
+  int (*close_msg)(struct _context *ctx, struct _message *msg);
+  int (*commit_msg)(struct _context *ctx, struct _message *msg);
+  int (*open_new_msg)(struct _message *msg, struct _context *ctx, HEADER *hdr);
 };
 
 #include "mutt_menu.h"
@@ -1029,54 +1024,54 @@ struct mx_ops
 typedef struct _context
 {
   char *path;
-  char *realpath;               /* used for buffy comparison and the sidebar */
+  char *realpath; /* used for buffy comparison and the sidebar */
   FILE *fp;
   time_t atime;
   time_t mtime;
   off_t size;
   off_t vsize;
-  char *pattern;                /* limit pattern string */
-  pattern_t *limit_pattern;     /* compiled limit pattern */
+  char *pattern;            /* limit pattern string */
+  pattern_t *limit_pattern; /* compiled limit pattern */
   HEADER **hdrs;
-  HEADER *last_tag;		/* last tagged msg. used to link threads */
-  THREAD *tree;			/* top of thread tree */
-  HASH *id_hash;		/* hash table by msg id */
-  HASH *subj_hash;		/* hash table by subject */
-  HASH *thread_hash;		/* hash table for threading */
-  HASH *label_hash;             /* hash table for x-labels */
-  int *v2r;			/* mapping from virtual to real msgno */
-  int hdrmax;			/* number of pointers in hdrs */
-  int msgcount;			/* number of messages in the mailbox */
-  int vcount;			/* the number of virtual messages */
-  int tagged;			/* how many messages are tagged? */
-  int new;			/* how many new messages? */
-  int unread;			/* how many unread messages? */
-  int deleted;			/* how many deleted messages */
-  int flagged;			/* how many flagged messages */
-  int msgnotreadyet;		/* which msg "new" in pager, -1 if none */
+  HEADER *last_tag;  /* last tagged msg. used to link threads */
+  THREAD *tree;      /* top of thread tree */
+  HASH *id_hash;     /* hash table by msg id */
+  HASH *subj_hash;   /* hash table by subject */
+  HASH *thread_hash; /* hash table for threading */
+  HASH *label_hash;  /* hash table for x-labels */
+  int *v2r;          /* mapping from virtual to real msgno */
+  int hdrmax;        /* number of pointers in hdrs */
+  int msgcount;      /* number of messages in the mailbox */
+  int vcount;        /* the number of virtual messages */
+  int tagged;        /* how many messages are tagged? */
+  int new;           /* how many new messages? */
+  int unread;        /* how many unread messages? */
+  int deleted;       /* how many deleted messages */
+  int flagged;       /* how many flagged messages */
+  int msgnotreadyet; /* which msg "new" in pager, -1 if none */
 
-  MUTTMENU *menu;               /* needed for pattern compilation */
+  MUTTMENU *menu; /* needed for pattern compilation */
 
-  short magic;			/* mailbox type */
+  short magic; /* mailbox type */
 
-  unsigned char rights[(RIGHTSMAX + 7)/8];	/* ACL bits */
+  unsigned char rights[(RIGHTSMAX + 7) / 8]; /* ACL bits */
 
-  bool locked : 1;		/* is the mailbox locked? */
-  bool changed : 1;		/* mailbox has been modified */
-  bool readonly : 1;		/* don't allow changes to the mailbox */
-  bool dontwrite : 1;		/* don't write the mailbox on close */
-  bool append : 1;		/* mailbox is opened in append mode */
-  bool quiet : 1;		/* inhibit status messages? */
-  bool collapsed : 1;		/* are all threads collapsed? */
-  bool closing : 1;		/* mailbox is being closed */
-  bool peekonly : 1;		/* just taking a glance, revert atime */
+  bool locked : 1;    /* is the mailbox locked? */
+  bool changed : 1;   /* mailbox has been modified */
+  bool readonly : 1;  /* don't allow changes to the mailbox */
+  bool dontwrite : 1; /* don't write the mailbox on close */
+  bool append : 1;    /* mailbox is opened in append mode */
+  bool quiet : 1;     /* inhibit status messages? */
+  bool collapsed : 1; /* are all threads collapsed? */
+  bool closing : 1;   /* mailbox is being closed */
+  bool peekonly : 1;  /* just taking a glance, revert atime */
 
 #ifdef USE_COMPRESSED
-  void *compress_info;		/* compressed mbox module private data */
+  void *compress_info; /* compressed mbox module private data */
 #endif /* USE_COMPRESSED */
 
   /* driver hooks */
-  void *data;			/* driver specific data */
+  void *data; /* driver specific data */
   struct mx_ops *mx_ops;
 } CONTEXT;
 
@@ -1097,28 +1092,28 @@ typedef struct
   size_t lastchar;
   size_t curpos;
   size_t begin;
-  int	 tabs;
+  int tabs;
 } ENTER_STATE;
 
 static inline ENTER_STATE *mutt_new_enter_state(void)
 {
-    return safe_calloc (1, sizeof (ENTER_STATE));
+  return safe_calloc(1, sizeof(ENTER_STATE));
 }
 
 /* flags for the STATE struct */
-#define MUTT_DISPLAY       (1<<0) /* output is displayed to the user */
-#define MUTT_VERIFY        (1<<1) /* perform signature verification */
-#define MUTT_PENDINGPREFIX (1<<2) /* prefix to write, but character must follow */
-#define MUTT_WEED          (1<<3) /* weed headers even when not in display mode */
-#define MUTT_CHARCONV      (1<<4) /* Do character set conversions */
-#define MUTT_PRINTING      (1<<5) /* are we printing? - MUTT_DISPLAY "light" */
-#define MUTT_REPLYING      (1<<6) /* are we replying? */
-#define MUTT_FIRSTDONE     (1<<7) /* the first attachment has been done */
+#define MUTT_DISPLAY       (1 << 0) /* output is displayed to the user */
+#define MUTT_VERIFY        (1 << 1) /* perform signature verification */
+#define MUTT_PENDINGPREFIX (1 << 2) /* prefix to write, but character must follow */
+#define MUTT_WEED          (1 << 3) /* weed headers even when not in display mode */
+#define MUTT_CHARCONV      (1 << 4) /* Do character set conversions */
+#define MUTT_PRINTING      (1 << 5) /* are we printing? - MUTT_DISPLAY "light" */
+#define MUTT_REPLYING      (1 << 6) /* are we replying? */
+#define MUTT_FIRSTDONE     (1 << 7) /* the first attachment has been done */
 
 #define state_set_prefix(s) ((s)->flags |= MUTT_PENDINGPREFIX)
 #define state_reset_prefix(s) ((s)->flags &= ~MUTT_PENDINGPREFIX)
-#define state_puts(x,y) fputs(x,(y)->fpout)
-#define state_putc(x,y) fputc(x,(y)->fpout)
+#define state_puts(x, y) fputs(x, (y)->fpout)
+#define state_putc(x, y) fputc(x, (y)->fpout)
 
 void state_mark_attach(STATE *s);
 void state_attach_puts(const char *t, STATE *s);
@@ -1129,9 +1124,9 @@ int state_putws(const wchar_t *ws, STATE *s);
 /* for attachment counter */
 typedef struct
 {
-  char   *major;
-  int     major_int;
-  char   *minor;
+  char *major;
+  int major_int;
+  char *minor;
   regex_t minor_rx;
 } ATTACH_MATCH;
 
@@ -1141,17 +1136,17 @@ typedef struct
  * option types. */
 typedef struct
 {
-  int len;               /* number of characters */
-  char **chars;          /* the array of multibyte character strings */
-  char *segmented_str;   /* each chars entry points inside this string */
+  int len;             /* number of characters */
+  char **chars;        /* the array of multibyte character strings */
+  char *segmented_str; /* each chars entry points inside this string */
   char *orig_str;
 } mbchar_table;
 
-#define MUTT_PARTS_TOPLEVEL	(1<<0)	/* is the top-level part */
+#define MUTT_PARTS_TOPLEVEL (1 << 0) /* is the top-level part */
 
 #include "ascii.h"
-#include "protos.h"
-#include "lib.h"
 #include "globals.h"
+#include "lib.h"
+#include "protos.h"
 
 #endif /* _MUTT_H */

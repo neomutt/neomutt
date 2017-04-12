@@ -34,9 +34,9 @@ struct folder_file
   char *name;
   char *desc;
 
-  bool new;               /* true if mailbox has "new mail" */
-  int msg_count;           /* total number of messages */
-  int msg_unread;          /* number of unread messages */
+  bool new;       /* true if mailbox has "new mail" */
+  int msg_count;  /* total number of messages */
+  int msg_unread; /* number of unread messages */
 
 #ifdef USE_IMAP
   char delim;
@@ -56,8 +56,8 @@ struct folder_file
 struct browser_state
 {
   struct folder_file *entry;
-  unsigned int entrylen;	/* number of real entries */
-  unsigned int entrymax;	/* max entry */
+  unsigned int entrylen; /* number of real entries */
+  unsigned int entrymax; /* max entry */
 #ifdef USE_IMAP
   bool imap_browse;
   char *folder;

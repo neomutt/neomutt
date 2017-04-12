@@ -20,14 +20,14 @@
 #define _MUTT_PROTOS_H 1
 
 #ifdef HAVE_INTTYPES_H
-# include <inttypes.h>
+#include <inttypes.h>
 #endif
 
 #include "mbyte.h"
 
 #define MoreArgs(p) (*p->dptr && *p->dptr != ';' && *p->dptr != '#')
 
-#define mutt_make_string(A,B,C,D,E) _mutt_make_string(A,B,C,D,E,0)
+#define mutt_make_string(A, B, C, D, E) _mutt_make_string(A, B, C, D, E, 0)
 void _mutt_make_string(char *dest, size_t destlen, const char *s, CONTEXT *ctx,
                        HEADER *hdr, format_flag flags);
 
@@ -39,40 +39,43 @@ struct hdr_format_info
 };
 
 typedef enum {
-  kXDGConfigHome,  /* $XDG_CONFIG_HOME */
-  kXDGConfigDirs,  /* $XDG_CONFIG_DIRS */
+  kXDGConfigHome, /* $XDG_CONFIG_HOME */
+  kXDGConfigDirs, /* $XDG_CONFIG_DIRS */
 } XDGType;
 
-void mutt_make_string_info (char *dst, size_t dstlen, int cols, const char *s, struct hdr_format_info *hfi, format_flag flags);
+void mutt_make_string_info(char *dst, size_t dstlen, int cols, const char *s,
+                           struct hdr_format_info *hfi, format_flag flags);
 
 void mutt_free_opts(void);
 
-#define mutt_system(x) _mutt_system(x,0)
+#define mutt_system(x) _mutt_system(x, 0)
 int _mutt_system(const char *cmd, int flags);
 
-#define mutt_next_thread(x) _mutt_aside_thread(x,1,0)
-#define mutt_previous_thread(x) _mutt_aside_thread(x,0,0)
-#define mutt_next_subthread(x) _mutt_aside_thread(x,1,1)
-#define mutt_previous_subthread(x) _mutt_aside_thread(x,0,1)
-int _mutt_aside_thread (HEADER *hdr, short dir, short subthreads);
+#define mutt_next_thread(x) _mutt_aside_thread(x, 1, 0)
+#define mutt_previous_thread(x) _mutt_aside_thread(x, 0, 0)
+#define mutt_next_subthread(x) _mutt_aside_thread(x, 1, 1)
+#define mutt_previous_subthread(x) _mutt_aside_thread(x, 0, 1)
+int _mutt_aside_thread(HEADER *hdr, short dir, short subthreads);
 
-#define mutt_collapse_thread(x,y) _mutt_traverse_thread (x,y,MUTT_THREAD_COLLAPSE)
-#define mutt_uncollapse_thread(x,y) _mutt_traverse_thread (x,y,MUTT_THREAD_UNCOLLAPSE)
-#define mutt_get_hidden(x,y)_mutt_traverse_thread (x,y,MUTT_THREAD_GET_HIDDEN)
-#define mutt_thread_contains_unread(x,y) _mutt_traverse_thread (x,y,MUTT_THREAD_UNREAD)
-#define mutt_thread_next_unread(x,y) _mutt_traverse_thread(x,y,MUTT_THREAD_NEXT_UNREAD)
+#define mutt_collapse_thread(x, y) _mutt_traverse_thread(x, y, MUTT_THREAD_COLLAPSE)
+#define mutt_uncollapse_thread(x, y) _mutt_traverse_thread(x, y, MUTT_THREAD_UNCOLLAPSE)
+#define mutt_get_hidden(x, y) _mutt_traverse_thread(x, y, MUTT_THREAD_GET_HIDDEN)
+#define mutt_thread_contains_unread(x, y) _mutt_traverse_thread(x, y, MUTT_THREAD_UNREAD)
+#define mutt_thread_next_unread(x, y) _mutt_traverse_thread(x, y, MUTT_THREAD_NEXT_UNREAD)
 int _mutt_traverse_thread(CONTEXT *ctx, HEADER *cur, int flag);
 
-typedef const char * format_t (char *, size_t, size_t, int, char, const char *, const char *, const char *, const char *, unsigned long, format_flag);
+typedef const char *format_t(char *, size_t, size_t, int, char, const char *,
+                             const char *, const char *, const char *,
+                             unsigned long, format_flag);
 
-void mutt_FormatString (char *dest,		/* output buffer */
-			size_t destlen,		/* output buffer len */
-			size_t col,		/* starting column (nonzero when called recursively) */
-                        int cols,               /* maximum columns */
-			const char *src,	/* template string */
-			format_t *callback,	/* callback for processing */
-			unsigned long data,	/* callback data */
-			format_flag flags);	/* callback flags */
+void mutt_FormatString(char *dest,         /* output buffer */
+                       size_t destlen,     /* output buffer len */
+                       size_t col,         /* starting column (nonzero when called recursively) */
+                       int cols,           /* maximum columns */
+                       const char *src,    /* template string */
+                       format_t *callback, /* callback for processing */
+                       unsigned long data, /* callback data */
+                       format_flag flags); /* callback flags */
 
 void mutt_parse_content_type(char *s, BODY *ct);
 void mutt_generate_boundary(PARAMETER **parm);
@@ -124,18 +127,10 @@ time_t mutt_parse_date(const char *s, HEADER *h);
 int is_from(const char *s, char *path, size_t pathlen, time_t *tp);
 void mutt_touch_atime(int f);
 
-const char *mutt_attach_fmt (
-	char *dest,
-	size_t destlen,
-	size_t col,
-        int cols,
-	char op,
-	const char *src,
-	const char *prefix,
-	const char *ifstring,
-	const char *elsestring,
-	unsigned long data,
-	format_flag flags);
+const char *mutt_attach_fmt(char *dest, size_t destlen, size_t col, int cols,
+                            char op, const char *src, const char *prefix,
+                            const char *ifstring, const char *elsestring,
+                            unsigned long data, format_flag flags);
 
 
 char *mutt_charset_hook(const char *chs);
@@ -190,8 +185,8 @@ void mutt_edit_content_type(HEADER *h, BODY *b, FILE *fp);
 void mutt_edit_file(const char *editor, const char *data);
 void mutt_edit_headers(const char *editor, const char *body, HEADER *msg,
                        char *fcc, size_t fcclen);
-char **mutt_envlist (void);
-void mutt_envlist_set (const char *name, const char *value);
+char **mutt_envlist(void);
+void mutt_envlist_set(const char *name, const char *value);
 int mutt_filter_unprintable(char **s);
 int mutt_label_message(HEADER *hdr);
 void mutt_make_label_hash(CONTEXT *ctx);
@@ -232,8 +227,8 @@ void mutt_make_misc_reply_headers(ENVELOPE *env, CONTEXT *ctx, HEADER *cur, ENVE
 void mutt_make_post_indent(CONTEXT *ctx, HEADER *cur, FILE *out);
 void mutt_merge_envelopes(ENVELOPE *base, ENVELOPE **extra);
 void mutt_message_to_7bit(BODY *a, FILE *fp);
-#define mutt_mktemp(a,b) mutt_mktemp_pfx_sfx (a, b, "mutt", NULL)
-#define mutt_mktemp_pfx_sfx(a,b,c,d)  _mutt_mktemp (a, b, c, d, __FILE__, __LINE__)
+#define mutt_mktemp(a, b) mutt_mktemp_pfx_sfx(a, b, "mutt", NULL)
+#define mutt_mktemp_pfx_sfx(a, b, c, d) _mutt_mktemp(a, b, c, d, __FILE__, __LINE__)
 void _mutt_mktemp(char *s, size_t slen, const char *prefix, const char *suffix,
                   const char *src, int line);
 void mutt_normalize_time(struct tm *tm);
@@ -253,11 +248,11 @@ void mutt_safe_path(char *s, size_t l, ADDRESS *a);
 void mutt_save_path(char *d, size_t dsize, ADDRESS *a);
 void mutt_score_message(CONTEXT *ctx, HEADER *hdr, int upd_ctx);
 void mutt_select_fcc(char *path, size_t pathlen, HEADER *hdr);
-#define mutt_select_file(A,B,C) _mutt_select_file(A,B,C,NULL,NULL)
+#define mutt_select_file(A, B, C) _mutt_select_file(A, B, C, NULL, NULL)
 void _mutt_select_file(char *f, size_t flen, int flags, char ***files, int *numfiles);
 void mutt_message_hook(CONTEXT *ctx, HEADER *hdr, int type);
 void _mutt_set_flag(CONTEXT *ctx, HEADER *h, int flag, int bf, int upd_ctx);
-#define mutt_set_flag(a,b,c,d) _mutt_set_flag(a,b,c,d,1)
+#define mutt_set_flag(a, b, c, d) _mutt_set_flag(a, b, c, d, 1)
 void mutt_set_followup_to(ENVELOPE *e);
 void mutt_shell_escape(void);
 void mutt_show_error(void);
@@ -309,25 +304,25 @@ int mutt_edit_attachment(BODY *a);
 int mutt_edit_message(CONTEXT *ctx, HEADER *hdr);
 int mutt_fetch_recips(ENVELOPE *out, ENVELOPE *in, int flags);
 int mutt_chscmp(const char *s, const char *chs);
-#define mutt_is_utf8(a) mutt_chscmp (a, "utf-8")
-#define mutt_is_us_ascii(a) mutt_chscmp (a, "us-ascii")
+#define mutt_is_utf8(a) mutt_chscmp(a, "utf-8")
+#define mutt_is_us_ascii(a) mutt_chscmp(a, "us-ascii")
 int mutt_parent_message(CONTEXT *ctx, HEADER *hdr, int find_root);
 int mutt_prepare_template(FILE *fp, CONTEXT *ctx, HEADER *newhdr, HEADER *hdr, short resend);
 int mutt_resend_message(FILE *fp, CONTEXT *ctx, HEADER *cur);
 int mutt_compose_to_sender(HEADER *hdr);
-#define mutt_enter_fname(A,B,C,D) _mutt_enter_fname(A,B,C,D,0,NULL,NULL,0)
-#define mutt_enter_vfolder(A,B,C,D) _mutt_enter_fname(A,B,C,D,0,NULL,NULL,MUTT_SEL_VFOLDER)
+#define mutt_enter_fname(A, B, C, D) _mutt_enter_fname(A, B, C, D, 0, NULL, NULL, 0)
+#define mutt_enter_vfolder(A, B, C, D) _mutt_enter_fname(A, B, C, D, 0, NULL, NULL, MUTT_SEL_VFOLDER)
 int _mutt_enter_fname(const char *prompt, char *buf, size_t blen, int buffy,
                       int multiple, char ***files, int *numfiles, int flags);
 int mutt_enter_string(char *buf, size_t buflen, int col, int flags);
 int _mutt_enter_string(char *buf, size_t buflen, int col, int flags, int multiple,
                        char ***files, int *numfiles, ENTER_STATE *state);
-#define mutt_get_field(A,B,C,D) _mutt_get_field(A,B,C,D,0,NULL,NULL)
+#define mutt_get_field(A, B, C, D) _mutt_get_field(A, B, C, D, 0, NULL, NULL)
 int _mutt_get_field(const char *field, char *buf, size_t buflen, int complete,
                     int multiple, char ***files, int *numfiles);
 int mutt_get_hook_type(const char *name);
 int mutt_get_field_unbuffered(char *msg, char *buf, size_t buflen, int flags);
-#define mutt_get_password(A,B,C) mutt_get_field_unbuffered(A,B,C,MUTT_PASS)
+#define mutt_get_password(A, B, C) mutt_get_field_unbuffered(A, B, C, MUTT_PASS)
 
 int mutt_get_postponed(CONTEXT *ctx, HEADER *hdr, HEADER **cur, char *fcc, size_t fcclen);
 int mutt_get_tmp_attachment(BODY *a);
@@ -419,20 +414,18 @@ int mutt_from_base64(char *out, const char *in);
 int mutt_wctoutf8(char *s, unsigned int c, size_t buflen);
 
 #ifdef LOCALES_HACK
-#define IsPrint(c) (isprint((unsigned char)(c)) || \
-	((unsigned char)(c) >= 0xa0))
+#define IsPrint(c) (isprint((unsigned char) (c)) || ((unsigned char) (c) >= 0xa0))
 #define IsWPrint(wc) (iswprint(wc) || wc >= 0xa0)
 #else
-#define IsPrint(c) (isprint((unsigned char)(c)) || \
-	(option (OPTLOCALES) ? 0 : \
-	((unsigned char)(c) >= 0xa0)))
-#define IsWPrint(wc) (iswprint(wc) || \
-	(option (OPTLOCALES) ? 0 : (wc >= 0xa0)))
+#define IsPrint(c)                                                             \
+  (isprint((unsigned char) (c)) ||                                             \
+   (option(OPTLOCALES) ? 0 : ((unsigned char) (c) >= 0xa0)))
+#define IsWPrint(wc) (iswprint(wc) || (option(OPTLOCALES) ? 0 : (wc >= 0xa0)))
 #endif
 
-static inline pattern_t *new_pattern (void)
+static inline pattern_t *new_pattern(void)
 {
-  return safe_calloc (1, sizeof (pattern_t));
+  return safe_calloc(1, sizeof(pattern_t));
 }
 
 int mutt_pattern_exec(struct pattern_t *pat, pattern_exec_flag flags,
@@ -456,13 +449,13 @@ void mutt_pattern_free(pattern_t **pat);
 
 /* HP-UX, ConvexOS and UNIXware don't have this macro */
 #ifndef S_ISLNK
-#define S_ISLNK(x) (((x) & S_IFMT) == S_IFLNK ? 1 : 0)
+#define S_ISLNK(x) (((x) &S_IFMT) == S_IFLNK ? 1 : 0)
 #endif
 
-int getdnsdomainname (char *, size_t);
+int getdnsdomainname(char *, size_t);
 
 /* According to SCO support, this is how to detect SCO */
-#if defined (_M_UNIX) || defined (MUTT_OS)
+#if defined(_M_UNIX) || defined(MUTT_OS)
 #define SCO
 #endif
 
@@ -476,11 +469,11 @@ int getdnsdomainname (char *, size_t);
 #endif /* !HAVE_STRERROR */
 
 #ifndef HAVE_MEMMOVE
-#define memmove(d,s,n) bcopy((s),(d),(n))
+#define memmove(d, s, n) bcopy((s), (d), (n))
 #endif
 
 #ifdef _AIX
-int setegid (gid_t);
+int setegid(gid_t);
 #endif /* _AIX */
 
 /* unsorted */

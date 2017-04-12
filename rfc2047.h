@@ -25,7 +25,7 @@ int convert_nonmime_string(char **ps);
 void _rfc2047_encode_string(char **pd, int encode_specials, int col);
 void rfc2047_encode_adrlist(ADDRESS *addr, const char *tag);
 
-#define rfc2047_encode_string(a) _rfc2047_encode_string (a, 0, 32);
+#define rfc2047_encode_string(a) _rfc2047_encode_string(a, 0, 32);
 
 void rfc2047_decode(char **pd);
 void rfc2047_decode_adrlist(ADDRESS *a);

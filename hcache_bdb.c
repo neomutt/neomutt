@@ -19,13 +19,12 @@
  */
 
 #include "config.h"
-
-#include "hcache_backend.h"
-#include "mutt.h"
-#include "mx.h"
 #include <db.h>
-#include <fcntl.h>
 #include <errno.h>
+#include <fcntl.h>
+#include "mutt.h"
+#include "hcache_backend.h"
+#include "mx.h"
 
 typedef struct
 {
@@ -35,8 +34,7 @@ typedef struct
   char lockfile[_POSIX_PATH_MAX];
 } hcache_db_ctx_t;
 
-static void
-dbt_init(DBT *dbt, void *data, size_t len)
+static void dbt_init(DBT *dbt, void *data, size_t len)
 {
   dbt->data = data;
   dbt->size = dbt->ulen = len;
@@ -44,16 +42,14 @@ dbt_init(DBT *dbt, void *data, size_t len)
   dbt->flags = DB_DBT_USERMEM;
 }
 
-static void
-dbt_empty_init(DBT *dbt)
+static void dbt_empty_init(DBT *dbt)
 {
   dbt->data = NULL;
   dbt->size = dbt->ulen = dbt->dlen = dbt->doff = 0;
   dbt->flags = 0;
 }
 
-static void *
-hcache_bdb_open(const char *path)
+static void *hcache_bdb_open(const char *path)
 {
   struct stat sb;
   int ret;
@@ -62,22 +58,22 @@ hcache_bdb_open(const char *path)
 
   hcache_db_ctx_t *ctx = safe_malloc(sizeof(hcache_db_ctx_t));
 
-  if (mutt_atoi (HeaderCachePageSize, &pagesize) < 0 || pagesize <= 0)
+  if (mutt_atoi(HeaderCachePageSize, &pagesize) < 0 || pagesize <= 0)
     pagesize = 16384;
 
-  snprintf (ctx->lockfile, _POSIX_PATH_MAX, "%s-lock-hack", path);
+  snprintf(ctx->lockfile, _POSIX_PATH_MAX, "%s-lock-hack", path);
 
-  ctx->fd = open (ctx->lockfile, O_WRONLY | O_CREAT, S_IRUSR | S_IWUSR);
+  ctx->fd = open(ctx->lockfile, O_WRONLY | O_CREAT, S_IRUSR | S_IWUSR);
   if (ctx->fd < 0)
   {
     FREE(&ctx);
     return NULL;
   }
 
-  if (mx_lock_file (ctx->lockfile, ctx->fd, 1, 0, 5))
+  if (mx_lock_file(ctx->lockfile, ctx->fd, 1, 0, 5))
     goto fail_close;
 
-  ret = db_env_create (&ctx->env, 0);
+  ret = db_env_create(&ctx->env, 0);
   if (ret)
     goto fail_unlock;
 
@@ -86,7 +82,7 @@ hcache_bdb_open(const char *path)
     goto fail_env;
 
   ctx->db = NULL;
-  ret = db_create (&ctx->db, ctx->env, 0);
+  ret = db_create(&ctx->db, ctx->env, 0);
   if (ret)
     goto fail_env;
 
@@ -96,29 +92,27 @@ hcache_bdb_open(const char *path)
     ctx->db->set_pagesize(ctx->db, pagesize);
   }
 
-  ret = (*ctx->db->open)(ctx->db, NULL, path, NULL, DB_BTREE, createflags,
-                       0600);
+  ret = (*ctx->db->open)(ctx->db, NULL, path, NULL, DB_BTREE, createflags, 0600);
   if (ret)
     goto fail_db;
 
   return ctx;
 
 fail_db:
-  ctx->db->close (ctx->db, 0);
+  ctx->db->close(ctx->db, 0);
 fail_env:
-  ctx->env->close (ctx->env, 0);
+  ctx->env->close(ctx->env, 0);
 fail_unlock:
-  mx_unlock_file (ctx->lockfile, ctx->fd, 0);
+  mx_unlock_file(ctx->lockfile, ctx->fd, 0);
 fail_close:
-  close (ctx->fd);
-  unlink (ctx->lockfile);
+  close(ctx->fd);
+  unlink(ctx->lockfile);
   FREE(&ctx);
 
   return NULL;
 }
 
-static void *
-hcache_bdb_fetch(void *vctx, const char *key, size_t keylen)
+static void *hcache_bdb_fetch(void *vctx, const char *key, size_t keylen)
 {
   DBT dkey;
   DBT data;
@@ -137,14 +131,12 @@ hcache_bdb_fetch(void *vctx, const char *key, size_t keylen)
   return data.data;
 }
 
-static void
-hcache_bdb_free(void *vctx, void **data)
+static void hcache_bdb_free(void *vctx, void **data)
 {
-    FREE(data); /* __FREE_CHECKED__ */
+  FREE(data); /* __FREE_CHECKED__ */
 }
 
-static int
-hcache_bdb_store(void *vctx, const char *key, size_t keylen, void *data, size_t dlen)
+static int hcache_bdb_store(void *vctx, const char *key, size_t keylen, void *data, size_t dlen)
 {
   DBT dkey;
   DBT databuf;
@@ -164,8 +156,7 @@ hcache_bdb_store(void *vctx, const char *key, size_t keylen, void *data, size_t 
   return ctx->db->put(ctx->db, NULL, &dkey, &databuf, 0);
 }
 
-static int
-hcache_bdb_delete(void *vctx, const char *key, size_t keylen)
+static int hcache_bdb_delete(void *vctx, const char *key, size_t keylen)
 {
   DBT dkey;
 
@@ -178,27 +169,24 @@ hcache_bdb_delete(void *vctx, const char *key, size_t keylen)
   return ctx->db->del(ctx->db, NULL, &dkey, 0);
 }
 
-static void
-hcache_bdb_close(void **vctx)
+static void hcache_bdb_close(void **vctx)
 {
   if (!vctx || !*vctx)
     return;
 
   hcache_db_ctx_t *ctx = *vctx;
 
-  ctx->db->close (ctx->db, 0);
-  ctx->env->close (ctx->env, 0);
-  mx_unlock_file (ctx->lockfile, ctx->fd, 0);
-  close (ctx->fd);
-  unlink (ctx->lockfile);
+  ctx->db->close(ctx->db, 0);
+  ctx->env->close(ctx->env, 0);
+  mx_unlock_file(ctx->lockfile, ctx->fd, 0);
+  close(ctx->fd);
+  unlink(ctx->lockfile);
   FREE(vctx); /* __FREE_CHECKED__ */
 }
 
-static const char *
-hcache_bdb_backend(void)
+static const char *hcache_bdb_backend(void)
 {
   return DB_VERSION_STRING;
 }
 
 HCACHE_BACKEND_OPS(bdb)
-

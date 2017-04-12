@@ -30,8 +30,7 @@ typedef struct pgp_signature
   unsigned char sigtype;
   unsigned long sid1;
   unsigned long sid2;
-}
-pgp_sig_t;
+} pgp_sig_t;
 
 struct pgp_keyinfo
 {
@@ -57,8 +56,7 @@ typedef struct pgp_uid
   struct pgp_keyinfo *parent;
   struct pgp_uid *next;
   struct pgp_signature *sigs;
-}
-pgp_uid_t;
+} pgp_uid_t;
 
 enum pgp_version
 {
@@ -83,7 +81,7 @@ void pgp_free_key(pgp_key_t *kpp);
 
 static inline pgp_key_t pgp_new_keyinfo(void)
 {
-    return safe_calloc (1, sizeof (*((pgp_key_t)0)));
+  return safe_calloc(1, sizeof(*((pgp_key_t) 0)));
 }
 
 #endif /* CRYPT_BACKEND_CLASSIC_PGP */

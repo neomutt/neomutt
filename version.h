@@ -18,8 +18,8 @@
 #ifndef _MUTT_VERSION_H
 #define _MUTT_VERSION_H 1
 
-void print_version (void);
-void print_copyright (void);
-bool feature_enabled (const char *name);
+void print_version(void);
+void print_copyright(void);
+bool feature_enabled(const char *name);
 
 #endif /* _MUTT_VERSION_H */

@@ -75,8 +75,6 @@ enum
   MENU_MIX,
 #endif
 
-
-
   MENU_MAX
 };
 
@@ -90,12 +88,12 @@ extern const struct mapping_t Menus[];
 
 struct binding_t
 {
-  char *name;	/* name of the function */
-  int op;	/* function id number */
-  char *seq;	/* default key binding */
+  char *name; /* name of the function */
+  int op;     /* function id number */
+  char *seq;  /* default key binding */
 };
 
-const struct binding_t *km_get_table (int menu);
+const struct binding_t *km_get_table(int menu);
 
 extern const struct binding_t OpGeneric[];
 extern const struct binding_t OpPost[];

@@ -18,8 +18,7 @@
 #ifndef _MUTT_HASH_H
 #define _MUTT_HASH_H 1
 
-union hash_key
-{
+union hash_key {
   const char *strkey;
   unsigned int intkey;
 };
@@ -34,21 +33,20 @@ struct hash_elem
 typedef struct
 {
   int nelem, curnelem;
-  bool strdup_keys : 1;      /* if set, the key->strkey is strdup'ed */
-  bool allow_dups : 1;       /* if set, duplicate keys are allowed */
+  bool strdup_keys : 1; /* if set, the key->strkey is strdup'ed */
+  bool allow_dups  : 1; /* if set, duplicate keys are allowed */
   struct hash_elem **table;
   unsigned int (*gen_hash)(union hash_key, unsigned int);
   int (*cmp_key)(union hash_key, union hash_key);
-}
-HASH;
+} HASH;
 
 /* flags for hash_create() */
-#define MUTT_HASH_STRCASECMP   (1<<0)   /* use strcasecmp() to compare keys */
-#define MUTT_HASH_STRDUP_KEYS  (1<<1)   /* make a copy of the keys */
-#define MUTT_HASH_ALLOW_DUPS   (1<<2)   /* allow duplicate keys to be inserted */
+#define MUTT_HASH_STRCASECMP  (1 << 0) /* use strcasecmp() to compare keys */
+#define MUTT_HASH_STRDUP_KEYS (1 << 1) /* make a copy of the keys */
+#define MUTT_HASH_ALLOW_DUPS  (1 << 2) /* allow duplicate keys to be inserted */
 
-HASH *hash_create (int nelem, int flags);
-HASH *int_hash_create (int nelem, int flags);
+HASH *hash_create(int nelem, int flags);
+HASH *int_hash_create(int nelem, int flags);
 
 int hash_insert(HASH *table, const char *strkey, void *data);
 int int_hash_insert(HASH *table, unsigned int intkey, void *data);
@@ -65,9 +63,10 @@ void hash_delete(HASH *table, const char *strkey, const void *data,
 void int_hash_delete(HASH *table, unsigned int intkey, const void *data,
                      void (*destroy)(void *));
 
-void hash_destroy (HASH **ptr, void (*destroy) (void *));
+void hash_destroy(HASH **ptr, void (*destroy)(void *));
 
-struct hash_walk_state {
+struct hash_walk_state
+{
   int index;
   struct hash_elem *last;
 };

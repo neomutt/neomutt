@@ -31,14 +31,14 @@
 #define REG_WORDS 0
 #endif
 
-#define REGCOMP(X,Y,Z) regcomp(X, Y, REG_WORDS|REG_EXTENDED|(Z))
-#define REGEXEC(X,Y) regexec(&X, Y, (size_t)0, (regmatch_t *)0, (int)0)
+#define REGCOMP(X, Y, Z) regcomp(X, Y, REG_WORDS | REG_EXTENDED | (Z))
+#define REGEXEC(X, Y) regexec(&X, Y, (size_t) 0, (regmatch_t *) 0, (int) 0)
 
 typedef struct
 {
-  char *pattern;	/* printable version */
-  regex_t *rx; 		/* compiled expression */
-  int not;		/* do not match */
+  char *pattern; /* printable version */
+  regex_t *rx;   /* compiled expression */
+  int not;       /* do not match */
 } REGEXP;
 
 WHERE REGEXP Mask;

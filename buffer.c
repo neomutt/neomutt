@@ -13,18 +13,18 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <string.h>
 #include <stdarg.h>
 #include <stdio.h>
 #include <stdlib.h>
-
+#include <string.h>
+#include "buffer.h"
+#include "filter.h"
 #include "lib.h"
 #include "myvar.h"
-#include "filter.h"
-#include "buffer.h"
 
 /* creates and initializes a BUFFER */
-BUFFER *mutt_buffer_new(void) {
+BUFFER *mutt_buffer_new(void)
+{
   BUFFER *b = NULL;
 
   b = safe_malloc(sizeof(BUFFER));
@@ -35,7 +35,8 @@ BUFFER *mutt_buffer_new(void) {
 }
 
 /* initialize a new BUFFER */
-BUFFER *mutt_buffer_init (BUFFER *b) {
+BUFFER *mutt_buffer_init(BUFFER *b)
+{
   memset(b, 0, sizeof(BUFFER));
   return b;
 }
@@ -48,36 +49,37 @@ BUFFER *mutt_buffer_init (BUFFER *b) {
  * Disregards the 'destroy' flag, which seems reserved for caller.
  * This is bad, but there's no apparent protocol for it.
  */
-BUFFER *mutt_buffer_from (char *seed) {
+BUFFER *mutt_buffer_from(char *seed)
+{
   BUFFER *b = NULL;
 
   if (!seed)
     return NULL;
 
-  b = mutt_buffer_new ();
+  b = mutt_buffer_new();
   b->data = safe_strdup(seed);
   b->dsize = mutt_strlen(seed);
   b->dptr = (char *) b->data + b->dsize;
   return b;
 }
 
-void mutt_buffer_free (BUFFER **p)
+void mutt_buffer_free(BUFFER **p)
 {
   if (!p || !*p)
     return;
 
-   FREE(&(*p)->data);
-   /* dptr is just an offset to data and shouldn't be freed */
-   FREE(p);		/* __FREE_CHECKED__ */
+  FREE(&(*p)->data);
+  /* dptr is just an offset to data and shouldn't be freed */
+  FREE(p); /* __FREE_CHECKED__ */
 }
 
-int mutt_buffer_printf (BUFFER* buf, const char* fmt, ...)
+int mutt_buffer_printf(BUFFER *buf, const char *fmt, ...)
 {
   va_list ap, ap_retry;
   int len, blen, doff;
 
-  va_start (ap, fmt);
-  va_copy (ap_retry, ap);
+  va_start(ap, fmt);
+  va_copy(ap_retry, ap);
 
   if (!buf->dptr)
     buf->dptr = buf->data;
@@ -89,24 +91,24 @@ int mutt_buffer_printf (BUFFER* buf, const char* fmt, ...)
   {
     blen = 128;
     buf->dsize += blen;
-    safe_realloc (&buf->data, buf->dsize);
+    safe_realloc(&buf->data, buf->dsize);
     buf->dptr = buf->data + doff;
   }
-  if ((len = vsnprintf (buf->dptr, blen, fmt, ap)) >= blen)
+  if ((len = vsnprintf(buf->dptr, blen, fmt, ap)) >= blen)
   {
     blen = ++len - blen;
     if (blen < 128)
       blen = 128;
     buf->dsize += blen;
-    safe_realloc (&buf->data, buf->dsize);
+    safe_realloc(&buf->data, buf->dsize);
     buf->dptr = buf->data + doff;
-    len = vsnprintf (buf->dptr, len, fmt, ap_retry);
+    len = vsnprintf(buf->dptr, len, fmt, ap_retry);
   }
   if (len > 0)
     buf->dptr += len;
 
-  va_end (ap);
-  va_end (ap_retry);
+  va_end(ap);
+  va_end(ap_retry);
 
   return len;
 }
@@ -114,7 +116,7 @@ int mutt_buffer_printf (BUFFER* buf, const char* fmt, ...)
 /* dynamically grows a BUFFER to accommodate s, in increments of 128 bytes.
  * Always one byte bigger than necessary for the null terminator, and
  * the buffer is always null-terminated */
-static void mutt_buffer_add (BUFFER* buf, const char* s, size_t len)
+static void mutt_buffer_add(BUFFER *buf, const char *s, size_t len)
 {
   if (!buf || !s)
     return;
@@ -123,49 +125,49 @@ static void mutt_buffer_add (BUFFER* buf, const char* s, size_t len)
   {
     size_t offset = buf->dptr - buf->data;
     buf->dsize += (len < 128) ? 128 : len + 1;
-    safe_realloc (&buf->data, buf->dsize);
+    safe_realloc(&buf->data, buf->dsize);
     buf->dptr = buf->data + offset;
   }
   if (!buf->dptr)
     return;
-  memcpy (buf->dptr, s, len);
+  memcpy(buf->dptr, s, len);
   buf->dptr += len;
   *(buf->dptr) = '\0';
 }
 
-void mutt_buffer_addstr (BUFFER* buf, const char* s)
+void mutt_buffer_addstr(BUFFER *buf, const char *s)
 {
-  mutt_buffer_add (buf, s, mutt_strlen (s));
+  mutt_buffer_add(buf, s, mutt_strlen(s));
 }
 
-void mutt_buffer_addch (BUFFER* buf, char c)
+void mutt_buffer_addch(BUFFER *buf, char c)
 {
-  mutt_buffer_add (buf, &c, 1);
+  mutt_buffer_add(buf, &c, 1);
 }
 
-int mutt_extract_token (BUFFER *dest, BUFFER *tok, int flags)
+int mutt_extract_token(BUFFER *dest, BUFFER *tok, int flags)
 {
   if (!dest || !tok)
     return -1;
 
-  char		ch;
-  char		qc = 0; /* quote char */
-  char		*pc;
+  char ch;
+  char qc = 0; /* quote char */
+  char *pc;
 
   /* reset the destination pointer to the beginning of the buffer */
   dest->dptr = dest->data;
 
-  SKIPWS (tok->dptr);
+  SKIPWS(tok->dptr);
   while ((ch = *tok->dptr))
   {
     if (!qc)
     {
-      if ((ISSPACE (ch) && !(flags & MUTT_TOKEN_SPACE)) ||
-	  (ch == '#' && !(flags & MUTT_TOKEN_COMMENT)) ||
-	  (ch == '=' && (flags & MUTT_TOKEN_EQUAL)) ||
-	  (ch == ';' && !(flags & MUTT_TOKEN_SEMICOLON)) ||
-	  ((flags & MUTT_TOKEN_PATTERN) && strchr ("~%=!|", ch)))
-	break;
+      if ((ISSPACE(ch) && !(flags & MUTT_TOKEN_SPACE)) ||
+          (ch == '#' && !(flags & MUTT_TOKEN_COMMENT)) ||
+          (ch == '=' && (flags & MUTT_TOKEN_EQUAL)) ||
+          (ch == ';' && !(flags & MUTT_TOKEN_SEMICOLON)) ||
+          ((flags & MUTT_TOKEN_PATTERN) && strchr("~%=!|", ch)))
+        break;
     }
 
     tok->dptr++;
@@ -176,129 +178,128 @@ int mutt_extract_token (BUFFER *dest, BUFFER *tok, int flags)
       qc = ch;
     else if (ch == '\\' && qc != '\'')
     {
-	if (!*tok->dptr)
-	    return -1; /* premature end of token */
+      if (!*tok->dptr)
+        return -1; /* premature end of token */
       switch (ch = *tok->dptr++)
       {
-	case 'c':
-	case 'C':
-	    if (!*tok->dptr)
-		return -1; /* premature end of token */
-	  mutt_buffer_addch (dest, (toupper ((unsigned char) *tok->dptr)
-                                    - '@') & 0x7f);
-	  tok->dptr++;
-	  break;
-	case 'r':
-	  mutt_buffer_addch (dest, '\r');
-	  break;
-	case 'n':
-	  mutt_buffer_addch (dest, '\n');
-	  break;
-	case 't':
-	  mutt_buffer_addch (dest, '\t');
-	  break;
-	case 'f':
-	  mutt_buffer_addch (dest, '\f');
-	  break;
-	case 'e':
-	  mutt_buffer_addch (dest, '\033');
-	  break;
-	default:
-	  if (isdigit ((unsigned char) ch) &&
-	      isdigit ((unsigned char) *tok->dptr) &&
-	      isdigit ((unsigned char) *(tok->dptr + 1)))
-	  {
-
-	    mutt_buffer_addch (dest, (ch << 6) + (*tok->dptr << 3) + *(tok->dptr + 1) - 3504);
-	    tok->dptr += 2;
-	  }
-	  else
-	    mutt_buffer_addch (dest, ch);
+        case 'c':
+        case 'C':
+          if (!*tok->dptr)
+            return -1; /* premature end of token */
+          mutt_buffer_addch(dest, (toupper((unsigned char) *tok->dptr) - '@') & 0x7f);
+          tok->dptr++;
+          break;
+        case 'r':
+          mutt_buffer_addch(dest, '\r');
+          break;
+        case 'n':
+          mutt_buffer_addch(dest, '\n');
+          break;
+        case 't':
+          mutt_buffer_addch(dest, '\t');
+          break;
+        case 'f':
+          mutt_buffer_addch(dest, '\f');
+          break;
+        case 'e':
+          mutt_buffer_addch(dest, '\033');
+          break;
+        default:
+          if (isdigit((unsigned char) ch) && isdigit((unsigned char) *tok->dptr) &&
+              isdigit((unsigned char) *(tok->dptr + 1)))
+          {
+            mutt_buffer_addch(dest, (ch << 6) + (*tok->dptr << 3) + *(tok->dptr + 1) - 3504);
+            tok->dptr += 2;
+          }
+          else
+            mutt_buffer_addch(dest, ch);
       }
     }
     else if (ch == '^' && (flags & MUTT_TOKEN_CONDENSE))
     {
-	if (!*tok->dptr)
-	    return -1; /* premature end of token */
+      if (!*tok->dptr)
+        return -1; /* premature end of token */
       ch = *tok->dptr++;
       if (ch == '^')
-	mutt_buffer_addch (dest, ch);
+        mutt_buffer_addch(dest, ch);
       else if (ch == '[')
-	mutt_buffer_addch (dest, '\033');
-      else if (isalpha ((unsigned char) ch))
-	mutt_buffer_addch (dest, toupper ((unsigned char) ch) - '@');
+        mutt_buffer_addch(dest, '\033');
+      else if (isalpha((unsigned char) ch))
+        mutt_buffer_addch(dest, toupper((unsigned char) ch) - '@');
       else
       {
-	mutt_buffer_addch (dest, '^');
-	mutt_buffer_addch (dest, ch);
+        mutt_buffer_addch(dest, '^');
+        mutt_buffer_addch(dest, ch);
       }
     }
     else if (ch == '`' && (!qc || qc == '"'))
     {
-      FILE	*fp;
-      pid_t	pid;
-      char	*cmd = NULL, *ptr = NULL;
-      size_t	expnlen;
-      BUFFER	expn;
-      int	line = 0;
+      FILE *fp;
+      pid_t pid;
+      char *cmd = NULL, *ptr = NULL;
+      size_t expnlen;
+      BUFFER expn;
+      int line = 0;
 
       pc = tok->dptr;
-      do {
-	if ((pc = strpbrk (pc, "\\`")))
-	{
-	  /* skip any quoted chars */
-	  if (*pc == '\\')
-	    pc += 2;
-	}
+      do
+      {
+        if ((pc = strpbrk(pc, "\\`")))
+        {
+          /* skip any quoted chars */
+          if (*pc == '\\')
+            pc += 2;
+        }
       } while (pc && *pc != '`');
       if (!pc)
       {
-	mutt_debug (1, "mutt_get_token: mismatched backticks\n");
-	return -1;
+        mutt_debug(1, "mutt_get_token: mismatched backticks\n");
+        return -1;
       }
-      cmd = mutt_substrdup (tok->dptr, pc);
-      if ((pid = mutt_create_filter (cmd, NULL, &fp, NULL)) < 0)
+      cmd = mutt_substrdup(tok->dptr, pc);
+      if ((pid = mutt_create_filter(cmd, NULL, &fp, NULL)) < 0)
       {
-	mutt_debug (1, "mutt_get_token: unable to fork command: %s\n", cmd);
-	FREE (&cmd);
-	return -1;
+        mutt_debug(1, "mutt_get_token: unable to fork command: %s\n", cmd);
+        FREE(&cmd);
+        return -1;
       }
-      FREE (&cmd);
+      FREE(&cmd);
 
       tok->dptr = pc + 1;
 
       /* read line */
-      mutt_buffer_init (&expn);
-      expn.data = mutt_read_line (NULL, &expn.dsize, fp, &line, 0);
-      safe_fclose (&fp);
-      mutt_wait_filter (pid);
+      mutt_buffer_init(&expn);
+      expn.data = mutt_read_line(NULL, &expn.dsize, fp, &line, 0);
+      safe_fclose(&fp);
+      mutt_wait_filter(pid);
 
       /* if we got output, make a new string consisting of the shell output
-	 plus whatever else was left on the original line */
+         plus whatever else was left on the original line */
       /* BUT: If this is inside a quoted string, directly add output to
        * the token */
       if (expn.data && qc)
       {
-	mutt_buffer_addstr (dest, expn.data);
-	FREE (&expn.data);
+        mutt_buffer_addstr(dest, expn.data);
+        FREE(&expn.data);
       }
       else if (expn.data)
       {
-	expnlen = mutt_strlen (expn.data);
-	tok->dsize = expnlen + mutt_strlen (tok->dptr) + 1;
-	ptr = safe_malloc (tok->dsize);
-	memcpy (ptr, expn.data, expnlen);
-	strcpy (ptr + expnlen, tok->dptr);	/* __STRCPY_CHECKED__ */
-	if (tok->destroy)
-	  FREE (&tok->data);
-	tok->data = ptr;
-	tok->dptr = ptr;
-	tok->destroy = 1; /* mark that the caller should destroy this data */
-	ptr = NULL;
-	FREE (&expn.data);
+        expnlen = mutt_strlen(expn.data);
+        tok->dsize = expnlen + mutt_strlen(tok->dptr) + 1;
+        ptr = safe_malloc(tok->dsize);
+        memcpy(ptr, expn.data, expnlen);
+        strcpy(ptr + expnlen, tok->dptr); /* __STRCPY_CHECKED__ */
+        if (tok->destroy)
+          FREE(&tok->data);
+        tok->data = ptr;
+        tok->dptr = ptr;
+        tok->destroy = 1; /* mark that the caller should destroy this data */
+        ptr = NULL;
+        FREE(&expn.data);
       }
     }
-    else if (ch == '$' && (!qc || qc == '"') && (*tok->dptr == '{' || isalpha ((unsigned char) *tok->dptr)))
+    else if (ch == '$' && (!qc || qc == '"') &&
+             (*tok->dptr == '{' || isalpha((unsigned char) *tok->dptr)))
     {
       const char *env = NULL;
       char *var = NULL;
@@ -306,39 +307,39 @@ int mutt_extract_token (BUFFER *dest, BUFFER *tok, int flags)
 
       if (*tok->dptr == '{')
       {
-	tok->dptr++;
-	if ((pc = strchr (tok->dptr, '}')))
-	{
-	  var = mutt_substrdup (tok->dptr, pc);
-	  tok->dptr = pc + 1;
-	}
+        tok->dptr++;
+        if ((pc = strchr(tok->dptr, '}')))
+        {
+          var = mutt_substrdup(tok->dptr, pc);
+          tok->dptr = pc + 1;
+        }
       }
       else
       {
-	for (pc = tok->dptr; isalnum ((unsigned char) *pc) || *pc == '_'; pc++)
-	  ;
-	var = mutt_substrdup (tok->dptr, pc);
-	tok->dptr = pc;
+        for (pc = tok->dptr; isalnum((unsigned char) *pc) || *pc == '_'; pc++)
+          ;
+        var = mutt_substrdup(tok->dptr, pc);
+        tok->dptr = pc;
       }
       if (var)
       {
-        if ((env = getenv (var)) || (env = myvar_get (var)))
-          mutt_buffer_addstr (dest, env);
-        else if ((idx = mutt_option_index (var)) != -1)
+        if ((env = getenv(var)) || (env = myvar_get(var)))
+          mutt_buffer_addstr(dest, env);
+        else if ((idx = mutt_option_index(var)) != -1)
         {
           /* expand settable mutt variables */
           char val[LONG_STRING];
 
-          if (var_to_string (idx, val, sizeof (val)))
-            mutt_buffer_addstr (dest, val);
+          if (var_to_string(idx, val, sizeof(val)))
+            mutt_buffer_addstr(dest, val);
         }
-        FREE (&var);
+        FREE(&var);
       }
     }
     else
-      mutt_buffer_addch (dest, ch);
+      mutt_buffer_addch(dest, ch);
   }
-  mutt_buffer_addch (dest, 0); /* terminate the string */
-  SKIPWS (tok->dptr);
+  mutt_buffer_addch(dest, 0); /* terminate the string */
+  SKIPWS(tok->dptr);
   return 0;
 }

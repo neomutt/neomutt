@@ -16,18 +16,13 @@
  */
 
 #include "config.h"
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <unistd.h>
 #include <time.h>
-
-
-
+#include <unistd.h>
 /* yuck, we were including this one somewhere below. */
 #include "mutt.h"
-
 #include "lib.h"
 #include "pgppacket.h"
 
@@ -36,7 +31,7 @@
 static unsigned char *pbuf = NULL;
 static size_t plen = 0;
 
-static int read_material (size_t material, size_t * used, FILE * fp)
+static int read_material(size_t material, size_t *used, FILE *fp)
 {
   if (*used + material >= plen)
   {
@@ -45,18 +40,18 @@ static int read_material (size_t material, size_t * used, FILE * fp)
 
     nplen = *used + material + CHUNKSIZE;
 
-    if (!(p = realloc (pbuf, nplen)))	/* __MEM_CHECKED__ */
+    if (!(p = realloc(pbuf, nplen))) /* __MEM_CHECKED__ */
     {
-      perror ("realloc");
+      perror("realloc");
       return -1;
     }
     plen = nplen;
     pbuf = p;
   }
 
-  if (fread (pbuf + *used, 1, material, fp) < material)
+  if (fread(pbuf + *used, 1, material, fp) < material)
   {
-    perror ("fread");
+    perror("fread");
     return -1;
   }
 
@@ -64,7 +59,7 @@ static int read_material (size_t material, size_t * used, FILE * fp)
   return 0;
 }
 
-unsigned char *pgp_read_packet (FILE * fp, size_t * len)
+unsigned char *pgp_read_packet(FILE *fp, size_t *len)
 {
   size_t used = 0;
   LOFF_T startpos;
@@ -72,20 +67,20 @@ unsigned char *pgp_read_packet (FILE * fp, size_t * len)
   unsigned char b;
   size_t material;
 
-  startpos = ftello (fp);
+  startpos = ftello(fp);
   if (startpos < 0)
     return NULL;
 
   if (!plen)
   {
     plen = CHUNKSIZE;
-    pbuf = safe_malloc (plen);
+    pbuf = safe_malloc(plen);
   }
 
-  if (fread (&ctb, 1, 1, fp) < 1)
+  if (fread(&ctb, 1, 1, fp) < 1)
   {
-    if (!feof (fp))
-      perror ("fread");
+    if (!feof(fp))
+      perror("fread");
     goto bail;
   }
 
@@ -94,7 +89,7 @@ unsigned char *pgp_read_packet (FILE * fp, size_t * len)
     goto bail;
   }
 
-  if (ctb & 0x40)		/* handle PGP 5.0 packets. */
+  if (ctb & 0x40) /* handle PGP 5.0 packets. */
   {
     int partial = 0;
     pbuf[0] = ctb;
@@ -102,57 +97,56 @@ unsigned char *pgp_read_packet (FILE * fp, size_t * len)
 
     do
     {
-      if (fread (&b, 1, 1, fp) < 1)
+      if (fread(&b, 1, 1, fp) < 1)
       {
-	perror ("fread");
-	goto bail;
+        perror("fread");
+        goto bail;
       }
 
       if (b < 192)
       {
-	material = b;
-	partial = 0;
+        material = b;
+        partial = 0;
       }
       else if (192 <= b && b <= 223)
       {
-	material = (b - 192) * 256;
-	if (fread (&b, 1, 1, fp) < 1)
-	{
-	  perror ("fread");
-	  goto bail;
-	}
-	material += b + 192;
-	partial = 0;
+        material = (b - 192) * 256;
+        if (fread(&b, 1, 1, fp) < 1)
+        {
+          perror("fread");
+          goto bail;
+        }
+        material += b + 192;
+        partial = 0;
       }
       else if (b < 255)
       {
-	material = 1 << (b & 0x1f);
-	partial = 1;
+        material = 1 << (b & 0x1f);
+        partial = 1;
       }
       else
-	/* b == 255 */
+      /* b == 255 */
       {
-	unsigned char buf[4];
-	if (fread (buf, 4, 1, fp) < 1)
-	{
-	  perror ("fread");
-	  goto bail;
-	}
-	material = (size_t) buf[0] << 24;
-	material |= buf[1] << 16;
-	material |= buf[2] << 8;
-	material |= buf[3];
-	partial = 0;
+        unsigned char buf[4];
+        if (fread(buf, 4, 1, fp) < 1)
+        {
+          perror("fread");
+          goto bail;
+        }
+        material = (size_t) buf[0] << 24;
+        material |= buf[1] << 16;
+        material |= buf[2] << 8;
+        material |= buf[3];
+        partial = 0;
       }
 
-      if (read_material (material, &used, fp) == -1)
-	goto bail;
+      if (read_material(material, &used, fp) == -1)
+        goto bail;
 
-    }
-    while (partial);
+    } while (partial);
   }
   else
-    /* Old-Style PGP */
+  /* Old-Style PGP */
   {
     int bytes = 0;
     pbuf[0] = 0x80 | ((ctb >> 2) & 0x0f);
@@ -162,47 +156,47 @@ unsigned char *pgp_read_packet (FILE * fp, size_t * len)
     {
       case 0:
       {
-	if (fread (&b, 1, 1, fp) < 1)
-	{
-	  perror ("fread");
-	  goto bail;
-	}
+        if (fread(&b, 1, 1, fp) < 1)
+        {
+          perror("fread");
+          goto bail;
+        }
 
-	material = b;
-	break;
+        material = b;
+        break;
       }
 
       case 1:
         bytes = 2;
-        /* fall through */
+      /* fall through */
 
       case 2:
       {
-	int i;
+        int i;
 
-	if (!bytes)
-	  bytes = 4;
+        if (!bytes)
+          bytes = 4;
 
-	material = 0;
+        material = 0;
 
-	for (i = 0; i < bytes; i++)
-	{
-	  if (fread (&b, 1, 1, fp) < 1)
-	  {
-	    perror ("fread");
-	    goto bail;
-	  }
+        for (i = 0; i < bytes; i++)
+        {
+          if (fread(&b, 1, 1, fp) < 1)
+          {
+            perror("fread");
+            goto bail;
+          }
 
-	  material = (material << 8) + b;
-	}
-	break;
+          material = (material << 8) + b;
+        }
+        break;
       }
 
       default:
-      goto bail;
+        goto bail;
     }
 
-    if (read_material (material, &used, fp) == -1)
+    if (read_material(material, &used, fp) == -1)
       goto bail;
   }
 
@@ -213,13 +207,12 @@ unsigned char *pgp_read_packet (FILE * fp, size_t * len)
 
 bail:
 
-  fseeko (fp, startpos, SEEK_SET);
+  fseeko(fp, startpos, SEEK_SET);
   return NULL;
 }
 
-void pgp_release_packet (void)
+void pgp_release_packet(void)
 {
   plen = 0;
-  FREE (&pbuf);
+  FREE(&pbuf);
 }
-

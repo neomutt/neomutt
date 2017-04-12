@@ -20,38 +20,27 @@
  */
 
 #include "config.h"
-
-#include "mutt.h"
-#include "pgp.h"
-#include "pgppacket.h"
-#include "charset.h"
-
+#include <ctype.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <ctype.h>
+#include "mutt.h"
+#include "charset.h"
+#include "pgp.h"
+#include "pgppacket.h"
 
 static const struct
 {
   short id;
   const char *name;
-}
-HashAlgorithms[] =
-{
-  { 1,		"pgp-md5"  		},
-  { 2,  	"pgp-sha1" 		},
-  { 3,  	"pgp-ripemd160" 	},
-  { 5,  	"pgp-md2"		},
-  { 6,  	"pgp-tiger192"		},
-  { 7,		"pgp-haval-5-160" 	},
-  { 8,		"pgp-sha256"		},
-  { 9,		"pgp-sha384"		},
-  { 10,		"pgp-sha512"		},
-  { 11,		"pgp-sha224"		},
-  { -1, 	NULL }
+} HashAlgorithms[] = {
+    {1, "pgp-md5"},     {2, "pgp-sha1"},     {3, "pgp-ripemd160"},
+    {5, "pgp-md2"},     {6, "pgp-tiger192"}, {7, "pgp-haval-5-160"},
+    {8, "pgp-sha256"},  {9, "pgp-sha384"},   {10, "pgp-sha512"},
+    {11, "pgp-sha224"}, {-1, NULL},
 };
 
-static const char *pgp_hash_to_micalg (short id)
+static const char *pgp_hash_to_micalg(short id)
 {
   int i;
 
@@ -61,7 +50,7 @@ static const char *pgp_hash_to_micalg (short id)
   return "x-unknown";
 }
 
-static void pgp_dearmor (FILE *in, FILE *out)
+static void pgp_dearmor(FILE *in, FILE *out)
 {
   char line[HUGE_STRING];
   LOFF_T start;
@@ -70,76 +59,76 @@ static void pgp_dearmor (FILE *in, FILE *out)
 
   STATE state;
 
-  memset (&state, 0, sizeof (STATE));
+  memset(&state, 0, sizeof(STATE));
   state.fpin = in;
   state.fpout = out;
 
   /* find the beginning of ASCII armor */
 
-  while ((r = fgets (line, sizeof (line), in)) != NULL)
+  while ((r = fgets(line, sizeof(line), in)) != NULL)
   {
-    if (strncmp (line, "-----BEGIN", 10) == 0)
+    if (strncmp(line, "-----BEGIN", 10) == 0)
       break;
   }
   if (r == NULL)
   {
-    mutt_debug (1, "pgp_dearmor: Can't find begin of ASCII armor.\n");
+    mutt_debug(1, "pgp_dearmor: Can't find begin of ASCII armor.\n");
     return;
   }
 
   /* skip the armor header */
 
-  while ((r = fgets (line, sizeof (line), in)) != NULL)
+  while ((r = fgets(line, sizeof(line), in)) != NULL)
   {
-    SKIPWS (r);
-    if (!*r) break;
+    SKIPWS(r);
+    if (!*r)
+      break;
   }
   if (r == NULL)
   {
-    mutt_debug (1, "pgp_dearmor: Armor header doesn't end.\n");
+    mutt_debug(1, "pgp_dearmor: Armor header doesn't end.\n");
     return;
   }
 
   /* actual data starts here */
-  start = ftello (in);
+  start = ftello(in);
   if (start < 0)
     return;
 
   /* find the checksum */
 
-  while ((r = fgets (line, sizeof (line), in)) != NULL)
+  while ((r = fgets(line, sizeof(line), in)) != NULL)
   {
-    if (*line == '=' || (strncmp (line, "-----END", 8) == 0))
+    if (*line == '=' || (strncmp(line, "-----END", 8) == 0))
       break;
   }
   if (r == NULL)
   {
-    mutt_debug (1, "pgp_dearmor: Can't find end of ASCII armor.\n");
+    mutt_debug(1, "pgp_dearmor: Can't find end of ASCII armor.\n");
     return;
   }
 
-  if ((end = ftello (in) - strlen (line)) < start)
+  if ((end = ftello(in) - strlen(line)) < start)
   {
-    mutt_debug (1, "pgp_dearmor: end < start???\n");
+    mutt_debug(1, "pgp_dearmor: end < start???\n");
     return;
   }
 
-  if (fseeko (in, start, SEEK_SET) == -1)
+  if (fseeko(in, start, SEEK_SET) == -1)
   {
-    mutt_debug (1, "pgp_dearmor: Can't seekto start.\n");
+    mutt_debug(1, "pgp_dearmor: Can't seekto start.\n");
     return;
   }
 
-  mutt_decode_base64 (&state, end - start, 0, (iconv_t) -1);
+  mutt_decode_base64(&state, end - start, 0, (iconv_t) -1);
 }
 
-static short pgp_mic_from_packet (unsigned char *p, size_t len)
+static short pgp_mic_from_packet(unsigned char *p, size_t len)
 {
   /* is signature? */
   if ((p[0] & 0x3f) != PT_SIG)
   {
-    mutt_debug (1, "pgp_mic_from_packet: tag = %d, want %d.\n",
-                p[0]&0x3f, PT_SIG);
+    mutt_debug(1, "pgp_mic_from_packet: tag = %d, want %d.\n", p[0] & 0x3f, PT_SIG);
     return -1;
   }
 
@@ -151,12 +140,12 @@ static short pgp_mic_from_packet (unsigned char *p, size_t len)
     return (short) p[4];
   else
   {
-    mutt_debug (1, "pgp_mic_from_packet: Bad signature packet.\n");
+    mutt_debug(1, "pgp_mic_from_packet: Bad signature packet.\n");
     return -1;
   }
 }
 
-static short pgp_find_hash (const char *fname)
+static short pgp_find_hash(const char *fname)
 {
   FILE *in = NULL;
   FILE *out = NULL;
@@ -168,42 +157,41 @@ static short pgp_find_hash (const char *fname)
 
   short rv = -1;
 
-  mutt_mktemp (tempfile, sizeof (tempfile));
-  if ((out = safe_fopen (tempfile, "w+")) == NULL)
+  mutt_mktemp(tempfile, sizeof(tempfile));
+  if ((out = safe_fopen(tempfile, "w+")) == NULL)
   {
-    mutt_perror (tempfile);
+    mutt_perror(tempfile);
     goto bye;
   }
-  unlink (tempfile);
+  unlink(tempfile);
 
-  if ((in = fopen (fname, "r")) == NULL)
+  if ((in = fopen(fname, "r")) == NULL)
   {
-    mutt_perror (fname);
+    mutt_perror(fname);
     goto bye;
   }
 
-  pgp_dearmor (in, out);
-  rewind (out);
+  pgp_dearmor(in, out);
+  rewind(out);
 
-  if ((p = pgp_read_packet (out, &l)) != NULL)
+  if ((p = pgp_read_packet(out, &l)) != NULL)
   {
-    rv = pgp_mic_from_packet (p, l);
+    rv = pgp_mic_from_packet(p, l);
   }
   else
   {
-    mutt_debug (1, "pgp_find_hash: No packet.\n");
+    mutt_debug(1, "pgp_find_hash: No packet.\n");
   }
 
-  bye:
+bye:
 
-  safe_fclose (&in);
-  safe_fclose (&out);
-  pgp_release_packet ();
+  safe_fclose(&in);
+  safe_fclose(&out);
+  pgp_release_packet();
   return rv;
 }
 
-const char *pgp_micalg (const char *fname)
+const char *pgp_micalg(const char *fname)
 {
-  return pgp_hash_to_micalg (pgp_find_hash (fname));
+  return pgp_hash_to_micalg(pgp_find_hash(fname));
 }
-

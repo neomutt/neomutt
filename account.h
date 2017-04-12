@@ -33,11 +33,11 @@ enum
 };
 
 /* account flags */
-#define MUTT_ACCT_PORT  (1<<0)
-#define MUTT_ACCT_USER  (1<<1)
-#define MUTT_ACCT_LOGIN (1<<2)
-#define MUTT_ACCT_PASS  (1<<3)
-#define MUTT_ACCT_SSL   (1<<4)
+#define MUTT_ACCT_PORT (1 << 0)
+#define MUTT_ACCT_USER (1 << 1)
+#define MUTT_ACCT_LOGIN (1 << 2)
+#define MUTT_ACCT_PASS (1 << 3)
+#define MUTT_ACCT_SSL (1 << 4)
 
 typedef struct
 {
@@ -50,12 +50,12 @@ typedef struct
   unsigned char flags;
 } ACCOUNT;
 
-int mutt_account_match (const ACCOUNT* a1, const ACCOUNT* m2);
-int mutt_account_fromurl (ACCOUNT* account, ciss_url_t* url);
-void mutt_account_tourl (ACCOUNT* account, ciss_url_t* url);
-int mutt_account_getuser (ACCOUNT* account);
-int mutt_account_getlogin (ACCOUNT* account);
-int mutt_account_getpass (ACCOUNT* account);
-void mutt_account_unsetpass (ACCOUNT* account);
+int mutt_account_match(const ACCOUNT *a1, const ACCOUNT *m2);
+int mutt_account_fromurl(ACCOUNT *account, ciss_url_t *url);
+void mutt_account_tourl(ACCOUNT *account, ciss_url_t *url);
+int mutt_account_getuser(ACCOUNT *account);
+int mutt_account_getlogin(ACCOUNT *account);
+int mutt_account_getpass(ACCOUNT *account);
+void mutt_account_unsetpass(ACCOUNT *account);
 
 #endif /* _MUTT_ACCOUNT_H */

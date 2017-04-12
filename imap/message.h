@@ -35,7 +35,7 @@ typedef struct imap_header_data
 
   bool parsed : 1;
 
-  unsigned int uid;	/* 32-bit Message UID */
+  unsigned int uid; /* 32-bit Message UID */
   LIST *keywords;
 } IMAP_HEADER_DATA;
 
@@ -43,13 +43,13 @@ typedef struct
 {
   unsigned int sid;
 
-  IMAP_HEADER_DATA* data;
+  IMAP_HEADER_DATA *data;
 
   time_t received;
   long content_length;
 } IMAP_HEADER;
 
 /* -- macros -- */
-#define HEADER_DATA(ph) ((IMAP_HEADER_DATA*) ((ph)->data))
+#define HEADER_DATA(ph) ((IMAP_HEADER_DATA *) ((ph)->data))
 
 #endif /* _MUTT_IMAP_MESSAGE_H */

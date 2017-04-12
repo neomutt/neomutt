@@ -17,17 +17,14 @@
  */
 
 #include "config.h"
-
 #include <lauxlib.h>
+#include <limits.h>
 #include <lua.h>
 #include <lualib.h>
-
 #include <stdbool.h>
-#include <limits.h>
-
 #include "mutt.h"
-#include "mutt_commands.h"
 #include "mutt_lua.h"
+#include "mutt_commands.h"
 #include "mutt_options.h"
 #include "mx.h"
 
@@ -156,19 +153,20 @@ static int _lua_mutt_set(lua_State *l)
         }
         break;
       case DT_NUM:
+      {
+        lua_Integer i = lua_tointeger(l, -1);
+        if ((i > SHRT_MIN) && (i < SHRT_MAX))
         {
-          lua_Integer i = lua_tointeger(l, -1);
-          if ((i > SHRT_MIN) && (i < SHRT_MAX)) {
-            value->data = lua_tointeger(l, -1);
-            rv = mutt_option_set(value, &err);
-          }
-          else
-          {
-            luaL_error(l, "Integer overflow of %d, not in %d-%d", i, SHRT_MIN, SHRT_MAX);
-            rv = -1;
-          }
-          break;
+          value->data = lua_tointeger(l, -1);
+          rv = mutt_option_set(value, &err);
         }
+        else
+        {
+          luaL_error(l, "Integer overflow of %d, not in %d-%d", i, SHRT_MIN, SHRT_MAX);
+          rv = -1;
+        }
+        break;
+      }
       case DT_BOOL:
         value->data = (long) lua_toboolean(l, -1);
         rv = mutt_option_set(value, &err);
@@ -244,7 +242,7 @@ static int _lua_mutt_get(lua_State *l)
         return 1;
       }
       case DT_NUM:
-        lua_pushinteger(l, (signed short)*((unsigned long *) opt->data));
+        lua_pushinteger(l, (signed short) *((unsigned long *) opt->data));
         return 1;
       case DT_BOOL:
         lua_pushboolean(l, option(opt->data));

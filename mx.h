@@ -24,8 +24,8 @@
 #ifndef _MUTT_MX_H
 #define _MUTT_MX_H 1
 
-#include "mailbox.h"
 #include "buffy.h"
+#include "mailbox.h"
 
 /* supported mailbox formats */
 enum
@@ -41,7 +41,7 @@ enum
   MUTT_COMPRESSED,
 };
 
-WHERE short DefaultMagic INITVAL (MUTT_MBOX);
+WHERE short DefaultMagic INITVAL(MUTT_MBOX);
 
 #define MMDF_SEP "\001\001\001\001\n"
 #define MAXLOCKATTEMPT 5
@@ -61,17 +61,16 @@ void maildir_flags(char *dest, size_t destlen, HEADER *hdr);
 
 #ifdef USE_HCACHE
 #include "hcache.h"
-int mh_sync_mailbox_message (CONTEXT * ctx, int msgno, header_cache_t *hc);
+int mh_sync_mailbox_message(CONTEXT *ctx, int msgno, header_cache_t *hc);
 #else
-int mh_sync_mailbox_message (CONTEXT * ctx, int msgno);
+int mh_sync_mailbox_message(CONTEXT *ctx, int msgno);
 #endif
 
 #ifdef USE_NOTMUCH
 bool mx_is_notmuch(const char *p);
 #endif
 
-FILE *maildir_open_find_message (const char *folder, const char *msg,
-                                  char **newname);
+FILE *maildir_open_find_message(const char *folder, const char *msg, char **newname);
 
 int mbox_strict_cmp_headers(const HEADER *h1, const HEADER *h2);
 
@@ -83,7 +82,7 @@ void mx_update_tables(CONTEXT *ctx, int committing);
 int mx_lock_file(const char *path, int fd, int excl, int dot, int timeout);
 int mx_unlock_file(const char *path, int fd, int dot);
 
-struct mx_ops* mx_get_ops (int magic);
+struct mx_ops *mx_get_ops(int magic);
 extern struct mx_ops mx_maildir_ops;
 extern struct mx_ops mx_mbox_ops;
 extern struct mx_ops mx_mh_ops;

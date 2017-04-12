@@ -16,7 +16,6 @@
  */
 
 #include "config.h"
-
 #include "crypt_mod.h"
 
 /* A type of a variable to keep track of registered crypto modules. */
@@ -31,9 +30,9 @@ struct crypt_module
 static crypt_module_t modules;
 
 /* Register a new crypto module. */
-void crypto_module_register (crypt_module_specs_t specs)
+void crypto_module_register(crypt_module_specs_t specs)
 {
-  crypt_module_t module_new = safe_malloc (sizeof (*module_new));
+  crypt_module_t module_new = safe_malloc(sizeof(*module_new));
 
   module_new->specs = specs;
   module_new->next = modules;
@@ -44,7 +43,7 @@ void crypto_module_register (crypt_module_specs_t specs)
 
 /* Return the crypto module specs for IDENTIFIER.  This function is
    usually used via the CRYPT_MOD_CALL[_CHECK] macros. */
-crypt_module_specs_t crypto_module_lookup (int identifier)
+crypt_module_specs_t crypto_module_lookup(int identifier)
 {
   crypt_module_t module = modules;
 

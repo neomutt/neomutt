@@ -18,6 +18,8 @@
 #ifndef _MUTT_MAPPING_H
 #define _MUTT_MAPPING_H 1
 
+#include <unistd.h>
+
 struct mapping_t
 {
   const char *name;

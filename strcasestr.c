@@ -4,30 +4,35 @@
  *
  * Licensed under the LGPL v2.1, see the file COPYING.LIB in this tarball.
  */
-#include <stdlib.h>
 #include <ctype.h>
+#include <stdlib.h>
 
 /* IBM AIX 7.1 still misses strcasestr */
 char *strcasestr(const char *s1, const char *s2)
 {
-        register const char *s = s1;
-        register const char *p = s2;
+  register const char *s = s1;
+  register const char *p = s2;
 
-        do {
-                if (!*p) {
-                        return (char *) s1;;
-                }
-                if ((*p == *s)
-                        || (tolower(*((unsigned char *)p)) == tolower(*((unsigned char *)s)))
-                        ) {
-                        ++p;
-                        ++s;
-                } else {
-                        p = s2;
-                        if (!*s) {
-                                return NULL;
-                        }
-                        s = ++s1;
-                }
-        } while (1);
+  do
+  {
+    if (!*p)
+    {
+      return (char *) s1;
+      ;
+    }
+    if ((*p == *s) || (tolower(*((unsigned char *) p)) == tolower(*((unsigned char *) s))))
+    {
+      ++p;
+      ++s;
+    }
+    else
+    {
+      p = s2;
+      if (!*s)
+      {
+        return NULL;
+      }
+      s = ++s1;
+    }
+  } while (1);
 }

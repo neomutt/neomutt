@@ -16,17 +16,15 @@
  */
 
 #include "config.h"
-
-#include <string.h>
-#include <unistd.h>
 #include <netdb.h>
-#include <sys/types.h>
+#include <string.h>
 #include <sys/socket.h>
-
+#include <sys/types.h>
+#include <unistd.h>
 #include "mutt.h"
 
 
-int getdnsdomainname (char *d, size_t len)
+int getdnsdomainname(char *d, size_t len)
 {
   int ret = -1;
 
@@ -39,7 +37,7 @@ int getdnsdomainname (char *d, size_t len)
   struct addrinfo *h = NULL;
 
   *d = '\0';
-  memset(&hints, 0, sizeof (struct addrinfo));
+  memset(&hints, 0, sizeof(struct addrinfo));
   hints.ai_flags = AI_CANONNAME;
   hints.ai_family = AF_UNSPEC;
 
@@ -57,7 +55,7 @@ int getdnsdomainname (char *d, size_t len)
   reqs[0]->ar_request = &hints;
   if (getaddrinfo_a(GAI_NOWAIT, reqs, 1, NULL) == 0)
   {
-    gai_suspend((const struct gaicb * const *) reqs, 1, &timeout);
+    gai_suspend((const struct gaicb *const *) reqs, 1, &timeout);
     status = gai_error(reqs[0]);
     if (status == 0)
       h = reqs[0]->ar_result;
@@ -67,13 +65,12 @@ int getdnsdomainname (char *d, size_t len)
       /* request is not finish, cancel it to free it safely */
       if (gai_cancel(reqs[0]) == EAI_NOTCANCELED)
       {
-        while (gai_suspend ((const struct gaicb * const *) reqs, 1, NULL) != 0)
+        while (gai_suspend((const struct gaicb *const *) reqs, 1, NULL) != 0)
           continue;
       }
     }
     else
-      mutt_debug(1, "getdnsdomainname fail: (%d) %s\n",
-                 status, gai_strerror(status));
+      mutt_debug(1, "getdnsdomainname fail: (%d) %s\n", status, gai_strerror(status));
   }
   FREE(&reqs[0]);
 
@@ -88,7 +85,7 @@ int getdnsdomainname (char *d, size_t len)
   {
     strfcpy(d, ++p, len);
     ret = 0;
-    mutt_debug (1, "getdnsdomainname(): %s\n", d);
+    mutt_debug(1, "getdnsdomainname(): %s\n", d);
     freeaddrinfo(h);
   }
 
@@ -96,4 +93,3 @@ int getdnsdomainname (char *d, size_t len)
 
   return ret;
 }
-

@@ -21,7 +21,7 @@
 #ifndef _MUTT_HCACHE_BACKEND_H
 #define _MUTT_HCACHE_BACKEND_H 1
 
-#include <stdlib.h> /* for size_t */
+#include <stdlib.h>
 
 /**
  * hcache_open_t - backend-specific routing to open the header cache database.
@@ -35,7 +35,7 @@
  * stored in the ctx member of the header_cache_t structure and passed on to
  * all other backend-specific functions (see below).
  */
-typedef void * (*hcache_open_t)(const char *path);
+typedef void *(*hcache_open_t)(const char *path);
 
 /**
  * hcache_fetch_t - backend-specific routine to fetch a message's headers.
@@ -45,7 +45,7 @@ typedef void * (*hcache_open_t)(const char *path);
  * @param keylen The length of the string pointed to by key.
  * @return Pointer to the message's headers on success, NULL otherwise.
  */
-typedef void * (*hcache_fetch_t)(void *ctx, const char *key, size_t keylen);
+typedef void *(*hcache_fetch_t)(void *ctx, const char *key, size_t keylen);
 
 /**
  * hcache_free_t - backend-specific routine to free fetched data.
@@ -66,7 +66,7 @@ typedef void (*hcache_free_t)(void *ctx, void **data);
  * @return 0 on success, a backend-specific error code otherwise.
  */
 typedef int (*hcache_store_t)(void *ctx, const char *key, size_t keylen,
-                                  void *data, size_t datalen);
+                              void *data, size_t datalen);
 
 /**
  * hcache_delete_t - backend-specific routine to delete a message's headers.
@@ -98,34 +98,34 @@ typedef const char *(*hcache_backend_t)(void);
 
 typedef struct
 {
-    const char *     name;
-    hcache_open_t    open;
-    hcache_fetch_t   fetch;
-    hcache_free_t    free;
-    hcache_store_t   store;
-    hcache_delete_t  delete;
-    hcache_close_t   close;
-    hcache_backend_t backend;
+  const char       *name;
+  hcache_open_t    open;
+  hcache_fetch_t   fetch;
+  hcache_free_t    free;
+  hcache_store_t   store;
+  hcache_delete_t  delete;
+  hcache_close_t   close;
+  hcache_backend_t backend;
 } hcache_ops_t;
 
-#define HCACHE_BACKEND_LIST \
-  HCACHE_BACKEND(bdb) \
-  HCACHE_BACKEND(gdbm) \
-  HCACHE_BACKEND(kyotocabinet) \
-  HCACHE_BACKEND(lmdb) \
-  HCACHE_BACKEND(qdbm) \
+#define HCACHE_BACKEND_LIST                                                    \
+  HCACHE_BACKEND(bdb)                                                          \
+  HCACHE_BACKEND(gdbm)                                                         \
+  HCACHE_BACKEND(kyotocabinet)                                                 \
+  HCACHE_BACKEND(lmdb)                                                         \
+  HCACHE_BACKEND(qdbm)                                                         \
   HCACHE_BACKEND(tokyocabinet)
 
-#define HCACHE_BACKEND_OPS(_name)             \
-  const hcache_ops_t hcache_##_name##_ops = { \
-    .name    = #_name,                        \
-    .open    = hcache_##_name##_open,         \
-    .fetch   = hcache_##_name##_fetch,        \
-    .free    = hcache_##_name##_free,         \
-    .store   = hcache_##_name##_store,        \
-    .delete  = hcache_##_name##_delete,       \
-    .close   = hcache_##_name##_close,        \
-    .backend = hcache_##_name##_backend       \
+#define HCACHE_BACKEND_OPS(_name)                                              \
+  const hcache_ops_t hcache_##_name##_ops = {                                  \
+      .name    = #_name,                                                       \
+      .open    = hcache_##_name##_open,                                        \
+      .fetch   = hcache_##_name##_fetch,                                       \
+      .free    = hcache_##_name##_free,                                        \
+      .store   = hcache_##_name##_store,                                       \
+      .delete  = hcache_##_name##_delete,                                      \
+      .close   = hcache_##_name##_close,                                       \
+      .backend = hcache_##_name##_backend,                                     \
   };
 
 #endif /* _MUTT_HCACHE_BACKEND_H */

@@ -30,42 +30,41 @@ typedef struct buffy_t
   char *desc;
   off_t size;
   struct buffy_t *next;
-  bool new;			/* mailbox has new mail */
+  bool new; /* mailbox has new mail */
 
   /* These next three are only set when OPTMAILCHECKSTATS is set */
-  int msg_count;		/* total number of messages */
-  int msg_unread;		/* number of unread messages */
-  int msg_flagged;		/* number of flagged messages */
+  int msg_count;             /* total number of messages */
+  int msg_unread;            /* number of unread messages */
+  int msg_flagged;           /* number of flagged messages */
 
-  bool notified;		/* user has been notified */
-  short magic;			/* mailbox type */
-  bool newly_created;		/* mbox or mmdf just popped into existence */
-  time_t last_visited;		/* time of last exit from this mailbox */
-  time_t stats_last_checked;	/* mtime of mailbox the last time stats where checked. */
-}
-BUFFY;
+  bool notified;             /* user has been notified */
+  short magic;               /* mailbox type */
+  bool newly_created;        /* mbox or mmdf just popped into existence */
+  time_t last_visited;       /* time of last exit from this mailbox */
+  time_t stats_last_checked; /* mtime of mailbox the last time stats where checked. */
+} BUFFY;
 
-WHERE BUFFY *Incoming INITVAL (0);
-WHERE short BuffyTimeout INITVAL (3);
-WHERE short BuffyCheckStatsInterval INITVAL (60);
+WHERE BUFFY *Incoming INITVAL(0);
+WHERE short BuffyTimeout INITVAL(3);
+WHERE short BuffyCheckStatsInterval INITVAL(60);
 
 #ifdef USE_NOTMUCH
-WHERE BUFFY *VirtIncoming INITVAL (0);
-void mutt_buffy_vfolder (char *s, size_t slen);
+WHERE BUFFY *VirtIncoming INITVAL(0);
+void mutt_buffy_vfolder(char *s, size_t slen);
 #endif
 
-extern time_t BuffyDoneTime;	/* last time we knew for sure how much mail there was */
+extern time_t BuffyDoneTime; /* last time we knew for sure how much mail there was */
 
-BUFFY *mutt_find_mailbox (const char *path);
-void mutt_update_mailbox (BUFFY * b);
+BUFFY *mutt_find_mailbox(const char *path);
+void mutt_update_mailbox(BUFFY *b);
 
 /* fixes up atime + mtime after mbox/mmdf mailbox was modified
    according to stat() info taken before a modification */
-void mutt_buffy_cleanup (const char *buf, struct stat *st);
+void mutt_buffy_cleanup(const char *buf, struct stat *st);
 
 /* mark mailbox just left as already notified */
-void mutt_buffy_setnotified (const char *path);
+void mutt_buffy_setnotified(const char *path);
 
-int mh_buffy (BUFFY *mailbox, int check_stats);
+int mh_buffy(BUFFY *mailbox, int check_stats);
 
 #endif /* _MUTT_BUFFY_H */

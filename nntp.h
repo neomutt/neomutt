@@ -20,17 +20,15 @@
 #ifndef _MUTT_NNTP_H
 #define _MUTT_NNTP_H 1
 
-#include "mutt_socket.h"
-#include "mailbox.h"
+#include <stdint.h>
+#include <sys/types.h>
+#include <time.h>
 #include "bcache.h"
-
+#include "mailbox.h"
+#include "mutt_socket.h"
 #ifdef USE_HCACHE
 #include "hcache.h"
 #endif
-
-#include <time.h>
-#include <sys/types.h>
-#include <stdint.h>
 
 #define NNTP_PORT 119
 #define NNTP_SSL_PORT 563
@@ -117,7 +115,7 @@ typedef struct
   bool parsed : 1;
 } NNTP_HEADER_DATA;
 
-#define NHDR(hdr) ((NNTP_HEADER_DATA*)((hdr)->data))
+#define NHDR(hdr) ((NNTP_HEADER_DATA *) ((hdr)->data))
 
 /* internal functions */
 int nntp_add_group(char *line, void *data);
@@ -153,7 +151,7 @@ const char *nntp_format_str(char *dest, size_t destlen, size_t col, int cols,
                             const char *ifstring, const char *elsestring,
                             unsigned long data, format_flag flags);
 
-NNTP_SERVER *CurrentNewsSrv INITVAL (NULL);
+NNTP_SERVER *CurrentNewsSrv INITVAL(NULL);
 
 #ifdef USE_HCACHE
 header_cache_t *nntp_hcache_open(NNTP_DATA *nntp_data);

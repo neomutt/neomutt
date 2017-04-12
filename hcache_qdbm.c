@@ -19,26 +19,23 @@
  */
 
 #include "config.h"
-
-#include "hcache_backend.h"
-#include "mutt.h"
-#include <depot.h>
 #include <cabin.h>
+#include <depot.h>
 #include <villa.h>
+#include "mutt.h"
+#include "hcache_backend.h"
 
-static void *
-hcache_qdbm_open(const char *path)
+static void *hcache_qdbm_open(const char *path)
 {
   int flags = VL_OWRITER | VL_OCREAT;
 
   if (option(OPTHCACHECOMPRESS))
     flags |= VL_OZCOMP;
 
-  return vlopen (path, flags, VL_CMPLEX);
+  return vlopen(path, flags, VL_CMPLEX);
 }
 
-static void *
-hcache_qdbm_fetch(void *ctx, const char *key, size_t keylen)
+static void *hcache_qdbm_fetch(void *ctx, const char *key, size_t keylen)
 {
   if (!ctx)
     return NULL;
@@ -47,14 +44,12 @@ hcache_qdbm_fetch(void *ctx, const char *key, size_t keylen)
   return vlget(db, key, keylen, NULL);
 }
 
-static void
-hcache_qdbm_free(void *ctx, void **data)
+static void hcache_qdbm_free(void *ctx, void **data)
 {
-    FREE(data); /* __FREE_CHECKED__ */
+  FREE(data); /* __FREE_CHECKED__ */
 }
 
-static int
-hcache_qdbm_store(void *ctx, const char *key, size_t keylen, void *data, size_t dlen)
+static int hcache_qdbm_store(void *ctx, const char *key, size_t keylen, void *data, size_t dlen)
 {
   if (!ctx)
     return -1;
@@ -63,8 +58,7 @@ hcache_qdbm_store(void *ctx, const char *key, size_t keylen, void *data, size_t 
   return vlput(db, key, keylen, data, dlen, VL_DOVER);
 }
 
-static int
-hcache_qdbm_delete(void *ctx, const char *key, size_t keylen)
+static int hcache_qdbm_delete(void *ctx, const char *key, size_t keylen)
 {
   if (!ctx)
     return -1;
@@ -73,8 +67,7 @@ hcache_qdbm_delete(void *ctx, const char *key, size_t keylen)
   return vlout(db, key, keylen);
 }
 
-static void
-hcache_qdbm_close(void **ctx)
+static void hcache_qdbm_close(void **ctx)
 {
   if (!ctx || !*ctx)
     return;
@@ -83,11 +76,9 @@ hcache_qdbm_close(void **ctx)
   vlclose(db);
 }
 
-static const char *
-hcache_qdbm_backend(void)
+static const char *hcache_qdbm_backend(void)
 {
   return "qdbm " _QDBM_VERSION;
 }
 
 HCACHE_BACKEND_OPS(qdbm)
-

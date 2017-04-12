@@ -17,17 +17,15 @@
  */
 
 #include "config.h"
-
-#include "mutt.h"
-#include "mutt_socket.h"
-#include "mutt_tunnel.h"
-
-#include <netinet/in.h>
-#include <sys/types.h>
-#include <sys/socket.h>
-#include <sys/wait.h>
-#include <fcntl.h>
 #include <errno.h>
+#include <fcntl.h>
+#include <netinet/in.h>
+#include <sys/socket.h>
+#include <sys/types.h>
+#include <sys/wait.h>
+#include "mutt.h"
+#include "mutt_tunnel.h"
+#include "mutt_socket.h"
 
 /* -- data types -- */
 typedef struct
@@ -37,73 +35,71 @@ typedef struct
   int writefd;
 } TUNNEL_DATA;
 
-static int tunnel_socket_open (CONNECTION *conn)
+static int tunnel_socket_open(CONNECTION *conn)
 {
-  TUNNEL_DATA* tunnel = NULL;
+  TUNNEL_DATA *tunnel = NULL;
   int pid;
   int rc;
   int pin[2], pout[2];
   int devnull;
 
-  tunnel = safe_malloc (sizeof (TUNNEL_DATA));
+  tunnel = safe_malloc(sizeof(TUNNEL_DATA));
   conn->sockdata = tunnel;
 
-  mutt_message (_("Connecting with \"%s\"..."), Tunnel);
+  mutt_message(_("Connecting with \"%s\"..."), Tunnel);
 
-  if ((rc = pipe (pin)) == -1)
+  if ((rc = pipe(pin)) == -1)
   {
-    mutt_perror ("pipe");
-    FREE (&conn->sockdata);
+    mutt_perror("pipe");
+    FREE(&conn->sockdata);
     return -1;
   }
-  if ((rc = pipe (pout)) == -1)
+  if ((rc = pipe(pout)) == -1)
   {
-    mutt_perror ("pipe");
-    close (pin[0]);
-    close (pin[1]);
-    FREE (&conn->sockdata);
+    mutt_perror("pipe");
+    close(pin[0]);
+    close(pin[1]);
+    FREE(&conn->sockdata);
     return -1;
   }
 
-  mutt_block_signals_system ();
-  if ((pid = fork ()) == 0)
+  mutt_block_signals_system();
+  if ((pid = fork()) == 0)
   {
-    mutt_unblock_signals_system (0);
-    devnull = open ("/dev/null", O_RDWR);
-    if (devnull < 0 ||
-        dup2 (pout[0], STDIN_FILENO) < 0 ||
-        dup2 (pin[1], STDOUT_FILENO) < 0 ||
-        dup2 (devnull, STDERR_FILENO) < 0)
-      _exit (127);
-    close (pin[0]);
-    close (pin[1]);
-    close (pout[0]);
-    close (pout[1]);
-    close (devnull);
+    mutt_unblock_signals_system(0);
+    devnull = open("/dev/null", O_RDWR);
+    if (devnull < 0 || dup2(pout[0], STDIN_FILENO) < 0 ||
+        dup2(pin[1], STDOUT_FILENO) < 0 || dup2(devnull, STDERR_FILENO) < 0)
+      _exit(127);
+    close(pin[0]);
+    close(pin[1]);
+    close(pout[0]);
+    close(pout[1]);
+    close(devnull);
 
     /* Don't let the subprocess think it can use the controlling tty */
-    setsid ();
+    setsid();
 
-    execl (EXECSHELL, "sh", "-c", Tunnel, NULL);
-    _exit (127);
+    execl(EXECSHELL, "sh", "-c", Tunnel, NULL);
+    _exit(127);
   }
-  mutt_unblock_signals_system (1);
+  mutt_unblock_signals_system(1);
 
   if (pid == -1)
   {
-    mutt_perror ("fork");
-    close (pin[0]);
-    close (pin[1]);
-    close (pout[0]);
-    close (pout[1]);
-    FREE (&conn->sockdata);
+    mutt_perror("fork");
+    close(pin[0]);
+    close(pin[1]);
+    close(pout[0]);
+    close(pout[1]);
+    FREE(&conn->sockdata);
     return -1;
   }
-  if (close (pin[1]) < 0 || close (pout[0]) < 0)
-    mutt_perror ("close");
+  if (close(pin[1]) < 0 || close(pout[0]) < 0)
+    mutt_perror("close");
 
-  fcntl (pin[0], F_SETFD, FD_CLOEXEC);
-  fcntl (pout[1], F_SETFD, FD_CLOEXEC);
+  fcntl(pin[0], F_SETFD, FD_CLOEXEC);
+  fcntl(pout[1], F_SETFD, FD_CLOEXEC);
 
   tunnel->readfd = pin[0];
   tunnel->writefd = pout[1];
@@ -114,74 +110,71 @@ static int tunnel_socket_open (CONNECTION *conn)
   return 0;
 }
 
-static int tunnel_socket_close (CONNECTION* conn)
+static int tunnel_socket_close(CONNECTION *conn)
 {
-  TUNNEL_DATA* tunnel = (TUNNEL_DATA*) conn->sockdata;
+  TUNNEL_DATA *tunnel = (TUNNEL_DATA *) conn->sockdata;
   int status;
 
-  close (tunnel->readfd);
-  close (tunnel->writefd);
-  waitpid (tunnel->pid, &status, 0);
+  close(tunnel->readfd);
+  close(tunnel->writefd);
+  waitpid(tunnel->pid, &status, 0);
   if (!WIFEXITED(status) || WEXITSTATUS(status))
   {
     mutt_error(_("Tunnel to %s returned error %d (%s)"), conn->account.host,
-               WEXITSTATUS(status),
-               NONULL(mutt_strsysexit(WEXITSTATUS(status))));
-    mutt_sleep (2);
+               WEXITSTATUS(status), NONULL(mutt_strsysexit(WEXITSTATUS(status))));
+    mutt_sleep(2);
   }
-  FREE (&conn->sockdata);
+  FREE(&conn->sockdata);
 
   return 0;
 }
 
-static int tunnel_socket_read (CONNECTION* conn, char* buf, size_t len)
+static int tunnel_socket_read(CONNECTION *conn, char *buf, size_t len)
 {
-  TUNNEL_DATA* tunnel = (TUNNEL_DATA*) conn->sockdata;
+  TUNNEL_DATA *tunnel = (TUNNEL_DATA *) conn->sockdata;
   int rc;
 
-  rc = read (tunnel->readfd, buf, len);
+  rc = read(tunnel->readfd, buf, len);
   if (rc == -1)
   {
-    mutt_error (_("Tunnel error talking to %s: %s"), conn->account.host,
-		strerror (errno));
-    mutt_sleep (1);
+    mutt_error(_("Tunnel error talking to %s: %s"), conn->account.host, strerror(errno));
+    mutt_sleep(1);
   }
 
   return rc;
 }
 
-static int tunnel_socket_write (CONNECTION* conn, const char* buf, size_t len)
+static int tunnel_socket_write(CONNECTION *conn, const char *buf, size_t len)
 {
-  TUNNEL_DATA* tunnel = (TUNNEL_DATA*) conn->sockdata;
+  TUNNEL_DATA *tunnel = (TUNNEL_DATA *) conn->sockdata;
   int rc;
 
-  rc = write (tunnel->writefd, buf, len);
+  rc = write(tunnel->writefd, buf, len);
   if (rc == -1)
   {
-    mutt_error (_("Tunnel error talking to %s: %s"), conn->account.host,
-		strerror (errno));
-    mutt_sleep (1);
+    mutt_error(_("Tunnel error talking to %s: %s"), conn->account.host, strerror(errno));
+    mutt_sleep(1);
   }
 
   return rc;
 }
 
-static int tunnel_socket_poll (CONNECTION* conn)
+static int tunnel_socket_poll(CONNECTION *conn)
 {
-  TUNNEL_DATA* tunnel = (TUNNEL_DATA*) conn->sockdata;
+  TUNNEL_DATA *tunnel = (TUNNEL_DATA *) conn->sockdata;
   int ofd;
   int rc;
 
   ofd = conn->fd;
   conn->fd = tunnel->readfd;
-  rc = raw_socket_poll (conn);
+  rc = raw_socket_poll(conn);
   conn->fd = ofd;
 
   return rc;
 }
 
 /* -- public functions -- */
-int mutt_tunnel_socket_setup (CONNECTION *conn)
+int mutt_tunnel_socket_setup(CONNECTION *conn)
 {
   conn->conn_open = tunnel_socket_open;
   conn->conn_close = tunnel_socket_close;
@@ -191,4 +184,3 @@ int mutt_tunnel_socket_setup (CONNECTION *conn)
 
   return 0;
 }
-

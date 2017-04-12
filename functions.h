@@ -33,8 +33,8 @@
  */
 
 #ifdef _MAKEDOC
-# include "config.h"
-# include "doc/makedoc_defs.h"
+#include "config.h"
+#include "doc/makedoc_defs.h"
 #endif
 
 // clang-format off
@@ -80,7 +80,7 @@ const struct binding_t OpGeneric[] = { /* map: generic */
   { "current-middle",  OP_CURRENT_MIDDLE,       NULL },
   { "current-bottom",  OP_CURRENT_BOTTOM,       NULL },
   { "what-key",        OP_WHAT_KEY,             NULL },
-  { NULL,              0,                       NULL }
+  { NULL,              0,                       NULL },
 };
 
 const struct binding_t OpMain[] = { /* map: index */
@@ -161,7 +161,7 @@ const struct binding_t OpMain[] = { /* map: index */
   { "tag-thread",                OP_TAG_THREAD,                     "\033t" },
   { "untag-pattern",             OP_MAIN_UNTAG_PATTERN,             "\024" },
   { "undelete-message",          OP_UNDELETE,                       "u" },
-  { "undelete-pattern",          OP_MAIN_UNDELETE_PATTERN,          "U"},
+  { "undelete-pattern",          OP_MAIN_UNDELETE_PATTERN,          "U" },
   { "undelete-subthread",        OP_UNDELETE_SUBTHREAD,             "\033u" },
   { "undelete-thread",           OP_UNDELETE_THREAD,                "\025" },
   { "view-attachments",          OP_VIEW_ATTACHMENTS,               "v" },
@@ -187,8 +187,6 @@ const struct binding_t OpMain[] = { /* map: index */
   { "previous-unread",           OP_MAIN_PREV_UNREAD,               NULL },
   { "parent-message",            OP_MAIN_PARENT_MESSAGE,            "P" },
   { "root-message",              OP_MAIN_ROOT_MESSAGE,              NULL },
-
-
   { "extract-keys",              OP_EXTRACT_KEYS,                   "\013" },
   { "forget-passphrase",         OP_FORGET_PASSPHRASE,              "\006" },
   { "check-traditional-pgp",     OP_CHECK_TRADITIONAL,              "\033P" },
@@ -196,7 +194,6 @@ const struct binding_t OpMain[] = { /* map: index */
   { "decrypt-copy",              OP_DECRYPT_COPY,                   NULL },
   { "decrypt-save",              OP_DECRYPT_SAVE,                   NULL },
   { "quasi-delete",              OP_MAIN_QUASI_DELETE,              NULL },
-
 #ifdef USE_SIDEBAR
   { "sidebar-next",              OP_SIDEBAR_NEXT,                   NULL },
   { "sidebar-next-new",          OP_SIDEBAR_NEXT_NEW,               NULL },
@@ -208,7 +205,6 @@ const struct binding_t OpMain[] = { /* map: index */
   { "sidebar-toggle-virtual",    OP_SIDEBAR_TOGGLE_VIRTUAL,         NULL },
   { "sidebar-toggle-visible",    OP_SIDEBAR_TOGGLE_VISIBLE,         NULL },
 #endif
-
 #ifdef USE_NOTMUCH
   { "change-vfolder",            OP_MAIN_CHANGE_VFOLDER,            NULL },
   { "vfolder-from-query",        OP_MAIN_VFOLDER_FROM_QUERY,        NULL },
@@ -218,7 +214,7 @@ const struct binding_t OpMain[] = { /* map: index */
   { "modify-labels-then-hide",   OP_MAIN_MODIFY_LABELS_THEN_HIDE,   NULL },
   { "entire-thread",             OP_MAIN_ENTIRE_THREAD,             NULL },
 #endif
-  { NULL,                        0,                                 NULL }
+  { NULL,                        0,                                 NULL },
 };
 
 const struct binding_t OpPager[] = { /* map: pager */
@@ -326,16 +322,14 @@ const struct binding_t OpPager[] = { /* map: pager */
   { "bottom",                    OP_PAGER_BOTTOM,                 NULL },
   { "parent-message",            OP_MAIN_PARENT_MESSAGE,          "P" },
   { "root-message",              OP_MAIN_ROOT_MESSAGE,            NULL },
-  { "check-traditional-pgp",     OP_CHECK_TRADITIONAL,            "\033P"   },
+  { "check-traditional-pgp",     OP_CHECK_TRADITIONAL,            "\033P" },
   { "mail-key",                  OP_MAIL_KEY,                     "\033k" },
   { "extract-keys",              OP_EXTRACT_KEYS,                 "\013" },
   { "forget-passphrase",         OP_FORGET_PASSPHRASE,            "\006" },
   { "decrypt-copy",              OP_DECRYPT_COPY,                 NULL },
   { "decrypt-save",              OP_DECRYPT_SAVE,                 NULL },
-
   { "what-key",                  OP_WHAT_KEY,                     NULL },
   { "quasi-delete",              OP_MAIN_QUASI_DELETE,            NULL },
-
 #ifdef USE_SIDEBAR
   { "sidebar-next",              OP_SIDEBAR_NEXT,                 NULL },
   { "sidebar-next-new",          OP_SIDEBAR_NEXT_NEW,             NULL },
@@ -347,7 +341,6 @@ const struct binding_t OpPager[] = { /* map: pager */
   { "sidebar-toggle-virtual",    OP_SIDEBAR_TOGGLE_VIRTUAL,       NULL },
   { "sidebar-toggle-visible",    OP_SIDEBAR_TOGGLE_VISIBLE,       NULL },
 #endif
-
 #ifdef USE_NOTMUCH
   { "change-vfolder",            OP_MAIN_CHANGE_VFOLDER,          NULL },
   { "vfolder-from-query",        OP_MAIN_VFOLDER_FROM_QUERY,      NULL },
@@ -355,8 +348,7 @@ const struct binding_t OpPager[] = { /* map: pager */
   { "modify-labels-then-hide",   OP_MAIN_MODIFY_LABELS_THEN_HIDE, NULL },
   { "entire-thread",             OP_MAIN_ENTIRE_THREAD,           NULL },
 #endif
-
-  { NULL,                        0,                               NULL }
+  { NULL,                        0,                               NULL },
 };
 
 const struct binding_t OpAttach[] = { /* map: attachment */
@@ -382,12 +374,10 @@ const struct binding_t OpAttach[] = { /* map: attachment */
   { "delete-entry",          OP_DELETE,                      "d" },
   { "undelete-entry",        OP_UNDELETE,                    "u" },
   { "collapse-parts",        OP_ATTACH_COLLAPSE,             "v" },
-
-  { "check-traditional-pgp", OP_CHECK_TRADITIONAL,           "\033P"   },
+  { "check-traditional-pgp", OP_CHECK_TRADITIONAL,           "\033P" },
   { "extract-keys",          OP_EXTRACT_KEYS,                "\013" },
   { "forget-passphrase",     OP_FORGET_PASSPHRASE,           "\006" },
-
-  { NULL,                    0,                              NULL }
+  { NULL,                    0,                              NULL },
 };
 
 const struct binding_t OpCompose[] = { /* map: compose */
@@ -435,33 +425,27 @@ const struct binding_t OpCompose[] = { /* map: compose */
   { "view-attach",           OP_VIEW_ATTACH,                 "\r" },
   { "send-message",          OP_COMPOSE_SEND_MESSAGE,        "y" },
   { "pipe-entry",            OP_PIPE,                        "|" },
-
   { "attach-key",            OP_COMPOSE_ATTACH_KEY,          "\033k" },
-  { "pgp-menu",              OP_COMPOSE_PGP_MENU,            "p"   },
-
-  { "forget-passphrase",     OP_FORGET_PASSPHRASE,           "\006"  },
-
-  { "smime-menu",            OP_COMPOSE_SMIME_MENU,          "S"   },
-
+  { "pgp-menu",              OP_COMPOSE_PGP_MENU,            "p" },
+  { "forget-passphrase",     OP_FORGET_PASSPHRASE,           "\006" },
+  { "smime-menu",            OP_COMPOSE_SMIME_MENU,          "S" },
 #ifdef MIXMASTER
   { "mix",                   OP_COMPOSE_MIX,                 "M" },
 #endif
-
-  { NULL,                    0,                              NULL }
+  { NULL,                    0,                              NULL },
 };
 
 const struct binding_t OpPost[] = { /* map: postpone */
   { "delete-entry",          OP_DELETE,                      "d" },
   { "undelete-entry",        OP_UNDELETE,                    "u" },
-  { NULL,                    0,                              NULL }
+  { NULL,                    0,                              NULL },
 };
 
 const struct binding_t OpAlias[] = { /* map: alias */
   { "delete-entry",          OP_DELETE,                      "d" },
   { "undelete-entry",        OP_UNDELETE,                    "u" },
-  { NULL,                    0,                              NULL }
+  { NULL,                    0,                              NULL },
 };
-
 
 /* The file browser */
 const struct binding_t OpBrowser[] = { /* map: browser */
@@ -495,7 +479,7 @@ const struct binding_t OpBrowser[] = { /* map: browser */
   { "toggle-subscribed",     OP_BROWSER_TOGGLE_LSUB,         "T" },
 #endif
   { "goto-folder",           OP_BROWSER_GOTO_FOLDER,         "=" },
-  { NULL,                    0,                              NULL }
+  { NULL,                    0,                              NULL },
 };
 
 /* External Query Menu */
@@ -504,44 +488,40 @@ const struct binding_t OpQuery[] = { /* map: query */
   { "mail",                  OP_MAIL,                        "m" },
   { "query",                 OP_QUERY,                       "Q" },
   { "query-append",          OP_QUERY_APPEND,                "A" },
-  { NULL,                    0,                              NULL }
+  { NULL,                    0,                              NULL },
 };
 
 const struct binding_t OpEditor[] = { /* map: editor */
   { "bol",                   OP_EDITOR_BOL,                  "\001" },
   { "backward-char",         OP_EDITOR_BACKWARD_CHAR,        "\002" },
-  { "backward-word",         OP_EDITOR_BACKWARD_WORD,        "\033b"},
-  { "capitalize-word",       OP_EDITOR_CAPITALIZE_WORD,      "\033c"},
-  { "downcase-word",         OP_EDITOR_DOWNCASE_WORD,        "\033l"},
-  { "upcase-word",           OP_EDITOR_UPCASE_WORD,          "\033u"},
+  { "backward-word",         OP_EDITOR_BACKWARD_WORD,        "\033b" },
+  { "capitalize-word",       OP_EDITOR_CAPITALIZE_WORD,      "\033c" },
+  { "downcase-word",         OP_EDITOR_DOWNCASE_WORD,        "\033l" },
+  { "upcase-word",           OP_EDITOR_UPCASE_WORD,          "\033u" },
   { "delete-char",           OP_EDITOR_DELETE_CHAR,          "\004" },
   { "eol",                   OP_EDITOR_EOL,                  "\005" },
   { "forward-char",          OP_EDITOR_FORWARD_CHAR,         "\006" },
-  { "forward-word",          OP_EDITOR_FORWARD_WORD,         "\033f"},
+  { "forward-word",          OP_EDITOR_FORWARD_WORD,         "\033f" },
   { "backspace",             OP_EDITOR_BACKSPACE,            "\010" },
   { "kill-eol",              OP_EDITOR_KILL_EOL,             "\013" },
-  { "kill-eow",              OP_EDITOR_KILL_EOW,             "\033d"},
+  { "kill-eow",              OP_EDITOR_KILL_EOW,             "\033d" },
   { "kill-line",             OP_EDITOR_KILL_LINE,            "\025" },
   { "quote-char",            OP_EDITOR_QUOTE_CHAR,           "\026" },
   { "kill-word",             OP_EDITOR_KILL_WORD,            "\027" },
-  { "complete",              OP_EDITOR_COMPLETE,             "\t"   },
+  { "complete",              OP_EDITOR_COMPLETE,             "\t" },
   { "complete-query",        OP_EDITOR_COMPLETE_QUERY,       "\024" },
-  { "buffy-cycle",           OP_EDITOR_BUFFY_CYCLE,          " "    },
-  { "history-up",            OP_EDITOR_HISTORY_UP,           NULL   },
-  { "history-down",          OP_EDITOR_HISTORY_DOWN,         NULL   },
-  { "transpose-chars",       OP_EDITOR_TRANSPOSE_CHARS,      NULL   },
-  { NULL,                    0,                              NULL   }
+  { "buffy-cycle",           OP_EDITOR_BUFFY_CYCLE,          " " },
+  { "history-up",            OP_EDITOR_HISTORY_UP,           NULL },
+  { "history-down",          OP_EDITOR_HISTORY_DOWN,         NULL },
+  { "transpose-chars",       OP_EDITOR_TRANSPOSE_CHARS,      NULL },
+  { NULL,                    0,                              NULL },
 };
-
-
 
 const struct binding_t OpPgp[] = { /* map: pgp */
   { "verify-key",            OP_VERIFY_KEY,                  "c" },
   { "view-name",             OP_VIEW_ID,                     "%" },
-  { NULL,                    0,                              NULL }
+  { NULL,                    0,                              NULL },
 };
-
-
 
 /* When using the GPGME based backend we have some useful functions
    for the SMIME menu.  */
@@ -550,21 +530,19 @@ const struct binding_t OpSmime[] = { /* map: smime */
   { "verify-key",            OP_VERIFY_KEY,                  "c" },
   { "view-name",             OP_VIEW_ID,                     "%" },
 #endif
-  { NULL,                    0,                              NULL }
+  { NULL,                    0,                              NULL },
 };
-
-
 
 #ifdef MIXMASTER
 const struct binding_t OpMix[] = { /* map: mixmaster */
   { "accept",                OP_MIX_USE,                     "\n" },
   { "accept",                OP_MIX_USE,                     "\r" },
-  { "append",                OP_MIX_APPEND,                  "a"       },
-  { "insert",                OP_MIX_INSERT,                  "i"       },
-  { "delete",                OP_MIX_DELETE,                  "d"   },
+  { "append",                OP_MIX_APPEND,                  "a" },
+  { "insert",                OP_MIX_INSERT,                  "i" },
+  { "delete",                OP_MIX_DELETE,                  "d" },
   { "chain-prev",            OP_MIX_CHAIN_PREV,              "<left>" },
   { "chain-next",            OP_MIX_CHAIN_NEXT,              "<right>" },
-  { NULL,                    0,                              NULL }
+  { NULL,                    0,                              NULL },
 };
 #endif /* MIXMASTER */
 // clang-format on

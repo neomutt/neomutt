@@ -16,8 +16,8 @@
 #ifndef _MUTT_FILTER_H
 #define _MUTT_FILTER_H 1
 
-#include <unistd.h>
 #include <stdio.h>
+#include <unistd.h>
 
 pid_t mutt_create_filter_fd(const char *cmd, FILE **in, FILE **out, FILE **err,
                             int fdin, int fdout, int fderr);

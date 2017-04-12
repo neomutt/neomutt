@@ -18,7 +18,7 @@
 #ifndef _MUTT_SASL_PLAIN_H
 #define _MUTT_SASL_PLAIN_H 1
 
-#include <stdlib.h> /* for size_t */
+#include <stdlib.h>
 
 /**
  * mutt_sasl_plain_msg - construct a base64 encoded SASL PLAIN message

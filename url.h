@@ -18,8 +18,7 @@
 
 #include "mutt.h"
 
-typedef enum url_scheme
-{
+typedef enum url_scheme {
   U_FILE,
   U_POP,
   U_POPS,
@@ -34,11 +33,10 @@ typedef enum url_scheme
   U_NOTMUCH,
 #endif
   U_UNKNOWN
-}
-url_scheme_t;
+} url_scheme_t;
 
 #define U_DECODE_PASSWD (1)
-#define U_PATH          (1 << 1)
+#define U_PATH (1 << 1)
 
 typedef struct ciss_url
 {
@@ -48,8 +46,7 @@ typedef struct ciss_url
   char *host;
   unsigned short port;
   char *path;
-}
-ciss_url_t;
+} ciss_url_t;
 
 url_scheme_t url_check_scheme(const char *s);
 int url_parse_ciss(ciss_url_t *ciss, char *src);

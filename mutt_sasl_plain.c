@@ -16,13 +16,11 @@
  */
 
 #include "config.h"
-
 #include "mutt.h"
 #include "mutt_sasl_plain.h"
 
 size_t mutt_sasl_plain_msg(char *buf, size_t buflen, const char *cmd,
-                           const char *authz, const char *user,
-                           const char *pass)
+                           const char *authz, const char *user, const char *pass)
 {
   /* authz, user, and pass can each be up to 255 bytes, making up for a 765
    * bytes string. Add the two NULL bytes in between plus one at the end and we
@@ -34,8 +32,7 @@ size_t mutt_sasl_plain_msg(char *buf, size_t buflen, const char *cmd,
   if (!user || !*user || !pass || !*pass)
     return 0;
 
-  tmplen = snprintf(tmp, sizeof(tmp), "%s%c%s%c%s", NONULL(authz), '\0', user,
-                    '\0', pass);
+  tmplen = snprintf(tmp, sizeof(tmp), "%s%c%s%c%s", NONULL(authz), '\0', user, '\0', pass);
 
   len = snprintf(buf, buflen, "%s ", cmd);
   len += mutt_to_base64(buf + len, tmp, tmplen, buflen - len);

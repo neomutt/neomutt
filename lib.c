@@ -23,18 +23,18 @@
  */
 
 #include "config.h"
-
-#include <string.h>
 #include <ctype.h>
-#include <unistd.h>
-#include <stdlib.h>
-#include <sys/wait.h>
+#include <dirent.h>
 #include <errno.h>
-#include <sys/stat.h>
 #include <fcntl.h>
 #include <pwd.h>
+#include <stdlib.h>
+#include <string.h>
+#include <sys/stat.h>
 #include <sys/types.h>
-#include <dirent.h>
+#include <sys/wait.h>
+#include <unistd.h>
+#include "lib.h"
 
 #ifdef HAVE_SYSEXITS_H
 #include <sysexits.h>
@@ -42,75 +42,71 @@
 #define EX_OK 0
 #endif
 
-#include "lib.h"
-
 static const struct sysexits
 {
   int v;
   const char *str;
-}
-sysexits_h[] =
-{
+} sysexits_h[] = {
 #ifdef EX_USAGE
-  { 0xff & EX_USAGE, "Bad usage." },
+    {0xff & EX_USAGE, "Bad usage."},
 #endif
 #ifdef EX_DATAERR
-  { 0xff & EX_DATAERR, "Data format error." },
+    {0xff & EX_DATAERR, "Data format error."},
 #endif
 #ifdef EX_NOINPUT
-  { 0xff & EX_NOINPUT, "Cannot open input." },
+    {0xff & EX_NOINPUT, "Cannot open input."},
 #endif
 #ifdef EX_NOUSER
-  { 0xff & EX_NOUSER, "User unknown." },
+    {0xff & EX_NOUSER, "User unknown."},
 #endif
 #ifdef EX_NOHOST
-  { 0xff & EX_NOHOST, "Host unknown." },
+    {0xff & EX_NOHOST, "Host unknown."},
 #endif
 #ifdef EX_UNAVAILABLE
-  { 0xff & EX_UNAVAILABLE, "Service unavailable." },
+    {0xff & EX_UNAVAILABLE, "Service unavailable."},
 #endif
 #ifdef EX_SOFTWARE
-  { 0xff & EX_SOFTWARE, "Internal error." },
+    {0xff & EX_SOFTWARE, "Internal error."},
 #endif
 #ifdef EX_OSERR
-  { 0xff & EX_OSERR, "Operating system error." },
+    {0xff & EX_OSERR, "Operating system error."},
 #endif
 #ifdef EX_OSFILE
-  { 0xff & EX_OSFILE, "System file missing." },
+    {0xff & EX_OSFILE, "System file missing."},
 #endif
 #ifdef EX_CANTCREAT
-  { 0xff & EX_CANTCREAT, "Can't create output." },
+    {0xff & EX_CANTCREAT, "Can't create output."},
 #endif
 #ifdef EX_IOERR
-  { 0xff & EX_IOERR, "I/O error." },
+    {0xff & EX_IOERR, "I/O error."},
 #endif
 #ifdef EX_TEMPFAIL
-  { 0xff & EX_TEMPFAIL, "Deferred." },
+    {0xff & EX_TEMPFAIL, "Deferred."},
 #endif
 #ifdef EX_PROTOCOL
-  { 0xff & EX_PROTOCOL, "Remote protocol error." },
+    {0xff & EX_PROTOCOL, "Remote protocol error."},
 #endif
 #ifdef EX_NOPERM
-  { 0xff & EX_NOPERM, "Insufficient permission." },
+    {0xff & EX_NOPERM, "Insufficient permission."},
 #endif
 #ifdef EX_CONFIG
-  { 0xff & EX_NOPERM, "Local configuration error." },
+    {0xff & EX_NOPERM, "Local configuration error."},
 #endif
-  { S_ERR, "Exec error." },
-  { -1, NULL}
+    {S_ERR, "Exec error."},
+    {-1, NULL},
 };
 
-void mutt_nocurses_error (const char *fmt, ...)
+void mutt_nocurses_error(const char *fmt, ...)
 {
   va_list ap;
 
-  va_start (ap, fmt);
-  vfprintf (stderr, fmt, ap);
-  va_end (ap);
-  fputc ('\n', stderr);
+  va_start(ap, fmt);
+  vfprintf(stderr, fmt, ap);
+  va_end(ap);
+  fputc('\n', stderr);
 }
 
-void *safe_calloc (size_t nmemb, size_t size)
+void *safe_calloc(size_t nmemb, size_t size)
 {
   void *p = NULL;
 
@@ -119,125 +115,125 @@ void *safe_calloc (size_t nmemb, size_t size)
 
   if (((size_t) -1) / nmemb <= size)
   {
-    mutt_error (_("Integer overflow -- can't allocate memory!"));
-    sleep (1);
-    mutt_exit (1);
+    mutt_error(_("Integer overflow -- can't allocate memory!"));
+    sleep(1);
+    mutt_exit(1);
   }
 
-  if (!(p = calloc (nmemb, size)))
+  if (!(p = calloc(nmemb, size)))
   {
-    mutt_error (_("Out of memory!"));
-    sleep (1);
-    mutt_exit (1);
+    mutt_error(_("Out of memory!"));
+    sleep(1);
+    mutt_exit(1);
   }
   return p;
 }
 
-void *safe_malloc (size_t siz)
+void *safe_malloc(size_t siz)
 {
   void *p = NULL;
 
   if (siz == 0)
     return 0;
-  if ((p = malloc (siz)) == NULL)	/* __MEM_CHECKED__ */
+  if ((p = malloc(siz)) == NULL) /* __MEM_CHECKED__ */
   {
-    mutt_error (_("Out of memory!"));
-    sleep (1);
-    mutt_exit (1);
+    mutt_error(_("Out of memory!"));
+    sleep(1);
+    mutt_exit(1);
   }
   return p;
 }
 
-void safe_realloc (void *ptr, size_t siz)
+void safe_realloc(void *ptr, size_t siz)
 {
   void *r = NULL;
-  void **p = (void **)ptr;
+  void **p = (void **) ptr;
 
   if (siz == 0)
   {
     if (*p)
     {
-      free (*p);			/* __MEM_CHECKED__ */
+      free(*p); /* __MEM_CHECKED__ */
       *p = NULL;
     }
     return;
   }
 
   if (*p)
-    r = realloc (*p, siz);	/* __MEM_CHECKED__ */
+    r = realloc(*p, siz); /* __MEM_CHECKED__ */
   else
   {
     /* realloc(NULL, nbytes) doesn't seem to work under SunOS 4.1.x  --- __MEM_CHECKED__ */
-    r = malloc (siz);		/* __MEM_CHECKED__ */
+    r = malloc(siz); /* __MEM_CHECKED__ */
   }
 
   if (!r)
   {
-    mutt_error (_("Out of memory!"));
-    sleep (1);
-    mutt_exit (1);
+    mutt_error(_("Out of memory!"));
+    sleep(1);
+    mutt_exit(1);
   }
 
   *p = r;
 }
 
-void safe_free (void *ptr)	/* __SAFE_FREE_CHECKED__ */
+void safe_free(void *ptr) /* __SAFE_FREE_CHECKED__ */
 {
   if (!ptr)
     return;
-  void **p = (void **)ptr;
+  void **p = (void **) ptr;
   if (*p)
   {
-    free (*p);				/* __MEM_CHECKED__ */
+    free(*p); /* __MEM_CHECKED__ */
     *p = 0;
   }
 }
 
-int safe_fclose (FILE **f)
+int safe_fclose(FILE **f)
 {
   int r = 0;
 
   if (*f)
-    r = fclose (*f);
+    r = fclose(*f);
 
   *f = NULL;
   return r;
 }
 
-int safe_fsync_close (FILE **f)
+int safe_fsync_close(FILE **f)
 {
   int r = 0;
 
   if (*f)
   {
-    if (fflush (*f) || fsync (fileno (*f)))
+    if (fflush(*f) || fsync(fileno(*f)))
     {
       int save_errno = errno;
       r = -1;
-      safe_fclose (f);
+      safe_fclose(f);
       errno = save_errno;
     }
     else
-      r = safe_fclose (f);
+      r = safe_fclose(f);
   }
 
   return r;
 }
 
-char *safe_strdup (const char *s)
+char *safe_strdup(const char *s)
 {
   char *p = NULL;
   size_t l;
 
   if (!s || !*s)
     return 0;
-  l = strlen (s) + 1;
-  p = safe_malloc (l);
-  memcpy (p, s, l);
+  l = strlen(s) + 1;
+  p = safe_malloc(l);
+  memcpy(p, s, l);
   return p;
 }
 
-char *safe_strcat (char *d, size_t l, const char *s)
+char *safe_strcat(char *d, size_t l, const char *s)
 {
   char *p = d;
 
@@ -256,7 +252,7 @@ char *safe_strcat (char *d, size_t l, const char *s)
   return p;
 }
 
-char *safe_strncat (char *d, size_t l, const char *s, size_t sl)
+char *safe_strncat(char *d, size_t l, const char *s, size_t sl)
 {
   char *p = d;
 
@@ -276,26 +272,27 @@ char *safe_strncat (char *d, size_t l, const char *s, size_t sl)
 }
 
 
-void mutt_str_replace (char **p, const char *s)
+void mutt_str_replace(char **p, const char *s)
 {
-  FREE (p);		/* __FREE_CHECKED__ */
-  *p = safe_strdup (s);
+  FREE(p); /* __FREE_CHECKED__ */
+  *p = safe_strdup(s);
 }
 
-void mutt_str_adjust (char **p)
+void mutt_str_adjust(char **p)
 {
-  if (!p || !*p) return;
-  safe_realloc (p, strlen (*p) + 1);
+  if (!p || !*p)
+    return;
+  safe_realloc(p, strlen(*p) + 1);
 }
 
 /* convert all characters in the string to lowercase */
-char *mutt_strlower (char *s)
+char *mutt_strlower(char *s)
 {
   char *p = s;
 
   while (*p)
   {
-    *p = tolower ((unsigned char) *p);
+    *p = tolower((unsigned char) *p);
     p++;
   }
 
@@ -321,7 +318,7 @@ const char *mutt_strchrnul(const char *s, char c)
   return s;
 }
 
-void mutt_unlink (const char *s)
+void mutt_unlink(const char *s)
 {
   int fd;
   int flags;
@@ -329,7 +326,7 @@ void mutt_unlink (const char *s)
   struct stat sb, sb2;
   char buf[2048];
 
-  /* Defend against symlink attacks */
+/* Defend against symlink attacks */
 
 #ifdef O_NOFOLLOW
   flags = O_RDWR | O_NOFOLLOW;
@@ -337,73 +334,73 @@ void mutt_unlink (const char *s)
   flags = O_RDWR;
 #endif
 
-  if (lstat (s, &sb) == 0 && S_ISREG(sb.st_mode))
+  if (lstat(s, &sb) == 0 && S_ISREG(sb.st_mode))
   {
-    if ((fd = open (s, flags)) < 0)
+    if ((fd = open(s, flags)) < 0)
       return;
 
-    if ((fstat (fd, &sb2) != 0) || !S_ISREG (sb2.st_mode)
-	|| (sb.st_dev != sb2.st_dev) || (sb.st_ino != sb2.st_ino))
+    if ((fstat(fd, &sb2) != 0) || !S_ISREG(sb2.st_mode) ||
+        (sb.st_dev != sb2.st_dev) || (sb.st_ino != sb2.st_ino))
     {
-      close (fd);
+      close(fd);
       return;
     }
 
-    if ((f = fdopen (fd, "r+")))
+    if ((f = fdopen(fd, "r+")))
     {
-      unlink (s);
-      memset (buf, 0, sizeof (buf));
+      unlink(s);
+      memset(buf, 0, sizeof(buf));
       while (sb.st_size > 0)
       {
-	fwrite (buf, 1, MIN (sizeof (buf), sb.st_size), f);
-	sb.st_size -= MIN (sizeof (buf), sb.st_size);
+        fwrite(buf, 1, MIN(sizeof(buf), sb.st_size), f);
+        sb.st_size -= MIN(sizeof(buf), sb.st_size);
       }
-      safe_fclose (&f);
+      safe_fclose(&f);
     }
   }
 }
 
-int mutt_copy_bytes (FILE *in, FILE *out, size_t size)
+int mutt_copy_bytes(FILE *in, FILE *out, size_t size)
 {
   char buf[2048];
   size_t chunk;
 
   while (size > 0)
   {
-    chunk = (size > sizeof (buf)) ? sizeof (buf) : size;
-    if ((chunk = fread (buf, 1, chunk, in)) < 1)
+    chunk = (size > sizeof(buf)) ? sizeof(buf) : size;
+    if ((chunk = fread(buf, 1, chunk, in)) < 1)
       break;
-    if (fwrite (buf, 1, chunk, out) != chunk)
+    if (fwrite(buf, 1, chunk, out) != chunk)
     {
       return -1;
     }
     size -= chunk;
   }
 
-  if (fflush(out) != 0) return -1;
+  if (fflush(out) != 0)
+    return -1;
   return 0;
 }
 
-int mutt_copy_stream (FILE *fin, FILE *fout)
+int mutt_copy_stream(FILE *fin, FILE *fout)
 {
   size_t l;
   char buf[LONG_STRING];
 
-  while ((l = fread (buf, 1, sizeof (buf), fin)) > 0)
+  while ((l = fread(buf, 1, sizeof(buf), fin)) > 0)
   {
-    if (fwrite (buf, 1, l, fout) != l)
+    if (fwrite(buf, 1, l, fout) != l)
       return -1;
   }
 
-  if (fflush(fout) != 0) return -1;
+  if (fflush(fout) != 0)
+    return -1;
   return 0;
 }
 
-static bool
-compare_stat (struct stat *osb, struct stat *nsb)
+static bool compare_stat(struct stat *osb, struct stat *nsb)
 {
-  if (osb->st_dev != nsb->st_dev || osb->st_ino != nsb->st_ino ||
-      osb->st_rdev != nsb->st_rdev)
+  if (osb->st_dev != nsb->st_dev || osb->st_ino != nsb->st_ino || osb->st_rdev != nsb->st_rdev)
   {
     return false;
   }
@@ -415,33 +412,32 @@ int safe_symlink(const char *oldpath, const char *newpath)
 {
   struct stat osb, nsb;
 
-  if(!oldpath || !newpath)
+  if (!oldpath || !newpath)
     return -1;
 
-  if(unlink(newpath) == -1 && errno != ENOENT)
+  if (unlink(newpath) == -1 && errno != ENOENT)
     return -1;
 
   if (oldpath[0] == '/')
   {
-    if (symlink (oldpath, newpath) == -1)
+    if (symlink(oldpath, newpath) == -1)
       return -1;
   }
   else
   {
     char abs_oldpath[_POSIX_PATH_MAX];
 
-    if ((getcwd (abs_oldpath, sizeof (abs_oldpath)) == NULL) ||
-	(strlen (abs_oldpath) + 1 + strlen (oldpath) + 1 > sizeof (abs_oldpath)))
-    return -1;
+    if ((getcwd(abs_oldpath, sizeof(abs_oldpath)) == NULL) ||
+        (strlen(abs_oldpath) + 1 + strlen(oldpath) + 1 > sizeof(abs_oldpath)))
+      return -1;
 
-    strcat (abs_oldpath, "/");		/* __STRCAT_CHECKED__ */
-    strcat (abs_oldpath, oldpath);	/* __STRCAT_CHECKED__ */
-    if (symlink (abs_oldpath, newpath) == -1)
+    strcat(abs_oldpath, "/");     /* __STRCAT_CHECKED__ */
+    strcat(abs_oldpath, oldpath); /* __STRCAT_CHECKED__ */
+    if (symlink(abs_oldpath, newpath) == -1)
       return -1;
   }
 
-  if(stat(oldpath, &osb) == -1 || stat(newpath, &nsb) == -1
-     || !compare_stat(&osb, &nsb))
+  if (stat(oldpath, &osb) == -1 || stat(newpath, &nsb) == -1 || !compare_stat(&osb, &nsb))
   {
     unlink(newpath);
     return -1;
@@ -451,22 +447,20 @@ int safe_symlink(const char *oldpath, const char *newpath)
 }
 
 
-
 /*
  * This function is supposed to do nfs-safe renaming of files.
  *
  * Warning: We don't check whether src and target are equal.
  */
-int safe_rename (const char *src, const char *target)
+int safe_rename(const char *src, const char *target)
 {
   struct stat ssb, tsb;
 
   if (!src || !target)
     return -1;
 
-  if (link (src, target) != 0)
+  if (link(src, target) != 0)
   {
-
     /*
      * Coda does not allow cross-directory links, but tells
      * us it's a cross-filesystem linking attempt.
@@ -479,8 +473,8 @@ int safe_rename (const char *src, const char *target)
      *
      */
 
-    mutt_debug (1, "safe_rename: link (%s, %s) failed: %s (%d)\n",
-                src, target, strerror (errno), errno);
+    mutt_debug(1, "safe_rename: link (%s, %s) failed: %s (%d)\n", src, target,
+               strerror(errno), errno);
 
     /*
      * FUSE may return ENOSYS. VFAT may return EPERM. FreeBSD's
@@ -488,21 +482,21 @@ int safe_rename (const char *src, const char *target)
      */
     if (errno == EXDEV || errno == ENOSYS || errno == EPERM
 #ifdef ENOTSUP
-	|| errno == ENOTSUP
+        || errno == ENOTSUP
 #endif
 #ifdef EOPNOTSUPP
-	|| errno == EOPNOTSUPP
+        || errno == EOPNOTSUPP
 #endif
-	)
+        )
     {
-      mutt_debug (1, "safe_rename: trying rename...\n");
-      if (rename (src, target) == -1)
+      mutt_debug(1, "safe_rename: trying rename...\n");
+      if (rename(src, target) == -1)
       {
-        mutt_debug (1, "safe_rename: rename (%s, %s) failed: %s (%d)\n",
-                    src, target, strerror (errno), errno);
-	return -1;
+        mutt_debug(1, "safe_rename: rename (%s, %s) failed: %s (%d)\n", src,
+                   target, strerror(errno), errno);
+        return -1;
       }
-      mutt_debug (1, "safe_rename: rename succeeded.\n");
+      mutt_debug(1, "safe_rename: rename succeeded.\n");
 
       return 0;
     }
@@ -514,17 +508,15 @@ int safe_rename (const char *src, const char *target)
    * Stat both links and check if they are equal.
    */
 
-  if (lstat (src, &ssb) == -1)
+  if (lstat(src, &ssb) == -1)
   {
-    mutt_debug (1, "safe_rename: can't stat %s: %s (%d)\n",
-                src, strerror (errno), errno);
+    mutt_debug(1, "safe_rename: can't stat %s: %s (%d)\n", src, strerror(errno), errno);
     return -1;
   }
 
-  if (lstat (target, &tsb) == -1)
+  if (lstat(target, &tsb) == -1)
   {
-    mutt_debug (1, "safe_rename: can't stat %s: %s (%d)\n",
-                src, strerror (errno), errno);
+    mutt_debug(1, "safe_rename: can't stat %s: %s (%d)\n", src, strerror(errno), errno);
     return -1;
   }
 
@@ -533,10 +525,11 @@ int safe_rename (const char *src, const char *target)
    * did already exist.
    */
 
-  if (!compare_stat (&ssb, &tsb))
+  if (!compare_stat(&ssb, &tsb))
   {
-    mutt_debug (1, "safe_rename: stat blocks for %s and %s diverge; "
-                "pretending EEXIST.\n", src, target);
+    mutt_debug(1, "safe_rename: stat blocks for %s and %s diverge; "
+                  "pretending EEXIST.\n",
+               src, target);
     errno = EEXIST;
     return -1;
   }
@@ -546,10 +539,9 @@ int safe_rename (const char *src, const char *target)
    * value here? XXX
    */
 
-  if (unlink (src) == -1)
+  if (unlink(src) == -1)
   {
-    mutt_debug (1, "safe_rename: unlink (%s) failed: %s (%d)\n",
-                src, strerror (errno), errno);
+    mutt_debug(1, "safe_rename: unlink (%s) failed: %s (%d)\n", src, strerror(errno), errno);
   }
 
 
@@ -558,62 +550,61 @@ int safe_rename (const char *src, const char *target)
 
 
 /* Create a temporary directory next to a file name */
-static int mkwrapdir (const char *path, char *newfile, size_t nflen,
-		    char *newdir, size_t ndlen)
+static int mkwrapdir(const char *path, char *newfile, size_t nflen, char *newdir, size_t ndlen)
 {
   const char *basename = NULL;
   char parent[_POSIX_PATH_MAX];
   char *p = NULL;
 
-  strfcpy (parent, NONULL (path), sizeof (parent));
+  strfcpy(parent, NONULL(path), sizeof(parent));
 
-  if ((p = strrchr (parent, '/')))
+  if ((p = strrchr(parent, '/')))
   {
     *p = '\0';
     basename = p + 1;
   }
   else
   {
-    strfcpy (parent, ".", sizeof (parent));
+    strfcpy(parent, ".", sizeof(parent));
     basename = path;
   }
 
-  snprintf (newdir, ndlen, "%s/%s", parent, ".muttXXXXXX");
+  snprintf(newdir, ndlen, "%s/%s", parent, ".muttXXXXXX");
   if (mkdtemp(newdir) == NULL)
   {
-      mutt_debug (1, "mkwrapdir: mkdtemp() failed\n");
-      return -1;
+    mutt_debug(1, "mkwrapdir: mkdtemp() failed\n");
+    return -1;
   }
 
-  if (snprintf (newfile, nflen, "%s/%s", newdir, NONULL(basename)) >= nflen)
+  if (snprintf(newfile, nflen, "%s/%s", newdir, NONULL(basename)) >= nflen)
   {
-      rmdir(newdir);
-      mutt_debug (1, "mkwrapdir: string was truncated\n");
-      return -1;
+    rmdir(newdir);
+    mutt_debug(1, "mkwrapdir: string was truncated\n");
+    return -1;
   }
   return 0;
 }
 
 /* remove a directory and everything under it */
-int mutt_rmtree (const char* path)
+int mutt_rmtree(const char *path)
 {
-  DIR* dirp = NULL;
-  struct dirent* de = NULL;
+  DIR *dirp = NULL;
+  struct dirent *de = NULL;
   char cur[_POSIX_PATH_MAX];
   struct stat statbuf;
   int rc = 0;
 
-  if (!(dirp = opendir (path)))
+  if (!(dirp = opendir(path)))
   {
-    mutt_debug (1, "mutt_rmtree: error opening directory %s\n", path);
+    mutt_debug(1, "mutt_rmtree: error opening directory %s\n", path);
     return -1;
   }
-  while ((de = readdir (dirp)))
+  while ((de = readdir(dirp)))
   {
-    if ((strcmp (".", de->d_name) == 0) || (strcmp ("..", de->d_name) == 0))
+    if ((strcmp(".", de->d_name) == 0) || (strcmp("..", de->d_name) == 0))
       continue;
 
-    snprintf (cur, sizeof (cur), "%s/%s", path, de->d_name);
+    snprintf(cur, sizeof(cur), "%s/%s", path, de->d_name);
     /* XXX make nonrecursive version */
 
     if (stat(cur, &statbuf) == -1)
@@ -622,29 +613,29 @@ int mutt_rmtree (const char* path)
       continue;
     }
 
-    if (S_ISDIR (statbuf.st_mode))
-      rc |= mutt_rmtree (cur);
+    if (S_ISDIR(statbuf.st_mode))
+      rc |= mutt_rmtree(cur);
     else
-      rc |= unlink (cur);
+      rc |= unlink(cur);
   }
-  closedir (dirp);
+  closedir(dirp);
 
-  rc |= rmdir (path);
+  rc |= rmdir(path);
 
   return rc;
 }
 
-static int put_file_in_place (const char *path, const char *safe_file, const char *safe_dir)
+static int put_file_in_place(const char *path, const char *safe_file, const char *safe_dir)
 {
   int rv;
 
-  rv = safe_rename (safe_file, path);
-  unlink (safe_file);
-  rmdir (safe_dir);
+  rv = safe_rename(safe_file, path);
+  unlink(safe_file);
+  rmdir(safe_dir);
   return rv;
 }
 
-int safe_open (const char *path, int flags)
+int safe_open(const char *path, int flags)
 {
   struct stat osb, nsb;
   int fd;
@@ -654,30 +645,28 @@ int safe_open (const char *path, int flags)
     char safe_file[_POSIX_PATH_MAX];
     char safe_dir[_POSIX_PATH_MAX];
 
-    if (mkwrapdir (path, safe_file, sizeof (safe_file),
-			safe_dir, sizeof (safe_dir)) == -1)
+    if (mkwrapdir(path, safe_file, sizeof(safe_file), safe_dir, sizeof(safe_dir)) == -1)
       return -1;
 
-    if ((fd = open (safe_file, flags, 0600)) < 0)
+    if ((fd = open(safe_file, flags, 0600)) < 0)
     {
-      rmdir (safe_dir);
+      rmdir(safe_dir);
       return fd;
     }
 
     /* NFS and I believe cygwin do not handle movement of open files well */
-    close (fd);
-    if (put_file_in_place (path, safe_file, safe_dir) == -1)
+    close(fd);
+    if (put_file_in_place(path, safe_file, safe_dir) == -1)
       return -1;
   }
 
-  if ((fd = open (path, flags & ~O_EXCL, 0600)) < 0)
+  if ((fd = open(path, flags & ~O_EXCL, 0600)) < 0)
     return fd;
 
   /* make sure the file is not symlink */
-  if (lstat (path, &osb) < 0 || fstat (fd, &nsb) < 0 ||
-      !compare_stat(&osb, &nsb))
+  if (lstat(path, &osb) < 0 || fstat(fd, &nsb) < 0 || !compare_stat(&osb, &nsb))
   {
-    close (fd);
+    close(fd);
     return -1;
   }
 
@@ -687,7 +676,7 @@ int safe_open (const char *path, int flags)
 /* when opening files for writing, make sure the file doesn't already exist
  * to avoid race conditions.
  */
-FILE *safe_fopen (const char *path, const char *mode)
+FILE *safe_fopen(const char *path, const char *mode)
 {
   if (mode[0] == 'w')
   {
@@ -703,24 +692,26 @@ FILE *safe_fopen (const char *path, const char *mode)
     else
       flags |= O_WRONLY;
 
-    if ((fd = safe_open (path, flags)) < 0)
+    if ((fd = safe_open(path, flags)) < 0)
       return NULL;
 
-    return (fdopen (fd, mode));
+    return (fdopen(fd, mode));
   }
   else
-    return (fopen (path, mode));
+    return (fopen(path, mode));
 }
 
-static const char safe_chars[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+@{}._-:%/";
+static const char safe_chars[] =
+    "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+@{}._-:%/";
 
-void mutt_sanitize_filename (char *f, short slash)
+void mutt_sanitize_filename(char *f, short slash)
 {
-  if (!f) return;
+  if (!f)
+    return;
 
   for (; *f; f++)
   {
-    if ((slash && *f == '/') || !strchr (safe_chars, *f))
+    if ((slash && *f == '/') || !strchr(safe_chars, *f))
       *f = '_';
   }
 }
@@ -729,11 +720,11 @@ void mutt_sanitize_filename (char *f, short slash)
 
 static const char rx_special_chars[] = "^.[$()|*+?{\\";
 
-int mutt_rx_sanitize_string (char *dest, size_t destlen, const char *src)
+int mutt_rx_sanitize_string(char *dest, size_t destlen, const char *src)
 {
   while (*src && --destlen > 2)
   {
-    if (strchr (rx_special_chars, *src))
+    if (strchr(rx_special_chars, *src))
     {
       *dest++ = '\\';
       destlen--;
@@ -754,41 +745,41 @@ int mutt_rx_sanitize_string (char *dest, size_t destlen, const char *src)
  * If a line ends with "\", this char and the linefeed is removed,
  * and the next line is read too.
  */
-char *mutt_read_line (char *s, size_t *size, FILE *fp, int *line, int flags)
+char *mutt_read_line(char *s, size_t *size, FILE *fp, int *line, int flags)
 {
   size_t offset = 0;
   char *ch = NULL;
 
   if (!s)
   {
-    s = safe_malloc (STRING);
+    s = safe_malloc(STRING);
     *size = STRING;
   }
 
   while (true)
   {
-    if (fgets (s + offset, *size - offset, fp) == NULL)
+    if (fgets(s + offset, *size - offset, fp) == NULL)
     {
-      FREE (&s);
+      FREE(&s);
       return NULL;
     }
-    if ((ch = strchr (s + offset, '\n')) != NULL)
+    if ((ch = strchr(s + offset, '\n')) != NULL)
     {
       if (line)
-	(*line)++;
+        (*line)++;
       if (flags & MUTT_EOL)
-	return s;
+        return s;
       *ch = 0;
       if (ch > s && *(ch - 1) == '\r')
-	*--ch = 0;
+        *--ch = 0;
       if (!(flags & MUTT_CONT) || ch == s || *(ch - 1) != '\\')
-	return s;
+        return s;
       offset = ch - s - 1;
     }
     else
     {
       int c;
-      c = getc (fp); /* This is kind of a hack. We want to know if the
+      c = getc(fp); /* This is kind of a hack. We want to know if the
                         char at the current point in the input stream is EOF.
                         feof() will only tell us if we've already hit EOF, not
                         if the next character is EOF. So, we need to read in
@@ -796,36 +787,35 @@ char *mutt_read_line (char *s, size_t *size, FILE *fp, int *line, int flags)
       if (c == EOF)
       {
         /* The last line of fp isn't \n terminated */
-	if (line)
-	  (*line)++;
+        if (line)
+          (*line)++;
         return s;
       }
       else
       {
-        ungetc (c, fp); /* undo our damage */
+        ungetc(c, fp); /* undo our damage */
         /* There wasn't room for the line -- increase ``s'' */
         offset = *size - 1; /* overwrite the terminating 0 */
         *size += STRING;
-        safe_realloc (&s, *size);
+        safe_realloc(&s, *size);
       }
     }
   }
 }
 
-char *
-mutt_substrcpy (char *dest, const char *beg, const char *end, size_t destlen)
+char *mutt_substrcpy(char *dest, const char *beg, const char *end, size_t destlen)
 {
   size_t len;
 
   len = end - beg;
   if (len > destlen - 1)
     len = destlen - 1;
-  memcpy (dest, beg, len);
+  memcpy(dest, beg, len);
   dest[len] = 0;
   return dest;
 }
 
-char *mutt_substrdup (const char *begin, const char *end)
+char *mutt_substrdup(const char *begin, const char *end)
 {
   size_t len;
   char *p = NULL;
@@ -833,10 +823,10 @@ char *mutt_substrdup (const char *begin, const char *end)
   if (end)
     len = end - begin;
   else
-    len = strlen (begin);
+    len = strlen(begin);
 
-  p = safe_malloc (len + 1);
-  memcpy (p, begin, len);
+  p = safe_malloc(len + 1);
+  memcpy(p, begin, len);
   p[len] = 0;
   return p;
 }
@@ -844,11 +834,11 @@ char *mutt_substrdup (const char *begin, const char *end)
 /* prepare a file name to survive the shell's quoting rules.
  * From the Unix programming FAQ by way of Liviu.
  */
-size_t mutt_quote_filename (char *d, size_t l, const char *f)
+size_t mutt_quote_filename(char *d, size_t l, const char *f)
 {
   size_t i, j = 0;
 
-  if(!f)
+  if (!f)
   {
     *d = '\0';
     return 0;
@@ -859,9 +849,9 @@ size_t mutt_quote_filename (char *d, size_t l, const char *f)
 
   d[j++] = '\'';
 
-  for(i = 0; j < l && f[i]; i++)
+  for (i = 0; j < l && f[i]; i++)
   {
-    if(f[i] == '\'' || f[i] == '`')
+    if (f[i] == '\'' || f[i] == '`')
     {
       d[j++] = '\'';
       d[j++] = '\\';
@@ -873,7 +863,7 @@ size_t mutt_quote_filename (char *d, size_t l, const char *f)
   }
 
   d[j++] = '\'';
-  d[j]   = '\0';
+  d[j] = '\0';
 
   return j;
 }
@@ -902,7 +892,7 @@ int mutt_strncasecmp(const char *a, const char *b, size_t l)
 
 size_t mutt_strlen(const char *a)
 {
-  return a ? strlen (a) : 0;
+  return a ? strlen(a) : 0;
 }
 
 int mutt_strcoll(const char *a, const char *b)
@@ -910,7 +900,7 @@ int mutt_strcoll(const char *a, const char *b)
   return strcoll(NONULL(a), NONULL(b));
 }
 
-const char *mutt_stristr (const char *haystack, const char *needle)
+const char *mutt_stristr(const char *haystack, const char *needle)
 {
   const char *p = NULL, *q = NULL;
 
@@ -922,9 +912,7 @@ const char *mutt_stristr (const char *haystack, const char *needle)
   while (*(p = haystack))
   {
     for (q = needle;
-         *p && *q &&
-           tolower ((unsigned char) *p) == tolower ((unsigned char) *q);
-         p++, q++)
+         *p && *q && tolower((unsigned char) *p) == tolower((unsigned char) *q); p++, q++)
       ;
     if (!*q)
       return haystack;
@@ -933,17 +921,17 @@ const char *mutt_stristr (const char *haystack, const char *needle)
   return NULL;
 }
 
-char *mutt_skip_whitespace (char *p)
+char *mutt_skip_whitespace(char *p)
 {
-  SKIPWS (p);
+  SKIPWS(p);
   return p;
 }
 
-void mutt_remove_trailing_ws (char *s)
+void mutt_remove_trailing_ws(char *s)
 {
   char *p = NULL;
 
-  for (p = s + mutt_strlen (s) - 1 ; p >= s && ISSPACE (*p) ; p--)
+  for (p = s + mutt_strlen(s) - 1; p >= s && ISSPACE(*p); p--)
     *p = 0;
 }
 
@@ -952,8 +940,8 @@ void mutt_remove_trailing_ws (char *s)
  * The slash is omitted when dir or fname is of 0 length.
  * Returns NULL on error or a pointer to dst otherwise.
  */
-char *mutt_concatn_path (char *dst, size_t dstlen,
-    const char *dir, size_t dirlen, const char *fname, size_t fnamelen)
+char *mutt_concatn_path(char *dst, size_t dstlen, const char *dir,
+                        size_t dirlen, const char *fname, size_t fnamelen)
 {
   size_t req;
   size_t offset = 0;
@@ -965,7 +953,8 @@ char *mutt_concatn_path (char *dst, size_t dstlen,
   req = dirlen + fnamelen + 1; /* +1 for the trailing nul */
   if (dirlen && fnamelen)
     req++; /* when both components are non-nul, we add a "/" in between */
-  if (req > dstlen) { /* check for condition where the dst length is too short */
+  if (req > dstlen)
+  { /* check for condition where the dst length is too short */
     /* Two options here:
      * 1) assert(0) or return NULL to signal error
      * 2) copy as much of the path as will fit
@@ -976,13 +965,15 @@ char *mutt_concatn_path (char *dst, size_t dstlen,
     return NULL;
   }
 
-  if (dirlen) { /* when dir is not empty */
+  if (dirlen)
+  { /* when dir is not empty */
     memcpy(dst, dir, dirlen);
     offset = dirlen;
     if (fnamelen)
       dst[offset++] = '/';
   }
-  if (fnamelen) { /* when fname is not empty */
+  if (fnamelen)
+  { /* when fname is not empty */
     memcpy(dst + offset, fname, fnamelen);
     offset += fnamelen;
   }
@@ -990,34 +981,33 @@ char *mutt_concatn_path (char *dst, size_t dstlen,
   return dst;
 }
 
-char *mutt_concat_path (char *d, const char *dir, const char *fname, size_t l)
+char *mutt_concat_path(char *d, const char *dir, const char *fname, size_t l)
 {
   const char *fmt = "%s/%s";
 
-  if (!*fname || (*dir && dir[strlen(dir)-1] == '/'))
+  if (!*fname || (*dir && dir[strlen(dir) - 1] == '/'))
     fmt = "%s%s";
 
-  snprintf (d, l, fmt, dir, fname);
+  snprintf(d, l, fmt, dir, fname);
   return d;
 }
 
-const char *mutt_basename (const char *f)
+const char *mutt_basename(const char *f)
 {
-  const char *p = strrchr (f, '/');
+  const char *p = strrchr(f, '/');
   if (p)
     return p + 1;
   else
     return f;
 }
 
-const char *
-mutt_strsysexit(int e)
+const char *mutt_strsysexit(int e)
 {
   int i;
 
-  for(i = 0; sysexits_h[i].str; i++)
+  for (i = 0; sysexits_h[i].str; i++)
   {
-    if(e == sysexits_h[i].v)
+    if (e == sysexits_h[i].v)
       break;
   }
 
@@ -1028,10 +1018,10 @@ mutt_strsysexit(int e)
 FILE *debugfile;
 int debuglevel;
 
-void mutt_debug (int level, const char *fmt, ...)
+void mutt_debug(int level, const char *fmt, ...)
 {
   va_list ap;
-  time_t now = time (NULL);
+  time_t now = time(NULL);
   static char buf[23] = "";
   static time_t last = 0;
 
@@ -1040,17 +1030,17 @@ void mutt_debug (int level, const char *fmt, ...)
 
   if (now > last)
   {
-    strftime (buf, sizeof (buf), "%Y-%m-%d %H:%M:%S", localtime (&now));
+    strftime(buf, sizeof(buf), "%Y-%m-%d %H:%M:%S", localtime(&now));
     last = now;
   }
-  fprintf (debugfile, "[%s] ", buf);
-  va_start (ap, fmt);
-  vfprintf (debugfile, fmt, ap);
-  va_end (ap);
+  fprintf(debugfile, "[%s] ", buf);
+  va_start(ap, fmt);
+  vfprintf(debugfile, fmt, ap);
+  va_end(ap);
 }
 #endif
 
-static int mutt_atol (const char *str, long *dst)
+static int mutt_atol(const char *str, long *dst)
 {
   long r;
   long *res = dst ? dst : &r;
@@ -1063,14 +1053,13 @@ static int mutt_atol (const char *str, long *dst)
     return 0;
   }
 
-  *res = strtol (str, &e, 10);
-  if ((*res == LONG_MAX && errno == ERANGE) ||
-      (e && *e != '\0'))
+  *res = strtol(str, &e, 10);
+  if ((*res == LONG_MAX && errno == ERANGE) || (e && *e != '\0'))
     return -1;
   return 0;
 }
 
-int mutt_atos (const char *str, short *dst)
+int mutt_atos(const char *str, short *dst)
 {
   int rc;
   long res;
@@ -1079,7 +1068,7 @@ int mutt_atos (const char *str, short *dst)
 
   *t = 0;
 
-  if ((rc = mutt_atol (str, &res)) < 0)
+  if ((rc = mutt_atol(str, &res)) < 0)
     return rc;
   if ((short) res != res)
     return -2;
@@ -1088,7 +1077,7 @@ int mutt_atos (const char *str, short *dst)
   return 0;
 }
 
-int mutt_atoi (const char *str, int *dst)
+int mutt_atoi(const char *str, int *dst)
 {
   int rc;
   long res;
@@ -1097,7 +1086,7 @@ int mutt_atoi (const char *str, int *dst)
 
   *t = 0;
 
-  if ((rc = mutt_atol (str, &res)) < 0)
+  if ((rc = mutt_atol(str, &res)) < 0)
     return rc;
   if ((int) res != res)
     return -2;
@@ -1129,15 +1118,16 @@ int mutt_atoi (const char *str, int *dst)
  *   mutt_inbox_cmp("/foo/bar/sent", "/foo/bar/inbox") --> 1
  *   mutt_inbox_cmp("=INBOX",        "=Drafts") --> -1
  */
-int mutt_inbox_cmp (const char *a, const char *b)
+int mutt_inbox_cmp(const char *a, const char *b)
 {
   /* fast-track in case the paths have been mutt_pretty_mailbox'ified */
   if (a[0] == '=' && b[0] == '=')
-    return (mutt_strcasecmp(a+1, "inbox") == 0) ? -1 :
-           (mutt_strcasecmp(b+1, "inbox") == 0) ?  1 : 0;
+    return (mutt_strcasecmp(a + 1, "inbox") == 0) ?
+               -1 :
+               (mutt_strcasecmp(b + 1, "inbox") == 0) ? 1 : 0;
 
-  const char *a_end = strrchr (a, '/');
-  const char *b_end = strrchr (b, '/');
+  const char *a_end = strrchr(a, '/');
+  const char *b_end = strrchr(b, '/');
 
   /* If one path contains a '/', but not the other */
   if (!a_end ^ !b_end)
@@ -1151,23 +1141,22 @@ int mutt_inbox_cmp (const char *a, const char *b)
   size_t a_len = a_end - a;
   size_t b_len = b_end - b;
   size_t min = MIN(a_len, b_len);
-  int same = (a[min] == '/') && (b[min] == '/') &&
-             (a[min+1] != '\0') && (b[min+1] != '\0') &&
-             (mutt_strncasecmp(a, b, min) == 0);
+  int same = (a[min] == '/') && (b[min] == '/') && (a[min + 1] != '\0') &&
+             (b[min + 1] != '\0') && (mutt_strncasecmp(a, b, min) == 0);
 
   if (!same)
-      return 0;
+    return 0;
 
-  if (mutt_strcasecmp(&a[min+1], "inbox") == 0)
-      return -1;
+  if (mutt_strcasecmp(&a[min + 1], "inbox") == 0)
+    return -1;
 
-  if (mutt_strcasecmp(&b[min+1], "inbox") == 0)
-      return 1;
+  if (mutt_strcasecmp(&b[min + 1], "inbox") == 0)
+    return 1;
 
   return 0;
 }
 
-char * strfcpy (char *dest, const char *src, size_t dlen)
+char *strfcpy(char *dest, const char *src, size_t dlen)
 {
   char *dest0 = dest;
   while ((--dlen > 0) && (*src != '\0'))
@@ -1236,4 +1225,3 @@ int mutt_mkdir(const char *path, mode_t mode)
 
   return 0;
 }
-

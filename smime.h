@@ -23,7 +23,8 @@
 
 #include "mutt_crypt.h"
 
-typedef struct smime_key {
+typedef struct smime_key
+{
   char *email;
   char *hash;
   char *label;
