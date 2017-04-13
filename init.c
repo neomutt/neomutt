@@ -2336,10 +2336,6 @@ static int parse_set (BUFFER *tmp, BUFFER *s, unsigned long data, BUFFER *err)
           restore_default (&MuttVars[idx]);
       }
     }
-    else if (idx < 0)
-    {
-      return -1;
-    }
     else if (!myvar && DTYPE (MuttVars[idx].type) == DT_BOOL)
     {
       if (*s->dptr == '=')
