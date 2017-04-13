@@ -1,3 +1,137 @@
+2017-04-11 12:14 -0700  Kevin McCarthy  <kevin@8t8.us>  (b825cbcaf6b5)
+
+	* compose.c: Fix memleak when attaching files.
+
+2017-04-08 14:18 -0700  Kevin McCarthy  <kevin@8t8.us>  (a8b1017a4cc1)
+
+	* imap/message.c: Silence imap progress messages for pipe-message.
+	(see #3929)
+
+	_mutt_pipe_message() calls endwin(), and then calls pipe_msg(). If
+	an imap message body hasn't already been downloaded, this can end up
+	calling imap_fetch_message().
+
+	The progress messages in imap_fetch_message() were restoring curses,
+	just after extract_url was running. This was leading to a condition
+	where mutt curses didn't think the screen had changed after
+	extract_url exited.
+
+	There was already a check for isendwin() inside
+	imap_fetch_message(), but it wasn't wrapped around the progressbar
+	creation/usage. Add a check for those places too.
+
+2017-03-27 11:39 -0700  Kevin McCarthy  <kevin@8t8.us>  (77032036c642)
+
+	* init.c, init.h: Fix (un)sidebar_whitelist to expand paths.
+
+	Thanks to Arturo for reporting the issue.
+
+2017-03-26 12:27 -0700  Kevin McCarthy  <kevin@8t8.us>  (9da67ea88f25)
+
+	* curs_lib.c: Fix mutt_refresh() pausing during macro events.
+
+	Changeset a07e8215a0ef split input buffering into two pools.
+	Unfortunately, the mutt_refresh() was not changed to check the
+	correct buffer count, resulting in unnecessary refreshes during
+	macros.
+
+	The SSL interactive certificate prompts set OPTIGNOREMACROEVENTS and
+	then put up a confirmation menu. Perhaps we've just been lucky, but
+	it seems we should refresh the screen in those cases if we're in the
+	middle of a macro. Add a check for this option in mutt_refresh()
+	too.
+
+2017-03-20 10:16 -0700  Kevin McCarthy  <kevin@8t8.us>  (7cefa378ab7e)
+
+	* init.c: Fix setenv overwriting to not truncate the envlist. (see
+	#3922)
+
+	The refactor in 2b9c40f13e13 exposed a bug I hadn't noticed. The
+	match loop performed a FREE() on the slot. Then, below, it was
+	checking if (*envp) to see whether it was overwriting or creating a
+	new slot. However, FREE() nulls out *envp. This would end up
+	truncating the envlist just after the set slot!
+
+	Move the free down, using a mutt_str_replace(), when overwriting the
+	slot.
+
+2017-03-18 14:39 -0700  Kevin McCarthy  <kevin@8t8.us>  (2b9c40f13e13)
+
+	* init.c: Fix mutt_envlist_set() for the case that envlist is null.
+	(see #3922)
+
+2017-03-18 13:48 -0700  Kevin McCarthy  <kevin@8t8.us>  (37209157e33c)
+
+	* filter.c, init.c, protos.h, system.c: Pass envlist to filter
+	children too. (closes #3922)
+
+	The new setenv patch neglected to pass the envlist for filters too.
+
+	Unfortunately, the filter code was already set up to pass COLUMNS to
+	children, so it needed to be changed to add this to the envlist
+	instead.
+
+	Factor out mutt_envlist_set() from the parse_setenv() function,
+	which the filter code can then use to set COLUMNS after forking.
+
+2017-03-05 15:24 -0800  Kevin McCarthy  <kevin@8t8.us>  (f0e3b2875065)
+
+	* account.h: Increase ACCOUNT.pass field size. (closes #3921)
+
+	#3921 reported his password token used for Google XOAUTH2 is size
+	129. The ACCOUNT structure currently uses a size 128 buffer. Who
+	knew a password field would ever be bigger than that?
+
+	Since the ACCOUNT structure has no allocation/dellocation routines,
+	the easiest fix is to increase the size. Bump the size up to 256.
+
+2017-03-02 15:53 -0800  Matthias Andree  <matthias.andree@gmx.de>  (5fc3c0729a07)
+
+	* mutt_ssl.c: SSL: Fix memory leak in subject alternative name code.
+	(closes #3920)
+
+2017-03-02 14:53 -0800  Kevin McCarthy  <kevin@8t8.us>  (e3e47b2f1370)
+
+	* mbox.c: Prevent segv if open-appending to an mbox fails. (closes
+	#3918)
+
+	If mbox_open_mailbox_append() fails, ctx->fp will be null. Add a
+	check in mbox_close_mailbox(), to prevent a segv from passing null
+	to fileno().
+
+2017-03-02 13:11 -0800  Kevin McCarthy  <kevin@8t8.us>  (e82253beaa9f)
+
+	* mutt_ssl.c: Clear out extraneous errors before SSL_connect() (see
+	#3916)
+
+	Call ERR_clear_error() just before the call to SSL_connect() to make
+	sure the error queue doesn't have any old errors in it.
+
+	PEM_read_X509() sets an error PEM_R_NO_START_LINE on end-of-file.
+	Clear that out so it doesn't show up as the SSL_connect() error
+	message.
+
+2017-02-24 11:00 -0800  Kevin McCarthy  <kevin@8t8.us>  (f85c3eb8d065)
+
+	* merge default into stable
+
+2017-02-24 10:55 -0800  Kevin McCarthy  <kevin@8t8.us>  (7cc47d82cac4)
+
+	* .hgsigs: mutt-1.8.0 signed
+
+2017-02-24 10:50 -0800  Kevin McCarthy  <kevin@8t8.us>  (1672b430cbc3)
+
+	* .hgtags: Added tag mutt-1-8-rel for changeset d897983752f9
+
+2017-02-24 10:50 -0800  Kevin McCarthy  <kevin@8t8.us>  (d897983752f9)
+
+	* ChangeLog, VERSION, po/bg.po, po/ca.po, po/cs.po, po/da.po,
+	po/de.po, po/el.po, po/eo.po, po/es.po, po/et.po, po/eu.po,
+	po/fr.po, po/ga.po, po/gl.po, po/hu.po, po/id.po, po/it.po,
+	po/ja.po, po/ko.po, po/lt.po, po/nl.po, po/pl.po, po/pt_BR.po,
+	po/ru.po, po/sk.po, po/sv.po, po/tr.po, po/uk.po, po/zh_CN.po,
+	po/zh_TW.po: automatic post-release commit for mutt-1.8.0
+
 2017-02-23 08:56 -0800  TAKAHASHI Tamotsu  <ttakah@lapis.plala.or.jp>  (43e312cee971)
 
 	* po/ja.po: Updated Japanese translation.
