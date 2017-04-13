@@ -584,7 +584,7 @@ static char *data_object_to_tempfile (gpgme_data_t data, char *tempf, FILE **ret
     {
       char buf[4096];
 
-      while ((nread = gpgme_data_read (data, buf, sizeof (buf))) >= 0)
+      while ((nread = gpgme_data_read (data, buf, sizeof (buf))) > 0)
         {
           if (fwrite (buf, nread, 1, fp) != 1)
             {
