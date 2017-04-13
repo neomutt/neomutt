@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neomutt-20161104\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
-"POT-Creation-Date: 2017-04-13 02:10+0100\n"
+"POT-Creation-Date: 2017-04-13 13:26+0100\n"
 "PO-Revision-Date: 2017-02-22 20:12+0100\n"
 "Last-Translator: Benno Schulenberg <benno@vertaalt.nl>\n"
 "Language-Team: Dutch <vertaling@vrijschrift.org>\n"
@@ -2703,7 +2703,7 @@ msgstr "Optie niet beschikbaar in dit menu."
 msgid "%s: unknown sorting method"
 msgstr "%s: onbekende sorteermethode"
 
-#: init.c:377 init.c:414 init.c:2719
+#: init.c:377 init.c:414 init.c:2715
 #, c-format
 msgid "%s: Unknown type."
 msgstr "%s: Onbekend type."
@@ -2787,12 +2787,12 @@ msgstr "ongeldig veld in berichtenkop"
 msgid "restore_default(%s): error in regexp: %s\n"
 msgstr "mutt_restore_default(%s): fout in reguliere expressie: %s\n"
 
-#: init.c:2189 init.c:2359
+#: init.c:2189 init.c:2355
 #, c-format
 msgid "%s is unset"
 msgstr "%s is niet gezet"
 
-#: init.c:2285 init.c:2404
+#: init.c:2285 init.c:2400
 #, c-format
 msgid "%s: unknown variable"
 msgstr "%s: onbekende variable"
@@ -2807,105 +2807,105 @@ msgstr "Prefix is niet toegestaan"
 msgid "value is illegal with reset"
 msgstr "Toekenning van een waarde is niet toegestaan"
 
-#: init.c:2339 init.c:2351
+#: init.c:2335 init.c:2347
 #, c-format
 msgid "Usage: set variable=yes|no"
 msgstr "Gebruik:  set variable=yes|no"
 
-#: init.c:2359
+#: init.c:2355
 #, c-format
 msgid "%s is set"
 msgstr "%s is gezet"
 
-#: init.c:2471 init.c:2486
+#: init.c:2467 init.c:2482
 #, c-format
 msgid "Invalid value for option %s: \"%s\""
 msgstr "Ongeldige waarde voor optie %s: \"%s\""
 
-#: init.c:2583
+#: init.c:2579
 #, c-format
 msgid "%s: invalid mailbox type"
 msgstr "%s: Ongeldig postvaktype"
 
-#: init.c:2614
+#: init.c:2610
 #, c-format
 msgid "%s: invalid value (%s)"
 msgstr "%s: ongeldige waarde (%s)"
 
-#: init.c:2615
+#: init.c:2611
 msgid "format error"
 msgstr "opmaakfout"
 
-#: init.c:2615
+#: init.c:2611
 msgid "number overflow"
 msgstr "overloop van getal"
 
-#: init.c:2675
+#: init.c:2671
 #, c-format
 msgid "%s: invalid value"
 msgstr "%s: ongeldige waarde"
 
-#: init.c:2765
+#: init.c:2761
 #, fuzzy, c-format
 msgid "%s: invalid backend"
 msgstr "%s: ongeldige waarde"
 
-#: init.c:2773
+#: init.c:2769
 #, c-format
 msgid "%s: unknown type"
 msgstr "%s: onbekend type"
 
-#: init.c:2918
+#: init.c:2914
 #, c-format
 msgid "Error in %s, line %d: %s"
 msgstr "Fout in %s, regel %d: %s"
 
-#: init.c:2948
+#: init.c:2944
 #, c-format
 msgid "source: errors in %s"
 msgstr "source: fouten in %s"
 
-#: init.c:2949
+#: init.c:2945
 #, c-format
 msgid "source: reading aborted due to too many errors in %s"
 msgstr "source: inlezen is gestaakt vanwege te veel fouten in %s"
 
-#: init.c:2967 mutt_lua.c:405
+#: init.c:2963 mutt_lua.c:405
 #, c-format
 msgid "source: error at %s"
 msgstr "source: fout bij %s"
 
-#: init.c:2972 mutt_lua.c:410
+#: init.c:2968 mutt_lua.c:410
 msgid "source: too many arguments"
 msgstr "source: te veel argumenten"
 
-#: init.c:3029
+#: init.c:3025
 #, c-format
 msgid "%s: unknown command"
 msgstr "%s: onbekend commando"
 
-#: init.c:3719
+#: init.c:3715
 #, c-format
 msgid "Error in command line: %s\n"
 msgstr "Fout in opdrachtregel: %s\n"
 
-#: init.c:3826
+#: init.c:3822
 msgid "unable to determine home directory"
 msgstr "Kan persoonlijke map niet achterhalen"
 
-#: init.c:3834
+#: init.c:3830
 msgid "unable to determine username"
 msgstr "Kan gebruikersnaam niet achterhalen"
 
-#: init.c:3856
+#: init.c:3852
 msgid "unable to determine nodename via uname()"
 msgstr "Kan hostnaam niet achterhalen via uname()"
 
-#: init.c:4151
+#: init.c:4147
 msgid "-group: no group name"
 msgstr "-group: geen groepsnaam"
 
-#: init.c:4161
+#: init.c:4157
 msgid "out of arguments"
 msgstr "te weinig argumenten"
 

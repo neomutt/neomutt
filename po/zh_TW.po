@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neomutt-20161104\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
-"POT-Creation-Date: 2017-04-13 02:10+0100\n"
+"POT-Creation-Date: 2017-04-13 13:26+0100\n"
 "PO-Revision-Date: 2001-09-06 18:25+0800\n"
 "Last-Translator: Anthony Wong <ypwong@debian.org>\n"
 "Language-Team: Chinese <zh@li.org>\n"
@@ -2830,7 +2830,7 @@ msgstr "在這個菜單中沒有這個功能。"
 msgid "%s: unknown sorting method"
 msgstr "%s：不明的排序方式"
 
-#: init.c:377 init.c:414 init.c:2719
+#: init.c:377 init.c:414 init.c:2715
 #, fuzzy, c-format
 msgid "%s: Unknown type."
 msgstr "%s：不明的種類"
@@ -2920,12 +2920,12 @@ msgstr "無效的標頭欄位"
 msgid "restore_default(%s): error in regexp: %s\n"
 msgstr "mutt_restore_defualt(%s)：錯誤的正規表示式：%s\n"
 
-#: init.c:2189 init.c:2359
+#: init.c:2189 init.c:2355
 #, c-format
 msgid "%s is unset"
 msgstr "%s 沒有被設定"
 
-#: init.c:2285 init.c:2404
+#: init.c:2285 init.c:2400
 #, c-format
 msgid "%s: unknown variable"
 msgstr "%s：不明的變數"
@@ -2940,106 +2940,106 @@ msgstr "重新設置後字首仍不合規定"
 msgid "value is illegal with reset"
 msgstr "重新設置後值仍不合規定"
 
-#: init.c:2339 init.c:2351
+#: init.c:2335 init.c:2347
 #, c-format
 msgid "Usage: set variable=yes|no"
 msgstr ""
 
-#: init.c:2359
+#: init.c:2355
 #, c-format
 msgid "%s is set"
 msgstr "%s 已被設定"
 
-#: init.c:2471 init.c:2486
+#: init.c:2467 init.c:2482
 #, fuzzy, c-format
 msgid "Invalid value for option %s: \"%s\""
 msgstr "無效的日子：%s"
 
-#: init.c:2583
+#: init.c:2579
 #, c-format
 msgid "%s: invalid mailbox type"
 msgstr "%s：無效的信箱種類"
 
-#: init.c:2614
+#: init.c:2610
 #, fuzzy, c-format
 msgid "%s: invalid value (%s)"
 msgstr "%s：無效的值"
 
-#: init.c:2615
+#: init.c:2611
 msgid "format error"
 msgstr ""
 
-#: init.c:2615
+#: init.c:2611
 msgid "number overflow"
 msgstr ""
 
-#: init.c:2675
+#: init.c:2671
 #, c-format
 msgid "%s: invalid value"
 msgstr "%s：無效的值"
 
-#: init.c:2765
+#: init.c:2761
 #, fuzzy, c-format
 msgid "%s: invalid backend"
 msgstr "%s：無效的值"
 
-#: init.c:2773
+#: init.c:2769
 #, c-format
 msgid "%s: unknown type"
 msgstr "%s：不明的種類"
 
-#: init.c:2918
+#: init.c:2914
 #, c-format
 msgid "Error in %s, line %d: %s"
 msgstr "%s 發生錯誤，行號 %d：%s"
 
-#: init.c:2948
+#: init.c:2944
 #, c-format
 msgid "source: errors in %s"
 msgstr "source：錯誤發生在 %s"
 
-#: init.c:2949
+#: init.c:2945
 #, fuzzy, c-format
 msgid "source: reading aborted due to too many errors in %s"
 msgstr "source: 因 %s 發生太多錯誤，因此閱讀終止。"
 
-#: init.c:2967 mutt_lua.c:405
+#: init.c:2963 mutt_lua.c:405
 #, c-format
 msgid "source: error at %s"
 msgstr "source：錯誤發生在 %s"
 
-#: init.c:2972 mutt_lua.c:410
+#: init.c:2968 mutt_lua.c:410
 msgid "source: too many arguments"
 msgstr "source：太多引數"
 
-#: init.c:3029
+#: init.c:3025
 #, c-format
 msgid "%s: unknown command"
 msgstr "%s：不明的指令"
 
-#: init.c:3719
+#: init.c:3715
 #, c-format
 msgid "Error in command line: %s\n"
 msgstr "指令行有錯：%s\n"
 
-#: init.c:3826
+#: init.c:3822
 msgid "unable to determine home directory"
 msgstr "無法決定 home 目錄"
 
-#: init.c:3834
+#: init.c:3830
 msgid "unable to determine username"
 msgstr "無法決定使用者名稱"
 
-#: init.c:3856
+#: init.c:3852
 #, fuzzy
 msgid "unable to determine nodename via uname()"
 msgstr "無法決定使用者名稱"
 
-#: init.c:4151
+#: init.c:4147
 msgid "-group: no group name"
 msgstr ""
 
-#: init.c:4161
+#: init.c:4157
 #, fuzzy
 msgid "out of arguments"
 msgstr "太少參數"

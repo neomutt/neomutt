@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neomutt-20161104\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
-"POT-Creation-Date: 2017-04-13 02:10+0100\n"
+"POT-Creation-Date: 2017-04-13 13:26+0100\n"
 "PO-Revision-Date: 2001-04-22 22:05+0200\n"
 "Last-Translator: Roberto Suarez Soto <ask4it@bigfoot.com>\n"
 "Language-Team: Galician <trasno@ceu.fi.udc.es>\n"
@@ -2835,7 +2835,7 @@ msgstr "Non dispoñible neste menú."
 msgid "%s: unknown sorting method"
 msgstr "%s: método de ordeación descoñecido"
 
-#: init.c:377 init.c:414 init.c:2719
+#: init.c:377 init.c:414 init.c:2715
 #, fuzzy, c-format
 msgid "%s: Unknown type."
 msgstr "%s: tipo descoñecido"
@@ -2925,12 +2925,12 @@ msgstr "campo de cabeceira inválido"
 msgid "restore_default(%s): error in regexp: %s\n"
 msgstr "mutt_restore_default(%s): erro en regexp: %s\n"
 
-#: init.c:2189 init.c:2359
+#: init.c:2189 init.c:2355
 #, c-format
 msgid "%s is unset"
 msgstr "%s non está activada"
 
-#: init.c:2285 init.c:2404
+#: init.c:2285 init.c:2400
 #, c-format
 msgid "%s: unknown variable"
 msgstr "%s: variable descoñecida"
@@ -2945,106 +2945,106 @@ msgstr "prefixo ilegal con reset"
 msgid "value is illegal with reset"
 msgstr "valor ilegal con reset"
 
-#: init.c:2339 init.c:2351
+#: init.c:2335 init.c:2347
 #, c-format
 msgid "Usage: set variable=yes|no"
 msgstr ""
 
-#: init.c:2359
+#: init.c:2355
 #, c-format
 msgid "%s is set"
 msgstr "%s está activada"
 
-#: init.c:2471 init.c:2486
+#: init.c:2467 init.c:2482
 #, fuzzy, c-format
 msgid "Invalid value for option %s: \"%s\""
 msgstr "Día do mes inválido: %s"
 
-#: init.c:2583
+#: init.c:2579
 #, c-format
 msgid "%s: invalid mailbox type"
 msgstr "%s: tipo de buzón inválido"
 
-#: init.c:2614
+#: init.c:2610
 #, fuzzy, c-format
 msgid "%s: invalid value (%s)"
 msgstr "%s: valor inválido"
 
-#: init.c:2615
+#: init.c:2611
 msgid "format error"
 msgstr ""
 
-#: init.c:2615
+#: init.c:2611
 msgid "number overflow"
 msgstr ""
 
-#: init.c:2675
+#: init.c:2671
 #, c-format
 msgid "%s: invalid value"
 msgstr "%s: valor inválido"
 
-#: init.c:2765
+#: init.c:2761
 #, fuzzy, c-format
 msgid "%s: invalid backend"
 msgstr "%s: valor inválido"
 
-#: init.c:2773
+#: init.c:2769
 #, c-format
 msgid "%s: unknown type"
 msgstr "%s: tipo descoñecido"
 
-#: init.c:2918
+#: init.c:2914
 #, c-format
 msgid "Error in %s, line %d: %s"
 msgstr "Erro en %s, liña %d: %s"
 
-#: init.c:2948
+#: init.c:2944
 #, c-format
 msgid "source: errors in %s"
 msgstr "source: erros en %s"
 
-#: init.c:2949
+#: init.c:2945
 #, fuzzy, c-format
 msgid "source: reading aborted due to too many errors in %s"
 msgstr "source: a lectura foi abortada por haber demasiados erros in %s"
 
-#: init.c:2967 mutt_lua.c:405
+#: init.c:2963 mutt_lua.c:405
 #, c-format
 msgid "source: error at %s"
 msgstr "source: erro en %s"
 
-#: init.c:2972 mutt_lua.c:410
+#: init.c:2968 mutt_lua.c:410
 msgid "source: too many arguments"
 msgstr "source: demasiados parámetros"
 
-#: init.c:3029
+#: init.c:3025
 #, c-format
 msgid "%s: unknown command"
 msgstr "%s: comando descoñecido"
 
-#: init.c:3719
+#: init.c:3715
 #, c-format
 msgid "Error in command line: %s\n"
 msgstr "Erro na liña de comando: %s\n"
 
-#: init.c:3826
+#: init.c:3822
 msgid "unable to determine home directory"
 msgstr "non foi posible determina-lo directorio \"home\""
 
-#: init.c:3834
+#: init.c:3830
 msgid "unable to determine username"
 msgstr "non foi posible determina-lo nome de usuario"
 
-#: init.c:3856
+#: init.c:3852
 #, fuzzy
 msgid "unable to determine nodename via uname()"
 msgstr "non foi posible determina-lo nome de usuario"
 
-#: init.c:4151
+#: init.c:4147
 msgid "-group: no group name"
 msgstr ""
 
-#: init.c:4161
+#: init.c:4157
 #, fuzzy
 msgid "out of arguments"
 msgstr "parámetros insuficientes"

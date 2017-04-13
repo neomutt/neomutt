@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neomutt-20161104\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
-"POT-Creation-Date: 2017-04-13 02:10+0100\n"
+"POT-Creation-Date: 2017-04-13 13:26+0100\n"
 "PO-Revision-Date: 2007-12-15 14:05+0100\n"
 "Last-Translator: Johan Svedberg <johan@svedberg.com>\n"
 "Language-Team: Swedish <sv@li.org>\n"
@@ -2745,7 +2745,7 @@ msgstr "Inte tillgänglig i den här menyn."
 msgid "%s: unknown sorting method"
 msgstr "%s: okänd sorteringsmetod"
 
-#: init.c:377 init.c:414 init.c:2719
+#: init.c:377 init.c:414 init.c:2715
 #, c-format
 msgid "%s: Unknown type."
 msgstr "%s: Okänd typ."
@@ -2830,12 +2830,12 @@ msgstr "ogiltigt huvudfält"
 msgid "restore_default(%s): error in regexp: %s\n"
 msgstr "mutt_restore_default(%s): fel i reguljärt uttryck: %s\n"
 
-#: init.c:2189 init.c:2359
+#: init.c:2189 init.c:2355
 #, c-format
 msgid "%s is unset"
 msgstr "%s är inte satt"
 
-#: init.c:2285 init.c:2404
+#: init.c:2285 init.c:2400
 #, c-format
 msgid "%s: unknown variable"
 msgstr "%s: okänd variabel"
@@ -2850,106 +2850,106 @@ msgstr "prefix är otillåtet med \"reset\""
 msgid "value is illegal with reset"
 msgstr "värde är otillåtet med \"reset\""
 
-#: init.c:2339 init.c:2351
+#: init.c:2335 init.c:2347
 #, c-format
 msgid "Usage: set variable=yes|no"
 msgstr "Användning: set variable=yes|no"
 
-#: init.c:2359
+#: init.c:2355
 #, c-format
 msgid "%s is set"
 msgstr "%s är satt"
 
-#: init.c:2471 init.c:2486
+#: init.c:2467 init.c:2482
 #, fuzzy, c-format
 msgid "Invalid value for option %s: \"%s\""
 msgstr "Ogiltig dag i månaden: %s"
 
-#: init.c:2583
+#: init.c:2579
 #, c-format
 msgid "%s: invalid mailbox type"
 msgstr "%s: ogiltig typ av brevlåda"
 
-#: init.c:2614
+#: init.c:2610
 #, fuzzy, c-format
 msgid "%s: invalid value (%s)"
 msgstr "%s: ogiltigt värde"
 
-#: init.c:2615
+#: init.c:2611
 msgid "format error"
 msgstr ""
 
-#: init.c:2615
+#: init.c:2611
 msgid "number overflow"
 msgstr ""
 
-#: init.c:2675
+#: init.c:2671
 #, c-format
 msgid "%s: invalid value"
 msgstr "%s: ogiltigt värde"
 
-#: init.c:2765
+#: init.c:2761
 #, fuzzy, c-format
 msgid "%s: invalid backend"
 msgstr "%s: ogiltigt värde"
 
-#: init.c:2773
+#: init.c:2769
 #, c-format
 msgid "%s: unknown type"
 msgstr "%s: okänd typ"
 
-#: init.c:2918
+#: init.c:2914
 #, c-format
 msgid "Error in %s, line %d: %s"
 msgstr "Fel i %s, rad %d: %s"
 
-#: init.c:2948
+#: init.c:2944
 #, c-format
 msgid "source: errors in %s"
 msgstr "source: fel i %s"
 
-#: init.c:2949
+#: init.c:2945
 #, fuzzy, c-format
 msgid "source: reading aborted due to too many errors in %s"
 msgstr "source: läsningen avbruten pga för många fel i %s"
 
-#: init.c:2967 mutt_lua.c:405
+#: init.c:2963 mutt_lua.c:405
 #, c-format
 msgid "source: error at %s"
 msgstr "source: fel vid %s"
 
-#: init.c:2972 mutt_lua.c:410
+#: init.c:2968 mutt_lua.c:410
 msgid "source: too many arguments"
 msgstr "source: för många parametrar"
 
-#: init.c:3029
+#: init.c:3025
 #, c-format
 msgid "%s: unknown command"
 msgstr "%s: okänt kommando"
 
-#: init.c:3719
+#: init.c:3715
 #, c-format
 msgid "Error in command line: %s\n"
 msgstr "Fel i kommandorad: %s\n"
 
-#: init.c:3826
+#: init.c:3822
 msgid "unable to determine home directory"
 msgstr "kunde inte avgöra hemkatalog"
 
-#: init.c:3834
+#: init.c:3830
 msgid "unable to determine username"
 msgstr "kunde inte avgöra användarnamn"
 
-#: init.c:3856
+#: init.c:3852
 #, fuzzy
 msgid "unable to determine nodename via uname()"
 msgstr "kunde inte avgöra användarnamn"
 
-#: init.c:4151
+#: init.c:4147
 msgid "-group: no group name"
 msgstr "-group: inget gruppnamn"
 
-#: init.c:4161
+#: init.c:4157
 msgid "out of arguments"
 msgstr "slut på parametrar"
 

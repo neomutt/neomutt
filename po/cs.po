@@ -13,7 +13,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neomutt-20161104\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
-"POT-Creation-Date: 2017-04-13 02:10+0100\n"
+"POT-Creation-Date: 2017-04-13 13:26+0100\n"
 "PO-Revision-Date: 2017-02-13 21:09+01:00\n"
 "Last-Translator: Petr Písař <petr.pisar@atlas.cz>\n"
 "Language-Team: Czech <translation-team-cs@lists.sourceforge.net>\n"
@@ -2713,7 +2713,7 @@ msgstr "V tomto menu není tato funkce dostupná."
 msgid "%s: unknown sorting method"
 msgstr "metoda %s pro řazení není známa"
 
-#: init.c:377 init.c:414 init.c:2719
+#: init.c:377 init.c:414 init.c:2715
 #, c-format
 msgid "%s: Unknown type."
 msgstr "neznámý typ %s"
@@ -2799,12 +2799,12 @@ msgstr "neplatná hlavička"
 msgid "restore_default(%s): error in regexp: %s\n"
 msgstr "mutt_restore_default(%s): chybný regulární výraz %s\n"
 
-#: init.c:2189 init.c:2359
+#: init.c:2189 init.c:2355
 #, c-format
 msgid "%s is unset"
 msgstr "%s není nastaveno"
 
-#: init.c:2285 init.c:2404
+#: init.c:2285 init.c:2400
 #, c-format
 msgid "%s: unknown variable"
 msgstr "Proměnná %s není známa."
@@ -2819,105 +2819,105 @@ msgstr "Prefix není s „reset“ povolen."
 msgid "value is illegal with reset"
 msgstr "Hodnota není s „reset“ povolena."
 
-#: init.c:2339 init.c:2351
+#: init.c:2335 init.c:2347
 #, c-format
 msgid "Usage: set variable=yes|no"
 msgstr "Použití: set proměnná=yes|no (ano|ne)"
 
-#: init.c:2359
+#: init.c:2355
 #, c-format
 msgid "%s is set"
 msgstr "%s je nastaveno"
 
-#: init.c:2471 init.c:2486
+#: init.c:2467 init.c:2482
 #, c-format
 msgid "Invalid value for option %s: \"%s\""
 msgstr "Nesprávná hodnota přepínače %s: „%s“"
 
-#: init.c:2583
+#: init.c:2579
 #, c-format
 msgid "%s: invalid mailbox type"
 msgstr "%s je nesprávný typ schránky."
 
-#: init.c:2614
+#: init.c:2610
 #, c-format
 msgid "%s: invalid value (%s)"
 msgstr "%s: nesprávná hodnota (%s)"
 
-#: init.c:2615
+#: init.c:2611
 msgid "format error"
 msgstr "chyba formátu"
 
-#: init.c:2615
+#: init.c:2611
 msgid "number overflow"
 msgstr "přetečení čísla"
 
-#: init.c:2675
+#: init.c:2671
 #, c-format
 msgid "%s: invalid value"
 msgstr "Hodnota %s je nesprávná."
 
-#: init.c:2765
+#: init.c:2761
 #, fuzzy, c-format
 msgid "%s: invalid backend"
 msgstr "Hodnota %s je nesprávná."
 
-#: init.c:2773
+#: init.c:2769
 #, c-format
 msgid "%s: unknown type"
 msgstr "neznámý typ %s"
 
-#: init.c:2918
+#: init.c:2914
 #, c-format
 msgid "Error in %s, line %d: %s"
 msgstr "Chyba v %s na řádku %d: %s"
 
-#: init.c:2948
+#: init.c:2944
 #, c-format
 msgid "source: errors in %s"
 msgstr "source: chyby v %s"
 
-#: init.c:2949
+#: init.c:2945
 #, c-format
 msgid "source: reading aborted due to too many errors in %s"
 msgstr "source: čtení přerušeno kvůli velikému množství chyb v %s"
 
-#: init.c:2967 mutt_lua.c:405
+#: init.c:2963 mutt_lua.c:405
 #, c-format
 msgid "source: error at %s"
 msgstr "source: chyba na %s"
 
-#: init.c:2972 mutt_lua.c:410
+#: init.c:2968 mutt_lua.c:410
 msgid "source: too many arguments"
 msgstr "source: příliš mnoho argumentů"
 
-#: init.c:3029
+#: init.c:3025
 #, c-format
 msgid "%s: unknown command"
 msgstr "Příkaz %s není znám."
 
-#: init.c:3719
+#: init.c:3715
 #, c-format
 msgid "Error in command line: %s\n"
 msgstr "Chyba %s na příkazovém řádku\n"
 
-#: init.c:3826
+#: init.c:3822
 msgid "unable to determine home directory"
 msgstr "domovský adresář nelze určit"
 
-#: init.c:3834
+#: init.c:3830
 msgid "unable to determine username"
 msgstr "uživatelské jméno nelze určit"
 
-#: init.c:3856
+#: init.c:3852
 msgid "unable to determine nodename via uname()"
 msgstr "název stroje nelze určit pomocí volání uname()"
 
-#: init.c:4151
+#: init.c:4147
 msgid "-group: no group name"
 msgstr "-group: chybí jméno skupiny"
 
-#: init.c:4161
+#: init.c:4157
 msgid "out of arguments"
 msgstr "příliš málo argumentů"
 
