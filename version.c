@@ -1,7 +1,7 @@
 /**
  * Copyright (C) 1996-2007 Michael R. Elkins <me@mutt.org>
  * Copyright (C) 1999-2007 Thomas Roessler <roessler@does-not-exist.org>
- * Copyright (C) 2016 Richard Russon
+ * Copyright (C) 2016-2017 Richard Russon
  *
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
@@ -53,7 +53,7 @@ static const char *Copyright =
        "Copyright (C) 2000-2004 Edmund Grimley Evans <edmundo@rano.org>\n"
        "Copyright (C) 2006-2009 Rocco Rutte <pdmef@gmx.net>\n"
        "Copyright (C) 2014-2016 Kevin J. McCarthy <kevin@8t8.us>\n"
-       "Copyright (C) 2015-2016 Richard Russon <rich@flatcap.org>\n"
+       "Copyright (C) 2015-2017 Richard Russon <rich@flatcap.org>\n"
        "\n"
        "Many others not mentioned here contributed code, fixes,\n"
        "and suggestions.\n");

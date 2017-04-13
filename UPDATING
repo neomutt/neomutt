@@ -8,6 +8,10 @@ http://www.mutt.org/doc/manual/
 The keys used are:
   !: modified feature, -: deleted feature, +: new feature
 
+1.8.1 (2017-04-13):
+
+  ! Bug fix release.
+
 1.8.0 (2017-02-24):
 
   - $locale has been removed.  Mutt now respects the LC_TIME setting

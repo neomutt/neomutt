@@ -2926,13 +2926,13 @@ color sidebar_divider   color8  default
         <tgroup cols="1">
           <tbody>
             <row>
-              <entry>neomuttrc-20170306</entry>
+              <entry>neomuttrc-20170414</entry>
             </row>
             <row>
               <entry>neomuttrc</entry>
             </row>
             <row>
-              <entry>muttrc-1.8.0</entry>
+              <entry>muttrc-1.8.1</entry>
             </row>
             <row>
               <entry>muttrc</entry>
@@ -2970,14 +2970,14 @@ color sidebar_divider   color8  default
             </thead>
             <tbody>
               <row>
-                <entry>/etc/xdg/mutt/neomuttrc-20170306</entry>
+                <entry>/etc/xdg/mutt/neomuttrc-20170414</entry>
                 <entry>NeoMutt release version</entry>
               </row>
               <row>
                 <entry>/etc/xdg/mutt/neomuttrc</entry>
               </row>
               <row>
-                <entry>/etc/xdg/mutt/Muttrc-1.8.0</entry>
+                <entry>/etc/xdg/mutt/Muttrc-1.8.1</entry>
                 <entry>Mutt release version, Note the case of the
                 filename</entry>
               </row>
@@ -2986,14 +2986,14 @@ color sidebar_divider   color8  default
                 <entry>Note the case of the filename</entry>
               </row>
               <row>
-                <entry>/etc/mutt/neomuttrc-20170306</entry>
+                <entry>/etc/mutt/neomuttrc-20170414</entry>
                 <entry>NeoMutt release version</entry>
               </row>
               <row>
                 <entry>/etc/mutt/neomuttrc</entry>
               </row>
               <row>
-                <entry>/etc/mutt/Muttrc-1.8.0</entry>
+                <entry>/etc/mutt/Muttrc-1.8.1</entry>
                 <entry>Mutt release version, Note the case of the
                 filename</entry>
               </row>
@@ -3002,14 +3002,14 @@ color sidebar_divider   color8  default
                 <entry>Note the case of the filename</entry>
               </row>
               <row>
-                <entry>/usr/share/mutt/neomuttrc-20170306</entry>
+                <entry>/usr/share/mutt/neomuttrc-20170414</entry>
                 <entry>NeoMutt release version</entry>
               </row>
               <row>
                 <entry>/usr/share/mutt/neomuttrc</entry>
               </row>
               <row>
-                <entry>/usr/share/mutt/Muttrc-1.8.0</entry>
+                <entry>/usr/share/mutt/Muttrc-1.8.1</entry>
                 <entry>Mutt release version, Note the case of the
                 filename</entry>
               </row>
@@ -3049,42 +3049,42 @@ color sidebar_divider   color8  default
             </thead>
             <tbody>
               <row>
-                <entry>~/.config/mutt/neomuttrc-20170306</entry>
+                <entry>~/.config/mutt/neomuttrc-20170414</entry>
                 <entry>NeoMutt release version</entry>
               </row>
               <row>
                 <entry>~/.config/mutt/neomuttrc</entry>
               </row>
               <row>
-                <entry>~/.config/mutt/muttrc-1.8.0</entry>
+                <entry>~/.config/mutt/muttrc-1.8.1</entry>
                 <entry>Mutt release version</entry>
               </row>
               <row>
                 <entry>~/.config/mutt/muttrc</entry>
               </row>
               <row>
-                <entry>~/.neomuttrc-20170306</entry>
+                <entry>~/.neomuttrc-20170414</entry>
                 <entry>NeoMutt release version</entry>
               </row>
               <row>
                 <entry>~/.neomuttrc</entry>
               </row>
               <row>
-                <entry>~/.muttrc-1.8.0</entry>
+                <entry>~/.muttrc-1.8.1</entry>
                 <entry>Mutt release version</entry>
               </row>
               <row>
                 <entry>~/.muttrc</entry>
               </row>
               <row>
-                <entry>~/.mutt/neomuttrc-20170306</entry>
+                <entry>~/.mutt/neomuttrc-20170414</entry>
                 <entry>NeoMutt release version</entry>
               </row>
               <row>
                 <entry>~/.mutt/neomuttrc</entry>
               </row>
               <row>
-                <entry>~/.mutt/muttrc-1.8.0</entry>
+                <entry>~/.mutt/muttrc-1.8.1</entry>
                 <entry>Mutt release version</entry>
               </row>
               <row>
@@ -9032,7 +9032,7 @@ attachments   -I message/external-body
         <quote>patched</quote>to support smaller features. These patches should
         add a free-form string to the end Mutt's version string. Running 
         <literal>mutt -v</literal>might show: 
-        <screen>patch-1.8.0.sidebar.20170306</screen></para>
+        <screen>patch-1.8.1.sidebar.20170414</screen></para>
       </sect2>
 
       <sect2 id="url-syntax">
