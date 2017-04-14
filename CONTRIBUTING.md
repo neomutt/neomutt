@@ -58,7 +58,10 @@ Tips for writing good pull requests
   your commit. The github documentation
   ([1](https://help.github.com/articles/autolinked-references-and-urls/)
   and [2](https://help.github.com/articles/closing-issues-via-commit-messages/))
-  can help you with that
+  can help you with that.
+
+* Please eliminate any warnings gcc or any other tool produces during the
+  compilation stage.
 
 
 Thank you for your help!
