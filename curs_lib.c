@@ -167,9 +167,6 @@ int _mutt_get_field(const char *field, char *buf, size_t buflen, int complete,
     {
       SigWinch = 0;
       mutt_resize_screen();
-      /* mutt_resize_screen sets REDRAW_FULL, but the pager also
-       * requires SIGWINCH. */
-      mutt_set_current_menu_redraw(REDRAW_SIGWINCH);
       clearok(stdscr, TRUE);
       mutt_current_menu_redraw();
     }
@@ -627,6 +624,8 @@ void mutt_reflow_windows(void)
 #endif
 
   mutt_set_current_menu_redraw_full();
+  /* the pager menu needs this flag set to recalc lineInfo */
+  mutt_set_current_menu_redraw(REDRAW_SIGWINCH);
 }
 
 static void reflow_message_window_rows(int mw_rows)
@@ -647,6 +646,8 @@ static void reflow_message_window_rows(int mw_rows)
     MuttSidebarWindow->rows = MuttIndexWindow->rows;
 #endif
 
+  /* We don't also set REDRAW_SIGWINCH because this function only
+   * changes rows and is a temporary adjustment. */
   mutt_set_current_menu_redraw_full();
 }
 
@@ -976,7 +977,6 @@ int mutt_multi_choice(char *prompt, char *letters)
       {
         SigWinch = 0;
         mutt_resize_screen();
-        mutt_set_current_menu_redraw(REDRAW_SIGWINCH);
         clearok(stdscr, TRUE);
         mutt_current_menu_redraw();
       }
