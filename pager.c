@@ -2029,7 +2029,8 @@ mutt_pager (const char *banner, const char *fname, int flags, pager_t *extra)
       }
       else
       {
-	pager_menu->redraw = REDRAW_FULL | REDRAW_SIGWINCH;
+        /* note: mutt_resize_screen() -> mutt_reflow_windows() sets
+         * REDRAW_FULL and REDRAW_SIGWINCH */
 	ch = 0;
       }
       continue;
