@@ -35,7 +35,7 @@ endif
 
 distdir = neo$(PACKAGE)-$(VERSION)
 
-BUILT_SOURCES = keymap_defs.h patchlist.c git_ver.h conststrings.c hcachever.sh $(HCVERSION)
+BUILT_SOURCES = keymap_defs.h keymap_alldefs.h patchlist.c git_ver.h conststrings.c hcachever.sh $(HCVERSION)
 
 bin_PROGRAMS = mutt $(DOTLOCK_TARGET) $(PGPAUX_TARGET)
 mutt_SOURCES = addrbook.c alias.c ascii.c attach.c base64.c browser.c buffer.c \
