@@ -18,6 +18,7 @@
 /* SASL login/authentication code */
 
 #include "config.h"
+#include <stddef.h>
 #include <sasl/sasl.h>
 #include <sasl/saslutil.h>
 #include "imap_private.h"

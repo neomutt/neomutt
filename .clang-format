@@ -10,8 +10,10 @@ BreakBeforeBraces: Allman
 IncludeCategories:
   - Regex:      '"config.h"'
     Priority:   -10
-  - Regex:      '<.*>'
+  - Regex:      '<stddef.h>'
     Priority:   -5
+  - Regex:      '<.*>'
+    Priority:   -4
   - Regex:      '"imap_private.h"'
     Priority:   -3
   - Regex:      '"mutt.h"'
