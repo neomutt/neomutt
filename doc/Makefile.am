@@ -56,7 +56,7 @@ srcdir_DOCFILES = PGP-Notes.txt applying-patches.txt	\
 	devel-notes.txt patch-notes.txt smime-notes.txt
 
 topsrcdir_DOCFILES = COPYRIGHT LICENSE.md INSTALL ChangeLog ChangeLog.neomutt	\
-	README.SECURITY README.SSL README.md
+	README.SSL README.md
 
 all: makedoc-all
 
