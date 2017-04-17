@@ -26,8 +26,9 @@ set nm_open_timeout = 5
 # 'messages'.
 set nm_query_type = messages
 
-# Add messages stored to the mutt record (see $record in the mutt docs)
-# also to notmuch DB.
+# Add messages stored to the mutt record (see $record in the mutt docs)also to
+# notmuch DB. If you reply to an email then the new email inherits tags from
+# the original email.
 set nm_record = no
 
 # Tags that should be removed or added to the to the messages stored in the mutt record.
@@ -98,7 +99,6 @@ bind index <  vfolder-window-backward
 #                "deleted" "DEL" \
 #                "invites" "CAL"
 
-# See README.notmuch for an explanation
 # tag-formats tag format-string { tag format-string ...}
 # tag-formats "inbox"   "GI" \
 #              "unread"  "GU" \
