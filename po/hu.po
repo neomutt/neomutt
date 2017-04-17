@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neomutt-20161104\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
-"POT-Creation-Date: 2017-04-13 13:26+0100\n"
+"POT-Creation-Date: 2017-04-17 17:04+0100\n"
 "PO-Revision-Date: 2003-08-01 13:56+0000\n"
 "Last-Translator: Szabolcs Horváth <horvaths@fi.inf.elte.hu>\n"
 "Language-Team: LME Magyaritasok Lista <magyar@lists.linux.hu>\n"
@@ -918,6 +918,119 @@ msgstr "Másolás a(z) %s-ba..."
 msgid "No decryption engine available for message"
 msgstr ""
 
+#: crypt.c:59
+#, c-format
+msgid " (current time: %c)"
+msgstr " (pontos idő: %c)"
+
+#: crypt.c:64
+#, c-format
+msgid "[-- %s output follows%s --]\n"
+msgstr "[-- %s kimenet következik%s --]\n"
+
+#: crypt.c:78
+msgid "Passphrase(s) forgotten."
+msgstr "Jelszó elfelejtve."
+
+#: crypt.c:139
+msgid "Inline PGP can't be used with attachments.  Revert to PGP/MIME?"
+msgstr ""
+
+#: crypt.c:143
+msgid "Mail not sent: inline PGP can't be used with attachments."
+msgstr ""
+
+#: crypt.c:151 cryptglue.c:106 pgpkey.c:541 pgpkey.c:724
+msgid "Invoking PGP..."
+msgstr "PGP betöltés..."
+
+#: crypt.c:162
+msgid "Message can't be sent inline.  Revert to using PGP/MIME?"
+msgstr ""
+
+#: crypt.c:164 send.c:1796
+msgid "Mail not sent."
+msgstr "A levél nem lett elküldve."
+
+#: crypt.c:224
+msgid "Encrypt message to S/MIME Default Key also?"
+msgstr ""
+
+#: crypt.c:259
+msgid "Encrypt message to PGP Default Key also?"
+msgstr ""
+
+#: crypt.c:502
+msgid "S/MIME messages with no hints on content are unsupported."
+msgstr "Tartalom-útmutatás nélküli S/MIME üzenetek nem támogatottak."
+
+#: crypt.c:710 crypt.c:751
+msgid "Trying to extract PGP keys...\n"
+msgstr "PGP kulcsok kibontása...\n"
+
+#: crypt.c:732 crypt.c:772
+msgid "Trying to extract S/MIME certificates...\n"
+msgstr "S/MIME tanúsítványok kibontása...\n"
+
+#: crypt.c:913
+#, c-format
+msgid ""
+"[-- Error: Unknown multipart/signed protocol %s! --]\n"
+"\n"
+msgstr ""
+"[-- Hiba: Ismeretlen többrészes/aláírt protokoll %s! --]\n"
+"\n"
+
+#: crypt.c:947
+msgid ""
+"[-- Error: Inconsistent multipart/signed structure! --]\n"
+"\n"
+msgstr ""
+"[-- Hiba: Ellentmondó többrészes/aláírt struktúra! --]\n"
+"\n"
+
+#: crypt.c:983
+#, c-format
+msgid ""
+"[-- Warning: We can't verify %s/%s signatures. --]\n"
+"\n"
+msgstr ""
+"[-- Figyelmeztetés: Nem tudtam leellenőrizni a %s/%s aláírásokat. --]\n"
+"\n"
+
+#: crypt.c:995
+msgid ""
+"[-- The following data is signed --]\n"
+"\n"
+msgstr ""
+"[-- A következő adatok alá vannak írva --]\n"
+"\n"
+
+#: crypt.c:1001
+msgid ""
+"[-- Warning: Can't find any signatures. --]\n"
+"\n"
+msgstr ""
+"[-- Figyelmeztetés: Nem találtam egy aláírást sem. --]\n"
+"\n"
+
+#: crypt.c:1007
+msgid ""
+"\n"
+"[-- End of signed data --]\n"
+msgstr ""
+"\n"
+"[-- Aláírt adat vége --]\n"
+
+#: cryptglue.c:84
+msgid "\"crypt_use_gpgme\" set but not built with GPGME support."
+msgstr ""
+
+#: cryptglue.c:108
+#, fuzzy
+msgid "Invoking S/MIME..."
+msgstr "S/MIME betöltés..."
+
 #: crypt_gpgme.c:384
 #, fuzzy, c-format
 msgid "error creating gpgme context: %s\n"
@@ -1595,119 +1708,6 @@ msgstr ""
 #, fuzzy
 msgid "Failed to figure out sender"
 msgstr "Fájl megnyitási hiba a fejléc vizsgálatakor."
-
-#: crypt.c:59
-#, c-format
-msgid " (current time: %c)"
-msgstr " (pontos idő: %c)"
-
-#: crypt.c:64
-#, c-format
-msgid "[-- %s output follows%s --]\n"
-msgstr "[-- %s kimenet következik%s --]\n"
-
-#: crypt.c:78
-msgid "Passphrase(s) forgotten."
-msgstr "Jelszó elfelejtve."
-
-#: crypt.c:139
-msgid "Inline PGP can't be used with attachments.  Revert to PGP/MIME?"
-msgstr ""
-
-#: crypt.c:143
-msgid "Mail not sent: inline PGP can't be used with attachments."
-msgstr ""
-
-#: crypt.c:151 cryptglue.c:106 pgpkey.c:541 pgpkey.c:724
-msgid "Invoking PGP..."
-msgstr "PGP betöltés..."
-
-#: crypt.c:162
-msgid "Message can't be sent inline.  Revert to using PGP/MIME?"
-msgstr ""
-
-#: crypt.c:164 send.c:1796
-msgid "Mail not sent."
-msgstr "A levél nem lett elküldve."
-
-#: crypt.c:224
-msgid "Encrypt message to S/MIME Default Key also?"
-msgstr ""
-
-#: crypt.c:259
-msgid "Encrypt message to PGP Default Key also?"
-msgstr ""
-
-#: crypt.c:502
-msgid "S/MIME messages with no hints on content are unsupported."
-msgstr "Tartalom-útmutatás nélküli S/MIME üzenetek nem támogatottak."
-
-#: crypt.c:710 crypt.c:751
-msgid "Trying to extract PGP keys...\n"
-msgstr "PGP kulcsok kibontása...\n"
-
-#: crypt.c:732 crypt.c:772
-msgid "Trying to extract S/MIME certificates...\n"
-msgstr "S/MIME tanúsítványok kibontása...\n"
-
-#: crypt.c:913
-#, c-format
-msgid ""
-"[-- Error: Unknown multipart/signed protocol %s! --]\n"
-"\n"
-msgstr ""
-"[-- Hiba: Ismeretlen többrészes/aláírt protokoll %s! --]\n"
-"\n"
-
-#: crypt.c:947
-msgid ""
-"[-- Error: Inconsistent multipart/signed structure! --]\n"
-"\n"
-msgstr ""
-"[-- Hiba: Ellentmondó többrészes/aláírt struktúra! --]\n"
-"\n"
-
-#: crypt.c:983
-#, c-format
-msgid ""
-"[-- Warning: We can't verify %s/%s signatures. --]\n"
-"\n"
-msgstr ""
-"[-- Figyelmeztetés: Nem tudtam leellenőrizni a %s/%s aláírásokat. --]\n"
-"\n"
-
-#: crypt.c:995
-msgid ""
-"[-- The following data is signed --]\n"
-"\n"
-msgstr ""
-"[-- A következő adatok alá vannak írva --]\n"
-"\n"
-
-#: crypt.c:1001
-msgid ""
-"[-- Warning: Can't find any signatures. --]\n"
-"\n"
-msgstr ""
-"[-- Figyelmeztetés: Nem találtam egy aláírást sem. --]\n"
-"\n"
-
-#: crypt.c:1007
-msgid ""
-"\n"
-"[-- End of signed data --]\n"
-msgstr ""
-"\n"
-"[-- Aláírt adat vége --]\n"
-
-#: cryptglue.c:84
-msgid "\"crypt_use_gpgme\" set but not built with GPGME support."
-msgstr ""
-
-#: cryptglue.c:108
-#, fuzzy
-msgid "Invoking S/MIME..."
-msgstr "S/MIME betöltés..."
 
 #: curs_lib.c:229
 msgid "yes"
@@ -2582,12 +2582,12 @@ msgstr "Bejelentkezés..."
 msgid "Login failed."
 msgstr "Sikertelen bejelentkezés."
 
-#: imap/auth_sasl.c:94 nntp.c:367 nntp.c:432 smtp.c:372
+#: imap/auth_sasl.c:95 nntp.c:367 nntp.c:432 smtp.c:372
 #, fuzzy, c-format
 msgid "Authenticating (%s)..."
 msgstr "Azonosítás (APOP)..."
 
-#: imap/auth_sasl.c:222 pop_auth.c:175
+#: imap/auth_sasl.c:223 pop_auth.c:175
 msgid "SASL authentication failed."
 msgstr "SASL azonosítás nem sikerült."
 
@@ -3072,6 +3072,1022 @@ msgstr "Add meg a kulcsokat (^G megszakítás): "
 #, c-format
 msgid "Char = %s, Octal = %o, Decimal = %d"
 msgstr "Karakter = %s, Oktális = %o, Decimális = %d"
+
+#: keymap_alldefs.h:5
+msgid "null operation"
+msgstr "üres művelet"
+
+#: keymap_alldefs.h:6
+msgid "end of conditional execution (noop)"
+msgstr ""
+
+#: keymap_alldefs.h:7
+msgid "force viewing of attachment using mailcap"
+msgstr "melléklet megtekintése mailcap segítségével"
+
+#: keymap_alldefs.h:8
+msgid "view attachment as text"
+msgstr "melléklet megtekintése szövegként"
+
+#: keymap_alldefs.h:9
+msgid "Toggle display of subparts"
+msgstr "További részek mutatása/elrejtése"
+
+#: keymap_alldefs.h:10
+msgid "move to the bottom of the page"
+msgstr "ugrás az oldal aljára"
+
+#: keymap_alldefs.h:11
+msgid "remail a message to another user"
+msgstr "levél újraküldése egy másik felhasználónak"
+
+#: keymap_alldefs.h:12
+msgid "swap the current folder position with $folder if it exists"
+msgstr ""
+
+#: keymap_alldefs.h:13
+msgid "select a new file in this directory"
+msgstr "válassz egy új fájlt ebben a könyvtárban"
+
+#: keymap_alldefs.h:14
+msgid "view file"
+msgstr "fájl megtekintése"
+
+#: keymap_alldefs.h:15
+msgid "display the currently selected file's name"
+msgstr "kijelölt fájl nevének mutatása"
+
+#: keymap_alldefs.h:16
+#, fuzzy
+msgid "subscribe to current mbox (IMAP/NNTP only)"
+msgstr "aktuális postafiók felírása (csak IMAP)"
+
+#: keymap_alldefs.h:17
+#, fuzzy
+msgid "unsubscribe from current mbox (IMAP/NNTP only)"
+msgstr "aktuális postafiók leírása (csak IMAP)"
+
+#: keymap_alldefs.h:18
+msgid "toggle view all/subscribed mailboxes (IMAP only)"
+msgstr "váltás az összes/felírt postafiók nézetek között (csak IMAP)"
+
+#: keymap_alldefs.h:19
+msgid "list mailboxes with new mail"
+msgstr "új levelet tartalmazó postafiókok"
+
+#: keymap_alldefs.h:20
+msgid "mark all articles in newsgroup as read"
+msgstr ""
+
+#: keymap_alldefs.h:21
+msgid "change directories"
+msgstr "könyvtár váltás"
+
+#: keymap_alldefs.h:22
+msgid "check mailboxes for new mail"
+msgstr "új levél keresése a postafiókokban"
+
+#: keymap_alldefs.h:23
+#, fuzzy
+msgid "attach file(s) to this message"
+msgstr "fájl(ok) csatolása ezen üzenethez"
+
+#: keymap_alldefs.h:24
+msgid "attach message(s) to this message"
+msgstr "üzenet(ek) csatolása ezen üzenethez"
+
+#: keymap_alldefs.h:25
+#, fuzzy
+msgid "attach news article(s) to this message"
+msgstr "fájl(ok) csatolása ezen üzenethez"
+
+#: keymap_alldefs.h:26
+msgid "edit the BCC list"
+msgstr "Rejtett másolatot kap (BCC) lista szerkesztése"
+
+#: keymap_alldefs.h:27
+msgid "edit the CC list"
+msgstr "Másolatot kap lista (CC) szerkesztése"
+
+#: keymap_alldefs.h:28
+msgid "edit attachment description"
+msgstr "melléklet-leírás szerkesztése"
+
+#: keymap_alldefs.h:29
+msgid "edit attachment transfer-encoding"
+msgstr "melléklet átviteli-kódolás szerkesztése"
+
+#: keymap_alldefs.h:30
+msgid "enter a file to save a copy of this message in"
+msgstr "adj meg egy fájlnevet, ahova a levél másolatát elmentem"
+
+#: keymap_alldefs.h:31
+msgid "edit the file to be attached"
+msgstr "csatolandó fájl szerkesztése"
+
+#: keymap_alldefs.h:32
+msgid "edit the from field"
+msgstr "feladó mező szerkesztése"
+
+#: keymap_alldefs.h:33
+msgid "edit the message with headers"
+msgstr "üzenet szerkesztése fejlécekkel együtt"
+
+#: keymap_alldefs.h:34
+msgid "edit the message"
+msgstr "üzenet szerkesztése"
+
+#: keymap_alldefs.h:35
+msgid "edit attachment using mailcap entry"
+msgstr "melléklet szerkesztése a mailcap bejegyzés használatával"
+
+#: keymap_alldefs.h:36
+#, fuzzy
+msgid "edit the newsgroups list"
+msgstr "Másolatot kap lista (CC) szerkesztése"
+
+#: keymap_alldefs.h:37
+msgid "edit the Reply-To field"
+msgstr "Válaszcím szerkesztése"
+
+#: keymap_alldefs.h:38
+#, fuzzy
+msgid "edit the Followup-To field"
+msgstr "Válaszcím szerkesztése"
+
+#: keymap_alldefs.h:39
+#, fuzzy
+msgid "edit the X-Comment-To field"
+msgstr "Válaszcím szerkesztése"
+
+#: keymap_alldefs.h:40
+msgid "edit the subject of this message"
+msgstr "levél tárgyának szerkesztése"
+
+#: keymap_alldefs.h:41
+msgid "edit the TO list"
+msgstr "Címzett lista (TO) szerkesztése"
+
+#: keymap_alldefs.h:42
+msgid "create a new mailbox (IMAP only)"
+msgstr "új postafiók létrehozása (csak IMAP)"
+
+#: keymap_alldefs.h:43
+msgid "edit attachment content type"
+msgstr "melléklet tartalom-típusának szerkesztése"
+
+#: keymap_alldefs.h:44
+msgid "get a temporary copy of an attachment"
+msgstr "ideiglenes másolat készítése a mellékletről"
+
+#: keymap_alldefs.h:45
+msgid "run ispell on the message"
+msgstr "levél ellenőrzése ispell-el"
+
+#: keymap_alldefs.h:46
+msgid "compose new attachment using mailcap entry"
+msgstr "új melléklet összeállítása a mailcap bejegyzéssel segítségével"
+
+#: keymap_alldefs.h:47
+msgid "toggle recoding of this attachment"
+msgstr "ezen melléklet újrakódolása"
+
+#: keymap_alldefs.h:48
+msgid "save this message to send later"
+msgstr "üzenet elmentése későbbi küldéshez"
+
+#: keymap_alldefs.h:49
+#, fuzzy
+msgid "send attachment with a different name"
+msgstr "melléklet átviteli-kódolás szerkesztése"
+
+#: keymap_alldefs.h:50
+msgid "rename/move an attached file"
+msgstr "csatolt fájl átnevezése/mozgatása"
+
+#: keymap_alldefs.h:51
+#, fuzzy
+msgid "compose a new message to the sender"
+msgstr "új levél szerkesztése"
+
+#: keymap_alldefs.h:52
+msgid "send the message"
+msgstr "üzenet elküldése"
+
+#: keymap_alldefs.h:53
+msgid "toggle disposition between inline/attachment"
+msgstr "váltás beágyazás/csatolás között"
+
+#: keymap_alldefs.h:54
+msgid "toggle whether to delete file after sending it"
+msgstr "fájl törlése/meghagyása küldés után"
+
+#: keymap_alldefs.h:55
+msgid "update an attachment's encoding info"
+msgstr "melléklet kódolási információinak frissítése"
+
+#: keymap_alldefs.h:56
+msgid "write the message to a folder"
+msgstr "üzenet írása postafiókba"
+
+#: keymap_alldefs.h:57
+msgid "copy a message to a file/mailbox"
+msgstr "üzenet másolása fájlba/postafiókba"
+
+#: keymap_alldefs.h:58
+msgid "create an alias from a message sender"
+msgstr "álnév létrehozása a feladóhoz"
+
+#: keymap_alldefs.h:59
+msgid "move entry to bottom of screen"
+msgstr "lapozás a képernyő aljára"
+
+#: keymap_alldefs.h:60
+msgid "move entry to middle of screen"
+msgstr "lapozás a képernyő közepére"
+
+#: keymap_alldefs.h:61
+msgid "move entry to top of screen"
+msgstr "lapozás a képernyő tetejére"
+
+#: keymap_alldefs.h:62
+msgid "make decoded (text/plain) copy"
+msgstr "visszafejtett (sima szöveges) másolat készítése"
+
+#: keymap_alldefs.h:63
+msgid "make decoded copy (text/plain) and delete"
+msgstr "visszafejtett (sima szöveges) másolat készítése és törlés"
+
+#: keymap_alldefs.h:64
+msgid "delete the current entry"
+msgstr "aktuális bejegyzés törlése"
+
+#: keymap_alldefs.h:65
+msgid "delete the current mailbox (IMAP only)"
+msgstr "aktuális postafiók törlése (csak IMAP)"
+
+#: keymap_alldefs.h:66
+msgid "delete all messages in subthread"
+msgstr "témarész összes üzenetének törlése"
+
+#: keymap_alldefs.h:67
+msgid "delete all messages in thread"
+msgstr "téma összes üzenetének törlése"
+
+#: keymap_alldefs.h:68
+msgid "display full address of sender"
+msgstr "a feladó teljes címének mutatása"
+
+#: keymap_alldefs.h:69
+msgid "display message and toggle header weeding"
+msgstr "üzenet megjelenítése és a teljes fejléc ki/bekapcsolása"
+
+#: keymap_alldefs.h:70
+msgid "display a message"
+msgstr "üzenet megjelenítése"
+
+#: keymap_alldefs.h:71
+msgid "add, change, or delete a message's label"
+msgstr ""
+
+#: keymap_alldefs.h:72
+msgid "edit the raw message"
+msgstr "nyers üzenet szerkesztése"
+
+#: keymap_alldefs.h:73
+msgid "delete the char in front of the cursor"
+msgstr "a kurzor előtti karakter törlése"
+
+#: keymap_alldefs.h:74
+msgid "move the cursor one character to the left"
+msgstr "kurzor mozgatása egy karakterrel balra"
+
+#: keymap_alldefs.h:75
+msgid "move the cursor to the beginning of the word"
+msgstr "kurzor mozgatása a szó elejére"
+
+#: keymap_alldefs.h:76
+msgid "jump to the beginning of the line"
+msgstr "ugrás a sor elejére"
+
+#: keymap_alldefs.h:77
+msgid "cycle among incoming mailboxes"
+msgstr "bejövő postafiókok körbejárása"
+
+#: keymap_alldefs.h:78
+msgid "complete filename or alias"
+msgstr "teljes fájlnév vagy álnév"
+
+#: keymap_alldefs.h:79
+msgid "complete address with query"
+msgstr "teljes cím lekérdezéssel"
+
+#: keymap_alldefs.h:80
+msgid "delete the char under the cursor"
+msgstr "kurzoron álló karakter törlése"
+
+#: keymap_alldefs.h:81
+msgid "jump to the end of the line"
+msgstr "ugrás a sor végére"
+
+#: keymap_alldefs.h:82
+msgid "move the cursor one character to the right"
+msgstr "kurzor mozgatása egy karakterrel jobbra"
+
+#: keymap_alldefs.h:83
+msgid "move the cursor to the end of the word"
+msgstr "kurzor mozgatása a szó végére"
+
+#: keymap_alldefs.h:84
+msgid "scroll down through the history list"
+msgstr "lapozás lefelé az előzményekben"
+
+#: keymap_alldefs.h:85
+msgid "scroll up through the history list"
+msgstr "lapozás felfelé az előzményekben"
+
+#: keymap_alldefs.h:86
+msgid "delete chars from cursor to end of line"
+msgstr "karakterek törlése a sor végéig"
+
+#: keymap_alldefs.h:87
+msgid "delete chars from the cursor to the end of the word"
+msgstr "karakterek törlése a szó végéig"
+
+#: keymap_alldefs.h:88
+msgid "delete all chars on the line"
+msgstr "karakter törlése a sorban"
+
+#: keymap_alldefs.h:89
+msgid "delete the word in front of the cursor"
+msgstr "a kurzor előtti szó törlése"
+
+#: keymap_alldefs.h:90
+msgid "quote the next typed key"
+msgstr "a következő kulcs idézése"
+
+#: keymap_alldefs.h:91
+msgid "transpose character under cursor with previous"
+msgstr "az előző és az aktuális karakter cseréje"
+
+#: keymap_alldefs.h:92
+msgid "capitalize the word"
+msgstr "szó nagy kezdőbetűssé alakítása"
+
+#: keymap_alldefs.h:93
+msgid "convert the word to lower case"
+msgstr "szó kisbetűssé alakítása"
+
+#: keymap_alldefs.h:94
+msgid "convert the word to upper case"
+msgstr "szó nagybetűssé alakítása"
+
+#: keymap_alldefs.h:95
+msgid "enter a muttrc command"
+msgstr "adj meg egy muttrc parancsot"
+
+#: keymap_alldefs.h:96
+msgid "enter a file mask"
+msgstr "adj meg egy fájlmaszkot"
+
+#: keymap_alldefs.h:97
+msgid "exit this menu"
+msgstr "kilépés ebből a menüből"
+
+#: keymap_alldefs.h:98
+msgid "filter attachment through a shell command"
+msgstr "melléklet szűrése egy shell parancson keresztül"
+
+#: keymap_alldefs.h:99
+msgid "move to the first entry"
+msgstr "ugrás az első bejegyzésre"
+
+#: keymap_alldefs.h:100
+msgid "toggle a message's 'important' flag"
+msgstr "üzenet 'fontos' jelzőjének állítása"
+
+#: keymap_alldefs.h:101
+#, fuzzy
+msgid "followup to newsgroup"
+msgstr "Válasz a %s%s címre?"
+
+#: keymap_alldefs.h:102
+msgid "forward to newsgroup"
+msgstr ""
+
+#: keymap_alldefs.h:103
+msgid "forward a message with comments"
+msgstr "üzenet továbbítása kommentekkel"
+
+#: keymap_alldefs.h:104
+msgid "select the current entry"
+msgstr "aktuális bejegyzés kijelölése"
+
+#: keymap_alldefs.h:105
+#, fuzzy
+msgid "get all children of the current message"
+msgstr "Ez az első levél."
+
+#: keymap_alldefs.h:106
+#, fuzzy
+msgid "get message with Message-Id"
+msgstr "üzenet szerkesztése fejlécekkel együtt"
+
+#: keymap_alldefs.h:107
+#, fuzzy
+msgid "get parent of the current message"
+msgstr "Ez az első levél."
+
+#: keymap_alldefs.h:108
+msgid "reply to all recipients"
+msgstr "válasz az összes címzettnek"
+
+#: keymap_alldefs.h:109
+msgid "scroll down 1/2 page"
+msgstr "fél oldal lapozás lefelé"
+
+#: keymap_alldefs.h:110
+msgid "scroll up 1/2 page"
+msgstr "fél oldal lapozás felfelé"
+
+#: keymap_alldefs.h:111
+msgid "this screen"
+msgstr "ez a képernyő"
+
+#: keymap_alldefs.h:112
+msgid "jump to an index number"
+msgstr "ugrás sorszámra"
+
+#: keymap_alldefs.h:113
+msgid "move to the last entry"
+msgstr "ugrás az utolsó bejegyzésre"
+
+#: keymap_alldefs.h:114
+msgid "reply to specified mailing list"
+msgstr "válasz a megadott levelezőlistára"
+
+#: keymap_alldefs.h:115
+msgid "load list of all newsgroups from NNTP server"
+msgstr ""
+
+#: keymap_alldefs.h:116
+msgid "execute a macro"
+msgstr "makró végrehajtása"
+
+#: keymap_alldefs.h:117
+msgid "compose a new mail message"
+msgstr "új levél szerkesztése"
+
+#: keymap_alldefs.h:118
+msgid "break the thread in two"
+msgstr ""
+
+#: keymap_alldefs.h:119
+msgid "open a different folder"
+msgstr "más postafiók megnyitása"
+
+#: keymap_alldefs.h:120
+msgid "open a different folder in read only mode"
+msgstr "más postafiók megnyitása csak olvasásra"
+
+#: keymap_alldefs.h:121
+#, fuzzy
+msgid "open a different newsgroup"
+msgstr "más postafiók megnyitása"
+
+#: keymap_alldefs.h:122
+#, fuzzy
+msgid "open a different newsgroup in read only mode"
+msgstr "más postafiók megnyitása csak olvasásra"
+
+#: keymap_alldefs.h:123
+msgid "clear a status flag from a message"
+msgstr "levél-állapotjelző törlése"
+
+#: keymap_alldefs.h:124
+msgid "delete messages matching a pattern"
+msgstr "mintára illeszkedő levelek törlése"
+
+#: keymap_alldefs.h:125
+msgid "force retrieval of mail from IMAP server"
+msgstr "kényszerített levélletöltés az IMAP kiszolgálóról"
+
+#: keymap_alldefs.h:126
+msgid "logout from all IMAP servers"
+msgstr ""
+
+#: keymap_alldefs.h:127
+msgid "retrieve mail from POP server"
+msgstr "levelek törlése POP kiszolgálóról"
+
+#: keymap_alldefs.h:128
+msgid "show only messages matching a pattern"
+msgstr "csak a mintára illeszkedő levelek mutatása"
+
+#: keymap_alldefs.h:129
+#, fuzzy
+msgid "link tagged message to the current one"
+msgstr "Kijelölt levelek visszaküldése. Címzett: "
+
+#: keymap_alldefs.h:130
+#, fuzzy
+msgid "open next mailbox with new mail"
+msgstr "Nincs új levél egyik postafiókban sem."
+
+#: keymap_alldefs.h:131
+msgid "jump to the next new message"
+msgstr "ugrás a következő új levélre"
+
+#: keymap_alldefs.h:132
+msgid "jump to the next new or unread message"
+msgstr "ugrás a következő új vagy olvasatlan levélre"
+
+#: keymap_alldefs.h:133
+msgid "jump to the next subthread"
+msgstr "ugrás a következő témarészre"
+
+#: keymap_alldefs.h:134
+msgid "jump to the next thread"
+msgstr "ugrás a következő témára"
+
+#: keymap_alldefs.h:135
+msgid "move to the next undeleted message"
+msgstr "ugrás a következő visszaállított levélre"
+
+#: keymap_alldefs.h:136
+msgid "jump to the next unread message"
+msgstr "ugrás a következő olvasatlan levélre"
+
+#: keymap_alldefs.h:137
+msgid "jump to parent message in thread"
+msgstr "ugrás a levél előzményére ebben a témában"
+
+#: keymap_alldefs.h:138
+msgid "jump to previous thread"
+msgstr "ugrás az előző témára"
+
+#: keymap_alldefs.h:139
+msgid "jump to previous subthread"
+msgstr "ugrás az előző témarészre"
+
+#: keymap_alldefs.h:140
+msgid "move to the previous undeleted message"
+msgstr "ugrás az előző visszaállított levélre"
+
+#: keymap_alldefs.h:141
+msgid "jump to the previous new message"
+msgstr "ugrás az előző új levélre"
+
+#: keymap_alldefs.h:142
+msgid "jump to the previous new or unread message"
+msgstr "ugrás az előző új vagy olvasatlan levélre"
+
+#: keymap_alldefs.h:143
+msgid "jump to the previous unread message"
+msgstr "ugrás az előző olvasatlan levélre"
+
+#: keymap_alldefs.h:144
+msgid "mark the current thread as read"
+msgstr "téma jelölése olvasottnak"
+
+#: keymap_alldefs.h:145
+msgid "mark the current subthread as read"
+msgstr "témarész jelölése olvasottnak"
+
+#: keymap_alldefs.h:146
+#, fuzzy
+msgid "jump to root message in thread"
+msgstr "ugrás a levél előzményére ebben a témában"
+
+#: keymap_alldefs.h:147
+msgid "set a status flag on a message"
+msgstr "levél-állapotjelző beállítása"
+
+#: keymap_alldefs.h:148
+msgid "save changes to mailbox"
+msgstr "mentés postafiókba"
+
+#: keymap_alldefs.h:149
+msgid "tag messages matching a pattern"
+msgstr "levelek kijelölése mintára illesztéssel"
+
+#: keymap_alldefs.h:150
+msgid "delete from mutt, don't touch on disk"
+msgstr ""
+
+#: keymap_alldefs.h:151
+msgid "undelete messages matching a pattern"
+msgstr "levelek visszaállítása mintára illesztéssel"
+
+#: keymap_alldefs.h:152
+msgid "untag messages matching a pattern"
+msgstr "kijelölés megszüntetése mintára illesztéssel"
+
+#: keymap_alldefs.h:153
+#, fuzzy
+msgid "create a hotkey macro for the current message"
+msgstr "Ez az első levél."
+
+#: keymap_alldefs.h:154
+msgid "move to the middle of the page"
+msgstr "mozgatás az oldal közepére"
+
+#: keymap_alldefs.h:155
+msgid "move to the next entry"
+msgstr "mozgatás a következő bejegyzésre"
+
+#: keymap_alldefs.h:156
+msgid "scroll down one line"
+msgstr "mozgás egy sorral lejjebb"
+
+#: keymap_alldefs.h:157
+msgid "move to the next page"
+msgstr "ugrás a következő oldalra"
+
+#: keymap_alldefs.h:158
+msgid "jump to the bottom of the message"
+msgstr "ugrás az üzenet aljára"
+
+#: keymap_alldefs.h:159
+msgid "toggle display of quoted text"
+msgstr "idézett szöveg mutatása/elrejtése"
+
+#: keymap_alldefs.h:160
+msgid "skip beyond quoted text"
+msgstr "idézett szöveg átlépése"
+
+#: keymap_alldefs.h:161
+msgid "jump to the top of the message"
+msgstr "ugrás az üzenet tetejére"
+
+#: keymap_alldefs.h:162
+msgid "pipe message/attachment to a shell command"
+msgstr "üzenet/melléklet átadása csövön shell parancsnak"
+
+#: keymap_alldefs.h:163
+#, fuzzy
+msgid "post message to newsgroup"
+msgstr "Levél visszaküldése %s részére"
+
+#: keymap_alldefs.h:164
+msgid "move to the previous entry"
+msgstr "ugrás az előző bejegyzésre"
+
+#: keymap_alldefs.h:165
+msgid "scroll up one line"
+msgstr "mozgás egy sorral feljebb"
+
+#: keymap_alldefs.h:166
+msgid "move to the previous page"
+msgstr "ugrás az előző oldalra"
+
+#: keymap_alldefs.h:167
+msgid "print the current entry"
+msgstr "bejegyzés nyomtatása"
+
+#: keymap_alldefs.h:168
+msgid "really delete the current entry, bypassing the trash folder"
+msgstr ""
+
+#: keymap_alldefs.h:169
+msgid "really delete the current thread, bypassing the trash folder"
+msgstr ""
+
+#: keymap_alldefs.h:170
+msgid "query external program for addresses"
+msgstr "címek lekérdezése külső program segítségével"
+
+#: keymap_alldefs.h:171
+msgid "append new query results to current results"
+msgstr "új lekérdezés eredményének hozzáfűzése az eddigiekhez"
+
+#: keymap_alldefs.h:172
+msgid "save changes to mailbox and quit"
+msgstr "változások mentése és kilépés"
+
+#: keymap_alldefs.h:173
+msgid "recall a postponed message"
+msgstr "elhalasztott levél újrahívása"
+
+#: keymap_alldefs.h:174
+#, fuzzy
+msgid "reconstruct thread containing current message"
+msgstr "A témában olvasatlan levelek vannak."
+
+#: keymap_alldefs.h:175
+msgid "clear and redraw the screen"
+msgstr "képernyő törlése és újrarajzolása"
+
+#: keymap_alldefs.h:176
+msgid "{internal}"
+msgstr "(belső)"
+
+#: keymap_alldefs.h:177
+#, fuzzy
+msgid "rename the current mailbox (IMAP only)"
+msgstr "aktuális postafiók törlése (csak IMAP)"
+
+#: keymap_alldefs.h:178
+msgid "reply to a message"
+msgstr "válasz a levélre"
+
+#: keymap_alldefs.h:179
+msgid "use the current message as a template for a new one"
+msgstr "levél sablonként használata egy új levélhez"
+
+#: keymap_alldefs.h:180
+#, fuzzy
+msgid "save message/attachment to a mailbox/file"
+msgstr "levél/melléklet mentése fájlba"
+
+#: keymap_alldefs.h:181
+msgid "search for a regular expression"
+msgstr "reguláris kifejezés keresése"
+
+#: keymap_alldefs.h:182
+msgid "search backwards for a regular expression"
+msgstr "reguláris kifejezés keresése visszafelé"
+
+#: keymap_alldefs.h:183
+msgid "search for next match"
+msgstr "keresés tovább"
+
+#: keymap_alldefs.h:184
+msgid "search for next match in opposite direction"
+msgstr "keresés visszafelé"
+
+#: keymap_alldefs.h:185
+msgid "toggle search pattern coloring"
+msgstr "keresett minta színezése ki/be"
+
+#: keymap_alldefs.h:186
+msgid "invoke a command in a subshell"
+msgstr "parancs végrehajtása rész-shellben"
+
+#: keymap_alldefs.h:187
+msgid "sort messages"
+msgstr "üzenetek rendezése"
+
+#: keymap_alldefs.h:188
+msgid "sort messages in reverse order"
+msgstr "üzenetek rendezése fordított sorrendben"
+
+#: keymap_alldefs.h:189
+#, fuzzy
+msgid "subscribe to newsgroups matching a pattern"
+msgstr "kijelölés megszüntetése mintára illesztéssel"
+
+#: keymap_alldefs.h:190
+msgid "tag the current entry"
+msgstr "bejegyzés megjelölése"
+
+#: keymap_alldefs.h:191
+msgid "apply next function to tagged messages"
+msgstr "csoportos művelet végrehajtás a kijelölt üzenetekre"
+
+#: keymap_alldefs.h:192
+#, fuzzy
+msgid "apply next function ONLY to tagged messages"
+msgstr "csoportos művelet végrehajtás a kijelölt üzenetekre"
+
+#: keymap_alldefs.h:193
+msgid "tag the current subthread"
+msgstr "témarész megjelölése"
+
+#: keymap_alldefs.h:194
+msgid "tag the current thread"
+msgstr "téma megjelölése"
+
+#: keymap_alldefs.h:195
+msgid "toggle a message's 'new' flag"
+msgstr "levél 'új' jelzőjének állítása"
+
+#: keymap_alldefs.h:196
+#, fuzzy
+msgid "toggle view of read messages"
+msgstr "ugrás az előző új vagy olvasatlan levélre"
+
+#: keymap_alldefs.h:197
+msgid "toggle whether the mailbox will be rewritten"
+msgstr "a postafiók újraírásának ki/bekapcsolása"
+
+#: keymap_alldefs.h:198
+msgid "toggle whether to browse mailboxes or all files"
+msgstr "váltás a csak postafiókok/összes fájl böngészése között"
+
+#: keymap_alldefs.h:199
+msgid "move to the top of the page"
+msgstr "ugrás az oldal tetejére"
+
+#: keymap_alldefs.h:200
+msgid "mark all articles in newsgroup as unread"
+msgstr ""
+
+#: keymap_alldefs.h:201
+msgid "undelete the current entry"
+msgstr "aktuális bejegyzés visszaállítása"
+
+#: keymap_alldefs.h:202
+msgid "undelete all messages in thread"
+msgstr "a téma összes levelének visszaállítása"
+
+#: keymap_alldefs.h:203
+msgid "undelete all messages in subthread"
+msgstr "a témarész összes levelének visszaállítása"
+
+#: keymap_alldefs.h:204
+#, fuzzy
+msgid "unsubscribe from newsgroups matching a pattern"
+msgstr "kijelölés megszüntetése mintára illesztéssel"
+
+#: keymap_alldefs.h:205
+msgid "show the Mutt version number and date"
+msgstr "a Mutt verziójának és dátumának megjelenítése"
+
+#: keymap_alldefs.h:206
+msgid "view attachment using mailcap entry if necessary"
+msgstr "melléklet mutatása mailcap bejegyzés használatával, ha szükséges"
+
+#: keymap_alldefs.h:207
+msgid "show MIME attachments"
+msgstr "MIME mellékletek mutatása"
+
+#: keymap_alldefs.h:208
+msgid "display the keycode for a key press"
+msgstr "billentyűleütés kódjának mutatása"
+
+#: keymap_alldefs.h:209
+#, fuzzy
+msgid "limit view to current thread"
+msgstr "téma megjelölése"
+
+#: keymap_alldefs.h:210
+msgid "show currently active limit pattern"
+msgstr "aktuális szűrőminta mutatása"
+
+#: keymap_alldefs.h:211
+msgid "collapse/uncollapse current thread"
+msgstr "téma kinyitása/bezárása"
+
+#: keymap_alldefs.h:212
+msgid "collapse/uncollapse all threads"
+msgstr "összes téma kinyitása/bezárása"
+
+#: keymap_alldefs.h:213
+msgid "move the highlight to next mailbox"
+msgstr ""
+
+#: keymap_alldefs.h:214
+#, fuzzy
+msgid "move the highlight to next mailbox with new mail"
+msgstr "Nincs új levél egyik postafiókban sem."
+
+#: keymap_alldefs.h:215
+#, fuzzy
+msgid "open highlighted mailbox"
+msgstr "Postafiók újra megnyitása..."
+
+#: keymap_alldefs.h:216
+#, fuzzy
+msgid "scroll the sidebar down 1 page"
+msgstr "fél oldal lapozás lefelé"
+
+#: keymap_alldefs.h:217
+#, fuzzy
+msgid "scroll the sidebar up 1 page"
+msgstr "fél oldal lapozás felfelé"
+
+#: keymap_alldefs.h:218
+#, fuzzy
+msgid "move the highlight to previous mailbox"
+msgstr "ugrás az előző oldalra"
+
+#: keymap_alldefs.h:219
+#, fuzzy
+msgid "move the highlight to previous mailbox with new mail"
+msgstr "Nincs új levél egyik postafiókban sem."
+
+#: keymap_alldefs.h:220
+#, fuzzy
+msgid "toggle between mailboxes and virtual mailboxes"
+msgstr "váltás a csak postafiókok/összes fájl böngészése között"
+
+#: keymap_alldefs.h:221
+msgid "make the sidebar (in)visible"
+msgstr ""
+
+#: keymap_alldefs.h:222
+#, fuzzy
+msgid "open a different virtual folder"
+msgstr "más postafiók megnyitása"
+
+#: keymap_alldefs.h:223
+msgid "generate virtual folder from query"
+msgstr ""
+
+#: keymap_alldefs.h:224
+msgid "generate virtual folder from query and time window"
+msgstr ""
+
+#: keymap_alldefs.h:225
+msgid "shifts virtual folder time window forwards"
+msgstr ""
+
+#: keymap_alldefs.h:226
+msgid "shifts virtual folder time window backwards"
+msgstr ""
+
+#: keymap_alldefs.h:227
+msgid "modify (notmuch) tags"
+msgstr ""
+
+#: keymap_alldefs.h:228
+#, fuzzy
+msgid "modify labels and then hide message"
+msgstr "Ez az első levél."
+
+#: keymap_alldefs.h:229
+msgid "read entire thread of the current message"
+msgstr ""
+
+#: keymap_alldefs.h:230
+#, fuzzy
+msgid "accept the chain constructed"
+msgstr "Összeállított lánc elfogadása"
+
+#: keymap_alldefs.h:231
+#, fuzzy
+msgid "append a remailer to the chain"
+msgstr "Újraküldő hozzáfűzése a lánchoz"
+
+#: keymap_alldefs.h:232
+#, fuzzy
+msgid "insert a remailer into the chain"
+msgstr "Újraküldő beszúrása a láncba"
+
+#: keymap_alldefs.h:233
+#, fuzzy
+msgid "delete a remailer from the chain"
+msgstr "Újraküldő törlése a láncból"
+
+#: keymap_alldefs.h:234
+#, fuzzy
+msgid "select the previous element of the chain"
+msgstr "A lánc előző elemének kijelölése"
+
+#: keymap_alldefs.h:235
+#, fuzzy
+msgid "select the next element of the chain"
+msgstr "A lánc következő elemének kijelölése"
+
+#: keymap_alldefs.h:236
+msgid "send the message through a mixmaster remailer chain"
+msgstr "üzenet küldése egy mixmaster újraküldő láncon keresztül"
+
+#: keymap_alldefs.h:237
+msgid "attach a PGP public key"
+msgstr "PGP nyilvános kulcs csatolása"
+
+#: keymap_alldefs.h:238
+msgid "show PGP options"
+msgstr "PGP paraméterek mutatása"
+
+#: keymap_alldefs.h:239
+msgid "mail a PGP public key"
+msgstr "PGP nyilvános kulcs elküldése"
+
+#: keymap_alldefs.h:240
+msgid "verify a PGP public key"
+msgstr "PGP nyilvános kulcs ellenőrzése"
+
+#: keymap_alldefs.h:241
+msgid "view the key's user id"
+msgstr "a kulcstulajdonos azonosítójának megtekintése"
+
+#: keymap_alldefs.h:242
+#, fuzzy
+msgid "check for classic PGP"
+msgstr "klasszikus php keresése"
+
+#: keymap_alldefs.h:243
+msgid "show S/MIME options"
+msgstr "S/MIME opciók mutatása"
+
+#: keymap_alldefs.h:244
+msgid "make decrypted copy and delete"
+msgstr "visszafejtett másolat készítése és törlés"
+
+#: keymap_alldefs.h:245
+msgid "make decrypted copy"
+msgstr "visszafejtett másolat készítése"
+
+#: keymap_alldefs.h:246
+msgid "wipe passphrase(s) from memory"
+msgstr "jelszó törlése a memóriából"
+
+#: keymap_alldefs.h:247
+msgid "extract supported public keys"
+msgstr "támogatott nyilvános kulcsok kibontása"
 
 #: lib.c:118
 msgid "Integer overflow -- can't allocate memory!"
@@ -5194,7 +6210,7 @@ msgid ""
 "Copyright (C) 2000-2004 Edmund Grimley Evans <edmundo@rano.org>\n"
 "Copyright (C) 2006-2009 Rocco Rutte <pdmef@gmx.net>\n"
 "Copyright (C) 2014-2016 Kevin J. McCarthy <kevin@8t8.us>\n"
-"Copyright (C) 2015-2016 Richard Russon <rich@flatcap.org>\n"
+"Copyright (C) 2015-2017 Richard Russon <rich@flatcap.org>\n"
 "\n"
 "Many others not mentioned here contributed code, fixes,\n"
 "and suggestions.\n"
@@ -5248,735 +6264,3 @@ msgid ""
 msgstr ""
 "\n"
 "Fordítási opciók:"
-
-#~ msgid "PGP passphrase forgotten."
-#~ msgstr "PGP jelszó elfelejtve."
-
-#~ msgid "Query"
-#~ msgstr "Lekérdezés"
-
-#~ msgid "null operation"
-#~ msgstr "üres művelet"
-
-#~ msgid "force viewing of attachment using mailcap"
-#~ msgstr "melléklet megtekintése mailcap segítségével"
-
-#~ msgid "view attachment as text"
-#~ msgstr "melléklet megtekintése szövegként"
-
-#~ msgid "Toggle display of subparts"
-#~ msgstr "További részek mutatása/elrejtése"
-
-#~ msgid "move to the bottom of the page"
-#~ msgstr "ugrás az oldal aljára"
-
-#~ msgid "remail a message to another user"
-#~ msgstr "levél újraküldése egy másik felhasználónak"
-
-#~ msgid "select a new file in this directory"
-#~ msgstr "válassz egy új fájlt ebben a könyvtárban"
-
-#~ msgid "view file"
-#~ msgstr "fájl megtekintése"
-
-#~ msgid "display the currently selected file's name"
-#~ msgstr "kijelölt fájl nevének mutatása"
-
-#, fuzzy
-#~ msgid "subscribe to current mbox (IMAP/NNTP only)"
-#~ msgstr "aktuális postafiók felírása (csak IMAP)"
-
-#, fuzzy
-#~ msgid "unsubscribe from current mbox (IMAP/NNTP only)"
-#~ msgstr "aktuális postafiók leírása (csak IMAP)"
-
-#~ msgid "toggle view all/subscribed mailboxes (IMAP only)"
-#~ msgstr "váltás az összes/felírt postafiók nézetek között (csak IMAP)"
-
-#~ msgid "list mailboxes with new mail"
-#~ msgstr "új levelet tartalmazó postafiókok"
-
-#~ msgid "change directories"
-#~ msgstr "könyvtár váltás"
-
-#~ msgid "check mailboxes for new mail"
-#~ msgstr "új levél keresése a postafiókokban"
-
-#, fuzzy
-#~ msgid "attach file(s) to this message"
-#~ msgstr "fájl(ok) csatolása ezen üzenethez"
-
-#~ msgid "attach message(s) to this message"
-#~ msgstr "üzenet(ek) csatolása ezen üzenethez"
-
-#, fuzzy
-#~ msgid "attach news article(s) to this message"
-#~ msgstr "fájl(ok) csatolása ezen üzenethez"
-
-#~ msgid "edit the BCC list"
-#~ msgstr "Rejtett másolatot kap (BCC) lista szerkesztése"
-
-#~ msgid "edit the CC list"
-#~ msgstr "Másolatot kap lista (CC) szerkesztése"
-
-#~ msgid "edit attachment description"
-#~ msgstr "melléklet-leírás szerkesztése"
-
-#~ msgid "edit attachment transfer-encoding"
-#~ msgstr "melléklet átviteli-kódolás szerkesztése"
-
-#~ msgid "enter a file to save a copy of this message in"
-#~ msgstr "adj meg egy fájlnevet, ahova a levél másolatát elmentem"
-
-#~ msgid "edit the file to be attached"
-#~ msgstr "csatolandó fájl szerkesztése"
-
-#~ msgid "edit the from field"
-#~ msgstr "feladó mező szerkesztése"
-
-#~ msgid "edit the message with headers"
-#~ msgstr "üzenet szerkesztése fejlécekkel együtt"
-
-#~ msgid "edit the message"
-#~ msgstr "üzenet szerkesztése"
-
-#~ msgid "edit attachment using mailcap entry"
-#~ msgstr "melléklet szerkesztése a mailcap bejegyzés használatával"
-
-#, fuzzy
-#~ msgid "edit the newsgroups list"
-#~ msgstr "Másolatot kap lista (CC) szerkesztése"
-
-#~ msgid "edit the Reply-To field"
-#~ msgstr "Válaszcím szerkesztése"
-
-#, fuzzy
-#~ msgid "edit the Followup-To field"
-#~ msgstr "Válaszcím szerkesztése"
-
-#, fuzzy
-#~ msgid "edit the X-Comment-To field"
-#~ msgstr "Válaszcím szerkesztése"
-
-#~ msgid "edit the subject of this message"
-#~ msgstr "levél tárgyának szerkesztése"
-
-#~ msgid "edit the TO list"
-#~ msgstr "Címzett lista (TO) szerkesztése"
-
-#~ msgid "create a new mailbox (IMAP only)"
-#~ msgstr "új postafiók létrehozása (csak IMAP)"
-
-#~ msgid "edit attachment content type"
-#~ msgstr "melléklet tartalom-típusának szerkesztése"
-
-#~ msgid "get a temporary copy of an attachment"
-#~ msgstr "ideiglenes másolat készítése a mellékletről"
-
-#~ msgid "run ispell on the message"
-#~ msgstr "levél ellenőrzése ispell-el"
-
-#~ msgid "compose new attachment using mailcap entry"
-#~ msgstr "új melléklet összeállítása a mailcap bejegyzéssel segítségével"
-
-#~ msgid "toggle recoding of this attachment"
-#~ msgstr "ezen melléklet újrakódolása"
-
-#~ msgid "save this message to send later"
-#~ msgstr "üzenet elmentése későbbi küldéshez"
-
-#, fuzzy
-#~ msgid "send attachment with a different name"
-#~ msgstr "melléklet átviteli-kódolás szerkesztése"
-
-#~ msgid "rename/move an attached file"
-#~ msgstr "csatolt fájl átnevezése/mozgatása"
-
-#, fuzzy
-#~ msgid "compose a new message to the sender"
-#~ msgstr "új levél szerkesztése"
-
-#~ msgid "send the message"
-#~ msgstr "üzenet elküldése"
-
-#~ msgid "toggle disposition between inline/attachment"
-#~ msgstr "váltás beágyazás/csatolás között"
-
-#~ msgid "toggle whether to delete file after sending it"
-#~ msgstr "fájl törlése/meghagyása küldés után"
-
-#~ msgid "update an attachment's encoding info"
-#~ msgstr "melléklet kódolási információinak frissítése"
-
-#~ msgid "write the message to a folder"
-#~ msgstr "üzenet írása postafiókba"
-
-#~ msgid "copy a message to a file/mailbox"
-#~ msgstr "üzenet másolása fájlba/postafiókba"
-
-#~ msgid "create an alias from a message sender"
-#~ msgstr "álnév létrehozása a feladóhoz"
-
-#~ msgid "move entry to bottom of screen"
-#~ msgstr "lapozás a képernyő aljára"
-
-#~ msgid "move entry to middle of screen"
-#~ msgstr "lapozás a képernyő közepére"
-
-#~ msgid "move entry to top of screen"
-#~ msgstr "lapozás a képernyő tetejére"
-
-#~ msgid "make decoded (text/plain) copy"
-#~ msgstr "visszafejtett (sima szöveges) másolat készítése"
-
-#~ msgid "make decoded copy (text/plain) and delete"
-#~ msgstr "visszafejtett (sima szöveges) másolat készítése és törlés"
-
-#~ msgid "delete the current entry"
-#~ msgstr "aktuális bejegyzés törlése"
-
-#~ msgid "delete the current mailbox (IMAP only)"
-#~ msgstr "aktuális postafiók törlése (csak IMAP)"
-
-#~ msgid "delete all messages in subthread"
-#~ msgstr "témarész összes üzenetének törlése"
-
-#~ msgid "delete all messages in thread"
-#~ msgstr "téma összes üzenetének törlése"
-
-#~ msgid "display full address of sender"
-#~ msgstr "a feladó teljes címének mutatása"
-
-#~ msgid "display message and toggle header weeding"
-#~ msgstr "üzenet megjelenítése és a teljes fejléc ki/bekapcsolása"
-
-#~ msgid "display a message"
-#~ msgstr "üzenet megjelenítése"
-
-#~ msgid "edit the raw message"
-#~ msgstr "nyers üzenet szerkesztése"
-
-#~ msgid "delete the char in front of the cursor"
-#~ msgstr "a kurzor előtti karakter törlése"
-
-#~ msgid "move the cursor one character to the left"
-#~ msgstr "kurzor mozgatása egy karakterrel balra"
-
-#~ msgid "move the cursor to the beginning of the word"
-#~ msgstr "kurzor mozgatása a szó elejére"
-
-#~ msgid "jump to the beginning of the line"
-#~ msgstr "ugrás a sor elejére"
-
-#~ msgid "cycle among incoming mailboxes"
-#~ msgstr "bejövő postafiókok körbejárása"
-
-#~ msgid "complete filename or alias"
-#~ msgstr "teljes fájlnév vagy álnév"
-
-#~ msgid "complete address with query"
-#~ msgstr "teljes cím lekérdezéssel"
-
-#~ msgid "delete the char under the cursor"
-#~ msgstr "kurzoron álló karakter törlése"
-
-#~ msgid "jump to the end of the line"
-#~ msgstr "ugrás a sor végére"
-
-#~ msgid "move the cursor one character to the right"
-#~ msgstr "kurzor mozgatása egy karakterrel jobbra"
-
-#~ msgid "move the cursor to the end of the word"
-#~ msgstr "kurzor mozgatása a szó végére"
-
-#~ msgid "scroll down through the history list"
-#~ msgstr "lapozás lefelé az előzményekben"
-
-#~ msgid "scroll up through the history list"
-#~ msgstr "lapozás felfelé az előzményekben"
-
-#~ msgid "delete chars from cursor to end of line"
-#~ msgstr "karakterek törlése a sor végéig"
-
-#~ msgid "delete chars from the cursor to the end of the word"
-#~ msgstr "karakterek törlése a szó végéig"
-
-#~ msgid "delete all chars on the line"
-#~ msgstr "karakter törlése a sorban"
-
-#~ msgid "delete the word in front of the cursor"
-#~ msgstr "a kurzor előtti szó törlése"
-
-#~ msgid "quote the next typed key"
-#~ msgstr "a következő kulcs idézése"
-
-#~ msgid "transpose character under cursor with previous"
-#~ msgstr "az előző és az aktuális karakter cseréje"
-
-#~ msgid "capitalize the word"
-#~ msgstr "szó nagy kezdőbetűssé alakítása"
-
-#~ msgid "convert the word to lower case"
-#~ msgstr "szó kisbetűssé alakítása"
-
-#~ msgid "convert the word to upper case"
-#~ msgstr "szó nagybetűssé alakítása"
-
-#~ msgid "enter a muttrc command"
-#~ msgstr "adj meg egy muttrc parancsot"
-
-#~ msgid "enter a file mask"
-#~ msgstr "adj meg egy fájlmaszkot"
-
-#~ msgid "exit this menu"
-#~ msgstr "kilépés ebből a menüből"
-
-#~ msgid "filter attachment through a shell command"
-#~ msgstr "melléklet szűrése egy shell parancson keresztül"
-
-#~ msgid "move to the first entry"
-#~ msgstr "ugrás az első bejegyzésre"
-
-#~ msgid "toggle a message's 'important' flag"
-#~ msgstr "üzenet 'fontos' jelzőjének állítása"
-
-#, fuzzy
-#~ msgid "followup to newsgroup"
-#~ msgstr "Válasz a %s%s címre?"
-
-#~ msgid "forward a message with comments"
-#~ msgstr "üzenet továbbítása kommentekkel"
-
-#~ msgid "select the current entry"
-#~ msgstr "aktuális bejegyzés kijelölése"
-
-#, fuzzy
-#~ msgid "get all children of the current message"
-#~ msgstr "Ez az első levél."
-
-#, fuzzy
-#~ msgid "get message with Message-Id"
-#~ msgstr "üzenet szerkesztése fejlécekkel együtt"
-
-#, fuzzy
-#~ msgid "get parent of the current message"
-#~ msgstr "Ez az első levél."
-
-#~ msgid "reply to all recipients"
-#~ msgstr "válasz az összes címzettnek"
-
-#~ msgid "scroll down 1/2 page"
-#~ msgstr "fél oldal lapozás lefelé"
-
-#~ msgid "scroll up 1/2 page"
-#~ msgstr "fél oldal lapozás felfelé"
-
-#~ msgid "this screen"
-#~ msgstr "ez a képernyő"
-
-#~ msgid "jump to an index number"
-#~ msgstr "ugrás sorszámra"
-
-#~ msgid "move to the last entry"
-#~ msgstr "ugrás az utolsó bejegyzésre"
-
-#~ msgid "reply to specified mailing list"
-#~ msgstr "válasz a megadott levelezőlistára"
-
-#~ msgid "execute a macro"
-#~ msgstr "makró végrehajtása"
-
-#~ msgid "compose a new mail message"
-#~ msgstr "új levél szerkesztése"
-
-#~ msgid "open a different folder"
-#~ msgstr "más postafiók megnyitása"
-
-#~ msgid "open a different folder in read only mode"
-#~ msgstr "más postafiók megnyitása csak olvasásra"
-
-#, fuzzy
-#~ msgid "open a different newsgroup"
-#~ msgstr "más postafiók megnyitása"
-
-#, fuzzy
-#~ msgid "open a different newsgroup in read only mode"
-#~ msgstr "más postafiók megnyitása csak olvasásra"
-
-#~ msgid "clear a status flag from a message"
-#~ msgstr "levél-állapotjelző törlése"
-
-#~ msgid "delete messages matching a pattern"
-#~ msgstr "mintára illeszkedő levelek törlése"
-
-#~ msgid "force retrieval of mail from IMAP server"
-#~ msgstr "kényszerített levélletöltés az IMAP kiszolgálóról"
-
-#~ msgid "retrieve mail from POP server"
-#~ msgstr "levelek törlése POP kiszolgálóról"
-
-#~ msgid "show only messages matching a pattern"
-#~ msgstr "csak a mintára illeszkedő levelek mutatása"
-
-#, fuzzy
-#~ msgid "link tagged message to the current one"
-#~ msgstr "Kijelölt levelek visszaküldése. Címzett: "
-
-#, fuzzy
-#~ msgid "open next mailbox with new mail"
-#~ msgstr "Nincs új levél egyik postafiókban sem."
-
-#~ msgid "jump to the next new message"
-#~ msgstr "ugrás a következő új levélre"
-
-#~ msgid "jump to the next new or unread message"
-#~ msgstr "ugrás a következő új vagy olvasatlan levélre"
-
-#~ msgid "jump to the next subthread"
-#~ msgstr "ugrás a következő témarészre"
-
-#~ msgid "jump to the next thread"
-#~ msgstr "ugrás a következő témára"
-
-#~ msgid "move to the next undeleted message"
-#~ msgstr "ugrás a következő visszaállított levélre"
-
-#~ msgid "jump to the next unread message"
-#~ msgstr "ugrás a következő olvasatlan levélre"
-
-#~ msgid "jump to parent message in thread"
-#~ msgstr "ugrás a levél előzményére ebben a témában"
-
-#~ msgid "jump to previous thread"
-#~ msgstr "ugrás az előző témára"
-
-#~ msgid "jump to previous subthread"
-#~ msgstr "ugrás az előző témarészre"
-
-#~ msgid "move to the previous undeleted message"
-#~ msgstr "ugrás az előző visszaállított levélre"
-
-#~ msgid "jump to the previous new message"
-#~ msgstr "ugrás az előző új levélre"
-
-#~ msgid "jump to the previous new or unread message"
-#~ msgstr "ugrás az előző új vagy olvasatlan levélre"
-
-#~ msgid "jump to the previous unread message"
-#~ msgstr "ugrás az előző olvasatlan levélre"
-
-#~ msgid "mark the current thread as read"
-#~ msgstr "téma jelölése olvasottnak"
-
-#~ msgid "mark the current subthread as read"
-#~ msgstr "témarész jelölése olvasottnak"
-
-#, fuzzy
-#~ msgid "jump to root message in thread"
-#~ msgstr "ugrás a levél előzményére ebben a témában"
-
-#~ msgid "set a status flag on a message"
-#~ msgstr "levél-állapotjelző beállítása"
-
-#~ msgid "save changes to mailbox"
-#~ msgstr "mentés postafiókba"
-
-#~ msgid "tag messages matching a pattern"
-#~ msgstr "levelek kijelölése mintára illesztéssel"
-
-#~ msgid "undelete messages matching a pattern"
-#~ msgstr "levelek visszaállítása mintára illesztéssel"
-
-#~ msgid "untag messages matching a pattern"
-#~ msgstr "kijelölés megszüntetése mintára illesztéssel"
-
-#, fuzzy
-#~ msgid "create a hotkey macro for the current message"
-#~ msgstr "Ez az első levél."
-
-#~ msgid "move to the middle of the page"
-#~ msgstr "mozgatás az oldal közepére"
-
-#~ msgid "move to the next entry"
-#~ msgstr "mozgatás a következő bejegyzésre"
-
-#~ msgid "scroll down one line"
-#~ msgstr "mozgás egy sorral lejjebb"
-
-#~ msgid "move to the next page"
-#~ msgstr "ugrás a következő oldalra"
-
-#~ msgid "jump to the bottom of the message"
-#~ msgstr "ugrás az üzenet aljára"
-
-#~ msgid "toggle display of quoted text"
-#~ msgstr "idézett szöveg mutatása/elrejtése"
-
-#~ msgid "skip beyond quoted text"
-#~ msgstr "idézett szöveg átlépése"
-
-#~ msgid "jump to the top of the message"
-#~ msgstr "ugrás az üzenet tetejére"
-
-#~ msgid "pipe message/attachment to a shell command"
-#~ msgstr "üzenet/melléklet átadása csövön shell parancsnak"
-
-#, fuzzy
-#~ msgid "post message to newsgroup"
-#~ msgstr "Levél visszaküldése %s részére"
-
-#~ msgid "move to the previous entry"
-#~ msgstr "ugrás az előző bejegyzésre"
-
-#~ msgid "scroll up one line"
-#~ msgstr "mozgás egy sorral feljebb"
-
-#~ msgid "move to the previous page"
-#~ msgstr "ugrás az előző oldalra"
-
-#~ msgid "print the current entry"
-#~ msgstr "bejegyzés nyomtatása"
-
-#~ msgid "query external program for addresses"
-#~ msgstr "címek lekérdezése külső program segítségével"
-
-#~ msgid "append new query results to current results"
-#~ msgstr "új lekérdezés eredményének hozzáfűzése az eddigiekhez"
-
-#~ msgid "save changes to mailbox and quit"
-#~ msgstr "változások mentése és kilépés"
-
-#~ msgid "recall a postponed message"
-#~ msgstr "elhalasztott levél újrahívása"
-
-#, fuzzy
-#~ msgid "reconstruct thread containing current message"
-#~ msgstr "A témában olvasatlan levelek vannak."
-
-#~ msgid "clear and redraw the screen"
-#~ msgstr "képernyő törlése és újrarajzolása"
-
-#~ msgid "{internal}"
-#~ msgstr "(belső)"
-
-#, fuzzy
-#~ msgid "rename the current mailbox (IMAP only)"
-#~ msgstr "aktuális postafiók törlése (csak IMAP)"
-
-#~ msgid "reply to a message"
-#~ msgstr "válasz a levélre"
-
-#~ msgid "use the current message as a template for a new one"
-#~ msgstr "levél sablonként használata egy új levélhez"
-
-#, fuzzy
-#~ msgid "save message/attachment to a mailbox/file"
-#~ msgstr "levél/melléklet mentése fájlba"
-
-#~ msgid "search for a regular expression"
-#~ msgstr "reguláris kifejezés keresése"
-
-#~ msgid "search backwards for a regular expression"
-#~ msgstr "reguláris kifejezés keresése visszafelé"
-
-#~ msgid "search for next match"
-#~ msgstr "keresés tovább"
-
-#~ msgid "search for next match in opposite direction"
-#~ msgstr "keresés visszafelé"
-
-#~ msgid "toggle search pattern coloring"
-#~ msgstr "keresett minta színezése ki/be"
-
-#~ msgid "invoke a command in a subshell"
-#~ msgstr "parancs végrehajtása rész-shellben"
-
-#~ msgid "sort messages"
-#~ msgstr "üzenetek rendezése"
-
-#~ msgid "sort messages in reverse order"
-#~ msgstr "üzenetek rendezése fordított sorrendben"
-
-#, fuzzy
-#~ msgid "subscribe to newsgroups matching a pattern"
-#~ msgstr "kijelölés megszüntetése mintára illesztéssel"
-
-#~ msgid "tag the current entry"
-#~ msgstr "bejegyzés megjelölése"
-
-#~ msgid "apply next function to tagged messages"
-#~ msgstr "csoportos művelet végrehajtás a kijelölt üzenetekre"
-
-#, fuzzy
-#~ msgid "apply next function ONLY to tagged messages"
-#~ msgstr "csoportos művelet végrehajtás a kijelölt üzenetekre"
-
-#~ msgid "tag the current subthread"
-#~ msgstr "témarész megjelölése"
-
-#~ msgid "tag the current thread"
-#~ msgstr "téma megjelölése"
-
-#~ msgid "toggle a message's 'new' flag"
-#~ msgstr "levél 'új' jelzőjének állítása"
-
-#, fuzzy
-#~ msgid "toggle view of read messages"
-#~ msgstr "ugrás az előző új vagy olvasatlan levélre"
-
-#~ msgid "toggle whether the mailbox will be rewritten"
-#~ msgstr "a postafiók újraírásának ki/bekapcsolása"
-
-#~ msgid "toggle whether to browse mailboxes or all files"
-#~ msgstr "váltás a csak postafiókok/összes fájl böngészése között"
-
-#~ msgid "move to the top of the page"
-#~ msgstr "ugrás az oldal tetejére"
-
-#~ msgid "undelete the current entry"
-#~ msgstr "aktuális bejegyzés visszaállítása"
-
-#~ msgid "undelete all messages in thread"
-#~ msgstr "a téma összes levelének visszaállítása"
-
-#~ msgid "undelete all messages in subthread"
-#~ msgstr "a témarész összes levelének visszaállítása"
-
-#, fuzzy
-#~ msgid "unsubscribe from newsgroups matching a pattern"
-#~ msgstr "kijelölés megszüntetése mintára illesztéssel"
-
-#~ msgid "show the Mutt version number and date"
-#~ msgstr "a Mutt verziójának és dátumának megjelenítése"
-
-#~ msgid "view attachment using mailcap entry if necessary"
-#~ msgstr "melléklet mutatása mailcap bejegyzés használatával, ha szükséges"
-
-#~ msgid "show MIME attachments"
-#~ msgstr "MIME mellékletek mutatása"
-
-#~ msgid "display the keycode for a key press"
-#~ msgstr "billentyűleütés kódjának mutatása"
-
-#, fuzzy
-#~ msgid "limit view to current thread"
-#~ msgstr "téma megjelölése"
-
-#~ msgid "show currently active limit pattern"
-#~ msgstr "aktuális szűrőminta mutatása"
-
-#~ msgid "collapse/uncollapse current thread"
-#~ msgstr "téma kinyitása/bezárása"
-
-#~ msgid "collapse/uncollapse all threads"
-#~ msgstr "összes téma kinyitása/bezárása"
-
-#, fuzzy
-#~ msgid "move the highlight to next mailbox with new mail"
-#~ msgstr "Nincs új levél egyik postafiókban sem."
-
-#, fuzzy
-#~ msgid "open highlighted mailbox"
-#~ msgstr "Postafiók újra megnyitása..."
-
-#, fuzzy
-#~ msgid "scroll the sidebar down 1 page"
-#~ msgstr "fél oldal lapozás lefelé"
-
-#, fuzzy
-#~ msgid "scroll the sidebar up 1 page"
-#~ msgstr "fél oldal lapozás felfelé"
-
-#, fuzzy
-#~ msgid "move the highlight to previous mailbox"
-#~ msgstr "ugrás az előző oldalra"
-
-#, fuzzy
-#~ msgid "move the highlight to previous mailbox with new mail"
-#~ msgstr "Nincs új levél egyik postafiókban sem."
-
-#, fuzzy
-#~ msgid "toggle between mailboxes and virtual mailboxes"
-#~ msgstr "váltás a csak postafiókok/összes fájl böngészése között"
-
-#, fuzzy
-#~ msgid "open a different virtual folder"
-#~ msgstr "más postafiók megnyitása"
-
-#, fuzzy
-#~ msgid "modify labels and then hide message"
-#~ msgstr "Ez az első levél."
-
-#~ msgid "attach a PGP public key"
-#~ msgstr "PGP nyilvános kulcs csatolása"
-
-#~ msgid "show PGP options"
-#~ msgstr "PGP paraméterek mutatása"
-
-#~ msgid "mail a PGP public key"
-#~ msgstr "PGP nyilvános kulcs elküldése"
-
-#~ msgid "verify a PGP public key"
-#~ msgstr "PGP nyilvános kulcs ellenőrzése"
-
-#~ msgid "view the key's user id"
-#~ msgstr "a kulcstulajdonos azonosítójának megtekintése"
-
-#, fuzzy
-#~ msgid "check for classic PGP"
-#~ msgstr "klasszikus php keresése"
-
-#, fuzzy
-#~ msgid "accept the chain constructed"
-#~ msgstr "Összeállított lánc elfogadása"
-
-#, fuzzy
-#~ msgid "append a remailer to the chain"
-#~ msgstr "Újraküldő hozzáfűzése a lánchoz"
-
-#, fuzzy
-#~ msgid "insert a remailer into the chain"
-#~ msgstr "Újraküldő beszúrása a láncba"
-
-#, fuzzy
-#~ msgid "delete a remailer from the chain"
-#~ msgstr "Újraküldő törlése a láncból"
-
-#, fuzzy
-#~ msgid "select the previous element of the chain"
-#~ msgstr "A lánc előző elemének kijelölése"
-
-#, fuzzy
-#~ msgid "select the next element of the chain"
-#~ msgstr "A lánc következő elemének kijelölése"
-
-#~ msgid "send the message through a mixmaster remailer chain"
-#~ msgstr "üzenet küldése egy mixmaster újraküldő láncon keresztül"
-
-#~ msgid "make decrypted copy and delete"
-#~ msgstr "visszafejtett másolat készítése és törlés"
-
-#~ msgid "make decrypted copy"
-#~ msgstr "visszafejtett másolat készítése"
-
-#~ msgid "wipe passphrase(s) from memory"
-#~ msgstr "jelszó törlése a memóriából"
-
-#~ msgid "extract supported public keys"
-#~ msgstr "támogatott nyilvános kulcsok kibontása"
-
-#~ msgid "show S/MIME options"
-#~ msgstr "S/MIME opciók mutatása"
-
-#~ msgid "Fingerprint: %s"
-#~ msgstr "Ujjlenyomat: %s"
-
-#, fuzzy
-#~ msgid "SMTP authentication requires SASL"
-#~ msgstr "GSSAPI azonosítás nem sikerült."
-
-#~ msgid "move to the first message"
-#~ msgstr "ugrás az első levélre"
-
-#~ msgid "move to the last message"
-#~ msgstr "ugrás az utolsó levélre"

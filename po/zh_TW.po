@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neomutt-20161104\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
-"POT-Creation-Date: 2017-04-13 13:26+0100\n"
+"POT-Creation-Date: 2017-04-17 17:04+0100\n"
 "PO-Revision-Date: 2001-09-06 18:25+0800\n"
 "Last-Translator: Anthony Wong <ypwong@debian.org>\n"
 "Language-Team: Chinese <zh@li.org>\n"
@@ -925,6 +925,122 @@ msgstr "拷貝到 %s…"
 msgid "No decryption engine available for message"
 msgstr ""
 
+#: crypt.c:59
+#, c-format
+msgid " (current time: %c)"
+msgstr ""
+
+#: crypt.c:64
+#, fuzzy, c-format
+msgid "[-- %s output follows%s --]\n"
+msgstr "[-- 以下為 PGP 輸出的資料（現在時間：%c) --]\n"
+
+#: crypt.c:78
+#, fuzzy
+msgid "Passphrase(s) forgotten."
+msgstr "已忘記 PGP 通行密碼。"
+
+#: crypt.c:139
+msgid "Inline PGP can't be used with attachments.  Revert to PGP/MIME?"
+msgstr ""
+
+#: crypt.c:143
+msgid "Mail not sent: inline PGP can't be used with attachments."
+msgstr ""
+
+#: crypt.c:151 cryptglue.c:106 pgpkey.c:541 pgpkey.c:724
+msgid "Invoking PGP..."
+msgstr "啟動 PGP…"
+
+#: crypt.c:162
+msgid "Message can't be sent inline.  Revert to using PGP/MIME?"
+msgstr ""
+
+#: crypt.c:164 send.c:1796
+msgid "Mail not sent."
+msgstr "信件沒有寄出。"
+
+#: crypt.c:224
+msgid "Encrypt message to S/MIME Default Key also?"
+msgstr ""
+
+#: crypt.c:259
+msgid "Encrypt message to PGP Default Key also?"
+msgstr ""
+
+#: crypt.c:502
+msgid "S/MIME messages with no hints on content are unsupported."
+msgstr ""
+
+#: crypt.c:710 crypt.c:751
+msgid "Trying to extract PGP keys...\n"
+msgstr ""
+
+#: crypt.c:732 crypt.c:772
+msgid "Trying to extract S/MIME certificates...\n"
+msgstr ""
+
+#: crypt.c:913
+#, c-format
+msgid ""
+"[-- Error: Unknown multipart/signed protocol %s! --]\n"
+"\n"
+msgstr ""
+"[-- 錯誤：不明的 multipart/signed 協定 %s！ --]\n"
+"\n"
+
+#: crypt.c:947
+msgid ""
+"[-- Error: Inconsistent multipart/signed structure! --]\n"
+"\n"
+msgstr ""
+"[-- 錯誤：不一致的 multipart/signed 結構！ --]\n"
+"\n"
+
+#: crypt.c:983
+#, c-format
+msgid ""
+"[-- Warning: We can't verify %s/%s signatures. --]\n"
+"\n"
+msgstr ""
+"[-- 警告：我們不能證實 %s/%s 簽名。 --]\n"
+"\n"
+
+#: crypt.c:995
+#, fuzzy
+msgid ""
+"[-- The following data is signed --]\n"
+"\n"
+msgstr ""
+"[-- 以下的資料已被簽署 --]\n"
+"\n"
+
+#: crypt.c:1001
+msgid ""
+"[-- Warning: Can't find any signatures. --]\n"
+"\n"
+msgstr ""
+"[-- 警告：找不到任何的簽名。 --]\n"
+"\n"
+
+#: crypt.c:1007
+#, fuzzy
+msgid ""
+"\n"
+"[-- End of signed data --]\n"
+msgstr ""
+"\n"
+"[-- 簽署的資料結束 --]\n"
+
+#: cryptglue.c:84
+msgid "\"crypt_use_gpgme\" set but not built with GPGME support."
+msgstr ""
+
+#: cryptglue.c:108
+#, fuzzy
+msgid "Invoking S/MIME..."
+msgstr "啟動 S/MIME…"
+
 #: crypt_gpgme.c:384
 #, fuzzy, c-format
 msgid "error creating gpgme context: %s\n"
@@ -1619,122 +1735,6 @@ msgstr ""
 #, fuzzy
 msgid "Failed to figure out sender"
 msgstr "開啟檔案來分析檔頭失敗。"
-
-#: crypt.c:59
-#, c-format
-msgid " (current time: %c)"
-msgstr ""
-
-#: crypt.c:64
-#, fuzzy, c-format
-msgid "[-- %s output follows%s --]\n"
-msgstr "[-- 以下為 PGP 輸出的資料（現在時間：%c) --]\n"
-
-#: crypt.c:78
-#, fuzzy
-msgid "Passphrase(s) forgotten."
-msgstr "已忘記 PGP 通行密碼。"
-
-#: crypt.c:139
-msgid "Inline PGP can't be used with attachments.  Revert to PGP/MIME?"
-msgstr ""
-
-#: crypt.c:143
-msgid "Mail not sent: inline PGP can't be used with attachments."
-msgstr ""
-
-#: crypt.c:151 cryptglue.c:106 pgpkey.c:541 pgpkey.c:724
-msgid "Invoking PGP..."
-msgstr "啟動 PGP…"
-
-#: crypt.c:162
-msgid "Message can't be sent inline.  Revert to using PGP/MIME?"
-msgstr ""
-
-#: crypt.c:164 send.c:1796
-msgid "Mail not sent."
-msgstr "信件沒有寄出。"
-
-#: crypt.c:224
-msgid "Encrypt message to S/MIME Default Key also?"
-msgstr ""
-
-#: crypt.c:259
-msgid "Encrypt message to PGP Default Key also?"
-msgstr ""
-
-#: crypt.c:502
-msgid "S/MIME messages with no hints on content are unsupported."
-msgstr ""
-
-#: crypt.c:710 crypt.c:751
-msgid "Trying to extract PGP keys...\n"
-msgstr ""
-
-#: crypt.c:732 crypt.c:772
-msgid "Trying to extract S/MIME certificates...\n"
-msgstr ""
-
-#: crypt.c:913
-#, c-format
-msgid ""
-"[-- Error: Unknown multipart/signed protocol %s! --]\n"
-"\n"
-msgstr ""
-"[-- 錯誤：不明的 multipart/signed 協定 %s！ --]\n"
-"\n"
-
-#: crypt.c:947
-msgid ""
-"[-- Error: Inconsistent multipart/signed structure! --]\n"
-"\n"
-msgstr ""
-"[-- 錯誤：不一致的 multipart/signed 結構！ --]\n"
-"\n"
-
-#: crypt.c:983
-#, c-format
-msgid ""
-"[-- Warning: We can't verify %s/%s signatures. --]\n"
-"\n"
-msgstr ""
-"[-- 警告：我們不能證實 %s/%s 簽名。 --]\n"
-"\n"
-
-#: crypt.c:995
-#, fuzzy
-msgid ""
-"[-- The following data is signed --]\n"
-"\n"
-msgstr ""
-"[-- 以下的資料已被簽署 --]\n"
-"\n"
-
-#: crypt.c:1001
-msgid ""
-"[-- Warning: Can't find any signatures. --]\n"
-"\n"
-msgstr ""
-"[-- 警告：找不到任何的簽名。 --]\n"
-"\n"
-
-#: crypt.c:1007
-#, fuzzy
-msgid ""
-"\n"
-"[-- End of signed data --]\n"
-msgstr ""
-"\n"
-"[-- 簽署的資料結束 --]\n"
-
-#: cryptglue.c:84
-msgid "\"crypt_use_gpgme\" set but not built with GPGME support."
-msgstr ""
-
-#: cryptglue.c:108
-#, fuzzy
-msgid "Invoking S/MIME..."
-msgstr "啟動 S/MIME…"
 
 # Don't translate this!!
 #: curs_lib.c:229
@@ -2615,12 +2615,12 @@ msgstr "登入中…"
 msgid "Login failed."
 msgstr "登入失敗。"
 
-#: imap/auth_sasl.c:94 nntp.c:367 nntp.c:432 smtp.c:372
+#: imap/auth_sasl.c:95 nntp.c:367 nntp.c:432 smtp.c:372
 #, fuzzy, c-format
 msgid "Authenticating (%s)..."
 msgstr "驗證中 (APOP)…"
 
-#: imap/auth_sasl.c:222 pop_auth.c:175
+#: imap/auth_sasl.c:223 pop_auth.c:175
 msgid "SASL authentication failed."
 msgstr "SASL 驗證失敗。"
 
@@ -3109,6 +3109,1031 @@ msgstr "請輸入 %s 的鑰匙 ID："
 #, c-format
 msgid "Char = %s, Octal = %o, Decimal = %d"
 msgstr ""
+
+#: keymap_alldefs.h:5
+msgid "null operation"
+msgstr "空的運算"
+
+#: keymap_alldefs.h:6
+msgid "end of conditional execution (noop)"
+msgstr ""
+
+#: keymap_alldefs.h:7
+msgid "force viewing of attachment using mailcap"
+msgstr "強迫使用 mailcap 瀏覽附件"
+
+#: keymap_alldefs.h:8
+msgid "view attachment as text"
+msgstr "用文字方式顯示附件內容"
+
+#: keymap_alldefs.h:9
+msgid "Toggle display of subparts"
+msgstr "切換部件顯示"
+
+#: keymap_alldefs.h:10
+msgid "move to the bottom of the page"
+msgstr "移到本頁的最後面"
+
+#: keymap_alldefs.h:11
+msgid "remail a message to another user"
+msgstr "重新寄信給另外一個使用者"
+
+#: keymap_alldefs.h:12
+msgid "swap the current folder position with $folder if it exists"
+msgstr ""
+
+#: keymap_alldefs.h:13
+msgid "select a new file in this directory"
+msgstr "請選擇本目錄中一個新的檔案"
+
+#: keymap_alldefs.h:14
+msgid "view file"
+msgstr "顯示檔案"
+
+#: keymap_alldefs.h:15
+msgid "display the currently selected file's name"
+msgstr "顯示所選擇的檔案"
+
+#: keymap_alldefs.h:16
+#, fuzzy
+msgid "subscribe to current mbox (IMAP/NNTP only)"
+msgstr "訂閱現在這個郵箱 (只適用於 IMAP)"
+
+#: keymap_alldefs.h:17
+#, fuzzy
+msgid "unsubscribe from current mbox (IMAP/NNTP only)"
+msgstr "取消訂閱現在這個郵箱 (只適用於 IMAP)"
+
+#: keymap_alldefs.h:18
+msgid "toggle view all/subscribed mailboxes (IMAP only)"
+msgstr "切換顯示 全部/已訂閱 的郵箱 (只適用於 IMAP)"
+
+#: keymap_alldefs.h:19
+#, fuzzy
+msgid "list mailboxes with new mail"
+msgstr "沒有信箱有新信件。"
+
+#: keymap_alldefs.h:20
+msgid "mark all articles in newsgroup as read"
+msgstr ""
+
+#: keymap_alldefs.h:21
+msgid "change directories"
+msgstr "改變目錄"
+
+#: keymap_alldefs.h:22
+msgid "check mailboxes for new mail"
+msgstr "檢查信箱是否有新信件"
+
+#: keymap_alldefs.h:23
+#, fuzzy
+msgid "attach file(s) to this message"
+msgstr "在這封信件中夾帶檔案"
+
+#: keymap_alldefs.h:24
+msgid "attach message(s) to this message"
+msgstr "在這封信件中夾帶信件"
+
+#: keymap_alldefs.h:25
+#, fuzzy
+msgid "attach news article(s) to this message"
+msgstr "在這封信件中夾帶檔案"
+
+#: keymap_alldefs.h:26
+msgid "edit the BCC list"
+msgstr "編輯 BCC 列表"
+
+#: keymap_alldefs.h:27
+msgid "edit the CC list"
+msgstr "編輯 CC 列表"
+
+#: keymap_alldefs.h:28
+msgid "edit attachment description"
+msgstr "編輯附件的說明"
+
+#: keymap_alldefs.h:29
+msgid "edit attachment transfer-encoding"
+msgstr "編輯附件的傳輸編碼"
+
+#: keymap_alldefs.h:30
+msgid "enter a file to save a copy of this message in"
+msgstr "輸入用來儲存這封信件拷貝的檔案名稱"
+
+#: keymap_alldefs.h:31
+msgid "edit the file to be attached"
+msgstr "編輯附件的檔案名稱"
+
+#: keymap_alldefs.h:32
+msgid "edit the from field"
+msgstr "編輯發信人欄位"
+
+#: keymap_alldefs.h:33
+msgid "edit the message with headers"
+msgstr "編輯信件與標頭"
+
+#: keymap_alldefs.h:34
+msgid "edit the message"
+msgstr "編輯信件內容"
+
+#: keymap_alldefs.h:35
+msgid "edit attachment using mailcap entry"
+msgstr "使用 mailcap 編輯附件"
+
+#: keymap_alldefs.h:36
+#, fuzzy
+msgid "edit the newsgroups list"
+msgstr "編輯 CC 列表"
+
+#: keymap_alldefs.h:37
+msgid "edit the Reply-To field"
+msgstr "編輯 Reply-To 欄位"
+
+#: keymap_alldefs.h:38
+#, fuzzy
+msgid "edit the Followup-To field"
+msgstr "編輯 Reply-To 欄位"
+
+#: keymap_alldefs.h:39
+#, fuzzy
+msgid "edit the X-Comment-To field"
+msgstr "編輯 Reply-To 欄位"
+
+#: keymap_alldefs.h:40
+msgid "edit the subject of this message"
+msgstr "編輯信件的標題"
+
+#: keymap_alldefs.h:41
+msgid "edit the TO list"
+msgstr "編輯 TO 列表"
+
+#: keymap_alldefs.h:42
+msgid "create a new mailbox (IMAP only)"
+msgstr "建立新郵箱 (只適用於 IMAP)"
+
+#: keymap_alldefs.h:43
+msgid "edit attachment content type"
+msgstr "編輯附件的 content type"
+
+#: keymap_alldefs.h:44
+msgid "get a temporary copy of an attachment"
+msgstr "取得附件的暫存拷貝"
+
+#: keymap_alldefs.h:45
+msgid "run ispell on the message"
+msgstr "於信件執行 ispell"
+
+#: keymap_alldefs.h:46
+msgid "compose new attachment using mailcap entry"
+msgstr "使用 mailcap 來組合新的附件"
+
+#: keymap_alldefs.h:47
+msgid "toggle recoding of this attachment"
+msgstr "切換是否再為附件重新編碼"
+
+#: keymap_alldefs.h:48
+msgid "save this message to send later"
+msgstr "儲存信件以便稍後寄出"
+
+#: keymap_alldefs.h:49
+#, fuzzy
+msgid "send attachment with a different name"
+msgstr "編輯附件的傳輸編碼"
+
+#: keymap_alldefs.h:50
+msgid "rename/move an attached file"
+msgstr "更改檔名∕移動 已被附帶的檔案"
+
+#: keymap_alldefs.h:51
+#, fuzzy
+msgid "compose a new message to the sender"
+msgstr "撰寫一封新的信件"
+
+#: keymap_alldefs.h:52
+msgid "send the message"
+msgstr "寄出信件"
+
+#: keymap_alldefs.h:53
+msgid "toggle disposition between inline/attachment"
+msgstr "切換 合拼∕附件式 觀看模式"
+
+#: keymap_alldefs.h:54
+msgid "toggle whether to delete file after sending it"
+msgstr "切換寄出後是否刪除檔案"
+
+#: keymap_alldefs.h:55
+msgid "update an attachment's encoding info"
+msgstr "更新附件的編碼資訊"
+
+#: keymap_alldefs.h:56
+msgid "write the message to a folder"
+msgstr "存入一封信件到某個檔案夾"
+
+#: keymap_alldefs.h:57
+msgid "copy a message to a file/mailbox"
+msgstr "拷貝一封信件到某個檔案或信箱"
+
+#: keymap_alldefs.h:58
+msgid "create an alias from a message sender"
+msgstr "建立某封信件寄信人的別名"
+
+#: keymap_alldefs.h:59
+msgid "move entry to bottom of screen"
+msgstr "移至螢幕結尾"
+
+#: keymap_alldefs.h:60
+msgid "move entry to middle of screen"
+msgstr "移至螢幕中央"
+
+#: keymap_alldefs.h:61
+msgid "move entry to top of screen"
+msgstr "移至螢幕開頭"
+
+#: keymap_alldefs.h:62
+msgid "make decoded (text/plain) copy"
+msgstr "製作解碼的 (text/plain) 拷貝"
+
+#: keymap_alldefs.h:63
+msgid "make decoded copy (text/plain) and delete"
+msgstr "製作解碼的拷貝 (text/plain) 並且刪除之"
+
+#: keymap_alldefs.h:64
+msgid "delete the current entry"
+msgstr "刪除所在的資料"
+
+#: keymap_alldefs.h:65
+msgid "delete the current mailbox (IMAP only)"
+msgstr "刪除所在的郵箱 (只適用於 IMAP)"
+
+#: keymap_alldefs.h:66
+msgid "delete all messages in subthread"
+msgstr "刪除所有在子序列中的信件"
+
+#: keymap_alldefs.h:67
+msgid "delete all messages in thread"
+msgstr "刪除所有在序列中的信件"
+
+#: keymap_alldefs.h:68
+msgid "display full address of sender"
+msgstr "顯示寄信人的完整位址"
+
+#: keymap_alldefs.h:69
+msgid "display message and toggle header weeding"
+msgstr "顯示信件並切換是否顯示所有標頭資料"
+
+#: keymap_alldefs.h:70
+msgid "display a message"
+msgstr "顯示信件"
+
+#: keymap_alldefs.h:71
+msgid "add, change, or delete a message's label"
+msgstr ""
+
+#: keymap_alldefs.h:72
+msgid "edit the raw message"
+msgstr "編輯信件的真正內容"
+
+#: keymap_alldefs.h:73
+msgid "delete the char in front of the cursor"
+msgstr "刪除游標所在位置之前的字元"
+
+#: keymap_alldefs.h:74
+msgid "move the cursor one character to the left"
+msgstr "向左移動一個字元"
+
+#: keymap_alldefs.h:75
+msgid "move the cursor to the beginning of the word"
+msgstr "移動至字的開頭"
+
+#: keymap_alldefs.h:76
+msgid "jump to the beginning of the line"
+msgstr "跳到行首"
+
+#: keymap_alldefs.h:77
+msgid "cycle among incoming mailboxes"
+msgstr "圈選進入的郵筒"
+
+#: keymap_alldefs.h:78
+msgid "complete filename or alias"
+msgstr "完整的檔名或別名"
+
+#: keymap_alldefs.h:79
+msgid "complete address with query"
+msgstr "附上完整的位址查詢"
+
+#: keymap_alldefs.h:80
+msgid "delete the char under the cursor"
+msgstr "刪除游標所在的字母"
+
+#: keymap_alldefs.h:81
+msgid "jump to the end of the line"
+msgstr "跳到行尾"
+
+#: keymap_alldefs.h:82
+msgid "move the cursor one character to the right"
+msgstr "向游標向右移動一個字元"
+
+#: keymap_alldefs.h:83
+msgid "move the cursor to the end of the word"
+msgstr "移動至字的最後"
+
+#: keymap_alldefs.h:84
+#, fuzzy
+msgid "scroll down through the history list"
+msgstr "向上捲動使用紀錄清單"
+
+#: keymap_alldefs.h:85
+msgid "scroll up through the history list"
+msgstr "向上捲動使用紀錄清單"
+
+#: keymap_alldefs.h:86
+msgid "delete chars from cursor to end of line"
+msgstr "由游標所在位置刪除至行尾所有的字元"
+
+#: keymap_alldefs.h:87
+msgid "delete chars from the cursor to the end of the word"
+msgstr "由游標所在位置刪除至字尾所有的字元"
+
+#: keymap_alldefs.h:88
+msgid "delete all chars on the line"
+msgstr "刪除某行上所有的字母"
+
+#: keymap_alldefs.h:89
+msgid "delete the word in front of the cursor"
+msgstr "刪除游標之前的字"
+
+#: keymap_alldefs.h:90
+msgid "quote the next typed key"
+msgstr "用下一個輸入的鍵值作引言"
+
+#: keymap_alldefs.h:91
+msgid "transpose character under cursor with previous"
+msgstr "把遊標上的字母與前一個字交換"
+
+#: keymap_alldefs.h:92
+msgid "capitalize the word"
+msgstr "把字的第一個字母轉成大寫"
+
+#: keymap_alldefs.h:93
+msgid "convert the word to lower case"
+msgstr "把字串轉成小寫"
+
+#: keymap_alldefs.h:94
+msgid "convert the word to upper case"
+msgstr "把字串轉成大寫"
+
+#: keymap_alldefs.h:95
+msgid "enter a muttrc command"
+msgstr "輸入 muttrc 指令"
+
+#: keymap_alldefs.h:96
+msgid "enter a file mask"
+msgstr "輸入檔案遮罩"
+
+#: keymap_alldefs.h:97
+msgid "exit this menu"
+msgstr "離開這個選單"
+
+#: keymap_alldefs.h:98
+msgid "filter attachment through a shell command"
+msgstr "透過 shell 指令來過濾附件"
+
+#: keymap_alldefs.h:99
+msgid "move to the first entry"
+msgstr "移到第一項資料"
+
+#: keymap_alldefs.h:100
+msgid "toggle a message's 'important' flag"
+msgstr "切換信件的「重要」旗標"
+
+#: keymap_alldefs.h:101
+#, fuzzy
+msgid "followup to newsgroup"
+msgstr "以後的回覆都寄至 %s%s?"
+
+#: keymap_alldefs.h:102
+msgid "forward to newsgroup"
+msgstr ""
+
+#: keymap_alldefs.h:103
+msgid "forward a message with comments"
+msgstr "轉寄訊息並加上額外文字"
+
+#: keymap_alldefs.h:104
+msgid "select the current entry"
+msgstr "選擇所在的資料記錄"
+
+#: keymap_alldefs.h:105
+#, fuzzy
+msgid "get all children of the current message"
+msgstr "您已經在第一封信了。"
+
+#: keymap_alldefs.h:106
+#, fuzzy
+msgid "get message with Message-Id"
+msgstr "編輯信件與標頭"
+
+#: keymap_alldefs.h:107
+#, fuzzy
+msgid "get parent of the current message"
+msgstr "您已經在第一封信了。"
+
+#: keymap_alldefs.h:108
+msgid "reply to all recipients"
+msgstr "回覆給所有收件人"
+
+#: keymap_alldefs.h:109
+msgid "scroll down 1/2 page"
+msgstr "向下捲動半頁"
+
+#: keymap_alldefs.h:110
+msgid "scroll up 1/2 page"
+msgstr "向上捲動半頁"
+
+#: keymap_alldefs.h:111
+msgid "this screen"
+msgstr "這個畫面"
+
+#: keymap_alldefs.h:112
+msgid "jump to an index number"
+msgstr "跳到某一個索引號碼"
+
+#: keymap_alldefs.h:113
+msgid "move to the last entry"
+msgstr "移動到最後一項資料"
+
+#: keymap_alldefs.h:114
+msgid "reply to specified mailing list"
+msgstr "回覆給某一個指定的郵件列表"
+
+#: keymap_alldefs.h:115
+msgid "load list of all newsgroups from NNTP server"
+msgstr ""
+
+#: keymap_alldefs.h:116
+msgid "execute a macro"
+msgstr "執行一個巨集"
+
+#: keymap_alldefs.h:117
+msgid "compose a new mail message"
+msgstr "撰寫一封新的信件"
+
+#: keymap_alldefs.h:118
+msgid "break the thread in two"
+msgstr ""
+
+#: keymap_alldefs.h:119
+msgid "open a different folder"
+msgstr "開啟另一個檔案夾"
+
+#: keymap_alldefs.h:120
+msgid "open a different folder in read only mode"
+msgstr "用唯讀模式開啟另一個檔案夾"
+
+#: keymap_alldefs.h:121
+#, fuzzy
+msgid "open a different newsgroup"
+msgstr "開啟另一個檔案夾"
+
+#: keymap_alldefs.h:122
+#, fuzzy
+msgid "open a different newsgroup in read only mode"
+msgstr "用唯讀模式開啟另一個檔案夾"
+
+#: keymap_alldefs.h:123
+msgid "clear a status flag from a message"
+msgstr "清除某封信件上的狀態旗標"
+
+#: keymap_alldefs.h:124
+msgid "delete messages matching a pattern"
+msgstr "刪除符合某個格式的信件"
+
+#: keymap_alldefs.h:125
+msgid "force retrieval of mail from IMAP server"
+msgstr "強行取回 IMAP 伺服器上的信件"
+
+#: keymap_alldefs.h:126
+msgid "logout from all IMAP servers"
+msgstr ""
+
+#: keymap_alldefs.h:127
+msgid "retrieve mail from POP server"
+msgstr "取回 POP 伺服器上的信件"
+
+#: keymap_alldefs.h:128
+msgid "show only messages matching a pattern"
+msgstr "只顯示符合某個格式的信件"
+
+#: keymap_alldefs.h:129
+#, fuzzy
+msgid "link tagged message to the current one"
+msgstr "無法傳送已標記的郵件至："
+
+#: keymap_alldefs.h:130
+#, fuzzy
+msgid "open next mailbox with new mail"
+msgstr "沒有信箱有新信件。"
+
+#: keymap_alldefs.h:131
+msgid "jump to the next new message"
+msgstr "跳到下一封新的信件"
+
+#: keymap_alldefs.h:132
+#, fuzzy
+msgid "jump to the next new or unread message"
+msgstr "跳到下一個未讀取的信件"
+
+#: keymap_alldefs.h:133
+msgid "jump to the next subthread"
+msgstr "跳到下一個子序列"
+
+#: keymap_alldefs.h:134
+msgid "jump to the next thread"
+msgstr "跳到下一個序列"
+
+#: keymap_alldefs.h:135
+msgid "move to the next undeleted message"
+msgstr "移動到下一個未刪除的信件"
+
+#: keymap_alldefs.h:136
+msgid "jump to the next unread message"
+msgstr "跳到下一個未讀取的信件"
+
+#: keymap_alldefs.h:137
+msgid "jump to parent message in thread"
+msgstr "跳到這個序列的主信件"
+
+#: keymap_alldefs.h:138
+msgid "jump to previous thread"
+msgstr "跳到上一個序列"
+
+#: keymap_alldefs.h:139
+msgid "jump to previous subthread"
+msgstr "跳到上一個子序列"
+
+#: keymap_alldefs.h:140
+msgid "move to the previous undeleted message"
+msgstr "移動到上一個未刪除的信件"
+
+#: keymap_alldefs.h:141
+msgid "jump to the previous new message"
+msgstr "跳到上一個新的信件"
+
+#: keymap_alldefs.h:142
+#, fuzzy
+msgid "jump to the previous new or unread message"
+msgstr "跳到上一個未讀取的信件"
+
+#: keymap_alldefs.h:143
+msgid "jump to the previous unread message"
+msgstr "跳到上一個未讀取的信件"
+
+#: keymap_alldefs.h:144
+msgid "mark the current thread as read"
+msgstr "標記現在的序列為已讀取"
+
+#: keymap_alldefs.h:145
+msgid "mark the current subthread as read"
+msgstr "標記現在的子序列為已讀取"
+
+#: keymap_alldefs.h:146
+#, fuzzy
+msgid "jump to root message in thread"
+msgstr "跳到這個序列的主信件"
+
+#: keymap_alldefs.h:147
+msgid "set a status flag on a message"
+msgstr "設定某一封信件的狀態旗標"
+
+#: keymap_alldefs.h:148
+msgid "save changes to mailbox"
+msgstr "儲存變動到信箱"
+
+#: keymap_alldefs.h:149
+msgid "tag messages matching a pattern"
+msgstr "標記符合某個格式的信件"
+
+#: keymap_alldefs.h:150
+msgid "delete from mutt, don't touch on disk"
+msgstr ""
+
+#: keymap_alldefs.h:151
+msgid "undelete messages matching a pattern"
+msgstr "反刪除符合某個格式的信件"
+
+#: keymap_alldefs.h:152
+msgid "untag messages matching a pattern"
+msgstr "反標記符合某個格式的信件"
+
+#: keymap_alldefs.h:153
+#, fuzzy
+msgid "create a hotkey macro for the current message"
+msgstr "您已經在第一封信了。"
+
+#: keymap_alldefs.h:154
+msgid "move to the middle of the page"
+msgstr "移動到本頁的中間"
+
+#: keymap_alldefs.h:155
+msgid "move to the next entry"
+msgstr "移動到下一項資料"
+
+#: keymap_alldefs.h:156
+msgid "scroll down one line"
+msgstr "向下捲動一行"
+
+#: keymap_alldefs.h:157
+msgid "move to the next page"
+msgstr "移到下一頁"
+
+#: keymap_alldefs.h:158
+msgid "jump to the bottom of the message"
+msgstr "跳到信件的最後面"
+
+#: keymap_alldefs.h:159
+msgid "toggle display of quoted text"
+msgstr "切換引言顯示"
+
+#: keymap_alldefs.h:160
+msgid "skip beyond quoted text"
+msgstr "跳過引言"
+
+#: keymap_alldefs.h:161
+msgid "jump to the top of the message"
+msgstr "跳到信件的最上面"
+
+#: keymap_alldefs.h:162
+msgid "pipe message/attachment to a shell command"
+msgstr "輸出導向 訊息/附件 至命令解譯器"
+
+#: keymap_alldefs.h:163
+#, fuzzy
+msgid "post message to newsgroup"
+msgstr "把郵件直接傳送至 %s"
+
+#: keymap_alldefs.h:164
+msgid "move to the previous entry"
+msgstr "移到上一項資料"
+
+#: keymap_alldefs.h:165
+msgid "scroll up one line"
+msgstr "向上捲動一行"
+
+#: keymap_alldefs.h:166
+msgid "move to the previous page"
+msgstr "移到上一頁"
+
+#: keymap_alldefs.h:167
+msgid "print the current entry"
+msgstr "列印現在的資料"
+
+#: keymap_alldefs.h:168
+msgid "really delete the current entry, bypassing the trash folder"
+msgstr ""
+
+#: keymap_alldefs.h:169
+msgid "really delete the current thread, bypassing the trash folder"
+msgstr ""
+
+#: keymap_alldefs.h:170
+msgid "query external program for addresses"
+msgstr "利用外部應用程式查詢地址"
+
+#: keymap_alldefs.h:171
+msgid "append new query results to current results"
+msgstr "附加新的查詢結果至現今的查詢結果"
+
+#: keymap_alldefs.h:172
+msgid "save changes to mailbox and quit"
+msgstr "儲存變動過的資料到信箱並且離開"
+
+#: keymap_alldefs.h:173
+msgid "recall a postponed message"
+msgstr "重新叫出一封被延遲寄出的信件"
+
+#: keymap_alldefs.h:174
+#, fuzzy
+msgid "reconstruct thread containing current message"
+msgstr "序列中有尚未讀取的信件。"
+
+#: keymap_alldefs.h:175
+msgid "clear and redraw the screen"
+msgstr "清除並重新繪製畫面"
+
+#: keymap_alldefs.h:176
+msgid "{internal}"
+msgstr "{內部的}"
+
+#: keymap_alldefs.h:177
+#, fuzzy
+msgid "rename the current mailbox (IMAP only)"
+msgstr "刪除所在的郵箱 (只適用於 IMAP)"
+
+#: keymap_alldefs.h:178
+msgid "reply to a message"
+msgstr "回覆一封信件"
+
+#: keymap_alldefs.h:179
+msgid "use the current message as a template for a new one"
+msgstr "用這封信件作為新信件的範本"
+
+#: keymap_alldefs.h:180
+#, fuzzy
+msgid "save message/attachment to a mailbox/file"
+msgstr "儲存信件/附件到某個檔案"
+
+#: keymap_alldefs.h:181
+msgid "search for a regular expression"
+msgstr "用正規表示式尋找"
+
+#: keymap_alldefs.h:182
+msgid "search backwards for a regular expression"
+msgstr "向後搜尋一個正規表示式"
+
+#: keymap_alldefs.h:183
+msgid "search for next match"
+msgstr "尋找下一個符合的資料"
+
+#: keymap_alldefs.h:184
+msgid "search for next match in opposite direction"
+msgstr "返方向搜尋下一個符合的資料"
+
+#: keymap_alldefs.h:185
+msgid "toggle search pattern coloring"
+msgstr "切換搜尋格式的顏色"
+
+#: keymap_alldefs.h:186
+msgid "invoke a command in a subshell"
+msgstr "在子 shell 執行指令"
+
+#: keymap_alldefs.h:187
+msgid "sort messages"
+msgstr "信件排序"
+
+#: keymap_alldefs.h:188
+msgid "sort messages in reverse order"
+msgstr "以相反的次序來做訊息排序"
+
+#: keymap_alldefs.h:189
+#, fuzzy
+msgid "subscribe to newsgroups matching a pattern"
+msgstr "反標記符合某個格式的信件"
+
+#: keymap_alldefs.h:190
+msgid "tag the current entry"
+msgstr "標記現在的記錄"
+
+#: keymap_alldefs.h:191
+msgid "apply next function to tagged messages"
+msgstr "應用下一個功能到已標記的訊息"
+
+#: keymap_alldefs.h:192
+#, fuzzy
+msgid "apply next function ONLY to tagged messages"
+msgstr "應用下一個功能到已標記的訊息"
+
+#: keymap_alldefs.h:193
+msgid "tag the current subthread"
+msgstr "標記目前的子序列"
+
+#: keymap_alldefs.h:194
+msgid "tag the current thread"
+msgstr "標記目前的序列"
+
+#: keymap_alldefs.h:195
+msgid "toggle a message's 'new' flag"
+msgstr "切換信件的 'new' 旗標"
+
+#: keymap_alldefs.h:196
+#, fuzzy
+msgid "toggle view of read messages"
+msgstr "跳到上一個未讀取的信件"
+
+#: keymap_alldefs.h:197
+msgid "toggle whether the mailbox will be rewritten"
+msgstr "切換是否重新寫入郵箱中"
+
+#: keymap_alldefs.h:198
+msgid "toggle whether to browse mailboxes or all files"
+msgstr "切換瀏覽郵箱抑或所有的檔案"
+
+#: keymap_alldefs.h:199
+msgid "move to the top of the page"
+msgstr "移到頁首"
+
+#: keymap_alldefs.h:200
+msgid "mark all articles in newsgroup as unread"
+msgstr ""
+
+#: keymap_alldefs.h:201
+msgid "undelete the current entry"
+msgstr "取消刪除所在的記錄"
+
+#: keymap_alldefs.h:202
+msgid "undelete all messages in thread"
+msgstr "取消刪除序列中的所有信件"
+
+# XXX weird translation
+#: keymap_alldefs.h:203
+msgid "undelete all messages in subthread"
+msgstr "取消刪除子序列中的所有信件"
+
+#: keymap_alldefs.h:204
+#, fuzzy
+msgid "unsubscribe from newsgroups matching a pattern"
+msgstr "反標記符合某個格式的信件"
+
+#: keymap_alldefs.h:205
+msgid "show the Mutt version number and date"
+msgstr "顯示 Mutt 的版本號碼與日期"
+
+#: keymap_alldefs.h:206
+msgid "view attachment using mailcap entry if necessary"
+msgstr "如果需要的話使用 mailcap 瀏覽附件"
+
+#: keymap_alldefs.h:207
+msgid "show MIME attachments"
+msgstr "顯示 MIME 附件"
+
+#: keymap_alldefs.h:208
+msgid "display the keycode for a key press"
+msgstr ""
+
+#: keymap_alldefs.h:209
+#, fuzzy
+msgid "limit view to current thread"
+msgstr "標記目前的序列"
+
+#: keymap_alldefs.h:210
+msgid "show currently active limit pattern"
+msgstr "顯示目前有作用的限制樣式"
+
+#: keymap_alldefs.h:211
+msgid "collapse/uncollapse current thread"
+msgstr "打開/關閉 目前的序列"
+
+#: keymap_alldefs.h:212
+msgid "collapse/uncollapse all threads"
+msgstr "打開/關閉 所有的序列"
+
+#: keymap_alldefs.h:213
+msgid "move the highlight to next mailbox"
+msgstr ""
+
+#: keymap_alldefs.h:214
+#, fuzzy
+msgid "move the highlight to next mailbox with new mail"
+msgstr "沒有信箱有新信件。"
+
+#: keymap_alldefs.h:215
+#, fuzzy
+msgid "open highlighted mailbox"
+msgstr "重新開啟信箱中…"
+
+#: keymap_alldefs.h:216
+#, fuzzy
+msgid "scroll the sidebar down 1 page"
+msgstr "向下捲動半頁"
+
+#: keymap_alldefs.h:217
+#, fuzzy
+msgid "scroll the sidebar up 1 page"
+msgstr "向上捲動半頁"
+
+#: keymap_alldefs.h:218
+#, fuzzy
+msgid "move the highlight to previous mailbox"
+msgstr "移到上一頁"
+
+#: keymap_alldefs.h:219
+#, fuzzy
+msgid "move the highlight to previous mailbox with new mail"
+msgstr "沒有信箱有新信件。"
+
+#: keymap_alldefs.h:220
+#, fuzzy
+msgid "toggle between mailboxes and virtual mailboxes"
+msgstr "切換瀏覽郵箱抑或所有的檔案"
+
+#: keymap_alldefs.h:221
+msgid "make the sidebar (in)visible"
+msgstr ""
+
+#: keymap_alldefs.h:222
+#, fuzzy
+msgid "open a different virtual folder"
+msgstr "開啟另一個檔案夾"
+
+#: keymap_alldefs.h:223
+msgid "generate virtual folder from query"
+msgstr ""
+
+#: keymap_alldefs.h:224
+msgid "generate virtual folder from query and time window"
+msgstr ""
+
+#: keymap_alldefs.h:225
+msgid "shifts virtual folder time window forwards"
+msgstr ""
+
+#: keymap_alldefs.h:226
+msgid "shifts virtual folder time window backwards"
+msgstr ""
+
+#: keymap_alldefs.h:227
+msgid "modify (notmuch) tags"
+msgstr ""
+
+#: keymap_alldefs.h:228
+#, fuzzy
+msgid "modify labels and then hide message"
+msgstr "您已經在第一封信了。"
+
+#: keymap_alldefs.h:229
+msgid "read entire thread of the current message"
+msgstr ""
+
+#: keymap_alldefs.h:230
+#, fuzzy
+msgid "accept the chain constructed"
+msgstr "同意已建好的鏈結"
+
+#: keymap_alldefs.h:231
+#, fuzzy
+msgid "append a remailer to the chain"
+msgstr "在鏈結的後面加上郵件轉接器"
+
+#: keymap_alldefs.h:232
+#, fuzzy
+msgid "insert a remailer into the chain"
+msgstr "在鏈結中加入郵件轉接器"
+
+#: keymap_alldefs.h:233
+#, fuzzy
+msgid "delete a remailer from the chain"
+msgstr "從鏈結中刪除郵件轉接器"
+
+#: keymap_alldefs.h:234
+#, fuzzy
+msgid "select the previous element of the chain"
+msgstr "選擇鏈結裏對上一個部份"
+
+#: keymap_alldefs.h:235
+#, fuzzy
+msgid "select the next element of the chain"
+msgstr "選擇鏈結裏跟著的一個部份"
+
+#: keymap_alldefs.h:236
+msgid "send the message through a mixmaster remailer chain"
+msgstr "利用 mixmaster 郵件轉接器把郵件寄出"
+
+# XXX strange translation
+#: keymap_alldefs.h:237
+msgid "attach a PGP public key"
+msgstr "附帶一把 PGP 公共鑰匙"
+
+#: keymap_alldefs.h:238
+msgid "show PGP options"
+msgstr "顯示 PGP 選項"
+
+#: keymap_alldefs.h:239
+msgid "mail a PGP public key"
+msgstr "寄出 PGP 公共鑰匙"
+
+#: keymap_alldefs.h:240
+msgid "verify a PGP public key"
+msgstr "檢驗 PGP 公共鑰匙"
+
+#: keymap_alldefs.h:241
+msgid "view the key's user id"
+msgstr "檢閱這把鑰匙的使用者 id"
+
+#: keymap_alldefs.h:242
+#, fuzzy
+msgid "check for classic PGP"
+msgstr "檢查古老的pgp格式"
+
+#: keymap_alldefs.h:243
+#, fuzzy
+msgid "show S/MIME options"
+msgstr "顯示 S/MIME 選項"
+
+#: keymap_alldefs.h:244
+msgid "make decrypted copy and delete"
+msgstr "製作解密的拷貝並且刪除之"
+
+#: keymap_alldefs.h:245
+msgid "make decrypted copy"
+msgstr "製作一份解密的拷貝"
+
+#: keymap_alldefs.h:246
+#, fuzzy
+msgid "wipe passphrase(s) from memory"
+msgstr "清除記憶體中的 PGP 通行密碼"
+
+#: keymap_alldefs.h:247
+#, fuzzy
+msgid "extract supported public keys"
+msgstr "擷取 PGP 公共鑰匙"
 
 #: lib.c:118
 msgid "Integer overflow -- can't allocate memory!"
@@ -5248,7 +6273,7 @@ msgid ""
 "Copyright (C) 2000-2004 Edmund Grimley Evans <edmundo@rano.org>\n"
 "Copyright (C) 2006-2009 Rocco Rutte <pdmef@gmx.net>\n"
 "Copyright (C) 2014-2016 Kevin J. McCarthy <kevin@8t8.us>\n"
-"Copyright (C) 2015-2016 Richard Russon <rich@flatcap.org>\n"
+"Copyright (C) 2015-2017 Richard Russon <rich@flatcap.org>\n"
 "\n"
 "Many others not mentioned here contributed code, fixes,\n"
 "and suggestions.\n"
@@ -5302,741 +6327,3 @@ msgid ""
 msgstr ""
 "\n"
 "編譯選項："
-
-#~ msgid "PGP passphrase forgotten."
-#~ msgstr "已忘記 PGP 通行密碼。"
-
-#~ msgid "Query"
-#~ msgstr "查詢"
-
-#~ msgid "null operation"
-#~ msgstr "空的運算"
-
-#~ msgid "force viewing of attachment using mailcap"
-#~ msgstr "強迫使用 mailcap 瀏覽附件"
-
-#~ msgid "view attachment as text"
-#~ msgstr "用文字方式顯示附件內容"
-
-#~ msgid "Toggle display of subparts"
-#~ msgstr "切換部件顯示"
-
-#~ msgid "move to the bottom of the page"
-#~ msgstr "移到本頁的最後面"
-
-#~ msgid "remail a message to another user"
-#~ msgstr "重新寄信給另外一個使用者"
-
-#~ msgid "select a new file in this directory"
-#~ msgstr "請選擇本目錄中一個新的檔案"
-
-#~ msgid "view file"
-#~ msgstr "顯示檔案"
-
-#~ msgid "display the currently selected file's name"
-#~ msgstr "顯示所選擇的檔案"
-
-#, fuzzy
-#~ msgid "subscribe to current mbox (IMAP/NNTP only)"
-#~ msgstr "訂閱現在這個郵箱 (只適用於 IMAP)"
-
-#, fuzzy
-#~ msgid "unsubscribe from current mbox (IMAP/NNTP only)"
-#~ msgstr "取消訂閱現在這個郵箱 (只適用於 IMAP)"
-
-#~ msgid "toggle view all/subscribed mailboxes (IMAP only)"
-#~ msgstr "切換顯示 全部/已訂閱 的郵箱 (只適用於 IMAP)"
-
-#, fuzzy
-#~ msgid "list mailboxes with new mail"
-#~ msgstr "沒有信箱有新信件。"
-
-#~ msgid "change directories"
-#~ msgstr "改變目錄"
-
-#~ msgid "check mailboxes for new mail"
-#~ msgstr "檢查信箱是否有新信件"
-
-#, fuzzy
-#~ msgid "attach file(s) to this message"
-#~ msgstr "在這封信件中夾帶檔案"
-
-#~ msgid "attach message(s) to this message"
-#~ msgstr "在這封信件中夾帶信件"
-
-#, fuzzy
-#~ msgid "attach news article(s) to this message"
-#~ msgstr "在這封信件中夾帶檔案"
-
-#~ msgid "edit the BCC list"
-#~ msgstr "編輯 BCC 列表"
-
-#~ msgid "edit the CC list"
-#~ msgstr "編輯 CC 列表"
-
-#~ msgid "edit attachment description"
-#~ msgstr "編輯附件的說明"
-
-#~ msgid "edit attachment transfer-encoding"
-#~ msgstr "編輯附件的傳輸編碼"
-
-#~ msgid "enter a file to save a copy of this message in"
-#~ msgstr "輸入用來儲存這封信件拷貝的檔案名稱"
-
-#~ msgid "edit the file to be attached"
-#~ msgstr "編輯附件的檔案名稱"
-
-#~ msgid "edit the from field"
-#~ msgstr "編輯發信人欄位"
-
-#~ msgid "edit the message with headers"
-#~ msgstr "編輯信件與標頭"
-
-#~ msgid "edit the message"
-#~ msgstr "編輯信件內容"
-
-#~ msgid "edit attachment using mailcap entry"
-#~ msgstr "使用 mailcap 編輯附件"
-
-#, fuzzy
-#~ msgid "edit the newsgroups list"
-#~ msgstr "編輯 CC 列表"
-
-#~ msgid "edit the Reply-To field"
-#~ msgstr "編輯 Reply-To 欄位"
-
-#, fuzzy
-#~ msgid "edit the Followup-To field"
-#~ msgstr "編輯 Reply-To 欄位"
-
-#, fuzzy
-#~ msgid "edit the X-Comment-To field"
-#~ msgstr "編輯 Reply-To 欄位"
-
-#~ msgid "edit the subject of this message"
-#~ msgstr "編輯信件的標題"
-
-#~ msgid "edit the TO list"
-#~ msgstr "編輯 TO 列表"
-
-#~ msgid "create a new mailbox (IMAP only)"
-#~ msgstr "建立新郵箱 (只適用於 IMAP)"
-
-#~ msgid "edit attachment content type"
-#~ msgstr "編輯附件的 content type"
-
-#~ msgid "get a temporary copy of an attachment"
-#~ msgstr "取得附件的暫存拷貝"
-
-#~ msgid "run ispell on the message"
-#~ msgstr "於信件執行 ispell"
-
-#~ msgid "compose new attachment using mailcap entry"
-#~ msgstr "使用 mailcap 來組合新的附件"
-
-#~ msgid "toggle recoding of this attachment"
-#~ msgstr "切換是否再為附件重新編碼"
-
-#~ msgid "save this message to send later"
-#~ msgstr "儲存信件以便稍後寄出"
-
-#, fuzzy
-#~ msgid "send attachment with a different name"
-#~ msgstr "編輯附件的傳輸編碼"
-
-#~ msgid "rename/move an attached file"
-#~ msgstr "更改檔名∕移動 已被附帶的檔案"
-
-#, fuzzy
-#~ msgid "compose a new message to the sender"
-#~ msgstr "撰寫一封新的信件"
-
-#~ msgid "send the message"
-#~ msgstr "寄出信件"
-
-#~ msgid "toggle disposition between inline/attachment"
-#~ msgstr "切換 合拼∕附件式 觀看模式"
-
-#~ msgid "toggle whether to delete file after sending it"
-#~ msgstr "切換寄出後是否刪除檔案"
-
-#~ msgid "update an attachment's encoding info"
-#~ msgstr "更新附件的編碼資訊"
-
-#~ msgid "write the message to a folder"
-#~ msgstr "存入一封信件到某個檔案夾"
-
-#~ msgid "copy a message to a file/mailbox"
-#~ msgstr "拷貝一封信件到某個檔案或信箱"
-
-#~ msgid "create an alias from a message sender"
-#~ msgstr "建立某封信件寄信人的別名"
-
-#~ msgid "move entry to bottom of screen"
-#~ msgstr "移至螢幕結尾"
-
-#~ msgid "move entry to middle of screen"
-#~ msgstr "移至螢幕中央"
-
-#~ msgid "move entry to top of screen"
-#~ msgstr "移至螢幕開頭"
-
-#~ msgid "make decoded (text/plain) copy"
-#~ msgstr "製作解碼的 (text/plain) 拷貝"
-
-#~ msgid "make decoded copy (text/plain) and delete"
-#~ msgstr "製作解碼的拷貝 (text/plain) 並且刪除之"
-
-#~ msgid "delete the current entry"
-#~ msgstr "刪除所在的資料"
-
-#~ msgid "delete the current mailbox (IMAP only)"
-#~ msgstr "刪除所在的郵箱 (只適用於 IMAP)"
-
-#~ msgid "delete all messages in subthread"
-#~ msgstr "刪除所有在子序列中的信件"
-
-#~ msgid "delete all messages in thread"
-#~ msgstr "刪除所有在序列中的信件"
-
-#~ msgid "display full address of sender"
-#~ msgstr "顯示寄信人的完整位址"
-
-#~ msgid "display message and toggle header weeding"
-#~ msgstr "顯示信件並切換是否顯示所有標頭資料"
-
-#~ msgid "display a message"
-#~ msgstr "顯示信件"
-
-#~ msgid "edit the raw message"
-#~ msgstr "編輯信件的真正內容"
-
-#~ msgid "delete the char in front of the cursor"
-#~ msgstr "刪除游標所在位置之前的字元"
-
-#~ msgid "move the cursor one character to the left"
-#~ msgstr "向左移動一個字元"
-
-#~ msgid "move the cursor to the beginning of the word"
-#~ msgstr "移動至字的開頭"
-
-#~ msgid "jump to the beginning of the line"
-#~ msgstr "跳到行首"
-
-#~ msgid "cycle among incoming mailboxes"
-#~ msgstr "圈選進入的郵筒"
-
-#~ msgid "complete filename or alias"
-#~ msgstr "完整的檔名或別名"
-
-#~ msgid "complete address with query"
-#~ msgstr "附上完整的位址查詢"
-
-#~ msgid "delete the char under the cursor"
-#~ msgstr "刪除游標所在的字母"
-
-#~ msgid "jump to the end of the line"
-#~ msgstr "跳到行尾"
-
-#~ msgid "move the cursor one character to the right"
-#~ msgstr "向游標向右移動一個字元"
-
-#~ msgid "move the cursor to the end of the word"
-#~ msgstr "移動至字的最後"
-
-#, fuzzy
-#~ msgid "scroll down through the history list"
-#~ msgstr "向上捲動使用紀錄清單"
-
-#~ msgid "scroll up through the history list"
-#~ msgstr "向上捲動使用紀錄清單"
-
-#~ msgid "delete chars from cursor to end of line"
-#~ msgstr "由游標所在位置刪除至行尾所有的字元"
-
-#~ msgid "delete chars from the cursor to the end of the word"
-#~ msgstr "由游標所在位置刪除至字尾所有的字元"
-
-#~ msgid "delete all chars on the line"
-#~ msgstr "刪除某行上所有的字母"
-
-#~ msgid "delete the word in front of the cursor"
-#~ msgstr "刪除游標之前的字"
-
-#~ msgid "quote the next typed key"
-#~ msgstr "用下一個輸入的鍵值作引言"
-
-#~ msgid "transpose character under cursor with previous"
-#~ msgstr "把遊標上的字母與前一個字交換"
-
-#~ msgid "capitalize the word"
-#~ msgstr "把字的第一個字母轉成大寫"
-
-#~ msgid "convert the word to lower case"
-#~ msgstr "把字串轉成小寫"
-
-#~ msgid "convert the word to upper case"
-#~ msgstr "把字串轉成大寫"
-
-#~ msgid "enter a muttrc command"
-#~ msgstr "輸入 muttrc 指令"
-
-#~ msgid "enter a file mask"
-#~ msgstr "輸入檔案遮罩"
-
-#~ msgid "exit this menu"
-#~ msgstr "離開這個選單"
-
-#~ msgid "filter attachment through a shell command"
-#~ msgstr "透過 shell 指令來過濾附件"
-
-#~ msgid "move to the first entry"
-#~ msgstr "移到第一項資料"
-
-#~ msgid "toggle a message's 'important' flag"
-#~ msgstr "切換信件的「重要」旗標"
-
-#, fuzzy
-#~ msgid "followup to newsgroup"
-#~ msgstr "以後的回覆都寄至 %s%s?"
-
-#~ msgid "forward a message with comments"
-#~ msgstr "轉寄訊息並加上額外文字"
-
-#~ msgid "select the current entry"
-#~ msgstr "選擇所在的資料記錄"
-
-#, fuzzy
-#~ msgid "get all children of the current message"
-#~ msgstr "您已經在第一封信了。"
-
-#, fuzzy
-#~ msgid "get message with Message-Id"
-#~ msgstr "編輯信件與標頭"
-
-#, fuzzy
-#~ msgid "get parent of the current message"
-#~ msgstr "您已經在第一封信了。"
-
-#~ msgid "reply to all recipients"
-#~ msgstr "回覆給所有收件人"
-
-#~ msgid "scroll down 1/2 page"
-#~ msgstr "向下捲動半頁"
-
-#~ msgid "scroll up 1/2 page"
-#~ msgstr "向上捲動半頁"
-
-#~ msgid "this screen"
-#~ msgstr "這個畫面"
-
-#~ msgid "jump to an index number"
-#~ msgstr "跳到某一個索引號碼"
-
-#~ msgid "move to the last entry"
-#~ msgstr "移動到最後一項資料"
-
-#~ msgid "reply to specified mailing list"
-#~ msgstr "回覆給某一個指定的郵件列表"
-
-#~ msgid "execute a macro"
-#~ msgstr "執行一個巨集"
-
-#~ msgid "compose a new mail message"
-#~ msgstr "撰寫一封新的信件"
-
-#~ msgid "open a different folder"
-#~ msgstr "開啟另一個檔案夾"
-
-#~ msgid "open a different folder in read only mode"
-#~ msgstr "用唯讀模式開啟另一個檔案夾"
-
-#, fuzzy
-#~ msgid "open a different newsgroup"
-#~ msgstr "開啟另一個檔案夾"
-
-#, fuzzy
-#~ msgid "open a different newsgroup in read only mode"
-#~ msgstr "用唯讀模式開啟另一個檔案夾"
-
-#~ msgid "clear a status flag from a message"
-#~ msgstr "清除某封信件上的狀態旗標"
-
-#~ msgid "delete messages matching a pattern"
-#~ msgstr "刪除符合某個格式的信件"
-
-#~ msgid "force retrieval of mail from IMAP server"
-#~ msgstr "強行取回 IMAP 伺服器上的信件"
-
-#~ msgid "retrieve mail from POP server"
-#~ msgstr "取回 POP 伺服器上的信件"
-
-#~ msgid "show only messages matching a pattern"
-#~ msgstr "只顯示符合某個格式的信件"
-
-#, fuzzy
-#~ msgid "link tagged message to the current one"
-#~ msgstr "無法傳送已標記的郵件至："
-
-#, fuzzy
-#~ msgid "open next mailbox with new mail"
-#~ msgstr "沒有信箱有新信件。"
-
-#~ msgid "jump to the next new message"
-#~ msgstr "跳到下一封新的信件"
-
-#, fuzzy
-#~ msgid "jump to the next new or unread message"
-#~ msgstr "跳到下一個未讀取的信件"
-
-#~ msgid "jump to the next subthread"
-#~ msgstr "跳到下一個子序列"
-
-#~ msgid "jump to the next thread"
-#~ msgstr "跳到下一個序列"
-
-#~ msgid "move to the next undeleted message"
-#~ msgstr "移動到下一個未刪除的信件"
-
-#~ msgid "jump to the next unread message"
-#~ msgstr "跳到下一個未讀取的信件"
-
-#~ msgid "jump to parent message in thread"
-#~ msgstr "跳到這個序列的主信件"
-
-#~ msgid "jump to previous thread"
-#~ msgstr "跳到上一個序列"
-
-#~ msgid "jump to previous subthread"
-#~ msgstr "跳到上一個子序列"
-
-#~ msgid "move to the previous undeleted message"
-#~ msgstr "移動到上一個未刪除的信件"
-
-#~ msgid "jump to the previous new message"
-#~ msgstr "跳到上一個新的信件"
-
-#, fuzzy
-#~ msgid "jump to the previous new or unread message"
-#~ msgstr "跳到上一個未讀取的信件"
-
-#~ msgid "jump to the previous unread message"
-#~ msgstr "跳到上一個未讀取的信件"
-
-#~ msgid "mark the current thread as read"
-#~ msgstr "標記現在的序列為已讀取"
-
-#~ msgid "mark the current subthread as read"
-#~ msgstr "標記現在的子序列為已讀取"
-
-#, fuzzy
-#~ msgid "jump to root message in thread"
-#~ msgstr "跳到這個序列的主信件"
-
-#~ msgid "set a status flag on a message"
-#~ msgstr "設定某一封信件的狀態旗標"
-
-#~ msgid "save changes to mailbox"
-#~ msgstr "儲存變動到信箱"
-
-#~ msgid "tag messages matching a pattern"
-#~ msgstr "標記符合某個格式的信件"
-
-#~ msgid "undelete messages matching a pattern"
-#~ msgstr "反刪除符合某個格式的信件"
-
-#~ msgid "untag messages matching a pattern"
-#~ msgstr "反標記符合某個格式的信件"
-
-#, fuzzy
-#~ msgid "create a hotkey macro for the current message"
-#~ msgstr "您已經在第一封信了。"
-
-#~ msgid "move to the middle of the page"
-#~ msgstr "移動到本頁的中間"
-
-#~ msgid "move to the next entry"
-#~ msgstr "移動到下一項資料"
-
-#~ msgid "scroll down one line"
-#~ msgstr "向下捲動一行"
-
-#~ msgid "move to the next page"
-#~ msgstr "移到下一頁"
-
-#~ msgid "jump to the bottom of the message"
-#~ msgstr "跳到信件的最後面"
-
-#~ msgid "toggle display of quoted text"
-#~ msgstr "切換引言顯示"
-
-#~ msgid "skip beyond quoted text"
-#~ msgstr "跳過引言"
-
-#~ msgid "jump to the top of the message"
-#~ msgstr "跳到信件的最上面"
-
-#~ msgid "pipe message/attachment to a shell command"
-#~ msgstr "輸出導向 訊息/附件 至命令解譯器"
-
-#, fuzzy
-#~ msgid "post message to newsgroup"
-#~ msgstr "把郵件直接傳送至 %s"
-
-#~ msgid "move to the previous entry"
-#~ msgstr "移到上一項資料"
-
-#~ msgid "scroll up one line"
-#~ msgstr "向上捲動一行"
-
-#~ msgid "move to the previous page"
-#~ msgstr "移到上一頁"
-
-#~ msgid "print the current entry"
-#~ msgstr "列印現在的資料"
-
-#~ msgid "query external program for addresses"
-#~ msgstr "利用外部應用程式查詢地址"
-
-#~ msgid "append new query results to current results"
-#~ msgstr "附加新的查詢結果至現今的查詢結果"
-
-#~ msgid "save changes to mailbox and quit"
-#~ msgstr "儲存變動過的資料到信箱並且離開"
-
-#~ msgid "recall a postponed message"
-#~ msgstr "重新叫出一封被延遲寄出的信件"
-
-#, fuzzy
-#~ msgid "reconstruct thread containing current message"
-#~ msgstr "序列中有尚未讀取的信件。"
-
-#~ msgid "clear and redraw the screen"
-#~ msgstr "清除並重新繪製畫面"
-
-#~ msgid "{internal}"
-#~ msgstr "{內部的}"
-
-#, fuzzy
-#~ msgid "rename the current mailbox (IMAP only)"
-#~ msgstr "刪除所在的郵箱 (只適用於 IMAP)"
-
-#~ msgid "reply to a message"
-#~ msgstr "回覆一封信件"
-
-#~ msgid "use the current message as a template for a new one"
-#~ msgstr "用這封信件作為新信件的範本"
-
-#, fuzzy
-#~ msgid "save message/attachment to a mailbox/file"
-#~ msgstr "儲存信件/附件到某個檔案"
-
-#~ msgid "search for a regular expression"
-#~ msgstr "用正規表示式尋找"
-
-#~ msgid "search backwards for a regular expression"
-#~ msgstr "向後搜尋一個正規表示式"
-
-#~ msgid "search for next match"
-#~ msgstr "尋找下一個符合的資料"
-
-#~ msgid "search for next match in opposite direction"
-#~ msgstr "返方向搜尋下一個符合的資料"
-
-#~ msgid "toggle search pattern coloring"
-#~ msgstr "切換搜尋格式的顏色"
-
-#~ msgid "invoke a command in a subshell"
-#~ msgstr "在子 shell 執行指令"
-
-#~ msgid "sort messages"
-#~ msgstr "信件排序"
-
-#~ msgid "sort messages in reverse order"
-#~ msgstr "以相反的次序來做訊息排序"
-
-#, fuzzy
-#~ msgid "subscribe to newsgroups matching a pattern"
-#~ msgstr "反標記符合某個格式的信件"
-
-#~ msgid "tag the current entry"
-#~ msgstr "標記現在的記錄"
-
-#~ msgid "apply next function to tagged messages"
-#~ msgstr "應用下一個功能到已標記的訊息"
-
-#, fuzzy
-#~ msgid "apply next function ONLY to tagged messages"
-#~ msgstr "應用下一個功能到已標記的訊息"
-
-#~ msgid "tag the current subthread"
-#~ msgstr "標記目前的子序列"
-
-#~ msgid "tag the current thread"
-#~ msgstr "標記目前的序列"
-
-#~ msgid "toggle a message's 'new' flag"
-#~ msgstr "切換信件的 'new' 旗標"
-
-#, fuzzy
-#~ msgid "toggle view of read messages"
-#~ msgstr "跳到上一個未讀取的信件"
-
-#~ msgid "toggle whether the mailbox will be rewritten"
-#~ msgstr "切換是否重新寫入郵箱中"
-
-#~ msgid "toggle whether to browse mailboxes or all files"
-#~ msgstr "切換瀏覽郵箱抑或所有的檔案"
-
-#~ msgid "move to the top of the page"
-#~ msgstr "移到頁首"
-
-#~ msgid "undelete the current entry"
-#~ msgstr "取消刪除所在的記錄"
-
-#~ msgid "undelete all messages in thread"
-#~ msgstr "取消刪除序列中的所有信件"
-
-# XXX weird translation
-#~ msgid "undelete all messages in subthread"
-#~ msgstr "取消刪除子序列中的所有信件"
-
-#, fuzzy
-#~ msgid "unsubscribe from newsgroups matching a pattern"
-#~ msgstr "反標記符合某個格式的信件"
-
-#~ msgid "show the Mutt version number and date"
-#~ msgstr "顯示 Mutt 的版本號碼與日期"
-
-#~ msgid "view attachment using mailcap entry if necessary"
-#~ msgstr "如果需要的話使用 mailcap 瀏覽附件"
-
-#~ msgid "show MIME attachments"
-#~ msgstr "顯示 MIME 附件"
-
-#, fuzzy
-#~ msgid "limit view to current thread"
-#~ msgstr "標記目前的序列"
-
-#~ msgid "show currently active limit pattern"
-#~ msgstr "顯示目前有作用的限制樣式"
-
-#~ msgid "collapse/uncollapse current thread"
-#~ msgstr "打開/關閉 目前的序列"
-
-#~ msgid "collapse/uncollapse all threads"
-#~ msgstr "打開/關閉 所有的序列"
-
-#, fuzzy
-#~ msgid "move the highlight to next mailbox with new mail"
-#~ msgstr "沒有信箱有新信件。"
-
-#, fuzzy
-#~ msgid "open highlighted mailbox"
-#~ msgstr "重新開啟信箱中…"
-
-#, fuzzy
-#~ msgid "scroll the sidebar down 1 page"
-#~ msgstr "向下捲動半頁"
-
-#, fuzzy
-#~ msgid "scroll the sidebar up 1 page"
-#~ msgstr "向上捲動半頁"
-
-#, fuzzy
-#~ msgid "move the highlight to previous mailbox"
-#~ msgstr "移到上一頁"
-
-#, fuzzy
-#~ msgid "move the highlight to previous mailbox with new mail"
-#~ msgstr "沒有信箱有新信件。"
-
-#, fuzzy
-#~ msgid "toggle between mailboxes and virtual mailboxes"
-#~ msgstr "切換瀏覽郵箱抑或所有的檔案"
-
-#, fuzzy
-#~ msgid "open a different virtual folder"
-#~ msgstr "開啟另一個檔案夾"
-
-#, fuzzy
-#~ msgid "modify labels and then hide message"
-#~ msgstr "您已經在第一封信了。"
-
-# XXX strange translation
-#~ msgid "attach a PGP public key"
-#~ msgstr "附帶一把 PGP 公共鑰匙"
-
-#~ msgid "show PGP options"
-#~ msgstr "顯示 PGP 選項"
-
-#~ msgid "mail a PGP public key"
-#~ msgstr "寄出 PGP 公共鑰匙"
-
-#~ msgid "verify a PGP public key"
-#~ msgstr "檢驗 PGP 公共鑰匙"
-
-#~ msgid "view the key's user id"
-#~ msgstr "檢閱這把鑰匙的使用者 id"
-
-#, fuzzy
-#~ msgid "check for classic PGP"
-#~ msgstr "檢查古老的pgp格式"
-
-#, fuzzy
-#~ msgid "accept the chain constructed"
-#~ msgstr "同意已建好的鏈結"
-
-#, fuzzy
-#~ msgid "append a remailer to the chain"
-#~ msgstr "在鏈結的後面加上郵件轉接器"
-
-#, fuzzy
-#~ msgid "insert a remailer into the chain"
-#~ msgstr "在鏈結中加入郵件轉接器"
-
-#, fuzzy
-#~ msgid "delete a remailer from the chain"
-#~ msgstr "從鏈結中刪除郵件轉接器"
-
-#, fuzzy
-#~ msgid "select the previous element of the chain"
-#~ msgstr "選擇鏈結裏對上一個部份"
-
-#, fuzzy
-#~ msgid "select the next element of the chain"
-#~ msgstr "選擇鏈結裏跟著的一個部份"
-
-#~ msgid "send the message through a mixmaster remailer chain"
-#~ msgstr "利用 mixmaster 郵件轉接器把郵件寄出"
-
-#~ msgid "make decrypted copy and delete"
-#~ msgstr "製作解密的拷貝並且刪除之"
-
-#~ msgid "make decrypted copy"
-#~ msgstr "製作一份解密的拷貝"
-
-#, fuzzy
-#~ msgid "wipe passphrase(s) from memory"
-#~ msgstr "清除記憶體中的 PGP 通行密碼"
-
-#, fuzzy
-#~ msgid "extract supported public keys"
-#~ msgstr "擷取 PGP 公共鑰匙"
-
-#, fuzzy
-#~ msgid "show S/MIME options"
-#~ msgstr "顯示 S/MIME 選項"
-
-#~ msgid "Fingerprint: %s"
-#~ msgstr "指模：%s"
-
-#, fuzzy
-#~ msgid "SMTP authentication requires SASL"
-#~ msgstr "GSSAPI 驗證失敗。"
-
-#~ msgid "move to the first message"
-#~ msgstr "移動到第一封信件"
-
-#~ msgid "move to the last message"
-#~ msgstr "移動到最後一封信件"

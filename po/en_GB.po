@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neomutt-20161104\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
-"POT-Creation-Date: 2017-04-13 13:26+0100\n"
-"PO-Revision-Date: 2016-11-09 22:45+0000\n"
+"POT-Creation-Date: 2017-04-17 17:04+0100\n"
+"PO-Revision-Date: 2017-04-17 17:06+0100\n"
 "Last-Translator: Richard Russon <rich@flatcap.org>\n"
 "Language-Team: none\n"
 "Language: en_GB\n"
@@ -199,14 +199,14 @@ msgid "I don't know how to print that!"
 msgstr "I don't know how to print that!"
 
 #: bcache.c:140
-#, fuzzy, c-format
+#, c-format
 msgid "Message cache isn't a directory: %s."
-msgstr "%s is not a directory."
+msgstr "Message cache isn't a directory: %s."
 
 #: bcache.c:148
-#, fuzzy, c-format
+#, c-format
 msgid "Can't create %s %s"
-msgstr "Can't create %s: %s."
+msgstr "Can't create %s %s"
 
 #: browser.c:49
 msgid "Chdir"
@@ -899,6 +899,118 @@ msgstr "Compressing %s"
 msgid "No decryption engine available for message"
 msgstr "No decryption engine available for message"
 
+#: crypt.c:59
+#, c-format
+msgid " (current time: %c)"
+msgstr " (current time: %c)"
+
+#: crypt.c:64
+#, c-format
+msgid "[-- %s output follows%s --]\n"
+msgstr "[-- %s output follows%s --]\n"
+
+#: crypt.c:78
+msgid "Passphrase(s) forgotten."
+msgstr "Passphrase(s) forgotten."
+
+#: crypt.c:139
+msgid "Inline PGP can't be used with attachments.  Revert to PGP/MIME?"
+msgstr "Inline PGP can't be used with attachments.  Revert to PGP/MIME?"
+
+#: crypt.c:143
+msgid "Mail not sent: inline PGP can't be used with attachments."
+msgstr "Mail not sent: inline PGP can't be used with attachments."
+
+#: crypt.c:151 cryptglue.c:106 pgpkey.c:541 pgpkey.c:724
+msgid "Invoking PGP..."
+msgstr "Invoking PGP..."
+
+#: crypt.c:162
+msgid "Message can't be sent inline.  Revert to using PGP/MIME?"
+msgstr "Message can't be sent inline.  Revert to using PGP/MIME?"
+
+#: crypt.c:164 send.c:1796
+msgid "Mail not sent."
+msgstr "Mail not sent."
+
+#: crypt.c:224
+msgid "Encrypt message to S/MIME Default Key also?"
+msgstr "Encrypt message to S/MIME Default Key also?"
+
+#: crypt.c:259
+msgid "Encrypt message to PGP Default Key also?"
+msgstr "Encrypt message to PGP Default Key also?"
+
+#: crypt.c:502
+msgid "S/MIME messages with no hints on content are unsupported."
+msgstr "S/MIME messages with no hints on content are unsupported."
+
+#: crypt.c:710 crypt.c:751
+msgid "Trying to extract PGP keys...\n"
+msgstr "Trying to extract PGP keys...\n"
+
+#: crypt.c:732 crypt.c:772
+msgid "Trying to extract S/MIME certificates...\n"
+msgstr "Trying to extract S/MIME certificates...\n"
+
+#: crypt.c:913
+#, c-format
+msgid ""
+"[-- Error: Unknown multipart/signed protocol %s! --]\n"
+"\n"
+msgstr ""
+"[-- Error: Unknown multipart/signed protocol %s! --]\n"
+"\n"
+
+#: crypt.c:947
+msgid ""
+"[-- Error: Inconsistent multipart/signed structure! --]\n"
+"\n"
+msgstr ""
+"[-- Error: Inconsistent multipart/signed structure! --]\n"
+"\n"
+
+#: crypt.c:983
+#, c-format
+msgid ""
+"[-- Warning: We can't verify %s/%s signatures. --]\n"
+"\n"
+msgstr ""
+"[-- Warning: We can't verify %s/%s signatures. --]\n"
+"\n"
+
+#: crypt.c:995
+msgid ""
+"[-- The following data is signed --]\n"
+"\n"
+msgstr ""
+"[-- The following data is signed --]\n"
+"\n"
+
+#: crypt.c:1001
+msgid ""
+"[-- Warning: Can't find any signatures. --]\n"
+"\n"
+msgstr ""
+"[-- Warning: Can't find any signatures. --]\n"
+"\n"
+
+#: crypt.c:1007
+msgid ""
+"\n"
+"[-- End of signed data --]\n"
+msgstr ""
+"\n"
+"[-- End of signed data --]\n"
+
+#: cryptglue.c:84
+msgid "\"crypt_use_gpgme\" set but not built with GPGME support."
+msgstr "\"crypt_use_gpgme\" set but not built with GPGME support."
+
+#: cryptglue.c:108
+msgid "Invoking S/MIME..."
+msgstr "Invoking S/MIME..."
+
 #: crypt_gpgme.c:384
 #, c-format
 msgid "error creating gpgme context: %s\n"
@@ -926,7 +1038,7 @@ msgstr "error rewinding data object: %s\n"
 
 #: crypt_gpgme.c:529
 msgid "[tempfile]"
-msgstr ""
+msgstr "[tempfile]"
 
 #: crypt_gpgme.c:535 crypt_gpgme.c:587
 #, c-format
@@ -1542,118 +1654,6 @@ msgstr "Failed to verify sender"
 msgid "Failed to figure out sender"
 msgstr "Failed to figure out sender"
 
-#: crypt.c:59
-#, c-format
-msgid " (current time: %c)"
-msgstr " (current time: %c)"
-
-#: crypt.c:64
-#, c-format
-msgid "[-- %s output follows%s --]\n"
-msgstr "[-- %s output follows%s --]\n"
-
-#: crypt.c:78
-msgid "Passphrase(s) forgotten."
-msgstr "Passphrase(s) forgotten."
-
-#: crypt.c:139
-msgid "Inline PGP can't be used with attachments.  Revert to PGP/MIME?"
-msgstr "Inline PGP can't be used with attachments.  Revert to PGP/MIME?"
-
-#: crypt.c:143
-msgid "Mail not sent: inline PGP can't be used with attachments."
-msgstr "Mail not sent: inline PGP can't be used with attachments."
-
-#: crypt.c:151 cryptglue.c:106 pgpkey.c:541 pgpkey.c:724
-msgid "Invoking PGP..."
-msgstr "Invoking PGP..."
-
-#: crypt.c:162
-msgid "Message can't be sent inline.  Revert to using PGP/MIME?"
-msgstr "Message can't be sent inline.  Revert to using PGP/MIME?"
-
-#: crypt.c:164 send.c:1796
-msgid "Mail not sent."
-msgstr "Mail not sent."
-
-#: crypt.c:224
-msgid "Encrypt message to S/MIME Default Key also?"
-msgstr "Encrypt message to S/MIME Default Key also?"
-
-#: crypt.c:259
-msgid "Encrypt message to PGP Default Key also?"
-msgstr "Encrypt message to PGP Default Key also?"
-
-#: crypt.c:502
-msgid "S/MIME messages with no hints on content are unsupported."
-msgstr "S/MIME messages with no hints on content are unsupported."
-
-#: crypt.c:710 crypt.c:751
-msgid "Trying to extract PGP keys...\n"
-msgstr "Trying to extract PGP keys...\n"
-
-#: crypt.c:732 crypt.c:772
-msgid "Trying to extract S/MIME certificates...\n"
-msgstr "Trying to extract S/MIME certificates...\n"
-
-#: crypt.c:913
-#, c-format
-msgid ""
-"[-- Error: Unknown multipart/signed protocol %s! --]\n"
-"\n"
-msgstr ""
-"[-- Error: Unknown multipart/signed protocol %s! --]\n"
-"\n"
-
-#: crypt.c:947
-msgid ""
-"[-- Error: Inconsistent multipart/signed structure! --]\n"
-"\n"
-msgstr ""
-"[-- Error: Inconsistent multipart/signed structure! --]\n"
-"\n"
-
-#: crypt.c:983
-#, c-format
-msgid ""
-"[-- Warning: We can't verify %s/%s signatures. --]\n"
-"\n"
-msgstr ""
-"[-- Warning: We can't verify %s/%s signatures. --]\n"
-"\n"
-
-#: crypt.c:995
-msgid ""
-"[-- The following data is signed --]\n"
-"\n"
-msgstr ""
-"[-- The following data is signed --]\n"
-"\n"
-
-#: crypt.c:1001
-msgid ""
-"[-- Warning: Can't find any signatures. --]\n"
-"\n"
-msgstr ""
-"[-- Warning: Can't find any signatures. --]\n"
-"\n"
-
-#: crypt.c:1007
-msgid ""
-"\n"
-"[-- End of signed data --]\n"
-msgstr ""
-"\n"
-"[-- End of signed data --]\n"
-
-#: cryptglue.c:84
-msgid "\"crypt_use_gpgme\" set but not built with GPGME support."
-msgstr "\"crypt_use_gpgme\" set but not built with GPGME support."
-
-#: cryptglue.c:108
-msgid "Invoking S/MIME..."
-msgstr "Invoking S/MIME..."
-
 #: curs_lib.c:229
 msgid "yes"
 msgstr "yes"
@@ -1902,11 +1902,11 @@ msgstr "Failed to create query, aborting."
 
 #: curs_main.c:1912 curs_main.c:1931
 msgid "Windowed queries disabled."
-msgstr ""
+msgstr "Windowed queries disabled."
 
 #: curs_main.c:1917 curs_main.c:1936
 msgid "No notmuch vfolder currently loaded."
-msgstr ""
+msgstr "No notmuch vfolder currently loaded."
 
 #: curs_main.c:1974
 msgid "Open mailbox in read-only mode"
@@ -2045,9 +2045,9 @@ msgstr "Cannot edit message"
 #. L10N: This is displayed when the x-label on one or more
 #. * messages is edited.
 #: curs_main.c:2863 pager.c:3111
-#, fuzzy, c-format
+#, c-format
 msgid "%d labels changed."
-msgstr "No labels changed."
+msgstr "%d labels changed."
 
 #. L10N: This is displayed when editing an x-label, but no messages
 #. * were updated.  Possibly due to canceling at the prompt or if the new
@@ -2234,16 +2234,16 @@ msgstr "Clear flag"
 #: handler.c:73
 #, c-format
 msgid "[-- Alternative Type #%d: "
-msgstr ""
+msgstr "[-- Alternative Type #%d: "
 
 #: handler.c:75
 msgid "[-- Type: "
-msgstr ""
+msgstr "[-- Type: "
 
 #: handler.c:76
-#, fuzzy, c-format
+#, c-format
 msgid "%s/%s%s%s, Encoding: %s, Size: %s --]\n"
-msgstr "[-- Type: %s/%s, Encoding: %s, Size: %s --]\n"
+msgstr "%s/%s%s%s, Encoding: %s, Size: %s --]\n"
 
 #: handler.c:1208
 msgid "[-- Error:  Could not display any parts of Multipart/Alternative! --]\n"
@@ -2333,9 +2333,8 @@ msgid "Unable to open temporary file!"
 msgstr "Unable to open temporary file!"
 
 #: handler.c:1760
-#, fuzzy
 msgid "failed to re-open memstream!"
-msgstr "Unable to open memory stream!"
+msgstr "failed to re-open memstream!"
 
 #: handler.c:1886
 msgid "Error: multipart/signed has no protocol."
@@ -2474,12 +2473,12 @@ msgstr "Logging in..."
 msgid "Login failed."
 msgstr "Login failed."
 
-#: imap/auth_sasl.c:94 nntp.c:367 nntp.c:432 smtp.c:372
+#: imap/auth_sasl.c:95 nntp.c:367 nntp.c:432 smtp.c:372
 #, c-format
 msgid "Authenticating (%s)..."
 msgstr "Authenticating (%s)..."
 
-#: imap/auth_sasl.c:222 pop_auth.c:175
+#: imap/auth_sasl.c:223 pop_auth.c:175
 msgid "SASL authentication failed."
 msgstr "SASL authentication failed."
 
@@ -2691,9 +2690,9 @@ msgid "Bad regexp: %s"
 msgstr "Bad regexp: %s"
 
 #: init.c:722
-#, fuzzy, c-format
+#, c-format
 msgid "Not enough subexpressions for template"
-msgstr "Not enough subexpressions for spam template"
+msgstr "Not enough subexpressions for template"
 
 #: init.c:781
 #, c-format
@@ -2701,9 +2700,8 @@ msgid "finish: too many arguments"
 msgstr "finish: too many arguments"
 
 #: init.c:990 init.c:998 init.c:1020
-#, fuzzy
 msgid "not enough arguments"
-msgstr "out of arguments"
+msgstr "not enough arguments"
 
 #: init.c:1081
 msgid "spam: no matching pattern"
@@ -2728,12 +2726,15 @@ msgid "attachments: no disposition"
 msgstr "attachments: no disposition"
 
 #: init.c:1507
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "\n"
 "Current attachments settings:\n"
 "\n"
-msgstr "edit attachment description"
+msgstr ""
+"\n"
+"Current attachments settings:\n"
+"\n"
 
 #: init.c:1537
 msgid "attachments: invalid disposition"
@@ -2761,9 +2762,9 @@ msgid "invalid header field"
 msgstr "invalid header field"
 
 #: init.c:1974
-#, fuzzy, c-format
+#, c-format
 msgid "restore_default(%s): error in regexp: %s\n"
-msgstr "mutt_restore_default(%s): error in regexp: %s\n"
+msgstr "restore_default(%s): error in regexp: %s\n"
 
 #: init.c:2189 init.c:2355
 #, c-format
@@ -2952,6 +2953,978 @@ msgstr "Enter keys (^G to abort): "
 msgid "Char = %s, Octal = %o, Decimal = %d"
 msgstr "Char = %s, Octal = %o, Decimal = %d"
 
+#: keymap_alldefs.h:5
+msgid "null operation"
+msgstr "null operation"
+
+#: keymap_alldefs.h:6
+msgid "end of conditional execution (noop)"
+msgstr "end of conditional execution (noop)"
+
+#: keymap_alldefs.h:7
+msgid "force viewing of attachment using mailcap"
+msgstr "force viewing of attachment using mailcap"
+
+#: keymap_alldefs.h:8
+msgid "view attachment as text"
+msgstr "view attachment as text"
+
+#: keymap_alldefs.h:9
+msgid "Toggle display of subparts"
+msgstr "Toggle display of subparts"
+
+#: keymap_alldefs.h:10
+msgid "move to the bottom of the page"
+msgstr "move to the bottom of the page"
+
+#: keymap_alldefs.h:11
+msgid "remail a message to another user"
+msgstr "remail a message to another user"
+
+#: keymap_alldefs.h:12
+msgid "swap the current folder position with $folder if it exists"
+msgstr "swap the current folder position with $folder if it exists"
+
+#: keymap_alldefs.h:13
+msgid "select a new file in this directory"
+msgstr "select a new file in this directory"
+
+#: keymap_alldefs.h:14
+msgid "view file"
+msgstr "view file"
+
+#: keymap_alldefs.h:15
+msgid "display the currently selected file's name"
+msgstr "display the currently selected file's name"
+
+#: keymap_alldefs.h:16
+msgid "subscribe to current mbox (IMAP/NNTP only)"
+msgstr "subscribe to current mbox (IMAP/NNTP only)"
+
+#: keymap_alldefs.h:17
+msgid "unsubscribe from current mbox (IMAP/NNTP only)"
+msgstr "unsubscribe from current mbox (IMAP/NNTP only)"
+
+#: keymap_alldefs.h:18
+msgid "toggle view all/subscribed mailboxes (IMAP only)"
+msgstr "toggle view all/subscribed mailboxes (IMAP only)"
+
+#: keymap_alldefs.h:19
+msgid "list mailboxes with new mail"
+msgstr "list mailboxes with new mail"
+
+#: keymap_alldefs.h:20
+msgid "mark all articles in newsgroup as read"
+msgstr "mark all articles in newsgroup as read"
+
+#: keymap_alldefs.h:21
+msgid "change directories"
+msgstr "change directories"
+
+#: keymap_alldefs.h:22
+msgid "check mailboxes for new mail"
+msgstr "check mailboxes for new mail"
+
+#: keymap_alldefs.h:23
+msgid "attach file(s) to this message"
+msgstr "attach file(s) to this message"
+
+#: keymap_alldefs.h:24
+msgid "attach message(s) to this message"
+msgstr "attach message(s) to this message"
+
+#: keymap_alldefs.h:25
+msgid "attach news article(s) to this message"
+msgstr "attach news article(s) to this message"
+
+#: keymap_alldefs.h:26
+msgid "edit the BCC list"
+msgstr "edit the BCC list"
+
+#: keymap_alldefs.h:27
+msgid "edit the CC list"
+msgstr "edit the CC list"
+
+#: keymap_alldefs.h:28
+msgid "edit attachment description"
+msgstr "edit attachment description"
+
+#: keymap_alldefs.h:29
+msgid "edit attachment transfer-encoding"
+msgstr "edit attachment transfer-encoding"
+
+#: keymap_alldefs.h:30
+msgid "enter a file to save a copy of this message in"
+msgstr "enter a file to save a copy of this message in"
+
+#: keymap_alldefs.h:31
+msgid "edit the file to be attached"
+msgstr "edit the file to be attached"
+
+#: keymap_alldefs.h:32
+msgid "edit the from field"
+msgstr "edit the from field"
+
+#: keymap_alldefs.h:33
+msgid "edit the message with headers"
+msgstr "edit the message with headers"
+
+#: keymap_alldefs.h:34
+msgid "edit the message"
+msgstr "edit the message"
+
+#: keymap_alldefs.h:35
+msgid "edit attachment using mailcap entry"
+msgstr "edit attachment using mailcap entry"
+
+#: keymap_alldefs.h:36
+msgid "edit the newsgroups list"
+msgstr "edit the newsgroups list"
+
+#: keymap_alldefs.h:37
+msgid "edit the Reply-To field"
+msgstr "edit the Reply-To field"
+
+#: keymap_alldefs.h:38
+msgid "edit the Followup-To field"
+msgstr "edit the Followup-To field"
+
+#: keymap_alldefs.h:39
+msgid "edit the X-Comment-To field"
+msgstr "edit the X-Comment-To field"
+
+#: keymap_alldefs.h:40
+msgid "edit the subject of this message"
+msgstr "edit the subject of this message"
+
+#: keymap_alldefs.h:41
+msgid "edit the TO list"
+msgstr "edit the TO list"
+
+#: keymap_alldefs.h:42
+msgid "create a new mailbox (IMAP only)"
+msgstr "create a new mailbox (IMAP only)"
+
+#: keymap_alldefs.h:43
+msgid "edit attachment content type"
+msgstr "edit attachment content type"
+
+#: keymap_alldefs.h:44
+msgid "get a temporary copy of an attachment"
+msgstr "get a temporary copy of an attachment"
+
+#: keymap_alldefs.h:45
+msgid "run ispell on the message"
+msgstr "run ispell on the message"
+
+#: keymap_alldefs.h:46
+msgid "compose new attachment using mailcap entry"
+msgstr "compose new attachment using mailcap entry"
+
+#: keymap_alldefs.h:47
+msgid "toggle recoding of this attachment"
+msgstr "toggle recoding of this attachment"
+
+#: keymap_alldefs.h:48
+msgid "save this message to send later"
+msgstr "save this message to send later"
+
+#: keymap_alldefs.h:49
+msgid "send attachment with a different name"
+msgstr "send attachment with a different name"
+
+#: keymap_alldefs.h:50
+msgid "rename/move an attached file"
+msgstr "rename/move an attached file"
+
+#: keymap_alldefs.h:51
+msgid "compose a new message to the sender"
+msgstr "compose a new message to the sender"
+
+#: keymap_alldefs.h:52
+msgid "send the message"
+msgstr "send the message"
+
+#: keymap_alldefs.h:53
+msgid "toggle disposition between inline/attachment"
+msgstr "toggle disposition between inline/attachment"
+
+#: keymap_alldefs.h:54
+msgid "toggle whether to delete file after sending it"
+msgstr "toggle whether to delete file after sending it"
+
+#: keymap_alldefs.h:55
+msgid "update an attachment's encoding info"
+msgstr "update an attachment's encoding info"
+
+#: keymap_alldefs.h:56
+msgid "write the message to a folder"
+msgstr "write the message to a folder"
+
+#: keymap_alldefs.h:57
+msgid "copy a message to a file/mailbox"
+msgstr "copy a message to a file/mailbox"
+
+#: keymap_alldefs.h:58
+msgid "create an alias from a message sender"
+msgstr "create an alias from a message sender"
+
+#: keymap_alldefs.h:59
+msgid "move entry to bottom of screen"
+msgstr "move entry to bottom of screen"
+
+#: keymap_alldefs.h:60
+msgid "move entry to middle of screen"
+msgstr "move entry to middle of screen"
+
+#: keymap_alldefs.h:61
+msgid "move entry to top of screen"
+msgstr "move entry to top of screen"
+
+#: keymap_alldefs.h:62
+msgid "make decoded (text/plain) copy"
+msgstr "make decoded (text/plain) copy"
+
+#: keymap_alldefs.h:63
+msgid "make decoded copy (text/plain) and delete"
+msgstr "make decoded copy (text/plain) and delete"
+
+#: keymap_alldefs.h:64
+msgid "delete the current entry"
+msgstr "delete the current entry"
+
+#: keymap_alldefs.h:65
+msgid "delete the current mailbox (IMAP only)"
+msgstr "delete the current mailbox (IMAP only)"
+
+#: keymap_alldefs.h:66
+msgid "delete all messages in subthread"
+msgstr "delete all messages in subthread"
+
+#: keymap_alldefs.h:67
+msgid "delete all messages in thread"
+msgstr "delete all messages in thread"
+
+#: keymap_alldefs.h:68
+msgid "display full address of sender"
+msgstr "display full address of sender"
+
+#: keymap_alldefs.h:69
+msgid "display message and toggle header weeding"
+msgstr "display message and toggle header weeding"
+
+#: keymap_alldefs.h:70
+msgid "display a message"
+msgstr "display a message"
+
+#: keymap_alldefs.h:71
+msgid "add, change, or delete a message's label"
+msgstr "add, change, or delete a message's label"
+
+#: keymap_alldefs.h:72
+msgid "edit the raw message"
+msgstr "edit the raw message"
+
+#: keymap_alldefs.h:73
+msgid "delete the char in front of the cursor"
+msgstr "delete the char in front of the cursor"
+
+#: keymap_alldefs.h:74
+msgid "move the cursor one character to the left"
+msgstr "move the cursor one character to the left"
+
+#: keymap_alldefs.h:75
+msgid "move the cursor to the beginning of the word"
+msgstr "move the cursor to the beginning of the word"
+
+#: keymap_alldefs.h:76
+msgid "jump to the beginning of the line"
+msgstr "jump to the beginning of the line"
+
+#: keymap_alldefs.h:77
+msgid "cycle among incoming mailboxes"
+msgstr "cycle among incoming mailboxes"
+
+#: keymap_alldefs.h:78
+msgid "complete filename or alias"
+msgstr "complete filename or alias"
+
+#: keymap_alldefs.h:79
+msgid "complete address with query"
+msgstr "complete address with query"
+
+#: keymap_alldefs.h:80
+msgid "delete the char under the cursor"
+msgstr "delete the char under the cursor"
+
+#: keymap_alldefs.h:81
+msgid "jump to the end of the line"
+msgstr "jump to the end of the line"
+
+#: keymap_alldefs.h:82
+msgid "move the cursor one character to the right"
+msgstr "move the cursor one character to the right"
+
+#: keymap_alldefs.h:83
+msgid "move the cursor to the end of the word"
+msgstr "move the cursor to the end of the word"
+
+#: keymap_alldefs.h:84
+msgid "scroll down through the history list"
+msgstr "scroll down through the history list"
+
+#: keymap_alldefs.h:85
+msgid "scroll up through the history list"
+msgstr "scroll up through the history list"
+
+#: keymap_alldefs.h:86
+msgid "delete chars from cursor to end of line"
+msgstr "delete chars from cursor to end of line"
+
+#: keymap_alldefs.h:87
+msgid "delete chars from the cursor to the end of the word"
+msgstr "delete chars from the cursor to the end of the word"
+
+#: keymap_alldefs.h:88
+msgid "delete all chars on the line"
+msgstr "delete all chars on the line"
+
+#: keymap_alldefs.h:89
+msgid "delete the word in front of the cursor"
+msgstr "delete the word in front of the cursor"
+
+#: keymap_alldefs.h:90
+msgid "quote the next typed key"
+msgstr "quote the next typed key"
+
+#: keymap_alldefs.h:91
+msgid "transpose character under cursor with previous"
+msgstr "transpose character under cursor with previous"
+
+#: keymap_alldefs.h:92
+msgid "capitalize the word"
+msgstr "capitalize the word"
+
+#: keymap_alldefs.h:93
+msgid "convert the word to lower case"
+msgstr "convert the word to lower case"
+
+#: keymap_alldefs.h:94
+msgid "convert the word to upper case"
+msgstr "convert the word to upper case"
+
+#: keymap_alldefs.h:95
+msgid "enter a muttrc command"
+msgstr "enter a muttrc command"
+
+#: keymap_alldefs.h:96
+msgid "enter a file mask"
+msgstr "enter a file mask"
+
+#: keymap_alldefs.h:97
+msgid "exit this menu"
+msgstr "exit this menu"
+
+#: keymap_alldefs.h:98
+msgid "filter attachment through a shell command"
+msgstr "filter attachment through a shell command"
+
+#: keymap_alldefs.h:99
+msgid "move to the first entry"
+msgstr "move to the first entry"
+
+#: keymap_alldefs.h:100
+msgid "toggle a message's 'important' flag"
+msgstr "toggle a message's 'important' flag"
+
+#: keymap_alldefs.h:101
+msgid "followup to newsgroup"
+msgstr "followup to newsgroup"
+
+#: keymap_alldefs.h:102
+msgid "forward to newsgroup"
+msgstr "forward to newsgroup"
+
+#: keymap_alldefs.h:103
+msgid "forward a message with comments"
+msgstr "forward a message with comments"
+
+#: keymap_alldefs.h:104
+msgid "select the current entry"
+msgstr "select the current entry"
+
+#: keymap_alldefs.h:105
+msgid "get all children of the current message"
+msgstr "get all children of the current message"
+
+#: keymap_alldefs.h:106
+msgid "get message with Message-Id"
+msgstr "get message with Message-Id"
+
+#: keymap_alldefs.h:107
+msgid "get parent of the current message"
+msgstr "get parent of the current message"
+
+#: keymap_alldefs.h:108
+msgid "reply to all recipients"
+msgstr "reply to all recipients"
+
+#: keymap_alldefs.h:109
+msgid "scroll down 1/2 page"
+msgstr "scroll down 1/2 page"
+
+#: keymap_alldefs.h:110
+msgid "scroll up 1/2 page"
+msgstr "scroll up 1/2 page"
+
+#: keymap_alldefs.h:111
+msgid "this screen"
+msgstr "this screen"
+
+#: keymap_alldefs.h:112
+msgid "jump to an index number"
+msgstr "jump to an index number"
+
+#: keymap_alldefs.h:113
+msgid "move to the last entry"
+msgstr "move to the last entry"
+
+#: keymap_alldefs.h:114
+msgid "reply to specified mailing list"
+msgstr "reply to specified mailing list"
+
+#: keymap_alldefs.h:115
+msgid "load list of all newsgroups from NNTP server"
+msgstr "load list of all newsgroups from NNTP server"
+
+#: keymap_alldefs.h:116
+msgid "execute a macro"
+msgstr "execute a macro"
+
+#: keymap_alldefs.h:117
+msgid "compose a new mail message"
+msgstr "compose a new mail message"
+
+#: keymap_alldefs.h:118
+msgid "break the thread in two"
+msgstr "break the thread in two"
+
+#: keymap_alldefs.h:119
+msgid "open a different folder"
+msgstr "open a different folder"
+
+#: keymap_alldefs.h:120
+msgid "open a different folder in read only mode"
+msgstr "open a different folder in read only mode"
+
+#: keymap_alldefs.h:121
+msgid "open a different newsgroup"
+msgstr "open a different newsgroup"
+
+#: keymap_alldefs.h:122
+msgid "open a different newsgroup in read only mode"
+msgstr "open a different newsgroup in read only mode"
+
+#: keymap_alldefs.h:123
+msgid "clear a status flag from a message"
+msgstr "clear a status flag from a message"
+
+#: keymap_alldefs.h:124
+msgid "delete messages matching a pattern"
+msgstr "delete messages matching a pattern"
+
+#: keymap_alldefs.h:125
+msgid "force retrieval of mail from IMAP server"
+msgstr "force retrieval of mail from IMAP server"
+
+#: keymap_alldefs.h:126
+msgid "logout from all IMAP servers"
+msgstr "logout from all IMAP servers"
+
+#: keymap_alldefs.h:127
+msgid "retrieve mail from POP server"
+msgstr "retrieve mail from POP server"
+
+#: keymap_alldefs.h:128
+msgid "show only messages matching a pattern"
+msgstr "show only messages matching a pattern"
+
+#: keymap_alldefs.h:129
+msgid "link tagged message to the current one"
+msgstr "link tagged message to the current one"
+
+#: keymap_alldefs.h:130
+msgid "open next mailbox with new mail"
+msgstr "open next mailbox with new mail"
+
+#: keymap_alldefs.h:131
+msgid "jump to the next new message"
+msgstr "jump to the next new message"
+
+#: keymap_alldefs.h:132
+msgid "jump to the next new or unread message"
+msgstr "jump to the next new or unread message"
+
+#: keymap_alldefs.h:133
+msgid "jump to the next subthread"
+msgstr "jump to the next subthread"
+
+#: keymap_alldefs.h:134
+msgid "jump to the next thread"
+msgstr "jump to the next thread"
+
+#: keymap_alldefs.h:135
+msgid "move to the next undeleted message"
+msgstr "move to the next undeleted message"
+
+#: keymap_alldefs.h:136
+msgid "jump to the next unread message"
+msgstr "jump to the next unread message"
+
+#: keymap_alldefs.h:137
+msgid "jump to parent message in thread"
+msgstr "jump to parent message in thread"
+
+#: keymap_alldefs.h:138
+msgid "jump to previous thread"
+msgstr "jump to previous thread"
+
+#: keymap_alldefs.h:139
+msgid "jump to previous subthread"
+msgstr "jump to previous subthread"
+
+#: keymap_alldefs.h:140
+msgid "move to the previous undeleted message"
+msgstr "move to the previous undeleted message"
+
+#: keymap_alldefs.h:141
+msgid "jump to the previous new message"
+msgstr "jump to the previous new message"
+
+#: keymap_alldefs.h:142
+msgid "jump to the previous new or unread message"
+msgstr "jump to the previous new or unread message"
+
+#: keymap_alldefs.h:143
+msgid "jump to the previous unread message"
+msgstr "jump to the previous unread message"
+
+#: keymap_alldefs.h:144
+msgid "mark the current thread as read"
+msgstr "mark the current thread as read"
+
+#: keymap_alldefs.h:145
+msgid "mark the current subthread as read"
+msgstr "mark the current subthread as read"
+
+#: keymap_alldefs.h:146
+msgid "jump to root message in thread"
+msgstr "jump to root message in thread"
+
+#: keymap_alldefs.h:147
+msgid "set a status flag on a message"
+msgstr "set a status flag on a message"
+
+#: keymap_alldefs.h:148
+msgid "save changes to mailbox"
+msgstr "save changes to mailbox"
+
+#: keymap_alldefs.h:149
+msgid "tag messages matching a pattern"
+msgstr "tag messages matching a pattern"
+
+#: keymap_alldefs.h:150
+msgid "delete from mutt, don't touch on disk"
+msgstr "delete from mutt, don't touch on disk"
+
+#: keymap_alldefs.h:151
+msgid "undelete messages matching a pattern"
+msgstr "undelete messages matching a pattern"
+
+#: keymap_alldefs.h:152
+msgid "untag messages matching a pattern"
+msgstr "untag messages matching a pattern"
+
+#: keymap_alldefs.h:153
+msgid "create a hotkey macro for the current message"
+msgstr "create a hotkey macro for the current message"
+
+#: keymap_alldefs.h:154
+msgid "move to the middle of the page"
+msgstr "move to the middle of the page"
+
+#: keymap_alldefs.h:155
+msgid "move to the next entry"
+msgstr "move to the next entry"
+
+#: keymap_alldefs.h:156
+msgid "scroll down one line"
+msgstr "scroll down one line"
+
+#: keymap_alldefs.h:157
+msgid "move to the next page"
+msgstr "move to the next page"
+
+#: keymap_alldefs.h:158
+msgid "jump to the bottom of the message"
+msgstr "jump to the bottom of the message"
+
+#: keymap_alldefs.h:159
+msgid "toggle display of quoted text"
+msgstr "toggle display of quoted text"
+
+#: keymap_alldefs.h:160
+msgid "skip beyond quoted text"
+msgstr "skip beyond quoted text"
+
+#: keymap_alldefs.h:161
+msgid "jump to the top of the message"
+msgstr "jump to the top of the message"
+
+#: keymap_alldefs.h:162
+msgid "pipe message/attachment to a shell command"
+msgstr "pipe message/attachment to a shell command"
+
+#: keymap_alldefs.h:163
+msgid "post message to newsgroup"
+msgstr "post message to newsgroup"
+
+#: keymap_alldefs.h:164
+msgid "move to the previous entry"
+msgstr "move to the previous entry"
+
+#: keymap_alldefs.h:165
+msgid "scroll up one line"
+msgstr "scroll up one line"
+
+#: keymap_alldefs.h:166
+msgid "move to the previous page"
+msgstr "move to the previous page"
+
+#: keymap_alldefs.h:167
+msgid "print the current entry"
+msgstr "print the current entry"
+
+#: keymap_alldefs.h:168
+msgid "really delete the current entry, bypassing the trash folder"
+msgstr "really delete the current entry, bypassing the trash folder"
+
+#: keymap_alldefs.h:169
+msgid "really delete the current thread, bypassing the trash folder"
+msgstr "really delete the current thread, bypassing the trash folder"
+
+#: keymap_alldefs.h:170
+msgid "query external program for addresses"
+msgstr "query external program for addresses"
+
+#: keymap_alldefs.h:171
+msgid "append new query results to current results"
+msgstr "append new query results to current results"
+
+#: keymap_alldefs.h:172
+msgid "save changes to mailbox and quit"
+msgstr "save changes to mailbox and quit"
+
+#: keymap_alldefs.h:173
+msgid "recall a postponed message"
+msgstr "recall a postponed message"
+
+#: keymap_alldefs.h:174
+msgid "reconstruct thread containing current message"
+msgstr "reconstruct thread containing current message"
+
+#: keymap_alldefs.h:175
+msgid "clear and redraw the screen"
+msgstr "clear and redraw the screen"
+
+#: keymap_alldefs.h:176
+msgid "{internal}"
+msgstr "{internal}"
+
+#: keymap_alldefs.h:177
+msgid "rename the current mailbox (IMAP only)"
+msgstr "rename the current mailbox (IMAP only)"
+
+#: keymap_alldefs.h:178
+msgid "reply to a message"
+msgstr "reply to a message"
+
+#: keymap_alldefs.h:179
+msgid "use the current message as a template for a new one"
+msgstr "use the current message as a template for a new one"
+
+#: keymap_alldefs.h:180
+msgid "save message/attachment to a mailbox/file"
+msgstr "save message/attachment to a mailbox/file"
+
+#: keymap_alldefs.h:181
+msgid "search for a regular expression"
+msgstr "search for a regular expression"
+
+#: keymap_alldefs.h:182
+msgid "search backwards for a regular expression"
+msgstr "search backwards for a regular expression"
+
+#: keymap_alldefs.h:183
+msgid "search for next match"
+msgstr "search for next match"
+
+#: keymap_alldefs.h:184
+msgid "search for next match in opposite direction"
+msgstr "search for next match in opposite direction"
+
+#: keymap_alldefs.h:185
+msgid "toggle search pattern coloring"
+msgstr "toggle search pattern coloring"
+
+#: keymap_alldefs.h:186
+msgid "invoke a command in a subshell"
+msgstr "invoke a command in a subshell"
+
+#: keymap_alldefs.h:187
+msgid "sort messages"
+msgstr "sort messages"
+
+#: keymap_alldefs.h:188
+msgid "sort messages in reverse order"
+msgstr "sort messages in reverse order"
+
+#: keymap_alldefs.h:189
+msgid "subscribe to newsgroups matching a pattern"
+msgstr "subscribe to newsgroups matching a pattern"
+
+#: keymap_alldefs.h:190
+msgid "tag the current entry"
+msgstr "tag the current entry"
+
+#: keymap_alldefs.h:191
+msgid "apply next function to tagged messages"
+msgstr "apply next function to tagged messages"
+
+#: keymap_alldefs.h:192
+msgid "apply next function ONLY to tagged messages"
+msgstr "apply next function ONLY to tagged messages"
+
+#: keymap_alldefs.h:193
+msgid "tag the current subthread"
+msgstr "tag the current subthread"
+
+#: keymap_alldefs.h:194
+msgid "tag the current thread"
+msgstr "tag the current thread"
+
+#: keymap_alldefs.h:195
+msgid "toggle a message's 'new' flag"
+msgstr "toggle a message's 'new' flag"
+
+#: keymap_alldefs.h:196
+msgid "toggle view of read messages"
+msgstr "toggle view of read messages"
+
+#: keymap_alldefs.h:197
+msgid "toggle whether the mailbox will be rewritten"
+msgstr "toggle whether the mailbox will be rewritten"
+
+#: keymap_alldefs.h:198
+msgid "toggle whether to browse mailboxes or all files"
+msgstr "toggle whether to browse mailboxes or all files"
+
+#: keymap_alldefs.h:199
+msgid "move to the top of the page"
+msgstr "move to the top of the page"
+
+#: keymap_alldefs.h:200
+msgid "mark all articles in newsgroup as unread"
+msgstr "mark all articles in newsgroup as unread"
+
+#: keymap_alldefs.h:201
+msgid "undelete the current entry"
+msgstr "undelete the current entry"
+
+#: keymap_alldefs.h:202
+msgid "undelete all messages in thread"
+msgstr "undelete all messages in thread"
+
+#: keymap_alldefs.h:203
+msgid "undelete all messages in subthread"
+msgstr "undelete all messages in subthread"
+
+#: keymap_alldefs.h:204
+msgid "unsubscribe from newsgroups matching a pattern"
+msgstr "unsubscribe from newsgroups matching a pattern"
+
+#: keymap_alldefs.h:205
+msgid "show the Mutt version number and date"
+msgstr "show the Mutt version number and date"
+
+#: keymap_alldefs.h:206
+msgid "view attachment using mailcap entry if necessary"
+msgstr "view attachment using mailcap entry if necessary"
+
+#: keymap_alldefs.h:207
+msgid "show MIME attachments"
+msgstr "show MIME attachments"
+
+#: keymap_alldefs.h:208
+msgid "display the keycode for a key press"
+msgstr "display the keycode for a key press"
+
+#: keymap_alldefs.h:209
+msgid "limit view to current thread"
+msgstr "limit view to current thread"
+
+#: keymap_alldefs.h:210
+msgid "show currently active limit pattern"
+msgstr "show currently active limit pattern"
+
+#: keymap_alldefs.h:211
+msgid "collapse/uncollapse current thread"
+msgstr "collapse/uncollapse current thread"
+
+#: keymap_alldefs.h:212
+msgid "collapse/uncollapse all threads"
+msgstr "collapse/uncollapse all threads"
+
+#: keymap_alldefs.h:213
+msgid "move the highlight to next mailbox"
+msgstr "move the highlight to next mailbox"
+
+#: keymap_alldefs.h:214
+msgid "move the highlight to next mailbox with new mail"
+msgstr "move the highlight to next mailbox with new mail"
+
+#: keymap_alldefs.h:215
+msgid "open highlighted mailbox"
+msgstr "open highlighted mailbox"
+
+#: keymap_alldefs.h:216
+msgid "scroll the sidebar down 1 page"
+msgstr "scroll the sidebar down 1 page"
+
+#: keymap_alldefs.h:217
+msgid "scroll the sidebar up 1 page"
+msgstr "scroll the sidebar up 1 page"
+
+#: keymap_alldefs.h:218
+msgid "move the highlight to previous mailbox"
+msgstr "move the highlight to previous mailbox"
+
+#: keymap_alldefs.h:219
+msgid "move the highlight to previous mailbox with new mail"
+msgstr "move the highlight to previous mailbox with new mail"
+
+#: keymap_alldefs.h:220
+msgid "toggle between mailboxes and virtual mailboxes"
+msgstr "toggle between mailboxes and virtual mailboxes"
+
+#: keymap_alldefs.h:221
+msgid "make the sidebar (in)visible"
+msgstr "make the sidebar (in)visible"
+
+#: keymap_alldefs.h:222
+msgid "open a different virtual folder"
+msgstr "open a different virtual folder"
+
+#: keymap_alldefs.h:223
+msgid "generate virtual folder from query"
+msgstr "generate virtual folder from query"
+
+#: keymap_alldefs.h:224
+msgid "generate virtual folder from query and time window"
+msgstr "generate virtual folder from query and time window"
+
+#: keymap_alldefs.h:225
+msgid "shifts virtual folder time window forwards"
+msgstr "shifts virtual folder time window forwards"
+
+#: keymap_alldefs.h:226
+msgid "shifts virtual folder time window backwards"
+msgstr "shifts virtual folder time window backwards"
+
+#: keymap_alldefs.h:227
+msgid "modify (notmuch) tags"
+msgstr "modify (notmuch) tags"
+
+#: keymap_alldefs.h:228
+msgid "modify labels and then hide message"
+msgstr "modify labels and then hide message"
+
+#: keymap_alldefs.h:229
+msgid "read entire thread of the current message"
+msgstr "read entire thread of the current message"
+
+#: keymap_alldefs.h:230
+msgid "accept the chain constructed"
+msgstr "accept the chain constructed"
+
+#: keymap_alldefs.h:231
+msgid "append a remailer to the chain"
+msgstr "append a remailer to the chain"
+
+#: keymap_alldefs.h:232
+msgid "insert a remailer into the chain"
+msgstr "insert a remailer into the chain"
+
+#: keymap_alldefs.h:233
+msgid "delete a remailer from the chain"
+msgstr "delete a remailer from the chain"
+
+#: keymap_alldefs.h:234
+msgid "select the previous element of the chain"
+msgstr "select the previous element of the chain"
+
+#: keymap_alldefs.h:235
+msgid "select the next element of the chain"
+msgstr "select the next element of the chain"
+
+#: keymap_alldefs.h:236
+msgid "send the message through a mixmaster remailer chain"
+msgstr "send the message through a mixmaster remailer chain"
+
+#: keymap_alldefs.h:237
+msgid "attach a PGP public key"
+msgstr "attach a PGP public key"
+
+#: keymap_alldefs.h:238
+msgid "show PGP options"
+msgstr "show PGP options"
+
+#: keymap_alldefs.h:239
+msgid "mail a PGP public key"
+msgstr "mail a PGP public key"
+
+#: keymap_alldefs.h:240
+msgid "verify a PGP public key"
+msgstr "verify a PGP public key"
+
+#: keymap_alldefs.h:241
+msgid "view the key's user id"
+msgstr "view the key's user id"
+
+#: keymap_alldefs.h:242
+msgid "check for classic PGP"
+msgstr "check for classic PGP"
+
+#: keymap_alldefs.h:243
+msgid "show S/MIME options"
+msgstr "show S/MIME options"
+
+#: keymap_alldefs.h:244
+msgid "make decrypted copy and delete"
+msgstr "make decrypted copy and delete"
+
+#: keymap_alldefs.h:245
+msgid "make decrypted copy"
+msgstr "make decrypted copy"
+
+#: keymap_alldefs.h:246
+msgid "wipe passphrase(s) from memory"
+msgstr "wipe passphrase(s) from memory"
+
+#: keymap_alldefs.h:247
+msgid "extract supported public keys"
+msgstr "extract supported public keys"
+
 #: lib.c:118
 msgid "Integer overflow -- can't allocate memory!"
 msgstr "Integer overflow -- can't allocate memory!"
@@ -2961,7 +3934,6 @@ msgid "Out of memory!"
 msgstr "Out of memory!"
 
 #: main.c:77
-#, fuzzy
 msgid ""
 "usage: mutt [<options>] [-z] [-f <file> | -yZ]\n"
 "       mutt [<options>] [-Ex] [-Hi <file>] [-s <subj>] [-bc <addr>] [-a <file> [...] --] <addr> [...]\n"
@@ -2979,11 +3951,11 @@ msgstr ""
 "       mutt [<options>] -p\n"
 "       mutt [<options>] -A <alias> [...]\n"
 "       mutt [<options>] -Q <query> [...]\n"
-"       mutt [<options>] -D\n"
+"       mutt [<options>] -B\n"
+"       mutt [<options>] -D [-S]\n"
 "       mutt -v[v]\n"
 
 #: main.c:87
-#, fuzzy
 msgid ""
 "options:\n"
 "  -A <alias>    expand the given alias\n"
@@ -3001,15 +3973,15 @@ msgstr ""
 "                the list of files must be terminated with the \"--\" sequence\n"
 "  -b <address>  specify a blind carbon-copy (BCC) address\n"
 "  -c <address>  specify a carbon-copy (CC) address\n"
-"  -D            print the value of all variables to stdout"
+"  -D            print the value of all variables to stdout\n"
+"  -D -S         like -D, but hide the value of sensitive variables\n"
+"  -B            run in batch mode (do not start the ncurses UI)"
 
 #: main.c:97
-#, fuzzy
 msgid "  -d <level>    log debugging output to ~/.muttdebug0"
-msgstr "  -d <level>     log debugging output to ~/.muttdebug0"
+msgstr "  -d <level>    log debugging output to ~/.muttdebug0"
 
 #: main.c:100
-#, fuzzy
 msgid ""
 "  -E            edit the draft (-H) or include (-i) file\n"
 "  -e <command>  specify a command to be executed after initialization\n"
@@ -3036,7 +4008,6 @@ msgstr ""
 "  -p            recall a postponed message"
 
 #: main.c:112
-#, fuzzy
 msgid ""
 "  -Q <variable> query a configuration variable\n"
 "  -R            open mailbox in read-only mode\n"
@@ -3307,7 +4278,7 @@ msgstr "%s is not a mailbox!"
 #: mutt_lua.c:386
 #, c-format
 msgid "%s: %s"
-msgstr ""
+msgstr "%s: %s"
 
 #: mutt_notmuch.c:367 mutt_notmuch.c:1802 mutt_notmuch.c:1811
 #: mutt_notmuch.c:1822 mutt_notmuch.c:1929
@@ -3322,7 +4293,7 @@ msgstr "failed to parse notmuch query type: %s"
 
 #: mutt_notmuch.c:521
 msgid "Invalid nm_query_window_timebase value (valid values are: hour, day, week, month or year)."
-msgstr ""
+msgstr "Invalid nm_query_window_timebase value (valid values are: hour, day, week, month or year)."
 
 #: mutt_notmuch.c:575
 #, c-format
@@ -3395,9 +4366,9 @@ msgid "Error talking to %s (%s)"
 msgstr "Error talking to %s (%s)"
 
 #: mutt_socket.c:337 mutt_socket.c:361
-#, fuzzy, c-format
+#, c-format
 msgid "Connection to %s has been aborted"
-msgstr "Connection to %s closed"
+msgstr "Connection to %s has been aborted"
 
 #: mutt_socket.c:454 mutt_socket.c:513
 #, c-format
@@ -3522,21 +4493,19 @@ msgstr "SSL Certificate check (certificate %d of %d in chain)"
 #.
 #: mutt_ssl.c:818
 msgid "roas"
-msgstr ""
+msgstr "roas"
 
 #: mutt_ssl.c:822
-#, fuzzy
 msgid "(r)eject, accept (o)nce, (a)ccept always, (s)kip"
-msgstr "(r)eject, accept (o)nce, (a)ccept always"
+msgstr "(r)eject, accept (o)nce, (a)ccept always, (s)kip"
 
 #: mutt_ssl.c:824 mutt_ssl_gnutls.c:702
 msgid "(r)eject, accept (o)nce, (a)ccept always"
 msgstr "(r)eject, accept (o)nce, (a)ccept always"
 
 #: mutt_ssl.c:829
-#, fuzzy
 msgid "(r)eject, accept (o)nce, (s)kip"
-msgstr "(r)eject, accept (o)nce"
+msgstr "(r)eject, accept (o)nce, (s)kip"
 
 #: mutt_ssl.c:831 mutt_ssl_gnutls.c:707
 msgid "(r)eject, accept (o)nce"
@@ -3560,7 +4529,7 @@ msgstr "Certificate host check failed: %s"
 #. * the correct certificate if it supports multiple hosts.
 #: mutt_ssl.c:1055 mutt_ssl_gnutls.c:1061
 msgid "Warning: unable to set TLS SNI host name"
-msgstr ""
+msgstr "Warning: unable to set TLS SNI host name"
 
 #: mutt_ssl.c:1066
 msgid "I/O error"
@@ -3580,7 +4549,7 @@ msgstr "Unable to create SSL context"
 
 #: mutt_ssl.c:1157 mutt_ssl.c:1251
 msgid "Warning: error enabling ssl_verify_partial_chains"
-msgstr ""
+msgstr "Warning: error enabling ssl_verify_partial_chains"
 
 #: mutt_ssl_gnutls.c:108 mutt_ssl_gnutls.c:135
 msgid "Error: no TLS socket open"
@@ -3696,9 +4665,9 @@ msgid "Waiting for flock attempt... %d"
 msgstr "Waiting for flock attempt... %d"
 
 #: mx.c:682
-#, fuzzy, c-format
+#, c-format
 msgid "Reading from %s interrupted..."
-msgstr "Search interrupted."
+msgstr "Reading from %s interrupted..."
 
 #: mx.c:777
 msgid "message(s) not deleted"
@@ -3932,28 +4901,24 @@ msgid "Invalid relative date: %s"
 msgstr "Invalid relative date: %s"
 
 #: pattern.c:614 pattern.c:720
-#, fuzzy
 msgid "No current message"
-msgstr "No unread messages."
+msgstr "No current message"
 
 #: pattern.c:742
 msgid "No Context"
-msgstr ""
+msgstr "No Context"
 
 #: pattern.c:903
-#, fuzzy
 msgid "Error opening memstream"
-msgstr "Error opening mailbox"
+msgstr "Error opening memstream"
 
 #: pattern.c:950
-#, fuzzy
 msgid "Error re-opening memstream"
-msgstr "Error opening mailbox"
+msgstr "Error re-opening memstream"
 
 #: pattern.c:959
-#, fuzzy
 msgid "Error opening /dev/null"
-msgstr "Can't open /dev/null"
+msgstr "Error opening /dev/null"
 
 #: pattern.c:1122 pattern.c:1281
 #, c-format
@@ -4174,9 +5139,9 @@ msgid "Can't open /dev/null"
 msgstr "Can't open /dev/null"
 
 #: pgpkey.c:606
-#, fuzzy, c-format
+#, c-format
 msgid "%str Do you really want to use the key?"
-msgstr "%s Do you really want to use the key?"
+msgstr "%str Do you really want to use the key?"
 
 #: pgpkey.c:748
 #, c-format
@@ -4471,7 +5436,7 @@ msgstr "Can't decode all tagged attachments.  MIME-encapsulate the others?"
 
 #: remailer.c:138
 msgid "<random>"
-msgstr ""
+msgstr "<random>"
 
 #: remailer.c:434
 msgid "Append"
@@ -4993,7 +5958,7 @@ msgid ""
 "Copyright (C) 2000-2004 Edmund Grimley Evans <edmundo@rano.org>\n"
 "Copyright (C) 2006-2009 Rocco Rutte <pdmef@gmx.net>\n"
 "Copyright (C) 2014-2016 Kevin J. McCarthy <kevin@8t8.us>\n"
-"Copyright (C) 2015-2016 Richard Russon <rich@flatcap.org>\n"
+"Copyright (C) 2015-2017 Richard Russon <rich@flatcap.org>\n"
 "\n"
 "Many others not mentioned here contributed code, fixes,\n"
 "and suggestions.\n"
@@ -5007,7 +5972,7 @@ msgstr ""
 "Copyright (C) 2000-2004 Edmund Grimley Evans <edmundo@rano.org>\n"
 "Copyright (C) 2006-2009 Rocco Rutte <pdmef@gmx.net>\n"
 "Copyright (C) 2014-2016 Kevin J. McCarthy <kevin@8t8.us>\n"
-"Copyright (C) 2015-2016 Richard Russon <rich@flatcap.org>\n"
+"Copyright (C) 2015-2017 Richard Russon <rich@flatcap.org>\n"
 "\n"
 "Many others not mentioned here contributed code, fixes,\n"
 "and suggestions.\n"
@@ -5075,745 +6040,3 @@ msgid ""
 msgstr ""
 "\n"
 "Compile options:"
-
-#~ msgid "PGP passphrase forgotten."
-#~ msgstr "PGP passphrase forgotten."
-
-#~ msgid "Query"
-#~ msgstr "Query"
-
-#~ msgid "null operation"
-#~ msgstr "null operation"
-
-#~ msgid "end of conditional execution (noop)"
-#~ msgstr "end of conditional execution (noop)"
-
-#~ msgid "force viewing of attachment using mailcap"
-#~ msgstr "force viewing of attachment using mailcap"
-
-#~ msgid "view attachment as text"
-#~ msgstr "view attachment as text"
-
-#~ msgid "Toggle display of subparts"
-#~ msgstr "Toggle display of subparts"
-
-#~ msgid "move to the bottom of the page"
-#~ msgstr "move to the bottom of the page"
-
-#~ msgid "remail a message to another user"
-#~ msgstr "remail a message to another user"
-
-#~ msgid "swap the current folder position with $folder if it exists"
-#~ msgstr "swap the current folder position with $folder if it exists"
-
-#~ msgid "select a new file in this directory"
-#~ msgstr "select a new file in this directory"
-
-#~ msgid "view file"
-#~ msgstr "view file"
-
-#~ msgid "display the currently selected file's name"
-#~ msgstr "display the currently selected file's name"
-
-#~ msgid "subscribe to current mbox (IMAP/NNTP only)"
-#~ msgstr "subscribe to current mbox (IMAP/NNTP only)"
-
-#~ msgid "unsubscribe from current mbox (IMAP/NNTP only)"
-#~ msgstr "unsubscribe from current mbox (IMAP/NNTP only)"
-
-#~ msgid "toggle view all/subscribed mailboxes (IMAP only)"
-#~ msgstr "toggle view all/subscribed mailboxes (IMAP only)"
-
-#~ msgid "list mailboxes with new mail"
-#~ msgstr "list mailboxes with new mail"
-
-#~ msgid "mark all articles in newsgroup as read"
-#~ msgstr "mark all articles in newsgroup as read"
-
-#~ msgid "change directories"
-#~ msgstr "change directories"
-
-#~ msgid "check mailboxes for new mail"
-#~ msgstr "check mailboxes for new mail"
-
-#~ msgid "attach file(s) to this message"
-#~ msgstr "attach file(s) to this message"
-
-#~ msgid "attach message(s) to this message"
-#~ msgstr "attach message(s) to this message"
-
-#~ msgid "attach news article(s) to this message"
-#~ msgstr "attach news article(s) to this message"
-
-#~ msgid "edit the BCC list"
-#~ msgstr "edit the BCC list"
-
-#~ msgid "edit the CC list"
-#~ msgstr "edit the CC list"
-
-#~ msgid "edit attachment description"
-#~ msgstr "edit attachment description"
-
-#~ msgid "edit attachment transfer-encoding"
-#~ msgstr "edit attachment transfer-encoding"
-
-#~ msgid "enter a file to save a copy of this message in"
-#~ msgstr "enter a file to save a copy of this message in"
-
-#~ msgid "edit the file to be attached"
-#~ msgstr "edit the file to be attached"
-
-#~ msgid "edit the from field"
-#~ msgstr "edit the from field"
-
-#~ msgid "edit the message with headers"
-#~ msgstr "edit the message with headers"
-
-#~ msgid "edit the message"
-#~ msgstr "edit the message"
-
-#~ msgid "edit attachment using mailcap entry"
-#~ msgstr "edit attachment using mailcap entry"
-
-#~ msgid "edit the newsgroups list"
-#~ msgstr "edit the newsgroups list"
-
-#~ msgid "edit the Reply-To field"
-#~ msgstr "edit the Reply-To field"
-
-#~ msgid "edit the Followup-To field"
-#~ msgstr "edit the Followup-To field"
-
-#~ msgid "edit the X-Comment-To field"
-#~ msgstr "edit the X-Comment-To field"
-
-#~ msgid "edit the subject of this message"
-#~ msgstr "edit the subject of this message"
-
-#~ msgid "edit the TO list"
-#~ msgstr "edit the TO list"
-
-#~ msgid "create a new mailbox (IMAP only)"
-#~ msgstr "create a new mailbox (IMAP only)"
-
-#~ msgid "edit attachment content type"
-#~ msgstr "edit attachment content type"
-
-#~ msgid "get a temporary copy of an attachment"
-#~ msgstr "get a temporary copy of an attachment"
-
-#~ msgid "run ispell on the message"
-#~ msgstr "run ispell on the message"
-
-#~ msgid "compose new attachment using mailcap entry"
-#~ msgstr "compose new attachment using mailcap entry"
-
-#~ msgid "toggle recoding of this attachment"
-#~ msgstr "toggle recoding of this attachment"
-
-#~ msgid "save this message to send later"
-#~ msgstr "save this message to send later"
-
-#~ msgid "send attachment with a different name"
-#~ msgstr "send attachment with a different name"
-
-#~ msgid "rename/move an attached file"
-#~ msgstr "rename/move an attached file"
-
-#~ msgid "compose a new message to the sender"
-#~ msgstr "compose a new message to the sender"
-
-#~ msgid "send the message"
-#~ msgstr "send the message"
-
-#~ msgid "toggle disposition between inline/attachment"
-#~ msgstr "toggle disposition between inline/attachment"
-
-#~ msgid "toggle whether to delete file after sending it"
-#~ msgstr "toggle whether to delete file after sending it"
-
-#~ msgid "update an attachment's encoding info"
-#~ msgstr "update an attachment's encoding info"
-
-#~ msgid "write the message to a folder"
-#~ msgstr "write the message to a folder"
-
-#~ msgid "copy a message to a file/mailbox"
-#~ msgstr "copy a message to a file/mailbox"
-
-#~ msgid "create an alias from a message sender"
-#~ msgstr "create an alias from a message sender"
-
-#~ msgid "move entry to bottom of screen"
-#~ msgstr "move entry to bottom of screen"
-
-#~ msgid "move entry to middle of screen"
-#~ msgstr "move entry to middle of screen"
-
-#~ msgid "move entry to top of screen"
-#~ msgstr "move entry to top of screen"
-
-#~ msgid "make decoded (text/plain) copy"
-#~ msgstr "make decoded (text/plain) copy"
-
-#~ msgid "make decoded copy (text/plain) and delete"
-#~ msgstr "make decoded copy (text/plain) and delete"
-
-#~ msgid "delete the current entry"
-#~ msgstr "delete the current entry"
-
-#~ msgid "delete the current mailbox (IMAP only)"
-#~ msgstr "delete the current mailbox (IMAP only)"
-
-#~ msgid "delete all messages in subthread"
-#~ msgstr "delete all messages in subthread"
-
-#~ msgid "delete all messages in thread"
-#~ msgstr "delete all messages in thread"
-
-#~ msgid "display full address of sender"
-#~ msgstr "display full address of sender"
-
-#~ msgid "display message and toggle header weeding"
-#~ msgstr "display message and toggle header weeding"
-
-#~ msgid "display a message"
-#~ msgstr "display a message"
-
-#~ msgid "add, change, or delete a message's label"
-#~ msgstr "add, change, or delete a message's label"
-
-#~ msgid "edit the raw message"
-#~ msgstr "edit the raw message"
-
-#~ msgid "delete the char in front of the cursor"
-#~ msgstr "delete the char in front of the cursor"
-
-#~ msgid "move the cursor one character to the left"
-#~ msgstr "move the cursor one character to the left"
-
-#~ msgid "move the cursor to the beginning of the word"
-#~ msgstr "move the cursor to the beginning of the word"
-
-#~ msgid "jump to the beginning of the line"
-#~ msgstr "jump to the beginning of the line"
-
-#~ msgid "cycle among incoming mailboxes"
-#~ msgstr "cycle among incoming mailboxes"
-
-#~ msgid "complete filename or alias"
-#~ msgstr "complete filename or alias"
-
-#~ msgid "complete address with query"
-#~ msgstr "complete address with query"
-
-#~ msgid "delete the char under the cursor"
-#~ msgstr "delete the char under the cursor"
-
-#~ msgid "jump to the end of the line"
-#~ msgstr "jump to the end of the line"
-
-#~ msgid "move the cursor one character to the right"
-#~ msgstr "move the cursor one character to the right"
-
-#~ msgid "move the cursor to the end of the word"
-#~ msgstr "move the cursor to the end of the word"
-
-#~ msgid "scroll down through the history list"
-#~ msgstr "scroll down through the history list"
-
-#~ msgid "scroll up through the history list"
-#~ msgstr "scroll up through the history list"
-
-#~ msgid "delete chars from cursor to end of line"
-#~ msgstr "delete chars from cursor to end of line"
-
-#~ msgid "delete chars from the cursor to the end of the word"
-#~ msgstr "delete chars from the cursor to the end of the word"
-
-#~ msgid "delete all chars on the line"
-#~ msgstr "delete all chars on the line"
-
-#~ msgid "delete the word in front of the cursor"
-#~ msgstr "delete the word in front of the cursor"
-
-#~ msgid "quote the next typed key"
-#~ msgstr "quote the next typed key"
-
-#~ msgid "transpose character under cursor with previous"
-#~ msgstr "transpose character under cursor with previous"
-
-#~ msgid "capitalize the word"
-#~ msgstr "capitalize the word"
-
-#~ msgid "convert the word to lower case"
-#~ msgstr "convert the word to lower case"
-
-#~ msgid "convert the word to upper case"
-#~ msgstr "convert the word to upper case"
-
-#~ msgid "enter a muttrc command"
-#~ msgstr "enter a muttrc command"
-
-#~ msgid "enter a file mask"
-#~ msgstr "enter a file mask"
-
-#~ msgid "exit this menu"
-#~ msgstr "exit this menu"
-
-#~ msgid "filter attachment through a shell command"
-#~ msgstr "filter attachment through a shell command"
-
-#~ msgid "move to the first entry"
-#~ msgstr "move to the first entry"
-
-#~ msgid "toggle a message's 'important' flag"
-#~ msgstr "toggle a message's 'important' flag"
-
-#~ msgid "followup to newsgroup"
-#~ msgstr "followup to newsgroup"
-
-#~ msgid "forward to newsgroup"
-#~ msgstr "forward to newsgroup"
-
-#~ msgid "forward a message with comments"
-#~ msgstr "forward a message with comments"
-
-#~ msgid "select the current entry"
-#~ msgstr "select the current entry"
-
-#~ msgid "get all children of the current message"
-#~ msgstr "get all children of the current message"
-
-#~ msgid "get message with Message-Id"
-#~ msgstr "get message with Message-Id"
-
-#~ msgid "get parent of the current message"
-#~ msgstr "get parent of the current message"
-
-#~ msgid "reply to all recipients"
-#~ msgstr "reply to all recipients"
-
-#~ msgid "scroll down 1/2 page"
-#~ msgstr "scroll down 1/2 page"
-
-#~ msgid "scroll up 1/2 page"
-#~ msgstr "scroll up 1/2 page"
-
-#~ msgid "this screen"
-#~ msgstr "this screen"
-
-#~ msgid "jump to an index number"
-#~ msgstr "jump to an index number"
-
-#~ msgid "move to the last entry"
-#~ msgstr "move to the last entry"
-
-#~ msgid "reply to specified mailing list"
-#~ msgstr "reply to specified mailing list"
-
-#~ msgid "load list of all newsgroups from NNTP server"
-#~ msgstr "load list of all newsgroups from NNTP server"
-
-#~ msgid "execute a macro"
-#~ msgstr "execute a macro"
-
-#~ msgid "compose a new mail message"
-#~ msgstr "compose a new mail message"
-
-#~ msgid "break the thread in two"
-#~ msgstr "break the thread in two"
-
-#~ msgid "open a different folder"
-#~ msgstr "open a different folder"
-
-#~ msgid "open a different folder in read only mode"
-#~ msgstr "open a different folder in read only mode"
-
-#~ msgid "open a different newsgroup"
-#~ msgstr "open a different newsgroup"
-
-#~ msgid "open a different newsgroup in read only mode"
-#~ msgstr "open a different newsgroup in read only mode"
-
-#~ msgid "clear a status flag from a message"
-#~ msgstr "clear a status flag from a message"
-
-#~ msgid "delete messages matching a pattern"
-#~ msgstr "delete messages matching a pattern"
-
-#~ msgid "force retrieval of mail from IMAP server"
-#~ msgstr "force retrieval of mail from IMAP server"
-
-#~ msgid "logout from all IMAP servers"
-#~ msgstr "logout from all IMAP servers"
-
-#~ msgid "retrieve mail from POP server"
-#~ msgstr "retrieve mail from POP server"
-
-#~ msgid "show only messages matching a pattern"
-#~ msgstr "show only messages matching a pattern"
-
-#~ msgid "link tagged message to the current one"
-#~ msgstr "link tagged message to the current one"
-
-#~ msgid "open next mailbox with new mail"
-#~ msgstr "open next mailbox with new mail"
-
-#~ msgid "jump to the next new message"
-#~ msgstr "jump to the next new message"
-
-#~ msgid "jump to the next new or unread message"
-#~ msgstr "jump to the next new or unread message"
-
-#~ msgid "jump to the next subthread"
-#~ msgstr "jump to the next subthread"
-
-#~ msgid "jump to the next thread"
-#~ msgstr "jump to the next thread"
-
-#~ msgid "move to the next undeleted message"
-#~ msgstr "move to the next undeleted message"
-
-#~ msgid "jump to the next unread message"
-#~ msgstr "jump to the next unread message"
-
-#~ msgid "jump to parent message in thread"
-#~ msgstr "jump to parent message in thread"
-
-#~ msgid "jump to previous thread"
-#~ msgstr "jump to previous thread"
-
-#~ msgid "jump to previous subthread"
-#~ msgstr "jump to previous subthread"
-
-#~ msgid "move to the previous undeleted message"
-#~ msgstr "move to the previous undeleted message"
-
-#~ msgid "jump to the previous new message"
-#~ msgstr "jump to the previous new message"
-
-#~ msgid "jump to the previous new or unread message"
-#~ msgstr "jump to the previous new or unread message"
-
-#~ msgid "jump to the previous unread message"
-#~ msgstr "jump to the previous unread message"
-
-#~ msgid "mark the current thread as read"
-#~ msgstr "mark the current thread as read"
-
-#~ msgid "mark the current subthread as read"
-#~ msgstr "mark the current subthread as read"
-
-#~ msgid "jump to root message in thread"
-#~ msgstr "jump to root message in thread"
-
-#~ msgid "set a status flag on a message"
-#~ msgstr "set a status flag on a message"
-
-#~ msgid "save changes to mailbox"
-#~ msgstr "save changes to mailbox"
-
-#~ msgid "tag messages matching a pattern"
-#~ msgstr "tag messages matching a pattern"
-
-#~ msgid "delete from mutt, don't touch on disk"
-#~ msgstr "delete from mutt, don't touch on disk"
-
-#~ msgid "undelete messages matching a pattern"
-#~ msgstr "undelete messages matching a pattern"
-
-#~ msgid "untag messages matching a pattern"
-#~ msgstr "untag messages matching a pattern"
-
-#~ msgid "create a hotkey macro for the current message"
-#~ msgstr "create a hotkey macro for the current message"
-
-#~ msgid "move to the middle of the page"
-#~ msgstr "move to the middle of the page"
-
-#~ msgid "move to the next entry"
-#~ msgstr "move to the next entry"
-
-#~ msgid "scroll down one line"
-#~ msgstr "scroll down one line"
-
-#~ msgid "move to the next page"
-#~ msgstr "move to the next page"
-
-#~ msgid "jump to the bottom of the message"
-#~ msgstr "jump to the bottom of the message"
-
-#~ msgid "toggle display of quoted text"
-#~ msgstr "toggle display of quoted text"
-
-#~ msgid "skip beyond quoted text"
-#~ msgstr "skip beyond quoted text"
-
-#~ msgid "jump to the top of the message"
-#~ msgstr "jump to the top of the message"
-
-#~ msgid "pipe message/attachment to a shell command"
-#~ msgstr "pipe message/attachment to a shell command"
-
-#~ msgid "post message to newsgroup"
-#~ msgstr "post message to newsgroup"
-
-#~ msgid "move to the previous entry"
-#~ msgstr "move to the previous entry"
-
-#~ msgid "scroll up one line"
-#~ msgstr "scroll up one line"
-
-#~ msgid "move to the previous page"
-#~ msgstr "move to the previous page"
-
-#~ msgid "print the current entry"
-#~ msgstr "print the current entry"
-
-#~ msgid "really delete the current entry, bypassing the trash folder"
-#~ msgstr "really delete the current entry, bypassing the trash folder"
-
-#~ msgid "really delete the current thread, bypassing the trash folder"
-#~ msgstr "really delete the current thread, bypassing the trash folder"
-
-#~ msgid "query external program for addresses"
-#~ msgstr "query external program for addresses"
-
-#~ msgid "append new query results to current results"
-#~ msgstr "append new query results to current results"
-
-#~ msgid "save changes to mailbox and quit"
-#~ msgstr "save changes to mailbox and quit"
-
-#~ msgid "recall a postponed message"
-#~ msgstr "recall a postponed message"
-
-#~ msgid "reconstruct thread containing current message"
-#~ msgstr "reconstruct thread containing current message"
-
-#~ msgid "clear and redraw the screen"
-#~ msgstr "clear and redraw the screen"
-
-#~ msgid "{internal}"
-#~ msgstr "{internal}"
-
-#~ msgid "rename the current mailbox (IMAP only)"
-#~ msgstr "rename the current mailbox (IMAP only)"
-
-#~ msgid "reply to a message"
-#~ msgstr "reply to a message"
-
-#~ msgid "use the current message as a template for a new one"
-#~ msgstr "use the current message as a template for a new one"
-
-#~ msgid "save message/attachment to a mailbox/file"
-#~ msgstr "save message/attachment to a mailbox/file"
-
-#~ msgid "search for a regular expression"
-#~ msgstr "search for a regular expression"
-
-#~ msgid "search backwards for a regular expression"
-#~ msgstr "search backwards for a regular expression"
-
-#~ msgid "search for next match"
-#~ msgstr "search for next match"
-
-#~ msgid "search for next match in opposite direction"
-#~ msgstr "search for next match in opposite direction"
-
-#~ msgid "toggle search pattern coloring"
-#~ msgstr "toggle search pattern coloring"
-
-#~ msgid "invoke a command in a subshell"
-#~ msgstr "invoke a command in a subshell"
-
-#~ msgid "sort messages"
-#~ msgstr "sort messages"
-
-#~ msgid "sort messages in reverse order"
-#~ msgstr "sort messages in reverse order"
-
-#~ msgid "subscribe to newsgroups matching a pattern"
-#~ msgstr "subscribe to newsgroups matching a pattern"
-
-#~ msgid "tag the current entry"
-#~ msgstr "tag the current entry"
-
-#~ msgid "apply next function to tagged messages"
-#~ msgstr "apply next function to tagged messages"
-
-#~ msgid "apply next function ONLY to tagged messages"
-#~ msgstr "apply next function ONLY to tagged messages"
-
-#~ msgid "tag the current subthread"
-#~ msgstr "tag the current subthread"
-
-#~ msgid "tag the current thread"
-#~ msgstr "tag the current thread"
-
-#~ msgid "toggle a message's 'new' flag"
-#~ msgstr "toggle a message's 'new' flag"
-
-#~ msgid "toggle view of read messages"
-#~ msgstr "toggle view of read messages"
-
-#~ msgid "toggle whether the mailbox will be rewritten"
-#~ msgstr "toggle whether the mailbox will be rewritten"
-
-#~ msgid "toggle whether to browse mailboxes or all files"
-#~ msgstr "toggle whether to browse mailboxes or all files"
-
-#~ msgid "move to the top of the page"
-#~ msgstr "move to the top of the page"
-
-#~ msgid "mark all articles in newsgroup as unread"
-#~ msgstr "mark all articles in newsgroup as unread"
-
-#~ msgid "undelete the current entry"
-#~ msgstr "undelete the current entry"
-
-#~ msgid "undelete all messages in thread"
-#~ msgstr "undelete all messages in thread"
-
-#~ msgid "undelete all messages in subthread"
-#~ msgstr "undelete all messages in subthread"
-
-#~ msgid "unsubscribe from newsgroups matching a pattern"
-#~ msgstr "unsubscribe from newsgroups matching a pattern"
-
-#~ msgid "show the Mutt version number and date"
-#~ msgstr "show the Mutt version number and date"
-
-#~ msgid "view attachment using mailcap entry if necessary"
-#~ msgstr "view attachment using mailcap entry if necessary"
-
-#~ msgid "show MIME attachments"
-#~ msgstr "show MIME attachments"
-
-#~ msgid "display the keycode for a key press"
-#~ msgstr "display the keycode for a key press"
-
-#~ msgid "limit view to current thread"
-#~ msgstr "limit view to current thread"
-
-#~ msgid "show currently active limit pattern"
-#~ msgstr "show currently active limit pattern"
-
-#~ msgid "collapse/uncollapse current thread"
-#~ msgstr "collapse/uncollapse current thread"
-
-#~ msgid "collapse/uncollapse all threads"
-#~ msgstr "collapse/uncollapse all threads"
-
-#~ msgid "move the highlight to next mailbox"
-#~ msgstr "move the highlight to next mailbox"
-
-#~ msgid "move the highlight to next mailbox with new mail"
-#~ msgstr "move the highlight to next mailbox with new mail"
-
-#~ msgid "open highlighted mailbox"
-#~ msgstr "open highlighted mailbox"
-
-#~ msgid "scroll the sidebar down 1 page"
-#~ msgstr "scroll the sidebar down 1 page"
-
-#~ msgid "scroll the sidebar up 1 page"
-#~ msgstr "scroll the sidebar up 1 page"
-
-#~ msgid "move the highlight to previous mailbox"
-#~ msgstr "move the highlight to previous mailbox"
-
-#~ msgid "move the highlight to previous mailbox with new mail"
-#~ msgstr "move the highlight to previous mailbox with new mail"
-
-#~ msgid "toggle between mailboxes and virtual mailboxes"
-#~ msgstr "toggle between mailboxes and virtual mailboxes"
-
-#~ msgid "make the sidebar (in)visible"
-#~ msgstr "make the sidebar (in)visible"
-
-#~ msgid "open a different virtual folder"
-#~ msgstr "open a different virtual folder"
-
-#~ msgid "generate virtual folder from query"
-#~ msgstr "generate virtual folder from query"
-
-#, fuzzy
-#~ msgid "generate virtual folder from query and time window"
-#~ msgstr "generate virtual folder from query"
-
-#~ msgid "modify (notmuch) tags"
-#~ msgstr "modify (notmuch) tags"
-
-#~ msgid "modify labels and then hide message"
-#~ msgstr "modify labels and then hide message"
-
-#~ msgid "read entire thread of the current message"
-#~ msgstr "read entire thread of the current message"
-
-#~ msgid "attach a PGP public key"
-#~ msgstr "attach a PGP public key"
-
-#~ msgid "show PGP options"
-#~ msgstr "show PGP options"
-
-#~ msgid "mail a PGP public key"
-#~ msgstr "mail a PGP public key"
-
-#~ msgid "verify a PGP public key"
-#~ msgstr "verify a PGP public key"
-
-#~ msgid "view the key's user id"
-#~ msgstr "view the key's user id"
-
-#~ msgid "check for classic PGP"
-#~ msgstr "check for classic PGP"
-
-#~ msgid "accept the chain constructed"
-#~ msgstr "accept the chain constructed"
-
-#~ msgid "append a remailer to the chain"
-#~ msgstr "append a remailer to the chain"
-
-#~ msgid "insert a remailer into the chain"
-#~ msgstr "insert a remailer into the chain"
-
-#~ msgid "delete a remailer from the chain"
-#~ msgstr "delete a remailer from the chain"
-
-#~ msgid "select the previous element of the chain"
-#~ msgstr "select the previous element of the chain"
-
-#~ msgid "select the next element of the chain"
-#~ msgstr "select the next element of the chain"
-
-#~ msgid "send the message through a mixmaster remailer chain"
-#~ msgstr "send the message through a mixmaster remailer chain"
-
-#~ msgid "make decrypted copy and delete"
-#~ msgstr "make decrypted copy and delete"
-
-#~ msgid "make decrypted copy"
-#~ msgstr "make decrypted copy"
-
-#~ msgid "wipe passphrase(s) from memory"
-#~ msgstr "wipe passphrase(s) from memory"
-
-#~ msgid "extract supported public keys"
-#~ msgstr "extract supported public keys"
-
-#~ msgid "show S/MIME options"
-#~ msgstr "show S/MIME options"
-
-#~ msgid "Fingerprint: %s"
-#~ msgstr "Fingerprint: %s"
-
-#~ msgid "SMTP authentication requires SASL"
-#~ msgstr "SMTP authentication requires SASL"
-
-#~ msgid "move to the first message"
-#~ msgstr "move to the first message"
-
-#~ msgid "move to the last message"
-#~ msgstr "move to the last message"

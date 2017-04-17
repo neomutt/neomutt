@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neomutt-20161104\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
-"POT-Creation-Date: 2017-04-13 13:26+0100\n"
+"POT-Creation-Date: 2017-04-17 17:04+0100\n"
 "PO-Revision-Date: 2017-02-22 21:14+0100\n"
 "Last-Translator: Benno Schulenberg <benno@vertaalt.nl>\n"
 "Language-Team: Esperanto <translation-team-eo@lists.sourceforge.net>\n"
@@ -906,6 +906,118 @@ msgstr "Densigo de %s"
 msgid "No decryption engine available for message"
 msgstr ""
 
+#: crypt.c:59
+#, c-format
+msgid " (current time: %c)"
+msgstr " (nuna horo: %c)"
+
+#: crypt.c:64
+#, c-format
+msgid "[-- %s output follows%s --]\n"
+msgstr "[-- %s eligo sekvas%s --]\n"
+
+#: crypt.c:78
+msgid "Passphrase(s) forgotten."
+msgstr "Pasfrazo(j) forgesita(j)."
+
+#: crypt.c:139
+msgid "Inline PGP can't be used with attachments.  Revert to PGP/MIME?"
+msgstr "Ne eblas uzi PGP kun aldonaĵoj.  Ĉu refali al PGP/MIME?"
+
+#: crypt.c:143
+msgid "Mail not sent: inline PGP can't be used with attachments."
+msgstr "Mesaĝo ne sendita: ne eblas uzi enteksta PGP kun aldonaĵoj."
+
+#: crypt.c:151 cryptglue.c:106 pgpkey.c:541 pgpkey.c:724
+msgid "Invoking PGP..."
+msgstr "Alvokas PGP..."
+
+#: crypt.c:162
+msgid "Message can't be sent inline.  Revert to using PGP/MIME?"
+msgstr "Ne eblas sendi mesaĝon entekste.  Ĉu refali al PGP/MIME?"
+
+#: crypt.c:164 send.c:1796
+msgid "Mail not sent."
+msgstr "Mesaĝo ne sendita."
+
+#: crypt.c:224
+msgid "Encrypt message to S/MIME Default Key also?"
+msgstr ""
+
+#: crypt.c:259
+msgid "Encrypt message to PGP Default Key also?"
+msgstr ""
+
+#: crypt.c:502
+msgid "S/MIME messages with no hints on content are unsupported."
+msgstr "S/MIME-mesaĝoj sen informoj pri enhavo ne funkcias."
+
+#: crypt.c:710 crypt.c:751
+msgid "Trying to extract PGP keys...\n"
+msgstr "Provas eltiri PGP-ŝlosilojn...\n"
+
+#: crypt.c:732 crypt.c:772
+msgid "Trying to extract S/MIME certificates...\n"
+msgstr "Provas eltiri S/MIME-atestilojn...\n"
+
+#: crypt.c:913
+#, c-format
+msgid ""
+"[-- Error: Unknown multipart/signed protocol %s! --]\n"
+"\n"
+msgstr ""
+"[-- Eraro: nekonata multipart/signed-protokolo %s! --]\n"
+"\n"
+
+#: crypt.c:947
+msgid ""
+"[-- Error: Inconsistent multipart/signed structure! --]\n"
+"\n"
+msgstr ""
+"[-- Eraro: malĝusta strukturo de multipart/signed! --]\n"
+"\n"
+
+#: crypt.c:983
+#, c-format
+msgid ""
+"[-- Warning: We can't verify %s/%s signatures. --]\n"
+"\n"
+msgstr ""
+"[-- Averto: ne eblas kontroli %s/%s-subskribojn. --]\n"
+"\n"
+
+#: crypt.c:995
+msgid ""
+"[-- The following data is signed --]\n"
+"\n"
+msgstr ""
+"[-- La sekvaj datenoj estas subskribitaj --]\n"
+"\n"
+
+#: crypt.c:1001
+msgid ""
+"[-- Warning: Can't find any signatures. --]\n"
+"\n"
+msgstr ""
+"[-- Averto: ne eblas trovi subskribon. --]\n"
+"\n"
+
+#: crypt.c:1007
+msgid ""
+"\n"
+"[-- End of signed data --]\n"
+msgstr ""
+"\n"
+"[-- Fino de subskribitaj datenoj --]\n"
+
+#: cryptglue.c:84
+msgid "\"crypt_use_gpgme\" set but not built with GPGME support."
+msgstr "\"crypt_use_gpgme\" petita, sed ne konstruita kun GPGME"
+
+#: cryptglue.c:108
+msgid "Invoking S/MIME..."
+msgstr "Alvokas S/MIME..."
+
 #: crypt_gpgme.c:384
 #, c-format
 msgid "error creating gpgme context: %s\n"
@@ -1544,118 +1656,6 @@ msgstr "Malsukcesis kontroli sendinton"
 #: crypt_gpgme.c:4833
 msgid "Failed to figure out sender"
 msgstr "Malsukcesis eltrovi sendinton"
-
-#: crypt.c:59
-#, c-format
-msgid " (current time: %c)"
-msgstr " (nuna horo: %c)"
-
-#: crypt.c:64
-#, c-format
-msgid "[-- %s output follows%s --]\n"
-msgstr "[-- %s eligo sekvas%s --]\n"
-
-#: crypt.c:78
-msgid "Passphrase(s) forgotten."
-msgstr "Pasfrazo(j) forgesita(j)."
-
-#: crypt.c:139
-msgid "Inline PGP can't be used with attachments.  Revert to PGP/MIME?"
-msgstr "Ne eblas uzi PGP kun aldonaĵoj.  Ĉu refali al PGP/MIME?"
-
-#: crypt.c:143
-msgid "Mail not sent: inline PGP can't be used with attachments."
-msgstr "Mesaĝo ne sendita: ne eblas uzi enteksta PGP kun aldonaĵoj."
-
-#: crypt.c:151 cryptglue.c:106 pgpkey.c:541 pgpkey.c:724
-msgid "Invoking PGP..."
-msgstr "Alvokas PGP..."
-
-#: crypt.c:162
-msgid "Message can't be sent inline.  Revert to using PGP/MIME?"
-msgstr "Ne eblas sendi mesaĝon entekste.  Ĉu refali al PGP/MIME?"
-
-#: crypt.c:164 send.c:1796
-msgid "Mail not sent."
-msgstr "Mesaĝo ne sendita."
-
-#: crypt.c:224
-msgid "Encrypt message to S/MIME Default Key also?"
-msgstr ""
-
-#: crypt.c:259
-msgid "Encrypt message to PGP Default Key also?"
-msgstr ""
-
-#: crypt.c:502
-msgid "S/MIME messages with no hints on content are unsupported."
-msgstr "S/MIME-mesaĝoj sen informoj pri enhavo ne funkcias."
-
-#: crypt.c:710 crypt.c:751
-msgid "Trying to extract PGP keys...\n"
-msgstr "Provas eltiri PGP-ŝlosilojn...\n"
-
-#: crypt.c:732 crypt.c:772
-msgid "Trying to extract S/MIME certificates...\n"
-msgstr "Provas eltiri S/MIME-atestilojn...\n"
-
-#: crypt.c:913
-#, c-format
-msgid ""
-"[-- Error: Unknown multipart/signed protocol %s! --]\n"
-"\n"
-msgstr ""
-"[-- Eraro: nekonata multipart/signed-protokolo %s! --]\n"
-"\n"
-
-#: crypt.c:947
-msgid ""
-"[-- Error: Inconsistent multipart/signed structure! --]\n"
-"\n"
-msgstr ""
-"[-- Eraro: malĝusta strukturo de multipart/signed! --]\n"
-"\n"
-
-#: crypt.c:983
-#, c-format
-msgid ""
-"[-- Warning: We can't verify %s/%s signatures. --]\n"
-"\n"
-msgstr ""
-"[-- Averto: ne eblas kontroli %s/%s-subskribojn. --]\n"
-"\n"
-
-#: crypt.c:995
-msgid ""
-"[-- The following data is signed --]\n"
-"\n"
-msgstr ""
-"[-- La sekvaj datenoj estas subskribitaj --]\n"
-"\n"
-
-#: crypt.c:1001
-msgid ""
-"[-- Warning: Can't find any signatures. --]\n"
-"\n"
-msgstr ""
-"[-- Averto: ne eblas trovi subskribon. --]\n"
-"\n"
-
-#: crypt.c:1007
-msgid ""
-"\n"
-"[-- End of signed data --]\n"
-msgstr ""
-"\n"
-"[-- Fino de subskribitaj datenoj --]\n"
-
-#: cryptglue.c:84
-msgid "\"crypt_use_gpgme\" set but not built with GPGME support."
-msgstr "\"crypt_use_gpgme\" petita, sed ne konstruita kun GPGME"
-
-#: cryptglue.c:108
-msgid "Invoking S/MIME..."
-msgstr "Alvokas S/MIME..."
 
 #: curs_lib.c:229
 msgid "yes"
@@ -2486,12 +2486,12 @@ msgstr "Salutas..."
 msgid "Login failed."
 msgstr "Saluto malsukcesis."
 
-#: imap/auth_sasl.c:94 nntp.c:367 nntp.c:432 smtp.c:372
+#: imap/auth_sasl.c:95 nntp.c:367 nntp.c:432 smtp.c:372
 #, c-format
 msgid "Authenticating (%s)..."
 msgstr "Rajtiĝas (%s)..."
 
-#: imap/auth_sasl.c:222 pop_auth.c:175
+#: imap/auth_sasl.c:223 pop_auth.c:175
 msgid "SASL authentication failed."
 msgstr "SASL-rajtiĝo malsukcesis."
 
@@ -2964,6 +2964,1002 @@ msgstr "Donu ŝlosilojn (^G por nuligi): "
 msgid "Char = %s, Octal = %o, Decimal = %d"
 msgstr "Signo = %s, Okume = %o, Dekume = %d"
 
+#: keymap_alldefs.h:5
+msgid "null operation"
+msgstr "malplena funkcio"
+
+#: keymap_alldefs.h:6
+msgid "end of conditional execution (noop)"
+msgstr "fino de kondiĉa rulo (noop)"
+
+#: keymap_alldefs.h:7
+msgid "force viewing of attachment using mailcap"
+msgstr "devigi vidigon de parto per mailcap"
+
+#: keymap_alldefs.h:8
+msgid "view attachment as text"
+msgstr "vidigi parton kiel tekston"
+
+#: keymap_alldefs.h:9
+msgid "Toggle display of subparts"
+msgstr "ŝalti aŭ malŝalti montradon de subpartoj"
+
+#: keymap_alldefs.h:10
+msgid "move to the bottom of the page"
+msgstr "iri al fino de paĝo"
+
+#: keymap_alldefs.h:11
+msgid "remail a message to another user"
+msgstr "redirekti mesaĝon al alia adreso"
+
+#: keymap_alldefs.h:12
+msgid "swap the current folder position with $folder if it exists"
+msgstr ""
+
+#: keymap_alldefs.h:13
+msgid "select a new file in this directory"
+msgstr "elekti novan dosieron en ĉi tiu dosierujo"
+
+#: keymap_alldefs.h:14
+msgid "view file"
+msgstr "vidigi dosieron"
+
+#: keymap_alldefs.h:15
+msgid "display the currently selected file's name"
+msgstr "montri la nomon de la elektita dosiero"
+
+#: keymap_alldefs.h:16
+#, fuzzy
+msgid "subscribe to current mbox (IMAP/NNTP only)"
+msgstr "aboni ĉi tiun poŝtfakon (nur IMAP)"
+
+#: keymap_alldefs.h:17
+#, fuzzy
+msgid "unsubscribe from current mbox (IMAP/NNTP only)"
+msgstr "malaboni ĉi tiun poŝtfakon (nur IMAP)"
+
+#: keymap_alldefs.h:18
+msgid "toggle view all/subscribed mailboxes (IMAP only)"
+msgstr "elekti, ĉu vidi ĉiujn, aŭ nur abonitajn poŝtfakojn (nur IMAP)"
+
+#: keymap_alldefs.h:19
+msgid "list mailboxes with new mail"
+msgstr "listigi poŝtfakojn kun nova mesaĝo"
+
+#: keymap_alldefs.h:20
+msgid "mark all articles in newsgroup as read"
+msgstr ""
+
+#: keymap_alldefs.h:21
+msgid "change directories"
+msgstr "ŝanĝi la dosierujon"
+
+#: keymap_alldefs.h:22
+msgid "check mailboxes for new mail"
+msgstr "kontroli poŝtfakojn pri novaj mesaĝoj"
+
+#: keymap_alldefs.h:23
+msgid "attach file(s) to this message"
+msgstr "aldoni dosiero(j)n al ĉi tiu mesaĝo"
+
+#: keymap_alldefs.h:24
+msgid "attach message(s) to this message"
+msgstr "aldoni mesaĝo(j)n al ĉi tiu mesaĝo"
+
+#: keymap_alldefs.h:25
+#, fuzzy
+msgid "attach news article(s) to this message"
+msgstr "aldoni dosiero(j)n al ĉi tiu mesaĝo"
+
+#: keymap_alldefs.h:26
+msgid "edit the BCC list"
+msgstr "redakti la BCC-liston"
+
+#: keymap_alldefs.h:27
+msgid "edit the CC list"
+msgstr "redakti la CC-liston"
+
+#: keymap_alldefs.h:28
+msgid "edit attachment description"
+msgstr "redakti priskribon de parto"
+
+#: keymap_alldefs.h:29
+msgid "edit attachment transfer-encoding"
+msgstr "redakti kodadon de parto"
+
+#: keymap_alldefs.h:30
+msgid "enter a file to save a copy of this message in"
+msgstr "donu dosieron, al kiu la mesaĝo estu skribita"
+
+#: keymap_alldefs.h:31
+msgid "edit the file to be attached"
+msgstr "redakti la dosieron aldonotan"
+
+#: keymap_alldefs.h:32
+msgid "edit the from field"
+msgstr "redakti la From-kampon"
+
+#: keymap_alldefs.h:33
+msgid "edit the message with headers"
+msgstr "redakti la mesaĝon kun ĉapo"
+
+#: keymap_alldefs.h:34
+msgid "edit the message"
+msgstr "redakti la mesaĝon"
+
+#: keymap_alldefs.h:35
+msgid "edit attachment using mailcap entry"
+msgstr "redakti parton, uzante mailcap"
+
+#: keymap_alldefs.h:36
+#, fuzzy
+msgid "edit the newsgroups list"
+msgstr "redakti la CC-liston"
+
+#: keymap_alldefs.h:37
+msgid "edit the Reply-To field"
+msgstr "redakti la kampon Reply-To"
+
+#: keymap_alldefs.h:38
+#, fuzzy
+msgid "edit the Followup-To field"
+msgstr "redakti la kampon Reply-To"
+
+#: keymap_alldefs.h:39
+#, fuzzy
+msgid "edit the X-Comment-To field"
+msgstr "redakti la kampon Reply-To"
+
+#: keymap_alldefs.h:40
+msgid "edit the subject of this message"
+msgstr "redakti la temlinion de le mesaĝo"
+
+#: keymap_alldefs.h:41
+msgid "edit the TO list"
+msgstr "redakti la liston de ricevontoj"
+
+#: keymap_alldefs.h:42
+msgid "create a new mailbox (IMAP only)"
+msgstr "krei novan poŝtfakon (nur IMAP)"
+
+#: keymap_alldefs.h:43
+msgid "edit attachment content type"
+msgstr "redakti MIME-enhavospecon de parto"
+
+#: keymap_alldefs.h:44
+msgid "get a temporary copy of an attachment"
+msgstr "akiri dumtempan kopion de parto"
+
+#: keymap_alldefs.h:45
+msgid "run ispell on the message"
+msgstr "apliki ispell al la mesaĝo"
+
+#: keymap_alldefs.h:46
+msgid "compose new attachment using mailcap entry"
+msgstr "verki novan parton per mailcap"
+
+#: keymap_alldefs.h:47
+msgid "toggle recoding of this attachment"
+msgstr "ŝalti aŭ malŝalti rekodadon de ĉi tiu parto"
+
+#: keymap_alldefs.h:48
+msgid "save this message to send later"
+msgstr "skribi ĉi tiun mesaĝon por sendi ĝin poste"
+
+#: keymap_alldefs.h:49
+msgid "send attachment with a different name"
+msgstr "sendi parton kun alia nomo"
+
+#: keymap_alldefs.h:50
+msgid "rename/move an attached file"
+msgstr "renomi/movi aldonitan dosieron"
+
+#: keymap_alldefs.h:51
+#, fuzzy
+msgid "compose a new message to the sender"
+msgstr "verki novan mesaĝon"
+
+#: keymap_alldefs.h:52
+msgid "send the message"
+msgstr "sendi la mesaĝon"
+
+#: keymap_alldefs.h:53
+msgid "toggle disposition between inline/attachment"
+msgstr "ŝalti dispozicion inter \"inline\" kaj \"attachment\""
+
+#: keymap_alldefs.h:54
+msgid "toggle whether to delete file after sending it"
+msgstr "elekti ĉu forviŝi la dosieron post sendado"
+
+#: keymap_alldefs.h:55
+msgid "update an attachment's encoding info"
+msgstr "aktualigi la kodadon de parto"
+
+#: keymap_alldefs.h:56
+msgid "write the message to a folder"
+msgstr "skribi la mesaĝon al poŝtfako"
+
+#: keymap_alldefs.h:57
+msgid "copy a message to a file/mailbox"
+msgstr "kopii mesaĝon al dosiero/poŝtfako"
+
+#: keymap_alldefs.h:58
+msgid "create an alias from a message sender"
+msgstr "aldoni sendinton al adresaro"
+
+#: keymap_alldefs.h:59
+msgid "move entry to bottom of screen"
+msgstr "movi registron al fino de ekrano"
+
+#: keymap_alldefs.h:60
+msgid "move entry to middle of screen"
+msgstr "movi registron al mezo de ekrano"
+
+#: keymap_alldefs.h:61
+msgid "move entry to top of screen"
+msgstr "movi registron al komenco de ekrano"
+
+#: keymap_alldefs.h:62
+msgid "make decoded (text/plain) copy"
+msgstr "fari malkoditan kopion (text/plain)"
+
+#: keymap_alldefs.h:63
+msgid "make decoded copy (text/plain) and delete"
+msgstr "fari malkoditan kopion (text/plain) kaj forviŝi"
+
+#: keymap_alldefs.h:64
+msgid "delete the current entry"
+msgstr "forviŝi registron"
+
+#: keymap_alldefs.h:65
+msgid "delete the current mailbox (IMAP only)"
+msgstr "forviŝi ĉi tiun poŝtfakon (nur IMAP)"
+
+#: keymap_alldefs.h:66
+msgid "delete all messages in subthread"
+msgstr "forviŝi ĉiujn mesaĝojn en subfadeno"
+
+#: keymap_alldefs.h:67
+msgid "delete all messages in thread"
+msgstr "forviŝi ĉiujn mesaĝojn en fadeno"
+
+#: keymap_alldefs.h:68
+msgid "display full address of sender"
+msgstr "montri plenan adreson de sendinto"
+
+#: keymap_alldefs.h:69
+msgid "display message and toggle header weeding"
+msgstr "montri mesaĝon kaj (mal)ŝalti montradon de plena ĉapo"
+
+#: keymap_alldefs.h:70
+msgid "display a message"
+msgstr "montri mesaĝon"
+
+#: keymap_alldefs.h:71
+msgid "add, change, or delete a message's label"
+msgstr "alkroĉi, ŝanĝi, aŭ forigi mesaĝa etikedo"
+
+#: keymap_alldefs.h:72
+msgid "edit the raw message"
+msgstr "redakti la krudan mesaĝon"
+
+#: keymap_alldefs.h:73
+msgid "delete the char in front of the cursor"
+msgstr "forviŝi la signon antaŭ la tajpmontrilo"
+
+#: keymap_alldefs.h:74
+msgid "move the cursor one character to the left"
+msgstr "movi la tajpmontrilon unu signon maldekstren"
+
+#: keymap_alldefs.h:75
+msgid "move the cursor to the beginning of the word"
+msgstr "movi la tajpmontrilon al la komenco de la vorto"
+
+#: keymap_alldefs.h:76
+msgid "jump to the beginning of the line"
+msgstr "salti al la komenco de la linio"
+
+#: keymap_alldefs.h:77
+msgid "cycle among incoming mailboxes"
+msgstr "rondiri tra enir-poŝtfakoj"
+
+#: keymap_alldefs.h:78
+msgid "complete filename or alias"
+msgstr "kompletigi dosieronomon aŭ nomon el la adresaro"
+
+#: keymap_alldefs.h:79
+msgid "complete address with query"
+msgstr "kompletigi adreson kun demando"
+
+#: keymap_alldefs.h:80
+msgid "delete the char under the cursor"
+msgstr "forviŝi la signon sub la tajpmontrilo"
+
+#: keymap_alldefs.h:81
+msgid "jump to the end of the line"
+msgstr "salti al la fino de la linio"
+
+#: keymap_alldefs.h:82
+msgid "move the cursor one character to the right"
+msgstr "movi la tajpmontrilon unu signon dekstren"
+
+#: keymap_alldefs.h:83
+msgid "move the cursor to the end of the word"
+msgstr "movi la tajpmontrilon al la fino de la vorto"
+
+#: keymap_alldefs.h:84
+msgid "scroll down through the history list"
+msgstr "rulumi malsupren tra la histori-listo"
+
+#: keymap_alldefs.h:85
+msgid "scroll up through the history list"
+msgstr "rulumi supren tra la histori-listo"
+
+#: keymap_alldefs.h:86
+msgid "delete chars from cursor to end of line"
+msgstr "forviŝi signojn de la tajpmontrilo ĝis linifino"
+
+#: keymap_alldefs.h:87
+msgid "delete chars from the cursor to the end of the word"
+msgstr "forviŝi signojn de la tajpmontrilo ĝis fino de la vorto"
+
+#: keymap_alldefs.h:88
+msgid "delete all chars on the line"
+msgstr "forviŝi ĉiujn signojn en la linio"
+
+#: keymap_alldefs.h:89
+msgid "delete the word in front of the cursor"
+msgstr "forviŝi la vorton antaŭ la tajpmontrilo"
+
+#: keymap_alldefs.h:90
+msgid "quote the next typed key"
+msgstr "citi la sekvontan klavopremon"
+
+#: keymap_alldefs.h:91
+msgid "transpose character under cursor with previous"
+msgstr "interŝanĝi la signon sub la tajpmontrilo kun la antaŭa"
+
+#: keymap_alldefs.h:92
+msgid "capitalize the word"
+msgstr "majuskligi la vorton"
+
+#: keymap_alldefs.h:93
+msgid "convert the word to lower case"
+msgstr "konverti la vorton al minuskloj"
+
+#: keymap_alldefs.h:94
+msgid "convert the word to upper case"
+msgstr "konverti la vorton al majuskloj"
+
+#: keymap_alldefs.h:95
+msgid "enter a muttrc command"
+msgstr "enigi muttrc-komandon"
+
+#: keymap_alldefs.h:96
+msgid "enter a file mask"
+msgstr "enigi dosierŝablonon"
+
+#: keymap_alldefs.h:97
+msgid "exit this menu"
+msgstr "eliri el ĉi tiu menuo"
+
+#: keymap_alldefs.h:98
+msgid "filter attachment through a shell command"
+msgstr "filtri parton tra ŝelkomando"
+
+#: keymap_alldefs.h:99
+msgid "move to the first entry"
+msgstr "iri al la unua registro"
+
+#: keymap_alldefs.h:100
+msgid "toggle a message's 'important' flag"
+msgstr "ŝanĝi la flagon 'grava' de mesaĝo"
+
+#: keymap_alldefs.h:101
+#, fuzzy
+msgid "followup to newsgroup"
+msgstr "Ĉu respondi grupe al %s%s?"
+
+#: keymap_alldefs.h:102
+msgid "forward to newsgroup"
+msgstr ""
+
+#: keymap_alldefs.h:103
+msgid "forward a message with comments"
+msgstr "plusendi mesaĝon kun komentoj"
+
+#: keymap_alldefs.h:104
+msgid "select the current entry"
+msgstr "elekti la aktualan registron"
+
+#: keymap_alldefs.h:105
+#, fuzzy
+msgid "get all children of the current message"
+msgstr "krei fulmklavan makroon por nuna mesaĝo"
+
+#: keymap_alldefs.h:106
+#, fuzzy
+msgid "get message with Message-Id"
+msgstr "redakti la mesaĝon kun ĉapo"
+
+#: keymap_alldefs.h:107
+#, fuzzy
+msgid "get parent of the current message"
+msgstr "krei fulmklavan makroon por nuna mesaĝo"
+
+#: keymap_alldefs.h:108
+msgid "reply to all recipients"
+msgstr "respondi al ĉiuj ricevintoj"
+
+#: keymap_alldefs.h:109
+msgid "scroll down 1/2 page"
+msgstr "rulumi malsupren duonon de paĝo"
+
+#: keymap_alldefs.h:110
+msgid "scroll up 1/2 page"
+msgstr "rulumi supren duonon de paĝo"
+
+#: keymap_alldefs.h:111
+msgid "this screen"
+msgstr "ĉi tiu ekrano"
+
+#: keymap_alldefs.h:112
+msgid "jump to an index number"
+msgstr "salti al indeksnumero"
+
+#: keymap_alldefs.h:113
+msgid "move to the last entry"
+msgstr "iri al la lasta registro"
+
+#: keymap_alldefs.h:114
+msgid "reply to specified mailing list"
+msgstr "respondi al specifita dissendolisto"
+
+#: keymap_alldefs.h:115
+msgid "load list of all newsgroups from NNTP server"
+msgstr ""
+
+#: keymap_alldefs.h:116
+msgid "execute a macro"
+msgstr "ruligi makroon"
+
+#: keymap_alldefs.h:117
+msgid "compose a new mail message"
+msgstr "verki novan mesaĝon"
+
+#: keymap_alldefs.h:118
+msgid "break the thread in two"
+msgstr "duigi la fadenon"
+
+#: keymap_alldefs.h:119
+msgid "open a different folder"
+msgstr "malfermi alian poŝtfakon"
+
+#: keymap_alldefs.h:120
+msgid "open a different folder in read only mode"
+msgstr "malfermi alian poŝtfakon nurlege"
+
+#: keymap_alldefs.h:121
+#, fuzzy
+msgid "open a different newsgroup"
+msgstr "malfermi alian poŝtfakon"
+
+#: keymap_alldefs.h:122
+#, fuzzy
+msgid "open a different newsgroup in read only mode"
+msgstr "malfermi alian poŝtfakon nurlege"
+
+#: keymap_alldefs.h:123
+msgid "clear a status flag from a message"
+msgstr "malŝalti flagon ĉe mesaĝo"
+
+#: keymap_alldefs.h:124
+msgid "delete messages matching a pattern"
+msgstr "forviŝi mesaĝojn laŭ ŝablono"
+
+#: keymap_alldefs.h:125
+msgid "force retrieval of mail from IMAP server"
+msgstr "devigi prenadon de mesaĝoj de IMAP-servilo"
+
+#: keymap_alldefs.h:126
+msgid "logout from all IMAP servers"
+msgstr "elsaluti el ĉiuj IMAP-serviloj"
+
+#: keymap_alldefs.h:127
+msgid "retrieve mail from POP server"
+msgstr "elŝuti mesaĝojn de POP-servilo"
+
+#: keymap_alldefs.h:128
+msgid "show only messages matching a pattern"
+msgstr "montri nur la mesaĝojn kiuj kongruas kun ŝablono"
+
+#: keymap_alldefs.h:129
+msgid "link tagged message to the current one"
+msgstr "ligi markitan mesaĝon al ĉi tiu"
+
+#: keymap_alldefs.h:130
+msgid "open next mailbox with new mail"
+msgstr "malfermi sekvan poŝtfakon kun nova poŝto"
+
+#: keymap_alldefs.h:131
+msgid "jump to the next new message"
+msgstr "salti al la unua nova mesaĝo"
+
+#: keymap_alldefs.h:132
+msgid "jump to the next new or unread message"
+msgstr "salti al la sekva nova aŭ nelegita mesaĝo"
+
+#: keymap_alldefs.h:133
+msgid "jump to the next subthread"
+msgstr "salti al la sekva subfadeno"
+
+#: keymap_alldefs.h:134
+msgid "jump to the next thread"
+msgstr "salti al la sekva fadeno"
+
+#: keymap_alldefs.h:135
+msgid "move to the next undeleted message"
+msgstr "salti al la sekva malforviŝita mesaĝo"
+
+#: keymap_alldefs.h:136
+msgid "jump to the next unread message"
+msgstr "salti al la sekva nelegita mesaĝo"
+
+#: keymap_alldefs.h:137
+msgid "jump to parent message in thread"
+msgstr "salti al patra mesaĝo en fadeno"
+
+#: keymap_alldefs.h:138
+msgid "jump to previous thread"
+msgstr "salti al la antaŭa fadeno"
+
+#: keymap_alldefs.h:139
+msgid "jump to previous subthread"
+msgstr "salti al la antaŭa subfadeno"
+
+#: keymap_alldefs.h:140
+msgid "move to the previous undeleted message"
+msgstr "salti al la antaŭa malforviŝita mesaĝo"
+
+#: keymap_alldefs.h:141
+msgid "jump to the previous new message"
+msgstr "salti al la antaŭa nova mesaĝo"
+
+#: keymap_alldefs.h:142
+msgid "jump to the previous new or unread message"
+msgstr "salti al la antaŭa nova aŭ nelegita mesaĝo"
+
+#: keymap_alldefs.h:143
+msgid "jump to the previous unread message"
+msgstr "salti al la antaŭa nelegita mesaĝo"
+
+#: keymap_alldefs.h:144
+msgid "mark the current thread as read"
+msgstr "marki la aktualan fadenon kiel legitan"
+
+#: keymap_alldefs.h:145
+msgid "mark the current subthread as read"
+msgstr "marki la aktualan subfadenon kiel legitan"
+
+#: keymap_alldefs.h:146
+msgid "jump to root message in thread"
+msgstr "salti al radika mesaĝo de fadeno"
+
+#: keymap_alldefs.h:147
+msgid "set a status flag on a message"
+msgstr "ŝalti flagon ĉe mesaĝo"
+
+#: keymap_alldefs.h:148
+msgid "save changes to mailbox"
+msgstr "skribi ŝanĝojn al poŝtfako"
+
+#: keymap_alldefs.h:149
+msgid "tag messages matching a pattern"
+msgstr "marki mesaĝojn laŭ ŝablono"
+
+#: keymap_alldefs.h:150
+msgid "delete from mutt, don't touch on disk"
+msgstr ""
+
+#: keymap_alldefs.h:151
+msgid "undelete messages matching a pattern"
+msgstr "malforviŝi mesaĝojn laŭ ŝablono"
+
+#: keymap_alldefs.h:152
+msgid "untag messages matching a pattern"
+msgstr "malmarki mesaĝojn laŭ ŝablono"
+
+#: keymap_alldefs.h:153
+msgid "create a hotkey macro for the current message"
+msgstr "krei fulmklavan makroon por nuna mesaĝo"
+
+#: keymap_alldefs.h:154
+msgid "move to the middle of the page"
+msgstr "iri al la mezo de la paĝo"
+
+#: keymap_alldefs.h:155
+msgid "move to the next entry"
+msgstr "iri al la sekva registro"
+
+#: keymap_alldefs.h:156
+msgid "scroll down one line"
+msgstr "rulumi malsupren unu linion"
+
+#: keymap_alldefs.h:157
+msgid "move to the next page"
+msgstr "iri al la sekva paĝo"
+
+#: keymap_alldefs.h:158
+msgid "jump to the bottom of the message"
+msgstr "salti al la fino de la mesaĝo"
+
+#: keymap_alldefs.h:159
+msgid "toggle display of quoted text"
+msgstr "ŝalti aŭ malŝalti montradon de citita teksto"
+
+#: keymap_alldefs.h:160
+msgid "skip beyond quoted text"
+msgstr "supersalti cititan tekston"
+
+#: keymap_alldefs.h:161
+msgid "jump to the top of the message"
+msgstr "salti al la komenco de mesaĝo"
+
+#: keymap_alldefs.h:162
+msgid "pipe message/attachment to a shell command"
+msgstr "trakti mesaĝon/parton per ŝelkomando"
+
+#: keymap_alldefs.h:163
+#, fuzzy
+msgid "post message to newsgroup"
+msgstr "Mesaĝa ID mankas en indekso."
+
+#: keymap_alldefs.h:164
+msgid "move to the previous entry"
+msgstr "iri al la antaŭa registro"
+
+#: keymap_alldefs.h:165
+msgid "scroll up one line"
+msgstr "rulumi supren unu linion"
+
+#: keymap_alldefs.h:166
+msgid "move to the previous page"
+msgstr "iri al la antaŭa paĝo"
+
+#: keymap_alldefs.h:167
+msgid "print the current entry"
+msgstr "presi la aktualan registron"
+
+#: keymap_alldefs.h:168
+msgid "really delete the current entry, bypassing the trash folder"
+msgstr "vere forviŝi la nunan eron, preterpasante rubujon"
+
+#: keymap_alldefs.h:169
+#, fuzzy
+msgid "really delete the current thread, bypassing the trash folder"
+msgstr "vere forviŝi la nunan eron, preterpasante rubujon"
+
+#: keymap_alldefs.h:170
+msgid "query external program for addresses"
+msgstr "demandi eksteran programon pri adresoj"
+
+#: keymap_alldefs.h:171
+msgid "append new query results to current results"
+msgstr "aldoni novajn demandrezultojn al jamaj rezultoj"
+
+#: keymap_alldefs.h:172
+msgid "save changes to mailbox and quit"
+msgstr "skribi ŝanĝojn al poŝtfako kaj eliri"
+
+#: keymap_alldefs.h:173
+msgid "recall a postponed message"
+msgstr "revoki prokrastitan mesaĝon"
+
+#: keymap_alldefs.h:174
+#, fuzzy
+msgid "reconstruct thread containing current message"
+msgstr "Fadeno enhavas nelegitajn mesaĝojn."
+
+#: keymap_alldefs.h:175
+msgid "clear and redraw the screen"
+msgstr "rekrei la enhavon de la ekrano"
+
+#: keymap_alldefs.h:176
+msgid "{internal}"
+msgstr "{interna}"
+
+#: keymap_alldefs.h:177
+msgid "rename the current mailbox (IMAP only)"
+msgstr "renomi ĉi tiun poŝtfakon (nur IMAP)"
+
+#: keymap_alldefs.h:178
+msgid "reply to a message"
+msgstr "respondi al mesaĝo"
+
+#: keymap_alldefs.h:179
+msgid "use the current message as a template for a new one"
+msgstr "uzi ĉi tiun mesaĝon kiel modelon por nova mesaĝo"
+
+#: keymap_alldefs.h:180
+msgid "save message/attachment to a mailbox/file"
+msgstr "skribi mesaĝon/parton al poŝtfako/dosiero"
+
+#: keymap_alldefs.h:181
+msgid "search for a regular expression"
+msgstr "serĉi pri regula esprimo"
+
+#: keymap_alldefs.h:182
+msgid "search backwards for a regular expression"
+msgstr "serĉi malantaŭen per regula esprimo"
+
+#: keymap_alldefs.h:183
+msgid "search for next match"
+msgstr "serĉi pri la sekva trafo"
+
+#: keymap_alldefs.h:184
+msgid "search for next match in opposite direction"
+msgstr "serĉi pri la sekva trafo en la mala direkto"
+
+#: keymap_alldefs.h:185
+msgid "toggle search pattern coloring"
+msgstr "ŝalti aŭ malŝalti alikolorigon de serĉŝablono"
+
+#: keymap_alldefs.h:186
+msgid "invoke a command in a subshell"
+msgstr "alvoki komandon en subŝelo"
+
+#: keymap_alldefs.h:187
+msgid "sort messages"
+msgstr "ordigi mesaĝojn"
+
+#: keymap_alldefs.h:188
+msgid "sort messages in reverse order"
+msgstr "ordigi mesaĝojn en inversa ordo"
+
+#: keymap_alldefs.h:189
+#, fuzzy
+msgid "subscribe to newsgroups matching a pattern"
+msgstr "malmarki mesaĝojn laŭ ŝablono"
+
+#: keymap_alldefs.h:190
+msgid "tag the current entry"
+msgstr "marki la aktualan registron"
+
+#: keymap_alldefs.h:191
+msgid "apply next function to tagged messages"
+msgstr "apliki la sekvan komandon al ĉiuj markitaj mesaĝoj"
+
+#: keymap_alldefs.h:192
+msgid "apply next function ONLY to tagged messages"
+msgstr "apliki la sekvan funkcion NUR al markitaj mesaĝoj"
+
+#: keymap_alldefs.h:193
+msgid "tag the current subthread"
+msgstr "marki la aktualan subfadenon"
+
+#: keymap_alldefs.h:194
+msgid "tag the current thread"
+msgstr "marki la aktualan fadenon"
+
+#: keymap_alldefs.h:195
+msgid "toggle a message's 'new' flag"
+msgstr "ŝanĝi la flagon 'nova' de mesaĝo"
+
+#: keymap_alldefs.h:196
+#, fuzzy
+msgid "toggle view of read messages"
+msgstr "salti al la antaŭa nova aŭ nelegita mesaĝo"
+
+#: keymap_alldefs.h:197
+msgid "toggle whether the mailbox will be rewritten"
+msgstr "(mal)ŝalti, ĉu la poŝtfako estos reskribita"
+
+#: keymap_alldefs.h:198
+msgid "toggle whether to browse mailboxes or all files"
+msgstr "(mal)ŝali, ĉu vidi poŝtfakojn aŭ ĉiujn dosierojn"
+
+#: keymap_alldefs.h:199
+msgid "move to the top of the page"
+msgstr "iri al la supro de la paĝo"
+
+#: keymap_alldefs.h:200
+msgid "mark all articles in newsgroup as unread"
+msgstr ""
+
+#: keymap_alldefs.h:201
+msgid "undelete the current entry"
+msgstr "malforviŝi la aktualan registron"
+
+#: keymap_alldefs.h:202
+msgid "undelete all messages in thread"
+msgstr "malforviŝi ĉiujn mesaĝojn en fadeno"
+
+#: keymap_alldefs.h:203
+msgid "undelete all messages in subthread"
+msgstr "malforviŝi ĉiujn mesaĝojn en subfadeno"
+
+#: keymap_alldefs.h:204
+#, fuzzy
+msgid "unsubscribe from newsgroups matching a pattern"
+msgstr "malmarki mesaĝojn laŭ ŝablono"
+
+#: keymap_alldefs.h:205
+msgid "show the Mutt version number and date"
+msgstr "montri la version kaj daton de Mutt"
+
+#: keymap_alldefs.h:206
+msgid "view attachment using mailcap entry if necessary"
+msgstr "vidigi parton, per mailcap se necesas"
+
+#: keymap_alldefs.h:207
+msgid "show MIME attachments"
+msgstr "montri MIME-partojn"
+
+#: keymap_alldefs.h:208
+msgid "display the keycode for a key press"
+msgstr "montri la klavokodon por klavopremo"
+
+#: keymap_alldefs.h:209
+#, fuzzy
+msgid "limit view to current thread"
+msgstr "marki la aktualan fadenon"
+
+#: keymap_alldefs.h:210
+msgid "show currently active limit pattern"
+msgstr "montri la aktivan limigŝablonon"
+
+#: keymap_alldefs.h:211
+msgid "collapse/uncollapse current thread"
+msgstr "(mal)kolapsigi la aktualan fadenon"
+
+#: keymap_alldefs.h:212
+msgid "collapse/uncollapse all threads"
+msgstr "(mal)kolapsigi ĉiujn fadenojn"
+
+#: keymap_alldefs.h:213
+msgid "move the highlight to next mailbox"
+msgstr "movi markilon al sekvan poŝtfakon"
+
+#: keymap_alldefs.h:214
+msgid "move the highlight to next mailbox with new mail"
+msgstr "movi markilon al sekvan poŝtfakon kun nova poŝto"
+
+#: keymap_alldefs.h:215
+msgid "open highlighted mailbox"
+msgstr "malfermi markitan poŝtfakon"
+
+#: keymap_alldefs.h:216
+msgid "scroll the sidebar down 1 page"
+msgstr "rulumi flankan strion suben je unu paĝo"
+
+#: keymap_alldefs.h:217
+msgid "scroll the sidebar up 1 page"
+msgstr "rulumi flankan strion supren je unu paĝo"
+
+#: keymap_alldefs.h:218
+msgid "move the highlight to previous mailbox"
+msgstr "movi markilon al antaŭan poŝtfakon"
+
+#: keymap_alldefs.h:219
+msgid "move the highlight to previous mailbox with new mail"
+msgstr "movi markilon al antaŭan poŝtfakon kun nova poŝto"
+
+#: keymap_alldefs.h:220
+#, fuzzy
+msgid "toggle between mailboxes and virtual mailboxes"
+msgstr "(mal)ŝali, ĉu vidi poŝtfakojn aŭ ĉiujn dosierojn"
+
+#: keymap_alldefs.h:221
+msgid "make the sidebar (in)visible"
+msgstr "kaŝi/malkaŝi la flankan strion"
+
+#: keymap_alldefs.h:222
+#, fuzzy
+msgid "open a different virtual folder"
+msgstr "malfermi alian poŝtfakon"
+
+#: keymap_alldefs.h:223
+msgid "generate virtual folder from query"
+msgstr ""
+
+#: keymap_alldefs.h:224
+msgid "generate virtual folder from query and time window"
+msgstr ""
+
+#: keymap_alldefs.h:225
+msgid "shifts virtual folder time window forwards"
+msgstr ""
+
+#: keymap_alldefs.h:226
+msgid "shifts virtual folder time window backwards"
+msgstr ""
+
+#: keymap_alldefs.h:227
+msgid "modify (notmuch) tags"
+msgstr ""
+
+#: keymap_alldefs.h:228
+#, fuzzy
+msgid "modify labels and then hide message"
+msgstr "Vi estas ĉe la unua mesaĝo."
+
+#: keymap_alldefs.h:229
+#, fuzzy
+msgid "read entire thread of the current message"
+msgstr "krei fulmklavan makroon por nuna mesaĝo"
+
+#: keymap_alldefs.h:230
+msgid "accept the chain constructed"
+msgstr "akcepti la konstruitan ĉenon"
+
+#: keymap_alldefs.h:231
+msgid "append a remailer to the chain"
+msgstr "aldoni plusendilon al la ĉeno"
+
+#: keymap_alldefs.h:232
+msgid "insert a remailer into the chain"
+msgstr "enŝovi plusendilon en la ĉenon"
+
+#: keymap_alldefs.h:233
+msgid "delete a remailer from the chain"
+msgstr "forviŝi plusendilon el la ĉeno"
+
+#: keymap_alldefs.h:234
+msgid "select the previous element of the chain"
+msgstr "elekti la antaŭan elementon de la ĉeno"
+
+#: keymap_alldefs.h:235
+msgid "select the next element of the chain"
+msgstr "elekti la sekvan elementon de la ĉeno"
+
+#: keymap_alldefs.h:236
+msgid "send the message through a mixmaster remailer chain"
+msgstr "sendi la mesaĝon tra mixmaster-plusendiloĉeno"
+
+#: keymap_alldefs.h:237
+msgid "attach a PGP public key"
+msgstr "aldoni publikan PGP-ŝlosilon"
+
+#: keymap_alldefs.h:238
+msgid "show PGP options"
+msgstr "montri PGP-funkciojn"
+
+#: keymap_alldefs.h:239
+msgid "mail a PGP public key"
+msgstr "sendi publikan PGP-ŝlosilon"
+
+#: keymap_alldefs.h:240
+msgid "verify a PGP public key"
+msgstr "kontroli publikan PGP-ŝlosilon"
+
+#: keymap_alldefs.h:241
+msgid "view the key's user id"
+msgstr "vidi la uzant-identigilon de la ŝlosilo"
+
+#: keymap_alldefs.h:242
+msgid "check for classic PGP"
+msgstr "kontroli pri klasika PGP"
+
+#: keymap_alldefs.h:243
+msgid "show S/MIME options"
+msgstr "montri S/MIME-funkciojn"
+
+#: keymap_alldefs.h:244
+msgid "make decrypted copy and delete"
+msgstr "fari malĉifritan kopion kaj forviŝi"
+
+#: keymap_alldefs.h:245
+msgid "make decrypted copy"
+msgstr "fari malĉifritan kopion"
+
+#: keymap_alldefs.h:246
+msgid "wipe passphrase(s) from memory"
+msgstr "forviŝi pasfrazo(j)n el memoro"
+
+#: keymap_alldefs.h:247
+msgid "extract supported public keys"
+msgstr "eltiri publikajn ŝlosilojn"
+
 #: lib.c:118
 msgid "Integer overflow -- can't allocate memory!"
 msgstr "Entjera troo -- ne eblas asigni memoron!"
@@ -3023,7 +4019,6 @@ msgid "  -d <level>    log debugging output to ~/.muttdebug0"
 msgstr "  -d <nivelo>    skribi sencimigan eligon al ~/.muttdebug0"
 
 #: main.c:100
-#, fuzzy
 msgid ""
 "  -E            edit the draft (-H) or include (-i) file\n"
 "  -e <command>  specify a command to be executed after initialization\n"
@@ -3038,17 +4033,16 @@ msgid ""
 "  -p            recall a postponed message"
 msgstr ""
 "  -E            redakti la malnetaĵon (-H) aŭ la inkluzivitan dosieron (-i)\n"
-"  -e <komando>  specifi komandon por ruligi post la starto\n"
-"  -f <dosiero>  specifi la poŝtfakon por malfermi\n"
-"  -F <dosiero>  specifi alian dosieron muttrc\n"
-"  -H <dosiero>  specifi malnetan dosieron por legi la ĉapon kaj korpon\n"
-"  -i <dosiero>  specifi dosieron kiun Mutt inkluzivu en la respondo\n"
-"  -m <speco>    specifi implicitan specon de poŝtfako\n"
-"  -n            indikas al Mutt ne legi la sisteman dosieron Muttrc\n"
-"  -p            revoki prokrastitan mesaĝon"
+"  -e <komando>   specifi komandon por ruligi post la starto\n"
+"  -f <dosiero>   specifi la poŝtfakon por malfermi\n"
+"  -F <dosiero>   specifi alian dosieron muttrc\n"
+"  -H <dosiero>   specifi malnetan dosieron por legi la ĉapon kaj korpon\n"
+"  -i <dosiero>   specifi dosieron kiun Mutt inkluzivu en la respondo\n"
+"  -m <speco>     specifi implicitan specon de poŝtfako\n"
+"  -n             indikas al Mutt ne legi la sisteman dosieron Muttrc\n"
+"  -p             revoki prokrastitan mesaĝon"
 
 #: main.c:112
-#, fuzzy
 msgid ""
 "  -Q <variable> query a configuration variable\n"
 "  -R            open mailbox in read-only mode\n"
@@ -3060,15 +4054,15 @@ msgid ""
 "  -Z            open the first folder with new message, exit immediately if none\n"
 "  -h            this help message"
 msgstr ""
-"  -Q <variablo> pridemandi la valoron de agordo-variablo\n"
-"  -R            malfermi poŝtfakon nurlege\n"
-"  -s <temo>     specifi temlinion (en citiloj, se ĝi enhavas spacetojn)\n"
-"  -v            montri version kaj parametrojn de la tradukaĵo\n"
-"  -x            imiti la sendreĝimon de mailx\n"
-"  -y            elekti poŝtfakon specifitan en via listo 'mailboxes'\n"
-"  -z            eliri tuj, se ne estas mesaĝoj en la poŝtfako\n"
-"  -Z            malfermi la unuan poŝtfakon kun nova mesaĝo; eliri tuj, se mankas\n"
-"  -h            doni ĉi tiun helpmesaĝon"
+"  -Q <variablo>  pridemandi la valoron de agordo-variablo\n"
+"  -R             malfermi poŝtfakon nurlege\n"
+"  -s <temo>      specifi temlinion (en citiloj, se ĝi enhavas spacetojn)\n"
+"  -v             montri version kaj parametrojn de la tradukaĵo\n"
+"  -x             imiti la sendreĝimon de mailx\n"
+"  -y             elekti poŝtfakon specifitan en via listo 'mailboxes'\n"
+"  -z             eliri tuj, se ne estas mesaĝoj en la poŝtfako\n"
+"  -Z             malfermi la unuan poŝtfakon kun nova mesaĝo; eliri tuj, se mankas\n"
+"  -h             doni ĉi tiun helpmesaĝon"
 
 #: main.c:144
 msgid "Error initializing terminal."
@@ -5022,7 +6016,7 @@ msgid ""
 "Copyright (C) 2000-2004 Edmund Grimley Evans <edmundo@rano.org>\n"
 "Copyright (C) 2006-2009 Rocco Rutte <pdmef@gmx.net>\n"
 "Copyright (C) 2014-2016 Kevin J. McCarthy <kevin@8t8.us>\n"
-"Copyright (C) 2015-2016 Richard Russon <rich@flatcap.org>\n"
+"Copyright (C) 2015-2017 Richard Russon <rich@flatcap.org>\n"
 "\n"
 "Many others not mentioned here contributed code, fixes,\n"
 "and suggestions.\n"
@@ -5099,748 +6093,3 @@ msgid ""
 msgstr ""
 "\n"
 "Parametroj de la tradukaĵo:"
-
-#~ msgid "PGP passphrase forgotten."
-#~ msgstr "PGP-pasfrazo forgesita."
-
-#~ msgid "Query"
-#~ msgstr "Demando"
-
-#~ msgid "null operation"
-#~ msgstr "malplena funkcio"
-
-#~ msgid "end of conditional execution (noop)"
-#~ msgstr "fino de kondiĉa rulo (noop)"
-
-#~ msgid "force viewing of attachment using mailcap"
-#~ msgstr "devigi vidigon de parto per mailcap"
-
-#~ msgid "view attachment as text"
-#~ msgstr "vidigi parton kiel tekston"
-
-#~ msgid "Toggle display of subparts"
-#~ msgstr "ŝalti aŭ malŝalti montradon de subpartoj"
-
-#~ msgid "move to the bottom of the page"
-#~ msgstr "iri al fino de paĝo"
-
-#~ msgid "remail a message to another user"
-#~ msgstr "redirekti mesaĝon al alia adreso"
-
-#~ msgid "select a new file in this directory"
-#~ msgstr "elekti novan dosieron en ĉi tiu dosierujo"
-
-#~ msgid "view file"
-#~ msgstr "vidigi dosieron"
-
-#~ msgid "display the currently selected file's name"
-#~ msgstr "montri la nomon de la elektita dosiero"
-
-#, fuzzy
-#~ msgid "subscribe to current mbox (IMAP/NNTP only)"
-#~ msgstr "aboni ĉi tiun poŝtfakon (nur IMAP)"
-
-#, fuzzy
-#~ msgid "unsubscribe from current mbox (IMAP/NNTP only)"
-#~ msgstr "malaboni ĉi tiun poŝtfakon (nur IMAP)"
-
-#~ msgid "toggle view all/subscribed mailboxes (IMAP only)"
-#~ msgstr "elekti, ĉu vidi ĉiujn, aŭ nur abonitajn poŝtfakojn (nur IMAP)"
-
-#~ msgid "list mailboxes with new mail"
-#~ msgstr "listigi poŝtfakojn kun nova mesaĝo"
-
-#~ msgid "change directories"
-#~ msgstr "ŝanĝi la dosierujon"
-
-#~ msgid "check mailboxes for new mail"
-#~ msgstr "kontroli poŝtfakojn pri novaj mesaĝoj"
-
-#~ msgid "attach file(s) to this message"
-#~ msgstr "aldoni dosiero(j)n al ĉi tiu mesaĝo"
-
-#~ msgid "attach message(s) to this message"
-#~ msgstr "aldoni mesaĝo(j)n al ĉi tiu mesaĝo"
-
-#, fuzzy
-#~ msgid "attach news article(s) to this message"
-#~ msgstr "aldoni dosiero(j)n al ĉi tiu mesaĝo"
-
-#~ msgid "edit the BCC list"
-#~ msgstr "redakti la BCC-liston"
-
-#~ msgid "edit the CC list"
-#~ msgstr "redakti la CC-liston"
-
-#~ msgid "edit attachment description"
-#~ msgstr "redakti priskribon de parto"
-
-#~ msgid "edit attachment transfer-encoding"
-#~ msgstr "redakti kodadon de parto"
-
-#~ msgid "enter a file to save a copy of this message in"
-#~ msgstr "donu dosieron, al kiu la mesaĝo estu skribita"
-
-#~ msgid "edit the file to be attached"
-#~ msgstr "redakti la dosieron aldonotan"
-
-#~ msgid "edit the from field"
-#~ msgstr "redakti la From-kampon"
-
-#~ msgid "edit the message with headers"
-#~ msgstr "redakti la mesaĝon kun ĉapo"
-
-#~ msgid "edit the message"
-#~ msgstr "redakti la mesaĝon"
-
-#~ msgid "edit attachment using mailcap entry"
-#~ msgstr "redakti parton, uzante mailcap"
-
-#, fuzzy
-#~ msgid "edit the newsgroups list"
-#~ msgstr "redakti la CC-liston"
-
-#~ msgid "edit the Reply-To field"
-#~ msgstr "redakti la kampon Reply-To"
-
-#, fuzzy
-#~ msgid "edit the Followup-To field"
-#~ msgstr "redakti la kampon Reply-To"
-
-#, fuzzy
-#~ msgid "edit the X-Comment-To field"
-#~ msgstr "redakti la kampon Reply-To"
-
-#~ msgid "edit the subject of this message"
-#~ msgstr "redakti la temlinion de le mesaĝo"
-
-#~ msgid "edit the TO list"
-#~ msgstr "redakti la liston de ricevontoj"
-
-#~ msgid "create a new mailbox (IMAP only)"
-#~ msgstr "krei novan poŝtfakon (nur IMAP)"
-
-#~ msgid "edit attachment content type"
-#~ msgstr "redakti MIME-enhavospecon de parto"
-
-#~ msgid "get a temporary copy of an attachment"
-#~ msgstr "akiri dumtempan kopion de parto"
-
-#~ msgid "run ispell on the message"
-#~ msgstr "apliki ispell al la mesaĝo"
-
-#~ msgid "compose new attachment using mailcap entry"
-#~ msgstr "verki novan parton per mailcap"
-
-#~ msgid "toggle recoding of this attachment"
-#~ msgstr "ŝalti aŭ malŝalti rekodadon de ĉi tiu parto"
-
-#~ msgid "save this message to send later"
-#~ msgstr "skribi ĉi tiun mesaĝon por sendi ĝin poste"
-
-#~ msgid "send attachment with a different name"
-#~ msgstr "sendi parton kun alia nomo"
-
-#~ msgid "rename/move an attached file"
-#~ msgstr "renomi/movi aldonitan dosieron"
-
-#, fuzzy
-#~ msgid "compose a new message to the sender"
-#~ msgstr "verki novan mesaĝon"
-
-#~ msgid "send the message"
-#~ msgstr "sendi la mesaĝon"
-
-#~ msgid "toggle disposition between inline/attachment"
-#~ msgstr "ŝalti dispozicion inter \"inline\" kaj \"attachment\""
-
-#~ msgid "toggle whether to delete file after sending it"
-#~ msgstr "elekti ĉu forviŝi la dosieron post sendado"
-
-#~ msgid "update an attachment's encoding info"
-#~ msgstr "aktualigi la kodadon de parto"
-
-#~ msgid "write the message to a folder"
-#~ msgstr "skribi la mesaĝon al poŝtfako"
-
-#~ msgid "copy a message to a file/mailbox"
-#~ msgstr "kopii mesaĝon al dosiero/poŝtfako"
-
-#~ msgid "create an alias from a message sender"
-#~ msgstr "aldoni sendinton al adresaro"
-
-#~ msgid "move entry to bottom of screen"
-#~ msgstr "movi registron al fino de ekrano"
-
-#~ msgid "move entry to middle of screen"
-#~ msgstr "movi registron al mezo de ekrano"
-
-#~ msgid "move entry to top of screen"
-#~ msgstr "movi registron al komenco de ekrano"
-
-#~ msgid "make decoded (text/plain) copy"
-#~ msgstr "fari malkoditan kopion (text/plain)"
-
-#~ msgid "make decoded copy (text/plain) and delete"
-#~ msgstr "fari malkoditan kopion (text/plain) kaj forviŝi"
-
-#~ msgid "delete the current entry"
-#~ msgstr "forviŝi registron"
-
-#~ msgid "delete the current mailbox (IMAP only)"
-#~ msgstr "forviŝi ĉi tiun poŝtfakon (nur IMAP)"
-
-#~ msgid "delete all messages in subthread"
-#~ msgstr "forviŝi ĉiujn mesaĝojn en subfadeno"
-
-#~ msgid "delete all messages in thread"
-#~ msgstr "forviŝi ĉiujn mesaĝojn en fadeno"
-
-#~ msgid "display full address of sender"
-#~ msgstr "montri plenan adreson de sendinto"
-
-#~ msgid "display message and toggle header weeding"
-#~ msgstr "montri mesaĝon kaj (mal)ŝalti montradon de plena ĉapo"
-
-#~ msgid "display a message"
-#~ msgstr "montri mesaĝon"
-
-#~ msgid "add, change, or delete a message's label"
-#~ msgstr "alkroĉi, ŝanĝi, aŭ forigi mesaĝa etikedo"
-
-#~ msgid "edit the raw message"
-#~ msgstr "redakti la krudan mesaĝon"
-
-#~ msgid "delete the char in front of the cursor"
-#~ msgstr "forviŝi la signon antaŭ la tajpmontrilo"
-
-#~ msgid "move the cursor one character to the left"
-#~ msgstr "movi la tajpmontrilon unu signon maldekstren"
-
-#~ msgid "move the cursor to the beginning of the word"
-#~ msgstr "movi la tajpmontrilon al la komenco de la vorto"
-
-#~ msgid "jump to the beginning of the line"
-#~ msgstr "salti al la komenco de la linio"
-
-#~ msgid "cycle among incoming mailboxes"
-#~ msgstr "rondiri tra enir-poŝtfakoj"
-
-#~ msgid "complete filename or alias"
-#~ msgstr "kompletigi dosieronomon aŭ nomon el la adresaro"
-
-#~ msgid "complete address with query"
-#~ msgstr "kompletigi adreson kun demando"
-
-#~ msgid "delete the char under the cursor"
-#~ msgstr "forviŝi la signon sub la tajpmontrilo"
-
-#~ msgid "jump to the end of the line"
-#~ msgstr "salti al la fino de la linio"
-
-#~ msgid "move the cursor one character to the right"
-#~ msgstr "movi la tajpmontrilon unu signon dekstren"
-
-#~ msgid "move the cursor to the end of the word"
-#~ msgstr "movi la tajpmontrilon al la fino de la vorto"
-
-#~ msgid "scroll down through the history list"
-#~ msgstr "rulumi malsupren tra la histori-listo"
-
-#~ msgid "scroll up through the history list"
-#~ msgstr "rulumi supren tra la histori-listo"
-
-#~ msgid "delete chars from cursor to end of line"
-#~ msgstr "forviŝi signojn de la tajpmontrilo ĝis linifino"
-
-#~ msgid "delete chars from the cursor to the end of the word"
-#~ msgstr "forviŝi signojn de la tajpmontrilo ĝis fino de la vorto"
-
-#~ msgid "delete all chars on the line"
-#~ msgstr "forviŝi ĉiujn signojn en la linio"
-
-#~ msgid "delete the word in front of the cursor"
-#~ msgstr "forviŝi la vorton antaŭ la tajpmontrilo"
-
-#~ msgid "quote the next typed key"
-#~ msgstr "citi la sekvontan klavopremon"
-
-#~ msgid "transpose character under cursor with previous"
-#~ msgstr "interŝanĝi la signon sub la tajpmontrilo kun la antaŭa"
-
-#~ msgid "capitalize the word"
-#~ msgstr "majuskligi la vorton"
-
-#~ msgid "convert the word to lower case"
-#~ msgstr "konverti la vorton al minuskloj"
-
-#~ msgid "convert the word to upper case"
-#~ msgstr "konverti la vorton al majuskloj"
-
-#~ msgid "enter a muttrc command"
-#~ msgstr "enigi muttrc-komandon"
-
-#~ msgid "enter a file mask"
-#~ msgstr "enigi dosierŝablonon"
-
-#~ msgid "exit this menu"
-#~ msgstr "eliri el ĉi tiu menuo"
-
-#~ msgid "filter attachment through a shell command"
-#~ msgstr "filtri parton tra ŝelkomando"
-
-#~ msgid "move to the first entry"
-#~ msgstr "iri al la unua registro"
-
-#~ msgid "toggle a message's 'important' flag"
-#~ msgstr "ŝanĝi la flagon 'grava' de mesaĝo"
-
-#, fuzzy
-#~ msgid "followup to newsgroup"
-#~ msgstr "Ĉu respondi grupe al %s%s?"
-
-#~ msgid "forward a message with comments"
-#~ msgstr "plusendi mesaĝon kun komentoj"
-
-#~ msgid "select the current entry"
-#~ msgstr "elekti la aktualan registron"
-
-#, fuzzy
-#~ msgid "get all children of the current message"
-#~ msgstr "krei fulmklavan makroon por nuna mesaĝo"
-
-#, fuzzy
-#~ msgid "get message with Message-Id"
-#~ msgstr "redakti la mesaĝon kun ĉapo"
-
-#, fuzzy
-#~ msgid "get parent of the current message"
-#~ msgstr "krei fulmklavan makroon por nuna mesaĝo"
-
-#~ msgid "reply to all recipients"
-#~ msgstr "respondi al ĉiuj ricevintoj"
-
-#~ msgid "scroll down 1/2 page"
-#~ msgstr "rulumi malsupren duonon de paĝo"
-
-#~ msgid "scroll up 1/2 page"
-#~ msgstr "rulumi supren duonon de paĝo"
-
-#~ msgid "this screen"
-#~ msgstr "ĉi tiu ekrano"
-
-#~ msgid "jump to an index number"
-#~ msgstr "salti al indeksnumero"
-
-#~ msgid "move to the last entry"
-#~ msgstr "iri al la lasta registro"
-
-#~ msgid "reply to specified mailing list"
-#~ msgstr "respondi al specifita dissendolisto"
-
-#~ msgid "execute a macro"
-#~ msgstr "ruligi makroon"
-
-#~ msgid "compose a new mail message"
-#~ msgstr "verki novan mesaĝon"
-
-#~ msgid "break the thread in two"
-#~ msgstr "duigi la fadenon"
-
-#~ msgid "open a different folder"
-#~ msgstr "malfermi alian poŝtfakon"
-
-#~ msgid "open a different folder in read only mode"
-#~ msgstr "malfermi alian poŝtfakon nurlege"
-
-#, fuzzy
-#~ msgid "open a different newsgroup"
-#~ msgstr "malfermi alian poŝtfakon"
-
-#, fuzzy
-#~ msgid "open a different newsgroup in read only mode"
-#~ msgstr "malfermi alian poŝtfakon nurlege"
-
-#~ msgid "clear a status flag from a message"
-#~ msgstr "malŝalti flagon ĉe mesaĝo"
-
-#~ msgid "delete messages matching a pattern"
-#~ msgstr "forviŝi mesaĝojn laŭ ŝablono"
-
-#~ msgid "force retrieval of mail from IMAP server"
-#~ msgstr "devigi prenadon de mesaĝoj de IMAP-servilo"
-
-#~ msgid "logout from all IMAP servers"
-#~ msgstr "elsaluti el ĉiuj IMAP-serviloj"
-
-#~ msgid "retrieve mail from POP server"
-#~ msgstr "elŝuti mesaĝojn de POP-servilo"
-
-#~ msgid "show only messages matching a pattern"
-#~ msgstr "montri nur la mesaĝojn kiuj kongruas kun ŝablono"
-
-#~ msgid "link tagged message to the current one"
-#~ msgstr "ligi markitan mesaĝon al ĉi tiu"
-
-#~ msgid "open next mailbox with new mail"
-#~ msgstr "malfermi sekvan poŝtfakon kun nova poŝto"
-
-#~ msgid "jump to the next new message"
-#~ msgstr "salti al la unua nova mesaĝo"
-
-#~ msgid "jump to the next new or unread message"
-#~ msgstr "salti al la sekva nova aŭ nelegita mesaĝo"
-
-#~ msgid "jump to the next subthread"
-#~ msgstr "salti al la sekva subfadeno"
-
-#~ msgid "jump to the next thread"
-#~ msgstr "salti al la sekva fadeno"
-
-#~ msgid "move to the next undeleted message"
-#~ msgstr "salti al la sekva malforviŝita mesaĝo"
-
-#~ msgid "jump to the next unread message"
-#~ msgstr "salti al la sekva nelegita mesaĝo"
-
-#~ msgid "jump to parent message in thread"
-#~ msgstr "salti al patra mesaĝo en fadeno"
-
-#~ msgid "jump to previous thread"
-#~ msgstr "salti al la antaŭa fadeno"
-
-#~ msgid "jump to previous subthread"
-#~ msgstr "salti al la antaŭa subfadeno"
-
-#~ msgid "move to the previous undeleted message"
-#~ msgstr "salti al la antaŭa malforviŝita mesaĝo"
-
-#~ msgid "jump to the previous new message"
-#~ msgstr "salti al la antaŭa nova mesaĝo"
-
-#~ msgid "jump to the previous new or unread message"
-#~ msgstr "salti al la antaŭa nova aŭ nelegita mesaĝo"
-
-#~ msgid "jump to the previous unread message"
-#~ msgstr "salti al la antaŭa nelegita mesaĝo"
-
-#~ msgid "mark the current thread as read"
-#~ msgstr "marki la aktualan fadenon kiel legitan"
-
-#~ msgid "mark the current subthread as read"
-#~ msgstr "marki la aktualan subfadenon kiel legitan"
-
-#~ msgid "jump to root message in thread"
-#~ msgstr "salti al radika mesaĝo de fadeno"
-
-#~ msgid "set a status flag on a message"
-#~ msgstr "ŝalti flagon ĉe mesaĝo"
-
-#~ msgid "save changes to mailbox"
-#~ msgstr "skribi ŝanĝojn al poŝtfako"
-
-#~ msgid "tag messages matching a pattern"
-#~ msgstr "marki mesaĝojn laŭ ŝablono"
-
-#~ msgid "undelete messages matching a pattern"
-#~ msgstr "malforviŝi mesaĝojn laŭ ŝablono"
-
-#~ msgid "untag messages matching a pattern"
-#~ msgstr "malmarki mesaĝojn laŭ ŝablono"
-
-#~ msgid "create a hotkey macro for the current message"
-#~ msgstr "krei fulmklavan makroon por nuna mesaĝo"
-
-#~ msgid "move to the middle of the page"
-#~ msgstr "iri al la mezo de la paĝo"
-
-#~ msgid "move to the next entry"
-#~ msgstr "iri al la sekva registro"
-
-#~ msgid "scroll down one line"
-#~ msgstr "rulumi malsupren unu linion"
-
-#~ msgid "move to the next page"
-#~ msgstr "iri al la sekva paĝo"
-
-#~ msgid "jump to the bottom of the message"
-#~ msgstr "salti al la fino de la mesaĝo"
-
-#~ msgid "toggle display of quoted text"
-#~ msgstr "ŝalti aŭ malŝalti montradon de citita teksto"
-
-#~ msgid "skip beyond quoted text"
-#~ msgstr "supersalti cititan tekston"
-
-#~ msgid "jump to the top of the message"
-#~ msgstr "salti al la komenco de mesaĝo"
-
-#~ msgid "pipe message/attachment to a shell command"
-#~ msgstr "trakti mesaĝon/parton per ŝelkomando"
-
-#, fuzzy
-#~ msgid "post message to newsgroup"
-#~ msgstr "Mesaĝa ID mankas en indekso."
-
-#~ msgid "move to the previous entry"
-#~ msgstr "iri al la antaŭa registro"
-
-#~ msgid "scroll up one line"
-#~ msgstr "rulumi supren unu linion"
-
-#~ msgid "move to the previous page"
-#~ msgstr "iri al la antaŭa paĝo"
-
-#~ msgid "print the current entry"
-#~ msgstr "presi la aktualan registron"
-
-#~ msgid "really delete the current entry, bypassing the trash folder"
-#~ msgstr "vere forviŝi la nunan eron, preterpasante rubujon"
-
-#, fuzzy
-#~ msgid "really delete the current thread, bypassing the trash folder"
-#~ msgstr "vere forviŝi la nunan eron, preterpasante rubujon"
-
-#~ msgid "query external program for addresses"
-#~ msgstr "demandi eksteran programon pri adresoj"
-
-#~ msgid "append new query results to current results"
-#~ msgstr "aldoni novajn demandrezultojn al jamaj rezultoj"
-
-#~ msgid "save changes to mailbox and quit"
-#~ msgstr "skribi ŝanĝojn al poŝtfako kaj eliri"
-
-#~ msgid "recall a postponed message"
-#~ msgstr "revoki prokrastitan mesaĝon"
-
-#, fuzzy
-#~ msgid "reconstruct thread containing current message"
-#~ msgstr "Fadeno enhavas nelegitajn mesaĝojn."
-
-#~ msgid "clear and redraw the screen"
-#~ msgstr "rekrei la enhavon de la ekrano"
-
-#~ msgid "{internal}"
-#~ msgstr "{interna}"
-
-#~ msgid "rename the current mailbox (IMAP only)"
-#~ msgstr "renomi ĉi tiun poŝtfakon (nur IMAP)"
-
-#~ msgid "reply to a message"
-#~ msgstr "respondi al mesaĝo"
-
-#~ msgid "use the current message as a template for a new one"
-#~ msgstr "uzi ĉi tiun mesaĝon kiel modelon por nova mesaĝo"
-
-#~ msgid "save message/attachment to a mailbox/file"
-#~ msgstr "skribi mesaĝon/parton al poŝtfako/dosiero"
-
-#~ msgid "search for a regular expression"
-#~ msgstr "serĉi pri regula esprimo"
-
-#~ msgid "search backwards for a regular expression"
-#~ msgstr "serĉi malantaŭen per regula esprimo"
-
-#~ msgid "search for next match"
-#~ msgstr "serĉi pri la sekva trafo"
-
-#~ msgid "search for next match in opposite direction"
-#~ msgstr "serĉi pri la sekva trafo en la mala direkto"
-
-#~ msgid "toggle search pattern coloring"
-#~ msgstr "ŝalti aŭ malŝalti alikolorigon de serĉŝablono"
-
-#~ msgid "invoke a command in a subshell"
-#~ msgstr "alvoki komandon en subŝelo"
-
-#~ msgid "sort messages"
-#~ msgstr "ordigi mesaĝojn"
-
-#~ msgid "sort messages in reverse order"
-#~ msgstr "ordigi mesaĝojn en inversa ordo"
-
-#, fuzzy
-#~ msgid "subscribe to newsgroups matching a pattern"
-#~ msgstr "malmarki mesaĝojn laŭ ŝablono"
-
-#~ msgid "tag the current entry"
-#~ msgstr "marki la aktualan registron"
-
-#~ msgid "apply next function to tagged messages"
-#~ msgstr "apliki la sekvan komandon al ĉiuj markitaj mesaĝoj"
-
-#~ msgid "apply next function ONLY to tagged messages"
-#~ msgstr "apliki la sekvan funkcion NUR al markitaj mesaĝoj"
-
-#~ msgid "tag the current subthread"
-#~ msgstr "marki la aktualan subfadenon"
-
-#~ msgid "tag the current thread"
-#~ msgstr "marki la aktualan fadenon"
-
-#~ msgid "toggle a message's 'new' flag"
-#~ msgstr "ŝanĝi la flagon 'nova' de mesaĝo"
-
-#, fuzzy
-#~ msgid "toggle view of read messages"
-#~ msgstr "salti al la antaŭa nova aŭ nelegita mesaĝo"
-
-#~ msgid "toggle whether the mailbox will be rewritten"
-#~ msgstr "(mal)ŝalti, ĉu la poŝtfako estos reskribita"
-
-#~ msgid "toggle whether to browse mailboxes or all files"
-#~ msgstr "(mal)ŝali, ĉu vidi poŝtfakojn aŭ ĉiujn dosierojn"
-
-#~ msgid "move to the top of the page"
-#~ msgstr "iri al la supro de la paĝo"
-
-#~ msgid "undelete the current entry"
-#~ msgstr "malforviŝi la aktualan registron"
-
-#~ msgid "undelete all messages in thread"
-#~ msgstr "malforviŝi ĉiujn mesaĝojn en fadeno"
-
-#~ msgid "undelete all messages in subthread"
-#~ msgstr "malforviŝi ĉiujn mesaĝojn en subfadeno"
-
-#, fuzzy
-#~ msgid "unsubscribe from newsgroups matching a pattern"
-#~ msgstr "malmarki mesaĝojn laŭ ŝablono"
-
-#~ msgid "show the Mutt version number and date"
-#~ msgstr "montri la version kaj daton de Mutt"
-
-#~ msgid "view attachment using mailcap entry if necessary"
-#~ msgstr "vidigi parton, per mailcap se necesas"
-
-#~ msgid "show MIME attachments"
-#~ msgstr "montri MIME-partojn"
-
-#~ msgid "display the keycode for a key press"
-#~ msgstr "montri la klavokodon por klavopremo"
-
-#, fuzzy
-#~ msgid "limit view to current thread"
-#~ msgstr "marki la aktualan fadenon"
-
-#~ msgid "show currently active limit pattern"
-#~ msgstr "montri la aktivan limigŝablonon"
-
-#~ msgid "collapse/uncollapse current thread"
-#~ msgstr "(mal)kolapsigi la aktualan fadenon"
-
-#~ msgid "collapse/uncollapse all threads"
-#~ msgstr "(mal)kolapsigi ĉiujn fadenojn"
-
-#~ msgid "move the highlight to next mailbox"
-#~ msgstr "movi markilon al sekvan poŝtfakon"
-
-#~ msgid "move the highlight to next mailbox with new mail"
-#~ msgstr "movi markilon al sekvan poŝtfakon kun nova poŝto"
-
-#~ msgid "open highlighted mailbox"
-#~ msgstr "malfermi markitan poŝtfakon"
-
-#~ msgid "scroll the sidebar down 1 page"
-#~ msgstr "rulumi flankan strion suben je unu paĝo"
-
-#~ msgid "scroll the sidebar up 1 page"
-#~ msgstr "rulumi flankan strion supren je unu paĝo"
-
-#~ msgid "move the highlight to previous mailbox"
-#~ msgstr "movi markilon al antaŭan poŝtfakon"
-
-#~ msgid "move the highlight to previous mailbox with new mail"
-#~ msgstr "movi markilon al antaŭan poŝtfakon kun nova poŝto"
-
-#, fuzzy
-#~ msgid "toggle between mailboxes and virtual mailboxes"
-#~ msgstr "(mal)ŝali, ĉu vidi poŝtfakojn aŭ ĉiujn dosierojn"
-
-#~ msgid "make the sidebar (in)visible"
-#~ msgstr "kaŝi/malkaŝi la flankan strion"
-
-#, fuzzy
-#~ msgid "open a different virtual folder"
-#~ msgstr "malfermi alian poŝtfakon"
-
-#, fuzzy
-#~ msgid "modify labels and then hide message"
-#~ msgstr "Vi estas ĉe la unua mesaĝo."
-
-#, fuzzy
-#~ msgid "read entire thread of the current message"
-#~ msgstr "krei fulmklavan makroon por nuna mesaĝo"
-
-#~ msgid "attach a PGP public key"
-#~ msgstr "aldoni publikan PGP-ŝlosilon"
-
-#~ msgid "show PGP options"
-#~ msgstr "montri PGP-funkciojn"
-
-#~ msgid "mail a PGP public key"
-#~ msgstr "sendi publikan PGP-ŝlosilon"
-
-#~ msgid "verify a PGP public key"
-#~ msgstr "kontroli publikan PGP-ŝlosilon"
-
-#~ msgid "view the key's user id"
-#~ msgstr "vidi la uzant-identigilon de la ŝlosilo"
-
-#~ msgid "check for classic PGP"
-#~ msgstr "kontroli pri klasika PGP"
-
-#~ msgid "accept the chain constructed"
-#~ msgstr "akcepti la konstruitan ĉenon"
-
-#~ msgid "append a remailer to the chain"
-#~ msgstr "aldoni plusendilon al la ĉeno"
-
-#~ msgid "insert a remailer into the chain"
-#~ msgstr "enŝovi plusendilon en la ĉenon"
-
-#~ msgid "delete a remailer from the chain"
-#~ msgstr "forviŝi plusendilon el la ĉeno"
-
-#~ msgid "select the previous element of the chain"
-#~ msgstr "elekti la antaŭan elementon de la ĉeno"
-
-#~ msgid "select the next element of the chain"
-#~ msgstr "elekti la sekvan elementon de la ĉeno"
-
-#~ msgid "send the message through a mixmaster remailer chain"
-#~ msgstr "sendi la mesaĝon tra mixmaster-plusendiloĉeno"
-
-#~ msgid "make decrypted copy and delete"
-#~ msgstr "fari malĉifritan kopion kaj forviŝi"
-
-#~ msgid "make decrypted copy"
-#~ msgstr "fari malĉifritan kopion"
-
-#~ msgid "wipe passphrase(s) from memory"
-#~ msgstr "forviŝi pasfrazo(j)n el memoro"
-
-#~ msgid "extract supported public keys"
-#~ msgstr "eltiri publikajn ŝlosilojn"
-
-#~ msgid "show S/MIME options"
-#~ msgstr "montri S/MIME-funkciojn"
-
-#~ msgid "Subscribed [%s], File mask: %s"
-#~ msgstr "Abonita [%s], Dosieromasko: %s"
-
-#~ msgid "dazn"
-#~ msgstr "dagn"
-
-#~ msgid ""
-#~ "To contact the developers, please mail to <mutt-dev@mutt.org>.\n"
-#~ "To report a bug, please visit http://bugs.mutt.org/.\n"
-#~ msgstr ""
-#~ "Por kontakti la kreantojn, bonvolu skribi al <mutt-dev@mutt.org>.\n"
-#~ "Por raporti cimon, bonvolu iri al http://bugs.mutt.org/.\n"
-
-#~ msgid "%s connection using %s (%s)"
-#~ msgstr "%s-konekto per %s (%s)"
-
-#~ msgid "SMTP authentication requires SASL"
-#~ msgstr "SMTP-rajtiĝo bezonas SASL"

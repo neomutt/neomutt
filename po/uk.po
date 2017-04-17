@@ -11,13 +11,13 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neomutt-20161104\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
-"POT-Creation-Date: 2017-04-13 13:26+0100\n"
+"POT-Creation-Date: 2017-04-17 17:04+0100\n"
 "PO-Revision-Date: 2017-02-16 21:22+0200\n"
 "Last-Translator: Vsevolod Volkov <vvv@mutt.org.ua>\n"
 "Language-Team: \n"
 "Language: uk\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
 
@@ -907,6 +907,118 @@ msgstr "Стиснення %s"
 msgid "No decryption engine available for message"
 msgstr ""
 
+#: crypt.c:59
+#, c-format
+msgid " (current time: %c)"
+msgstr " (поточний час: %c)"
+
+#: crypt.c:64
+#, c-format
+msgid "[-- %s output follows%s --]\n"
+msgstr "[-- Результат роботи %s%s --]\n"
+
+#: crypt.c:78
+msgid "Passphrase(s) forgotten."
+msgstr "Паролі видалено з пам’яті."
+
+#: crypt.c:139
+msgid "Inline PGP can't be used with attachments.  Revert to PGP/MIME?"
+msgstr "Неможливо використовувати PGP/текст з додатками. Використати PGP/MIME?"
+
+#: crypt.c:143
+msgid "Mail not sent: inline PGP can't be used with attachments."
+msgstr "Лист не відправлено: неможливо використовувати PGP/текст з додатками."
+
+#: crypt.c:151 cryptglue.c:106 pgpkey.c:541 pgpkey.c:724
+msgid "Invoking PGP..."
+msgstr "Виклик PGP..."
+
+#: crypt.c:162
+msgid "Message can't be sent inline.  Revert to using PGP/MIME?"
+msgstr "Повідомлення не може бути відправленим в текстовому форматі. Використовувати PGP/MIME?"
+
+#: crypt.c:164 send.c:1796
+msgid "Mail not sent."
+msgstr "Лист не відправлено."
+
+#: crypt.c:224
+msgid "Encrypt message to S/MIME Default Key also?"
+msgstr ""
+
+#: crypt.c:259
+msgid "Encrypt message to PGP Default Key also?"
+msgstr ""
+
+#: crypt.c:502
+msgid "S/MIME messages with no hints on content are unsupported."
+msgstr "Повідомлення S/MIME без вказазування типу даних не підтрмується."
+
+#: crypt.c:710 crypt.c:751
+msgid "Trying to extract PGP keys...\n"
+msgstr "Спроба видобування ключів PGP...\n"
+
+#: crypt.c:732 crypt.c:772
+msgid "Trying to extract S/MIME certificates...\n"
+msgstr "Спроба видобування сертифікатів S/MIME...\n"
+
+#: crypt.c:913
+#, c-format
+msgid ""
+"[-- Error: Unknown multipart/signed protocol %s! --]\n"
+"\n"
+msgstr ""
+"[-- Помилка: невідомий протокол multipart/signed %s! --]\n"
+"\n"
+
+#: crypt.c:947
+msgid ""
+"[-- Error: Inconsistent multipart/signed structure! --]\n"
+"\n"
+msgstr ""
+"[-- Помилка: несумісна структура multipart/signed! --]\n"
+"\n"
+
+#: crypt.c:983
+#, c-format
+msgid ""
+"[-- Warning: We can't verify %s/%s signatures. --]\n"
+"\n"
+msgstr ""
+"[-- Попередження: неможливо перевірити %s/%s підписи. --]\n"
+"\n"
+
+#: crypt.c:995
+msgid ""
+"[-- The following data is signed --]\n"
+"\n"
+msgstr ""
+"[-- Наступні дані підписано --]\n"
+"\n"
+
+#: crypt.c:1001
+msgid ""
+"[-- Warning: Can't find any signatures. --]\n"
+"\n"
+msgstr ""
+"[-- Попередження: неможливо знайти жодного підпису. --]\n"
+"\n"
+
+#: crypt.c:1007
+msgid ""
+"\n"
+"[-- End of signed data --]\n"
+msgstr ""
+"\n"
+"[-- Кінець підписаних даних --]\n"
+
+#: cryptglue.c:84
+msgid "\"crypt_use_gpgme\" set but not built with GPGME support."
+msgstr "\"crypt_use_gpgme\" ввімкнено, але зібрано без підтримки GPGME."
+
+#: cryptglue.c:108
+msgid "Invoking S/MIME..."
+msgstr "Виклик S/MIME..."
+
 #: crypt_gpgme.c:384
 #, c-format
 msgid "error creating gpgme context: %s\n"
@@ -1547,118 +1659,6 @@ msgstr "Відправника не перевірено"
 #: crypt_gpgme.c:4833
 msgid "Failed to figure out sender"
 msgstr "Відправника не вирахувано"
-
-#: crypt.c:59
-#, c-format
-msgid " (current time: %c)"
-msgstr " (поточний час: %c)"
-
-#: crypt.c:64
-#, c-format
-msgid "[-- %s output follows%s --]\n"
-msgstr "[-- Результат роботи %s%s --]\n"
-
-#: crypt.c:78
-msgid "Passphrase(s) forgotten."
-msgstr "Паролі видалено з пам’яті."
-
-#: crypt.c:139
-msgid "Inline PGP can't be used with attachments.  Revert to PGP/MIME?"
-msgstr "Неможливо використовувати PGP/текст з додатками. Використати PGP/MIME?"
-
-#: crypt.c:143
-msgid "Mail not sent: inline PGP can't be used with attachments."
-msgstr "Лист не відправлено: неможливо використовувати PGP/текст з додатками."
-
-#: crypt.c:151 cryptglue.c:106 pgpkey.c:541 pgpkey.c:724
-msgid "Invoking PGP..."
-msgstr "Виклик PGP..."
-
-#: crypt.c:162
-msgid "Message can't be sent inline.  Revert to using PGP/MIME?"
-msgstr "Повідомлення не може бути відправленим в текстовому форматі. Використовувати PGP/MIME?"
-
-#: crypt.c:164 send.c:1796
-msgid "Mail not sent."
-msgstr "Лист не відправлено."
-
-#: crypt.c:224
-msgid "Encrypt message to S/MIME Default Key also?"
-msgstr ""
-
-#: crypt.c:259
-msgid "Encrypt message to PGP Default Key also?"
-msgstr ""
-
-#: crypt.c:502
-msgid "S/MIME messages with no hints on content are unsupported."
-msgstr "Повідомлення S/MIME без вказазування типу даних не підтрмується."
-
-#: crypt.c:710 crypt.c:751
-msgid "Trying to extract PGP keys...\n"
-msgstr "Спроба видобування ключів PGP...\n"
-
-#: crypt.c:732 crypt.c:772
-msgid "Trying to extract S/MIME certificates...\n"
-msgstr "Спроба видобування сертифікатів S/MIME...\n"
-
-#: crypt.c:913
-#, c-format
-msgid ""
-"[-- Error: Unknown multipart/signed protocol %s! --]\n"
-"\n"
-msgstr ""
-"[-- Помилка: невідомий протокол multipart/signed %s! --]\n"
-"\n"
-
-#: crypt.c:947
-msgid ""
-"[-- Error: Inconsistent multipart/signed structure! --]\n"
-"\n"
-msgstr ""
-"[-- Помилка: несумісна структура multipart/signed! --]\n"
-"\n"
-
-#: crypt.c:983
-#, c-format
-msgid ""
-"[-- Warning: We can't verify %s/%s signatures. --]\n"
-"\n"
-msgstr ""
-"[-- Попередження: неможливо перевірити %s/%s підписи. --]\n"
-"\n"
-
-#: crypt.c:995
-msgid ""
-"[-- The following data is signed --]\n"
-"\n"
-msgstr ""
-"[-- Наступні дані підписано --]\n"
-"\n"
-
-#: crypt.c:1001
-msgid ""
-"[-- Warning: Can't find any signatures. --]\n"
-"\n"
-msgstr ""
-"[-- Попередження: неможливо знайти жодного підпису. --]\n"
-"\n"
-
-#: crypt.c:1007
-msgid ""
-"\n"
-"[-- End of signed data --]\n"
-msgstr ""
-"\n"
-"[-- Кінець підписаних даних --]\n"
-
-#: cryptglue.c:84
-msgid "\"crypt_use_gpgme\" set but not built with GPGME support."
-msgstr "\"crypt_use_gpgme\" ввімкнено, але зібрано без підтримки GPGME."
-
-#: cryptglue.c:108
-msgid "Invoking S/MIME..."
-msgstr "Виклик S/MIME..."
 
 #: curs_lib.c:229
 msgid "yes"
@@ -2489,12 +2489,12 @@ msgstr "Реєстрація..."
 msgid "Login failed."
 msgstr "Помилка реєстрації."
 
-#: imap/auth_sasl.c:94 nntp.c:367 nntp.c:432 smtp.c:372
+#: imap/auth_sasl.c:95 nntp.c:367 nntp.c:432 smtp.c:372
 #, c-format
 msgid "Authenticating (%s)..."
 msgstr "Аутентифікація (%s)..."
 
-#: imap/auth_sasl.c:222 pop_auth.c:175
+#: imap/auth_sasl.c:223 pop_auth.c:175
 msgid "SASL authentication failed."
 msgstr "Помилка аутентифікації SASL."
 
@@ -2967,6 +2967,1002 @@ msgstr "Введіть клавіші (^G для відміни): "
 msgid "Char = %s, Octal = %o, Decimal = %d"
 msgstr "Символ = %s, Вісімковий = %o, Десятковий = %d"
 
+#: keymap_alldefs.h:5
+msgid "null operation"
+msgstr "порожня операція"
+
+#: keymap_alldefs.h:6
+msgid "end of conditional execution (noop)"
+msgstr "завершення операції по умовам"
+
+#: keymap_alldefs.h:7
+msgid "force viewing of attachment using mailcap"
+msgstr "примусовий перегляд з використанням mailcap"
+
+#: keymap_alldefs.h:8
+msgid "view attachment as text"
+msgstr "дивитись додаток як текст"
+
+#: keymap_alldefs.h:9
+msgid "Toggle display of subparts"
+msgstr "вимк./ввімкн. відображення підчастин"
+
+#: keymap_alldefs.h:10
+msgid "move to the bottom of the page"
+msgstr "перейти до кінця сторінки"
+
+#: keymap_alldefs.h:11
+msgid "remail a message to another user"
+msgstr "надіслати копію листа іншому адресату"
+
+#: keymap_alldefs.h:12
+msgid "swap the current folder position with $folder if it exists"
+msgstr ""
+
+#: keymap_alldefs.h:13
+msgid "select a new file in this directory"
+msgstr "вибрати новий файл в цьому каталозі"
+
+#: keymap_alldefs.h:14
+msgid "view file"
+msgstr "проглянути файл"
+
+#: keymap_alldefs.h:15
+msgid "display the currently selected file's name"
+msgstr "показати ім’я вибраного файлу"
+
+#: keymap_alldefs.h:16
+#, fuzzy
+msgid "subscribe to current mbox (IMAP/NNTP only)"
+msgstr "підписатись на цю скриньку (лише IMAP)"
+
+#: keymap_alldefs.h:17
+#, fuzzy
+msgid "unsubscribe from current mbox (IMAP/NNTP only)"
+msgstr "відписатись від цієї скриньки (лише IMAP)"
+
+#: keymap_alldefs.h:18
+msgid "toggle view all/subscribed mailboxes (IMAP only)"
+msgstr "вибрати: перелік всіх/підписаних (лише IMAP)"
+
+#: keymap_alldefs.h:19
+msgid "list mailboxes with new mail"
+msgstr "список поштових скриньок з новою поштою."
+
+#: keymap_alldefs.h:20
+msgid "mark all articles in newsgroup as read"
+msgstr ""
+
+#: keymap_alldefs.h:21
+msgid "change directories"
+msgstr "змінювати каталоги"
+
+#: keymap_alldefs.h:22
+msgid "check mailboxes for new mail"
+msgstr "перевірити наявність нової пошти у скриньках"
+
+#: keymap_alldefs.h:23
+msgid "attach file(s) to this message"
+msgstr "приєднати файл(и) до цього листа"
+
+#: keymap_alldefs.h:24
+msgid "attach message(s) to this message"
+msgstr "приєднати лист(и) до цього листа"
+
+#: keymap_alldefs.h:25
+#, fuzzy
+msgid "attach news article(s) to this message"
+msgstr "приєднати файл(и) до цього листа"
+
+#: keymap_alldefs.h:26
+msgid "edit the BCC list"
+msgstr "змінити перелік Bcc"
+
+#: keymap_alldefs.h:27
+msgid "edit the CC list"
+msgstr "змінити перелік Cc"
+
+#: keymap_alldefs.h:28
+msgid "edit attachment description"
+msgstr "змінити пояснення до додатку"
+
+#: keymap_alldefs.h:29
+msgid "edit attachment transfer-encoding"
+msgstr "змінити спосіб кодування додатку"
+
+#: keymap_alldefs.h:30
+msgid "enter a file to save a copy of this message in"
+msgstr "ввести ім’я файлу, куди додати копію листа"
+
+#: keymap_alldefs.h:31
+msgid "edit the file to be attached"
+msgstr "редагувати файл, що приєднується"
+
+#: keymap_alldefs.h:32
+msgid "edit the from field"
+msgstr "змінити поле From"
+
+#: keymap_alldefs.h:33
+msgid "edit the message with headers"
+msgstr "редагувати лист з заголовками"
+
+#: keymap_alldefs.h:34
+msgid "edit the message"
+msgstr "редагувати лист"
+
+#: keymap_alldefs.h:35
+msgid "edit attachment using mailcap entry"
+msgstr "редагувати додаток, використовуючи mailcap"
+
+#: keymap_alldefs.h:36
+#, fuzzy
+msgid "edit the newsgroups list"
+msgstr "змінити перелік Cc"
+
+#: keymap_alldefs.h:37
+msgid "edit the Reply-To field"
+msgstr "змінити поле Reply-To"
+
+#: keymap_alldefs.h:38
+#, fuzzy
+msgid "edit the Followup-To field"
+msgstr "змінити поле Reply-To"
+
+#: keymap_alldefs.h:39
+#, fuzzy
+msgid "edit the X-Comment-To field"
+msgstr "змінити поле Reply-To"
+
+#: keymap_alldefs.h:40
+msgid "edit the subject of this message"
+msgstr "редагувати тему цього листа"
+
+#: keymap_alldefs.h:41
+msgid "edit the TO list"
+msgstr "змінити перелік To"
+
+#: keymap_alldefs.h:42
+msgid "create a new mailbox (IMAP only)"
+msgstr "створити нову поштову скриньку (лише IMAP)"
+
+#: keymap_alldefs.h:43
+msgid "edit attachment content type"
+msgstr "змінити тип додатку"
+
+#: keymap_alldefs.h:44
+msgid "get a temporary copy of an attachment"
+msgstr "отримати тимчасову копію додатку"
+
+#: keymap_alldefs.h:45
+msgid "run ispell on the message"
+msgstr "перевірити граматику у листі (ispell)"
+
+#: keymap_alldefs.h:46
+msgid "compose new attachment using mailcap entry"
+msgstr "створити новий додаток, використовуючи mailcap"
+
+#: keymap_alldefs.h:47
+msgid "toggle recoding of this attachment"
+msgstr "вимкнути/ввімкнути перекодовування додатку"
+
+#: keymap_alldefs.h:48
+msgid "save this message to send later"
+msgstr "зберегти цей лист, аби відіслати пізніше"
+
+#: keymap_alldefs.h:49
+msgid "send attachment with a different name"
+msgstr "відправити додаток з іншим ім’ям"
+
+#: keymap_alldefs.h:50
+msgid "rename/move an attached file"
+msgstr "перейменувати приєднаний файл"
+
+#: keymap_alldefs.h:51
+#, fuzzy
+msgid "compose a new message to the sender"
+msgstr "компонувати новий лист"
+
+#: keymap_alldefs.h:52
+msgid "send the message"
+msgstr "відіслати лист"
+
+#: keymap_alldefs.h:53
+msgid "toggle disposition between inline/attachment"
+msgstr "змінити inline на attachment або навпаки"
+
+#: keymap_alldefs.h:54
+msgid "toggle whether to delete file after sending it"
+msgstr "вибрати, чи треба видаляти файл після відправки"
+
+#: keymap_alldefs.h:55
+msgid "update an attachment's encoding info"
+msgstr "обновити відомості про кодування додатку"
+
+#: keymap_alldefs.h:56
+msgid "write the message to a folder"
+msgstr "додати лист до скриньки"
+
+#: keymap_alldefs.h:57
+msgid "copy a message to a file/mailbox"
+msgstr "копіювати лист до файлу/поштової скриньки"
+
+#: keymap_alldefs.h:58
+msgid "create an alias from a message sender"
+msgstr "створити псевдонім на відправника листа"
+
+#: keymap_alldefs.h:59
+msgid "move entry to bottom of screen"
+msgstr "пересунути позицію донизу екрану"
+
+#: keymap_alldefs.h:60
+msgid "move entry to middle of screen"
+msgstr "пересунути позицію досередини екрану"
+
+#: keymap_alldefs.h:61
+msgid "move entry to top of screen"
+msgstr "пересунути позицію догори екрану"
+
+#: keymap_alldefs.h:62
+msgid "make decoded (text/plain) copy"
+msgstr "зробити декодовану (простий текст) копію"
+
+#: keymap_alldefs.h:63
+msgid "make decoded copy (text/plain) and delete"
+msgstr "зробити декодовану (текст) копію та видалити"
+
+#: keymap_alldefs.h:64
+msgid "delete the current entry"
+msgstr "видалити поточну позицію"
+
+#: keymap_alldefs.h:65
+msgid "delete the current mailbox (IMAP only)"
+msgstr "видалити поточну скриньку (лише IMAP)"
+
+#: keymap_alldefs.h:66
+msgid "delete all messages in subthread"
+msgstr "видалити всі листи гілки"
+
+#: keymap_alldefs.h:67
+msgid "delete all messages in thread"
+msgstr "видалити всі листи розмови"
+
+#: keymap_alldefs.h:68
+msgid "display full address of sender"
+msgstr "показати повну адресу відправника"
+
+#: keymap_alldefs.h:69
+msgid "display message and toggle header weeding"
+msgstr "показати лист і вимкн./ввімкн. стискання заголовків"
+
+#: keymap_alldefs.h:70
+msgid "display a message"
+msgstr "показати лист"
+
+#: keymap_alldefs.h:71
+msgid "add, change, or delete a message's label"
+msgstr "додати, змінити або видалити помітку листа"
+
+#: keymap_alldefs.h:72
+msgid "edit the raw message"
+msgstr "редагувати вихідний код листа"
+
+#: keymap_alldefs.h:73
+msgid "delete the char in front of the cursor"
+msgstr "видалити символ перед курсором"
+
+#: keymap_alldefs.h:74
+msgid "move the cursor one character to the left"
+msgstr "пересунути курсор на один символ вліво"
+
+#: keymap_alldefs.h:75
+msgid "move the cursor to the beginning of the word"
+msgstr "пересунути курсор до початку слова"
+
+#: keymap_alldefs.h:76
+msgid "jump to the beginning of the line"
+msgstr "перейти до початку рядку"
+
+#: keymap_alldefs.h:77
+msgid "cycle among incoming mailboxes"
+msgstr "перейти по вхідних поштових скриньках"
+
+#: keymap_alldefs.h:78
+msgid "complete filename or alias"
+msgstr "доповнити ім’я файлу чи псевдонім"
+
+#: keymap_alldefs.h:79
+msgid "complete address with query"
+msgstr "послідовно доповнити адресу"
+
+#: keymap_alldefs.h:80
+msgid "delete the char under the cursor"
+msgstr "видалити символ на місці курсору"
+
+#: keymap_alldefs.h:81
+msgid "jump to the end of the line"
+msgstr "перейти до кінця рядку"
+
+#: keymap_alldefs.h:82
+msgid "move the cursor one character to the right"
+msgstr "пересунути курсор на один символ вправо"
+
+#: keymap_alldefs.h:83
+msgid "move the cursor to the end of the word"
+msgstr "пересунути курсор до кінця слова"
+
+#: keymap_alldefs.h:84
+msgid "scroll down through the history list"
+msgstr "прогорнути історію вводу донизу"
+
+#: keymap_alldefs.h:85
+msgid "scroll up through the history list"
+msgstr "прогорнути історію вводу нагору"
+
+#: keymap_alldefs.h:86
+msgid "delete chars from cursor to end of line"
+msgstr "видалити від курсору до кінця рядку"
+
+#: keymap_alldefs.h:87
+msgid "delete chars from the cursor to the end of the word"
+msgstr "видалити від курсору до кінця слова"
+
+#: keymap_alldefs.h:88
+msgid "delete all chars on the line"
+msgstr "очистити рядок"
+
+#: keymap_alldefs.h:89
+msgid "delete the word in front of the cursor"
+msgstr "видалити слово перед курсором"
+
+#: keymap_alldefs.h:90
+msgid "quote the next typed key"
+msgstr "сприйняти наступний символ, як є"
+
+#: keymap_alldefs.h:91
+msgid "transpose character under cursor with previous"
+msgstr "пересунути поточний символ до попереднього"
+
+#: keymap_alldefs.h:92
+msgid "capitalize the word"
+msgstr "написати слово з великої літери"
+
+#: keymap_alldefs.h:93
+msgid "convert the word to lower case"
+msgstr "перетворити літери слова на маленькі"
+
+#: keymap_alldefs.h:94
+msgid "convert the word to upper case"
+msgstr "перетворити літери слова на великі"
+
+#: keymap_alldefs.h:95
+msgid "enter a muttrc command"
+msgstr "ввести команду muttrc"
+
+#: keymap_alldefs.h:96
+msgid "enter a file mask"
+msgstr "ввести маску файлів"
+
+#: keymap_alldefs.h:97
+msgid "exit this menu"
+msgstr "вийти з цього меню"
+
+#: keymap_alldefs.h:98
+msgid "filter attachment through a shell command"
+msgstr "фільтрувати додаток через команду shell"
+
+#: keymap_alldefs.h:99
+msgid "move to the first entry"
+msgstr "перейти до першої позиції"
+
+#: keymap_alldefs.h:100
+msgid "toggle a message's 'important' flag"
+msgstr "змінити атрибут важливості листа"
+
+#: keymap_alldefs.h:101
+#, fuzzy
+msgid "followup to newsgroup"
+msgstr "Переслати %s%s?"
+
+#: keymap_alldefs.h:102
+msgid "forward to newsgroup"
+msgstr ""
+
+#: keymap_alldefs.h:103
+msgid "forward a message with comments"
+msgstr "переслати лист з коментарем"
+
+#: keymap_alldefs.h:104
+msgid "select the current entry"
+msgstr "вибрати поточну позицію"
+
+#: keymap_alldefs.h:105
+#, fuzzy
+msgid "get all children of the current message"
+msgstr "створити макрос для поточного листа"
+
+#: keymap_alldefs.h:106
+#, fuzzy
+msgid "get message with Message-Id"
+msgstr "редагувати лист з заголовками"
+
+#: keymap_alldefs.h:107
+#, fuzzy
+msgid "get parent of the current message"
+msgstr "створити макрос для поточного листа"
+
+#: keymap_alldefs.h:108
+msgid "reply to all recipients"
+msgstr "відповісти всім адресатам"
+
+#: keymap_alldefs.h:109
+msgid "scroll down 1/2 page"
+msgstr "прогорнути на півсторінки донизу"
+
+#: keymap_alldefs.h:110
+msgid "scroll up 1/2 page"
+msgstr "прогорнути на півсторінки догори"
+
+#: keymap_alldefs.h:111
+msgid "this screen"
+msgstr "цей екран"
+
+#: keymap_alldefs.h:112
+msgid "jump to an index number"
+msgstr "перейти до позиції з номером"
+
+#: keymap_alldefs.h:113
+msgid "move to the last entry"
+msgstr "перейти до останньої позиції"
+
+#: keymap_alldefs.h:114
+msgid "reply to specified mailing list"
+msgstr "відповісти до вказаної розсилки"
+
+#: keymap_alldefs.h:115
+msgid "load list of all newsgroups from NNTP server"
+msgstr ""
+
+#: keymap_alldefs.h:116
+msgid "execute a macro"
+msgstr "виконати макрос"
+
+#: keymap_alldefs.h:117
+msgid "compose a new mail message"
+msgstr "компонувати новий лист"
+
+#: keymap_alldefs.h:118
+msgid "break the thread in two"
+msgstr "розділити розмову на дві"
+
+#: keymap_alldefs.h:119
+msgid "open a different folder"
+msgstr "відкрити іншу поштову скриньку"
+
+#: keymap_alldefs.h:120
+msgid "open a different folder in read only mode"
+msgstr "відкрити іншу скриньку тільки для читання"
+
+#: keymap_alldefs.h:121
+#, fuzzy
+msgid "open a different newsgroup"
+msgstr "відкрити іншу поштову скриньку"
+
+#: keymap_alldefs.h:122
+#, fuzzy
+msgid "open a different newsgroup in read only mode"
+msgstr "відкрити іншу скриньку тільки для читання"
+
+#: keymap_alldefs.h:123
+msgid "clear a status flag from a message"
+msgstr "скинути атрибут статусу листа"
+
+#: keymap_alldefs.h:124
+msgid "delete messages matching a pattern"
+msgstr "видалити листи, що містять вираз"
+
+#: keymap_alldefs.h:125
+msgid "force retrieval of mail from IMAP server"
+msgstr "примусово отримати пошту з сервера IMAP"
+
+#: keymap_alldefs.h:126
+msgid "logout from all IMAP servers"
+msgstr "вийти з усіх IMAP-серверів"
+
+#: keymap_alldefs.h:127
+msgid "retrieve mail from POP server"
+msgstr "отримати пошту з сервера POP"
+
+#: keymap_alldefs.h:128
+msgid "show only messages matching a pattern"
+msgstr "показати лише листи, що відповідають виразу"
+
+#: keymap_alldefs.h:129
+msgid "link tagged message to the current one"
+msgstr "об’єднати виділені листи з поточним"
+
+#: keymap_alldefs.h:130
+msgid "open next mailbox with new mail"
+msgstr "відкрити нову скриньку з непрочитаною поштою"
+
+#: keymap_alldefs.h:131
+msgid "jump to the next new message"
+msgstr "перейти до наступного нового листа"
+
+#: keymap_alldefs.h:132
+msgid "jump to the next new or unread message"
+msgstr "перейти до наступного нового чи нечитаного листа"
+
+#: keymap_alldefs.h:133
+msgid "jump to the next subthread"
+msgstr "перейти до наступної підбесіди"
+
+#: keymap_alldefs.h:134
+msgid "jump to the next thread"
+msgstr "перейти до наступної бесіди"
+
+#: keymap_alldefs.h:135
+msgid "move to the next undeleted message"
+msgstr "перейти до наступного невидаленого листа"
+
+#: keymap_alldefs.h:136
+msgid "jump to the next unread message"
+msgstr "перейти до наступного нечитаного листа"
+
+#: keymap_alldefs.h:137
+msgid "jump to parent message in thread"
+msgstr "перейти до батьківського листа у бесіді"
+
+#: keymap_alldefs.h:138
+msgid "jump to previous thread"
+msgstr "перейти до попередньої бесіди"
+
+#: keymap_alldefs.h:139
+msgid "jump to previous subthread"
+msgstr "перейти до попередньої підбесіди"
+
+#: keymap_alldefs.h:140
+msgid "move to the previous undeleted message"
+msgstr "перейти до попереднього невидаленого листа"
+
+#: keymap_alldefs.h:141
+msgid "jump to the previous new message"
+msgstr "перейти до попереднього нового листа"
+
+#: keymap_alldefs.h:142
+msgid "jump to the previous new or unread message"
+msgstr "перейти до попереднього нового чи нечитаного листа"
+
+#: keymap_alldefs.h:143
+msgid "jump to the previous unread message"
+msgstr "перейти до попереднього нечитаного листа"
+
+#: keymap_alldefs.h:144
+msgid "mark the current thread as read"
+msgstr "відмітити поточну бесіду як читану"
+
+#: keymap_alldefs.h:145
+msgid "mark the current subthread as read"
+msgstr "відмітити поточну підбесіду як читану"
+
+#: keymap_alldefs.h:146
+msgid "jump to root message in thread"
+msgstr "перейти до кореневого листа у бесіді"
+
+#: keymap_alldefs.h:147
+msgid "set a status flag on a message"
+msgstr "встановити атрибут статусу листа"
+
+#: keymap_alldefs.h:148
+msgid "save changes to mailbox"
+msgstr "записати зміни до поштової скриньки"
+
+#: keymap_alldefs.h:149
+msgid "tag messages matching a pattern"
+msgstr "виділити листи, що відповідають виразу"
+
+#: keymap_alldefs.h:150
+msgid "delete from mutt, don't touch on disk"
+msgstr ""
+
+#: keymap_alldefs.h:151
+msgid "undelete messages matching a pattern"
+msgstr "відновити листи, що відповідають виразу"
+
+#: keymap_alldefs.h:152
+msgid "untag messages matching a pattern"
+msgstr "зняти виділення з листів, що відповідають виразу"
+
+#: keymap_alldefs.h:153
+msgid "create a hotkey macro for the current message"
+msgstr "створити макрос для поточного листа"
+
+#: keymap_alldefs.h:154
+msgid "move to the middle of the page"
+msgstr "перейти до середини сторінки"
+
+#: keymap_alldefs.h:155
+msgid "move to the next entry"
+msgstr "перейти до наступної позиції"
+
+#: keymap_alldefs.h:156
+msgid "scroll down one line"
+msgstr "прогорнути на рядок донизу"
+
+#: keymap_alldefs.h:157
+msgid "move to the next page"
+msgstr "перейти до наступної сторінки"
+
+#: keymap_alldefs.h:158
+msgid "jump to the bottom of the message"
+msgstr "перейти до кінця листа"
+
+#: keymap_alldefs.h:159
+msgid "toggle display of quoted text"
+msgstr "вимк./ввімкн. відображення цитованого тексту"
+
+#: keymap_alldefs.h:160
+msgid "skip beyond quoted text"
+msgstr "пропустити цитований текст цілком"
+
+#: keymap_alldefs.h:161
+msgid "jump to the top of the message"
+msgstr "перейти до початку листа"
+
+#: keymap_alldefs.h:162
+msgid "pipe message/attachment to a shell command"
+msgstr "віддати лист/додаток у конвеєр команді shell"
+
+#: keymap_alldefs.h:163
+#, fuzzy
+msgid "post message to newsgroup"
+msgstr "Немає Message-ID для створення макроса."
+
+#: keymap_alldefs.h:164
+msgid "move to the previous entry"
+msgstr "перейти до попередньої позицїї"
+
+#: keymap_alldefs.h:165
+msgid "scroll up one line"
+msgstr "прогорнути на рядок догори"
+
+#: keymap_alldefs.h:166
+msgid "move to the previous page"
+msgstr "перейти до попередньої сторінки"
+
+#: keymap_alldefs.h:167
+msgid "print the current entry"
+msgstr "друкувати поточну позицію"
+
+#: keymap_alldefs.h:168
+msgid "really delete the current entry, bypassing the trash folder"
+msgstr "дійсно видалити поточну позицію не використовуючи кошик"
+
+#: keymap_alldefs.h:169
+#, fuzzy
+msgid "really delete the current thread, bypassing the trash folder"
+msgstr "дійсно видалити поточну позицію не використовуючи кошик"
+
+#: keymap_alldefs.h:170
+msgid "query external program for addresses"
+msgstr "запит зовнішньої адреси у зовнішньої програми"
+
+#: keymap_alldefs.h:171
+msgid "append new query results to current results"
+msgstr "додати результати нового запиту до поточних"
+
+#: keymap_alldefs.h:172
+msgid "save changes to mailbox and quit"
+msgstr "зберегти зміни скриньки та вийти"
+
+#: keymap_alldefs.h:173
+msgid "recall a postponed message"
+msgstr "викликати залишений лист"
+
+#: keymap_alldefs.h:174
+#, fuzzy
+msgid "reconstruct thread containing current message"
+msgstr "Розмова має нечитані листи."
+
+#: keymap_alldefs.h:175
+msgid "clear and redraw the screen"
+msgstr "очистити та перемалювати екран"
+
+#: keymap_alldefs.h:176
+msgid "{internal}"
+msgstr "{внутрішня}"
+
+#: keymap_alldefs.h:177
+msgid "rename the current mailbox (IMAP only)"
+msgstr "перейменувати поточну скриньку (лише IMAP)"
+
+#: keymap_alldefs.h:178
+msgid "reply to a message"
+msgstr "відповісти на лист"
+
+#: keymap_alldefs.h:179
+msgid "use the current message as a template for a new one"
+msgstr "взяти цей лист в якості шаблону для нового"
+
+#: keymap_alldefs.h:180
+msgid "save message/attachment to a mailbox/file"
+msgstr "зберегти лист/додаток у файлі чи скриньку"
+
+#: keymap_alldefs.h:181
+msgid "search for a regular expression"
+msgstr "пошук виразу в напрямку уперед"
+
+#: keymap_alldefs.h:182
+msgid "search backwards for a regular expression"
+msgstr "пошук виразу в напрямку назад"
+
+#: keymap_alldefs.h:183
+msgid "search for next match"
+msgstr "пошук наступної відповідності"
+
+#: keymap_alldefs.h:184
+msgid "search for next match in opposite direction"
+msgstr "пошук наступного в зворотньому напрямку"
+
+#: keymap_alldefs.h:185
+msgid "toggle search pattern coloring"
+msgstr "вимк./ввімкнути виділення виразу пошуку"
+
+#: keymap_alldefs.h:186
+msgid "invoke a command in a subshell"
+msgstr "викликати команду в shell"
+
+#: keymap_alldefs.h:187
+msgid "sort messages"
+msgstr "сортувати листи"
+
+#: keymap_alldefs.h:188
+msgid "sort messages in reverse order"
+msgstr "сортувати листи в зворотньому напрямку"
+
+#: keymap_alldefs.h:189
+#, fuzzy
+msgid "subscribe to newsgroups matching a pattern"
+msgstr "зняти виділення з листів, що відповідають виразу"
+
+#: keymap_alldefs.h:190
+msgid "tag the current entry"
+msgstr "виділити поточну позицію"
+
+#: keymap_alldefs.h:191
+msgid "apply next function to tagged messages"
+msgstr "використати наступну функцію до виділеного"
+
+#: keymap_alldefs.h:192
+msgid "apply next function ONLY to tagged messages"
+msgstr "використати наступну функцію ТІЛЬКИ до виділеного"
+
+#: keymap_alldefs.h:193
+msgid "tag the current subthread"
+msgstr "виділити поточну підбесіду"
+
+#: keymap_alldefs.h:194
+msgid "tag the current thread"
+msgstr "виділити поточну бесіду"
+
+#: keymap_alldefs.h:195
+msgid "toggle a message's 'new' flag"
+msgstr "змінити атрибут \"новий\" листа"
+
+#: keymap_alldefs.h:196
+#, fuzzy
+msgid "toggle view of read messages"
+msgstr "перейти до попереднього нового чи нечитаного листа"
+
+#: keymap_alldefs.h:197
+msgid "toggle whether the mailbox will be rewritten"
+msgstr "вимкнути/ввімкнути перезаписування скриньки"
+
+#: keymap_alldefs.h:198
+msgid "toggle whether to browse mailboxes or all files"
+msgstr "вибір проглядання скриньок/всіх файлів"
+
+#: keymap_alldefs.h:199
+msgid "move to the top of the page"
+msgstr "перейти до початку сторінки"
+
+#: keymap_alldefs.h:200
+msgid "mark all articles in newsgroup as unread"
+msgstr ""
+
+#: keymap_alldefs.h:201
+msgid "undelete the current entry"
+msgstr "відновити поточну позицію"
+
+#: keymap_alldefs.h:202
+msgid "undelete all messages in thread"
+msgstr "відновити всі листи бесіди"
+
+#: keymap_alldefs.h:203
+msgid "undelete all messages in subthread"
+msgstr "відновити всі листи підбесіди"
+
+#: keymap_alldefs.h:204
+#, fuzzy
+msgid "unsubscribe from newsgroups matching a pattern"
+msgstr "зняти виділення з листів, що відповідають виразу"
+
+#: keymap_alldefs.h:205
+msgid "show the Mutt version number and date"
+msgstr "показати версію та дату Mutt"
+
+#: keymap_alldefs.h:206
+msgid "view attachment using mailcap entry if necessary"
+msgstr "проглянути додаток за допомогою mailcap при потребі"
+
+#: keymap_alldefs.h:207
+msgid "show MIME attachments"
+msgstr "показати додатки MIME"
+
+#: keymap_alldefs.h:208
+msgid "display the keycode for a key press"
+msgstr "показати код натиснутої клавіші"
+
+#: keymap_alldefs.h:209
+#, fuzzy
+msgid "limit view to current thread"
+msgstr "виділити поточну бесіду"
+
+#: keymap_alldefs.h:210
+msgid "show currently active limit pattern"
+msgstr "показати поточний вираз обмеження"
+
+#: keymap_alldefs.h:211
+msgid "collapse/uncollapse current thread"
+msgstr "згорнути/розгорнути поточну бесіду"
+
+#: keymap_alldefs.h:212
+msgid "collapse/uncollapse all threads"
+msgstr "згорнути/розгорнути всі бесіди"
+
+#: keymap_alldefs.h:213
+msgid "move the highlight to next mailbox"
+msgstr "перемістити маркер до наступної скриньки"
+
+#: keymap_alldefs.h:214
+msgid "move the highlight to next mailbox with new mail"
+msgstr "перемістити маркер до наступної скриньки з новою поштою"
+
+#: keymap_alldefs.h:215
+msgid "open highlighted mailbox"
+msgstr "відкрити обрану скриньку"
+
+#: keymap_alldefs.h:216
+msgid "scroll the sidebar down 1 page"
+msgstr "прогорнути бокову панель на сторінку донизу"
+
+#: keymap_alldefs.h:217
+msgid "scroll the sidebar up 1 page"
+msgstr "прогорнути бокову панель на сторінку догори"
+
+#: keymap_alldefs.h:218
+msgid "move the highlight to previous mailbox"
+msgstr "перемістити маркер до попередньої скриньки"
+
+#: keymap_alldefs.h:219
+msgid "move the highlight to previous mailbox with new mail"
+msgstr "перемістити маркер до попередньої скриньки з новою поштою"
+
+#: keymap_alldefs.h:220
+#, fuzzy
+msgid "toggle between mailboxes and virtual mailboxes"
+msgstr "вибір проглядання скриньок/всіх файлів"
+
+#: keymap_alldefs.h:221
+msgid "make the sidebar (in)visible"
+msgstr "приховати/показати бокову панель"
+
+#: keymap_alldefs.h:222
+#, fuzzy
+msgid "open a different virtual folder"
+msgstr "відкрити іншу поштову скриньку"
+
+#: keymap_alldefs.h:223
+msgid "generate virtual folder from query"
+msgstr ""
+
+#: keymap_alldefs.h:224
+msgid "generate virtual folder from query and time window"
+msgstr ""
+
+#: keymap_alldefs.h:225
+msgid "shifts virtual folder time window forwards"
+msgstr ""
+
+#: keymap_alldefs.h:226
+msgid "shifts virtual folder time window backwards"
+msgstr ""
+
+#: keymap_alldefs.h:227
+msgid "modify (notmuch) tags"
+msgstr ""
+
+#: keymap_alldefs.h:228
+#, fuzzy
+msgid "modify labels and then hide message"
+msgstr "Це перший лист."
+
+#: keymap_alldefs.h:229
+#, fuzzy
+msgid "read entire thread of the current message"
+msgstr "створити макрос для поточного листа"
+
+#: keymap_alldefs.h:230
+msgid "accept the chain constructed"
+msgstr "прийняти сконструйований ланцюжок"
+
+#: keymap_alldefs.h:231
+msgid "append a remailer to the chain"
+msgstr "додати remailer до ланцюжку"
+
+#: keymap_alldefs.h:232
+msgid "insert a remailer into the chain"
+msgstr "вставити remailer в ланцюжок"
+
+#: keymap_alldefs.h:233
+msgid "delete a remailer from the chain"
+msgstr "видалити remailer з ланцюжку"
+
+#: keymap_alldefs.h:234
+msgid "select the previous element of the chain"
+msgstr "вибрати попередній елемент ланцюжку"
+
+#: keymap_alldefs.h:235
+msgid "select the next element of the chain"
+msgstr "вибрати наступний елемент ланцюжку"
+
+#: keymap_alldefs.h:236
+msgid "send the message through a mixmaster remailer chain"
+msgstr "відіслати лист через ланцюжок mixmaster remailer"
+
+#: keymap_alldefs.h:237
+msgid "attach a PGP public key"
+msgstr "приєднати відкритий ключ PGP"
+
+#: keymap_alldefs.h:238
+msgid "show PGP options"
+msgstr "показати параметри PGP"
+
+#: keymap_alldefs.h:239
+msgid "mail a PGP public key"
+msgstr "відіслати відкритий ключ PGP"
+
+#: keymap_alldefs.h:240
+msgid "verify a PGP public key"
+msgstr "перевірити відкритий ключ PGP"
+
+#: keymap_alldefs.h:241
+msgid "view the key's user id"
+msgstr "побачити ідентіфікатор користувача ключа"
+
+#: keymap_alldefs.h:242
+msgid "check for classic PGP"
+msgstr "перевірка на класичне PGP"
+
+#: keymap_alldefs.h:243
+msgid "show S/MIME options"
+msgstr "показати параметри S/MIME"
+
+#: keymap_alldefs.h:244
+msgid "make decrypted copy and delete"
+msgstr "зробити розшифровану копію та видалити"
+
+#: keymap_alldefs.h:245
+msgid "make decrypted copy"
+msgstr "зробити розшифровану копію"
+
+#: keymap_alldefs.h:246
+msgid "wipe passphrase(s) from memory"
+msgstr "знищити паролі у пам’яті"
+
+#: keymap_alldefs.h:247
+msgid "extract supported public keys"
+msgstr "розпакувати підтримувані відкриті ключі"
+
 #: lib.c:118
 msgid "Integer overflow -- can't allocate memory!"
 msgstr "Переповнення цілого значення -- неможливо виділити пам’ять!"
@@ -3019,9 +4015,8 @@ msgstr ""
 "  -D            показати значення всіх змінних"
 
 #: main.c:97
-#, fuzzy
 msgid "  -d <level>    log debugging output to ~/.muttdebug0"
-msgstr "  -d <level>     записати інформацію для налагодження в ~/.muttdebug0"
+msgstr "  -d <level>    записати інформацію для налагодження в ~/.muttdebug0"
 
 #: main.c:100
 #, fuzzy
@@ -3049,7 +4044,6 @@ msgstr ""
 "  -p            викликати залишений лист"
 
 #: main.c:112
-#, fuzzy
 msgid ""
 "  -Q <variable> query a configuration variable\n"
 "  -R            open mailbox in read-only mode\n"
@@ -5021,7 +6015,7 @@ msgid ""
 "Copyright (C) 2000-2004 Edmund Grimley Evans <edmundo@rano.org>\n"
 "Copyright (C) 2006-2009 Rocco Rutte <pdmef@gmx.net>\n"
 "Copyright (C) 2014-2016 Kevin J. McCarthy <kevin@8t8.us>\n"
-"Copyright (C) 2015-2016 Richard Russon <rich@flatcap.org>\n"
+"Copyright (C) 2015-2017 Richard Russon <rich@flatcap.org>\n"
 "\n"
 "Many others not mentioned here contributed code, fixes,\n"
 "and suggestions.\n"
@@ -5095,742 +6089,3 @@ msgid ""
 msgstr ""
 "\n"
 "Параметри компіляції:"
-
-#~ msgid "PGP passphrase forgotten."
-#~ msgstr "Кодову фразу PGP забуто."
-
-#~ msgid "Query"
-#~ msgstr "Запит"
-
-#~ msgid "null operation"
-#~ msgstr "порожня операція"
-
-#~ msgid "end of conditional execution (noop)"
-#~ msgstr "завершення операції по умовам"
-
-#~ msgid "force viewing of attachment using mailcap"
-#~ msgstr "примусовий перегляд з використанням mailcap"
-
-#~ msgid "view attachment as text"
-#~ msgstr "дивитись додаток як текст"
-
-#~ msgid "Toggle display of subparts"
-#~ msgstr "вимк./ввімкн. відображення підчастин"
-
-#~ msgid "move to the bottom of the page"
-#~ msgstr "перейти до кінця сторінки"
-
-#~ msgid "remail a message to another user"
-#~ msgstr "надіслати копію листа іншому адресату"
-
-#~ msgid "select a new file in this directory"
-#~ msgstr "вибрати новий файл в цьому каталозі"
-
-#~ msgid "view file"
-#~ msgstr "проглянути файл"
-
-#~ msgid "display the currently selected file's name"
-#~ msgstr "показати ім’я вибраного файлу"
-
-#, fuzzy
-#~ msgid "subscribe to current mbox (IMAP/NNTP only)"
-#~ msgstr "підписатись на цю скриньку (лише IMAP)"
-
-#, fuzzy
-#~ msgid "unsubscribe from current mbox (IMAP/NNTP only)"
-#~ msgstr "відписатись від цієї скриньки (лише IMAP)"
-
-#~ msgid "toggle view all/subscribed mailboxes (IMAP only)"
-#~ msgstr "вибрати: перелік всіх/підписаних (лише IMAP)"
-
-#~ msgid "list mailboxes with new mail"
-#~ msgstr "список поштових скриньок з новою поштою."
-
-#~ msgid "change directories"
-#~ msgstr "змінювати каталоги"
-
-#~ msgid "check mailboxes for new mail"
-#~ msgstr "перевірити наявність нової пошти у скриньках"
-
-#~ msgid "attach file(s) to this message"
-#~ msgstr "приєднати файл(и) до цього листа"
-
-#~ msgid "attach message(s) to this message"
-#~ msgstr "приєднати лист(и) до цього листа"
-
-#, fuzzy
-#~ msgid "attach news article(s) to this message"
-#~ msgstr "приєднати файл(и) до цього листа"
-
-#~ msgid "edit the BCC list"
-#~ msgstr "змінити перелік Bcc"
-
-#~ msgid "edit the CC list"
-#~ msgstr "змінити перелік Cc"
-
-#~ msgid "edit attachment description"
-#~ msgstr "змінити пояснення до додатку"
-
-#~ msgid "edit attachment transfer-encoding"
-#~ msgstr "змінити спосіб кодування додатку"
-
-#~ msgid "enter a file to save a copy of this message in"
-#~ msgstr "ввести ім’я файлу, куди додати копію листа"
-
-#~ msgid "edit the file to be attached"
-#~ msgstr "редагувати файл, що приєднується"
-
-#~ msgid "edit the from field"
-#~ msgstr "змінити поле From"
-
-#~ msgid "edit the message with headers"
-#~ msgstr "редагувати лист з заголовками"
-
-#~ msgid "edit the message"
-#~ msgstr "редагувати лист"
-
-#~ msgid "edit attachment using mailcap entry"
-#~ msgstr "редагувати додаток, використовуючи mailcap"
-
-#, fuzzy
-#~ msgid "edit the newsgroups list"
-#~ msgstr "змінити перелік Cc"
-
-#~ msgid "edit the Reply-To field"
-#~ msgstr "змінити поле Reply-To"
-
-#, fuzzy
-#~ msgid "edit the Followup-To field"
-#~ msgstr "змінити поле Reply-To"
-
-#, fuzzy
-#~ msgid "edit the X-Comment-To field"
-#~ msgstr "змінити поле Reply-To"
-
-#~ msgid "edit the subject of this message"
-#~ msgstr "редагувати тему цього листа"
-
-#~ msgid "edit the TO list"
-#~ msgstr "змінити перелік To"
-
-#~ msgid "create a new mailbox (IMAP only)"
-#~ msgstr "створити нову поштову скриньку (лише IMAP)"
-
-#~ msgid "edit attachment content type"
-#~ msgstr "змінити тип додатку"
-
-#~ msgid "get a temporary copy of an attachment"
-#~ msgstr "отримати тимчасову копію додатку"
-
-#~ msgid "run ispell on the message"
-#~ msgstr "перевірити граматику у листі (ispell)"
-
-#~ msgid "compose new attachment using mailcap entry"
-#~ msgstr "створити новий додаток, використовуючи mailcap"
-
-#~ msgid "toggle recoding of this attachment"
-#~ msgstr "вимкнути/ввімкнути перекодовування додатку"
-
-#~ msgid "save this message to send later"
-#~ msgstr "зберегти цей лист, аби відіслати пізніше"
-
-#~ msgid "send attachment with a different name"
-#~ msgstr "відправити додаток з іншим ім’ям"
-
-#~ msgid "rename/move an attached file"
-#~ msgstr "перейменувати приєднаний файл"
-
-#, fuzzy
-#~ msgid "compose a new message to the sender"
-#~ msgstr "компонувати новий лист"
-
-#~ msgid "send the message"
-#~ msgstr "відіслати лист"
-
-#~ msgid "toggle disposition between inline/attachment"
-#~ msgstr "змінити inline на attachment або навпаки"
-
-#~ msgid "toggle whether to delete file after sending it"
-#~ msgstr "вибрати, чи треба видаляти файл після відправки"
-
-#~ msgid "update an attachment's encoding info"
-#~ msgstr "обновити відомості про кодування додатку"
-
-#~ msgid "write the message to a folder"
-#~ msgstr "додати лист до скриньки"
-
-#~ msgid "copy a message to a file/mailbox"
-#~ msgstr "копіювати лист до файлу/поштової скриньки"
-
-#~ msgid "create an alias from a message sender"
-#~ msgstr "створити псевдонім на відправника листа"
-
-#~ msgid "move entry to bottom of screen"
-#~ msgstr "пересунути позицію донизу екрану"
-
-#~ msgid "move entry to middle of screen"
-#~ msgstr "пересунути позицію досередини екрану"
-
-#~ msgid "move entry to top of screen"
-#~ msgstr "пересунути позицію догори екрану"
-
-#~ msgid "make decoded (text/plain) copy"
-#~ msgstr "зробити декодовану (простий текст) копію"
-
-#~ msgid "make decoded copy (text/plain) and delete"
-#~ msgstr "зробити декодовану (текст) копію та видалити"
-
-#~ msgid "delete the current entry"
-#~ msgstr "видалити поточну позицію"
-
-#~ msgid "delete the current mailbox (IMAP only)"
-#~ msgstr "видалити поточну скриньку (лише IMAP)"
-
-#~ msgid "delete all messages in subthread"
-#~ msgstr "видалити всі листи гілки"
-
-#~ msgid "delete all messages in thread"
-#~ msgstr "видалити всі листи розмови"
-
-#~ msgid "display full address of sender"
-#~ msgstr "показати повну адресу відправника"
-
-#~ msgid "display message and toggle header weeding"
-#~ msgstr "показати лист і вимкн./ввімкн. стискання заголовків"
-
-#~ msgid "display a message"
-#~ msgstr "показати лист"
-
-#~ msgid "add, change, or delete a message's label"
-#~ msgstr "додати, змінити або видалити помітку листа"
-
-#~ msgid "edit the raw message"
-#~ msgstr "редагувати вихідний код листа"
-
-#~ msgid "delete the char in front of the cursor"
-#~ msgstr "видалити символ перед курсором"
-
-#~ msgid "move the cursor one character to the left"
-#~ msgstr "пересунути курсор на один символ вліво"
-
-#~ msgid "move the cursor to the beginning of the word"
-#~ msgstr "пересунути курсор до початку слова"
-
-#~ msgid "jump to the beginning of the line"
-#~ msgstr "перейти до початку рядку"
-
-#~ msgid "cycle among incoming mailboxes"
-#~ msgstr "перейти по вхідних поштових скриньках"
-
-#~ msgid "complete filename or alias"
-#~ msgstr "доповнити ім’я файлу чи псевдонім"
-
-#~ msgid "complete address with query"
-#~ msgstr "послідовно доповнити адресу"
-
-#~ msgid "delete the char under the cursor"
-#~ msgstr "видалити символ на місці курсору"
-
-#~ msgid "jump to the end of the line"
-#~ msgstr "перейти до кінця рядку"
-
-#~ msgid "move the cursor one character to the right"
-#~ msgstr "пересунути курсор на один символ вправо"
-
-#~ msgid "move the cursor to the end of the word"
-#~ msgstr "пересунути курсор до кінця слова"
-
-#~ msgid "scroll down through the history list"
-#~ msgstr "прогорнути історію вводу донизу"
-
-#~ msgid "scroll up through the history list"
-#~ msgstr "прогорнути історію вводу нагору"
-
-#~ msgid "delete chars from cursor to end of line"
-#~ msgstr "видалити від курсору до кінця рядку"
-
-#~ msgid "delete chars from the cursor to the end of the word"
-#~ msgstr "видалити від курсору до кінця слова"
-
-#~ msgid "delete all chars on the line"
-#~ msgstr "очистити рядок"
-
-#~ msgid "delete the word in front of the cursor"
-#~ msgstr "видалити слово перед курсором"
-
-#~ msgid "quote the next typed key"
-#~ msgstr "сприйняти наступний символ, як є"
-
-#~ msgid "transpose character under cursor with previous"
-#~ msgstr "пересунути поточний символ до попереднього"
-
-#~ msgid "capitalize the word"
-#~ msgstr "написати слово з великої літери"
-
-#~ msgid "convert the word to lower case"
-#~ msgstr "перетворити літери слова на маленькі"
-
-#~ msgid "convert the word to upper case"
-#~ msgstr "перетворити літери слова на великі"
-
-#~ msgid "enter a muttrc command"
-#~ msgstr "ввести команду muttrc"
-
-#~ msgid "enter a file mask"
-#~ msgstr "ввести маску файлів"
-
-#~ msgid "exit this menu"
-#~ msgstr "вийти з цього меню"
-
-#~ msgid "filter attachment through a shell command"
-#~ msgstr "фільтрувати додаток через команду shell"
-
-#~ msgid "move to the first entry"
-#~ msgstr "перейти до першої позиції"
-
-#~ msgid "toggle a message's 'important' flag"
-#~ msgstr "змінити атрибут важливості листа"
-
-#, fuzzy
-#~ msgid "followup to newsgroup"
-#~ msgstr "Переслати %s%s?"
-
-#~ msgid "forward a message with comments"
-#~ msgstr "переслати лист з коментарем"
-
-#~ msgid "select the current entry"
-#~ msgstr "вибрати поточну позицію"
-
-#, fuzzy
-#~ msgid "get all children of the current message"
-#~ msgstr "створити макрос для поточного листа"
-
-#, fuzzy
-#~ msgid "get message with Message-Id"
-#~ msgstr "редагувати лист з заголовками"
-
-#, fuzzy
-#~ msgid "get parent of the current message"
-#~ msgstr "створити макрос для поточного листа"
-
-#~ msgid "reply to all recipients"
-#~ msgstr "відповісти всім адресатам"
-
-#~ msgid "scroll down 1/2 page"
-#~ msgstr "прогорнути на півсторінки донизу"
-
-#~ msgid "scroll up 1/2 page"
-#~ msgstr "прогорнути на півсторінки догори"
-
-#~ msgid "this screen"
-#~ msgstr "цей екран"
-
-#~ msgid "jump to an index number"
-#~ msgstr "перейти до позиції з номером"
-
-#~ msgid "move to the last entry"
-#~ msgstr "перейти до останньої позиції"
-
-#~ msgid "reply to specified mailing list"
-#~ msgstr "відповісти до вказаної розсилки"
-
-#~ msgid "execute a macro"
-#~ msgstr "виконати макрос"
-
-#~ msgid "compose a new mail message"
-#~ msgstr "компонувати новий лист"
-
-#~ msgid "break the thread in two"
-#~ msgstr "розділити розмову на дві"
-
-#~ msgid "open a different folder"
-#~ msgstr "відкрити іншу поштову скриньку"
-
-#~ msgid "open a different folder in read only mode"
-#~ msgstr "відкрити іншу скриньку тільки для читання"
-
-#, fuzzy
-#~ msgid "open a different newsgroup"
-#~ msgstr "відкрити іншу поштову скриньку"
-
-#, fuzzy
-#~ msgid "open a different newsgroup in read only mode"
-#~ msgstr "відкрити іншу скриньку тільки для читання"
-
-#~ msgid "clear a status flag from a message"
-#~ msgstr "скинути атрибут статусу листа"
-
-#~ msgid "delete messages matching a pattern"
-#~ msgstr "видалити листи, що містять вираз"
-
-#~ msgid "force retrieval of mail from IMAP server"
-#~ msgstr "примусово отримати пошту з сервера IMAP"
-
-#~ msgid "logout from all IMAP servers"
-#~ msgstr "вийти з усіх IMAP-серверів"
-
-#~ msgid "retrieve mail from POP server"
-#~ msgstr "отримати пошту з сервера POP"
-
-#~ msgid "show only messages matching a pattern"
-#~ msgstr "показати лише листи, що відповідають виразу"
-
-#~ msgid "link tagged message to the current one"
-#~ msgstr "об’єднати виділені листи з поточним"
-
-#~ msgid "open next mailbox with new mail"
-#~ msgstr "відкрити нову скриньку з непрочитаною поштою"
-
-#~ msgid "jump to the next new message"
-#~ msgstr "перейти до наступного нового листа"
-
-#~ msgid "jump to the next new or unread message"
-#~ msgstr "перейти до наступного нового чи нечитаного листа"
-
-#~ msgid "jump to the next subthread"
-#~ msgstr "перейти до наступної підбесіди"
-
-#~ msgid "jump to the next thread"
-#~ msgstr "перейти до наступної бесіди"
-
-#~ msgid "move to the next undeleted message"
-#~ msgstr "перейти до наступного невидаленого листа"
-
-#~ msgid "jump to the next unread message"
-#~ msgstr "перейти до наступного нечитаного листа"
-
-#~ msgid "jump to parent message in thread"
-#~ msgstr "перейти до батьківського листа у бесіді"
-
-#~ msgid "jump to previous thread"
-#~ msgstr "перейти до попередньої бесіди"
-
-#~ msgid "jump to previous subthread"
-#~ msgstr "перейти до попередньої підбесіди"
-
-#~ msgid "move to the previous undeleted message"
-#~ msgstr "перейти до попереднього невидаленого листа"
-
-#~ msgid "jump to the previous new message"
-#~ msgstr "перейти до попереднього нового листа"
-
-#~ msgid "jump to the previous new or unread message"
-#~ msgstr "перейти до попереднього нового чи нечитаного листа"
-
-#~ msgid "jump to the previous unread message"
-#~ msgstr "перейти до попереднього нечитаного листа"
-
-#~ msgid "mark the current thread as read"
-#~ msgstr "відмітити поточну бесіду як читану"
-
-#~ msgid "mark the current subthread as read"
-#~ msgstr "відмітити поточну підбесіду як читану"
-
-#~ msgid "jump to root message in thread"
-#~ msgstr "перейти до кореневого листа у бесіді"
-
-#~ msgid "set a status flag on a message"
-#~ msgstr "встановити атрибут статусу листа"
-
-#~ msgid "save changes to mailbox"
-#~ msgstr "записати зміни до поштової скриньки"
-
-#~ msgid "tag messages matching a pattern"
-#~ msgstr "виділити листи, що відповідають виразу"
-
-#~ msgid "undelete messages matching a pattern"
-#~ msgstr "відновити листи, що відповідають виразу"
-
-#~ msgid "untag messages matching a pattern"
-#~ msgstr "зняти виділення з листів, що відповідають виразу"
-
-#~ msgid "create a hotkey macro for the current message"
-#~ msgstr "створити макрос для поточного листа"
-
-#~ msgid "move to the middle of the page"
-#~ msgstr "перейти до середини сторінки"
-
-#~ msgid "move to the next entry"
-#~ msgstr "перейти до наступної позиції"
-
-#~ msgid "scroll down one line"
-#~ msgstr "прогорнути на рядок донизу"
-
-#~ msgid "move to the next page"
-#~ msgstr "перейти до наступної сторінки"
-
-#~ msgid "jump to the bottom of the message"
-#~ msgstr "перейти до кінця листа"
-
-#~ msgid "toggle display of quoted text"
-#~ msgstr "вимк./ввімкн. відображення цитованого тексту"
-
-#~ msgid "skip beyond quoted text"
-#~ msgstr "пропустити цитований текст цілком"
-
-#~ msgid "jump to the top of the message"
-#~ msgstr "перейти до початку листа"
-
-#~ msgid "pipe message/attachment to a shell command"
-#~ msgstr "віддати лист/додаток у конвеєр команді shell"
-
-#, fuzzy
-#~ msgid "post message to newsgroup"
-#~ msgstr "Немає Message-ID для створення макроса."
-
-#~ msgid "move to the previous entry"
-#~ msgstr "перейти до попередньої позицїї"
-
-#~ msgid "scroll up one line"
-#~ msgstr "прогорнути на рядок догори"
-
-#~ msgid "move to the previous page"
-#~ msgstr "перейти до попередньої сторінки"
-
-#~ msgid "print the current entry"
-#~ msgstr "друкувати поточну позицію"
-
-#~ msgid "really delete the current entry, bypassing the trash folder"
-#~ msgstr "дійсно видалити поточну позицію не використовуючи кошик"
-
-#, fuzzy
-#~ msgid "really delete the current thread, bypassing the trash folder"
-#~ msgstr "дійсно видалити поточну позицію не використовуючи кошик"
-
-#~ msgid "query external program for addresses"
-#~ msgstr "запит зовнішньої адреси у зовнішньої програми"
-
-#~ msgid "append new query results to current results"
-#~ msgstr "додати результати нового запиту до поточних"
-
-#~ msgid "save changes to mailbox and quit"
-#~ msgstr "зберегти зміни скриньки та вийти"
-
-#~ msgid "recall a postponed message"
-#~ msgstr "викликати залишений лист"
-
-#, fuzzy
-#~ msgid "reconstruct thread containing current message"
-#~ msgstr "Розмова має нечитані листи."
-
-#~ msgid "clear and redraw the screen"
-#~ msgstr "очистити та перемалювати екран"
-
-#~ msgid "{internal}"
-#~ msgstr "{внутрішня}"
-
-#~ msgid "rename the current mailbox (IMAP only)"
-#~ msgstr "перейменувати поточну скриньку (лише IMAP)"
-
-#~ msgid "reply to a message"
-#~ msgstr "відповісти на лист"
-
-#~ msgid "use the current message as a template for a new one"
-#~ msgstr "взяти цей лист в якості шаблону для нового"
-
-#~ msgid "save message/attachment to a mailbox/file"
-#~ msgstr "зберегти лист/додаток у файлі чи скриньку"
-
-#~ msgid "search for a regular expression"
-#~ msgstr "пошук виразу в напрямку уперед"
-
-#~ msgid "search backwards for a regular expression"
-#~ msgstr "пошук виразу в напрямку назад"
-
-#~ msgid "search for next match"
-#~ msgstr "пошук наступної відповідності"
-
-#~ msgid "search for next match in opposite direction"
-#~ msgstr "пошук наступного в зворотньому напрямку"
-
-#~ msgid "toggle search pattern coloring"
-#~ msgstr "вимк./ввімкнути виділення виразу пошуку"
-
-#~ msgid "invoke a command in a subshell"
-#~ msgstr "викликати команду в shell"
-
-#~ msgid "sort messages"
-#~ msgstr "сортувати листи"
-
-#~ msgid "sort messages in reverse order"
-#~ msgstr "сортувати листи в зворотньому напрямку"
-
-#, fuzzy
-#~ msgid "subscribe to newsgroups matching a pattern"
-#~ msgstr "зняти виділення з листів, що відповідають виразу"
-
-#~ msgid "tag the current entry"
-#~ msgstr "виділити поточну позицію"
-
-#~ msgid "apply next function to tagged messages"
-#~ msgstr "використати наступну функцію до виділеного"
-
-#~ msgid "apply next function ONLY to tagged messages"
-#~ msgstr "використати наступну функцію ТІЛЬКИ до виділеного"
-
-#~ msgid "tag the current subthread"
-#~ msgstr "виділити поточну підбесіду"
-
-#~ msgid "tag the current thread"
-#~ msgstr "виділити поточну бесіду"
-
-#~ msgid "toggle a message's 'new' flag"
-#~ msgstr "змінити атрибут \"новий\" листа"
-
-#, fuzzy
-#~ msgid "toggle view of read messages"
-#~ msgstr "перейти до попереднього нового чи нечитаного листа"
-
-#~ msgid "toggle whether the mailbox will be rewritten"
-#~ msgstr "вимкнути/ввімкнути перезаписування скриньки"
-
-#~ msgid "toggle whether to browse mailboxes or all files"
-#~ msgstr "вибір проглядання скриньок/всіх файлів"
-
-#~ msgid "move to the top of the page"
-#~ msgstr "перейти до початку сторінки"
-
-#~ msgid "undelete the current entry"
-#~ msgstr "відновити поточну позицію"
-
-#~ msgid "undelete all messages in thread"
-#~ msgstr "відновити всі листи бесіди"
-
-#~ msgid "undelete all messages in subthread"
-#~ msgstr "відновити всі листи підбесіди"
-
-#, fuzzy
-#~ msgid "unsubscribe from newsgroups matching a pattern"
-#~ msgstr "зняти виділення з листів, що відповідають виразу"
-
-#~ msgid "show the Mutt version number and date"
-#~ msgstr "показати версію та дату Mutt"
-
-#~ msgid "view attachment using mailcap entry if necessary"
-#~ msgstr "проглянути додаток за допомогою mailcap при потребі"
-
-#~ msgid "show MIME attachments"
-#~ msgstr "показати додатки MIME"
-
-#~ msgid "display the keycode for a key press"
-#~ msgstr "показати код натиснутої клавіші"
-
-#, fuzzy
-#~ msgid "limit view to current thread"
-#~ msgstr "виділити поточну бесіду"
-
-#~ msgid "show currently active limit pattern"
-#~ msgstr "показати поточний вираз обмеження"
-
-#~ msgid "collapse/uncollapse current thread"
-#~ msgstr "згорнути/розгорнути поточну бесіду"
-
-#~ msgid "collapse/uncollapse all threads"
-#~ msgstr "згорнути/розгорнути всі бесіди"
-
-#~ msgid "move the highlight to next mailbox"
-#~ msgstr "перемістити маркер до наступної скриньки"
-
-#~ msgid "move the highlight to next mailbox with new mail"
-#~ msgstr "перемістити маркер до наступної скриньки з новою поштою"
-
-#~ msgid "open highlighted mailbox"
-#~ msgstr "відкрити обрану скриньку"
-
-#~ msgid "scroll the sidebar down 1 page"
-#~ msgstr "прогорнути бокову панель на сторінку донизу"
-
-#~ msgid "scroll the sidebar up 1 page"
-#~ msgstr "прогорнути бокову панель на сторінку догори"
-
-#~ msgid "move the highlight to previous mailbox"
-#~ msgstr "перемістити маркер до попередньої скриньки"
-
-#~ msgid "move the highlight to previous mailbox with new mail"
-#~ msgstr "перемістити маркер до попередньої скриньки з новою поштою"
-
-#, fuzzy
-#~ msgid "toggle between mailboxes and virtual mailboxes"
-#~ msgstr "вибір проглядання скриньок/всіх файлів"
-
-#~ msgid "make the sidebar (in)visible"
-#~ msgstr "приховати/показати бокову панель"
-
-#, fuzzy
-#~ msgid "open a different virtual folder"
-#~ msgstr "відкрити іншу поштову скриньку"
-
-#, fuzzy
-#~ msgid "modify labels and then hide message"
-#~ msgstr "Це перший лист."
-
-#, fuzzy
-#~ msgid "read entire thread of the current message"
-#~ msgstr "створити макрос для поточного листа"
-
-#~ msgid "attach a PGP public key"
-#~ msgstr "приєднати відкритий ключ PGP"
-
-#~ msgid "show PGP options"
-#~ msgstr "показати параметри PGP"
-
-#~ msgid "mail a PGP public key"
-#~ msgstr "відіслати відкритий ключ PGP"
-
-#~ msgid "verify a PGP public key"
-#~ msgstr "перевірити відкритий ключ PGP"
-
-#~ msgid "view the key's user id"
-#~ msgstr "побачити ідентіфікатор користувача ключа"
-
-#~ msgid "check for classic PGP"
-#~ msgstr "перевірка на класичне PGP"
-
-#~ msgid "accept the chain constructed"
-#~ msgstr "прийняти сконструйований ланцюжок"
-
-#~ msgid "append a remailer to the chain"
-#~ msgstr "додати remailer до ланцюжку"
-
-#~ msgid "insert a remailer into the chain"
-#~ msgstr "вставити remailer в ланцюжок"
-
-#~ msgid "delete a remailer from the chain"
-#~ msgstr "видалити remailer з ланцюжку"
-
-#~ msgid "select the previous element of the chain"
-#~ msgstr "вибрати попередній елемент ланцюжку"
-
-#~ msgid "select the next element of the chain"
-#~ msgstr "вибрати наступний елемент ланцюжку"
-
-#~ msgid "send the message through a mixmaster remailer chain"
-#~ msgstr "відіслати лист через ланцюжок mixmaster remailer"
-
-#~ msgid "make decrypted copy and delete"
-#~ msgstr "зробити розшифровану копію та видалити"
-
-#~ msgid "make decrypted copy"
-#~ msgstr "зробити розшифровану копію"
-
-#~ msgid "wipe passphrase(s) from memory"
-#~ msgstr "знищити паролі у пам’яті"
-
-#~ msgid "extract supported public keys"
-#~ msgstr "розпакувати підтримувані відкриті ключі"
-
-#~ msgid "show S/MIME options"
-#~ msgstr "показати параметри S/MIME"
-
-#, fuzzy
-#~ msgid "Fingerprint: %s"
-#~ msgstr "Відбиток: "
-
-#~ msgid "SMTP authentication requires SASL"
-#~ msgstr "SMTP-аутентифікація потребує SASL"
-
-#~ msgid "move to the first message"
-#~ msgstr "перейти до першого листа"
-
-#~ msgid "move to the last message"
-#~ msgstr "перейти до останнього листа"

@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neomutt-20161104\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
-"POT-Creation-Date: 2017-04-13 13:26+0100\n"
+"POT-Creation-Date: 2017-04-17 17:04+0100\n"
 "PO-Revision-Date: 2000-11-29 21:22+0200\n"
 "Last-Translator: Gediminas Paulauskas <menesis@delfi.lt>\n"
 "Language-Team: Lithuanian <komp_lt@konferencijos.lt>\n"
@@ -926,6 +926,122 @@ msgstr "Kopijuoju į %s..."
 msgid "No decryption engine available for message"
 msgstr ""
 
+#: crypt.c:59
+#, c-format
+msgid " (current time: %c)"
+msgstr ""
+
+#: crypt.c:64
+#, fuzzy, c-format
+msgid "[-- %s output follows%s --]\n"
+msgstr "[-- Toliau PGP išvestis (esamas laikas: %c) --]\n"
+
+#: crypt.c:78
+#, fuzzy
+msgid "Passphrase(s) forgotten."
+msgstr "PGP slapta frazė pamiršta."
+
+#: crypt.c:139
+msgid "Inline PGP can't be used with attachments.  Revert to PGP/MIME?"
+msgstr ""
+
+#: crypt.c:143
+msgid "Mail not sent: inline PGP can't be used with attachments."
+msgstr ""
+
+#: crypt.c:151 cryptglue.c:106 pgpkey.c:541 pgpkey.c:724
+msgid "Invoking PGP..."
+msgstr "Kviečiu PGP..."
+
+#: crypt.c:162
+msgid "Message can't be sent inline.  Revert to using PGP/MIME?"
+msgstr ""
+
+#: crypt.c:164 send.c:1796
+msgid "Mail not sent."
+msgstr "Laiškas neišsiųstas."
+
+#: crypt.c:224
+msgid "Encrypt message to S/MIME Default Key also?"
+msgstr ""
+
+#: crypt.c:259
+msgid "Encrypt message to PGP Default Key also?"
+msgstr ""
+
+#: crypt.c:502
+msgid "S/MIME messages with no hints on content are unsupported."
+msgstr ""
+
+#: crypt.c:710 crypt.c:751
+msgid "Trying to extract PGP keys...\n"
+msgstr ""
+
+#: crypt.c:732 crypt.c:772
+msgid "Trying to extract S/MIME certificates...\n"
+msgstr ""
+
+#: crypt.c:913
+#, c-format
+msgid ""
+"[-- Error: Unknown multipart/signed protocol %s! --]\n"
+"\n"
+msgstr ""
+"[-- Klaida: Nežinomas multipart/signed protokolas %s! --]\n"
+"\n"
+
+#: crypt.c:947
+msgid ""
+"[-- Error: Inconsistent multipart/signed structure! --]\n"
+"\n"
+msgstr ""
+"[-- Klaida: Neteisinga multipart/signed struktūra! --]\n"
+"\n"
+
+#: crypt.c:983
+#, c-format
+msgid ""
+"[-- Warning: We can't verify %s/%s signatures. --]\n"
+"\n"
+msgstr ""
+"[-- Dėmesio: Negaliu patikrinti %s/%s parašo. --]\n"
+"\n"
+
+#: crypt.c:995
+#, fuzzy
+msgid ""
+"[-- The following data is signed --]\n"
+"\n"
+msgstr ""
+"[-- Toliau einantys duomenys yra pasirašyti --]\n"
+"\n"
+
+#: crypt.c:1001
+msgid ""
+"[-- Warning: Can't find any signatures. --]\n"
+"\n"
+msgstr ""
+"[-- Dėmesio: Negaliu rasti jokių parašų --]\n"
+"\n"
+
+#: crypt.c:1007
+#, fuzzy
+msgid ""
+"\n"
+"[-- End of signed data --]\n"
+msgstr ""
+"\n"
+"[-- Pasirašytų duomenų pabaiga --]\n"
+
+#: cryptglue.c:84
+msgid "\"crypt_use_gpgme\" set but not built with GPGME support."
+msgstr ""
+
+#: cryptglue.c:108
+#, fuzzy
+msgid "Invoking S/MIME..."
+msgstr "Kviečiu S/MIME..."
+
 #: crypt_gpgme.c:384
 #, fuzzy, c-format
 msgid "error creating gpgme context: %s\n"
@@ -1620,122 +1736,6 @@ msgstr ""
 #, fuzzy
 msgid "Failed to figure out sender"
 msgstr "Nepavyko atidaryti bylos antraštėms nuskaityti."
-
-#: crypt.c:59
-#, c-format
-msgid " (current time: %c)"
-msgstr ""
-
-#: crypt.c:64
-#, fuzzy, c-format
-msgid "[-- %s output follows%s --]\n"
-msgstr "[-- Toliau PGP išvestis (esamas laikas: %c) --]\n"
-
-#: crypt.c:78
-#, fuzzy
-msgid "Passphrase(s) forgotten."
-msgstr "PGP slapta frazė pamiršta."
-
-#: crypt.c:139
-msgid "Inline PGP can't be used with attachments.  Revert to PGP/MIME?"
-msgstr ""
-
-#: crypt.c:143
-msgid "Mail not sent: inline PGP can't be used with attachments."
-msgstr ""
-
-#: crypt.c:151 cryptglue.c:106 pgpkey.c:541 pgpkey.c:724
-msgid "Invoking PGP..."
-msgstr "Kviečiu PGP..."
-
-#: crypt.c:162
-msgid "Message can't be sent inline.  Revert to using PGP/MIME?"
-msgstr ""
-
-#: crypt.c:164 send.c:1796
-msgid "Mail not sent."
-msgstr "Laiškas neišsiųstas."
-
-#: crypt.c:224
-msgid "Encrypt message to S/MIME Default Key also?"
-msgstr ""
-
-#: crypt.c:259
-msgid "Encrypt message to PGP Default Key also?"
-msgstr ""
-
-#: crypt.c:502
-msgid "S/MIME messages with no hints on content are unsupported."
-msgstr ""
-
-#: crypt.c:710 crypt.c:751
-msgid "Trying to extract PGP keys...\n"
-msgstr ""
-
-#: crypt.c:732 crypt.c:772
-msgid "Trying to extract S/MIME certificates...\n"
-msgstr ""
-
-#: crypt.c:913
-#, c-format
-msgid ""
-"[-- Error: Unknown multipart/signed protocol %s! --]\n"
-"\n"
-msgstr ""
-"[-- Klaida: Nežinomas multipart/signed protokolas %s! --]\n"
-"\n"
-
-#: crypt.c:947
-msgid ""
-"[-- Error: Inconsistent multipart/signed structure! --]\n"
-"\n"
-msgstr ""
-"[-- Klaida: Neteisinga multipart/signed struktūra! --]\n"
-"\n"
-
-#: crypt.c:983
-#, c-format
-msgid ""
-"[-- Warning: We can't verify %s/%s signatures. --]\n"
-"\n"
-msgstr ""
-"[-- Dėmesio: Negaliu patikrinti %s/%s parašo. --]\n"
-"\n"
-
-#: crypt.c:995
-#, fuzzy
-msgid ""
-"[-- The following data is signed --]\n"
-"\n"
-msgstr ""
-"[-- Toliau einantys duomenys yra pasirašyti --]\n"
-"\n"
-
-#: crypt.c:1001
-msgid ""
-"[-- Warning: Can't find any signatures. --]\n"
-"\n"
-msgstr ""
-"[-- Dėmesio: Negaliu rasti jokių parašų --]\n"
-"\n"
-
-#: crypt.c:1007
-#, fuzzy
-msgid ""
-"\n"
-"[-- End of signed data --]\n"
-msgstr ""
-"\n"
-"[-- Pasirašytų duomenų pabaiga --]\n"
-
-#: cryptglue.c:84
-msgid "\"crypt_use_gpgme\" set but not built with GPGME support."
-msgstr ""
-
-#: cryptglue.c:108
-#, fuzzy
-msgid "Invoking S/MIME..."
-msgstr "Kviečiu S/MIME..."
 
 #: curs_lib.c:229
 msgid "yes"
@@ -2614,12 +2614,12 @@ msgstr "Pasisveikinu..."
 msgid "Login failed."
 msgstr "Nepavyko pasisveikinti."
 
-#: imap/auth_sasl.c:94 nntp.c:367 nntp.c:432 smtp.c:372
+#: imap/auth_sasl.c:95 nntp.c:367 nntp.c:432 smtp.c:372
 #, fuzzy, c-format
 msgid "Authenticating (%s)..."
 msgstr "Autentikuojuosi (APOP)..."
 
-#: imap/auth_sasl.c:222 pop_auth.c:175
+#: imap/auth_sasl.c:223 pop_auth.c:175
 msgid "SASL authentication failed."
 msgstr "SASL autentikacija nepavyko."
 
@@ -3112,6 +3112,1030 @@ msgstr "Įvesk rakto ID, skirtą %s: "
 #, c-format
 msgid "Char = %s, Octal = %o, Decimal = %d"
 msgstr ""
+
+#: keymap_alldefs.h:5
+msgid "null operation"
+msgstr "nulinė operacija"
+
+#: keymap_alldefs.h:6
+msgid "end of conditional execution (noop)"
+msgstr ""
+
+#: keymap_alldefs.h:7
+msgid "force viewing of attachment using mailcap"
+msgstr "priverstinai rodyti priedą naudojant mailcap įrašą"
+
+#: keymap_alldefs.h:8
+msgid "view attachment as text"
+msgstr "žiūrėti priedą kaip tekstą"
+
+#: keymap_alldefs.h:9
+#, fuzzy
+msgid "Toggle display of subparts"
+msgstr "perjungti cituojamo teksto rodymą"
+
+#: keymap_alldefs.h:10
+msgid "move to the bottom of the page"
+msgstr "eiti į puslapio apačią"
+
+#: keymap_alldefs.h:11
+msgid "remail a message to another user"
+msgstr "vėl siųsti laišką kitam vartotojui"
+
+#: keymap_alldefs.h:12
+msgid "swap the current folder position with $folder if it exists"
+msgstr ""
+
+#: keymap_alldefs.h:13
+msgid "select a new file in this directory"
+msgstr "pasirink naują bylą šiame kataloge"
+
+#: keymap_alldefs.h:14
+msgid "view file"
+msgstr "žiūrėti bylą"
+
+#: keymap_alldefs.h:15
+msgid "display the currently selected file's name"
+msgstr "parodyti dabar pažymėtos bylos vardą"
+
+#: keymap_alldefs.h:16
+#, fuzzy
+msgid "subscribe to current mbox (IMAP/NNTP only)"
+msgstr "užsakyti esamą aplanką (tik IMAP)"
+
+#: keymap_alldefs.h:17
+#, fuzzy
+msgid "unsubscribe from current mbox (IMAP/NNTP only)"
+msgstr "atsisakyti esamo aplanko (tik IMAP)"
+
+#: keymap_alldefs.h:18
+msgid "toggle view all/subscribed mailboxes (IMAP only)"
+msgstr "perjungti visų/užsakytų dėžučių rodymą (tik IMAP)"
+
+#: keymap_alldefs.h:19
+#, fuzzy
+msgid "list mailboxes with new mail"
+msgstr "Nėra dėžutės su nauju paštu."
+
+#: keymap_alldefs.h:20
+msgid "mark all articles in newsgroup as read"
+msgstr ""
+
+#: keymap_alldefs.h:21
+msgid "change directories"
+msgstr "keisti katalogus"
+
+#: keymap_alldefs.h:22
+msgid "check mailboxes for new mail"
+msgstr "tikrinti, ar dėžutėse yra naujo pašto"
+
+#: keymap_alldefs.h:23
+#, fuzzy
+msgid "attach file(s) to this message"
+msgstr "prisegti bylą(as) prie šio laiško"
+
+#: keymap_alldefs.h:24
+msgid "attach message(s) to this message"
+msgstr "prisegti bylą(as) prie šio laiško"
+
+#: keymap_alldefs.h:25
+#, fuzzy
+msgid "attach news article(s) to this message"
+msgstr "prisegti bylą(as) prie šio laiško"
+
+#: keymap_alldefs.h:26
+msgid "edit the BCC list"
+msgstr "taisyti BCC sąrašą"
+
+#: keymap_alldefs.h:27
+msgid "edit the CC list"
+msgstr "taisyti CC sąrašą"
+
+#: keymap_alldefs.h:28
+msgid "edit attachment description"
+msgstr "taisyti priedo aprašymą"
+
+#: keymap_alldefs.h:29
+msgid "edit attachment transfer-encoding"
+msgstr "taisyti priedo Transfer-Encoding"
+
+#: keymap_alldefs.h:30
+msgid "enter a file to save a copy of this message in"
+msgstr "įvesk bylą, į kurią išsaugoti šio laiško kopiją"
+
+#: keymap_alldefs.h:31
+msgid "edit the file to be attached"
+msgstr "taisyti bylą, skirtą prisegimui"
+
+#: keymap_alldefs.h:32
+msgid "edit the from field"
+msgstr "taisyti From lauką"
+
+#: keymap_alldefs.h:33
+msgid "edit the message with headers"
+msgstr "taisyti laišką su antraštėmis"
+
+#: keymap_alldefs.h:34
+msgid "edit the message"
+msgstr "taisyti laišką"
+
+#: keymap_alldefs.h:35
+msgid "edit attachment using mailcap entry"
+msgstr "taisyti priedą naudojant mailcap įrašą"
+
+#: keymap_alldefs.h:36
+#, fuzzy
+msgid "edit the newsgroups list"
+msgstr "taisyti CC sąrašą"
+
+#: keymap_alldefs.h:37
+msgid "edit the Reply-To field"
+msgstr "taisyti Reply-To lauką"
+
+#: keymap_alldefs.h:38
+#, fuzzy
+msgid "edit the Followup-To field"
+msgstr "taisyti Reply-To lauką"
+
+#: keymap_alldefs.h:39
+#, fuzzy
+msgid "edit the X-Comment-To field"
+msgstr "taisyti Reply-To lauką"
+
+#: keymap_alldefs.h:40
+msgid "edit the subject of this message"
+msgstr "taisyti šio laiško temą"
+
+#: keymap_alldefs.h:41
+msgid "edit the TO list"
+msgstr "taisyti To sąrašą"
+
+#: keymap_alldefs.h:42
+msgid "create a new mailbox (IMAP only)"
+msgstr "sukurti naują dėžutę (tik IMAP)"
+
+#: keymap_alldefs.h:43
+msgid "edit attachment content type"
+msgstr "keisti priedo Content-Type"
+
+#: keymap_alldefs.h:44
+msgid "get a temporary copy of an attachment"
+msgstr "gauti laikiną priedo kopiją"
+
+#: keymap_alldefs.h:45
+msgid "run ispell on the message"
+msgstr "paleisti ispell laiškui"
+
+#: keymap_alldefs.h:46
+msgid "compose new attachment using mailcap entry"
+msgstr "sukurti naują priedą naudojant mailcap įrašą"
+
+#: keymap_alldefs.h:47
+msgid "toggle recoding of this attachment"
+msgstr "perjungti šio priedo perkodavimą"
+
+#: keymap_alldefs.h:48
+msgid "save this message to send later"
+msgstr "išsaugoti šį laišką vėlesniam siuntimui"
+
+#: keymap_alldefs.h:49
+#, fuzzy
+msgid "send attachment with a different name"
+msgstr "taisyti priedo Transfer-Encoding"
+
+#: keymap_alldefs.h:50
+msgid "rename/move an attached file"
+msgstr "pervadinti/perkelti prisegtą bylą"
+
+#: keymap_alldefs.h:51
+#, fuzzy
+msgid "compose a new message to the sender"
+msgstr "sukurti naują laišką"
+
+#: keymap_alldefs.h:52
+msgid "send the message"
+msgstr "siųsti laišką"
+
+#: keymap_alldefs.h:53
+msgid "toggle disposition between inline/attachment"
+msgstr "perjungti, ar siųsti laiške, ar priede"
+
+#: keymap_alldefs.h:54
+msgid "toggle whether to delete file after sending it"
+msgstr "perjungti, ar ištrinti bylą, ją išsiuntus"
+
+#: keymap_alldefs.h:55
+msgid "update an attachment's encoding info"
+msgstr "atnaujinti priedo koduotės info."
+
+#: keymap_alldefs.h:56
+msgid "write the message to a folder"
+msgstr "įrašyti laišką į aplanką"
+
+#: keymap_alldefs.h:57
+msgid "copy a message to a file/mailbox"
+msgstr "kopijuoti laišką į bylą/dėžutę"
+
+#: keymap_alldefs.h:58
+msgid "create an alias from a message sender"
+msgstr "sukurti aliasą laiško siuntėjui"
+
+#: keymap_alldefs.h:59
+msgid "move entry to bottom of screen"
+msgstr "rodyti įrašą į ekrano apačioje"
+
+#: keymap_alldefs.h:60
+msgid "move entry to middle of screen"
+msgstr "rodyti įrašą į ekrano viduryje"
+
+#: keymap_alldefs.h:61
+msgid "move entry to top of screen"
+msgstr "rodyti įrašą į ekrano viršuje"
+
+#: keymap_alldefs.h:62
+msgid "make decoded (text/plain) copy"
+msgstr "padaryti iškoduotą (text/plain) kopiją"
+
+#: keymap_alldefs.h:63
+msgid "make decoded copy (text/plain) and delete"
+msgstr "padaryti iškoduotą (text/plain) kopiją ir ištrinti"
+
+#: keymap_alldefs.h:64
+msgid "delete the current entry"
+msgstr "ištrinti esamą įrašą"
+
+#: keymap_alldefs.h:65
+msgid "delete the current mailbox (IMAP only)"
+msgstr "ištrinti esamą dėžutę (tik IMAP)"
+
+#: keymap_alldefs.h:66
+msgid "delete all messages in subthread"
+msgstr "ištrinti visus laiškus subgijoje"
+
+#: keymap_alldefs.h:67
+msgid "delete all messages in thread"
+msgstr "ištrinti visus laiškus gijoje"
+
+#: keymap_alldefs.h:68
+msgid "display full address of sender"
+msgstr "rodyti pilną siuntėjo adresą"
+
+#: keymap_alldefs.h:69
+msgid "display message and toggle header weeding"
+msgstr "rodyti laišką ir perjungti antraščių rodymą"
+
+#: keymap_alldefs.h:70
+msgid "display a message"
+msgstr "rodyti laišką"
+
+#: keymap_alldefs.h:71
+msgid "add, change, or delete a message's label"
+msgstr ""
+
+#: keymap_alldefs.h:72
+msgid "edit the raw message"
+msgstr "taisyti gryną laišką"
+
+#: keymap_alldefs.h:73
+msgid "delete the char in front of the cursor"
+msgstr "ištrinti simbolį prieš žymeklį"
+
+#: keymap_alldefs.h:74
+msgid "move the cursor one character to the left"
+msgstr "perkelti žymeklį vienu simboliu kairėn"
+
+#: keymap_alldefs.h:75
+msgid "move the cursor to the beginning of the word"
+msgstr "perkelti žymeklį į žodžio pradžią"
+
+#: keymap_alldefs.h:76
+msgid "jump to the beginning of the line"
+msgstr "peršokti į eilutės pradžią"
+
+#: keymap_alldefs.h:77
+msgid "cycle among incoming mailboxes"
+msgstr "eiti ratu per gaunamo pašto dėžutes"
+
+#: keymap_alldefs.h:78
+msgid "complete filename or alias"
+msgstr "užbaigti bylos vardą ar aliasą"
+
+#: keymap_alldefs.h:79
+msgid "complete address with query"
+msgstr "užbaigti adresą su užklausa"
+
+#: keymap_alldefs.h:80
+msgid "delete the char under the cursor"
+msgstr "ištrinti simbolį po žymekliu"
+
+#: keymap_alldefs.h:81
+msgid "jump to the end of the line"
+msgstr "peršokti į eilutės galą"
+
+#: keymap_alldefs.h:82
+msgid "move the cursor one character to the right"
+msgstr "perkelti žymeklį vienu simboliu dešinėn"
+
+#: keymap_alldefs.h:83
+msgid "move the cursor to the end of the word"
+msgstr "perkelti žymeklį į žodžio pabaigą"
+
+#: keymap_alldefs.h:84
+#, fuzzy
+msgid "scroll down through the history list"
+msgstr "slinktis aukštyn istorijos sąraše"
+
+#: keymap_alldefs.h:85
+msgid "scroll up through the history list"
+msgstr "slinktis aukštyn istorijos sąraše"
+
+#: keymap_alldefs.h:86
+msgid "delete chars from cursor to end of line"
+msgstr "ištrinti simbolius nuo žymeklio iki eilutės galo"
+
+#: keymap_alldefs.h:87
+msgid "delete chars from the cursor to the end of the word"
+msgstr "ištrinti simbolius nuo žymeklio iki žodžio galo"
+
+#: keymap_alldefs.h:88
+msgid "delete all chars on the line"
+msgstr "ištrinti visus simbolius eilutėje"
+
+#: keymap_alldefs.h:89
+msgid "delete the word in front of the cursor"
+msgstr "ištrinti žodį prieš žymeklį"
+
+#: keymap_alldefs.h:90
+msgid "quote the next typed key"
+msgstr "cituoti sekantį nuspaustą klavišą"
+
+#: keymap_alldefs.h:91
+msgid "transpose character under cursor with previous"
+msgstr "sukeisti simbolį po žymekliu su praeitu"
+
+#: keymap_alldefs.h:92
+msgid "capitalize the word"
+msgstr "pradėti žodį didžiąja raide"
+
+#: keymap_alldefs.h:93
+msgid "convert the word to lower case"
+msgstr "perrašyti žodį mažosiomis raidėmis"
+
+#: keymap_alldefs.h:94
+msgid "convert the word to upper case"
+msgstr "perrašyti žodį didžiosiomis raidėmis"
+
+#: keymap_alldefs.h:95
+msgid "enter a muttrc command"
+msgstr "įvesti muttrc komandą"
+
+#: keymap_alldefs.h:96
+msgid "enter a file mask"
+msgstr "įvesti bylų kaukę"
+
+#: keymap_alldefs.h:97
+msgid "exit this menu"
+msgstr "išeiti iš šio meniu"
+
+#: keymap_alldefs.h:98
+msgid "filter attachment through a shell command"
+msgstr "filtruoti priedą per shell komandą"
+
+#: keymap_alldefs.h:99
+msgid "move to the first entry"
+msgstr "eiti į pirmą užrašą"
+
+#: keymap_alldefs.h:100
+msgid "toggle a message's 'important' flag"
+msgstr "perjungti laiško 'svarbumo' flagą"
+
+#: keymap_alldefs.h:101
+#, fuzzy
+msgid "followup to newsgroup"
+msgstr "Pratęsti-į %s%s?"
+
+#: keymap_alldefs.h:102
+msgid "forward to newsgroup"
+msgstr ""
+
+#: keymap_alldefs.h:103
+msgid "forward a message with comments"
+msgstr "persiųsti laišką su komentarais"
+
+#: keymap_alldefs.h:104
+msgid "select the current entry"
+msgstr "pažymėti esamą įrašą"
+
+#: keymap_alldefs.h:105
+#, fuzzy
+msgid "get all children of the current message"
+msgstr "Tu esi ties pirmu laišku."
+
+#: keymap_alldefs.h:106
+#, fuzzy
+msgid "get message with Message-Id"
+msgstr "taisyti laišką su antraštėmis"
+
+#: keymap_alldefs.h:107
+#, fuzzy
+msgid "get parent of the current message"
+msgstr "Tu esi ties pirmu laišku."
+
+#: keymap_alldefs.h:108
+msgid "reply to all recipients"
+msgstr "atsakyti visiems gavėjams"
+
+#: keymap_alldefs.h:109
+msgid "scroll down 1/2 page"
+msgstr "slinktis žemyn per 1/2 puslapio"
+
+#: keymap_alldefs.h:110
+msgid "scroll up 1/2 page"
+msgstr "slinktis aukštyn per 1/2 puslapio"
+
+#: keymap_alldefs.h:111
+msgid "this screen"
+msgstr "šis ekranas"
+
+#: keymap_alldefs.h:112
+msgid "jump to an index number"
+msgstr "šokti į indekso numerį"
+
+#: keymap_alldefs.h:113
+msgid "move to the last entry"
+msgstr "eiti į paskutinį įrašą"
+
+#: keymap_alldefs.h:114
+msgid "reply to specified mailing list"
+msgstr "atsakyti nurodytai konferencijai"
+
+#: keymap_alldefs.h:115
+msgid "load list of all newsgroups from NNTP server"
+msgstr ""
+
+#: keymap_alldefs.h:116
+msgid "execute a macro"
+msgstr "įvykdyti macro"
+
+#: keymap_alldefs.h:117
+msgid "compose a new mail message"
+msgstr "sukurti naują laišką"
+
+#: keymap_alldefs.h:118
+msgid "break the thread in two"
+msgstr ""
+
+#: keymap_alldefs.h:119
+msgid "open a different folder"
+msgstr "atidaryti kitą aplanką"
+
+#: keymap_alldefs.h:120
+msgid "open a different folder in read only mode"
+msgstr "atidaryti kitą aplanką tik skaitymo režimu"
+
+#: keymap_alldefs.h:121
+#, fuzzy
+msgid "open a different newsgroup"
+msgstr "atidaryti kitą aplanką"
+
+#: keymap_alldefs.h:122
+#, fuzzy
+msgid "open a different newsgroup in read only mode"
+msgstr "atidaryti kitą aplanką tik skaitymo režimu"
+
+#: keymap_alldefs.h:123
+msgid "clear a status flag from a message"
+msgstr "išvalyti laiško būsenos flagą"
+
+#: keymap_alldefs.h:124
+msgid "delete messages matching a pattern"
+msgstr "ištrinti laiškus, tenkinančius pattern'ą"
+
+#: keymap_alldefs.h:125
+#, fuzzy
+msgid "force retrieval of mail from IMAP server"
+msgstr "parsiųsti paštą iš POP serverio"
+
+#: keymap_alldefs.h:126
+msgid "logout from all IMAP servers"
+msgstr ""
+
+#: keymap_alldefs.h:127
+msgid "retrieve mail from POP server"
+msgstr "parsiųsti paštą iš POP serverio"
+
+#: keymap_alldefs.h:128
+msgid "show only messages matching a pattern"
+msgstr "rodyti tik laiškus, tenkinančius pattern'ą"
+
+#: keymap_alldefs.h:129
+#, fuzzy
+msgid "link tagged message to the current one"
+msgstr "Nukreipti pažymėtus laiškus kam: "
+
+#: keymap_alldefs.h:130
+#, fuzzy
+msgid "open next mailbox with new mail"
+msgstr "Nėra dėžutės su nauju paštu."
+
+#: keymap_alldefs.h:131
+msgid "jump to the next new message"
+msgstr "šokti į kitą naują laišką"
+
+#: keymap_alldefs.h:132
+#, fuzzy
+msgid "jump to the next new or unread message"
+msgstr "šokti į kitą neskaitytą laišką"
+
+#: keymap_alldefs.h:133
+msgid "jump to the next subthread"
+msgstr "šokti į kitą subgiją"
+
+#: keymap_alldefs.h:134
+msgid "jump to the next thread"
+msgstr "šokti į kitą giją"
+
+#: keymap_alldefs.h:135
+msgid "move to the next undeleted message"
+msgstr "eiti į kitą neištrintą laišką"
+
+#: keymap_alldefs.h:136
+msgid "jump to the next unread message"
+msgstr "šokti į kitą neskaitytą laišką"
+
+#: keymap_alldefs.h:137
+msgid "jump to parent message in thread"
+msgstr "šokti į tėvinį laišką gijoje"
+
+#: keymap_alldefs.h:138
+msgid "jump to previous thread"
+msgstr "šokti į praeitą giją"
+
+#: keymap_alldefs.h:139
+msgid "jump to previous subthread"
+msgstr "šokti į praeitą subgiją"
+
+#: keymap_alldefs.h:140
+msgid "move to the previous undeleted message"
+msgstr "eiti į praeitą neištrintą laišką"
+
+#: keymap_alldefs.h:141
+msgid "jump to the previous new message"
+msgstr "šokti į praeitą naują laišką"
+
+#: keymap_alldefs.h:142
+#, fuzzy
+msgid "jump to the previous new or unread message"
+msgstr "šokti į praeitą neskaitytą laišką"
+
+#: keymap_alldefs.h:143
+msgid "jump to the previous unread message"
+msgstr "šokti į praeitą neskaitytą laišką"
+
+#: keymap_alldefs.h:144
+msgid "mark the current thread as read"
+msgstr "pažymėti esamą giją skaityta"
+
+#: keymap_alldefs.h:145
+msgid "mark the current subthread as read"
+msgstr "pažymėti esamą subgiją skaityta"
+
+#: keymap_alldefs.h:146
+#, fuzzy
+msgid "jump to root message in thread"
+msgstr "šokti į tėvinį laišką gijoje"
+
+#: keymap_alldefs.h:147
+msgid "set a status flag on a message"
+msgstr "uždėti būsenos flagą laiškui"
+
+#: keymap_alldefs.h:148
+msgid "save changes to mailbox"
+msgstr "išsaugoti dėžutės pakeitimus"
+
+#: keymap_alldefs.h:149
+msgid "tag messages matching a pattern"
+msgstr "pažymėti laiškus, tenkinančius pattern'ą"
+
+#: keymap_alldefs.h:150
+msgid "delete from mutt, don't touch on disk"
+msgstr ""
+
+#: keymap_alldefs.h:151
+msgid "undelete messages matching a pattern"
+msgstr "sugrąžinti laiškus, tenkinančius pattern'ą"
+
+#: keymap_alldefs.h:152
+msgid "untag messages matching a pattern"
+msgstr "atžymėti laiškus, tenkinančius pattern'ą"
+
+#: keymap_alldefs.h:153
+#, fuzzy
+msgid "create a hotkey macro for the current message"
+msgstr "Tu esi ties pirmu laišku."
+
+#: keymap_alldefs.h:154
+msgid "move to the middle of the page"
+msgstr "eiti į puslapio vidurį"
+
+#: keymap_alldefs.h:155
+msgid "move to the next entry"
+msgstr "eiti į kitą įrašą"
+
+#: keymap_alldefs.h:156
+msgid "scroll down one line"
+msgstr "slinktis viena eilute žemyn"
+
+#: keymap_alldefs.h:157
+msgid "move to the next page"
+msgstr "eiti į kitą puslapį"
+
+#: keymap_alldefs.h:158
+msgid "jump to the bottom of the message"
+msgstr "šokti į laiško apačią"
+
+#: keymap_alldefs.h:159
+msgid "toggle display of quoted text"
+msgstr "perjungti cituojamo teksto rodymą"
+
+#: keymap_alldefs.h:160
+msgid "skip beyond quoted text"
+msgstr "praleisti cituojamą tekstą"
+
+#: keymap_alldefs.h:161
+msgid "jump to the top of the message"
+msgstr "šokti į laiško viršų"
+
+#: keymap_alldefs.h:162
+msgid "pipe message/attachment to a shell command"
+msgstr "filtruoti laišką/priedą per shell komandą"
+
+#: keymap_alldefs.h:163
+#, fuzzy
+msgid "post message to newsgroup"
+msgstr "Nukreipti laišką į %s"
+
+#: keymap_alldefs.h:164
+msgid "move to the previous entry"
+msgstr "eiti į praeitą įrašą"
+
+#: keymap_alldefs.h:165
+msgid "scroll up one line"
+msgstr "slinktis viena eilute aukštyn"
+
+#: keymap_alldefs.h:166
+msgid "move to the previous page"
+msgstr "eiti į praeitą puslapį"
+
+#: keymap_alldefs.h:167
+msgid "print the current entry"
+msgstr "spausdinti esamą įrašą"
+
+#: keymap_alldefs.h:168
+msgid "really delete the current entry, bypassing the trash folder"
+msgstr ""
+
+#: keymap_alldefs.h:169
+msgid "really delete the current thread, bypassing the trash folder"
+msgstr ""
+
+#: keymap_alldefs.h:170
+msgid "query external program for addresses"
+msgstr "užklausti išorinę programą adresams rasti"
+
+#: keymap_alldefs.h:171
+msgid "append new query results to current results"
+msgstr "pridurti naujos užklausos rezultatus prie esamų"
+
+#: keymap_alldefs.h:172
+msgid "save changes to mailbox and quit"
+msgstr "išsaugoti dėžutės pakeitimus ir išeiti"
+
+#: keymap_alldefs.h:173
+msgid "recall a postponed message"
+msgstr "tęsti atidėtą laišką"
+
+#: keymap_alldefs.h:174
+#, fuzzy
+msgid "reconstruct thread containing current message"
+msgstr "Gijoje yra neskaitytų laiškų."
+
+#: keymap_alldefs.h:175
+msgid "clear and redraw the screen"
+msgstr "išvalyti ir perpiešti ekraną"
+
+#: keymap_alldefs.h:176
+msgid "{internal}"
+msgstr "{vidinė}"
+
+#: keymap_alldefs.h:177
+#, fuzzy
+msgid "rename the current mailbox (IMAP only)"
+msgstr "ištrinti esamą dėžutę (tik IMAP)"
+
+#: keymap_alldefs.h:178
+msgid "reply to a message"
+msgstr "atsakyti į laišką"
+
+#: keymap_alldefs.h:179
+msgid "use the current message as a template for a new one"
+msgstr "naudoti esamą laišką kaip šabloną naujam"
+
+#: keymap_alldefs.h:180
+#, fuzzy
+msgid "save message/attachment to a mailbox/file"
+msgstr "išsaugoti laišką/priedą į bylą"
+
+#: keymap_alldefs.h:181
+msgid "search for a regular expression"
+msgstr "ieškoti reguliarios išraiškos"
+
+#: keymap_alldefs.h:182
+msgid "search backwards for a regular expression"
+msgstr "ieškoti reguliarios išraiškos atgal"
+
+#: keymap_alldefs.h:183
+msgid "search for next match"
+msgstr "ieškoti kito tinkamo"
+
+#: keymap_alldefs.h:184
+msgid "search for next match in opposite direction"
+msgstr "ieškoti kito tinkamo priešinga kryptimi"
+
+#: keymap_alldefs.h:185
+msgid "toggle search pattern coloring"
+msgstr "perjungti paieškos pattern'o spalvojimą"
+
+#: keymap_alldefs.h:186
+msgid "invoke a command in a subshell"
+msgstr "kviesti komandą subshell'e"
+
+#: keymap_alldefs.h:187
+msgid "sort messages"
+msgstr "rikiuoti laiškus"
+
+#: keymap_alldefs.h:188
+msgid "sort messages in reverse order"
+msgstr "rikiuoti laiškus atvirkščia tvarka"
+
+#: keymap_alldefs.h:189
+#, fuzzy
+msgid "subscribe to newsgroups matching a pattern"
+msgstr "atžymėti laiškus, tenkinančius pattern'ą"
+
+#: keymap_alldefs.h:190
+msgid "tag the current entry"
+msgstr "pažymėti esamą įrašą"
+
+#: keymap_alldefs.h:191
+msgid "apply next function to tagged messages"
+msgstr "pritaikyti kitą funkciją pažymėtiems laiškams"
+
+#: keymap_alldefs.h:192
+#, fuzzy
+msgid "apply next function ONLY to tagged messages"
+msgstr "pritaikyti kitą funkciją pažymėtiems laiškams"
+
+#: keymap_alldefs.h:193
+msgid "tag the current subthread"
+msgstr "pažymėti esamą subgiją"
+
+#: keymap_alldefs.h:194
+msgid "tag the current thread"
+msgstr "pažymėti esamą giją"
+
+#: keymap_alldefs.h:195
+msgid "toggle a message's 'new' flag"
+msgstr "perjungti laiško 'naujumo' flagą"
+
+#: keymap_alldefs.h:196
+#, fuzzy
+msgid "toggle view of read messages"
+msgstr "šokti į praeitą neskaitytą laišką"
+
+#: keymap_alldefs.h:197
+msgid "toggle whether the mailbox will be rewritten"
+msgstr "perjungti, ar dėžutė bus perrašoma"
+
+#: keymap_alldefs.h:198
+msgid "toggle whether to browse mailboxes or all files"
+msgstr "perjungti, ar naršyti pašto dėžutes, ar visas bylas"
+
+#: keymap_alldefs.h:199
+msgid "move to the top of the page"
+msgstr "eiti į puslapio viršų"
+
+#: keymap_alldefs.h:200
+msgid "mark all articles in newsgroup as unread"
+msgstr ""
+
+#: keymap_alldefs.h:201
+msgid "undelete the current entry"
+msgstr "sugrąžinti esamą įrašą"
+
+#: keymap_alldefs.h:202
+msgid "undelete all messages in thread"
+msgstr "sugrąžinti visus laiškus gijoje"
+
+#: keymap_alldefs.h:203
+msgid "undelete all messages in subthread"
+msgstr "sugrąžinti visus laiškus subgijoje"
+
+#: keymap_alldefs.h:204
+#, fuzzy
+msgid "unsubscribe from newsgroups matching a pattern"
+msgstr "atžymėti laiškus, tenkinančius pattern'ą"
+
+#: keymap_alldefs.h:205
+msgid "show the Mutt version number and date"
+msgstr "parodyti Mutt versijos numerį ir datą"
+
+#: keymap_alldefs.h:206
+msgid "view attachment using mailcap entry if necessary"
+msgstr "rodyti priedą naudojant mailcap įrašą, jei reikia"
+
+#: keymap_alldefs.h:207
+msgid "show MIME attachments"
+msgstr "rodyti MIME priedus"
+
+#: keymap_alldefs.h:208
+msgid "display the keycode for a key press"
+msgstr ""
+
+#: keymap_alldefs.h:209
+#, fuzzy
+msgid "limit view to current thread"
+msgstr "pažymėti esamą giją"
+
+#: keymap_alldefs.h:210
+msgid "show currently active limit pattern"
+msgstr "parodyti dabar aktyvų ribojimo pattern'ą"
+
+#: keymap_alldefs.h:211
+msgid "collapse/uncollapse current thread"
+msgstr "sutraukti/išskleisti esamą giją"
+
+#: keymap_alldefs.h:212
+msgid "collapse/uncollapse all threads"
+msgstr "sutraukti/išskleisti visas gijas"
+
+#: keymap_alldefs.h:213
+msgid "move the highlight to next mailbox"
+msgstr ""
+
+#: keymap_alldefs.h:214
+#, fuzzy
+msgid "move the highlight to next mailbox with new mail"
+msgstr "Nėra dėžutės su nauju paštu."
+
+#: keymap_alldefs.h:215
+#, fuzzy
+msgid "open highlighted mailbox"
+msgstr "Vėl atidarau dėžutę..."
+
+#: keymap_alldefs.h:216
+#, fuzzy
+msgid "scroll the sidebar down 1 page"
+msgstr "slinktis žemyn per 1/2 puslapio"
+
+#: keymap_alldefs.h:217
+#, fuzzy
+msgid "scroll the sidebar up 1 page"
+msgstr "slinktis aukštyn per 1/2 puslapio"
+
+#: keymap_alldefs.h:218
+#, fuzzy
+msgid "move the highlight to previous mailbox"
+msgstr "eiti į praeitą puslapį"
+
+#: keymap_alldefs.h:219
+#, fuzzy
+msgid "move the highlight to previous mailbox with new mail"
+msgstr "Nėra dėžutės su nauju paštu."
+
+#: keymap_alldefs.h:220
+#, fuzzy
+msgid "toggle between mailboxes and virtual mailboxes"
+msgstr "perjungti, ar naršyti pašto dėžutes, ar visas bylas"
+
+#: keymap_alldefs.h:221
+msgid "make the sidebar (in)visible"
+msgstr ""
+
+#: keymap_alldefs.h:222
+#, fuzzy
+msgid "open a different virtual folder"
+msgstr "atidaryti kitą aplanką"
+
+#: keymap_alldefs.h:223
+msgid "generate virtual folder from query"
+msgstr ""
+
+#: keymap_alldefs.h:224
+msgid "generate virtual folder from query and time window"
+msgstr ""
+
+#: keymap_alldefs.h:225
+msgid "shifts virtual folder time window forwards"
+msgstr ""
+
+#: keymap_alldefs.h:226
+msgid "shifts virtual folder time window backwards"
+msgstr ""
+
+#: keymap_alldefs.h:227
+msgid "modify (notmuch) tags"
+msgstr ""
+
+#: keymap_alldefs.h:228
+#, fuzzy
+msgid "modify labels and then hide message"
+msgstr "Tu esi ties pirmu laišku."
+
+#: keymap_alldefs.h:229
+msgid "read entire thread of the current message"
+msgstr ""
+
+#: keymap_alldefs.h:230
+#, fuzzy
+msgid "accept the chain constructed"
+msgstr "Priimti sukonstruotą grandinę"
+
+#: keymap_alldefs.h:231
+#, fuzzy
+msgid "append a remailer to the chain"
+msgstr "Pridėti persiuntėją į grandinę"
+
+#: keymap_alldefs.h:232
+#, fuzzy
+msgid "insert a remailer into the chain"
+msgstr "Įterpti persiuntėją į grandinę"
+
+#: keymap_alldefs.h:233
+#, fuzzy
+msgid "delete a remailer from the chain"
+msgstr "Pašalinti persiuntėją iš grandinės"
+
+#: keymap_alldefs.h:234
+#, fuzzy
+msgid "select the previous element of the chain"
+msgstr "Pasirinkti ankstesnį elementą grandinėje"
+
+#: keymap_alldefs.h:235
+#, fuzzy
+msgid "select the next element of the chain"
+msgstr "Pasirinkti tolesnį elementą grandinėje"
+
+#: keymap_alldefs.h:236
+msgid "send the message through a mixmaster remailer chain"
+msgstr "pasiųsti pranešimą per mixmaster persiuntėjų grandinę"
+
+#: keymap_alldefs.h:237
+msgid "attach a PGP public key"
+msgstr "prisegti PGP viešą raktą"
+
+#: keymap_alldefs.h:238
+msgid "show PGP options"
+msgstr "rodyti PGP parinktis"
+
+#: keymap_alldefs.h:239
+msgid "mail a PGP public key"
+msgstr "siųsti PGP viešą raktą"
+
+#: keymap_alldefs.h:240
+msgid "verify a PGP public key"
+msgstr "patikrinti PGP viešą raktą"
+
+#: keymap_alldefs.h:241
+msgid "view the key's user id"
+msgstr "žiūrėti rakto vartotojo id"
+
+#: keymap_alldefs.h:242
+msgid "check for classic PGP"
+msgstr ""
+
+#: keymap_alldefs.h:243
+#, fuzzy
+msgid "show S/MIME options"
+msgstr "rodyti S/MIME parinktis"
+
+#: keymap_alldefs.h:244
+msgid "make decrypted copy and delete"
+msgstr "padaryti iššifruotą kopiją ir ištrinti"
+
+#: keymap_alldefs.h:245
+msgid "make decrypted copy"
+msgstr "padaryti iššifruotą kopiją"
+
+#: keymap_alldefs.h:246
+#, fuzzy
+msgid "wipe passphrase(s) from memory"
+msgstr "užmiršti PGP slaptą frazę"
+
+#: keymap_alldefs.h:247
+#, fuzzy
+msgid "extract supported public keys"
+msgstr "ištraukti PGP viešus raktus"
 
 #: lib.c:118
 msgid "Integer overflow -- can't allocate memory!"
@@ -5249,7 +6273,7 @@ msgid ""
 "Copyright (C) 2000-2004 Edmund Grimley Evans <edmundo@rano.org>\n"
 "Copyright (C) 2006-2009 Rocco Rutte <pdmef@gmx.net>\n"
 "Copyright (C) 2014-2016 Kevin J. McCarthy <kevin@8t8.us>\n"
-"Copyright (C) 2015-2016 Richard Russon <rich@flatcap.org>\n"
+"Copyright (C) 2015-2017 Richard Russon <rich@flatcap.org>\n"
 "\n"
 "Many others not mentioned here contributed code, fixes,\n"
 "and suggestions.\n"
@@ -5303,737 +6327,3 @@ msgid ""
 msgstr ""
 "\n"
 "Kompiliavimo parinktys:"
-
-#~ msgid "PGP passphrase forgotten."
-#~ msgstr "PGP slapta frazė pamiršta."
-
-#~ msgid "Query"
-#~ msgstr "Užklausa"
-
-#~ msgid "null operation"
-#~ msgstr "nulinė operacija"
-
-#~ msgid "force viewing of attachment using mailcap"
-#~ msgstr "priverstinai rodyti priedą naudojant mailcap įrašą"
-
-#~ msgid "view attachment as text"
-#~ msgstr "žiūrėti priedą kaip tekstą"
-
-#, fuzzy
-#~ msgid "Toggle display of subparts"
-#~ msgstr "perjungti cituojamo teksto rodymą"
-
-#~ msgid "move to the bottom of the page"
-#~ msgstr "eiti į puslapio apačią"
-
-#~ msgid "remail a message to another user"
-#~ msgstr "vėl siųsti laišką kitam vartotojui"
-
-#~ msgid "select a new file in this directory"
-#~ msgstr "pasirink naują bylą šiame kataloge"
-
-#~ msgid "view file"
-#~ msgstr "žiūrėti bylą"
-
-#~ msgid "display the currently selected file's name"
-#~ msgstr "parodyti dabar pažymėtos bylos vardą"
-
-#, fuzzy
-#~ msgid "subscribe to current mbox (IMAP/NNTP only)"
-#~ msgstr "užsakyti esamą aplanką (tik IMAP)"
-
-#, fuzzy
-#~ msgid "unsubscribe from current mbox (IMAP/NNTP only)"
-#~ msgstr "atsisakyti esamo aplanko (tik IMAP)"
-
-#~ msgid "toggle view all/subscribed mailboxes (IMAP only)"
-#~ msgstr "perjungti visų/užsakytų dėžučių rodymą (tik IMAP)"
-
-#, fuzzy
-#~ msgid "list mailboxes with new mail"
-#~ msgstr "Nėra dėžutės su nauju paštu."
-
-#~ msgid "change directories"
-#~ msgstr "keisti katalogus"
-
-#~ msgid "check mailboxes for new mail"
-#~ msgstr "tikrinti, ar dėžutėse yra naujo pašto"
-
-#, fuzzy
-#~ msgid "attach file(s) to this message"
-#~ msgstr "prisegti bylą(as) prie šio laiško"
-
-#~ msgid "attach message(s) to this message"
-#~ msgstr "prisegti bylą(as) prie šio laiško"
-
-#, fuzzy
-#~ msgid "attach news article(s) to this message"
-#~ msgstr "prisegti bylą(as) prie šio laiško"
-
-#~ msgid "edit the BCC list"
-#~ msgstr "taisyti BCC sąrašą"
-
-#~ msgid "edit the CC list"
-#~ msgstr "taisyti CC sąrašą"
-
-#~ msgid "edit attachment description"
-#~ msgstr "taisyti priedo aprašymą"
-
-#~ msgid "edit attachment transfer-encoding"
-#~ msgstr "taisyti priedo Transfer-Encoding"
-
-#~ msgid "enter a file to save a copy of this message in"
-#~ msgstr "įvesk bylą, į kurią išsaugoti šio laiško kopiją"
-
-#~ msgid "edit the file to be attached"
-#~ msgstr "taisyti bylą, skirtą prisegimui"
-
-#~ msgid "edit the from field"
-#~ msgstr "taisyti From lauką"
-
-#~ msgid "edit the message with headers"
-#~ msgstr "taisyti laišką su antraštėmis"
-
-#~ msgid "edit the message"
-#~ msgstr "taisyti laišką"
-
-#~ msgid "edit attachment using mailcap entry"
-#~ msgstr "taisyti priedą naudojant mailcap įrašą"
-
-#, fuzzy
-#~ msgid "edit the newsgroups list"
-#~ msgstr "taisyti CC sąrašą"
-
-#~ msgid "edit the Reply-To field"
-#~ msgstr "taisyti Reply-To lauką"
-
-#, fuzzy
-#~ msgid "edit the Followup-To field"
-#~ msgstr "taisyti Reply-To lauką"
-
-#, fuzzy
-#~ msgid "edit the X-Comment-To field"
-#~ msgstr "taisyti Reply-To lauką"
-
-#~ msgid "edit the subject of this message"
-#~ msgstr "taisyti šio laiško temą"
-
-#~ msgid "edit the TO list"
-#~ msgstr "taisyti To sąrašą"
-
-#~ msgid "create a new mailbox (IMAP only)"
-#~ msgstr "sukurti naują dėžutę (tik IMAP)"
-
-#~ msgid "edit attachment content type"
-#~ msgstr "keisti priedo Content-Type"
-
-#~ msgid "get a temporary copy of an attachment"
-#~ msgstr "gauti laikiną priedo kopiją"
-
-#~ msgid "run ispell on the message"
-#~ msgstr "paleisti ispell laiškui"
-
-#~ msgid "compose new attachment using mailcap entry"
-#~ msgstr "sukurti naują priedą naudojant mailcap įrašą"
-
-#~ msgid "toggle recoding of this attachment"
-#~ msgstr "perjungti šio priedo perkodavimą"
-
-#~ msgid "save this message to send later"
-#~ msgstr "išsaugoti šį laišką vėlesniam siuntimui"
-
-#, fuzzy
-#~ msgid "send attachment with a different name"
-#~ msgstr "taisyti priedo Transfer-Encoding"
-
-#~ msgid "rename/move an attached file"
-#~ msgstr "pervadinti/perkelti prisegtą bylą"
-
-#, fuzzy
-#~ msgid "compose a new message to the sender"
-#~ msgstr "sukurti naują laišką"
-
-#~ msgid "send the message"
-#~ msgstr "siųsti laišką"
-
-#~ msgid "toggle disposition between inline/attachment"
-#~ msgstr "perjungti, ar siųsti laiške, ar priede"
-
-#~ msgid "toggle whether to delete file after sending it"
-#~ msgstr "perjungti, ar ištrinti bylą, ją išsiuntus"
-
-#~ msgid "update an attachment's encoding info"
-#~ msgstr "atnaujinti priedo koduotės info."
-
-#~ msgid "write the message to a folder"
-#~ msgstr "įrašyti laišką į aplanką"
-
-#~ msgid "copy a message to a file/mailbox"
-#~ msgstr "kopijuoti laišką į bylą/dėžutę"
-
-#~ msgid "create an alias from a message sender"
-#~ msgstr "sukurti aliasą laiško siuntėjui"
-
-#~ msgid "move entry to bottom of screen"
-#~ msgstr "rodyti įrašą į ekrano apačioje"
-
-#~ msgid "move entry to middle of screen"
-#~ msgstr "rodyti įrašą į ekrano viduryje"
-
-#~ msgid "move entry to top of screen"
-#~ msgstr "rodyti įrašą į ekrano viršuje"
-
-#~ msgid "make decoded (text/plain) copy"
-#~ msgstr "padaryti iškoduotą (text/plain) kopiją"
-
-#~ msgid "make decoded copy (text/plain) and delete"
-#~ msgstr "padaryti iškoduotą (text/plain) kopiją ir ištrinti"
-
-#~ msgid "delete the current entry"
-#~ msgstr "ištrinti esamą įrašą"
-
-#~ msgid "delete the current mailbox (IMAP only)"
-#~ msgstr "ištrinti esamą dėžutę (tik IMAP)"
-
-#~ msgid "delete all messages in subthread"
-#~ msgstr "ištrinti visus laiškus subgijoje"
-
-#~ msgid "delete all messages in thread"
-#~ msgstr "ištrinti visus laiškus gijoje"
-
-#~ msgid "display full address of sender"
-#~ msgstr "rodyti pilną siuntėjo adresą"
-
-#~ msgid "display message and toggle header weeding"
-#~ msgstr "rodyti laišką ir perjungti antraščių rodymą"
-
-#~ msgid "display a message"
-#~ msgstr "rodyti laišką"
-
-#~ msgid "edit the raw message"
-#~ msgstr "taisyti gryną laišką"
-
-#~ msgid "delete the char in front of the cursor"
-#~ msgstr "ištrinti simbolį prieš žymeklį"
-
-#~ msgid "move the cursor one character to the left"
-#~ msgstr "perkelti žymeklį vienu simboliu kairėn"
-
-#~ msgid "move the cursor to the beginning of the word"
-#~ msgstr "perkelti žymeklį į žodžio pradžią"
-
-#~ msgid "jump to the beginning of the line"
-#~ msgstr "peršokti į eilutės pradžią"
-
-#~ msgid "cycle among incoming mailboxes"
-#~ msgstr "eiti ratu per gaunamo pašto dėžutes"
-
-#~ msgid "complete filename or alias"
-#~ msgstr "užbaigti bylos vardą ar aliasą"
-
-#~ msgid "complete address with query"
-#~ msgstr "užbaigti adresą su užklausa"
-
-#~ msgid "delete the char under the cursor"
-#~ msgstr "ištrinti simbolį po žymekliu"
-
-#~ msgid "jump to the end of the line"
-#~ msgstr "peršokti į eilutės galą"
-
-#~ msgid "move the cursor one character to the right"
-#~ msgstr "perkelti žymeklį vienu simboliu dešinėn"
-
-#~ msgid "move the cursor to the end of the word"
-#~ msgstr "perkelti žymeklį į žodžio pabaigą"
-
-#, fuzzy
-#~ msgid "scroll down through the history list"
-#~ msgstr "slinktis aukštyn istorijos sąraše"
-
-#~ msgid "scroll up through the history list"
-#~ msgstr "slinktis aukštyn istorijos sąraše"
-
-#~ msgid "delete chars from cursor to end of line"
-#~ msgstr "ištrinti simbolius nuo žymeklio iki eilutės galo"
-
-#~ msgid "delete chars from the cursor to the end of the word"
-#~ msgstr "ištrinti simbolius nuo žymeklio iki žodžio galo"
-
-#~ msgid "delete all chars on the line"
-#~ msgstr "ištrinti visus simbolius eilutėje"
-
-#~ msgid "delete the word in front of the cursor"
-#~ msgstr "ištrinti žodį prieš žymeklį"
-
-#~ msgid "quote the next typed key"
-#~ msgstr "cituoti sekantį nuspaustą klavišą"
-
-#~ msgid "transpose character under cursor with previous"
-#~ msgstr "sukeisti simbolį po žymekliu su praeitu"
-
-#~ msgid "capitalize the word"
-#~ msgstr "pradėti žodį didžiąja raide"
-
-#~ msgid "convert the word to lower case"
-#~ msgstr "perrašyti žodį mažosiomis raidėmis"
-
-#~ msgid "convert the word to upper case"
-#~ msgstr "perrašyti žodį didžiosiomis raidėmis"
-
-#~ msgid "enter a muttrc command"
-#~ msgstr "įvesti muttrc komandą"
-
-#~ msgid "enter a file mask"
-#~ msgstr "įvesti bylų kaukę"
-
-#~ msgid "exit this menu"
-#~ msgstr "išeiti iš šio meniu"
-
-#~ msgid "filter attachment through a shell command"
-#~ msgstr "filtruoti priedą per shell komandą"
-
-#~ msgid "move to the first entry"
-#~ msgstr "eiti į pirmą užrašą"
-
-#~ msgid "toggle a message's 'important' flag"
-#~ msgstr "perjungti laiško 'svarbumo' flagą"
-
-#, fuzzy
-#~ msgid "followup to newsgroup"
-#~ msgstr "Pratęsti-į %s%s?"
-
-#~ msgid "forward a message with comments"
-#~ msgstr "persiųsti laišką su komentarais"
-
-#~ msgid "select the current entry"
-#~ msgstr "pažymėti esamą įrašą"
-
-#, fuzzy
-#~ msgid "get all children of the current message"
-#~ msgstr "Tu esi ties pirmu laišku."
-
-#, fuzzy
-#~ msgid "get message with Message-Id"
-#~ msgstr "taisyti laišką su antraštėmis"
-
-#, fuzzy
-#~ msgid "get parent of the current message"
-#~ msgstr "Tu esi ties pirmu laišku."
-
-#~ msgid "reply to all recipients"
-#~ msgstr "atsakyti visiems gavėjams"
-
-#~ msgid "scroll down 1/2 page"
-#~ msgstr "slinktis žemyn per 1/2 puslapio"
-
-#~ msgid "scroll up 1/2 page"
-#~ msgstr "slinktis aukštyn per 1/2 puslapio"
-
-#~ msgid "this screen"
-#~ msgstr "šis ekranas"
-
-#~ msgid "jump to an index number"
-#~ msgstr "šokti į indekso numerį"
-
-#~ msgid "move to the last entry"
-#~ msgstr "eiti į paskutinį įrašą"
-
-#~ msgid "reply to specified mailing list"
-#~ msgstr "atsakyti nurodytai konferencijai"
-
-#~ msgid "execute a macro"
-#~ msgstr "įvykdyti macro"
-
-#~ msgid "compose a new mail message"
-#~ msgstr "sukurti naują laišką"
-
-#~ msgid "open a different folder"
-#~ msgstr "atidaryti kitą aplanką"
-
-#~ msgid "open a different folder in read only mode"
-#~ msgstr "atidaryti kitą aplanką tik skaitymo režimu"
-
-#, fuzzy
-#~ msgid "open a different newsgroup"
-#~ msgstr "atidaryti kitą aplanką"
-
-#, fuzzy
-#~ msgid "open a different newsgroup in read only mode"
-#~ msgstr "atidaryti kitą aplanką tik skaitymo režimu"
-
-#~ msgid "clear a status flag from a message"
-#~ msgstr "išvalyti laiško būsenos flagą"
-
-#~ msgid "delete messages matching a pattern"
-#~ msgstr "ištrinti laiškus, tenkinančius pattern'ą"
-
-#, fuzzy
-#~ msgid "force retrieval of mail from IMAP server"
-#~ msgstr "parsiųsti paštą iš POP serverio"
-
-#~ msgid "retrieve mail from POP server"
-#~ msgstr "parsiųsti paštą iš POP serverio"
-
-#~ msgid "show only messages matching a pattern"
-#~ msgstr "rodyti tik laiškus, tenkinančius pattern'ą"
-
-#, fuzzy
-#~ msgid "link tagged message to the current one"
-#~ msgstr "Nukreipti pažymėtus laiškus kam: "
-
-#, fuzzy
-#~ msgid "open next mailbox with new mail"
-#~ msgstr "Nėra dėžutės su nauju paštu."
-
-#~ msgid "jump to the next new message"
-#~ msgstr "šokti į kitą naują laišką"
-
-#, fuzzy
-#~ msgid "jump to the next new or unread message"
-#~ msgstr "šokti į kitą neskaitytą laišką"
-
-#~ msgid "jump to the next subthread"
-#~ msgstr "šokti į kitą subgiją"
-
-#~ msgid "jump to the next thread"
-#~ msgstr "šokti į kitą giją"
-
-#~ msgid "move to the next undeleted message"
-#~ msgstr "eiti į kitą neištrintą laišką"
-
-#~ msgid "jump to the next unread message"
-#~ msgstr "šokti į kitą neskaitytą laišką"
-
-#~ msgid "jump to parent message in thread"
-#~ msgstr "šokti į tėvinį laišką gijoje"
-
-#~ msgid "jump to previous thread"
-#~ msgstr "šokti į praeitą giją"
-
-#~ msgid "jump to previous subthread"
-#~ msgstr "šokti į praeitą subgiją"
-
-#~ msgid "move to the previous undeleted message"
-#~ msgstr "eiti į praeitą neištrintą laišką"
-
-#~ msgid "jump to the previous new message"
-#~ msgstr "šokti į praeitą naują laišką"
-
-#, fuzzy
-#~ msgid "jump to the previous new or unread message"
-#~ msgstr "šokti į praeitą neskaitytą laišką"
-
-#~ msgid "jump to the previous unread message"
-#~ msgstr "šokti į praeitą neskaitytą laišką"
-
-#~ msgid "mark the current thread as read"
-#~ msgstr "pažymėti esamą giją skaityta"
-
-#~ msgid "mark the current subthread as read"
-#~ msgstr "pažymėti esamą subgiją skaityta"
-
-#, fuzzy
-#~ msgid "jump to root message in thread"
-#~ msgstr "šokti į tėvinį laišką gijoje"
-
-#~ msgid "set a status flag on a message"
-#~ msgstr "uždėti būsenos flagą laiškui"
-
-#~ msgid "save changes to mailbox"
-#~ msgstr "išsaugoti dėžutės pakeitimus"
-
-#~ msgid "tag messages matching a pattern"
-#~ msgstr "pažymėti laiškus, tenkinančius pattern'ą"
-
-#~ msgid "undelete messages matching a pattern"
-#~ msgstr "sugrąžinti laiškus, tenkinančius pattern'ą"
-
-#~ msgid "untag messages matching a pattern"
-#~ msgstr "atžymėti laiškus, tenkinančius pattern'ą"
-
-#, fuzzy
-#~ msgid "create a hotkey macro for the current message"
-#~ msgstr "Tu esi ties pirmu laišku."
-
-#~ msgid "move to the middle of the page"
-#~ msgstr "eiti į puslapio vidurį"
-
-#~ msgid "move to the next entry"
-#~ msgstr "eiti į kitą įrašą"
-
-#~ msgid "scroll down one line"
-#~ msgstr "slinktis viena eilute žemyn"
-
-#~ msgid "move to the next page"
-#~ msgstr "eiti į kitą puslapį"
-
-#~ msgid "jump to the bottom of the message"
-#~ msgstr "šokti į laiško apačią"
-
-#~ msgid "toggle display of quoted text"
-#~ msgstr "perjungti cituojamo teksto rodymą"
-
-#~ msgid "skip beyond quoted text"
-#~ msgstr "praleisti cituojamą tekstą"
-
-#~ msgid "jump to the top of the message"
-#~ msgstr "šokti į laiško viršų"
-
-#~ msgid "pipe message/attachment to a shell command"
-#~ msgstr "filtruoti laišką/priedą per shell komandą"
-
-#, fuzzy
-#~ msgid "post message to newsgroup"
-#~ msgstr "Nukreipti laišką į %s"
-
-#~ msgid "move to the previous entry"
-#~ msgstr "eiti į praeitą įrašą"
-
-#~ msgid "scroll up one line"
-#~ msgstr "slinktis viena eilute aukštyn"
-
-#~ msgid "move to the previous page"
-#~ msgstr "eiti į praeitą puslapį"
-
-#~ msgid "print the current entry"
-#~ msgstr "spausdinti esamą įrašą"
-
-#~ msgid "query external program for addresses"
-#~ msgstr "užklausti išorinę programą adresams rasti"
-
-#~ msgid "append new query results to current results"
-#~ msgstr "pridurti naujos užklausos rezultatus prie esamų"
-
-#~ msgid "save changes to mailbox and quit"
-#~ msgstr "išsaugoti dėžutės pakeitimus ir išeiti"
-
-#~ msgid "recall a postponed message"
-#~ msgstr "tęsti atidėtą laišką"
-
-#, fuzzy
-#~ msgid "reconstruct thread containing current message"
-#~ msgstr "Gijoje yra neskaitytų laiškų."
-
-#~ msgid "clear and redraw the screen"
-#~ msgstr "išvalyti ir perpiešti ekraną"
-
-#~ msgid "{internal}"
-#~ msgstr "{vidinė}"
-
-#, fuzzy
-#~ msgid "rename the current mailbox (IMAP only)"
-#~ msgstr "ištrinti esamą dėžutę (tik IMAP)"
-
-#~ msgid "reply to a message"
-#~ msgstr "atsakyti į laišką"
-
-#~ msgid "use the current message as a template for a new one"
-#~ msgstr "naudoti esamą laišką kaip šabloną naujam"
-
-#, fuzzy
-#~ msgid "save message/attachment to a mailbox/file"
-#~ msgstr "išsaugoti laišką/priedą į bylą"
-
-#~ msgid "search for a regular expression"
-#~ msgstr "ieškoti reguliarios išraiškos"
-
-#~ msgid "search backwards for a regular expression"
-#~ msgstr "ieškoti reguliarios išraiškos atgal"
-
-#~ msgid "search for next match"
-#~ msgstr "ieškoti kito tinkamo"
-
-#~ msgid "search for next match in opposite direction"
-#~ msgstr "ieškoti kito tinkamo priešinga kryptimi"
-
-#~ msgid "toggle search pattern coloring"
-#~ msgstr "perjungti paieškos pattern'o spalvojimą"
-
-#~ msgid "invoke a command in a subshell"
-#~ msgstr "kviesti komandą subshell'e"
-
-#~ msgid "sort messages"
-#~ msgstr "rikiuoti laiškus"
-
-#~ msgid "sort messages in reverse order"
-#~ msgstr "rikiuoti laiškus atvirkščia tvarka"
-
-#, fuzzy
-#~ msgid "subscribe to newsgroups matching a pattern"
-#~ msgstr "atžymėti laiškus, tenkinančius pattern'ą"
-
-#~ msgid "tag the current entry"
-#~ msgstr "pažymėti esamą įrašą"
-
-#~ msgid "apply next function to tagged messages"
-#~ msgstr "pritaikyti kitą funkciją pažymėtiems laiškams"
-
-#, fuzzy
-#~ msgid "apply next function ONLY to tagged messages"
-#~ msgstr "pritaikyti kitą funkciją pažymėtiems laiškams"
-
-#~ msgid "tag the current subthread"
-#~ msgstr "pažymėti esamą subgiją"
-
-#~ msgid "tag the current thread"
-#~ msgstr "pažymėti esamą giją"
-
-#~ msgid "toggle a message's 'new' flag"
-#~ msgstr "perjungti laiško 'naujumo' flagą"
-
-#, fuzzy
-#~ msgid "toggle view of read messages"
-#~ msgstr "šokti į praeitą neskaitytą laišką"
-
-#~ msgid "toggle whether the mailbox will be rewritten"
-#~ msgstr "perjungti, ar dėžutė bus perrašoma"
-
-#~ msgid "toggle whether to browse mailboxes or all files"
-#~ msgstr "perjungti, ar naršyti pašto dėžutes, ar visas bylas"
-
-#~ msgid "move to the top of the page"
-#~ msgstr "eiti į puslapio viršų"
-
-#~ msgid "undelete the current entry"
-#~ msgstr "sugrąžinti esamą įrašą"
-
-#~ msgid "undelete all messages in thread"
-#~ msgstr "sugrąžinti visus laiškus gijoje"
-
-#~ msgid "undelete all messages in subthread"
-#~ msgstr "sugrąžinti visus laiškus subgijoje"
-
-#, fuzzy
-#~ msgid "unsubscribe from newsgroups matching a pattern"
-#~ msgstr "atžymėti laiškus, tenkinančius pattern'ą"
-
-#~ msgid "show the Mutt version number and date"
-#~ msgstr "parodyti Mutt versijos numerį ir datą"
-
-#~ msgid "view attachment using mailcap entry if necessary"
-#~ msgstr "rodyti priedą naudojant mailcap įrašą, jei reikia"
-
-#~ msgid "show MIME attachments"
-#~ msgstr "rodyti MIME priedus"
-
-#, fuzzy
-#~ msgid "limit view to current thread"
-#~ msgstr "pažymėti esamą giją"
-
-#~ msgid "show currently active limit pattern"
-#~ msgstr "parodyti dabar aktyvų ribojimo pattern'ą"
-
-#~ msgid "collapse/uncollapse current thread"
-#~ msgstr "sutraukti/išskleisti esamą giją"
-
-#~ msgid "collapse/uncollapse all threads"
-#~ msgstr "sutraukti/išskleisti visas gijas"
-
-#, fuzzy
-#~ msgid "move the highlight to next mailbox with new mail"
-#~ msgstr "Nėra dėžutės su nauju paštu."
-
-#, fuzzy
-#~ msgid "open highlighted mailbox"
-#~ msgstr "Vėl atidarau dėžutę..."
-
-#, fuzzy
-#~ msgid "scroll the sidebar down 1 page"
-#~ msgstr "slinktis žemyn per 1/2 puslapio"
-
-#, fuzzy
-#~ msgid "scroll the sidebar up 1 page"
-#~ msgstr "slinktis aukštyn per 1/2 puslapio"
-
-#, fuzzy
-#~ msgid "move the highlight to previous mailbox"
-#~ msgstr "eiti į praeitą puslapį"
-
-#, fuzzy
-#~ msgid "move the highlight to previous mailbox with new mail"
-#~ msgstr "Nėra dėžutės su nauju paštu."
-
-#, fuzzy
-#~ msgid "toggle between mailboxes and virtual mailboxes"
-#~ msgstr "perjungti, ar naršyti pašto dėžutes, ar visas bylas"
-
-#, fuzzy
-#~ msgid "open a different virtual folder"
-#~ msgstr "atidaryti kitą aplanką"
-
-#, fuzzy
-#~ msgid "modify labels and then hide message"
-#~ msgstr "Tu esi ties pirmu laišku."
-
-#~ msgid "attach a PGP public key"
-#~ msgstr "prisegti PGP viešą raktą"
-
-#~ msgid "show PGP options"
-#~ msgstr "rodyti PGP parinktis"
-
-#~ msgid "mail a PGP public key"
-#~ msgstr "siųsti PGP viešą raktą"
-
-#~ msgid "verify a PGP public key"
-#~ msgstr "patikrinti PGP viešą raktą"
-
-#~ msgid "view the key's user id"
-#~ msgstr "žiūrėti rakto vartotojo id"
-
-#, fuzzy
-#~ msgid "accept the chain constructed"
-#~ msgstr "Priimti sukonstruotą grandinę"
-
-#, fuzzy
-#~ msgid "append a remailer to the chain"
-#~ msgstr "Pridėti persiuntėją į grandinę"
-
-#, fuzzy
-#~ msgid "insert a remailer into the chain"
-#~ msgstr "Įterpti persiuntėją į grandinę"
-
-#, fuzzy
-#~ msgid "delete a remailer from the chain"
-#~ msgstr "Pašalinti persiuntėją iš grandinės"
-
-#, fuzzy
-#~ msgid "select the previous element of the chain"
-#~ msgstr "Pasirinkti ankstesnį elementą grandinėje"
-
-#, fuzzy
-#~ msgid "select the next element of the chain"
-#~ msgstr "Pasirinkti tolesnį elementą grandinėje"
-
-#~ msgid "send the message through a mixmaster remailer chain"
-#~ msgstr "pasiųsti pranešimą per mixmaster persiuntėjų grandinę"
-
-#~ msgid "make decrypted copy and delete"
-#~ msgstr "padaryti iššifruotą kopiją ir ištrinti"
-
-#~ msgid "make decrypted copy"
-#~ msgstr "padaryti iššifruotą kopiją"
-
-#, fuzzy
-#~ msgid "wipe passphrase(s) from memory"
-#~ msgstr "užmiršti PGP slaptą frazę"
-
-#, fuzzy
-#~ msgid "extract supported public keys"
-#~ msgstr "ištraukti PGP viešus raktus"
-
-#, fuzzy
-#~ msgid "show S/MIME options"
-#~ msgstr "rodyti S/MIME parinktis"
-
-#~ msgid "Fingerprint: %s"
-#~ msgstr "Pirštų antspaudas: %s"
-
-#, fuzzy
-#~ msgid "SMTP authentication requires SASL"
-#~ msgstr "GSSAPI autentikacija nepavyko."
-
-#~ msgid "move to the first message"
-#~ msgstr "eiti į pirmą laišką"
-
-#~ msgid "move to the last message"
-#~ msgstr "eiti į paskutinį laišką"

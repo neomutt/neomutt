@@ -16,7 +16,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neomutt-20161104\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
-"POT-Creation-Date: 2017-04-13 13:26+0100\n"
+"POT-Creation-Date: 2017-04-17 17:04+0100\n"
 "PO-Revision-Date: 2017-02-15 23:39+0200\n"
 "Last-Translator: Vsevolod Volkov <vvv@mutt.org.ua>\n"
 "Language-Team: mutt-ru@woe.spb.ru\n"
@@ -912,6 +912,118 @@ msgstr "Упаковывается %s"
 msgid "No decryption engine available for message"
 msgstr ""
 
+#: crypt.c:59
+#, c-format
+msgid " (current time: %c)"
+msgstr " (текущее время: %c)"
+
+#: crypt.c:64
+#, c-format
+msgid "[-- %s output follows%s --]\n"
+msgstr "[-- Результат работы программы %s%s --]\n"
+
+#: crypt.c:78
+msgid "Passphrase(s) forgotten."
+msgstr "Фразы-пароли удалены из памяти."
+
+#: crypt.c:139
+msgid "Inline PGP can't be used with attachments.  Revert to PGP/MIME?"
+msgstr "Невозможно использовать PGP/текст с вложениями. Применить PGP/MIME?"
+
+#: crypt.c:143
+msgid "Mail not sent: inline PGP can't be used with attachments."
+msgstr "Письмо не отправлено: невозможно использовать PGP/текст с вложениями."
+
+#: crypt.c:151 cryptglue.c:106 pgpkey.c:541 pgpkey.c:724
+msgid "Invoking PGP..."
+msgstr "Запускается программа PGP..."
+
+#: crypt.c:162
+msgid "Message can't be sent inline.  Revert to using PGP/MIME?"
+msgstr "Не удалось отправить PGP-сообщение в текстовом формате. Использовать PGP/MIME?"
+
+#: crypt.c:164 send.c:1796
+msgid "Mail not sent."
+msgstr "Письмо не отправлено."
+
+#: crypt.c:224
+msgid "Encrypt message to S/MIME Default Key also?"
+msgstr ""
+
+#: crypt.c:259
+msgid "Encrypt message to PGP Default Key also?"
+msgstr ""
+
+#: crypt.c:502
+msgid "S/MIME messages with no hints on content are unsupported."
+msgstr "S/MIME-сообщения без указания типа содержимого не поддерживаются."
+
+#: crypt.c:710 crypt.c:751
+msgid "Trying to extract PGP keys...\n"
+msgstr "Попытка извлечь PGP ключи...\n"
+
+#: crypt.c:732 crypt.c:772
+msgid "Trying to extract S/MIME certificates...\n"
+msgstr "Попытка извлечь S/MIME сертификаты...\n"
+
+#: crypt.c:913
+#, c-format
+msgid ""
+"[-- Error: Unknown multipart/signed protocol %s! --]\n"
+"\n"
+msgstr ""
+"[-- Ошибка: неизвестный multipart/signed протокол %s! --]\n"
+"\n"
+
+#: crypt.c:947
+msgid ""
+"[-- Error: Inconsistent multipart/signed structure! --]\n"
+"\n"
+msgstr ""
+"[-- Ошибка: нарушена структура multipart/signed-сообщения! --]\n"
+"\n"
+
+#: crypt.c:983
+#, c-format
+msgid ""
+"[-- Warning: We can't verify %s/%s signatures. --]\n"
+"\n"
+msgstr ""
+"[-- Предупреждение: не удалось проверить %s/%s подписи. --]\n"
+"\n"
+
+#: crypt.c:995
+msgid ""
+"[-- The following data is signed --]\n"
+"\n"
+msgstr ""
+"[-- Начало подписанных данных --]\n"
+"\n"
+
+#: crypt.c:1001
+msgid ""
+"[-- Warning: Can't find any signatures. --]\n"
+"\n"
+msgstr ""
+"[-- Предупреждение: не найдено ни одной подписи. --]\n"
+"\n"
+
+#: crypt.c:1007
+msgid ""
+"\n"
+"[-- End of signed data --]\n"
+msgstr ""
+"\n"
+"[-- Конец подписанных данных --]\n"
+
+#: cryptglue.c:84
+msgid "\"crypt_use_gpgme\" set but not built with GPGME support."
+msgstr "Опция \"crypt_use_gpgme\" включена, но поддержка GPGME не собрана."
+
+#: cryptglue.c:108
+msgid "Invoking S/MIME..."
+msgstr "Вызывается S/MIME..."
+
 #: crypt_gpgme.c:384
 #, c-format
 msgid "error creating gpgme context: %s\n"
@@ -1554,118 +1666,6 @@ msgstr "Не удалось проверить отправителя"
 #: crypt_gpgme.c:4833
 msgid "Failed to figure out sender"
 msgstr "Не удалось вычислить отправителя"
-
-#: crypt.c:59
-#, c-format
-msgid " (current time: %c)"
-msgstr " (текущее время: %c)"
-
-#: crypt.c:64
-#, c-format
-msgid "[-- %s output follows%s --]\n"
-msgstr "[-- Результат работы программы %s%s --]\n"
-
-#: crypt.c:78
-msgid "Passphrase(s) forgotten."
-msgstr "Фразы-пароли удалены из памяти."
-
-#: crypt.c:139
-msgid "Inline PGP can't be used with attachments.  Revert to PGP/MIME?"
-msgstr "Невозможно использовать PGP/текст с вложениями. Применить PGP/MIME?"
-
-#: crypt.c:143
-msgid "Mail not sent: inline PGP can't be used with attachments."
-msgstr "Письмо не отправлено: невозможно использовать PGP/текст с вложениями."
-
-#: crypt.c:151 cryptglue.c:106 pgpkey.c:541 pgpkey.c:724
-msgid "Invoking PGP..."
-msgstr "Запускается программа PGP..."
-
-#: crypt.c:162
-msgid "Message can't be sent inline.  Revert to using PGP/MIME?"
-msgstr "Не удалось отправить PGP-сообщение в текстовом формате. Использовать PGP/MIME?"
-
-#: crypt.c:164 send.c:1796
-msgid "Mail not sent."
-msgstr "Письмо не отправлено."
-
-#: crypt.c:224
-msgid "Encrypt message to S/MIME Default Key also?"
-msgstr ""
-
-#: crypt.c:259
-msgid "Encrypt message to PGP Default Key also?"
-msgstr ""
-
-#: crypt.c:502
-msgid "S/MIME messages with no hints on content are unsupported."
-msgstr "S/MIME-сообщения без указания типа содержимого не поддерживаются."
-
-#: crypt.c:710 crypt.c:751
-msgid "Trying to extract PGP keys...\n"
-msgstr "Попытка извлечь PGP ключи...\n"
-
-#: crypt.c:732 crypt.c:772
-msgid "Trying to extract S/MIME certificates...\n"
-msgstr "Попытка извлечь S/MIME сертификаты...\n"
-
-#: crypt.c:913
-#, c-format
-msgid ""
-"[-- Error: Unknown multipart/signed protocol %s! --]\n"
-"\n"
-msgstr ""
-"[-- Ошибка: неизвестный multipart/signed протокол %s! --]\n"
-"\n"
-
-#: crypt.c:947
-msgid ""
-"[-- Error: Inconsistent multipart/signed structure! --]\n"
-"\n"
-msgstr ""
-"[-- Ошибка: нарушена структура multipart/signed-сообщения! --]\n"
-"\n"
-
-#: crypt.c:983
-#, c-format
-msgid ""
-"[-- Warning: We can't verify %s/%s signatures. --]\n"
-"\n"
-msgstr ""
-"[-- Предупреждение: не удалось проверить %s/%s подписи. --]\n"
-"\n"
-
-#: crypt.c:995
-msgid ""
-"[-- The following data is signed --]\n"
-"\n"
-msgstr ""
-"[-- Начало подписанных данных --]\n"
-"\n"
-
-#: crypt.c:1001
-msgid ""
-"[-- Warning: Can't find any signatures. --]\n"
-"\n"
-msgstr ""
-"[-- Предупреждение: не найдено ни одной подписи. --]\n"
-"\n"
-
-#: crypt.c:1007
-msgid ""
-"\n"
-"[-- End of signed data --]\n"
-msgstr ""
-"\n"
-"[-- Конец подписанных данных --]\n"
-
-#: cryptglue.c:84
-msgid "\"crypt_use_gpgme\" set but not built with GPGME support."
-msgstr "Опция \"crypt_use_gpgme\" включена, но поддержка GPGME не собрана."
-
-#: cryptglue.c:108
-msgid "Invoking S/MIME..."
-msgstr "Вызывается S/MIME..."
 
 #: curs_lib.c:229
 msgid "yes"
@@ -2498,12 +2498,12 @@ msgstr "Регистрация..."
 msgid "Login failed."
 msgstr "Регистрация не удалась."
 
-#: imap/auth_sasl.c:94 nntp.c:367 nntp.c:432 smtp.c:372
+#: imap/auth_sasl.c:95 nntp.c:367 nntp.c:432 smtp.c:372
 #, c-format
 msgid "Authenticating (%s)..."
 msgstr "Аутентификация (%s)..."
 
-#: imap/auth_sasl.c:222 pop_auth.c:175
+#: imap/auth_sasl.c:223 pop_auth.c:175
 msgid "SASL authentication failed."
 msgstr "Ошибка SASL-аутентификации."
 
@@ -2978,6 +2978,1002 @@ msgstr "Введите ключи (^G - прерывание ввода): "
 msgid "Char = %s, Octal = %o, Decimal = %d"
 msgstr "Символ = %s, восьмиричный = %o, десятичный = %d"
 
+#: keymap_alldefs.h:5
+msgid "null operation"
+msgstr "пустая операция"
+
+#: keymap_alldefs.h:6
+msgid "end of conditional execution (noop)"
+msgstr "завершение выполнения по условию"
+
+#: keymap_alldefs.h:7
+msgid "force viewing of attachment using mailcap"
+msgstr "форсировать использование базы mailcap для просмотра вложения"
+
+#: keymap_alldefs.h:8
+msgid "view attachment as text"
+msgstr "показать вложение как текст"
+
+#: keymap_alldefs.h:9
+msgid "Toggle display of subparts"
+msgstr "Разрешить/запретить отображение частей дайджеста"
+
+#: keymap_alldefs.h:10
+msgid "move to the bottom of the page"
+msgstr "конец страницы"
+
+#: keymap_alldefs.h:11
+msgid "remail a message to another user"
+msgstr "переслать сообщение другому пользователю"
+
+#: keymap_alldefs.h:12
+msgid "swap the current folder position with $folder if it exists"
+msgstr ""
+
+#: keymap_alldefs.h:13
+msgid "select a new file in this directory"
+msgstr "указать новый файл в этом каталоге"
+
+#: keymap_alldefs.h:14
+msgid "view file"
+msgstr "просмотреть файл"
+
+#: keymap_alldefs.h:15
+msgid "display the currently selected file's name"
+msgstr "показать имя текущего файла"
+
+#: keymap_alldefs.h:16
+#, fuzzy
+msgid "subscribe to current mbox (IMAP/NNTP only)"
+msgstr "подключиться к текущему почтовому ящику (только IMAP)"
+
+#: keymap_alldefs.h:17
+#, fuzzy
+msgid "unsubscribe from current mbox (IMAP/NNTP only)"
+msgstr "отключиться от текущего почтового ящика (только IMAP)"
+
+#: keymap_alldefs.h:18
+msgid "toggle view all/subscribed mailboxes (IMAP only)"
+msgstr "переключиться между режимами просмотра всех/подключенных почтовых ящиков (только IMAP)"
+
+#: keymap_alldefs.h:19
+msgid "list mailboxes with new mail"
+msgstr "список почтовых ящиков с новой почтой"
+
+#: keymap_alldefs.h:20
+msgid "mark all articles in newsgroup as read"
+msgstr ""
+
+#: keymap_alldefs.h:21
+msgid "change directories"
+msgstr "изменить каталог"
+
+#: keymap_alldefs.h:22
+msgid "check mailboxes for new mail"
+msgstr "проверить почтовые ящики на наличие новой почты"
+
+#: keymap_alldefs.h:23
+msgid "attach file(s) to this message"
+msgstr "вложить файлы в это сообщение"
+
+#: keymap_alldefs.h:24
+msgid "attach message(s) to this message"
+msgstr "вложить сообщения в это сообщение"
+
+#: keymap_alldefs.h:25
+#, fuzzy
+msgid "attach news article(s) to this message"
+msgstr "вложить файлы в это сообщение"
+
+#: keymap_alldefs.h:26
+msgid "edit the BCC list"
+msgstr "изменить список \"BCC:\""
+
+#: keymap_alldefs.h:27
+msgid "edit the CC list"
+msgstr "изменить список \"CC:\""
+
+#: keymap_alldefs.h:28
+msgid "edit attachment description"
+msgstr "изменить описание вложения"
+
+#: keymap_alldefs.h:29
+msgid "edit attachment transfer-encoding"
+msgstr "изменить транспортную кодировку для вложения"
+
+#: keymap_alldefs.h:30
+msgid "enter a file to save a copy of this message in"
+msgstr "укажите файл, в котором будет сохранена копия этого сообщения"
+
+#: keymap_alldefs.h:31
+msgid "edit the file to be attached"
+msgstr "изменить вложенный файл"
+
+#: keymap_alldefs.h:32
+msgid "edit the from field"
+msgstr "изменить поле \"From:\""
+
+#: keymap_alldefs.h:33
+msgid "edit the message with headers"
+msgstr "редактировать сообщение вместе с заголовками"
+
+#: keymap_alldefs.h:34
+msgid "edit the message"
+msgstr "редактировать сообщение"
+
+#: keymap_alldefs.h:35
+msgid "edit attachment using mailcap entry"
+msgstr "редактировать вложение в соответствии с записью в mailcap"
+
+#: keymap_alldefs.h:36
+#, fuzzy
+msgid "edit the newsgroups list"
+msgstr "изменить список \"CC:\""
+
+#: keymap_alldefs.h:37
+msgid "edit the Reply-To field"
+msgstr "изменить поле \"Reply-To:\""
+
+#: keymap_alldefs.h:38
+#, fuzzy
+msgid "edit the Followup-To field"
+msgstr "изменить поле \"Reply-To:\""
+
+#: keymap_alldefs.h:39
+#, fuzzy
+msgid "edit the X-Comment-To field"
+msgstr "изменить поле \"Reply-To:\""
+
+#: keymap_alldefs.h:40
+msgid "edit the subject of this message"
+msgstr "редактировать тему сообщения"
+
+#: keymap_alldefs.h:41
+msgid "edit the TO list"
+msgstr "изменить список \"To:\""
+
+#: keymap_alldefs.h:42
+msgid "create a new mailbox (IMAP only)"
+msgstr "создать новый почтовый ящик (только IMAP)"
+
+#: keymap_alldefs.h:43
+msgid "edit attachment content type"
+msgstr "изменить тип вложения (content-type)"
+
+#: keymap_alldefs.h:44
+msgid "get a temporary copy of an attachment"
+msgstr "создать временную копию вложения"
+
+#: keymap_alldefs.h:45
+msgid "run ispell on the message"
+msgstr "проверить правописание"
+
+#: keymap_alldefs.h:46
+msgid "compose new attachment using mailcap entry"
+msgstr "создать новое вложение в соответствии с записью в mailcap"
+
+#: keymap_alldefs.h:47
+msgid "toggle recoding of this attachment"
+msgstr "включить/выключить перекодирование вложения"
+
+#: keymap_alldefs.h:48
+msgid "save this message to send later"
+msgstr "сохранить это сообщение для отправки позднее"
+
+#: keymap_alldefs.h:49
+msgid "send attachment with a different name"
+msgstr "отправить вложение с другим именем"
+
+#: keymap_alldefs.h:50
+msgid "rename/move an attached file"
+msgstr "переименовать/переместить вложенный файл"
+
+#: keymap_alldefs.h:51
+#, fuzzy
+msgid "compose a new message to the sender"
+msgstr "создать новое сообщение"
+
+#: keymap_alldefs.h:52
+msgid "send the message"
+msgstr "отправить сообщение"
+
+#: keymap_alldefs.h:53
+msgid "toggle disposition between inline/attachment"
+msgstr "установить поле disposition в inline/attachment"
+
+#: keymap_alldefs.h:54
+msgid "toggle whether to delete file after sending it"
+msgstr "удалить/оставить файл после отправки"
+
+#: keymap_alldefs.h:55
+msgid "update an attachment's encoding info"
+msgstr "обновить информацию о кодировке вложения"
+
+#: keymap_alldefs.h:56
+msgid "write the message to a folder"
+msgstr "записать сообщение в файл/почтовый ящик"
+
+#: keymap_alldefs.h:57
+msgid "copy a message to a file/mailbox"
+msgstr "копировать сообщение в файл/почтовый ящик"
+
+#: keymap_alldefs.h:58
+msgid "create an alias from a message sender"
+msgstr "создать псевдоним для отправителя сообщения"
+
+#: keymap_alldefs.h:59
+msgid "move entry to bottom of screen"
+msgstr "поместить запись в низ экрана"
+
+#: keymap_alldefs.h:60
+msgid "move entry to middle of screen"
+msgstr "поместить запись в середину экрана"
+
+#: keymap_alldefs.h:61
+msgid "move entry to top of screen"
+msgstr "поместить запись в верх экрана"
+
+#: keymap_alldefs.h:62
+msgid "make decoded (text/plain) copy"
+msgstr "создать декодированную (text/plain) копию"
+
+#: keymap_alldefs.h:63
+msgid "make decoded copy (text/plain) and delete"
+msgstr "создать декодированную (text/plain) копию и удалить оригинал"
+
+#: keymap_alldefs.h:64
+msgid "delete the current entry"
+msgstr "удалить текущую запись"
+
+#: keymap_alldefs.h:65
+msgid "delete the current mailbox (IMAP only)"
+msgstr "удалить текущий почтовый ящик (только IMAP)"
+
+#: keymap_alldefs.h:66
+msgid "delete all messages in subthread"
+msgstr "удалить все сообщения в поддискуссии"
+
+#: keymap_alldefs.h:67
+msgid "delete all messages in thread"
+msgstr "удалить все сообщения в дискуссии"
+
+#: keymap_alldefs.h:68
+msgid "display full address of sender"
+msgstr "показать полный адрес отправителя"
+
+#: keymap_alldefs.h:69
+msgid "display message and toggle header weeding"
+msgstr "показать сообщение со всеми заголовками"
+
+#: keymap_alldefs.h:70
+msgid "display a message"
+msgstr "показать сообщение"
+
+#: keymap_alldefs.h:71
+msgid "add, change, or delete a message's label"
+msgstr "добавить, изменить или удалить метку сообщения"
+
+#: keymap_alldefs.h:72
+msgid "edit the raw message"
+msgstr "\"низкоуровневое\" редактирование сообщения"
+
+#: keymap_alldefs.h:73
+msgid "delete the char in front of the cursor"
+msgstr "удалить символ перед курсором"
+
+#: keymap_alldefs.h:74
+msgid "move the cursor one character to the left"
+msgstr "передвинуть курсор влево на один символ"
+
+#: keymap_alldefs.h:75
+msgid "move the cursor to the beginning of the word"
+msgstr "передвинуть курсор в начало слова"
+
+#: keymap_alldefs.h:76
+msgid "jump to the beginning of the line"
+msgstr "перейти в начало строки"
+
+#: keymap_alldefs.h:77
+msgid "cycle among incoming mailboxes"
+msgstr "переключиться между почтовыми ящиками со входящими письмами"
+
+#: keymap_alldefs.h:78
+msgid "complete filename or alias"
+msgstr "дописать имя файла или псевдонима"
+
+#: keymap_alldefs.h:79
+msgid "complete address with query"
+msgstr "дописать адрес, используя внешнюю программу"
+
+#: keymap_alldefs.h:80
+msgid "delete the char under the cursor"
+msgstr "удалить символ под курсором"
+
+#: keymap_alldefs.h:81
+msgid "jump to the end of the line"
+msgstr "перейти в конец строки"
+
+#: keymap_alldefs.h:82
+msgid "move the cursor one character to the right"
+msgstr "передвинуть курсор на один символ вправо"
+
+#: keymap_alldefs.h:83
+msgid "move the cursor to the end of the word"
+msgstr "передвинуть курсор в конец слова"
+
+#: keymap_alldefs.h:84
+msgid "scroll down through the history list"
+msgstr "прокрутить вниз список истории"
+
+#: keymap_alldefs.h:85
+msgid "scroll up through the history list"
+msgstr "прокрутить вверх список истории"
+
+#: keymap_alldefs.h:86
+msgid "delete chars from cursor to end of line"
+msgstr "удалить символы от курсора и до конца строки"
+
+#: keymap_alldefs.h:87
+msgid "delete chars from the cursor to the end of the word"
+msgstr "удалить символы от курсора и до конца слова"
+
+#: keymap_alldefs.h:88
+msgid "delete all chars on the line"
+msgstr "удалить все символы в строке"
+
+#: keymap_alldefs.h:89
+msgid "delete the word in front of the cursor"
+msgstr "удалить слово перед курсором"
+
+#: keymap_alldefs.h:90
+msgid "quote the next typed key"
+msgstr "ввести следующую нажатую клавишу \"как есть\""
+
+#: keymap_alldefs.h:91
+msgid "transpose character under cursor with previous"
+msgstr "поменять символ под курсором с предыдущим"
+
+#: keymap_alldefs.h:92
+msgid "capitalize the word"
+msgstr "перевести первую букву слова в верхний регистр, а остальные -- в нижний"
+
+#: keymap_alldefs.h:93
+msgid "convert the word to lower case"
+msgstr "преобразовать слово в нижний регистр"
+
+#: keymap_alldefs.h:94
+msgid "convert the word to upper case"
+msgstr "преобразовать слово в верхний регистр"
+
+#: keymap_alldefs.h:95
+msgid "enter a muttrc command"
+msgstr "ввести команду muttrc"
+
+#: keymap_alldefs.h:96
+msgid "enter a file mask"
+msgstr "ввести маску файла"
+
+#: keymap_alldefs.h:97
+msgid "exit this menu"
+msgstr "выйти из этого меню"
+
+#: keymap_alldefs.h:98
+msgid "filter attachment through a shell command"
+msgstr "передать вложение внешней программе"
+
+#: keymap_alldefs.h:99
+msgid "move to the first entry"
+msgstr "первая запись"
+
+#: keymap_alldefs.h:100
+msgid "toggle a message's 'important' flag"
+msgstr "установить/сбросить флаг \"важное\" для сообщения"
+
+#: keymap_alldefs.h:101
+#, fuzzy
+msgid "followup to newsgroup"
+msgstr "Отвечать по %s%s?"
+
+#: keymap_alldefs.h:102
+msgid "forward to newsgroup"
+msgstr ""
+
+#: keymap_alldefs.h:103
+msgid "forward a message with comments"
+msgstr "переслать сообщение с комментариями"
+
+#: keymap_alldefs.h:104
+msgid "select the current entry"
+msgstr "выбрать текущую запись"
+
+#: keymap_alldefs.h:105
+#, fuzzy
+msgid "get all children of the current message"
+msgstr "создать макрос для текущего сообщения"
+
+#: keymap_alldefs.h:106
+#, fuzzy
+msgid "get message with Message-Id"
+msgstr "редактировать сообщение вместе с заголовками"
+
+#: keymap_alldefs.h:107
+#, fuzzy
+msgid "get parent of the current message"
+msgstr "создать макрос для текущего сообщения"
+
+#: keymap_alldefs.h:108
+msgid "reply to all recipients"
+msgstr "ответить всем адресатам"
+
+#: keymap_alldefs.h:109
+msgid "scroll down 1/2 page"
+msgstr "на полстраницы вперед"
+
+#: keymap_alldefs.h:110
+msgid "scroll up 1/2 page"
+msgstr "на полстраницы назад"
+
+#: keymap_alldefs.h:111
+msgid "this screen"
+msgstr "этот текст"
+
+#: keymap_alldefs.h:112
+msgid "jump to an index number"
+msgstr "перейти по последовательному номеру"
+
+#: keymap_alldefs.h:113
+msgid "move to the last entry"
+msgstr "последняя запись"
+
+#: keymap_alldefs.h:114
+msgid "reply to specified mailing list"
+msgstr "ответить в указанный список рассылки"
+
+#: keymap_alldefs.h:115
+msgid "load list of all newsgroups from NNTP server"
+msgstr ""
+
+#: keymap_alldefs.h:116
+msgid "execute a macro"
+msgstr "выполнить макрос"
+
+#: keymap_alldefs.h:117
+msgid "compose a new mail message"
+msgstr "создать новое сообщение"
+
+#: keymap_alldefs.h:118
+msgid "break the thread in two"
+msgstr "резделить дикуссию на две части"
+
+#: keymap_alldefs.h:119
+msgid "open a different folder"
+msgstr "открыть другой почтовый ящик/файл"
+
+#: keymap_alldefs.h:120
+msgid "open a different folder in read only mode"
+msgstr "открыть другой почтовый ящик/файл в режиме \"только для чтения\""
+
+#: keymap_alldefs.h:121
+#, fuzzy
+msgid "open a different newsgroup"
+msgstr "открыть другой почтовый ящик/файл"
+
+#: keymap_alldefs.h:122
+#, fuzzy
+msgid "open a different newsgroup in read only mode"
+msgstr "открыть другой почтовый ящик/файл в режиме \"только для чтения\""
+
+#: keymap_alldefs.h:123
+msgid "clear a status flag from a message"
+msgstr "сбросить у сообщения флаг состояния"
+
+#: keymap_alldefs.h:124
+msgid "delete messages matching a pattern"
+msgstr "удалить сообщения по образцу"
+
+#: keymap_alldefs.h:125
+msgid "force retrieval of mail from IMAP server"
+msgstr "забрать почту с IMAP-сервера"
+
+#: keymap_alldefs.h:126
+msgid "logout from all IMAP servers"
+msgstr "отключение от всех IMAP-серверов"
+
+#: keymap_alldefs.h:127
+msgid "retrieve mail from POP server"
+msgstr "забрать почту с POP-сервера"
+
+#: keymap_alldefs.h:128
+msgid "show only messages matching a pattern"
+msgstr "показывать только сообщения, соответствующие образцу"
+
+#: keymap_alldefs.h:129
+msgid "link tagged message to the current one"
+msgstr "подсоединить помеченное сообщение к текущему"
+
+#: keymap_alldefs.h:130
+msgid "open next mailbox with new mail"
+msgstr "открыть следующий почтовый ящик с новой почтой"
+
+#: keymap_alldefs.h:131
+msgid "jump to the next new message"
+msgstr "следующее новое сообщение"
+
+#: keymap_alldefs.h:132
+msgid "jump to the next new or unread message"
+msgstr "следующее новое или непрочитанное сообщение"
+
+#: keymap_alldefs.h:133
+msgid "jump to the next subthread"
+msgstr "следующая поддискуссия"
+
+#: keymap_alldefs.h:134
+msgid "jump to the next thread"
+msgstr "следующая дискуссия"
+
+#: keymap_alldefs.h:135
+msgid "move to the next undeleted message"
+msgstr "следующее неудаленное сообщение"
+
+#: keymap_alldefs.h:136
+msgid "jump to the next unread message"
+msgstr "следующее непрочитанное сообщение"
+
+#: keymap_alldefs.h:137
+msgid "jump to parent message in thread"
+msgstr "перейти к родительскому сообщению дискуссии"
+
+#: keymap_alldefs.h:138
+msgid "jump to previous thread"
+msgstr "предыдущая дискуссия"
+
+#: keymap_alldefs.h:139
+msgid "jump to previous subthread"
+msgstr "предыдущая поддискуссия"
+
+#: keymap_alldefs.h:140
+msgid "move to the previous undeleted message"
+msgstr "предыдущее неудаленное сообщение"
+
+#: keymap_alldefs.h:141
+msgid "jump to the previous new message"
+msgstr "предыдущее новое сообщение"
+
+#: keymap_alldefs.h:142
+msgid "jump to the previous new or unread message"
+msgstr "предыдущее новое или непрочитанное сообщение"
+
+#: keymap_alldefs.h:143
+msgid "jump to the previous unread message"
+msgstr "предыдущее непрочитанное сообщение"
+
+#: keymap_alldefs.h:144
+msgid "mark the current thread as read"
+msgstr "пометить текущую дискуссию как прочитанную"
+
+#: keymap_alldefs.h:145
+msgid "mark the current subthread as read"
+msgstr "пометить текущую поддискуссию как прочитанную"
+
+#: keymap_alldefs.h:146
+msgid "jump to root message in thread"
+msgstr "перейти к корневому сообщению дискуссии"
+
+#: keymap_alldefs.h:147
+msgid "set a status flag on a message"
+msgstr "установить флаг состояния для сообщения"
+
+#: keymap_alldefs.h:148
+msgid "save changes to mailbox"
+msgstr "сохранить изменения почтового ящика"
+
+#: keymap_alldefs.h:149
+msgid "tag messages matching a pattern"
+msgstr "пометить сообщения по образцу"
+
+#: keymap_alldefs.h:150
+msgid "delete from mutt, don't touch on disk"
+msgstr ""
+
+#: keymap_alldefs.h:151
+msgid "undelete messages matching a pattern"
+msgstr "восстановить сообщения по образцу"
+
+#: keymap_alldefs.h:152
+msgid "untag messages matching a pattern"
+msgstr "снять пометку с сообщений по образцу"
+
+#: keymap_alldefs.h:153
+msgid "create a hotkey macro for the current message"
+msgstr "создать макрос для текущего сообщения"
+
+#: keymap_alldefs.h:154
+msgid "move to the middle of the page"
+msgstr "середина страницы"
+
+#: keymap_alldefs.h:155
+msgid "move to the next entry"
+msgstr "следующая запись"
+
+#: keymap_alldefs.h:156
+msgid "scroll down one line"
+msgstr "вниз на одну строку"
+
+#: keymap_alldefs.h:157
+msgid "move to the next page"
+msgstr "следующая страница"
+
+#: keymap_alldefs.h:158
+msgid "jump to the bottom of the message"
+msgstr "конец сообщения"
+
+#: keymap_alldefs.h:159
+msgid "toggle display of quoted text"
+msgstr "разрешить/запретить отображение цитируемого текста"
+
+#: keymap_alldefs.h:160
+msgid "skip beyond quoted text"
+msgstr "пропустить цитируемый текст"
+
+#: keymap_alldefs.h:161
+msgid "jump to the top of the message"
+msgstr "в начало сообщения"
+
+#: keymap_alldefs.h:162
+msgid "pipe message/attachment to a shell command"
+msgstr "передать сообщение/вложение внешней программе"
+
+#: keymap_alldefs.h:163
+#, fuzzy
+msgid "post message to newsgroup"
+msgstr "Нет Message-ID для создания макроса."
+
+#: keymap_alldefs.h:164
+msgid "move to the previous entry"
+msgstr "предыдущая запись"
+
+#: keymap_alldefs.h:165
+msgid "scroll up one line"
+msgstr "вверх на одну строку"
+
+#: keymap_alldefs.h:166
+msgid "move to the previous page"
+msgstr "предыдущая страница"
+
+#: keymap_alldefs.h:167
+msgid "print the current entry"
+msgstr "напечатать текущую запись"
+
+#: keymap_alldefs.h:168
+msgid "really delete the current entry, bypassing the trash folder"
+msgstr "действительно удалить текущую запись не используя мусорную корзину"
+
+#: keymap_alldefs.h:169
+#, fuzzy
+msgid "really delete the current thread, bypassing the trash folder"
+msgstr "действительно удалить текущую запись не используя мусорную корзину"
+
+#: keymap_alldefs.h:170
+msgid "query external program for addresses"
+msgstr "запросить адреса у внешней программы"
+
+#: keymap_alldefs.h:171
+msgid "append new query results to current results"
+msgstr "добавить результаты нового запроса к текущим результатам"
+
+#: keymap_alldefs.h:172
+msgid "save changes to mailbox and quit"
+msgstr "сохранить изменения почтового ящика и выйти"
+
+#: keymap_alldefs.h:173
+msgid "recall a postponed message"
+msgstr "продолжить отложенное сообщение"
+
+#: keymap_alldefs.h:174
+#, fuzzy
+msgid "reconstruct thread containing current message"
+msgstr "В дискуссии присутствуют непрочитанные сообщения."
+
+#: keymap_alldefs.h:175
+msgid "clear and redraw the screen"
+msgstr "очистить и перерисовать экран"
+
+#: keymap_alldefs.h:176
+msgid "{internal}"
+msgstr "{внутренний}"
+
+#: keymap_alldefs.h:177
+msgid "rename the current mailbox (IMAP only)"
+msgstr "переименовать текущий почтовый ящик (только IMAP)"
+
+#: keymap_alldefs.h:178
+msgid "reply to a message"
+msgstr "ответить на сообщение"
+
+#: keymap_alldefs.h:179
+msgid "use the current message as a template for a new one"
+msgstr "использовать текущее сообщение в качестве шаблона для нового"
+
+#: keymap_alldefs.h:180
+msgid "save message/attachment to a mailbox/file"
+msgstr "сохранить сообщение/вложение в ящик/файл"
+
+#: keymap_alldefs.h:181
+msgid "search for a regular expression"
+msgstr "поиск по образцу"
+
+#: keymap_alldefs.h:182
+msgid "search backwards for a regular expression"
+msgstr "обратный поиск по образцу"
+
+#: keymap_alldefs.h:183
+msgid "search for next match"
+msgstr "поиск следующего совпадения"
+
+#: keymap_alldefs.h:184
+msgid "search for next match in opposite direction"
+msgstr "поиск предыдущего совпадения"
+
+#: keymap_alldefs.h:185
+msgid "toggle search pattern coloring"
+msgstr "установить/сбросить режим выделения образца цветом"
+
+#: keymap_alldefs.h:186
+msgid "invoke a command in a subshell"
+msgstr "запустить внешнюю программу"
+
+#: keymap_alldefs.h:187
+msgid "sort messages"
+msgstr "сортировать сообщения"
+
+#: keymap_alldefs.h:188
+msgid "sort messages in reverse order"
+msgstr "сортировать сообщения в обратном порядке"
+
+#: keymap_alldefs.h:189
+#, fuzzy
+msgid "subscribe to newsgroups matching a pattern"
+msgstr "снять пометку с сообщений по образцу"
+
+#: keymap_alldefs.h:190
+msgid "tag the current entry"
+msgstr "пометить текущую запись"
+
+#: keymap_alldefs.h:191
+msgid "apply next function to tagged messages"
+msgstr "применить следующую функцию к помеченным сообщениям"
+
+#: keymap_alldefs.h:192
+msgid "apply next function ONLY to tagged messages"
+msgstr "выполнить операцию ТОЛЬКО для помеченных сообщений"
+
+#: keymap_alldefs.h:193
+msgid "tag the current subthread"
+msgstr "пометить текущую поддискуссию"
+
+#: keymap_alldefs.h:194
+msgid "tag the current thread"
+msgstr "пометить текущую дискуссию"
+
+#: keymap_alldefs.h:195
+msgid "toggle a message's 'new' flag"
+msgstr "установить/сбросить флаг \"новое\" для сообщения"
+
+#: keymap_alldefs.h:196
+#, fuzzy
+msgid "toggle view of read messages"
+msgstr "предыдущее новое или непрочитанное сообщение"
+
+#: keymap_alldefs.h:197
+msgid "toggle whether the mailbox will be rewritten"
+msgstr "разрешить/запретить перезапись почтового ящика"
+
+#: keymap_alldefs.h:198
+msgid "toggle whether to browse mailboxes or all files"
+msgstr "переключиться между режимами просмотра всех файлов и просмотра почтовых ящиков"
+
+#: keymap_alldefs.h:199
+msgid "move to the top of the page"
+msgstr "начало страницы"
+
+#: keymap_alldefs.h:200
+msgid "mark all articles in newsgroup as unread"
+msgstr ""
+
+#: keymap_alldefs.h:201
+msgid "undelete the current entry"
+msgstr "восстановить текущую запись"
+
+#: keymap_alldefs.h:202
+msgid "undelete all messages in thread"
+msgstr "восстановить все сообщения в дискуссии"
+
+#: keymap_alldefs.h:203
+msgid "undelete all messages in subthread"
+msgstr "восстановить все сообщения в поддискуссии"
+
+#: keymap_alldefs.h:204
+#, fuzzy
+msgid "unsubscribe from newsgroups matching a pattern"
+msgstr "снять пометку с сообщений по образцу"
+
+#: keymap_alldefs.h:205
+msgid "show the Mutt version number and date"
+msgstr "вывести номер версии Mutt и дату"
+
+#: keymap_alldefs.h:206
+msgid "view attachment using mailcap entry if necessary"
+msgstr "просмотреть вложение, используя при необходимости mailcap"
+
+#: keymap_alldefs.h:207
+msgid "show MIME attachments"
+msgstr "показать вложения"
+
+#: keymap_alldefs.h:208
+msgid "display the keycode for a key press"
+msgstr "показать код нажатой клавиши"
+
+#: keymap_alldefs.h:209
+#, fuzzy
+msgid "limit view to current thread"
+msgstr "пометить текущую дискуссию"
+
+#: keymap_alldefs.h:210
+msgid "show currently active limit pattern"
+msgstr "показать текущий шаблон ограничения"
+
+#: keymap_alldefs.h:211
+msgid "collapse/uncollapse current thread"
+msgstr "свернуть/развернуть текущую дискуссию"
+
+#: keymap_alldefs.h:212
+msgid "collapse/uncollapse all threads"
+msgstr "свернуть/развернуть все дискуссии"
+
+#: keymap_alldefs.h:213
+msgid "move the highlight to next mailbox"
+msgstr "переместить указатель на следующий почтовый ящик"
+
+#: keymap_alldefs.h:214
+msgid "move the highlight to next mailbox with new mail"
+msgstr "переместить указатель на следующий ящик с новой почтой"
+
+#: keymap_alldefs.h:215
+msgid "open highlighted mailbox"
+msgstr "открыть выбранный почтовый ящик"
+
+#: keymap_alldefs.h:216
+msgid "scroll the sidebar down 1 page"
+msgstr "прокрутка бокового списка на страницу вниз"
+
+#: keymap_alldefs.h:217
+msgid "scroll the sidebar up 1 page"
+msgstr "прокрутка бокового списка на страницу вверх"
+
+#: keymap_alldefs.h:218
+msgid "move the highlight to previous mailbox"
+msgstr "переместить указатель на предыдущий почтовый ящик"
+
+#: keymap_alldefs.h:219
+msgid "move the highlight to previous mailbox with new mail"
+msgstr "переместить указатель на предыдущий ящик с новой почтой"
+
+#: keymap_alldefs.h:220
+#, fuzzy
+msgid "toggle between mailboxes and virtual mailboxes"
+msgstr "переключиться между режимами просмотра всех файлов и просмотра почтовых ящиков"
+
+#: keymap_alldefs.h:221
+msgid "make the sidebar (in)visible"
+msgstr "скрыть/показать боковой список"
+
+#: keymap_alldefs.h:222
+#, fuzzy
+msgid "open a different virtual folder"
+msgstr "открыть другой почтовый ящик/файл"
+
+#: keymap_alldefs.h:223
+msgid "generate virtual folder from query"
+msgstr ""
+
+#: keymap_alldefs.h:224
+msgid "generate virtual folder from query and time window"
+msgstr ""
+
+#: keymap_alldefs.h:225
+msgid "shifts virtual folder time window forwards"
+msgstr ""
+
+#: keymap_alldefs.h:226
+msgid "shifts virtual folder time window backwards"
+msgstr ""
+
+#: keymap_alldefs.h:227
+msgid "modify (notmuch) tags"
+msgstr ""
+
+#: keymap_alldefs.h:228
+#, fuzzy
+msgid "modify labels and then hide message"
+msgstr "Это первое сообщение."
+
+#: keymap_alldefs.h:229
+#, fuzzy
+msgid "read entire thread of the current message"
+msgstr "создать макрос для текущего сообщения"
+
+#: keymap_alldefs.h:230
+msgid "accept the chain constructed"
+msgstr "использовать созданную цепочку"
+
+#: keymap_alldefs.h:231
+msgid "append a remailer to the chain"
+msgstr "добавить remailer в цепочку"
+
+#: keymap_alldefs.h:232
+msgid "insert a remailer into the chain"
+msgstr "вставить remailer в цепочку"
+
+#: keymap_alldefs.h:233
+msgid "delete a remailer from the chain"
+msgstr "удалить remailer из цепочки"
+
+#: keymap_alldefs.h:234
+msgid "select the previous element of the chain"
+msgstr "выбрать предыдущий элемент в цепочке"
+
+#: keymap_alldefs.h:235
+msgid "select the next element of the chain"
+msgstr "выбрать следующий элемент в цепочке"
+
+#: keymap_alldefs.h:236
+msgid "send the message through a mixmaster remailer chain"
+msgstr "послать сообщение через цепочку remailer"
+
+#: keymap_alldefs.h:237
+msgid "attach a PGP public key"
+msgstr "вложить открытый PGP-ключ"
+
+#: keymap_alldefs.h:238
+msgid "show PGP options"
+msgstr "вывести параметры PGP"
+
+#: keymap_alldefs.h:239
+msgid "mail a PGP public key"
+msgstr "отправить открытый PGP-ключ"
+
+#: keymap_alldefs.h:240
+msgid "verify a PGP public key"
+msgstr "проверить открытый PGP-ключ"
+
+#: keymap_alldefs.h:241
+msgid "view the key's user id"
+msgstr "показать идентификатор владельца ключа"
+
+#: keymap_alldefs.h:242
+msgid "check for classic PGP"
+msgstr "проверить PGP-сообщение в текстовом формате"
+
+#: keymap_alldefs.h:243
+msgid "show S/MIME options"
+msgstr "вывести параметры S/MIME"
+
+#: keymap_alldefs.h:244
+msgid "make decrypted copy and delete"
+msgstr "создать расшифрованную копию и удалить оригинал"
+
+#: keymap_alldefs.h:245
+msgid "make decrypted copy"
+msgstr "создать расшифрованную копию"
+
+#: keymap_alldefs.h:246
+msgid "wipe passphrase(s) from memory"
+msgstr "удалить фразы-пароли из памяти"
+
+#: keymap_alldefs.h:247
+msgid "extract supported public keys"
+msgstr "извлечь поддерживаемые открытые ключи"
+
 #: lib.c:118
 msgid "Integer overflow -- can't allocate memory!"
 msgstr "Переполнение -- не удалось выделить память!"
@@ -3030,9 +4026,8 @@ msgstr ""
 "  -D            вывести значения всех переменных на stdout"
 
 #: main.c:97
-#, fuzzy
 msgid "  -d <level>    log debugging output to ~/.muttdebug0"
-msgstr "  -d <level>     запись отладочной информации в ~/.muttdebug0"
+msgstr "  -d <level>    запись отладочной информации в ~/.muttdebug0"
 
 #: main.c:100
 #, fuzzy
@@ -3060,7 +4055,6 @@ msgstr ""
 "  -p            продолжить отложенное сообщение"
 
 #: main.c:112
-#, fuzzy
 msgid ""
 "  -Q <variable> query a configuration variable\n"
 "  -R            open mailbox in read-only mode\n"
@@ -5032,7 +6026,7 @@ msgid ""
 "Copyright (C) 2000-2004 Edmund Grimley Evans <edmundo@rano.org>\n"
 "Copyright (C) 2006-2009 Rocco Rutte <pdmef@gmx.net>\n"
 "Copyright (C) 2014-2016 Kevin J. McCarthy <kevin@8t8.us>\n"
-"Copyright (C) 2015-2016 Richard Russon <rich@flatcap.org>\n"
+"Copyright (C) 2015-2017 Richard Russon <rich@flatcap.org>\n"
 "\n"
 "Many others not mentioned here contributed code, fixes,\n"
 "and suggestions.\n"
@@ -5111,754 +6105,3 @@ msgid ""
 msgstr ""
 "\n"
 "Параметры компиляции:"
-
-#~ msgid "PGP passphrase forgotten."
-#~ msgstr "PGP фраза-пароль удалена из памяти."
-
-#~ msgid "Query"
-#~ msgstr "Запрос"
-
-#~ msgid "null operation"
-#~ msgstr "пустая операция"
-
-#~ msgid "end of conditional execution (noop)"
-#~ msgstr "завершение выполнения по условию"
-
-#~ msgid "force viewing of attachment using mailcap"
-#~ msgstr "форсировать использование базы mailcap для просмотра вложения"
-
-#~ msgid "view attachment as text"
-#~ msgstr "показать вложение как текст"
-
-#~ msgid "Toggle display of subparts"
-#~ msgstr "Разрешить/запретить отображение частей дайджеста"
-
-#~ msgid "move to the bottom of the page"
-#~ msgstr "конец страницы"
-
-#~ msgid "remail a message to another user"
-#~ msgstr "переслать сообщение другому пользователю"
-
-#~ msgid "select a new file in this directory"
-#~ msgstr "указать новый файл в этом каталоге"
-
-#~ msgid "view file"
-#~ msgstr "просмотреть файл"
-
-#~ msgid "display the currently selected file's name"
-#~ msgstr "показать имя текущего файла"
-
-#, fuzzy
-#~ msgid "subscribe to current mbox (IMAP/NNTP only)"
-#~ msgstr "подключиться к текущему почтовому ящику (только IMAP)"
-
-#, fuzzy
-#~ msgid "unsubscribe from current mbox (IMAP/NNTP only)"
-#~ msgstr "отключиться от текущего почтового ящика (только IMAP)"
-
-#~ msgid "toggle view all/subscribed mailboxes (IMAP only)"
-#~ msgstr "переключиться между режимами просмотра всех/подключенных почтовых ящиков (только IMAP)"
-
-#~ msgid "list mailboxes with new mail"
-#~ msgstr "список почтовых ящиков с новой почтой"
-
-#~ msgid "change directories"
-#~ msgstr "изменить каталог"
-
-#~ msgid "check mailboxes for new mail"
-#~ msgstr "проверить почтовые ящики на наличие новой почты"
-
-#~ msgid "attach file(s) to this message"
-#~ msgstr "вложить файлы в это сообщение"
-
-#~ msgid "attach message(s) to this message"
-#~ msgstr "вложить сообщения в это сообщение"
-
-#, fuzzy
-#~ msgid "attach news article(s) to this message"
-#~ msgstr "вложить файлы в это сообщение"
-
-#~ msgid "edit the BCC list"
-#~ msgstr "изменить список \"BCC:\""
-
-#~ msgid "edit the CC list"
-#~ msgstr "изменить список \"CC:\""
-
-#~ msgid "edit attachment description"
-#~ msgstr "изменить описание вложения"
-
-#~ msgid "edit attachment transfer-encoding"
-#~ msgstr "изменить транспортную кодировку для вложения"
-
-#~ msgid "enter a file to save a copy of this message in"
-#~ msgstr "укажите файл, в котором будет сохранена копия этого сообщения"
-
-#~ msgid "edit the file to be attached"
-#~ msgstr "изменить вложенный файл"
-
-#~ msgid "edit the from field"
-#~ msgstr "изменить поле \"From:\""
-
-#~ msgid "edit the message with headers"
-#~ msgstr "редактировать сообщение вместе с заголовками"
-
-#~ msgid "edit the message"
-#~ msgstr "редактировать сообщение"
-
-#~ msgid "edit attachment using mailcap entry"
-#~ msgstr "редактировать вложение в соответствии с записью в mailcap"
-
-#, fuzzy
-#~ msgid "edit the newsgroups list"
-#~ msgstr "изменить список \"CC:\""
-
-#~ msgid "edit the Reply-To field"
-#~ msgstr "изменить поле \"Reply-To:\""
-
-#, fuzzy
-#~ msgid "edit the Followup-To field"
-#~ msgstr "изменить поле \"Reply-To:\""
-
-#, fuzzy
-#~ msgid "edit the X-Comment-To field"
-#~ msgstr "изменить поле \"Reply-To:\""
-
-#~ msgid "edit the subject of this message"
-#~ msgstr "редактировать тему сообщения"
-
-#~ msgid "edit the TO list"
-#~ msgstr "изменить список \"To:\""
-
-#~ msgid "create a new mailbox (IMAP only)"
-#~ msgstr "создать новый почтовый ящик (только IMAP)"
-
-#~ msgid "edit attachment content type"
-#~ msgstr "изменить тип вложения (content-type)"
-
-#~ msgid "get a temporary copy of an attachment"
-#~ msgstr "создать временную копию вложения"
-
-#~ msgid "run ispell on the message"
-#~ msgstr "проверить правописание"
-
-#~ msgid "compose new attachment using mailcap entry"
-#~ msgstr "создать новое вложение в соответствии с записью в mailcap"
-
-#~ msgid "toggle recoding of this attachment"
-#~ msgstr "включить/выключить перекодирование вложения"
-
-#~ msgid "save this message to send later"
-#~ msgstr "сохранить это сообщение для отправки позднее"
-
-#~ msgid "send attachment with a different name"
-#~ msgstr "отправить вложение с другим именем"
-
-#~ msgid "rename/move an attached file"
-#~ msgstr "переименовать/переместить вложенный файл"
-
-#, fuzzy
-#~ msgid "compose a new message to the sender"
-#~ msgstr "создать новое сообщение"
-
-#~ msgid "send the message"
-#~ msgstr "отправить сообщение"
-
-#~ msgid "toggle disposition between inline/attachment"
-#~ msgstr "установить поле disposition в inline/attachment"
-
-#~ msgid "toggle whether to delete file after sending it"
-#~ msgstr "удалить/оставить файл после отправки"
-
-#~ msgid "update an attachment's encoding info"
-#~ msgstr "обновить информацию о кодировке вложения"
-
-#~ msgid "write the message to a folder"
-#~ msgstr "записать сообщение в файл/почтовый ящик"
-
-#~ msgid "copy a message to a file/mailbox"
-#~ msgstr "копировать сообщение в файл/почтовый ящик"
-
-#~ msgid "create an alias from a message sender"
-#~ msgstr "создать псевдоним для отправителя сообщения"
-
-#~ msgid "move entry to bottom of screen"
-#~ msgstr "поместить запись в низ экрана"
-
-#~ msgid "move entry to middle of screen"
-#~ msgstr "поместить запись в середину экрана"
-
-#~ msgid "move entry to top of screen"
-#~ msgstr "поместить запись в верх экрана"
-
-#~ msgid "make decoded (text/plain) copy"
-#~ msgstr "создать декодированную (text/plain) копию"
-
-#~ msgid "make decoded copy (text/plain) and delete"
-#~ msgstr "создать декодированную (text/plain) копию и удалить оригинал"
-
-#~ msgid "delete the current entry"
-#~ msgstr "удалить текущую запись"
-
-#~ msgid "delete the current mailbox (IMAP only)"
-#~ msgstr "удалить текущий почтовый ящик (только IMAP)"
-
-#~ msgid "delete all messages in subthread"
-#~ msgstr "удалить все сообщения в поддискуссии"
-
-#~ msgid "delete all messages in thread"
-#~ msgstr "удалить все сообщения в дискуссии"
-
-#~ msgid "display full address of sender"
-#~ msgstr "показать полный адрес отправителя"
-
-#~ msgid "display message and toggle header weeding"
-#~ msgstr "показать сообщение со всеми заголовками"
-
-#~ msgid "display a message"
-#~ msgstr "показать сообщение"
-
-#~ msgid "add, change, or delete a message's label"
-#~ msgstr "добавить, изменить или удалить метку сообщения"
-
-#~ msgid "edit the raw message"
-#~ msgstr "\"низкоуровневое\" редактирование сообщения"
-
-#~ msgid "delete the char in front of the cursor"
-#~ msgstr "удалить символ перед курсором"
-
-#~ msgid "move the cursor one character to the left"
-#~ msgstr "передвинуть курсор влево на один символ"
-
-#~ msgid "move the cursor to the beginning of the word"
-#~ msgstr "передвинуть курсор в начало слова"
-
-#~ msgid "jump to the beginning of the line"
-#~ msgstr "перейти в начало строки"
-
-#~ msgid "cycle among incoming mailboxes"
-#~ msgstr "переключиться между почтовыми ящиками со входящими письмами"
-
-#~ msgid "complete filename or alias"
-#~ msgstr "дописать имя файла или псевдонима"
-
-#~ msgid "complete address with query"
-#~ msgstr "дописать адрес, используя внешнюю программу"
-
-#~ msgid "delete the char under the cursor"
-#~ msgstr "удалить символ под курсором"
-
-#~ msgid "jump to the end of the line"
-#~ msgstr "перейти в конец строки"
-
-#~ msgid "move the cursor one character to the right"
-#~ msgstr "передвинуть курсор на один символ вправо"
-
-#~ msgid "move the cursor to the end of the word"
-#~ msgstr "передвинуть курсор в конец слова"
-
-#~ msgid "scroll down through the history list"
-#~ msgstr "прокрутить вниз список истории"
-
-#~ msgid "scroll up through the history list"
-#~ msgstr "прокрутить вверх список истории"
-
-#~ msgid "delete chars from cursor to end of line"
-#~ msgstr "удалить символы от курсора и до конца строки"
-
-#~ msgid "delete chars from the cursor to the end of the word"
-#~ msgstr "удалить символы от курсора и до конца слова"
-
-#~ msgid "delete all chars on the line"
-#~ msgstr "удалить все символы в строке"
-
-#~ msgid "delete the word in front of the cursor"
-#~ msgstr "удалить слово перед курсором"
-
-#~ msgid "quote the next typed key"
-#~ msgstr "ввести следующую нажатую клавишу \"как есть\""
-
-#~ msgid "transpose character under cursor with previous"
-#~ msgstr "поменять символ под курсором с предыдущим"
-
-#~ msgid "capitalize the word"
-#~ msgstr "перевести первую букву слова в верхний регистр, а остальные -- в нижний"
-
-#~ msgid "convert the word to lower case"
-#~ msgstr "преобразовать слово в нижний регистр"
-
-#~ msgid "convert the word to upper case"
-#~ msgstr "преобразовать слово в верхний регистр"
-
-#~ msgid "enter a muttrc command"
-#~ msgstr "ввести команду muttrc"
-
-#~ msgid "enter a file mask"
-#~ msgstr "ввести маску файла"
-
-#~ msgid "exit this menu"
-#~ msgstr "выйти из этого меню"
-
-#~ msgid "filter attachment through a shell command"
-#~ msgstr "передать вложение внешней программе"
-
-#~ msgid "move to the first entry"
-#~ msgstr "первая запись"
-
-#~ msgid "toggle a message's 'important' flag"
-#~ msgstr "установить/сбросить флаг \"важное\" для сообщения"
-
-#, fuzzy
-#~ msgid "followup to newsgroup"
-#~ msgstr "Отвечать по %s%s?"
-
-#~ msgid "forward a message with comments"
-#~ msgstr "переслать сообщение с комментариями"
-
-#~ msgid "select the current entry"
-#~ msgstr "выбрать текущую запись"
-
-#, fuzzy
-#~ msgid "get all children of the current message"
-#~ msgstr "создать макрос для текущего сообщения"
-
-#, fuzzy
-#~ msgid "get message with Message-Id"
-#~ msgstr "редактировать сообщение вместе с заголовками"
-
-#, fuzzy
-#~ msgid "get parent of the current message"
-#~ msgstr "создать макрос для текущего сообщения"
-
-#~ msgid "reply to all recipients"
-#~ msgstr "ответить всем адресатам"
-
-#~ msgid "scroll down 1/2 page"
-#~ msgstr "на полстраницы вперед"
-
-#~ msgid "scroll up 1/2 page"
-#~ msgstr "на полстраницы назад"
-
-#~ msgid "this screen"
-#~ msgstr "этот текст"
-
-#~ msgid "jump to an index number"
-#~ msgstr "перейти по последовательному номеру"
-
-#~ msgid "move to the last entry"
-#~ msgstr "последняя запись"
-
-#~ msgid "reply to specified mailing list"
-#~ msgstr "ответить в указанный список рассылки"
-
-#~ msgid "execute a macro"
-#~ msgstr "выполнить макрос"
-
-#~ msgid "compose a new mail message"
-#~ msgstr "создать новое сообщение"
-
-#~ msgid "break the thread in two"
-#~ msgstr "резделить дикуссию на две части"
-
-#~ msgid "open a different folder"
-#~ msgstr "открыть другой почтовый ящик/файл"
-
-#~ msgid "open a different folder in read only mode"
-#~ msgstr "открыть другой почтовый ящик/файл в режиме \"только для чтения\""
-
-#, fuzzy
-#~ msgid "open a different newsgroup"
-#~ msgstr "открыть другой почтовый ящик/файл"
-
-#, fuzzy
-#~ msgid "open a different newsgroup in read only mode"
-#~ msgstr "открыть другой почтовый ящик/файл в режиме \"только для чтения\""
-
-#~ msgid "clear a status flag from a message"
-#~ msgstr "сбросить у сообщения флаг состояния"
-
-#~ msgid "delete messages matching a pattern"
-#~ msgstr "удалить сообщения по образцу"
-
-#~ msgid "force retrieval of mail from IMAP server"
-#~ msgstr "забрать почту с IMAP-сервера"
-
-#~ msgid "logout from all IMAP servers"
-#~ msgstr "отключение от всех IMAP-серверов"
-
-#~ msgid "retrieve mail from POP server"
-#~ msgstr "забрать почту с POP-сервера"
-
-#~ msgid "show only messages matching a pattern"
-#~ msgstr "показывать только сообщения, соответствующие образцу"
-
-#~ msgid "link tagged message to the current one"
-#~ msgstr "подсоединить помеченное сообщение к текущему"
-
-#~ msgid "open next mailbox with new mail"
-#~ msgstr "открыть следующий почтовый ящик с новой почтой"
-
-#~ msgid "jump to the next new message"
-#~ msgstr "следующее новое сообщение"
-
-#~ msgid "jump to the next new or unread message"
-#~ msgstr "следующее новое или непрочитанное сообщение"
-
-#~ msgid "jump to the next subthread"
-#~ msgstr "следующая поддискуссия"
-
-#~ msgid "jump to the next thread"
-#~ msgstr "следующая дискуссия"
-
-#~ msgid "move to the next undeleted message"
-#~ msgstr "следующее неудаленное сообщение"
-
-#~ msgid "jump to the next unread message"
-#~ msgstr "следующее непрочитанное сообщение"
-
-#~ msgid "jump to parent message in thread"
-#~ msgstr "перейти к родительскому сообщению дискуссии"
-
-#~ msgid "jump to previous thread"
-#~ msgstr "предыдущая дискуссия"
-
-#~ msgid "jump to previous subthread"
-#~ msgstr "предыдущая поддискуссия"
-
-#~ msgid "move to the previous undeleted message"
-#~ msgstr "предыдущее неудаленное сообщение"
-
-#~ msgid "jump to the previous new message"
-#~ msgstr "предыдущее новое сообщение"
-
-#~ msgid "jump to the previous new or unread message"
-#~ msgstr "предыдущее новое или непрочитанное сообщение"
-
-#~ msgid "jump to the previous unread message"
-#~ msgstr "предыдущее непрочитанное сообщение"
-
-#~ msgid "mark the current thread as read"
-#~ msgstr "пометить текущую дискуссию как прочитанную"
-
-#~ msgid "mark the current subthread as read"
-#~ msgstr "пометить текущую поддискуссию как прочитанную"
-
-#~ msgid "jump to root message in thread"
-#~ msgstr "перейти к корневому сообщению дискуссии"
-
-#~ msgid "set a status flag on a message"
-#~ msgstr "установить флаг состояния для сообщения"
-
-#~ msgid "save changes to mailbox"
-#~ msgstr "сохранить изменения почтового ящика"
-
-#~ msgid "tag messages matching a pattern"
-#~ msgstr "пометить сообщения по образцу"
-
-#~ msgid "undelete messages matching a pattern"
-#~ msgstr "восстановить сообщения по образцу"
-
-#~ msgid "untag messages matching a pattern"
-#~ msgstr "снять пометку с сообщений по образцу"
-
-#~ msgid "create a hotkey macro for the current message"
-#~ msgstr "создать макрос для текущего сообщения"
-
-#~ msgid "move to the middle of the page"
-#~ msgstr "середина страницы"
-
-#~ msgid "move to the next entry"
-#~ msgstr "следующая запись"
-
-#~ msgid "scroll down one line"
-#~ msgstr "вниз на одну строку"
-
-#~ msgid "move to the next page"
-#~ msgstr "следующая страница"
-
-#~ msgid "jump to the bottom of the message"
-#~ msgstr "конец сообщения"
-
-#~ msgid "toggle display of quoted text"
-#~ msgstr "разрешить/запретить отображение цитируемого текста"
-
-#~ msgid "skip beyond quoted text"
-#~ msgstr "пропустить цитируемый текст"
-
-#~ msgid "jump to the top of the message"
-#~ msgstr "в начало сообщения"
-
-#~ msgid "pipe message/attachment to a shell command"
-#~ msgstr "передать сообщение/вложение внешней программе"
-
-#, fuzzy
-#~ msgid "post message to newsgroup"
-#~ msgstr "Нет Message-ID для создания макроса."
-
-#~ msgid "move to the previous entry"
-#~ msgstr "предыдущая запись"
-
-#~ msgid "scroll up one line"
-#~ msgstr "вверх на одну строку"
-
-#~ msgid "move to the previous page"
-#~ msgstr "предыдущая страница"
-
-#~ msgid "print the current entry"
-#~ msgstr "напечатать текущую запись"
-
-#~ msgid "really delete the current entry, bypassing the trash folder"
-#~ msgstr "действительно удалить текущую запись не используя мусорную корзину"
-
-#, fuzzy
-#~ msgid "really delete the current thread, bypassing the trash folder"
-#~ msgstr "действительно удалить текущую запись не используя мусорную корзину"
-
-#~ msgid "query external program for addresses"
-#~ msgstr "запросить адреса у внешней программы"
-
-#~ msgid "append new query results to current results"
-#~ msgstr "добавить результаты нового запроса к текущим результатам"
-
-#~ msgid "save changes to mailbox and quit"
-#~ msgstr "сохранить изменения почтового ящика и выйти"
-
-#~ msgid "recall a postponed message"
-#~ msgstr "продолжить отложенное сообщение"
-
-#, fuzzy
-#~ msgid "reconstruct thread containing current message"
-#~ msgstr "В дискуссии присутствуют непрочитанные сообщения."
-
-#~ msgid "clear and redraw the screen"
-#~ msgstr "очистить и перерисовать экран"
-
-#~ msgid "{internal}"
-#~ msgstr "{внутренний}"
-
-#~ msgid "rename the current mailbox (IMAP only)"
-#~ msgstr "переименовать текущий почтовый ящик (только IMAP)"
-
-#~ msgid "reply to a message"
-#~ msgstr "ответить на сообщение"
-
-#~ msgid "use the current message as a template for a new one"
-#~ msgstr "использовать текущее сообщение в качестве шаблона для нового"
-
-#~ msgid "save message/attachment to a mailbox/file"
-#~ msgstr "сохранить сообщение/вложение в ящик/файл"
-
-#~ msgid "search for a regular expression"
-#~ msgstr "поиск по образцу"
-
-#~ msgid "search backwards for a regular expression"
-#~ msgstr "обратный поиск по образцу"
-
-#~ msgid "search for next match"
-#~ msgstr "поиск следующего совпадения"
-
-#~ msgid "search for next match in opposite direction"
-#~ msgstr "поиск предыдущего совпадения"
-
-#~ msgid "toggle search pattern coloring"
-#~ msgstr "установить/сбросить режим выделения образца цветом"
-
-#~ msgid "invoke a command in a subshell"
-#~ msgstr "запустить внешнюю программу"
-
-#~ msgid "sort messages"
-#~ msgstr "сортировать сообщения"
-
-#~ msgid "sort messages in reverse order"
-#~ msgstr "сортировать сообщения в обратном порядке"
-
-#, fuzzy
-#~ msgid "subscribe to newsgroups matching a pattern"
-#~ msgstr "снять пометку с сообщений по образцу"
-
-#~ msgid "tag the current entry"
-#~ msgstr "пометить текущую запись"
-
-#~ msgid "apply next function to tagged messages"
-#~ msgstr "применить следующую функцию к помеченным сообщениям"
-
-#~ msgid "apply next function ONLY to tagged messages"
-#~ msgstr "выполнить операцию ТОЛЬКО для помеченных сообщений"
-
-#~ msgid "tag the current subthread"
-#~ msgstr "пометить текущую поддискуссию"
-
-#~ msgid "tag the current thread"
-#~ msgstr "пометить текущую дискуссию"
-
-#~ msgid "toggle a message's 'new' flag"
-#~ msgstr "установить/сбросить флаг \"новое\" для сообщения"
-
-#, fuzzy
-#~ msgid "toggle view of read messages"
-#~ msgstr "предыдущее новое или непрочитанное сообщение"
-
-#~ msgid "toggle whether the mailbox will be rewritten"
-#~ msgstr "разрешить/запретить перезапись почтового ящика"
-
-#~ msgid "toggle whether to browse mailboxes or all files"
-#~ msgstr "переключиться между режимами просмотра всех файлов и просмотра почтовых ящиков"
-
-#~ msgid "move to the top of the page"
-#~ msgstr "начало страницы"
-
-#~ msgid "undelete the current entry"
-#~ msgstr "восстановить текущую запись"
-
-#~ msgid "undelete all messages in thread"
-#~ msgstr "восстановить все сообщения в дискуссии"
-
-#~ msgid "undelete all messages in subthread"
-#~ msgstr "восстановить все сообщения в поддискуссии"
-
-#, fuzzy
-#~ msgid "unsubscribe from newsgroups matching a pattern"
-#~ msgstr "снять пометку с сообщений по образцу"
-
-#~ msgid "show the Mutt version number and date"
-#~ msgstr "вывести номер версии Mutt и дату"
-
-#~ msgid "view attachment using mailcap entry if necessary"
-#~ msgstr "просмотреть вложение, используя при необходимости mailcap"
-
-#~ msgid "show MIME attachments"
-#~ msgstr "показать вложения"
-
-#~ msgid "display the keycode for a key press"
-#~ msgstr "показать код нажатой клавиши"
-
-#, fuzzy
-#~ msgid "limit view to current thread"
-#~ msgstr "пометить текущую дискуссию"
-
-#~ msgid "show currently active limit pattern"
-#~ msgstr "показать текущий шаблон ограничения"
-
-#~ msgid "collapse/uncollapse current thread"
-#~ msgstr "свернуть/развернуть текущую дискуссию"
-
-#~ msgid "collapse/uncollapse all threads"
-#~ msgstr "свернуть/развернуть все дискуссии"
-
-#~ msgid "move the highlight to next mailbox"
-#~ msgstr "переместить указатель на следующий почтовый ящик"
-
-#~ msgid "move the highlight to next mailbox with new mail"
-#~ msgstr "переместить указатель на следующий ящик с новой почтой"
-
-#~ msgid "open highlighted mailbox"
-#~ msgstr "открыть выбранный почтовый ящик"
-
-#~ msgid "scroll the sidebar down 1 page"
-#~ msgstr "прокрутка бокового списка на страницу вниз"
-
-#~ msgid "scroll the sidebar up 1 page"
-#~ msgstr "прокрутка бокового списка на страницу вверх"
-
-#~ msgid "move the highlight to previous mailbox"
-#~ msgstr "переместить указатель на предыдущий почтовый ящик"
-
-#~ msgid "move the highlight to previous mailbox with new mail"
-#~ msgstr "переместить указатель на предыдущий ящик с новой почтой"
-
-#, fuzzy
-#~ msgid "toggle between mailboxes and virtual mailboxes"
-#~ msgstr "переключиться между режимами просмотра всех файлов и просмотра почтовых ящиков"
-
-#~ msgid "make the sidebar (in)visible"
-#~ msgstr "скрыть/показать боковой список"
-
-#, fuzzy
-#~ msgid "open a different virtual folder"
-#~ msgstr "открыть другой почтовый ящик/файл"
-
-#, fuzzy
-#~ msgid "modify labels and then hide message"
-#~ msgstr "Это первое сообщение."
-
-#, fuzzy
-#~ msgid "read entire thread of the current message"
-#~ msgstr "создать макрос для текущего сообщения"
-
-#~ msgid "attach a PGP public key"
-#~ msgstr "вложить открытый PGP-ключ"
-
-#~ msgid "show PGP options"
-#~ msgstr "вывести параметры PGP"
-
-#~ msgid "mail a PGP public key"
-#~ msgstr "отправить открытый PGP-ключ"
-
-#~ msgid "verify a PGP public key"
-#~ msgstr "проверить открытый PGP-ключ"
-
-#~ msgid "view the key's user id"
-#~ msgstr "показать идентификатор владельца ключа"
-
-#~ msgid "check for classic PGP"
-#~ msgstr "проверить PGP-сообщение в текстовом формате"
-
-#~ msgid "accept the chain constructed"
-#~ msgstr "использовать созданную цепочку"
-
-#~ msgid "append a remailer to the chain"
-#~ msgstr "добавить remailer в цепочку"
-
-#~ msgid "insert a remailer into the chain"
-#~ msgstr "вставить remailer в цепочку"
-
-#~ msgid "delete a remailer from the chain"
-#~ msgstr "удалить remailer из цепочки"
-
-#~ msgid "select the previous element of the chain"
-#~ msgstr "выбрать предыдущий элемент в цепочке"
-
-#~ msgid "select the next element of the chain"
-#~ msgstr "выбрать следующий элемент в цепочке"
-
-#~ msgid "send the message through a mixmaster remailer chain"
-#~ msgstr "послать сообщение через цепочку remailer"
-
-#~ msgid "make decrypted copy and delete"
-#~ msgstr "создать расшифрованную копию и удалить оригинал"
-
-#~ msgid "make decrypted copy"
-#~ msgstr "создать расшифрованную копию"
-
-#~ msgid "wipe passphrase(s) from memory"
-#~ msgstr "удалить фразы-пароли из памяти"
-
-#~ msgid "extract supported public keys"
-#~ msgstr "извлечь поддерживаемые открытые ключи"
-
-#~ msgid "show S/MIME options"
-#~ msgstr "вывести параметры S/MIME"
-
-#~ msgid "Fingerprint: %s"
-#~ msgstr "Отпечаток пальца: %s"
-
-#~ msgid "[-- Type: %s/%s, Encoding: %s, Size: %s --]\n"
-#~ msgstr "[-- Тип: %s/%s, кодировка: %s, размер: %s --]\n"
-
-#~ msgid "Subscribed [%s], File mask: %s"
-#~ msgstr "Подключение [%s], маска файла: %s"
-
-#~ msgid "dazn"
-#~ msgstr "dazn"
-
-#~ msgid ""
-#~ "To contact the developers, please mail to <mutt-dev@mutt.org>.\n"
-#~ "To report a bug, please visit http://bugs.mutt.org/.\n"
-#~ msgstr ""
-#~ "Чтобы связаться с разработчиками, используйте адрес <mutt-dev@mutt.org>.\n"
-#~ "Чтобы сообщить об ошибке, посетите http://bugs.mutt.org/.\n"
-
-#~ msgid "%s connection using %s (%s)"
-#~ msgstr "%s соединение; шифрование %s (%s)"
-
-#~ msgid "move to the last message"
-#~ msgstr "последнее сообщение"

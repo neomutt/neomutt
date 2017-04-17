@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neomutt-20161104\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
-"POT-Creation-Date: 2017-04-13 13:26+0100\n"
+"POT-Creation-Date: 2017-04-17 17:04+0100\n"
 "PO-Revision-Date: 2008-05-20 22:39+0200\n"
 "Last-Translator: Piarres Beobide <pi@beobide.net>\n"
 "Language-Team: Euskara <debian-l10n-basque@lists.debian.org>\n"
@@ -914,6 +914,119 @@ msgstr "Hona kopiatzen %s..."
 msgid "No decryption engine available for message"
 msgstr ""
 
+#: crypt.c:59
+#, c-format
+msgid " (current time: %c)"
+msgstr " (uneko ordua:%c)"
+
+#: crypt.c:64
+#, c-format
+msgid "[-- %s output follows%s --]\n"
+msgstr "[-- %s irteera jarraian%s --]\n"
+
+#: crypt.c:78
+msgid "Passphrase(s) forgotten."
+msgstr "Pasahitza(k) ahazturik."
+
+#: crypt.c:139
+#, fuzzy
+msgid "Inline PGP can't be used with attachments.  Revert to PGP/MIME?"
+msgstr "Mezua ezin da erantsia bidali.  PGP/MIME erabiltzea itzuli?"
+
+#: crypt.c:143
+msgid "Mail not sent: inline PGP can't be used with attachments."
+msgstr ""
+
+#: crypt.c:151 cryptglue.c:106 pgpkey.c:541 pgpkey.c:724
+msgid "Invoking PGP..."
+msgstr "PGP deitzen..."
+
+#: crypt.c:162
+msgid "Message can't be sent inline.  Revert to using PGP/MIME?"
+msgstr "Mezua ezin da erantsia bidali.  PGP/MIME erabiltzea itzuli?"
+
+#: crypt.c:164 send.c:1796
+msgid "Mail not sent."
+msgstr "Eposta ez da bidali."
+
+#: crypt.c:224
+msgid "Encrypt message to S/MIME Default Key also?"
+msgstr ""
+
+#: crypt.c:259
+msgid "Encrypt message to PGP Default Key also?"
+msgstr ""
+
+#: crypt.c:502
+msgid "S/MIME messages with no hints on content are unsupported."
+msgstr "S/MIME mezuak ez dira onartzen edukian gomendiorik ez badute."
+
+#: crypt.c:710 crypt.c:751
+msgid "Trying to extract PGP keys...\n"
+msgstr "PGP-gakoak ateratzen saiatzen...\n"
+
+#: crypt.c:732 crypt.c:772
+msgid "Trying to extract S/MIME certificates...\n"
+msgstr "S/MIME ziurtagiria ateratzen saiatzen...\n"
+
+#: crypt.c:913
+#, c-format
+msgid ""
+"[-- Error: Unknown multipart/signed protocol %s! --]\n"
+"\n"
+msgstr ""
+"[-- Errorea: zatianitz/sinatutako protokolo ezezaguna %s! --]\n"
+"\n"
+
+#: crypt.c:947
+msgid ""
+"[-- Error: Inconsistent multipart/signed structure! --]\n"
+"\n"
+msgstr ""
+"[-- Errorea: konsistentzi gabeko zatianitz/sinaturiko estruktura! --]\n"
+"\n"
+
+#: crypt.c:983
+#, c-format
+msgid ""
+"[-- Warning: We can't verify %s/%s signatures. --]\n"
+"\n"
+msgstr ""
+"[-- Kontuz: Ezin dira %s/%s sinadurak egiaztatu. --]\n"
+"\n"
+
+#: crypt.c:995
+msgid ""
+"[-- The following data is signed --]\n"
+"\n"
+msgstr ""
+"[-- Hurrengo datuak sinaturik daude --]\n"
+"\n"
+
+#: crypt.c:1001
+msgid ""
+"[-- Warning: Can't find any signatures. --]\n"
+"\n"
+msgstr ""
+"[-- Kontuz: Ez da sinadurarik aurkitu. --]\n"
+"\n"
+
+#: crypt.c:1007
+msgid ""
+"\n"
+"[-- End of signed data --]\n"
+msgstr ""
+"\n"
+"[-- Sinatutako datuen amaiera --]\n"
+
+#: cryptglue.c:84
+msgid "\"crypt_use_gpgme\" set but not built with GPGME support."
+msgstr "\"crypt_use_gpgme\" ezarria bina ez dago GPGME onarpenik."
+
+#: cryptglue.c:108
+msgid "Invoking S/MIME..."
+msgstr "S/MIME deitzen..."
+
 #: crypt_gpgme.c:384
 #, c-format
 msgid "error creating gpgme context: %s\n"
@@ -1571,119 +1684,6 @@ msgstr "Huts bidaltzailea egiaztatzerakoan"
 #: crypt_gpgme.c:4833
 msgid "Failed to figure out sender"
 msgstr "Ezin izan da biltzailea atzeman"
-
-#: crypt.c:59
-#, c-format
-msgid " (current time: %c)"
-msgstr " (uneko ordua:%c)"
-
-#: crypt.c:64
-#, c-format
-msgid "[-- %s output follows%s --]\n"
-msgstr "[-- %s irteera jarraian%s --]\n"
-
-#: crypt.c:78
-msgid "Passphrase(s) forgotten."
-msgstr "Pasahitza(k) ahazturik."
-
-#: crypt.c:139
-#, fuzzy
-msgid "Inline PGP can't be used with attachments.  Revert to PGP/MIME?"
-msgstr "Mezua ezin da erantsia bidali.  PGP/MIME erabiltzea itzuli?"
-
-#: crypt.c:143
-msgid "Mail not sent: inline PGP can't be used with attachments."
-msgstr ""
-
-#: crypt.c:151 cryptglue.c:106 pgpkey.c:541 pgpkey.c:724
-msgid "Invoking PGP..."
-msgstr "PGP deitzen..."
-
-#: crypt.c:162
-msgid "Message can't be sent inline.  Revert to using PGP/MIME?"
-msgstr "Mezua ezin da erantsia bidali.  PGP/MIME erabiltzea itzuli?"
-
-#: crypt.c:164 send.c:1796
-msgid "Mail not sent."
-msgstr "Eposta ez da bidali."
-
-#: crypt.c:224
-msgid "Encrypt message to S/MIME Default Key also?"
-msgstr ""
-
-#: crypt.c:259
-msgid "Encrypt message to PGP Default Key also?"
-msgstr ""
-
-#: crypt.c:502
-msgid "S/MIME messages with no hints on content are unsupported."
-msgstr "S/MIME mezuak ez dira onartzen edukian gomendiorik ez badute."
-
-#: crypt.c:710 crypt.c:751
-msgid "Trying to extract PGP keys...\n"
-msgstr "PGP-gakoak ateratzen saiatzen...\n"
-
-#: crypt.c:732 crypt.c:772
-msgid "Trying to extract S/MIME certificates...\n"
-msgstr "S/MIME ziurtagiria ateratzen saiatzen...\n"
-
-#: crypt.c:913
-#, c-format
-msgid ""
-"[-- Error: Unknown multipart/signed protocol %s! --]\n"
-"\n"
-msgstr ""
-"[-- Errorea: zatianitz/sinatutako protokolo ezezaguna %s! --]\n"
-"\n"
-
-#: crypt.c:947
-msgid ""
-"[-- Error: Inconsistent multipart/signed structure! --]\n"
-"\n"
-msgstr ""
-"[-- Errorea: konsistentzi gabeko zatianitz/sinaturiko estruktura! --]\n"
-"\n"
-
-#: crypt.c:983
-#, c-format
-msgid ""
-"[-- Warning: We can't verify %s/%s signatures. --]\n"
-"\n"
-msgstr ""
-"[-- Kontuz: Ezin dira %s/%s sinadurak egiaztatu. --]\n"
-"\n"
-
-#: crypt.c:995
-msgid ""
-"[-- The following data is signed --]\n"
-"\n"
-msgstr ""
-"[-- Hurrengo datuak sinaturik daude --]\n"
-"\n"
-
-#: crypt.c:1001
-msgid ""
-"[-- Warning: Can't find any signatures. --]\n"
-"\n"
-msgstr ""
-"[-- Kontuz: Ez da sinadurarik aurkitu. --]\n"
-"\n"
-
-#: crypt.c:1007
-msgid ""
-"\n"
-"[-- End of signed data --]\n"
-msgstr ""
-"\n"
-"[-- Sinatutako datuen amaiera --]\n"
-
-#: cryptglue.c:84
-msgid "\"crypt_use_gpgme\" set but not built with GPGME support."
-msgstr "\"crypt_use_gpgme\" ezarria bina ez dago GPGME onarpenik."
-
-#: cryptglue.c:108
-msgid "Invoking S/MIME..."
-msgstr "S/MIME deitzen..."
 
 #: curs_lib.c:229
 msgid "yes"
@@ -2537,12 +2537,12 @@ msgstr "Saio asten..."
 msgid "Login failed."
 msgstr "Huts saioa hasterakoan."
 
-#: imap/auth_sasl.c:94 nntp.c:367 nntp.c:432 smtp.c:372
+#: imap/auth_sasl.c:95 nntp.c:367 nntp.c:432 smtp.c:372
 #, c-format
 msgid "Authenticating (%s)..."
 msgstr "Autentifikazioa (%s)..."
 
-#: imap/auth_sasl.c:222 pop_auth.c:175
+#: imap/auth_sasl.c:223 pop_auth.c:175
 msgid "SASL authentication failed."
 msgstr "SASL egiaztapenak huts egin du."
 
@@ -3018,6 +3018,1016 @@ msgstr "Sartu gakoak (^G uzteko): "
 msgid "Char = %s, Octal = %o, Decimal = %d"
 msgstr "Kar = %s, Zortziko = %o, hamarreko = %d"
 
+#: keymap_alldefs.h:5
+msgid "null operation"
+msgstr "operazio baloigabea"
+
+#: keymap_alldefs.h:6
+msgid "end of conditional execution (noop)"
+msgstr "balizko exekuzio amaiera (noop)"
+
+#: keymap_alldefs.h:7
+msgid "force viewing of attachment using mailcap"
+msgstr "gehigarria mailcap erabiliaz erakustea derrigortu"
+
+#: keymap_alldefs.h:8
+msgid "view attachment as text"
+msgstr "gehigarriak testua balira ikusi"
+
+#: keymap_alldefs.h:9
+msgid "Toggle display of subparts"
+msgstr "Azpizatien erakustaldia txandakatu"
+
+#: keymap_alldefs.h:10
+msgid "move to the bottom of the page"
+msgstr "orrialdearen azkenera mugitu"
+
+#: keymap_alldefs.h:11
+msgid "remail a message to another user"
+msgstr "mezua beste erabiltzaile bati birbidali"
+
+#: keymap_alldefs.h:12
+msgid "swap the current folder position with $folder if it exists"
+msgstr ""
+
+#: keymap_alldefs.h:13
+msgid "select a new file in this directory"
+msgstr "aukeratu fitxategi berria karpeta honetan"
+
+#: keymap_alldefs.h:14
+msgid "view file"
+msgstr "fitxategia ikusi"
+
+#: keymap_alldefs.h:15
+msgid "display the currently selected file's name"
+msgstr "une honetan aukeratutako fitxategi izena erakutsi"
+
+#: keymap_alldefs.h:16
+#, fuzzy
+msgid "subscribe to current mbox (IMAP/NNTP only)"
+msgstr "une honetako posta-kutxan harpidetza egin (IMAP bakarrik)"
+
+#: keymap_alldefs.h:17
+#, fuzzy
+msgid "unsubscribe from current mbox (IMAP/NNTP only)"
+msgstr "une honetako posta-kutxan harpidetza ezabatu (IMAP bakarrik)"
+
+#: keymap_alldefs.h:18
+msgid "toggle view all/subscribed mailboxes (IMAP only)"
+msgstr "denak/harpidetutako postakutxen (IMAP bakarrik) erakustaldia txandakatu"
+
+#: keymap_alldefs.h:19
+msgid "list mailboxes with new mail"
+msgstr "posta berria duten posta-kutxen zerrenda"
+
+#: keymap_alldefs.h:20
+msgid "mark all articles in newsgroup as read"
+msgstr ""
+
+#: keymap_alldefs.h:21
+msgid "change directories"
+msgstr "karpetak aldatu"
+
+#: keymap_alldefs.h:22
+msgid "check mailboxes for new mail"
+msgstr "posta-kutxak eposta berrien bila arakatu"
+
+#: keymap_alldefs.h:23
+msgid "attach file(s) to this message"
+msgstr "fitxategia(k) erantsi mezu honetara"
+
+#: keymap_alldefs.h:24
+msgid "attach message(s) to this message"
+msgstr "mezua(k) erantsi mezu honetara"
+
+#: keymap_alldefs.h:25
+#, fuzzy
+msgid "attach news article(s) to this message"
+msgstr "fitxategia(k) erantsi mezu honetara"
+
+#: keymap_alldefs.h:26
+msgid "edit the BCC list"
+msgstr "BCC zerrenda editatu"
+
+#: keymap_alldefs.h:27
+msgid "edit the CC list"
+msgstr "CC zerrenda editatu"
+
+#: keymap_alldefs.h:28
+msgid "edit attachment description"
+msgstr "gehigarri deskribapena editatu"
+
+#: keymap_alldefs.h:29
+msgid "edit attachment transfer-encoding"
+msgstr "gehigarriaren transferentzi kodifikazioa editatu"
+
+#: keymap_alldefs.h:30
+msgid "enter a file to save a copy of this message in"
+msgstr "mezu honen kopia egingo den fitxategia sartu"
+
+#: keymap_alldefs.h:31
+msgid "edit the file to be attached"
+msgstr "gehitu behar den fitxategia editatu"
+
+#: keymap_alldefs.h:32
+msgid "edit the from field"
+msgstr "nondik parametroa editatu"
+
+#: keymap_alldefs.h:33
+msgid "edit the message with headers"
+msgstr "mezua buruekin editatu"
+
+#: keymap_alldefs.h:34
+msgid "edit the message"
+msgstr "mezua editatu"
+
+#: keymap_alldefs.h:35
+msgid "edit attachment using mailcap entry"
+msgstr "mailcap sarrera erabiliaz gehigarria editatu"
+
+#: keymap_alldefs.h:36
+#, fuzzy
+msgid "edit the newsgroups list"
+msgstr "CC zerrenda editatu"
+
+#: keymap_alldefs.h:37
+msgid "edit the Reply-To field"
+msgstr "erantzun-honi eremua aldatu"
+
+#: keymap_alldefs.h:38
+#, fuzzy
+msgid "edit the Followup-To field"
+msgstr "erantzun-honi eremua aldatu"
+
+#: keymap_alldefs.h:39
+#, fuzzy
+msgid "edit the X-Comment-To field"
+msgstr "erantzun-honi eremua aldatu"
+
+#: keymap_alldefs.h:40
+msgid "edit the subject of this message"
+msgstr "mezu honen gaia editatu"
+
+#: keymap_alldefs.h:41
+msgid "edit the TO list"
+msgstr "Nori zerrenda editatu"
+
+#: keymap_alldefs.h:42
+msgid "create a new mailbox (IMAP only)"
+msgstr "posta-kutxa berria sortu (IMAP bakarrik)"
+
+#: keymap_alldefs.h:43
+msgid "edit attachment content type"
+msgstr "gehigarriaren eduki mota editatu"
+
+#: keymap_alldefs.h:44
+msgid "get a temporary copy of an attachment"
+msgstr "eskuratu gehigarriaren behin-behineko kopia"
+
+#: keymap_alldefs.h:45
+msgid "run ispell on the message"
+msgstr "ispell abiarazi mezu honetan"
+
+#: keymap_alldefs.h:46
+msgid "compose new attachment using mailcap entry"
+msgstr "mailcap sarrera erabiliaz gehigarri berria sortu"
+
+#: keymap_alldefs.h:47
+msgid "toggle recoding of this attachment"
+msgstr "txandakatu gehigarri honen gordetzea"
+
+#: keymap_alldefs.h:48
+msgid "save this message to send later"
+msgstr "mezu hau beranduago bidaltzeko gorde"
+
+#: keymap_alldefs.h:49
+#, fuzzy
+msgid "send attachment with a different name"
+msgstr "gehigarriaren transferentzi kodifikazioa editatu"
+
+#: keymap_alldefs.h:50
+msgid "rename/move an attached file"
+msgstr "gehituriko fitxategia ezabatu/berrizendatu"
+
+#: keymap_alldefs.h:51
+#, fuzzy
+msgid "compose a new message to the sender"
+msgstr "eposta mezu berri bat idatzi"
+
+#: keymap_alldefs.h:52
+msgid "send the message"
+msgstr "bidali mezua"
+
+#: keymap_alldefs.h:53
+msgid "toggle disposition between inline/attachment"
+msgstr "mezua/gehigarriaren artean kokalekua aldatu"
+
+#: keymap_alldefs.h:54
+msgid "toggle whether to delete file after sending it"
+msgstr "bidali aurretik gehigarria ezabatua baldin bada aldatu"
+
+#: keymap_alldefs.h:55
+msgid "update an attachment's encoding info"
+msgstr "gehigarriaren kodeaketa argibideak eguneratu"
+
+#: keymap_alldefs.h:56
+msgid "write the message to a folder"
+msgstr "mezua karpeta batetan gorde"
+
+#: keymap_alldefs.h:57
+msgid "copy a message to a file/mailbox"
+msgstr "fitxategi/postakutxa batetara kopiatu mezua"
+
+#: keymap_alldefs.h:58
+msgid "create an alias from a message sender"
+msgstr "mezuaren bidaltzailearentzat ezizena berria sortu"
+
+#: keymap_alldefs.h:59
+msgid "move entry to bottom of screen"
+msgstr "sarrera pantailaren bukaerara mugitu"
+
+#: keymap_alldefs.h:60
+msgid "move entry to middle of screen"
+msgstr "sarrera pantailaren erdira mugitu"
+
+#: keymap_alldefs.h:61
+msgid "move entry to top of screen"
+msgstr "sarrera pantailaren goikaldera mugitu"
+
+#: keymap_alldefs.h:62
+msgid "make decoded (text/plain) copy"
+msgstr "enkriptatu gabeko (testu/laua) kopia"
+
+#: keymap_alldefs.h:63
+msgid "make decoded copy (text/plain) and delete"
+msgstr "enkriptatu gabeko (testu/laua) kopia egin eta ezabatu"
+
+#: keymap_alldefs.h:64
+msgid "delete the current entry"
+msgstr "uneko sarrera ezabatu"
+
+#: keymap_alldefs.h:65
+msgid "delete the current mailbox (IMAP only)"
+msgstr "uneko posta-kutxa ezabatu (IMAP bakarrik)"
+
+#: keymap_alldefs.h:66
+msgid "delete all messages in subthread"
+msgstr "azpihari honetako mezuak ezabatu"
+
+#: keymap_alldefs.h:67
+msgid "delete all messages in thread"
+msgstr "hari honetako mezu guztiak ezabatu"
+
+#: keymap_alldefs.h:68
+msgid "display full address of sender"
+msgstr "bidaltzailearen helbide osoa erakutsi"
+
+#: keymap_alldefs.h:69
+msgid "display message and toggle header weeding"
+msgstr "mezua erakutsi eta buru guztien erakustaldia aldatu"
+
+#: keymap_alldefs.h:70
+msgid "display a message"
+msgstr "mezua erakutsi"
+
+#: keymap_alldefs.h:71
+msgid "add, change, or delete a message's label"
+msgstr ""
+
+#: keymap_alldefs.h:72
+msgid "edit the raw message"
+msgstr "mezu laua editatu"
+
+#: keymap_alldefs.h:73
+msgid "delete the char in front of the cursor"
+msgstr "kurtsorearen aurrean dagoen karakterra ezabatu"
+
+#: keymap_alldefs.h:74
+msgid "move the cursor one character to the left"
+msgstr "kurtsorea karaktere bat ezkerraldera mugitu"
+
+#: keymap_alldefs.h:75
+msgid "move the cursor to the beginning of the word"
+msgstr "kurtsorea hitzaren hasierara mugitu"
+
+#: keymap_alldefs.h:76
+msgid "jump to the beginning of the line"
+msgstr "lerroaren hasierara salto egin"
+
+#: keymap_alldefs.h:77
+msgid "cycle among incoming mailboxes"
+msgstr "sarrera posta-kutxen artean aldatu"
+
+#: keymap_alldefs.h:78
+msgid "complete filename or alias"
+msgstr "fitxategi izen edo ezizena bete"
+
+#: keymap_alldefs.h:79
+msgid "complete address with query"
+msgstr "galderarekin osatu helbidea"
+
+#: keymap_alldefs.h:80
+msgid "delete the char under the cursor"
+msgstr "kurtsorearen azpian dagoen karakterra ezabatu"
+
+#: keymap_alldefs.h:81
+msgid "jump to the end of the line"
+msgstr "lerroaren bukaerara salto egin"
+
+#: keymap_alldefs.h:82
+msgid "move the cursor one character to the right"
+msgstr "kurtsorea karaktere bat eskuinaldera mugitu"
+
+#: keymap_alldefs.h:83
+msgid "move the cursor to the end of the word"
+msgstr "kurtsorea hitzaren bukaerara mugitu"
+
+#: keymap_alldefs.h:84
+msgid "scroll down through the history list"
+msgstr "historia zerrendan atzera mugitu"
+
+#: keymap_alldefs.h:85
+msgid "scroll up through the history list"
+msgstr "historia zerrendan aurrera mugitu"
+
+#: keymap_alldefs.h:86
+msgid "delete chars from cursor to end of line"
+msgstr "kurtsoretik lerro bukaerara dauden karakterrak ezabatu"
+
+#: keymap_alldefs.h:87
+msgid "delete chars from the cursor to the end of the word"
+msgstr "kurtsoretik hitzaren bukaerara dauden karakterrak ezabatu"
+
+#: keymap_alldefs.h:88
+msgid "delete all chars on the line"
+msgstr "lerro honetako karaktere guziak ezabatu"
+
+#: keymap_alldefs.h:89
+msgid "delete the word in front of the cursor"
+msgstr "kurtsorearen aurrean dagoen hitza ezabatu"
+
+#: keymap_alldefs.h:90
+msgid "quote the next typed key"
+msgstr "sakatzen den hurrengo tekla markatu"
+
+#: keymap_alldefs.h:91
+msgid "transpose character under cursor with previous"
+msgstr "kurtsorearen azpiko karakterra aurrekoarekin irauli"
+
+#: keymap_alldefs.h:92
+msgid "capitalize the word"
+msgstr "hitza kapitalizatu"
+
+#: keymap_alldefs.h:93
+msgid "convert the word to lower case"
+msgstr "hitza minuskuletara bihurtu"
+
+#: keymap_alldefs.h:94
+msgid "convert the word to upper case"
+msgstr "hitza maiuskuletara bihurtu"
+
+#: keymap_alldefs.h:95
+msgid "enter a muttrc command"
+msgstr "sar muttrc komandoa"
+
+#: keymap_alldefs.h:96
+msgid "enter a file mask"
+msgstr "fitxategi maskara sartu"
+
+#: keymap_alldefs.h:97
+msgid "exit this menu"
+msgstr "menu hau utzi"
+
+#: keymap_alldefs.h:98
+msgid "filter attachment through a shell command"
+msgstr "sheel komando bidezko gehigarri iragazkia"
+
+#: keymap_alldefs.h:99
+msgid "move to the first entry"
+msgstr "lehenengo sarrerara mugitu"
+
+#: keymap_alldefs.h:100
+msgid "toggle a message's 'important' flag"
+msgstr "mezuen bandera garrantzitsuak txandakatu"
+
+#: keymap_alldefs.h:101
+#, fuzzy
+msgid "followup to newsgroup"
+msgstr "Jarraitu %s%s-ra?"
+
+#: keymap_alldefs.h:102
+msgid "forward to newsgroup"
+msgstr ""
+
+#: keymap_alldefs.h:103
+msgid "forward a message with comments"
+msgstr "birbidali mezua iruzkinekin"
+
+#: keymap_alldefs.h:104
+msgid "select the current entry"
+msgstr "uneko sarrera aukeratu"
+
+#: keymap_alldefs.h:105
+#, fuzzy
+msgid "get all children of the current message"
+msgstr "Lehenengo mezuan zaude."
+
+#: keymap_alldefs.h:106
+#, fuzzy
+msgid "get message with Message-Id"
+msgstr "mezua buruekin editatu"
+
+#: keymap_alldefs.h:107
+#, fuzzy
+msgid "get parent of the current message"
+msgstr "Lehenengo mezuan zaude."
+
+#: keymap_alldefs.h:108
+msgid "reply to all recipients"
+msgstr "denei erantzun"
+
+#: keymap_alldefs.h:109
+msgid "scroll down 1/2 page"
+msgstr "orrialde erdia jaitsi"
+
+#: keymap_alldefs.h:110
+msgid "scroll up 1/2 page"
+msgstr "orrialde erdia igo"
+
+#: keymap_alldefs.h:111
+msgid "this screen"
+msgstr "leiho hau"
+
+#: keymap_alldefs.h:112
+msgid "jump to an index number"
+msgstr "joan sarrera zenbakira"
+
+#: keymap_alldefs.h:113
+msgid "move to the last entry"
+msgstr "azkenengo sarrerara salto egin"
+
+#: keymap_alldefs.h:114
+msgid "reply to specified mailing list"
+msgstr "emandako eposta zerrendara erantzun"
+
+#: keymap_alldefs.h:115
+msgid "load list of all newsgroups from NNTP server"
+msgstr ""
+
+#: keymap_alldefs.h:116
+msgid "execute a macro"
+msgstr "macro bat abiarazi"
+
+#: keymap_alldefs.h:117
+msgid "compose a new mail message"
+msgstr "eposta mezu berri bat idatzi"
+
+#: keymap_alldefs.h:118
+msgid "break the thread in two"
+msgstr "haria bitan zatitu"
+
+#: keymap_alldefs.h:119
+msgid "open a different folder"
+msgstr "beste karpeta bat ireki"
+
+#: keymap_alldefs.h:120
+msgid "open a different folder in read only mode"
+msgstr "irakurketa soilerako beste karpeta bat ireki"
+
+#: keymap_alldefs.h:121
+#, fuzzy
+msgid "open a different newsgroup"
+msgstr "beste karpeta bat ireki"
+
+#: keymap_alldefs.h:122
+#, fuzzy
+msgid "open a different newsgroup in read only mode"
+msgstr "irakurketa soilerako beste karpeta bat ireki"
+
+#: keymap_alldefs.h:123
+msgid "clear a status flag from a message"
+msgstr "mezuaren egoera bandera ezabatu"
+
+#: keymap_alldefs.h:124
+msgid "delete messages matching a pattern"
+msgstr "emandako patroiaren araberako mezuak ezabatu"
+
+#: keymap_alldefs.h:125
+msgid "force retrieval of mail from IMAP server"
+msgstr "IMAP zerbitzari batetatik ePosta jasotzea behartu"
+
+#: keymap_alldefs.h:126
+msgid "logout from all IMAP servers"
+msgstr ""
+
+#: keymap_alldefs.h:127
+msgid "retrieve mail from POP server"
+msgstr "POP zerbitzaritik ePosta jaso"
+
+#: keymap_alldefs.h:128
+msgid "show only messages matching a pattern"
+msgstr "emandako patroia betetzen duten mezuak bakarrik erakutsi"
+
+#: keymap_alldefs.h:129
+msgid "link tagged message to the current one"
+msgstr "lotu markaturiko mezua honetara"
+
+#: keymap_alldefs.h:130
+msgid "open next mailbox with new mail"
+msgstr "ireki posta berria duen hurrengo postakutxa"
+
+#: keymap_alldefs.h:131
+msgid "jump to the next new message"
+msgstr "hurrengo mezu berrira joan"
+
+#: keymap_alldefs.h:132
+msgid "jump to the next new or unread message"
+msgstr "hurrengo mezu berri edo irakurgabera joan"
+
+#: keymap_alldefs.h:133
+msgid "jump to the next subthread"
+msgstr "hurrengo azpiharira joan"
+
+#: keymap_alldefs.h:134
+msgid "jump to the next thread"
+msgstr "hurrengo harira joan"
+
+#: keymap_alldefs.h:135
+msgid "move to the next undeleted message"
+msgstr "hurrengo ezabatu gabeko mezura joan"
+
+#: keymap_alldefs.h:136
+msgid "jump to the next unread message"
+msgstr "hurrengo irakurgabeko mezura joan"
+
+#: keymap_alldefs.h:137
+msgid "jump to parent message in thread"
+msgstr "hariko goiko mezura joan"
+
+#: keymap_alldefs.h:138
+msgid "jump to previous thread"
+msgstr "aurreko harira joan"
+
+#: keymap_alldefs.h:139
+msgid "jump to previous subthread"
+msgstr "aurreko harirazpira joan"
+
+#: keymap_alldefs.h:140
+msgid "move to the previous undeleted message"
+msgstr "ezabatugabeko hurrengo mezura joan"
+
+#: keymap_alldefs.h:141
+msgid "jump to the previous new message"
+msgstr "aurreko mezu berrira joan"
+
+#: keymap_alldefs.h:142
+msgid "jump to the previous new or unread message"
+msgstr "aurreko mezu berri edo irakurgabera joan"
+
+#: keymap_alldefs.h:143
+msgid "jump to the previous unread message"
+msgstr "aurreko mezu irakurgabera joan"
+
+#: keymap_alldefs.h:144
+msgid "mark the current thread as read"
+msgstr "uneko haria irakurria bezala markatu"
+
+#: keymap_alldefs.h:145
+msgid "mark the current subthread as read"
+msgstr "uneko azpiharia irakurria bezala markatu"
+
+#: keymap_alldefs.h:146
+#, fuzzy
+msgid "jump to root message in thread"
+msgstr "hariko goiko mezura joan"
+
+#: keymap_alldefs.h:147
+msgid "set a status flag on a message"
+msgstr "egoera bandera ezarri mezuari"
+
+#: keymap_alldefs.h:148
+msgid "save changes to mailbox"
+msgstr "postakutxaren aldaketak gorde"
+
+#: keymap_alldefs.h:149
+msgid "tag messages matching a pattern"
+msgstr "emandako patroiaren araberako mezuak markatu"
+
+#: keymap_alldefs.h:150
+msgid "delete from mutt, don't touch on disk"
+msgstr ""
+
+#: keymap_alldefs.h:151
+msgid "undelete messages matching a pattern"
+msgstr "emandako patroiaren araberako mezuak berreskuratu"
+
+#: keymap_alldefs.h:152
+msgid "untag messages matching a pattern"
+msgstr "emandako patroiaren araberako mezuak desmarkatu"
+
+#: keymap_alldefs.h:153
+#, fuzzy
+msgid "create a hotkey macro for the current message"
+msgstr "Lehenengo mezuan zaude."
+
+#: keymap_alldefs.h:154
+msgid "move to the middle of the page"
+msgstr "orriaren erdira joan"
+
+#: keymap_alldefs.h:155
+msgid "move to the next entry"
+msgstr "hurrengo sarrerara joan"
+
+#: keymap_alldefs.h:156
+msgid "scroll down one line"
+msgstr "lerro bat jaitsi"
+
+#: keymap_alldefs.h:157
+msgid "move to the next page"
+msgstr "hurrengo orrialdera joan"
+
+#: keymap_alldefs.h:158
+msgid "jump to the bottom of the message"
+msgstr "mezuaren bukaerara joan"
+
+#: keymap_alldefs.h:159
+msgid "toggle display of quoted text"
+msgstr "gako arteko testuaren erakustaldia aldatu"
+
+#: keymap_alldefs.h:160
+msgid "skip beyond quoted text"
+msgstr "gako arteko testuaren atzera salto egin"
+
+#: keymap_alldefs.h:161
+msgid "jump to the top of the message"
+msgstr "mezuaren hasierara joan"
+
+#: keymap_alldefs.h:162
+msgid "pipe message/attachment to a shell command"
+msgstr "mezua/gehigarria shell komando batetara bideratu"
+
+#: keymap_alldefs.h:163
+#, fuzzy
+msgid "post message to newsgroup"
+msgstr "Mezua %s-ra errebotatu"
+
+#: keymap_alldefs.h:164
+msgid "move to the previous entry"
+msgstr "aurreko sarrerara joan"
+
+#: keymap_alldefs.h:165
+msgid "scroll up one line"
+msgstr "lerro bat igo"
+
+#: keymap_alldefs.h:166
+msgid "move to the previous page"
+msgstr "aurreko orrialdera joan"
+
+#: keymap_alldefs.h:167
+msgid "print the current entry"
+msgstr "uneko sarrera inprimatu"
+
+#: keymap_alldefs.h:168
+msgid "really delete the current entry, bypassing the trash folder"
+msgstr ""
+
+#: keymap_alldefs.h:169
+msgid "really delete the current thread, bypassing the trash folder"
+msgstr ""
+
+#: keymap_alldefs.h:170
+msgid "query external program for addresses"
+msgstr "galdetu kanpoko aplikazioari helbidea lortzeko"
+
+#: keymap_alldefs.h:171
+msgid "append new query results to current results"
+msgstr "emaitza hauei bilaketa berriaren emaitzak gehitu"
+
+#: keymap_alldefs.h:172
+msgid "save changes to mailbox and quit"
+msgstr "aldaketak postakutxan gorde eta utzi"
+
+#: keymap_alldefs.h:173
+msgid "recall a postponed message"
+msgstr "atzeratiutako mezua berriz hartu"
+
+#: keymap_alldefs.h:174
+#, fuzzy
+msgid "reconstruct thread containing current message"
+msgstr "Irakurgabeko mezuak dituen haria."
+
+#: keymap_alldefs.h:175
+msgid "clear and redraw the screen"
+msgstr "pantaila garbitu eta berriz marraztu"
+
+#: keymap_alldefs.h:176
+msgid "{internal}"
+msgstr "{barnekoa}"
+
+#: keymap_alldefs.h:177
+msgid "rename the current mailbox (IMAP only)"
+msgstr "uneko postakutxa berrizendatu (IMAP soilik)"
+
+#: keymap_alldefs.h:178
+msgid "reply to a message"
+msgstr "mezuari erantzuna"
+
+#: keymap_alldefs.h:179
+msgid "use the current message as a template for a new one"
+msgstr "unekoa mezu berri bat egiteko txantiloi gisa erabili"
+
+#: keymap_alldefs.h:180
+#, fuzzy
+msgid "save message/attachment to a mailbox/file"
+msgstr "mezua/gehigarria fitxategi batetan gorde"
+
+#: keymap_alldefs.h:181
+msgid "search for a regular expression"
+msgstr "espresio erregular bat bilatu"
+
+#: keymap_alldefs.h:182
+msgid "search backwards for a regular expression"
+msgstr "espresio erregular baten bidez atzeraka bilatu"
+
+#: keymap_alldefs.h:183
+msgid "search for next match"
+msgstr "hurrengo parekatzera joan"
+
+#: keymap_alldefs.h:184
+msgid "search for next match in opposite direction"
+msgstr "beste zentzuan hurrengoa parekatzea bilatu"
+
+#: keymap_alldefs.h:185
+msgid "toggle search pattern coloring"
+msgstr "bilaketa patroiaren kolorea txandakatu"
+
+#: keymap_alldefs.h:186
+msgid "invoke a command in a subshell"
+msgstr "komando bat subshell batetan deitu"
+
+#: keymap_alldefs.h:187
+msgid "sort messages"
+msgstr "mezuak ordenatu"
+
+#: keymap_alldefs.h:188
+msgid "sort messages in reverse order"
+msgstr "mezuak atzekoz aurrera ordenatu"
+
+#: keymap_alldefs.h:189
+#, fuzzy
+msgid "subscribe to newsgroups matching a pattern"
+msgstr "emandako patroiaren araberako mezuak desmarkatu"
+
+#: keymap_alldefs.h:190
+msgid "tag the current entry"
+msgstr "uneko sarrera markatu"
+
+#: keymap_alldefs.h:191
+msgid "apply next function to tagged messages"
+msgstr "markatutako mezuei funtzio hau aplikatu"
+
+#: keymap_alldefs.h:192
+msgid "apply next function ONLY to tagged messages"
+msgstr "hurrengo funtzioa BAKARRIK markaturiko mezuetan erabili"
+
+#: keymap_alldefs.h:193
+msgid "tag the current subthread"
+msgstr "uneko azpiharia markatu"
+
+#: keymap_alldefs.h:194
+msgid "tag the current thread"
+msgstr "uneko haria markatu"
+
+#: keymap_alldefs.h:195
+msgid "toggle a message's 'new' flag"
+msgstr "mezuaren 'berria' bandera aldatu"
+
+#: keymap_alldefs.h:196
+#, fuzzy
+msgid "toggle view of read messages"
+msgstr "aurreko mezu berri edo irakurgabera joan"
+
+#: keymap_alldefs.h:197
+msgid "toggle whether the mailbox will be rewritten"
+msgstr "posta-kutxaren datuak berritzen direnean aldatu"
+
+#: keymap_alldefs.h:198
+msgid "toggle whether to browse mailboxes or all files"
+msgstr "postakutxak eta artxibo guztien ikustaldia aldatu"
+
+#: keymap_alldefs.h:199
+msgid "move to the top of the page"
+msgstr "orriaren goikaldera joan"
+
+#: keymap_alldefs.h:200
+msgid "mark all articles in newsgroup as unread"
+msgstr ""
+
+#: keymap_alldefs.h:201
+msgid "undelete the current entry"
+msgstr "uneko sarrera berreskuratu"
+
+#: keymap_alldefs.h:202
+msgid "undelete all messages in thread"
+msgstr "hariko mezu guztiak berreskuratu"
+
+#: keymap_alldefs.h:203
+msgid "undelete all messages in subthread"
+msgstr "azpihariko mezu guztiak berreskuratu"
+
+#: keymap_alldefs.h:204
+#, fuzzy
+msgid "unsubscribe from newsgroups matching a pattern"
+msgstr "emandako patroiaren araberako mezuak desmarkatu"
+
+#: keymap_alldefs.h:205
+msgid "show the Mutt version number and date"
+msgstr "Mutt bertsio zenbakia eta data erakutsi"
+
+#: keymap_alldefs.h:206
+msgid "view attachment using mailcap entry if necessary"
+msgstr "gehigarria erakutsi beharrezkoa balitz mailcap sarrera erabiliaz"
+
+#: keymap_alldefs.h:207
+msgid "show MIME attachments"
+msgstr "MIME gehigarriak ikusi"
+
+#: keymap_alldefs.h:208
+msgid "display the keycode for a key press"
+msgstr "zanpatutako teklaren tekla-kodea erakutsi"
+
+#: keymap_alldefs.h:209
+#, fuzzy
+msgid "limit view to current thread"
+msgstr "uneko haria markatu"
+
+#: keymap_alldefs.h:210
+msgid "show currently active limit pattern"
+msgstr "unean gaitutako patroiaren muga erakutsi"
+
+#: keymap_alldefs.h:211
+msgid "collapse/uncollapse current thread"
+msgstr "uneko haria zabaldu/trinkotu"
+
+#: keymap_alldefs.h:212
+msgid "collapse/uncollapse all threads"
+msgstr "hari guztiak zabaldu/trinkotu"
+
+#: keymap_alldefs.h:213
+msgid "move the highlight to next mailbox"
+msgstr ""
+
+#: keymap_alldefs.h:214
+#, fuzzy
+msgid "move the highlight to next mailbox with new mail"
+msgstr "ireki posta berria duen hurrengo postakutxa"
+
+#: keymap_alldefs.h:215
+#, fuzzy
+msgid "open highlighted mailbox"
+msgstr "Postakutxa berrirekitzen..."
+
+#: keymap_alldefs.h:216
+#, fuzzy
+msgid "scroll the sidebar down 1 page"
+msgstr "orrialde erdia jaitsi"
+
+#: keymap_alldefs.h:217
+#, fuzzy
+msgid "scroll the sidebar up 1 page"
+msgstr "orrialde erdia igo"
+
+#: keymap_alldefs.h:218
+#, fuzzy
+msgid "move the highlight to previous mailbox"
+msgstr "aurreko orrialdera joan"
+
+#: keymap_alldefs.h:219
+#, fuzzy
+msgid "move the highlight to previous mailbox with new mail"
+msgstr "ireki posta berria duen hurrengo postakutxa"
+
+#: keymap_alldefs.h:220
+#, fuzzy
+msgid "toggle between mailboxes and virtual mailboxes"
+msgstr "postakutxak eta artxibo guztien ikustaldia aldatu"
+
+#: keymap_alldefs.h:221
+msgid "make the sidebar (in)visible"
+msgstr ""
+
+#: keymap_alldefs.h:222
+#, fuzzy
+msgid "open a different virtual folder"
+msgstr "beste karpeta bat ireki"
+
+#: keymap_alldefs.h:223
+msgid "generate virtual folder from query"
+msgstr ""
+
+#: keymap_alldefs.h:224
+msgid "generate virtual folder from query and time window"
+msgstr ""
+
+#: keymap_alldefs.h:225
+msgid "shifts virtual folder time window forwards"
+msgstr ""
+
+#: keymap_alldefs.h:226
+msgid "shifts virtual folder time window backwards"
+msgstr ""
+
+#: keymap_alldefs.h:227
+msgid "modify (notmuch) tags"
+msgstr ""
+
+#: keymap_alldefs.h:228
+#, fuzzy
+msgid "modify labels and then hide message"
+msgstr "Lehenengo mezuan zaude."
+
+#: keymap_alldefs.h:229
+msgid "read entire thread of the current message"
+msgstr ""
+
+#: keymap_alldefs.h:230
+#, fuzzy
+msgid "accept the chain constructed"
+msgstr "Eratutako katea onartu"
+
+#: keymap_alldefs.h:231
+#, fuzzy
+msgid "append a remailer to the chain"
+msgstr "Kateari berbidaltze bat gehitu"
+
+#: keymap_alldefs.h:232
+#, fuzzy
+msgid "insert a remailer into the chain"
+msgstr "Kateari berbidaltze bat gehitu"
+
+#: keymap_alldefs.h:233
+#, fuzzy
+msgid "delete a remailer from the chain"
+msgstr "Kateari berbidaltze bat ezabatu"
+
+#: keymap_alldefs.h:234
+#, fuzzy
+msgid "select the previous element of the chain"
+msgstr "Katearen aurreko elementua aukeratu"
+
+#: keymap_alldefs.h:235
+#, fuzzy
+msgid "select the next element of the chain"
+msgstr "Katearen hurrengo elementua aukeratu"
+
+#: keymap_alldefs.h:236
+msgid "send the message through a mixmaster remailer chain"
+msgstr "mixmaster berbidalketa katearen bidez bidali mezua"
+
+#: keymap_alldefs.h:237
+msgid "attach a PGP public key"
+msgstr "PGP gako publikoa gehitu"
+
+#: keymap_alldefs.h:238
+msgid "show PGP options"
+msgstr "PGP aukerak ikusi"
+
+#: keymap_alldefs.h:239
+msgid "mail a PGP public key"
+msgstr "PGP gako publikoa epostaz bidali"
+
+#: keymap_alldefs.h:240
+msgid "verify a PGP public key"
+msgstr "PGP gako publikoa egiaztatu"
+
+#: keymap_alldefs.h:241
+msgid "view the key's user id"
+msgstr "gakoaren erabiltzaile id-a erakutsi"
+
+#: keymap_alldefs.h:242
+msgid "check for classic PGP"
+msgstr "PGP klasiko bila arakatu"
+
+#: keymap_alldefs.h:243
+msgid "show S/MIME options"
+msgstr "S/MIME aukerak ikusi"
+
+#: keymap_alldefs.h:244
+msgid "make decrypted copy and delete"
+msgstr "enkriptatu gabeko kopia egin eta ezabatu"
+
+#: keymap_alldefs.h:245
+msgid "make decrypted copy"
+msgstr "enkriptatu gabeko kopia egin"
+
+#: keymap_alldefs.h:246
+msgid "wipe passphrase(s) from memory"
+msgstr "pasahitza(k) memoriatik ezabatu"
+
+#: keymap_alldefs.h:247
+msgid "extract supported public keys"
+msgstr "onartutako gako publikoak atera"
+
 #: lib.c:118
 msgid "Integer overflow -- can't allocate memory!"
 msgstr "Osoko zenbakia iraultzea - ezin da memoria esleitu!"
@@ -3068,9 +4078,8 @@ msgstr ""
 "  -D            inprimatu aldagai guztien balioa irteera estandarrean"
 
 #: main.c:97
-#, fuzzy
 msgid "  -d <level>    log debugging output to ~/.muttdebug0"
-msgstr "  -d <maila>     inprimatu arazpen irteera hemen: ~/.muttdebug0"
+msgstr "  -d <maila>    inprimatu arazpen irteera hemen: ~/.muttdebug0"
 
 #: main.c:100
 #, fuzzy
@@ -3097,7 +4106,6 @@ msgstr ""
 "  -p            atzeratutako mezu bat berreskuratzen du"
 
 #: main.c:112
-#, fuzzy
 msgid ""
 "  -Q <variable> query a configuration variable\n"
 "  -R            open mailbox in read-only mode\n"
@@ -5093,7 +6101,7 @@ msgid ""
 "Copyright (C) 2000-2004 Edmund Grimley Evans <edmundo@rano.org>\n"
 "Copyright (C) 2006-2009 Rocco Rutte <pdmef@gmx.net>\n"
 "Copyright (C) 2014-2016 Kevin J. McCarthy <kevin@8t8.us>\n"
-"Copyright (C) 2015-2016 Richard Russon <rich@flatcap.org>\n"
+"Copyright (C) 2015-2017 Richard Russon <rich@flatcap.org>\n"
 "\n"
 "Many others not mentioned here contributed code, fixes,\n"
 "and suggestions.\n"
@@ -5152,734 +6160,3 @@ msgid ""
 msgstr ""
 "\n"
 "Konpilazio aukerak:"
-
-#~ msgid "PGP passphrase forgotten."
-#~ msgstr "PGP pasahitza ahazturik."
-
-#~ msgid "Query"
-#~ msgstr "Bilaketa"
-
-#~ msgid "null operation"
-#~ msgstr "operazio baloigabea"
-
-#~ msgid "end of conditional execution (noop)"
-#~ msgstr "balizko exekuzio amaiera (noop)"
-
-#~ msgid "force viewing of attachment using mailcap"
-#~ msgstr "gehigarria mailcap erabiliaz erakustea derrigortu"
-
-#~ msgid "view attachment as text"
-#~ msgstr "gehigarriak testua balira ikusi"
-
-#~ msgid "Toggle display of subparts"
-#~ msgstr "Azpizatien erakustaldia txandakatu"
-
-#~ msgid "move to the bottom of the page"
-#~ msgstr "orrialdearen azkenera mugitu"
-
-#~ msgid "remail a message to another user"
-#~ msgstr "mezua beste erabiltzaile bati birbidali"
-
-#~ msgid "select a new file in this directory"
-#~ msgstr "aukeratu fitxategi berria karpeta honetan"
-
-#~ msgid "view file"
-#~ msgstr "fitxategia ikusi"
-
-#~ msgid "display the currently selected file's name"
-#~ msgstr "une honetan aukeratutako fitxategi izena erakutsi"
-
-#, fuzzy
-#~ msgid "subscribe to current mbox (IMAP/NNTP only)"
-#~ msgstr "une honetako posta-kutxan harpidetza egin (IMAP bakarrik)"
-
-#, fuzzy
-#~ msgid "unsubscribe from current mbox (IMAP/NNTP only)"
-#~ msgstr "une honetako posta-kutxan harpidetza ezabatu (IMAP bakarrik)"
-
-#~ msgid "toggle view all/subscribed mailboxes (IMAP only)"
-#~ msgstr "denak/harpidetutako postakutxen (IMAP bakarrik) erakustaldia txandakatu"
-
-#~ msgid "list mailboxes with new mail"
-#~ msgstr "posta berria duten posta-kutxen zerrenda"
-
-#~ msgid "change directories"
-#~ msgstr "karpetak aldatu"
-
-#~ msgid "check mailboxes for new mail"
-#~ msgstr "posta-kutxak eposta berrien bila arakatu"
-
-#~ msgid "attach file(s) to this message"
-#~ msgstr "fitxategia(k) erantsi mezu honetara"
-
-#~ msgid "attach message(s) to this message"
-#~ msgstr "mezua(k) erantsi mezu honetara"
-
-#, fuzzy
-#~ msgid "attach news article(s) to this message"
-#~ msgstr "fitxategia(k) erantsi mezu honetara"
-
-#~ msgid "edit the BCC list"
-#~ msgstr "BCC zerrenda editatu"
-
-#~ msgid "edit the CC list"
-#~ msgstr "CC zerrenda editatu"
-
-#~ msgid "edit attachment description"
-#~ msgstr "gehigarri deskribapena editatu"
-
-#~ msgid "edit attachment transfer-encoding"
-#~ msgstr "gehigarriaren transferentzi kodifikazioa editatu"
-
-#~ msgid "enter a file to save a copy of this message in"
-#~ msgstr "mezu honen kopia egingo den fitxategia sartu"
-
-#~ msgid "edit the file to be attached"
-#~ msgstr "gehitu behar den fitxategia editatu"
-
-#~ msgid "edit the from field"
-#~ msgstr "nondik parametroa editatu"
-
-#~ msgid "edit the message with headers"
-#~ msgstr "mezua buruekin editatu"
-
-#~ msgid "edit the message"
-#~ msgstr "mezua editatu"
-
-#~ msgid "edit attachment using mailcap entry"
-#~ msgstr "mailcap sarrera erabiliaz gehigarria editatu"
-
-#, fuzzy
-#~ msgid "edit the newsgroups list"
-#~ msgstr "CC zerrenda editatu"
-
-#~ msgid "edit the Reply-To field"
-#~ msgstr "erantzun-honi eremua aldatu"
-
-#, fuzzy
-#~ msgid "edit the Followup-To field"
-#~ msgstr "erantzun-honi eremua aldatu"
-
-#, fuzzy
-#~ msgid "edit the X-Comment-To field"
-#~ msgstr "erantzun-honi eremua aldatu"
-
-#~ msgid "edit the subject of this message"
-#~ msgstr "mezu honen gaia editatu"
-
-#~ msgid "edit the TO list"
-#~ msgstr "Nori zerrenda editatu"
-
-#~ msgid "create a new mailbox (IMAP only)"
-#~ msgstr "posta-kutxa berria sortu (IMAP bakarrik)"
-
-#~ msgid "edit attachment content type"
-#~ msgstr "gehigarriaren eduki mota editatu"
-
-#~ msgid "get a temporary copy of an attachment"
-#~ msgstr "eskuratu gehigarriaren behin-behineko kopia"
-
-#~ msgid "run ispell on the message"
-#~ msgstr "ispell abiarazi mezu honetan"
-
-#~ msgid "compose new attachment using mailcap entry"
-#~ msgstr "mailcap sarrera erabiliaz gehigarri berria sortu"
-
-#~ msgid "toggle recoding of this attachment"
-#~ msgstr "txandakatu gehigarri honen gordetzea"
-
-#~ msgid "save this message to send later"
-#~ msgstr "mezu hau beranduago bidaltzeko gorde"
-
-#, fuzzy
-#~ msgid "send attachment with a different name"
-#~ msgstr "gehigarriaren transferentzi kodifikazioa editatu"
-
-#~ msgid "rename/move an attached file"
-#~ msgstr "gehituriko fitxategia ezabatu/berrizendatu"
-
-#, fuzzy
-#~ msgid "compose a new message to the sender"
-#~ msgstr "eposta mezu berri bat idatzi"
-
-#~ msgid "send the message"
-#~ msgstr "bidali mezua"
-
-#~ msgid "toggle disposition between inline/attachment"
-#~ msgstr "mezua/gehigarriaren artean kokalekua aldatu"
-
-#~ msgid "toggle whether to delete file after sending it"
-#~ msgstr "bidali aurretik gehigarria ezabatua baldin bada aldatu"
-
-#~ msgid "update an attachment's encoding info"
-#~ msgstr "gehigarriaren kodeaketa argibideak eguneratu"
-
-#~ msgid "write the message to a folder"
-#~ msgstr "mezua karpeta batetan gorde"
-
-#~ msgid "copy a message to a file/mailbox"
-#~ msgstr "fitxategi/postakutxa batetara kopiatu mezua"
-
-#~ msgid "create an alias from a message sender"
-#~ msgstr "mezuaren bidaltzailearentzat ezizena berria sortu"
-
-#~ msgid "move entry to bottom of screen"
-#~ msgstr "sarrera pantailaren bukaerara mugitu"
-
-#~ msgid "move entry to middle of screen"
-#~ msgstr "sarrera pantailaren erdira mugitu"
-
-#~ msgid "move entry to top of screen"
-#~ msgstr "sarrera pantailaren goikaldera mugitu"
-
-#~ msgid "make decoded (text/plain) copy"
-#~ msgstr "enkriptatu gabeko (testu/laua) kopia"
-
-#~ msgid "make decoded copy (text/plain) and delete"
-#~ msgstr "enkriptatu gabeko (testu/laua) kopia egin eta ezabatu"
-
-#~ msgid "delete the current entry"
-#~ msgstr "uneko sarrera ezabatu"
-
-#~ msgid "delete the current mailbox (IMAP only)"
-#~ msgstr "uneko posta-kutxa ezabatu (IMAP bakarrik)"
-
-#~ msgid "delete all messages in subthread"
-#~ msgstr "azpihari honetako mezuak ezabatu"
-
-#~ msgid "delete all messages in thread"
-#~ msgstr "hari honetako mezu guztiak ezabatu"
-
-#~ msgid "display full address of sender"
-#~ msgstr "bidaltzailearen helbide osoa erakutsi"
-
-#~ msgid "display message and toggle header weeding"
-#~ msgstr "mezua erakutsi eta buru guztien erakustaldia aldatu"
-
-#~ msgid "display a message"
-#~ msgstr "mezua erakutsi"
-
-#~ msgid "edit the raw message"
-#~ msgstr "mezu laua editatu"
-
-#~ msgid "delete the char in front of the cursor"
-#~ msgstr "kurtsorearen aurrean dagoen karakterra ezabatu"
-
-#~ msgid "move the cursor one character to the left"
-#~ msgstr "kurtsorea karaktere bat ezkerraldera mugitu"
-
-#~ msgid "move the cursor to the beginning of the word"
-#~ msgstr "kurtsorea hitzaren hasierara mugitu"
-
-#~ msgid "jump to the beginning of the line"
-#~ msgstr "lerroaren hasierara salto egin"
-
-#~ msgid "cycle among incoming mailboxes"
-#~ msgstr "sarrera posta-kutxen artean aldatu"
-
-#~ msgid "complete filename or alias"
-#~ msgstr "fitxategi izen edo ezizena bete"
-
-#~ msgid "complete address with query"
-#~ msgstr "galderarekin osatu helbidea"
-
-#~ msgid "delete the char under the cursor"
-#~ msgstr "kurtsorearen azpian dagoen karakterra ezabatu"
-
-#~ msgid "jump to the end of the line"
-#~ msgstr "lerroaren bukaerara salto egin"
-
-#~ msgid "move the cursor one character to the right"
-#~ msgstr "kurtsorea karaktere bat eskuinaldera mugitu"
-
-#~ msgid "move the cursor to the end of the word"
-#~ msgstr "kurtsorea hitzaren bukaerara mugitu"
-
-#~ msgid "scroll down through the history list"
-#~ msgstr "historia zerrendan atzera mugitu"
-
-#~ msgid "scroll up through the history list"
-#~ msgstr "historia zerrendan aurrera mugitu"
-
-#~ msgid "delete chars from cursor to end of line"
-#~ msgstr "kurtsoretik lerro bukaerara dauden karakterrak ezabatu"
-
-#~ msgid "delete chars from the cursor to the end of the word"
-#~ msgstr "kurtsoretik hitzaren bukaerara dauden karakterrak ezabatu"
-
-#~ msgid "delete all chars on the line"
-#~ msgstr "lerro honetako karaktere guziak ezabatu"
-
-#~ msgid "delete the word in front of the cursor"
-#~ msgstr "kurtsorearen aurrean dagoen hitza ezabatu"
-
-#~ msgid "quote the next typed key"
-#~ msgstr "sakatzen den hurrengo tekla markatu"
-
-#~ msgid "transpose character under cursor with previous"
-#~ msgstr "kurtsorearen azpiko karakterra aurrekoarekin irauli"
-
-#~ msgid "capitalize the word"
-#~ msgstr "hitza kapitalizatu"
-
-#~ msgid "convert the word to lower case"
-#~ msgstr "hitza minuskuletara bihurtu"
-
-#~ msgid "convert the word to upper case"
-#~ msgstr "hitza maiuskuletara bihurtu"
-
-#~ msgid "enter a muttrc command"
-#~ msgstr "sar muttrc komandoa"
-
-#~ msgid "enter a file mask"
-#~ msgstr "fitxategi maskara sartu"
-
-#~ msgid "exit this menu"
-#~ msgstr "menu hau utzi"
-
-#~ msgid "filter attachment through a shell command"
-#~ msgstr "sheel komando bidezko gehigarri iragazkia"
-
-#~ msgid "move to the first entry"
-#~ msgstr "lehenengo sarrerara mugitu"
-
-#~ msgid "toggle a message's 'important' flag"
-#~ msgstr "mezuen bandera garrantzitsuak txandakatu"
-
-#, fuzzy
-#~ msgid "followup to newsgroup"
-#~ msgstr "Jarraitu %s%s-ra?"
-
-#~ msgid "forward a message with comments"
-#~ msgstr "birbidali mezua iruzkinekin"
-
-#~ msgid "select the current entry"
-#~ msgstr "uneko sarrera aukeratu"
-
-#, fuzzy
-#~ msgid "get all children of the current message"
-#~ msgstr "Lehenengo mezuan zaude."
-
-#, fuzzy
-#~ msgid "get message with Message-Id"
-#~ msgstr "mezua buruekin editatu"
-
-#, fuzzy
-#~ msgid "get parent of the current message"
-#~ msgstr "Lehenengo mezuan zaude."
-
-#~ msgid "reply to all recipients"
-#~ msgstr "denei erantzun"
-
-#~ msgid "scroll down 1/2 page"
-#~ msgstr "orrialde erdia jaitsi"
-
-#~ msgid "scroll up 1/2 page"
-#~ msgstr "orrialde erdia igo"
-
-#~ msgid "this screen"
-#~ msgstr "leiho hau"
-
-#~ msgid "jump to an index number"
-#~ msgstr "joan sarrera zenbakira"
-
-#~ msgid "move to the last entry"
-#~ msgstr "azkenengo sarrerara salto egin"
-
-#~ msgid "reply to specified mailing list"
-#~ msgstr "emandako eposta zerrendara erantzun"
-
-#~ msgid "execute a macro"
-#~ msgstr "macro bat abiarazi"
-
-#~ msgid "compose a new mail message"
-#~ msgstr "eposta mezu berri bat idatzi"
-
-#~ msgid "break the thread in two"
-#~ msgstr "haria bitan zatitu"
-
-#~ msgid "open a different folder"
-#~ msgstr "beste karpeta bat ireki"
-
-#~ msgid "open a different folder in read only mode"
-#~ msgstr "irakurketa soilerako beste karpeta bat ireki"
-
-#, fuzzy
-#~ msgid "open a different newsgroup"
-#~ msgstr "beste karpeta bat ireki"
-
-#, fuzzy
-#~ msgid "open a different newsgroup in read only mode"
-#~ msgstr "irakurketa soilerako beste karpeta bat ireki"
-
-#~ msgid "clear a status flag from a message"
-#~ msgstr "mezuaren egoera bandera ezabatu"
-
-#~ msgid "delete messages matching a pattern"
-#~ msgstr "emandako patroiaren araberako mezuak ezabatu"
-
-#~ msgid "force retrieval of mail from IMAP server"
-#~ msgstr "IMAP zerbitzari batetatik ePosta jasotzea behartu"
-
-#~ msgid "retrieve mail from POP server"
-#~ msgstr "POP zerbitzaritik ePosta jaso"
-
-#~ msgid "show only messages matching a pattern"
-#~ msgstr "emandako patroia betetzen duten mezuak bakarrik erakutsi"
-
-#~ msgid "link tagged message to the current one"
-#~ msgstr "lotu markaturiko mezua honetara"
-
-#~ msgid "open next mailbox with new mail"
-#~ msgstr "ireki posta berria duen hurrengo postakutxa"
-
-#~ msgid "jump to the next new message"
-#~ msgstr "hurrengo mezu berrira joan"
-
-#~ msgid "jump to the next new or unread message"
-#~ msgstr "hurrengo mezu berri edo irakurgabera joan"
-
-#~ msgid "jump to the next subthread"
-#~ msgstr "hurrengo azpiharira joan"
-
-#~ msgid "jump to the next thread"
-#~ msgstr "hurrengo harira joan"
-
-#~ msgid "move to the next undeleted message"
-#~ msgstr "hurrengo ezabatu gabeko mezura joan"
-
-#~ msgid "jump to the next unread message"
-#~ msgstr "hurrengo irakurgabeko mezura joan"
-
-#~ msgid "jump to parent message in thread"
-#~ msgstr "hariko goiko mezura joan"
-
-#~ msgid "jump to previous thread"
-#~ msgstr "aurreko harira joan"
-
-#~ msgid "jump to previous subthread"
-#~ msgstr "aurreko harirazpira joan"
-
-#~ msgid "move to the previous undeleted message"
-#~ msgstr "ezabatugabeko hurrengo mezura joan"
-
-#~ msgid "jump to the previous new message"
-#~ msgstr "aurreko mezu berrira joan"
-
-#~ msgid "jump to the previous new or unread message"
-#~ msgstr "aurreko mezu berri edo irakurgabera joan"
-
-#~ msgid "jump to the previous unread message"
-#~ msgstr "aurreko mezu irakurgabera joan"
-
-#~ msgid "mark the current thread as read"
-#~ msgstr "uneko haria irakurria bezala markatu"
-
-#~ msgid "mark the current subthread as read"
-#~ msgstr "uneko azpiharia irakurria bezala markatu"
-
-#, fuzzy
-#~ msgid "jump to root message in thread"
-#~ msgstr "hariko goiko mezura joan"
-
-#~ msgid "set a status flag on a message"
-#~ msgstr "egoera bandera ezarri mezuari"
-
-#~ msgid "save changes to mailbox"
-#~ msgstr "postakutxaren aldaketak gorde"
-
-#~ msgid "tag messages matching a pattern"
-#~ msgstr "emandako patroiaren araberako mezuak markatu"
-
-#~ msgid "undelete messages matching a pattern"
-#~ msgstr "emandako patroiaren araberako mezuak berreskuratu"
-
-#~ msgid "untag messages matching a pattern"
-#~ msgstr "emandako patroiaren araberako mezuak desmarkatu"
-
-#, fuzzy
-#~ msgid "create a hotkey macro for the current message"
-#~ msgstr "Lehenengo mezuan zaude."
-
-#~ msgid "move to the middle of the page"
-#~ msgstr "orriaren erdira joan"
-
-#~ msgid "move to the next entry"
-#~ msgstr "hurrengo sarrerara joan"
-
-#~ msgid "scroll down one line"
-#~ msgstr "lerro bat jaitsi"
-
-#~ msgid "move to the next page"
-#~ msgstr "hurrengo orrialdera joan"
-
-#~ msgid "jump to the bottom of the message"
-#~ msgstr "mezuaren bukaerara joan"
-
-#~ msgid "toggle display of quoted text"
-#~ msgstr "gako arteko testuaren erakustaldia aldatu"
-
-#~ msgid "skip beyond quoted text"
-#~ msgstr "gako arteko testuaren atzera salto egin"
-
-#~ msgid "jump to the top of the message"
-#~ msgstr "mezuaren hasierara joan"
-
-#~ msgid "pipe message/attachment to a shell command"
-#~ msgstr "mezua/gehigarria shell komando batetara bideratu"
-
-#, fuzzy
-#~ msgid "post message to newsgroup"
-#~ msgstr "Mezua %s-ra errebotatu"
-
-#~ msgid "move to the previous entry"
-#~ msgstr "aurreko sarrerara joan"
-
-#~ msgid "scroll up one line"
-#~ msgstr "lerro bat igo"
-
-#~ msgid "move to the previous page"
-#~ msgstr "aurreko orrialdera joan"
-
-#~ msgid "print the current entry"
-#~ msgstr "uneko sarrera inprimatu"
-
-#~ msgid "query external program for addresses"
-#~ msgstr "galdetu kanpoko aplikazioari helbidea lortzeko"
-
-#~ msgid "append new query results to current results"
-#~ msgstr "emaitza hauei bilaketa berriaren emaitzak gehitu"
-
-#~ msgid "save changes to mailbox and quit"
-#~ msgstr "aldaketak postakutxan gorde eta utzi"
-
-#~ msgid "recall a postponed message"
-#~ msgstr "atzeratiutako mezua berriz hartu"
-
-#, fuzzy
-#~ msgid "reconstruct thread containing current message"
-#~ msgstr "Irakurgabeko mezuak dituen haria."
-
-#~ msgid "clear and redraw the screen"
-#~ msgstr "pantaila garbitu eta berriz marraztu"
-
-#~ msgid "{internal}"
-#~ msgstr "{barnekoa}"
-
-#~ msgid "rename the current mailbox (IMAP only)"
-#~ msgstr "uneko postakutxa berrizendatu (IMAP soilik)"
-
-#~ msgid "reply to a message"
-#~ msgstr "mezuari erantzuna"
-
-#~ msgid "use the current message as a template for a new one"
-#~ msgstr "unekoa mezu berri bat egiteko txantiloi gisa erabili"
-
-#, fuzzy
-#~ msgid "save message/attachment to a mailbox/file"
-#~ msgstr "mezua/gehigarria fitxategi batetan gorde"
-
-#~ msgid "search for a regular expression"
-#~ msgstr "espresio erregular bat bilatu"
-
-#~ msgid "search backwards for a regular expression"
-#~ msgstr "espresio erregular baten bidez atzeraka bilatu"
-
-#~ msgid "search for next match"
-#~ msgstr "hurrengo parekatzera joan"
-
-#~ msgid "search for next match in opposite direction"
-#~ msgstr "beste zentzuan hurrengoa parekatzea bilatu"
-
-#~ msgid "toggle search pattern coloring"
-#~ msgstr "bilaketa patroiaren kolorea txandakatu"
-
-#~ msgid "invoke a command in a subshell"
-#~ msgstr "komando bat subshell batetan deitu"
-
-#~ msgid "sort messages"
-#~ msgstr "mezuak ordenatu"
-
-#~ msgid "sort messages in reverse order"
-#~ msgstr "mezuak atzekoz aurrera ordenatu"
-
-#, fuzzy
-#~ msgid "subscribe to newsgroups matching a pattern"
-#~ msgstr "emandako patroiaren araberako mezuak desmarkatu"
-
-#~ msgid "tag the current entry"
-#~ msgstr "uneko sarrera markatu"
-
-#~ msgid "apply next function to tagged messages"
-#~ msgstr "markatutako mezuei funtzio hau aplikatu"
-
-#~ msgid "apply next function ONLY to tagged messages"
-#~ msgstr "hurrengo funtzioa BAKARRIK markaturiko mezuetan erabili"
-
-#~ msgid "tag the current subthread"
-#~ msgstr "uneko azpiharia markatu"
-
-#~ msgid "tag the current thread"
-#~ msgstr "uneko haria markatu"
-
-#~ msgid "toggle a message's 'new' flag"
-#~ msgstr "mezuaren 'berria' bandera aldatu"
-
-#, fuzzy
-#~ msgid "toggle view of read messages"
-#~ msgstr "aurreko mezu berri edo irakurgabera joan"
-
-#~ msgid "toggle whether the mailbox will be rewritten"
-#~ msgstr "posta-kutxaren datuak berritzen direnean aldatu"
-
-#~ msgid "toggle whether to browse mailboxes or all files"
-#~ msgstr "postakutxak eta artxibo guztien ikustaldia aldatu"
-
-#~ msgid "move to the top of the page"
-#~ msgstr "orriaren goikaldera joan"
-
-#~ msgid "undelete the current entry"
-#~ msgstr "uneko sarrera berreskuratu"
-
-#~ msgid "undelete all messages in thread"
-#~ msgstr "hariko mezu guztiak berreskuratu"
-
-#~ msgid "undelete all messages in subthread"
-#~ msgstr "azpihariko mezu guztiak berreskuratu"
-
-#, fuzzy
-#~ msgid "unsubscribe from newsgroups matching a pattern"
-#~ msgstr "emandako patroiaren araberako mezuak desmarkatu"
-
-#~ msgid "show the Mutt version number and date"
-#~ msgstr "Mutt bertsio zenbakia eta data erakutsi"
-
-#~ msgid "view attachment using mailcap entry if necessary"
-#~ msgstr "gehigarria erakutsi beharrezkoa balitz mailcap sarrera erabiliaz"
-
-#~ msgid "show MIME attachments"
-#~ msgstr "MIME gehigarriak ikusi"
-
-#~ msgid "display the keycode for a key press"
-#~ msgstr "zanpatutako teklaren tekla-kodea erakutsi"
-
-#, fuzzy
-#~ msgid "limit view to current thread"
-#~ msgstr "uneko haria markatu"
-
-#~ msgid "show currently active limit pattern"
-#~ msgstr "unean gaitutako patroiaren muga erakutsi"
-
-#~ msgid "collapse/uncollapse current thread"
-#~ msgstr "uneko haria zabaldu/trinkotu"
-
-#~ msgid "collapse/uncollapse all threads"
-#~ msgstr "hari guztiak zabaldu/trinkotu"
-
-#, fuzzy
-#~ msgid "move the highlight to next mailbox with new mail"
-#~ msgstr "ireki posta berria duen hurrengo postakutxa"
-
-#, fuzzy
-#~ msgid "open highlighted mailbox"
-#~ msgstr "Postakutxa berrirekitzen..."
-
-#, fuzzy
-#~ msgid "scroll the sidebar down 1 page"
-#~ msgstr "orrialde erdia jaitsi"
-
-#, fuzzy
-#~ msgid "scroll the sidebar up 1 page"
-#~ msgstr "orrialde erdia igo"
-
-#, fuzzy
-#~ msgid "move the highlight to previous mailbox"
-#~ msgstr "aurreko orrialdera joan"
-
-#, fuzzy
-#~ msgid "move the highlight to previous mailbox with new mail"
-#~ msgstr "ireki posta berria duen hurrengo postakutxa"
-
-#, fuzzy
-#~ msgid "toggle between mailboxes and virtual mailboxes"
-#~ msgstr "postakutxak eta artxibo guztien ikustaldia aldatu"
-
-#, fuzzy
-#~ msgid "open a different virtual folder"
-#~ msgstr "beste karpeta bat ireki"
-
-#, fuzzy
-#~ msgid "modify labels and then hide message"
-#~ msgstr "Lehenengo mezuan zaude."
-
-#~ msgid "attach a PGP public key"
-#~ msgstr "PGP gako publikoa gehitu"
-
-#~ msgid "show PGP options"
-#~ msgstr "PGP aukerak ikusi"
-
-#~ msgid "mail a PGP public key"
-#~ msgstr "PGP gako publikoa epostaz bidali"
-
-#~ msgid "verify a PGP public key"
-#~ msgstr "PGP gako publikoa egiaztatu"
-
-#~ msgid "view the key's user id"
-#~ msgstr "gakoaren erabiltzaile id-a erakutsi"
-
-#~ msgid "check for classic PGP"
-#~ msgstr "PGP klasiko bila arakatu"
-
-#, fuzzy
-#~ msgid "accept the chain constructed"
-#~ msgstr "Eratutako katea onartu"
-
-#, fuzzy
-#~ msgid "append a remailer to the chain"
-#~ msgstr "Kateari berbidaltze bat gehitu"
-
-#, fuzzy
-#~ msgid "insert a remailer into the chain"
-#~ msgstr "Kateari berbidaltze bat gehitu"
-
-#, fuzzy
-#~ msgid "delete a remailer from the chain"
-#~ msgstr "Kateari berbidaltze bat ezabatu"
-
-#, fuzzy
-#~ msgid "select the previous element of the chain"
-#~ msgstr "Katearen aurreko elementua aukeratu"
-
-#, fuzzy
-#~ msgid "select the next element of the chain"
-#~ msgstr "Katearen hurrengo elementua aukeratu"
-
-#~ msgid "send the message through a mixmaster remailer chain"
-#~ msgstr "mixmaster berbidalketa katearen bidez bidali mezua"
-
-#~ msgid "make decrypted copy and delete"
-#~ msgstr "enkriptatu gabeko kopia egin eta ezabatu"
-
-#~ msgid "make decrypted copy"
-#~ msgstr "enkriptatu gabeko kopia egin"
-
-#~ msgid "wipe passphrase(s) from memory"
-#~ msgstr "pasahitza(k) memoriatik ezabatu"
-
-#~ msgid "extract supported public keys"
-#~ msgstr "onartutako gako publikoak atera"
-
-#~ msgid "show S/MIME options"
-#~ msgstr "S/MIME aukerak ikusi"
-
-#~ msgid "Fingerprint: %s"
-#~ msgstr "Hatz-marka: %s"
-
-#~ msgid "SMTP authentication requires SASL"
-#~ msgstr "SMTP autentifikazioak SASL behar du"
-
-#~ msgid "move to the first message"
-#~ msgstr "lehenengo mezura joan"
-
-#~ msgid "move to the last message"
-#~ msgstr "azkenengo mezura joan"

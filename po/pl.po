@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neomutt-20161104\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
-"POT-Creation-Date: 2017-04-13 13:26+0100\n"
+"POT-Creation-Date: 2017-04-17 17:04+0100\n"
 "PO-Revision-Date: 2007-11-02 11:11+0200\n"
 "Last-Translator: Paweł Dziekoński <dzieko@gmail.com>\n"
 "Language-Team: POLISH <pl@li.org>\n"
@@ -916,6 +916,119 @@ msgstr "Kopiowanie do %s..."
 msgid "No decryption engine available for message"
 msgstr ""
 
+#: crypt.c:59
+#, c-format
+msgid " (current time: %c)"
+msgstr " (bieżąca data i czas: %c)"
+
+#: crypt.c:64
+#, c-format
+msgid "[-- %s output follows%s --]\n"
+msgstr "[-- Wynik działania %s %s --]\n"
+
+#: crypt.c:78
+msgid "Passphrase(s) forgotten."
+msgstr "Hasło(a) zostało(y) zapomniane."
+
+#: crypt.c:139
+#, fuzzy
+msgid "Inline PGP can't be used with attachments.  Revert to PGP/MIME?"
+msgstr "Nie można wysłać listu w trybie inline. Zastosować PGP/MIME?"
+
+#: crypt.c:143
+msgid "Mail not sent: inline PGP can't be used with attachments."
+msgstr ""
+
+#: crypt.c:151 cryptglue.c:106 pgpkey.c:541 pgpkey.c:724
+msgid "Invoking PGP..."
+msgstr "Wywoływanie PGP..."
+
+#: crypt.c:162
+msgid "Message can't be sent inline.  Revert to using PGP/MIME?"
+msgstr "Nie można wysłać listu w trybie inline. Zastosować PGP/MIME?"
+
+#: crypt.c:164 send.c:1796
+msgid "Mail not sent."
+msgstr "List nie został wysłany."
+
+#: crypt.c:224
+msgid "Encrypt message to S/MIME Default Key also?"
+msgstr ""
+
+#: crypt.c:259
+msgid "Encrypt message to PGP Default Key also?"
+msgstr ""
+
+#: crypt.c:502
+msgid "S/MIME messages with no hints on content are unsupported."
+msgstr "Listy S/MIME bez wskazówek co do zawartości nie są obsługiwane."
+
+#: crypt.c:710 crypt.c:751
+msgid "Trying to extract PGP keys...\n"
+msgstr "Próba skopiowania kluczy PGP...\n"
+
+#: crypt.c:732 crypt.c:772
+msgid "Trying to extract S/MIME certificates...\n"
+msgstr "Próba skopiowania kluczy S/MIME...\n"
+
+#: crypt.c:913
+#, c-format
+msgid ""
+"[-- Error: Unknown multipart/signed protocol %s! --]\n"
+"\n"
+msgstr ""
+"[-- Błąd: Nieznany protokół multipart/signed %s! --]\n"
+"\n"
+
+#: crypt.c:947
+msgid ""
+"[-- Error: Inconsistent multipart/signed structure! --]\n"
+"\n"
+msgstr ""
+"[-- Błąd: Niespójna struktura multipart/signed ! --]\n"
+"\n"
+
+#: crypt.c:983
+#, c-format
+msgid ""
+"[-- Warning: We can't verify %s/%s signatures. --]\n"
+"\n"
+msgstr ""
+"[-- Ostrzeżenie: nie można zweryfikować podpisów %s/%s --]\n"
+"\n"
+
+#: crypt.c:995
+msgid ""
+"[-- The following data is signed --]\n"
+"\n"
+msgstr ""
+"[-- Poniższe dane są podpisane --]\n"
+"\n"
+
+#: crypt.c:1001
+msgid ""
+"[-- Warning: Can't find any signatures. --]\n"
+"\n"
+msgstr ""
+"[-- Ostrzeżenie: Nie znaleziono żadnych podpisów. --]\n"
+"\n"
+
+#: crypt.c:1007
+msgid ""
+"\n"
+"[-- End of signed data --]\n"
+msgstr ""
+"\n"
+"[-- Koniec podpisanych danych --]\n"
+
+#: cryptglue.c:84
+msgid "\"crypt_use_gpgme\" set but not built with GPGME support."
+msgstr "Ustawiono \"crypt_use_gpgme\" ale zbudowano Mutta bez wsparcia dla GPGME."
+
+#: cryptglue.c:108
+msgid "Invoking S/MIME..."
+msgstr "Wywoływanie S/MIME..."
+
 #: crypt_gpgme.c:384
 #, c-format
 msgid "error creating gpgme context: %s\n"
@@ -1573,119 +1686,6 @@ msgstr "Błąd weryfikacji nadawcy"
 #: crypt_gpgme.c:4833
 msgid "Failed to figure out sender"
 msgstr "Błąd określenia nadawcy"
-
-#: crypt.c:59
-#, c-format
-msgid " (current time: %c)"
-msgstr " (bieżąca data i czas: %c)"
-
-#: crypt.c:64
-#, c-format
-msgid "[-- %s output follows%s --]\n"
-msgstr "[-- Wynik działania %s %s --]\n"
-
-#: crypt.c:78
-msgid "Passphrase(s) forgotten."
-msgstr "Hasło(a) zostało(y) zapomniane."
-
-#: crypt.c:139
-#, fuzzy
-msgid "Inline PGP can't be used with attachments.  Revert to PGP/MIME?"
-msgstr "Nie można wysłać listu w trybie inline. Zastosować PGP/MIME?"
-
-#: crypt.c:143
-msgid "Mail not sent: inline PGP can't be used with attachments."
-msgstr ""
-
-#: crypt.c:151 cryptglue.c:106 pgpkey.c:541 pgpkey.c:724
-msgid "Invoking PGP..."
-msgstr "Wywoływanie PGP..."
-
-#: crypt.c:162
-msgid "Message can't be sent inline.  Revert to using PGP/MIME?"
-msgstr "Nie można wysłać listu w trybie inline. Zastosować PGP/MIME?"
-
-#: crypt.c:164 send.c:1796
-msgid "Mail not sent."
-msgstr "List nie został wysłany."
-
-#: crypt.c:224
-msgid "Encrypt message to S/MIME Default Key also?"
-msgstr ""
-
-#: crypt.c:259
-msgid "Encrypt message to PGP Default Key also?"
-msgstr ""
-
-#: crypt.c:502
-msgid "S/MIME messages with no hints on content are unsupported."
-msgstr "Listy S/MIME bez wskazówek co do zawartości nie są obsługiwane."
-
-#: crypt.c:710 crypt.c:751
-msgid "Trying to extract PGP keys...\n"
-msgstr "Próba skopiowania kluczy PGP...\n"
-
-#: crypt.c:732 crypt.c:772
-msgid "Trying to extract S/MIME certificates...\n"
-msgstr "Próba skopiowania kluczy S/MIME...\n"
-
-#: crypt.c:913
-#, c-format
-msgid ""
-"[-- Error: Unknown multipart/signed protocol %s! --]\n"
-"\n"
-msgstr ""
-"[-- Błąd: Nieznany protokół multipart/signed %s! --]\n"
-"\n"
-
-#: crypt.c:947
-msgid ""
-"[-- Error: Inconsistent multipart/signed structure! --]\n"
-"\n"
-msgstr ""
-"[-- Błąd: Niespójna struktura multipart/signed ! --]\n"
-"\n"
-
-#: crypt.c:983
-#, c-format
-msgid ""
-"[-- Warning: We can't verify %s/%s signatures. --]\n"
-"\n"
-msgstr ""
-"[-- Ostrzeżenie: nie można zweryfikować podpisów %s/%s --]\n"
-"\n"
-
-#: crypt.c:995
-msgid ""
-"[-- The following data is signed --]\n"
-"\n"
-msgstr ""
-"[-- Poniższe dane są podpisane --]\n"
-"\n"
-
-#: crypt.c:1001
-msgid ""
-"[-- Warning: Can't find any signatures. --]\n"
-"\n"
-msgstr ""
-"[-- Ostrzeżenie: Nie znaleziono żadnych podpisów. --]\n"
-"\n"
-
-#: crypt.c:1007
-msgid ""
-"\n"
-"[-- End of signed data --]\n"
-msgstr ""
-"\n"
-"[-- Koniec podpisanych danych --]\n"
-
-#: cryptglue.c:84
-msgid "\"crypt_use_gpgme\" set but not built with GPGME support."
-msgstr "Ustawiono \"crypt_use_gpgme\" ale zbudowano Mutta bez wsparcia dla GPGME."
-
-#: cryptglue.c:108
-msgid "Invoking S/MIME..."
-msgstr "Wywoływanie S/MIME..."
 
 #: curs_lib.c:229
 msgid "yes"
@@ -2539,12 +2539,12 @@ msgstr "Logowanie..."
 msgid "Login failed."
 msgstr "Zalogowanie nie powiodło się."
 
-#: imap/auth_sasl.c:94 nntp.c:367 nntp.c:432 smtp.c:372
+#: imap/auth_sasl.c:95 nntp.c:367 nntp.c:432 smtp.c:372
 #, c-format
 msgid "Authenticating (%s)..."
 msgstr "Uwierzytelnianie (%s)..."
 
-#: imap/auth_sasl.c:222 pop_auth.c:175
+#: imap/auth_sasl.c:223 pop_auth.c:175
 msgid "SASL authentication failed."
 msgstr "Uwierzytelnianie SASL nie powiodło się."
 
@@ -3020,6 +3020,1016 @@ msgstr "Wprowadź klucze (^G aby przerwać): "
 msgid "Char = %s, Octal = %o, Decimal = %d"
 msgstr "Znak = %s, ósemkowo = %o, dziesiętnie = %d"
 
+#: keymap_alldefs.h:5
+msgid "null operation"
+msgstr "pusta operacja"
+
+#: keymap_alldefs.h:6
+msgid "end of conditional execution (noop)"
+msgstr "koniec wykonywania warunkowego (noop)"
+
+#: keymap_alldefs.h:7
+msgid "force viewing of attachment using mailcap"
+msgstr "wymusza obejrzenie załączników poprzez plik 'mailcap'"
+
+#: keymap_alldefs.h:8
+msgid "view attachment as text"
+msgstr "obejrzyj załącznik jako tekst"
+
+#: keymap_alldefs.h:9
+msgid "Toggle display of subparts"
+msgstr "przełącza podgląd pod-listów listów złożonych"
+
+#: keymap_alldefs.h:10
+msgid "move to the bottom of the page"
+msgstr "przejdź na koniec strony"
+
+#: keymap_alldefs.h:11
+msgid "remail a message to another user"
+msgstr "wyślij ponownie do innego użytkownika"
+
+#: keymap_alldefs.h:12
+msgid "swap the current folder position with $folder if it exists"
+msgstr ""
+
+#: keymap_alldefs.h:13
+msgid "select a new file in this directory"
+msgstr "wybierz nowy plik w tym katalogu"
+
+#: keymap_alldefs.h:14
+msgid "view file"
+msgstr "oglądaj plik"
+
+#: keymap_alldefs.h:15
+msgid "display the currently selected file's name"
+msgstr "wyświetl nazwy aktualnie wybranych plików"
+
+#: keymap_alldefs.h:16
+#, fuzzy
+msgid "subscribe to current mbox (IMAP/NNTP only)"
+msgstr "zasubskrybuj bieżącą skrzynkę (tylko IMAP)"
+
+#: keymap_alldefs.h:17
+#, fuzzy
+msgid "unsubscribe from current mbox (IMAP/NNTP only)"
+msgstr "odsubskrybuj bieżącą skrzynkę (tylko IMAP)"
+
+#: keymap_alldefs.h:18
+msgid "toggle view all/subscribed mailboxes (IMAP only)"
+msgstr "zmień tryb przeglądania skrzynek: wszystkie/zasubskrybowane (tylko IMAP)"
+
+#: keymap_alldefs.h:19
+msgid "list mailboxes with new mail"
+msgstr "pokaż skrzynki z nową pocztą"
+
+#: keymap_alldefs.h:20
+msgid "mark all articles in newsgroup as read"
+msgstr ""
+
+#: keymap_alldefs.h:21
+msgid "change directories"
+msgstr "zmień katalog"
+
+#: keymap_alldefs.h:22
+msgid "check mailboxes for new mail"
+msgstr "szukaj nowych listów w skrzynkach"
+
+#: keymap_alldefs.h:23
+msgid "attach file(s) to this message"
+msgstr "załącz pliki do li(s)tu"
+
+#: keymap_alldefs.h:24
+msgid "attach message(s) to this message"
+msgstr "dołącz list(y) do tego listu"
+
+#: keymap_alldefs.h:25
+#, fuzzy
+msgid "attach news article(s) to this message"
+msgstr "załącz pliki do li(s)tu"
+
+#: keymap_alldefs.h:26
+msgid "edit the BCC list"
+msgstr "podaj treść pola BCC"
+
+#: keymap_alldefs.h:27
+msgid "edit the CC list"
+msgstr "podaj treść pola CC"
+
+#: keymap_alldefs.h:28
+msgid "edit attachment description"
+msgstr "edytuj opis załącznika"
+
+#: keymap_alldefs.h:29
+msgid "edit attachment transfer-encoding"
+msgstr "podaj sposób zakodowania załącznika"
+
+#: keymap_alldefs.h:30
+msgid "enter a file to save a copy of this message in"
+msgstr "podaj nazwę pliku, do którego ma być skopiowany list"
+
+#: keymap_alldefs.h:31
+msgid "edit the file to be attached"
+msgstr "podaj nazwę pliku załącznika"
+
+#: keymap_alldefs.h:32
+msgid "edit the from field"
+msgstr "podaj treść pola From:"
+
+#: keymap_alldefs.h:33
+msgid "edit the message with headers"
+msgstr "edytuj treść listu i nagłówków"
+
+#: keymap_alldefs.h:34
+msgid "edit the message"
+msgstr "edytuj treść listu"
+
+#: keymap_alldefs.h:35
+msgid "edit attachment using mailcap entry"
+msgstr "edytuj załącznik używając pliku 'mailcap'"
+
+#: keymap_alldefs.h:36
+#, fuzzy
+msgid "edit the newsgroups list"
+msgstr "podaj treść pola CC"
+
+#: keymap_alldefs.h:37
+msgid "edit the Reply-To field"
+msgstr "podaj treść pola Reply-To:"
+
+#: keymap_alldefs.h:38
+#, fuzzy
+msgid "edit the Followup-To field"
+msgstr "podaj treść pola Reply-To:"
+
+#: keymap_alldefs.h:39
+#, fuzzy
+msgid "edit the X-Comment-To field"
+msgstr "podaj treść pola Reply-To:"
+
+#: keymap_alldefs.h:40
+msgid "edit the subject of this message"
+msgstr "podaj tytuł listu"
+
+#: keymap_alldefs.h:41
+msgid "edit the TO list"
+msgstr "podaj treść listy TO"
+
+#: keymap_alldefs.h:42
+msgid "create a new mailbox (IMAP only)"
+msgstr "utwórz nową skrzynkę (tylko IMAP)"
+
+#: keymap_alldefs.h:43
+msgid "edit attachment content type"
+msgstr "podaj rodzaj typu \"Content-Type\" załącznika"
+
+#: keymap_alldefs.h:44
+msgid "get a temporary copy of an attachment"
+msgstr "weź tymczasową kopię załącznika"
+
+#: keymap_alldefs.h:45
+msgid "run ispell on the message"
+msgstr "sprawdź poprawność pisowni listu"
+
+#: keymap_alldefs.h:46
+msgid "compose new attachment using mailcap entry"
+msgstr "utwórz nowy załącznik używając pliku 'mailcap'"
+
+#: keymap_alldefs.h:47
+msgid "toggle recoding of this attachment"
+msgstr "zdecyduj czy załącznik ma być przekodowywany"
+
+#: keymap_alldefs.h:48
+msgid "save this message to send later"
+msgstr "zapisz list aby wysłać go później"
+
+#: keymap_alldefs.h:49
+#, fuzzy
+msgid "send attachment with a different name"
+msgstr "podaj sposób zakodowania załącznika"
+
+#: keymap_alldefs.h:50
+msgid "rename/move an attached file"
+msgstr "zmień nazwę lub przenieś dołączony plik"
+
+#: keymap_alldefs.h:51
+#, fuzzy
+msgid "compose a new message to the sender"
+msgstr "zredaguj nowy list"
+
+#: keymap_alldefs.h:52
+msgid "send the message"
+msgstr "wyślij list"
+
+#: keymap_alldefs.h:53
+msgid "toggle disposition between inline/attachment"
+msgstr "ustala czy wstawiać w treści czy jako załącznik"
+
+#: keymap_alldefs.h:54
+msgid "toggle whether to delete file after sending it"
+msgstr "ustala czy usunąć plik po wysłaniu"
+
+#: keymap_alldefs.h:55
+msgid "update an attachment's encoding info"
+msgstr "zaktualizuj informację o kodowaniu załącznika"
+
+#: keymap_alldefs.h:56
+msgid "write the message to a folder"
+msgstr "zapisz list do skrzynki"
+
+#: keymap_alldefs.h:57
+msgid "copy a message to a file/mailbox"
+msgstr "kopiuj list do pliku/skrzynki"
+
+#: keymap_alldefs.h:58
+msgid "create an alias from a message sender"
+msgstr "utwórz alias dla nadawcy"
+
+#: keymap_alldefs.h:59
+msgid "move entry to bottom of screen"
+msgstr "przesuń pozycję kursora na dół ekranu"
+
+#: keymap_alldefs.h:60
+msgid "move entry to middle of screen"
+msgstr "przesuń pozycję kursora na środek ekranu"
+
+#: keymap_alldefs.h:61
+msgid "move entry to top of screen"
+msgstr "przesuń pozycję kursora na górę ekranu"
+
+#: keymap_alldefs.h:62
+msgid "make decoded (text/plain) copy"
+msgstr "utwórz rozkodowaną (text/plain) kopię"
+
+#: keymap_alldefs.h:63
+msgid "make decoded copy (text/plain) and delete"
+msgstr "utwórz rozkodowaną kopię (text/plain) i usuń"
+
+#: keymap_alldefs.h:64
+msgid "delete the current entry"
+msgstr "usuń bieżący list"
+
+#: keymap_alldefs.h:65
+msgid "delete the current mailbox (IMAP only)"
+msgstr "usuń bieżącą skrzynkę (tylko IMAP)"
+
+#: keymap_alldefs.h:66
+msgid "delete all messages in subthread"
+msgstr "usuń wszystkie listy w podwątku"
+
+#: keymap_alldefs.h:67
+msgid "delete all messages in thread"
+msgstr "usuń wszystkie listy w wątku"
+
+#: keymap_alldefs.h:68
+msgid "display full address of sender"
+msgstr "wyświetl pełny adres nadawcy"
+
+#: keymap_alldefs.h:69
+msgid "display message and toggle header weeding"
+msgstr "wyświelt list ze wszystkimi nagłówkami"
+
+#: keymap_alldefs.h:70
+msgid "display a message"
+msgstr "wyświetl list"
+
+#: keymap_alldefs.h:71
+msgid "add, change, or delete a message's label"
+msgstr ""
+
+#: keymap_alldefs.h:72
+msgid "edit the raw message"
+msgstr "edytuj list z nagłowkami"
+
+#: keymap_alldefs.h:73
+msgid "delete the char in front of the cursor"
+msgstr "usuń znak przed kursorem"
+
+#: keymap_alldefs.h:74
+msgid "move the cursor one character to the left"
+msgstr "przesuń kursor jeden znak w lewo"
+
+#: keymap_alldefs.h:75
+msgid "move the cursor to the beginning of the word"
+msgstr "przesuń kursor do początku słowa"
+
+#: keymap_alldefs.h:76
+msgid "jump to the beginning of the line"
+msgstr "przeskocz do początku linii"
+
+#: keymap_alldefs.h:77
+msgid "cycle among incoming mailboxes"
+msgstr "krąż pomiędzy skrzynkami pocztowymi"
+
+#: keymap_alldefs.h:78
+msgid "complete filename or alias"
+msgstr "uzupełnij nazwę pliku lub alias"
+
+#: keymap_alldefs.h:79
+msgid "complete address with query"
+msgstr "uzupełnij adres poprzez zapytanie"
+
+#: keymap_alldefs.h:80
+msgid "delete the char under the cursor"
+msgstr "usuń znak pod kursorem"
+
+#: keymap_alldefs.h:81
+msgid "jump to the end of the line"
+msgstr "przeskocz do końca linii"
+
+#: keymap_alldefs.h:82
+msgid "move the cursor one character to the right"
+msgstr "przesuń kursor o znak w prawo"
+
+#: keymap_alldefs.h:83
+msgid "move the cursor to the end of the word"
+msgstr "przesuń kursor do końca słowa"
+
+#: keymap_alldefs.h:84
+msgid "scroll down through the history list"
+msgstr "przewijaj w dół listę wydanych poleceń"
+
+#: keymap_alldefs.h:85
+msgid "scroll up through the history list"
+msgstr "przewijaj do góry listę wydanych poleceń"
+
+#: keymap_alldefs.h:86
+msgid "delete chars from cursor to end of line"
+msgstr "usuń znaki począwszy od kursora aż do końca linii"
+
+#: keymap_alldefs.h:87
+msgid "delete chars from the cursor to the end of the word"
+msgstr "usuń znaki począwszy od kursora aż do końca słowa"
+
+#: keymap_alldefs.h:88
+msgid "delete all chars on the line"
+msgstr "usuń wszystkie znaki w linii"
+
+#: keymap_alldefs.h:89
+msgid "delete the word in front of the cursor"
+msgstr "usuń słowo z przodu kursora"
+
+#: keymap_alldefs.h:90
+msgid "quote the next typed key"
+msgstr "zacytuj następny wpisany znak"
+
+#: keymap_alldefs.h:91
+msgid "transpose character under cursor with previous"
+msgstr "zamień znak pod kursorem ze znakiem poprzednim"
+
+#: keymap_alldefs.h:92
+msgid "capitalize the word"
+msgstr "zamień piewszą literę słowa na wielką"
+
+#: keymap_alldefs.h:93
+msgid "convert the word to lower case"
+msgstr "zamień litery słowa na małe"
+
+#: keymap_alldefs.h:94
+msgid "convert the word to upper case"
+msgstr "zamień litery słowa na wielkie"
+
+#: keymap_alldefs.h:95
+msgid "enter a muttrc command"
+msgstr "wprowadź polecenie pliku startowego (muttrc)"
+
+#: keymap_alldefs.h:96
+msgid "enter a file mask"
+msgstr "wprowadź wzorzec nazwy pliku"
+
+#: keymap_alldefs.h:97
+msgid "exit this menu"
+msgstr "opuść niniejsze menu"
+
+#: keymap_alldefs.h:98
+msgid "filter attachment through a shell command"
+msgstr "przefiltruj załącznik przez polecenie powłoki"
+
+#: keymap_alldefs.h:99
+msgid "move to the first entry"
+msgstr "przesuń się do pierwszej pozycji"
+
+#: keymap_alldefs.h:100
+msgid "toggle a message's 'important' flag"
+msgstr "włącz dla listu flagę 'ważne!'"
+
+#: keymap_alldefs.h:101
+#, fuzzy
+msgid "followup to newsgroup"
+msgstr "Follow-up do %s%s?"
+
+#: keymap_alldefs.h:102
+msgid "forward to newsgroup"
+msgstr ""
+
+#: keymap_alldefs.h:103
+msgid "forward a message with comments"
+msgstr "prześlij dalej list opatrując go uwagami"
+
+#: keymap_alldefs.h:104
+msgid "select the current entry"
+msgstr "wskaż obecną pozycję"
+
+#: keymap_alldefs.h:105
+#, fuzzy
+msgid "get all children of the current message"
+msgstr "To jest pierwszy list."
+
+#: keymap_alldefs.h:106
+#, fuzzy
+msgid "get message with Message-Id"
+msgstr "edytuj treść listu i nagłówków"
+
+#: keymap_alldefs.h:107
+#, fuzzy
+msgid "get parent of the current message"
+msgstr "To jest pierwszy list."
+
+#: keymap_alldefs.h:108
+msgid "reply to all recipients"
+msgstr "odpowiedz wszystkim adresatom"
+
+#: keymap_alldefs.h:109
+msgid "scroll down 1/2 page"
+msgstr "przewiń w dół o pół strony"
+
+#: keymap_alldefs.h:110
+msgid "scroll up 1/2 page"
+msgstr "przewiń w górę o pół strony"
+
+#: keymap_alldefs.h:111
+msgid "this screen"
+msgstr "niniejszy ekran"
+
+#: keymap_alldefs.h:112
+msgid "jump to an index number"
+msgstr "przeskocz do konkretnej pozycji w indeksie"
+
+#: keymap_alldefs.h:113
+msgid "move to the last entry"
+msgstr "przejdź do ostatniej pozycji"
+
+#: keymap_alldefs.h:114
+msgid "reply to specified mailing list"
+msgstr "opowiedz na wskazaną listę pocztową"
+
+#: keymap_alldefs.h:115
+msgid "load list of all newsgroups from NNTP server"
+msgstr ""
+
+#: keymap_alldefs.h:116
+msgid "execute a macro"
+msgstr "wykonaj makropolecenie"
+
+#: keymap_alldefs.h:117
+msgid "compose a new mail message"
+msgstr "zredaguj nowy list"
+
+#: keymap_alldefs.h:118
+msgid "break the thread in two"
+msgstr "rozdziel wątki na dwa niezależne"
+
+#: keymap_alldefs.h:119
+msgid "open a different folder"
+msgstr "otwórz inną skrzynkę"
+
+#: keymap_alldefs.h:120
+msgid "open a different folder in read only mode"
+msgstr "otwórz inną skrzynkę w trybie tylko do odczytu"
+
+#: keymap_alldefs.h:121
+#, fuzzy
+msgid "open a different newsgroup"
+msgstr "otwórz inną skrzynkę"
+
+#: keymap_alldefs.h:122
+#, fuzzy
+msgid "open a different newsgroup in read only mode"
+msgstr "otwórz inną skrzynkę w trybie tylko do odczytu"
+
+#: keymap_alldefs.h:123
+msgid "clear a status flag from a message"
+msgstr "usuń flagę ze statusem wiadomości"
+
+#: keymap_alldefs.h:124
+msgid "delete messages matching a pattern"
+msgstr "usuń listy pasujące do wzorca"
+
+#: keymap_alldefs.h:125
+msgid "force retrieval of mail from IMAP server"
+msgstr "wymuszą pobranie poczty z serwera IMAP"
+
+#: keymap_alldefs.h:126
+msgid "logout from all IMAP servers"
+msgstr ""
+
+#: keymap_alldefs.h:127
+msgid "retrieve mail from POP server"
+msgstr "pobierz pocztę z serwera POP"
+
+#: keymap_alldefs.h:128
+msgid "show only messages matching a pattern"
+msgstr "pokaż tylko listy pasujące do wzorca"
+
+#: keymap_alldefs.h:129
+msgid "link tagged message to the current one"
+msgstr "podlinkuj zaznaczony list do bieżącego"
+
+#: keymap_alldefs.h:130
+msgid "open next mailbox with new mail"
+msgstr "otwórz następną skrzynkę zawierającą nowe listy"
+
+#: keymap_alldefs.h:131
+msgid "jump to the next new message"
+msgstr "przejdź do następnego nowego listu"
+
+#: keymap_alldefs.h:132
+msgid "jump to the next new or unread message"
+msgstr "przejdź do następnego nowego lub nie przeczytanego listu"
+
+#: keymap_alldefs.h:133
+msgid "jump to the next subthread"
+msgstr "przejdź do następnego podwątku"
+
+#: keymap_alldefs.h:134
+msgid "jump to the next thread"
+msgstr "przejdź do następnego wątku"
+
+#: keymap_alldefs.h:135
+msgid "move to the next undeleted message"
+msgstr "przejdź do następnego nieusuniętego listu"
+
+#: keymap_alldefs.h:136
+msgid "jump to the next unread message"
+msgstr "przejdź do następnego nieprzeczytanego listu"
+
+#: keymap_alldefs.h:137
+msgid "jump to parent message in thread"
+msgstr "przejdź na początek wątku"
+
+#: keymap_alldefs.h:138
+msgid "jump to previous thread"
+msgstr "przejdź do poprzedniego wątku"
+
+#: keymap_alldefs.h:139
+msgid "jump to previous subthread"
+msgstr "przejdź do poprzedniego podwątku"
+
+#: keymap_alldefs.h:140
+msgid "move to the previous undeleted message"
+msgstr "przejdź do poprzedniego nieusuniętego listu"
+
+#: keymap_alldefs.h:141
+msgid "jump to the previous new message"
+msgstr "przejdź do poprzedniego nowego listu"
+
+#: keymap_alldefs.h:142
+msgid "jump to the previous new or unread message"
+msgstr "przejdź do poprzedniego nowego lub nie przeczytanego listu"
+
+#: keymap_alldefs.h:143
+msgid "jump to the previous unread message"
+msgstr "przejdź do poprzedniego nieprzeczytanego listu"
+
+#: keymap_alldefs.h:144
+msgid "mark the current thread as read"
+msgstr "zaznacz obecny wątek jako przeczytany"
+
+#: keymap_alldefs.h:145
+msgid "mark the current subthread as read"
+msgstr "zaznacz obecny podwątek jako przeczytany"
+
+#: keymap_alldefs.h:146
+#, fuzzy
+msgid "jump to root message in thread"
+msgstr "przejdź na początek wątku"
+
+#: keymap_alldefs.h:147
+msgid "set a status flag on a message"
+msgstr "ustaw flagę statusu listu"
+
+#: keymap_alldefs.h:148
+msgid "save changes to mailbox"
+msgstr "zapisz zmiany do skrzynki"
+
+#: keymap_alldefs.h:149
+msgid "tag messages matching a pattern"
+msgstr "zaznacz listy pasujące do wzorca"
+
+#: keymap_alldefs.h:150
+msgid "delete from mutt, don't touch on disk"
+msgstr ""
+
+#: keymap_alldefs.h:151
+msgid "undelete messages matching a pattern"
+msgstr "odtwórz listy pasujące do wzorca"
+
+#: keymap_alldefs.h:152
+msgid "untag messages matching a pattern"
+msgstr "odznacz listy pasujące do wzorca"
+
+#: keymap_alldefs.h:153
+#, fuzzy
+msgid "create a hotkey macro for the current message"
+msgstr "To jest pierwszy list."
+
+#: keymap_alldefs.h:154
+msgid "move to the middle of the page"
+msgstr "przejdź do połowy strony"
+
+#: keymap_alldefs.h:155
+msgid "move to the next entry"
+msgstr "przejdź do następnej pozycji"
+
+#: keymap_alldefs.h:156
+msgid "scroll down one line"
+msgstr "przewiń w dół o linię"
+
+#: keymap_alldefs.h:157
+msgid "move to the next page"
+msgstr "przejdź do następnej strony"
+
+#: keymap_alldefs.h:158
+msgid "jump to the bottom of the message"
+msgstr "przejdź na koniec listu"
+
+#: keymap_alldefs.h:159
+msgid "toggle display of quoted text"
+msgstr "ustala sposób pokazywania zaznaczonego tekstu"
+
+#: keymap_alldefs.h:160
+msgid "skip beyond quoted text"
+msgstr "przeskocz poza zaznaczony fragment tekstu"
+
+#: keymap_alldefs.h:161
+msgid "jump to the top of the message"
+msgstr "przejdź na początek listu"
+
+#: keymap_alldefs.h:162
+msgid "pipe message/attachment to a shell command"
+msgstr "przekieruj list/załącznik do polecenia powłoki"
+
+#: keymap_alldefs.h:163
+#, fuzzy
+msgid "post message to newsgroup"
+msgstr "Wyślij kopię listu do %s"
+
+#: keymap_alldefs.h:164
+msgid "move to the previous entry"
+msgstr "przejdź do poprzedniej pozycji"
+
+#: keymap_alldefs.h:165
+msgid "scroll up one line"
+msgstr "przewiń w górę o linię"
+
+#: keymap_alldefs.h:166
+msgid "move to the previous page"
+msgstr "przejdź do poprzedniej strony"
+
+#: keymap_alldefs.h:167
+msgid "print the current entry"
+msgstr "wydrukuj obecną pozycję"
+
+#: keymap_alldefs.h:168
+msgid "really delete the current entry, bypassing the trash folder"
+msgstr ""
+
+#: keymap_alldefs.h:169
+msgid "really delete the current thread, bypassing the trash folder"
+msgstr ""
+
+#: keymap_alldefs.h:170
+msgid "query external program for addresses"
+msgstr "zapytaj zewnętrzny program o adres"
+
+#: keymap_alldefs.h:171
+msgid "append new query results to current results"
+msgstr "dodaj rezultaty nowych poszukiwań do obecnych"
+
+#: keymap_alldefs.h:172
+msgid "save changes to mailbox and quit"
+msgstr "zapisz zmiany do skrzynki i opuść program pocztowy"
+
+#: keymap_alldefs.h:173
+msgid "recall a postponed message"
+msgstr "wywołaj odłożony list"
+
+#: keymap_alldefs.h:174
+#, fuzzy
+msgid "reconstruct thread containing current message"
+msgstr "Wątek zawiera nieprzeczytane listy."
+
+#: keymap_alldefs.h:175
+msgid "clear and redraw the screen"
+msgstr "wyczyść i odśwież ekran"
+
+#: keymap_alldefs.h:176
+msgid "{internal}"
+msgstr "{wewnętrzne}"
+
+#: keymap_alldefs.h:177
+msgid "rename the current mailbox (IMAP only)"
+msgstr "zmień nazwę bieżącej skrzynki (tylko IMAP)"
+
+#: keymap_alldefs.h:178
+msgid "reply to a message"
+msgstr "odpowiedz na list"
+
+#: keymap_alldefs.h:179
+msgid "use the current message as a template for a new one"
+msgstr "użyj bieżącego listu jako wzorca dla nowych wiadomości"
+
+#: keymap_alldefs.h:180
+#, fuzzy
+msgid "save message/attachment to a mailbox/file"
+msgstr "zapisz list/załącznik do pliku"
+
+#: keymap_alldefs.h:181
+msgid "search for a regular expression"
+msgstr "szukaj wyrażenia regularnego"
+
+#: keymap_alldefs.h:182
+msgid "search backwards for a regular expression"
+msgstr "szukaj wstecz wyrażenia regularnego"
+
+#: keymap_alldefs.h:183
+msgid "search for next match"
+msgstr "szukaj następnego pozytywnego rezultatu"
+
+#: keymap_alldefs.h:184
+msgid "search for next match in opposite direction"
+msgstr "szukaj wstecz następnego pozytywnego rezultatu"
+
+#: keymap_alldefs.h:185
+msgid "toggle search pattern coloring"
+msgstr "ustala czy szukana fraza ma być zaznaczona kolorem"
+
+#: keymap_alldefs.h:186
+msgid "invoke a command in a subshell"
+msgstr "wywołaj polecenie w podpowłoce"
+
+#: keymap_alldefs.h:187
+msgid "sort messages"
+msgstr "uszereguj listy"
+
+#: keymap_alldefs.h:188
+msgid "sort messages in reverse order"
+msgstr "uszereguj listy w odwrotnej kolejności"
+
+#: keymap_alldefs.h:189
+#, fuzzy
+msgid "subscribe to newsgroups matching a pattern"
+msgstr "odznacz listy pasujące do wzorca"
+
+#: keymap_alldefs.h:190
+msgid "tag the current entry"
+msgstr "zaznacz bieżącą pozycję"
+
+#: keymap_alldefs.h:191
+msgid "apply next function to tagged messages"
+msgstr "wykonaj następne polecenie na zaznaczonych listach"
+
+#: keymap_alldefs.h:192
+msgid "apply next function ONLY to tagged messages"
+msgstr "wykonaj następne polecenie TYLKO na zaznaczonych listach"
+
+#: keymap_alldefs.h:193
+msgid "tag the current subthread"
+msgstr "zaznacz bieżący podwątek"
+
+#: keymap_alldefs.h:194
+msgid "tag the current thread"
+msgstr "zaznacz bieżący wątek"
+
+#: keymap_alldefs.h:195
+msgid "toggle a message's 'new' flag"
+msgstr "ustaw flagę listu na 'nowy'"
+
+#: keymap_alldefs.h:196
+#, fuzzy
+msgid "toggle view of read messages"
+msgstr "przejdź do poprzedniego nowego lub nie przeczytanego listu"
+
+#: keymap_alldefs.h:197
+msgid "toggle whether the mailbox will be rewritten"
+msgstr "ustala czy skrzynka będzie ponownie zapisana"
+
+#: keymap_alldefs.h:198
+msgid "toggle whether to browse mailboxes or all files"
+msgstr "ustala czy przeglądać skrzynki czy wszystkie pliki"
+
+#: keymap_alldefs.h:199
+msgid "move to the top of the page"
+msgstr "przejdź na początek strony"
+
+#: keymap_alldefs.h:200
+msgid "mark all articles in newsgroup as unread"
+msgstr ""
+
+#: keymap_alldefs.h:201
+msgid "undelete the current entry"
+msgstr "odtwórz bieżącą pozycję listy"
+
+#: keymap_alldefs.h:202
+msgid "undelete all messages in thread"
+msgstr "odtwórz wszystkie listy z tego wątku"
+
+#: keymap_alldefs.h:203
+msgid "undelete all messages in subthread"
+msgstr "odtwórz wszystkie listy z tego podwątku"
+
+#: keymap_alldefs.h:204
+#, fuzzy
+msgid "unsubscribe from newsgroups matching a pattern"
+msgstr "odznacz listy pasujące do wzorca"
+
+#: keymap_alldefs.h:205
+msgid "show the Mutt version number and date"
+msgstr "pokaż wersję i datę programu pocztowego Mutt"
+
+#: keymap_alldefs.h:206
+msgid "view attachment using mailcap entry if necessary"
+msgstr "pokaż załącznik używając, jeśli to niezbędne, pliku 'mailcap'"
+
+#: keymap_alldefs.h:207
+msgid "show MIME attachments"
+msgstr "pokaż załączniki MIME"
+
+#: keymap_alldefs.h:208
+msgid "display the keycode for a key press"
+msgstr "wyświetl kod wprowadzonego znaku"
+
+#: keymap_alldefs.h:209
+#, fuzzy
+msgid "limit view to current thread"
+msgstr "zaznacz bieżący wątek"
+
+#: keymap_alldefs.h:210
+msgid "show currently active limit pattern"
+msgstr "pokaż bieżący wzorzec ograniczający"
+
+#: keymap_alldefs.h:211
+msgid "collapse/uncollapse current thread"
+msgstr "zwiń/rozwiń bieżący wątek"
+
+#: keymap_alldefs.h:212
+msgid "collapse/uncollapse all threads"
+msgstr "zwiń/rozwiń wszystkie wątki"
+
+#: keymap_alldefs.h:213
+msgid "move the highlight to next mailbox"
+msgstr ""
+
+#: keymap_alldefs.h:214
+#, fuzzy
+msgid "move the highlight to next mailbox with new mail"
+msgstr "otwórz następną skrzynkę zawierającą nowe listy"
+
+#: keymap_alldefs.h:215
+#, fuzzy
+msgid "open highlighted mailbox"
+msgstr "Ponowne otwieranie skrzynki..."
+
+#: keymap_alldefs.h:216
+#, fuzzy
+msgid "scroll the sidebar down 1 page"
+msgstr "przewiń w dół o pół strony"
+
+#: keymap_alldefs.h:217
+#, fuzzy
+msgid "scroll the sidebar up 1 page"
+msgstr "przewiń w górę o pół strony"
+
+#: keymap_alldefs.h:218
+#, fuzzy
+msgid "move the highlight to previous mailbox"
+msgstr "przejdź do poprzedniej strony"
+
+#: keymap_alldefs.h:219
+#, fuzzy
+msgid "move the highlight to previous mailbox with new mail"
+msgstr "otwórz następną skrzynkę zawierającą nowe listy"
+
+#: keymap_alldefs.h:220
+#, fuzzy
+msgid "toggle between mailboxes and virtual mailboxes"
+msgstr "ustala czy przeglądać skrzynki czy wszystkie pliki"
+
+#: keymap_alldefs.h:221
+msgid "make the sidebar (in)visible"
+msgstr ""
+
+#: keymap_alldefs.h:222
+#, fuzzy
+msgid "open a different virtual folder"
+msgstr "otwórz inną skrzynkę"
+
+#: keymap_alldefs.h:223
+msgid "generate virtual folder from query"
+msgstr ""
+
+#: keymap_alldefs.h:224
+msgid "generate virtual folder from query and time window"
+msgstr ""
+
+#: keymap_alldefs.h:225
+msgid "shifts virtual folder time window forwards"
+msgstr ""
+
+#: keymap_alldefs.h:226
+msgid "shifts virtual folder time window backwards"
+msgstr ""
+
+#: keymap_alldefs.h:227
+msgid "modify (notmuch) tags"
+msgstr ""
+
+#: keymap_alldefs.h:228
+#, fuzzy
+msgid "modify labels and then hide message"
+msgstr "To jest pierwszy list."
+
+#: keymap_alldefs.h:229
+msgid "read entire thread of the current message"
+msgstr ""
+
+#: keymap_alldefs.h:230
+#, fuzzy
+msgid "accept the chain constructed"
+msgstr "Potwierdź skonstruowany łańcuch"
+
+#: keymap_alldefs.h:231
+#, fuzzy
+msgid "append a remailer to the chain"
+msgstr "Dodaj remailera do łańcucha"
+
+#: keymap_alldefs.h:232
+#, fuzzy
+msgid "insert a remailer into the chain"
+msgstr "Wprowadz remailera do łańcucha"
+
+#: keymap_alldefs.h:233
+#, fuzzy
+msgid "delete a remailer from the chain"
+msgstr "Usuń remailera z łańcucha"
+
+#: keymap_alldefs.h:234
+#, fuzzy
+msgid "select the previous element of the chain"
+msgstr "Wybierz poprzedni element łańcucha"
+
+#: keymap_alldefs.h:235
+#, fuzzy
+msgid "select the next element of the chain"
+msgstr "Wybierz nastepny element łańcucha"
+
+#: keymap_alldefs.h:236
+msgid "send the message through a mixmaster remailer chain"
+msgstr "przeslij list przez łańcuch anonimowych remailerów typu mixmaster"
+
+#: keymap_alldefs.h:237
+msgid "attach a PGP public key"
+msgstr "dołącz własny klucz publiczny PGP"
+
+#: keymap_alldefs.h:238
+msgid "show PGP options"
+msgstr "pokaż opcje PGP"
+
+#: keymap_alldefs.h:239
+msgid "mail a PGP public key"
+msgstr "wyślij własny klucz publiczny PGP"
+
+#: keymap_alldefs.h:240
+msgid "verify a PGP public key"
+msgstr "zweryfikuj klucz publiczny PGP"
+
+#: keymap_alldefs.h:241
+msgid "view the key's user id"
+msgstr "obejrzyj identyfikator użytkownika klucza"
+
+#: keymap_alldefs.h:242
+msgid "check for classic PGP"
+msgstr "użyj starej wersji PGP"
+
+#: keymap_alldefs.h:243
+msgid "show S/MIME options"
+msgstr "pokaż opcje S/MIME"
+
+#: keymap_alldefs.h:244
+msgid "make decrypted copy and delete"
+msgstr "utwórz rozszyfrowanaą kopię i usuń oryginał"
+
+#: keymap_alldefs.h:245
+msgid "make decrypted copy"
+msgstr "utwórz rozszyfrowaną kopię"
+
+#: keymap_alldefs.h:246
+msgid "wipe passphrase(s) from memory"
+msgstr "wymaż hasło z pamięci operacyjnej"
+
+#: keymap_alldefs.h:247
+msgid "extract supported public keys"
+msgstr "kopiuj klucze publiczne"
+
 #: lib.c:118
 msgid "Integer overflow -- can't allocate memory!"
 msgstr "Przepełnienie zmiennej całkowitej - nie można zaalokować pamięci!"
@@ -3070,9 +4080,8 @@ msgstr ""
 "  -D            wydrukuj wartości wszystkich zmiennych"
 
 #: main.c:97
-#, fuzzy
 msgid "  -d <level>    log debugging output to ~/.muttdebug0"
-msgstr "  -d <poziom>    zapisuj komunikaty debugowania do ~/.muttdebug0"
+msgstr "  -d <poziom>   zapisuj komunikaty debugowania do ~/.muttdebug0"
 
 #: main.c:100
 #, fuzzy
@@ -3099,7 +4108,6 @@ msgstr ""
 "  -p            ponownie edytuj zarzucony list"
 
 #: main.c:112
-#, fuzzy
 msgid ""
 "  -Q <variable> query a configuration variable\n"
 "  -R            open mailbox in read-only mode\n"
@@ -5094,7 +6102,7 @@ msgid ""
 "Copyright (C) 2000-2004 Edmund Grimley Evans <edmundo@rano.org>\n"
 "Copyright (C) 2006-2009 Rocco Rutte <pdmef@gmx.net>\n"
 "Copyright (C) 2014-2016 Kevin J. McCarthy <kevin@8t8.us>\n"
-"Copyright (C) 2015-2016 Richard Russon <rich@flatcap.org>\n"
+"Copyright (C) 2015-2017 Richard Russon <rich@flatcap.org>\n"
 "\n"
 "Many others not mentioned here contributed code, fixes,\n"
 "and suggestions.\n"
@@ -5170,734 +6178,3 @@ msgid ""
 msgstr ""
 "\n"
 "Parametry kompilacji:"
-
-#~ msgid "PGP passphrase forgotten."
-#~ msgstr "Hasło PGP zostało zapomniane."
-
-#~ msgid "Query"
-#~ msgstr "Pytanie"
-
-#~ msgid "null operation"
-#~ msgstr "pusta operacja"
-
-#~ msgid "end of conditional execution (noop)"
-#~ msgstr "koniec wykonywania warunkowego (noop)"
-
-#~ msgid "force viewing of attachment using mailcap"
-#~ msgstr "wymusza obejrzenie załączników poprzez plik 'mailcap'"
-
-#~ msgid "view attachment as text"
-#~ msgstr "obejrzyj załącznik jako tekst"
-
-#~ msgid "Toggle display of subparts"
-#~ msgstr "przełącza podgląd pod-listów listów złożonych"
-
-#~ msgid "move to the bottom of the page"
-#~ msgstr "przejdź na koniec strony"
-
-#~ msgid "remail a message to another user"
-#~ msgstr "wyślij ponownie do innego użytkownika"
-
-#~ msgid "select a new file in this directory"
-#~ msgstr "wybierz nowy plik w tym katalogu"
-
-#~ msgid "view file"
-#~ msgstr "oglądaj plik"
-
-#~ msgid "display the currently selected file's name"
-#~ msgstr "wyświetl nazwy aktualnie wybranych plików"
-
-#, fuzzy
-#~ msgid "subscribe to current mbox (IMAP/NNTP only)"
-#~ msgstr "zasubskrybuj bieżącą skrzynkę (tylko IMAP)"
-
-#, fuzzy
-#~ msgid "unsubscribe from current mbox (IMAP/NNTP only)"
-#~ msgstr "odsubskrybuj bieżącą skrzynkę (tylko IMAP)"
-
-#~ msgid "toggle view all/subscribed mailboxes (IMAP only)"
-#~ msgstr "zmień tryb przeglądania skrzynek: wszystkie/zasubskrybowane (tylko IMAP)"
-
-#~ msgid "list mailboxes with new mail"
-#~ msgstr "pokaż skrzynki z nową pocztą"
-
-#~ msgid "change directories"
-#~ msgstr "zmień katalog"
-
-#~ msgid "check mailboxes for new mail"
-#~ msgstr "szukaj nowych listów w skrzynkach"
-
-#~ msgid "attach file(s) to this message"
-#~ msgstr "załącz pliki do li(s)tu"
-
-#~ msgid "attach message(s) to this message"
-#~ msgstr "dołącz list(y) do tego listu"
-
-#, fuzzy
-#~ msgid "attach news article(s) to this message"
-#~ msgstr "załącz pliki do li(s)tu"
-
-#~ msgid "edit the BCC list"
-#~ msgstr "podaj treść pola BCC"
-
-#~ msgid "edit the CC list"
-#~ msgstr "podaj treść pola CC"
-
-#~ msgid "edit attachment description"
-#~ msgstr "edytuj opis załącznika"
-
-#~ msgid "edit attachment transfer-encoding"
-#~ msgstr "podaj sposób zakodowania załącznika"
-
-#~ msgid "enter a file to save a copy of this message in"
-#~ msgstr "podaj nazwę pliku, do którego ma być skopiowany list"
-
-#~ msgid "edit the file to be attached"
-#~ msgstr "podaj nazwę pliku załącznika"
-
-#~ msgid "edit the from field"
-#~ msgstr "podaj treść pola From:"
-
-#~ msgid "edit the message with headers"
-#~ msgstr "edytuj treść listu i nagłówków"
-
-#~ msgid "edit the message"
-#~ msgstr "edytuj treść listu"
-
-#~ msgid "edit attachment using mailcap entry"
-#~ msgstr "edytuj załącznik używając pliku 'mailcap'"
-
-#, fuzzy
-#~ msgid "edit the newsgroups list"
-#~ msgstr "podaj treść pola CC"
-
-#~ msgid "edit the Reply-To field"
-#~ msgstr "podaj treść pola Reply-To:"
-
-#, fuzzy
-#~ msgid "edit the Followup-To field"
-#~ msgstr "podaj treść pola Reply-To:"
-
-#, fuzzy
-#~ msgid "edit the X-Comment-To field"
-#~ msgstr "podaj treść pola Reply-To:"
-
-#~ msgid "edit the subject of this message"
-#~ msgstr "podaj tytuł listu"
-
-#~ msgid "edit the TO list"
-#~ msgstr "podaj treść listy TO"
-
-#~ msgid "create a new mailbox (IMAP only)"
-#~ msgstr "utwórz nową skrzynkę (tylko IMAP)"
-
-#~ msgid "edit attachment content type"
-#~ msgstr "podaj rodzaj typu \"Content-Type\" załącznika"
-
-#~ msgid "get a temporary copy of an attachment"
-#~ msgstr "weź tymczasową kopię załącznika"
-
-#~ msgid "run ispell on the message"
-#~ msgstr "sprawdź poprawność pisowni listu"
-
-#~ msgid "compose new attachment using mailcap entry"
-#~ msgstr "utwórz nowy załącznik używając pliku 'mailcap'"
-
-#~ msgid "toggle recoding of this attachment"
-#~ msgstr "zdecyduj czy załącznik ma być przekodowywany"
-
-#~ msgid "save this message to send later"
-#~ msgstr "zapisz list aby wysłać go później"
-
-#, fuzzy
-#~ msgid "send attachment with a different name"
-#~ msgstr "podaj sposób zakodowania załącznika"
-
-#~ msgid "rename/move an attached file"
-#~ msgstr "zmień nazwę lub przenieś dołączony plik"
-
-#, fuzzy
-#~ msgid "compose a new message to the sender"
-#~ msgstr "zredaguj nowy list"
-
-#~ msgid "send the message"
-#~ msgstr "wyślij list"
-
-#~ msgid "toggle disposition between inline/attachment"
-#~ msgstr "ustala czy wstawiać w treści czy jako załącznik"
-
-#~ msgid "toggle whether to delete file after sending it"
-#~ msgstr "ustala czy usunąć plik po wysłaniu"
-
-#~ msgid "update an attachment's encoding info"
-#~ msgstr "zaktualizuj informację o kodowaniu załącznika"
-
-#~ msgid "write the message to a folder"
-#~ msgstr "zapisz list do skrzynki"
-
-#~ msgid "copy a message to a file/mailbox"
-#~ msgstr "kopiuj list do pliku/skrzynki"
-
-#~ msgid "create an alias from a message sender"
-#~ msgstr "utwórz alias dla nadawcy"
-
-#~ msgid "move entry to bottom of screen"
-#~ msgstr "przesuń pozycję kursora na dół ekranu"
-
-#~ msgid "move entry to middle of screen"
-#~ msgstr "przesuń pozycję kursora na środek ekranu"
-
-#~ msgid "move entry to top of screen"
-#~ msgstr "przesuń pozycję kursora na górę ekranu"
-
-#~ msgid "make decoded (text/plain) copy"
-#~ msgstr "utwórz rozkodowaną (text/plain) kopię"
-
-#~ msgid "make decoded copy (text/plain) and delete"
-#~ msgstr "utwórz rozkodowaną kopię (text/plain) i usuń"
-
-#~ msgid "delete the current entry"
-#~ msgstr "usuń bieżący list"
-
-#~ msgid "delete the current mailbox (IMAP only)"
-#~ msgstr "usuń bieżącą skrzynkę (tylko IMAP)"
-
-#~ msgid "delete all messages in subthread"
-#~ msgstr "usuń wszystkie listy w podwątku"
-
-#~ msgid "delete all messages in thread"
-#~ msgstr "usuń wszystkie listy w wątku"
-
-#~ msgid "display full address of sender"
-#~ msgstr "wyświetl pełny adres nadawcy"
-
-#~ msgid "display message and toggle header weeding"
-#~ msgstr "wyświelt list ze wszystkimi nagłówkami"
-
-#~ msgid "display a message"
-#~ msgstr "wyświetl list"
-
-#~ msgid "edit the raw message"
-#~ msgstr "edytuj list z nagłowkami"
-
-#~ msgid "delete the char in front of the cursor"
-#~ msgstr "usuń znak przed kursorem"
-
-#~ msgid "move the cursor one character to the left"
-#~ msgstr "przesuń kursor jeden znak w lewo"
-
-#~ msgid "move the cursor to the beginning of the word"
-#~ msgstr "przesuń kursor do początku słowa"
-
-#~ msgid "jump to the beginning of the line"
-#~ msgstr "przeskocz do początku linii"
-
-#~ msgid "cycle among incoming mailboxes"
-#~ msgstr "krąż pomiędzy skrzynkami pocztowymi"
-
-#~ msgid "complete filename or alias"
-#~ msgstr "uzupełnij nazwę pliku lub alias"
-
-#~ msgid "complete address with query"
-#~ msgstr "uzupełnij adres poprzez zapytanie"
-
-#~ msgid "delete the char under the cursor"
-#~ msgstr "usuń znak pod kursorem"
-
-#~ msgid "jump to the end of the line"
-#~ msgstr "przeskocz do końca linii"
-
-#~ msgid "move the cursor one character to the right"
-#~ msgstr "przesuń kursor o znak w prawo"
-
-#~ msgid "move the cursor to the end of the word"
-#~ msgstr "przesuń kursor do końca słowa"
-
-#~ msgid "scroll down through the history list"
-#~ msgstr "przewijaj w dół listę wydanych poleceń"
-
-#~ msgid "scroll up through the history list"
-#~ msgstr "przewijaj do góry listę wydanych poleceń"
-
-#~ msgid "delete chars from cursor to end of line"
-#~ msgstr "usuń znaki począwszy od kursora aż do końca linii"
-
-#~ msgid "delete chars from the cursor to the end of the word"
-#~ msgstr "usuń znaki począwszy od kursora aż do końca słowa"
-
-#~ msgid "delete all chars on the line"
-#~ msgstr "usuń wszystkie znaki w linii"
-
-#~ msgid "delete the word in front of the cursor"
-#~ msgstr "usuń słowo z przodu kursora"
-
-#~ msgid "quote the next typed key"
-#~ msgstr "zacytuj następny wpisany znak"
-
-#~ msgid "transpose character under cursor with previous"
-#~ msgstr "zamień znak pod kursorem ze znakiem poprzednim"
-
-#~ msgid "capitalize the word"
-#~ msgstr "zamień piewszą literę słowa na wielką"
-
-#~ msgid "convert the word to lower case"
-#~ msgstr "zamień litery słowa na małe"
-
-#~ msgid "convert the word to upper case"
-#~ msgstr "zamień litery słowa na wielkie"
-
-#~ msgid "enter a muttrc command"
-#~ msgstr "wprowadź polecenie pliku startowego (muttrc)"
-
-#~ msgid "enter a file mask"
-#~ msgstr "wprowadź wzorzec nazwy pliku"
-
-#~ msgid "exit this menu"
-#~ msgstr "opuść niniejsze menu"
-
-#~ msgid "filter attachment through a shell command"
-#~ msgstr "przefiltruj załącznik przez polecenie powłoki"
-
-#~ msgid "move to the first entry"
-#~ msgstr "przesuń się do pierwszej pozycji"
-
-#~ msgid "toggle a message's 'important' flag"
-#~ msgstr "włącz dla listu flagę 'ważne!'"
-
-#, fuzzy
-#~ msgid "followup to newsgroup"
-#~ msgstr "Follow-up do %s%s?"
-
-#~ msgid "forward a message with comments"
-#~ msgstr "prześlij dalej list opatrując go uwagami"
-
-#~ msgid "select the current entry"
-#~ msgstr "wskaż obecną pozycję"
-
-#, fuzzy
-#~ msgid "get all children of the current message"
-#~ msgstr "To jest pierwszy list."
-
-#, fuzzy
-#~ msgid "get message with Message-Id"
-#~ msgstr "edytuj treść listu i nagłówków"
-
-#, fuzzy
-#~ msgid "get parent of the current message"
-#~ msgstr "To jest pierwszy list."
-
-#~ msgid "reply to all recipients"
-#~ msgstr "odpowiedz wszystkim adresatom"
-
-#~ msgid "scroll down 1/2 page"
-#~ msgstr "przewiń w dół o pół strony"
-
-#~ msgid "scroll up 1/2 page"
-#~ msgstr "przewiń w górę o pół strony"
-
-#~ msgid "this screen"
-#~ msgstr "niniejszy ekran"
-
-#~ msgid "jump to an index number"
-#~ msgstr "przeskocz do konkretnej pozycji w indeksie"
-
-#~ msgid "move to the last entry"
-#~ msgstr "przejdź do ostatniej pozycji"
-
-#~ msgid "reply to specified mailing list"
-#~ msgstr "opowiedz na wskazaną listę pocztową"
-
-#~ msgid "execute a macro"
-#~ msgstr "wykonaj makropolecenie"
-
-#~ msgid "compose a new mail message"
-#~ msgstr "zredaguj nowy list"
-
-#~ msgid "break the thread in two"
-#~ msgstr "rozdziel wątki na dwa niezależne"
-
-#~ msgid "open a different folder"
-#~ msgstr "otwórz inną skrzynkę"
-
-#~ msgid "open a different folder in read only mode"
-#~ msgstr "otwórz inną skrzynkę w trybie tylko do odczytu"
-
-#, fuzzy
-#~ msgid "open a different newsgroup"
-#~ msgstr "otwórz inną skrzynkę"
-
-#, fuzzy
-#~ msgid "open a different newsgroup in read only mode"
-#~ msgstr "otwórz inną skrzynkę w trybie tylko do odczytu"
-
-#~ msgid "clear a status flag from a message"
-#~ msgstr "usuń flagę ze statusem wiadomości"
-
-#~ msgid "delete messages matching a pattern"
-#~ msgstr "usuń listy pasujące do wzorca"
-
-#~ msgid "force retrieval of mail from IMAP server"
-#~ msgstr "wymuszą pobranie poczty z serwera IMAP"
-
-#~ msgid "retrieve mail from POP server"
-#~ msgstr "pobierz pocztę z serwera POP"
-
-#~ msgid "show only messages matching a pattern"
-#~ msgstr "pokaż tylko listy pasujące do wzorca"
-
-#~ msgid "link tagged message to the current one"
-#~ msgstr "podlinkuj zaznaczony list do bieżącego"
-
-#~ msgid "open next mailbox with new mail"
-#~ msgstr "otwórz następną skrzynkę zawierającą nowe listy"
-
-#~ msgid "jump to the next new message"
-#~ msgstr "przejdź do następnego nowego listu"
-
-#~ msgid "jump to the next new or unread message"
-#~ msgstr "przejdź do następnego nowego lub nie przeczytanego listu"
-
-#~ msgid "jump to the next subthread"
-#~ msgstr "przejdź do następnego podwątku"
-
-#~ msgid "jump to the next thread"
-#~ msgstr "przejdź do następnego wątku"
-
-#~ msgid "move to the next undeleted message"
-#~ msgstr "przejdź do następnego nieusuniętego listu"
-
-#~ msgid "jump to the next unread message"
-#~ msgstr "przejdź do następnego nieprzeczytanego listu"
-
-#~ msgid "jump to parent message in thread"
-#~ msgstr "przejdź na początek wątku"
-
-#~ msgid "jump to previous thread"
-#~ msgstr "przejdź do poprzedniego wątku"
-
-#~ msgid "jump to previous subthread"
-#~ msgstr "przejdź do poprzedniego podwątku"
-
-#~ msgid "move to the previous undeleted message"
-#~ msgstr "przejdź do poprzedniego nieusuniętego listu"
-
-#~ msgid "jump to the previous new message"
-#~ msgstr "przejdź do poprzedniego nowego listu"
-
-#~ msgid "jump to the previous new or unread message"
-#~ msgstr "przejdź do poprzedniego nowego lub nie przeczytanego listu"
-
-#~ msgid "jump to the previous unread message"
-#~ msgstr "przejdź do poprzedniego nieprzeczytanego listu"
-
-#~ msgid "mark the current thread as read"
-#~ msgstr "zaznacz obecny wątek jako przeczytany"
-
-#~ msgid "mark the current subthread as read"
-#~ msgstr "zaznacz obecny podwątek jako przeczytany"
-
-#, fuzzy
-#~ msgid "jump to root message in thread"
-#~ msgstr "przejdź na początek wątku"
-
-#~ msgid "set a status flag on a message"
-#~ msgstr "ustaw flagę statusu listu"
-
-#~ msgid "save changes to mailbox"
-#~ msgstr "zapisz zmiany do skrzynki"
-
-#~ msgid "tag messages matching a pattern"
-#~ msgstr "zaznacz listy pasujące do wzorca"
-
-#~ msgid "undelete messages matching a pattern"
-#~ msgstr "odtwórz listy pasujące do wzorca"
-
-#~ msgid "untag messages matching a pattern"
-#~ msgstr "odznacz listy pasujące do wzorca"
-
-#, fuzzy
-#~ msgid "create a hotkey macro for the current message"
-#~ msgstr "To jest pierwszy list."
-
-#~ msgid "move to the middle of the page"
-#~ msgstr "przejdź do połowy strony"
-
-#~ msgid "move to the next entry"
-#~ msgstr "przejdź do następnej pozycji"
-
-#~ msgid "scroll down one line"
-#~ msgstr "przewiń w dół o linię"
-
-#~ msgid "move to the next page"
-#~ msgstr "przejdź do następnej strony"
-
-#~ msgid "jump to the bottom of the message"
-#~ msgstr "przejdź na koniec listu"
-
-#~ msgid "toggle display of quoted text"
-#~ msgstr "ustala sposób pokazywania zaznaczonego tekstu"
-
-#~ msgid "skip beyond quoted text"
-#~ msgstr "przeskocz poza zaznaczony fragment tekstu"
-
-#~ msgid "jump to the top of the message"
-#~ msgstr "przejdź na początek listu"
-
-#~ msgid "pipe message/attachment to a shell command"
-#~ msgstr "przekieruj list/załącznik do polecenia powłoki"
-
-#, fuzzy
-#~ msgid "post message to newsgroup"
-#~ msgstr "Wyślij kopię listu do %s"
-
-#~ msgid "move to the previous entry"
-#~ msgstr "przejdź do poprzedniej pozycji"
-
-#~ msgid "scroll up one line"
-#~ msgstr "przewiń w górę o linię"
-
-#~ msgid "move to the previous page"
-#~ msgstr "przejdź do poprzedniej strony"
-
-#~ msgid "print the current entry"
-#~ msgstr "wydrukuj obecną pozycję"
-
-#~ msgid "query external program for addresses"
-#~ msgstr "zapytaj zewnętrzny program o adres"
-
-#~ msgid "append new query results to current results"
-#~ msgstr "dodaj rezultaty nowych poszukiwań do obecnych"
-
-#~ msgid "save changes to mailbox and quit"
-#~ msgstr "zapisz zmiany do skrzynki i opuść program pocztowy"
-
-#~ msgid "recall a postponed message"
-#~ msgstr "wywołaj odłożony list"
-
-#, fuzzy
-#~ msgid "reconstruct thread containing current message"
-#~ msgstr "Wątek zawiera nieprzeczytane listy."
-
-#~ msgid "clear and redraw the screen"
-#~ msgstr "wyczyść i odśwież ekran"
-
-#~ msgid "{internal}"
-#~ msgstr "{wewnętrzne}"
-
-#~ msgid "rename the current mailbox (IMAP only)"
-#~ msgstr "zmień nazwę bieżącej skrzynki (tylko IMAP)"
-
-#~ msgid "reply to a message"
-#~ msgstr "odpowiedz na list"
-
-#~ msgid "use the current message as a template for a new one"
-#~ msgstr "użyj bieżącego listu jako wzorca dla nowych wiadomości"
-
-#, fuzzy
-#~ msgid "save message/attachment to a mailbox/file"
-#~ msgstr "zapisz list/załącznik do pliku"
-
-#~ msgid "search for a regular expression"
-#~ msgstr "szukaj wyrażenia regularnego"
-
-#~ msgid "search backwards for a regular expression"
-#~ msgstr "szukaj wstecz wyrażenia regularnego"
-
-#~ msgid "search for next match"
-#~ msgstr "szukaj następnego pozytywnego rezultatu"
-
-#~ msgid "search for next match in opposite direction"
-#~ msgstr "szukaj wstecz następnego pozytywnego rezultatu"
-
-#~ msgid "toggle search pattern coloring"
-#~ msgstr "ustala czy szukana fraza ma być zaznaczona kolorem"
-
-#~ msgid "invoke a command in a subshell"
-#~ msgstr "wywołaj polecenie w podpowłoce"
-
-#~ msgid "sort messages"
-#~ msgstr "uszereguj listy"
-
-#~ msgid "sort messages in reverse order"
-#~ msgstr "uszereguj listy w odwrotnej kolejności"
-
-#, fuzzy
-#~ msgid "subscribe to newsgroups matching a pattern"
-#~ msgstr "odznacz listy pasujące do wzorca"
-
-#~ msgid "tag the current entry"
-#~ msgstr "zaznacz bieżącą pozycję"
-
-#~ msgid "apply next function to tagged messages"
-#~ msgstr "wykonaj następne polecenie na zaznaczonych listach"
-
-#~ msgid "apply next function ONLY to tagged messages"
-#~ msgstr "wykonaj następne polecenie TYLKO na zaznaczonych listach"
-
-#~ msgid "tag the current subthread"
-#~ msgstr "zaznacz bieżący podwątek"
-
-#~ msgid "tag the current thread"
-#~ msgstr "zaznacz bieżący wątek"
-
-#~ msgid "toggle a message's 'new' flag"
-#~ msgstr "ustaw flagę listu na 'nowy'"
-
-#, fuzzy
-#~ msgid "toggle view of read messages"
-#~ msgstr "przejdź do poprzedniego nowego lub nie przeczytanego listu"
-
-#~ msgid "toggle whether the mailbox will be rewritten"
-#~ msgstr "ustala czy skrzynka będzie ponownie zapisana"
-
-#~ msgid "toggle whether to browse mailboxes or all files"
-#~ msgstr "ustala czy przeglądać skrzynki czy wszystkie pliki"
-
-#~ msgid "move to the top of the page"
-#~ msgstr "przejdź na początek strony"
-
-#~ msgid "undelete the current entry"
-#~ msgstr "odtwórz bieżącą pozycję listy"
-
-#~ msgid "undelete all messages in thread"
-#~ msgstr "odtwórz wszystkie listy z tego wątku"
-
-#~ msgid "undelete all messages in subthread"
-#~ msgstr "odtwórz wszystkie listy z tego podwątku"
-
-#, fuzzy
-#~ msgid "unsubscribe from newsgroups matching a pattern"
-#~ msgstr "odznacz listy pasujące do wzorca"
-
-#~ msgid "show the Mutt version number and date"
-#~ msgstr "pokaż wersję i datę programu pocztowego Mutt"
-
-#~ msgid "view attachment using mailcap entry if necessary"
-#~ msgstr "pokaż załącznik używając, jeśli to niezbędne, pliku 'mailcap'"
-
-#~ msgid "show MIME attachments"
-#~ msgstr "pokaż załączniki MIME"
-
-#~ msgid "display the keycode for a key press"
-#~ msgstr "wyświetl kod wprowadzonego znaku"
-
-#, fuzzy
-#~ msgid "limit view to current thread"
-#~ msgstr "zaznacz bieżący wątek"
-
-#~ msgid "show currently active limit pattern"
-#~ msgstr "pokaż bieżący wzorzec ograniczający"
-
-#~ msgid "collapse/uncollapse current thread"
-#~ msgstr "zwiń/rozwiń bieżący wątek"
-
-#~ msgid "collapse/uncollapse all threads"
-#~ msgstr "zwiń/rozwiń wszystkie wątki"
-
-#, fuzzy
-#~ msgid "move the highlight to next mailbox with new mail"
-#~ msgstr "otwórz następną skrzynkę zawierającą nowe listy"
-
-#, fuzzy
-#~ msgid "open highlighted mailbox"
-#~ msgstr "Ponowne otwieranie skrzynki..."
-
-#, fuzzy
-#~ msgid "scroll the sidebar down 1 page"
-#~ msgstr "przewiń w dół o pół strony"
-
-#, fuzzy
-#~ msgid "scroll the sidebar up 1 page"
-#~ msgstr "przewiń w górę o pół strony"
-
-#, fuzzy
-#~ msgid "move the highlight to previous mailbox"
-#~ msgstr "przejdź do poprzedniej strony"
-
-#, fuzzy
-#~ msgid "move the highlight to previous mailbox with new mail"
-#~ msgstr "otwórz następną skrzynkę zawierającą nowe listy"
-
-#, fuzzy
-#~ msgid "toggle between mailboxes and virtual mailboxes"
-#~ msgstr "ustala czy przeglądać skrzynki czy wszystkie pliki"
-
-#, fuzzy
-#~ msgid "open a different virtual folder"
-#~ msgstr "otwórz inną skrzynkę"
-
-#, fuzzy
-#~ msgid "modify labels and then hide message"
-#~ msgstr "To jest pierwszy list."
-
-#~ msgid "attach a PGP public key"
-#~ msgstr "dołącz własny klucz publiczny PGP"
-
-#~ msgid "show PGP options"
-#~ msgstr "pokaż opcje PGP"
-
-#~ msgid "mail a PGP public key"
-#~ msgstr "wyślij własny klucz publiczny PGP"
-
-#~ msgid "verify a PGP public key"
-#~ msgstr "zweryfikuj klucz publiczny PGP"
-
-#~ msgid "view the key's user id"
-#~ msgstr "obejrzyj identyfikator użytkownika klucza"
-
-#~ msgid "check for classic PGP"
-#~ msgstr "użyj starej wersji PGP"
-
-#, fuzzy
-#~ msgid "accept the chain constructed"
-#~ msgstr "Potwierdź skonstruowany łańcuch"
-
-#, fuzzy
-#~ msgid "append a remailer to the chain"
-#~ msgstr "Dodaj remailera do łańcucha"
-
-#, fuzzy
-#~ msgid "insert a remailer into the chain"
-#~ msgstr "Wprowadz remailera do łańcucha"
-
-#, fuzzy
-#~ msgid "delete a remailer from the chain"
-#~ msgstr "Usuń remailera z łańcucha"
-
-#, fuzzy
-#~ msgid "select the previous element of the chain"
-#~ msgstr "Wybierz poprzedni element łańcucha"
-
-#, fuzzy
-#~ msgid "select the next element of the chain"
-#~ msgstr "Wybierz nastepny element łańcucha"
-
-#~ msgid "send the message through a mixmaster remailer chain"
-#~ msgstr "przeslij list przez łańcuch anonimowych remailerów typu mixmaster"
-
-#~ msgid "make decrypted copy and delete"
-#~ msgstr "utwórz rozszyfrowanaą kopię i usuń oryginał"
-
-#~ msgid "make decrypted copy"
-#~ msgstr "utwórz rozszyfrowaną kopię"
-
-#~ msgid "wipe passphrase(s) from memory"
-#~ msgstr "wymaż hasło z pamięci operacyjnej"
-
-#~ msgid "extract supported public keys"
-#~ msgstr "kopiuj klucze publiczne"
-
-#~ msgid "show S/MIME options"
-#~ msgstr "pokaż opcje S/MIME"
-
-#~ msgid "Fingerprint: %s"
-#~ msgstr "Odcisk: %s"
-
-#~ msgid "SMTP authentication requires SASL"
-#~ msgstr "Uwierzytelnianie SMTP wymaga SASL"
-
-#~ msgid "move to the first message"
-#~ msgstr "przejdź do pierwszego listu"
-
-#~ msgid "move to the last message"
-#~ msgstr "przejdź do ostatniego listu"

@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neomutt-20161104\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
-"POT-Creation-Date: 2017-04-13 13:26+0100\n"
+"POT-Creation-Date: 2017-04-17 17:04+0100\n"
 "PO-Revision-Date: 2002-12-09 17:19+02:00\n"
 "Last-Translator: Toomas Soome <tsoome@muhv.pri.ee>\n"
 "Language-Team: Estonian <et@li.org>\n"
@@ -919,6 +919,119 @@ msgstr "Kopeerin kausta %s..."
 msgid "No decryption engine available for message"
 msgstr ""
 
+#: crypt.c:59
+#, c-format
+msgid " (current time: %c)"
+msgstr " (praegune aeg: %c)"
+
+#: crypt.c:64
+#, c-format
+msgid "[-- %s output follows%s --]\n"
+msgstr "[-- järgneb %s väljund%s --]\n"
+
+#: crypt.c:78
+msgid "Passphrase(s) forgotten."
+msgstr "Parool(id) on unustatud."
+
+#: crypt.c:139
+msgid "Inline PGP can't be used with attachments.  Revert to PGP/MIME?"
+msgstr ""
+
+#: crypt.c:143
+msgid "Mail not sent: inline PGP can't be used with attachments."
+msgstr ""
+
+#: crypt.c:151 cryptglue.c:106 pgpkey.c:541 pgpkey.c:724
+msgid "Invoking PGP..."
+msgstr "Käivitan PGP..."
+
+#: crypt.c:162
+msgid "Message can't be sent inline.  Revert to using PGP/MIME?"
+msgstr ""
+
+#: crypt.c:164 send.c:1796
+msgid "Mail not sent."
+msgstr "Kirja ei saadetud."
+
+#: crypt.c:224
+msgid "Encrypt message to S/MIME Default Key also?"
+msgstr ""
+
+#: crypt.c:259
+msgid "Encrypt message to PGP Default Key also?"
+msgstr ""
+
+#: crypt.c:502
+msgid "S/MIME messages with no hints on content are unsupported."
+msgstr "Sisu vihjeta S/MIME teateid ei toetata."
+
+#: crypt.c:710 crypt.c:751
+msgid "Trying to extract PGP keys...\n"
+msgstr "Proovin eraldada PGP võtmed...\n"
+
+#: crypt.c:732 crypt.c:772
+msgid "Trying to extract S/MIME certificates...\n"
+msgstr "Proovin eraldada S/MIME sertifikaadid...\n"
+
+#: crypt.c:913
+#, c-format
+msgid ""
+"[-- Error: Unknown multipart/signed protocol %s! --]\n"
+"\n"
+msgstr ""
+"[-- Viga: Tundmatu multipart/signed protokoll %s! --]\n"
+"\n"
+
+#: crypt.c:947
+msgid ""
+"[-- Error: Inconsistent multipart/signed structure! --]\n"
+"\n"
+msgstr ""
+"[-- Viga: Vigane multipart/signed struktuur! --]\n"
+"\n"
+
+#: crypt.c:983
+#, c-format
+msgid ""
+"[-- Warning: We can't verify %s/%s signatures. --]\n"
+"\n"
+msgstr ""
+"[-- Hoiatus: Me ai saa kontrollida %s/%s allkirju. --]\n"
+"\n"
+
+#: crypt.c:995
+msgid ""
+"[-- The following data is signed --]\n"
+"\n"
+msgstr ""
+"[-- Järgnev info on allkirjastatud --]\n"
+"\n"
+
+#: crypt.c:1001
+msgid ""
+"[-- Warning: Can't find any signatures. --]\n"
+"\n"
+msgstr ""
+"[-- Hoiatus: Ei leia ühtegi allkirja. --]\n"
+"\n"
+
+#: crypt.c:1007
+msgid ""
+"\n"
+"[-- End of signed data --]\n"
+msgstr ""
+"\n"
+"[-- Allkirjastatud info lõpp --]\n"
+
+#: cryptglue.c:84
+msgid "\"crypt_use_gpgme\" set but not built with GPGME support."
+msgstr ""
+
+#: cryptglue.c:108
+#, fuzzy
+msgid "Invoking S/MIME..."
+msgstr "Käivitan S/MIME..."
+
 #: crypt_gpgme.c:384
 #, fuzzy, c-format
 msgid "error creating gpgme context: %s\n"
@@ -1596,119 +1709,6 @@ msgstr ""
 #, fuzzy
 msgid "Failed to figure out sender"
 msgstr "Faili avamine päiste analüüsiks ebaõnnestus."
-
-#: crypt.c:59
-#, c-format
-msgid " (current time: %c)"
-msgstr " (praegune aeg: %c)"
-
-#: crypt.c:64
-#, c-format
-msgid "[-- %s output follows%s --]\n"
-msgstr "[-- järgneb %s väljund%s --]\n"
-
-#: crypt.c:78
-msgid "Passphrase(s) forgotten."
-msgstr "Parool(id) on unustatud."
-
-#: crypt.c:139
-msgid "Inline PGP can't be used with attachments.  Revert to PGP/MIME?"
-msgstr ""
-
-#: crypt.c:143
-msgid "Mail not sent: inline PGP can't be used with attachments."
-msgstr ""
-
-#: crypt.c:151 cryptglue.c:106 pgpkey.c:541 pgpkey.c:724
-msgid "Invoking PGP..."
-msgstr "Käivitan PGP..."
-
-#: crypt.c:162
-msgid "Message can't be sent inline.  Revert to using PGP/MIME?"
-msgstr ""
-
-#: crypt.c:164 send.c:1796
-msgid "Mail not sent."
-msgstr "Kirja ei saadetud."
-
-#: crypt.c:224
-msgid "Encrypt message to S/MIME Default Key also?"
-msgstr ""
-
-#: crypt.c:259
-msgid "Encrypt message to PGP Default Key also?"
-msgstr ""
-
-#: crypt.c:502
-msgid "S/MIME messages with no hints on content are unsupported."
-msgstr "Sisu vihjeta S/MIME teateid ei toetata."
-
-#: crypt.c:710 crypt.c:751
-msgid "Trying to extract PGP keys...\n"
-msgstr "Proovin eraldada PGP võtmed...\n"
-
-#: crypt.c:732 crypt.c:772
-msgid "Trying to extract S/MIME certificates...\n"
-msgstr "Proovin eraldada S/MIME sertifikaadid...\n"
-
-#: crypt.c:913
-#, c-format
-msgid ""
-"[-- Error: Unknown multipart/signed protocol %s! --]\n"
-"\n"
-msgstr ""
-"[-- Viga: Tundmatu multipart/signed protokoll %s! --]\n"
-"\n"
-
-#: crypt.c:947
-msgid ""
-"[-- Error: Inconsistent multipart/signed structure! --]\n"
-"\n"
-msgstr ""
-"[-- Viga: Vigane multipart/signed struktuur! --]\n"
-"\n"
-
-#: crypt.c:983
-#, c-format
-msgid ""
-"[-- Warning: We can't verify %s/%s signatures. --]\n"
-"\n"
-msgstr ""
-"[-- Hoiatus: Me ai saa kontrollida %s/%s allkirju. --]\n"
-"\n"
-
-#: crypt.c:995
-msgid ""
-"[-- The following data is signed --]\n"
-"\n"
-msgstr ""
-"[-- Järgnev info on allkirjastatud --]\n"
-"\n"
-
-#: crypt.c:1001
-msgid ""
-"[-- Warning: Can't find any signatures. --]\n"
-"\n"
-msgstr ""
-"[-- Hoiatus: Ei leia ühtegi allkirja. --]\n"
-"\n"
-
-#: crypt.c:1007
-msgid ""
-"\n"
-"[-- End of signed data --]\n"
-msgstr ""
-"\n"
-"[-- Allkirjastatud info lõpp --]\n"
-
-#: cryptglue.c:84
-msgid "\"crypt_use_gpgme\" set but not built with GPGME support."
-msgstr ""
-
-#: cryptglue.c:108
-#, fuzzy
-msgid "Invoking S/MIME..."
-msgstr "Käivitan S/MIME..."
 
 #: curs_lib.c:229
 msgid "yes"
@@ -2581,12 +2581,12 @@ msgstr "Meldin..."
 msgid "Login failed."
 msgstr "Meldimine ebaõnnestus."
 
-#: imap/auth_sasl.c:94 nntp.c:367 nntp.c:432 smtp.c:372
+#: imap/auth_sasl.c:95 nntp.c:367 nntp.c:432 smtp.c:372
 #, fuzzy, c-format
 msgid "Authenticating (%s)..."
 msgstr "Autentimine (APOP)..."
 
-#: imap/auth_sasl.c:222 pop_auth.c:175
+#: imap/auth_sasl.c:223 pop_auth.c:175
 msgid "SASL authentication failed."
 msgstr "SASL autentimine ebaõnnestus."
 
@@ -3072,6 +3072,1024 @@ msgstr "Sisestage kasutaja teatele %s: "
 #, c-format
 msgid "Char = %s, Octal = %o, Decimal = %d"
 msgstr ""
+
+#: keymap_alldefs.h:5
+msgid "null operation"
+msgstr "tühi operatsioon"
+
+#: keymap_alldefs.h:6
+msgid "end of conditional execution (noop)"
+msgstr ""
+
+#: keymap_alldefs.h:7
+msgid "force viewing of attachment using mailcap"
+msgstr "vaata lisa mailcap vahendusel"
+
+#: keymap_alldefs.h:8
+msgid "view attachment as text"
+msgstr "vaata lisa tekstina"
+
+#: keymap_alldefs.h:9
+msgid "Toggle display of subparts"
+msgstr "Lülita osade näitamist"
+
+#: keymap_alldefs.h:10
+msgid "move to the bottom of the page"
+msgstr "liigu lehe lõppu"
+
+#: keymap_alldefs.h:11
+msgid "remail a message to another user"
+msgstr "saada teade edasi teisele kasutajale"
+
+#: keymap_alldefs.h:12
+msgid "swap the current folder position with $folder if it exists"
+msgstr ""
+
+#: keymap_alldefs.h:13
+msgid "select a new file in this directory"
+msgstr "valige sellest kataloogist uus fail"
+
+#: keymap_alldefs.h:14
+msgid "view file"
+msgstr "vaata faili"
+
+#: keymap_alldefs.h:15
+msgid "display the currently selected file's name"
+msgstr "näita praegu valitud faili nime"
+
+#: keymap_alldefs.h:16
+#, fuzzy
+msgid "subscribe to current mbox (IMAP/NNTP only)"
+msgstr "telli jooksev postkast (ainult IMAP)"
+
+#: keymap_alldefs.h:17
+#, fuzzy
+msgid "unsubscribe from current mbox (IMAP/NNTP only)"
+msgstr "loobu jooksvast postkastist (ainult IMAP)"
+
+#: keymap_alldefs.h:18
+msgid "toggle view all/subscribed mailboxes (IMAP only)"
+msgstr "lülita kõikide/tellitud kaustade vaatamine (ainult IMAP)"
+
+#: keymap_alldefs.h:19
+msgid "list mailboxes with new mail"
+msgstr "näita uute teadetega postkaste"
+
+#: keymap_alldefs.h:20
+msgid "mark all articles in newsgroup as read"
+msgstr ""
+
+#: keymap_alldefs.h:21
+msgid "change directories"
+msgstr "vaheta kataloogi"
+
+#: keymap_alldefs.h:22
+msgid "check mailboxes for new mail"
+msgstr "kontrolli uusi kirju postkastides"
+
+#: keymap_alldefs.h:23
+#, fuzzy
+msgid "attach file(s) to this message"
+msgstr "lisa sellele teatele fail(e)"
+
+#: keymap_alldefs.h:24
+msgid "attach message(s) to this message"
+msgstr "lisa sellele teatele teateid"
+
+#: keymap_alldefs.h:25
+#, fuzzy
+msgid "attach news article(s) to this message"
+msgstr "lisa sellele teatele fail(e)"
+
+#: keymap_alldefs.h:26
+msgid "edit the BCC list"
+msgstr "toimeta BCC nimekirja"
+
+#: keymap_alldefs.h:27
+msgid "edit the CC list"
+msgstr "toimeta CC nimekirja"
+
+#: keymap_alldefs.h:28
+msgid "edit attachment description"
+msgstr "toimeta lisa kirjeldust"
+
+#: keymap_alldefs.h:29
+msgid "edit attachment transfer-encoding"
+msgstr "toimeta lisa kodeeringut"
+
+#: keymap_alldefs.h:30
+msgid "enter a file to save a copy of this message in"
+msgstr "sisestage failinimi, kuhu salvestada selle teate koopia"
+
+#: keymap_alldefs.h:31
+msgid "edit the file to be attached"
+msgstr "toimeta lisatavat faili"
+
+#: keymap_alldefs.h:32
+msgid "edit the from field"
+msgstr "toimeta from välja"
+
+#: keymap_alldefs.h:33
+msgid "edit the message with headers"
+msgstr "toimeta teadet koos päisega"
+
+#: keymap_alldefs.h:34
+msgid "edit the message"
+msgstr "toimeta teadet"
+
+#: keymap_alldefs.h:35
+msgid "edit attachment using mailcap entry"
+msgstr "toimeta lisa kasutades mailcap kirjet"
+
+#: keymap_alldefs.h:36
+#, fuzzy
+msgid "edit the newsgroups list"
+msgstr "toimeta CC nimekirja"
+
+#: keymap_alldefs.h:37
+msgid "edit the Reply-To field"
+msgstr "toimeta Reply-To välja"
+
+#: keymap_alldefs.h:38
+#, fuzzy
+msgid "edit the Followup-To field"
+msgstr "toimeta Reply-To välja"
+
+#: keymap_alldefs.h:39
+#, fuzzy
+msgid "edit the X-Comment-To field"
+msgstr "toimeta Reply-To välja"
+
+#: keymap_alldefs.h:40
+msgid "edit the subject of this message"
+msgstr "toimeta selle teate teemat"
+
+#: keymap_alldefs.h:41
+msgid "edit the TO list"
+msgstr "toimeta TO nimekirja"
+
+#: keymap_alldefs.h:42
+msgid "create a new mailbox (IMAP only)"
+msgstr "loo uus postkast (ainult IMAP)"
+
+#: keymap_alldefs.h:43
+msgid "edit attachment content type"
+msgstr "muuda lisa sisu tüüpi"
+
+#: keymap_alldefs.h:44
+msgid "get a temporary copy of an attachment"
+msgstr "loo lisast ajutine koopia"
+
+#: keymap_alldefs.h:45
+msgid "run ispell on the message"
+msgstr "käivita teatel ispell"
+
+#: keymap_alldefs.h:46
+msgid "compose new attachment using mailcap entry"
+msgstr "loo mailcap kirjet kasutades uus lisa"
+
+#: keymap_alldefs.h:47
+msgid "toggle recoding of this attachment"
+msgstr "lülita selle lisa ümberkodeerimine"
+
+#: keymap_alldefs.h:48
+msgid "save this message to send later"
+msgstr "salvesta teade hilisemaks saatmiseks"
+
+#: keymap_alldefs.h:49
+#, fuzzy
+msgid "send attachment with a different name"
+msgstr "toimeta lisa kodeeringut"
+
+#: keymap_alldefs.h:50
+msgid "rename/move an attached file"
+msgstr "tõsta/nimeta lisatud fail ümber"
+
+#: keymap_alldefs.h:51
+#, fuzzy
+msgid "compose a new message to the sender"
+msgstr "koosta uus e-posti teade"
+
+#: keymap_alldefs.h:52
+msgid "send the message"
+msgstr "saada teade"
+
+#: keymap_alldefs.h:53
+msgid "toggle disposition between inline/attachment"
+msgstr "lülita paigutust kehasse/lisasse"
+
+#: keymap_alldefs.h:54
+msgid "toggle whether to delete file after sending it"
+msgstr "lülita faili kustutamist peale saatmist"
+
+#: keymap_alldefs.h:55
+msgid "update an attachment's encoding info"
+msgstr "uuenda teate kodeerimise infot"
+
+#: keymap_alldefs.h:56
+msgid "write the message to a folder"
+msgstr "kirjuta teade kausta"
+
+#: keymap_alldefs.h:57
+msgid "copy a message to a file/mailbox"
+msgstr "koleeri teade faili/postkasti"
+
+#: keymap_alldefs.h:58
+msgid "create an alias from a message sender"
+msgstr "loo teate saatjale alias"
+
+#: keymap_alldefs.h:59
+msgid "move entry to bottom of screen"
+msgstr "liiguta kirje ekraanil alla"
+
+#: keymap_alldefs.h:60
+msgid "move entry to middle of screen"
+msgstr "liiguta kirje ekraanil keskele"
+
+#: keymap_alldefs.h:61
+msgid "move entry to top of screen"
+msgstr "liiguta kirje ekraanil üles"
+
+#: keymap_alldefs.h:62
+msgid "make decoded (text/plain) copy"
+msgstr "tee avatud (text/plain) koopia"
+
+#: keymap_alldefs.h:63
+msgid "make decoded copy (text/plain) and delete"
+msgstr "tee avatud (text/plain) koopia ja kustuta"
+
+#: keymap_alldefs.h:64
+msgid "delete the current entry"
+msgstr "kustuta jooksev kirje"
+
+#: keymap_alldefs.h:65
+msgid "delete the current mailbox (IMAP only)"
+msgstr "kustuta jooksev postkast (ainult IMAP)"
+
+#: keymap_alldefs.h:66
+msgid "delete all messages in subthread"
+msgstr "kustuta kõik teated alamteemas"
+
+#: keymap_alldefs.h:67
+msgid "delete all messages in thread"
+msgstr "kustuta kõik teated teemas"
+
+#: keymap_alldefs.h:68
+msgid "display full address of sender"
+msgstr "esita saatja täielik aadress"
+
+#: keymap_alldefs.h:69
+msgid "display message and toggle header weeding"
+msgstr "näita teadet ja lülita päise näitamist"
+
+#: keymap_alldefs.h:70
+msgid "display a message"
+msgstr "näita teadet"
+
+#: keymap_alldefs.h:71
+msgid "add, change, or delete a message's label"
+msgstr ""
+
+#: keymap_alldefs.h:72
+msgid "edit the raw message"
+msgstr "toimeta kogu teadet"
+
+#: keymap_alldefs.h:73
+msgid "delete the char in front of the cursor"
+msgstr "kustuta sümbol kursori eest"
+
+#: keymap_alldefs.h:74
+msgid "move the cursor one character to the left"
+msgstr "liiguta kursorit sümbol vasakule"
+
+#: keymap_alldefs.h:75
+msgid "move the cursor to the beginning of the word"
+msgstr "tõsta kursor sõna algusse"
+
+#: keymap_alldefs.h:76
+msgid "jump to the beginning of the line"
+msgstr "hüppa rea algusse"
+
+#: keymap_alldefs.h:77
+msgid "cycle among incoming mailboxes"
+msgstr "vaheta sissetulevaid postkaste"
+
+#: keymap_alldefs.h:78
+msgid "complete filename or alias"
+msgstr "täienda failinime või aliast"
+
+#: keymap_alldefs.h:79
+msgid "complete address with query"
+msgstr "täienda aadressi päringuga"
+
+#: keymap_alldefs.h:80
+msgid "delete the char under the cursor"
+msgstr "kustuta sümbol kursori alt"
+
+#: keymap_alldefs.h:81
+msgid "jump to the end of the line"
+msgstr "hüppa realõppu"
+
+#: keymap_alldefs.h:82
+msgid "move the cursor one character to the right"
+msgstr "liiguta kursorit sümbol paremale"
+
+#: keymap_alldefs.h:83
+msgid "move the cursor to the end of the word"
+msgstr "tõsta kursor sõna lõppu"
+
+#: keymap_alldefs.h:84
+msgid "scroll down through the history list"
+msgstr "keri ajaloos alla"
+
+#: keymap_alldefs.h:85
+msgid "scroll up through the history list"
+msgstr "keri ajaloos üles"
+
+#: keymap_alldefs.h:86
+msgid "delete chars from cursor to end of line"
+msgstr "kustuta sümbolid kursorist realõpuni"
+
+#: keymap_alldefs.h:87
+msgid "delete chars from the cursor to the end of the word"
+msgstr "kustuta sümbolid kursorist sõna lõpuni"
+
+#: keymap_alldefs.h:88
+msgid "delete all chars on the line"
+msgstr "kustuta real kõik sümbolid"
+
+#: keymap_alldefs.h:89
+msgid "delete the word in front of the cursor"
+msgstr "kustuta sõna kursori eest"
+
+#: keymap_alldefs.h:90
+msgid "quote the next typed key"
+msgstr "kvoodi järgmine klahvivajutus"
+
+#: keymap_alldefs.h:91
+msgid "transpose character under cursor with previous"
+msgstr "vaheta kursori all olev sümbol kursorile eelnevaga"
+
+#: keymap_alldefs.h:92
+msgid "capitalize the word"
+msgstr "sõna algab suurtähega"
+
+#: keymap_alldefs.h:93
+msgid "convert the word to lower case"
+msgstr "teisenda tähed sõnas väiketähtedeks"
+
+#: keymap_alldefs.h:94
+msgid "convert the word to upper case"
+msgstr "teisenda tähed sõnas suurtähtedeks"
+
+#: keymap_alldefs.h:95
+msgid "enter a muttrc command"
+msgstr "sisestage muttrc käsk"
+
+#: keymap_alldefs.h:96
+msgid "enter a file mask"
+msgstr "sisestage faili mask"
+
+#: keymap_alldefs.h:97
+msgid "exit this menu"
+msgstr "välju sellest menüüst"
+
+#: keymap_alldefs.h:98
+msgid "filter attachment through a shell command"
+msgstr "filtreeri lisa läbi väliskäsu"
+
+#: keymap_alldefs.h:99
+msgid "move to the first entry"
+msgstr "liigu esimesele kirjele"
+
+#: keymap_alldefs.h:100
+msgid "toggle a message's 'important' flag"
+msgstr "lülita teate 'tähtsuse' lippu"
+
+#: keymap_alldefs.h:101
+#, fuzzy
+msgid "followup to newsgroup"
+msgstr "Vastus aadressile %s%s?"
+
+#: keymap_alldefs.h:102
+msgid "forward to newsgroup"
+msgstr ""
+
+#: keymap_alldefs.h:103
+msgid "forward a message with comments"
+msgstr "edasta teade kommentaaridega"
+
+#: keymap_alldefs.h:104
+msgid "select the current entry"
+msgstr "vali jooksev kirje"
+
+#: keymap_alldefs.h:105
+#, fuzzy
+msgid "get all children of the current message"
+msgstr "Te olete esimesel teatel."
+
+#: keymap_alldefs.h:106
+#, fuzzy
+msgid "get message with Message-Id"
+msgstr "toimeta teadet koos päisega"
+
+#: keymap_alldefs.h:107
+#, fuzzy
+msgid "get parent of the current message"
+msgstr "Te olete esimesel teatel."
+
+#: keymap_alldefs.h:108
+msgid "reply to all recipients"
+msgstr "vasta kõikidele"
+
+#: keymap_alldefs.h:109
+msgid "scroll down 1/2 page"
+msgstr "keri pool lehekülge alla"
+
+#: keymap_alldefs.h:110
+msgid "scroll up 1/2 page"
+msgstr "keri pool lehekülge üles"
+
+#: keymap_alldefs.h:111
+msgid "this screen"
+msgstr "see ekraan"
+
+#: keymap_alldefs.h:112
+msgid "jump to an index number"
+msgstr "hüppa indeksi numbrile"
+
+#: keymap_alldefs.h:113
+msgid "move to the last entry"
+msgstr "liigu viimasele kirjele"
+
+#: keymap_alldefs.h:114
+msgid "reply to specified mailing list"
+msgstr "vasta määratud postiloendile"
+
+#: keymap_alldefs.h:115
+msgid "load list of all newsgroups from NNTP server"
+msgstr ""
+
+#: keymap_alldefs.h:116
+msgid "execute a macro"
+msgstr "käivita makro"
+
+#: keymap_alldefs.h:117
+msgid "compose a new mail message"
+msgstr "koosta uus e-posti teade"
+
+#: keymap_alldefs.h:118
+msgid "break the thread in two"
+msgstr ""
+
+#: keymap_alldefs.h:119
+msgid "open a different folder"
+msgstr "ava teine kaust"
+
+#: keymap_alldefs.h:120
+msgid "open a different folder in read only mode"
+msgstr "ava teine kaust ainult lugemiseks"
+
+#: keymap_alldefs.h:121
+#, fuzzy
+msgid "open a different newsgroup"
+msgstr "ava teine kaust"
+
+#: keymap_alldefs.h:122
+#, fuzzy
+msgid "open a different newsgroup in read only mode"
+msgstr "ava teine kaust ainult lugemiseks"
+
+#: keymap_alldefs.h:123
+msgid "clear a status flag from a message"
+msgstr "puhasta teate olekulipp"
+
+#: keymap_alldefs.h:124
+msgid "delete messages matching a pattern"
+msgstr "kustuta mustrile vastavad teated"
+
+#: keymap_alldefs.h:125
+msgid "force retrieval of mail from IMAP server"
+msgstr "lae kiri IMAP serverilt"
+
+#: keymap_alldefs.h:126
+msgid "logout from all IMAP servers"
+msgstr ""
+
+#: keymap_alldefs.h:127
+msgid "retrieve mail from POP server"
+msgstr "lae kiri POP serverilt"
+
+#: keymap_alldefs.h:128
+msgid "show only messages matching a pattern"
+msgstr "näita ainult mustrile vastavaid teateid"
+
+#: keymap_alldefs.h:129
+#, fuzzy
+msgid "link tagged message to the current one"
+msgstr "Peegelda märgitud teated aadressile: "
+
+#: keymap_alldefs.h:130
+#, fuzzy
+msgid "open next mailbox with new mail"
+msgstr "Uute teadetega postkaste ei ole."
+
+#: keymap_alldefs.h:131
+msgid "jump to the next new message"
+msgstr "hüppa järgmisele uuele teatele"
+
+#: keymap_alldefs.h:132
+#, fuzzy
+msgid "jump to the next new or unread message"
+msgstr "hüppa järgmisele lugemata teatele"
+
+#: keymap_alldefs.h:133
+msgid "jump to the next subthread"
+msgstr "hüppa järgmisele alamteemale"
+
+#: keymap_alldefs.h:134
+msgid "jump to the next thread"
+msgstr "hüppa järgmisele teemale"
+
+#: keymap_alldefs.h:135
+msgid "move to the next undeleted message"
+msgstr "liigu järgmisele kustutamata teatele"
+
+#: keymap_alldefs.h:136
+msgid "jump to the next unread message"
+msgstr "hüppa järgmisele lugemata teatele"
+
+#: keymap_alldefs.h:137
+msgid "jump to parent message in thread"
+msgstr "hüppa teema vanemteatele"
+
+#: keymap_alldefs.h:138
+msgid "jump to previous thread"
+msgstr "hüppa eelmisele teemale"
+
+#: keymap_alldefs.h:139
+msgid "jump to previous subthread"
+msgstr "hüppa eelmisele alamteemale"
+
+#: keymap_alldefs.h:140
+msgid "move to the previous undeleted message"
+msgstr "liigu eelmisele kustutamata teatele"
+
+#: keymap_alldefs.h:141
+msgid "jump to the previous new message"
+msgstr "hüppa eelmisele uuele teatele"
+
+#: keymap_alldefs.h:142
+#, fuzzy
+msgid "jump to the previous new or unread message"
+msgstr "hüppa eelmisele lugemata teatele"
+
+#: keymap_alldefs.h:143
+msgid "jump to the previous unread message"
+msgstr "hüppa eelmisele lugemata teatele"
+
+#: keymap_alldefs.h:144
+msgid "mark the current thread as read"
+msgstr "märgi jooksev teema loetuks"
+
+#: keymap_alldefs.h:145
+msgid "mark the current subthread as read"
+msgstr "märgi jooksev alamteema loetuks"
+
+#: keymap_alldefs.h:146
+#, fuzzy
+msgid "jump to root message in thread"
+msgstr "hüppa teema vanemteatele"
+
+#: keymap_alldefs.h:147
+msgid "set a status flag on a message"
+msgstr "sea teate olekulipp"
+
+#: keymap_alldefs.h:148
+msgid "save changes to mailbox"
+msgstr "salvesta postkasti muutused"
+
+#: keymap_alldefs.h:149
+msgid "tag messages matching a pattern"
+msgstr "märgi mustrile vastavad teated"
+
+#: keymap_alldefs.h:150
+msgid "delete from mutt, don't touch on disk"
+msgstr ""
+
+#: keymap_alldefs.h:151
+msgid "undelete messages matching a pattern"
+msgstr "taasta mustrile vastavad teated"
+
+#: keymap_alldefs.h:152
+msgid "untag messages matching a pattern"
+msgstr "eemalda märk mustrile vastavatelt teadetelt"
+
+#: keymap_alldefs.h:153
+#, fuzzy
+msgid "create a hotkey macro for the current message"
+msgstr "Te olete esimesel teatel."
+
+#: keymap_alldefs.h:154
+msgid "move to the middle of the page"
+msgstr "liigu lehe keskele"
+
+#: keymap_alldefs.h:155
+msgid "move to the next entry"
+msgstr "liigu järgmisele kirjele"
+
+#: keymap_alldefs.h:156
+msgid "scroll down one line"
+msgstr "keri üks rida alla"
+
+#: keymap_alldefs.h:157
+msgid "move to the next page"
+msgstr "liigu järgmisele lehele"
+
+#: keymap_alldefs.h:158
+msgid "jump to the bottom of the message"
+msgstr "hüppa teate lõppu"
+
+#: keymap_alldefs.h:159
+msgid "toggle display of quoted text"
+msgstr "lülita tsiteeritud teksti näitamist"
+
+#: keymap_alldefs.h:160
+msgid "skip beyond quoted text"
+msgstr "liigu tsiteeritud teksti lõppu"
+
+#: keymap_alldefs.h:161
+msgid "jump to the top of the message"
+msgstr "hüppa teate algusse"
+
+#: keymap_alldefs.h:162
+msgid "pipe message/attachment to a shell command"
+msgstr "saada teade/lisa käsu sisendisse"
+
+#: keymap_alldefs.h:163
+#, fuzzy
+msgid "post message to newsgroup"
+msgstr "Peegelda teade aadressile %s"
+
+#: keymap_alldefs.h:164
+msgid "move to the previous entry"
+msgstr "liigu eelmisele kirjele"
+
+#: keymap_alldefs.h:165
+msgid "scroll up one line"
+msgstr "keri üks rida üles"
+
+#: keymap_alldefs.h:166
+msgid "move to the previous page"
+msgstr "liigu eelmisele lehele"
+
+#: keymap_alldefs.h:167
+msgid "print the current entry"
+msgstr "trüki jooksev kirje"
+
+#: keymap_alldefs.h:168
+msgid "really delete the current entry, bypassing the trash folder"
+msgstr ""
+
+#: keymap_alldefs.h:169
+msgid "really delete the current thread, bypassing the trash folder"
+msgstr ""
+
+#: keymap_alldefs.h:170
+msgid "query external program for addresses"
+msgstr "otsi aadresse välise programmiga"
+
+#: keymap_alldefs.h:171
+msgid "append new query results to current results"
+msgstr "lisa uue päringu tulemused olemasolevatele"
+
+#: keymap_alldefs.h:172
+msgid "save changes to mailbox and quit"
+msgstr "salvesta postkasti muutused ja välju"
+
+#: keymap_alldefs.h:173
+msgid "recall a postponed message"
+msgstr "võta postitusootel teade"
+
+#: keymap_alldefs.h:174
+#, fuzzy
+msgid "reconstruct thread containing current message"
+msgstr "Teema sisaldab lugemata teateid."
+
+#: keymap_alldefs.h:175
+msgid "clear and redraw the screen"
+msgstr "puhasta ja joonista ekraan uuesti"
+
+#: keymap_alldefs.h:176
+msgid "{internal}"
+msgstr "{sisemine}"
+
+#: keymap_alldefs.h:177
+#, fuzzy
+msgid "rename the current mailbox (IMAP only)"
+msgstr "kustuta jooksev postkast (ainult IMAP)"
+
+#: keymap_alldefs.h:178
+msgid "reply to a message"
+msgstr "vasta teatele"
+
+#: keymap_alldefs.h:179
+msgid "use the current message as a template for a new one"
+msgstr "võta teade aluseks uuele"
+
+#: keymap_alldefs.h:180
+#, fuzzy
+msgid "save message/attachment to a mailbox/file"
+msgstr "salvesta teade/lisa faili"
+
+#: keymap_alldefs.h:181
+msgid "search for a regular expression"
+msgstr "otsi regulaaravaldist"
+
+#: keymap_alldefs.h:182
+msgid "search backwards for a regular expression"
+msgstr "otsi regulaaravaldist tagaspidi"
+
+#: keymap_alldefs.h:183
+msgid "search for next match"
+msgstr "otsi järgmist"
+
+#: keymap_alldefs.h:184
+msgid "search for next match in opposite direction"
+msgstr "otsi järgmist vastasuunas"
+
+#: keymap_alldefs.h:185
+msgid "toggle search pattern coloring"
+msgstr "lülita otsingumustri värvimine"
+
+#: keymap_alldefs.h:186
+msgid "invoke a command in a subshell"
+msgstr "käivita käsk käsuinterpretaatoris"
+
+#: keymap_alldefs.h:187
+msgid "sort messages"
+msgstr "järjesta teated"
+
+#: keymap_alldefs.h:188
+msgid "sort messages in reverse order"
+msgstr "järjesta teated tagurpidi"
+
+#: keymap_alldefs.h:189
+#, fuzzy
+msgid "subscribe to newsgroups matching a pattern"
+msgstr "eemalda märk mustrile vastavatelt teadetelt"
+
+#: keymap_alldefs.h:190
+msgid "tag the current entry"
+msgstr "märgi jooksev kirje"
+
+#: keymap_alldefs.h:191
+msgid "apply next function to tagged messages"
+msgstr "kasuta funktsiooni märgitud teadetel"
+
+#: keymap_alldefs.h:192
+#, fuzzy
+msgid "apply next function ONLY to tagged messages"
+msgstr "kasuta funktsiooni märgitud teadetel"
+
+#: keymap_alldefs.h:193
+msgid "tag the current subthread"
+msgstr "märgi jooksev alamteema"
+
+#: keymap_alldefs.h:194
+msgid "tag the current thread"
+msgstr "märgi jooksev teema"
+
+#: keymap_alldefs.h:195
+msgid "toggle a message's 'new' flag"
+msgstr "lülita teate 'värskuse' lippu"
+
+#: keymap_alldefs.h:196
+#, fuzzy
+msgid "toggle view of read messages"
+msgstr "hüppa eelmisele lugemata teatele"
+
+#: keymap_alldefs.h:197
+msgid "toggle whether the mailbox will be rewritten"
+msgstr "lülita postkasti ülekirjutatamist"
+
+#: keymap_alldefs.h:198
+msgid "toggle whether to browse mailboxes or all files"
+msgstr "lülita kas brausida ainult postkaste või kõiki faile"
+
+#: keymap_alldefs.h:199
+msgid "move to the top of the page"
+msgstr "liigu lehe algusse"
+
+#: keymap_alldefs.h:200
+msgid "mark all articles in newsgroup as unread"
+msgstr ""
+
+#: keymap_alldefs.h:201
+msgid "undelete the current entry"
+msgstr "taasta jooksev kirje"
+
+#: keymap_alldefs.h:202
+msgid "undelete all messages in thread"
+msgstr "taasta kõik teema teated"
+
+#: keymap_alldefs.h:203
+msgid "undelete all messages in subthread"
+msgstr "taasta kõik alamteema teated"
+
+#: keymap_alldefs.h:204
+#, fuzzy
+msgid "unsubscribe from newsgroups matching a pattern"
+msgstr "eemalda märk mustrile vastavatelt teadetelt"
+
+#: keymap_alldefs.h:205
+msgid "show the Mutt version number and date"
+msgstr "näita Mutti versiooni ja kuupäeva"
+
+#: keymap_alldefs.h:206
+msgid "view attachment using mailcap entry if necessary"
+msgstr "vaata lisa kasutades vajadusel mailcap kirjet"
+
+#: keymap_alldefs.h:207
+msgid "show MIME attachments"
+msgstr "näita MIME lisasid"
+
+#: keymap_alldefs.h:208
+msgid "display the keycode for a key press"
+msgstr ""
+
+#: keymap_alldefs.h:209
+#, fuzzy
+msgid "limit view to current thread"
+msgstr "märgi jooksev teema"
+
+#: keymap_alldefs.h:210
+msgid "show currently active limit pattern"
+msgstr "näita praegu kehtivat piirangu mustrit"
+
+#: keymap_alldefs.h:211
+msgid "collapse/uncollapse current thread"
+msgstr "ava/sule jooksev teema"
+
+#: keymap_alldefs.h:212
+msgid "collapse/uncollapse all threads"
+msgstr "ava/sule kõik teemad"
+
+#: keymap_alldefs.h:213
+msgid "move the highlight to next mailbox"
+msgstr ""
+
+#: keymap_alldefs.h:214
+#, fuzzy
+msgid "move the highlight to next mailbox with new mail"
+msgstr "Uute teadetega postkaste ei ole."
+
+#: keymap_alldefs.h:215
+#, fuzzy
+msgid "open highlighted mailbox"
+msgstr "Avan postkasti uuesti..."
+
+#: keymap_alldefs.h:216
+#, fuzzy
+msgid "scroll the sidebar down 1 page"
+msgstr "keri pool lehekülge alla"
+
+#: keymap_alldefs.h:217
+#, fuzzy
+msgid "scroll the sidebar up 1 page"
+msgstr "keri pool lehekülge üles"
+
+#: keymap_alldefs.h:218
+#, fuzzy
+msgid "move the highlight to previous mailbox"
+msgstr "liigu eelmisele lehele"
+
+#: keymap_alldefs.h:219
+#, fuzzy
+msgid "move the highlight to previous mailbox with new mail"
+msgstr "Uute teadetega postkaste ei ole."
+
+#: keymap_alldefs.h:220
+#, fuzzy
+msgid "toggle between mailboxes and virtual mailboxes"
+msgstr "lülita kas brausida ainult postkaste või kõiki faile"
+
+#: keymap_alldefs.h:221
+msgid "make the sidebar (in)visible"
+msgstr ""
+
+#: keymap_alldefs.h:222
+#, fuzzy
+msgid "open a different virtual folder"
+msgstr "ava teine kaust"
+
+#: keymap_alldefs.h:223
+msgid "generate virtual folder from query"
+msgstr ""
+
+#: keymap_alldefs.h:224
+msgid "generate virtual folder from query and time window"
+msgstr ""
+
+#: keymap_alldefs.h:225
+msgid "shifts virtual folder time window forwards"
+msgstr ""
+
+#: keymap_alldefs.h:226
+msgid "shifts virtual folder time window backwards"
+msgstr ""
+
+#: keymap_alldefs.h:227
+msgid "modify (notmuch) tags"
+msgstr ""
+
+#: keymap_alldefs.h:228
+#, fuzzy
+msgid "modify labels and then hide message"
+msgstr "Te olete esimesel teatel."
+
+#: keymap_alldefs.h:229
+msgid "read entire thread of the current message"
+msgstr ""
+
+#: keymap_alldefs.h:230
+#, fuzzy
+msgid "accept the chain constructed"
+msgstr "Aktsepteeri koostatud ahelaga"
+
+#: keymap_alldefs.h:231
+#, fuzzy
+msgid "append a remailer to the chain"
+msgstr "Lisa edasisaatja ahela lõppu"
+
+#: keymap_alldefs.h:232
+#, fuzzy
+msgid "insert a remailer into the chain"
+msgstr "Lisa edasisaatja ahelasse"
+
+#: keymap_alldefs.h:233
+#, fuzzy
+msgid "delete a remailer from the chain"
+msgstr "Eemalda edasisaatja ahelast"
+
+#: keymap_alldefs.h:234
+#, fuzzy
+msgid "select the previous element of the chain"
+msgstr "Vali ahela eelmine element"
+
+#: keymap_alldefs.h:235
+#, fuzzy
+msgid "select the next element of the chain"
+msgstr "Vali ahela järgmine element"
+
+#: keymap_alldefs.h:236
+msgid "send the message through a mixmaster remailer chain"
+msgstr "saada teade läbi mixmaster vahendajate ahela"
+
+#: keymap_alldefs.h:237
+msgid "attach a PGP public key"
+msgstr "lisa PGP avalik võti"
+
+#: keymap_alldefs.h:238
+msgid "show PGP options"
+msgstr "näita PGP võtmeid"
+
+#: keymap_alldefs.h:239
+msgid "mail a PGP public key"
+msgstr "saada PGP avalik võti"
+
+#: keymap_alldefs.h:240
+msgid "verify a PGP public key"
+msgstr "kontrolli PGP avalikku võtit"
+
+#: keymap_alldefs.h:241
+msgid "view the key's user id"
+msgstr "vaata võtme kasutaja identifikaatorit"
+
+#: keymap_alldefs.h:242
+#, fuzzy
+msgid "check for classic PGP"
+msgstr "kontrolli klassikalise pgp olemasolu"
+
+#: keymap_alldefs.h:243
+msgid "show S/MIME options"
+msgstr "näita S/MIME võtmeid"
+
+#: keymap_alldefs.h:244
+msgid "make decrypted copy and delete"
+msgstr "loo avateksti koopia ja kustuta"
+
+#: keymap_alldefs.h:245
+msgid "make decrypted copy"
+msgstr "loo avateksti koopia"
+
+#: keymap_alldefs.h:246
+msgid "wipe passphrase(s) from memory"
+msgstr "eemalda parool(id) mälust"
+
+#: keymap_alldefs.h:247
+msgid "extract supported public keys"
+msgstr "eralda toetatud avalikud võtmed"
 
 #: lib.c:118
 msgid "Integer overflow -- can't allocate memory!"
@@ -5199,7 +6217,7 @@ msgid ""
 "Copyright (C) 2000-2004 Edmund Grimley Evans <edmundo@rano.org>\n"
 "Copyright (C) 2006-2009 Rocco Rutte <pdmef@gmx.net>\n"
 "Copyright (C) 2014-2016 Kevin J. McCarthy <kevin@8t8.us>\n"
-"Copyright (C) 2015-2016 Richard Russon <rich@flatcap.org>\n"
+"Copyright (C) 2015-2017 Richard Russon <rich@flatcap.org>\n"
 "\n"
 "Many others not mentioned here contributed code, fixes,\n"
 "and suggestions.\n"
@@ -5253,734 +6271,3 @@ msgid ""
 msgstr ""
 "\n"
 "Kompileerimise võtmed:"
-
-#~ msgid "PGP passphrase forgotten."
-#~ msgstr "PGP parool on unustatud."
-
-#~ msgid "Query"
-#~ msgstr "Päring"
-
-#~ msgid "null operation"
-#~ msgstr "tühi operatsioon"
-
-#~ msgid "force viewing of attachment using mailcap"
-#~ msgstr "vaata lisa mailcap vahendusel"
-
-#~ msgid "view attachment as text"
-#~ msgstr "vaata lisa tekstina"
-
-#~ msgid "Toggle display of subparts"
-#~ msgstr "Lülita osade näitamist"
-
-#~ msgid "move to the bottom of the page"
-#~ msgstr "liigu lehe lõppu"
-
-#~ msgid "remail a message to another user"
-#~ msgstr "saada teade edasi teisele kasutajale"
-
-#~ msgid "select a new file in this directory"
-#~ msgstr "valige sellest kataloogist uus fail"
-
-#~ msgid "view file"
-#~ msgstr "vaata faili"
-
-#~ msgid "display the currently selected file's name"
-#~ msgstr "näita praegu valitud faili nime"
-
-#, fuzzy
-#~ msgid "subscribe to current mbox (IMAP/NNTP only)"
-#~ msgstr "telli jooksev postkast (ainult IMAP)"
-
-#, fuzzy
-#~ msgid "unsubscribe from current mbox (IMAP/NNTP only)"
-#~ msgstr "loobu jooksvast postkastist (ainult IMAP)"
-
-#~ msgid "toggle view all/subscribed mailboxes (IMAP only)"
-#~ msgstr "lülita kõikide/tellitud kaustade vaatamine (ainult IMAP)"
-
-#~ msgid "list mailboxes with new mail"
-#~ msgstr "näita uute teadetega postkaste"
-
-#~ msgid "change directories"
-#~ msgstr "vaheta kataloogi"
-
-#~ msgid "check mailboxes for new mail"
-#~ msgstr "kontrolli uusi kirju postkastides"
-
-#, fuzzy
-#~ msgid "attach file(s) to this message"
-#~ msgstr "lisa sellele teatele fail(e)"
-
-#~ msgid "attach message(s) to this message"
-#~ msgstr "lisa sellele teatele teateid"
-
-#, fuzzy
-#~ msgid "attach news article(s) to this message"
-#~ msgstr "lisa sellele teatele fail(e)"
-
-#~ msgid "edit the BCC list"
-#~ msgstr "toimeta BCC nimekirja"
-
-#~ msgid "edit the CC list"
-#~ msgstr "toimeta CC nimekirja"
-
-#~ msgid "edit attachment description"
-#~ msgstr "toimeta lisa kirjeldust"
-
-#~ msgid "edit attachment transfer-encoding"
-#~ msgstr "toimeta lisa kodeeringut"
-
-#~ msgid "enter a file to save a copy of this message in"
-#~ msgstr "sisestage failinimi, kuhu salvestada selle teate koopia"
-
-#~ msgid "edit the file to be attached"
-#~ msgstr "toimeta lisatavat faili"
-
-#~ msgid "edit the from field"
-#~ msgstr "toimeta from välja"
-
-#~ msgid "edit the message with headers"
-#~ msgstr "toimeta teadet koos päisega"
-
-#~ msgid "edit the message"
-#~ msgstr "toimeta teadet"
-
-#~ msgid "edit attachment using mailcap entry"
-#~ msgstr "toimeta lisa kasutades mailcap kirjet"
-
-#, fuzzy
-#~ msgid "edit the newsgroups list"
-#~ msgstr "toimeta CC nimekirja"
-
-#~ msgid "edit the Reply-To field"
-#~ msgstr "toimeta Reply-To välja"
-
-#, fuzzy
-#~ msgid "edit the Followup-To field"
-#~ msgstr "toimeta Reply-To välja"
-
-#, fuzzy
-#~ msgid "edit the X-Comment-To field"
-#~ msgstr "toimeta Reply-To välja"
-
-#~ msgid "edit the subject of this message"
-#~ msgstr "toimeta selle teate teemat"
-
-#~ msgid "edit the TO list"
-#~ msgstr "toimeta TO nimekirja"
-
-#~ msgid "create a new mailbox (IMAP only)"
-#~ msgstr "loo uus postkast (ainult IMAP)"
-
-#~ msgid "edit attachment content type"
-#~ msgstr "muuda lisa sisu tüüpi"
-
-#~ msgid "get a temporary copy of an attachment"
-#~ msgstr "loo lisast ajutine koopia"
-
-#~ msgid "run ispell on the message"
-#~ msgstr "käivita teatel ispell"
-
-#~ msgid "compose new attachment using mailcap entry"
-#~ msgstr "loo mailcap kirjet kasutades uus lisa"
-
-#~ msgid "toggle recoding of this attachment"
-#~ msgstr "lülita selle lisa ümberkodeerimine"
-
-#~ msgid "save this message to send later"
-#~ msgstr "salvesta teade hilisemaks saatmiseks"
-
-#, fuzzy
-#~ msgid "send attachment with a different name"
-#~ msgstr "toimeta lisa kodeeringut"
-
-#~ msgid "rename/move an attached file"
-#~ msgstr "tõsta/nimeta lisatud fail ümber"
-
-#, fuzzy
-#~ msgid "compose a new message to the sender"
-#~ msgstr "koosta uus e-posti teade"
-
-#~ msgid "send the message"
-#~ msgstr "saada teade"
-
-#~ msgid "toggle disposition between inline/attachment"
-#~ msgstr "lülita paigutust kehasse/lisasse"
-
-#~ msgid "toggle whether to delete file after sending it"
-#~ msgstr "lülita faili kustutamist peale saatmist"
-
-#~ msgid "update an attachment's encoding info"
-#~ msgstr "uuenda teate kodeerimise infot"
-
-#~ msgid "write the message to a folder"
-#~ msgstr "kirjuta teade kausta"
-
-#~ msgid "copy a message to a file/mailbox"
-#~ msgstr "koleeri teade faili/postkasti"
-
-#~ msgid "create an alias from a message sender"
-#~ msgstr "loo teate saatjale alias"
-
-#~ msgid "move entry to bottom of screen"
-#~ msgstr "liiguta kirje ekraanil alla"
-
-#~ msgid "move entry to middle of screen"
-#~ msgstr "liiguta kirje ekraanil keskele"
-
-#~ msgid "move entry to top of screen"
-#~ msgstr "liiguta kirje ekraanil üles"
-
-#~ msgid "make decoded (text/plain) copy"
-#~ msgstr "tee avatud (text/plain) koopia"
-
-#~ msgid "make decoded copy (text/plain) and delete"
-#~ msgstr "tee avatud (text/plain) koopia ja kustuta"
-
-#~ msgid "delete the current entry"
-#~ msgstr "kustuta jooksev kirje"
-
-#~ msgid "delete the current mailbox (IMAP only)"
-#~ msgstr "kustuta jooksev postkast (ainult IMAP)"
-
-#~ msgid "delete all messages in subthread"
-#~ msgstr "kustuta kõik teated alamteemas"
-
-#~ msgid "delete all messages in thread"
-#~ msgstr "kustuta kõik teated teemas"
-
-#~ msgid "display full address of sender"
-#~ msgstr "esita saatja täielik aadress"
-
-#~ msgid "display message and toggle header weeding"
-#~ msgstr "näita teadet ja lülita päise näitamist"
-
-#~ msgid "display a message"
-#~ msgstr "näita teadet"
-
-#~ msgid "edit the raw message"
-#~ msgstr "toimeta kogu teadet"
-
-#~ msgid "delete the char in front of the cursor"
-#~ msgstr "kustuta sümbol kursori eest"
-
-#~ msgid "move the cursor one character to the left"
-#~ msgstr "liiguta kursorit sümbol vasakule"
-
-#~ msgid "move the cursor to the beginning of the word"
-#~ msgstr "tõsta kursor sõna algusse"
-
-#~ msgid "jump to the beginning of the line"
-#~ msgstr "hüppa rea algusse"
-
-#~ msgid "cycle among incoming mailboxes"
-#~ msgstr "vaheta sissetulevaid postkaste"
-
-#~ msgid "complete filename or alias"
-#~ msgstr "täienda failinime või aliast"
-
-#~ msgid "complete address with query"
-#~ msgstr "täienda aadressi päringuga"
-
-#~ msgid "delete the char under the cursor"
-#~ msgstr "kustuta sümbol kursori alt"
-
-#~ msgid "jump to the end of the line"
-#~ msgstr "hüppa realõppu"
-
-#~ msgid "move the cursor one character to the right"
-#~ msgstr "liiguta kursorit sümbol paremale"
-
-#~ msgid "move the cursor to the end of the word"
-#~ msgstr "tõsta kursor sõna lõppu"
-
-#~ msgid "scroll down through the history list"
-#~ msgstr "keri ajaloos alla"
-
-#~ msgid "scroll up through the history list"
-#~ msgstr "keri ajaloos üles"
-
-#~ msgid "delete chars from cursor to end of line"
-#~ msgstr "kustuta sümbolid kursorist realõpuni"
-
-#~ msgid "delete chars from the cursor to the end of the word"
-#~ msgstr "kustuta sümbolid kursorist sõna lõpuni"
-
-#~ msgid "delete all chars on the line"
-#~ msgstr "kustuta real kõik sümbolid"
-
-#~ msgid "delete the word in front of the cursor"
-#~ msgstr "kustuta sõna kursori eest"
-
-#~ msgid "quote the next typed key"
-#~ msgstr "kvoodi järgmine klahvivajutus"
-
-#~ msgid "transpose character under cursor with previous"
-#~ msgstr "vaheta kursori all olev sümbol kursorile eelnevaga"
-
-#~ msgid "capitalize the word"
-#~ msgstr "sõna algab suurtähega"
-
-#~ msgid "convert the word to lower case"
-#~ msgstr "teisenda tähed sõnas väiketähtedeks"
-
-#~ msgid "convert the word to upper case"
-#~ msgstr "teisenda tähed sõnas suurtähtedeks"
-
-#~ msgid "enter a muttrc command"
-#~ msgstr "sisestage muttrc käsk"
-
-#~ msgid "enter a file mask"
-#~ msgstr "sisestage faili mask"
-
-#~ msgid "exit this menu"
-#~ msgstr "välju sellest menüüst"
-
-#~ msgid "filter attachment through a shell command"
-#~ msgstr "filtreeri lisa läbi väliskäsu"
-
-#~ msgid "move to the first entry"
-#~ msgstr "liigu esimesele kirjele"
-
-#~ msgid "toggle a message's 'important' flag"
-#~ msgstr "lülita teate 'tähtsuse' lippu"
-
-#, fuzzy
-#~ msgid "followup to newsgroup"
-#~ msgstr "Vastus aadressile %s%s?"
-
-#~ msgid "forward a message with comments"
-#~ msgstr "edasta teade kommentaaridega"
-
-#~ msgid "select the current entry"
-#~ msgstr "vali jooksev kirje"
-
-#, fuzzy
-#~ msgid "get all children of the current message"
-#~ msgstr "Te olete esimesel teatel."
-
-#, fuzzy
-#~ msgid "get message with Message-Id"
-#~ msgstr "toimeta teadet koos päisega"
-
-#, fuzzy
-#~ msgid "get parent of the current message"
-#~ msgstr "Te olete esimesel teatel."
-
-#~ msgid "reply to all recipients"
-#~ msgstr "vasta kõikidele"
-
-#~ msgid "scroll down 1/2 page"
-#~ msgstr "keri pool lehekülge alla"
-
-#~ msgid "scroll up 1/2 page"
-#~ msgstr "keri pool lehekülge üles"
-
-#~ msgid "this screen"
-#~ msgstr "see ekraan"
-
-#~ msgid "jump to an index number"
-#~ msgstr "hüppa indeksi numbrile"
-
-#~ msgid "move to the last entry"
-#~ msgstr "liigu viimasele kirjele"
-
-#~ msgid "reply to specified mailing list"
-#~ msgstr "vasta määratud postiloendile"
-
-#~ msgid "execute a macro"
-#~ msgstr "käivita makro"
-
-#~ msgid "compose a new mail message"
-#~ msgstr "koosta uus e-posti teade"
-
-#~ msgid "open a different folder"
-#~ msgstr "ava teine kaust"
-
-#~ msgid "open a different folder in read only mode"
-#~ msgstr "ava teine kaust ainult lugemiseks"
-
-#, fuzzy
-#~ msgid "open a different newsgroup"
-#~ msgstr "ava teine kaust"
-
-#, fuzzy
-#~ msgid "open a different newsgroup in read only mode"
-#~ msgstr "ava teine kaust ainult lugemiseks"
-
-#~ msgid "clear a status flag from a message"
-#~ msgstr "puhasta teate olekulipp"
-
-#~ msgid "delete messages matching a pattern"
-#~ msgstr "kustuta mustrile vastavad teated"
-
-#~ msgid "force retrieval of mail from IMAP server"
-#~ msgstr "lae kiri IMAP serverilt"
-
-#~ msgid "retrieve mail from POP server"
-#~ msgstr "lae kiri POP serverilt"
-
-#~ msgid "show only messages matching a pattern"
-#~ msgstr "näita ainult mustrile vastavaid teateid"
-
-#, fuzzy
-#~ msgid "link tagged message to the current one"
-#~ msgstr "Peegelda märgitud teated aadressile: "
-
-#, fuzzy
-#~ msgid "open next mailbox with new mail"
-#~ msgstr "Uute teadetega postkaste ei ole."
-
-#~ msgid "jump to the next new message"
-#~ msgstr "hüppa järgmisele uuele teatele"
-
-#, fuzzy
-#~ msgid "jump to the next new or unread message"
-#~ msgstr "hüppa järgmisele lugemata teatele"
-
-#~ msgid "jump to the next subthread"
-#~ msgstr "hüppa järgmisele alamteemale"
-
-#~ msgid "jump to the next thread"
-#~ msgstr "hüppa järgmisele teemale"
-
-#~ msgid "move to the next undeleted message"
-#~ msgstr "liigu järgmisele kustutamata teatele"
-
-#~ msgid "jump to the next unread message"
-#~ msgstr "hüppa järgmisele lugemata teatele"
-
-#~ msgid "jump to parent message in thread"
-#~ msgstr "hüppa teema vanemteatele"
-
-#~ msgid "jump to previous thread"
-#~ msgstr "hüppa eelmisele teemale"
-
-#~ msgid "jump to previous subthread"
-#~ msgstr "hüppa eelmisele alamteemale"
-
-#~ msgid "move to the previous undeleted message"
-#~ msgstr "liigu eelmisele kustutamata teatele"
-
-#~ msgid "jump to the previous new message"
-#~ msgstr "hüppa eelmisele uuele teatele"
-
-#, fuzzy
-#~ msgid "jump to the previous new or unread message"
-#~ msgstr "hüppa eelmisele lugemata teatele"
-
-#~ msgid "jump to the previous unread message"
-#~ msgstr "hüppa eelmisele lugemata teatele"
-
-#~ msgid "mark the current thread as read"
-#~ msgstr "märgi jooksev teema loetuks"
-
-#~ msgid "mark the current subthread as read"
-#~ msgstr "märgi jooksev alamteema loetuks"
-
-#, fuzzy
-#~ msgid "jump to root message in thread"
-#~ msgstr "hüppa teema vanemteatele"
-
-#~ msgid "set a status flag on a message"
-#~ msgstr "sea teate olekulipp"
-
-#~ msgid "save changes to mailbox"
-#~ msgstr "salvesta postkasti muutused"
-
-#~ msgid "tag messages matching a pattern"
-#~ msgstr "märgi mustrile vastavad teated"
-
-#~ msgid "undelete messages matching a pattern"
-#~ msgstr "taasta mustrile vastavad teated"
-
-#~ msgid "untag messages matching a pattern"
-#~ msgstr "eemalda märk mustrile vastavatelt teadetelt"
-
-#, fuzzy
-#~ msgid "create a hotkey macro for the current message"
-#~ msgstr "Te olete esimesel teatel."
-
-#~ msgid "move to the middle of the page"
-#~ msgstr "liigu lehe keskele"
-
-#~ msgid "move to the next entry"
-#~ msgstr "liigu järgmisele kirjele"
-
-#~ msgid "scroll down one line"
-#~ msgstr "keri üks rida alla"
-
-#~ msgid "move to the next page"
-#~ msgstr "liigu järgmisele lehele"
-
-#~ msgid "jump to the bottom of the message"
-#~ msgstr "hüppa teate lõppu"
-
-#~ msgid "toggle display of quoted text"
-#~ msgstr "lülita tsiteeritud teksti näitamist"
-
-#~ msgid "skip beyond quoted text"
-#~ msgstr "liigu tsiteeritud teksti lõppu"
-
-#~ msgid "jump to the top of the message"
-#~ msgstr "hüppa teate algusse"
-
-#~ msgid "pipe message/attachment to a shell command"
-#~ msgstr "saada teade/lisa käsu sisendisse"
-
-#, fuzzy
-#~ msgid "post message to newsgroup"
-#~ msgstr "Peegelda teade aadressile %s"
-
-#~ msgid "move to the previous entry"
-#~ msgstr "liigu eelmisele kirjele"
-
-#~ msgid "scroll up one line"
-#~ msgstr "keri üks rida üles"
-
-#~ msgid "move to the previous page"
-#~ msgstr "liigu eelmisele lehele"
-
-#~ msgid "print the current entry"
-#~ msgstr "trüki jooksev kirje"
-
-#~ msgid "query external program for addresses"
-#~ msgstr "otsi aadresse välise programmiga"
-
-#~ msgid "append new query results to current results"
-#~ msgstr "lisa uue päringu tulemused olemasolevatele"
-
-#~ msgid "save changes to mailbox and quit"
-#~ msgstr "salvesta postkasti muutused ja välju"
-
-#~ msgid "recall a postponed message"
-#~ msgstr "võta postitusootel teade"
-
-#, fuzzy
-#~ msgid "reconstruct thread containing current message"
-#~ msgstr "Teema sisaldab lugemata teateid."
-
-#~ msgid "clear and redraw the screen"
-#~ msgstr "puhasta ja joonista ekraan uuesti"
-
-#~ msgid "{internal}"
-#~ msgstr "{sisemine}"
-
-#, fuzzy
-#~ msgid "rename the current mailbox (IMAP only)"
-#~ msgstr "kustuta jooksev postkast (ainult IMAP)"
-
-#~ msgid "reply to a message"
-#~ msgstr "vasta teatele"
-
-#~ msgid "use the current message as a template for a new one"
-#~ msgstr "võta teade aluseks uuele"
-
-#, fuzzy
-#~ msgid "save message/attachment to a mailbox/file"
-#~ msgstr "salvesta teade/lisa faili"
-
-#~ msgid "search for a regular expression"
-#~ msgstr "otsi regulaaravaldist"
-
-#~ msgid "search backwards for a regular expression"
-#~ msgstr "otsi regulaaravaldist tagaspidi"
-
-#~ msgid "search for next match"
-#~ msgstr "otsi järgmist"
-
-#~ msgid "search for next match in opposite direction"
-#~ msgstr "otsi järgmist vastasuunas"
-
-#~ msgid "toggle search pattern coloring"
-#~ msgstr "lülita otsingumustri värvimine"
-
-#~ msgid "invoke a command in a subshell"
-#~ msgstr "käivita käsk käsuinterpretaatoris"
-
-#~ msgid "sort messages"
-#~ msgstr "järjesta teated"
-
-#~ msgid "sort messages in reverse order"
-#~ msgstr "järjesta teated tagurpidi"
-
-#, fuzzy
-#~ msgid "subscribe to newsgroups matching a pattern"
-#~ msgstr "eemalda märk mustrile vastavatelt teadetelt"
-
-#~ msgid "tag the current entry"
-#~ msgstr "märgi jooksev kirje"
-
-#~ msgid "apply next function to tagged messages"
-#~ msgstr "kasuta funktsiooni märgitud teadetel"
-
-#, fuzzy
-#~ msgid "apply next function ONLY to tagged messages"
-#~ msgstr "kasuta funktsiooni märgitud teadetel"
-
-#~ msgid "tag the current subthread"
-#~ msgstr "märgi jooksev alamteema"
-
-#~ msgid "tag the current thread"
-#~ msgstr "märgi jooksev teema"
-
-#~ msgid "toggle a message's 'new' flag"
-#~ msgstr "lülita teate 'värskuse' lippu"
-
-#, fuzzy
-#~ msgid "toggle view of read messages"
-#~ msgstr "hüppa eelmisele lugemata teatele"
-
-#~ msgid "toggle whether the mailbox will be rewritten"
-#~ msgstr "lülita postkasti ülekirjutatamist"
-
-#~ msgid "toggle whether to browse mailboxes or all files"
-#~ msgstr "lülita kas brausida ainult postkaste või kõiki faile"
-
-#~ msgid "move to the top of the page"
-#~ msgstr "liigu lehe algusse"
-
-#~ msgid "undelete the current entry"
-#~ msgstr "taasta jooksev kirje"
-
-#~ msgid "undelete all messages in thread"
-#~ msgstr "taasta kõik teema teated"
-
-#~ msgid "undelete all messages in subthread"
-#~ msgstr "taasta kõik alamteema teated"
-
-#, fuzzy
-#~ msgid "unsubscribe from newsgroups matching a pattern"
-#~ msgstr "eemalda märk mustrile vastavatelt teadetelt"
-
-#~ msgid "show the Mutt version number and date"
-#~ msgstr "näita Mutti versiooni ja kuupäeva"
-
-#~ msgid "view attachment using mailcap entry if necessary"
-#~ msgstr "vaata lisa kasutades vajadusel mailcap kirjet"
-
-#~ msgid "show MIME attachments"
-#~ msgstr "näita MIME lisasid"
-
-#, fuzzy
-#~ msgid "limit view to current thread"
-#~ msgstr "märgi jooksev teema"
-
-#~ msgid "show currently active limit pattern"
-#~ msgstr "näita praegu kehtivat piirangu mustrit"
-
-#~ msgid "collapse/uncollapse current thread"
-#~ msgstr "ava/sule jooksev teema"
-
-#~ msgid "collapse/uncollapse all threads"
-#~ msgstr "ava/sule kõik teemad"
-
-#, fuzzy
-#~ msgid "move the highlight to next mailbox with new mail"
-#~ msgstr "Uute teadetega postkaste ei ole."
-
-#, fuzzy
-#~ msgid "open highlighted mailbox"
-#~ msgstr "Avan postkasti uuesti..."
-
-#, fuzzy
-#~ msgid "scroll the sidebar down 1 page"
-#~ msgstr "keri pool lehekülge alla"
-
-#, fuzzy
-#~ msgid "scroll the sidebar up 1 page"
-#~ msgstr "keri pool lehekülge üles"
-
-#, fuzzy
-#~ msgid "move the highlight to previous mailbox"
-#~ msgstr "liigu eelmisele lehele"
-
-#, fuzzy
-#~ msgid "move the highlight to previous mailbox with new mail"
-#~ msgstr "Uute teadetega postkaste ei ole."
-
-#, fuzzy
-#~ msgid "toggle between mailboxes and virtual mailboxes"
-#~ msgstr "lülita kas brausida ainult postkaste või kõiki faile"
-
-#, fuzzy
-#~ msgid "open a different virtual folder"
-#~ msgstr "ava teine kaust"
-
-#, fuzzy
-#~ msgid "modify labels and then hide message"
-#~ msgstr "Te olete esimesel teatel."
-
-#~ msgid "attach a PGP public key"
-#~ msgstr "lisa PGP avalik võti"
-
-#~ msgid "show PGP options"
-#~ msgstr "näita PGP võtmeid"
-
-#~ msgid "mail a PGP public key"
-#~ msgstr "saada PGP avalik võti"
-
-#~ msgid "verify a PGP public key"
-#~ msgstr "kontrolli PGP avalikku võtit"
-
-#~ msgid "view the key's user id"
-#~ msgstr "vaata võtme kasutaja identifikaatorit"
-
-#, fuzzy
-#~ msgid "check for classic PGP"
-#~ msgstr "kontrolli klassikalise pgp olemasolu"
-
-#, fuzzy
-#~ msgid "accept the chain constructed"
-#~ msgstr "Aktsepteeri koostatud ahelaga"
-
-#, fuzzy
-#~ msgid "append a remailer to the chain"
-#~ msgstr "Lisa edasisaatja ahela lõppu"
-
-#, fuzzy
-#~ msgid "insert a remailer into the chain"
-#~ msgstr "Lisa edasisaatja ahelasse"
-
-#, fuzzy
-#~ msgid "delete a remailer from the chain"
-#~ msgstr "Eemalda edasisaatja ahelast"
-
-#, fuzzy
-#~ msgid "select the previous element of the chain"
-#~ msgstr "Vali ahela eelmine element"
-
-#, fuzzy
-#~ msgid "select the next element of the chain"
-#~ msgstr "Vali ahela järgmine element"
-
-#~ msgid "send the message through a mixmaster remailer chain"
-#~ msgstr "saada teade läbi mixmaster vahendajate ahela"
-
-#~ msgid "make decrypted copy and delete"
-#~ msgstr "loo avateksti koopia ja kustuta"
-
-#~ msgid "make decrypted copy"
-#~ msgstr "loo avateksti koopia"
-
-#~ msgid "wipe passphrase(s) from memory"
-#~ msgstr "eemalda parool(id) mälust"
-
-#~ msgid "extract supported public keys"
-#~ msgstr "eralda toetatud avalikud võtmed"
-
-#~ msgid "show S/MIME options"
-#~ msgstr "näita S/MIME võtmeid"
-
-#~ msgid "Fingerprint: %s"
-#~ msgstr "Sõrmejälg: %s"
-
-#, fuzzy
-#~ msgid "SMTP authentication requires SASL"
-#~ msgstr "GSSAPI autentimine ebaõnnestus."
-
-#~ msgid "move to the first message"
-#~ msgstr "liigu esimesele teatele"
-
-#~ msgid "move to the last message"
-#~ msgstr "liigu viimasele teatele"

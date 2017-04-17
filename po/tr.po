@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neomutt-20161104\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
-"POT-Creation-Date: 2017-04-13 13:26+0100\n"
+"POT-Creation-Date: 2017-04-17 17:04+0100\n"
 "PO-Revision-Date: 2006-01-11 04:13+0200\n"
 "Last-Translator: Recai Oktaş <roktas@debian.org>\n"
 "Language-Team: Debian L10n Turkish <debian-l10n-turkish@lists.debian.org>\n"
@@ -917,6 +917,120 @@ msgstr "%s konumuna kopyalanıyor..."
 msgid "No decryption engine available for message"
 msgstr ""
 
+#: crypt.c:59
+#, c-format
+msgid " (current time: %c)"
+msgstr " (şu anki tarih: %c)"
+
+#: crypt.c:64
+#, c-format
+msgid "[-- %s output follows%s --]\n"
+msgstr "[-- %s çıktısı%s --]\n"
+
+#: crypt.c:78
+msgid "Passphrase(s) forgotten."
+msgstr "PGP parolası/parolaları unutuldu."
+
+#: crypt.c:139
+#, fuzzy
+msgid "Inline PGP can't be used with attachments.  Revert to PGP/MIME?"
+msgstr "İleti satıriçi olarak gönderilemiyor.  PGP/MIME kullanımına geri dönülsün mü?"
+
+#: crypt.c:143
+msgid "Mail not sent: inline PGP can't be used with attachments."
+msgstr ""
+
+#: crypt.c:151 cryptglue.c:106 pgpkey.c:541 pgpkey.c:724
+msgid "Invoking PGP..."
+msgstr "PGP çağırılıyor..."
+
+#: crypt.c:162
+msgid "Message can't be sent inline.  Revert to using PGP/MIME?"
+msgstr "İleti satıriçi olarak gönderilemiyor.  PGP/MIME kullanımına geri dönülsün mü?"
+
+#: crypt.c:164 send.c:1796
+msgid "Mail not sent."
+msgstr "Eposta gönderilmedi."
+
+#: crypt.c:224
+msgid "Encrypt message to S/MIME Default Key also?"
+msgstr ""
+
+#: crypt.c:259
+msgid "Encrypt message to PGP Default Key also?"
+msgstr ""
+
+#: crypt.c:502
+msgid "S/MIME messages with no hints on content are unsupported."
+msgstr "İçeriği hakkında hiçbir bilginin bulunmadığı S/MIME iletilerinin gönderilmesi desteklenmiyor."
+
+#: crypt.c:710 crypt.c:751
+msgid "Trying to extract PGP keys...\n"
+msgstr "PGP anahtarları belirlenmeye çalışılıyor...\n"
+
+#: crypt.c:732 crypt.c:772
+msgid "Trying to extract S/MIME certificates...\n"
+msgstr "S/MIME sertifikaları belirlenmeye çalışılıyor...\n"
+
+#: crypt.c:913
+#, c-format
+msgid ""
+"[-- Error: Unknown multipart/signed protocol %s! --]\n"
+"\n"
+msgstr ""
+"[-- Hata: Bilinmeyen \"multipart/signed\" protokolü %s! --]\n"
+"\n"
+
+#: crypt.c:947
+msgid ""
+"[-- Error: Inconsistent multipart/signed structure! --]\n"
+"\n"
+msgstr ""
+"[-- Hata: Tutarsız \"multipart/signed\" yapısı! --]\n"
+"\n"
+
+#: crypt.c:983
+#, c-format
+msgid ""
+"[-- Warning: We can't verify %s/%s signatures. --]\n"
+"\n"
+msgstr ""
+"[-- Uyarı: %s/%s imzaları doğrulanamıyor. --]\n"
+"\n"
+
+#: crypt.c:995
+msgid ""
+"[-- The following data is signed --]\n"
+"\n"
+msgstr ""
+"[-- Aşağıdaki bilgi imzalanmıştır --]\n"
+"\n"
+
+#: crypt.c:1001
+msgid ""
+"[-- Warning: Can't find any signatures. --]\n"
+"\n"
+msgstr ""
+"[-- Uyarı: Herhangi bir imza bulunamıyor. --]\n"
+"\n"
+
+#: crypt.c:1007
+msgid ""
+"\n"
+"[-- End of signed data --]\n"
+msgstr ""
+"\n"
+"[-- İmzalanmış bilginin sonu --]\n"
+
+#: cryptglue.c:84
+#, fuzzy
+msgid "\"crypt_use_gpgme\" set but not built with GPGME support."
+msgstr "\"crypt_use_gpgme\" ayarlanmış, fakat GPGME desteğiyle inşa edilmemiş."
+
+#: cryptglue.c:108
+msgid "Invoking S/MIME..."
+msgstr "S/MIME çağırılıyor..."
+
 #: crypt_gpgme.c:384
 #, c-format
 msgid "error creating gpgme context: %s\n"
@@ -1573,120 +1687,6 @@ msgstr "Gönderici doğrulanamadı"
 #: crypt_gpgme.c:4833
 msgid "Failed to figure out sender"
 msgstr "Göndericinin kim olduğu belirlenemedi"
-
-#: crypt.c:59
-#, c-format
-msgid " (current time: %c)"
-msgstr " (şu anki tarih: %c)"
-
-#: crypt.c:64
-#, c-format
-msgid "[-- %s output follows%s --]\n"
-msgstr "[-- %s çıktısı%s --]\n"
-
-#: crypt.c:78
-msgid "Passphrase(s) forgotten."
-msgstr "PGP parolası/parolaları unutuldu."
-
-#: crypt.c:139
-#, fuzzy
-msgid "Inline PGP can't be used with attachments.  Revert to PGP/MIME?"
-msgstr "İleti satıriçi olarak gönderilemiyor.  PGP/MIME kullanımına geri dönülsün mü?"
-
-#: crypt.c:143
-msgid "Mail not sent: inline PGP can't be used with attachments."
-msgstr ""
-
-#: crypt.c:151 cryptglue.c:106 pgpkey.c:541 pgpkey.c:724
-msgid "Invoking PGP..."
-msgstr "PGP çağırılıyor..."
-
-#: crypt.c:162
-msgid "Message can't be sent inline.  Revert to using PGP/MIME?"
-msgstr "İleti satıriçi olarak gönderilemiyor.  PGP/MIME kullanımına geri dönülsün mü?"
-
-#: crypt.c:164 send.c:1796
-msgid "Mail not sent."
-msgstr "Eposta gönderilmedi."
-
-#: crypt.c:224
-msgid "Encrypt message to S/MIME Default Key also?"
-msgstr ""
-
-#: crypt.c:259
-msgid "Encrypt message to PGP Default Key also?"
-msgstr ""
-
-#: crypt.c:502
-msgid "S/MIME messages with no hints on content are unsupported."
-msgstr "İçeriği hakkında hiçbir bilginin bulunmadığı S/MIME iletilerinin gönderilmesi desteklenmiyor."
-
-#: crypt.c:710 crypt.c:751
-msgid "Trying to extract PGP keys...\n"
-msgstr "PGP anahtarları belirlenmeye çalışılıyor...\n"
-
-#: crypt.c:732 crypt.c:772
-msgid "Trying to extract S/MIME certificates...\n"
-msgstr "S/MIME sertifikaları belirlenmeye çalışılıyor...\n"
-
-#: crypt.c:913
-#, c-format
-msgid ""
-"[-- Error: Unknown multipart/signed protocol %s! --]\n"
-"\n"
-msgstr ""
-"[-- Hata: Bilinmeyen \"multipart/signed\" protokolü %s! --]\n"
-"\n"
-
-#: crypt.c:947
-msgid ""
-"[-- Error: Inconsistent multipart/signed structure! --]\n"
-"\n"
-msgstr ""
-"[-- Hata: Tutarsız \"multipart/signed\" yapısı! --]\n"
-"\n"
-
-#: crypt.c:983
-#, c-format
-msgid ""
-"[-- Warning: We can't verify %s/%s signatures. --]\n"
-"\n"
-msgstr ""
-"[-- Uyarı: %s/%s imzaları doğrulanamıyor. --]\n"
-"\n"
-
-#: crypt.c:995
-msgid ""
-"[-- The following data is signed --]\n"
-"\n"
-msgstr ""
-"[-- Aşağıdaki bilgi imzalanmıştır --]\n"
-"\n"
-
-#: crypt.c:1001
-msgid ""
-"[-- Warning: Can't find any signatures. --]\n"
-"\n"
-msgstr ""
-"[-- Uyarı: Herhangi bir imza bulunamıyor. --]\n"
-"\n"
-
-#: crypt.c:1007
-msgid ""
-"\n"
-"[-- End of signed data --]\n"
-msgstr ""
-"\n"
-"[-- İmzalanmış bilginin sonu --]\n"
-
-#: cryptglue.c:84
-#, fuzzy
-msgid "\"crypt_use_gpgme\" set but not built with GPGME support."
-msgstr "\"crypt_use_gpgme\" ayarlanmış, fakat GPGME desteğiyle inşa edilmemiş."
-
-#: cryptglue.c:108
-msgid "Invoking S/MIME..."
-msgstr "S/MIME çağırılıyor..."
 
 #: curs_lib.c:229
 msgid "yes"
@@ -2540,12 +2540,12 @@ msgstr "Giriş yapılıyor..."
 msgid "Login failed."
 msgstr "Giriş başarısız oldu."
 
-#: imap/auth_sasl.c:94 nntp.c:367 nntp.c:432 smtp.c:372
+#: imap/auth_sasl.c:95 nntp.c:367 nntp.c:432 smtp.c:372
 #, c-format
 msgid "Authenticating (%s)..."
 msgstr "Doğrulanıyor (%s)..."
 
-#: imap/auth_sasl.c:222 pop_auth.c:175
+#: imap/auth_sasl.c:223 pop_auth.c:175
 msgid "SASL authentication failed."
 msgstr "SASL doğrulaması başarısız oldu."
 
@@ -3024,6 +3024,1019 @@ msgstr "Tuşları girin (iptal için ^G): "
 msgid "Char = %s, Octal = %o, Decimal = %d"
 msgstr "Karakter = %s, Sekizlik = %o, Onluk = %d"
 
+#: keymap_alldefs.h:5
+msgid "null operation"
+msgstr "belirtilmemiş işlem"
+
+#: keymap_alldefs.h:6
+msgid "end of conditional execution (noop)"
+msgstr "koşullu çalıştırma sonu (noop)"
+
+#: keymap_alldefs.h:7
+msgid "force viewing of attachment using mailcap"
+msgstr "mailcap kullanarak ekin görüntülenmesini sağla"
+
+#: keymap_alldefs.h:8
+msgid "view attachment as text"
+msgstr "eki metin olarak göster"
+
+#: keymap_alldefs.h:9
+msgid "Toggle display of subparts"
+msgstr "Alt bölümlerin görüntülenmesini aç/kapat"
+
+#: keymap_alldefs.h:10
+msgid "move to the bottom of the page"
+msgstr "sayfanın sonuna geç"
+
+#: keymap_alldefs.h:11
+msgid "remail a message to another user"
+msgstr "iletiyi başka bir kullanıcıya yeniden gönder"
+
+#: keymap_alldefs.h:12
+msgid "swap the current folder position with $folder if it exists"
+msgstr ""
+
+#: keymap_alldefs.h:13
+msgid "select a new file in this directory"
+msgstr "bu dizinde yeni bir dosya seç"
+
+#: keymap_alldefs.h:14
+msgid "view file"
+msgstr "dosyayı görüntüle"
+
+#: keymap_alldefs.h:15
+msgid "display the currently selected file's name"
+msgstr "seçili dosyanın ismini göster"
+
+#: keymap_alldefs.h:16
+#, fuzzy
+msgid "subscribe to current mbox (IMAP/NNTP only)"
+msgstr "geçerli eposta kutusuna abone ol (sadece IMAP)"
+
+#: keymap_alldefs.h:17
+#, fuzzy
+msgid "unsubscribe from current mbox (IMAP/NNTP only)"
+msgstr "geçerli eposta kutusuna olan aboneliği iptal et (sadece IMAP)"
+
+#: keymap_alldefs.h:18
+msgid "toggle view all/subscribed mailboxes (IMAP only)"
+msgstr "görüntüleme kipleri arasında geçiş yap: hepsi/abone olunanlar (sadece IMAP)"
+
+#: keymap_alldefs.h:19
+msgid "list mailboxes with new mail"
+msgstr "yeni eposta içeren eposta kutularını listele"
+
+#: keymap_alldefs.h:20
+msgid "mark all articles in newsgroup as read"
+msgstr ""
+
+#: keymap_alldefs.h:21
+msgid "change directories"
+msgstr "dizin değiştir"
+
+#: keymap_alldefs.h:22
+msgid "check mailboxes for new mail"
+msgstr "eposta kutularını yeni eposta için denetle"
+
+#: keymap_alldefs.h:23
+#, fuzzy
+msgid "attach file(s) to this message"
+msgstr "bu iletiye dosya ekle"
+
+#: keymap_alldefs.h:24
+msgid "attach message(s) to this message"
+msgstr "bu iletiye ileti ekle"
+
+#: keymap_alldefs.h:25
+#, fuzzy
+msgid "attach news article(s) to this message"
+msgstr "bu iletiye dosya ekle"
+
+#: keymap_alldefs.h:26
+msgid "edit the BCC list"
+msgstr "BCC listesini düzenle"
+
+#: keymap_alldefs.h:27
+msgid "edit the CC list"
+msgstr "CC listesini düzenle"
+
+#: keymap_alldefs.h:28
+msgid "edit attachment description"
+msgstr "ek açıklamasını düzenle"
+
+#: keymap_alldefs.h:29
+msgid "edit attachment transfer-encoding"
+msgstr "ek iletim kodlamasını (transfer-encoding) düzenle"
+
+#: keymap_alldefs.h:30
+msgid "enter a file to save a copy of this message in"
+msgstr "bu iletinin bir kopyasının kaydedileceği dosyayı gir"
+
+#: keymap_alldefs.h:31
+msgid "edit the file to be attached"
+msgstr "eklenecek dosyayı düzenle"
+
+#: keymap_alldefs.h:32
+msgid "edit the from field"
+msgstr "gönderen alanını düzenle"
+
+#: keymap_alldefs.h:33
+msgid "edit the message with headers"
+msgstr "iletiyi başlıklarıyla düzenle"
+
+#: keymap_alldefs.h:34
+msgid "edit the message"
+msgstr "iletiyi düzenle"
+
+#: keymap_alldefs.h:35
+msgid "edit attachment using mailcap entry"
+msgstr "mailcap kaydını kullanarak eki düzenle"
+
+#: keymap_alldefs.h:36
+#, fuzzy
+msgid "edit the newsgroups list"
+msgstr "CC listesini düzenle"
+
+#: keymap_alldefs.h:37
+msgid "edit the Reply-To field"
+msgstr "\"Reply-To\" (Cevaplanan) alanını düzenle"
+
+#: keymap_alldefs.h:38
+#, fuzzy
+msgid "edit the Followup-To field"
+msgstr "\"Reply-To\" (Cevaplanan) alanını düzenle"
+
+#: keymap_alldefs.h:39
+#, fuzzy
+msgid "edit the X-Comment-To field"
+msgstr "\"Reply-To\" (Cevaplanan) alanını düzenle"
+
+#: keymap_alldefs.h:40
+msgid "edit the subject of this message"
+msgstr "bu iletinin konusunu düzenle"
+
+#: keymap_alldefs.h:41
+msgid "edit the TO list"
+msgstr "gönderilen (TO) listesini düzenle"
+
+#: keymap_alldefs.h:42
+msgid "create a new mailbox (IMAP only)"
+msgstr "yeni bir eposta kutusu yarat (sadece IMAP)"
+
+#: keymap_alldefs.h:43
+msgid "edit attachment content type"
+msgstr "ekin içerik tipini düzenle"
+
+#: keymap_alldefs.h:44
+msgid "get a temporary copy of an attachment"
+msgstr "eke ait geçici bir kopya elde et"
+
+#: keymap_alldefs.h:45
+msgid "run ispell on the message"
+msgstr "iletiye ispell komutunu uygula"
+
+#: keymap_alldefs.h:46
+msgid "compose new attachment using mailcap entry"
+msgstr "mailcap kaydını kullanarak yeni bir ek düzenle"
+
+#: keymap_alldefs.h:47
+msgid "toggle recoding of this attachment"
+msgstr "Bu ekin yeniden kodlanması özelliğini aç/kapat"
+
+#: keymap_alldefs.h:48
+msgid "save this message to send later"
+msgstr "bu iletiyi daha sonra göndermek üzere kaydet"
+
+#: keymap_alldefs.h:49
+#, fuzzy
+msgid "send attachment with a different name"
+msgstr "ek iletim kodlamasını (transfer-encoding) düzenle"
+
+#: keymap_alldefs.h:50
+msgid "rename/move an attached file"
+msgstr "ekli bir dosyayı yeniden adlandır/taşı"
+
+#: keymap_alldefs.h:51
+#, fuzzy
+msgid "compose a new message to the sender"
+msgstr "yeni bir eposta iletisi yarat"
+
+#: keymap_alldefs.h:52
+msgid "send the message"
+msgstr "iletiyi gönder"
+
+#: keymap_alldefs.h:53
+msgid "toggle disposition between inline/attachment"
+msgstr "satıriçi/ek olarak dispozisyon kipleri arasında geçiş yap"
+
+#: keymap_alldefs.h:54
+msgid "toggle whether to delete file after sending it"
+msgstr "dosyanın gönderildikten sonra silinmesi özelliğini aç/kapat"
+
+#: keymap_alldefs.h:55
+msgid "update an attachment's encoding info"
+msgstr "eke ait kodlama bilgisini güncelle"
+
+#: keymap_alldefs.h:56
+msgid "write the message to a folder"
+msgstr "iletiyi bir klasöre yaz"
+
+#: keymap_alldefs.h:57
+msgid "copy a message to a file/mailbox"
+msgstr "iletiyi bir dosyaya/eposta kutusuna kopyala"
+
+#: keymap_alldefs.h:58
+msgid "create an alias from a message sender"
+msgstr "gönderenden türetilen bir lâkap yarat"
+
+#: keymap_alldefs.h:59
+msgid "move entry to bottom of screen"
+msgstr "birimi ekran sonuna taşı"
+
+#: keymap_alldefs.h:60
+msgid "move entry to middle of screen"
+msgstr "birimi ekran ortasına taşı"
+
+#: keymap_alldefs.h:61
+msgid "move entry to top of screen"
+msgstr "birimi ekran başına taşı"
+
+#: keymap_alldefs.h:62
+msgid "make decoded (text/plain) copy"
+msgstr "çözülmüş (düz metin) kopya yarat"
+
+#: keymap_alldefs.h:63
+msgid "make decoded copy (text/plain) and delete"
+msgstr "çözülmüş (düz metin) kopya yarat ve diğerini sil"
+
+#: keymap_alldefs.h:64
+msgid "delete the current entry"
+msgstr "geçerli ögeyi sil"
+
+#: keymap_alldefs.h:65
+msgid "delete the current mailbox (IMAP only)"
+msgstr "geçerli eposta kutusunu sil (sadece IMAP)"
+
+#: keymap_alldefs.h:66
+msgid "delete all messages in subthread"
+msgstr "alt ilmekteki bütün iletileri sil"
+
+#: keymap_alldefs.h:67
+msgid "delete all messages in thread"
+msgstr "ilmekteki bütün iletileri sil"
+
+#: keymap_alldefs.h:68
+msgid "display full address of sender"
+msgstr "gönderenin tam adresini göster"
+
+#: keymap_alldefs.h:69
+msgid "display message and toggle header weeding"
+msgstr "iletiyi görüntüle ve başlıkların görüntülenmesini aç/kapat"
+
+#: keymap_alldefs.h:70
+msgid "display a message"
+msgstr "iletiyi göster"
+
+#: keymap_alldefs.h:71
+msgid "add, change, or delete a message's label"
+msgstr ""
+
+#: keymap_alldefs.h:72
+msgid "edit the raw message"
+msgstr "kaynak iletiyi düzenle"
+
+#: keymap_alldefs.h:73
+msgid "delete the char in front of the cursor"
+msgstr "imlecin önündeki harfi sil"
+
+#: keymap_alldefs.h:74
+msgid "move the cursor one character to the left"
+msgstr "imleci bir harf sola taşı"
+
+#: keymap_alldefs.h:75
+msgid "move the cursor to the beginning of the word"
+msgstr "imleci kelime başına taşı"
+
+#: keymap_alldefs.h:76
+msgid "jump to the beginning of the line"
+msgstr "satır başına geç"
+
+#: keymap_alldefs.h:77
+msgid "cycle among incoming mailboxes"
+msgstr "eposta kutuları arasında gezin"
+
+#: keymap_alldefs.h:78
+msgid "complete filename or alias"
+msgstr "dosya adını ya da lâkabı tamamla"
+
+#: keymap_alldefs.h:79
+msgid "complete address with query"
+msgstr "adresi bir sorgulama yaparak tamamla"
+
+#: keymap_alldefs.h:80
+msgid "delete the char under the cursor"
+msgstr "imlecin altındaki harfi sil"
+
+#: keymap_alldefs.h:81
+msgid "jump to the end of the line"
+msgstr "satır sonuna geç"
+
+#: keymap_alldefs.h:82
+msgid "move the cursor one character to the right"
+msgstr "imleci bir harf sağa taşı"
+
+#: keymap_alldefs.h:83
+msgid "move the cursor to the end of the word"
+msgstr "imleci kelime sonuna taşı"
+
+#: keymap_alldefs.h:84
+msgid "scroll down through the history list"
+msgstr "tarihçe listesinde aşağıya in"
+
+#: keymap_alldefs.h:85
+msgid "scroll up through the history list"
+msgstr "tarihçe listesinde yukarıya çık"
+
+#: keymap_alldefs.h:86
+msgid "delete chars from cursor to end of line"
+msgstr "imleçten satır sonuna kadar olan harfleri sil"
+
+#: keymap_alldefs.h:87
+msgid "delete chars from the cursor to the end of the word"
+msgstr "imleçten kelime sonuna kadar olan harfleri sil"
+
+#: keymap_alldefs.h:88
+msgid "delete all chars on the line"
+msgstr "satırdaki bütün harfleri sil"
+
+#: keymap_alldefs.h:89
+msgid "delete the word in front of the cursor"
+msgstr "imlecin önündeki kelimeyi sil"
+
+#: keymap_alldefs.h:90
+msgid "quote the next typed key"
+msgstr "girilen karakteri tırnak içine al"
+
+#: keymap_alldefs.h:91
+msgid "transpose character under cursor with previous"
+msgstr "imlecin üzerinde bulunduğu karakteri öncekiyle değiştir"
+
+#: keymap_alldefs.h:92
+msgid "capitalize the word"
+msgstr "kelimenin ilk harfini büyük yaz"
+
+#: keymap_alldefs.h:93
+msgid "convert the word to lower case"
+msgstr "kelimeyi küçük harfe çevir"
+
+#: keymap_alldefs.h:94
+msgid "convert the word to upper case"
+msgstr "kelimeyi büyük harfe çevir"
+
+#: keymap_alldefs.h:95
+msgid "enter a muttrc command"
+msgstr "bir muttrc komutu gir"
+
+#: keymap_alldefs.h:96
+msgid "enter a file mask"
+msgstr "bir dosya maskesi gir"
+
+#: keymap_alldefs.h:97
+msgid "exit this menu"
+msgstr "bu menüden çık"
+
+#: keymap_alldefs.h:98
+msgid "filter attachment through a shell command"
+msgstr "eki bir kabuk komut komutundan geçir"
+
+#: keymap_alldefs.h:99
+msgid "move to the first entry"
+msgstr "ilk ögeye geç"
+
+#: keymap_alldefs.h:100
+msgid "toggle a message's 'important' flag"
+msgstr "iletinin 'önemli' (important) bayrağını aç/kapat"
+
+#: keymap_alldefs.h:101
+#, fuzzy
+msgid "followup to newsgroup"
+msgstr "Cevap adresi olarak %s%s kullanılsın mı? [Mail-Followup-To]"
+
+#: keymap_alldefs.h:102
+msgid "forward to newsgroup"
+msgstr ""
+
+#: keymap_alldefs.h:103
+msgid "forward a message with comments"
+msgstr "iletiyi düzenleyerek ilet"
+
+#: keymap_alldefs.h:104
+msgid "select the current entry"
+msgstr "geçerli ögeye geç"
+
+#: keymap_alldefs.h:105
+#, fuzzy
+msgid "get all children of the current message"
+msgstr "İlk iletidesiniz."
+
+#: keymap_alldefs.h:106
+#, fuzzy
+msgid "get message with Message-Id"
+msgstr "iletiyi başlıklarıyla düzenle"
+
+#: keymap_alldefs.h:107
+#, fuzzy
+msgid "get parent of the current message"
+msgstr "İlk iletidesiniz."
+
+#: keymap_alldefs.h:108
+msgid "reply to all recipients"
+msgstr "bütün alıcılara cevap ver"
+
+#: keymap_alldefs.h:109
+msgid "scroll down 1/2 page"
+msgstr "yarım sayfa aşağıya in"
+
+#: keymap_alldefs.h:110
+msgid "scroll up 1/2 page"
+msgstr "yarım sayfa yukarıya çık"
+
+#: keymap_alldefs.h:111
+msgid "this screen"
+msgstr "bu ekran"
+
+#: keymap_alldefs.h:112
+msgid "jump to an index number"
+msgstr "indeks sayısına geç"
+
+#: keymap_alldefs.h:113
+msgid "move to the last entry"
+msgstr "son ögeye geç"
+
+#: keymap_alldefs.h:114
+msgid "reply to specified mailing list"
+msgstr "belirtilen eposta listesine cevap ver"
+
+#: keymap_alldefs.h:115
+msgid "load list of all newsgroups from NNTP server"
+msgstr ""
+
+#: keymap_alldefs.h:116
+msgid "execute a macro"
+msgstr "bir makro çalıştır"
+
+#: keymap_alldefs.h:117
+msgid "compose a new mail message"
+msgstr "yeni bir eposta iletisi yarat"
+
+#: keymap_alldefs.h:118
+msgid "break the thread in two"
+msgstr "ilmeği ikiye böl"
+
+#: keymap_alldefs.h:119
+msgid "open a different folder"
+msgstr "başka bir dizin aç"
+
+#: keymap_alldefs.h:120
+msgid "open a different folder in read only mode"
+msgstr "başka bir dizini salt okunur aç"
+
+#: keymap_alldefs.h:121
+#, fuzzy
+msgid "open a different newsgroup"
+msgstr "başka bir dizin aç"
+
+#: keymap_alldefs.h:122
+#, fuzzy
+msgid "open a different newsgroup in read only mode"
+msgstr "başka bir dizini salt okunur aç"
+
+#: keymap_alldefs.h:123
+msgid "clear a status flag from a message"
+msgstr "iletinin durum bayrağını temizle"
+
+#: keymap_alldefs.h:124
+msgid "delete messages matching a pattern"
+msgstr "tabire uyan iletileri sil"
+
+#: keymap_alldefs.h:125
+msgid "force retrieval of mail from IMAP server"
+msgstr "IMAP sunucularından eposta alımını zorla"
+
+#: keymap_alldefs.h:126
+msgid "logout from all IMAP servers"
+msgstr ""
+
+#: keymap_alldefs.h:127
+msgid "retrieve mail from POP server"
+msgstr "POP sunucusundan epostaları al"
+
+#: keymap_alldefs.h:128
+msgid "show only messages matching a pattern"
+msgstr "sadece tabire uyan iletileri göster"
+
+#: keymap_alldefs.h:129
+msgid "link tagged message to the current one"
+msgstr "işaretlenmiş iletileri geçerli iletiye bağla"
+
+#: keymap_alldefs.h:130
+#, fuzzy
+msgid "open next mailbox with new mail"
+msgstr "Yeni eposta içeren bir eposta kutusu yok."
+
+#: keymap_alldefs.h:131
+msgid "jump to the next new message"
+msgstr "bir sonraki yeni iletiye geç"
+
+#: keymap_alldefs.h:132
+msgid "jump to the next new or unread message"
+msgstr "bir sonraki yeni veya okunmamış iletiye geç"
+
+#: keymap_alldefs.h:133
+msgid "jump to the next subthread"
+msgstr "bir sonraki alt ilmeğe geç"
+
+#: keymap_alldefs.h:134
+msgid "jump to the next thread"
+msgstr "bir sonraki ilmeğe geç"
+
+#: keymap_alldefs.h:135
+msgid "move to the next undeleted message"
+msgstr "bir sonraki silinmemiş iletiye geç"
+
+#: keymap_alldefs.h:136
+msgid "jump to the next unread message"
+msgstr "bir sonraki okunmamış iletiye geç"
+
+#: keymap_alldefs.h:137
+msgid "jump to parent message in thread"
+msgstr "ilmeği başlatan ana iletiye geç"
+
+#: keymap_alldefs.h:138
+msgid "jump to previous thread"
+msgstr "bir önceki ilmeğe geç"
+
+#: keymap_alldefs.h:139
+msgid "jump to previous subthread"
+msgstr "bir önceki alt ilmeğe geç"
+
+#: keymap_alldefs.h:140
+msgid "move to the previous undeleted message"
+msgstr "bir önceki silinmemiş iletiye geç"
+
+#: keymap_alldefs.h:141
+msgid "jump to the previous new message"
+msgstr "bir önceki yeni iletiye geç"
+
+#: keymap_alldefs.h:142
+msgid "jump to the previous new or unread message"
+msgstr "bir önceki yeni veya okunmamış iletiye geç"
+
+#: keymap_alldefs.h:143
+msgid "jump to the previous unread message"
+msgstr "bir önceki okunmamış iletiye geç"
+
+#: keymap_alldefs.h:144
+msgid "mark the current thread as read"
+msgstr "geçerli ilmeği okunmuş olarak işaretle"
+
+#: keymap_alldefs.h:145
+msgid "mark the current subthread as read"
+msgstr "geçerli alt ilmeği okunmuş olarak işaretle"
+
+#: keymap_alldefs.h:146
+#, fuzzy
+msgid "jump to root message in thread"
+msgstr "ilmeği başlatan ana iletiye geç"
+
+#: keymap_alldefs.h:147
+msgid "set a status flag on a message"
+msgstr "iletinin durum bayrağını ayarla"
+
+#: keymap_alldefs.h:148
+msgid "save changes to mailbox"
+msgstr "eposta kutusuna yapılan değişiklikleri kaydet"
+
+#: keymap_alldefs.h:149
+msgid "tag messages matching a pattern"
+msgstr "tabire uyan iletileri işaretle"
+
+#: keymap_alldefs.h:150
+msgid "delete from mutt, don't touch on disk"
+msgstr ""
+
+#: keymap_alldefs.h:151
+msgid "undelete messages matching a pattern"
+msgstr "tabire uyan silinmiş iletileri kurtar"
+
+#: keymap_alldefs.h:152
+msgid "untag messages matching a pattern"
+msgstr "tabire uyan iletilerdeki işaretlemeyi kaldır"
+
+#: keymap_alldefs.h:153
+#, fuzzy
+msgid "create a hotkey macro for the current message"
+msgstr "İlk iletidesiniz."
+
+#: keymap_alldefs.h:154
+msgid "move to the middle of the page"
+msgstr "sayfanın ortasına geç"
+
+#: keymap_alldefs.h:155
+msgid "move to the next entry"
+msgstr "bir sonraki ögeye geç"
+
+#: keymap_alldefs.h:156
+msgid "scroll down one line"
+msgstr "bir satır aşağıya in"
+
+#: keymap_alldefs.h:157
+msgid "move to the next page"
+msgstr "bir sonraki sayfaya geç"
+
+#: keymap_alldefs.h:158
+msgid "jump to the bottom of the message"
+msgstr "iletinin sonuna geç"
+
+#: keymap_alldefs.h:159
+msgid "toggle display of quoted text"
+msgstr "alıntı metnin görüntülenmesi özelliğini aç/kapat"
+
+#: keymap_alldefs.h:160
+msgid "skip beyond quoted text"
+msgstr "alıntı metni atla"
+
+#: keymap_alldefs.h:161
+msgid "jump to the top of the message"
+msgstr "iletinin başına geç"
+
+#: keymap_alldefs.h:162
+msgid "pipe message/attachment to a shell command"
+msgstr "iletiyi/eki bir kabuk komutundan geçir"
+
+#: keymap_alldefs.h:163
+#, fuzzy
+msgid "post message to newsgroup"
+msgstr "İletiyi %s adresine geri gönder"
+
+#: keymap_alldefs.h:164
+msgid "move to the previous entry"
+msgstr "bir önceki ögeye geç"
+
+#: keymap_alldefs.h:165
+msgid "scroll up one line"
+msgstr "bir satır yukarıya çık"
+
+#: keymap_alldefs.h:166
+msgid "move to the previous page"
+msgstr "bir önceki sayfaya geç"
+
+#: keymap_alldefs.h:167
+msgid "print the current entry"
+msgstr "geçerli ögeyi yazdır"
+
+#: keymap_alldefs.h:168
+msgid "really delete the current entry, bypassing the trash folder"
+msgstr ""
+
+#: keymap_alldefs.h:169
+msgid "really delete the current thread, bypassing the trash folder"
+msgstr ""
+
+#: keymap_alldefs.h:170
+msgid "query external program for addresses"
+msgstr "adresler için başka bir uygulamayı sorgula"
+
+#: keymap_alldefs.h:171
+msgid "append new query results to current results"
+msgstr "yeni sorgulama sonuçlarını geçerli sonuçlara ekle"
+
+#: keymap_alldefs.h:172
+msgid "save changes to mailbox and quit"
+msgstr "eposta kutusuna yapılan değişiklikleri kaydet ve çık"
+
+#: keymap_alldefs.h:173
+msgid "recall a postponed message"
+msgstr "gönderilmesi ertelenmiş iletiyi yeniden düzenle"
+
+#: keymap_alldefs.h:174
+#, fuzzy
+msgid "reconstruct thread containing current message"
+msgstr "İlmek okunmamış iletiler içeriyor."
+
+#: keymap_alldefs.h:175
+msgid "clear and redraw the screen"
+msgstr "ekranı temizle ve güncelle"
+
+#: keymap_alldefs.h:176
+msgid "{internal}"
+msgstr "{dahili}"
+
+#: keymap_alldefs.h:177
+msgid "rename the current mailbox (IMAP only)"
+msgstr "geçerli eposta kutusunu yeniden isimlendir (sadece IMAP)"
+
+#: keymap_alldefs.h:178
+msgid "reply to a message"
+msgstr "iletiye cevap ver"
+
+#: keymap_alldefs.h:179
+msgid "use the current message as a template for a new one"
+msgstr "geçerli iletiyi yeni bir ileti için örnek olarak kullan"
+
+#: keymap_alldefs.h:180
+#, fuzzy
+msgid "save message/attachment to a mailbox/file"
+msgstr "iletiyi/eki bir dosyaya kaydet"
+
+#: keymap_alldefs.h:181
+msgid "search for a regular expression"
+msgstr "düzenli ifade ara"
+
+#: keymap_alldefs.h:182
+msgid "search backwards for a regular expression"
+msgstr "ters yönde düzenli ifade ara"
+
+#: keymap_alldefs.h:183
+msgid "search for next match"
+msgstr "bir sonraki eşleşmeyi bul"
+
+#: keymap_alldefs.h:184
+msgid "search for next match in opposite direction"
+msgstr "bir sonraki eşleşmeyi ters yönde bul"
+
+#: keymap_alldefs.h:185
+msgid "toggle search pattern coloring"
+msgstr "arama tabirinin renklendirilmesi özellğini aç/kapat"
+
+#: keymap_alldefs.h:186
+msgid "invoke a command in a subshell"
+msgstr "alt kabukta bir komut çalıştır"
+
+#: keymap_alldefs.h:187
+msgid "sort messages"
+msgstr "iletileri sırala"
+
+#: keymap_alldefs.h:188
+msgid "sort messages in reverse order"
+msgstr "iletileri ters sırala"
+
+#: keymap_alldefs.h:189
+#, fuzzy
+msgid "subscribe to newsgroups matching a pattern"
+msgstr "tabire uyan iletilerdeki işaretlemeyi kaldır"
+
+#: keymap_alldefs.h:190
+msgid "tag the current entry"
+msgstr "geçerli ögeyi işaretle"
+
+#: keymap_alldefs.h:191
+msgid "apply next function to tagged messages"
+msgstr "işaretlenmiş iletilere verilecek işlevi uygula"
+
+#: keymap_alldefs.h:192
+msgid "apply next function ONLY to tagged messages"
+msgstr "verilecek işlevi SADECE işaretlenmiş iletilere uygula"
+
+#: keymap_alldefs.h:193
+msgid "tag the current subthread"
+msgstr "geçerli alt ilmeği işaretle"
+
+#: keymap_alldefs.h:194
+msgid "tag the current thread"
+msgstr "geçerli ilmeği işaretle"
+
+#: keymap_alldefs.h:195
+msgid "toggle a message's 'new' flag"
+msgstr "iletinin 'yeni' (new) bayrağını aç/kapat"
+
+#: keymap_alldefs.h:196
+#, fuzzy
+msgid "toggle view of read messages"
+msgstr "bir önceki yeni veya okunmamış iletiye geç"
+
+#: keymap_alldefs.h:197
+msgid "toggle whether the mailbox will be rewritten"
+msgstr "eposta kutusunun yeniden yazılması özelliğini aç/kapat"
+
+#: keymap_alldefs.h:198
+msgid "toggle whether to browse mailboxes or all files"
+msgstr "sadece eposta kutuları veya bütün dosyaların görüntülenmesi arasında geçiş yap"
+
+#: keymap_alldefs.h:199
+msgid "move to the top of the page"
+msgstr "sayfanın başına geç"
+
+#: keymap_alldefs.h:200
+msgid "mark all articles in newsgroup as unread"
+msgstr ""
+
+#: keymap_alldefs.h:201
+msgid "undelete the current entry"
+msgstr "geçerli ögeyi kurtar"
+
+#: keymap_alldefs.h:202
+msgid "undelete all messages in thread"
+msgstr "ilmekteki bütün iletileri kurtar"
+
+#: keymap_alldefs.h:203
+msgid "undelete all messages in subthread"
+msgstr "alt ilmekteki bütün iletileri kurtar"
+
+#: keymap_alldefs.h:204
+#, fuzzy
+msgid "unsubscribe from newsgroups matching a pattern"
+msgstr "tabire uyan iletilerdeki işaretlemeyi kaldır"
+
+#: keymap_alldefs.h:205
+msgid "show the Mutt version number and date"
+msgstr "Mutt sürümünü ve tarihini göster"
+
+#: keymap_alldefs.h:206
+msgid "view attachment using mailcap entry if necessary"
+msgstr "eki, gerekiyorsa, mailcap kaydını kullanarak görüntüle"
+
+#: keymap_alldefs.h:207
+msgid "show MIME attachments"
+msgstr "MIME eklerini göster"
+
+#: keymap_alldefs.h:208
+msgid "display the keycode for a key press"
+msgstr "girilen tuşun tuş kodunu göster"
+
+#: keymap_alldefs.h:209
+#, fuzzy
+msgid "limit view to current thread"
+msgstr "geçerli ilmeği işaretle"
+
+#: keymap_alldefs.h:210
+msgid "show currently active limit pattern"
+msgstr "etkin durumdaki sınırlama tabirini göster"
+
+#: keymap_alldefs.h:211
+msgid "collapse/uncollapse current thread"
+msgstr "geçerli ilmeği göster/gizle"
+
+#: keymap_alldefs.h:212
+msgid "collapse/uncollapse all threads"
+msgstr "bütün ilmekleri göster/gizle"
+
+#: keymap_alldefs.h:213
+msgid "move the highlight to next mailbox"
+msgstr ""
+
+#: keymap_alldefs.h:214
+#, fuzzy
+msgid "move the highlight to next mailbox with new mail"
+msgstr "Yeni eposta içeren bir eposta kutusu yok."
+
+#: keymap_alldefs.h:215
+#, fuzzy
+msgid "open highlighted mailbox"
+msgstr "Eposta kutusu yeniden açılıyor..."
+
+#: keymap_alldefs.h:216
+#, fuzzy
+msgid "scroll the sidebar down 1 page"
+msgstr "yarım sayfa aşağıya in"
+
+#: keymap_alldefs.h:217
+#, fuzzy
+msgid "scroll the sidebar up 1 page"
+msgstr "yarım sayfa yukarıya çık"
+
+#: keymap_alldefs.h:218
+#, fuzzy
+msgid "move the highlight to previous mailbox"
+msgstr "bir önceki sayfaya geç"
+
+#: keymap_alldefs.h:219
+#, fuzzy
+msgid "move the highlight to previous mailbox with new mail"
+msgstr "Yeni eposta içeren bir eposta kutusu yok."
+
+#: keymap_alldefs.h:220
+#, fuzzy
+msgid "toggle between mailboxes and virtual mailboxes"
+msgstr "sadece eposta kutuları veya bütün dosyaların görüntülenmesi arasında geçiş yap"
+
+#: keymap_alldefs.h:221
+msgid "make the sidebar (in)visible"
+msgstr ""
+
+#: keymap_alldefs.h:222
+#, fuzzy
+msgid "open a different virtual folder"
+msgstr "başka bir dizin aç"
+
+#: keymap_alldefs.h:223
+msgid "generate virtual folder from query"
+msgstr ""
+
+#: keymap_alldefs.h:224
+msgid "generate virtual folder from query and time window"
+msgstr ""
+
+#: keymap_alldefs.h:225
+msgid "shifts virtual folder time window forwards"
+msgstr ""
+
+#: keymap_alldefs.h:226
+msgid "shifts virtual folder time window backwards"
+msgstr ""
+
+#: keymap_alldefs.h:227
+msgid "modify (notmuch) tags"
+msgstr ""
+
+#: keymap_alldefs.h:228
+#, fuzzy
+msgid "modify labels and then hide message"
+msgstr "İlk iletidesiniz."
+
+#: keymap_alldefs.h:229
+msgid "read entire thread of the current message"
+msgstr ""
+
+#: keymap_alldefs.h:230
+#, fuzzy
+msgid "accept the chain constructed"
+msgstr "Oluşturulan zinciri kabul et"
+
+#: keymap_alldefs.h:231
+#, fuzzy
+msgid "append a remailer to the chain"
+msgstr "Zincirin sonuna yeni bir postacı ekle"
+
+#: keymap_alldefs.h:232
+#, fuzzy
+msgid "insert a remailer into the chain"
+msgstr "Zincire yeni bir postacı ekle"
+
+#: keymap_alldefs.h:233
+#, fuzzy
+msgid "delete a remailer from the chain"
+msgstr "Zincirdeki bir postacıyı sil"
+
+#: keymap_alldefs.h:234
+#, fuzzy
+msgid "select the previous element of the chain"
+msgstr "Zincirde bir önceki ögeyi seç"
+
+#: keymap_alldefs.h:235
+#, fuzzy
+msgid "select the next element of the chain"
+msgstr "Zincirde bir sonraki ögeyi seç"
+
+#: keymap_alldefs.h:236
+msgid "send the message through a mixmaster remailer chain"
+msgstr "iletiyi bir \"mixmaster\" postacı zinciri üzerinden gönder"
+
+#: keymap_alldefs.h:237
+msgid "attach a PGP public key"
+msgstr "bir PGP genel anahtarı ekle"
+
+#: keymap_alldefs.h:238
+msgid "show PGP options"
+msgstr "PGP seçeneklerini göster"
+
+#: keymap_alldefs.h:239
+msgid "mail a PGP public key"
+msgstr "bir PGP genel anahtarı gönder"
+
+#: keymap_alldefs.h:240
+msgid "verify a PGP public key"
+msgstr "bir PGP genel anahtarı doğrula"
+
+#: keymap_alldefs.h:241
+msgid "view the key's user id"
+msgstr "anahtarın kullanıcı kimliğini göster"
+
+#: keymap_alldefs.h:242
+#, fuzzy
+msgid "check for classic PGP"
+msgstr "klasik pgp için denetle"
+
+#: keymap_alldefs.h:243
+msgid "show S/MIME options"
+msgstr "S/MIME seçeneklerini göster"
+
+#: keymap_alldefs.h:244
+msgid "make decrypted copy and delete"
+msgstr "çözülmüş kopyasını yarat ve sil"
+
+#: keymap_alldefs.h:245
+msgid "make decrypted copy"
+msgstr "çözülmüş kopya yarat"
+
+#: keymap_alldefs.h:246
+msgid "wipe passphrase(s) from memory"
+msgstr "bellekteki parolaları sil"
+
+#: keymap_alldefs.h:247
+msgid "extract supported public keys"
+msgstr "desteklenen genel anahtarları çıkar"
+
 #: lib.c:118
 msgid "Integer overflow -- can't allocate memory!"
 msgstr "Tam sayı taşması -- bellek ayrılamıyor!"
@@ -3066,9 +4079,8 @@ msgstr ""
 "  -D            değişkenlerin hepsini göster"
 
 #: main.c:97
-#, fuzzy
 msgid "  -d <level>    log debugging output to ~/.muttdebug0"
-msgstr " -d <seviye>     hata ayıklama bilgisini ~/.muttdebug0 dosyasına kaydet"
+msgstr " -d <seviye>    hata ayıklama bilgisini ~/.muttdebug0 dosyasına kaydet"
 
 #: main.c:100
 #, fuzzy
@@ -3095,7 +4107,6 @@ msgstr ""
 "  -p            gönderilmesi ertelenmiş iletiyi çağır"
 
 #: main.c:112
-#, fuzzy
 msgid ""
 "  -Q <variable> query a configuration variable\n"
 "  -R            open mailbox in read-only mode\n"
@@ -5094,7 +6105,7 @@ msgid ""
 "Copyright (C) 2000-2004 Edmund Grimley Evans <edmundo@rano.org>\n"
 "Copyright (C) 2006-2009 Rocco Rutte <pdmef@gmx.net>\n"
 "Copyright (C) 2014-2016 Kevin J. McCarthy <kevin@8t8.us>\n"
-"Copyright (C) 2015-2016 Richard Russon <rich@flatcap.org>\n"
+"Copyright (C) 2015-2017 Richard Russon <rich@flatcap.org>\n"
 "\n"
 "Many others not mentioned here contributed code, fixes,\n"
 "and suggestions.\n"
@@ -5174,738 +6185,3 @@ msgid ""
 msgstr ""
 "\n"
 "İnşa seçenekleri:"
-
-#~ msgid "PGP passphrase forgotten."
-#~ msgstr "PGP parolası unutuldu."
-
-#~ msgid "Query"
-#~ msgstr "Sorgula"
-
-#~ msgid "null operation"
-#~ msgstr "belirtilmemiş işlem"
-
-#~ msgid "end of conditional execution (noop)"
-#~ msgstr "koşullu çalıştırma sonu (noop)"
-
-#~ msgid "force viewing of attachment using mailcap"
-#~ msgstr "mailcap kullanarak ekin görüntülenmesini sağla"
-
-#~ msgid "view attachment as text"
-#~ msgstr "eki metin olarak göster"
-
-#~ msgid "Toggle display of subparts"
-#~ msgstr "Alt bölümlerin görüntülenmesini aç/kapat"
-
-#~ msgid "move to the bottom of the page"
-#~ msgstr "sayfanın sonuna geç"
-
-#~ msgid "remail a message to another user"
-#~ msgstr "iletiyi başka bir kullanıcıya yeniden gönder"
-
-#~ msgid "select a new file in this directory"
-#~ msgstr "bu dizinde yeni bir dosya seç"
-
-#~ msgid "view file"
-#~ msgstr "dosyayı görüntüle"
-
-#~ msgid "display the currently selected file's name"
-#~ msgstr "seçili dosyanın ismini göster"
-
-#, fuzzy
-#~ msgid "subscribe to current mbox (IMAP/NNTP only)"
-#~ msgstr "geçerli eposta kutusuna abone ol (sadece IMAP)"
-
-#, fuzzy
-#~ msgid "unsubscribe from current mbox (IMAP/NNTP only)"
-#~ msgstr "geçerli eposta kutusuna olan aboneliği iptal et (sadece IMAP)"
-
-#~ msgid "toggle view all/subscribed mailboxes (IMAP only)"
-#~ msgstr "görüntüleme kipleri arasında geçiş yap: hepsi/abone olunanlar (sadece IMAP)"
-
-#~ msgid "list mailboxes with new mail"
-#~ msgstr "yeni eposta içeren eposta kutularını listele"
-
-#~ msgid "change directories"
-#~ msgstr "dizin değiştir"
-
-#~ msgid "check mailboxes for new mail"
-#~ msgstr "eposta kutularını yeni eposta için denetle"
-
-#, fuzzy
-#~ msgid "attach file(s) to this message"
-#~ msgstr "bu iletiye dosya ekle"
-
-#~ msgid "attach message(s) to this message"
-#~ msgstr "bu iletiye ileti ekle"
-
-#, fuzzy
-#~ msgid "attach news article(s) to this message"
-#~ msgstr "bu iletiye dosya ekle"
-
-#~ msgid "edit the BCC list"
-#~ msgstr "BCC listesini düzenle"
-
-#~ msgid "edit the CC list"
-#~ msgstr "CC listesini düzenle"
-
-#~ msgid "edit attachment description"
-#~ msgstr "ek açıklamasını düzenle"
-
-#~ msgid "edit attachment transfer-encoding"
-#~ msgstr "ek iletim kodlamasını (transfer-encoding) düzenle"
-
-#~ msgid "enter a file to save a copy of this message in"
-#~ msgstr "bu iletinin bir kopyasının kaydedileceği dosyayı gir"
-
-#~ msgid "edit the file to be attached"
-#~ msgstr "eklenecek dosyayı düzenle"
-
-#~ msgid "edit the from field"
-#~ msgstr "gönderen alanını düzenle"
-
-#~ msgid "edit the message with headers"
-#~ msgstr "iletiyi başlıklarıyla düzenle"
-
-#~ msgid "edit the message"
-#~ msgstr "iletiyi düzenle"
-
-#~ msgid "edit attachment using mailcap entry"
-#~ msgstr "mailcap kaydını kullanarak eki düzenle"
-
-#, fuzzy
-#~ msgid "edit the newsgroups list"
-#~ msgstr "CC listesini düzenle"
-
-#~ msgid "edit the Reply-To field"
-#~ msgstr "\"Reply-To\" (Cevaplanan) alanını düzenle"
-
-#, fuzzy
-#~ msgid "edit the Followup-To field"
-#~ msgstr "\"Reply-To\" (Cevaplanan) alanını düzenle"
-
-#, fuzzy
-#~ msgid "edit the X-Comment-To field"
-#~ msgstr "\"Reply-To\" (Cevaplanan) alanını düzenle"
-
-#~ msgid "edit the subject of this message"
-#~ msgstr "bu iletinin konusunu düzenle"
-
-#~ msgid "edit the TO list"
-#~ msgstr "gönderilen (TO) listesini düzenle"
-
-#~ msgid "create a new mailbox (IMAP only)"
-#~ msgstr "yeni bir eposta kutusu yarat (sadece IMAP)"
-
-#~ msgid "edit attachment content type"
-#~ msgstr "ekin içerik tipini düzenle"
-
-#~ msgid "get a temporary copy of an attachment"
-#~ msgstr "eke ait geçici bir kopya elde et"
-
-#~ msgid "run ispell on the message"
-#~ msgstr "iletiye ispell komutunu uygula"
-
-#~ msgid "compose new attachment using mailcap entry"
-#~ msgstr "mailcap kaydını kullanarak yeni bir ek düzenle"
-
-#~ msgid "toggle recoding of this attachment"
-#~ msgstr "Bu ekin yeniden kodlanması özelliğini aç/kapat"
-
-#~ msgid "save this message to send later"
-#~ msgstr "bu iletiyi daha sonra göndermek üzere kaydet"
-
-#, fuzzy
-#~ msgid "send attachment with a different name"
-#~ msgstr "ek iletim kodlamasını (transfer-encoding) düzenle"
-
-#~ msgid "rename/move an attached file"
-#~ msgstr "ekli bir dosyayı yeniden adlandır/taşı"
-
-#, fuzzy
-#~ msgid "compose a new message to the sender"
-#~ msgstr "yeni bir eposta iletisi yarat"
-
-#~ msgid "send the message"
-#~ msgstr "iletiyi gönder"
-
-#~ msgid "toggle disposition between inline/attachment"
-#~ msgstr "satıriçi/ek olarak dispozisyon kipleri arasında geçiş yap"
-
-#~ msgid "toggle whether to delete file after sending it"
-#~ msgstr "dosyanın gönderildikten sonra silinmesi özelliğini aç/kapat"
-
-#~ msgid "update an attachment's encoding info"
-#~ msgstr "eke ait kodlama bilgisini güncelle"
-
-#~ msgid "write the message to a folder"
-#~ msgstr "iletiyi bir klasöre yaz"
-
-#~ msgid "copy a message to a file/mailbox"
-#~ msgstr "iletiyi bir dosyaya/eposta kutusuna kopyala"
-
-#~ msgid "create an alias from a message sender"
-#~ msgstr "gönderenden türetilen bir lâkap yarat"
-
-#~ msgid "move entry to bottom of screen"
-#~ msgstr "birimi ekran sonuna taşı"
-
-#~ msgid "move entry to middle of screen"
-#~ msgstr "birimi ekran ortasına taşı"
-
-#~ msgid "move entry to top of screen"
-#~ msgstr "birimi ekran başına taşı"
-
-#~ msgid "make decoded (text/plain) copy"
-#~ msgstr "çözülmüş (düz metin) kopya yarat"
-
-#~ msgid "make decoded copy (text/plain) and delete"
-#~ msgstr "çözülmüş (düz metin) kopya yarat ve diğerini sil"
-
-#~ msgid "delete the current entry"
-#~ msgstr "geçerli ögeyi sil"
-
-#~ msgid "delete the current mailbox (IMAP only)"
-#~ msgstr "geçerli eposta kutusunu sil (sadece IMAP)"
-
-#~ msgid "delete all messages in subthread"
-#~ msgstr "alt ilmekteki bütün iletileri sil"
-
-#~ msgid "delete all messages in thread"
-#~ msgstr "ilmekteki bütün iletileri sil"
-
-#~ msgid "display full address of sender"
-#~ msgstr "gönderenin tam adresini göster"
-
-#~ msgid "display message and toggle header weeding"
-#~ msgstr "iletiyi görüntüle ve başlıkların görüntülenmesini aç/kapat"
-
-#~ msgid "display a message"
-#~ msgstr "iletiyi göster"
-
-#~ msgid "edit the raw message"
-#~ msgstr "kaynak iletiyi düzenle"
-
-#~ msgid "delete the char in front of the cursor"
-#~ msgstr "imlecin önündeki harfi sil"
-
-#~ msgid "move the cursor one character to the left"
-#~ msgstr "imleci bir harf sola taşı"
-
-#~ msgid "move the cursor to the beginning of the word"
-#~ msgstr "imleci kelime başına taşı"
-
-#~ msgid "jump to the beginning of the line"
-#~ msgstr "satır başına geç"
-
-#~ msgid "cycle among incoming mailboxes"
-#~ msgstr "eposta kutuları arasında gezin"
-
-#~ msgid "complete filename or alias"
-#~ msgstr "dosya adını ya da lâkabı tamamla"
-
-#~ msgid "complete address with query"
-#~ msgstr "adresi bir sorgulama yaparak tamamla"
-
-#~ msgid "delete the char under the cursor"
-#~ msgstr "imlecin altındaki harfi sil"
-
-#~ msgid "jump to the end of the line"
-#~ msgstr "satır sonuna geç"
-
-#~ msgid "move the cursor one character to the right"
-#~ msgstr "imleci bir harf sağa taşı"
-
-#~ msgid "move the cursor to the end of the word"
-#~ msgstr "imleci kelime sonuna taşı"
-
-#~ msgid "scroll down through the history list"
-#~ msgstr "tarihçe listesinde aşağıya in"
-
-#~ msgid "scroll up through the history list"
-#~ msgstr "tarihçe listesinde yukarıya çık"
-
-#~ msgid "delete chars from cursor to end of line"
-#~ msgstr "imleçten satır sonuna kadar olan harfleri sil"
-
-#~ msgid "delete chars from the cursor to the end of the word"
-#~ msgstr "imleçten kelime sonuna kadar olan harfleri sil"
-
-#~ msgid "delete all chars on the line"
-#~ msgstr "satırdaki bütün harfleri sil"
-
-#~ msgid "delete the word in front of the cursor"
-#~ msgstr "imlecin önündeki kelimeyi sil"
-
-#~ msgid "quote the next typed key"
-#~ msgstr "girilen karakteri tırnak içine al"
-
-#~ msgid "transpose character under cursor with previous"
-#~ msgstr "imlecin üzerinde bulunduğu karakteri öncekiyle değiştir"
-
-#~ msgid "capitalize the word"
-#~ msgstr "kelimenin ilk harfini büyük yaz"
-
-#~ msgid "convert the word to lower case"
-#~ msgstr "kelimeyi küçük harfe çevir"
-
-#~ msgid "convert the word to upper case"
-#~ msgstr "kelimeyi büyük harfe çevir"
-
-#~ msgid "enter a muttrc command"
-#~ msgstr "bir muttrc komutu gir"
-
-#~ msgid "enter a file mask"
-#~ msgstr "bir dosya maskesi gir"
-
-#~ msgid "exit this menu"
-#~ msgstr "bu menüden çık"
-
-#~ msgid "filter attachment through a shell command"
-#~ msgstr "eki bir kabuk komut komutundan geçir"
-
-#~ msgid "move to the first entry"
-#~ msgstr "ilk ögeye geç"
-
-#~ msgid "toggle a message's 'important' flag"
-#~ msgstr "iletinin 'önemli' (important) bayrağını aç/kapat"
-
-#, fuzzy
-#~ msgid "followup to newsgroup"
-#~ msgstr "Cevap adresi olarak %s%s kullanılsın mı? [Mail-Followup-To]"
-
-#~ msgid "forward a message with comments"
-#~ msgstr "iletiyi düzenleyerek ilet"
-
-#~ msgid "select the current entry"
-#~ msgstr "geçerli ögeye geç"
-
-#, fuzzy
-#~ msgid "get all children of the current message"
-#~ msgstr "İlk iletidesiniz."
-
-#, fuzzy
-#~ msgid "get message with Message-Id"
-#~ msgstr "iletiyi başlıklarıyla düzenle"
-
-#, fuzzy
-#~ msgid "get parent of the current message"
-#~ msgstr "İlk iletidesiniz."
-
-#~ msgid "reply to all recipients"
-#~ msgstr "bütün alıcılara cevap ver"
-
-#~ msgid "scroll down 1/2 page"
-#~ msgstr "yarım sayfa aşağıya in"
-
-#~ msgid "scroll up 1/2 page"
-#~ msgstr "yarım sayfa yukarıya çık"
-
-#~ msgid "this screen"
-#~ msgstr "bu ekran"
-
-#~ msgid "jump to an index number"
-#~ msgstr "indeks sayısına geç"
-
-#~ msgid "move to the last entry"
-#~ msgstr "son ögeye geç"
-
-#~ msgid "reply to specified mailing list"
-#~ msgstr "belirtilen eposta listesine cevap ver"
-
-#~ msgid "execute a macro"
-#~ msgstr "bir makro çalıştır"
-
-#~ msgid "compose a new mail message"
-#~ msgstr "yeni bir eposta iletisi yarat"
-
-#~ msgid "break the thread in two"
-#~ msgstr "ilmeği ikiye böl"
-
-#~ msgid "open a different folder"
-#~ msgstr "başka bir dizin aç"
-
-#~ msgid "open a different folder in read only mode"
-#~ msgstr "başka bir dizini salt okunur aç"
-
-#, fuzzy
-#~ msgid "open a different newsgroup"
-#~ msgstr "başka bir dizin aç"
-
-#, fuzzy
-#~ msgid "open a different newsgroup in read only mode"
-#~ msgstr "başka bir dizini salt okunur aç"
-
-#~ msgid "clear a status flag from a message"
-#~ msgstr "iletinin durum bayrağını temizle"
-
-#~ msgid "delete messages matching a pattern"
-#~ msgstr "tabire uyan iletileri sil"
-
-#~ msgid "force retrieval of mail from IMAP server"
-#~ msgstr "IMAP sunucularından eposta alımını zorla"
-
-#~ msgid "retrieve mail from POP server"
-#~ msgstr "POP sunucusundan epostaları al"
-
-#~ msgid "show only messages matching a pattern"
-#~ msgstr "sadece tabire uyan iletileri göster"
-
-#~ msgid "link tagged message to the current one"
-#~ msgstr "işaretlenmiş iletileri geçerli iletiye bağla"
-
-#, fuzzy
-#~ msgid "open next mailbox with new mail"
-#~ msgstr "Yeni eposta içeren bir eposta kutusu yok."
-
-#~ msgid "jump to the next new message"
-#~ msgstr "bir sonraki yeni iletiye geç"
-
-#~ msgid "jump to the next new or unread message"
-#~ msgstr "bir sonraki yeni veya okunmamış iletiye geç"
-
-#~ msgid "jump to the next subthread"
-#~ msgstr "bir sonraki alt ilmeğe geç"
-
-#~ msgid "jump to the next thread"
-#~ msgstr "bir sonraki ilmeğe geç"
-
-#~ msgid "move to the next undeleted message"
-#~ msgstr "bir sonraki silinmemiş iletiye geç"
-
-#~ msgid "jump to the next unread message"
-#~ msgstr "bir sonraki okunmamış iletiye geç"
-
-#~ msgid "jump to parent message in thread"
-#~ msgstr "ilmeği başlatan ana iletiye geç"
-
-#~ msgid "jump to previous thread"
-#~ msgstr "bir önceki ilmeğe geç"
-
-#~ msgid "jump to previous subthread"
-#~ msgstr "bir önceki alt ilmeğe geç"
-
-#~ msgid "move to the previous undeleted message"
-#~ msgstr "bir önceki silinmemiş iletiye geç"
-
-#~ msgid "jump to the previous new message"
-#~ msgstr "bir önceki yeni iletiye geç"
-
-#~ msgid "jump to the previous new or unread message"
-#~ msgstr "bir önceki yeni veya okunmamış iletiye geç"
-
-#~ msgid "jump to the previous unread message"
-#~ msgstr "bir önceki okunmamış iletiye geç"
-
-#~ msgid "mark the current thread as read"
-#~ msgstr "geçerli ilmeği okunmuş olarak işaretle"
-
-#~ msgid "mark the current subthread as read"
-#~ msgstr "geçerli alt ilmeği okunmuş olarak işaretle"
-
-#, fuzzy
-#~ msgid "jump to root message in thread"
-#~ msgstr "ilmeği başlatan ana iletiye geç"
-
-#~ msgid "set a status flag on a message"
-#~ msgstr "iletinin durum bayrağını ayarla"
-
-#~ msgid "save changes to mailbox"
-#~ msgstr "eposta kutusuna yapılan değişiklikleri kaydet"
-
-#~ msgid "tag messages matching a pattern"
-#~ msgstr "tabire uyan iletileri işaretle"
-
-#~ msgid "undelete messages matching a pattern"
-#~ msgstr "tabire uyan silinmiş iletileri kurtar"
-
-#~ msgid "untag messages matching a pattern"
-#~ msgstr "tabire uyan iletilerdeki işaretlemeyi kaldır"
-
-#, fuzzy
-#~ msgid "create a hotkey macro for the current message"
-#~ msgstr "İlk iletidesiniz."
-
-#~ msgid "move to the middle of the page"
-#~ msgstr "sayfanın ortasına geç"
-
-#~ msgid "move to the next entry"
-#~ msgstr "bir sonraki ögeye geç"
-
-#~ msgid "scroll down one line"
-#~ msgstr "bir satır aşağıya in"
-
-#~ msgid "move to the next page"
-#~ msgstr "bir sonraki sayfaya geç"
-
-#~ msgid "jump to the bottom of the message"
-#~ msgstr "iletinin sonuna geç"
-
-#~ msgid "toggle display of quoted text"
-#~ msgstr "alıntı metnin görüntülenmesi özelliğini aç/kapat"
-
-#~ msgid "skip beyond quoted text"
-#~ msgstr "alıntı metni atla"
-
-#~ msgid "jump to the top of the message"
-#~ msgstr "iletinin başına geç"
-
-#~ msgid "pipe message/attachment to a shell command"
-#~ msgstr "iletiyi/eki bir kabuk komutundan geçir"
-
-#, fuzzy
-#~ msgid "post message to newsgroup"
-#~ msgstr "İletiyi %s adresine geri gönder"
-
-#~ msgid "move to the previous entry"
-#~ msgstr "bir önceki ögeye geç"
-
-#~ msgid "scroll up one line"
-#~ msgstr "bir satır yukarıya çık"
-
-#~ msgid "move to the previous page"
-#~ msgstr "bir önceki sayfaya geç"
-
-#~ msgid "print the current entry"
-#~ msgstr "geçerli ögeyi yazdır"
-
-#~ msgid "query external program for addresses"
-#~ msgstr "adresler için başka bir uygulamayı sorgula"
-
-#~ msgid "append new query results to current results"
-#~ msgstr "yeni sorgulama sonuçlarını geçerli sonuçlara ekle"
-
-#~ msgid "save changes to mailbox and quit"
-#~ msgstr "eposta kutusuna yapılan değişiklikleri kaydet ve çık"
-
-#~ msgid "recall a postponed message"
-#~ msgstr "gönderilmesi ertelenmiş iletiyi yeniden düzenle"
-
-#, fuzzy
-#~ msgid "reconstruct thread containing current message"
-#~ msgstr "İlmek okunmamış iletiler içeriyor."
-
-#~ msgid "clear and redraw the screen"
-#~ msgstr "ekranı temizle ve güncelle"
-
-#~ msgid "{internal}"
-#~ msgstr "{dahili}"
-
-#~ msgid "rename the current mailbox (IMAP only)"
-#~ msgstr "geçerli eposta kutusunu yeniden isimlendir (sadece IMAP)"
-
-#~ msgid "reply to a message"
-#~ msgstr "iletiye cevap ver"
-
-#~ msgid "use the current message as a template for a new one"
-#~ msgstr "geçerli iletiyi yeni bir ileti için örnek olarak kullan"
-
-#, fuzzy
-#~ msgid "save message/attachment to a mailbox/file"
-#~ msgstr "iletiyi/eki bir dosyaya kaydet"
-
-#~ msgid "search for a regular expression"
-#~ msgstr "düzenli ifade ara"
-
-#~ msgid "search backwards for a regular expression"
-#~ msgstr "ters yönde düzenli ifade ara"
-
-#~ msgid "search for next match"
-#~ msgstr "bir sonraki eşleşmeyi bul"
-
-#~ msgid "search for next match in opposite direction"
-#~ msgstr "bir sonraki eşleşmeyi ters yönde bul"
-
-#~ msgid "toggle search pattern coloring"
-#~ msgstr "arama tabirinin renklendirilmesi özellğini aç/kapat"
-
-#~ msgid "invoke a command in a subshell"
-#~ msgstr "alt kabukta bir komut çalıştır"
-
-#~ msgid "sort messages"
-#~ msgstr "iletileri sırala"
-
-#~ msgid "sort messages in reverse order"
-#~ msgstr "iletileri ters sırala"
-
-#, fuzzy
-#~ msgid "subscribe to newsgroups matching a pattern"
-#~ msgstr "tabire uyan iletilerdeki işaretlemeyi kaldır"
-
-#~ msgid "tag the current entry"
-#~ msgstr "geçerli ögeyi işaretle"
-
-#~ msgid "apply next function to tagged messages"
-#~ msgstr "işaretlenmiş iletilere verilecek işlevi uygula"
-
-#~ msgid "apply next function ONLY to tagged messages"
-#~ msgstr "verilecek işlevi SADECE işaretlenmiş iletilere uygula"
-
-#~ msgid "tag the current subthread"
-#~ msgstr "geçerli alt ilmeği işaretle"
-
-#~ msgid "tag the current thread"
-#~ msgstr "geçerli ilmeği işaretle"
-
-#~ msgid "toggle a message's 'new' flag"
-#~ msgstr "iletinin 'yeni' (new) bayrağını aç/kapat"
-
-#, fuzzy
-#~ msgid "toggle view of read messages"
-#~ msgstr "bir önceki yeni veya okunmamış iletiye geç"
-
-#~ msgid "toggle whether the mailbox will be rewritten"
-#~ msgstr "eposta kutusunun yeniden yazılması özelliğini aç/kapat"
-
-#~ msgid "toggle whether to browse mailboxes or all files"
-#~ msgstr "sadece eposta kutuları veya bütün dosyaların görüntülenmesi arasında geçiş yap"
-
-#~ msgid "move to the top of the page"
-#~ msgstr "sayfanın başına geç"
-
-#~ msgid "undelete the current entry"
-#~ msgstr "geçerli ögeyi kurtar"
-
-#~ msgid "undelete all messages in thread"
-#~ msgstr "ilmekteki bütün iletileri kurtar"
-
-#~ msgid "undelete all messages in subthread"
-#~ msgstr "alt ilmekteki bütün iletileri kurtar"
-
-#, fuzzy
-#~ msgid "unsubscribe from newsgroups matching a pattern"
-#~ msgstr "tabire uyan iletilerdeki işaretlemeyi kaldır"
-
-#~ msgid "show the Mutt version number and date"
-#~ msgstr "Mutt sürümünü ve tarihini göster"
-
-#~ msgid "view attachment using mailcap entry if necessary"
-#~ msgstr "eki, gerekiyorsa, mailcap kaydını kullanarak görüntüle"
-
-#~ msgid "show MIME attachments"
-#~ msgstr "MIME eklerini göster"
-
-#~ msgid "display the keycode for a key press"
-#~ msgstr "girilen tuşun tuş kodunu göster"
-
-#, fuzzy
-#~ msgid "limit view to current thread"
-#~ msgstr "geçerli ilmeği işaretle"
-
-#~ msgid "show currently active limit pattern"
-#~ msgstr "etkin durumdaki sınırlama tabirini göster"
-
-#~ msgid "collapse/uncollapse current thread"
-#~ msgstr "geçerli ilmeği göster/gizle"
-
-#~ msgid "collapse/uncollapse all threads"
-#~ msgstr "bütün ilmekleri göster/gizle"
-
-#, fuzzy
-#~ msgid "move the highlight to next mailbox with new mail"
-#~ msgstr "Yeni eposta içeren bir eposta kutusu yok."
-
-#, fuzzy
-#~ msgid "open highlighted mailbox"
-#~ msgstr "Eposta kutusu yeniden açılıyor..."
-
-#, fuzzy
-#~ msgid "scroll the sidebar down 1 page"
-#~ msgstr "yarım sayfa aşağıya in"
-
-#, fuzzy
-#~ msgid "scroll the sidebar up 1 page"
-#~ msgstr "yarım sayfa yukarıya çık"
-
-#, fuzzy
-#~ msgid "move the highlight to previous mailbox"
-#~ msgstr "bir önceki sayfaya geç"
-
-#, fuzzy
-#~ msgid "move the highlight to previous mailbox with new mail"
-#~ msgstr "Yeni eposta içeren bir eposta kutusu yok."
-
-#, fuzzy
-#~ msgid "toggle between mailboxes and virtual mailboxes"
-#~ msgstr "sadece eposta kutuları veya bütün dosyaların görüntülenmesi arasında geçiş yap"
-
-#, fuzzy
-#~ msgid "open a different virtual folder"
-#~ msgstr "başka bir dizin aç"
-
-#, fuzzy
-#~ msgid "modify labels and then hide message"
-#~ msgstr "İlk iletidesiniz."
-
-#~ msgid "attach a PGP public key"
-#~ msgstr "bir PGP genel anahtarı ekle"
-
-#~ msgid "show PGP options"
-#~ msgstr "PGP seçeneklerini göster"
-
-#~ msgid "mail a PGP public key"
-#~ msgstr "bir PGP genel anahtarı gönder"
-
-#~ msgid "verify a PGP public key"
-#~ msgstr "bir PGP genel anahtarı doğrula"
-
-#~ msgid "view the key's user id"
-#~ msgstr "anahtarın kullanıcı kimliğini göster"
-
-#, fuzzy
-#~ msgid "check for classic PGP"
-#~ msgstr "klasik pgp için denetle"
-
-#, fuzzy
-#~ msgid "accept the chain constructed"
-#~ msgstr "Oluşturulan zinciri kabul et"
-
-#, fuzzy
-#~ msgid "append a remailer to the chain"
-#~ msgstr "Zincirin sonuna yeni bir postacı ekle"
-
-#, fuzzy
-#~ msgid "insert a remailer into the chain"
-#~ msgstr "Zincire yeni bir postacı ekle"
-
-#, fuzzy
-#~ msgid "delete a remailer from the chain"
-#~ msgstr "Zincirdeki bir postacıyı sil"
-
-#, fuzzy
-#~ msgid "select the previous element of the chain"
-#~ msgstr "Zincirde bir önceki ögeyi seç"
-
-#, fuzzy
-#~ msgid "select the next element of the chain"
-#~ msgstr "Zincirde bir sonraki ögeyi seç"
-
-#~ msgid "send the message through a mixmaster remailer chain"
-#~ msgstr "iletiyi bir \"mixmaster\" postacı zinciri üzerinden gönder"
-
-#~ msgid "make decrypted copy and delete"
-#~ msgstr "çözülmüş kopyasını yarat ve sil"
-
-#~ msgid "make decrypted copy"
-#~ msgstr "çözülmüş kopya yarat"
-
-#~ msgid "wipe passphrase(s) from memory"
-#~ msgstr "bellekteki parolaları sil"
-
-#~ msgid "extract supported public keys"
-#~ msgstr "desteklenen genel anahtarları çıkar"
-
-#~ msgid "show S/MIME options"
-#~ msgstr "S/MIME seçeneklerini göster"
-
-#~ msgid "Fingerprint: %s"
-#~ msgstr "Parmak izi: %s"
-
-#, fuzzy
-#~ msgid "SMTP authentication requires SASL"
-#~ msgstr "GSSAPI doğrulaması başarısız oldu."
-
-#~ msgid "move to the first message"
-#~ msgstr "ilk iletiye geç"
-
-#~ msgid "move to the last message"
-#~ msgstr "son iletiye geç"
