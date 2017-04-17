@@ -32,16 +32,9 @@ EXTRA_DIST = dotlock.man		\
 	Muttrc Muttrc.head stamp-doc-rc \
 	makedoc.c makedoc_defs.h 	\
 	mutt.css mutt.xsl html.xsl chunk.xsl \
-	$(BUILT_DISTFILES) $(SAMPLE_MUTTRC) neomutt-syntax.vim \
+	$(BUILT_DISTFILES) neomutt-syntax.vim \
 	mutt-1.7.0-syntax.vim 
 
-SAMPLE_MUTTRC = muttrc.attach-headers-color muttrc.compress muttrc.cond-date \
-	muttrc.encrypt-to-self muttrc.forgotten-attachment muttrc.ifdef \
-	muttrc.index-color muttrc.initials muttrc.keywords \
-	muttrc.limit-current-thread muttrc.nested-if muttrc.new-mail \
-	muttrc.nntp muttrc.notmuch muttrc.progress muttrc.quasi-delete \
-	muttrc.reply-with-xorig muttrc.sidebar muttrc.skip-quoted \
-	muttrc.status-color muttrc.timeout
 
 
 CHUNKED_DOCFILES = index.html intro.html gettingstarted.html \
@@ -86,9 +79,6 @@ install-data-local: makedoc-all instdoc
 	-for f in $(HTML_DOCFILES) ; do \
 		$(INSTALL) -m 644 $(srcdir)/$$f $(DESTDIR)$(docdir) ; \
 	done
-	-for f in $(SAMPLE_MUTTRC) ; do \
-		$(INSTALL) -m 644 $(srcdir)/$$f $(DESTDIR)$(docdir) ; \
-	done
 	$(INSTALL) -m 644 Muttrc $(DESTDIR)$(sysconfdir)/Muttrc.dist
 	-if [ -f $(DESTDIR)$(pkgdatadir)/Muttrc ] ; then \
 		mv $(DESTDIR)$(pkgdatadir)/Muttrc* $(DESTDIR)$(sysconfdir) ; \
@@ -106,7 +96,7 @@ uninstall-local:
 	for f in muttrc.5 mbox.5 mmdf.5 ; do \
 		rm -f $(DESTDIR)$(mandir)/man5/$$f ; \
 	done
-	for f in $(srcdir_DOCFILES) $(topsrcdir_DOCFILES) $(HTML_DOCFILES) $(SAMPLE_MUTTRC); \
+	for f in $(srcdir_DOCFILES) $(topsrcdir_DOCFILES) $(HTML_DOCFILES); \
 	do \
 		rm -f $(DESTDIR)$(docdir)/$$f ; \
 	done
