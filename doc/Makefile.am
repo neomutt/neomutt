@@ -19,7 +19,6 @@ EXTRA_DIST = dotlock.man		\
 	pgpring.man			\
 	PGP-Notes.txt			\
 	applying-patches.txt		\
-	devel-notes.txt			\
 	gen-map-doc			\
 	muttrc.man.head			\
 	muttrc.man.tail			\
