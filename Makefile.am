@@ -35,7 +35,7 @@ endif
 
 distdir = neo$(PACKAGE)-$(VERSION)
 
-BUILT_SOURCES = keymap_defs.h keymap_alldefs.h patchlist.c git_ver.h conststrings.c hcachever.sh $(HCVERSION)
+BUILT_SOURCES = keymap_defs.h patchlist.c git_ver.h conststrings.c hcachever.sh $(HCVERSION)
 
 bin_PROGRAMS = mutt $(DOTLOCK_TARGET) $(PGPAUX_TARGET)
 mutt_SOURCES = addrbook.c alias.c ascii.c attach.c base64.c browser.c buffer.c \
@@ -87,7 +87,7 @@ EXTRA_DIST = account.h ascii.h attach.h browser.h buffer.h buffy.h ChangeLog \
 	pop.h protos.h README.md README.neomutt README.notmuch README.SECURITY \
 	README.SSL remailer.c remailer.h rfc1524.h rfc2047.h rfc2231.h \
 	rfc3676.h rfc822.h sha1.h sidebar.h smime.h smime_keys.pl sort.h TODO \
-	txt2c.c txt2c.sh UPDATING UPDATING.kz version.h
+	txt2c.c txt2c.sh UPDATING UPDATING.kz version.h keymap_alldefs.h
 
 EXTRA_SCRIPTS = smime_keys
 
@@ -148,7 +148,7 @@ smime_keys: $(srcdir)/smime_keys.pl
 keymap_defs.h: $(OPS) $(srcdir)/gen_defs
 	$(srcdir)/gen_defs $(OPS) > keymap_defs.h
 
-keymap_alldefs.h: $(srcdir)/OPS $(srcdir)/OPS.SIDEBAR $(srcdir)/OPS.NOTMUCH $(srcdir)/OPS.MIX $(srcdir)/OPS.PGP $(srcdir)/OPS.SMIME $(srcdir)/OPS.CRYPT $(srcdir)/gen_defs $(srcdir)/config.h
+keymap_alldefs.h: $(srcdir)/OPS $(srcdir)/OPS.SIDEBAR $(srcdir)/OPS.NOTMUCH $(srcdir)/OPS.MIX $(srcdir)/OPS.PGP $(srcdir)/OPS.SMIME $(srcdir)/OPS.CRYPT $(srcdir)/gen_defs config.h
 	rm -f $@
 	$(srcdir)/gen_defs $(srcdir)/OPS $(srcdir)/OPS.SIDEBAR $(srcdir)/OPS.NOTMUCH \
 		$(srcdir)/OPS.MIX $(srcdir)/OPS.PGP $(srcdir)/OPS.SMIME $(srcdir)/OPS.CRYPT \
