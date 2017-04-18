@@ -186,7 +186,7 @@ void mutt_edit_content_type (HEADER *, BODY *, FILE *);
 void mutt_edit_file (const char *, const char *);
 void mutt_edit_headers (const char *, const char *, HEADER *, char *, size_t);
 char **mutt_envlist (void);
-void mutt_envlist_set (const char *name, const char *value);
+void mutt_envlist_set (const char *name, const char *value, int overwrite);
 int mutt_filter_unprintable (char **);
 int mutt_label_message (HEADER *);
 void mutt_make_label_hash (CONTEXT *);
