@@ -533,12 +533,13 @@ int mutt_select_sort (int reverse)
 
   switch (mutt_multi_choice (reverse ?
        /* L10N: The following three are the sort/reverse sort prompts.
-        * Capital letters must match the order of the characters in the third
-        * string.
+        * Letters must match the order of the characters in the third
+        * string.  Note that mutt now supports multiline prompts, so
+        * it's okay for the translation to take up to three lines.
         */
-			     _("Rev-Sort Date/Frm/Recv/Subj/tO/Thread/Unsort/siZe/sCore/sPam/Label?: ") :
-			     _("Sort Date/Frm/Recv/Subj/tO/Thread/Unsort/siZe/sCore/sPam/Label?: "),
-			     _("dfrsotuzcpl")))
+	_("Rev-Sort (d)ate/(f)rm/(r)ecv/(s)ubj/t(o)/(t)hread/(u)nsort/si(z)e/s(c)ore/s(p)am/(l)abel?: ") :
+	_("Sort (d)ate/(f)rm/(r)ecv/(s)ubj/t(o)/(t)hread/(u)nsort/si(z)e/s(c)ore/s(p)am/(l)abel?: "),
+	_("dfrsotuzcpl")))
   {
   case -1: /* abort - don't resort */
     return -1;
