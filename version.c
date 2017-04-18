@@ -296,8 +296,6 @@ static struct compile_options comp_opts[] = {
 #endif
 #ifdef USE_SIDEBAR
     {"USE_SIDEBAR", 1},
-#else
-    {"USE_SIDEBAR", 0},
 #endif
 #ifdef USE_SMTP
     {"USE_SMTP", 1},
