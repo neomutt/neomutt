@@ -1,3 +1,25 @@
+2017-04-18 12:25 -0700  Kevin McCarthy  <kevin@8t8.us>  (33995363e723)
+
+	* filter.c, init.c, pgp.c, protos.h: Fix GPG_TTY to be added to
+	envlist. (closes #3931)
+
+	Changeset 37209157e33c converted filters to use the envlist.
+	Unfortunately, I missed that pgp.c sets GPG_TTY when using the GnuPG
+	agent. Convert to add GPG_TTY to the envlist too.
+
+2017-04-12 17:45 -0700  Kevin McCarthy  <kevin@8t8.us>  (feccc2ac1b9a)
+
+	* .hgsigs: mutt-1.8.1 signed
+
+2017-04-12 17:44 -0700  Kevin McCarthy  <kevin@8t8.us>  (491f7cfa03d9)
+
+	* .hgtags: Added tag mutt-1-8-1-rel for changeset f44974c10990
+
+2017-04-12 17:43 -0700  Kevin McCarthy  <kevin@8t8.us>  (f44974c10990)
+
+	* ChangeLog, UPDATING, VERSION: automatic post-release commit for
+	mutt-1.8.1
+
 2017-04-11 12:14 -0700  Kevin McCarthy  <kevin@8t8.us>  (b825cbcaf6b5)
 
 	* compose.c: Fix memleak when attaching files.
