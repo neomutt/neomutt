@@ -122,7 +122,7 @@ mutt_create_filter_fd (const char *cmd, FILE **in, FILE **out, FILE **err,
     if (MuttIndexWindow && (MuttIndexWindow->cols > 0))
     {
       snprintf (columns, sizeof (columns), "%d", MuttIndexWindow->cols);
-      mutt_envlist_set ("COLUMNS", columns);
+      mutt_envlist_set ("COLUMNS", columns, 1);
     }
 
     execle (EXECSHELL, "sh", "-c", cmd, NULL, mutt_envlist ());
