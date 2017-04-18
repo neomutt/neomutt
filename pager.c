@@ -33,6 +33,7 @@
 #include "mutt_curses.h"
 #include "mutt_menu.h"
 #include "mutt_regex.h"
+#include "sort.h"
 #ifdef USE_SIDEBAR
 #include "sidebar.h"
 #endif
@@ -2481,6 +2482,17 @@ int mutt_pager(const char *banner, const char *fname, int flags, pager_t *extra)
         {
           rd.SearchFlag ^= MUTT_SEARCH;
           pager_menu->redraw = REDRAW_BODY;
+        }
+        break;
+
+      case OP_SORT:
+      case OP_SORT_REVERSE:
+        CHECK_MODE(IsHeader(extra))
+        if (mutt_select_sort((ch == OP_SORT_REVERSE)) == 0)
+        {
+          set_option(OPTNEEDRESORT);
+          ch = -1;
+          rc = OP_DISPLAY_MESSAGE;
         }
         break;
 
