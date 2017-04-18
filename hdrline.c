@@ -156,6 +156,27 @@ enum FieldType
 };
 
 /**
+ * get_nth_wchar - Extract one char from a multi-byte table
+ * @table:  Multi-byte table
+ * @index:  Select this character
+ * @return: String pointer to the character
+ *
+ * Extract one multi-byte character from a string table.
+ * If the index is invalid, then a space character will be returned.
+ * If the character selected is '\n' (Ctrl-M), then "" will be returned.
+ */
+static char *get_nth_wchar(mbchar_table *table, int index)
+{
+  if (!table || !table->chars || (index < 0) || (index >= table->len))
+    return " ";
+
+  if (table->chars[index][0] == '\r')
+    return "";
+
+  return table->chars[index];
+}
+
+/**
  * make_from_prefix - Create a prefix for an author field
  * @disp:   Type of field
  * @return: Prefix string (do not free it)
@@ -165,14 +186,19 @@ enum FieldType
  */
 static const char *make_from_prefix(enum FieldType disp)
 {
+  /* need 2 bytes at the end, one for the space, another for NUL */
   static char padded[8];
   static const char *long_prefixes[DISP_NUM] = {[DISP_TO] = "To ", [DISP_CC] = "Cc ",
                                                 [DISP_BCC] = "Bcc ", [DISP_FROM] = ""};
 
-  if (!Fromchars || (disp >= Fromchars->len))
+  if (!Fromchars || !Fromchars->chars || (Fromchars->len == 0))
     return long_prefixes[disp];
 
-  snprintf(padded, sizeof(padded), "%s ", Fromchars->chars[disp]);
+  char *pchar = get_nth_wchar(Fromchars, disp);
+  if (mutt_strlen(pchar) == 0)
+      return "";
+
+  snprintf(padded, sizeof(padded), "%s ", pchar);
   return padded;
 }
 
@@ -366,27 +392,6 @@ static bool get_initials(const char *name, char *buf, int buflen)
 
   *buf = 0;
   return true;
-}
-
-/**
- * get_nth_wchar - Extract one char from a multi-byte table
- * @table:  Multi-byte table
- * @index:  Select this character
- * @return: String pointer to the character
- *
- * Extract one multi-byte character from a string table.
- * If the index is invalid, then a space character will be returned.
- * If the character selected is '\n' (Ctrl-M), then "" will be returned.
- */
-static char *get_nth_wchar(mbchar_table *table, int index)
-{
-  if (!table || !table->chars || (index < 0) || (index >= table->len))
-    return " ";
-
-  if (table->chars[index][0] == '\n')
-    return "";
-
-  return table->chars[index];
 }
 
 static char *apply_subject_mods(ENVELOPE *env)
