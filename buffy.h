@@ -18,7 +18,7 @@
 #ifndef _MUTT_BUFFY_H
 #define _MUTT_BUFFY_H 1
 
-/*parameter to mutt_parse_mailboxes*/
+/* parameter to mutt_parse_mailboxes */
 #define MUTT_MAILBOXES   1
 #define MUTT_UNMAILBOXES 2
 

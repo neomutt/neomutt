@@ -951,7 +951,7 @@ int mutt_compose_menu(HEADER *msg, /* structure for new message */
           break;
         }
 
-        this = Context; /* remember current folder and sort methods*/
+        this = Context; /* remember current folder and sort methods */
         oldSort = Sort;
         oldSortAux = SortAux;
 

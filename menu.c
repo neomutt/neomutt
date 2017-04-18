@@ -569,7 +569,7 @@ static void menu_length_jump(MUTTMENU *menu, int jumplen)
   {
     /* possible to scroll? */
     if (DIRECTION * menu->top <
-        (tmp = (neg ? 0 : (menu->max /*-1*/) - (menu->pagelen /*-1*/))))
+        (tmp = (neg ? 0 : (menu->max /* -1 */) - (menu->pagelen /* -1 */))))
     {
       menu->top += jumplen;
 
@@ -1114,7 +1114,7 @@ int mutt_menu_loop(MUTTMENU *menu)
     {
       mutt_resize_screen();
       SigWinch = 0;
-      clearok(stdscr, true); /*force complete redraw*/
+      clearok(stdscr, true); /* force complete redraw */
     }
 #endif
 

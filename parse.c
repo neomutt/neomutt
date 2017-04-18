@@ -685,15 +685,15 @@ static const struct tz_t
     {"aat", 1, 0, true},           /* Atlantic Africa Time */
     {"adt", 4, 0, false},          /* Arabia DST */
     {"ast", 3, 0, false},          /* Arabia */
-    /*{ "ast",   4,  0, true  },*/ /* Atlantic */
+    /* { "ast",   4,  0, true  }, */ /* Atlantic */
     {"bst", 1, 0, false},          /* British DST */
     {"cat", 1, 0, false},          /* Central Africa */
     {"cdt", 5, 0, true},
     {"cest", 2, 0, false}, /* Central Europe DST */
     {"cet", 1, 0, false},  /* Central Europe */
     {"cst", 6, 0, true},
-    /*{ "cst",   8,  0, false },*/ /* China */
-    /*{ "cst",   9, 30, false },*/ /* Australian Central Standard Time */
+    /* { "cst",   8,  0, false }, */ /* China */
+    /* { "cst",   9, 30, false }, */ /* Australian Central Standard Time */
     {"eat", 3, 0, false},          /* East Africa */
     {"edt", 4, 0, true},
     {"eest", 3, 0, false}, /* Eastern Europe DST */
@@ -707,7 +707,7 @@ static const struct tz_t
     {"ict", 7, 0, false},          /* Indochina */
     {"idt", 3, 0, false},          /* Israel DST */
     {"ist", 2, 0, false},          /* Israel */
-    /*{ "ist",   5, 30, false },*/ /* India */
+    /* { "ist",   5, 30, false }, */ /* India */
     {"jst", 9, 0, false},          /* Japan */
     {"kst", 9, 0, false},          /* Korea */
     {"mdt", 6, 0, true},
@@ -722,7 +722,7 @@ static const struct tz_t
     {"sat", 2, 0, false},          /* South Africa */
     {"smt", 4, 0, false},          /* Seychelles */
     {"sst", 11, 0, true},          /* Samoa */
-    /*{ "sst",   8,  0, false },*/ /* Singapore */
+    /* { "sst",   8,  0, false }, */ /* Singapore */
     {"utc", 0, 0, false},
     {"wat", 0, 0, false},  /* West Africa */
     {"west", 1, 0, false}, /* Western Europe DST */
@@ -836,7 +836,7 @@ time_t mutt_parse_date(const char *s, HEADER *h)
           tz = bsearch(ptz, TimeZones, sizeof(TimeZones) / sizeof(struct tz_t),
                        sizeof(struct tz_t), (int (*)(const void *, const void *)) ascii_strcasecmp
                        /* This is safe to do: A pointer to a struct equals
-                         * a pointer to its first element*/);
+                        * a pointer to its first element */);
 
           if (tz)
           {

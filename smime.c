@@ -1417,7 +1417,7 @@ BODY *smime_build_smime_entity(BODY *a, char *certlist)
   t->disposition = DISPATTACH;
   t->d_filename = safe_strdup("smime.p7m");
   t->filename = safe_strdup(tempfile);
-  t->unlink = true; /*delete after sending the message */
+  t->unlink = true; /* delete after sending the message */
   t->parts = 0;
   t->next = 0;
 

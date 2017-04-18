@@ -17,7 +17,7 @@
 
 #define per_line 12
 
-void static txt2c(char *sym, FILE *fp)
+static void txt2c(char *sym, FILE *fp)
 {
   unsigned char buf[per_line];
   int i;

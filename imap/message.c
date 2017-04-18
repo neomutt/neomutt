@@ -290,7 +290,7 @@ static int msg_fetch_header(CONTEXT *ctx, IMAP_HEADER *h, char *buf, FILE *fp)
 {
   IMAP_DATA *idata = NULL;
   long bytes;
-  int rc = -1; /* default now is that string isn't FETCH response*/
+  int rc = -1; /* default now is that string isn't FETCH response */
 
   idata = ctx->data;
 
@@ -854,7 +854,7 @@ parsemsg:
    * IMAP server doesn't know the message has been \Seen. So we capture
    * the server's notion of 'read' and if it differs from the message info
    * picked up in mutt_read_rfc822_header, we mark the message (and context
-   * changed). Another possibility: ignore Status on IMAP?*/
+   * changed). Another possibility: ignore Status on IMAP? */
   read = h->read;
   newenv = mutt_read_rfc822_header(msg->fp, h, 0, 0);
   mutt_merge_envelopes(h->env, &newenv);

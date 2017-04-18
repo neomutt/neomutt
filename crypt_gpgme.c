@@ -88,7 +88,7 @@ typedef struct crypt_keyinfo
   gpgme_key_t kobj;
   int idx;                   /* and the user ID at this index */
   const char *uid;           /* and for convenience point to this user ID */
-  unsigned int flags;        /* global and per uid flags (for convenience)*/
+  unsigned int flags;        /* global and per uid flags (for convenience) */
   gpgme_validity_t validity; /* uid validity (cached for convenience) */
 } crypt_key_t;
 
@@ -1098,7 +1098,7 @@ BODY *smime_gpgme_build_smime_entity(BODY *a, char *keylist)
   t->disposition = DISPATTACH;
   t->d_filename = safe_strdup("smime.p7m");
   t->filename = outfile;
-  t->unlink = true; /*delete after sending the message */
+  t->unlink = true; /* delete after sending the message */
   t->parts = 0;
   t->next = 0;
 
@@ -2746,8 +2746,8 @@ static const char *crypt_entry_fmt(char *dest, size_t destlen, size_t col, int c
   /*    if (isupper ((unsigned char) op)) */
   /*      key = pkey; */
 
-  kflags = (key->flags /*| (pkey->flags & KEYFLAG_RESTRICTIONS)
-                         | uid->flags*/);
+  kflags = (key->flags /* | (pkey->flags & KEYFLAG_RESTRICTIONS)
+                          | uid->flags */);
 
   switch (tolower(op))
   {

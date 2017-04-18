@@ -461,7 +461,7 @@ int mutt_copy_header(FILE *in, HEADER *h, FILE *out, int flags, const char *pref
   return 0;
 }
 
-/* Count the number of lines and bytes to be deleted in this body*/
+/* Count the number of lines and bytes to be deleted in this body */
 static int count_delete_lines(FILE *fp, BODY *b, LOFF_T *length, size_t datelen)
 {
   int dellines = 0;

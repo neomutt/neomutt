@@ -274,7 +274,7 @@ WHERE int CurrentMenu;
 WHERE ALIAS *Aliases INITVAL(0);
 WHERE LIST *UserHeader INITVAL(0);
 
-/*-- formerly in pgp.h --*/
+/* -- formerly in pgp.h -- */
 WHERE REGEXP PgpGoodSign;
 WHERE REGEXP PgpDecryptionOkay;
 WHERE char *PgpSignAs;
@@ -294,7 +294,7 @@ WHERE char *PgpListSecringCommand;
 WHERE char *PgpListPubringCommand;
 WHERE char *PgpGetkeysCommand;
 
-/*-- formerly in smime.h --*/
+/* -- formerly in smime.h -- */
 WHERE char *SmimeDefaultKey;
 WHERE short SmimeTimeout;
 WHERE char *SmimeCertificates;

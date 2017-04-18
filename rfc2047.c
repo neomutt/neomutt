@@ -28,7 +28,7 @@
 #include "mime.h"
 
 /* If you are debugging this file, comment out the following line. */
-/*#define NDEBUG*/
+/* #define NDEBUG */
 #ifdef NDEBUG
 #define assert(x)
 #else

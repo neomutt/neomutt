@@ -124,7 +124,7 @@ int mutt_parse_crypt_hdr(const char *p, int set_empty_signas, int crypt_app);
 
 void convert_to_7bit(BODY *a);
 
-/*-- crypt.c --*/
+/* -- crypt.c -- */
 
 /* Print the current time. */
 void crypt_current_time(STATE *s, char *app_name);
@@ -174,7 +174,7 @@ const char *crypt_get_fingerprint_or_id(char *p, const char **pphint,
 /* Check if a string contains a numerical key */
 bool crypt_is_numerical_keyid(const char *s);
 
-/*-- cryptglue.c --*/
+/* -- cryptglue.c -- */
 
 /* Show a message that a backend will be invoked. */
 void crypt_invoke_message(int type);

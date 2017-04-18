@@ -4189,7 +4189,7 @@ struct option_t MuttVars[] = {
   { "virtual_spoolfile", DT_BOOL, R_NONE, OPTVIRTSPOOLFILE, 0 },
   /*
   ** .pp
-  ** When \fset\fP, mutt will use the first defined virtual mailbox (see
+  ** When \fIset\fP, mutt will use the first defined virtual mailbox (see
   ** virtual-mailboxes) as a spool file.
   */
 #endif

@@ -2153,7 +2153,7 @@ int mutt_pager(const char *banner, const char *fname, int flags, pager_t *extra)
     {
       SigWinch = 0;
       mutt_resize_screen();
-      clearok(stdscr, TRUE); /*force complete redraw*/
+      clearok(stdscr, TRUE); /* force complete redraw */
 
       if (flags & MUTT_PAGER_RETWINCH)
       {
