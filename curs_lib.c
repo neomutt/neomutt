@@ -71,6 +71,9 @@ mutt_window_t *MuttMessageWindow = NULL;
 mutt_window_t *MuttSidebarWindow = NULL;
 #endif
 
+static void reflow_message_window_rows(int mw_rows);
+
+
 void mutt_refresh(void)
 {
   /* don't refresh when we are waiting for a child. */
@@ -162,16 +165,15 @@ int _mutt_get_field(const char *field, char *buf, size_t buflen, int complete,
 
   do
   {
+#if defined(USE_SLANG_CURSES) || defined(HAVE_RESIZETERM)
     if (SigWinch)
     {
       SigWinch = 0;
       mutt_resize_screen();
-      /* mutt_resize_screen sets REDRAW_FULL, but the pager also
-       * requires SIGWINCH. */
-      mutt_set_current_menu_redraw(REDRAW_SIGWINCH);
       clearok(stdscr, TRUE);
       mutt_current_menu_redraw();
     }
+#endif
     mutt_window_clearline(MuttMessageWindow, 0);
     SETCOLOR(MT_COLOR_PROMPT);
     addstr((char *) field); /* cast to get around bad prototypes */
@@ -229,8 +231,9 @@ int mutt_yesorno(const char *msg, int def)
   char *yes = _("yes");
   char *no = _("no");
   char *answer_string = NULL;
-  size_t answer_string_len;
-  size_t msglen;
+  int answer_string_wid, msg_wid;
+  size_t trunc_msg_len;
+  int redraw = 1, prompt_lines = 1;
 
 #ifdef HAVE_LANGINFO_YESEXPR
   char *expr = NULL;
@@ -248,8 +251,6 @@ int mutt_yesorno(const char *msg, int def)
             !REGCOMP(&reno, expr, REG_NOSUB);
 #endif
 
-  mutt_window_clearline(MuttMessageWindow, 0);
-
   /*
    * In order to prevent the default answer to the question to wrapped
    * around the screen in the even the question is wider than the screen,
@@ -258,20 +259,55 @@ int mutt_yesorno(const char *msg, int def)
    */
   safe_asprintf(&answer_string, " ([%s]/%s): ", def == MUTT_YES ? yes : no,
                 def == MUTT_YES ? no : yes);
-  answer_string_len = mutt_strwidth(answer_string);
-  /* maxlen here is sort of arbitrary, so pick a reasonable upper bound */
-  msglen = mutt_wstr_trunc(msg, 4 * MuttMessageWindow->cols,
-                           MuttMessageWindow->cols - answer_string_len, NULL);
-  SETCOLOR(MT_COLOR_PROMPT);
-  addnstr(msg, msglen);
-  addstr(answer_string);
-  NORMAL_COLOR;
-  FREE(&answer_string);
+  answer_string_wid = mutt_strwidth(answer_string);
+  msg_wid = mutt_strwidth(msg);
 
   while (true)
   {
+    if (redraw || SigWinch)
+    {
+      redraw = 0;
+#if defined(USE_SLANG_CURSES) || defined(HAVE_RESIZETERM)
+      if (SigWinch)
+      {
+        SigWinch = 0;
+        mutt_resize_screen();
+        clearok(stdscr, TRUE);
+        mutt_current_menu_redraw();
+      }
+#endif
+      if (MuttMessageWindow->cols)
+      {
+        prompt_lines = (msg_wid + answer_string_wid + MuttMessageWindow->cols - 1) /
+                       MuttMessageWindow->cols;
+        prompt_lines = MAX(1, MIN(3, prompt_lines));
+      }
+      if (prompt_lines != MuttMessageWindow->rows)
+      {
+        reflow_message_window_rows(prompt_lines);
+        mutt_current_menu_redraw();
+      }
+
+      /* maxlen here is sort of arbitrary, so pick a reasonable upper bound */
+      trunc_msg_len = mutt_wstr_trunc(
+          msg, 4 * prompt_lines * MuttMessageWindow->cols,
+          prompt_lines * MuttMessageWindow->cols - answer_string_wid, NULL);
+
+      mutt_window_move(MuttMessageWindow, 0, 0);
+      SETCOLOR(MT_COLOR_PROMPT);
+      addnstr(msg, trunc_msg_len);
+      addstr(answer_string);
+      NORMAL_COLOR;
+      mutt_window_clrtoeol(MuttMessageWindow);
+    }
+
     mutt_refresh();
+    /* SigWinch is not processed unless timeout is set */
+    timeout(30 * 1000);
     ch = mutt_getch();
+    timeout(-1);
+    if (ch.ch == -2)
+      continue;
     if (CI_is_return(ch.ch))
       break;
     if (ch.ch < 0)
@@ -306,12 +342,22 @@ int mutt_yesorno(const char *msg, int def)
     }
   }
 
+  FREE(&answer_string);
+
 #ifdef HAVE_LANGINFO_YESEXPR
   if (reyes_ok)
     regfree(&reyes);
   if (reno_ok)
     regfree(&reno);
 #endif
+
+  if (MuttMessageWindow->rows != 1)
+  {
+    reflow_message_window_rows(1);
+    mutt_current_menu_redraw();
+  }
+  else
+    mutt_window_clearline(MuttMessageWindow, 0);
 
   if (def != MUTT_ABORT)
   {
@@ -624,6 +670,31 @@ void mutt_reflow_windows(void)
   }
 #endif
 
+  mutt_set_current_menu_redraw_full();
+  /* the pager menu needs this flag set to recalc lineInfo */
+  mutt_set_current_menu_redraw(REDRAW_SIGWINCH);
+}
+
+static void reflow_message_window_rows(int mw_rows)
+{
+  MuttMessageWindow->rows = mw_rows;
+  MuttMessageWindow->row_offset = LINES - mw_rows;
+
+  MuttStatusWindow->row_offset = option(OPTSTATUSONTOP) ? 0 : LINES - mw_rows - 1;
+
+  if (option(OPTHELP))
+    MuttHelpWindow->row_offset = option(OPTSTATUSONTOP) ? LINES - mw_rows - 1 : 0;
+
+  MuttIndexWindow->rows = MAX(
+      LINES - MuttStatusWindow->rows - MuttHelpWindow->rows - MuttMessageWindow->rows, 0);
+
+#ifdef USE_SIDEBAR
+  if (option(OPTSIDEBAR))
+    MuttSidebarWindow->rows = MuttIndexWindow->rows;
+#endif
+
+  /* We don't also set REDRAW_SIGWINCH because this function only
+   * changes rows and is a temporary adjustment. */
   mutt_set_current_menu_redraw_full();
 }
 
@@ -940,16 +1011,48 @@ int mutt_multi_choice(char *prompt, char *letters)
 {
   event_t ch;
   int choice;
+  int redraw = 1, prompt_lines = 1;
   char *p = NULL;
 
-  SETCOLOR(MT_COLOR_PROMPT);
-  mutt_window_mvaddstr(MuttMessageWindow, 0, 0, prompt);
-  NORMAL_COLOR;
-  mutt_window_clrtoeol(MuttMessageWindow);
   while (true)
   {
+    if (redraw || SigWinch)
+    {
+      redraw = 0;
+#if defined(USE_SLANG_CURSES) || defined(HAVE_RESIZETERM)
+      if (SigWinch)
+      {
+        SigWinch = 0;
+        mutt_resize_screen();
+        clearok(stdscr, TRUE);
+        mutt_current_menu_redraw();
+      }
+#endif
+      if (MuttMessageWindow->cols)
+      {
+        prompt_lines = (mutt_strwidth(prompt) + MuttMessageWindow->cols - 1) /
+                       MuttMessageWindow->cols;
+        prompt_lines = MAX(1, MIN(3, prompt_lines));
+      }
+      if (prompt_lines != MuttMessageWindow->rows)
+      {
+        reflow_message_window_rows(prompt_lines);
+        mutt_current_menu_redraw();
+      }
+
+      SETCOLOR(MT_COLOR_PROMPT);
+      mutt_window_mvaddstr(MuttMessageWindow, 0, 0, prompt);
+      NORMAL_COLOR;
+      mutt_window_clrtoeol(MuttMessageWindow);
+    }
+
     mutt_refresh();
+    /* SigWinch is not processed unless timeout is set */
+    timeout(30 * 1000);
     ch = mutt_getch();
+    timeout(-1);
+    if (ch.ch == -2)
+      continue;
     /* (ch.ch == 0) is technically possible.  Treat the same as < 0 (abort) */
     if (ch.ch <= 0 || CI_is_return(ch.ch))
     {
@@ -973,7 +1076,13 @@ int mutt_multi_choice(char *prompt, char *letters)
     }
     BEEP();
   }
-  mutt_window_clearline(MuttMessageWindow, 0);
+  if (MuttMessageWindow->rows != 1)
+  {
+    reflow_message_window_rows(1);
+    mutt_current_menu_redraw();
+  }
+  else
+    mutt_window_clearline(MuttMessageWindow, 0);
   mutt_refresh();
   return choice;
 }
