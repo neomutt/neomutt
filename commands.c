@@ -537,8 +537,8 @@ int mutt_select_sort (int reverse)
         * string.  Note that mutt now supports multiline prompts, so
         * it's okay for the translation to take up to three lines.
         */
-	_("Rev-Sort (d)ate/(f)rm/(r)ecv/(s)ubj/t(o)/(t)hread/(u)nsort/si(z)e/s(c)ore/s(p)am/(l)abel?: ") :
-	_("Sort (d)ate/(f)rm/(r)ecv/(s)ubj/t(o)/(t)hread/(u)nsort/si(z)e/s(c)ore/s(p)am/(l)abel?: "),
+	_("Rev-Sort Date/Frm/Recv/Subj/tO/Thread/Unsort/siZe/sCore/sPam/Label?: ") :
+	_("Sort Date/Frm/Recv/Subj/tO/Thread/Unsort/siZe/sCore/sPam/Label?: "),
 	_("dfrsotuzcpl")))
   {
   case -1: /* abort - don't resort */
