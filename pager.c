@@ -29,6 +29,7 @@
 #include "pager.h"
 #include "attach.h"
 #include "mbyte.h"
+#include "sort.h"
 #ifdef USE_SIDEBAR
 #include "sidebar.h"
 #endif
@@ -2334,6 +2335,17 @@ search_next:
 	  pager_menu->redraw = REDRAW_BODY;
 	}
 	break;
+
+      case OP_SORT:
+      case OP_SORT_REVERSE:
+        CHECK_MODE(IsHeader (extra))
+        if (mutt_select_sort ((ch == OP_SORT_REVERSE)) == 0)
+        {
+          set_option (OPTNEEDRESORT);
+          ch = -1;
+          rc = OP_DISPLAY_MESSAGE;
+        }
+        break;
 
       case OP_HELP:
 	/* don't let the user enter the help-menu from the help screen! */
