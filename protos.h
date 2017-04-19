@@ -464,10 +464,6 @@ int getdnsdomainname(char *, size_t);
 #define ftruncate chsize
 #endif
 
-#ifndef HAVE_STRERROR
-#define strerror(x) ((x) > 0 && (x) < sys_nerr) ? sys_errlist[(x)] : 0
-#endif /* !HAVE_STRERROR */
-
 #ifdef _AIX
 int setegid(gid_t);
 #endif /* _AIX */
