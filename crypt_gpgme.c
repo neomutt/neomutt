@@ -514,7 +514,7 @@ static int data_object_to_stream(gpgme_data_t data, FILE *fp)
     return -1;
   }
 
-  while ((nread = gpgme_data_read(data, buf, sizeof(buf))) >= 0)
+  while ((nread = gpgme_data_read(data, buf, sizeof(buf))) > 0)
   {
     /* fixme: we are not really converting CRLF to LF but just
          skipping CR. Doing it correctly needs a more complex logic */
