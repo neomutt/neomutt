@@ -51,15 +51,6 @@ extern int optind;
 
 #define MD5_DIGEST_LENGTH 16
 
-#ifdef HAVE_FGETPOS
-#define FGETPOS(fp, pos) fgetpos((fp), &(pos))
-#define FSETPOS(fp, pos) fsetpos((fp), &(pos))
-#else
-#define FGETPOS(fp, pos) pos = ftello((fp));
-#define FSETPOS(fp, pos) fseeko((fp), (pos), SEEK_SET)
-#endif
-
-
 static short dump_signatures = 0;
 static short dump_fingerprints = 0;
 
@@ -633,11 +624,7 @@ static pgp_key_t pgp_parse_keyblock(FILE *fp)
   size_t l = 0;
   short err = 0;
 
-#ifdef HAVE_FGETPOS
   fpos_t pos;
-#else
-  LOFF_T pos;
-#endif
 
   pgp_key_t root = NULL;
   pgp_key_t *last = &root;
@@ -646,7 +633,7 @@ static pgp_key_t pgp_parse_keyblock(FILE *fp)
   pgp_uid_t **addr = NULL;
   pgp_sig_t **lsig = NULL;
 
-  FGETPOS(fp, pos);
+  fgetpos(fp, &pos);
 
   while (!err && (buff = pgp_read_packet(fp, &l)) != NULL)
   {
@@ -657,7 +644,7 @@ static pgp_key_t pgp_parse_keyblock(FILE *fp)
 
     if ((pt == PT_SECKEY || pt == PT_PUBKEY) && root)
     {
-      FSETPOS(fp, pos);
+      fsetpos(fp, &pos);
       return root;
     }
 
@@ -760,7 +747,7 @@ static pgp_key_t pgp_parse_keyblock(FILE *fp)
       }
     }
 
-    FGETPOS(fp, pos);
+    fgetpos(fp, &pos);
   }
 
   if (err)
@@ -777,11 +764,7 @@ static pgp_key_t pgp_parse_keyblock(FILE *fp)
 static void pgpring_find_candidates(char *ringfile, const char *hints[], int nhints)
 {
   FILE *rfp = NULL;
-#ifdef HAVE_FGETPOS
   fpos_t pos, keypos;
-#else
-  LOFF_T pos, keypos;
-#endif
 
   unsigned char *buff = NULL;
   unsigned char pt = 0;
@@ -802,8 +785,8 @@ static void pgpring_find_candidates(char *ringfile, const char *hints[], int nhi
     return;
   }
 
-  FGETPOS(rfp, pos);
-  FGETPOS(rfp, keypos);
+  fgetpos(rfp, &pos);
+  fgetpos(rfp, &keypos);
 
   while (!err && (buff = pgp_read_packet(rfp, &l)) != NULL)
   {
@@ -827,7 +810,7 @@ static void pgpring_find_candidates(char *ringfile, const char *hints[], int nhi
       {
         pgp_key_t p;
 
-        FSETPOS(rfp, keypos);
+        fsetpos(rfp, &keypos);
 
         /* Not bailing out here would lead us into an endless loop. */
 
@@ -841,7 +824,7 @@ static void pgpring_find_candidates(char *ringfile, const char *hints[], int nhi
       FREE(&tmp);
     }
 
-    FGETPOS(rfp, pos);
+    fgetpos(rfp, &pos);
   }
 
   safe_fclose(&rfp);
