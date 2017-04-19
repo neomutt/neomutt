@@ -29,7 +29,7 @@
 #include "mutt_menu.h"
 #include "sort.h"
 #ifdef USE_IMAP
-#include "imap.h"
+#include "imap/imap.h"
 #endif
 
 static const struct mapping_t PostponeHelp[] = {

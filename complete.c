@@ -23,7 +23,7 @@
 #include <sys/types.h>
 #include "mutt.h"
 #ifdef USE_IMAP
-#include "imap.h"
+#include "imap/imap.h"
 #include "mailbox.h"
 #endif
 #ifdef USE_NNTP

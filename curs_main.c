@@ -41,7 +41,7 @@
 #include "pop.h"
 #endif
 #ifdef USE_IMAP
-#include "imap_private.h"
+#include "imap/imap.h"
 #endif
 #ifdef USE_NOTMUCH
 #include "mutt_notmuch.h"
