@@ -468,10 +468,6 @@ int getdnsdomainname(char *, size_t);
 #define strerror(x) ((x) > 0 && (x) < sys_nerr) ? sys_errlist[(x)] : 0
 #endif /* !HAVE_STRERROR */
 
-#ifndef HAVE_MEMMOVE
-#define memmove(d, s, n) bcopy((s), (d), (n))
-#endif
-
 #ifdef _AIX
 int setegid(gid_t);
 #endif /* _AIX */

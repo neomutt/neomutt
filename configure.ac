@@ -491,7 +491,7 @@ AC_CHECK_DECLS([sys_siglist],[],[],[#include <signal.h>
 AC_TYPE_PID_T
 AC_CHECK_TYPE(ssize_t, int)
 
-AC_CHECK_FUNCS(memmove setegid srand48 strerror)
+AC_CHECK_FUNCS(setegid srand48 strerror)
 
 AC_REPLACE_FUNCS([wcscasecmp strcasestr])
 
