@@ -1252,52 +1252,6 @@ fi
 
 dnl -- locales --
 
-AC_CHECK_HEADERS(wchar.h)
-
-AC_CACHE_CHECK([for wchar_t], mutt_cv_wchar_t,
-	AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[
-#include <stddef.h>
-#include <stdlib.h>
-#ifdef HAVE_WCHAR_H
-#include <wchar.h>
-#endif
-]], [[ wchar_t wc; return 0; ]])],[mutt_cv_wchar_t=yes],[mutt_cv_wchar_t=no]))
-
-if test "$mutt_cv_wchar_t" = no; then
-	AC_DEFINE(wchar_t,int,[ Define to 'int' if system headers don't define. ])
-fi
-
-AC_CACHE_CHECK([for wint_t], mutt_cv_wint_t,
-	AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[
-#include <stddef.h>
-#include <stdlib.h>
-#ifdef HAVE_WCHAR_H
-#include <wchar.h>
-#endif
-]], [[ wint_t wc; return 0; ]])],[mutt_cv_wint_t=yes],[mutt_cv_wint_t=no]))
-
-if test "$mutt_cv_wint_t" = no; then
-	AC_DEFINE(wint_t,int,[ Define to 'int' if system headers don't define. ])
-fi
-
-AC_CHECK_HEADERS(wctype.h)
-AC_CHECK_FUNCS(iswalnum iswalpha iswblank iswcntrl iswdigit)
-AC_CHECK_FUNCS(iswgraph iswlower iswprint iswpunct iswspace iswupper)
-AC_CHECK_FUNCS(iswxdigit towupper towlower)
-
-AC_CACHE_CHECK([for mbstate_t], mutt_cv_mbstate_t,
-	AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[
-#include <stddef.h>
-#include <stdlib.h>
-#ifdef HAVE_WCHAR_H
-#include <wchar.h>
-#endif
-]], [[ mbstate_t s; return 0; ]])],[mutt_cv_mbstate_t=yes],[mutt_cv_mbstate_t=no]))
-
-if test "$mutt_cv_mbstate_t" = no; then
-	AC_DEFINE(mbstate_t,int,[ Define to 'int' if system headers don't define. ])
-fi
-
 wc_funcs=maybe
 AC_ARG_WITH(wc-funcs, AS_HELP_STRING([--without-wc-funcs],[Do not use the system's wchar_t functions]),
 	wc_funcs=$withval)
@@ -1309,12 +1263,8 @@ if test "$wc_funcs" != yes && test "$wc_funcs" != no; then
 #define _XOPEN_SOURCE 600
 #include <stddef.h>
 #include <stdlib.h>
-#ifdef HAVE_WCHAR_H
 #include <wchar.h>
-#endif
-#ifdef HAVE_WCTYPE_H
-#include <wctype.h>
-#endif]], [[mbrtowc(0, 0, 0, 0); wctomb(0, 0); wcwidth(0);
+#include <wctype.h>]], [[mbrtowc(0, 0, 0, 0); wctomb(0, 0); wcwidth(0);
 	iswprint(0); iswspace(0); towlower(0); towupper(0); iswalnum(0)]])],[mutt_cv_wc_funcs=yes],[]))
 	wc_funcs=$mutt_cv_wc_funcs
 fi

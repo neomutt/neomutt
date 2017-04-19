@@ -48,10 +48,9 @@
 #ifdef __APPLE_CC__
 #define _DONT_USE_CTYPE_INLINE_
 #endif
-#ifdef HAVE_WCHAR_H
+
 #include <wchar.h>
-#endif
-#if defined(HAVE_WCTYPE_H) && defined(HAVE_WC_FUNCS)
+#ifdef HAVE_WC_FUNCS
 #include <wctype.h>
 #endif
 
