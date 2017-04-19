@@ -52,7 +52,6 @@ AC_CHECK_TOOL(AR, ar, ar)
 AC_C_BIGENDIAN
 
 AC_SYS_LARGEFILE
-AC_FUNC_FSEEKO
 AC_CHECK_SIZEOF(off_t)
 
 AC_PATH_PROG(DBX, dbx, no)
@@ -96,26 +95,11 @@ AH_TEMPLATE([ICONV_NONTRANS],
 	all return values other than (size_t)(-1) as equivalent.])
 
 AH_BOTTOM([/* fseeko portability defines */
-#ifdef HAVE_FSEEKO
-# define LOFF_T off_t
-# if HAVE_C99_INTTYPES && HAVE_INTTYPES_H
-#  if SIZEOF_OFF_T == 8
-#   define OFF_T_FMT "%" PRId64
-#  else
-#   define OFF_T_FMT "%" PRId32
-#  endif
-# else
-#  if (SIZEOF_OFF_T == 8) && (SIZEOF_LONG == 4)
-#   define OFF_T_FMT "%lld"
-#  else
-#   define OFF_T_FMT "%ld"
-#  endif
-# endif
+#define LOFF_T off_t
+#if SIZEOF_OFF_T == 8
+# define OFF_T_FMT "%" PRId64
 #else
-# define LOFF_T long
-# define fseeko fseek
-# define ftello ftell
-# define OFF_T_FMT "%ld"
+# define OFF_T_FMT "%" PRId32
 #endif
 ])
 
@@ -449,11 +433,10 @@ main ()
 AC_HEADER_STDC
 
 AC_CHECK_HEADERS(sys/ioctl.h ioctl.h sysexits.h)
-AC_CHECK_HEADERS(sys/time.h sys/resource.h sys/syscall.h)
+AC_CHECK_HEADERS(sys/syscall.h)
 
-AC_CHECK_FUNCS(setrlimit getsid)
 AC_CHECK_FUNCS(fgets_unlocked fgetc_unlocked)
-AC_CHECK_FUNCS(strcasecmp strncasecmp setenv strdup strsep strtok_r mkdtemp)
+AC_CHECK_FUNCS(strsep mkdtemp)
 
 AC_MSG_CHECKING(for sig_atomic_t in signal.h)
 AC_EGREP_HEADER(volatile.*sig_atomic_t,signal.h,
@@ -473,29 +456,12 @@ AC_CHECK_DECLS([sys_siglist],[],[],[#include <signal.h>
 ])
 
 
-AC_TYPE_PID_T
-AC_CHECK_TYPE(ssize_t, int)
-
-AC_CHECK_FUNCS(setegid)
-
 AC_REPLACE_FUNCS([wcscasecmp strcasestr])
 
-AC_CHECK_FUNC(getopt)
-if test $ac_cv_func_getopt = yes; then
-	AC_CHECK_HEADERS(getopt.h)
-fi
-
-dnl SCO uses chsize() instead of ftruncate()
-AC_CHECK_FUNCS(ftruncate, , [AC_CHECK_LIB(x, chsize)])
-
-dnl SCO has strftime() in libintl
-AC_CHECK_FUNCS(strftime, , [AC_CHECK_LIB(intl, strftime)])
+AC_CHECK_HEADERS(getopt.h)
 
 dnl Set the atime of files
 AC_CHECK_FUNCS(futimens)
-
-dnl AIX may not have fchdir()
-AC_CHECK_FUNCS(fchdir, , [mutt_cv_fchdir=no])
 
 AC_ARG_WITH(homespool,
 	AS_HELP_STRING([--with-homespool@<:@=FILE@:>@],[File in user's directory where new mail is spooled]), with_homespool=${withval})
@@ -664,12 +630,6 @@ fi
 dnl -- end socket dependencies --
 
 if test "$need_socket" = "yes"; then
-	AC_CHECK_HEADERS([sys/select.h])
-	AC_MSG_CHECKING([for socklen_t])
-	AC_EGREP_HEADER(socklen_t, sys/socket.h, AC_MSG_RESULT([yes]),
-		AC_MSG_RESULT([no])
-		AC_DEFINE(socklen_t,int,
-			[ Define to 'int' if <sys/socket.h> doesn't have it. ]))
 	AC_DEFINE(USE_SOCKET,1,
 		[ Include code for socket support. Set automatically if you enable POP3 or IMAP ])
 	MUTT_LIB_OBJECTS="$MUTT_LIB_OBJECTS account.o mutt_socket.o mutt_tunnel.o"
@@ -1116,7 +1076,6 @@ dnl -- iconv/gettext --
 
 AM_GNU_GETTEXT_VERSION([0.17])
 AM_GNU_GETTEXT([external])
-AC_CHECK_HEADERS([locale.h])
 
 AM_ICONV
 if test "$am_cv_func_iconv" != yes; then

@@ -450,11 +450,6 @@ int getdnsdomainname(char *, size_t);
 #define SCO
 #endif
 
-/* SCO Unix uses chsize() instead of ftruncate() */
-#ifndef HAVE_FTRUNCATE
-#define ftruncate chsize
-#endif
-
 #ifdef _AIX
 int setegid(gid_t);
 #endif /* _AIX */

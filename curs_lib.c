@@ -23,6 +23,7 @@
 #include <langinfo.h>
 #include <stdlib.h>
 #include <string.h>
+#include <sys/time.h>
 #include <sys/types.h>
 #include <termios.h>
 #include <time.h>
@@ -32,9 +33,6 @@
 #include "mutt_curses.h"
 #include "mutt_menu.h"
 #include "pager.h"
-#ifdef HAVE_SYS_TIME_H
-#include <sys/time.h>
-#endif
 #ifdef HAVE_ISWBLANK
 #include <wctype.h>
 #endif
@@ -313,15 +311,12 @@ int mutt_yesorno(const char *msg, int def)
     }
 
     answer[0] = ch.ch;
-    if (reyes_ok ? (regexec(&reyes, answer, 0, 0, 0) == 0) :
-                   (tolower(ch.ch) == 'y'))
+    if (reyes_ok ? (regexec(&reyes, answer, 0, 0, 0) == 0) : (tolower(ch.ch) == 'y'))
     {
       def = MUTT_YES;
       break;
     }
-    else if (
-        reno_ok ? (regexec(&reno, answer, 0, 0, 0) == 0) :
-                  (tolower(ch.ch) == 'n'))
+    else if (reno_ok ? (regexec(&reno, answer, 0, 0, 0) == 0) : (tolower(ch.ch) == 'n'))
     {
       def = MUTT_NO;
       break;

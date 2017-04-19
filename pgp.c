@@ -28,9 +28,12 @@
 #include "config.h"
 #include <ctype.h>
 #include <errno.h>
+#include <locale.h>
 #include <stdlib.h>
 #include <string.h>
+#include <sys/resource.h>
 #include <sys/stat.h>
+#include <sys/time.h>
 #include <sys/wait.h>
 #include <unistd.h>
 #include "mutt.h"
@@ -39,18 +42,8 @@
 #include "filter.h"
 #include "mime.h"
 #include "mutt_crypt.h"
-#include "mutt_crypt.h"
 #include "mutt_curses.h"
 #include "mutt_menu.h"
-#ifdef HAVE_LOCALE_H
-#include <locale.h>
-#endif
-#ifdef HAVE_SYS_TIME_H
-#include <sys/time.h>
-#endif
-#ifdef HAVE_SYS_RESOURCE_H
-#include <sys/resource.h>
-#endif
 
 
 char PgpPass[LONG_STRING];
