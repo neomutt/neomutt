@@ -24,7 +24,6 @@ endif
 
 if BUILD_IMAP
 SUBDIRS += imap
-IMAP_INCLUDES = -I$(top_srcdir)/imap
 endif
 
 bin_SCRIPTS = $(SMIMEAUX_TARGET)
@@ -60,7 +59,7 @@ mutt_DEPENDENCIES = $(MUTT_LIB_OBJECTS) $(LIBOBJS) $(LIBIMAPDEPS) \
 DEFS=-DPKGDATADIR=\"$(pkgdatadir)\" -DSYSCONFDIR=\"$(sysconfdir)\" \
 	-DBINDIR=\"$(bindir)\" -DMUTTLOCALEDIR=\"$(datadir)/locale\"
 
-AM_CPPFLAGS=-I. -I$(top_srcdir) $(IMAP_INCLUDES) $(GPGME_CFLAGS)
+AM_CPPFLAGS=-I. -I$(top_srcdir) $(GPGME_CFLAGS)
 
 EXTRA_mutt_SOURCES = account.c bcache.c bcache.h browser.h compress.c \
 	crypt_gpgme.c crypt_mod_pgp_classic.c crypt_mod_pgp_gpgme.c \

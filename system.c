@@ -24,7 +24,7 @@
 #include "mutt.h"
 #ifdef USE_IMAP
 #include <errno.h>
-#include "imap.h"
+#include "imap/imap.h"
 #endif
 
 int _mutt_system(const char *cmd, int flags)
