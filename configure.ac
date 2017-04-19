@@ -1159,7 +1159,7 @@ AC_SUBST(NOTMUCH_LIBS)
 
 dnl -- iconv/gettext --
 
-AM_GNU_GETTEXT_VERSION([0.18])
+AM_GNU_GETTEXT_VERSION([0.17])
 AM_GNU_GETTEXT([external])
 AC_CHECK_HEADERS([locale.h])
 
