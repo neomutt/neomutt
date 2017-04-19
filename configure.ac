@@ -118,7 +118,6 @@ AH_BOTTOM([/* fseeko portability defines */
 # define OFF_T_FMT "%ld"
 #endif
 ])
-AC_TYPE_LONG_LONG_INT
 
 ac_aux_path_sendmail=/usr/sbin:/usr/lib
 AC_PATH_PROG(SENDMAIL, sendmail, /usr/sbin/sendmail, $PATH:$ac_aux_path_sendmail)

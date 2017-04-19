@@ -438,15 +438,6 @@ void mutt_pattern_free(pattern_t **pat);
  * Prototypes for broken systems
  */
 
-#ifdef HAVE_LONG_LONG_INT
-#ifdef LONGLONG
-#error LONGLONG is already defined
-#endif
-#define LONGLONG long long
-#else
-#define LONGLONG long
-#endif
-
 /* HP-UX, ConvexOS and UNIXware don't have this macro */
 #ifndef S_ISLNK
 #define S_ISLNK(x) (((x) &S_IFMT) == S_IFLNK ? 1 : 0)
