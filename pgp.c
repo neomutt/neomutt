@@ -100,7 +100,7 @@ bool pgp_use_gpg_agent(void)
   if ((tty = ttyname(0)))
   {
     setenv("GPG_TTY", tty, 0);
-    mutt_envlist_set("GPG_TTY", tty, 0);
+    mutt_envlist_set("GPG_TTY", tty, false);
   }
 
   return true;

@@ -2103,8 +2103,12 @@ char **mutt_envlist(void)
 /* Helper function for parse_setenv().
  * It's broken out because some other parts of mutt (filter.c) need
  * to set/overwrite environment variables in envlist before execing.
+ *
+ * @param name pointer to the name of the environment variable
+ * @param value pointer to the value the envionment variable should have
+ * @param overwrite whether the environment variable should be overwritten
  */
-void mutt_envlist_set(const char *name, const char *value, int overwrite)
+void mutt_envlist_set(const char *name, const char *value, bool overwrite)
 {
   char **envp = envlist;
   char work[LONG_STRING];
@@ -2234,7 +2238,7 @@ static int parse_setenv(BUFFER *tmp, BUFFER *s, unsigned long data, BUFFER *err)
 
   name = safe_strdup(tmp->data);
   mutt_extract_token(tmp, s, 0);
-  mutt_envlist_set(name, tmp->data, 1);
+  mutt_envlist_set(name, tmp->data, true);
   FREE(&name);
 
   return 0;

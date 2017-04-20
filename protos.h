@@ -186,7 +186,7 @@ void mutt_edit_file(const char *editor, const char *data);
 void mutt_edit_headers(const char *editor, const char *body, HEADER *msg,
                        char *fcc, size_t fcclen);
 char **mutt_envlist(void);
-void mutt_envlist_set(const char *name, const char *value, int overwrite);
+void mutt_envlist_set(const char *name, const char *value, bool overwrite);
 int mutt_filter_unprintable(char **s);
 int mutt_label_message(HEADER *hdr);
 void mutt_make_label_hash(CONTEXT *ctx);
