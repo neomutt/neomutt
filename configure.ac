@@ -42,6 +42,9 @@ fi
 
 CFLAGS="-Wall -pedantic $CFLAGS"
 
+# Non-verbose make
+m4_ifdef([AM_SILENT_RULES], [AM_SILENT_RULES([yes])])
+
 AC_PROG_CPP
 AC_PROG_MAKE_SET
 AC_PROG_INSTALL
@@ -609,6 +612,22 @@ AC_ARG_ENABLE(fcntl, AS_HELP_STRING([--disable-fcntl],[Do NOT use fcntl() to loc
 
 if test $mutt_cv_fcntl = yes; then
 	AC_DEFINE(USE_FCNTL,1, [ Define to use fcntl() to lock folders. ])
+fi
+
+AC_ARG_ENABLE([fsanitize-ubsan],
+  [AS_HELP_STRING([--enable-fsanitize-ubsan], [Turn on Undefined Behavior Sanitizer (for developers)])],
+  [gl_cc_sanitize_ubsan=yes], [gl_cc_sanitize_ubsan=no])
+
+AC_ARG_ENABLE([fsanitize-asan],
+  [AS_HELP_STRING([--enable-fsanitize-asan], [Turn on Address Sanitizer (for developers)])],
+  [gl_cc_sanitize_asan=yes], [gl_cc_sanitize_asan=no])
+
+if test "$gl_cc_sanitize_ubsan" = yes; then
+  CFLAGS="$CFLAGS -fsanitize=undefined -fno-sanitize-recover=undefined"
+fi
+
+if test "$gl_cc_sanitize_asan" = yes; then
+  CFLAGS="$CFLAGS -fsanitize=address -fsanitize-memory-track-origins"
 fi
 
 AC_ARG_ENABLE(locales-fix, AS_HELP_STRING([--enable-locales-fix],[The result of isprint() is unreliable]),
