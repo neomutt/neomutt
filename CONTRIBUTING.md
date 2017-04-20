@@ -37,9 +37,9 @@ Tips for writing a good feature request
 Tips for writing good pull requests
 ---------------------------------------
 
-* The first line should be a short (50 chars or less) summary of your commit
-  message. If you can't find a short enough one-line summary, split the commit
-  into multiple ones.
+* The first line should be a short (50 characters or less) summary of your
+  commit message. If you can't find a short enough one-line summary, split the
+  commit into multiple ones.
 
 * Keep one line between the one-line summary and the body.
 
@@ -48,14 +48,14 @@ Tips for writing good pull requests
 
 * your commits should be clear and concise. That means also you shouldn't sum up
   two features or two bug fixes into one commit. If you do, it makes both bug
-  fixes or features harder to understand. Also, don't hesitate
-  to [rewrite](https://git-scm.com/book/en/v2/Git-Tools-Rewriting-History) the
+  fixes or features harder to understand. Also, don't hesitate to
+  [rewrite](https://git-scm.com/book/en/v2/Git-Tools-Rewriting-History) the
   Github history of your development branch.
 
 * Wrap the body of the commit message at around 80 characters.
 
 * if your commit addresses a particular PR, commit or Issue, please say so in
-  your commit. The github documentation
+  your commit. The Github documentation
   ([1](https://help.github.com/articles/autolinked-references-and-urls/)
   and [2](https://help.github.com/articles/closing-issues-via-commit-messages/))
   can help you with that.
@@ -63,6 +63,8 @@ Tips for writing good pull requests
 * Please eliminate any warnings gcc or any other tool produces during the
   compilation stage.
 
+* If your commit addresses only a specific method or a specific file, please say
+  so in your commit.
 
 Thank you for your help!
 
