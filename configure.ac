@@ -622,38 +622,44 @@ AC_ARG_WITH(gdbm,
 	AS_HELP_STRING(
 		[--with-gdbm@<:@=DIR@:>@],
 		[Use gdbm for the header cache]),
-		[hcache_gdbm=$withval])
+		[hcache_gdbm=$withval],
+		[hcache_gdbm=check])
 AC_ARG_WITH(tokyocabinet,
 	AS_HELP_STRING(
 		[--with-tokyocabinet@<:@=DIR@:>@],
 		[Use tokyocabinet for the header cache]),
-		[hcache_tokyocabinet=$withval])
+		[hcache_tokyocabinet=$withval],
+		[hcache_tokyocabinet=check])
 AC_ARG_WITH(kyotocabinet,
 	AS_HELP_STRING(
 		[--with-kyotocabinet@<:@=DIR@:>@],
 		[Use kyotocabinet for the header cache]),
-		[hcache_kyotocabinet=$withval])
+		[hcache_kyotocabinet=$withval],
+		[hcache_kyotocabinet=check])
 AC_ARG_WITH(qdbm,
 	AS_HELP_STRING(
 		[--with-qdbm@<:@=DIR@:>@],
 		[Use qdbm for the header cache]),
-		[hcache_qdbm=$withval])
+		[hcache_qdbm=$withval],
+		[hcache_qdbm=check])
 AC_ARG_WITH(bdb,
 	AS_HELP_STRING(
 		[--with-bdb@<:@=DIR@:>@],
 		[Use BerkeleyDB for the header cache]),
-		[hcache_bdb=$withval])
+		[hcache_bdb=$withval],
+		[hcache_bdb=check])
 AC_ARG_WITH(lmdb,
 	AS_HELP_STRING(
 		[--with-lmdb@<:@=DIR@:>@],
 		[Use LMDB for the header cache]),
-		[hcache_lmdb=$withval])
+		[hcache_lmdb=$withval],
+		[hcache_lmdb=check])
 
 dnl -- Tokyo Cabinet --
-if test -n "$hcache_tokyocabinet" && test "$hcache_tokyocabinet" != "no"; then
+if test "x$hcache_tokyocabinet" != "xno"; then
 	OLDCPPFLAGS="$CPPFLAGS"
 	OLDLDFLAGS="$LDFLAGS"
-	if test "$hcache_tokyocabinet" != "yes"; then
+	if test "$hcache_tokyocabinet" != "yes" -a "x$hcache_tokyocabinet" != "xcheck"; then
 		CPPFLAGS="$CPPFLAGS -I$hcache_tokyocabinet/include"
 		LDFLAGS="$LDFLAGS -L$hcache_tokyocabinet/lib"
 	fi
@@ -666,15 +672,17 @@ if test -n "$hcache_tokyocabinet" && test "$hcache_tokyocabinet" != "no"; then
 			hcache_db_used="tokyocabinet $hcache_db_used"
 			build_hc_tc="yes"
 		],[
-			AC_MSG_ERROR(Unable to find TokyoCabinet)
-		]),	AC_MSG_ERROR(Unable to find TokyoCabinet))
+			CPPFLAGS="$OLDCPPFLAGS"
+			LDFLAGS="$OLDLDFLAGS"
+			test "x$hcache_tokyocabinet" != "xcheck" && AC_MSG_ERROR(Unable to find TokyoCabinet)
+		]),	test "x$hcache_tokyocabinet" != "xcheck" && AC_MSG_ERROR(Unable to find TokyoCabinet))
 fi
 
 dnl -- Kyoto Cabinet --
-if test -n "$hcache_kyotocabinet" && test "$hcache_kyotocabinet" != "no"; then
+if test "x$hcache_kyotocabinet" != "xno"; then
 	OLDCPPFLAGS="$CPPFLAGS"
 	OLDLDFLAGS="$LDFLAGS"
-	if test "$hcache_kyotocabinet" != "yes"; then
+	if test "x$hcache_kyotocabinet" != "xyes" -a "x$hcache_kyotocabinet" != "xcheck"; then
 		CPPFLAGS="$CPPFLAGS -I$hcache_kyotocabinet/include"
 		LDFLAGS="$LDFLAGS -L$hcache_kyotocabinet/lib"
 	fi
@@ -687,8 +695,10 @@ if test -n "$hcache_kyotocabinet" && test "$hcache_kyotocabinet" != "no"; then
 			hcache_db_used="kyotocabinet $hcache_db_used"
 			build_hc_kc="yes"
 		],[
-			AC_MSG_ERROR(Unable to find KyotoCabinet)
-		]),	AC_MSG_ERROR(Unable to find KyotoCabinet))
+			CPPFLAGS="$OLDCPPFLAGS"
+			LDFLAGS="$OLDLDFLAGS"
+			test "x$hcache_kyotocabinet" != "xcheck" && AC_MSG_ERROR(Unable to find KyotoCabinet)
+		]),	test "x$hcache_kyotocabinet" != "xcheck" && AC_MSG_ERROR(Unable to find KyotoCabinet))
 fi
 
 dnl -- GDBM --
@@ -696,10 +706,10 @@ dnl -- Make sure the GDBM block comes before the QDBM one. QDBM provides
 dnl -- the GDBM symbols in a compatibility layer (google for gdbm hovel).
 dnl -- By doing this, we make sure the symbols are resolved in GDBM's
 dnl -- library when both GDBM and QDBM are linked.
-if test -n "$hcache_gdbm" && test "$hcache_gdbm" != "no"; then
+if test "x$hcache_gdbm" != "xno"; then
 	OLDCPPFLAGS="$CPPFLAGS"
 	OLDLDFLAGS="$LDFLAGS"
-	if test "$hcache_gdbm" != "yes"; then
+	if test "x$hcache_gdbm" != "yes" -a "x$hcache_gdbm" != "xcheck"; then
 		CPPFLAGS="$CPPFLAGS -I$hcache_gdbm/include"
 		LDFLAGS="$LDFLAGS -L$hcache_gdbm/lib"
 	fi
@@ -712,15 +722,17 @@ if test -n "$hcache_gdbm" && test "$hcache_gdbm" != "no"; then
 			hcache_db_used="gdbm $hcache_db_used"
 			build_hc_gdbm="yes"
 		],[
-			AC_MSG_ERROR(Unable to find GDBM)
-		]),	AC_MSG_ERROR(Unable to find GDBM))
+			CPPFLAGS="$OLDCPPFLAGS"
+			LDFLAGS="$OLDLDFLAGS"
+			test "x$hcache_gdbm" != "xcheck" && AC_MSG_ERROR(Unable to find GDBM)
+		]),	test "x$hcache_gdbm" != "xcheck" && AC_MSG_ERROR(Unable to find GDBM))
 fi
 
 dnl -- QDBM --
-if test -n "$hcache_qdbm" && test "$hcache_qdbm" != "no"; then
+if test "x$hcache_qdbm" != "xno"; then
 	OLDCPPFLAGS="$CPPFLAGS"
 	OLDLDFLAGS="$LDFLAGS"
-	if test "$hcache_qdbm" != "yes"; then
+	if test "x$hcache_qdbm" != "xyes" -a "x$hcache_qdbm" != "xcheck"; then
 		if test -d $hcache_qdbm/include/qdbm; then
 			CPPFLAGS="$CPPFLAGS -I$hcache_qdbm/include/qdbm"
 		else
@@ -741,16 +753,18 @@ if test -n "$hcache_qdbm" && test "$hcache_qdbm" != "no"; then
 			hcache_db_used="qdbm $hcache_db_used"
 			build_hc_qdbm="yes"
 		],[
-			AC_MSG_ERROR(Unable to find QDBM)
-		]),	AC_MSG_ERROR(Unable to find QDBM))
+			CPPFLAGS="$OLDCPPFLAGS"
+			LDFLAGS="$OLDLDFLAGS"
+			test "x$hcache_qdbm" != "xcheck" && AC_MSG_ERROR(Unable to find QDBM)
+		]),	test "x$hcache_qdbm" != "xcheck" && AC_MSG_ERROR(Unable to find QDBM))
 fi
 
 dnl -- BDB --
 ac_bdb_prefix="$mutt_cv_prefix /opt /usr/local /usr"
-if test -n "$hcache_bdb" && test "$hcache_bdb" != "no"; then
+if test "x$hcache_bdb" != "xno"; then
 	OLDCPPFLAGS="$CPPFLAGS"
 	OLDLDFLAGS="$LDFLAGS"
-	if test "$hcache_bdb" != "yes"; then
+	if test "x$hcache_bdb" != "xyes" -a "x$hcache_bdb" != "xcheck"; then
 		ac_bdb_prefix="$hcache_bdb $mutt_cv_prefix"
 	fi
 	BDB_VERSIONS="$BDB_VERSIONS db-5.3 db53 db5.3 db-5 db5"
@@ -789,16 +803,16 @@ if test -n "$hcache_bdb" && test "$hcache_bdb" != "no"; then
 		done
 		test "$BDB_FOUND" = "yes" && break
 	done
-	if test "$BDB_FOUND" != "yes"; then
+	if test "$BDB_FOUND" != "yes" -a "x$hcache_bdb" != "xcheck"; then
 		AC_MSG_ERROR(Unable to find BDB)
 	fi
 fi
 
 dnl -- LMDB --
-if test -n "$hcache_lmdb" && test "$hcache_lmdb" != "no"; then
+if test "x$hcache_lmdb" != "xno"; then
 	OLDCPPFLAGS="$CPPFLAGS"
 	OLDLDFLAGS="$LDFLAGS"
-	if test "$hcache_lmdb" != "yes"; then
+	if test "x$hcache_lmdb" != "xyes" -a "x$hache_lmdb" != "xcheck"; then
 		CPPFLAGS="$CPPFLAGS -I$hcache_lmdb/include"
 		LDFLAGS="$LDFLAGS -L$hcache_lmdb/lib"
 	fi
@@ -810,8 +824,10 @@ if test -n "$hcache_lmdb" && test "$hcache_lmdb" != "no"; then
 			hcache_db_used="lmdb $hcache_db_used"
 			build_hc_lmdb="yes"
 		],[
-			AC_MSG_ERROR(Unable to find LMDB)
-		]),	AC_MSG_ERROR(Unable to find LMDB))
+			CPPFLAGS="$OLDCPPFLAGS"
+			LDFLAGS="$OLDLDFLAGS"
+			test "x$hcache_lmdb" != "xcheck" && AC_MSG_ERROR(Unable to find LMDB)
+		]),	test "x$hcache_lmdb" != "xcheck" && AC_MSG_ERROR(Unable to find LMDB))
 fi
 
 AM_CONDITIONAL(BUILD_HCACHE, test -n "$hcache_db_used")
