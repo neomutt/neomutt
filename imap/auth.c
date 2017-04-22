@@ -40,7 +40,8 @@ static const imap_auth_t imap_authenticators[] = {
 #endif
     {imap_auth_login, "login"},
 
-    {NULL, NULL}};
+    {NULL, NULL},
+};
 
 /* imap_authenticate: Attempt to authenticate using either user-specified
  *   authentication method if specified, or any. */

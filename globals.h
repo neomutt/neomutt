@@ -331,17 +331,22 @@ WHERE char *NotmuchQueryWindowCurrentSearch;
 #endif
 
 #ifdef MAIN_C
-const char *const Weekdays[] = {"Sun", "Mon", "Tue", "Wed",
-                                "Thu", "Fri", "Sat"};
-const char *const Months[] = {"Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul",
-                              "Aug", "Sep", "Oct", "Nov", "Dec", "ERR"};
+const char *const Weekdays[] = {
+    "Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat",
+};
+const char *const Months[] = {
+    "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul",
+    "Aug", "Sep", "Oct", "Nov", "Dec", "ERR",
+};
 
-const char *const BodyTypes[] = {"x-unknown", "audio",   "application",
-                                 "image",     "message", "model",
-                                 "multipart", "text",    "video"};
-const char *const BodyEncodings[] = {"x-unknown",        "7bit",   "8bit",
-                                     "quoted-printable", "base64", "binary",
-                                     "x-uuencoded"};
+const char *const BodyTypes[] = {
+    "x-unknown", "audio",     "application", "image", "message",
+    "model",     "multipart", "text",        "video",
+};
+const char *const BodyEncodings[] = {
+    "x-unknown", "7bit",   "8bit",        "quoted-printable",
+    "base64",    "binary", "x-uuencoded",
+};
 #else
 extern const char *const Weekdays[];
 extern const char *const Months[];

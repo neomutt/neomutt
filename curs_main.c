@@ -495,8 +495,10 @@ bool mutt_ts_capability(void)
   int tcapi;
 #endif
   char **termp;
-  char *known[] = {"color-xterm", "cygwin", "eterm",  "kterm", "nxterm",
-                   "putty",       "rxvt",   "screen", "xterm", NULL};
+  char *known[] = {
+      "color-xterm", "cygwin", "eterm",  "kterm", "nxterm",
+      "putty",       "rxvt",   "screen", "xterm", NULL,
+  };
 
   /* If tsl is set, then terminfo says that status lines work. */
   tcaps = tigetstr("tsl");
@@ -1660,7 +1662,7 @@ int mutt_index_menu(void)
         }
         break;
 
-/* --------------------------------------------------------------------
+        /* --------------------------------------------------------------------
          * The following operations can be performed inside of the pager.
          */
 

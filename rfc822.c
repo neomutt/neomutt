@@ -60,7 +60,8 @@ int RFC822Error = 0;
 /* these must defined in the same order as the numerated errors given in rfc822.h */
 const char *const RFC822Errors[] = {
     "out of memory",   "mismatched parenthesis", "mismatched quotes",
-    "bad route in <>", "bad address in <>",      "bad address spec"};
+    "bad route in <>", "bad address in <>",      "bad address spec",
+};
 
 void rfc822_dequote_comment(char *s)
 {

@@ -81,7 +81,8 @@ const hcache_ops_t *hcache_ops[] = {
 #ifdef HAVE_LMDB
     &hcache_lmdb_ops,
 #endif
-    NULL};
+    NULL,
+};
 
 static const hcache_ops_t *hcache_get_backend_ops(const char *backend)
 {

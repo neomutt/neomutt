@@ -3065,8 +3065,9 @@ static int print_dn_part(FILE *fp, struct dn_array_s *dn, const char *key)
 /* Print all parts of a DN in a standard sequence. */
 static void print_dn_parts(FILE *fp, struct dn_array_s *dn)
 {
-  static const char *const stdpart[] = {"CN", "OU", "O", "STREET",
-                                        "L",  "ST", "C", NULL};
+  static const char *const stdpart[] = {
+      "CN", "OU", "O", "STREET", "L", "ST", "C", NULL,
+  };
   int any = 0, any2 = 0, i;
 
   for (i = 0; stdpart[i]; i++)

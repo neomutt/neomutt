@@ -32,12 +32,14 @@
 #define IMAP_CMD_BUFSIZE 512
 
 static const char *const Capabilities[] = {
-    "IMAP4",     "IMAP4rev1",     "STATUS",      "ACL",
-    "NAMESPACE", "AUTH=CRAM-MD5", "AUTH=GSSAPI", "AUTH=ANONYMOUS",
-    "STARTTLS",  "LOGINDISABLED", "IDLE",        "SASL-IR",
-    "ENABLE",
-
-    NULL};
+    "IMAP4",       "IMAP4rev1",
+    "STATUS",      "ACL",
+    "NAMESPACE",   "AUTH=CRAM-MD5",
+    "AUTH=GSSAPI", "AUTH=ANONYMOUS",
+    "STARTTLS",    "LOGINDISABLED",
+    "IDLE",        "SASL-IR",
+    "ENABLE",      NULL,
+};
 
 static bool cmd_queue_full(IMAP_DATA *idata)
 {
