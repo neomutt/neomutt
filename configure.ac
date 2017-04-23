@@ -250,21 +250,16 @@ dnl == Declare all the checks and code for options / features below this line ==
 
 dnl --enable-gpgme
 AS_IF([test x$use_gpgme = "xyes"], [
-	AM_PATH_GPGME(1.0.0, AC_DEFINE(CRYPT_BACKEND_GPGME, 1,
-		[Defined, if GPGME support is enabled]),
-		[gpgme_found=no])
-	AS_IF([test x$gpgme_found = "xno"], [
-		AC_MSG_ERROR([*** GPGME not found ***])
-	], [
-		AM_PATH_GPGME(1.1.1, AC_DEFINE(HAVE_GPGME_PKA_TRUST, 1,
-			[Define if GPGME supports PKA]))
-		dnl AC_CHECK_FUNCS([gpgme_op_export_keys])
-		saved_LIBS="$LIBS"
-		LIBS="$LIBS $GPGME_LIBS"
-		AC_CHECK_FUNCS([gpgme_op_export_keys])
-		LIBS="$saved_LIBS"
-		MUTT_LIB_OBJECTS="$MUTT_LIB_OBJECTS crypt_gpgme.o crypt_mod_pgp_gpgme.o crypt_mod_smime_gpgme.o"
-	])
+	ifdef([AM_PATH_GPGME], [
+		AM_PATH_GPGME(1.2.0, [
+			AC_DEFINE(CRYPT_BACKEND_GPGME, 1, [GPGME support])
+			MUTT_LIB_OBJECTS="$MUTT_LIB_OBJECTS crypt_gpgme.o \
+			crypt_mod_pgp_gpgme.o crypt_mod_smime_gpgme.o"
+		], [gpgme_found=no])
+	], [gpgme_found=no])
+])
+AS_IF([test x$use_gpgme = xyes && test x$gpgme_found = xno], [
+	AC_MSG_ERROR([GPGME not found])
 ])
 
 dnl --enable-pgp

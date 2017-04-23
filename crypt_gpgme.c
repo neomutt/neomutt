@@ -1214,8 +1214,6 @@ static int show_sig_summary(unsigned long sum, gpgme_ctx_t ctx, gpgme_key_t key,
     state_puts("\n", s);
   }
 
-#ifdef HAVE_GPGME_PKA_TRUST
-
   if (option(OPTCRYPTUSEPKA))
   {
     if (sig->pka_trust == 1 && sig->pka_address)
@@ -1233,8 +1231,6 @@ static int show_sig_summary(unsigned long sum, gpgme_ctx_t ctx, gpgme_key_t key,
       state_puts("\n", s);
     }
   }
-
-#endif
 
   return severe;
 }
@@ -4471,7 +4467,6 @@ char *smime_gpgme_findkeys(ADDRESS *adrlist, int oppenc_mode)
   return find_keys(adrlist, APPLICATION_SMIME, oppenc_mode);
 }
 
-#ifdef HAVE_GPGME_OP_EXPORT_KEYS
 BODY *pgp_gpgme_make_key_attachment(char *tempf)
 {
   crypt_key_t *key = NULL;
@@ -4531,7 +4526,6 @@ bail:
 
   return att;
 }
-#endif
 
 /*
  * Implementation of `init'.

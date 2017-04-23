@@ -89,12 +89,10 @@ static BODY *crypt_mod_pgp_encrypt_message(BODY *a, char *keylist, int sign)
   return pgp_gpgme_encrypt_message(a, keylist, sign);
 }
 
-#ifdef HAVE_GPGME_OP_EXPORT_KEYS
 static BODY *crypt_mod_pgp_make_key_attachment(char *tempf)
 {
   return pgp_gpgme_make_key_attachment(tempf);
 }
-#endif
 
 static void crypt_mod_pgp_set_sender(const char *sender)
 {
@@ -112,11 +110,7 @@ struct crypt_module_specs crypt_mod_pgp_gpgme = {
 
         /* PGP specific.  */
         crypt_mod_pgp_encrypt_message,
-#ifdef HAVE_GPGME_OP_EXPORT_KEYS
         crypt_mod_pgp_make_key_attachment,
-#else
-        NULL,
-#endif
         crypt_mod_pgp_check_traditional, NULL, /* pgp_traditional_encryptsign  */
         NULL,                                  /* pgp_invoke_getkeys  */
         crypt_mod_pgp_invoke_import, NULL, /* pgp_extract_keys_from_attachment_list  */
