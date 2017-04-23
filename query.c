@@ -41,13 +41,13 @@ typedef struct entry
 } ENTRY;
 
 static const struct mapping_t QueryHelp[] = {
-    {N_("Exit"), OP_EXIT},
-    {N_("Mail"), OP_MAIL},
-    {N_("New Query"), OP_QUERY},
-    {N_("Make Alias"), OP_CREATE_ALIAS},
-    {N_("Search"), OP_SEARCH},
-    {N_("Help"), OP_HELP},
-    {NULL, 0},
+  { N_("Exit"), OP_EXIT },
+  { N_("Mail"), OP_MAIL },
+  { N_("New Query"), OP_QUERY },
+  { N_("Make Alias"), OP_CREATE_ALIAS },
+  { N_("Search"), OP_SEARCH },
+  { N_("Help"), OP_HELP },
+  { NULL, 0 },
 };
 
 static ADDRESS *result_to_addr(QUERY *r)

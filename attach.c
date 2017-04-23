@@ -294,7 +294,7 @@ void mutt_check_lookup_list(BODY *b, char *type, int len)
          (ascii_strncasecmp(type, t->data, i) == 0)) ||
         (ascii_strcasecmp(type, t->data) == 0))
     {
-      BODY tmp = {0};
+      BODY tmp = { 0 };
       int n;
       if ((n = mutt_lookup_mime_type(&tmp, b->filename)) != TYPEOTHER)
       {

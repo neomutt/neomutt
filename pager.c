@@ -1357,7 +1357,7 @@ static int display_line(FILE *f, LOFF_T *last_pos, struct line_t **lineInfo,
   int def_color;
   int m;
   int rc = -1;
-  ansi_attr a = {0, 0, 0, -1};
+  ansi_attr a = { 0, 0, 0, -1 };
   regmatch_t pmatch[1];
 
   if (n == *last)
@@ -1596,23 +1596,23 @@ static int up_n_lines(int nlines, struct line_t *info, int cur, int hiding)
 }
 
 static const struct mapping_t PagerHelp[] = {
-    {N_("Exit"), OP_EXIT}, {N_("PrevPg"), OP_PREV_PAGE}, {N_("NextPg"), OP_NEXT_PAGE}, {NULL, 0},
+  { N_("Exit"), OP_EXIT }, { N_("PrevPg"), OP_PREV_PAGE }, { N_("NextPg"), OP_NEXT_PAGE }, { NULL, 0 },
 };
 static const struct mapping_t PagerHelpExtra[] = {
-    {N_("View Attachm."), OP_VIEW_ATTACHMENTS},
-    {N_("Del"), OP_DELETE},
-    {N_("Reply"), OP_REPLY},
-    {N_("Next"), OP_MAIN_NEXT_UNDELETED},
-    {NULL, 0},
+  { N_("View Attachm."), OP_VIEW_ATTACHMENTS },
+  { N_("Del"), OP_DELETE },
+  { N_("Reply"), OP_REPLY },
+  { N_("Next"), OP_MAIN_NEXT_UNDELETED },
+  { NULL, 0 },
 };
 
 #ifdef USE_NNTP
 static struct mapping_t PagerNewsHelpExtra[] = {
-    {N_("Post"), OP_POST},
-    {N_("Followup"), OP_FOLLOWUP},
-    {N_("Del"), OP_DELETE},
-    {N_("Next"), OP_MAIN_NEXT_UNDELETED},
-    {NULL, 0},
+  { N_("Post"), OP_POST },
+  { N_("Followup"), OP_FOLLOWUP },
+  { N_("Del"), OP_DELETE },
+  { N_("Next"), OP_MAIN_NEXT_UNDELETED },
+  { NULL, 0 },
 };
 #endif
 

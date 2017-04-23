@@ -351,7 +351,7 @@ int mutt_write_mime_header(BODY *a, FILE *f)
 
   if (a->disposition != DISPNONE)
   {
-    const char *dispstr[] = {"inline", "attachment", "form-data"};
+    const char *dispstr[] = { "inline", "attachment", "form-data" };
 
     if (a->disposition < sizeof(dispstr) / sizeof(char *))
     {

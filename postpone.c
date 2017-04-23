@@ -33,11 +33,11 @@
 #endif
 
 static const struct mapping_t PostponeHelp[] = {
-    {N_("Exit"), OP_EXIT},
-    {N_("Del"), OP_DELETE},
-    {N_("Undel"), OP_UNDELETE},
-    {N_("Help"), OP_HELP},
-    {NULL, 0},
+  { N_("Exit"), OP_EXIT },
+  { N_("Del"), OP_DELETE },
+  { N_("Undel"), OP_UNDELETE },
+  { N_("Help"), OP_HELP },
+  { NULL, 0 },
 };
 
 

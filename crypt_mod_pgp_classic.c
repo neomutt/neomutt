@@ -103,31 +103,31 @@ static void crypt_mod_pgp_extract_keys_from_attachment_list(FILE *fp, int tag, B
 }
 
 struct crypt_module_specs crypt_mod_pgp_classic = {
-    APPLICATION_PGP,
-    {
-        NULL, /* init */
-        crypt_mod_pgp_void_passphrase,
-        crypt_mod_pgp_valid_passphrase,
-        crypt_mod_pgp_decrypt_mime,
-        crypt_mod_pgp_application_handler,
-        crypt_mod_pgp_encrypted_handler,
-        crypt_mod_pgp_findkeys,
-        crypt_mod_pgp_sign_message,
-        crypt_mod_pgp_verify_one,
-        crypt_mod_pgp_send_menu,
-        NULL,
+  APPLICATION_PGP,
+  {
+      NULL, /* init */
+      crypt_mod_pgp_void_passphrase,
+      crypt_mod_pgp_valid_passphrase,
+      crypt_mod_pgp_decrypt_mime,
+      crypt_mod_pgp_application_handler,
+      crypt_mod_pgp_encrypted_handler,
+      crypt_mod_pgp_findkeys,
+      crypt_mod_pgp_sign_message,
+      crypt_mod_pgp_verify_one,
+      crypt_mod_pgp_send_menu,
+      NULL,
 
-        crypt_mod_pgp_encrypt_message,
-        crypt_mod_pgp_make_key_attachment,
-        crypt_mod_pgp_check_traditional,
-        crypt_mod_pgp_traditional_encryptsign,
-        crypt_mod_pgp_invoke_getkeys,
-        crypt_mod_pgp_invoke_import,
-        crypt_mod_pgp_extract_keys_from_attachment_list,
+      crypt_mod_pgp_encrypt_message,
+      crypt_mod_pgp_make_key_attachment,
+      crypt_mod_pgp_check_traditional,
+      crypt_mod_pgp_traditional_encryptsign,
+      crypt_mod_pgp_invoke_getkeys,
+      crypt_mod_pgp_invoke_import,
+      crypt_mod_pgp_extract_keys_from_attachment_list,
 
-        NULL, /* smime_getkeys */
-        NULL, /* smime_verify_sender */
-        NULL, /* smime_build_smime_entity */
-        NULL, /* smime_invoke_import */
-    },
+      NULL, /* smime_getkeys */
+      NULL, /* smime_verify_sender */
+      NULL, /* smime_build_smime_entity */
+      NULL, /* smime_invoke_import */
+  },
 };

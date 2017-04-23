@@ -2159,13 +2159,13 @@ out:
 }
 
 struct mx_ops mx_imap_ops = {
-    .open = imap_open_mailbox,
-    .open_append = imap_open_mailbox_append,
-    .close = imap_close_mailbox,
-    .open_msg = imap_fetch_message,
-    .close_msg = imap_close_message,
-    .commit_msg = imap_commit_message,
-    .open_new_msg = imap_open_new_message,
-    .check = imap_check_mailbox_reopen,
-    .sync = NULL, /* imap syncing is handled by imap_sync_mailbox */
+  .open = imap_open_mailbox,
+  .open_append = imap_open_mailbox_append,
+  .close = imap_close_mailbox,
+  .open_msg = imap_fetch_message,
+  .close_msg = imap_close_message,
+  .commit_msg = imap_commit_message,
+  .open_new_msg = imap_open_new_message,
+  .check = imap_check_mailbox_reopen,
+  .sync = NULL, /* imap syncing is handled by imap_sync_mailbox */
 };

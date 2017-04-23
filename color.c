@@ -60,66 +60,66 @@ static COLOR_LIST *ColorList = NULL;
 static int UserColors = 0;
 
 static const struct mapping_t Colors[] = {
-    {"black", COLOR_BLACK},
-    {"blue", COLOR_BLUE},
-    {"cyan", COLOR_CYAN},
-    {"green", COLOR_GREEN},
-    {"magenta", COLOR_MAGENTA},
-    {"red", COLOR_RED},
-    {"white", COLOR_WHITE},
-    {"yellow", COLOR_YELLOW},
+  { "black", COLOR_BLACK },
+  { "blue", COLOR_BLUE },
+  { "cyan", COLOR_CYAN },
+  { "green", COLOR_GREEN },
+  { "magenta", COLOR_MAGENTA },
+  { "red", COLOR_RED },
+  { "white", COLOR_WHITE },
+  { "yellow", COLOR_YELLOW },
 #if defined(USE_SLANG_CURSES) || defined(HAVE_USE_DEFAULT_COLORS)
-    {"default", COLOR_DEFAULT},
+  { "default", COLOR_DEFAULT },
 #endif
-    {0, 0},
+  { 0, 0 },
 };
 
 #endif /* HAVE_COLOR */
 
 static const struct mapping_t Fields[] = {
-    {"hdrdefault", MT_COLOR_HDEFAULT},
-    {"quoted", MT_COLOR_QUOTED},
-    {"signature", MT_COLOR_SIGNATURE},
-    {"indicator", MT_COLOR_INDICATOR},
-    {"status", MT_COLOR_STATUS},
-    {"tree", MT_COLOR_TREE},
-    {"error", MT_COLOR_ERROR},
-    {"normal", MT_COLOR_NORMAL},
-    {"tilde", MT_COLOR_TILDE},
-    {"markers", MT_COLOR_MARKERS},
-    {"header", MT_COLOR_HEADER},
-    {"body", MT_COLOR_BODY},
-    {"message", MT_COLOR_MESSAGE},
-    {"attachment", MT_COLOR_ATTACHMENT},
-    {"attach_headers", MT_COLOR_ATTACH_HEADERS},
-    {"search", MT_COLOR_SEARCH},
-    {"bold", MT_COLOR_BOLD},
-    {"underline", MT_COLOR_UNDERLINE},
-    {"index", MT_COLOR_INDEX},
-    {"progress", MT_COLOR_PROGRESS},
-    {"index_author", MT_COLOR_INDEX_AUTHOR},
-    {"index_collapsed", MT_COLOR_INDEX_COLLAPSED},
-    {"index_date", MT_COLOR_INDEX_DATE},
-    {"index_flags", MT_COLOR_INDEX_FLAGS},
-    {"index_label", MT_COLOR_INDEX_LABEL},
-    {"index_number", MT_COLOR_INDEX_NUMBER},
-    {"index_size", MT_COLOR_INDEX_SIZE},
-    {"index_subject", MT_COLOR_INDEX_SUBJECT},
+  { "hdrdefault", MT_COLOR_HDEFAULT },
+  { "quoted", MT_COLOR_QUOTED },
+  { "signature", MT_COLOR_SIGNATURE },
+  { "indicator", MT_COLOR_INDICATOR },
+  { "status", MT_COLOR_STATUS },
+  { "tree", MT_COLOR_TREE },
+  { "error", MT_COLOR_ERROR },
+  { "normal", MT_COLOR_NORMAL },
+  { "tilde", MT_COLOR_TILDE },
+  { "markers", MT_COLOR_MARKERS },
+  { "header", MT_COLOR_HEADER },
+  { "body", MT_COLOR_BODY },
+  { "message", MT_COLOR_MESSAGE },
+  { "attachment", MT_COLOR_ATTACHMENT },
+  { "attach_headers", MT_COLOR_ATTACH_HEADERS },
+  { "search", MT_COLOR_SEARCH },
+  { "bold", MT_COLOR_BOLD },
+  { "underline", MT_COLOR_UNDERLINE },
+  { "index", MT_COLOR_INDEX },
+  { "progress", MT_COLOR_PROGRESS },
+  { "index_author", MT_COLOR_INDEX_AUTHOR },
+  { "index_collapsed", MT_COLOR_INDEX_COLLAPSED },
+  { "index_date", MT_COLOR_INDEX_DATE },
+  { "index_flags", MT_COLOR_INDEX_FLAGS },
+  { "index_label", MT_COLOR_INDEX_LABEL },
+  { "index_number", MT_COLOR_INDEX_NUMBER },
+  { "index_size", MT_COLOR_INDEX_SIZE },
+  { "index_subject", MT_COLOR_INDEX_SUBJECT },
 #ifdef USE_NOTMUCH
-    {"index_tag", MT_COLOR_INDEX_TAG},
-    {"index_tags", MT_COLOR_INDEX_TAGS},
+  { "index_tag", MT_COLOR_INDEX_TAG },
+  { "index_tags", MT_COLOR_INDEX_TAGS },
 #endif
-    {"prompt", MT_COLOR_PROMPT},
+  { "prompt", MT_COLOR_PROMPT },
 #ifdef USE_SIDEBAR
-    {"sidebar_divider", MT_COLOR_DIVIDER},
-    {"sidebar_flagged", MT_COLOR_FLAGGED},
-    {"sidebar_highlight", MT_COLOR_HIGHLIGHT},
-    {"sidebar_indicator", MT_COLOR_SB_INDICATOR},
-    {"sidebar_new", MT_COLOR_NEW},
-    {"sidebar_ordinary", MT_COLOR_ORDINARY},
-    {"sidebar_spoolfile", MT_COLOR_SB_SPOOLFILE},
+  { "sidebar_divider", MT_COLOR_DIVIDER },
+  { "sidebar_flagged", MT_COLOR_FLAGGED },
+  { "sidebar_highlight", MT_COLOR_HIGHLIGHT },
+  { "sidebar_indicator", MT_COLOR_SB_INDICATOR },
+  { "sidebar_new", MT_COLOR_NEW },
+  { "sidebar_ordinary", MT_COLOR_ORDINARY },
+  { "sidebar_spoolfile", MT_COLOR_SB_SPOOLFILE },
 #endif
-    {NULL, 0},
+  { NULL, 0 },
 };
 
 #define COLOR_QUOTE_INIT 8
@@ -187,7 +187,7 @@ void ci_start_color(void)
 #ifdef USE_SLANG_CURSES
 static char *get_color_name(char *dest, size_t destlen, int val)
 {
-  static const char *const missing[3] = {"brown", "lightgray", "default"};
+  static const char *const missing[3] = { "brown", "lightgray", "default" };
   int i;
 
   switch (val)

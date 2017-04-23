@@ -3066,7 +3066,7 @@ static int print_dn_part(FILE *fp, struct dn_array_s *dn, const char *key)
 static void print_dn_parts(FILE *fp, struct dn_array_s *dn)
 {
   static const char *const stdpart[] = {
-      "CN", "OU", "O", "STREET", "L", "ST", "C", NULL,
+    "CN", "OU", "O", "STREET", "L", "ST", "C", NULL,
   };
   int any = 0, any2 = 0, i;
 

@@ -242,7 +242,7 @@ void ci_bounce_message(HEADER *h)
 {
   char prompt[SHORT_STRING];
   char scratch[SHORT_STRING];
-  char buf[HUGE_STRING] = {0};
+  char buf[HUGE_STRING] = { 0 };
   ADDRESS *adr = NULL;
   char *err = NULL;
   int rc;

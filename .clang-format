@@ -30,8 +30,10 @@ BinPackArguments:                 true
 BinPackParameters:                true
 BreakBeforeBinaryOperators:       false
 BreakBeforeTernaryOperators:      false
+Cpp11BracedListStyle:             false
 DerivePointerAlignment:           false
 IndentCaseLabels:                 true
+IndentWrappedFunctionNames:       false
 KeepEmptyLinesAtTheStartOfBlocks: false
 MaxEmptyLinesToKeep:              2
 PointerAlignment:                 Right
@@ -44,7 +46,6 @@ SpaceInEmptyParentheses:          false
 SpacesInCStyleCastParentheses:    false
 SpacesInParentheses:              false
 SpacesInSquareBrackets:           false
-IndentWrappedFunctionNames:       false
 
 # Allow some slightly over-long lines
 PenaltyExcessCharacter: 1

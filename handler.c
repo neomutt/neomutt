@@ -475,21 +475,21 @@ static const struct
   const wchar_t *tag_name;
   int index;
 } EnrichedTags[] = {
-    {L"param", RICH_PARAM},
-    {L"bold", RICH_BOLD},
-    {L"italic", RICH_ITALIC},
-    {L"underline", RICH_UNDERLINE},
-    {L"nofill", RICH_NOFILL},
-    {L"excerpt", RICH_EXCERPT},
-    {L"indent", RICH_INDENT},
-    {L"indentright", RICH_INDENT_RIGHT},
-    {L"center", RICH_CENTER},
-    {L"flushleft", RICH_FLUSHLEFT},
-    {L"flushright", RICH_FLUSHRIGHT},
-    {L"flushboth", RICH_FLUSHLEFT},
-    {L"color", RICH_COLOR},
-    {L"x-color", RICH_COLOR},
-    {NULL, -1},
+  { L"param", RICH_PARAM },
+  { L"bold", RICH_BOLD },
+  { L"italic", RICH_ITALIC },
+  { L"underline", RICH_UNDERLINE },
+  { L"nofill", RICH_NOFILL },
+  { L"excerpt", RICH_EXCERPT },
+  { L"indent", RICH_INDENT },
+  { L"indentright", RICH_INDENT_RIGHT },
+  { L"center", RICH_CENTER },
+  { L"flushleft", RICH_FLUSHLEFT },
+  { L"flushright", RICH_FLUSHRIGHT },
+  { L"flushboth", RICH_FLUSHLEFT },
+  { L"color", RICH_COLOR },
+  { L"x-color", RICH_COLOR },
+  { NULL, -1 },
 };
 
 struct enriched_state

@@ -737,13 +737,13 @@ static int ssl_cache_trusted_cert(X509 *c)
 static int interactive_check_cert(X509 *cert, int idx, int len, SSL *ssl, int allow_always)
 {
   static const int part[] = {
-      NID_commonName,             /* CN */
-      NID_pkcs9_emailAddress,     /* Email */
-      NID_organizationName,       /* O */
-      NID_organizationalUnitName, /* OU */
-      NID_localityName,           /* L */
-      NID_stateOrProvinceName,    /* ST */
-      NID_countryName,            /* C */
+    NID_commonName,             /* CN */
+    NID_pkcs9_emailAddress,     /* Email */
+    NID_organizationName,       /* O */
+    NID_organizationalUnitName, /* OU */
+    NID_localityName,           /* L */
+    NID_stateOrProvinceName,    /* ST */
+    NID_countryName,            /* C */
   };
   X509_NAME *x509_subject = NULL;
   X509_NAME *x509_issuer = NULL;

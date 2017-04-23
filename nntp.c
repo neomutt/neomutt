@@ -2396,13 +2396,13 @@ int nntp_check_children(CONTEXT *ctx, const char *msgid)
 }
 
 struct mx_ops mx_nntp_ops = {
-    .open = nntp_open_mailbox,
-    .open_append = NULL,
-    .close = nntp_fastclose_mailbox,
-    .check = nntp_check_mailbox,
-    .sync = nntp_sync_mailbox,
-    .open_msg = nntp_fetch_message,
-    .close_msg = nntp_close_message,
-    .commit_msg = NULL,
-    .open_new_msg = NULL,
+  .open = nntp_open_mailbox,
+  .open_append = NULL,
+  .close = nntp_fastclose_mailbox,
+  .check = nntp_check_mailbox,
+  .sync = nntp_sync_mailbox,
+  .open_msg = nntp_fetch_message,
+  .close_msg = nntp_close_message,
+  .commit_msg = NULL,
+  .open_new_msg = NULL,
 };

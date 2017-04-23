@@ -48,7 +48,7 @@ int getdnsdomainname(char *d, size_t len)
    * working properly, so...
    */
   int status;
-  struct timespec timeout = {0, 100000000};
+  struct timespec timeout = { 0, 100000000 };
   struct gaicb *reqs[1];
   reqs[0] = safe_calloc(1, sizeof(*reqs[0]));
   reqs[0]->ar_name = node;

@@ -496,8 +496,8 @@ bool mutt_ts_capability(void)
 #endif
   char **termp;
   char *known[] = {
-      "color-xterm", "cygwin", "eterm",  "kterm", "nxterm",
-      "putty",       "rxvt",   "screen", "xterm", NULL,
+    "color-xterm", "cygwin", "eterm",  "kterm", "nxterm",
+    "putty",       "rxvt",   "screen", "xterm", NULL,
   };
 
   /* If tsl is set, then terminfo says that status lines work. */
@@ -773,28 +773,28 @@ dsl_finish:
 }
 
 static const struct mapping_t IndexHelp[] = {
-    {N_("Quit"), OP_QUIT},
-    {N_("Del"), OP_DELETE},
-    {N_("Undel"), OP_UNDELETE},
-    {N_("Save"), OP_SAVE},
-    {N_("Mail"), OP_MAIL},
-    {N_("Reply"), OP_REPLY},
-    {N_("Group"), OP_GROUP_REPLY},
-    {N_("Help"), OP_HELP},
-    {NULL, 0},
+  { N_("Quit"), OP_QUIT },
+  { N_("Del"), OP_DELETE },
+  { N_("Undel"), OP_UNDELETE },
+  { N_("Save"), OP_SAVE },
+  { N_("Mail"), OP_MAIL },
+  { N_("Reply"), OP_REPLY },
+  { N_("Group"), OP_GROUP_REPLY },
+  { N_("Help"), OP_HELP },
+  { NULL, 0 },
 };
 
 #ifdef USE_NNTP
 struct mapping_t IndexNewsHelp[] = {
-    {N_("Quit"), OP_QUIT},
-    {N_("Del"), OP_DELETE},
-    {N_("Undel"), OP_UNDELETE},
-    {N_("Save"), OP_SAVE},
-    {N_("Post"), OP_POST},
-    {N_("Followup"), OP_FOLLOWUP},
-    {N_("Catchup"), OP_CATCHUP},
-    {N_("Help"), OP_HELP},
-    {NULL, 0},
+  { N_("Quit"), OP_QUIT },
+  { N_("Del"), OP_DELETE },
+  { N_("Undel"), OP_UNDELETE },
+  { N_("Save"), OP_SAVE },
+  { N_("Post"), OP_POST },
+  { N_("Followup"), OP_FOLLOWUP },
+  { N_("Catchup"), OP_CATCHUP },
+  { N_("Help"), OP_HELP },
+  { NULL, 0 },
 };
 #endif
 

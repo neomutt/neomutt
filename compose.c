@@ -83,39 +83,39 @@ enum
 #define W (MuttIndexWindow->cols - HDR_XOFFSET)
 
 static const char *const Prompts[] = {
-    "From: ", "To: ", "Cc: ", "Bcc: ", "Subject: ", "Reply-To: ", "Fcc: "
+  "From: ", "To: ", "Cc: ", "Bcc: ", "Subject: ", "Reply-To: ", "Fcc: "
 #ifdef USE_NNTP
 #ifdef MIXMASTER
-    ,
-    ""
+  ,
+  ""
 #endif
-    ,
-    "", "Newsgroups: ", "Followup-To: ", "X-Comment-To: "
+  ,
+  "", "Newsgroups: ", "Followup-To: ", "X-Comment-To: "
 #endif
 };
 
 static const struct mapping_t ComposeHelp[] = {
-    {N_("Send"), OP_COMPOSE_SEND_MESSAGE},
-    {N_("Abort"), OP_EXIT},
-    {"To", OP_COMPOSE_EDIT_TO},
-    {"CC", OP_COMPOSE_EDIT_CC},
-    {"Subj", OP_COMPOSE_EDIT_SUBJECT},
-    {N_("Attach file"), OP_COMPOSE_ATTACH_FILE},
-    {N_("Descrip"), OP_COMPOSE_EDIT_DESCRIPTION},
-    {N_("Help"), OP_HELP},
-    {NULL, 0},
+  { N_("Send"), OP_COMPOSE_SEND_MESSAGE },
+  { N_("Abort"), OP_EXIT },
+  { "To", OP_COMPOSE_EDIT_TO },
+  { "CC", OP_COMPOSE_EDIT_CC },
+  { "Subj", OP_COMPOSE_EDIT_SUBJECT },
+  { N_("Attach file"), OP_COMPOSE_ATTACH_FILE },
+  { N_("Descrip"), OP_COMPOSE_EDIT_DESCRIPTION },
+  { N_("Help"), OP_HELP },
+  { NULL, 0 },
 };
 
 #ifdef USE_NNTP
 static struct mapping_t ComposeNewsHelp[] = {
-    {N_("Send"), OP_COMPOSE_SEND_MESSAGE},
-    {N_("Abort"), OP_EXIT},
-    {"Newsgroups", OP_COMPOSE_EDIT_NEWSGROUPS},
-    {"Subj", OP_COMPOSE_EDIT_SUBJECT},
-    {N_("Attach file"), OP_COMPOSE_ATTACH_FILE},
-    {N_("Descrip"), OP_COMPOSE_EDIT_DESCRIPTION},
-    {N_("Help"), OP_HELP},
-    {NULL, 0},
+  { N_("Send"), OP_COMPOSE_SEND_MESSAGE },
+  { N_("Abort"), OP_EXIT },
+  { "Newsgroups", OP_COMPOSE_EDIT_NEWSGROUPS },
+  { "Subj", OP_COMPOSE_EDIT_SUBJECT },
+  { N_("Attach file"), OP_COMPOSE_ATTACH_FILE },
+  { N_("Descrip"), OP_COMPOSE_EDIT_DESCRIPTION },
+  { N_("Help"), OP_HELP },
+  { NULL, 0 },
 };
 #endif
 

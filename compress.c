@@ -925,13 +925,13 @@ int mutt_comp_valid_command(const char *cmd)
  * The message functions are delegated to mbox.
  */
 struct mx_ops mx_comp_ops = {
-    .open = comp_open_mailbox,
-    .open_append = comp_open_append_mailbox,
-    .close = comp_close_mailbox,
-    .check = comp_check_mailbox,
-    .sync = comp_sync_mailbox,
-    .open_msg = comp_open_message,
-    .close_msg = comp_close_message,
-    .commit_msg = comp_commit_message,
-    .open_new_msg = comp_open_new_message,
+  .open = comp_open_mailbox,
+  .open_append = comp_open_append_mailbox,
+  .close = comp_close_mailbox,
+  .check = comp_check_mailbox,
+  .sync = comp_sync_mailbox,
+  .open_msg = comp_open_message,
+  .close_msg = comp_close_message,
+  .commit_msg = comp_commit_message,
+  .open_new_msg = comp_open_new_message,
 };

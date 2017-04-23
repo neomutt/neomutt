@@ -2421,13 +2421,13 @@ static int nm_commit_message(CONTEXT *ctx, MESSAGE *msg)
  * These functions are common to all mailbox types.
  */
 struct mx_ops mx_notmuch_ops = {
-    .open = nm_open_mailbox, /* calls init_context() */
-    .open_append = NULL,
-    .close = nm_close_mailbox,
-    .check = nm_check_mailbox,
-    .sync = nm_sync_mailbox,
-    .open_msg = nm_open_message,
-    .close_msg = nm_close_message,
-    .commit_msg = nm_commit_message,
-    .open_new_msg = NULL,
+  .open = nm_open_mailbox, /* calls init_context() */
+  .open_append = NULL,
+  .close = nm_close_mailbox,
+  .check = nm_check_mailbox,
+  .sync = nm_sync_mailbox,
+  .open_msg = nm_open_message,
+  .close_msg = nm_close_message,
+  .commit_msg = nm_commit_message,
+  .open_new_msg = NULL,
 };

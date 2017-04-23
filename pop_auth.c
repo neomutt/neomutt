@@ -301,11 +301,11 @@ static pop_auth_res_t pop_auth_user(POP_DATA *pop_data, const char *method)
 
 static const pop_auth_t pop_authenticators[] = {
 #ifdef USE_SASL
-    {pop_auth_sasl, NULL},
+  { pop_auth_sasl, NULL },
 #endif
-    {pop_auth_apop, "apop"},
-    {pop_auth_user, "user"},
-    {NULL, NULL},
+  { pop_auth_apop, "apop" },
+  { pop_auth_user, "user" },
+  { NULL, NULL },
 };
 
 /*

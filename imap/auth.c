@@ -25,22 +25,22 @@
 #include "auth.h"
 
 static const imap_auth_t imap_authenticators[] = {
-    {imap_auth_plain, "plain"},
+  { imap_auth_plain, "plain" },
 #ifdef USE_SASL
-    {imap_auth_sasl, NULL},
+  { imap_auth_sasl, NULL },
 #else
-    {imap_auth_anon, "anonymous"},
+  { imap_auth_anon, "anonymous" },
 #endif
 #ifdef USE_GSS
-    {imap_auth_gss, "gssapi"},
+  { imap_auth_gss, "gssapi" },
 #endif
 /* SASL includes CRAM-MD5 (and GSSAPI, but that's not enabled by default) */
 #ifndef USE_SASL
-    {imap_auth_cram_md5, "cram-md5"},
+  { imap_auth_cram_md5, "cram-md5" },
 #endif
-    {imap_auth_login, "login"},
+  { imap_auth_login, "login" },
 
-    {NULL, NULL},
+  { NULL, NULL },
 };
 
 /* imap_authenticate: Attempt to authenticate using either user-specified

@@ -442,7 +442,7 @@ size_t mutt_iconv(iconv_t cd, ICONV_CONST char **inbuf, size_t *inbytesleft,
 int mutt_convert_string(char **ps, const char *from, const char *to, int flags)
 {
   iconv_t cd;
-  ICONV_CONST char *repls[] = {"\357\277\275", "?", 0};
+  ICONV_CONST char *repls[] = { "\357\277\275", "?", 0 };
   char *s = *ps;
 
   if (!s || !*s)
@@ -517,7 +517,7 @@ FGETCONV *fgetconv_open(FILE *file, const char *from, const char *to, int flags)
 {
   struct fgetconv_s *fc = NULL;
   iconv_t cd = (iconv_t) -1;
-  static ICONV_CONST char *repls[] = {"\357\277\275", "?", 0};
+  static ICONV_CONST char *repls[] = { "\357\277\275", "?", 0 };
 
   if (from && to)
     cd = mutt_iconv_open(to, from, flags);

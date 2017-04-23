@@ -431,9 +431,9 @@ static int mix_chain_add(MIXCHAIN *chain, const char *s, REMAILER **type2_list)
 }
 
 static const struct mapping_t RemailerHelp[] = {
-    {N_("Append"), OP_MIX_APPEND}, {N_("Insert"), OP_MIX_INSERT},
-    {N_("Delete"), OP_MIX_DELETE}, {N_("Abort"), OP_EXIT},
-    {N_("OK"), OP_MIX_USE},        {NULL, 0},
+  { N_("Append"), OP_MIX_APPEND }, { N_("Insert"), OP_MIX_INSERT },
+  { N_("Delete"), OP_MIX_DELETE }, { N_("Abort"), OP_EXIT },
+  { N_("OK"), OP_MIX_USE },        { NULL, 0 },
 };
 
 

@@ -64,24 +64,24 @@ HCACHE_BACKEND_LIST
  * header_cache_backend is specified. */
 const hcache_ops_t *hcache_ops[] = {
 #ifdef HAVE_TC
-    &hcache_tokyocabinet_ops,
+  &hcache_tokyocabinet_ops,
 #endif
 #ifdef HAVE_KC
-    &hcache_kyotocabinet_ops,
+  &hcache_kyotocabinet_ops,
 #endif
 #ifdef HAVE_QDBM
-    &hcache_qdbm_ops,
+  &hcache_qdbm_ops,
 #endif
 #ifdef HAVE_GDBM
-    &hcache_gdbm_ops,
+  &hcache_gdbm_ops,
 #endif
 #ifdef HAVE_BDB
-    &hcache_bdb_ops,
+  &hcache_bdb_ops,
 #endif
 #ifdef HAVE_LMDB
-    &hcache_lmdb_ops,
+  &hcache_lmdb_ops,
 #endif
-    NULL,
+  NULL,
 };
 
 static const hcache_ops_t *hcache_get_backend_ops(const char *backend)
@@ -889,7 +889,7 @@ int mutt_hcache_delete(header_cache_t *h, const char *key, size_t keylen)
 
 const char *mutt_hcache_backend_list(void)
 {
-  char tmp[STRING] = {0};
+  char tmp[STRING] = { 0 };
   const hcache_ops_t **ops = hcache_ops;
   size_t len = 0;
 

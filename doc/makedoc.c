@@ -961,19 +961,19 @@ struct
   char *machine;
   char *human;
 } types[] = {
-    {"DT_NONE", "-none-"},
-    {"DT_BOOL", "boolean"},
-    {"DT_NUM", "number"},
-    {"DT_STR", "string"},
-    {"DT_PATH", "path"},
-    {"DT_QUAD", "quadoption"},
-    {"DT_SORT", "sort order"},
-    {"DT_RX", "regular expression"},
-    {"DT_MAGIC", "folder magic"},
-    {"DT_SYN", NULL},
-    {"DT_ADDR", "e-mail address"},
-    {"DT_MBCHARTBL", "string"},
-    {NULL, NULL},
+  { "DT_NONE", "-none-" },
+  { "DT_BOOL", "boolean" },
+  { "DT_NUM", "number" },
+  { "DT_STR", "string" },
+  { "DT_PATH", "path" },
+  { "DT_QUAD", "quadoption" },
+  { "DT_SORT", "sort order" },
+  { "DT_RX", "regular expression" },
+  { "DT_MAGIC", "folder magic" },
+  { "DT_SYN", NULL },
+  { "DT_ADDR", "e-mail address" },
+  { "DT_MBCHARTBL", "string" },
+  { NULL, NULL },
 };
 
 static int buff2type(const char *s)

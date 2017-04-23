@@ -59,7 +59,7 @@ char SmimePass[STRING];
 time_t SmimeExptime = 0; /* when does the cached passphrase expire? */
 
 
-static char SmimeKeyToUse[_POSIX_PATH_MAX] = {0};
+static char SmimeKeyToUse[_POSIX_PATH_MAX] = { 0 };
 static char SmimeCertToUse[_POSIX_PATH_MAX];
 static char SmimeIntermediateToUse[_POSIX_PATH_MAX];
 

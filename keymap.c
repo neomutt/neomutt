@@ -31,88 +31,88 @@
 #endif
 
 const struct mapping_t Menus[] = {
-    {"alias", MENU_ALIAS},
-    {"attach", MENU_ATTACH},
-    {"browser", MENU_FOLDER},
-    {"compose", MENU_COMPOSE},
-    {"editor", MENU_EDITOR},
-    {"index", MENU_MAIN},
-    {"pager", MENU_PAGER},
-    {"postpone", MENU_POST},
-    {"pgp", MENU_PGP},
-    {"smime", MENU_SMIME},
+  { "alias", MENU_ALIAS },
+  { "attach", MENU_ATTACH },
+  { "browser", MENU_FOLDER },
+  { "compose", MENU_COMPOSE },
+  { "editor", MENU_EDITOR },
+  { "index", MENU_MAIN },
+  { "pager", MENU_PAGER },
+  { "postpone", MENU_POST },
+  { "pgp", MENU_PGP },
+  { "smime", MENU_SMIME },
 #ifdef CRYPT_BACKEND_GPGME
-    {"key_select_pgp", MENU_KEY_SELECT_PGP},
-    {"key_select_smime", MENU_KEY_SELECT_SMIME},
+  { "key_select_pgp", MENU_KEY_SELECT_PGP },
+  { "key_select_smime", MENU_KEY_SELECT_SMIME },
 #endif
 
 #ifdef MIXMASTER
-    {"mix", MENU_MIX},
+  { "mix", MENU_MIX },
 #endif
 
 
-    {"query", MENU_QUERY},
-    {"generic", MENU_GENERIC},
-    {NULL, 0},
+  { "query", MENU_QUERY },
+  { "generic", MENU_GENERIC },
+  { NULL, 0 },
 };
 
 static struct mapping_t KeyNames[] = {
-    {"<PageUp>", KEY_PPAGE},
-    {"<PageDown>", KEY_NPAGE},
-    {"<Up>", KEY_UP},
-    {"<Down>", KEY_DOWN},
-    {"<Right>", KEY_RIGHT},
-    {"<Left>", KEY_LEFT},
-    {"<Delete>", KEY_DC},
-    {"<BackSpace>", KEY_BACKSPACE},
-    {"<Insert>", KEY_IC},
-    {"<Home>", KEY_HOME},
-    {"<End>", KEY_END},
-    {"<Enter>", '\n'},
-    {"<Return>", '\r'},
-    {"<Esc>", '\033'},
-    {"<Tab>", '\t'},
-    {"<Space>", ' '},
+  { "<PageUp>", KEY_PPAGE },
+  { "<PageDown>", KEY_NPAGE },
+  { "<Up>", KEY_UP },
+  { "<Down>", KEY_DOWN },
+  { "<Right>", KEY_RIGHT },
+  { "<Left>", KEY_LEFT },
+  { "<Delete>", KEY_DC },
+  { "<BackSpace>", KEY_BACKSPACE },
+  { "<Insert>", KEY_IC },
+  { "<Home>", KEY_HOME },
+  { "<End>", KEY_END },
+  { "<Enter>", '\n' },
+  { "<Return>", '\r' },
+  { "<Esc>", '\033' },
+  { "<Tab>", '\t' },
+  { "<Space>", ' ' },
 #ifdef KEY_BTAB
-    {"<BackTab>", KEY_BTAB},
+  { "<BackTab>", KEY_BTAB },
 #endif
 #ifdef KEY_NEXT
-    {"<Next>", KEY_NEXT},
+  { "<Next>", KEY_NEXT },
 #endif
 #ifdef NCURSES_VERSION
-    /* extensions supported by ncurses.  values are filled in during initialization */
+  /* extensions supported by ncurses.  values are filled in during initialization */
 
-    /* CTRL+key */
-    {"<C-Up>", -1},
-    {"<C-Down>", -1},
-    {"<C-Left>", -1},
-    {"<C-Right>", -1},
-    {"<C-Home>", -1},
-    {"<C-End>", -1},
-    {"<C-Next>", -1},
-    {"<C-Prev>", -1},
+  /* CTRL+key */
+  { "<C-Up>", -1 },
+  { "<C-Down>", -1 },
+  { "<C-Left>", -1 },
+  { "<C-Right>", -1 },
+  { "<C-Home>", -1 },
+  { "<C-End>", -1 },
+  { "<C-Next>", -1 },
+  { "<C-Prev>", -1 },
 
-    /* SHIFT+key */
-    {"<S-Up>", -1},
-    {"<S-Down>", -1},
-    {"<S-Left>", -1},
-    {"<S-Right>", -1},
-    {"<S-Home>", -1},
-    {"<S-End>", -1},
-    {"<S-Next>", -1},
-    {"<S-Prev>", -1},
+  /* SHIFT+key */
+  { "<S-Up>", -1 },
+  { "<S-Down>", -1 },
+  { "<S-Left>", -1 },
+  { "<S-Right>", -1 },
+  { "<S-Home>", -1 },
+  { "<S-End>", -1 },
+  { "<S-Next>", -1 },
+  { "<S-Prev>", -1 },
 
-    /* ALT+key */
-    {"<A-Up>", -1},
-    {"<A-Down>", -1},
-    {"<A-Left>", -1},
-    {"<A-Right>", -1},
-    {"<A-Home>", -1},
-    {"<A-End>", -1},
-    {"<A-Next>", -1},
-    {"<A-Prev>", -1},
+  /* ALT+key */
+  { "<A-Up>", -1 },
+  { "<A-Down>", -1 },
+  { "<A-Left>", -1 },
+  { "<A-Right>", -1 },
+  { "<A-Home>", -1 },
+  { "<A-End>", -1 },
+  { "<A-Next>", -1 },
+  { "<A-Prev>", -1 },
 #endif /* NCURSES_VERSION */
-    {NULL, 0},
+  { NULL, 0 },
 };
 
 /* contains the last key the user pressed */
@@ -627,39 +627,39 @@ struct extkey
 };
 
 static const struct extkey ExtKeys[] = {
-    {"<c-up>", "kUP5"},
-    {"<s-up>", "kUP"},
-    {"<a-up>", "kUP3"},
+  { "<c-up>", "kUP5" },
+  { "<s-up>", "kUP" },
+  { "<a-up>", "kUP3" },
 
-    {"<s-down>", "kDN"},
-    {"<a-down>", "kDN3"},
-    {"<c-down>", "kDN5"},
+  { "<s-down>", "kDN" },
+  { "<a-down>", "kDN3" },
+  { "<c-down>", "kDN5" },
 
-    {"<c-right>", "kRIT5"},
-    {"<s-right>", "kRIT"},
-    {"<a-right>", "kRIT3"},
+  { "<c-right>", "kRIT5" },
+  { "<s-right>", "kRIT" },
+  { "<a-right>", "kRIT3" },
 
-    {"<s-left>", "kLFT"},
-    {"<a-left>", "kLFT3"},
-    {"<c-left>", "kLFT5"},
+  { "<s-left>", "kLFT" },
+  { "<a-left>", "kLFT3" },
+  { "<c-left>", "kLFT5" },
 
-    {"<s-home>", "kHOM"},
-    {"<a-home>", "kHOM3"},
-    {"<c-home>", "kHOM5"},
+  { "<s-home>", "kHOM" },
+  { "<a-home>", "kHOM3" },
+  { "<c-home>", "kHOM5" },
 
-    {"<s-end>", "kEND"},
-    {"<a-end>", "kEND3"},
-    {"<c-end>", "kEND5"},
+  { "<s-end>", "kEND" },
+  { "<a-end>", "kEND3" },
+  { "<c-end>", "kEND5" },
 
-    {"<s-next>", "kNXT"},
-    {"<a-next>", "kNXT3"},
-    {"<c-next>", "kNXT5"},
+  { "<s-next>", "kNXT" },
+  { "<a-next>", "kNXT3" },
+  { "<c-next>", "kNXT5" },
 
-    {"<s-prev>", "kPRV"},
-    {"<a-prev>", "kPRV3"},
-    {"<c-prev>", "kPRV5"},
+  { "<s-prev>", "kPRV" },
+  { "<a-prev>", "kPRV3" },
+  { "<c-prev>", "kPRV5" },
 
-    {0, 0},
+  { 0, 0 },
 };
 
 /* Look up Mutt's name for a key and find the ncurses extended name for it */

@@ -94,7 +94,7 @@ static void shrink_histfile(void)
 {
   char tmpfname[_POSIX_PATH_MAX];
   FILE *f = NULL, *tmp = NULL;
-  int n[HC_LAST] = {0};
+  int n[HC_LAST] = { 0 };
   int line, hclass;
   char *linebuf = NULL;
   size_t buflen;

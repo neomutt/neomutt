@@ -95,224 +95,224 @@ struct compile_options
 
 static struct compile_options comp_opts[] = {
 #ifdef CRYPT_BACKEND_CLASSIC_PGP
-    {"CRYPT_BACKEND_CLASSIC_PGP", 1},
+  { "CRYPT_BACKEND_CLASSIC_PGP", 1 },
 #else
-    {"CRYPT_BACKEND_CLASSIC_PGP", 0},
+  { "CRYPT_BACKEND_CLASSIC_PGP", 0 },
 #endif
 #ifdef CRYPT_BACKEND_CLASSIC_SMIME
-    {"CRYPT_BACKEND_CLASSIC_SMIME", 1},
+  { "CRYPT_BACKEND_CLASSIC_SMIME", 1 },
 #else
-    {"CRYPT_BACKEND_CLASSIC_SMIME", 0},
+  { "CRYPT_BACKEND_CLASSIC_SMIME", 0 },
 #endif
 #ifdef CRYPT_BACKEND_GPGME
-    {"CRYPT_BACKEND_GPGME", 1},
+  { "CRYPT_BACKEND_GPGME", 1 },
 #else
-    {"CRYPT_BACKEND_GPGME", 0},
+  { "CRYPT_BACKEND_GPGME", 0 },
 #endif
 #ifdef DEBUG
-    {"DEBUG", 1},
+  { "DEBUG", 1 },
 #else
-    {"DEBUG", 0},
+  { "DEBUG", 0 },
 #endif
 #ifdef DL_STANDALONE
-    {"DL_STANDALONE", 1},
+  { "DL_STANDALONE", 1 },
 #else
-    {"DL_STANDALONE", 0},
+  { "DL_STANDALONE", 0 },
 #endif
 #ifdef ENABLE_NLS
-    {"ENABLE_NLS", 1},
+  { "ENABLE_NLS", 1 },
 #else
-    {"ENABLE_NLS", 0},
+  { "ENABLE_NLS", 0 },
 #endif
 #ifdef EXACT_ADDRESS
-    {"EXACT_ADDRESS", 1},
+  { "EXACT_ADDRESS", 1 },
 #else
-    {"EXACT_ADDRESS", 0},
+  { "EXACT_ADDRESS", 0 },
 #endif
 #ifdef HOMESPOOL
-    {"HOMESPOOL", 1},
+  { "HOMESPOOL", 1 },
 #else
-    {"HOMESPOOL", 0},
+  { "HOMESPOOL", 0 },
 #endif
 #ifdef LOCALES_HACK
-    {"LOCALES_HACK", 1},
+  { "LOCALES_HACK", 1 },
 #else
-    {"LOCALES_HACK", 0},
+  { "LOCALES_HACK", 0 },
 #endif
 #ifdef SUN_ATTACHMENT
-    {"SUN_ATTACHMENT", 1},
+  { "SUN_ATTACHMENT", 1 },
 #else
-    {"SUN_ATTACHMENT", 0},
+  { "SUN_ATTACHMENT", 0 },
 #endif
 #ifdef HAVE_BKGDSET
-    {"HAVE_BKGDSET", 1},
+  { "HAVE_BKGDSET", 1 },
 #else
-    {"HAVE_BKGDSET", 0},
+  { "HAVE_BKGDSET", 0 },
 #endif
 #ifdef HAVE_COLOR
-    {"HAVE_COLOR", 1},
+  { "HAVE_COLOR", 1 },
 #else
-    {"HAVE_COLOR", 0},
+  { "HAVE_COLOR", 0 },
 #endif
 #ifdef HAVE_CURS_SET
-    {"HAVE_CURS_SET", 1},
+  { "HAVE_CURS_SET", 1 },
 #else
-    {"HAVE_CURS_SET", 0},
+  { "HAVE_CURS_SET", 0 },
 #endif
 #ifdef HAVE_FUTIMENS
-    {"HAVE_FUTIMENS", 1},
+  { "HAVE_FUTIMENS", 1 },
 #else
-    {"HAVE_FUTIMENS", 0},
+  { "HAVE_FUTIMENS", 0 },
 #endif
 #ifdef HAVE_GETADDRINFO
-    {"HAVE_GETADDRINFO", 1},
+  { "HAVE_GETADDRINFO", 1 },
 #else
-    {"HAVE_GETADDRINFO", 0},
+  { "HAVE_GETADDRINFO", 0 },
 #endif
 #ifdef HAVE_GETSID
-    {"HAVE_GETSID", 1},
+  { "HAVE_GETSID", 1 },
 #else
-    {"HAVE_GETSID", 0},
+  { "HAVE_GETSID", 0 },
 #endif
 #ifdef HAVE_LANGINFO_CODESET
-    {"HAVE_LANGINFO_CODESET", 1},
+  { "HAVE_LANGINFO_CODESET", 1 },
 #else
-    {"HAVE_LANGINFO_CODESET", 0},
+  { "HAVE_LANGINFO_CODESET", 0 },
 #endif
 #ifdef HAVE_LANGINFO_YESEXPR
-    {"HAVE_LANGINFO_YESEXPR", 1},
+  { "HAVE_LANGINFO_YESEXPR", 1 },
 #else
-    {"HAVE_LANGINFO_YESEXPR", 0},
+  { "HAVE_LANGINFO_YESEXPR", 0 },
 #endif
 #ifdef HAVE_LIBIDN
-    {"HAVE_LIBIDN", 1},
+  { "HAVE_LIBIDN", 1 },
 #else
-    {"HAVE_LIBIDN", 0},
+  { "HAVE_LIBIDN", 0 },
 #endif
 #ifdef HAVE_META
-    {"HAVE_META", 1},
+  { "HAVE_META", 1 },
 #else
-    {"HAVE_META", 0},
+  { "HAVE_META", 0 },
 #endif
 #ifdef HAVE_REGCOMP
-    {"HAVE_REGCOMP", 1},
+  { "HAVE_REGCOMP", 1 },
 #else
-    {"HAVE_REGCOMP", 0},
+  { "HAVE_REGCOMP", 0 },
 #endif
 #ifdef HAVE_RESIZETERM
-    {"HAVE_RESIZETERM", 1},
+  { "HAVE_RESIZETERM", 1 },
 #else
-    {"HAVE_RESIZETERM", 0},
+  { "HAVE_RESIZETERM", 0 },
 #endif
 #ifdef HAVE_START_COLOR
-    {"HAVE_START_COLOR", 1},
+  { "HAVE_START_COLOR", 1 },
 #else
-    {"HAVE_START_COLOR", 0},
+  { "HAVE_START_COLOR", 0 },
 #endif
 #ifdef HAVE_TYPEAHEAD
-    {"HAVE_TYPEAHEAD", 1},
+  { "HAVE_TYPEAHEAD", 1 },
 #else
-    {"HAVE_TYPEAHEAD", 0},
+  { "HAVE_TYPEAHEAD", 0 },
 #endif
 #ifdef HAVE_WC_FUNCS
-    {"HAVE_WC_FUNCS", 1},
+  { "HAVE_WC_FUNCS", 1 },
 #else
-    {"HAVE_WC_FUNCS", 0},
+  { "HAVE_WC_FUNCS", 0 },
 #endif
 #ifdef ICONV_NONTRANS
-    {"ICONV_NONTRANS", 1},
+  { "ICONV_NONTRANS", 1 },
 #else
-    {"ICONV_NONTRANS", 0},
+  { "ICONV_NONTRANS", 0 },
 #endif
 #ifdef USE_COMPRESSED
-    {"USE_COMPRESSED", 1},
+  { "USE_COMPRESSED", 1 },
 #else
-    {"USE_COMPRESSED", 0},
+  { "USE_COMPRESSED", 0 },
 #endif
 #ifdef USE_DOTLOCK
-    {"USE_DOTLOCK", 1},
+  { "USE_DOTLOCK", 1 },
 #else
-    {"USE_DOTLOCK", 0},
+  { "USE_DOTLOCK", 0 },
 #endif
 #ifdef USE_FCNTL
-    {"USE_FCNTL", 1},
+  { "USE_FCNTL", 1 },
 #else
-    {"USE_FCNTL", 0},
+  { "USE_FCNTL", 0 },
 #endif
 #ifdef USE_FLOCK
-    {"USE_FLOCK", 1},
+  { "USE_FLOCK", 1 },
 #else
-    {"USE_FLOCK", 0},
+  { "USE_FLOCK", 0 },
 #endif
 #ifdef USE_FMEMOPEN
-    {"USE_FMEMOPEN", 1},
+  { "USE_FMEMOPEN", 1 },
 #else
-    {"USE_FMEMOPEN", 0},
+  { "USE_FMEMOPEN", 0 },
 #endif
 #ifdef USE_GSS
-    {"USE_GSS", 1},
+  { "USE_GSS", 1 },
 #else
-    {"USE_GSS", 0},
+  { "USE_GSS", 0 },
 #endif
 #ifdef USE_HCACHE
-    {"USE_HCACHE", 1},
+  { "USE_HCACHE", 1 },
 #else
-    {"USE_HCACHE", 0},
+  { "USE_HCACHE", 0 },
 #endif
 #ifdef USE_IMAP
-    {"USE_IMAP", 1},
+  { "USE_IMAP", 1 },
 #else
-    {"USE_IMAP", 0},
+  { "USE_IMAP", 0 },
 #endif
 #ifdef USE_LUA
-    {"USE_LUA", 1},
+  { "USE_LUA", 1 },
 #else
-    {"USE_LUA", 0},
+  { "USE_LUA", 0 },
 #endif
 #ifdef USE_NOTMUCH
-    {"USE_NOTMUCH", 1},
+  { "USE_NOTMUCH", 1 },
 #else
-    {"USE_NOTMUCH", 0},
+  { "USE_NOTMUCH", 0 },
 #endif
 #ifdef USE_NNTP
-    {"USE_NNTP", 1},
+  { "USE_NNTP", 1 },
 #else
-    {"USE_NNTP", 0},
+  { "USE_NNTP", 0 },
 #endif
 #ifdef USE_POP
-    {"USE_POP", 1},
+  { "USE_POP", 1 },
 #else
-    {"USE_POP", 0},
+  { "USE_POP", 0 },
 #endif
 #ifdef USE_SASL
-    {"USE_SASL", 1},
+  { "USE_SASL", 1 },
 #else
-    {"USE_SASL", 0},
+  { "USE_SASL", 0 },
 #endif
 #ifdef USE_SETGID
-    {"USE_SETGID", 1},
+  { "USE_SETGID", 1 },
 #else
-    {"USE_SETGID", 0},
+  { "USE_SETGID", 0 },
 #endif
 #ifdef USE_SIDEBAR
-    {"USE_SIDEBAR", 1},
+  { "USE_SIDEBAR", 1 },
 #endif
 #ifdef USE_SMTP
-    {"USE_SMTP", 1},
+  { "USE_SMTP", 1 },
 #else
-    {"USE_SMTP", 0},
+  { "USE_SMTP", 0 },
 #endif
 #ifdef USE_SSL_GNUTLS
-    {"USE_SSL_GNUTLS", 1},
+  { "USE_SSL_GNUTLS", 1 },
 #else
-    {"USE_SSL_GNUTLS", 0},
+  { "USE_SSL_GNUTLS", 0 },
 #endif
 #ifdef USE_SSL_OPENSSL
-    {"USE_SSL_OPENSSL", 1},
+  { "USE_SSL_OPENSSL", 1 },
 #else
-    {"USE_SSL_OPENSSL", 0},
+  { "USE_SSL_OPENSSL", 0 },
 #endif
-    {NULL, 0},
+  { NULL, 0 },
 };
 
 /**

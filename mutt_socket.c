@@ -370,7 +370,7 @@ int raw_socket_write(CONNECTION *conn, const char *buf, size_t count)
 int raw_socket_poll(CONNECTION *conn)
 {
   fd_set rfds;
-  struct timeval tv = {0, 0};
+  struct timeval tv = { 0, 0 };
 
   if (conn->fd < 0)
     return -1;

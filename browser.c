@@ -45,24 +45,24 @@
 #endif
 
 static const struct mapping_t FolderHelp[] = {
-    {N_("Exit"), OP_EXIT},
-    {N_("Chdir"), OP_CHANGE_DIRECTORY},
-    {N_("Goto"), OP_BROWSER_GOTO_FOLDER},
-    {N_("Mask"), OP_ENTER_MASK},
-    {N_("Help"), OP_HELP},
-    {NULL, 0},
+  { N_("Exit"), OP_EXIT },
+  { N_("Chdir"), OP_CHANGE_DIRECTORY },
+  { N_("Goto"), OP_BROWSER_GOTO_FOLDER },
+  { N_("Mask"), OP_ENTER_MASK },
+  { N_("Help"), OP_HELP },
+  { NULL, 0 },
 };
 
 #ifdef USE_NNTP
 static struct mapping_t FolderNewsHelp[] = {
-    {N_("Exit"), OP_EXIT},
-    {N_("List"), OP_TOGGLE_MAILBOXES},
-    {N_("Subscribe"), OP_BROWSER_SUBSCRIBE},
-    {N_("Unsubscribe"), OP_BROWSER_UNSUBSCRIBE},
-    {N_("Catchup"), OP_CATCHUP},
-    {N_("Mask"), OP_ENTER_MASK},
-    {N_("Help"), OP_HELP},
-    {NULL, 0},
+  { N_("Exit"), OP_EXIT },
+  { N_("List"), OP_TOGGLE_MAILBOXES },
+  { N_("Subscribe"), OP_BROWSER_SUBSCRIBE },
+  { N_("Unsubscribe"), OP_BROWSER_UNSUBSCRIBE },
+  { N_("Catchup"), OP_CATCHUP },
+  { N_("Mask"), OP_ENTER_MASK },
+  { N_("Help"), OP_HELP },
+  { NULL, 0 },
 };
 #endif
 

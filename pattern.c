@@ -211,11 +211,11 @@ enum
 };
 
 static struct range_regexp range_regexps[] = {
-        [RANGE_K_REL] = {.raw = RANGE_REL_RX, .lgrp = 1, .rgrp = 3, .ready = 0},
-        [RANGE_K_ABS] = {.raw = RANGE_ABS_RX, .lgrp = 1, .rgrp = 3, .ready = 0},
-        [RANGE_K_LT] = {.raw = RANGE_LT_RX, .lgrp = 1, .rgrp = 2, .ready = 0},
-        [RANGE_K_GT] = {.raw = RANGE_GT_RX, .lgrp = 2, .rgrp = 1, .ready = 0},
-        [RANGE_K_BARE] = {.raw = RANGE_BARE_RX, .lgrp = 1, .rgrp = 1, .ready = 0},
+      [RANGE_K_REL] = {.raw = RANGE_REL_RX, .lgrp = 1, .rgrp = 3, .ready = 0 },
+      [RANGE_K_ABS] = {.raw = RANGE_ABS_RX, .lgrp = 1, .rgrp = 3, .ready = 0 },
+      [RANGE_K_LT] = {.raw = RANGE_LT_RX, .lgrp = 1, .rgrp = 2, .ready = 0 },
+      [RANGE_K_GT] = {.raw = RANGE_GT_RX, .lgrp = 2, .rgrp = 1, .ready = 0 },
+      [RANGE_K_BARE] = {.raw = RANGE_BARE_RX, .lgrp = 1, .rgrp = 1, .ready = 0 },
 };
 
 #define KILO 1024
@@ -592,11 +592,11 @@ static bool is_context_available(BUFFER *s, regmatch_t pmatch[], int kind, BUFFE
 {
   char *context_loc = NULL;
   const char *context_req_chars[] = {
-          [RANGE_K_REL] = ".0123456789",
-          [RANGE_K_ABS] = ".",
-          [RANGE_K_LT] = "",
-          [RANGE_K_GT] = "",
-          [RANGE_K_BARE] = ".",
+        [RANGE_K_REL] = ".0123456789",
+        [RANGE_K_ABS] = ".",
+        [RANGE_K_LT] = "",
+        [RANGE_K_GT] = "",
+        [RANGE_K_BARE] = ".",
   };
 
   /* First decide if we're going to need the context at all.
@@ -781,60 +781,60 @@ static const struct pattern_flags
   int class;
   bool (*eat_arg)(pattern_t *, BUFFER *, BUFFER *);
 } Flags[] = {
-    {'A', MUTT_ALL, 0, NULL},
-    {'b', MUTT_BODY, MUTT_FULL_MSG, eat_regexp},
-    {'B', MUTT_WHOLE_MSG, MUTT_FULL_MSG, eat_regexp},
-    {'c', MUTT_CC, 0, eat_regexp},
-    {'C', MUTT_RECIPIENT, 0, eat_regexp},
-    {'d', MUTT_DATE, 0, eat_date},
-    {'D', MUTT_DELETED, 0, NULL},
-    {'e', MUTT_SENDER, 0, eat_regexp},
-    {'E', MUTT_EXPIRED, 0, NULL},
-    {'f', MUTT_FROM, 0, eat_regexp},
-    {'F', MUTT_FLAG, 0, NULL},
-    {'g', MUTT_CRYPT_SIGN, 0, NULL},
-    {'G', MUTT_CRYPT_ENCRYPT, 0, NULL},
-    {'h', MUTT_HEADER, MUTT_FULL_MSG, eat_regexp},
-    {'H', MUTT_HORMEL, 0, eat_regexp},
-    {'i', MUTT_ID, 0, eat_regexp},
-    {'k', MUTT_PGP_KEY, 0, NULL},
-    {'l', MUTT_LIST, 0, NULL},
-    {'L', MUTT_ADDRESS, 0, eat_regexp},
-    {'m', MUTT_MESSAGE, 0, eat_message_range},
-    {'n', MUTT_SCORE, 0, eat_range},
-    {'N', MUTT_NEW, 0, NULL},
-    {'O', MUTT_OLD, 0, NULL},
-    {'p', MUTT_PERSONAL_RECIP, 0, NULL},
-    {'P', MUTT_PERSONAL_FROM, 0, NULL},
-    {'Q', MUTT_REPLIED, 0, NULL},
-    {'r', MUTT_DATE_RECEIVED, 0, eat_date},
-    {'R', MUTT_READ, 0, NULL},
-    {'s', MUTT_SUBJECT, 0, eat_regexp},
-    {'S', MUTT_SUPERSEDED, 0, NULL},
-    {'t', MUTT_TO, 0, eat_regexp},
-    {'T', MUTT_TAG, 0, NULL},
-    {'u', MUTT_SUBSCRIBED_LIST, 0, NULL},
-    {'U', MUTT_UNREAD, 0, NULL},
-    {'v', MUTT_COLLAPSED, 0, NULL},
-    {'V', MUTT_CRYPT_VERIFIED, 0, NULL},
+  { 'A', MUTT_ALL, 0, NULL },
+  { 'b', MUTT_BODY, MUTT_FULL_MSG, eat_regexp },
+  { 'B', MUTT_WHOLE_MSG, MUTT_FULL_MSG, eat_regexp },
+  { 'c', MUTT_CC, 0, eat_regexp },
+  { 'C', MUTT_RECIPIENT, 0, eat_regexp },
+  { 'd', MUTT_DATE, 0, eat_date },
+  { 'D', MUTT_DELETED, 0, NULL },
+  { 'e', MUTT_SENDER, 0, eat_regexp },
+  { 'E', MUTT_EXPIRED, 0, NULL },
+  { 'f', MUTT_FROM, 0, eat_regexp },
+  { 'F', MUTT_FLAG, 0, NULL },
+  { 'g', MUTT_CRYPT_SIGN, 0, NULL },
+  { 'G', MUTT_CRYPT_ENCRYPT, 0, NULL },
+  { 'h', MUTT_HEADER, MUTT_FULL_MSG, eat_regexp },
+  { 'H', MUTT_HORMEL, 0, eat_regexp },
+  { 'i', MUTT_ID, 0, eat_regexp },
+  { 'k', MUTT_PGP_KEY, 0, NULL },
+  { 'l', MUTT_LIST, 0, NULL },
+  { 'L', MUTT_ADDRESS, 0, eat_regexp },
+  { 'm', MUTT_MESSAGE, 0, eat_message_range },
+  { 'n', MUTT_SCORE, 0, eat_range },
+  { 'N', MUTT_NEW, 0, NULL },
+  { 'O', MUTT_OLD, 0, NULL },
+  { 'p', MUTT_PERSONAL_RECIP, 0, NULL },
+  { 'P', MUTT_PERSONAL_FROM, 0, NULL },
+  { 'Q', MUTT_REPLIED, 0, NULL },
+  { 'r', MUTT_DATE_RECEIVED, 0, eat_date },
+  { 'R', MUTT_READ, 0, NULL },
+  { 's', MUTT_SUBJECT, 0, eat_regexp },
+  { 'S', MUTT_SUPERSEDED, 0, NULL },
+  { 't', MUTT_TO, 0, eat_regexp },
+  { 'T', MUTT_TAG, 0, NULL },
+  { 'u', MUTT_SUBSCRIBED_LIST, 0, NULL },
+  { 'U', MUTT_UNREAD, 0, NULL },
+  { 'v', MUTT_COLLAPSED, 0, NULL },
+  { 'V', MUTT_CRYPT_VERIFIED, 0, NULL },
 #ifdef USE_NNTP
-    {'w', MUTT_NEWSGROUPS, 0, eat_regexp},
+  { 'w', MUTT_NEWSGROUPS, 0, eat_regexp },
 #endif
-    {'x', MUTT_REFERENCE, 0, eat_regexp},
-    {'X', MUTT_MIMEATTACH, 0, eat_range},
-    {'y', MUTT_XLABEL, 0, eat_regexp},
+  { 'x', MUTT_REFERENCE, 0, eat_regexp },
+  { 'X', MUTT_MIMEATTACH, 0, eat_range },
+  { 'y', MUTT_XLABEL, 0, eat_regexp },
 #ifdef USE_NOTMUCH
-    {'Y', MUTT_NOTMUCH_LABEL, 0, eat_regexp},
+  { 'Y', MUTT_NOTMUCH_LABEL, 0, eat_regexp },
 #endif
-    {'z', MUTT_SIZE, 0, eat_range},
-    {'=', MUTT_DUPLICATED, 0, NULL},
-    {'$', MUTT_UNREFERENCED, 0, NULL},
-    {0, 0, 0, NULL},
+  { 'z', MUTT_SIZE, 0, eat_range },
+  { '=', MUTT_DUPLICATED, 0, NULL },
+  { '$', MUTT_UNREFERENCED, 0, NULL },
+  { 0, 0, 0, NULL },
 };
 
-static pattern_t *SearchPattern = NULL;        /* current search pattern */
-static char LastSearch[STRING] = {0};          /* last pattern searched for */
-static char LastSearchExpn[LONG_STRING] = {0}; /* expanded version of
+static pattern_t *SearchPattern = NULL;          /* current search pattern */
+static char LastSearch[STRING] = { 0 };          /* last pattern searched for */
+static char LastSearchExpn[LONG_STRING] = { 0 }; /* expanded version of
                                                     LastSearch */
 
 

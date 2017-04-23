@@ -28,13 +28,13 @@
 #include "rfc2047.h"
 
 static const struct mapping_t UrlMap[] = {
-    {"file", U_FILE},       {"imap", U_IMAP},     {"imaps", U_IMAPS},
-    {"pop", U_POP},         {"pops", U_POPS},     {"news", U_NNTP},
-    {"snews", U_NNTPS},     {"mailto", U_MAILTO},
+  { "file", U_FILE },       { "imap", U_IMAP },     { "imaps", U_IMAPS },
+  { "pop", U_POP },         { "pops", U_POPS },     { "news", U_NNTP },
+  { "snews", U_NNTPS },     { "mailto", U_MAILTO },
 #ifdef USE_NOTMUCH
-    {"notmuch", U_NOTMUCH},
+  { "notmuch", U_NOTMUCH },
 #endif
-    {"smtp", U_SMTP},       {"smtps", U_SMTPS},   {NULL, U_UNKNOWN},
+  { "smtp", U_SMTP },       { "smtps", U_SMTPS },   { NULL, U_UNKNOWN },
 };
 
 int url_pct_decode(char *s)

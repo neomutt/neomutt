@@ -47,8 +47,8 @@ static const char *Mailbox_is_read_only = N_("Mailbox is read-only.");
   }
 
 static const struct mapping_t AttachHelp[] = {
-    {N_("Exit"), OP_EXIT},   {N_("Save"), OP_SAVE}, {N_("Pipe"), OP_PIPE},
-    {N_("Print"), OP_PRINT}, {N_("Help"), OP_HELP}, {NULL, 0},
+  { N_("Exit"), OP_EXIT },   { N_("Save"), OP_SAVE }, { N_("Pipe"), OP_PIPE },
+  { N_("Print"), OP_PRINT }, { N_("Help"), OP_HELP }, { NULL, 0 },
 };
 
 void mutt_update_tree(ATTACHPTR **idx, short idxlen)
@@ -270,7 +270,7 @@ const char *mutt_attach_fmt(char *dest, size_t destlen, size_t col, int cols,
     case 'I':
       if (!optional)
       {
-        const char dispchar[] = {'I', 'A', 'F', '-'};
+        const char dispchar[] = { 'I', 'A', 'F', '-' };
         char ch;
 
         if (aptr->content->disposition < sizeof(dispchar))

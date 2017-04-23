@@ -317,10 +317,10 @@ static void _lua_expose_command(void *p, const struct command_t *cmd)
 }
 
 static const luaL_Reg luaMuttDecl[] = {
-    {"set", _lua_mutt_set},       {"get", _lua_mutt_get},
-    {"call", _lua_mutt_call},     {"enter", _lua_mutt_enter},
-    {"print", _lua_mutt_message}, {"message", _lua_mutt_message},
-    {"error", _lua_mutt_error},   {NULL, NULL},
+  { "set", _lua_mutt_set },       { "get", _lua_mutt_get },
+  { "call", _lua_mutt_call },     { "enter", _lua_mutt_enter },
+  { "print", _lua_mutt_message }, { "message", _lua_mutt_message },
+  { "error", _lua_mutt_error },   { NULL, NULL },
 };
 
 #define lua_add_lib_member(LUA, TABLE, KEY, VALUE, DATATYPE_HANDLER)           \

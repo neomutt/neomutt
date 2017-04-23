@@ -102,8 +102,8 @@ void mutt_need_hard_redraw(void)
 event_t mutt_getch(void)
 {
   int ch;
-  event_t err = {-1, OP_NULL}, ret;
-  event_t timeout = {-2, OP_NULL};
+  event_t err = { -1, OP_NULL }, ret;
+  event_t timeout = { -2, OP_NULL };
 
   if (UngetCount)
     return UngetKeyEvents[--UngetCount];
@@ -438,7 +438,7 @@ void mutt_curses_message(const char *fmt, ...)
 void mutt_progress_init(progress_t *progress, const char *msg,
                         unsigned short flags, unsigned short inc, long size)
 {
-  struct timeval tv = {0, 0};
+  struct timeval tv = { 0, 0 };
 
   if (!progress)
     return;
@@ -538,7 +538,7 @@ void mutt_progress_update(progress_t *progress, long pos, int percent)
 {
   char posstr[SHORT_STRING];
   short update = 0;
-  struct timeval tv = {0, 0};
+  struct timeval tv = { 0, 0 };
   unsigned int now = 0;
 
   if (option(OPTNOCURSES))

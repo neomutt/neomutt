@@ -2654,7 +2654,7 @@ static int parse_set(BUFFER *tmp, BUFFER *s, unsigned long data, BUFFER *err)
     {
       if (query)
       {
-        static const char *const vals[] = {"no", "yes", "ask-no", "ask-yes"};
+        static const char *const vals[] = { "no", "yes", "ask-no", "ask-yes" };
 
         snprintf(err->data, err->dsize, "%s=%s", MuttVars[idx].option,
                  vals[quadoption(MuttVars[idx].data)]);
@@ -3046,10 +3046,10 @@ finish:
 #define NUMCOMMANDS (sizeof(Commands) / sizeof(Commands[0]))
 /* initial string that starts completion. No telling how much crap
  * the user has typed so far. Allocate LONG_STRING just to be sure! */
-static char User_typed[LONG_STRING] = {0};
+static char User_typed[LONG_STRING] = { 0 };
 
-static int Num_matched = 0;          /* Number of matches for completion */
-static char Completed[STRING] = {0}; /* completed string (command or variable) */
+static int Num_matched = 0;            /* Number of matches for completion */
+static char Completed[STRING] = { 0 }; /* completed string (command or variable) */
 static const char **Matches;
 /* this is a lie until mutt_init runs: */
 static int Matches_listsize = MAX(NUMVARS, NUMCOMMANDS) + 10;
@@ -3168,7 +3168,7 @@ int mutt_command_complete(char *buffer, size_t len, int pos, int numtabs)
            (mutt_strncmp(buffer, "reset", 5) == 0) ||
            (mutt_strncmp(buffer, "toggle", 6) == 0))
   { /* complete variables */
-    static const char *const prefixes[] = {"no", "inv", "?", "&", 0};
+    static const char *const prefixes[] = { "no", "inv", "?", "&", 0 };
 
     pt++;
     /* loop through all the possible prefixes (no, inv, ...) */
@@ -3494,7 +3494,7 @@ bool mutt_nm_tag_complete(char *buffer, size_t len, int pos, int numtabs)
 int var_to_string(int idx, char *val, size_t len)
 {
   char tmp[LONG_STRING];
-  static const char *const vals[] = {"no", "yes", "ask-no", "ask-yes"};
+  static const char *const vals[] = { "no", "yes", "ask-no", "ask-yes" };
 
   tmp[0] = '\0';
 
@@ -3736,22 +3736,22 @@ static int execute_commands(LIST *p)
 static char *find_cfg(const char *home, const char *xdg_cfg_home)
 {
   const char *names[] = {
-      "neomuttrc-" PACKAGE_VERSION,
-      "neomuttrc",
-      "muttrc-" MUTT_VERSION,
-      "muttrc",
-      NULL,
+    "neomuttrc-" PACKAGE_VERSION,
+    "neomuttrc",
+    "muttrc-" MUTT_VERSION,
+    "muttrc",
+    NULL,
   };
 
   const char *locations[][2] = {
-      {
-          xdg_cfg_home, "mutt/",
-      },
-      {
-          home, ".",
-      },
-      {home, ".mutt/"},
-      {NULL, NULL},
+    {
+        xdg_cfg_home, "mutt/",
+    },
+    {
+        home, ".",
+    },
+    { home, ".mutt/" },
+    { NULL, NULL },
   };
 
   int i;

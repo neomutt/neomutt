@@ -682,54 +682,54 @@ static const struct tz_t
   unsigned char zminutes;
   bool zoccident; /* west of UTC? */
 } TimeZones[] = {
-    {"aat", 1, 0, true},             /* Atlantic Africa Time */
-    {"adt", 4, 0, false},            /* Arabia DST */
-    {"ast", 3, 0, false},            /* Arabia */
-    /* { "ast",   4,  0, true  }, */ /* Atlantic */
-    {"bst", 1, 0, false},            /* British DST */
-    {"cat", 1, 0, false},            /* Central Africa */
-    {"cdt", 5, 0, true},
-    {"cest", 2, 0, false}, /* Central Europe DST */
-    {"cet", 1, 0, false},  /* Central Europe */
-    {"cst", 6, 0, true},
-    /* { "cst",   8,  0, false }, */ /* China */
-    /* { "cst",   9, 30, false }, */ /* Australian Central Standard Time */
-    {"eat", 3, 0, false},            /* East Africa */
-    {"edt", 4, 0, true},
-    {"eest", 3, 0, false}, /* Eastern Europe DST */
-    {"eet", 2, 0, false},  /* Eastern Europe */
-    {"egst", 0, 0, false}, /* Eastern Greenland DST */
-    {"egt", 1, 0, true},   /* Eastern Greenland */
-    {"est", 5, 0, true},
-    {"gmt", 0, 0, false},
-    {"gst", 4, 0, false},            /* Presian Gulf */
-    {"hkt", 8, 0, false},            /* Hong Kong */
-    {"ict", 7, 0, false},            /* Indochina */
-    {"idt", 3, 0, false},            /* Israel DST */
-    {"ist", 2, 0, false},            /* Israel */
-    /* { "ist",   5, 30, false }, */ /* India */
-    {"jst", 9, 0, false},            /* Japan */
-    {"kst", 9, 0, false},            /* Korea */
-    {"mdt", 6, 0, true},
-    {"met", 1, 0, false}, /* this is now officially CET */
-    {"msd", 4, 0, false}, /* Moscow DST */
-    {"msk", 3, 0, false}, /* Moscow */
-    {"mst", 7, 0, true},
-    {"nzdt", 13, 0, false}, /* New Zealand DST */
-    {"nzst", 12, 0, false}, /* New Zealand */
-    {"pdt", 7, 0, true},
-    {"pst", 8, 0, true},
-    {"sat", 2, 0, false},            /* South Africa */
-    {"smt", 4, 0, false},            /* Seychelles */
-    {"sst", 11, 0, true},            /* Samoa */
-    /* { "sst",   8,  0, false }, */ /* Singapore */
-    {"utc", 0, 0, false},
-    {"wat", 0, 0, false},  /* West Africa */
-    {"west", 1, 0, false}, /* Western Europe DST */
-    {"wet", 0, 0, false},  /* Western Europe */
-    {"wgst", 2, 0, true},  /* Western Greenland DST */
-    {"wgt", 3, 0, true},   /* Western Greenland */
-    {"wst", 8, 0, false},  /* Western Australia */
+  { "aat", 1, 0, true },           /* Atlantic Africa Time */
+  { "adt", 4, 0, false },          /* Arabia DST */
+  { "ast", 3, 0, false },          /* Arabia */
+  /* { "ast",   4,  0, true  }, */ /* Atlantic */
+  { "bst", 1, 0, false },          /* British DST */
+  { "cat", 1, 0, false },          /* Central Africa */
+  { "cdt", 5, 0, true },
+  { "cest", 2, 0, false }, /* Central Europe DST */
+  { "cet", 1, 0, false },  /* Central Europe */
+  { "cst", 6, 0, true },
+  /* { "cst",   8,  0, false }, */ /* China */
+  /* { "cst",   9, 30, false }, */ /* Australian Central Standard Time */
+  { "eat", 3, 0, false },          /* East Africa */
+  { "edt", 4, 0, true },
+  { "eest", 3, 0, false }, /* Eastern Europe DST */
+  { "eet", 2, 0, false },  /* Eastern Europe */
+  { "egst", 0, 0, false }, /* Eastern Greenland DST */
+  { "egt", 1, 0, true },   /* Eastern Greenland */
+  { "est", 5, 0, true },
+  { "gmt", 0, 0, false },
+  { "gst", 4, 0, false },          /* Presian Gulf */
+  { "hkt", 8, 0, false },          /* Hong Kong */
+  { "ict", 7, 0, false },          /* Indochina */
+  { "idt", 3, 0, false },          /* Israel DST */
+  { "ist", 2, 0, false },          /* Israel */
+  /* { "ist",   5, 30, false }, */ /* India */
+  { "jst", 9, 0, false },          /* Japan */
+  { "kst", 9, 0, false },          /* Korea */
+  { "mdt", 6, 0, true },
+  { "met", 1, 0, false }, /* this is now officially CET */
+  { "msd", 4, 0, false }, /* Moscow DST */
+  { "msk", 3, 0, false }, /* Moscow */
+  { "mst", 7, 0, true },
+  { "nzdt", 13, 0, false }, /* New Zealand DST */
+  { "nzst", 12, 0, false }, /* New Zealand */
+  { "pdt", 7, 0, true },
+  { "pst", 8, 0, true },
+  { "sat", 2, 0, false },          /* South Africa */
+  { "smt", 4, 0, false },          /* Seychelles */
+  { "sst", 11, 0, true },          /* Samoa */
+  /* { "sst",   8,  0, false }, */ /* Singapore */
+  { "utc", 0, 0, false },
+  { "wat", 0, 0, false },  /* West Africa */
+  { "west", 1, 0, false }, /* Western Europe DST */
+  { "wet", 0, 0, false },  /* Western Europe */
+  { "wgst", 2, 0, true },  /* Western Greenland DST */
+  { "wgt", 3, 0, true },   /* Western Greenland */
+  { "wst", 8, 0, false },  /* Western Australia */
 };
 
 /* parses a date string in RFC822 format:

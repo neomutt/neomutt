@@ -180,7 +180,7 @@ int mx_lock_file(const char *path, int fd, int excl, int dot, int timeout)
 #if defined(USE_FCNTL) || defined(USE_FLOCK)
   int count;
   int attempt;
-  struct stat sb = {0}, prev_sb = {0}; /* silence gcc warnings */
+  struct stat sb = { 0 }, prev_sb = { 0 }; /* silence gcc warnings */
 #endif
   int r = 0;
 
@@ -282,7 +282,7 @@ int mx_lock_file(const char *path, int fd, int excl, int dot, int timeout)
 int mx_unlock_file(const char *path, int fd, int dot)
 {
 #ifdef USE_FCNTL
-  struct flock unlockit = {F_UNLCK, 0, 0, 0, 0};
+  struct flock unlockit = { F_UNLCK, 0, 0, 0, 0 };
 
   memset(&unlockit, 0, sizeof(struct flock));
   unlockit.l_type = F_UNLCK;

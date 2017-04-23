@@ -48,12 +48,12 @@
 #endif
 
 static const char *xdg_env_vars[] = {
-        [kXDGConfigHome] = "XDG_CONFIG_HOME",
-        [kXDGConfigDirs] = "XDG_CONFIG_DIRS",
+      [kXDGConfigHome] = "XDG_CONFIG_HOME",
+      [kXDGConfigDirs] = "XDG_CONFIG_DIRS",
 };
 
 static const char *xdg_defaults[] = {
-        [kXDGConfigHome] = "~/.config", [kXDGConfigDirs] = "/etc/xdg",
+      [kXDGConfigHome] = "~/.config", [kXDGConfigDirs] = "/etc/xdg",
 };
 
 BODY *mutt_new_body(void)
@@ -1995,7 +1995,7 @@ void mutt_set_mtime(const char *from, const char *to)
 void mutt_touch_atime(int f)
 {
 #ifdef HAVE_FUTIMENS
-  struct timespec times[2] = {{0, UTIME_NOW}, {0, UTIME_OMIT}};
+  struct timespec times[2] = { { 0, UTIME_NOW }, { 0, UTIME_OMIT } };
   futimens(f, times);
 #endif
 }

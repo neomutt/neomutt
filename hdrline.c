@@ -189,7 +189,7 @@ static const char *make_from_prefix(enum FieldType disp)
   /* need 2 bytes at the end, one for the space, another for NUL */
   static char padded[8];
   static const char *long_prefixes[DISP_NUM] = {
-          [DISP_TO] = "To ", [DISP_CC] = "Cc ", [DISP_BCC] = "Bcc ", [DISP_FROM] = "",
+        [DISP_TO] = "To ", [DISP_CC] = "Cc ", [DISP_BCC] = "Bcc ", [DISP_FROM] = "",
   };
 
   if (!Fromchars || !Fromchars->chars || (Fromchars->len == 0))
