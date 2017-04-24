@@ -290,18 +290,17 @@ AS_IF([test x$enable_lua = "xyes"], [
 	AC_DEFINE(USE_LUA, 1, [Define if you want support for LUA.])
 	MUTT_LIB_OBJECTS="$MUTT_LIB_OBJECTS mutt_lua.o"
 	CPPFLAGS="$CPPFLAGS $LUA_INCLUDE"
-	LIBS="$LIBS $LUA_LIB"
+	MUTTLIBS="$MUTTLIBS $LUA_LIB"
 ])
-AM_CONDITIONAL(BUILD_LUA, test x$enable_lua = xyes)
 
 dnl --enable-notmuch
 AS_IF([test x$use_notmuch = "xyes"], [
-	AC_CHECK_LIB(notmuch, notmuch_database_open,,
+	AC_CHECK_LIB(notmuch, notmuch_database_open, [:],
 		AC_MSG_ERROR([Unable to find Notmuch library]))
 	AC_DEFINE(USE_NOTMUCH,1,[ Define if you want support for the notmuch. ])
-	NOTMUCH_LIBS="-lnotmuch"
+	MUTT_LIB_OBJECTS="$MUTT_LIB_OBJECTS mutt_notmuch.o"
+	MUTTLIBS="$MUTTLIBS -lnotmuch"
 	OPS="$OPS \$(srcdir)/OPS.NOTMUCH"
-	need_notmuch="yes"
 
 	AC_MSG_CHECKING([for notmuch api version 3])
 	AC_COMPILE_IFELSE([AC_LANG_PROGRAM(
@@ -315,7 +314,6 @@ AS_IF([test x$use_notmuch = "xyes"], [
 	])
 	AC_MSG_RESULT([$notmuch_api_3])
 ])
-AM_CONDITIONAL(BUILD_NOTMUCH, test x$need_notmuch = xyes)
 
 dnl --with-mixmaster
 AS_IF([test "$alongwith_mixmaster" != "no"], [
@@ -419,7 +417,7 @@ main ()
 	AC_CHECK_LIB($cf_ncurses, initscr,
 		[MUTTLIBS="$MUTTLIBS -l$cf_ncurses"
 
-		AC_CHECK_LIB($cf_ncurses, tgetent, [], [
+		AC_CHECK_LIB($cf_ncurses, tgetent, [:], [
 			AC_CHECK_LIB(tinfo, tgetent, [MUTTLIBS="$MUTTLIBS -ltinfo"])
 		])
 
@@ -1139,7 +1137,6 @@ AC_SUBST(MUTTLIBS)
 AC_SUBST(MUTT_LIB_OBJECTS)
 AC_SUBST(LIBIMAP)
 AC_SUBST(LIBIMAPDEPS)
-AC_SUBST(NOTMUCH_LIBS)
 
 dnl -- iconv/gettext --
 
@@ -1238,7 +1235,7 @@ if test "x$with_idn" != "xno"; then
 
     AC_SEARCH_LIBS([stringprep_check_version], [idn], [
         AC_DEFINE([HAVE_LIBIDN], 1, [Define to 1 if you have the GNU idn library])
-        MUTTLIBS="$MUTTLIBS $LIBS"
+        MUTTLIBS="$MUTTLIBS -lidn"
 
         LIBS="$LIBS $LIBICONV"
         AC_CHECK_FUNCS(idna_to_unicode_utf8_from_utf8 idna_to_unicode_8z8z)

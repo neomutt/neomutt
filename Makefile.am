@@ -65,11 +65,10 @@ EXTRA_mutt_SOURCES = account.c bcache.c bcache.h browser.h compress.c \
 	crypt_gpgme.c crypt_mod_pgp_classic.c crypt_mod_pgp_gpgme.c \
 	crypt_mod_smime_classic.c crypt_mod_smime_gpgme.c dotlock.c \
 	gnupgparse.c hcache.c hcache.h mbyte.h md5.c mutt_idna.c mutt_idna.h \
-	mutt_lua.c mutt_sasl.c mutt_socket.c mutt_ssl.c mutt_ssl_gnutls.c \
+	mutt_lua.c mutt_sasl.c mutt_notmuch.c mutt_socket.c mutt_ssl.c mutt_ssl_gnutls.c \
 	mutt_tunnel.c newsrc.c nntp.c pgp.c pgpinvoke.c pgpkey.c pgplib.c \
 	pgpmicalg.c pgppacket.c pop.c pop_auth.c pop_lib.c remailer.c \
-	remailer.h resize.c sha1.c smime.c smtp.c url.h utf8.c \
-	wcwidth.c
+	remailer.h resize.c sha1.c smime.c smtp.c url.h utf8.c wcwidth.c
 
 EXTRA_DIST = account.h ascii.h attach.h browser.h buffer.h buffy.h ChangeLog \
 	ChangeLog.neomutt ChangeLog.nntp charset.h compress.h config.rpath \
@@ -79,20 +78,15 @@ EXTRA_DIST = account.h ascii.h attach.h browser.h buffer.h buffy.h ChangeLog \
 	hcache_qdbm.c hcache_tc.c hcachever.sh.in history.h init.h keymap.h \
 	lib.h LICENSE.md mailbox.h mapping.h mbyte.h md5.h mime.h mime.types \
 	mutt.h mutt_commands.h mutt_crypt.h mutt_curses.h mutt_idna.h \
-	mutt_lua.h mutt_menu.h mutt_options.h mutt_regex.h mutt_sasl.h \
+	mutt_lua.h mutt_menu.h mutt_notmuch.h mutt_options.h mutt_regex.h mutt_sasl.h \
 	mutt_sasl_plain.h mutt_socket.h mutt_ssl.h mutt_tunnel.h mx.h myvar.h \
 	nntp.h OPS OPS.CRYPT OPS.MIX OPS.NOTMUCH OPS.PGP OPS.SIDEBAR OPS.SMIME \
 	pager.h PATCHES patchlist.sh pgp.h pgpewrap.c pgplib.h pgppacket.h \
 	pop.h protos.h README.md README.SSL remailer.c remailer.h \
-	rfc1524.h rfc2047.h rfc2231.h rfc3676.h rfc822.h sha1.h sidebar.h smime.h \ 
+	rfc1524.h rfc2047.h rfc2231.h rfc3676.h rfc822.h sha1.h sidebar.h smime.h \
 	smime_keys.pl sort.h txt2c.c txt2c.sh UPDATING version.h keymap_alldefs.h
 
 EXTRA_SCRIPTS = smime_keys
-
-if BUILD_NOTMUCH
-mutt_SOURCES += mutt_notmuch.c mutt_notmuch.h
-mutt_LDADD += $(NOTMUCH_LIBS)
-endif
 
 mutt_dotlock_SOURCES = mutt_dotlock.c
 mutt_dotlock_LDADD = $(LIBOBJS)
