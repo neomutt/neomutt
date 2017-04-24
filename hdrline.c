@@ -28,9 +28,6 @@
 #include "mutt_curses.h"
 #include "mutt_idna.h"
 #include "sort.h"
-#ifdef HAVE_ALLOCA_H
-#include <alloca.h>
-#endif
 #ifdef USE_NOTMUCH
 #include "mutt_notmuch.h"
 #endif

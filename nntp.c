@@ -35,12 +35,6 @@
 #ifdef USE_SSL
 #include "mutt_ssl.h"
 #endif
-#ifdef HAVE_PGP
-#include "pgp.h"
-#endif
-#ifdef HAVE_SMIME
-#include "smime.h"
-#endif
 #ifdef USE_HCACHE
 #include "hcache.h"
 #endif

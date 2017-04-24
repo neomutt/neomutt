@@ -194,11 +194,7 @@ static struct compile_options comp_opts[] = {
 #else
   { "HAVE_META", 0 },
 #endif
-#ifdef HAVE_REGCOMP
   { "HAVE_REGCOMP", 1 },
-#else
-  { "HAVE_REGCOMP", 0 },
-#endif
 #ifdef HAVE_RESIZETERM
   { "HAVE_RESIZETERM", 1 },
 #else

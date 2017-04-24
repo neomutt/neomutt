@@ -26,9 +26,6 @@
 #include "mutt.h"
 #include "bcache.h"
 #include "mx.h"
-#ifdef HAVE_PGP
-#include "pgp.h"
-#endif
 #ifdef USE_HCACHE
 #include "hcache.h"
 #endif
@@ -876,11 +873,6 @@ parsemsg:
   }
 
   h->content->length = ftell(msg->fp) - h->content->offset;
-
-/* This needs to be done in case this is a multipart message */
-#if defined(HAVE_PGP) || defined(HAVE_SMIME)
-  h->security = crypt_query(h->content);
-#endif
 
   mutt_clear_error();
   rewind(msg->fp);

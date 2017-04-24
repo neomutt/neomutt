@@ -25,9 +25,6 @@
 #include "mutt_regex.h"
 #include "mutt_socket.h"
 #include "mutt_ssl.h"
-#ifdef HAVE_GNUTLS_OPENSSL_H
-#include <gnutls/openssl.h>
-#endif
 
 /* certificate error bitmap values */
 #define CERTERR_VALID 0
