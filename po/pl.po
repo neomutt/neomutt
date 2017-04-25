@@ -2654,7 +2654,7 @@ msgstr "Połączyć używając TLS?"
 
 #: imap/imap.c:441 nntp.c:678 pop_lib.c:309 smtp.c:587
 msgid "Could not negotiate TLS connection"
-msgstr "Połączenie TSL nie zostało wynegocjowane"
+msgstr "Połączenie TLS nie zostało wynegocjowane"
 
 #: imap/imap.c:457 pop_lib.c:330
 msgid "Encrypted connection unavailable"

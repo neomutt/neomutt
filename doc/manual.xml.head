@@ -14563,7 +14563,7 @@ color status brightwhite default 'Mutt: ([^ ]+)' 1
 
     <sect1 id="tls-sni">
       <title>TLS-SNI Feature</title>
-      <subtitle>Negotiate with a server for a TSL/SSL certificate</subtitle>
+      <subtitle>Negotiate with a server for a TLS/SSL certificate</subtitle>
 
       <sect2 id="tls-sni-support">
         <title>Support</title>

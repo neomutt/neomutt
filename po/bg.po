@@ -2706,7 +2706,7 @@ msgstr "Желаете ли да установите сигурна връзк�
 
 #: imap/imap.c:441 nntp.c:678 pop_lib.c:309 smtp.c:587
 msgid "Could not negotiate TLS connection"
-msgstr "Не може да бъде установена TSL връзка"
+msgstr "Не може да бъде установена TLS връзка"
 
 #: imap/imap.c:457 pop_lib.c:330
 msgid "Encrypted connection unavailable"

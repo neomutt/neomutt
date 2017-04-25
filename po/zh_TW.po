@@ -2712,7 +2712,7 @@ msgstr "這個 IMAP 伺服器已過時，Mutt 無法使用它。"
 
 #: imap/imap.c:431 nntp.c:659 pop_lib.c:289 smtp.c:575
 msgid "Secure connection with TLS?"
-msgstr "利用 TSL 來進行安全連接？"
+msgstr "利用 TLS 來進行安全連接？"
 
 #: imap/imap.c:441 nntp.c:678 pop_lib.c:309 smtp.c:587
 msgid "Could not negotiate TLS connection"
