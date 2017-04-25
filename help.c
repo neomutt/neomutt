@@ -193,21 +193,28 @@ static int get_wrapped_width(const char *t, size_t wid)
   return n;
 }
 
-static int pad(FILE *f, int col, int i)
+static int pad(FILE *f, int col, int i, bool is_alternate)
 {
-  char fmt[32] = "";
-
   if (col < i)
   {
-    snprintf(fmt, sizeof(fmt), "%%-%ds", i - col);
-    fprintf(f, fmt, "");
+    if (col <= i + 2) {
+      fputc(' ', f);
+      for (int j = 0; j < i - col - 2; j++) {
+        fputs(is_alternate ? "―" : "•", f);
+      }
+      fputc(' ', f);
+    }
+    else {
+      /* Only a single character of difference */
+      fputc(' ', f);
+    }
     return i;
   }
   fputc(' ', f);
   return (col + 1);
 }
 
-static void format_line(FILE *f, int ismacro, const char *t1, const char *t2, const char *t3)
+static void format_line(FILE *f, int ismacro, const char *t1, const char *t2, const char *t3, bool is_alternate)
 {
   int col;
   int col_a, col_b;
@@ -228,7 +235,7 @@ static void format_line(FILE *f, int ismacro, const char *t1, const char *t2, co
   {
     col_a = MuttIndexWindow->cols > 83 ? (MuttIndexWindow->cols - 32) >> 2 : 12;
     col_b = MuttIndexWindow->cols > 49 ? (MuttIndexWindow->cols - 10) >> 1 : 19;
-    col = pad(f, mutt_strwidth(t1), col_a);
+    col = pad(f, mutt_strwidth(t1), col_a, is_alternate);
   }
 
   if (ismacro > 0)
@@ -250,7 +257,7 @@ static void format_line(FILE *f, int ismacro, const char *t1, const char *t2, co
   if (split)
     fputc('\n', f);
   else
-    col = pad(f, col, col_b);
+    col = pad(f, col, col_b, is_alternate);
 
   if (split)
   {
@@ -284,7 +291,7 @@ static void format_line(FILE *f, int ismacro, const char *t1, const char *t2, co
           if (option(OPT_MARKERS))
             n++;
         }
-        col = pad(f, n, col_b);
+        col = pad(f, n, col_b, is_alternate);
       }
     }
   }
@@ -297,27 +304,29 @@ static void dump_menu(FILE *f, int menu)
   struct Keymap *map = NULL;
   const struct Binding *b = NULL;
   char buf[SHORT_STRING];
+  bool is_alternate = true;
 
   /* browse through the keymap table */
   for (map = Keymaps[menu]; map; map = map->next)
   {
     if (map->op != OP_NULL)
     {
+      is_alternate = !is_alternate;
       km_expand_key(buf, sizeof(buf), map);
 
       if (map->op == OP_MACRO)
       {
         if (!map->descr)
-          format_line(f, -1, buf, "macro", map->macro);
+          format_line(f, -1, buf, "macro", map->macro, is_alternate);
         else
-          format_line(f, 1, buf, map->macro, map->descr);
+          format_line(f, 1, buf, map->macro, map->descr, is_alternate);
       }
       else
       {
         b = help_lookup_function(map->op, menu);
         format_line(f, 0, buf, b ? b->name : "UNKNOWN",
                     b ? _(HelpStrings[b->op]) :
-                        _("ERROR: please report this bug"));
+                        _("ERROR: please report this bug"), is_alternate);
       }
     }
   }
@@ -334,10 +343,15 @@ static bool is_bound(struct Keymap *map, int op)
 static void dump_unbound(FILE *f, const struct Binding *funcs,
                          struct Keymap *map, struct Keymap *aux)
 {
+  bool is_alternate = true;
+
   for (int i = 0; funcs[i].name; i++)
   {
-    if (!is_bound(map, funcs[i].op) && (!aux || !is_bound(aux, funcs[i].op)))
-      format_line(f, 0, funcs[i].name, "", _(HelpStrings[funcs[i].op]));
+
+    if (!is_bound(map, funcs[i].op) && (!aux || !is_bound(aux, funcs[i].op))) {
+      is_alternate = !is_alternate;
+      format_line(f, 0, funcs[i].name, "", _(HelpStrings[funcs[i].op]), is_alternate);
+    }
   }
 }
 
