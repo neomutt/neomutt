@@ -49,7 +49,7 @@ sorted through them, fixed them up and documented them.
 | Sidebar              | Panel containing list of Mailboxes
 | Skip Quoted          | Leave some context visible
 | Status Color         | Custom rules for theming the status bar
-| TLS-SNI              | Negotiate with a server for a TSL/SSL certificate
+| TLS-SNI              | Negotiate with a server for a TLS/SSL certificate
 | Trash Folder         | Automatically move deleted emails to a trash bin
 
 ## Contributed Scripts and Config
