@@ -641,10 +641,10 @@ CONTEXT *mx_open_mailbox(const char *path, int flags, CONTEXT *pctx)
 
   if (ctx->magic <= 0 || !ctx->mx_ops)
   {
-    if (ctx->magic == 0 || !ctx->mx_ops)
-      mutt_error(_("%s is not a mailbox."), path);
-    else if (ctx->magic == -1)
+    if (ctx->magic == -1)
       mutt_perror(path);
+    else if (ctx->magic == 0 || !ctx->mx_ops)
+      mutt_error(_("%s is not a mailbox."), path);
 
     mx_fastclose_mailbox(ctx);
     if (!pctx)
