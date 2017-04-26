@@ -21,10 +21,6 @@
 
 int wcscasecmp(const wchar_t *a, const wchar_t *b)
 {
-  const wchar_t *p = a;
-  const wchar_t *q = b;
-  int i;
-
   if (!a && !b)
     return 0;
   if (!a && b)
@@ -32,9 +28,10 @@ int wcscasecmp(const wchar_t *a, const wchar_t *b)
   if (a && !b)
     return 1;
 
-  for (; *p || *q; p++, q++)
+  for (; *a || *b; a++, b++)
   {
-    if ((i = towlower(*p)) - towlower(*q))
+    int i = towlower(*a);
+    if ((i - towlower(*b)) != 0)
       return i;
   }
   return 0;
