@@ -186,16 +186,26 @@ static int add_entropy(const char *file)
 
 static void ssl_err(sslsockdata *data, int err)
 {
-  const char *errmsg = NULL;
-  unsigned long sslerr;
-
-  switch (SSL_get_error(data->ssl, err))
+  int e = SSL_get_error(data->ssl, err);
+  switch (e)
   {
     case SSL_ERROR_NONE:
       return;
     case SSL_ERROR_ZERO_RETURN:
-      errmsg = "SSL connection closed";
       data->isopen = 0;
+      break;
+    case SSL_ERROR_SYSCALL:
+      data->isopen = 0;
+      break;
+  }
+#ifdef DEBUG
+  const char *errmsg = NULL;
+  unsigned long sslerr;
+
+  switch (e)
+  {
+    case SSL_ERROR_ZERO_RETURN:
+      errmsg = "SSL connection closed";
       break;
     case SSL_ERROR_WANT_READ:
       errmsg = "retry read";
@@ -214,7 +224,6 @@ static void ssl_err(sslsockdata *data, int err)
       break;
     case SSL_ERROR_SYSCALL:
       errmsg = "I/O error";
-      data->isopen = 0;
       break;
     case SSL_ERROR_SSL:
       sslerr = ERR_get_error();
@@ -239,6 +248,7 @@ static void ssl_err(sslsockdata *data, int err)
   }
 
   mutt_debug(1, "SSL error: %s\n", errmsg);
+#endif
 }
 
 static void ssl_dprint_err_stack(void)
