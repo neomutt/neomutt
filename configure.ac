@@ -245,8 +245,9 @@ dnl == Declare all the checks and code for options / features below this line ==
 dnl --enable-gpgme
 AS_IF([test x$use_gpgme = "xyes"], [
 	ifdef([AM_PATH_GPGME], [
-		AM_PATH_GPGME(1.2.0, [
+		AM_PATH_GPGME(1.1.0, [
 			AC_DEFINE(CRYPT_BACKEND_GPGME, 1, [GPGME support])
+			AC_CHECK_FUNCS([gpgme_op_export_keys])
 			MUTT_LIB_OBJECTS="$MUTT_LIB_OBJECTS crypt_gpgme.o \
 			crypt_mod_pgp_gpgme.o crypt_mod_smime_gpgme.o"
 		], [gpgme_found=no])

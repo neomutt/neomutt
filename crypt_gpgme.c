@@ -4468,6 +4468,7 @@ char *smime_gpgme_findkeys(ADDRESS *adrlist, int oppenc_mode)
   return find_keys(adrlist, APPLICATION_SMIME, oppenc_mode);
 }
 
+#ifdef HAVE_GPGME_OP_EXPORT_KEYS
 BODY *pgp_gpgme_make_key_attachment(char *tempf)
 {
   crypt_key_t *key = NULL;
@@ -4527,6 +4528,7 @@ bail:
 
   return att;
 }
+#endif
 
 /*
  * Implementation of `init'.
