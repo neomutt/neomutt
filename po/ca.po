@@ -54,7 +54,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neomutt-20161104\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
-"POT-Creation-Date: 2017-04-21 13:02+0100\n"
+"POT-Creation-Date: 2017-04-28 12:34+0100\n"
 "PO-Revision-Date: 2017-02-18 01:24+0100\n"
 "Last-Translator: Ivan Vilata i Balaguer <ivan@selidor.net>\n"
 "Language-Team: Catalan <ca@dodds.net>\n"
@@ -94,7 +94,7 @@ msgid "Select"
 msgstr "Selecciona"
 
 #: addrbook.c:33 browser.c:52 browser.c:64 compose.c:105 compose.c:117
-#: crypt_gpgme.c:3943 curs_main.c:781 curs_main.c:794 mutt_ssl.c:837
+#: crypt_gpgme.c:3939 curs_main.c:781 curs_main.c:794 mutt_ssl.c:837
 #: mutt_ssl_gnutls.c:714 pager.c:2022 pgpkey.c:500 postpone.c:39 query.c:49
 #: recvattach.c:51 smime.c:412
 msgid "Help"
@@ -462,7 +462,7 @@ msgstr "%s: L’atribut no existeix."
 
 # ivb (2001/12/08)
 # ivb  També apareix com a error aïllat.
-#: color.c:774 hook.c:69 hook.c:81 init.c:2160 init.c:2235 keymap.c:920
+#: color.c:774 hook.c:69 hook.c:81 init.c:2160 init.c:2235 keymap.c:949
 msgid "too few arguments"
 msgstr "Manquen arguments."
 
@@ -1137,7 +1137,7 @@ msgstr "Error en habilitar el protocol CMS: %s\n"
 msgid "error creating gpgme data object: %s\n"
 msgstr "Error en crear l’objecte de dades GPGME: %s\n"
 
-#: crypt_gpgme.c:478 crypt_gpgme.c:496 crypt_gpgme.c:1526 crypt_gpgme.c:2235
+#: crypt_gpgme.c:478 crypt_gpgme.c:496 crypt_gpgme.c:1522 crypt_gpgme.c:2231
 #, c-format
 msgid "error allocating data object: %s\n"
 msgstr "Error en reservar l’objecte de dades: %s\n"
@@ -1156,7 +1156,7 @@ msgstr ""
 msgid "error reading data object: %s\n"
 msgstr "Error en llegir l’objecte de dades: %s\n"
 
-#: crypt_gpgme.c:561 crypt_gpgme.c:3589 pgpkey.c:537 pgpkey.c:711
+#: crypt_gpgme.c:561 crypt_gpgme.c:3585 pgpkey.c:537 pgpkey.c:711
 msgid "Can't create temporary file"
 msgstr "No s’ha pogut crear un fitxer temporal."
 
@@ -1240,11 +1240,11 @@ msgstr "No s’ha acomplert un requeriment establert per política.\n"
 msgid "A system error occurred"
 msgstr "S’ha produït un error de sistema."
 
-#: crypt_gpgme.c:1223
+#: crypt_gpgme.c:1221
 msgid "WARNING: PKA entry does not match signer's address: "
 msgstr "Avís: L’entrada PKA no concorda amb l’adreça del signatari: "
 
-#: crypt_gpgme.c:1231
+#: crypt_gpgme.c:1229
 msgid "PKA verified signer's address is: "
 msgstr "L’adreça del signatari verificada amb PKA és: "
 
@@ -1253,86 +1253,86 @@ msgstr "L’adreça del signatari verificada amb PKA és: "
 #. Fill dots to make the DOTFILL entries the same length.
 #. In English, msgid "Fingerprint: " is the longest entry for this menu.
 #. Your language may vary.
-#: crypt_gpgme.c:1248 crypt_gpgme.c:3431
+#: crypt_gpgme.c:1244 crypt_gpgme.c:3427
 msgid "Fingerprint: "
 msgstr "Empremta digital .....: "
 
-#: crypt_gpgme.c:1309
+#: crypt_gpgme.c:1305
 msgid ""
 "WARNING: We have NO indication whether the key belongs to the person named "
 "as shown above\n"
 msgstr ""
 "Avís: RES indica que la clau pertanya a la persona esmentada a sobre.\n"
 
-#: crypt_gpgme.c:1316
+#: crypt_gpgme.c:1312
 msgid "WARNING: The key does NOT BELONG to the person named as shown above\n"
 msgstr "Avís: La clau NO PERTANY a la persona esmentada a sobre.\n"
 
-#: crypt_gpgme.c:1320
+#: crypt_gpgme.c:1316
 msgid ""
 "WARNING: It is NOT certain that the key belongs to the person named as shown "
 "above\n"
 msgstr ""
 "Avís: NO és segur que la clau pertanya a la persona esmentada a sobre.\n"
 
-#: crypt_gpgme.c:1350 crypt_gpgme.c:1355
+#: crypt_gpgme.c:1346 crypt_gpgme.c:1351
 msgid "aka: "
 msgstr "també conegut com a: "
 
 # Millor amb cometes però no es pot.  ivb
-#: crypt_gpgme.c:1365
+#: crypt_gpgme.c:1361
 msgid "KeyID "
 msgstr "identificador "
 
 # Es refereix a una signatura.  ivb
-#: crypt_gpgme.c:1374 crypt_gpgme.c:1379
+#: crypt_gpgme.c:1370 crypt_gpgme.c:1375
 msgid "created: "
 msgstr "creada en: "
 
 # Millor amb cometes però no es pot (per coherència amb l’anterior).  ivb
-#: crypt_gpgme.c:1451
+#: crypt_gpgme.c:1447
 #, c-format
 msgid "Error getting key information for KeyID %s: %s\n"
 msgstr "Error en obtenir informació de la clau amb identificador %s: %s\n"
 
-#: crypt_gpgme.c:1458 crypt_gpgme.c:1473
+#: crypt_gpgme.c:1454 crypt_gpgme.c:1469
 msgid "Good signature from:"
 msgstr "Signatura correcta de:"
 
-#: crypt_gpgme.c:1465
+#: crypt_gpgme.c:1461
 msgid "*BAD* signature from:"
 msgstr "Signatura *INCORRECTA* de:"
 
-#: crypt_gpgme.c:1481
+#: crypt_gpgme.c:1477
 msgid "Problem signature from:"
 msgstr "Problema, la signatura de:"
 
 #. L10N:
 #. This is trying to match the width of the
 #. "Problem signature from:" translation just above.
-#: crypt_gpgme.c:1488
+#: crypt_gpgme.c:1484
 msgid "               expires: "
 msgstr "                expira en: "
 
-#: crypt_gpgme.c:1534 crypt_gpgme.c:1751 crypt_gpgme.c:2451
+#: crypt_gpgme.c:1530 crypt_gpgme.c:1747 crypt_gpgme.c:2447
 msgid "[-- Begin signature information --]\n"
 msgstr "[-- Inici de la informació de la signatura. --]\n"
 
-#: crypt_gpgme.c:1545
+#: crypt_gpgme.c:1541
 #, c-format
 msgid "Error: verification failed: %s\n"
 msgstr "Error: La verificació ha fallat: %s\n"
 
-#: crypt_gpgme.c:1597
+#: crypt_gpgme.c:1593
 #, c-format
 msgid "*** Begin Notation (signature by: %s) ***\n"
 msgstr "*** Inici de la notació (signatura de: %s). ***\n"
 
-#: crypt_gpgme.c:1616
+#: crypt_gpgme.c:1612
 msgid "*** End Notation ***\n"
 msgstr "*** Final de la notació. ***\n"
 
-#: crypt_gpgme.c:1624 crypt_gpgme.c:1765 crypt_gpgme.c:2463
+#: crypt_gpgme.c:1620 crypt_gpgme.c:1761 crypt_gpgme.c:2459
 msgid ""
 "[-- End signature information --]\n"
 "\n"
@@ -1340,7 +1340,7 @@ msgstr ""
 "[-- Final de la informació de la signatura. --]\n"
 "\n"
 
-#: crypt_gpgme.c:1720
+#: crypt_gpgme.c:1716
 #, c-format
 msgid ""
 "[-- Error: decryption failed: %s --]\n"
@@ -1350,22 +1350,22 @@ msgstr ""
 "\n"
 
 # Es refereix a múltiples claus.  ivb
-#: crypt_gpgme.c:2242
+#: crypt_gpgme.c:2238
 msgid "Error extracting key data!\n"
 msgstr "Error en extreure les dades de les claus.\n"
 
-#: crypt_gpgme.c:2428
+#: crypt_gpgme.c:2424
 #, c-format
 msgid "Error: decryption/verification failed: %s\n"
 msgstr "Error: El desxifratge o verificació ha fallat: %s\n"
 
-#: crypt_gpgme.c:2472
+#: crypt_gpgme.c:2468
 msgid "Error: copy data failed\n"
 msgstr "Error: La còpia de les dades ha fallat.\n"
 
 # Aquests texts en majúscules reprodueixen els marcadors dels fitxers PGP,
 # així que no té molt de sentit mantenir les majúscules en la traducció.  ivb
-#: crypt_gpgme.c:2493 pgp.c:504
+#: crypt_gpgme.c:2489 pgp.c:504
 msgid ""
 "[-- BEGIN PGP MESSAGE --]\n"
 "\n"
@@ -1373,11 +1373,11 @@ msgstr ""
 "[-- Inici del missatge PGP. --]\n"
 "\n"
 
-#: crypt_gpgme.c:2495 pgp.c:506
+#: crypt_gpgme.c:2491 pgp.c:506
 msgid "[-- BEGIN PGP PUBLIC KEY BLOCK --]\n"
 msgstr "[-- Inici del bloc de clau pública PGP. --]\n"
 
-#: crypt_gpgme.c:2497 pgp.c:508
+#: crypt_gpgme.c:2493 pgp.c:508
 msgid ""
 "[-- BEGIN PGP SIGNED MESSAGE --]\n"
 "\n"
@@ -1385,19 +1385,19 @@ msgstr ""
 "[-- Inici del missatge PGP signat. --]\n"
 "\n"
 
-#: crypt_gpgme.c:2523 pgp.c:551
+#: crypt_gpgme.c:2519 pgp.c:551
 msgid "[-- END PGP MESSAGE --]\n"
 msgstr "[-- Final del missatge PGP. --]\n"
 
-#: crypt_gpgme.c:2525 pgp.c:558
+#: crypt_gpgme.c:2521 pgp.c:558
 msgid "[-- END PGP PUBLIC KEY BLOCK --]\n"
 msgstr "[-- Final del bloc de clau pública PGP. --]\n"
 
-#: crypt_gpgme.c:2527 pgp.c:560
+#: crypt_gpgme.c:2523 pgp.c:560
 msgid "[-- END PGP SIGNED MESSAGE --]\n"
 msgstr "[-- Final del missatge PGP signat. --]\n"
 
-#: crypt_gpgme.c:2550 pgp.c:594
+#: crypt_gpgme.c:2546 pgp.c:594
 msgid ""
 "[-- Error: could not find beginning of PGP message! --]\n"
 "\n"
@@ -1405,11 +1405,11 @@ msgstr ""
 "[-- Error: No s’ha trobat l’inici del missatge PGP. --]\n"
 "\n"
 
-#: crypt_gpgme.c:2582 crypt_gpgme.c:2657 pgp.c:1013
+#: crypt_gpgme.c:2578 crypt_gpgme.c:2653 pgp.c:1013
 msgid "[-- Error: could not create temporary file! --]\n"
 msgstr "[-- Error: No s’ha pogut crear un fitxer temporal. --]\n"
 
-#: crypt_gpgme.c:2595
+#: crypt_gpgme.c:2591
 msgid ""
 "[-- The following data is PGP/MIME signed and encrypted --]\n"
 "\n"
@@ -1417,7 +1417,7 @@ msgstr ""
 "[-- Les dades següents es troben signades i xifrades amb PGP/MIME: --]\n"
 "\n"
 
-#: crypt_gpgme.c:2597 pgp.c:1024
+#: crypt_gpgme.c:2593 pgp.c:1024
 msgid ""
 "[-- The following data is PGP/MIME encrypted --]\n"
 "\n"
@@ -1425,23 +1425,23 @@ msgstr ""
 "[-- Les dades següents es troben xifrades amb PGP/MIME: --]\n"
 "\n"
 
-#: crypt_gpgme.c:2619
+#: crypt_gpgme.c:2615
 msgid "[-- End of PGP/MIME signed and encrypted data --]\n"
 msgstr "[-- Final de les dades signades i xifrades amb PGP/MIME. --]\n"
 
-#: crypt_gpgme.c:2620 pgp.c:1044
+#: crypt_gpgme.c:2616 pgp.c:1044
 msgid "[-- End of PGP/MIME encrypted data --]\n"
 msgstr "[-- Final de les dades xifrades amb PGP/MIME. --]\n"
 
-#: crypt_gpgme.c:2625 pgp.c:555 pgp.c:1049
+#: crypt_gpgme.c:2621 pgp.c:555 pgp.c:1049
 msgid "PGP message successfully decrypted."
 msgstr "S’ha pogut desxifrar amb èxit el missatge PGP."
 
-#: crypt_gpgme.c:2629 pgp.c:490 pgp.c:553 pgp.c:1053
+#: crypt_gpgme.c:2625 pgp.c:490 pgp.c:553 pgp.c:1053
 msgid "Could not decrypt PGP message"
 msgstr "No s’ha pogut desxifrar el missatge PGP."
 
-#: crypt_gpgme.c:2670
+#: crypt_gpgme.c:2666
 msgid ""
 "[-- The following data is S/MIME signed --]\n"
 "\n"
@@ -1449,7 +1449,7 @@ msgstr ""
 "[-- Les dades següents es troben signades amb S/MIME: --]\n"
 "\n"
 
-#: crypt_gpgme.c:2671
+#: crypt_gpgme.c:2667
 msgid ""
 "[-- The following data is S/MIME encrypted --]\n"
 "\n"
@@ -1457,49 +1457,49 @@ msgstr ""
 "[-- Les dades següents es troben xifrades amb S/MIME: --]\n"
 "\n"
 
-#: crypt_gpgme.c:2700
+#: crypt_gpgme.c:2696
 msgid "[-- End of S/MIME signed data --]\n"
 msgstr "[-- Final de les dades signades amb S/MIME. --]\n"
 
-#: crypt_gpgme.c:2701
+#: crypt_gpgme.c:2697
 msgid "[-- End of S/MIME encrypted data --]\n"
 msgstr "[-- Final de les dades xifrades amb S/MIME. --]\n"
 
 # Cal mantenir‐lo curt (porta al davant «Nom ..................: »).  ivb
-#: crypt_gpgme.c:3268
+#: crypt_gpgme.c:3264
 msgid "[Can't display this user ID (unknown encoding)]"
 msgstr "[No es mostra l’ID d’usuari (codificació desconeguda).]"
 
 # Cal mantenir‐lo curt (porta al davant «Nom ..................: »).  ivb
-#: crypt_gpgme.c:3270
+#: crypt_gpgme.c:3266
 msgid "[Can't display this user ID (invalid encoding)]"
 msgstr "[No es mostra l’ID d’usuari (codificació no vàlida).]"
 
 # Cal mantenir‐lo curt (porta al davant «Nom ..................: »).  ivb
-#: crypt_gpgme.c:3275
+#: crypt_gpgme.c:3271
 msgid "[Can't display this user ID (invalid DN)]"
 msgstr "[No es mostra l’ID d’usuari (DN desconegut).]"
 
 # Alineat amb «  també conegut com a : ».  ivb
 #. L10N: DOTFILL
-#: crypt_gpgme.c:3349
+#: crypt_gpgme.c:3345
 msgid " aka ......: "
 msgstr "  també conegut com a : "
 
 # Alineat amb «  també conegut com a : ».  ivb
-#: crypt_gpgme.c:3349
+#: crypt_gpgme.c:3345
 msgid "Name ......: "
 msgstr "Nom ..................: "
 
 # Es refereix a un identificador d’usuari.  ivb
-#: crypt_gpgme.c:3352 crypt_gpgme.c:3501
+#: crypt_gpgme.c:3348 crypt_gpgme.c:3497
 msgid "[Invalid]"
 msgstr "[No és vàlid]"
 
 # Es refereix a una clau.  ivb
 # Alineat amb «  també conegut com a : ».  ivb
 #. L10N: DOTFILL
-#: crypt_gpgme.c:3373 crypt_gpgme.c:3526
+#: crypt_gpgme.c:3369 crypt_gpgme.c:3522
 #, c-format
 msgid "Valid From : %s\n"
 msgstr "Vàlida des de ........: %s\n"
@@ -1507,7 +1507,7 @@ msgstr "Vàlida des de ........: %s\n"
 # Es refereix a una clau.  ivb
 # Alineat amb «  també conegut com a : ».  ivb
 #. L10N: DOTFILL
-#: crypt_gpgme.c:3387 crypt_gpgme.c:3540
+#: crypt_gpgme.c:3383 crypt_gpgme.c:3536
 #, c-format
 msgid "Valid To ..: %s\n"
 msgstr "Vàlida fins a ........: %s\n"
@@ -1515,143 +1515,143 @@ msgstr "Vàlida fins a ........: %s\n"
 # Alineat amb «  també conegut com a : ».  ivb
 # Tipus de certificat, bits de l’algorisme, tipus d’algorisme.  ivb
 #. L10N: DOTFILL
-#: crypt_gpgme.c:3401 crypt_gpgme.c:3548
+#: crypt_gpgme.c:3397 crypt_gpgme.c:3544
 #, c-format
 msgid "Key Type ..: %s, %lu bit %s\n"
 msgstr "Tipus de clau ........: %1$s, %3$s de %2$lu bits\n"
 
 # Alineat amb «  també conegut com a : ».  ivb
 #. L10N: DOTFILL
-#: crypt_gpgme.c:3404 crypt_gpgme.c:3551
+#: crypt_gpgme.c:3400 crypt_gpgme.c:3547
 #, c-format
 msgid "Key Usage .: "
 msgstr "Utilitat de la clau ..: "
 
 # Capacitats d’una clau.  ivb
-#: crypt_gpgme.c:3409 crypt_gpgme.c:3556
+#: crypt_gpgme.c:3405 crypt_gpgme.c:3552
 msgid "encryption"
 msgstr "xifratge"
 
-#: crypt_gpgme.c:3410 crypt_gpgme.c:3415 crypt_gpgme.c:3420 crypt_gpgme.c:3557
-#: crypt_gpgme.c:3562 crypt_gpgme.c:3567
+#: crypt_gpgme.c:3406 crypt_gpgme.c:3411 crypt_gpgme.c:3416 crypt_gpgme.c:3553
+#: crypt_gpgme.c:3558 crypt_gpgme.c:3563
 msgid ", "
 msgstr ", "
 
 # Capacitats d’una clau.  ivb
-#: crypt_gpgme.c:3414 crypt_gpgme.c:3561
+#: crypt_gpgme.c:3410 crypt_gpgme.c:3557
 msgid "signing"
 msgstr "signatura"
 
 # Capacitats d’una clau.  ivb
-#: crypt_gpgme.c:3419 crypt_gpgme.c:3566
+#: crypt_gpgme.c:3415 crypt_gpgme.c:3562
 msgid "certification"
 msgstr "certificació"
 
 # Alineat amb «  també conegut com a : ».  ivb
 #. L10N: DOTFILL
-#: crypt_gpgme.c:3464
+#: crypt_gpgme.c:3460
 #, c-format
 msgid "Serial-No .: 0x%s\n"
 msgstr "Número de sèrie ......: 0x%s\n"
 
 # Alineat amb «  també conegut com a : ».  ivb
 #. L10N: DOTFILL
-#: crypt_gpgme.c:3473
+#: crypt_gpgme.c:3469
 #, c-format
 msgid "Issued By .: "
 msgstr "Lliurada per .........: "
 
 # Alineat amb «  també conegut com a : ».  ivb
 #. L10N: DOTFILL
-#: crypt_gpgme.c:3492
+#: crypt_gpgme.c:3488
 #, c-format
 msgid "Subkey ....: 0x%s"
 msgstr "Subclau ..............: 0x%s"
 
 # Subclau.  ivb
-#: crypt_gpgme.c:3496
+#: crypt_gpgme.c:3492
 msgid "[Revoked]"
 msgstr "[Revocada]"
 
 # Subclau.  ivb
-#: crypt_gpgme.c:3506
+#: crypt_gpgme.c:3502
 msgid "[Expired]"
 msgstr "[Expirada]"
 
 # Subclau.  ivb
-#: crypt_gpgme.c:3511
+#: crypt_gpgme.c:3507
 msgid "[Disabled]"
 msgstr "[Inhabilitada]"
 
-#: crypt_gpgme.c:3592
+#: crypt_gpgme.c:3588
 msgid "Collecting data..."
 msgstr "S’estan recollint les dades…"
 
-#: crypt_gpgme.c:3617
+#: crypt_gpgme.c:3613
 #, c-format
 msgid "Error finding issuer key: %s\n"
 msgstr "Error en trobar la clau del lliurador: %s\n"
 
-#: crypt_gpgme.c:3626
+#: crypt_gpgme.c:3622
 msgid "Error: certification chain too long - stopping here\n"
 msgstr "Error: La cadena de certificació és massa llarga, s’abandona aquí.\n"
 
-#: crypt_gpgme.c:3636 pgpkey.c:559
+#: crypt_gpgme.c:3632 pgpkey.c:559
 #, c-format
 msgid "Key ID: 0x%s"
 msgstr "ID de la clau: 0x%s"
 
-#: crypt_gpgme.c:3719
+#: crypt_gpgme.c:3715
 #, c-format
 msgid "gpgme_new failed: %s"
 msgstr "Ha fallat gpgme_new(): %s"
 
-#: crypt_gpgme.c:3758 crypt_gpgme.c:3809
+#: crypt_gpgme.c:3754 crypt_gpgme.c:3805
 #, c-format
 msgid "gpgme_op_keylist_start failed: %s"
 msgstr "Ha fallat gpgme_op_keylist_start(): %s"
 
-#: crypt_gpgme.c:3797 crypt_gpgme.c:3839
+#: crypt_gpgme.c:3793 crypt_gpgme.c:3835
 #, c-format
 msgid "gpgme_op_keylist_next failed: %s"
 msgstr "Ha fallat gpgme_op_keylist_next(): %s"
 
-#: crypt_gpgme.c:3908
+#: crypt_gpgme.c:3904
 msgid "All matching keys are marked expired/revoked."
 msgstr ""
 "Totes les claus concordants estan marcades com a expirades o revocades."
 
-#: crypt_gpgme.c:3937 mutt_ssl.c:835 mutt_ssl_gnutls.c:712 pgpkey.c:494
+#: crypt_gpgme.c:3933 mutt_ssl.c:835 mutt_ssl_gnutls.c:712 pgpkey.c:494
 #: smime.c:408
 msgid "Exit  "
 msgstr "Ix  "
 
 # Aquest menú no està massa poblat.  -- ivb
-#: crypt_gpgme.c:3939 pgpkey.c:496 smime.c:410
+#: crypt_gpgme.c:3935 pgpkey.c:496 smime.c:410
 msgid "Select  "
 msgstr "Selecciona  "
 
-#: crypt_gpgme.c:3941 pgpkey.c:498
+#: crypt_gpgme.c:3937 pgpkey.c:498
 msgid "Check key  "
 msgstr "Comprova la clau  "
 
 # Darrere va el patró corresponent.  ivb
-#: crypt_gpgme.c:3957
+#: crypt_gpgme.c:3953
 msgid "PGP and S/MIME keys matching"
 msgstr "Claus PGP i S/MIME que concordem amb"
 
 # Darrere va el patró corresponent.  ivb
-#: crypt_gpgme.c:3959
+#: crypt_gpgme.c:3955
 msgid "PGP keys matching"
 msgstr "Claus PGP que concordem amb"
 
 # Darrere va el patró corresponent.  ivb
-#: crypt_gpgme.c:3961
+#: crypt_gpgme.c:3957
 msgid "S/MIME keys matching"
 msgstr "Claus S/MIME que concorden amb"
 
 # Darrere va el patró corresponent.  ivb
-#: crypt_gpgme.c:3963
+#: crypt_gpgme.c:3959
 msgid "keys matching"
 msgstr "Claus que concordem amb"
 
@@ -1660,7 +1660,7 @@ msgstr "Claus que concordem amb"
 #. %1$s is one of the previous four entries.
 #. %2$s is an address.
 #. e.g. "S/MIME keys matching <me@mutt.org>."
-#: crypt_gpgme.c:3970
+#: crypt_gpgme.c:3966
 #, c-format
 msgid "%s <%s>."
 msgstr "%s <%s>."
@@ -1668,12 +1668,12 @@ msgstr "%s <%s>."
 # Nom i àlies?  ivb
 #. L10N:
 #. e.g. 'S/MIME keys matching "Michael Elkins".'
-#: crypt_gpgme.c:3974
+#: crypt_gpgme.c:3970
 #, c-format
 msgid "%s \"%s\"."
 msgstr "%s «%s»."
 
-#: crypt_gpgme.c:4001 pgpkey.c:579
+#: crypt_gpgme.c:3997 pgpkey.c:579
 msgid "This key can't be used: expired/disabled/revoked."
 msgstr ""
 "No es pot emprar aquesta clau: es troba expirada, inhabilitada o revocada."
@@ -1681,58 +1681,58 @@ msgstr ""
 # ivb (2001/12/08)
 # ivb  ABREUJAT!
 # ivb  Aquest ID es troba expirat, inhabilitat o revocat.
-#: crypt_gpgme.c:4014 pgpkey.c:590 smime.c:440
+#: crypt_gpgme.c:4010 pgpkey.c:590 smime.c:440
 msgid "ID is expired/disabled/revoked."
 msgstr "ID expirat/inhabilitat/revocat."
 
 # ivb (2002/02/02)
 # ivb  ABREUJAT! (Hei!  Hui és 2/2/2!)
 # ivb  Aquest ID té una validesa indefinida.
-#: crypt_gpgme.c:4022 pgpkey.c:595 smime.c:443
+#: crypt_gpgme.c:4018 pgpkey.c:595 smime.c:443
 msgid "ID has undefined validity."
 msgstr "L’ID té una validesa indefinida."
 
 # ivb (2001/12/08)
 # ivb  ABREUJAT!
 # ivb  Aquest ID no és vàlid.
-#: crypt_gpgme.c:4025 pgpkey.c:598
+#: crypt_gpgme.c:4021 pgpkey.c:598
 msgid "ID is not valid."
 msgstr "L’ID no és vàlid."
 
 # ivb (2001/12/08)
 # ivb  ABREUJAT!
 # ivb  Aquest ID només és lleugerament vàlid.
-#: crypt_gpgme.c:4028 pgpkey.c:601
+#: crypt_gpgme.c:4024 pgpkey.c:601
 msgid "ID is only marginally valid."
 msgstr "L’ID és lleugerament vàlid."
 
 # ivb (2001/12/08)
 # ivb  Davant d’açò pot anar una de les quatre anteriors.
-#: crypt_gpgme.c:4037 smime.c:450
+#: crypt_gpgme.c:4033 smime.c:450
 #, c-format
 msgid "%s Do you really want to use the key?"
 msgstr "%s  Voleu realment emprar la clau?"
 
-#: crypt_gpgme.c:4095 crypt_gpgme.c:4224 pgpkey.c:806 pgpkey.c:929
+#: crypt_gpgme.c:4091 crypt_gpgme.c:4220 pgpkey.c:806 pgpkey.c:929
 #, c-format
 msgid "Looking for keys matching \"%s\"..."
 msgstr "S’estan cercant les claus que concorden amb «%s»…"
 
-#: crypt_gpgme.c:4375 pgp.c:1227
+#: crypt_gpgme.c:4371 pgp.c:1227
 #, c-format
 msgid "Use keyID = \"%s\" for %s?"
 msgstr "Voleu emprar l’ID de clau «%s» per a %s?"
 
-#: crypt_gpgme.c:4426 pgp.c:1276 smime.c:765 smime.c:865
+#: crypt_gpgme.c:4422 pgp.c:1276 smime.c:765 smime.c:865
 #, c-format
 msgid "Enter keyID for %s: "
 msgstr "Entreu l’ID de clau per a %s: "
 
-#: crypt_gpgme.c:4488 pgpkey.c:695
+#: crypt_gpgme.c:4483 pgpkey.c:695
 msgid "Please enter the key ID: "
 msgstr "Per favor, entreu l’ID de la clau: "
 
-#: crypt_gpgme.c:4500
+#: crypt_gpgme.c:4495
 #, c-format
 msgid "Error exporting key: %s\n"
 msgstr "Error en exportar la clau: %s\n"
@@ -1741,20 +1741,20 @@ msgstr "Error en exportar la clau: %s\n"
 #. MIME description for exported (attached) keys.
 #. You can translate this entry to a non-ASCII string (it will be encoded),
 #. but it may be safer to keep it untranslated.
-#: crypt_gpgme.c:4520
+#: crypt_gpgme.c:4515
 #, c-format
 msgid "PGP Key 0x%s."
 msgstr "Clau PGP 0x%s."
 
-#: crypt_gpgme.c:4563
+#: crypt_gpgme.c:4557
 msgid "GPGME: OpenPGP protocol not available"
 msgstr "GPGME: El protocol OpenPGP no es troba disponible."
 
-#: crypt_gpgme.c:4571
+#: crypt_gpgme.c:4565
 msgid "GPGME: CMS protocol not available"
 msgstr "GPGME: El protocol CMS no es troba disponible."
 
-#: crypt_gpgme.c:4610
+#: crypt_gpgme.c:4604
 msgid "S/MIME (s)ign, sign (a)s, (p)gp, (c)lear, or (o)ppenc mode off? "
 msgstr "S/MIME: (s)igna, si(g)na com a, (p)gp, (c)lar, no (o)portunista? "
 
@@ -1762,11 +1762,11 @@ msgstr "S/MIME: (s)igna, si(g)na com a, (p)gp, (c)lar, no (o)portunista? "
 # La «f» i la «c» originals s’agafen en el mateix cas en el codi.  ivb
 #. L10N: S/MIME options (opportunistic encryption is on)
 #. The 'f' is undocumented. Please DO NOT translate it.
-#: crypt_gpgme.c:4613
+#: crypt_gpgme.c:4607
 msgid "sapfco"
 msgstr "sgpcco"
 
-#: crypt_gpgme.c:4620
+#: crypt_gpgme.c:4614
 msgid "PGP (s)ign, sign (a)s, s/(m)ime, (c)lear, or (o)ppenc mode off? "
 msgstr "PGP: (s)igna, si(g)na com a, s/(m)ime, (c)lar, no (o)portunista? "
 
@@ -1774,12 +1774,12 @@ msgstr "PGP: (s)igna, si(g)na com a, s/(m)ime, (c)lar, no (o)portunista? "
 # La «f» i la «c» originals s’agafen en el mateix cas en el codi.  ivb
 #. L10N: PGP options (opportunistic encryption is on)
 #. The 'f' is undocumented. Please DO NOT translate it.
-#: crypt_gpgme.c:4623
+#: crypt_gpgme.c:4617
 msgid "samfco"
 msgstr "sgmcco"
 
 #. L10N: S/MIME options (opportunistic encryption is off)
-#: crypt_gpgme.c:4636
+#: crypt_gpgme.c:4630
 msgid ""
 "S/MIME (e)ncrypt, (s)ign, sign (a)s, (b)oth, (p)gp, (c)lear, or (o)ppenc "
 "mode? "
@@ -1791,12 +1791,12 @@ msgstr ""
 # La «f» i la «c» originals s’agafen en el mateix cas en el codi.  ivb
 #. L10N: S/MIME options (opportunistic encryption is off)
 #. The 'f' is undocumented. Please DO NOT translate it.
-#: crypt_gpgme.c:4640
+#: crypt_gpgme.c:4634
 msgid "esabpfco"
 msgstr "xsgapcco"
 
 #. L10N: PGP options (opportunistic encryption is off)
-#: crypt_gpgme.c:4646
+#: crypt_gpgme.c:4640
 msgid ""
 "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, s/(m)ime, (c)lear, or (o)ppenc "
 "mode? "
@@ -1808,11 +1808,11 @@ msgstr ""
 # La «f» i la «c» originals s’agafen en el mateix cas en el codi.  ivb
 #. L10N: PGP options (opportunistic encryption is off)
 #. The 'f' is undocumented. Please DO NOT translate it.
-#: crypt_gpgme.c:4650
+#: crypt_gpgme.c:4644
 msgid "esabmfco"
 msgstr "xsgamcco"
 
-#: crypt_gpgme.c:4663
+#: crypt_gpgme.c:4657
 msgid "S/MIME (e)ncrypt, (s)ign, sign (a)s, (b)oth, (p)gp or (c)lear? "
 msgstr "S/MIME: (x)ifra, (s)igna, si(g)na com a, (a)mbdós, (p)gp, (c)lar? "
 
@@ -1820,11 +1820,11 @@ msgstr "S/MIME: (x)ifra, (s)igna, si(g)na com a, (a)mbdós, (p)gp, (c)lar? "
 # La «f» i la «c» originals s’agafen en el mateix cas en el codi.  ivb
 #. L10N: S/MIME options
 #. The 'f' is undocumented. Please DO NOT translate it.
-#: crypt_gpgme.c:4666
+#: crypt_gpgme.c:4660
 msgid "esabpfc"
 msgstr "xsgapcc"
 
-#: crypt_gpgme.c:4673
+#: crypt_gpgme.c:4667
 msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, s/(m)ime or (c)lear? "
 msgstr "PGP: (x)ifra, (s)igna, si(g)na com a, (a)mbdós, s/(m)ime, (c)lar? "
 
@@ -1832,19 +1832,19 @@ msgstr "PGP: (x)ifra, (s)igna, si(g)na com a, (a)mbdós, s/(m)ime, (c)lar? "
 # La «f» i la «c» originals s’agafen en el mateix cas en el codi.  ivb
 #. L10N: PGP options
 #. The 'f' is undocumented. Please DO NOT translate it.
-#: crypt_gpgme.c:4676
+#: crypt_gpgme.c:4670
 msgid "esabmfc"
 msgstr "xsgamcc"
 
-#: crypt_gpgme.c:4701 pgp.c:1760 smime.c:2143 smime.c:2158
+#: crypt_gpgme.c:4695 pgp.c:1760 smime.c:2143 smime.c:2158
 msgid "Sign as: "
 msgstr "Signa com a: "
 
-#: crypt_gpgme.c:4830
+#: crypt_gpgme.c:4824
 msgid "Failed to verify sender"
 msgstr "No s’ha pogut verificar el remitent."
 
-#: crypt_gpgme.c:4833
+#: crypt_gpgme.c:4827
 msgid "Failed to figure out sender"
 msgstr "No s’ha pogut endevinar el remitent."
 
@@ -1913,7 +1913,7 @@ msgstr "S’escriuran els canvis a la carpeta en abandonar‐la."
 msgid "Changes to folder will not be written."
 msgstr "No s’escriuran els canvis a la carpeta."
 
-#: curs_main.c:419 mx.c:553 mx.c:645
+#: curs_main.c:419 mx.c:553 mx.c:647
 #, c-format
 msgid "%s is not a mailbox."
 msgstr "«%s» no és una bústia."
@@ -3169,59 +3169,59 @@ msgstr "Les macros es troben inhabilitades en aquest moment."
 msgid "Macro loop detected."
 msgstr "S’ha detectat un bucle entre macros."
 
-#: keymap.c:844 keymap.c:852
+#: keymap.c:845 keymap.c:880
 msgid "Key is not bound."
 msgstr "La tecla no està vinculada."
 
-#: keymap.c:856
+#: keymap.c:885
 #, c-format
 msgid "Key is not bound.  Press '%s' for help."
 msgstr "La tecla no està vinculada.  Premeu «%s» per a obtenir ajuda."
 
-#: keymap.c:867
+#: keymap.c:896
 msgid "push: too many arguments"
 msgstr "push: Sobren arguments."
 
-#: keymap.c:898
+#: keymap.c:927
 #, c-format
 msgid "%s: no such menu"
 msgstr "%s: El menú no existeix."
 
-#: keymap.c:913
+#: keymap.c:942
 msgid "null key sequence"
 msgstr "La seqüència de tecles és nul·la."
 
-#: keymap.c:997
+#: keymap.c:1026
 msgid "bind: too many arguments"
 msgstr "bind: Sobren arguments."
 
-#: keymap.c:1019
+#: keymap.c:1048
 #, c-format
 msgid "%s: no such function in map"
 msgstr "%s: La funció no es troba al mapa."
 
-#: keymap.c:1043
+#: keymap.c:1072
 msgid "macro: empty key sequence"
 msgstr "macro: La seqüència de tecles és buida."
 
-#: keymap.c:1054
+#: keymap.c:1083
 msgid "macro: too many arguments"
 msgstr "macro: Sobren arguments."
 
-#: keymap.c:1090
+#: keymap.c:1119
 msgid "exec: no arguments"
 msgstr "exec: Manquen arguments."
 
-#: keymap.c:1109
+#: keymap.c:1138
 #, c-format
 msgid "%s: no such function"
 msgstr "%s: La funció no existeix."
 
-#: keymap.c:1130
+#: keymap.c:1159
 msgid "Enter keys (^G to abort): "
 msgstr "Premeu les tecles («^G» avorta): "
 
-#: keymap.c:1136
+#: keymap.c:1165
 #, c-format
 msgid "Char = %s, Octal = %o, Decimal = %d"
 msgstr "Caràcter = %s, Octal = %o, Decimal = %d"

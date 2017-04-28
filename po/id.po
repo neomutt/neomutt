@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neomutt-20161104\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
-"POT-Creation-Date: 2017-04-21 13:02+0100\n"
+"POT-Creation-Date: 2017-04-28 12:34+0100\n"
 "PO-Revision-Date: 2007-11-07 10:39+1100\n"
 "Last-Translator: Ronny Haryanto <ronny@haryan.to>\n"
 "Language-Team: Indonesian <web@linux.or.id>\n"
@@ -51,7 +51,7 @@ msgid "Select"
 msgstr "Pilih"
 
 #: addrbook.c:33 browser.c:52 browser.c:64 compose.c:105 compose.c:117
-#: crypt_gpgme.c:3943 curs_main.c:781 curs_main.c:794 mutt_ssl.c:837
+#: crypt_gpgme.c:3939 curs_main.c:781 curs_main.c:794 mutt_ssl.c:837
 #: mutt_ssl_gnutls.c:714 pager.c:2022 pgpkey.c:500 postpone.c:39 query.c:49
 #: recvattach.c:51 smime.c:412
 msgid "Help"
@@ -412,7 +412,7 @@ msgstr "mono: parameternya kurang"
 msgid "%s: no such attribute"
 msgstr "%s: tidak ada atribut begitu"
 
-#: color.c:774 hook.c:69 hook.c:81 init.c:2160 init.c:2235 keymap.c:920
+#: color.c:774 hook.c:69 hook.c:81 init.c:2160 init.c:2235 keymap.c:949
 msgid "too few arguments"
 msgstr "parameternya kurang"
 
@@ -1059,7 +1059,7 @@ msgstr "error saat mengaktifkan protokol CMS: %s\n"
 msgid "error creating gpgme data object: %s\n"
 msgstr "error saat membuat objek data gpgme: %s\n"
 
-#: crypt_gpgme.c:478 crypt_gpgme.c:496 crypt_gpgme.c:1526 crypt_gpgme.c:2235
+#: crypt_gpgme.c:478 crypt_gpgme.c:496 crypt_gpgme.c:1522 crypt_gpgme.c:2231
 #, c-format
 msgid "error allocating data object: %s\n"
 msgstr "error saat mengalokasikan objek data: %s\n"
@@ -1078,7 +1078,7 @@ msgstr ""
 msgid "error reading data object: %s\n"
 msgstr "error saat membaca objek data: %s\n"
 
-#: crypt_gpgme.c:561 crypt_gpgme.c:3589 pgpkey.c:537 pgpkey.c:711
+#: crypt_gpgme.c:561 crypt_gpgme.c:3585 pgpkey.c:537 pgpkey.c:711
 msgid "Can't create temporary file"
 msgstr "Tidak bisa membuat file sementara"
 
@@ -1160,11 +1160,11 @@ msgstr "Salah satu persyaratan kebijaksanaan tidak terpenuhi\n"
 msgid "A system error occurred"
 msgstr "Telah terjadi suatu kesalahan di sistem"
 
-#: crypt_gpgme.c:1223
+#: crypt_gpgme.c:1221
 msgid "WARNING: PKA entry does not match signer's address: "
 msgstr "PERHATIAN: Masukan PKA tidak cocok dengan alamat penandatangan: "
 
-#: crypt_gpgme.c:1231
+#: crypt_gpgme.c:1229
 msgid "PKA verified signer's address is: "
 msgstr "Alamat penandatangan PKA yang sudah diverifikasi adalah: "
 
@@ -1172,11 +1172,11 @@ msgstr "Alamat penandatangan PKA yang sudah diverifikasi adalah: "
 #. Fill dots to make the DOTFILL entries the same length.
 #. In English, msgid "Fingerprint: " is the longest entry for this menu.
 #. Your language may vary.
-#: crypt_gpgme.c:1248 crypt_gpgme.c:3431
+#: crypt_gpgme.c:1244 crypt_gpgme.c:3427
 msgid "Fingerprint: "
 msgstr "Cap jari: "
 
-#: crypt_gpgme.c:1309
+#: crypt_gpgme.c:1305
 msgid ""
 "WARNING: We have NO indication whether the key belongs to the person named "
 "as shown above\n"
@@ -1184,13 +1184,13 @@ msgstr ""
 "PERHATIAN: TIDAK ada indikasi bahwa kunci tersebut dimiliki oleh orang yang "
 "namanya tertera di atas\n"
 
-#: crypt_gpgme.c:1316
+#: crypt_gpgme.c:1312
 msgid "WARNING: The key does NOT BELONG to the person named as shown above\n"
 msgstr ""
 "PERHATIAN: Kunci tersebut TIDAK dimiliki oleh oleh orang yang namanya "
 "tertera di atas\n"
 
-#: crypt_gpgme.c:1320
+#: crypt_gpgme.c:1316
 msgid ""
 "WARNING: It is NOT certain that the key belongs to the person named as shown "
 "above\n"
@@ -1198,35 +1198,35 @@ msgstr ""
 "PERHATIAN: TIDAK bisa dipastikan bahwa kunci tersebut dimiliki oleh orang "
 "yang namanya tertera di atas\n"
 
-#: crypt_gpgme.c:1350 crypt_gpgme.c:1355
+#: crypt_gpgme.c:1346 crypt_gpgme.c:1351
 msgid "aka: "
 msgstr ""
 
-#: crypt_gpgme.c:1365
+#: crypt_gpgme.c:1361
 msgid "KeyID "
 msgstr ""
 
-#: crypt_gpgme.c:1374 crypt_gpgme.c:1379
+#: crypt_gpgme.c:1370 crypt_gpgme.c:1375
 #, fuzzy
 msgid "created: "
 msgstr "Buat %s?"
 
-#: crypt_gpgme.c:1451
+#: crypt_gpgme.c:1447
 #, fuzzy, c-format
 msgid "Error getting key information for KeyID %s: %s\n"
 msgstr "Error saat mengambil informasi tentang kunci: "
 
-#: crypt_gpgme.c:1458 crypt_gpgme.c:1473
+#: crypt_gpgme.c:1454 crypt_gpgme.c:1469
 #, fuzzy
 msgid "Good signature from:"
 msgstr "Tandatangan valid dari: "
 
-#: crypt_gpgme.c:1465
+#: crypt_gpgme.c:1461
 #, fuzzy
 msgid "*BAD* signature from:"
 msgstr "Tandatangan valid dari: "
 
-#: crypt_gpgme.c:1481
+#: crypt_gpgme.c:1477
 #, fuzzy
 msgid "Problem signature from:"
 msgstr "Tandatangan valid dari: "
@@ -1234,30 +1234,30 @@ msgstr "Tandatangan valid dari: "
 #. L10N:
 #. This is trying to match the width of the
 #. "Problem signature from:" translation just above.
-#: crypt_gpgme.c:1488
+#: crypt_gpgme.c:1484
 #, fuzzy
 msgid "               expires: "
 msgstr "                alias: "
 
-#: crypt_gpgme.c:1534 crypt_gpgme.c:1751 crypt_gpgme.c:2451
+#: crypt_gpgme.c:1530 crypt_gpgme.c:1747 crypt_gpgme.c:2447
 msgid "[-- Begin signature information --]\n"
 msgstr "[-- Awal informasi tandatangan --]\n"
 
-#: crypt_gpgme.c:1545
+#: crypt_gpgme.c:1541
 #, c-format
 msgid "Error: verification failed: %s\n"
 msgstr "Error: verifikasi gagal: %s\n"
 
-#: crypt_gpgme.c:1597
+#: crypt_gpgme.c:1593
 #, c-format
 msgid "*** Begin Notation (signature by: %s) ***\n"
 msgstr "*** Awal Notasi (tandatangan oleh: %s) ***\n"
 
-#: crypt_gpgme.c:1616
+#: crypt_gpgme.c:1612
 msgid "*** End Notation ***\n"
 msgstr "*** Akhir Notasi ***\n"
 
-#: crypt_gpgme.c:1624 crypt_gpgme.c:1765 crypt_gpgme.c:2463
+#: crypt_gpgme.c:1620 crypt_gpgme.c:1761 crypt_gpgme.c:2459
 msgid ""
 "[-- End signature information --]\n"
 "\n"
@@ -1265,7 +1265,7 @@ msgstr ""
 "[-- Akhir informasi tandatangan --]\n"
 "\n"
 
-#: crypt_gpgme.c:1720
+#: crypt_gpgme.c:1716
 #, c-format
 msgid ""
 "[-- Error: decryption failed: %s --]\n"
@@ -1274,21 +1274,21 @@ msgstr ""
 "[-- Error: dekripsi gagal: %s --]\n"
 "\n"
 
-#: crypt_gpgme.c:2242
+#: crypt_gpgme.c:2238
 #, fuzzy
 msgid "Error extracting key data!\n"
 msgstr "Error saat mengambil informasi tentang kunci: "
 
-#: crypt_gpgme.c:2428
+#: crypt_gpgme.c:2424
 #, c-format
 msgid "Error: decryption/verification failed: %s\n"
 msgstr "Error: dekripsi/verifikasi gagal: %s\n"
 
-#: crypt_gpgme.c:2472
+#: crypt_gpgme.c:2468
 msgid "Error: copy data failed\n"
 msgstr "Error: penyalinan data gagal\n"
 
-#: crypt_gpgme.c:2493 pgp.c:504
+#: crypt_gpgme.c:2489 pgp.c:504
 msgid ""
 "[-- BEGIN PGP MESSAGE --]\n"
 "\n"
@@ -1296,11 +1296,11 @@ msgstr ""
 "[-- AWAL SURAT PGP --]\n"
 "\n"
 
-#: crypt_gpgme.c:2495 pgp.c:506
+#: crypt_gpgme.c:2491 pgp.c:506
 msgid "[-- BEGIN PGP PUBLIC KEY BLOCK --]\n"
 msgstr "[-- AWAL PGP PUBLIC KEY BLOCK --]\n"
 
-#: crypt_gpgme.c:2497 pgp.c:508
+#: crypt_gpgme.c:2493 pgp.c:508
 msgid ""
 "[-- BEGIN PGP SIGNED MESSAGE --]\n"
 "\n"
@@ -1308,19 +1308,19 @@ msgstr ""
 "[-- AWAL SURAT DG TANDATANGAN PGP --]\n"
 "\n"
 
-#: crypt_gpgme.c:2523 pgp.c:551
+#: crypt_gpgme.c:2519 pgp.c:551
 msgid "[-- END PGP MESSAGE --]\n"
 msgstr "[-- AKHIR PESAN PGP --]\n"
 
-#: crypt_gpgme.c:2525 pgp.c:558
+#: crypt_gpgme.c:2521 pgp.c:558
 msgid "[-- END PGP PUBLIC KEY BLOCK --]\n"
 msgstr "[-- AKHIR PGP PUBLIC KEY BLOCK --]\n"
 
-#: crypt_gpgme.c:2527 pgp.c:560
+#: crypt_gpgme.c:2523 pgp.c:560
 msgid "[-- END PGP SIGNED MESSAGE --]\n"
 msgstr "[-- AKHIR PESAN DG TANDATANGAN PGP --]\n"
 
-#: crypt_gpgme.c:2550 pgp.c:594
+#: crypt_gpgme.c:2546 pgp.c:594
 msgid ""
 "[-- Error: could not find beginning of PGP message! --]\n"
 "\n"
@@ -1328,11 +1328,11 @@ msgstr ""
 "[-- Error: tidak tahu dimana surat PGP dimulai! --]\n"
 "\n"
 
-#: crypt_gpgme.c:2582 crypt_gpgme.c:2657 pgp.c:1013
+#: crypt_gpgme.c:2578 crypt_gpgme.c:2653 pgp.c:1013
 msgid "[-- Error: could not create temporary file! --]\n"
 msgstr "[-- Error: tidak bisa membuat file sementara! --]\n"
 
-#: crypt_gpgme.c:2595
+#: crypt_gpgme.c:2591
 msgid ""
 "[-- The following data is PGP/MIME signed and encrypted --]\n"
 "\n"
@@ -1340,7 +1340,7 @@ msgstr ""
 "[-- Data berikut ditandatangani dan dienkripsi dg PGP/MIME --]\n"
 "\n"
 
-#: crypt_gpgme.c:2597 pgp.c:1024
+#: crypt_gpgme.c:2593 pgp.c:1024
 msgid ""
 "[-- The following data is PGP/MIME encrypted --]\n"
 "\n"
@@ -1348,23 +1348,23 @@ msgstr ""
 "[-- Data berikut dienkripsi dg PGP/MIME --]\n"
 "\n"
 
-#: crypt_gpgme.c:2619
+#: crypt_gpgme.c:2615
 msgid "[-- End of PGP/MIME signed and encrypted data --]\n"
 msgstr "[-- Akhir data yang ditandatangani dan dienkripsi dg PGP/MIME --]\n"
 
-#: crypt_gpgme.c:2620 pgp.c:1044
+#: crypt_gpgme.c:2616 pgp.c:1044
 msgid "[-- End of PGP/MIME encrypted data --]\n"
 msgstr "[-- Akhir data yang dienkripsi dg PGP/MIME --]\n"
 
-#: crypt_gpgme.c:2625 pgp.c:555 pgp.c:1049
+#: crypt_gpgme.c:2621 pgp.c:555 pgp.c:1049
 msgid "PGP message successfully decrypted."
 msgstr "Surat PGP berhasil didekrip."
 
-#: crypt_gpgme.c:2629 pgp.c:490 pgp.c:553 pgp.c:1053
+#: crypt_gpgme.c:2625 pgp.c:490 pgp.c:553 pgp.c:1053
 msgid "Could not decrypt PGP message"
 msgstr "Tidak bisa mendekripsi surat PGP"
 
-#: crypt_gpgme.c:2670
+#: crypt_gpgme.c:2666
 msgid ""
 "[-- The following data is S/MIME signed --]\n"
 "\n"
@@ -1372,7 +1372,7 @@ msgstr ""
 "[-- Data berikut ditandatangani dg S/MIME --]\n"
 "\n"
 
-#: crypt_gpgme.c:2671
+#: crypt_gpgme.c:2667
 msgid ""
 "[-- The following data is S/MIME encrypted --]\n"
 "\n"
@@ -1380,174 +1380,174 @@ msgstr ""
 "[-- Data berikut dienkripsi dg S/MIME --]\n"
 "\n"
 
-#: crypt_gpgme.c:2700
+#: crypt_gpgme.c:2696
 msgid "[-- End of S/MIME signed data --]\n"
 msgstr "[-- Akhir data yg ditandatangani dg S/MIME --]\n"
 
-#: crypt_gpgme.c:2701
+#: crypt_gpgme.c:2697
 msgid "[-- End of S/MIME encrypted data --]\n"
 msgstr "[-- Akhir data yang dienkripsi dg S/MIME --]\n"
 
-#: crypt_gpgme.c:3268
+#: crypt_gpgme.c:3264
 msgid "[Can't display this user ID (unknown encoding)]"
 msgstr "[Tidak bisa menampilkan user ID ini (encoding tidak diketahui)]"
 
-#: crypt_gpgme.c:3270
+#: crypt_gpgme.c:3266
 msgid "[Can't display this user ID (invalid encoding)]"
 msgstr "[Tidak bisa menampilkan user ID ini (encoding tidak valid)]"
 
-#: crypt_gpgme.c:3275
+#: crypt_gpgme.c:3271
 msgid "[Can't display this user ID (invalid DN)]"
 msgstr "[Tidak bisa menampilkan user ID ini (DN tidak valid)]"
 
 #. L10N: DOTFILL
-#: crypt_gpgme.c:3349
+#: crypt_gpgme.c:3345
 msgid " aka ......: "
 msgstr " alias.....: "
 
-#: crypt_gpgme.c:3349
+#: crypt_gpgme.c:3345
 msgid "Name ......: "
 msgstr "Nama ......: "
 
-#: crypt_gpgme.c:3352 crypt_gpgme.c:3501
+#: crypt_gpgme.c:3348 crypt_gpgme.c:3497
 msgid "[Invalid]"
 msgstr "[Tidak valid]"
 
 #. L10N: DOTFILL
-#: crypt_gpgme.c:3373 crypt_gpgme.c:3526
+#: crypt_gpgme.c:3369 crypt_gpgme.c:3522
 #, c-format
 msgid "Valid From : %s\n"
 msgstr "Berlaku Dari..: %s\n"
 
 #. L10N: DOTFILL
-#: crypt_gpgme.c:3387 crypt_gpgme.c:3540
+#: crypt_gpgme.c:3383 crypt_gpgme.c:3536
 #, c-format
 msgid "Valid To ..: %s\n"
 msgstr "Berlaku Sampai: %s\n"
 
 #. L10N: DOTFILL
-#: crypt_gpgme.c:3401 crypt_gpgme.c:3548
+#: crypt_gpgme.c:3397 crypt_gpgme.c:3544
 #, c-format
 msgid "Key Type ..: %s, %lu bit %s\n"
 msgstr "Jenis Kunci: %s, %lu bit %s\n"
 
 #. L10N: DOTFILL
-#: crypt_gpgme.c:3404 crypt_gpgme.c:3551
+#: crypt_gpgme.c:3400 crypt_gpgme.c:3547
 #, c-format
 msgid "Key Usage .: "
 msgstr "Penggunaan Kunci: "
 
-#: crypt_gpgme.c:3409 crypt_gpgme.c:3556
+#: crypt_gpgme.c:3405 crypt_gpgme.c:3552
 msgid "encryption"
 msgstr "enkripsi"
 
-#: crypt_gpgme.c:3410 crypt_gpgme.c:3415 crypt_gpgme.c:3420 crypt_gpgme.c:3557
-#: crypt_gpgme.c:3562 crypt_gpgme.c:3567
+#: crypt_gpgme.c:3406 crypt_gpgme.c:3411 crypt_gpgme.c:3416 crypt_gpgme.c:3553
+#: crypt_gpgme.c:3558 crypt_gpgme.c:3563
 msgid ", "
 msgstr ", "
 
-#: crypt_gpgme.c:3414 crypt_gpgme.c:3561
+#: crypt_gpgme.c:3410 crypt_gpgme.c:3557
 msgid "signing"
 msgstr "menandatangani"
 
-#: crypt_gpgme.c:3419 crypt_gpgme.c:3566
+#: crypt_gpgme.c:3415 crypt_gpgme.c:3562
 msgid "certification"
 msgstr "sertifikasi"
 
 #. L10N: DOTFILL
-#: crypt_gpgme.c:3464
+#: crypt_gpgme.c:3460
 #, c-format
 msgid "Serial-No .: 0x%s\n"
 msgstr "Nomer Seri .: 0x%s\n"
 
 #. L10N: DOTFILL
-#: crypt_gpgme.c:3473
+#: crypt_gpgme.c:3469
 #, c-format
 msgid "Issued By .: "
 msgstr "Dikeluarkan oleh: "
 
 #. L10N: DOTFILL
-#: crypt_gpgme.c:3492
+#: crypt_gpgme.c:3488
 #, c-format
 msgid "Subkey ....: 0x%s"
 msgstr "Sub kunci..: 0x%s"
 
-#: crypt_gpgme.c:3496
+#: crypt_gpgme.c:3492
 msgid "[Revoked]"
 msgstr "[Dicabut]"
 
-#: crypt_gpgme.c:3506
+#: crypt_gpgme.c:3502
 msgid "[Expired]"
 msgstr "[Kadaluwarsa]"
 
-#: crypt_gpgme.c:3511
+#: crypt_gpgme.c:3507
 msgid "[Disabled]"
 msgstr "[Tidak aktif]"
 
-#: crypt_gpgme.c:3592
+#: crypt_gpgme.c:3588
 msgid "Collecting data..."
 msgstr "Mengumpulkan data ..."
 
-#: crypt_gpgme.c:3617
+#: crypt_gpgme.c:3613
 #, c-format
 msgid "Error finding issuer key: %s\n"
 msgstr "Error saat mencari kunci yg mengeluarkan: %s\n"
 
-#: crypt_gpgme.c:3626
+#: crypt_gpgme.c:3622
 #, fuzzy
 msgid "Error: certification chain too long - stopping here\n"
 msgstr "Error: rantai sertifikasi terlalu panjang - berhenti di sini\n"
 
-#: crypt_gpgme.c:3636 pgpkey.c:559
+#: crypt_gpgme.c:3632 pgpkey.c:559
 #, c-format
 msgid "Key ID: 0x%s"
 msgstr "Identifikasi kunci: 0x%s"
 
-#: crypt_gpgme.c:3719
+#: crypt_gpgme.c:3715
 #, c-format
 msgid "gpgme_new failed: %s"
 msgstr "gpgme_new gagal: %s"
 
-#: crypt_gpgme.c:3758 crypt_gpgme.c:3809
+#: crypt_gpgme.c:3754 crypt_gpgme.c:3805
 #, c-format
 msgid "gpgme_op_keylist_start failed: %s"
 msgstr "gpgme_op_keylist_start gagal: %s"
 
-#: crypt_gpgme.c:3797 crypt_gpgme.c:3839
+#: crypt_gpgme.c:3793 crypt_gpgme.c:3835
 #, c-format
 msgid "gpgme_op_keylist_next failed: %s"
 msgstr "gpgme_op_keylist_next gagal: %s"
 
-#: crypt_gpgme.c:3908
+#: crypt_gpgme.c:3904
 msgid "All matching keys are marked expired/revoked."
 msgstr "Semua kunci yang cocok ditandai kadaluwarsa/dicabut."
 
-#: crypt_gpgme.c:3937 mutt_ssl.c:835 mutt_ssl_gnutls.c:712 pgpkey.c:494
+#: crypt_gpgme.c:3933 mutt_ssl.c:835 mutt_ssl_gnutls.c:712 pgpkey.c:494
 #: smime.c:408
 msgid "Exit  "
 msgstr "Keluar  "
 
-#: crypt_gpgme.c:3939 pgpkey.c:496 smime.c:410
+#: crypt_gpgme.c:3935 pgpkey.c:496 smime.c:410
 msgid "Select  "
 msgstr "Pilih  "
 
-#: crypt_gpgme.c:3941 pgpkey.c:498
+#: crypt_gpgme.c:3937 pgpkey.c:498
 msgid "Check key  "
 msgstr "Cek key  "
 
-#: crypt_gpgme.c:3957
+#: crypt_gpgme.c:3953
 msgid "PGP and S/MIME keys matching"
 msgstr "Kunci-kunci PGP dan S/MIME cocok"
 
-#: crypt_gpgme.c:3959
+#: crypt_gpgme.c:3955
 msgid "PGP keys matching"
 msgstr "Kunci-kunci PGP cocok"
 
-#: crypt_gpgme.c:3961
+#: crypt_gpgme.c:3957
 msgid "S/MIME keys matching"
 msgstr "Kunci-kunci S/MIME cocok"
 
-#: crypt_gpgme.c:3963
+#: crypt_gpgme.c:3959
 msgid "keys matching"
 msgstr "kunci-kunci cocok"
 
@@ -1555,63 +1555,63 @@ msgstr "kunci-kunci cocok"
 #. %1$s is one of the previous four entries.
 #. %2$s is an address.
 #. e.g. "S/MIME keys matching <me@mutt.org>."
-#: crypt_gpgme.c:3970
+#: crypt_gpgme.c:3966
 #, c-format
 msgid "%s <%s>."
 msgstr "%s <%s>."
 
 #. L10N:
 #. e.g. 'S/MIME keys matching "Michael Elkins".'
-#: crypt_gpgme.c:3974
+#: crypt_gpgme.c:3970
 #, c-format
 msgid "%s \"%s\"."
 msgstr "%s \"%s\"."
 
-#: crypt_gpgme.c:4001 pgpkey.c:579
+#: crypt_gpgme.c:3997 pgpkey.c:579
 msgid "This key can't be used: expired/disabled/revoked."
 msgstr "Kunci ini tidak dapat digunakan: kadaluwarsa/disabled/dicabut."
 
-#: crypt_gpgme.c:4014 pgpkey.c:590 smime.c:440
+#: crypt_gpgme.c:4010 pgpkey.c:590 smime.c:440
 msgid "ID is expired/disabled/revoked."
 msgstr "ID telah kadaluwarsa/disabled/dicabut."
 
-#: crypt_gpgme.c:4022 pgpkey.c:595 smime.c:443
+#: crypt_gpgme.c:4018 pgpkey.c:595 smime.c:443
 msgid "ID has undefined validity."
 msgstr "Validitas ID tidak terdifinisikan."
 
-#: crypt_gpgme.c:4025 pgpkey.c:598
+#: crypt_gpgme.c:4021 pgpkey.c:598
 msgid "ID is not valid."
 msgstr "ID tidak valid."
 
-#: crypt_gpgme.c:4028 pgpkey.c:601
+#: crypt_gpgme.c:4024 pgpkey.c:601
 msgid "ID is only marginally valid."
 msgstr "ID hanya valid secara marginal."
 
-#: crypt_gpgme.c:4037 smime.c:450
+#: crypt_gpgme.c:4033 smime.c:450
 #, c-format
 msgid "%s Do you really want to use the key?"
 msgstr "%s Anda yakin mau menggunakan kunci tsb?"
 
-#: crypt_gpgme.c:4095 crypt_gpgme.c:4224 pgpkey.c:806 pgpkey.c:929
+#: crypt_gpgme.c:4091 crypt_gpgme.c:4220 pgpkey.c:806 pgpkey.c:929
 #, c-format
 msgid "Looking for keys matching \"%s\"..."
 msgstr "Mencari kunci yg cocok dengan \"%s\"..."
 
-#: crypt_gpgme.c:4375 pgp.c:1227
+#: crypt_gpgme.c:4371 pgp.c:1227
 #, c-format
 msgid "Use keyID = \"%s\" for %s?"
 msgstr "Gunakan keyID = '%s' untuk %s?"
 
-#: crypt_gpgme.c:4426 pgp.c:1276 smime.c:765 smime.c:865
+#: crypt_gpgme.c:4422 pgp.c:1276 smime.c:765 smime.c:865
 #, c-format
 msgid "Enter keyID for %s: "
 msgstr "Masukkan keyID untuk %s: "
 
-#: crypt_gpgme.c:4488 pgpkey.c:695
+#: crypt_gpgme.c:4483 pgpkey.c:695
 msgid "Please enter the key ID: "
 msgstr "Masukkan key ID: "
 
-#: crypt_gpgme.c:4500
+#: crypt_gpgme.c:4495
 #, fuzzy, c-format
 msgid "Error exporting key: %s\n"
 msgstr "Error saat mengambil informasi tentang kunci: "
@@ -1620,20 +1620,20 @@ msgstr "Error saat mengambil informasi tentang kunci: "
 #. MIME description for exported (attached) keys.
 #. You can translate this entry to a non-ASCII string (it will be encoded),
 #. but it may be safer to keep it untranslated.
-#: crypt_gpgme.c:4520
+#: crypt_gpgme.c:4515
 #, fuzzy, c-format
 msgid "PGP Key 0x%s."
 msgstr "Kunci PGP %s."
 
-#: crypt_gpgme.c:4563
+#: crypt_gpgme.c:4557
 msgid "GPGME: OpenPGP protocol not available"
 msgstr ""
 
-#: crypt_gpgme.c:4571
+#: crypt_gpgme.c:4565
 msgid "GPGME: CMS protocol not available"
 msgstr ""
 
-#: crypt_gpgme.c:4610
+#: crypt_gpgme.c:4604
 #, fuzzy
 msgid "S/MIME (s)ign, sign (a)s, (p)gp, (c)lear, or (o)ppenc mode off? "
 msgstr ""
@@ -1642,11 +1642,11 @@ msgstr ""
 
 #. L10N: S/MIME options (opportunistic encryption is on)
 #. The 'f' is undocumented. Please DO NOT translate it.
-#: crypt_gpgme.c:4613
+#: crypt_gpgme.c:4607
 msgid "sapfco"
 msgstr ""
 
-#: crypt_gpgme.c:4620
+#: crypt_gpgme.c:4614
 #, fuzzy
 msgid "PGP (s)ign, sign (a)s, s/(m)ime, (c)lear, or (o)ppenc mode off? "
 msgstr ""
@@ -1655,12 +1655,12 @@ msgstr ""
 
 #. L10N: PGP options (opportunistic encryption is on)
 #. The 'f' is undocumented. Please DO NOT translate it.
-#: crypt_gpgme.c:4623
+#: crypt_gpgme.c:4617
 msgid "samfco"
 msgstr ""
 
 #. L10N: S/MIME options (opportunistic encryption is off)
-#: crypt_gpgme.c:4636
+#: crypt_gpgme.c:4630
 #, fuzzy
 msgid ""
 "S/MIME (e)ncrypt, (s)ign, sign (a)s, (b)oth, (p)gp, (c)lear, or (o)ppenc "
@@ -1671,13 +1671,13 @@ msgstr ""
 
 #. L10N: S/MIME options (opportunistic encryption is off)
 #. The 'f' is undocumented. Please DO NOT translate it.
-#: crypt_gpgme.c:4640
+#: crypt_gpgme.c:4634
 #, fuzzy
 msgid "esabpfco"
 msgstr "etsdplb"
 
 #. L10N: PGP options (opportunistic encryption is off)
-#: crypt_gpgme.c:4646
+#: crypt_gpgme.c:4640
 #, fuzzy
 msgid ""
 "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, s/(m)ime, (c)lear, or (o)ppenc "
@@ -1688,12 +1688,12 @@ msgstr ""
 
 #. L10N: PGP options (opportunistic encryption is off)
 #. The 'f' is undocumented. Please DO NOT translate it.
-#: crypt_gpgme.c:4650
+#: crypt_gpgme.c:4644
 #, fuzzy
 msgid "esabmfco"
 msgstr "etsdmlb"
 
-#: crypt_gpgme.c:4663
+#: crypt_gpgme.c:4657
 #, fuzzy
 msgid "S/MIME (e)ncrypt, (s)ign, sign (a)s, (b)oth, (p)gp or (c)lear? "
 msgstr ""
@@ -1702,11 +1702,11 @@ msgstr ""
 
 #. L10N: S/MIME options
 #. The 'f' is undocumented. Please DO NOT translate it.
-#: crypt_gpgme.c:4666
+#: crypt_gpgme.c:4660
 msgid "esabpfc"
 msgstr "etsdplb"
 
-#: crypt_gpgme.c:4673
+#: crypt_gpgme.c:4667
 #, fuzzy
 msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, s/(m)ime or (c)lear? "
 msgstr ""
@@ -1715,19 +1715,19 @@ msgstr ""
 
 #. L10N: PGP options
 #. The 'f' is undocumented. Please DO NOT translate it.
-#: crypt_gpgme.c:4676
+#: crypt_gpgme.c:4670
 msgid "esabmfc"
 msgstr "etsdmlb"
 
-#: crypt_gpgme.c:4701 pgp.c:1760 smime.c:2143 smime.c:2158
+#: crypt_gpgme.c:4695 pgp.c:1760 smime.c:2143 smime.c:2158
 msgid "Sign as: "
 msgstr "Tandatangani sebagai: "
 
-#: crypt_gpgme.c:4830
+#: crypt_gpgme.c:4824
 msgid "Failed to verify sender"
 msgstr "Gagal memverifikasi pengirim"
 
-#: crypt_gpgme.c:4833
+#: crypt_gpgme.c:4827
 msgid "Failed to figure out sender"
 msgstr "Gagal menentukan pengirim"
 
@@ -1793,7 +1793,7 @@ msgstr "Perubahan ke folder akan dilakukan saat keluar dari folder."
 msgid "Changes to folder will not be written."
 msgstr "Perubahan ke folder tidak akan dilakukan."
 
-#: curs_main.c:419 mx.c:553 mx.c:645
+#: curs_main.c:419 mx.c:553 mx.c:647
 #, c-format
 msgid "%s is not a mailbox."
 msgstr "%s bukan kotak surat."
@@ -3011,59 +3011,59 @@ msgstr ""
 msgid "Macro loop detected."
 msgstr "Loop macro terdeteksi."
 
-#: keymap.c:844 keymap.c:852
+#: keymap.c:845 keymap.c:880
 msgid "Key is not bound."
 msgstr "Tombol itu tidak ditentukan untuk apa."
 
-#: keymap.c:856
+#: keymap.c:885
 #, c-format
 msgid "Key is not bound.  Press '%s' for help."
 msgstr "Tombol itu tidak ditentukan untuk apa. Tekan '%s' utk bantuan."
 
-#: keymap.c:867
+#: keymap.c:896
 msgid "push: too many arguments"
 msgstr "push: parameter terlalu banyak"
 
-#: keymap.c:898
+#: keymap.c:927
 #, c-format
 msgid "%s: no such menu"
 msgstr "%s: tidak ada menu begitu"
 
-#: keymap.c:913
+#: keymap.c:942
 msgid "null key sequence"
 msgstr "urutan tombol kosong"
 
-#: keymap.c:997
+#: keymap.c:1026
 msgid "bind: too many arguments"
 msgstr "bind: parameter terlalu banyak"
 
-#: keymap.c:1019
+#: keymap.c:1048
 #, c-format
 msgid "%s: no such function in map"
 msgstr "%s: tidak ada fungsi begitu di map"
 
-#: keymap.c:1043
+#: keymap.c:1072
 msgid "macro: empty key sequence"
 msgstr "macro: urutan tombol kosong"
 
-#: keymap.c:1054
+#: keymap.c:1083
 msgid "macro: too many arguments"
 msgstr "macro: parameter terlalu banyak"
 
-#: keymap.c:1090
+#: keymap.c:1119
 msgid "exec: no arguments"
 msgstr "exec: tidak ada parameter"
 
-#: keymap.c:1109
+#: keymap.c:1138
 #, c-format
 msgid "%s: no such function"
 msgstr "%s: tidak ada fungsi begitu"
 
-#: keymap.c:1130
+#: keymap.c:1159
 msgid "Enter keys (^G to abort): "
 msgstr "Masukkan kunci-kunci (^G utk batal): "
 
-#: keymap.c:1136
+#: keymap.c:1165
 #, c-format
 msgid "Char = %s, Octal = %o, Decimal = %d"
 msgstr "Kar = %s, Oktal = %o, Desimal = %d"

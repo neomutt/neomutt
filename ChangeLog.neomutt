@@ -1,3 +1,12 @@
+2017-04-28  Richard Russon  <rich@flatcap.org>
+* Bug Fixes
+  - Fix and simplify handling of GPGME in configure.ac (@gahr)
+* Docs
+  - Fix typo in README.neomutt (@l2dy)
+* Upstream
+  - Fix km_error_key() infinite loop and unget buffer pollution
+  - Fix error message when opening a mailbox with no read permission
+
 2017-04-21  Richard Russon  <rich@flatcap.org>
 * Features
   - add lua scripting
