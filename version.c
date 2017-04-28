@@ -282,8 +282,6 @@ static struct compile_options comp_opts[] = {
   { "status_color", 1 },
 #ifdef SUN_ATTACHMENT
   { "sun_attachment", 1 },
-#else
-  { "sun_attachment", 0 },
 #endif
   { "timeout", 1 },
   { "tls_sni", 1 },

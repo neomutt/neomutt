@@ -221,6 +221,7 @@ AC_DEFINE(USE_SIDEBAR, 1, [Define if you want support for the sidebar.])
 AC_DEFINE(USE_SMTP, 1, [Include internal SMTP relay support])
 AC_DEFINE(USE_SOCKET,1,
 	[ Include code for socket support. Set automatically if you enable POP3 or IMAP ])
+AC_DEFINE(SUN_ATTACHMENT,1,[ Define to enable Sun mailtool attachments support. ])
 
 dnl --enable-lua
 AS_IF([test x$use_lua = "xyes"], [
@@ -635,11 +636,6 @@ AC_ARG_ENABLE(nfs-fix, AS_HELP_STRING([--enable-nfs-fix],[Work around an NFS wit
 			[Define if you have problems with mutt not detecting
 			new/old mailboxes over NFS.  Some NFS implementations
 			incorrectly cache the attributes of small files.])
-	fi])
-
-AC_ARG_ENABLE(mailtool, AS_HELP_STRING([--enable-mailtool],[Enable Sun mailtool attachments support]),
-	[if test x$enableval = xyes; then
-		AC_DEFINE(SUN_ATTACHMENT,1,[ Define to enable Sun mailtool attachments support. ])
 	fi])
 
 AC_ARG_ENABLE(locales-fix, AS_HELP_STRING([--enable-locales-fix],[The result of isprint() is unreliable]),
