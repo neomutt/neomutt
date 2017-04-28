@@ -908,6 +908,18 @@ void mutt_flush_macro_to_endcond (void)
   }
 }
 
+/* Normally, OP_END_COND should only be in the MacroEvent buffer.
+ * km_error_key() (ab)uses OP_END_COND as a barrier in the unget
+ * buffer, and calls this function to flush. */
+void mutt_flush_unget_to_endcond (void)
+{
+  while (UngetCount > 0)
+  {
+    if (UngetKeyEvents[--UngetCount].op == OP_END_COND)
+      return;
+  }
+}
+
 void mutt_flushinp (void)
 {
   UngetCount = 0;
