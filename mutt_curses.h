@@ -96,6 +96,7 @@ void mutt_unget_event (int, int);
 void mutt_unget_string (char *);
 void mutt_push_macro_event (int, int);
 void mutt_flush_macro_to_endcond (void);
+void mutt_flush_unget_to_endcond (void);
 void mutt_need_hard_redraw (void);
 
 /* ----------------------------------------------------------------------------
