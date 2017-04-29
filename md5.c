@@ -28,26 +28,6 @@
 #include <string.h>
 #include "md5.h"
 
-#ifdef USE_UNLOCKED_IO
-#include "unlocked-io.h"
-#endif
-
-#ifdef _LIBC
-#include <endian.h>
-#if (__BYTE_ORDER == __BIG_ENDIAN)
-#define WORDS_BIGENDIAN 1
-#endif
-/* We need to keep the namespace clean so define the MD5 function
-   protected using leading __ .  */
-#define md5_init_ctx __md5_init_ctx
-#define md5_process_block __md5_process_block
-#define md5_process_bytes __md5_process_bytes
-#define md5_finish_ctx __md5_finish_ctx
-#define md5_read_ctx __md5_read_ctx
-#define md5_stream __md5_stream
-#define md5_buffer __md5_buffer
-#endif
-
 #ifdef WORDS_BIGENDIAN
 #define SWAP(n)                                                                \
   (((n) << 24) | (((n) &0xff00) << 8) | (((n) >> 8) & 0xff00) | ((n) >> 24))
@@ -56,14 +36,10 @@
 #endif
 
 #define BLOCKSIZE 4096
-#if ((BLOCKSIZE % 64) != 0)
-#error "invalid BLOCKSIZE"
-#endif
 
 /* This array contains the bytes used to pad the buffer to the next
    64-byte boundary.  (RFC 1321, 3.1: Step 1)  */
 static const unsigned char fillbuf[64] = { 0x80, 0 /* , 0, 0, ...  */ };
-
 
 /* Initialize structure containing state of computation.
    (RFC 1321, 3.3: Step 3)  */
@@ -140,8 +116,8 @@ int md5_stream(FILE *stream, void *resblock)
   while (1)
   {
     /* We read the file in blocks of BLOCKSIZE bytes.  One call of the
-         computation function processes the whole buffer so that with the
-         next round of the loop another block can be read.  */
+     * computation function processes the whole buffer so that with the next
+     * round of the loop another block can be read.  */
     size_t n;
     sum = 0;
 
@@ -157,24 +133,22 @@ int md5_stream(FILE *stream, void *resblock)
 
       if (n == 0)
       {
-        /* Check for the error flag IFF N == 0, so that we don't
-                 exit the loop after a partial read due to e.g., EAGAIN
-                 or EWOULDBLOCK.  */
+        /* Check for the error flag IFF N == 0, so that we don't exit the loop
+         * after a partial read due to e.g., EAGAIN or EWOULDBLOCK.  */
         if (ferror(stream))
           return 1;
         goto process_partial_block;
       }
 
-      /* We've read at least one byte, so ignore errors.  But always
-             check for EOF, since feof may be true even though N > 0.
-             Otherwise, we could end up calling fread after EOF.  */
+      /* We've read at least one byte, so ignore errors.  But always check for
+       * EOF, since feof may be true even though N > 0.  Otherwise, we could
+       * end up calling fread after EOF.  */
       if (feof(stream))
         goto process_partial_block;
     }
 
-    /* Process buffer with BLOCKSIZE bytes.  Note that
-         BLOCKSIZE % 64 == 0
-       */
+    /* Process buffer with BLOCKSIZE bytes.
+     * Note that BLOCKSIZE % 64 == 0 */
     md5_process_block(buffer, BLOCKSIZE, &ctx);
   }
 
@@ -210,8 +184,8 @@ void *md5_buffer(const char *buffer, size_t len, void *resblock)
 
 void md5_process_bytes(const void *buffer, size_t len, struct md5_ctx *ctx)
 {
-  /* When we already have some bits in our internal buffer concatenate
-     both inputs first.  */
+  /* When we already have some bits in our internal buffer concatenate both
+   * inputs first.  */
   if (ctx->buflen != 0)
   {
     size_t left_over = ctx->buflen;
@@ -295,15 +269,14 @@ void md5_process_block(const void *buffer, size_t len, struct md5_ctx *ctx)
   md5_uint32 C = ctx->C;
   md5_uint32 D = ctx->D;
 
-  /* First increment the byte count.  RFC 1321 specifies the possible
-     length of the file up to 2^64 bits.  Here we only compute the
-     number of bytes.  Do a double word increment.  */
+  /* First increment the byte count.  RFC 1321 specifies the possible length of
+   * the file up to 2^64 bits.  Here we only compute the number of bytes.  Do a
+   * double word increment.  */
   ctx->total[0] += len;
   if (ctx->total[0] < len)
     ++ctx->total[1];
 
-  /* Process all bytes in the buffer with 64 bytes in each round of
-     the loop.  */
+  /* Process all bytes in the buffer with 64 bytes in each round of the loop.  */
   while (words < endp)
   {
     md5_uint32 *cwp = correct_words;
@@ -312,12 +285,12 @@ void md5_process_block(const void *buffer, size_t len, struct md5_ctx *ctx)
     md5_uint32 C_save = C;
     md5_uint32 D_save = D;
 
-/* First round: using the given function, the context and a constant
-         the next context is computed.  Because the algorithms processing
-         unit is a 32-bit word and it is determined to work on words in
-         little endian byte order we perhaps have to change the byte order
-         before the computation.  To reduce the work for the next steps
-         we store the swapped words in the array CORRECT_WORDS.  */
+/* First round: using the given function, the context and a constant the next
+ * context is computed.  Because the algorithms processing unit is a 32-bit
+ * word and it is determined to work on words in little endian byte order we
+ * perhaps have to change the byte order before the computation.  To reduce the
+ * work for the next steps we store the swapped words in the array
+ * CORRECT_WORDS.  */
 
 #define OP(a, b, c, d, s, T)                                                   \
   do                                                                           \
@@ -329,18 +302,15 @@ void md5_process_block(const void *buffer, size_t len, struct md5_ctx *ctx)
   } while (0)
 
 /* It is unfortunate that C does not provide an operator for
-         cyclic rotation.  Hope the C compiler is smart enough.  */
+ * cyclic rotation.  Hope the C compiler is smart enough.  */
 #define CYCLIC(w, s) (w = (w << s) | (w >> (32 - s)))
 
     /* Before we start, one word to the strange constants.
-         They are defined in RFC 1321 as
-
-         T[i] = (int) (4294967296.0 * fabs (sin (i))), i=1..64
-
-         Here is an equivalent invocation using Perl:
-
-         perl -e 'foreach(1..64){printf "0x%08x\n", int (4294967296 * abs (sin $_))}'
-       */
+     * They are defined in RFC 1321 as
+     * T[i] = (int) (4294967296.0 * fabs (sin (i))), i=1..64
+     * Here is an equivalent invocation using Perl:
+     * perl -e 'foreach(1..64){printf "0x%08x\n", int (4294967296 * abs (sin $_))}'
+     */
 
     /* Round 1.  */
     OP(A, B, C, D, 7, 0xd76aa478);
@@ -361,8 +331,8 @@ void md5_process_block(const void *buffer, size_t len, struct md5_ctx *ctx)
     OP(B, C, D, A, 22, 0x49b40821);
 
 /* For the second to fourth round we have the possibly swapped words
-         in CORRECT_WORDS.  Redefine the macro to take an additional first
-         argument specifying the function to use.  */
+ * in CORRECT_WORDS.  Redefine the macro to take an additional first
+ * argument specifying the function to use.  */
 #undef OP
 #define OP(f, a, b, c, d, k, s, T)                                             \
   do                                                                           \
