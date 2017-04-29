@@ -26,6 +26,7 @@
 #include <ctype.h>
 #include <errno.h>
 #include <gpgme.h>
+#include <langinfo.h>
 #include <stdlib.h>
 #include <string.h>
 #include <sys/stat.h>
@@ -41,9 +42,6 @@
 #include "sort.h"
 #ifdef HAVE_LOCALE_H
 #include <locale.h>
-#endif
-#ifdef HAVE_LANGINFO_D_T_FMT
-#include <langinfo.h>
 #endif
 #ifdef HAVE_SYS_TIME_H
 #include <sys/time.h>
@@ -847,11 +845,7 @@ static void print_time(time_t t, STATE *s)
 {
   char p[STRING];
 
-#ifdef HAVE_LANGINFO_D_T_FMT
   strftime(p, sizeof(p), nl_langinfo(D_T_FMT), localtime(&t));
-#else
-  strftime(p, sizeof(p), "%c", localtime(&t));
-#endif
   state_puts(p, s);
 }
 
@@ -3361,11 +3355,7 @@ static void print_key_info(gpgme_key_t key, FILE *fp)
     tt = key->subkeys->timestamp;
 
     tm = localtime(&tt);
-#ifdef HAVE_LANGINFO_D_T_FMT
     strftime(shortbuf, sizeof(shortbuf), nl_langinfo(D_T_FMT), tm);
-#else
-    strftime(shortbuf, sizeof(shortbuf), "%c", tm);
-#endif
     /* L10N: DOTFILL */
     fprintf(fp, _("Valid From : %s\n"), shortbuf);
   }
@@ -3375,11 +3365,7 @@ static void print_key_info(gpgme_key_t key, FILE *fp)
     tt = key->subkeys->expires;
 
     tm = localtime(&tt);
-#ifdef HAVE_LANGINFO_D_T_FMT
     strftime(shortbuf, sizeof(shortbuf), nl_langinfo(D_T_FMT), tm);
-#else
-    strftime(shortbuf, sizeof(shortbuf), "%c", tm);
-#endif
     /* L10N: DOTFILL */
     fprintf(fp, _("Valid To ..: %s\n"), shortbuf);
   }
@@ -3514,11 +3500,7 @@ static void print_key_info(gpgme_key_t key, FILE *fp)
         tt = subkey->timestamp;
 
         tm = localtime(&tt);
-#ifdef HAVE_LANGINFO_D_T_FMT
         strftime(shortbuf, sizeof(shortbuf), nl_langinfo(D_T_FMT), tm);
-#else
-        strftime(shortbuf, sizeof(shortbuf), "%c", tm);
-#endif
         /* L10N: DOTFILL */
         fprintf(fp, _("Valid From : %s\n"), shortbuf);
       }
@@ -3528,11 +3510,7 @@ static void print_key_info(gpgme_key_t key, FILE *fp)
         tt = subkey->expires;
 
         tm = localtime(&tt);
-#ifdef HAVE_LANGINFO_D_T_FMT
         strftime(shortbuf, sizeof(shortbuf), nl_langinfo(D_T_FMT), tm);
-#else
-        strftime(shortbuf, sizeof(shortbuf), "%c", tm);
-#endif
         /* L10N: DOTFILL */
         fprintf(fp, _("Valid To ..: %s\n"), shortbuf);
       }

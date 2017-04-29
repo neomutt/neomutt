@@ -19,6 +19,7 @@
 #include <ctype.h>
 #include <dirent.h>
 #include <errno.h>
+#include <langinfo.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -204,10 +205,6 @@ PreferredMIMENames[] =
 };
 // clang-format on
 
-#ifdef HAVE_LANGINFO_CODESET
-#include <langinfo.h>
-
-
 void mutt_set_langinfo_charset(void)
 {
   char buff[LONG_STRING];
@@ -220,15 +217,6 @@ void mutt_set_langinfo_charset(void)
   if (!(Charset = safe_strdup(buff2)))
     Charset = safe_strdup("iso-8859-1");
 }
-
-#else
-
-void mutt_set_langinfo_charset(void)
-{
-  Charset = safe_strdup("iso-8859-1");
-}
-
-#endif
 
 /* this first ties off any charset extension such as //TRANSLIT,
    canonicalizes the charset and re-adds the extension */

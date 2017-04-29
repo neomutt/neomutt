@@ -1251,18 +1251,6 @@ else
 	MUTT_LIB_OBJECTS="$MUTT_LIB_OBJECTS utf8.o wcwidth.o"
 fi
 
-AC_CACHE_CHECK([for nl_langinfo and CODESET], mutt_cv_langinfo_codeset,
-	[AC_LINK_IFELSE([AC_LANG_PROGRAM([[#include <langinfo.h>]], [[char* cs = nl_langinfo(CODESET);]])],[mutt_cv_langinfo_codeset=yes],[mutt_cv_langinfo_codeset=no])])
-if test $mutt_cv_langinfo_codeset = yes; then
-	AC_DEFINE(HAVE_LANGINFO_CODESET,1,[ Define if you have <langinfo.h> and nl_langinfo(CODESET). ])
-fi
-
-AC_CACHE_CHECK([for nl_langinfo and YESEXPR], mutt_cv_langinfo_yesexpr,
-	[AC_LINK_IFELSE([AC_LANG_PROGRAM([[#include <langinfo.h>]], [[char* cs = nl_langinfo(YESEXPR);]])],[mutt_cv_langinfo_yesexpr=yes],[mutt_cv_langinfo_yesexpr=no])])
-if test $mutt_cv_langinfo_yesexpr = yes; then
-	AC_DEFINE(HAVE_LANGINFO_YESEXPR,1,[ Define if you have <langinfo.h> and nl_langinfo(YESEXPR). ])
-fi
-
 # Only enable fmemopen if both fmemopen() and open_memstream()
 # AND --enable-fmemopen is given.
 have_fmemopen=yes
