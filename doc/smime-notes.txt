@@ -40,11 +40,11 @@ How to add use mutt's S/MIME capabilities
 - Edit the smime_sign_as line in your muttrc, replacing the keyid with your
   own.
 
-- You probably want to import the trusted roots in
-  contrib/ca-bundle.crt. This makes you trust anything that was ultimately
-  signed by one of them. You can use "smime_keys add_root" to do so, or
-  just copy ca-bundle.crt into the place you point mutt's smime_ca_location
-  variable to.
+- You probably want to import trusted root certificates from Mozilla or
+  the system. This makes you trust anything that was ultimately signed by
+  one of them. You can use "smime_keys add_root" to do so, or just download
+  https://curl.haxx.se/ca/cacert.pem into the place you point mutt's
+  smime_ca_location variable to.
 
 
 
