@@ -1,4 +1,0 @@
-" Vim syntax file for the NeoMutt compose-to-sender feature.
-
-syntax match muttrcFunction     contained "\<compose-to-sender\>"
-

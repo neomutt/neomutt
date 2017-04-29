@@ -1,6 +1,0 @@
-" Vim syntax file for the NeoMutt ifdef feature.
-
-syntax keyword muttrcCommand    ifdef
-syntax keyword muttrcCommand    ifndef
-syntax keyword muttrcCommand    finish
-

@@ -1,6 +1,0 @@
-" Vim syntax file for the NeoMutt compress feature.
-
-syntax keyword muttrcCommand    append-hook
-syntax keyword muttrcCommand    close-hook
-syntax keyword muttrcCommand    open-hook
-

@@ -12961,7 +12961,10 @@ virtual-mailboxes "My INBOX" "notmuch://?query=tag:inbox"
                 <entry>
                   <literal>&lt;change-vfolder&gt;</literal>
                 </entry>
-                <entry>open a different virtual folder</entry>
+                <entry>
+                  switch to another virtual folder, a new folder maybe be 
+                  specified by vfolder description (see virtual-mailboxes) or
+                  URI. the default is next vfolder with unread messages</entry>
               </row>
               <row>
                 <entry>index,pager</entry>
@@ -12975,17 +12978,21 @@ virtual-mailboxes "My INBOX" "notmuch://?query=tag:inbox"
                 <entry>
                   <literal>&lt;modify-labels&gt;</literal>
                 </entry>
-                <entry>modify (notmuch) tags</entry>
+                <entry>add, remove, or toggle notmuch tags; [+]&lt;tag&gt; to
+                  add, -&lt;tag&gt; to remove, !&lt;tag&gt; to toggle(notmuch)
+                  tags. Note: Tab completion of tag names is available</entry>
               </row>
               <row>
                 <entry>index,pager</entry>
                 <entry>
                   <literal>&lt;modify-labels-then-hide&gt;</literal>
                 </entry>
-                <entry>modify labels and then hide message by applying the
-                "quasi-deleted" state. Normal redisplay rules apply here, so
-                the user must call &lt;sync-mailbox&gt; for the changes to be
-                displayed</entry>
+                <entry>add, remove, or toggle notmuch tags; [+]&lt;tag&gt; to
+                  add, -&lt;tag&gt; to remove, !&lt;tag&gt; to togglelabels and
+                  then hide message by applying the "quasi-deleted" state.
+                  Normal redisplay rules apply here, so the user must call
+                  &lt;sync-mailbox&gt; for the changes to be displayed. Note:
+                  Tab completion of tag names is available.</entry>
               </row>
               <row>
                 <entry>index,pager</entry>
@@ -12999,7 +13006,10 @@ virtual-mailboxes "My INBOX" "notmuch://?query=tag:inbox"
                 <entry>
                   <literal>&lt;vfolder-from-query&gt;</literal>
                 </entry>
-                <entry>generate virtual folder from query</entry>
+                <entry>
+                  generate virtual folder from notmuch search query.
+                  Note: TAB completion of 'tag:' names is available.
+                </entry>
               </row>
               <row>
                 <entry>index,pager</entry>
@@ -13140,15 +13150,30 @@ set nm_open_timeout = 5
 <emphasis role="comment"># This variable specifies notmuch query type, supported types: 'threads' and
 # 'messages'.</emphasis>
 set nm_query_type = messages
-<emphasis role="comment"># Add messages stored to the mutt record (see $record in the mutt docs)
-# also to notmuch DB.</emphasis>
+<emphasis role="comment"># Add messages stored to the mutt record (see $record in the mutt docs) also to notmuch DB. If you reply to an email then the new email inherits tags from the original email.
+</emphasis>
 set nm_record = no
-<emphasis role="comment"># Tags that should be removed or added to the to the messages stored in the mutt record.</emphasis>
+<emphasis role="comment"># Tags that should be removed or added to the to the messages stored in the mutt record.
+
+example:
+set record = "~/sent-mails"
+set nm_record = yes
+set nm_record_tags = "-inbox,archive,me"
+</emphasis>
 set nm_record_tags = ""
 <emphasis role="comment"># This variable specifies notmuch tag which is used for unread messages.</emphasis>
 set nm_unread_tag = unread
 <emphasis role="comment"># This variable allows you to customize the file browser display for virtual
-# folders to your personal taste.</emphasis>
+# folders to your personal taste.
+# %C   current folder number
+# %f   folder name (description)
+# %m   number of messages in the mailbox *
+# %n   number of unread messages in the mailbox *
+# %N   N if mailbox has new mail, blank otherwise
+# %>X  right justify the rest of the string and pad with character ``X''
+# %|X  pad to the end of the line with character ``X''
+# %*X  soft-fill with character ``X'' as pad
+</emphasis>
 set vfolder_format = "%6n(%6N) %f"
 <emphasis role="comment"># When set, mutt will use the first virtual mailbox (see virtual-mailboxes)
 # as a spoolfile.</emphasis>
@@ -13193,7 +13218,8 @@ bind index,pager &gt; vfolder-window-forward
 #                "todo"    "T"   \
 #                "deleted" "DEL" \
 #                "invites" "CAL"
-# See README.notmuch for an explanation
+
+# The formats must start with 'G' and the entire sequence is case sensitive.  
 # tag-formats tag format-string { tag format-string ...}
 # tag-formats "inbox"   "GI" \
 #              "unread"  "GU" \
@@ -13202,7 +13228,15 @@ bind index,pager &gt; vfolder-window-forward
 #              "todo"    "Gt" \
 #              "deleted" "GD" \
 #              "invites" "Gi"
+
+# Now instead of using '%g' in your $index_format, which lists all tags
+# in a non-deterministic order, you can something like the following which puts
+# a transformed tag name in a specific spot on the index line:
 # set index_format='%4C %S %[%y.%m.%d] %-18.18n %?GU?%GU&amp; ? %?GR?%GR&amp; ? %?GI?%GI&amp; ? %s'
+
+# The %G formatting sequence may display all tags including tags hidden by
+# nm_hidden_tags.
+#
 # --------------------------------------------------------------------------
 # COLORS - some unpleasant examples are given
 # --------------------------------------------------------------------------

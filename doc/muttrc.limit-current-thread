@@ -1,6 +1,0 @@
-# Example NeoMutt config file for the limit-current-thread feature.
-
-# Limit view to current thread
-bind index <esc>L limit-current-thread
-
-# vim: syntax=muttrc

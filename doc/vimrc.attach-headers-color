@@ -1,4 +1,0 @@
-" Vim syntax file for the NeoMutt attach-headers-color feature.
-
-syntax keyword muttrcColorField contained attach_headers
-

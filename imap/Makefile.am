@@ -3,7 +3,7 @@ include $(top_srcdir)/flymake.am
 
 AUTOMAKE_OPTIONS = 1.6 foreign
 
-EXTRA_DIST = README TODO auth_anon.c auth_cram.c auth_gss.c auth_sasl.c
+EXTRA_DIST = README auth_anon.c auth_cram.c auth_gss.c auth_sasl.c
 
 AM_CPPFLAGS = -I$(top_srcdir)
 

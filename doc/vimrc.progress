@@ -1,4 +1,0 @@
-" Vim syntax file for the NeoMutt progress feature.
-
-syntax keyword muttrcColorField contained progress
-

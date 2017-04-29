@@ -1,5 +1,0 @@
-" Vim syntax file for the NeoMutt encrypt-to-self feature.
-
-syntax keyword muttrcVarQuad    contained skipwhite smime_encrypt_self    nextgroup=muttrcSetQuadAssignment,muttrcVPrefix,muttrcVarBool,muttrcVarQuad,muttrcVarNum,muttrcVarStr
-syntax keyword muttrcVarQuad    contained skipwhite pgp_encrypt_self      nextgroup=muttrcSetQuadAssignment,muttrcVPrefix,muttrcVarBool,muttrcVarQuad,muttrcVarNum,muttrcVarStr
-

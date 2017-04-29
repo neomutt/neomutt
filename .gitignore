@@ -25,7 +25,6 @@ doc/muttrc.man
 doc/stamp-doc-chunked
 doc/stamp-doc-rc
 doc/stamp-doc-xml
-doc/neomutt-syntax.vim
 
 po/POTFILES
 po/mutt.pot
