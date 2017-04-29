@@ -1061,16 +1061,16 @@ static void char_to_escape(char *dest, unsigned int c)
   switch (c)
   {
     case '\r':
-      strcpy(dest, "\\r"); /* __STRCPY_CHECKED__ */
+      strcpy(dest, "\\r");
       break;
     case '\n':
-      strcpy(dest, "\\n"); /* __STRCPY_CHECKED__ */
+      strcpy(dest, "\\n");
       break;
     case '\t':
-      strcpy(dest, "\\t"); /* __STRCPY_CHECKED__ */
+      strcpy(dest, "\\t");
       break;
     case '\f':
-      strcpy(dest, "\\f"); /* __STRCPY_CHECKED__ */
+      strcpy(dest, "\\f");
       break;
     default:
       sprintf(dest, "\\%03o", c);

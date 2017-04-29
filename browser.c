@@ -1104,7 +1104,7 @@ void _mutt_select_file(char *f, size_t flen, int flags, char ***files, int *numf
       else
       {
         if (f[0] == '/')
-          strcpy(LastDir, "/"); /* __STRCPY_CHECKED__ */
+          strcpy(LastDir, "/");
         else
           getcwd(LastDir, sizeof(LastDir));
       }
@@ -1314,7 +1314,7 @@ void _mutt_select_file(char *f, size_t flen, int flags, char ***files, int *numf
             if (mutt_strcmp(state.entry[menu->current].name, "..") == 0)
             {
               if (mutt_strcmp("..", LastDir + mutt_strlen(LastDir) - 2) == 0)
-                strcat(LastDir, "/.."); /* __STRCAT_CHECKED__ */
+                strcat(LastDir, "/..");
               else
               {
                 char *p = strrchr(LastDir + 1, '/');
@@ -1326,7 +1326,7 @@ void _mutt_select_file(char *f, size_t flen, int flags, char ***files, int *numf
                   if (LastDir[0] == '/')
                     LastDir[1] = 0;
                   else
-                    strcat(LastDir, "/.."); /* __STRCAT_CHECKED__ */
+                    strcat(LastDir, "/..");
                 }
               }
             }

@@ -372,7 +372,7 @@ static int mh_mkstemp(CONTEXT *dest, FILE **fp, char **tgt)
 
   if ((*fp = fdopen(fd, "w")) == NULL)
   {
-    FREE(tgt); /* __FREE_CHECKED__ */
+    FREE(tgt);
     close(fd);
     unlink(path);
     return -1;
@@ -635,7 +635,7 @@ static void maildir_free_entry(struct maildir **md)
   if ((*md)->h)
     mutt_free_header(&(*md)->h);
 
-  FREE(md); /* __FREE_CHECKED__ */
+  FREE(md);
 }
 
 static void maildir_free_maildir(struct maildir **md)
@@ -2386,7 +2386,7 @@ static FILE *_maildir_open_find_message(const char *folder, const char *unique,
     if (mutt_strcmp(tunique, unique) == 0)
     {
       snprintf(fname, sizeof(fname), "%s/%s/%s", folder, subfolder, de->d_name);
-      fp = fopen(fname, "r"); /* __FOPEN_CHECKED__ */
+      fp = fopen(fname, "r");
       oe = errno;
       break;
     }

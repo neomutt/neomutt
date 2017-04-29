@@ -105,7 +105,7 @@ int convert_nonmime_string(char **ps)
     FREE(&fromcode);
     if (m != (size_t)(-1))
     {
-      FREE(ps); /* __FREE_CHECKED__ */
+      FREE(ps);
       *ps = s;
       return 0;
     }
@@ -572,7 +572,7 @@ void _rfc2047_encode_string(char **pd, int encode_specials, int col)
   rfc2047_encode(*pd, strlen(*pd), col, Charset, charsets, &e, &elen,
                  encode_specials ? RFC822Specials : NULL);
 
-  FREE(pd); /* __FREE_CHECKED__ */
+  FREE(pd);
   *pd = e;
 }
 
@@ -868,7 +868,7 @@ void rfc2047_decode(char **pd)
   }
   *d = 0;
 
-  FREE(pd); /* __FREE_CHECKED__ */
+  FREE(pd);
   *pd = d0;
   mutt_str_adjust(pd);
 }

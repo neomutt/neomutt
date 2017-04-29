@@ -355,7 +355,7 @@ void rfc1524_free_entry(rfc1524_entry **entry)
   FREE(&p->editcommand);
   FREE(&p->printcommand);
   FREE(&p->nametemplate);
-  FREE(entry); /* __FREE_CHECKED__ */
+  FREE(entry);
 }
 
 /*

@@ -859,7 +859,7 @@ static BODY *pgp_decrypt_part(BODY *a, STATE *s, FILE *fpout, BODY *p)
   {
     len = mutt_strlen(buf);
     if (len > 1 && buf[len - 2] == '\r')
-      strcpy(buf + len - 2, "\n"); /* __STRCPY_CHECKED__ */
+      strcpy(buf + len - 2, "\n");
     fputs(buf, fpout);
   }
 
@@ -1290,7 +1290,7 @@ char *pgp_find_keys(ADDRESS *adrlist, int oppenc_mode)
     bypass_selection:
       keylist_size += mutt_strlen(keyID) + 4;
       safe_realloc(&keylist, keylist_size);
-      sprintf(keylist + keylist_used, "%s0x%s", keylist_used ? " " : "", /* __SPRINTF_CHECKED__ */
+      sprintf(keylist + keylist_used, "%s0x%s", keylist_used ? " " : "",
               keyID);
       keylist_used = mutt_strlen(keylist);
 

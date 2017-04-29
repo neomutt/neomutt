@@ -314,7 +314,7 @@ char *mutt_get_default_charset(void)
     strfcpy(fcharset, c, c1 ? (c1 - c + 1) : sizeof(fcharset));
     return fcharset;
   }
-  return strcpy(fcharset, "us-ascii"); /* __STRCPY_CHECKED__ */
+  return strcpy(fcharset, "us-ascii");
 }
 
 /*
@@ -474,7 +474,7 @@ int mutt_convert_string(char **ps, const char *from, const char *to, int flags)
 
     *ob = '\0';
 
-    FREE(ps); /* __FREE_CHECKED__ */
+    FREE(ps);
     *ps = buf;
 
     mutt_str_adjust(ps);
@@ -617,7 +617,7 @@ void fgetconv_close(FGETCONV **_fc)
 
   if (fc->cd != (iconv_t) -1)
     iconv_close(fc->cd);
-  FREE(_fc); /* __FREE_CHECKED__ */
+  FREE(_fc);
 }
 
 bool mutt_check_charset(const char *s, bool strict)

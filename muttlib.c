@@ -391,7 +391,7 @@ void mutt_free_header(HEADER **h)
     (*h)->free_cb(*h);
   FREE(&(*h)->data);
 #endif
-  FREE(h); /* __FREE_CHECKED__ */
+  FREE(h);
 }
 
 /* returns true if the header contained in "s" is in list "t" */
@@ -770,7 +770,7 @@ void mutt_free_envelope(ENVELOPE **p)
   mutt_free_list(&(*p)->references);
   mutt_free_list(&(*p)->in_reply_to);
   mutt_free_list(&(*p)->userhdrs);
-  FREE(p); /* __FREE_CHECKED__ */
+  FREE(p);
 }
 
 /* move all the headers from extra not present in base into base */
@@ -1103,13 +1103,13 @@ int mutt_check_overwrite(const char *attname, const char *path, char *fname,
           mutt_str_replace(directory, fname);
           break;
         case 1:            /* yes */
-          FREE(directory); /* __FREE_CHECKED__ */
+          FREE(directory);
           break;
         case -1:           /* abort */
-          FREE(directory); /* __FREE_CHECKED__ */
+          FREE(directory);
           return -1;
         case 2:            /* no */
-          FREE(directory); /* __FREE_CHECKED__ */
+          FREE(directory);
           return 1;
       }
     }
@@ -2023,7 +2023,7 @@ void mutt_free_regexp(REGEXP **pp)
   FREE(&(*pp)->pattern);
   regfree((*pp)->rx);
   FREE(&(*pp)->rx);
-  FREE(pp); /* __FREE_CHECKED__ */
+  FREE(pp);
 }
 
 void mutt_free_rx_list(RX_LIST **list)

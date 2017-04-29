@@ -177,7 +177,7 @@ int mutt_copy_hdr(FILE *in, FILE *out, LOFF_T off_start, LOFF_T off_end,
           int hlen = mutt_strlen(headers[x]);
 
           safe_realloc(&headers[x], hlen + this_one_len + sizeof(char));
-          strcat(headers[x] + hlen, this_one); /* __STRCAT_CHECKED__ */
+          strcat(headers[x] + hlen, this_one);
           FREE(&this_one);
         }
 
@@ -249,7 +249,7 @@ int mutt_copy_hdr(FILE *in, FILE *out, LOFF_T off_start, LOFF_T off_end,
         int blen = mutt_strlen(buf);
 
         safe_realloc(&this_one, this_one_len + blen + sizeof(char));
-        strcat(this_one + this_one_len, buf); /* __STRCAT_CHECKED__ */
+        strcat(this_one + this_one_len, buf);
         this_one_len += blen;
       }
     }
@@ -272,7 +272,7 @@ int mutt_copy_hdr(FILE *in, FILE *out, LOFF_T off_start, LOFF_T off_end,
       int hlen = mutt_strlen(headers[x]);
 
       safe_realloc(&headers[x], hlen + this_one_len + sizeof(char));
-      strcat(headers[x] + hlen, this_one); /* __STRCAT_CHECKED__ */
+      strcat(headers[x] + hlen, this_one);
       FREE(&this_one);
     }
 
@@ -865,14 +865,14 @@ static void format_address_header(char **h, ADDRESS *a)
 
     if (count && linelen + l > 74)
     {
-      strcpy(cbuf, "\n\t"); /* __STRCPY_CHECKED__ */
+      strcpy(cbuf, "\n\t");
       linelen = l + 8;
     }
     else
     {
       if (a->mailbox)
       {
-        strcpy(cbuf, " "); /* __STRCPY_CHECKED__ */
+        strcpy(cbuf, " ");
         linelen++;
       }
       linelen += l;
@@ -881,7 +881,7 @@ static void format_address_header(char **h, ADDRESS *a)
     {
       linelen++;
       buflen++;
-      strcpy(c2buf, ","); /* __STRCPY_CHECKED__ */
+      strcpy(c2buf, ",");
     }
 
     cbuflen = mutt_strlen(cbuf);
@@ -889,16 +889,16 @@ static void format_address_header(char **h, ADDRESS *a)
     buflen += l + cbuflen + c2buflen;
     safe_realloc(h, buflen);
     p = *h;
-    strcat(p + plen, cbuf); /* __STRCAT_CHECKED__ */
+    strcat(p + plen, cbuf);
     plen += cbuflen;
-    strcat(p + plen, buf); /* __STRCAT_CHECKED__ */
+    strcat(p + plen, buf);
     plen += l;
-    strcat(p + plen, c2buf); /* __STRCAT_CHECKED__ */
+    strcat(p + plen, c2buf);
     plen += c2buflen;
   }
 
   /* Space for this was allocated in the beginning of this function. */
-  strcat(p + plen, "\n"); /* __STRCAT_CHECKED__ */
+  strcat(p + plen, "\n");
 }
 
 static int address_header_decode(char **h)

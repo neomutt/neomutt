@@ -492,13 +492,13 @@ static pgp_key_t pgp_select_key(pgp_key_t keys, ADDRESS *p, const char *s)
 
   helpstr[0] = 0;
   mutt_make_help(buf, sizeof(buf), _("Exit  "), MENU_PGP, OP_EXIT);
-  strcat(helpstr, buf); /* __STRCAT_CHECKED__ */
+  strcat(helpstr, buf);
   mutt_make_help(buf, sizeof(buf), _("Select  "), MENU_PGP, OP_GENERIC_SELECT_ENTRY);
-  strcat(helpstr, buf); /* __STRCAT_CHECKED__ */
+  strcat(helpstr, buf);
   mutt_make_help(buf, sizeof(buf), _("Check key  "), MENU_PGP, OP_VERIFY_KEY);
-  strcat(helpstr, buf); /* __STRCAT_CHECKED__ */
+  strcat(helpstr, buf);
   mutt_make_help(buf, sizeof(buf), _("Help"), MENU_PGP, OP_HELP);
-  strcat(helpstr, buf); /* __STRCAT_CHECKED__ */
+  strcat(helpstr, buf);
 
   menu = mutt_new_menu(MENU_PGP);
   menu->max = i;
@@ -526,7 +526,7 @@ static pgp_key_t pgp_select_key(pgp_key_t keys, ADDRESS *p, const char *s)
       case OP_VERIFY_KEY:
 
         mutt_mktemp(tempfile, sizeof(tempfile));
-        if ((devnull = fopen("/dev/null", "w")) == NULL) /* __FOPEN_CHECKED__ */
+        if ((devnull = fopen("/dev/null", "w")) == NULL)
         {
           mutt_perror(_("Can't open /dev/null"));
           break;
@@ -712,7 +712,7 @@ BODY *pgp_make_key_attachment(char *tempf)
     return NULL;
   }
 
-  if ((devnull = fopen("/dev/null", "w")) == NULL) /* __FOPEN_CHECKED__ */
+  if ((devnull = fopen("/dev/null", "w")) == NULL)
   {
     mutt_perror(_("Can't open /dev/null"));
     safe_fclose(&tempfp);

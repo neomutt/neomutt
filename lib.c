@@ -135,7 +135,7 @@ void *safe_malloc(size_t siz)
 
   if (siz == 0)
     return 0;
-  if ((p = malloc(siz)) == NULL) /* __MEM_CHECKED__ */
+  if ((p = malloc(siz)) == NULL)
   {
     mutt_error(_("Out of memory!"));
     sleep(1);
@@ -153,18 +153,18 @@ void safe_realloc(void *ptr, size_t siz)
   {
     if (*p)
     {
-      free(*p); /* __MEM_CHECKED__ */
+      free(*p);
       *p = NULL;
     }
     return;
   }
 
   if (*p)
-    r = realloc(*p, siz); /* __MEM_CHECKED__ */
+    r = realloc(*p, siz);
   else
   {
-    /* realloc(NULL, nbytes) doesn't seem to work under SunOS 4.1.x  --- __MEM_CHECKED__ */
-    r = malloc(siz); /* __MEM_CHECKED__ */
+    /* realloc(NULL, nbytes) doesn't seem to work under SunOS 4.1.x */
+    r = malloc(siz);
   }
 
   if (!r)
@@ -177,14 +177,14 @@ void safe_realloc(void *ptr, size_t siz)
   *p = r;
 }
 
-void safe_free(void *ptr) /* __SAFE_FREE_CHECKED__ */
+void safe_free(void *ptr)
 {
   if (!ptr)
     return;
   void **p = (void **) ptr;
   if (*p)
   {
-    free(*p); /* __MEM_CHECKED__ */
+    free(*p);
     *p = 0;
   }
 }
@@ -274,7 +274,7 @@ char *safe_strncat(char *d, size_t l, const char *s, size_t sl)
 
 void mutt_str_replace(char **p, const char *s)
 {
-  FREE(p); /* __FREE_CHECKED__ */
+  FREE(p);
   *p = safe_strdup(s);
 }
 
@@ -431,8 +431,8 @@ int safe_symlink(const char *oldpath, const char *newpath)
         (strlen(abs_oldpath) + 1 + strlen(oldpath) + 1 > sizeof(abs_oldpath)))
       return -1;
 
-    strcat(abs_oldpath, "/");     /* __STRCAT_CHECKED__ */
-    strcat(abs_oldpath, oldpath); /* __STRCAT_CHECKED__ */
+    strcat(abs_oldpath, "/");
+    strcat(abs_oldpath, oldpath);
     if (symlink(abs_oldpath, newpath) == -1)
       return -1;
   }

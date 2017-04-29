@@ -566,7 +566,7 @@ int mutt_filter_unprintable(char **s)
     scratch[k2] = '\0';
     mutt_buffer_addstr(b, scratch);
   }
-  FREE(s); /* __FREE_CHECKED__ */
+  FREE(s);
   *s = b->data ? b->data : safe_calloc(1, 1);
   FREE(&b);
   return 0;

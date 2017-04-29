@@ -671,7 +671,7 @@ void mutt_make_misc_reply_headers(ENVELOPE *env, CONTEXT *ctx, HEADER *cur, ENVE
   {
     FREE(&env->subject);
     env->subject = safe_malloc(mutt_strlen(curenv->real_subj) + 5);
-    sprintf(env->subject, "Re: %s", curenv->real_subj); /* __SPRINTF_CHECKED__ */
+    sprintf(env->subject, "Re: %s", curenv->real_subj);
   }
   else if (!env->subject)
     env->subject = safe_strdup(EmptySubject);
@@ -1039,7 +1039,7 @@ ADDRESS *mutt_default_from(void)
   {
     adr = rfc822_new_address();
     adr->mailbox = safe_malloc(mutt_strlen(Username) + mutt_strlen(fqdn) + 2);
-    sprintf(adr->mailbox, "%s@%s", NONULL(Username), NONULL(fqdn)); /* __SPRINTF_CHECKED__ */
+    sprintf(adr->mailbox, "%s@%s", NONULL(Username), NONULL(fqdn));
   }
   else
   {

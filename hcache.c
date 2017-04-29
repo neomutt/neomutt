@@ -839,7 +839,7 @@ void mutt_hcache_free(header_cache_t *h, void **data)
   if (!h || !ops)
     return;
 
-  ops->free(h->ctx, data); /* __MEM_CHECKED__ */
+  ops->free(h->ctx, data);
 }
 
 int mutt_hcache_store(header_cache_t *h, const char *key, size_t keylen,

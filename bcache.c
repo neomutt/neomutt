@@ -103,7 +103,7 @@ void mutt_bcache_close(body_cache_t **bcache)
 {
   if (!bcache || !*bcache)
     return;
-  FREE(bcache); /* __FREE_CHECKED__ */
+  FREE(bcache);
 }
 
 FILE *mutt_bcache_get(body_cache_t *bcache, const char *id)

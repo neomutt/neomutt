@@ -1399,7 +1399,7 @@ int mx_close_message(CONTEXT *ctx, MESSAGE **msg)
   }
 
   FREE(&(*msg)->commited_path);
-  FREE(msg); /* __FREE_CHECKED__ */
+  FREE(msg);
   return r;
 }
 

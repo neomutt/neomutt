@@ -97,7 +97,7 @@ static void myvar_del(const char *var)
     tmp = (*cur)->next;
     FREE(&(*cur)->name);
     FREE(&(*cur)->value);
-    FREE(cur); /* __FREE_CHECKED__ */
+    FREE(cur);
     *cur = tmp;
   }
 }
@@ -262,7 +262,7 @@ static void free_mbchar_table(mbchar_table **t)
   FREE(&(*t)->chars);
   FREE(&(*t)->segmented_str);
   FREE(&(*t)->orig_str);
-  FREE(t); /* __FREE_CHECKED__ */
+  FREE(t);
 }
 
 static mbchar_table *parse_mbchar_table(const char *s)
@@ -440,7 +440,7 @@ int mutt_option_set(const struct option_t *val, BUFFER *err)
         mutt_expand_path(scratch, sizeof(scratch));
         /* MuttVars[idx].data is already 'char**' (or some 'void**') or...
         * so cast to 'void*' is okay */
-        FREE((void *) MuttVars[idx].data); /* __FREE_CHECKED__ */
+        FREE((void *) MuttVars[idx].data);
         *((char **) MuttVars[idx].data) = safe_strdup(scratch);
         break;
       }
@@ -448,7 +448,7 @@ int mutt_option_set(const struct option_t *val, BUFFER *err)
       {
         /* MuttVars[idx].data is already 'char**' (or some 'void**') or...
           * so cast to 'void*' is okay */
-        FREE((void *) MuttVars[idx].data); /* __FREE_CHECKED__ */
+        FREE((void *) MuttVars[idx].data);
         *((char **) MuttVars[idx].data) = safe_strdup((char *) val->data);
       }
       break;
@@ -497,7 +497,7 @@ static void free_opt(struct option_t *p)
       break;
     case DT_PATH:
     case DT_STR:
-      FREE((char **) p->data); /* __FREE_CHECKED__ */
+      FREE((char **) p->data);
       break;
   }
 }
@@ -1364,7 +1364,7 @@ static int parse_attach_list(BUFFER *buf, BUFFER *s, LIST **ldata, BUFFER *err)
 
     len = strlen(a->minor);
     tmpminor = safe_malloc(len + 3);
-    strcpy(&tmpminor[1], a->minor); /* __STRCPY_CHECKED__ */
+    strcpy(&tmpminor[1], a->minor);
     tmpminor[0] = '^';
     tmpminor[len + 1] = '$';
     tmpminor[len + 2] = '\0';
@@ -1912,7 +1912,7 @@ static void restore_default(struct option_t *p)
       *((mbchar_table **) p->data) = parse_mbchar_table((char *) p->init);
       break;
     case DT_PATH:
-      FREE((char **) p->data); /* __FREE_CHECKED__ */
+      FREE((char **) p->data);
       if (p->init)
       {
         char path[_POSIX_PATH_MAX];
@@ -2389,7 +2389,7 @@ static int parse_set(BUFFER *tmp, BUFFER *s, unsigned long data, BUFFER *err)
         else
           /* MuttVars[idx].data is already 'char**' (or some 'void**') or...
            * so cast to 'void*' is okay */
-          FREE((void *) MuttVars[idx].data); /* __FREE_CHECKED__ */
+          FREE((void *) MuttVars[idx].data);
       }
       else if (query || *s->dptr != '=')
       {
@@ -2458,7 +2458,7 @@ static int parse_set(BUFFER *tmp, BUFFER *s, unsigned long data, BUFFER *err)
         {
           /* MuttVars[idx].data is already 'char**' (or some 'void**') or...
            * so cast to 'void*' is okay */
-          FREE((void *) MuttVars[idx].data); /* __FREE_CHECKED__ */
+          FREE((void *) MuttVars[idx].data);
 
           strfcpy(scratch, tmp->data, sizeof(scratch));
           mutt_expand_path(scratch, sizeof(scratch));
@@ -2477,7 +2477,7 @@ static int parse_set(BUFFER *tmp, BUFFER *s, unsigned long data, BUFFER *err)
             return -1;
           }
 
-          FREE((void *) MuttVars[idx].data); /* __FREE_CHECKED__ */
+          FREE((void *) MuttVars[idx].data);
           *((char **) MuttVars[idx].data) = safe_strdup(tmp->data);
           if (mutt_strcmp(MuttVars[idx].option, "charset") == 0)
             mutt_set_charset(Charset);
@@ -2761,7 +2761,7 @@ static int parse_set(BUFFER *tmp, BUFFER *s, unsigned long data, BUFFER *err)
       mutt_extract_token(tmp, s, 0);
       if (mutt_hcache_is_valid_backend(tmp->data))
       {
-        FREE((void *) MuttVars[idx].data); /* __FREE_CHECKED__ */
+        FREE((void *) MuttVars[idx].data);
         *(char **) (MuttVars[idx].data) = safe_strdup(tmp->data);
       }
       else
@@ -3871,12 +3871,12 @@ void mutt_init(int skip_sys_rc, LIST *commands)
 #ifdef DOMAIN
   /* we have a compile-time domain name, use that for Fqdn */
   Fqdn = safe_malloc(mutt_strlen(DOMAIN) + mutt_strlen(Hostname) + 2);
-  sprintf(Fqdn, "%s.%s", NONULL(Hostname), DOMAIN); /* __SPRINTF_CHECKED__ */
+  sprintf(Fqdn, "%s.%s", NONULL(Hostname), DOMAIN);
 #else
   if (!(getdnsdomainname(buffer, sizeof(buffer))))
   {
     Fqdn = safe_malloc(mutt_strlen(buffer) + mutt_strlen(Hostname) + 2);
-    sprintf(Fqdn, "%s.%s", NONULL(Hostname), buffer); /* __SPRINTF_CHECKED__ */
+    sprintf(Fqdn, "%s.%s", NONULL(Hostname), buffer);
   }
   else
     /*

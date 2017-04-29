@@ -27,7 +27,7 @@ int main(int argc, char **argv)
     print_usage(argv[0]);
   }
 
-  opts = malloc((2 * argc + 1) * sizeof(*opts)); /* __MEM_CHECKED__ */
+  opts = malloc((2 * argc + 1) * sizeof(*opts));
   if (!opts)
   {
     perror(argv[0]);

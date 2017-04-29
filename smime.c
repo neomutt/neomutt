@@ -406,11 +406,11 @@ static smime_key_t *smime_select_key(smime_key_t *keys, char *query)
   /* Make Helpstring */
   helpstr[0] = 0;
   mutt_make_help(buf, sizeof(buf), _("Exit  "), MENU_SMIME, OP_EXIT);
-  strcat(helpstr, buf); /* __STRCAT_CHECKED__ */
+  strcat(helpstr, buf);
   mutt_make_help(buf, sizeof(buf), _("Select  "), MENU_SMIME, OP_GENERIC_SELECT_ENTRY);
-  strcat(helpstr, buf); /* __STRCAT_CHECKED__ */
+  strcat(helpstr, buf);
   mutt_make_help(buf, sizeof(buf), _("Help"), MENU_SMIME, OP_HELP);
-  strcat(helpstr, buf); /* __STRCAT_CHECKED__ */
+  strcat(helpstr, buf);
 
   /* Create the menu */
   menu = mutt_new_menu(MENU_SMIME);
@@ -876,7 +876,7 @@ char *smime_find_keys(ADDRESS *adrlist, int oppenc_mode)
     keyID = key->hash;
     keylist_size += mutt_strlen(keyID) + 2;
     safe_realloc(&keylist, keylist_size);
-    sprintf(keylist + keylist_used, "%s\n", keyID); /* __SPRINTF_CHECKED__ */
+    sprintf(keylist + keylist_used, "%s\n", keyID);
     keylist_used = mutt_strlen(keylist);
 
     smime_free_key(&key);

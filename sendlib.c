@@ -2103,7 +2103,7 @@ static void encode_headers(LIST *h)
     rfc2047_encode_string(&tmp);
     safe_realloc(&h->data, mutt_strlen(h->data) + 2 + mutt_strlen(tmp) + 1);
 
-    sprintf(h->data + i, ": %s", NONULL(tmp)); /* __SPRINTF_CHECKED__ */
+    sprintf(h->data + i, ": %s", NONULL(tmp));
 
     FREE(&tmp);
   }
@@ -2251,7 +2251,7 @@ static int send_msg(const char *path, char **args, const char *msg, char **tempf
     {
       unlink(msg);
       if (tempfile)
-        FREE(tempfile); /* __FREE_CHECKED__ */
+        FREE(tempfile);
       _exit(S_ERR);
     }
 
@@ -2282,7 +2282,7 @@ static int send_msg(const char *path, char **args, const char *msg, char **tempf
       if (SendmailWait && st == (0xff & EX_OK) && tempfile && *tempfile)
       {
         unlink(*tempfile); /* no longer needed */
-        FREE(tempfile);    /* __FREE_CHECKED__ */
+        FREE(tempfile);
       }
     }
     else
@@ -2291,7 +2291,7 @@ static int send_msg(const char *path, char **args, const char *msg, char **tempf
       if (SendmailWait > 0 && tempfile && *tempfile)
       {
         unlink(*tempfile);
-        FREE(tempfile); /* __FREE_CHECKED__ */
+        FREE(tempfile);
       }
     }
 
@@ -2306,7 +2306,7 @@ static int send_msg(const char *path, char **args, const char *msg, char **tempf
     {
       /* the parent is already dead */
       unlink(*tempfile);
-      FREE(tempfile); /* __FREE_CHECKED__ */
+      FREE(tempfile);
     }
 
     _exit(st);

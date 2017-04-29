@@ -70,7 +70,7 @@ void mutt_buffer_free(BUFFER **p)
 
   FREE(&(*p)->data);
   /* dptr is just an offset to data and shouldn't be freed */
-  FREE(p); /* __FREE_CHECKED__ */
+  FREE(p);
 }
 
 int mutt_buffer_printf(BUFFER *buf, const char *fmt, ...)
@@ -288,7 +288,7 @@ int mutt_extract_token(BUFFER *dest, BUFFER *tok, int flags)
         tok->dsize = expnlen + mutt_strlen(tok->dptr) + 1;
         ptr = safe_malloc(tok->dsize);
         memcpy(ptr, expn.data, expnlen);
-        strcpy(ptr + expnlen, tok->dptr); /* __STRCPY_CHECKED__ */
+        strcpy(ptr + expnlen, tok->dptr);
         if (tok->destroy)
           FREE(&tok->data);
         tok->data = ptr;

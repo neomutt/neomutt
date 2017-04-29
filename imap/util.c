@@ -494,7 +494,7 @@ void imap_free_idata(IMAP_DATA **idata)
   FREE(&(*idata)->buf);
   mutt_bcache_close(&(*idata)->bcache);
   FREE(&(*idata)->cmds);
-  FREE(idata); /* __FREE_CHECKED__ */
+  FREE(idata);
 }
 
 /*

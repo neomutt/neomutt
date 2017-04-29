@@ -335,7 +335,7 @@ void hash_destroy(HASH **ptr, void (*destroy)(void *))
     }
   }
   FREE(&pptr->table);
-  FREE(ptr); /* __FREE_CHECKED__ */
+  FREE(ptr);
 }
 
 struct hash_elem *hash_walk(const HASH *table, struct hash_walk_state *state)

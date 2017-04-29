@@ -40,7 +40,7 @@ static int read_material(size_t material, size_t *used, FILE *fp)
 
     nplen = *used + material + CHUNKSIZE;
 
-    if (!(p = realloc(pbuf, nplen))) /* __MEM_CHECKED__ */
+    if (!(p = realloc(pbuf, nplen)))
     {
       perror("realloc");
       return -1;

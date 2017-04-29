@@ -154,7 +154,7 @@ static void free_color_line(COLOR_LINE **l, int free_colors)
   regfree(&tmp->rx);
   mutt_pattern_free(&tmp->color_pattern);
   FREE(&tmp->pattern);
-  FREE(l); /* __FREE_CHECKED__ */
+  FREE(l);
 }
 
 void ci_start_color(void)

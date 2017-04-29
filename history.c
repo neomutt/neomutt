@@ -149,7 +149,7 @@ cleanup:
   FREE(&linebuf);
   if (tmp != NULL)
   {
-    if (fflush(tmp) == 0 && (f = fopen(HistFile, "w")) != NULL) /* __FOPEN_CHECKED__ */
+    if (fflush(tmp) == 0 && (f = fopen(HistFile, "w")) != NULL)
     {
       rewind(tmp);
       mutt_copy_stream(tmp, f);

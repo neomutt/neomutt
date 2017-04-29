@@ -613,7 +613,7 @@ static void free_recipient_set(gpgme_key_t **p_rset)
     rset++;
   }
 
-  FREE(p_rset); /* __FREE_CHECKED__ */
+  FREE(p_rset);
 }
 
 
@@ -1251,7 +1251,7 @@ static void show_fingerprint(gpgme_key_t key, STATE *state)
   is_pgp = (key->protocol == GPGME_PROTOCOL_OpenPGP);
 
   buf = safe_malloc(strlen(prefix) + strlen(s) * 4 + 2);
-  strcpy(buf, prefix); /* __STRCPY_CHECKED__ */
+  strcpy(buf, prefix);
   p = buf + strlen(buf);
   if (is_pgp && strlen(s) == 40)
   { /* PGP v4 style formatted. */
@@ -3932,13 +3932,13 @@ static crypt_key_t *crypt_select_key(crypt_key_t *keys, ADDRESS *p, const char *
 
   helpstr[0] = 0;
   mutt_make_help(buf, sizeof(buf), _("Exit  "), menu_to_use, OP_EXIT);
-  strcat(helpstr, buf); /* __STRCAT_CHECKED__ */
+  strcat(helpstr, buf);
   mutt_make_help(buf, sizeof(buf), _("Select  "), menu_to_use, OP_GENERIC_SELECT_ENTRY);
-  strcat(helpstr, buf); /* __STRCAT_CHECKED__ */
+  strcat(helpstr, buf);
   mutt_make_help(buf, sizeof(buf), _("Check key  "), menu_to_use, OP_VERIFY_KEY);
-  strcat(helpstr, buf); /* __STRCAT_CHECKED__ */
+  strcat(helpstr, buf);
   mutt_make_help(buf, sizeof(buf), _("Help"), menu_to_use, OP_HELP);
-  strcat(helpstr, buf); /* __STRCAT_CHECKED__ */
+  strcat(helpstr, buf);
 
   menu = mutt_new_menu(menu_to_use);
   menu->max = i;
@@ -4439,7 +4439,7 @@ static char *find_keys(ADDRESS *adrlist, unsigned int app, int oppenc_mode)
     bypass_selection:
       keylist_size += mutt_strlen(keyID) + 4 + 1;
       safe_realloc(&keylist, keylist_size);
-      sprintf(keylist + keylist_used, "%s0x%s%s", /* __SPRINTF_CHECKED__ */
+      sprintf(keylist + keylist_used, "%s0x%s%s",
               keylist_used ? " " : "", keyID, forced_valid ? "!" : "");
       keylist_used = mutt_strlen(keylist);
 

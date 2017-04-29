@@ -57,7 +57,7 @@ static void *hcache_tokyocabinet_fetch(void *ctx, const char *key, size_t keylen
 
 static void hcache_tokyocabinet_free(void *ctx, void **data)
 {
-  FREE(data); /* __FREE_CHECKED__ */
+  FREE(data);
 }
 
 static int hcache_tokyocabinet_store(void *ctx, const char *key, size_t keylen,

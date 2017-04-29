@@ -792,10 +792,10 @@ void pop_fetch_mail(void)
   url = p = safe_calloc(strlen(PopHost) + 7, sizeof(char));
   if (url_check_scheme(PopHost) == U_UNKNOWN)
   {
-    strcpy(url, "pop://"); /* __STRCPY_CHECKED__ */
+    strcpy(url, "pop://");
     p = strchr(url, '\0');
   }
-  strcpy(p, PopHost); /* __STRCPY_CHECKED__ */
+  strcpy(p, PopHost);
 
   ret = pop_parse_path(url, &acct);
   FREE(&url);

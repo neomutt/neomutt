@@ -137,7 +137,7 @@ static void rfc2231_free_parameter(struct rfc2231_parameter **p)
   {
     FREE(&(*p)->attribute);
     FREE(&(*p)->value);
-    FREE(p); /* __FREE_CHECKED__ */
+    FREE(p);
   }
 }
 
@@ -174,7 +174,7 @@ static void rfc2231_join_continuations(PARAMETER **head, struct rfc2231_paramete
       vl = strlen(par->value);
 
       safe_realloc(&value, l + vl + 1);
-      strcpy(value + l, par->value); /* __STRCPY_CHECKED__ */
+      strcpy(value + l, par->value);
       l += vl;
 
       q = par->next;
@@ -330,7 +330,7 @@ int rfc2231_encode_string(char **pd)
   if (encode)
   {
     e = safe_malloc(dlen + 2 * ext + strlen(charset) + 3);
-    sprintf(e, "%s''", charset); /* __SPRINTF_CHECKED__ */
+    sprintf(e, "%s''", charset);
     t = e + strlen(e);
     for (s = d, slen = dlen; slen; s++, slen--)
       if (*s < 0x20 || *s >= 0x7f || strchr(MimeSpecials, *s) || strchr("*'%", *s))
@@ -344,12 +344,12 @@ int rfc2231_encode_string(char **pd)
 
     if (d != *pd)
       FREE(&d);
-    FREE(pd); /* __FREE_CHECKED__ */
+    FREE(pd);
     *pd = e;
   }
   else if (d != *pd)
   {
-    FREE(pd); /* __FREE_CHECKED__ */
+    FREE(pd);
     *pd = d;
   }
 

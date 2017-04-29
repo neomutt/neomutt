@@ -133,7 +133,7 @@ static void *hcache_bdb_fetch(void *vctx, const char *key, size_t keylen)
 
 static void hcache_bdb_free(void *vctx, void **data)
 {
-  FREE(data); /* __FREE_CHECKED__ */
+  FREE(data);
 }
 
 static int hcache_bdb_store(void *vctx, const char *key, size_t keylen, void *data, size_t dlen)
@@ -181,7 +181,7 @@ static void hcache_bdb_close(void **vctx)
   mx_unlock_file(ctx->lockfile, ctx->fd, 0);
   close(ctx->fd);
   unlink(ctx->lockfile);
-  FREE(vctx); /* __FREE_CHECKED__ */
+  FREE(vctx);
 }
 
 static const char *hcache_bdb_backend(void)

@@ -262,7 +262,7 @@ static void hcache_lmdb_close(void **vctx)
   }
 
   mdb_env_close(ctx->env);
-  FREE(vctx); /* __FREE_CHECKED__ */
+  FREE(vctx);
 }
 
 static const char *hcache_lmdb_backend(void)

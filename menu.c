@@ -796,7 +796,7 @@ void mutt_menu_destroy(MUTTMENU **p)
     FREE(&(*p)->dialog);
   }
 
-  FREE(p); /* __FREE_CHECKED__ */
+  FREE(p);
 }
 
 static MUTTMENU *get_current_menu(void)

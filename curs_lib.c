@@ -912,7 +912,7 @@ int _mutt_enter_fname(const char *prompt, char *buf, size_t blen, int buffy,
   {
     char *pc = safe_malloc(mutt_strlen(prompt) + 3);
 
-    sprintf(pc, "%s: ", prompt); /* __SPRINTF_CHECKED__ */
+    sprintf(pc, "%s: ", prompt);
     mutt_unget_event(ch.op ? 0 : ch.ch, ch.op ? ch.op : 0);
     if (_mutt_get_field(pc, buf, blen, (buffy ? MUTT_EFILE : MUTT_FILE) | MUTT_CLEAR,
                         multiple, files, numfiles) != 0)

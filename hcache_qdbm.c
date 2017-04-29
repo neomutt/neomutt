@@ -46,7 +46,7 @@ static void *hcache_qdbm_fetch(void *ctx, const char *key, size_t keylen)
 
 static void hcache_qdbm_free(void *ctx, void **data)
 {
-  FREE(data); /* __FREE_CHECKED__ */
+  FREE(data);
 }
 
 static int hcache_qdbm_store(void *ctx, const char *key, size_t keylen, void *data, size_t dlen)

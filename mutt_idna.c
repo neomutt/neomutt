@@ -173,7 +173,7 @@ static char *intl_to_local(char *orig_user, char *orig_domain, int flags)
   }
 
   mailbox = safe_malloc(mutt_strlen(local_user) + mutt_strlen(local_domain) + 2);
-  sprintf(mailbox, "%s@%s", NONULL(local_user), NONULL(local_domain)); /* __SPRINTF_CHECKED__ */
+  sprintf(mailbox, "%s@%s", NONULL(local_user), NONULL(local_domain));
 
 cleanup:
   FREE(&local_user);
@@ -211,7 +211,7 @@ static char *local_to_intl(char *user, char *domain)
 #endif /* HAVE_LIBIDN */
 
   mailbox = safe_malloc(mutt_strlen(intl_user) + mutt_strlen(intl_domain) + 2);
-  sprintf(mailbox, "%s@%s", NONULL(intl_user), NONULL(intl_domain)); /* __SPRINTF_CHECKED__ */
+  sprintf(mailbox, "%s@%s", NONULL(intl_user), NONULL(intl_domain));
 
 cleanup:
   FREE(&intl_user);

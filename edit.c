@@ -121,7 +121,7 @@ static int be_barf_file(const char *path, char **buf, int buflen)
   FILE *f = NULL;
   int i;
 
-  if ((f = fopen(path, "w")) == NULL) /* __FOPEN_CHECKED__ */
+  if ((f = fopen(path, "w")) == NULL)
   {
     addstr(strerror(errno));
     addch('\n');
@@ -161,7 +161,7 @@ static char **be_include_messages(char *msg, char **buf, int *bufmax,
         setlocale(LC_TIME, NONULL(AttributionLocale));
         mutt_make_string(tmp, sizeof(tmp) - 1, Attribution, Context, Context->hdrs[n]);
         setlocale(LC_TIME, "");
-        strcat(tmp, "\n"); /* __STRCAT_CHECKED__ */
+        strcat(tmp, "\n");
       }
 
       if (*bufmax == *buflen)
