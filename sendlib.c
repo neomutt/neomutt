@@ -2244,7 +2244,7 @@ static int send_msg(const char *path, char **args, const char *msg, char **tempf
           _exit(S_ERR);
       }
 
-      execvp(path, args);
+      execvpe(path, args, mutt_envlist());
       _exit(S_ERR);
     }
     else if (pid == -1)
