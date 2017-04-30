@@ -3271,6 +3271,12 @@ See  <xref linkend="mailbox-hook"/> for more details.
 </para>
 
 <para>
+Note that execution of mbox-hooks is dependent on the <link
+linkend="move">$move</link> configuration variable.  If set to
+<quote>no</quote> (the default), mbox-hooks will not be executed.
+</para>
+
+<para>
 Unlike some of the other <emphasis>hook</emphasis> commands, only the
 <emphasis>first</emphasis> matching regexp is used (it is not possible
 to save read mail in more than a single mailbox).
