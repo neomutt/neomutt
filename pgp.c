@@ -114,10 +114,7 @@ int pgp_use_gpg_agent (void)
     return 0;
 
   if ((tty = ttyname(0)))
-  {
-    setenv("GPG_TTY", tty, 0);
     mutt_envlist_set ("GPG_TTY", tty, 0);
-  }
 
   return 1;
 }
