@@ -56,14 +56,6 @@
 #define PATH_MAX _POSIX_PATH_MAX
 #endif
 
-#ifndef __bool_true_false_are_defined
-#define boot int
-#define _Bool int
-#define false 0
-#define true(!false)
-#define __bool_true_false_are_defined 1
-#endif
-
 #ifndef HAVE_WC_FUNCS
 #ifdef MB_LEN_MAX
 #undef MB_LEN_MAX

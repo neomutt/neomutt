@@ -1,7 +1,7 @@
 /**
  * Copyright (C) 1996-2007 Michael R. Elkins <me@mutt.org>
  * Copyright (C) 1999-2007 Thomas Roessler <roessler@does-not-exist.org>
- * Copyright (C) 2016-2017 Richard Russon
+ * Copyright (C) 2016-2017 Richard Russon <rich@flatcap.org>
  *
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software

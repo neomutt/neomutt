@@ -82,7 +82,7 @@ static void print_fingerprint(pgp_key_t p)
     return;
 
   printf("fpr:::::::::%s:\n", p->fingerprint);
-} /* print_fingerprint() */
+}
 
 static void pgpring_dump_signatures(pgp_sig_t *sig)
 {
@@ -214,7 +214,7 @@ static void pgp_make_pgp2_fingerprint(unsigned char *buff, unsigned char *digest
   md5_process_bytes(buff, size, &ctx);
 
   md5_finish_ctx(&ctx, digest);
-} /* pgp_make_pgp2_fingerprint() */
+}
 
 static char *binary_fingerprint_to_string(unsigned char *buff, size_t length)
 {

@@ -586,8 +586,6 @@ if test "$gnutls_prefix" != "no" && test x"$need_ssl" != xyes; then
 		[AC_MSG_ERROR([could not find libgnutls])])
 fi
 
-AM_CONDITIONAL(USE_SSL, test x$need_ssl = xyes)
-
 AC_ARG_WITH(sasl, AS_HELP_STRING([--with-sasl@<:@=PFX@:>@],[Use SASL network security library]),
 	[
 	if test "$with_sasl" != "no"; then
