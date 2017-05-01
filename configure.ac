@@ -72,7 +72,7 @@ fi
 AC_SUBST([DEBUGGER])
 
 AH_TEMPLATE([sig_atomic_t],
-	[/* Define to `int' if <signal.h> doesn't define.])
+	[Define to `int' if <signal.h> doesn't define.])
 AH_TEMPLATE([HAVE_START_COLOR],
 	[Define if you have start_color, as a function or macro.])
 AH_TEMPLATE([HAVE_TYPEAHEAD],
@@ -456,28 +456,14 @@ AC_CHECK_FUNCS(fgets_unlocked fgetc_unlocked)
 AC_CHECK_FUNCS(strcasecmp strncasecmp setenv strdup strsep strtok_r mkdtemp)
 
 AC_MSG_CHECKING(for sig_atomic_t in signal.h)
-AC_EGREP_HEADER(sig_atomic_t,signal.h,
+AC_EGREP_HEADER(volatile.*sig_atomic_t,signal.h,
 	[
-		ac_cv_type_sig_atomic_t=yes;
-		AC_EGREP_HEADER(volatile.*sig_atomic_t,
-			signal.h,
-			[
-				is_sig_atomic_t_volatile=yes;
-				AC_MSG_RESULT([yes, volatile])
-			], [
-				is_sig_atomic_t_volatile=no;
-				AC_MSG_RESULT([yes, non volatile])
-			])
+		AC_MSG_RESULT([yes, volatile])
+		AC_DEFINE(SIG_ATOMIC_VOLATILE_T, sig_atomic_t)
 	], [
-		AC_MSG_RESULT(no)
-		AC_CHECK_TYPE(sig_atomic_t, int)
-		is_sig_atomic_t_volatile=no
+		AC_MSG_RESULT([yes, non volatile])
+		AC_DEFINE(SIG_ATOMIC_VOLATILE_T, [volatile sig_atomic_t])
 	])
-if test $is_sig_atomic_t_volatile = 'yes'; then
-	AC_DEFINE(SIG_ATOMIC_VOLATILE_T, sig_atomic_t)
-else
-	AC_DEFINE(SIG_ATOMIC_VOLATILE_T, [volatile sig_atomic_t])
-fi
 
 AC_CHECK_DECLS([sys_siglist],[],[],[#include <signal.h>
 /* NetBSD declares sys_siglist in unistd.h.  */
