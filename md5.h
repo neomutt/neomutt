@@ -26,15 +26,12 @@
 #define _MUTT_MD5_H 1
 
 #include <stdio.h>
-
+#include <sys/types.h>
 #ifdef HAVE_INTTYPES_H
 #include <inttypes.h>
 #endif
 #if defined(HAVE_STDINT_H) || defined(_LIBC)
 #include <stdint.h>
-#endif
-#ifdef HAVE_SYS_TYPES_H
-#include <sys/types.h>
 #endif
 
 #ifndef __GNUC_PREREQ
