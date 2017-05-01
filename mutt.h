@@ -31,13 +31,10 @@
 #include <sys/stat.h>
 #include <sys/types.h>
 #include <time.h>
+#include <unistd.h>
 #include "charset.h"
 #include "hash.h"
 #include "rfc822.h"
-
-#ifdef HAVE_UNISTD_H
-#include <unistd.h>
-#endif
 #ifndef _POSIX_PATH_MAX
 #include <limits.h>
 #endif

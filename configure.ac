@@ -450,9 +450,7 @@ AC_EGREP_HEADER(volatile.*sig_atomic_t,signal.h,
 
 AC_CHECK_DECLS([sys_siglist],[],[],[#include <signal.h>
 /* NetBSD declares sys_siglist in unistd.h.  */
-#ifdef HAVE_UNISTD_H
 # include <unistd.h>
-#endif
 ])
 
 
