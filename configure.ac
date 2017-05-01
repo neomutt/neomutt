@@ -1078,34 +1078,6 @@ if test "$am_cv_func_iconv" != yes; then
     AC_MSG_ERROR([An iconv implementation is required])
 fi
 
-dnl (1) Some implementations of iconv won't convert from UTF-8 to UTF-8.
-dnl (2) In glibc-2.1.2 and earlier there is a bug that messes up ob and
-dnl     obl when args 2 and 3 are 0 (fixed in glibc-2.1.3).
-AC_CACHE_CHECK([whether this iconv is good enough], mutt_cv_iconv_good,
-	mutt_save_LIBS="$LIBS"
-	LIBS="$LIBS $LIBICONV"
-	AC_RUN_IFELSE([AC_LANG_SOURCE([[
-#include <iconv.h>
-int main()
-{
-  iconv_t cd;
-changequote(, )dnl
-  char buf[4];
-changequote([, ])dnl
-  char *ob;
-  size_t obl;
-  ob = buf, obl = sizeof(buf);
-  return ((cd = iconv_open("UTF-8", "UTF-8")) != (iconv_t)(-1) &&
-          (iconv(cd, 0, 0, &ob, &obl) ||
-           !(ob == buf && obl == sizeof(buf)) ||
-           iconv_close(cd)));
-}
-]])],[mutt_cv_iconv_good=yes],[mutt_cv_iconv_good=no],[mutt_cv_iconv_good=yes])
-	LIBS="$mutt_save_LIBS")
-if test "$mutt_cv_iconv_good" = no; then
-	AC_MSG_ERROR(Try using libiconv instead)
-fi
-
 dnl This is to detect implementations such as the one in glibc-2.1,
 dnl which always convert exactly but return the number of characters
 dnl converted instead of the number converted inexactly.
