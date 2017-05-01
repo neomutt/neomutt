@@ -19,10 +19,7 @@
 #ifndef _MUTT_PROTOS_H
 #define _MUTT_PROTOS_H 1
 
-#ifdef HAVE_INTTYPES_H
 #include <inttypes.h>
-#endif
-
 #include "mbyte.h"
 
 #define MoreArgs(p) (*p->dptr && *p->dptr != ';' && *p->dptr != '#')
