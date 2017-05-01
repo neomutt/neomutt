@@ -834,15 +834,6 @@ if test $mutt_cv_fcntl = yes; then
 	AC_DEFINE(USE_FCNTL,1, [ Define to use fcntl() to lock folders. ])
 fi
 
-AC_MSG_CHECKING(whether struct dirent defines d_ino)
-ac_cv_dirent_d_ino=no
-AC_LINK_IFELSE([AC_LANG_PROGRAM([[#include <dirent.h>]], [[struct dirent dp; (void)dp.d_ino]])],[ac_cv_dirent_d_ino=yes],[])
-if test x$ac_cv_dirent_d_ino = xyes; then
-	AC_DEFINE(HAVE_DIRENT_D_INO,1,
-		[Define to 1 if your system has the dirent::d_ino member])
-fi
-AC_MSG_RESULT($ac_cv_dirent_d_ino)
-
 mutt_cv_warnings=yes
 AC_ARG_ENABLE(warnings, AS_HELP_STRING([--disable-warnings],[Turn off compiler warnings (not recommended)]),
 	[if test $enableval = no; then

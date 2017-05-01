@@ -62,9 +62,7 @@ struct maildir
   HEADER *h;
   char *canon_fname;
   unsigned header_parsed : 1;
-#ifdef HAVE_DIRENT_D_INO
   ino_t inode;
-#endif /* HAVE_DIRENT_D_INO */
   struct maildir *next;
 };
 
@@ -840,9 +838,7 @@ static int maildir_parse_dir(CONTEXT *ctx, struct maildir ***last,
 
     entry = safe_calloc(sizeof(struct maildir), 1);
     entry->h = h;
-#ifdef HAVE_DIRENT_D_INO
     entry->inode = de->d_ino;
-#endif /* HAVE_DIRENT_D_INO */
     **last = entry;
     *last = &entry->next;
   }
@@ -911,12 +907,10 @@ static size_t maildir_hcache_keylen(const char *fn)
 }
 #endif
 
-#ifdef HAVE_DIRENT_D_INO
 static int md_cmp_inode(struct maildir *a, struct maildir *b)
 {
   return a->inode - b->inode;
 }
-#endif
 
 static int md_cmp_path(struct maildir *a, struct maildir *b)
 {
@@ -1056,7 +1050,6 @@ static void mh_sort_natural(CONTEXT *ctx, struct maildir **md)
   *md = maildir_sort(*md, (size_t) -1, md_cmp_path);
 }
 
-#ifdef HAVE_DIRENT_D_INO
 static struct maildir *skip_duplicates(struct maildir *p, struct maildir **last)
 {
   /*
@@ -1076,7 +1069,6 @@ static struct maildir *skip_duplicates(struct maildir *p, struct maildir **last)
   }
   return p;
 }
-#endif
 
 /*
  * This function does the second parsing pass
@@ -1086,9 +1078,7 @@ static void maildir_delayed_parsing(CONTEXT *ctx, struct maildir **md, progress_
   struct maildir *p, *last = NULL;
   char fn[_POSIX_PATH_MAX];
   int count;
-#ifdef HAVE_DIRENT_D_INO
   int sort = 0;
-#endif
 #ifdef USE_HCACHE
   header_cache_t *hc = NULL;
   void *data = NULL;
@@ -1099,7 +1089,6 @@ static void maildir_delayed_parsing(CONTEXT *ctx, struct maildir **md, progress_
   int ret;
 #endif
 
-#ifdef HAVE_DIRENT_D_INO
 #define DO_SORT()                                                              \
   do                                                                           \
   {                                                                            \
@@ -1116,9 +1105,6 @@ static void maildir_delayed_parsing(CONTEXT *ctx, struct maildir **md, progress_
       snprintf(fn, sizeof(fn), "%s/%s", ctx->path, p->h->path);                \
     }                                                                          \
   } while (0)
-#else
-#define DO_SORT() /* nothing */
-#endif
 
 #ifdef USE_HCACHE
   hc = mutt_hcache_open(HeaderCache, ctx->path, NULL);
