@@ -42,9 +42,6 @@
 #include "pgplib.h"
 #include "pgppacket.h"
 #include "sha1.h"
-#ifdef HAVE_GETOPT_H
-#include <getopt.h>
-#endif
 
 extern char *optarg;
 extern int optind;

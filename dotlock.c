@@ -37,9 +37,6 @@
 #include <time.h>
 #include <unistd.h>
 #include "dotlock.h"
-#ifdef HAVE_GETOPT_H
-#include <getopt.h>
-#endif
 #ifndef _POSIX_PATH_MAX
 #include <limits.h>
 #endif

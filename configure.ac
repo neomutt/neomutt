@@ -458,8 +458,6 @@ AC_CHECK_DECLS([sys_siglist],[],[],[#include <signal.h>
 
 AC_REPLACE_FUNCS([wcscasecmp strcasestr])
 
-AC_CHECK_HEADERS(getopt.h)
-
 dnl Set the atime of files
 AC_CHECK_FUNCS(futimens)
 

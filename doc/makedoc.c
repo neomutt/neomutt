@@ -36,9 +36,6 @@
 #ifdef HAVE_UNISTD_H
 #include <unistd.h>
 #endif
-#ifdef HAVE_GETOPT_H
-#include <getopt.h>
-#endif
 
 #ifndef HAVE_STRERROR
 #define strerror(x) ((x) > 0 && (x) < sys_nerr) ? sys_errlist[(x)] : 0
