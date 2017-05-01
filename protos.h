@@ -434,25 +434,7 @@ pattern_t *mutt_pattern_comp(/* const */ char *s, int flags, BUFFER *err);
 void mutt_check_simple(char *s, size_t len, const char *simple);
 void mutt_pattern_free(pattern_t **pat);
 
-/* ----------------------------------------------------------------------------
- * Prototypes for broken systems
- */
-
-/* HP-UX, ConvexOS and UNIXware don't have this macro */
-#ifndef S_ISLNK
-#define S_ISLNK(x) (((x) &S_IFMT) == S_IFLNK ? 1 : 0)
-#endif
-
 int getdnsdomainname(char *, size_t);
-
-/* According to SCO support, this is how to detect SCO */
-#if defined(_M_UNIX) || defined(MUTT_OS)
-#define SCO
-#endif
-
-#ifdef _AIX
-int setegid(gid_t);
-#endif /* _AIX */
 
 /* unsorted */
 void ci_bounce_message(HEADER *h);
