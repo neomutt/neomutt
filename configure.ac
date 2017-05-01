@@ -1078,37 +1078,6 @@ if test "$am_cv_func_iconv" != yes; then
     AC_MSG_ERROR([An iconv implementation is required])
 fi
 
-dnl This is to detect implementations such as the one in glibc-2.1,
-dnl which always convert exactly but return the number of characters
-dnl converted instead of the number converted inexactly.
-AC_CACHE_CHECK([whether iconv is non-transcribing], mutt_cv_iconv_nontrans,
-	mutt_save_LIBS="$LIBS"
-	LIBS="$LIBS $LIBICONV"
-	AC_RUN_IFELSE([AC_LANG_SOURCE([[
-#include <iconv.h>
-#include <string.h>
-int main()
-{
-  iconv_t cd;
-  const char *ib;
-  char *ob;
-  size_t ibl, obl;
-  const char *s = "\304\211";
-changequote(, )dnl
-  char t[3];
-changequote([, ])dnl
-  ib = s, ibl = 2, ob = t, obl = 3;
-  return ((cd = iconv_open("UTF-8", "UTF-8")) == (iconv_t)(-1) ||
-          iconv(cd, &ib, &ibl, &ob, &obl));
-}
-]])],[mutt_cv_iconv_nontrans=no],[mutt_cv_iconv_nontrans=yes],[mutt_cv_iconv_nontrans=no])
-	LIBS="$mutt_save_LIBS")
-if test "$mutt_cv_iconv_nontrans" = yes; then
-	AC_DEFINE(ICONV_NONTRANS, 1)
-else
-	AC_DEFINE(ICONV_NONTRANS, 0)
-fi
-
 AC_ARG_WITH(idn, AS_HELP_STRING([--with-idn=@<:@PFX@:>@],[Use GNU libidn for internationalized domain names]),
 		[
 		if test "$with_idn" != "no"; then

@@ -673,7 +673,7 @@ static size_t convert_file_to(FILE *file, const char *fromcode, int ncodes,
     ib = bufi;
     ob = bufu, obl = sizeof(bufu);
     n = iconv(cd1, ibl ? &ib : 0, &ibl, &ob, &obl);
-    assert(n == (size_t)(-1) || !n || ICONV_NONTRANS);
+    assert(n == (size_t)(-1) || !n);
     if (n == (size_t)(-1) && ((errno != EINVAL && errno != E2BIG) || ib == bufi))
     {
       assert(errno == EILSEQ || (errno == EINVAL && ib == bufi && ibl < sizeof(bufi)));
