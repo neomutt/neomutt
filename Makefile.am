@@ -32,13 +32,13 @@ distdir = neo$(PACKAGE)-$(VERSION)
 BUILT_SOURCES = keymap_defs.h keymap_alldefs.h patchlist.c git_ver.h conststrings.c
 
 bin_PROGRAMS = mutt $(DOTLOCK_TARGET) $(PGPAUX_TARGET)
-mutt_SOURCES = addrbook.c alias.c ascii.c attach.c base64.c bcache.c browser.c buffer.c \
+mutt_SOURCES = account.c addrbook.c alias.c ascii.c attach.c base64.c bcache.c browser.c buffer.c \
 	buffy.c charset.c color.c commands.c complete.c compose.c compress.c copy.c \
 	crypt_mod.c crypt_mod.h crypt.c cryptglue.c curs_lib.c curs_main.c \
 	date.c edit.c editmsg.c enter.c filter.c flags.c from.c getdomain.c \
 	group.c handler.c hash.c hdrline.c headers.c help.c history.c hook.c \
 	init.c keymap.c lib.c main.c mbox.c mbyte.c md5.c menu.c mh.c muttlib.c \
-	mutt_idna.c mutt_sasl_plain.c mx.c pager.c parse.c pattern.c \
+	mutt_idna.c mutt_sasl_plain.c mutt_socket.c mutt_tunnel.c mx.c pager.c parse.c pattern.c \
 	postpone.c query.c recvattach.c recvcmd.c rfc1524.c rfc2047.c \
 	rfc2231.c rfc3676.c rfc822.c safe_asprintf.c score.c send.c sendlib.c \
 	sidebar.c signal.c sort.c status.c system.c thread.c url.c version.c
@@ -59,12 +59,12 @@ DEFS=-DPKGDATADIR=\"$(pkgdatadir)\" -DSYSCONFDIR=\"$(sysconfdir)\" \
 
 AM_CPPFLAGS=-I. -I$(top_srcdir) $(GPGME_CFLAGS)
 
-EXTRA_mutt_SOURCES = account.c browser.h \
+EXTRA_mutt_SOURCES = browser.h \
 	crypt_gpgme.c crypt_mod_pgp_classic.c crypt_mod_pgp_gpgme.c \
 	crypt_mod_smime_classic.c crypt_mod_smime_gpgme.c dotlock.c \
 	gnupgparse.c mbyte.h mutt_idna.c mutt_idna.h \
-	mutt_lua.c mutt_sasl.c mutt_notmuch.c mutt_socket.c mutt_ssl.c mutt_ssl_gnutls.c \
-	mutt_tunnel.c newsrc.c nntp.c pgp.c pgpinvoke.c pgpkey.c pgplib.c \
+	mutt_lua.c mutt_sasl.c mutt_notmuch.c mutt_ssl.c mutt_ssl_gnutls.c \
+	newsrc.c nntp.c pgp.c pgpinvoke.c pgpkey.c pgplib.c \
 	pgpmicalg.c pgppacket.c pop.c pop_auth.c pop_lib.c remailer.c \
 	remailer.h resize.c sha1.c smime.c smtp.c url.h utf8.c wcwidth.c
 

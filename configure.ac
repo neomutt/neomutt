@@ -246,8 +246,9 @@ AS_IF([test x$use_smime != "xno"], [
 
 AC_DEFINE(USE_COMPRESSED, 1, [Define to enable compressed folders support.])
 AC_DEFINE(USE_IMAP, 1, [Define if you want support for the IMAP protocol.])
-need_socket="yes"
 AC_DEFINE(USE_SIDEBAR, 1, [Define if you want support for the sidebar.])
+AC_DEFINE(USE_SOCKET,1,
+	[ Include code for socket support. Set automatically if you enable POP3 or IMAP ])
 
 dnl --enable-lua
 AS_IF([test x$use_lua = "xyes"], [
@@ -496,8 +497,6 @@ AC_ARG_WITH(domain, AS_HELP_STRING([--with-domain=DOMAIN],[Specify your DNS doma
 		fi
 	fi])
 
-need_socket="no"
-
 dnl -- socket dependencies --
 
 dnl getaddrinfo/getaddrinfo_a is used by getdomain.c, and requires libnsl and
@@ -511,30 +510,21 @@ AS_IF([test x$use_pop = "xyes"], [
 	AC_DEFINE(USE_POP, 1, [Define if you want support for the POP3 protocol.])
 	MUTT_LIB_OBJECTS="$MUTT_LIB_OBJECTS pop.o pop_lib.o pop_auth.o"
 	need_pop="yes"
-	need_socket="yes"
 ])
 
 AS_IF([test x$use_nntp = "xyes"], [
 	AC_DEFINE(USE_NNTP, 1, [Define if you want support for the NNTP protocol.])
 	MUTT_LIB_OBJECTS="$MUTT_LIB_OBJECTS nntp.o newsrc.o"
 	need_nntp="yes"
-	need_socket="yes"
 ])
 
 
 AS_IF([test x$use_smtp = "xyes"], [
 	AC_DEFINE(USE_SMTP, 1, [Include internal SMTP relay support])
 	MUTT_LIB_OBJECTS="$MUTT_LIB_OBJECTS smtp.o"
-	need_socket="yes"
 ])
 
 dnl -- end socket dependencies --
-
-if test "$need_socket" = "yes"; then
-	AC_DEFINE(USE_SOCKET,1,
-		[ Include code for socket support. Set automatically if you enable POP3 or IMAP ])
-	MUTT_LIB_OBJECTS="$MUTT_LIB_OBJECTS account.o mutt_socket.o mutt_tunnel.o"
-fi
 
 dnl -- imap dependencies --
 
@@ -562,79 +552,71 @@ dnl -- end imap dependencies --
 
 AC_ARG_WITH(ssl, AS_HELP_STRING([--with-ssl@<:@=PFX@:>@],[Enable TLS support using OpenSSL]),
 [	if test "$with_ssl" != "no"; then
-		if test "$need_socket" != "yes"; then
-			AC_MSG_WARN([SSL support is only useful with POP, IMAP or SMTP support])
-		else
-			if test "$with_ssl" != "yes"; then
-				LDFLAGS="$LDFLAGS -L$withval/lib"
-				CPPFLAGS="$CPPFLAGS -I$withval/include"
-			fi
-			saved_LIBS="$LIBS"
-
-			crypto_libs=""
-			AC_CHECK_LIB(z, deflate, [crypto_libs=-lz])
-			AC_CHECK_LIB(crypto, X509_STORE_CTX_new,
-				[crypto_libs="-lcrypto $crypto_libs"],
-				AC_MSG_ERROR([Unable to find SSL library]), [$crypto_libs])
-			AC_CHECK_LIB(ssl, SSL_new,,
-				AC_MSG_ERROR([Unable to find SSL library]), [$crypto_libs])
-
-			LIBS="$LIBS $crypto_libs"
-			AC_CHECK_FUNCS(RAND_status RAND_egd)
-			AC_CHECK_DECLS([SSL_set_mode, SSL_MODE_AUTO_RETRY],,
-				AC_MSG_ERROR([Unable to find decent SSL header]), [[#include <openssl/ssl.h>]])
-
-			AC_CHECK_DECL([X509_V_FLAG_PARTIAL_CHAIN],
-				AC_DEFINE(HAVE_SSL_PARTIAL_CHAIN,1,[ Define if OpenSSL supports partial chains. ]),,
-				[[#include <openssl/x509_vfy.h>]])
-
-			AC_DEFINE(USE_SSL,1,[ Define if you want support for SSL. ])
-			AC_DEFINE(USE_SSL_OPENSSL,1,[ Define if you want support for SSL via OpenSSL. ])
-			LIBS="$saved_LIBS"
-			MUTTLIBS="$MUTTLIBS -lssl $crypto_libs"
-			MUTT_LIB_OBJECTS="$MUTT_LIB_OBJECTS mutt_ssl.o"
-			need_ssl=yes
+		if test "$with_ssl" != "yes"; then
+			LDFLAGS="$LDFLAGS -L$withval/lib"
+			CPPFLAGS="$CPPFLAGS -I$withval/include"
 		fi
+		saved_LIBS="$LIBS"
+
+		crypto_libs=""
+		AC_CHECK_LIB(z, deflate, [crypto_libs=-lz])
+		AC_CHECK_LIB(crypto, X509_STORE_CTX_new,
+			[crypto_libs="-lcrypto $crypto_libs"],
+			AC_MSG_ERROR([Unable to find SSL library]), [$crypto_libs])
+		AC_CHECK_LIB(ssl, SSL_new,,
+			AC_MSG_ERROR([Unable to find SSL library]), [$crypto_libs])
+
+		LIBS="$LIBS $crypto_libs"
+		AC_CHECK_FUNCS(RAND_status RAND_egd)
+		AC_CHECK_DECLS([SSL_set_mode, SSL_MODE_AUTO_RETRY],,
+			AC_MSG_ERROR([Unable to find decent SSL header]), [[#include <openssl/ssl.h>]])
+
+		AC_CHECK_DECL([X509_V_FLAG_PARTIAL_CHAIN],
+			AC_DEFINE(HAVE_SSL_PARTIAL_CHAIN,1,[ Define if OpenSSL supports partial chains. ]),,
+			[[#include <openssl/x509_vfy.h>]])
+
+		AC_DEFINE(USE_SSL,1,[ Define if you want support for SSL. ])
+		AC_DEFINE(USE_SSL_OPENSSL,1,[ Define if you want support for SSL via OpenSSL. ])
+		LIBS="$saved_LIBS"
+		MUTTLIBS="$MUTTLIBS -lssl $crypto_libs"
+		MUTT_LIB_OBJECTS="$MUTT_LIB_OBJECTS mutt_ssl.o"
+		need_ssl=yes
 	fi
 ])
 
 AC_ARG_WITH([gnutls], AS_HELP_STRING([--with-gnutls@<:@=PFX@:>@],[enable TLS support using gnutls]),
 	[gnutls_prefix="$withval"], [gnutls_prefix="no"])
 if test "$gnutls_prefix" != "no" && test x"$need_ssl" != xyes; then
-	if test "$need_socket" != "yes"; then
-		AC_MSG_WARN([SSL support is only useful with POP, IMAP or SMTP support])
-	else
-		if test "$gnutls_prefix" != "yes"; then
-			LDFLAGS="$LDFLAGS -L$gnutls_prefix/lib"
-			CPPFLAGS="$CPPFLAGS -I$gnutls_prefix/include"
-		fi
-		saved_LIBS="$LIBS"
-
-		AC_CHECK_LIB(gnutls, gnutls_check_version,
-			[dnl GNUTLS found
-			AC_CHECK_DECLS([GNUTLS_VERIFY_DISABLE_TIME_CHECKS], [], [],
-				[[#include <gnutls/x509.h>]])
-
-			LIBS="$LIBS -lgnutls"
-			AC_CHECK_FUNCS(gnutls_priority_set_direct)
-			AC_CHECK_TYPES([gnutls_certificate_credentials_t,
-				gnutls_certificate_status_t,
-				gnutls_datum_t,
-				gnutls_digest_algorithm_t,
-				gnutls_session_t,
-				gnutls_transport_ptr_t,
-				gnutls_x509_crt_t], [], [], [[#include <gnutls/gnutls.h>]])
-
-			LIBS="$saved_LIBS"
-			MUTTLIBS="$MUTTLIBS -lgnutls"
-
-			AC_DEFINE(USE_SSL, 1, [ Define if you want support for SSL. ])
-			AC_DEFINE(USE_SSL_GNUTLS, 1, [ Define if you want support for SSL via GNUTLS. ])
-
-			MUTT_LIB_OBJECTS="$MUTT_LIB_OBJECTS mutt_ssl_gnutls.o"
-			need_ssl=yes],
-			[AC_MSG_ERROR([could not find libgnutls])])
+	if test "$gnutls_prefix" != "yes"; then
+		LDFLAGS="$LDFLAGS -L$gnutls_prefix/lib"
+		CPPFLAGS="$CPPFLAGS -I$gnutls_prefix/include"
 	fi
+	saved_LIBS="$LIBS"
+
+	AC_CHECK_LIB(gnutls, gnutls_check_version,
+		[dnl GNUTLS found
+		AC_CHECK_DECLS([GNUTLS_VERIFY_DISABLE_TIME_CHECKS], [], [],
+			[[#include <gnutls/x509.h>]])
+
+		LIBS="$LIBS -lgnutls"
+		AC_CHECK_FUNCS(gnutls_priority_set_direct)
+		AC_CHECK_TYPES([gnutls_certificate_credentials_t,
+			gnutls_certificate_status_t,
+			gnutls_datum_t,
+			gnutls_digest_algorithm_t,
+			gnutls_session_t,
+			gnutls_transport_ptr_t,
+			gnutls_x509_crt_t], [], [], [[#include <gnutls/gnutls.h>]])
+
+		LIBS="$saved_LIBS"
+		MUTTLIBS="$MUTTLIBS -lgnutls"
+
+		AC_DEFINE(USE_SSL, 1, [ Define if you want support for SSL. ])
+		AC_DEFINE(USE_SSL_GNUTLS, 1, [ Define if you want support for SSL via GNUTLS. ])
+
+		MUTT_LIB_OBJECTS="$MUTT_LIB_OBJECTS mutt_ssl_gnutls.o"
+		need_ssl=yes],
+		[AC_MSG_ERROR([could not find libgnutls])])
 fi
 
 AM_CONDITIONAL(USE_SSL, test x$need_ssl = xyes)
@@ -642,10 +624,6 @@ AM_CONDITIONAL(USE_SSL, test x$need_ssl = xyes)
 AC_ARG_WITH(sasl, AS_HELP_STRING([--with-sasl@<:@=PFX@:>@],[Use SASL network security library]),
 	[
 	if test "$with_sasl" != "no"; then
-		if test "$need_socket" != "yes"; then
-			AC_MSG_ERROR([SASL support is only useful with POP or IMAP support])
-		fi
-
 		if test "$with_sasl" != "yes"; then
 			CPPFLAGS="$CPPFLAGS -I$with_sasl/include"
 			LDFLAGS="$LDFLAGS -L$with_sasl/lib"
