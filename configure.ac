@@ -134,7 +134,6 @@ AS_IF([test x$enable_everything = "xyes"], [
 	use_smime="yes"
 	use_notmuch="yes"
 	use_pop="yes"
-	use_imap="yes"
 	use_nntp="yes"
 	use_smtp="yes"
 	use_lua="yes"
@@ -150,7 +149,6 @@ AS_IF([test x$enable_everything = "xyes"], [
 	use_smime="no"
 	use_notmuch="no"
 	use_pop="no"
-	use_imap="no"
 	use_nntp="no"
 	use_smtp="no"
 	use_lua="no"
@@ -200,10 +198,6 @@ AC_ARG_ENABLE(pop,
 	AS_HELP_STRING([--enable-pop], [Enable POP3 support]),
 	[use_pop=$enableval])
 
-AC_ARG_ENABLE(imap,
-	AS_HELP_STRING([--enable-imap], [Enable IMAP support]),
-	[use_imap=$enableval])
-
 AC_ARG_ENABLE(nntp,
 	AC_HELP_STRING([--enable-nntp], [Enable NNTP support]),
 	[use_nntp=$enableval])
@@ -251,6 +245,10 @@ AS_IF([test x$use_smime != "xno"], [
 ])
 
 AC_DEFINE(USE_COMPRESSED, 1, [Define to enable compressed folders support.])
+AC_DEFINE(USE_IMAP, 1, [Define if you want support for the IMAP protocol.])
+need_imap="yes"
+need_socket="yes"
+need_md5="yes"
 AC_DEFINE(USE_SIDEBAR, 1, [Define if you want support for the sidebar.])
 
 dnl --enable-lua
@@ -518,16 +516,6 @@ AS_IF([test x$use_pop = "xyes"], [
 	need_socket="yes"
 	need_md5="yes"
 ])
-
-AS_IF([test x$use_imap = "xyes"], [
-	AC_DEFINE(USE_IMAP, 1, [Define if you want support for the IMAP protocol.])
-	LIBIMAP="-Limap -limap"
-	LIBIMAPDEPS="\$(top_srcdir)/imap/imap.h imap/libimap.a"
-	need_imap="yes"
-	need_socket="yes"
-	need_md5="yes"
-])
-AM_CONDITIONAL(BUILD_IMAP, test x$need_imap = xyes)
 
 AS_IF([test x$use_nntp = "xyes"], [
 	AC_DEFINE(USE_NNTP, 1, [Define if you want support for the NNTP protocol.])
@@ -986,8 +974,6 @@ fi
 AC_SUBST(MUTT_MD5)
 AC_SUBST(MUTTLIBS)
 AC_SUBST(MUTT_LIB_OBJECTS)
-AC_SUBST(LIBIMAP)
-AC_SUBST(LIBIMAPDEPS)
 AC_SUBST(HCACHE_LIBS)
 
 dnl -- iconv/gettext --
@@ -1131,7 +1117,6 @@ AC_MSG_NOTICE([Summary of build options:
   Lua:               $use_lua
 
   POP3:              $use_pop
-  IMAP:              $use_imap
   NNTP:              $use_nntp
   SMTP:              $use_smtp
 ])

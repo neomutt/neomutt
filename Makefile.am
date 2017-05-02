@@ -7,12 +7,12 @@ EXTRA_PROGRAMS = mutt_dotlock pgpring pgpewrap mutt_md5
 
 # Test the .tar file by building everything
 AM_DISTCHECK_CONFIGURE_FLAGS = --enable-debug \
-	--enable-gpgme --enable-imap --enable-nntp --enable-notmuch \
+	--enable-gpgme --enable-nntp --enable-notmuch \
 	--enable-pop --enable-smtp --with-bdb --with-gdbm \
 	--with-gnutls --with-gss --with-kyotocabinet --with-lmdb --with-qdbm \
 	--with-sasl --with-tokyocabinet
 
-SUBDIRS = m4 contrib hcache
+SUBDIRS = m4 contrib hcache imap
 
 if BUILD_DOC
 SUBDIRS += doc
@@ -20,10 +20,6 @@ endif
 
 if BUILD_PO
 SUBDIRS += po
-endif
-
-if BUILD_IMAP
-SUBDIRS += imap
 endif
 
 bin_SCRIPTS = $(SMIMEAUX_TARGET)
@@ -48,6 +44,9 @@ mutt_SOURCES = addrbook.c alias.c ascii.c attach.c base64.c browser.c buffer.c \
 	sidebar.c signal.c sort.c status.c system.c thread.c url.c version.c
 
 nodist_mutt_SOURCES = $(BUILT_SOURCES)
+
+LIBIMAP = -Limap -limap
+LIBIMAPDEPS = $(top_srcdir)/imap/imap.h imap/libimap.a
 
 mutt_LDADD = $(MUTT_LIB_OBJECTS) $(LIBOBJS) $(LIBIMAP) $(MUTTLIBS) \
 	$(INTLLIBS) $(LIBICONV) $(GPGME_LIBS) $(HCACHE_LIBS)
