@@ -1398,11 +1398,7 @@ void _mutt_select_file(char *f, size_t flen, int flags, char ***files, int *numf
           }
         }
 
-#ifdef USE_NNTP
-        if (buffy || option(OPTNEWS))
-#else
-        if (buffy)
-#endif
+        if (buffy || option(OPTNEWS)) /* USE_NNTP */
         {
           strfcpy(f, state.entry[menu->current].name, flen);
           mutt_expand_path(f, flen);
