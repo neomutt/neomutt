@@ -32,7 +32,7 @@ distdir = neo$(PACKAGE)-$(VERSION)
 BUILT_SOURCES = keymap_defs.h keymap_alldefs.h patchlist.c git_ver.h conststrings.c
 
 bin_PROGRAMS = mutt $(DOTLOCK_TARGET) $(PGPAUX_TARGET)
-mutt_SOURCES = addrbook.c alias.c ascii.c attach.c base64.c browser.c buffer.c \
+mutt_SOURCES = addrbook.c alias.c ascii.c attach.c base64.c bcache.c browser.c buffer.c \
 	buffy.c charset.c color.c commands.c complete.c compose.c compress.c copy.c \
 	crypt_mod.c crypt_mod.h crypt.c cryptglue.c curs_lib.c curs_main.c \
 	date.c edit.c editmsg.c enter.c filter.c flags.c from.c getdomain.c \
@@ -59,7 +59,7 @@ DEFS=-DPKGDATADIR=\"$(pkgdatadir)\" -DSYSCONFDIR=\"$(sysconfdir)\" \
 
 AM_CPPFLAGS=-I. -I$(top_srcdir) $(GPGME_CFLAGS)
 
-EXTRA_mutt_SOURCES = account.c bcache.c bcache.h browser.h \
+EXTRA_mutt_SOURCES = account.c browser.h \
 	crypt_gpgme.c crypt_mod_pgp_classic.c crypt_mod_pgp_gpgme.c \
 	crypt_mod_smime_classic.c crypt_mod_smime_gpgme.c dotlock.c \
 	gnupgparse.c mbyte.h mutt_idna.c mutt_idna.h \
@@ -68,7 +68,7 @@ EXTRA_mutt_SOURCES = account.c bcache.c bcache.h browser.h \
 	pgpmicalg.c pgppacket.c pop.c pop_auth.c pop_lib.c remailer.c \
 	remailer.h resize.c sha1.c smime.c smtp.c url.h utf8.c wcwidth.c
 
-EXTRA_DIST = account.h ascii.h attach.h browser.h buffer.h buffy.h ChangeLog \
+EXTRA_DIST = account.h ascii.h attach.h bcache.h browser.h buffer.h buffy.h ChangeLog \
 	ChangeLog.neomutt ChangeLog.nntp charset.h compress.h config.rpath \
 	copy.h COPYRIGHT crypt_gpgme.h crypthash.h depcomp dotlock.h extlib.c \
 	filter.h functions.h gen_defs globals.h group.h hash.h \

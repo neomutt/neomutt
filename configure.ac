@@ -246,7 +246,6 @@ AS_IF([test x$use_smime != "xno"], [
 
 AC_DEFINE(USE_COMPRESSED, 1, [Define to enable compressed folders support.])
 AC_DEFINE(USE_IMAP, 1, [Define if you want support for the IMAP protocol.])
-need_imap="yes"
 need_socket="yes"
 AC_DEFINE(USE_SIDEBAR, 1, [Define if you want support for the sidebar.])
 
@@ -529,10 +528,6 @@ AS_IF([test x$use_smtp = "xyes"], [
 	need_socket="yes"
 ])
 
-if test x"$need_imap" = xyes -o x"$need_pop" = xyes -o x"$need_nntp" = xyes; then
-	MUTT_LIB_OBJECTS="$MUTT_LIB_OBJECTS bcache.o"
-fi
-
 dnl -- end socket dependencies --
 
 if test "$need_socket" = "yes"; then
@@ -546,24 +541,20 @@ dnl -- imap dependencies --
 AC_ARG_WITH(gss, AS_HELP_STRING([--with-gss@<:@=PFX@:>@],[Compile in GSSAPI authentication for IMAP]),
 	gss_prefix="$withval", gss_prefix="no")
 if test "$gss_prefix" != "no"; then
-	if test "$need_imap" = "yes"; then
-		MUTT_AM_PATH_GSSAPI(gss_prefix)
-		AC_MSG_CHECKING(GSSAPI implementation)
-		AC_MSG_RESULT($GSSAPI_IMPL)
-		if test "$GSSAPI_IMPL" = "none"; then
-			AC_CACHE_SAVE
-			AC_MSG_RESULT([GSSAPI libraries not found])
-		fi
-		if test "$GSSAPI_IMPL" = "Heimdal"; then
-			AC_DEFINE(HAVE_HEIMDAL,1,[ Define if your GSSAPI implementation is Heimdal ])
-		fi
-		CPPFLAGS="$CPPFLAGS $GSSAPI_CFLAGS"
-		MUTTLIBS="$MUTTLIBS $GSSAPI_LIBS"
-		AC_DEFINE(USE_GSS,1,[ Define if you have GSSAPI libraries available ])
-		need_gss="yes"
-	else
-		AC_MSG_WARN([GSS was requested but IMAP is not enabled])
+	MUTT_AM_PATH_GSSAPI(gss_prefix)
+	AC_MSG_CHECKING(GSSAPI implementation)
+	AC_MSG_RESULT($GSSAPI_IMPL)
+	if test "$GSSAPI_IMPL" = "none"; then
+		AC_CACHE_SAVE
+		AC_MSG_RESULT([GSSAPI libraries not found])
 	fi
+	if test "$GSSAPI_IMPL" = "Heimdal"; then
+		AC_DEFINE(HAVE_HEIMDAL,1,[ Define if your GSSAPI implementation is Heimdal ])
+	fi
+	CPPFLAGS="$CPPFLAGS $GSSAPI_CFLAGS"
+	MUTTLIBS="$MUTTLIBS $GSSAPI_LIBS"
+	AC_DEFINE(USE_GSS,1,[ Define if you have GSSAPI libraries available ])
+	need_gss="yes"
 fi
 AM_CONDITIONAL(USE_GSS, test x$need_gss = xyes)
 
