@@ -11,9 +11,11 @@ EXTRA_DIST = language.txt language50.txt  \
 	iconv/README \
 	iconv/make.sh \
 	vim-keys \
-	keybase
+	keybase \
+	lua \
+	hcache-bench
 
-CONTRIB_DIRS = vim-keys keybase
+CONTRIB_DIRS = vim-keys keybase lua hcache-bench
 
 install-data-local:
 	$(INSTALL) -d -m 755 $(DESTDIR)$(docdir)/samples $(DESTDIR)$(docdir)/samples/iconv

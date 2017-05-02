@@ -33,9 +33,7 @@ EXTRA_DIST = dotlock.man		\
 	makedoc.c makedoc_defs.h 	\
 	mutt.css mutt.xsl html.xsl chunk.xsl \
 	$(BUILT_DISTFILES) neomutt-syntax.vim \
-	mutt-1.7.0-syntax.vim 
-
-
+	mutt-1.7.0-syntax.vim
 
 CHUNKED_DOCFILES = index.html intro.html gettingstarted.html \
 	configuration.html mimesupport.html advancedusage.html \
@@ -149,7 +147,7 @@ sortcheck: manual.xml
 
 clean-local:
 	rm -f *~ *.html *.orig *.rej  stamp-doc-* *.ps mutt.1 smime_keys.1 muttrc.man pgpewrap.1 pgpring.1
-	rm -f *.aux *.log *.tex *.out neomutt-syntax.vim
+	rm -f *.aux *.log *.tex *.out
 
 DISTCLEANFILES=manual.txt manual.html manual.xml manual.pdf html \
 	       instdoc Muttrc
