@@ -225,7 +225,7 @@ char *safe_strdup(const char *s)
   char *p = NULL;
   size_t l;
 
-  if (!s || !*s)
+  if (!s)
     return 0;
   l = strlen(s) + 1;
   p = safe_malloc(l);
