@@ -27,9 +27,9 @@
     pattern matching language for selecting groups of messages.</para>
 
     <sect1 id="homepage">
-      <title>Mutt Home Page</title>
-      <para>The official homepage can be found at
-      <ulink url="http://www.mutt.org/">http://www.mutt.org/</ulink>.</para>
+      <title>NeoMutt Home Page</title>
+      <para>The homepage can be found at
+      <ulink url="https://www.neomutt.org/">https://www.neomutt.org/</ulink>.</para>
     </sect1>
 
     <sect1 id="mailinglists">
@@ -37,7 +37,7 @@
       <itemizedlist>
         <listitem>
           <para>
-            <email>neomutt-users@neomutt.org</email>— help, bug reports and
+            <email>neomutt-users@neomutt.org</email> — help, bug reports and
             feature requests. To subscribe to this list, please send a mail to
             <email>neomutt-users-request@neomutt.org</email> with the subject
             "subscribe".
@@ -45,7 +45,7 @@
         </listitem>
         <listitem>
           <para>
-            <email>neomutt-devel@neomutt.org</email>— development mailing list.
+            <email>neomutt-devel@neomutt.org</email> — development mailing list.
             To subscribe to this list, please send a mail to
             <email>neomutt-devel-request@neomutt.org</email> with the subject
             "subscribe".
@@ -54,50 +54,22 @@
       </itemizedlist>
     </sect1>
 
-    <sect1 id="distribution">
-      <title>Getting Mutt</title>
-      <para>Mutt releases can be downloaded from
-      <ulink url="ftp://ftp.mutt.org/mutt/">ftp://ftp.mutt.org/mutt/</ulink>.
-      For a list of mirror sites, please refer to
-      <ulink url="http://www.mutt.org/download.html">
-      http://www.mutt.org/download.html</ulink>.</para>
-      <para>For nightly tarballs and version control access, please refer to
-      the
-      <ulink url="http://dev.mutt.org/">Mutt development site</ulink>.</para>
-    </sect1>
-
     <sect1 id="irc">
-      <title>Mutt Online Resources</title>
+      <title>NeoMutt Online Resources</title>
       <variablelist>
         <varlistentry>
-          <term>Bug Tracking System</term>
+          <term>Issue Tracking System</term>
           <listitem>
-            <para>The official Mutt bug tracking system can be found at
-            <ulink url="http://bugs.mutt.org/">
-            http://bugs.mutt.org/</ulink></para>
-          </listitem>
-        </varlistentry>
-        <varlistentry>
-          <term>Wiki</term>
-          <listitem>
-            <para>An (unofficial) wiki can be found at
-            <ulink url="http://wiki.mutt.org/">
-            http://wiki.mutt.org/</ulink>.</para>
+            <para>Bugs may be reported on the devel mailing list, or on GitHub:
+            <ulink url="https://github.com/neomutt/neomutt/issues">https://github.com/neomutt/neomutt/issues</ulink></para>
           </listitem>
         </varlistentry>
         <varlistentry>
           <term>IRC</term>
           <listitem>
             <para>For the IRC user community, visit channel
-            <emphasis>#mutt</emphasis>on
-            <ulink url="http://freenode.net/">irc.freenode.net</ulink>.</para>
-          </listitem>
-        </varlistentry>
-        <varlistentry>
-          <term>USENET</term>
-          <listitem>
-            <para>For USENET, see the newsgroup
-            <ulink url="news:comp.mail.mutt">comp.mail.mutt</ulink>.</para>
+            <emphasis>#neomutt</emphasis>on
+            <ulink url="https://webchat.freenode.net">irc.freenode.net</ulink>.</para>
           </listitem>
         </varlistentry>
       </variablelist>
@@ -114,8 +86,8 @@
       help improve and continue to maintain stale translations.</para>
       <para>For contributing code patches for new features and bug fixes,
       please refer to the developer pages at
-      <ulink url="http://dev.mutt.org/">http://dev.mutt.org/</ulink>for more
-      details.</para>
+      <ulink url="https://www.neomutt.org/dev.html">https://www.neomutt.org/dev.html</ulink>
+      for more details.</para>
     </sect1>
 
     <sect1 id="typo">
