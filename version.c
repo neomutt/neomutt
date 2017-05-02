@@ -33,7 +33,6 @@
 
 /* #include "protos.h" */
 const char *mutt_make_version(void);
-void mutt_print_patchlist(void);
 /* #include "hcache/hcache.h" */
 const char *mutt_hcache_backend_list(void);
 
@@ -424,9 +423,6 @@ void print_version(void)
   printf("PKGDATADIR=\"%s\"\n", PKGDATADIR);
   printf("SYSCONFDIR=\"%s\"\n", SYSCONFDIR);
   printf("EXECSHELL=\"%s\"\n", EXECSHELL);
-
-  puts("");
-  mutt_print_patchlist();
 
   puts("");
   puts(_(ReachingUs));
