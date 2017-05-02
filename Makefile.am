@@ -37,7 +37,7 @@ mutt_SOURCES = addrbook.c alias.c ascii.c attach.c base64.c browser.c buffer.c \
 	crypt_mod.c crypt_mod.h crypt.c cryptglue.c curs_lib.c curs_main.c \
 	date.c edit.c editmsg.c enter.c filter.c flags.c from.c getdomain.c \
 	group.c handler.c hash.c hdrline.c headers.c help.c history.c hook.c \
-	init.c keymap.c lib.c main.c mbox.c mbyte.c menu.c mh.c muttlib.c \
+	init.c keymap.c lib.c main.c mbox.c mbyte.c md5.c menu.c mh.c muttlib.c \
 	mutt_idna.c mutt_sasl_plain.c mx.c pager.c parse.c pattern.c \
 	postpone.c query.c recvattach.c recvcmd.c rfc1524.c rfc2047.c \
 	rfc2231.c rfc3676.c rfc822.c safe_asprintf.c score.c send.c sendlib.c \
@@ -62,7 +62,7 @@ AM_CPPFLAGS=-I. -I$(top_srcdir) $(GPGME_CFLAGS)
 EXTRA_mutt_SOURCES = account.c bcache.c bcache.h browser.h \
 	crypt_gpgme.c crypt_mod_pgp_classic.c crypt_mod_pgp_gpgme.c \
 	crypt_mod_smime_classic.c crypt_mod_smime_gpgme.c dotlock.c \
-	gnupgparse.c mbyte.h md5.c mutt_idna.c mutt_idna.h \
+	gnupgparse.c mbyte.h mutt_idna.c mutt_idna.h \
 	mutt_lua.c mutt_sasl.c mutt_notmuch.c mutt_socket.c mutt_ssl.c mutt_ssl_gnutls.c \
 	mutt_tunnel.c newsrc.c nntp.c pgp.c pgpinvoke.c pgpkey.c pgplib.c \
 	pgpmicalg.c pgppacket.c pop.c pop_auth.c pop_lib.c remailer.c \
