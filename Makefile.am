@@ -8,7 +8,7 @@ EXTRA_PROGRAMS = mutt_dotlock pgpring pgpewrap mutt_md5
 # Test the .tar file by building everything
 AM_DISTCHECK_CONFIGURE_FLAGS = --enable-debug \
 	--enable-gpgme --enable-nntp --enable-notmuch \
-	--enable-pop --enable-smtp --with-bdb --with-gdbm \
+	--enable-smtp --with-bdb --with-gdbm \
 	--with-gnutls --with-gss --with-kyotocabinet --with-lmdb --with-qdbm \
 	--with-sasl --with-tokyocabinet
 
@@ -39,7 +39,7 @@ mutt_SOURCES = account.c addrbook.c alias.c ascii.c attach.c base64.c bcache.c b
 	group.c handler.c hash.c hdrline.c headers.c help.c history.c hook.c \
 	init.c keymap.c lib.c main.c mbox.c mbyte.c md5.c menu.c mh.c muttlib.c \
 	mutt_idna.c mutt_sasl_plain.c mutt_socket.c mutt_tunnel.c mx.c pager.c parse.c pattern.c \
-	postpone.c query.c recvattach.c recvcmd.c rfc1524.c rfc2047.c \
+	pop.c pop_auth.c pop_lib.c postpone.c query.c recvattach.c recvcmd.c rfc1524.c rfc2047.c \
 	rfc2231.c rfc3676.c rfc822.c safe_asprintf.c score.c send.c sendlib.c \
 	sidebar.c signal.c sort.c status.c system.c thread.c url.c version.c
 
@@ -65,7 +65,7 @@ EXTRA_mutt_SOURCES = browser.h \
 	gnupgparse.c mbyte.h mutt_idna.c mutt_idna.h \
 	mutt_lua.c mutt_sasl.c mutt_notmuch.c mutt_ssl.c mutt_ssl_gnutls.c \
 	newsrc.c nntp.c pgp.c pgpinvoke.c pgpkey.c pgplib.c \
-	pgpmicalg.c pgppacket.c pop.c pop_auth.c pop_lib.c remailer.c \
+	pgpmicalg.c pgppacket.c remailer.c \
 	remailer.h resize.c sha1.c smime.c smtp.c url.h utf8.c wcwidth.c
 
 EXTRA_DIST = account.h ascii.h attach.h bcache.h browser.h buffer.h buffy.h ChangeLog \
