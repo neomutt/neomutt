@@ -6,7 +6,7 @@ AUTOMAKE_OPTIONS = 1.6 foreign
 EXTRA_PROGRAMS = mutt_dotlock pgpring pgpewrap mutt_md5
 
 # Test the .tar file by building everything
-AM_DISTCHECK_CONFIGURE_FLAGS = --enable-compressed --enable-debug \
+AM_DISTCHECK_CONFIGURE_FLAGS = --enable-debug \
 	--enable-gpgme --enable-imap --enable-nntp --enable-notmuch \
 	--enable-pop --enable-smtp --with-bdb --with-gdbm \
 	--with-gnutls --with-gss --with-kyotocabinet --with-lmdb --with-qdbm \
@@ -37,7 +37,7 @@ BUILT_SOURCES = keymap_defs.h keymap_alldefs.h patchlist.c git_ver.h conststring
 
 bin_PROGRAMS = mutt $(DOTLOCK_TARGET) $(PGPAUX_TARGET)
 mutt_SOURCES = addrbook.c alias.c ascii.c attach.c base64.c browser.c buffer.c \
-	buffy.c charset.c color.c commands.c complete.c compose.c copy.c \
+	buffy.c charset.c color.c commands.c complete.c compose.c compress.c copy.c \
 	crypt_mod.c crypt_mod.h crypt.c cryptglue.c curs_lib.c curs_main.c \
 	date.c edit.c editmsg.c enter.c filter.c flags.c from.c getdomain.c \
 	group.c handler.c hash.c hdrline.c headers.c help.c history.c hook.c \
@@ -60,7 +60,7 @@ DEFS=-DPKGDATADIR=\"$(pkgdatadir)\" -DSYSCONFDIR=\"$(sysconfdir)\" \
 
 AM_CPPFLAGS=-I. -I$(top_srcdir) $(GPGME_CFLAGS)
 
-EXTRA_mutt_SOURCES = account.c bcache.c bcache.h browser.h compress.c \
+EXTRA_mutt_SOURCES = account.c bcache.c bcache.h browser.h \
 	crypt_gpgme.c crypt_mod_pgp_classic.c crypt_mod_pgp_gpgme.c \
 	crypt_mod_smime_classic.c crypt_mod_smime_gpgme.c dotlock.c \
 	gnupgparse.c mbyte.h md5.c mutt_idna.c mutt_idna.h \

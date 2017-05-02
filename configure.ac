@@ -132,7 +132,6 @@ AS_IF([test x$enable_everything = "xyes"], [
 	use_gpgme="yes"
 	use_pgp="yes"
 	use_smime="yes"
-	use_compressed="yes"
 	use_notmuch="yes"
 	use_pop="yes"
 	use_imap="yes"
@@ -149,7 +148,6 @@ AS_IF([test x$enable_everything = "xyes"], [
 	use_gpgme="no"
 	use_pgp="no"
 	use_smime="no"
-	use_compressed="no"
 	use_notmuch="no"
 	use_pop="no"
 	use_imap="no"
@@ -193,10 +191,6 @@ AC_ARG_ENABLE(smime,
 AC_ARG_ENABLE(lua,
 	AC_HELP_STRING([--enable-lua], [Enable lua scripting support]),
 	[use_lua=$enableval])
-
-AC_ARG_ENABLE(compressed,
-	AC_HELP_STRING([--enable-compressed], [Enable compressed folders support]),
-	[use_compressed=$enableval])
 
 AC_ARG_ENABLE(notmuch,
 	AC_HELP_STRING([--enable-notmuch], [Enable NOTMUCH support]),
@@ -256,14 +250,8 @@ AS_IF([test x$use_smime != "xno"], [
 	SMIMEAUX_TARGET="smime_keys"
 ])
 
+AC_DEFINE(USE_COMPRESSED, 1, [Define to enable compressed folders support.])
 AC_DEFINE(USE_SIDEBAR, 1, [Define if you want support for the sidebar.])
-
-dnl --enable-compressed
-AS_IF([test x$use_compressed = "xyes"], [
-	AC_DEFINE(USE_COMPRESSED, 1, [Define to enable compressed folders support.])
-	MUTT_LIB_OBJECTS="$MUTT_LIB_OBJECTS compress.o"
-])
-AM_CONDITIONAL(BUILD_COMPRESS, test x$enable_compressed = xyes)
 
 dnl --enable-lua
 AS_IF([test x$use_lua = "xyes"], [
@@ -1139,7 +1127,6 @@ AC_MSG_NOTICE([Summary of build options:
   PGP:               $use_pgp
   SMIME:             $use_smime
   Notmuch:           $use_notmuch
-  Compressed Folder: $use_compressed
   Header Cache(s):   $hcache_db_used
   Lua:               $use_lua
 
