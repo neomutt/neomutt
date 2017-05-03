@@ -92,197 +92,209 @@ struct compile_options
   int enabled;
 };
 
+/* These are sorted by the display string */
 static struct compile_options comp_opts[] = {
-#ifdef CRYPT_BACKEND_CLASSIC_PGP
-  { "CRYPT_BACKEND_CLASSIC_PGP", 1 },
-#else
-  { "CRYPT_BACKEND_CLASSIC_PGP", 0 },
-#endif
-#ifdef CRYPT_BACKEND_CLASSIC_SMIME
-  { "CRYPT_BACKEND_CLASSIC_SMIME", 1 },
-#else
-  { "CRYPT_BACKEND_CLASSIC_SMIME", 0 },
-#endif
-#ifdef CRYPT_BACKEND_GPGME
-  { "CRYPT_BACKEND_GPGME", 1 },
-#else
-  { "CRYPT_BACKEND_GPGME", 0 },
-#endif
-#ifdef DEBUG
-  { "DEBUG", 1 },
-#else
-  { "DEBUG", 0 },
-#endif
-#ifdef ENABLE_NLS
-  { "ENABLE_NLS", 1 },
-#else
-  { "ENABLE_NLS", 0 },
-#endif
-#ifdef EXACT_ADDRESS
-  { "EXACT_ADDRESS", 1 },
-#else
-  { "EXACT_ADDRESS", 0 },
-#endif
-#ifdef HOMESPOOL
-  { "HOMESPOOL", 1 },
-#else
-  { "HOMESPOOL", 0 },
-#endif
-#ifdef LOCALES_HACK
-  { "LOCALES_HACK", 1 },
-#else
-  { "LOCALES_HACK", 0 },
-#endif
-#ifdef SUN_ATTACHMENT
-  { "SUN_ATTACHMENT", 1 },
-#else
-  { "SUN_ATTACHMENT", 0 },
-#endif
+  { "attach_headers_color", 1 },
 #ifdef HAVE_BKGDSET
-  { "HAVE_BKGDSET", 1 },
+  { "bkgdset", 1 },
 #else
-  { "HAVE_BKGDSET", 0 },
+  { "bkgdset", 0 },
 #endif
 #ifdef HAVE_COLOR
-  { "HAVE_COLOR", 1 },
+  { "color", 1 },
 #else
-  { "HAVE_COLOR", 0 },
+  { "color", 0 },
+#endif
+  { "compose_to_sender", 1 },
+  { "compress", 1 },
+  { "cond_date", 1 },
+#ifdef CRYPT_BACKEND_CLASSIC_PGP
+  { "crypt_pgp", 1 },
+#else
+  { "crypt_pgp", 0 },
+#endif
+#ifdef CRYPT_BACKEND_CLASSIC_SMIME
+  { "crypt_smime", 1 },
+#else
+  { "crypt_smime", 0 },
+#endif
+#ifdef CRYPT_BACKEND_GPGME
+  { "crypt_gpgme", 1 },
+#else
+  { "crypt_gpgme", 0 },
 #endif
 #ifdef HAVE_CURS_SET
-  { "HAVE_CURS_SET", 1 },
+  { "curs_set", 1 },
 #else
-  { "HAVE_CURS_SET", 0 },
+  { "curs_set", 0 },
 #endif
-#ifdef HAVE_FUTIMENS
-  { "HAVE_FUTIMENS", 1 },
+#ifdef DEBUG
+  { "debug", 1 },
 #else
-  { "HAVE_FUTIMENS", 0 },
-#endif
-#ifdef HAVE_GETADDRINFO
-  { "HAVE_GETADDRINFO", 1 },
-#else
-  { "HAVE_GETADDRINFO", 0 },
-#endif
-#ifdef HAVE_GETSID
-  { "HAVE_GETSID", 1 },
-#else
-  { "HAVE_GETSID", 0 },
-#endif
-  { "HAVE_LANGINFO_CODESET", 1 },
-  { "HAVE_LANGINFO_YESEXPR", 1 },
-#ifdef HAVE_LIBIDN
-  { "HAVE_LIBIDN", 1 },
-#else
-  { "HAVE_LIBIDN", 0 },
-#endif
-#ifdef HAVE_META
-  { "HAVE_META", 1 },
-#else
-  { "HAVE_META", 0 },
-#endif
-  { "HAVE_REGCOMP", 1 },
-#ifdef HAVE_RESIZETERM
-  { "HAVE_RESIZETERM", 1 },
-#else
-  { "HAVE_RESIZETERM", 0 },
-#endif
-#ifdef HAVE_START_COLOR
-  { "HAVE_START_COLOR", 1 },
-#else
-  { "HAVE_START_COLOR", 0 },
-#endif
-#ifdef HAVE_TYPEAHEAD
-  { "HAVE_TYPEAHEAD", 1 },
-#else
-  { "HAVE_TYPEAHEAD", 0 },
-#endif
-#ifdef HAVE_WC_FUNCS
-  { "HAVE_WC_FUNCS", 1 },
-#else
-  { "HAVE_WC_FUNCS", 0 },
-#endif
-#ifdef ICONV_NONTRANS
-  { "ICONV_NONTRANS", 1 },
-#else
-  { "ICONV_NONTRANS", 0 },
-#endif
-#ifdef USE_COMPRESSED
-  { "USE_COMPRESSED", 1 },
+  { "debug", 0 },
 #endif
 #ifdef USE_DOTLOCK
-  { "USE_DOTLOCK", 1 },
+  { "dotlock", 1 },
 #else
-  { "USE_DOTLOCK", 0 },
+  { "dotlock", 0 },
+#endif
+#ifdef ENABLE_NLS
+  { "enable_nls", 1 },
+#else
+  { "enable_nls", 0 },
+#endif
+  { "encrypt_to_self", 1 },
+#ifdef EXACT_ADDRESS
+  { "exact_address", 1 },
+#else
+  { "exact_address", 0 },
 #endif
 #ifdef USE_FCNTL
-  { "USE_FCNTL", 1 },
+  { "fcntl", 1 },
 #else
-  { "USE_FCNTL", 0 },
+  { "fcntl", 0 },
 #endif
 #ifdef USE_FLOCK
-  { "USE_FLOCK", 1 },
+  { "flock", 1 },
 #else
-  { "USE_FLOCK", 0 },
+  { "flock", 0 },
 #endif
 #ifdef USE_FMEMOPEN
-  { "USE_FMEMOPEN", 1 },
+  { "fmemopen", 1 },
 #else
-  { "USE_FMEMOPEN", 0 },
+  { "fmemopen", 0 },
 #endif
-#ifdef USE_GSS
-  { "USE_GSS", 1 },
+  { "forgotten_attachments", 1 },
+  { "forwref", 1 },
+#ifdef HAVE_FUTIMENS
+  { "futimens", 1 },
 #else
-  { "USE_GSS", 0 },
+  { "futimens", 0 },
+#endif
+#ifdef HAVE_GETADDRINFO
+  { "getaddrinfo", 1 },
+#else
+  { "getaddrinfo", 0 },
+#endif
+  { "getsid", 1 },
+#ifdef USE_GSS
+  { "gss", 1 },
+#else
+  { "gss", 0 },
 #endif
 #ifdef USE_HCACHE
-  { "USE_HCACHE", 1 },
+  { "hcache", 1 },
 #else
-  { "USE_HCACHE", 0 },
+  { "hcache", 0 },
 #endif
-#ifdef USE_IMAP
-  { "USE_IMAP", 1 },
+#ifdef HOMESPOOL
+  { "homespool", 1 },
+#else
+  { "homespool", 0 },
+#endif
+#ifdef ICONV_NONTRANS
+  { "iconv_nontrans", 1 },
+#else
+  { "iconv_nontrans", 0 },
+#endif
+  { "ifdef", 1 },
+  { "imap", 1 },
+  { "index_color", 1 },
+  { "initials", 1 },
+  { "keywords", 1 },
+#ifdef HAVE_LIBIDN
+  { "libidn", 1 },
+#else
+  { "libidn", 0 },
+#endif
+  { "limit_current_thread", 1 },
+  { "lmdb", 1 },
+#ifdef LOCALES_HACK
+  { "locales_hack", 1 },
+#else
+  { "locales_hack", 0 },
 #endif
 #ifdef USE_LUA
-  { "USE_LUA", 1 },
+  { "lua", 1 },
 #else
-  { "USE_LUA", 0 },
+  { "lua", 0 },
 #endif
+#ifdef HAVE_META
+  { "meta", 1 },
+#else
+  { "meta", 0 },
+#endif
+#ifdef MIXMASTER
+  { "mixmaster", 1 },
+#else
+  { "mixmaster", 0 },
+#endif
+  { "multiple_fcc", 1 },
+  { "nested_if", 1 },
+  { "new_mail", 1 },
+  { "nntp", 1 },
 #ifdef USE_NOTMUCH
-  { "USE_NOTMUCH", 1 },
+  { "notmuch", 1 },
 #else
-  { "USE_NOTMUCH", 0 },
+  { "notmuch", 0 },
 #endif
-#ifdef USE_NNTP
-  { "USE_NNTP", 1 },
-#endif
-#ifdef USE_POP
-  { "USE_POP", 1 },
+  { "pop", 1 },
+  { "progress", 1 },
+  { "quasi_delete", 1 },
+  { "regcomp", 1 },
+  { "reply_with_xorig", 1 },
+#ifdef HAVE_RESIZETERM
+  { "resizeterm", 1 },
+#else
+  { "resizeterm", 0 },
 #endif
 #ifdef USE_SASL
-  { "USE_SASL", 1 },
+  { "sasl", 1 },
 #else
-  { "USE_SASL", 0 },
+  { "sasl", 0 },
 #endif
+  { "sensible_browser", 1 },
 #ifdef USE_SETGID
-  { "USE_SETGID", 1 },
+  { "setgid", 1 },
 #else
-  { "USE_SETGID", 0 },
+  { "setgid", 0 },
 #endif
-#ifdef USE_SIDEBAR
-  { "USE_SIDEBAR", 1 },
-#endif
-#ifdef USE_SMTP
-  { "USE_SMTP", 1 },
-#endif
+  { "sidebar", 1 },
+  { "skip_quoted", 1 },
+  { "smtp", 1 },
 #ifdef USE_SSL_GNUTLS
-  { "USE_SSL_GNUTLS", 1 },
+  { "ssl_gnutls", 1 },
 #else
-  { "USE_SSL_GNUTLS", 0 },
+  { "ssl_gnutls", 0 },
 #endif
 #ifdef USE_SSL_OPENSSL
-  { "USE_SSL_OPENSSL", 1 },
+  { "ssl_openssl", 1 },
 #else
-  { "USE_SSL_OPENSSL", 0 },
+  { "ssl_openssl", 0 },
+#endif
+#ifdef HAVE_START_COLOR
+  { "start_color", 1 },
+#else
+  { "start_color", 0 },
+#endif
+  { "status_color", 1 },
+#ifdef SUN_ATTACHMENT
+  { "sun_attachment", 1 },
+#else
+  { "sun_attachment", 0 },
+#endif
+  { "timeout", 1 },
+  { "tls_sni", 1 },
+  { "trash", 1 },
+#ifdef HAVE_TYPEAHEAD
+  { "typeahead", 1 },
+#else
+  { "typeahead", 0 },
+#endif
+#ifdef HAVE_WC_FUNCS
+  { "wc_funcs", 1 },
+#else
+  { "wc_funcs", 0 },
 #endif
   { NULL, 0 },
 };
@@ -293,7 +305,7 @@ static struct compile_options comp_opts[] = {
  * The configure script lets uses enable/disable features.
  * This shows the Mutt user which features are/aren't available.
  *
- * The output is of the form: "+ENABLED_FEATURE -DISABLED_FEATURE" and is
+ * The output is of the form: "+enabled_feature -disabled_feature" and is
  * wrapped to SCREEN_WIDTH characters.
  */
 static void print_compile_options(void)
@@ -301,15 +313,16 @@ static void print_compile_options(void)
   int i;
   char c;
   int len;
-  int used = 0;
+  int used = 2;
 
+  printf("  ");
   for (i = 0; comp_opts[i].name; i++)
   {
     len = strlen(comp_opts[i].name) + 2; /* +/- and a space */
     if ((used + len) > SCREEN_WIDTH)
     {
-      used = 0;
-      puts("");
+      used = 2;
+      printf("\n  ");
     }
     used += len;
     c = comp_opts[i].enabled ? '+' : '-';
@@ -402,27 +415,18 @@ void print_version(void)
 
 #ifdef DOMAIN
   printf("DOMAIN=\"%s\"\n", DOMAIN);
-#else
-  puts("-DOMAIN");
 #endif
-
-#ifdef MIXMASTER
-  printf("MIXMASTER=\"%s\"\n", MIXMASTER);
-#else
-  puts("-MIXMASTER");
-#endif
-
+  printf("EXECSHELL=\"%s\"\n", EXECSHELL);
 #ifdef ISPELL
   printf("ISPELL=\"%s\"\n", ISPELL);
-#else
-  puts("-ISPELL");
 #endif
-
-  printf("SENDMAIL=\"%s\"\n", SENDMAIL);
   printf("MAILPATH=\"%s\"\n", MAILPATH);
+#ifdef MIXMASTER
+  printf("MIXMASTER=\"%s\"\n", MIXMASTER);
+#endif
   printf("PKGDATADIR=\"%s\"\n", PKGDATADIR);
+  printf("SENDMAIL=\"%s\"\n", SENDMAIL);
   printf("SYSCONFDIR=\"%s\"\n", SYSCONFDIR);
-  printf("EXECSHELL=\"%s\"\n", EXECSHELL);
 
   puts("");
   puts(_(ReachingUs));
