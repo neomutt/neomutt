@@ -114,11 +114,6 @@ static struct compile_options comp_opts[] = {
 #else
   { "DEBUG", 0 },
 #endif
-#ifdef DL_STANDALONE
-  { "DL_STANDALONE", 1 },
-#else
-  { "DL_STANDALONE", 0 },
-#endif
 #ifdef ENABLE_NLS
   { "ENABLE_NLS", 1 },
 #else

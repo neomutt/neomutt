@@ -16,13 +16,6 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-/*
- * This module either be compiled into Mutt, or it can be
- * built as a separate program. For building it
- * separately, define the DL_STANDALONE preprocessor
- * macro.
- */
-
 #include "config.h"
 #include <dirent.h>
 #include <errno.h>
@@ -40,13 +33,9 @@
 #ifndef _POSIX_PATH_MAX
 #include <limits.h>
 #endif
-#ifdef DL_STANDALONE
 #include "git_ver.h"
-#endif
 
 #define MAXLINKS 1024 /* maximum link depth */
-
-#ifdef DL_STANDALONE
 
 #define LONG_STRING 1024
 #define MAXLOCKATTEMPT 5
@@ -74,23 +63,10 @@
 
 #endif
 
-#else /* DL_STANDALONE */
-
-#ifdef USE_SETGID
-#error Do not try to compile dotlock as a mutt module when requiring egid switching!
-#endif
-
-#include "mutt.h"
-#include "mx.h"
-
-#endif /* DL_STANDALONE */
-
 static int DotlockFlags;
 static int Retry = MAXLOCKATTEMPT;
 
-#ifdef DL_STANDALONE
 struct utsname utsname;
-#endif
 
 #ifdef USE_SETGID
 static gid_t UserGid;
@@ -103,7 +79,6 @@ static gid_t MailGid;
  * return value.
  */
 
-#ifdef DL_STANDALONE
 /*
  * Determine our effective group ID, and drop
  * privileges.
@@ -128,7 +103,6 @@ static int dotlock_init_privs(void)
 
   return 0;
 }
-#endif /* DL_STANDALONE */
 
 /*
  * Get privileges
@@ -174,7 +148,6 @@ static void END_PRIVILEGED(void)
 #endif
 }
 
-#ifdef DL_STANDALONE
 /*
  * Usage information.
  *
@@ -201,7 +174,6 @@ static void usage(const char *av0)
 
   exit(DL_EX_ERROR);
 }
-#endif
 
 /*
  * Access checking: Let's avoid to lock other users' mail
@@ -449,12 +421,7 @@ static int dotlock_lock(const char *realpath)
   time_t t;
 
   snprintf(nfslockfile, sizeof(nfslockfile), "%s.%s.%d", realpath,
-#ifdef DL_STANDALONE
-           utsname.nodename,
-#else
-           Hostname,
-#endif
-           (int) getpid());
+           utsname.nodename, (int) getpid());
   snprintf(lockfile, sizeof(lockfile), "%s.lock", realpath);
 
   BEGIN_PRIVILEGED();
@@ -605,38 +572,6 @@ static int dotlock_dispatch(const char *f, int fd)
     return dotlock_lock(realpath);
 }
 
-#ifndef DL_STANDALONE
-/*
- * This function is intended to be invoked from within
- * mutt instead of mx.c's invoke_dotlock ().
- */
-int dotlock_invoke(const char *path, int fd, int flags, int retry)
-{
-  int currdir;
-  int r;
-
-  DotlockFlags = flags;
-
-  if ((currdir = open(".", O_RDONLY)) == -1)
-    return DL_EX_ERROR;
-
-  if (!(DotlockFlags & DL_FL_RETRY) || retry)
-    Retry = MAXLOCKATTEMPT;
-  else
-    Retry = 0;
-
-  r = dotlock_dispatch(path, fd);
-
-  fchdir(currdir);
-  close(currdir);
-
-  return r;
-}
-#endif /* !DL_STANDALONE */
-
-
-#ifdef DL_STANDALONE
-
 #define check_flags(a)                                                         \
   if (a & DL_FL_ACTIONS)                                                       \
   usage(argv[0])
@@ -700,4 +635,3 @@ int main(int argc, char **argv)
 
   return dotlock_dispatch(argv[optind], -1);
 }
-#endif

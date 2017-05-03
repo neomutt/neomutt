@@ -103,9 +103,6 @@ struct mx_ops *mx_get_ops(int magic)
  * path - file to lock
  * retry - should retry if unable to lock?
  */
-
-#ifdef DL_STANDALONE
-
 static int invoke_dotlock(const char *path, int dummy, int flags, int retry)
 {
   char cmd[LONG_STRING + _POSIX_PATH_MAX];
@@ -124,12 +121,6 @@ static int invoke_dotlock(const char *path, int dummy, int flags, int retry)
 
   return mutt_system(cmd);
 }
-
-#else
-
-#define invoke_dotlock dotlock_invoke
-
-#endif
 
 static int dotlock_file(const char *path, int fd, int retry)
 {

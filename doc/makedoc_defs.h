@@ -52,9 +52,6 @@
 #ifndef USE_DOTLOCK
 #define USE_DOTLOCK
 #endif
-#ifndef DL_STANDALONE
-#define DL_STANDALONE
-#endif
 #ifndef USE_HCACHE
 #define USE_HCACHE
 #endif

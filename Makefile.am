@@ -32,6 +32,9 @@ if BUILD_HCACHE
 HCVERSION = hcversion.h
 endif
 
+DOTLOCK_GROUP='mail'
+DOTLOCK_PERMISSION='2755'
+
 distdir = neo$(PACKAGE)-$(VERSION)
 
 BUILT_SOURCES = keymap_defs.h keymap_alldefs.h patchlist.c git_ver.h conststrings.c hcachever.sh $(HCVERSION)

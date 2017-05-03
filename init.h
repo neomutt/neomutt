@@ -712,7 +712,7 @@ struct option_t MuttVars[] = {
   ** is viewed it is passed as standard input to $$display_filter, and the
   ** filtered message is read from the standard output.
   */
-#if defined(DL_STANDALONE) && defined(USE_DOTLOCK)
+#ifdef USE_DOTLOCK
   { "dotlock_program",  DT_PATH, R_NONE, UL &MuttDotlock, UL BINDIR "/mutt_dotlock" },
   /*
   ** .pp
