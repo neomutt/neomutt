@@ -174,16 +174,8 @@ static struct compile_options comp_opts[] = {
 #else
   { "HAVE_GETSID", 0 },
 #endif
-#ifdef HAVE_LANGINFO_CODESET
   { "HAVE_LANGINFO_CODESET", 1 },
-#else
-  { "HAVE_LANGINFO_CODESET", 0 },
-#endif
-#ifdef HAVE_LANGINFO_YESEXPR
   { "HAVE_LANGINFO_YESEXPR", 1 },
-#else
-  { "HAVE_LANGINFO_YESEXPR", 0 },
-#endif
 #ifdef HAVE_LIBIDN
   { "HAVE_LIBIDN", 1 },
 #else

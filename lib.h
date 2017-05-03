@@ -31,10 +31,7 @@
 #include <sys/stat.h>
 #include <sys/types.h>
 #include <time.h>
-
-#ifdef HAVE_UNISTD_H
 #include <unistd.h>
-#endif
 #ifndef _POSIX_PATH_MAX
 #include <limits.h>
 #endif

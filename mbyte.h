@@ -16,16 +16,11 @@
 #ifndef _MUTT_MBYTE_H
 #define _MUTT_MBYTE_H 1
 
-#ifdef HAVE_WC_FUNCS
-#ifdef HAVE_WCHAR_H
 #include <wchar.h>
-#endif
-#ifdef HAVE_WCTYPE_H
-#include <wctype.h>
-#endif
-#endif
 
-#ifndef HAVE_WC_FUNCS
+#ifdef HAVE_WC_FUNCS
+#include <wctype.h>
+#else
 #ifdef towupper
 #undef towupper
 #endif

@@ -20,23 +20,19 @@
 #include <ctype.h>
 #include <errno.h>
 #include <fcntl.h>
+#include <langinfo.h>
 #include <stdlib.h>
 #include <string.h>
+#include <sys/time.h>
 #include <sys/types.h>
 #include <termios.h>
+#include <time.h>
 #include <unistd.h>
 #include "mutt.h"
 #include "mbyte.h"
 #include "mutt_curses.h"
 #include "mutt_menu.h"
 #include "pager.h"
-#ifdef HAVE_SYS_TIME_H
-#include <sys/time.h>
-#endif
-#include <time.h>
-#ifdef HAVE_LANGINFO_YESEXPR
-#include <langinfo.h>
-#endif
 #ifdef HAVE_ISWBLANK
 #include <wctype.h>
 #endif
@@ -235,7 +231,6 @@ int mutt_yesorno(const char *msg, int def)
   size_t trunc_msg_len;
   int redraw = 1, prompt_lines = 1;
 
-#ifdef HAVE_LANGINFO_YESEXPR
   char *expr = NULL;
   regex_t reyes;
   regex_t reno;
@@ -249,7 +244,6 @@ int mutt_yesorno(const char *msg, int def)
              !REGCOMP(&reyes, expr, REG_NOSUB);
   reno_ok = (expr = nl_langinfo(NOEXPR)) && expr[0] == '^' &&
             !REGCOMP(&reno, expr, REG_NOSUB);
-#endif
 
   /*
    * In order to prevent the default answer to the question to wrapped
@@ -316,22 +310,13 @@ int mutt_yesorno(const char *msg, int def)
       break;
     }
 
-#ifdef HAVE_LANGINFO_YESEXPR
     answer[0] = ch.ch;
-    if (reyes_ok ? (regexec(&reyes, answer, 0, 0, 0) == 0) :
-#else
-    if (
-#endif
-                   (tolower(ch.ch) == 'y'))
+    if (reyes_ok ? (regexec(&reyes, answer, 0, 0, 0) == 0) : (tolower(ch.ch) == 'y'))
     {
       def = MUTT_YES;
       break;
     }
-    else if (
-#ifdef HAVE_LANGINFO_YESEXPR
-        reno_ok ? (regexec(&reno, answer, 0, 0, 0) == 0) :
-#endif
-                  (tolower(ch.ch) == 'n'))
+    else if (reno_ok ? (regexec(&reno, answer, 0, 0, 0) == 0) : (tolower(ch.ch) == 'n'))
     {
       def = MUTT_NO;
       break;
@@ -344,12 +329,10 @@ int mutt_yesorno(const char *msg, int def)
 
   FREE(&answer_string);
 
-#ifdef HAVE_LANGINFO_YESEXPR
   if (reyes_ok)
     regfree(&reyes);
   if (reno_ok)
     regfree(&reno);
-#endif
 
   if (MuttMessageWindow->rows != 1)
   {

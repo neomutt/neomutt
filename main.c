@@ -52,9 +52,6 @@
 #endif
 
 
-#ifdef HAVE_GETOPT_H
-#include <getopt.h>
-#endif
 #ifdef HAVE_STRINGPREP_H
 #include <stringprep.h>
 #elif defined(HAVE_IDN_STRINGPREP_H)

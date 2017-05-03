@@ -34,18 +34,19 @@ static void exit_handler(int sig)
 {
   curs_set(1);
   endwin(); /* just to be safe */
-#ifdef SYS_SIGLIST_DECLARED
+
+  /*
+   * if sys_siglist is not defined, HAVE_DECL_SYS_SIGLIST will be set to 0
+   * so we must check it with #if and not #ifdef
+   */
+#if HAVE_DECL_SYS_SIGLIST
   printf(_("%s...  Exiting.\n"), sys_siglist[sig]);
-#else
-#if (defined(__sun__) && defined(__svr4__))
+#elif (defined(__sun__) && defined(__svr4__))
   printf(_("Caught %s...  Exiting.\n"), _sys_siglist[sig]);
-#else
-#if (defined(__alpha) && defined(__osf__))
+#elif (defined(__alpha) && defined(__osf__))
   printf(_("Caught %s...  Exiting.\n"), __sys_siglist[sig]);
 #else
   printf(_("Caught signal %d...  Exiting.\n"), sig);
-#endif
-#endif
 #endif
   exit(0);
 }
