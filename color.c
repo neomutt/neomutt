@@ -106,6 +106,16 @@ static const struct mapping_t Fields[] =
   { NULL,		0 }
 };
 
+static const struct mapping_t ComposeFields[] =
+{
+  { "header",               MT_COLOR_COMPOSE_HEADER },
+  { "security_encrypt",     MT_COLOR_COMPOSE_SECURITY_ENCRYPT },
+  { "security_sign",        MT_COLOR_COMPOSE_SECURITY_SIGN },
+  { "security_both",        MT_COLOR_COMPOSE_SECURITY_BOTH },
+  { "security_none",        MT_COLOR_COMPOSE_SECURITY_NONE },
+  { NULL,                   0 }
+};
+
 #define COLOR_QUOTE_INIT	8
 
 static COLOR_LINE *mutt_new_color_line (void)
@@ -621,6 +631,22 @@ parse_object(BUFFER *buf, BUFFER *s, int *o, int *ql, BUFFER *err)
       *ql = 0;
     
     *o = MT_COLOR_QUOTED;
+  }
+  else if (!ascii_strcasecmp(buf->data, "compose"))
+  {
+    if (!MoreArgs(s))
+    {
+      strfcpy(err->data, _("Missing arguments."), err->dsize);
+      return -1;
+    }
+
+    mutt_extract_token(buf, s, 0);
+
+    if ((*o = mutt_getvaluebyname (buf->data, ComposeFields)) == -1)
+    {
+      snprintf (err->data, err->dsize, _("%s: no such object"), buf->data);
+      return (-1);
+    }
   }
   else if ((*o = mutt_getvaluebyname (buf->data, Fields)) == -1)
   {

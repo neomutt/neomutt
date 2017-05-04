@@ -110,7 +110,9 @@ static void snd_entry (char *b, size_t blen, MUTTMENU *menu, int num)
 
 static void redraw_crypt_lines (HEADER *msg)
 {
+  SETCOLOR (MT_COLOR_COMPOSE_HEADER);
   mutt_window_mvprintw (MuttIndexWindow, HDR_CRYPT, 0, TITLE_FMT, "Security: ");
+  NORMAL_COLOR;
 
   if ((WithCrypto & (APPLICATION_PGP | APPLICATION_SMIME)) == 0)
   {
@@ -119,13 +121,26 @@ static void redraw_crypt_lines (HEADER *msg)
   }
 
   if ((msg->security & (ENCRYPT | SIGN)) == (ENCRYPT | SIGN))
+  {
+    SETCOLOR (MT_COLOR_COMPOSE_SECURITY_BOTH);
     addstr (_("Sign, Encrypt"));
+  }
   else if (msg->security & ENCRYPT)
+  {
+    SETCOLOR (MT_COLOR_COMPOSE_SECURITY_ENCRYPT);
     addstr (_("Encrypt"));
+  }
   else if (msg->security & SIGN)
+  {
+    SETCOLOR (MT_COLOR_COMPOSE_SECURITY_SIGN);
     addstr (_("Sign"));
+  }
   else
+  {
+    SETCOLOR (MT_COLOR_COMPOSE_SECURITY_NONE);
     addstr (_("None"));
+  }
+  NORMAL_COLOR;
 
   if ((msg->security & (ENCRYPT | SIGN)))
   {
@@ -150,20 +165,32 @@ static void redraw_crypt_lines (HEADER *msg)
 
   if ((WithCrypto & APPLICATION_PGP)
       && (msg->security & APPLICATION_PGP) && (msg->security & SIGN))
-    printw (TITLE_FMT "%s", _("sign as: "), PgpSignAs ? PgpSignAs : _("<default>"));
+  {
+    SETCOLOR (MT_COLOR_COMPOSE_HEADER);
+    printw (TITLE_FMT, _("sign as: "));
+    NORMAL_COLOR;
+    printw ("%s", PgpSignAs ? PgpSignAs : _("<default>"));
+  }
 
   if ((WithCrypto & APPLICATION_SMIME)
-      && (msg->security & APPLICATION_SMIME) && (msg->security & SIGN)) {
-      printw (TITLE_FMT "%s", _("sign as: "), SmimeDefaultKey ? SmimeDefaultKey : _("<default>"));
+      && (msg->security & APPLICATION_SMIME) && (msg->security & SIGN))
+  {
+    SETCOLOR (MT_COLOR_COMPOSE_HEADER);
+    printw (TITLE_FMT, _("sign as: "));
+    NORMAL_COLOR;
+    printw ("%s", SmimeDefaultKey ? SmimeDefaultKey : _("<default>"));
   }
 
   if ((WithCrypto & APPLICATION_SMIME)
       && (msg->security & APPLICATION_SMIME)
       && (msg->security & ENCRYPT)
       && SmimeCryptAlg
-      && *SmimeCryptAlg) {
-    mutt_window_mvprintw (MuttIndexWindow, HDR_CRYPTINFO, 40, "%s%s", _("Encrypt with: "),
-		NONULL(SmimeCryptAlg));
+      && *SmimeCryptAlg)
+  {
+    SETCOLOR (MT_COLOR_COMPOSE_HEADER);
+    mutt_window_mvprintw (MuttIndexWindow, HDR_CRYPTINFO, 40, "%s", _("Encrypt with: "));
+    NORMAL_COLOR;
+    printw ("%s", NONULL(SmimeCryptAlg));
   }
 }
 
@@ -175,8 +202,10 @@ static void redraw_mix_line (LIST *chain)
   int c;
   char *t;
 
+  SETCOLOR (MT_COLOR_COMPOSE_HEADER);
   /* L10N: "Mix" refers to the MixMaster chain for anonymous email */
   mutt_window_mvprintw (MuttIndexWindow, HDR_MIX, 0, TITLE_FMT, _("Mix: "));
+  NORMAL_COLOR;
 
   if (!chain)
   {
@@ -243,7 +272,9 @@ static void draw_envelope_addr (int line, ADDRESS *addr)
 
   buf[0] = 0;
   rfc822_write_address (buf, sizeof (buf), addr, 1);
+  SETCOLOR (MT_COLOR_COMPOSE_HEADER);
   mutt_window_mvprintw (MuttIndexWindow, line, 0, TITLE_FMT, Prompts[line]);
+  NORMAL_COLOR;
   mutt_paddstr (W, buf);
 }
 
@@ -253,10 +284,17 @@ static void draw_envelope (HEADER *msg, char *fcc)
   draw_envelope_addr (HDR_TO, msg->env->to);
   draw_envelope_addr (HDR_CC, msg->env->cc);
   draw_envelope_addr (HDR_BCC, msg->env->bcc);
+
+  SETCOLOR (MT_COLOR_COMPOSE_HEADER);
   mutt_window_mvprintw (MuttIndexWindow, HDR_SUBJECT, 0, TITLE_FMT, Prompts[HDR_SUBJECT]);
+  NORMAL_COLOR;
   mutt_paddstr (W, NONULL (msg->env->subject));
+
   draw_envelope_addr (HDR_REPLYTO, msg->env->reply_to);
+
+  SETCOLOR (MT_COLOR_COMPOSE_HEADER);
   mutt_window_mvprintw (MuttIndexWindow, HDR_FCC, 0, TITLE_FMT, Prompts[HDR_FCC]);
+  NORMAL_COLOR;
   mutt_paddstr (W, fcc);
 
   if (WithCrypto)

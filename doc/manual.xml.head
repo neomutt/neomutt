@@ -2664,6 +2664,20 @@ silently truncated at the screen width, and are not wrapped.
 <replaceable class="parameter">pattern</replaceable>
 </arg>
 
+<command>color</command>
+<arg choice="plain">
+<option>compose</option>
+</arg>
+<arg choice="plain">
+<replaceable class="parameter">composeobject</replaceable>
+</arg>
+<arg choice="plain">
+<replaceable class="parameter">foreground</replaceable>
+</arg>
+<arg choice="plain">
+<replaceable class="parameter">background</replaceable>
+</arg>
+
 <command>uncolor</command>
 <group choice="req">
 <arg choice="plain">
@@ -2725,6 +2739,18 @@ patterns.
 <listitem><para>tilde (the <quote>~</quote> used to pad blank lines in the pager)</para></listitem>
 <listitem><para>tree (thread tree drawn in the message index and attachment menu)</para></listitem>
 <listitem><para>underline (highlighting underlined patterns in the body of messages)</para></listitem>
+</itemizedlist>
+
+<para>
+<emphasis>composeobject</emphasis> can be one of:
+</para>
+
+<itemizedlist>
+<listitem><para>header</para></listitem>
+<listitem><para>security_encrypt</para></listitem>
+<listitem><para>security_sign</para></listitem>
+<listitem><para>security_both</para></listitem>
+<listitem><para>security_none</para></listitem>
 </itemizedlist>
 
 <para>
@@ -2841,6 +2867,17 @@ command. Usage:
 <replaceable class="parameter">pattern</replaceable>
 </arg>
 
+<command>mono</command>
+<arg choice="plain">
+<option>compose</option>
+</arg>
+<arg choice="plain">
+<replaceable class="parameter">composeobject</replaceable>
+</arg>
+<arg choice="plain">
+<replaceable class="parameter">attribute</replaceable>
+</arg>
+
 <command>unmono</command>
 <group choice="req">
 <arg choice="plain">
@@ -2864,8 +2901,9 @@ command. Usage:
 </cmdsynopsis>
 
 <para>
-For <emphasis>object</emphasis>, see the <command>color</command>
-command. <emphasis>attribute</emphasis> can be one of the following:
+For <emphasis>object</emphasis> and <emphasis>composeobject</emphasis>,
+see the <command>color</command> command. <emphasis>attribute</emphasis>
+can be one of the following:
 </para>
 
 <itemizedlist>
@@ -9502,6 +9540,20 @@ The following are the commands understood by Mutt:
 <replaceable class="parameter">pattern</replaceable>
 </arg>
 
+<command><link linkend="color">color</link></command>
+<arg choice="plain">
+<option>compose</option>
+</arg>
+<arg choice="plain">
+<replaceable class="parameter">composeobject</replaceable>
+</arg>
+<arg choice="plain">
+<replaceable class="parameter">foreground</replaceable>
+</arg>
+<arg choice="plain">
+<replaceable class="parameter">background</replaceable>
+</arg>
+
 <command><link linkend="color">uncolor</link></command>
 <group choice="req">
 <arg choice="plain">
@@ -9843,6 +9895,17 @@ The following are the commands understood by Mutt:
 </arg>
 <arg choice="plain">
 <replaceable class="parameter">pattern</replaceable>
+</arg>
+
+<command><link linkend="mono">mono</link></command>
+<arg choice="plain">
+<option>compose</option>
+</arg>
+<arg choice="plain">
+<replaceable class="parameter">composeobject</replaceable>
+</arg>
+<arg choice="plain">
+<replaceable class="parameter">attribute</replaceable>
 </arg>
 
 <command><link linkend="mono">unmono</link></command>
