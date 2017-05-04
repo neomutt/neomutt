@@ -195,8 +195,6 @@ System definition for handling non-text MIME types.
 User's personal mapping between MIME types and file extensions.
 .IP "@sysconfdir@/mime.types"
 System mapping between MIME types and file extensions.
-.IP "@bindir@/mutt_dotlock"
-The privileged dotlocking program.
 .IP "@docdir@/manual.txt"
 The Mutt manual.
 .SH BUGS
@@ -229,7 +227,6 @@ GNU General Public License for more details.
 .BR mailcap (5),
 .BR maildir (5),
 .BR mbox (5),
-.BR mutt_dotlock (1),
 .BR muttrc (5),
 .BR ncurses (3),
 .BR sendmail (1),

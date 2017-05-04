@@ -76,7 +76,7 @@ static void *hcache_bdb_open(const char *path)
     return NULL;
   }
 
-  if (mx_lock_file(ctx->lockfile, ctx->fd, 1, 0, 5))
+  if (mx_lock_file(ctx->lockfile, ctx->fd, 1, 5))
     goto fail_close;
 
   ret = db_env_create(&ctx->env, 0);

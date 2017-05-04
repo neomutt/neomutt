@@ -38,10 +38,6 @@ WHERE struct Context *Context;
 WHERE char Errorbuf[STRING];
 WHERE char AttachmentMarker[STRING];
 
-#ifdef USE_DOTLOCK
-WHERE char *MuttDotlock;
-#endif
-
 WHERE struct Address *EnvFrom;
 WHERE struct Address *From;
 

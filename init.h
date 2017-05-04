@@ -720,14 +720,6 @@ struct Option MuttVars[] = {
   ** is viewed it is passed as standard input to $$display_filter, and the
   ** filtered message is read from the standard output.
   */
-#ifdef USE_DOTLOCK
-  { "dotlock_program",  DT_PATH, R_NONE, UL &MuttDotlock, UL BINDIR "/mutt_dotlock" },
-  /*
-  ** .pp
-  ** Contains the path of the \fCmutt_dotlock(8)\fP binary to be used by
-  ** mutt.
-  */
-#endif
   { "dsn_notify",       DT_STR,  R_NONE, UL &DsnNotify, UL "" },
   /*
   ** .pp
