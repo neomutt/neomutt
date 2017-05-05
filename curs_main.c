@@ -419,7 +419,6 @@ static int main_change_folder(MUTTMENU *menu, int op, char *buf, size_t bufsz,
     mutt_error(_("%s is not a mailbox."), buf);
     return -1;
   }
-  mutt_str_replace(&CurrentFolder, buf);
 
   /* keepalive failure in mutt_enter_fname may kill connection. #3028 */
   if (Context && !Context->path)
@@ -428,13 +427,14 @@ static int main_change_folder(MUTTMENU *menu, int op, char *buf, size_t bufsz,
   if (Context)
   {
     int check;
+    char *new_last_folder;
 
 #ifdef USE_COMPRESSED
     if (Context->compress_info && Context->realpath)
-      mutt_str_replace(&LastFolder, Context->realpath);
+      new_last_folder = safe_strdup(Context->realpath);
     else
 #endif
-      mutt_str_replace(&LastFolder, Context->path);
+      new_last_folder = safe_strdup(Context->path);
     *oldcount = Context ? Context->msgcount : 0;
 
     if ((check = mx_close_mailbox(Context, index_hint)) != 0)
@@ -442,12 +442,16 @@ static int main_change_folder(MUTTMENU *menu, int op, char *buf, size_t bufsz,
       if (check == MUTT_NEW_MAIL || check == MUTT_REOPENED)
         update_index(menu, Context, check, *oldcount, *index_hint);
 
+      FREE(&new_last_folder);
       set_option(OPTSEARCHINVALID);
       menu->redraw = REDRAW_INDEX | REDRAW_STATUS;
       return 0;
     }
     FREE(&Context);
+    FREE(&LastFolder);
+    LastFolder = new_last_folder;
   }
+  mutt_str_replace(&CurrentFolder, buf);
 
   mutt_sleep(0);
 
