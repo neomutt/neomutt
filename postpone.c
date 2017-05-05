@@ -189,13 +189,13 @@ static HEADER *select_msg (void)
 	  if (menu->current >= menu->top + menu->pagelen)
 	  {
 	    menu->top = menu->current;
-	    menu->redraw = REDRAW_INDEX | REDRAW_STATUS;
+	    menu->redraw |= REDRAW_INDEX | REDRAW_STATUS;
 	  }
 	  else
 	    menu->redraw |= REDRAW_MOTION_RESYNCH;
 	}
 	else
-	  menu->redraw = REDRAW_CURRENT;
+	  menu->redraw |= REDRAW_CURRENT;
 	break;
 
       case OP_GENERIC_SELECT_ENTRY:

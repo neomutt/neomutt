@@ -2489,7 +2489,7 @@ search_next:
 	mutt_set_flag (Context, extra->hdr, MUTT_PURGE, (ch == OP_PURGE_MESSAGE));
         if (option (OPTDELETEUNTAG))
 	  mutt_set_flag (Context, extra->hdr, MUTT_TAG, 0);
-	pager_menu->redraw = REDRAW_STATUS | REDRAW_INDEX;
+	pager_menu->redraw |= REDRAW_STATUS | REDRAW_INDEX;
 	if (option (OPTRESOLVE))
 	{
 	  ch = -1;
@@ -2535,7 +2535,7 @@ search_next:
 	  if (!option (OPTRESOLVE) && PagerIndexLines)
 	    pager_menu->redraw = REDRAW_FULL;
 	  else
-	    pager_menu->redraw = REDRAW_STATUS | REDRAW_INDEX;
+	    pager_menu->redraw |= REDRAW_STATUS | REDRAW_INDEX;
 	}
 	break;
 
@@ -2635,7 +2635,7 @@ search_next:
 	CHECK_ACL(MUTT_ACL_WRITE, "Cannot flag message");
 
 	mutt_set_flag (Context, extra->hdr, MUTT_FLAG, !extra->hdr->flagged);
-	pager_menu->redraw = REDRAW_STATUS | REDRAW_INDEX;
+	pager_menu->redraw |= REDRAW_STATUS | REDRAW_INDEX;
 	if (option (OPTRESOLVE))
 	{
 	  ch = -1;
@@ -2773,7 +2773,7 @@ search_next:
 	  ((Context->last_tag == extra->hdr && !extra->hdr->tagged)
 	   ? NULL : Context->last_tag);
 
-	pager_menu->redraw = REDRAW_STATUS | REDRAW_INDEX;
+	pager_menu->redraw |= REDRAW_STATUS | REDRAW_INDEX;
 	if (option (OPTRESOLVE))
 	{
 	  ch = -1;
@@ -2793,7 +2793,7 @@ search_next:
 	  mutt_set_flag (Context, extra->hdr, MUTT_READ, 1);
 	first = 0;
         Context->msgnotreadyet = -1;
-	pager_menu->redraw = REDRAW_STATUS | REDRAW_INDEX;
+	pager_menu->redraw |= REDRAW_STATUS | REDRAW_INDEX;
 	if (option (OPTRESOLVE))
 	{
 	  ch = -1;
@@ -2809,7 +2809,7 @@ search_next:
 
 	mutt_set_flag (Context, extra->hdr, MUTT_DELETE, 0);
 	mutt_set_flag (Context, extra->hdr, MUTT_PURGE, 0);
-	pager_menu->redraw = REDRAW_STATUS | REDRAW_INDEX;
+	pager_menu->redraw |= REDRAW_STATUS | REDRAW_INDEX;
 	if (option (OPTRESOLVE))
 	{
 	  ch = -1;
@@ -2841,7 +2841,7 @@ search_next:
 	  if (!option (OPTRESOLVE) && PagerIndexLines)
 	    pager_menu->redraw = REDRAW_FULL;
 	  else
-	    pager_menu->redraw = REDRAW_STATUS | REDRAW_INDEX;
+	    pager_menu->redraw |= REDRAW_STATUS | REDRAW_INDEX;
 	}
 	break;
 

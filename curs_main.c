@@ -479,7 +479,7 @@ static void resort_index (MUTTMENU *menu)
   if (menu->current < 0)
     menu->current = ci_first_message ();
 
-  menu->redraw = REDRAW_INDEX | REDRAW_STATUS;
+  menu->redraw |= REDRAW_INDEX | REDRAW_STATUS;
 }
 
 static const struct mapping_t IndexHelp[] = {
@@ -904,7 +904,7 @@ int mutt_index_menu (void)
 
 	CHECK_ATTACH;
 	mutt_pattern_func (MUTT_DELETE, _("Delete messages matching: "));
-	menu->redraw = REDRAW_INDEX | REDRAW_STATUS;
+	menu->redraw |= REDRAW_INDEX | REDRAW_STATUS;
 	break;
 
 #ifdef USE_POP
@@ -956,7 +956,6 @@ int mutt_index_menu (void)
 	  }
 	  else
 	    menu->current = 0;
-	  menu->redraw = REDRAW_INDEX | REDRAW_STATUS;
 	  if (Context->msgcount && (Sort & SORT_MASK) == SORT_THREADS)
 	    mutt_draw_tree (Context);
 	  menu->redraw = REDRAW_FULL;
@@ -1039,7 +1038,7 @@ int mutt_index_menu (void)
 	{
 	  for (j = 0; j < Context->vcount; j++)
 	    mutt_set_flag (Context, Context->hdrs[Context->v2r[j]], MUTT_TAG, 0);
-	  menu->redraw = REDRAW_STATUS | REDRAW_INDEX;
+	  menu->redraw |= REDRAW_STATUS | REDRAW_INDEX;
 	}
 	else
 	{
@@ -1049,7 +1048,7 @@ int mutt_index_menu (void)
 	    ((Context->last_tag == CURHDR && !CURHDR->tagged)
 	     ? NULL : Context->last_tag);
 
-	  menu->redraw = REDRAW_STATUS;
+	  menu->redraw |= REDRAW_STATUS;
 	  if (option (OPTRESOLVE) && menu->current < Context->vcount - 1)
 	  {
 	    menu->current++;
@@ -1065,7 +1064,7 @@ int mutt_index_menu (void)
 	CHECK_MSGCOUNT;
         CHECK_VISIBLE;
 	mutt_pattern_func (MUTT_TAG, _("Tag messages matching: "));
-	menu->redraw = REDRAW_INDEX | REDRAW_STATUS;
+	menu->redraw |= REDRAW_INDEX | REDRAW_STATUS;
 	break;
 
       case OP_MAIN_UNDELETE_PATTERN:
@@ -1077,7 +1076,7 @@ int mutt_index_menu (void)
 	CHECK_ACL(MUTT_ACL_DELETE, _("Cannot undelete message(s)"));
 
 	if (mutt_pattern_func (MUTT_UNDELETE, _("Undelete messages matching: ")) == 0)
-	  menu->redraw = REDRAW_INDEX | REDRAW_STATUS;
+	  menu->redraw |= REDRAW_INDEX | REDRAW_STATUS;
 	break;
 
       case OP_MAIN_UNTAG_PATTERN:
@@ -1085,7 +1084,7 @@ int mutt_index_menu (void)
 	CHECK_MSGCOUNT;
         CHECK_VISIBLE;
 	if (mutt_pattern_func (MUTT_UNTAG, _("Untag messages matching: ")) == 0)
-	  menu->redraw = REDRAW_INDEX | REDRAW_STATUS;
+	  menu->redraw |= REDRAW_INDEX | REDRAW_STATUS;
 	break;
 
 	/* --------------------------------------------------------------------
@@ -1271,7 +1270,7 @@ int mutt_index_menu (void)
 	      update_index (menu, Context, check, oldcount, index_hint);
 
 	    set_option (OPTSEARCHINVALID);
-	    menu->redraw = REDRAW_INDEX | REDRAW_STATUS;
+	    menu->redraw |= REDRAW_INDEX | REDRAW_STATUS;
 	    break;
 	  }
 	  FREE (&Context);
@@ -1716,13 +1715,13 @@ int mutt_index_menu (void)
 	    if ((menu->current = ci_next_undeleted (menu->current)) == -1)
 	    {
 	      menu->current = menu->oldcurrent;
-	      menu->redraw = REDRAW_CURRENT;
+	      menu->redraw |= REDRAW_CURRENT;
 	    }
 	    else
-	      menu->redraw = REDRAW_MOTION_RESYNCH;
+	      menu->redraw |= REDRAW_MOTION_RESYNCH;
 	  }
 	  else
-	    menu->redraw = REDRAW_CURRENT;
+	    menu->redraw |= REDRAW_CURRENT;
 	}
 	menu->redraw |= REDRAW_STATUS;
 	break;
@@ -1748,7 +1747,7 @@ int mutt_index_menu (void)
 		mutt_set_flag (Context, Context->hdrs[Context->v2r[j]], MUTT_READ, 1);
 	    }
 	  }
-	  menu->redraw = REDRAW_STATUS | REDRAW_INDEX;
+	  menu->redraw |= REDRAW_STATUS | REDRAW_INDEX;
 	}
 	else
 	{
@@ -1762,13 +1761,13 @@ int mutt_index_menu (void)
 	    if ((menu->current = ci_next_undeleted (menu->current)) == -1)
 	    {
 	      menu->current = menu->oldcurrent;
-	      menu->redraw = REDRAW_CURRENT;
+	      menu->redraw |= REDRAW_CURRENT;
 	    }
 	    else
-	      menu->redraw = REDRAW_MOTION_RESYNCH;
+	      menu->redraw |= REDRAW_MOTION_RESYNCH;
 	  }
 	  else
-	    menu->redraw = REDRAW_CURRENT;
+	    menu->redraw |= REDRAW_CURRENT;
 	  menu->redraw |= REDRAW_STATUS;
 	}
 	break;
@@ -1853,7 +1852,7 @@ int mutt_index_menu (void)
 
 	if (mutt_change_flag (tag ? NULL : CURHDR, (op == OP_MAIN_SET_FLAG)) == 0)
 	{
-	  menu->redraw = REDRAW_STATUS;
+	  menu->redraw |= REDRAW_STATUS;
 	  if (tag)
 	    menu->redraw |= REDRAW_INDEX;
 	  else if (option (OPTRESOLVE))
@@ -1997,7 +1996,7 @@ int mutt_index_menu (void)
           mutt_tag_set_flag (MUTT_PURGE, (op == OP_PURGE_MESSAGE));
 	  if (option (OPTDELETEUNTAG))
 	    mutt_tag_set_flag (MUTT_TAG, 0);
-	  menu->redraw = REDRAW_INDEX;
+	  menu->redraw |= REDRAW_INDEX;
 	}
 	else
 	{
@@ -2010,7 +2009,7 @@ int mutt_index_menu (void)
 	    if ((menu->current = ci_next_undeleted (menu->current)) == -1)
 	    {
 	      menu->current = menu->oldcurrent;
-	      menu->redraw = REDRAW_CURRENT;
+	      menu->redraw |= REDRAW_CURRENT;
 	    }
 	    else if (menu->menu == MENU_PAGER)
 	    {
@@ -2021,7 +2020,7 @@ int mutt_index_menu (void)
 	      menu->redraw |= REDRAW_MOTION_RESYNCH;
 	  }
 	  else
-	    menu->redraw = REDRAW_CURRENT;
+	    menu->redraw |= REDRAW_CURRENT;
 	}
 	menu->redraw |= REDRAW_STATUS;
 	break;
@@ -2046,7 +2045,7 @@ int mutt_index_menu (void)
 	  if (option (OPTRESOLVE))
 	    if ((menu->current = ci_next_undeleted (menu->current)) == -1)
 	      menu->current = menu->oldcurrent;
-	  menu->redraw = REDRAW_INDEX | REDRAW_STATUS;
+	  menu->redraw |= REDRAW_INDEX | REDRAW_STATUS;
 	}
 	break;
 
@@ -2190,7 +2189,7 @@ int mutt_index_menu (void)
 	 */
 	if (Context->magic == MUTT_IMAP && !option (OPTIMAPPEEK))
 	{
-	  menu->redraw = (tag ? REDRAW_INDEX : REDRAW_CURRENT) | REDRAW_STATUS;
+	  menu->redraw |= (tag ? REDRAW_INDEX : REDRAW_CURRENT) | REDRAW_STATUS;
 	}
 #endif
 
@@ -2208,7 +2207,7 @@ int mutt_index_menu (void)
 	 */
 	if (Context->magic == MUTT_IMAP && !option (OPTIMAPPEEK))
 	{
-	  menu->redraw = (tag ? REDRAW_INDEX : REDRAW_CURRENT) | REDRAW_STATUS;
+	  menu->redraw |= (tag ? REDRAW_INDEX : REDRAW_CURRENT) | REDRAW_STATUS;
 	}
 #endif
 
@@ -2239,7 +2238,7 @@ int mutt_index_menu (void)
 	      continue;
 	    }
 	  }
-	  menu->redraw = REDRAW_INDEX | REDRAW_STATUS;
+	  menu->redraw |= REDRAW_INDEX | REDRAW_STATUS;
 	}
 	break;
 
@@ -2344,7 +2343,7 @@ int mutt_index_menu (void)
 	    if (menu->current == -1)
 	      menu->current = menu->oldcurrent;
 	  }
-	  menu->redraw = REDRAW_INDEX | REDRAW_STATUS;
+	  menu->redraw |= REDRAW_INDEX | REDRAW_STATUS;
 	}
 	break;
 
@@ -2360,7 +2359,7 @@ int mutt_index_menu (void)
 	{
 	  mutt_tag_set_flag (MUTT_DELETE, 0);
 	  mutt_tag_set_flag (MUTT_PURGE, 0);
-	  menu->redraw = REDRAW_INDEX;
+	  menu->redraw |= REDRAW_INDEX;
 	}
 	else
 	{
@@ -2369,10 +2368,10 @@ int mutt_index_menu (void)
 	  if (option (OPTRESOLVE) && menu->current < Context->vcount - 1)
 	  {
 	    menu->current++;
-	    menu->redraw = REDRAW_MOTION_RESYNCH;
+	    menu->redraw |= REDRAW_MOTION_RESYNCH;
 	  }
 	  else
-	    menu->redraw = REDRAW_CURRENT;
+	    menu->redraw |= REDRAW_CURRENT;
 	}
 	menu->redraw |= REDRAW_STATUS;
 	break;
@@ -2403,7 +2402,7 @@ int mutt_index_menu (void)
 	    if (menu->current == -1)
 	      menu->current = menu->oldcurrent;
 	  }
-	  menu->redraw = REDRAW_INDEX | REDRAW_STATUS;
+	  menu->redraw |= REDRAW_INDEX | REDRAW_STATUS;
 	}
 	break;
 
