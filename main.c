@@ -45,12 +45,11 @@
 #include "imap/imap.h"
 #endif
 #ifdef USE_HCACHE
-#include "hcache.h"
+#include "hcache/hcache.h"
 #endif
 #ifdef USE_NNTP
 #include "nntp.h"
 #endif
-
 
 #ifdef HAVE_STRINGPREP_H
 #include <stringprep.h>

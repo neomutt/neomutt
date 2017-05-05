@@ -23,7 +23,7 @@
 #include <depot.h>
 #include <villa.h>
 #include "mutt.h"
-#include "hcache_backend.h"
+#include "backend.h"
 
 static void *hcache_qdbm_open(const char *path)
 {

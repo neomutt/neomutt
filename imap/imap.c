@@ -35,7 +35,7 @@
 #include "mx.h"
 #include "sort.h"
 #ifdef USE_HCACHE
-#include "hcache.h"
+#include "hcache/hcache.h"
 #endif
 #ifdef USE_SSL
 #include "mutt_ssl.h"

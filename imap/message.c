@@ -27,7 +27,7 @@
 #include "bcache.h"
 #include "mx.h"
 #ifdef USE_HCACHE
-#include "hcache.h"
+#include "hcache/hcache.h"
 #endif
 
 static void imap_update_context(IMAP_DATA *idata, int oldmsgcount)

@@ -21,7 +21,7 @@
 #include "config.h"
 #include <tcbdb.h>
 #include "mutt.h"
-#include "hcache_backend.h"
+#include "backend.h"
 
 static void *hcache_tokyocabinet_open(const char *path)
 {

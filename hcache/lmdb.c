@@ -20,7 +20,7 @@
 
 #include "config.h"
 #include <lmdb.h>
-#include "hcache_backend.h"
+#include "backend.h"
 #include "lib.h"
 
 /* The maximum size of the database file (2GiB).

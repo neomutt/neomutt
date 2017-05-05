@@ -27,7 +27,7 @@
 #include "mailbox.h"
 #include "mutt_socket.h"
 #ifdef USE_HCACHE
-#include "hcache.h"
+#include "hcache/hcache.h"
 #endif
 
 #define NNTP_PORT 119

@@ -45,8 +45,7 @@ conftest.c
 conftest.err
 conststrings.c
 depcomp
-hcachever.sh
-hcversion.h
+hcache/hcversion.h
 install-sh
 keymap_alldefs.h
 keymap_defs.h

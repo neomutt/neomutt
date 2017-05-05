@@ -23,7 +23,7 @@
 #include <errno.h>
 #include <fcntl.h>
 #include "mutt.h"
-#include "hcache_backend.h"
+#include "backend.h"
 #include "mx.h"
 
 typedef struct

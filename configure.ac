@@ -812,13 +812,11 @@ if test -n "$hcache_tokyocabinet" && test "$hcache_tokyocabinet" != "no"; then
 	AC_CHECK_HEADER(tcbdb.h,
 	AC_CHECK_LIB(tokyocabinet, tcbdbopen,
 		[
-			MUTTLIBS="$MUTTLIBS -ltokyocabinet"
+			HCACHE_LIBS="$HCACHE_LIBS -ltokyocabinet"
 			AC_DEFINE(HAVE_TC, 1, [Tokyo Cabinet Support])
-			MUTT_LIB_OBJECTS="$MUTT_LIB_OBJECTS hcache_tc.o"
 			hcache_db_used="tokyocabinet $hcache_db_used"
+			build_hc_tc="yes"
 		],[
-			CPPFLAGS="$OLDCPPFLAGS"
-			LDFLAGS="$OLDLDFLAGS"
 			AC_MSG_ERROR(Unable to find TokyoCabinet)
 		]),	AC_MSG_ERROR(Unable to find TokyoCabinet))
 fi
@@ -835,13 +833,11 @@ if test -n "$hcache_kyotocabinet" && test "$hcache_kyotocabinet" != "no"; then
 	AC_CHECK_HEADER(kclangc.h,
 	AC_CHECK_LIB(kyotocabinet, kcdbopen,
 		[
-			MUTTLIBS="$MUTTLIBS -lkyotocabinet"
+			HCACHE_LIBS="$HCACHE_LIBS -lkyotocabinet"
 			AC_DEFINE(HAVE_KC, 1, [Kyoto Cabinet Support])
-			MUTT_LIB_OBJECTS="$MUTT_LIB_OBJECTS hcache_kc.o"
 			hcache_db_used="kyotocabinet $hcache_db_used"
+			build_hc_kc="yes"
 		],[
-			CPPFLAGS="$OLDCPPFLAGS"
-			LDFLAGS="$OLDLDFLAGS"
 			AC_MSG_ERROR(Unable to find KyotoCabinet)
 		]),	AC_MSG_ERROR(Unable to find KyotoCabinet))
 fi
@@ -862,13 +858,11 @@ if test -n "$hcache_gdbm" && test "$hcache_gdbm" != "no"; then
 	AC_CHECK_HEADERS(gdbm.h,
 	AC_CHECK_LIB(gdbm, gdbm_open,
 		[
-			MUTTLIBS="$MUTTLIBS -lgdbm"
-			MUTT_LIB_OBJECTS="$MUTT_LIB_OBJECTS hcache_gdbm.o"
+			HCACHE_LIBS="$HCACHE_LIBS -lgdbm"
 			AC_DEFINE(HAVE_GDBM, 1, [GDBM Support])
 			hcache_db_used="gdbm $hcache_db_used"
+			build_hc_gdbm="yes"
 		],[
-			CPPFLAGS="$OLDCPPFLAGS"
-			LDFLAGS="$OLDLDFLAGS"
 			AC_MSG_ERROR(Unable to find GDBM)
 		]),	AC_MSG_ERROR(Unable to find GDBM))
 fi
@@ -893,13 +887,11 @@ if test -n "$hcache_qdbm" && test "$hcache_qdbm" != "no"; then
 	AC_CHECK_HEADERS(villa.h,
 	AC_CHECK_LIB(qdbm, vlopen,
 		[
-			MUTTLIBS="$MUTTLIBS -lqdbm"
-			MUTT_LIB_OBJECTS="$MUTT_LIB_OBJECTS hcache_qdbm.o"
+			HCACHE_LIBS="$HCACHE_LIBS -lqdbm"
 			AC_DEFINE(HAVE_QDBM, 1, [QDBM Support])
 			hcache_db_used="qdbm $hcache_db_used"
+			build_hc_qdbm="yes"
 		],[
-			CPPFLAGS="$OLDCPPFLAGS"
-			LDFLAGS="$OLDLDFLAGS"
 			AC_MSG_ERROR(Unable to find QDBM)
 		]),	AC_MSG_ERROR(Unable to find QDBM))
 fi
@@ -935,10 +927,10 @@ if test -n "$hcache_bdb" && test "$hcache_bdb" != "no"; then
 				LDFLAGS="$OLDLDFLAGS -L$BDB_LIB_DIR"
 				AC_CHECK_LIB($BDB_LIB_NAME, db_env_create,
 					[
-						MUTTLIBS="$MUTTLIBS -l$BDB_LIB_NAME"
-						MUTT_LIB_OBJECTS="$MUTT_LIB_OBJECTS hcache_bdb.o"
+						HCACHE_LIBS="$HCACHE_LIBS -l$BDB_LIB_NAME"
 						AC_DEFINE(HAVE_BDB, 1, [Berkeley DB Support])
 						hcache_db_used="bdb $hcache_db_used"
+						build_hc_bdb="yes"
 						BDB_FOUND=yes
 						break
 				],[
@@ -968,12 +960,10 @@ if test -n "$hcache_lmdb" && test "$hcache_lmdb" != "no"; then
 	AC_CHECK_LIB(lmdb, mdb_env_create,
 		[
 			AC_DEFINE(HAVE_LMDB, 1, [LMDB Support])
-			MUTTLIBS="$MUTTLIBS -llmdb"
-			MUTT_LIB_OBJECTS="$MUTT_LIB_OBJECTS hcache_lmdb.o"
+			HCACHE_LIBS="$HCACHE_LIBS -llmdb"
 			hcache_db_used="lmdb $hcache_db_used"
+			build_hc_lmdb="yes"
 		],[
-			CPPFLAGS="$OLDCPPFLAGS"
-			LDFLAGS="$OLDLDFLAGS"
 			AC_MSG_ERROR(Unable to find LMDB)
 		]),	AC_MSG_ERROR(Unable to find LMDB))
 fi
@@ -981,12 +971,19 @@ fi
 AM_CONDITIONAL(BUILD_HCACHE, test -n "$hcache_db_used")
 if test -n "$hcache_db_used"; then
 	AC_DEFINE(USE_HCACHE, 1, [Enable header caching])
-	MUTT_LIB_OBJECTS="$MUTT_LIB_OBJECTS hcache.o"
+	HCACHE_LIBS="-Lhcache -lhcache $HCACHE_LIBS"
 	need_md5="yes"
 else
 	# For outputting in the summary
 	hcache_db_used="no"
 fi
+
+AM_CONDITIONAL(BUILD_HC_BDB,  test "x$build_hc_bdb"  = "xyes")
+AM_CONDITIONAL(BUILD_HC_GDBM, test "x$build_hc_gdbm" = "xyes")
+AM_CONDITIONAL(BUILD_HC_KC,   test "x$build_hc_kc"   = "xyes")
+AM_CONDITIONAL(BUILD_HC_LMDB, test "x$build_hc_lmdb" = "xyes")
+AM_CONDITIONAL(BUILD_HC_QDBM, test "x$build_hc_qdbm" = "xyes")
+AM_CONDITIONAL(BUILD_HC_TC,   test "x$build_hc_tc"   = "xyes")
 dnl -- end cache --
 
 if test "$need_md5" = "yes"; then
@@ -999,6 +996,7 @@ AC_SUBST(MUTTLIBS)
 AC_SUBST(MUTT_LIB_OBJECTS)
 AC_SUBST(LIBIMAP)
 AC_SUBST(LIBIMAPDEPS)
+AC_SUBST(HCACHE_LIBS)
 
 dnl -- iconv/gettext --
 
@@ -1119,8 +1117,7 @@ if test x$full_doc != xno; then
 fi
 
 AC_CONFIG_FILES(Makefile contrib/Makefile doc/Makefile imap/Makefile
-	m4/Makefile po/Makefile.in
-	hcachever.sh doc/instdoc.sh)
+	m4/Makefile po/Makefile.in hcache/Makefile doc/instdoc.sh)
 AC_OUTPUT
 
 AC_MSG_NOTICE([Summary of build options:
@@ -1132,7 +1129,7 @@ AC_MSG_NOTICE([Summary of build options:
   CFlags:            ${CFLAGS} ${CPPFLAGS}
   LDFlags:           ${LDFLAGS}
   Libs:              ${LIBS}
-  Mutt libs:         ${MUTTLIBS}
+  Mutt libs:         ${MUTTLIBS} ${HCACHE_LIBS}
 
   GPGME:             $use_gpgme
   PGP:               $use_pgp

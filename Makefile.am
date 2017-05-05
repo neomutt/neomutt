@@ -12,7 +12,7 @@ AM_DISTCHECK_CONFIGURE_FLAGS = --enable-compressed --enable-debug \
 	--with-gnutls --with-gss --with-kyotocabinet --with-lmdb --with-qdbm \
 	--with-sasl --with-tokyocabinet
 
-SUBDIRS = m4 contrib
+SUBDIRS = m4 contrib hcache
 
 if BUILD_DOC
 SUBDIRS += doc
@@ -28,16 +28,12 @@ endif
 
 bin_SCRIPTS = $(SMIMEAUX_TARGET)
 
-if BUILD_HCACHE
-HCVERSION = hcversion.h
-endif
-
 DOTLOCK_GROUP='mail'
 DOTLOCK_PERMISSION='2755'
 
 distdir = neo$(PACKAGE)-$(VERSION)
 
-BUILT_SOURCES = keymap_defs.h keymap_alldefs.h patchlist.c git_ver.h conststrings.c hcachever.sh $(HCVERSION)
+BUILT_SOURCES = keymap_defs.h keymap_alldefs.h patchlist.c git_ver.h conststrings.c
 
 bin_PROGRAMS = mutt $(DOTLOCK_TARGET) $(PGPAUX_TARGET)
 mutt_SOURCES = addrbook.c alias.c ascii.c attach.c base64.c browser.c buffer.c \
@@ -54,7 +50,7 @@ mutt_SOURCES = addrbook.c alias.c ascii.c attach.c base64.c browser.c buffer.c \
 nodist_mutt_SOURCES = $(BUILT_SOURCES)
 
 mutt_LDADD = $(MUTT_LIB_OBJECTS) $(LIBOBJS) $(LIBIMAP) $(MUTTLIBS) \
-	$(INTLLIBS) $(LIBICONV) $(GPGME_LIBS)
+	$(INTLLIBS) $(LIBICONV) $(GPGME_LIBS) $(HCACHE_LIBS)
 
 mutt_DEPENDENCIES = $(MUTT_LIB_OBJECTS) $(LIBOBJS) $(LIBIMAPDEPS) \
 	$(INTLDEPS)
@@ -67,7 +63,7 @@ AM_CPPFLAGS=-I. -I$(top_srcdir) $(GPGME_CFLAGS)
 EXTRA_mutt_SOURCES = account.c bcache.c bcache.h browser.h compress.c \
 	crypt_gpgme.c crypt_mod_pgp_classic.c crypt_mod_pgp_gpgme.c \
 	crypt_mod_smime_classic.c crypt_mod_smime_gpgme.c dotlock.c \
-	gnupgparse.c hcache.c hcache.h mbyte.h md5.c mutt_idna.c mutt_idna.h \
+	gnupgparse.c mbyte.h md5.c mutt_idna.c mutt_idna.h \
 	mutt_lua.c mutt_sasl.c mutt_notmuch.c mutt_socket.c mutt_ssl.c mutt_ssl_gnutls.c \
 	mutt_tunnel.c newsrc.c nntp.c pgp.c pgpinvoke.c pgpkey.c pgplib.c \
 	pgpmicalg.c pgppacket.c pop.c pop_auth.c pop_lib.c remailer.c \
@@ -77,8 +73,7 @@ EXTRA_DIST = account.h ascii.h attach.h browser.h buffer.h buffy.h ChangeLog \
 	ChangeLog.neomutt ChangeLog.nntp charset.h compress.h config.rpath \
 	copy.h COPYRIGHT crypt_gpgme.h crypthash.h depcomp dotlock.h extlib.c \
 	filter.h functions.h gen_defs globals.h group.h hash.h \
-	hcache_backend.h hcache_bdb.c hcache_gdbm.c hcache_kc.c hcache_lmdb.c \
-	hcache_qdbm.c hcache_tc.c hcachever.sh.in history.h init.h keymap.h \
+	history.h init.h keymap.h \
 	lib.h LICENSE.md mailbox.h mapping.h mbyte.h md5.h mime.h mime.types \
 	mutt.h mutt_commands.h mutt_crypt.h mutt_curses.h mutt_idna.h \
 	mutt_lua.h mutt_menu.h mutt_notmuch.h mutt_options.h mutt_regex.h mutt_sasl.h \
@@ -154,10 +149,6 @@ git_ver.h:
 	echo 'const char *GitVer = "'$$version'";' > git_ver.h.tmp; \
 	cmp -s git_ver.h.tmp git_ver.h || mv git_ver.h.tmp git_ver.h; \
 	rm -f git_ver.h.tmp
-
-hcversion.h: $(srcdir)/mutt.h $(srcdir)/rfc822.h hcachever.sh $(MUTT_MD5)
-	( echo '#include "config.h"'; echo '#include "mutt.h"'; ) \
-	| $(CPP) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) - | sh ./hcachever.sh hcversion.h
 
 patchlist.c: $(srcdir)/PATCHES $(srcdir)/patchlist.sh
 	$(srcdir)/patchlist.sh < $(srcdir)/PATCHES > patchlist.c

@@ -36,7 +36,7 @@
 #include "mutt_ssl.h"
 #endif
 #ifdef USE_HCACHE
-#include "hcache.h"
+#include "hcache/hcache.h"
 #endif
 #ifdef USE_SASL
 #include <sasl/sasl.h>

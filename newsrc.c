@@ -38,7 +38,7 @@
 #include "rfc822.h"
 #include "sort.h"
 #ifdef USE_HCACHE
-#include "hcache.h"
+#include "hcache/hcache.h"
 #endif
 
 /* Find NNTP_DATA for given newsgroup or add it */

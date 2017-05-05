@@ -28,7 +28,7 @@
 #include <errno.h>
 #include <sys/time.h>
 #include "hcache.h"
-#include "hcache_backend.h"
+#include "backend.h"
 #include "hcversion.h"
 #include "md5.h"
 

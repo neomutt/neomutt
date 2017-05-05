@@ -27,7 +27,7 @@
 #include "mutt_curses.h"
 #include "mx.h"
 #ifdef USE_HCACHE
-#include "hcache.h"
+#include "hcache/hcache.h"
 #endif
 
 #ifdef USE_HCACHE

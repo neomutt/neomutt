@@ -60,7 +60,7 @@ void maildir_update_flags(CONTEXT *ctx, HEADER *o, HEADER *n);
 void maildir_flags(char *dest, size_t destlen, HEADER *hdr);
 
 #ifdef USE_HCACHE
-#include "hcache.h"
+#include "hcache/hcache.h"
 int mh_sync_mailbox_message(CONTEXT *ctx, int msgno, header_cache_t *hc);
 #else
 int mh_sync_mailbox_message(CONTEXT *ctx, int msgno);

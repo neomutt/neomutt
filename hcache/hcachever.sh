@@ -81,7 +81,7 @@ do
 done
 echo " */" >> $TMPD
 
-MD5TEXT=`echo "$TEXT" | ./mutt_md5`
+MD5TEXT=`echo "$TEXT" | ../mutt_md5`
 echo "#define HCACHEVER 0x"`echo $MD5TEXT | cut -c-8` >> $TMPD
 
 # TODO: validate we have all structs

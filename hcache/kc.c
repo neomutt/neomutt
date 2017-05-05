@@ -21,7 +21,7 @@
 #include "config.h"
 #include <kclangc.h>
 #include "mutt.h"
-#include "hcache_backend.h"
+#include "backend.h"
 
 static void *hcache_kyotocabinet_open(const char *path)
 {

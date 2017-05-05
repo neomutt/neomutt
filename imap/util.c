@@ -33,7 +33,7 @@
 #include "mx.h"
 #include "url.h"
 #ifdef USE_HCACHE
-#include "hcache.h"
+#include "hcache/hcache.h"
 #endif
 
 /* -- public functions -- */

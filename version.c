@@ -34,7 +34,7 @@
 /* #include "protos.h" */
 const char *mutt_make_version(void);
 void mutt_print_patchlist(void);
-/* #include "hcache.h" */
+/* #include "hcache/hcache.h" */
 const char *mutt_hcache_backend_list(void);
 
 const int SCREEN_WIDTH = 80;

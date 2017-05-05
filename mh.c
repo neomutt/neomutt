@@ -50,7 +50,7 @@
 #include "mutt_notmuch.h"
 #endif
 #ifdef USE_HCACHE
-#include "hcache.h"
+#include "hcache/hcache.h"
 #endif
 
 #define INS_SORT_THRESHOLD 6

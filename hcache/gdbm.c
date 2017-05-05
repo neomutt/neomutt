@@ -21,7 +21,7 @@
 #include "config.h"
 #include <gdbm.h>
 #include "mutt.h"
-#include "hcache_backend.h"
+#include "backend.h"
 
 static void *hcache_gdbm_open(const char *path)
 {

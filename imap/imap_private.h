@@ -26,7 +26,7 @@
 #include "mutt_curses.h"
 #include "mutt_socket.h"
 #ifdef USE_HCACHE
-#include "hcache.h"
+#include "hcache/hcache.h"
 #endif
 
 /* -- symbols -- */
