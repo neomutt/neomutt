@@ -801,12 +801,6 @@ int mx_close_mailbox (CONTEXT *ctx, int *index_hint)
     if (!ctx->hdrs[i]->deleted && ctx->hdrs[i]->read 
         && !(ctx->hdrs[i]->flagged && option (OPTKEEPFLAGGED)))
       read_msgs++;
-#ifdef USE_SIDEBAR
-    if (ctx->hdrs[i]->deleted && !ctx->hdrs[i]->read)
-      ctx->unread--;
-    if (ctx->hdrs[i]->deleted && ctx->hdrs[i]->flagged)
-      ctx->flagged--;
-#endif
   }
 
   if (read_msgs && quadoption (OPT_MOVE) != MUTT_NO)
@@ -991,7 +985,17 @@ int mx_close_mailbox (CONTEXT *ctx, int *index_hint)
     mx_unlink_empty (ctx->path);
 
 #ifdef USE_SIDEBAR
-  ctx->msgcount -= ctx->deleted;
+  if (purge && ctx->deleted)
+  {
+    for (i = 0; i < ctx->msgcount; i++)
+    {
+      if (ctx->hdrs[i]->deleted && !ctx->hdrs[i]->read)
+        ctx->unread--;
+      if (ctx->hdrs[i]->deleted && ctx->hdrs[i]->flagged)
+        ctx->flagged--;
+    }
+    ctx->msgcount -= ctx->deleted;
+  }
   mutt_sb_set_buffystats (ctx);
 #endif
 
