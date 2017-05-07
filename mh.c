@@ -1983,11 +1983,12 @@ static int maildir_check_mailbox(CONTEXT *ctx, int *index_hint)
   struct stat st_new; /* status of the "new" subdirectory */
   struct stat st_cur; /* status of the "cur" subdirectory */
   char buf[_POSIX_PATH_MAX];
-  int changed = 0;           /* bitmask representing which subdirectories
-                                   have changed.  0x1 = new, 0x2 = cur */
-  int occult = 0;            /* messages were removed from the mailbox */
-  int have_new = 0;          /* messages were added to the mailbox */
-  struct maildir *md = NULL; /* list of messages in the mailbox */
+  int changed = 0;            /* bitmask representing which subdirectories
+                                 have changed.  0x1 = new, 0x2 = cur */
+  int occult = 0;             /* messages were removed from the mailbox */
+  int have_new = 0;           /* messages were added to the mailbox */
+  bool flags_changed = false; /* message flags were changed in the mailbox */
+  struct maildir *md = NULL;  /* list of messages in the mailbox */
   struct maildir **last = NULL, *p = NULL;
   int i;
   HASH *fnames = NULL; /* hash table for quickly looking up the base filename
@@ -2065,10 +2066,15 @@ static int maildir_check_mailbox(CONTEXT *ctx, int *index_hint)
        * the flags we just detected.
        */
       if (!ctx->hdrs[i]->changed)
-        maildir_update_flags(ctx, ctx->hdrs[i], p->h);
+        if (maildir_update_flags(ctx, ctx->hdrs[i], p->h))
+          flags_changed = true;
 
       if (ctx->hdrs[i]->deleted == ctx->hdrs[i]->trash)
-        ctx->hdrs[i]->deleted = p->h->deleted;
+        if (ctx->hdrs[i]->deleted != p->h->deleted)
+        {
+          ctx->hdrs[i]->deleted = p->h->deleted;
+          flags_changed = true;
+        }
       ctx->hdrs[i]->trash = p->h->trash;
 
       /* this is a duplicate of an existing header, so remove it */
@@ -2110,7 +2116,13 @@ static int maildir_check_mailbox(CONTEXT *ctx, int *index_hint)
   /* Incorporate new messages */
   have_new = maildir_move_to_context(ctx, &md);
 
-  return occult ? MUTT_REOPENED : (have_new ? MUTT_NEW_MAIL : 0);
+  if (occult)
+    return MUTT_REOPENED;
+  if (have_new)
+    return MUTT_NEW_MAIL;
+  if (flags_changed)
+    return MUTT_FLAGS;
+  return 0;
 }
 
 /*
@@ -2127,7 +2139,7 @@ static int mh_check_mailbox(CONTEXT *ctx, int *index_hint)
 {
   char buf[_POSIX_PATH_MAX];
   struct stat st, st_cur;
-  short modified = 0, have_new = 0, occult = 0;
+  bool modified = false, have_new = false, occult = false, flags_changed = false;
   struct maildir *md = NULL, *p = NULL;
   struct maildir **last = NULL;
   struct mh_sequences mhs;
@@ -2159,10 +2171,10 @@ static int mh_check_mailbox(CONTEXT *ctx, int *index_hint)
   }
 
   if (i == -1 && stat(buf, &st_cur) == -1)
-    modified = 1;
+    modified = true;
 
   if (st.st_mtime > ctx->mtime || st_cur.st_mtime > data->mtime_cur)
-    modified = 1;
+    modified = true;
 
   if (!modified)
     return 0;
@@ -2203,12 +2215,13 @@ static int mh_check_mailbox(CONTEXT *ctx, int *index_hint)
       ctx->hdrs[i]->active = true;
       /* found the right message */
       if (!ctx->hdrs[i]->changed)
-        maildir_update_flags(ctx, ctx->hdrs[i], p->h);
+        if (maildir_update_flags(ctx, ctx->hdrs[i], p->h))
+          flags_changed = true;
 
       mutt_free_header(&p->h);
     }
     else /* message has disappeared */
-      occult = 1;
+      occult = true;
   }
 
   /* destroy the file name hash */
@@ -2222,7 +2235,13 @@ static int mh_check_mailbox(CONTEXT *ctx, int *index_hint)
   /* Incorporate new messages */
   have_new = maildir_move_to_context(ctx, &md);
 
-  return occult ? MUTT_REOPENED : (have_new ? MUTT_NEW_MAIL : 0);
+  if (occult)
+    return MUTT_REOPENED;
+  if (have_new)
+    return MUTT_NEW_MAIL;
+  if (flags_changed)
+    return MUTT_FLAGS;
+  return 0;
 }
 
 static int mh_sync_mailbox(CONTEXT *ctx, int *index_hint)
@@ -2300,12 +2319,13 @@ err:
   return -1;
 }
 
-void maildir_update_flags(CONTEXT *ctx, HEADER *o, HEADER *n)
+bool maildir_update_flags(CONTEXT *ctx, HEADER *o, HEADER *n)
 {
   /* save the global state here so we can reset it at the
    * end of list block if required.
    */
   bool context_changed = ctx->changed;
+  bool header_changed;
 
   /* user didn't modify this message.  alter the flags to match the
    * current state on disk.  This may not actually do
@@ -2326,6 +2346,7 @@ void maildir_update_flags(CONTEXT *ctx, HEADER *o, HEADER *n)
    * context to match the current on-disk state of the
    * message.
    */
+  header_changed = o->changed;
   o->changed = false;
 
   /* if the mailbox was not modified before we made these
@@ -2334,6 +2355,8 @@ void maildir_update_flags(CONTEXT *ctx, HEADER *o, HEADER *n)
    */
   if (!context_changed)
     ctx->changed = false;
+
+  return header_changed;
 }
 
 

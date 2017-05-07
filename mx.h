@@ -56,7 +56,7 @@ int maildir_check_empty(const char *path);
 HEADER *maildir_parse_message(int magic, const char *fname, int is_old, HEADER *h);
 HEADER *maildir_parse_stream(int magic, FILE *f, const char *fname, int is_old, HEADER *_h);
 void maildir_parse_flags(HEADER *h, const char *path);
-void maildir_update_flags(CONTEXT *ctx, HEADER *o, HEADER *n);
+bool maildir_update_flags(CONTEXT *ctx, HEADER *o, HEADER *n);
 void maildir_flags(char *dest, size_t destlen, HEADER *hdr);
 
 #ifdef USE_HCACHE
