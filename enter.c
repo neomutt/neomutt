@@ -17,12 +17,22 @@
  */
 
 #include "config.h"
+#include <stddef.h>
+#include <limits.h>
 #include <string.h>
+#include <wchar.h>
+#include <wctype.h>
 #include "mutt.h"
+#include "enter_state.h"
+#include "globals.h"
 #include "history.h"
 #include "keymap.h"
+#include "keymap_defs.h"
+#include "lib.h"
+#include "mbyte.h"
 #include "mutt_curses.h"
-#include "mutt_menu.h"
+#include "options.h"
+#include "protos.h"
 
 /* redraw flags for mutt_enter_string() */
 enum

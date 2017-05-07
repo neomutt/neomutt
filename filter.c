@@ -19,9 +19,9 @@
 #include <stdlib.h>
 #include <sys/wait.h>
 #include <unistd.h>
-#include "mutt.h"
 #include "filter.h"
 #include "mutt_curses.h"
+#include "protos.h"
 
 /* Invokes a command on a pipe and optionally connects its stdin and stdout
  * to the specified handles.

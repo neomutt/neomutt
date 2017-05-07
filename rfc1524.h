@@ -18,6 +18,11 @@
 #ifndef _MUTT_RFC1524_H
 #define _MUTT_RFC1524_H 1
 
+#include <stdbool.h>
+#include <stddef.h>
+
+struct Body;
+
 struct Rfc1524MailcapEntry
 {
   char *command;

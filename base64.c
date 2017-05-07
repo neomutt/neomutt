@@ -35,7 +35,7 @@
  */
 
 #include "config.h"
-#include "mutt.h"
+#include <stddef.h>
 #include "mime.h"
 
 #define BAD -1

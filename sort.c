@@ -16,13 +16,22 @@
  */
 
 #include "config.h"
-#include <ctype.h>
 #include <stdlib.h>
 #include <string.h>
-#include <unistd.h>
 #include "mutt.h"
 #include "sort.h"
+#include "address.h"
+#include "body.h"
+#include "buffer.h"
+#include "context.h"
+#include "envelope.h"
+#include "globals.h"
+#include "header.h"
+#include "lib.h"
 #include "mutt_idna.h"
+#include "options.h"
+#include "protos.h"
+#include "thread.h"
 #ifdef USE_NNTP
 #include "mx.h"
 #include "nntp.h"

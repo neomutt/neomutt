@@ -16,7 +16,7 @@
 #ifndef _MUTT_MYVAR_H
 #define _MUTT_MYVAR_H 1
 
-#include <sys/types.h>
+#include <stddef.h>
 
 const char *myvar_get(const char *var);
 int var_to_string(int idx, char *val, size_t len);

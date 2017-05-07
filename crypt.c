@@ -21,22 +21,31 @@
  */
 
 #include "config.h"
-#include <ctype.h>
-#include <errno.h>
+#include <limits.h>
 #include <locale.h>
-#include <stdlib.h>
+#include <stdbool.h>
+#include <stdio.h>
 #include <string.h>
-#include <sys/resource.h>
-#include <sys/stat.h>
-#include <sys/time.h>
-#include <sys/wait.h>
-#include <unistd.h>
+#include <time.h>
 #include "mutt.h"
+#include "address.h"
+#include "alias.h"
+#include "ascii.h"
+#include "body.h"
+#include "content.h"
+#include "context.h"
 #include "copy.h"
+#include "envelope.h"
+#include "globals.h"
+#include "header.h"
+#include "lib.h"
 #include "mime.h"
 #include "mutt_crypt.h"
 #include "mutt_curses.h"
-
+#include "options.h"
+#include "protos.h"
+#include "rfc822.h"
+#include "state.h"
 
 /* print the current time to avoid spoofing of the signature output */
 void crypt_current_time(struct State *s, char *app_name)
@@ -75,6 +84,7 @@ void crypt_forget_passphrase(void)
 
 #if (!defined(DEBUG))
 
+#include <sys/resource.h>
 static void disable_coredumps(void)
 {
   struct rlimit rl = { 0, 0 };

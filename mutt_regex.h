@@ -23,6 +23,7 @@
 #define _MUTT_REGEX_H 1
 
 #include <regex.h>
+#include "where.h"
 
 /* this is a non-standard option supported by Solaris 2.5.x which allows
  * patterns of the form \<...\>
@@ -39,6 +40,20 @@ struct Regex
   char *pattern; /* printable version */
   regex_t *rx;   /* compiled expression */
   int not;       /* do not match */
+};
+
+struct RxList
+{
+  struct Regex *rx;
+  struct RxList *next;
+};
+
+struct ReplaceList
+{
+  struct Regex *rx;
+  int nmatch;
+  char *template;
+  struct ReplaceList *next;
 };
 
 WHERE struct Regex Mask;

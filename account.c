@@ -18,8 +18,15 @@
 /* remote host account manipulation (POP/IMAP) */
 
 #include "config.h"
+#include <stdio.h>
+#include <string.h>
 #include "mutt.h"
 #include "account.h"
+#include "ascii.h"
+#include "globals.h"
+#include "lib.h"
+#include "options.h"
+#include "protos.h"
 #include "url.h"
 
 /* mutt_account_match: compare account info (host/port/user) */

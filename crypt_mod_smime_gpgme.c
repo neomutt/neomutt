@@ -16,12 +16,19 @@
  */
 
 /*
-    This is a crytpo module wrapping the gpgme based smime code.
+    This is a crypto module wrapping the gpgme based smime code.
  */
 
 #include "config.h"
+#include <stdio.h>
 #include "crypt_gpgme.h"
 #include "crypt_mod.h"
+#include "mutt_crypt.h"
+
+struct Address;
+struct Body;
+struct Header;
+struct State;
 
 static void crypt_mod_smime_init(void)
 {

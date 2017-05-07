@@ -17,16 +17,17 @@
 
 #include "config.h"
 #include <ctype.h>
-#include <dirent.h>
 #include <errno.h>
 #include <langinfo.h>
+#include <limits.h>
 #include <stdio.h>
-#include <stdlib.h>
 #include <string.h>
-#include <sys/types.h>
-#include <unistd.h>
 #include "mutt.h"
 #include "charset.h"
+#include "ascii.h"
+#include "globals.h"
+#include "lib.h"
+#include "protos.h"
 
 #ifndef EILSEQ
 #define EILSEQ EINVAL

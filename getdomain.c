@@ -19,10 +19,9 @@
 #include <netdb.h>
 #include <string.h>
 #include <sys/socket.h>
-#include <sys/types.h>
+#include <time.h>
 #include <unistd.h>
-#include "mutt.h"
-
+#include "lib.h"
 
 int getdnsdomainname(char *d, size_t len)
 {

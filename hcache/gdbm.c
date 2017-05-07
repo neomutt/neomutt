@@ -19,9 +19,11 @@
  */
 
 #include "config.h"
+#include <stddef.h>
 #include <gdbm.h>
-#include "mutt.h"
 #include "backend.h"
+#include "globals.h"
+#include "lib.h"
 
 static void *hcache_gdbm_open(const char *path)
 {

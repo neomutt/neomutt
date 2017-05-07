@@ -25,24 +25,43 @@
 #include "config.h"
 #include <ctype.h>
 #include <errno.h>
+#include <gpg-error.h>
 #include <gpgme.h>
 #include <langinfo.h>
+#include <libintl.h>
+#include <limits.h>
 #include <locale.h>
+#include <stdbool.h>
+#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <sys/resource.h>
 #include <sys/stat.h>
-#include <sys/time.h>
-#include <sys/wait.h>
+#include <time.h>
 #include <unistd.h>
 #include "mutt.h"
-#include "copy.h"
+#include "address.h"
+#include "alias.h"
+#include "ascii.h"
+#include "body.h"
+#include "charset.h"
+#include "envelope.h"
+#include "format_flags.h"
+#include "globals.h"
+#include "header.h"
+#include "keymap.h"
+#include "keymap_defs.h"
+#include "lib.h"
+#include "list.h"
 #include "mime.h"
 #include "mutt_crypt.h"
 #include "mutt_curses.h"
 #include "mutt_menu.h"
+#include "options.h"
 #include "pager.h"
+#include "protos.h"
+#include "rfc822.h"
 #include "sort.h"
+#include "state.h"
 
 #define PKA_NOTATION_NAME "pka-address@gnupg.org"
 #define is_pka_notation(notation)                                              \
@@ -4411,8 +4430,8 @@ static char *find_keys(struct Address *adrlist, unsigned int app, int oppenc_mod
     bypass_selection:
       keylist_size += mutt_strlen(keyID) + 4 + 1;
       safe_realloc(&keylist, keylist_size);
-      sprintf(keylist + keylist_used, "%s0x%s%s",
-              keylist_used ? " " : "", keyID, forced_valid ? "!" : "");
+      sprintf(keylist + keylist_used, "%s0x%s%s", keylist_used ? " " : "",
+              keyID, forced_valid ? "!" : "");
       keylist_used = mutt_strlen(keylist);
 
       key_selected = 1;

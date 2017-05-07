@@ -19,13 +19,23 @@
  */
 
 #include "config.h"
+#include <stdbool.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 #include "mutt.h"
 #include "sidebar.h"
 #include "buffy.h"
-#include "keymap.h"
+#include "context.h"
+#include "format_flags.h"
+#include "globals.h"
+#include "keymap_defs.h"
+#include "lib.h"
 #include "mutt_curses.h"
 #include "mutt_menu.h"
 #include "mx.h"
+#include "options.h"
+#include "protos.h"
 #include "sort.h"
 #ifdef USE_NOTMUCH
 #include "mutt_notmuch.h"

@@ -20,8 +20,8 @@
 #ifndef _MUTT_SIDEBAR_H
 #define _MUTT_SIDEBAR_H 1
 
-#include "mutt.h"
-#include "buffy.h"
+struct Context;
+struct Buffy;
 
 void mutt_sb_change_mailbox(int op);
 void mutt_sb_draw(void);

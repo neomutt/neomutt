@@ -18,6 +18,7 @@
 #ifndef _MUTT_KEYMAP_H
 #define _MUTT_KEYMAP_H 1
 
+#include <stddef.h>
 #include "mapping.h"
 
 /* maximal length of a key binding sequence used for buffer in km_bindkey */
@@ -113,7 +114,5 @@ extern const struct binding_t OpSmime[];
 #ifdef MIXMASTER
 extern const struct binding_t OpMix[];
 #endif
-
-#include "keymap_defs.h"
 
 #endif /* _MUTT_KEYMAP_H */

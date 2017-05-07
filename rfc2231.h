@@ -18,6 +18,8 @@
 #ifndef _MUTT_RFC2231_H
 #define _MUTT_RFC2231_H 1
 
+struct Parameter;
+
 void rfc2231_decode_parameters(struct Parameter **headp);
 int rfc2231_encode_string(char **pd);
 

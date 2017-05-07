@@ -16,9 +16,22 @@
  */
 
 #include "config.h"
-#include <ctype.h>
+#include <limits.h>
+#include <stdlib.h>
 #include <string.h>
+#include <time.h>
 #include "mutt.h"
+#include "thread.h"
+#include "body.h"
+#include "context.h"
+#include "envelope.h"
+#include "globals.h"
+#include "hash.h"
+#include "header.h"
+#include "lib.h"
+#include "list.h"
+#include "options.h"
+#include "protos.h"
 #include "sort.h"
 
 #define VISIBLE(hdr, ctx)                                                      \

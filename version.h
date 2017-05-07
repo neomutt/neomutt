@@ -18,6 +18,8 @@
 #ifndef _MUTT_VERSION_H
 #define _MUTT_VERSION_H 1
 
+#include <stdbool.h>
+
 void print_version(void);
 void print_copyright(void);
 bool feature_enabled(const char *name);

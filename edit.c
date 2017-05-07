@@ -20,15 +20,25 @@
 #include "config.h"
 #include <ctype.h>
 #include <errno.h>
-#include <fcntl.h>
+#include <libintl.h>
 #include <locale.h>
+#include <stdbool.h>
 #include <stdio.h>
-#include <stdlib.h>
 #include <string.h>
 #include <sys/stat.h>
 #include "mutt.h"
+#include "alias.h"
+#include "body.h"
+#include "context.h"
+#include "envelope.h"
+#include "globals.h"
+#include "header.h"
+#include "lib.h"
 #include "mutt_curses.h"
 #include "mutt_idna.h"
+#include "options.h"
+#include "protos.h"
+#include "rfc822.h"
 
 /*
  * SLcurses_waddnstr() can't take a "const char *", so this is only

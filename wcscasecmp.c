@@ -16,8 +16,8 @@
  */
 
 #include "config.h"
-#include "mutt.h"
-#include "mbyte.h"
+#include <stddef.h>
+#include <wctype.h>
 
 int wcscasecmp(const wchar_t *a, const wchar_t *b)
 {

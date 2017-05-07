@@ -16,15 +16,30 @@
  */
 
 #include "config.h"
-#include <ctype.h>
+#include <stddef.h>
 #include <errno.h>
+#include <libintl.h>
+#include <pwd.h>
+#include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
+#include <wchar.h>
+#include <wctype.h>
 #include "mutt.h"
+#include "alias.h"
+#include "address.h"
+#include "ascii.h"
+#include "charset.h"
+#include "envelope.h"
+#include "globals.h"
+#include "hash.h"
+#include "lib.h"
+#include "list.h"
 #include "mutt_curses.h"
 #include "mutt_idna.h"
-#include "mutt_regex.h"
-
-int mutt_check_alias_name(const char *s, char *dest, size_t destlen);
+#include "options.h"
+#include "protos.h"
+#include "rfc822.h"
 
 struct Address *mutt_lookup_alias(const char *s)
 {
@@ -222,6 +237,50 @@ static void recode_buf(char *buf, size_t buflen)
   FREE(&s);
 }
 
+/*
+ * Sanity-check an alias name:  Only characters which are non-special to both
+ * the RFC 822 and the mutt configuration parser are permitted.
+ */
+int check_alias_name(const char *s, char *dest, size_t destlen)
+{
+  wchar_t wc;
+  mbstate_t mb;
+  size_t l;
+  int rv = 0, bad = 0, dry = !dest || !destlen;
+
+  memset(&mb, 0, sizeof(mbstate_t));
+
+  if (!dry)
+    destlen--;
+  for (; s && *s && (dry || destlen) && (l = mbrtowc(&wc, s, MB_CUR_MAX, &mb)) != 0;
+       s += l, destlen -= l)
+  {
+    bad = l == (size_t)(-1) || l == (size_t)(-2); /* conversion error */
+    bad = bad || (!dry && l > destlen);           /* too few room for mb char */
+    if (l == 1)
+      bad = bad || (strchr("-_+=.", *s) == NULL && !iswalnum(wc));
+    else
+      bad = bad || !iswalnum(wc);
+    if (bad)
+    {
+      if (dry)
+        return -1;
+      if (l == (size_t)(-1))
+        memset(&mb, 0, sizeof(mbstate_t));
+      *dest++ = '_';
+      rv = -1;
+    }
+    else if (!dry)
+    {
+      memcpy(dest, s, l);
+      dest += l;
+    }
+  }
+  if (!dry)
+    *dest = 0;
+  return rv;
+}
+
 void mutt_create_alias(struct Envelope *cur, struct Address *iadr)
 {
   struct Alias *new = NULL, *t = NULL;
@@ -250,7 +309,7 @@ void mutt_create_alias(struct Envelope *cur, struct Address *iadr)
     tmp[0] = '\0';
 
   /* Don't suggest a bad alias name in the event of a strange local part. */
-  mutt_check_alias_name(tmp, buf, sizeof(buf));
+  check_alias_name(tmp, buf, sizeof(buf));
 
 retry_name:
   /* L10N: prompt to add a new alias */
@@ -264,7 +323,7 @@ retry_name:
     return;
   }
 
-  if (mutt_check_alias_name(buf, fixed, sizeof(fixed)))
+  if (check_alias_name(buf, fixed, sizeof(fixed)))
   {
     switch (mutt_yesorno(_("Warning: This alias name may not work.  Fix it?"), MUTT_YES))
     {
@@ -364,7 +423,7 @@ retry_name:
         fputc('\n', rc);
     }
 
-    if (mutt_check_alias_name(new->name, NULL, 0))
+    if (check_alias_name(new->name, NULL, 0))
       mutt_quote_filename(buf, sizeof(buf), new->name);
     else
       strfcpy(buf, new->name, sizeof(buf));
@@ -389,50 +448,6 @@ fseek_err:
   mutt_perror(_("Error seeking in alias file"));
   safe_fclose(&rc);
   return;
-}
-
-/*
- * Sanity-check an alias name:  Only characters which are non-special to both
- * the RFC 822 and the mutt configuration parser are permitted.
- */
-int mutt_check_alias_name(const char *s, char *dest, size_t destlen)
-{
-  wchar_t wc;
-  mbstate_t mb;
-  size_t l;
-  int rv = 0, bad = 0, dry = !dest || !destlen;
-
-  memset(&mb, 0, sizeof(mbstate_t));
-
-  if (!dry)
-    destlen--;
-  for (; s && *s && (dry || destlen) && (l = mbrtowc(&wc, s, MB_CUR_MAX, &mb)) != 0;
-       s += l, destlen -= l)
-  {
-    bad = l == (size_t)(-1) || l == (size_t)(-2); /* conversion error */
-    bad = bad || (!dry && l > destlen);           /* too few room for mb char */
-    if (l == 1)
-      bad = bad || (strchr("-_+=.", *s) == NULL && !iswalnum(wc));
-    else
-      bad = bad || !iswalnum(wc);
-    if (bad)
-    {
-      if (dry)
-        return -1;
-      if (l == (size_t)(-1))
-        memset(&mb, 0, sizeof(mbstate_t));
-      *dest++ = '_';
-      rv = -1;
-    }
-    else if (!dry)
-    {
-      memcpy(dest, s, l);
-      dest += l;
-    }
-  }
-  if (!dry)
-    *dest = 0;
-  return rv;
 }
 
 /*

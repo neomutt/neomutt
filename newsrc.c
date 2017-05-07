@@ -18,28 +18,37 @@
  */
 
 #include "config.h"
-#include <ctype.h>
 #include <dirent.h>
 #include <errno.h>
-#include <stdlib.h>
+#include <limits.h>
+#include <stdbool.h>
+#include <stdio.h>
 #include <string.h>
 #include <sys/stat.h>
-#include <sys/types.h>
+#include <time.h>
 #include <unistd.h>
 #include "mutt.h"
+#include "account.h"
 #include "bcache.h"
-#include "mailbox.h"
-#include "mime.h"
+#include "context.h"
+#include "format_flags.h"
+#include "globals.h"
+#include "hash.h"
+#include "header.h"
+#include "lib.h"
 #include "mutt_curses.h"
+#include "mutt_socket.h"
 #include "mx.h"
 #include "nntp.h"
-#include "rfc1524.h"
-#include "rfc2047.h"
-#include "rfc822.h"
+#include "options.h"
+#include "protos.h"
 #include "sort.h"
+#include "url.h"
 #ifdef USE_HCACHE
 #include "hcache/hcache.h"
 #endif
+
+struct BodyCache;
 
 /* Find NntpData for given newsgroup or add it */
 static struct NntpData *nntp_data_find(struct NntpServer *nserv, const char *group)

@@ -17,18 +17,16 @@
  */
 
 #include "config.h"
-#include <ctype.h>
-#include <errno.h>
 #include <stdlib.h>
-#include <string.h>
-#include <sys/utsname.h>
-#include <sys/wait.h>
-#include <unistd.h>
 #include "mutt.h"
-#include "charset.h"
-#include "mbyte.h"
-#include "mutt_curses.h"
-#include "mutt_regex.h"
+#include "group.h"
+#include "address.h"
+#include "globals.h"
+#include "hash.h"
+#include "lib.h"
+#include "list.h"
+#include "protos.h"
+#include "rfc822.h"
 
 struct Group *mutt_pattern_group(const char *k)
 {

@@ -18,6 +18,12 @@
 #ifndef _MUTT_COPY_H
 #define _MUTT_COPY_H 1
 
+#include <stdio.h>
+
+struct Body;
+struct Header;
+struct Context;
+
 /* flags to _mutt_copy_message */
 #define MUTT_CM_NOHEADER (1 << 0) /* don't copy the message header */
 #define MUTT_CM_PREFIX   (1 << 1) /* quote the message */

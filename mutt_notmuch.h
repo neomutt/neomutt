@@ -18,7 +18,12 @@
 #ifndef _MUTT_NOTMUCH_H
 #define _MUTT_NOTMUCH_H 1
 
+#include <stddef.h>
 #include <stdbool.h>
+#include "mx.h"
+
+struct Context;
+struct Header;
 
 int nm_read_entire_thread(struct Context *ctx, struct Header *h);
 

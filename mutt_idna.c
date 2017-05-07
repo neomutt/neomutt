@@ -16,9 +16,18 @@
  */
 
 #include "config.h"
-#include "mutt.h"
+#include <idna.h>
+#include <stdbool.h>
+#include <stdio.h>
+#include <string.h>
 #include "mutt_idna.h"
+#include "address.h"
+#include "ascii.h"
 #include "charset.h"
+#include "envelope.h"
+#include "globals.h"
+#include "lib.h"
+#include "options.h"
 
 #ifdef HAVE_LIBIDN
 static bool check_idn(char *domain)

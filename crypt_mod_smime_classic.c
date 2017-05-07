@@ -20,8 +20,16 @@
  */
 
 #include "config.h"
+#include <stdio.h>
 #include "crypt_mod.h"
+#include "mutt_crypt.h"
 #include "smime.h"
+
+struct Address;
+struct Body;
+struct Envelope;
+struct Header;
+struct State;
 
 static void crypt_mod_smime_void_passphrase(void)
 {

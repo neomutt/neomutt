@@ -21,9 +21,9 @@
 #ifndef _MUTT_HCACHE_H
 #define _MUTT_HCACHE_H 1
 
-#include "mutt.h"
+#include <stddef.h>
 
-struct header_cache;
+struct Header;
 typedef struct header_cache header_cache_t;
 
 typedef int (*hcache_namer_t)(const char *path, char *dest, size_t dlen);

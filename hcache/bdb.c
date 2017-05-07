@@ -22,8 +22,14 @@
 #include <db.h>
 #include <errno.h>
 #include <fcntl.h>
-#include "mutt.h"
+#include <limits.h>
+#include <stdio.h>
+#include <sys/stat.h>
+#include <sys/types.h>
+#include <unistd.h>
 #include "backend.h"
+#include "globals.h"
+#include "lib.h"
 #include "mx.h"
 
 struct HcacheDbCtx

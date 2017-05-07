@@ -22,11 +22,20 @@
 #include <lua.h>
 #include <lualib.h>
 #include <stdbool.h>
+#include <stdio.h>
+#include <string.h>
 #include "mutt.h"
 #include "mutt_lua.h"
+#include "buffer.h"
+#include "globals.h"
+#include "lib.h"
+#include "mailbox.h"
+#include "mbyte_table.h"
 #include "mutt_commands.h"
 #include "mutt_options.h"
-#include "mx.h"
+#include "options.h"
+#include "protos.h"
+#include "rfc822.h"
 
 static int _handle_panic(lua_State *l)
 {

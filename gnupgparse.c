@@ -29,18 +29,22 @@
 #include "config.h"
 #include <ctype.h>
 #include <fcntl.h>
+#include <iconv.h>
 #include <stdio.h>
-#include <stdlib.h>
 #include <string.h>
-#include <sys/stat.h>
-#include <sys/types.h>
 #include <time.h>
 #include <unistd.h>
 #include "mutt.h"
 #include "charset.h"
 #include "filter.h"
+#include "globals.h"
+#include "lib.h"
 #include "mime.h"
+#include "mutt_crypt.h"
+#include "options.h"
 #include "pgp.h"
+#include "pgplib.h"
+#include "protos.h"
 
 /****************
  * Read the GNUPG keys.  For now we read the complete keyring by
@@ -373,7 +377,7 @@ struct PgpKeyInfo *pgp_get_candidates(pgp_ring_t keyring, struct List *hints)
   FILE *fp = NULL;
   pid_t thepid;
   char buf[LONG_STRING];
-  struct PgpKeyInfo *db = NULL, **kend, *k = NULL, *kk = NULL, *mainkey = NULL;
+  struct PgpKeyInfo *db = NULL, **kend = NULL, *k = NULL, *kk = NULL, *mainkey = NULL;
   int is_sub;
   int devnull;
 

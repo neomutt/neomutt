@@ -18,7 +18,12 @@
 #ifndef _MUTT_CRYPT_GPGME_H
 #define _MUTT_CRYPT_GPGME_H 1
 
-#include "mutt_crypt.h"
+#include <stdio.h>
+
+struct Address;
+struct Body;
+struct Header;
+struct State;
 
 void pgp_gpgme_init(void);
 void smime_gpgme_init(void);

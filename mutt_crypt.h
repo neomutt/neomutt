@@ -24,7 +24,15 @@
 #ifndef _MUTT_CRYPT_H
 #define _MUTT_CRYPT_H 1
 
-#include "mutt.h"
+#include <stdbool.h>
+#include <stdio.h>
+
+struct Address;
+struct Body;
+struct Envelope;
+struct Header;
+struct State;
+
 /* FIXME: They should be pointer to anonymous structures for better
    information hiding. */
 
@@ -91,12 +99,11 @@
 
 #define KEYFLAG_ABILITIES (KEYFLAG_CANSIGN | KEYFLAG_CANENCRYPT | KEYFLAG_PREFER_ENCRYPTION | KEYFLAG_PREFER_SIGNING)
 
-enum pgp_ring
+typedef enum pgp_ring
 {
   PGP_PUBRING,
   PGP_SECRING
-};
-typedef enum pgp_ring pgp_ring_t;
+} pgp_ring_t;
 
 /* Some prototypes -- old crypt.h. */
 

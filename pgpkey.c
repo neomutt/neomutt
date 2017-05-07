@@ -18,20 +18,37 @@
 
 #include "config.h"
 #include <ctype.h>
+#include <limits.h>
 #include <locale.h>
+#include <stdbool.h>
+#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <sys/stat.h>
-#include <sys/wait.h>
+#include <time.h>
 #include <unistd.h>
 #include "mutt.h"
+#include "address.h"
+#include "body.h"
 #include "filter.h"
+#include "format_flags.h"
+#include "globals.h"
+#include "keymap.h"
+#include "keymap_defs.h"
+#include "lib.h"
 #include "mime.h"
+#include "mutt_crypt.h"
 #include "mutt_curses.h"
 #include "mutt_menu.h"
+#include "options.h"
 #include "pager.h"
 #include "pgp.h"
+#include "pgplib.h"
+#include "protos.h"
+#include "rfc822.h"
 #include "sort.h"
+
+struct List;
 
 struct pgp_cache
 {

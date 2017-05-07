@@ -21,11 +21,19 @@
 
 #include "config.h"
 #include <ctype.h>
+#include <stdio.h>
+#include <string.h>
 #include "mutt.h"
 #include "url.h"
+#include "ascii.h"
+#include "envelope.h"
+#include "globals.h"
+#include "lib.h"
 #include "mapping.h"
 #include "mime.h"
+#include "protos.h"
 #include "rfc2047.h"
+#include "rfc822.h"
 
 static const struct mapping_t UrlMap[] = {
   { "file", U_FILE },       { "imap", U_IMAP },     { "imaps", U_IMAPS },

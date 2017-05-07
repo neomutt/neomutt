@@ -18,10 +18,13 @@
 #include "config.h"
 #include <errno.h>
 #include <signal.h>
+#include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
-#include <sys/wait.h>
-#include "mutt.h"
+#include "globals.h"
+#include "lib.h"
 #include "mutt_curses.h"
+#include "options.h"
 
 static sigset_t Sigset;
 static sigset_t SigsetSys;
@@ -35,7 +38,7 @@ static void exit_handler(int sig)
   curs_set(1);
   endwin(); /* just to be safe */
 
-  /*
+/*
    * if sys_siglist is not defined, HAVE_DECL_SYS_SIGLIST will be set to 0
    * so we must check it with #if and not #ifdef
    */

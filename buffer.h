@@ -16,7 +16,7 @@
 #ifndef _MUTT_BUFFER_H
 #define _MUTT_BUFFER_H 1
 
-#include <sys/types.h>
+#include <stddef.h>
 
 struct Buffer
 {

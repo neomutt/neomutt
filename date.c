@@ -17,7 +17,7 @@
 
 #include "config.h"
 #include <string.h>
-#include "mutt.h"
+#include <time.h>
 
 /* returns the seconds east of UTC given `g' and its corresponding gmtime()
    representation */

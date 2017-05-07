@@ -18,20 +18,36 @@
 /* This file contains code to parse ``mbox'' and ``mmdf'' style mailboxes */
 
 #include "config.h"
-#include <dirent.h>
-#include <errno.h>
 #include <fcntl.h>
-#include <string.h>
-#include <sys/file.h>
+#include <inttypes.h>
+#include <limits.h>
+#include <stdbool.h>
+#include <stdio.h>
 #include <sys/stat.h>
+#include <time.h>
 #include <unistd.h>
 #include <utime.h>
 #include "mutt.h"
+#include "address.h"
+#include "body.h"
+#include "buffy.h"
+#include "context.h"
 #include "copy.h"
+#include "envelope.h"
+#include "globals.h"
+#include "hash.h"
+#include "header.h"
+#include "lib.h"
+#include "list.h"
 #include "mailbox.h"
 #include "mutt_curses.h"
 #include "mx.h"
+#include "options.h"
+#include "parameter.h"
+#include "protos.h"
+#include "rfc822.h"
 #include "sort.h"
+#include "thread.h"
 
 /* struct used by mutt_sync_mailbox() to store new offsets */
 struct m_update_t

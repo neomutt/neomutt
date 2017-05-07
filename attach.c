@@ -17,27 +17,33 @@
  */
 
 #include "config.h"
-#include <ctype.h>
 #include <errno.h>
 #include <fcntl.h>
-#include <stdlib.h>
+#include <limits.h>
 #include <string.h>
 #include <sys/stat.h>
-#include <sys/wait.h>
 #include <unistd.h>
 #include "mutt.h"
 #include "attach.h"
+#include "ascii.h"
+#include "body.h"
+#include "context.h"
 #include "copy.h"
 #include "filter.h"
-#include "keymap.h"
+#include "globals.h"
+#include "header.h"
+#include "lib.h"
+#include "list.h"
 #include "mailbox.h"
 #include "mime.h"
 #include "mutt_crypt.h"
 #include "mutt_curses.h"
-#include "mutt_menu.h"
 #include "mx.h"
+#include "options.h"
 #include "pager.h"
+#include "protos.h"
 #include "rfc1524.h"
+#include "state.h"
 
 int mutt_get_tmp_attachment(struct Body *a)
 {

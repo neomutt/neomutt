@@ -28,9 +28,19 @@
    modules.  */
 
 #include "config.h"
-#include "mutt.h"
+#include <stdio.h>
 #include "crypt_mod.h"
+#include "globals.h"
+#include "lib.h"
 #include "mutt_crypt.h"
+#include "options.h"
+#include "protos.h"
+
+struct Address;
+struct Body;
+struct Envelope;
+struct Header;
+struct State;
 
 /*
 

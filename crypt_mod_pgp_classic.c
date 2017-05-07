@@ -20,8 +20,15 @@
  */
 
 #include "config.h"
+#include <stdio.h>
 #include "crypt_mod.h"
+#include "mutt_crypt.h"
 #include "pgp.h"
+
+struct Address;
+struct Body;
+struct Header;
+struct State;
 
 static void crypt_mod_pgp_void_passphrase(void)
 {

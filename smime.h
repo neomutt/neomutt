@@ -21,7 +21,13 @@
 
 #ifdef CRYPT_BACKEND_CLASSIC_SMIME
 
-#include "mutt_crypt.h"
+#include <stdio.h>
+
+struct Address;
+struct Body;
+struct Envelope;
+struct Header;
+struct State;
 
 struct SmimeKey
 {

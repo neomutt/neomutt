@@ -18,11 +18,16 @@
 #ifndef _MUTT_CRYPT_MOD_H
 #define _MUTT_CRYPT_MOD_H 1
 
-#include "mutt.h"
+#include <stdio.h>
 #include "mutt_crypt.h"
 
-#define CRYPTO_SUPPORT(identifier) (WithCrypto & APPLICATION_##identifier)
+struct Address;
+struct Body;
+struct Envelope;
+struct Header;
+struct State;
 
+#define CRYPTO_SUPPORT(identifier) (WithCrypto & APPLICATION_##identifier)
 
 /*
     Type definitions for crypto module functions.

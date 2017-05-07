@@ -22,12 +22,30 @@
 
 #include "config.h"
 #include <ctype.h>
+#include <stdbool.h>
+#include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
+#include <time.h>
 #include "imap_private.h"
-#include "mutt.h"
+#include "account.h"
+#include "ascii.h"
+#include "buffer.h"
 #include "buffy.h"
+#include "context.h"
+#include "globals.h"
+#include "hash.h"
+#include "header.h"
+#include "imap/imap.h"
+#include "lib.h"
+#include "mailbox.h"
+#include "message.h"
 #include "mutt_menu.h"
+#include "mutt_socket.h"
 #include "mx.h"
+#include "options.h"
+#include "protos.h"
+#include "url.h"
 
 #define IMAP_CMD_BUFSIZE 512
 

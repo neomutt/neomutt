@@ -17,19 +17,25 @@
  */
 
 #include "config.h"
-#include <ctype.h>
 #include <dirent.h>
+#include <limits.h>
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 #include <sys/stat.h>
-#include <unistd.h>
 #include <utime.h>
-#include "mutt.h"
 #include "buffy.h"
+#include "buffer.h"
+#include "context.h"
+#include "globals.h"
+#include "header.h"
+#include "lib.h"
 #include "mailbox.h"
 #include "mutt_curses.h"
 #include "mutt_menu.h"
 #include "mx.h"
+#include "options.h"
+#include "protos.h"
 #ifdef USE_SIDEBAR
 #include "sidebar.h"
 #endif

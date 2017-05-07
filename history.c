@@ -16,8 +16,15 @@
  */
 
 #include "config.h"
-#include "mutt.h"
+#include <limits.h>
+#include <stdio.h>
+#include <string.h>
+#include <unistd.h>
 #include "history.h"
+#include "charset.h"
+#include "globals.h"
+#include "lib.h"
+#include "protos.h"
 
 struct history
 {

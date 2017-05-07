@@ -18,14 +18,8 @@
 #ifndef _MUTT_IDNA_H
 #define _MUTT_IDNA_H 1
 
-#include "charset.h"
-#include "rfc822.h"
-
-#ifdef HAVE_IDNA_H
-#include <idna.h>
-#elif defined(HAVE_IDN_IDNA_H)
-#include <idn/idna.h>
-#endif
+struct Envelope;
+struct Address;
 
 #define MI_MAY_BE_IRREVERSIBLE (1 << 0)
 

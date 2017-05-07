@@ -19,9 +19,15 @@
 #ifndef _MUTT_IMAP_H
 #define _MUTT_IMAP_H 1
 
+#include <stddef.h>
+#include <sys/types.h>
 #include "account.h"
-#include "browser.h"
-#include "mailbox.h"
+
+struct Header;
+struct Pattern;
+struct Context;
+struct Message;
+struct browser_state;
 
 /* -- data structures -- */
 struct ImapMbox

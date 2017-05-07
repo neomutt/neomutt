@@ -17,18 +17,31 @@
 
 #include "config.h"
 #include <ctype.h>
-#include <stdlib.h>
+#include <inttypes.h>
+#include <stdbool.h>
 #include <string.h>
-#include <unistd.h>
 #include "mutt.h"
 #include "copy.h"
+#include "address.h"
+#include "ascii.h"
+#include "body.h"
+#include "context.h"
+#include "envelope.h"
+#include "globals.h"
+#include "header.h"
+#include "lib.h"
+#include "list.h"
 #include "mailbox.h"
 #include "mime.h"
 #include "mutt_crypt.h"
 #include "mutt_curses.h"
 #include "mutt_idna.h"
 #include "mx.h"
+#include "options.h"
+#include "protos.h"
 #include "rfc2047.h"
+#include "rfc822.h"
+#include "state.h"
 #ifdef USE_NOTMUCH
 #include "mutt_notmuch.h"
 #endif

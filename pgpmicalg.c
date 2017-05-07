@@ -21,13 +21,16 @@
 
 #include "config.h"
 #include <ctype.h>
+#include <iconv.h>
+#include <limits.h>
 #include <stdio.h>
-#include <stdlib.h>
 #include <string.h>
+#include <unistd.h>
 #include "mutt.h"
-#include "charset.h"
-#include "pgp.h"
+#include "lib.h"
 #include "pgppacket.h"
+#include "protos.h"
+#include "state.h"
 
 static const struct
 {

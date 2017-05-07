@@ -19,11 +19,23 @@
 /* Mutt browser support routines */
 
 #include "config.h"
-#include <ctype.h>
-#include <stdlib.h>
+#include <libintl.h>
+#include <regex.h>
+#include <stdbool.h>
+#include <stdio.h>
+#include <string.h>
 #include "imap_private.h"
 #include "mutt.h"
+#include "account.h"
+#include "browser.h"
 #include "buffy.h"
+#include "context.h"
+#include "globals.h"
+#include "imap/imap.h"
+#include "lib.h"
+#include "mutt_regex.h"
+#include "options.h"
+#include "protos.h"
 
 /* imap_add_folder:
  * add a folder name to the browser list, formatting it as necessary.

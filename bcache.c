@@ -19,13 +19,16 @@
 #include "config.h"
 #include <dirent.h>
 #include <errno.h>
+#include <limits.h>
 #include <stdio.h>
+#include <string.h>
 #include <sys/stat.h>
-#include <sys/types.h>
-#include "mutt.h"
+#include <unistd.h>
 #include "bcache.h"
 #include "account.h"
+#include "globals.h"
 #include "lib.h"
+#include "protos.h"
 #include "url.h"
 
 static int mutt_bcache_move(struct BodyCache *bcache, const char *id, const char *newid);

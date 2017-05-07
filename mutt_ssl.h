@@ -18,9 +18,9 @@
 #ifndef _MUTT_SSL_H
 #define _MUTT_SSL_H 1
 
-#include "mutt_socket.h"
-
 #ifdef USE_SSL
+struct Connection;
+
 int mutt_ssl_starttls(struct Connection *conn);
 int mutt_ssl_socket_setup(struct Connection *conn);
 #endif

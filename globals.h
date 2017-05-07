@@ -18,6 +18,18 @@
 #ifndef _MUTT_GLOBALS_H
 #define _MUTT_GLOBALS_H 1
 
+#include <signal.h>
+#include "lib.h"
+#include "where.h"
+
+#ifdef MAIN_C
+/* so that global vars get included */
+#include "git_ver.h"
+#include "mutt_crypt.h"
+#include "mx.h"
+#include "sort.h"
+#endif /* MAIN_C */
+
 WHERE void (*mutt_error)(const char *, ...);
 WHERE void (*mutt_message)(const char *, ...);
 
@@ -212,13 +224,6 @@ WHERE struct RxList *NoSpamList INITVAL(0);
 WHERE struct ReplaceList *SubjectRxList INITVAL(0);
 
 
-/* bit vector for boolean variables */
-#ifdef MAIN_C
-unsigned char Options[(OPTMAX + 7) / 8];
-#else
-extern unsigned char Options[];
-#endif
-
 /* bit vector for the yes/no/ask variable type */
 #ifdef MAIN_C
 unsigned char QuadOptions[(OPT_MAX * 2 + 7) / 8];
@@ -356,15 +361,5 @@ const char *const BodyEncodings[] = {
 extern const char *const Weekdays[];
 extern const char *const Months[];
 #endif
-
-#ifdef MAIN_C
-/* so that global vars get included */
-#include "buffy.h"
-#include "git_ver.h"
-#include "mutt_crypt.h"
-#include "mutt_regex.h"
-#include "mx.h"
-#include "sort.h"
-#endif /* MAIN_C */
 
 #endif /* _MUTT_GLOBALS_H */

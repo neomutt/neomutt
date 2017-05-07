@@ -27,12 +27,18 @@
 
 #include "config.h"
 #include <ctype.h>
+#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "mutt.h"
 #include "rfc2231.h"
 #include "charset.h"
+#include "globals.h"
+#include "lib.h"
+#include "mbyte.h"
 #include "mime.h"
+#include "options.h"
+#include "parameter.h"
+#include "protos.h"
 #include "rfc2047.h"
 
 struct rfc2231_parameter

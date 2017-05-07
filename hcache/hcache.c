@@ -26,11 +26,32 @@
 #endif
 
 #include <errno.h>
+#include <limits.h>
+#include <stdbool.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <sys/stat.h>
 #include <sys/time.h>
-#include "hcache.h"
+#include <unistd.h>
+#include "address.h"
 #include "backend.h"
+#include "body.h"
+#include "buffer.h"
+#include "charset.h"
+#include "envelope.h"
+#include "globals.h"
+#include "hcache.h"
 #include "hcversion.h"
+#include "header.h"
+#include "lib.h"
+#include "list.h"
+#include "mbyte.h"
 #include "md5.h"
+#include "mutt_regex.h"
+#include "parameter.h"
+#include "protos.h"
+#include "rfc822.h"
 
 static unsigned int hcachever = 0x0;
 

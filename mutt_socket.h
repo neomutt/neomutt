@@ -19,6 +19,7 @@
 #ifndef _MUTT_SOCKET_H
 #define _MUTT_SOCKET_H 1
 
+#include <stddef.h>
 #include "account.h"
 #include "lib.h"
 

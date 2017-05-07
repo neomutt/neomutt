@@ -16,7 +16,7 @@
 #ifndef _MUTT_TUNNEL_H
 #define _MUTT_TUNNEL_H 1
 
-#include "mutt_socket.h"
+struct Connection;
 
 int mutt_tunnel_socket_setup(struct Connection *conn);
 

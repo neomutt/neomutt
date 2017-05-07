@@ -8,7 +8,7 @@
 #ifndef _MUTT_SHA1_H
 #define _MUTT_SHA1_H 1
 
-#include <inttypes.h>
+#include <stdint.h>
 
 struct Sha1Ctx
 {

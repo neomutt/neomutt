@@ -35,6 +35,10 @@
 #ifdef _MAKEDOC
 #include "config.h"
 #include "doc/makedoc_defs.h"
+#else
+#include <stddef.h>
+#include "keymap.h"
+#include "keymap_defs.h"
 #endif
 
 // clang-format off

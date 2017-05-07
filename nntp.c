@@ -19,19 +19,29 @@
 
 #include "config.h"
 #include <ctype.h>
-#include <stdlib.h>
+#include <limits.h>
 #include <string.h>
 #include <unistd.h>
 #include "mutt.h"
 #include "nntp.h"
+#include "account.h"
+#include "bcache.h"
+#include "body.h"
+#include "context.h"
+#include "envelope.h"
+#include "globals.h"
+#include "hash.h"
+#include "header.h"
+#include "lib.h"
 #include "mailbox.h"
-#include "mime.h"
 #include "mutt_crypt.h"
 #include "mutt_curses.h"
+#include "mutt_socket.h"
 #include "mx.h"
-#include "rfc1524.h"
-#include "rfc2047.h"
-#include "sort.h"
+#include "options.h"
+#include "protos.h"
+#include "thread.h"
+#include "url.h"
 #ifdef USE_SSL
 #include "mutt_ssl.h"
 #endif

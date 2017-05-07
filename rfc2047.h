@@ -18,6 +18,10 @@
 #ifndef _MUTT_RFC2047_H
 #define _MUTT_RFC2047_H 1
 
+#include <stddef.h>
+
+struct Address;
+
 char *mutt_choose_charset(const char *fromcode, const char *charsets, char *u,
                           size_t ulen, char **d, size_t *dlen);
 int convert_nonmime_string(char **ps);

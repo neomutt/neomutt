@@ -18,6 +18,14 @@
 #ifndef _MUTT_BUFFY_H
 #define _MUTT_BUFFY_H 1
 
+#include <limits.h>
+#include <stdbool.h>
+#include <sys/types.h>
+#include <time.h>
+#include "where.h"
+
+struct stat;
+
 /* parameter to mutt_parse_mailboxes */
 #define MUTT_MAILBOXES   1
 #define MUTT_UNMAILBOXES 2

@@ -21,10 +21,18 @@
 #include <stddef.h>
 #include <sasl/sasl.h>
 #include <sasl/saslutil.h>
+#include <stdio.h>
+#include <string.h>
 #include "imap_private.h"
-#include "mutt.h"
+#include "account.h"
+#include "ascii.h"
 #include "auth.h"
+#include "globals.h"
+#include "lib.h"
 #include "mutt_sasl.h"
+#include "mutt_socket.h"
+#include "options.h"
+#include "protos.h"
 
 /* imap_auth_sasl: Default authenticator if available. */
 imap_auth_res_t imap_auth_sasl(struct ImapData *idata, const char *method)

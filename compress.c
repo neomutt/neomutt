@@ -17,15 +17,24 @@
  */
 
 #include "config.h"
-#include <errno.h>
+#include <limits.h>
+#include <stdio.h>
 #include <string.h>
 #include <sys/stat.h>
 #include <unistd.h>
 #include "mutt.h"
 #include "compress.h"
+#include "context.h"
+#include "format_flags.h"
+#include "globals.h"
+#include "lib.h"
 #include "mailbox.h"
 #include "mutt_curses.h"
 #include "mx.h"
+#include "options.h"
+#include "protos.h"
+
+struct Header;
 
 /* Notes:
  * Any references to compressed files also apply to encrypted files.

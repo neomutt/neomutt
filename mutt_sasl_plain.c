@@ -16,8 +16,10 @@
  */
 
 #include "config.h"
-#include "mutt.h"
+#include <stdio.h>
 #include "mutt_sasl_plain.h"
+#include "lib.h"
+#include "protos.h"
 
 size_t mutt_sasl_plain_msg(char *buf, size_t buflen, const char *cmd,
                            const char *authz, const char *user, const char *pass)

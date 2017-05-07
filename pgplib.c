@@ -18,14 +18,10 @@
 /* Generally useful, pgp-related functions. */
 
 #include "config.h"
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <time.h>
-#include <unistd.h>
-#include "mutt.h"
+#include <stdbool.h>
 #include "pgplib.h"
 #include "lib.h"
+#include "mutt_crypt.h"
 
 const char *pgp_pkalgbytype(unsigned char type)
 {

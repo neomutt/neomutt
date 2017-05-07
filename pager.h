@@ -18,7 +18,10 @@
 #ifndef _MUTT_PAGER_H
 #define _MUTT_PAGER_H 1
 
-#include "attach.h"
+#include <stdio.h>
+
+struct Context;
+struct Menu;
 
 /* dynamic internal flags */
 #define MUTT_SHOWFLAT  (1 << 0)

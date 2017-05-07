@@ -18,7 +18,7 @@
 #ifndef _MUTT_COMMANDS_H
 #define _MUTT_COMMANDS_H 1
 
-#include "mutt.h"
+struct Buffer;
 
 struct command_t
 {

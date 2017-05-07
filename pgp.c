@@ -26,25 +26,35 @@
  */
 
 #include "config.h"
-#include <ctype.h>
-#include <errno.h>
-#include <locale.h>
-#include <stdlib.h>
+#include <libintl.h>
+#include <limits.h>
+#include <regex.h>
+#include <stdbool.h>
+#include <stdio.h>
 #include <string.h>
-#include <sys/resource.h>
 #include <sys/stat.h>
-#include <sys/time.h>
-#include <sys/wait.h>
+#include <time.h>
 #include <unistd.h>
 #include "mutt.h"
 #include "pgp.h"
-#include "copy.h"
+#include "address.h"
+#include "ascii.h"
+#include "body.h"
+#include "charset.h"
 #include "filter.h"
+#include "globals.h"
+#include "header.h"
+#include "lib.h"
+#include "list.h"
 #include "mime.h"
 #include "mutt_crypt.h"
 #include "mutt_curses.h"
-#include "mutt_menu.h"
-
+#include "mutt_regex.h"
+#include "options.h"
+#include "pgplib.h"
+#include "protos.h"
+#include "rfc822.h"
+#include "state.h"
 
 char PgpPass[LONG_STRING];
 time_t PgpExptime = 0; /* when does the cached passphrase expire? */
@@ -1280,8 +1290,7 @@ char *pgp_find_keys(struct Address *adrlist, int oppenc_mode)
     bypass_selection:
       keylist_size += mutt_strlen(keyID) + 4;
       safe_realloc(&keylist, keylist_size);
-      sprintf(keylist + keylist_used, "%s0x%s", keylist_used ? " " : "",
-              keyID);
+      sprintf(keylist + keylist_used, "%s0x%s", keylist_used ? " " : "", keyID);
       keylist_used = mutt_strlen(keylist);
 
       key_selected = 1;

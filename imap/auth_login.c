@@ -18,9 +18,15 @@
 /* plain LOGIN support */
 
 #include "config.h"
+#include <stdio.h>
 #include "imap_private.h"
-#include "mutt.h"
+#include "account.h"
 #include "auth.h"
+#include "globals.h"
+#include "lib.h"
+#include "mutt_socket.h"
+#include "options.h"
+#include "protos.h"
 
 /* imap_auth_login: Plain LOGIN support */
 imap_auth_res_t imap_auth_login(struct ImapData *idata, const char *method)

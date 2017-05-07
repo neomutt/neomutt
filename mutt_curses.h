@@ -19,6 +19,10 @@
 #ifndef _MUTT_CURSES_H
 #define _MUTT_CURSES_H 1
 
+#include <regex.h>
+#include "lib.h"
+#include "options.h"
+
 #ifdef USE_SLANG_CURSES
 
 #ifndef unix /* this symbol is not defined by the hp-ux compiler (sigh) */
@@ -67,8 +71,6 @@
 #endif
 
 #endif /* USE_SLANG_CURSES */
-
-#include "lib.h"
 
 /* AIX defines ``lines'' in <term.h>, but it's used as a var name in
  * various places in Mutt

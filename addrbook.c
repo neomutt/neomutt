@@ -16,13 +16,23 @@
  */
 
 #include "config.h"
-#include <ctype.h>
+#include <stdbool.h>
+#include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
-#include "mutt.h"
+#include "address.h"
+#include "alias.h"
+#include "ascii.h"
+#include "format_flags.h"
+#include "globals.h"
+#include "keymap.h"
+#include "keymap_defs.h"
+#include "lib.h"
 #include "mapping.h"
-#include "mutt_idna.h"
+#include "mutt_curses.h"
 #include "mutt_menu.h"
+#include "options.h"
+#include "protos.h"
+#include "rfc822.h"
 #include "sort.h"
 
 #define RSORT(x) (SortAlias & SORT_REVERSE) ? -x : x

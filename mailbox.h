@@ -18,6 +18,13 @@
 #ifndef _MUTT_MAILBOX_H
 #define _MUTT_MAILBOX_H 1
 
+#include <stdbool.h>
+#include <stdio.h>
+#include <time.h>
+
+struct Header;
+struct Context;
+
 /* flags for mutt_open_mailbox() */
 #define MUTT_NOSORT    (1 << 0) /* do not sort the mailbox after opening it */
 #define MUTT_APPEND    (1 << 1) /* open mailbox for appending messages */

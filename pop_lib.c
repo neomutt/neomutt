@@ -16,15 +16,25 @@
  */
 
 #include "config.h"
-#include <ctype.h>
 #include <errno.h>
 #include <netdb.h>
 #include <netinet/in.h>
+#include <stdbool.h>
+#include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
-#include <unistd.h>
 #include "mutt.h"
-#include "mx.h"
+#include "account.h"
+#include "ascii.h"
+#include "context.h"
+#include "globals.h"
+#include "header.h"
+#include "lib.h"
+#include "mutt_curses.h"
+#include "mutt_socket.h"
+#include "options.h"
 #include "pop.h"
+#include "protos.h"
 #include "url.h"
 #ifdef USE_SSL
 #include "mutt_ssl.h"

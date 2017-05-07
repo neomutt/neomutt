@@ -19,8 +19,26 @@
 #ifndef _MUTT_GROUP_H
 #define _MUTT_GROUP_H 1
 
+#include <stdbool.h>
+
+struct Address;
+struct Buffer;
+
 #define MUTT_GROUP   0
 #define MUTT_UNGROUP 1
+
+struct Group
+{
+  struct Address *as;
+  struct RxList *rs;
+  char *name;
+};
+
+struct GroupContext
+{
+  struct Group *g;
+  struct GroupContext *next;
+};
 
 void mutt_group_context_add(struct GroupContext **ctx, struct Group *group);
 void mutt_group_context_destroy(struct GroupContext **ctx);
@@ -32,5 +50,7 @@ bool mutt_group_match(struct Group *g, const char *s);
 int mutt_group_context_clear(struct GroupContext **ctx);
 int mutt_group_context_remove_rx(struct GroupContext *ctx, const char *s);
 int mutt_group_context_remove_adrlist(struct GroupContext *ctx, struct Address *a);
+
+struct Group *mutt_pattern_group(const char *k);
 
 #endif /* _MUTT_GROUP_H */

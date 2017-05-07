@@ -26,15 +26,18 @@
  */
 
 #include "config.h"
-#include <ctype.h>
-#include <errno.h>
-#include <stdlib.h>
+#include <limits.h>
+#include <stdio.h>
 #include <string.h>
-#include <sys/stat.h>
-#include <sys/wait.h>
 #include <unistd.h>
 #include "mutt.h"
 #include "rfc1524.h"
+#include "ascii.h"
+#include "body.h"
+#include "globals.h"
+#include "lib.h"
+#include "options.h"
+#include "protos.h"
 
 /* The command semantics include the following:
  * %s is the filename that contains the mail body data

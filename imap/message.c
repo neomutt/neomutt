@@ -20,12 +20,33 @@
 
 #include "config.h"
 #include <ctype.h>
-#include <errno.h>
+#include <limits.h>
+#include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
+#include <unistd.h>
 #include "imap_private.h"
 #include "mutt.h"
+#include "message.h"
+#include "account.h"
+#include "ascii.h"
 #include "bcache.h"
+#include "body.h"
+#include "buffer.h"
+#include "context.h"
+#include "envelope.h"
+#include "globals.h"
+#include "hash.h"
+#include "header.h"
+#include "imap/imap.h"
+#include "lib.h"
+#include "list.h"
+#include "mailbox.h"
+#include "mutt_curses.h"
+#include "mutt_socket.h"
 #include "mx.h"
+#include "options.h"
+#include "protos.h"
 #ifdef USE_HCACHE
 #include "hcache/hcache.h"
 #endif

@@ -16,20 +16,38 @@
  */
 
 #include "config.h"
+#include <errno.h>
+#include <idna.h>
+#include <limits.h>
+#include <openssl/asn1.h>
+#include <openssl/bio.h>
 #include <openssl/err.h>
 #include <openssl/evp.h>
+#include <openssl/obj_mac.h>
+#include <openssl/ossl_typ.h>
+#include <openssl/pem.h>
 #include <openssl/rand.h>
 #include <openssl/ssl.h>
+#include <openssl/ssl3.h>
 #include <openssl/x509.h>
 #include <openssl/x509_vfy.h>
 #include <openssl/x509v3.h>
+#include <stdbool.h>
+#include <stdio.h>
 #include <string.h>
+#include <sys/stat.h>
+#include <unistd.h>
 #include "mutt.h"
 #include "mutt_ssl.h"
-#include "mutt_curses.h"
-#include "mutt_idna.h"
+#include "account.h"
+#include "globals.h"
+#include "keymap.h"
+#include "keymap_defs.h"
+#include "lib.h"
 #include "mutt_menu.h"
 #include "mutt_socket.h"
+#include "options.h"
+#include "protos.h"
 
 /* Just in case OpenSSL doesn't define DEVRANDOM */
 #ifndef DEVRANDOM

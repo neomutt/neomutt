@@ -18,10 +18,13 @@
 #ifndef _MUTT_POP_H
 #define _MUTT_POP_H 1
 
-#include "bcache.h"
-#include "mailbox.h"
-#include "mutt_curses.h"
-#include "mutt_socket.h"
+#include <stdbool.h>
+#include <time.h>
+#include "mx.h"
+
+struct Account;
+struct Context;
+struct Progress;
 
 #define POP_PORT 110
 #define POP_SSL_PORT 995

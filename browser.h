@@ -18,9 +18,9 @@
 #ifndef _MUTT_BROWSER_H
 #define _MUTT_BROWSER_H 1
 
-#ifdef USE_NNTP
-#include "nntp.h"
-#endif
+#include <stdbool.h>
+#include <sys/types.h>
+#include <time.h>
 
 struct folder_file
 {

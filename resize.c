@@ -17,10 +17,10 @@
 
 #include "config.h"
 #include <fcntl.h>
+#include <stdbool.h>
 #include <stdlib.h>
-#include <termios.h>
 #include <unistd.h>
-#include "mutt.h"
+#include "lib.h"
 #include "mutt_curses.h"
 #ifdef HAVE_SYS_IOCTL_H
 #include <sys/ioctl.h>

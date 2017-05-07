@@ -16,13 +16,26 @@
  */
 
 #include "config.h"
-#include <ctype.h>
+#include <regex.h>
+#include <stdbool.h>
+#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include "mutt.h"
+#include "ascii.h"
+#include "buffer.h"
+#include "context.h"
+#include "globals.h"
+#include "header.h"
+#include "keymap.h"
+#include "lib.h"
 #include "mapping.h"
 #include "mutt_curses.h"
 #include "mutt_menu.h"
+#include "mutt_regex.h"
+#include "options.h"
+#include "pattern.h"
+#include "protos.h"
 
 /* globals */
 int *ColorQuote;

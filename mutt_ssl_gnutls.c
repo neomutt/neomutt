@@ -19,12 +19,23 @@
 #include "config.h"
 #include <gnutls/gnutls.h>
 #include <gnutls/x509.h>
+#include <regex.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <sys/stat.h>
+#include <time.h>
 #include "mutt.h"
-#include "mutt_curses.h"
+#include "account.h"
+#include "globals.h"
+#include "keymap.h"
+#include "keymap_defs.h"
+#include "lib.h"
 #include "mutt_menu.h"
 #include "mutt_regex.h"
 #include "mutt_socket.h"
-#include "mutt_ssl.h"
+#include "options.h"
+#include "protos.h"
 
 /* certificate error bitmap values */
 #define CERTERR_VALID 0

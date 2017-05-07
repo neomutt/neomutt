@@ -20,8 +20,11 @@
 
 #include "config.h"
 #include <kclangc.h>
-#include "mutt.h"
+#include <limits.h>
+#include <stdio.h>
 #include "backend.h"
+#include "lib.h"
+#include "options.h"
 
 static void *hcache_kyotocabinet_open(const char *path)
 {

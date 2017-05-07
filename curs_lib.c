@@ -17,22 +17,35 @@
  */
 
 #include "config.h"
+#include <stddef.h>
 #include <ctype.h>
 #include <errno.h>
 #include <fcntl.h>
 #include <langinfo.h>
+#include <libintl.h>
+#include <limits.h>
+#include <regex.h>
+#include <stdarg.h>
+#include <stdbool.h>
+#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <sys/time.h>
-#include <sys/types.h>
 #include <termios.h>
-#include <time.h>
 #include <unistd.h>
+#include <wchar.h>
 #include "mutt.h"
+#include "enter_state.h"
+#include "globals.h"
+#include "keymap_defs.h"
+#include "lib.h"
 #include "mbyte.h"
 #include "mutt_curses.h"
 #include "mutt_menu.h"
+#include "mutt_regex.h"
+#include "options.h"
 #include "pager.h"
+#include "protos.h"
 #ifdef HAVE_ISWBLANK
 #include <wctype.h>
 #endif

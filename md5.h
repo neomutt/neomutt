@@ -25,9 +25,8 @@
 #ifndef _MUTT_MD5_H
 #define _MUTT_MD5_H 1
 
-#include <inttypes.h>
+#include <stdint.h>
 #include <stdio.h>
-#include <sys/types.h>
 
 typedef uint32_t md5_uint32;
 

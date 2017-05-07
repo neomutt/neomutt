@@ -16,11 +16,20 @@
  */
 
 #include "config.h"
+#include <stddef.h>
+#include <stdbool.h>
 #include "mutt.h"
+#include "context.h"
+#include "globals.h"
+#include "header.h"
+#include "lib.h"
 #include "mutt_curses.h"
 #include "mutt_menu.h"
 #include "mx.h"
+#include "options.h"
+#include "protos.h"
 #include "sort.h"
+#include "thread.h"
 
 void _mutt_set_flag(struct Context *ctx, struct Header *h, int flag, int bf, int upd_ctx)
 {

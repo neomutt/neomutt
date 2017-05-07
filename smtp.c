@@ -21,11 +21,22 @@
 #include "config.h"
 #include <netdb.h>
 #include <netinet/in.h>
+#include <stdbool.h>
 #include <stdio.h>
+#include <string.h>
 #include <sys/stat.h>
+#include <unistd.h>
 #include "mutt.h"
+#include "account.h"
+#include "address.h"
+#include "ascii.h"
+#include "globals.h"
+#include "lib.h"
 #include "mutt_curses.h"
 #include "mutt_socket.h"
+#include "options.h"
+#include "protos.h"
+#include "url.h"
 #ifdef USE_SSL
 #include "mutt_ssl.h"
 #endif

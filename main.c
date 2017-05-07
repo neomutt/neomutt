@@ -21,18 +21,36 @@
 
 #include "config.h"
 #include <errno.h>
+#include <libintl.h>
+#include <limits.h>
 #include <locale.h>
+#include <stdbool.h>
+#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <sys/stat.h>
-#include <sys/utsname.h>
 #include <unistd.h>
 #include "mutt.h"
+#include "address.h"
+#include "alias.h"
+#include "ascii.h"
+#include "body.h"
+#include "buffy.h"
+#include "envelope.h"
+#include "globals.h"
+#include "header.h"
 #include "keymap.h"
+#include "lib.h"
+#include "list.h"
 #include "mailbox.h"
 #include "mutt_crypt.h"
 #include "mutt_curses.h"
 #include "mutt_idna.h"
+#include "mutt_regex.h"
+#include "mutt_socket.h"
+#include "options.h"
+#include "protos.h"
+#include "rfc822.h"
 #include "url.h"
 #include "version.h"
 #ifdef USE_SIDEBAR
@@ -44,17 +62,8 @@
 #ifdef USE_IMAP
 #include "imap/imap.h"
 #endif
-#ifdef USE_HCACHE
-#include "hcache/hcache.h"
-#endif
 #ifdef USE_NNTP
 #include "nntp.h"
-#endif
-
-#ifdef HAVE_STRINGPREP_H
-#include <stringprep.h>
-#elif defined(HAVE_IDN_STRINGPREP_H)
-#include <idn/stringprep.h>
 #endif
 
 char **envlist;

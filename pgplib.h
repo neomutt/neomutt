@@ -21,8 +21,9 @@
 
 #ifdef CRYPT_BACKEND_CLASSIC_PGP
 
-#include "mutt_crypt.h"
-
+#include <stdbool.h>
+#include <time.h>
+#include "lib.h"
 
 struct PgpSignature
 {

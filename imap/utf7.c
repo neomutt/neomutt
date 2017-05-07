@@ -16,9 +16,11 @@
  */
 
 #include "config.h"
+#include <string.h>
 #include "imap_private.h"
-#include "mutt.h"
 #include "charset.h"
+#include "globals.h"
+#include "lib.h"
 
 // clang-format off
 static const int Index_64[128] = {

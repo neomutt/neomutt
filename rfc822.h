@@ -19,6 +19,9 @@
 #ifndef _MUTT_RFC822_H
 #define _MUTT_RFC822_H 1
 
+#include <stddef.h>
+#include <stdbool.h>
+#include "address.h"
 #include "lib.h"
 
 /* possible values for RFC822Error */
@@ -30,19 +33,6 @@ enum
   ERR_BAD_ROUTE,
   ERR_BAD_ROUTE_ADDR,
   ERR_BAD_ADDR_SPEC
-};
-
-struct Address
-{
-#ifdef EXACT_ADDRESS
-  char *val;      /* value of address as parsed */
-#endif
-  char *personal; /* real name of address */
-  char *mailbox;  /* mailbox and host address */
-  int group;      /* group mailbox? */
-  struct Address *next;
-  bool is_intl : 1;
-  bool intl_checked : 1;
 };
 
 void rfc822_dequote_comment(char *s);

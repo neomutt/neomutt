@@ -20,12 +20,18 @@
 #include <errno.h>
 #include <fcntl.h>
 #include <netinet/in.h>
+#include <string.h>
 #include <sys/socket.h>
 #include <sys/types.h>
 #include <sys/wait.h>
+#include <unistd.h>
 #include "mutt.h"
 #include "mutt_tunnel.h"
+#include "account.h"
+#include "globals.h"
+#include "lib.h"
 #include "mutt_socket.h"
+#include "protos.h"
 
 /* -- data types -- */
 struct TunnelData

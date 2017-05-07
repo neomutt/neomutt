@@ -16,10 +16,27 @@
  */
 
 #include "config.h"
+#include <stddef.h>
+#include <libintl.h>
+#include <regex.h>
+#include <stdbool.h>
+#include <stdio.h>
+#include <string.h>
+#include <wchar.h>
 #include "mutt.h"
-#include "mbyte.h"
+#include "context.h"
+#include "globals.h"
+#include "hash.h"
+#include "keymap.h"
+#include "keymap_defs.h"
+#include "lib.h"
 #include "mutt_curses.h"
 #include "mutt_menu.h"
+#include "mutt_regex.h"
+#include "mbyte.h"
+#include "options.h"
+#include "pattern.h"
+#include "protos.h"
 #ifdef USE_SIDEBAR
 #include "sidebar.h"
 #endif

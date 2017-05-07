@@ -18,23 +18,36 @@
  */
 
 #include "config.h"
-#include <ctype.h>
-#include <errno.h>
-#include <locale.h>
-#include <stdlib.h>
+#include <libintl.h>
+#include <limits.h>
+#include <stdbool.h>
+#include <stdio.h>
 #include <string.h>
 #include <sys/stat.h>
-#include <sys/time.h>
-#include <sys/wait.h>
-#include <unistd.h>
+#include <time.h>
 #include "mutt.h"
 #include "smime.h"
+#include "address.h"
+#include "alias.h"
+#include "ascii.h"
+#include "body.h"
 #include "copy.h"
+#include "envelope.h"
 #include "filter.h"
+#include "format_flags.h"
+#include "globals.h"
+#include "header.h"
+#include "keymap.h"
+#include "keymap_defs.h"
+#include "lib.h"
 #include "mime.h"
 #include "mutt_crypt.h"
 #include "mutt_curses.h"
 #include "mutt_menu.h"
+#include "options.h"
+#include "protos.h"
+#include "rfc822.h"
+#include "state.h"
 
 struct smime_command_context
 {

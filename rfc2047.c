@@ -19,13 +19,18 @@
 #include "config.h"
 #include <ctype.h>
 #include <errno.h>
-#include <stdio.h>
-#include <stdlib.h>
+#include <iconv.h>
 #include <string.h>
-#include "mutt.h"
 #include "rfc2047.h"
+#include "address.h"
+#include "ascii.h"
 #include "charset.h"
+#include "globals.h"
+#include "lib.h"
+#include "mbyte.h"
 #include "mime.h"
+#include "options.h"
+#include "protos.h"
 
 /* If you are debugging this file, comment out the following line. */
 /* #define NDEBUG */

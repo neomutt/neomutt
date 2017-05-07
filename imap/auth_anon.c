@@ -19,8 +19,13 @@
 
 #include "config.h"
 #include "imap_private.h"
-#include "mutt.h"
+#include "account.h"
 #include "auth.h"
+#include "globals.h"
+#include "lib.h"
+#include "mutt_socket.h"
+#include "options.h"
+#include "protos.h"
 
 /* this is basically a stripped-down version of the cram-md5 method. */
 imap_auth_res_t imap_auth_anon(struct ImapData *idata, const char *method)

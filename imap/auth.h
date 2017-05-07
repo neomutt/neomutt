@@ -21,12 +21,13 @@
 #ifndef _MUTT_IMAP_AUTH_H
 #define _MUTT_IMAP_AUTH_H 1
 
+struct ImapData;
+
 typedef enum {
   IMAP_AUTH_SUCCESS = 0,
   IMAP_AUTH_FAILURE,
   IMAP_AUTH_UNAVAIL
 } imap_auth_res_t;
-
 
 struct ImapAuth
 {

@@ -17,17 +17,36 @@
  */
 
 #include "config.h"
-#include <ctype.h>
+#include <limits.h>
+#include <stdbool.h>
+#include <stdio.h>
 #include <string.h>
 #include <sys/stat.h>
+#include <time.h>
 #include <unistd.h>
 #include "mutt.h"
+#include "ascii.h"
+#include "body.h"
+#include "context.h"
+#include "envelope.h"
+#include "format_flags.h"
+#include "globals.h"
+#include "hash.h"
+#include "header.h"
+#include "keymap.h"
+#include "keymap_defs.h"
+#include "lib.h"
+#include "list.h"
 #include "mailbox.h"
 #include "mapping.h"
 #include "mime.h"
 #include "mutt_crypt.h"
 #include "mutt_menu.h"
+#include "options.h"
+#include "protos.h"
 #include "sort.h"
+#include "state.h"
+#include "thread.h"
 #ifdef USE_IMAP
 #include "imap/imap.h"
 #endif

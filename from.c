@@ -17,8 +17,14 @@
 
 #include "config.h"
 #include <ctype.h>
+#include <stdbool.h>
+#include <stdio.h>
 #include <string.h>
-#include "mutt.h"
+#include <time.h>
+#include "ascii.h"
+#include "globals.h"
+#include "lib.h"
+#include "protos.h"
 
 static const char *next_word(const char *s)
 {

@@ -21,6 +21,9 @@
 #ifndef _MUTT_IMAP_MESSAGE_H
 #define _MUTT_IMAP_MESSAGE_H 1
 
+#include <stdbool.h>
+#include <time.h>
+
 /* -- data structures -- */
 /* IMAP-specific header data, stored as Header->data */
 struct ImapHeaderData

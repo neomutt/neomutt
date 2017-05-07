@@ -16,12 +16,19 @@
  */
 
 #include "config.h"
+#include <stdbool.h>
+#include <stdio.h>
 #include <string.h>
-#include <unistd.h>
-#include "mutt.h"
+#include "account.h"
+#include "ascii.h"
+#include "globals.h"
+#include "lib.h"
 #include "md5.h"
-#include "mx.h"
+#include "mutt_socket.h"
+#include "options.h"
 #include "pop.h"
+#include "protos.h"
+#include "rfc822.h"
 #ifdef USE_SASL
 #include <sasl/sasl.h>
 #include <sasl/saslutil.h>

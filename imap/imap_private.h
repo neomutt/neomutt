@@ -19,15 +19,22 @@
 #ifndef _MUTT_IMAP_PRIVATE_H
 #define _MUTT_IMAP_PRIVATE_H 1
 
-#include "account.h"
-#include "bcache.h"
-#include "imap.h"
-#include "message.h"
-#include "mutt_curses.h"
-#include "mutt_socket.h"
+#include <stdbool.h>
+#include <stdio.h>
+#include <time.h>
 #ifdef USE_HCACHE
 #include "hcache/hcache.h"
 #endif
+
+struct Account;
+struct Buffer;
+struct Context;
+struct Header;
+struct ImapHeaderData;
+struct ImapMbox;
+struct List;
+struct Message;
+struct Progress;
 
 /* -- symbols -- */
 #define IMAP_PORT 143

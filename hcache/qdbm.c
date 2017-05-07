@@ -19,11 +19,12 @@
  */
 
 #include "config.h"
-#include <cabin.h>
+#include <stddef.h>
 #include <depot.h>
 #include <villa.h>
-#include "mutt.h"
 #include "backend.h"
+#include "lib.h"
+#include "options.h"
 
 static void *hcache_qdbm_open(const char *path)
 {

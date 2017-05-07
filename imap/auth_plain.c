@@ -20,9 +20,13 @@
 
 #include "config.h"
 #include "imap_private.h"
-#include "mutt.h"
+#include "account.h"
 #include "auth.h"
+#include "globals.h"
+#include "lib.h"
 #include "mutt_sasl_plain.h"
+#include "mutt_socket.h"
+#include "protos.h"
 
 /* imap_auth_plain: SASL PLAIN support */
 imap_auth_res_t imap_auth_plain(struct ImapData *idata, const char *method)

@@ -18,22 +18,38 @@
 #include "config.h"
 #include <assert.h>
 #include <ctype.h>
-#include <errno.h>
+#include <libintl.h>
+#include <regex.h>
+#include <stdbool.h>
+#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <sys/stat.h>
-#include <sys/wait.h>
-#include <unistd.h>
 #include "mutt.h"
+#include "alias.h"
+#include "body.h"
 #include "buffy.h"
+#include "context.h"
+#include "envelope.h"
+#include "format_flags.h"
+#include "globals.h"
+#include "hash.h"
+#include "header.h"
+#include "keymap.h"
+#include "keymap_defs.h"
+#include "lib.h"
+#include "list.h"
 #include "mailbox.h"
 #include "mapping.h"
 #include "mutt_crypt.h"
 #include "mutt_curses.h"
 #include "mutt_menu.h"
+#include "mutt_socket.h"
 #include "mx.h"
-#include "mx.h"
+#include "options.h"
+#include "pattern.h"
+#include "protos.h"
 #include "sort.h"
+#include "thread.h"
 #ifdef USE_SIDEBAR
 #include "sidebar.h"
 #endif
@@ -1665,7 +1681,7 @@ int mutt_index_menu(void)
         }
         break;
 
-        /* --------------------------------------------------------------------
+/* --------------------------------------------------------------------
          * The following operations can be performed inside of the pager.
          */
 

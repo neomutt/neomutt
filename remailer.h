@@ -22,6 +22,11 @@
 #ifndef _MUTT_REMAILER_H
 #define _MUTT_REMAILER_H 1
 
+#include <stddef.h>
+
+struct List;
+struct Header;
+
 #ifdef MIXMASTER
 
 #define MIX_CAP_COMPRESS  (1 << 0)

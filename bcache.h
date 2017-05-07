@@ -19,12 +19,9 @@
 #ifndef _MUTT_BCACHE_H
 #define _MUTT_BCACHE_H 1
 
-#include "account.h"
+#include <stdio.h>
 
-/*
- * support for body cache
- */
-
+struct Account;
 struct BodyCache;
 
 /*

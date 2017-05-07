@@ -18,9 +18,11 @@
  */
 
 #include "config.h"
+#include <stdbool.h>
 #include <stdio.h>
 #include <string.h>
 #include <sys/utsname.h>
+#include <unistd.h>
 #include "lib.h"
 #ifdef HAVE_STRINGPREP_H
 #include <stringprep.h>

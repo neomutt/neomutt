@@ -23,7 +23,6 @@
 
 #include "config.h"
 #include <stdio.h>
-#include <stdlib.h>
 #include "ascii.h"
 
 int ascii_strcasecmp(const char *a, const char *b)

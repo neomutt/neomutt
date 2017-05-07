@@ -17,16 +17,26 @@
  */
 
 #include "config.h"
-#include <ctype.h>
-#include <errno.h>
-#include <stdlib.h>
+#include <libintl.h>
+#include <limits.h>
+#include <stdbool.h>
+#include <stdio.h>
 #include <string.h>
 #include <sys/stat.h>
-#include <sys/wait.h>
 #include <unistd.h>
 #include "mutt.h"
+#include "ascii.h"
 #include "attach.h"
+#include "body.h"
+#include "context.h"
+#include "envelope.h"
 #include "filter.h"
+#include "format_flags.h"
+#include "globals.h"
+#include "header.h"
+#include "keymap.h"
+#include "keymap_defs.h"
+#include "lib.h"
 #include "mailbox.h"
 #include "mapping.h"
 #include "mime.h"
@@ -34,7 +44,10 @@
 #include "mutt_curses.h"
 #include "mutt_menu.h"
 #include "mx.h"
+#include "options.h"
+#include "protos.h"
 #include "rfc1524.h"
+#include "state.h"
 
 static const char *Mailbox_is_read_only = N_("Mailbox is read-only.");
 

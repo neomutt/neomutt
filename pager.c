@@ -16,16 +16,31 @@
  */
 
 #include "config.h"
+#include <stddef.h>
 #include <ctype.h>
 #include <errno.h>
-#include <stdlib.h>
+#include <inttypes.h>
+#include <libintl.h>
+#include <limits.h>
+#include <regex.h>
+#include <stdbool.h>
 #include <string.h>
 #include <sys/stat.h>
 #include <unistd.h>
+#include <wchar.h>
 #include "mutt.h"
 #include "pager.h"
+#include "alias.h"
 #include "attach.h"
+#include "body.h"
+#include "context.h"
+#include "envelope.h"
+#include "format_flags.h"
+#include "globals.h"
+#include "header.h"
 #include "keymap.h"
+#include "keymap_defs.h"
+#include "lib.h"
 #include "mailbox.h"
 #include "mapping.h"
 #include "mbyte.h"
@@ -33,9 +48,16 @@
 #include "mutt_curses.h"
 #include "mutt_menu.h"
 #include "mutt_regex.h"
+#include "mx.h"
+#include "options.h"
+#include "pattern.h"
+#include "protos.h"
 #include "sort.h"
 #ifdef USE_SIDEBAR
 #include "sidebar.h"
+#endif
+#ifdef USE_NNTP
+#include "nntp.h"
 #endif
 
 #define ISHEADER(x) ((x) == MT_COLOR_HEADER || (x) == MT_COLOR_HDEFAULT)
@@ -1155,12 +1177,6 @@ static int fill_buffer(FILE *f, LOFF_T *last_pos, LOFF_T offset, unsigned char *
   }
   return b_read;
 }
-
-#ifdef USE_NNTP
-#include "mx.h"
-#include "nntp.h"
-#endif
-
 
 static int format_line(struct line_t **lineInfo, int n, unsigned char *buf,
                        int flags, struct AnsiAttr *pa, int cnt, int *pspace, int *pvch,

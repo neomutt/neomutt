@@ -21,16 +21,21 @@
 /* This file was originally part of mutt-ng */
 
 #include "config.h"
-#include <ctype.h>
-#include <stdlib.h>
+#include <limits.h>
+#include <stdbool.h>
+#include <stdio.h>
 #include <string.h>
-#include <sys/stat.h>
-#include <sys/wait.h>
 #include <unistd.h>
 #include "mutt.h"
 #include "ascii.h"
+#include "body.h"
+#include "globals.h"
+#include "header.h"
 #include "lib.h"
 #include "mutt_curses.h"
+#include "options.h"
+#include "protos.h"
+#include "state.h"
 
 #define FLOWED_MAX 72
 

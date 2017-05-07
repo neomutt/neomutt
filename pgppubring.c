@@ -31,7 +31,8 @@
  */
 
 #include "config.h"
-#include <errno.h>
+#include <limits.h>
+#include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -39,6 +40,7 @@
 #include <unistd.h>
 #include "lib.h"
 #include "md5.h"
+#include "mutt_crypt.h"
 #include "pgplib.h"
 #include "pgppacket.h"
 #include "sha1.h"

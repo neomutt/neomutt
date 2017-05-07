@@ -20,7 +20,12 @@
 #ifndef _MUTT_ATTACH_H
 #define _MUTT_ATTACH_H 1
 
-#include "mutt_menu.h"
+#include <stdbool.h>
+#include <stdio.h>
+
+struct Menu;
+struct Header;
+struct Body;
 
 struct AttachPtr
 {

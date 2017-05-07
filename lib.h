@@ -23,18 +23,9 @@
 
 #include <ctype.h>
 #include <limits.h>
-#include <signal.h>
-#include <stdarg.h>
-#include <stdbool.h>
 #include <stdio.h>
 #include <string.h>
-#include <sys/stat.h>
 #include <sys/types.h>
-#include <time.h>
-#include <unistd.h>
-#ifndef _POSIX_PATH_MAX
-#include <limits.h>
-#endif
 
 #ifdef ENABLE_NLS
 #include <libintl.h>

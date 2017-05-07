@@ -18,7 +18,9 @@
 #ifndef _MUTT_OPTIONS_H
 #define _MUTT_OPTIONS_H 1
 
-#include "mutt.h"
+#include <stddef.h>
+
+struct Buffer;
 
 #define DT_MASK      0x0f
 #define DT_BOOL      1    /* boolean option */

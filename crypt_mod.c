@@ -17,6 +17,7 @@
 
 #include "config.h"
 #include "crypt_mod.h"
+#include "lib.h"
 
 /* A type of a variable to keep track of registered crypto modules. */
 struct CryptModule

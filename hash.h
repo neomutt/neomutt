@@ -18,6 +18,8 @@
 #ifndef _MUTT_HASH_H
 #define _MUTT_HASH_H 1
 
+#include <stdbool.h>
+
 union hash_key {
   const char *strkey;
   unsigned int intkey;

@@ -20,15 +20,21 @@
 #ifndef _MUTT_NNTP_H
 #define _MUTT_NNTP_H 1
 
+#include <stdbool.h>
 #include <stdint.h>
+#include <stdio.h>
 #include <sys/types.h>
 #include <time.h>
-#include "bcache.h"
-#include "mailbox.h"
-#include "mutt_socket.h"
+#include "format_flags.h"
+#include "where.h"
+#include "mx.h"
 #ifdef USE_HCACHE
 #include "hcache/hcache.h"
 #endif
+
+struct Account;
+struct Header;
+struct Context;
 
 #define NNTP_PORT 119
 #define NNTP_SSL_PORT 563

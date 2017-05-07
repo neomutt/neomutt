@@ -16,13 +16,25 @@
  */
 
 #include "config.h"
+#include <limits.h>
+#include <stdbool.h>
+#include <stdio.h>
+#include <string.h>
 #include "mutt.h"
+#include "alias.h"
 #include "attach.h"
+#include "body.h"
 #include "copy.h"
-#include "mapping.h"
+#include "envelope.h"
+#include "globals.h"
+#include "header.h"
+#include "lib.h"
 #include "mutt_curses.h"
 #include "mutt_idna.h"
-#include "mutt_menu.h"
+#include "options.h"
+#include "protos.h"
+#include "rfc822.h"
+#include "state.h"
 
 /* some helper functions to verify that we are exclusively operating
  * on message/rfc822 attachments

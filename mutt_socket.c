@@ -20,19 +20,20 @@
 #include "config.h"
 #include <errno.h>
 #include <fcntl.h>
+#include <idna.h>
 #include <netdb.h>
 #include <netinet/in.h>
-#include <stdlib.h>
+#include <stdio.h>
 #include <string.h>
 #include <sys/select.h>
 #include <sys/socket.h>
-#include <sys/time.h>
-#include <sys/types.h>
 #include <unistd.h>
-#include "mutt.h"
 #include "mutt_socket.h"
-#include "mutt_idna.h"
+#include "globals.h"
 #include "mutt_tunnel.h"
+#include "options.h"
+#include "protos.h"
+#include "url.h"
 #ifdef USE_SSL
 #include "mutt_ssl.h"
 #endif

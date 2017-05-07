@@ -20,9 +20,12 @@
 /* IMAP login/authentication code */
 
 #include "config.h"
-#include "imap_private.h"
-#include "mutt.h"
+#include <string.h>
 #include "auth.h"
+#include "ascii.h"
+#include "globals.h"
+#include "lib.h"
+#include "protos.h"
 
 static const struct ImapAuth imap_authenticators[] = {
   { imap_auth_plain, "plain" },

@@ -18,14 +18,30 @@
 
 #include "config.h"
 #include <errno.h>
+#include <limits.h>
+#include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
 #include "mutt.h"
 #include "pop.h"
+#include "account.h"
 #include "bcache.h"
+#include "body.h"
+#include "context.h"
+#include "envelope.h"
+#include "globals.h"
+#include "hash.h"
+#include "header.h"
+#include "lib.h"
+#include "mailbox.h"
 #include "mutt_crypt.h"
 #include "mutt_curses.h"
+#include "mutt_socket.h"
 #include "mx.h"
+#include "options.h"
+#include "protos.h"
+#include "url.h"
 #ifdef USE_HCACHE
 #include "hcache/hcache.h"
 #endif

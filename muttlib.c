@@ -17,31 +17,53 @@
  */
 
 #include "config.h"
+#include <stddef.h>
 #include <ctype.h>
 #include <errno.h>
-#include <fcntl.h>
+#include <inttypes.h>
+#include <libintl.h>
+#include <limits.h>
+#include <pwd.h>
+#include <regex.h>
+#include <stdarg.h>
+#include <stdbool.h>
+#include <stdint.h>
+#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <sys/stat.h>
-#include <sys/types.h>
-#include <sys/wait.h>
 #include <time.h>
 #include <unistd.h>
 #include <utime.h>
+#include <wchar.h>
 #include "mutt.h"
+#include "address.h"
+#include "alias.h"
+#include "ascii.h"
+#include "body.h"
 #include "buffer.h"
+#include "charset.h"
+#include "envelope.h"
 #include "filter.h"
+#include "format_flags.h"
+#include "globals.h"
+#include "header.h"
+#include "lib.h"
+#include "list.h"
 #include "mailbox.h"
 #include "mime.h"
 #include "mutt_crypt.h"
 #include "mutt_curses.h"
+#include "mutt_regex.h"
 #include "mx.h"
+#include "options.h"
+#include "parameter.h"
+#include "protos.h"
+#include "rfc822.h"
+#include "state.h"
 #include "url.h"
 #ifdef USE_IMAP
 #include "imap/imap.h"
-#endif
-#ifdef USE_NOTMUCH
-#include "mutt_notmuch.h"
 #endif
 #ifdef HAVE_SYS_SYSCALL_H
 #include <sys/syscall.h>
@@ -1102,13 +1124,13 @@ int mutt_check_overwrite(const char *attname, const char *path, char *fname,
         case 3: /* all */
           mutt_str_replace(directory, fname);
           break;
-        case 1:            /* yes */
+        case 1: /* yes */
           FREE(directory);
           break;
-        case -1:           /* abort */
+        case -1: /* abort */
           FREE(directory);
           return -1;
-        case 2:            /* no */
+        case 2: /* no */
           FREE(directory);
           return 1;
       }

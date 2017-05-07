@@ -35,19 +35,21 @@ BUILT_SOURCES = keymap_defs.h keymap_alldefs.h git_ver.h conststrings.c
 
 bin_PROGRAMS = mutt $(DOTLOCK_TARGET) $(PGPAUX_TARGET)
 
-mutt_SOURCES = account.c addrbook.c alias.c ascii.c attach.c base64.c bcache.c \
-	       browser.c buffer.c buffy.c charset.c color.c commands.c \
-	       complete.c compose.c compress.c copy.c crypt_mod.c crypt_mod.h \
-	       crypt.c cryptglue.c curs_lib.c curs_main.c date.c edit.c \
-	       editmsg.c enter.c filter.c flags.c from.c getdomain.c group.c \
-	       handler.c hash.c hdrline.c headers.c help.c history.c hook.c \
-	       init.c keymap.c lib.c main.c mbox.c mbyte.c md5.c menu.c mh.c \
-	       muttlib.c mutt_idna.c mutt_sasl_plain.c mutt_socket.c \
-	       mutt_tunnel.c mx.c newsrc.c nntp.c pager.c parse.c pattern.c \
-	       pop.c pop_auth.c pop_lib.c postpone.c query.c recvattach.c \
-	       recvcmd.c rfc1524.c rfc2047.c rfc2231.c rfc3676.c rfc822.c \
-	       safe_asprintf.c score.c send.c sendlib.c sidebar.c signal.c \
-	       smtp.c sort.c status.c system.c thread.c url.c version.c
+mutt_SOURCES = account.c addrbook.c address.h alias.c alias.h ascii.c attach.c \
+	base64.c bcache.c body.h browser.c buffer.c buffy.c charset.c color.c \
+	commands.c complete.c compose.c compress.c content.h context.h copy.c \
+	crypt.c cryptglue.c crypt_mod.c crypt_mod.h curs_lib.c curs_main.c \
+	date.c edit.c editmsg.c enter.c enter_state.h envelope.h filter.c \
+	flags.c format_flags.h from.c getdomain.c group.c handler.c hash.c \
+	hdrline.c header.h headers.c help.c history.c hook.c init.c keymap.c \
+	lib.c list.h main.c mbox.c mbyte.c mbyte_table.h md5.c menu.c mh.c \
+	muttlib.c mutt_idna.c mutt_sasl_plain.c mutt_socket.c \
+	mutt_tunnel.c mx.c newsrc.c nntp.c options.h pager.c parameter.h \
+	parse.c pattern.c pattern.h pop.c pop_auth.c pop_lib.c postpone.c \
+	query.c recvattach.c recvcmd.c rfc1524.c rfc2047.c rfc2231.c rfc3676.c \
+	rfc822.c safe_asprintf.c score.c send.c sendlib.c sidebar.c signal.c \
+	smtp.c sort.c state.h status.c system.c thread.c thread.h url.c \
+	version.c where.h
 
 nodist_mutt_SOURCES = $(BUILT_SOURCES)
 

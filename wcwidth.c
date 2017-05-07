@@ -21,9 +21,7 @@
  */
 
 #include "config.h"
-#include <ctype.h>
-#include "mutt.h"
-#include "mbyte.h"
+#include <stddef.h>
 
 /* The following two functions define the column width of an ISO 10646
  * character as follows:

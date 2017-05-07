@@ -19,9 +19,12 @@
  */
 
 #include "config.h"
+#include <stddef.h>
 #include <tcbdb.h>
-#include "mutt.h"
+#include <tcutil.h>
 #include "backend.h"
+#include "lib.h"
+#include "options.h"
 
 static void *hcache_tokyocabinet_open(const char *path)
 {

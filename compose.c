@@ -18,22 +18,40 @@
 
 #include "config.h"
 #include <errno.h>
-#include <stdlib.h>
+#include <libintl.h>
+#include <limits.h>
+#include <stdbool.h>
+#include <stdio.h>
 #include <string.h>
 #include <sys/stat.h>
-#include <sys/wait.h>
 #include <unistd.h>
 #include "mutt.h"
+#include "alias.h"
 #include "attach.h"
-#include "charset.h"
+#include "body.h"
+#include "content.h"
+#include "context.h"
+#include "envelope.h"
+#include "format_flags.h"
+#include "globals.h"
+#include "header.h"
+#include "keymap.h"
+#include "keymap_defs.h"
+#include "lib.h"
+#include "list.h"
 #include "mailbox.h"
 #include "mapping.h"
 #include "mime.h"
+#include "mutt_crypt.h"
 #include "mutt_curses.h"
 #include "mutt_idna.h"
 #include "mutt_menu.h"
+#include "mutt_socket.h"
 #include "mx.h"
+#include "options.h"
+#include "protos.h"
 #include "rfc1524.h"
+#include "rfc822.h"
 #include "sort.h"
 #ifdef MIXMASTER
 #include "remailer.h"
@@ -41,6 +59,8 @@
 #ifdef USE_NNTP
 #include "nntp.h"
 #endif
+
+struct Address;
 
 static const char *There_are_no_attachments = N_("There are no attachments.");
 
@@ -125,9 +145,6 @@ static void snd_entry(char *b, size_t blen, struct Menu *menu, int num)
                     (unsigned long) (((struct AttachPtr **) menu->data)[num]),
                     MUTT_FORMAT_STAT_FILE | MUTT_FORMAT_ARROWCURSOR);
 }
-
-
-#include "mutt_crypt.h"
 
 static void redraw_crypt_lines(struct Header *msg)
 {

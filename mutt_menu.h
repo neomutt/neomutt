@@ -22,9 +22,9 @@
 #ifndef _MUTT_MENU_H
 #define _MUTT_MENU_H 1
 
-#include "keymap.h"
-#include "mutt_curses.h"
-#include "mutt_regex.h"
+#include <regex.h>
+#include <stdbool.h>
+#include <stdio.h>
 
 #define REDRAW_INDEX          (1 << 0)
 #define REDRAW_MOTION         (1 << 1)
@@ -135,7 +135,5 @@ int mutt_menu_loop(struct Menu *menu);
 /* used in both the index and pager index to make an entry. */
 void index_make_entry(char *s, size_t l, struct Menu *menu, int num);
 int index_color(int index_no);
-
-bool mutt_limit_current_thread(struct Header *h);
 
 #endif /* _MUTT_MENU_H */

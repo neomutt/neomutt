@@ -18,12 +18,26 @@
 #include "config.h"
 #include <ctype.h>
 #include <limits.h>
-#include <stdlib.h>
+#include <regex.h>
+#include <stdbool.h>
+#include <stdio.h>
 #include <string.h>
 #include <unistd.h>
 #include "mutt.h"
+#include "address.h"
+#include "buffer.h"
+#include "context.h"
+#include "envelope.h"
+#include "globals.h"
+#include "header.h"
+#include "lib.h"
+#include "list.h"
 #include "mailbox.h"
 #include "mutt_crypt.h"
+#include "mutt_regex.h"
+#include "options.h"
+#include "pattern.h"
+#include "protos.h"
 #ifdef USE_COMPRESSED
 #include "compress.h"
 #endif

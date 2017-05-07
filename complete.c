@@ -18,10 +18,13 @@
 #include "config.h"
 #include <dirent.h>
 #include <errno.h>
+#include <limits.h>
 #include <string.h>
 #include <sys/stat.h>
-#include <sys/types.h>
-#include "mutt.h"
+#include "globals.h"
+#include "lib.h"
+#include "options.h"
+#include "protos.h"
 #ifdef USE_IMAP
 #include "imap/imap.h"
 #include "mailbox.h"

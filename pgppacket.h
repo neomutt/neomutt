@@ -23,6 +23,8 @@
 #ifndef _MUTT_PGPPACKET_H
 #define _MUTT_PGPPACKET_H 1
 
+#include <stdio.h>
+
 enum packet_tags
 {
   PT_RES0 = 0,   /* reserved */

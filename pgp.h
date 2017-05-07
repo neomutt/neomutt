@@ -22,11 +22,17 @@
 
 #ifdef CRYPT_BACKEND_CLASSIC_PGP
 
+#include <stdio.h>
+#include <stdbool.h>
+#include <unistd.h>
 #include "mutt_crypt.h"
-#include "pgplib.h"
 
-
-/* prototypes */
+struct Address;
+struct Body;
+struct Header;
+struct List;
+struct PgpKeyInfo;
+struct State;
 
 bool pgp_use_gpg_agent(void);
 

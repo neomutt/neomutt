@@ -22,7 +22,9 @@
 #ifndef _MUTT_RFC3676_H
 #define _MUTT_RFC3676_H 1
 
-#include "mutt.h"
+struct Body;
+struct Header;
+struct State;
 
 /* body handler implementing RfC 3676 for format=flowed */
 int rfc3676_handler(struct Body *a, struct State *s);

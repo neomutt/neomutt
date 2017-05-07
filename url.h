@@ -16,7 +16,9 @@
 #ifndef _MUTT_URL_H
 #define _MUTT_URL_H 1
 
-#include "mutt.h"
+#include <stddef.h>
+
+struct Envelope;
 
 typedef enum url_scheme {
   U_FILE,

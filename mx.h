@@ -24,8 +24,40 @@
 #ifndef _MUTT_MX_H
 #define _MUTT_MX_H 1
 
-#include "buffy.h"
-#include "mailbox.h"
+#include <stdbool.h>
+#include <stdio.h>
+#include "where.h"
+#ifdef USE_HCACHE
+#include "hcache/hcache.h"
+#endif
+
+struct Header;
+struct Context;
+struct Message;
+struct stat;
+
+/*
+ * struct mx_ops - a structure to store operations on a mailbox
+ * The following operations are mandatory:
+ *  - open
+ *  - close
+ *  - check
+ *
+ * Optional operations
+ *  - open_new_msg
+ */
+struct mx_ops
+{
+  int (*open)(struct Context *ctx);
+  int (*open_append)(struct Context *ctx, int flags);
+  int (*close)(struct Context *ctx);
+  int (*check)(struct Context *ctx, int *index_hint);
+  int (*sync)(struct Context *ctx, int *index_hint);
+  int (*open_msg)(struct Context *ctx, struct Message *msg, int msgno);
+  int (*close_msg)(struct Context *ctx, struct Message *msg);
+  int (*commit_msg)(struct Context *ctx, struct Message *msg);
+  int (*open_new_msg)(struct Message *msg, struct Context *ctx, struct Header *hdr);
+};
 
 /* supported mailbox formats */
 enum
@@ -60,7 +92,6 @@ bool maildir_update_flags(struct Context *ctx, struct Header *o, struct Header *
 void maildir_flags(char *dest, size_t destlen, struct Header *hdr);
 
 #ifdef USE_HCACHE
-#include "hcache/hcache.h"
 int mh_sync_mailbox_message(struct Context *ctx, int msgno, header_cache_t *hc);
 #else
 int mh_sync_mailbox_message(struct Context *ctx, int msgno);

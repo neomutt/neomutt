@@ -20,7 +20,7 @@
 #ifndef _MUTT_ACCOUNT_H
 #define _MUTT_ACCOUNT_H 1
 
-#include "url.h"
+struct CissUrl;
 
 /* account types */
 enum

@@ -18,10 +18,17 @@
 /* IMAP login/authentication code */
 
 #include "config.h"
+#include <stdio.h>
+#include <string.h>
 #include "imap_private.h"
-#include "mutt.h"
+#include "account.h"
 #include "auth.h"
+#include "globals.h"
+#include "lib.h"
 #include "md5.h"
+#include "mutt_socket.h"
+#include "options.h"
+#include "protos.h"
 
 #define MD5_BLOCK_LEN 64
 #define MD5_DIGEST_LEN 16

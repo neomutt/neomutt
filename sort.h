@@ -18,6 +18,12 @@
 #ifndef _MUTT_SORT_H
 #define _MUTT_SORT_H 1
 
+#include "mapping.h"
+#include "where.h"
+
+struct Address;
+struct Context;
+
 #define SORT_DATE     1 /* the date the mail was sent. */
 #define SORT_SIZE     2
 #define SORT_SUBJECT  3
@@ -59,11 +65,8 @@
 typedef int sort_t(const void *, const void *);
 sort_t *mutt_get_sort_func(int method);
 
-void mutt_clear_threads(struct Context *ctx);
 void mutt_sort_headers(struct Context *ctx, int init);
-void mutt_sort_threads(struct Context *ctx, int init);
 int mutt_select_sort(int reverse);
-struct MuttThread *mutt_sort_subthreads(struct MuttThread *thread, int init);
 
 WHERE short BrowserSort INITVAL(SORT_SUBJECT);
 WHERE short Sort INITVAL(SORT_DATE);
@@ -74,7 +77,8 @@ WHERE short SidebarSortMethod INITVAL(SORT_ORDER);
 /* FIXME: This one does not belong to here */
 WHERE short PgpSortKeys INITVAL(SORT_ADDRESS);
 
-#include "mapping.h"
 extern const struct mapping_t SortMethods[];
+
+const char *mutt_get_name(struct Address *a);
 
 #endif /* _MUTT_SORT_H */

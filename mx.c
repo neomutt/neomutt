@@ -17,25 +17,38 @@
  */
 
 #include "config.h"
-#include <ctype.h>
-#include <dirent.h>
 #include <errno.h>
 #include <fcntl.h>
+#include <limits.h>
 #include <stdlib.h>
 #include <string.h>
 #include <sys/file.h>
 #include <sys/stat.h>
+#include <time.h>
 #include <unistd.h>
 #include <utime.h>
 #include "mutt.h"
 #include "mx.h"
+#include "address.h"
+#include "ascii.h"
+#include "body.h"
 #include "buffy.h"
+#include "context.h"
 #include "copy.h"
+#include "envelope.h"
+#include "globals.h"
+#include "hash.h"
+#include "header.h"
 #include "keymap.h"
+#include "keymap_defs.h"
+#include "lib.h"
 #include "mailbox.h"
 #include "mutt_crypt.h"
-#include "rfc2047.h"
+#include "options.h"
+#include "pattern.h"
+#include "protos.h"
 #include "sort.h"
+#include "thread.h"
 #include "url.h"
 #ifdef USE_SIDEBAR
 #include "sidebar.h"
@@ -1050,10 +1063,6 @@ int mx_close_mailbox(struct Context *ctx, int *index_hint)
 
   return 0;
 }
-
-#ifdef USE_NOTMUCH
-#include "mutt_notmuch.h"
-#endif
 
 /* update a Context structure's internal tables. */
 void mx_update_tables(struct Context *ctx, int committing)

@@ -16,14 +16,18 @@
  */
 
 #include "config.h"
-#include <ctype.h>
-#include <string.h>
-#include <unistd.h>
-#include "mutt.h"
+#include <stdio.h>
+#include "context.h"
+#include "format_flags.h"
+#include "globals.h"
+#include "lib.h"
 #include "mapping.h"
+#include "mbyte_table.h"
 #include "mutt_curses.h"
 #include "mutt_menu.h"
 #include "mx.h"
+#include "options.h"
+#include "protos.h"
 #include "sort.h"
 #ifdef USE_NOTMUCH
 #include "mutt_notmuch.h"

@@ -15,6 +15,7 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <stdarg.h>
 #include <stdio.h>
 #include "lib.h"
 
@@ -78,7 +79,7 @@ int safe_asprintf(char **strp, const char *fmt, ...)
       /* reduce space to just that which was used.  note that 'n' does not
        * include the terminal nul char.
        */
-      if (n == 0)   /* convention is to use NULL for zero-length strings. */
+      if (n == 0) /* convention is to use NULL for zero-length strings. */
         FREE(strp);
       else if (n != rlen - 1)
         safe_realloc(strp, n + 1);

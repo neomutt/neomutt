@@ -18,13 +18,7 @@
 #include "config.h"
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
-#include <time.h>
-#include <unistd.h>
-/* yuck, we were including this one somewhere below. */
-#include "mutt.h"
 #include "lib.h"
-#include "pgppacket.h"
 
 #define CHUNKSIZE 1024
 

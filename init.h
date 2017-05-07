@@ -23,20 +23,27 @@
 #include "config.h"
 #include "doc/makedoc_defs.h"
 #else
+#include <stddef.h>
+#include "mutt.h"
+#include "buffy.h"
+#include "globals.h"
+#include "group.h"
+#include "mapping.h"
+#include "mutt_commands.h"
+#include "mutt_options.h"
+#include "mutt_regex.h"
 #include "mx.h"
+#include "options.h"
+#include "protos.h"
 #include "sort.h"
 #ifdef USE_LUA
 #include "mutt_lua.h"
 #endif
 #endif
 
-#include "buffy.h"
+struct Buffer;
 
 #ifndef _MAKEDOC
-#include "group.h"
-#include "mutt_commands.h"
-#include "mutt_options.h"
-
 /* flags to parse_set() */
 #define MUTT_SET_INV   (1 << 0) /* default is to invert all vars */
 #define MUTT_SET_UNSET (1 << 1) /* default is to unset all vars */

@@ -20,13 +20,16 @@
 #include "config.h"
 #include <errno.h>
 #include <netdb.h>
-#include <netinet/in.h>
 #include <sasl/sasl.h>
+#include <stdio.h>
+#include <string.h>
 #include <sys/socket.h>
-#include "mutt.h"
 #include "mutt_sasl.h"
 #include "account.h"
+#include "lib.h"
 #include "mutt_socket.h"
+#include "options.h"
+#include "protos.h"
 
 static int getnameinfo_err(int ret)
 {

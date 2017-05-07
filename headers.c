@@ -17,12 +17,27 @@
 
 #include "config.h"
 #include <ctype.h>
+#include <limits.h>
+#include <stdbool.h>
 #include <stdint.h>
-#include <string.h>
+#include <stdio.h>
 #include <sys/stat.h>
+#include <time.h>
 #include "mutt.h"
+#include "alias.h"
+#include "ascii.h"
+#include "body.h"
+#include "context.h"
+#include "envelope.h"
+#include "globals.h"
+#include "hash.h"
+#include "header.h"
+#include "lib.h"
+#include "list.h"
 #include "mutt_crypt.h"
 #include "mutt_idna.h"
+#include "options.h"
+#include "protos.h"
 
 void mutt_edit_headers(const char *editor, const char *body, struct Header *msg, char *fcc, size_t fcclen)
 {

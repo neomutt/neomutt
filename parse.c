@@ -17,18 +17,36 @@
 
 #include "config.h"
 #include <ctype.h>
+#include <regex.h>
+#include <stdbool.h>
+#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <sys/stat.h>
+#include <time.h>
 #include "mutt.h"
+#include "ascii.h"
+#include "body.h"
 #include "buffer.h"
+#include "charset.h"
+#include "envelope.h"
+#include "globals.h"
+#include "header.h"
+#include "lib.h"
+#include "list.h"
 #include "mailbox.h"
 #include "mime.h"
 #include "mutt_crypt.h"
 #include "mutt_regex.h"
+#include "options.h"
+#include "parameter.h"
+#include "protos.h"
 #include "rfc2047.h"
 #include "rfc2231.h"
+#include "rfc822.h"
 #include "url.h"
+
+struct Address;
+struct Context;
 
 /* Reads an arbitrarily long header field, and looks ahead for continuation
  * lines.  ``line'' must point to a dynamically allocated string; it is

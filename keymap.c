@@ -17,15 +17,23 @@
 
 #include "config.h"
 #include <ctype.h>
+#include <limits.h>
+#include <stdbool.h>
+#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "mutt.h"
 #include "keymap.h"
+#include "ascii.h"
+#include "buffer.h"
 #include "functions.h"
+#include "globals.h"
+#include "keymap_defs.h"
+#include "lib.h"
 #include "mapping.h"
 #include "mutt_crypt.h"
 #include "mutt_curses.h"
-#include "mutt_menu.h"
+#include "options.h"
+#include "protos.h"
 #ifdef USE_IMAP
 #include "imap/imap.h"
 #endif

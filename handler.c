@@ -16,22 +16,39 @@
  */
 
 #include "config.h"
+#include <stddef.h>
 #include <ctype.h>
+#include <iconv.h>
+#include <libintl.h>
+#include <limits.h>
+#include <stdbool.h>
+#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <sys/stat.h>
-#include <sys/wait.h>
+#include <time.h>
 #include <unistd.h>
+#include <wchar.h>
+#include <wctype.h>
 #include "mutt.h"
+#include "ascii.h"
+#include "body.h"
 #include "charset.h"
 #include "copy.h"
 #include "filter.h"
+#include "globals.h"
 #include "keymap.h"
+#include "keymap_defs.h"
+#include "lib.h"
+#include "list.h"
 #include "mime.h"
 #include "mutt_crypt.h"
 #include "mutt_curses.h"
+#include "options.h"
+#include "protos.h"
 #include "rfc1524.h"
 #include "rfc3676.h"
+#include "state.h"
 
 #define BUFI_SIZE 1000
 #define BUFO_SIZE 2000

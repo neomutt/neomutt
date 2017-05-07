@@ -19,6 +19,11 @@
 #ifndef _MUTT_COMPRESS_H
 #define _MUTT_COMPRESS_H 1
 
+#include <stdbool.h>
+#include "mx.h"
+
+struct Context;
+
 bool mutt_comp_can_append(struct Context *ctx);
 bool mutt_comp_can_read(const char *path);
 int mutt_comp_valid_command(const char *cmd);

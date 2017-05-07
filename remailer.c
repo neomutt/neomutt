@@ -21,18 +21,29 @@
 
 #include "config.h"
 #include <fcntl.h>
+#include <limits.h>
 #include <stdio.h>
-#include <stdlib.h>
 #include <string.h>
-#include <sys/file.h>
-#include <sys/types.h>
+#include <unistd.h>
 #include "mutt.h"
 #include "remailer.h"
+#include "address.h"
+#include "ascii.h"
+#include "envelope.h"
 #include "filter.h"
+#include "format_flags.h"
+#include "globals.h"
+#include "header.h"
+#include "keymap.h"
+#include "keymap_defs.h"
+#include "lib.h"
+#include "list.h"
 #include "mapping.h"
 #include "mutt_curses.h"
 #include "mutt_menu.h"
-#include "mutt_regex.h"
+#include "options.h"
+#include "protos.h"
+#include "rfc822.h"
 
 struct coord
 {

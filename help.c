@@ -18,13 +18,23 @@
 #define HELP_C
 
 #include "config.h"
+#include <stddef.h>
 #include <ctype.h>
+#include <limits.h>
+#include <stdbool.h>
+#include <stdio.h>
 #include <string.h>
-#include "mutt.h"
+#include <wchar.h>
+#include "globals.h"
 #include "keymap.h"
+#include "keymap_defs.h"
+#include "lib.h"
 #include "mapping.h"
+#include "mbyte.h"
 #include "mutt_curses.h"
+#include "options.h"
 #include "pager.h"
+#include "protos.h"
 
 static const struct binding_t *help_lookup_function(int op, int menu)
 {

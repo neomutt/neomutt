@@ -19,6 +19,7 @@
  */
 
 #include "config.h"
+#include <stddef.h>
 #include <lmdb.h>
 #include "backend.h"
 #include "lib.h"

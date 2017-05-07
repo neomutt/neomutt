@@ -17,12 +17,12 @@
  */
 
 #include "config.h"
-#include <stdlib.h>
+#include <stdio.h>
 #include <string.h>
+#include "rfc822.h"
+#include "ascii.h"
 
-#ifndef TESTING
-#include "mutt.h"
-#else
+#ifdef TESTING
 #define safe_strdup strdup
 #define safe_malloc malloc
 #define FREE(x) safe_free(x)
