@@ -1703,7 +1703,7 @@ static void pager_menu_redraw (MUTTMENU *pager_menu)
         rd->SearchBack = Resize->SearchBack;
       }
       rd->lines = Resize->line;
-      pager_menu->redraw |= REDRAW_SIGWINCH;
+      pager_menu->redraw |= REDRAW_FLOW;
 
       FREE (&Resize);
     }
@@ -1745,7 +1745,7 @@ static void pager_menu_redraw (MUTTMENU *pager_menu)
     mutt_show_error ();
   }
 
-  if (pager_menu->redraw & REDRAW_SIGWINCH)
+  if (pager_menu->redraw & REDRAW_FLOW)
   {
     if (!(rd->flags & MUTT_PAGER_RETWINCH))
     {
@@ -2045,7 +2045,7 @@ mutt_pager (const char *banner, const char *fname, int flags, pager_t *extra)
       else
       {
         /* note: mutt_resize_screen() -> mutt_reflow_windows() sets
-         * REDRAW_FULL and REDRAW_SIGWINCH */
+         * REDRAW_FULL and REDRAW_FLOW */
 	ch = 0;
       }
       continue;

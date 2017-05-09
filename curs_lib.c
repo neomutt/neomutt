@@ -608,7 +608,7 @@ void mutt_reflow_windows (void)
 
   mutt_set_current_menu_redraw_full ();
   /* the pager menu needs this flag set to recalc lineInfo */
-  mutt_set_current_menu_redraw (REDRAW_SIGWINCH);
+  mutt_set_current_menu_redraw (REDRAW_FLOW);
 }
 
 static void reflow_message_window_rows (int mw_rows)
@@ -629,7 +629,7 @@ static void reflow_message_window_rows (int mw_rows)
     MuttSidebarWindow->rows = MuttIndexWindow->rows;
 #endif
 
-  /* We don't also set REDRAW_SIGWINCH because this function only
+  /* We don't also set REDRAW_FLOW because this function only
    * changes rows and is a temporary adjustment. */
   mutt_set_current_menu_redraw_full ();
 }
