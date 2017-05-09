@@ -2718,6 +2718,14 @@ patterns.
 </para>
 
 <para>
+When <link linkend="header-color-partial">$header_color_partial</link>
+is unset (the default), a <emphasis>header</emphasis> matched by
+<emphasis>regexp</emphasis> will have color applied to the entire header.
+When set, color is applied only to the exact text matched by
+<emphasis>regexp</emphasis>.
+</para>
+
+<para>
 <emphasis>object</emphasis> can be one of:
 </para>
 

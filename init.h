@@ -1007,6 +1007,17 @@ struct option_t MuttVars[] = {
   */
 #endif /* HAVE_GDBM || HAVE_DB4 */
 #endif /* USE_HCACHE */
+  { "header_color_partial", DT_BOOL, R_PAGER|R_REFLOW, OPTHEADERCOLORPARTIAL, 0 },
+  /*
+  ** .pp
+  ** When \fIset\fP, color header regexps behave like color body regexps:
+  ** color is applied to the exact text matched by the regexp.  When
+  ** \fIunset\fP, color is applied to the entire header.
+  ** .pp
+  ** One use of this option might be to apply color to just the header labels.
+  ** .pp
+  ** See ``$color'' for more details.
+  */
   { "help",		DT_BOOL, R_REFLOW, OPTHELP, 1 },
   /*
   ** .pp
