@@ -733,38 +733,48 @@ static void resolve_types(char *buf, char *raw, struct line_t *lineInfo, int n,
       if (n > 0 && (buf[0] == ' ' || buf[0] == '\t'))
       {
         lineInfo[n].type = lineInfo[n - 1].type; /* wrapped line */
-        (lineInfo[n].syntax)[0].color = (lineInfo[n - 1].syntax)[0].color;
-        lineInfo[n].is_cont_hdr = 1;
+        if (!option(OPTHEADERCOLORPARTIAL))
+        {
+          (lineInfo[n].syntax)[0].color = (lineInfo[n - 1].syntax)[0].color;
+          lineInfo[n].is_cont_hdr = 1;
+        }
       }
       else
       {
         lineInfo[n].type = MT_COLOR_HDEFAULT;
       }
 
-      for (color_line = ColorHdrList; color_line; color_line = color_line->next)
+      /* When this option is unset, we color the entire header the
+       * same color.  Otherwise, we handle the header patterns just
+       * like body patterns (further below).
+       */
+      if (!option(OPTHEADERCOLORPARTIAL))
       {
-        if (REGEXEC(color_line->rx, buf) == 0)
+        for (color_line = ColorHdrList; color_line; color_line = color_line->next)
         {
-          lineInfo[n].type = MT_COLOR_HEADER;
-          lineInfo[n].syntax[0].color = color_line->pair;
-          if (lineInfo[n].is_cont_hdr)
+          if (REGEXEC(color_line->rx, buf) == 0)
           {
-            /* adjust the previous continuation lines to reflect the color of this continuation line */
-            int j;
-            for (j = n - 1; j >= 0 && lineInfo[j].is_cont_hdr; --j)
+            lineInfo[n].type = MT_COLOR_HEADER;
+            lineInfo[n].syntax[0].color = color_line->pair;
+            if (lineInfo[n].is_cont_hdr)
             {
-              lineInfo[j].type = lineInfo[n].type;
-              lineInfo[j].syntax[0].color = lineInfo[n].syntax[0].color;
+              /* adjust the previous continuation lines to reflect the color of this continuation line */
+              int j;
+              for (j = n - 1; j >= 0 && lineInfo[j].is_cont_hdr; --j)
+              {
+                lineInfo[j].type = lineInfo[n].type;
+                lineInfo[j].syntax[0].color = lineInfo[n].syntax[0].color;
+              }
+              /* now adjust the first line of this header field */
+              if (j >= 0)
+              {
+                lineInfo[j].type = lineInfo[n].type;
+                lineInfo[j].syntax[0].color = lineInfo[n].syntax[0].color;
+              }
+              *force_redraw = 1; /* the previous lines have already been drawn on the screen */
             }
-            /* now adjust the first line of this header field */
-            if (j >= 0)
-            {
-              lineInfo[j].type = lineInfo[n].type;
-              lineInfo[j].syntax[0].color = lineInfo[n].syntax[0].color;
-            }
-            *force_redraw = 1; /* the previous lines have already been drawn on the screen */
+            break;
           }
-          break;
         }
       }
     }
@@ -834,7 +844,8 @@ static void resolve_types(char *buf, char *raw, struct line_t *lineInfo, int n,
     lineInfo[n].type = MT_COLOR_NORMAL;
 
   /* body patterns */
-  if (lineInfo[n].type == MT_COLOR_NORMAL || lineInfo[n].type == MT_COLOR_QUOTED)
+  if (lineInfo[n].type == MT_COLOR_NORMAL || lineInfo[n].type == MT_COLOR_QUOTED ||
+      (lineInfo[n].type == MT_COLOR_HDEFAULT && option(OPTHEADERCOLORPARTIAL)))
   {
     size_t nl;
 
@@ -853,7 +864,10 @@ static void resolve_types(char *buf, char *raw, struct line_t *lineInfo, int n,
 
       found = 0;
       null_rx = 0;
-      color_line = ColorBodyList;
+      if (lineInfo[n].type == MT_COLOR_HDEFAULT)
+        color_line = ColorHdrList;
+      else
+        color_line = ColorBodyList;
       while (color_line)
       {
         if (regexec(&color_line->rx, buf + offset, 1, pmatch, (offset ? REG_NOTBOL : 0)) == 0)
