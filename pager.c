@@ -1905,10 +1905,9 @@ mutt_pager (const char *banner, const char *fname, int flags, pager_t *extra)
   char buffer[LONG_STRING];
   char helpstr[SHORT_STRING*2];
   char tmphelp[SHORT_STRING*2];
-  int i, j, ch = 0, rc = -1;
+  int i, ch = 0, rc = -1;
   int err, first = 1;
   int r = -1, wrapped = 0, searchctx = 0;
-  int old_smart_wrap, old_markers;
 
   MUTTMENU *pager_menu = NULL;
   int old_PagerIndexLines;		/* some people want to resize it
@@ -2562,8 +2561,6 @@ search_next:
 	break;
 
       case OP_ENTER_COMMAND:
-	old_smart_wrap = option (OPTWRAP);
-	old_markers = option (OPTMARKERS);
 	old_PagerIndexLines = PagerIndexLines;
 
 	mutt_enter_command ();
@@ -2581,65 +2578,16 @@ search_next:
 	    mutt_menuDestroy (&rd.index);
 	  rd.index = NULL;
 	}
-	
-	if (option (OPTWRAP) != old_smart_wrap || 
-	    option (OPTMARKERS) != old_markers)
-	{
-	  if (flags & MUTT_PAGER_RETWINCH)
-	  {
-	    ch = -1;
-	    rc = OP_REFORMAT_WINCH;
-	    continue;
-	  }
 
-	  /* count the real lines above */
-	  j = 0;
-	  for (i = 0; i <= rd.topline; i++)
-	  {
-	    if (!rd.lineInfo[i].continuation)
-	      j++;
-	  }
+        if ((pager_menu->redraw & REDRAW_FLOW) &&
+            (flags & MUTT_PAGER_RETWINCH))
+        {
+          ch = -1;
+          rc = OP_REFORMAT_WINCH;
+          continue;
+        }
 
-	  /* we need to restart the whole thing */
-	  for (i = 0; i < rd.maxLine; i++)
-	  {
-	    rd.lineInfo[i].offset = 0;
-	    rd.lineInfo[i].type = -1;
-	    rd.lineInfo[i].continuation = 0;
-	    rd.lineInfo[i].chunks = 0;
-	    rd.lineInfo[i].search_cnt = -1;
-	    rd.lineInfo[i].quote = NULL;
-
-	    safe_realloc (&(rd.lineInfo[i].syntax), sizeof (struct syntax_t));
-	    if (rd.SearchCompiled && rd.lineInfo[i].search)
-		FREE (&(rd.lineInfo[i].search));
-	  }
-
-	  if (rd.SearchCompiled)
-	  {
-	    regfree (&rd.SearchRE);
-	    rd.SearchCompiled = 0;
-	  }
-	  rd.SearchFlag = 0;
-
-	  /* try to keep the old position */
-	  rd.topline = 0;
-	  rd.lastLine = 0;
-	  while (j > 0 && display_line (rd.fp, &rd.last_pos, &rd.lineInfo, rd.topline, 
-					&rd.lastLine, &rd.maxLine,
-					(rd.has_types ? MUTT_TYPES : 0) | (flags & MUTT_PAGER_NOWRAP),
-					&rd.QuoteList, &rd.q_level, &rd.force_redraw,
-					&rd.SearchRE, rd.pager_window) == 0)
-	  {
-	    if (! rd.lineInfo[rd.topline].continuation)
-	      j--;
-	    if (j > 0)
-	      rd.topline++;
-	  }
-
-	  ch = 0;
-	}
-
+        ch = 0;
 	break;
 
       case OP_FLAG_MESSAGE:

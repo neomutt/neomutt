@@ -792,6 +792,12 @@ void mutt_set_current_menu_redraw_full (void)
     current_menu->redraw = REDRAW_FULL;
 }
 
+void mutt_set_menu_redraw (int menu_type, int redraw)
+{
+  if (CurrentMenu == menu_type)
+    mutt_set_current_menu_redraw (redraw);
+}
+
 void mutt_set_menu_redraw_full (int menu_type)
 {
   if (CurrentMenu == menu_type)

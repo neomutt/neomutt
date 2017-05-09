@@ -59,13 +59,14 @@
 #define R_NONE		0
 #define R_INDEX		(1<<0)  /* redraw the index menu (MENU_MAIN) */
 #define R_PAGER		(1<<1)  /* redraw the pager menu */
-#define R_RESORT	(1<<2)	/* resort the mailbox */
-#define R_RESORT_SUB	(1<<3)	/* resort subthreads */
-#define R_RESORT_INIT	(1<<4)  /* resort from scratch */
-#define R_TREE		(1<<5)  /* redraw the thread tree */
-#define R_REFLOW        (1<<6)  /* reflow window layout and full redraw */
-#define R_SIDEBAR       (1<<7)  /* redraw the sidebar */
-#define R_MENU          (1<<8)  /* redraw all menus */
+#define R_PAGER_FLOW    (1<<2)  /* reflow lineInfo and redraw the pager menu */
+#define R_RESORT	(1<<3)	/* resort the mailbox */
+#define R_RESORT_SUB	(1<<4)	/* resort subthreads */
+#define R_RESORT_INIT	(1<<5)  /* resort from scratch */
+#define R_TREE		(1<<6)  /* redraw the thread tree */
+#define R_REFLOW        (1<<7)  /* reflow window layout and full redraw */
+#define R_SIDEBAR       (1<<8)  /* redraw the sidebar */
+#define R_MENU          (1<<9)  /* redraw all menus */
 #define R_BOTH		(R_INDEX | R_PAGER)
 #define R_RESORT_BOTH	(R_RESORT | R_RESORT_SUB)
 
@@ -1007,7 +1008,7 @@ struct option_t MuttVars[] = {
   */
 #endif /* HAVE_GDBM || HAVE_DB4 */
 #endif /* USE_HCACHE */
-  { "header_color_partial", DT_BOOL, R_PAGER|R_REFLOW, OPTHEADERCOLORPARTIAL, 0 },
+  { "header_color_partial", DT_BOOL, R_PAGER_FLOW, OPTHEADERCOLORPARTIAL, 0 },
   /*
   ** .pp
   ** When \fIset\fP, color header regexps behave like color body regexps:
@@ -1518,7 +1519,7 @@ struct option_t MuttVars[] = {
   ** will show up with an ``O'' next to them in the index menu,
   ** indicating that they are old.
   */
-  { "markers",		DT_BOOL, R_PAGER, OPTMARKERS, 1 },
+  { "markers",		DT_BOOL, R_PAGER_FLOW, OPTMARKERS, 1 },
   /*
   ** .pp
   ** Controls the display of wrapped lines in the internal pager. If set, a
@@ -2911,7 +2912,7 @@ struct option_t MuttVars[] = {
   ** messages from the current folder.  The default is to pause one second, so
   ** a value of zero for this option suppresses the pause.
   */
-  { "smart_wrap",	DT_BOOL, R_PAGER, OPTWRAP, 1 },
+  { "smart_wrap",	DT_BOOL, R_PAGER_FLOW, OPTWRAP, 1 },
   /*
   ** .pp
   ** Controls the display of lines longer than the screen width in the
