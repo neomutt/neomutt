@@ -426,11 +426,7 @@ static int parse_color_name(const char *s, int *col, int *attr, int is_fg, struc
 
   if (is_bright)
   {
-    if (is_fg)
-    {
-      *attr |= A_BOLD;
-    }
-    else if (COLORS < 16)
+    if (COLORS < 16)
     {
       /* A_BLINK turns the background color brite on some terms */
       *attr |= A_BLINK;
