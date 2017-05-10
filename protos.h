@@ -256,6 +256,7 @@ int mutt_alias_complete(char *s, size_t buflen);
 void mutt_alias_add_reverse(struct Alias *t);
 void mutt_alias_delete_reverse(struct Alias *t);
 int mutt_alloc_color(int fg, int bg);
+int mutt_combine_color(int fg_attr, int bg_attr);
 int mutt_any_key_to_continue(const char *s);
 char *mutt_apply_replace(char *dbuf, size_t dlen, char *sbuf, struct ReplaceList *rlist);
 int mutt_buffy_check(bool force);

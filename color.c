@@ -313,6 +313,45 @@ int mutt_alloc_color(int fg, int bg)
   return (COLOR_PAIR(p->index));
 }
 
+static int mutt_lookup_color(short pair, short *fg, short *bg)
+{
+  struct ColorList *p = ColorList;
+
+  while (p)
+  {
+    if (COLOR_PAIR(p->index) == pair)
+    {
+      if (fg)
+        *fg = p->fg;
+      if (bg)
+        *bg = p->bg;
+      return 0;
+    }
+    p = p->next;
+  }
+  return -1;
+}
+
+int mutt_combine_color(int fg_attr, int bg_attr)
+{
+  short fg, bg;
+
+  fg = bg = COLOR_DEFAULT;
+  mutt_lookup_color(fg_attr, &fg, NULL);
+  mutt_lookup_color(bg_attr, NULL, &bg);
+  if ((fg == COLOR_DEFAULT) && (bg == COLOR_DEFAULT))
+    return A_NORMAL;
+#ifdef HAVE_USE_DEFAULT_COLORS
+  if (!option(OPTNOCURSES) && has_colors() &&
+      ((fg == COLOR_DEFAULT) || (bg == COLOR_DEFAULT)) && use_default_colors() != OK)
+  {
+    mutt_error(_("default colors not supported."));
+    return A_NORMAL;
+  }
+#endif
+  return mutt_alloc_color(fg, bg);
+}
+
 void mutt_free_color(int fg, int bg)
 {
   struct ColorList *p = NULL, *q = NULL;

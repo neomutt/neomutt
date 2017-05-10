@@ -102,7 +102,15 @@ static void print_enriched_string(int index, int attr, unsigned char *s, int do_
     if (*s < MUTT_TREE_MAX)
     {
       if (do_color)
+#if defined(HAVE_COLOR) && defined(HAVE_USE_DEFAULT_COLORS)
+        /* Combining tree fg color and another bg color requires
+         * having use_default_colors, because the other bg color
+         * may be undefined. */
+        ATTRSET(mutt_combine_color(ColorDefs[MT_COLOR_TREE], attr));
+#else
         SETCOLOR(MT_COLOR_TREE);
+#endif
+
       while (*s && *s < MUTT_TREE_MAX)
       {
         switch (*s)
