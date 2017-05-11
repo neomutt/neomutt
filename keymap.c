@@ -1094,8 +1094,7 @@ int mutt_parse_bind(BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err)
       }
 
       /* Clear any error message, we're going to try again */
-      if (err->data)
-        err->data[0] = '\0';
+      err->data[0] = '\0';
       bindings = km_get_table(menu[i]);
       if (bindings)
       {

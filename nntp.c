@@ -1676,10 +1676,14 @@ int nntp_post(const char *msg)
 
   strfcpy(buf, "POST\r\n", sizeof(buf));
   if (nntp_query(nntp_data, buf, sizeof(buf)) < 0)
+  {
+    safe_fclose(&fp);
     return -1;
+  }
   if (buf[0] != '3')
   {
     mutt_error(_("Can't post article: %s"), buf);
+    safe_fclose(&fp);
     return -1;
   }
 
@@ -2056,6 +2060,7 @@ static int nntp_date(NNTP_SERVER *nserv, time_t *now)
     NNTP_DATA nntp_data;
     char buf[LONG_STRING];
     struct tm tm;
+    memset(&tm, 0, sizeof(tm));
 
     nntp_data.nserv = nserv;
     nntp_data.group = NULL;

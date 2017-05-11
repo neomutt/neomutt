@@ -104,6 +104,7 @@ void mutt_account_tourl(ACCOUNT *account, ciss_url_t *url)
   url->user = NULL;
   url->pass = NULL;
   url->port = 0;
+  url->path = NULL;
 
 #ifdef USE_IMAP
   if (account->type == MUTT_ACCT_TYPE_IMAP)

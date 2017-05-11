@@ -2354,7 +2354,7 @@ int mutt_invoke_sendmail(ADDRESS *from, /* the sender */
                          const char *msg, /* file containing message */
                          int eightbit)    /* message contains 8bit chars */
 {
-  char *ps = NULL, *path = NULL, *s = safe_strdup(Sendmail), *childout = NULL;
+  char *ps = NULL, *path = NULL, *s = NULL, *childout = NULL;
   char **args = NULL;
   size_t argslen = 0, argsmax = 0;
   char **extra_args = NULL;
@@ -2377,7 +2377,9 @@ int mutt_invoke_sendmail(ADDRESS *from, /* the sender */
 
     s = safe_strdup(cmd);
   }
+  else
 #endif
+    s = safe_strdup(Sendmail);
 
   /* ensure that $sendmail is set to avoid a crash. http://dev.mutt.org/trac/ticket/3548 */
   if (!s)

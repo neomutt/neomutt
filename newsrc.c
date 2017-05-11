@@ -1198,7 +1198,11 @@ NNTP_DATA *mutt_newsgroup_uncatchup(NNTP_SERVER *nserv, char *group)
       mutt_set_flag(Context, Context->hdrs[i], MUTT_READ, 0);
   }
   else
-    nntp_data->unread = nntp_data->lastMessage - nntp_data->newsrc_ent[0].last;
+  {
+    nntp_data->unread = nntp_data->lastMessage;
+    if (nntp_data->newsrc_ent)
+      nntp_data->unread -= nntp_data->newsrc_ent[0].last;
+  }
   return nntp_data;
 }
 

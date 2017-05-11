@@ -1934,7 +1934,6 @@ void _mutt_select_file(char *f, size_t flen, int flags, char ***files, int *numf
         if (option(OPTNEWS))
         {
           NNTP_SERVER *nserv = CurrentNewsSrv;
-          NNTP_DATA *nntp_data = NULL;
           regex_t *rx = safe_malloc(sizeof(regex_t));
           char *s = buf;
           int rc, j = menu->current;
@@ -1985,9 +1984,9 @@ void _mutt_select_file(char *f, size_t flen, int flags, char ***files, int *numf
                 regexec(rx, ff->name, 0, NULL, 0) == 0)
             {
               if (i == OP_BROWSER_SUBSCRIBE || i == OP_SUBSCRIBE_PATTERN)
-                nntp_data = mutt_newsgroup_subscribe(nserv, ff->name);
+                mutt_newsgroup_subscribe(nserv, ff->name);
               else
-                nntp_data = mutt_newsgroup_unsubscribe(nserv, ff->name);
+                mutt_newsgroup_unsubscribe(nserv, ff->name);
             }
             if (i == OP_BROWSER_SUBSCRIBE || i == OP_BROWSER_UNSUBSCRIBE)
             {
@@ -2003,7 +2002,7 @@ void _mutt_select_file(char *f, size_t flen, int flags, char ***files, int *numf
 
             for (k = 0; nserv && k < nserv->groups_num; k++)
             {
-              nntp_data = nserv->groups_list[k];
+              NNTP_DATA *nntp_data = nserv->groups_list[k];
               if (nntp_data && nntp_data->group && !nntp_data->subscribed)
               {
                 if (regexec(rx, nntp_data->group, 0, NULL, 0) == 0)

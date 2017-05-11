@@ -4026,7 +4026,10 @@ void mutt_init(int skip_sys_rc, LIST *commands)
     }
   }
   if ((p = getenv("NNTPSERVER")))
+  {
+    FREE(&NewsServer);
     NewsServer = safe_strdup(p);
+  }
 #endif
 
   if ((p = getenv("MAIL")))

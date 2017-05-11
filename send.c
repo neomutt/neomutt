@@ -655,6 +655,9 @@ void mutt_fix_reply_recipients(ENVELOPE *env)
 
 void mutt_make_forward_subject(ENVELOPE *env, CONTEXT *ctx, HEADER *cur)
 {
+  if (!env)
+    return;
+
   char buffer[STRING];
 
   /* set the default subject for the message. */
@@ -664,6 +667,9 @@ void mutt_make_forward_subject(ENVELOPE *env, CONTEXT *ctx, HEADER *cur)
 
 void mutt_make_misc_reply_headers(ENVELOPE *env, CONTEXT *ctx, HEADER *cur, ENVELOPE *curenv)
 {
+  if (!env || !curenv)
+    return;
+
   /* This takes precedence over a subject that might have
    * been taken from a List-Post header.  Is that correct?
    */
@@ -717,6 +723,9 @@ void mutt_add_to_reference_headers(ENVELOPE *env, ENVELOPE *curenv, LIST ***pp, 
 
 static void make_reference_headers(ENVELOPE *curenv, ENVELOPE *env, CONTEXT *ctx)
 {
+  if (!env || !ctx)
+    return;
+
   env->references = NULL;
   env->in_reply_to = NULL;
 
@@ -771,14 +780,16 @@ static int envelope_defaults(ENVELOPE *env, CONTEXT *ctx, HEADER *cur, int flags
   else
     curenv = cur->env;
 
+  if (!curenv)
+    return -1;
+
   if (flags & SENDREPLY)
   {
 #ifdef USE_NNTP
     if ((flags & SENDNEWS))
     {
       /* in case followup set Newsgroups: with Followup-To: if it present */
-      if (!env->newsgroups && curenv &&
-          (mutt_strcasecmp(curenv->followup_to, "poster") != 0))
+      if (!env->newsgroups && (mutt_strcasecmp(curenv->followup_to, "poster") != 0))
         env->newsgroups = safe_strdup(curenv->followup_to);
     }
     else
