@@ -27,7 +27,7 @@ DOTLOCK_PERMISSION='2755'
 
 distdir = neo$(PACKAGE)-$(VERSION)
 
-BUILT_SOURCES = keymap_defs.h keymap_alldefs.h patchlist.c git_ver.h conststrings.c
+BUILT_SOURCES = keymap_defs.h keymap_alldefs.h git_ver.h conststrings.c
 
 bin_PROGRAMS = mutt $(DOTLOCK_TARGET) $(PGPAUX_TARGET)
 
@@ -79,11 +79,10 @@ EXTRA_DIST = account.h ascii.h attach.h bcache.h browser.h buffer.h buffy.h \
 	mutt_options.h mutt_regex.h mutt_sasl.h mutt_sasl_plain.h \
 	mutt_socket.h mutt_ssl.h mutt_tunnel.h mx.h myvar.h nntp.h OPS \
 	OPS.CRYPT OPS.MIX OPS.NOTMUCH OPS.PGP OPS.SIDEBAR OPS.SMIME pager.h \
-	PATCHES patchlist.sh pgp.h pgpewrap.c pgplib.h pgppacket.h pop.h \
-	protos.h README.md README.SSL remailer.c remailer.h rfc1524.h \
-	rfc2047.h rfc2231.h rfc3676.h rfc822.h sha1.h sidebar.h smime.h \
-	smime_keys.pl sort.h txt2c.c txt2c.sh UPDATING version.h \
-	keymap_alldefs.h
+	pgp.h pgpewrap.c pgplib.h pgppacket.h pop.h protos.h README.md \
+	README.SSL remailer.c remailer.h rfc1524.h rfc2047.h rfc2231.h \
+	rfc3676.h rfc822.h sha1.h sidebar.h smime.h smime_keys.pl sort.h \
+	txt2c.c txt2c.sh UPDATING version.h keymap_alldefs.h
 
 EXTRA_SCRIPTS = smime_keys
 
@@ -150,9 +149,6 @@ git_ver.h:
 	echo 'const char *GitVer = "'$$version'";' > git_ver.h.tmp; \
 	cmp -s git_ver.h.tmp git_ver.h || mv git_ver.h.tmp git_ver.h; \
 	rm -f git_ver.h.tmp
-
-patchlist.c: $(srcdir)/PATCHES $(srcdir)/patchlist.sh
-	$(srcdir)/patchlist.sh < $(srcdir)/PATCHES > patchlist.c
 
 install-exec-hook:
 	if test -f $(DESTDIR)$(bindir)/mutt.dotlock && test -f $(DESTDIR)$(bindir)/mutt_dotlock ; then	\

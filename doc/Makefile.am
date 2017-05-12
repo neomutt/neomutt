@@ -18,7 +18,6 @@ EXTRA_DIST = dotlock.man		\
 	pgpewrap.man			\
 	pgpring.man			\
 	PGP-Notes.txt			\
-	applying-patches.txt		\
 	gen-map-doc			\
 	muttrc.man.head			\
 	muttrc.man.tail			\
@@ -27,7 +26,6 @@ EXTRA_DIST = dotlock.man		\
 	manual.xml.head			\
 	manual.xml.tail			\
 	instdoc.sh.in			\
-	patch-notes.txt			\
 	smime-notes.txt			\
 	Muttrc Muttrc.head stamp-doc-rc \
 	makedoc.c makedoc_defs.h 	\
@@ -43,8 +41,7 @@ HTML_DOCFILES = manual.html $(CHUNKED_DOCFILES)
 
 BUILT_DISTFILES = stamp-doc-xml stamp-doc-chunked manual.txt $(HTML_DOCFILES)
 
-srcdir_DOCFILES = PGP-Notes.txt applying-patches.txt	\
-	devel-notes.txt patch-notes.txt smime-notes.txt
+srcdir_DOCFILES = PGP-Notes.txt devel-notes.txt smime-notes.txt
 
 topsrcdir_DOCFILES = COPYRIGHT LICENSE.md INSTALL ChangeLog ChangeLog.neomutt	\
 	README.SSL README.md

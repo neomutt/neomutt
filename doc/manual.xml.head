@@ -5777,10 +5777,9 @@ mailboxes $my_mx +mailbox3</screen>
 
       <sect2 id="formatstrings-conditional-dates">
         <title>Conditional Dates</title>
-        <para>This patch allows the format of dates in the index to vary based
+        <para>This feature allows the format of dates in the index to vary based
         on how recent the message is. This is especially useful in combination
-        with David Champion's patch to allow if-else sequences to be
-        nested.</para>
+        with the <link linkend="nested-if">nested-if feature</link>.</para>
         <para>For example, using
         <literal>
         %&lt;[y?%&lt;[d?%[%H:%M]&amp;%[%m/%d]&gt;&amp;%[%y.%m]&gt;</literal>for
@@ -9026,15 +9025,6 @@ attachments   -I message/external-body
         <screen>-USE_SSL_OPENSSL +USE_SSL_GNUTLS</screen>
       </sect2>
 
-      <sect2 id="mutt-patches">
-        <title>Mutt Patches</title>
-        <para>Mutt may also be
-        <quote>patched</quote>to support smaller features. These patches should
-        add a free-form string to the end Mutt's version string. Running
-        <literal>mutt -v</literal>might show:
-        <screen>patch-1.8.2.sidebar.20170421</screen></para>
-      </sect2>
-
       <sect2 id="url-syntax">
         <title>URL Syntax</title>
         <para>Mutt optionally supports the IMAP, POP3 and SMTP protocols which
@@ -9219,9 +9209,7 @@ set timeout=15
       <sect2 id="imap-authentication">
         <title>Authentication</title>
         <para>Mutt supports four authentication methods with IMAP servers:
-        SASL, GSSAPI, CRAM-MD5, and LOGIN (there is a patch by Grant Edwards to
-        add NTLM authentication for you poor exchange users out there, but it
-        has yet to be integrated into the main tree). There is also support for
+        SASL, GSSAPI, CRAM-MD5, and LOGIN. There is also support for
         the pseudo-protocol ANONYMOUS, which allows you to log in to a public
         IMAP server without having an account. To use ANONYMOUS, simply make
         your username blank or
@@ -9623,7 +9611,7 @@ color   attach_headers     brightmagenta   default        "invalid node with pac
 
       <sect2 id="compose-to-sender-intro">
         <title>Introduction</title>
-        <para>The compose-to-sender patch adds a new command to start composing
+        <para>The compose-to-sender feature adds a new command to start composing
         a new email to the sender of the current message. This is not a reply,
         but a new, separate, message.</para>
         <para>It works on tagged messages too, sending one email to all of the
@@ -9707,12 +9695,12 @@ bind index,pager @ compose-to-sender
 
       <sect2 id="compress-intro">
         <title>Introduction</title>
-        <para>The Compressed Folder patch allows Mutt to read mailbox files
+        <para>The Compressed Folder feature allows Mutt to read mailbox files
         that are compressed. But it isn't limited to compressed files. It works
         well with encrypted files, too. In fact, if you can create a
         program/script to convert to and from your format, then Mutt can read
         it.</para>
-        <para>The patch adds three hooks to Mutt:
+        <para>The feature adds three hooks to Mutt:
         <literal>open-hook</literal>,
         <literal>close-hook</literal>and
         <literal>append-hook</literal>. They define commands to: uncompress a
@@ -10103,7 +10091,7 @@ close-hook  '\.gpg$' "gpg --encrypt --recipient YourGpgUserIdOrKeyId &lt; '%t' &
       <sect2 id="cond-date-intro">
         <title>Introduction</title>
         <para>The
-        <quote>cond-date</quote>patch allows you to construct
+        <quote>Conditional Dates</quote>feature allows you to construct
         <link linkend="index-format">$index_format</link>expressions based on
         the age of the email.</para>
         <para>Mutt's default
@@ -10396,8 +10384,8 @@ close-hook  '\.gpg$' "gpg --encrypt --recipient YourGpgUserIdOrKeyId &lt; '%t' &
       <sect2 id="cond-date-variables">
         <title>Variables</title>
         <para>The
-        <quote>cond-date</quote>patch doesn't have any config of its own. It
-        modifies the behavior of the format strings.</para>
+        <quote>Conditional Dates</quote>feature doesn't have any config of its own.
+        It modifies the behavior of the format strings.</para>
       </sect2>
 
       <sect2 id="cond-date-muttrc">
@@ -10431,7 +10419,7 @@ set index_format='%4C %Z %&lt;[y?%&lt;[m?%&lt;[d?%[%H:%M ]&amp;%[%a %d]&gt;&amp;
           </listitem>
           <listitem>
             <para>
-              <link linkend="nested-if">nested-if patch</link>
+              <link linkend="nested-if">nested-if feature</link>
             </para>
           </listitem>
           <listitem>
@@ -10611,7 +10599,7 @@ set pgp_encrypt_self = "no"
       <sect2 id="fmemopen-intro">
         <title>Introduction</title>
         <para>The
-        <quote>fmemopen</quote>patch speeds up some searches.</para>
+        <quote>fmemopen</quote> feature speeds up some searches.</para>
         <para>This feature changes a few places where Mutt creates temporary
         files. It replaces them with in-memory buffers. This should improve the
         performance when searching the header or body using the
@@ -10678,12 +10666,13 @@ set pgp_encrypt_self = "no"
 
       <sect2 id="forgotten-attachment-intro">
         <title>Introduction</title>
-        <para>The 'forgotten-attachment' patch provides a new setting for Mutt
-        that alerts the user if the message body contains a certain keyword but
-        there are no attachments added. This is meant to ensure that the user
-        does not forget to attach a file after promising to do so in the mail.
-        The attachment keyword will not be scanned in text matched by
-        <link linkend="quote-regexp">$quote_regexp</link>.</para>
+        <para>The <quote>forgotten-attachment</quote> feature provides a new
+        setting for Mutt that alerts the user if the message body contains a
+        certain keyword but there are no attachments added. This is meant to
+        ensure that the user does not forget to attach a file after promising
+        to do so in the mail.  The attachment keyword will not be scanned in
+        text matched by <link linkend="quote-regexp">$quote_regexp</link>.
+        </para>
       </sect2>
 
       <sect2 id="forgotten-attachment-variables">
@@ -10950,7 +10939,7 @@ shutdown-hook 'exec sync-mailbox'
       <sect2 id="ifdef-intro">
         <title>Introduction</title>
         <para>The
-        <quote>ifdef</quote>patch introduces three new commands to Mutt and
+        <quote>ifdef</quote> feature introduces three new commands to Mutt and
         allow you to share one config file between versions of Mutt that may
         have different features compiled in.</para>
         <screen>
@@ -11069,7 +11058,7 @@ ifndef USE_SIDEBAR finish
             </term>
             <listitem>
               <para>
-                <link linkend="status-color">status-color patch</link>
+                <link linkend="status-color">status-color feature</link>
               </para>
             </listitem>
           </varlistentry>
@@ -11079,7 +11068,7 @@ ifndef USE_SIDEBAR finish
       <sect2 id="index-color-intro">
         <title>Introduction</title>
         <para>The
-        <quote>index-color</quote>patch allows you to specify colors for
+        <quote>index-color</quote> feature allows you to specify colors for
         individual parts of the email index. e.g. Subject, Author,
         Flags.</para>
         <para>First choose which part of the index you'd like to color. Then,
@@ -11239,12 +11228,12 @@ color index_size cyan default
           </listitem>
           <listitem>
             <para>
-              <link linkend="status-color">Status-Color patch</link>
+              <link linkend="status-color">Status-Color feature</link>
             </para>
           </listitem>
           <listitem>
             <para>
-              <link linkend="keywords">Keywords patch</link>
+              <link linkend="keywords">Keywords feature</link>
             </para>
           </listitem>
         </itemizedlist>
@@ -11302,7 +11291,7 @@ color index_size cyan default
       <sect2 id="initials-intro">
         <title>Introduction</title>
         <para>The
-        <quote>initials</quote>patch adds an expando (%I) for an author's
+        <quote>initials</quote> feature adds an expando (%I) for an author's
         initials.</para>
         <para>The index panel displays a list of emails. Its layout is
         controlled by the
@@ -11357,7 +11346,7 @@ set index_format='%4C %Z %{%b %d} %I (%?l?%4l&amp;%4c?) %s'
           </listitem>
           <listitem>
             <para>
-              <link linkend="index-color">index-color patch</link>
+              <link linkend="index-color">index-color feature</link>
             </para>
           </listitem>
           <listitem>
@@ -11570,7 +11559,7 @@ bind index,pager y edit-label
           </listitem>
           <listitem>
             <para>
-              <link linkend="index-color">index-color patch</link>
+              <link linkend="index-color">index-color feature</link>
             </para>
           </listitem>
           <listitem>
@@ -11626,8 +11615,7 @@ bind index,pager y edit-label
         <itemizedlist>
           <listitem>
             <para>
-            <quote>patch-kyoto</quote>in the mutt version. See:
-            <xref linkend="mutt-patches" />.</para>
+            <quote>kyoto</quote>in the mutt version.</para>
           </listitem>
           <listitem>
             <para>
@@ -11960,7 +11948,7 @@ bind index &lt;esc&gt;L limit-current-thread
       <sect2 id="nested-if-variables">
         <title>Variables</title>
         <para>The
-        <quote>nested-if</quote>patch doesn't have any config of its own. It
+        <quote>nested-if</quote> feature doesn't have any config of its own. It
         modifies the behavior of the format strings.</para>
       </sect2>
 
@@ -11998,7 +11986,7 @@ set index_format='%4C %Z %{%b %d} %-25.25n %&lt;M?[%M] %s&amp;%s%* %&lt;l?%l&amp
         <itemizedlist>
           <listitem>
             <para>
-              <link linkend="cond-date">cond-date patch</link>
+              <link linkend="cond-date">cond-date feature</link>
             </para>
           </listitem>
           <listitem>
@@ -12016,7 +12004,7 @@ set index_format='%4C %Z %{%b %d} %-25.25n %&lt;M?[%M] %s&amp;%s%* %&lt;l?%l&amp
 
       <sect2 id="nested-if-known-bugs">
         <title>Known Bugs</title>
-        <para>Patch overwrites $&lt;fmt&gt; handler in
+        <para>Feature overwrites $&lt;fmt&gt; handler in
         <literal>$index_format</literal></para>
       </sect2>
 
@@ -12676,12 +12664,12 @@ bind index \CG get-message
         <itemizedlist>
           <listitem>
             <para>
-              <link linkend="quasi-delete">quasi-delete patch</link>
+              <link linkend="quasi-delete">quasi-delete feature</link>
             </para>
           </listitem>
           <listitem>
             <para>
-              <link linkend="index-color">index-color patch</link>
+              <link linkend="index-color">index-color feature</link>
             </para>
           </listitem>
           <listitem>
@@ -12962,7 +12950,7 @@ virtual-mailboxes "My INBOX" "notmuch://?query=tag:inbox"
                   <literal>&lt;change-vfolder&gt;</literal>
                 </entry>
                 <entry>
-                  switch to another virtual folder, a new folder maybe be 
+                  switch to another virtual folder, a new folder maybe be
                   specified by vfolder description (see virtual-mailboxes) or
                   URI. the default is next vfolder with unread messages</entry>
               </row>
@@ -13094,7 +13082,7 @@ virtual-mailboxes "My INBOX" "notmuch://?query=tag:inbox"
 
       <sect2 id="notmuch-colors">
         <title>Colors</title>
-        <para>Adds these to index-color patch:</para>
+        <para>Adds these to index-color feature:</para>
 
         <table id="table-notmuch-colors">
           <title>Index Colors</title>
@@ -13219,7 +13207,7 @@ bind index,pager &gt; vfolder-window-forward
 #                "deleted" "DEL" \
 #                "invites" "CAL"
 
-# The formats must start with 'G' and the entire sequence is case sensitive.  
+# The formats must start with 'G' and the entire sequence is case sensitive.
 # tag-formats tag format-string { tag format-string ...}
 # tag-formats "inbox"   "GI" \
 #              "unread"  "GU" \
@@ -13391,8 +13379,8 @@ color index_tags green default
       <sect2 id="progress-intro">
         <title>Introduction</title>
         <para>The
-        <quote>progress</quote>patch shows a visual progress bar on slow tasks,
-        such as indexing a large folder over the net.</para>
+        <quote>progress</quote> feature shows a visual progress bar on slow
+        tasks, such as indexing a large folder over the net.</para>
       </sect2>
 
       <sect2 id="progress-colors">
@@ -13547,7 +13535,7 @@ bind index,pager Q quasi-delete
         <itemizedlist>
           <listitem>
             <para>
-              <link linkend="notmuch">notmuch patch</link>
+              <link linkend="notmuch">notmuch feature</link>
             </para>
           </listitem>
         </itemizedlist>
@@ -14266,7 +14254,7 @@ color sidebar_ordinary color245 default
           </listitem>
           <listitem>
             <para>
-              <link linkend="notmuch">notmuch patch</link>
+              <link linkend="notmuch">notmuch feature</link>
             </para>
           </listitem>
         </itemizedlist>
@@ -14428,8 +14416,8 @@ set skip_quoted_offset = 3
       <sect2 id="status-color-intro">
         <title>Introduction</title>
         <para>The
-        <quote>status-color</quote>patch allows you to theme different parts of
-        the status bar (also when it's used by the index).</para>
+        <quote>status-color</quote> feature allows you to theme different parts
+        of the status bar (also when it's used by the index).</para>
         <para>Unlike normal color commands,
         <literal>color status</literal>can now take up to 2 extra parameters
         (regex, num).</para>
@@ -14556,7 +14544,7 @@ color status brightwhite default 'Mutt: ([^ ]+)' 1
           </listitem>
           <listitem>
             <para>
-              <link linkend="index-color">index-color patch</link>
+              <link linkend="index-color">index-color feature</link>
             </para>
           </listitem>
           <listitem>
@@ -14618,7 +14606,7 @@ color status brightwhite default 'Mutt: ([^ ]+)' 1
       <sect2 id="tls-sni-intro">
         <title>Introduction</title>
         <para>The
-        <quote>TLS-SNI</quote>patch adds support for TLS virtual hosting. If
+        <quote>TLS-SNI</quote> feature adds support for TLS virtual hosting. If
         your mail server doesn't support this everything will still work
         normally.</para>
         <para>TLS supports sending the expected server hostname during the
