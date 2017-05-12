@@ -1336,10 +1336,12 @@ int imap_sync_mailbox (CONTEXT* ctx, int expunge, int* index_hint)
     idata->reopen |= IMAP_EXPUNGE_EXPECTED;
     if (imap_exec (idata, "EXPUNGE", 0) != 0)
     {
+      idata->reopen &= ~IMAP_EXPUNGE_EXPECTED;
       imap_error (_("imap_sync_mailbox: EXPUNGE failed"), idata->buf);
       rc = -1;
       goto out;
     }
+    idata->reopen &= ~IMAP_EXPUNGE_EXPECTED;
   }
 
   if (expunge && ctx->closing)
