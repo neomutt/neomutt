@@ -10,7 +10,11 @@ AM_DISTCHECK_CONFIGURE_FLAGS = --enable-debug --enable-gpgme --enable-notmuch \
 	--with-bdb --with-gdbm --with-gnutls --with-gss --with-kyotocabinet \
 	--with-lmdb --with-qdbm --with-sasl --with-tokyocabinet
 
-SUBDIRS = m4 contrib hcache imap
+SUBDIRS = m4 contrib imap
+
+if BUILD_HCACHE
+SUBDIRS += hcache
+endif
 
 if BUILD_DOC
 SUBDIRS += doc
@@ -54,7 +58,7 @@ mutt_LDADD = $(MUTT_LIB_OBJECTS) $(LIBOBJS) $(LIBIMAP) $(MUTTLIBS) \
 	$(INTLLIBS) $(LIBICONV) $(GPGME_LIBS) $(HCACHE_LIBS)
 
 mutt_DEPENDENCIES = $(MUTT_LIB_OBJECTS) $(LIBOBJS) $(LIBIMAPDEPS) \
-	$(INTLDEPS)
+	$(INTLDEPS) $(HCACHE_DEPS)
 
 DEFS=-DPKGDATADIR=\"$(pkgdatadir)\" -DSYSCONFDIR=\"$(sysconfdir)\" \
 	-DBINDIR=\"$(bindir)\" -DMUTTLOCALEDIR=\"$(datadir)/locale\"

@@ -884,6 +884,7 @@ AM_CONDITIONAL(BUILD_HCACHE, test -n "$hcache_db_used")
 if test -n "$hcache_db_used"; then
 	AC_DEFINE(USE_HCACHE, 1, [Enable header caching])
 	HCACHE_LIBS="-Lhcache -lhcache $HCACHE_LIBS"
+	HCACHE_DEPS="hcache/libhcache.a"
 else
 	# For outputting in the summary
 	hcache_db_used="no"
@@ -903,6 +904,7 @@ AC_SUBST(MUTT_MD5)
 AC_SUBST(MUTTLIBS)
 AC_SUBST(MUTT_LIB_OBJECTS)
 AC_SUBST(HCACHE_LIBS)
+AC_SUBST(HCACHE_DEPS)
 
 dnl -- iconv/gettext --
 
