@@ -209,8 +209,6 @@ static struct compile_options comp_opts[] = {
 #endif
 #ifdef USE_COMPRESSED
   { "USE_COMPRESSED", 1 },
-#else
-  { "USE_COMPRESSED", 0 },
 #endif
 #ifdef USE_DOTLOCK
   { "USE_DOTLOCK", 1 },
@@ -244,8 +242,6 @@ static struct compile_options comp_opts[] = {
 #endif
 #ifdef USE_IMAP
   { "USE_IMAP", 1 },
-#else
-  { "USE_IMAP", 0 },
 #endif
 #ifdef USE_LUA
   { "USE_LUA", 1 },
@@ -259,13 +255,9 @@ static struct compile_options comp_opts[] = {
 #endif
 #ifdef USE_NNTP
   { "USE_NNTP", 1 },
-#else
-  { "USE_NNTP", 0 },
 #endif
 #ifdef USE_POP
   { "USE_POP", 1 },
-#else
-  { "USE_POP", 0 },
 #endif
 #ifdef USE_SASL
   { "USE_SASL", 1 },
@@ -282,8 +274,6 @@ static struct compile_options comp_opts[] = {
 #endif
 #ifdef USE_SMTP
   { "USE_SMTP", 1 },
-#else
-  { "USE_SMTP", 0 },
 #endif
 #ifdef USE_SSL_GNUTLS
   { "USE_SSL_GNUTLS", 1 },

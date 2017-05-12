@@ -115,10 +115,7 @@ int _mutt_system(const char *cmd, int flags)
   }
   else if (thepid != -1)
   {
-#ifndef USE_IMAP
-    /* wait for the (first) child process to finish */
-    waitpid(thepid, &rc, 0);
-#else
+#ifdef USE_IMAP
     rc = imap_wait_keepalive(thepid);
 #endif
   }

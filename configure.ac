@@ -132,12 +132,7 @@ AS_IF([test x$enable_everything = "xyes"], [
 	use_gpgme="yes"
 	use_pgp="yes"
 	use_smime="yes"
-	use_compressed="yes"
 	use_notmuch="yes"
-	use_pop="yes"
-	use_imap="yes"
-	use_nntp="yes"
-	use_smtp="yes"
 	use_lua="yes"
 	hcache_tokyocabinet="yes"
 	hcache_kyotocabinet="yes"
@@ -149,12 +144,7 @@ AS_IF([test x$enable_everything = "xyes"], [
 	use_gpgme="no"
 	use_pgp="no"
 	use_smime="no"
-	use_compressed="no"
 	use_notmuch="no"
-	use_pop="no"
-	use_imap="no"
-	use_nntp="no"
-	use_smtp="no"
 	use_lua="no"
 ])
 
@@ -194,29 +184,9 @@ AC_ARG_ENABLE(lua,
 	AC_HELP_STRING([--enable-lua], [Enable lua scripting support]),
 	[use_lua=$enableval])
 
-AC_ARG_ENABLE(compressed,
-	AC_HELP_STRING([--enable-compressed], [Enable compressed folders support]),
-	[use_compressed=$enableval])
-
 AC_ARG_ENABLE(notmuch,
 	AC_HELP_STRING([--enable-notmuch], [Enable NOTMUCH support]),
 	[use_notmuch=$enableval])
-
-AC_ARG_ENABLE(pop,
-	AS_HELP_STRING([--enable-pop], [Enable POP3 support]),
-	[use_pop=$enableval])
-
-AC_ARG_ENABLE(imap,
-	AS_HELP_STRING([--enable-imap], [Enable IMAP support]),
-	[use_imap=$enableval])
-
-AC_ARG_ENABLE(nntp,
-	AC_HELP_STRING([--enable-nntp], [Enable NNTP support]),
-	[use_nntp=$enableval])
-
-AC_ARG_ENABLE(smtp,
-	AS_HELP_STRING([--enable-smtp], [Include internal SMTP relay support]),
-	[use_smtp=$enableval])
 
 AC_ARG_WITH(mixmaster,
 	AS_HELP_STRING([--with-mixmaster@<:@=PATH@:>@], [Include Mixmaster support]),
@@ -256,14 +226,14 @@ AS_IF([test x$use_smime != "xno"], [
 	SMIMEAUX_TARGET="smime_keys"
 ])
 
+AC_DEFINE(USE_COMPRESSED, 1, [Define to enable compressed folders support.])
+AC_DEFINE(USE_IMAP, 1, [Define if you want support for the IMAP protocol.])
+AC_DEFINE(USE_NNTP, 1, [Define if you want support for the NNTP protocol.])
+AC_DEFINE(USE_POP, 1, [Define if you want support for the POP3 protocol.])
 AC_DEFINE(USE_SIDEBAR, 1, [Define if you want support for the sidebar.])
-
-dnl --enable-compressed
-AS_IF([test x$use_compressed = "xyes"], [
-	AC_DEFINE(USE_COMPRESSED, 1, [Define to enable compressed folders support.])
-	MUTT_LIB_OBJECTS="$MUTT_LIB_OBJECTS compress.o"
-])
-AM_CONDITIONAL(BUILD_COMPRESS, test x$enable_compressed = xyes)
+AC_DEFINE(USE_SMTP, 1, [Include internal SMTP relay support])
+AC_DEFINE(USE_SOCKET,1,
+	[ Include code for socket support. Set automatically if you enable POP3 or IMAP ])
 
 dnl --enable-lua
 AS_IF([test x$use_lua = "xyes"], [
@@ -512,8 +482,6 @@ AC_ARG_WITH(domain, AS_HELP_STRING([--with-domain=DOMAIN],[Specify your DNS doma
 		fi
 	fi])
 
-need_socket="no"
-
 dnl -- socket dependencies --
 
 dnl getaddrinfo/getaddrinfo_a is used by getdomain.c, and requires libnsl and
@@ -523,73 +491,27 @@ AC_CHECK_FUNC(setsockopt, , AC_CHECK_LIB(socket, setsockopt))
 AC_CHECK_FUNCS(getaddrinfo)
 AC_SEARCH_LIBS([getaddrinfo_a], [anl], [AC_DEFINE(HAVE_GETADDRINFO_A, 1, [Define to 1 if you have the `getaddrinfo_a' function.])])
 
-AS_IF([test x$use_pop = "xyes"], [
-	AC_DEFINE(USE_POP, 1, [Define if you want support for the POP3 protocol.])
-	MUTT_LIB_OBJECTS="$MUTT_LIB_OBJECTS pop.o pop_lib.o pop_auth.o"
-	need_pop="yes"
-	need_socket="yes"
-	need_md5="yes"
-])
-
-AS_IF([test x$use_imap = "xyes"], [
-	AC_DEFINE(USE_IMAP, 1, [Define if you want support for the IMAP protocol.])
-	LIBIMAP="-Limap -limap"
-	LIBIMAPDEPS="\$(top_srcdir)/imap/imap.h imap/libimap.a"
-	need_imap="yes"
-	need_socket="yes"
-	need_md5="yes"
-])
-AM_CONDITIONAL(BUILD_IMAP, test x$need_imap = xyes)
-
-AS_IF([test x$use_nntp = "xyes"], [
-	AC_DEFINE(USE_NNTP, 1, [Define if you want support for the NNTP protocol.])
-	MUTT_LIB_OBJECTS="$MUTT_LIB_OBJECTS nntp.o newsrc.o"
-	need_nntp="yes"
-	need_socket="yes"
-])
-
-
-AS_IF([test x$use_smtp = "xyes"], [
-	AC_DEFINE(USE_SMTP, 1, [Include internal SMTP relay support])
-	MUTT_LIB_OBJECTS="$MUTT_LIB_OBJECTS smtp.o"
-	need_socket="yes"
-])
-
-if test x"$need_imap" = xyes -o x"$need_pop" = xyes -o x"$need_nntp" = xyes; then
-	MUTT_LIB_OBJECTS="$MUTT_LIB_OBJECTS bcache.o"
-fi
-
 dnl -- end socket dependencies --
-
-if test "$need_socket" = "yes"; then
-	AC_DEFINE(USE_SOCKET,1,
-		[ Include code for socket support. Set automatically if you enable POP3 or IMAP ])
-	MUTT_LIB_OBJECTS="$MUTT_LIB_OBJECTS account.o mutt_socket.o mutt_tunnel.o"
-fi
 
 dnl -- imap dependencies --
 
 AC_ARG_WITH(gss, AS_HELP_STRING([--with-gss@<:@=PFX@:>@],[Compile in GSSAPI authentication for IMAP]),
 	gss_prefix="$withval", gss_prefix="no")
 if test "$gss_prefix" != "no"; then
-	if test "$need_imap" = "yes"; then
-		MUTT_AM_PATH_GSSAPI(gss_prefix)
-		AC_MSG_CHECKING(GSSAPI implementation)
-		AC_MSG_RESULT($GSSAPI_IMPL)
-		if test "$GSSAPI_IMPL" = "none"; then
-			AC_CACHE_SAVE
-			AC_MSG_RESULT([GSSAPI libraries not found])
-		fi
-		if test "$GSSAPI_IMPL" = "Heimdal"; then
-			AC_DEFINE(HAVE_HEIMDAL,1,[ Define if your GSSAPI implementation is Heimdal ])
-		fi
-		CPPFLAGS="$CPPFLAGS $GSSAPI_CFLAGS"
-		MUTTLIBS="$MUTTLIBS $GSSAPI_LIBS"
-		AC_DEFINE(USE_GSS,1,[ Define if you have GSSAPI libraries available ])
-		need_gss="yes"
-	else
-		AC_MSG_WARN([GSS was requested but IMAP is not enabled])
+	MUTT_AM_PATH_GSSAPI(gss_prefix)
+	AC_MSG_CHECKING(GSSAPI implementation)
+	AC_MSG_RESULT($GSSAPI_IMPL)
+	if test "$GSSAPI_IMPL" = "none"; then
+		AC_CACHE_SAVE
+		AC_MSG_RESULT([GSSAPI libraries not found])
 	fi
+	if test "$GSSAPI_IMPL" = "Heimdal"; then
+		AC_DEFINE(HAVE_HEIMDAL,1,[ Define if your GSSAPI implementation is Heimdal ])
+	fi
+	CPPFLAGS="$CPPFLAGS $GSSAPI_CFLAGS"
+	MUTTLIBS="$MUTTLIBS $GSSAPI_LIBS"
+	AC_DEFINE(USE_GSS,1,[ Define if you have GSSAPI libraries available ])
+	need_gss="yes"
 fi
 AM_CONDITIONAL(USE_GSS, test x$need_gss = xyes)
 
@@ -597,79 +519,71 @@ dnl -- end imap dependencies --
 
 AC_ARG_WITH(ssl, AS_HELP_STRING([--with-ssl@<:@=PFX@:>@],[Enable TLS support using OpenSSL]),
 [	if test "$with_ssl" != "no"; then
-		if test "$need_socket" != "yes"; then
-			AC_MSG_WARN([SSL support is only useful with POP, IMAP or SMTP support])
-		else
-			if test "$with_ssl" != "yes"; then
-				LDFLAGS="$LDFLAGS -L$withval/lib"
-				CPPFLAGS="$CPPFLAGS -I$withval/include"
-			fi
-			saved_LIBS="$LIBS"
-
-			crypto_libs=""
-			AC_CHECK_LIB(z, deflate, [crypto_libs=-lz])
-			AC_CHECK_LIB(crypto, X509_STORE_CTX_new,
-				[crypto_libs="-lcrypto $crypto_libs"],
-				AC_MSG_ERROR([Unable to find SSL library]), [$crypto_libs])
-			AC_CHECK_LIB(ssl, SSL_new,,
-				AC_MSG_ERROR([Unable to find SSL library]), [$crypto_libs])
-
-			LIBS="$LIBS $crypto_libs"
-			AC_CHECK_FUNCS(RAND_status RAND_egd)
-			AC_CHECK_DECLS([SSL_set_mode, SSL_MODE_AUTO_RETRY],,
-				AC_MSG_ERROR([Unable to find decent SSL header]), [[#include <openssl/ssl.h>]])
-
-			AC_CHECK_DECL([X509_V_FLAG_PARTIAL_CHAIN],
-				AC_DEFINE(HAVE_SSL_PARTIAL_CHAIN,1,[ Define if OpenSSL supports partial chains. ]),,
-				[[#include <openssl/x509_vfy.h>]])
-
-			AC_DEFINE(USE_SSL,1,[ Define if you want support for SSL. ])
-			AC_DEFINE(USE_SSL_OPENSSL,1,[ Define if you want support for SSL via OpenSSL. ])
-			LIBS="$saved_LIBS"
-			MUTTLIBS="$MUTTLIBS -lssl $crypto_libs"
-			MUTT_LIB_OBJECTS="$MUTT_LIB_OBJECTS mutt_ssl.o"
-			need_ssl=yes
+		if test "$with_ssl" != "yes"; then
+			LDFLAGS="$LDFLAGS -L$withval/lib"
+			CPPFLAGS="$CPPFLAGS -I$withval/include"
 		fi
+		saved_LIBS="$LIBS"
+
+		crypto_libs=""
+		AC_CHECK_LIB(z, deflate, [crypto_libs=-lz])
+		AC_CHECK_LIB(crypto, X509_STORE_CTX_new,
+			[crypto_libs="-lcrypto $crypto_libs"],
+			AC_MSG_ERROR([Unable to find SSL library]), [$crypto_libs])
+		AC_CHECK_LIB(ssl, SSL_new,,
+			AC_MSG_ERROR([Unable to find SSL library]), [$crypto_libs])
+
+		LIBS="$LIBS $crypto_libs"
+		AC_CHECK_FUNCS(RAND_status RAND_egd)
+		AC_CHECK_DECLS([SSL_set_mode, SSL_MODE_AUTO_RETRY],,
+			AC_MSG_ERROR([Unable to find decent SSL header]), [[#include <openssl/ssl.h>]])
+
+		AC_CHECK_DECL([X509_V_FLAG_PARTIAL_CHAIN],
+			AC_DEFINE(HAVE_SSL_PARTIAL_CHAIN,1,[ Define if OpenSSL supports partial chains. ]),,
+			[[#include <openssl/x509_vfy.h>]])
+
+		AC_DEFINE(USE_SSL,1,[ Define if you want support for SSL. ])
+		AC_DEFINE(USE_SSL_OPENSSL,1,[ Define if you want support for SSL via OpenSSL. ])
+		LIBS="$saved_LIBS"
+		MUTTLIBS="$MUTTLIBS -lssl $crypto_libs"
+		MUTT_LIB_OBJECTS="$MUTT_LIB_OBJECTS mutt_ssl.o"
+		need_ssl=yes
 	fi
 ])
 
 AC_ARG_WITH([gnutls], AS_HELP_STRING([--with-gnutls@<:@=PFX@:>@],[enable TLS support using gnutls]),
 	[gnutls_prefix="$withval"], [gnutls_prefix="no"])
 if test "$gnutls_prefix" != "no" && test x"$need_ssl" != xyes; then
-	if test "$need_socket" != "yes"; then
-		AC_MSG_WARN([SSL support is only useful with POP, IMAP or SMTP support])
-	else
-		if test "$gnutls_prefix" != "yes"; then
-			LDFLAGS="$LDFLAGS -L$gnutls_prefix/lib"
-			CPPFLAGS="$CPPFLAGS -I$gnutls_prefix/include"
-		fi
-		saved_LIBS="$LIBS"
-
-		AC_CHECK_LIB(gnutls, gnutls_check_version,
-			[dnl GNUTLS found
-			AC_CHECK_DECLS([GNUTLS_VERIFY_DISABLE_TIME_CHECKS], [], [],
-				[[#include <gnutls/x509.h>]])
-
-			LIBS="$LIBS -lgnutls"
-			AC_CHECK_FUNCS(gnutls_priority_set_direct)
-			AC_CHECK_TYPES([gnutls_certificate_credentials_t,
-				gnutls_certificate_status_t,
-				gnutls_datum_t,
-				gnutls_digest_algorithm_t,
-				gnutls_session_t,
-				gnutls_transport_ptr_t,
-				gnutls_x509_crt_t], [], [], [[#include <gnutls/gnutls.h>]])
-
-			LIBS="$saved_LIBS"
-			MUTTLIBS="$MUTTLIBS -lgnutls"
-
-			AC_DEFINE(USE_SSL, 1, [ Define if you want support for SSL. ])
-			AC_DEFINE(USE_SSL_GNUTLS, 1, [ Define if you want support for SSL via GNUTLS. ])
-
-			MUTT_LIB_OBJECTS="$MUTT_LIB_OBJECTS mutt_ssl_gnutls.o"
-			need_ssl=yes],
-			[AC_MSG_ERROR([could not find libgnutls])])
+	if test "$gnutls_prefix" != "yes"; then
+		LDFLAGS="$LDFLAGS -L$gnutls_prefix/lib"
+		CPPFLAGS="$CPPFLAGS -I$gnutls_prefix/include"
 	fi
+	saved_LIBS="$LIBS"
+
+	AC_CHECK_LIB(gnutls, gnutls_check_version,
+		[dnl GNUTLS found
+		AC_CHECK_DECLS([GNUTLS_VERIFY_DISABLE_TIME_CHECKS], [], [],
+			[[#include <gnutls/x509.h>]])
+
+		LIBS="$LIBS -lgnutls"
+		AC_CHECK_FUNCS(gnutls_priority_set_direct)
+		AC_CHECK_TYPES([gnutls_certificate_credentials_t,
+			gnutls_certificate_status_t,
+			gnutls_datum_t,
+			gnutls_digest_algorithm_t,
+			gnutls_session_t,
+			gnutls_transport_ptr_t,
+			gnutls_x509_crt_t], [], [], [[#include <gnutls/gnutls.h>]])
+
+		LIBS="$saved_LIBS"
+		MUTTLIBS="$MUTTLIBS -lgnutls"
+
+		AC_DEFINE(USE_SSL, 1, [ Define if you want support for SSL. ])
+		AC_DEFINE(USE_SSL_GNUTLS, 1, [ Define if you want support for SSL via GNUTLS. ])
+
+		MUTT_LIB_OBJECTS="$MUTT_LIB_OBJECTS mutt_ssl_gnutls.o"
+		need_ssl=yes],
+		[AC_MSG_ERROR([could not find libgnutls])])
 fi
 
 AM_CONDITIONAL(USE_SSL, test x$need_ssl = xyes)
@@ -677,10 +591,6 @@ AM_CONDITIONAL(USE_SSL, test x$need_ssl = xyes)
 AC_ARG_WITH(sasl, AS_HELP_STRING([--with-sasl@<:@=PFX@:>@],[Use SASL network security library]),
 	[
 	if test "$with_sasl" != "no"; then
-		if test "$need_socket" != "yes"; then
-			AC_MSG_ERROR([SASL support is only useful with POP or IMAP support])
-		fi
-
 		if test "$with_sasl" != "yes"; then
 			CPPFLAGS="$CPPFLAGS -I$with_sasl/include"
 			LDFLAGS="$LDFLAGS -L$with_sasl/lib"
@@ -976,7 +886,6 @@ AM_CONDITIONAL(BUILD_HCACHE, test -n "$hcache_db_used")
 if test -n "$hcache_db_used"; then
 	AC_DEFINE(USE_HCACHE, 1, [Enable header caching])
 	HCACHE_LIBS="-Lhcache -lhcache $HCACHE_LIBS"
-	need_md5="yes"
 else
 	# For outputting in the summary
 	hcache_db_used="no"
@@ -990,16 +899,11 @@ AM_CONDITIONAL(BUILD_HC_QDBM, test "x$build_hc_qdbm" = "xyes")
 AM_CONDITIONAL(BUILD_HC_TC,   test "x$build_hc_tc"   = "xyes")
 dnl -- end cache --
 
-if test "$need_md5" = "yes"; then
-	MUTT_LIB_OBJECTS="$MUTT_LIB_OBJECTS md5.o"
-	MUTT_MD5="mutt_md5$EXEEXT"
-fi
+MUTT_MD5="mutt_md5$EXEEXT"
 
 AC_SUBST(MUTT_MD5)
 AC_SUBST(MUTTLIBS)
 AC_SUBST(MUTT_LIB_OBJECTS)
-AC_SUBST(LIBIMAP)
-AC_SUBST(LIBIMAPDEPS)
 AC_SUBST(HCACHE_LIBS)
 
 dnl -- iconv/gettext --
@@ -1139,12 +1043,6 @@ AC_MSG_NOTICE([Summary of build options:
   PGP:               $use_pgp
   SMIME:             $use_smime
   Notmuch:           $use_notmuch
-  Compressed Folder: $use_compressed
   Header Cache(s):   $hcache_db_used
   Lua:               $use_lua
-
-  POP3:              $use_pop
-  IMAP:              $use_imap
-  NNTP:              $use_nntp
-  SMTP:              $use_smtp
 ])

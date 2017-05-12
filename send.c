@@ -2120,12 +2120,8 @@ int ci_send_message(int flags,      /* send mode */
   else if (!option(OPTNOCURSES) && !(flags & SENDMAILX))
   {
     mutt_message(i != 0 ? _("Sending in background.") :
-#ifdef USE_NNTP
-                          (flags & SENDNEWS) ? _("Article posted.") :
+                          (flags & SENDNEWS) ? _("Article posted.") : /* USE_NNTP */
                                                _("Mail sent."));
-#else
-                          _("Mail sent."));
-#endif
 #ifdef USE_NOTMUCH
     if (option(OPTNOTMUCHRECORD))
       nm_record_message(ctx, finalpath, cur);

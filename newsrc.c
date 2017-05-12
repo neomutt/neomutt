@@ -873,7 +873,9 @@ const char *nntp_format_str(char *dest, size_t destlen, size_t col, int cols, ch
 NNTP_SERVER *nntp_select_server(char *server, int leave_lock)
 {
   char file[_POSIX_PATH_MAX];
+#ifdef USE_HCACHE
   char *p = NULL;
+#endif
   int rc;
   ACCOUNT acct;
   NNTP_SERVER *nserv = NULL;
