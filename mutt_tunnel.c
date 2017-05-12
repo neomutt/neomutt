@@ -80,7 +80,7 @@ static int tunnel_socket_open(CONNECTION *conn)
     /* Don't let the subprocess think it can use the controlling tty */
     setsid();
 
-    execl(EXECSHELL, "sh", "-c", Tunnel, NULL);
+    execle(EXECSHELL, "sh", "-c", Tunnel, NULL, mutt_envlist());
     _exit(127);
   }
   mutt_unblock_signals_system(1);

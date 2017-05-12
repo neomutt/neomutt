@@ -1999,6 +1999,11 @@ static void restore_default(struct option_t *p)
     mutt_set_menu_redraw_full(MENU_MAIN);
   if (p->flags & R_PAGER)
     mutt_set_menu_redraw_full(MENU_PAGER);
+  if (p->flags & R_PAGER_FLOW)
+  {
+    mutt_set_menu_redraw_full(MENU_PAGER);
+    mutt_set_menu_redraw(MENU_PAGER, REDRAW_FLOW);
+  }
   if (p->flags & R_RESORT_SUB)
     set_option(OPTSORTSUBTHREADS);
   if (p->flags & R_RESORT)
@@ -2888,6 +2893,11 @@ static int parse_set(BUFFER *tmp, BUFFER *s, unsigned long data, BUFFER *err)
         mutt_set_menu_redraw_full(MENU_MAIN);
       if (MuttVars[idx].flags & R_PAGER)
         mutt_set_menu_redraw_full(MENU_PAGER);
+      if (MuttVars[idx].flags & R_PAGER_FLOW)
+      {
+        mutt_set_menu_redraw_full(MENU_PAGER);
+        mutt_set_menu_redraw(MENU_PAGER, REDRAW_FLOW);
+      }
       if (MuttVars[idx].flags & R_RESORT_SUB)
         set_option(OPTSORTSUBTHREADS);
       if (MuttVars[idx].flags & R_RESORT)

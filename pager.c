@@ -733,38 +733,48 @@ static void resolve_types(char *buf, char *raw, struct line_t *lineInfo, int n,
       if (n > 0 && (buf[0] == ' ' || buf[0] == '\t'))
       {
         lineInfo[n].type = lineInfo[n - 1].type; /* wrapped line */
-        (lineInfo[n].syntax)[0].color = (lineInfo[n - 1].syntax)[0].color;
-        lineInfo[n].is_cont_hdr = 1;
+        if (!option(OPTHEADERCOLORPARTIAL))
+        {
+          (lineInfo[n].syntax)[0].color = (lineInfo[n - 1].syntax)[0].color;
+          lineInfo[n].is_cont_hdr = 1;
+        }
       }
       else
       {
         lineInfo[n].type = MT_COLOR_HDEFAULT;
       }
 
-      for (color_line = ColorHdrList; color_line; color_line = color_line->next)
+      /* When this option is unset, we color the entire header the
+       * same color.  Otherwise, we handle the header patterns just
+       * like body patterns (further below).
+       */
+      if (!option(OPTHEADERCOLORPARTIAL))
       {
-        if (REGEXEC(color_line->rx, buf) == 0)
+        for (color_line = ColorHdrList; color_line; color_line = color_line->next)
         {
-          lineInfo[n].type = MT_COLOR_HEADER;
-          lineInfo[n].syntax[0].color = color_line->pair;
-          if (lineInfo[n].is_cont_hdr)
+          if (REGEXEC(color_line->rx, buf) == 0)
           {
-            /* adjust the previous continuation lines to reflect the color of this continuation line */
-            int j;
-            for (j = n - 1; j >= 0 && lineInfo[j].is_cont_hdr; --j)
+            lineInfo[n].type = MT_COLOR_HEADER;
+            lineInfo[n].syntax[0].color = color_line->pair;
+            if (lineInfo[n].is_cont_hdr)
             {
-              lineInfo[j].type = lineInfo[n].type;
-              lineInfo[j].syntax[0].color = lineInfo[n].syntax[0].color;
+              /* adjust the previous continuation lines to reflect the color of this continuation line */
+              int j;
+              for (j = n - 1; j >= 0 && lineInfo[j].is_cont_hdr; --j)
+              {
+                lineInfo[j].type = lineInfo[n].type;
+                lineInfo[j].syntax[0].color = lineInfo[n].syntax[0].color;
+              }
+              /* now adjust the first line of this header field */
+              if (j >= 0)
+              {
+                lineInfo[j].type = lineInfo[n].type;
+                lineInfo[j].syntax[0].color = lineInfo[n].syntax[0].color;
+              }
+              *force_redraw = 1; /* the previous lines have already been drawn on the screen */
             }
-            /* now adjust the first line of this header field */
-            if (j >= 0)
-            {
-              lineInfo[j].type = lineInfo[n].type;
-              lineInfo[j].syntax[0].color = lineInfo[n].syntax[0].color;
-            }
-            *force_redraw = 1; /* the previous lines have already been drawn on the screen */
+            break;
           }
-          break;
         }
       }
     }
@@ -834,7 +844,8 @@ static void resolve_types(char *buf, char *raw, struct line_t *lineInfo, int n,
     lineInfo[n].type = MT_COLOR_NORMAL;
 
   /* body patterns */
-  if (lineInfo[n].type == MT_COLOR_NORMAL || lineInfo[n].type == MT_COLOR_QUOTED)
+  if (lineInfo[n].type == MT_COLOR_NORMAL || lineInfo[n].type == MT_COLOR_QUOTED ||
+      (lineInfo[n].type == MT_COLOR_HDEFAULT && option(OPTHEADERCOLORPARTIAL)))
   {
     size_t nl;
 
@@ -853,7 +864,10 @@ static void resolve_types(char *buf, char *raw, struct line_t *lineInfo, int n,
 
       found = 0;
       null_rx = 0;
-      color_line = ColorBodyList;
+      if (lineInfo[n].type == MT_COLOR_HDEFAULT)
+        color_line = ColorHdrList;
+      else
+        color_line = ColorBodyList;
       while (color_line)
       {
         if (regexec(&color_line->rx, buf + offset, 1, pmatch, (offset ? REG_NOTBOL : 0)) == 0)
@@ -1737,7 +1751,7 @@ static void pager_menu_redraw(MUTTMENU *pager_menu)
         rd->SearchBack = Resize->SearchBack;
       }
       rd->lines = Resize->line;
-      pager_menu->redraw |= REDRAW_SIGWINCH;
+      pager_menu->redraw |= REDRAW_FLOW;
 
       FREE(&Resize);
     }
@@ -1780,7 +1794,7 @@ static void pager_menu_redraw(MUTTMENU *pager_menu)
     mutt_show_error();
   }
 
-  if (pager_menu->redraw & REDRAW_SIGWINCH)
+  if (pager_menu->redraw & REDRAW_FLOW)
   {
     if (!(rd->flags & MUTT_PAGER_RETWINCH))
     {
@@ -1942,10 +1956,9 @@ int mutt_pager(const char *banner, const char *fname, int flags, pager_t *extra)
   char buffer[LONG_STRING];
   char helpstr[SHORT_STRING * 2];
   char tmphelp[SHORT_STRING * 2];
-  int i, j, ch = 0, rc = -1;
+  int i, ch = 0, rc = -1;
   int err, first = 1;
   int r = -1, wrapped = 0, searchctx = 0;
-  int old_smart_wrap, old_markers;
 
   MUTTMENU *pager_menu = NULL;
   int old_PagerIndexLines; /* some people want to resize it
@@ -2175,7 +2188,7 @@ int mutt_pager(const char *banner, const char *fname, int flags, pager_t *extra)
       else
       {
         /* note: mutt_resize_screen() -> mutt_reflow_windows() sets
-         * REDRAW_FULL and REDRAW_SIGWINCH */
+         * REDRAW_FULL and REDRAW_FLOW */
         ch = 0;
       }
       continue;
@@ -2663,7 +2676,7 @@ int mutt_pager(const char *banner, const char *fname, int flags, pager_t *extra)
         mutt_set_flag(Context, extra->hdr, MUTT_PURGE, (ch == OP_PURGE_MESSAGE));
         if (option(OPTDELETEUNTAG))
           mutt_set_flag(Context, extra->hdr, MUTT_TAG, 0);
-        pager_menu->redraw = REDRAW_STATUS | REDRAW_INDEX;
+        pager_menu->redraw |= REDRAW_STATUS | REDRAW_INDEX;
         if (option(OPTRESOLVE))
         {
           ch = -1;
@@ -2716,7 +2729,7 @@ int mutt_pager(const char *banner, const char *fname, int flags, pager_t *extra)
           if (!option(OPTRESOLVE) && PagerIndexLines)
             pager_menu->redraw = REDRAW_FULL;
           else
-            pager_menu->redraw = REDRAW_STATUS | REDRAW_INDEX;
+            pager_menu->redraw |= REDRAW_STATUS | REDRAW_INDEX;
         }
         break;
 
@@ -2729,8 +2742,6 @@ int mutt_pager(const char *banner, const char *fname, int flags, pager_t *extra)
         break;
 
       case OP_ENTER_COMMAND:
-        old_smart_wrap = option(OPTWRAP);
-        old_markers = option(OPTMARKERS);
         old_PagerIndexLines = PagerIndexLines;
 
         mutt_enter_command();
@@ -2749,64 +2760,14 @@ int mutt_pager(const char *banner, const char *fname, int flags, pager_t *extra)
           rd.index = NULL;
         }
 
-        if (option(OPTWRAP) != old_smart_wrap || option(OPTMARKERS) != old_markers)
+        if ((pager_menu->redraw & REDRAW_FLOW) && (flags & MUTT_PAGER_RETWINCH))
         {
-          if (flags & MUTT_PAGER_RETWINCH)
-          {
-            ch = -1;
-            rc = OP_REFORMAT_WINCH;
-            continue;
-          }
-
-          /* count the real lines above */
-          j = 0;
-          for (i = 0; i <= rd.topline; i++)
-          {
-            if (!rd.lineInfo[i].continuation)
-              j++;
-          }
-
-          /* we need to restart the whole thing */
-          for (i = 0; i < rd.maxLine; i++)
-          {
-            rd.lineInfo[i].offset = 0;
-            rd.lineInfo[i].type = -1;
-            rd.lineInfo[i].continuation = 0;
-            rd.lineInfo[i].chunks = 0;
-            rd.lineInfo[i].search_cnt = -1;
-            rd.lineInfo[i].quote = NULL;
-
-            safe_realloc(&(rd.lineInfo[i].syntax), sizeof(struct syntax_t));
-            if (rd.SearchCompiled && rd.lineInfo[i].search)
-              FREE(&(rd.lineInfo[i].search));
-          }
-
-          if (rd.SearchCompiled)
-          {
-            regfree(&rd.SearchRE);
-            rd.SearchCompiled = 0;
-          }
-          rd.SearchFlag = 0;
-
-          /* try to keep the old position */
-          rd.topline = 0;
-          rd.lastLine = 0;
-          while (j > 0 &&
-                 display_line(rd.fp, &rd.last_pos, &rd.lineInfo, rd.topline,
-                              &rd.lastLine, &rd.maxLine,
-                              (rd.has_types ? MUTT_TYPES : 0) | (flags & MUTT_PAGER_NOWRAP),
-                              &rd.QuoteList, &rd.q_level, &rd.force_redraw,
-                              &rd.SearchRE, rd.pager_window) == 0)
-          {
-            if (!rd.lineInfo[rd.topline].continuation)
-              j--;
-            if (j > 0)
-              rd.topline++;
-          }
-
-          ch = 0;
+          ch = -1;
+          rc = OP_REFORMAT_WINCH;
+          continue;
         }
 
+        ch = 0;
         break;
 
       case OP_FLAG_MESSAGE:
@@ -2816,7 +2777,7 @@ int mutt_pager(const char *banner, const char *fname, int flags, pager_t *extra)
         CHECK_ACL(MUTT_ACL_WRITE, "Cannot flag message");
 
         mutt_set_flag(Context, extra->hdr, MUTT_FLAG, !extra->hdr->flagged);
-        pager_menu->redraw = REDRAW_STATUS | REDRAW_INDEX;
+        pager_menu->redraw |= REDRAW_STATUS | REDRAW_INDEX;
         if (option(OPTRESOLVE))
         {
           ch = -1;
@@ -3009,7 +2970,7 @@ int mutt_pager(const char *banner, const char *fname, int flags, pager_t *extra)
                        Context->last_tag);
         }
 
-        pager_menu->redraw = REDRAW_STATUS | REDRAW_INDEX;
+        pager_menu->redraw |= REDRAW_STATUS | REDRAW_INDEX;
         if (option(OPTRESOLVE))
         {
           ch = -1;
@@ -3029,7 +2990,7 @@ int mutt_pager(const char *banner, const char *fname, int flags, pager_t *extra)
           mutt_set_flag(Context, extra->hdr, MUTT_READ, 1);
         first = 0;
         Context->msgnotreadyet = -1;
-        pager_menu->redraw = REDRAW_STATUS | REDRAW_INDEX;
+        pager_menu->redraw |= REDRAW_STATUS | REDRAW_INDEX;
         if (option(OPTRESOLVE))
         {
           ch = -1;
@@ -3045,7 +3006,7 @@ int mutt_pager(const char *banner, const char *fname, int flags, pager_t *extra)
 
         mutt_set_flag(Context, extra->hdr, MUTT_DELETE, 0);
         mutt_set_flag(Context, extra->hdr, MUTT_PURGE, 0);
-        pager_menu->redraw = REDRAW_STATUS | REDRAW_INDEX;
+        pager_menu->redraw |= REDRAW_STATUS | REDRAW_INDEX;
         if (option(OPTRESOLVE))
         {
           ch = -1;
@@ -3076,7 +3037,7 @@ int mutt_pager(const char *banner, const char *fname, int flags, pager_t *extra)
           if (!option(OPTRESOLVE) && PagerIndexLines)
             pager_menu->redraw = REDRAW_FULL;
           else
-            pager_menu->redraw = REDRAW_STATUS | REDRAW_INDEX;
+            pager_menu->redraw |= REDRAW_STATUS | REDRAW_INDEX;
         }
         break;
 

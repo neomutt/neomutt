@@ -857,6 +857,12 @@ void mutt_set_current_menu_redraw_full(void)
     current_menu->redraw = REDRAW_FULL;
 }
 
+void mutt_set_menu_redraw(int menu_type, int redraw)
+{
+  if (CurrentMenu == menu_type)
+    mutt_set_current_menu_redraw(redraw);
+}
+
 void mutt_set_menu_redraw_full(int menu_type)
 {
   if (CurrentMenu == menu_type)
@@ -1212,7 +1218,7 @@ int mutt_menu_loop(MUTTMENU *menu)
           {
             for (i = 0; i < menu->max; i++)
               menu->tagged += menu->tag(menu, i, 0);
-            menu->redraw = REDRAW_INDEX;
+            menu->redraw |= REDRAW_INDEX;
           }
           else if (menu->max)
           {
@@ -1221,10 +1227,10 @@ int mutt_menu_loop(MUTTMENU *menu)
             if (j && option(OPTRESOLVE) && menu->current < menu->max - 1)
             {
               menu->current++;
-              menu->redraw = REDRAW_MOTION_RESYNCH;
+              menu->redraw |= REDRAW_MOTION_RESYNCH;
             }
             else
-              menu->redraw = REDRAW_CURRENT;
+              menu->redraw |= REDRAW_CURRENT;
           }
           else
             mutt_error(_("No entries."));
