@@ -1002,9 +1002,12 @@ static int try_bind(char *key, int menu, char *func,
       return km_bindkey_err(key, menu, bindings[i].op, err);
     }
   }
-  snprintf(err->data, err->dsize,
-           _("Function '%s' not available for menu '%s'"), func,
-           mutt_getnamebyvalue(menu, Menus));
+  if (err)
+  {
+    snprintf(err->data, err->dsize,
+             _("Function '%s' not available for menu '%s'"), func,
+             mutt_getnamebyvalue(menu, Menus));
+  }
   return -1; /* Couldn't find an existing function with this name */
 }
 
@@ -1079,22 +1082,24 @@ int mutt_parse_bind(BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err)
   {
     for (i = 0; i < nummenus; ++i)
     {
-      /* Bind first on the generic (why?), except for this menus */
-      if (menu[i] != MENU_PAGER || menu[i] != MENU_EDITOR || menu[i] != MENU_GENERIC)
+      /* The pager and editor menus don't use the generic map,
+       * however for other menus try generic first. */
+      if ((menu[i] != MENU_PAGER) && (menu[i] != MENU_EDITOR) && (menu[i] != MENU_GENERIC))
       {
         r = try_bind(key, menu[i], buf->data, OpGeneric, err);
+        if (r == 0)
+          continue;
+        if (r == -2)
+          break;
       }
-      else
+
+      /* Clear any error message, we're going to try again */
+      if (err->data)
+        err->data[0] = '\0';
+      bindings = km_get_table(menu[i]);
+      if (bindings)
       {
-        r = -2; /* If you don't bind on generic, bind on the actual menu*/
-      }
-      if (r != 0)
-      {
-        bindings = km_get_table(menu[i]);
-        if (bindings)
-        {
-          r = try_bind(key, menu[i], buf->data, bindings, err);
-        }
+        r = try_bind(key, menu[i], buf->data, bindings, err);
       }
     }
   }
