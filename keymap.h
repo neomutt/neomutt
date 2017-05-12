@@ -26,7 +26,7 @@
 /* type for key storage, the rest of mutt works fine with int type */
 typedef short keycode_t;
 
-void km_bind(char *s, int menu, int op, char *macro, char *descr);
+int km_bind(char *s, int menu, int op, char *macro, char *descr);
 int km_dokey(int menu);
 
 void init_extended_keys(void);
