@@ -4261,11 +4261,6 @@ msgstr "連線到 %s (%s) 時失敗"
 msgid "Lock count exceeded, remove lock for %s?"
 msgstr "鎖進數量超過限額，將 %s 的鎖移除？"
 
-#: mx.c:164
-#, c-format
-msgid "Can't dotlock %s.\n"
-msgstr "無法用 dotlock 鎖住 %s。\n"
-
 #: mx.c:219
 msgid "Timeout exceeded while attempting fcntl lock!"
 msgstr "嘗試 fcntl 的鎖定時超過時間!"
@@ -5315,6 +5310,7 @@ msgstr ""
 msgid "Can't sign: No key specified. Use Sign As."
 msgstr ""
 
+<<<<<<< c23b47cf1363cd9f07111507973168220ae588aa
 #: ncrypt/smime.c:1492
 #, fuzzy
 msgid "Can't open OpenSSL subprocess!"
@@ -5328,6 +5324,21 @@ msgid ""
 msgstr ""
 "[-- OpenSSL 輸出部份結束 --]\n"
 "\n"
+=======
+#: mutt_tunnel.c:140 mutt_tunnel.c:155
+#, fuzzy, c-format
+msgid "Tunnel error talking to %s: %s"
+msgstr "連線到 %s (%s) 時失敗"
+
+#: mx.c:149
+#, c-format
+msgid "Lock count exceeded, remove lock for %s?"
+msgstr "鎖進數量超過限額，將 %s 的鎖移除？"
+
+#: mx.c:215
+msgid "Timeout exceeded while attempting fcntl lock!"
+msgstr "嘗試 fcntl 的鎖定時超過時間!"
+>>>>>>> update translation files
 
 #: ncrypt/smime.c:1752 ncrypt/smime.c:1764
 #, fuzzy

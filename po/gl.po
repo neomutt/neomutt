@@ -4268,11 +4268,6 @@ msgstr "Erro ó conectar có servidor: %s"
 msgid "Lock count exceeded, remove lock for %s?"
 msgstr "Excedeuse a conta de bloqueos, ¿borrar bloqueo para %s?"
 
-#: mx.c:164
-#, c-format
-msgid "Can't dotlock %s.\n"
-msgstr "Non se pode bloquear %s.\n"
-
 #: mx.c:219
 msgid "Timeout exceeded while attempting fcntl lock!"
 msgstr "¡Tempo de espera excedido cando se tentaba face-lo bloqueo fcntl!"
@@ -5363,7 +5358,44 @@ msgstr ""
 "\n"
 "[-- Fin dos datos con encriptación S/MIME --]\n"
 
+<<<<<<< c23b47cf1363cd9f07111507973168220ae588aa
 #: ncrypt/smime.c:1867
+=======
+#: mutt_tunnel.c:140 mutt_tunnel.c:155
+#, fuzzy, c-format
+msgid "Tunnel error talking to %s: %s"
+msgstr "Erro ó conectar có servidor: %s"
+
+#: mx.c:149
+#, c-format
+msgid "Lock count exceeded, remove lock for %s?"
+msgstr "Excedeuse a conta de bloqueos, ¿borrar bloqueo para %s?"
+
+#: mx.c:215
+msgid "Timeout exceeded while attempting fcntl lock!"
+msgstr "¡Tempo de espera excedido cando se tentaba face-lo bloqueo fcntl!"
+
+#: mx.c:221
+#, c-format
+msgid "Waiting for fcntl lock... %d"
+msgstr "Agardando polo bloqueo fcntl... %d"
+
+#: mx.c:248
+msgid "Timeout exceeded while attempting flock lock!"
+msgstr "¡Tempo de espera excedido cando se tentaba face-lo bloqueo flock!"
+
+#: mx.c:255
+#, c-format
+msgid "Waiting for flock attempt... %d"
+msgstr "Agardando polo intento de flock... %d"
+
+#: mx.c:682
+#, fuzzy, c-format
+msgid "Reading from %s interrupted..."
+msgstr "Búsqueda interrompida."
+
+#: mx.c:777
+>>>>>>> update translation files
 #, fuzzy
 msgid ""
 "\n"

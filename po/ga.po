@@ -4183,11 +4183,6 @@ msgstr "Earráid tolláin i rith déanamh teagmháil le %s: %s"
 msgid "Lock count exceeded, remove lock for %s?"
 msgstr "Sáraíodh líon na nglas, bain glas do %s?"
 
-#: mx.c:164
-#, c-format
-msgid "Can't dotlock %s.\n"
-msgstr "Ní féidir %s a phoncghlasáil.\n"
-
 #: mx.c:219
 msgid "Timeout exceeded while attempting fcntl lock!"
 msgstr "Thar am agus glas fcntl á dhéanamh!"
@@ -5198,6 +5193,7 @@ msgstr "Gan aschur ó OpenSSL..."
 msgid "Can't sign: No key specified. Use Sign As."
 msgstr "Ní féidir é a shíniú: Níor sonraíodh eochair. Úsáid \"Sínigh Mar\"."
 
+<<<<<<< c23b47cf1363cd9f07111507973168220ae588aa
 #: ncrypt/smime.c:1492
 msgid "Can't open OpenSSL subprocess!"
 msgstr "Ní féidir fo-phróiseas OpenSSL a oscailt!"
@@ -5209,6 +5205,11 @@ msgid ""
 msgstr ""
 "[-- Deireadh an aschuir OpenSSL --]\n"
 "\n"
+=======
+#: mx.c:215
+msgid "Timeout exceeded while attempting fcntl lock!"
+msgstr "Thar am agus glas fcntl á dhéanamh!"
+>>>>>>> update translation files
 
 #: ncrypt/smime.c:1752 ncrypt/smime.c:1764
 msgid "[-- Error: unable to create OpenSSL subprocess! --]\n"

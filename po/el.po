@@ -4274,11 +4274,6 @@ msgstr "Σφάλμα στη συνομιλία με το %s (%s)"
 msgid "Lock count exceeded, remove lock for %s?"
 msgstr "Ο αριθμός κλειδωμάτων ξεπεράστηκε, ξεκλείδωμα του %s;"
 
-#: mx.c:164
-#, c-format
-msgid "Can't dotlock %s.\n"
-msgstr "Αδυναμία dotlock του %s.\n"
-
 #: mx.c:219
 msgid "Timeout exceeded while attempting fcntl lock!"
 msgstr "Το όριο χρόνου ξεπεράστηκε κατά την προσπάθεια κλειδώματος με fcntl!"
@@ -5303,6 +5298,7 @@ msgstr "Καμμία έξοδος από OpenSSL.."
 msgid "Can't sign: No key specified. Use Sign As."
 msgstr "Αδυναμία υπογραφής. Δεν έχει οριστεί κλειδί. Χρησιμοποιήστε Υπογρ.σαν"
 
+<<<<<<< c23b47cf1363cd9f07111507973168220ae588aa
 #: ncrypt/smime.c:1492
 msgid "Can't open OpenSSL subprocess!"
 msgstr "Αδυναμία εκκίνησης υποδιεργασίας OpenSSL!"
@@ -5314,6 +5310,11 @@ msgid ""
 msgstr ""
 "[-- Τέλος της εξόδου OpenSSL --]\n"
 "\n"
+=======
+#: mx.c:215
+msgid "Timeout exceeded while attempting fcntl lock!"
+msgstr "Το όριο χρόνου ξεπεράστηκε κατά την προσπάθεια κλειδώματος με fcntl!"
+>>>>>>> update translation files
 
 #: ncrypt/smime.c:1752 ncrypt/smime.c:1764
 msgid "[-- Error: unable to create OpenSSL subprocess! --]\n"

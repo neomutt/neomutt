@@ -3960,11 +3960,6 @@ msgstr ""
 msgid "Lock count exceeded, remove lock for %s?"
 msgstr ""
 
-#: mx.c:164
-#, c-format
-msgid "Can't dotlock %s.\n"
-msgstr ""
-
 #: mx.c:219
 msgid "Timeout exceeded while attempting fcntl lock!"
 msgstr ""
@@ -4753,6 +4748,7 @@ msgstr ""
 msgid "safco"
 msgstr ""
 
+<<<<<<< c23b47cf1363cd9f07111507973168220ae588aa
 #. L10N: PGP options (inline) (opportunistic encryption is off)
 #: ncrypt/pgp.c:1684
 #, c-format
@@ -4764,6 +4760,10 @@ msgstr ""
 #. The 'f' is undocumented. Please DO NOT translate it.
 #: ncrypt/pgp.c:1691
 msgid "esabfcoi"
+=======
+#: mx.c:215
+msgid "Timeout exceeded while attempting fcntl lock!"
+>>>>>>> update translation files
 msgstr ""
 
 #. L10N: PGP options (opportunistic encryption is off)

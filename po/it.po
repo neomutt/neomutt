@@ -4161,11 +4161,6 @@ msgstr "Errore del tunnel nella comunicazione con %s: %s"
 msgid "Lock count exceeded, remove lock for %s?"
 msgstr "Tentati troppi lock, rimuovere il lock di %s?"
 
-#: mx.c:164
-#, c-format
-msgid "Can't dotlock %s.\n"
-msgstr "Impossibile fare un dotlock su %s.\n"
-
 #: mx.c:219
 msgid "Timeout exceeded while attempting fcntl lock!"
 msgstr "Timeout scaduto durante il tentativo di lock fcntl!"
@@ -5144,6 +5139,7 @@ msgstr "Non è stato trovato un certificato (valido) per %s."
 msgid "Error: unable to create OpenSSL subprocess!"
 msgstr "Errore: impossibile creare il sottoprocesso di OpenSSL!"
 
+<<<<<<< c23b47cf1363cd9f07111507973168220ae588aa
 #: ncrypt/smime.c:1163
 #, fuzzy
 msgid "Label for certificate: "
@@ -5152,6 +5148,11 @@ msgstr "Impossibile ottenere il certificato dal peer"
 #: ncrypt/smime.c:1255
 msgid "no certfile"
 msgstr "manca il file del certificato"
+=======
+#: mx.c:215
+msgid "Timeout exceeded while attempting fcntl lock!"
+msgstr "Timeout scaduto durante il tentativo di lock fcntl!"
+>>>>>>> update translation files
 
 #: ncrypt/smime.c:1258
 msgid "no mbox"

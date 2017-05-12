@@ -4123,11 +4123,6 @@ msgstr "Chyba při komunikaci tunelem s %s (%s)"
 msgid "Lock count exceeded, remove lock for %s?"
 msgstr "Zámek stále existuje, odemknout %s?"
 
-#: mx.c:164
-#, c-format
-msgid "Can't dotlock %s.\n"
-msgstr "%s nelze zamknout.\n"
-
 #: mx.c:219
 msgid "Timeout exceeded while attempting fcntl lock!"
 msgstr "Vypršel čas pro pokus o zamknutí pomocí funkce fcntl!"
@@ -5126,6 +5121,7 @@ msgstr "OpenSSL nevygenerovalo žádný výstup…"
 msgid "Can't sign: No key specified. Use Sign As."
 msgstr "Nemohu najít klíč odesílatele, použijte funkci podepsat jako."
 
+<<<<<<< c23b47cf1363cd9f07111507973168220ae588aa
 #: ncrypt/smime.c:1492
 msgid "Can't open OpenSSL subprocess!"
 msgstr "OpenSSL podproces nelze spustit!"
@@ -5137,6 +5133,11 @@ msgid ""
 msgstr ""
 "[-- Konec OpenSSL výstupu --]\n"
 "\n"
+=======
+#: mx.c:215
+msgid "Timeout exceeded while attempting fcntl lock!"
+msgstr "Vypršel čas pro pokus o zamknutí pomocí funkce fcntl!"
+>>>>>>> update translation files
 
 #: ncrypt/smime.c:1752 ncrypt/smime.c:1764
 msgid "[-- Error: unable to create OpenSSL subprocess! --]\n"

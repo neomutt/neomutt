@@ -4337,13 +4337,6 @@ msgstr "Error al túnel establert amb «%s»: %s"
 msgid "Lock count exceeded, remove lock for %s?"
 msgstr "Voleu eliminar un forrellat sobrant de «%s»?"
 
-# ivb (2001/11/27)
-# ivb  «dotlock» és el programa emprat per a blocar.
-#: mx.c:164
-#, c-format
-msgid "Can't dotlock %s.\n"
-msgstr "No s’ha pogut blocar «%s» amb «dotlock».\n"
-
 #: mx.c:219
 msgid "Timeout exceeded while attempting fcntl lock!"
 msgstr "S’ha excedit el temps d’espera en intentar blocar amb fcntl()."
@@ -5437,6 +5430,7 @@ msgstr "OpenSSL no ha produit cap eixida…"
 msgid "Can't sign: No key specified. Use Sign As."
 msgstr "No es pot signar: no s’ha indicat cap clau.  Useu «signa com a»."
 
+<<<<<<< c23b47cf1363cd9f07111507973168220ae588aa
 #: ncrypt/smime.c:1492
 msgid "Can't open OpenSSL subprocess!"
 msgstr "No s’ha pogut obrir el subprocés OpenSSL."
@@ -5448,6 +5442,11 @@ msgid ""
 msgstr ""
 "[-- Final de l’eixida d’OpenSSL. --]\n"
 "\n"
+=======
+#: mx.c:215
+msgid "Timeout exceeded while attempting fcntl lock!"
+msgstr "S’ha excedit el temps d’espera en intentar blocar amb fcntl()."
+>>>>>>> update translation files
 
 #: ncrypt/smime.c:1752 ncrypt/smime.c:1764
 msgid "[-- Error: unable to create OpenSSL subprocess! --]\n"

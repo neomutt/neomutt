@@ -4162,11 +4162,6 @@ msgstr "Tunel errorea %s-rekiko konexioan: %s"
 msgid "Lock count exceeded, remove lock for %s?"
 msgstr "Blokeo kontua gainditua, %s-ren blokeoa ezabatu?"
 
-#: mx.c:164
-#, c-format
-msgid "Can't dotlock %s.\n"
-msgstr "Ezin izan da dotlock bidez %s blokeatu.\n"
-
 #: mx.c:219
 msgid "Timeout exceeded while attempting fcntl lock!"
 msgstr "fcntl lock itxaroten denbora amaitu da!"
@@ -5176,6 +5171,7 @@ msgstr "Ez dago irteerarik OpenSSL-tik..."
 msgid "Can't sign: No key specified. Use Sign As."
 msgstr "Ezin da sinatu. Ez da gakorik ezarri. Honela sinatu erabili."
 
+<<<<<<< c23b47cf1363cd9f07111507973168220ae588aa
 #: ncrypt/smime.c:1492
 msgid "Can't open OpenSSL subprocess!"
 msgstr "Ezin da OpenSSL azpiprozesua ireki!"
@@ -5187,6 +5183,11 @@ msgid ""
 msgstr ""
 "[-- OpenSSL irteeraren bukaera --]\n"
 "\n"
+=======
+#: mx.c:215
+msgid "Timeout exceeded while attempting fcntl lock!"
+msgstr "fcntl lock itxaroten denbora amaitu da!"
+>>>>>>> update translation files
 
 #: ncrypt/smime.c:1752 ncrypt/smime.c:1764
 msgid "[-- Error: unable to create OpenSSL subprocess! --]\n"

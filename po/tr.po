@@ -4180,11 +4180,6 @@ msgstr "%s ile konuşurken tünel hatası oluştu: %s"
 msgid "Lock count exceeded, remove lock for %s?"
 msgstr "Maksimum kilit sayısı aşıldı, %s için varolan kilit silinsin mi?"
 
-#: mx.c:164
-#, c-format
-msgid "Can't dotlock %s.\n"
-msgstr "%s kilitlenemedi.\n"
-
 #: mx.c:219
 msgid "Timeout exceeded while attempting fcntl lock!"
 msgstr "\"fcntl\" kilitlemesi zaman aşımına uğradı!"
@@ -5198,6 +5193,7 @@ msgstr "OpenSSL bir çıktı üretmedi..."
 msgid "Can't sign: No key specified. Use Sign As."
 msgstr "İmzalanmıyor: Anahtar belirtilmedi. \"farklı imzala\"yı seçin."
 
+<<<<<<< c23b47cf1363cd9f07111507973168220ae588aa
 #: ncrypt/smime.c:1492
 msgid "Can't open OpenSSL subprocess!"
 msgstr "OpenSSL alt süreci açılamıyor!"
@@ -5209,6 +5205,11 @@ msgid ""
 msgstr ""
 "[-- OpenSSL çıktısı sonu --]\n"
 "\n"
+=======
+#: mx.c:215
+msgid "Timeout exceeded while attempting fcntl lock!"
+msgstr "\"fcntl\" kilitlemesi zaman aşımına uğradı!"
+>>>>>>> update translation files
 
 #: ncrypt/smime.c:1752 ncrypt/smime.c:1764
 msgid "[-- Error: unable to create OpenSSL subprocess! --]\n"
