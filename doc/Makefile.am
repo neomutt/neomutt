@@ -27,19 +27,19 @@ EXTRA_DIST = dotlock.man		\
 	manual.xml.tail			\
 	instdoc.sh.in			\
 	smime-notes.txt			\
-	Muttrc Muttrc.head stamp-doc-rc \
+	Muttrc Muttrc.head \
 	makedoc.c makedoc_defs.h 	\
 	mutt.css mutt.xsl html.xsl chunk.xsl \
 	$(BUILT_DISTFILES) neomutt-syntax.vim \
 	mutt-1.7.0-syntax.vim
 
-CHUNKED_DOCFILES = index.html intro.html gettingstarted.html \
+CHUNKED_DOCFILES = intro.html gettingstarted.html \
 	configuration.html mimesupport.html advancedusage.html \
 	optionalfeatures.html security.html tuning.html reference.html miscellany.html
 
-HTML_DOCFILES = manual.html $(CHUNKED_DOCFILES)
+HTML_DOCFILES = manual.html index.html $(CHUNKED_DOCFILES)
 
-BUILT_DISTFILES = stamp-doc-xml stamp-doc-chunked manual.txt $(HTML_DOCFILES)
+BUILT_DISTFILES = manual.txt $(HTML_DOCFILES)
 
 srcdir_DOCFILES = PGP-Notes.txt devel-notes.txt smime-notes.txt
 
@@ -48,7 +48,7 @@ topsrcdir_DOCFILES = COPYRIGHT LICENSE.md INSTALL ChangeLog ChangeLog.neomutt	\
 
 all: makedoc-all
 
-makedoc-all: mutt.1 smime_keys.1 muttrc.man manual.html stamp-doc-rc stamp-doc-chunked manual.txt pgpewrap.1 pgpring.1 neomutt-syntax.vim
+makedoc-all: mutt.1 smime_keys.1 muttrc.man manual.html Muttrc index.html $(CHUNKED_DOCFILES) manual.txt pgpewrap.1 pgpring.1 neomutt-syntax.vim
 
 install-data-local: makedoc-all instdoc
 	$(MKDIR_P) $(DESTDIR)$(mandir)/man1
@@ -110,26 +110,20 @@ manual.txt: manual.html
 	LC_ALL=C lynx -dump -nolist -with_backspaces -display_charset=us-ascii manual.html > $@ || \
 	LC_ALL=C elinks -dump -no-numbering -no-references manual.html | sed -e 's,\\001, ,g' > $@
 
-Muttrc: stamp-doc-rc
-
-stamp-doc-rc: $(top_srcdir)/init.h makedoc$(EXEEXT) $(srcdir)/Muttrc.head
-	-rm -f Muttrc stamp-doc-rc
+Muttrc: $(top_srcdir)/init.h makedoc$(EXEEXT) $(srcdir)/Muttrc.head
 	sed -e 's,[@]docdir[@],$(docdir),' $(srcdir)/Muttrc.head > Muttrc
-	$(CPP) $(AM_CPPFLAGS) $(DEFS) $(CPPFLAGS) -D_MAKEDOC -C \
-	  $(top_srcdir)/init.h | ./makedoc$(EXEEXT) -c >> Muttrc
-	touch stamp-doc-rc
+	$(CPP) $(AM_CPPFLAGS) $(DEFS) $(CPPFLAGS) -D_MAKEDOC -C $(top_srcdir)/init.h | ./makedoc$(EXEEXT) -c >> Muttrc
 
-manual.html: $(srcdir)/html.xsl $(srcdir)/mutt.xsl stamp-doc-xml $(srcdir)/mutt.css
+manual.html: manual.xml $(srcdir)/html.xsl $(srcdir)/mutt.xsl $(srcdir)/mutt.css
 	-xsltproc --nonet -o $@ $(srcdir)/html.xsl manual.xml
 
-stamp-doc-chunked: $(srcdir)/chunk.xsl $(srcdir)/mutt.xsl stamp-doc-xml $(srcdir)/mutt.css
-	-xsltproc --nonet $(srcdir)/chunk.xsl manual.xml
-	touch stamp-doc-chunked
+$(CHUNKED_DOCFILES): index.html
 
-$(CHUNKED_DOCFILES): stamp-doc-chunked
+index.html: $(srcdir)/chunk.xsl $(srcdir)/mutt.xsl manual.xml $(srcdir)/mutt.css
+	xsltproc --nonet $(srcdir)/chunk.xsl manual.xml > /dev/null 2>&1
 
-validate: stamp-doc-xml
-	xmllint --noout --noblanks --postvalid manual.xml
+validate: manual.xml
+	xmllint --noout --noblanks --postvalid $<
 
 spellcheck:
 	-aspell -d american --mode=sgml  --encoding=utf-8 -p $(srcdir)/mutt.pwl check manual.xml.head
@@ -143,22 +137,20 @@ sortcheck: manual.xml
 	rm -rf vars.tmp.1 vars.tmp.2
 
 clean-local:
-	rm -f *~ *.html *.orig *.rej  stamp-doc-* *.ps mutt.1 smime_keys.1 muttrc.man pgpewrap.1 pgpring.1
+	rm -f *~ *.html *.orig *.rej  *.ps mutt.1 smime_keys.1 muttrc.man pgpewrap.1 pgpring.1
 	rm -f *.aux *.log *.tex *.out
 
 DISTCLEANFILES=manual.txt manual.html manual.xml manual.pdf html \
 	       instdoc Muttrc
 
 instdoc: instdoc.sh
-	cat instdoc.sh > instdoc
+	cp instdoc.sh instdoc
 	chmod a+x instdoc
 
-update-doc: stamp-doc-xml stamp-doc-chunked stamp-doc-rc manual.txt manual.html
-
 muttrc.man: makedoc$(EXEEXT) $(top_srcdir)/init.h muttrc.man.head muttrc.man.tail
-	$(MAKEDOC_CPP) $(top_srcdir)/init.h | ./makedoc$(EXEEXT) -m | 	    \
-		cat $(srcdir)/muttrc.man.head - $(srcdir)/muttrc.man.tail\
-		> muttrc.man
+	$(MAKEDOC_CPP) $(top_srcdir)/init.h | \
+		./makedoc$(EXEEXT) -m | \
+		cat $(srcdir)/muttrc.man.head - $(srcdir)/muttrc.man.tail > $@
 
 EDIT = sed -e 's,@sysconfdir\@,$(sysconfdir),g' \
 	-e 's,@bindir\@,$(bindir),g' \
@@ -176,13 +168,13 @@ pgpring.1: $(srcdir)/pgpring.man
 smime_keys.1: $(srcdir)/smime_keys.man
 	$(EDIT) $(srcdir)/smime_keys.man > $@
 
-stamp-doc-xml: makedoc$(EXEEXT) $(top_srcdir)/init.h \
+manual.xml: makedoc$(EXEEXT) ../config.h $(top_srcdir)/init.h \
                manual.xml.head $(top_srcdir)/functions.h $(top_srcdir)/OPS* manual.xml.tail \
                $(srcdir)/gen-map-doc
 	( mutt_ver=`sed -n -e '/MUTT_VERSION/s/.*"\(.*\)".*/\1/p' ../config.h` && \
-	  sed -e "s/@VERSION\@/$(PACKAGE_VERSION) ($$mutt_ver)/" $(srcdir)/manual.xml.head && \
-	  $(MAKEDOC_CPP) $(top_srcdir)/init.h | ./makedoc$(EXEEXT) -s && \
-	  $(MAKEDOC_CPP) $(top_srcdir)/functions.h | \
-	    perl $(srcdir)/gen-map-doc $(srcdir)/manual.xml.tail $(top_srcdir)/OPS* \
-	) > manual.xml
-	touch stamp-doc-xml
+		sed -e "s/@VERSION\@/$(PACKAGE_VERSION) ($$mutt_ver)/" $(srcdir)/manual.xml.head && \
+		$(MAKEDOC_CPP) $(top_srcdir)/init.h | ./makedoc$(EXEEXT) -s && \
+		$(MAKEDOC_CPP) $(top_srcdir)/functions.h | \
+		perl $(srcdir)/gen-map-doc $(srcdir)/manual.xml.tail $(top_srcdir)/OPS* \
+	) > $@
+
