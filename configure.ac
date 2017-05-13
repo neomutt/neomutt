@@ -9,6 +9,7 @@ LDFLAGS=$LDFLAGS
 
 AC_INIT([NeoMutt], [20170428], [neomutt-devel@neomutt.org], [mutt], [https://www.neomutt.org])
 AC_CONFIG_SRCDIR(mutt.h)
+AC_CONFIG_AUX_DIR([.build-aux])
 AM_INIT_AUTOMAKE
 AC_CONFIG_HEADERS([config.h])
 
