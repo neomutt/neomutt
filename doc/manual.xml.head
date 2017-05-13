@@ -587,7 +587,8 @@ bind editor &lt;delete&gt; backspace
 Mutt maintains a history for the built-in editor.  The number of items
 is controlled by the <link linkend="history">$history</link> variable
 and can be made persistent using an external file specified using <link
-linkend="history-file">$history_file</link>.  You may cycle through them
+linkend="history-file">$history_file</link> and <link
+linkend="save-history">$save_history</link>.  You may cycle through them
 at an editor prompt by using the <literal>&lt;history-up&gt;</literal>
 and/or <literal>&lt;history-down&gt;</literal> commands.  Mutt will
 remember the currently entered text as you cycle through history, and
