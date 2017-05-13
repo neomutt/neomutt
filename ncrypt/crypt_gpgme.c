@@ -4699,12 +4699,10 @@ static int gpgme_send_menu(struct Header *msg, int is_smime)
         crypt_opportunistic_encrypt(msg);
         break;
 
-      case 'f': /* (f)orget it: kept for backward compatibility. */
       case 'c': /* (c)lear */
         msg->security &= ~(ENCRYPT | SIGN);
         break;
 
-      case 'F': /* (f)orget it or (c)lear in oppenc mode */
       case 'C':
         msg->security &= ~SIGN;
         break;

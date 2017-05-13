@@ -1770,12 +1770,10 @@ int pgp_send_menu(struct Header *msg)
         msg->security |= (ENCRYPT | SIGN);
         break;
 
-      case 'f': /* (f)orget it: kept for backward compatibility. */
       case 'c': /* (c)lear     */
         msg->security &= ~(ENCRYPT | SIGN);
         break;
 
-      case 'F': /* (f)orget it or (c)lear in oppenc mode */
       case 'C':
         msg->security &= ~SIGN;
         break;
