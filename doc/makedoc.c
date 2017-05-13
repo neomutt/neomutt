@@ -35,10 +35,6 @@
 #include <unistd.h>
 #include "makedoc_defs.h"
 
-#ifndef HAVE_STRERROR
-#define strerror(x) ((x) > 0 && (x) < sys_nerr) ? sys_errlist[(x)] : 0
-#endif /* !HAVE_STRERROR */
-
 extern int optind;
 
 #define BUFFSIZE 2048
