@@ -58,22 +58,6 @@ AC_C_BIGENDIAN
 AC_SYS_LARGEFILE
 AC_CHECK_SIZEOF(off_t)
 
-AC_PATH_PROG(DBX, dbx, no)
-AC_PATH_PROG(GDB, gdb, no)
-AC_PATH_PROG(SDB, sdb, no)
-
-if test $GDB != no; then
-	DEBUGGER=$GDB
-elif test $DBX != no; then
-	DEBUGGER=$DBX
-elif test $SDB != no; then
-	DEBUGGER=$SDB
-else
-	DEBUGGER=no
-fi
-
-AC_SUBST([DEBUGGER])
-
 AH_TEMPLATE([sig_atomic_t],
 	[Define to `int' if <signal.h> doesn't define.])
 AH_TEMPLATE([HAVE_START_COLOR],
