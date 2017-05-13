@@ -23,6 +23,44 @@
 #include "mutt.h"
 #include "history.h"
 
+/* This history ring grows from 0..HistSize, with last marking the
+ * where new entries go:
+ *         0        the oldest entry in the ring
+ *         1        entry
+ *         ...
+ *         x-1      most recently entered text
+ *  last-> x        NULL  (this will be overwritten next)
+ *         x+1      NULL
+ *         ...
+ *         HistSize NULL
+ *
+ * Once the array fills up, it is used as a ring.  last points where a new
+ * entry will go.  Older entries are "up", and wrap around:
+ *         0        entry
+ *         1        entry
+ *         ...
+ *         y-1      most recently entered text
+ *  last-> y        entry (this will be overwritten next)
+ *         y+1      the oldest entry in the ring
+ *         ...
+ *         HistSize entry
+ *
+ * When $history_remove_dups is set, duplicate entries are scanned and removed
+ * each time a new entry is added.  In order to preserve the history ring size,
+ * entries 0..last are compacted up.  Entries last+1..HistSize are
+ * compacted down:
+ *         0        entry
+ *         1        entry
+ *         ...
+ *         z-1      most recently entered text
+ *  last-> z        entry (this will be overwritten next)
+ *         z+1      NULL
+ *         z+2      NULL
+ *         ...
+ *                  the oldest entry in the ring
+ *                  next oldest entry
+ *         HistSize entry
+ */
 struct history
 {
   char **hist;
@@ -206,6 +244,51 @@ static void save_history (history_class_t hclass, const char *s)
   }
 }
 
+/* When removing dups, we want the created "blanks" to be right below the
+ * resulting h->last position.  See the comment section above 'struct history'.
+ */
+static void remove_history_dups (history_class_t hclass, const char *s)
+{
+  int source, dest, old_last;
+  struct history *h = GET_HISTORY(hclass);
+
+  if (!HistSize || !h)
+    return; /* disabled */
+
+  /* Remove dups from 0..last-1 compacting up. */
+  source = dest = 0;
+  while (source < h->last)
+  {
+    if (!mutt_strcmp (h->hist[source], s))
+      FREE (&h->hist[source++]);
+    else
+      h->hist[dest++] = h->hist[source++];
+  }
+
+  /* Move 'last' entry up. */
+  h->hist[dest] = h->hist[source];
+  old_last = h->last;
+  h->last = dest;
+
+  /* Fill in moved entries with NULL */
+  while (source > h->last)
+    h->hist[source--] = NULL;
+
+  /* Remove dups from last+1 .. HistSize compacting down. */
+  source = dest = HistSize;
+  while (source > old_last)
+  {
+    if (!mutt_strcmp (h->hist[source], s))
+      FREE (&h->hist[source--]);
+    else
+      h->hist[dest--] = h->hist[source--];
+  }
+
+  /* Fill in moved entries with NULL */
+  while (dest > old_last)
+    h->hist[dest--] = NULL;
+}
+
 void mutt_init_history(void)
 {
   history_class_t hclass;
@@ -238,6 +321,8 @@ void mutt_history_add (history_class_t hclass, const char *s, int save)
      */
     if (*s != ' ' && (!h->hist[prev] || mutt_strcmp (h->hist[prev], s) != 0))
     {
+      if (option (OPTHISTREMOVEDUPS))
+        remove_history_dups (hclass, s);
       if (save && SaveHist)
         save_history (hclass, s);
       mutt_str_replace (&h->hist[h->last++], s);
@@ -256,13 +341,17 @@ char *mutt_history_next (history_class_t hclass)
   if (!HistSize || !h)
     return (""); /* disabled */
 
-  next = h->cur + 1;
-  if (next > HistSize)
-    next = 0;
-  if (h->hist[next] || (next == h->last))
-    h->cur = next;
-  else
-    h->cur = 0;
+  next = h->cur;
+  do
+  {
+    next++;
+    if (next > HistSize)
+      next = 0;
+    if (next == h->last)
+      break;
+  } while (h->hist[next] == NULL);
+
+  h->cur = next;
   return (h->hist[h->cur] ? h->hist[h->cur] : "");
 }
 
@@ -274,15 +363,17 @@ char *mutt_history_prev (history_class_t hclass)
   if (!HistSize || !h)
     return (""); /* disabled */
 
-  prev = h->cur - 1;
-  if (prev < 0)
+  prev = h->cur;
+  do
   {
-    prev = HistSize;
-    while ((prev > 0) && (prev != h->last) && (h->hist[prev] == NULL))
-      prev--;
-  }
-  if (h->hist[prev] || (prev == h->last))
-    h->cur = prev;
+    prev--;
+    if (prev < 0)
+      prev = HistSize;
+    if (prev == h->last)
+      break;
+  } while (h->hist[prev] == NULL);
+
+  h->cur = prev;
   return (h->hist[h->cur] ? h->hist[h->cur] : "");
 }
 

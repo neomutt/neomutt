@@ -610,9 +610,11 @@ following categories:
 
 <para>
 Mutt automatically filters out consecutively repeated items from the
-history. It also mimics the behavior of some shells by ignoring items
-starting with a space. The latter feature can be useful in macros to not
-clobber the history's valuable entries with unwanted entries.
+history.  If <link linkend="history-remove-dups">$history_remove_dups</link>
+is set, all repeated items are removed from the history.  It also mimics the
+behavior of some shells by ignoring items starting with a space. The latter
+feature can be useful in macros to not clobber the history's valuable entries
+with unwanted entries.
 </para>
 
 </sect2>

@@ -1084,6 +1084,12 @@ struct option_t MuttVars[] = {
   ** .pp
   ** The file in which Mutt will save its history.
   */
+  { "history_remove_dups", DT_BOOL, R_NONE, OPTHISTREMOVEDUPS, 0 },
+  /*
+  ** .pp
+  ** When \fIset\fP, all of the string history will be scanned for duplicates
+  ** when a new entry is added.
+  */
   { "honor_disposition", DT_BOOL, R_NONE, OPTHONORDISP, 0 },
   /*
   ** .pp
