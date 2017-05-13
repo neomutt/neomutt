@@ -436,7 +436,7 @@ int mutt_option_set(const struct option_t *val, BUFFER *err)
       case DT_PATH:
       {
         char scratch[LONG_STRING];
-        strfcpy(scratch, (const char *) val->data, sizeof(scratch));
+        strfcpy(scratch, NONULL((const char *) val->data), sizeof(scratch));
         mutt_expand_path(scratch, sizeof(scratch));
         /* MuttVars[idx].data is already 'char**' (or some 'void**') or...
         * so cast to 'void*' is okay */
