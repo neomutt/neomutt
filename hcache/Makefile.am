@@ -45,6 +45,6 @@ $(top_srcdir)/keymap_defs.h:
 	+$(MAKE) -C $(top_srcdir) keymap_defs.h
 
 hcversion.h: $(top_srcdir)/mutt.h $(top_srcdir)/rfc822.h $(srcdir)/hcachever.sh ../$(MUTT_MD5)
-	( echo '#include "config.h"'; echo '#include "mutt.h"'; ) \
+	$(AM_V_GEN)( echo '#include "config.h"'; echo '#include "mutt.h"'; ) \
 	| $(CPP) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) - | sh $(srcdir)/hcachever.sh hcversion.h
 
