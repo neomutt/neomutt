@@ -244,7 +244,7 @@ static void shrink_histfile (void)
 	continue;
       *p = '\0';
       if (option (OPTHISTREMOVEDUPS) &&
-          (dup_hash_dec (dup_hashes[hclass], linebuf + read) != 0))
+          (dup_hash_dec (dup_hashes[hclass], linebuf + read) > 0))
         continue;
       *p = '|';
       if (n[hclass]-- <= SaveHist)
