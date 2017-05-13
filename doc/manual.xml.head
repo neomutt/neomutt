@@ -1394,10 +1394,12 @@ color sidebar_divider   color8  default
           </listitem>
         </itemizedlist>
         <para>Mutt automatically filters out consecutively repeated items from
-        the history. It also mimics the behavior of some shells by ignoring
-        items starting with a space. The latter feature can be useful in macros
-        to not clobber the history's valuable entries with unwanted
-        entries.</para>
+        the history. If
+        <link linkend="history-remove-dups">$history_remove_dups</link>is set,
+        all repeated items are removed from the history. It also mimics the
+        behavior of some shells by ignoring items starting with a space. The
+        latter feature can be useful in macros to not clobber the history's
+        valuable entries with unwanted entries.</para>
       </sect2>
     </sect1>
 
