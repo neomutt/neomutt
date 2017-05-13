@@ -1,9 +1,6 @@
 dnl To create the configure script, run:
 dnl     autoreconf -i
 
-dnl !!! WHEN ADDING NEW CONFIGURE TESTS, PLEASE ADD CODE TO MAIN.C !!!
-dnl !!! TO DUMP THEIR RESULTS WHEN MUTT -V IS CALLED               !!!
-
 CFLAGS=$CFLAGS
 LDFLAGS=$LDFLAGS
 
@@ -95,7 +92,6 @@ AC_DEFINE_UNQUOTED(SENDMAIL,"$ac_cv_path_SENDMAIL", [Where to find sendmail on y
 
 OPS='$(srcdir)/OPS $(srcdir)/OPS.SIDEBAR'
 
-
 dnl Define the option to enable everything before any feature / option is declared
 dnl This is important because it allows us to set a default value for the options
 dnl that can later be overridden by the user's command line options.
@@ -129,7 +125,6 @@ AS_IF([test x$enable_everything = "xyes"], [
 	use_notmuch="no"
 	use_lua="no"
 ])
-
 
 dnl : A note about the organization of this file
 dnl : =========================================================================
@@ -175,7 +170,6 @@ AC_ARG_WITH(mixmaster,
 	[alongwith_mixmaster=$withval], [alongwith_mixmaster=no])
 
 dnl == End of Features and Options Definitions ==
-
 
 dnl == Declare all the checks and code for options / features below this line ==
 
@@ -260,7 +254,6 @@ AS_IF([test "$alongwith_mixmaster" != "no"], [
 	MUTT_LIB_OBJECTS="$MUTT_LIB_OBJECTS remailer.o"
 	AC_DEFINE_UNQUOTED(MIXMASTER, "$MIXMASTER", [Where to find mixmaster on your system.])
 ])
-
 
 # We now require all OPS
 OPS="$OPS \$(srcdir)/OPS.PGP \$(srcdir)/OPS.SMIME \$(srcdir)/OPS.CRYPT "
@@ -408,7 +401,6 @@ AC_CHECK_DECLS([sys_siglist],[],[],[#include <signal.h>
 /* NetBSD declares sys_siglist in unistd.h.  */
 # include <unistd.h>
 ])
-
 
 AC_REPLACE_FUNCS([wcscasecmp strcasestr])
 
