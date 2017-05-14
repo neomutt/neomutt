@@ -198,8 +198,8 @@ static int pad(FILE *f, int col, int i, bool is_alternate)
   if (col < i)
   {
     if (col <= i + 2) {
-      fputc(' ', f);
-      for (int j = 0; j < i - col - 2; j++) {
+      fputs("  ", f);
+      for (int j = 0; j < i - col - 3; j++) {
         fputs(is_alternate ? "―" : "•", f);
       }
       fputc(' ', f);
