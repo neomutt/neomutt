@@ -914,16 +914,16 @@ typedef enum {
   MUTT_MATCH_FULL_ADDRESS = 1
 } pattern_exec_flag;
 
-typedef struct group_t
+struct Group
 {
   struct Address *as;
   RX_LIST *rs;
   char *name;
-} group_t;
+};
 
 typedef struct group_context_t
 {
-  group_t *g;
+  struct Group *g;
   struct group_context_t *next;
 } group_context_t;
 
@@ -942,7 +942,7 @@ typedef struct pattern_t
   struct pattern_t *child; /* arguments to logical op */
   union {
     regex_t *rx;
-    group_t *g;
+    struct Group *g;
     char *str;
   } p;
 } pattern_t;

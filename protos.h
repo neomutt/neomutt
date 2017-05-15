@@ -149,7 +149,7 @@ const char *mutt_make_version(void);
 
 const char *mutt_fqdn(short may_hide_host);
 
-group_t *mutt_pattern_group(const char *k);
+struct Group *mutt_pattern_group(const char *k);
 
 REGEXP *mutt_compile_regexp(const char *s, int flags);
 
