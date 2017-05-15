@@ -209,7 +209,7 @@ void mutt_forward_trailer(FILE *fp);
 void mutt_free_alias(struct Alias **p);
 void mutt_free_body(struct Body **p);
 void mutt_free_color(int fg, int bg);
-void mutt_free_enter_state(ENTER_STATE **esp);
+void mutt_free_enter_state(struct EnterState **esp);
 void mutt_free_envelope(ENVELOPE **p);
 void mutt_free_header(HEADER **h);
 void mutt_free_parameter(PARAMETER **p);
@@ -313,7 +313,7 @@ int _mutt_enter_fname(const char *prompt, char *buf, size_t blen, int buffy,
                       int multiple, char ***files, int *numfiles, int flags);
 int mutt_enter_string(char *buf, size_t buflen, int col, int flags);
 int _mutt_enter_string(char *buf, size_t buflen, int col, int flags, int multiple,
-                       char ***files, int *numfiles, ENTER_STATE *state);
+                       char ***files, int *numfiles, struct EnterState *state);
 #define mutt_get_field(A, B, C, D) _mutt_get_field(A, B, C, D, 0, NULL, NULL)
 int _mutt_get_field(const char *field, char *buf, size_t buflen, int complete,
                     int multiple, char ***files, int *numfiles);

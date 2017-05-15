@@ -157,7 +157,7 @@ int _mutt_get_field(const char *field, char *buf, size_t buflen, int complete,
   int ret;
   int x;
 
-  ENTER_STATE *es = mutt_new_enter_state();
+  struct EnterState *es = mutt_new_enter_state();
 
   do
   {

@@ -159,7 +159,7 @@ static size_t my_mbstowcs(wchar_t **pwbuf, size_t *pwbuflen, size_t i, char *buf
 /*
  * Replace part of the wchar_t buffer, from FROM to CURPOS, by BUF.
  */
-static void replace_part(ENTER_STATE *state, size_t from, char *buf)
+static void replace_part(struct EnterState *state, size_t from, char *buf)
 {
   /* Save the suffix */
   size_t savelen = state->lastchar - state->curpos;
@@ -212,7 +212,7 @@ static inline int is_shell_char(wchar_t ch)
 int mutt_enter_string(char *buf, size_t buflen, int col, int flags)
 {
   int rv;
-  ENTER_STATE *es = mutt_new_enter_state();
+  struct EnterState *es = mutt_new_enter_state();
   do
   {
 #if defined(USE_SLANG_CURSES) || defined(HAVE_RESIZETERM)
@@ -236,7 +236,7 @@ int mutt_enter_string(char *buf, size_t buflen, int col, int flags)
  *      -1 if abort.
  */
 int _mutt_enter_string(char *buf, size_t buflen, int col, int flags, int multiple,
-                       char ***files, int *numfiles, ENTER_STATE *state)
+                       char ***files, int *numfiles, struct EnterState *state)
 {
   int width = MuttMessageWindow->cols - col - 1;
   int redraw;
@@ -828,7 +828,7 @@ bye:
   return rv;
 }
 
-void mutt_free_enter_state(ENTER_STATE **esp)
+void mutt_free_enter_state(struct EnterState **esp)
 {
   if (!esp)
     return;

@@ -1074,7 +1074,7 @@ typedef struct
 
 /* used by enter.c */
 
-typedef struct
+struct EnterState
 {
   wchar_t *wbuf;
   size_t wbuflen;
@@ -1082,11 +1082,11 @@ typedef struct
   size_t curpos;
   size_t begin;
   int tabs;
-} ENTER_STATE;
+};
 
-static inline ENTER_STATE *mutt_new_enter_state(void)
+static inline struct EnterState *mutt_new_enter_state(void)
 {
-  return safe_calloc(1, sizeof(ENTER_STATE));
+  return safe_calloc(1, sizeof(struct EnterState));
 }
 
 /* flags for the STATE struct */
