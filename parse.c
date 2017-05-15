@@ -132,9 +132,9 @@ int mutt_check_encoding(const char *c)
     return ENCOTHER;
 }
 
-static PARAMETER *parse_parameters(const char *s)
+static struct Parameter *parse_parameters(const char *s)
 {
-  PARAMETER *head = NULL, *cur = NULL, *new = NULL;
+  struct Parameter *head = NULL, *cur = NULL, *new = NULL;
   char buffer[LONG_STRING];
   const char *p = NULL;
   size_t i;
@@ -373,7 +373,7 @@ void mutt_parse_content_type(char *s, struct Body *ct)
 
 static void parse_content_disposition(const char *s, struct Body *ct)
 {
-  PARAMETER *parms = NULL;
+  struct Parameter *parms = NULL;
 
   if (ascii_strncasecmp("inline", s, 6) == 0)
     ct->disposition = DISPINLINE;

@@ -692,16 +692,16 @@ static inline struct Envelope *mutt_new_envelope(void)
   return safe_calloc(1, sizeof(struct Envelope));
 }
 
-typedef struct parameter
+struct Parameter
 {
   char *attribute;
   char *value;
-  struct parameter *next;
-} PARAMETER;
+  struct Parameter *next;
+};
 
-static inline PARAMETER *mutt_new_parameter(void)
+static inline struct Parameter *mutt_new_parameter(void)
 {
-  return safe_calloc(1, sizeof(PARAMETER));
+  return safe_calloc(1, sizeof(struct Parameter));
 }
 
 /* Information that helps in determining the Content-* of an attachment */
@@ -723,7 +723,7 @@ struct Body
 {
   char *xtype;          /* content-type if x-unknown */
   char *subtype;        /* content-type subtype */
-  PARAMETER *parameter; /* parameters of the content-type */
+  struct Parameter *parameter; /* parameters of the content-type */
   char *description;    /* content-description */
   char *form_name;      /* Content-Disposition form-data name param */
   long hdr_offset;      /* offset in stream where the headers begin.

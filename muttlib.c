@@ -108,7 +108,7 @@ int mutt_copy_body(FILE *fp, struct Body **tgt, struct Body *src)
   char tmp[_POSIX_PATH_MAX];
   struct Body *b = NULL;
 
-  PARAMETER *par = NULL, **ppar = NULL;
+  struct Parameter *par = NULL, **ppar = NULL;
 
   bool use_disp;
 
@@ -217,10 +217,10 @@ void mutt_free_body(struct Body **p)
   *p = 0;
 }
 
-void mutt_free_parameter(PARAMETER **p)
+void mutt_free_parameter(struct Parameter **p)
 {
-  PARAMETER *t = *p;
-  PARAMETER *o = NULL;
+  struct Parameter *t = *p;
+  struct Parameter *o = NULL;
 
   while (t)
   {
@@ -635,7 +635,7 @@ char *mutt_gecos_name(char *dest, size_t destlen, struct passwd *pw)
 }
 
 
-char *mutt_get_parameter(const char *s, PARAMETER *p)
+char *mutt_get_parameter(const char *s, struct Parameter *p)
 {
   for (; p; p = p->next)
     if (ascii_strcasecmp(s, p->attribute) == 0)
@@ -644,9 +644,9 @@ char *mutt_get_parameter(const char *s, PARAMETER *p)
   return NULL;
 }
 
-void mutt_set_parameter(const char *attribute, const char *value, PARAMETER **p)
+void mutt_set_parameter(const char *attribute, const char *value, struct Parameter **p)
 {
-  PARAMETER *q = NULL;
+  struct Parameter *q = NULL;
 
   if (!value)
   {
@@ -670,9 +670,9 @@ void mutt_set_parameter(const char *attribute, const char *value, PARAMETER **p)
   *p = q;
 }
 
-void mutt_delete_parameter(const char *attribute, PARAMETER **p)
+void mutt_delete_parameter(const char *attribute, struct Parameter **p)
 {
-  PARAMETER *q = NULL;
+  struct Parameter *q = NULL;
 
   for (q = *p; q; p = &q->next, q = q->next)
   {

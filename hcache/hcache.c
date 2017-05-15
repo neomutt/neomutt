@@ -332,7 +332,7 @@ static void restore_buffer(struct Buffer **b, const unsigned char *d, int *off, 
   (*b)->destroy = used;
 }
 
-static unsigned char *dump_parameter(PARAMETER *p, unsigned char *d, int *off, int convert)
+static unsigned char *dump_parameter(struct Parameter *p, unsigned char *d, int *off, int convert)
 {
   unsigned int counter = 0;
   unsigned int start_off = *off;
@@ -352,7 +352,7 @@ static unsigned char *dump_parameter(PARAMETER *p, unsigned char *d, int *off, i
   return d;
 }
 
-static void restore_parameter(PARAMETER **p, const unsigned char *d, int *off, int convert)
+static void restore_parameter(struct Parameter **p, const unsigned char *d, int *off, int convert)
 {
   unsigned int counter;
 
@@ -360,7 +360,7 @@ static void restore_parameter(PARAMETER **p, const unsigned char *d, int *off, i
 
   while (counter)
   {
-    *p = safe_malloc(sizeof(PARAMETER));
+    *p = safe_malloc(sizeof(struct Parameter));
     restore_char(&(*p)->attribute, d, off, 0);
     restore_char(&(*p)->value, d, off, convert);
     p = &(*p)->next;

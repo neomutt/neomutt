@@ -75,9 +75,9 @@ void mutt_FormatString(char *dest,         /* output buffer */
                        format_flag flags); /* callback flags */
 
 void mutt_parse_content_type(char *s, struct Body *ct);
-void mutt_generate_boundary(PARAMETER **parm);
-void mutt_delete_parameter(const char *attribute, PARAMETER **p);
-void mutt_set_parameter(const char *attribute, const char *value, PARAMETER **p);
+void mutt_generate_boundary(struct Parameter **parm);
+void mutt_delete_parameter(const char *attribute, struct Parameter **p);
+void mutt_set_parameter(const char *attribute, const char *value, struct Parameter **p);
 
 #ifdef USE_NOTMUCH
 int mutt_parse_virtual_mailboxes(struct Buffer *path, struct Buffer *s, unsigned long data, struct Buffer *err);
@@ -138,7 +138,7 @@ char *mutt_find_hook(int type, const char *pat);
 char *mutt_gecos_name(char *dest, size_t destlen, struct passwd *pw);
 char *mutt_get_body_charset(char *d, size_t dlen, struct Body *b);
 const char *mutt_get_name(struct Address *a);
-char *mutt_get_parameter(const char *s, PARAMETER *p);
+char *mutt_get_parameter(const char *s, struct Parameter *p);
 struct List *mutt_crypt_hook(struct Address *adr);
 char *mutt_make_date(char *s, size_t len);
 void mutt_timeout_hook(void);
@@ -212,7 +212,7 @@ void mutt_free_color(int fg, int bg);
 void mutt_free_enter_state(struct EnterState **esp);
 void mutt_free_envelope(struct Envelope **p);
 void mutt_free_header(struct Header **h);
-void mutt_free_parameter(PARAMETER **p);
+void mutt_free_parameter(struct Parameter **p);
 void mutt_free_regexp(REGEXP **pp);
 void mutt_help(int menu);
 void mutt_draw_tree(struct Context *ctx);

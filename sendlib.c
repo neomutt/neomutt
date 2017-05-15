@@ -289,7 +289,7 @@ static void encode_8bit(FGETCONV *fc, FILE *fout, int istext)
 
 int mutt_write_mime_header(struct Body *a, FILE *f)
 {
-  PARAMETER *p = NULL;
+  struct Parameter *p = NULL;
   char buffer[STRING];
   char *t = NULL;
   char *fn = NULL;
@@ -476,7 +476,7 @@ int mutt_write_mime_body(struct Body *a, FILE *f)
 
 #undef write_as_text_part
 
-void mutt_generate_boundary(PARAMETER **parm)
+void mutt_generate_boundary(struct Parameter **parm)
 {
   char rs[MUTT_RANDTAG_LEN + 1];
 

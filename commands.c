@@ -910,7 +910,7 @@ void mutt_edit_content_type(struct Header *h, struct Body *b, FILE *fp)
   char buf[LONG_STRING];
   char obuf[LONG_STRING];
   char tmp[STRING];
-  PARAMETER *p = NULL;
+  struct Parameter *p = NULL;
 
   char charset[STRING];
   char *cp = NULL;
