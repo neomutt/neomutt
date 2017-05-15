@@ -204,7 +204,7 @@ static int _lua_mutt_get(lua_State *l)
       }
       case DT_MBCHARTBL:
       {
-        mbchar_table *tbl = *(mbchar_table **) opt->data;
+        struct MbCharTable *tbl = *(struct MbCharTable **) opt->data;
         lua_pushstring(l, tbl->orig_str);
         return 1;
       }

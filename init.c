@@ -254,7 +254,7 @@ const struct option_t *mutt_option_get(const char *s)
 }
 #endif
 
-static void free_mbchar_table(mbchar_table **t)
+static void free_mbchar_table(struct MbCharTable **t)
 {
   if (!t || !*t)
     return;
@@ -265,14 +265,14 @@ static void free_mbchar_table(mbchar_table **t)
   FREE(t);
 }
 
-static mbchar_table *parse_mbchar_table(const char *s)
+static struct MbCharTable *parse_mbchar_table(const char *s)
 {
-  mbchar_table *t = NULL;
+  struct MbCharTable *t = NULL;
   size_t slen, k;
   mbstate_t mbstate;
   char *d = NULL;
 
-  t = safe_calloc(1, sizeof(mbchar_table));
+  t = safe_calloc(1, sizeof(struct MbCharTable));
   slen = mutt_strlen(s);
   if (!slen)
     return t;
@@ -423,7 +423,7 @@ int mutt_option_set(const struct option_t *val, struct Buffer *err)
       break;
       case DT_MBCHARTBL:
       {
-        mbchar_table **tbl = (mbchar_table **) MuttVars[idx].data;
+        struct MbCharTable **tbl = (struct MbCharTable **) MuttVars[idx].data;
         free_mbchar_table(tbl);
         *tbl = parse_mbchar_table((const char *) val->data);
       }
@@ -1908,8 +1908,8 @@ static void restore_default(struct option_t *p)
       mutt_str_replace((char **) p->data, (char *) p->init);
       break;
     case DT_MBCHARTBL:
-      free_mbchar_table((mbchar_table **) p->data);
-      *((mbchar_table **) p->data) = parse_mbchar_table((char *) p->init);
+      free_mbchar_table((struct MbCharTable **) p->data);
+      *((struct MbCharTable **) p->data) = parse_mbchar_table((char *) p->init);
       break;
     case DT_PATH:
       FREE((char **) p->data);
@@ -2465,7 +2465,7 @@ static int parse_set(struct Buffer *tmp, struct Buffer *s, unsigned long data, s
         else if (DTYPE(MuttVars[idx].type) == DT_ADDR)
           rfc822_free_address((struct Address **) MuttVars[idx].data);
         else if (DTYPE(MuttVars[idx].type) == DT_MBCHARTBL)
-          free_mbchar_table((mbchar_table **) MuttVars[idx].data);
+          free_mbchar_table((struct MbCharTable **) MuttVars[idx].data);
         else
           /* MuttVars[idx].data is already 'char**' (or some 'void**') or...
            * so cast to 'void*' is okay */
@@ -2504,7 +2504,7 @@ static int parse_set(struct Buffer *tmp, struct Buffer *s, unsigned long data, s
         }
         else if (DTYPE(MuttVars[idx].type) == DT_MBCHARTBL)
         {
-          mbchar_table *mbt = (*((mbchar_table **) MuttVars[idx].data));
+          struct MbCharTable *mbt = (*((struct MbCharTable **) MuttVars[idx].data));
           val = mbt ? NONULL(mbt->orig_str) : "";
         }
         else
@@ -2586,8 +2586,8 @@ static int parse_set(struct Buffer *tmp, struct Buffer *s, unsigned long data, s
         }
         else if (DTYPE(MuttVars[idx].type) == DT_MBCHARTBL)
         {
-          free_mbchar_table((mbchar_table **) MuttVars[idx].data);
-          *((mbchar_table **) MuttVars[idx].data) = parse_mbchar_table(tmp->data);
+          free_mbchar_table((struct MbCharTable **) MuttVars[idx].data);
+          *((struct MbCharTable **) MuttVars[idx].data) = parse_mbchar_table(tmp->data);
         }
         else
         {
@@ -3635,7 +3635,7 @@ int var_to_string(int idx, char *val, size_t len)
   }
   else if (DTYPE(MuttVars[idx].type) == DT_MBCHARTBL)
   {
-    mbchar_table *mbt = (*((mbchar_table **) MuttVars[idx].data));
+    struct MbCharTable *mbt = (*((struct MbCharTable **) MuttVars[idx].data));
     strfcpy(tmp, mbt ? NONULL(mbt->orig_str) : "", sizeof(tmp));
   }
   else if (DTYPE(MuttVars[idx].type) == DT_ADDR)

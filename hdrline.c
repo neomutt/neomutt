@@ -162,7 +162,7 @@ enum FieldType
  * If the index is invalid, then a space character will be returned.
  * If the character selected is '\n' (Ctrl-M), then "" will be returned.
  */
-static char *get_nth_wchar(mbchar_table *table, int index)
+static char *get_nth_wchar(struct MbCharTable *table, int index)
 {
   if (!table || !table->chars || (index < 0) || (index >= table->len))
     return " ";

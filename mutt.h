@@ -1123,13 +1123,13 @@ typedef struct
  * Allows for direct access to the individual multibyte characters in a
  * string.  This is used for the Flagchars, Fromchars, StChars and Tochars
  * option types. */
-typedef struct
+struct MbCharTable
 {
   int len;             /* number of characters */
   char **chars;        /* the array of multibyte character strings */
   char *segmented_str; /* each chars entry points inside this string */
   char *orig_str;
-} mbchar_table;
+};
 
 #define MUTT_PARTS_TOPLEVEL (1 << 0) /* is the top-level part */
 

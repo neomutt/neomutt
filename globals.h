@@ -57,7 +57,7 @@ WHERE char *EscChar;
 WHERE char *FolderFormat;
 WHERE char *ForwFmt;
 WHERE char *Fqdn;
-WHERE mbchar_table *Fromchars;
+WHERE struct MbCharTable *Fromchars;
 WHERE char *HdrFmt;
 WHERE char *HistFile;
 WHERE char *Homedir;
@@ -163,11 +163,11 @@ WHERE short SslDHPrimeBits;
 WHERE char *SslCACertFile INITVAL(NULL);
 #endif
 #endif
-WHERE mbchar_table *StChars;
+WHERE struct MbCharTable *StChars;
 WHERE char *Status;
 WHERE char *Tempdir;
-WHERE mbchar_table *Tochars;
-WHERE mbchar_table *Flagchars;
+WHERE struct MbCharTable *Tochars;
+WHERE struct MbCharTable *Flagchars;
 WHERE char *TrashPath;
 WHERE char *TSStatusFormat;
 WHERE char *TSIconFormat;
