@@ -1024,10 +1024,10 @@ struct Context
   HEADER **hdrs;
   HEADER *last_tag;  /* last tagged msg. used to link threads */
   THREAD *tree;      /* top of thread tree */
-  HASH *id_hash;     /* hash table by msg id */
-  HASH *subj_hash;   /* hash table by subject */
-  HASH *thread_hash; /* hash table for threading */
-  HASH *label_hash;  /* hash table for x-labels */
+  struct Hash *id_hash;     /* hash table by msg id */
+  struct Hash *subj_hash;   /* hash table by subject */
+  struct Hash *thread_hash; /* hash table for threading */
+  struct Hash *label_hash;  /* hash table for x-labels */
   int *v2r;          /* mapping from virtual to real msgno */
   int hdrmax;        /* number of pointers in hdrs */
   int msgcount;      /* number of messages in the mailbox */

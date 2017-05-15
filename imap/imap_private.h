@@ -214,7 +214,7 @@ typedef struct
   unsigned char reopen;
   unsigned int newMailCount;
   IMAP_CACHE cache[IMAP_CACHE_LEN];
-  HASH *uid_hash;
+  struct Hash *uid_hash;
   unsigned int uid_validity;
   unsigned int uidnext;
   struct BodyCache *bcache;

@@ -73,7 +73,7 @@ typedef struct
   unsigned int groups_num;
   unsigned int groups_max;
   void **groups_list;
-  HASH *groups_hash;
+  struct Hash *groups_hash;
   struct Connection *conn;
 } NNTP_SERVER;
 

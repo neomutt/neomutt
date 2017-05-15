@@ -111,7 +111,7 @@ struct Body *mutt_read_mime_header(FILE *fp, int digest);
 
 struct Content *mutt_get_content_info(const char *fname, struct Body *b);
 
-HASH *mutt_make_id_hash(struct Context *ctx);
+struct Hash *mutt_make_id_hash(struct Context *ctx);
 
 char *mutt_read_rfc822_line(FILE *f, char *line, size_t *linelen);
 struct Envelope *mutt_read_rfc822_header(FILE *f, HEADER *hdr, short user_hdrs, short weed);

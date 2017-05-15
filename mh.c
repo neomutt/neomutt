@@ -1991,7 +1991,7 @@ static int maildir_check_mailbox(struct Context *ctx, int *index_hint)
   struct maildir *md = NULL;  /* list of messages in the mailbox */
   struct maildir **last = NULL, *p = NULL;
   int i;
-  HASH *fnames = NULL; /* hash table for quickly looking up the base filename
+  struct Hash *fnames = NULL; /* hash table for quickly looking up the base filename
                                    for a maildir message */
   struct mh_data *data = mh_data(ctx);
 
@@ -2143,7 +2143,7 @@ static int mh_check_mailbox(struct Context *ctx, int *index_hint)
   struct maildir *md = NULL, *p = NULL;
   struct maildir **last = NULL;
   struct mh_sequences mhs;
-  HASH *fnames = NULL;
+  struct Hash *fnames = NULL;
   int i;
   struct mh_data *data = mh_data(ctx);
 

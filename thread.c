@@ -477,11 +477,11 @@ static void insert_message(THREAD **new, THREAD *newparent, THREAD *cur)
   *new = cur;
 }
 
-static HASH *make_subj_hash(struct Context *ctx)
+static struct Hash *make_subj_hash(struct Context *ctx)
 {
   int i;
   HEADER *hdr = NULL;
-  HASH *hash = NULL;
+  struct Hash *hash = NULL;
 
   hash = hash_create(ctx->msgcount * 2, MUTT_HASH_ALLOW_DUPS);
 
@@ -1333,11 +1333,11 @@ int mutt_messages_in_thread(struct Context *ctx, HEADER *hdr, int flag)
 }
 
 
-HASH *mutt_make_id_hash(struct Context *ctx)
+struct Hash *mutt_make_id_hash(struct Context *ctx)
 {
   int i;
   HEADER *hdr = NULL;
-  HASH *hash = NULL;
+  struct Hash *hash = NULL;
 
   hash = hash_create(ctx->msgcount * 2, 0);
 

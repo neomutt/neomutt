@@ -182,11 +182,11 @@ WHERE char *LastFolder;
 
 WHERE const char *GitVer;
 
-WHERE HASH *Groups;
-WHERE HASH *ReverseAlias;
+WHERE struct Hash *Groups;
+WHERE struct Hash *ReverseAlias;
 #ifdef USE_NOTMUCH
-WHERE HASH *TagTransforms;
-WHERE HASH *TagFormats;
+WHERE struct Hash *TagTransforms;
+WHERE struct Hash *TagFormats;
 #endif
 
 WHERE LIST *AutoViewList INITVAL(0);
