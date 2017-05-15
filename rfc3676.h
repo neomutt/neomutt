@@ -25,7 +25,7 @@
 #include "mutt.h"
 
 /* body handler implementing RfC 3676 for format=flowed */
-int rfc3676_handler(struct Body *a, STATE *s);
+int rfc3676_handler(struct Body *a, struct State *s);
 
 /* this does the space-stuffing for RfC3676 style messages */
 void rfc3676_space_stuff(struct Header *hdr);

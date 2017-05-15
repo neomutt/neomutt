@@ -32,8 +32,8 @@ typedef int (*crypt_func_valid_passphrase_t)(void);
 
 typedef int (*crypt_func_decrypt_mime_t)(FILE *a, FILE **b, struct Body *c, struct Body **d);
 
-typedef int (*crypt_func_application_handler_t)(struct Body *m, STATE *s);
-typedef int (*crypt_func_encrypted_handler_t)(struct Body *m, STATE *s);
+typedef int (*crypt_func_application_handler_t)(struct Body *m, struct State *s);
+typedef int (*crypt_func_encrypted_handler_t)(struct Body *m, struct State *s);
 
 typedef void (*crypt_func_pgp_invoke_getkeys_t)(struct Address *addr);
 typedef int (*crypt_func_pgp_check_traditional_t)(FILE *fp, struct Body *b, int tagged_only);
@@ -43,7 +43,7 @@ typedef char *(*crypt_func_findkeys_t)(struct Address *adrlist, int oppenc_mode)
 typedef struct Body *(*crypt_func_sign_message_t)(struct Body *a);
 typedef struct Body *(*crypt_func_pgp_encrypt_message_t)(struct Body *a, char *keylist, int sign);
 typedef void (*crypt_func_pgp_invoke_import_t)(const char *fname);
-typedef int (*crypt_func_verify_one_t)(struct Body *sigbdy, STATE *s, const char *tempf);
+typedef int (*crypt_func_verify_one_t)(struct Body *sigbdy, struct State *s, const char *tempf);
 typedef void (*crypt_func_pgp_extract_keys_from_attachment_list_t)(FILE *fp, int tag,
                                                                    struct Body *top);
 

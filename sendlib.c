@@ -1030,7 +1030,7 @@ bye:
 static void transform_to_7bit(struct Body *a, FILE *fpin)
 {
   char buff[_POSIX_PATH_MAX];
-  STATE s;
+  struct State s;
   struct stat sb;
 
   memset(&s, 0, sizeof(s));

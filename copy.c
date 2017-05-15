@@ -513,7 +513,7 @@ static int count_delete_lines(FILE *fp, struct Body *b, LOFF_T *length, size_t d
 int _mutt_copy_message(FILE *fpout, FILE *fpin, struct Header *hdr, struct Body *body, int flags, int chflags)
 {
   char prefix[SHORT_STRING];
-  STATE s;
+  struct State s;
   LOFF_T new_offset = -1;
   int rc = 0;
 
@@ -617,7 +617,7 @@ int _mutt_copy_message(FILE *fpout, FILE *fpin, struct Header *hdr, struct Body 
   if (flags & MUTT_CM_DECODE)
   {
     /* now make a text/plain version of the message */
-    memset(&s, 0, sizeof(STATE));
+    memset(&s, 0, sizeof(struct State));
     s.fpin = fpin;
     s.fpout = fpout;
     if (flags & MUTT_CM_PREFIX)

@@ -382,7 +382,7 @@ static void attach_forward_bodies(FILE *fp, struct Header *hdr, struct AttachPtr
 
   int rc = 0;
 
-  STATE st;
+  struct State st;
 
   /*
    * First, find the parent message.
@@ -790,7 +790,7 @@ void mutt_attach_reply(FILE *fp, struct Header *hdr, struct AttachPtr **idx, sho
   struct Header *tmphdr = NULL;
   short i;
 
-  STATE st;
+  struct State st;
   char tmpbody[_POSIX_PATH_MAX];
   FILE *tmpfp = NULL;
 
@@ -858,7 +858,7 @@ void mutt_attach_reply(FILE *fp, struct Header *hdr, struct AttachPtr **idx, sho
   {
     mutt_make_attribution(Context, parent, tmpfp);
 
-    memset(&st, 0, sizeof(STATE));
+    memset(&st, 0, sizeof(struct State));
     st.fpin = fp;
     st.fpout = tmpfp;
 

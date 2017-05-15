@@ -1867,7 +1867,7 @@ int mutt_save_confirm(const char *s, struct stat *st)
   return ret;
 }
 
-void state_prefix_putc(char c, STATE *s)
+void state_prefix_putc(char c, struct State *s)
 {
   if (s->flags & MUTT_PENDINGPREFIX)
   {
@@ -1882,7 +1882,7 @@ void state_prefix_putc(char c, STATE *s)
     state_set_prefix(s);
 }
 
-int state_printf(STATE *s, const char *fmt, ...)
+int state_printf(struct State *s, const char *fmt, ...)
 {
   int rv;
   va_list ap;
@@ -1894,7 +1894,7 @@ int state_printf(STATE *s, const char *fmt, ...)
   return rv;
 }
 
-void state_mark_attach(STATE *s)
+void state_mark_attach(struct State *s)
 {
   if (!s || !s->fpout)
     return;
@@ -1902,7 +1902,7 @@ void state_mark_attach(STATE *s)
     state_puts(AttachmentMarker, s);
 }
 
-void state_attach_puts(const char *t, STATE *s)
+void state_attach_puts(const char *t, struct State *s)
 {
   if (!t || !s || !s->fpout)
     return;
@@ -1918,7 +1918,7 @@ void state_attach_puts(const char *t, STATE *s)
   }
 }
 
-static int state_putwc(wchar_t wc, STATE *s)
+static int state_putwc(wchar_t wc, struct State *s)
 {
   char mb[MB_LEN_MAX] = "";
   int rc;
@@ -1930,7 +1930,7 @@ static int state_putwc(wchar_t wc, STATE *s)
   return 0;
 }
 
-int state_putws(const wchar_t *ws, STATE *s)
+int state_putws(const wchar_t *ws, struct State *s)
 {
   const wchar_t *p = ws;
 

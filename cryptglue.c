@@ -142,7 +142,7 @@ int crypt_pgp_decrypt_mime(FILE *a, FILE **b, struct Body *c, struct Body **d)
 }
 
 /* MIME handler for the application/pgp content-type. */
-int crypt_pgp_application_pgp_handler(struct Body *m, STATE *s)
+int crypt_pgp_application_pgp_handler(struct Body *m, struct State *s)
 {
   if (CRYPT_MOD_CALL_CHECK(PGP, application_handler))
     return (CRYPT_MOD_CALL(PGP, application_handler))(m, s);
@@ -151,7 +151,7 @@ int crypt_pgp_application_pgp_handler(struct Body *m, STATE *s)
 }
 
 /* MIME handler for an PGP/MIME encrypted message. */
-int crypt_pgp_encrypted_handler(struct Body *a, STATE *s)
+int crypt_pgp_encrypted_handler(struct Body *a, struct State *s)
 {
   if (CRYPT_MOD_CALL_CHECK(PGP, encrypted_handler))
     return (CRYPT_MOD_CALL(PGP, encrypted_handler))(a, s);
@@ -232,7 +232,7 @@ void crypt_pgp_invoke_import(const char *fname)
 }
 
 /* fixme: needs documentation */
-int crypt_pgp_verify_one(struct Body *sigbdy, STATE *s, const char *tempf)
+int crypt_pgp_verify_one(struct Body *sigbdy, struct State *s, const char *tempf)
 {
   if (CRYPT_MOD_CALL_CHECK(PGP, verify_one))
     return (CRYPT_MOD_CALL(PGP, verify_one))(sigbdy, s, tempf);
@@ -296,7 +296,7 @@ int crypt_smime_decrypt_mime(FILE *a, FILE **b, struct Body *c, struct Body **d)
 }
 
 /* MIME handler for the application/smime content-type. */
-int crypt_smime_application_smime_handler(struct Body *m, STATE *s)
+int crypt_smime_application_smime_handler(struct Body *m, struct State *s)
 {
   if (CRYPT_MOD_CALL_CHECK(SMIME, application_handler))
     return (CRYPT_MOD_CALL(SMIME, application_handler))(m, s);
@@ -305,7 +305,7 @@ int crypt_smime_application_smime_handler(struct Body *m, STATE *s)
 }
 
 /* MIME handler for an PGP/MIME encrypted message. */
-void crypt_smime_encrypted_handler(struct Body *a, STATE *s)
+void crypt_smime_encrypted_handler(struct Body *a, struct State *s)
 {
   if (CRYPT_MOD_CALL_CHECK(SMIME, encrypted_handler))
     (CRYPT_MOD_CALL(SMIME, encrypted_handler))(a, s);
@@ -365,7 +365,7 @@ void crypt_smime_invoke_import(char *infile, char *mailbox)
 }
 
 /* fixme: needs documentation */
-int crypt_smime_verify_one(struct Body *sigbdy, STATE *s, const char *tempf)
+int crypt_smime_verify_one(struct Body *sigbdy, struct State *s, const char *tempf)
 {
   if (CRYPT_MOD_CALL_CHECK(SMIME, verify_one))
     return (CRYPT_MOD_CALL(SMIME, verify_one))(sigbdy, s, tempf);

@@ -501,7 +501,7 @@ int mutt_view_attachment(FILE *fp, struct Body *a, int flag, struct Header *hdr,
          * Don't use mutt_save_attachment() because we want to perform charset
          * conversion since this will be displayed by the internal pager.
          */
-        STATE decode_state;
+        struct State decode_state;
 
         memset(&decode_state, 0, sizeof(decode_state));
         decode_state.fpout = safe_fopen(pagerfile, "w");
@@ -608,9 +608,9 @@ int mutt_pipe_attachment(FILE *fp, struct Body *b, const char *path, char *outfi
   {
     /* recv case */
 
-    STATE s;
+    struct State s;
 
-    memset(&s, 0, sizeof(STATE));
+    memset(&s, 0, sizeof(struct State));
     /* perform charset conversion on text attachments when piping */
     s.flags = MUTT_CHARCONV;
 
@@ -745,7 +745,7 @@ int mutt_save_attachment(FILE *fp, struct Body *m, char *path, int flags, struct
     {
       /* In recv mode, extract from folder and decode */
 
-      STATE s;
+      struct State s;
 
       memset(&s, 0, sizeof(s));
       if ((s.fpout = save_attachment_open(path, flags)) == NULL)
@@ -808,7 +808,7 @@ int mutt_save_attachment(FILE *fp, struct Body *m, char *path, int flags, struct
 /* returns 0 on success, -1 on error */
 int mutt_decode_save_attachment(FILE *fp, struct Body *m, char *path, int displaying, int flags)
 {
-  STATE s;
+  struct State s;
   unsigned int saved_encoding = 0;
   struct Body *saved_parts = NULL;
   struct Header *saved_hdr = NULL;

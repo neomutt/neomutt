@@ -35,17 +35,17 @@ int smime_gpgme_decrypt_mime(FILE *fpin, FILE **fpout, struct Body *b, struct Bo
 int pgp_gpgme_check_traditional(FILE *fp, struct Body *b, int tagged_only);
 void pgp_gpgme_invoke_import(const char *fname);
 
-int pgp_gpgme_application_handler(struct Body *m, STATE *s);
-int smime_gpgme_application_handler(struct Body *a, STATE *s);
-int pgp_gpgme_encrypted_handler(struct Body *a, STATE *s);
+int pgp_gpgme_application_handler(struct Body *m, struct State *s);
+int smime_gpgme_application_handler(struct Body *a, struct State *s);
+int pgp_gpgme_encrypted_handler(struct Body *a, struct State *s);
 
 struct Body *pgp_gpgme_make_key_attachment(char *tempf);
 
 struct Body *pgp_gpgme_sign_message(struct Body *a);
 struct Body *smime_gpgme_sign_message(struct Body *a);
 
-int pgp_gpgme_verify_one(struct Body *sigbdy, STATE *s, const char *tempfile);
-int smime_gpgme_verify_one(struct Body *sigbdy, STATE *s, const char *tempfile);
+int pgp_gpgme_verify_one(struct Body *sigbdy, struct State *s, const char *tempfile);
+int smime_gpgme_verify_one(struct Body *sigbdy, struct State *s, const char *tempfile);
 
 int pgp_gpgme_send_menu(struct Header *msg);
 int smime_gpgme_send_menu(struct Header *msg);

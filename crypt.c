@@ -39,7 +39,7 @@
 
 
 /* print the current time to avoid spoofing of the signature output */
-void crypt_current_time(STATE *s, char *app_name)
+void crypt_current_time(struct State *s, char *app_name)
 {
   time_t t;
   char p[STRING], tmp[STRING];
@@ -581,7 +581,7 @@ int crypt_query(struct Body *m)
 }
 
 
-int crypt_write_signed(struct Body *a, STATE *s, const char *tempfile)
+int crypt_write_signed(struct Body *a, struct State *s, const char *tempfile)
 {
   FILE *fp = NULL;
   int c;
@@ -883,7 +883,7 @@ static void crypt_fetch_signatures(struct Body ***signatures, struct Body *a, in
 /*
  * This routine verifies a  "multipart/signed"  body.
  */
-int mutt_signed_handler(struct Body *a, STATE *s)
+int mutt_signed_handler(struct Body *a, struct State *s)
 {
   char tempfile[_POSIX_PATH_MAX];
   int signed_type;

@@ -247,7 +247,7 @@ static int pgp_check_decryption_okay(FILE *fpin)
  * note that we can successfully handle anything produced by any
  * existing versions of mutt.)
  */
-static void pgp_copy_clearsigned(FILE *fpin, STATE *s, char *charset)
+static void pgp_copy_clearsigned(FILE *fpin, struct State *s, char *charset)
 {
   char buf[HUGE_STRING];
   short complete, armor_header;
@@ -297,7 +297,7 @@ static void pgp_copy_clearsigned(FILE *fpin, STATE *s, char *charset)
 
 
 /* Support for the Application/PGP Content Type. */
-int pgp_application_pgp_handler(struct Body *m, STATE *s)
+int pgp_application_pgp_handler(struct Body *m, struct State *s)
 {
   int could_not_decrypt = 0;
   int needpass = -1, pgp_keyblock = 0;
@@ -669,7 +669,7 @@ int pgp_check_traditional(FILE *fp, struct Body *b, int tagged_only)
 }
 
 
-int pgp_verify_one(struct Body *sigbdy, STATE *s, const char *tempfile)
+int pgp_verify_one(struct Body *sigbdy, struct State *s, const char *tempfile)
 {
   char sigfile[_POSIX_PATH_MAX], pgperrfile[_POSIX_PATH_MAX];
   FILE *fp = NULL, *pgpout = NULL, *pgperr = NULL;
@@ -735,7 +735,7 @@ int pgp_verify_one(struct Body *sigbdy, STATE *s, const char *tempfile)
 /* Extract pgp public keys from messages or attachments */
 static void pgp_extract_keys_from_attachment(FILE *fp, struct Body *top)
 {
-  STATE s;
+  struct State s;
   FILE *tempfp = NULL;
   char tempfname[_POSIX_PATH_MAX];
 
@@ -746,7 +746,7 @@ static void pgp_extract_keys_from_attachment(FILE *fp, struct Body *top)
     return;
   }
 
-  memset(&s, 0, sizeof(STATE));
+  memset(&s, 0, sizeof(struct State));
 
   s.fpin = fp;
   s.fpout = tempfp;
@@ -784,7 +784,7 @@ void pgp_extract_keys_from_attachment_list(FILE *fp, int tag, struct Body *top)
   unset_option(OPTDONTHANDLEPGPKEYS);
 }
 
-static struct Body *pgp_decrypt_part(struct Body *a, STATE *s, FILE *fpout, struct Body *p)
+static struct Body *pgp_decrypt_part(struct Body *a, struct State *s, FILE *fpout, struct Body *p)
 {
   if (!a || !s || !fpout || !p)
     return NULL;
@@ -911,7 +911,7 @@ static struct Body *pgp_decrypt_part(struct Body *a, STATE *s, FILE *fpout, stru
 int pgp_decrypt_mime(FILE *fpin, FILE **fpout, struct Body *b, struct Body **cur)
 {
   char tempfile[_POSIX_PATH_MAX];
-  STATE s;
+  struct State s;
   struct Body *p = b;
   int need_decode = 0;
   int saved_type;
@@ -989,7 +989,7 @@ bail:
  * This handler is passed the application/octet-stream directly.
  * The caller must propagate a->goodsig to its parent.
  */
-int pgp_encrypted_handler(struct Body *a, STATE *s)
+int pgp_encrypted_handler(struct Body *a, struct State *s)
 {
   char tempfile[_POSIX_PATH_MAX];
   FILE *fpout = NULL, *fpin = NULL;

@@ -114,7 +114,7 @@ int mutt_is_application_pgp(struct Body *m);
 
 int mutt_is_application_smime(struct Body *m);
 
-int mutt_signed_handler(struct Body *a, STATE *s);
+int mutt_signed_handler(struct Body *a, struct State *s);
 
 int mutt_parse_crypt_hdr(const char *p, int set_empty_signas, int crypt_app);
 
@@ -123,7 +123,7 @@ void convert_to_7bit(struct Body *a);
 /* -- crypt.c -- */
 
 /* Print the current time. */
-void crypt_current_time(STATE *s, char *app_name);
+void crypt_current_time(struct State *s, char *app_name);
 
 /* Check out the type of encryption used and set the cached status
    values if there are any. */
@@ -151,7 +151,7 @@ int crypt_valid_passphrase(int flags);
 
 /* Write the message body/part A described by state S to the given
    TEMPFILE.  */
-int crypt_write_signed(struct Body *a, STATE *s, const char *tempfile);
+int crypt_write_signed(struct Body *a, struct State *s, const char *tempfile);
 
 /* Obtain pointers to fingerprint or short or long key ID, if any.
 
@@ -186,10 +186,10 @@ int crypt_pgp_valid_passphrase(void);
 int crypt_pgp_decrypt_mime(FILE *a, FILE **b, struct Body *c, struct Body **d);
 
 /* MIME handler for the application/pgp content-type. */
-int crypt_pgp_application_pgp_handler(struct Body *m, STATE *s);
+int crypt_pgp_application_pgp_handler(struct Body *m, struct State *s);
 
 /* MIME handler for an PGP/MIME encrypted message. */
-int crypt_pgp_encrypted_handler(struct Body *a, STATE *s);
+int crypt_pgp_encrypted_handler(struct Body *a, struct State *s);
 
 /* fixme: needs documentation. */
 void crypt_pgp_invoke_getkeys(struct Address *addr);
@@ -222,7 +222,7 @@ void crypt_pgp_invoke_import(const char *fname);
 int crypt_pgp_send_menu(struct Header *msg);
 
 /* fixme: needs documentation */
-int crypt_pgp_verify_one(struct Body *sigbdy, STATE *s, const char *tempf);
+int crypt_pgp_verify_one(struct Body *sigbdy, struct State *s, const char *tempf);
 
 /* fixme: needs documentation */
 void crypt_pgp_extract_keys_from_attachment_list(FILE *fp, int tag, struct Body *top);
@@ -238,7 +238,7 @@ int crypt_smime_valid_passphrase(void);
 int crypt_smime_decrypt_mime(FILE *a, FILE **b, struct Body *c, struct Body **d);
 
 /* MIME handler for the application/smime content-type. */
-int crypt_smime_application_smime_handler(struct Body *m, STATE *s);
+int crypt_smime_application_smime_handler(struct Body *m, struct State *s);
 
 /* fixme: Needs documentation. */
 void crypt_smime_getkeys(struct Envelope *env);
@@ -268,7 +268,7 @@ int crypt_smime_send_menu(struct Header *msg);
 void crypt_smime_set_sender(const char *sender);
 
 /* fixme: needs documentation */
-int crypt_smime_verify_one(struct Body *sigbdy, STATE *s, const char *tempf);
+int crypt_smime_verify_one(struct Body *sigbdy, struct State *s, const char *tempf);
 
 void crypt_init(void);
 

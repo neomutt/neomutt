@@ -549,7 +549,7 @@ int mutt_prepare_template(FILE *fp, struct Context *ctx, struct Header *newhdr, 
   struct Body *b = NULL;
   FILE *bfp = NULL;
   int rv = -1;
-  STATE s;
+  struct State s;
   int sec_type;
 
   memset(&s, 0, sizeof(s));

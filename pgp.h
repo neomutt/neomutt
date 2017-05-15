@@ -49,8 +49,8 @@ struct PgpKeyInfo *pgp_getkeybystr(char *p, short abilities, pgp_ring_t keyring)
 
 char *pgp_find_keys(struct Address *adrlist, int oppenc_mode);
 
-int pgp_application_pgp_handler(struct Body *m, STATE *s);
-int pgp_encrypted_handler(struct Body *a, STATE *s);
+int pgp_application_pgp_handler(struct Body *m, struct State *s);
+int pgp_encrypted_handler(struct Body *a, struct State *s);
 void pgp_extract_keys_from_attachment_list(FILE *fp, int tag, struct Body *top);
 void pgp_void_passphrase(void);
 int pgp_valid_passphrase(void);
@@ -85,7 +85,7 @@ void pgp_invoke_getkeys(struct Address *addr);
 
 
 /* private ? */
-int pgp_verify_one(struct Body *sigbdy, STATE *s, const char *tempfile);
+int pgp_verify_one(struct Body *sigbdy, struct State *s, const char *tempfile);
 struct Body *pgp_traditional_encryptsign(struct Body *a, int flags, char *keylist);
 struct Body *pgp_encrypt_message(struct Body *a, char *keylist, int sign);
 struct Body *pgp_sign_message(struct Body *a);

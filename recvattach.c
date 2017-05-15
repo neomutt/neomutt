@@ -609,7 +609,7 @@ static void query_pipe_attachment(char *command, FILE *fp, struct Body *body, in
   }
 }
 
-static void pipe_attachment(FILE *fp, struct Body *b, STATE *state)
+static void pipe_attachment(FILE *fp, struct Body *b, struct State *state)
 {
   FILE *ifp = NULL;
 
@@ -635,7 +635,7 @@ static void pipe_attachment(FILE *fp, struct Body *b, STATE *state)
 }
 
 static void pipe_attachment_list(char *command, FILE *fp, int tag, struct Body *top,
-                                 int filter, STATE *state)
+                                 int filter, struct State *state)
 {
   for (; top; top = top->next)
   {
@@ -655,7 +655,7 @@ static void pipe_attachment_list(char *command, FILE *fp, int tag, struct Body *
 
 void mutt_pipe_attachment_list(FILE *fp, int tag, struct Body *top, int filter)
 {
-  STATE state;
+  struct State state;
   char buf[SHORT_STRING];
   pid_t thepid;
 
@@ -663,7 +663,7 @@ void mutt_pipe_attachment_list(FILE *fp, int tag, struct Body *top, int filter)
     filter = 0; /* sanity check: we can't filter in the recv case yet */
 
   buf[0] = 0;
-  memset(&state, 0, sizeof(STATE));
+  memset(&state, 0, sizeof(struct State));
   /* perform charset conversion on text attachments when piping */
   state.flags = MUTT_CHARCONV;
 
@@ -717,7 +717,7 @@ static int can_print(struct Body *top, int tag)
   return 1;
 }
 
-static void print_attachment_list(FILE *fp, int tag, struct Body *top, STATE *state)
+static void print_attachment_list(FILE *fp, int tag, struct Body *top, struct State *state)
 {
   char type[STRING];
 
@@ -765,7 +765,7 @@ static void print_attachment_list(FILE *fp, int tag, struct Body *top, STATE *st
 
 void mutt_print_attachment_list(FILE *fp, int tag, struct Body *top)
 {
-  STATE state;
+  struct State state;
 
   pid_t thepid;
   if (query_quadoption(OPT_PRINT, tag ? _("Print tagged attachment(s)?") :
@@ -777,7 +777,7 @@ void mutt_print_attachment_list(FILE *fp, int tag, struct Body *top)
     if (!can_print(top, tag))
       return;
     mutt_endwin(NULL);
-    memset(&state, 0, sizeof(STATE));
+    memset(&state, 0, sizeof(struct State));
     thepid = mutt_create_filter(NONULL(PrintCmd), &state.fpout, NULL, NULL);
     print_attachment_list(fp, tag, top, &state);
     safe_fclose(&state.fpout);

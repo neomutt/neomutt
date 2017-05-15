@@ -37,7 +37,7 @@ static int crypt_mod_smime_decrypt_mime(FILE *a, FILE **b, struct Body *c, struc
 {
   return smime_decrypt_mime(a, b, c, d);
 }
-static int crypt_mod_smime_application_handler(struct Body *m, STATE *s)
+static int crypt_mod_smime_application_handler(struct Body *m, struct State *s)
 {
   return smime_application_smime_handler(m, s);
 }
@@ -52,7 +52,7 @@ static struct Body *crypt_mod_smime_sign_message(struct Body *a)
   return smime_sign_message(a);
 }
 
-static int crypt_mod_smime_verify_one(struct Body *sigbdy, STATE *s, const char *tempf)
+static int crypt_mod_smime_verify_one(struct Body *sigbdy, struct State *s, const char *tempf)
 {
   return smime_verify_one(sigbdy, s, tempf);
 }

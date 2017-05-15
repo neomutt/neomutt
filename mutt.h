@@ -1061,13 +1061,13 @@ struct Context
   struct mx_ops *mx_ops;
 };
 
-typedef struct
+struct State
 {
   FILE *fpin;
   FILE *fpout;
   char *prefix;
   int flags;
-} STATE;
+};
 
 /* used by enter.c */
 
@@ -1086,7 +1086,7 @@ static inline struct EnterState *mutt_new_enter_state(void)
   return safe_calloc(1, sizeof(struct EnterState));
 }
 
-/* flags for the STATE struct */
+/* flags for the State struct */
 #define MUTT_DISPLAY       (1 << 0) /* output is displayed to the user */
 #define MUTT_VERIFY        (1 << 1) /* perform signature verification */
 #define MUTT_PENDINGPREFIX (1 << 2) /* prefix to write, but character must follow */
@@ -1101,11 +1101,11 @@ static inline struct EnterState *mutt_new_enter_state(void)
 #define state_puts(x, y) fputs(x, (y)->fpout)
 #define state_putc(x, y) fputc(x, (y)->fpout)
 
-void state_mark_attach(STATE *s);
-void state_attach_puts(const char *t, STATE *s);
-void state_prefix_putc(char c, STATE *s);
-int state_printf(STATE *s, const char *fmt, ...);
-int state_putws(const wchar_t *ws, STATE *s);
+void state_mark_attach(struct State *s);
+void state_attach_puts(const char *t, struct State *s);
+void state_prefix_putc(char c, struct State *s);
+int state_printf(struct State *s, const char *fmt, ...);
+int state_putws(const wchar_t *ws, struct State *s);
 
 /* for attachment counter */
 typedef struct

@@ -873,7 +873,7 @@ static int patmatch(const struct Pattern *pat, const char *buf)
 static int msg_search(struct Context *ctx, struct Pattern *pat, int msgno)
 {
   struct Message *msg = NULL;
-  STATE s;
+  struct State s;
   FILE *fp = NULL;
   long lng = 0;
   int match = 0;

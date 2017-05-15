@@ -835,7 +835,7 @@ static int get_micalg(gpgme_ctx_t ctx, int use_smime, char *buf, size_t buflen)
   return *buf ? 0 : -1;
 }
 
-static void print_time(time_t t, STATE *s)
+static void print_time(time_t t, struct State *s)
 {
   char p[STRING];
 
@@ -1102,7 +1102,7 @@ struct Body *smime_gpgme_build_smime_entity(struct Body *a, char *keylist)
    Return 1 if there is is a severe warning.
  */
 static int show_sig_summary(unsigned long sum, gpgme_ctx_t ctx, gpgme_key_t key,
-                            int idx, STATE *s, gpgme_signature_t sig)
+                            int idx, struct State *s, gpgme_signature_t sig)
 {
   if (!key)
     return 1;
@@ -1224,7 +1224,7 @@ static int show_sig_summary(unsigned long sum, gpgme_ctx_t ctx, gpgme_key_t key,
 }
 
 
-static void show_fingerprint(gpgme_key_t key, STATE *state)
+static void show_fingerprint(gpgme_key_t key, struct State *state)
 {
   const char *s = NULL;
   int i, is_pgp;
@@ -1276,7 +1276,7 @@ static void show_fingerprint(gpgme_key_t key, STATE *state)
 }
 
 /* Show the validity of a key used for one signature. */
-static void show_one_sig_validity(gpgme_ctx_t ctx, int idx, STATE *s)
+static void show_one_sig_validity(gpgme_ctx_t ctx, int idx, struct State *s)
 {
   gpgme_verify_result_t result = NULL;
   gpgme_signature_t sig = NULL;
@@ -1314,7 +1314,7 @@ static void show_one_sig_validity(gpgme_ctx_t ctx, int idx, STATE *s)
 }
 
 static void print_smime_keyinfo(const char *msg, gpgme_signature_t sig,
-                                gpgme_key_t key, STATE *s)
+                                gpgme_key_t key, struct State *s)
 {
   int msgwid;
   gpgme_user_id_t uids = NULL;
@@ -1373,7 +1373,7 @@ static void print_smime_keyinfo(const char *msg, gpgme_signature_t sig,
 
    Return values are: 0 for normal procession, 1 for a bad signature,
    2 for a signature with a warning or -1 for no more signature.  */
-static int show_one_sig_status(gpgme_ctx_t ctx, int idx, STATE *s)
+static int show_one_sig_status(gpgme_ctx_t ctx, int idx, struct State *s)
 {
   const char *fpr = NULL;
   gpgme_key_t key = NULL;
@@ -1486,7 +1486,7 @@ static int show_one_sig_status(gpgme_ctx_t ctx, int idx, STATE *s)
 
 /* Do the actual verification step. With IS_SMIME set to true we
    assume S/MIME (surprise!) */
-static int verify_one(struct Body *sigbdy, STATE *s, const char *tempfile, int is_smime)
+static int verify_one(struct Body *sigbdy, struct State *s, const char *tempfile, int is_smime)
 {
   int badsig = -1;
   int anywarn = 0;
@@ -1611,12 +1611,12 @@ static int verify_one(struct Body *sigbdy, STATE *s, const char *tempfile, int i
   return badsig ? 1 : anywarn ? 2 : 0;
 }
 
-int pgp_gpgme_verify_one(struct Body *sigbdy, STATE *s, const char *tempfile)
+int pgp_gpgme_verify_one(struct Body *sigbdy, struct State *s, const char *tempfile)
 {
   return verify_one(sigbdy, s, tempfile, 0);
 }
 
-int smime_gpgme_verify_one(struct Body *sigbdy, STATE *s, const char *tempfile)
+int smime_gpgme_verify_one(struct Body *sigbdy, struct State *s, const char *tempfile)
 {
   return verify_one(sigbdy, s, tempfile, 1);
 }
@@ -1631,7 +1631,7 @@ int smime_gpgme_verify_one(struct Body *sigbdy, STATE *s, const char *tempfile)
    a flag in R_IS_SIGNED to indicate whether this is a combined
    encrypted and signed message, for S/MIME it returns true when it is
    not a encrypted but a signed message.  */
-static struct Body *decrypt_part(struct Body *a, STATE *s, FILE *fpout, int is_smime, int *r_is_signed)
+static struct Body *decrypt_part(struct Body *a, struct State *s, FILE *fpout, int is_smime, int *r_is_signed)
 {
   if (!a || !s || !fpout)
     return NULL;
@@ -1778,7 +1778,7 @@ restart:
 int pgp_gpgme_decrypt_mime(FILE *fpin, FILE **fpout, struct Body *b, struct Body **cur)
 {
   char tempfile[_POSIX_PATH_MAX];
-  STATE s;
+  struct State s;
   struct Body *first_part = b;
   int is_signed = 0;
   int need_decode = 0;
@@ -1864,7 +1864,7 @@ bail:
 int smime_gpgme_decrypt_mime(FILE *fpin, FILE **fpout, struct Body *b, struct Body **cur)
 {
   char tempfile[_POSIX_PATH_MAX];
-  STATE s;
+  struct State s;
   FILE *tmpfp = NULL;
   int is_signed;
   LOFF_T saved_b_offset;
@@ -2247,7 +2247,7 @@ void pgp_gpgme_invoke_import(const char *fname)
   (Note that we aren't worse than Outlook & Cie in this, and also
   note that we can successfully handle anything produced by any
   existing versions of mutt.)  */
-static void copy_clearsigned(gpgme_data_t data, STATE *s, char *charset)
+static void copy_clearsigned(gpgme_data_t data, struct State *s, char *charset)
 {
   char buf[HUGE_STRING];
   short complete, armor_header;
@@ -2304,7 +2304,7 @@ static void copy_clearsigned(gpgme_data_t data, STATE *s, char *charset)
 }
 
 /* Support for classic_application/pgp */
-int pgp_gpgme_application_handler(struct Body *m, STATE *s)
+int pgp_gpgme_application_handler(struct Body *m, struct State *s)
 {
   int needpass = -1, pgp_keyblock = 0;
   int clearsign = 0;
@@ -2549,7 +2549,7 @@ int pgp_gpgme_application_handler(struct Body *m, STATE *s)
  * This handler is passed the application/octet-stream directly.
  * The caller must propagate a->goodsig to its parent.
  */
-int pgp_gpgme_encrypted_handler(struct Body *a, STATE *s)
+int pgp_gpgme_encrypted_handler(struct Body *a, struct State *s)
 {
   char tempfile[_POSIX_PATH_MAX];
   FILE *fpout = NULL;
@@ -2623,7 +2623,7 @@ int pgp_gpgme_encrypted_handler(struct Body *a, STATE *s)
 }
 
 /* Support for application/smime */
-int smime_gpgme_application_handler(struct Body *a, STATE *s)
+int smime_gpgme_application_handler(struct Body *a, struct State *s)
 {
   char tempfile[_POSIX_PATH_MAX];
   FILE *fpout = NULL;

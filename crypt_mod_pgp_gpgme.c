@@ -44,12 +44,12 @@ static int crypt_mod_pgp_decrypt_mime(FILE *a, FILE **b, struct Body *c, struct 
   return pgp_gpgme_decrypt_mime(a, b, c, d);
 }
 
-static int crypt_mod_pgp_application_handler(struct Body *m, STATE *s)
+static int crypt_mod_pgp_application_handler(struct Body *m, struct State *s)
 {
   return pgp_gpgme_application_handler(m, s);
 }
 
-static int crypt_mod_pgp_encrypted_handler(struct Body *m, STATE *s)
+static int crypt_mod_pgp_encrypted_handler(struct Body *m, struct State *s)
 {
   return pgp_gpgme_encrypted_handler(m, s);
 }
@@ -74,7 +74,7 @@ static struct Body *crypt_mod_pgp_sign_message(struct Body *a)
   return pgp_gpgme_sign_message(a);
 }
 
-static int crypt_mod_pgp_verify_one(struct Body *sigbdy, STATE *s, const char *tempf)
+static int crypt_mod_pgp_verify_one(struct Body *sigbdy, struct State *s, const char *tempf)
 {
   return pgp_gpgme_verify_one(sigbdy, s, tempf);
 }
