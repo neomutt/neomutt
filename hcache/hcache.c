@@ -211,7 +211,7 @@ static void restore_char(char **c, const unsigned char *d, int *off, int convert
   *off += size;
 }
 
-static unsigned char *dump_address(ADDRESS *a, unsigned char *d, int *off, int convert)
+static unsigned char *dump_address(struct Address *a, unsigned char *d, int *off, int convert)
 {
   unsigned int counter = 0;
   unsigned int start_off = *off;
@@ -235,7 +235,7 @@ static unsigned char *dump_address(ADDRESS *a, unsigned char *d, int *off, int c
   return d;
 }
 
-static void restore_address(ADDRESS **a, const unsigned char *d, int *off, int convert)
+static void restore_address(struct Address **a, const unsigned char *d, int *off, int convert)
 {
   unsigned int counter;
 

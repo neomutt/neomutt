@@ -1275,7 +1275,7 @@ int mx_sync_mailbox(CONTEXT *ctx, int *index_hint)
  */
 MESSAGE *mx_open_new_message(CONTEXT *dest, HEADER *hdr, int flags)
 {
-  ADDRESS *p = NULL;
+  struct Address *p = NULL;
   MESSAGE *msg = NULL;
 
   if (!dest->mx_ops || !dest->mx_ops->open_new_msg)

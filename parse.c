@@ -1513,7 +1513,7 @@ ENVELOPE *mutt_read_rfc822_header(FILE *f, HEADER *hdr, short user_hdrs, short w
   return e;
 }
 
-ADDRESS *mutt_parse_adrlist(ADDRESS *p, const char *s)
+struct Address *mutt_parse_adrlist(struct Address *p, const char *s)
 {
   const char *q = NULL;
 

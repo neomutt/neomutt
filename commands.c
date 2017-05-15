@@ -243,7 +243,7 @@ void ci_bounce_message(HEADER *h)
   char prompt[SHORT_STRING];
   char scratch[SHORT_STRING];
   char buf[HUGE_STRING] = { 0 };
-  ADDRESS *adr = NULL;
+  struct Address *adr = NULL;
   char *err = NULL;
   int rc;
 
@@ -631,7 +631,7 @@ void mutt_display_address(ENVELOPE *env)
 {
   char *pfx = NULL;
   char buf[SHORT_STRING];
-  ADDRESS *adr = NULL;
+  struct Address *adr = NULL;
 
   adr = mutt_get_address(env, &pfx);
 

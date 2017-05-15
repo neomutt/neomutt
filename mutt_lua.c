@@ -198,7 +198,7 @@ static int _lua_mutt_get(lua_State *l)
       case DT_ADDR:
       {
         char value[LONG_STRING] = "";
-        rfc822_write_address(value, LONG_STRING, *((ADDRESS **) opt->data), 0);
+        rfc822_write_address(value, LONG_STRING, *((struct Address **) opt->data), 0);
         lua_pushstring(l, value);
         return 1;
       }

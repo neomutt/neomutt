@@ -100,9 +100,9 @@ void mutt_group_context_destroy(group_context_t **ctx)
   }
 }
 
-static void group_add_adrlist(group_t *g, ADDRESS *a)
+static void group_add_adrlist(group_t *g, struct Address *a)
 {
-  ADDRESS **p = NULL, *q = NULL;
+  struct Address **p = NULL, *q = NULL;
 
   if (!g)
     return;
@@ -117,9 +117,9 @@ static void group_add_adrlist(group_t *g, ADDRESS *a)
   *p = q;
 }
 
-static int group_remove_adrlist(group_t *g, ADDRESS *a)
+static int group_remove_adrlist(group_t *g, struct Address *a)
 {
-  ADDRESS *p = NULL;
+  struct Address *p = NULL;
 
   if (!g)
     return -1;
@@ -142,13 +142,13 @@ static int group_remove_rx(group_t *g, const char *s)
   return mutt_remove_from_rx_list(&g->rs, s);
 }
 
-void mutt_group_context_add_adrlist(group_context_t *ctx, ADDRESS *a)
+void mutt_group_context_add_adrlist(group_context_t *ctx, struct Address *a)
 {
   for (; ctx; ctx = ctx->next)
     group_add_adrlist(ctx->g, a);
 }
 
-int mutt_group_context_remove_adrlist(group_context_t *ctx, ADDRESS *a)
+int mutt_group_context_remove_adrlist(group_context_t *ctx, struct Address *a)
 {
   int rv = 0;
 
@@ -188,7 +188,7 @@ int mutt_group_context_remove_rx(group_context_t *ctx, const char *s)
 
 bool mutt_group_match(group_t *g, const char *s)
 {
-  ADDRESS *ap = NULL;
+  struct Address *ap = NULL;
 
   if (s && g)
   {

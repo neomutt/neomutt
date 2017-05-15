@@ -282,7 +282,7 @@ static int check_attachments(ATTACHPTR **idx, short idxlen)
   return 0;
 }
 
-static void draw_envelope_addr(int line, ADDRESS *addr)
+static void draw_envelope_addr(int line, struct Address *addr)
 {
   char buf[LONG_STRING];
 
@@ -349,7 +349,7 @@ static void draw_envelope(HEADER *msg, char *fcc)
   NORMAL_COLOR;
 }
 
-static void edit_address_list(int line, ADDRESS **addr)
+static void edit_address_list(int line, struct Address **addr)
 {
   char buf[HUGE_STRING] = ""; /* needs to be large for alias expansion */
   char *err = NULL;

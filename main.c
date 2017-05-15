@@ -458,7 +458,7 @@ int main(int argc, char **argv, char **environ)
   if (alias_queries)
   {
     int rv = 0;
-    ADDRESS *a = NULL;
+    struct Address *a = NULL;
     for (; optind < argc; optind++)
       alias_queries = mutt_add_list(alias_queries, argv[optind]);
     for (; alias_queries; alias_queries = alias_queries->next)

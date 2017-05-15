@@ -337,7 +337,7 @@ static int crypt_id_is_valid(crypt_key_t *key)
 
 /* Return a bit vector describing how well the addresses ADDR and
    U_ADDR match and whether KEY is valid. */
-static int crypt_id_matches_addr(ADDRESS *addr, ADDRESS *u_addr, crypt_key_t *key)
+static int crypt_id_matches_addr(struct Address *addr, struct Address *u_addr, crypt_key_t *key)
 {
   int rv = 0;
 
@@ -3837,7 +3837,7 @@ static LIST *crypt_add_string_to_hints(LIST *hints, const char *str)
 /* Display a menu to select a key from the array KEYS. FORCED_VALID
    will be set to true on return if the user did override the
    key's validity. */
-static crypt_key_t *crypt_select_key(crypt_key_t *keys, ADDRESS *p, const char *s,
+static crypt_key_t *crypt_select_key(crypt_key_t *keys, struct Address *p, const char *s,
                                      unsigned int app, int *forced_valid)
 {
   int keymax;
@@ -4031,10 +4031,10 @@ static crypt_key_t *crypt_select_key(crypt_key_t *keys, ADDRESS *p, const char *
   return k;
 }
 
-static crypt_key_t *crypt_getkeybyaddr(ADDRESS *a, short abilities, unsigned int app,
+static crypt_key_t *crypt_getkeybyaddr(struct Address *a, short abilities, unsigned int app,
                                        int *forced_valid, int oppenc_mode)
 {
-  ADDRESS *r = NULL, *p = NULL;
+  struct Address *r = NULL, *p = NULL;
   LIST *hints = NULL;
 
   int weak = 0;
@@ -4308,7 +4308,7 @@ static crypt_key_t *crypt_ask_for_key(char *tag, char *whatfor, short abilities,
    message.  It returns NULL if any of the keys can not be found.
    If oppenc_mode is true, only keys that can be determined without
    prompting will be used.  */
-static char *find_keys(ADDRESS *adrlist, unsigned int app, int oppenc_mode)
+static char *find_keys(struct Address *adrlist, unsigned int app, int oppenc_mode)
 {
   LIST *crypt_hook_list = NULL, *crypt_hook = NULL;
   char *crypt_hook_val = NULL;
@@ -4316,8 +4316,8 @@ static char *find_keys(ADDRESS *adrlist, unsigned int app, int oppenc_mode)
   char *keylist = NULL, *t = NULL;
   size_t keylist_size = 0;
   size_t keylist_used = 0;
-  ADDRESS *addr = NULL;
-  ADDRESS *p = NULL, *q = NULL;
+  struct Address *addr = NULL;
+  struct Address *p = NULL, *q = NULL;
   crypt_key_t *k_info = NULL;
   const char *fqdn = mutt_fqdn(1);
   char buf[LONG_STRING];
@@ -4430,12 +4430,12 @@ static char *find_keys(ADDRESS *adrlist, unsigned int app, int oppenc_mode)
   return keylist;
 }
 
-char *pgp_gpgme_findkeys(ADDRESS *adrlist, int oppenc_mode)
+char *pgp_gpgme_findkeys(struct Address *adrlist, int oppenc_mode)
 {
   return find_keys(adrlist, APPLICATION_PGP, oppenc_mode);
 }
 
-char *smime_gpgme_findkeys(ADDRESS *adrlist, int oppenc_mode)
+char *smime_gpgme_findkeys(struct Address *adrlist, int oppenc_mode)
 {
   return find_keys(adrlist, APPLICATION_SMIME, oppenc_mode);
 }
@@ -4734,7 +4734,7 @@ int smime_gpgme_send_menu(HEADER *msg)
 
 static int verify_sender(HEADER *h, gpgme_protocol_t protocol)
 {
-  ADDRESS *sender = NULL;
+  struct Address *sender = NULL;
   unsigned int ret = 1;
 
   if (h->env->from)

@@ -441,7 +441,7 @@ void mutt_default_save(char *path, size_t pathlen, HEADER *hdr)
   if (addr_hook(path, pathlen, MUTT_SAVEHOOK, Context, hdr) != 0)
   {
     char tmp[_POSIX_PATH_MAX];
-    ADDRESS *adr = NULL;
+    struct Address *adr = NULL;
     ENVELOPE *env = hdr->env;
     bool fromMe = mutt_addr_is_user(env->from);
 
@@ -465,7 +465,7 @@ void mutt_default_save(char *path, size_t pathlen, HEADER *hdr)
 
 void mutt_select_fcc(char *path, size_t pathlen, HEADER *hdr)
 {
-  ADDRESS *adr = NULL;
+  struct Address *adr = NULL;
   char buf[_POSIX_PATH_MAX];
   ENVELOPE *env = hdr->env;
 
@@ -522,7 +522,7 @@ char *mutt_iconv_hook(const char *chs)
   return _mutt_string_hook(chs, MUTT_ICONVHOOK);
 }
 
-LIST *mutt_crypt_hook(ADDRESS *adr)
+LIST *mutt_crypt_hook(struct Address *adr)
 {
   return _mutt_list_hook(adr->mailbox, MUTT_CRYPTHOOK);
 }

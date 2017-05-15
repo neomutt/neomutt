@@ -399,7 +399,7 @@ static bool pgp_id_is_valid(pgp_uid_t *uid)
 
 #define PGP_KV_MATCH (PGP_KV_ADDR | PGP_KV_STRING)
 
-static int pgp_id_matches_addr(ADDRESS *addr, ADDRESS *u_addr, pgp_uid_t *uid)
+static int pgp_id_matches_addr(struct Address *addr, struct Address *u_addr, pgp_uid_t *uid)
 {
   int rv = 0;
 
@@ -420,7 +420,7 @@ static int pgp_id_matches_addr(ADDRESS *addr, ADDRESS *u_addr, pgp_uid_t *uid)
   return rv;
 }
 
-static pgp_key_t pgp_select_key(pgp_key_t keys, ADDRESS *p, const char *s)
+static pgp_key_t pgp_select_key(pgp_key_t keys, struct Address *p, const char *s)
 {
   int keymax;
   pgp_uid_t **KeyTable;
@@ -782,9 +782,9 @@ static pgp_key_t *pgp_get_lastp(pgp_key_t p)
   return NULL;
 }
 
-pgp_key_t pgp_getkeybyaddr(ADDRESS *a, short abilities, pgp_ring_t keyring, int oppenc_mode)
+pgp_key_t pgp_getkeybyaddr(struct Address *a, short abilities, pgp_ring_t keyring, int oppenc_mode)
 {
-  ADDRESS *r = NULL, *p = NULL;
+  struct Address *r = NULL, *p = NULL;
   LIST *hints = NULL;
 
   int multi = 0;

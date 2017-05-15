@@ -551,7 +551,7 @@ static int mbox_open_new_message(MESSAGE *msg, CONTEXT *dest, HEADER *hdr)
 }
 
 /* return 1 if address lists are strictly identical */
-static int strict_addrcmp(const ADDRESS *a, const ADDRESS *b)
+static int strict_addrcmp(const struct Address *a, const struct Address *b)
 {
   while (a && b)
   {

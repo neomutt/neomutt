@@ -85,7 +85,7 @@ void rfc822_dequote_comment(char *s)
   *w = 0;
 }
 
-static void free_address(ADDRESS *a)
+static void free_address(struct Address *a)
 {
   FREE(&a->personal);
   FREE(&a->mailbox);
@@ -95,9 +95,9 @@ static void free_address(ADDRESS *a)
   FREE(&a);
 }
 
-int rfc822_remove_from_adrlist(ADDRESS **a, const char *mailbox)
+int rfc822_remove_from_adrlist(struct Address **a, const char *mailbox)
 {
-  ADDRESS *p = NULL, *last = NULL, *t = NULL;
+  struct Address *p = NULL, *last = NULL, *t = NULL;
   int rv = -1;
 
   p = *a;
@@ -125,9 +125,9 @@ int rfc822_remove_from_adrlist(ADDRESS **a, const char *mailbox)
   return rv;
 }
 
-void rfc822_free_address(ADDRESS **p)
+void rfc822_free_address(struct Address **p)
 {
-  ADDRESS *t = NULL;
+  struct Address *t = NULL;
 
   while (*p)
   {
@@ -255,7 +255,7 @@ static const char *parse_mailboxdomain(const char *s, const char *nonspecial,
 
 static const char *parse_address(const char *s, char *token, size_t *tokenlen,
                                  size_t tokenmax, char *comment, size_t *commentlen,
-                                 size_t commentmax, ADDRESS *addr)
+                                 size_t commentmax, struct Address *addr)
 {
   s = parse_mailboxdomain(s, ".\"(\\", token, tokenlen, tokenmax, comment,
                           commentlen, commentmax);
@@ -285,7 +285,7 @@ static const char *parse_address(const char *s, char *token, size_t *tokenlen,
 }
 
 static const char *parse_route_addr(const char *s, char *comment, size_t *commentlen,
-                                    size_t commentmax, ADDRESS *addr)
+                                    size_t commentmax, struct Address *addr)
 {
   char token[LONG_STRING];
   size_t tokenlen = 0;
@@ -331,7 +331,7 @@ static const char *parse_route_addr(const char *s, char *comment, size_t *commen
 }
 
 static const char *parse_addr_spec(const char *s, char *comment, size_t *commentlen,
-                                   size_t commentmax, ADDRESS *addr)
+                                   size_t commentmax, struct Address *addr)
 {
   char token[LONG_STRING];
   size_t tokenlen = 0;
@@ -346,10 +346,10 @@ static const char *parse_addr_spec(const char *s, char *comment, size_t *comment
   return s;
 }
 
-static void add_addrspec(ADDRESS **top, ADDRESS **last, const char *phrase,
+static void add_addrspec(struct Address **top, struct Address **last, const char *phrase,
                          char *comment, size_t *commentlen, size_t commentmax)
 {
-  ADDRESS *cur = rfc822_new_address();
+  struct Address *cur = rfc822_new_address();
 
   if (parse_addr_spec(phrase, comment, commentlen, commentmax, cur) == NULL)
   {
@@ -364,7 +364,7 @@ static void add_addrspec(ADDRESS **top, ADDRESS **last, const char *phrase,
   *last = cur;
 }
 
-ADDRESS *rfc822_parse_adrlist(ADDRESS *top, const char *s)
+struct Address *rfc822_parse_adrlist(struct Address *top, const char *s)
 {
   int ws_pending, nl;
 #ifdef EXACT_ADDRESS
@@ -373,7 +373,7 @@ ADDRESS *rfc822_parse_adrlist(ADDRESS *top, const char *s)
   const char *ps = NULL;
   char comment[LONG_STRING], phrase[LONG_STRING];
   size_t phraselen = 0, commentlen = 0;
-  ADDRESS *cur = NULL, *last = NULL;
+  struct Address *cur = NULL, *last = NULL;
 
   RFC822Error = 0;
 
@@ -550,7 +550,7 @@ ADDRESS *rfc822_parse_adrlist(ADDRESS *top, const char *s)
   return top;
 }
 
-void rfc822_qualify(ADDRESS *addr, const char *host)
+void rfc822_qualify(struct Address *addr, const char *host)
 {
   char *p = NULL;
 
@@ -590,7 +590,7 @@ void rfc822_cat(char *buf, size_t buflen, const char *value, const char *special
     strfcpy(buf, value, buflen);
 }
 
-void rfc822_write_address_single(char *buf, size_t buflen, ADDRESS *addr, int display)
+void rfc822_write_address_single(char *buf, size_t buflen, struct Address *addr, int display)
 {
   size_t len;
   char *pbuf = buf;
@@ -727,7 +727,7 @@ done:
 }
 
 /* note: it is assumed that `buf' is nul terminated! */
-int rfc822_write_address(char *buf, size_t buflen, ADDRESS *addr, int display)
+int rfc822_write_address(char *buf, size_t buflen, struct Address *addr, int display)
 {
   char *pbuf = buf;
   size_t len = mutt_strlen(buf);
@@ -783,9 +783,9 @@ done:
 }
 
 /* this should be rfc822_cpy_adr */
-ADDRESS *rfc822_cpy_adr_real(ADDRESS *addr)
+struct Address *rfc822_cpy_adr_real(struct Address *addr)
 {
-  ADDRESS *p = rfc822_new_address();
+  struct Address *p = rfc822_new_address();
 
 #ifdef EXACT_ADDRESS
   p->val = safe_strdup(addr->val);
@@ -799,9 +799,9 @@ ADDRESS *rfc822_cpy_adr_real(ADDRESS *addr)
 }
 
 /* this should be rfc822_cpy_adrlist */
-ADDRESS *rfc822_cpy_adr(ADDRESS *addr, int prune)
+struct Address *rfc822_cpy_adr(struct Address *addr, int prune)
 {
-  ADDRESS *top = NULL, *last = NULL;
+  struct Address *top = NULL, *last = NULL;
 
   for (; addr; addr = addr->next)
   {
@@ -821,9 +821,9 @@ ADDRESS *rfc822_cpy_adr(ADDRESS *addr, int prune)
 }
 
 /* append list 'b' to list 'a' and return the last element in the new list */
-ADDRESS *rfc822_append(ADDRESS **a, ADDRESS *b, int prune)
+struct Address *rfc822_append(struct Address **a, struct Address *b, int prune)
 {
-  ADDRESS *tmp = *a;
+  struct Address *tmp = *a;
 
   while (tmp && tmp->next)
     tmp = tmp->next;
@@ -892,7 +892,7 @@ int safe_free(void **p)
 
 int main(int argc, char **argv)
 {
-  ADDRESS *list = NULL;
+  struct Address *list = NULL;
   char buf[256];
   char *str = "a b c ";
 

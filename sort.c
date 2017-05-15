@@ -91,9 +91,9 @@ static int compare_subject(const void *a, const void *b)
   return (SORTCODE(rc));
 }
 
-const char *mutt_get_name(ADDRESS *a)
+const char *mutt_get_name(struct Address *a)
 {
-  ADDRESS *ali = NULL;
+  struct Address *ali = NULL;
 
   if (a)
   {

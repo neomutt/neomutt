@@ -128,7 +128,7 @@ static int smtp_get_resp(CONNECTION *conn)
   return -1;
 }
 
-static int smtp_rcpt_to(CONNECTION *conn, const ADDRESS *a)
+static int smtp_rcpt_to(CONNECTION *conn, const struct Address *a)
 {
   char buf[1024];
   int r;
@@ -247,7 +247,7 @@ static bool address_uses_unicode(const char *a)
 /* Returns 1 if any address in a contains at least one 8-bit
  * character, 0 if none do.
  */
-static bool addresses_use_unicode(const ADDRESS *a)
+static bool addresses_use_unicode(const struct Address *a)
 {
   while (a)
   {
@@ -614,8 +614,8 @@ static int smtp_open(CONNECTION *conn)
   return 0;
 }
 
-int mutt_smtp_send(const ADDRESS *from, const ADDRESS *to, const ADDRESS *cc,
-                   const ADDRESS *bcc, const char *msgfile, int eightbit)
+int mutt_smtp_send(const struct Address *from, const struct Address *to, const struct Address *cc,
+                   const struct Address *bcc, const char *msgfile, int eightbit)
 {
   CONNECTION *conn = NULL;
   struct Account account;

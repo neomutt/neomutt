@@ -252,7 +252,7 @@ void pgp_invoke_import(const char *fname)
   mutt_system(cmd);
 }
 
-void pgp_invoke_getkeys(ADDRESS *addr)
+void pgp_invoke_getkeys(struct Address *addr)
 {
   char buff[LONG_STRING];
   char tmp[LONG_STRING];

@@ -1461,9 +1461,9 @@ char *mutt_make_date(char *s, size_t len)
 
 /* wrapper around mutt_write_address() so we can handle very large
    recipient lists without needing a huge temporary buffer in memory */
-void mutt_write_address_list(ADDRESS *adr, FILE *fp, int linelen, int display)
+void mutt_write_address_list(struct Address *adr, FILE *fp, int linelen, int display)
 {
-  ADDRESS *tmp = NULL;
+  struct Address *tmp = NULL;
   char buf[LONG_STRING];
   int count = 0;
   int len;
@@ -2326,7 +2326,7 @@ static int send_msg(const char *path, char **args, const char *msg, char **tempf
   return st;
 }
 
-static char **add_args(char **args, size_t *argslen, size_t *argsmax, ADDRESS *addr)
+static char **add_args(char **args, size_t *argslen, size_t *argsmax, struct Address *addr)
 {
   for (; addr; addr = addr->next)
   {
@@ -2349,8 +2349,8 @@ static char **add_option(char **args, size_t *argslen, size_t *argsmax, char *s)
   return args;
 }
 
-int mutt_invoke_sendmail(ADDRESS *from, /* the sender */
-                         ADDRESS *to, ADDRESS *cc, ADDRESS *bcc, /* recips */
+int mutt_invoke_sendmail(struct Address *from, /* the sender */
+                         struct Address *to, struct Address *cc, struct Address *bcc, /* recips */
                          const char *msg, /* file containing message */
                          int eightbit)    /* message contains 8bit chars */
 {
@@ -2576,8 +2576,8 @@ void mutt_unprepare_envelope(ENVELOPE *env)
   rfc2047_decode(&env->subject);
 }
 
-static int _mutt_bounce_message(FILE *fp, HEADER *h, ADDRESS *to,
-                                const char *resent_from, ADDRESS *env_from)
+static int _mutt_bounce_message(FILE *fp, HEADER *h, struct Address *to,
+                                const char *resent_from, struct Address *env_from)
 {
   int i, ret = 0;
   FILE *f = NULL;
@@ -2641,9 +2641,9 @@ static int _mutt_bounce_message(FILE *fp, HEADER *h, ADDRESS *to,
   return ret;
 }
 
-int mutt_bounce_message(FILE *fp, HEADER *h, ADDRESS *to)
+int mutt_bounce_message(FILE *fp, HEADER *h, struct Address *to)
 {
-  ADDRESS *from = NULL, *resent_to = NULL;
+  struct Address *from = NULL, *resent_to = NULL;
   const char *fqdn = mutt_fqdn(1);
   char resent_from[STRING];
   int ret;
@@ -2696,11 +2696,11 @@ int mutt_bounce_message(FILE *fp, HEADER *h, ADDRESS *to)
 
 
 /* given a list of addresses, return a list of unique addresses */
-ADDRESS *mutt_remove_duplicates(ADDRESS *addr)
+struct Address *mutt_remove_duplicates(struct Address *addr)
 {
-  ADDRESS *top = addr;
-  ADDRESS **last = &top;
-  ADDRESS *tmp = NULL;
+  struct Address *top = addr;
+  struct Address **last = &top;
+  struct Address *tmp = NULL;
   int dup;
 
   while (addr)

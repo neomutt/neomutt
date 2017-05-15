@@ -429,8 +429,8 @@ int mutt_option_set(const struct option_t *val, BUFFER *err)
       }
       break;
       case DT_ADDR:
-        rfc822_free_address((ADDRESS **) MuttVars[idx].data);
-        *((ADDRESS **) MuttVars[idx].data) =
+        rfc822_free_address((struct Address **) MuttVars[idx].data);
+        *((struct Address **) MuttVars[idx].data) =
             rfc822_parse_adrlist(NULL, (const char *) val->data);
         break;
       case DT_PATH:
@@ -484,7 +484,7 @@ static void free_opt(struct option_t *p)
   switch (p->type & DT_MASK)
   {
     case DT_ADDR:
-      rfc822_free_address((ADDRESS **) p->data);
+      rfc822_free_address((struct Address **) p->data);
       break;
     case DT_RX:
       pp = (REGEXP *) p->data;
@@ -1236,7 +1236,7 @@ static int parse_group(BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err)
 {
   group_context_t *gc = NULL;
   group_state_t state = NONE;
-  ADDRESS *addr = NULL;
+  struct Address *addr = NULL;
   char *estr = NULL;
 
   do
@@ -1758,7 +1758,7 @@ static int parse_alias(BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err)
 #ifdef DEBUG
   if (debuglevel >= 2)
   {
-    ADDRESS *a = NULL;
+    struct Address *a = NULL;
     /* A group is terminated with an empty address, so check a->mailbox */
     for (a = tmp->addr; a && a->mailbox; a = a->next)
     {
@@ -1882,11 +1882,11 @@ static void set_default(struct option_t *p)
       }
       break;
     case DT_ADDR:
-      if (!p->init && *((ADDRESS **) p->data))
+      if (!p->init && *((struct Address **) p->data))
       {
         char tmp[HUGE_STRING];
         *tmp = '\0';
-        rfc822_write_address(tmp, sizeof(tmp), *((ADDRESS **) p->data), 0);
+        rfc822_write_address(tmp, sizeof(tmp), *((struct Address **) p->data), 0);
         p->init = (unsigned long) safe_strdup(tmp);
       }
       break;
@@ -1929,9 +1929,9 @@ static void restore_default(struct option_t *p)
       }
       break;
     case DT_ADDR:
-      rfc822_free_address((ADDRESS **) p->data);
+      rfc822_free_address((struct Address **) p->data);
       if (p->init)
-        *((ADDRESS **) p->data) = rfc822_parse_adrlist(NULL, (char *) p->init);
+        *((struct Address **) p->data) = rfc822_parse_adrlist(NULL, (char *) p->init);
       break;
     case DT_BOOL:
       if (p->init)
@@ -2463,7 +2463,7 @@ static int parse_set(BUFFER *tmp, BUFFER *s, unsigned long data, BUFFER *err)
         if (myvar)
           myvar_del(myvar);
         else if (DTYPE(MuttVars[idx].type) == DT_ADDR)
-          rfc822_free_address((ADDRESS **) MuttVars[idx].data);
+          rfc822_free_address((struct Address **) MuttVars[idx].data);
         else if (DTYPE(MuttVars[idx].type) == DT_MBCHARTBL)
           free_mbchar_table((mbchar_table **) MuttVars[idx].data);
         else
@@ -2492,7 +2492,7 @@ static int parse_set(BUFFER *tmp, BUFFER *s, unsigned long data, BUFFER *err)
         else if (DTYPE(MuttVars[idx].type) == DT_ADDR)
         {
           _tmp[0] = '\0';
-          rfc822_write_address(_tmp, sizeof(_tmp), *((ADDRESS **) MuttVars[idx].data), 0);
+          rfc822_write_address(_tmp, sizeof(_tmp), *((struct Address **) MuttVars[idx].data), 0);
           val = _tmp;
         }
         else if (DTYPE(MuttVars[idx].type) == DT_PATH)
@@ -2591,8 +2591,8 @@ static int parse_set(BUFFER *tmp, BUFFER *s, unsigned long data, BUFFER *err)
         }
         else
         {
-          rfc822_free_address((ADDRESS **) MuttVars[idx].data);
-          *((ADDRESS **) MuttVars[idx].data) = rfc822_parse_adrlist(NULL, tmp->data);
+          rfc822_free_address((struct Address **) MuttVars[idx].data);
+          *((struct Address **) MuttVars[idx].data) = rfc822_parse_adrlist(NULL, tmp->data);
         }
       }
     }
@@ -3640,7 +3640,7 @@ int var_to_string(int idx, char *val, size_t len)
   }
   else if (DTYPE(MuttVars[idx].type) == DT_ADDR)
   {
-    rfc822_write_address(tmp, sizeof(tmp), *((ADDRESS **) MuttVars[idx].data), 0);
+    rfc822_write_address(tmp, sizeof(tmp), *((struct Address **) MuttVars[idx].data), 0);
   }
   else if (DTYPE(MuttVars[idx].type) == DT_QUAD)
     strfcpy(tmp, vals[quadoption(MuttVars[idx].data)], sizeof(tmp));

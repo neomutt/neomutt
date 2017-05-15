@@ -44,10 +44,10 @@ int pgp_decrypt_mime(FILE *fpin, FILE **fpout, BODY *b, BODY **cur);
 
 pgp_key_t pgp_ask_for_key(char *tag, char *whatfor, short abilities, pgp_ring_t keyring);
 pgp_key_t pgp_get_candidates(pgp_ring_t keyring, LIST *hints);
-pgp_key_t pgp_getkeybyaddr(ADDRESS *a, short abilities, pgp_ring_t keyring, int oppenc_mode);
+pgp_key_t pgp_getkeybyaddr(struct Address *a, short abilities, pgp_ring_t keyring, int oppenc_mode);
 pgp_key_t pgp_getkeybystr(char *p, short abilities, pgp_ring_t keyring);
 
-char *pgp_find_keys(ADDRESS *adrlist, int oppenc_mode);
+char *pgp_find_keys(struct Address *adrlist, int oppenc_mode);
 
 int pgp_application_pgp_handler(BODY *m, STATE *s);
 int pgp_encrypted_handler(BODY *a, STATE *s);
@@ -81,7 +81,7 @@ pid_t pgp_invoke_traditional(FILE **pgpin, FILE **pgpout, FILE **pgperr,
 
 
 void pgp_invoke_import(const char *fname);
-void pgp_invoke_getkeys(ADDRESS *addr);
+void pgp_invoke_getkeys(struct Address *addr);
 
 
 /* private ? */

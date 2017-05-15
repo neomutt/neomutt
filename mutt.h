@@ -644,7 +644,7 @@ typedef struct alias
 {
   struct alias *self; /* XXX - ugly hack */
   char *name;
-  ADDRESS *addr;
+  struct Address *addr;
   struct alias *next;
   bool tagged;
   bool del;
@@ -653,15 +653,15 @@ typedef struct alias
 
 typedef struct envelope
 {
-  ADDRESS *return_path;
-  ADDRESS *from;
-  ADDRESS *to;
-  ADDRESS *cc;
-  ADDRESS *bcc;
-  ADDRESS *sender;
-  ADDRESS *reply_to;
-  ADDRESS *mail_followup_to;
-  ADDRESS *x_original_to;
+  struct Address *return_path;
+  struct Address *from;
+  struct Address *to;
+  struct Address *cc;
+  struct Address *bcc;
+  struct Address *sender;
+  struct Address *reply_to;
+  struct Address *mail_followup_to;
+  struct Address *x_original_to;
   char *list_post; /* this stores a mailto URL, or nothing */
   char *subject;
   char *real_subj; /* offset of the real subject */
@@ -916,7 +916,7 @@ typedef enum {
 
 typedef struct group_t
 {
-  ADDRESS *as;
+  struct Address *as;
   RX_LIST *rs;
   char *name;
 } group_t;

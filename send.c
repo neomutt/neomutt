@@ -68,7 +68,7 @@ static void append_signature(FILE *f)
 }
 
 /* compare two e-mail addresses and return 1 if they are equivalent */
-static bool addrcmp(ADDRESS *a, ADDRESS *b)
+static bool addrcmp(struct Address *a, struct Address *b)
 {
   if (!a->mailbox || !b->mailbox)
     return false;
@@ -78,7 +78,7 @@ static bool addrcmp(ADDRESS *a, ADDRESS *b)
 }
 
 /* search an e-mail address in a list */
-static int addrsrc(ADDRESS *a, ADDRESS *lst)
+static int addrsrc(struct Address *a, struct Address *lst)
 {
   for (; lst; lst = lst->next)
   {
@@ -89,9 +89,9 @@ static int addrsrc(ADDRESS *a, ADDRESS *lst)
 }
 
 /* removes addresses from "b" which are contained in "a" */
-ADDRESS *mutt_remove_xrefs(ADDRESS *a, ADDRESS *b)
+struct Address *mutt_remove_xrefs(struct Address *a, struct Address *b)
 {
-  ADDRESS *top = NULL, *p = NULL, *prev = NULL;
+  struct Address *top = NULL, *p = NULL, *prev = NULL;
 
   top = b;
   while (b)
@@ -130,9 +130,9 @@ ADDRESS *mutt_remove_xrefs(ADDRESS *a, ADDRESS *b)
 /* remove any address which matches the current user.  if `leave_only' is
  * nonzero, don't remove the user's address if it is the only one in the list
  */
-static ADDRESS *remove_user(ADDRESS *a, int leave_only)
+static struct Address *remove_user(struct Address *a, int leave_only)
 {
-  ADDRESS *top = NULL, *last = NULL;
+  struct Address *top = NULL, *last = NULL;
 
   while (a)
   {
@@ -150,7 +150,7 @@ static ADDRESS *remove_user(ADDRESS *a, int leave_only)
     }
     else
     {
-      ADDRESS *tmp = a;
+      struct Address *tmp = a;
 
       a = a->next;
       if (!leave_only || a || last)
@@ -165,9 +165,9 @@ static ADDRESS *remove_user(ADDRESS *a, int leave_only)
   return top;
 }
 
-static ADDRESS *find_mailing_lists(ADDRESS *t, ADDRESS *c)
+static struct Address *find_mailing_lists(struct Address *t, struct Address *c)
 {
-  ADDRESS *top = NULL, *ptr = NULL;
+  struct Address *top = NULL, *ptr = NULL;
 
   for (; t || c; t = c, c = NULL)
   {
@@ -188,7 +188,7 @@ static ADDRESS *find_mailing_lists(ADDRESS *t, ADDRESS *c)
   return top;
 }
 
-static int edit_address(ADDRESS **a, /* const */ char *field)
+static int edit_address(struct Address **a, /* const */ char *field)
 {
   char buf[HUGE_STRING];
   char *err = NULL;
@@ -495,7 +495,7 @@ static int include_reply(CONTEXT *ctx, HEADER *cur, FILE *out)
   return 0;
 }
 
-static int default_to(ADDRESS **to, ENVELOPE *env, int flags, int hmfupto)
+static int default_to(struct Address **to, ENVELOPE *env, int flags, int hmfupto)
 {
   char prompt[STRING];
 
@@ -572,7 +572,7 @@ static int default_to(ADDRESS **to, ENVELOPE *env, int flags, int hmfupto)
 int mutt_fetch_recips(ENVELOPE *out, ENVELOPE *in, int flags)
 {
   char prompt[STRING];
-  ADDRESS *tmp = NULL;
+  struct Address *tmp = NULL;
   int hmfupto = -1;
 
   if ((flags & (SENDLISTREPLY | SENDGROUPREPLY)) && in->mail_followup_to)
@@ -933,8 +933,8 @@ static int generate_body(FILE *tempfp, /* stream for outgoing message */
 
 void mutt_set_followup_to(ENVELOPE *e)
 {
-  ADDRESS *t = NULL;
-  ADDRESS *from = NULL;
+  struct Address *t = NULL;
+  struct Address *from = NULL;
 
   /*
    * Only generate the Mail-Followup-To if the user has requested it, and
@@ -1003,9 +1003,9 @@ void mutt_set_followup_to(ENVELOPE *e)
 /* look through the recipients of the message we are replying to, and if
    we find an address that matches $alternates, we use that as the default
    from field */
-static ADDRESS *set_reverse_name(ENVELOPE *env)
+static struct Address *set_reverse_name(ENVELOPE *env)
 {
-  ADDRESS *tmp = NULL;
+  struct Address *tmp = NULL;
 
   for (tmp = env->to; tmp; tmp = tmp->next)
   {
@@ -1034,9 +1034,9 @@ static ADDRESS *set_reverse_name(ENVELOPE *env)
   return tmp;
 }
 
-ADDRESS *mutt_default_from(void)
+struct Address *mutt_default_from(void)
 {
-  ADDRESS *adr = NULL;
+  struct Address *adr = NULL;
   const char *fqdn = mutt_fqdn(1);
 
   /*
@@ -1236,7 +1236,7 @@ static int is_reply(HEADER *reply, HEADER *orig)
          mutt_find_list(orig->env->in_reply_to, reply->env->message_id);
 }
 
-static int has_recips(ADDRESS *a)
+static int has_recips(struct Address *a)
 {
   int c = 0;
 

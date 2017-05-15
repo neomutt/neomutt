@@ -55,17 +55,17 @@ static int mbox_to_udomain(const char *mbx, char **user, char **domain)
   return 0;
 }
 
-static int addr_is_local(ADDRESS *a)
+static int addr_is_local(struct Address *a)
 {
   return (a->intl_checked && !a->is_intl);
 }
 
-static int addr_is_intl(ADDRESS *a)
+static int addr_is_intl(struct Address *a)
 {
   return (a->intl_checked && a->is_intl);
 }
 
-static void set_local_mailbox(ADDRESS *a, char *local_mailbox)
+static void set_local_mailbox(struct Address *a, char *local_mailbox)
 {
   FREE(&a->mailbox);
   a->mailbox = local_mailbox;
@@ -73,7 +73,7 @@ static void set_local_mailbox(ADDRESS *a, char *local_mailbox)
   a->is_intl = false;
 }
 
-static void set_intl_mailbox(ADDRESS *a, char *intl_mailbox)
+static void set_intl_mailbox(struct Address *a, char *intl_mailbox)
 {
   FREE(&a->mailbox);
   a->mailbox = intl_mailbox;
@@ -223,7 +223,7 @@ cleanup:
 
 /* higher level functions */
 
-int mutt_addrlist_to_intl(ADDRESS *a, char **err)
+int mutt_addrlist_to_intl(struct Address *a, char **err)
 {
   char *user = NULL, *domain = NULL;
   char *intl_mailbox = NULL;
@@ -255,7 +255,7 @@ int mutt_addrlist_to_intl(ADDRESS *a, char **err)
   return rv;
 }
 
-int mutt_addrlist_to_local(ADDRESS *a)
+int mutt_addrlist_to_local(struct Address *a)
 {
   char *user = NULL, *domain = NULL;
   char *local_mailbox = NULL;
@@ -277,7 +277,7 @@ int mutt_addrlist_to_local(ADDRESS *a)
 }
 
 /* convert just for displaying purposes */
-const char *mutt_addr_for_display(ADDRESS *a)
+const char *mutt_addr_for_display(struct Address *a)
 {
   char *user = NULL, *domain = NULL;
   static char *buff = NULL;

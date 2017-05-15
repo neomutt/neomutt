@@ -1184,14 +1184,14 @@ BODY *pgp_sign_message(BODY *a)
  * If oppenc_mode is true, only keys that can be determined without
  * prompting will be used.
  */
-char *pgp_find_keys(ADDRESS *adrlist, int oppenc_mode)
+char *pgp_find_keys(struct Address *adrlist, int oppenc_mode)
 {
   LIST *crypt_hook_list = NULL, *crypt_hook = NULL;
   char *keyID = NULL, *keylist = NULL;
   size_t keylist_size = 0;
   size_t keylist_used = 0;
-  ADDRESS *addr = NULL;
-  ADDRESS *p = NULL, *q = NULL;
+  struct Address *addr = NULL;
+  struct Address *p = NULL, *q = NULL;
   pgp_key_t k_info = NULL;
   char buf[LONG_STRING];
   int r;

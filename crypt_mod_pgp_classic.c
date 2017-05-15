@@ -42,7 +42,7 @@ static int crypt_mod_pgp_application_handler(BODY *m, STATE *s)
   return pgp_application_pgp_handler(m, s);
 }
 
-static char *crypt_mod_pgp_findkeys(ADDRESS *adrlist, int oppenc_mode)
+static char *crypt_mod_pgp_findkeys(struct Address *adrlist, int oppenc_mode)
 {
   return pgp_find_keys(adrlist, oppenc_mode);
 }
@@ -87,7 +87,7 @@ static int crypt_mod_pgp_encrypted_handler(BODY *m, STATE *s)
   return pgp_encrypted_handler(m, s);
 }
 
-static void crypt_mod_pgp_invoke_getkeys(ADDRESS *addr)
+static void crypt_mod_pgp_invoke_getkeys(struct Address *addr)
 {
   pgp_invoke_getkeys(addr);
 }

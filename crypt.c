@@ -664,7 +664,7 @@ void crypt_extract_keys_from_messages(HEADER *h)
 {
   int i;
   char tempfname[_POSIX_PATH_MAX], *mbox = NULL;
-  ADDRESS *tmp = NULL;
+  struct Address *tmp = NULL;
   FILE *fpout = NULL;
 
   if (!WithCrypto)
@@ -783,7 +783,7 @@ void crypt_extract_keys_from_messages(HEADER *h)
 
 int crypt_get_keys(HEADER *msg, char **keylist, int oppenc_mode)
 {
-  ADDRESS *adrlist = NULL, *last = NULL;
+  struct Address *adrlist = NULL, *last = NULL;
   const char *fqdn = mutt_fqdn(1);
 
   /* Do a quick check to make sure that we can find all of the encryption

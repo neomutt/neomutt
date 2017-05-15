@@ -801,7 +801,7 @@ static void _smime_getkeys(char *mailbox)
 
 void smime_getkeys(ENVELOPE *env)
 {
-  ADDRESS *t = NULL;
+  struct Address *t = NULL;
   int found = 0;
 
   if (option(OPTSDEFAULTDECRYPTKEY) && SmimeDefaultKey && *SmimeDefaultKey)
@@ -838,13 +838,13 @@ void smime_getkeys(ENVELOPE *env)
  * If oppenc_mode is true, only keys that can be determined without
  * prompting will be used.
  */
-char *smime_find_keys(ADDRESS *adrlist, int oppenc_mode)
+char *smime_find_keys(struct Address *adrlist, int oppenc_mode)
 {
   smime_key_t *key = NULL;
   char *keyID = NULL, *keylist = NULL;
   size_t keylist_size = 0;
   size_t keylist_used = 0;
-  ADDRESS *p = NULL, *q = NULL;
+  struct Address *p = NULL, *q = NULL;
 
   for (p = adrlist; p; p = p->next)
   {

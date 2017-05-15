@@ -48,14 +48,14 @@ enum
   FlagCharZEmpty
 };
 
-bool mutt_is_mail_list(ADDRESS *addr)
+bool mutt_is_mail_list(struct Address *addr)
 {
   if (!mutt_match_rx_list(addr->mailbox, UnMailLists))
     return mutt_match_rx_list(addr->mailbox, MailLists);
   return false;
 }
 
-bool mutt_is_subscribed_list(ADDRESS *addr)
+bool mutt_is_subscribed_list(struct Address *addr)
 {
   if (!mutt_match_rx_list(addr->mailbox, UnMailLists) &&
       !mutt_match_rx_list(addr->mailbox, UnSubscribedLists))
@@ -67,7 +67,7 @@ bool mutt_is_subscribed_list(ADDRESS *addr)
  * If one is found, print pfx and the name of the list into buf, then
  * return 1.  Otherwise, simply return 0.
  */
-static bool check_for_mailing_list(ADDRESS *adr, const char *pfx, char *buf, int buflen)
+static bool check_for_mailing_list(struct Address *adr, const char *pfx, char *buf, int buflen)
 {
   for (; adr; adr = adr->next)
   {
@@ -85,7 +85,7 @@ static bool check_for_mailing_list(ADDRESS *adr, const char *pfx, char *buf, int
  * If one is found, print the address of the list into buf, then return 1.
  * Otherwise, simply return 0.
  */
-static bool check_for_mailing_list_addr(ADDRESS *adr, char *buf, int buflen)
+static bool check_for_mailing_list_addr(struct Address *adr, char *buf, int buflen)
 {
   for (; adr; adr = adr->next)
   {
@@ -100,7 +100,7 @@ static bool check_for_mailing_list_addr(ADDRESS *adr, char *buf, int buflen)
 }
 
 
-static bool first_mailing_list(char *buf, size_t buflen, ADDRESS *a)
+static bool first_mailing_list(char *buf, size_t buflen, struct Address *a)
 {
   for (; a; a = a->next)
   {
@@ -220,7 +220,7 @@ static void make_from(ENVELOPE *env, char *buf, size_t len, int do_lists)
 
   bool me;
   enum FieldType disp;
-  ADDRESS *name = NULL;
+  struct Address *name = NULL;
 
   me = mutt_addr_is_user(env->from);
 
@@ -286,7 +286,7 @@ static void make_from_addr(ENVELOPE *hdr, char *buf, size_t len, int do_lists)
     *buf = 0;
 }
 
-static bool user_in_addr(ADDRESS *a)
+static bool user_in_addr(struct Address *a)
 {
   for (; a; a = a->next)
     if (mutt_addr_is_user(a))

@@ -650,7 +650,7 @@ int mix_check_message(HEADER *msg)
 {
   const char *fqdn = NULL;
   short need_hostname = 0;
-  ADDRESS *p = NULL;
+  struct Address *p = NULL;
 
   if (msg->env->cc || msg->env->bcc)
   {

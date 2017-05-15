@@ -1319,12 +1319,12 @@ static int perform_or(struct pattern_t *pat, pattern_exec_flag flags,
 static int match_adrlist(pattern_t *pat, int match_personal, int n, ...)
 {
   va_list ap;
-  ADDRESS *a = NULL;
+  struct Address *a = NULL;
 
   va_start(ap, n);
   for (; n; n--)
   {
-    for (a = va_arg(ap, ADDRESS *); a; a = a->next)
+    for (a = va_arg(ap, struct Address *); a; a = a->next)
     {
       if (pat->alladdr ^ ((!pat->isalias || alias_reverse_lookup(a)) &&
                           ((a->mailbox && !patmatch(pat, a->mailbox)) ||
@@ -1350,7 +1350,7 @@ static bool match_reference(pattern_t *pat, LIST *refs)
 /*
  * Matches subscribed mailing lists
  */
-int mutt_is_list_recipient(int alladdr, ADDRESS *a1, ADDRESS *a2)
+int mutt_is_list_recipient(int alladdr, struct Address *a1, struct Address *a2)
 {
   for (; a1; a1 = a1->next)
     if (alladdr ^ mutt_is_subscribed_list(a1))
@@ -1366,7 +1366,7 @@ int mutt_is_list_recipient(int alladdr, ADDRESS *a1, ADDRESS *a2)
  * The function name may seem a little bit misleading: It checks all
  * recipients in To and Cc for known mailing lists, subscribed or not.
  */
-int mutt_is_list_cc(int alladdr, ADDRESS *a1, ADDRESS *a2)
+int mutt_is_list_cc(int alladdr, struct Address *a1, struct Address *a2)
 {
   for (; a1; a1 = a1->next)
     if (alladdr ^ mutt_is_mail_list(a1))
@@ -1377,7 +1377,7 @@ int mutt_is_list_cc(int alladdr, ADDRESS *a1, ADDRESS *a2)
   return alladdr;
 }
 
-static int match_user(int alladdr, ADDRESS *a1, ADDRESS *a2)
+static int match_user(int alladdr, struct Address *a1, struct Address *a2)
 {
   for (; a1; a1 = a1->next)
     if (alladdr ^ mutt_addr_is_user(a1))

@@ -113,7 +113,7 @@ void mutt_attach_bounce(FILE *fp, HEADER *hdr, ATTACHPTR **idx, short idxlen, BO
   char prompt[STRING];
   char buf[HUGE_STRING];
   char *err = NULL;
-  ADDRESS *adr = NULL;
+  struct Address *adr = NULL;
   int ret = 0;
   int p = 0;
 

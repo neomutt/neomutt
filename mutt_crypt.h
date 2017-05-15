@@ -196,7 +196,7 @@ int crypt_pgp_application_pgp_handler(BODY *m, STATE *s);
 int crypt_pgp_encrypted_handler(BODY *a, STATE *s);
 
 /* fixme: needs documentation. */
-void crypt_pgp_invoke_getkeys(ADDRESS *addr);
+void crypt_pgp_invoke_getkeys(struct Address *addr);
 
 /* Check for a traditional PGP message in body B. */
 int crypt_pgp_check_traditional(FILE *fp, BODY *b, int tagged_only);
@@ -211,7 +211,7 @@ BODY *crypt_pgp_make_key_attachment(char *tempf);
    message.  It returns NULL if any of the keys can not be found.
    If oppenc_mode is true, only keys that can be determined without
    prompting will be used.  */
-char *crypt_pgp_findkeys(ADDRESS *adrlist, int oppenc_mode);
+char *crypt_pgp_findkeys(struct Address *adrlist, int oppenc_mode);
 
 /* Create a new body with a PGP signed message from A. */
 BODY *crypt_pgp_sign_message(BODY *a);
@@ -256,7 +256,7 @@ int crypt_smime_verify_sender(HEADER *h);
    message.  It returns NULL if any of the keys can not be found.
    If oppenc_mode is true, only keys that can be determined without
    prompting will be used.  */
-char *crypt_smime_findkeys(ADDRESS *adrlist, int oppenc_mode);
+char *crypt_smime_findkeys(struct Address *adrlist, int oppenc_mode);
 
 /* fixme: Needs documentation. */
 BODY *crypt_smime_sign_message(BODY *a);

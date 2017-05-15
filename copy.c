@@ -842,7 +842,7 @@ static int copy_delete_attach(BODY *b, FILE *fpin, FILE *fpout, char *date)
  *
  * XXX - fix that.
  */
-static void format_address_header(char **h, ADDRESS *a)
+static void format_address_header(char **h, struct Address *a)
 {
   char buf[HUGE_STRING];
   char cbuf[STRING];
@@ -857,7 +857,7 @@ static void format_address_header(char **h, ADDRESS *a)
   safe_realloc(h, buflen);
   for (count = 0; a; a = a->next, count++)
   {
-    ADDRESS *tmp = a->next;
+    struct Address *tmp = a->next;
     a->next = NULL;
     *buf = *cbuf = *c2buf = '\0';
     l = rfc822_write_address(buf, sizeof(buf), a, 0);
@@ -906,8 +906,8 @@ static int address_header_decode(char **h)
   char *s = *h;
   int l, rp = 0;
 
-  ADDRESS *a = NULL;
-  ADDRESS *cur = NULL;
+  struct Address *a = NULL;
+  struct Address *cur = NULL;
 
   switch (tolower((unsigned char) *s))
   {

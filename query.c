@@ -28,7 +28,7 @@
 typedef struct query
 {
   int num;
-  ADDRESS *addr;
+  struct Address *addr;
   char *name;
   char *other;
   struct query *next;
@@ -50,9 +50,9 @@ static const struct mapping_t QueryHelp[] = {
   { NULL, 0 },
 };
 
-static ADDRESS *result_to_addr(QUERY *r)
+static struct Address *result_to_addr(QUERY *r)
 {
-  static ADDRESS *tmp = NULL;
+  static struct Address *tmp = NULL;
 
   if (!(tmp = rfc822_cpy_adr(r->addr, 0)))
     return NULL;
@@ -371,12 +371,12 @@ static void query_menu(char *buf, size_t buflen, QUERY *results, int retbuf)
         case OP_CREATE_ALIAS:
           if (menu->tagprefix)
           {
-            ADDRESS *naddr = NULL;
+            struct Address *naddr = NULL;
 
             for (i = 0; i < menu->max; i++)
               if (QueryTable[i].tagged)
               {
-                ADDRESS *a = result_to_addr(QueryTable[i].data);
+                struct Address *a = result_to_addr(QueryTable[i].data);
                 rfc822_append(&naddr, a, 0);
                 rfc822_free_address(&a);
               }
@@ -386,7 +386,7 @@ static void query_menu(char *buf, size_t buflen, QUERY *results, int retbuf)
           }
           else
           {
-            ADDRESS *a = result_to_addr(QueryTable[menu->current].data);
+            struct Address *a = result_to_addr(QueryTable[menu->current].data);
             mutt_create_alias(NULL, a);
             rfc822_free_address(&a);
           }
@@ -412,7 +412,7 @@ static void query_menu(char *buf, size_t buflen, QUERY *results, int retbuf)
             for (i = 0; i < menu->max; i++)
               if (QueryTable[i].tagged)
               {
-                ADDRESS *a = result_to_addr(QueryTable[i].data);
+                struct Address *a = result_to_addr(QueryTable[i].data);
                 rfc822_append(&msg->env->to, a, 0);
                 rfc822_free_address(&a);
               }
@@ -442,7 +442,7 @@ static void query_menu(char *buf, size_t buflen, QUERY *results, int retbuf)
         {
           if (curpos == 0)
           {
-            ADDRESS *tmpa = result_to_addr(QueryTable[i].data);
+            struct Address *tmpa = result_to_addr(QueryTable[i].data);
             mutt_addrlist_to_local(tmpa);
             tagged = 1;
             rfc822_write_address(buf, buflen, tmpa, 0);
@@ -451,7 +451,7 @@ static void query_menu(char *buf, size_t buflen, QUERY *results, int retbuf)
           }
           else if (curpos + 2 < buflen)
           {
-            ADDRESS *tmpa = result_to_addr(QueryTable[i].data);
+            struct Address *tmpa = result_to_addr(QueryTable[i].data);
             mutt_addrlist_to_local(tmpa);
             strcat(buf, ", ");
             rfc822_write_address((char *) buf + curpos + 1, buflen - curpos - 1, tmpa, 0);
@@ -463,7 +463,7 @@ static void query_menu(char *buf, size_t buflen, QUERY *results, int retbuf)
       /* then enter current message */
       if (!tagged)
       {
-        ADDRESS *tmpa = result_to_addr(QueryTable[menu->current].data);
+        struct Address *tmpa = result_to_addr(QueryTable[menu->current].data);
         mutt_addrlist_to_local(tmpa);
         rfc822_write_address(buf, buflen, tmpa, 0);
         rfc822_free_address(&tmpa);
@@ -479,7 +479,7 @@ static void query_menu(char *buf, size_t buflen, QUERY *results, int retbuf)
 int mutt_query_complete(char *buf, size_t buflen)
 {
   QUERY *results = NULL;
-  ADDRESS *tmpa = NULL;
+  struct Address *tmpa = NULL;
 
   if (!QueryCmd)
   {

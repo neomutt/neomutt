@@ -96,8 +96,8 @@ static int alias_sort_alias(const void *a, const void *b)
 
 static int alias_sort_address(const void *a, const void *b)
 {
-  ADDRESS *pa = (*(ALIAS **) a)->addr;
-  ADDRESS *pb = (*(ALIAS **) b)->addr;
+  struct Address *pa = (*(ALIAS **) a)->addr;
+  struct Address *pb = (*(ALIAS **) b)->addr;
   int r;
 
   if (pa == pb)

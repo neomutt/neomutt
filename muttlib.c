@@ -498,7 +498,7 @@ char *_mutt_expand_path(char *s, size_t slen, int rx)
       case '@':
       {
         HEADER *h = NULL;
-        ADDRESS *alias = NULL;
+        struct Address *alias = NULL;
 
         if ((alias = mutt_lookup_alias(s + 1)))
         {
@@ -1148,7 +1148,7 @@ int mutt_check_overwrite(const char *attname, const char *path, char *fname,
   return 0;
 }
 
-void mutt_save_path(char *d, size_t dsize, ADDRESS *a)
+void mutt_save_path(char *d, size_t dsize, struct Address *a)
 {
   if (a && a->mailbox)
   {
@@ -1166,7 +1166,7 @@ void mutt_save_path(char *d, size_t dsize, ADDRESS *a)
     *d = 0;
 }
 
-void mutt_safe_path(char *s, size_t l, ADDRESS *a)
+void mutt_safe_path(char *s, size_t l, struct Address *a)
 {
   char *p = NULL;
 
