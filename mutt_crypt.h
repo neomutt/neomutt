@@ -98,10 +98,6 @@ enum pgp_ring
 };
 typedef enum pgp_ring pgp_ring_t;
 
-
-struct pgp_keyinfo;
-typedef struct pgp_keyinfo *pgp_key_t;
-
 /* Some prototypes -- old crypt.h. */
 
 int mutt_protect(struct Header *msg, char *keylist);

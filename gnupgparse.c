@@ -107,7 +107,7 @@ static void fix_uid(char *uid)
   }
 }
 
-static pgp_key_t parse_pub_line(char *buf, int *is_subkey, pgp_key_t k)
+static struct PgpKeyInfo *parse_pub_line(char *buf, int *is_subkey, struct PgpKeyInfo *k)
 {
   pgp_uid_t *uid = NULL;
   int field = 0, is_uid = 0;
@@ -116,7 +116,7 @@ static pgp_key_t parse_pub_line(char *buf, int *is_subkey, pgp_key_t k)
   char *pend = NULL, *p = NULL;
   int trust = 0;
   int flags = 0;
-  struct pgp_keyinfo tmp;
+  struct PgpKeyInfo tmp;
 
   *is_subkey = 0;
   if (!*buf)
@@ -368,12 +368,12 @@ bail:
   return NULL;
 }
 
-pgp_key_t  pgp_get_candidates(pgp_ring_t keyring, struct List *hints)
+struct PgpKeyInfo *pgp_get_candidates(pgp_ring_t keyring, struct List *hints)
 {
   FILE *fp = NULL;
   pid_t thepid;
   char buf[LONG_STRING];
-  pgp_key_t db = NULL, *kend, k = NULL, kk, mainkey = NULL;
+  struct PgpKeyInfo *db = NULL, **kend, *k = NULL, *kk = NULL, *mainkey = NULL;
   int is_sub;
   int devnull;
 

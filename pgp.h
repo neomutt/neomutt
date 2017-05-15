@@ -34,18 +34,18 @@ int pgp_check_traditional(FILE *fp, struct Body *b, int tagged_only);
 struct Body *pgp_make_key_attachment(char *tempf);
 const char *pgp_micalg(const char *fname);
 
-char *_pgp_keyid(pgp_key_t);
-char *pgp_keyid(pgp_key_t);
-char *pgp_short_keyid(pgp_key_t k);
-char *pgp_long_keyid(pgp_key_t k);
-char *pgp_fpr_or_lkeyid(pgp_key_t k);
+char *_pgp_keyid(struct PgpKeyInfo *k);
+char *pgp_keyid(struct PgpKeyInfo *k);
+char *pgp_short_keyid(struct PgpKeyInfo *k);
+char *pgp_long_keyid(struct PgpKeyInfo *k);
+char *pgp_fpr_or_lkeyid(struct PgpKeyInfo *k);
 
 int pgp_decrypt_mime(FILE *fpin, FILE **fpout, struct Body *b, struct Body **cur);
 
-pgp_key_t pgp_ask_for_key(char *tag, char *whatfor, short abilities, pgp_ring_t keyring);
-pgp_key_t pgp_get_candidates(pgp_ring_t keyring, struct List *hints);
-pgp_key_t pgp_getkeybyaddr(struct Address *a, short abilities, pgp_ring_t keyring, int oppenc_mode);
-pgp_key_t pgp_getkeybystr(char *p, short abilities, pgp_ring_t keyring);
+struct PgpKeyInfo *pgp_ask_for_key(char *tag, char *whatfor, short abilities, pgp_ring_t keyring);
+struct PgpKeyInfo *pgp_get_candidates(pgp_ring_t keyring, struct List *hints);
+struct PgpKeyInfo *pgp_getkeybyaddr(struct Address *a, short abilities, pgp_ring_t keyring, int oppenc_mode);
+struct PgpKeyInfo *pgp_getkeybystr(char *p, short abilities, pgp_ring_t keyring);
 
 char *pgp_find_keys(struct Address *adrlist, int oppenc_mode);
 

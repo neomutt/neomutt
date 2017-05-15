@@ -32,7 +32,7 @@ typedef struct pgp_signature
   unsigned long sid2;
 } pgp_sig_t;
 
-struct pgp_keyinfo
+struct PgpKeyInfo
 {
   char *keyid;
   char *fingerprint;
@@ -42,18 +42,17 @@ struct pgp_keyinfo
   time_t gen_time;
   int numalg;
   const char *algorithm;
-  struct pgp_keyinfo *parent;
+  struct PgpKeyInfo *parent;
   struct pgp_signature *sigs;
-  struct pgp_keyinfo *next;
+  struct PgpKeyInfo *next;
 };
-/* Note, that pgp_key_t is now pointer and declared in crypt.h */
 
 typedef struct pgp_uid
 {
   char *addr;
   short trust;
   int flags;
-  struct pgp_keyinfo *parent;
+  struct PgpKeyInfo *parent;
   struct pgp_uid *next;
   struct pgp_signature *sigs;
 } pgp_uid_t;
@@ -70,18 +69,18 @@ enum pgp_version
 
 const char *pgp_pkalgbytype(unsigned char type);
 
-pgp_key_t pgp_remove_key(pgp_key_t *klist, pgp_key_t key);
-pgp_uid_t *pgp_copy_uids(pgp_uid_t *up, pgp_key_t parent);
+struct PgpKeyInfo *pgp_remove_key(struct PgpKeyInfo **klist, struct PgpKeyInfo *key);
+pgp_uid_t *pgp_copy_uids(pgp_uid_t *up, struct PgpKeyInfo *parent);
 
 bool pgp_canencrypt(unsigned char type);
 bool pgp_cansign(unsigned char type);
 short pgp_get_abilities(unsigned char type);
 
-void pgp_free_key(pgp_key_t *kpp);
+void pgp_free_key(struct PgpKeyInfo **kpp);
 
-static inline pgp_key_t pgp_new_keyinfo(void)
+static inline struct PgpKeyInfo *pgp_new_keyinfo(void)
 {
-  return safe_calloc(1, sizeof(*((pgp_key_t) 0)));
+  return safe_calloc(1, sizeof(struct PgpKeyInfo));
 }
 
 #endif /* CRYPT_BACKEND_CLASSIC_PGP */

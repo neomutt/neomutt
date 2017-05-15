@@ -81,7 +81,7 @@ static char pgp_flags(int flags)
     return ' ';
 }
 
-static pgp_key_t pgp_principal_key(pgp_key_t key)
+static struct PgpKeyInfo *pgp_principal_key(struct PgpKeyInfo *key)
 {
   if (key->flags & KEYFLAG_SUBKEY && key->parent)
     return key->parent;
@@ -117,7 +117,7 @@ static const char *pgp_entry_fmt(char *dest, size_t destlen, size_t col, int col
   char fmt[16];
   pgp_entry_t *entry = NULL;
   pgp_uid_t *uid = NULL;
-  pgp_key_t key, pkey;
+  struct PgpKeyInfo *key = NULL, *pkey = NULL;
   int kflags = 0;
   int optional = (flags & MUTT_FORMAT_OPTIONAL);
 
@@ -363,9 +363,9 @@ static int pgp_compare_trust(const void *a, const void *b)
                                          _pgp_compare_trust(a, b));
 }
 
-static bool pgp_key_is_valid(pgp_key_t k)
+static bool pgp_key_is_valid(struct PgpKeyInfo *k)
 {
-  pgp_key_t pk = pgp_principal_key(k);
+  struct PgpKeyInfo *pk = pgp_principal_key(k);
   if (k->flags & KEYFLAG_CANTUSE)
     return false;
   if (pk->flags & KEYFLAG_CANTUSE)
@@ -420,7 +420,7 @@ static int pgp_id_matches_addr(struct Address *addr, struct Address *u_addr, pgp
   return rv;
 }
 
-static pgp_key_t pgp_select_key(pgp_key_t keys, struct Address *p, const char *s)
+static struct PgpKeyInfo *pgp_select_key(struct PgpKeyInfo *keys, struct Address *p, const char *s)
 {
   int keymax;
   pgp_uid_t **KeyTable;
@@ -430,7 +430,7 @@ static pgp_key_t pgp_select_key(pgp_key_t keys, struct Address *p, const char *s
   char cmd[LONG_STRING], tempfile[_POSIX_PATH_MAX];
   FILE *fp = NULL, *devnull = NULL;
   pid_t thepid;
-  pgp_key_t kp;
+  struct PgpKeyInfo *kp = NULL;
   pgp_uid_t *a = NULL;
   int (*f)(const void *, const void *);
 
@@ -631,9 +631,9 @@ static pgp_key_t pgp_select_key(pgp_key_t keys, struct Address *p, const char *s
   return kp;
 }
 
-pgp_key_t pgp_ask_for_key(char *tag, char *whatfor, short abilities, pgp_ring_t keyring)
+struct PgpKeyInfo *pgp_ask_for_key(char *tag, char *whatfor, short abilities, pgp_ring_t keyring)
 {
-  pgp_key_t key;
+  struct PgpKeyInfo *key = NULL;
   char resp[SHORT_STRING];
   struct pgp_cache *l = NULL;
 
@@ -689,7 +689,7 @@ struct Body *pgp_make_key_attachment(char *tempf)
   FILE *devnull = NULL;
   struct stat sb;
   pid_t thepid;
-  pgp_key_t key;
+  struct PgpKeyInfo *key = NULL;
   unset_option(OPTPGPCHECKTRUST);
 
   key = pgp_ask_for_key(_("Please enter the key ID: "), NULL, 0, PGP_PUBRING);
@@ -773,7 +773,7 @@ static struct List *pgp_add_string_to_hints(struct List *hints, const char *str)
   return hints;
 }
 
-static pgp_key_t *pgp_get_lastp(pgp_key_t p)
+static struct PgpKeyInfo **pgp_get_lastp(struct PgpKeyInfo *p)
 {
   for (; p; p = p->next)
     if (!p->next)
@@ -782,7 +782,7 @@ static pgp_key_t *pgp_get_lastp(pgp_key_t p)
   return NULL;
 }
 
-pgp_key_t pgp_getkeybyaddr(struct Address *a, short abilities, pgp_ring_t keyring, int oppenc_mode)
+struct PgpKeyInfo *pgp_getkeybyaddr(struct Address *a, short abilities, pgp_ring_t keyring, int oppenc_mode)
 {
   struct Address *r = NULL, *p = NULL;
   struct List *hints = NULL;
@@ -790,11 +790,11 @@ pgp_key_t pgp_getkeybyaddr(struct Address *a, short abilities, pgp_ring_t keyrin
   int multi = 0;
   int match;
 
-  pgp_key_t keys, k, kn;
-  pgp_key_t the_strong_valid_key = NULL;
-  pgp_key_t a_valid_addrmatch_key = NULL;
-  pgp_key_t matches = NULL;
-  pgp_key_t *last = &matches;
+  struct PgpKeyInfo *keys = NULL, *k = NULL, *kn = NULL;
+  struct PgpKeyInfo *the_strong_valid_key = NULL;
+  struct PgpKeyInfo *a_valid_addrmatch_key = NULL;
+  struct PgpKeyInfo *matches = NULL;
+  struct PgpKeyInfo **last = &matches;
   pgp_uid_t *q = NULL;
 
   if (a && a->mailbox)
@@ -911,13 +911,13 @@ pgp_key_t pgp_getkeybyaddr(struct Address *a, short abilities, pgp_ring_t keyrin
   return NULL;
 }
 
-pgp_key_t pgp_getkeybystr(char *p, short abilities, pgp_ring_t keyring)
+struct PgpKeyInfo *pgp_getkeybystr(char *p, short abilities, pgp_ring_t keyring)
 {
   struct List *hints = NULL;
-  pgp_key_t keys;
-  pgp_key_t matches = NULL;
-  pgp_key_t *last = &matches;
-  pgp_key_t k, kn;
+  struct PgpKeyInfo *keys = NULL;
+  struct PgpKeyInfo *matches = NULL;
+  struct PgpKeyInfo **last = &matches;
+  struct PgpKeyInfo *k = NULL, *kn = NULL;
   pgp_uid_t *a = NULL;
   short match;
   size_t l;

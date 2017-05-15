@@ -121,7 +121,7 @@ static void pgp_free_uid(pgp_uid_t **upp)
   *upp = NULL;
 }
 
-pgp_uid_t *pgp_copy_uids(pgp_uid_t *up, pgp_key_t parent)
+pgp_uid_t *pgp_copy_uids(pgp_uid_t *up, struct PgpKeyInfo *parent)
 {
   pgp_uid_t *l = NULL;
   pgp_uid_t **lp = &l;
@@ -139,9 +139,9 @@ pgp_uid_t *pgp_copy_uids(pgp_uid_t *up, pgp_key_t parent)
   return l;
 }
 
-static void _pgp_free_key(pgp_key_t *kpp)
+static void _pgp_free_key(struct PgpKeyInfo **kpp)
 {
-  pgp_key_t kp;
+  struct PgpKeyInfo *kp = NULL;
 
   if (!kpp || !*kpp)
     return;
@@ -151,14 +151,13 @@ static void _pgp_free_key(pgp_key_t *kpp)
   pgp_free_uid(&kp->address);
   FREE(&kp->keyid);
   FREE(&kp->fingerprint);
-  /* mutt_crypt.h: 'typedef struct pgp_keyinfo *pgp_key_t;' */
   FREE(kpp);
 }
 
-pgp_key_t pgp_remove_key(pgp_key_t *klist, pgp_key_t key)
+struct PgpKeyInfo *pgp_remove_key(struct PgpKeyInfo **klist, struct PgpKeyInfo *key)
 {
-  pgp_key_t *last = NULL;
-  pgp_key_t p, q, r;
+  struct PgpKeyInfo **last = NULL;
+  struct PgpKeyInfo *p = NULL, *q = NULL, *r = NULL;
 
   if (!klist || !*klist || !key)
     return NULL;
@@ -183,9 +182,9 @@ pgp_key_t pgp_remove_key(pgp_key_t *klist, pgp_key_t key)
   return q;
 }
 
-void pgp_free_key(pgp_key_t *kpp)
+void pgp_free_key(struct PgpKeyInfo **kpp)
 {
-  pgp_key_t p, q, r;
+  struct PgpKeyInfo *p = NULL, *q = NULL, *r = NULL;
 
   if (!kpp || !*kpp)
     return;

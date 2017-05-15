@@ -96,7 +96,7 @@ bool pgp_use_gpg_agent(void)
   return true;
 }
 
-static pgp_key_t _pgp_parent(pgp_key_t k)
+static struct PgpKeyInfo *_pgp_parent(struct PgpKeyInfo *k)
 {
   if ((k->flags & KEYFLAG_SUBKEY) && k->parent && option(OPTPGPIGNORESUB))
     k = k->parent;
@@ -104,28 +104,28 @@ static pgp_key_t _pgp_parent(pgp_key_t k)
   return k;
 }
 
-char *pgp_long_keyid(pgp_key_t k)
+char *pgp_long_keyid(struct PgpKeyInfo *k)
 {
   k = _pgp_parent(k);
 
   return k->keyid;
 }
 
-char *pgp_short_keyid(pgp_key_t k)
+char *pgp_short_keyid(struct PgpKeyInfo *k)
 {
   k = _pgp_parent(k);
 
   return k->keyid + 8;
 }
 
-char *pgp_keyid(pgp_key_t k)
+char *pgp_keyid(struct PgpKeyInfo *k)
 {
   k = _pgp_parent(k);
 
   return _pgp_keyid(k);
 }
 
-char *_pgp_keyid(pgp_key_t k)
+char *_pgp_keyid(struct PgpKeyInfo *k)
 {
   if (option(OPTPGPLONGIDS))
     return k->keyid;
@@ -133,7 +133,7 @@ char *_pgp_keyid(pgp_key_t k)
     return (k->keyid + 8);
 }
 
-static char *pgp_fingerprint(pgp_key_t k)
+static char *pgp_fingerprint(struct PgpKeyInfo *k)
 {
   k = _pgp_parent(k);
 
@@ -146,7 +146,7 @@ static char *pgp_fingerprint(pgp_key_t k)
  * The longest available should be used for internally identifying
  * the key and for invoking pgp commands.
  */
-char *pgp_fpr_or_lkeyid(pgp_key_t k)
+char *pgp_fpr_or_lkeyid(struct PgpKeyInfo *k)
 {
   char *fingerprint = NULL;
 
@@ -1192,7 +1192,7 @@ char *pgp_find_keys(struct Address *adrlist, int oppenc_mode)
   size_t keylist_used = 0;
   struct Address *addr = NULL;
   struct Address *p = NULL, *q = NULL;
-  pgp_key_t k_info = NULL;
+  struct PgpKeyInfo *k_info = NULL;
   char buf[LONG_STRING];
   int r;
   int key_selected;
@@ -1600,7 +1600,7 @@ struct Body *pgp_traditional_encryptsign(struct Body *a, int flags, char *keylis
 
 int pgp_send_menu(struct Header *msg)
 {
-  pgp_key_t p;
+  struct PgpKeyInfo *p = NULL;
   char input_signas[SHORT_STRING];
   char *prompt = NULL, *letters = NULL, *choices = NULL;
   char promptbuf[LONG_STRING];
