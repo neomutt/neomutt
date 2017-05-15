@@ -40,7 +40,7 @@ static short PreviousSort = SORT_ORDER; /* sidebar_sort_method */
 typedef struct sidebar_entry
 {
   char box[STRING]; /* formatted mailbox name */
-  BUFFY *buffy;
+  struct Buffy *buffy;
   short is_hidden;
 } SBENTRY;
 
@@ -69,7 +69,7 @@ enum
 };
 static int sidebar_source = SB_SRC_NONE;
 
-static BUFFY *get_incoming(void)
+static struct Buffy *get_incoming(void)
 {
   switch (sidebar_source)
   {
@@ -132,7 +132,7 @@ static const char *cb_format_str(char *dest, size_t destlen, size_t col, int col
 
   dest[0] = 0; /* Just in case there's nothing to do */
 
-  BUFFY *b = sbe->buffy;
+  struct Buffy *b = sbe->buffy;
   if (!b)
     return src;
 
@@ -297,8 +297,8 @@ static int cb_qsort_sbe(const void *a, const void *b)
 {
   const SBENTRY *sbe1 = *(const SBENTRY **) a;
   const SBENTRY *sbe2 = *(const SBENTRY **) b;
-  BUFFY *b1 = sbe1->buffy;
-  BUFFY *b2 = sbe2->buffy;
+  struct Buffy *b1 = sbe1->buffy;
+  struct Buffy *b2 = sbe2->buffy;
 
   int result = 0;
 
@@ -335,7 +335,7 @@ static int cb_qsort_sbe(const void *a, const void *b)
  * update_entries_visibility - Should a sidebar_entry be displayed in the sidebar
  *
  * For each SBENTRY in the Entries array, check whether we should display it.
- * This is determined by several criteria.  If the BUFFY:
+ * This is determined by several criteria.  If the Buffy:
  *      is the currently open mailbox
  *      is the currently highlighted mailbox
  *      has unread messages
@@ -379,7 +379,7 @@ static void update_entries_visibility(void)
  */
 static void unsort_entries(void)
 {
-  BUFFY *cur = get_incoming();
+  struct Buffy *cur = get_incoming();
   int i = 0, j;
   SBENTRY *tmp = NULL;
 
@@ -817,7 +817,7 @@ static void draw_sidebar(int num_rows, int num_cols, int div_width)
 {
   int entryidx;
   SBENTRY *entry = NULL;
-  BUFFY *b = NULL;
+  struct Buffy *b = NULL;
   if (TopIndex < 0)
     return;
 
@@ -955,7 +955,7 @@ static void draw_sidebar(int num_rows, int num_cols, int div_width)
  * mutt_sb_draw - Completely redraw the sidebar
  *
  * Completely refresh the sidebar region.  First draw the divider; then, for
- * each BUFFY, call make_sidebar_entry; finally blank out any remaining space.
+ * each Buffy, call make_sidebar_entry; finally blank out any remaining space.
  */
 void mutt_sb_draw(void)
 {
@@ -975,7 +975,7 @@ void mutt_sb_draw(void)
 
   int div_width = draw_divider(num_rows, num_cols);
 
-  BUFFY *b = NULL;
+  struct Buffy *b = NULL;
   if (Entries == NULL)
     for (b = get_incoming(); b; b = b->next)
       mutt_sb_notify_mailbox(b, 1);
@@ -1049,17 +1049,17 @@ void mutt_sb_change_mailbox(int op)
 }
 
 /**
- * mutt_sb_set_buffystats - Update the BUFFY's message counts from the CONTEXT
+ * mutt_sb_set_buffystats - Update the Buffy's message counts from the CONTEXT
  * @ctx:  A mailbox CONTEXT
  *
- * Given a mailbox CONTEXT, find a matching mailbox BUFFY and copy the message
+ * Given a mailbox CONTEXT, find a matching mailbox Buffy and copy the message
  * counts into it.
  */
 void mutt_sb_set_buffystats(const CONTEXT *ctx)
 {
   /* Even if the sidebar's hidden,
    * we should take note of the new data. */
-  BUFFY *b = get_incoming();
+  struct Buffy *b = get_incoming();
   if (!ctx || !b)
     return;
 
@@ -1076,7 +1076,7 @@ void mutt_sb_set_buffystats(const CONTEXT *ctx)
 }
 
 /**
- * mutt_sb_get_highlight - Get the BUFFY that's highlighted in the sidebar
+ * mutt_sb_get_highlight - Get the Buffy that's highlighted in the sidebar
  *
  * Get the path of the mailbox that's highlighted in the sidebar.
  *
@@ -1097,7 +1097,7 @@ const char *mutt_sb_get_highlight(void)
 /**
  * mutt_sb_set_open_buffy - Set the OpnBuffy based on the global Context
  *
- * Search through the list of mailboxes.  If a BUFFY has a matching path, set
+ * Search through the list of mailboxes.  If a Buffy has a matching path, set
  * OpnBuffy to it.
  */
 void mutt_sb_set_open_buffy(void)
@@ -1121,15 +1121,15 @@ void mutt_sb_set_open_buffy(void)
 }
 
 /**
- * mutt_sb_notify_mailbox - The state of a BUFFY is about to change
+ * mutt_sb_notify_mailbox - The state of a Buffy is about to change
  *
  * We receive a notification:
- *      After a new BUFFY has been created
- *      Before a BUFFY is deleted
+ *      After a new Buffy has been created
+ *      Before a Buffy is deleted
  *
  * Before a deletion, check that our pointers won't be invalidated.
  */
-void mutt_sb_notify_mailbox(BUFFY *b, int created)
+void mutt_sb_notify_mailbox(struct Buffy *b, int created)
 {
   int del_index;
 
@@ -1209,7 +1209,7 @@ void mutt_sb_toggle_virtual(void)
   HilIndex = -1;
   BotIndex = -1;
 
-  BUFFY *b = NULL;
+  struct Buffy *b = NULL;
 
   EntryCount = 0;
   FREE(&Entries);

@@ -37,7 +37,7 @@ static void imap_add_folder(char delim, char *folder, int noselect, int noinferi
   char tmp[LONG_STRING];
   char relpath[LONG_STRING];
   IMAP_MBOX mx;
-  BUFFY *b = NULL;
+  struct Buffy *b = NULL;
 
   if (imap_parse_path(state->folder, &mx))
     return;

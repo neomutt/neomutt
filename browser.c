@@ -560,7 +560,7 @@ static const char *newsgroup_format_str(char *dest, size_t destlen, size_t col, 
 #endif /* USE_NNTP */
 
 static void add_folder(MUTTMENU *m, struct browser_state *state, const char *name,
-                       const char *desc, const struct stat *s, BUFFY *b, void *data)
+                       const char *desc, const struct stat *s, struct Buffy *b, void *data)
 {
   if (state->entrylen == state->entrymax)
   {
@@ -648,7 +648,7 @@ static int examine_directory(MUTTMENU *menu, struct browser_state *state,
     DIR *dp = NULL;
     struct dirent *de = NULL;
     char buffer[_POSIX_PATH_MAX + SHORT_STRING];
-    BUFFY *tmp = NULL;
+    struct Buffy *tmp = NULL;
 
     while (stat(d, &s) == -1)
     {
@@ -719,7 +719,7 @@ static int examine_directory(MUTTMENU *menu, struct browser_state *state,
 #ifdef USE_NOTMUCH
 static int examine_vfolders(MUTTMENU *menu, struct browser_state *state)
 {
-  BUFFY *tmp = VirtIncoming;
+  struct Buffy *tmp = VirtIncoming;
 
   if (!VirtIncoming)
     return -1;
@@ -767,7 +767,7 @@ static int examine_mailboxes(MUTTMENU *menu, struct browser_state *state)
   else
 #endif
   {
-    BUFFY *tmp = Incoming;
+    struct Buffy *tmp = Incoming;
 
     if (!Incoming)
       return -1;

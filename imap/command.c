@@ -484,7 +484,7 @@ static void cmd_parse_status(IMAP_DATA *idata, char *s)
 {
   char *mailbox = NULL;
   char *value = NULL;
-  BUFFY *inc = NULL;
+  struct Buffy *inc = NULL;
   IMAP_MBOX mx;
   int count;
   IMAP_STATUS *status = NULL;

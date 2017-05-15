@@ -1999,7 +1999,7 @@ done:
 
 char *nm_get_description(CONTEXT *ctx)
 {
-  BUFFY *p = NULL;
+  struct Buffy *p = NULL;
 
   for (p = VirtIncoming; p; p = p->next)
     if (p->desc && (strcmp(p->path, ctx->path) == 0))
@@ -2010,7 +2010,7 @@ char *nm_get_description(CONTEXT *ctx)
 
 int nm_description_to_path(const char *desc, char *buf, size_t bufsz)
 {
-  BUFFY *p = NULL;
+  struct Buffy *p = NULL;
 
   if (!desc || !buf || !bufsz)
     return -EINVAL;

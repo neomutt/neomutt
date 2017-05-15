@@ -1499,7 +1499,7 @@ int imap_buffy_check(int force, int check_stats)
 {
   IMAP_DATA *idata = NULL;
   IMAP_DATA *lastdata = NULL;
-  BUFFY *mailbox = NULL;
+  struct Buffy *mailbox = NULL;
   char name[LONG_STRING];
   char command[LONG_STRING];
   char munged[LONG_STRING];
@@ -1922,7 +1922,7 @@ static int longest_common_prefix(char *dest, const char *src, int start, size_t 
  * to complete over open connections and account/folder hooks too. */
 static int imap_complete_hosts(char *dest, size_t len)
 {
-  BUFFY *mailbox = NULL;
+  struct Buffy *mailbox = NULL;
   CONNECTION *conn = NULL;
   int rc = -1;
   int matchlen;

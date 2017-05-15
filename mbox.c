@@ -1010,7 +1010,7 @@ static int mbox_sync_mailbox(CONTEXT *ctx, int *index_hint)
   FILE *fp = NULL;
   progress_t progress;
   char msgbuf[STRING];
-  BUFFY *tmp = NULL;
+  struct Buffy *tmp = NULL;
 
   /* sort message by their position in the mailbox on disk */
   if (Sort != SORT_ORDER)

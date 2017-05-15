@@ -216,7 +216,7 @@ static inline mode_t mh_umask(CONTEXT *ctx)
  * Returns 0 if the modification time is older
  * Returns -1 on error
  */
-static int mh_sequences_changed(BUFFY *b)
+static int mh_sequences_changed(struct Buffy *b)
 {
   char path[_POSIX_PATH_MAX];
   struct stat sb;
@@ -232,7 +232,7 @@ static int mh_sequences_changed(BUFFY *b)
  * Returns 0 if the modtime is newer
  * Returns -1 on error
  */
-static int mh_already_notified(BUFFY *b, int msgno)
+static int mh_already_notified(struct Buffy *b, int msgno)
 {
   char path[_POSIX_PATH_MAX];
   struct stat sb;
@@ -261,7 +261,7 @@ static bool mh_valid_message(const char *s)
  * check_stats: if true, also count total, new, and flagged messages.
  * Returns 1 if the mailbox has new mail.
  */
-int mh_buffy(BUFFY *mailbox, int check_stats)
+int mh_buffy(struct Buffy *mailbox, int check_stats)
 {
   int i;
   struct mh_sequences mhs;
