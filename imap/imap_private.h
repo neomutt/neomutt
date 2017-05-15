@@ -201,7 +201,7 @@ typedef struct
   int cmdslots;
   int nextcmd;
   int lastcmd;
-  BUFFER *cmdbuf;
+  struct Buffer *cmdbuf;
 
   /* cache IMAP_STATUS of visited mailboxes */
   LIST *mboxcache;
@@ -242,7 +242,7 @@ IMAP_DATA *imap_conn_find(const struct Account *account, int flags);
 int imap_read_literal(FILE *fp, IMAP_DATA *idata, long bytes, progress_t *pbar);
 void imap_expunge_mailbox(IMAP_DATA *idata);
 void imap_logout(IMAP_DATA **idata);
-int imap_sync_message(IMAP_DATA *idata, HEADER *hdr, BUFFER *cmd, int *err_continue);
+int imap_sync_message(IMAP_DATA *idata, HEADER *hdr, struct Buffer *cmd, int *err_continue);
 bool imap_has_flag(LIST *flag_list, const char *flag);
 
 /* auth.c */

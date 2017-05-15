@@ -353,7 +353,7 @@ static void cmd_parse_lsub(IMAP_DATA *idata, char *s)
 {
   char buf[STRING];
   char errstr[STRING];
-  BUFFER err, token;
+  struct Buffer err, token;
   ciss_url_t url;
   IMAP_LIST list;
 

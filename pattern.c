@@ -47,9 +47,9 @@ enum
   RANGE_E_CTX,
 };
 
-static bool eat_regexp(pattern_t *pat, BUFFER *s, BUFFER *err)
+static bool eat_regexp(pattern_t *pat, struct Buffer *s, struct Buffer *err)
 {
-  BUFFER buf;
+  struct Buffer buf;
   char errmsg[STRING];
   int r;
   char *pexpr = NULL;
@@ -128,7 +128,7 @@ static const char *get_offset(struct tm *tm, const char *s, int sign)
   return (ps + 1);
 }
 
-static const char *get_date(const char *s, struct tm *t, BUFFER *err)
+static const char *get_date(const char *s, struct tm *t, struct Buffer *err)
 {
   char *p = NULL;
   time_t now = time(NULL);
@@ -249,7 +249,7 @@ enum
 };
 
 static const char *parse_date_range(const char *pc, struct tm *min, struct tm *max,
-                                    int haveMin, struct tm *baseMin, BUFFER *err)
+                                    int haveMin, struct tm *baseMin, struct Buffer *err)
 {
   int flag = MUTT_PDR_NONE;
   while (*pc && ((flag & MUTT_PDR_DONE) == 0))
@@ -355,9 +355,9 @@ static void adjust_date_range(struct tm *min, struct tm *max)
   }
 }
 
-static bool eat_date(pattern_t *pat, BUFFER *s, BUFFER *err)
+static bool eat_date(pattern_t *pat, struct Buffer *s, struct Buffer *err)
 {
-  BUFFER buffer;
+  struct Buffer buffer;
   struct tm min, max;
   char *pexpr = NULL;
 
@@ -493,7 +493,7 @@ static bool eat_date(pattern_t *pat, BUFFER *s, BUFFER *err)
   return true;
 }
 
-static bool eat_range(pattern_t *pat, BUFFER *s, BUFFER *err)
+static bool eat_range(pattern_t *pat, struct Buffer *s, struct Buffer *err)
 {
   char *tmp = NULL;
   int do_exclusive = 0;
@@ -578,7 +578,7 @@ static bool eat_range(pattern_t *pat, BUFFER *s, BUFFER *err)
   return true;
 }
 
-static int report_regerror(int regerr, regex_t *preg, BUFFER *err)
+static int report_regerror(int regerr, regex_t *preg, struct Buffer *err)
 {
   size_t ds = err->dsize;
 
@@ -588,7 +588,7 @@ static int report_regerror(int regerr, regex_t *preg, BUFFER *err)
   return RANGE_E_SYNTAX;
 }
 
-static bool is_context_available(BUFFER *s, regmatch_t pmatch[], int kind, BUFFER *err)
+static bool is_context_available(struct Buffer *s, regmatch_t pmatch[], int kind, struct Buffer *err)
 {
   char *context_loc = NULL;
   const char *context_req_chars[] = {
@@ -615,7 +615,7 @@ static bool is_context_available(BUFFER *s, regmatch_t pmatch[], int kind, BUFFE
   return false;
 }
 
-static int scan_range_num(BUFFER *s, regmatch_t pmatch[], int group, int kind)
+static int scan_range_num(struct Buffer *s, regmatch_t pmatch[], int group, int kind)
 {
   int num;
   unsigned char c;
@@ -641,7 +641,7 @@ static int scan_range_num(BUFFER *s, regmatch_t pmatch[], int group, int kind)
   }
 }
 
-static int scan_range_slot(BUFFER *s, regmatch_t pmatch[], int grp, int side, int kind)
+static int scan_range_slot(struct Buffer *s, regmatch_t pmatch[], int grp, int side, int kind)
 {
   unsigned char c;
 
@@ -683,7 +683,7 @@ static void order_range(pattern_t *pat)
   pat->max = num;
 }
 
-static int eat_range_by_regexp(pattern_t *pat, BUFFER *s, int kind, BUFFER *err)
+static int eat_range_by_regexp(pattern_t *pat, struct Buffer *s, int kind, struct Buffer *err)
 {
   int regerr;
   regmatch_t pmatch[RANGE_RX_GROUPS];
@@ -731,7 +731,7 @@ static int eat_range_by_regexp(pattern_t *pat, BUFFER *s, int kind, BUFFER *err)
   return RANGE_E_OK;
 }
 
-static bool eat_message_range(pattern_t *pat, BUFFER *s, BUFFER *err)
+static bool eat_message_range(pattern_t *pat, struct Buffer *s, struct Buffer *err)
 {
   int skip_quote = 0;
   int i_kind;
@@ -779,7 +779,7 @@ static const struct pattern_flags
   int tag; /* character used to represent this op */
   int op;  /* operation to perform */
   int class;
-  bool (*eat_arg)(pattern_t *, BUFFER *, BUFFER *);
+  bool (*eat_arg)(pattern_t *, struct Buffer *, struct Buffer *);
 } Flags[] = {
   { 'A', MUTT_ALL, 0, NULL },
   { 'b', MUTT_BODY, MUTT_FULL_MSG, eat_regexp },
@@ -1078,7 +1078,7 @@ void mutt_pattern_free(pattern_t **pat)
   }
 }
 
-pattern_t *mutt_pattern_comp(/* const */ char *s, int flags, BUFFER *err)
+pattern_t *mutt_pattern_comp(/* const */ char *s, int flags, struct Buffer *err)
 {
   pattern_t *curlist = NULL;
   pattern_t *tmp = NULL, *tmp2 = NULL;
@@ -1091,7 +1091,7 @@ pattern_t *mutt_pattern_comp(/* const */ char *s, int flags, BUFFER *err)
   const struct pattern_flags *entry = NULL;
   char *p = NULL;
   char *buf = NULL;
-  BUFFER ps;
+  struct Buffer ps;
 
   mutt_buffer_init(&ps);
   ps.dptr = s;
@@ -1769,7 +1769,7 @@ int mutt_pattern_func(int op, char *prompt)
 {
   pattern_t *pat = NULL;
   char buf[LONG_STRING] = "", *simple = NULL;
-  BUFFER err;
+  struct Buffer err;
   int i;
   progress_t progress;
 
@@ -1916,7 +1916,7 @@ int mutt_search_command(int cur, int op)
 
     if (!SearchPattern || (mutt_strcmp(temp, LastSearchExpn) != 0))
     {
-      BUFFER err;
+      struct Buffer err;
       mutt_buffer_init(&err);
       set_option(OPTSEARCHINVALID);
       strfcpy(LastSearch, buf, sizeof(LastSearch));

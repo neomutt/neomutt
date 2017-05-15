@@ -18,13 +18,13 @@
 
 #include <sys/types.h>
 
-typedef struct
+struct Buffer
 {
   char *data;   /* pointer to data */
   char *dptr;   /* current read/write position */
   size_t dsize; /* length of data */
   int destroy;  /* destroy `data' when done? */
-} BUFFER;
+};
 
 /* flags for mutt_extract_token() */
 #define MUTT_TOKEN_EQUAL     (1 << 0) /* treat '=' as a special */
@@ -35,13 +35,13 @@ typedef struct
 #define MUTT_TOKEN_COMMENT   (1 << 5) /* don't reap comments */
 #define MUTT_TOKEN_SEMICOLON (1 << 6) /* don't treat ; as special */
 
-BUFFER *mutt_buffer_new(void);
-BUFFER *mutt_buffer_init(BUFFER *b);
-BUFFER *mutt_buffer_from(char *seed);
-void mutt_buffer_free(BUFFER **p);
-int mutt_buffer_printf(BUFFER *buf, const char *fmt, ...);
-void mutt_buffer_addstr(BUFFER *buf, const char *s);
-void mutt_buffer_addch(BUFFER *buf, char c);
-int mutt_extract_token(BUFFER *dest, BUFFER *tok, int flags);
+struct Buffer *mutt_buffer_new(void);
+struct Buffer *mutt_buffer_init(struct Buffer *b);
+struct Buffer *mutt_buffer_from(char *seed);
+void mutt_buffer_free(struct Buffer **p);
+int mutt_buffer_printf(struct Buffer *buf, const char *fmt, ...);
+void mutt_buffer_addstr(struct Buffer *buf, const char *s);
+void mutt_buffer_addch(struct Buffer *buf, char c);
+int mutt_extract_token(struct Buffer *dest, struct Buffer *tok, int flags);
 
 #endif /* _MUTT_BUFFER_H */

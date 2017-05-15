@@ -132,7 +132,7 @@ static int group_remove_adrlist(group_t *g, struct Address *a)
   return 0;
 }
 
-static int group_add_rx(group_t *g, const char *s, int flags, BUFFER *err)
+static int group_add_rx(group_t *g, const char *s, int flags, struct Buffer *err)
 {
   return mutt_add_to_rx_list(&g->rs, s, flags, err);
 }
@@ -162,7 +162,7 @@ int mutt_group_context_remove_adrlist(group_context_t *ctx, struct Address *a)
   return rv;
 }
 
-int mutt_group_context_add_rx(group_context_t *ctx, const char *s, int flags, BUFFER *err)
+int mutt_group_context_add_rx(group_context_t *ctx, const char *s, int flags, struct Buffer *err)
 {
   int rv = 0;
 

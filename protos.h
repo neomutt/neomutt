@@ -80,8 +80,8 @@ void mutt_delete_parameter(const char *attribute, PARAMETER **p);
 void mutt_set_parameter(const char *attribute, const char *value, PARAMETER **p);
 
 #ifdef USE_NOTMUCH
-int mutt_parse_virtual_mailboxes(BUFFER *path, BUFFER *s, unsigned long data, BUFFER *err);
-int mutt_parse_unvirtual_mailboxes(BUFFER *path, BUFFER *s, unsigned long data, BUFFER *err);
+int mutt_parse_virtual_mailboxes(struct Buffer *path, struct Buffer *s, unsigned long data, struct Buffer *err);
+int mutt_parse_unvirtual_mailboxes(struct Buffer *path, struct Buffer *s, unsigned long data, struct Buffer *err);
 #endif
 
 FILE *mutt_open_read(const char *path, pid_t *thepid);
@@ -264,7 +264,7 @@ void mutt_version(void);
 void mutt_view_attachments(HEADER *hdr);
 void mutt_write_address_list(struct Address *adr, FILE *fp, int linelen, int display);
 void mutt_set_virtual(CONTEXT *ctx);
-int mutt_add_to_rx_list(RX_LIST **list, const char *s, int flags, BUFFER *err);
+int mutt_add_to_rx_list(RX_LIST **list, const char *s, int flags, struct Buffer *err);
 bool mutt_addr_is_user(struct Address *addr);
 int mutt_addwch(wchar_t wc);
 int mutt_alias_complete(char *s, size_t buflen);
@@ -340,22 +340,22 @@ int mutt_messages_in_thread(CONTEXT *ctx, HEADER *hdr, int flag);
 int mutt_multi_choice(char *prompt, char *letters);
 bool mutt_needs_mailcap(struct Body *m);
 int mutt_num_postponed(int force);
-int mutt_parse_bind(BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err);
-int mutt_parse_exec(BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err);
-int mutt_parse_color(BUFFER *buff, BUFFER *s, unsigned long data, BUFFER *err);
-int mutt_parse_uncolor(BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err);
-int mutt_parse_hook(BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err);
-int mutt_parse_macro(BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err);
-int mutt_parse_mailboxes(BUFFER *path, BUFFER *s, unsigned long data, BUFFER *err);
-int mutt_parse_mono(BUFFER *buff, BUFFER *s, unsigned long data, BUFFER *err);
-int mutt_parse_unmono(BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err);
-int mutt_parse_push(BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err);
-int mutt_parse_rc_line(/* const */ char *line, BUFFER *token, BUFFER *err);
+int mutt_parse_bind(struct Buffer *buf, struct Buffer *s, unsigned long data, struct Buffer *err);
+int mutt_parse_exec(struct Buffer *buf, struct Buffer *s, unsigned long data, struct Buffer *err);
+int mutt_parse_color(struct Buffer *buff, struct Buffer *s, unsigned long data, struct Buffer *err);
+int mutt_parse_uncolor(struct Buffer *buf, struct Buffer *s, unsigned long data, struct Buffer *err);
+int mutt_parse_hook(struct Buffer *buf, struct Buffer *s, unsigned long data, struct Buffer *err);
+int mutt_parse_macro(struct Buffer *buf, struct Buffer *s, unsigned long data, struct Buffer *err);
+int mutt_parse_mailboxes(struct Buffer *path, struct Buffer *s, unsigned long data, struct Buffer *err);
+int mutt_parse_mono(struct Buffer *buff, struct Buffer *s, unsigned long data, struct Buffer *err);
+int mutt_parse_unmono(struct Buffer *buf, struct Buffer *s, unsigned long data, struct Buffer *err);
+int mutt_parse_push(struct Buffer *buf, struct Buffer *s, unsigned long data, struct Buffer *err);
+int mutt_parse_rc_line(/* const */ char *line, struct Buffer *token, struct Buffer *err);
 int mutt_parse_rfc822_line(ENVELOPE *e, HEADER *hdr, char *line, char *p,
                            short user_hdrs, short weed, short do_2047, LIST **lastp);
-int mutt_parse_score(BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err);
-int mutt_parse_unscore(BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err);
-int mutt_parse_unhook(BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err);
+int mutt_parse_score(struct Buffer *buf, struct Buffer *s, unsigned long data, struct Buffer *err);
+int mutt_parse_unscore(struct Buffer *buf, struct Buffer *s, unsigned long data, struct Buffer *err);
+int mutt_parse_unhook(struct Buffer *buf, struct Buffer *s, unsigned long data, struct Buffer *err);
 int mutt_pattern_func(int op, char *prompt);
 int mutt_pipe_attachment(FILE *fp, struct Body *b, const char *path, char *outfile);
 int mutt_print_attachment(FILE *fp, struct Body *a);
@@ -427,7 +427,7 @@ static inline pattern_t *new_pattern(void)
 
 int mutt_pattern_exec(struct pattern_t *pat, pattern_exec_flag flags,
                       CONTEXT *ctx, HEADER *h, pattern_cache_t *cache);
-pattern_t *mutt_pattern_comp(/* const */ char *s, int flags, BUFFER *err);
+pattern_t *mutt_pattern_comp(/* const */ char *s, int flags, struct Buffer *err);
 void mutt_check_simple(char *s, size_t len, const char *simple);
 void mutt_pattern_free(pattern_t **pat);
 

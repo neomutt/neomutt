@@ -871,7 +871,7 @@ bool imap_has_flag(LIST *flag_list, const char *flag)
 
 /* Note: headers must be in SORT_ORDER. See imap_exec_msgset for args.
  * Pos is an opaque pointer a la strtok. It should be 0 at first call. */
-static int imap_make_msg_set(IMAP_DATA *idata, BUFFER *buf, int flag,
+static int imap_make_msg_set(IMAP_DATA *idata, struct Buffer *buf, int flag,
                              int changed, int invert, int *pos)
 {
   HEADER **hdrs = idata->ctx->hdrs;
@@ -969,7 +969,7 @@ int imap_exec_msgset(IMAP_DATA *idata, const char *pre, const char *post,
 {
   HEADER **hdrs = NULL;
   short oldsort;
-  BUFFER *cmd = NULL;
+  struct Buffer *cmd = NULL;
   int pos;
   int rc;
   int count = 0;
@@ -1048,7 +1048,7 @@ static bool compare_flags(HEADER *h)
 }
 
 /* Update the IMAP server to reflect the flags a single message.  */
-int imap_sync_message(IMAP_DATA *idata, HEADER *hdr, BUFFER *cmd, int *err_continue)
+int imap_sync_message(IMAP_DATA *idata, HEADER *hdr, struct Buffer *cmd, int *err_continue)
 {
   char flags[LONG_STRING];
   char uid[11];
@@ -1737,7 +1737,7 @@ static int do_search(const pattern_t *search, int allpats)
 /* convert mutt pattern_t to IMAP SEARCH command containing only elements
  * that require full-text search (mutt already has what it needs for most
  * match types, and does a better job (eg server doesn't support regexps). */
-static int imap_compile_search(const pattern_t *pat, BUFFER *buf)
+static int imap_compile_search(const pattern_t *pat, struct Buffer *buf)
 {
   if (!do_search(pat, 0))
     return 0;
@@ -1821,7 +1821,7 @@ static int imap_compile_search(const pattern_t *pat, BUFFER *buf)
 
 int imap_search(CONTEXT *ctx, const pattern_t *pat)
 {
-  BUFFER buf;
+  struct Buffer buf;
   IMAP_DATA *idata = ctx->data;
   int i;
 
@@ -1854,7 +1854,7 @@ int imap_subscribe(char *path, int subscribe)
   char buf[LONG_STRING];
   char mbox[LONG_STRING];
   char errstr[STRING];
-  BUFFER err, token;
+  struct Buffer err, token;
   IMAP_MBOX mx;
 
   if (!mx_is_imap(path) || imap_parse_path(path, &mx) || !mx.mbox)

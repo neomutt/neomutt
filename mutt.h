@@ -677,7 +677,7 @@ typedef struct envelope
   char *followup_to;
   char *x_comment_to;
 #endif
-  BUFFER *spam;
+  struct Buffer *spam;
   LIST *references;  /* message references (in reverse order) */
   LIST *in_reply_to; /* in-reply-to header content */
   LIST *userhdrs;    /* user defined headers */

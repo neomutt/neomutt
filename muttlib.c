@@ -1310,7 +1310,7 @@ void mutt_FormatString(char *dest,     /* output buffer */
     /* n-off is the number of backslashes. */
     if (off > 0 && ((n - off) % 2) == 0)
     {
-      BUFFER *srcbuf = NULL, *word = NULL, *command = NULL;
+      struct Buffer *srcbuf = NULL, *word = NULL, *command = NULL;
       char srccopy[LONG_STRING];
 #ifdef DEBUG
       int i = 0;

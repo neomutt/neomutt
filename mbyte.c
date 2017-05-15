@@ -539,7 +539,7 @@ bool is_display_corrupting_utf8(wchar_t wc)
 
 int mutt_filter_unprintable(char **s)
 {
-  BUFFER *b = NULL;
+  struct Buffer *b = NULL;
   wchar_t wc;
   size_t k, k2;
   char scratch[MB_LEN_MAX + 1];

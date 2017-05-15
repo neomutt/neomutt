@@ -293,7 +293,7 @@ static void restore_list(LIST **l, const unsigned char *d, int *off, int convert
   *l = NULL;
 }
 
-static unsigned char *dump_buffer(BUFFER *b, unsigned char *d, int *off, int convert)
+static unsigned char *dump_buffer(struct Buffer *b, unsigned char *d, int *off, int convert)
 {
   if (!b)
   {
@@ -311,7 +311,7 @@ static unsigned char *dump_buffer(BUFFER *b, unsigned char *d, int *off, int con
   return d;
 }
 
-static void restore_buffer(BUFFER **b, const unsigned char *d, int *off, int convert)
+static void restore_buffer(struct Buffer **b, const unsigned char *d, int *off, int convert)
 {
   unsigned int used;
   unsigned int offset;
@@ -321,7 +321,7 @@ static void restore_buffer(BUFFER **b, const unsigned char *d, int *off, int con
     return;
   }
 
-  *b = safe_malloc(sizeof(BUFFER));
+  *b = safe_malloc(sizeof(struct Buffer));
 
   restore_char(&(*b)->data, d, off, convert);
   restore_int(&offset, d, off);

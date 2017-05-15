@@ -504,7 +504,7 @@ void mutt_update_mailbox(BUFFY *b)
   return;
 }
 
-int mutt_parse_mailboxes(BUFFER *path, BUFFER *s, unsigned long data, BUFFER *err)
+int mutt_parse_mailboxes(struct Buffer *path, struct Buffer *s, unsigned long data, struct Buffer *err)
 {
   BUFFY **tmp = NULL, *tmp1 = NULL;
   char buf[_POSIX_PATH_MAX];
@@ -591,7 +591,7 @@ int mutt_parse_mailboxes(BUFFER *path, BUFFER *s, unsigned long data, BUFFER *er
 }
 
 #ifdef USE_NOTMUCH
-int mutt_parse_virtual_mailboxes(BUFFER *path, BUFFER *s, unsigned long data, BUFFER *err)
+int mutt_parse_virtual_mailboxes(struct Buffer *path, struct Buffer *s, unsigned long data, struct Buffer *err)
 {
   if (!path || !s)
     return -1;
@@ -649,7 +649,7 @@ int mutt_parse_virtual_mailboxes(BUFFER *path, BUFFER *s, unsigned long data, BU
   return 0;
 }
 
-int mutt_parse_unvirtual_mailboxes(BUFFER *path, BUFFER *s, unsigned long data, BUFFER *err)
+int mutt_parse_unvirtual_mailboxes(struct Buffer *path, struct Buffer *s, unsigned long data, struct Buffer *err)
 {
   BUFFY **tmp = NULL, *tmp1 = NULL;
 

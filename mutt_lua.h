@@ -20,7 +20,7 @@
 
 #include "mutt.h"
 
-int mutt_lua_parse(BUFFER *tmp, BUFFER *s, unsigned long data, BUFFER *err);
-int mutt_lua_source_file(BUFFER *tmp, BUFFER *s, unsigned long data, BUFFER *err);
+int mutt_lua_parse(struct Buffer *tmp, struct Buffer *s, unsigned long data, struct Buffer *err);
+int mutt_lua_source_file(struct Buffer *tmp, struct Buffer *s, unsigned long data, struct Buffer *err);
 
 #endif /* _MUTT_LUA_H */

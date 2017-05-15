@@ -600,7 +600,7 @@ void mutt_shell_escape(void)
 /* enter a mutt command */
 void mutt_enter_command(void)
 {
-  BUFFER err, token;
+  struct Buffer err, token;
   char buffer[LONG_STRING];
   int r;
 

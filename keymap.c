@@ -224,7 +224,7 @@ static int parsekeys(const char *str, keycode_t *d, int max)
 /* insert a key sequence into the specified map.  the map is sorted by ASCII
  * value (lowest to highest)
  */
-int km_bind_err(char *s, int menu, int op, char *macro, char *descr, BUFFER *err)
+int km_bind_err(char *s, int menu, int op, char *macro, char *descr, struct Buffer *err)
 {
   int retval = 0;
   struct keymap_t *map = NULL, *tmp = NULL, *last = NULL, *next = NULL;
@@ -318,7 +318,7 @@ int km_bind(char *s, int menu, int op, char *macro, char *descr)
   return km_bind_err(s, menu, op, macro, descr, NULL);
 }
 
-static int km_bindkey_err(char *s, int menu, int op, BUFFER *err)
+static int km_bindkey_err(char *s, int menu, int op, struct Buffer *err)
 {
   return km_bind_err(s, menu, op, NULL, NULL, err);
 }
@@ -923,7 +923,7 @@ void km_error_key(int menu)
   return;
 }
 
-int mutt_parse_push(BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err)
+int mutt_parse_push(struct Buffer *buf, struct Buffer *s, unsigned long data, struct Buffer *err)
 {
   int r = 0;
 
@@ -939,9 +939,9 @@ int mutt_parse_push(BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err)
 }
 
 /* expects to see: <menu-string>,<menu-string>,... <key-string> */
-char *parse_keymap(int *menu, BUFFER *s, int maxmenus, int *nummenus, BUFFER *err)
+char *parse_keymap(int *menu, struct Buffer *s, int maxmenus, int *nummenus, struct Buffer *err)
 {
-  BUFFER buf;
+  struct Buffer buf;
   int i = 0;
   char *p = NULL, *q = NULL;
 
@@ -991,7 +991,7 @@ error:
 }
 
 static int try_bind(char *key, int menu, char *func,
-                    const struct binding_t *bindings, BUFFER *err)
+                    const struct binding_t *bindings, struct Buffer *err)
 {
   int i;
 
@@ -1055,7 +1055,7 @@ const struct binding_t *km_get_table(int menu)
 }
 
 /* bind menu-name '<key_sequence>' function-name */
-int mutt_parse_bind(BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err)
+int mutt_parse_bind(struct Buffer *buf, struct Buffer *s, unsigned long data, struct Buffer *err)
 {
   const struct binding_t *bindings = NULL;
   char *key = NULL;
@@ -1107,7 +1107,7 @@ int mutt_parse_bind(BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err)
 }
 
 /* macro <menu> <key> <macro> <description> */
-int mutt_parse_macro(BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err)
+int mutt_parse_macro(struct Buffer *buf, struct Buffer *s, unsigned long data, struct Buffer *err)
 {
   int menu[sizeof(Menus) / sizeof(struct mapping_t) - 1], r = -1, nummenus, i;
   char *seq = NULL;
@@ -1156,7 +1156,7 @@ int mutt_parse_macro(BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err)
 }
 
 /* exec function-name */
-int mutt_parse_exec(BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err)
+int mutt_parse_exec(struct Buffer *buf, struct Buffer *s, unsigned long data, struct Buffer *err)
 {
   int ops[128];
   int nops = 0;

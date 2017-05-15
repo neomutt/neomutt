@@ -25,7 +25,7 @@
 void mutt_group_context_add(group_context_t **ctx, group_t *group);
 void mutt_group_context_destroy(group_context_t **ctx);
 void mutt_group_context_add_adrlist(group_context_t *ctx, struct Address *a);
-int mutt_group_context_add_rx(group_context_t *ctx, const char *s, int flags, BUFFER *err);
+int mutt_group_context_add_rx(group_context_t *ctx, const char *s, int flags, struct Buffer *err);
 
 bool mutt_group_match(group_t *g, const char *s);
 

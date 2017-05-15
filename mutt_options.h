@@ -56,6 +56,6 @@ struct option_t
 int mutt_option_to_string(const struct option_t *opt, char *val, size_t len);
 
 const struct option_t *mutt_option_get(const char *s);
-int mutt_option_set(const struct option_t *val, BUFFER *err);
+int mutt_option_set(const struct option_t *val, struct Buffer *err);
 
 #endif /* _MUTT_OPTIONS_H */

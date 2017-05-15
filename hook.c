@@ -41,10 +41,10 @@ static HOOK *Hooks = NULL;
 
 static int current_hook_type = 0;
 
-int mutt_parse_hook(BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err)
+int mutt_parse_hook(struct Buffer *buf, struct Buffer *s, unsigned long data, struct Buffer *err)
 {
   HOOK *ptr = NULL;
-  BUFFER command, pattern;
+  struct Buffer command, pattern;
   int rc, not = 0;
   regex_t *rx = NULL;
   pattern_t *pat = NULL;
@@ -282,7 +282,7 @@ static void delete_hooks(int type)
   }
 }
 
-int mutt_parse_unhook(BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err)
+int mutt_parse_unhook(struct Buffer *buf, struct Buffer *s, unsigned long data, struct Buffer *err)
 {
   while (MoreArgs(s))
   {
@@ -321,7 +321,7 @@ int mutt_parse_unhook(BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err)
 void mutt_folder_hook(char *path)
 {
   HOOK *tmp = Hooks;
-  BUFFER err, token;
+  struct Buffer err, token;
 
   current_hook_type = MUTT_FOLDERHOOK;
 
@@ -372,7 +372,7 @@ char *mutt_find_hook(int type, const char *pat)
 
 void mutt_message_hook(CONTEXT *ctx, HEADER *hdr, int type)
 {
-  BUFFER err, token;
+  struct Buffer err, token;
   HOOK *hook = NULL;
   pattern_cache_t cache;
 
@@ -536,8 +536,8 @@ void mutt_account_hook(const char *url)
   static int inhook = 0;
 
   HOOK *hook = NULL;
-  BUFFER token;
-  BUFFER err;
+  struct Buffer token;
+  struct Buffer err;
 
   if (inhook)
     return;
@@ -579,8 +579,8 @@ void mutt_account_hook(const char *url)
 void mutt_timeout_hook(void)
 {
   HOOK *hook = NULL;
-  BUFFER token;
-  BUFFER err;
+  struct Buffer token;
+  struct Buffer err;
   char buf[STRING];
 
   err.data = buf;
@@ -614,8 +614,8 @@ void mutt_timeout_hook(void)
 void mutt_startup_shutdown_hook(int type)
 {
   HOOK *hook = NULL;
-  BUFFER token;
-  BUFFER err;
+  struct Buffer token;
+  struct Buffer err;
   char buf[STRING];
 
   err.data = buf;
