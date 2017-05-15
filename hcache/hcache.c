@@ -728,7 +728,7 @@ header_cache_t *mutt_hcache_open(const char *path, const char *folder, hcache_na
       unsigned int intval;
     } digest;
     struct md5_ctx ctx;
-    REPLACE_LIST *spam = NULL;
+    struct ReplaceList *spam = NULL;
     RX_LIST *nospam = NULL;
 
     hcachever = HCACHEVER;

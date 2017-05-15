@@ -604,9 +604,9 @@ int mutt_add_to_rx_list(RX_LIST **list, const char *s, int flags, struct Buffer 
   return 0;
 }
 
-static int remove_from_replace_list(REPLACE_LIST **list, const char *pat)
+static int remove_from_replace_list(struct ReplaceList **list, const char *pat)
 {
-  REPLACE_LIST *cur = NULL, *prev = NULL;
+  struct ReplaceList *cur = NULL, *prev = NULL;
   int nremoved = 0;
 
   /* Being first is a special case. */
@@ -641,15 +641,15 @@ static int remove_from_replace_list(REPLACE_LIST **list, const char *pat)
   return nremoved;
 }
 
-static REPLACE_LIST *new_replace_list(void)
+static struct ReplaceList *new_replace_list(void)
 {
-  return safe_calloc(1, sizeof(REPLACE_LIST));
+  return safe_calloc(1, sizeof(struct ReplaceList));
 }
 
-static int add_to_replace_list(REPLACE_LIST **list, const char *pat,
+static int add_to_replace_list(struct ReplaceList **list, const char *pat,
                                const char *templ, struct Buffer *err)
 {
-  REPLACE_LIST *t = NULL, *last = NULL;
+  struct ReplaceList *t = NULL, *last = NULL;
   struct Regex *rx = NULL;
   int n;
   const char *p = NULL;
@@ -682,7 +682,7 @@ static int add_to_replace_list(REPLACE_LIST **list, const char *pat,
       break;
   }
 
-  /* If t is set, it's pointing into an extant REPLACE_LIST* that we want to
+  /* If t is set, it's pointing into an extant ReplaceList* that we want to
    * update. Otherwise we want to make a new one to link at the list's end.
    */
   if (!t)
@@ -698,7 +698,7 @@ static int add_to_replace_list(REPLACE_LIST **list, const char *pat,
   else
     mutt_free_regexp(&rx);
 
-  /* Now t is the REPLACE_LIST* that we want to modify. It is prepared. */
+  /* Now t is the ReplaceList* that we want to modify. It is prepared. */
   t->template = safe_strdup(templ);
 
   /* Find highest match number in template string */
@@ -979,7 +979,7 @@ static int parse_unalternates(struct Buffer *buf, struct Buffer *s, unsigned lon
 
 static int parse_replace_list(struct Buffer *buf, struct Buffer *s, unsigned long data, struct Buffer *err)
 {
-  REPLACE_LIST **list = (REPLACE_LIST **) data;
+  struct ReplaceList **list = (struct ReplaceList **) data;
   struct Buffer templ;
 
   memset(&templ, 0, sizeof(templ));
@@ -1012,7 +1012,7 @@ static int parse_replace_list(struct Buffer *buf, struct Buffer *s, unsigned lon
 
 static int parse_unreplace_list(struct Buffer *buf, struct Buffer *s, unsigned long data, struct Buffer *err)
 {
-  REPLACE_LIST **list = (REPLACE_LIST **) data;
+  struct ReplaceList **list = (struct ReplaceList **) data;
 
   /* First token is a regexp. */
   if (!MoreArgs(s))

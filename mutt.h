@@ -607,13 +607,13 @@ typedef struct rx_list_t
   struct rx_list_t *next;
 } RX_LIST;
 
-typedef struct replace_list_t
+struct ReplaceList
 {
   struct Regex *rx;
   int nmatch;
   char *template;
-  struct replace_list_t *next;
-} REPLACE_LIST;
+  struct ReplaceList *next;
+};
 
 static inline struct List *mutt_new_list(void)
 {
@@ -622,7 +622,7 @@ static inline struct List *mutt_new_list(void)
 
 void mutt_free_list(struct List **list);
 void mutt_free_rx_list(RX_LIST **list);
-void mutt_free_replace_list(REPLACE_LIST **list);
+void mutt_free_replace_list(struct ReplaceList **list);
 struct List *mutt_copy_list(struct List *p);
 int mutt_matches_ignore(const char *s);
 bool mutt_matches_list(const char *s, struct List *t);

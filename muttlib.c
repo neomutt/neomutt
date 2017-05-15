@@ -1178,9 +1178,9 @@ void mutt_safe_path(char *s, size_t l, struct Address *a)
 
 /* Note this function uses a fixed size buffer of LONG_STRING and so
  * should only be used for visual modifications, such as disp_subj. */
-char *mutt_apply_replace(char *dbuf, size_t dlen, char *sbuf, REPLACE_LIST *rlist)
+char *mutt_apply_replace(char *dbuf, size_t dlen, char *sbuf, struct ReplaceList *rlist)
 {
-  REPLACE_LIST *l = NULL;
+  struct ReplaceList *l = NULL;
   static regmatch_t *pmatch = NULL;
   static int nmatch = 0;
   static char twinbuf[2][LONG_STRING];
@@ -2041,9 +2041,9 @@ void mutt_free_rx_list(RX_LIST **list)
   }
 }
 
-void mutt_free_replace_list(REPLACE_LIST **list)
+void mutt_free_replace_list(struct ReplaceList **list)
 {
-  REPLACE_LIST *p = NULL;
+  struct ReplaceList *p = NULL;
 
   if (!list)
     return;
@@ -2081,7 +2081,7 @@ bool mutt_match_rx_list(const char *s, RX_LIST *l)
  *
  * Returns true if the argument `s` matches a pattern in the spam list, otherwise
  * false. */
-bool mutt_match_spam_list(const char *s, REPLACE_LIST *l, char *text, int textsize)
+bool mutt_match_spam_list(const char *s, struct ReplaceList *l, char *text, int textsize)
 {
   static regmatch_t *pmatch = NULL;
   static int nmatch = 0;
