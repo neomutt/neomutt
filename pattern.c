@@ -1389,7 +1389,7 @@ static int match_user(int alladdr, struct Address *a1, struct Address *a2)
 }
 
 static int match_threadcomplete(struct pattern_t *pat, pattern_exec_flag flags,
-                                struct Context *ctx, THREAD *t, int left, int up,
+                                struct Context *ctx, struct MuttThread *t, int left, int up,
                                 int right, int down)
 {
   int a;
@@ -1702,12 +1702,12 @@ void mutt_check_simple(char *s, size_t len, const char *simple)
  * @h: Header of current email
  *
  * Returns:
- *  THREAD*: success, email found
+ *  MuttThread*: success, email found
  *  NULL:    on error
  */
-static THREAD *top_of_thread(struct Header *h)
+static struct MuttThread *top_of_thread(struct Header *h)
 {
-  THREAD *t = NULL;
+  struct MuttThread *t = NULL;
 
   if (!h)
     return NULL;
@@ -1731,7 +1731,7 @@ static THREAD *top_of_thread(struct Header *h)
 bool mutt_limit_current_thread(struct Header *h)
 {
   int i;
-  THREAD *me = NULL;
+  struct MuttThread *me = NULL;
 
   if (!h)
     return false;

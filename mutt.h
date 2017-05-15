@@ -796,9 +796,6 @@ struct Body
 
 };
 
-/* #3279: AIX defines conflicting struct thread */
-typedef struct mutt_thread THREAD;
-
 struct Header
 {
   unsigned int security : 12; /* bit 0-8: flags, bit 9,10: application.
@@ -862,7 +859,7 @@ struct Header
   char *path;
 
   char *tree; /* character string to print thread tree */
-  THREAD *thread;
+  struct MuttThread *thread;
 
   /* Number of qualifying attachments in message, if attach_valid */
   short attach_total;
@@ -888,7 +885,7 @@ static inline struct Header *mutt_new_header(void)
   return safe_calloc(1, sizeof(struct Header));
 }
 
-struct mutt_thread
+struct MuttThread
 {
   bool fake_thread : 1;
   bool duplicate_thread : 1;
@@ -898,10 +895,10 @@ struct mutt_thread
   bool deep : 1;
   unsigned int subtree_visible : 2;
   bool next_subtree_visible : 1;
-  THREAD *parent;
-  THREAD *child;
-  THREAD *next;
-  THREAD *prev;
+  struct MuttThread *parent;
+  struct MuttThread *child;
+  struct MuttThread *next;
+  struct MuttThread *prev;
   struct Header *message;
   struct Header *sort_key;
 };
@@ -1023,7 +1020,7 @@ struct Context
   pattern_t *limit_pattern; /* compiled limit pattern */
   struct Header **hdrs;
   struct Header *last_tag;  /* last tagged msg. used to link threads */
-  THREAD *tree;      /* top of thread tree */
+  struct MuttThread *tree;      /* top of thread tree */
   struct Hash *id_hash;     /* hash table by msg id */
   struct Hash *subj_hash;   /* hash table by subject */
   struct Hash *thread_hash; /* hash table for threading */

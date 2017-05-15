@@ -325,7 +325,7 @@ void mutt_tag_set_flag(int flag, int bf)
 }
 int mutt_thread_set_flag(struct Header *hdr, int flag, int bf, int subthread)
 {
-  THREAD *start = NULL, *cur = hdr->thread;
+  struct MuttThread *start = NULL, *cur = hdr->thread;
 
   if ((Sort & SORT_MASK) != SORT_THREADS)
   {

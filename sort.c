@@ -288,7 +288,7 @@ void mutt_sort_headers(struct Context *ctx, int init)
 {
   int i;
   struct Header *h = NULL;
-  THREAD *thread = NULL, *top = NULL;
+  struct MuttThread *thread = NULL, *top = NULL;
   sort_t *sortfunc = NULL;
 
   unset_option(OPTNEEDRESORT);

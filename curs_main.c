@@ -134,7 +134,7 @@ static char *fsl = "\007";
 static void collapse_all(struct Menu *menu, int toggle)
 {
   struct Header *h = NULL, *base = NULL;
-  THREAD *thread = NULL, *top = NULL;
+  struct MuttThread *thread = NULL, *top = NULL;
   int final;
 
   if (!Context || (Context->msgcount == 0))
@@ -354,7 +354,7 @@ void update_index(struct Menu *menu, struct Context *ctx, int check, int oldcoun
   {
     if (check == MUTT_REOPENED)
     {
-      THREAD *h = NULL, *k = NULL;
+      struct MuttThread *h = NULL, *k = NULL;
 
       ctx->collapsed = false;
 
@@ -568,7 +568,7 @@ void index_make_entry(char *s, size_t l, struct Menu *menu, int num)
 
   format_flag flag = MUTT_FORMAT_MAKEPRINT | MUTT_FORMAT_ARROWCURSOR | MUTT_FORMAT_INDEX;
   int edgemsgno, reverse = Sort & SORT_REVERSE;
-  THREAD *tmp = NULL;
+  struct MuttThread *tmp = NULL;
 
   if ((Sort & SORT_MASK) == SORT_THREADS && h->tree)
   {
