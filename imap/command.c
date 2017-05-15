@@ -354,7 +354,7 @@ static void cmd_parse_lsub(IMAP_DATA *idata, char *s)
   char buf[STRING];
   char errstr[STRING];
   struct Buffer err, token;
-  ciss_url_t url;
+  struct CissUrl url;
   IMAP_LIST list;
 
   if (idata->cmddata && idata->cmdtype == IMAP_CT_LIST)

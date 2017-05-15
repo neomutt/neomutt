@@ -51,8 +51,8 @@ struct Account
 };
 
 int mutt_account_match(const struct Account *a1, const struct Account *m2);
-int mutt_account_fromurl(struct Account *account, ciss_url_t *url);
-void mutt_account_tourl(struct Account *account, ciss_url_t *url);
+int mutt_account_fromurl(struct Account *account, struct CissUrl *url);
+void mutt_account_tourl(struct Account *account, struct CissUrl *url);
 int mutt_account_getuser(struct Account *account);
 int mutt_account_getlogin(struct Account *account);
 int mutt_account_getpass(struct Account *account);

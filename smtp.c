@@ -264,7 +264,7 @@ static int smtp_fill_account(struct Account *account)
   static unsigned short SmtpPort = 0;
 
   struct servent *service = NULL;
-  ciss_url_t url;
+  struct CissUrl url;
   char *urlstr = NULL;
 
   account->flags = 0;

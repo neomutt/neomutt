@@ -207,7 +207,7 @@ static int pop_hcache_namer(const char *path, char *dest, size_t destlen)
 
 static header_cache_t *pop_hcache_open(POP_DATA *pop_data, const char *path)
 {
-  ciss_url_t url;
+  struct CissUrl url;
   char p[LONG_STRING];
 
   if (!pop_data || !pop_data->conn)
@@ -398,7 +398,7 @@ static int pop_open_mailbox(CONTEXT *ctx)
   CONNECTION *conn = NULL;
   struct Account acct;
   POP_DATA *pop_data = NULL;
-  ciss_url_t url;
+  struct CissUrl url;
 
   if (pop_parse_path(ctx->path, &acct))
   {

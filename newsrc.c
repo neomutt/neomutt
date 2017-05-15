@@ -487,7 +487,7 @@ static void cache_expand(char *dst, size_t dstlen, struct Account *acct, char *s
   /* server subdirectory */
   if (acct)
   {
-    ciss_url_t url;
+    struct CissUrl url;
 
     mutt_account_tourl(acct, &url);
     url.path = src;
@@ -508,7 +508,7 @@ static void cache_expand(char *dst, size_t dstlen, struct Account *acct, char *s
 /* Make fully qualified url from newsgroup name */
 void nntp_expand_path(char *line, size_t len, struct Account *acct)
 {
-  ciss_url_t url;
+  struct CissUrl url;
 
   url.path = safe_strdup(line);
   mutt_account_tourl(acct, &url);
@@ -630,7 +630,7 @@ static int nntp_hcache_namer(const char *path, char *dest, size_t destlen)
 /* Open newsgroup hcache */
 header_cache_t *nntp_hcache_open(NNTP_DATA *nntp_data)
 {
-  ciss_url_t url;
+  struct CissUrl url;
   char file[_POSIX_PATH_MAX];
 
   if (!nntp_data->nserv || !nntp_data->nserv->cacheable ||
@@ -817,7 +817,7 @@ const char *nntp_format_str(char *dest, size_t destlen, size_t col, int cols, ch
 {
   NNTP_SERVER *nserv = (NNTP_SERVER *) data;
   struct Account *acct = &nserv->conn->account;
-  ciss_url_t url;
+  struct CissUrl url;
   char fn[SHORT_STRING], tmp[SHORT_STRING], *p = NULL;
 
   switch (op)
@@ -881,7 +881,7 @@ NNTP_SERVER *nntp_select_server(char *server, int leave_lock)
   NNTP_SERVER *nserv = NULL;
   NNTP_DATA *nntp_data = NULL;
   CONNECTION *conn = NULL;
-  ciss_url_t url;
+  struct CissUrl url;
 
   if (!server || !*server)
   {

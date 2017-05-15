@@ -67,7 +67,7 @@ int mutt_account_match(const struct Account *a1, const struct Account *a2)
 }
 
 /* mutt_account_fromurl: fill account with information from url. */
-int mutt_account_fromurl(struct Account *account, ciss_url_t *url)
+int mutt_account_fromurl(struct Account *account, struct CissUrl *url)
 {
   /* must be present */
   if (url->host)
@@ -98,7 +98,7 @@ int mutt_account_fromurl(struct Account *account, ciss_url_t *url)
  *   is a set of pointers into account - don't free or edit account until
  *   you've finished with url (make a copy of account if you need it for
  *   a while). */
-void mutt_account_tourl(struct Account *account, ciss_url_t *url)
+void mutt_account_tourl(struct Account *account, struct CissUrl *url)
 {
   url->scheme = U_UNKNOWN;
   url->user = NULL;

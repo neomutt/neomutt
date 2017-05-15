@@ -1339,7 +1339,7 @@ void _mutt_select_file(char *f, size_t flen, int flags, char ***files, int *numf
             else if (state.imap_browse)
             {
               int n;
-              ciss_url_t url;
+              struct CissUrl url;
 
               strfcpy(LastDir, state.entry[menu->current].name, sizeof(LastDir));
               /* tack on delimiter here */

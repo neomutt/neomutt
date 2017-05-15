@@ -1394,7 +1394,7 @@ static int nntp_open_mailbox(CONTEXT *ctx)
   int rc;
   void *hc = NULL;
   anum_t first, last, count = 0;
-  ciss_url_t url;
+  struct CissUrl url;
 
   strfcpy(buf, ctx->path, sizeof(buf));
   if (url_parse_ciss(&url, buf) < 0 || !url.path ||

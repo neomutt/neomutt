@@ -49,7 +49,7 @@ int imap_expand_path(char *path, size_t len)
 {
   IMAP_MBOX mx;
   IMAP_DATA *idata = NULL;
-  ciss_url_t url;
+  struct CissUrl url;
   char fixedpath[LONG_STRING];
   int rc;
 
@@ -178,7 +178,7 @@ static int imap_hcache_namer(const char *path, char *dest, size_t dlen)
 header_cache_t *imap_hcache_open(IMAP_DATA *idata, const char *path)
 {
   IMAP_MBOX mx;
-  ciss_url_t url;
+  struct CissUrl url;
   char cachepath[LONG_STRING];
   char mbox[LONG_STRING];
 
@@ -264,7 +264,7 @@ int imap_parse_path(const char *path, IMAP_MBOX *mx)
   static unsigned short ImapsPort = 0;
   struct servent *service = NULL;
   char tmp[128];
-  ciss_url_t url;
+  struct CissUrl url;
   char *c = NULL;
   int n;
 
@@ -395,7 +395,7 @@ int imap_mxcmp(const char *mx1, const char *mx2)
 void imap_pretty_mailbox(char *path)
 {
   IMAP_MBOX home, target;
-  ciss_url_t url;
+  struct CissUrl url;
   char *delim = NULL;
   int tlen;
   int hlen = 0;
@@ -690,7 +690,7 @@ void imap_make_date(char *buf, time_t timestamp)
  *   and relative path. */
 void imap_qualify_path(char *dest, size_t len, IMAP_MBOX *mx, char *path)
 {
-  ciss_url_t url;
+  struct CissUrl url;
 
   mutt_account_tourl(&mx->account, &url);
   url.path = path;

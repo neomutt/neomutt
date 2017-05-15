@@ -33,7 +33,7 @@
 /* given an POP mailbox name, return host, port, username and password */
 int pop_parse_path(const char *path, struct Account *acct)
 {
-  ciss_url_t url;
+  struct CissUrl url;
   char *c = NULL;
   struct servent *service = NULL;
 

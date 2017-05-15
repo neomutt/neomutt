@@ -1944,7 +1944,7 @@ static int imap_complete_hosts(char *dest, size_t len)
 
   for (conn = mutt_socket_head(); conn; conn = conn->next)
   {
-    ciss_url_t url;
+    struct CissUrl url;
     char urlstr[LONG_STRING];
 
     if (conn->account.type != MUTT_ACCT_TYPE_IMAP)

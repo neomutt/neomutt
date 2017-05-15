@@ -257,7 +257,7 @@ static CONNECTION *socket_new_conn(void)
 CONNECTION *mutt_conn_find(const CONNECTION *start, const struct Account *account)
 {
   CONNECTION *conn = NULL;
-  ciss_url_t url;
+  struct CissUrl url;
   char hook[LONG_STRING];
 
   /* account isn't actually modified, since url isn't either */

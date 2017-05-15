@@ -40,14 +40,14 @@ static int bcache_path(struct Account *account, const char *mailbox, char *dst, 
 {
   char host[STRING];
   char path[_POSIX_PATH_MAX];
-  ciss_url_t url;
+  struct CissUrl url;
   int len;
 
   if (!account || !MessageCachedir || !*MessageCachedir || !dst || !dstlen)
     return -1;
 
-  /* make up a ciss_url_t we can turn into a string */
-  memset(&url, 0, sizeof(ciss_url_t));
+  /* make up a CissUrl we can turn into a string */
+  memset(&url, 0, sizeof(struct CissUrl));
   mutt_account_tourl(account, &url);
   /*
    * mutt_account_tourl() just sets up some pointers;
