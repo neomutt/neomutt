@@ -151,7 +151,7 @@ const char *mutt_fqdn(short may_hide_host);
 
 struct Group *mutt_pattern_group(const char *k);
 
-REGEXP *mutt_compile_regexp(const char *s, int flags);
+struct Regex *mutt_compile_regexp(const char *s, int flags);
 
 void mutt_account_hook(const char *url);
 void mutt_add_to_reference_headers(struct Envelope *env, struct Envelope *curenv, struct List ***pp,
@@ -213,7 +213,7 @@ void mutt_free_enter_state(struct EnterState **esp);
 void mutt_free_envelope(struct Envelope **p);
 void mutt_free_header(struct Header **h);
 void mutt_free_parameter(struct Parameter **p);
-void mutt_free_regexp(REGEXP **pp);
+void mutt_free_regexp(struct Regex **pp);
 void mutt_help(int menu);
 void mutt_draw_tree(struct Context *ctx);
 void mutt_check_lookup_list(struct Body *b, char *type, int len);

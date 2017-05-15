@@ -124,7 +124,7 @@ static int parse_regex(int idx, struct Buffer *tmp, struct Buffer *err)
   int e, flags = 0;
   const char *p = NULL;
   regex_t *rx = NULL;
-  REGEXP *ptr = (REGEXP *) MuttVars[idx].data;
+  struct Regex *ptr = (struct Regex *) MuttVars[idx].data;
 
   if (!ptr->pattern || (mutt_strcmp(ptr->pattern, tmp->data) != 0))
   {
@@ -479,7 +479,7 @@ int mutt_option_set(const struct option_t *val, struct Buffer *err)
 
 static void free_opt(struct option_t *p)
 {
-  REGEXP *pp = NULL;
+  struct Regex *pp = NULL;
 
   switch (p->type & DT_MASK)
   {
@@ -487,7 +487,7 @@ static void free_opt(struct option_t *p)
       rfc822_free_address((struct Address **) p->data);
       break;
     case DT_RX:
-      pp = (REGEXP *) p->data;
+      pp = (struct Regex *) p->data;
       FREE(&pp->pattern);
       if (pp->rx)
       {
@@ -562,7 +562,7 @@ static RX_LIST *new_rx_list(void)
 int mutt_add_to_rx_list(RX_LIST **list, const char *s, int flags, struct Buffer *err)
 {
   RX_LIST *t = NULL, *last = NULL;
-  REGEXP *rx = NULL;
+  struct Regex *rx = NULL;
 
   if (!s || !*s)
     return 0;
@@ -650,7 +650,7 @@ static int add_to_replace_list(REPLACE_LIST **list, const char *pat,
                                const char *templ, struct Buffer *err)
 {
   REPLACE_LIST *t = NULL, *last = NULL;
-  REGEXP *rx = NULL;
+  struct Regex *rx = NULL;
   int n;
   const char *p = NULL;
 
@@ -1892,7 +1892,7 @@ static void set_default(struct option_t *p)
       break;
     case DT_RX:
     {
-      REGEXP *pp = (REGEXP *) p->data;
+      struct Regex *pp = (struct Regex *) p->data;
       if (!p->init && pp->pattern)
         p->init = (unsigned long) safe_strdup(pp->pattern);
       break;
@@ -1954,7 +1954,7 @@ static void restore_default(struct option_t *p)
       break;
     case DT_RX:
     {
-      REGEXP *pp = (REGEXP *) p->data;
+      struct Regex *pp = (struct Regex *) p->data;
       int flags = 0;
 
       FREE(&pp->pattern);
@@ -2601,7 +2601,7 @@ static int parse_set(struct Buffer *tmp, struct Buffer *s, unsigned long data, s
       if (query || *s->dptr != '=')
       {
         /* user requested the value of this variable */
-        REGEXP *ptr = (REGEXP *) MuttVars[idx].data;
+        struct Regex *ptr = (struct Regex *) MuttVars[idx].data;
         pretty_var(err->data, err->dsize, MuttVars[idx].option, NONULL(ptr->pattern));
         break;
       }

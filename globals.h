@@ -41,7 +41,7 @@ WHERE char *Attribution;
 WHERE char *AttributionLocale;
 WHERE char *AttachCharset;
 WHERE char *AttachFormat;
-WHERE REGEXP AttachKeyword;
+WHERE struct Regex AttachKeyword;
 WHERE char *Charset;
 WHERE char *ComposeFormat;
 WHERE char *ConfigCharset;
@@ -280,8 +280,8 @@ WHERE struct Alias *Aliases INITVAL(0);
 WHERE struct List *UserHeader INITVAL(0);
 
 /* -- formerly in pgp.h -- */
-WHERE REGEXP PgpGoodSign;
-WHERE REGEXP PgpDecryptionOkay;
+WHERE struct Regex PgpGoodSign;
+WHERE struct Regex PgpDecryptionOkay;
 WHERE char *PgpSignAs;
 WHERE short PgpTimeout;
 WHERE char *PgpEntryFormat;

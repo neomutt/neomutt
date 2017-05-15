@@ -603,13 +603,13 @@ struct List
 
 typedef struct rx_list_t
 {
-  REGEXP *rx;
+  struct Regex *rx;
   struct rx_list_t *next;
 } RX_LIST;
 
 typedef struct replace_list_t
 {
-  REGEXP *rx;
+  struct Regex *rx;
   int nmatch;
   char *template;
   struct replace_list_t *next;

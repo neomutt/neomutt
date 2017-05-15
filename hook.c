@@ -31,7 +31,7 @@
 typedef struct hook
 {
   int type;           /* hook type */
-  REGEXP rx;          /* regular expression */
+  struct Regex rx;          /* regular expression */
   char *command;      /* filename, command or pattern to execute */
   struct Pattern *pattern; /* used for fcc,save,send-hook */
   struct hook *next;

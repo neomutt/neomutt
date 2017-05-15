@@ -2007,9 +2007,9 @@ const char *mutt_make_version(void)
   return vstring;
 }
 
-REGEXP *mutt_compile_regexp(const char *s, int flags)
+struct Regex *mutt_compile_regexp(const char *s, int flags)
 {
-  REGEXP *pp = safe_calloc(sizeof(REGEXP), 1);
+  struct Regex *pp = safe_calloc(sizeof(struct Regex), 1);
   pp->pattern = safe_strdup(s);
   pp->rx = safe_calloc(sizeof(regex_t), 1);
   if (REGCOMP(pp->rx, NONULL(s), flags) != 0)
@@ -2018,7 +2018,7 @@ REGEXP *mutt_compile_regexp(const char *s, int flags)
   return pp;
 }
 
-void mutt_free_regexp(REGEXP **pp)
+void mutt_free_regexp(struct Regex **pp)
 {
   FREE(&(*pp)->pattern);
   regfree((*pp)->rx);
