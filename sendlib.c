@@ -287,7 +287,7 @@ static void encode_8bit(FGETCONV *fc, FILE *fout, int istext)
 }
 
 
-int mutt_write_mime_header(BODY *a, FILE *f)
+int mutt_write_mime_header(struct Body *a, FILE *f)
 {
   PARAMETER *p = NULL;
   char buffer[STRING];
@@ -399,12 +399,12 @@ int mutt_write_mime_header(BODY *a, FILE *f)
 #define write_as_text_part(a)                                                  \
   (mutt_is_text_part(a) || ((WithCrypto & APPLICATION_PGP) && mutt_is_application_pgp(a)))
 
-int mutt_write_mime_body(BODY *a, FILE *f)
+int mutt_write_mime_body(struct Body *a, FILE *f)
 {
   char *p, boundary[SHORT_STRING];
   char send_charset[SHORT_STRING];
   FILE *fpin = NULL;
-  BODY *t = NULL;
+  struct Body *t = NULL;
   FGETCONV *fc = NULL;
 
   if (a->type == TYPEMULTIPART)
@@ -840,7 +840,7 @@ static size_t convert_file_from_to(FILE *file, const char *fromcodes, const char
  * Analyze the contents of a file to determine which MIME encoding to use.
  * Also set the body charset, sometimes, or not.
  */
-CONTENT *mutt_get_content_info(const char *fname, BODY *b)
+CONTENT *mutt_get_content_info(const char *fname, struct Body *b)
 {
   CONTENT *info = NULL;
   CONTENT_STATE state;
@@ -923,7 +923,7 @@ CONTENT *mutt_get_content_info(const char *fname, BODY *b)
  * The longest match is used so that we can match `ps.gz' when `gz' also
  * exists.
  */
-int mutt_lookup_mime_type(BODY *att, const char *path)
+int mutt_lookup_mime_type(struct Body *att, const char *path)
 {
   FILE *f = NULL;
   char *p = NULL, *q = NULL, *ct = NULL;
@@ -1027,7 +1027,7 @@ bye:
   return type;
 }
 
-static void transform_to_7bit(BODY *a, FILE *fpin)
+static void transform_to_7bit(struct Body *a, FILE *fpin)
 {
   char buff[_POSIX_PATH_MAX];
   STATE s;
@@ -1081,7 +1081,7 @@ static void transform_to_7bit(BODY *a, FILE *fpin)
   }
 }
 
-void mutt_message_to_7bit(BODY *a, FILE *fp)
+void mutt_message_to_7bit(struct Body *a, FILE *fp)
 {
   char temp[_POSIX_PATH_MAX];
   char *line = NULL;
@@ -1158,7 +1158,7 @@ cleanup:
 }
 
 /* determine which Content-Transfer-Encoding to use */
-static void set_encoding(BODY *b, CONTENT *info)
+static void set_encoding(struct Body *b, CONTENT *info)
 {
   char send_charset[SHORT_STRING];
 
@@ -1199,13 +1199,13 @@ static void set_encoding(BODY *b, CONTENT *info)
   }
 }
 
-void mutt_stamp_attachment(BODY *a)
+void mutt_stamp_attachment(struct Body *a)
 {
   a->stamp = time(NULL);
 }
 
 /* Get a body's character set */
-char *mutt_get_body_charset(char *d, size_t dlen, BODY *b)
+char *mutt_get_body_charset(char *d, size_t dlen, struct Body *b)
 {
   char *p = NULL;
 
@@ -1224,8 +1224,8 @@ char *mutt_get_body_charset(char *d, size_t dlen, BODY *b)
 }
 
 
-/* Assumes called from send mode where BODY->filename points to actual file */
-void mutt_update_encoding(BODY *a)
+/* Assumes called from send mode where Body->filename points to actual file */
+void mutt_update_encoding(struct Body *a)
 {
   CONTENT *info = NULL;
   char chsbuff[STRING];
@@ -1247,10 +1247,10 @@ void mutt_update_encoding(BODY *a)
   a->content = info;
 }
 
-BODY *mutt_make_message_attach(CONTEXT *ctx, HEADER *hdr, int attach_msg)
+struct Body *mutt_make_message_attach(CONTEXT *ctx, HEADER *hdr, int attach_msg)
 {
   char buffer[LONG_STRING];
-  BODY *body = NULL;
+  struct Body *body = NULL;
   FILE *fp = NULL;
   int cmflags, chflags;
   int pgp = WithCrypto ? hdr->security : 0;
@@ -1335,9 +1335,9 @@ BODY *mutt_make_message_attach(CONTEXT *ctx, HEADER *hdr, int attach_msg)
   return body;
 }
 
-BODY *mutt_make_file_attach(const char *path)
+struct Body *mutt_make_file_attach(const char *path)
 {
-  BODY *att = NULL;
+  struct Body *att = NULL;
   CONTENT *info = NULL;
 
   att = mutt_new_body();
@@ -1378,7 +1378,7 @@ BODY *mutt_make_file_attach(const char *path)
   return att;
 }
 
-static int get_toplevel_encoding(BODY *a)
+static int get_toplevel_encoding(struct Body *a)
 {
   int e = ENC7BIT;
 
@@ -1394,7 +1394,7 @@ static int get_toplevel_encoding(BODY *a)
 }
 
 /* check for duplicate boundary. return 1 if duplicate */
-static bool check_boundary(const char *boundary, BODY *b)
+static bool check_boundary(const char *boundary, struct Body *b)
 {
   char *p = NULL;
 
@@ -1409,9 +1409,9 @@ static bool check_boundary(const char *boundary, BODY *b)
   return false;
 }
 
-BODY *mutt_make_multipart(BODY *b)
+struct Body *mutt_make_multipart(struct Body *b)
 {
-  BODY *new = NULL;
+  struct Body *new = NULL;
 
   new = mutt_new_body();
   new->type = TYPEMULTIPART;
@@ -1431,9 +1431,9 @@ BODY *mutt_make_multipart(BODY *b)
 }
 
 /* remove the multipart body if it exists */
-BODY *mutt_remove_multipart(BODY *b)
+struct Body *mutt_remove_multipart(struct Body *b)
 {
-  BODY *t = NULL;
+  struct Body *t = NULL;
 
   if (b->parts)
   {
@@ -1914,7 +1914,7 @@ out:
  */
 
 
-int mutt_write_rfc822_header(FILE *fp, ENVELOPE *env, BODY *attach, int mode, int privacy)
+int mutt_write_rfc822_header(FILE *fp, ENVELOPE *env, struct Body *attach, int mode, int privacy)
 {
   char buffer[LONG_STRING];
   char *p = NULL, *q = NULL;
@@ -2736,7 +2736,7 @@ struct Address *mutt_remove_duplicates(struct Address *addr)
   return top;
 }
 
-static void set_noconv_flags(BODY *b, short flag)
+static void set_noconv_flags(struct Body *b, short flag)
 {
   for (; b; b = b->next)
   {

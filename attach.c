@@ -39,7 +39,7 @@
 #include "pager.h"
 #include "rfc1524.h"
 
-int mutt_get_tmp_attachment(BODY *a)
+int mutt_get_tmp_attachment(struct Body *a)
 {
   char type[STRING];
   char tempfile[_POSIX_PATH_MAX];
@@ -81,7 +81,7 @@ int mutt_get_tmp_attachment(BODY *a)
 
 
 /* return 1 if require full screen redraw, 0 otherwise */
-int mutt_compose_attachment(BODY *a)
+int mutt_compose_attachment(struct Body *a)
 {
   char type[STRING];
   char command[STRING];
@@ -128,7 +128,7 @@ int mutt_compose_attachment(BODY *a)
 
         if (r != -1 && entry->composetypecommand)
         {
-          BODY *b = NULL;
+          struct Body *b = NULL;
           FILE *fp = NULL, *tfp = NULL;
           char tempfile[_POSIX_PATH_MAX];
 
@@ -205,14 +205,14 @@ bailout:
 
 /*
  * Currently, this only works for send mode, as it assumes that the
- * BODY->filename actually contains the information.  I'm not sure
+ * Body->filename actually contains the information.  I'm not sure
  * we want to deal with editing attachments we've already received,
  * so this should be ok.
  *
  * Returns 1 if editor found, 0 if not (useful to tell calling menu to
  * redraw)
  */
-int mutt_edit_attachment(BODY *a)
+int mutt_edit_attachment(struct Body *a)
 {
   char type[STRING];
   char command[STRING];
@@ -282,7 +282,7 @@ bailout:
 }
 
 
-void mutt_check_lookup_list(BODY *b, char *type, int len)
+void mutt_check_lookup_list(struct Body *b, char *type, int len)
 {
   LIST *t = MimeLookupList;
   int i;
@@ -294,7 +294,7 @@ void mutt_check_lookup_list(BODY *b, char *type, int len)
          (ascii_strncasecmp(type, t->data, i) == 0)) ||
         (ascii_strcasecmp(type, t->data) == 0))
     {
-      BODY tmp = { 0 };
+      struct Body tmp = { 0 };
       int n;
       if ((n = mutt_lookup_mime_type(&tmp, b->filename)) != TYPEOTHER)
       {
@@ -323,7 +323,7 @@ void mutt_check_lookup_list(BODY *b, char *type, int len)
 }
 
 /* returns -1 on error, 0 or the return code from mutt_do_pager() on success */
-int mutt_view_attachment(FILE *fp, BODY *a, int flag, HEADER *hdr, struct AttachPtr **idx, short idxlen)
+int mutt_view_attachment(FILE *fp, struct Body *a, int flag, HEADER *hdr, struct AttachPtr **idx, short idxlen)
 {
   char tempfile[_POSIX_PATH_MAX] = "";
   char pagerfile[_POSIX_PATH_MAX] = "";
@@ -589,7 +589,7 @@ return_error:
 }
 
 /* returns 1 on success, 0 on error */
-int mutt_pipe_attachment(FILE *fp, BODY *b, const char *path, char *outfile)
+int mutt_pipe_attachment(FILE *fp, struct Body *b, const char *path, char *outfile)
 {
   pid_t thepid;
   int out = -1;
@@ -692,7 +692,7 @@ static FILE *save_attachment_open(char *path, int flags)
 }
 
 /* returns 0 on success, -1 on error */
-int mutt_save_attachment(FILE *fp, BODY *m, char *path, int flags, HEADER *hdr)
+int mutt_save_attachment(FILE *fp, struct Body *m, char *path, int flags, HEADER *hdr)
 {
   if (!m)
     return -1;
@@ -806,11 +806,11 @@ int mutt_save_attachment(FILE *fp, BODY *m, char *path, int flags, HEADER *hdr)
 }
 
 /* returns 0 on success, -1 on error */
-int mutt_decode_save_attachment(FILE *fp, BODY *m, char *path, int displaying, int flags)
+int mutt_decode_save_attachment(FILE *fp, struct Body *m, char *path, int displaying, int flags)
 {
   STATE s;
   unsigned int saved_encoding = 0;
-  BODY *saved_parts = NULL;
+  struct Body *saved_parts = NULL;
   HEADER *saved_hdr = NULL;
   int ret = 0;
 
@@ -892,12 +892,12 @@ int mutt_decode_save_attachment(FILE *fp, BODY *m, char *path, int displaying, i
 }
 
 /* Ok, the difference between send and receive:
- * recv: BODY->filename is a suggested name, and Context|HEADER points
+ * recv: Body->filename is a suggested name, and Context|HEADER points
  *       to the attachment in mailbox which is encoded
- * send: BODY->filename points to the un-encoded file which contains the
+ * send: Body->filename points to the un-encoded file which contains the
  *       attachment
  */
-int mutt_print_attachment(FILE *fp, BODY *a)
+int mutt_print_attachment(FILE *fp, struct Body *a)
 {
   char newfile[_POSIX_PATH_MAX] = "";
   char type[STRING];

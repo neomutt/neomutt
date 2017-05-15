@@ -30,8 +30,8 @@
 
 bool pgp_use_gpg_agent(void);
 
-int pgp_check_traditional(FILE *fp, BODY *b, int tagged_only);
-BODY *pgp_make_key_attachment(char *tempf);
+int pgp_check_traditional(FILE *fp, struct Body *b, int tagged_only);
+struct Body *pgp_make_key_attachment(char *tempf);
 const char *pgp_micalg(const char *fname);
 
 char *_pgp_keyid(pgp_key_t);
@@ -40,7 +40,7 @@ char *pgp_short_keyid(pgp_key_t k);
 char *pgp_long_keyid(pgp_key_t k);
 char *pgp_fpr_or_lkeyid(pgp_key_t k);
 
-int pgp_decrypt_mime(FILE *fpin, FILE **fpout, BODY *b, BODY **cur);
+int pgp_decrypt_mime(FILE *fpin, FILE **fpout, struct Body *b, struct Body **cur);
 
 pgp_key_t pgp_ask_for_key(char *tag, char *whatfor, short abilities, pgp_ring_t keyring);
 pgp_key_t pgp_get_candidates(pgp_ring_t keyring, LIST *hints);
@@ -49,9 +49,9 @@ pgp_key_t pgp_getkeybystr(char *p, short abilities, pgp_ring_t keyring);
 
 char *pgp_find_keys(struct Address *adrlist, int oppenc_mode);
 
-int pgp_application_pgp_handler(BODY *m, STATE *s);
-int pgp_encrypted_handler(BODY *a, STATE *s);
-void pgp_extract_keys_from_attachment_list(FILE *fp, int tag, BODY *top);
+int pgp_application_pgp_handler(struct Body *m, STATE *s);
+int pgp_encrypted_handler(struct Body *a, STATE *s);
+void pgp_extract_keys_from_attachment_list(FILE *fp, int tag, struct Body *top);
 void pgp_void_passphrase(void);
 int pgp_valid_passphrase(void);
 
@@ -85,10 +85,10 @@ void pgp_invoke_getkeys(struct Address *addr);
 
 
 /* private ? */
-int pgp_verify_one(BODY *sigbdy, STATE *s, const char *tempfile);
-BODY *pgp_traditional_encryptsign(BODY *a, int flags, char *keylist);
-BODY *pgp_encrypt_message(BODY *a, char *keylist, int sign);
-BODY *pgp_sign_message(BODY *a);
+int pgp_verify_one(struct Body *sigbdy, STATE *s, const char *tempfile);
+struct Body *pgp_traditional_encryptsign(struct Body *a, int flags, char *keylist);
+struct Body *pgp_encrypt_message(struct Body *a, char *keylist, int sign);
+struct Body *pgp_sign_message(struct Body *a);
 
 int pgp_send_menu(HEADER *msg);
 

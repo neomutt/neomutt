@@ -1297,14 +1297,14 @@ static pid_t smime_invoke_sign(FILE **smimein, FILE **smimeout, FILE **smimeerr,
 }
 
 
-BODY *smime_build_smime_entity(BODY *a, char *certlist)
+struct Body *smime_build_smime_entity(struct Body *a, char *certlist)
 {
   char buf[LONG_STRING], certfile[LONG_STRING];
   char tempfile[_POSIX_PATH_MAX], smimeerrfile[_POSIX_PATH_MAX];
   char smimeinfile[_POSIX_PATH_MAX];
   char *cert_start = certlist, *cert_end = certlist;
   FILE *smimein = NULL, *smimeerr = NULL, *fpout = NULL, *fptmp = NULL;
-  BODY *t = NULL;
+  struct Body *t = NULL;
   int err = 0, empty;
   pid_t thepid;
 
@@ -1446,9 +1446,9 @@ static char *openssl_md_to_smime_micalg(char *md)
 }
 
 
-BODY *smime_sign_message(BODY *a)
+struct Body *smime_sign_message(struct Body *a)
 {
-  BODY *t = NULL;
+  struct Body *t = NULL;
   char buffer[LONG_STRING];
   char signedfile[_POSIX_PATH_MAX], filetosign[_POSIX_PATH_MAX];
   FILE *smimein = NULL, *smimeout = NULL, *smimeerr = NULL, *sfp = NULL;
@@ -1610,7 +1610,7 @@ static pid_t smime_invoke_decrypt(FILE **smimein, FILE **smimeout,
 }
 
 
-int smime_verify_one(BODY *sigbdy, STATE *s, const char *tempfile)
+int smime_verify_one(struct Body *sigbdy, STATE *s, const char *tempfile)
 {
   char signedfile[_POSIX_PATH_MAX], smimeerrfile[_POSIX_PATH_MAX];
   FILE *fp = NULL, *smimeout = NULL, *smimeerr = NULL;
@@ -1722,7 +1722,7 @@ int smime_verify_one(BODY *sigbdy, STATE *s, const char *tempfile)
   This handles application/pkcs7-mime which can either be a signed
   or an encrypted message.
 */
-static BODY *smime_handle_entity(BODY *m, STATE *s, FILE *outFile)
+static struct Body *smime_handle_entity(struct Body *m, STATE *s, FILE *outFile)
 {
   int len = 0;
   int c;
@@ -1733,7 +1733,7 @@ static BODY *smime_handle_entity(BODY *m, STATE *s, FILE *outFile)
   FILE *smimeout = NULL, *smimein = NULL, *smimeerr = NULL;
   FILE *tmpfp = NULL, *tmpfp_buffer = NULL, *fpout = NULL;
   struct stat info;
-  BODY *p = NULL;
+  struct Body *p = NULL;
   pid_t thepid = -1;
   unsigned int type = mutt_is_application_smime(m);
 
@@ -1926,7 +1926,7 @@ static BODY *smime_handle_entity(BODY *m, STATE *s, FILE *outFile)
 }
 
 
-int smime_decrypt_mime(FILE *fpin, FILE **fpout, BODY *b, BODY **cur)
+int smime_decrypt_mime(FILE *fpin, FILE **fpout, struct Body *b, struct Body **cur)
 {
   char tempfile[_POSIX_PATH_MAX];
   STATE s;
@@ -1993,7 +1993,7 @@ bail:
 }
 
 
-int smime_application_smime_handler(BODY *m, STATE *s)
+int smime_application_smime_handler(struct Body *m, STATE *s)
 {
   return smime_handle_entity(m, s, NULL) ? 0 : -1;
 }

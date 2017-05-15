@@ -24,7 +24,7 @@
 
 struct AttachPtr
 {
-  BODY *content;
+  struct Body *content;
   int parent_type;
   char *tree;
   int level;
@@ -32,25 +32,25 @@ struct AttachPtr
   bool unowned : 1; /* don't unlink on detach */
 };
 
-struct AttachPtr **mutt_gen_attach_list(BODY *m, int parent_type, struct AttachPtr **idx,
+struct AttachPtr **mutt_gen_attach_list(struct Body *m, int parent_type, struct AttachPtr **idx,
                                  short *idxlen, short *idxmax, int level, int compose);
 void mutt_update_tree(struct AttachPtr **idx, short idxlen);
-int mutt_view_attachment(FILE *fp, BODY *a, int flag, HEADER *hdr,
+int mutt_view_attachment(FILE *fp, struct Body *a, int flag, HEADER *hdr,
                          struct AttachPtr **idx, short idxlen);
 
 int mutt_tag_attach(MUTTMENU *menu, int n, int m);
-int mutt_attach_display_loop(MUTTMENU *menu, int op, FILE *fp, HEADER *hdr, BODY *cur,
+int mutt_attach_display_loop(MUTTMENU *menu, int op, FILE *fp, HEADER *hdr, struct Body *cur,
                              struct AttachPtr ***idxp, short *idxlen, short *idxmax, int recv);
 
-void mutt_save_attachment_list(FILE *fp, int tag, BODY *top, HEADER *hdr, MUTTMENU *menu);
-void mutt_pipe_attachment_list(FILE *fp, int tag, BODY *top, int filter);
-void mutt_print_attachment_list(FILE *fp, int tag, BODY *top);
+void mutt_save_attachment_list(FILE *fp, int tag, struct Body *top, HEADER *hdr, MUTTMENU *menu);
+void mutt_pipe_attachment_list(FILE *fp, int tag, struct Body *top, int filter);
+void mutt_print_attachment_list(FILE *fp, int tag, struct Body *top);
 
-void mutt_attach_bounce(FILE *fp, HEADER *hdr, struct AttachPtr **idx, short idxlen, BODY *cur);
-void mutt_attach_resend(FILE *fp, HEADER *hdr, struct AttachPtr **idx, short idxlen, BODY *cur);
+void mutt_attach_bounce(FILE *fp, HEADER *hdr, struct AttachPtr **idx, short idxlen, struct Body *cur);
+void mutt_attach_resend(FILE *fp, HEADER *hdr, struct AttachPtr **idx, short idxlen, struct Body *cur);
 void mutt_attach_forward(FILE *fp, HEADER *hdr, struct AttachPtr **idx, short idxlen,
-                         BODY *cur, int flags);
+                         struct Body *cur, int flags);
 void mutt_attach_reply(FILE *fp, HEADER *hdr, struct AttachPtr **idx, short idxlen,
-                       BODY *cur, int flags);
+                       struct Body *cur, int flags);
 
 #endif /* _MUTT_ATTACH_H */

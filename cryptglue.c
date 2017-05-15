@@ -133,7 +133,7 @@ int crypt_pgp_valid_passphrase(void)
 
 
 /* Decrypt a PGP/MIME message. */
-int crypt_pgp_decrypt_mime(FILE *a, FILE **b, BODY *c, BODY **d)
+int crypt_pgp_decrypt_mime(FILE *a, FILE **b, struct Body *c, struct Body **d)
 {
   if (CRYPT_MOD_CALL_CHECK(PGP, decrypt_mime))
     return (CRYPT_MOD_CALL(PGP, decrypt_mime))(a, b, c, d);
@@ -142,7 +142,7 @@ int crypt_pgp_decrypt_mime(FILE *a, FILE **b, BODY *c, BODY **d)
 }
 
 /* MIME handler for the application/pgp content-type. */
-int crypt_pgp_application_pgp_handler(BODY *m, STATE *s)
+int crypt_pgp_application_pgp_handler(struct Body *m, STATE *s)
 {
   if (CRYPT_MOD_CALL_CHECK(PGP, application_handler))
     return (CRYPT_MOD_CALL(PGP, application_handler))(m, s);
@@ -151,7 +151,7 @@ int crypt_pgp_application_pgp_handler(BODY *m, STATE *s)
 }
 
 /* MIME handler for an PGP/MIME encrypted message. */
-int crypt_pgp_encrypted_handler(BODY *a, STATE *s)
+int crypt_pgp_encrypted_handler(struct Body *a, STATE *s)
 {
   if (CRYPT_MOD_CALL_CHECK(PGP, encrypted_handler))
     return (CRYPT_MOD_CALL(PGP, encrypted_handler))(a, s);
@@ -167,7 +167,7 @@ void crypt_pgp_invoke_getkeys(struct Address *addr)
 }
 
 /* Check for a traditional PGP message in body B. */
-int crypt_pgp_check_traditional(FILE *fp, BODY *b, int tagged_only)
+int crypt_pgp_check_traditional(FILE *fp, struct Body *b, int tagged_only)
 {
   if (CRYPT_MOD_CALL_CHECK(PGP, pgp_check_traditional))
     return (CRYPT_MOD_CALL(PGP, pgp_check_traditional))(fp, b, tagged_only);
@@ -176,7 +176,7 @@ int crypt_pgp_check_traditional(FILE *fp, BODY *b, int tagged_only)
 }
 
 /* fixme: needs documentation. */
-BODY *crypt_pgp_traditional_encryptsign(BODY *a, int flags, char *keylist)
+struct Body *crypt_pgp_traditional_encryptsign(struct Body *a, int flags, char *keylist)
 {
   if (CRYPT_MOD_CALL_CHECK(PGP, pgp_traditional_encryptsign))
     return (CRYPT_MOD_CALL(PGP, pgp_traditional_encryptsign))(a, flags, keylist);
@@ -185,7 +185,7 @@ BODY *crypt_pgp_traditional_encryptsign(BODY *a, int flags, char *keylist)
 }
 
 /* Generate a PGP public key attachment. */
-BODY *crypt_pgp_make_key_attachment(char *tempf)
+struct Body *crypt_pgp_make_key_attachment(char *tempf)
 {
   if (CRYPT_MOD_CALL_CHECK(PGP, pgp_make_key_attachment))
     return (CRYPT_MOD_CALL(PGP, pgp_make_key_attachment))(tempf);
@@ -206,7 +206,7 @@ char *crypt_pgp_findkeys(struct Address *adrlist, int oppenc_mode)
 }
 
 /* Create a new body with a PGP signed message from A. */
-BODY *crypt_pgp_sign_message(BODY *a)
+struct Body *crypt_pgp_sign_message(struct Body *a)
 {
   if (CRYPT_MOD_CALL_CHECK(PGP, sign_message))
     return (CRYPT_MOD_CALL(PGP, sign_message))(a);
@@ -216,7 +216,7 @@ BODY *crypt_pgp_sign_message(BODY *a)
 
 /* Warning: A is no longer freed in this routine, you need to free it
    later.  This is necessary for $fcc_attach. */
-BODY *crypt_pgp_encrypt_message(BODY *a, char *keylist, int sign)
+struct Body *crypt_pgp_encrypt_message(struct Body *a, char *keylist, int sign)
 {
   if (CRYPT_MOD_CALL_CHECK(PGP, pgp_encrypt_message))
     return (CRYPT_MOD_CALL(PGP, pgp_encrypt_message))(a, keylist, sign);
@@ -232,7 +232,7 @@ void crypt_pgp_invoke_import(const char *fname)
 }
 
 /* fixme: needs documentation */
-int crypt_pgp_verify_one(BODY *sigbdy, STATE *s, const char *tempf)
+int crypt_pgp_verify_one(struct Body *sigbdy, STATE *s, const char *tempf)
 {
   if (CRYPT_MOD_CALL_CHECK(PGP, verify_one))
     return (CRYPT_MOD_CALL(PGP, verify_one))(sigbdy, s, tempf);
@@ -251,7 +251,7 @@ int crypt_pgp_send_menu(HEADER *msg)
 
 
 /* fixme: needs documentation */
-void crypt_pgp_extract_keys_from_attachment_list(FILE *fp, int tag, BODY *top)
+void crypt_pgp_extract_keys_from_attachment_list(FILE *fp, int tag, struct Body *top)
 {
   if (CRYPT_MOD_CALL_CHECK(PGP, pgp_extract_keys_from_attachment_list))
     (CRYPT_MOD_CALL(PGP, pgp_extract_keys_from_attachment_list))(fp, tag, top);
@@ -287,7 +287,7 @@ int crypt_smime_valid_passphrase(void)
 }
 
 /* Decrypt am S/MIME message. */
-int crypt_smime_decrypt_mime(FILE *a, FILE **b, BODY *c, BODY **d)
+int crypt_smime_decrypt_mime(FILE *a, FILE **b, struct Body *c, struct Body **d)
 {
   if (CRYPT_MOD_CALL_CHECK(SMIME, decrypt_mime))
     return (CRYPT_MOD_CALL(SMIME, decrypt_mime))(a, b, c, d);
@@ -296,7 +296,7 @@ int crypt_smime_decrypt_mime(FILE *a, FILE **b, BODY *c, BODY **d)
 }
 
 /* MIME handler for the application/smime content-type. */
-int crypt_smime_application_smime_handler(BODY *m, STATE *s)
+int crypt_smime_application_smime_handler(struct Body *m, STATE *s)
 {
   if (CRYPT_MOD_CALL_CHECK(SMIME, application_handler))
     return (CRYPT_MOD_CALL(SMIME, application_handler))(m, s);
@@ -305,7 +305,7 @@ int crypt_smime_application_smime_handler(BODY *m, STATE *s)
 }
 
 /* MIME handler for an PGP/MIME encrypted message. */
-void crypt_smime_encrypted_handler(BODY *a, STATE *s)
+void crypt_smime_encrypted_handler(struct Body *a, STATE *s)
 {
   if (CRYPT_MOD_CALL_CHECK(SMIME, encrypted_handler))
     (CRYPT_MOD_CALL(SMIME, encrypted_handler))(a, s);
@@ -340,7 +340,7 @@ char *crypt_smime_findkeys(struct Address *adrlist, int oppenc_mode)
 }
 
 /* fixme: Needs documentation. */
-BODY *crypt_smime_sign_message(BODY *a)
+struct Body *crypt_smime_sign_message(struct Body *a)
 {
   if (CRYPT_MOD_CALL_CHECK(SMIME, sign_message))
     return (CRYPT_MOD_CALL(SMIME, sign_message))(a);
@@ -349,7 +349,7 @@ BODY *crypt_smime_sign_message(BODY *a)
 }
 
 /* fixme: needs documentation. */
-BODY *crypt_smime_build_smime_entity(BODY *a, char *certlist)
+struct Body *crypt_smime_build_smime_entity(struct Body *a, char *certlist)
 {
   if (CRYPT_MOD_CALL_CHECK(SMIME, smime_build_smime_entity))
     return (CRYPT_MOD_CALL(SMIME, smime_build_smime_entity))(a, certlist);
@@ -365,7 +365,7 @@ void crypt_smime_invoke_import(char *infile, char *mailbox)
 }
 
 /* fixme: needs documentation */
-int crypt_smime_verify_one(BODY *sigbdy, STATE *s, const char *tempf)
+int crypt_smime_verify_one(struct Body *sigbdy, STATE *s, const char *tempf)
 {
   if (CRYPT_MOD_CALL_CHECK(SMIME, verify_one))
     return (CRYPT_MOD_CALL(SMIME, verify_one))(sigbdy, s, tempf);

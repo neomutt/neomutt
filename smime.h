@@ -38,16 +38,16 @@ typedef struct smime_key
 void smime_void_passphrase(void);
 int smime_valid_passphrase(void);
 
-int smime_decrypt_mime(FILE *fpin, FILE **fpout, BODY *b, BODY **cur);
+int smime_decrypt_mime(FILE *fpin, FILE **fpout, struct Body *b, struct Body **cur);
 
-int smime_application_smime_handler(BODY *m, STATE *s);
+int smime_application_smime_handler(struct Body *m, STATE *s);
 
 
-BODY *smime_sign_message(BODY *a);
+struct Body *smime_sign_message(struct Body *a);
 
-BODY *smime_build_smime_entity(BODY *a, char *certlist);
+struct Body *smime_build_smime_entity(struct Body *a, char *certlist);
 
-int smime_verify_one(BODY *sigbdy, STATE *s, const char *tempfile);
+int smime_verify_one(struct Body *sigbdy, STATE *s, const char *tempfile);
 
 
 int smime_verify_sender(HEADER *h);

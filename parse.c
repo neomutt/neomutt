@@ -285,7 +285,7 @@ int mutt_check_mime_type(const char *s)
     return TYPEOTHER;
 }
 
-void mutt_parse_content_type(char *s, BODY *ct)
+void mutt_parse_content_type(char *s, struct Body *ct)
 {
   char *pc = NULL;
   char *subtype = NULL;
@@ -340,7 +340,7 @@ void mutt_parse_content_type(char *s, BODY *ct)
   if (ct->subtype == NULL)
   {
     /* Some older non-MIME mailers (i.e., mailtool, elm) have a content-type
-     * field, so we can attempt to convert the type to BODY here.
+     * field, so we can attempt to convert the type to Body here.
      */
     if (ct->type == TYPETEXT)
       ct->subtype = safe_strdup("plain");
@@ -371,7 +371,7 @@ void mutt_parse_content_type(char *s, BODY *ct)
   }
 }
 
-static void parse_content_disposition(const char *s, BODY *ct)
+static void parse_content_disposition(const char *s, struct Body *ct)
 {
   PARAMETER *parms = NULL;
 
@@ -400,9 +400,9 @@ static void parse_content_disposition(const char *s, BODY *ct)
  *      digest  1 if reading subparts of a multipart/digest, 0
  *              otherwise
  */
-BODY *mutt_read_mime_header(FILE *fp, int digest)
+struct Body *mutt_read_mime_header(FILE *fp, int digest)
 {
-  BODY *p = mutt_new_body();
+  struct Body *p = mutt_new_body();
   char *c = NULL;
   char *line = safe_malloc(LONG_STRING);
   size_t linelen = LONG_STRING;
@@ -475,7 +475,7 @@ BODY *mutt_read_mime_header(FILE *fp, int digest)
   return p;
 }
 
-void mutt_parse_part(FILE *fp, BODY *b)
+void mutt_parse_part(FILE *fp, struct Body *b)
 {
   char *bound = NULL;
 
@@ -529,9 +529,9 @@ void mutt_parse_part(FILE *fp, BODY *b)
  *
  * NOTE: this assumes that `parent->length' has been set!
  */
-BODY *mutt_parse_message_rfc822(FILE *fp, BODY *parent)
+struct Body *mutt_parse_message_rfc822(FILE *fp, struct Body *parent)
 {
-  BODY *msg = NULL;
+  struct Body *msg = NULL;
 
   parent->hdr = mutt_new_header();
   parent->hdr->offset = ftello(fp);
@@ -563,14 +563,14 @@ BODY *mutt_parse_message_rfc822(FILE *fp, BODY *parent)
  *
  *      digest          1 if reading a multipart/digest, 0 otherwise
  */
-BODY *mutt_parse_multipart(FILE *fp, const char *boundary, LOFF_T end_off, int digest)
+struct Body *mutt_parse_multipart(FILE *fp, const char *boundary, LOFF_T end_off, int digest)
 {
 #ifdef SUN_ATTACHMENT
   int lines;
 #endif
   int blen, len, crlf = 0;
   char buffer[LONG_STRING];
-  BODY *head = NULL, *last = NULL, *new = NULL;
+  struct Body *head = NULL, *last = NULL, *new = NULL;
   int i;
   int final = 0; /* did we see the ending boundary? */
 
@@ -1538,7 +1538,7 @@ struct Address *mutt_parse_adrlist(struct Address *p, const char *s)
 }
 
 /* Compares mime types to the ok and except lists */
-static bool count_body_parts_check(LIST **checklist, BODY *b, bool dflt)
+static bool count_body_parts_check(LIST **checklist, struct Body *b, bool dflt)
 {
   LIST *type = NULL;
   ATTACH_MATCH *a = NULL;
@@ -1579,11 +1579,11 @@ static bool count_body_parts_check(LIST **checklist, BODY *b, bool dflt)
     shallcount = false;                                                        \
   }
 
-static int count_body_parts(BODY *body, int flags)
+static int count_body_parts(struct Body *body, int flags)
 {
   int count = 0;
   bool shallcount, shallrecurse;
-  BODY *bp = NULL;
+  struct Body *bp = NULL;
 
   if (body == NULL)
     return 0;

@@ -34,9 +34,9 @@ typedef struct rfc1524_mailcap_entry
 
 rfc1524_entry *rfc1524_new_entry(void);
 void rfc1524_free_entry(rfc1524_entry **entry);
-int rfc1524_expand_command(BODY *a, char *filename, char *_type, char *command, int clen);
+int rfc1524_expand_command(struct Body *a, char *filename, char *_type, char *command, int clen);
 int rfc1524_expand_filename(char *nametemplate, char *oldfile, char *newfile, size_t nflen);
-int rfc1524_mailcap_lookup(BODY *a, char *type, rfc1524_entry *entry, int opt);
+int rfc1524_mailcap_lookup(struct Body *a, char *type, rfc1524_entry *entry, int opt);
 int mutt_rename_file(char *oldfile, char *newfile);
 
 #endif /* _MUTT_RFC1524_H */

@@ -412,7 +412,7 @@ static gpgme_data_t create_gpgme_data(void)
 /* Create a new GPGME Data object from the mail body A.  With CONVERT
    passed as true, the lines are converted to CR,LF if required.
    Return NULL on error or the gpgme_data_t object on success. */
-static gpgme_data_t body_to_data_object(BODY *a, int convert)
+static gpgme_data_t body_to_data_object(struct Body *a, int convert)
 {
   char tempfile[_POSIX_PATH_MAX];
   FILE *fptmp = NULL;
@@ -850,9 +850,9 @@ static void print_time(time_t t, STATE *s)
 /* Sign the MESSAGE in body A either using OpenPGP or S/MIME when
    USE_SMIME is passed as true.  Returns the new body or NULL on
    error. */
-static BODY *sign_message(BODY *a, int use_smime)
+static struct Body *sign_message(struct Body *a, int use_smime)
 {
-  BODY *t = NULL;
+  struct Body *t = NULL;
   char *sigfile = NULL;
   int err = 0;
   char buf[100];
@@ -971,12 +971,12 @@ static BODY *sign_message(BODY *a, int use_smime)
 }
 
 
-BODY *pgp_gpgme_sign_message(BODY *a)
+struct Body *pgp_gpgme_sign_message(struct Body *a)
 {
   return sign_message(a, 0);
 }
 
-BODY *smime_gpgme_sign_message(BODY *a)
+struct Body *smime_gpgme_sign_message(struct Body *a)
 {
   return sign_message(a, 1);
 }
@@ -987,10 +987,10 @@ BODY *smime_gpgme_sign_message(BODY *a)
 
 /* Encrypt the mail body A to all keys given as space separated keyids
    or fingerprints in KEYLIST and return the encrypted body.  */
-BODY *pgp_gpgme_encrypt_message(BODY *a, char *keylist, int sign)
+struct Body *pgp_gpgme_encrypt_message(struct Body *a, char *keylist, int sign)
 {
   char *outfile = NULL;
-  BODY *t = NULL;
+  struct Body *t = NULL;
   gpgme_key_t *rset = NULL;
   gpgme_data_t plaintext;
 
@@ -1048,10 +1048,10 @@ BODY *pgp_gpgme_encrypt_message(BODY *a, char *keylist, int sign)
 
 /* Encrypt the mail body A to all keys given as space separated
    fingerprints in KEYLIST and return the S/MIME encrypted body.  */
-BODY *smime_gpgme_build_smime_entity(BODY *a, char *keylist)
+struct Body *smime_gpgme_build_smime_entity(struct Body *a, char *keylist)
 {
   char *outfile = NULL;
-  BODY *t = NULL;
+  struct Body *t = NULL;
   gpgme_key_t *rset = NULL;
   gpgme_data_t plaintext;
 
@@ -1486,7 +1486,7 @@ static int show_one_sig_status(gpgme_ctx_t ctx, int idx, STATE *s)
 
 /* Do the actual verification step. With IS_SMIME set to true we
    assume S/MIME (surprise!) */
-static int verify_one(BODY *sigbdy, STATE *s, const char *tempfile, int is_smime)
+static int verify_one(struct Body *sigbdy, STATE *s, const char *tempfile, int is_smime)
 {
   int badsig = -1;
   int anywarn = 0;
@@ -1611,12 +1611,12 @@ static int verify_one(BODY *sigbdy, STATE *s, const char *tempfile, int is_smime
   return badsig ? 1 : anywarn ? 2 : 0;
 }
 
-int pgp_gpgme_verify_one(BODY *sigbdy, STATE *s, const char *tempfile)
+int pgp_gpgme_verify_one(struct Body *sigbdy, STATE *s, const char *tempfile)
 {
   return verify_one(sigbdy, s, tempfile, 0);
 }
 
-int smime_gpgme_verify_one(BODY *sigbdy, STATE *s, const char *tempfile)
+int smime_gpgme_verify_one(struct Body *sigbdy, STATE *s, const char *tempfile)
 {
   return verify_one(sigbdy, s, tempfile, 1);
 }
@@ -1631,13 +1631,13 @@ int smime_gpgme_verify_one(BODY *sigbdy, STATE *s, const char *tempfile)
    a flag in R_IS_SIGNED to indicate whether this is a combined
    encrypted and signed message, for S/MIME it returns true when it is
    not a encrypted but a signed message.  */
-static BODY *decrypt_part(BODY *a, STATE *s, FILE *fpout, int is_smime, int *r_is_signed)
+static struct Body *decrypt_part(struct Body *a, STATE *s, FILE *fpout, int is_smime, int *r_is_signed)
 {
   if (!a || !s || !fpout)
     return NULL;
 
   struct stat info;
-  BODY *tattach = NULL;
+  struct Body *tattach = NULL;
   int err = 0;
   gpgme_ctx_t ctx;
   gpgme_data_t ciphertext, plaintext;
@@ -1775,11 +1775,11 @@ restart:
 
 /* Decrypt a PGP/MIME message in FPIN and B and return a new body and
    the stream in CUR and FPOUT.  Returns 0 on success. */
-int pgp_gpgme_decrypt_mime(FILE *fpin, FILE **fpout, BODY *b, BODY **cur)
+int pgp_gpgme_decrypt_mime(FILE *fpin, FILE **fpout, struct Body *b, struct Body **cur)
 {
   char tempfile[_POSIX_PATH_MAX];
   STATE s;
-  BODY *first_part = b;
+  struct Body *first_part = b;
   int is_signed = 0;
   int need_decode = 0;
   int saved_type;
@@ -1861,7 +1861,7 @@ bail:
 
 /* Decrypt a S/MIME message in FPIN and B and return a new body and
    the stream in CUR and FPOUT.  Returns 0 on success. */
-int smime_gpgme_decrypt_mime(FILE *fpin, FILE **fpout, BODY *b, BODY **cur)
+int smime_gpgme_decrypt_mime(FILE *fpin, FILE **fpout, struct Body *b, struct Body **cur)
 {
   char tempfile[_POSIX_PATH_MAX];
   STATE s;
@@ -1932,8 +1932,8 @@ int smime_gpgme_decrypt_mime(FILE *fpin, FILE **fpout, BODY *b, BODY **cur)
          encrypted part can then point into this file and there won't
          ever be a need to decrypt again.  This needs a partial
          rewrite of the MIME engine. */
-    BODY *bb = *cur;
-    BODY *tmp_b = NULL;
+    struct Body *bb = *cur;
+    struct Body *tmp_b = NULL;
 
     saved_b_type = bb->type;
     saved_b_offset = bb->offset;
@@ -2124,7 +2124,7 @@ static int line_compare(const char *a, size_t n, const char *b)
 /*
  * Implementation of `pgp_check_traditional'.
  */
-static int pgp_check_traditional_one_body(FILE *fp, BODY *b, int tagged_only)
+static int pgp_check_traditional_one_body(FILE *fp, struct Body *b, int tagged_only)
 {
   char tempfile[_POSIX_PATH_MAX];
   char buf[HUGE_STRING];
@@ -2182,7 +2182,7 @@ static int pgp_check_traditional_one_body(FILE *fp, BODY *b, int tagged_only)
   return 1;
 }
 
-int pgp_gpgme_check_traditional(FILE *fp, BODY *b, int tagged_only)
+int pgp_gpgme_check_traditional(FILE *fp, struct Body *b, int tagged_only)
 {
   int rv = 0;
   int r;
@@ -2304,7 +2304,7 @@ static void copy_clearsigned(gpgme_data_t data, STATE *s, char *charset)
 }
 
 /* Support for classic_application/pgp */
-int pgp_gpgme_application_handler(BODY *m, STATE *s)
+int pgp_gpgme_application_handler(struct Body *m, STATE *s)
 {
   int needpass = -1, pgp_keyblock = 0;
   int clearsign = 0;
@@ -2549,11 +2549,11 @@ int pgp_gpgme_application_handler(BODY *m, STATE *s)
  * This handler is passed the application/octet-stream directly.
  * The caller must propagate a->goodsig to its parent.
  */
-int pgp_gpgme_encrypted_handler(BODY *a, STATE *s)
+int pgp_gpgme_encrypted_handler(struct Body *a, STATE *s)
 {
   char tempfile[_POSIX_PATH_MAX];
   FILE *fpout = NULL;
-  BODY *tattach = NULL;
+  struct Body *tattach = NULL;
   int is_signed;
   int rc = 0;
 
@@ -2623,11 +2623,11 @@ int pgp_gpgme_encrypted_handler(BODY *a, STATE *s)
 }
 
 /* Support for application/smime */
-int smime_gpgme_application_handler(BODY *a, STATE *s)
+int smime_gpgme_application_handler(struct Body *a, STATE *s)
 {
   char tempfile[_POSIX_PATH_MAX];
   FILE *fpout = NULL;
-  BODY *tattach = NULL;
+  struct Body *tattach = NULL;
   int is_signed;
   int rc = 0;
 
@@ -4441,14 +4441,14 @@ char *smime_gpgme_findkeys(struct Address *adrlist, int oppenc_mode)
 }
 
 #ifdef HAVE_GPGME_OP_EXPORT_KEYS
-BODY *pgp_gpgme_make_key_attachment(char *tempf)
+struct Body *pgp_gpgme_make_key_attachment(char *tempf)
 {
   crypt_key_t *key = NULL;
   gpgme_ctx_t context = NULL;
   gpgme_key_t export_keys[2];
   gpgme_data_t keydata = NULL;
   gpgme_error_t err;
-  BODY *att = NULL;
+  struct Body *att = NULL;
   char buff[LONG_STRING];
   struct stat sb;
 

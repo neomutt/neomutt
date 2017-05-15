@@ -1848,7 +1848,7 @@ void _mutt_select_file(char *f, size_t flen, int flags, char ***files, int *numf
         }
         else
         {
-          BODY *b = NULL;
+          struct Body *b = NULL;
           char buf2[_POSIX_PATH_MAX];
 
           mutt_concat_path(buf2, LastDir, state.entry[menu->current].name, sizeof(buf2));

@@ -680,9 +680,9 @@ pgp_key_t pgp_ask_for_key(char *tag, char *whatfor, short abilities, pgp_ring_t 
 }
 
 /* generate a public key attachment */
-BODY *pgp_make_key_attachment(char *tempf)
+struct Body *pgp_make_key_attachment(char *tempf)
 {
-  BODY *att = NULL;
+  struct Body *att = NULL;
   char buff[LONG_STRING];
   char tempfb[_POSIX_PATH_MAX], tmp[STRING];
   FILE *tempfp = NULL;

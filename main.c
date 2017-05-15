@@ -647,7 +647,7 @@ int main(int argc, char **argv, char **environ)
       else
         sendflags |= SENDNOFREEHEADER;
 
-      /* Parse the draftFile into the full HEADER/BODY structure.
+      /* Parse the draftFile into the full HEADER/Body structure.
        * Set SENDDRAFTFILE so ci_send_message doesn't overwrite
        * our msg->content.
        */
@@ -719,7 +719,7 @@ int main(int argc, char **argv, char **environ)
     if (attach)
     {
       LIST *t = attach;
-      BODY *a = msg->content;
+      struct Body *a = msg->content;
 
       while (a && a->next)
         a = a->next;

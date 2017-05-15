@@ -719,7 +719,7 @@ typedef struct content
   bool cr : 1;     /* has CR, even when in a CRLF pair */
 } CONTENT;
 
-typedef struct body
+struct Body
 {
   char *xtype;          /* content-type if x-unknown */
   char *subtype;        /* content-type subtype */
@@ -747,8 +747,8 @@ typedef struct body
                          * to determine what content-transfer-encoding
                          * is required when sending mail.
                          */
-  struct body *next;    /* next attachment in the list */
-  struct body *parts;   /* parts of a multipart or message/rfc822 */
+  struct Body *next;    /* next attachment in the list */
+  struct Body *parts;   /* parts of a multipart or message/rfc822 */
   struct header *hdr;   /* header information for message/rfc822 */
 
   struct AttachPtr *aptr; /* Menu information, used in recvattach.c */
@@ -794,7 +794,7 @@ typedef struct body
   bool collapsed : 1; /* used by recvattach */
   bool attach_qualifies : 1;
 
-} BODY;
+};
 
 /* #3279: AIX defines conflicting struct thread */
 typedef struct mutt_thread THREAD;
@@ -858,7 +858,7 @@ typedef struct header
   int virtual;        /* virtual message number */
   int score;
   ENVELOPE *env;      /* envelope information */
-  BODY *content;      /* list of MIME parts */
+  struct Body *content;      /* list of MIME parts */
   char *path;
 
   char *tree; /* character string to print thread tree */

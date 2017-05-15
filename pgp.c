@@ -297,7 +297,7 @@ static void pgp_copy_clearsigned(FILE *fpin, STATE *s, char *charset)
 
 
 /* Support for the Application/PGP Content Type. */
-int pgp_application_pgp_handler(BODY *m, STATE *s)
+int pgp_application_pgp_handler(struct Body *m, STATE *s)
 {
   int could_not_decrypt = 0;
   int needpass = -1, pgp_keyblock = 0;
@@ -588,7 +588,7 @@ out:
   return rc;
 }
 
-static int pgp_check_traditional_one_body(FILE *fp, BODY *b, int tagged_only)
+static int pgp_check_traditional_one_body(FILE *fp, struct Body *b, int tagged_only)
 {
   char tempfile[_POSIX_PATH_MAX];
   char buf[HUGE_STRING];
@@ -648,7 +648,7 @@ static int pgp_check_traditional_one_body(FILE *fp, BODY *b, int tagged_only)
   return 1;
 }
 
-int pgp_check_traditional(FILE *fp, BODY *b, int tagged_only)
+int pgp_check_traditional(FILE *fp, struct Body *b, int tagged_only)
 {
   int rv = 0;
   int r;
@@ -669,7 +669,7 @@ int pgp_check_traditional(FILE *fp, BODY *b, int tagged_only)
 }
 
 
-int pgp_verify_one(BODY *sigbdy, STATE *s, const char *tempfile)
+int pgp_verify_one(struct Body *sigbdy, STATE *s, const char *tempfile)
 {
   char sigfile[_POSIX_PATH_MAX], pgperrfile[_POSIX_PATH_MAX];
   FILE *fp = NULL, *pgpout = NULL, *pgperr = NULL;
@@ -733,7 +733,7 @@ int pgp_verify_one(BODY *sigbdy, STATE *s, const char *tempfile)
 
 
 /* Extract pgp public keys from messages or attachments */
-static void pgp_extract_keys_from_attachment(FILE *fp, BODY *top)
+static void pgp_extract_keys_from_attachment(FILE *fp, struct Body *top)
 {
   STATE s;
   FILE *tempfp = NULL;
@@ -761,7 +761,7 @@ static void pgp_extract_keys_from_attachment(FILE *fp, BODY *top)
   mutt_unlink(tempfname);
 }
 
-void pgp_extract_keys_from_attachment_list(FILE *fp, int tag, BODY *top)
+void pgp_extract_keys_from_attachment_list(FILE *fp, int tag, struct Body *top)
 {
   if (!fp)
   {
@@ -784,7 +784,7 @@ void pgp_extract_keys_from_attachment_list(FILE *fp, int tag, BODY *top)
   unset_option(OPTDONTHANDLEPGPKEYS);
 }
 
-static BODY *pgp_decrypt_part(BODY *a, STATE *s, FILE *fpout, BODY *p)
+static struct Body *pgp_decrypt_part(struct Body *a, STATE *s, FILE *fpout, struct Body *p)
 {
   if (!a || !s || !fpout || !p)
     return NULL;
@@ -792,7 +792,7 @@ static BODY *pgp_decrypt_part(BODY *a, STATE *s, FILE *fpout, BODY *p)
   char buf[LONG_STRING];
   FILE *pgpin = NULL, *pgpout = NULL, *pgperr = NULL, *pgptmp = NULL;
   struct stat info;
-  BODY *tattach = NULL;
+  struct Body *tattach = NULL;
   int len;
   char pgperrfile[_POSIX_PATH_MAX];
   char pgptmpfile[_POSIX_PATH_MAX];
@@ -908,11 +908,11 @@ static BODY *pgp_decrypt_part(BODY *a, STATE *s, FILE *fpout, BODY *p)
   return tattach;
 }
 
-int pgp_decrypt_mime(FILE *fpin, FILE **fpout, BODY *b, BODY **cur)
+int pgp_decrypt_mime(FILE *fpin, FILE **fpout, struct Body *b, struct Body **cur)
 {
   char tempfile[_POSIX_PATH_MAX];
   STATE s;
-  BODY *p = b;
+  struct Body *p = b;
   int need_decode = 0;
   int saved_type;
   LOFF_T saved_offset;
@@ -989,11 +989,11 @@ bail:
  * This handler is passed the application/octet-stream directly.
  * The caller must propagate a->goodsig to its parent.
  */
-int pgp_encrypted_handler(BODY *a, STATE *s)
+int pgp_encrypted_handler(struct Body *a, STATE *s)
 {
   char tempfile[_POSIX_PATH_MAX];
   FILE *fpout = NULL, *fpin = NULL;
-  BODY *tattach = NULL;
+  struct Body *tattach = NULL;
   int rc = 0;
 
   mutt_mktemp(tempfile, sizeof(tempfile));
@@ -1058,9 +1058,9 @@ int pgp_encrypted_handler(BODY *a, STATE *s)
  */
 
 
-BODY *pgp_sign_message(BODY *a)
+struct Body *pgp_sign_message(struct Body *a)
 {
-  BODY *t = NULL;
+  struct Body *t = NULL;
   char buffer[LONG_STRING];
   char sigfile[_POSIX_PATH_MAX], signedfile[_POSIX_PATH_MAX];
   FILE *pgpin = NULL, *pgpout = NULL, *pgperr = NULL, *fp = NULL, *sfp = NULL;
@@ -1301,13 +1301,13 @@ char *pgp_find_keys(struct Address *adrlist, int oppenc_mode)
 
 /* Warning: "a" is no longer freed in this routine, you need
  * to free it later.  This is necessary for $fcc_attach. */
-BODY *pgp_encrypt_message(BODY *a, char *keylist, int sign)
+struct Body *pgp_encrypt_message(struct Body *a, char *keylist, int sign)
 {
   char buf[LONG_STRING];
   char tempfile[_POSIX_PATH_MAX], pgperrfile[_POSIX_PATH_MAX];
   char pgpinfile[_POSIX_PATH_MAX];
   FILE *pgpin = NULL, *pgperr = NULL, *fpout = NULL, *fptmp = NULL;
-  BODY *t = NULL;
+  struct Body *t = NULL;
   int err = 0;
   int empty = 0;
   pid_t thepid;
@@ -1425,9 +1425,9 @@ BODY *pgp_encrypt_message(BODY *a, char *keylist, int sign)
   return t;
 }
 
-BODY *pgp_traditional_encryptsign(BODY *a, int flags, char *keylist)
+struct Body *pgp_traditional_encryptsign(struct Body *a, int flags, char *keylist)
 {
-  BODY *b = NULL;
+  struct Body *b = NULL;
 
   char pgpoutfile[_POSIX_PATH_MAX];
   char pgperrfile[_POSIX_PATH_MAX];

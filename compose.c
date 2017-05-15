@@ -493,7 +493,7 @@ static unsigned long cum_attachs_size(MUTTMENU *menu)
   unsigned short i;
   struct AttachPtr **idx = menu->data;
   CONTENT *info = NULL;
-  BODY *b = NULL;
+  struct Body *b = NULL;
 
   for (i = 0, s = 0; i < menu->max; i++)
   {
@@ -1109,7 +1109,7 @@ int mutt_compose_menu(HEADER *msg, /* structure for new message */
         CHECK_COUNT;
         if (menu->tagprefix)
         {
-          BODY *top = NULL;
+          struct Body *top = NULL;
           for (top = msg->content; top; top = top->next)
           {
             if (top->tagged)
@@ -1213,7 +1213,7 @@ int mutt_compose_menu(HEADER *msg, /* structure for new message */
         CHECK_COUNT;
         if (menu->tagprefix)
         {
-          BODY *top = NULL;
+          struct Body *top = NULL;
           for (top = msg->content; top; top = top->next)
           {
             if (top->tagged)

@@ -1753,7 +1753,7 @@ bool mutt_limit_current_thread(HEADER *h)
 
     if (top_of_thread(Context->hdrs[i]) == me)
     {
-      BODY *body = Context->hdrs[i]->content;
+      struct Body *body = Context->hdrs[i]->content;
 
       Context->hdrs[i]->virtual = Context->vcount;
       Context->hdrs[i]->limited = true;

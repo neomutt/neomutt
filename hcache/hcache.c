@@ -370,11 +370,11 @@ static void restore_parameter(PARAMETER **p, const unsigned char *d, int *off, i
   *p = NULL;
 }
 
-static unsigned char *dump_body(BODY *c, unsigned char *d, int *off, int convert)
+static unsigned char *dump_body(struct Body *c, unsigned char *d, int *off, int convert)
 {
-  BODY nb;
+  struct Body nb;
 
-  memcpy(&nb, c, sizeof(BODY));
+  memcpy(&nb, c, sizeof(struct Body));
 
   /* some fields are not safe to cache */
   nb.content = NULL;
@@ -384,9 +384,9 @@ static unsigned char *dump_body(BODY *c, unsigned char *d, int *off, int convert
   nb.hdr = NULL;
   nb.aptr = NULL;
 
-  lazy_realloc(&d, *off + sizeof(BODY));
-  memcpy(d + *off, &nb, sizeof(BODY));
-  *off += sizeof(BODY);
+  lazy_realloc(&d, *off + sizeof(struct Body));
+  memcpy(d + *off, &nb, sizeof(struct Body));
+  *off += sizeof(struct Body);
 
   d = dump_char(nb.xtype, d, off, 0);
   d = dump_char(nb.subtype, d, off, 0);
@@ -401,10 +401,10 @@ static unsigned char *dump_body(BODY *c, unsigned char *d, int *off, int convert
   return d;
 }
 
-static void restore_body(BODY *c, const unsigned char *d, int *off, int convert)
+static void restore_body(struct Body *c, const unsigned char *d, int *off, int convert)
 {
-  memcpy(c, d + *off, sizeof(BODY));
-  *off += sizeof(BODY);
+  memcpy(c, d + *off, sizeof(struct Body));
+  *off += sizeof(struct Body);
 
   restore_char(&c->xtype, d, off, 0);
   restore_char(&c->subtype, d, off, 0);

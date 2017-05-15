@@ -34,7 +34,7 @@
 #endif
 
 static int address_header_decode(char **str);
-static int copy_delete_attach(BODY *b, FILE *fpin, FILE *fpout, char *date);
+static int copy_delete_attach(struct Body *b, FILE *fpin, FILE *fpout, char *date);
 
 /* Ok, the only reason for not merging this with mutt_copy_header()
  * below is to avoid creating a HEADER structure in message_handler().
@@ -462,7 +462,7 @@ int mutt_copy_header(FILE *in, HEADER *h, FILE *out, int flags, const char *pref
 }
 
 /* Count the number of lines and bytes to be deleted in this body */
-static int count_delete_lines(FILE *fp, BODY *b, LOFF_T *length, size_t datelen)
+static int count_delete_lines(FILE *fp, struct Body *b, LOFF_T *length, size_t datelen)
 {
   int dellines = 0;
   long l;
@@ -510,7 +510,7 @@ static int count_delete_lines(FILE *fp, BODY *b, LOFF_T *length, size_t datelen)
  *      MUTT_CM_CHARCONV        perform character set conversion
  * chflags      flags to mutt_copy_header()
  */
-int _mutt_copy_message(FILE *fpout, FILE *fpin, HEADER *hdr, BODY *body, int flags, int chflags)
+int _mutt_copy_message(FILE *fpout, FILE *fpin, HEADER *hdr, struct Body *body, int flags, int chflags)
 {
   char prefix[SHORT_STRING];
   STATE s;
@@ -640,7 +640,7 @@ int _mutt_copy_message(FILE *fpout, FILE *fpin, HEADER *hdr, BODY *body, int fla
   }
   else if (WithCrypto && (flags & MUTT_CM_DECODE_CRYPT) && (hdr->security & ENCRYPT))
   {
-    BODY *cur = NULL;
+    struct Body *cur = NULL;
     FILE *fp = NULL;
 
     if ((WithCrypto & APPLICATION_PGP) && (flags & MUTT_CM_DECODE_PGP) &&
@@ -741,7 +741,7 @@ int mutt_copy_message(FILE *fpout, CONTEXT *src, HEADER *hdr, int flags, int chf
  * chflags      mutt_copy_header() flags
  */
 static int _mutt_append_message(CONTEXT *dest, FILE *fpin, CONTEXT *src,
-                                HEADER *hdr, BODY *body, int flags, int chflags)
+                                HEADER *hdr, struct Body *body, int flags, int chflags)
 {
   char buf[STRING];
   MESSAGE *msg = NULL;
@@ -789,9 +789,9 @@ int mutt_append_message(CONTEXT *dest, CONTEXT *src, HEADER *hdr, int cmflags, i
  *
  * The function will return 0 on success and -1 on failure.
  */
-static int copy_delete_attach(BODY *b, FILE *fpin, FILE *fpout, char *date)
+static int copy_delete_attach(struct Body *b, FILE *fpin, FILE *fpout, char *date)
 {
-  BODY *part = NULL;
+  struct Body *part = NULL;
 
   for (part = b->parts; part; part = part->next)
   {

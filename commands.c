@@ -905,7 +905,7 @@ void mutt_version(void)
   mutt_message("NeoMutt %s%s (%s)", PACKAGE_VERSION, GitVer, MUTT_VERSION);
 }
 
-void mutt_edit_content_type(HEADER *h, BODY *b, FILE *fp)
+void mutt_edit_content_type(HEADER *h, struct Body *b, FILE *fp)
 {
   char buf[LONG_STRING];
   char obuf[LONG_STRING];

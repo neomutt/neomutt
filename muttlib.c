@@ -56,9 +56,9 @@ static const char *xdg_defaults[] = {
       [kXDGConfigHome] = "~/.config", [kXDGConfigDirs] = "/etc/xdg",
 };
 
-BODY *mutt_new_body(void)
+struct Body *mutt_new_body(void)
 {
-  BODY *p = safe_calloc(1, sizeof(BODY));
+  struct Body *p = safe_calloc(1, sizeof(struct Body));
 
   p->disposition = DISPATTACH;
   p->use_disp = true;
@@ -100,13 +100,13 @@ void mutt_adv_mktemp(char *s, size_t l)
 }
 
 /* create a send-mode duplicate from a receive-mode body */
-int mutt_copy_body(FILE *fp, BODY **tgt, BODY *src)
+int mutt_copy_body(FILE *fp, struct Body **tgt, struct Body *src)
 {
   if (!tgt || !src)
     return -1;
 
   char tmp[_POSIX_PATH_MAX];
-  BODY *b = NULL;
+  struct Body *b = NULL;
 
   PARAMETER *par = NULL, **ppar = NULL;
 
@@ -130,7 +130,7 @@ int mutt_copy_body(FILE *fp, BODY **tgt, BODY *src)
   *tgt = mutt_new_body();
   b = *tgt;
 
-  memcpy(b, src, sizeof(BODY));
+  memcpy(b, src, sizeof(struct Body));
   b->parts = NULL;
   b->next = NULL;
 
@@ -173,9 +173,9 @@ int mutt_copy_body(FILE *fp, BODY **tgt, BODY *src)
 }
 
 
-void mutt_free_body(BODY **p)
+void mutt_free_body(struct Body **p)
 {
-  BODY *a = *p, *b = NULL;
+  struct Body *a = *p, *b = NULL;
 
   while (a)
   {
@@ -687,7 +687,7 @@ void mutt_delete_parameter(const char *attribute, PARAMETER **p)
 }
 
 /* returns 1 if Mutt can't display this type of data, 0 otherwise */
-bool mutt_needs_mailcap(BODY *m)
+bool mutt_needs_mailcap(struct Body *m)
 {
   switch (m->type)
   {
@@ -710,7 +710,7 @@ bool mutt_needs_mailcap(BODY *m)
   return true;
 }
 
-bool mutt_is_text_part(BODY *b)
+bool mutt_is_text_part(struct Body *b)
 {
   int t = b->type;
   char *s = b->subtype;

@@ -835,7 +835,7 @@ static int generate_body(FILE *tempfp, /* stream for outgoing message */
 {
   int i;
   HEADER *h = NULL;
-  BODY *tmp = NULL;
+  struct Body *tmp = NULL;
 
   if (flags & SENDREPLY)
   {
@@ -869,7 +869,7 @@ static int generate_body(FILE *tempfp, /* stream for outgoing message */
   {
     if ((i = query_quadoption(OPT_MIMEFWD, _("Forward as attachment?"))) == MUTT_YES)
     {
-      BODY *last = msg->content;
+      struct Body *last = msg->content;
 
       mutt_message(_("Preparing forwarded message..."));
 
@@ -917,7 +917,7 @@ static int generate_body(FILE *tempfp, /* stream for outgoing message */
   /* if (WithCrypto && (flags & SENDKEY)) */
   else if ((WithCrypto & APPLICATION_PGP) && (flags & SENDKEY))
   {
-    BODY *b = NULL;
+    struct Body *b = NULL;
 
     if ((WithCrypto & APPLICATION_PGP) && (b = crypt_pgp_make_key_attachment(NULL)) == NULL)
       return -1;
@@ -1127,9 +1127,9 @@ static int send_message(HEADER *msg)
 }
 
 /* rfc2047 encode the content-descriptions */
-void mutt_encode_descriptions(BODY *b, short recurse)
+void mutt_encode_descriptions(struct Body *b, short recurse)
 {
-  BODY *t = NULL;
+  struct Body *t = NULL;
 
   for (t = b; t; t = t->next)
   {
@@ -1143,9 +1143,9 @@ void mutt_encode_descriptions(BODY *b, short recurse)
 }
 
 /* rfc2047 decode them in case of an error */
-static void decode_descriptions(BODY *b)
+static void decode_descriptions(struct Body *b)
 {
-  BODY *t = NULL;
+  struct Body *t = NULL;
 
   for (t = b; t; t = t->next)
   {
@@ -1290,13 +1290,13 @@ int ci_send_message(int flags,      /* send mode */
   char buffer[LONG_STRING];
   char fcc[_POSIX_PATH_MAX] = ""; /* where to copy this message */
   FILE *tempfp = NULL;
-  BODY *pbody = NULL;
+  struct Body *pbody = NULL;
   int i, killfrom = 0;
   int fcc_error = 0;
   int free_clear_content = 0;
 
-  BODY *save_content = NULL;
-  BODY *clear_content = NULL;
+  struct Body *save_content = NULL;
+  struct Body *clear_content = NULL;
   char *pgpkeylist = NULL;
   /* save current value of "pgp_sign_as"  and "smime_default_key" */
   char *pgp_signas = NULL;
@@ -2008,9 +2008,9 @@ int ci_send_message(int flags,      /* send mode */
 
   if (*fcc && (mutt_strcmp("/dev/null", fcc) != 0))
   {
-    BODY *tmpbody = msg->content;
-    BODY *save_sig = NULL;
-    BODY *save_parts = NULL;
+    struct Body *tmpbody = msg->content;
+    struct Body *save_sig = NULL;
+    struct Body *save_parts = NULL;
 
     if (WithCrypto && (msg->security & (ENCRYPT | SIGN)) && option(OPTFCCCLEAR))
       msg->content = clear_content;

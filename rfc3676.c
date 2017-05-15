@@ -243,7 +243,7 @@ static void print_fixed_line(const char *line, STATE *s, int ql, flowed_state_t 
   fst->spaces = 0;
 }
 
-int rfc3676_handler(BODY *a, STATE *s)
+int rfc3676_handler(struct Body *a, STATE *s)
 {
   char *buf = NULL, *t = NULL;
   unsigned int quotelevel = 0, newql = 0, sigsep = 0;

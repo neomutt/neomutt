@@ -625,7 +625,7 @@ static int strict_cmp_parameters(const PARAMETER *p1, const PARAMETER *p2)
   return 1;
 }
 
-static int strict_cmp_bodies(const BODY *b1, const BODY *b2)
+static int strict_cmp_bodies(const struct Body *b1, const struct Body *b2)
 {
   if (b1->type != b2->type || b1->encoding != b2->encoding ||
       (mutt_strcmp(b1->subtype, b2->subtype) != 0) ||

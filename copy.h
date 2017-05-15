@@ -63,7 +63,7 @@ int mutt_copy_hdr(FILE *in, FILE *out, LOFF_T off_start, LOFF_T off_end,
 
 int mutt_copy_header(FILE *in, HEADER *h, FILE *out, int flags, const char *prefix);
 
-int _mutt_copy_message(FILE *fpout, FILE *fpin, HEADER *hdr, BODY *body,
+int _mutt_copy_message(FILE *fpout, FILE *fpin, HEADER *hdr, struct Body *body,
                        int flags, int chflags);
 
 int mutt_copy_message(FILE *fpout, CONTEXT *src, HEADER *hdr, int flags, int chflags);

@@ -147,8 +147,8 @@ void mutt_edit_headers(const char *editor, const char *body, HEADER *msg, char *
     }
     else if (ascii_strncasecmp("attach:", cur->data, 7) == 0)
     {
-      BODY *body2 = NULL;
-      BODY *parts = NULL;
+      struct Body *body2 = NULL;
+      struct Body *parts = NULL;
       size_t l = 0;
 
       p = skip_email_wsp(cur->data + 7);
