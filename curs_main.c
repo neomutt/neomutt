@@ -1215,7 +1215,7 @@ int mutt_index_menu(void)
           }
           else
           {
-            LIST *ref = CURHDR->env->references;
+            struct List *ref = CURHDR->env->references;
             if (!ref)
             {
               mutt_error(_("Article has no parent reference."));
@@ -1288,7 +1288,7 @@ int mutt_index_menu(void)
           /* trying to find msgid of the root message */
           if (op == OP_RECONSTRUCT_THREAD)
           {
-            LIST *ref = CURHDR->env->references;
+            struct List *ref = CURHDR->env->references;
             while (ref)
             {
               if (hash_find(Context->id_hash, ref->data) == NULL)

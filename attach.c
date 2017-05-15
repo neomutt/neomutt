@@ -284,7 +284,7 @@ bailout:
 
 void mutt_check_lookup_list(struct Body *b, char *type, int len)
 {
-  LIST *t = MimeLookupList;
+  struct List *t = MimeLookupList;
   int i;
 
   for (; t; t = t->next)

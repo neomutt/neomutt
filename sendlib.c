@@ -1508,9 +1508,9 @@ void mutt_write_address_list(struct Address *adr, FILE *fp, int linelen, int dis
 /* need to write the list in reverse because they are stored in reverse order
  * when parsed to speed up threading
  */
-void mutt_write_references(LIST *r, FILE *f, int trim)
+void mutt_write_references(struct List *r, FILE *f, int trim)
 {
-  LIST **ref = NULL;
+  struct List **ref = NULL;
   int refcnt = 0, refmax = 0;
   int multiline = 1;
   int space = 0;
@@ -1524,7 +1524,7 @@ void mutt_write_references(LIST *r, FILE *f, int trim)
   for (; (trim == 0 || refcnt < trim) && r; r = r->next)
   {
     if (refcnt == refmax)
-      safe_realloc(&ref, (refmax += REF_INC) * sizeof(LIST *));
+      safe_realloc(&ref, (refmax += REF_INC) * sizeof(struct List *));
     ref[refcnt++] = r;
   }
 
@@ -1918,7 +1918,7 @@ int mutt_write_rfc822_header(FILE *fp, struct Envelope *env, struct Body *attach
 {
   char buffer[LONG_STRING];
   char *p = NULL, *q = NULL;
-  LIST *tmp = env->userhdrs;
+  struct List *tmp = env->userhdrs;
   int has_agent = 0; /* user defined user-agent header field exists */
 
   if (mode == 0 && !privacy)
@@ -2082,7 +2082,7 @@ int mutt_write_rfc822_header(FILE *fp, struct Envelope *env, struct Body *attach
   return (ferror(fp) == 0 ? 0 : -1);
 }
 
-static void encode_headers(LIST *h)
+static void encode_headers(struct List *h)
 {
   char *tmp = NULL;
   char *p = NULL;
@@ -2560,7 +2560,7 @@ void mutt_prepare_envelope(struct Envelope *env, int final)
 
 void mutt_unprepare_envelope(struct Envelope *env)
 {
-  LIST *item = NULL;
+  struct List *item = NULL;
 
   for (item = env->userhdrs; item; item = item->next)
     rfc2047_decode(&item->data);
@@ -2916,7 +2916,7 @@ int mutt_write_fcc(const char *path, struct Header *hdr, const char *msgid, int 
 
   if (post && hdr->chain && hdr->chain)
   {
-    LIST *p = NULL;
+    struct List *p = NULL;
 
     fputs("X-Mutt-Mix:", msg->fp);
     for (p = hdr->chain; p; p = p->next)

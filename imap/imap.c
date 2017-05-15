@@ -42,7 +42,7 @@
 #endif
 
 /* imap forward declarations */
-static char *imap_get_flags(LIST **hflags, char *s);
+static char *imap_get_flags(struct List **hflags, char *s);
 static int imap_check_capabilities(IMAP_DATA *idata);
 static void imap_set_flag(IMAP_DATA *idata, int aclbit, int flag,
                           const char *str, char *flags, size_t flsize);
@@ -497,9 +497,9 @@ void imap_close_connection(IMAP_DATA *idata)
 
 /* imap_get_flags: Make a simple list out of a FLAGS response.
  *   return stream following FLAGS response */
-static char *imap_get_flags(LIST **hflags, char *s)
+static char *imap_get_flags(struct List **hflags, char *s)
 {
-  LIST *flags = NULL;
+  struct List *flags = NULL;
   char *flag_word = NULL;
   char ctmp;
 
@@ -720,7 +720,7 @@ static int imap_open_mailbox(struct Context *ctx)
       mutt_debug(3, "No folder flags found\n");
     else
     {
-      LIST *t = idata->flags;
+      struct List *t = idata->flags;
 
       mutt_debug(3, "Mailbox flags: ");
 
@@ -849,7 +849,7 @@ static void imap_set_flag(IMAP_DATA *idata, int aclbit, int flag,
 
 /* imap_has_flag: do a caseless comparison of the flag against a flag list,
 *   return true if found or flag list has '\*', false otherwise */
-bool imap_has_flag(LIST *flag_list, const char *flag)
+bool imap_has_flag(struct List *flag_list, const char *flag)
 {
   if (!flag_list)
     return false;
@@ -1633,7 +1633,7 @@ int imap_status(char *path, int queue)
 /* return cached mailbox stats or NULL if create is 0 */
 IMAP_STATUS *imap_mboxcache_get(IMAP_DATA *idata, const char *mbox, int create)
 {
-  LIST *cur = NULL;
+  struct List *cur = NULL;
   IMAP_STATUS *status = NULL;
   IMAP_STATUS scache;
 #ifdef USE_HCACHE
@@ -1692,7 +1692,7 @@ IMAP_STATUS *imap_mboxcache_get(IMAP_DATA *idata, const char *mbox, int create)
 
 void imap_mboxcache_free(IMAP_DATA *idata)
 {
-  LIST *cur = NULL;
+  struct List *cur = NULL;
   IMAP_STATUS *status = NULL;
 
   for (cur = idata->mboxcache; cur; cur = cur->next)

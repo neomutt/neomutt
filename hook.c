@@ -498,10 +498,10 @@ static char *_mutt_string_hook(const char *match, int hook)
   return NULL;
 }
 
-static LIST *_mutt_list_hook(const char *match, int hook)
+static struct List *_mutt_list_hook(const char *match, int hook)
 {
   HOOK *tmp = Hooks;
-  LIST *matches = NULL;
+  struct List *matches = NULL;
 
   for (; tmp; tmp = tmp->next)
   {
@@ -522,7 +522,7 @@ char *mutt_iconv_hook(const char *chs)
   return _mutt_string_hook(chs, MUTT_ICONVHOOK);
 }
 
-LIST *mutt_crypt_hook(struct Address *adr)
+struct List *mutt_crypt_hook(struct Address *adr)
 {
   return _mutt_list_hook(adr->mailbox, MUTT_CRYPTHOOK);
 }

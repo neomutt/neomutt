@@ -1241,9 +1241,9 @@ int imap_cache_clean(IMAP_DATA *idata)
 
 /* imap_add_keywords: concatenate custom IMAP tags to list, if they
  *   appear in the folder flags list. Why wouldn't they? */
-void imap_add_keywords(char *s, struct Header *h, LIST *mailbox_flags, size_t slen)
+void imap_add_keywords(char *s, struct Header *h, struct List *mailbox_flags, size_t slen)
 {
-  LIST *keywords = NULL;
+  struct List *keywords = NULL;
 
   if (!mailbox_flags || !HEADER_DATA(h) || !HEADER_DATA(h)->keywords)
     return;

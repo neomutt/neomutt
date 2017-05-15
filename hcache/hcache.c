@@ -257,7 +257,7 @@ static void restore_address(struct Address **a, const unsigned char *d, int *off
   *a = NULL;
 }
 
-static unsigned char *dump_list(LIST *l, unsigned char *d, int *off, int convert)
+static unsigned char *dump_list(struct List *l, unsigned char *d, int *off, int convert)
 {
   unsigned int counter = 0;
   unsigned int start_off = *off;
@@ -276,7 +276,7 @@ static unsigned char *dump_list(LIST *l, unsigned char *d, int *off, int convert
   return d;
 }
 
-static void restore_list(LIST **l, const unsigned char *d, int *off, int convert)
+static void restore_list(struct List **l, const unsigned char *d, int *off, int convert)
 {
   unsigned int counter;
 
@@ -284,7 +284,7 @@ static void restore_list(LIST **l, const unsigned char *d, int *off, int convert
 
   while (counter)
   {
-    *l = safe_malloc(sizeof(LIST));
+    *l = safe_malloc(sizeof(struct List));
     restore_char(&(*l)->data, d, off, convert);
     l = &(*l)->next;
     counter--;

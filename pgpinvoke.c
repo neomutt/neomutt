@@ -311,7 +311,7 @@ pid_t pgp_invoke_verify_key(FILE **pgpin, FILE **pgpout, FILE **pgperr, int pgpi
 }
 
 pid_t pgp_invoke_list_keys(FILE **pgpin, FILE **pgpout, FILE **pgperr, int pgpinfd,
-                           int pgpoutfd, int pgperrfd, pgp_ring_t keyring, LIST *hints)
+                           int pgpoutfd, int pgperrfd, pgp_ring_t keyring, struct List *hints)
 {
   char uids[HUGE_STRING];
   char tmpuids[HUGE_STRING];

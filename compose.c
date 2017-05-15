@@ -216,7 +216,7 @@ static void redraw_crypt_lines(struct Header *msg)
 
 #ifdef MIXMASTER
 
-static void redraw_mix_line(LIST *chain)
+static void redraw_mix_line(struct List *chain)
 {
   int c;
   char *t = NULL;

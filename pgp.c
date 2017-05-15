@@ -1186,7 +1186,7 @@ struct Body *pgp_sign_message(struct Body *a)
  */
 char *pgp_find_keys(struct Address *adrlist, int oppenc_mode)
 {
-  LIST *crypt_hook_list = NULL, *crypt_hook = NULL;
+  struct List *crypt_hook_list = NULL, *crypt_hook = NULL;
   char *keyID = NULL, *keylist = NULL;
   size_t keylist_size = 0;
   size_t keylist_used = 0;

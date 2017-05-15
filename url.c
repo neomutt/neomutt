@@ -252,7 +252,7 @@ int url_parse_mailto(struct Envelope *e, char **body, const char *src)
 
   int rc = -1;
 
-  LIST *last = NULL;
+  struct List *last = NULL;
 
   if (!(t = strchr(src, ':')))
     return -1;

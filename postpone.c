@@ -238,9 +238,9 @@ int mutt_get_postponed(struct Context *ctx, struct Header *hdr, struct Header **
 {
   struct Header *h = NULL;
   int code = SENDPOSTPONED;
-  LIST *tmp = NULL;
-  LIST *last = NULL;
-  LIST *next = NULL;
+  struct List *tmp = NULL;
+  struct List *last = NULL;
+  struct List *next = NULL;
   const char *p = NULL;
   int opt_delete;
 

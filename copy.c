@@ -48,7 +48,7 @@ int mutt_copy_hdr(FILE *in, FILE *out, LOFF_T off_start, LOFF_T off_end,
   int ignore = 0;
   char buf[LONG_STRING]; /* should be long enough to get most fields in one pass */
   char *nl = NULL;
-  LIST *t = NULL;
+  struct List *t = NULL;
   char **headers;
   int hdr_count;
   int x;
@@ -368,7 +368,7 @@ int mutt_copy_header(FILE *in, struct Header *h, FILE *out, int flags, const cha
 
   if ((flags & CH_UPDATE_IRT) && h->env->in_reply_to)
   {
-    LIST *listp = h->env->in_reply_to;
+    struct List *listp = h->env->in_reply_to;
     fputs("In-Reply-To:", out);
     for (; listp; listp = listp->next)
     {

@@ -519,9 +519,9 @@ void mutt_free_opts(void)
   mutt_free_rx_list(&NoSpamList);
 }
 
-static void add_to_list(LIST **list, const char *str)
+static void add_to_list(struct List **list, const char *str)
 {
-  LIST *t = NULL, *last = NULL;
+  struct List *t = NULL, *last = NULL;
 
   /* don't add a NULL or empty string to the list */
   if (!str || *str == '\0')
@@ -542,7 +542,7 @@ static void add_to_list(LIST **list, const char *str)
 
   if (!*list || last)
   {
-    t = safe_calloc(1, sizeof(LIST));
+    t = safe_calloc(1, sizeof(struct List));
     t->data = safe_strdup(str);
     if (last)
     {
@@ -731,9 +731,9 @@ static int add_to_replace_list(REPLACE_LIST **list, const char *pat,
 }
 
 
-static void remove_from_list(LIST **l, const char *str)
+static void remove_from_list(struct List **l, const char *str)
 {
-  LIST *p = NULL, *last = NULL;
+  struct List *p = NULL, *last = NULL;
 
   if (mutt_strcmp("*", str) == 0)
     mutt_free_list(l); /* ``unCMD *'' means delete all current entries */
@@ -914,7 +914,7 @@ static int parse_list(struct Buffer *buf, struct Buffer *s, unsigned long data, 
   do
   {
     mutt_extract_token(buf, s, 0);
-    add_to_list((LIST **) data, buf->data);
+    add_to_list((struct List **) data, buf->data);
   } while (MoreArgs(s));
 
   return 0;
@@ -1153,10 +1153,10 @@ static int parse_unlist(struct Buffer *buf, struct Buffer *s, unsigned long data
      */
     if (mutt_strcmp(buf->data, "*") == 0)
     {
-      mutt_free_list((LIST **) data);
+      mutt_free_list((struct List **) data);
       break;
     }
-    remove_from_list((LIST **) data, buf->data);
+    remove_from_list((struct List **) data, buf->data);
   } while (MoreArgs(s));
 
   return 0;
@@ -1172,7 +1172,7 @@ static int parse_path_list(struct Buffer *buf, struct Buffer *s, unsigned long d
     mutt_extract_token(buf, s, 0);
     strfcpy(path, buf->data, sizeof(path));
     mutt_expand_path(path, sizeof(path));
-    add_to_list((LIST **) data, path);
+    add_to_list((struct List **) data, path);
   } while (MoreArgs(s));
 
   return 0;
@@ -1190,12 +1190,12 @@ static int parse_path_unlist(struct Buffer *buf, struct Buffer *s, unsigned long
      */
     if (mutt_strcmp(buf->data, "*") == 0)
     {
-      mutt_free_list((LIST **) data);
+      mutt_free_list((struct List **) data);
       break;
     }
     strfcpy(path, buf->data, sizeof(path));
     mutt_expand_path(path, sizeof(path));
-    remove_from_list((LIST **) data, path);
+    remove_from_list((struct List **) data, path);
   } while (MoreArgs(s));
 
   return 0;
@@ -1314,10 +1314,10 @@ static void _attachments_clean(void)
   }
 }
 
-static int parse_attach_list(struct Buffer *buf, struct Buffer *s, LIST **ldata, struct Buffer *err)
+static int parse_attach_list(struct Buffer *buf, struct Buffer *s, struct List **ldata, struct Buffer *err)
 {
   ATTACH_MATCH *a = NULL;
-  LIST *listp = NULL, *lastp = NULL;
+  struct List *listp = NULL, *lastp = NULL;
   char *p = NULL;
   char *tmpminor = NULL;
   int len;
@@ -1384,7 +1384,7 @@ static int parse_attach_list(struct Buffer *buf, struct Buffer *s, LIST **ldata,
 
     mutt_debug(5, "parse_attach_list: added %s/%s [%d]\n", a->major, a->minor, a->major_int);
 
-    listp = safe_malloc(sizeof(LIST));
+    listp = safe_malloc(sizeof(struct List));
     listp->data = (char *) a;
     listp->next = NULL;
     if (lastp)
@@ -1402,10 +1402,10 @@ static int parse_attach_list(struct Buffer *buf, struct Buffer *s, LIST **ldata,
   return 0;
 }
 
-static int parse_unattach_list(struct Buffer *buf, struct Buffer *s, LIST **ldata, struct Buffer *err)
+static int parse_unattach_list(struct Buffer *buf, struct Buffer *s, struct List **ldata, struct Buffer *err)
 {
   ATTACH_MATCH *a = NULL;
-  LIST *lp = NULL, *lastp = NULL, *newlp = NULL;
+  struct List *lp = NULL, *lastp = NULL, *newlp = NULL;
   char *tmp = NULL;
   int major;
   char *minor = NULL;
@@ -1434,7 +1434,7 @@ static int parse_unattach_list(struct Buffer *buf, struct Buffer *s, LIST **ldat
     major = mutt_check_mime_type(tmp);
 
     /* We must do our own walk here because remove_from_list() will only
-     * remove the LIST->data, not anything pointed to by the LIST->data. */
+     * remove the List->data, not anything pointed to by the List->data. */
     lastp = NULL;
     for (lp = *ldata; lp;)
     {
@@ -1472,7 +1472,7 @@ static int parse_unattach_list(struct Buffer *buf, struct Buffer *s, LIST **ldat
   return 0;
 }
 
-static int print_attach_list(LIST *lp, char op, char *name)
+static int print_attach_list(struct List *lp, char op, char *name)
 {
   while (lp)
   {
@@ -1488,7 +1488,7 @@ static int print_attach_list(LIST *lp, char op, char *name)
 static int parse_attachments(struct Buffer *buf, struct Buffer *s, unsigned long data, struct Buffer *err)
 {
   char op, *category = NULL;
-  LIST **listp;
+  struct List **listp;
 
   mutt_extract_token(buf, s, 0);
   if (!buf->data || *buf->data == '\0')
@@ -1544,7 +1544,7 @@ static int parse_attachments(struct Buffer *buf, struct Buffer *s, unsigned long
 static int parse_unattachments(struct Buffer *buf, struct Buffer *s, unsigned long data, struct Buffer *err)
 {
   char op, *p = NULL;
-  LIST **listp;
+  struct List **listp;
 
   mutt_extract_token(buf, s, 0);
   if (!buf->data || *buf->data == '\0')
@@ -1779,9 +1779,9 @@ bail:
 
 static int parse_unmy_hdr(struct Buffer *buf, struct Buffer *s, unsigned long data, struct Buffer *err)
 {
-  LIST *last = NULL;
-  LIST *tmp = UserHeader;
-  LIST *ptr = NULL;
+  struct List *last = NULL;
+  struct List *tmp = UserHeader;
+  struct List *ptr = NULL;
   size_t l;
 
   do
@@ -1824,7 +1824,7 @@ static int parse_unmy_hdr(struct Buffer *buf, struct Buffer *s, unsigned long da
 
 static int parse_my_hdr(struct Buffer *buf, struct Buffer *s, unsigned long data, struct Buffer *err)
 {
-  LIST *tmp = NULL;
+  struct List *tmp = NULL;
   size_t keylen;
   char *p = NULL;
 
@@ -2922,7 +2922,7 @@ static int parse_set(struct Buffer *tmp, struct Buffer *s, unsigned long data, s
 /* Stack structure
  * FILO designed to contain the list of config files that have been sourced
  * and avoid cyclic sourcing */
-static LIST *MuttrcStack;
+static struct List *MuttrcStack;
 
 /* Use POSIX functions to convert a path to absolute, relatively to another path
  * Args:
@@ -3716,9 +3716,9 @@ int var_to_string(int idx, char *val, size_t len)
 }
 
 /* Implement the -Q command line flag */
-int mutt_query_variables(LIST *queries)
+int mutt_query_variables(struct List *queries)
 {
-  LIST *p = NULL;
+  struct List *p = NULL;
 
   char command[STRING];
 
@@ -3813,7 +3813,7 @@ int mutt_getvaluebyname(const char *name, const struct mapping_t *map)
   return -1;
 }
 
-static int execute_commands(LIST *p)
+static int execute_commands(struct List *p)
 {
   struct Buffer err, token;
 
@@ -3882,7 +3882,7 @@ static char *find_cfg(const char *home, const char *xdg_cfg_home)
   return NULL;
 }
 
-void mutt_init(int skip_sys_rc, LIST *commands)
+void mutt_init(int skip_sys_rc, struct List *commands)
 {
   struct passwd *pw = NULL;
   struct utsname utsname;
@@ -4138,7 +4138,7 @@ void mutt_init(int skip_sys_rc, LIST *commands)
   }
   else
   {
-    for (LIST *config = Muttrc; config != NULL; config = config->next)
+    for (struct List *config = Muttrc; config != NULL; config = config->next)
     {
       strfcpy(buffer, config->data, sizeof(buffer));
       FREE(&config->data);
@@ -4210,7 +4210,7 @@ void mutt_init(int skip_sys_rc, LIST *commands)
   }
 
   /* Read the user's initialization file.  */
-  for (LIST *config = Muttrc; config != NULL; config = config->next)
+  for (struct List *config = Muttrc; config != NULL; config = config->next)
   {
     if (config->data)
     {

@@ -101,7 +101,7 @@ WHERE char *Mixmaster;
 WHERE char *MixEntryFormat;
 #endif
 
-WHERE LIST *Muttrc INITVAL(0);
+WHERE struct List *Muttrc INITVAL(0);
 #ifdef USE_NNTP
 WHERE char *GroupFormat;
 WHERE char *Inews;
@@ -189,17 +189,17 @@ WHERE struct Hash *TagTransforms;
 WHERE struct Hash *TagFormats;
 #endif
 
-WHERE LIST *AutoViewList INITVAL(0);
-WHERE LIST *AlternativeOrderList INITVAL(0);
-WHERE LIST *AttachAllow INITVAL(0);
-WHERE LIST *AttachExclude INITVAL(0);
-WHERE LIST *InlineAllow INITVAL(0);
-WHERE LIST *InlineExclude INITVAL(0);
-WHERE LIST *HeaderOrderList INITVAL(0);
-WHERE LIST *Ignore INITVAL(0);
-WHERE LIST *MailtoAllow INITVAL(0);
-WHERE LIST *MimeLookupList INITVAL(0);
-WHERE LIST *UnIgnore INITVAL(0);
+WHERE struct List *AutoViewList INITVAL(0);
+WHERE struct List *AlternativeOrderList INITVAL(0);
+WHERE struct List *AttachAllow INITVAL(0);
+WHERE struct List *AttachExclude INITVAL(0);
+WHERE struct List *InlineAllow INITVAL(0);
+WHERE struct List *InlineExclude INITVAL(0);
+WHERE struct List *HeaderOrderList INITVAL(0);
+WHERE struct List *Ignore INITVAL(0);
+WHERE struct List *MailtoAllow INITVAL(0);
+WHERE struct List *MimeLookupList INITVAL(0);
+WHERE struct List *UnIgnore INITVAL(0);
 
 WHERE RX_LIST *Alternates INITVAL(0);
 WHERE RX_LIST *UnAlternates INITVAL(0);
@@ -261,7 +261,7 @@ WHERE short ScoreThresholdFlag;
 
 #ifdef USE_SIDEBAR
 WHERE short SidebarWidth INITVAL(0);
-WHERE LIST *SidebarWhitelist INITVAL(0);
+WHERE struct List *SidebarWhitelist INITVAL(0);
 #endif
 
 #ifdef USE_IMAP
@@ -277,7 +277,7 @@ WHERE SIG_ATOMIC_VOLATILE_T SigWinch INITVAL(0);
 WHERE int CurrentMenu;
 
 WHERE struct Alias *Aliases INITVAL(0);
-WHERE LIST *UserHeader INITVAL(0);
+WHERE struct List *UserHeader INITVAL(0);
 
 /* -- formerly in pgp.h -- */
 WHERE REGEXP PgpGoodSign;

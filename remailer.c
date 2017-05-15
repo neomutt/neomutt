@@ -437,9 +437,9 @@ static const struct mapping_t RemailerHelp[] = {
 };
 
 
-void mix_make_chain(LIST **chainp)
+void mix_make_chain(struct List **chainp)
 {
-  LIST *p = NULL;
+  struct List *p = NULL;
   MIXCHAIN *chain = NULL;
   int c_cur = 0, c_old = 0;
   short c_redraw = 1;
@@ -691,7 +691,7 @@ int mix_check_message(struct Header *msg)
   return 0;
 }
 
-int mix_send_message(LIST *chain, const char *tempfile)
+int mix_send_message(struct List *chain, const char *tempfile)
 {
   char cmd[HUGE_STRING];
   char tmp[HUGE_STRING];

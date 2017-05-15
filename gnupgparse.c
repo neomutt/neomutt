@@ -368,7 +368,7 @@ bail:
   return NULL;
 }
 
-pgp_key_t pgp_get_candidates(pgp_ring_t keyring, LIST *hints)
+pgp_key_t  pgp_get_candidates(pgp_ring_t keyring, struct List *hints)
 {
   FILE *fp = NULL;
   pid_t thepid;

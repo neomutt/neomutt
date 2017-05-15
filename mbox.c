@@ -568,7 +568,7 @@ static int strict_addrcmp(const struct Address *a, const struct Address *b)
   return 1;
 }
 
-static int strict_cmp_lists(const LIST *a, const LIST *b)
+static int strict_cmp_lists(const struct List *a, const struct List *b)
 {
   while (a && b)
   {

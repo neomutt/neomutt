@@ -342,12 +342,12 @@ void mutt_draw_tree(struct Context *ctx)
  * has no message, we have to make a list of all the subjects of its
  * most immediate existing descendants.  we also note the earliest
  * date on any of the parents and put it in *dateptr. */
-static LIST *make_subject_list(THREAD *cur, time_t *dateptr)
+static struct List *make_subject_list(THREAD *cur, time_t *dateptr)
 {
   THREAD *start = cur;
   struct Envelope *env = NULL;
   time_t thisdate;
-  LIST *curlist = NULL, *oldlist = NULL, *newlist = NULL, *subjects = NULL;
+  struct List *curlist = NULL, *oldlist = NULL, *newlist = NULL, *subjects = NULL;
   int rc = 0;
 
   while (true)
@@ -375,7 +375,7 @@ static LIST *make_subject_list(THREAD *cur, time_t *dateptr)
       }
       if (!curlist || rc > 0)
       {
-        newlist = safe_calloc(1, sizeof(LIST));
+        newlist = safe_calloc(1, sizeof(struct List));
         newlist->data = env->real_subj;
         if (oldlist)
         {
@@ -410,7 +410,7 @@ static THREAD *find_subject(struct Context *ctx, THREAD *cur)
 {
   struct hash_elem *ptr = NULL;
   THREAD *tmp = NULL, *last = NULL;
-  LIST *subjects = NULL, *oldlist = NULL;
+  struct List *subjects = NULL, *oldlist = NULL;
   time_t date = 0;
 
   subjects = make_subject_list(cur, &date);
@@ -757,7 +757,7 @@ void mutt_sort_threads(struct Context *ctx, int init)
   int i, oldsort, using_refs = 0;
   THREAD *thread = NULL, *new = NULL, *tmp = NULL, top;
   memset(&top, 0, sizeof(top));
-  LIST *ref = NULL;
+  struct List *ref = NULL;
 
   /* set Sort to the secondary method to support the set sort_aux=reverse-*
    * settings.  The sorting functions just look at the value of
@@ -1354,7 +1354,7 @@ struct Hash *mutt_make_id_hash(struct Context *ctx)
 static void clean_references(THREAD *brk, THREAD *cur)
 {
   THREAD *p = NULL;
-  LIST *ref = NULL;
+  struct List *ref = NULL;
   int done = 0;
 
   for (; cur; cur = cur->next, done = 0)

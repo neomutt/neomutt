@@ -90,16 +90,16 @@ char *mutt_read_rfc822_line(FILE *f, char *line, size_t *linelen)
   /* not reached */
 }
 
-static LIST *parse_references(char *s, int in_reply_to)
+static struct List *parse_references(char *s, int in_reply_to)
 {
-  LIST *t = NULL, *lst = NULL;
+  struct List *t = NULL, *lst = NULL;
   char *m = NULL;
   const char *sp = NULL;
 
   m = mutt_extract_message_id(s, &sp);
   while (m)
   {
-    t = safe_malloc(sizeof(LIST));
+    t = safe_malloc(sizeof(struct List));
     t->data = m;
     t->next = lst;
     lst = t;
@@ -967,10 +967,10 @@ void mutt_parse_mime_message(struct Context *ctx, struct Header *cur)
 }
 
 int mutt_parse_rfc822_line(struct Envelope *e, struct Header *hdr, char *line, char *p,
-                           short user_hdrs, short weed, short do_2047, LIST **lastp)
+                           short user_hdrs, short weed, short do_2047, struct List **lastp)
 {
   int matched = 0;
-  LIST *last = NULL;
+  struct List *last = NULL;
 
   if (lastp)
     last = *lastp;
@@ -1368,7 +1368,7 @@ done:
 struct Envelope *mutt_read_rfc822_header(FILE *f, struct Header *hdr, short user_hdrs, short weed)
 {
   struct Envelope *e = mutt_new_envelope();
-  LIST *last = NULL;
+  struct List *last = NULL;
   char *line = safe_malloc(LONG_STRING);
   char *p = NULL;
   LOFF_T loc;
@@ -1538,9 +1538,9 @@ struct Address *mutt_parse_adrlist(struct Address *p, const char *s)
 }
 
 /* Compares mime types to the ok and except lists */
-static bool count_body_parts_check(LIST **checklist, struct Body *b, bool dflt)
+static bool count_body_parts_check(struct List **checklist, struct Body *b, bool dflt)
 {
-  LIST *type = NULL;
+  struct List *type = NULL;
   ATTACH_MATCH *a = NULL;
 
   /* If list is null, use default behavior. */

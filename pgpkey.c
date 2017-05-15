@@ -755,7 +755,7 @@ struct Body *pgp_make_key_attachment(char *tempf)
   return att;
 }
 
-static LIST *pgp_add_string_to_hints(LIST *hints, const char *str)
+static struct List *pgp_add_string_to_hints(struct List *hints, const char *str)
 {
   char *scratch = NULL;
   char *t = NULL;
@@ -785,7 +785,7 @@ static pgp_key_t *pgp_get_lastp(pgp_key_t p)
 pgp_key_t pgp_getkeybyaddr(struct Address *a, short abilities, pgp_ring_t keyring, int oppenc_mode)
 {
   struct Address *r = NULL, *p = NULL;
-  LIST *hints = NULL;
+  struct List *hints = NULL;
 
   int multi = 0;
   int match;
@@ -913,7 +913,7 @@ pgp_key_t pgp_getkeybyaddr(struct Address *a, short abilities, pgp_ring_t keyrin
 
 pgp_key_t pgp_getkeybystr(char *p, short abilities, pgp_ring_t keyring)
 {
-  LIST *hints = NULL;
+  struct List *hints = NULL;
   pgp_key_t keys;
   pgp_key_t matches = NULL;
   pgp_key_t *last = &matches;

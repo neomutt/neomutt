@@ -43,7 +43,7 @@ char *pgp_fpr_or_lkeyid(pgp_key_t k);
 int pgp_decrypt_mime(FILE *fpin, FILE **fpout, struct Body *b, struct Body **cur);
 
 pgp_key_t pgp_ask_for_key(char *tag, char *whatfor, short abilities, pgp_ring_t keyring);
-pgp_key_t pgp_get_candidates(pgp_ring_t keyring, LIST *hints);
+pgp_key_t pgp_get_candidates(pgp_ring_t keyring, struct List *hints);
 pgp_key_t pgp_getkeybyaddr(struct Address *a, short abilities, pgp_ring_t keyring, int oppenc_mode);
 pgp_key_t pgp_getkeybystr(char *p, short abilities, pgp_ring_t keyring);
 
@@ -74,7 +74,7 @@ pid_t pgp_invoke_export(FILE **pgpin, FILE **pgpout, FILE **pgperr, int pgpinfd,
 pid_t pgp_invoke_verify_key(FILE **pgpin, FILE **pgpout, FILE **pgperr, int pgpinfd,
                             int pgpoutfd, int pgperrfd, const char *uids);
 pid_t pgp_invoke_list_keys(FILE **pgpin, FILE **pgpout, FILE **pgperr, int pgpinfd,
-                           int pgpoutfd, int pgperrfd, pgp_ring_t keyring, LIST *hints);
+                           int pgpoutfd, int pgperrfd, pgp_ring_t keyring, struct List *hints);
 pid_t pgp_invoke_traditional(FILE **pgpin, FILE **pgpout, FILE **pgperr,
                              int pgpinfd, int pgpoutfd, int pgperrfd,
                              const char *fname, const char *uids, int flags);

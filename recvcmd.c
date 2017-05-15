@@ -747,7 +747,7 @@ static int attach_reply_envelope_defaults(struct Envelope *env, struct AttachPtr
     mutt_add_to_reference_headers(env, curenv, NULL, NULL);
   else
   {
-    LIST **p = NULL, **q = NULL;
+    struct List **p = NULL, **q = NULL;
 
     for (i = 0; i < idxlen; i++)
     {

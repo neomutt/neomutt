@@ -36,7 +36,7 @@ typedef struct imap_header_data
   bool parsed : 1;
 
   unsigned int uid; /* 32-bit Message UID */
-  LIST *keywords;
+  struct List *keywords;
 } IMAP_HEADER_DATA;
 
 typedef struct

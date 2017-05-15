@@ -174,10 +174,10 @@ int main(int argc, char **argv, char **environ)
   char *draftFile = NULL;
   char *newMagic = NULL;
   struct Header *msg = NULL;
-  LIST *attach = NULL;
-  LIST *commands = NULL;
-  LIST *queries = NULL;
-  LIST *alias_queries = NULL;
+  struct List *attach = NULL;
+  struct List *commands = NULL;
+  struct List *queries = NULL;
+  struct List *alias_queries = NULL;
   int sendflags = 0;
   int flags = 0;
   int version = 0;
@@ -656,7 +656,7 @@ int main(int argc, char **argv, char **environ)
         struct Header *context_hdr = NULL;
         struct Envelope *opts_env = msg->env;
         struct stat st;
-        LIST *uh = NULL, **last_uhp = NULL;
+        struct List *uh = NULL, **last_uhp = NULL;
 
         sendflags |= SENDDRAFTFILE;
 
@@ -718,7 +718,7 @@ int main(int argc, char **argv, char **environ)
 
     if (attach)
     {
-      LIST *t = attach;
+      struct List *t = attach;
       struct Body *a = msg->content;
 
       while (a && a->next)

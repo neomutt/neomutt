@@ -36,10 +36,10 @@ struct Address *mutt_lookup_alias(const char *s)
   return NULL; /* no such alias */
 }
 
-static struct Address *expand_aliases_r(struct Address *a, LIST **expn)
+static struct Address *expand_aliases_r(struct Address *a, struct List **expn)
 {
   struct Address *head = NULL, *last = NULL, *t = NULL, *w = NULL;
-  LIST *u = NULL;
+  struct List *u = NULL;
   char i;
   const char *fqdn = NULL;
 
@@ -64,7 +64,7 @@ static struct Address *expand_aliases_r(struct Address *a, LIST **expn)
 
         if (!i)
         {
-          u = safe_malloc(sizeof(LIST));
+          u = safe_malloc(sizeof(struct List));
           u->data = safe_strdup(a->mailbox);
           u->next = *expn;
           *expn = u;
@@ -124,7 +124,7 @@ static struct Address *expand_aliases_r(struct Address *a, LIST **expn)
 struct Address *mutt_expand_aliases(struct Address *a)
 {
   struct Address *t = NULL;
-  LIST *expn = NULL; /* previously expanded aliases to avoid loops */
+  struct List *expn = NULL; /* previously expanded aliases to avoid loops */
 
   t = expand_aliases_r(a, &expn);
   mutt_free_list(&expn);

@@ -233,26 +233,26 @@ void mutt_free_parameter(PARAMETER **p)
   *p = 0;
 }
 
-LIST *mutt_add_list(LIST *head, const char *data)
+struct List *mutt_add_list(struct List *head, const char *data)
 {
   size_t len = mutt_strlen(data);
 
   return mutt_add_list_n(head, data, len ? len + 1 : 0);
 }
 
-LIST *mutt_add_list_n(LIST *head, const void *data, size_t len)
+struct List *mutt_add_list_n(struct List *head, const void *data, size_t len)
 {
-  LIST *tmp = NULL;
+  struct List *tmp = NULL;
 
   for (tmp = head; tmp && tmp->next; tmp = tmp->next)
     ;
   if (tmp)
   {
-    tmp->next = safe_malloc(sizeof(LIST));
+    tmp->next = safe_malloc(sizeof(struct List));
     tmp = tmp->next;
   }
   else
-    head = tmp = safe_malloc(sizeof(LIST));
+    head = tmp = safe_malloc(sizeof(struct List));
 
   tmp->data = safe_malloc(len);
   if (len)
@@ -261,9 +261,9 @@ LIST *mutt_add_list_n(LIST *head, const void *data, size_t len)
   return head;
 }
 
-LIST *mutt_find_list(LIST *l, const char *data)
+struct List *mutt_find_list(struct List *l, const char *data)
 {
-  LIST *p = l;
+  struct List *p = l;
 
   while (p)
   {
@@ -276,18 +276,18 @@ LIST *mutt_find_list(LIST *l, const char *data)
   return NULL;
 }
 
-void mutt_push_list(LIST **head, const char *data)
+void mutt_push_list(struct List **head, const char *data)
 {
-  LIST *tmp = NULL;
-  tmp = safe_malloc(sizeof(LIST));
+  struct List *tmp = NULL;
+  tmp = safe_malloc(sizeof(struct List));
   tmp->data = safe_strdup(data);
   tmp->next = *head;
   *head = tmp;
 }
 
-bool mutt_pop_list(LIST **head)
+bool mutt_pop_list(struct List **head)
 {
-  LIST *elt = *head;
+  struct List *elt = *head;
   if (!elt)
     return false;
   *head = elt->next;
@@ -296,7 +296,7 @@ bool mutt_pop_list(LIST **head)
   return true;
 }
 
-const char *mutt_front_list(LIST *head)
+const char *mutt_front_list(struct List *head)
 {
   if (!head || !head->data)
     return "";
@@ -339,9 +339,9 @@ int mutt_remove_from_rx_list(RX_LIST **l, const char *str)
   return rv;
 }
 
-void mutt_free_list(LIST **list)
+void mutt_free_list(struct List **list)
 {
-  LIST *p = NULL;
+  struct List *p = NULL;
 
   if (!list)
     return;
@@ -354,13 +354,13 @@ void mutt_free_list(LIST **list)
   }
 }
 
-LIST *mutt_copy_list(LIST *p)
+struct List *mutt_copy_list(struct List *p)
 {
-  LIST *t = NULL, *r = NULL, *l = NULL;
+  struct List *t = NULL, *r = NULL, *l = NULL;
 
   for (; p; p = p->next)
   {
-    t = safe_malloc(sizeof(LIST));
+    t = safe_malloc(sizeof(struct List));
     t->data = safe_strdup(p->data);
     t->next = NULL;
     if (l)
@@ -395,7 +395,7 @@ void mutt_free_header(struct Header **h)
 }
 
 /* returns true if the header contained in "s" is in list "t" */
-bool mutt_matches_list(const char *s, LIST *t)
+bool mutt_matches_list(const char *s, struct List *t)
 {
   for (; t; t = t->next)
   {

@@ -1011,7 +1011,7 @@ static int is_autoview(struct Body *b)
   else
   {
     /* determine if this type is on the user's auto_view list */
-    LIST *t = AutoViewList;
+    struct List *t = AutoViewList;
 
     mutt_check_lookup_list(b, type, sizeof(type));
     for (; t; t = t->next)
@@ -1044,7 +1044,7 @@ static int alternative_handler(struct Body *a, STATE *s)
 {
   struct Body *choice = NULL;
   struct Body *b = NULL;
-  LIST *t = NULL;
+  struct List *t = NULL;
   int type = 0;
   int mustfree = 0;
   int rc = 0;

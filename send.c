@@ -217,7 +217,7 @@ static int edit_address(struct Address **a, /* const */ char *field)
 static int edit_envelope(struct Envelope *en, int flags)
 {
   char buf[HUGE_STRING];
-  LIST *uh = UserHeader;
+  struct List *uh = UserHeader;
 
 #ifdef USE_NNTP
   if (option(OPTNEWSSEND))
@@ -307,7 +307,7 @@ static char *nntp_get_header(const char *s)
 
 static void process_user_recips(struct Envelope *env)
 {
-  LIST *uh = UserHeader;
+  struct List *uh = UserHeader;
 
   for (; uh; uh = uh->next)
   {
@@ -330,8 +330,8 @@ static void process_user_recips(struct Envelope *env)
 
 static void process_user_header(struct Envelope *env)
 {
-  LIST *uh = UserHeader;
-  LIST *last = env->userhdrs;
+  struct List *uh = UserHeader;
+  struct List *last = env->userhdrs;
 
   if (last)
     while (last->next)
@@ -610,9 +610,9 @@ int mutt_fetch_recips(struct Envelope *out, struct Envelope *in, int flags)
   return 0;
 }
 
-static LIST *make_references(struct Envelope *e)
+static struct List *make_references(struct Envelope *e)
 {
-  LIST *t = NULL, *l = NULL;
+  struct List *t = NULL, *l = NULL;
 
   if (e->references)
     l = mutt_copy_list(e->references);
@@ -683,9 +683,9 @@ void mutt_make_misc_reply_headers(struct Envelope *env, struct Context *ctx, str
     env->subject = safe_strdup(EmptySubject);
 }
 
-void mutt_add_to_reference_headers(struct Envelope *env, struct Envelope *curenv, LIST ***pp, LIST ***qq)
+void mutt_add_to_reference_headers(struct Envelope *env, struct Envelope *curenv, struct List ***pp, struct List ***qq)
 {
-  LIST **p = NULL, **q = NULL;
+  struct List **p = NULL, **q = NULL;
 
   if (pp)
     p = *pp;
@@ -732,7 +732,7 @@ static void make_reference_headers(struct Envelope *curenv, struct Envelope *env
   if (!curenv)
   {
     struct Header *h = NULL;
-    LIST **p = NULL, **q = NULL;
+    struct List **p = NULL, **q = NULL;
     int i;
 
     for (i = 0; i < ctx->vcount; i++)

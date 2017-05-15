@@ -595,11 +595,11 @@ enum
 #define toggle_option(x) mutt_bit_toggle(Options, x)
 #define option(x) mutt_bit_isset(Options, x)
 
-typedef struct list_t
+struct List
 {
   char *data;
-  struct list_t *next;
-} LIST;
+  struct List *next;
+};
 
 typedef struct rx_list_t
 {
@@ -615,30 +615,30 @@ typedef struct replace_list_t
   struct replace_list_t *next;
 } REPLACE_LIST;
 
-static inline LIST *mutt_new_list(void)
+static inline struct List *mutt_new_list(void)
 {
-  return safe_calloc(1, sizeof(LIST));
+  return safe_calloc(1, sizeof(struct List));
 }
 
-void mutt_free_list(LIST **list);
+void mutt_free_list(struct List **list);
 void mutt_free_rx_list(RX_LIST **list);
 void mutt_free_replace_list(REPLACE_LIST **list);
-LIST *mutt_copy_list(LIST *p);
+struct List *mutt_copy_list(struct List *p);
 int mutt_matches_ignore(const char *s);
-bool mutt_matches_list(const char *s, LIST *t);
+bool mutt_matches_list(const char *s, struct List *t);
 
 /* add an element to a list */
-LIST *mutt_add_list(LIST *head, const char *data);
-LIST *mutt_add_list_n(LIST *head, const void *data, size_t len);
-LIST *mutt_find_list(LIST *l, const char *data);
+struct List *mutt_add_list(struct List *head, const char *data);
+struct List *mutt_add_list_n(struct List *head, const void *data, size_t len);
+struct List *mutt_find_list(struct List *l, const char *data);
 int mutt_remove_from_rx_list(RX_LIST **l, const char *str);
 
 /* handle stack */
-void mutt_push_list(LIST **head, const char *data);
-bool mutt_pop_list(LIST **head);
-const char *mutt_front_list(LIST *head);
+void mutt_push_list(struct List **head, const char *data);
+bool mutt_pop_list(struct List **head);
+const char *mutt_front_list(struct List *head);
 
-void mutt_init(int skip_sys_rc, LIST *commands);
+void mutt_init(int skip_sys_rc, struct List *commands);
 
 struct Alias
 {
@@ -678,9 +678,9 @@ struct Envelope
   char *x_comment_to;
 #endif
   struct Buffer *spam;
-  LIST *references;  /* message references (in reverse order) */
-  LIST *in_reply_to; /* in-reply-to header content */
-  LIST *userhdrs;    /* user defined headers */
+  struct List *references;  /* message references (in reverse order) */
+  struct List *in_reply_to; /* in-reply-to header content */
+  struct List *userhdrs;    /* user defined headers */
   int kwtypes;
 
   bool irt_changed : 1;  /* In-Reply-To changed to link/break threads */
@@ -868,7 +868,7 @@ struct Header
   short attach_total;
 
 #ifdef MIXMASTER
-  LIST *chain;
+  struct List *chain;
 #endif
 
 #ifdef USE_POP

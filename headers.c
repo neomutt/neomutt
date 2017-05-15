@@ -34,7 +34,7 @@ void mutt_edit_headers(const char *editor, const char *body, struct Header *msg,
   struct Envelope *n = NULL;
   time_t mtime;
   struct stat st;
-  LIST *cur = NULL, **last = NULL, *tmp = NULL;
+  struct List *cur = NULL, **last = NULL, *tmp = NULL;
 
   mutt_mktemp(path, sizeof(path));
   if ((ofp = safe_fopen(path, "w")) == NULL)

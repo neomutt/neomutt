@@ -139,7 +139,7 @@ char *mutt_gecos_name(char *dest, size_t destlen, struct passwd *pw);
 char *mutt_get_body_charset(char *d, size_t dlen, struct Body *b);
 const char *mutt_get_name(struct Address *a);
 char *mutt_get_parameter(const char *s, PARAMETER *p);
-LIST *mutt_crypt_hook(struct Address *adr);
+struct List *mutt_crypt_hook(struct Address *adr);
 char *mutt_make_date(char *s, size_t len);
 void mutt_timeout_hook(void);
 void mutt_startup_shutdown_hook(int type);
@@ -154,8 +154,8 @@ struct Group *mutt_pattern_group(const char *k);
 REGEXP *mutt_compile_regexp(const char *s, int flags);
 
 void mutt_account_hook(const char *url);
-void mutt_add_to_reference_headers(struct Envelope *env, struct Envelope *curenv, LIST ***pp,
-                                   LIST ***qq);
+void mutt_add_to_reference_headers(struct Envelope *env, struct Envelope *curenv, struct List ***pp,
+                                   struct List ***qq);
 void mutt_adv_mktemp(char *s, size_t l);
 void mutt_alias_menu(char *buf, size_t buflen, struct Alias *aliases);
 void mutt_allow_interrupt(int disposition);
@@ -352,7 +352,7 @@ int mutt_parse_unmono(struct Buffer *buf, struct Buffer *s, unsigned long data, 
 int mutt_parse_push(struct Buffer *buf, struct Buffer *s, unsigned long data, struct Buffer *err);
 int mutt_parse_rc_line(/* const */ char *line, struct Buffer *token, struct Buffer *err);
 int mutt_parse_rfc822_line(struct Envelope *e, struct Header *hdr, char *line, char *p,
-                           short user_hdrs, short weed, short do_2047, LIST **lastp);
+                           short user_hdrs, short weed, short do_2047, struct List **lastp);
 int mutt_parse_score(struct Buffer *buf, struct Buffer *s, unsigned long data, struct Buffer *err);
 int mutt_parse_unscore(struct Buffer *buf, struct Buffer *s, unsigned long data, struct Buffer *err);
 int mutt_parse_unhook(struct Buffer *buf, struct Buffer *s, unsigned long data, struct Buffer *err);
@@ -360,7 +360,7 @@ int mutt_pattern_func(int op, char *prompt);
 int mutt_pipe_attachment(FILE *fp, struct Body *b, const char *path, char *outfile);
 int mutt_print_attachment(FILE *fp, struct Body *a);
 int mutt_query_complete(char *buf, size_t buflen);
-int mutt_query_variables(LIST *queries);
+int mutt_query_variables(struct List *queries);
 int mutt_save_attachment(FILE *fp, struct Body *m, char *path, int flags, struct Header *hdr);
 int _mutt_save_message(struct Header *h, struct Context *ctx, int delete, int decode, int decrypt);
 int mutt_save_message(struct Header *h, int delete, int decode, int decrypt);
@@ -386,7 +386,7 @@ int mutt_write_mime_header(struct Body *a, FILE *f);
 int mutt_write_one_header(FILE *fp, const char *tag, const char *value,
                           const char *pfx, int wraplen, int flags);
 int mutt_write_rfc822_header(FILE *fp, struct Envelope *env, struct Body *attach, int mode, int privacy);
-void mutt_write_references(LIST *r, FILE *f, int trim);
+void mutt_write_references(struct List *r, FILE *f, int trim);
 int mutt_yesorno(const char *msg, int def);
 void mutt_set_header_color(struct Context *ctx, struct Header *curhdr);
 void mutt_sleep(short s);

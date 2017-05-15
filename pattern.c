@@ -1339,7 +1339,7 @@ static int match_adrlist(pattern_t *pat, int match_personal, int n, ...)
   return pat->alladdr; /* No matches, or all matches if alladdr */
 }
 
-static bool match_reference(pattern_t *pat, LIST *refs)
+static bool match_reference(pattern_t *pat, struct List *refs)
 {
   for (; refs; refs = refs->next)
     if (patmatch(pat, refs->data) == 0)

@@ -3611,12 +3611,12 @@ leave:
  */
 
 
-/* Convert LIST into a pattern string suitable to be passed to GPGME.
+/* Convert List into a pattern string suitable to be passed to GPGME.
    We need to convert spaces in an item into a '+' and '%' into
    "%25". */
-static char *list_to_pattern(LIST *list)
+static char *list_to_pattern(struct List *list)
 {
-  LIST *l = NULL;
+  struct List *l = NULL;
   char *pattern = NULL, *p = NULL;
   const char *s = NULL;
   size_t n;
@@ -3668,7 +3668,7 @@ static char *list_to_pattern(LIST *list)
 
 /* Return a list of keys which are candidates for the selection.
    Select by looking at the HINTS list. */
-static crypt_key_t *get_candidates(LIST *hints, unsigned int app, int secret)
+static crypt_key_t *get_candidates(struct List *hints, unsigned int app, int secret)
 {
   crypt_key_t *db = NULL, *k = NULL, **kend = NULL;
   char *pattern = NULL;
@@ -3699,7 +3699,7 @@ static crypt_key_t *get_candidates(LIST *hints, unsigned int app, int secret)
          depending on the protocol.  For gpg we don't need percent
          escaped pappert but simple strings passed in an array to the
          keylist_ext_start function. */
-    LIST *l = NULL;
+    struct List *l = NULL;
     size_t n;
     char **patarr;
 
@@ -3816,7 +3816,7 @@ static crypt_key_t *get_candidates(LIST *hints, unsigned int app, int secret)
 
 /* Add the string STR to the list HINTS.  This list is later used to
    match addresses. */
-static LIST *crypt_add_string_to_hints(LIST *hints, const char *str)
+static struct List *crypt_add_string_to_hints(struct List *hints, const char *str)
 {
   char *scratch = NULL;
   char *t = NULL;
@@ -4035,7 +4035,7 @@ static crypt_key_t *crypt_getkeybyaddr(struct Address *a, short abilities, unsig
                                        int *forced_valid, int oppenc_mode)
 {
   struct Address *r = NULL, *p = NULL;
-  LIST *hints = NULL;
+  struct List *hints = NULL;
 
   int weak = 0;
   int invalid = 0;
@@ -4183,7 +4183,7 @@ static crypt_key_t *crypt_getkeybyaddr(struct Address *a, short abilities, unsig
 
 static crypt_key_t *crypt_getkeybystr(char *p, short abilities, unsigned int app, int *forced_valid)
 {
-  LIST *hints = NULL;
+  struct List *hints = NULL;
   crypt_key_t *keys = NULL;
   crypt_key_t *matches = NULL;
   crypt_key_t **matches_endp = &matches;
@@ -4310,7 +4310,7 @@ static crypt_key_t *crypt_ask_for_key(char *tag, char *whatfor, short abilities,
    prompting will be used.  */
 static char *find_keys(struct Address *adrlist, unsigned int app, int oppenc_mode)
 {
-  LIST *crypt_hook_list = NULL, *crypt_hook = NULL;
+  struct List *crypt_hook_list = NULL, *crypt_hook = NULL;
   char *crypt_hook_val = NULL;
   const char *keyID = NULL;
   char *keylist = NULL, *t = NULL;
