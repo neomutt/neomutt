@@ -14,7 +14,7 @@ IncludeCategories:
     Priority:   -5
   - Regex:      '<.*>'
     Priority:   -4
-  - Regex:      '"imap_private.h"'
+  - Regex:      '".*_private.h"'
     Priority:   -3
   - Regex:      '"mutt.h"'
     Priority:   -2

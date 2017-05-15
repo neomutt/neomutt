@@ -30,8 +30,8 @@
 #include "keymap_defs.h"
 #include "lib.h"
 #include "mapping.h"
-#include "mutt_crypt.h"
 #include "mutt_curses.h"
+#include "ncrypt/ncrypt.h"
 #include "options.h"
 #include "protos.h"
 #ifdef USE_IMAP

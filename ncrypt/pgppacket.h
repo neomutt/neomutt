@@ -20,8 +20,8 @@
  * by mutt proper and the PGP public key ring lister.
  */
 
-#ifndef _MUTT_PGPPACKET_H
-#define _MUTT_PGPPACKET_H 1
+#ifndef _NCRYPT_PGPPACKET_H
+#define _NCRYPT_PGPPACKET_H
 
 #include <stdio.h>
 
@@ -49,4 +49,4 @@ enum packet_tags
 unsigned char *pgp_read_packet(FILE *fp, size_t *len);
 void pgp_release_packet(void);
 
-#endif /* _MUTT_PGPPACKET_H */
+#endif /* _NCRYPT_PGPPACKET_H */

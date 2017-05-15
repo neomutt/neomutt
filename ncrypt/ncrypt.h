@@ -21,10 +21,9 @@
    all defined in crypt.c and cryptglue.c
 */
 
-#ifndef _MUTT_CRYPT_H
-#define _MUTT_CRYPT_H 1
+#ifndef _NCRYPT_NCRYPT_H
+#define _NCRYPT_NCRYPT_H
 
-#include <stdbool.h>
 #include <stdio.h>
 
 struct Address;
@@ -63,12 +62,11 @@ struct State;
 #define SMIMEBADSIGN  (APPLICATION_SMIME | BADSIGN)
 #define SMIMEOPAQUE   (APPLICATION_SMIME | SIGNOPAQUE)
 
-
 /* WITHCRYPTO actually replaces ifdefs so make the code more readable.
    Because it is defined as a constant and known at compile time, the
    compiler can do dead code elimination and thus it behaves
    effectively as a conditional compile directive. It is set to false
-   if no crypto backend is configures or to a bit vector denoting the
+   if no crypto backend is configured or to a bit vector denoting the
    configured backends. */
 #if (defined(CRYPT_BACKEND_CLASSIC_PGP) && defined(CRYPT_BACKEND_CLASSIC_SMIME)) || \
     defined(CRYPT_BACKEND_GPGME)
@@ -80,7 +78,6 @@ struct State;
 #else
 #define WithCrypto 0
 #endif
-
 
 #define KEYFLAG_CANSIGN           (1 << 0)
 #define KEYFLAG_CANENCRYPT        (1 << 1)
@@ -98,12 +95,6 @@ struct State;
 #define KEYFLAG_RESTRICTIONS (KEYFLAG_CANTUSE | KEYFLAG_CRITICAL)
 
 #define KEYFLAG_ABILITIES (KEYFLAG_CANSIGN | KEYFLAG_CANENCRYPT | KEYFLAG_PREFER_ENCRYPTION | KEYFLAG_PREFER_SIGNING)
-
-typedef enum pgp_ring
-{
-  PGP_PUBRING,
-  PGP_SECRING
-} pgp_ring_t;
 
 /* Some prototypes -- old crypt.h. */
 
@@ -125,12 +116,7 @@ int mutt_signed_handler(struct Body *a, struct State *s);
 
 int mutt_parse_crypt_hdr(const char *p, int set_empty_signas, int crypt_app);
 
-void convert_to_7bit(struct Body *a);
-
 /* -- crypt.c -- */
-
-/* Print the current time. */
-void crypt_current_time(struct State *s, char *app_name);
 
 /* Check out the type of encryption used and set the cached status
    values if there are any. */
@@ -156,38 +142,10 @@ void crypt_forget_passphrase(void);
 /* Check that we have a usable passphrase, ask if not. */
 int crypt_valid_passphrase(int flags);
 
-/* Write the message body/part A described by state S to the given
-   TEMPFILE.  */
-int crypt_write_signed(struct Body *a, struct State *s, const char *tempfile);
-
-/* Obtain pointers to fingerprint or short or long key ID, if any.
-
-   Upon return, at most one of return, *ppl and *pps pointers is non-NULL,
-   indicating the longest fingerprint or ID found, if any.
-
-   Return:  Copy of fingerprint, if any, stripped of all spaces, else NULL.
-            Must be FREE'd by caller.
-   *pphint  Start of string to be passed to pgp_add_string_to_hints() or
-            crypt_add_string_to_hints().
-   *ppl     Start of long key ID if detected, else NULL.
-   *pps     Start of short key ID if detected, else NULL. */
-const char *crypt_get_fingerprint_or_id(char *p, const char **pphint,
-                                        const char **ppl, const char **pps);
-
-/* Check if a string contains a numerical key */
-bool crypt_is_numerical_keyid(const char *s);
-
 /* -- cryptglue.c -- */
 
 /* Show a message that a backend will be invoked. */
 void crypt_invoke_message(int type);
-
-
-/* Silently forget about a passphrase. */
-void crypt_pgp_void_passphrase(void);
-
-int crypt_pgp_valid_passphrase(void);
-
 
 /* Decrypt a PGP/MIME message. */
 int crypt_pgp_decrypt_mime(FILE *a, FILE **b, struct Body *c, struct Body **d);
@@ -204,42 +162,13 @@ void crypt_pgp_invoke_getkeys(struct Address *addr);
 /* Check for a traditional PGP message in body B. */
 int crypt_pgp_check_traditional(FILE *fp, struct Body *b, int tagged_only);
 
-/* fixme: needs documentation. */
-struct Body *crypt_pgp_traditional_encryptsign(struct Body *a, int flags, char *keylist);
-
 /* Generate a PGP public key attachment. */
 struct Body *crypt_pgp_make_key_attachment(char *tempf);
-
-/* This routine attempts to find the keyids of the recipients of a
-   message.  It returns NULL if any of the keys can not be found.
-   If oppenc_mode is true, only keys that can be determined without
-   prompting will be used.  */
-char *crypt_pgp_findkeys(struct Address *adrlist, int oppenc_mode);
-
-/* Create a new body with a PGP signed message from A. */
-struct Body *crypt_pgp_sign_message(struct Body *a);
-
-/* Warning: A is no longer freed in this routine, you need to free it
-   later.  This is necessary for $fcc_attach. */
-struct Body *crypt_pgp_encrypt_message(struct Body *a, char *keylist, int sign);
-
-/* Invoke the PGP command to import a key. */
-void crypt_pgp_invoke_import(const char *fname);
 
 int crypt_pgp_send_menu(struct Header *msg);
 
 /* fixme: needs documentation */
-int crypt_pgp_verify_one(struct Body *sigbdy, struct State *s, const char *tempf);
-
-/* fixme: needs documentation */
 void crypt_pgp_extract_keys_from_attachment_list(FILE *fp, int tag, struct Body *top);
-
-void crypt_pgp_set_sender(const char *sender);
-
-/* Silently forget about a passphrase. */
-void crypt_smime_void_passphrase(void);
-
-int crypt_smime_valid_passphrase(void);
 
 /* Decrypt an S/MIME message. */
 int crypt_smime_decrypt_mime(FILE *a, FILE **b, struct Body *c, struct Body **d);
@@ -253,30 +182,8 @@ void crypt_smime_getkeys(struct Envelope *env);
 /* Check that the sender matches. */
 int crypt_smime_verify_sender(struct Header *h);
 
-/* Ask for an SMIME key. */
-
-/* This routine attempts to find the keyids of the recipients of a
-   message.  It returns NULL if any of the keys can not be found.
-   If oppenc_mode is true, only keys that can be determined without
-   prompting will be used.  */
-char *crypt_smime_findkeys(struct Address *adrlist, int oppenc_mode);
-
-/* fixme: Needs documentation. */
-struct Body *crypt_smime_sign_message(struct Body *a);
-
-/* fixme: needs documentation. */
-struct Body *crypt_smime_build_smime_entity(struct Body *a, char *certlist);
-
-/* Add a certificate and update index file (externally). */
-void crypt_smime_invoke_import(char *infile, char *mailbox);
-
 int crypt_smime_send_menu(struct Header *msg);
-
-void crypt_smime_set_sender(const char *sender);
-
-/* fixme: needs documentation */
-int crypt_smime_verify_one(struct Body *sigbdy, struct State *s, const char *tempf);
 
 void crypt_init(void);
 
-#endif /* _MUTT_CRYPT_H */
+#endif /* _NCRYPT_NCRYPT_H */

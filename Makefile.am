@@ -16,7 +16,7 @@ am__v_COPY_ = $(am__v_COPY_$(AM_DEFAULT_VERBOSITY))
 am__v_COPY_0 = @echo "  COPY    " $@;
 am__v_COPY_1 = 
 
-SUBDIRS = m4 contrib imap
+SUBDIRS = m4 contrib imap ncrypt
 
 if BUILD_HCACHE
 SUBDIRS += hcache
@@ -44,12 +44,11 @@ bin_PROGRAMS = mutt $(DOTLOCK_TARGET) $(PGPAUX_TARGET)
 mutt_SOURCES = account.c addrbook.c address.h alias.c alias.h ascii.c attach.c \
 	base64.c bcache.c body.h browser.c buffer.c buffy.c charset.c color.c \
 	commands.c complete.c compose.c compress.c content.h context.h copy.c \
-	crypt.c cryptglue.c crypt_mod.c crypt_mod.h curs_lib.c curs_main.c \
-	date.c edit.c editmsg.c enter.c enter_state.h envelope.h filter.c \
-	flags.c format_flags.h from.c getdomain.c group.c handler.c hash.c \
-	hdrline.c header.h headers.c help.c history.c hook.c init.c keymap.c \
-	lib.c list.h main.c mbox.c mbyte.c mbyte_table.h md5.c menu.c mh.c \
-	muttlib.c mutt_idna.c mutt_sasl_plain.c mutt_socket.c \
+	curs_lib.c curs_main.c date.c edit.c editmsg.c enter.c enter_state.h \
+	envelope.h filter.c flags.c format_flags.h from.c getdomain.c group.c \
+	handler.c hash.c hdrline.c header.h headers.c help.c history.c hook.c \
+	init.c keymap.c lib.c list.h main.c mbox.c mbyte.c mbyte_table.h md5.c \
+	menu.c mh.c muttlib.c mutt_idna.c mutt_sasl_plain.c mutt_socket.c \
 	mutt_tunnel.c mx.c newsrc.c nntp.c options.h pager.c parameter.h \
 	parse.c pattern.c pattern.h pop.c pop_auth.c pop_lib.c postpone.c \
 	query.c recvattach.c recvcmd.c rfc1524.c rfc2047.c rfc2231.c rfc3676.c \
@@ -62,39 +61,34 @@ nodist_mutt_SOURCES = $(BUILT_SOURCES)
 LIBIMAP = -Limap -limap
 LIBIMAPDEPS = $(top_srcdir)/imap/imap.h imap/libimap.a
 
-mutt_LDADD = $(MUTT_LIB_OBJECTS) $(LIBOBJS) $(LIBIMAP) $(MUTTLIBS) \
-	$(LIBICONV) $(GPGME_LIBS) $(HCACHE_LIBS)
+mutt_LDADD = $(MUTT_LIB_OBJECTS) $(LIBOBJS) $(HCACHE_LIBS) $(NCRYPT_LIBS) \
+	$(LIBIMAP) $(MUTTLIBS) $(LIBICONV) $(GPGME_LIBS)
 
 mutt_DEPENDENCIES = $(MUTT_LIB_OBJECTS) $(LIBOBJS) $(LIBIMAPDEPS) \
-	$(HCACHE_DEPS)
+	$(HCACHE_DEPS) $(NCRYPT_DEPS)
 
 DEFS=-DPKGDATADIR=\"$(pkgdatadir)\" -DSYSCONFDIR=\"$(sysconfdir)\" \
 	-DBINDIR=\"$(bindir)\" -DMUTTLOCALEDIR=\"$(datadir)/locale\"
 
 AM_CPPFLAGS=-I. -I$(top_srcdir) $(GPGME_CFLAGS)
 
-EXTRA_mutt_SOURCES = browser.h crypt_gpgme.c crypt_mod_pgp_classic.c \
-	crypt_mod_pgp_gpgme.c crypt_mod_smime_classic.c \
-	crypt_mod_smime_gpgme.c dotlock.c gnupgparse.c mbyte.h mutt_idna.c \
-	mutt_idna.h mutt_lua.c mutt_sasl.c mutt_notmuch.c mutt_ssl.c \
-	mutt_ssl_gnutls.c pgp.c pgpinvoke.c pgpkey.c pgplib.c pgpmicalg.c \
-	pgppacket.c remailer.c remailer.h resize.c sha1.c smime.c url.h utf8.c \
-	wcwidth.c 
+EXTRA_mutt_SOURCES = browser.h dotlock.c mbyte.h mutt_idna.c mutt_idna.h \
+	mutt_lua.c mutt_sasl.c mutt_notmuch.c mutt_ssl.c mutt_ssl_gnutls.c \
+	remailer.c remailer.h resize.c sha1.c url.h utf8.c wcwidth.c 
 
 EXTRA_DIST = account.h ascii.h attach.h bcache.h browser.h buffer.h buffy.h \
-	ChangeLog ChangeLog.neomutt ChangeLog.nntp charset.h compress.h \
-	copy.h COPYRIGHT crypt_gpgme.h \
-	dotlock.h extlib.c filter.h functions.h gen_defs globals.h group.h \
-	hash.h history.h init.h keymap.h lib.h LICENSE.md mailbox.h mapping.h \
-	mbyte.h md5.h mime.h mime.types mutt.h mutt_commands.h mutt_crypt.h \
+	ChangeLog ChangeLog.neomutt ChangeLog.nntp charset.h compress.h copy.h \
+	COPYRIGHT dotlock.h extlib.c filter.h functions.h gen_defs globals.h \
+	group.h hash.h history.h init.h keymap.h lib.h LICENSE.md mailbox.h \
+	mapping.h mbyte.h md5.h mime.h mime.types mutt.h mutt_commands.h \
 	mutt_curses.h mutt_idna.h mutt_lua.h mutt_menu.h mutt_notmuch.h \
 	mutt_options.h mutt_regex.h mutt_sasl.h mutt_sasl_plain.h \
 	mutt_socket.h mutt_ssl.h mutt_tunnel.h mx.h myvar.h nntp.h OPS \
 	OPS.CRYPT OPS.MIX OPS.NOTMUCH OPS.PGP OPS.SIDEBAR OPS.SMIME pager.h \
-	pgp.h pgpewrap.c pgplib.h pgppacket.h pop.h protos.h README.md \
-	README.SSL remailer.c remailer.h rfc1524.h rfc2047.h rfc2231.h \
-	rfc3676.h rfc822.h sha1.h sidebar.h smime.h smime_keys.pl sort.h \
-	txt2c.c txt2c.sh UPDATING version.h keymap_alldefs.h
+	pgpewrap.c pop.h protos.h README.md README.SSL remailer.c remailer.h \
+	rfc1524.h rfc2047.h rfc2231.h rfc3676.h rfc822.h sha1.h sidebar.h \
+	smime_keys.pl sort.h txt2c.c txt2c.sh UPDATING version.h \
+	keymap_alldefs.h
 
 EXTRA_SCRIPTS = smime_keys
 
@@ -102,10 +96,9 @@ mutt_dotlock_SOURCES = mutt_dotlock.c
 mutt_dotlock_LDADD = $(LIBOBJS)
 mutt_dotlock_DEPENDENCIES = $(LIBOBJS)
 
-pgpring_SOURCES = ascii.c extlib.c lib.c md5.c pgplib.c pgppacket.c \
-	pgppubring.c sha1.c
-pgpring_LDADD = $(LIBOBJS)
-pgpring_DEPENDENCIES = $(LIBOBJS)
+pgpring_SOURCES = ascii.c extlib.c lib.c md5.c pgppubring.c sha1.c
+pgpring_LDADD = $(LIBOBJS) $(NCRYPT_LIBS)
+pgpring_DEPENDENCIES = $(LIBOBJS) $(NCRYPT_DEPS)
 
 mutt_md5_SOURCES = md5.c
 mutt_md5_CFLAGS = -DMD5UTIL

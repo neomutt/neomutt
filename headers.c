@@ -34,8 +34,8 @@
 #include "header.h"
 #include "lib.h"
 #include "list.h"
-#include "mutt_crypt.h"
 #include "mutt_idna.h"
+#include "ncrypt/ncrypt.h"
 #include "options.h"
 #include "protos.h"
 

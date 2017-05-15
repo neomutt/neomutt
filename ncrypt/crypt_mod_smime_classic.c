@@ -16,80 +16,84 @@
  */
 
 /*
-    This is a crypto module wrapping the gpgme based smime code.
+    This is a crytpo module wrapping the classic smime code.
  */
 
 #include "config.h"
 #include <stdio.h>
-#include "crypt_gpgme.h"
 #include "crypt_mod.h"
-#include "mutt_crypt.h"
+#include "ncrypt.h"
+#include "smime.h"
 
 struct Address;
 struct Body;
+struct Envelope;
 struct Header;
 struct State;
 
-static void crypt_mod_smime_init(void)
-{
-  smime_gpgme_init();
-}
-
 static void crypt_mod_smime_void_passphrase(void)
 {
-  /* Handled by gpg-agent.  */
+  smime_void_passphrase();
 }
 
 static int crypt_mod_smime_valid_passphrase(void)
 {
-  /* Handled by gpg-agent.  */
-  return 1;
+  return smime_valid_passphrase();
 }
 
 static int crypt_mod_smime_decrypt_mime(FILE *a, FILE **b, struct Body *c, struct Body **d)
 {
-  return smime_gpgme_decrypt_mime(a, b, c, d);
+  return smime_decrypt_mime(a, b, c, d);
 }
-
 static int crypt_mod_smime_application_handler(struct Body *m, struct State *s)
 {
-  return smime_gpgme_application_handler(m, s);
+  return smime_application_smime_handler(m, s);
 }
 
 static char *crypt_mod_smime_findkeys(struct Address *adrlist, int oppenc_mode)
 {
-  return smime_gpgme_findkeys(adrlist, oppenc_mode);
+  return smime_find_keys(adrlist, oppenc_mode);
 }
 
 static struct Body *crypt_mod_smime_sign_message(struct Body *a)
 {
-  return smime_gpgme_sign_message(a);
+  return smime_sign_message(a);
 }
 
 static int crypt_mod_smime_verify_one(struct Body *sigbdy, struct State *s, const char *tempf)
 {
-  return smime_gpgme_verify_one(sigbdy, s, tempf);
+  return smime_verify_one(sigbdy, s, tempf);
 }
 
 static int crypt_mod_smime_send_menu(struct Header *msg)
 {
-  return smime_gpgme_send_menu(msg);
+  return smime_send_menu(msg);
 }
 
-static struct Body *crypt_mod_smime_build_smime_entity(struct Body *a, char *certlist)
+static void crypt_mod_smime_getkeys(struct Envelope *env)
 {
-  return smime_gpgme_build_smime_entity(a, certlist);
+  smime_getkeys(env);
 }
 
 static int crypt_mod_smime_verify_sender(struct Header *h)
 {
-  return smime_gpgme_verify_sender(h);
+  return smime_verify_sender(h);
 }
 
-struct crypt_module_specs crypt_mod_smime_gpgme = {
+static struct Body *crypt_mod_smime_build_smime_entity(struct Body *a, char *certlist)
+{
+  return smime_build_smime_entity(a, certlist);
+}
+
+static void crypt_mod_smime_invoke_import(char *infile, char *mailbox)
+{
+  smime_invoke_import(infile, mailbox);
+}
+
+struct crypt_module_specs crypt_mod_smime_classic = {
   APPLICATION_SMIME,
   {
-      crypt_mod_smime_init,
+      NULL, /* init */
       crypt_mod_smime_void_passphrase,
       crypt_mod_smime_valid_passphrase,
       crypt_mod_smime_decrypt_mime,
@@ -109,9 +113,9 @@ struct crypt_module_specs crypt_mod_smime_gpgme = {
       NULL, /* pgp_invoke_import */
       NULL, /* pgp_extract_keys_from_attachment_list */
 
-      NULL, /* smime_getkeys */
+      crypt_mod_smime_getkeys,
       crypt_mod_smime_verify_sender,
       crypt_mod_smime_build_smime_entity,
-      NULL, /* smime_invoke_import */
+      crypt_mod_smime_invoke_import,
   },
 };

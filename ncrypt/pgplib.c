@@ -21,7 +21,6 @@
 #include <stdbool.h>
 #include "pgplib.h"
 #include "lib.h"
-#include "mutt_crypt.h"
 
 const char *pgp_pkalgbytype(unsigned char type)
 {

@@ -31,10 +31,11 @@
 #include "globals.h"
 #include "lib.h"
 #include "list.h"
-#include "mutt_crypt.h"
 #include "mutt_curses.h"
 #include "mutt_idna.h"
+#include "ncrypt.h"
 #include "pgp.h"
+#include "pgpkey.h"
 #include "protos.h"
 #include "rfc822.h"
 
@@ -50,7 +51,6 @@ struct pgp_command_context
   const char *signas;    /* %a */
   const char *ids;       /* %r */
 };
-
 
 static const char *_mutt_fmt_pgp_command(char *dest, size_t destlen, size_t col,
                                          int cols, char op, const char *src,
@@ -150,7 +150,6 @@ static void mutt_pgp_command(char *d, size_t dlen,
  * Glue.
  */
 
-
 static pid_t pgp_invoke(FILE **pgpin, FILE **pgpout, FILE **pgperr, int pgpinfd,
                         int pgpoutfd, int pgperrfd, short need_passphrase,
                         const char *fname, const char *sig_fname,
@@ -175,14 +174,12 @@ static pid_t pgp_invoke(FILE **pgpin, FILE **pgpout, FILE **pgperr, int pgpinfd,
   return mutt_create_filter_fd(cmd, pgpin, pgpout, pgperr, pgpinfd, pgpoutfd, pgperrfd);
 }
 
-
 /*
  * The exported interface.
  *
  * This is historic and may be removed at some point.
  *
  */
-
 
 pid_t pgp_invoke_decode(FILE **pgpin, FILE **pgpout, FILE **pgperr, int pgpinfd,
                         int pgpoutfd, int pgperrfd, const char *fname, short need_passphrase)
@@ -212,7 +209,6 @@ pid_t pgp_invoke_sign(FILE **pgpin, FILE **pgpout, FILE **pgperr, int pgpinfd,
                     fname, NULL, PgpSignAs, NULL, PgpSignCommand);
 }
 
-
 pid_t pgp_invoke_encrypt(FILE **pgpin, FILE **pgpout, FILE **pgperr,
                          int pgpinfd, int pgpoutfd, int pgperrfd,
                          const char *fname, const char *uids, int sign)
@@ -237,7 +233,6 @@ pid_t pgp_invoke_traditional(FILE **pgpin, FILE **pgpout, FILE **pgperr,
     return pgp_invoke(pgpin, pgpout, pgperr, pgpinfd, pgpoutfd, pgperrfd, 1,
                       fname, NULL, PgpSignAs, NULL, PgpClearSignCommand);
 }
-
 
 void pgp_invoke_import(const char *fname)
 {

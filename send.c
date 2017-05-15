@@ -42,10 +42,10 @@
 #include "list.h"
 #include "mailbox.h"
 #include "mime.h"
-#include "mutt_crypt.h"
 #include "mutt_curses.h"
 #include "mutt_idna.h"
 #include "mutt_regex.h"
+#include "ncrypt/ncrypt.h"
 #include "options.h"
 #include "pattern.h"
 #include "protos.h"
@@ -2146,7 +2146,7 @@ int ci_send_message(int flags,      /* send mode */
   {
     mutt_message(i != 0 ? _("Sending in background.") :
                           (flags & SENDNEWS) ? _("Article posted.") : /* USE_NNTP */
-                                               _("Mail sent."));
+                              _("Mail sent."));
 #ifdef USE_NOTMUCH
     if (option(OPTNOTMUCHRECORD))
       nm_record_message(ctx, finalpath, cur);

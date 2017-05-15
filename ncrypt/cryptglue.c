@@ -32,7 +32,7 @@
 #include "crypt_mod.h"
 #include "globals.h"
 #include "lib.h"
-#include "mutt_crypt.h"
+#include "ncrypt.h"
 #include "options.h"
 #include "protos.h"
 
@@ -108,7 +108,6 @@ void crypt_init(void)
 #endif
 }
 
-
 /* Show a message that a backend will be invoked. */
 void crypt_invoke_message(int type)
 {
@@ -118,13 +117,11 @@ void crypt_invoke_message(int type)
     mutt_message(_("Invoking S/MIME..."));
 }
 
-
 /*
 
     PGP
 
 */
-
 
 /* Reset a PGP passphrase */
 void crypt_pgp_void_passphrase(void)
@@ -140,7 +137,6 @@ int crypt_pgp_valid_passphrase(void)
 
   return 0;
 }
-
 
 /* Decrypt a PGP/MIME message. */
 int crypt_pgp_decrypt_mime(FILE *a, FILE **b, struct Body *c, struct Body **d)
@@ -250,7 +246,6 @@ int crypt_pgp_verify_one(struct Body *sigbdy, struct State *s, const char *tempf
   return -1;
 }
 
-
 int crypt_pgp_send_menu(struct Header *msg)
 {
   if (CRYPT_MOD_CALL_CHECK(PGP, send_menu))
@@ -258,7 +253,6 @@ int crypt_pgp_send_menu(struct Header *msg)
 
   return 0;
 }
-
 
 /* fixme: needs documentation */
 void crypt_pgp_extract_keys_from_attachment_list(FILE *fp, int tag, struct Body *top)
@@ -273,13 +267,11 @@ void crypt_pgp_set_sender(const char *sender)
     (CRYPT_MOD_CALL(PGP, set_sender))(sender);
 }
 
-
 /*
 
    S/MIME
 
 */
-
 
 /* Reset an SMIME passphrase */
 void crypt_smime_void_passphrase(void)

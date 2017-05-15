@@ -25,8 +25,8 @@
 #ifdef MAIN_C
 /* so that global vars get included */
 #include "git_ver.h"
-#include "mutt_crypt.h"
 #include "mx.h"
+#include "ncrypt/ncrypt.h"
 #include "sort.h"
 #endif /* MAIN_C */
 

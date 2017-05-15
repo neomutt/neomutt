@@ -37,12 +37,16 @@
 #include "keymap_defs.h"
 #include "lib.h"
 #include "mime.h"
-#include "mutt_crypt.h"
 #include "mutt_curses.h"
 #include "mutt_menu.h"
+#include "ncrypt.h"
 #include "options.h"
+#include "crypt.h"
 #include "pager.h"
 #include "pgp.h"
+#include "pgpinvoke.h"
+#include "gnupgparse.h"
+#include "pgpkey.h"
 #include "pgplib.h"
 #include "protos.h"
 #include "rfc822.h"
@@ -194,7 +198,6 @@ static const char *pgp_entry_fmt(char *dest, size_t destlen, size_t col, int col
       }
       *p = 0;
 
-
       tm = localtime(&key->gen_time);
 
       if (!do_locales)
@@ -314,7 +317,6 @@ static int pgp_compare_address(const void *a, const void *b)
   return ((PgpSortKeys & SORT_REVERSE) ? !_pgp_compare_address(a, b) :
                                          _pgp_compare_address(a, b));
 }
-
 
 static int _pgp_compare_keyid(const void *a, const void *b)
 {
@@ -529,7 +531,6 @@ static struct PgpKeyInfo *pgp_select_key(struct PgpKeyInfo *keys, struct Address
   else
     snprintf(buf, sizeof(buf), _("PGP keys matching \"%s\"."), s);
 
-
   menu->title = buf;
 
   kp = NULL;
@@ -586,7 +587,6 @@ static struct PgpKeyInfo *pgp_select_key(struct PgpKeyInfo *keys, struct Address
         break;
 
       case OP_GENERIC_SELECT_ENTRY:
-
 
         /* XXX make error reporting more verbose */
 
@@ -667,7 +667,6 @@ struct PgpKeyInfo *pgp_ask_for_key(char *tag, char *whatfor, short abilities, pg
       }
   }
 
-
   while (true)
   {
     resp[0] = 0;
@@ -739,7 +738,6 @@ struct Body *pgp_make_key_attachment(char *tempf)
   }
 
   mutt_message(_("Invoking PGP..."));
-
 
   if ((thepid = pgp_invoke_export(NULL, NULL, NULL, -1, fileno(tempfp),
                                   fileno(devnull), tmp)) == -1)
@@ -829,7 +827,6 @@ struct PgpKeyInfo *pgp_getkeybyaddr(struct Address *a, short abilities, pgp_ring
     return NULL;
 
   mutt_debug(5, "pgp_getkeybyaddr: looking for %s <%s>.\n", a->personal, a->mailbox);
-
 
   for (k = keys; k; k = kn)
   {

@@ -22,7 +22,9 @@
 #include "config.h"
 #include <stdio.h>
 #include "crypt_mod.h"
-#include "mutt_crypt.h"
+#include "ncrypt.h"
+#include "pgpinvoke.h"
+#include "pgpkey.h"
 #include "pgp.h"
 
 struct Address;

@@ -34,14 +34,15 @@
 #include "body.h"
 #include "content.h"
 #include "context.h"
+#include "cryptglue.h"
 #include "copy.h"
 #include "envelope.h"
 #include "globals.h"
 #include "header.h"
 #include "lib.h"
 #include "mime.h"
-#include "mutt_crypt.h"
 #include "mutt_curses.h"
+#include "ncrypt.h"
 #include "options.h"
 #include "protos.h"
 #include "rfc822.h"
@@ -68,7 +69,6 @@ void crypt_current_time(struct State *s, char *app_name)
   state_attach_puts(tmp, s);
 }
 
-
 void crypt_forget_passphrase(void)
 {
   if ((WithCrypto & APPLICATION_PGP))
@@ -80,7 +80,6 @@ void crypt_forget_passphrase(void)
   if (WithCrypto)
     mutt_message(_("Passphrase(s) forgotten."));
 }
-
 
 #if (!defined(DEBUG))
 
@@ -99,7 +98,6 @@ static void disable_coredumps(void)
 
 #endif
 
-
 int crypt_valid_passphrase(int flags)
 {
   int ret = 0;
@@ -116,7 +114,6 @@ int crypt_valid_passphrase(int flags)
 
   return ret;
 }
-
 
 int mutt_protect(struct Header *msg, char *keylist)
 {
@@ -216,7 +213,6 @@ int mutt_protect(struct Header *msg, char *keylist)
     }
   }
 
-
   if (msg->security & ENCRYPT)
   {
     if ((WithCrypto & APPLICATION_SMIME) && (msg->security & APPLICATION_SMIME))
@@ -303,7 +299,6 @@ int mutt_protect(struct Header *msg, char *keylist)
   return 0;
 }
 
-
 int mutt_is_multipart_signed(struct Body *b)
 {
   char *p = NULL;
@@ -332,7 +327,6 @@ int mutt_is_multipart_signed(struct Body *b)
   return 0;
 }
 
-
 int mutt_is_multipart_encrypted(struct Body *b)
 {
   if ((WithCrypto & APPLICATION_PGP))
@@ -351,7 +345,6 @@ int mutt_is_multipart_encrypted(struct Body *b)
   return 0;
 }
 
-
 int mutt_is_valid_multipart_pgp_encrypted(struct Body *b)
 {
   if (!mutt_is_multipart_encrypted(b))
@@ -369,7 +362,6 @@ int mutt_is_valid_multipart_pgp_encrypted(struct Body *b)
 
   return PGPENCRYPT;
 }
-
 
 /*
  * This checks for the malformed layout caused by MS Exchange in
@@ -410,7 +402,6 @@ int mutt_is_malformed_multipart_pgp_encrypted(struct Body *b)
 
   return PGPENCRYPT;
 }
-
 
 int mutt_is_application_pgp(struct Body *m)
 {
@@ -525,7 +516,6 @@ int mutt_is_application_smime(struct Body *m)
   return 0;
 }
 
-
 int crypt_query(struct Body *m)
 {
   int t = 0;
@@ -590,7 +580,6 @@ int crypt_query(struct Body *m)
   return t;
 }
 
-
 int crypt_write_signed(struct Body *a, struct State *s, const char *tempfile)
 {
   FILE *fp = NULL;
@@ -634,7 +623,6 @@ int crypt_write_signed(struct Body *a, struct State *s, const char *tempfile)
   return 0;
 }
 
-
 void convert_to_7bit(struct Body *a)
 {
   if (!WithCrypto)
@@ -668,7 +656,6 @@ void convert_to_7bit(struct Body *a)
     a = a->next;
   }
 }
-
 
 void crypt_extract_keys_from_messages(struct Header *h)
 {
@@ -790,7 +777,6 @@ void crypt_extract_keys_from_messages(struct Header *h)
     unset_option(OPTDONTHANDLEPGPKEYS);
 }
 
-
 int crypt_get_keys(struct Header *msg, char **keylist, int oppenc_mode)
 {
   struct Address *adrlist = NULL, *last = NULL;
@@ -842,7 +828,6 @@ int crypt_get_keys(struct Header *msg, char **keylist, int oppenc_mode)
   return 0;
 }
 
-
 /*
  * Check if all recipients keys can be automatically determined.
  * Enable encryption if they can, otherwise disable encryption.
@@ -869,7 +854,6 @@ void crypt_opportunistic_encrypt(struct Header *msg)
   }
 }
 
-
 static void crypt_fetch_signatures(struct Body ***signatures, struct Body *a, int *n)
 {
   if (!WithCrypto)
@@ -888,7 +872,6 @@ static void crypt_fetch_signatures(struct Body ***signatures, struct Body *a, in
     }
   }
 }
-
 
 /*
  * This routine verifies a  "multipart/signed"  body.
@@ -998,7 +981,6 @@ int mutt_signed_handler(struct Body *a, struct State *s)
       /* Now display the signed body */
       state_attach_puts(_("[-- The following data is signed --]\n\n"), s);
 
-
       FREE(&signatures);
     }
     else
@@ -1013,9 +995,8 @@ int mutt_signed_handler(struct Body *a, struct State *s)
   return rc;
 }
 
-
 /* Obtain pointers to fingerprint or short or long key ID, if any.
- * See mutt_crypt.h for details.
+ * See ncrypt.h for details.
  */
 const char *crypt_get_fingerprint_or_id(char *p, const char **pphint,
                                         const char **ppl, const char **pps)
@@ -1094,7 +1075,6 @@ const char *crypt_get_fingerprint_or_id(char *p, const char **pphint,
   *pps = ps;
   return pfcopy;
 }
-
 
 /*
  * Used by pgp_find_keys and find_keys to check if a crypt-hook

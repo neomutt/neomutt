@@ -32,6 +32,8 @@
 #include "ascii.h"
 #include "body.h"
 #include "copy.h"
+#include "crypt.h"
+#include "cryptglue.h"
 #include "envelope.h"
 #include "filter.h"
 #include "format_flags.h"
@@ -41,9 +43,9 @@
 #include "keymap_defs.h"
 #include "lib.h"
 #include "mime.h"
-#include "mutt_crypt.h"
 #include "mutt_curses.h"
 #include "mutt_menu.h"
+#include "ncrypt.h"
 #include "options.h"
 #include "protos.h"
 #include "rfc822.h"
@@ -60,15 +62,12 @@ struct smime_command_context
   const char *intermediates; /* %i */
 };
 
-
 char SmimePass[STRING];
 time_t SmimeExptime = 0; /* when does the cached passphrase expire? */
-
 
 static char SmimeKeyToUse[_POSIX_PATH_MAX] = { 0 };
 static char SmimeCertToUse[_POSIX_PATH_MAX];
 static char SmimeIntermediateToUse[_POSIX_PATH_MAX];
-
 
 static void smime_free_key(struct SmimeKey **keylist)
 {
@@ -108,14 +107,11 @@ static struct SmimeKey *smime_copy_key(struct SmimeKey *key)
   return copy;
 }
 
-
 /*
  *     Queries and passphrase handling.
  */
 
-
 /* these are copies from pgp.c */
-
 
 void smime_void_passphrase(void)
 {
@@ -143,7 +139,6 @@ int smime_valid_passphrase(void)
 
   return 0;
 }
-
 
 /*
  *     The OpenSSL interface
@@ -285,7 +280,6 @@ static const char *_mutt_fmt_smime_command(char *dest, size_t destlen, size_t co
   return src;
 }
 
-
 static void smime_command(char *d, size_t dlen,
                           struct smime_command_context *cctx, const char *fmt)
 {
@@ -293,7 +287,6 @@ static void smime_command(char *d, size_t dlen,
                     _mutt_fmt_smime_command, (unsigned long) cctx, 0);
   mutt_debug(2, "smime_command: %s\n", d);
 }
-
 
 static pid_t smime_invoke(FILE **smimein, FILE **smimeout, FILE **smimeerr,
                           int smimeinfd, int smimeoutfd, int smimeerrfd,
@@ -323,11 +316,9 @@ static pid_t smime_invoke(FILE **smimein, FILE **smimeout, FILE **smimeerr,
                                smimeoutfd, smimeerrfd);
 }
 
-
 /*
  *    Key and certificate handling.
  */
-
 
 static char *smime_key_flags(int flags)
 {
@@ -347,7 +338,6 @@ static char *smime_key_flags(int flags)
 
   return buff;
 }
-
 
 static void smime_entry(char *s, size_t l, struct Menu *menu, int num)
 {
@@ -380,7 +370,6 @@ static void smime_entry(char *s, size_t l, struct Menu *menu, int num)
   snprintf(s, l, " 0x%s %s %s %-35.35s %s", this->hash,
            smime_key_flags(this->flags), truststate, this->email, this->label);
 }
-
 
 static struct SmimeKey *smime_select_key(struct SmimeKey *keys, char *query)
 {
@@ -729,7 +718,6 @@ static struct SmimeKey *smime_get_key_by_str(char *str, short abilities, short p
   return return_key;
 }
 
-
 static struct SmimeKey *smime_ask_for_key(char *prompt, short abilities, short public)
 {
   struct SmimeKey *key = NULL;
@@ -752,7 +740,6 @@ static struct SmimeKey *smime_ask_for_key(char *prompt, short abilities, short p
     BEEP();
   }
 }
-
 
 /*
    This sets the '*ToUse' variables for an upcoming decryption, where
@@ -890,7 +877,6 @@ char *smime_find_keys(struct Address *adrlist, int oppenc_mode)
   return keylist;
 }
 
-
 static int smime_handle_cert_email(char *certificate, char *mailbox, int copy,
                                    char ***buffer, int *num)
 {
@@ -934,7 +920,6 @@ static int smime_handle_cert_email(char *certificate, char *mailbox, int copy,
   rewind(fpout);
   fflush(fperr);
   rewind(fperr);
-
 
   while ((fgets(email, sizeof(email), fpout)))
   {
@@ -986,7 +971,6 @@ static int smime_handle_cert_email(char *certificate, char *mailbox, int copy,
   return ret;
 }
 
-
 static char *smime_extract_certificate(char *infile)
 {
   FILE *fpout = NULL, *fperr = NULL;
@@ -994,7 +978,6 @@ static char *smime_extract_certificate(char *infile)
   char tmpfname[_POSIX_PATH_MAX];
   pid_t thepid;
   int empty;
-
 
   mutt_mktemp(tmpfname, sizeof(tmpfname));
   if ((fperr = safe_fopen(tmpfname, "w+")) == NULL)
@@ -1027,7 +1010,6 @@ static char *smime_extract_certificate(char *infile)
 
   mutt_wait_filter(thepid);
 
-
   fflush(fpout);
   rewind(fpout);
   fflush(fperr);
@@ -1042,7 +1024,6 @@ static char *smime_extract_certificate(char *infile)
     mutt_unlink(pk7out);
     return NULL;
   }
-
 
   safe_fclose(&fpout);
   mutt_mktemp(certfile, sizeof(certfile));
@@ -1099,7 +1080,6 @@ static char *smime_extract_signer_certificate(char *infile)
   pid_t thepid;
   int empty;
 
-
   mutt_mktemp(tmpfname, sizeof(tmpfname));
   if ((fperr = safe_fopen(tmpfname, "w+")) == NULL)
   {
@@ -1107,7 +1087,6 @@ static char *smime_extract_signer_certificate(char *infile)
     return NULL;
   }
   mutt_unlink(tmpfname);
-
 
   mutt_mktemp(certfile, sizeof(certfile));
   if ((fpout = safe_fopen(certfile, "w+")) == NULL)
@@ -1154,7 +1133,6 @@ static char *smime_extract_signer_certificate(char *infile)
   return safe_strdup(certfile);
 }
 
-
 /* Add a certificate and update index file (externally). */
 void smime_invoke_import(char *infile, char *mailbox)
 {
@@ -1178,7 +1156,6 @@ void smime_invoke_import(char *infile, char *mailbox)
     return;
   }
   mutt_unlink(tmpfname);
-
 
   buf[0] = '\0';
   if (option(OPTASKCERTLABEL))
@@ -1225,7 +1202,6 @@ void smime_invoke_import(char *infile, char *mailbox)
   safe_fclose(&fpout);
   safe_fclose(&fperr);
 }
-
 
 int smime_verify_sender(struct Header *h)
 {
@@ -1285,11 +1261,9 @@ int smime_verify_sender(struct Header *h)
   return retval;
 }
 
-
 /*
  *    Creating S/MIME - bodies.
  */
-
 
 static pid_t smime_invoke_encrypt(FILE **smimein, FILE **smimeout, FILE **smimeerr,
                                   int smimeinfd, int smimeoutfd, int smimeerrfd,
@@ -1300,7 +1274,6 @@ static pid_t smime_invoke_encrypt(FILE **smimein, FILE **smimeout, FILE **smimee
                       NULL, SmimeEncryptCommand);
 }
 
-
 static pid_t smime_invoke_sign(FILE **smimein, FILE **smimeout, FILE **smimeerr, int smimeinfd,
                                int smimeoutfd, int smimeerrfd, const char *fname)
 {
@@ -1308,7 +1281,6 @@ static pid_t smime_invoke_sign(FILE **smimein, FILE **smimeout, FILE **smimeerr,
                       smimeerrfd, fname, NULL, NULL, SmimeDigestAlg, SmimeKeyToUse,
                       SmimeCertToUse, SmimeIntermediateToUse, SmimeSignCommand);
 }
-
 
 struct Body *smime_build_smime_entity(struct Body *a, char *certlist)
 {
@@ -1430,7 +1402,6 @@ struct Body *smime_build_smime_entity(struct Body *a, char *certlist)
   return t;
 }
 
-
 /* The openssl -md doesn't want hyphens:
  *   md5, sha1,  sha224,  sha256,  sha384,  sha512
  * However, the micalg does:
@@ -1457,7 +1428,6 @@ static char *openssl_md_to_smime_micalg(char *md)
 
   return micalg;
 }
-
 
 struct Body *smime_sign_message(struct Body *a)
 {
@@ -1501,7 +1471,6 @@ struct Body *smime_sign_message(struct Body *a)
   mutt_write_mime_body(a, sfp);
   safe_fclose(&sfp);
 
-
   snprintf(SmimeKeyToUse, sizeof(SmimeKeyToUse), "%s/%s", NONULL(SmimeKeys), SmimeDefaultKey);
 
   snprintf(SmimeCertToUse, sizeof(SmimeCertToUse), "%s/%s",
@@ -1518,7 +1487,6 @@ struct Body *smime_sign_message(struct Body *a)
 
   smime_free_key(&default_key);
 
-
   if ((thepid = smime_invoke_sign(&smimein, NULL, &smimeerr, -1,
                                   fileno(smimeout), -1, filetosign)) == -1)
   {
@@ -1531,7 +1499,6 @@ struct Body *smime_sign_message(struct Body *a)
   fputs(SmimePass, smimein);
   fputc('\n', smimein);
   safe_fclose(&smimein);
-
 
   mutt_wait_filter(thepid);
 
@@ -1546,14 +1513,12 @@ struct Body *smime_sign_message(struct Body *a)
   }
   safe_fclose(&smimeerr);
 
-
   fflush(smimeout);
   rewind(smimeout);
   empty = (fgetc(smimeout) == EOF);
   safe_fclose(&smimeout);
 
   mutt_unlink(filetosign);
-
 
   if (err)
     mutt_any_key_to_continue(NULL);
@@ -1597,11 +1562,9 @@ struct Body *smime_sign_message(struct Body *a)
   return a;
 }
 
-
 /*
  *    Handling S/MIME - bodies.
  */
-
 
 static pid_t smime_invoke_verify(FILE **smimein, FILE **smimeout, FILE **smimeerr,
                                  int smimeinfd, int smimeoutfd, int smimeerrfd,
@@ -1612,7 +1575,6 @@ static pid_t smime_invoke_verify(FILE **smimein, FILE **smimeout, FILE **smimeer
                       (opaque ? SmimeVerifyOpaqueCommand : SmimeVerifyCommand));
 }
 
-
 static pid_t smime_invoke_decrypt(FILE **smimein, FILE **smimeout,
                                   FILE **smimeerr, int smimeinfd, int smimeoutfd,
                                   int smimeerrfd, const char *fname)
@@ -1621,7 +1583,6 @@ static pid_t smime_invoke_decrypt(FILE **smimein, FILE **smimeout,
                       smimeerrfd, fname, NULL, NULL, NULL, SmimeKeyToUse,
                       SmimeCertToUse, NULL, SmimeDecryptCommand);
 }
-
 
 int smime_verify_one(struct Body *sigbdy, struct State *s, const char *tempfile)
 {
@@ -1634,7 +1595,6 @@ int smime_verify_one(struct Body *sigbdy, struct State *s, const char *tempfile)
   size_t tmplength = 0;
   int origType = sigbdy->type;
   char *savePrefix = NULL;
-
 
   snprintf(signedfile, sizeof(signedfile), "%s.sig", tempfile);
 
@@ -1672,7 +1632,6 @@ int smime_verify_one(struct Body *sigbdy, struct State *s, const char *tempfile)
   s->prefix = savePrefix;
 
   sigbdy->type = origType;
-
 
   mutt_mktemp(smimeerrfile, sizeof(smimeerrfile));
   if (!(smimeerr = safe_fopen(smimeerrfile, "w+")))
@@ -1726,10 +1685,8 @@ int smime_verify_one(struct Body *sigbdy, struct State *s, const char *tempfile)
   safe_fclose(&s->fpin);
   s->fpin = fp;
 
-
   return badsig;
 }
-
 
 /*
   This handles application/pkcs7-mime which can either be a signed
@@ -1768,7 +1725,6 @@ static struct Body *smime_handle_entity(struct Body *m, struct State *s, FILE *o
     return NULL;
   }
   mutt_unlink(errfile);
-
 
   mutt_mktemp(tmpfname, sizeof(tmpfname));
   if ((tmpfp = safe_fopen(tmpfname, "w+")) == NULL)
@@ -1811,7 +1767,6 @@ static struct Body *smime_handle_entity(struct Body *m, struct State *s, FILE *o
     return NULL;
   }
 
-
   if (type & ENCRYPT)
   {
     if (!smime_valid_passphrase())
@@ -1824,7 +1779,6 @@ static struct Body *smime_handle_entity(struct Body *m, struct State *s, FILE *o
 
   mutt_wait_filter(thepid);
   mutt_unlink(tmpfname);
-
 
   if (s->flags & MUTT_DISPLAY)
   {
@@ -1878,7 +1832,6 @@ static struct Body *smime_handle_entity(struct Body *m, struct State *s, FILE *o
     }
     fflush(fpout);
     rewind(fpout);
-
 
     if ((p = mutt_read_mime_header(fpout, 0)) != NULL)
     {
@@ -1937,7 +1890,6 @@ static struct Body *smime_handle_entity(struct Body *m, struct State *s, FILE *o
 
   return p;
 }
-
 
 int smime_decrypt_mime(FILE *fpin, FILE **fpout, struct Body *b, struct Body **cur)
 {
@@ -2005,7 +1957,6 @@ bail:
   return rv;
 }
 
-
 int smime_application_smime_handler(struct Body *m, struct State *s)
 {
   return smime_handle_entity(m, s, NULL) ? 0 : -1;
@@ -2064,7 +2015,6 @@ int smime_send_menu(struct Header *msg)
     letters = _("eswabfc");
     choices = "eswabfc";
   }
-
 
   choice = mutt_multi_choice(prompt, letters);
   if (choice > 0)

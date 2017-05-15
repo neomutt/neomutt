@@ -44,6 +44,7 @@
 #include "ascii.h"
 #include "body.h"
 #include "charset.h"
+#include "crypt.h"
 #include "envelope.h"
 #include "format_flags.h"
 #include "globals.h"
@@ -53,9 +54,9 @@
 #include "lib.h"
 #include "list.h"
 #include "mime.h"
-#include "mutt_crypt.h"
 #include "mutt_curses.h"
 #include "mutt_menu.h"
+#include "ncrypt.h"
 #include "options.h"
 #include "pager.h"
 #include "protos.h"
@@ -109,11 +110,9 @@ struct CryptEntry
   struct CryptKeyinfo *key;
 };
 
-
 static struct crypt_cache *id_defaults = NULL;
 static gpgme_key_t signature_key = NULL;
 static char *current_sender = NULL;
-
 
 /*
  * General helper functions.
@@ -142,7 +141,6 @@ static int digit_or_letter(const unsigned char *s)
   return ((*s >= '0' && *s < '9') || (*s >= 'A' && *s <= 'Z') || (*s >= 'a' && *s <= 'z'));
 }
 
-
 /* Print the utf-8 encoded string BUF of length LEN bytes to stream
    FP. Convert the character set. */
 static void print_utf8(FILE *fp, const char *buf, size_t len)
@@ -160,7 +158,6 @@ static void print_utf8(FILE *fp, const char *buf, size_t len)
   fputs(tstr, fp);
   FREE(&tstr);
 }
-
 
 /*
  * Key management.
@@ -376,7 +373,6 @@ static int crypt_id_matches_addr(struct Address *addr, struct Address *u_addr, s
 
   return rv;
 }
-
 
 /*
  * GPGME convenient functions.
@@ -605,7 +601,6 @@ static char *data_object_to_tempfile(gpgme_data_t data, char *tempf, FILE **ret_
   return safe_strdup(tempf);
 }
 
-
 static void free_recipient_set(gpgme_key_t **p_rset)
 {
   gpgme_key_t *rset, k;
@@ -626,7 +621,6 @@ static void free_recipient_set(gpgme_key_t **p_rset)
 
   FREE(p_rset);
 }
-
 
 /* Create a GpgmeRecipientSet from the keys in the string KEYLIST.
    The keys must be space delimited. */
@@ -695,7 +689,6 @@ static gpgme_key_t *create_recipient_set(const char *keylist, gpgme_protocol_t p
 
   return rset;
 }
-
 
 /* Make sure that the correct signer is set. Returns 0 on success. */
 static int set_signer(gpgme_ctx_t ctx, int for_smime)
@@ -989,7 +982,6 @@ static struct Body *sign_message(struct Body *a, int use_smime)
   return a;
 }
 
-
 struct Body *pgp_gpgme_sign_message(struct Body *a)
 {
   return sign_message(a, 0);
@@ -1111,7 +1103,6 @@ struct Body *smime_gpgme_build_smime_entity(struct Body *a, char *keylist)
 
   return t;
 }
-
 
 /*
  * Implementation of `verify_one'.
@@ -1241,7 +1232,6 @@ static int show_sig_summary(unsigned long sum, gpgme_ctx_t ctx, gpgme_key_t key,
 
   return severe;
 }
-
 
 static void show_fingerprint(gpgme_key_t key, struct State *state)
 {
@@ -1877,7 +1867,6 @@ bail:
   return rv;
 }
 
-
 /* Decrypt a S/MIME message in FPIN and B and return a new body and
    the stream in CUR and FPOUT.  Returns 0 on success. */
 int smime_gpgme_decrypt_mime(FILE *fpin, FILE **fpout, struct Body *b, struct Body **cur)
@@ -2249,7 +2238,6 @@ void pgp_gpgme_invoke_import(const char *fname)
   safe_fclose(&in);
   safe_fclose(&out);
 }
-
 
 /*
  * Implementation of `application_handler'.
@@ -2715,7 +2703,6 @@ int smime_gpgme_application_handler(struct Body *a, struct State *s)
   return rc;
 }
 
-
 /*
  * Format an entry on the CRYPT key selection menu.
  *
@@ -2960,7 +2947,6 @@ static int crypt_compare_address(const void *a, const void *b)
                                          _crypt_compare_address(a, b));
 }
 
-
 /* Compare two key IDs and the addresses to be used for sorting. */
 static int _crypt_compare_keyid(const void *a, const void *b)
 {
@@ -3105,7 +3091,6 @@ static void print_dn_parts(FILE *fp, struct dn_array_s *dn)
     fputs(")", fp);
 }
 
-
 /* Parse an RDN; this is a helper to parse_dn(). */
 static const char *parse_dn_part(struct dn_array_s *array, const char *string)
 {
@@ -3192,7 +3177,6 @@ static const char *parse_dn_part(struct dn_array_s *array, const char *string)
   return s;
 }
 
-
 /* Parse a DN and return an array-ized one.  This is not a validating
    parser and it does not support any old-stylish syntax; gpgme is
    expected to return only rfc2253 compatible strings. */
@@ -3251,7 +3235,6 @@ failure:
   FREE(&array);
   return NULL;
 }
-
 
 /* Print a nice representation of the USERID and make sure it is
    displayed in a proper way, which does mean to reorder some parts
@@ -3325,7 +3308,6 @@ static unsigned int key_check_cap(gpgme_key_t key, key_cap_t cap)
 
   return ret;
 }
-
 
 /* Print verbose information about a key or certificate to FP. */
 static void print_key_info(gpgme_key_t key, FILE *fp)
@@ -3559,7 +3541,6 @@ static void print_key_info(gpgme_key_t key, FILE *fp)
   }
 }
 
-
 /* Show detailed information about the selected key */
 static void verify_key(struct CryptKeyinfo *key)
 {
@@ -3628,7 +3609,6 @@ leave:
 /*
  * Implementation of `findkeys'.
  */
-
 
 /* Convert List into a pattern string suitable to be passed to GPGME.
    We need to convert spaces in an item into a '+' and '%' into
@@ -4199,7 +4179,6 @@ static struct CryptKeyinfo *crypt_getkeybyaddr(struct Address *a, short abilitie
   return k;
 }
 
-
 static struct CryptKeyinfo *crypt_getkeybystr(char *p, short abilities, unsigned int app, int *forced_valid)
 {
   struct List *hints = NULL;
@@ -4293,7 +4272,6 @@ static struct CryptKeyinfo *crypt_ask_for_key(char *tag, char *whatfor, short ab
         break;
       }
   }
-
 
   for (;;)
   {
@@ -4423,7 +4401,6 @@ static char *find_keys(struct Address *adrlist, unsigned int app, int oppenc_mod
         mutt_free_list(&crypt_hook_list);
         return NULL;
       }
-
 
       keyID = crypt_fpr_or_lkeyid(k_info);
 

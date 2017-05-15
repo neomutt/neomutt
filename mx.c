@@ -43,7 +43,7 @@
 #include "keymap_defs.h"
 #include "lib.h"
 #include "mailbox.h"
-#include "mutt_crypt.h"
+#include "ncrypt/ncrypt.h"
 #include "options.h"
 #include "pattern.h"
 #include "protos.h"

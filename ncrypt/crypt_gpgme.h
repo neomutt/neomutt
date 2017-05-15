@@ -15,8 +15,8 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _MUTT_CRYPT_GPGME_H
-#define _MUTT_CRYPT_GPGME_H 1
+#ifndef _NCRYPT_CRYPT_GPGME_H
+#define _NCRYPT_CRYPT_GPGME_H
 
 #include <stdio.h>
 
@@ -59,4 +59,4 @@ int smime_gpgme_verify_sender(struct Header *h);
 
 void mutt_gpgme_set_sender(const char *sender);
 
-#endif /* _MUTT_CRYPT_GPGME_H */
+#endif /* _NCRYPT_CRYPT_GPGME_H */

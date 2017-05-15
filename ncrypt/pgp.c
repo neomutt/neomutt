@@ -41,18 +41,22 @@
 #include "ascii.h"
 #include "body.h"
 #include "charset.h"
+#include "crypt.h"
 #include "filter.h"
 #include "globals.h"
 #include "header.h"
 #include "lib.h"
 #include "list.h"
 #include "mime.h"
-#include "mutt_crypt.h"
 #include "mutt_curses.h"
 #include "mutt_regex.h"
+#include "ncrypt.h"
 #include "options.h"
+#include "pgpinvoke.h"
 #include "pgplib.h"
+#include "pgpmicalg.h"
 #include "protos.h"
+#include "cryptglue.h"
 #include "rfc822.h"
 #include "state.h"
 
@@ -168,7 +172,6 @@ char *pgp_fpr_or_lkeyid(struct PgpKeyInfo *k)
  * Routines for handing PGP input.
  */
 
-
 /* Copy PGP output messages and look for signs of a good signature */
 static int pgp_copy_checksig(FILE *fpin, FILE *fpout)
 {
@@ -244,7 +247,6 @@ static int pgp_check_decryption_okay(FILE *fpin)
   return rv;
 }
 
-
 /*
  * Copy a clearsigned message, and strip the signature and PGP's
  * dash-escaping.
@@ -304,7 +306,6 @@ static void pgp_copy_clearsigned(FILE *fpin, struct State *s, char *charset)
 
   fgetconv_close(&fc);
 }
-
 
 /* Support for the Application/PGP Content Type. */
 int pgp_application_pgp_handler(struct Body *m, struct State *s)
@@ -678,7 +679,6 @@ int pgp_check_traditional(FILE *fp, struct Body *b, int tagged_only)
   return rv;
 }
 
-
 int pgp_verify_one(struct Body *sigbdy, struct State *s, const char *tempfile)
 {
   char sigfile[_POSIX_PATH_MAX], pgperrfile[_POSIX_PATH_MAX];
@@ -715,7 +715,6 @@ int pgp_verify_one(struct Body *sigbdy, struct State *s, const char *tempfile)
     if (pgp_copy_checksig(pgpout, s->fpout) >= 0)
       badsig = 0;
 
-
     safe_fclose(&pgpout);
     fflush(pgperr);
     rewind(pgperr);
@@ -740,7 +739,6 @@ int pgp_verify_one(struct Body *sigbdy, struct State *s, const char *tempfile)
 
   return badsig;
 }
-
 
 /* Extract pgp public keys from messages or attachments */
 static void pgp_extract_keys_from_attachment(FILE *fp, struct Body *top)
@@ -1066,7 +1064,6 @@ int pgp_encrypted_handler(struct Body *a, struct State *s)
 /* ----------------------------------------------------------------------------
  * Routines for sending PGP/MIME messages.
  */
-
 
 struct Body *pgp_sign_message(struct Body *a)
 {

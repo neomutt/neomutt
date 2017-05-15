@@ -179,8 +179,7 @@ AS_IF([test x$use_gpgme = "xyes"], [
 		AM_PATH_GPGME(1.1.0, [
 			AC_DEFINE(CRYPT_BACKEND_GPGME, 1, [GPGME support])
 			AC_CHECK_FUNCS([gpgme_op_export_keys])
-			MUTT_LIB_OBJECTS="$MUTT_LIB_OBJECTS crypt_gpgme.o \
-			crypt_mod_pgp_gpgme.o crypt_mod_smime_gpgme.o"
+			build_ncrypt_gpgme="yes"
 		], [gpgme_found=no])
 	], [gpgme_found=no])
 ])
@@ -192,15 +191,27 @@ dnl --enable-pgp
 AS_IF([test x$use_pgp != "xno"], [
 	AC_DEFINE(CRYPT_BACKEND_CLASSIC_PGP, 1, [Define if you want classic PGP Support.])
 	PGPAUX_TARGET="pgpring\$(EXEEXT) pgpewrap\$(EXEEXT)"
-	MUTT_LIB_OBJECTS="$MUTT_LIB_OBJECTS pgp.o pgpinvoke.o pgpkey.o pgplib.o gnupgparse.o pgpmicalg.o pgppacket.o crypt_mod_pgp_classic.o"
+	build_ncrypt_pgp="yes"
 ])
 
 dnl --enable-smime
 AS_IF([test x$use_smime != "xno"], [
 	AC_DEFINE(CRYPT_BACKEND_CLASSIC_SMIME, 1, [Define if you want classic S/MIME support.])
-	MUTT_LIB_OBJECTS="$MUTT_LIB_OBJECTS smime.o crypt_mod_smime_classic.o"
 	SMIMEAUX_TARGET="smime_keys"
+	build_ncrypt_smime="yes"
 ])
+
+dnl Ideally, these two defines should be dependent on :
+dnl     $build_ncrypt_gpgme, $build_ncrypt_pgp, $build_ncrypt_smime
+dnl but there are two many places in the code that still reference the crypto code.
+NCRYPT_LIBS="-Lncrypt -lncrypt"
+NCRYPT_DEPS="ncrypt/libncrypt.a"
+AC_SUBST(NCRYPT_LIBS)
+AC_SUBST(NCRYPT_DEPS)
+
+AM_CONDITIONAL(BUILD_NCRYPT_GPGME, test "x$build_ncrypt_gpgme" = "xyes")
+AM_CONDITIONAL(BUILD_NCRYPT_PGP,   test "x$build_ncrypt_pgp"   = "xyes")
+AM_CONDITIONAL(BUILD_NCRYPT_SMIME, test "x$build_ncrypt_smime" = "xyes")
 
 AC_DEFINE(USE_COMPRESSED, 1, [Define to enable compressed folders support.])
 AC_DEFINE(USE_IMAP, 1, [Define if you want support for the IMAP protocol.])
@@ -999,7 +1010,7 @@ if test x$full_doc != xno; then
 fi
 
 AC_CONFIG_FILES(Makefile contrib/Makefile doc/Makefile imap/Makefile
-	m4/Makefile po/Makefile.in hcache/Makefile doc/instdoc.sh)
+	m4/Makefile po/Makefile.in hcache/Makefile doc/instdoc.sh ncrypt/Makefile)
 AC_OUTPUT
 
 AC_MSG_NOTICE([Summary of build options:

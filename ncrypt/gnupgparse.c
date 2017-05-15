@@ -40,9 +40,10 @@
 #include "globals.h"
 #include "lib.h"
 #include "mime.h"
-#include "mutt_crypt.h"
+#include "ncrypt.h"
 #include "options.h"
-#include "pgp.h"
+#include "pgpinvoke.h"
+#include "pgpkey.h"
 #include "pgplib.h"
 #include "protos.h"
 
