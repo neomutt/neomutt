@@ -201,14 +201,14 @@ WHERE struct List *MailtoAllow INITVAL(0);
 WHERE struct List *MimeLookupList INITVAL(0);
 WHERE struct List *UnIgnore INITVAL(0);
 
-WHERE RX_LIST *Alternates INITVAL(0);
-WHERE RX_LIST *UnAlternates INITVAL(0);
-WHERE RX_LIST *MailLists INITVAL(0);
-WHERE RX_LIST *UnMailLists INITVAL(0);
-WHERE RX_LIST *SubscribedLists INITVAL(0);
-WHERE RX_LIST *UnSubscribedLists INITVAL(0);
+WHERE struct RxList *Alternates INITVAL(0);
+WHERE struct RxList *UnAlternates INITVAL(0);
+WHERE struct RxList *MailLists INITVAL(0);
+WHERE struct RxList *UnMailLists INITVAL(0);
+WHERE struct RxList *SubscribedLists INITVAL(0);
+WHERE struct RxList *UnSubscribedLists INITVAL(0);
 WHERE struct ReplaceList *SpamList INITVAL(0);
-WHERE RX_LIST *NoSpamList INITVAL(0);
+WHERE struct RxList *NoSpamList INITVAL(0);
 WHERE struct ReplaceList *SubjectRxList INITVAL(0);
 
 

@@ -554,14 +554,14 @@ static void add_to_list(struct List **list, const char *str)
   }
 }
 
-static RX_LIST *new_rx_list(void)
+static struct RxList *new_rx_list(void)
 {
-  return safe_calloc(1, sizeof(RX_LIST));
+  return safe_calloc(1, sizeof(struct RxList));
 }
 
-int mutt_add_to_rx_list(RX_LIST **list, const char *s, int flags, struct Buffer *err)
+int mutt_add_to_rx_list(struct RxList **list, const char *s, int flags, struct Buffer *err)
 {
-  RX_LIST *t = NULL, *last = NULL;
+  struct RxList *t = NULL, *last = NULL;
   struct Regex *rx = NULL;
 
   if (!s || !*s)

@@ -303,9 +303,9 @@ const char *mutt_front_list(struct List *head)
   return head->data;
 }
 
-int mutt_remove_from_rx_list(RX_LIST **l, const char *str)
+int mutt_remove_from_rx_list(struct RxList **l, const char *str)
 {
-  RX_LIST *p = NULL, *last = NULL;
+  struct RxList *p = NULL, *last = NULL;
   int rv = -1;
 
   if (mutt_strcmp("*", str) == 0)
@@ -2026,9 +2026,9 @@ void mutt_free_regexp(struct Regex **pp)
   FREE(pp);
 }
 
-void mutt_free_rx_list(RX_LIST **list)
+void mutt_free_rx_list(struct RxList **list)
 {
-  RX_LIST *p = NULL;
+  struct RxList *p = NULL;
 
   if (!list)
     return;
@@ -2057,7 +2057,7 @@ void mutt_free_replace_list(struct ReplaceList **list)
   }
 }
 
-bool mutt_match_rx_list(const char *s, RX_LIST *l)
+bool mutt_match_rx_list(const char *s, struct RxList *l)
 {
   if (!s)
     return 0;

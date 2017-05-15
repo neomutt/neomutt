@@ -601,11 +601,11 @@ struct List
   struct List *next;
 };
 
-typedef struct rx_list_t
+struct RxList
 {
   struct Regex *rx;
-  struct rx_list_t *next;
-} RX_LIST;
+  struct RxList *next;
+};
 
 struct ReplaceList
 {
@@ -621,7 +621,7 @@ static inline struct List *mutt_new_list(void)
 }
 
 void mutt_free_list(struct List **list);
-void mutt_free_rx_list(RX_LIST **list);
+void mutt_free_rx_list(struct RxList **list);
 void mutt_free_replace_list(struct ReplaceList **list);
 struct List *mutt_copy_list(struct List *p);
 int mutt_matches_ignore(const char *s);
@@ -631,7 +631,7 @@ bool mutt_matches_list(const char *s, struct List *t);
 struct List *mutt_add_list(struct List *head, const char *data);
 struct List *mutt_add_list_n(struct List *head, const void *data, size_t len);
 struct List *mutt_find_list(struct List *l, const char *data);
-int mutt_remove_from_rx_list(RX_LIST **l, const char *str);
+int mutt_remove_from_rx_list(struct RxList **l, const char *str);
 
 /* handle stack */
 void mutt_push_list(struct List **head, const char *data);
@@ -914,7 +914,7 @@ typedef enum {
 struct Group
 {
   struct Address *as;
-  RX_LIST *rs;
+  struct RxList *rs;
   char *name;
 };
 
