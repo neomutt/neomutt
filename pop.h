@@ -93,7 +93,7 @@ void pop_apop_timestamp(POP_DATA *pop_data, char *buf);
 
 /* pop_lib.c */
 #define pop_query(A, B, C) pop_query_d(A, B, C, NULL)
-int pop_parse_path(const char *path, ACCOUNT *acct);
+int pop_parse_path(const char *path, struct Account *acct);
 int pop_connect(POP_DATA *pop_data);
 int pop_open_connection(POP_DATA *pop_data);
 int pop_query_d(POP_DATA *pop_data, char *buf, size_t buflen, char *msg);

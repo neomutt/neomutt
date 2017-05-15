@@ -315,10 +315,10 @@ static int imap_check_capabilities(IMAP_DATA *idata)
 
 /* imap_conn_find: Find an open IMAP connection matching account, or open
  *   a new one if none can be found. */
-IMAP_DATA *imap_conn_find(const ACCOUNT *account, int flags)
+IMAP_DATA *imap_conn_find(const struct Account *account, int flags)
 {
   CONNECTION *conn = NULL;
-  ACCOUNT *creds = NULL;
+  struct Account *creds = NULL;
   IMAP_DATA *idata = NULL;
   int new = 0;
 
@@ -327,7 +327,7 @@ IMAP_DATA *imap_conn_find(const ACCOUNT *account, int flags)
     if (!creds)
       creds = &conn->account;
     else
-      memcpy(&conn->account, creds, sizeof(ACCOUNT));
+      memcpy(&conn->account, creds, sizeof(struct Account));
 
     idata = conn->data;
     if (flags & MUTT_IMAP_CONN_NONEW)

@@ -37,7 +37,7 @@ typedef struct body_cache body_cache_t;
  *     mailboxes or hierarchies)
  * Returns NULL on failure.
  */
-body_cache_t *mutt_bcache_open(ACCOUNT *account, const char *mailbox);
+body_cache_t *mutt_bcache_open(struct Account *account, const char *mailbox);
 
 /* free all memory of bcache and finally FREE() it, too */
 void mutt_bcache_close(body_cache_t **bcache);

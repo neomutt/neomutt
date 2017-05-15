@@ -254,14 +254,14 @@ static CONNECTION *socket_new_conn(void)
  *   connections after the given connection (allows higher level socket code
  *   to make more fine-grained searches than account info - eg in IMAP we may
  *   wish to find a connection which is not in IMAP_SELECTED state) */
-CONNECTION *mutt_conn_find(const CONNECTION *start, const ACCOUNT *account)
+CONNECTION *mutt_conn_find(const CONNECTION *start, const struct Account *account)
 {
   CONNECTION *conn = NULL;
   ciss_url_t url;
   char hook[LONG_STRING];
 
   /* account isn't actually modified, since url isn't either */
-  mutt_account_tourl((ACCOUNT *) account, &url);
+  mutt_account_tourl((struct Account *) account, &url);
   url.path = NULL;
   url_ciss_tostring(&url, hook, sizeof(hook), 0);
   mutt_account_hook(hook);
@@ -275,7 +275,7 @@ CONNECTION *mutt_conn_find(const CONNECTION *start, const ACCOUNT *account)
   }
 
   conn = socket_new_conn();
-  memcpy(&conn->account, account, sizeof(ACCOUNT));
+  memcpy(&conn->account, account, sizeof(struct Account));
 
   conn->next = Connections;
   Connections = conn;

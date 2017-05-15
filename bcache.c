@@ -36,7 +36,7 @@ struct body_cache
   size_t pathlen;
 };
 
-static int bcache_path(ACCOUNT *account, const char *mailbox, char *dst, size_t dstlen)
+static int bcache_path(struct Account *account, const char *mailbox, char *dst, size_t dstlen)
 {
   char host[STRING];
   char path[_POSIX_PATH_MAX];
@@ -79,7 +79,7 @@ static int bcache_path(ACCOUNT *account, const char *mailbox, char *dst, size_t 
   return 0;
 }
 
-body_cache_t *mutt_bcache_open(ACCOUNT *account, const char *mailbox)
+body_cache_t *mutt_bcache_open(struct Account *account, const char *mailbox)
 {
   struct body_cache *bcache = NULL;
 

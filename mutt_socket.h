@@ -29,7 +29,7 @@
 
 typedef struct _connection
 {
-  ACCOUNT account;
+  struct Account account;
   /* security strength factor, in bits */
   unsigned int ssf;
   void *data;
@@ -63,7 +63,7 @@ int mutt_socket_write_d(CONNECTION *conn, const char *buf, int len, int dbg);
 /* stupid hack for imap_logout_all */
 CONNECTION *mutt_socket_head(void);
 void mutt_socket_free(CONNECTION *conn);
-CONNECTION *mutt_conn_find(const CONNECTION *start, const ACCOUNT *account);
+CONNECTION *mutt_conn_find(const CONNECTION *start, const struct Account *account);
 
 int raw_socket_read(CONNECTION *conn, char *buf, size_t len);
 int raw_socket_write(CONNECTION *conn, const char *buf, size_t count);

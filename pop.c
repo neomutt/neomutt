@@ -396,7 +396,7 @@ static int pop_open_mailbox(CONTEXT *ctx)
   int ret;
   char buf[LONG_STRING];
   CONNECTION *conn = NULL;
-  ACCOUNT acct;
+  struct Account acct;
   POP_DATA *pop_data = NULL;
   ciss_url_t url;
 
@@ -780,7 +780,7 @@ void pop_fetch_mail(void)
   CONNECTION *conn = NULL;
   CONTEXT ctx;
   MESSAGE *msg = NULL;
-  ACCOUNT acct;
+  struct Account acct;
   POP_DATA *pop_data = NULL;
 
   if (!PopHost)

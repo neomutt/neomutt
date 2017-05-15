@@ -317,7 +317,7 @@ static const pop_auth_t pop_authenticators[] = {
 */
 int pop_authenticate(POP_DATA *pop_data)
 {
-  ACCOUNT *acct = &pop_data->conn->account;
+  struct Account *acct = &pop_data->conn->account;
   const pop_auth_t *authenticator = NULL;
   char *methods = NULL;
   char *comma = NULL;

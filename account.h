@@ -39,7 +39,7 @@ enum
 #define MUTT_ACCT_PASS (1 << 3)
 #define MUTT_ACCT_SSL (1 << 4)
 
-typedef struct
+struct Account
 {
   char user[64];
   char login[64];
@@ -48,14 +48,14 @@ typedef struct
   unsigned short port;
   unsigned char type;
   unsigned char flags;
-} ACCOUNT;
+};
 
-int mutt_account_match(const ACCOUNT *a1, const ACCOUNT *m2);
-int mutt_account_fromurl(ACCOUNT *account, ciss_url_t *url);
-void mutt_account_tourl(ACCOUNT *account, ciss_url_t *url);
-int mutt_account_getuser(ACCOUNT *account);
-int mutt_account_getlogin(ACCOUNT *account);
-int mutt_account_getpass(ACCOUNT *account);
-void mutt_account_unsetpass(ACCOUNT *account);
+int mutt_account_match(const struct Account *a1, const struct Account *m2);
+int mutt_account_fromurl(struct Account *account, ciss_url_t *url);
+void mutt_account_tourl(struct Account *account, ciss_url_t *url);
+int mutt_account_getuser(struct Account *account);
+int mutt_account_getlogin(struct Account *account);
+int mutt_account_getpass(struct Account *account);
+void mutt_account_unsetpass(struct Account *account);
 
 #endif /* _MUTT_ACCOUNT_H */

@@ -238,7 +238,7 @@ int imap_exec_msgset(IMAP_DATA *idata, const char *pre, const char *post,
                      int flag, int changed, int invert);
 int imap_open_connection(IMAP_DATA *idata);
 void imap_close_connection(IMAP_DATA *idata);
-IMAP_DATA *imap_conn_find(const ACCOUNT *account, int flags);
+IMAP_DATA *imap_conn_find(const struct Account *account, int flags);
 int imap_read_literal(FILE *fp, IMAP_DATA *idata, long bytes, progress_t *pbar);
 void imap_expunge_mailbox(IMAP_DATA *idata);
 void imap_logout(IMAP_DATA **idata);
