@@ -171,7 +171,7 @@ static int fetch_uidl(char *line, void *data)
   return 0;
 }
 
-static int msg_cache_check(const char *id, body_cache_t *bcache, void *data)
+static int msg_cache_check(const char *id, struct BodyCache *bcache, void *data)
 {
   CONTEXT *ctx = NULL;
   POP_DATA *pop_data = NULL;

@@ -106,7 +106,7 @@ typedef struct
   NEWSRC_ENTRY *newsrc_ent;
   NNTP_SERVER *nserv;
   NNTP_ACACHE acache[NNTP_ACACHE_LEN];
-  body_cache_t *bcache;
+  struct BodyCache *bcache;
 } NNTP_DATA;
 
 typedef struct

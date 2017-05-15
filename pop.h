@@ -73,7 +73,7 @@ typedef struct
   time_t login_delay; /* minimal login delay  capability */
   char *auth_list;    /* list of auth mechanisms */
   char *timestamp;
-  body_cache_t *bcache; /* body cache */
+  struct BodyCache *bcache; /* body cache */
   char err_msg[POP_CMD_RESPONSE];
   POP_CACHE cache[POP_CACHE_LEN];
 } POP_DATA;

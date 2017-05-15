@@ -28,9 +28,9 @@
 #include "lib.h"
 #include "url.h"
 
-static int mutt_bcache_move(body_cache_t *bcache, const char *id, const char *newid);
+static int mutt_bcache_move(struct BodyCache *bcache, const char *id, const char *newid);
 
-struct body_cache
+struct BodyCache
 {
   char path[_POSIX_PATH_MAX];
   size_t pathlen;
@@ -79,14 +79,14 @@ static int bcache_path(struct Account *account, const char *mailbox, char *dst, 
   return 0;
 }
 
-body_cache_t *mutt_bcache_open(struct Account *account, const char *mailbox)
+struct BodyCache *mutt_bcache_open(struct Account *account, const char *mailbox)
 {
-  struct body_cache *bcache = NULL;
+  struct BodyCache *bcache = NULL;
 
   if (!account)
     goto bail;
 
-  bcache = safe_calloc(1, sizeof(struct body_cache));
+  bcache = safe_calloc(1, sizeof(struct BodyCache));
   if (bcache_path(account, mailbox, bcache->path, sizeof(bcache->path)) < 0)
     goto bail;
   bcache->pathlen = mutt_strlen(bcache->path);
@@ -99,14 +99,14 @@ bail:
   return NULL;
 }
 
-void mutt_bcache_close(body_cache_t **bcache)
+void mutt_bcache_close(struct BodyCache **bcache)
 {
   if (!bcache || !*bcache)
     return;
   FREE(bcache);
 }
 
-FILE *mutt_bcache_get(body_cache_t *bcache, const char *id)
+FILE *mutt_bcache_get(struct BodyCache *bcache, const char *id)
 {
   char path[_POSIX_PATH_MAX];
   FILE *fp = NULL;
@@ -125,7 +125,7 @@ FILE *mutt_bcache_get(body_cache_t *bcache, const char *id)
   return fp;
 }
 
-FILE *mutt_bcache_put(body_cache_t *bcache, const char *id, int tmp)
+FILE *mutt_bcache_put(struct BodyCache *bcache, const char *id, int tmp)
 {
   char path[_POSIX_PATH_MAX];
   struct stat sb;
@@ -156,7 +156,7 @@ FILE *mutt_bcache_put(body_cache_t *bcache, const char *id, int tmp)
   return safe_fopen(path, "w+");
 }
 
-int mutt_bcache_commit(body_cache_t *bcache, const char *id)
+int mutt_bcache_commit(struct BodyCache *bcache, const char *id)
 {
   char tmpid[_POSIX_PATH_MAX];
 
@@ -165,7 +165,7 @@ int mutt_bcache_commit(body_cache_t *bcache, const char *id)
   return mutt_bcache_move(bcache, tmpid, id);
 }
 
-static int mutt_bcache_move(body_cache_t *bcache, const char *id, const char *newid)
+static int mutt_bcache_move(struct BodyCache *bcache, const char *id, const char *newid)
 {
   char path[_POSIX_PATH_MAX];
   char newpath[_POSIX_PATH_MAX];
@@ -181,7 +181,7 @@ static int mutt_bcache_move(body_cache_t *bcache, const char *id, const char *ne
   return rename(path, newpath);
 }
 
-int mutt_bcache_del(body_cache_t *bcache, const char *id)
+int mutt_bcache_del(struct BodyCache *bcache, const char *id)
 {
   char path[_POSIX_PATH_MAX];
 
@@ -197,7 +197,7 @@ int mutt_bcache_del(body_cache_t *bcache, const char *id)
   return unlink(path);
 }
 
-int mutt_bcache_exists(body_cache_t *bcache, const char *id)
+int mutt_bcache_exists(struct BodyCache *bcache, const char *id)
 {
   char path[_POSIX_PATH_MAX];
   struct stat st;
@@ -220,8 +220,8 @@ int mutt_bcache_exists(body_cache_t *bcache, const char *id)
   return rc;
 }
 
-int mutt_bcache_list(body_cache_t *bcache,
-                     int (*want_id)(const char *id, body_cache_t *bcache, void *data),
+int mutt_bcache_list(struct BodyCache *bcache,
+                     int (*want_id)(const char *id, struct BodyCache *bcache, void *data),
                      void *data)
 {
   DIR *d = NULL;

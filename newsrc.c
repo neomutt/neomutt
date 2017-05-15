@@ -690,7 +690,7 @@ void nntp_hcache_update(NNTP_DATA *nntp_data, header_cache_t *hc)
 #endif
 
 /* Remove bcache file */
-static int nntp_bcache_delete(const char *id, body_cache_t *bcache, void *data)
+static int nntp_bcache_delete(const char *id, struct BodyCache *bcache, void *data)
 {
   NNTP_DATA *nntp_data = data;
   anum_t anum;

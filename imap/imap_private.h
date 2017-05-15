@@ -217,7 +217,7 @@ typedef struct
   HASH *uid_hash;
   unsigned int uid_validity;
   unsigned int uidnext;
-  body_cache_t *bcache;
+  struct BodyCache *bcache;
 
   /* all folder flags - system flags AND keywords */
   LIST *flags;

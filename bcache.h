@@ -25,8 +25,7 @@
  * support for body cache
  */
 
-struct body_cache;
-typedef struct body_cache body_cache_t;
+struct BodyCache;
 
 /*
  * Parameters:
@@ -37,10 +36,10 @@ typedef struct body_cache body_cache_t;
  *     mailboxes or hierarchies)
  * Returns NULL on failure.
  */
-body_cache_t *mutt_bcache_open(struct Account *account, const char *mailbox);
+struct BodyCache *mutt_bcache_open(struct Account *account, const char *mailbox);
 
 /* free all memory of bcache and finally FREE() it, too */
-void mutt_bcache_close(body_cache_t **bcache);
+void mutt_bcache_close(struct BodyCache **bcache);
 
 /*
  * Parameters:
@@ -49,13 +48,13 @@ void mutt_bcache_close(body_cache_t **bcache);
  * These return NULL/-1 on failure and FILE pointer/0 on success.
  */
 
-FILE *mutt_bcache_get(body_cache_t *bcache, const char *id);
+FILE *mutt_bcache_get(struct BodyCache *bcache, const char *id);
 /* tmp: the returned FILE* is in a temporary location.
  *      if set, use mutt_bcache_commit to put it into place */
-FILE *mutt_bcache_put(body_cache_t *bcache, const char *id, int tmp);
-int mutt_bcache_commit(body_cache_t *bcache, const char *id);
-int mutt_bcache_del(body_cache_t *bcache, const char *id);
-int mutt_bcache_exists(body_cache_t *bcache, const char *id);
+FILE *mutt_bcache_put(struct BodyCache *bcache, const char *id, int tmp);
+int mutt_bcache_commit(struct BodyCache *bcache, const char *id);
+int mutt_bcache_del(struct BodyCache *bcache, const char *id);
+int mutt_bcache_exists(struct BodyCache *bcache, const char *id);
 
 /*
  * This more or less "examines" the cache and calls a function with
@@ -72,8 +71,8 @@ int mutt_bcache_exists(body_cache_t *bcache, const char *id);
  * This returns -1 on failure and the count (>=0) of items processed
  * otherwise.
  */
-int mutt_bcache_list(body_cache_t *bcache,
-                     int (*want_id)(const char *id, body_cache_t *bcache, void *data),
+int mutt_bcache_list(struct BodyCache *bcache,
+                     int (*want_id)(const char *id, struct BodyCache *bcache, void *data),
                      void *data);
 
 #endif /* _MUTT_BCACHE_H */

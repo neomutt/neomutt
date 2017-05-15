@@ -47,7 +47,7 @@ static void imap_update_context(IMAP_DATA *idata, int oldmsgcount)
   }
 }
 
-static body_cache_t *msg_cache_open(IMAP_DATA *idata)
+static struct BodyCache *msg_cache_open(IMAP_DATA *idata)
 {
   char mailbox[_POSIX_PATH_MAX];
 
@@ -96,7 +96,7 @@ static int msg_cache_commit(IMAP_DATA *idata, HEADER *h)
   return mutt_bcache_commit(idata->bcache, id);
 }
 
-static int msg_cache_clean_cb(const char *id, body_cache_t *bcache, void *data)
+static int msg_cache_clean_cb(const char *id, struct BodyCache *bcache, void *data)
 {
   unsigned int uv, uid, n;
   IMAP_DATA *idata = data;
