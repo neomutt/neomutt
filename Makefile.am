@@ -75,7 +75,7 @@ EXTRA_mutt_SOURCES = browser.h crypt_gpgme.c crypt_mod_pgp_classic.c \
 
 EXTRA_DIST = account.h ascii.h attach.h bcache.h browser.h buffer.h buffy.h \
 	ChangeLog ChangeLog.neomutt ChangeLog.nntp charset.h compress.h \
-	config.rpath copy.h COPYRIGHT crypt_gpgme.h crypthash.h depcomp \
+	config.rpath copy.h COPYRIGHT crypt_gpgme.h depcomp \
 	dotlock.h extlib.c filter.h functions.h gen_defs globals.h group.h \
 	hash.h history.h init.h keymap.h lib.h LICENSE.md mailbox.h mapping.h \
 	mbyte.h md5.h mime.h mime.types mutt.h mutt_commands.h mutt_crypt.h \
