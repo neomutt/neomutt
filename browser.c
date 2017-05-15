@@ -559,7 +559,7 @@ static const char *newsgroup_format_str(char *dest, size_t destlen, size_t col, 
 }
 #endif /* USE_NNTP */
 
-static void add_folder(MUTTMENU *m, struct browser_state *state, const char *name,
+static void add_folder(struct Menu *m, struct browser_state *state, const char *name,
                        const char *desc, const struct stat *s, struct Buffy *b, void *data)
 {
   if (state->entrylen == state->entrymax)
@@ -605,7 +605,7 @@ static void add_folder(MUTTMENU *m, struct browser_state *state, const char *nam
   (state->entrylen)++;
 }
 
-static void init_state(struct browser_state *state, MUTTMENU *menu)
+static void init_state(struct browser_state *state, struct Menu *menu)
 {
   state->entrylen = 0;
   state->entrymax = 256;
@@ -618,7 +618,7 @@ static void init_state(struct browser_state *state, MUTTMENU *menu)
 }
 
 /* get list of all files/newsgroups with mask */
-static int examine_directory(MUTTMENU *menu, struct browser_state *state,
+static int examine_directory(struct Menu *menu, struct browser_state *state,
                              char *d, const char *prefix)
 {
 #ifdef USE_NNTP
@@ -717,7 +717,7 @@ static int examine_directory(MUTTMENU *menu, struct browser_state *state,
 }
 
 #ifdef USE_NOTMUCH
-static int examine_vfolders(MUTTMENU *menu, struct browser_state *state)
+static int examine_vfolders(struct Menu *menu, struct browser_state *state)
 {
   struct Buffy *tmp = VirtIncoming;
 
@@ -742,7 +742,7 @@ static int examine_vfolders(MUTTMENU *menu, struct browser_state *state)
 #endif
 
 /* get list of mailboxes/subscribed newsgroups */
-static int examine_mailboxes(MUTTMENU *menu, struct browser_state *state)
+static int examine_mailboxes(struct Menu *menu, struct browser_state *state)
 {
   struct stat s;
   char buffer[LONG_STRING];
@@ -835,7 +835,7 @@ static int examine_mailboxes(MUTTMENU *menu, struct browser_state *state)
   return 0;
 }
 
-static int select_file_search(MUTTMENU *menu, regex_t *re, int n)
+static int select_file_search(struct Menu *menu, regex_t *re, int n)
 {
 #ifdef USE_NNTP
   if (option(OPTNEWS))
@@ -845,13 +845,13 @@ static int select_file_search(MUTTMENU *menu, regex_t *re, int n)
 }
 
 #ifdef USE_NOTMUCH
-static int select_vfolder_search(MUTTMENU *menu, regex_t *re, int n)
+static int select_vfolder_search(struct Menu *menu, regex_t *re, int n)
 {
   return (regexec(re, ((struct folder_file *) menu->data)[n].desc, 0, NULL, 0));
 }
 #endif
 
-static void folder_entry(char *s, size_t slen, MUTTMENU *menu, int num)
+static void folder_entry(char *s, size_t slen, struct Menu *menu, int num)
 {
   FOLDER folder;
 
@@ -869,7 +869,7 @@ static void folder_entry(char *s, size_t slen, MUTTMENU *menu, int num)
 }
 
 #ifdef USE_NOTMUCH
-static void vfolder_entry(char *s, size_t slen, MUTTMENU *menu, int num)
+static void vfolder_entry(char *s, size_t slen, struct Menu *menu, int num)
 {
   FOLDER folder;
 
@@ -885,7 +885,7 @@ static void vfolder_entry(char *s, size_t slen, MUTTMENU *menu, int num)
  * This function takes a menu and a state and defines the current
  * entry that should be highlighted.
  */
-static void browser_highlight_default(struct browser_state *state, MUTTMENU *menu)
+static void browser_highlight_default(struct browser_state *state, struct Menu *menu)
 {
   menu->top = 0;
   /* Reset menu position to 1.
@@ -900,7 +900,7 @@ static void browser_highlight_default(struct browser_state *state, MUTTMENU *men
     menu->current = 0;
 }
 
-static void init_menu(struct browser_state *state, MUTTMENU *menu, char *title,
+static void init_menu(struct browser_state *state, struct Menu *menu, char *title,
                       size_t titlelen, int buffy)
 {
   char path[_POSIX_PATH_MAX];
@@ -987,7 +987,7 @@ static void init_menu(struct browser_state *state, MUTTMENU *menu, char *title,
   menu->redraw = REDRAW_FULL;
 }
 
-static int file_tag(MUTTMENU *menu, int n, int m)
+static int file_tag(struct Menu *menu, int n, int m)
 {
   struct folder_file *ff = &(((struct folder_file *) menu->data)[n]);
   if (S_ISDIR(ff->mode) || (S_ISLNK(ff->mode) && link_is_dir(LastDir, ff->name)))
@@ -1026,7 +1026,7 @@ void _mutt_select_file(char *f, size_t flen, int flags, char ***files, int *numf
   char helpstr[LONG_STRING];
   char title[STRING];
   struct browser_state state;
-  MUTTMENU *menu = NULL;
+  struct Menu *menu = NULL;
   struct stat st;
   int i, killPrefix = 0;
   int multiple = (flags & MUTT_SEL_MULTI) ? 1 : 0;

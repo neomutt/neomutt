@@ -266,7 +266,7 @@ static const char *pgp_entry_fmt(char *dest, size_t destlen, size_t col, int col
   return src;
 }
 
-static void pgp_entry(char *s, size_t l, MUTTMENU *menu, int num)
+static void pgp_entry(char *s, size_t l, struct Menu *menu, int num)
 {
   pgp_uid_t **KeyTable = (pgp_uid_t **) menu->data;
   pgp_entry_t entry;
@@ -424,7 +424,7 @@ static pgp_key_t pgp_select_key(pgp_key_t keys, struct Address *p, const char *s
 {
   int keymax;
   pgp_uid_t **KeyTable;
-  MUTTMENU *menu = NULL;
+  struct Menu *menu = NULL;
   int i, done = 0;
   char helpstr[LONG_STRING], buf[LONG_STRING], tmpbuf[STRING];
   char cmd[LONG_STRING], tempfile[_POSIX_PATH_MAX];

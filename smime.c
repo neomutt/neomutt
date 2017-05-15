@@ -336,7 +336,7 @@ static char *smime_key_flags(int flags)
 }
 
 
-static void smime_entry(char *s, size_t l, MUTTMENU *menu, int num)
+static void smime_entry(char *s, size_t l, struct Menu *menu, int num)
 {
   smime_key_t **Table = (smime_key_t **) menu->data;
   smime_key_t *this = Table[num];
@@ -379,7 +379,7 @@ static smime_key_t *smime_select_key(smime_key_t *keys, char *query)
   char helpstr[LONG_STRING];
   char buf[LONG_STRING];
   char title[256];
-  MUTTMENU *menu = NULL;
+  struct Menu *menu = NULL;
   char *s = "";
   int done = 0;
 

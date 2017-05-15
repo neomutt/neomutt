@@ -119,7 +119,7 @@ static struct mapping_t ComposeNewsHelp[] = {
 };
 #endif
 
-static void snd_entry(char *b, size_t blen, MUTTMENU *menu, int num)
+static void snd_entry(char *b, size_t blen, struct Menu *menu, int num)
 {
   mutt_FormatString(b, blen, 0, MuttIndexWindow->cols, NONULL(AttachFormat), mutt_attach_fmt,
                     (unsigned long) (((struct AttachPtr **) menu->data)[num]),
@@ -377,7 +377,7 @@ static void edit_address_list(int line, struct Address **addr)
   mutt_paddstr(W, buf);
 }
 
-static int delete_attachment(MUTTMENU *menu, short *idxlen, int x)
+static int delete_attachment(struct Menu *menu, short *idxlen, int x)
 {
   struct AttachPtr **idx = (struct AttachPtr **) menu->data;
   int y;
@@ -413,7 +413,7 @@ static int delete_attachment(MUTTMENU *menu, short *idxlen, int x)
   return 0;
 }
 
-static void update_idx(MUTTMENU *menu, struct AttachPtr **idx, short idxlen)
+static void update_idx(struct Menu *menu, struct AttachPtr **idx, short idxlen)
 {
   idx[idxlen]->level = (idxlen > 0) ? idx[idxlen - 1]->level : 0;
   if (idxlen)
@@ -433,9 +433,9 @@ typedef struct
 
 /* prototype for use below */
 static void compose_status_line(char *buf, size_t buflen, size_t col, int cols,
-                                MUTTMENU *menu, const char *p);
+                                struct Menu *menu, const char *p);
 
-static void compose_menu_redraw(MUTTMENU *menu)
+static void compose_menu_redraw(struct Menu *menu)
 {
   char buf[LONG_STRING];
   compose_redraw_data_t *rd = menu->redraw_data;
@@ -487,7 +487,7 @@ static void compose_menu_redraw(MUTTMENU *menu)
  * applied.
  *
  */
-static unsigned long cum_attachs_size(MUTTMENU *menu)
+static unsigned long cum_attachs_size(struct Menu *menu)
 {
   size_t s;
   unsigned short i;
@@ -540,7 +540,7 @@ static const char *compose_format_str(char *buf, size_t buflen, size_t col, int 
 {
   char fmt[SHORT_STRING], tmp[SHORT_STRING];
   int optional = (flags & MUTT_FORMAT_OPTIONAL);
-  MUTTMENU *menu = (MUTTMENU *) data;
+  struct Menu *menu = (struct Menu *) data;
 
   *buf = 0;
   switch (op)
@@ -584,7 +584,7 @@ static const char *compose_format_str(char *buf, size_t buflen, size_t col, int 
 }
 
 static void compose_status_line(char *buf, size_t buflen, size_t col, int cols,
-                                MUTTMENU *menu, const char *p)
+                                struct Menu *menu, const char *p)
 {
   mutt_FormatString(buf, buflen, col, cols, p, compose_format_str, (unsigned long) menu, 0);
 }
@@ -603,7 +603,7 @@ int mutt_compose_menu(struct Header *msg, /* structure for new message */
   char helpstr[LONG_STRING];
   char buf[LONG_STRING];
   char fname[_POSIX_PATH_MAX];
-  MUTTMENU *menu = NULL;
+  struct Menu *menu = NULL;
   struct AttachPtr **idx = NULL;
   short idxlen = 0;
   short idxmax = 0;

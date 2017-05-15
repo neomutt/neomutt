@@ -518,7 +518,7 @@ static int tls_check_one_certificate(const gnutls_datum_t *certdata,
   char dn_country[SHORT_STRING];
   time_t t;
   char datestr[30];
-  MUTTMENU *menu = NULL;
+  struct Menu *menu = NULL;
   char helpstr[LONG_STRING];
   char title[STRING];
   FILE *fp = NULL;

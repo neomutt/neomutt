@@ -69,13 +69,13 @@ static const char *alias_format_str(char *dest, size_t destlen, size_t col, int 
   return src;
 }
 
-static void alias_entry(char *s, size_t slen, MUTTMENU *m, int num)
+static void alias_entry(char *s, size_t slen, struct Menu *m, int num)
 {
   mutt_FormatString(s, slen, 0, MuttIndexWindow->cols, NONULL(AliasFmt), alias_format_str,
                     (unsigned long) ((struct Alias **) m->data)[num], MUTT_FORMAT_ARROWCURSOR);
 }
 
-static int alias_tag(MUTTMENU *menu, int n, int m)
+static int alias_tag(struct Menu *menu, int n, int m)
 {
   struct Alias *cur = ((struct Alias **) menu->data)[n];
   bool ot = cur->tagged;
@@ -123,7 +123,7 @@ static int alias_sort_address(const void *a, const void *b)
 void mutt_alias_menu(char *buf, size_t buflen, struct Alias *aliases)
 {
   struct Alias *aliasp = NULL;
-  MUTTMENU *menu = NULL;
+  struct Menu *menu = NULL;
   struct Alias **AliasTable = NULL;
   int t = -1;
   int i, done = 0;

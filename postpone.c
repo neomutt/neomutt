@@ -149,7 +149,7 @@ void mutt_update_num_postponed(void)
   UpdateNumPostponed = 1;
 }
 
-static void post_entry(char *s, size_t slen, MUTTMENU *menu, int entry)
+static void post_entry(char *s, size_t slen, struct Menu *menu, int entry)
 {
   struct Context *ctx = (struct Context *) menu->data;
 
@@ -158,7 +158,7 @@ static void post_entry(char *s, size_t slen, MUTTMENU *menu, int entry)
 
 static struct Header *select_msg(void)
 {
-  MUTTMENU *menu = NULL;
+  struct Menu *menu = NULL;
   int i, done = 0, r = -1;
   char helpstr[LONG_STRING];
   short orig_sort;

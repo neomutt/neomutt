@@ -38,11 +38,11 @@ void mutt_update_tree(struct AttachPtr **idx, short idxlen);
 int mutt_view_attachment(FILE *fp, struct Body *a, int flag, struct Header *hdr,
                          struct AttachPtr **idx, short idxlen);
 
-int mutt_tag_attach(MUTTMENU *menu, int n, int m);
-int mutt_attach_display_loop(MUTTMENU *menu, int op, FILE *fp, struct Header *hdr, struct Body *cur,
+int mutt_tag_attach(struct Menu *menu, int n, int m);
+int mutt_attach_display_loop(struct Menu *menu, int op, FILE *fp, struct Header *hdr, struct Body *cur,
                              struct AttachPtr ***idxp, short *idxlen, short *idxmax, int recv);
 
-void mutt_save_attachment_list(FILE *fp, int tag, struct Body *top, struct Header *hdr, MUTTMENU *menu);
+void mutt_save_attachment_list(FILE *fp, int tag, struct Body *top, struct Header *hdr, struct Menu *menu);
 void mutt_pipe_attachment_list(FILE *fp, int tag, struct Body *top, int filter);
 void mutt_print_attachment_list(FILE *fp, int tag, struct Body *top);
 

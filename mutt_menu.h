@@ -40,7 +40,7 @@
 
 #define MUTT_MODEFMT "-- Mutt: %s"
 
-typedef struct menu_t
+struct Menu
 {
   char *title; /* the title of this menu */
   char *help;  /* quickref for the current menu */
@@ -68,15 +68,15 @@ typedef struct menu_t
   char *keys;    /* keys used in the prompt */
 
   /* callback to generate an index line for the requested element */
-  void (*make_entry)(char *, size_t, struct menu_t *, int);
+  void (*make_entry)(char *, size_t, struct Menu *, int);
 
   /* how to search the menu */
-  int (*search)(struct menu_t *, regex_t *re, int n);
+  int (*search)(struct Menu *, regex_t *re, int n);
 
-  int (*tag)(struct menu_t *, int i, int m);
+  int (*tag)(struct Menu *, int i, int m);
 
   /* these are used for custom redrawing callbacks */
-  void (*custom_menu_redraw)(struct menu_t *);
+  void (*custom_menu_redraw)(struct Menu *);
   void *redraw_data;
 
   /* color pair to be used for the requested element
@@ -89,51 +89,51 @@ typedef struct menu_t
   int oldcurrent; /* for driver use only. */
   int searchDir;  /* direction of search */
   int tagged;     /* number of tagged entries */
-} MUTTMENU;
+};
 
 void mutt_menu_init(void);
-void menu_redraw_full(MUTTMENU *menu);
+void menu_redraw_full(struct Menu *menu);
 #ifdef USE_SIDEBAR
-void menu_redraw_sidebar(MUTTMENU *menu);
+void menu_redraw_sidebar(struct Menu *menu);
 #endif
-void menu_redraw_index(MUTTMENU *menu);
-void menu_redraw_status(MUTTMENU *menu);
-void menu_redraw_motion(MUTTMENU *menu);
-void menu_redraw_current(MUTTMENU *menu);
-int menu_redraw(MUTTMENU *menu);
-void menu_first_entry(MUTTMENU *menu);
-void menu_last_entry(MUTTMENU *menu);
-void menu_top_page(MUTTMENU *menu);
-void menu_bottom_page(MUTTMENU *menu);
-void menu_middle_page(MUTTMENU *menu);
-void menu_next_page(MUTTMENU *menu);
-void menu_prev_page(MUTTMENU *menu);
-void menu_next_line(MUTTMENU *menu);
-void menu_prev_line(MUTTMENU *menu);
-void menu_half_up(MUTTMENU *menu);
-void menu_half_down(MUTTMENU *menu);
-void menu_current_top(MUTTMENU *menu);
-void menu_current_middle(MUTTMENU *menu);
-void menu_current_bottom(MUTTMENU *menu);
-void menu_check_recenter(MUTTMENU *menu);
-void menu_status_line(char *buf, size_t buflen, MUTTMENU *menu, const char *p);
+void menu_redraw_index(struct Menu *menu);
+void menu_redraw_status(struct Menu *menu);
+void menu_redraw_motion(struct Menu *menu);
+void menu_redraw_current(struct Menu *menu);
+int menu_redraw(struct Menu *menu);
+void menu_first_entry(struct Menu *menu);
+void menu_last_entry(struct Menu *menu);
+void menu_top_page(struct Menu *menu);
+void menu_bottom_page(struct Menu *menu);
+void menu_middle_page(struct Menu *menu);
+void menu_next_page(struct Menu *menu);
+void menu_prev_page(struct Menu *menu);
+void menu_next_line(struct Menu *menu);
+void menu_prev_line(struct Menu *menu);
+void menu_half_up(struct Menu *menu);
+void menu_half_down(struct Menu *menu);
+void menu_current_top(struct Menu *menu);
+void menu_current_middle(struct Menu *menu);
+void menu_current_bottom(struct Menu *menu);
+void menu_check_recenter(struct Menu *menu);
+void menu_status_line(char *buf, size_t buflen, struct Menu *menu, const char *p);
 bool mutt_ts_capability(void);
 void mutt_ts_status(char *str);
 void mutt_ts_icon(char *str);
 
-MUTTMENU *mutt_new_menu(int menu);
-void mutt_menu_destroy(MUTTMENU **p);
-void mutt_push_current_menu(MUTTMENU *);
-void mutt_pop_current_menu(MUTTMENU *);
+struct Menu *mutt_new_menu(int menu);
+void mutt_menu_destroy(struct Menu **p);
+void mutt_push_current_menu(struct Menu *);
+void mutt_pop_current_menu(struct Menu *);
 void mutt_set_current_menu_redraw(int redraw);
 void mutt_set_current_menu_redraw_full(void);
 void mutt_set_menu_redraw(int menu_type, int redraw);
 void mutt_set_menu_redraw_full(int menu_type);
 void mutt_current_menu_redraw(void);
-int mutt_menu_loop(MUTTMENU *menu);
+int mutt_menu_loop(struct Menu *menu);
 
 /* used in both the index and pager index to make an entry. */
-void index_make_entry(char *s, size_t l, MUTTMENU *menu, int num);
+void index_make_entry(char *s, size_t l, struct Menu *menu, int num);
 int index_color(int index_no);
 
 bool mutt_limit_current_thread(struct Header *h);

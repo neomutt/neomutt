@@ -367,14 +367,14 @@ const char *mutt_attach_fmt(char *dest, size_t destlen, size_t col, int cols,
   return src;
 }
 
-static void attach_entry(char *b, size_t blen, MUTTMENU *menu, int num)
+static void attach_entry(char *b, size_t blen, struct Menu *menu, int num)
 {
   mutt_FormatString(b, blen, 0, MuttIndexWindow->cols, NONULL(AttachFormat), mutt_attach_fmt,
                     (unsigned long) (((struct AttachPtr **) menu->data)[num]),
                     MUTT_FORMAT_ARROWCURSOR);
 }
 
-int mutt_tag_attach(MUTTMENU *menu, int n, int m)
+int mutt_tag_attach(struct Menu *menu, int n, int m)
 {
   struct Body *cur = ((struct AttachPtr **) menu->data)[n]->content;
   bool ot = cur->tagged;
@@ -492,7 +492,7 @@ static int query_save_attachment(FILE *fp, struct Body *body, struct Header *hdr
   return 0;
 }
 
-void mutt_save_attachment_list(FILE *fp, int tag, struct Body *top, struct Header *hdr, MUTTMENU *menu)
+void mutt_save_attachment_list(FILE *fp, int tag, struct Body *top, struct Header *hdr, struct Menu *menu)
 {
   char buf[_POSIX_PATH_MAX], tfile[_POSIX_PATH_MAX];
   char *directory = NULL;
@@ -789,7 +789,7 @@ void mutt_print_attachment_list(FILE *fp, int tag, struct Body *top)
 }
 
 static void update_attach_index(struct Body *cur, struct AttachPtr ***idxp, short *idxlen,
-                                short *idxmax, MUTTMENU *menu)
+                                short *idxmax, struct Menu *menu)
 {
   struct AttachPtr **idx = *idxp;
   while (--(*idxlen) >= 0)
@@ -808,7 +808,7 @@ static void update_attach_index(struct Body *cur, struct AttachPtr ***idxp, shor
 }
 
 
-int mutt_attach_display_loop(MUTTMENU *menu, int op, FILE *fp, struct Header *hdr, struct Body *cur,
+int mutt_attach_display_loop(struct Menu *menu, int op, FILE *fp, struct Header *hdr, struct Body *cur,
                              struct AttachPtr ***idxp, short *idxlen, short *idxmax, int recv)
 {
   struct AttachPtr **idx = *idxp;
@@ -923,7 +923,7 @@ void mutt_view_attachments(struct Header *hdr)
   int need_secured = 0;
 
   char helpstr[LONG_STRING];
-  MUTTMENU *menu = NULL;
+  struct Menu *menu = NULL;
   struct Body *cur = NULL;
   MESSAGE *msg = NULL;
   FILE *fp = NULL;

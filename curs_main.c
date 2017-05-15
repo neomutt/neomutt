@@ -131,7 +131,7 @@ static char *fsl = "\007";
  * threads. In the second case, the @toggle parameter is 0, actually turning
  * this function into a one-way collapse.
  */
-static void collapse_all(MUTTMENU *menu, int toggle)
+static void collapse_all(struct Menu *menu, int toggle)
 {
   struct Header *h = NULL, *base = NULL;
   THREAD *thread = NULL, *top = NULL;
@@ -267,7 +267,7 @@ static int mx_toggle_write(struct Context *ctx)
   return 0;
 }
 
-static void resort_index(MUTTMENU *menu)
+static void resort_index(struct Menu *menu)
 {
   int i;
   struct Header *current = CURHDR;
@@ -294,7 +294,7 @@ static void resort_index(MUTTMENU *menu)
   menu->redraw |= REDRAW_INDEX | REDRAW_STATUS;
 }
 
-void update_index(MUTTMENU *menu, struct Context *ctx, int check, int oldcount, int index_hint)
+void update_index(struct Menu *menu, struct Context *ctx, int check, int oldcount, int index_hint)
 {
   /* store pointers to the newly added messages */
   struct Header **save_new = NULL;
@@ -402,7 +402,7 @@ void update_index(MUTTMENU *menu, struct Context *ctx, int check, int oldcount, 
     menu->current = ci_first_message();
 }
 
-static int main_change_folder(MUTTMENU *menu, int op, char *buf, size_t bufsz,
+static int main_change_folder(struct Menu *menu, int op, char *buf, size_t bufsz,
                               int *oldcount, int *index_hint, int flags)
 {
 #ifdef USE_NNTP
@@ -557,7 +557,7 @@ void mutt_ts_icon(char *str)
   fprintf(stderr, "\033]1;%s\007", str);
 }
 
-void index_make_entry(char *s, size_t l, MUTTMENU *menu, int num)
+void index_make_entry(char *s, size_t l, struct Menu *menu, int num)
 {
   if (!Context || !menu || (num < 0) || (num >= Context->hdrmax))
     return;
@@ -802,7 +802,7 @@ struct mapping_t IndexNewsHelp[] = {
 };
 #endif
 
-static void index_menu_redraw(MUTTMENU *menu)
+static void index_menu_redraw(struct Menu *menu)
 {
   char buf[LONG_STRING];
 
@@ -869,7 +869,7 @@ int mutt_index_menu(void)
   int newcount = -1;
   int oldcount = -1;
   int rc = -1;
-  MUTTMENU *menu = NULL;
+  struct Menu *menu = NULL;
   char *cp = NULL; /* temporary variable. */
   int index_hint;  /* used to restore cursor position */
   int do_buffy_notify = 1;

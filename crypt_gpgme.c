@@ -2910,7 +2910,7 @@ static const char *crypt_entry_fmt(char *dest, size_t destlen, size_t col, int c
 }
 
 /* Used by the display function to format a line. */
-static void crypt_entry(char *s, size_t l, MUTTMENU *menu, int num)
+static void crypt_entry(char *s, size_t l, struct Menu *menu, int num)
 {
   crypt_key_t **key_table = (crypt_key_t **) menu->data;
   crypt_entry_t entry;
@@ -3842,7 +3842,7 @@ static crypt_key_t *crypt_select_key(crypt_key_t *keys, struct Address *p, const
 {
   int keymax;
   crypt_key_t **key_table;
-  MUTTMENU *menu = NULL;
+  struct Menu *menu = NULL;
   int i, done = 0;
   char helpstr[LONG_STRING], buf[LONG_STRING];
   crypt_key_t *k = NULL;

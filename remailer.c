@@ -393,7 +393,7 @@ static const char *mix_entry_fmt(char *dest, size_t destlen, size_t col, int col
 }
 
 
-static void mix_entry(char *b, size_t blen, MUTTMENU *menu, int num)
+static void mix_entry(char *b, size_t blen, struct Menu *menu, int num)
 {
   REMAILER **type2_list = (REMAILER **) menu->data;
   mutt_FormatString(b, blen, 0, MuttIndexWindow->cols, NONULL(MixEntryFormat), mix_entry_fmt,
@@ -449,7 +449,7 @@ void mix_make_chain(struct List **chainp)
 
   struct coord *coords = NULL;
 
-  MUTTMENU *menu = NULL;
+  struct Menu *menu = NULL;
   char helpstr[LONG_STRING];
   short loop = 1;
   int op;

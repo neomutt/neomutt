@@ -1039,7 +1039,7 @@ struct Context
   int flagged;       /* how many flagged messages */
   int msgnotreadyet; /* which msg "new" in pager, -1 if none */
 
-  MUTTMENU *menu; /* needed for pattern compilation */
+  struct Menu *menu; /* needed for pattern compilation */
 
   short magic; /* mailbox type */
 

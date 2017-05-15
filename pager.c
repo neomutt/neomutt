@@ -1659,7 +1659,7 @@ typedef struct
   mutt_window_t *index_window;
   mutt_window_t *pager_status_window;
   mutt_window_t *pager_window;
-  MUTTMENU *index; /* the Pager Index (PI) */
+  struct Menu *index; /* the Pager Index (PI) */
   regex_t SearchRE;
   int SearchCompiled;
   int SearchFlag;
@@ -1672,7 +1672,7 @@ typedef struct
   struct stat sb;
 } pager_redraw_data_t;
 
-static void pager_menu_redraw(MUTTMENU *pager_menu)
+static void pager_menu_redraw(struct Menu *pager_menu)
 {
   pager_redraw_data_t *rd = pager_menu->redraw_data;
   int i, j;
@@ -1960,7 +1960,7 @@ int mutt_pager(const char *banner, const char *fname, int flags, pager_t *extra)
   int err, first = 1;
   int r = -1, wrapped = 0, searchctx = 0;
 
-  MUTTMENU *pager_menu = NULL;
+  struct Menu *pager_menu = NULL;
   int old_PagerIndexLines; /* some people want to resize it
                                          * while inside the pager... */
   int index_hint = 0;      /* used to restore cursor position */

@@ -152,7 +152,7 @@ static QUERY *run_query(char *s, int quiet)
   return first;
 }
 
-static int query_search(MUTTMENU *m, regex_t *re, int n)
+static int query_search(struct Menu *m, regex_t *re, int n)
 {
   ENTRY *table = (ENTRY *) m->data;
 
@@ -230,7 +230,7 @@ static const char *query_format_str(char *dest, size_t destlen, size_t col, int 
   return src;
 }
 
-static void query_entry(char *s, size_t slen, MUTTMENU *m, int num)
+static void query_entry(char *s, size_t slen, struct Menu *m, int num)
 {
   ENTRY *entry = &((ENTRY *) m->data)[num];
 
@@ -239,7 +239,7 @@ static void query_entry(char *s, size_t slen, MUTTMENU *m, int num)
                     query_format_str, (unsigned long) entry, MUTT_FORMAT_ARROWCURSOR);
 }
 
-static int query_tag(MUTTMENU *menu, int n, int m)
+static int query_tag(struct Menu *menu, int n, int m)
 {
   ENTRY *cur = &((ENTRY *) menu->data)[n];
   bool ot = cur->tagged;
@@ -250,7 +250,7 @@ static int query_tag(MUTTMENU *menu, int n, int m)
 
 static void query_menu(char *buf, size_t buflen, QUERY *results, int retbuf)
 {
-  MUTTMENU *menu = NULL;
+  struct Menu *menu = NULL;
   struct Header *msg = NULL;
   ENTRY *QueryTable = NULL;
   QUERY *queryp = NULL;
