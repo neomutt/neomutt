@@ -912,9 +912,9 @@ void _mutt_mktemp(char *s, size_t slen, const char *prefix, const char *suffix,
                strerror(errno), errno);
 }
 
-void mutt_free_alias(ALIAS **p)
+void mutt_free_alias(struct Alias **p)
 {
-  ALIAS *t = NULL;
+  struct Alias *t = NULL;
 
   while (*p)
   {

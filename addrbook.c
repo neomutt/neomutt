@@ -39,7 +39,7 @@ static const char *alias_format_str(char *dest, size_t destlen, size_t col, int 
                                     unsigned long data, format_flag flags)
 {
   char tmp[SHORT_STRING], adr[SHORT_STRING];
-  ALIAS *alias = (ALIAS *) data;
+  struct Alias *alias = (struct Alias *) data;
 
   switch (op)
   {
@@ -72,12 +72,12 @@ static const char *alias_format_str(char *dest, size_t destlen, size_t col, int 
 static void alias_entry(char *s, size_t slen, MUTTMENU *m, int num)
 {
   mutt_FormatString(s, slen, 0, MuttIndexWindow->cols, NONULL(AliasFmt), alias_format_str,
-                    (unsigned long) ((ALIAS **) m->data)[num], MUTT_FORMAT_ARROWCURSOR);
+                    (unsigned long) ((struct Alias **) m->data)[num], MUTT_FORMAT_ARROWCURSOR);
 }
 
 static int alias_tag(MUTTMENU *menu, int n, int m)
 {
-  ALIAS *cur = ((ALIAS **) menu->data)[n];
+  struct Alias *cur = ((struct Alias **) menu->data)[n];
   bool ot = cur->tagged;
 
   cur->tagged = (m >= 0 ? m : !cur->tagged);
@@ -87,8 +87,8 @@ static int alias_tag(MUTTMENU *menu, int n, int m)
 
 static int alias_sort_alias(const void *a, const void *b)
 {
-  ALIAS *pa = *(ALIAS **) a;
-  ALIAS *pb = *(ALIAS **) b;
+  struct Alias *pa = *(struct Alias **) a;
+  struct Alias *pb = *(struct Alias **) b;
   int r = mutt_strcasecmp(pa->name, pb->name);
 
   return (RSORT(r));
@@ -96,8 +96,8 @@ static int alias_sort_alias(const void *a, const void *b)
 
 static int alias_sort_address(const void *a, const void *b)
 {
-  struct Address *pa = (*(ALIAS **) a)->addr;
-  struct Address *pb = (*(ALIAS **) b)->addr;
+  struct Address *pa = (*(struct Alias **) a)->addr;
+  struct Address *pb = (*(struct Alias **) b)->addr;
   int r;
 
   if (pa == pb)
@@ -120,11 +120,11 @@ static int alias_sort_address(const void *a, const void *b)
   return (RSORT(r));
 }
 
-void mutt_alias_menu(char *buf, size_t buflen, ALIAS *aliases)
+void mutt_alias_menu(char *buf, size_t buflen, struct Alias *aliases)
 {
-  ALIAS *aliasp = NULL;
+  struct Alias *aliasp = NULL;
   MUTTMENU *menu = NULL;
-  ALIAS **AliasTable = NULL;
+  struct Alias **AliasTable = NULL;
   int t = -1;
   int i, done = 0;
   int op;
@@ -157,7 +157,7 @@ new_aliases:
     menu->max++;
   }
 
-  safe_realloc(&AliasTable, menu->max * sizeof(ALIAS *));
+  safe_realloc(&AliasTable, menu->max * sizeof(struct Alias *));
   menu->data = AliasTable;
   if (!AliasTable)
     return;
@@ -170,7 +170,7 @@ new_aliases:
 
   if ((SortAlias & SORT_MASK) != SORT_ORDER)
   {
-    qsort(AliasTable, i, sizeof(ALIAS *),
+    qsort(AliasTable, i, sizeof(struct Alias *),
           (SortAlias & SORT_MASK) == SORT_ADDRESS ? alias_sort_address : alias_sort_alias);
   }
 

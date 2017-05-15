@@ -640,16 +640,16 @@ const char *mutt_front_list(LIST *head);
 
 void mutt_init(int skip_sys_rc, LIST *commands);
 
-typedef struct alias
+struct Alias
 {
-  struct alias *self; /* XXX - ugly hack */
+  struct Alias *self; /* XXX - ugly hack */
   char *name;
   struct Address *addr;
-  struct alias *next;
+  struct Alias *next;
   bool tagged;
   bool del;
   short num;
-} ALIAS;
+};
 
 typedef struct envelope
 {

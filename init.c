@@ -1646,7 +1646,7 @@ static int parse_unsubscribe(BUFFER *buf, BUFFER *s, unsigned long data, BUFFER 
 
 static int parse_unalias(BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err)
 {
-  ALIAS *tmp = NULL, *last = NULL;
+  struct Alias *tmp = NULL, *last = NULL;
 
   do
   {
@@ -1692,8 +1692,8 @@ static int parse_unalias(BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err
 
 static int parse_alias(BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err)
 {
-  ALIAS *tmp = Aliases;
-  ALIAS *last = NULL;
+  struct Alias *tmp = Aliases;
+  struct Alias *last = NULL;
   char *estr = NULL;
   group_context_t *gc = NULL;
 
@@ -1719,7 +1719,7 @@ static int parse_alias(BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err)
   if (!tmp)
   {
     /* create a new alias */
-    tmp = safe_calloc(1, sizeof(ALIAS));
+    tmp = safe_calloc(1, sizeof(struct Alias));
     tmp->self = tmp;
     tmp->name = safe_strdup(buf->data);
     /* give the main addressbook code a chance */

@@ -276,7 +276,7 @@ WHERE SIG_ATOMIC_VOLATILE_T SigWinch INITVAL(0);
 
 WHERE int CurrentMenu;
 
-WHERE ALIAS *Aliases INITVAL(0);
+WHERE struct Alias *Aliases INITVAL(0);
 WHERE LIST *UserHeader INITVAL(0);
 
 /* -- formerly in pgp.h -- */

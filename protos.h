@@ -157,7 +157,7 @@ void mutt_account_hook(const char *url);
 void mutt_add_to_reference_headers(ENVELOPE *env, ENVELOPE *curenv, LIST ***pp,
                                    LIST ***qq);
 void mutt_adv_mktemp(char *s, size_t l);
-void mutt_alias_menu(char *buf, size_t buflen, ALIAS *aliases);
+void mutt_alias_menu(char *buf, size_t buflen, struct Alias *aliases);
 void mutt_allow_interrupt(int disposition);
 void mutt_attach_init(BODY *b);
 void mutt_block_signals(void);
@@ -206,7 +206,7 @@ void mutt_format_s(char *dest, size_t destlen, const char *prefix, const char *s
 void mutt_format_s_tree(char *dest, size_t destlen, const char *prefix, const char *s);
 void mutt_forward_intro(FILE *fp, HEADER *cur);
 void mutt_forward_trailer(FILE *fp);
-void mutt_free_alias(ALIAS **p);
+void mutt_free_alias(struct Alias **p);
 void mutt_free_body(BODY **p);
 void mutt_free_color(int fg, int bg);
 void mutt_free_enter_state(ENTER_STATE **esp);
@@ -268,8 +268,8 @@ int mutt_add_to_rx_list(RX_LIST **list, const char *s, int flags, BUFFER *err);
 bool mutt_addr_is_user(struct Address *addr);
 int mutt_addwch(wchar_t wc);
 int mutt_alias_complete(char *s, size_t buflen);
-void mutt_alias_add_reverse(ALIAS *t);
-void mutt_alias_delete_reverse(ALIAS *t);
+void mutt_alias_add_reverse(struct Alias *t);
+void mutt_alias_delete_reverse(struct Alias *t);
 int mutt_alloc_color(int fg, int bg);
 int mutt_any_key_to_continue(const char *s);
 char *mutt_apply_replace(char *dbuf, size_t dlen, char *sbuf, REPLACE_LIST *rlist);

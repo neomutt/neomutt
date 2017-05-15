@@ -28,7 +28,7 @@ int mutt_check_alias_name(const char *s, char *dest, size_t destlen);
 
 struct Address *mutt_lookup_alias(const char *s)
 {
-  ALIAS *t = Aliases;
+  struct Alias *t = Aliases;
 
   for (; t; t = t->next)
     if (mutt_strcasecmp(s, t->name) == 0)
@@ -224,7 +224,7 @@ static void recode_buf(char *buf, size_t buflen)
 
 void mutt_create_alias(ENVELOPE *cur, struct Address *iadr)
 {
-  ALIAS *new = NULL, *t = NULL;
+  struct Alias *new = NULL, *t = NULL;
   char buf[LONG_STRING], tmp[LONG_STRING], prompt[SHORT_STRING], *pc = NULL;
   char *err = NULL;
   char fixed[LONG_STRING];
@@ -276,7 +276,7 @@ retry_name:
     }
   }
 
-  new = safe_calloc(1, sizeof(ALIAS));
+  new = safe_calloc(1, sizeof(struct Alias));
   new->self = new;
   new->name = safe_strdup(buf);
 
@@ -447,7 +447,7 @@ struct Address *alias_reverse_lookup(struct Address *a)
   return hash_find(ReverseAlias, a->mailbox);
 }
 
-void mutt_alias_add_reverse(ALIAS *t)
+void mutt_alias_add_reverse(struct Alias *t)
 {
   struct Address *ap = NULL;
   if (!t)
@@ -465,7 +465,7 @@ void mutt_alias_add_reverse(ALIAS *t)
   }
 }
 
-void mutt_alias_delete_reverse(ALIAS *t)
+void mutt_alias_delete_reverse(struct Alias *t)
 {
   struct Address *ap = NULL;
   if (!t)
@@ -490,8 +490,8 @@ void mutt_alias_delete_reverse(ALIAS *t)
  */
 int mutt_alias_complete(char *s, size_t buflen)
 {
-  ALIAS *a = Aliases;
-  ALIAS *a_list = NULL, *a_cur = NULL;
+  struct Alias *a = Aliases;
+  struct Alias *a_list = NULL, *a_cur = NULL;
   char bestname[HUGE_STRING];
   int i;
 
@@ -536,13 +536,13 @@ int mutt_alias_complete(char *s, size_t buflen)
         if (a->name && (strstr(a->name, s) == a->name))
         {
           if (!a_list) /* init */
-            a_cur = a_list = safe_malloc(sizeof(ALIAS));
+            a_cur = a_list = safe_malloc(sizeof(struct Alias));
           else
           {
-            a_cur->next = safe_malloc(sizeof(ALIAS));
+            a_cur->next = safe_malloc(sizeof(struct Alias));
             a_cur = a_cur->next;
           }
-          memcpy(a_cur, a, sizeof(ALIAS));
+          memcpy(a_cur, a, sizeof(struct Alias));
           a_cur->next = NULL;
         }
         a = a->next;
