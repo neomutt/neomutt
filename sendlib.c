@@ -495,7 +495,7 @@ typedef struct
 } CONTENT_STATE;
 
 
-static void update_content_info(CONTENT *info, CONTENT_STATE *s, char *d, size_t dlen)
+static void update_content_info(struct Content *info, CONTENT_STATE *s, char *d, size_t dlen)
 {
   int from = s->from;
   int whitespace = s->whitespace;
@@ -618,7 +618,7 @@ static void update_content_info(CONTENT *info, CONTENT_STATE *s, char *d, size_t
 
 /*
  * Find the best charset conversion of the file from fromcode into one
- * of the tocodes. If successful, set *tocode and CONTENT *info and
+ * of the tocodes. If successful, set *tocode and Content *info and
  * return the number of characters converted inexactly. If no
  * conversion was possible, return -1.
  *
@@ -633,7 +633,7 @@ static void update_content_info(CONTENT *info, CONTENT_STATE *s, char *d, size_t
  * in.
  */
 static size_t convert_file_to(FILE *file, const char *fromcode, int ncodes,
-                              const char **tocodes, int *tocode, CONTENT *info)
+                              const char **tocodes, int *tocode, struct Content *info)
 {
   iconv_t cd1, *cd = NULL;
   char bufi[256], bufu[512], bufo[4 * sizeof(bufi)];
@@ -641,7 +641,7 @@ static size_t convert_file_to(FILE *file, const char *fromcode, int ncodes,
   char *ob = NULL;
   size_t ibl, obl, ubl, ubl1, n, ret;
   int i;
-  CONTENT *infos = NULL;
+  struct Content *infos = NULL;
   CONTENT_STATE *states = NULL;
   size_t *score = NULL;
 
@@ -652,7 +652,7 @@ static size_t convert_file_to(FILE *file, const char *fromcode, int ncodes,
   cd = safe_calloc(ncodes, sizeof(iconv_t));
   score = safe_calloc(ncodes, sizeof(size_t));
   states = safe_calloc(ncodes, sizeof(CONTENT_STATE));
-  infos = safe_calloc(ncodes, sizeof(CONTENT));
+  infos = safe_calloc(ncodes, sizeof(struct Content));
 
   for (i = 0; i < ncodes; i++)
     if (ascii_strcasecmp(tocodes[i], "utf-8") != 0)
@@ -739,7 +739,7 @@ static size_t convert_file_to(FILE *file, const char *fromcode, int ncodes,
     }
     if (ret != (size_t)(-1))
     {
-      memcpy(info, &infos[*tocode], sizeof(CONTENT));
+      memcpy(info, &infos[*tocode], sizeof(struct Content));
       update_content_info(info, &states[*tocode], 0, 0); /* EOF */
     }
   }
@@ -761,7 +761,7 @@ static size_t convert_file_to(FILE *file, const char *fromcode, int ncodes,
  * Find the first of the fromcodes that gives a valid conversion and
  * the best charset conversion of the file into one of the tocodes. If
  * successful, set *fromcode and *tocode to dynamically allocated
- * strings, set CONTENT *info, and return the number of characters
+ * strings, set Content *info, and return the number of characters
  * converted inexactly. If no conversion was possible, return -1.
  *
  * Both fromcodes and tocodes may be colon-separated lists of charsets.
@@ -769,7 +769,7 @@ static size_t convert_file_to(FILE *file, const char *fromcode, int ncodes,
  * name of a single charset even if it contains a colon.
  */
 static size_t convert_file_from_to(FILE *file, const char *fromcodes, const char *tocodes,
-                                   char **fromcode, char **tocode, CONTENT *info)
+                                   char **fromcode, char **tocode, struct Content *info)
 {
   char *fcode = NULL;
   char **tcode;
@@ -840,9 +840,9 @@ static size_t convert_file_from_to(FILE *file, const char *fromcodes, const char
  * Analyze the contents of a file to determine which MIME encoding to use.
  * Also set the body charset, sometimes, or not.
  */
-CONTENT *mutt_get_content_info(const char *fname, struct Body *b)
+struct Content *mutt_get_content_info(const char *fname, struct Body *b)
 {
-  CONTENT *info = NULL;
+  struct Content *info = NULL;
   CONTENT_STATE state;
   FILE *fp = NULL;
   char *fromcode = NULL;
@@ -875,7 +875,7 @@ CONTENT *mutt_get_content_info(const char *fname, struct Body *b)
     return NULL;
   }
 
-  info = safe_calloc(1, sizeof(CONTENT));
+  info = safe_calloc(1, sizeof(struct Content));
   memset(&state, 0, sizeof(state));
 
   if (b != NULL && b->type == TYPETEXT && (!b->noconv && !b->force_charset))
@@ -1158,7 +1158,7 @@ cleanup:
 }
 
 /* determine which Content-Transfer-Encoding to use */
-static void set_encoding(struct Body *b, CONTENT *info)
+static void set_encoding(struct Body *b, struct Content *info)
 {
   char send_charset[SHORT_STRING];
 
@@ -1227,7 +1227,7 @@ char *mutt_get_body_charset(char *d, size_t dlen, struct Body *b)
 /* Assumes called from send mode where Body->filename points to actual file */
 void mutt_update_encoding(struct Body *a)
 {
-  CONTENT *info = NULL;
+  struct Content *info = NULL;
   char chsbuff[STRING];
 
   /* override noconv when it's us-ascii */
@@ -1338,7 +1338,7 @@ struct Body *mutt_make_message_attach(CONTEXT *ctx, HEADER *hdr, int attach_msg)
 struct Body *mutt_make_file_attach(const char *path)
 {
   struct Body *att = NULL;
-  CONTENT *info = NULL;
+  struct Content *info = NULL;
 
   att = mutt_new_body();
   att->filename = safe_strdup(path);

@@ -705,7 +705,7 @@ static inline PARAMETER *mutt_new_parameter(void)
 }
 
 /* Information that helps in determining the Content-* of an attachment */
-typedef struct content
+struct Content
 {
   long hibin;      /* 8-bit characters */
   long lobin;      /* unprintable 7-bit chars (eg., control chars) */
@@ -717,7 +717,7 @@ typedef struct content
   bool from : 1;   /* has a line beginning with "From "? */
   bool dot : 1;    /* has a line consisting of a single dot? */
   bool cr : 1;     /* has CR, even when in a CRLF pair */
-} CONTENT;
+};
 
 struct Body
 {
@@ -742,7 +742,7 @@ struct Body
                          * instead.
                          */
   char *charset;        /* charset of attached file */
-  CONTENT *content;     /* structure used to store detailed info about
+  struct Content *content;     /* structure used to store detailed info about
                          * the content of the attachment.  this is used
                          * to determine what content-transfer-encoding
                          * is required when sending mail.

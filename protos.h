@@ -109,7 +109,7 @@ struct Body *mutt_parse_multipart(FILE *fp, const char *boundary, LOFF_T end_off
 struct Body *mutt_parse_message_rfc822(FILE *fp, struct Body *parent);
 struct Body *mutt_read_mime_header(FILE *fp, int digest);
 
-CONTENT *mutt_get_content_info(const char *fname, struct Body *b);
+struct Content *mutt_get_content_info(const char *fname, struct Body *b);
 
 HASH *mutt_make_id_hash(CONTEXT *ctx);
 

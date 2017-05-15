@@ -492,7 +492,7 @@ static unsigned long cum_attachs_size(MUTTMENU *menu)
   size_t s;
   unsigned short i;
   struct AttachPtr **idx = menu->data;
-  CONTENT *info = NULL;
+  struct Content *info = NULL;
   struct Body *b = NULL;
 
   for (i = 0, s = 0; i < menu->max; i++)
