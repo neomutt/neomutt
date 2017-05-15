@@ -209,11 +209,11 @@ void imap_hcache_close(IMAP_DATA *idata)
   idata->hcache = NULL;
 }
 
-HEADER *imap_hcache_get(IMAP_DATA *idata, unsigned int uid)
+struct Header *imap_hcache_get(IMAP_DATA *idata, unsigned int uid)
 {
   char key[16];
   void *uv = NULL;
-  HEADER *h = NULL;
+  struct Header *h = NULL;
 
   if (!idata->hcache)
     return NULL;
@@ -232,7 +232,7 @@ HEADER *imap_hcache_get(IMAP_DATA *idata, unsigned int uid)
   return h;
 }
 
-int imap_hcache_put(IMAP_DATA *idata, HEADER *h)
+int imap_hcache_put(IMAP_DATA *idata, struct Header *h)
 {
   char key[16];
 

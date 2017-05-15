@@ -82,7 +82,7 @@ static int mmdf_parse_mailbox(struct Context *ctx)
   int lines;
   time_t t;
   LOFF_T loc, tmploc;
-  HEADER *hdr = NULL;
+  struct Header *hdr = NULL;
   struct stat sb;
 #ifdef NFS_ATTRIBUTE_HACK
   struct utimbuf newtime;
@@ -243,7 +243,7 @@ static int mbox_parse_mailbox(struct Context *ctx)
 {
   struct stat sb;
   char buf[HUGE_STRING], return_path[STRING];
-  HEADER *curhdr = NULL;
+  struct Header *curhdr = NULL;
   time_t t;
   int count = 0, lines = 0;
   LOFF_T loc;
@@ -544,7 +544,7 @@ static int mmdf_commit_message(struct Context *ctx, MESSAGE *msg)
   return 0;
 }
 
-static int mbox_open_new_message(MESSAGE *msg, struct Context *dest, HEADER *hdr)
+static int mbox_open_new_message(MESSAGE *msg, struct Context *dest, struct Header *hdr)
 {
   msg->fp = dest->fp;
   return 0;
@@ -636,7 +636,7 @@ static int strict_cmp_bodies(const struct Body *b1, const struct Body *b2)
 }
 
 /* return 1 if headers are strictly identical */
-int mbox_strict_cmp_headers(const HEADER *h1, const HEADER *h2)
+int mbox_strict_cmp_headers(const struct Header *h1, const struct Header *h2)
 {
   if (h1 && h2)
   {
@@ -661,8 +661,8 @@ int mbox_strict_cmp_headers(const HEADER *h1, const HEADER *h2)
 
 static int reopen_mailbox(struct Context *ctx, int *index_hint)
 {
-  int (*cmp_headers)(const HEADER *, const HEADER *) = NULL;
-  HEADER **old_hdrs;
+  int (*cmp_headers)(const struct Header *, const struct Header *) = NULL;
+  struct Header **old_hdrs;
   int old_msgcount;
   int msg_mod = 0;
   int index_hint_set;

@@ -1273,7 +1273,7 @@ int mx_sync_mailbox(struct Context *ctx, int *index_hint)
  *      hdr     message being copied (required for maildir support, because
  *              the filename depends on the message flags)
  */
-MESSAGE *mx_open_new_message(struct Context *dest, HEADER *hdr, int flags)
+MESSAGE *mx_open_new_message(struct Context *dest, struct Header *hdr, int flags)
 {
   struct Address *p = NULL;
   MESSAGE *msg = NULL;
@@ -1401,7 +1401,7 @@ int mx_close_message(struct Context *ctx, MESSAGE **msg)
 void mx_alloc_memory(struct Context *ctx)
 {
   int i;
-  size_t s = MAX(sizeof(HEADER *), sizeof(int));
+  size_t s = MAX(sizeof(struct Header *), sizeof(int));
 
   if ((ctx->hdrmax + 25) * s < ctx->hdrmax * s)
   {
@@ -1412,12 +1412,12 @@ void mx_alloc_memory(struct Context *ctx)
 
   if (ctx->hdrs)
   {
-    safe_realloc(&ctx->hdrs, sizeof(HEADER *) * (ctx->hdrmax += 25));
+    safe_realloc(&ctx->hdrs, sizeof(struct Header *) * (ctx->hdrmax += 25));
     safe_realloc(&ctx->v2r, sizeof(int) * ctx->hdrmax);
   }
   else
   {
-    ctx->hdrs = safe_calloc((ctx->hdrmax += 25), sizeof(HEADER *));
+    ctx->hdrs = safe_calloc((ctx->hdrmax += 25), sizeof(struct Header *));
     ctx->v2r = safe_calloc(ctx->hdrmax, sizeof(int));
   }
   for (i = ctx->msgcount; i < ctx->hdrmax; i++)
@@ -1432,7 +1432,7 @@ void mx_alloc_memory(struct Context *ctx)
  */
 void mx_update_context(struct Context *ctx, int new_messages)
 {
-  HEADER *h = NULL;
+  struct Header *h = NULL;
   int msgno;
 
   for (msgno = ctx->msgcount - new_messages; msgno < ctx->msgcount; msgno++)
@@ -1456,7 +1456,7 @@ void mx_update_context(struct Context *ctx, int new_messages)
 
     if (h->env->supersedes)
     {
-      HEADER *h2 = NULL;
+      struct Header *h2 = NULL;
 
       if (!ctx->id_hash)
         ctx->id_hash = mutt_make_id_hash(ctx);

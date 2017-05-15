@@ -243,7 +243,7 @@ int imap_read_literal(FILE *fp, IMAP_DATA *idata, long bytes, progress_t *pbar)
  *   (eg inside pager or editor). That is, check IMAP_REOPEN_ALLOW. */
 void imap_expunge_mailbox(IMAP_DATA *idata)
 {
-  HEADER *h = NULL;
+  struct Header *h = NULL;
   int i, cacheno;
 
 #ifdef USE_HCACHE
@@ -742,7 +742,7 @@ static int imap_open_mailbox(struct Context *ctx)
     ctx->readonly = true;
 
   ctx->hdrmax = count;
-  ctx->hdrs = safe_calloc(count, sizeof(HEADER *));
+  ctx->hdrs = safe_calloc(count, sizeof(struct Header *));
   ctx->v2r = safe_calloc(count, sizeof(int));
   ctx->msgcount = 0;
 
@@ -823,7 +823,7 @@ void imap_logout(IMAP_DATA **idata)
   imap_free_idata(idata);
 }
 
-static int imap_open_new_message(MESSAGE *msg, struct Context *dest, HEADER *hdr)
+static int imap_open_new_message(MESSAGE *msg, struct Context *dest, struct Header *hdr)
 {
   char tmp[_POSIX_PATH_MAX];
 
@@ -874,7 +874,7 @@ bool imap_has_flag(LIST *flag_list, const char *flag)
 static int imap_make_msg_set(IMAP_DATA *idata, struct Buffer *buf, int flag,
                              int changed, int invert, int *pos)
 {
-  HEADER **hdrs = idata->ctx->hdrs;
+  struct Header **hdrs = idata->ctx->hdrs;
   int count = 0; /* number of messages in message set */
   int match = 0; /* whether current message matches flag condition */
   unsigned int setstart = 0; /* start of current message range */
@@ -967,7 +967,7 @@ static int imap_make_msg_set(IMAP_DATA *idata, struct Buffer *buf, int flag,
 int imap_exec_msgset(IMAP_DATA *idata, const char *pre, const char *post,
                      int flag, int changed, int invert)
 {
-  HEADER **hdrs = NULL;
+  struct Header **hdrs = NULL;
   short oldsort;
   struct Buffer *cmd = NULL;
   int pos;
@@ -987,11 +987,11 @@ int imap_exec_msgset(IMAP_DATA *idata, const char *pre, const char *post,
   if (Sort != SORT_ORDER)
   {
     hdrs = idata->ctx->hdrs;
-    idata->ctx->hdrs = safe_malloc(idata->ctx->msgcount * sizeof(HEADER *));
-    memcpy(idata->ctx->hdrs, hdrs, idata->ctx->msgcount * sizeof(HEADER *));
+    idata->ctx->hdrs = safe_malloc(idata->ctx->msgcount * sizeof(struct Header *));
+    memcpy(idata->ctx->hdrs, hdrs, idata->ctx->msgcount * sizeof(struct Header *));
 
     Sort = SORT_ORDER;
-    qsort(idata->ctx->hdrs, idata->ctx->msgcount, sizeof(HEADER *),
+    qsort(idata->ctx->hdrs, idata->ctx->msgcount, sizeof(struct Header *),
           mutt_get_sort_func(SORT_ORDER));
   }
 
@@ -1029,7 +1029,7 @@ out:
 }
 
 /* returns 0 if mutt's flags match cached server flags */
-static bool compare_flags(HEADER *h)
+static bool compare_flags(struct Header *h)
 {
   IMAP_HEADER_DATA *hd = (IMAP_HEADER_DATA *) h->data;
 
@@ -1048,7 +1048,7 @@ static bool compare_flags(HEADER *h)
 }
 
 /* Update the IMAP server to reflect the flags a single message.  */
-int imap_sync_message(IMAP_DATA *idata, HEADER *hdr, struct Buffer *cmd, int *err_continue)
+int imap_sync_message(IMAP_DATA *idata, struct Header *hdr, struct Buffer *cmd, int *err_continue)
 {
   char flags[LONG_STRING];
   char uid[11];
@@ -1156,8 +1156,8 @@ int imap_sync_mailbox(struct Context *ctx, int expunge)
 {
   IMAP_DATA *idata = NULL;
   struct Context *appendctx = NULL;
-  HEADER *h = NULL;
-  HEADER **hdrs = NULL;
+  struct Header *h = NULL;
+  struct Header **hdrs = NULL;
   int oldsort;
   int n;
   int rc;
@@ -1249,11 +1249,11 @@ int imap_sync_mailbox(struct Context *ctx, int expunge)
   if (Sort != SORT_ORDER)
   {
     hdrs = ctx->hdrs;
-    ctx->hdrs = safe_malloc(ctx->msgcount * sizeof(HEADER *));
-    memcpy(ctx->hdrs, hdrs, ctx->msgcount * sizeof(HEADER *));
+    ctx->hdrs = safe_malloc(ctx->msgcount * sizeof(struct Header *));
+    memcpy(ctx->hdrs, hdrs, ctx->msgcount * sizeof(struct Header *));
 
     Sort = SORT_ORDER;
-    qsort(ctx->hdrs, ctx->msgcount, sizeof(HEADER *), mutt_get_sort_func(SORT_ORDER));
+    qsort(ctx->hdrs, ctx->msgcount, sizeof(struct Header *), mutt_get_sort_func(SORT_ORDER));
   }
 
   rc = sync_helper(idata, MUTT_ACL_DELETE, MUTT_DELETED, "\\Deleted");

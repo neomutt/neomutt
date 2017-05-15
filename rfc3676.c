@@ -325,7 +325,7 @@ int rfc3676_handler(struct Body *a, STATE *s)
  * a freshly created copy in a tempfile and modifies the file's mtime
  * so we don't trigger code paths watching for mtime changes
  */
-void rfc3676_space_stuff(HEADER *hdr)
+void rfc3676_space_stuff(struct Header *hdr)
 {
 #ifdef DEBUG
   int lc = 0;

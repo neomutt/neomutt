@@ -766,7 +766,7 @@ static int comp_commit_message(struct Context *ctx, MESSAGE *msg)
 /**
  * comp_open_new_message - Delegated to mbox handler
  */
-static int comp_open_new_message(MESSAGE *msg, struct Context *ctx, HEADER *hdr)
+static int comp_open_new_message(MESSAGE *msg, struct Context *ctx, struct Header *hdr)
 {
   if (!ctx)
     return -1;

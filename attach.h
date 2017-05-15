@@ -35,22 +35,22 @@ struct AttachPtr
 struct AttachPtr **mutt_gen_attach_list(struct Body *m, int parent_type, struct AttachPtr **idx,
                                  short *idxlen, short *idxmax, int level, int compose);
 void mutt_update_tree(struct AttachPtr **idx, short idxlen);
-int mutt_view_attachment(FILE *fp, struct Body *a, int flag, HEADER *hdr,
+int mutt_view_attachment(FILE *fp, struct Body *a, int flag, struct Header *hdr,
                          struct AttachPtr **idx, short idxlen);
 
 int mutt_tag_attach(MUTTMENU *menu, int n, int m);
-int mutt_attach_display_loop(MUTTMENU *menu, int op, FILE *fp, HEADER *hdr, struct Body *cur,
+int mutt_attach_display_loop(MUTTMENU *menu, int op, FILE *fp, struct Header *hdr, struct Body *cur,
                              struct AttachPtr ***idxp, short *idxlen, short *idxmax, int recv);
 
-void mutt_save_attachment_list(FILE *fp, int tag, struct Body *top, HEADER *hdr, MUTTMENU *menu);
+void mutt_save_attachment_list(FILE *fp, int tag, struct Body *top, struct Header *hdr, MUTTMENU *menu);
 void mutt_pipe_attachment_list(FILE *fp, int tag, struct Body *top, int filter);
 void mutt_print_attachment_list(FILE *fp, int tag, struct Body *top);
 
-void mutt_attach_bounce(FILE *fp, HEADER *hdr, struct AttachPtr **idx, short idxlen, struct Body *cur);
-void mutt_attach_resend(FILE *fp, HEADER *hdr, struct AttachPtr **idx, short idxlen, struct Body *cur);
-void mutt_attach_forward(FILE *fp, HEADER *hdr, struct AttachPtr **idx, short idxlen,
+void mutt_attach_bounce(FILE *fp, struct Header *hdr, struct AttachPtr **idx, short idxlen, struct Body *cur);
+void mutt_attach_resend(FILE *fp, struct Header *hdr, struct AttachPtr **idx, short idxlen, struct Body *cur);
+void mutt_attach_forward(FILE *fp, struct Header *hdr, struct AttachPtr **idx, short idxlen,
                          struct Body *cur, int flags);
-void mutt_attach_reply(FILE *fp, HEADER *hdr, struct AttachPtr **idx, short idxlen,
+void mutt_attach_reply(FILE *fp, struct Header *hdr, struct AttachPtr **idx, short idxlen,
                        struct Body *cur, int flags);
 
 #endif /* _MUTT_ATTACH_H */

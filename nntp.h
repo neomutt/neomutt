@@ -124,7 +124,7 @@ int nntp_check_new_groups(NNTP_SERVER *nserv);
 int nntp_open_connection(NNTP_SERVER *nserv);
 void nntp_newsrc_gen_entries(struct Context *ctx);
 void nntp_bcache_update(NNTP_DATA *nntp_data);
-void nntp_article_status(struct Context *ctx, HEADER *hdr, char *group, anum_t anum);
+void nntp_article_status(struct Context *ctx, struct Header *hdr, char *group, anum_t anum);
 void nntp_group_unread_stat(NNTP_DATA *nntp_data);
 void nntp_data_free(void *data);
 void nntp_acache_free(NNTP_DATA *nntp_data);

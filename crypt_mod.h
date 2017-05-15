@@ -47,11 +47,11 @@ typedef int (*crypt_func_verify_one_t)(struct Body *sigbdy, STATE *s, const char
 typedef void (*crypt_func_pgp_extract_keys_from_attachment_list_t)(FILE *fp, int tag,
                                                                    struct Body *top);
 
-typedef int (*crypt_func_send_menu_t)(HEADER *msg);
+typedef int (*crypt_func_send_menu_t)(struct Header *msg);
 
 /* (SMIME) */
 typedef void (*crypt_func_smime_getkeys_t)(struct Envelope *env);
-typedef int (*crypt_func_smime_verify_sender_t)(HEADER *h);
+typedef int (*crypt_func_smime_verify_sender_t)(struct Header *h);
 
 typedef struct Body *(*crypt_func_smime_build_smime_entity_t)(struct Body *a, char *certlist);
 

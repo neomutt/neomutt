@@ -64,7 +64,7 @@ static int crypt_mod_smime_verify_one(struct Body *sigbdy, STATE *s, const char 
   return smime_gpgme_verify_one(sigbdy, s, tempf);
 }
 
-static int crypt_mod_smime_send_menu(HEADER *msg)
+static int crypt_mod_smime_send_menu(struct Header *msg)
 {
   return smime_gpgme_send_menu(msg);
 }
@@ -74,7 +74,7 @@ static struct Body *crypt_mod_smime_build_smime_entity(struct Body *a, char *cer
   return smime_gpgme_build_smime_entity(a, certlist);
 }
 
-static int crypt_mod_smime_verify_sender(HEADER *h)
+static int crypt_mod_smime_verify_sender(struct Header *h)
 {
   return smime_gpgme_verify_sender(h);
 }

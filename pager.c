@@ -54,7 +54,7 @@ static const char *Function_not_permitted_in_attach_message_mode =
 
 /* hack to return to position when returning from index to same message */
 static int TopLine = 0;
-static HEADER *OldHdr = NULL;
+static struct Header *OldHdr = NULL;
 
 #define CHECK_MODE(x)                                                          \
   if (!(x))                                                                    \
@@ -2109,7 +2109,7 @@ int mutt_pager(const char *banner, const char *fname, int flags, pager_t *extra)
         {
           for (i = oldcount; i < Context->msgcount; i++)
           {
-            HEADER *h = Context->hdrs[i];
+            struct Header *h = Context->hdrs[i];
 
             if (h && !h->read)
             {

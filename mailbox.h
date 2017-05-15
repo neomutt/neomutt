@@ -62,7 +62,7 @@ typedef struct _message
 struct Context *mx_open_mailbox(const char *path, int flags, struct Context *pctx);
 
 MESSAGE *mx_open_message(struct Context *ctx, int msgno);
-MESSAGE *mx_open_new_message(struct Context *dest, HEADER *hdr, int flags);
+MESSAGE *mx_open_new_message(struct Context *dest, struct Header *hdr, int flags);
 
 void mx_fastclose_mailbox(struct Context *ctx);
 

@@ -739,7 +739,7 @@ static const struct tz_t
  * This routine assumes that `h' has been initialized to 0.  the `timezone'
  * field is optional, defaulting to +0000 if missing.
  */
-time_t mutt_parse_date(const char *s, HEADER *h)
+time_t mutt_parse_date(const char *s, struct Header *h)
 {
   int count = 0;
   char *t = NULL;
@@ -940,7 +940,7 @@ char *mutt_extract_message_id(const char *s, const char **saveptr)
   return NULL;
 }
 
-void mutt_parse_mime_message(struct Context *ctx, HEADER *cur)
+void mutt_parse_mime_message(struct Context *ctx, struct Header *cur)
 {
   MESSAGE *msg = NULL;
 
@@ -966,7 +966,7 @@ void mutt_parse_mime_message(struct Context *ctx, HEADER *cur)
   cur->attach_valid = false;
 }
 
-int mutt_parse_rfc822_line(struct Envelope *e, HEADER *hdr, char *line, char *p,
+int mutt_parse_rfc822_line(struct Envelope *e, struct Header *hdr, char *line, char *p,
                            short user_hdrs, short weed, short do_2047, LIST **lastp)
 {
   int matched = 0;
@@ -1365,7 +1365,7 @@ done:
  * Returns:     newly allocated envelope structure.  You should free it by
  *              mutt_free_envelope() when envelope stay unneeded.
  */
-struct Envelope *mutt_read_rfc822_header(FILE *f, HEADER *hdr, short user_hdrs, short weed)
+struct Envelope *mutt_read_rfc822_header(FILE *f, struct Header *hdr, short user_hdrs, short weed)
 {
   struct Envelope *e = mutt_new_envelope();
   LIST *last = NULL;
@@ -1672,7 +1672,7 @@ static int count_body_parts(struct Body *body, int flags)
   return count < 0 ? 0 : count;
 }
 
-int mutt_count_body_parts(struct Context *ctx, HEADER *hdr)
+int mutt_count_body_parts(struct Context *ctx, struct Header *hdr)
 {
   short keep_parts = 0;
 

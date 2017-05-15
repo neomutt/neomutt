@@ -877,7 +877,7 @@ static int msg_search(struct Context *ctx, pattern_t *pat, int msgno)
   FILE *fp = NULL;
   long lng = 0;
   int match = 0;
-  HEADER *h = ctx->hdrs[msgno];
+  struct Header *h = ctx->hdrs[msgno];
   char *buf = NULL;
   size_t blen;
 #ifdef USE_FMEMOPEN
@@ -1299,7 +1299,7 @@ pattern_t *mutt_pattern_comp(/* const */ char *s, int flags, struct Buffer *err)
 }
 
 static bool perform_and(pattern_t *pat, pattern_exec_flag flags, struct Context *ctx,
-                        HEADER *hdr, pattern_cache_t *cache)
+                        struct Header *hdr, pattern_cache_t *cache)
 {
   for (; pat; pat = pat->next)
     if (mutt_pattern_exec(pat, flags, ctx, hdr, cache) <= 0)
@@ -1308,7 +1308,7 @@ static bool perform_and(pattern_t *pat, pattern_exec_flag flags, struct Context 
 }
 
 static int perform_or(struct pattern_t *pat, pattern_exec_flag flags,
-                      struct Context *ctx, HEADER *hdr, pattern_cache_t *cache)
+                      struct Context *ctx, struct Header *hdr, pattern_cache_t *cache)
 {
   for (; pat; pat = pat->next)
     if (mutt_pattern_exec(pat, flags, ctx, hdr, cache) > 0)
@@ -1393,7 +1393,7 @@ static int match_threadcomplete(struct pattern_t *pat, pattern_exec_flag flags,
                                 int right, int down)
 {
   int a;
-  HEADER *h = NULL;
+  struct Header *h = NULL;
 
   if (!t)
     return 0;
@@ -1438,10 +1438,10 @@ static int is_pattern_cache_set(int cache_entry)
 
 /*
  * flags: MUTT_MATCH_FULL_ADDRESS - match both personal and machine address
- * cache: For repeated matches against the same HEADER, passing in non-NULL will
+ * cache: For repeated matches against the same Header, passing in non-NULL will
  *        store some of the cacheable pattern matches in this structure. */
 int mutt_pattern_exec(struct pattern_t *pat, pattern_exec_flag flags,
-                      struct Context *ctx, HEADER *h, pattern_cache_t *cache)
+                      struct Context *ctx, struct Header *h, pattern_cache_t *cache)
 {
   int result;
   int *cache_entry = NULL;
@@ -1705,7 +1705,7 @@ void mutt_check_simple(char *s, size_t len, const char *simple)
  *  THREAD*: success, email found
  *  NULL:    on error
  */
-static THREAD *top_of_thread(HEADER *h)
+static THREAD *top_of_thread(struct Header *h)
 {
   THREAD *t = NULL;
 
@@ -1728,7 +1728,7 @@ static THREAD *top_of_thread(HEADER *h)
  *  true: Success
  *  false: Failure
  */
-bool mutt_limit_current_thread(HEADER *h)
+bool mutt_limit_current_thread(struct Header *h)
 {
   int i;
   THREAD *me = NULL;
@@ -1890,7 +1890,7 @@ int mutt_search_command(int cur, int op)
   char buf[STRING];
   char temp[LONG_STRING];
   int incr;
-  HEADER *h = NULL;
+  struct Header *h = NULL;
   progress_t progress;
   const char *msg = NULL;
 

@@ -22,7 +22,7 @@
 #define _MUTT_IMAP_MESSAGE_H 1
 
 /* -- data structures -- */
-/* IMAP-specific header data, stored as HEADER->data */
+/* IMAP-specific header data, stored as Header->data */
 typedef struct imap_header_data
 {
   /* server-side flags */

@@ -108,7 +108,7 @@ int crypt_valid_passphrase(int flags)
 }
 
 
-int mutt_protect(HEADER *msg, char *keylist)
+int mutt_protect(struct Header *msg, char *keylist)
 {
   struct Body *pbody = NULL, *tmp_pbody = NULL;
   struct Body *tmp_smime_pbody = NULL;
@@ -660,7 +660,7 @@ void convert_to_7bit(struct Body *a)
 }
 
 
-void crypt_extract_keys_from_messages(HEADER *h)
+void crypt_extract_keys_from_messages(struct Header *h)
 {
   int i;
   char tempfname[_POSIX_PATH_MAX], *mbox = NULL;
@@ -781,7 +781,7 @@ void crypt_extract_keys_from_messages(HEADER *h)
 }
 
 
-int crypt_get_keys(HEADER *msg, char **keylist, int oppenc_mode)
+int crypt_get_keys(struct Header *msg, char **keylist, int oppenc_mode)
 {
   struct Address *adrlist = NULL, *last = NULL;
   const char *fqdn = mutt_fqdn(1);
@@ -837,7 +837,7 @@ int crypt_get_keys(HEADER *msg, char **keylist, int oppenc_mode)
  * Check if all recipients keys can be automatically determined.
  * Enable encryption if they can, otherwise disable encryption.
  */
-void crypt_opportunistic_encrypt(HEADER *msg)
+void crypt_opportunistic_encrypt(struct Header *msg)
 {
   char *pgpkeylist = NULL;
 

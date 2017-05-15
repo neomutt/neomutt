@@ -24,7 +24,7 @@
 #include "mutt_crypt.h"
 #include "mutt_idna.h"
 
-void mutt_edit_headers(const char *editor, const char *body, HEADER *msg, char *fcc, size_t fcclen)
+void mutt_edit_headers(const char *editor, const char *body, struct Header *msg, char *fcc, size_t fcclen)
 {
   char path[_POSIX_PATH_MAX]; /* tempfile used to edit headers + body */
   char buffer[LONG_STRING];
@@ -250,7 +250,7 @@ static void label_ref_inc(struct Context *ctx, char *label)
 /*
  * add an X-Label: field.
  */
-static int label_message(struct Context *ctx, HEADER *hdr, char *new)
+static int label_message(struct Context *ctx, struct Header *hdr, char *new)
 {
   if (hdr == NULL)
     return 0;
@@ -266,7 +266,7 @@ static int label_message(struct Context *ctx, HEADER *hdr, char *new)
   return hdr->changed = hdr->xlabel_changed = true;
 }
 
-int mutt_label_message(HEADER *hdr)
+int mutt_label_message(struct Header *hdr)
 {
   char buf[LONG_STRING], *new = NULL;
   int i;
@@ -324,7 +324,7 @@ void mutt_make_label_hash(struct Context *ctx)
   ctx->label_hash = hash_create(131, MUTT_HASH_STRDUP_KEYS);
 }
 
-void mutt_label_hash_add(struct Context *ctx, HEADER *hdr)
+void mutt_label_hash_add(struct Context *ctx, struct Header *hdr)
 {
   if (!ctx || !ctx->label_hash)
     return;
@@ -332,7 +332,7 @@ void mutt_label_hash_add(struct Context *ctx, HEADER *hdr)
     label_ref_inc(ctx, hdr->env->x_label);
 }
 
-void mutt_label_hash_remove(struct Context *ctx, HEADER *hdr)
+void mutt_label_hash_remove(struct Context *ctx, struct Header *hdr)
 {
   if (!ctx || !ctx->label_hash)
     return;

@@ -41,7 +41,7 @@
 typedef struct
 {
   struct Context *ctx;    /* current mailbox */
-  HEADER *hdr;     /* current message */
+  struct Header *hdr;     /* current message */
   struct Body *bdy;       /* current attachment */
   FILE *fp;        /* source stream */
   struct AttachPtr **idx; /* attachment information */

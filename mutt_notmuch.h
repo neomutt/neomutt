@@ -20,13 +20,13 @@
 
 #include <stdbool.h>
 
-int nm_read_entire_thread(struct Context *ctx, HEADER *h);
+int nm_read_entire_thread(struct Context *ctx, struct Header *h);
 
-char *nm_header_get_folder(HEADER *h);
-int nm_update_filename(struct Context *ctx, const char *old, const char *new, HEADER *h);
+char *nm_header_get_folder(struct Header *h);
+int nm_update_filename(struct Context *ctx, const char *old, const char *new, struct Header *h);
 bool nm_normalize_uri(char *new_uri, const char *orig_uri, size_t new_uri_sz);
 char *nm_uri_from_query(struct Context *ctx, char *buf, size_t bufsz);
-int nm_modify_message_tags(struct Context *ctx, HEADER *hdr, char *buf);
+int nm_modify_message_tags(struct Context *ctx, struct Header *hdr, char *buf);
 
 void nm_query_window_backward(void);
 void nm_query_window_forward(void);
@@ -37,7 +37,7 @@ void nm_longrun_done(struct Context *ctx);
 char *nm_get_description(struct Context *ctx);
 int nm_description_to_path(const char *desc, char *buf, size_t bufsz);
 
-int nm_record_message(struct Context *ctx, char *path, HEADER *h);
+int nm_record_message(struct Context *ctx, char *path, struct Header *h);
 
 void nm_debug_check(struct Context *ctx);
 int nm_get_all_tags(struct Context *ctx, char **tag_list, int *tag_count);
@@ -47,9 +47,9 @@ int nm_get_all_tags(struct Context *ctx, char **tag_list, int *tag_count);
  */
 int nm_nonctx_get_count(char *path, int *all, int *new);
 
-char *nm_header_get_tag_transformed(char *tag, HEADER *h);
-char *nm_header_get_tags_transformed(HEADER *h);
-char *nm_header_get_tags(HEADER *h);
+char *nm_header_get_tag_transformed(char *tag, struct Header *h);
+char *nm_header_get_tags_transformed(struct Header *h);
+char *nm_header_get_tags(struct Header *h);
 
 extern struct mx_ops mx_notmuch_ops;
 

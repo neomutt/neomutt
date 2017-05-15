@@ -90,7 +90,7 @@ struct Body *pgp_traditional_encryptsign(struct Body *a, int flags, char *keylis
 struct Body *pgp_encrypt_message(struct Body *a, char *keylist, int sign);
 struct Body *pgp_sign_message(struct Body *a);
 
-int pgp_send_menu(HEADER *msg);
+int pgp_send_menu(struct Header *msg);
 
 #endif /* CRYPT_BACKEND_CLASSIC_PGP */
 

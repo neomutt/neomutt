@@ -37,7 +37,7 @@ static int is_descendant(THREAD *a, THREAD *b)
 }
 
 /* Determines whether to display a message's subject. */
-static int need_display_subject(struct Context *ctx, HEADER *hdr)
+static int need_display_subject(struct Context *ctx, struct Header *hdr)
 {
   THREAD *tmp = NULL, *tree = hdr->thread;
 
@@ -84,7 +84,7 @@ static int need_display_subject(struct Context *ctx, HEADER *hdr)
 static void linearize_tree(struct Context *ctx)
 {
   THREAD *tree = ctx->tree;
-  HEADER **array = ctx->hdrs + (Sort & SORT_REVERSE ? ctx->msgcount - 1 : 0);
+  struct Header **array = ctx->hdrs + (Sort & SORT_REVERSE ? ctx->msgcount - 1 : 0);
 
   while (tree)
   {
@@ -419,7 +419,7 @@ static THREAD *find_subject(struct Context *ctx, THREAD *cur)
   {
     for (ptr = hash_find_bucket(ctx->subj_hash, subjects->data); ptr; ptr = ptr->next)
     {
-      tmp = ((HEADER *) ptr->data)->thread;
+      tmp = ((struct Header *) ptr->data)->thread;
       if (tmp != cur &&                    /* don't match the same message */
           !tmp->fake_thread &&             /* don't match pseudo threads */
           tmp->message->subject_changed && /* only match interesting replies */
@@ -480,7 +480,7 @@ static void insert_message(THREAD **new, THREAD *newparent, THREAD *cur)
 static struct Hash *make_subj_hash(struct Context *ctx)
 {
   int i;
-  HEADER *hdr = NULL;
+  struct Header *hdr = NULL;
   struct Hash *hash = NULL;
 
   hash = hash_create(ctx->msgcount * 2, MUTT_HASH_ALLOW_DUPS);
@@ -594,7 +594,7 @@ static int compare_threads(const void *a, const void *b)
 THREAD *mutt_sort_subthreads(THREAD *thread, int init)
 {
   THREAD **array = NULL, *sort_key = NULL, *top = NULL, *tmp = NULL;
-  HEADER *oldsort_key = NULL;
+  struct Header *oldsort_key = NULL;
   int i, array_size, sort_top = 0;
 
   /* we put things into the array backwards to save some cycles,
@@ -721,7 +721,7 @@ THREAD *mutt_sort_subthreads(THREAD *thread, int init)
 
 static void check_subjects(struct Context *ctx, int init)
 {
-  HEADER *cur = NULL;
+  struct Header *cur = NULL;
   THREAD *tmp = NULL;
   int i;
 
@@ -753,7 +753,7 @@ static void check_subjects(struct Context *ctx, int init)
 
 void mutt_sort_threads(struct Context *ctx, int init)
 {
-  HEADER *cur = NULL;
+  struct Header *cur = NULL;
   int i, oldsort, using_refs = 0;
   THREAD *thread = NULL, *new = NULL, *tmp = NULL, top;
   memset(&top, 0, sizeof(top));
@@ -977,7 +977,7 @@ void mutt_sort_threads(struct Context *ctx, int init)
   }
 }
 
-static HEADER *find_virtual(THREAD *cur, int reverse)
+static struct Header *find_virtual(THREAD *cur, int reverse)
 {
   THREAD *top = NULL;
 
@@ -1022,10 +1022,10 @@ static HEADER *find_virtual(THREAD *cur, int reverse)
 /* dir => true when moving forward, false when moving in reverse
  * subthreads => false when moving to next thread, true when moving to next subthread
  */
-int _mutt_aside_thread(HEADER *hdr, short dir, short subthreads)
+int _mutt_aside_thread(struct Header *hdr, short dir, short subthreads)
 {
   THREAD *cur = NULL;
-  HEADER *tmp = NULL;
+  struct Header *tmp = NULL;
 
   if ((Sort & SORT_MASK) != SORT_THREADS)
   {
@@ -1078,10 +1078,10 @@ int _mutt_aside_thread(HEADER *hdr, short dir, short subthreads)
   return tmp->virtual;
 }
 
-int mutt_parent_message(struct Context *ctx, HEADER *hdr, int find_root)
+int mutt_parent_message(struct Context *ctx, struct Header *hdr, int find_root)
 {
   THREAD *thread = NULL;
-  HEADER *parent = NULL;
+  struct Header *parent = NULL;
 
   if ((Sort & SORT_MASK) != SORT_THREADS)
   {
@@ -1122,7 +1122,7 @@ int mutt_parent_message(struct Context *ctx, HEADER *hdr, int find_root)
 void mutt_set_virtual(struct Context *ctx)
 {
   int i;
-  HEADER *cur = NULL;
+  struct Header *cur = NULL;
 
   ctx->vcount = 0;
   ctx->vsize = 0;
@@ -1141,10 +1141,10 @@ void mutt_set_virtual(struct Context *ctx)
   }
 }
 
-int _mutt_traverse_thread(struct Context *ctx, HEADER *cur, int flag)
+int _mutt_traverse_thread(struct Context *ctx, struct Header *cur, int flag)
 {
   THREAD *thread = NULL, *top = NULL;
-  HEADER *roothdr = NULL;
+  struct Header *roothdr = NULL;
   int final, reverse = (Sort & SORT_REVERSE), minmsgno;
   int num_hidden = 0, new = 0, old = 0;
   int min_unread_msgno = INT_MAX, min_unread = cur->virtual;
@@ -1300,7 +1300,7 @@ int _mutt_traverse_thread(struct Context *ctx, HEADER *cur, int flag)
 /* if flag is 0, we want to know how many messages
  * are in the thread.  if flag is 1, we want to know
  * our position in the thread. */
-int mutt_messages_in_thread(struct Context *ctx, HEADER *hdr, int flag)
+int mutt_messages_in_thread(struct Context *ctx, struct Header *hdr, int flag)
 {
   THREAD *threads[2];
   int i, rc;
@@ -1336,7 +1336,7 @@ int mutt_messages_in_thread(struct Context *ctx, HEADER *hdr, int flag)
 struct Hash *mutt_make_id_hash(struct Context *ctx)
 {
   int i;
-  HEADER *hdr = NULL;
+  struct Header *hdr = NULL;
   struct Hash *hash = NULL;
 
   hash = hash_create(ctx->msgcount * 2, 0);
@@ -1378,7 +1378,7 @@ static void clean_references(THREAD *brk, THREAD *cur)
 
     if (done)
     {
-      HEADER *h = cur->message;
+      struct Header *h = cur->message;
 
       /* clearing the References: header from obsolete Message-ID(s) */
       mutt_free_list(&ref->next);
@@ -1388,7 +1388,7 @@ static void clean_references(THREAD *brk, THREAD *cur)
   }
 }
 
-void mutt_break_thread(HEADER *hdr)
+void mutt_break_thread(struct Header *hdr)
 {
   mutt_free_list(&hdr->env->in_reply_to);
   mutt_free_list(&hdr->env->references);
@@ -1397,7 +1397,7 @@ void mutt_break_thread(HEADER *hdr)
   clean_references(hdr->thread, hdr->thread->child);
 }
 
-static bool link_threads(HEADER *parent, HEADER *child, struct Context *ctx)
+static bool link_threads(struct Header *parent, struct Header *child, struct Context *ctx)
 {
   if (child == parent)
     return false;
@@ -1413,7 +1413,7 @@ static bool link_threads(HEADER *parent, HEADER *child, struct Context *ctx)
   return true;
 }
 
-int mutt_link_threads(HEADER *cur, HEADER *last, struct Context *ctx)
+int mutt_link_threads(struct Header *cur, struct Header *last, struct Context *ctx)
 {
   int i;
   bool changed = false;

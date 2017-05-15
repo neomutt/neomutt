@@ -370,7 +370,7 @@ char *mutt_find_hook(int type, const char *pat)
   return NULL;
 }
 
-void mutt_message_hook(struct Context *ctx, HEADER *hdr, int type)
+void mutt_message_hook(struct Context *ctx, struct Header *hdr, int type)
 {
   struct Buffer err, token;
   HOOK *hook = NULL;
@@ -412,7 +412,7 @@ void mutt_message_hook(struct Context *ctx, HEADER *hdr, int type)
   current_hook_type = 0;
 }
 
-static int addr_hook(char *path, size_t pathlen, int type, struct Context *ctx, HEADER *hdr)
+static int addr_hook(char *path, size_t pathlen, int type, struct Context *ctx, struct Header *hdr)
 {
   HOOK *hook = NULL;
   pattern_cache_t cache;
@@ -435,7 +435,7 @@ static int addr_hook(char *path, size_t pathlen, int type, struct Context *ctx, 
   return -1;
 }
 
-void mutt_default_save(char *path, size_t pathlen, HEADER *hdr)
+void mutt_default_save(char *path, size_t pathlen, struct Header *hdr)
 {
   *path = 0;
   if (addr_hook(path, pathlen, MUTT_SAVEHOOK, Context, hdr) != 0)
@@ -463,7 +463,7 @@ void mutt_default_save(char *path, size_t pathlen, HEADER *hdr)
   }
 }
 
-void mutt_select_fcc(char *path, size_t pathlen, HEADER *hdr)
+void mutt_select_fcc(char *path, size_t pathlen, struct Header *hdr)
 {
   struct Address *adr = NULL;
   char buf[_POSIX_PATH_MAX];

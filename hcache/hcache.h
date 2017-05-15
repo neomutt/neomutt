@@ -83,17 +83,17 @@ void *mutt_hcache_fetch_raw(header_cache_t *h, const char *key, size_t keylen);
 void mutt_hcache_free(header_cache_t *h, void **data);
 
 /**
- * mutt_hcache_restore - restore a HEADER from data retrieved from the cache.
+ * mutt_hcache_restore - restore a Header from data retrieved from the cache.
  *
  * @param d Data retrieved using mutt_hcache_fetch or mutt_hcache_fetch_raw.
  * @return Pointer to the restored header (cannot be NULL).
- * @note The returned HEADER must be free'd by caller code with
+ * @note The returned Header must be free'd by caller code with
  * mutt_free_header.
  */
-HEADER *mutt_hcache_restore(const unsigned char *d);
+struct Header *mutt_hcache_restore(const unsigned char *d);
 
 /**
- * mutt_hcache_store - store a HEADER along with a validity datum.
+ * mutt_hcache_store - store a Header along with a validity datum.
  *
  * @param h Pointer to the header_cache_t structure got by mutt_hcache_open.
  * @param key Message identification string.
@@ -104,7 +104,7 @@ HEADER *mutt_hcache_restore(const unsigned char *d);
  * @return 0 on success, -1 otherwise.
  */
 int mutt_hcache_store(header_cache_t *h, const char *key, size_t keylen,
-                      HEADER *header, unsigned int uidvalidity);
+                      struct Header *header, unsigned int uidvalidity);
 
 /**
  * mutt_hcache_store_raw - store a key / data pair.

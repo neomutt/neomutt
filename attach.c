@@ -323,7 +323,7 @@ void mutt_check_lookup_list(struct Body *b, char *type, int len)
 }
 
 /* returns -1 on error, 0 or the return code from mutt_do_pager() on success */
-int mutt_view_attachment(FILE *fp, struct Body *a, int flag, HEADER *hdr, struct AttachPtr **idx, short idxlen)
+int mutt_view_attachment(FILE *fp, struct Body *a, int flag, struct Header *hdr, struct AttachPtr **idx, short idxlen)
 {
   char tempfile[_POSIX_PATH_MAX] = "";
   char pagerfile[_POSIX_PATH_MAX] = "";
@@ -692,7 +692,7 @@ static FILE *save_attachment_open(char *path, int flags)
 }
 
 /* returns 0 on success, -1 on error */
-int mutt_save_attachment(FILE *fp, struct Body *m, char *path, int flags, HEADER *hdr)
+int mutt_save_attachment(FILE *fp, struct Body *m, char *path, int flags, struct Header *hdr)
 {
   if (!m)
     return -1;
@@ -707,7 +707,7 @@ int mutt_save_attachment(FILE *fp, struct Body *m, char *path, int flags, HEADER
       /* message type attachments are written to mail folders. */
 
       char buf[HUGE_STRING];
-      HEADER *hn = NULL;
+      struct Header *hn = NULL;
       struct Context ctx;
       MESSAGE *msg = NULL;
       int chflags = 0;
@@ -811,7 +811,7 @@ int mutt_decode_save_attachment(FILE *fp, struct Body *m, char *path, int displa
   STATE s;
   unsigned int saved_encoding = 0;
   struct Body *saved_parts = NULL;
-  HEADER *saved_hdr = NULL;
+  struct Header *saved_hdr = NULL;
   int ret = 0;
 
   memset(&s, 0, sizeof(s));
@@ -892,7 +892,7 @@ int mutt_decode_save_attachment(FILE *fp, struct Body *m, char *path, int displa
 }
 
 /* Ok, the difference between send and receive:
- * recv: Body->filename is a suggested name, and Context|HEADER points
+ * recv: Body->filename is a suggested name, and Context|Header points
  *       to the attachment in mailbox which is encoded
  * send: Body->filename points to the un-encoded file which contains the
  *       attachment

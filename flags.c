@@ -22,7 +22,7 @@
 #include "mx.h"
 #include "sort.h"
 
-void _mutt_set_flag(struct Context *ctx, HEADER *h, int flag, int bf, int upd_ctx)
+void _mutt_set_flag(struct Context *ctx, struct Header *h, int flag, int bf, int upd_ctx)
 {
   if (!ctx || !h)
     return;
@@ -323,7 +323,7 @@ void mutt_tag_set_flag(int flag, int bf)
     if (Context->hdrs[Context->v2r[j]]->tagged)
       mutt_set_flag(Context, Context->hdrs[Context->v2r[j]], flag, bf);
 }
-int mutt_thread_set_flag(HEADER *hdr, int flag, int bf, int subthread)
+int mutt_thread_set_flag(struct Header *hdr, int flag, int bf, int subthread)
 {
   THREAD *start = NULL, *cur = hdr->thread;
 
@@ -367,7 +367,7 @@ int mutt_thread_set_flag(HEADER *hdr, int flag, int bf, int subthread)
   /* not reached */
 }
 
-int mutt_change_flag(HEADER *h, int bf)
+int mutt_change_flag(struct Header *h, int bf)
 {
   int i, flag;
   event_t event;

@@ -133,7 +133,7 @@ static char *fsl = "\007";
  */
 static void collapse_all(MUTTMENU *menu, int toggle)
 {
-  HEADER *h = NULL, *base = NULL;
+  struct Header *h = NULL, *base = NULL;
   THREAD *thread = NULL, *top = NULL;
   int final;
 
@@ -270,7 +270,7 @@ static int mx_toggle_write(struct Context *ctx)
 static void resort_index(MUTTMENU *menu)
 {
   int i;
-  HEADER *current = CURHDR;
+  struct Header *current = CURHDR;
 
   menu->current = -1;
   mutt_sort_headers(Context, 0);
@@ -297,7 +297,7 @@ static void resort_index(MUTTMENU *menu)
 void update_index(MUTTMENU *menu, struct Context *ctx, int check, int oldcount, int index_hint)
 {
   /* store pointers to the newly added messages */
-  HEADER **save_new = NULL;
+  struct Header **save_new = NULL;
   int j;
 
   if (!menu || !ctx)
@@ -341,7 +341,7 @@ void update_index(MUTTMENU *menu, struct Context *ctx, int check, int oldcount, 
   if (option(OPTUNCOLLAPSENEW) && oldcount && check != MUTT_REOPENED &&
       ((Sort & SORT_MASK) == SORT_THREADS))
   {
-    save_new = safe_malloc(sizeof(HEADER *) * (ctx->msgcount - oldcount));
+    save_new = safe_malloc(sizeof(struct Header *) * (ctx->msgcount - oldcount));
     for (j = oldcount; j < ctx->msgcount; j++)
       save_new[j - oldcount] = ctx->hdrs[j];
   }
@@ -374,7 +374,7 @@ void update_index(MUTTMENU *menu, struct Context *ctx, int check, int oldcount, 
 
         for (k = 0; k < ctx->msgcount; k++)
         {
-          HEADER *h = ctx->hdrs[k];
+          struct Header *h = ctx->hdrs[k];
           if (h == save_new[j] && (!ctx->pattern || h->limited))
             mutt_uncollapse_thread(ctx, h);
         }
@@ -562,7 +562,7 @@ void index_make_entry(char *s, size_t l, MUTTMENU *menu, int num)
   if (!Context || !menu || (num < 0) || (num >= Context->hdrmax))
     return;
 
-  HEADER *h = Context->hdrs[Context->v2r[num]];
+  struct Header *h = Context->hdrs[Context->v2r[num]];
   if (!h)
     return;
 
@@ -630,7 +630,7 @@ int index_color(int index_no)
   if (!Context || (index_no < 0))
     return 0;
 
-  HEADER *h = Context->hdrs[Context->v2r[index_no]];
+  struct Header *h = Context->hdrs[Context->v2r[index_no]];
 
   if (h && h->pair)
     return h->pair;
@@ -1204,7 +1204,7 @@ int mutt_index_menu(void)
         CHECK_ATTACH;
         if (Context->magic == MUTT_NNTP)
         {
-          HEADER *hdr = NULL;
+          struct Header *hdr = NULL;
 
           if (op == OP_GET_MESSAGE)
           {
@@ -1312,8 +1312,8 @@ int mutt_index_menu(void)
           /* at least one message has been loaded */
           if (Context->msgcount > oldmsgcount)
           {
-            HEADER *oldcur = CURHDR;
-            HEADER *hdr = NULL;
+            struct Header *oldcur = CURHDR;
+            struct Header *hdr = NULL;
             int k;
             bool quiet = Context->quiet;
 
@@ -1704,7 +1704,7 @@ int mutt_index_menu(void)
           int ovc = Context->vcount;
           int oc = Context->msgcount;
           int check, newidx;
-          HEADER *newhdr = NULL;
+          struct Header *newhdr = NULL;
 
           /* don't attempt to move the cursor if there are no visible messages in the current limit */
           if (menu->current < Context->vcount)
@@ -1797,7 +1797,7 @@ int mutt_index_menu(void)
         }
         if (oc < Context->msgcount)
         {
-          HEADER *oldcur = CURHDR;
+          struct Header *oldcur = CURHDR;
 
           if ((Sort & SORT_MASK) == SORT_THREADS)
             mutt_sort_headers(Context, 0);
@@ -2159,7 +2159,7 @@ int mutt_index_menu(void)
         else if (CURHDR->env->in_reply_to || CURHDR->env->references)
         {
           {
-            HEADER *oldcur = CURHDR;
+            struct Header *oldcur = CURHDR;
 
             mutt_break_thread(CURHDR);
             mutt_sort_headers(Context, 1);
@@ -2199,7 +2199,7 @@ int mutt_index_menu(void)
           mutt_error(_("First, please tag a message to be linked here"));
         else
         {
-          HEADER *oldcur = CURHDR;
+          struct Header *oldcur = CURHDR;
 
           if (mutt_link_threads(CURHDR, tag ? NULL : Context->last_tag, Context))
           {
@@ -3255,7 +3255,7 @@ int mutt_index_menu(void)
   return close;
 }
 
-void mutt_set_header_color(struct Context *ctx, HEADER *curhdr)
+void mutt_set_header_color(struct Context *ctx, struct Header *curhdr)
 {
   COLOR_LINE *color = NULL;
   pattern_cache_t cache;

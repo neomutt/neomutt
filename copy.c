@@ -37,7 +37,7 @@ static int address_header_decode(char **str);
 static int copy_delete_attach(struct Body *b, FILE *fpin, FILE *fpout, char *date);
 
 /* Ok, the only reason for not merging this with mutt_copy_header()
- * below is to avoid creating a HEADER structure in message_handler().
+ * below is to avoid creating a Header structure in message_handler().
  * Also, this one will wrap headers much more aggressively than the other one.
  */
 int mutt_copy_hdr(FILE *in, FILE *out, LOFF_T off_start, LOFF_T off_end,
@@ -342,7 +342,7 @@ int mutt_copy_hdr(FILE *in, FILE *out, LOFF_T off_start, LOFF_T off_end,
    prefix
         string to use if CH_PREFIX is set
  */
-int mutt_copy_header(FILE *in, HEADER *h, FILE *out, int flags, const char *prefix)
+int mutt_copy_header(FILE *in, struct Header *h, FILE *out, int flags, const char *prefix)
 {
   char buffer[SHORT_STRING];
 
@@ -510,7 +510,7 @@ static int count_delete_lines(FILE *fp, struct Body *b, LOFF_T *length, size_t d
  *      MUTT_CM_CHARCONV        perform character set conversion
  * chflags      flags to mutt_copy_header()
  */
-int _mutt_copy_message(FILE *fpout, FILE *fpin, HEADER *hdr, struct Body *body, int flags, int chflags)
+int _mutt_copy_message(FILE *fpout, FILE *fpin, struct Header *hdr, struct Body *body, int flags, int chflags)
 {
   char prefix[SHORT_STRING];
   STATE s;
@@ -713,7 +713,7 @@ int _mutt_copy_message(FILE *fpout, FILE *fpin, HEADER *hdr, struct Body *body, 
 
 /* should be made to return -1 on fatal errors, and 1 on non-fatal errors
  * like partial decode, where it is worth displaying as much as possible */
-int mutt_copy_message(FILE *fpout, struct Context *src, HEADER *hdr, int flags, int chflags)
+int mutt_copy_message(FILE *fpout, struct Context *src, struct Header *hdr, int flags, int chflags)
 {
   MESSAGE *msg = NULL;
   int r;
@@ -741,7 +741,7 @@ int mutt_copy_message(FILE *fpout, struct Context *src, HEADER *hdr, int flags, 
  * chflags      mutt_copy_header() flags
  */
 static int _mutt_append_message(struct Context *dest, FILE *fpin, struct Context *src,
-                                HEADER *hdr, struct Body *body, int flags, int chflags)
+                                struct Header *hdr, struct Body *body, int flags, int chflags)
 {
   char buf[STRING];
   MESSAGE *msg = NULL;
@@ -770,7 +770,7 @@ static int _mutt_append_message(struct Context *dest, FILE *fpin, struct Context
   return r;
 }
 
-int mutt_append_message(struct Context *dest, struct Context *src, HEADER *hdr, int cmflags, int chflags)
+int mutt_append_message(struct Context *dest, struct Context *src, struct Header *hdr, int cmflags, int chflags)
 {
   MESSAGE *msg = NULL;
   int r;

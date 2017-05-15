@@ -129,7 +129,7 @@ static void snd_entry(char *b, size_t blen, MUTTMENU *menu, int num)
 
 #include "mutt_crypt.h"
 
-static void redraw_crypt_lines(HEADER *msg)
+static void redraw_crypt_lines(struct Header *msg)
 {
   SETCOLOR(MT_COLOR_COMPOSE_HEADER);
   mutt_window_mvprintw(MuttIndexWindow, HDR_CRYPT, 0, TITLE_FMT, "Security: ");
@@ -294,7 +294,7 @@ static void draw_envelope_addr(int line, struct Address *addr)
   mutt_paddstr(W, buf);
 }
 
-static void draw_envelope(HEADER *msg, char *fcc)
+static void draw_envelope(struct Header *msg, char *fcc)
 {
   draw_envelope_addr(HDR_FROM, msg->env->from);
 #ifdef USE_NNTP
@@ -427,7 +427,7 @@ static void update_idx(MUTTMENU *menu, struct AttachPtr **idx, short idxlen)
 
 typedef struct
 {
-  HEADER *msg;
+  struct Header *msg;
   char *fcc;
 } compose_redraw_data_t;
 
@@ -595,9 +595,9 @@ static void compose_status_line(char *buf, size_t buflen, size_t col, int cols,
  * 0    normal exit
  * -1   abort message
  */
-int mutt_compose_menu(HEADER *msg, /* structure for new message */
+int mutt_compose_menu(struct Header *msg, /* structure for new message */
                       char *fcc,   /* where to save a copy of the message */
-                      size_t fcclen, HEADER *cur, /* current message */
+                      size_t fcclen, struct Header *cur, /* current message */
                       int flags)
 {
   char helpstr[LONG_STRING];
@@ -919,7 +919,7 @@ int mutt_compose_menu(HEADER *msg, /* structure for new message */
 #endif
       {
         char *prompt = NULL;
-        HEADER *h = NULL;
+        struct Header *h = NULL;
 
         fname[0] = 0;
         prompt = _("Open mailbox to attach message from");

@@ -311,7 +311,7 @@ static void be_edit_header(struct Envelope *e, int force)
   }
 }
 
-int mutt_builtin_editor(const char *path, HEADER *msg, HEADER *cur)
+int mutt_builtin_editor(const char *path, struct Header *msg, struct Header *cur)
 {
   char **buf = NULL;
   int bufmax = 0, buflen = 0;

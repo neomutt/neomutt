@@ -33,7 +33,7 @@
 static void imap_update_context(IMAP_DATA *idata, int oldmsgcount)
 {
   struct Context *ctx = NULL;
-  HEADER *h = NULL;
+  struct Header *h = NULL;
   int msgno;
 
   ctx = idata->ctx;
@@ -59,7 +59,7 @@ static struct BodyCache *msg_cache_open(IMAP_DATA *idata)
   return mutt_bcache_open(&idata->conn->account, mailbox);
 }
 
-static FILE *msg_cache_get(IMAP_DATA *idata, HEADER *h)
+static FILE *msg_cache_get(IMAP_DATA *idata, struct Header *h)
 {
   char id[_POSIX_PATH_MAX];
 
@@ -71,7 +71,7 @@ static FILE *msg_cache_get(IMAP_DATA *idata, HEADER *h)
   return mutt_bcache_get(idata->bcache, id);
 }
 
-static FILE *msg_cache_put(IMAP_DATA *idata, HEADER *h)
+static FILE *msg_cache_put(IMAP_DATA *idata, struct Header *h)
 {
   char id[_POSIX_PATH_MAX];
 
@@ -83,7 +83,7 @@ static FILE *msg_cache_put(IMAP_DATA *idata, HEADER *h)
   return mutt_bcache_put(idata->bcache, id, 1);
 }
 
-static int msg_cache_commit(IMAP_DATA *idata, HEADER *h)
+static int msg_cache_commit(IMAP_DATA *idata, struct Header *h)
 {
   char id[_POSIX_PATH_MAX];
 
@@ -688,7 +688,7 @@ error_out_0:
 int imap_fetch_message(struct Context *ctx, MESSAGE *msg, int msgno)
 {
   IMAP_DATA *idata = NULL;
-  HEADER *h = NULL;
+  struct Header *h = NULL;
   struct Envelope *newenv = NULL;
   char buf[LONG_STRING];
   char path[_POSIX_PATH_MAX];
@@ -943,7 +943,7 @@ int imap_append_message(struct Context *ctx, MESSAGE *msg)
    * already rereading the whole file for length it isn't any more
    * expensive (it'd be nice if we had the file size passed in already
    * by the code that writes the file, but that's a lot of changes.
-   * Ideally we'd have a HEADER structure with flag info here... */
+   * Ideally we'd have a Header structure with flag info here... */
   for (last = EOF, len = 0; (c = fgetc(fp)) != EOF; last = c)
   {
     if (c == '\n' && last != '\r')
@@ -1045,7 +1045,7 @@ fail:
  *      -1: error
  *       0: success
  *       1: non-fatal error - try fetch/append */
-int imap_copy_messages(struct Context *ctx, HEADER *h, char *dest, int delete)
+int imap_copy_messages(struct Context *ctx, struct Header *h, char *dest, int delete)
 {
   IMAP_DATA *idata = NULL;
   struct Buffer cmd, sync_cmd;
@@ -1091,7 +1091,7 @@ int imap_copy_messages(struct Context *ctx, HEADER *h, char *dest, int delete)
     mutt_buffer_init(&sync_cmd);
     mutt_buffer_init(&cmd);
 
-    /* Null HEADER* means copy tagged messages */
+    /* Null Header* means copy tagged messages */
     if (!h)
     {
       /* if any messages have attachments to delete, fall through to FETCH
@@ -1219,7 +1219,7 @@ out:
   return rc < 0 ? -1 : rc;
 }
 
-int imap_cache_del(IMAP_DATA *idata, HEADER *h)
+int imap_cache_del(IMAP_DATA *idata, struct Header *h)
 {
   char id[_POSIX_PATH_MAX];
 
@@ -1241,7 +1241,7 @@ int imap_cache_clean(IMAP_DATA *idata)
 
 /* imap_add_keywords: concatenate custom IMAP tags to list, if they
  *   appear in the folder flags list. Why wouldn't they? */
-void imap_add_keywords(char *s, HEADER *h, LIST *mailbox_flags, size_t slen)
+void imap_add_keywords(char *s, struct Header *h, LIST *mailbox_flags, size_t slen)
 {
   LIST *keywords = NULL;
 
@@ -1274,7 +1274,7 @@ void imap_free_header_data(IMAP_HEADER_DATA **data)
 
 /* imap_set_flags: fill out the message header according to the flags from
  *   the server. Expects a flags line of the form "FLAGS (flag flag ...)" */
-char *imap_set_flags(IMAP_DATA *idata, HEADER *h, char *s)
+char *imap_set_flags(IMAP_DATA *idata, struct Header *h, char *s)
 {
   struct Context *ctx = idata->ctx;
   IMAP_HEADER newh;

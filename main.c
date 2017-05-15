@@ -173,7 +173,7 @@ int main(int argc, char **argv, char **environ)
   char *includeFile = NULL;
   char *draftFile = NULL;
   char *newMagic = NULL;
-  HEADER *msg = NULL;
+  struct Header *msg = NULL;
   LIST *attach = NULL;
   LIST *commands = NULL;
   LIST *queries = NULL;
@@ -647,13 +647,13 @@ int main(int argc, char **argv, char **environ)
       else
         sendflags |= SENDNOFREEHEADER;
 
-      /* Parse the draftFile into the full HEADER/Body structure.
+      /* Parse the draftFile into the full Header/Body structure.
        * Set SENDDRAFTFILE so ci_send_message doesn't overwrite
        * our msg->content.
        */
       if (draftFile)
       {
-        HEADER *context_hdr = NULL;
+        struct Header *context_hdr = NULL;
         struct Envelope *opts_env = msg->env;
         struct stat st;
         LIST *uh = NULL, **last_uhp = NULL;

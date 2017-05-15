@@ -165,7 +165,7 @@ static int cmd_status(const char *s)
 static void cmd_parse_expunge(IMAP_DATA *idata, const char *s)
 {
   int expno, cur;
-  HEADER *h = NULL;
+  struct Header *h = NULL;
 
   mutt_debug(2, "Handling EXPUNGE\n");
 
@@ -195,7 +195,7 @@ static void cmd_parse_expunge(IMAP_DATA *idata, const char *s)
 static void cmd_parse_fetch(IMAP_DATA *idata, char *s)
 {
   int msgno, cur;
-  HEADER *h = NULL;
+  struct Header *h = NULL;
 
   mutt_debug(3, "Handling FETCH\n");
 
@@ -465,14 +465,14 @@ static void cmd_parse_myrights(IMAP_DATA *idata, const char *s)
 static void cmd_parse_search(IMAP_DATA *idata, const char *s)
 {
   unsigned int uid;
-  HEADER *h = NULL;
+  struct Header *h = NULL;
 
   mutt_debug(2, "Handling SEARCH\n");
 
   while ((s = imap_next_word((char *) s)) && *s != '\0')
   {
     uid = (unsigned int) atoi(s);
-    h = (HEADER *) int_hash_find(idata->uid_hash, uid);
+    h = (struct Header *) int_hash_find(idata->uid_hash, uid);
     if (h)
       h->matched = true;
   }

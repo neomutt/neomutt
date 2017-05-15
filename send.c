@@ -385,7 +385,7 @@ static void process_user_header(struct Envelope *env)
   }
 }
 
-void mutt_forward_intro(FILE *fp, HEADER *cur)
+void mutt_forward_intro(FILE *fp, struct Header *cur)
 {
   char buffer[STRING];
 
@@ -402,7 +402,7 @@ void mutt_forward_trailer(FILE *fp)
 }
 
 
-static int include_forward(struct Context *ctx, HEADER *cur, FILE *out)
+static int include_forward(struct Context *ctx, struct Header *cur, FILE *out)
 {
   int chflags = CH_DECODE, cmflags = 0;
 
@@ -439,7 +439,7 @@ static int include_forward(struct Context *ctx, HEADER *cur, FILE *out)
   return 0;
 }
 
-void mutt_make_attribution(struct Context *ctx, HEADER *cur, FILE *out)
+void mutt_make_attribution(struct Context *ctx, struct Header *cur, FILE *out)
 {
   char buffer[LONG_STRING];
   if (Attribution)
@@ -452,7 +452,7 @@ void mutt_make_attribution(struct Context *ctx, HEADER *cur, FILE *out)
   }
 }
 
-void mutt_make_post_indent(struct Context *ctx, HEADER *cur, FILE *out)
+void mutt_make_post_indent(struct Context *ctx, struct Header *cur, FILE *out)
 {
   char buffer[STRING];
   if (PostIndentString)
@@ -463,7 +463,7 @@ void mutt_make_post_indent(struct Context *ctx, HEADER *cur, FILE *out)
   }
 }
 
-static int include_reply(struct Context *ctx, HEADER *cur, FILE *out)
+static int include_reply(struct Context *ctx, struct Header *cur, FILE *out)
 {
   int cmflags = MUTT_CM_PREFIX | MUTT_CM_DECODE | MUTT_CM_CHARCONV | MUTT_CM_REPLYING;
   int chflags = CH_DECODE;
@@ -653,7 +653,7 @@ void mutt_fix_reply_recipients(struct Envelope *env)
   }
 }
 
-void mutt_make_forward_subject(struct Envelope *env, struct Context *ctx, HEADER *cur)
+void mutt_make_forward_subject(struct Envelope *env, struct Context *ctx, struct Header *cur)
 {
   if (!env)
     return;
@@ -665,7 +665,7 @@ void mutt_make_forward_subject(struct Envelope *env, struct Context *ctx, HEADER
   mutt_str_replace(&env->subject, buffer);
 }
 
-void mutt_make_misc_reply_headers(struct Envelope *env, struct Context *ctx, HEADER *cur, struct Envelope *curenv)
+void mutt_make_misc_reply_headers(struct Envelope *env, struct Context *ctx, struct Header *cur, struct Envelope *curenv)
 {
   if (!env || !curenv)
     return;
@@ -731,7 +731,7 @@ static void make_reference_headers(struct Envelope *curenv, struct Envelope *env
 
   if (!curenv)
   {
-    HEADER *h = NULL;
+    struct Header *h = NULL;
     LIST **p = NULL, **q = NULL;
     int i;
 
@@ -752,7 +752,7 @@ static void make_reference_headers(struct Envelope *curenv, struct Envelope *env
     mutt_free_list(&env->references);
 }
 
-static int envelope_defaults(struct Envelope *env, struct Context *ctx, HEADER *cur, int flags)
+static int envelope_defaults(struct Envelope *env, struct Context *ctx, struct Header *cur, int flags)
 {
   struct Envelope *curenv = NULL;
   int i = 0, tag = 0;
@@ -796,7 +796,7 @@ static int envelope_defaults(struct Envelope *env, struct Context *ctx, HEADER *
 #endif
         if (tag)
     {
-      HEADER *h = NULL;
+      struct Header *h = NULL;
 
       for (i = 0; i < ctx->vcount; i++)
       {
@@ -828,13 +828,13 @@ static int envelope_defaults(struct Envelope *env, struct Context *ctx, HEADER *
 }
 
 static int generate_body(FILE *tempfp, /* stream for outgoing message */
-                         HEADER *msg,  /* header for outgoing message */
+                         struct Header *msg,  /* header for outgoing message */
                          int flags,    /* compose mode */
                          struct Context *ctx, /* current mailbox */
-                         HEADER *cur)  /* current message */
+                         struct Header *cur)  /* current message */
 {
   int i;
-  HEADER *h = NULL;
+  struct Header *h = NULL;
   struct Body *tmp = NULL;
 
   if (flags & SENDREPLY)
@@ -1061,7 +1061,7 @@ struct Address *mutt_default_from(void)
   return adr;
 }
 
-static int send_message(HEADER *msg)
+static int send_message(struct Header *msg)
 {
   char tempfile[_POSIX_PATH_MAX];
   FILE *tempfp = NULL;
@@ -1173,9 +1173,9 @@ static void fix_end_of_file(const char *data)
   safe_fclose(&fp);
 }
 
-int mutt_compose_to_sender(HEADER *hdr)
+int mutt_compose_to_sender(struct Header *hdr)
 {
-  HEADER *msg = mutt_new_header();
+  struct Header *msg = mutt_new_header();
 
   msg->env = mutt_new_envelope();
   if (!hdr)
@@ -1194,9 +1194,9 @@ int mutt_compose_to_sender(HEADER *hdr)
   return ci_send_message(0, msg, NULL, NULL, NULL);
 }
 
-int mutt_resend_message(FILE *fp, struct Context *ctx, HEADER *cur)
+int mutt_resend_message(FILE *fp, struct Context *ctx, struct Header *cur)
 {
-  HEADER *msg = mutt_new_header();
+  struct Header *msg = mutt_new_header();
 
   if (mutt_prepare_template(fp, ctx, msg, cur, 1) < 0)
   {
@@ -1228,7 +1228,7 @@ int mutt_resend_message(FILE *fp, struct Context *ctx, HEADER *cur)
   return ci_send_message(SENDRESEND, msg, NULL, ctx, cur);
 }
 
-static int is_reply(HEADER *reply, HEADER *orig)
+static int is_reply(struct Header *reply, struct Header *orig)
 {
   if (!reply || !reply->env || !orig || !orig->env)
     return 0;
@@ -1282,10 +1282,10 @@ static int mutt_search_attach_keyword(char *filename)
  *         1 if the message was postponed
  */
 int ci_send_message(int flags,      /* send mode */
-                    HEADER *msg,    /* template to use for new message */
+                    struct Header *msg,    /* template to use for new message */
                     char *tempfile, /* file specified by -i or -H */
                     struct Context *ctx,   /* current mailbox */
-                    HEADER *cur)    /* current message */
+                    struct Header *cur)    /* current message */
 {
   char buffer[LONG_STRING];
   char fcc[_POSIX_PATH_MAX] = ""; /* where to copy this message */

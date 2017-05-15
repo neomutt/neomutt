@@ -613,10 +613,10 @@ static const char *hcache_per_folder(const char *path, const char *folder, hcach
 /* This function transforms a header into a char so that it is useable by
  * db_store.
  */
-static void *hcache_dump(header_cache_t *h, HEADER *header, int *off, unsigned int uidvalidity)
+static void *hcache_dump(header_cache_t *h, struct Header *header, int *off, unsigned int uidvalidity)
 {
   unsigned char *d = NULL;
-  HEADER nh;
+  struct Header nh;
   int convert = !Charset_is_utf8;
 
   *off = 0;
@@ -634,8 +634,8 @@ static void *hcache_dump(header_cache_t *h, HEADER *header, int *off, unsigned i
 
   d = dump_int(h->crc, d, off);
 
-  lazy_realloc(&d, *off + sizeof(HEADER));
-  memcpy(&nh, header, sizeof(HEADER));
+  lazy_realloc(&d, *off + sizeof(struct Header));
+  memcpy(&nh, header, sizeof(struct Header));
 
   /* some fields are not safe to cache */
   nh.tagged = false;
@@ -660,8 +660,8 @@ static void *hcache_dump(header_cache_t *h, HEADER *header, int *off, unsigned i
   nh.data = NULL;
 #endif
 
-  memcpy(d + *off, &nh, sizeof(HEADER));
-  *off += sizeof(HEADER);
+  memcpy(d + *off, &nh, sizeof(struct Header));
+  *off += sizeof(struct Header);
 
   d = dump_envelope(nh.env, d, off, convert);
   d = dump_body(nh.content, d, off, convert);
@@ -670,10 +670,10 @@ static void *hcache_dump(header_cache_t *h, HEADER *header, int *off, unsigned i
   return d;
 }
 
-HEADER *mutt_hcache_restore(const unsigned char *d)
+struct Header *mutt_hcache_restore(const unsigned char *d)
 {
   int off = 0;
-  HEADER *h = mutt_new_header();
+  struct Header *h = mutt_new_header();
   int convert = !Charset_is_utf8;
 
   /* skip validate */
@@ -682,8 +682,8 @@ HEADER *mutt_hcache_restore(const unsigned char *d)
   /* skip crc */
   off += sizeof(unsigned int);
 
-  memcpy(h, d + off, sizeof(HEADER));
-  off += sizeof(HEADER);
+  memcpy(h, d + off, sizeof(struct Header));
+  off += sizeof(struct Header);
 
   h->env = mutt_new_envelope();
   restore_envelope(h->env, d, &off, convert);
@@ -841,7 +841,7 @@ void mutt_hcache_free(header_cache_t *h, void **data)
 }
 
 int mutt_hcache_store(header_cache_t *h, const char *key, size_t keylen,
-                      HEADER *header, unsigned int uidvalidity)
+                      struct Header *header, unsigned int uidvalidity)
 {
   char *data = NULL;
   int dlen;

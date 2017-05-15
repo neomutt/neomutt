@@ -302,7 +302,7 @@ static bool user_in_addr(struct Address *a)
  * 4: user is originator
  * 5: sent to a subscribed mailinglist
  */
-static int user_is_recipient(HEADER *h)
+static int user_is_recipient(struct Header *h)
 {
   if (!h || !h->env)
     return 0;
@@ -456,7 +456,7 @@ static const char *hdr_format_str(char *dest, size_t destlen, size_t col, int co
                                   unsigned long data, format_flag flags)
 {
   struct hdr_format_info *hfi = (struct hdr_format_info *) data;
-  HEADER *hdr = NULL, *htmp = NULL;
+  struct Header *hdr = NULL, *htmp = NULL;
   struct Context *ctx = NULL;
   char fmt[SHORT_STRING], buf2[LONG_STRING], *p = NULL;
   char *wch = NULL;
@@ -1304,7 +1304,7 @@ static const char *hdr_format_str(char *dest, size_t destlen, size_t col, int co
 }
 
 void _mutt_make_string(char *dest, size_t destlen, const char *s, struct Context *ctx,
-                       HEADER *hdr, format_flag flags)
+                       struct Header *hdr, format_flag flags)
 {
   struct hdr_format_info hfi;
 

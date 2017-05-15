@@ -53,11 +53,11 @@ int mh_check_empty(const char *path);
 
 int maildir_check_empty(const char *path);
 
-HEADER *maildir_parse_message(int magic, const char *fname, int is_old, HEADER *h);
-HEADER *maildir_parse_stream(int magic, FILE *f, const char *fname, int is_old, HEADER *_h);
-void maildir_parse_flags(HEADER *h, const char *path);
-bool maildir_update_flags(struct Context *ctx, HEADER *o, HEADER *n);
-void maildir_flags(char *dest, size_t destlen, HEADER *hdr);
+struct Header *maildir_parse_message(int magic, const char *fname, int is_old, struct Header *h);
+struct Header *maildir_parse_stream(int magic, FILE *f, const char *fname, int is_old, struct Header *_h);
+void maildir_parse_flags(struct Header *h, const char *path);
+bool maildir_update_flags(struct Context *ctx, struct Header *o, struct Header *n);
+void maildir_flags(char *dest, size_t destlen, struct Header *hdr);
 
 #ifdef USE_HCACHE
 #include "hcache/hcache.h"
@@ -72,7 +72,7 @@ bool mx_is_notmuch(const char *p);
 
 FILE *maildir_open_find_message(const char *folder, const char *msg, char **newname);
 
-int mbox_strict_cmp_headers(const HEADER *h1, const HEADER *h2);
+int mbox_strict_cmp_headers(const struct Header *h1, const struct Header *h2);
 
 void mx_alloc_memory(struct Context *ctx);
 void mx_update_context(struct Context *ctx, int new_messages);

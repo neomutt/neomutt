@@ -1214,7 +1214,7 @@ void smime_invoke_import(char *infile, char *mailbox)
 }
 
 
-int smime_verify_sender(HEADER *h)
+int smime_verify_sender(struct Header *h)
 {
   char *mbox = NULL, *certfile, tempfname[_POSIX_PATH_MAX];
   FILE *fpout = NULL;
@@ -1998,7 +1998,7 @@ int smime_application_smime_handler(struct Body *m, STATE *s)
   return smime_handle_entity(m, s, NULL) ? 0 : -1;
 }
 
-int smime_send_menu(HEADER *msg)
+int smime_send_menu(struct Header *msg)
 {
   smime_key_t *key = NULL;
   char *prompt = NULL, *letters = NULL, *choices = NULL;

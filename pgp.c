@@ -1598,7 +1598,7 @@ struct Body *pgp_traditional_encryptsign(struct Body *a, int flags, char *keylis
   return b;
 }
 
-int pgp_send_menu(HEADER *msg)
+int pgp_send_menu(struct Header *msg)
 {
   pgp_key_t p;
   char input_signas[SHORT_STRING];

@@ -251,7 +251,7 @@ static int query_tag(MUTTMENU *menu, int n, int m)
 static void query_menu(char *buf, size_t buflen, QUERY *results, int retbuf)
 {
   MUTTMENU *menu = NULL;
-  HEADER *msg = NULL;
+  struct Header *msg = NULL;
   ENTRY *QueryTable = NULL;
   QUERY *queryp = NULL;
   int i, done = 0;

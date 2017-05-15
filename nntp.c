@@ -925,7 +925,7 @@ static int get_description(NNTP_DATA *nntp_data, char *wildmat, char *msg)
 }
 
 /* Update read flag and set article number if empty */
-static void nntp_parse_xref(struct Context *ctx, HEADER *hdr)
+static void nntp_parse_xref(struct Context *ctx, struct Header *hdr)
 {
   NNTP_DATA *nntp_data = ctx->data;
   char *buf = NULL, *p = NULL;
@@ -1007,7 +1007,7 @@ static int parse_overview_line(char *line, void *data)
   FETCH_CTX *fc = data;
   struct Context *ctx = fc->ctx;
   NNTP_DATA *nntp_data = ctx->data;
-  HEADER *hdr = NULL;
+  struct Header *hdr = NULL;
   FILE *fp = NULL;
   char tempfile[_POSIX_PATH_MAX];
   char *header = NULL, *field = NULL;
@@ -1157,7 +1157,7 @@ static int nntp_fetch_headers(struct Context *ctx, void *hc, anum_t first, anum_
 {
   NNTP_DATA *nntp_data = ctx->data;
   FETCH_CTX fc;
-  HEADER *hdr = NULL;
+  struct Header *hdr = NULL;
   char buf[HUGE_STRING];
   int rc = 0;
   int oldmsgcount = ctx->msgcount;
@@ -1523,7 +1523,7 @@ static int nntp_fetch_message(struct Context *ctx, MESSAGE *msg, int msgno)
 {
   NNTP_DATA *nntp_data = ctx->data;
   NNTP_ACACHE *acache = NULL;
-  HEADER *hdr = ctx->hdrs[msgno];
+  struct Header *hdr = ctx->hdrs[msgno];
   char buf[_POSIX_PATH_MAX];
   char article[16];
   char *fetch_msg = _("Fetching message...");
@@ -1816,7 +1816,7 @@ static int nntp_check_mailbox(struct Context *ctx, int *index_hint)
     unsigned char *messages = NULL;
     char buf[16];
     void *hdata = NULL;
-    HEADER *hdr = NULL;
+    struct Header *hdr = NULL;
     anum_t first = nntp_data->firstMessage;
 
     if (NntpContext && nntp_data->lastMessage - first + 1 > NntpContext)
@@ -1998,7 +1998,7 @@ static int nntp_sync_mailbox(struct Context *ctx, int *index_hint)
   nntp_data->unread = ctx->unread;
   for (i = 0; i < ctx->msgcount; i++)
   {
-    HEADER *hdr = ctx->hdrs[i];
+    struct Header *hdr = ctx->hdrs[i];
     char buf[16];
 
     snprintf(buf, sizeof(buf), "%d", NHDR(hdr)->article_num);
@@ -2243,7 +2243,7 @@ int nntp_check_new_groups(NNTP_SERVER *nserv)
 int nntp_check_msgid(struct Context *ctx, const char *msgid)
 {
   NNTP_DATA *nntp_data = ctx->data;
-  HEADER *hdr = NULL;
+  struct Header *hdr = NULL;
   FILE *fp = NULL;
   char tempfile[_POSIX_PATH_MAX];
   char buf[LONG_STRING];

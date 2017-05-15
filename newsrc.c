@@ -1067,7 +1067,7 @@ NNTP_SERVER *nntp_select_server(char *server, int leave_lock)
  * Read = a read message number is in the .newsrc
  * New = not read and not cached
  * Old = not read but cached */
-void nntp_article_status(struct Context *ctx, HEADER *hdr, char *group, anum_t anum)
+void nntp_article_status(struct Context *ctx, struct Header *hdr, char *group, anum_t anum)
 {
   NNTP_DATA *nntp_data = ctx->data;
   unsigned int i;

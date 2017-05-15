@@ -34,7 +34,7 @@ static MUTTMENU **MenuStack = NULL;
 static int get_color(int index, unsigned char *s)
 {
   COLOR_LINE *color = NULL;
-  HEADER *hdr = Context->hdrs[Context->v2r[index]];
+  struct Header *hdr = Context->hdrs[Context->v2r[index]];
   int type = *s;
 
   switch (type)

@@ -241,7 +241,7 @@ int crypt_pgp_verify_one(struct Body *sigbdy, STATE *s, const char *tempf)
 }
 
 
-int crypt_pgp_send_menu(HEADER *msg)
+int crypt_pgp_send_menu(struct Header *msg)
 {
   if (CRYPT_MOD_CALL_CHECK(PGP, send_menu))
     return (CRYPT_MOD_CALL(PGP, send_menu))(msg);
@@ -319,7 +319,7 @@ void crypt_smime_getkeys(struct Envelope *env)
 }
 
 /* Check that the sender matches. */
-int crypt_smime_verify_sender(HEADER *h)
+int crypt_smime_verify_sender(struct Header *h)
 {
   if (CRYPT_MOD_CALL_CHECK(SMIME, smime_verify_sender))
     return (CRYPT_MOD_CALL(SMIME, smime_verify_sender))(h);
@@ -373,7 +373,7 @@ int crypt_smime_verify_one(struct Body *sigbdy, STATE *s, const char *tempf)
   return -1;
 }
 
-int crypt_smime_send_menu(HEADER *msg)
+int crypt_smime_send_menu(struct Header *msg)
 {
   if (CRYPT_MOD_CALL_CHECK(SMIME, send_menu))
     return (CRYPT_MOD_CALL(SMIME, send_menu))(msg);

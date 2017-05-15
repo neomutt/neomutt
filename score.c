@@ -123,7 +123,7 @@ int mutt_parse_score(struct Buffer *buf, struct Buffer *s, unsigned long data, s
   return 0;
 }
 
-void mutt_score_message(struct Context *ctx, HEADER *hdr, int upd_ctx)
+void mutt_score_message(struct Context *ctx, struct Header *hdr, int upd_ctx)
 {
   SCORE *tmp = NULL;
   pattern_cache_t cache;

@@ -1247,7 +1247,7 @@ void mutt_update_encoding(struct Body *a)
   a->content = info;
 }
 
-struct Body *mutt_make_message_attach(struct Context *ctx, HEADER *hdr, int attach_msg)
+struct Body *mutt_make_message_attach(struct Context *ctx, struct Header *hdr, int attach_msg)
 {
   char buffer[LONG_STRING];
   struct Body *body = NULL;
@@ -2576,7 +2576,7 @@ void mutt_unprepare_envelope(struct Envelope *env)
   rfc2047_decode(&env->subject);
 }
 
-static int _mutt_bounce_message(FILE *fp, HEADER *h, struct Address *to,
+static int _mutt_bounce_message(FILE *fp, struct Header *h, struct Address *to,
                                 const char *resent_from, struct Address *env_from)
 {
   int i, ret = 0;
@@ -2641,7 +2641,7 @@ static int _mutt_bounce_message(FILE *fp, HEADER *h, struct Address *to,
   return ret;
 }
 
-int mutt_bounce_message(FILE *fp, HEADER *h, struct Address *to)
+int mutt_bounce_message(FILE *fp, struct Header *h, struct Address *to)
 {
   struct Address *from = NULL, *resent_to = NULL;
   const char *fqdn = mutt_fqdn(1);
@@ -2753,7 +2753,7 @@ static void set_noconv_flags(struct Body *b, short flag)
 }
 
 /* Handle a Fcc with multiple, comma separated entries. */
-int mutt_write_multiple_fcc(const char *path, HEADER *hdr, const char *msgid,
+int mutt_write_multiple_fcc(const char *path, struct Header *hdr, const char *msgid,
                             int post, char *fcc, char **finalpath)
 {
   char fcc_tok[_POSIX_PATH_MAX];
@@ -2788,7 +2788,7 @@ int mutt_write_multiple_fcc(const char *path, HEADER *hdr, const char *msgid,
   return 0;
 }
 
-int mutt_write_fcc(const char *path, HEADER *hdr, const char *msgid, int post,
+int mutt_write_fcc(const char *path, struct Header *hdr, const char *msgid, int post,
                    char *fcc, char **finalpath)
 {
   struct Context f;

@@ -646,7 +646,7 @@ void mix_make_chain(LIST **chainp)
 }
 
 /* some safety checks before piping the message to mixmaster */
-int mix_check_message(HEADER *msg)
+int mix_check_message(struct Header *msg)
 {
   const char *fqdn = NULL;
   short need_hostname = 0;

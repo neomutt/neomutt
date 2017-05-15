@@ -28,6 +28,6 @@
 int rfc3676_handler(struct Body *a, STATE *s);
 
 /* this does the space-stuffing for RfC3676 style messages */
-void rfc3676_space_stuff(HEADER *hdr);
+void rfc3676_space_stuff(struct Header *hdr);
 
 #endif /* _MUTT_RFC3676_H */

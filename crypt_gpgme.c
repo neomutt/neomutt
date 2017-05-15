@@ -4553,7 +4553,7 @@ void smime_gpgme_init(void)
   init_smime();
 }
 
-static int gpgme_send_menu(HEADER *msg, int is_smime)
+static int gpgme_send_menu(struct Header *msg, int is_smime)
 {
   crypt_key_t *p = NULL;
   char input_signas[SHORT_STRING];
@@ -4722,17 +4722,17 @@ static int gpgme_send_menu(HEADER *msg, int is_smime)
   return msg->security;
 }
 
-int pgp_gpgme_send_menu(HEADER *msg)
+int pgp_gpgme_send_menu(struct Header *msg)
 {
   return gpgme_send_menu(msg, 0);
 }
 
-int smime_gpgme_send_menu(HEADER *msg)
+int smime_gpgme_send_menu(struct Header *msg)
 {
   return gpgme_send_menu(msg, 1);
 }
 
-static int verify_sender(HEADER *h, gpgme_protocol_t protocol)
+static int verify_sender(struct Header *h, gpgme_protocol_t protocol)
 {
   struct Address *sender = NULL;
   unsigned int ret = 1;
@@ -4810,7 +4810,7 @@ static int verify_sender(HEADER *h, gpgme_protocol_t protocol)
   return ret;
 }
 
-int smime_gpgme_verify_sender(HEADER *h)
+int smime_gpgme_verify_sender(struct Header *h)
 {
   return verify_sender(h, GPGME_PROTOCOL_CMS);
 }

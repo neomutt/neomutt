@@ -57,7 +57,7 @@ static int crypt_mod_smime_verify_one(struct Body *sigbdy, STATE *s, const char 
   return smime_verify_one(sigbdy, s, tempf);
 }
 
-static int crypt_mod_smime_send_menu(HEADER *msg)
+static int crypt_mod_smime_send_menu(struct Header *msg)
 {
   return smime_send_menu(msg);
 }
@@ -67,7 +67,7 @@ static void crypt_mod_smime_getkeys(struct Envelope *env)
   smime_getkeys(env);
 }
 
-static int crypt_mod_smime_verify_sender(HEADER *h)
+static int crypt_mod_smime_verify_sender(struct Header *h)
 {
   return smime_verify_sender(h);
 }

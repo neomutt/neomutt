@@ -104,7 +104,7 @@ typedef struct pgp_keyinfo *pgp_key_t;
 
 /* Some prototypes -- old crypt.h. */
 
-int mutt_protect(HEADER *msg, char *keylist);
+int mutt_protect(struct Header *msg, char *keylist);
 
 int mutt_is_multipart_encrypted(struct Body *b);
 
@@ -134,18 +134,18 @@ void crypt_current_time(STATE *s, char *app_name);
 int crypt_query(struct Body *m);
 
 /* Fixme: To be documented. */
-void crypt_extract_keys_from_messages(HEADER *h);
+void crypt_extract_keys_from_messages(struct Header *h);
 
 /* Do a quick check to make sure that we can find all of the
    encryption keys if the user has requested this service.
    Return the list of keys in KEYLIST.
    If oppenc_mode is true, only keys that can be determined without
    prompting will be used.  */
-int crypt_get_keys(HEADER *msg, char **keylist, int oppenc_mode);
+int crypt_get_keys(struct Header *msg, char **keylist, int oppenc_mode);
 
 /* Check if all recipients keys can be automatically determined.
  * Enable encryption if they can, otherwise disable encryption.  */
-void crypt_opportunistic_encrypt(HEADER *msg);
+void crypt_opportunistic_encrypt(struct Header *msg);
 
 /* Forget a passphrase and display a message. */
 void crypt_forget_passphrase(void);
@@ -223,7 +223,7 @@ struct Body *crypt_pgp_encrypt_message(struct Body *a, char *keylist, int sign);
 /* Invoke the PGP command to import a key. */
 void crypt_pgp_invoke_import(const char *fname);
 
-int crypt_pgp_send_menu(HEADER *msg);
+int crypt_pgp_send_menu(struct Header *msg);
 
 /* fixme: needs documentation */
 int crypt_pgp_verify_one(struct Body *sigbdy, STATE *s, const char *tempf);
@@ -248,7 +248,7 @@ int crypt_smime_application_smime_handler(struct Body *m, STATE *s);
 void crypt_smime_getkeys(struct Envelope *env);
 
 /* Check that the sender matches. */
-int crypt_smime_verify_sender(HEADER *h);
+int crypt_smime_verify_sender(struct Header *h);
 
 /* Ask for an SMIME key. */
 
@@ -267,7 +267,7 @@ struct Body *crypt_smime_build_smime_entity(struct Body *a, char *certlist);
 /* Add a certificate and update index file (externally). */
 void crypt_smime_invoke_import(char *infile, char *mailbox);
 
-int crypt_smime_send_menu(HEADER *msg);
+int crypt_smime_send_menu(struct Header *msg);
 
 void crypt_smime_set_sender(const char *sender);
 

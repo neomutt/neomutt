@@ -47,10 +47,10 @@ struct Body *smime_gpgme_sign_message(struct Body *a);
 int pgp_gpgme_verify_one(struct Body *sigbdy, STATE *s, const char *tempfile);
 int smime_gpgme_verify_one(struct Body *sigbdy, STATE *s, const char *tempfile);
 
-int pgp_gpgme_send_menu(HEADER *msg);
-int smime_gpgme_send_menu(HEADER *msg);
+int pgp_gpgme_send_menu(struct Header *msg);
+int smime_gpgme_send_menu(struct Header *msg);
 
-int smime_gpgme_verify_sender(HEADER *h);
+int smime_gpgme_verify_sender(struct Header *h);
 
 void mutt_gpgme_set_sender(const char *sender);
 

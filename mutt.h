@@ -749,7 +749,7 @@ struct Body
                          */
   struct Body *next;    /* next attachment in the list */
   struct Body *parts;   /* parts of a multipart or message/rfc822 */
-  struct header *hdr;   /* header information for message/rfc822 */
+  struct Header *hdr;   /* header information for message/rfc822 */
 
   struct AttachPtr *aptr; /* Menu information, used in recvattach.c */
 
@@ -799,7 +799,7 @@ struct Body
 /* #3279: AIX defines conflicting struct thread */
 typedef struct mutt_thread THREAD;
 
-typedef struct header
+struct Header
 {
   unsigned int security : 12; /* bit 0-8: flags, bit 9,10: application.
                                  see: mutt_crypt.h pgplib.h, smime.h */
@@ -877,15 +877,15 @@ typedef struct header
 
 #if defined(USE_POP) || defined(USE_IMAP) || defined(USE_NNTP) || defined(USE_NOTMUCH)
   void *data;                       /* driver-specific data */
-  void (*free_cb)(struct header *); /* driver-specific data free function */
+  void (*free_cb)(struct Header *); /* driver-specific data free function */
 #endif
 
   char *maildir_flags; /* unknown maildir flags */
-} HEADER;
+};
 
-static inline HEADER *mutt_new_header(void)
+static inline struct Header *mutt_new_header(void)
 {
-  return safe_calloc(1, sizeof(HEADER));
+  return safe_calloc(1, sizeof(struct Header));
 }
 
 struct mutt_thread
@@ -902,8 +902,8 @@ struct mutt_thread
   THREAD *child;
   THREAD *next;
   THREAD *prev;
-  HEADER *message;
-  HEADER *sort_key;
+  struct Header *message;
+  struct Header *sort_key;
 };
 
 
@@ -1005,7 +1005,7 @@ struct mx_ops
   int (*open_msg)(struct Context *ctx, struct _message *msg, int msgno);
   int (*close_msg)(struct Context *ctx, struct _message *msg);
   int (*commit_msg)(struct Context *ctx, struct _message *msg);
-  int (*open_new_msg)(struct _message *msg, struct Context *ctx, HEADER *hdr);
+  int (*open_new_msg)(struct _message *msg, struct Context *ctx, struct Header *hdr);
 };
 
 #include "mutt_menu.h"
@@ -1021,8 +1021,8 @@ struct Context
   off_t vsize;
   char *pattern;            /* limit pattern string */
   pattern_t *limit_pattern; /* compiled limit pattern */
-  HEADER **hdrs;
-  HEADER *last_tag;  /* last tagged msg. used to link threads */
+  struct Header **hdrs;
+  struct Header *last_tag;  /* last tagged msg. used to link threads */
   THREAD *tree;      /* top of thread tree */
   struct Hash *id_hash;     /* hash table by msg id */
   struct Hash *subj_hash;   /* hash table by subject */

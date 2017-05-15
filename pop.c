@@ -55,7 +55,7 @@ static int fetch_message(char *line, void *file)
  * -2 - invalid command or execution error,
  * -3 - error writing to tempfile
  */
-static int pop_read_header(POP_DATA *pop_data, HEADER *h)
+static int pop_read_header(POP_DATA *pop_data, struct Header *h)
 {
   FILE *f = NULL;
   int ret, index;
@@ -311,7 +311,7 @@ static int pop_fetch_headers(struct Context *ctx)
          *   (the old h->data should point inside a malloc'd block from
          *   hcache so there shouldn't be a memleak here)
          */
-        HEADER *h = mutt_hcache_restore((unsigned char *) data);
+        struct Header *h = mutt_hcache_restore((unsigned char *) data);
         mutt_hcache_free(hc, &data);
         mutt_free_header(&ctx->hdrs[i]);
         ctx->hdrs[i] = h;
@@ -517,7 +517,7 @@ static int pop_fetch_message(struct Context *ctx, MESSAGE *msg, int msgno)
   progress_t progressbar;
   POP_DATA *pop_data = (POP_DATA *) ctx->data;
   POP_CACHE *cache = NULL;
-  HEADER *h = ctx->hdrs[msgno];
+  struct Header *h = ctx->hdrs[msgno];
   unsigned short bcache = 1;
 
   /* see if we already have the message in body cache */

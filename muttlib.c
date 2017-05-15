@@ -152,7 +152,7 @@ int mutt_copy_body(FILE *fp, struct Body **tgt, struct Body *src)
   b->description = safe_strdup(b->description);
 
   /*
-   * we don't seem to need the HEADER structure currently.
+   * we don't seem to need the Header structure currently.
    * XXX - this may change in the future
    */
 
@@ -374,7 +374,7 @@ LIST *mutt_copy_list(LIST *p)
   return l;
 }
 
-void mutt_free_header(HEADER **h)
+void mutt_free_header(struct Header **h)
 {
   if (!h || !*h)
     return;
@@ -497,7 +497,7 @@ char *_mutt_expand_path(char *s, size_t slen, int rx)
 
       case '@':
       {
-        HEADER *h = NULL;
+        struct Header *h = NULL;
         struct Address *alias = NULL;
 
         if ((alias = mutt_lookup_alias(s + 1)))

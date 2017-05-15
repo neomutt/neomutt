@@ -57,7 +57,7 @@ static int crypt_mod_pgp_verify_one(struct Body *sigbdy, STATE *s, const char *t
   return pgp_verify_one(sigbdy, s, tempf);
 }
 
-static int crypt_mod_pgp_send_menu(HEADER *msg)
+static int crypt_mod_pgp_send_menu(struct Header *msg)
 {
   return pgp_send_menu(msg);
 }

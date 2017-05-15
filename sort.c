@@ -41,12 +41,12 @@ static sort_t *AuxSort = NULL;
     unset_option(OPTAUXSORT);                                                  \
   }                                                                            \
   if (!code)                                                                   \
-    code = (*((HEADER **) a))->index - (*((HEADER **) b))->index;
+    code = (*((struct Header **) a))->index - (*((struct Header **) b))->index;
 
 static int compare_score(const void *a, const void *b)
 {
-  HEADER **pa = (HEADER **) a;
-  HEADER **pb = (HEADER **) b;
+  struct Header **pa = (struct Header **) a;
+  struct Header **pb = (struct Header **) b;
   int result = (*pb)->score - (*pa)->score; /* note that this is reverse */
   AUXSORT(result, a, b);
   return (SORTCODE(result));
@@ -54,8 +54,8 @@ static int compare_score(const void *a, const void *b)
 
 static int compare_size(const void *a, const void *b)
 {
-  HEADER **pa = (HEADER **) a;
-  HEADER **pb = (HEADER **) b;
+  struct Header **pa = (struct Header **) a;
+  struct Header **pb = (struct Header **) b;
   int result = (*pa)->content->length - (*pb)->content->length;
   AUXSORT(result, a, b);
   return (SORTCODE(result));
@@ -63,8 +63,8 @@ static int compare_size(const void *a, const void *b)
 
 static int compare_date_sent(const void *a, const void *b)
 {
-  HEADER **pa = (HEADER **) a;
-  HEADER **pb = (HEADER **) b;
+  struct Header **pa = (struct Header **) a;
+  struct Header **pb = (struct Header **) b;
   int result = (*pa)->date_sent - (*pb)->date_sent;
   AUXSORT(result, a, b);
   return (SORTCODE(result));
@@ -72,8 +72,8 @@ static int compare_date_sent(const void *a, const void *b)
 
 static int compare_subject(const void *a, const void *b)
 {
-  HEADER **pa = (HEADER **) a;
-  HEADER **pb = (HEADER **) b;
+  struct Header **pa = (struct Header **) a;
+  struct Header **pb = (struct Header **) b;
   int rc;
 
   if (!(*pa)->env->real_subj)
@@ -110,8 +110,8 @@ const char *mutt_get_name(struct Address *a)
 
 static int compare_to(const void *a, const void *b)
 {
-  HEADER **ppa = (HEADER **) a;
-  HEADER **ppb = (HEADER **) b;
+  struct Header **ppa = (struct Header **) a;
+  struct Header **ppb = (struct Header **) b;
   char fa[SHORT_STRING];
   const char *fb = NULL;
   int result;
@@ -125,8 +125,8 @@ static int compare_to(const void *a, const void *b)
 
 static int compare_from(const void *a, const void *b)
 {
-  HEADER **ppa = (HEADER **) a;
-  HEADER **ppb = (HEADER **) b;
+  struct Header **ppa = (struct Header **) a;
+  struct Header **ppb = (struct Header **) b;
   char fa[SHORT_STRING];
   const char *fb = NULL;
   int result;
@@ -140,8 +140,8 @@ static int compare_from(const void *a, const void *b)
 
 static int compare_date_received(const void *a, const void *b)
 {
-  HEADER **pa = (HEADER **) a;
-  HEADER **pb = (HEADER **) b;
+  struct Header **pa = (struct Header **) a;
+  struct Header **pb = (struct Header **) b;
   int result = (*pa)->received - (*pb)->received;
   AUXSORT(result, a, b);
   return (SORTCODE(result));
@@ -149,8 +149,8 @@ static int compare_date_received(const void *a, const void *b)
 
 static int compare_order(const void *a, const void *b)
 {
-  HEADER **ha = (HEADER **) a;
-  HEADER **hb = (HEADER **) b;
+  struct Header **ha = (struct Header **) a;
+  struct Header **hb = (struct Header **) b;
 
 #ifdef USE_NNTP
   if (Context && Context->magic == MUTT_NNTP)
@@ -169,8 +169,8 @@ static int compare_order(const void *a, const void *b)
 
 static int compare_spam(const void *a, const void *b)
 {
-  HEADER **ppa = (HEADER **) a;
-  HEADER **ppb = (HEADER **) b;
+  struct Header **ppa = (struct Header **) a;
+  struct Header **ppb = (struct Header **) b;
   char *aptr = NULL, *bptr = NULL;
   int ahas, bhas;
   int result = 0;
@@ -226,8 +226,8 @@ static int compare_spam(const void *a, const void *b)
 
 static int compare_label(const void *a, const void *b)
 {
-  HEADER **ppa = (HEADER **) a;
-  HEADER **ppb = (HEADER **) b;
+  struct Header **ppa = (struct Header **) a;
+  struct Header **ppb = (struct Header **) b;
   int ahas, bhas, result = 0;
 
   /* As with compare_spam, not all messages will have the x-label
@@ -287,7 +287,7 @@ sort_t *mutt_get_sort_func(int method)
 void mutt_sort_headers(struct Context *ctx, int init)
 {
   int i;
-  HEADER *h = NULL;
+  struct Header *h = NULL;
   THREAD *thread = NULL, *top = NULL;
   sort_t *sortfunc = NULL;
 
@@ -350,13 +350,13 @@ void mutt_sort_headers(struct Context *ctx, int init)
     return;
   }
   else
-    qsort((void *) ctx->hdrs, ctx->msgcount, sizeof(HEADER *), sortfunc);
+    qsort((void *) ctx->hdrs, ctx->msgcount, sizeof(struct Header *), sortfunc);
 
   /* adjust the virtual message numbers */
   ctx->vcount = 0;
   for (i = 0; i < ctx->msgcount; i++)
   {
-    HEADER *cur = ctx->hdrs[i];
+    struct Header *cur = ctx->hdrs[i];
     if (cur->virtual != -1 || (cur->collapsed && (!ctx->pattern || cur->limited)))
     {
       cur->virtual = ctx->vcount;

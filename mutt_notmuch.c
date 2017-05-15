@@ -24,7 +24,7 @@
  *
  * ## Notes
  *
- * - notmuch uses private Context->data and private HEADER->data
+ * - notmuch uses private Context->data and private Header->data
  *
  * - all exported functions are usable within notmuch context only
  *
@@ -116,7 +116,7 @@ struct nm_hdrtag
  *
  * This stores all the NotMuch data associated with an email.
  *
- * @sa HEADER#data, MUTT_MBOX
+ * @sa Header#data, MUTT_MBOX
  */
 struct nm_hdrdata
 {
@@ -387,12 +387,12 @@ static int init_context(struct Context *ctx)
   return 0;
 }
 
-static char *header_get_id(HEADER *h)
+static char *header_get_id(struct Header *h)
 {
   return (h && h->data) ? ((struct nm_hdrdata *) h->data)->virtual_id : NULL;
 }
 
-static char *header_get_fullpath(HEADER *h, char *buf, size_t bufsz)
+static char *header_get_fullpath(struct Header *h, char *buf, size_t bufsz)
 {
   snprintf(buf, bufsz, "%s/%s", nm_header_get_folder(h), h->path);
   return buf;
@@ -839,7 +839,7 @@ static void append_str_item(char **str, const char *item, int sep)
   memcpy(p, item, sz + 1);
 }
 
-static int update_header_tags(HEADER *h, notmuch_message_t *msg)
+static int update_header_tags(struct Header *h, notmuch_message_t *msg)
 {
   struct nm_hdrdata *data = h->data;
   notmuch_tags_t *tags = NULL;
@@ -911,7 +911,7 @@ static int update_header_tags(HEADER *h, notmuch_message_t *msg)
   return 0;
 }
 
-static int update_message_path(HEADER *h, const char *path)
+static int update_message_path(struct Header *h, const char *path)
 {
   struct nm_hdrdata *data = h->data;
   char *p = NULL;
@@ -961,7 +961,7 @@ static char *get_folder_from_path(const char *path)
   return NULL;
 }
 
-static void deinit_header(HEADER *h)
+static void deinit_header(struct Header *h)
 {
   if (h)
   {
@@ -984,7 +984,7 @@ static char *nm2mutt_message_id(const char *id)
   return mid;
 }
 
-static int init_header(HEADER *h, const char *path, notmuch_message_t *msg)
+static int init_header(struct Header *h, const char *path, notmuch_message_t *msg)
 {
   const char *id = NULL;
 
@@ -998,7 +998,7 @@ static int init_header(HEADER *h, const char *path, notmuch_message_t *msg)
 
   /*
    * Notmuch ensures that message Id exists (if not notmuch Notmuch will
-   * generate an ID), so it's more safe than use mutt HEADER->env->id
+   * generate an ID), so it's more safe than use mutt Header->env->id
    */
   ((struct nm_hdrdata *) h->data)->virtual_id = safe_strdup(id);
 
@@ -1076,11 +1076,11 @@ static void progress_update(struct Context *ctx, notmuch_query_t *q)
                          ctx->msgcount + data->ignmsgcount - data->oldmsgcount, -1);
 }
 
-static HEADER *get_mutt_header(struct Context *ctx, notmuch_message_t *msg)
+static struct Header *get_mutt_header(struct Context *ctx, notmuch_message_t *msg)
 {
   char *mid = NULL;
   const char *id = NULL;
-  HEADER *h = NULL;
+  struct Header *h = NULL;
 
   if (!ctx || !msg)
     return NULL;
@@ -1111,7 +1111,7 @@ static void append_message(struct Context *ctx, notmuch_query_t *q, notmuch_mess
 {
   char *newpath = NULL;
   const char *path = NULL;
-  HEADER *h = NULL;
+  struct Header *h = NULL;
 
   struct nm_ctxdata *data = get_ctxdata(ctx);
   if (!data)
@@ -1286,7 +1286,7 @@ static bool read_threads_query(struct Context *ctx, notmuch_query_t *q, int dedu
   return true;
 }
 
-static notmuch_message_t *get_nm_message(notmuch_database_t *db, HEADER *hdr)
+static notmuch_message_t *get_nm_message(notmuch_database_t *db, struct Header *hdr)
 {
   notmuch_message_t *msg = NULL;
   char *id = header_get_id(hdr);
@@ -1373,7 +1373,7 @@ static int update_tags(notmuch_message_t *msg, const char *tags)
   return 0;
 }
 
-static int update_header_flags(struct Context *ctx, HEADER *hdr, const char *tags)
+static int update_header_flags(struct Context *ctx, struct Header *hdr, const char *tags)
 {
   char *tag = NULL, *end = NULL, *p = NULL;
   char *buf = safe_strdup(tags);
@@ -1425,7 +1425,7 @@ static int update_header_flags(struct Context *ctx, HEADER *hdr, const char *tag
   return 0;
 }
 
-static int rename_maildir_filename(const char *old, char *newpath, size_t newsz, HEADER *h)
+static int rename_maildir_filename(const char *old, char *newpath, size_t newsz, struct Header *h)
 {
   char filename[_POSIX_PATH_MAX];
   char suffix[_POSIX_PATH_MAX];
@@ -1527,7 +1527,7 @@ static int remove_filename(struct nm_ctxdata *data, const char *path)
 }
 
 static int rename_filename(struct nm_ctxdata *data, const char *old,
-                           const char *new, HEADER *h)
+                           const char *new, struct Header *h)
 {
   int rc = -1;
   notmuch_status_t st;
@@ -1630,22 +1630,22 @@ static unsigned count_query(notmuch_database_t *db, const char *qstr)
 }
 
 
-char *nm_header_get_folder(HEADER *h)
+char *nm_header_get_folder(struct Header *h)
 {
   return (h && h->data) ? ((struct nm_hdrdata *) h->data)->folder : NULL;
 }
 
-char *nm_header_get_tags(HEADER *h)
+char *nm_header_get_tags(struct Header *h)
 {
   return (h && h->data) ? ((struct nm_hdrdata *) h->data)->tags : NULL;
 }
 
-char *nm_header_get_tags_transformed(HEADER *h)
+char *nm_header_get_tags_transformed(struct Header *h)
 {
   return (h && h->data) ? ((struct nm_hdrdata *) h->data)->tags_transformed : NULL;
 }
 
-char *nm_header_get_tag_transformed(char *tag, HEADER *h)
+char *nm_header_get_tag_transformed(char *tag, struct Header *h)
 {
   struct nm_hdrtag *tmp = NULL;
 
@@ -1693,7 +1693,7 @@ void nm_debug_check(struct Context *ctx)
   }
 }
 
-int nm_read_entire_thread(struct Context *ctx, HEADER *h)
+int nm_read_entire_thread(struct Context *ctx, struct Header *h)
 {
   struct nm_ctxdata *data = get_ctxdata(ctx);
   const char *id = NULL;
@@ -1861,7 +1861,7 @@ void nm_query_window_backward(void)
   mutt_debug(2, "nm_query_window_backward (%d)\n", NotmuchQueryWindowCurrentPosition);
 }
 
-int nm_modify_message_tags(struct Context *ctx, HEADER *hdr, char *buf)
+int nm_modify_message_tags(struct Context *ctx, struct Header *hdr, char *buf)
 {
   struct nm_ctxdata *data = get_ctxdata(ctx);
   notmuch_database_t *db = NULL;
@@ -1892,7 +1892,7 @@ done:
   return rc;
 }
 
-int nm_update_filename(struct Context *ctx, const char *old, const char *new, HEADER *h)
+int nm_update_filename(struct Context *ctx, const char *old, const char *new, struct Header *h)
 {
   char buf[PATH_MAX];
   int rc;
@@ -2026,7 +2026,7 @@ int nm_description_to_path(const char *desc, char *buf, size_t bufsz)
   return -1;
 }
 
-int nm_record_message(struct Context *ctx, char *path, HEADER *h)
+int nm_record_message(struct Context *ctx, char *path, struct Header *h)
 {
   notmuch_database_t *db = NULL;
   notmuch_status_t st;
@@ -2172,7 +2172,7 @@ static int nm_close_mailbox(struct Context *ctx)
 
   for (i = 0; i < ctx->msgcount; i++)
   {
-    HEADER *h = ctx->hdrs[i];
+    struct Header *h = ctx->hdrs[i];
 
     if (h)
     {
@@ -2232,7 +2232,7 @@ static int nm_check_mailbox(struct Context *ctx, int *index_hint)
     const char *new = NULL;
 
     notmuch_message_t *m = notmuch_messages_get(msgs);
-    HEADER *h = get_mutt_header(ctx, m);
+    struct Header *h = get_mutt_header(ctx, m);
 
     if (!h)
     {
@@ -2260,7 +2260,7 @@ static int nm_check_mailbox(struct Context *ctx, int *index_hint)
        * this message, update the flags we just
        * detected.
        */
-      HEADER tmp;
+      struct Header tmp;
       memset(&tmp, 0, sizeof(tmp));
       maildir_parse_flags(&tmp, new);
       maildir_update_flags(ctx, h, &tmp);
@@ -2324,7 +2324,7 @@ static int nm_sync_mailbox(struct Context *ctx, int *index_hint)
   for (i = 0; i < ctx->msgcount; i++)
   {
     char old[_POSIX_PATH_MAX], new[_POSIX_PATH_MAX];
-    HEADER *h = ctx->hdrs[i];
+    struct Header *h = ctx->hdrs[i];
     struct nm_hdrdata *hd = h->data;
 
     if (!ctx->quiet)
@@ -2384,7 +2384,7 @@ static int nm_open_message(struct Context *ctx, MESSAGE *msg, int msgno)
 {
   if (!ctx || !msg)
     return 1;
-  HEADER *cur = ctx->hdrs[msgno];
+  struct Header *cur = ctx->hdrs[msgno];
   char *folder = ctx->path;
   char path[_POSIX_PATH_MAX];
   folder = nm_header_get_folder(cur);

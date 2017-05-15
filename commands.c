@@ -53,7 +53,7 @@ static const char *ExtPagerProgress = "all";
 /* The folder the user last saved to.  Used by ci_save_message() */
 static char LastSaveFolder[_POSIX_PATH_MAX] = "";
 
-int mutt_display_message(HEADER *cur)
+int mutt_display_message(struct Header *cur)
 {
   char tempfile[_POSIX_PATH_MAX], buf[LONG_STRING];
   int rc = 0, builtin = 0;
@@ -238,7 +238,7 @@ int mutt_display_message(HEADER *cur)
   return rc;
 }
 
-void ci_bounce_message(HEADER *h)
+void ci_bounce_message(struct Header *h)
 {
   char prompt[SHORT_STRING];
   char scratch[SHORT_STRING];
@@ -346,7 +346,7 @@ static void pipe_set_flags(int decode, int print, int *cmflags, int *chflags)
     *cmflags |= MUTT_CM_PRINTING;
 }
 
-static void pipe_msg(HEADER *h, FILE *fp, int decode, int print)
+static void pipe_msg(struct Header *h, FILE *fp, int decode, int print)
 {
   int cmflags = 0;
   int chflags = CH_FROM;
@@ -368,7 +368,7 @@ static void pipe_msg(HEADER *h, FILE *fp, int decode, int print)
 
 
 /* the following code is shared between printing and piping */
-static int _mutt_pipe_message(HEADER *h, char *cmd, int decode, int print,
+static int _mutt_pipe_message(struct Header *h, char *cmd, int decode, int print,
                               int split, char *sep)
 {
   int i, rc = 0;
@@ -472,7 +472,7 @@ static int _mutt_pipe_message(HEADER *h, char *cmd, int decode, int print,
   return rc;
 }
 
-void mutt_pipe_message(HEADER *h)
+void mutt_pipe_message(struct Header *h)
 {
   char buffer[LONG_STRING];
 
@@ -485,7 +485,7 @@ void mutt_pipe_message(HEADER *h)
   _mutt_pipe_message(h, buffer, option(OPTPIPEDECODE), 0, option(OPTPIPESPLIT), PipeSep);
 }
 
-void mutt_print_message(HEADER *h)
+void mutt_print_message(struct Header *h)
 {
   if (quadoption(OPT_PRINT) && (!PrintCmd || !*PrintCmd))
   {
@@ -650,7 +650,7 @@ void mutt_display_address(struct Envelope *env)
   mutt_message("%s: %s", pfx, buf);
 }
 
-static void set_copy_flags(HEADER *hdr, int decode, int decrypt, int *cmflags, int *chflags)
+static void set_copy_flags(struct Header *hdr, int decode, int decrypt, int *cmflags, int *chflags)
 {
   *cmflags = 0;
   *chflags = CH_UPDATE_LEN;
@@ -690,7 +690,7 @@ static void set_copy_flags(HEADER *hdr, int decode, int decrypt, int *cmflags, i
   }
 }
 
-int _mutt_save_message(HEADER *h, struct Context *ctx, int delete, int decode, int decrypt)
+int _mutt_save_message(struct Header *h, struct Context *ctx, int delete, int decode, int decrypt)
 {
   int cmflags, chflags;
   int rc;
@@ -715,7 +715,7 @@ int _mutt_save_message(HEADER *h, struct Context *ctx, int delete, int decode, i
 }
 
 /* returns 0 if the copy/save was successful, or -1 on error/abort */
-int mutt_save_message(HEADER *h, int delete, int decode, int decrypt)
+int mutt_save_message(struct Header *h, int delete, int decode, int decrypt)
 {
   int i, need_buffy_cleanup;
   int need_passphrase = 0, app = 0;
@@ -864,7 +864,7 @@ int mutt_save_message(HEADER *h, int delete, int decode, int decrypt)
 #ifdef USE_COMPRESSED
           if (cm)
           {
-            HEADER *h2 = Context->hdrs[Context->v2r[i]];
+            struct Header *h2 = Context->hdrs[Context->v2r[i]];
             cm->msg_count++;
             if (!h2->read)
               cm->msg_unread++;
@@ -905,7 +905,7 @@ void mutt_version(void)
   mutt_message("NeoMutt %s%s (%s)", PACKAGE_VERSION, GitVer, MUTT_VERSION);
 }
 
-void mutt_edit_content_type(HEADER *h, struct Body *b, FILE *fp)
+void mutt_edit_content_type(struct Header *h, struct Body *b, FILE *fp)
 {
   char buf[LONG_STRING];
   char obuf[LONG_STRING];
@@ -999,7 +999,7 @@ void mutt_edit_content_type(HEADER *h, struct Body *b, FILE *fp)
 }
 
 
-static int _mutt_check_traditional_pgp(HEADER *h, int *redraw)
+static int _mutt_check_traditional_pgp(struct Header *h, int *redraw)
 {
   MESSAGE *msg = NULL;
   int rv = 0;
@@ -1021,7 +1021,7 @@ static int _mutt_check_traditional_pgp(HEADER *h, int *redraw)
   return rv;
 }
 
-int mutt_check_traditional_pgp(HEADER *h, int *redraw)
+int mutt_check_traditional_pgp(struct Header *h, int *redraw)
 {
   int i;
   int rv = 0;

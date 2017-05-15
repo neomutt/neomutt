@@ -242,7 +242,7 @@ IMAP_DATA *imap_conn_find(const struct Account *account, int flags);
 int imap_read_literal(FILE *fp, IMAP_DATA *idata, long bytes, progress_t *pbar);
 void imap_expunge_mailbox(IMAP_DATA *idata);
 void imap_logout(IMAP_DATA **idata);
-int imap_sync_message(IMAP_DATA *idata, HEADER *hdr, struct Buffer *cmd, int *err_continue);
+int imap_sync_message(IMAP_DATA *idata, struct Header *hdr, struct Buffer *cmd, int *err_continue);
 bool imap_has_flag(LIST *flag_list, const char *flag);
 
 /* auth.c */
@@ -258,11 +258,11 @@ int imap_exec(IMAP_DATA *idata, const char *cmd, int flags);
 int imap_cmd_idle(IMAP_DATA *idata);
 
 /* message.c */
-void imap_add_keywords(char *s, HEADER *keywords, LIST *mailbox_flags, size_t slen);
+void imap_add_keywords(char *s, struct Header *keywords, LIST *mailbox_flags, size_t slen);
 void imap_free_header_data(IMAP_HEADER_DATA **data);
 int imap_read_headers(IMAP_DATA *idata, int msgbegin, int msgend);
-char *imap_set_flags(IMAP_DATA *idata, HEADER *h, char *s);
-int imap_cache_del(IMAP_DATA *idata, HEADER *h);
+char *imap_set_flags(IMAP_DATA *idata, struct Header *h, char *s);
+int imap_cache_del(IMAP_DATA *idata, struct Header *h);
 int imap_cache_clean(IMAP_DATA *idata);
 
 int imap_fetch_message(struct Context *ctx, MESSAGE *msg, int msgno);
@@ -273,8 +273,8 @@ int imap_commit_message(struct Context *ctx, MESSAGE *msg);
 #ifdef USE_HCACHE
 header_cache_t *imap_hcache_open(IMAP_DATA *idata, const char *path);
 void imap_hcache_close(IMAP_DATA *idata);
-HEADER *imap_hcache_get(IMAP_DATA *idata, unsigned int uid);
-int imap_hcache_put(IMAP_DATA *idata, HEADER *h);
+struct Header *imap_hcache_get(IMAP_DATA *idata, unsigned int uid);
+int imap_hcache_put(IMAP_DATA *idata, struct Header *h);
 int imap_hcache_del(IMAP_DATA *idata, unsigned int uid);
 #endif
 

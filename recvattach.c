@@ -411,7 +411,7 @@ static void prepend_curdir(char *dst, size_t dstlen)
   dst[l + 2] = 0;
 }
 
-static int query_save_attachment(FILE *fp, struct Body *body, HEADER *hdr, char **directory)
+static int query_save_attachment(FILE *fp, struct Body *body, struct Header *hdr, char **directory)
 {
   char *prompt = NULL;
   char buf[_POSIX_PATH_MAX], tfile[_POSIX_PATH_MAX];
@@ -492,7 +492,7 @@ static int query_save_attachment(FILE *fp, struct Body *body, HEADER *hdr, char 
   return 0;
 }
 
-void mutt_save_attachment_list(FILE *fp, int tag, struct Body *top, HEADER *hdr, MUTTMENU *menu)
+void mutt_save_attachment_list(FILE *fp, int tag, struct Body *top, struct Header *hdr, MUTTMENU *menu)
 {
   char buf[_POSIX_PATH_MAX], tfile[_POSIX_PATH_MAX];
   char *directory = NULL;
@@ -808,7 +808,7 @@ static void update_attach_index(struct Body *cur, struct AttachPtr ***idxp, shor
 }
 
 
-int mutt_attach_display_loop(MUTTMENU *menu, int op, FILE *fp, HEADER *hdr, struct Body *cur,
+int mutt_attach_display_loop(MUTTMENU *menu, int op, FILE *fp, struct Header *hdr, struct Body *cur,
                              struct AttachPtr ***idxp, short *idxlen, short *idxmax, int recv)
 {
   struct AttachPtr **idx = *idxp;
@@ -917,7 +917,7 @@ static const char *Function_not_permitted =
   }
 
 
-void mutt_view_attachments(HEADER *hdr)
+void mutt_view_attachments(struct Header *hdr)
 {
   int secured = 0;
   int need_secured = 0;
