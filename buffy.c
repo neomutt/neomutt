@@ -97,7 +97,7 @@ static int fseek_last_message(FILE *f)
 static int test_last_status_new(FILE *f)
 {
   HEADER *hdr = NULL;
-  ENVELOPE *tmp_envelope = NULL;
+  struct Envelope *tmp_envelope = NULL;
   int result = 0;
 
   if (fseek_last_message(f) == -1)

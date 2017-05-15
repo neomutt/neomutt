@@ -1914,7 +1914,7 @@ out:
  */
 
 
-int mutt_write_rfc822_header(FILE *fp, ENVELOPE *env, struct Body *attach, int mode, int privacy)
+int mutt_write_rfc822_header(FILE *fp, struct Envelope *env, struct Body *attach, int mode, int privacy)
 {
   char buffer[LONG_STRING];
   char *p = NULL, *q = NULL;
@@ -2512,7 +2512,7 @@ int mutt_invoke_sendmail(struct Address *from, /* the sender */
 }
 
 /* For postponing (!final) do the necessary encodings only */
-void mutt_prepare_envelope(ENVELOPE *env, int final)
+void mutt_prepare_envelope(struct Envelope *env, int final)
 {
   char buffer[LONG_STRING];
 
@@ -2558,7 +2558,7 @@ void mutt_prepare_envelope(ENVELOPE *env, int final)
   encode_headers(env->userhdrs);
 }
 
-void mutt_unprepare_envelope(ENVELOPE *env)
+void mutt_unprepare_envelope(struct Envelope *env)
 {
   LIST *item = NULL;
 

@@ -417,7 +417,7 @@ static void restore_body(struct Body *c, const unsigned char *d, int *off, int c
   restore_char(&c->d_filename, d, off, convert);
 }
 
-static unsigned char *dump_envelope(ENVELOPE *e, unsigned char *d, int *off, int convert)
+static unsigned char *dump_envelope(struct Envelope *e, unsigned char *d, int *off, int convert)
 {
   d = dump_address(e->return_path, d, off, convert);
   d = dump_address(e->from, d, off, convert);
@@ -456,7 +456,7 @@ static unsigned char *dump_envelope(ENVELOPE *e, unsigned char *d, int *off, int
   return d;
 }
 
-static void restore_envelope(ENVELOPE *e, const unsigned char *d, int *off, int convert)
+static void restore_envelope(struct Envelope *e, const unsigned char *d, int *off, int convert)
 {
   int real_subj_off;
 

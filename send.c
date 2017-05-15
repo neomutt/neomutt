@@ -214,7 +214,7 @@ static int edit_address(struct Address **a, /* const */ char *field)
   return 0;
 }
 
-static int edit_envelope(ENVELOPE *en, int flags)
+static int edit_envelope(struct Envelope *en, int flags)
 {
   char buf[HUGE_STRING];
   LIST *uh = UserHeader;
@@ -305,7 +305,7 @@ static char *nntp_get_header(const char *s)
 }
 #endif
 
-static void process_user_recips(ENVELOPE *env)
+static void process_user_recips(struct Envelope *env)
 {
   LIST *uh = UserHeader;
 
@@ -328,7 +328,7 @@ static void process_user_recips(ENVELOPE *env)
   }
 }
 
-static void process_user_header(ENVELOPE *env)
+static void process_user_header(struct Envelope *env)
 {
   LIST *uh = UserHeader;
   LIST *last = env->userhdrs;
@@ -495,7 +495,7 @@ static int include_reply(struct Context *ctx, HEADER *cur, FILE *out)
   return 0;
 }
 
-static int default_to(struct Address **to, ENVELOPE *env, int flags, int hmfupto)
+static int default_to(struct Address **to, struct Envelope *env, int flags, int hmfupto)
 {
   char prompt[STRING];
 
@@ -569,7 +569,7 @@ static int default_to(struct Address **to, ENVELOPE *env, int flags, int hmfupto
   return 0;
 }
 
-int mutt_fetch_recips(ENVELOPE *out, ENVELOPE *in, int flags)
+int mutt_fetch_recips(struct Envelope *out, struct Envelope *in, int flags)
 {
   char prompt[STRING];
   struct Address *tmp = NULL;
@@ -610,7 +610,7 @@ int mutt_fetch_recips(ENVELOPE *out, ENVELOPE *in, int flags)
   return 0;
 }
 
-static LIST *make_references(ENVELOPE *e)
+static LIST *make_references(struct Envelope *e)
 {
   LIST *t = NULL, *l = NULL;
 
@@ -630,7 +630,7 @@ static LIST *make_references(ENVELOPE *e)
   return l;
 }
 
-void mutt_fix_reply_recipients(ENVELOPE *env)
+void mutt_fix_reply_recipients(struct Envelope *env)
 {
   if (!option(OPTMETOO))
   {
@@ -653,7 +653,7 @@ void mutt_fix_reply_recipients(ENVELOPE *env)
   }
 }
 
-void mutt_make_forward_subject(ENVELOPE *env, struct Context *ctx, HEADER *cur)
+void mutt_make_forward_subject(struct Envelope *env, struct Context *ctx, HEADER *cur)
 {
   if (!env)
     return;
@@ -665,7 +665,7 @@ void mutt_make_forward_subject(ENVELOPE *env, struct Context *ctx, HEADER *cur)
   mutt_str_replace(&env->subject, buffer);
 }
 
-void mutt_make_misc_reply_headers(ENVELOPE *env, struct Context *ctx, HEADER *cur, ENVELOPE *curenv)
+void mutt_make_misc_reply_headers(struct Envelope *env, struct Context *ctx, HEADER *cur, struct Envelope *curenv)
 {
   if (!env || !curenv)
     return;
@@ -683,7 +683,7 @@ void mutt_make_misc_reply_headers(ENVELOPE *env, struct Context *ctx, HEADER *cu
     env->subject = safe_strdup(EmptySubject);
 }
 
-void mutt_add_to_reference_headers(ENVELOPE *env, ENVELOPE *curenv, LIST ***pp, LIST ***qq)
+void mutt_add_to_reference_headers(struct Envelope *env, struct Envelope *curenv, LIST ***pp, LIST ***qq)
 {
   LIST **p = NULL, **q = NULL;
 
@@ -721,7 +721,7 @@ void mutt_add_to_reference_headers(ENVELOPE *env, ENVELOPE *curenv, LIST ***pp, 
 #endif
 }
 
-static void make_reference_headers(ENVELOPE *curenv, ENVELOPE *env, struct Context *ctx)
+static void make_reference_headers(struct Envelope *curenv, struct Envelope *env, struct Context *ctx)
 {
   if (!env || !ctx)
     return;
@@ -752,9 +752,9 @@ static void make_reference_headers(ENVELOPE *curenv, ENVELOPE *env, struct Conte
     mutt_free_list(&env->references);
 }
 
-static int envelope_defaults(ENVELOPE *env, struct Context *ctx, HEADER *cur, int flags)
+static int envelope_defaults(struct Envelope *env, struct Context *ctx, HEADER *cur, int flags)
 {
-  ENVELOPE *curenv = NULL;
+  struct Envelope *curenv = NULL;
   int i = 0, tag = 0;
 
   if (!cur)
@@ -931,7 +931,7 @@ static int generate_body(FILE *tempfp, /* stream for outgoing message */
   return 0;
 }
 
-void mutt_set_followup_to(ENVELOPE *e)
+void mutt_set_followup_to(struct Envelope *e)
 {
   struct Address *t = NULL;
   struct Address *from = NULL;
@@ -1003,7 +1003,7 @@ void mutt_set_followup_to(ENVELOPE *e)
 /* look through the recipients of the message we are replying to, and if
    we find an address that matches $alternates, we use that as the default
    from field */
-static struct Address *set_reverse_name(ENVELOPE *env)
+static struct Address *set_reverse_name(struct Envelope *env)
 {
   struct Address *tmp = NULL;
 

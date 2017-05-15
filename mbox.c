@@ -584,7 +584,7 @@ static int strict_cmp_lists(const LIST *a, const LIST *b)
   return 1;
 }
 
-static int strict_cmp_envelopes(const ENVELOPE *e1, const ENVELOPE *e2)
+static int strict_cmp_envelopes(const struct Envelope *e1, const struct Envelope *e2)
 {
   if (e1 && e2)
   {

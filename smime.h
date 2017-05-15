@@ -52,7 +52,7 @@ int smime_verify_one(struct Body *sigbdy, STATE *s, const char *tempfile);
 
 int smime_verify_sender(HEADER *h);
 
-void smime_getkeys(ENVELOPE *env);
+void smime_getkeys(struct Envelope *env);
 
 char *smime_find_keys(struct Address *adrlist, int oppenc_mode);
 

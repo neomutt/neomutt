@@ -345,7 +345,7 @@ void mutt_draw_tree(struct Context *ctx)
 static LIST *make_subject_list(THREAD *cur, time_t *dateptr)
 {
   THREAD *start = cur;
-  ENVELOPE *env = NULL;
+  struct Envelope *env = NULL;
   time_t thisdate;
   LIST *curlist = NULL, *oldlist = NULL, *newlist = NULL, *subjects = NULL;
   int rc = 0;

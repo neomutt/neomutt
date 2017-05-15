@@ -689,7 +689,7 @@ int imap_fetch_message(struct Context *ctx, MESSAGE *msg, int msgno)
 {
   IMAP_DATA *idata = NULL;
   HEADER *h = NULL;
-  ENVELOPE *newenv = NULL;
+  struct Envelope *newenv = NULL;
   char buf[LONG_STRING];
   char path[_POSIX_PATH_MAX];
   char *pc = NULL;

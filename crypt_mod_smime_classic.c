@@ -62,7 +62,7 @@ static int crypt_mod_smime_send_menu(HEADER *msg)
   return smime_send_menu(msg);
 }
 
-static void crypt_mod_smime_getkeys(ENVELOPE *env)
+static void crypt_mod_smime_getkeys(struct Envelope *env)
 {
   smime_getkeys(env);
 }

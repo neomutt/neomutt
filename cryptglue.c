@@ -312,7 +312,7 @@ void crypt_smime_encrypted_handler(struct Body *a, STATE *s)
 }
 
 /* fixme: Needs documentation. */
-void crypt_smime_getkeys(ENVELOPE *env)
+void crypt_smime_getkeys(struct Envelope *env)
 {
   if (CRYPT_MOD_CALL_CHECK(SMIME, smime_getkeys))
     (CRYPT_MOD_CALL(SMIME, smime_getkeys))(env);

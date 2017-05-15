@@ -654,7 +654,7 @@ int main(int argc, char **argv, char **environ)
       if (draftFile)
       {
         HEADER *context_hdr = NULL;
-        ENVELOPE *opts_env = msg->env;
+        struct Envelope *opts_env = msg->env;
         struct stat st;
         LIST *uh = NULL, **last_uhp = NULL;
 

@@ -736,7 +736,7 @@ bool mutt_is_text_part(struct Body *b)
   return false;
 }
 
-void mutt_free_envelope(ENVELOPE **p)
+void mutt_free_envelope(struct Envelope **p)
 {
   if (!*p)
     return;
@@ -774,7 +774,7 @@ void mutt_free_envelope(ENVELOPE **p)
 }
 
 /* move all the headers from extra not present in base into base */
-void mutt_merge_envelopes(ENVELOPE *base, ENVELOPE **extra)
+void mutt_merge_envelopes(struct Envelope *base, struct Envelope **extra)
 {
 /* copies each existing element if necessary, and sets the element
   * to NULL in the source so that mutt_free_envelope doesn't leave us

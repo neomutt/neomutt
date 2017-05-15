@@ -627,7 +627,7 @@ void mutt_enter_command(void)
   FREE(&err.data);
 }
 
-void mutt_display_address(ENVELOPE *env)
+void mutt_display_address(struct Envelope *env)
 {
   char *pfx = NULL;
   char buf[SHORT_STRING];

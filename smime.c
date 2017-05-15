@@ -799,7 +799,7 @@ static void _smime_getkeys(char *mailbox)
            NONULL(SmimeCertificates), NONULL(SmimeDefaultKey));
 }
 
-void smime_getkeys(ENVELOPE *env)
+void smime_getkeys(struct Envelope *env)
 {
   struct Address *t = NULL;
   int found = 0;

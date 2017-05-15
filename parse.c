@@ -966,7 +966,7 @@ void mutt_parse_mime_message(struct Context *ctx, HEADER *cur)
   cur->attach_valid = false;
 }
 
-int mutt_parse_rfc822_line(ENVELOPE *e, HEADER *hdr, char *line, char *p,
+int mutt_parse_rfc822_line(struct Envelope *e, HEADER *hdr, char *line, char *p,
                            short user_hdrs, short weed, short do_2047, LIST **lastp)
 {
   int matched = 0;
@@ -1365,9 +1365,9 @@ done:
  * Returns:     newly allocated envelope structure.  You should free it by
  *              mutt_free_envelope() when envelope stay unneeded.
  */
-ENVELOPE *mutt_read_rfc822_header(FILE *f, HEADER *hdr, short user_hdrs, short weed)
+struct Envelope *mutt_read_rfc822_header(FILE *f, HEADER *hdr, short user_hdrs, short weed)
 {
-  ENVELOPE *e = mutt_new_envelope();
+  struct Envelope *e = mutt_new_envelope();
   LIST *last = NULL;
   char *line = safe_malloc(LONG_STRING);
   char *p = NULL;

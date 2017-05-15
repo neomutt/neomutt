@@ -31,7 +31,7 @@ void mutt_edit_headers(const char *editor, const char *body, HEADER *msg, char *
   const char *p = NULL;
   FILE *ifp = NULL, *ofp = NULL;
   int i, keep;
-  ENVELOPE *n = NULL;
+  struct Envelope *n = NULL;
   time_t mtime;
   struct stat st;
   LIST *cur = NULL, **last = NULL, *tmp = NULL;

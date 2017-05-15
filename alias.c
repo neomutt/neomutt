@@ -131,7 +131,7 @@ struct Address *mutt_expand_aliases(struct Address *a)
   return (mutt_remove_duplicates(t));
 }
 
-void mutt_expand_aliases_env(ENVELOPE *env)
+void mutt_expand_aliases_env(struct Envelope *env)
 {
   env->from = mutt_expand_aliases(env->from);
   env->to = mutt_expand_aliases(env->to);
@@ -173,7 +173,7 @@ static void write_safe_address(FILE *fp, char *s)
   }
 }
 
-struct Address *mutt_get_address(ENVELOPE *env, char **pfxp)
+struct Address *mutt_get_address(struct Envelope *env, char **pfxp)
 {
   struct Address *adr = NULL;
   char *pfx = NULL;
@@ -222,7 +222,7 @@ static void recode_buf(char *buf, size_t buflen)
   FREE(&s);
 }
 
-void mutt_create_alias(ENVELOPE *cur, struct Address *iadr)
+void mutt_create_alias(struct Envelope *cur, struct Address *iadr)
 {
   struct Alias *new = NULL, *t = NULL;
   char buf[LONG_STRING], tmp[LONG_STRING], prompt[SHORT_STRING], *pc = NULL;

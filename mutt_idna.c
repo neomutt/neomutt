@@ -299,8 +299,8 @@ const char *mutt_addr_for_display(struct Address *a)
   FREE(&local_mailbox);
   return buff;
 }
-/* Convert an ENVELOPE structure */
-void mutt_env_to_local(ENVELOPE *e)
+/* Convert an Envelope structure */
+void mutt_env_to_local(struct Envelope *e)
 {
   mutt_addrlist_to_local(e->return_path);
   mutt_addrlist_to_local(e->from);
@@ -325,7 +325,7 @@ void mutt_env_to_local(ENVELOPE *e)
     err = NULL;                                                                \
   }
 
-int mutt_env_to_intl(ENVELOPE *env, char **tag, char **err)
+int mutt_env_to_intl(struct Envelope *env, char **tag, char **err)
 {
   int e = 0;
   H_TO_INTL(return_path);

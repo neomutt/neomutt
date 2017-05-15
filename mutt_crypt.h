@@ -245,7 +245,7 @@ int crypt_smime_decrypt_mime(FILE *a, FILE **b, struct Body *c, struct Body **d)
 int crypt_smime_application_smime_handler(struct Body *m, STATE *s);
 
 /* fixme: Needs documentation. */
-void crypt_smime_getkeys(ENVELOPE *env);
+void crypt_smime_getkeys(struct Envelope *env);
 
 /* Check that the sender matches. */
 int crypt_smime_verify_sender(HEADER *h);

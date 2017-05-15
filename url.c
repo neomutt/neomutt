@@ -243,7 +243,7 @@ int url_ciss_tostring(struct CissUrl *ciss, char *dest, size_t len, int flags)
   return 0;
 }
 
-int url_parse_mailto(ENVELOPE *e, char **body, const char *src)
+int url_parse_mailto(struct Envelope *e, char **body, const char *src)
 {
   char *t = NULL, *p = NULL;
   char *tmp = NULL;

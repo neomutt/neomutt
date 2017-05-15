@@ -213,7 +213,7 @@ static const char *make_from_prefix(enum FieldType disp)
  * The field can optionally be prefixed by a character from $from_chars.
  * If $from_chars is not set, the prefix will be, "To", "Cc", etc
  */
-static void make_from(ENVELOPE *env, char *buf, size_t len, int do_lists)
+static void make_from(struct Envelope *env, char *buf, size_t len, int do_lists)
 {
   if (!env || !buf)
     return;
@@ -261,7 +261,7 @@ static void make_from(ENVELOPE *env, char *buf, size_t len, int do_lists)
   snprintf(buf, len, "%s%s", make_from_prefix(disp), mutt_get_name(name));
 }
 
-static void make_from_addr(ENVELOPE *hdr, char *buf, size_t len, int do_lists)
+static void make_from_addr(struct Envelope *hdr, char *buf, size_t len, int do_lists)
 {
   if (!hdr || !buf)
     return;
@@ -307,7 +307,7 @@ static int user_is_recipient(HEADER *h)
   if (!h || !h->env)
     return 0;
 
-  ENVELOPE *env = h->env;
+  struct Envelope *env = h->env;
 
   if (!h->recip_valid)
   {
@@ -392,7 +392,7 @@ static bool get_initials(const char *name, char *buf, int buflen)
   return true;
 }
 
-static char *apply_subject_mods(ENVELOPE *env)
+static char *apply_subject_mods(struct Envelope *env)
 {
   if (env == NULL)
     return NULL;

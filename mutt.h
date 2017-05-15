@@ -651,7 +651,7 @@ struct Alias
   short num;
 };
 
-typedef struct envelope
+struct Envelope
 {
   struct Address *return_path;
   struct Address *from;
@@ -685,11 +685,11 @@ typedef struct envelope
 
   bool irt_changed : 1;  /* In-Reply-To changed to link/break threads */
   bool refs_changed : 1; /* References changed to break thread */
-} ENVELOPE;
+};
 
-static inline ENVELOPE *mutt_new_envelope(void)
+static inline struct Envelope *mutt_new_envelope(void)
 {
-  return safe_calloc(1, sizeof(ENVELOPE));
+  return safe_calloc(1, sizeof(struct Envelope));
 }
 
 typedef struct parameter
@@ -857,7 +857,7 @@ typedef struct header
   int msgno;          /* number displayed to the user */
   int virtual;        /* virtual message number */
   int score;
-  ENVELOPE *env;      /* envelope information */
+  struct Envelope *env;      /* envelope information */
   struct Body *content;      /* list of MIME parts */
   char *path;
 

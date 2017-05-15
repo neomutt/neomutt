@@ -50,7 +50,7 @@ typedef void (*crypt_func_pgp_extract_keys_from_attachment_list_t)(FILE *fp, int
 typedef int (*crypt_func_send_menu_t)(HEADER *msg);
 
 /* (SMIME) */
-typedef void (*crypt_func_smime_getkeys_t)(ENVELOPE *env);
+typedef void (*crypt_func_smime_getkeys_t)(struct Envelope *env);
 typedef int (*crypt_func_smime_verify_sender_t)(HEADER *h);
 
 typedef struct Body *(*crypt_func_smime_build_smime_entity_t)(struct Body *a, char *certlist);

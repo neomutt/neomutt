@@ -442,7 +442,7 @@ void mutt_default_save(char *path, size_t pathlen, HEADER *hdr)
   {
     char tmp[_POSIX_PATH_MAX];
     struct Address *adr = NULL;
-    ENVELOPE *env = hdr->env;
+    struct Envelope *env = hdr->env;
     bool fromMe = mutt_addr_is_user(env->from);
 
     if (!fromMe && env->reply_to && env->reply_to->mailbox)
@@ -467,7 +467,7 @@ void mutt_select_fcc(char *path, size_t pathlen, HEADER *hdr)
 {
   struct Address *adr = NULL;
   char buf[_POSIX_PATH_MAX];
-  ENVELOPE *env = hdr->env;
+  struct Envelope *env = hdr->env;
 
   if (addr_hook(path, pathlen, MUTT_FCCHOOK, NULL, hdr) != 0)
   {

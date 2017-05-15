@@ -676,10 +676,10 @@ void mutt_attach_forward(FILE *fp, HEADER *hdr, struct AttachPtr **idx, short id
  *
  * Note that this code is horribly similar to envelope_defaults () from send.c.
  */
-static int attach_reply_envelope_defaults(ENVELOPE *env, struct AttachPtr **idx,
+static int attach_reply_envelope_defaults(struct Envelope *env, struct AttachPtr **idx,
                                           short idxlen, HEADER *parent, int flags)
 {
-  ENVELOPE *curenv = NULL;
+  struct Envelope *curenv = NULL;
   HEADER *curhdr = NULL;
   short i;
 
