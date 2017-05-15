@@ -53,10 +53,10 @@ struct Menu
   int pagelen; /* number of entries per screen */
   int tagprefix;
   int is_mailbox_list;
-  mutt_window_t *indexwin;
-  mutt_window_t *statuswin;
-  mutt_window_t *helpwin;
-  mutt_window_t *messagewin;
+  struct MuttWindow *indexwin;
+  struct MuttWindow *statuswin;
+  struct MuttWindow *helpwin;
+  struct MuttWindow *messagewin;
 
   /* Setting dialog != NULL overrides normal menu behavior.
    * In dialog mode menubar is hidden and prompt keys are checked before

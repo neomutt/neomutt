@@ -59,12 +59,12 @@ static size_t UngetCount = 0;
 static size_t UngetLen = 0;
 static event_t *UngetKeyEvents;
 
-mutt_window_t *MuttHelpWindow = NULL;
-mutt_window_t *MuttIndexWindow = NULL;
-mutt_window_t *MuttStatusWindow = NULL;
-mutt_window_t *MuttMessageWindow = NULL;
+struct MuttWindow *MuttHelpWindow = NULL;
+struct MuttWindow *MuttIndexWindow = NULL;
+struct MuttWindow *MuttStatusWindow = NULL;
+struct MuttWindow *MuttMessageWindow = NULL;
 #ifdef USE_SIDEBAR
-mutt_window_t *MuttSidebarWindow = NULL;
+struct MuttWindow *MuttSidebarWindow = NULL;
 #endif
 
 static void reflow_message_window_rows(int mw_rows);
@@ -588,12 +588,12 @@ out:
 
 void mutt_init_windows(void)
 {
-  MuttHelpWindow = safe_calloc(sizeof(mutt_window_t), 1);
-  MuttIndexWindow = safe_calloc(sizeof(mutt_window_t), 1);
-  MuttStatusWindow = safe_calloc(sizeof(mutt_window_t), 1);
-  MuttMessageWindow = safe_calloc(sizeof(mutt_window_t), 1);
+  MuttHelpWindow = safe_calloc(sizeof(struct MuttWindow), 1);
+  MuttIndexWindow = safe_calloc(sizeof(struct MuttWindow), 1);
+  MuttStatusWindow = safe_calloc(sizeof(struct MuttWindow), 1);
+  MuttMessageWindow = safe_calloc(sizeof(struct MuttWindow), 1);
 #ifdef USE_SIDEBAR
-  MuttSidebarWindow = safe_calloc(sizeof(mutt_window_t), 1);
+  MuttSidebarWindow = safe_calloc(sizeof(struct MuttWindow), 1);
 #endif
 }
 
@@ -620,16 +620,16 @@ void mutt_reflow_windows(void)
   MuttStatusWindow->row_offset = option(OPTSTATUSONTOP) ? 0 : LINES - 2;
   MuttStatusWindow->col_offset = 0;
 
-  memcpy(MuttHelpWindow, MuttStatusWindow, sizeof(mutt_window_t));
+  memcpy(MuttHelpWindow, MuttStatusWindow, sizeof(struct MuttWindow));
   if (!option(OPTHELP))
     MuttHelpWindow->rows = 0;
   else
     MuttHelpWindow->row_offset = option(OPTSTATUSONTOP) ? LINES - 2 : 0;
 
-  memcpy(MuttMessageWindow, MuttStatusWindow, sizeof(mutt_window_t));
+  memcpy(MuttMessageWindow, MuttStatusWindow, sizeof(struct MuttWindow));
   MuttMessageWindow->row_offset = LINES - 1;
 
-  memcpy(MuttIndexWindow, MuttStatusWindow, sizeof(mutt_window_t));
+  memcpy(MuttIndexWindow, MuttStatusWindow, sizeof(struct MuttWindow));
   MuttIndexWindow->rows = MAX(
       LINES - MuttStatusWindow->rows - MuttHelpWindow->rows - MuttMessageWindow->rows, 0);
   MuttIndexWindow->row_offset =
@@ -638,7 +638,7 @@ void mutt_reflow_windows(void)
 #ifdef USE_SIDEBAR
   if (option(OPTSIDEBAR))
   {
-    memcpy(MuttSidebarWindow, MuttIndexWindow, sizeof(mutt_window_t));
+    memcpy(MuttSidebarWindow, MuttIndexWindow, sizeof(struct MuttWindow));
     MuttSidebarWindow->cols = SidebarWidth;
     MuttIndexWindow->cols -= SidebarWidth;
 
@@ -681,17 +681,17 @@ static void reflow_message_window_rows(int mw_rows)
   mutt_set_current_menu_redraw_full();
 }
 
-int mutt_window_move(mutt_window_t *win, int row, int col)
+int mutt_window_move(struct MuttWindow *win, int row, int col)
 {
   return move(win->row_offset + row, win->col_offset + col);
 }
 
-int mutt_window_mvaddch(mutt_window_t *win, int row, int col, const chtype ch)
+int mutt_window_mvaddch(struct MuttWindow *win, int row, int col, const chtype ch)
 {
   return mvaddch(win->row_offset + row, win->col_offset + col, ch);
 }
 
-int mutt_window_mvaddstr(mutt_window_t *win, int row, int col, const char *str)
+int mutt_window_mvaddstr(struct MuttWindow *win, int row, int col, const char *str)
 {
   return mvaddstr(win->row_offset + row, win->col_offset + col, str);
 }
@@ -707,7 +707,7 @@ static int vw_printw(SLcurses_Window_Type *win, const char *fmt, va_list ap)
 }
 #endif
 
-int mutt_window_mvprintw(mutt_window_t *win, int row, int col, const char *fmt, ...)
+int mutt_window_mvprintw(struct MuttWindow *win, int row, int col, const char *fmt, ...)
 {
   va_list ap;
   int rv;
@@ -725,7 +725,7 @@ int mutt_window_mvprintw(mutt_window_t *win, int row, int col, const char *fmt, 
 /* Assumes the cursor has already been positioned within the
  * window.
  */
-void mutt_window_clrtoeol(mutt_window_t *win)
+void mutt_window_clrtoeol(struct MuttWindow *win)
 {
   int row, col, curcol;
 
@@ -744,7 +744,7 @@ void mutt_window_clrtoeol(mutt_window_t *win)
   }
 }
 
-void mutt_window_clearline(mutt_window_t *win, int row)
+void mutt_window_clearline(struct MuttWindow *win, int row)
 {
   mutt_window_move(win, row, 0);
   mutt_window_clrtoeol(win);
@@ -754,7 +754,7 @@ void mutt_window_clearline(mutt_window_t *win, int row)
  * Otherwise it will happily return negative or values outside
  * the window boundaries
  */
-void mutt_window_getyx(mutt_window_t *win, int *y, int *x)
+void mutt_window_getyx(struct MuttWindow *win, int *y, int *x)
 {
   int row, col;
 

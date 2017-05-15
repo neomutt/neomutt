@@ -220,35 +220,35 @@ void mutt_progress_init(progress_t *progress, const char *msg,
 void mutt_progress_update(progress_t *progress, long pos, int percent);
 
 /* Windows for different parts of the screen */
-typedef struct
+struct MuttWindow
 {
   int rows;
   int cols;
   int row_offset;
   int col_offset;
-} mutt_window_t;
+};
 
-extern mutt_window_t *MuttHelpWindow;
-extern mutt_window_t *MuttIndexWindow;
-extern mutt_window_t *MuttStatusWindow;
-extern mutt_window_t *MuttMessageWindow;
+extern struct MuttWindow *MuttHelpWindow;
+extern struct MuttWindow *MuttIndexWindow;
+extern struct MuttWindow *MuttStatusWindow;
+extern struct MuttWindow *MuttMessageWindow;
 #ifdef USE_SIDEBAR
-extern mutt_window_t *MuttSidebarWindow;
+extern struct MuttWindow *MuttSidebarWindow;
 #endif
 
 void mutt_init_windows(void);
 void mutt_free_windows(void);
 void mutt_reflow_windows(void);
-int mutt_window_move(mutt_window_t *win, int row, int col);
-int mutt_window_mvaddch(mutt_window_t *win, int row, int col, const chtype ch);
-int mutt_window_mvaddstr(mutt_window_t *win, int row, int col, const char *str);
-int mutt_window_mvprintw(mutt_window_t *win, int row, int col, const char *fmt, ...);
-void mutt_window_clrtoeol(mutt_window_t *win);
-void mutt_window_clearline(mutt_window_t *win, int row);
-void mutt_window_getyx(mutt_window_t *win, int *y, int *x);
+int mutt_window_move(struct MuttWindow *win, int row, int col);
+int mutt_window_mvaddch(struct MuttWindow *win, int row, int col, const chtype ch);
+int mutt_window_mvaddstr(struct MuttWindow *win, int row, int col, const char *str);
+int mutt_window_mvprintw(struct MuttWindow *win, int row, int col, const char *fmt, ...);
+void mutt_window_clrtoeol(struct MuttWindow *win);
+void mutt_window_clearline(struct MuttWindow *win, int row);
+void mutt_window_getyx(struct MuttWindow *win, int *y, int *x);
 
 
-static inline int mutt_window_wrap_cols(mutt_window_t *win, short wrap)
+static inline int mutt_window_wrap_cols(struct MuttWindow *win, short wrap)
 {
   if (wrap < 0)
     return win->cols > -wrap ? win->cols + wrap : win->cols;
