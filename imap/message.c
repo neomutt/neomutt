@@ -365,7 +365,7 @@ int imap_read_headers(IMAP_DATA *idata, int msgbegin, int msgend)
       "DATE FROM SUBJECT TO CC MESSAGE-ID REFERENCES CONTENT-TYPE "
       "CONTENT-DESCRIPTION IN-REPLY-TO REPLY-TO LINES LIST-POST X-LABEL "
       "X-KEYWORDS X-MOZILLA-KEYS KEYWORDS X-ORIGINAL-TO";
-  progress_t progress;
+  struct Progress progress;
   int retval = -1;
 
 #ifdef USE_HCACHE
@@ -694,7 +694,7 @@ int imap_fetch_message(struct Context *ctx, struct Message *msg, int msgno)
   char path[_POSIX_PATH_MAX];
   char *pc = NULL;
   long bytes;
-  progress_t progressbar;
+  struct Progress progressbar;
   int uid;
   int cacheno;
   IMAP_CACHE *cache = NULL;
@@ -917,7 +917,7 @@ int imap_append_message(struct Context *ctx, struct Message *msg)
   char internaldate[IMAP_DATELEN];
   char imap_flags[SHORT_STRING];
   size_t len;
-  progress_t progressbar;
+  struct Progress progressbar;
   size_t sent;
   int c, last;
   IMAP_MBOX mx;

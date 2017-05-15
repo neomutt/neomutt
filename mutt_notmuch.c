@@ -147,7 +147,7 @@ struct nm_ctxdata
 
   struct uri_tag *query_items;
 
-  progress_t progress; /**< A progress bar */
+  struct Progress progress; /**< A progress bar */
   int oldmsgcount;
   int ignmsgcount; /**< Ignored messages */
 
@@ -2305,7 +2305,7 @@ static int nm_sync_mailbox(struct Context *ctx, int *index_hint)
   struct nm_ctxdata *data = get_ctxdata(ctx);
   int i, rc = 0;
   char msgbuf[STRING];
-  progress_t progress;
+  struct Progress progress;
   char *uri = ctx->path;
   int changed = 0;
 

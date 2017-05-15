@@ -97,7 +97,7 @@ int pop_parse_path(const char *path, struct Account *acct);
 int pop_connect(POP_DATA *pop_data);
 int pop_open_connection(POP_DATA *pop_data);
 int pop_query_d(POP_DATA *pop_data, char *buf, size_t buflen, char *msg);
-int pop_fetch_data(POP_DATA *pop_data, char *query, progress_t *progressbar,
+int pop_fetch_data(POP_DATA *pop_data, char *query, struct Progress *progressbar,
                    int (*funct)(char *, void *), void *data);
 int pop_reconnect(struct Context *ctx);
 void pop_logout(struct Context *ctx);

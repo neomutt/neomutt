@@ -87,7 +87,7 @@ static int mmdf_parse_mailbox(struct Context *ctx)
 #ifdef NFS_ATTRIBUTE_HACK
   struct utimbuf newtime;
 #endif
-  progress_t progress;
+  struct Progress progress;
   char msgbuf[STRING];
 
   if (stat(ctx->path, &sb) == -1)
@@ -250,7 +250,7 @@ static int mbox_parse_mailbox(struct Context *ctx)
 #ifdef NFS_ATTRIBUTE_HACK
   struct utimbuf newtime;
 #endif
-  progress_t progress;
+  struct Progress progress;
   char msgbuf[STRING];
 
   /* Save information about the folder at the time we opened it. */
@@ -1008,7 +1008,7 @@ static int mbox_sync_mailbox(struct Context *ctx, int *index_hint)
   struct m_update_t *newOffset = NULL;
   struct m_update_t *oldOffset = NULL;
   FILE *fp = NULL;
-  progress_t progress;
+  struct Progress progress;
   char msgbuf[STRING];
   struct Buffy *tmp = NULL;
 

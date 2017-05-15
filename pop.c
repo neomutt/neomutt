@@ -233,7 +233,7 @@ static int pop_fetch_headers(struct Context *ctx)
   int i, ret, old_count, new_count, deleted;
   unsigned short hcached = 0, bcached;
   POP_DATA *pop_data = (POP_DATA *) ctx->data;
-  progress_t progress;
+  struct Progress progress;
 
 #ifdef USE_HCACHE
   header_cache_t *hc = NULL;
@@ -514,7 +514,7 @@ static int pop_fetch_message(struct Context *ctx, struct Message *msg, int msgno
   void *uidl = NULL;
   char buf[LONG_STRING];
   char path[_POSIX_PATH_MAX];
-  progress_t progressbar;
+  struct Progress progressbar;
   POP_DATA *pop_data = (POP_DATA *) ctx->data;
   POP_CACHE *cache = NULL;
   struct Header *h = ctx->hdrs[msgno];
@@ -666,7 +666,7 @@ static int pop_sync_mailbox(struct Context *ctx, int *index_hint)
   int i, j, ret = 0;
   char buf[LONG_STRING];
   POP_DATA *pop_data = (POP_DATA *) ctx->data;
-  progress_t progress;
+  struct Progress progress;
 #ifdef USE_HCACHE
   header_cache_t *hc = NULL;
 #endif

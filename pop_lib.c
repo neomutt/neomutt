@@ -458,7 +458,7 @@ int pop_query_d(POP_DATA *pop_data, char *buf, size_t buflen, char *msg)
  * -2 - invalid command or execution error,
  * -3 - error in funct(*line, *data)
  */
-int pop_fetch_data(POP_DATA *pop_data, char *query, progress_t *progressbar,
+int pop_fetch_data(POP_DATA *pop_data, char *query, struct Progress *progressbar,
                    int (*funct)(char *, void *), void *data)
 {
   char buf[LONG_STRING];
@@ -550,7 +550,7 @@ int pop_reconnect(struct Context *ctx)
 {
   int ret;
   POP_DATA *pop_data = (POP_DATA *) ctx->data;
-  progress_t progressbar;
+  struct Progress progressbar;
 
   if (pop_data->status == POP_CONNECTED)
     return 0;

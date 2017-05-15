@@ -1771,7 +1771,7 @@ int mutt_pattern_func(int op, char *prompt)
   char buf[LONG_STRING] = "", *simple = NULL;
   struct Buffer err;
   int i;
-  progress_t progress;
+  struct Progress progress;
 
   strfcpy(buf, NONULL(Context->pattern), sizeof(buf));
   if (prompt || op != MUTT_LIMIT)
@@ -1891,7 +1891,7 @@ int mutt_search_command(int cur, int op)
   char temp[LONG_STRING];
   int incr;
   struct Header *h = NULL;
-  progress_t progress;
+  struct Progress progress;
   const char *msg = NULL;
 
   if (!*LastSearch || (op != OP_SEARCH_NEXT && op != OP_SEARCH_OPPOSITE))

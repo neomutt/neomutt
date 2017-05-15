@@ -784,7 +784,7 @@ struct Header *maildir_parse_message(int magic, const char *fname, int is_old, s
 }
 
 static int maildir_parse_dir(struct Context *ctx, struct maildir ***last,
-                             const char *subdir, int *count, progress_t *progress)
+                             const char *subdir, int *count, struct Progress *progress)
 {
   DIR *dirp = NULL;
   struct dirent *de = NULL;
@@ -1071,7 +1071,7 @@ static struct maildir *skip_duplicates(struct maildir *p, struct maildir **last)
 /*
  * This function does the second parsing pass
  */
-static void maildir_delayed_parsing(struct Context *ctx, struct maildir **md, progress_t *progress)
+static void maildir_delayed_parsing(struct Context *ctx, struct maildir **md, struct Progress *progress)
 {
   struct maildir *p, *last = NULL;
   char fn[_POSIX_PATH_MAX];
@@ -1217,7 +1217,7 @@ static int mh_read_dir(struct Context *ctx, const char *subdir)
   struct mh_data *data = NULL;
   int count;
   char msgbuf[STRING];
-  progress_t progress;
+  struct Progress progress;
 
   memset(&mhs, 0, sizeof(mhs));
   if (!ctx->quiet)
@@ -2251,7 +2251,7 @@ static int mh_sync_mailbox(struct Context *ctx, int *index_hint)
   header_cache_t *hc = NULL;
 #endif /* USE_HCACHE */
   char msgbuf[STRING];
-  progress_t progress;
+  struct Progress progress;
 
   if (ctx->magic == MUTT_MH)
     i = mh_check_mailbox(ctx, index_hint);

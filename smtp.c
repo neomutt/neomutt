@@ -159,7 +159,7 @@ static int smtp_data(struct Connection *conn, const char *msgfile)
 {
   char buf[1024];
   FILE *fp = NULL;
-  progress_t progress;
+  struct Progress progress;
   struct stat st;
   int r, term = 0;
   size_t buflen = 0;

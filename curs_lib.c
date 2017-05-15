@@ -418,7 +418,7 @@ void mutt_curses_message(const char *fmt, ...)
   va_end(ap);
 }
 
-void mutt_progress_init(progress_t *progress, const char *msg,
+void mutt_progress_init(struct Progress *progress, const char *msg,
                         unsigned short flags, unsigned short inc, long size)
 {
   struct timeval tv = { 0, 0 };
@@ -428,7 +428,7 @@ void mutt_progress_init(progress_t *progress, const char *msg,
   if (option(OPTNOCURSES))
     return;
 
-  memset(progress, 0, sizeof(progress_t));
+  memset(progress, 0, sizeof(struct Progress));
   progress->inc = inc;
   progress->flags = flags;
   progress->msg = msg;
@@ -517,7 +517,7 @@ static void message_bar(int percent, const char *fmt, ...)
   mutt_refresh();
 }
 
-void mutt_progress_update(progress_t *progress, long pos, int percent)
+void mutt_progress_update(struct Progress *progress, long pos, int percent)
 {
   char posstr[SHORT_STRING];
   short update = 0;

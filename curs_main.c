@@ -1837,7 +1837,7 @@ int mutt_index_menu(void)
         if (tag)
         {
           char msgbuf[STRING];
-          progress_t progress;
+          struct Progress progress;
           int px;
 
           if (!Context->quiet)

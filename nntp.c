@@ -804,7 +804,7 @@ static int nntp_fetch_lines(NNTP_DATA *nntp_data, char *query, size_t qlen,
     char *line = NULL;
     unsigned int lines = 0;
     size_t off = 0;
-    progress_t progress;
+    struct Progress progress;
 
     if (msg)
       mutt_progress_init(&progress, msg, MUTT_PROGRESS_MSG, ReadInc, -1);
@@ -979,7 +979,7 @@ typedef struct
   anum_t last;
   int restore;
   unsigned char *messages;
-  progress_t progress;
+  struct Progress progress;
 #ifdef USE_HCACHE
   header_cache_t *hc;
 #endif
@@ -2214,7 +2214,7 @@ int nntp_check_new_groups(NNTP_SERVER *nserv)
     if (option(OPTLOADDESC))
     {
       unsigned int count = 0;
-      progress_t progress;
+      struct Progress progress;
 
       mutt_progress_init(&progress, _("Loading descriptions..."),
                          MUTT_PROGRESS_MSG, ReadInc, nserv->groups_num - i);
