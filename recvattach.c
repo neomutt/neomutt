@@ -51,7 +51,7 @@ static const struct mapping_t AttachHelp[] = {
   { N_("Print"), OP_PRINT }, { N_("Help"), OP_HELP }, { NULL, 0 },
 };
 
-void mutt_update_tree(ATTACHPTR **idx, short idxlen)
+void mutt_update_tree(struct AttachPtr **idx, short idxlen)
 {
   char buf[STRING];
   char *s = NULL;
@@ -91,17 +91,17 @@ void mutt_update_tree(ATTACHPTR **idx, short idxlen)
   }
 }
 
-ATTACHPTR **mutt_gen_attach_list(BODY *m, int parent_type, ATTACHPTR **idx,
+struct AttachPtr **mutt_gen_attach_list(BODY *m, int parent_type, struct AttachPtr **idx,
                                  short *idxlen, short *idxmax, int level, int compose)
 {
-  ATTACHPTR *new = NULL;
+  struct AttachPtr *new = NULL;
   int i;
 
   for (; m; m = m->next)
   {
     if (*idxlen == *idxmax)
     {
-      safe_realloc(&idx, sizeof(ATTACHPTR *) * ((*idxmax) += 5));
+      safe_realloc(&idx, sizeof(struct AttachPtr *) * ((*idxmax) += 5));
       for (i = *idxlen; i < *idxmax; i++)
         idx[i] = NULL;
     }
@@ -115,7 +115,7 @@ ATTACHPTR **mutt_gen_attach_list(BODY *m, int parent_type, ATTACHPTR **idx,
     else
     {
       if (!idx[*idxlen])
-        idx[*idxlen] = safe_calloc(1, sizeof(ATTACHPTR));
+        idx[*idxlen] = safe_calloc(1, sizeof(struct AttachPtr));
 
       new = idx[(*idxlen)++];
       new->content = m;
@@ -164,7 +164,7 @@ const char *mutt_attach_fmt(char *dest, size_t destlen, size_t col, int cols,
   char fmt[16];
   char tmp[SHORT_STRING];
   char charset[SHORT_STRING];
-  ATTACHPTR *aptr = (ATTACHPTR *) data;
+  struct AttachPtr *aptr = (struct AttachPtr *) data;
   int optional = (flags & MUTT_FORMAT_OPTIONAL);
   size_t l;
 
@@ -370,13 +370,13 @@ const char *mutt_attach_fmt(char *dest, size_t destlen, size_t col, int cols,
 static void attach_entry(char *b, size_t blen, MUTTMENU *menu, int num)
 {
   mutt_FormatString(b, blen, 0, MuttIndexWindow->cols, NONULL(AttachFormat), mutt_attach_fmt,
-                    (unsigned long) (((ATTACHPTR **) menu->data)[num]),
+                    (unsigned long) (((struct AttachPtr **) menu->data)[num]),
                     MUTT_FORMAT_ARROWCURSOR);
 }
 
 int mutt_tag_attach(MUTTMENU *menu, int n, int m)
 {
-  BODY *cur = ((ATTACHPTR **) menu->data)[n]->content;
+  BODY *cur = ((struct AttachPtr **) menu->data)[n]->content;
   bool ot = cur->tagged;
 
   cur->tagged = (m >= 0 ? m : !cur->tagged);
@@ -788,10 +788,10 @@ void mutt_print_attachment_list(FILE *fp, int tag, BODY *top)
     print_attachment_list(fp, tag, top, &state);
 }
 
-static void update_attach_index(BODY *cur, ATTACHPTR ***idxp, short *idxlen,
+static void update_attach_index(BODY *cur, struct AttachPtr ***idxp, short *idxlen,
                                 short *idxmax, MUTTMENU *menu)
 {
-  ATTACHPTR **idx = *idxp;
+  struct AttachPtr **idx = *idxp;
   while (--(*idxlen) >= 0)
     idx[(*idxlen)]->content = NULL;
   *idxlen = 0;
@@ -809,9 +809,9 @@ static void update_attach_index(BODY *cur, ATTACHPTR ***idxp, short *idxlen,
 
 
 int mutt_attach_display_loop(MUTTMENU *menu, int op, FILE *fp, HEADER *hdr, BODY *cur,
-                             ATTACHPTR ***idxp, short *idxlen, short *idxmax, int recv)
+                             struct AttachPtr ***idxp, short *idxlen, short *idxmax, int recv)
 {
-  ATTACHPTR **idx = *idxp;
+  struct AttachPtr **idx = *idxp;
 
   do
   {
@@ -927,7 +927,7 @@ void mutt_view_attachments(HEADER *hdr)
   BODY *cur = NULL;
   MESSAGE *msg = NULL;
   FILE *fp = NULL;
-  ATTACHPTR **idx = NULL;
+  struct AttachPtr **idx = NULL;
   short idxlen = 0;
   short idxmax = 0;
   int flags = 0;

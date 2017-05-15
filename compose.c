@@ -122,7 +122,7 @@ static struct mapping_t ComposeNewsHelp[] = {
 static void snd_entry(char *b, size_t blen, MUTTMENU *menu, int num)
 {
   mutt_FormatString(b, blen, 0, MuttIndexWindow->cols, NONULL(AttachFormat), mutt_attach_fmt,
-                    (unsigned long) (((ATTACHPTR **) menu->data)[num]),
+                    (unsigned long) (((struct AttachPtr **) menu->data)[num]),
                     MUTT_FORMAT_STAT_FILE | MUTT_FORMAT_ARROWCURSOR);
 }
 
@@ -251,7 +251,7 @@ static void redraw_mix_line(LIST *chain)
 }
 #endif /* MIXMASTER */
 
-static int check_attachments(ATTACHPTR **idx, short idxlen)
+static int check_attachments(struct AttachPtr **idx, short idxlen)
 {
   int i, r;
   struct stat st;
@@ -379,7 +379,7 @@ static void edit_address_list(int line, struct Address **addr)
 
 static int delete_attachment(MUTTMENU *menu, short *idxlen, int x)
 {
-  ATTACHPTR **idx = (ATTACHPTR **) menu->data;
+  struct AttachPtr **idx = (struct AttachPtr **) menu->data;
   int y;
 
   menu->redraw = REDRAW_INDEX | REDRAW_STATUS;
@@ -413,7 +413,7 @@ static int delete_attachment(MUTTMENU *menu, short *idxlen, int x)
   return 0;
 }
 
-static void update_idx(MUTTMENU *menu, ATTACHPTR **idx, short idxlen)
+static void update_idx(MUTTMENU *menu, struct AttachPtr **idx, short idxlen)
 {
   idx[idxlen]->level = (idxlen > 0) ? idx[idxlen - 1]->level : 0;
   if (idxlen)
@@ -491,7 +491,7 @@ static unsigned long cum_attachs_size(MUTTMENU *menu)
 {
   size_t s;
   unsigned short i;
-  ATTACHPTR **idx = menu->data;
+  struct AttachPtr **idx = menu->data;
   CONTENT *info = NULL;
   BODY *b = NULL;
 
@@ -604,7 +604,7 @@ int mutt_compose_menu(HEADER *msg, /* structure for new message */
   char buf[LONG_STRING];
   char fname[_POSIX_PATH_MAX];
   MUTTMENU *menu = NULL;
-  ATTACHPTR **idx = NULL;
+  struct AttachPtr **idx = NULL;
   short idxlen = 0;
   short idxmax = 0;
   int i, close = 0;
@@ -844,11 +844,11 @@ int mutt_compose_menu(HEADER *msg, /* structure for new message */
           break;
         if (idxlen == idxmax)
         {
-          safe_realloc(&idx, sizeof(ATTACHPTR *) * (idxmax += 5));
+          safe_realloc(&idx, sizeof(struct AttachPtr *) * (idxmax += 5));
           menu->data = idx;
         }
 
-        idx[idxlen] = safe_calloc(1, sizeof(ATTACHPTR));
+        idx[idxlen] = safe_calloc(1, sizeof(struct AttachPtr));
         if ((idx[idxlen]->content = crypt_pgp_make_key_attachment(NULL)) != NULL)
         {
           update_idx(menu, idx, idxlen++);
@@ -880,7 +880,7 @@ int mutt_compose_menu(HEADER *msg, /* structure for new message */
 
         if (idxlen + numfiles >= idxmax)
         {
-          safe_realloc(&idx, sizeof(ATTACHPTR *) * (idxmax += 5 + numfiles));
+          safe_realloc(&idx, sizeof(struct AttachPtr *) * (idxmax += 5 + numfiles));
           menu->data = idx;
         }
 
@@ -890,7 +890,7 @@ int mutt_compose_menu(HEADER *msg, /* structure for new message */
         for (i = 0; i < numfiles; i++)
         {
           char *att = files[i];
-          idx[idxlen] = safe_calloc(1, sizeof(ATTACHPTR));
+          idx[idxlen] = safe_calloc(1, sizeof(struct AttachPtr));
           idx[idxlen]->unowned = true;
           idx[idxlen]->content = mutt_make_file_attach(att);
           if (idx[idxlen]->content != NULL)
@@ -1010,7 +1010,7 @@ int mutt_compose_menu(HEADER *msg, /* structure for new message */
 
         if (idxlen + Context->tagged >= idxmax)
         {
-          safe_realloc(&idx, sizeof(ATTACHPTR *) * (idxmax += 5 + Context->tagged));
+          safe_realloc(&idx, sizeof(struct AttachPtr *) * (idxmax += 5 + Context->tagged));
           menu->data = idx;
         }
 
@@ -1019,7 +1019,7 @@ int mutt_compose_menu(HEADER *msg, /* structure for new message */
           h = Context->hdrs[i];
           if (h->tagged)
           {
-            idx[idxlen] = safe_calloc(1, sizeof(ATTACHPTR));
+            idx[idxlen] = safe_calloc(1, sizeof(struct AttachPtr));
             idx[idxlen]->content = mutt_make_message_attach(Context, h, 1);
             if (idx[idxlen]->content != NULL)
               update_idx(menu, idx, idxlen++);
@@ -1311,7 +1311,7 @@ int mutt_compose_menu(HEADER *msg, /* structure for new message */
         }
         if (idxlen == idxmax)
         {
-          safe_realloc(&idx, sizeof(ATTACHPTR *) * (idxmax += 5));
+          safe_realloc(&idx, sizeof(struct AttachPtr *) * (idxmax += 5));
           menu->data = idx;
         }
 
@@ -1323,7 +1323,7 @@ int mutt_compose_menu(HEADER *msg, /* structure for new message */
         }
         safe_fclose(&fp);
 
-        idx[idxlen] = safe_calloc(1, sizeof(ATTACHPTR));
+        idx[idxlen] = safe_calloc(1, sizeof(struct AttachPtr));
         if ((idx[idxlen]->content = mutt_make_file_attach(fname)) == NULL)
         {
           mutt_error(_("What we have here is a failure to make an attachment"));

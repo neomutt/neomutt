@@ -44,7 +44,7 @@ typedef struct
   HEADER *hdr;     /* current message */
   BODY *bdy;       /* current attachment */
   FILE *fp;        /* source stream */
-  ATTACHPTR **idx; /* attachment information */
+  struct AttachPtr **idx; /* attachment information */
   short idxlen;
 } pager_t;
 

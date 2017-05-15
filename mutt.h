@@ -751,7 +751,7 @@ typedef struct body
   struct body *parts;   /* parts of a multipart or message/rfc822 */
   struct header *hdr;   /* header information for message/rfc822 */
 
-  struct attachptr *aptr; /* Menu information, used in recvattach.c */
+  struct AttachPtr *aptr; /* Menu information, used in recvattach.c */
 
   signed short attach_count;
 
