@@ -337,7 +337,7 @@ static int msg_fetch_header(CONTEXT *ctx, IMAP_HEADER *h, char *buf, FILE *fp)
   return rc;
 }
 
-static void flush_buffer(char *buf, size_t *len, CONNECTION *conn)
+static void flush_buffer(char *buf, size_t *len, struct Connection *conn)
 {
   buf[*len] = '\0';
   mutt_socket_write_n(conn, buf, *len);

@@ -880,7 +880,7 @@ NNTP_SERVER *nntp_select_server(char *server, int leave_lock)
   struct Account acct;
   NNTP_SERVER *nserv = NULL;
   NNTP_DATA *nntp_data = NULL;
-  CONNECTION *conn = NULL;
+  struct Connection *conn = NULL;
   struct CissUrl url;
 
   if (!server || !*server)

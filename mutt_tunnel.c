@@ -35,7 +35,7 @@ typedef struct
   int writefd;
 } TUNNEL_DATA;
 
-static int tunnel_socket_open(CONNECTION *conn)
+static int tunnel_socket_open(struct Connection *conn)
 {
   TUNNEL_DATA *tunnel = NULL;
   int pid;
@@ -110,7 +110,7 @@ static int tunnel_socket_open(CONNECTION *conn)
   return 0;
 }
 
-static int tunnel_socket_close(CONNECTION *conn)
+static int tunnel_socket_close(struct Connection *conn)
 {
   TUNNEL_DATA *tunnel = (TUNNEL_DATA *) conn->sockdata;
   int status;
@@ -129,7 +129,7 @@ static int tunnel_socket_close(CONNECTION *conn)
   return 0;
 }
 
-static int tunnel_socket_read(CONNECTION *conn, char *buf, size_t len)
+static int tunnel_socket_read(struct Connection *conn, char *buf, size_t len)
 {
   TUNNEL_DATA *tunnel = (TUNNEL_DATA *) conn->sockdata;
   int rc;
@@ -144,7 +144,7 @@ static int tunnel_socket_read(CONNECTION *conn, char *buf, size_t len)
   return rc;
 }
 
-static int tunnel_socket_write(CONNECTION *conn, const char *buf, size_t len)
+static int tunnel_socket_write(struct Connection *conn, const char *buf, size_t len)
 {
   TUNNEL_DATA *tunnel = (TUNNEL_DATA *) conn->sockdata;
   int rc;
@@ -159,7 +159,7 @@ static int tunnel_socket_write(CONNECTION *conn, const char *buf, size_t len)
   return rc;
 }
 
-static int tunnel_socket_poll(CONNECTION *conn)
+static int tunnel_socket_poll(struct Connection *conn)
 {
   TUNNEL_DATA *tunnel = (TUNNEL_DATA *) conn->sockdata;
   int ofd;
@@ -174,7 +174,7 @@ static int tunnel_socket_poll(CONNECTION *conn)
 }
 
 /* -- public functions -- */
-int mutt_tunnel_socket_setup(CONNECTION *conn)
+int mutt_tunnel_socket_setup(struct Connection *conn)
 {
   conn->conn_open = tunnel_socket_open;
   conn->conn_close = tunnel_socket_close;

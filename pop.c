@@ -395,7 +395,7 @@ static int pop_open_mailbox(CONTEXT *ctx)
 {
   int ret;
   char buf[LONG_STRING];
-  CONNECTION *conn = NULL;
+  struct Connection *conn = NULL;
   struct Account acct;
   POP_DATA *pop_data = NULL;
   struct CissUrl url;
@@ -777,7 +777,7 @@ void pop_fetch_mail(void)
   char msgbuf[SHORT_STRING];
   char *url = NULL, *p = NULL;
   int i, delanswer, last = 0, msgs, bytes, rset = 0, ret;
-  CONNECTION *conn = NULL;
+  struct Connection *conn = NULL;
   CONTEXT ctx;
   MESSAGE *msg = NULL;
   struct Account acct;

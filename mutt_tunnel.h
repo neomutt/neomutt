@@ -18,6 +18,6 @@
 
 #include "mutt_socket.h"
 
-int mutt_tunnel_socket_setup(CONNECTION *conn);
+int mutt_tunnel_socket_setup(struct Connection *conn);
 
 #endif /* _MUTT_TUNNEL_H */

@@ -167,8 +167,8 @@ typedef enum {
 
 typedef struct
 {
-  /* This data is specific to a CONNECTION to an IMAP server */
-  CONNECTION *conn;
+  /* This data is specific to a Connection to an IMAP server */
+  struct Connection *conn;
   bool recovering;
   unsigned char state;
   unsigned char status;

@@ -290,14 +290,14 @@ static int ssl_passwd_cb(char *buf, int size, int rwflag, void *userdata)
   return snprintf(buf, size, "%s", account->pass);
 }
 
-static int ssl_socket_open_err(CONNECTION *conn)
+static int ssl_socket_open_err(struct Connection *conn)
 {
   mutt_error(_("SSL disabled due to the lack of entropy"));
   mutt_sleep(2);
   return -1;
 }
 
-static int ssl_socket_close(CONNECTION *conn)
+static int ssl_socket_close(struct Connection *conn)
 {
   sslsockdata *data = conn->sockdata;
   if (data)
@@ -502,7 +502,7 @@ static int ssl_init(void)
   return 0;
 }
 
-static int ssl_socket_read(CONNECTION *conn, char *buf, size_t len)
+static int ssl_socket_read(struct Connection *conn, char *buf, size_t len)
 {
   sslsockdata *data = conn->sockdata;
   int rc;
@@ -521,7 +521,7 @@ static int ssl_socket_read(CONNECTION *conn, char *buf, size_t len)
   return rc;
 }
 
-static int ssl_socket_write(CONNECTION *conn, const char *buf, size_t len)
+static int ssl_socket_write(struct Connection *conn, const char *buf, size_t len)
 {
   sslsockdata *data = conn->sockdata;
   int rc;
@@ -539,7 +539,7 @@ static int ssl_socket_write(CONNECTION *conn, const char *buf, size_t len)
   return rc;
 }
 
-static void ssl_get_client_cert(sslsockdata *ssldata, CONNECTION *conn)
+static void ssl_get_client_cert(sslsockdata *ssldata, struct Connection *conn)
 {
   if (SslClientCert)
   {
@@ -554,7 +554,7 @@ static void ssl_get_client_cert(sslsockdata *ssldata, CONNECTION *conn)
   }
 }
 
-static int tls_close(CONNECTION *conn)
+static int tls_close(struct Connection *conn)
 {
   int rc;
 
@@ -1027,7 +1027,7 @@ static int ssl_verify_callback(int preverify_ok, X509_STORE_CTX *ctx)
 
 /* ssl_negotiate: After SSL state has been initialized, attempt to negotiate
  *   SSL over the wire, including certificate checks. */
-static int ssl_negotiate(CONNECTION *conn, sslsockdata *ssldata)
+static int ssl_negotiate(struct Connection *conn, sslsockdata *ssldata)
 {
   int err;
   const char *errmsg = NULL;
@@ -1093,7 +1093,7 @@ static int ssl_negotiate(CONNECTION *conn, sslsockdata *ssldata)
   return 0;
 }
 
-static int ssl_socket_open(CONNECTION *conn)
+static int ssl_socket_open(struct Connection *conn)
 {
   sslsockdata *data = NULL;
   int maxbits;
@@ -1188,7 +1188,7 @@ static int ssl_socket_open(CONNECTION *conn)
 
 /* mutt_ssl_starttls: Negotiate TLS over an already opened connection.
  *   TODO: Merge this code better with ssl_socket_open. */
-int mutt_ssl_starttls(CONNECTION *conn)
+int mutt_ssl_starttls(struct Connection *conn)
 {
   sslsockdata *ssldata = NULL;
   int maxbits;
@@ -1301,7 +1301,7 @@ bail:
   return -1;
 }
 
-int mutt_ssl_socket_setup(CONNECTION *conn)
+int mutt_ssl_socket_setup(struct Connection *conn)
 {
   if (ssl_init() < 0)
   {

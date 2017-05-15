@@ -56,7 +56,7 @@ typedef struct
 
 typedef struct
 {
-  CONNECTION *conn;
+  struct Connection *conn;
   unsigned int status : 2;
   bool capabilities : 1;
   unsigned int use_stls : 2;

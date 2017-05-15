@@ -832,7 +832,7 @@ static void alrm_handler(int sig)
 
 void imap_keepalive(void)
 {
-  CONNECTION *conn = NULL;
+  struct Connection *conn = NULL;
   IMAP_DATA *idata = NULL;
   time_t now = time(NULL);
 

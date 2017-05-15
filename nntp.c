@@ -58,7 +58,7 @@ static int nntp_connect_error(NNTP_SERVER *nserv)
  *  1 - need to switch to reader mode */
 static int nntp_capabilities(NNTP_SERVER *nserv)
 {
-  CONNECTION *conn = nserv->conn;
+  struct Connection *conn = nserv->conn;
   unsigned int mode_reader = 0;
   char buf[LONG_STRING];
   char authinfo[LONG_STRING] = "";
@@ -163,7 +163,7 @@ char *OverviewFmt = "Subject:\0"
 /* Detect supported commands */
 static int nntp_attempt_features(NNTP_SERVER *nserv)
 {
-  CONNECTION *conn = nserv->conn;
+  struct Connection *conn = nserv->conn;
   char buf[LONG_STRING];
 
   /* no CAPABILITIES, trying DATE, LISTGROUP, LIST NEWSGROUPS */
@@ -287,7 +287,7 @@ static int nntp_attempt_features(NNTP_SERVER *nserv)
 /* Get login, password and authenticate */
 static int nntp_auth(NNTP_SERVER *nserv)
 {
-  CONNECTION *conn = nserv->conn;
+  struct Connection *conn = nserv->conn;
   char buf[LONG_STRING];
   char authenticators[LONG_STRING] = "USER";
   char *method = NULL, *a = NULL, *p = NULL;
@@ -576,7 +576,7 @@ static int nntp_auth(NNTP_SERVER *nserv)
 /* Connect to server, authenticate and get capabilities */
 int nntp_open_connection(NNTP_SERVER *nserv)
 {
-  CONNECTION *conn = nserv->conn;
+  struct Connection *conn = nserv->conn;
   char buf[STRING];
   int cap;
   unsigned int posting = 0, auth = 1;

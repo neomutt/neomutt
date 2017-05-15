@@ -171,8 +171,8 @@ int imap_delete_mailbox(CONTEXT *ctx, IMAP_MBOX *mx)
  *   make sure we've got all the context we need. */
 void imap_logout_all(void)
 {
-  CONNECTION *conn = NULL;
-  CONNECTION *tmp = NULL;
+  struct Connection *conn = NULL;
+  struct Connection *tmp = NULL;
 
   conn = mutt_socket_head();
 
@@ -317,7 +317,7 @@ static int imap_check_capabilities(IMAP_DATA *idata)
  *   a new one if none can be found. */
 IMAP_DATA *imap_conn_find(const struct Account *account, int flags)
 {
-  CONNECTION *conn = NULL;
+  struct Connection *conn = NULL;
   struct Account *creds = NULL;
   IMAP_DATA *idata = NULL;
   int new = 0;
@@ -1923,7 +1923,7 @@ static int longest_common_prefix(char *dest, const char *src, int start, size_t 
 static int imap_complete_hosts(char *dest, size_t len)
 {
   struct Buffy *mailbox = NULL;
-  CONNECTION *conn = NULL;
+  struct Connection *conn = NULL;
   int rc = -1;
   int matchlen;
 
