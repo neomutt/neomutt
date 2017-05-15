@@ -924,7 +924,7 @@ typedef struct group_context_t
   struct group_context_t *next;
 } group_context_t;
 
-typedef struct pattern_t
+struct Pattern
 {
   short op;
   bool not : 1;
@@ -935,14 +935,14 @@ typedef struct pattern_t
   bool isalias : 1;
   int min;
   int max;
-  struct pattern_t *next;
-  struct pattern_t *child; /* arguments to logical op */
+  struct Pattern *next;
+  struct Pattern *child; /* arguments to logical op */
   union {
     regex_t *rx;
     struct Group *g;
     char *str;
   } p;
-} pattern_t;
+};
 
 /* This is used when a message is repeatedly pattern matched against.
  * e.g. for color, scoring, hooks.  It caches a few of the potentially slow
@@ -1017,7 +1017,7 @@ struct Context
   off_t size;
   off_t vsize;
   char *pattern;            /* limit pattern string */
-  pattern_t *limit_pattern; /* compiled limit pattern */
+  struct Pattern *limit_pattern; /* compiled limit pattern */
   struct Header **hdrs;
   struct Header *last_tag;  /* last tagged msg. used to link threads */
   struct MuttThread *tree;      /* top of thread tree */

@@ -25,7 +25,7 @@
 typedef struct score_t
 {
   char *str;
-  pattern_t *pat;
+  struct Pattern *pat;
   int val;
   int exact; /* if this rule matches, don't evaluate any more */
   struct score_t *next;
@@ -63,7 +63,7 @@ int mutt_parse_score(struct Buffer *buf, struct Buffer *s, unsigned long data, s
 {
   SCORE *ptr = NULL, *last = NULL;
   char *pattern = NULL, *pc = NULL;
-  struct pattern_t *pat = NULL;
+  struct Pattern *pat = NULL;
 
   mutt_extract_token(buf, s, 0);
   if (!MoreArgs(s))

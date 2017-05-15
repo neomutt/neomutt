@@ -33,7 +33,7 @@ typedef struct hook
   int type;           /* hook type */
   REGEXP rx;          /* regular expression */
   char *command;      /* filename, command or pattern to execute */
-  pattern_t *pattern; /* used for fcc,save,send-hook */
+  struct Pattern *pattern; /* used for fcc,save,send-hook */
   struct hook *next;
 } HOOK;
 
@@ -47,7 +47,7 @@ int mutt_parse_hook(struct Buffer *buf, struct Buffer *s, unsigned long data, st
   struct Buffer command, pattern;
   int rc, not = 0;
   regex_t *rx = NULL;
-  pattern_t *pat = NULL;
+  struct Pattern *pat = NULL;
   char path[_POSIX_PATH_MAX];
 
   mutt_buffer_init(&pattern);

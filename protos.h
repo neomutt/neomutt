@@ -420,16 +420,16 @@ int mutt_wctoutf8(char *s, unsigned int c, size_t buflen);
 #define IsWPrint(wc) (iswprint(wc) || (option(OPTLOCALES) ? 0 : (wc >= 0xa0)))
 #endif
 
-static inline pattern_t *new_pattern(void)
+static inline struct Pattern *new_pattern(void)
 {
-  return safe_calloc(1, sizeof(pattern_t));
+  return safe_calloc(1, sizeof(struct Pattern));
 }
 
-int mutt_pattern_exec(struct pattern_t *pat, pattern_exec_flag flags,
+int mutt_pattern_exec(struct Pattern *pat, pattern_exec_flag flags,
                       struct Context *ctx, struct Header *h, pattern_cache_t *cache);
-pattern_t *mutt_pattern_comp(/* const */ char *s, int flags, struct Buffer *err);
+struct Pattern *mutt_pattern_comp(/* const */ char *s, int flags, struct Buffer *err);
 void mutt_check_simple(char *s, size_t len, const char *simple);
-void mutt_pattern_free(pattern_t **pat);
+void mutt_pattern_free(struct Pattern **pat);
 
 int getdnsdomainname(char *, size_t);
 

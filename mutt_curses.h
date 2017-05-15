@@ -190,7 +190,7 @@ typedef struct color_line
   regex_t rx;
   int match; /* which substringmap 0 for old behaviour */
   char *pattern;
-  struct pattern_t *color_pattern; /* compiled pattern to speed up index color
+  struct Pattern *color_pattern; /* compiled pattern to speed up index color
                                       calculation */
   short fg;
   short bg;

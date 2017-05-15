@@ -1707,10 +1707,10 @@ void imap_mboxcache_free(IMAP_DATA *idata)
 
 /* returns number of patterns in the search that should be done server-side
  * (eg are full-text) */
-static int do_search(const pattern_t *search, int allpats)
+static int do_search(const struct Pattern *search, int allpats)
 {
   int rc = 0;
-  const pattern_t *pat = NULL;
+  const struct Pattern *pat = NULL;
 
   for (pat = search; pat; pat = pat->next)
   {
@@ -1734,10 +1734,10 @@ static int do_search(const pattern_t *search, int allpats)
   return rc;
 }
 
-/* convert mutt pattern_t to IMAP SEARCH command containing only elements
+/* convert mutt Pattern to IMAP SEARCH command containing only elements
  * that require full-text search (mutt already has what it needs for most
  * match types, and does a better job (eg server doesn't support regexps). */
-static int imap_compile_search(const pattern_t *pat, struct Buffer *buf)
+static int imap_compile_search(const struct Pattern *pat, struct Buffer *buf)
 {
   if (!do_search(pat, 0))
     return 0;
@@ -1751,7 +1751,7 @@ static int imap_compile_search(const pattern_t *pat, struct Buffer *buf)
 
     if ((clauses = do_search(pat->child, 1)) > 0)
     {
-      const pattern_t *clause = pat->child;
+      const struct Pattern *clause = pat->child;
 
       mutt_buffer_addch(buf, '(');
 
@@ -1819,7 +1819,7 @@ static int imap_compile_search(const pattern_t *pat, struct Buffer *buf)
   return 0;
 }
 
-int imap_search(struct Context *ctx, const pattern_t *pat)
+int imap_search(struct Context *ctx, const struct Pattern *pat)
 {
   struct Buffer buf;
   IMAP_DATA *idata = ctx->data;
