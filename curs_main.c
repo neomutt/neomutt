@@ -242,7 +242,7 @@ static int ci_first_message(void)
 }
 
 /* This should be in mx.c, but it only gets used here. */
-static int mx_toggle_write(CONTEXT *ctx)
+static int mx_toggle_write(struct Context *ctx)
 {
   if (!ctx)
     return -1;
@@ -294,7 +294,7 @@ static void resort_index(MUTTMENU *menu)
   menu->redraw |= REDRAW_INDEX | REDRAW_STATUS;
 }
 
-void update_index(MUTTMENU *menu, CONTEXT *ctx, int check, int oldcount, int index_hint)
+void update_index(MUTTMENU *menu, struct Context *ctx, int check, int oldcount, int index_hint)
 {
   /* store pointers to the newly added messages */
   HEADER **save_new = NULL;
@@ -3255,7 +3255,7 @@ int mutt_index_menu(void)
   return close;
 }
 
-void mutt_set_header_color(CONTEXT *ctx, HEADER *curhdr)
+void mutt_set_header_color(struct Context *ctx, HEADER *curhdr)
 {
   COLOR_LINE *color = NULL;
   pattern_cache_t cache;

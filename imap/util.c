@@ -894,7 +894,7 @@ int imap_wait_keepalive(pid_t pid)
 }
 
 /* Allow/disallow re-opening a folder upon expunge. */
-void imap_allow_reopen(CONTEXT *ctx)
+void imap_allow_reopen(struct Context *ctx)
 {
   IMAP_DATA *idata = NULL;
   if (!ctx || !ctx->data || ctx->magic != MUTT_IMAP)
@@ -905,7 +905,7 @@ void imap_allow_reopen(CONTEXT *ctx)
     idata->reopen |= IMAP_REOPEN_ALLOW;
 }
 
-void imap_disallow_reopen(CONTEXT *ctx)
+void imap_disallow_reopen(struct Context *ctx)
 {
   IMAP_DATA *idata = NULL;
   if (!ctx || !ctx->data || ctx->magic != MUTT_IMAP)

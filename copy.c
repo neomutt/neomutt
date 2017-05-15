@@ -713,7 +713,7 @@ int _mutt_copy_message(FILE *fpout, FILE *fpin, HEADER *hdr, struct Body *body, 
 
 /* should be made to return -1 on fatal errors, and 1 on non-fatal errors
  * like partial decode, where it is worth displaying as much as possible */
-int mutt_copy_message(FILE *fpout, CONTEXT *src, HEADER *hdr, int flags, int chflags)
+int mutt_copy_message(FILE *fpout, struct Context *src, HEADER *hdr, int flags, int chflags)
 {
   MESSAGE *msg = NULL;
   int r;
@@ -740,7 +740,7 @@ int mutt_copy_message(FILE *fpout, CONTEXT *src, HEADER *hdr, int flags, int chf
  * flags        mutt_copy_message() flags
  * chflags      mutt_copy_header() flags
  */
-static int _mutt_append_message(CONTEXT *dest, FILE *fpin, CONTEXT *src,
+static int _mutt_append_message(struct Context *dest, FILE *fpin, struct Context *src,
                                 HEADER *hdr, struct Body *body, int flags, int chflags)
 {
   char buf[STRING];
@@ -770,7 +770,7 @@ static int _mutt_append_message(CONTEXT *dest, FILE *fpin, CONTEXT *src,
   return r;
 }
 
-int mutt_append_message(CONTEXT *dest, CONTEXT *src, HEADER *hdr, int cmflags, int chflags)
+int mutt_append_message(struct Context *dest, struct Context *src, HEADER *hdr, int cmflags, int chflags)
 {
   MESSAGE *msg = NULL;
   int r;

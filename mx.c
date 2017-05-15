@@ -533,7 +533,7 @@ int mx_access(const char *path, int flags)
   return access(path, flags);
 }
 
-static int mx_open_mailbox_append(CONTEXT *ctx, int flags)
+static int mx_open_mailbox_append(struct Context *ctx, int flags)
 {
   struct stat sb;
 
@@ -587,17 +587,17 @@ static int mx_open_mailbox_append(CONTEXT *ctx, int flags)
  *              MUTT_PEEK               revert atime where applicable
  *      ctx     if non-null, context struct to use
  */
-CONTEXT *mx_open_mailbox(const char *path, int flags, CONTEXT *pctx)
+struct Context *mx_open_mailbox(const char *path, int flags, struct Context *pctx)
 {
-  CONTEXT *ctx = pctx;
+  struct Context *ctx = pctx;
   int rc;
 
   if (!path || !path[0])
     return NULL;
 
   if (!ctx)
-    ctx = safe_malloc(sizeof(CONTEXT));
-  memset(ctx, 0, sizeof(CONTEXT));
+    ctx = safe_malloc(sizeof(struct Context));
+  memset(ctx, 0, sizeof(struct Context));
   ctx->path = safe_strdup(path);
   if (!(ctx->realpath = realpath(ctx->path, NULL)))
     ctx->realpath = safe_strdup(ctx->path);
@@ -684,7 +684,7 @@ CONTEXT *mx_open_mailbox(const char *path, int flags, CONTEXT *pctx)
 }
 
 /* free up memory associated with the mailbox context */
-void mx_fastclose_mailbox(CONTEXT *ctx)
+void mx_fastclose_mailbox(struct Context *ctx)
 {
   int i;
   struct utimbuf ut;
@@ -724,11 +724,11 @@ void mx_fastclose_mailbox(CONTEXT *ctx)
   if (ctx->limit_pattern)
     mutt_pattern_free(&ctx->limit_pattern);
   safe_fclose(&ctx->fp);
-  memset(ctx, 0, sizeof(CONTEXT));
+  memset(ctx, 0, sizeof(struct Context));
 }
 
 /* save changes to disk */
-static int sync_mailbox(CONTEXT *ctx, int *index_hint)
+static int sync_mailbox(struct Context *ctx, int *index_hint)
 {
   if (!ctx->mx_ops || !ctx->mx_ops->sync)
     return -1;
@@ -740,9 +740,9 @@ static int sync_mailbox(CONTEXT *ctx, int *index_hint)
 }
 
 /* move deleted mails to the trash folder */
-static int trash_append(CONTEXT *ctx)
+static int trash_append(struct Context *ctx)
 {
-  CONTEXT ctx_trash;
+  struct Context ctx_trash;
   int i;
   struct stat st, stc;
   int opt_confappend, rc;
@@ -806,12 +806,12 @@ static int trash_append(CONTEXT *ctx)
 }
 
 /* save changes and close mailbox */
-int mx_close_mailbox(CONTEXT *ctx, int *index_hint)
+int mx_close_mailbox(struct Context *ctx, int *index_hint)
 {
   int i, move_messages = 0, purge = 1, read_msgs = 0;
   int check;
   int isSpool = 0;
-  CONTEXT f;
+  struct Context f;
   char mbox[_POSIX_PATH_MAX];
   char buf[SHORT_STRING];
 
@@ -1056,7 +1056,7 @@ int mx_close_mailbox(CONTEXT *ctx, int *index_hint)
 #endif
 
 /* update a Context structure's internal tables. */
-void mx_update_tables(CONTEXT *ctx, int committing)
+void mx_update_tables(struct Context *ctx, int committing)
 {
   int i, j;
 
@@ -1146,7 +1146,7 @@ void mx_update_tables(CONTEXT *ctx, int committing)
  *      0               success
  *      -1              error
  */
-int mx_sync_mailbox(CONTEXT *ctx, int *index_hint)
+int mx_sync_mailbox(struct Context *ctx, int *index_hint)
 {
   int rc, i;
   int purge = 1;
@@ -1273,7 +1273,7 @@ int mx_sync_mailbox(CONTEXT *ctx, int *index_hint)
  *      hdr     message being copied (required for maildir support, because
  *              the filename depends on the message flags)
  */
-MESSAGE *mx_open_new_message(CONTEXT *dest, HEADER *hdr, int flags)
+MESSAGE *mx_open_new_message(struct Context *dest, HEADER *hdr, int flags)
 {
   struct Address *p = NULL;
   MESSAGE *msg = NULL;
@@ -1330,7 +1330,7 @@ MESSAGE *mx_open_new_message(CONTEXT *dest, HEADER *hdr, int flags)
 }
 
 /* check for new mail */
-int mx_check_mailbox(CONTEXT *ctx, int *index_hint)
+int mx_check_mailbox(struct Context *ctx, int *index_hint)
 {
   if (!ctx || !ctx->mx_ops)
   {
@@ -1342,7 +1342,7 @@ int mx_check_mailbox(CONTEXT *ctx, int *index_hint)
 }
 
 /* return a stream pointer for a message */
-MESSAGE *mx_open_message(CONTEXT *ctx, int msgno)
+MESSAGE *mx_open_message(struct Context *ctx, int msgno)
 {
   MESSAGE *msg = NULL;
 
@@ -1361,7 +1361,7 @@ MESSAGE *mx_open_message(CONTEXT *ctx, int msgno)
 }
 
 /* commit a message to a folder */
-int mx_commit_message(MESSAGE *msg, CONTEXT *ctx)
+int mx_commit_message(MESSAGE *msg, struct Context *ctx)
 {
   if (!ctx->mx_ops || !ctx->mx_ops->commit_msg)
     return -1;
@@ -1377,7 +1377,7 @@ int mx_commit_message(MESSAGE *msg, CONTEXT *ctx)
 }
 
 /* close a pointer to a message */
-int mx_close_message(CONTEXT *ctx, MESSAGE **msg)
+int mx_close_message(struct Context *ctx, MESSAGE **msg)
 {
   if (!ctx || !msg)
     return 0;
@@ -1398,7 +1398,7 @@ int mx_close_message(CONTEXT *ctx, MESSAGE **msg)
   return r;
 }
 
-void mx_alloc_memory(CONTEXT *ctx)
+void mx_alloc_memory(struct Context *ctx)
 {
   int i;
   size_t s = MAX(sizeof(HEADER *), sizeof(int));
@@ -1430,7 +1430,7 @@ void mx_alloc_memory(CONTEXT *ctx)
 /* this routine is called to update the counts in the context structure for
  * the last message header parsed.
  */
-void mx_update_context(CONTEXT *ctx, int new_messages)
+void mx_update_context(struct Context *ctx, int new_messages)
 {
   HEADER *h = NULL;
   int msgno;

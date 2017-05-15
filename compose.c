@@ -612,7 +612,7 @@ int mutt_compose_menu(HEADER *msg, /* structure for new message */
   int op = 0;
   int loop = 1;
   int fccSet = 0; /* has the user edited the Fcc: field ? */
-  CONTEXT *ctx = NULL, *this = NULL;
+  struct Context *ctx = NULL, *this = NULL;
   /* Sort, SortAux could be changed in mutt_index_menu() */
   int oldSort, oldSortAux;
   struct stat st;

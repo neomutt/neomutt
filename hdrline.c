@@ -457,7 +457,7 @@ static const char *hdr_format_str(char *dest, size_t destlen, size_t col, int co
 {
   struct hdr_format_info *hfi = (struct hdr_format_info *) data;
   HEADER *hdr = NULL, *htmp = NULL;
-  CONTEXT *ctx = NULL;
+  struct Context *ctx = NULL;
   char fmt[SHORT_STRING], buf2[LONG_STRING], *p = NULL;
   char *wch = NULL;
   int do_locales, i;
@@ -1303,7 +1303,7 @@ static const char *hdr_format_str(char *dest, size_t destlen, size_t col, int co
 #undef THREAD_OLD
 }
 
-void _mutt_make_string(char *dest, size_t destlen, const char *s, CONTEXT *ctx,
+void _mutt_make_string(char *dest, size_t destlen, const char *s, struct Context *ctx,
                        HEADER *hdr, format_flag flags)
 {
   struct hdr_format_info hfi;

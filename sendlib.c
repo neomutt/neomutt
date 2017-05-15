@@ -1247,7 +1247,7 @@ void mutt_update_encoding(struct Body *a)
   a->content = info;
 }
 
-struct Body *mutt_make_message_attach(CONTEXT *ctx, HEADER *hdr, int attach_msg)
+struct Body *mutt_make_message_attach(struct Context *ctx, HEADER *hdr, int attach_msg)
 {
   char buffer[LONG_STRING];
   struct Body *body = NULL;
@@ -2791,7 +2791,7 @@ int mutt_write_multiple_fcc(const char *path, HEADER *hdr, const char *msgid,
 int mutt_write_fcc(const char *path, HEADER *hdr, const char *msgid, int post,
                    char *fcc, char **finalpath)
 {
-  CONTEXT f;
+  struct Context f;
   MESSAGE *msg = NULL;
   char tempfile[_POSIX_PATH_MAX];
   FILE *tempfp = NULL;

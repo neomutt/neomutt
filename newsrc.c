@@ -273,7 +273,7 @@ int nntp_newsrc_parse(NNTP_SERVER *nserv)
 }
 
 /* Generate array of .newsrc entries */
-void nntp_newsrc_gen_entries(CONTEXT *ctx)
+void nntp_newsrc_gen_entries(struct Context *ctx)
 {
   NNTP_DATA *nntp_data = ctx->data;
   anum_t last = 0, first = 1;
@@ -1067,7 +1067,7 @@ NNTP_SERVER *nntp_select_server(char *server, int leave_lock)
  * Read = a read message number is in the .newsrc
  * New = not read and not cached
  * Old = not read but cached */
-void nntp_article_status(CONTEXT *ctx, HEADER *hdr, char *group, anum_t anum)
+void nntp_article_status(struct Context *ctx, HEADER *hdr, char *group, anum_t anum)
 {
   NNTP_DATA *nntp_data = ctx->data;
   unsigned int i;

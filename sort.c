@@ -284,7 +284,7 @@ sort_t *mutt_get_sort_func(int method)
   /* not reached */
 }
 
-void mutt_sort_headers(CONTEXT *ctx, int init)
+void mutt_sort_headers(struct Context *ctx, int init)
 {
   int i;
   HEADER *h = NULL;

@@ -271,7 +271,7 @@ static int buffy_mbox_check(struct Buffy *mailbox, struct stat *sb, int check_st
 {
   int rc = 0;
   int new_or_changed;
-  CONTEXT ctx;
+  struct Context ctx;
 
   if (option(OPTCHECKMBOXSIZE))
     new_or_changed = sb->st_size > mailbox->size;

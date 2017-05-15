@@ -370,7 +370,7 @@ char *mutt_find_hook(int type, const char *pat)
   return NULL;
 }
 
-void mutt_message_hook(CONTEXT *ctx, HEADER *hdr, int type)
+void mutt_message_hook(struct Context *ctx, HEADER *hdr, int type)
 {
   struct Buffer err, token;
   HOOK *hook = NULL;
@@ -412,7 +412,7 @@ void mutt_message_hook(CONTEXT *ctx, HEADER *hdr, int type)
   current_hook_type = 0;
 }
 
-static int addr_hook(char *path, size_t pathlen, int type, CONTEXT *ctx, HEADER *hdr)
+static int addr_hook(char *path, size_t pathlen, int type, struct Context *ctx, HEADER *hdr)
 {
   HOOK *hook = NULL;
   pattern_cache_t cache;

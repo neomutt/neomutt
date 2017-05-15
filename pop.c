@@ -135,7 +135,7 @@ static int pop_read_header(POP_DATA *pop_data, HEADER *h)
 static int fetch_uidl(char *line, void *data)
 {
   int i, index;
-  CONTEXT *ctx = (CONTEXT *) data;
+  struct Context *ctx = (struct Context *) data;
   POP_DATA *pop_data = (POP_DATA *) ctx->data;
   char *endp = NULL;
 
@@ -173,11 +173,11 @@ static int fetch_uidl(char *line, void *data)
 
 static int msg_cache_check(const char *id, struct BodyCache *bcache, void *data)
 {
-  CONTEXT *ctx = NULL;
+  struct Context *ctx = NULL;
   POP_DATA *pop_data = NULL;
   int i;
 
-  if (!(ctx = (CONTEXT *) data))
+  if (!(ctx = (struct Context *) data))
     return -1;
   if (!(pop_data = (POP_DATA *) ctx->data))
     return -1;
@@ -228,7 +228,7 @@ static header_cache_t *pop_hcache_open(POP_DATA *pop_data, const char *path)
  * -2 - invalid command or execution error,
  * -3 - error writing to tempfile
  */
-static int pop_fetch_headers(CONTEXT *ctx)
+static int pop_fetch_headers(struct Context *ctx)
 {
   int i, ret, old_count, new_count, deleted;
   unsigned short hcached = 0, bcached;
@@ -391,7 +391,7 @@ static int pop_fetch_headers(CONTEXT *ctx)
 }
 
 /* open POP mailbox - fetch only headers */
-static int pop_open_mailbox(CONTEXT *ctx)
+static int pop_open_mailbox(struct Context *ctx)
 {
   int ret;
   char buf[LONG_STRING];
@@ -482,7 +482,7 @@ static void pop_clear_cache(POP_DATA *pop_data)
 }
 
 /* close POP mailbox */
-static int pop_close_mailbox(CONTEXT *ctx)
+static int pop_close_mailbox(struct Context *ctx)
 {
   POP_DATA *pop_data = (POP_DATA *) ctx->data;
 
@@ -508,7 +508,7 @@ static int pop_close_mailbox(CONTEXT *ctx)
 }
 
 /* fetch message from POP server */
-static int pop_fetch_message(CONTEXT *ctx, MESSAGE *msg, int msgno)
+static int pop_fetch_message(struct Context *ctx, MESSAGE *msg, int msgno)
 {
   int ret;
   void *uidl = NULL;
@@ -655,13 +655,13 @@ static int pop_fetch_message(CONTEXT *ctx, MESSAGE *msg, int msgno)
   return 0;
 }
 
-static int pop_close_message(CONTEXT *ctx, MESSAGE *msg)
+static int pop_close_message(struct Context *ctx, MESSAGE *msg)
 {
   return safe_fclose(&msg->fp);
 }
 
 /* update POP mailbox - delete messages from server */
-static int pop_sync_mailbox(CONTEXT *ctx, int *index_hint)
+static int pop_sync_mailbox(struct Context *ctx, int *index_hint)
 {
   int i, j, ret = 0;
   char buf[LONG_STRING];
@@ -739,7 +739,7 @@ static int pop_sync_mailbox(CONTEXT *ctx, int *index_hint)
 }
 
 /* Check for new messages and fetch headers */
-static int pop_check_mailbox(CONTEXT *ctx, int *index_hint)
+static int pop_check_mailbox(struct Context *ctx, int *index_hint)
 {
   int ret;
   POP_DATA *pop_data = (POP_DATA *) ctx->data;
@@ -778,7 +778,7 @@ void pop_fetch_mail(void)
   char *url = NULL, *p = NULL;
   int i, delanswer, last = 0, msgs, bytes, rset = 0, ret;
   struct Connection *conn = NULL;
-  CONTEXT ctx;
+  struct Context ctx;
   MESSAGE *msg = NULL;
   struct Account acct;
   POP_DATA *pop_data = NULL;

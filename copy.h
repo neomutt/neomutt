@@ -66,8 +66,8 @@ int mutt_copy_header(FILE *in, HEADER *h, FILE *out, int flags, const char *pref
 int _mutt_copy_message(FILE *fpout, FILE *fpin, HEADER *hdr, struct Body *body,
                        int flags, int chflags);
 
-int mutt_copy_message(FILE *fpout, CONTEXT *src, HEADER *hdr, int flags, int chflags);
+int mutt_copy_message(FILE *fpout, struct Context *src, HEADER *hdr, int flags, int chflags);
 
-int mutt_append_message(CONTEXT *dest, CONTEXT *src, HEADER *hdr, int cmflags, int chflags);
+int mutt_append_message(struct Context *dest, struct Context *src, HEADER *hdr, int cmflags, int chflags);
 
 #endif /* _MUTT_COPY_H */

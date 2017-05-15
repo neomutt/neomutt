@@ -36,7 +36,7 @@
 /**
  * struct COMPRESS_INFO - Private data for compress
  *
- * This object gets attached to the mailbox's CONTEXT.
+ * This object gets attached to the mailbox's Context.
  */
 typedef struct
 {
@@ -63,7 +63,7 @@ typedef struct
  *      1: Success (locked or readonly)
  *      0: Error (can't lock the file)
  */
-static int lock_realpath(CONTEXT *ctx, int excl)
+static int lock_realpath(struct Context *ctx, int excl)
 {
   if (!ctx)
     return 0;
@@ -105,7 +105,7 @@ static int lock_realpath(CONTEXT *ctx, int excl)
  *
  * Unlock a mailbox previously locked by lock_mailbox().
  */
-static void unlock_realpath(CONTEXT *ctx)
+static void unlock_realpath(struct Context *ctx)
 {
   if (!ctx)
     return;
@@ -135,7 +135,7 @@ static void unlock_realpath(CONTEXT *ctx)
  *      0: Success
  *      -1: Error
  */
-static int setup_paths(CONTEXT *ctx)
+static int setup_paths(struct Context *ctx)
 {
   if (!ctx)
     return -1;
@@ -184,7 +184,7 @@ static int get_size(const char *path)
  *
  * Save the compressed file size in the compress_info struct.
  */
-static void store_size(const CONTEXT *ctx)
+static void store_size(const struct Context *ctx)
 {
   if (!ctx)
     return;
@@ -236,7 +236,7 @@ static const char *find_hook(int type, const char *path)
  *      COMPRESS_INFO: Hook info for the mailbox's path
  *      NULL:          On error
  */
-static COMPRESS_INFO *set_compress_info(CONTEXT *ctx)
+static COMPRESS_INFO *set_compress_info(struct Context *ctx)
 {
   if (!ctx || !ctx->path)
     return NULL;
@@ -266,7 +266,7 @@ static COMPRESS_INFO *set_compress_info(CONTEXT *ctx)
  * free_compress_info - Frees the compress info members and structure.
  * @ctx: Mailbox to free compress_info for.
  */
-static void free_compress_info(CONTEXT *ctx)
+static void free_compress_info(struct Context *ctx)
 {
   COMPRESS_INFO *ci = NULL;
 
@@ -336,7 +336,7 @@ static char *escape_path(char *src)
  * @fmt:         Field formatting string, UNUSED
  * @ifstring:    If condition is met, display this string, UNUSED
  * @elsestring:  Otherwise, display this string, UNUSED
- * @data:        Pointer to the mailbox CONTEXT
+ * @data:        Pointer to the mailbox Context
  * @flags:       Format flags, UNUSED
  *
  * cb_format_str is a callback function for mutt_FormatString.  It understands
@@ -352,7 +352,7 @@ static const char *cb_format_str(char *dest, size_t destlen, size_t col, int col
   if (!dest || (data == 0))
     return src;
 
-  CONTEXT *ctx = (CONTEXT *) data;
+  struct Context *ctx = (struct Context *) data;
 
   switch (op)
   {
@@ -384,7 +384,7 @@ static const char *cb_format_str(char *dest, size_t destlen, size_t col, int col
  * Result:
  *      gzip -dc '~/mail/abc.gz' > '/tmp/xyz'
  */
-static void expand_command_str(const CONTEXT *ctx, const char *cmd, char *buf, int buflen)
+static void expand_command_str(const struct Context *ctx, const char *cmd, char *buf, int buflen)
 {
   if (!ctx || !cmd || !buf)
     return;
@@ -405,7 +405,7 @@ static void expand_command_str(const CONTEXT *ctx, const char *cmd, char *buf, i
  *      1: Success
  *      0: Failure
  */
-static int execute_command(CONTEXT *ctx, const char *command, const char *progress)
+static int execute_command(struct Context *ctx, const char *command, const char *progress)
 {
   int rc = 1;
   char sys_cmd[HUGE_STRING];
@@ -443,7 +443,7 @@ static int execute_command(CONTEXT *ctx, const char *command, const char *progre
  * Then determine the type of the mailbox so we can delegate the handling of
  * messages.
  */
-static int comp_open_mailbox(CONTEXT *ctx)
+static int comp_open_mailbox(struct Context *ctx)
 {
   if (!ctx || (ctx->magic != MUTT_COMPRESSED))
     return -1;
@@ -507,7 +507,7 @@ or_fail:
  *       0: Success
  *      -1: Failure
  */
-static int comp_open_append_mailbox(CONTEXT *ctx, int flags)
+static int comp_open_append_mailbox(struct Context *ctx, int flags)
 {
   if (!ctx)
     return -1;
@@ -589,7 +589,7 @@ oa_fail1:
  *       0: Success
  *      -1: Failure
  */
-static int comp_close_mailbox(CONTEXT *ctx)
+static int comp_close_mailbox(struct Context *ctx)
 {
   if (!ctx)
     return -1;
@@ -670,7 +670,7 @@ static int comp_close_mailbox(CONTEXT *ctx)
  *      MUTT_REOPENED:  The mailbox was closed and reopened
  *      -1:             Mailbox bad
  */
-static int comp_check_mailbox(CONTEXT *ctx, int *index_hint)
+static int comp_check_mailbox(struct Context *ctx, int *index_hint)
 {
   if (!ctx)
     return -1;
@@ -706,7 +706,7 @@ static int comp_check_mailbox(CONTEXT *ctx, int *index_hint)
 /**
  * comp_open_message - Delegated to mbox handler
  */
-static int comp_open_message(CONTEXT *ctx, MESSAGE *msg, int msgno)
+static int comp_open_message(struct Context *ctx, MESSAGE *msg, int msgno)
 {
   if (!ctx)
     return -1;
@@ -726,7 +726,7 @@ static int comp_open_message(CONTEXT *ctx, MESSAGE *msg, int msgno)
 /**
  * comp_close_message - Delegated to mbox handler
  */
-static int comp_close_message(CONTEXT *ctx, MESSAGE *msg)
+static int comp_close_message(struct Context *ctx, MESSAGE *msg)
 {
   if (!ctx)
     return -1;
@@ -746,7 +746,7 @@ static int comp_close_message(CONTEXT *ctx, MESSAGE *msg)
 /**
  * comp_commit_message - Delegated to mbox handler
  */
-static int comp_commit_message(CONTEXT *ctx, MESSAGE *msg)
+static int comp_commit_message(struct Context *ctx, MESSAGE *msg)
 {
   if (!ctx)
     return -1;
@@ -766,7 +766,7 @@ static int comp_commit_message(CONTEXT *ctx, MESSAGE *msg)
 /**
  * comp_open_new_message - Delegated to mbox handler
  */
-static int comp_open_new_message(MESSAGE *msg, CONTEXT *ctx, HEADER *hdr)
+static int comp_open_new_message(MESSAGE *msg, struct Context *ctx, HEADER *hdr)
 {
   if (!ctx)
     return -1;
@@ -797,7 +797,7 @@ static int comp_open_new_message(MESSAGE *msg, CONTEXT *ctx, HEADER *hdr)
  *      true: Yes, we can append to the file
  *      false: No, appending isn't possible
  */
-bool mutt_comp_can_append(CONTEXT *ctx)
+bool mutt_comp_can_append(struct Context *ctx)
 {
   if (!ctx)
     return false;
@@ -850,7 +850,7 @@ bool mutt_comp_can_read(const char *path)
  *       0: Success
  *      -1: Failure
  */
-static int comp_sync_mailbox(CONTEXT *ctx, int *index_hint)
+static int comp_sync_mailbox(struct Context *ctx, int *index_hint)
 {
   if (!ctx)
     return -1;

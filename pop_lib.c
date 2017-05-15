@@ -375,7 +375,7 @@ err_conn:
 }
 
 /* logout from POP server */
-void pop_logout(CONTEXT *ctx)
+void pop_logout(struct Context *ctx)
 {
   int ret = 0;
   char buf[LONG_STRING];
@@ -522,7 +522,7 @@ static int check_uidl(char *line, void *data)
 {
   int i;
   unsigned int index;
-  CONTEXT *ctx = (CONTEXT *) data;
+  struct Context *ctx = (struct Context *) data;
   char *endp = NULL;
 
   errno = 0;
@@ -546,7 +546,7 @@ static int check_uidl(char *line, void *data)
 }
 
 /* reconnect and verify indexes if connection was lost */
-int pop_reconnect(CONTEXT *ctx)
+int pop_reconnect(struct Context *ctx)
 {
   int ret;
   POP_DATA *pop_data = (POP_DATA *) ctx->data;

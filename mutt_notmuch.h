@@ -20,30 +20,30 @@
 
 #include <stdbool.h>
 
-int nm_read_entire_thread(CONTEXT *ctx, HEADER *h);
+int nm_read_entire_thread(struct Context *ctx, HEADER *h);
 
 char *nm_header_get_folder(HEADER *h);
-int nm_update_filename(CONTEXT *ctx, const char *old, const char *new, HEADER *h);
+int nm_update_filename(struct Context *ctx, const char *old, const char *new, HEADER *h);
 bool nm_normalize_uri(char *new_uri, const char *orig_uri, size_t new_uri_sz);
-char *nm_uri_from_query(CONTEXT *ctx, char *buf, size_t bufsz);
-int nm_modify_message_tags(CONTEXT *ctx, HEADER *hdr, char *buf);
+char *nm_uri_from_query(struct Context *ctx, char *buf, size_t bufsz);
+int nm_modify_message_tags(struct Context *ctx, HEADER *hdr, char *buf);
 
 void nm_query_window_backward(void);
 void nm_query_window_forward(void);
 
-void nm_longrun_init(CONTEXT *ctx, int writable);
-void nm_longrun_done(CONTEXT *ctx);
+void nm_longrun_init(struct Context *ctx, int writable);
+void nm_longrun_done(struct Context *ctx);
 
-char *nm_get_description(CONTEXT *ctx);
+char *nm_get_description(struct Context *ctx);
 int nm_description_to_path(const char *desc, char *buf, size_t bufsz);
 
-int nm_record_message(CONTEXT *ctx, char *path, HEADER *h);
+int nm_record_message(struct Context *ctx, char *path, HEADER *h);
 
-void nm_debug_check(CONTEXT *ctx);
-int nm_get_all_tags(CONTEXT *ctx, char **tag_list, int *tag_count);
+void nm_debug_check(struct Context *ctx);
+int nm_get_all_tags(struct Context *ctx, char **tag_list, int *tag_count);
 
 /*
- * functions usable outside notmuch CONTEXT
+ * functions usable outside notmuch Context
  */
 int nm_nonctx_get_count(char *path, int *all, int *new);
 

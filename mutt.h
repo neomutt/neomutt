@@ -982,7 +982,7 @@ enum
   RIGHTSMAX
 };
 
-struct _context;
+struct Context;
 struct _message;
 
 /*
@@ -997,20 +997,20 @@ struct _message;
  */
 struct mx_ops
 {
-  int (*open)(struct _context *ctx);
-  int (*open_append)(struct _context *ctx, int flags);
-  int (*close)(struct _context *ctx);
-  int (*check)(struct _context *ctx, int *index_hint);
-  int (*sync)(struct _context *ctx, int *index_hint);
-  int (*open_msg)(struct _context *ctx, struct _message *msg, int msgno);
-  int (*close_msg)(struct _context *ctx, struct _message *msg);
-  int (*commit_msg)(struct _context *ctx, struct _message *msg);
-  int (*open_new_msg)(struct _message *msg, struct _context *ctx, HEADER *hdr);
+  int (*open)(struct Context *ctx);
+  int (*open_append)(struct Context *ctx, int flags);
+  int (*close)(struct Context *ctx);
+  int (*check)(struct Context *ctx, int *index_hint);
+  int (*sync)(struct Context *ctx, int *index_hint);
+  int (*open_msg)(struct Context *ctx, struct _message *msg, int msgno);
+  int (*close_msg)(struct Context *ctx, struct _message *msg);
+  int (*commit_msg)(struct Context *ctx, struct _message *msg);
+  int (*open_new_msg)(struct _message *msg, struct Context *ctx, HEADER *hdr);
 };
 
 #include "mutt_menu.h"
 
-typedef struct _context
+struct Context
 {
   char *path;
   char *realpath; /* used for buffy comparison and the sidebar */
@@ -1062,7 +1062,7 @@ typedef struct _context
   /* driver hooks */
   void *data; /* driver specific data */
   struct mx_ops *mx_ops;
-} CONTEXT;
+};
 
 typedef struct
 {

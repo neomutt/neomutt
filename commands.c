@@ -690,7 +690,7 @@ static void set_copy_flags(HEADER *hdr, int decode, int decrypt, int *cmflags, i
   }
 }
 
-int _mutt_save_message(HEADER *h, CONTEXT *ctx, int delete, int decode, int decrypt)
+int _mutt_save_message(HEADER *h, struct Context *ctx, int delete, int decode, int decrypt)
 {
   int cmflags, chflags;
   int rc;
@@ -720,7 +720,7 @@ int mutt_save_message(HEADER *h, int delete, int decode, int decrypt)
   int i, need_buffy_cleanup;
   int need_passphrase = 0, app = 0;
   char prompt[SHORT_STRING], buf[_POSIX_PATH_MAX];
-  CONTEXT ctx;
+  struct Context ctx;
   struct stat st;
 
   snprintf(prompt, sizeof(prompt),

@@ -140,7 +140,7 @@ int imap_rename_mailbox(IMAP_DATA *idata, IMAP_MBOX *mx, const char *newname)
   return 0;
 }
 
-int imap_delete_mailbox(CONTEXT *ctx, IMAP_MBOX *mx)
+int imap_delete_mailbox(struct Context *ctx, IMAP_MBOX *mx)
 {
   char buf[LONG_STRING], mbox[LONG_STRING];
   IMAP_DATA *idata = NULL;
@@ -549,7 +549,7 @@ static char *imap_get_flags(LIST **hflags, char *s)
   return s;
 }
 
-static int imap_open_mailbox(CONTEXT *ctx)
+static int imap_open_mailbox(struct Context *ctx)
 {
   IMAP_DATA *idata = NULL;
   IMAP_STATUS *status = NULL;
@@ -765,7 +765,7 @@ fail_noidata:
   return -1;
 }
 
-static int imap_open_mailbox_append(CONTEXT *ctx, int flags)
+static int imap_open_mailbox_append(struct Context *ctx, int flags)
 {
   IMAP_DATA *idata = NULL;
   char buf[LONG_STRING];
@@ -823,7 +823,7 @@ void imap_logout(IMAP_DATA **idata)
   imap_free_idata(idata);
 }
 
-static int imap_open_new_message(MESSAGE *msg, CONTEXT *dest, HEADER *hdr)
+static int imap_open_new_message(MESSAGE *msg, struct Context *dest, HEADER *hdr)
 {
   char tmp[_POSIX_PATH_MAX];
 
@@ -1152,10 +1152,10 @@ static int sync_helper(IMAP_DATA *idata, int right, int flag, const char *name)
  *   ctx: the current context
  *   expunge: 0 or 1 - do expunge?
  */
-int imap_sync_mailbox(CONTEXT *ctx, int expunge)
+int imap_sync_mailbox(struct Context *ctx, int expunge)
 {
   IMAP_DATA *idata = NULL;
-  CONTEXT *appendctx = NULL;
+  struct Context *appendctx = NULL;
   HEADER *h = NULL;
   HEADER **hdrs = NULL;
   int oldsort;
@@ -1343,8 +1343,8 @@ out:
   return rc;
 }
 
-/* imap_close_mailbox: clean up IMAP data in CONTEXT */
-int imap_close_mailbox(CONTEXT *ctx)
+/* imap_close_mailbox: clean up IMAP data in Context */
+int imap_close_mailbox(struct Context *ctx)
 {
   IMAP_DATA *idata = NULL;
   int i;
@@ -1400,7 +1400,7 @@ int imap_close_mailbox(CONTEXT *ctx)
  *      0               no change
  *      -1              error
  */
-int imap_check_mailbox(CONTEXT *ctx, int force)
+int imap_check_mailbox(struct Context *ctx, int force)
 {
   return imap_check(ctx->data, force);
 }
@@ -1455,7 +1455,7 @@ int imap_check(IMAP_DATA *idata, int force)
   return result;
 }
 
-static int imap_check_mailbox_reopen(CONTEXT *ctx, int *index_hint)
+static int imap_check_mailbox_reopen(struct Context *ctx, int *index_hint)
 {
   int rc;
   (void) index_hint;
@@ -1819,7 +1819,7 @@ static int imap_compile_search(const pattern_t *pat, struct Buffer *buf)
   return 0;
 }
 
-int imap_search(CONTEXT *ctx, const pattern_t *pat)
+int imap_search(struct Context *ctx, const pattern_t *pat)
 {
   struct Buffer buf;
   IMAP_DATA *idata = ctx->data;
@@ -2064,7 +2064,7 @@ int imap_complete(char *dest, size_t dlen, char *path)
  *      -1: error
  *       0: success
  *       1: non-fatal error - try fetch/append */
-int imap_fast_trash(CONTEXT *ctx, char *dest)
+int imap_fast_trash(struct Context *ctx, char *dest)
 {
   IMAP_DATA *idata = NULL;
   char mbox[LONG_STRING];

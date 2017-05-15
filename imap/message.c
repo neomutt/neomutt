@@ -32,7 +32,7 @@
 
 static void imap_update_context(IMAP_DATA *idata, int oldmsgcount)
 {
-  CONTEXT *ctx = NULL;
+  struct Context *ctx = NULL;
   HEADER *h = NULL;
   int msgno;
 
@@ -283,7 +283,7 @@ static int msg_parse_fetch(IMAP_HEADER *h, char *s)
  *      0 on success
  *     -1 if the string is not a fetch response
  *     -2 if the string is a corrupt fetch response */
-static int msg_fetch_header(CONTEXT *ctx, IMAP_HEADER *h, char *buf, FILE *fp)
+static int msg_fetch_header(struct Context *ctx, IMAP_HEADER *h, char *buf, FILE *fp)
 {
   IMAP_DATA *idata = NULL;
   long bytes;
@@ -351,7 +351,7 @@ static void flush_buffer(char *buf, size_t *len, struct Connection *conn)
  */
 int imap_read_headers(IMAP_DATA *idata, int msgbegin, int msgend)
 {
-  CONTEXT *ctx = NULL;
+  struct Context *ctx = NULL;
   char *hdrreq = NULL;
   FILE *fp = NULL;
   char tempfile[_POSIX_PATH_MAX];
@@ -685,7 +685,7 @@ error_out_0:
   return retval;
 }
 
-int imap_fetch_message(CONTEXT *ctx, MESSAGE *msg, int msgno)
+int imap_fetch_message(struct Context *ctx, MESSAGE *msg, int msgno)
 {
   IMAP_DATA *idata = NULL;
   HEADER *h = NULL;
@@ -892,12 +892,12 @@ bail:
   return -1;
 }
 
-int imap_close_message(CONTEXT *ctx, MESSAGE *msg)
+int imap_close_message(struct Context *ctx, MESSAGE *msg)
 {
   return safe_fclose(&msg->fp);
 }
 
-int imap_commit_message(CONTEXT *ctx, MESSAGE *msg)
+int imap_commit_message(struct Context *ctx, MESSAGE *msg)
 {
   int r = safe_fclose(&msg->fp);
 
@@ -907,7 +907,7 @@ int imap_commit_message(CONTEXT *ctx, MESSAGE *msg)
   return imap_append_message(ctx, msg);
 }
 
-int imap_append_message(CONTEXT *ctx, MESSAGE *msg)
+int imap_append_message(struct Context *ctx, MESSAGE *msg)
 {
   IMAP_DATA *idata = NULL;
   FILE *fp = NULL;
@@ -1045,7 +1045,7 @@ fail:
  *      -1: error
  *       0: success
  *       1: non-fatal error - try fetch/append */
-int imap_copy_messages(CONTEXT *ctx, HEADER *h, char *dest, int delete)
+int imap_copy_messages(struct Context *ctx, HEADER *h, char *dest, int delete)
 {
   IMAP_DATA *idata = NULL;
   struct Buffer cmd, sync_cmd;
@@ -1276,7 +1276,7 @@ void imap_free_header_data(IMAP_HEADER_DATA **data)
  *   the server. Expects a flags line of the form "FLAGS (flag flag ...)" */
 char *imap_set_flags(IMAP_DATA *idata, HEADER *h, char *s)
 {
-  CONTEXT *ctx = idata->ctx;
+  struct Context *ctx = idata->ctx;
   IMAP_HEADER newh;
   IMAP_HEADER_DATA *hd = NULL;
   bool readonly;

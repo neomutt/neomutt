@@ -59,20 +59,20 @@ typedef struct _message
   time_t received; /* the time at which this message was received */
 } MESSAGE;
 
-CONTEXT *mx_open_mailbox(const char *path, int flags, CONTEXT *pctx);
+struct Context *mx_open_mailbox(const char *path, int flags, struct Context *pctx);
 
-MESSAGE *mx_open_message(CONTEXT *ctx, int msgno);
-MESSAGE *mx_open_new_message(CONTEXT *dest, HEADER *hdr, int flags);
+MESSAGE *mx_open_message(struct Context *ctx, int msgno);
+MESSAGE *mx_open_new_message(struct Context *dest, HEADER *hdr, int flags);
 
-void mx_fastclose_mailbox(CONTEXT *ctx);
+void mx_fastclose_mailbox(struct Context *ctx);
 
-int mx_close_mailbox(CONTEXT *ctx, int *index_hint);
-int mx_sync_mailbox(CONTEXT *ctx, int *index_hint);
-int mx_commit_message(MESSAGE *msg, CONTEXT *ctx);
-int mx_close_message(CONTEXT *ctx, MESSAGE **msg);
+int mx_close_mailbox(struct Context *ctx, int *index_hint);
+int mx_sync_mailbox(struct Context *ctx, int *index_hint);
+int mx_commit_message(MESSAGE *msg, struct Context *ctx);
+int mx_close_message(struct Context *ctx, MESSAGE **msg);
 int mx_get_magic(const char *path);
 int mx_set_magic(const char *s);
-int mx_check_mailbox(CONTEXT *ctx, int *index_hint);
+int mx_check_mailbox(struct Context *ctx, int *index_hint);
 #ifdef USE_IMAP
 bool mx_is_imap(const char *p);
 #endif

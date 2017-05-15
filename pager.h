@@ -40,7 +40,7 @@
 
 typedef struct
 {
-  CONTEXT *ctx;    /* current mailbox */
+  struct Context *ctx;    /* current mailbox */
   HEADER *hdr;     /* current message */
   struct Body *bdy;       /* current attachment */
   FILE *fp;        /* source stream */
@@ -50,6 +50,6 @@ typedef struct
 
 int mutt_do_pager(const char *banner, const char *tempfile, int do_color, pager_t *info);
 int mutt_pager(const char *banner, const char *fname, int flags, pager_t *extra);
-void update_index(MUTTMENU *menu, CONTEXT *ctx, int check, int oldcount, int index_hint);
+void update_index(MUTTMENU *menu, struct Context *ctx, int check, int oldcount, int index_hint);
 
 #endif /* _MUTT_PAGER_H */

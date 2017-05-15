@@ -22,7 +22,7 @@
 #include "mx.h"
 #include "sort.h"
 
-void _mutt_set_flag(CONTEXT *ctx, HEADER *h, int flag, int bf, int upd_ctx)
+void _mutt_set_flag(struct Context *ctx, HEADER *h, int flag, int bf, int upd_ctx)
 {
   if (!ctx || !h)
     return;

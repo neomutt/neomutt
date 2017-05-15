@@ -870,7 +870,7 @@ static int patmatch(const pattern_t *pat, const char *buf)
     return regexec(pat->p.rx, buf, 0, NULL, 0);
 }
 
-static int msg_search(CONTEXT *ctx, pattern_t *pat, int msgno)
+static int msg_search(struct Context *ctx, pattern_t *pat, int msgno)
 {
   MESSAGE *msg = NULL;
   STATE s;
@@ -1298,7 +1298,7 @@ pattern_t *mutt_pattern_comp(/* const */ char *s, int flags, struct Buffer *err)
   return curlist;
 }
 
-static bool perform_and(pattern_t *pat, pattern_exec_flag flags, CONTEXT *ctx,
+static bool perform_and(pattern_t *pat, pattern_exec_flag flags, struct Context *ctx,
                         HEADER *hdr, pattern_cache_t *cache)
 {
   for (; pat; pat = pat->next)
@@ -1308,7 +1308,7 @@ static bool perform_and(pattern_t *pat, pattern_exec_flag flags, CONTEXT *ctx,
 }
 
 static int perform_or(struct pattern_t *pat, pattern_exec_flag flags,
-                      CONTEXT *ctx, HEADER *hdr, pattern_cache_t *cache)
+                      struct Context *ctx, HEADER *hdr, pattern_cache_t *cache)
 {
   for (; pat; pat = pat->next)
     if (mutt_pattern_exec(pat, flags, ctx, hdr, cache) > 0)
@@ -1389,7 +1389,7 @@ static int match_user(int alladdr, struct Address *a1, struct Address *a2)
 }
 
 static int match_threadcomplete(struct pattern_t *pat, pattern_exec_flag flags,
-                                CONTEXT *ctx, THREAD *t, int left, int up,
+                                struct Context *ctx, THREAD *t, int left, int up,
                                 int right, int down)
 {
   int a;
@@ -1441,7 +1441,7 @@ static int is_pattern_cache_set(int cache_entry)
  * cache: For repeated matches against the same HEADER, passing in non-NULL will
  *        store some of the cacheable pattern matches in this structure. */
 int mutt_pattern_exec(struct pattern_t *pat, pattern_exec_flag flags,
-                      CONTEXT *ctx, HEADER *h, pattern_cache_t *cache)
+                      struct Context *ctx, HEADER *h, pattern_cache_t *cache)
 {
   int result;
   int *cache_entry = NULL;

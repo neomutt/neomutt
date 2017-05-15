@@ -1049,13 +1049,13 @@ void mutt_sb_change_mailbox(int op)
 }
 
 /**
- * mutt_sb_set_buffystats - Update the Buffy's message counts from the CONTEXT
- * @ctx:  A mailbox CONTEXT
+ * mutt_sb_set_buffystats - Update the Buffy's message counts from the Context
+ * @ctx:  A mailbox Context
  *
- * Given a mailbox CONTEXT, find a matching mailbox Buffy and copy the message
+ * Given a mailbox Context, find a matching mailbox Buffy and copy the message
  * counts into it.
  */
-void mutt_sb_set_buffystats(const CONTEXT *ctx)
+void mutt_sb_set_buffystats(const struct Context *ctx)
 {
   /* Even if the sidebar's hidden,
    * we should take note of the new data. */

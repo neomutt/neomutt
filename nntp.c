@@ -925,7 +925,7 @@ static int get_description(NNTP_DATA *nntp_data, char *wildmat, char *msg)
 }
 
 /* Update read flag and set article number if empty */
-static void nntp_parse_xref(CONTEXT *ctx, HEADER *hdr)
+static void nntp_parse_xref(struct Context *ctx, HEADER *hdr)
 {
   NNTP_DATA *nntp_data = ctx->data;
   char *buf = NULL, *p = NULL;
@@ -974,7 +974,7 @@ static int fetch_tempfile(char *line, void *data)
 
 typedef struct
 {
-  CONTEXT *ctx;
+  struct Context *ctx;
   anum_t first;
   anum_t last;
   int restore;
@@ -1005,7 +1005,7 @@ static int fetch_numbers(char *line, void *data)
 static int parse_overview_line(char *line, void *data)
 {
   FETCH_CTX *fc = data;
-  CONTEXT *ctx = fc->ctx;
+  struct Context *ctx = fc->ctx;
   NNTP_DATA *nntp_data = ctx->data;
   HEADER *hdr = NULL;
   FILE *fp = NULL;
@@ -1153,7 +1153,7 @@ static int parse_overview_line(char *line, void *data)
 }
 
 /* Fetch headers */
-static int nntp_fetch_headers(CONTEXT *ctx, void *hc, anum_t first, anum_t last, int restore)
+static int nntp_fetch_headers(struct Context *ctx, void *hc, anum_t first, anum_t last, int restore)
 {
   NNTP_DATA *nntp_data = ctx->data;
   FETCH_CTX fc;
@@ -1384,7 +1384,7 @@ static int nntp_fetch_headers(CONTEXT *ctx, void *hc, anum_t first, anum_t last,
 }
 
 /* Open newsgroup */
-static int nntp_open_mailbox(CONTEXT *ctx)
+static int nntp_open_mailbox(struct Context *ctx)
 {
   NNTP_SERVER *nserv = NULL;
   NNTP_DATA *nntp_data = NULL;
@@ -1519,7 +1519,7 @@ static int nntp_open_mailbox(CONTEXT *ctx)
 }
 
 /* Fetch message */
-static int nntp_fetch_message(CONTEXT *ctx, MESSAGE *msg, int msgno)
+static int nntp_fetch_message(struct Context *ctx, MESSAGE *msg, int msgno)
 {
   NNTP_DATA *nntp_data = ctx->data;
   NNTP_ACACHE *acache = NULL;
@@ -1641,7 +1641,7 @@ static int nntp_fetch_message(CONTEXT *ctx, MESSAGE *msg, int msgno)
 }
 
 /* Close message */
-static int nntp_close_message(CONTEXT *ctx, MESSAGE *msg)
+static int nntp_close_message(struct Context *ctx, MESSAGE *msg)
 {
   return safe_fclose(&msg->fp);
 }
@@ -1765,7 +1765,7 @@ static int nntp_group_poll(NNTP_DATA *nntp_data, int update_stat)
  *  MUTT_NEW_MAIL       - new articles found
  *  0           - no change
  * -1           - lost connection */
-static int nntp_check_mailbox(CONTEXT *ctx, int *index_hint)
+static int nntp_check_mailbox(struct Context *ctx, int *index_hint)
 {
   NNTP_DATA *nntp_data = ctx->data;
   NNTP_SERVER *nserv = nntp_data->nserv;
@@ -1976,7 +1976,7 @@ static int nntp_check_mailbox(CONTEXT *ctx, int *index_hint)
 }
 
 /* Save changes to .newsrc and cache */
-static int nntp_sync_mailbox(CONTEXT *ctx, int *index_hint)
+static int nntp_sync_mailbox(struct Context *ctx, int *index_hint)
 {
   NNTP_DATA *nntp_data = ctx->data;
   int rc, i;
@@ -2035,7 +2035,7 @@ static int nntp_sync_mailbox(CONTEXT *ctx, int *index_hint)
 }
 
 /* Free up memory associated with the newsgroup context */
-static int nntp_fastclose_mailbox(CONTEXT *ctx)
+static int nntp_fastclose_mailbox(struct Context *ctx)
 {
   NNTP_DATA *nntp_data = ctx->data, *nntp_tmp = NULL;
 
@@ -2240,7 +2240,7 @@ int nntp_check_new_groups(NNTP_SERVER *nserv)
  *  0 - success
  *  1 - no such article
  * -1 - error */
-int nntp_check_msgid(CONTEXT *ctx, const char *msgid)
+int nntp_check_msgid(struct Context *ctx, const char *msgid)
 {
   NNTP_DATA *nntp_data = ctx->data;
   HEADER *hdr = NULL;
@@ -2308,7 +2308,7 @@ int nntp_check_msgid(CONTEXT *ctx, const char *msgid)
 
 typedef struct
 {
-  CONTEXT *ctx;
+  struct Context *ctx;
   unsigned int num;
   unsigned int max;
   anum_t *child;
@@ -2336,7 +2336,7 @@ static int fetch_children(char *line, void *data)
 }
 
 /* Fetch children of article with the Message-ID */
-int nntp_check_children(CONTEXT *ctx, const char *msgid)
+int nntp_check_children(struct Context *ctx, const char *msgid)
 {
   NNTP_DATA *nntp_data = ctx->data;
   CHILD_CTX cc;

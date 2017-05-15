@@ -209,7 +209,7 @@ void mutt_edit_headers(const char *editor, const char *body, HEADER *msg, char *
   }
 }
 
-static void label_ref_dec(CONTEXT *ctx, char *label)
+static void label_ref_dec(struct Context *ctx, char *label)
 {
   struct hash_elem *elem = NULL;
   uintptr_t count;
@@ -229,7 +229,7 @@ static void label_ref_dec(CONTEXT *ctx, char *label)
   elem->data = (void *) count;
 }
 
-static void label_ref_inc(CONTEXT *ctx, char *label)
+static void label_ref_inc(struct Context *ctx, char *label)
 {
   struct hash_elem *elem = NULL;
   uintptr_t count;
@@ -250,7 +250,7 @@ static void label_ref_inc(CONTEXT *ctx, char *label)
 /*
  * add an X-Label: field.
  */
-static int label_message(CONTEXT *ctx, HEADER *hdr, char *new)
+static int label_message(struct Context *ctx, HEADER *hdr, char *new)
 {
   if (hdr == NULL)
     return 0;
@@ -316,7 +316,7 @@ int mutt_label_message(HEADER *hdr)
   return changed;
 }
 
-void mutt_make_label_hash(CONTEXT *ctx)
+void mutt_make_label_hash(struct Context *ctx)
 {
   /* 131 is just a rough prime estimate of how many distinct
    * labels someone might have in a mailbox.
@@ -324,7 +324,7 @@ void mutt_make_label_hash(CONTEXT *ctx)
   ctx->label_hash = hash_create(131, MUTT_HASH_STRDUP_KEYS);
 }
 
-void mutt_label_hash_add(CONTEXT *ctx, HEADER *hdr)
+void mutt_label_hash_add(struct Context *ctx, HEADER *hdr)
 {
   if (!ctx || !ctx->label_hash)
     return;
@@ -332,7 +332,7 @@ void mutt_label_hash_add(CONTEXT *ctx, HEADER *hdr)
     label_ref_inc(ctx, hdr->env->x_label);
 }
 
-void mutt_label_hash_remove(CONTEXT *ctx, HEADER *hdr)
+void mutt_label_hash_remove(struct Context *ctx, HEADER *hdr)
 {
   if (!ctx || !ctx->label_hash)
     return;

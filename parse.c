@@ -940,7 +940,7 @@ char *mutt_extract_message_id(const char *s, const char **saveptr)
   return NULL;
 }
 
-void mutt_parse_mime_message(CONTEXT *ctx, HEADER *cur)
+void mutt_parse_mime_message(struct Context *ctx, HEADER *cur)
 {
   MESSAGE *msg = NULL;
 
@@ -1672,7 +1672,7 @@ static int count_body_parts(struct Body *body, int flags)
   return count < 0 ? 0 : count;
 }
 
-int mutt_count_body_parts(CONTEXT *ctx, HEADER *hdr)
+int mutt_count_body_parts(struct Context *ctx, HEADER *hdr)
 {
   short keep_parts = 0;
 

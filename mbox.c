@@ -48,7 +48,7 @@ struct m_update_t
  * excl - exclusive lock?
  * retry - should retry if unable to lock?
  */
-static int mbox_lock_mailbox(CONTEXT *ctx, int excl, int retry)
+static int mbox_lock_mailbox(struct Context *ctx, int excl, int retry)
 {
   int r;
 
@@ -63,7 +63,7 @@ static int mbox_lock_mailbox(CONTEXT *ctx, int excl, int retry)
   return r;
 }
 
-static void mbox_unlock_mailbox(CONTEXT *ctx)
+static void mbox_unlock_mailbox(struct Context *ctx)
 {
   if (ctx->locked)
   {
@@ -74,7 +74,7 @@ static void mbox_unlock_mailbox(CONTEXT *ctx)
   }
 }
 
-static int mmdf_parse_mailbox(CONTEXT *ctx)
+static int mmdf_parse_mailbox(struct Context *ctx)
 {
   char buf[HUGE_STRING];
   char return_path[LONG_STRING];
@@ -239,7 +239,7 @@ static int mmdf_parse_mailbox(CONTEXT *ctx)
  * NOTE: it is assumed that the mailbox being read has been locked before
  * this routine gets called.  Strange things could happen if it's not!
  */
-static int mbox_parse_mailbox(CONTEXT *ctx)
+static int mbox_parse_mailbox(struct Context *ctx)
 {
   struct stat sb;
   char buf[HUGE_STRING], return_path[STRING];
@@ -434,7 +434,7 @@ static int mbox_parse_mailbox(CONTEXT *ctx)
 #undef PREV
 
 /* open a mbox or mmdf style mailbox */
-static int mbox_open_mailbox(CONTEXT *ctx)
+static int mbox_open_mailbox(struct Context *ctx)
 {
   int rc;
 
@@ -463,7 +463,7 @@ static int mbox_open_mailbox(CONTEXT *ctx)
   return rc;
 }
 
-static int mbox_open_mailbox_append(CONTEXT *ctx, int flags)
+static int mbox_open_mailbox_append(struct Context *ctx, int flags)
 {
   ctx->fp = safe_fopen(ctx->path, flags & MUTT_NEWFOLDER ? "w" : "a");
   if (!ctx->fp)
@@ -484,7 +484,7 @@ static int mbox_open_mailbox_append(CONTEXT *ctx, int flags)
   return 0;
 }
 
-static int mbox_close_mailbox(CONTEXT *ctx)
+static int mbox_close_mailbox(struct Context *ctx)
 {
   if (!ctx->fp)
   {
@@ -502,21 +502,21 @@ static int mbox_close_mailbox(CONTEXT *ctx)
   return 0;
 }
 
-static int mbox_open_message(CONTEXT *ctx, MESSAGE *msg, int msgno)
+static int mbox_open_message(struct Context *ctx, MESSAGE *msg, int msgno)
 {
   msg->fp = ctx->fp;
 
   return 0;
 }
 
-static int mbox_close_message(CONTEXT *ctx, MESSAGE *msg)
+static int mbox_close_message(struct Context *ctx, MESSAGE *msg)
 {
   msg->fp = NULL;
 
   return 0;
 }
 
-static int mbox_commit_message(CONTEXT *ctx, MESSAGE *msg)
+static int mbox_commit_message(struct Context *ctx, MESSAGE *msg)
 {
   if (fputc('\n', msg->fp) == EOF)
     return -1;
@@ -530,7 +530,7 @@ static int mbox_commit_message(CONTEXT *ctx, MESSAGE *msg)
   return 0;
 }
 
-static int mmdf_commit_message(CONTEXT *ctx, MESSAGE *msg)
+static int mmdf_commit_message(struct Context *ctx, MESSAGE *msg)
 {
   if (fputs(MMDF_SEP, msg->fp) == EOF)
     return -1;
@@ -544,7 +544,7 @@ static int mmdf_commit_message(CONTEXT *ctx, MESSAGE *msg)
   return 0;
 }
 
-static int mbox_open_new_message(MESSAGE *msg, CONTEXT *dest, HEADER *hdr)
+static int mbox_open_new_message(MESSAGE *msg, struct Context *dest, HEADER *hdr)
 {
   msg->fp = dest->fp;
   return 0;
@@ -659,7 +659,7 @@ int mbox_strict_cmp_headers(const HEADER *h1, const HEADER *h2)
   }
 }
 
-static int reopen_mailbox(CONTEXT *ctx, int *index_hint)
+static int reopen_mailbox(struct Context *ctx, int *index_hint)
 {
   int (*cmp_headers)(const HEADER *, const HEADER *) = NULL;
   HEADER **old_hdrs;
@@ -845,7 +845,7 @@ static int reopen_mailbox(CONTEXT *ctx, int *index_hint)
  *      0               no change
  *      -1              error
  */
-static int mbox_check_mailbox(CONTEXT *ctx, int *index_hint)
+static int mbox_check_mailbox(struct Context *ctx, int *index_hint)
 {
   struct stat st;
   char buffer[LONG_STRING];
@@ -954,7 +954,7 @@ static int mbox_check_mailbox(CONTEXT *ctx, int *index_hint)
  * Returns 1 if the mailbox has at least 1 new messages (not old)
  * otherwise returns 0.
  */
-static bool mbox_has_new(CONTEXT *ctx)
+static bool mbox_has_new(struct Context *ctx)
 {
   int i;
 
@@ -966,7 +966,7 @@ static bool mbox_has_new(CONTEXT *ctx)
 
 /* if mailbox has at least 1 new message, sets mtime > atime of mailbox
  * so buffy check reports new mail */
-void mbox_reset_atime(CONTEXT *ctx, struct stat *st)
+void mbox_reset_atime(struct Context *ctx, struct stat *st)
 {
   struct utimbuf utimebuf;
   struct stat _st;
@@ -995,7 +995,7 @@ void mbox_reset_atime(CONTEXT *ctx, struct stat *st)
  *      0       success
  *      -1      failure
  */
-static int mbox_sync_mailbox(CONTEXT *ctx, int *index_hint)
+static int mbox_sync_mailbox(struct Context *ctx, int *index_hint)
 {
   char tempfile[_POSIX_PATH_MAX];
   char buf[32];

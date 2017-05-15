@@ -82,7 +82,7 @@ struct mh_data
 #define MH_SEQ_REPLIED (1 << 1)
 #define MH_SEQ_FLAGGED (1 << 2)
 
-static inline struct mh_data *mh_data(CONTEXT *ctx)
+static inline struct mh_data *mh_data(struct Context *ctx)
 {
   return (struct mh_data *) ctx->data;
 }
@@ -194,7 +194,7 @@ out:
   return rc;
 }
 
-static inline mode_t mh_umask(CONTEXT *ctx)
+static inline mode_t mh_umask(struct Context *ctx)
 {
   struct stat st;
   struct mh_data *data = mh_data(ctx);
@@ -338,7 +338,7 @@ int mh_buffy(struct Buffy *mailbox, int check_stats)
   return rc;
 }
 
-static int mh_mkstemp(CONTEXT *dest, FILE **fp, char **tgt)
+static int mh_mkstemp(struct Context *dest, FILE **fp, char **tgt)
 {
   int fd;
   char path[_POSIX_PATH_MAX];
@@ -420,7 +420,7 @@ static void mhs_write_one_sequence(FILE *fp, struct mh_sequences *mhs, short f,
 }
 
 /* XXX - we don't currently remove deleted messages from sequences we don't know.  Should we? */
-static void mh_update_sequences(CONTEXT *ctx)
+static void mh_update_sequences(struct Context *ctx)
 {
   FILE *ofp = NULL, *nfp = NULL;
 
@@ -529,7 +529,7 @@ static void mh_update_sequences(CONTEXT *ctx)
   FREE(&tmpfname);
 }
 
-static void mh_sequences_add_one(CONTEXT *ctx, int n, short unseen, short flagged, short replied)
+static void mh_sequences_add_one(struct Context *ctx, int n, short unseen, short flagged, short replied)
 {
   short unseen_done = 0;
   short flagged_done = 0;
@@ -704,7 +704,7 @@ void maildir_parse_flags(HEADER *h, const char *path)
     *q = '\0';
 }
 
-static void maildir_update_mtime(CONTEXT *ctx)
+static void maildir_update_mtime(struct Context *ctx)
 {
   char buf[_POSIX_PATH_MAX];
   struct stat st;
@@ -783,7 +783,7 @@ HEADER *maildir_parse_message(int magic, const char *fname, int is_old, HEADER *
   return NULL;
 }
 
-static int maildir_parse_dir(CONTEXT *ctx, struct maildir ***last,
+static int maildir_parse_dir(struct Context *ctx, struct maildir ***last,
                              const char *subdir, int *count, progress_t *progress)
 {
   DIR *dirp = NULL;
@@ -852,7 +852,7 @@ static int maildir_parse_dir(CONTEXT *ctx, struct maildir ***last,
   return 0;
 }
 
-static bool maildir_add_to_context(CONTEXT *ctx, struct maildir *md)
+static bool maildir_add_to_context(struct Context *ctx, struct maildir *md)
 {
   int oldmsgcount = ctx->msgcount;
 
@@ -889,7 +889,7 @@ static bool maildir_add_to_context(CONTEXT *ctx, struct maildir *md)
   return false;
 }
 
-static int maildir_move_to_context(CONTEXT *ctx, struct maildir **md)
+static int maildir_move_to_context(struct Context *ctx, struct maildir **md)
 {
   int r;
   r = maildir_add_to_context(ctx, *md);
@@ -1040,7 +1040,7 @@ static struct maildir *maildir_sort(struct maildir *list, size_t len,
 /* Sorts mailbox into its natural order.
  * Currently only defined for MH where files are numbered.
  */
-static void mh_sort_natural(CONTEXT *ctx, struct maildir **md)
+static void mh_sort_natural(struct Context *ctx, struct maildir **md)
 {
   if (!ctx || !md || !*md || ctx->magic != MUTT_MH || Sort != SORT_ORDER)
     return;
@@ -1071,7 +1071,7 @@ static struct maildir *skip_duplicates(struct maildir *p, struct maildir **last)
 /*
  * This function does the second parsing pass
  */
-static void maildir_delayed_parsing(CONTEXT *ctx, struct maildir **md, progress_t *progress)
+static void maildir_delayed_parsing(struct Context *ctx, struct maildir **md, progress_t *progress)
 {
   struct maildir *p, *last = NULL;
   char fn[_POSIX_PATH_MAX];
@@ -1195,7 +1195,7 @@ static void maildir_delayed_parsing(CONTEXT *ctx, struct maildir **md, progress_
   mh_sort_natural(ctx, md);
 }
 
-static int mh_close_mailbox(CONTEXT *ctx)
+static int mh_close_mailbox(struct Context *ctx)
 {
   FREE(&ctx->data);
 
@@ -1209,7 +1209,7 @@ static int mh_close_mailbox(CONTEXT *ctx)
  *      subdir [IN]     NULL for MH mailboxes, otherwise the subdir of the
  *                      maildir mailbox to read from
  */
-static int mh_read_dir(CONTEXT *ctx, const char *subdir)
+static int mh_read_dir(struct Context *ctx, const char *subdir)
 {
   struct maildir *md = NULL;
   struct mh_sequences mhs;
@@ -1267,7 +1267,7 @@ static int mh_read_dir(CONTEXT *ctx, const char *subdir)
 }
 
 /* read a maildir style mailbox */
-static int maildir_read_dir(CONTEXT *ctx)
+static int maildir_read_dir(struct Context *ctx)
 {
   /* maildir looks sort of like MH, except that there are two subdirectories
    * of the main folder path from which to read messages
@@ -1278,12 +1278,12 @@ static int maildir_read_dir(CONTEXT *ctx)
   return 0;
 }
 
-static int maildir_open_mailbox(CONTEXT *ctx)
+static int maildir_open_mailbox(struct Context *ctx)
 {
   return maildir_read_dir(ctx);
 }
 
-static int maildir_open_mailbox_append(CONTEXT *ctx, int flags)
+static int maildir_open_mailbox_append(struct Context *ctx, int flags)
 {
   char tmp[_POSIX_PATH_MAX];
 
@@ -1329,12 +1329,12 @@ static int maildir_open_mailbox_append(CONTEXT *ctx, int flags)
   return 0;
 }
 
-static int mh_open_mailbox(CONTEXT *ctx)
+static int mh_open_mailbox(struct Context *ctx)
 {
   return mh_read_dir(ctx, NULL);
 }
 
-static int mh_open_mailbox_append(CONTEXT *ctx, int flags)
+static int mh_open_mailbox_append(struct Context *ctx, int flags)
 {
   char tmp[_POSIX_PATH_MAX];
   int i;
@@ -1365,7 +1365,7 @@ static int mh_open_mailbox_append(CONTEXT *ctx, int flags)
  * Open a new (temporary) message in an MH folder.
  */
 
-static int mh_open_new_message(MESSAGE *msg, CONTEXT *dest, HEADER *hdr)
+static int mh_open_new_message(MESSAGE *msg, struct Context *dest, HEADER *hdr)
 {
   return mh_mkstemp(dest, &msg->fp, &msg->path);
 }
@@ -1400,7 +1400,7 @@ void maildir_flags(char *dest, size_t destlen, HEADER *hdr)
   }
 }
 
-static int maildir_mh_open_message(CONTEXT *ctx, MESSAGE *msg, int msgno, int is_maildir)
+static int maildir_mh_open_message(struct Context *ctx, MESSAGE *msg, int msgno, int is_maildir)
 {
   HEADER *cur = ctx->hdrs[msgno];
   char path[_POSIX_PATH_MAX];
@@ -1422,17 +1422,17 @@ static int maildir_mh_open_message(CONTEXT *ctx, MESSAGE *msg, int msgno, int is
   return 0;
 }
 
-static int maildir_open_message(CONTEXT *ctx, MESSAGE *msg, int msgno)
+static int maildir_open_message(struct Context *ctx, MESSAGE *msg, int msgno)
 {
   return maildir_mh_open_message(ctx, msg, msgno, 1);
 }
 
-static int mh_open_message(CONTEXT *ctx, MESSAGE *msg, int msgno)
+static int mh_open_message(struct Context *ctx, MESSAGE *msg, int msgno)
 {
   return maildir_mh_open_message(ctx, msg, msgno, 0);
 }
 
-static int mh_close_message(CONTEXT *ctx, MESSAGE *msg)
+static int mh_close_message(struct Context *ctx, MESSAGE *msg)
 {
   return safe_fclose(&msg->fp);
 }
@@ -1444,7 +1444,7 @@ static int mh_close_message(CONTEXT *ctx, MESSAGE *msg)
  * with a {cur,new} prefix.
  *
  */
-static int maildir_open_new_message(MESSAGE *msg, CONTEXT *dest, HEADER *hdr)
+static int maildir_open_new_message(MESSAGE *msg, struct Context *dest, HEADER *hdr)
 {
   int fd;
   char path[_POSIX_PATH_MAX];
@@ -1527,7 +1527,7 @@ static int maildir_open_new_message(MESSAGE *msg, CONTEXT *dest, HEADER *hdr)
  * See also maildir_open_new_message().
  *
  */
-static int _maildir_commit_message(CONTEXT *ctx, MESSAGE *msg, HEADER *hdr)
+static int _maildir_commit_message(struct Context *ctx, MESSAGE *msg, HEADER *hdr)
 {
   char subdir[4];
   char suffix[16];
@@ -1604,7 +1604,7 @@ static int _maildir_commit_message(CONTEXT *ctx, MESSAGE *msg, HEADER *hdr)
   }
 }
 
-static int maildir_commit_message(CONTEXT *ctx, MESSAGE *msg)
+static int maildir_commit_message(struct Context *ctx, MESSAGE *msg)
 {
   return _maildir_commit_message(ctx, msg, NULL);
 }
@@ -1615,7 +1615,7 @@ static int maildir_commit_message(CONTEXT *ctx, MESSAGE *msg)
  */
 
 
-static int _mh_commit_message(CONTEXT *ctx, MESSAGE *msg, HEADER *hdr, short updseq)
+static int _mh_commit_message(struct Context *ctx, MESSAGE *msg, HEADER *hdr, short updseq)
 {
   DIR *dirp = NULL;
   struct dirent *de = NULL;
@@ -1690,7 +1690,7 @@ static int _mh_commit_message(CONTEXT *ctx, MESSAGE *msg, HEADER *hdr, short upd
   return 0;
 }
 
-static int mh_commit_message(CONTEXT *ctx, MESSAGE *msg)
+static int mh_commit_message(struct Context *ctx, MESSAGE *msg)
 {
   return _mh_commit_message(ctx, msg, NULL, 1);
 }
@@ -1701,7 +1701,7 @@ static int mh_commit_message(CONTEXT *ctx, MESSAGE *msg)
  * This code is also used for attachment deletion in maildir
  * folders.
  */
-static int mh_rewrite_message(CONTEXT *ctx, int msgno)
+static int mh_rewrite_message(struct Context *ctx, int msgno)
 {
   HEADER *h = ctx->hdrs[msgno];
   MESSAGE *dest = NULL;
@@ -1773,7 +1773,7 @@ static int mh_rewrite_message(CONTEXT *ctx, int msgno)
   return rc;
 }
 
-static int mh_sync_message(CONTEXT *ctx, int msgno)
+static int mh_sync_message(struct Context *ctx, int msgno)
 {
   HEADER *h = ctx->hdrs[msgno];
 
@@ -1785,7 +1785,7 @@ static int mh_sync_message(CONTEXT *ctx, int msgno)
   return 0;
 }
 
-static int maildir_sync_message(CONTEXT *ctx, int msgno)
+static int maildir_sync_message(struct Context *ctx, int msgno)
 {
   HEADER *h = ctx->hdrs[msgno];
 
@@ -1846,9 +1846,9 @@ static int maildir_sync_message(CONTEXT *ctx, int msgno)
 }
 
 #ifdef USE_HCACHE
-int mh_sync_mailbox_message(CONTEXT *ctx, int msgno, header_cache_t *hc)
+int mh_sync_mailbox_message(struct Context *ctx, int msgno, header_cache_t *hc)
 #else
-int mh_sync_mailbox_message(CONTEXT *ctx, int msgno)
+int mh_sync_mailbox_message(struct Context *ctx, int msgno)
 #endif
 {
 #ifdef USE_HCACHE
@@ -1942,7 +1942,7 @@ static char *maildir_canon_filename(char *dest, const char *src, size_t l)
   return dest;
 }
 
-static void maildir_update_tables(CONTEXT *ctx, int *index_hint)
+static void maildir_update_tables(struct Context *ctx, int *index_hint)
 {
   short old_sort;
   int old_count;
@@ -1978,7 +1978,7 @@ static void maildir_update_tables(CONTEXT *ctx, int *index_hint)
  * either subdirectory differently, as mail could be copied directly into
  * the cur directory from another agent.
  */
-static int maildir_check_mailbox(CONTEXT *ctx, int *index_hint)
+static int maildir_check_mailbox(struct Context *ctx, int *index_hint)
 {
   struct stat st_new; /* status of the "new" subdirectory */
   struct stat st_cur; /* status of the "cur" subdirectory */
@@ -2135,7 +2135,7 @@ static int maildir_check_mailbox(CONTEXT *ctx, int *index_hint)
  * happens.
  *
  */
-static int mh_check_mailbox(CONTEXT *ctx, int *index_hint)
+static int mh_check_mailbox(struct Context *ctx, int *index_hint)
 {
   char buf[_POSIX_PATH_MAX];
   struct stat st, st_cur;
@@ -2244,7 +2244,7 @@ static int mh_check_mailbox(CONTEXT *ctx, int *index_hint)
   return 0;
 }
 
-static int mh_sync_mailbox(CONTEXT *ctx, int *index_hint)
+static int mh_sync_mailbox(struct Context *ctx, int *index_hint)
 {
   int i, j;
 #ifdef USE_HCACHE
@@ -2319,7 +2319,7 @@ err:
   return -1;
 }
 
-bool maildir_update_flags(CONTEXT *ctx, HEADER *o, HEADER *n)
+bool maildir_update_flags(struct Context *ctx, HEADER *o, HEADER *n)
 {
   /* save the global state here so we can reset it at the
    * end of list block if required.
