@@ -1365,7 +1365,7 @@ static int mh_open_mailbox_append(struct Context *ctx, int flags)
  * Open a new (temporary) message in an MH folder.
  */
 
-static int mh_open_new_message(MESSAGE *msg, struct Context *dest, struct Header *hdr)
+static int mh_open_new_message(struct Message *msg, struct Context *dest, struct Header *hdr)
 {
   return mh_mkstemp(dest, &msg->fp, &msg->path);
 }
@@ -1400,7 +1400,7 @@ void maildir_flags(char *dest, size_t destlen, struct Header *hdr)
   }
 }
 
-static int maildir_mh_open_message(struct Context *ctx, MESSAGE *msg, int msgno, int is_maildir)
+static int maildir_mh_open_message(struct Context *ctx, struct Message *msg, int msgno, int is_maildir)
 {
   struct Header *cur = ctx->hdrs[msgno];
   char path[_POSIX_PATH_MAX];
@@ -1422,17 +1422,17 @@ static int maildir_mh_open_message(struct Context *ctx, MESSAGE *msg, int msgno,
   return 0;
 }
 
-static int maildir_open_message(struct Context *ctx, MESSAGE *msg, int msgno)
+static int maildir_open_message(struct Context *ctx, struct Message *msg, int msgno)
 {
   return maildir_mh_open_message(ctx, msg, msgno, 1);
 }
 
-static int mh_open_message(struct Context *ctx, MESSAGE *msg, int msgno)
+static int mh_open_message(struct Context *ctx, struct Message *msg, int msgno)
 {
   return maildir_mh_open_message(ctx, msg, msgno, 0);
 }
 
-static int mh_close_message(struct Context *ctx, MESSAGE *msg)
+static int mh_close_message(struct Context *ctx, struct Message *msg)
 {
   return safe_fclose(&msg->fp);
 }
@@ -1444,7 +1444,7 @@ static int mh_close_message(struct Context *ctx, MESSAGE *msg)
  * with a {cur,new} prefix.
  *
  */
-static int maildir_open_new_message(MESSAGE *msg, struct Context *dest, struct Header *hdr)
+static int maildir_open_new_message(struct Message *msg, struct Context *dest, struct Header *hdr)
 {
   int fd;
   char path[_POSIX_PATH_MAX];
@@ -1527,7 +1527,7 @@ static int maildir_open_new_message(MESSAGE *msg, struct Context *dest, struct H
  * See also maildir_open_new_message().
  *
  */
-static int _maildir_commit_message(struct Context *ctx, MESSAGE *msg, struct Header *hdr)
+static int _maildir_commit_message(struct Context *ctx, struct Message *msg, struct Header *hdr)
 {
   char subdir[4];
   char suffix[16];
@@ -1604,7 +1604,7 @@ static int _maildir_commit_message(struct Context *ctx, MESSAGE *msg, struct Hea
   }
 }
 
-static int maildir_commit_message(struct Context *ctx, MESSAGE *msg)
+static int maildir_commit_message(struct Context *ctx, struct Message *msg)
 {
   return _maildir_commit_message(ctx, msg, NULL);
 }
@@ -1615,7 +1615,7 @@ static int maildir_commit_message(struct Context *ctx, MESSAGE *msg)
  */
 
 
-static int _mh_commit_message(struct Context *ctx, MESSAGE *msg, struct Header *hdr, short updseq)
+static int _mh_commit_message(struct Context *ctx, struct Message *msg, struct Header *hdr, short updseq)
 {
   DIR *dirp = NULL;
   struct dirent *de = NULL;
@@ -1690,7 +1690,7 @@ static int _mh_commit_message(struct Context *ctx, MESSAGE *msg, struct Header *
   return 0;
 }
 
-static int mh_commit_message(struct Context *ctx, MESSAGE *msg)
+static int mh_commit_message(struct Context *ctx, struct Message *msg)
 {
   return _mh_commit_message(ctx, msg, NULL, 1);
 }
@@ -1704,7 +1704,7 @@ static int mh_commit_message(struct Context *ctx, MESSAGE *msg)
 static int mh_rewrite_message(struct Context *ctx, int msgno)
 {
   struct Header *h = ctx->hdrs[msgno];
-  MESSAGE *dest = NULL;
+  struct Message *dest = NULL;
 
   int rc;
   short restore = 1;

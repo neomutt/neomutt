@@ -43,7 +43,7 @@ enum
   MUTT_FLAGS         /* nondestructive flags change (IMAP) */
 };
 
-typedef struct _message
+struct Message
 {
   FILE *fp;            /* pointer to the message data */
   char *path;          /* path to temp file */
@@ -57,19 +57,19 @@ typedef struct _message
     bool draft : 1;
   } flags;
   time_t received; /* the time at which this message was received */
-} MESSAGE;
+};
 
 struct Context *mx_open_mailbox(const char *path, int flags, struct Context *pctx);
 
-MESSAGE *mx_open_message(struct Context *ctx, int msgno);
-MESSAGE *mx_open_new_message(struct Context *dest, struct Header *hdr, int flags);
+struct Message *mx_open_message(struct Context *ctx, int msgno);
+struct Message *mx_open_new_message(struct Context *dest, struct Header *hdr, int flags);
 
 void mx_fastclose_mailbox(struct Context *ctx);
 
 int mx_close_mailbox(struct Context *ctx, int *index_hint);
 int mx_sync_mailbox(struct Context *ctx, int *index_hint);
-int mx_commit_message(MESSAGE *msg, struct Context *ctx);
-int mx_close_message(struct Context *ctx, MESSAGE **msg);
+int mx_commit_message(struct Message *msg, struct Context *ctx);
+int mx_close_message(struct Context *ctx, struct Message **msg);
 int mx_get_magic(const char *path);
 int mx_set_magic(const char *s);
 int mx_check_mailbox(struct Context *ctx, int *index_hint);

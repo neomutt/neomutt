@@ -1001,7 +1001,7 @@ void mutt_edit_content_type(struct Header *h, struct Body *b, FILE *fp)
 
 static int _mutt_check_traditional_pgp(struct Header *h, int *redraw)
 {
-  MESSAGE *msg = NULL;
+  struct Message *msg = NULL;
   int rv = 0;
 
   h->security |= PGP_TRADITIONAL_CHECKED;

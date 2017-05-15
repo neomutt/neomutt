@@ -925,7 +925,7 @@ void mutt_view_attachments(struct Header *hdr)
   char helpstr[LONG_STRING];
   struct Menu *menu = NULL;
   struct Body *cur = NULL;
-  MESSAGE *msg = NULL;
+  struct Message *msg = NULL;
   FILE *fp = NULL;
   struct AttachPtr **idx = NULL;
   short idxlen = 0;

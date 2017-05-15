@@ -544,7 +544,7 @@ int mutt_parse_crypt_hdr(const char *p, int set_empty_signas, int crypt_app)
  */
 int mutt_prepare_template(FILE *fp, struct Context *ctx, struct Header *newhdr, struct Header *hdr, short resend)
 {
-  MESSAGE *msg = NULL;
+  struct Message *msg = NULL;
   char file[_POSIX_PATH_MAX];
   struct Body *b = NULL;
   FILE *bfp = NULL;

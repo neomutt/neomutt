@@ -47,7 +47,7 @@ static int edit_one_message(struct Context *ctx, struct Header *cur)
   int of, cf;
 
   struct Context tmpctx;
-  MESSAGE *msg = NULL;
+  struct Message *msg = NULL;
 
   FILE *fp = NULL;
 

@@ -983,7 +983,7 @@ enum
 };
 
 struct Context;
-struct _message;
+struct Message;
 
 /*
  * struct mx_ops - a structure to store operations on a mailbox
@@ -1002,10 +1002,10 @@ struct mx_ops
   int (*close)(struct Context *ctx);
   int (*check)(struct Context *ctx, int *index_hint);
   int (*sync)(struct Context *ctx, int *index_hint);
-  int (*open_msg)(struct Context *ctx, struct _message *msg, int msgno);
-  int (*close_msg)(struct Context *ctx, struct _message *msg);
-  int (*commit_msg)(struct Context *ctx, struct _message *msg);
-  int (*open_new_msg)(struct _message *msg, struct Context *ctx, struct Header *hdr);
+  int (*open_msg)(struct Context *ctx, struct Message *msg, int msgno);
+  int (*close_msg)(struct Context *ctx, struct Message *msg);
+  int (*commit_msg)(struct Context *ctx, struct Message *msg);
+  int (*open_new_msg)(struct Message *msg, struct Context *ctx, struct Header *hdr);
 };
 
 #include "mutt_menu.h"

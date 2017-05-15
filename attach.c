@@ -709,7 +709,7 @@ int mutt_save_attachment(FILE *fp, struct Body *m, char *path, int flags, struct
       char buf[HUGE_STRING];
       struct Header *hn = NULL;
       struct Context ctx;
-      MESSAGE *msg = NULL;
+      struct Message *msg = NULL;
       int chflags = 0;
       int r = -1;
 

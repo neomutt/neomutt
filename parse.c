@@ -519,7 +519,7 @@ void mutt_parse_part(FILE *fp, struct Body *b)
   }
 }
 
-/* parse a MESSAGE/RFC822 body
+/* parse a Message/RFC822 body
  *
  * args:
  *      fp              stream to read from
@@ -942,7 +942,7 @@ char *mutt_extract_message_id(const char *s, const char **saveptr)
 
 void mutt_parse_mime_message(struct Context *ctx, struct Header *cur)
 {
-  MESSAGE *msg = NULL;
+  struct Message *msg = NULL;
 
   do
   {

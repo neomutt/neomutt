@@ -2582,7 +2582,7 @@ static int _mutt_bounce_message(FILE *fp, struct Header *h, struct Address *to,
   int i, ret = 0;
   FILE *f = NULL;
   char date[SHORT_STRING], tempfile[_POSIX_PATH_MAX];
-  MESSAGE *msg = NULL;
+  struct Message *msg = NULL;
 
   if (!h)
   {
@@ -2792,7 +2792,7 @@ int mutt_write_fcc(const char *path, struct Header *hdr, const char *msgid, int 
                    char *fcc, char **finalpath)
 {
   struct Context f;
-  MESSAGE *msg = NULL;
+  struct Message *msg = NULL;
   char tempfile[_POSIX_PATH_MAX];
   FILE *tempfp = NULL;
   int r, need_buffy_cleanup = 0;

@@ -823,7 +823,7 @@ void imap_logout(IMAP_DATA **idata)
   imap_free_idata(idata);
 }
 
-static int imap_open_new_message(MESSAGE *msg, struct Context *dest, struct Header *hdr)
+static int imap_open_new_message(struct Message *msg, struct Context *dest, struct Header *hdr)
 {
   char tmp[_POSIX_PATH_MAX];
 

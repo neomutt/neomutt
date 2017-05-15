@@ -1519,7 +1519,7 @@ static int nntp_open_mailbox(struct Context *ctx)
 }
 
 /* Fetch message */
-static int nntp_fetch_message(struct Context *ctx, MESSAGE *msg, int msgno)
+static int nntp_fetch_message(struct Context *ctx, struct Message *msg, int msgno)
 {
   NNTP_DATA *nntp_data = ctx->data;
   NNTP_ACACHE *acache = NULL;
@@ -1641,7 +1641,7 @@ static int nntp_fetch_message(struct Context *ctx, MESSAGE *msg, int msgno)
 }
 
 /* Close message */
-static int nntp_close_message(struct Context *ctx, MESSAGE *msg)
+static int nntp_close_message(struct Context *ctx, struct Message *msg)
 {
   return safe_fclose(&msg->fp);
 }

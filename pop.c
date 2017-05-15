@@ -508,7 +508,7 @@ static int pop_close_mailbox(struct Context *ctx)
 }
 
 /* fetch message from POP server */
-static int pop_fetch_message(struct Context *ctx, MESSAGE *msg, int msgno)
+static int pop_fetch_message(struct Context *ctx, struct Message *msg, int msgno)
 {
   int ret;
   void *uidl = NULL;
@@ -655,7 +655,7 @@ static int pop_fetch_message(struct Context *ctx, MESSAGE *msg, int msgno)
   return 0;
 }
 
-static int pop_close_message(struct Context *ctx, MESSAGE *msg)
+static int pop_close_message(struct Context *ctx, struct Message *msg)
 {
   return safe_fclose(&msg->fp);
 }
@@ -779,7 +779,7 @@ void pop_fetch_mail(void)
   int i, delanswer, last = 0, msgs, bytes, rset = 0, ret;
   struct Connection *conn = NULL;
   struct Context ctx;
-  MESSAGE *msg = NULL;
+  struct Message *msg = NULL;
   struct Account acct;
   POP_DATA *pop_data = NULL;
 

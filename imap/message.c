@@ -685,7 +685,7 @@ error_out_0:
   return retval;
 }
 
-int imap_fetch_message(struct Context *ctx, MESSAGE *msg, int msgno)
+int imap_fetch_message(struct Context *ctx, struct Message *msg, int msgno)
 {
   IMAP_DATA *idata = NULL;
   struct Header *h = NULL;
@@ -892,12 +892,12 @@ bail:
   return -1;
 }
 
-int imap_close_message(struct Context *ctx, MESSAGE *msg)
+int imap_close_message(struct Context *ctx, struct Message *msg)
 {
   return safe_fclose(&msg->fp);
 }
 
-int imap_commit_message(struct Context *ctx, MESSAGE *msg)
+int imap_commit_message(struct Context *ctx, struct Message *msg)
 {
   int r = safe_fclose(&msg->fp);
 
@@ -907,7 +907,7 @@ int imap_commit_message(struct Context *ctx, MESSAGE *msg)
   return imap_append_message(ctx, msg);
 }
 
-int imap_append_message(struct Context *ctx, MESSAGE *msg)
+int imap_append_message(struct Context *ctx, struct Message *msg)
 {
   IMAP_DATA *idata = NULL;
   FILE *fp = NULL;

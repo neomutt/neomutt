@@ -1273,10 +1273,10 @@ int mx_sync_mailbox(struct Context *ctx, int *index_hint)
  *      hdr     message being copied (required for maildir support, because
  *              the filename depends on the message flags)
  */
-MESSAGE *mx_open_new_message(struct Context *dest, struct Header *hdr, int flags)
+struct Message *mx_open_new_message(struct Context *dest, struct Header *hdr, int flags)
 {
   struct Address *p = NULL;
-  MESSAGE *msg = NULL;
+  struct Message *msg = NULL;
 
   if (!dest->mx_ops || !dest->mx_ops->open_new_msg)
   {
@@ -1287,7 +1287,7 @@ MESSAGE *mx_open_new_message(struct Context *dest, struct Header *hdr, int flags
     return NULL;
   }
 
-  msg = safe_calloc(1, sizeof(MESSAGE));
+  msg = safe_calloc(1, sizeof(struct Message));
   msg->write = true;
 
   if (hdr)
@@ -1342,9 +1342,9 @@ int mx_check_mailbox(struct Context *ctx, int *index_hint)
 }
 
 /* return a stream pointer for a message */
-MESSAGE *mx_open_message(struct Context *ctx, int msgno)
+struct Message *mx_open_message(struct Context *ctx, int msgno)
 {
-  MESSAGE *msg = NULL;
+  struct Message *msg = NULL;
 
   if (!ctx->mx_ops || !ctx->mx_ops->open_msg)
   {
@@ -1353,7 +1353,7 @@ MESSAGE *mx_open_message(struct Context *ctx, int msgno)
     return NULL;
   }
 
-  msg = safe_calloc(1, sizeof(MESSAGE));
+  msg = safe_calloc(1, sizeof(struct Message));
   if (ctx->mx_ops->open_msg(ctx, msg, msgno))
     FREE(&msg);
 
@@ -1361,7 +1361,7 @@ MESSAGE *mx_open_message(struct Context *ctx, int msgno)
 }
 
 /* commit a message to a folder */
-int mx_commit_message(MESSAGE *msg, struct Context *ctx)
+int mx_commit_message(struct Message *msg, struct Context *ctx)
 {
   if (!ctx->mx_ops || !ctx->mx_ops->commit_msg)
     return -1;
@@ -1377,7 +1377,7 @@ int mx_commit_message(MESSAGE *msg, struct Context *ctx)
 }
 
 /* close a pointer to a message */
-int mx_close_message(struct Context *ctx, MESSAGE **msg)
+int mx_close_message(struct Context *ctx, struct Message **msg)
 {
   if (!ctx || !msg)
     return 0;

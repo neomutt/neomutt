@@ -847,7 +847,7 @@ static void print_time(time_t t, STATE *s)
  * Implementation of `sign_message'.
  */
 
-/* Sign the MESSAGE in body A either using OpenPGP or S/MIME when
+/* Sign the Message in body A either using OpenPGP or S/MIME when
    USE_SMIME is passed as true.  Returns the new body or NULL on
    error. */
 static struct Body *sign_message(struct Body *a, int use_smime)

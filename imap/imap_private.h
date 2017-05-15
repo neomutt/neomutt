@@ -265,9 +265,9 @@ char *imap_set_flags(IMAP_DATA *idata, struct Header *h, char *s);
 int imap_cache_del(IMAP_DATA *idata, struct Header *h);
 int imap_cache_clean(IMAP_DATA *idata);
 
-int imap_fetch_message(struct Context *ctx, MESSAGE *msg, int msgno);
-int imap_close_message(struct Context *ctx, MESSAGE *msg);
-int imap_commit_message(struct Context *ctx, MESSAGE *msg);
+int imap_fetch_message(struct Context *ctx, struct Message *msg, int msgno);
+int imap_close_message(struct Context *ctx, struct Message *msg);
+int imap_commit_message(struct Context *ctx, struct Message *msg);
 
 /* util.c */
 #ifdef USE_HCACHE

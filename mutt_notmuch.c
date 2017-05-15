@@ -2380,7 +2380,7 @@ static int nm_sync_mailbox(struct Context *ctx, int *index_hint)
   return rc;
 }
 
-static int nm_open_message(struct Context *ctx, MESSAGE *msg, int msgno)
+static int nm_open_message(struct Context *ctx, struct Message *msg, int msgno)
 {
   if (!ctx || !msg)
     return 1;
@@ -2400,7 +2400,7 @@ static int nm_open_message(struct Context *ctx, MESSAGE *msg, int msgno)
   return !msg->fp;
 }
 
-static int nm_close_message(struct Context *ctx, MESSAGE *msg)
+static int nm_close_message(struct Context *ctx, struct Message *msg)
 {
   if (!msg)
     return 1;
@@ -2408,7 +2408,7 @@ static int nm_close_message(struct Context *ctx, MESSAGE *msg)
   return 0;
 }
 
-static int nm_commit_message(struct Context *ctx, MESSAGE *msg)
+static int nm_commit_message(struct Context *ctx, struct Message *msg)
 {
   mutt_error(_("Can't write to virtual folder."));
   return -1;

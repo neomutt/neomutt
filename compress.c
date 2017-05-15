@@ -706,7 +706,7 @@ static int comp_check_mailbox(struct Context *ctx, int *index_hint)
 /**
  * comp_open_message - Delegated to mbox handler
  */
-static int comp_open_message(struct Context *ctx, MESSAGE *msg, int msgno)
+static int comp_open_message(struct Context *ctx, struct Message *msg, int msgno)
 {
   if (!ctx)
     return -1;
@@ -726,7 +726,7 @@ static int comp_open_message(struct Context *ctx, MESSAGE *msg, int msgno)
 /**
  * comp_close_message - Delegated to mbox handler
  */
-static int comp_close_message(struct Context *ctx, MESSAGE *msg)
+static int comp_close_message(struct Context *ctx, struct Message *msg)
 {
   if (!ctx)
     return -1;
@@ -746,7 +746,7 @@ static int comp_close_message(struct Context *ctx, MESSAGE *msg)
 /**
  * comp_commit_message - Delegated to mbox handler
  */
-static int comp_commit_message(struct Context *ctx, MESSAGE *msg)
+static int comp_commit_message(struct Context *ctx, struct Message *msg)
 {
   if (!ctx)
     return -1;
@@ -766,7 +766,7 @@ static int comp_commit_message(struct Context *ctx, MESSAGE *msg)
 /**
  * comp_open_new_message - Delegated to mbox handler
  */
-static int comp_open_new_message(MESSAGE *msg, struct Context *ctx, struct Header *hdr)
+static int comp_open_new_message(struct Message *msg, struct Context *ctx, struct Header *hdr)
 {
   if (!ctx)
     return -1;

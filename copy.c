@@ -715,7 +715,7 @@ int _mutt_copy_message(FILE *fpout, FILE *fpin, struct Header *hdr, struct Body 
  * like partial decode, where it is worth displaying as much as possible */
 int mutt_copy_message(FILE *fpout, struct Context *src, struct Header *hdr, int flags, int chflags)
 {
-  MESSAGE *msg = NULL;
+  struct Message *msg = NULL;
   int r;
 
   if ((msg = mx_open_message(src, hdr->msgno)) == NULL)
@@ -744,7 +744,7 @@ static int _mutt_append_message(struct Context *dest, FILE *fpin, struct Context
                                 struct Header *hdr, struct Body *body, int flags, int chflags)
 {
   char buf[STRING];
-  MESSAGE *msg = NULL;
+  struct Message *msg = NULL;
   int r;
 
   if (fseeko(fpin, hdr->offset, SEEK_SET) < 0)
@@ -772,7 +772,7 @@ static int _mutt_append_message(struct Context *dest, FILE *fpin, struct Context
 
 int mutt_append_message(struct Context *dest, struct Context *src, struct Header *hdr, int cmflags, int chflags)
 {
-  MESSAGE *msg = NULL;
+  struct Message *msg = NULL;
   int r;
 
   if ((msg = mx_open_message(src, hdr->msgno)) == NULL)
