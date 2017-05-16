@@ -230,7 +230,7 @@ int nntp_newsrc_parse(NNTP_SERVER *nserv)
     while (*b)
       if (*b++ == ',')
         j++;
-    nntp_data->newsrc_ent = safe_calloc(j, sizeof(NEWSRC_ENTRY));
+    nntp_data->newsrc_ent = safe_calloc(j, sizeof(struct NewsrcEntry));
     nntp_data->subscribed = subs;
 
     /* parse entries */
@@ -264,7 +264,7 @@ int nntp_newsrc_parse(NNTP_SERVER *nserv)
     if (nntp_data->lastMessage == 0)
       nntp_data->lastMessage = nntp_data->newsrc_ent[j - 1].last;
     nntp_data->newsrc_len = j;
-    safe_realloc(&nntp_data->newsrc_ent, j * sizeof(NEWSRC_ENTRY));
+    safe_realloc(&nntp_data->newsrc_ent, j * sizeof(struct NewsrcEntry));
     nntp_group_unread_stat(nntp_data);
     mutt_debug(2, "nntp_newsrc_parse: %s\n", nntp_data->group);
   }
@@ -292,7 +292,7 @@ void nntp_newsrc_gen_entries(struct Context *ctx)
   if (!entries)
   {
     entries = 5;
-    nntp_data->newsrc_ent = safe_calloc(entries, sizeof(NEWSRC_ENTRY));
+    nntp_data->newsrc_ent = safe_calloc(entries, sizeof(struct NewsrcEntry));
   }
 
   /* Set up to fake initial sequence from 1 to the article before the
@@ -313,7 +313,7 @@ void nntp_newsrc_gen_entries(struct Context *ctx)
         if (nntp_data->newsrc_len >= entries)
         {
           entries *= 2;
-          safe_realloc(&nntp_data->newsrc_ent, entries * sizeof(NEWSRC_ENTRY));
+          safe_realloc(&nntp_data->newsrc_ent, entries * sizeof(struct NewsrcEntry));
         }
         nntp_data->newsrc_ent[nntp_data->newsrc_len].first = first;
         nntp_data->newsrc_ent[nntp_data->newsrc_len].last = last - 1;
@@ -339,13 +339,13 @@ void nntp_newsrc_gen_entries(struct Context *ctx)
     if (nntp_data->newsrc_len >= entries)
     {
       entries++;
-      safe_realloc(&nntp_data->newsrc_ent, entries * sizeof(NEWSRC_ENTRY));
+      safe_realloc(&nntp_data->newsrc_ent, entries * sizeof(struct NewsrcEntry));
     }
     nntp_data->newsrc_ent[nntp_data->newsrc_len].first = first;
     nntp_data->newsrc_ent[nntp_data->newsrc_len].last = nntp_data->lastLoaded;
     nntp_data->newsrc_len++;
   }
-  safe_realloc(&nntp_data->newsrc_ent, nntp_data->newsrc_len * sizeof(NEWSRC_ENTRY));
+  safe_realloc(&nntp_data->newsrc_ent, nntp_data->newsrc_len * sizeof(struct NewsrcEntry));
 
   if (save_sort != Sort)
   {
@@ -1111,7 +1111,7 @@ NNTP_DATA *mutt_newsgroup_subscribe(NNTP_SERVER *nserv, char *group)
   nntp_data->subscribed = true;
   if (!nntp_data->newsrc_ent)
   {
-    nntp_data->newsrc_ent = safe_calloc(1, sizeof(NEWSRC_ENTRY));
+    nntp_data->newsrc_ent = safe_calloc(1, sizeof(struct NewsrcEntry));
     nntp_data->newsrc_len = 1;
     nntp_data->newsrc_ent[0].first = 1;
     nntp_data->newsrc_ent[0].last = 0;
@@ -1154,7 +1154,7 @@ NNTP_DATA *mutt_newsgroup_catchup(NNTP_SERVER *nserv, char *group)
 
   if (nntp_data->newsrc_ent)
   {
-    safe_realloc(&nntp_data->newsrc_ent, sizeof(NEWSRC_ENTRY));
+    safe_realloc(&nntp_data->newsrc_ent, sizeof(struct NewsrcEntry));
     nntp_data->newsrc_len = 1;
     nntp_data->newsrc_ent[0].first = 1;
     nntp_data->newsrc_ent[0].last = nntp_data->lastMessage;
@@ -1184,7 +1184,7 @@ NNTP_DATA *mutt_newsgroup_uncatchup(NNTP_SERVER *nserv, char *group)
 
   if (nntp_data->newsrc_ent)
   {
-    safe_realloc(&nntp_data->newsrc_ent, sizeof(NEWSRC_ENTRY));
+    safe_realloc(&nntp_data->newsrc_ent, sizeof(struct NewsrcEntry));
     nntp_data->newsrc_len = 1;
     nntp_data->newsrc_ent[0].first = 1;
     nntp_data->newsrc_ent[0].last = nntp_data->firstMessage - 1;

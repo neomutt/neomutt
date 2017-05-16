@@ -77,11 +77,11 @@ typedef struct
   struct Connection *conn;
 } NNTP_SERVER;
 
-typedef struct
+struct NewsrcEntry
 {
   anum_t first;
   anum_t last;
-} NEWSRC_ENTRY;
+};
 
 typedef struct
 {
@@ -103,7 +103,7 @@ typedef struct
   bool allowed : 1;
   bool deleted : 1;
   unsigned int newsrc_len;
-  NEWSRC_ENTRY *newsrc_ent;
+  struct NewsrcEntry *newsrc_ent;
   NNTP_SERVER *nserv;
   NNTP_ACACHE acache[NNTP_ACACHE_LEN];
   struct BodyCache *bcache;

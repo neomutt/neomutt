@@ -1741,7 +1741,7 @@ static int nntp_group_poll(NNTP_DATA *nntp_data, int update_stat)
     nntp_data->lastCached = 0;
     if (nntp_data->newsrc_len)
     {
-      safe_realloc(&nntp_data->newsrc_ent, sizeof(NEWSRC_ENTRY));
+      safe_realloc(&nntp_data->newsrc_ent, sizeof(struct NewsrcEntry));
       nntp_data->newsrc_len = 1;
       nntp_data->newsrc_ent[0].first = 1;
       nntp_data->newsrc_ent[0].last = 0;
