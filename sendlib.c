@@ -485,17 +485,17 @@ void mutt_generate_boundary(struct Parameter **parm)
   mutt_set_parameter("boundary", rs, parm);
 }
 
-typedef struct
+struct ContentState
 {
   int from;
   int whitespace;
   int dot;
   int linelen;
   int was_cr;
-} CONTENT_STATE;
+};
 
 
-static void update_content_info(struct Content *info, CONTENT_STATE *s, char *d, size_t dlen)
+static void update_content_info(struct Content *info, struct ContentState *s, char *d, size_t dlen)
 {
   int from = s->from;
   int whitespace = s->whitespace;
@@ -642,7 +642,7 @@ static size_t convert_file_to(FILE *file, const char *fromcode, int ncodes,
   size_t ibl, obl, ubl, ubl1, n, ret;
   int i;
   struct Content *infos = NULL;
-  CONTENT_STATE *states = NULL;
+  struct ContentState *states = NULL;
   size_t *score = NULL;
 
   cd1 = mutt_iconv_open("utf-8", fromcode, 0);
@@ -651,7 +651,7 @@ static size_t convert_file_to(FILE *file, const char *fromcode, int ncodes,
 
   cd = safe_calloc(ncodes, sizeof(iconv_t));
   score = safe_calloc(ncodes, sizeof(size_t));
-  states = safe_calloc(ncodes, sizeof(CONTENT_STATE));
+  states = safe_calloc(ncodes, sizeof(struct ContentState));
   infos = safe_calloc(ncodes, sizeof(struct Content));
 
   for (i = 0; i < ncodes; i++)
@@ -843,7 +843,7 @@ static size_t convert_file_from_to(FILE *file, const char *fromcodes, const char
 struct Content *mutt_get_content_info(const char *fname, struct Body *b)
 {
   struct Content *info = NULL;
-  CONTENT_STATE state;
+  struct ContentState state;
   FILE *fp = NULL;
   char *fromcode = NULL;
   char *tocode = NULL;
