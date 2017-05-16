@@ -66,11 +66,11 @@ static struct mapping_t FolderNewsHelp[] = {
 };
 #endif
 
-typedef struct folder_t
+struct Folder
 {
   struct folder_file *ff;
   int num;
-} FOLDER;
+};
 
 static char OldLastDir[_POSIX_PATH_MAX] = "";
 static char LastDir[_POSIX_PATH_MAX] = "";
@@ -241,7 +241,7 @@ static const char *folder_format_str(char *dest, size_t destlen, size_t col, int
   char fn[SHORT_STRING], tmp[SHORT_STRING], permission[11];
   char date[SHORT_STRING], *t_fmt = NULL;
   time_t tnow;
-  FOLDER *folder = (FOLDER *) data;
+  struct Folder *folder = (struct Folder *) data;
   struct passwd *pw = NULL;
   struct group *gr = NULL;
   int optional = (flags & MUTT_FORMAT_OPTIONAL);
@@ -462,7 +462,7 @@ static const char *newsgroup_format_str(char *dest, size_t destlen, size_t col, 
                                         unsigned long data, format_flag flags)
 {
   char fn[SHORT_STRING], tmp[SHORT_STRING];
-  FOLDER *folder = (FOLDER *) data;
+  struct Folder *folder = (struct Folder *) data;
 
   switch (op)
   {
@@ -853,7 +853,7 @@ static int select_vfolder_search(struct Menu *menu, regex_t *re, int n)
 
 static void folder_entry(char *s, size_t slen, struct Menu *menu, int num)
 {
-  FOLDER folder;
+  struct Folder folder;
 
   folder.ff = &((struct folder_file *) menu->data)[num];
   folder.num = num;
@@ -871,7 +871,7 @@ static void folder_entry(char *s, size_t slen, struct Menu *menu, int num)
 #ifdef USE_NOTMUCH
 static void vfolder_entry(char *s, size_t slen, struct Menu *menu, int num)
 {
-  FOLDER folder;
+  struct Folder folder;
 
   folder.ff = &((struct folder_file *) menu->data)[num];
   folder.num = num;
