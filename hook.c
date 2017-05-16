@@ -28,22 +28,22 @@
 #include "compress.h"
 #endif
 
-typedef struct hook
+struct Hook
 {
   int type;           /* hook type */
   struct Regex rx;          /* regular expression */
   char *command;      /* filename, command or pattern to execute */
   struct Pattern *pattern; /* used for fcc,save,send-hook */
-  struct hook *next;
-} HOOK;
+  struct Hook *next;
+};
 
-static HOOK *Hooks = NULL;
+static struct Hook *Hooks = NULL;
 
 static int current_hook_type = 0;
 
 int mutt_parse_hook(struct Buffer *buf, struct Buffer *s, unsigned long data, struct Buffer *err)
 {
-  HOOK *ptr = NULL;
+  struct Hook *ptr = NULL;
   struct Buffer command, pattern;
   int rc, not = 0;
   regex_t *rx = NULL;
@@ -223,11 +223,11 @@ int mutt_parse_hook(struct Buffer *buf, struct Buffer *s, unsigned long data, st
 
   if (ptr)
   {
-    ptr->next = safe_calloc(1, sizeof(HOOK));
+    ptr->next = safe_calloc(1, sizeof(struct Hook));
     ptr = ptr->next;
   }
   else
-    Hooks = ptr = safe_calloc(1, sizeof(HOOK));
+    Hooks = ptr = safe_calloc(1, sizeof(struct Hook));
   ptr->type = data;
   ptr->command = command.data;
   ptr->pattern = pat;
@@ -243,7 +243,7 @@ error:
   return -1;
 }
 
-static void delete_hook(HOOK *h)
+static void delete_hook(struct Hook *h)
 {
   FREE(&h->command);
   FREE(&h->rx.pattern);
@@ -258,8 +258,8 @@ static void delete_hook(HOOK *h)
 /* Deletes all hooks of type ``type'', or all defined hooks if ``type'' is 0 */
 static void delete_hooks(int type)
 {
-  HOOK *h = NULL;
-  HOOK *prev = NULL;
+  struct Hook *h = NULL;
+  struct Hook *prev = NULL;
 
   while (h = Hooks, h && (type == 0 || type == h->type))
   {
@@ -320,7 +320,7 @@ int mutt_parse_unhook(struct Buffer *buf, struct Buffer *s, unsigned long data, 
 
 void mutt_folder_hook(char *path)
 {
-  HOOK *tmp = Hooks;
+  struct Hook *tmp = Hooks;
   struct Buffer err, token;
 
   current_hook_type = MUTT_FOLDERHOOK;
@@ -359,7 +359,7 @@ void mutt_folder_hook(char *path)
 
 char *mutt_find_hook(int type, const char *pat)
 {
-  HOOK *tmp = Hooks;
+  struct Hook *tmp = Hooks;
 
   for (; tmp; tmp = tmp->next)
     if (tmp->type & type)
@@ -373,7 +373,7 @@ char *mutt_find_hook(int type, const char *pat)
 void mutt_message_hook(struct Context *ctx, struct Header *hdr, int type)
 {
   struct Buffer err, token;
-  HOOK *hook = NULL;
+  struct Hook *hook = NULL;
   pattern_cache_t cache;
 
   current_hook_type = type;
@@ -414,7 +414,7 @@ void mutt_message_hook(struct Context *ctx, struct Header *hdr, int type)
 
 static int addr_hook(char *path, size_t pathlen, int type, struct Context *ctx, struct Header *hdr)
 {
-  HOOK *hook = NULL;
+  struct Hook *hook = NULL;
   pattern_cache_t cache;
 
   memset(&cache, 0, sizeof(cache));
@@ -487,7 +487,7 @@ void mutt_select_fcc(char *path, size_t pathlen, struct Header *hdr)
 
 static char *_mutt_string_hook(const char *match, int hook)
 {
-  HOOK *tmp = Hooks;
+  struct Hook *tmp = Hooks;
 
   for (; tmp; tmp = tmp->next)
   {
@@ -500,7 +500,7 @@ static char *_mutt_string_hook(const char *match, int hook)
 
 static struct List *_mutt_list_hook(const char *match, int hook)
 {
-  HOOK *tmp = Hooks;
+  struct Hook *tmp = Hooks;
   struct List *matches = NULL;
 
   for (; tmp; tmp = tmp->next)
@@ -535,7 +535,7 @@ void mutt_account_hook(const char *url)
    * belong in a folder-hook -- perhaps we should warn the user. */
   static int inhook = 0;
 
-  HOOK *hook = NULL;
+  struct Hook *hook = NULL;
   struct Buffer token;
   struct Buffer err;
 
@@ -578,7 +578,7 @@ void mutt_account_hook(const char *url)
 
 void mutt_timeout_hook(void)
 {
-  HOOK *hook = NULL;
+  struct Hook *hook = NULL;
   struct Buffer token;
   struct Buffer err;
   char buf[STRING];
@@ -613,7 +613,7 @@ void mutt_timeout_hook(void)
  */
 void mutt_startup_shutdown_hook(int type)
 {
-  HOOK *hook = NULL;
+  struct Hook *hook = NULL;
   struct Buffer token;
   struct Buffer err;
   char buf[STRING];
