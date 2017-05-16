@@ -516,7 +516,7 @@ static int pop_fetch_message(struct Context *ctx, struct Message *msg, int msgno
   char path[_POSIX_PATH_MAX];
   struct Progress progressbar;
   POP_DATA *pop_data = (POP_DATA *) ctx->data;
-  POP_CACHE *cache = NULL;
+  struct PopCache *cache = NULL;
   struct Header *h = ctx->hdrs[msgno];
   unsigned short bcache = 1;
 

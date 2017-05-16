@@ -48,11 +48,11 @@ typedef enum {
   POP_A_UNAVAIL
 } pop_auth_res_t;
 
-typedef struct
+struct PopCache
 {
   unsigned int index;
   char *path;
-} POP_CACHE;
+};
 
 typedef struct
 {
@@ -75,7 +75,7 @@ typedef struct
   char *timestamp;
   struct BodyCache *bcache; /* body cache */
   char err_msg[POP_CMD_RESPONSE];
-  POP_CACHE cache[POP_CACHE_LEN];
+  struct PopCache cache[POP_CACHE_LEN];
 } POP_DATA;
 
 struct PopAuth
