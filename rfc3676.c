@@ -34,12 +34,12 @@
 
 #define FLOWED_MAX 72
 
-typedef struct flowed_state
+struct FlowedState
 {
   size_t width;
   size_t spaces;
   int delsp;
-} flowed_state_t;
+};
 
 static int get_quote_level(const char *line)
 {
@@ -127,7 +127,7 @@ static size_t print_indent(int ql, struct State *s, int add_suffix)
   return ql + add_suffix + wid;
 }
 
-static void flush_par(struct State *s, flowed_state_t *fst)
+static void flush_par(struct State *s, struct FlowedState *fst)
 {
   if (fst->width > 0)
   {
@@ -163,7 +163,7 @@ static int quote_width(struct State *s, int ql)
   return width;
 }
 
-static void print_flowed_line(char *line, struct State *s, int ql, flowed_state_t *fst, int term)
+static void print_flowed_line(char *line, struct State *s, int ql, struct FlowedState *fst, int term)
 {
   size_t width, w, words = 0;
   char *p = NULL;
@@ -232,7 +232,7 @@ static void print_flowed_line(char *line, struct State *s, int ql, flowed_state_
     flush_par(s, fst);
 }
 
-static void print_fixed_line(const char *line, struct State *s, int ql, flowed_state_t *fst)
+static void print_fixed_line(const char *line, struct State *s, int ql, struct FlowedState *fst)
 {
   print_indent(ql, s, add_quote_suffix(s, ql));
   if (line && *line)
@@ -249,7 +249,7 @@ int rfc3676_handler(struct Body *a, struct State *s)
   unsigned int quotelevel = 0, newql = 0, sigsep = 0;
   int buf_off = 0, delsp = 0, fixed = 0;
   size_t buf_len = 0, sz = 0;
-  flowed_state_t fst;
+  struct FlowedState fst;
 
   memset(&fst, 0, sizeof(fst));
 
