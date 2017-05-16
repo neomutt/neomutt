@@ -88,9 +88,9 @@ short pgp_get_abilities(unsigned char type)
   return (pgp_canencrypt(type) << 1) | pgp_cansign(type);
 }
 
-static void pgp_free_sig(pgp_sig_t **sigp)
+static void pgp_free_sig(struct PgpSignature **sigp)
 {
-  pgp_sig_t *sp = NULL, *q = NULL;
+  struct PgpSignature *sp = NULL, *q = NULL;
 
   if (!sigp || !*sigp)
     return;

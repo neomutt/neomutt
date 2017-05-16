@@ -84,7 +84,7 @@ static void print_fingerprint(struct PgpKeyInfo *p)
   printf("fpr:::::::::%s:\n", p->fingerprint);
 }
 
-static void pgpring_dump_signatures(pgp_sig_t *sig)
+static void pgpring_dump_signatures(struct PgpSignature *sig)
 {
   for (; sig; sig = sig->next)
   {
@@ -415,7 +415,7 @@ static struct PgpKeyInfo *pgp_parse_keyinfo(unsigned char *buff, size_t l)
   }
 }
 
-static int pgp_parse_pgp2_sig(unsigned char *buff, size_t l, struct PgpKeyInfo *p, pgp_sig_t *s)
+static int pgp_parse_pgp2_sig(unsigned char *buff, size_t l, struct PgpKeyInfo *p, struct PgpSignature *s)
 {
   unsigned char sigtype;
   time_t sig_gen_time;
@@ -455,7 +455,7 @@ static int pgp_parse_pgp2_sig(unsigned char *buff, size_t l, struct PgpKeyInfo *
   return 0;
 }
 
-static int pgp_parse_pgp3_sig(unsigned char *buff, size_t l, struct PgpKeyInfo *p, pgp_sig_t *s)
+static int pgp_parse_pgp3_sig(unsigned char *buff, size_t l, struct PgpKeyInfo *p, struct PgpSignature *s)
 {
   unsigned char sigtype;
   unsigned char skt;
@@ -594,7 +594,7 @@ static int pgp_parse_pgp3_sig(unsigned char *buff, size_t l, struct PgpKeyInfo *
   return 0;
 }
 
-static int pgp_parse_sig(unsigned char *buff, size_t l, struct PgpKeyInfo *p, pgp_sig_t *sig)
+static int pgp_parse_sig(unsigned char *buff, size_t l, struct PgpKeyInfo *p, struct PgpSignature *sig)
 {
   if (!buff || l < 2 || !p)
     return -1;
@@ -628,7 +628,7 @@ static struct PgpKeyInfo *pgp_parse_keyblock(FILE *fp)
   struct PgpKeyInfo *p = NULL;
   pgp_uid_t *uid = NULL;
   pgp_uid_t **addr = NULL;
-  pgp_sig_t **lsig = NULL;
+  struct PgpSignature **lsig = NULL;
 
   fgetpos(fp, &pos);
 
@@ -684,7 +684,7 @@ static struct PgpKeyInfo *pgp_parse_keyblock(FILE *fp)
       {
         if (lsig)
         {
-          pgp_sig_t *signature = safe_calloc(sizeof(pgp_sig_t), 1);
+          struct PgpSignature *signature = safe_calloc(sizeof(struct PgpSignature), 1);
           *lsig = signature;
           lsig = &signature->next;
 

@@ -24,13 +24,13 @@
 #include "mutt_crypt.h"
 
 
-typedef struct pgp_signature
+struct PgpSignature
 {
-  struct pgp_signature *next;
+  struct PgpSignature *next;
   unsigned char sigtype;
   unsigned long sid1;
   unsigned long sid2;
-} pgp_sig_t;
+};
 
 struct PgpKeyInfo
 {
@@ -43,7 +43,7 @@ struct PgpKeyInfo
   int numalg;
   const char *algorithm;
   struct PgpKeyInfo *parent;
-  struct pgp_signature *sigs;
+  struct PgpSignature *sigs;
   struct PgpKeyInfo *next;
 };
 
@@ -54,7 +54,7 @@ typedef struct pgp_uid
   int flags;
   struct PgpKeyInfo *parent;
   struct pgp_uid *next;
-  struct pgp_signature *sigs;
+  struct PgpSignature *sigs;
 } pgp_uid_t;
 
 enum pgp_version
