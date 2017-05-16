@@ -2306,18 +2306,18 @@ int nntp_check_msgid(struct Context *ctx, const char *msgid)
   return 0;
 }
 
-typedef struct
+struct ChildCtx
 {
   struct Context *ctx;
   unsigned int num;
   unsigned int max;
   anum_t *child;
-} CHILD_CTX;
+};
 
 /* Parse XPAT line */
 static int fetch_children(char *line, void *data)
 {
-  CHILD_CTX *cc = data;
+  struct ChildCtx *cc = data;
   anum_t anum;
   unsigned int i;
 
@@ -2339,7 +2339,7 @@ static int fetch_children(char *line, void *data)
 int nntp_check_children(struct Context *ctx, const char *msgid)
 {
   NNTP_DATA *nntp_data = ctx->data;
-  CHILD_CTX cc;
+  struct ChildCtx cc;
   char buf[STRING];
   int i, rc;
   bool quiet;
