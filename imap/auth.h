@@ -28,14 +28,14 @@ typedef enum {
 } imap_auth_res_t;
 
 
-typedef struct
+struct ImapAuth
 {
   /* do authentication, using named method or any available if method is NULL */
   imap_auth_res_t (*authenticate)(IMAP_DATA *idata, const char *method);
   /* name of authentication method supported, NULL means variable. If this
    * is not null, authenticate may ignore the second parameter. */
   const char *method;
-} imap_auth_t;
+};
 
 /* external authenticator prototypes */
 imap_auth_res_t imap_auth_plain(IMAP_DATA *idata, const char *method);

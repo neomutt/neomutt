@@ -24,7 +24,7 @@
 #include "mutt.h"
 #include "auth.h"
 
-static const imap_auth_t imap_authenticators[] = {
+static const struct ImapAuth imap_authenticators[] = {
   { imap_auth_plain, "plain" },
 #ifdef USE_SASL
   { imap_auth_sasl, NULL },
@@ -47,7 +47,7 @@ static const imap_auth_t imap_authenticators[] = {
  *   authentication method if specified, or any. */
 int imap_authenticate(IMAP_DATA *idata)
 {
-  const imap_auth_t *authenticator = NULL;
+  const struct ImapAuth *authenticator = NULL;
   char *methods = NULL;
   char *method = NULL;
   char *delim = NULL;
