@@ -125,11 +125,11 @@ enum
 #define MUTT_IMAP_CONN_NOSELECT (1 << 1)
 
 /* -- data structures -- */
-typedef struct
+struct ImapCache
 {
   unsigned int uid;
   char *path;
-} IMAP_CACHE;
+};
 
 typedef struct
 {
@@ -213,7 +213,7 @@ typedef struct
   unsigned short check_status;
   unsigned char reopen;
   unsigned int newMailCount;
-  IMAP_CACHE cache[IMAP_CACHE_LEN];
+  struct ImapCache cache[IMAP_CACHE_LEN];
   struct Hash *uid_hash;
   unsigned int uid_validity;
   unsigned int uidnext;

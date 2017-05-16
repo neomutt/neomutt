@@ -697,7 +697,7 @@ int imap_fetch_message(struct Context *ctx, struct Message *msg, int msgno)
   struct Progress progressbar;
   int uid;
   int cacheno;
-  IMAP_CACHE *cache = NULL;
+  struct ImapCache *cache = NULL;
   bool read;
   int rc;
 
