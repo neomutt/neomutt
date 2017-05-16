@@ -277,7 +277,7 @@ void imap_expunge_mailbox(IMAP_DATA *idata)
 
       int_hash_delete(idata->uid_hash, HEADER_DATA(h)->uid, h, NULL);
 
-      imap_free_header_data((IMAP_HEADER_DATA **) &h->data);
+      imap_free_header_data((struct ImapHeaderData **) &h->data);
     }
   }
 
@@ -1031,7 +1031,7 @@ out:
 /* returns 0 if mutt's flags match cached server flags */
 static bool compare_flags(struct Header *h)
 {
-  IMAP_HEADER_DATA *hd = (IMAP_HEADER_DATA *) h->data;
+  struct ImapHeaderData *hd = (struct ImapHeaderData *) h->data;
 
   if (h->read != hd->read)
     return true;
@@ -1375,7 +1375,7 @@ int imap_close_mailbox(struct Context *ctx)
   for (i = 0; i < ctx->msgcount; i++)
     /* mailbox may not have fully loaded */
     if (ctx->hdrs[i] && ctx->hdrs[i]->data)
-      imap_free_header_data((IMAP_HEADER_DATA **) &(ctx->hdrs[i]->data));
+      imap_free_header_data((struct ImapHeaderData **) &(ctx->hdrs[i]->data));
   hash_destroy(&idata->uid_hash, NULL);
 
   for (i = 0; i < IMAP_CACHE_LEN; i++)

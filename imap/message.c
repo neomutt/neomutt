@@ -122,7 +122,7 @@ static int msg_cache_clean_cb(const char *id, struct BodyCache *bcache, void *da
 /* msg_parse_flags: read a FLAGS token into an IMAP_HEADER */
 static char *msg_parse_flags(IMAP_HEADER *h, char *s)
 {
-  IMAP_HEADER_DATA *hd = h->data;
+  struct ImapHeaderData *hd = h->data;
 
   /* sanity-check string */
   if (ascii_strncasecmp("FLAGS", s, 5) != 0)
@@ -447,7 +447,7 @@ int imap_read_headers(IMAP_DATA *idata, int msgbegin, int msgend)
       mutt_progress_update(&progress, msgno + 1, -1);
 
       memset(&h, 0, sizeof(h));
-      h.data = safe_calloc(1, sizeof(IMAP_HEADER_DATA));
+      h.data = safe_calloc(1, sizeof(struct ImapHeaderData));
       do
       {
         mfhrc = 0;
@@ -544,7 +544,7 @@ int imap_read_headers(IMAP_DATA *idata, int msgbegin, int msgend)
 
     rewind(fp);
     memset(&h, 0, sizeof(h));
-    h.data = safe_calloc(1, sizeof(IMAP_HEADER_DATA));
+    h.data = safe_calloc(1, sizeof(struct ImapHeaderData));
 
     /* this DO loop does two things:
      * 1. handles untagged messages, so we can try again on the same msg
@@ -1262,7 +1262,7 @@ void imap_add_keywords(char *s, struct Header *h, struct List *mailbox_flags, si
 }
 
 /* imap_free_header_data: free IMAP_HEADER structure */
-void imap_free_header_data(IMAP_HEADER_DATA **data)
+void imap_free_header_data(struct ImapHeaderData **data)
 {
   if (*data)
   {
@@ -1278,7 +1278,7 @@ char *imap_set_flags(IMAP_DATA *idata, struct Header *h, char *s)
 {
   struct Context *ctx = idata->ctx;
   IMAP_HEADER newh;
-  IMAP_HEADER_DATA *hd = NULL;
+  struct ImapHeaderData *hd = NULL;
   bool readonly;
 
   memset(&newh, 0, sizeof(newh));

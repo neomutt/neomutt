@@ -23,7 +23,7 @@
 
 /* -- data structures -- */
 /* IMAP-specific header data, stored as Header->data */
-typedef struct imap_header_data
+struct ImapHeaderData
 {
   /* server-side flags */
   bool read : 1;
@@ -37,19 +37,19 @@ typedef struct imap_header_data
 
   unsigned int uid; /* 32-bit Message UID */
   struct List *keywords;
-} IMAP_HEADER_DATA;
+};
 
 typedef struct
 {
   unsigned int sid;
 
-  IMAP_HEADER_DATA *data;
+  struct ImapHeaderData *data;
 
   time_t received;
   long content_length;
 } IMAP_HEADER;
 
 /* -- macros -- */
-#define HEADER_DATA(ph) ((IMAP_HEADER_DATA *) ((ph)->data))
+#define HEADER_DATA(ph) ((struct ImapHeaderData *) ((ph)->data))
 
 #endif /* _MUTT_IMAP_MESSAGE_H */
