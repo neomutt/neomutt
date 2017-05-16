@@ -47,9 +47,9 @@ static bool cmd_queue_full(IMAP_DATA *idata)
 
 /* sets up a new command control block and adds it to the queue.
  * Returns NULL if the pipeline is full. */
-static IMAP_COMMAND *cmd_new(IMAP_DATA *idata)
+static struct ImapCommand *cmd_new(IMAP_DATA *idata)
 {
-  IMAP_COMMAND *cmd = NULL;
+  struct ImapCommand *cmd = NULL;
 
   if (cmd_queue_full(idata))
   {
@@ -72,7 +72,7 @@ static IMAP_COMMAND *cmd_new(IMAP_DATA *idata)
 /* queues command. If the queue is full, attempts to drain it. */
 static int cmd_queue(IMAP_DATA *idata, const char *cmdstr)
 {
-  IMAP_COMMAND *cmd = NULL;
+  struct ImapCommand *cmd = NULL;
   int rc;
 
   if (cmd_queue_full(idata))
@@ -764,7 +764,7 @@ int imap_cmd_step(IMAP_DATA *idata)
   int c;
   int rc;
   int stillrunning = 0;
-  IMAP_COMMAND *cmd = NULL;
+  struct ImapCommand *cmd = NULL;
 
   if (idata->status == IMAP_FATAL)
   {

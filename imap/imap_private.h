@@ -38,7 +38,7 @@
 #define IMAP_LOG_LTRL 4
 #define IMAP_LOG_PASS 5
 
-/* IMAP command responses. Used in IMAP_COMMAND.state too */
+/* IMAP command responses. Used in ImapCommand.state too */
 /* <tag> OK ... */
 #define IMAP_CMD_OK       (0)
 /* <tag> BAD ... */
@@ -49,7 +49,7 @@
 #define IMAP_CMD_CONTINUE (1)
 /* + */
 #define IMAP_CMD_RESPOND  (2)
-/* IMAP_COMMAND.state additions */
+/* ImapCommand.state additions */
 #define IMAP_CMD_NEW      (3)
 
 /* number of entries in the hash table */
@@ -153,11 +153,11 @@ typedef struct
 } IMAP_LIST;
 
 /* IMAP command structure */
-typedef struct
+struct ImapCommand
 {
   char seq[SEQLEN + 1];
   int state;
-} IMAP_COMMAND;
+};
 
 typedef enum {
   IMAP_CT_NONE = 0,
@@ -197,7 +197,7 @@ typedef struct
   void *cmddata;
 
   /* command queue */
-  IMAP_COMMAND *cmds;
+  struct ImapCommand *cmds;
   int cmdslots;
   int nextcmd;
   int lastcmd;

@@ -492,7 +492,7 @@ void imap_close_connection(IMAP_DATA *idata)
     idata->state = IMAP_DISCONNECTED;
   }
   idata->seqno = idata->nextcmd = idata->lastcmd = idata->status = false;
-  memset(idata->cmds, 0, sizeof(IMAP_COMMAND) * idata->cmdslots);
+  memset(idata->cmds, 0, sizeof(struct ImapCommand) * idata->cmdslots);
 }
 
 /* imap_get_flags: Make a simple list out of a FLAGS response.
