@@ -972,7 +972,7 @@ static int fetch_tempfile(char *line, void *data)
   return 0;
 }
 
-typedef struct
+struct FetchCtx
 {
   struct Context *ctx;
   anum_t first;
@@ -983,12 +983,12 @@ typedef struct
 #ifdef USE_HCACHE
   header_cache_t *hc;
 #endif
-} FETCH_CTX;
+};
 
 /* Parse article number */
 static int fetch_numbers(char *line, void *data)
 {
-  FETCH_CTX *fc = data;
+  struct FetchCtx *fc = data;
   anum_t anum;
 
   if (!line)
@@ -1004,7 +1004,7 @@ static int fetch_numbers(char *line, void *data)
 /* Parse overview line */
 static int parse_overview_line(char *line, void *data)
 {
-  FETCH_CTX *fc = data;
+  struct FetchCtx *fc = data;
   struct Context *ctx = fc->ctx;
   NNTP_DATA *nntp_data = ctx->data;
   struct Header *hdr = NULL;
@@ -1156,7 +1156,7 @@ static int parse_overview_line(char *line, void *data)
 static int nntp_fetch_headers(struct Context *ctx, void *hc, anum_t first, anum_t last, int restore)
 {
   NNTP_DATA *nntp_data = ctx->data;
-  FETCH_CTX fc;
+  struct FetchCtx fc;
   struct Header *hdr = NULL;
   char buf[HUGE_STRING];
   int rc = 0;
