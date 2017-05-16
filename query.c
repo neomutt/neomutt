@@ -34,11 +34,11 @@ typedef struct query
   struct query *next;
 } QUERY;
 
-typedef struct entry
+struct Entry
 {
   bool tagged;
   QUERY *data;
-} ENTRY;
+};
 
 static const struct mapping_t QueryHelp[] = {
   { N_("Exit"), OP_EXIT },
@@ -154,7 +154,7 @@ static QUERY *run_query(char *s, int quiet)
 
 static int query_search(struct Menu *m, regex_t *re, int n)
 {
-  ENTRY *table = (ENTRY *) m->data;
+  struct Entry *table = (struct Entry *) m->data;
 
   if (table[n].data->name && !regexec(re, table[n].data->name, 0, NULL, 0))
     return 0;
@@ -182,7 +182,7 @@ static const char *query_format_str(char *dest, size_t destlen, size_t col, int 
                                     const char *ifstring, const char *elsestring,
                                     unsigned long data, format_flag flags)
 {
-  ENTRY *entry = (ENTRY *) data;
+  struct Entry *entry = (struct Entry *) data;
   QUERY *query = entry->data;
   char tmp[SHORT_STRING];
   char buf2[STRING] = "";
@@ -232,7 +232,7 @@ static const char *query_format_str(char *dest, size_t destlen, size_t col, int 
 
 static void query_entry(char *s, size_t slen, struct Menu *m, int num)
 {
-  ENTRY *entry = &((ENTRY *) m->data)[num];
+  struct Entry *entry = &((struct Entry *) m->data)[num];
 
   entry->data->num = num;
   mutt_FormatString(s, slen, 0, MuttIndexWindow->cols, NONULL(QueryFormat),
@@ -241,7 +241,7 @@ static void query_entry(char *s, size_t slen, struct Menu *m, int num)
 
 static int query_tag(struct Menu *menu, int n, int m)
 {
-  ENTRY *cur = &((ENTRY *) menu->data)[n];
+  struct Entry *cur = &((struct Entry *) menu->data)[n];
   bool ot = cur->tagged;
 
   cur->tagged = m >= 0 ? m : !cur->tagged;
@@ -252,7 +252,7 @@ static void query_menu(char *buf, size_t buflen, QUERY *results, int retbuf)
 {
   struct Menu *menu = NULL;
   struct Header *msg = NULL;
-  ENTRY *QueryTable = NULL;
+  struct Entry *QueryTable = NULL;
   QUERY *queryp = NULL;
   int i, done = 0;
   int op;
@@ -284,7 +284,7 @@ static void query_menu(char *buf, size_t buflen, QUERY *results, int retbuf)
     for (queryp = results; queryp; queryp = queryp->next)
       menu->max++;
 
-    menu->data = QueryTable = safe_calloc(menu->max, sizeof(ENTRY));
+    menu->data = QueryTable = safe_calloc(menu->max, sizeof(struct Entry));
 
     for (i = 0, queryp = results; queryp; queryp = queryp->next, i++)
       QueryTable[i].data = queryp;
@@ -339,7 +339,7 @@ static void query_menu(char *buf, size_t buflen, QUERY *results, int retbuf)
 
               if (op == OP_QUERY)
               {
-                menu->data = QueryTable = safe_calloc(menu->max, sizeof(ENTRY));
+                menu->data = QueryTable = safe_calloc(menu->max, sizeof(struct Entry));
 
                 for (i = 0, queryp = results; queryp; queryp = queryp->next, i++)
                   QueryTable[i].data = queryp;
@@ -349,7 +349,7 @@ static void query_menu(char *buf, size_t buflen, QUERY *results, int retbuf)
                 int clear = 0;
 
                 /* append */
-                safe_realloc(&QueryTable, menu->max * sizeof(ENTRY));
+                safe_realloc(&QueryTable, menu->max * sizeof(struct Entry));
 
                 menu->data = QueryTable;
 
