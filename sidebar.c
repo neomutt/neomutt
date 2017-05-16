@@ -35,18 +35,18 @@
 static short PreviousSort = SORT_ORDER; /* sidebar_sort_method */
 
 /**
- * struct sidebar_entry - Info about folders in the sidebar
+ * struct SbEntry - Info about folders in the sidebar
  */
-typedef struct sidebar_entry
+struct SbEntry
 {
   char box[STRING]; /* formatted mailbox name */
   struct Buffy *buffy;
   short is_hidden;
-} SBENTRY;
+};
 
 static int EntryCount = 0;
 static int EntryLen = 0;
-static SBENTRY **Entries = NULL;
+static struct SbEntry **Entries = NULL;
 
 static int TopIndex = -1; /* First mailbox visible in sidebar */
 static int OpnIndex = -1; /* Current (open) mailbox */
@@ -123,7 +123,7 @@ static const char *cb_format_str(char *dest, size_t destlen, size_t col, int col
                                  const char *ifstring, const char *elsestring,
                                  unsigned long data, format_flag flags)
 {
-  SBENTRY *sbe = (SBENTRY *) data;
+  struct SbEntry *sbe = (struct SbEntry *) data;
   unsigned int optional;
   char fmt[STRING];
 
@@ -255,7 +255,7 @@ static const char *cb_format_str(char *dest, size_t destlen, size_t col, int col
  * us using cb_format_str() for the sidebar specific formatting characters.
  */
 static void make_sidebar_entry(char *buf, unsigned int buflen, int width,
-                               char *box, SBENTRY *sbe)
+                               char *box, struct SbEntry *sbe)
 {
   if (!buf || !box || !sbe)
     return;
@@ -285,8 +285,8 @@ static void make_sidebar_entry(char *buf, unsigned int buflen, int width,
 
 /**
  * cb_qsort_sbe - qsort callback to sort SBENTRYs
- * @a: First  SBENTRY to compare
- * @b: Second SBENTRY to compare
+ * @a: First  SbEntry to compare
+ * @b: Second SbEntry to compare
  *
  * Returns:
  *      -1: a precedes b
@@ -295,8 +295,8 @@ static void make_sidebar_entry(char *buf, unsigned int buflen, int width,
  */
 static int cb_qsort_sbe(const void *a, const void *b)
 {
-  const SBENTRY *sbe1 = *(const SBENTRY **) a;
-  const SBENTRY *sbe2 = *(const SBENTRY **) b;
+  const struct SbEntry *sbe1 = *(const struct SbEntry **) a;
+  const struct SbEntry *sbe2 = *(const struct SbEntry **) b;
   struct Buffy *b1 = sbe1->buffy;
   struct Buffy *b2 = sbe2->buffy;
 
@@ -334,7 +334,7 @@ static int cb_qsort_sbe(const void *a, const void *b)
 /**
  * update_entries_visibility - Should a sidebar_entry be displayed in the sidebar
  *
- * For each SBENTRY in the Entries array, check whether we should display it.
+ * For each SbEntry in the Entries array, check whether we should display it.
  * This is determined by several criteria.  If the Buffy:
  *      is the currently open mailbox
  *      is the currently highlighted mailbox
@@ -345,7 +345,7 @@ static int cb_qsort_sbe(const void *a, const void *b)
 static void update_entries_visibility(void)
 {
   short new_only = option(OPTSIDEBARNEWMAILONLY);
-  SBENTRY *sbe = NULL;
+  struct SbEntry *sbe = NULL;
   int i;
 
   for (i = 0; i < EntryCount; i++)
@@ -381,7 +381,7 @@ static void unsort_entries(void)
 {
   struct Buffy *cur = get_incoming();
   int i = 0, j;
-  SBENTRY *tmp = NULL;
+  struct SbEntry *tmp = NULL;
 
   while (cur && (i < EntryCount))
   {
@@ -603,7 +603,7 @@ static int select_page_up(void)
 static bool prepare_sidebar(int page_size)
 {
   int i;
-  SBENTRY *opn_entry = NULL, *hil_entry = NULL;
+  struct SbEntry *opn_entry = NULL, *hil_entry = NULL;
   int page_entries;
 
   if (!EntryCount || (page_size <= 0))
@@ -816,7 +816,7 @@ static void fill_empty_space(int first_row, int num_rows, int div_width, int num
 static void draw_sidebar(int num_rows, int num_cols, int div_width)
 {
   int entryidx;
-  SBENTRY *entry = NULL;
+  struct SbEntry *entry = NULL;
   struct Buffy *b = NULL;
   if (TopIndex < 0)
     return;
@@ -1147,9 +1147,9 @@ void mutt_sb_notify_mailbox(struct Buffy *b, int created)
     if (EntryCount >= EntryLen)
     {
       EntryLen += 10;
-      safe_realloc(&Entries, EntryLen * sizeof(SBENTRY *));
+      safe_realloc(&Entries, EntryLen * sizeof(struct SbEntry *));
     }
-    Entries[EntryCount] = safe_calloc(1, sizeof(SBENTRY));
+    Entries[EntryCount] = safe_calloc(1, sizeof(struct SbEntry));
     Entries[EntryCount]->buffy = b;
 
     if (TopIndex < 0)
