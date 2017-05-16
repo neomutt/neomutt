@@ -715,7 +715,7 @@ int _mutt_enter_string(char *buf, size_t buflen, int col, int flags, int multipl
 
         case OP_EDITOR_QUOTE_CHAR:
         {
-          event_t event;
+          struct Event event;
           event = mutt_getch();
           if (event.ch >= 0)
           {

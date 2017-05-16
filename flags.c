@@ -370,7 +370,7 @@ int mutt_thread_set_flag(struct Header *hdr, int flag, int bf, int subthread)
 int mutt_change_flag(struct Header *h, int bf)
 {
   int i, flag;
-  event_t event;
+  struct Event event;
 
   mutt_window_mvprintw(MuttMessageWindow, 0, 0, "%s? (D/N/O/r/*/!): ",
                        bf ? _("Set flag") : _("Clear flag"));

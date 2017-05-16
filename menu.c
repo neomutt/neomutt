@@ -977,7 +977,7 @@ static int menu_dialog_translate_op(int i)
 
 static int menu_dialog_dokey(struct Menu *menu, int *ip)
 {
-  event_t ch;
+  struct Event ch;
   char *p = NULL;
 
   ch = mutt_getch();

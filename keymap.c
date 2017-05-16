@@ -452,7 +452,7 @@ static int retry_generic(int menu, keycode_t *keys, int keyslen, int lastkey)
  */
 int km_dokey(int menu)
 {
-  event_t tmp;
+  struct Event tmp;
   struct keymap_t *map = Keymaps[menu];
   int pos = 0;
   int n = 0;

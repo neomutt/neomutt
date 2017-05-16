@@ -50,14 +50,14 @@
  */
 static size_t MacroBufferCount = 0;
 static size_t MacroBufferLen = 0;
-static event_t *MacroEvents;
+static struct Event *MacroEvents;
 
 /* These are used in all other "normal" situations, and are not
  * ignored when setting OPTIGNOREMACROEVENTS
  */
 static size_t UngetCount = 0;
 static size_t UngetLen = 0;
-static event_t *UngetKeyEvents;
+static struct Event *UngetKeyEvents;
 
 struct MuttWindow *MuttHelpWindow = NULL;
 struct MuttWindow *MuttIndexWindow = NULL;
@@ -95,11 +95,11 @@ void mutt_need_hard_redraw(void)
   mutt_set_current_menu_redraw_full();
 }
 
-event_t mutt_getch(void)
+struct Event mutt_getch(void)
 {
   int ch;
-  event_t err = { -1, OP_NULL }, ret;
-  event_t timeout = { -2, OP_NULL };
+  struct Event err = { -1, OP_NULL }, ret;
+  struct Event timeout = { -2, OP_NULL };
 
   if (UngetCount)
     return UngetKeyEvents[--UngetCount];
@@ -223,7 +223,7 @@ void mutt_edit_file(const char *editor, const char *data)
 
 int mutt_yesorno(const char *msg, int def)
 {
-  event_t ch;
+  struct Event ch;
   char *yes = _("yes");
   char *no = _("no");
   char *answer_string = NULL;
@@ -865,7 +865,7 @@ int mutt_do_pager(const char *banner, const char *tempfile, int do_color, pager_
 int _mutt_enter_fname(const char *prompt, char *buf, size_t blen, int buffy,
                       int multiple, char ***files, int *numfiles, int flags)
 {
-  event_t ch;
+  struct Event ch;
 
   SETCOLOR(MT_COLOR_PROMPT);
   mutt_window_mvaddstr(MuttMessageWindow, 0, 0, (char *) prompt);
@@ -912,13 +912,13 @@ int _mutt_enter_fname(const char *prompt, char *buf, size_t blen, int buffy,
 
 void mutt_unget_event(int ch, int op)
 {
-  event_t tmp;
+  struct Event tmp;
 
   tmp.ch = ch;
   tmp.op = op;
 
   if (UngetCount >= UngetLen)
-    safe_realloc(&UngetKeyEvents, (UngetLen += 16) * sizeof(event_t));
+    safe_realloc(&UngetKeyEvents, (UngetLen += 16) * sizeof(struct Event));
 
   UngetKeyEvents[UngetCount++] = tmp;
 }
@@ -939,13 +939,13 @@ void mutt_unget_string(char *s)
  */
 void mutt_push_macro_event(int ch, int op)
 {
-  event_t tmp;
+  struct Event tmp;
 
   tmp.ch = ch;
   tmp.op = op;
 
   if (MacroBufferCount >= MacroBufferLen)
-    safe_realloc(&MacroEvents, (MacroBufferLen += 128) * sizeof(event_t));
+    safe_realloc(&MacroEvents, (MacroBufferLen += 128) * sizeof(struct Event));
 
   MacroEvents[MacroBufferCount++] = tmp;
 }
@@ -1004,7 +1004,7 @@ void mutt_curs_set(int cursor)
 
 int mutt_multi_choice(char *prompt, char *letters)
 {
-  event_t ch;
+  struct Event ch;
   int choice;
   int redraw = 1, prompt_lines = 1;
   char *p = NULL;

@@ -105,13 +105,13 @@ void mutt_curs_set(int);
 #define CI_is_return(c) ((c) == '\r' || (c) == '\n')
 #endif
 
-typedef struct
+struct Event
 {
   int ch; /* raw key pressed */
   int op; /* function op */
-} event_t;
+};
 
-event_t mutt_getch(void);
+struct Event mutt_getch(void);
 
 void mutt_endwin(const char *msg);
 void mutt_flushinp(void);
