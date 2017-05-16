@@ -47,16 +47,16 @@ static int ColorQuoteSize;
 
 #define COLOR_DEFAULT (-2)
 
-typedef struct color_list
+struct ColorList
 {
   short fg;
   short bg;
   short index;
   short count;
-  struct color_list *next;
-} COLOR_LIST;
+  struct ColorList *next;
+};
 
-static COLOR_LIST *ColorList = NULL;
+static struct ColorList *ColorList = NULL;
 static int UserColors = 0;
 
 static const struct mapping_t Colors[] = {
@@ -234,7 +234,7 @@ static char *get_color_name(char *dest, size_t destlen, int val)
 
 int mutt_alloc_color(int fg, int bg)
 {
-  COLOR_LIST *p = ColorList;
+  struct ColorList *p = ColorList;
   int i;
 
 #ifdef USE_SLANG_CURSES
@@ -272,7 +272,7 @@ int mutt_alloc_color(int fg, int bg)
     i++;
   }
 
-  p = safe_malloc(sizeof(COLOR_LIST));
+  p = safe_malloc(sizeof(struct ColorList));
   p->next = ColorList;
   ColorList = p;
 
@@ -302,7 +302,7 @@ int mutt_alloc_color(int fg, int bg)
 
 void mutt_free_color(int fg, int bg)
 {
-  COLOR_LIST *p = NULL, *q = NULL;
+  struct ColorList *p = NULL, *q = NULL;
 
   p = ColorList;
   while (p)
