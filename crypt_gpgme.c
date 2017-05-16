@@ -84,11 +84,11 @@ typedef struct crypt_keyinfo
   gpgme_validity_t validity; /* uid validity (cached for convenience) */
 } crypt_key_t;
 
-typedef struct crypt_entry
+struct CryptEntry
 {
   size_t num;
   crypt_key_t *key;
-} crypt_entry_t;
+};
 
 
 static struct crypt_cache *id_defaults = NULL;
@@ -2717,14 +2717,14 @@ static const char *crypt_entry_fmt(char *dest, size_t destlen, size_t col, int c
                                    unsigned long data, format_flag flags)
 {
   char fmt[16];
-  crypt_entry_t *entry = NULL;
+  struct CryptEntry *entry = NULL;
   crypt_key_t *key = NULL;
   int kflags = 0;
   int optional = (flags & MUTT_FORMAT_OPTIONAL);
   const char *s = NULL;
   unsigned long val;
 
-  entry = (crypt_entry_t *) data;
+  entry = (struct CryptEntry *) data;
   key = entry->key;
 
   /*    if (isupper ((unsigned char) op)) */
@@ -2913,7 +2913,7 @@ static const char *crypt_entry_fmt(char *dest, size_t destlen, size_t col, int c
 static void crypt_entry(char *s, size_t l, struct Menu *menu, int num)
 {
   crypt_key_t **key_table = (crypt_key_t **) menu->data;
-  crypt_entry_t entry;
+  struct CryptEntry entry;
 
   entry.key = key_table[num];
   entry.num = num + 1;
