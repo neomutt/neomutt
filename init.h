@@ -4453,7 +4453,7 @@ static int parse_alternates(struct Buffer *, struct Buffer *, unsigned long, str
 static int parse_unalternates(struct Buffer *, struct Buffer *, unsigned long, struct Buffer *);
 
 /* Parse -group arguments */
-static int parse_group_context(group_context_t **ctx, struct Buffer *buf, struct Buffer *s,
+static int parse_group_context(struct GroupContext **ctx, struct Buffer *buf, struct Buffer *s,
                                unsigned long data, struct Buffer *err);
 
 #ifdef USE_NOTMUCH

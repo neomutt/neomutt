@@ -932,7 +932,7 @@ static void _alternates_clean(void)
 
 static int parse_alternates(struct Buffer *buf, struct Buffer *s, unsigned long data, struct Buffer *err)
 {
-  group_context_t *gc = NULL;
+  struct GroupContext *gc = NULL;
 
   _alternates_clean();
 
@@ -1204,7 +1204,7 @@ static int parse_path_unlist(struct Buffer *buf, struct Buffer *s, unsigned long
 
 static int parse_lists(struct Buffer *buf, struct Buffer *s, unsigned long data, struct Buffer *err)
 {
-  group_context_t *gc = NULL;
+  struct GroupContext *gc = NULL;
 
   do
   {
@@ -1234,7 +1234,7 @@ typedef enum group_state_t { NONE, RX, ADDR } group_state_t;
 
 static int parse_group(struct Buffer *buf, struct Buffer *s, unsigned long data, struct Buffer *err)
 {
-  group_context_t *gc = NULL;
+  struct GroupContext *gc = NULL;
   group_state_t state = NONE;
   struct Address *addr = NULL;
   char *estr = NULL;
@@ -1601,7 +1601,7 @@ static int parse_unlists(struct Buffer *buf, struct Buffer *s, unsigned long dat
 
 static int parse_subscribe(struct Buffer *buf, struct Buffer *s, unsigned long data, struct Buffer *err)
 {
-  group_context_t *gc = NULL;
+  struct GroupContext *gc = NULL;
 
   do
   {
@@ -1695,7 +1695,7 @@ static int parse_alias(struct Buffer *buf, struct Buffer *s, unsigned long data,
   struct Alias *tmp = Aliases;
   struct Alias *last = NULL;
   char *estr = NULL;
-  group_context_t *gc = NULL;
+  struct GroupContext *gc = NULL;
 
   if (!MoreArgs(s))
   {
@@ -4256,7 +4256,7 @@ int mutt_get_hook_type(const char *name)
   return 0;
 }
 
-static int parse_group_context(group_context_t **ctx, struct Buffer *buf, struct Buffer *s,
+static int parse_group_context(struct GroupContext **ctx, struct Buffer *buf, struct Buffer *s,
                                unsigned long data, struct Buffer *err)
 {
   while (mutt_strcasecmp(buf->data, "-group") == 0)

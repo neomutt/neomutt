@@ -918,11 +918,11 @@ struct Group
   char *name;
 };
 
-typedef struct group_context_t
+struct GroupContext
 {
   struct Group *g;
-  struct group_context_t *next;
-} group_context_t;
+  struct GroupContext *next;
+};
 
 struct Pattern
 {

@@ -59,9 +59,9 @@ static void group_remove(struct Group *g)
   FREE(&g);
 }
 
-int mutt_group_context_clear(group_context_t **ctx)
+int mutt_group_context_clear(struct GroupContext **ctx)
 {
-  group_context_t *t = NULL;
+  struct GroupContext *t = NULL;
   for (; ctx && *ctx; (*ctx) = t)
   {
     group_remove((*ctx)->g);
@@ -78,7 +78,7 @@ static int empty_group(struct Group *g)
   return !g->as && !g->rs;
 }
 
-void mutt_group_context_add(group_context_t **ctx, struct Group *group)
+void mutt_group_context_add(struct GroupContext **ctx, struct Group *group)
 {
   for (; *ctx; ctx = &((*ctx)->next))
   {
@@ -86,13 +86,13 @@ void mutt_group_context_add(group_context_t **ctx, struct Group *group)
       return;
   }
 
-  *ctx = safe_calloc(1, sizeof(group_context_t));
+  *ctx = safe_calloc(1, sizeof(struct GroupContext));
   (*ctx)->g = group;
 }
 
-void mutt_group_context_destroy(group_context_t **ctx)
+void mutt_group_context_destroy(struct GroupContext **ctx)
 {
-  group_context_t *p = NULL;
+  struct GroupContext *p = NULL;
   for (; *ctx; *ctx = p)
   {
     p = (*ctx)->next;
@@ -142,13 +142,13 @@ static int group_remove_rx(struct Group *g, const char *s)
   return mutt_remove_from_rx_list(&g->rs, s);
 }
 
-void mutt_group_context_add_adrlist(group_context_t *ctx, struct Address *a)
+void mutt_group_context_add_adrlist(struct GroupContext *ctx, struct Address *a)
 {
   for (; ctx; ctx = ctx->next)
     group_add_adrlist(ctx->g, a);
 }
 
-int mutt_group_context_remove_adrlist(group_context_t *ctx, struct Address *a)
+int mutt_group_context_remove_adrlist(struct GroupContext *ctx, struct Address *a)
 {
   int rv = 0;
 
@@ -162,7 +162,7 @@ int mutt_group_context_remove_adrlist(group_context_t *ctx, struct Address *a)
   return rv;
 }
 
-int mutt_group_context_add_rx(group_context_t *ctx, const char *s, int flags, struct Buffer *err)
+int mutt_group_context_add_rx(struct GroupContext *ctx, const char *s, int flags, struct Buffer *err)
 {
   int rv = 0;
 
@@ -172,7 +172,7 @@ int mutt_group_context_add_rx(group_context_t *ctx, const char *s, int flags, st
   return rv;
 }
 
-int mutt_group_context_remove_rx(group_context_t *ctx, const char *s)
+int mutt_group_context_remove_rx(struct GroupContext *ctx, const char *s)
 {
   int rv = 0;
 
