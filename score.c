@@ -22,16 +22,16 @@
 #include "mutt_menu.h"
 #include "sort.h"
 
-typedef struct score_t
+struct Score
 {
   char *str;
   struct Pattern *pat;
   int val;
   int exact; /* if this rule matches, don't evaluate any more */
-  struct score_t *next;
-} SCORE;
+  struct Score *next;
+};
 
-static SCORE *Score = NULL;
+static struct Score *Score = NULL;
 
 void mutt_check_rescore(struct Context *ctx)
 {
@@ -61,7 +61,7 @@ void mutt_check_rescore(struct Context *ctx)
 
 int mutt_parse_score(struct Buffer *buf, struct Buffer *s, unsigned long data, struct Buffer *err)
 {
-  SCORE *ptr = NULL, *last = NULL;
+  struct Score *ptr = NULL, *last = NULL;
   char *pattern = NULL, *pc = NULL;
   struct Pattern *pat = NULL;
 
@@ -93,7 +93,7 @@ int mutt_parse_score(struct Buffer *buf, struct Buffer *s, unsigned long data, s
       FREE(&pattern);
       return -1;
     }
-    ptr = safe_calloc(1, sizeof(SCORE));
+    ptr = safe_calloc(1, sizeof(struct Score));
     if (last)
       last->next = ptr;
     else
@@ -125,7 +125,7 @@ int mutt_parse_score(struct Buffer *buf, struct Buffer *s, unsigned long data, s
 
 void mutt_score_message(struct Context *ctx, struct Header *hdr, int upd_ctx)
 {
-  SCORE *tmp = NULL;
+  struct Score *tmp = NULL;
   pattern_cache_t cache;
 
   memset(&cache, 0, sizeof(cache));
@@ -155,7 +155,7 @@ void mutt_score_message(struct Context *ctx, struct Header *hdr, int upd_ctx)
 
 int mutt_parse_unscore(struct Buffer *buf, struct Buffer *s, unsigned long data, struct Buffer *err)
 {
-  SCORE *tmp = NULL, *last = NULL;
+  struct Score *tmp = NULL, *last = NULL;
 
   while (MoreArgs(s))
   {
