@@ -624,7 +624,7 @@ static int examine_directory(struct Menu *menu, struct browser_state *state,
 #ifdef USE_NNTP
   if (option(OPTNEWS))
   {
-    NNTP_SERVER *nserv = CurrentNewsSrv;
+    struct NntpServer *nserv = CurrentNewsSrv;
     unsigned int i;
 
     init_state(state, menu);
@@ -750,7 +750,7 @@ static int examine_mailboxes(struct Menu *menu, struct browser_state *state)
 #ifdef USE_NNTP
   if (option(OPTNEWS))
   {
-    NNTP_SERVER *nserv = CurrentNewsSrv;
+    struct NntpServer *nserv = CurrentNewsSrv;
     unsigned int i;
 
     init_state(state, menu);
@@ -1049,7 +1049,7 @@ void _mutt_select_file(char *f, size_t flen, int flags, char ***files, int *numf
       strfcpy(prefix, f, sizeof(prefix));
     else
     {
-      NNTP_SERVER *nserv = CurrentNewsSrv;
+      struct NntpServer *nserv = CurrentNewsSrv;
       unsigned int j;
 
       /* default state for news reader mode is browse subscribed newsgroups */
@@ -1898,7 +1898,7 @@ void _mutt_select_file(char *f, size_t flen, int flags, char ***files, int *numf
       case OP_LOAD_ACTIVE:
         if (option(OPTNEWS))
         {
-          NNTP_SERVER *nserv = CurrentNewsSrv;
+          struct NntpServer *nserv = CurrentNewsSrv;
           unsigned int j;
 
           if (nntp_newsrc_parse(nserv) < 0)
@@ -1933,7 +1933,7 @@ void _mutt_select_file(char *f, size_t flen, int flags, char ***files, int *numf
       case OP_UNSUBSCRIBE_PATTERN:
         if (option(OPTNEWS))
         {
-          NNTP_SERVER *nserv = CurrentNewsSrv;
+          struct NntpServer *nserv = CurrentNewsSrv;
           regex_t *rx = safe_malloc(sizeof(regex_t));
           char *s = buf;
           int rc, j = menu->current;

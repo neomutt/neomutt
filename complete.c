@@ -53,7 +53,7 @@ int mutt_complete(char *s, size_t slen)
 #ifdef USE_NNTP
   if (option(OPTNEWS))
   {
-    NNTP_SERVER *nserv = CurrentNewsSrv;
+    struct NntpServer *nserv = CurrentNewsSrv;
     unsigned int n = 0;
 
     strfcpy(filepart, s, sizeof(filepart));

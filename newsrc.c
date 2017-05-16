@@ -42,7 +42,7 @@
 #endif
 
 /* Find NntpData for given newsgroup or add it */
-static struct NntpData *nntp_data_find(NNTP_SERVER *nserv, const char *group)
+static struct NntpData *nntp_data_find(struct NntpServer *nserv, const char *group)
 {
   struct NntpData *nntp_data = hash_find(nserv->groups_hash, group);
 
@@ -101,7 +101,7 @@ void nntp_data_free(void *data)
 }
 
 /* Unlock and close .newsrc file */
-void nntp_newsrc_close(NNTP_SERVER *nserv)
+void nntp_newsrc_close(struct NntpServer *nserv)
 {
   if (!nserv->newsrc_fp)
     return;
@@ -139,7 +139,7 @@ void nntp_group_unread_stat(struct NntpData *nntp_data)
  *  0 - not changed
  *  1 - parsed
  * -1 - error */
-int nntp_newsrc_parse(NNTP_SERVER *nserv)
+int nntp_newsrc_parse(struct NntpServer *nserv)
 {
   unsigned int i;
   char *line = NULL;
@@ -402,7 +402,7 @@ static int update_file(char *filename, char *buf)
 }
 
 /* Update .newsrc file */
-int nntp_newsrc_update(NNTP_SERVER *nserv)
+int nntp_newsrc_update(struct NntpServer *nserv)
 {
   char *buf = NULL;
   size_t buflen, off;
@@ -519,7 +519,7 @@ void nntp_expand_path(char *line, size_t len, struct Account *acct)
 /* Parse newsgroup */
 int nntp_add_group(char *line, void *data)
 {
-  NNTP_SERVER *nserv = data;
+  struct NntpServer *nserv = data;
   struct NntpData *nntp_data = NULL;
   char group[LONG_STRING];
   char desc[HUGE_STRING] = "";
@@ -548,7 +548,7 @@ int nntp_add_group(char *line, void *data)
 }
 
 /* Load list of all newsgroups from cache */
-static int active_get_cache(NNTP_SERVER *nserv)
+static int active_get_cache(struct NntpServer *nserv)
 {
   char buf[HUGE_STRING];
   char file[_POSIX_PATH_MAX];
@@ -578,7 +578,7 @@ static int active_get_cache(NNTP_SERVER *nserv)
 }
 
 /* Save list of all newsgroups to cache */
-int nntp_active_save_cache(NNTP_SERVER *nserv)
+int nntp_active_save_cache(struct NntpServer *nserv)
 {
   char file[_POSIX_PATH_MAX];
   char *buf = NULL;
@@ -739,7 +739,7 @@ void nntp_delete_group_cache(struct NntpData *nntp_data)
 }
 
 /* Remove hcache and bcache of all unexistent and unsubscribed newsgroups */
-void nntp_clear_cache(NNTP_SERVER *nserv)
+void nntp_clear_cache(struct NntpServer *nserv)
 {
   char file[_POSIX_PATH_MAX];
   char *fp = NULL;
@@ -815,7 +815,7 @@ const char *nntp_format_str(char *dest, size_t destlen, size_t col, int cols, ch
                             const char *src, const char *fmt, const char *ifstring,
                             const char *elsestring, unsigned long data, format_flag flags)
 {
-  NNTP_SERVER *nserv = (NNTP_SERVER *) data;
+  struct NntpServer *nserv = (struct NntpServer *) data;
   struct Account *acct = &nserv->conn->account;
   struct CissUrl url;
   char fn[SHORT_STRING], tmp[SHORT_STRING], *p = NULL;
@@ -870,7 +870,7 @@ const char *nntp_format_str(char *dest, size_t destlen, size_t col, int cols, ch
  * Checks the size/mtime of a newsrc file, if it doesn't match, load
  * again.  Hmm, if a system has broken mtimes, this might mean the file
  * is reloaded every time, which we'd have to fix. */
-NNTP_SERVER *nntp_select_server(char *server, int leave_lock)
+struct NntpServer *nntp_select_server(char *server, int leave_lock)
 {
   char file[_POSIX_PATH_MAX];
 #ifdef USE_HCACHE
@@ -878,7 +878,7 @@ NNTP_SERVER *nntp_select_server(char *server, int leave_lock)
 #endif
   int rc;
   struct Account acct;
-  NNTP_SERVER *nserv = NULL;
+  struct NntpServer *nserv = NULL;
   struct NntpData *nntp_data = NULL;
   struct Connection *conn = NULL;
   struct CissUrl url;
@@ -945,7 +945,7 @@ NNTP_SERVER *nntp_select_server(char *server, int leave_lock)
   }
 
   /* new news server */
-  nserv = safe_calloc(1, sizeof(NNTP_SERVER));
+  nserv = safe_calloc(1, sizeof(struct NntpServer));
   nserv->conn = conn;
   nserv->groups_hash = hash_create(1009, 0);
   nserv->groups_max = 16;
@@ -1100,7 +1100,7 @@ void nntp_article_status(struct Context *ctx, struct Header *hdr, char *group, a
 }
 
 /* Subscribe newsgroup */
-struct NntpData *mutt_newsgroup_subscribe(NNTP_SERVER *nserv, char *group)
+struct NntpData *mutt_newsgroup_subscribe(struct NntpServer *nserv, char *group)
 {
   struct NntpData *nntp_data = NULL;
 
@@ -1120,7 +1120,7 @@ struct NntpData *mutt_newsgroup_subscribe(NNTP_SERVER *nserv, char *group)
 }
 
 /* Unsubscribe newsgroup */
-struct NntpData *mutt_newsgroup_unsubscribe(NNTP_SERVER *nserv, char *group)
+struct NntpData *mutt_newsgroup_unsubscribe(struct NntpServer *nserv, char *group)
 {
   struct NntpData *nntp_data = NULL;
 
@@ -1141,7 +1141,7 @@ struct NntpData *mutt_newsgroup_unsubscribe(NNTP_SERVER *nserv, char *group)
 }
 
 /* Catchup newsgroup */
-struct NntpData *mutt_newsgroup_catchup(NNTP_SERVER *nserv, char *group)
+struct NntpData *mutt_newsgroup_catchup(struct NntpServer *nserv, char *group)
 {
   struct NntpData *nntp_data = NULL;
 
@@ -1171,7 +1171,7 @@ struct NntpData *mutt_newsgroup_catchup(NNTP_SERVER *nserv, char *group)
 }
 
 /* Uncatchup newsgroup */
-struct NntpData *mutt_newsgroup_uncatchup(NNTP_SERVER *nserv, char *group)
+struct NntpData *mutt_newsgroup_uncatchup(struct NntpServer *nserv, char *group)
 {
   struct NntpData *nntp_data = NULL;
 

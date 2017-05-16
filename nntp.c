@@ -44,7 +44,7 @@
 #include "mutt_sasl.h"
 #endif
 
-static int nntp_connect_error(NNTP_SERVER *nserv)
+static int nntp_connect_error(struct NntpServer *nserv)
 {
   nserv->status = NNTP_NONE;
   mutt_error(_("Server closed connection!"));
@@ -56,7 +56,7 @@ static int nntp_connect_error(NNTP_SERVER *nserv)
  * -1 - error, connection is closed
  *  0 - mode is reader, capabilities setted up
  *  1 - need to switch to reader mode */
-static int nntp_capabilities(NNTP_SERVER *nserv)
+static int nntp_capabilities(struct NntpServer *nserv)
 {
   struct Connection *conn = nserv->conn;
   unsigned int mode_reader = 0;
@@ -161,7 +161,7 @@ char *OverviewFmt = "Subject:\0"
                     "\0";
 
 /* Detect supported commands */
-static int nntp_attempt_features(NNTP_SERVER *nserv)
+static int nntp_attempt_features(struct NntpServer *nserv)
 {
   struct Connection *conn = nserv->conn;
   char buf[LONG_STRING];
@@ -285,7 +285,7 @@ static int nntp_attempt_features(NNTP_SERVER *nserv)
 }
 
 /* Get login, password and authenticate */
-static int nntp_auth(NNTP_SERVER *nserv)
+static int nntp_auth(struct NntpServer *nserv)
 {
   struct Connection *conn = nserv->conn;
   char buf[LONG_STRING];
@@ -574,7 +574,7 @@ static int nntp_auth(NNTP_SERVER *nserv)
 }
 
 /* Connect to server, authenticate and get capabilities */
-int nntp_open_connection(NNTP_SERVER *nserv)
+int nntp_open_connection(struct NntpServer *nserv)
 {
   struct Connection *conn = nserv->conn;
   char buf[STRING];
@@ -729,7 +729,7 @@ int nntp_open_connection(NNTP_SERVER *nserv)
 /* Send data from buffer and receive answer to same buffer */
 static int nntp_query(struct NntpData *nntp_data, char *line, size_t linelen)
 {
-  NNTP_SERVER *nserv = nntp_data->nserv;
+  struct NntpServer *nserv = nntp_data->nserv;
   char buf[LONG_STRING];
 
   if (nserv->status == NNTP_BYE)
@@ -869,7 +869,7 @@ static int nntp_fetch_lines(struct NntpData *nntp_data, char *query, size_t qlen
 /* Parse newsgroup description */
 static int fetch_description(char *line, void *data)
 {
-  NNTP_SERVER *nserv = data;
+  struct NntpServer *nserv = data;
   struct NntpData *nntp_data = NULL;
   char *desc = NULL;
 
@@ -898,7 +898,7 @@ static int fetch_description(char *line, void *data)
  * Returns the same code as nntp_fetch_lines() */
 static int get_description(struct NntpData *nntp_data, char *wildmat, char *msg)
 {
-  NNTP_SERVER *nserv = NULL;
+  struct NntpServer *nserv = NULL;
   char buf[STRING];
   char *cmd = NULL;
   int rc;
@@ -1386,7 +1386,7 @@ static int nntp_fetch_headers(struct Context *ctx, void *hc, anum_t first, anum_
 /* Open newsgroup */
 static int nntp_open_mailbox(struct Context *ctx)
 {
-  NNTP_SERVER *nserv = NULL;
+  struct NntpServer *nserv = NULL;
   struct NntpData *nntp_data = NULL;
   char buf[HUGE_STRING];
   char server[LONG_STRING];
@@ -1768,7 +1768,7 @@ static int nntp_group_poll(struct NntpData *nntp_data, int update_stat)
 static int nntp_check_mailbox(struct Context *ctx, int *index_hint)
 {
   struct NntpData *nntp_data = ctx->data;
-  NNTP_SERVER *nserv = nntp_data->nserv;
+  struct NntpServer *nserv = nntp_data->nserv;
   time_t now = time(NULL);
   int i, j;
   int rc, ret = 0;
@@ -2053,7 +2053,7 @@ static int nntp_fastclose_mailbox(struct Context *ctx)
 }
 
 /* Get date and time from server */
-static int nntp_date(NNTP_SERVER *nserv, time_t *now)
+static int nntp_date(struct NntpServer *nserv, time_t *now)
 {
   if (nserv->hasDATE)
   {
@@ -2086,7 +2086,7 @@ static int nntp_date(NNTP_SERVER *nserv, time_t *now)
 }
 
 /* Fetch list of all newsgroups from server */
-int nntp_active_fetch(NNTP_SERVER *nserv)
+int nntp_active_fetch(struct NntpServer *nserv)
 {
   struct NntpData nntp_data;
   char msg[SHORT_STRING];
@@ -2138,7 +2138,7 @@ int nntp_active_fetch(NNTP_SERVER *nserv)
  *  1 - new groups found
  *  0 - no new groups
  * -1 - error */
-int nntp_check_new_groups(NNTP_SERVER *nserv)
+int nntp_check_new_groups(struct NntpServer *nserv)
 {
   struct NntpData nntp_data;
   time_t now;
