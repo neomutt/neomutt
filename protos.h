@@ -426,7 +426,7 @@ static inline struct Pattern *new_pattern(void)
 }
 
 int mutt_pattern_exec(struct Pattern *pat, pattern_exec_flag flags,
-                      struct Context *ctx, struct Header *h, pattern_cache_t *cache);
+                      struct Context *ctx, struct Header *h, struct PatternCache *cache);
 struct Pattern *mutt_pattern_comp(/* const */ char *s, int flags, struct Buffer *err);
 void mutt_check_simple(char *s, size_t len, const char *simple);
 void mutt_pattern_free(struct Pattern **pat);

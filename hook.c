@@ -374,7 +374,7 @@ void mutt_message_hook(struct Context *ctx, struct Header *hdr, int type)
 {
   struct Buffer err, token;
   struct Hook *hook = NULL;
-  pattern_cache_t cache;
+  struct PatternCache cache;
 
   current_hook_type = type;
 
@@ -415,7 +415,7 @@ void mutt_message_hook(struct Context *ctx, struct Header *hdr, int type)
 static int addr_hook(char *path, size_t pathlen, int type, struct Context *ctx, struct Header *hdr)
 {
   struct Hook *hook = NULL;
-  pattern_cache_t cache;
+  struct PatternCache cache;
 
   memset(&cache, 0, sizeof(cache));
   /* determine if a matching hook exists */

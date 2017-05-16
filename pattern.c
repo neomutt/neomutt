@@ -1299,7 +1299,7 @@ struct Pattern *mutt_pattern_comp(/* const */ char *s, int flags, struct Buffer 
 }
 
 static bool perform_and(struct Pattern *pat, pattern_exec_flag flags, struct Context *ctx,
-                        struct Header *hdr, pattern_cache_t *cache)
+                        struct Header *hdr, struct PatternCache *cache)
 {
   for (; pat; pat = pat->next)
     if (mutt_pattern_exec(pat, flags, ctx, hdr, cache) <= 0)
@@ -1308,7 +1308,7 @@ static bool perform_and(struct Pattern *pat, pattern_exec_flag flags, struct Con
 }
 
 static int perform_or(struct Pattern *pat, pattern_exec_flag flags,
-                      struct Context *ctx, struct Header *hdr, pattern_cache_t *cache)
+                      struct Context *ctx, struct Header *hdr, struct PatternCache *cache)
 {
   for (; pat; pat = pat->next)
     if (mutt_pattern_exec(pat, flags, ctx, hdr, cache) > 0)
@@ -1416,7 +1416,7 @@ static int match_threadcomplete(struct Pattern *pat, pattern_exec_flag flags,
 }
 
 
-/* Sets a value in the pattern_cache_t cache entry.
+/* Sets a value in the PatternCache cache entry.
  * Normalizes the "true" value to 2. */
 static void set_pattern_cache_value(int *cache_entry, int value)
 {
@@ -1441,7 +1441,7 @@ static int is_pattern_cache_set(int cache_entry)
  * cache: For repeated matches against the same Header, passing in non-NULL will
  *        store some of the cacheable pattern matches in this structure. */
 int mutt_pattern_exec(struct Pattern *pat, pattern_exec_flag flags,
-                      struct Context *ctx, struct Header *h, pattern_cache_t *cache)
+                      struct Context *ctx, struct Header *h, struct PatternCache *cache)
 {
   int result;
   int *cache_entry = NULL;

@@ -3258,7 +3258,7 @@ int mutt_index_menu(void)
 void mutt_set_header_color(struct Context *ctx, struct Header *curhdr)
 {
   struct ColorLine *color = NULL;
-  pattern_cache_t cache;
+  struct PatternCache cache;
 
   if (!curhdr)
     return;

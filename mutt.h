@@ -949,7 +949,7 @@ struct Pattern
  * operations.
  * Each entry has a value of 0 = unset, 1 = false, 2 = true
  */
-typedef struct
+struct PatternCache
 {
   int list_all;       /* ^~l */
   int list_one;       /*  ~l */
@@ -959,7 +959,7 @@ typedef struct
   int pers_recip_one; /*  ~p */
   int pers_from_all;  /* ^~P */
   int pers_from_one;  /*  ~P */
-} pattern_cache_t;
+};
 
 /* ACL Rights */
 enum
