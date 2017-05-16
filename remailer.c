@@ -200,7 +200,7 @@ static void mix_free_type2_list(REMAILER ***ttlp)
 
 
 static void mix_screen_coordinates(REMAILER **type2_list, struct coord **coordsp,
-                                   MIXCHAIN *chain, int i)
+                                   struct MixChain *chain, int i)
 {
   short c, r, oc;
   struct coord *coords = NULL;
@@ -241,7 +241,7 @@ static void mix_screen_coordinates(REMAILER **type2_list, struct coord **coordsp
 }
 
 static void mix_redraw_ce(REMAILER **type2_list, struct coord *coords,
-                          MIXCHAIN *chain, int i, short selected)
+                          struct MixChain *chain, int i, short selected)
 {
   if (!coords || !chain)
     return;
@@ -263,7 +263,7 @@ static void mix_redraw_ce(REMAILER **type2_list, struct coord *coords,
 }
 
 static void mix_redraw_chain(REMAILER **type2_list, struct coord *coords,
-                             MIXCHAIN *chain, int cur)
+                             struct MixChain *chain, int cur)
 {
   int i;
 
@@ -277,7 +277,7 @@ static void mix_redraw_chain(REMAILER **type2_list, struct coord *coords,
     mix_redraw_ce(type2_list, coords, chain, i, i == cur);
 }
 
-static void mix_redraw_head(MIXCHAIN *chain)
+static void mix_redraw_head(struct MixChain *chain)
 {
   SETCOLOR(MT_COLOR_STATUS);
   mutt_window_mvprintw(MuttIndexWindow, MIX_VOFFSET - 1, 0,
@@ -400,7 +400,7 @@ static void mix_entry(char *b, size_t blen, struct Menu *menu, int num)
                     (unsigned long) type2_list[num], MUTT_FORMAT_ARROWCURSOR);
 }
 
-static int mix_chain_add(MIXCHAIN *chain, const char *s, REMAILER **type2_list)
+static int mix_chain_add(struct MixChain *chain, const char *s, REMAILER **type2_list)
 {
   int i;
 
@@ -440,7 +440,7 @@ static const struct mapping_t RemailerHelp[] = {
 void mix_make_chain(struct List **chainp)
 {
   struct List *p = NULL;
-  MIXCHAIN *chain = NULL;
+  struct MixChain *chain = NULL;
   int c_cur = 0, c_old = 0;
   short c_redraw = 1;
 
@@ -463,7 +463,7 @@ void mix_make_chain(struct List **chainp)
     return;
   }
 
-  chain = safe_calloc(sizeof(MIXCHAIN), 1);
+  chain = safe_calloc(sizeof(struct MixChain), 1);
   for (p = *chainp; p; p = p->next)
     mix_chain_add(chain, (char *) p->data, type2_list);
 

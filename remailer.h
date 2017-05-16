@@ -44,14 +44,11 @@ struct type2
 
 typedef struct type2 REMAILER;
 
-
-struct mixchain
+struct MixChain
 {
   size_t cl;
   int ch[MAXMIXES];
 };
-
-typedef struct mixchain MIXCHAIN;
 
 int mix_send_message(struct List *chain, const char *tempfile);
 int mix_check_message(struct Header *msg);
