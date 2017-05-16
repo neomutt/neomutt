@@ -39,7 +39,7 @@ struct ImapHeaderData
   struct List *keywords;
 };
 
-typedef struct
+struct ImapHeader
 {
   unsigned int sid;
 
@@ -47,7 +47,7 @@ typedef struct
 
   time_t received;
   long content_length;
-} IMAP_HEADER;
+};
 
 /* -- macros -- */
 #define HEADER_DATA(ph) ((struct ImapHeaderData *) ((ph)->data))

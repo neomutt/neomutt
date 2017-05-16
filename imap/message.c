@@ -119,8 +119,8 @@ static int msg_cache_clean_cb(const char *id, struct BodyCache *bcache, void *da
   return 0;
 }
 
-/* msg_parse_flags: read a FLAGS token into an IMAP_HEADER */
-static char *msg_parse_flags(IMAP_HEADER *h, char *s)
+/* msg_parse_flags: read a FLAGS token into an ImapHeader */
+static char *msg_parse_flags(struct ImapHeader *h, char *s)
 {
   struct ImapHeaderData *hd = h->data;
 
@@ -204,7 +204,7 @@ static char *msg_parse_flags(IMAP_HEADER *h, char *s)
 }
 
 /* msg_parse_fetch: handle headers returned from header fetch */
-static int msg_parse_fetch(IMAP_HEADER *h, char *s)
+static int msg_parse_fetch(struct ImapHeader *h, char *s)
 {
   char tmp[SHORT_STRING];
   char *ptmp = NULL;
@@ -277,13 +277,13 @@ static int msg_parse_fetch(IMAP_HEADER *h, char *s)
   return 0;
 }
 
-/* msg_fetch_header: import IMAP FETCH response into an IMAP_HEADER.
+/* msg_fetch_header: import IMAP FETCH response into an ImapHeader.
  *   Expects string beginning with * n FETCH.
  *   Returns:
  *      0 on success
  *     -1 if the string is not a fetch response
  *     -2 if the string is a corrupt fetch response */
-static int msg_fetch_header(struct Context *ctx, IMAP_HEADER *h, char *buf, FILE *fp)
+static int msg_fetch_header(struct Context *ctx, struct ImapHeader *h, char *buf, FILE *fp)
 {
   struct ImapData *idata = NULL;
   long bytes;
@@ -356,7 +356,7 @@ int imap_read_headers(struct ImapData *idata, int msgbegin, int msgend)
   FILE *fp = NULL;
   char tempfile[_POSIX_PATH_MAX];
   int msgno, idx = msgbegin - 1;
-  IMAP_HEADER h;
+  struct ImapHeader h;
   IMAP_STATUS *status = NULL;
   int rc, mfhrc, oldmsgcount;
   int fetchlast = 0;
@@ -1261,7 +1261,7 @@ void imap_add_keywords(char *s, struct Header *h, struct List *mailbox_flags, si
   }
 }
 
-/* imap_free_header_data: free IMAP_HEADER structure */
+/* imap_free_header_data: free ImapHeader structure */
 void imap_free_header_data(struct ImapHeaderData **data)
 {
   if (*data)
@@ -1277,7 +1277,7 @@ void imap_free_header_data(struct ImapHeaderData **data)
 char *imap_set_flags(struct ImapData *idata, struct Header *h, char *s)
 {
   struct Context *ctx = idata->ctx;
-  IMAP_HEADER newh;
+  struct ImapHeader newh;
   struct ImapHeaderData *hd = NULL;
   bool readonly;
 
