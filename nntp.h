@@ -109,13 +109,13 @@ struct NntpData
   struct BodyCache *bcache;
 };
 
-typedef struct
+struct NntpHeaderData
 {
   anum_t article_num;
   bool parsed : 1;
-} NNTP_HEADER_DATA;
+};
 
-#define NHDR(hdr) ((NNTP_HEADER_DATA *) ((hdr)->data))
+#define NHDR(hdr) ((struct NntpHeaderData *) ((hdr)->data))
 
 /* internal functions */
 int nntp_add_group(char *line, void *data);

@@ -1130,7 +1130,7 @@ static int parse_overview_line(char *line, void *data)
     hdr->read = false;
     hdr->old = false;
     hdr->deleted = false;
-    hdr->data = safe_calloc(1, sizeof(NNTP_HEADER_DATA));
+    hdr->data = safe_calloc(1, sizeof(struct NntpHeaderData));
     NHDR(hdr)->article_num = anum;
     if (fc->restore)
       hdr->changed = true;
@@ -1342,7 +1342,7 @@ static int nntp_fetch_headers(struct Context *ctx, void *hc, anum_t first, anum_
     hdr->read = false;
     hdr->old = false;
     hdr->deleted = false;
-    hdr->data = safe_calloc(1, sizeof(NNTP_HEADER_DATA));
+    hdr->data = safe_calloc(1, sizeof(struct NntpHeaderData));
     NHDR(hdr)->article_num = current;
     if (restore)
       hdr->changed = true;
@@ -1910,7 +1910,7 @@ static int nntp_check_mailbox(struct Context *ctx, int *index_hint)
         ctx->msgcount++;
         hdr->read = false;
         hdr->old = false;
-        hdr->data = safe_calloc(1, sizeof(NNTP_HEADER_DATA));
+        hdr->data = safe_calloc(1, sizeof(struct NntpHeaderData));
         NHDR(hdr)->article_num = anum;
         nntp_article_status(ctx, hdr, NULL, anum);
         if (!hdr->read)
@@ -2276,7 +2276,7 @@ int nntp_check_msgid(struct Context *ctx, const char *msgid)
   if (ctx->msgcount == ctx->hdrmax)
     mx_alloc_memory(ctx);
   hdr = ctx->hdrs[ctx->msgcount] = mutt_new_header();
-  hdr->data = safe_calloc(1, sizeof(NNTP_HEADER_DATA));
+  hdr->data = safe_calloc(1, sizeof(struct NntpHeaderData));
   hdr->env = mutt_read_rfc822_header(fp, hdr, 0, 0);
   safe_fclose(&fp);
   unlink(tempfile);
