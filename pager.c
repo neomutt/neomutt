@@ -1636,7 +1636,7 @@ void mutt_clear_pager_position(void)
   OldHdr = NULL;
 }
 
-typedef struct
+struct PagerRedrawData
 {
   int flags;
   struct Pager *extra;
@@ -1670,11 +1670,11 @@ typedef struct
   struct line_t *lineInfo;
   FILE *fp;
   struct stat sb;
-} pager_redraw_data_t;
+};
 
 static void pager_menu_redraw(struct Menu *pager_menu)
 {
-  pager_redraw_data_t *rd = pager_menu->redraw_data;
+  struct PagerRedrawData *rd = pager_menu->redraw_data;
   int i, j;
   char buffer[LONG_STRING];
 
@@ -1971,7 +1971,7 @@ int mutt_pager(const char *banner, const char *fname, int flags, struct Pager *e
   char *followup_to = NULL;
 #endif
 
-  pager_redraw_data_t rd;
+  struct PagerRedrawData rd;
 
   if (!(flags & MUTT_SHOWCOLOR))
     flags |= MUTT_SHOWFLAT;
