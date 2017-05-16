@@ -309,7 +309,7 @@ bailout:
 static void pgp_make_pgp3_fingerprint(unsigned char *buff, size_t l, unsigned char *digest)
 {
   unsigned char dummy;
-  SHA1_CTX context;
+  struct Sha1Ctx context;
 
   SHA1_Init(&context);
 

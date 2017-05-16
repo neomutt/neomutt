@@ -176,7 +176,7 @@ void sha1_transform(uint32_t state[5], const unsigned char buffer[64])
 
 
 /* sha1_init - Initialize new context */
-void sha1_init(SHA1_CTX *context)
+void sha1_init(struct Sha1Ctx *context)
 {
   /* SHA1 initialization constants */
   context->state[0] = 0x67452301;
@@ -189,7 +189,7 @@ void sha1_init(SHA1_CTX *context)
 
 
 /* Run your data through this. */
-void sha1_update(SHA1_CTX *context, const unsigned char *data, uint32_t len)
+void sha1_update(struct Sha1Ctx *context, const unsigned char *data, uint32_t len)
 {
   uint32_t i;
   uint32_t j;
@@ -216,7 +216,7 @@ void sha1_update(SHA1_CTX *context, const unsigned char *data, uint32_t len)
 
 
 /* Add padding and return the message digest. */
-void sha1_final(unsigned char digest[20], SHA1_CTX *context)
+void sha1_final(unsigned char digest[20], struct Sha1Ctx *context)
 {
   unsigned i;
   unsigned char finalcount[8];
