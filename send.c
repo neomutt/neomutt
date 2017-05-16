@@ -1492,7 +1492,7 @@ int ci_send_message(int flags,      /* send mode */
 
 #ifdef USE_NNTP
     if ((flags & SENDNEWS) && ctx && ctx->magic == MUTT_NNTP && !msg->env->newsgroups)
-      msg->env->newsgroups = safe_strdup(((NNTP_DATA *) ctx->data)->group);
+      msg->env->newsgroups = safe_strdup(((struct NntpData *) ctx->data)->group);
 #endif
 
     if (!(flags & (SENDMAILX | SENDBATCH)) && !(option(OPTAUTOEDIT) && option(OPTEDITHDRS)) &&

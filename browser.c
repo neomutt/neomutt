@@ -600,7 +600,7 @@ static void add_folder(struct Menu *m, struct browser_state *state, const char *
 #endif
 #ifdef USE_NNTP
   if (option(OPTNEWS))
-    (state->entry)[state->entrylen].nd = (NNTP_DATA *) data;
+    (state->entry)[state->entrylen].nd = (struct NntpData *) data;
 #endif
   (state->entrylen)++;
 }
@@ -631,7 +631,7 @@ static int examine_directory(struct Menu *menu, struct browser_state *state,
 
     for (i = 0; i < nserv->groups_num; i++)
     {
-      NNTP_DATA *nntp_data = nserv->groups_list[i];
+      struct NntpData *nntp_data = nserv->groups_list[i];
       if (!nntp_data)
         continue;
       if (prefix && *prefix && (strncmp(prefix, nntp_data->group, strlen(prefix)) != 0))
@@ -757,7 +757,7 @@ static int examine_mailboxes(struct Menu *menu, struct browser_state *state)
 
     for (i = 0; i < nserv->groups_num; i++)
     {
-      NNTP_DATA *nntp_data = nserv->groups_list[i];
+      struct NntpData *nntp_data = nserv->groups_list[i];
       if (nntp_data &&
           (nntp_data->new || (nntp_data->subscribed &&
                               (nntp_data->unread || !option(OPTSHOWONLYUNREAD)))))
@@ -1056,7 +1056,7 @@ void _mutt_select_file(char *f, size_t flen, int flags, char ***files, int *numf
       buffy = 0;
       for (j = 0; j < nserv->groups_num; j++)
       {
-        NNTP_DATA *nntp_data = nserv->groups_list[j];
+        struct NntpData *nntp_data = nserv->groups_list[j];
         if (nntp_data && nntp_data->subscribed)
         {
           buffy = 1;
@@ -1871,7 +1871,7 @@ void _mutt_select_file(char *f, size_t flen, int flags, char ***files, int *numf
         {
           struct folder_file *ff = &state.entry[menu->current];
           int rc;
-          NNTP_DATA *nntp_data = NULL;
+          struct NntpData *nntp_data = NULL;
 
           rc = nntp_newsrc_parse(CurrentNewsSrv);
           if (rc < 0)
@@ -1906,7 +1906,7 @@ void _mutt_select_file(char *f, size_t flen, int flags, char ***files, int *numf
 
           for (j = 0; j < nserv->groups_num; j++)
           {
-            NNTP_DATA *nntp_data = nserv->groups_list[j];
+            struct NntpData *nntp_data = nserv->groups_list[j];
             if (nntp_data)
               nntp_data->deleted = true;
           }
@@ -2002,7 +2002,7 @@ void _mutt_select_file(char *f, size_t flen, int flags, char ***files, int *numf
 
             for (k = 0; nserv && k < nserv->groups_num; k++)
             {
-              NNTP_DATA *nntp_data = nserv->groups_list[k];
+              struct NntpData *nntp_data = nserv->groups_list[k];
               if (nntp_data && nntp_data->group && !nntp_data->subscribed)
               {
                 if (regexec(rx, nntp_data->group, 0, NULL, 0) == 0)

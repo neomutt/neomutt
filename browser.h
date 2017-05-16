@@ -47,7 +47,7 @@ struct folder_file
 #endif
   bool has_buffy : 1;
 #ifdef USE_NNTP
-  NNTP_DATA *nd;
+  struct NntpData *nd;
 #endif
   bool local : 1; /* folder is on local filesystem */
   bool tagged : 1;

@@ -41,17 +41,17 @@
 #include "hcache/hcache.h"
 #endif
 
-/* Find NNTP_DATA for given newsgroup or add it */
-static NNTP_DATA *nntp_data_find(NNTP_SERVER *nserv, const char *group)
+/* Find NntpData for given newsgroup or add it */
+static struct NntpData *nntp_data_find(NNTP_SERVER *nserv, const char *group)
 {
-  NNTP_DATA *nntp_data = hash_find(nserv->groups_hash, group);
+  struct NntpData *nntp_data = hash_find(nserv->groups_hash, group);
 
   if (!nntp_data)
   {
     int len = strlen(group) + 1;
-    /* create NNTP_DATA structure and add it to hash */
-    nntp_data = safe_calloc(1, sizeof(NNTP_DATA) + len);
-    nntp_data->group = (char *) nntp_data + sizeof(NNTP_DATA);
+    /* create NntpData structure and add it to hash */
+    nntp_data = safe_calloc(1, sizeof(struct NntpData) + len);
+    nntp_data->group = (char *) nntp_data + sizeof(struct NntpData);
     strfcpy(nntp_data->group, group, len);
     nntp_data->nserv = nserv;
     nntp_data->deleted = true;
@@ -60,7 +60,7 @@ static NNTP_DATA *nntp_data_find(NNTP_SERVER *nserv, const char *group)
           hash_resize(nserv->groups_hash, nserv->groups_hash->nelem * 2, 0);
     hash_insert(nserv->groups_hash, nntp_data->group, nntp_data);
 
-    /* add NNTP_DATA to list */
+    /* add NntpData to list */
     if (nserv->groups_num >= nserv->groups_max)
     {
       nserv->groups_max *= 2;
@@ -72,7 +72,7 @@ static NNTP_DATA *nntp_data_find(NNTP_SERVER *nserv, const char *group)
 }
 
 /* Remove all temporarily cache files */
-void nntp_acache_free(NNTP_DATA *nntp_data)
+void nntp_acache_free(struct NntpData *nntp_data)
 {
   int i;
 
@@ -86,10 +86,10 @@ void nntp_acache_free(NNTP_DATA *nntp_data)
   }
 }
 
-/* Free NNTP_DATA, used to destroy hash elements */
+/* Free NntpData, used to destroy hash elements */
 void nntp_data_free(void *data)
 {
-  NNTP_DATA *nntp_data = data;
+  struct NntpData *nntp_data = data;
 
   if (!nntp_data)
     return;
@@ -112,7 +112,7 @@ void nntp_newsrc_close(NNTP_SERVER *nserv)
 }
 
 /* calculate number of unread articles using .newsrc data */
-void nntp_group_unread_stat(NNTP_DATA *nntp_data)
+void nntp_group_unread_stat(struct NntpData *nntp_data)
 {
   unsigned int i;
   anum_t first, last;
@@ -193,7 +193,7 @@ int nntp_newsrc_parse(NNTP_SERVER *nserv)
   /* .newsrc has been externally modified or hasn't been loaded yet */
   for (i = 0; i < nserv->groups_num; i++)
   {
-    NNTP_DATA *nntp_data = nserv->groups_list[i];
+    struct NntpData *nntp_data = nserv->groups_list[i];
 
     if (!nntp_data)
       continue;
@@ -209,7 +209,7 @@ int nntp_newsrc_parse(NNTP_SERVER *nserv)
     char *b = NULL, *h = NULL, *p = NULL;
     unsigned int j = 1;
     bool subs = false;
-    NNTP_DATA *nntp_data = NULL;
+    struct NntpData *nntp_data = NULL;
 
     /* find end of newsgroup name */
     p = strpbrk(line, ":!");
@@ -275,7 +275,7 @@ int nntp_newsrc_parse(NNTP_SERVER *nserv)
 /* Generate array of .newsrc entries */
 void nntp_newsrc_gen_entries(struct Context *ctx)
 {
-  NNTP_DATA *nntp_data = ctx->data;
+  struct NntpData *nntp_data = ctx->data;
   anum_t last = 0, first = 1;
   int series, i;
   int save_sort = SORT_ORDER;
@@ -419,7 +419,7 @@ int nntp_newsrc_update(NNTP_SERVER *nserv)
   /* we will generate full newsrc here */
   for (i = 0; i < nserv->groups_num; i++)
   {
-    NNTP_DATA *nntp_data = nserv->groups_list[i];
+    struct NntpData *nntp_data = nserv->groups_list[i];
     unsigned int n;
 
     if (!nntp_data || !nntp_data->newsrc_ent)
@@ -520,7 +520,7 @@ void nntp_expand_path(char *line, size_t len, struct Account *acct)
 int nntp_add_group(char *line, void *data)
 {
   NNTP_SERVER *nserv = data;
-  NNTP_DATA *nntp_data = NULL;
+  struct NntpData *nntp_data = NULL;
   char group[LONG_STRING];
   char desc[HUGE_STRING] = "";
   char mod;
@@ -596,7 +596,7 @@ int nntp_active_save_cache(NNTP_SERVER *nserv)
 
   for (i = 0; i < nserv->groups_num; i++)
   {
-    NNTP_DATA *nntp_data = nserv->groups_list[i];
+    struct NntpData *nntp_data = nserv->groups_list[i];
 
     if (!nntp_data || nntp_data->deleted)
       continue;
@@ -628,7 +628,7 @@ static int nntp_hcache_namer(const char *path, char *dest, size_t destlen)
 }
 
 /* Open newsgroup hcache */
-header_cache_t *nntp_hcache_open(NNTP_DATA *nntp_data)
+header_cache_t *nntp_hcache_open(struct NntpData *nntp_data)
 {
   struct CissUrl url;
   char file[_POSIX_PATH_MAX];
@@ -645,7 +645,7 @@ header_cache_t *nntp_hcache_open(NNTP_DATA *nntp_data)
 }
 
 /* Remove stale cached headers */
-void nntp_hcache_update(NNTP_DATA *nntp_data, header_cache_t *hc)
+void nntp_hcache_update(struct NntpData *nntp_data, header_cache_t *hc)
 {
   char buf[16];
   int old = 0;
@@ -692,7 +692,7 @@ void nntp_hcache_update(NNTP_DATA *nntp_data, header_cache_t *hc)
 /* Remove bcache file */
 static int nntp_bcache_delete(const char *id, struct BodyCache *bcache, void *data)
 {
-  NNTP_DATA *nntp_data = data;
+  struct NntpData *nntp_data = data;
   anum_t anum;
   char c;
 
@@ -707,13 +707,13 @@ static int nntp_bcache_delete(const char *id, struct BodyCache *bcache, void *da
 }
 
 /* Remove stale cached messages */
-void nntp_bcache_update(NNTP_DATA *nntp_data)
+void nntp_bcache_update(struct NntpData *nntp_data)
 {
   mutt_bcache_list(nntp_data->bcache, nntp_bcache_delete, nntp_data);
 }
 
 /* Remove hcache and bcache of newsgroup */
-void nntp_delete_group_cache(NNTP_DATA *nntp_data)
+void nntp_delete_group_cache(struct NntpData *nntp_data)
 {
   if (!nntp_data || !nntp_data->nserv || !nntp_data->nserv->cacheable)
     return;
@@ -759,8 +759,8 @@ void nntp_clear_cache(NNTP_SERVER *nserv)
     {
       char *group = entry->d_name;
       struct stat sb;
-      NNTP_DATA *nntp_data = NULL;
-      NNTP_DATA nntp_tmp;
+      struct NntpData *nntp_data = NULL;
+      struct NntpData nntp_tmp;
 
       if ((mutt_strcmp(group, ".") == 0) || (mutt_strcmp(group, "..") == 0))
         continue;
@@ -879,7 +879,7 @@ NNTP_SERVER *nntp_select_server(char *server, int leave_lock)
   int rc;
   struct Account acct;
   NNTP_SERVER *nserv = NULL;
-  NNTP_DATA *nntp_data = NULL;
+  struct NntpData *nntp_data = NULL;
   struct Connection *conn = NULL;
   struct CissUrl url;
 
@@ -1069,7 +1069,7 @@ NNTP_SERVER *nntp_select_server(char *server, int leave_lock)
  * Old = not read but cached */
 void nntp_article_status(struct Context *ctx, struct Header *hdr, char *group, anum_t anum)
 {
-  NNTP_DATA *nntp_data = ctx->data;
+  struct NntpData *nntp_data = ctx->data;
   unsigned int i;
 
   if (group)
@@ -1100,9 +1100,9 @@ void nntp_article_status(struct Context *ctx, struct Header *hdr, char *group, a
 }
 
 /* Subscribe newsgroup */
-NNTP_DATA *mutt_newsgroup_subscribe(NNTP_SERVER *nserv, char *group)
+struct NntpData *mutt_newsgroup_subscribe(NNTP_SERVER *nserv, char *group)
 {
-  NNTP_DATA *nntp_data = NULL;
+  struct NntpData *nntp_data = NULL;
 
   if (!nserv || !nserv->groups_hash || !group || !*group)
     return NULL;
@@ -1120,9 +1120,9 @@ NNTP_DATA *mutt_newsgroup_subscribe(NNTP_SERVER *nserv, char *group)
 }
 
 /* Unsubscribe newsgroup */
-NNTP_DATA *mutt_newsgroup_unsubscribe(NNTP_SERVER *nserv, char *group)
+struct NntpData *mutt_newsgroup_unsubscribe(NNTP_SERVER *nserv, char *group)
 {
-  NNTP_DATA *nntp_data = NULL;
+  struct NntpData *nntp_data = NULL;
 
   if (!nserv || !nserv->groups_hash || !group || !*group)
     return NULL;
@@ -1141,9 +1141,9 @@ NNTP_DATA *mutt_newsgroup_unsubscribe(NNTP_SERVER *nserv, char *group)
 }
 
 /* Catchup newsgroup */
-NNTP_DATA *mutt_newsgroup_catchup(NNTP_SERVER *nserv, char *group)
+struct NntpData *mutt_newsgroup_catchup(NNTP_SERVER *nserv, char *group)
 {
-  NNTP_DATA *nntp_data = NULL;
+  struct NntpData *nntp_data = NULL;
 
   if (!nserv || !nserv->groups_hash || !group || !*group)
     return NULL;
@@ -1171,9 +1171,9 @@ NNTP_DATA *mutt_newsgroup_catchup(NNTP_SERVER *nserv, char *group)
 }
 
 /* Uncatchup newsgroup */
-NNTP_DATA *mutt_newsgroup_uncatchup(NNTP_SERVER *nserv, char *group)
+struct NntpData *mutt_newsgroup_uncatchup(NNTP_SERVER *nserv, char *group)
 {
-  NNTP_DATA *nntp_data = NULL;
+  struct NntpData *nntp_data = NULL;
 
   if (!nserv || !nserv->groups_hash || !group || !*group)
     return NULL;
@@ -1213,13 +1213,13 @@ void nntp_buffy(char *buf, size_t len)
 
   for (i = 0; i < CurrentNewsSrv->groups_num; i++)
   {
-    NNTP_DATA *nntp_data = CurrentNewsSrv->groups_list[i];
+    struct NntpData *nntp_data = CurrentNewsSrv->groups_list[i];
 
     if (!nntp_data || !nntp_data->subscribed || !nntp_data->unread)
       continue;
 
     if (Context && Context->magic == MUTT_NNTP &&
-        (mutt_strcmp(nntp_data->group, ((NNTP_DATA *) Context->data)->group) == 0))
+        (mutt_strcmp(nntp_data->group, ((struct NntpData *) Context->data)->group) == 0))
     {
       unsigned int j, unread = 0;
 

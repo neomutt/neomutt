@@ -2813,7 +2813,7 @@ int mutt_pager(const char *banner, const char *fname, int flags, pager_t *extra)
         CHECK_MODE(IsHeader(extra) && !IsAttach(extra));
         CHECK_ATTACH;
         if (extra->ctx && extra->ctx->magic == MUTT_NNTP &&
-            !((NNTP_DATA *) extra->ctx->data)->allowed && query_quadoption(OPT_TOMODERATED, _("Posting to this group not allowed, may be moderated. Continue?")) != MUTT_YES)
+            !((struct NntpData *) extra->ctx->data)->allowed && query_quadoption(OPT_TOMODERATED, _("Posting to this group not allowed, may be moderated. Continue?")) != MUTT_YES)
           break;
         ci_send_message(SENDNEWS, NULL, NULL, extra->ctx, NULL);
         pager_menu->redraw = REDRAW_FULL;
@@ -2823,7 +2823,7 @@ int mutt_pager(const char *banner, const char *fname, int flags, pager_t *extra)
         CHECK_MODE(IsHeader(extra) || IsMsgAttach(extra));
         CHECK_ATTACH;
         if (extra->ctx && extra->ctx->magic == MUTT_NNTP &&
-            !((NNTP_DATA *) extra->ctx->data)->allowed && query_quadoption(OPT_TOMODERATED, _("Posting to this group not allowed, may be moderated. Continue?")) != MUTT_YES)
+            !((struct NntpData *) extra->ctx->data)->allowed && query_quadoption(OPT_TOMODERATED, _("Posting to this group not allowed, may be moderated. Continue?")) != MUTT_YES)
           break;
         if (IsMsgAttach(extra))
           mutt_attach_forward(extra->fp, extra->hdr, extra->idx, extra->idxlen,
@@ -2847,7 +2847,7 @@ int mutt_pager(const char *banner, const char *fname, int flags, pager_t *extra)
                              _("Reply by mail as poster prefers?")) != MUTT_YES)
         {
           if (extra->ctx && extra->ctx->magic == MUTT_NNTP &&
-              !((NNTP_DATA *) extra->ctx->data)->allowed && query_quadoption(OPT_TOMODERATED, _("Posting to this group not allowed, may be moderated. Continue?")) != MUTT_YES)
+              !((struct NntpData *) extra->ctx->data)->allowed && query_quadoption(OPT_TOMODERATED, _("Posting to this group not allowed, may be moderated. Continue?")) != MUTT_YES)
             break;
           if (IsMsgAttach(extra))
             mutt_attach_reply(extra->fp, extra->hdr, extra->idx, extra->idxlen,

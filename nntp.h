@@ -89,7 +89,7 @@ struct NntpAcache
   char *path;
 };
 
-typedef struct
+struct NntpData
 {
   char *group;
   char *desc;
@@ -107,7 +107,7 @@ typedef struct
   NNTP_SERVER *nserv;
   struct NntpAcache acache[NNTP_ACACHE_LEN];
   struct BodyCache *bcache;
-} NNTP_DATA;
+};
 
 typedef struct
 {
@@ -123,19 +123,19 @@ int nntp_active_save_cache(NNTP_SERVER *nserv);
 int nntp_check_new_groups(NNTP_SERVER *nserv);
 int nntp_open_connection(NNTP_SERVER *nserv);
 void nntp_newsrc_gen_entries(struct Context *ctx);
-void nntp_bcache_update(NNTP_DATA *nntp_data);
+void nntp_bcache_update(struct NntpData *nntp_data);
 void nntp_article_status(struct Context *ctx, struct Header *hdr, char *group, anum_t anum);
-void nntp_group_unread_stat(NNTP_DATA *nntp_data);
+void nntp_group_unread_stat(struct NntpData *nntp_data);
 void nntp_data_free(void *data);
-void nntp_acache_free(NNTP_DATA *nntp_data);
-void nntp_delete_group_cache(NNTP_DATA *nntp_data);
+void nntp_acache_free(struct NntpData *nntp_data);
+void nntp_delete_group_cache(struct NntpData *nntp_data);
 
 /* exposed interface */
 NNTP_SERVER *nntp_select_server(char *server, int leave_lock);
-NNTP_DATA *mutt_newsgroup_subscribe(NNTP_SERVER *nserv, char *group);
-NNTP_DATA *mutt_newsgroup_unsubscribe(NNTP_SERVER *nserv, char *group);
-NNTP_DATA *mutt_newsgroup_catchup(NNTP_SERVER *nserv, char *group);
-NNTP_DATA *mutt_newsgroup_uncatchup(NNTP_SERVER *nserv, char *group);
+struct NntpData *mutt_newsgroup_subscribe(NNTP_SERVER *nserv, char *group);
+struct NntpData *mutt_newsgroup_unsubscribe(NNTP_SERVER *nserv, char *group);
+struct NntpData *mutt_newsgroup_catchup(NNTP_SERVER *nserv, char *group);
+struct NntpData *mutt_newsgroup_uncatchup(NNTP_SERVER *nserv, char *group);
 int nntp_active_fetch(NNTP_SERVER *nserv);
 int nntp_newsrc_update(NNTP_SERVER *nserv);
 int nntp_post(const char *msg);
@@ -154,8 +154,8 @@ const char *nntp_format_str(char *dest, size_t destlen, size_t col, int cols,
 NNTP_SERVER *CurrentNewsSrv INITVAL(NULL);
 
 #ifdef USE_HCACHE
-header_cache_t *nntp_hcache_open(NNTP_DATA *nntp_data);
-void nntp_hcache_update(NNTP_DATA *nntp_data, header_cache_t *hc);
+header_cache_t *nntp_hcache_open(struct NntpData *nntp_data);
+void nntp_hcache_update(struct NntpData *nntp_data, header_cache_t *hc);
 #endif
 
 extern struct mx_ops mx_nntp_ops;
