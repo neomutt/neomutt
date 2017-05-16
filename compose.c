@@ -425,11 +425,11 @@ static void update_idx(struct Menu *menu, struct AttachPtr **idx, short idxlen)
   return;
 }
 
-typedef struct
+struct ComposeRedrawData
 {
   struct Header *msg;
   char *fcc;
-} compose_redraw_data_t;
+};
 
 /* prototype for use below */
 static void compose_status_line(char *buf, size_t buflen, size_t col, int cols,
@@ -438,7 +438,7 @@ static void compose_status_line(char *buf, size_t buflen, size_t col, int cols,
 static void compose_menu_redraw(struct Menu *menu)
 {
   char buf[LONG_STRING];
-  compose_redraw_data_t *rd = menu->redraw_data;
+  struct ComposeRedrawData *rd = menu->redraw_data;
 
   if (!rd)
     return;
@@ -616,7 +616,7 @@ int mutt_compose_menu(struct Header *msg, /* structure for new message */
   /* Sort, SortAux could be changed in mutt_index_menu() */
   int oldSort, oldSortAux;
   struct stat st;
-  compose_redraw_data_t rd;
+  struct ComposeRedrawData rd;
 #ifdef USE_NNTP
   int news = 0; /* is it a news article ? */
 
