@@ -56,25 +56,25 @@
     return -1;                                                                       \
   }
 
-typedef struct myvar
+struct MyVar
 {
   char *name;
   char *value;
-  struct myvar *next;
-} myvar_t;
+  struct MyVar *next;
+};
 
-static myvar_t *MyVars;
+static struct MyVar *MyVars;
 
 static void myvar_set(const char *var, const char *val)
 {
-  myvar_t **cur;
+  struct MyVar **cur;
 
   for (cur = &MyVars; *cur; cur = &((*cur)->next))
     if (mutt_strcmp((*cur)->name, var) == 0)
       break;
 
   if (!*cur)
-    *cur = safe_calloc(1, sizeof(myvar_t));
+    *cur = safe_calloc(1, sizeof(struct MyVar));
 
   if (!(*cur)->name)
     (*cur)->name = safe_strdup(var);
@@ -84,8 +84,8 @@ static void myvar_set(const char *var, const char *val)
 
 static void myvar_del(const char *var)
 {
-  myvar_t **cur;
-  myvar_t *tmp = NULL;
+  struct MyVar **cur;
+  struct MyVar *tmp = NULL;
 
 
   for (cur = &MyVars; *cur; cur = &((*cur)->next))
@@ -3248,7 +3248,7 @@ int mutt_command_complete(char *buffer, size_t len, int pos, int numtabs)
   char *pt = buffer;
   int num;
   int spaces; /* keep track of the number of leading spaces on the line */
-  myvar_t *myv = NULL;
+  struct MyVar *myv = NULL;
 
   SKIPWS(buffer);
   spaces = buffer - pt;
@@ -4361,7 +4361,7 @@ static int parse_tag_formats(struct Buffer *b, struct Buffer *s, unsigned long d
 
 const char *myvar_get(const char *var)
 {
-  myvar_t *cur = NULL;
+  struct MyVar *cur = NULL;
 
   for (cur = MyVars; cur; cur = cur->next)
     if (mutt_strcmp(cur->name, var) == 0)
