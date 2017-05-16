@@ -104,9 +104,9 @@ static void pgp_free_sig(struct PgpSignature **sigp)
   *sigp = NULL;
 }
 
-static void pgp_free_uid(pgp_uid_t **upp)
+static void pgp_free_uid(struct PgpUid **upp)
 {
-  pgp_uid_t *up = NULL, *q = NULL;
+  struct PgpUid *up = NULL, *q = NULL;
 
   if (!upp || !*upp)
     return;
@@ -121,14 +121,14 @@ static void pgp_free_uid(pgp_uid_t **upp)
   *upp = NULL;
 }
 
-pgp_uid_t *pgp_copy_uids(pgp_uid_t *up, struct PgpKeyInfo *parent)
+struct PgpUid *pgp_copy_uids(struct PgpUid *up, struct PgpKeyInfo *parent)
 {
-  pgp_uid_t *l = NULL;
-  pgp_uid_t **lp = &l;
+  struct PgpUid *l = NULL;
+  struct PgpUid **lp = &l;
 
   for (; up; up = up->next)
   {
-    *lp = safe_calloc(1, sizeof(pgp_uid_t));
+    *lp = safe_calloc(1, sizeof(struct PgpUid));
     (*lp)->trust = up->trust;
     (*lp)->flags = up->flags;
     (*lp)->addr = safe_strdup(up->addr);

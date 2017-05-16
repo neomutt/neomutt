@@ -109,7 +109,7 @@ static void fix_uid(char *uid)
 
 static struct PgpKeyInfo *parse_pub_line(char *buf, int *is_subkey, struct PgpKeyInfo *k)
 {
-  pgp_uid_t *uid = NULL;
+  struct PgpUid *uid = NULL;
   int field = 0, is_uid = 0;
   int is_pub = 0;
   int is_fpr = 0;
@@ -299,7 +299,7 @@ static struct PgpKeyInfo *parse_pub_line(char *buf, int *is_subkey, struct PgpKe
 
         mutt_debug(2, "user ID: %s\n", NONULL(p));
 
-        uid = safe_calloc(sizeof(pgp_uid_t), 1);
+        uid = safe_calloc(sizeof(struct PgpUid), 1);
         fix_uid(p);
         uid->addr = safe_strdup(p);
         uid->trust = trust;
@@ -405,7 +405,7 @@ struct PgpKeyInfo *pgp_get_candidates(pgp_ring_t keyring, struct List *hints)
 
       if (is_sub)
       {
-        pgp_uid_t **l;
+        struct PgpUid **l;
 
         k->flags |= KEYFLAG_SUBKEY;
         k->parent = mainkey;

@@ -106,7 +106,7 @@ static struct PgpKeyInfo *pgp_principal_key(struct PgpKeyInfo *key)
 struct PgpEntry
 {
   size_t num;
-  pgp_uid_t *uid;
+  struct PgpUid *uid;
 };
 
 static const char *pgp_entry_fmt(char *dest, size_t destlen, size_t col, int cols,
@@ -116,7 +116,7 @@ static const char *pgp_entry_fmt(char *dest, size_t destlen, size_t col, int col
 {
   char fmt[16];
   struct PgpEntry *entry = NULL;
-  pgp_uid_t *uid = NULL;
+  struct PgpUid *uid = NULL;
   struct PgpKeyInfo *key = NULL, *pkey = NULL;
   int kflags = 0;
   int optional = (flags & MUTT_FORMAT_OPTIONAL);
@@ -268,7 +268,7 @@ static const char *pgp_entry_fmt(char *dest, size_t destlen, size_t col, int col
 
 static void pgp_entry(char *s, size_t l, struct Menu *menu, int num)
 {
-  pgp_uid_t **KeyTable = (pgp_uid_t **) menu->data;
+  struct PgpUid **KeyTable = (struct PgpUid **) menu->data;
   struct PgpEntry entry;
 
   entry.uid = KeyTable[num];
@@ -282,8 +282,8 @@ static int _pgp_compare_address(const void *a, const void *b)
 {
   int r;
 
-  pgp_uid_t **s = (pgp_uid_t **) a;
-  pgp_uid_t **t = (pgp_uid_t **) b;
+  struct PgpUid **s = (struct PgpUid **) a;
+  struct PgpUid **t = (struct PgpUid **) b;
 
   if ((r = mutt_strcasecmp((*s)->addr, (*t)->addr)))
     return r > 0;
@@ -303,8 +303,8 @@ static int _pgp_compare_keyid(const void *a, const void *b)
 {
   int r;
 
-  pgp_uid_t **s = (pgp_uid_t **) a;
-  pgp_uid_t **t = (pgp_uid_t **) b;
+  struct PgpUid **s = (struct PgpUid **) a;
+  struct PgpUid **t = (struct PgpUid **) b;
 
   if ((r = mutt_strcasecmp(pgp_fpr_or_lkeyid((*s)->parent), pgp_fpr_or_lkeyid((*t)->parent))))
     return r > 0;
@@ -321,8 +321,8 @@ static int pgp_compare_keyid(const void *a, const void *b)
 static int _pgp_compare_date(const void *a, const void *b)
 {
   int r;
-  pgp_uid_t **s = (pgp_uid_t **) a;
-  pgp_uid_t **t = (pgp_uid_t **) b;
+  struct PgpUid **s = (struct PgpUid **) a;
+  struct PgpUid **t = (struct PgpUid **) b;
 
   if ((r = ((*s)->parent->gen_time - (*t)->parent->gen_time)))
     return r > 0;
@@ -339,8 +339,8 @@ static int _pgp_compare_trust(const void *a, const void *b)
 {
   int r;
 
-  pgp_uid_t **s = (pgp_uid_t **) a;
-  pgp_uid_t **t = (pgp_uid_t **) b;
+  struct PgpUid **s = (struct PgpUid **) a;
+  struct PgpUid **t = (struct PgpUid **) b;
 
   if ((r = (((*s)->parent->flags & (KEYFLAG_RESTRICTIONS)) -
             ((*t)->parent->flags & (KEYFLAG_RESTRICTIONS)))))
@@ -374,7 +374,7 @@ static bool pgp_key_is_valid(struct PgpKeyInfo *k)
   return true;
 }
 
-static bool pgp_id_is_strong(pgp_uid_t *uid)
+static bool pgp_id_is_strong(struct PgpUid *uid)
 {
   if ((uid->trust & 3) < 3)
     return false;
@@ -382,7 +382,7 @@ static bool pgp_id_is_strong(pgp_uid_t *uid)
   return true;
 }
 
-static bool pgp_id_is_valid(pgp_uid_t *uid)
+static bool pgp_id_is_valid(struct PgpUid *uid)
 {
   if (!pgp_key_is_valid(uid->parent))
     return false;
@@ -399,7 +399,7 @@ static bool pgp_id_is_valid(pgp_uid_t *uid)
 
 #define PGP_KV_MATCH (PGP_KV_ADDR | PGP_KV_STRING)
 
-static int pgp_id_matches_addr(struct Address *addr, struct Address *u_addr, pgp_uid_t *uid)
+static int pgp_id_matches_addr(struct Address *addr, struct Address *u_addr, struct PgpUid *uid)
 {
   int rv = 0;
 
@@ -423,7 +423,7 @@ static int pgp_id_matches_addr(struct Address *addr, struct Address *u_addr, pgp
 static struct PgpKeyInfo *pgp_select_key(struct PgpKeyInfo *keys, struct Address *p, const char *s)
 {
   int keymax;
-  pgp_uid_t **KeyTable;
+  struct PgpUid **KeyTable;
   struct Menu *menu = NULL;
   int i, done = 0;
   char helpstr[LONG_STRING], buf[LONG_STRING], tmpbuf[STRING];
@@ -431,7 +431,7 @@ static struct PgpKeyInfo *pgp_select_key(struct PgpKeyInfo *keys, struct Address
   FILE *fp = NULL, *devnull = NULL;
   pid_t thepid;
   struct PgpKeyInfo *kp = NULL;
-  pgp_uid_t *a = NULL;
+  struct PgpUid *a = NULL;
   int (*f)(const void *, const void *);
 
   int unusable = 0;
@@ -458,7 +458,7 @@ static struct PgpKeyInfo *pgp_select_key(struct PgpKeyInfo *keys, struct Address
       if (i == keymax)
       {
         keymax += 5;
-        safe_realloc(&KeyTable, sizeof(pgp_uid_t *) * keymax);
+        safe_realloc(&KeyTable, sizeof(struct PgpUid *) * keymax);
       }
 
       KeyTable[i++] = a;
@@ -488,7 +488,7 @@ static struct PgpKeyInfo *pgp_select_key(struct PgpKeyInfo *keys, struct Address
       f = pgp_compare_trust;
       break;
   }
-  qsort(KeyTable, i, sizeof(pgp_uid_t *), f);
+  qsort(KeyTable, i, sizeof(struct PgpUid *), f);
 
   helpstr[0] = 0;
   mutt_make_help(buf, sizeof(buf), _("Exit  "), MENU_PGP, OP_EXIT);
@@ -795,7 +795,7 @@ struct PgpKeyInfo *pgp_getkeybyaddr(struct Address *a, short abilities, pgp_ring
   struct PgpKeyInfo *a_valid_addrmatch_key = NULL;
   struct PgpKeyInfo *matches = NULL;
   struct PgpKeyInfo **last = &matches;
-  pgp_uid_t *q = NULL;
+  struct PgpUid *q = NULL;
 
   if (a && a->mailbox)
     hints = pgp_add_string_to_hints(hints, a->mailbox);
@@ -918,7 +918,7 @@ struct PgpKeyInfo *pgp_getkeybystr(char *p, short abilities, pgp_ring_t keyring)
   struct PgpKeyInfo *matches = NULL;
   struct PgpKeyInfo **last = &matches;
   struct PgpKeyInfo *k = NULL, *kn = NULL;
-  pgp_uid_t *a = NULL;
+  struct PgpUid *a = NULL;
   short match;
   size_t l;
   const char *ps = NULL, *pl = NULL, *pfcopy = NULL, *phint = NULL;

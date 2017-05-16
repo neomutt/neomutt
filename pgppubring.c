@@ -98,7 +98,7 @@ static void pgpring_dump_signatures(struct PgpSignature *sig)
 
 static void pgpring_dump_keyblock(struct PgpKeyInfo *p)
 {
-  pgp_uid_t *uid = NULL;
+  struct PgpUid *uid = NULL;
   short first;
   struct tm *tp = NULL;
   time_t t;
@@ -626,8 +626,8 @@ static struct PgpKeyInfo *pgp_parse_keyblock(FILE *fp)
   struct PgpKeyInfo *root = NULL;
   struct PgpKeyInfo **last = &root;
   struct PgpKeyInfo *p = NULL;
-  pgp_uid_t *uid = NULL;
-  pgp_uid_t **addr = NULL;
+  struct PgpUid *uid = NULL;
+  struct PgpUid **addr = NULL;
   struct PgpSignature **lsig = NULL;
 
   fgetpos(fp, &pos);
@@ -724,7 +724,7 @@ static struct PgpKeyInfo *pgp_parse_keyblock(FILE *fp)
           chr[l - 1] = '\0';
         }
 
-        *addr = uid = safe_calloc(1, sizeof(pgp_uid_t)); /* XXX */
+        *addr = uid = safe_calloc(1, sizeof(struct PgpUid)); /* XXX */
         uid->addr = chr;
         uid->parent = p;
         uid->trust = 0;

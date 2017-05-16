@@ -36,7 +36,7 @@ struct PgpKeyInfo
 {
   char *keyid;
   char *fingerprint;
-  struct pgp_uid *address;
+  struct PgpUid *address;
   int flags;
   short keylen;
   time_t gen_time;
@@ -47,15 +47,15 @@ struct PgpKeyInfo
   struct PgpKeyInfo *next;
 };
 
-typedef struct pgp_uid
+struct PgpUid
 {
   char *addr;
   short trust;
   int flags;
   struct PgpKeyInfo *parent;
-  struct pgp_uid *next;
+  struct PgpUid *next;
   struct PgpSignature *sigs;
-} pgp_uid_t;
+};
 
 enum pgp_version
 {
@@ -70,7 +70,7 @@ enum pgp_version
 const char *pgp_pkalgbytype(unsigned char type);
 
 struct PgpKeyInfo *pgp_remove_key(struct PgpKeyInfo **klist, struct PgpKeyInfo *key);
-pgp_uid_t *pgp_copy_uids(pgp_uid_t *up, struct PgpKeyInfo *parent);
+struct PgpUid *pgp_copy_uids(struct PgpUid *up, struct PgpKeyInfo *parent);
 
 bool pgp_canencrypt(unsigned char type);
 bool pgp_cansign(unsigned char type);
