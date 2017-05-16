@@ -1522,7 +1522,7 @@ static int nntp_open_mailbox(struct Context *ctx)
 static int nntp_fetch_message(struct Context *ctx, struct Message *msg, int msgno)
 {
   NNTP_DATA *nntp_data = ctx->data;
-  NNTP_ACACHE *acache = NULL;
+  struct NntpAcache *acache = NULL;
   struct Header *hdr = ctx->hdrs[msgno];
   char buf[_POSIX_PATH_MAX];
   char article[16];

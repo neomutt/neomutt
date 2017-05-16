@@ -83,11 +83,11 @@ struct NewsrcEntry
   anum_t last;
 };
 
-typedef struct
+struct NntpAcache
 {
   unsigned int index;
   char *path;
-} NNTP_ACACHE;
+};
 
 typedef struct
 {
@@ -105,7 +105,7 @@ typedef struct
   unsigned int newsrc_len;
   struct NewsrcEntry *newsrc_ent;
   NNTP_SERVER *nserv;
-  NNTP_ACACHE acache[NNTP_ACACHE_LEN];
+  struct NntpAcache acache[NNTP_ACACHE_LEN];
   struct BodyCache *bcache;
 } NNTP_DATA;
 
