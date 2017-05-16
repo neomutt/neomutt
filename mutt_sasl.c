@@ -386,10 +386,10 @@ int mutt_sasl_interact(sasl_interact_t *interaction)
  *   is successful, using mutt_sasl_setup_conn */
 static int mutt_sasl_conn_open(struct Connection *conn)
 {
-  SASL_DATA *sasldata = NULL;
+  struct SaslData *sasldata = NULL;
   int rc;
 
-  sasldata = (SASL_DATA *) conn->sockdata;
+  sasldata = (struct SaslData *) conn->sockdata;
   conn->sockdata = sasldata->sockdata;
   rc = (sasldata->msasl_open)(conn);
   conn->sockdata = sasldata;
@@ -401,10 +401,10 @@ static int mutt_sasl_conn_open(struct Connection *conn)
  *   the sasl_conn_t object, then restores connection to pre-sasl state */
 static int mutt_sasl_conn_close(struct Connection *conn)
 {
-  SASL_DATA *sasldata = NULL;
+  struct SaslData *sasldata = NULL;
   int rc;
 
-  sasldata = (SASL_DATA *) conn->sockdata;
+  sasldata = (struct SaslData *) conn->sockdata;
 
   /* restore connection's underlying methods */
   conn->sockdata = sasldata->sockdata;
@@ -426,12 +426,12 @@ static int mutt_sasl_conn_close(struct Connection *conn)
 
 static int mutt_sasl_conn_read(struct Connection *conn, char *buf, size_t len)
 {
-  SASL_DATA *sasldata = NULL;
+  struct SaslData *sasldata = NULL;
   int rc;
 
   unsigned int olen;
 
-  sasldata = (SASL_DATA *) conn->sockdata;
+  sasldata = (struct SaslData *) conn->sockdata;
 
   /* if we still have data in our read buffer, copy it into buf */
   if (sasldata->blen > sasldata->bpos)
@@ -487,13 +487,13 @@ out:
 
 static int mutt_sasl_conn_write(struct Connection *conn, const char *buf, size_t len)
 {
-  SASL_DATA *sasldata = NULL;
+  struct SaslData *sasldata = NULL;
   int rc;
 
   const char *pbuf = NULL;
   unsigned int olen, plen;
 
-  sasldata = (SASL_DATA *) conn->sockdata;
+  sasldata = (struct SaslData *) conn->sockdata;
   conn->sockdata = sasldata->sockdata;
 
   /* encode data, if necessary */
@@ -534,7 +534,7 @@ fail:
 
 static int mutt_sasl_conn_poll(struct Connection *conn)
 {
-  SASL_DATA *sasldata = conn->sockdata;
+  struct SaslData *sasldata = conn->sockdata;
   int rc;
 
   conn->sockdata = sasldata->sockdata;
@@ -561,7 +561,7 @@ static int mutt_sasl_conn_poll(struct Connection *conn)
  *   for the read/write methods. */
 void mutt_sasl_setup_conn(struct Connection *conn, sasl_conn_t *saslconn)
 {
-  SASL_DATA *sasldata = safe_malloc(sizeof(SASL_DATA));
+  struct SaslData *sasldata = safe_malloc(sizeof(struct SaslData));
   /* work around sasl_getprop aliasing issues */
   const void *tmp = NULL;
 

@@ -29,7 +29,7 @@ int mutt_sasl_interact(sasl_interact_t *interaction);
 void mutt_sasl_setup_conn(struct Connection *conn, sasl_conn_t *saslconn);
 void mutt_sasl_done(void);
 
-typedef struct
+struct SaslData
 {
   sasl_conn_t *saslconn;
   const sasl_ssf_t *ssf;
@@ -47,6 +47,6 @@ typedef struct
   int (*msasl_read)(struct Connection *conn, char *buf, size_t len);
   int (*msasl_write)(struct Connection *conn, const char *buf, size_t count);
   int (*msasl_poll)(struct Connection *conn);
-} SASL_DATA;
+};
 
 #endif /* _MUTT_SASL_H */
