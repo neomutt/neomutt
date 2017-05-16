@@ -837,7 +837,7 @@ int mutt_any_key_to_continue(const char *s)
   return (ch >= 0) ? ch : EOF;
 }
 
-int mutt_do_pager(const char *banner, const char *tempfile, int do_color, pager_t *info)
+int mutt_do_pager(const char *banner, const char *tempfile, int do_color, struct Pager *info)
 {
   int rc;
 

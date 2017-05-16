@@ -1639,7 +1639,7 @@ void mutt_clear_pager_position(void)
 typedef struct
 {
   int flags;
-  pager_t *extra;
+  struct Pager *extra;
   int indexlen;
   int indicator; /* the indicator line of the PI */
   int oldtopline;
@@ -1950,7 +1950,7 @@ static void pager_menu_redraw(struct Menu *pager_menu)
    can be distinguished by whether or not ``hdr'' is NULL.  The ``hdr'' arg
    is there so that we can do operations on the current message without the
    need to pop back out to the main-menu.  */
-int mutt_pager(const char *banner, const char *fname, int flags, pager_t *extra)
+int mutt_pager(const char *banner, const char *fname, int flags, struct Pager *extra)
 {
   static char searchbuf[STRING] = "";
   char buffer[LONG_STRING];

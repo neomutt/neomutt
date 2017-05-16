@@ -180,7 +180,7 @@ int mutt_display_message(struct Header *cur)
 
   if (builtin)
   {
-    pager_t info;
+    struct Pager info;
 
     if (WithCrypto && (cur->security & APPLICATION_SMIME) && (cmflags & MUTT_CM_VERIFY))
     {
@@ -208,7 +208,7 @@ int mutt_display_message(struct Header *cur)
     }
 
     /* Invoke the builtin pager */
-    memset(&info, 0, sizeof(pager_t));
+    memset(&info, 0, sizeof(struct Pager));
     info.hdr = cur;
     info.ctx = Context;
     rc = mutt_pager(NULL, tempfile, MUTT_PAGER_MESSAGE, &info);

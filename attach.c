@@ -555,7 +555,7 @@ int mutt_view_attachment(FILE *fp, struct Body *a, int flag, struct Header *hdr,
 
   if (use_pager)
   {
-    pager_t info;
+    struct Pager info;
 
     memset(&info, 0, sizeof(info));
     info.fp = fp;
