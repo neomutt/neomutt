@@ -28,22 +28,22 @@
 #include "mutt_socket.h"
 
 /* -- data types -- */
-typedef struct
+struct TunnelData
 {
   pid_t pid;
   int readfd;
   int writefd;
-} TUNNEL_DATA;
+};
 
 static int tunnel_socket_open(struct Connection *conn)
 {
-  TUNNEL_DATA *tunnel = NULL;
+  struct TunnelData *tunnel = NULL;
   int pid;
   int rc;
   int pin[2], pout[2];
   int devnull;
 
-  tunnel = safe_malloc(sizeof(TUNNEL_DATA));
+  tunnel = safe_malloc(sizeof(struct TunnelData));
   conn->sockdata = tunnel;
 
   mutt_message(_("Connecting with \"%s\"..."), Tunnel);
@@ -112,7 +112,7 @@ static int tunnel_socket_open(struct Connection *conn)
 
 static int tunnel_socket_close(struct Connection *conn)
 {
-  TUNNEL_DATA *tunnel = (TUNNEL_DATA *) conn->sockdata;
+  struct TunnelData *tunnel = (struct TunnelData *) conn->sockdata;
   int status;
 
   close(tunnel->readfd);
@@ -131,7 +131,7 @@ static int tunnel_socket_close(struct Connection *conn)
 
 static int tunnel_socket_read(struct Connection *conn, char *buf, size_t len)
 {
-  TUNNEL_DATA *tunnel = (TUNNEL_DATA *) conn->sockdata;
+  struct TunnelData *tunnel = (struct TunnelData *) conn->sockdata;
   int rc;
 
   rc = read(tunnel->readfd, buf, len);
@@ -146,7 +146,7 @@ static int tunnel_socket_read(struct Connection *conn, char *buf, size_t len)
 
 static int tunnel_socket_write(struct Connection *conn, const char *buf, size_t len)
 {
-  TUNNEL_DATA *tunnel = (TUNNEL_DATA *) conn->sockdata;
+  struct TunnelData *tunnel = (struct TunnelData *) conn->sockdata;
   int rc;
 
   rc = write(tunnel->writefd, buf, len);
@@ -161,7 +161,7 @@ static int tunnel_socket_write(struct Connection *conn, const char *buf, size_t 
 
 static int tunnel_socket_poll(struct Connection *conn)
 {
-  TUNNEL_DATA *tunnel = (TUNNEL_DATA *) conn->sockdata;
+  struct TunnelData *tunnel = (struct TunnelData *) conn->sockdata;
   int ofd;
   int rc;
 
