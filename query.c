@@ -25,19 +25,19 @@
 #include "mutt_idna.h"
 #include "mutt_menu.h"
 
-typedef struct query
+struct Query
 {
   int num;
   struct Address *addr;
   char *name;
   char *other;
-  struct query *next;
-} QUERY;
+  struct Query *next;
+};
 
 struct Entry
 {
   bool tagged;
-  QUERY *data;
+  struct Query *data;
 };
 
 static const struct mapping_t QueryHelp[] = {
@@ -50,7 +50,7 @@ static const struct mapping_t QueryHelp[] = {
   { NULL, 0 },
 };
 
-static struct Address *result_to_addr(QUERY *r)
+static struct Address *result_to_addr(struct Query *r)
 {
   static struct Address *tmp = NULL;
 
@@ -64,9 +64,9 @@ static struct Address *result_to_addr(QUERY *r)
   return tmp;
 }
 
-static void free_query(QUERY **query)
+static void free_query(struct Query **query)
 {
-  QUERY *p = NULL;
+  struct Query *p = NULL;
 
   if (!query)
     return;
@@ -83,11 +83,11 @@ static void free_query(QUERY **query)
   }
 }
 
-static QUERY *run_query(char *s, int quiet)
+static struct Query *run_query(char *s, int quiet)
 {
   FILE *fp = NULL;
-  QUERY *first = NULL;
-  QUERY *cur = NULL;
+  struct Query *first = NULL;
+  struct Query *cur = NULL;
   char cmd[_POSIX_PATH_MAX];
   char *buf = NULL;
   size_t buflen;
@@ -115,12 +115,12 @@ static QUERY *run_query(char *s, int quiet)
     {
       if (first == NULL)
       {
-        first = safe_calloc(1, sizeof(QUERY));
+        first = safe_calloc(1, sizeof(struct Query));
         cur = first;
       }
       else
       {
-        cur->next = safe_calloc(1, sizeof(QUERY));
+        cur->next = safe_calloc(1, sizeof(struct Query));
         cur = cur->next;
       }
 
@@ -183,7 +183,7 @@ static const char *query_format_str(char *dest, size_t destlen, size_t col, int 
                                     unsigned long data, format_flag flags)
 {
   struct Entry *entry = (struct Entry *) data;
-  QUERY *query = entry->data;
+  struct Query *query = entry->data;
   char tmp[SHORT_STRING];
   char buf2[STRING] = "";
   int optional = (flags & MUTT_FORMAT_OPTIONAL);
@@ -248,12 +248,12 @@ static int query_tag(struct Menu *menu, int n, int m)
   return cur->tagged - ot;
 }
 
-static void query_menu(char *buf, size_t buflen, QUERY *results, int retbuf)
+static void query_menu(char *buf, size_t buflen, struct Query *results, int retbuf)
 {
   struct Menu *menu = NULL;
   struct Header *msg = NULL;
   struct Entry *QueryTable = NULL;
-  QUERY *queryp = NULL;
+  struct Query *queryp = NULL;
   int i, done = 0;
   int op;
   char helpstr[LONG_STRING];
@@ -297,7 +297,7 @@ static void query_menu(char *buf, size_t buflen, QUERY *results, int retbuf)
         case OP_QUERY:
           if (mutt_get_field(_("Query: "), buf, buflen, 0) == 0 && buf[0])
           {
-            QUERY *newresults = NULL;
+            struct Query *newresults = NULL;
 
             newresults = run_query(buf, 0);
 
@@ -478,7 +478,7 @@ static void query_menu(char *buf, size_t buflen, QUERY *results, int retbuf)
 }
 int mutt_query_complete(char *buf, size_t buflen)
 {
-  QUERY *results = NULL;
+  struct Query *results = NULL;
   struct Address *tmpa = NULL;
 
   if (!QueryCmd)
