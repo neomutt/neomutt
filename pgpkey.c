@@ -103,11 +103,11 @@ static struct PgpKeyInfo *pgp_principal_key(struct PgpKeyInfo *key)
  * %[...] date of key using strftime(3)
  */
 
-typedef struct pgp_entry
+struct PgpEntry
 {
   size_t num;
   pgp_uid_t *uid;
-} pgp_entry_t;
+};
 
 static const char *pgp_entry_fmt(char *dest, size_t destlen, size_t col, int cols,
                                  char op, const char *src, const char *prefix,
@@ -115,13 +115,13 @@ static const char *pgp_entry_fmt(char *dest, size_t destlen, size_t col, int col
                                  unsigned long data, format_flag flags)
 {
   char fmt[16];
-  pgp_entry_t *entry = NULL;
+  struct PgpEntry *entry = NULL;
   pgp_uid_t *uid = NULL;
   struct PgpKeyInfo *key = NULL, *pkey = NULL;
   int kflags = 0;
   int optional = (flags & MUTT_FORMAT_OPTIONAL);
 
-  entry = (pgp_entry_t *) data;
+  entry = (struct PgpEntry *) data;
   uid = entry->uid;
   key = uid->parent;
   pkey = pgp_principal_key(key);
@@ -269,7 +269,7 @@ static const char *pgp_entry_fmt(char *dest, size_t destlen, size_t col, int col
 static void pgp_entry(char *s, size_t l, struct Menu *menu, int num)
 {
   pgp_uid_t **KeyTable = (pgp_uid_t **) menu->data;
-  pgp_entry_t entry;
+  struct PgpEntry entry;
 
   entry.uid = KeyTable[num];
   entry.num = num + 1;
