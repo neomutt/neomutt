@@ -126,13 +126,13 @@ struct line_t
 #define ANSI_REVERSE (1 << 4)
 #define ANSI_COLOR (1 << 5)
 
-typedef struct _ansi_attr
+struct AnsiAttr
 {
   int attr;
   int fg;
   int bg;
   int pair;
-} ansi_attr;
+};
 
 static short InHelp = 0;
 
@@ -179,7 +179,7 @@ static int check_sig(const char *s, struct line_t *info, int n)
 }
 
 static void resolve_color(struct line_t *lineInfo, int n, int cnt, int flags,
-                          int special, ansi_attr *a)
+                          int special, struct AnsiAttr *a)
 {
   int def_color;         /* color without syntax highlight */
   int color;             /* final color */
@@ -984,7 +984,7 @@ static int is_ansi(unsigned char *buf)
   return (*buf == 'm');
 }
 
-static int grok_ansi(unsigned char *buf, int pos, ansi_attr *a)
+static int grok_ansi(unsigned char *buf, int pos, struct AnsiAttr *a)
 {
   int x = pos;
 
@@ -1163,7 +1163,7 @@ static int fill_buffer(FILE *f, LOFF_T *last_pos, LOFF_T offset, unsigned char *
 
 
 static int format_line(struct line_t **lineInfo, int n, unsigned char *buf,
-                       int flags, ansi_attr *pa, int cnt, int *pspace, int *pvch,
+                       int flags, struct AnsiAttr *pa, int cnt, int *pspace, int *pvch,
                        int *pcol, int *pspecial, struct MuttWindow *pager_window)
 {
   int space = -1; /* index of the last space or TAB */
@@ -1371,7 +1371,7 @@ static int display_line(FILE *f, LOFF_T *last_pos, struct line_t **lineInfo,
   int def_color;
   int m;
   int rc = -1;
-  ansi_attr a = { 0, 0, 0, -1 };
+  struct AnsiAttr a = { 0, 0, 0, -1 };
   regmatch_t pmatch[1];
 
   if (n == *last)
