@@ -552,7 +552,7 @@ static char *imap_get_flags(struct List **hflags, char *s)
 static int imap_open_mailbox(struct Context *ctx)
 {
   struct ImapData *idata = NULL;
-  IMAP_STATUS *status = NULL;
+  struct ImapStatus *status = NULL;
   char buf[LONG_STRING];
   char bufout[LONG_STRING];
   int count = 0;
@@ -1594,7 +1594,7 @@ int imap_status(char *path, int queue)
   struct ImapData *idata = NULL;
   char buf[LONG_STRING];
   char mbox[LONG_STRING];
-  IMAP_STATUS *status = NULL;
+  struct ImapStatus *status = NULL;
 
   if (imap_get_mailbox(path, &idata, buf, sizeof(buf)) < 0)
     return -1;
@@ -1631,11 +1631,11 @@ int imap_status(char *path, int queue)
 }
 
 /* return cached mailbox stats or NULL if create is 0 */
-IMAP_STATUS *imap_mboxcache_get(struct ImapData *idata, const char *mbox, int create)
+struct ImapStatus *imap_mboxcache_get(struct ImapData *idata, const char *mbox, int create)
 {
   struct List *cur = NULL;
-  IMAP_STATUS *status = NULL;
-  IMAP_STATUS scache;
+  struct ImapStatus *status = NULL;
+  struct ImapStatus scache;
 #ifdef USE_HCACHE
   header_cache_t *hc = NULL;
   void *uidvalidity = NULL;
@@ -1644,7 +1644,7 @@ IMAP_STATUS *imap_mboxcache_get(struct ImapData *idata, const char *mbox, int cr
 
   for (cur = idata->mboxcache; cur; cur = cur->next)
   {
-    status = (IMAP_STATUS *) cur->data;
+    status = (struct ImapStatus *) cur->data;
 
     if (imap_mxcmp(mbox, status->name) == 0)
       return status;
@@ -1693,11 +1693,11 @@ IMAP_STATUS *imap_mboxcache_get(struct ImapData *idata, const char *mbox, int cr
 void imap_mboxcache_free(struct ImapData *idata)
 {
   struct List *cur = NULL;
-  IMAP_STATUS *status = NULL;
+  struct ImapStatus *status = NULL;
 
   for (cur = idata->mboxcache; cur; cur = cur->next)
   {
-    status = (IMAP_STATUS *) cur->data;
+    status = (struct ImapStatus *) cur->data;
 
     FREE(&status->name);
   }

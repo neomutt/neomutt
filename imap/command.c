@@ -487,7 +487,7 @@ static void cmd_parse_status(struct ImapData *idata, char *s)
   struct Buffy *inc = NULL;
   struct ImapMbox mx;
   int count;
-  IMAP_STATUS *status = NULL;
+  struct ImapStatus *status = NULL;
   unsigned int olduv, oldun;
   long litlen;
   short new = 0;
@@ -557,7 +557,7 @@ static void cmd_parse_status(struct ImapData *idata, char *s)
   /* caller is prepared to handle the result herself */
   if (idata->cmddata && idata->cmdtype == IMAP_CT_STATUS)
   {
-    memcpy(idata->cmddata, status, sizeof(IMAP_STATUS));
+    memcpy(idata->cmddata, status, sizeof(struct ImapStatus));
     return;
   }
 

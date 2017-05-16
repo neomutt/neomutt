@@ -357,7 +357,7 @@ int imap_read_headers(struct ImapData *idata, int msgbegin, int msgend)
   char tempfile[_POSIX_PATH_MAX];
   int msgno, idx = msgbegin - 1;
   struct ImapHeader h;
-  IMAP_STATUS *status = NULL;
+  struct ImapStatus *status = NULL;
   int rc, mfhrc, oldmsgcount;
   int fetchlast = 0;
   int maxuid = 0;
