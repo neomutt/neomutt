@@ -57,9 +57,9 @@ static char SmimeCertToUse[_POSIX_PATH_MAX];
 static char SmimeIntermediateToUse[_POSIX_PATH_MAX];
 
 
-static void smime_free_key(smime_key_t **keylist)
+static void smime_free_key(struct SmimeKey **keylist)
 {
-  smime_key_t *key = NULL;
+  struct SmimeKey *key = NULL;
 
   if (!keylist)
     return;
@@ -77,14 +77,14 @@ static void smime_free_key(smime_key_t **keylist)
   }
 }
 
-static smime_key_t *smime_copy_key(smime_key_t *key)
+static struct SmimeKey *smime_copy_key(struct SmimeKey *key)
 {
-  smime_key_t *copy = NULL;
+  struct SmimeKey *copy = NULL;
 
   if (!key)
     return NULL;
 
-  copy = safe_calloc(1, sizeof(smime_key_t));
+  copy = safe_calloc(1, sizeof(struct SmimeKey));
   copy->email = safe_strdup(key->email);
   copy->hash = safe_strdup(key->hash);
   copy->label = safe_strdup(key->label);
@@ -338,8 +338,8 @@ static char *smime_key_flags(int flags)
 
 static void smime_entry(char *s, size_t l, struct Menu *menu, int num)
 {
-  smime_key_t **Table = (smime_key_t **) menu->data;
-  smime_key_t *this = Table[num];
+  struct SmimeKey **Table = (struct SmimeKey **) menu->data;
+  struct SmimeKey *this = Table[num];
   char *truststate = NULL;
   switch (this->trust)
   {
@@ -369,13 +369,13 @@ static void smime_entry(char *s, size_t l, struct Menu *menu, int num)
 }
 
 
-static smime_key_t *smime_select_key(smime_key_t *keys, char *query)
+static struct SmimeKey *smime_select_key(struct SmimeKey *keys, char *query)
 {
-  smime_key_t **table = NULL;
+  struct SmimeKey **table = NULL;
   int table_size = 0;
   int table_index = 0;
-  smime_key_t *key = NULL;
-  smime_key_t *selected_key = NULL;
+  struct SmimeKey *key = NULL;
+  struct SmimeKey *selected_key = NULL;
   char helpstr[LONG_STRING];
   char buf[LONG_STRING];
   char title[256];
@@ -388,7 +388,7 @@ static smime_key_t *smime_select_key(smime_key_t *keys, char *query)
     if (table_index == table_size)
     {
       table_size += 5;
-      safe_realloc(&table, sizeof(smime_key_t *) * table_size);
+      safe_realloc(&table, sizeof(struct SmimeKey *) * table_size);
     }
 
     table[table_index++] = key;
@@ -465,13 +465,13 @@ static smime_key_t *smime_select_key(smime_key_t *keys, char *query)
   return selected_key;
 }
 
-static smime_key_t *smime_parse_key(char *buf)
+static struct SmimeKey *smime_parse_key(char *buf)
 {
-  smime_key_t *key = NULL;
+  struct SmimeKey *key = NULL;
   char *pend = NULL, *p = NULL;
   int field = 0;
 
-  key = safe_calloc(1, sizeof(smime_key_t));
+  key = safe_calloc(1, sizeof(struct SmimeKey));
 
   for (p = buf; p; p = pend)
   {
@@ -545,12 +545,12 @@ static smime_key_t *smime_parse_key(char *buf)
   return key;
 }
 
-static smime_key_t *smime_get_candidates(char *search, short public)
+static struct SmimeKey *smime_get_candidates(char *search, short public)
 {
   char index_file[_POSIX_PATH_MAX];
   FILE *fp = NULL;
   char buf[LONG_STRING];
-  smime_key_t *key = NULL, *results = NULL, **results_end = NULL;
+  struct SmimeKey *key = NULL, *results = NULL, **results_end = NULL;
 
   results = NULL;
   results_end = &results;
@@ -585,10 +585,10 @@ static smime_key_t *smime_get_candidates(char *search, short public)
 /* Returns the first matching key record, without prompting or checking of
  * abilities or trust.
  */
-static smime_key_t *smime_get_key_by_hash(char *hash, short public)
+static struct SmimeKey *smime_get_key_by_hash(char *hash, short public)
 {
-  smime_key_t *results = NULL, *result = NULL;
-  smime_key_t *match = NULL;
+  struct SmimeKey *results = NULL, *result = NULL;
+  struct SmimeKey *match = NULL;
 
   results = smime_get_candidates(hash, public);
   for (result = results; result; result = result->next)
@@ -605,16 +605,16 @@ static smime_key_t *smime_get_key_by_hash(char *hash, short public)
   return match;
 }
 
-static smime_key_t *smime_get_key_by_addr(char *mailbox, short abilities,
+static struct SmimeKey *smime_get_key_by_addr(char *mailbox, short abilities,
                                           short public, short may_ask)
 {
-  smime_key_t *results = NULL, *result = NULL;
-  smime_key_t *matches = NULL;
-  smime_key_t **matches_end = &matches;
-  smime_key_t *match = NULL;
-  smime_key_t *trusted_match = NULL;
-  smime_key_t *valid_match = NULL;
-  smime_key_t *return_key = NULL;
+  struct SmimeKey *results = NULL, *result = NULL;
+  struct SmimeKey *matches = NULL;
+  struct SmimeKey **matches_end = &matches;
+  struct SmimeKey *match = NULL;
+  struct SmimeKey *trusted_match = NULL;
+  struct SmimeKey *valid_match = NULL;
+  struct SmimeKey *return_key = NULL;
   int multi_trusted_matches = 0;
 
   if (!mailbox)
@@ -677,13 +677,13 @@ static smime_key_t *smime_get_key_by_addr(char *mailbox, short abilities,
   return return_key;
 }
 
-static smime_key_t *smime_get_key_by_str(char *str, short abilities, short public)
+static struct SmimeKey *smime_get_key_by_str(char *str, short abilities, short public)
 {
-  smime_key_t *results = NULL, *result = NULL;
-  smime_key_t *matches = NULL;
-  smime_key_t **matches_end = &matches;
-  smime_key_t *match = NULL;
-  smime_key_t *return_key = NULL;
+  struct SmimeKey *results = NULL, *result = NULL;
+  struct SmimeKey *matches = NULL;
+  struct SmimeKey **matches_end = &matches;
+  struct SmimeKey *match = NULL;
+  struct SmimeKey *return_key = NULL;
 
   if (!str)
     return NULL;
@@ -717,9 +717,9 @@ static smime_key_t *smime_get_key_by_str(char *str, short abilities, short publi
 }
 
 
-static smime_key_t *smime_ask_for_key(char *prompt, short abilities, short public)
+static struct SmimeKey *smime_ask_for_key(char *prompt, short abilities, short public)
 {
-  smime_key_t *key = NULL;
+  struct SmimeKey *key = NULL;
   char resp[SHORT_STRING];
 
   if (!prompt)
@@ -747,7 +747,7 @@ static smime_key_t *smime_ask_for_key(char *prompt, short abilities, short publi
 */
 static void _smime_getkeys(char *mailbox)
 {
-  smime_key_t *key = NULL;
+  struct SmimeKey *key = NULL;
   char *k = NULL;
   char buf[STRING];
 
@@ -840,7 +840,7 @@ void smime_getkeys(struct Envelope *env)
  */
 char *smime_find_keys(struct Address *adrlist, int oppenc_mode)
 {
-  smime_key_t *key = NULL;
+  struct SmimeKey *key = NULL;
   char *keyID = NULL, *keylist = NULL;
   size_t keylist_size = 0;
   size_t keylist_used = 0;
@@ -1455,7 +1455,7 @@ struct Body *smime_sign_message(struct Body *a)
   int err = 0;
   int empty = 0;
   pid_t thepid;
-  smime_key_t *default_key = NULL;
+  struct SmimeKey *default_key = NULL;
   char *intermediates = NULL;
   char *micalg = NULL;
 
@@ -2000,7 +2000,7 @@ int smime_application_smime_handler(struct Body *m, struct State *s)
 
 int smime_send_menu(struct Header *msg)
 {
-  smime_key_t *key = NULL;
+  struct SmimeKey *key = NULL;
   char *prompt = NULL, *letters = NULL, *choices = NULL;
   int choice;
 

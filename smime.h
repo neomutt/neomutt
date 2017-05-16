@@ -23,7 +23,7 @@
 
 #include "mutt_crypt.h"
 
-typedef struct smime_key
+struct SmimeKey
 {
   char *email;
   char *hash;
@@ -31,8 +31,8 @@ typedef struct smime_key
   char *issuer;
   char trust; /* i=Invalid r=revoked e=expired u=unverified v=verified t=trusted */
   int flags;
-  struct smime_key *next;
-} smime_key_t;
+  struct SmimeKey *next;
+};
 
 
 void smime_void_passphrase(void);
