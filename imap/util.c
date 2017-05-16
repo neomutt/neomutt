@@ -47,7 +47,7 @@
  *   fails, which it might if there isn't enough room in the buffer. */
 int imap_expand_path(char *path, size_t len)
 {
-  IMAP_MBOX mx;
+  struct ImapMbox mx;
   struct ImapData *idata = NULL;
   struct CissUrl url;
   char fixedpath[LONG_STRING];
@@ -118,7 +118,7 @@ void imap_get_parent(char *output, const char *mbox, size_t olen, char delim)
  */
 void imap_get_parent_path(char *output, const char *path, size_t olen)
 {
-  IMAP_MBOX mx;
+  struct ImapMbox mx;
   struct ImapData *idata = NULL;
   char mbox[LONG_STRING] = "";
 
@@ -151,7 +151,7 @@ void imap_get_parent_path(char *output, const char *path, size_t olen)
  */
 void imap_clean_path(char *path, size_t plen)
 {
-  IMAP_MBOX mx;
+  struct ImapMbox mx;
   struct ImapData *idata = NULL;
   char mbox[LONG_STRING] = "";
 
@@ -177,7 +177,7 @@ static int imap_hcache_namer(const char *path, char *dest, size_t dlen)
 
 header_cache_t *imap_hcache_open(struct ImapData *idata, const char *path)
 {
-  IMAP_MBOX mx;
+  struct ImapMbox mx;
   struct CissUrl url;
   char cachepath[LONG_STRING];
   char mbox[LONG_STRING];
@@ -258,7 +258,7 @@ int imap_hcache_del(struct ImapData *idata, unsigned int uid)
 /* imap_parse_path: given an IMAP mailbox name, return host, port
  *   and a path IMAP servers will recognize.
  * mx.mbox is malloc'd, caller must free it */
-int imap_parse_path(const char *path, IMAP_MBOX *mx)
+int imap_parse_path(const char *path, struct ImapMbox *mx)
 {
   static unsigned short ImapPort = 0;
   static unsigned short ImapsPort = 0;
@@ -394,7 +394,7 @@ int imap_mxcmp(const char *mx1, const char *mx2)
  *   look nice. */
 void imap_pretty_mailbox(char *path)
 {
-  IMAP_MBOX home, target;
+  struct ImapMbox home, target;
   struct CissUrl url;
   char *delim = NULL;
   int tlen;
@@ -686,9 +686,9 @@ void imap_make_date(char *buf, time_t timestamp)
            tm->tm_min, tm->tm_sec, (int) tz / 60, (int) abs((int) tz) % 60);
 }
 
-/* imap_qualify_path: make an absolute IMAP folder target, given IMAP_MBOX
+/* imap_qualify_path: make an absolute IMAP folder target, given ImapMbox
  *   and relative path. */
-void imap_qualify_path(char *dest, size_t len, IMAP_MBOX *mx, char *path)
+void imap_qualify_path(char *dest, size_t len, struct ImapMbox *mx, char *path)
 {
   struct CissUrl url;
 

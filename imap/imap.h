@@ -24,16 +24,16 @@
 #include "mailbox.h"
 
 /* -- data structures -- */
-typedef struct
+struct ImapMbox
 {
   struct Account account;
   char *mbox;
-} IMAP_MBOX;
+};
 
 /* imap.c */
 int imap_access(const char *, int);
 int imap_check_mailbox(struct Context *ctx, int force);
-int imap_delete_mailbox(struct Context *ctx, IMAP_MBOX *mx);
+int imap_delete_mailbox(struct Context *ctx, struct ImapMbox *mx);
 int imap_sync_mailbox(struct Context *ctx, int expunge);
 int imap_close_mailbox(struct Context *ctx);
 int imap_buffy_check(int force, int check_stats);
@@ -62,7 +62,7 @@ void imap_logout_all(void);
 
 /* util.c */
 int imap_expand_path(char *path, size_t len);
-int imap_parse_path(const char *path, IMAP_MBOX *mx);
+int imap_parse_path(const char *path, struct ImapMbox *mx);
 void imap_pretty_mailbox(char *path);
 
 int imap_wait_keepalive(pid_t pid);

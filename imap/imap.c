@@ -53,7 +53,7 @@ static void imap_set_flag(struct ImapData *idata, int aclbit, int flag,
 int imap_access(const char *path, int flags)
 {
   struct ImapData *idata = NULL;
-  IMAP_MBOX mx;
+  struct ImapMbox mx;
   char buf[LONG_STRING];
   char mailbox[LONG_STRING];
   char mbox[LONG_STRING];
@@ -123,7 +123,7 @@ int imap_create_mailbox(struct ImapData *idata, char *mailbox)
   return 0;
 }
 
-int imap_rename_mailbox(struct ImapData *idata, IMAP_MBOX *mx, const char *newname)
+int imap_rename_mailbox(struct ImapData *idata, struct ImapMbox *mx, const char *newname)
 {
   char oldmbox[LONG_STRING];
   char newmbox[LONG_STRING];
@@ -140,7 +140,7 @@ int imap_rename_mailbox(struct ImapData *idata, IMAP_MBOX *mx, const char *newna
   return 0;
 }
 
-int imap_delete_mailbox(struct Context *ctx, IMAP_MBOX *mx)
+int imap_delete_mailbox(struct Context *ctx, struct ImapMbox *mx)
 {
   char buf[LONG_STRING], mbox[LONG_STRING];
   struct ImapData *idata = NULL;
@@ -556,7 +556,7 @@ static int imap_open_mailbox(struct Context *ctx)
   char buf[LONG_STRING];
   char bufout[LONG_STRING];
   int count = 0;
-  IMAP_MBOX mx, pmx;
+  struct ImapMbox mx, pmx;
   int rc;
 
   if (imap_parse_path(ctx->path, &mx))
@@ -770,7 +770,7 @@ static int imap_open_mailbox_append(struct Context *ctx, int flags)
   struct ImapData *idata = NULL;
   char buf[LONG_STRING];
   char mailbox[LONG_STRING];
-  IMAP_MBOX mx;
+  struct ImapMbox mx;
   int rc;
 
   if (imap_parse_path(ctx->path, &mx))
@@ -1470,7 +1470,7 @@ static int imap_check_mailbox_reopen(struct Context *ctx, int *index_hint)
 /* split path into (idata,mailbox name) */
 static int imap_get_mailbox(const char *path, struct ImapData **hidata, char *buf, size_t blen)
 {
-  IMAP_MBOX mx;
+  struct ImapMbox mx;
 
   if (imap_parse_path(path, &mx))
   {
@@ -1855,7 +1855,7 @@ int imap_subscribe(char *path, int subscribe)
   char mbox[LONG_STRING];
   char errstr[STRING];
   struct Buffer err, token;
-  IMAP_MBOX mx;
+  struct ImapMbox mx;
 
   if (!mx_is_imap(path) || imap_parse_path(path, &mx) || !mx.mbox)
   {
@@ -1981,7 +1981,7 @@ int imap_complete(char *dest, size_t dlen, char *path)
   char completion[LONG_STRING];
   int clen, matchlen = 0;
   int completions = 0;
-  IMAP_MBOX mx;
+  struct ImapMbox mx;
   int rc;
 
   if (imap_parse_path(path, &mx))
@@ -2071,7 +2071,7 @@ int imap_fast_trash(struct Context *ctx, char *dest)
   char mmbox[LONG_STRING];
   char prompt[LONG_STRING];
   int rc;
-  IMAP_MBOX mx;
+  struct ImapMbox mx;
   int triedcreate = 0;
 
   idata = ctx->data;

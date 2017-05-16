@@ -1518,7 +1518,7 @@ void _mutt_select_file(char *f, size_t flen, int flags, char ***files, int *numf
         else
         {
           char msg[SHORT_STRING];
-          IMAP_MBOX mx;
+          struct ImapMbox mx;
           int nentry = menu->current;
 
           imap_parse_path(state.entry[nentry].name, &mx);

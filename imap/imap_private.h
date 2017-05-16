@@ -231,7 +231,7 @@ struct ImapData
 /* imap.c */
 int imap_check(struct ImapData *idata, int force);
 int imap_create_mailbox(struct ImapData *idata, char *mailbox);
-int imap_rename_mailbox(struct ImapData *idata, IMAP_MBOX *mx, const char *newname);
+int imap_rename_mailbox(struct ImapData *idata, struct ImapMbox *mx, const char *newname);
 IMAP_STATUS *imap_mboxcache_get(struct ImapData *idata, const char *mbox, int create);
 void imap_mboxcache_free(struct ImapData *idata);
 int imap_exec_msgset(struct ImapData *idata, const char *pre, const char *post,
@@ -290,7 +290,7 @@ int imap_mxcmp(const char *mx1, const char *mx2);
 char *imap_next_word(char *s);
 time_t imap_parse_date(char *s);
 void imap_make_date(char *buf, time_t timestamp);
-void imap_qualify_path(char *dest, size_t len, IMAP_MBOX *mx, char *path);
+void imap_qualify_path(char *dest, size_t len, struct ImapMbox *mx, char *path);
 void imap_quote_string(char *dest, size_t slen, const char *src);
 void imap_unquote_string(char *s);
 void imap_munge_mbox_name(struct ImapData *idata, char *dest, size_t dlen, const char *src);

@@ -920,7 +920,7 @@ int imap_append_message(struct Context *ctx, struct Message *msg)
   struct Progress progressbar;
   size_t sent;
   int c, last;
-  IMAP_MBOX mx;
+  struct ImapMbox mx;
   int rc;
 
   idata = ctx->data;
@@ -1054,7 +1054,7 @@ int imap_copy_messages(struct Context *ctx, struct Header *h, char *dest, int de
   char prompt[LONG_STRING];
   int rc;
   int n;
-  IMAP_MBOX mx;
+  struct ImapMbox mx;
   int err_continue = MUTT_NO;
   int triedcreate = 0;
 
