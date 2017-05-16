@@ -33,7 +33,7 @@
 
 #define MAXMIXES 19
 
-struct type2
+struct Remailer
 {
   int num;
   char *shortname;
@@ -41,8 +41,6 @@ struct type2
   char *ver;
   int caps;
 };
-
-typedef struct type2 REMAILER;
 
 struct MixChain
 {
