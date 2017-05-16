@@ -27,7 +27,7 @@
 #include "mutt_sasl.h"
 
 /* imap_auth_sasl: Default authenticator if available. */
-imap_auth_res_t imap_auth_sasl(IMAP_DATA *idata, const char *method)
+imap_auth_res_t imap_auth_sasl(struct ImapData *idata, const char *method)
 {
   sasl_conn_t *saslconn = NULL;
   sasl_interact_t *interaction = NULL;

@@ -165,7 +165,7 @@ typedef enum {
   IMAP_CT_STATUS
 } IMAP_COMMAND_TYPE;
 
-typedef struct
+struct ImapData
 {
   /* This data is specific to a Connection to an IMAP server */
   struct Connection *conn;
@@ -224,46 +224,46 @@ typedef struct
 #ifdef USE_HCACHE
   header_cache_t *hcache;
 #endif
-} IMAP_DATA;
+};
 /* I wish that were called IMAP_CONTEXT :( */
 
 /* -- private IMAP functions -- */
 /* imap.c */
-int imap_check(IMAP_DATA *idata, int force);
-int imap_create_mailbox(IMAP_DATA *idata, char *mailbox);
-int imap_rename_mailbox(IMAP_DATA *idata, IMAP_MBOX *mx, const char *newname);
-IMAP_STATUS *imap_mboxcache_get(IMAP_DATA *idata, const char *mbox, int create);
-void imap_mboxcache_free(IMAP_DATA *idata);
-int imap_exec_msgset(IMAP_DATA *idata, const char *pre, const char *post,
+int imap_check(struct ImapData *idata, int force);
+int imap_create_mailbox(struct ImapData *idata, char *mailbox);
+int imap_rename_mailbox(struct ImapData *idata, IMAP_MBOX *mx, const char *newname);
+IMAP_STATUS *imap_mboxcache_get(struct ImapData *idata, const char *mbox, int create);
+void imap_mboxcache_free(struct ImapData *idata);
+int imap_exec_msgset(struct ImapData *idata, const char *pre, const char *post,
                      int flag, int changed, int invert);
-int imap_open_connection(IMAP_DATA *idata);
-void imap_close_connection(IMAP_DATA *idata);
-IMAP_DATA *imap_conn_find(const struct Account *account, int flags);
-int imap_read_literal(FILE *fp, IMAP_DATA *idata, long bytes, struct Progress *pbar);
-void imap_expunge_mailbox(IMAP_DATA *idata);
-void imap_logout(IMAP_DATA **idata);
-int imap_sync_message(IMAP_DATA *idata, struct Header *hdr, struct Buffer *cmd, int *err_continue);
+int imap_open_connection(struct ImapData *idata);
+void imap_close_connection(struct ImapData *idata);
+struct ImapData *imap_conn_find(const struct Account *account, int flags);
+int imap_read_literal(FILE *fp, struct ImapData *idata, long bytes, struct Progress *pbar);
+void imap_expunge_mailbox(struct ImapData *idata);
+void imap_logout(struct ImapData **idata);
+int imap_sync_message(struct ImapData *idata, struct Header *hdr, struct Buffer *cmd, int *err_continue);
 bool imap_has_flag(struct List *flag_list, const char *flag);
 
 /* auth.c */
-int imap_authenticate(IMAP_DATA *idata);
+int imap_authenticate(struct ImapData *idata);
 
 /* command.c */
-int imap_cmd_start(IMAP_DATA *idata, const char *cmd);
-int imap_cmd_step(IMAP_DATA *idata);
-void imap_cmd_finish(IMAP_DATA *idata);
+int imap_cmd_start(struct ImapData *idata, const char *cmd);
+int imap_cmd_step(struct ImapData *idata);
+void imap_cmd_finish(struct ImapData *idata);
 int imap_code(const char *s);
-const char *imap_cmd_trailer(IMAP_DATA *idata);
-int imap_exec(IMAP_DATA *idata, const char *cmd, int flags);
-int imap_cmd_idle(IMAP_DATA *idata);
+const char *imap_cmd_trailer(struct ImapData *idata);
+int imap_exec(struct ImapData *idata, const char *cmd, int flags);
+int imap_cmd_idle(struct ImapData *idata);
 
 /* message.c */
 void imap_add_keywords(char *s, struct Header *keywords, struct List *mailbox_flags, size_t slen);
 void imap_free_header_data(struct ImapHeaderData **data);
-int imap_read_headers(IMAP_DATA *idata, int msgbegin, int msgend);
-char *imap_set_flags(IMAP_DATA *idata, struct Header *h, char *s);
-int imap_cache_del(IMAP_DATA *idata, struct Header *h);
-int imap_cache_clean(IMAP_DATA *idata);
+int imap_read_headers(struct ImapData *idata, int msgbegin, int msgend);
+char *imap_set_flags(struct ImapData *idata, struct Header *h, char *s);
+int imap_cache_del(struct ImapData *idata, struct Header *h);
+int imap_cache_clean(struct ImapData *idata);
 
 int imap_fetch_message(struct Context *ctx, struct Message *msg, int msgno);
 int imap_close_message(struct Context *ctx, struct Message *msg);
@@ -271,19 +271,19 @@ int imap_commit_message(struct Context *ctx, struct Message *msg);
 
 /* util.c */
 #ifdef USE_HCACHE
-header_cache_t *imap_hcache_open(IMAP_DATA *idata, const char *path);
-void imap_hcache_close(IMAP_DATA *idata);
-struct Header *imap_hcache_get(IMAP_DATA *idata, unsigned int uid);
-int imap_hcache_put(IMAP_DATA *idata, struct Header *h);
-int imap_hcache_del(IMAP_DATA *idata, unsigned int uid);
+header_cache_t *imap_hcache_open(struct ImapData *idata, const char *path);
+void imap_hcache_close(struct ImapData *idata);
+struct Header *imap_hcache_get(struct ImapData *idata, unsigned int uid);
+int imap_hcache_put(struct ImapData *idata, struct Header *h);
+int imap_hcache_del(struct ImapData *idata, unsigned int uid);
 #endif
 
 int imap_continue(const char *msg, const char *resp);
 void imap_error(const char *where, const char *msg);
-IMAP_DATA *imap_new_idata(void);
-void imap_free_idata(IMAP_DATA **idata);
-char *imap_fix_path(IMAP_DATA *idata, const char *mailbox, char *path, size_t plen);
-void imap_cachepath(IMAP_DATA *idata, const char *mailbox, char *dest, size_t dlen);
+struct ImapData *imap_new_idata(void);
+void imap_free_idata(struct ImapData **idata);
+char *imap_fix_path(struct ImapData *idata, const char *mailbox, char *path, size_t plen);
+void imap_cachepath(struct ImapData *idata, const char *mailbox, char *dest, size_t dlen);
 int imap_get_literal_count(const char *buf, long *bytes);
 char *imap_get_qualifier(char *buf);
 int imap_mxcmp(const char *mx1, const char *mx2);
@@ -293,13 +293,13 @@ void imap_make_date(char *buf, time_t timestamp);
 void imap_qualify_path(char *dest, size_t len, IMAP_MBOX *mx, char *path);
 void imap_quote_string(char *dest, size_t slen, const char *src);
 void imap_unquote_string(char *s);
-void imap_munge_mbox_name(IMAP_DATA *idata, char *dest, size_t dlen, const char *src);
-void imap_unmunge_mbox_name(IMAP_DATA *idata, char *s);
+void imap_munge_mbox_name(struct ImapData *idata, char *dest, size_t dlen, const char *src);
+void imap_unmunge_mbox_name(struct ImapData *idata, char *s);
 int imap_wordcasecmp(const char *a, const char *b);
 
 /* utf7.c */
-void imap_utf_encode(IMAP_DATA *idata, char **s);
-void imap_utf_decode(IMAP_DATA *idata, char **s);
+void imap_utf_encode(struct ImapData *idata, char **s);
+void imap_utf_decode(struct ImapData *idata, char **s);
 
 #ifdef USE_HCACHE
 #define imap_hcache_keylen mutt_strlen

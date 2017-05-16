@@ -45,7 +45,7 @@ static const struct ImapAuth imap_authenticators[] = {
 
 /* imap_authenticate: Attempt to authenticate using either user-specified
  *   authentication method if specified, or any. */
-int imap_authenticate(IMAP_DATA *idata)
+int imap_authenticate(struct ImapData *idata)
 {
   const struct ImapAuth *authenticator = NULL;
   char *methods = NULL;

@@ -30,7 +30,7 @@
 #include "hcache/hcache.h"
 #endif
 
-static void imap_update_context(IMAP_DATA *idata, int oldmsgcount)
+static void imap_update_context(struct ImapData *idata, int oldmsgcount)
 {
   struct Context *ctx = NULL;
   struct Header *h = NULL;
@@ -47,7 +47,7 @@ static void imap_update_context(IMAP_DATA *idata, int oldmsgcount)
   }
 }
 
-static struct BodyCache *msg_cache_open(IMAP_DATA *idata)
+static struct BodyCache *msg_cache_open(struct ImapData *idata)
 {
   char mailbox[_POSIX_PATH_MAX];
 
@@ -59,7 +59,7 @@ static struct BodyCache *msg_cache_open(IMAP_DATA *idata)
   return mutt_bcache_open(&idata->conn->account, mailbox);
 }
 
-static FILE *msg_cache_get(IMAP_DATA *idata, struct Header *h)
+static FILE *msg_cache_get(struct ImapData *idata, struct Header *h)
 {
   char id[_POSIX_PATH_MAX];
 
@@ -71,7 +71,7 @@ static FILE *msg_cache_get(IMAP_DATA *idata, struct Header *h)
   return mutt_bcache_get(idata->bcache, id);
 }
 
-static FILE *msg_cache_put(IMAP_DATA *idata, struct Header *h)
+static FILE *msg_cache_put(struct ImapData *idata, struct Header *h)
 {
   char id[_POSIX_PATH_MAX];
 
@@ -83,7 +83,7 @@ static FILE *msg_cache_put(IMAP_DATA *idata, struct Header *h)
   return mutt_bcache_put(idata->bcache, id, 1);
 }
 
-static int msg_cache_commit(IMAP_DATA *idata, struct Header *h)
+static int msg_cache_commit(struct ImapData *idata, struct Header *h)
 {
   char id[_POSIX_PATH_MAX];
 
@@ -99,7 +99,7 @@ static int msg_cache_commit(IMAP_DATA *idata, struct Header *h)
 static int msg_cache_clean_cb(const char *id, struct BodyCache *bcache, void *data)
 {
   unsigned int uv, uid, n;
-  IMAP_DATA *idata = data;
+  struct ImapData *idata = data;
 
   if (sscanf(id, "%u-%u", &uv, &uid) != 2)
     return 0;
@@ -285,7 +285,7 @@ static int msg_parse_fetch(IMAP_HEADER *h, char *s)
  *     -2 if the string is a corrupt fetch response */
 static int msg_fetch_header(struct Context *ctx, IMAP_HEADER *h, char *buf, FILE *fp)
 {
-  IMAP_DATA *idata = NULL;
+  struct ImapData *idata = NULL;
   long bytes;
   int rc = -1; /* default now is that string isn't FETCH response */
 
@@ -349,7 +349,7 @@ static void flush_buffer(char *buf, size_t *len, struct Connection *conn)
  * msgno of the last message read. It will return a value other than
  * msgend if mail comes in while downloading headers (in theory).
  */
-int imap_read_headers(IMAP_DATA *idata, int msgbegin, int msgend)
+int imap_read_headers(struct ImapData *idata, int msgbegin, int msgend)
 {
   struct Context *ctx = NULL;
   char *hdrreq = NULL;
@@ -687,7 +687,7 @@ error_out_0:
 
 int imap_fetch_message(struct Context *ctx, struct Message *msg, int msgno)
 {
-  IMAP_DATA *idata = NULL;
+  struct ImapData *idata = NULL;
   struct Header *h = NULL;
   struct Envelope *newenv = NULL;
   char buf[LONG_STRING];
@@ -909,7 +909,7 @@ int imap_commit_message(struct Context *ctx, struct Message *msg)
 
 int imap_append_message(struct Context *ctx, struct Message *msg)
 {
-  IMAP_DATA *idata = NULL;
+  struct ImapData *idata = NULL;
   FILE *fp = NULL;
   char buf[LONG_STRING];
   char mbox[LONG_STRING];
@@ -1047,7 +1047,7 @@ fail:
  *       1: non-fatal error - try fetch/append */
 int imap_copy_messages(struct Context *ctx, struct Header *h, char *dest, int delete)
 {
-  IMAP_DATA *idata = NULL;
+  struct ImapData *idata = NULL;
   struct Buffer cmd, sync_cmd;
   char mbox[LONG_STRING];
   char mmbox[LONG_STRING];
@@ -1219,7 +1219,7 @@ out:
   return rc < 0 ? -1 : rc;
 }
 
-int imap_cache_del(IMAP_DATA *idata, struct Header *h)
+int imap_cache_del(struct ImapData *idata, struct Header *h)
 {
   char id[_POSIX_PATH_MAX];
 
@@ -1231,7 +1231,7 @@ int imap_cache_del(IMAP_DATA *idata, struct Header *h)
   return mutt_bcache_del(idata->bcache, id);
 }
 
-int imap_cache_clean(IMAP_DATA *idata)
+int imap_cache_clean(struct ImapData *idata)
 {
   idata->bcache = msg_cache_open(idata);
   mutt_bcache_list(idata->bcache, msg_cache_clean_cb, idata);
@@ -1274,7 +1274,7 @@ void imap_free_header_data(struct ImapHeaderData **data)
 
 /* imap_set_flags: fill out the message header according to the flags from
  *   the server. Expects a flags line of the form "FLAGS (flag flag ...)" */
-char *imap_set_flags(IMAP_DATA *idata, struct Header *h, char *s)
+char *imap_set_flags(struct ImapData *idata, struct Header *h, char *s)
 {
   struct Context *ctx = idata->ctx;
   IMAP_HEADER newh;

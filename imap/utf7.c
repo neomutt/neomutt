@@ -249,7 +249,7 @@ bail:
   return 0;
 }
 
-void imap_utf_encode(IMAP_DATA *idata, char **s)
+void imap_utf_encode(struct ImapData *idata, char **s)
 {
   if (Charset)
   {
@@ -266,7 +266,7 @@ void imap_utf_encode(IMAP_DATA *idata, char **s)
   }
 }
 
-void imap_utf_decode(IMAP_DATA *idata, char **s)
+void imap_utf_decode(struct ImapData *idata, char **s)
 {
   char *t = NULL;
 

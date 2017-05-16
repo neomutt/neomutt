@@ -65,7 +65,7 @@ static void print_gss_error(OM_uint32 err_maj, OM_uint32 err_min)
 }
 
 /* imap_auth_gss: AUTH=GSSAPI support. */
-imap_auth_res_t imap_auth_gss(IMAP_DATA *idata, const char *method)
+imap_auth_res_t imap_auth_gss(struct ImapData *idata, const char *method)
 {
   gss_buffer_desc request_buf, send_token;
   gss_buffer_t sec_token;

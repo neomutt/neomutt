@@ -37,7 +37,7 @@ static const char *const Capabilities[] = {
   "IDLE",          "SASL-IR",     "ENABLE",         NULL,
 };
 
-static bool cmd_queue_full(IMAP_DATA *idata)
+static bool cmd_queue_full(struct ImapData *idata)
 {
   if ((idata->nextcmd + 1) % idata->cmdslots == idata->lastcmd)
     return true;
@@ -47,7 +47,7 @@ static bool cmd_queue_full(IMAP_DATA *idata)
 
 /* sets up a new command control block and adds it to the queue.
  * Returns NULL if the pipeline is full. */
-static struct ImapCommand *cmd_new(IMAP_DATA *idata)
+static struct ImapCommand *cmd_new(struct ImapData *idata)
 {
   struct ImapCommand *cmd = NULL;
 
@@ -70,7 +70,7 @@ static struct ImapCommand *cmd_new(IMAP_DATA *idata)
 }
 
 /* queues command. If the queue is full, attempts to drain it. */
-static int cmd_queue(IMAP_DATA *idata, const char *cmdstr)
+static int cmd_queue(struct ImapData *idata, const char *cmdstr)
 {
   struct ImapCommand *cmd = NULL;
   int rc;
@@ -94,8 +94,8 @@ static int cmd_queue(IMAP_DATA *idata, const char *cmdstr)
   return 0;
 }
 
-/* cmd_handle_fatal: when IMAP_DATA is in fatal state, do what we can */
-static void cmd_handle_fatal(IMAP_DATA *idata)
+/* cmd_handle_fatal: when ImapData is in fatal state, do what we can */
+static void cmd_handle_fatal(struct ImapData *idata)
 {
   idata->status = IMAP_FATAL;
 
@@ -117,7 +117,7 @@ static void cmd_handle_fatal(IMAP_DATA *idata)
   }
 }
 
-static int cmd_start(IMAP_DATA *idata, const char *cmdstr, int flags)
+static int cmd_start(struct ImapData *idata, const char *cmdstr, int flags)
 {
   int rc;
 
@@ -162,7 +162,7 @@ static int cmd_status(const char *s)
 
 /* cmd_parse_expunge: mark headers with new sequence ID and mark idata to
  *   be reopened at our earliest convenience */
-static void cmd_parse_expunge(IMAP_DATA *idata, const char *s)
+static void cmd_parse_expunge(struct ImapData *idata, const char *s)
 {
   int expno, cur;
   struct Header *h = NULL;
@@ -188,11 +188,11 @@ static void cmd_parse_expunge(IMAP_DATA *idata, const char *s)
   idata->reopen |= IMAP_EXPUNGE_PENDING;
 }
 
-/* cmd_parse_fetch: Load fetch response into IMAP_DATA. Currently only
+/* cmd_parse_fetch: Load fetch response into ImapData. Currently only
  *   handles unanticipated FETCH responses, and only FLAGS data. We get
  *   these if another client has changed flags for a mailbox we've selected.
  *   Of course, a lot of code here duplicates code in message.c. */
-static void cmd_parse_fetch(IMAP_DATA *idata, char *s)
+static void cmd_parse_fetch(struct ImapData *idata, char *s)
 {
   int msgno, cur;
   struct Header *h = NULL;
@@ -251,7 +251,7 @@ static void cmd_parse_fetch(IMAP_DATA *idata, char *s)
 
 /* cmd_parse_capabilities: set capability bits according to CAPABILITY
  *   response */
-static void cmd_parse_capability(IMAP_DATA *idata, char *s)
+static void cmd_parse_capability(struct ImapData *idata, char *s)
 {
   int x;
   char *bracket = NULL;
@@ -278,7 +278,7 @@ static void cmd_parse_capability(IMAP_DATA *idata, char *s)
   }
 }
 
-static void cmd_parse_list(IMAP_DATA *idata, char *s)
+static void cmd_parse_list(struct ImapData *idata, char *s)
 {
   IMAP_LIST *list = NULL;
   IMAP_LIST lb;
@@ -349,7 +349,7 @@ static void cmd_parse_list(IMAP_DATA *idata, char *s)
   }
 }
 
-static void cmd_parse_lsub(IMAP_DATA *idata, char *s)
+static void cmd_parse_lsub(struct ImapData *idata, char *s)
 {
   char buf[STRING];
   char errstr[STRING];
@@ -397,7 +397,7 @@ static void cmd_parse_lsub(IMAP_DATA *idata, char *s)
 }
 
 /* cmd_parse_myrights: set rights bits according to MYRIGHTS response */
-static void cmd_parse_myrights(IMAP_DATA *idata, const char *s)
+static void cmd_parse_myrights(struct ImapData *idata, const char *s)
 {
   mutt_debug(2, "Handling MYRIGHTS\n");
 
@@ -462,7 +462,7 @@ static void cmd_parse_myrights(IMAP_DATA *idata, const char *s)
 }
 
 /* cmd_parse_search: store SEARCH response for later use */
-static void cmd_parse_search(IMAP_DATA *idata, const char *s)
+static void cmd_parse_search(struct ImapData *idata, const char *s)
 {
   unsigned int uid;
   struct Header *h = NULL;
@@ -480,7 +480,7 @@ static void cmd_parse_search(IMAP_DATA *idata, const char *s)
 
 /* first cut: just do buffy update. Later we may wish to cache all
  * mailbox information, even that not desired by buffy */
-static void cmd_parse_status(IMAP_DATA *idata, char *s)
+static void cmd_parse_status(struct ImapData *idata, char *s)
 {
   char *mailbox = NULL;
   char *value = NULL;
@@ -634,7 +634,7 @@ static void cmd_parse_status(IMAP_DATA *idata, char *s)
 }
 
 /* cmd_parse_enabled: record what the server has enabled */
-static void cmd_parse_enabled(IMAP_DATA *idata, const char *s)
+static void cmd_parse_enabled(struct ImapData *idata, const char *s)
 {
   mutt_debug(2, "Handling ENABLED\n");
 
@@ -647,7 +647,7 @@ static void cmd_parse_enabled(IMAP_DATA *idata, const char *s)
 }
 
 /* cmd_handle_untagged: fallback parser for otherwise unhandled messages. */
-static int cmd_handle_untagged(IMAP_DATA *idata)
+static int cmd_handle_untagged(struct ImapData *idata)
 {
   char *s = NULL;
   char *pn = NULL;
@@ -749,7 +749,7 @@ static int cmd_handle_untagged(IMAP_DATA *idata)
 
 /* imap_cmd_start: Given an IMAP command, send it to the server.
  *   If cmdstr is NULL, sends queued commands. */
-int imap_cmd_start(IMAP_DATA *idata, const char *cmdstr)
+int imap_cmd_start(struct ImapData *idata, const char *cmdstr)
 {
   return cmd_start(idata, cmdstr, 0);
 }
@@ -758,7 +758,7 @@ int imap_cmd_start(IMAP_DATA *idata, const char *cmdstr)
  *   tagged completion response, handles untagged messages, can read
  *   arbitrarily large strings (using malloc, so don't make it _too_
  *   large!). */
-int imap_cmd_step(IMAP_DATA *idata)
+int imap_cmd_step(struct ImapData *idata)
 {
   size_t len = 0;
   int c;
@@ -867,7 +867,7 @@ int imap_code(const char *s)
 }
 
 /* imap_cmd_trailer: extra information after tagged command response if any */
-const char *imap_cmd_trailer(IMAP_DATA *idata)
+const char *imap_cmd_trailer(struct ImapData *idata)
 {
   static const char *notrailer = "";
   const char *s = idata->buf;
@@ -902,7 +902,7 @@ const char *imap_cmd_trailer(IMAP_DATA *idata)
  *   IMAP_CMD_QUEUE: only queue command, do not execute.
  * Return 0 on success, -1 on Failure, -2 on OK Failure
  */
-int imap_exec(IMAP_DATA *idata, const char *cmdstr, int flags)
+int imap_exec(struct ImapData *idata, const char *cmdstr, int flags)
 {
   int rc;
 
@@ -941,7 +941,7 @@ int imap_exec(IMAP_DATA *idata, const char *cmdstr, int flags)
  *   detected, do expunge). Called automatically by imap_cmd_step, but
  *   may be called at any time. Called by imap_check_mailbox just before
  *   the index is refreshed, for instance. */
-void imap_cmd_finish(IMAP_DATA *idata)
+void imap_cmd_finish(struct ImapData *idata)
 {
   if (idata->status == IMAP_FATAL)
   {
@@ -982,7 +982,7 @@ void imap_cmd_finish(IMAP_DATA *idata)
 }
 
 /* imap_cmd_idle: Enter the IDLE state. */
-int imap_cmd_idle(IMAP_DATA *idata)
+int imap_cmd_idle(struct ImapData *idata)
 {
   int rc;
 
