@@ -1108,13 +1108,13 @@ int state_printf(struct State *s, const char *fmt, ...);
 int state_putws(const wchar_t *ws, struct State *s);
 
 /* for attachment counter */
-typedef struct
+struct AttachMatch
 {
   char *major;
   int major_int;
   char *minor;
   regex_t minor_rx;
-} ATTACH_MATCH;
+};
 
 /* multibyte character table.
  * Allows for direct access to the individual multibyte characters in a

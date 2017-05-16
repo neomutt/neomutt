@@ -1316,7 +1316,7 @@ static void _attachments_clean(void)
 
 static int parse_attach_list(struct Buffer *buf, struct Buffer *s, struct List **ldata, struct Buffer *err)
 {
-  ATTACH_MATCH *a = NULL;
+  struct AttachMatch *a = NULL;
   struct List *listp = NULL, *lastp = NULL;
   char *p = NULL;
   char *tmpminor = NULL;
@@ -1329,7 +1329,7 @@ static int parse_attach_list(struct Buffer *buf, struct Buffer *s, struct List *
              (void *) *ldata);
   for (listp = *ldata; listp; listp = listp->next)
   {
-    a = (ATTACH_MATCH *) listp->data;
+    a = (struct AttachMatch *) listp->data;
     mutt_debug(5, "parse_attach_list: skipping %s/%s\n", a->major, a->minor);
     lastp = listp;
   }
@@ -1341,7 +1341,7 @@ static int parse_attach_list(struct Buffer *buf, struct Buffer *s, struct List *
     if (!buf->data || *buf->data == '\0')
       continue;
 
-    a = safe_malloc(sizeof(ATTACH_MATCH));
+    a = safe_malloc(sizeof(struct AttachMatch));
 
     /* some cheap hacks that I expect to remove */
     if (ascii_strcasecmp(buf->data, "any") == 0)
@@ -1404,7 +1404,7 @@ static int parse_attach_list(struct Buffer *buf, struct Buffer *s, struct List *
 
 static int parse_unattach_list(struct Buffer *buf, struct Buffer *s, struct List **ldata, struct Buffer *err)
 {
-  ATTACH_MATCH *a = NULL;
+  struct AttachMatch *a = NULL;
   struct List *lp = NULL, *lastp = NULL, *newlp = NULL;
   char *tmp = NULL;
   int major;
@@ -1438,7 +1438,7 @@ static int parse_unattach_list(struct Buffer *buf, struct Buffer *s, struct List
     lastp = NULL;
     for (lp = *ldata; lp;)
     {
-      a = (ATTACH_MATCH *) lp->data;
+      a = (struct AttachMatch *) lp->data;
       mutt_debug(5, "parse_unattach_list: check %s/%s [%d] : %s/%s [%d]\n",
                  a->major, a->minor, a->major_int, tmp, minor, major);
       if (a->major_int == major && (mutt_strcasecmp(minor, a->minor) == 0))
@@ -1477,7 +1477,7 @@ static int print_attach_list(struct List *lp, char op, char *name)
   while (lp)
   {
     printf("attachments %c%s %s/%s\n", op, name,
-           ((ATTACH_MATCH *) lp->data)->major, ((ATTACH_MATCH *) lp->data)->minor);
+           ((struct AttachMatch *) lp->data)->major, ((struct AttachMatch *) lp->data)->minor);
     lp = lp->next;
   }
 

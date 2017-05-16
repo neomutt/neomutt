@@ -1541,7 +1541,7 @@ struct Address *mutt_parse_adrlist(struct Address *p, const char *s)
 static bool count_body_parts_check(struct List **checklist, struct Body *b, bool dflt)
 {
   struct List *type = NULL;
-  ATTACH_MATCH *a = NULL;
+  struct AttachMatch *a = NULL;
 
   /* If list is null, use default behavior. */
   if (!*checklist)
@@ -1551,7 +1551,7 @@ static bool count_body_parts_check(struct List **checklist, struct Body *b, bool
 
   for (type = *checklist; type; type = type->next)
   {
-    a = (ATTACH_MATCH *) type->data;
+    a = (struct AttachMatch *) type->data;
     mutt_debug(5, "cbpc: %s %d/%s ?? %s/%s [%d]... ",
                dflt ? "[OK]   " : "[EXCL] ", b->type,
                b->subtype ? b->subtype : "*", a->major, a->minor, a->major_int);
