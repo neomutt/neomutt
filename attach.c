@@ -49,7 +49,7 @@ int mutt_get_tmp_attachment(struct Body *a)
   if (a->unlink)
     return 0;
 
-  rfc1524_entry *entry = rfc1524_new_entry();
+  struct Rfc1524MailcapEntry *entry = rfc1524_new_entry();
   snprintf(type, sizeof(type), "%s/%s", TYPE(a), a->subtype);
   rfc1524_mailcap_lookup(a, type, entry, 0);
   rfc1524_expand_filename(entry->nametemplate, a->filename, tempfile, sizeof(tempfile));
@@ -86,7 +86,7 @@ int mutt_compose_attachment(struct Body *a)
   char type[STRING];
   char command[STRING];
   char newfile[_POSIX_PATH_MAX] = "";
-  rfc1524_entry *entry = rfc1524_new_entry();
+  struct Rfc1524MailcapEntry *entry = rfc1524_new_entry();
   short unlink_newfile = 0;
   int rc = 0;
 
@@ -217,7 +217,7 @@ int mutt_edit_attachment(struct Body *a)
   char type[STRING];
   char command[STRING];
   char newfile[_POSIX_PATH_MAX] = "";
-  rfc1524_entry *entry = rfc1524_new_entry();
+  struct Rfc1524MailcapEntry *entry = rfc1524_new_entry();
   short unlink_newfile = 0;
   int rc = 0;
 
@@ -335,7 +335,7 @@ int mutt_view_attachment(FILE *fp, struct Body *a, int flag, struct Header *hdr,
   char command[HUGE_STRING];
   char descrip[STRING];
   char *fname = NULL;
-  rfc1524_entry *entry = NULL;
+  struct Rfc1524MailcapEntry *entry = NULL;
   int rc = -1;
   int unlink_tempfile = 0;
 
@@ -910,7 +910,7 @@ int mutt_print_attachment(FILE *fp, struct Body *a)
   if (rfc1524_mailcap_lookup(a, type, NULL, MUTT_PRINT))
   {
     char command[_POSIX_PATH_MAX + STRING];
-    rfc1524_entry *entry = NULL;
+    struct Rfc1524MailcapEntry *entry = NULL;
     int piped = false;
 
     mutt_debug(2, "Using mailcap...\n");
