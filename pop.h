@@ -78,14 +78,14 @@ typedef struct
   POP_CACHE cache[POP_CACHE_LEN];
 } POP_DATA;
 
-typedef struct
+struct PopAuth
 {
   /* do authentication, using named method or any available if method is NULL */
   pop_auth_res_t (*authenticate)(POP_DATA *, const char *);
   /* name of authentication method supported, NULL means variable. If this
    * is not null, authenticate may ignore the second parameter. */
   const char *method;
-} pop_auth_t;
+};
 
 /* pop_auth.c */
 int pop_authenticate(POP_DATA *pop_data);
