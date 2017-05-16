@@ -1977,7 +1977,7 @@ int imap_complete(char *dest, size_t dlen, char *path)
   struct ImapData *idata = NULL;
   char list[LONG_STRING];
   char buf[LONG_STRING];
-  IMAP_LIST listresp;
+  struct ImapList listresp;
   char completion[LONG_STRING];
   int clen, matchlen = 0;
   int completions = 0;

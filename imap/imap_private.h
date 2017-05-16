@@ -142,7 +142,7 @@ typedef struct
   unsigned int unseen;
 } IMAP_STATUS;
 
-typedef struct
+struct ImapList
 {
   char *name;
 
@@ -150,7 +150,7 @@ typedef struct
   /* if we end up storing a lot of these we could turn this into a bitfield */
   bool noselect;
   bool noinferiors;
-} IMAP_LIST;
+};
 
 /* IMAP command structure */
 struct ImapCommand

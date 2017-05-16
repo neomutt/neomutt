@@ -280,17 +280,17 @@ static void cmd_parse_capability(struct ImapData *idata, char *s)
 
 static void cmd_parse_list(struct ImapData *idata, char *s)
 {
-  IMAP_LIST *list = NULL;
-  IMAP_LIST lb;
+  struct ImapList *list = NULL;
+  struct ImapList lb;
   char delimbuf[5]; /* worst case: "\\"\0 */
   long litlen;
 
   if (idata->cmddata && idata->cmdtype == IMAP_CT_LIST)
-    list = (IMAP_LIST *) idata->cmddata;
+    list = (struct ImapList *) idata->cmddata;
   else
     list = &lb;
 
-  memset(list, 0, sizeof(IMAP_LIST));
+  memset(list, 0, sizeof(struct ImapList));
 
   /* flags */
   s = imap_next_word(s);
@@ -355,7 +355,7 @@ static void cmd_parse_lsub(struct ImapData *idata, char *s)
   char errstr[STRING];
   struct Buffer err, token;
   struct CissUrl url;
-  IMAP_LIST list;
+  struct ImapList list;
 
   if (idata->cmddata && idata->cmdtype == IMAP_CT_LIST)
   {

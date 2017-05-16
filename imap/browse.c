@@ -111,7 +111,7 @@ static void imap_add_folder(char delim, char *folder, int noselect, int noinferi
 static int browse_add_list_result(struct ImapData *idata, const char *cmd,
                                   struct browser_state *state, short isparent)
 {
-  IMAP_LIST list;
+  struct ImapList list;
   IMAP_MBOX mx;
   int rc;
 
@@ -152,7 +152,7 @@ static int browse_add_list_result(struct ImapData *idata, const char *cmd,
 int imap_browse(char *path, struct browser_state *state)
 {
   struct ImapData *idata = NULL;
-  IMAP_LIST list;
+  struct ImapList list;
   char buf[LONG_STRING];
   char mbox[LONG_STRING];
   char munged_mbox[LONG_STRING];
