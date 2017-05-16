@@ -28,16 +28,16 @@
 int *ColorQuote;
 int ColorQuoteUsed;
 int ColorDefs[MT_COLOR_MAX];
-COLOR_LINE *ColorHdrList = NULL;
-COLOR_LINE *ColorBodyList = NULL;
-COLOR_LINE *ColorAttachList = NULL;
-COLOR_LINE *ColorStatusList = NULL;
-COLOR_LINE *ColorIndexList = NULL;
-COLOR_LINE *ColorIndexAuthorList = NULL;
-COLOR_LINE *ColorIndexFlagsList = NULL;
-COLOR_LINE *ColorIndexSubjectList = NULL;
+struct ColorLine *ColorHdrList = NULL;
+struct ColorLine *ColorBodyList = NULL;
+struct ColorLine *ColorAttachList = NULL;
+struct ColorLine *ColorStatusList = NULL;
+struct ColorLine *ColorIndexList = NULL;
+struct ColorLine *ColorIndexAuthorList = NULL;
+struct ColorLine *ColorIndexFlagsList = NULL;
+struct ColorLine *ColorIndexSubjectList = NULL;
 #ifdef USE_NOTMUCH
-COLOR_LINE *ColorIndexTagList = NULL;
+struct ColorLine *ColorIndexTagList = NULL;
 #endif
 
 /* local to this file */
@@ -133,18 +133,18 @@ static const struct mapping_t ComposeFields[] = {
 
 #define COLOR_QUOTE_INIT 8
 
-static COLOR_LINE *new_color_line(void)
+static struct ColorLine *new_color_line(void)
 {
-  COLOR_LINE *p = safe_calloc(1, sizeof(COLOR_LINE));
+  struct ColorLine *p = safe_calloc(1, sizeof(struct ColorLine));
 
   p->fg = p->bg = -1;
 
   return p;
 }
 
-static void free_color_line(COLOR_LINE **l, int free_colors)
+static void free_color_line(struct ColorLine **l, int free_colors)
 {
-  COLOR_LINE *tmp = NULL;
+  struct ColorLine *tmp = NULL;
 
   if (!l || !*l)
     return;
@@ -396,9 +396,9 @@ static int parse_color_name(const char *s, int *col, int *attr, int is_fg, struc
 #endif
 
 
-static void do_uncolor(struct Buffer *buf, struct Buffer *s, COLOR_LINE **cl, int *do_cache, int parse_uncolor)
+static void do_uncolor(struct Buffer *buf, struct Buffer *s, struct ColorLine **cl, int *do_cache, int parse_uncolor)
 {
-  COLOR_LINE *tmp = NULL, *last = NULL;
+  struct ColorLine *tmp = NULL, *last = NULL;
 
   do
   {
@@ -550,14 +550,14 @@ int mutt_parse_unmono(struct Buffer *buf, struct Buffer *s, unsigned long data, 
 }
 
 
-static int add_pattern(COLOR_LINE **top, const char *s, int sensitive, int fg,
+static int add_pattern(struct ColorLine **top, const char *s, int sensitive, int fg,
                        int bg, int attr, struct Buffer *err, int is_index, int match)
 {
   /* is_index used to store compiled pattern
    * only for `index' color object
    * when called from mutt_parse_color() */
 
-  COLOR_LINE *tmp = *top;
+  struct ColorLine *tmp = *top;
 
   while (tmp)
   {

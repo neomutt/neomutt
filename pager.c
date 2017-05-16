@@ -715,7 +715,7 @@ static void resolve_types(char *buf, char *raw, struct line_t *lineInfo, int n,
                           int last, struct q_class_t **QuoteList, int *q_level,
                           int *force_redraw, int q_classify)
 {
-  COLOR_LINE *color_line = NULL;
+  struct ColorLine *color_line = NULL;
   regmatch_t pmatch[1], smatch[1];
   int found, offset, null_rx, i;
 

@@ -185,7 +185,7 @@ enum
   MT_COLOR_MAX
 };
 
-typedef struct color_line
+struct ColorLine
 {
   regex_t rx;
   int match; /* which substringmap 0 for old behaviour */
@@ -195,8 +195,8 @@ typedef struct color_line
   short fg;
   short bg;
   int pair;
-  struct color_line *next;
-} COLOR_LINE;
+  struct ColorLine *next;
+};
 
 #define MUTT_PROGRESS_SIZE (1 << 0) /* traffic-based progress */
 #define MUTT_PROGRESS_MSG  (1 << 1) /* message-based progress */
@@ -261,17 +261,17 @@ static inline int mutt_window_wrap_cols(struct MuttWindow *win, short wrap)
 extern int *ColorQuote;
 extern int ColorQuoteUsed;
 extern int ColorDefs[];
-extern COLOR_LINE *ColorHdrList;
-extern COLOR_LINE *ColorBodyList;
-extern COLOR_LINE *ColorAttachList;
-extern COLOR_LINE *ColorStatusList;
-extern COLOR_LINE *ColorIndexList;
-extern COLOR_LINE *ColorIndexAuthorList;
-extern COLOR_LINE *ColorIndexFlagsList;
-extern COLOR_LINE *ColorIndexSubjectList;
+extern struct ColorLine *ColorHdrList;
+extern struct ColorLine *ColorBodyList;
+extern struct ColorLine *ColorAttachList;
+extern struct ColorLine *ColorStatusList;
+extern struct ColorLine *ColorIndexList;
+extern struct ColorLine *ColorIndexAuthorList;
+extern struct ColorLine *ColorIndexFlagsList;
+extern struct ColorLine *ColorIndexSubjectList;
 
 #ifdef USE_NOTMUCH
-extern COLOR_LINE *ColorIndexTagList;
+extern struct ColorLine *ColorIndexTagList;
 #endif
 
 void ci_start_color(void);

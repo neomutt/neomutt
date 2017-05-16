@@ -33,7 +33,7 @@ static struct Menu **MenuStack = NULL;
 
 static int get_color(int index, unsigned char *s)
 {
-  COLOR_LINE *color = NULL;
+  struct ColorLine *color = NULL;
   struct Header *hdr = Context->hdrs[Context->v2r[index]];
   int type = *s;
 

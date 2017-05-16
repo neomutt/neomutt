@@ -673,7 +673,7 @@ void mutt_draw_statusline(int cols, const char *buf, int buflen)
 
   do
   {
-    COLOR_LINE *cl = NULL;
+    struct ColorLine *cl = NULL;
     found = 0;
 
     if (!buf[offset])
@@ -3257,7 +3257,7 @@ int mutt_index_menu(void)
 
 void mutt_set_header_color(struct Context *ctx, struct Header *curhdr)
 {
-  COLOR_LINE *color = NULL;
+  struct ColorLine *color = NULL;
   pattern_cache_t cache;
 
   if (!curhdr)
