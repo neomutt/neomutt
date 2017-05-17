@@ -90,16 +90,16 @@ char *mutt_read_rfc822_line(FILE *f, char *line, size_t *linelen)
   /* not reached */
 }
 
-static LIST *parse_references(char *s, int in_reply_to)
+static struct List *parse_references(char *s, int in_reply_to)
 {
-  LIST *t = NULL, *lst = NULL;
+  struct List *t = NULL, *lst = NULL;
   char *m = NULL;
   const char *sp = NULL;
 
   m = mutt_extract_message_id(s, &sp);
   while (m)
   {
-    t = safe_malloc(sizeof(LIST));
+    t = safe_malloc(sizeof(struct List));
     t->data = m;
     t->next = lst;
     lst = t;
@@ -132,9 +132,9 @@ int mutt_check_encoding(const char *c)
     return ENCOTHER;
 }
 
-static PARAMETER *parse_parameters(const char *s)
+static struct Parameter *parse_parameters(const char *s)
 {
-  PARAMETER *head = NULL, *cur = NULL, *new = NULL;
+  struct Parameter *head = NULL, *cur = NULL, *new = NULL;
   char buffer[LONG_STRING];
   const char *p = NULL;
   size_t i;
@@ -285,7 +285,7 @@ int mutt_check_mime_type(const char *s)
     return TYPEOTHER;
 }
 
-void mutt_parse_content_type(char *s, BODY *ct)
+void mutt_parse_content_type(char *s, struct Body *ct)
 {
   char *pc = NULL;
   char *subtype = NULL;
@@ -340,7 +340,7 @@ void mutt_parse_content_type(char *s, BODY *ct)
   if (ct->subtype == NULL)
   {
     /* Some older non-MIME mailers (i.e., mailtool, elm) have a content-type
-     * field, so we can attempt to convert the type to BODY here.
+     * field, so we can attempt to convert the type to Body here.
      */
     if (ct->type == TYPETEXT)
       ct->subtype = safe_strdup("plain");
@@ -371,9 +371,9 @@ void mutt_parse_content_type(char *s, BODY *ct)
   }
 }
 
-static void parse_content_disposition(const char *s, BODY *ct)
+static void parse_content_disposition(const char *s, struct Body *ct)
 {
-  PARAMETER *parms = NULL;
+  struct Parameter *parms = NULL;
 
   if (ascii_strncasecmp("inline", s, 6) == 0)
     ct->disposition = DISPINLINE;
@@ -400,9 +400,9 @@ static void parse_content_disposition(const char *s, BODY *ct)
  *      digest  1 if reading subparts of a multipart/digest, 0
  *              otherwise
  */
-BODY *mutt_read_mime_header(FILE *fp, int digest)
+struct Body *mutt_read_mime_header(FILE *fp, int digest)
 {
-  BODY *p = mutt_new_body();
+  struct Body *p = mutt_new_body();
   char *c = NULL;
   char *line = safe_malloc(LONG_STRING);
   size_t linelen = LONG_STRING;
@@ -475,7 +475,7 @@ BODY *mutt_read_mime_header(FILE *fp, int digest)
   return p;
 }
 
-void mutt_parse_part(FILE *fp, BODY *b)
+void mutt_parse_part(FILE *fp, struct Body *b)
 {
   char *bound = NULL;
 
@@ -519,7 +519,7 @@ void mutt_parse_part(FILE *fp, BODY *b)
   }
 }
 
-/* parse a MESSAGE/RFC822 body
+/* parse a Message/RFC822 body
  *
  * args:
  *      fp              stream to read from
@@ -529,9 +529,9 @@ void mutt_parse_part(FILE *fp, BODY *b)
  *
  * NOTE: this assumes that `parent->length' has been set!
  */
-BODY *mutt_parse_message_rfc822(FILE *fp, BODY *parent)
+struct Body *mutt_parse_message_rfc822(FILE *fp, struct Body *parent)
 {
-  BODY *msg = NULL;
+  struct Body *msg = NULL;
 
   parent->hdr = mutt_new_header();
   parent->hdr->offset = ftello(fp);
@@ -563,14 +563,14 @@ BODY *mutt_parse_message_rfc822(FILE *fp, BODY *parent)
  *
  *      digest          1 if reading a multipart/digest, 0 otherwise
  */
-BODY *mutt_parse_multipart(FILE *fp, const char *boundary, LOFF_T end_off, int digest)
+struct Body *mutt_parse_multipart(FILE *fp, const char *boundary, LOFF_T end_off, int digest)
 {
 #ifdef SUN_ATTACHMENT
   int lines;
 #endif
   int blen, len, crlf = 0;
   char buffer[LONG_STRING];
-  BODY *head = NULL, *last = NULL, *new = NULL;
+  struct Body *head = NULL, *last = NULL, *new = NULL;
   int i;
   int final = 0; /* did we see the ending boundary? */
 
@@ -739,7 +739,7 @@ static const struct tz_t
  * This routine assumes that `h' has been initialized to 0.  the `timezone'
  * field is optional, defaulting to +0000 if missing.
  */
-time_t mutt_parse_date(const char *s, HEADER *h)
+time_t mutt_parse_date(const char *s, struct Header *h)
 {
   int count = 0;
   char *t = NULL;
@@ -940,9 +940,9 @@ char *mutt_extract_message_id(const char *s, const char **saveptr)
   return NULL;
 }
 
-void mutt_parse_mime_message(CONTEXT *ctx, HEADER *cur)
+void mutt_parse_mime_message(struct Context *ctx, struct Header *cur)
 {
-  MESSAGE *msg = NULL;
+  struct Message *msg = NULL;
 
   do
   {
@@ -966,11 +966,11 @@ void mutt_parse_mime_message(CONTEXT *ctx, HEADER *cur)
   cur->attach_valid = false;
 }
 
-int mutt_parse_rfc822_line(ENVELOPE *e, HEADER *hdr, char *line, char *p,
-                           short user_hdrs, short weed, short do_2047, LIST **lastp)
+int mutt_parse_rfc822_line(struct Envelope *e, struct Header *hdr, char *line, char *p,
+                           short user_hdrs, short weed, short do_2047, struct List **lastp)
 {
   int matched = 0;
-  LIST *last = NULL;
+  struct List *last = NULL;
 
   if (lastp)
     last = *lastp;
@@ -1365,10 +1365,10 @@ done:
  * Returns:     newly allocated envelope structure.  You should free it by
  *              mutt_free_envelope() when envelope stay unneeded.
  */
-ENVELOPE *mutt_read_rfc822_header(FILE *f, HEADER *hdr, short user_hdrs, short weed)
+struct Envelope *mutt_read_rfc822_header(FILE *f, struct Header *hdr, short user_hdrs, short weed)
 {
-  ENVELOPE *e = mutt_new_envelope();
-  LIST *last = NULL;
+  struct Envelope *e = mutt_new_envelope();
+  struct List *last = NULL;
   char *line = safe_malloc(LONG_STRING);
   char *p = NULL;
   LOFF_T loc;
@@ -1513,7 +1513,7 @@ ENVELOPE *mutt_read_rfc822_header(FILE *f, HEADER *hdr, short user_hdrs, short w
   return e;
 }
 
-ADDRESS *mutt_parse_adrlist(ADDRESS *p, const char *s)
+struct Address *mutt_parse_adrlist(struct Address *p, const char *s)
 {
   const char *q = NULL;
 
@@ -1538,10 +1538,10 @@ ADDRESS *mutt_parse_adrlist(ADDRESS *p, const char *s)
 }
 
 /* Compares mime types to the ok and except lists */
-static bool count_body_parts_check(LIST **checklist, BODY *b, bool dflt)
+static bool count_body_parts_check(struct List **checklist, struct Body *b, bool dflt)
 {
-  LIST *type = NULL;
-  ATTACH_MATCH *a = NULL;
+  struct List *type = NULL;
+  struct AttachMatch *a = NULL;
 
   /* If list is null, use default behavior. */
   if (!*checklist)
@@ -1551,7 +1551,7 @@ static bool count_body_parts_check(LIST **checklist, BODY *b, bool dflt)
 
   for (type = *checklist; type; type = type->next)
   {
-    a = (ATTACH_MATCH *) type->data;
+    a = (struct AttachMatch *) type->data;
     mutt_debug(5, "cbpc: %s %d/%s ?? %s/%s [%d]... ",
                dflt ? "[OK]   " : "[EXCL] ", b->type,
                b->subtype ? b->subtype : "*", a->major, a->minor, a->major_int);
@@ -1579,11 +1579,11 @@ static bool count_body_parts_check(LIST **checklist, BODY *b, bool dflt)
     shallcount = false;                                                        \
   }
 
-static int count_body_parts(BODY *body, int flags)
+static int count_body_parts(struct Body *body, int flags)
 {
   int count = 0;
   bool shallcount, shallrecurse;
-  BODY *bp = NULL;
+  struct Body *bp = NULL;
 
   if (body == NULL)
     return 0;
@@ -1672,7 +1672,7 @@ static int count_body_parts(BODY *body, int flags)
   return count < 0 ? 0 : count;
 }
 
-int mutt_count_body_parts(CONTEXT *ctx, HEADER *hdr)
+int mutt_count_body_parts(struct Context *ctx, struct Header *hdr)
 {
   short keep_parts = 0;
 

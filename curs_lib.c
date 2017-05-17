@@ -50,21 +50,21 @@
  */
 static size_t MacroBufferCount = 0;
 static size_t MacroBufferLen = 0;
-static event_t *MacroEvents;
+static struct Event *MacroEvents;
 
 /* These are used in all other "normal" situations, and are not
  * ignored when setting OPTIGNOREMACROEVENTS
  */
 static size_t UngetCount = 0;
 static size_t UngetLen = 0;
-static event_t *UngetKeyEvents;
+static struct Event *UngetKeyEvents;
 
-mutt_window_t *MuttHelpWindow = NULL;
-mutt_window_t *MuttIndexWindow = NULL;
-mutt_window_t *MuttStatusWindow = NULL;
-mutt_window_t *MuttMessageWindow = NULL;
+struct MuttWindow *MuttHelpWindow = NULL;
+struct MuttWindow *MuttIndexWindow = NULL;
+struct MuttWindow *MuttStatusWindow = NULL;
+struct MuttWindow *MuttMessageWindow = NULL;
 #ifdef USE_SIDEBAR
-mutt_window_t *MuttSidebarWindow = NULL;
+struct MuttWindow *MuttSidebarWindow = NULL;
 #endif
 
 static void reflow_message_window_rows(int mw_rows);
@@ -95,11 +95,11 @@ void mutt_need_hard_redraw(void)
   mutt_set_current_menu_redraw_full();
 }
 
-event_t mutt_getch(void)
+struct Event mutt_getch(void)
 {
   int ch;
-  event_t err = { -1, OP_NULL }, ret;
-  event_t timeout = { -2, OP_NULL };
+  struct Event err = { -1, OP_NULL }, ret;
+  struct Event timeout = { -2, OP_NULL };
 
   if (UngetCount)
     return UngetKeyEvents[--UngetCount];
@@ -157,7 +157,7 @@ int _mutt_get_field(const char *field, char *buf, size_t buflen, int complete,
   int ret;
   int x;
 
-  ENTER_STATE *es = mutt_new_enter_state();
+  struct EnterState *es = mutt_new_enter_state();
 
   do
   {
@@ -223,7 +223,7 @@ void mutt_edit_file(const char *editor, const char *data)
 
 int mutt_yesorno(const char *msg, int def)
 {
-  event_t ch;
+  struct Event ch;
   char *yes = _("yes");
   char *no = _("no");
   char *answer_string = NULL;
@@ -418,7 +418,7 @@ void mutt_curses_message(const char *fmt, ...)
   va_end(ap);
 }
 
-void mutt_progress_init(progress_t *progress, const char *msg,
+void mutt_progress_init(struct Progress *progress, const char *msg,
                         unsigned short flags, unsigned short inc, long size)
 {
   struct timeval tv = { 0, 0 };
@@ -428,7 +428,7 @@ void mutt_progress_init(progress_t *progress, const char *msg,
   if (option(OPTNOCURSES))
     return;
 
-  memset(progress, 0, sizeof(progress_t));
+  memset(progress, 0, sizeof(struct Progress));
   progress->inc = inc;
   progress->flags = flags;
   progress->msg = msg;
@@ -517,7 +517,7 @@ static void message_bar(int percent, const char *fmt, ...)
   mutt_refresh();
 }
 
-void mutt_progress_update(progress_t *progress, long pos, int percent)
+void mutt_progress_update(struct Progress *progress, long pos, int percent)
 {
   char posstr[SHORT_STRING];
   short update = 0;
@@ -588,12 +588,12 @@ out:
 
 void mutt_init_windows(void)
 {
-  MuttHelpWindow = safe_calloc(sizeof(mutt_window_t), 1);
-  MuttIndexWindow = safe_calloc(sizeof(mutt_window_t), 1);
-  MuttStatusWindow = safe_calloc(sizeof(mutt_window_t), 1);
-  MuttMessageWindow = safe_calloc(sizeof(mutt_window_t), 1);
+  MuttHelpWindow = safe_calloc(sizeof(struct MuttWindow), 1);
+  MuttIndexWindow = safe_calloc(sizeof(struct MuttWindow), 1);
+  MuttStatusWindow = safe_calloc(sizeof(struct MuttWindow), 1);
+  MuttMessageWindow = safe_calloc(sizeof(struct MuttWindow), 1);
 #ifdef USE_SIDEBAR
-  MuttSidebarWindow = safe_calloc(sizeof(mutt_window_t), 1);
+  MuttSidebarWindow = safe_calloc(sizeof(struct MuttWindow), 1);
 #endif
 }
 
@@ -620,16 +620,16 @@ void mutt_reflow_windows(void)
   MuttStatusWindow->row_offset = option(OPTSTATUSONTOP) ? 0 : LINES - 2;
   MuttStatusWindow->col_offset = 0;
 
-  memcpy(MuttHelpWindow, MuttStatusWindow, sizeof(mutt_window_t));
+  memcpy(MuttHelpWindow, MuttStatusWindow, sizeof(struct MuttWindow));
   if (!option(OPTHELP))
     MuttHelpWindow->rows = 0;
   else
     MuttHelpWindow->row_offset = option(OPTSTATUSONTOP) ? LINES - 2 : 0;
 
-  memcpy(MuttMessageWindow, MuttStatusWindow, sizeof(mutt_window_t));
+  memcpy(MuttMessageWindow, MuttStatusWindow, sizeof(struct MuttWindow));
   MuttMessageWindow->row_offset = LINES - 1;
 
-  memcpy(MuttIndexWindow, MuttStatusWindow, sizeof(mutt_window_t));
+  memcpy(MuttIndexWindow, MuttStatusWindow, sizeof(struct MuttWindow));
   MuttIndexWindow->rows = MAX(
       LINES - MuttStatusWindow->rows - MuttHelpWindow->rows - MuttMessageWindow->rows, 0);
   MuttIndexWindow->row_offset =
@@ -638,7 +638,7 @@ void mutt_reflow_windows(void)
 #ifdef USE_SIDEBAR
   if (option(OPTSIDEBAR))
   {
-    memcpy(MuttSidebarWindow, MuttIndexWindow, sizeof(mutt_window_t));
+    memcpy(MuttSidebarWindow, MuttIndexWindow, sizeof(struct MuttWindow));
     MuttSidebarWindow->cols = SidebarWidth;
     MuttIndexWindow->cols -= SidebarWidth;
 
@@ -681,17 +681,17 @@ static void reflow_message_window_rows(int mw_rows)
   mutt_set_current_menu_redraw_full();
 }
 
-int mutt_window_move(mutt_window_t *win, int row, int col)
+int mutt_window_move(struct MuttWindow *win, int row, int col)
 {
   return move(win->row_offset + row, win->col_offset + col);
 }
 
-int mutt_window_mvaddch(mutt_window_t *win, int row, int col, const chtype ch)
+int mutt_window_mvaddch(struct MuttWindow *win, int row, int col, const chtype ch)
 {
   return mvaddch(win->row_offset + row, win->col_offset + col, ch);
 }
 
-int mutt_window_mvaddstr(mutt_window_t *win, int row, int col, const char *str)
+int mutt_window_mvaddstr(struct MuttWindow *win, int row, int col, const char *str)
 {
   return mvaddstr(win->row_offset + row, win->col_offset + col, str);
 }
@@ -707,7 +707,7 @@ static int vw_printw(SLcurses_Window_Type *win, const char *fmt, va_list ap)
 }
 #endif
 
-int mutt_window_mvprintw(mutt_window_t *win, int row, int col, const char *fmt, ...)
+int mutt_window_mvprintw(struct MuttWindow *win, int row, int col, const char *fmt, ...)
 {
   va_list ap;
   int rv;
@@ -725,7 +725,7 @@ int mutt_window_mvprintw(mutt_window_t *win, int row, int col, const char *fmt, 
 /* Assumes the cursor has already been positioned within the
  * window.
  */
-void mutt_window_clrtoeol(mutt_window_t *win)
+void mutt_window_clrtoeol(struct MuttWindow *win)
 {
   int row, col, curcol;
 
@@ -744,7 +744,7 @@ void mutt_window_clrtoeol(mutt_window_t *win)
   }
 }
 
-void mutt_window_clearline(mutt_window_t *win, int row)
+void mutt_window_clearline(struct MuttWindow *win, int row)
 {
   mutt_window_move(win, row, 0);
   mutt_window_clrtoeol(win);
@@ -754,7 +754,7 @@ void mutt_window_clearline(mutt_window_t *win, int row)
  * Otherwise it will happily return negative or values outside
  * the window boundaries
  */
-void mutt_window_getyx(mutt_window_t *win, int *y, int *x)
+void mutt_window_getyx(struct MuttWindow *win, int *y, int *x)
 {
   int row, col;
 
@@ -837,7 +837,7 @@ int mutt_any_key_to_continue(const char *s)
   return (ch >= 0) ? ch : EOF;
 }
 
-int mutt_do_pager(const char *banner, const char *tempfile, int do_color, pager_t *info)
+int mutt_do_pager(const char *banner, const char *tempfile, int do_color, struct Pager *info)
 {
   int rc;
 
@@ -865,7 +865,7 @@ int mutt_do_pager(const char *banner, const char *tempfile, int do_color, pager_
 int _mutt_enter_fname(const char *prompt, char *buf, size_t blen, int buffy,
                       int multiple, char ***files, int *numfiles, int flags)
 {
-  event_t ch;
+  struct Event ch;
 
   SETCOLOR(MT_COLOR_PROMPT);
   mutt_window_mvaddstr(MuttMessageWindow, 0, 0, (char *) prompt);
@@ -912,13 +912,13 @@ int _mutt_enter_fname(const char *prompt, char *buf, size_t blen, int buffy,
 
 void mutt_unget_event(int ch, int op)
 {
-  event_t tmp;
+  struct Event tmp;
 
   tmp.ch = ch;
   tmp.op = op;
 
   if (UngetCount >= UngetLen)
-    safe_realloc(&UngetKeyEvents, (UngetLen += 16) * sizeof(event_t));
+    safe_realloc(&UngetKeyEvents, (UngetLen += 16) * sizeof(struct Event));
 
   UngetKeyEvents[UngetCount++] = tmp;
 }
@@ -939,13 +939,13 @@ void mutt_unget_string(char *s)
  */
 void mutt_push_macro_event(int ch, int op)
 {
-  event_t tmp;
+  struct Event tmp;
 
   tmp.ch = ch;
   tmp.op = op;
 
   if (MacroBufferCount >= MacroBufferLen)
-    safe_realloc(&MacroEvents, (MacroBufferLen += 128) * sizeof(event_t));
+    safe_realloc(&MacroEvents, (MacroBufferLen += 128) * sizeof(struct Event));
 
   MacroEvents[MacroBufferCount++] = tmp;
 }
@@ -1004,7 +1004,7 @@ void mutt_curs_set(int cursor)
 
 int mutt_multi_choice(char *prompt, char *letters)
 {
-  event_t ch;
+  struct Event ch;
   int choice;
   int redraw = 1, prompt_lines = 1;
   char *p = NULL;

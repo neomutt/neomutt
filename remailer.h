@@ -33,7 +33,7 @@
 
 #define MAXMIXES 19
 
-struct type2
+struct Remailer
 {
   int num;
   char *shortname;
@@ -42,20 +42,15 @@ struct type2
   int caps;
 };
 
-typedef struct type2 REMAILER;
-
-
-struct mixchain
+struct MixChain
 {
   size_t cl;
   int ch[MAXMIXES];
 };
 
-typedef struct mixchain MIXCHAIN;
-
-int mix_send_message(LIST *chain, const char *tempfile);
-int mix_check_message(HEADER *msg);
-void mix_make_chain(LIST **chainp);
+int mix_send_message(struct List *chain, const char *tempfile);
+int mix_check_message(struct Header *msg);
+void mix_make_chain(struct List **chainp);
 
 #endif /* MIXMASTER */
 

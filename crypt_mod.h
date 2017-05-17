@@ -30,30 +30,30 @@
 typedef void (*crypt_func_void_passphrase_t)(void);
 typedef int (*crypt_func_valid_passphrase_t)(void);
 
-typedef int (*crypt_func_decrypt_mime_t)(FILE *a, FILE **b, BODY *c, BODY **d);
+typedef int (*crypt_func_decrypt_mime_t)(FILE *a, FILE **b, struct Body *c, struct Body **d);
 
-typedef int (*crypt_func_application_handler_t)(BODY *m, STATE *s);
-typedef int (*crypt_func_encrypted_handler_t)(BODY *m, STATE *s);
+typedef int (*crypt_func_application_handler_t)(struct Body *m, struct State *s);
+typedef int (*crypt_func_encrypted_handler_t)(struct Body *m, struct State *s);
 
-typedef void (*crypt_func_pgp_invoke_getkeys_t)(ADDRESS *addr);
-typedef int (*crypt_func_pgp_check_traditional_t)(FILE *fp, BODY *b, int tagged_only);
-typedef BODY *(*crypt_func_pgp_traditional_encryptsign_t)(BODY *a, int flags, char *keylist);
-typedef BODY *(*crypt_func_pgp_make_key_attachment_t)(char *tempf);
-typedef char *(*crypt_func_findkeys_t)(ADDRESS *adrlist, int oppenc_mode);
-typedef BODY *(*crypt_func_sign_message_t)(BODY *a);
-typedef BODY *(*crypt_func_pgp_encrypt_message_t)(BODY *a, char *keylist, int sign);
+typedef void (*crypt_func_pgp_invoke_getkeys_t)(struct Address *addr);
+typedef int (*crypt_func_pgp_check_traditional_t)(FILE *fp, struct Body *b, int tagged_only);
+typedef struct Body *(*crypt_func_pgp_traditional_encryptsign_t)(struct Body *a, int flags, char *keylist);
+typedef struct Body *(*crypt_func_pgp_make_key_attachment_t)(char *tempf);
+typedef char *(*crypt_func_findkeys_t)(struct Address *adrlist, int oppenc_mode);
+typedef struct Body *(*crypt_func_sign_message_t)(struct Body *a);
+typedef struct Body *(*crypt_func_pgp_encrypt_message_t)(struct Body *a, char *keylist, int sign);
 typedef void (*crypt_func_pgp_invoke_import_t)(const char *fname);
-typedef int (*crypt_func_verify_one_t)(BODY *sigbdy, STATE *s, const char *tempf);
+typedef int (*crypt_func_verify_one_t)(struct Body *sigbdy, struct State *s, const char *tempf);
 typedef void (*crypt_func_pgp_extract_keys_from_attachment_list_t)(FILE *fp, int tag,
-                                                                   BODY *top);
+                                                                   struct Body *top);
 
-typedef int (*crypt_func_send_menu_t)(HEADER *msg);
+typedef int (*crypt_func_send_menu_t)(struct Header *msg);
 
 /* (SMIME) */
-typedef void (*crypt_func_smime_getkeys_t)(ENVELOPE *env);
-typedef int (*crypt_func_smime_verify_sender_t)(HEADER *h);
+typedef void (*crypt_func_smime_getkeys_t)(struct Envelope *env);
+typedef int (*crypt_func_smime_verify_sender_t)(struct Header *h);
 
-typedef BODY *(*crypt_func_smime_build_smime_entity_t)(BODY *a, char *certlist);
+typedef struct Body *(*crypt_func_smime_build_smime_entity_t)(struct Body *a, char *certlist);
 
 typedef void (*crypt_func_smime_invoke_import_t)(char *infile, char *mailbox);
 

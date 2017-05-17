@@ -26,9 +26,9 @@
 
 int mutt_check_alias_name(const char *s, char *dest, size_t destlen);
 
-ADDRESS *mutt_lookup_alias(const char *s)
+struct Address *mutt_lookup_alias(const char *s)
 {
-  ALIAS *t = Aliases;
+  struct Alias *t = Aliases;
 
   for (; t; t = t->next)
     if (mutt_strcasecmp(s, t->name) == 0)
@@ -36,10 +36,10 @@ ADDRESS *mutt_lookup_alias(const char *s)
   return NULL; /* no such alias */
 }
 
-static ADDRESS *expand_aliases_r(ADDRESS *a, LIST **expn)
+static struct Address *expand_aliases_r(struct Address *a, struct List **expn)
 {
-  ADDRESS *head = NULL, *last = NULL, *t = NULL, *w = NULL;
-  LIST *u = NULL;
+  struct Address *head = NULL, *last = NULL, *t = NULL, *w = NULL;
+  struct List *u = NULL;
   char i;
   const char *fqdn = NULL;
 
@@ -64,7 +64,7 @@ static ADDRESS *expand_aliases_r(ADDRESS *a, LIST **expn)
 
         if (!i)
         {
-          u = safe_malloc(sizeof(LIST));
+          u = safe_malloc(sizeof(struct List));
           u->data = safe_strdup(a->mailbox);
           u->next = *expn;
           *expn = u;
@@ -121,17 +121,17 @@ static ADDRESS *expand_aliases_r(ADDRESS *a, LIST **expn)
   return head;
 }
 
-ADDRESS *mutt_expand_aliases(ADDRESS *a)
+struct Address *mutt_expand_aliases(struct Address *a)
 {
-  ADDRESS *t = NULL;
-  LIST *expn = NULL; /* previously expanded aliases to avoid loops */
+  struct Address *t = NULL;
+  struct List *expn = NULL; /* previously expanded aliases to avoid loops */
 
   t = expand_aliases_r(a, &expn);
   mutt_free_list(&expn);
   return (mutt_remove_duplicates(t));
 }
 
-void mutt_expand_aliases_env(ENVELOPE *env)
+void mutt_expand_aliases_env(struct Envelope *env)
 {
   env->from = mutt_expand_aliases(env->from);
   env->to = mutt_expand_aliases(env->to);
@@ -173,9 +173,9 @@ static void write_safe_address(FILE *fp, char *s)
   }
 }
 
-ADDRESS *mutt_get_address(ENVELOPE *env, char **pfxp)
+struct Address *mutt_get_address(struct Envelope *env, char **pfxp)
 {
-  ADDRESS *adr = NULL;
+  struct Address *adr = NULL;
   char *pfx = NULL;
 
   if (mutt_addr_is_user(env->from))
@@ -222,14 +222,14 @@ static void recode_buf(char *buf, size_t buflen)
   FREE(&s);
 }
 
-void mutt_create_alias(ENVELOPE *cur, ADDRESS *iadr)
+void mutt_create_alias(struct Envelope *cur, struct Address *iadr)
 {
-  ALIAS *new = NULL, *t = NULL;
+  struct Alias *new = NULL, *t = NULL;
   char buf[LONG_STRING], tmp[LONG_STRING], prompt[SHORT_STRING], *pc = NULL;
   char *err = NULL;
   char fixed[LONG_STRING];
   FILE *rc = NULL;
-  ADDRESS *adr = NULL;
+  struct Address *adr = NULL;
 
   if (cur)
   {
@@ -276,7 +276,7 @@ retry_name:
     }
   }
 
-  new = safe_calloc(1, sizeof(ALIAS));
+  new = safe_calloc(1, sizeof(struct Alias));
   new->self = new;
   new->name = safe_strdup(buf);
 
@@ -439,7 +439,7 @@ int mutt_check_alias_name(const char *s, char *dest, size_t destlen)
  * This routine looks to see if the user has an alias defined for the given
  * address.
  */
-ADDRESS *alias_reverse_lookup(ADDRESS *a)
+struct Address *alias_reverse_lookup(struct Address *a)
 {
   if (!a || !a->mailbox)
     return NULL;
@@ -447,9 +447,9 @@ ADDRESS *alias_reverse_lookup(ADDRESS *a)
   return hash_find(ReverseAlias, a->mailbox);
 }
 
-void mutt_alias_add_reverse(ALIAS *t)
+void mutt_alias_add_reverse(struct Alias *t)
 {
-  ADDRESS *ap = NULL;
+  struct Address *ap = NULL;
   if (!t)
     return;
 
@@ -465,9 +465,9 @@ void mutt_alias_add_reverse(ALIAS *t)
   }
 }
 
-void mutt_alias_delete_reverse(ALIAS *t)
+void mutt_alias_delete_reverse(struct Alias *t)
 {
-  ADDRESS *ap = NULL;
+  struct Address *ap = NULL;
   if (!t)
     return;
 
@@ -490,8 +490,8 @@ void mutt_alias_delete_reverse(ALIAS *t)
  */
 int mutt_alias_complete(char *s, size_t buflen)
 {
-  ALIAS *a = Aliases;
-  ALIAS *a_list = NULL, *a_cur = NULL;
+  struct Alias *a = Aliases;
+  struct Alias *a_list = NULL, *a_cur = NULL;
   char bestname[HUGE_STRING];
   int i;
 
@@ -536,13 +536,13 @@ int mutt_alias_complete(char *s, size_t buflen)
         if (a->name && (strstr(a->name, s) == a->name))
         {
           if (!a_list) /* init */
-            a_cur = a_list = safe_malloc(sizeof(ALIAS));
+            a_cur = a_list = safe_malloc(sizeof(struct Alias));
           else
           {
-            a_cur->next = safe_malloc(sizeof(ALIAS));
+            a_cur->next = safe_malloc(sizeof(struct Alias));
             a_cur = a_cur->next;
           }
-          memcpy(a_cur, a, sizeof(ALIAS));
+          memcpy(a_cur, a, sizeof(struct Alias));
           a_cur->next = NULL;
         }
         a = a->next;
@@ -604,7 +604,7 @@ static bool string_is_address(const char *str, const char *u, const char *d)
 }
 
 /* returns true if the given address belongs to the user. */
-bool mutt_addr_is_user(ADDRESS *addr)
+bool mutt_addr_is_user(struct Address *addr)
 {
   const char *fqdn = NULL;
 

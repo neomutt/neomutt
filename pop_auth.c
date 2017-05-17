@@ -30,7 +30,7 @@
 
 #ifdef USE_SASL
 /* SASL authenticator */
-static pop_auth_res_t pop_auth_sasl(POP_DATA *pop_data, const char *method)
+static pop_auth_res_t pop_auth_sasl(struct PopData *pop_data, const char *method)
 {
   sasl_conn_t *saslconn = NULL;
   sasl_interact_t *interaction = NULL;
@@ -180,7 +180,7 @@ bail:
 #endif
 
 /* Get the server timestamp for APOP authentication */
-void pop_apop_timestamp(POP_DATA *pop_data, char *buf)
+void pop_apop_timestamp(struct PopData *pop_data, char *buf)
 {
   char *p1 = NULL, *p2 = NULL;
 
@@ -194,7 +194,7 @@ void pop_apop_timestamp(POP_DATA *pop_data, char *buf)
 }
 
 /* APOP authenticator */
-static pop_auth_res_t pop_auth_apop(POP_DATA *pop_data, const char *method)
+static pop_auth_res_t pop_auth_apop(struct PopData *pop_data, const char *method)
 {
   struct md5_ctx ctx;
   unsigned char digest[16];
@@ -242,7 +242,7 @@ static pop_auth_res_t pop_auth_apop(POP_DATA *pop_data, const char *method)
 }
 
 /* USER authenticator */
-static pop_auth_res_t pop_auth_user(POP_DATA *pop_data, const char *method)
+static pop_auth_res_t pop_auth_user(struct PopData *pop_data, const char *method)
 {
   char buf[LONG_STRING];
   int ret;
@@ -299,7 +299,7 @@ static pop_auth_res_t pop_auth_user(POP_DATA *pop_data, const char *method)
   return POP_A_FAILURE;
 }
 
-static const pop_auth_t pop_authenticators[] = {
+static const struct PopAuth pop_authenticators[] = {
 #ifdef USE_SASL
   { pop_auth_sasl, NULL },
 #endif
@@ -315,10 +315,10 @@ static const pop_auth_t pop_authenticators[] = {
  * -2 - login failed,
  * -3 - authentication canceled.
 */
-int pop_authenticate(POP_DATA *pop_data)
+int pop_authenticate(struct PopData *pop_data)
 {
-  ACCOUNT *acct = &pop_data->conn->account;
-  const pop_auth_t *authenticator = NULL;
+  struct Account *acct = &pop_data->conn->account;
+  const struct PopAuth *authenticator = NULL;
   char *methods = NULL;
   char *comma = NULL;
   char *method = NULL;

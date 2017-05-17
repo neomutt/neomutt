@@ -23,7 +23,7 @@
 #include "url.h"
 
 /* mutt_account_match: compare account info (host/port/user) */
-int mutt_account_match(const ACCOUNT *a1, const ACCOUNT *a2)
+int mutt_account_match(const struct Account *a1, const struct Account *a2)
 {
   const char *user = NONULL(Username);
 
@@ -67,7 +67,7 @@ int mutt_account_match(const ACCOUNT *a1, const ACCOUNT *a2)
 }
 
 /* mutt_account_fromurl: fill account with information from url. */
-int mutt_account_fromurl(ACCOUNT *account, ciss_url_t *url)
+int mutt_account_fromurl(struct Account *account, struct CissUrl *url)
 {
   /* must be present */
   if (url->host)
@@ -98,7 +98,7 @@ int mutt_account_fromurl(ACCOUNT *account, ciss_url_t *url)
  *   is a set of pointers into account - don't free or edit account until
  *   you've finished with url (make a copy of account if you need it for
  *   a while). */
-void mutt_account_tourl(ACCOUNT *account, ciss_url_t *url)
+void mutt_account_tourl(struct Account *account, struct CissUrl *url)
 {
   url->scheme = U_UNKNOWN;
   url->user = NULL;
@@ -155,8 +155,8 @@ void mutt_account_tourl(ACCOUNT *account, ciss_url_t *url)
     url->pass = account->pass;
 }
 
-/* mutt_account_getuser: retrieve username into ACCOUNT, if necessary */
-int mutt_account_getuser(ACCOUNT *account)
+/* mutt_account_getuser: retrieve username into Account, if necessary */
+int mutt_account_getuser(struct Account *account)
 {
   char prompt[SHORT_STRING];
 
@@ -192,7 +192,7 @@ int mutt_account_getuser(ACCOUNT *account)
   return 0;
 }
 
-int mutt_account_getlogin(ACCOUNT *account)
+int mutt_account_getlogin(struct Account *account)
 {
   /* already set */
   if (account->flags & MUTT_ACCT_LOGIN)
@@ -219,8 +219,8 @@ int mutt_account_getlogin(ACCOUNT *account)
   return 0;
 }
 
-/* mutt_account_getpass: fetch password into ACCOUNT, if necessary */
-int mutt_account_getpass(ACCOUNT *account)
+/* mutt_account_getpass: fetch password into Account, if necessary */
+int mutt_account_getpass(struct Account *account)
 {
   char prompt[SHORT_STRING];
 
@@ -259,7 +259,7 @@ int mutt_account_getpass(ACCOUNT *account)
   return 0;
 }
 
-void mutt_account_unsetpass(ACCOUNT *account)
+void mutt_account_unsetpass(struct Account *account)
 {
   account->flags &= ~MUTT_ACCT_PASS;
 }

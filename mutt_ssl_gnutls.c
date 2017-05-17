@@ -95,7 +95,7 @@ static int tls_init(void)
   return 0;
 }
 
-static int tls_socket_read(CONNECTION *conn, char *buf, size_t len)
+static int tls_socket_read(struct Connection *conn, char *buf, size_t len)
 {
   tlssockdata *data = conn->sockdata;
   int ret;
@@ -121,7 +121,7 @@ static int tls_socket_read(CONNECTION *conn, char *buf, size_t len)
   return ret;
 }
 
-static int tls_socket_write(CONNECTION *conn, const char *buf, size_t len)
+static int tls_socket_write(struct Connection *conn, const char *buf, size_t len)
 {
   tlssockdata *data = conn->sockdata;
   int ret;
@@ -153,7 +153,7 @@ static int tls_socket_write(CONNECTION *conn, const char *buf, size_t len)
   return sent;
 }
 
-static int tls_socket_close(CONNECTION *conn)
+static int tls_socket_close(struct Connection *conn)
 {
   tlssockdata *data = conn->sockdata;
   if (data)
@@ -176,7 +176,7 @@ static int tls_socket_close(CONNECTION *conn)
   return raw_socket_close(conn);
 }
 
-static int tls_starttls_close(CONNECTION *conn)
+static int tls_starttls_close(struct Connection *conn)
 {
   int rc;
 
@@ -518,7 +518,7 @@ static int tls_check_one_certificate(const gnutls_datum_t *certdata,
   char dn_country[SHORT_STRING];
   time_t t;
   char datestr[30];
-  MUTTMENU *menu = NULL;
+  struct Menu *menu = NULL;
   char helpstr[LONG_STRING];
   char title[STRING];
   FILE *fp = NULL;
@@ -772,7 +772,7 @@ static int tls_check_one_certificate(const gnutls_datum_t *certdata,
   return (done == 2);
 }
 
-static int tls_check_certificate(CONNECTION *conn)
+static int tls_check_certificate(struct Connection *conn)
 {
   tlssockdata *data = conn->sockdata;
   gnutls_session_t state = data->state;
@@ -850,7 +850,7 @@ static int tls_check_certificate(CONNECTION *conn)
   return rc;
 }
 
-static void tls_get_client_cert(CONNECTION *conn)
+static void tls_get_client_cert(struct Connection *conn)
 {
   tlssockdata *data = conn->sockdata;
   const gnutls_datum_t *crtdata = NULL;
@@ -1006,7 +1006,7 @@ static int tls_set_priority(tlssockdata *data)
 
 /* tls_negotiate: After TLS state has been initialized, attempt to negotiate
  *   TLS over the wire, including certificate checks. */
-static int tls_negotiate(CONNECTION *conn)
+static int tls_negotiate(struct Connection *conn)
 {
   tlssockdata *data = NULL;
   int err;
@@ -1125,7 +1125,7 @@ fail:
   return -1;
 }
 
-static int tls_socket_open(CONNECTION *conn)
+static int tls_socket_open(struct Connection *conn)
 {
   if (raw_socket_open(conn) < 0)
     return -1;
@@ -1139,7 +1139,7 @@ static int tls_socket_open(CONNECTION *conn)
   return 0;
 }
 
-int mutt_ssl_socket_setup(CONNECTION *conn)
+int mutt_ssl_socket_setup(struct Connection *conn)
 {
   if (tls_init() < 0)
     return -1;
@@ -1153,7 +1153,7 @@ int mutt_ssl_socket_setup(CONNECTION *conn)
   return 0;
 }
 
-int mutt_ssl_starttls(CONNECTION *conn)
+int mutt_ssl_starttls(struct Connection *conn)
 {
   if (tls_init() < 0)
     return -1;

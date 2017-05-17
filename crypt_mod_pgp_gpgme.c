@@ -39,22 +39,22 @@ static int crypt_mod_pgp_valid_passphrase(void)
   return 1;
 }
 
-static int crypt_mod_pgp_decrypt_mime(FILE *a, FILE **b, BODY *c, BODY **d)
+static int crypt_mod_pgp_decrypt_mime(FILE *a, FILE **b, struct Body *c, struct Body **d)
 {
   return pgp_gpgme_decrypt_mime(a, b, c, d);
 }
 
-static int crypt_mod_pgp_application_handler(BODY *m, STATE *s)
+static int crypt_mod_pgp_application_handler(struct Body *m, struct State *s)
 {
   return pgp_gpgme_application_handler(m, s);
 }
 
-static int crypt_mod_pgp_encrypted_handler(BODY *m, STATE *s)
+static int crypt_mod_pgp_encrypted_handler(struct Body *m, struct State *s)
 {
   return pgp_gpgme_encrypted_handler(m, s);
 }
 
-static int crypt_mod_pgp_check_traditional(FILE *fp, BODY *b, int tagged_only)
+static int crypt_mod_pgp_check_traditional(FILE *fp, struct Body *b, int tagged_only)
 {
   return pgp_gpgme_check_traditional(fp, b, tagged_only);
 }
@@ -64,33 +64,33 @@ static void crypt_mod_pgp_invoke_import(const char *fname)
   pgp_gpgme_invoke_import(fname);
 }
 
-static char *crypt_mod_pgp_findkeys(ADDRESS *adrlist, int oppenc_mode)
+static char *crypt_mod_pgp_findkeys(struct Address *adrlist, int oppenc_mode)
 {
   return pgp_gpgme_findkeys(adrlist, oppenc_mode);
 }
 
-static BODY *crypt_mod_pgp_sign_message(BODY *a)
+static struct Body *crypt_mod_pgp_sign_message(struct Body *a)
 {
   return pgp_gpgme_sign_message(a);
 }
 
-static int crypt_mod_pgp_verify_one(BODY *sigbdy, STATE *s, const char *tempf)
+static int crypt_mod_pgp_verify_one(struct Body *sigbdy, struct State *s, const char *tempf)
 {
   return pgp_gpgme_verify_one(sigbdy, s, tempf);
 }
 
-static int crypt_mod_pgp_send_menu(HEADER *msg)
+static int crypt_mod_pgp_send_menu(struct Header *msg)
 {
   return pgp_gpgme_send_menu(msg);
 }
 
-static BODY *crypt_mod_pgp_encrypt_message(BODY *a, char *keylist, int sign)
+static struct Body *crypt_mod_pgp_encrypt_message(struct Body *a, char *keylist, int sign)
 {
   return pgp_gpgme_encrypt_message(a, keylist, sign);
 }
 
 #ifdef HAVE_GPGME_OP_EXPORT_KEYS
-static BODY *crypt_mod_pgp_make_key_attachment(char *tempf)
+static struct Body *crypt_mod_pgp_make_key_attachment(char *tempf)
 {
   return pgp_gpgme_make_key_attachment(tempf);
 }

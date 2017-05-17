@@ -47,9 +47,9 @@
  *   fails, which it might if there isn't enough room in the buffer. */
 int imap_expand_path(char *path, size_t len)
 {
-  IMAP_MBOX mx;
-  IMAP_DATA *idata = NULL;
-  ciss_url_t url;
+  struct ImapMbox mx;
+  struct ImapData *idata = NULL;
+  struct CissUrl url;
   char fixedpath[LONG_STRING];
   int rc;
 
@@ -118,8 +118,8 @@ void imap_get_parent(char *output, const char *mbox, size_t olen, char delim)
  */
 void imap_get_parent_path(char *output, const char *path, size_t olen)
 {
-  IMAP_MBOX mx;
-  IMAP_DATA *idata = NULL;
+  struct ImapMbox mx;
+  struct ImapData *idata = NULL;
   char mbox[LONG_STRING] = "";
 
   if (imap_parse_path(path, &mx) < 0)
@@ -151,8 +151,8 @@ void imap_get_parent_path(char *output, const char *path, size_t olen)
  */
 void imap_clean_path(char *path, size_t plen)
 {
-  IMAP_MBOX mx;
-  IMAP_DATA *idata = NULL;
+  struct ImapMbox mx;
+  struct ImapData *idata = NULL;
   char mbox[LONG_STRING] = "";
 
   if (imap_parse_path(path, &mx) < 0)
@@ -175,10 +175,10 @@ static int imap_hcache_namer(const char *path, char *dest, size_t dlen)
   return snprintf(dest, dlen, "%s.hcache", path);
 }
 
-header_cache_t *imap_hcache_open(IMAP_DATA *idata, const char *path)
+header_cache_t *imap_hcache_open(struct ImapData *idata, const char *path)
 {
-  IMAP_MBOX mx;
-  ciss_url_t url;
+  struct ImapMbox mx;
+  struct CissUrl url;
   char cachepath[LONG_STRING];
   char mbox[LONG_STRING];
 
@@ -200,7 +200,7 @@ header_cache_t *imap_hcache_open(IMAP_DATA *idata, const char *path)
   return mutt_hcache_open(HeaderCache, cachepath, imap_hcache_namer);
 }
 
-void imap_hcache_close(IMAP_DATA *idata)
+void imap_hcache_close(struct ImapData *idata)
 {
   if (!idata->hcache)
     return;
@@ -209,11 +209,11 @@ void imap_hcache_close(IMAP_DATA *idata)
   idata->hcache = NULL;
 }
 
-HEADER *imap_hcache_get(IMAP_DATA *idata, unsigned int uid)
+struct Header *imap_hcache_get(struct ImapData *idata, unsigned int uid)
 {
   char key[16];
   void *uv = NULL;
-  HEADER *h = NULL;
+  struct Header *h = NULL;
 
   if (!idata->hcache)
     return NULL;
@@ -232,7 +232,7 @@ HEADER *imap_hcache_get(IMAP_DATA *idata, unsigned int uid)
   return h;
 }
 
-int imap_hcache_put(IMAP_DATA *idata, HEADER *h)
+int imap_hcache_put(struct ImapData *idata, struct Header *h)
 {
   char key[16];
 
@@ -243,7 +243,7 @@ int imap_hcache_put(IMAP_DATA *idata, HEADER *h)
   return mutt_hcache_store(idata->hcache, key, imap_hcache_keylen(key), h, idata->uid_validity);
 }
 
-int imap_hcache_del(IMAP_DATA *idata, unsigned int uid)
+int imap_hcache_del(struct ImapData *idata, unsigned int uid)
 {
   char key[16];
 
@@ -258,13 +258,13 @@ int imap_hcache_del(IMAP_DATA *idata, unsigned int uid)
 /* imap_parse_path: given an IMAP mailbox name, return host, port
  *   and a path IMAP servers will recognize.
  * mx.mbox is malloc'd, caller must free it */
-int imap_parse_path(const char *path, IMAP_MBOX *mx)
+int imap_parse_path(const char *path, struct ImapMbox *mx)
 {
   static unsigned short ImapPort = 0;
   static unsigned short ImapsPort = 0;
   struct servent *service = NULL;
   char tmp[128];
-  ciss_url_t url;
+  struct CissUrl url;
   char *c = NULL;
   int n;
 
@@ -394,8 +394,8 @@ int imap_mxcmp(const char *mx1, const char *mx2)
  *   look nice. */
 void imap_pretty_mailbox(char *path)
 {
-  IMAP_MBOX home, target;
-  ciss_url_t url;
+  struct ImapMbox home, target;
+  struct CissUrl url;
   char *delim = NULL;
   int tlen;
   int hlen = 0;
@@ -462,11 +462,11 @@ void imap_error(const char *where, const char *msg)
   mutt_sleep(2);
 }
 
-/* imap_new_idata: Allocate and initialise a new IMAP_DATA structure.
+/* imap_new_idata: Allocate and initialise a new ImapData structure.
  *   Returns NULL on failure (no mem) */
-IMAP_DATA *imap_new_idata(void)
+struct ImapData *imap_new_idata(void)
 {
-  IMAP_DATA *idata = safe_calloc(1, sizeof(IMAP_DATA));
+  struct ImapData *idata = safe_calloc(1, sizeof(struct ImapData));
 
   if (!(idata->cmdbuf = mutt_buffer_new()))
     FREE(&idata);
@@ -481,8 +481,8 @@ IMAP_DATA *imap_new_idata(void)
   return idata;
 }
 
-/* imap_free_idata: Release and clear storage in an IMAP_DATA structure. */
-void imap_free_idata(IMAP_DATA **idata)
+/* imap_free_idata: Release and clear storage in an ImapData structure. */
+void imap_free_idata(struct ImapData **idata)
 {
   if (!idata)
     return;
@@ -505,7 +505,7 @@ void imap_free_idata(IMAP_DATA **idata)
  * are not required to do this.
  * Moreover, IMAP servers may dislike the path ending with the delimiter.
  */
-char *imap_fix_path(IMAP_DATA *idata, const char *mailbox, char *path, size_t plen)
+char *imap_fix_path(struct ImapData *idata, const char *mailbox, char *path, size_t plen)
 {
   int i = 0;
   char delim = '\0';
@@ -540,7 +540,7 @@ char *imap_fix_path(IMAP_DATA *idata, const char *mailbox, char *path, size_t pl
   return path;
 }
 
-void imap_cachepath(IMAP_DATA *idata, const char *mailbox, char *dest, size_t dlen)
+void imap_cachepath(struct ImapData *idata, const char *mailbox, char *dest, size_t dlen)
 {
   char *s = NULL;
   const char *p = mailbox;
@@ -686,11 +686,11 @@ void imap_make_date(char *buf, time_t timestamp)
            tm->tm_min, tm->tm_sec, (int) tz / 60, (int) abs((int) tz) % 60);
 }
 
-/* imap_qualify_path: make an absolute IMAP folder target, given IMAP_MBOX
+/* imap_qualify_path: make an absolute IMAP folder target, given ImapMbox
  *   and relative path. */
-void imap_qualify_path(char *dest, size_t len, IMAP_MBOX *mx, char *path)
+void imap_qualify_path(char *dest, size_t len, struct ImapMbox *mx, char *path)
 {
-  ciss_url_t url;
+  struct CissUrl url;
 
   mutt_account_tourl(&mx->account, &url);
   url.path = path;
@@ -769,7 +769,7 @@ void imap_unquote_string(char *s)
 /*
  * Quoting and UTF-7 conversion
  */
-void imap_munge_mbox_name(IMAP_DATA *idata, char *dest, size_t dlen, const char *src)
+void imap_munge_mbox_name(struct ImapData *idata, char *dest, size_t dlen, const char *src)
 {
   char *buf = NULL;
 
@@ -781,7 +781,7 @@ void imap_munge_mbox_name(IMAP_DATA *idata, char *dest, size_t dlen, const char 
   FREE(&buf);
 }
 
-void imap_unmunge_mbox_name(IMAP_DATA *idata, char *s)
+void imap_unmunge_mbox_name(struct ImapData *idata, char *s)
 {
   char *buf = NULL;
 
@@ -832,8 +832,8 @@ static void alrm_handler(int sig)
 
 void imap_keepalive(void)
 {
-  CONNECTION *conn = NULL;
-  IMAP_DATA *idata = NULL;
+  struct Connection *conn = NULL;
+  struct ImapData *idata = NULL;
   time_t now = time(NULL);
 
   for (conn = mutt_socket_head(); conn; conn = conn->next)
@@ -894,9 +894,9 @@ int imap_wait_keepalive(pid_t pid)
 }
 
 /* Allow/disallow re-opening a folder upon expunge. */
-void imap_allow_reopen(CONTEXT *ctx)
+void imap_allow_reopen(struct Context *ctx)
 {
-  IMAP_DATA *idata = NULL;
+  struct ImapData *idata = NULL;
   if (!ctx || !ctx->data || ctx->magic != MUTT_IMAP)
     return;
 
@@ -905,9 +905,9 @@ void imap_allow_reopen(CONTEXT *ctx)
     idata->reopen |= IMAP_REOPEN_ALLOW;
 }
 
-void imap_disallow_reopen(CONTEXT *ctx)
+void imap_disallow_reopen(struct Context *ctx)
 {
-  IMAP_DATA *idata = NULL;
+  struct ImapData *idata = NULL;
   if (!ctx || !ctx->data || ctx->magic != MUTT_IMAP)
     return;
 
@@ -916,12 +916,12 @@ void imap_disallow_reopen(CONTEXT *ctx)
     idata->reopen &= ~IMAP_REOPEN_ALLOW;
 }
 
-int imap_account_match(const ACCOUNT *a1, const ACCOUNT *a2)
+int imap_account_match(const struct Account *a1, const struct Account *a2)
 {
-  IMAP_DATA *a1_idata = imap_conn_find(a1, MUTT_IMAP_CONN_NONEW);
-  IMAP_DATA *a2_idata = imap_conn_find(a2, MUTT_IMAP_CONN_NONEW);
-  const ACCOUNT *a1_canon = a1_idata == NULL ? a1 : &a1_idata->conn->account;
-  const ACCOUNT *a2_canon = a2_idata == NULL ? a2 : &a2_idata->conn->account;
+  struct ImapData *a1_idata = imap_conn_find(a1, MUTT_IMAP_CONN_NONEW);
+  struct ImapData *a2_idata = imap_conn_find(a2, MUTT_IMAP_CONN_NONEW);
+  const struct Account *a1_canon = a1_idata == NULL ? a1 : &a1_idata->conn->account;
+  const struct Account *a2_canon = a2_idata == NULL ? a2 : &a2_idata->conn->account;
 
   return mutt_account_match(a1_canon, a2_canon);
 }

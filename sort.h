@@ -59,11 +59,11 @@
 typedef int sort_t(const void *, const void *);
 sort_t *mutt_get_sort_func(int method);
 
-void mutt_clear_threads(CONTEXT *ctx);
-void mutt_sort_headers(CONTEXT *ctx, int init);
-void mutt_sort_threads(CONTEXT *ctx, int init);
+void mutt_clear_threads(struct Context *ctx);
+void mutt_sort_headers(struct Context *ctx, int init);
+void mutt_sort_threads(struct Context *ctx, int init);
 int mutt_select_sort(int reverse);
-THREAD *mutt_sort_subthreads(THREAD *thread, int init);
+struct MuttThread *mutt_sort_subthreads(struct MuttThread *thread, int init);
 
 WHERE short BrowserSort INITVAL(SORT_SUBJECT);
 WHERE short Sort INITVAL(SORT_DATE);

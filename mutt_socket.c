@@ -38,7 +38,7 @@
 #endif
 
 /* support for multiple socket connections */
-static CONNECTION *Connections = NULL;
+static struct Connection *Connections = NULL;
 
 static int socket_preconnect(void)
 {
@@ -64,7 +64,7 @@ static int socket_preconnect(void)
 }
 
 /* Wrappers */
-int mutt_socket_open(CONNECTION *conn)
+int mutt_socket_open(struct Connection *conn)
 {
   int rc;
 
@@ -79,7 +79,7 @@ int mutt_socket_open(CONNECTION *conn)
   return rc;
 }
 
-int mutt_socket_close(CONNECTION *conn)
+int mutt_socket_close(struct Connection *conn)
 {
   int rc = -1;
 
@@ -94,7 +94,7 @@ int mutt_socket_close(CONNECTION *conn)
   return rc;
 }
 
-int mutt_socket_write_d(CONNECTION *conn, const char *buf, int len, int dbg)
+int mutt_socket_write_d(struct Connection *conn, const char *buf, int len, int dbg)
 {
   int rc;
   int sent = 0;
@@ -134,7 +134,7 @@ int mutt_socket_write_d(CONNECTION *conn, const char *buf, int len, int dbg)
  *   Returns: >0 if there is data to read,
  *            0 if a read would block,
  *            -1 if this connection doesn't support polling */
-int mutt_socket_poll(CONNECTION *conn)
+int mutt_socket_poll(struct Connection *conn)
 {
   if (conn->bufpos < conn->available)
     return conn->available - conn->bufpos;
@@ -146,7 +146,7 @@ int mutt_socket_poll(CONNECTION *conn)
 }
 
 /* simple read buffering to speed things up. */
-int mutt_socket_readchar(CONNECTION *conn, char *c)
+int mutt_socket_readchar(struct Connection *conn, char *c)
 {
   if (conn->bufpos >= conn->available)
   {
@@ -175,7 +175,7 @@ int mutt_socket_readchar(CONNECTION *conn, char *c)
   return 1;
 }
 
-int mutt_socket_readln_d(char *buf, size_t buflen, CONNECTION *conn, int dbg)
+int mutt_socket_readln_d(char *buf, size_t buflen, struct Connection *conn, int dbg)
 {
   char ch;
   int i;
@@ -204,16 +204,16 @@ int mutt_socket_readln_d(char *buf, size_t buflen, CONNECTION *conn, int dbg)
   return i + 1;
 }
 
-CONNECTION *mutt_socket_head(void)
+struct Connection *mutt_socket_head(void)
 {
   return Connections;
 }
 
 /* mutt_socket_free: remove connection from connection list and free it */
-void mutt_socket_free(CONNECTION *conn)
+void mutt_socket_free(struct Connection *conn)
 {
-  CONNECTION *iter = NULL;
-  CONNECTION *tmp = NULL;
+  struct Connection *iter = NULL;
+  struct Connection *tmp = NULL;
 
   iter = Connections;
 
@@ -239,11 +239,11 @@ void mutt_socket_free(CONNECTION *conn)
 }
 
 /* socket_new_conn: allocate and initialise a new connection. */
-static CONNECTION *socket_new_conn(void)
+static struct Connection *socket_new_conn(void)
 {
-  CONNECTION *conn = NULL;
+  struct Connection *conn = NULL;
 
-  conn = safe_calloc(1, sizeof(CONNECTION));
+  conn = safe_calloc(1, sizeof(struct Connection));
   conn->fd = -1;
 
   return conn;
@@ -254,14 +254,14 @@ static CONNECTION *socket_new_conn(void)
  *   connections after the given connection (allows higher level socket code
  *   to make more fine-grained searches than account info - eg in IMAP we may
  *   wish to find a connection which is not in IMAP_SELECTED state) */
-CONNECTION *mutt_conn_find(const CONNECTION *start, const ACCOUNT *account)
+struct Connection *mutt_conn_find(const struct Connection *start, const struct Account *account)
 {
-  CONNECTION *conn = NULL;
-  ciss_url_t url;
+  struct Connection *conn = NULL;
+  struct CissUrl url;
   char hook[LONG_STRING];
 
   /* account isn't actually modified, since url isn't either */
-  mutt_account_tourl((ACCOUNT *) account, &url);
+  mutt_account_tourl((struct Account *) account, &url);
   url.path = NULL;
   url_ciss_tostring(&url, hook, sizeof(hook), 0);
   mutt_account_hook(hook);
@@ -275,7 +275,7 @@ CONNECTION *mutt_conn_find(const CONNECTION *start, const ACCOUNT *account)
   }
 
   conn = socket_new_conn();
-  memcpy(&conn->account, account, sizeof(ACCOUNT));
+  memcpy(&conn->account, account, sizeof(struct Account));
 
   conn->next = Connections;
   Connections = conn;
@@ -310,12 +310,12 @@ CONNECTION *mutt_conn_find(const CONNECTION *start, const ACCOUNT *account)
   return conn;
 }
 
-int raw_socket_close(CONNECTION *conn)
+int raw_socket_close(struct Connection *conn)
 {
   return close(conn->fd);
 }
 
-int raw_socket_read(CONNECTION *conn, char *buf, size_t len)
+int raw_socket_read(struct Connection *conn, char *buf, size_t len)
 {
   int rc;
 
@@ -339,7 +339,7 @@ int raw_socket_read(CONNECTION *conn, char *buf, size_t len)
   return rc;
 }
 
-int raw_socket_write(CONNECTION *conn, const char *buf, size_t count)
+int raw_socket_write(struct Connection *conn, const char *buf, size_t count)
 {
   int rc;
 
@@ -363,7 +363,7 @@ int raw_socket_write(CONNECTION *conn, const char *buf, size_t count)
   return rc;
 }
 
-int raw_socket_poll(CONNECTION *conn)
+int raw_socket_poll(struct Connection *conn)
 {
   fd_set rfds;
   struct timeval tv = { 0, 0 };
@@ -416,7 +416,7 @@ static int socket_connect(int fd, struct sockaddr *sa)
   return save_errno;
 }
 
-int raw_socket_open(CONNECTION *conn)
+int raw_socket_open(struct Connection *conn)
 {
   int rc;
   int fd;

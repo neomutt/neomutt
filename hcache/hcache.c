@@ -211,7 +211,7 @@ static void restore_char(char **c, const unsigned char *d, int *off, int convert
   *off += size;
 }
 
-static unsigned char *dump_address(ADDRESS *a, unsigned char *d, int *off, int convert)
+static unsigned char *dump_address(struct Address *a, unsigned char *d, int *off, int convert)
 {
   unsigned int counter = 0;
   unsigned int start_off = *off;
@@ -235,7 +235,7 @@ static unsigned char *dump_address(ADDRESS *a, unsigned char *d, int *off, int c
   return d;
 }
 
-static void restore_address(ADDRESS **a, const unsigned char *d, int *off, int convert)
+static void restore_address(struct Address **a, const unsigned char *d, int *off, int convert)
 {
   unsigned int counter;
 
@@ -257,7 +257,7 @@ static void restore_address(ADDRESS **a, const unsigned char *d, int *off, int c
   *a = NULL;
 }
 
-static unsigned char *dump_list(LIST *l, unsigned char *d, int *off, int convert)
+static unsigned char *dump_list(struct List *l, unsigned char *d, int *off, int convert)
 {
   unsigned int counter = 0;
   unsigned int start_off = *off;
@@ -276,7 +276,7 @@ static unsigned char *dump_list(LIST *l, unsigned char *d, int *off, int convert
   return d;
 }
 
-static void restore_list(LIST **l, const unsigned char *d, int *off, int convert)
+static void restore_list(struct List **l, const unsigned char *d, int *off, int convert)
 {
   unsigned int counter;
 
@@ -284,7 +284,7 @@ static void restore_list(LIST **l, const unsigned char *d, int *off, int convert
 
   while (counter)
   {
-    *l = safe_malloc(sizeof(LIST));
+    *l = safe_malloc(sizeof(struct List));
     restore_char(&(*l)->data, d, off, convert);
     l = &(*l)->next;
     counter--;
@@ -293,7 +293,7 @@ static void restore_list(LIST **l, const unsigned char *d, int *off, int convert
   *l = NULL;
 }
 
-static unsigned char *dump_buffer(BUFFER *b, unsigned char *d, int *off, int convert)
+static unsigned char *dump_buffer(struct Buffer *b, unsigned char *d, int *off, int convert)
 {
   if (!b)
   {
@@ -311,7 +311,7 @@ static unsigned char *dump_buffer(BUFFER *b, unsigned char *d, int *off, int con
   return d;
 }
 
-static void restore_buffer(BUFFER **b, const unsigned char *d, int *off, int convert)
+static void restore_buffer(struct Buffer **b, const unsigned char *d, int *off, int convert)
 {
   unsigned int used;
   unsigned int offset;
@@ -321,7 +321,7 @@ static void restore_buffer(BUFFER **b, const unsigned char *d, int *off, int con
     return;
   }
 
-  *b = safe_malloc(sizeof(BUFFER));
+  *b = safe_malloc(sizeof(struct Buffer));
 
   restore_char(&(*b)->data, d, off, convert);
   restore_int(&offset, d, off);
@@ -332,7 +332,7 @@ static void restore_buffer(BUFFER **b, const unsigned char *d, int *off, int con
   (*b)->destroy = used;
 }
 
-static unsigned char *dump_parameter(PARAMETER *p, unsigned char *d, int *off, int convert)
+static unsigned char *dump_parameter(struct Parameter *p, unsigned char *d, int *off, int convert)
 {
   unsigned int counter = 0;
   unsigned int start_off = *off;
@@ -352,7 +352,7 @@ static unsigned char *dump_parameter(PARAMETER *p, unsigned char *d, int *off, i
   return d;
 }
 
-static void restore_parameter(PARAMETER **p, const unsigned char *d, int *off, int convert)
+static void restore_parameter(struct Parameter **p, const unsigned char *d, int *off, int convert)
 {
   unsigned int counter;
 
@@ -360,7 +360,7 @@ static void restore_parameter(PARAMETER **p, const unsigned char *d, int *off, i
 
   while (counter)
   {
-    *p = safe_malloc(sizeof(PARAMETER));
+    *p = safe_malloc(sizeof(struct Parameter));
     restore_char(&(*p)->attribute, d, off, 0);
     restore_char(&(*p)->value, d, off, convert);
     p = &(*p)->next;
@@ -370,11 +370,11 @@ static void restore_parameter(PARAMETER **p, const unsigned char *d, int *off, i
   *p = NULL;
 }
 
-static unsigned char *dump_body(BODY *c, unsigned char *d, int *off, int convert)
+static unsigned char *dump_body(struct Body *c, unsigned char *d, int *off, int convert)
 {
-  BODY nb;
+  struct Body nb;
 
-  memcpy(&nb, c, sizeof(BODY));
+  memcpy(&nb, c, sizeof(struct Body));
 
   /* some fields are not safe to cache */
   nb.content = NULL;
@@ -384,9 +384,9 @@ static unsigned char *dump_body(BODY *c, unsigned char *d, int *off, int convert
   nb.hdr = NULL;
   nb.aptr = NULL;
 
-  lazy_realloc(&d, *off + sizeof(BODY));
-  memcpy(d + *off, &nb, sizeof(BODY));
-  *off += sizeof(BODY);
+  lazy_realloc(&d, *off + sizeof(struct Body));
+  memcpy(d + *off, &nb, sizeof(struct Body));
+  *off += sizeof(struct Body);
 
   d = dump_char(nb.xtype, d, off, 0);
   d = dump_char(nb.subtype, d, off, 0);
@@ -401,10 +401,10 @@ static unsigned char *dump_body(BODY *c, unsigned char *d, int *off, int convert
   return d;
 }
 
-static void restore_body(BODY *c, const unsigned char *d, int *off, int convert)
+static void restore_body(struct Body *c, const unsigned char *d, int *off, int convert)
 {
-  memcpy(c, d + *off, sizeof(BODY));
-  *off += sizeof(BODY);
+  memcpy(c, d + *off, sizeof(struct Body));
+  *off += sizeof(struct Body);
 
   restore_char(&c->xtype, d, off, 0);
   restore_char(&c->subtype, d, off, 0);
@@ -417,7 +417,7 @@ static void restore_body(BODY *c, const unsigned char *d, int *off, int convert)
   restore_char(&c->d_filename, d, off, convert);
 }
 
-static unsigned char *dump_envelope(ENVELOPE *e, unsigned char *d, int *off, int convert)
+static unsigned char *dump_envelope(struct Envelope *e, unsigned char *d, int *off, int convert)
 {
   d = dump_address(e->return_path, d, off, convert);
   d = dump_address(e->from, d, off, convert);
@@ -456,7 +456,7 @@ static unsigned char *dump_envelope(ENVELOPE *e, unsigned char *d, int *off, int
   return d;
 }
 
-static void restore_envelope(ENVELOPE *e, const unsigned char *d, int *off, int convert)
+static void restore_envelope(struct Envelope *e, const unsigned char *d, int *off, int convert)
 {
   int real_subj_off;
 
@@ -613,10 +613,10 @@ static const char *hcache_per_folder(const char *path, const char *folder, hcach
 /* This function transforms a header into a char so that it is useable by
  * db_store.
  */
-static void *hcache_dump(header_cache_t *h, HEADER *header, int *off, unsigned int uidvalidity)
+static void *hcache_dump(header_cache_t *h, struct Header *header, int *off, unsigned int uidvalidity)
 {
   unsigned char *d = NULL;
-  HEADER nh;
+  struct Header nh;
   int convert = !Charset_is_utf8;
 
   *off = 0;
@@ -634,8 +634,8 @@ static void *hcache_dump(header_cache_t *h, HEADER *header, int *off, unsigned i
 
   d = dump_int(h->crc, d, off);
 
-  lazy_realloc(&d, *off + sizeof(HEADER));
-  memcpy(&nh, header, sizeof(HEADER));
+  lazy_realloc(&d, *off + sizeof(struct Header));
+  memcpy(&nh, header, sizeof(struct Header));
 
   /* some fields are not safe to cache */
   nh.tagged = false;
@@ -660,8 +660,8 @@ static void *hcache_dump(header_cache_t *h, HEADER *header, int *off, unsigned i
   nh.data = NULL;
 #endif
 
-  memcpy(d + *off, &nh, sizeof(HEADER));
-  *off += sizeof(HEADER);
+  memcpy(d + *off, &nh, sizeof(struct Header));
+  *off += sizeof(struct Header);
 
   d = dump_envelope(nh.env, d, off, convert);
   d = dump_body(nh.content, d, off, convert);
@@ -670,10 +670,10 @@ static void *hcache_dump(header_cache_t *h, HEADER *header, int *off, unsigned i
   return d;
 }
 
-HEADER *mutt_hcache_restore(const unsigned char *d)
+struct Header *mutt_hcache_restore(const unsigned char *d)
 {
   int off = 0;
-  HEADER *h = mutt_new_header();
+  struct Header *h = mutt_new_header();
   int convert = !Charset_is_utf8;
 
   /* skip validate */
@@ -682,8 +682,8 @@ HEADER *mutt_hcache_restore(const unsigned char *d)
   /* skip crc */
   off += sizeof(unsigned int);
 
-  memcpy(h, d + off, sizeof(HEADER));
-  off += sizeof(HEADER);
+  memcpy(h, d + off, sizeof(struct Header));
+  off += sizeof(struct Header);
 
   h->env = mutt_new_envelope();
   restore_envelope(h->env, d, &off, convert);
@@ -728,8 +728,8 @@ header_cache_t *mutt_hcache_open(const char *path, const char *folder, hcache_na
       unsigned int intval;
     } digest;
     struct md5_ctx ctx;
-    REPLACE_LIST *spam = NULL;
-    RX_LIST *nospam = NULL;
+    struct ReplaceList *spam = NULL;
+    struct RxList *nospam = NULL;
 
     hcachever = HCACHEVER;
 
@@ -841,7 +841,7 @@ void mutt_hcache_free(header_cache_t *h, void **data)
 }
 
 int mutt_hcache_store(header_cache_t *h, const char *key, size_t keylen,
-                      HEADER *header, unsigned int uidvalidity)
+                      struct Header *header, unsigned int uidvalidity)
 {
   char *data = NULL;
   int dlen;

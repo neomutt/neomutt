@@ -33,61 +33,61 @@ static int crypt_mod_pgp_valid_passphrase(void)
   return pgp_valid_passphrase();
 }
 
-static int crypt_mod_pgp_decrypt_mime(FILE *a, FILE **b, BODY *c, BODY **d)
+static int crypt_mod_pgp_decrypt_mime(FILE *a, FILE **b, struct Body *c, struct Body **d)
 {
   return pgp_decrypt_mime(a, b, c, d);
 }
-static int crypt_mod_pgp_application_handler(BODY *m, STATE *s)
+static int crypt_mod_pgp_application_handler(struct Body *m, struct State *s)
 {
   return pgp_application_pgp_handler(m, s);
 }
 
-static char *crypt_mod_pgp_findkeys(ADDRESS *adrlist, int oppenc_mode)
+static char *crypt_mod_pgp_findkeys(struct Address *adrlist, int oppenc_mode)
 {
   return pgp_find_keys(adrlist, oppenc_mode);
 }
 
-static BODY *crypt_mod_pgp_sign_message(BODY *a)
+static struct Body *crypt_mod_pgp_sign_message(struct Body *a)
 {
   return pgp_sign_message(a);
 }
 
-static int crypt_mod_pgp_verify_one(BODY *sigbdy, STATE *s, const char *tempf)
+static int crypt_mod_pgp_verify_one(struct Body *sigbdy, struct State *s, const char *tempf)
 {
   return pgp_verify_one(sigbdy, s, tempf);
 }
 
-static int crypt_mod_pgp_send_menu(HEADER *msg)
+static int crypt_mod_pgp_send_menu(struct Header *msg)
 {
   return pgp_send_menu(msg);
 }
 
-static BODY *crypt_mod_pgp_encrypt_message(BODY *a, char *keylist, int sign)
+static struct Body *crypt_mod_pgp_encrypt_message(struct Body *a, char *keylist, int sign)
 {
   return pgp_encrypt_message(a, keylist, sign);
 }
 
-static BODY *crypt_mod_pgp_make_key_attachment(char *tempf)
+static struct Body *crypt_mod_pgp_make_key_attachment(char *tempf)
 {
   return pgp_make_key_attachment(tempf);
 }
 
-static int crypt_mod_pgp_check_traditional(FILE *fp, BODY *b, int tagged_only)
+static int crypt_mod_pgp_check_traditional(FILE *fp, struct Body *b, int tagged_only)
 {
   return pgp_check_traditional(fp, b, tagged_only);
 }
 
-static BODY *crypt_mod_pgp_traditional_encryptsign(BODY *a, int flags, char *keylist)
+static struct Body *crypt_mod_pgp_traditional_encryptsign(struct Body *a, int flags, char *keylist)
 {
   return pgp_traditional_encryptsign(a, flags, keylist);
 }
 
-static int crypt_mod_pgp_encrypted_handler(BODY *m, STATE *s)
+static int crypt_mod_pgp_encrypted_handler(struct Body *m, struct State *s)
 {
   return pgp_encrypted_handler(m, s);
 }
 
-static void crypt_mod_pgp_invoke_getkeys(ADDRESS *addr)
+static void crypt_mod_pgp_invoke_getkeys(struct Address *addr)
 {
   pgp_invoke_getkeys(addr);
 }
@@ -97,7 +97,7 @@ static void crypt_mod_pgp_invoke_import(const char *fname)
   pgp_invoke_import(fname);
 }
 
-static void crypt_mod_pgp_extract_keys_from_attachment_list(FILE *fp, int tag, BODY *top)
+static void crypt_mod_pgp_extract_keys_from_attachment_list(FILE *fp, int tag, struct Body *top)
 {
   pgp_extract_keys_from_attachment_list(fp, tag, top);
 }

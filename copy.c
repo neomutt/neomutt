@@ -34,10 +34,10 @@
 #endif
 
 static int address_header_decode(char **str);
-static int copy_delete_attach(BODY *b, FILE *fpin, FILE *fpout, char *date);
+static int copy_delete_attach(struct Body *b, FILE *fpin, FILE *fpout, char *date);
 
 /* Ok, the only reason for not merging this with mutt_copy_header()
- * below is to avoid creating a HEADER structure in message_handler().
+ * below is to avoid creating a Header structure in message_handler().
  * Also, this one will wrap headers much more aggressively than the other one.
  */
 int mutt_copy_hdr(FILE *in, FILE *out, LOFF_T off_start, LOFF_T off_end,
@@ -48,7 +48,7 @@ int mutt_copy_hdr(FILE *in, FILE *out, LOFF_T off_start, LOFF_T off_end,
   int ignore = 0;
   char buf[LONG_STRING]; /* should be long enough to get most fields in one pass */
   char *nl = NULL;
-  LIST *t = NULL;
+  struct List *t = NULL;
   char **headers;
   int hdr_count;
   int x;
@@ -342,7 +342,7 @@ int mutt_copy_hdr(FILE *in, FILE *out, LOFF_T off_start, LOFF_T off_end,
    prefix
         string to use if CH_PREFIX is set
  */
-int mutt_copy_header(FILE *in, HEADER *h, FILE *out, int flags, const char *prefix)
+int mutt_copy_header(FILE *in, struct Header *h, FILE *out, int flags, const char *prefix)
 {
   char buffer[SHORT_STRING];
 
@@ -368,7 +368,7 @@ int mutt_copy_header(FILE *in, HEADER *h, FILE *out, int flags, const char *pref
 
   if ((flags & CH_UPDATE_IRT) && h->env->in_reply_to)
   {
-    LIST *listp = h->env->in_reply_to;
+    struct List *listp = h->env->in_reply_to;
     fputs("In-Reply-To:", out);
     for (; listp; listp = listp->next)
     {
@@ -462,7 +462,7 @@ int mutt_copy_header(FILE *in, HEADER *h, FILE *out, int flags, const char *pref
 }
 
 /* Count the number of lines and bytes to be deleted in this body */
-static int count_delete_lines(FILE *fp, BODY *b, LOFF_T *length, size_t datelen)
+static int count_delete_lines(FILE *fp, struct Body *b, LOFF_T *length, size_t datelen)
 {
   int dellines = 0;
   long l;
@@ -510,10 +510,10 @@ static int count_delete_lines(FILE *fp, BODY *b, LOFF_T *length, size_t datelen)
  *      MUTT_CM_CHARCONV        perform character set conversion
  * chflags      flags to mutt_copy_header()
  */
-int _mutt_copy_message(FILE *fpout, FILE *fpin, HEADER *hdr, BODY *body, int flags, int chflags)
+int _mutt_copy_message(FILE *fpout, FILE *fpin, struct Header *hdr, struct Body *body, int flags, int chflags)
 {
   char prefix[SHORT_STRING];
-  STATE s;
+  struct State s;
   LOFF_T new_offset = -1;
   int rc = 0;
 
@@ -617,7 +617,7 @@ int _mutt_copy_message(FILE *fpout, FILE *fpin, HEADER *hdr, BODY *body, int fla
   if (flags & MUTT_CM_DECODE)
   {
     /* now make a text/plain version of the message */
-    memset(&s, 0, sizeof(STATE));
+    memset(&s, 0, sizeof(struct State));
     s.fpin = fpin;
     s.fpout = fpout;
     if (flags & MUTT_CM_PREFIX)
@@ -640,7 +640,7 @@ int _mutt_copy_message(FILE *fpout, FILE *fpin, HEADER *hdr, BODY *body, int fla
   }
   else if (WithCrypto && (flags & MUTT_CM_DECODE_CRYPT) && (hdr->security & ENCRYPT))
   {
-    BODY *cur = NULL;
+    struct Body *cur = NULL;
     FILE *fp = NULL;
 
     if ((WithCrypto & APPLICATION_PGP) && (flags & MUTT_CM_DECODE_PGP) &&
@@ -713,9 +713,9 @@ int _mutt_copy_message(FILE *fpout, FILE *fpin, HEADER *hdr, BODY *body, int fla
 
 /* should be made to return -1 on fatal errors, and 1 on non-fatal errors
  * like partial decode, where it is worth displaying as much as possible */
-int mutt_copy_message(FILE *fpout, CONTEXT *src, HEADER *hdr, int flags, int chflags)
+int mutt_copy_message(FILE *fpout, struct Context *src, struct Header *hdr, int flags, int chflags)
 {
-  MESSAGE *msg = NULL;
+  struct Message *msg = NULL;
   int r;
 
   if ((msg = mx_open_message(src, hdr->msgno)) == NULL)
@@ -740,11 +740,11 @@ int mutt_copy_message(FILE *fpout, CONTEXT *src, HEADER *hdr, int flags, int chf
  * flags        mutt_copy_message() flags
  * chflags      mutt_copy_header() flags
  */
-static int _mutt_append_message(CONTEXT *dest, FILE *fpin, CONTEXT *src,
-                                HEADER *hdr, BODY *body, int flags, int chflags)
+static int _mutt_append_message(struct Context *dest, FILE *fpin, struct Context *src,
+                                struct Header *hdr, struct Body *body, int flags, int chflags)
 {
   char buf[STRING];
-  MESSAGE *msg = NULL;
+  struct Message *msg = NULL;
   int r;
 
   if (fseeko(fpin, hdr->offset, SEEK_SET) < 0)
@@ -770,9 +770,9 @@ static int _mutt_append_message(CONTEXT *dest, FILE *fpin, CONTEXT *src,
   return r;
 }
 
-int mutt_append_message(CONTEXT *dest, CONTEXT *src, HEADER *hdr, int cmflags, int chflags)
+int mutt_append_message(struct Context *dest, struct Context *src, struct Header *hdr, int cmflags, int chflags)
 {
-  MESSAGE *msg = NULL;
+  struct Message *msg = NULL;
   int r;
 
   if ((msg = mx_open_message(src, hdr->msgno)) == NULL)
@@ -789,9 +789,9 @@ int mutt_append_message(CONTEXT *dest, CONTEXT *src, HEADER *hdr, int cmflags, i
  *
  * The function will return 0 on success and -1 on failure.
  */
-static int copy_delete_attach(BODY *b, FILE *fpin, FILE *fpout, char *date)
+static int copy_delete_attach(struct Body *b, FILE *fpin, FILE *fpout, char *date)
 {
-  BODY *part = NULL;
+  struct Body *part = NULL;
 
   for (part = b->parts; part; part = part->next)
   {
@@ -842,7 +842,7 @@ static int copy_delete_attach(BODY *b, FILE *fpin, FILE *fpout, char *date)
  *
  * XXX - fix that.
  */
-static void format_address_header(char **h, ADDRESS *a)
+static void format_address_header(char **h, struct Address *a)
 {
   char buf[HUGE_STRING];
   char cbuf[STRING];
@@ -857,7 +857,7 @@ static void format_address_header(char **h, ADDRESS *a)
   safe_realloc(h, buflen);
   for (count = 0; a; a = a->next, count++)
   {
-    ADDRESS *tmp = a->next;
+    struct Address *tmp = a->next;
     a->next = NULL;
     *buf = *cbuf = *c2buf = '\0';
     l = rfc822_write_address(buf, sizeof(buf), a, 0);
@@ -906,8 +906,8 @@ static int address_header_decode(char **h)
   char *s = *h;
   int l, rp = 0;
 
-  ADDRESS *a = NULL;
-  ADDRESS *cur = NULL;
+  struct Address *a = NULL;
+  struct Address *cur = NULL;
 
   switch (tolower((unsigned char) *s))
   {

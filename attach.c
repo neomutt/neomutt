@@ -39,7 +39,7 @@
 #include "pager.h"
 #include "rfc1524.h"
 
-int mutt_get_tmp_attachment(BODY *a)
+int mutt_get_tmp_attachment(struct Body *a)
 {
   char type[STRING];
   char tempfile[_POSIX_PATH_MAX];
@@ -49,7 +49,7 @@ int mutt_get_tmp_attachment(BODY *a)
   if (a->unlink)
     return 0;
 
-  rfc1524_entry *entry = rfc1524_new_entry();
+  struct Rfc1524MailcapEntry *entry = rfc1524_new_entry();
   snprintf(type, sizeof(type), "%s/%s", TYPE(a), a->subtype);
   rfc1524_mailcap_lookup(a, type, entry, 0);
   rfc1524_expand_filename(entry->nametemplate, a->filename, tempfile, sizeof(tempfile));
@@ -81,12 +81,12 @@ int mutt_get_tmp_attachment(BODY *a)
 
 
 /* return 1 if require full screen redraw, 0 otherwise */
-int mutt_compose_attachment(BODY *a)
+int mutt_compose_attachment(struct Body *a)
 {
   char type[STRING];
   char command[STRING];
   char newfile[_POSIX_PATH_MAX] = "";
-  rfc1524_entry *entry = rfc1524_new_entry();
+  struct Rfc1524MailcapEntry *entry = rfc1524_new_entry();
   short unlink_newfile = 0;
   int rc = 0;
 
@@ -128,7 +128,7 @@ int mutt_compose_attachment(BODY *a)
 
         if (r != -1 && entry->composetypecommand)
         {
-          BODY *b = NULL;
+          struct Body *b = NULL;
           FILE *fp = NULL, *tfp = NULL;
           char tempfile[_POSIX_PATH_MAX];
 
@@ -205,19 +205,19 @@ bailout:
 
 /*
  * Currently, this only works for send mode, as it assumes that the
- * BODY->filename actually contains the information.  I'm not sure
+ * Body->filename actually contains the information.  I'm not sure
  * we want to deal with editing attachments we've already received,
  * so this should be ok.
  *
  * Returns 1 if editor found, 0 if not (useful to tell calling menu to
  * redraw)
  */
-int mutt_edit_attachment(BODY *a)
+int mutt_edit_attachment(struct Body *a)
 {
   char type[STRING];
   char command[STRING];
   char newfile[_POSIX_PATH_MAX] = "";
-  rfc1524_entry *entry = rfc1524_new_entry();
+  struct Rfc1524MailcapEntry *entry = rfc1524_new_entry();
   short unlink_newfile = 0;
   int rc = 0;
 
@@ -282,9 +282,9 @@ bailout:
 }
 
 
-void mutt_check_lookup_list(BODY *b, char *type, int len)
+void mutt_check_lookup_list(struct Body *b, char *type, int len)
 {
-  LIST *t = MimeLookupList;
+  struct List *t = MimeLookupList;
   int i;
 
   for (; t; t = t->next)
@@ -294,7 +294,7 @@ void mutt_check_lookup_list(BODY *b, char *type, int len)
          (ascii_strncasecmp(type, t->data, i) == 0)) ||
         (ascii_strcasecmp(type, t->data) == 0))
     {
-      BODY tmp = { 0 };
+      struct Body tmp = { 0 };
       int n;
       if ((n = mutt_lookup_mime_type(&tmp, b->filename)) != TYPEOTHER)
       {
@@ -323,7 +323,7 @@ void mutt_check_lookup_list(BODY *b, char *type, int len)
 }
 
 /* returns -1 on error, 0 or the return code from mutt_do_pager() on success */
-int mutt_view_attachment(FILE *fp, BODY *a, int flag, HEADER *hdr, ATTACHPTR **idx, short idxlen)
+int mutt_view_attachment(FILE *fp, struct Body *a, int flag, struct Header *hdr, struct AttachPtr **idx, short idxlen)
 {
   char tempfile[_POSIX_PATH_MAX] = "";
   char pagerfile[_POSIX_PATH_MAX] = "";
@@ -335,7 +335,7 @@ int mutt_view_attachment(FILE *fp, BODY *a, int flag, HEADER *hdr, ATTACHPTR **i
   char command[HUGE_STRING];
   char descrip[STRING];
   char *fname = NULL;
-  rfc1524_entry *entry = NULL;
+  struct Rfc1524MailcapEntry *entry = NULL;
   int rc = -1;
   int unlink_tempfile = 0;
 
@@ -501,7 +501,7 @@ int mutt_view_attachment(FILE *fp, BODY *a, int flag, HEADER *hdr, ATTACHPTR **i
          * Don't use mutt_save_attachment() because we want to perform charset
          * conversion since this will be displayed by the internal pager.
          */
-        STATE decode_state;
+        struct State decode_state;
 
         memset(&decode_state, 0, sizeof(decode_state));
         decode_state.fpout = safe_fopen(pagerfile, "w");
@@ -555,7 +555,7 @@ int mutt_view_attachment(FILE *fp, BODY *a, int flag, HEADER *hdr, ATTACHPTR **i
 
   if (use_pager)
   {
-    pager_t info;
+    struct Pager info;
 
     memset(&info, 0, sizeof(info));
     info.fp = fp;
@@ -589,7 +589,7 @@ return_error:
 }
 
 /* returns 1 on success, 0 on error */
-int mutt_pipe_attachment(FILE *fp, BODY *b, const char *path, char *outfile)
+int mutt_pipe_attachment(FILE *fp, struct Body *b, const char *path, char *outfile)
 {
   pid_t thepid;
   int out = -1;
@@ -608,9 +608,9 @@ int mutt_pipe_attachment(FILE *fp, BODY *b, const char *path, char *outfile)
   {
     /* recv case */
 
-    STATE s;
+    struct State s;
 
-    memset(&s, 0, sizeof(STATE));
+    memset(&s, 0, sizeof(struct State));
     /* perform charset conversion on text attachments when piping */
     s.flags = MUTT_CHARCONV;
 
@@ -692,7 +692,7 @@ static FILE *save_attachment_open(char *path, int flags)
 }
 
 /* returns 0 on success, -1 on error */
-int mutt_save_attachment(FILE *fp, BODY *m, char *path, int flags, HEADER *hdr)
+int mutt_save_attachment(FILE *fp, struct Body *m, char *path, int flags, struct Header *hdr)
 {
   if (!m)
     return -1;
@@ -707,9 +707,9 @@ int mutt_save_attachment(FILE *fp, BODY *m, char *path, int flags, HEADER *hdr)
       /* message type attachments are written to mail folders. */
 
       char buf[HUGE_STRING];
-      HEADER *hn = NULL;
-      CONTEXT ctx;
-      MESSAGE *msg = NULL;
+      struct Header *hn = NULL;
+      struct Context ctx;
+      struct Message *msg = NULL;
       int chflags = 0;
       int r = -1;
 
@@ -745,7 +745,7 @@ int mutt_save_attachment(FILE *fp, BODY *m, char *path, int flags, HEADER *hdr)
     {
       /* In recv mode, extract from folder and decode */
 
-      STATE s;
+      struct State s;
 
       memset(&s, 0, sizeof(s));
       if ((s.fpout = save_attachment_open(path, flags)) == NULL)
@@ -806,12 +806,12 @@ int mutt_save_attachment(FILE *fp, BODY *m, char *path, int flags, HEADER *hdr)
 }
 
 /* returns 0 on success, -1 on error */
-int mutt_decode_save_attachment(FILE *fp, BODY *m, char *path, int displaying, int flags)
+int mutt_decode_save_attachment(FILE *fp, struct Body *m, char *path, int displaying, int flags)
 {
-  STATE s;
+  struct State s;
   unsigned int saved_encoding = 0;
-  BODY *saved_parts = NULL;
-  HEADER *saved_hdr = NULL;
+  struct Body *saved_parts = NULL;
+  struct Header *saved_hdr = NULL;
   int ret = 0;
 
   memset(&s, 0, sizeof(s));
@@ -892,12 +892,12 @@ int mutt_decode_save_attachment(FILE *fp, BODY *m, char *path, int displaying, i
 }
 
 /* Ok, the difference between send and receive:
- * recv: BODY->filename is a suggested name, and Context|HEADER points
+ * recv: Body->filename is a suggested name, and Context|Header points
  *       to the attachment in mailbox which is encoded
- * send: BODY->filename points to the un-encoded file which contains the
+ * send: Body->filename points to the un-encoded file which contains the
  *       attachment
  */
-int mutt_print_attachment(FILE *fp, BODY *a)
+int mutt_print_attachment(FILE *fp, struct Body *a)
 {
   char newfile[_POSIX_PATH_MAX] = "";
   char type[STRING];
@@ -910,7 +910,7 @@ int mutt_print_attachment(FILE *fp, BODY *a)
   if (rfc1524_mailcap_lookup(a, type, NULL, MUTT_PRINT))
   {
     char command[_POSIX_PATH_MAX + STRING];
-    rfc1524_entry *entry = NULL;
+    struct Rfc1524MailcapEntry *entry = NULL;
     int piped = false;
 
     mutt_debug(2, "Using mailcap...\n");

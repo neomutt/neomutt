@@ -77,12 +77,12 @@ static int mix_get_caps(const char *capstr)
   return caps;
 }
 
-static void mix_add_entry(REMAILER ***type2_list, REMAILER *entry, size_t *slots, size_t *used)
+static void mix_add_entry(struct Remailer ***type2_list, struct Remailer *entry, size_t *slots, size_t *used)
 {
   if (*used == *slots)
   {
     *slots += 5;
-    safe_realloc(type2_list, sizeof(REMAILER *) * (*slots));
+    safe_realloc(type2_list, sizeof(struct Remailer *) * (*slots));
   }
 
   (*type2_list)[(*used)++] = entry;
@@ -90,12 +90,12 @@ static void mix_add_entry(REMAILER ***type2_list, REMAILER *entry, size_t *slots
     entry->num = *used;
 }
 
-static REMAILER *mix_new_remailer(void)
+static struct Remailer *mix_new_remailer(void)
 {
-  return safe_calloc(1, sizeof(REMAILER));
+  return safe_calloc(1, sizeof(struct Remailer));
 }
 
-static void mix_free_remailer(REMAILER **r)
+static void mix_free_remailer(struct Remailer **r)
 {
   FREE(&(*r)->shortname);
   FREE(&(*r)->addr);
@@ -105,7 +105,7 @@ static void mix_free_remailer(REMAILER **r)
 }
 
 /* parse the type2.list as given by mixmaster -T */
-static REMAILER **mix_type2_list(size_t *l)
+static struct Remailer **mix_type2_list(size_t *l)
 {
   FILE *fp = NULL;
   pid_t mm_pid;
@@ -115,7 +115,7 @@ static REMAILER **mix_type2_list(size_t *l)
   char line[HUGE_STRING];
   char *t = NULL;
 
-  REMAILER **type2_list = NULL, *p = NULL;
+  struct Remailer **type2_list = NULL, *p = NULL;
   size_t slots = 0, used = 0;
 
   if (!l)
@@ -182,10 +182,10 @@ static REMAILER **mix_type2_list(size_t *l)
   return type2_list;
 }
 
-static void mix_free_type2_list(REMAILER ***ttlp)
+static void mix_free_type2_list(struct Remailer ***ttlp)
 {
   int i;
-  REMAILER **type2_list = *ttlp;
+  struct Remailer **type2_list = *ttlp;
 
   for (i = 0; type2_list[i]; i++)
     mix_free_remailer(&type2_list[i]);
@@ -199,8 +199,8 @@ static void mix_free_type2_list(REMAILER ***ttlp)
 #define MIX_MAXROW (MuttIndexWindow->rows - 1)
 
 
-static void mix_screen_coordinates(REMAILER **type2_list, struct coord **coordsp,
-                                   MIXCHAIN *chain, int i)
+static void mix_screen_coordinates(struct Remailer **type2_list, struct coord **coordsp,
+                                   struct MixChain *chain, int i)
 {
   short c, r, oc;
   struct coord *coords = NULL;
@@ -240,8 +240,8 @@ static void mix_screen_coordinates(REMAILER **type2_list, struct coord **coordsp
   }
 }
 
-static void mix_redraw_ce(REMAILER **type2_list, struct coord *coords,
-                          MIXCHAIN *chain, int i, short selected)
+static void mix_redraw_ce(struct Remailer **type2_list, struct coord *coords,
+                          struct MixChain *chain, int i, short selected)
 {
   if (!coords || !chain)
     return;
@@ -262,8 +262,8 @@ static void mix_redraw_ce(REMAILER **type2_list, struct coord *coords,
   }
 }
 
-static void mix_redraw_chain(REMAILER **type2_list, struct coord *coords,
-                             MIXCHAIN *chain, int cur)
+static void mix_redraw_chain(struct Remailer **type2_list, struct coord *coords,
+                             struct MixChain *chain, int cur)
 {
   int i;
 
@@ -277,7 +277,7 @@ static void mix_redraw_chain(REMAILER **type2_list, struct coord *coords,
     mix_redraw_ce(type2_list, coords, chain, i, i == cur);
 }
 
-static void mix_redraw_head(MIXCHAIN *chain)
+static void mix_redraw_head(struct MixChain *chain)
 {
   SETCOLOR(MT_COLOR_STATUS);
   mutt_window_mvprintw(MuttIndexWindow, MIX_VOFFSET - 1, 0,
@@ -286,7 +286,7 @@ static void mix_redraw_head(MIXCHAIN *chain)
   NORMAL_COLOR;
 }
 
-static const char *mix_format_caps(REMAILER *r)
+static const char *mix_format_caps(struct Remailer *r)
 {
   static char capbuff[10];
   char *t = capbuff;
@@ -343,7 +343,7 @@ static const char *mix_entry_fmt(char *dest, size_t destlen, size_t col, int col
                                  unsigned long data, format_flag flags)
 {
   char fmt[16];
-  REMAILER *remailer = (REMAILER *) data;
+  struct Remailer *remailer = (struct Remailer *) data;
   int optional = (flags & MUTT_FORMAT_OPTIONAL);
 
   switch (op)
@@ -393,14 +393,14 @@ static const char *mix_entry_fmt(char *dest, size_t destlen, size_t col, int col
 }
 
 
-static void mix_entry(char *b, size_t blen, MUTTMENU *menu, int num)
+static void mix_entry(char *b, size_t blen, struct Menu *menu, int num)
 {
-  REMAILER **type2_list = (REMAILER **) menu->data;
+  struct Remailer **type2_list = (struct Remailer **) menu->data;
   mutt_FormatString(b, blen, 0, MuttIndexWindow->cols, NONULL(MixEntryFormat), mix_entry_fmt,
                     (unsigned long) type2_list[num], MUTT_FORMAT_ARROWCURSOR);
 }
 
-static int mix_chain_add(MIXCHAIN *chain, const char *s, REMAILER **type2_list)
+static int mix_chain_add(struct MixChain *chain, const char *s, struct Remailer **type2_list)
 {
   int i;
 
@@ -437,19 +437,19 @@ static const struct mapping_t RemailerHelp[] = {
 };
 
 
-void mix_make_chain(LIST **chainp)
+void mix_make_chain(struct List **chainp)
 {
-  LIST *p = NULL;
-  MIXCHAIN *chain = NULL;
+  struct List *p = NULL;
+  struct MixChain *chain = NULL;
   int c_cur = 0, c_old = 0;
   short c_redraw = 1;
 
-  REMAILER **type2_list = NULL;
+  struct Remailer **type2_list = NULL;
   size_t ttll = 0;
 
   struct coord *coords = NULL;
 
-  MUTTMENU *menu = NULL;
+  struct Menu *menu = NULL;
   char helpstr[LONG_STRING];
   short loop = 1;
   int op;
@@ -463,7 +463,7 @@ void mix_make_chain(LIST **chainp)
     return;
   }
 
-  chain = safe_calloc(sizeof(MIXCHAIN), 1);
+  chain = safe_calloc(sizeof(struct MixChain), 1);
   for (p = *chainp; p; p = p->next)
     mix_chain_add(chain, (char *) p->data, type2_list);
 
@@ -646,11 +646,11 @@ void mix_make_chain(LIST **chainp)
 }
 
 /* some safety checks before piping the message to mixmaster */
-int mix_check_message(HEADER *msg)
+int mix_check_message(struct Header *msg)
 {
   const char *fqdn = NULL;
   short need_hostname = 0;
-  ADDRESS *p = NULL;
+  struct Address *p = NULL;
 
   if (msg->env->cc || msg->env->bcc)
   {
@@ -691,7 +691,7 @@ int mix_check_message(HEADER *msg)
   return 0;
 }
 
-int mix_send_message(LIST *chain, const char *tempfile)
+int mix_send_message(struct List *chain, const char *tempfile)
 {
   char cmd[HUGE_STRING];
   char tmp[HUGE_STRING];

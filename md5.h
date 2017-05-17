@@ -55,13 +55,13 @@ void md5_init_ctx(struct md5_ctx *ctx);
 
 /* Starting with the result of former calls of this function (or the
  * initialization function update the context for the next LEN bytes
- * starting at BUFFER.
+ * starting at Buffer.
  * It is necessary that LEN is a multiple of 64!!! */
 void md5_process_block(const void *buffer, size_t len, struct md5_ctx *ctx);
 
 /* Starting with the result of former calls of this function (or the
  * initialization function update the context for the next LEN bytes
- * starting at BUFFER.
+ * starting at Buffer.
  * It is NOT required that LEN is a multiple of 64.  */
 void md5_process_bytes(const void *buffer, size_t len, struct md5_ctx *ctx);
 
@@ -81,7 +81,7 @@ void *md5_read_ctx(const struct md5_ctx *ctx, void *resbuf);
  * beginning at RESBLOCK.  */
 int md5_stream(FILE *stream, void *resblock);
 
-/* Compute MD5 message digest for LEN bytes beginning at BUFFER.  The
+/* Compute MD5 message digest for LEN bytes beginning at Buffer.  The
  * result is always in little endian byte order, so that a byte-wise
  * output yields to the wanted ASCII representation of the message
  * digest.  */

@@ -96,8 +96,8 @@ static int fseek_last_message(FILE *f)
 /* Return 1 if the last message is new */
 static int test_last_status_new(FILE *f)
 {
-  HEADER *hdr = NULL;
-  ENVELOPE *tmp_envelope = NULL;
+  struct Header *hdr = NULL;
+  struct Envelope *tmp_envelope = NULL;
   int result = 0;
 
   if (fseek_last_message(f) == -1)
@@ -134,13 +134,13 @@ static int test_new_folder(const char *path)
   return rc;
 }
 
-static BUFFY *buffy_new(const char *path)
+static struct Buffy *buffy_new(const char *path)
 {
-  BUFFY *buffy = NULL;
+  struct Buffy *buffy = NULL;
   char rp[PATH_MAX] = "";
   char *r = NULL;
 
-  buffy = safe_calloc(1, sizeof(BUFFY));
+  buffy = safe_calloc(1, sizeof(struct Buffy));
   strfcpy(buffy->path, path, sizeof(buffy->path));
   r = realpath(path, rp);
   strfcpy(buffy->realpath, r ? rp : path, sizeof(buffy->realpath));
@@ -150,7 +150,7 @@ static BUFFY *buffy_new(const char *path)
   return buffy;
 }
 
-static void buffy_free(BUFFY **mailbox)
+static void buffy_free(struct Buffy **mailbox)
 {
   if (mailbox && *mailbox)
     FREE(&(*mailbox)->desc);
@@ -162,7 +162,7 @@ static void buffy_free(BUFFY **mailbox)
  * check_stats: if true, count total, new, and flagged messages.
  * Returns 1 if the dir has new mail.
  */
-static int buffy_maildir_check_dir(BUFFY *mailbox, const char *dir_name,
+static int buffy_maildir_check_dir(struct Buffy *mailbox, const char *dir_name,
                                    int check_new, int check_stats)
 {
   char path[_POSIX_PATH_MAX];
@@ -242,7 +242,7 @@ static int buffy_maildir_check_dir(BUFFY *mailbox, const char *dir_name,
  * check_stats: if true, also count total, new, and flagged messages.
  * Returns 1 if the mailbox has new mail.
  */
-static int buffy_maildir_check(BUFFY *mailbox, int check_stats)
+static int buffy_maildir_check(struct Buffy *mailbox, int check_stats)
 {
   int rc, check_new = 1;
 
@@ -267,11 +267,11 @@ static int buffy_maildir_check(BUFFY *mailbox, int check_stats)
  * check_stats: if true, also count total, new, and flagged messages.
  * Returns 1 if the mailbox has new mail.
  */
-static int buffy_mbox_check(BUFFY *mailbox, struct stat *sb, int check_stats)
+static int buffy_mbox_check(struct Buffy *mailbox, struct stat *sb, int check_stats)
 {
   int rc = 0;
   int new_or_changed;
-  CONTEXT ctx;
+  struct Context ctx;
 
   if (option(OPTCHECKMBOXSIZE))
     new_or_changed = sb->st_size > mailbox->size;
@@ -313,7 +313,7 @@ static int buffy_mbox_check(BUFFY *mailbox, struct stat *sb, int check_stats)
   return rc;
 }
 
-static void buffy_check(BUFFY *tmp, struct stat *contex_sb, int check_stats)
+static void buffy_check(struct Buffy *tmp, struct stat *contex_sb, int check_stats)
 {
   struct stat sb;
 #ifdef USE_SIDEBAR
@@ -421,9 +421,9 @@ static void buffy_check(BUFFY *tmp, struct stat *contex_sb, int check_stats)
 }
 
 /* fetch buffy object for given path, if present */
-static BUFFY *buffy_get(const char *path)
+static struct Buffy *buffy_get(const char *path)
 {
-  BUFFY *cur = NULL;
+  struct Buffy *cur = NULL;
   char *epath = NULL;
 
   if (!path)
@@ -450,7 +450,7 @@ static BUFFY *buffy_get(const char *path)
 void mutt_buffy_cleanup(const char *buf, struct stat *st)
 {
   struct utimbuf ut;
-  BUFFY *tmp = NULL;
+  struct Buffy *tmp = NULL;
 
   if (option(OPTCHECKMBOXSIZE))
   {
@@ -472,9 +472,9 @@ void mutt_buffy_cleanup(const char *buf, struct stat *st)
   }
 }
 
-BUFFY *mutt_find_mailbox(const char *path)
+struct Buffy *mutt_find_mailbox(const char *path)
 {
-  BUFFY *tmp = NULL;
+  struct Buffy *tmp = NULL;
   struct stat sb;
   struct stat tmp_sb;
 
@@ -490,7 +490,7 @@ BUFFY *mutt_find_mailbox(const char *path)
   return tmp;
 }
 
-void mutt_update_mailbox(BUFFY *b)
+void mutt_update_mailbox(struct Buffy *b)
 {
   struct stat sb;
 
@@ -504,9 +504,9 @@ void mutt_update_mailbox(BUFFY *b)
   return;
 }
 
-int mutt_parse_mailboxes(BUFFER *path, BUFFER *s, unsigned long data, BUFFER *err)
+int mutt_parse_mailboxes(struct Buffer *path, struct Buffer *s, unsigned long data, struct Buffer *err)
 {
-  BUFFY **tmp = NULL, *tmp1 = NULL;
+  struct Buffy **tmp = NULL, *tmp1 = NULL;
   char buf[_POSIX_PATH_MAX];
   struct stat sb;
   char f1[PATH_MAX];
@@ -591,12 +591,12 @@ int mutt_parse_mailboxes(BUFFER *path, BUFFER *s, unsigned long data, BUFFER *er
 }
 
 #ifdef USE_NOTMUCH
-int mutt_parse_virtual_mailboxes(BUFFER *path, BUFFER *s, unsigned long data, BUFFER *err)
+int mutt_parse_virtual_mailboxes(struct Buffer *path, struct Buffer *s, unsigned long data, struct Buffer *err)
 {
   if (!path || !s)
     return -1;
 
-  BUFFY **tmp;
+  struct Buffy **tmp;
   char buf[_POSIX_PATH_MAX + LONG_STRING + 32]; /* path to DB + query + URI "decoration" */
 
   while (MoreArgs(s))
@@ -649,9 +649,9 @@ int mutt_parse_virtual_mailboxes(BUFFER *path, BUFFER *s, unsigned long data, BU
   return 0;
 }
 
-int mutt_parse_unvirtual_mailboxes(BUFFER *path, BUFFER *s, unsigned long data, BUFFER *err)
+int mutt_parse_unvirtual_mailboxes(struct Buffer *path, struct Buffer *s, unsigned long data, struct Buffer *err)
 {
-  BUFFY **tmp = NULL, *tmp1 = NULL;
+  struct Buffy **tmp = NULL, *tmp1 = NULL;
 
   while (MoreArgs(s))
   {
@@ -702,7 +702,7 @@ int mutt_parse_unvirtual_mailboxes(BUFFER *path, BUFFER *s, unsigned long data, 
  */
 int mutt_buffy_check(int force)
 {
-  BUFFY *tmp = NULL;
+  struct Buffy *tmp = NULL;
   struct stat contex_sb;
   time_t t;
   int check_stats = 0;
@@ -766,7 +766,7 @@ int mutt_buffy_check(int force)
 
 int mutt_buffy_list(void)
 {
-  BUFFY *tmp = NULL;
+  struct Buffy *tmp = NULL;
   char path[_POSIX_PATH_MAX];
   char buffylist[2 * STRING];
   size_t pos = 0;
@@ -820,7 +820,7 @@ int mutt_buffy_list(void)
 
 void mutt_buffy_setnotified(const char *path)
 {
-  BUFFY *buffy = NULL;
+  struct Buffy *buffy = NULL;
 
   buffy = buffy_get(path);
   if (!buffy)
@@ -847,7 +847,7 @@ int mutt_buffy_notify(void)
  */
 void mutt_buffy(char *s, size_t slen)
 {
-  BUFFY *tmp = Incoming;
+  struct Buffy *tmp = Incoming;
   int pass, found = 0;
 
   mutt_expand_path(s, slen);
@@ -878,7 +878,7 @@ void mutt_buffy(char *s, size_t slen)
 #ifdef USE_NOTMUCH
 void mutt_buffy_vfolder(char *s, size_t slen)
 {
-  BUFFY *tmp = NULL;
+  struct Buffy *tmp = NULL;
   int pass, found = 0;
 
   if (mutt_buffy_check(0))

@@ -38,7 +38,7 @@ static char *get_sort_str(char *buf, size_t buflen, int method)
 }
 
 static void _menu_status_line(char *buf, size_t buflen, size_t col, int cols,
-                              MUTTMENU *menu, const char *p);
+                              struct Menu *menu, const char *p);
 
 /* %b = number of incoming folders with unread messages [option]
  * %d = number of deleted messages [option]
@@ -66,7 +66,7 @@ static const char *status_format_str(char *buf, size_t buflen, size_t col, int c
 {
   char fmt[SHORT_STRING], tmp[SHORT_STRING], *cp = NULL;
   int count, optional = (flags & MUTT_FORMAT_OPTIONAL);
-  MUTTMENU *menu = (MUTTMENU *) data;
+  struct Menu *menu = (struct Menu *) data;
 
   *buf = 0;
   switch (op)
@@ -311,12 +311,12 @@ static const char *status_format_str(char *buf, size_t buflen, size_t col, int c
 }
 
 static void _menu_status_line(char *buf, size_t buflen, size_t col, int cols,
-                              MUTTMENU *menu, const char *p)
+                              struct Menu *menu, const char *p)
 {
   mutt_FormatString(buf, buflen, col, cols, p, status_format_str, (unsigned long) menu, 0);
 }
 
-void menu_status_line(char *buf, size_t buflen, MUTTMENU *menu, const char *p)
+void menu_status_line(char *buf, size_t buflen, struct Menu *menu, const char *p)
 {
   mutt_FormatString(buf, buflen, 0,
                     menu ? menu->statuswin->cols : MuttStatusWindow->cols, p,

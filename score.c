@@ -22,18 +22,18 @@
 #include "mutt_menu.h"
 #include "sort.h"
 
-typedef struct score_t
+struct Score
 {
   char *str;
-  pattern_t *pat;
+  struct Pattern *pat;
   int val;
   int exact; /* if this rule matches, don't evaluate any more */
-  struct score_t *next;
-} SCORE;
+  struct Score *next;
+};
 
-static SCORE *Score = NULL;
+static struct Score *Score = NULL;
 
-void mutt_check_rescore(CONTEXT *ctx)
+void mutt_check_rescore(struct Context *ctx)
 {
   int i;
 
@@ -59,11 +59,11 @@ void mutt_check_rescore(CONTEXT *ctx)
   unset_option(OPTNEEDRESCORE);
 }
 
-int mutt_parse_score(BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err)
+int mutt_parse_score(struct Buffer *buf, struct Buffer *s, unsigned long data, struct Buffer *err)
 {
-  SCORE *ptr = NULL, *last = NULL;
+  struct Score *ptr = NULL, *last = NULL;
   char *pattern = NULL, *pc = NULL;
-  struct pattern_t *pat = NULL;
+  struct Pattern *pat = NULL;
 
   mutt_extract_token(buf, s, 0);
   if (!MoreArgs(s))
@@ -93,7 +93,7 @@ int mutt_parse_score(BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err)
       FREE(&pattern);
       return -1;
     }
-    ptr = safe_calloc(1, sizeof(SCORE));
+    ptr = safe_calloc(1, sizeof(struct Score));
     if (last)
       last->next = ptr;
     else
@@ -123,10 +123,10 @@ int mutt_parse_score(BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err)
   return 0;
 }
 
-void mutt_score_message(CONTEXT *ctx, HEADER *hdr, int upd_ctx)
+void mutt_score_message(struct Context *ctx, struct Header *hdr, int upd_ctx)
 {
-  SCORE *tmp = NULL;
-  pattern_cache_t cache;
+  struct Score *tmp = NULL;
+  struct PatternCache cache;
 
   memset(&cache, 0, sizeof(cache));
   hdr->score = 0; /* in case of re-scoring */
@@ -153,9 +153,9 @@ void mutt_score_message(CONTEXT *ctx, HEADER *hdr, int upd_ctx)
     _mutt_set_flag(ctx, hdr, MUTT_FLAG, 1, upd_ctx);
 }
 
-int mutt_parse_unscore(BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err)
+int mutt_parse_unscore(struct Buffer *buf, struct Buffer *s, unsigned long data, struct Buffer *err)
 {
-  SCORE *tmp = NULL, *last = NULL;
+  struct Score *tmp = NULL, *last = NULL;
 
   while (MoreArgs(s))
   {

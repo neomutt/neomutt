@@ -39,7 +39,7 @@
 
 
 /* print the current time to avoid spoofing of the signature output */
-void crypt_current_time(STATE *s, char *app_name)
+void crypt_current_time(struct State *s, char *app_name)
 {
   time_t t;
   char p[STRING], tmp[STRING];
@@ -108,11 +108,11 @@ int crypt_valid_passphrase(int flags)
 }
 
 
-int mutt_protect(HEADER *msg, char *keylist)
+int mutt_protect(struct Header *msg, char *keylist)
 {
-  BODY *pbody = NULL, *tmp_pbody = NULL;
-  BODY *tmp_smime_pbody = NULL;
-  BODY *tmp_pgp_pbody = NULL;
+  struct Body *pbody = NULL, *tmp_pbody = NULL;
+  struct Body *tmp_smime_pbody = NULL;
+  struct Body *tmp_pgp_pbody = NULL;
   int flags = (WithCrypto & APPLICATION_PGP) ? msg->security : 0;
 
   if (!WithCrypto)
@@ -294,7 +294,7 @@ int mutt_protect(HEADER *msg, char *keylist)
 }
 
 
-int mutt_is_multipart_signed(BODY *b)
+int mutt_is_multipart_signed(struct Body *b)
 {
   char *p = NULL;
 
@@ -323,7 +323,7 @@ int mutt_is_multipart_signed(BODY *b)
 }
 
 
-int mutt_is_multipart_encrypted(BODY *b)
+int mutt_is_multipart_encrypted(struct Body *b)
 {
   if ((WithCrypto & APPLICATION_PGP))
   {
@@ -342,7 +342,7 @@ int mutt_is_multipart_encrypted(BODY *b)
 }
 
 
-int mutt_is_valid_multipart_pgp_encrypted(BODY *b)
+int mutt_is_valid_multipart_pgp_encrypted(struct Body *b)
 {
   if (!mutt_is_multipart_encrypted(b))
     return 0;
@@ -370,7 +370,7 @@ int mutt_is_valid_multipart_pgp_encrypted(BODY *b)
  *     <application/octet-stream> [BASE64-encoded]
  * See ticket #3742
  */
-int mutt_is_malformed_multipart_pgp_encrypted(BODY *b)
+int mutt_is_malformed_multipart_pgp_encrypted(struct Body *b)
 {
   if (!(WithCrypto & APPLICATION_PGP))
     return 0;
@@ -402,7 +402,7 @@ int mutt_is_malformed_multipart_pgp_encrypted(BODY *b)
 }
 
 
-int mutt_is_application_pgp(BODY *m)
+int mutt_is_application_pgp(struct Body *m)
 {
   int t = 0;
   char *p = NULL;
@@ -449,7 +449,7 @@ int mutt_is_application_pgp(BODY *m)
   return t;
 }
 
-int mutt_is_application_smime(BODY *m)
+int mutt_is_application_smime(struct Body *m)
 {
   char *t = NULL;
   int len, complain = 0;
@@ -516,7 +516,7 @@ int mutt_is_application_smime(BODY *m)
 }
 
 
-int crypt_query(BODY *m)
+int crypt_query(struct Body *m)
 {
   int t = 0;
 
@@ -559,7 +559,7 @@ int crypt_query(BODY *m)
 
   if (m->type == TYPEMULTIPART || m->type == TYPEMESSAGE)
   {
-    BODY *p = NULL;
+    struct Body *p = NULL;
     int u, v, w;
 
     u = m->parts ? 0xffffffff : 0; /* Bits set in all parts */
@@ -581,7 +581,7 @@ int crypt_query(BODY *m)
 }
 
 
-int crypt_write_signed(BODY *a, STATE *s, const char *tempfile)
+int crypt_write_signed(struct Body *a, struct State *s, const char *tempfile)
 {
   FILE *fp = NULL;
   int c;
@@ -625,7 +625,7 @@ int crypt_write_signed(BODY *a, STATE *s, const char *tempfile)
 }
 
 
-void convert_to_7bit(BODY *a)
+void convert_to_7bit(struct Body *a)
 {
   if (!WithCrypto)
     return;
@@ -660,11 +660,11 @@ void convert_to_7bit(BODY *a)
 }
 
 
-void crypt_extract_keys_from_messages(HEADER *h)
+void crypt_extract_keys_from_messages(struct Header *h)
 {
   int i;
   char tempfname[_POSIX_PATH_MAX], *mbox = NULL;
-  ADDRESS *tmp = NULL;
+  struct Address *tmp = NULL;
   FILE *fpout = NULL;
 
   if (!WithCrypto)
@@ -781,9 +781,9 @@ void crypt_extract_keys_from_messages(HEADER *h)
 }
 
 
-int crypt_get_keys(HEADER *msg, char **keylist, int oppenc_mode)
+int crypt_get_keys(struct Header *msg, char **keylist, int oppenc_mode)
 {
-  ADDRESS *adrlist = NULL, *last = NULL;
+  struct Address *adrlist = NULL, *last = NULL;
   const char *fqdn = mutt_fqdn(1);
 
   /* Do a quick check to make sure that we can find all of the encryption
@@ -837,7 +837,7 @@ int crypt_get_keys(HEADER *msg, char **keylist, int oppenc_mode)
  * Check if all recipients keys can be automatically determined.
  * Enable encryption if they can, otherwise disable encryption.
  */
-void crypt_opportunistic_encrypt(HEADER *msg)
+void crypt_opportunistic_encrypt(struct Header *msg)
 {
   char *pgpkeylist = NULL;
 
@@ -860,7 +860,7 @@ void crypt_opportunistic_encrypt(HEADER *msg)
 }
 
 
-static void crypt_fetch_signatures(BODY ***signatures, BODY *a, int *n)
+static void crypt_fetch_signatures(struct Body ***signatures, struct Body *a, int *n)
 {
   if (!WithCrypto)
     return;
@@ -872,7 +872,7 @@ static void crypt_fetch_signatures(BODY ***signatures, BODY *a, int *n)
     else
     {
       if ((*n % 5) == 0)
-        safe_realloc(signatures, (*n + 6) * sizeof(BODY **));
+        safe_realloc(signatures, (*n + 6) * sizeof(struct Body **));
 
       (*signatures)[(*n)++] = a;
     }
@@ -883,14 +883,14 @@ static void crypt_fetch_signatures(BODY ***signatures, BODY *a, int *n)
 /*
  * This routine verifies a  "multipart/signed"  body.
  */
-int mutt_signed_handler(BODY *a, STATE *s)
+int mutt_signed_handler(struct Body *a, struct State *s)
 {
   char tempfile[_POSIX_PATH_MAX];
   int signed_type;
   int inconsistent = 0;
 
-  BODY *b = a;
-  BODY **signatures = NULL;
+  struct Body *b = a;
+  struct Body **signatures = NULL;
   int sigcnt = 0;
   int i;
   bool goodsig = true;

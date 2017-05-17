@@ -47,9 +47,9 @@ enum
   RANGE_E_CTX,
 };
 
-static bool eat_regexp(pattern_t *pat, BUFFER *s, BUFFER *err)
+static bool eat_regexp(struct Pattern *pat, struct Buffer *s, struct Buffer *err)
 {
-  BUFFER buf;
+  struct Buffer buf;
   char errmsg[STRING];
   int r;
   char *pexpr = NULL;
@@ -128,7 +128,7 @@ static const char *get_offset(struct tm *tm, const char *s, int sign)
   return (ps + 1);
 }
 
-static const char *get_date(const char *s, struct tm *t, BUFFER *err)
+static const char *get_date(const char *s, struct tm *t, struct Buffer *err)
 {
   char *p = NULL;
   time_t now = time(NULL);
@@ -249,7 +249,7 @@ enum
 };
 
 static const char *parse_date_range(const char *pc, struct tm *min, struct tm *max,
-                                    int haveMin, struct tm *baseMin, BUFFER *err)
+                                    int haveMin, struct tm *baseMin, struct Buffer *err)
 {
   int flag = MUTT_PDR_NONE;
   while (*pc && ((flag & MUTT_PDR_DONE) == 0))
@@ -355,9 +355,9 @@ static void adjust_date_range(struct tm *min, struct tm *max)
   }
 }
 
-static bool eat_date(pattern_t *pat, BUFFER *s, BUFFER *err)
+static bool eat_date(struct Pattern *pat, struct Buffer *s, struct Buffer *err)
 {
-  BUFFER buffer;
+  struct Buffer buffer;
   struct tm min, max;
   char *pexpr = NULL;
 
@@ -493,7 +493,7 @@ static bool eat_date(pattern_t *pat, BUFFER *s, BUFFER *err)
   return true;
 }
 
-static bool eat_range(pattern_t *pat, BUFFER *s, BUFFER *err)
+static bool eat_range(struct Pattern *pat, struct Buffer *s, struct Buffer *err)
 {
   char *tmp = NULL;
   int do_exclusive = 0;
@@ -578,7 +578,7 @@ static bool eat_range(pattern_t *pat, BUFFER *s, BUFFER *err)
   return true;
 }
 
-static int report_regerror(int regerr, regex_t *preg, BUFFER *err)
+static int report_regerror(int regerr, regex_t *preg, struct Buffer *err)
 {
   size_t ds = err->dsize;
 
@@ -588,7 +588,7 @@ static int report_regerror(int regerr, regex_t *preg, BUFFER *err)
   return RANGE_E_SYNTAX;
 }
 
-static bool is_context_available(BUFFER *s, regmatch_t pmatch[], int kind, BUFFER *err)
+static bool is_context_available(struct Buffer *s, regmatch_t pmatch[], int kind, struct Buffer *err)
 {
   char *context_loc = NULL;
   const char *context_req_chars[] = {
@@ -615,7 +615,7 @@ static bool is_context_available(BUFFER *s, regmatch_t pmatch[], int kind, BUFFE
   return false;
 }
 
-static int scan_range_num(BUFFER *s, regmatch_t pmatch[], int group, int kind)
+static int scan_range_num(struct Buffer *s, regmatch_t pmatch[], int group, int kind)
 {
   int num;
   unsigned char c;
@@ -641,7 +641,7 @@ static int scan_range_num(BUFFER *s, regmatch_t pmatch[], int group, int kind)
   }
 }
 
-static int scan_range_slot(BUFFER *s, regmatch_t pmatch[], int grp, int side, int kind)
+static int scan_range_slot(struct Buffer *s, regmatch_t pmatch[], int grp, int side, int kind)
 {
   unsigned char c;
 
@@ -672,7 +672,7 @@ static int scan_range_slot(BUFFER *s, regmatch_t pmatch[], int grp, int side, in
   }
 }
 
-static void order_range(pattern_t *pat)
+static void order_range(struct Pattern *pat)
 {
   int num;
 
@@ -683,7 +683,7 @@ static void order_range(pattern_t *pat)
   pat->max = num;
 }
 
-static int eat_range_by_regexp(pattern_t *pat, BUFFER *s, int kind, BUFFER *err)
+static int eat_range_by_regexp(struct Pattern *pat, struct Buffer *s, int kind, struct Buffer *err)
 {
   int regerr;
   regmatch_t pmatch[RANGE_RX_GROUPS];
@@ -731,7 +731,7 @@ static int eat_range_by_regexp(pattern_t *pat, BUFFER *s, int kind, BUFFER *err)
   return RANGE_E_OK;
 }
 
-static bool eat_message_range(pattern_t *pat, BUFFER *s, BUFFER *err)
+static bool eat_message_range(struct Pattern *pat, struct Buffer *s, struct Buffer *err)
 {
   int skip_quote = 0;
   int i_kind;
@@ -779,7 +779,7 @@ static const struct pattern_flags
   int tag; /* character used to represent this op */
   int op;  /* operation to perform */
   int class;
-  bool (*eat_arg)(pattern_t *, BUFFER *, BUFFER *);
+  bool (*eat_arg)(struct Pattern *, struct Buffer *, struct Buffer *);
 } Flags[] = {
   { 'A', MUTT_ALL, 0, NULL },
   { 'b', MUTT_BODY, MUTT_FULL_MSG, eat_regexp },
@@ -832,7 +832,7 @@ static const struct pattern_flags
   { 0, 0, 0, NULL },
 };
 
-static pattern_t *SearchPattern = NULL;          /* current search pattern */
+static struct Pattern *SearchPattern = NULL;          /* current search pattern */
 static char LastSearch[STRING] = { 0 };          /* last pattern searched for */
 static char LastSearchExpn[LONG_STRING] = { 0 }; /* expanded version of
                                                     LastSearch */
@@ -860,7 +860,7 @@ int mutt_which_case(const char *s)
   return REG_ICASE; /* case-insensitive */
 }
 
-static int patmatch(const pattern_t *pat, const char *buf)
+static int patmatch(const struct Pattern *pat, const char *buf)
 {
   if (pat->stringmatch)
     return pat->ign_case ? !strcasestr(buf, pat->p.str) : !strstr(buf, pat->p.str);
@@ -870,14 +870,14 @@ static int patmatch(const pattern_t *pat, const char *buf)
     return regexec(pat->p.rx, buf, 0, NULL, 0);
 }
 
-static int msg_search(CONTEXT *ctx, pattern_t *pat, int msgno)
+static int msg_search(struct Context *ctx, struct Pattern *pat, int msgno)
 {
-  MESSAGE *msg = NULL;
-  STATE s;
+  struct Message *msg = NULL;
+  struct State s;
   FILE *fp = NULL;
   long lng = 0;
   int match = 0;
-  HEADER *h = ctx->hdrs[msgno];
+  struct Header *h = ctx->hdrs[msgno];
   char *buf = NULL;
   size_t blen;
 #ifdef USE_FMEMOPEN
@@ -1053,9 +1053,9 @@ static /* const */ char *find_matching_paren(/* const */ char *s)
   return s;
 }
 
-void mutt_pattern_free(pattern_t **pat)
+void mutt_pattern_free(struct Pattern **pat)
 {
-  pattern_t *tmp = NULL;
+  struct Pattern *tmp = NULL;
 
   while (*pat)
   {
@@ -1078,11 +1078,11 @@ void mutt_pattern_free(pattern_t **pat)
   }
 }
 
-pattern_t *mutt_pattern_comp(/* const */ char *s, int flags, BUFFER *err)
+struct Pattern *mutt_pattern_comp(/* const */ char *s, int flags, struct Buffer *err)
 {
-  pattern_t *curlist = NULL;
-  pattern_t *tmp = NULL, *tmp2 = NULL;
-  pattern_t *last = NULL;
+  struct Pattern *curlist = NULL;
+  struct Pattern *tmp = NULL, *tmp2 = NULL;
+  struct Pattern *last = NULL;
   bool not = false;
   bool alladdr = false;
   bool or = false;
@@ -1091,7 +1091,7 @@ pattern_t *mutt_pattern_comp(/* const */ char *s, int flags, BUFFER *err)
   const struct pattern_flags *entry = NULL;
   char *p = NULL;
   char *buf = NULL;
-  BUFFER ps;
+  struct Buffer ps;
 
   mutt_buffer_init(&ps);
   ps.dptr = s;
@@ -1298,8 +1298,8 @@ pattern_t *mutt_pattern_comp(/* const */ char *s, int flags, BUFFER *err)
   return curlist;
 }
 
-static bool perform_and(pattern_t *pat, pattern_exec_flag flags, CONTEXT *ctx,
-                        HEADER *hdr, pattern_cache_t *cache)
+static bool perform_and(struct Pattern *pat, pattern_exec_flag flags, struct Context *ctx,
+                        struct Header *hdr, struct PatternCache *cache)
 {
   for (; pat; pat = pat->next)
     if (mutt_pattern_exec(pat, flags, ctx, hdr, cache) <= 0)
@@ -1307,8 +1307,8 @@ static bool perform_and(pattern_t *pat, pattern_exec_flag flags, CONTEXT *ctx,
   return true;
 }
 
-static int perform_or(struct pattern_t *pat, pattern_exec_flag flags,
-                      CONTEXT *ctx, HEADER *hdr, pattern_cache_t *cache)
+static int perform_or(struct Pattern *pat, pattern_exec_flag flags,
+                      struct Context *ctx, struct Header *hdr, struct PatternCache *cache)
 {
   for (; pat; pat = pat->next)
     if (mutt_pattern_exec(pat, flags, ctx, hdr, cache) > 0)
@@ -1316,15 +1316,15 @@ static int perform_or(struct pattern_t *pat, pattern_exec_flag flags,
   return false;
 }
 
-static int match_adrlist(pattern_t *pat, int match_personal, int n, ...)
+static int match_adrlist(struct Pattern *pat, int match_personal, int n, ...)
 {
   va_list ap;
-  ADDRESS *a = NULL;
+  struct Address *a = NULL;
 
   va_start(ap, n);
   for (; n; n--)
   {
-    for (a = va_arg(ap, ADDRESS *); a; a = a->next)
+    for (a = va_arg(ap, struct Address *); a; a = a->next)
     {
       if (pat->alladdr ^ ((!pat->isalias || alias_reverse_lookup(a)) &&
                           ((a->mailbox && !patmatch(pat, a->mailbox)) ||
@@ -1339,7 +1339,7 @@ static int match_adrlist(pattern_t *pat, int match_personal, int n, ...)
   return pat->alladdr; /* No matches, or all matches if alladdr */
 }
 
-static bool match_reference(pattern_t *pat, LIST *refs)
+static bool match_reference(struct Pattern *pat, struct List *refs)
 {
   for (; refs; refs = refs->next)
     if (patmatch(pat, refs->data) == 0)
@@ -1350,7 +1350,7 @@ static bool match_reference(pattern_t *pat, LIST *refs)
 /*
  * Matches subscribed mailing lists
  */
-int mutt_is_list_recipient(int alladdr, ADDRESS *a1, ADDRESS *a2)
+int mutt_is_list_recipient(int alladdr, struct Address *a1, struct Address *a2)
 {
   for (; a1; a1 = a1->next)
     if (alladdr ^ mutt_is_subscribed_list(a1))
@@ -1366,7 +1366,7 @@ int mutt_is_list_recipient(int alladdr, ADDRESS *a1, ADDRESS *a2)
  * The function name may seem a little bit misleading: It checks all
  * recipients in To and Cc for known mailing lists, subscribed or not.
  */
-int mutt_is_list_cc(int alladdr, ADDRESS *a1, ADDRESS *a2)
+int mutt_is_list_cc(int alladdr, struct Address *a1, struct Address *a2)
 {
   for (; a1; a1 = a1->next)
     if (alladdr ^ mutt_is_mail_list(a1))
@@ -1377,7 +1377,7 @@ int mutt_is_list_cc(int alladdr, ADDRESS *a1, ADDRESS *a2)
   return alladdr;
 }
 
-static int match_user(int alladdr, ADDRESS *a1, ADDRESS *a2)
+static int match_user(int alladdr, struct Address *a1, struct Address *a2)
 {
   for (; a1; a1 = a1->next)
     if (alladdr ^ mutt_addr_is_user(a1))
@@ -1388,12 +1388,12 @@ static int match_user(int alladdr, ADDRESS *a1, ADDRESS *a2)
   return alladdr;
 }
 
-static int match_threadcomplete(struct pattern_t *pat, pattern_exec_flag flags,
-                                CONTEXT *ctx, THREAD *t, int left, int up,
+static int match_threadcomplete(struct Pattern *pat, pattern_exec_flag flags,
+                                struct Context *ctx, struct MuttThread *t, int left, int up,
                                 int right, int down)
 {
   int a;
-  HEADER *h = NULL;
+  struct Header *h = NULL;
 
   if (!t)
     return 0;
@@ -1416,7 +1416,7 @@ static int match_threadcomplete(struct pattern_t *pat, pattern_exec_flag flags,
 }
 
 
-/* Sets a value in the pattern_cache_t cache entry.
+/* Sets a value in the PatternCache cache entry.
  * Normalizes the "true" value to 2. */
 static void set_pattern_cache_value(int *cache_entry, int value)
 {
@@ -1438,10 +1438,10 @@ static int is_pattern_cache_set(int cache_entry)
 
 /*
  * flags: MUTT_MATCH_FULL_ADDRESS - match both personal and machine address
- * cache: For repeated matches against the same HEADER, passing in non-NULL will
+ * cache: For repeated matches against the same Header, passing in non-NULL will
  *        store some of the cacheable pattern matches in this structure. */
-int mutt_pattern_exec(struct pattern_t *pat, pattern_exec_flag flags,
-                      CONTEXT *ctx, HEADER *h, pattern_cache_t *cache)
+int mutt_pattern_exec(struct Pattern *pat, pattern_exec_flag flags,
+                      struct Context *ctx, struct Header *h, struct PatternCache *cache)
 {
   int result;
   int *cache_entry = NULL;
@@ -1702,12 +1702,12 @@ void mutt_check_simple(char *s, size_t len, const char *simple)
  * @h: Header of current email
  *
  * Returns:
- *  THREAD*: success, email found
+ *  MuttThread*: success, email found
  *  NULL:    on error
  */
-static THREAD *top_of_thread(HEADER *h)
+static struct MuttThread *top_of_thread(struct Header *h)
 {
-  THREAD *t = NULL;
+  struct MuttThread *t = NULL;
 
   if (!h)
     return NULL;
@@ -1728,10 +1728,10 @@ static THREAD *top_of_thread(HEADER *h)
  *  true: Success
  *  false: Failure
  */
-bool mutt_limit_current_thread(HEADER *h)
+bool mutt_limit_current_thread(struct Header *h)
 {
   int i;
-  THREAD *me = NULL;
+  struct MuttThread *me = NULL;
 
   if (!h)
     return false;
@@ -1753,7 +1753,7 @@ bool mutt_limit_current_thread(HEADER *h)
 
     if (top_of_thread(Context->hdrs[i]) == me)
     {
-      BODY *body = Context->hdrs[i]->content;
+      struct Body *body = Context->hdrs[i]->content;
 
       Context->hdrs[i]->virtual = Context->vcount;
       Context->hdrs[i]->limited = true;
@@ -1767,11 +1767,11 @@ bool mutt_limit_current_thread(HEADER *h)
 
 int mutt_pattern_func(int op, char *prompt)
 {
-  pattern_t *pat = NULL;
+  struct Pattern *pat = NULL;
   char buf[LONG_STRING] = "", *simple = NULL;
-  BUFFER err;
+  struct Buffer err;
   int i;
-  progress_t progress;
+  struct Progress progress;
 
   strfcpy(buf, NONULL(Context->pattern), sizeof(buf));
   if (prompt || op != MUTT_LIMIT)
@@ -1890,8 +1890,8 @@ int mutt_search_command(int cur, int op)
   char buf[STRING];
   char temp[LONG_STRING];
   int incr;
-  HEADER *h = NULL;
-  progress_t progress;
+  struct Header *h = NULL;
+  struct Progress progress;
   const char *msg = NULL;
 
   if (!*LastSearch || (op != OP_SEARCH_NEXT && op != OP_SEARCH_OPPOSITE))
@@ -1916,7 +1916,7 @@ int mutt_search_command(int cur, int op)
 
     if (!SearchPattern || (mutt_strcmp(temp, LastSearchExpn) != 0))
     {
-      BUFFER err;
+      struct Buffer err;
       mutt_buffer_init(&err);
       set_option(OPTSEARCHINVALID);
       strfcpy(LastSearch, buf, sizeof(LastSearch));

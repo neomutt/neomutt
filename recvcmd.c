@@ -27,7 +27,7 @@
 /* some helper functions to verify that we are exclusively operating
  * on message/rfc822 attachments
  */
-static bool check_msg(BODY *b, bool err)
+static bool check_msg(struct Body *b, bool err)
 {
   if (!mutt_is_message_type(b->type, b->subtype))
   {
@@ -38,7 +38,7 @@ static bool check_msg(BODY *b, bool err)
   return true;
 }
 
-static bool check_all_msg(ATTACHPTR **idx, short idxlen, BODY *cur, bool err)
+static bool check_all_msg(struct AttachPtr **idx, short idxlen, struct Body *cur, bool err)
 {
   short i;
 
@@ -60,7 +60,7 @@ static bool check_all_msg(ATTACHPTR **idx, short idxlen, BODY *cur, bool err)
 
 
 /* can we decode all tagged attachments? */
-static short check_can_decode(ATTACHPTR **idx, short idxlen, BODY *cur)
+static short check_can_decode(struct AttachPtr **idx, short idxlen, struct Body *cur)
 {
   short i;
 
@@ -74,7 +74,7 @@ static short check_can_decode(ATTACHPTR **idx, short idxlen, BODY *cur)
   return 1;
 }
 
-static short count_tagged(ATTACHPTR **idx, short idxlen)
+static short count_tagged(struct AttachPtr **idx, short idxlen)
 {
   short count = 0;
   short i;
@@ -89,7 +89,7 @@ static short count_tagged(ATTACHPTR **idx, short idxlen)
 /* count the number of tagged children below a multipart or message
  * attachment.
  */
-static short count_tagged_children(ATTACHPTR **idx, short idxlen, short i)
+static short count_tagged_children(struct AttachPtr **idx, short idxlen, short i)
 {
   short level = idx[i]->level;
   short count = 0;
@@ -107,13 +107,13 @@ static short count_tagged_children(ATTACHPTR **idx, short idxlen, short i)
  ** The bounce function, from the attachment menu
  **
  **/
-void mutt_attach_bounce(FILE *fp, HEADER *hdr, ATTACHPTR **idx, short idxlen, BODY *cur)
+void mutt_attach_bounce(FILE *fp, struct Header *hdr, struct AttachPtr **idx, short idxlen, struct Body *cur)
 {
   short i;
   char prompt[STRING];
   char buf[HUGE_STRING];
   char *err = NULL;
-  ADDRESS *adr = NULL;
+  struct Address *adr = NULL;
   int ret = 0;
   int p = 0;
 
@@ -231,7 +231,7 @@ void mutt_attach_bounce(FILE *fp, HEADER *hdr, ATTACHPTR **idx, short idxlen, BO
  **
  **
  **/
-void mutt_attach_resend(FILE *fp, HEADER *hdr, ATTACHPTR **idx, short idxlen, BODY *cur)
+void mutt_attach_resend(FILE *fp, struct Header *hdr, struct AttachPtr **idx, short idxlen, struct Body *cur)
 {
   short i;
 
@@ -256,7 +256,7 @@ void mutt_attach_resend(FILE *fp, HEADER *hdr, ATTACHPTR **idx, short idxlen, BO
  **/
 
 /* try to find a common parent message for the tagged attachments. */
-static HEADER *find_common_parent(ATTACHPTR **idx, short idxlen, short nattach)
+static struct Header *find_common_parent(struct AttachPtr **idx, short idxlen, short nattach)
 {
   short i;
   short nchildren;
@@ -285,7 +285,7 @@ static HEADER *find_common_parent(ATTACHPTR **idx, short idxlen, short nattach)
  * Note: This and the calling procedure could be optimized quite a
  * bit.  For now, it's not worth the effort.
  */
-static bool is_parent(short i, ATTACHPTR **idx, short idxlen, BODY *cur)
+static bool is_parent(short i, struct AttachPtr **idx, short idxlen, struct Body *cur)
 {
   short level = idx[i]->level;
 
@@ -298,10 +298,10 @@ static bool is_parent(short i, ATTACHPTR **idx, short idxlen, BODY *cur)
   return 0;
 }
 
-static HEADER *find_parent(ATTACHPTR **idx, short idxlen, BODY *cur, short nattach)
+static struct Header *find_parent(struct AttachPtr **idx, short idxlen, struct Body *cur, short nattach)
 {
   short i;
-  HEADER *parent = NULL;
+  struct Header *parent = NULL;
 
   if (cur)
   {
@@ -320,7 +320,7 @@ static HEADER *find_parent(ATTACHPTR **idx, short idxlen, BODY *cur, short natta
   return parent;
 }
 
-static void include_header(int quote, FILE *ifp, HEADER *hdr, FILE *ofp, char *_prefix)
+static void include_header(int quote, FILE *ifp, struct Header *hdr, FILE *ofp, char *_prefix)
 {
   int chflags = CH_DECODE;
   char prefix[SHORT_STRING];
@@ -345,7 +345,7 @@ static void include_header(int quote, FILE *ifp, HEADER *hdr, FILE *ofp, char *_
 
 /* Attach all the body parts which can't be decoded.
  * This code is shared by forwarding and replying. */
-static BODY **copy_problematic_attachments(FILE *fp, BODY **last, ATTACHPTR **idx,
+static struct Body **copy_problematic_attachments(FILE *fp, struct Body **last, struct AttachPtr **idx,
                                            short idxlen, short force)
 {
   short i;
@@ -366,15 +366,15 @@ static BODY **copy_problematic_attachments(FILE *fp, BODY **last, ATTACHPTR **id
  * forward one or several MIME bodies
  * (non-message types)
  */
-static void attach_forward_bodies(FILE *fp, HEADER *hdr, ATTACHPTR **idx,
-                                  short idxlen, BODY *cur, short nattach, int flags)
+static void attach_forward_bodies(FILE *fp, struct Header *hdr, struct AttachPtr **idx,
+                                  short idxlen, struct Body *cur, short nattach, int flags)
 {
   short i;
   short mime_fwd_all = 0;
   short mime_fwd_any = 1;
-  HEADER *parent = NULL;
-  HEADER *tmphdr = NULL;
-  BODY **last;
+  struct Header *parent = NULL;
+  struct Header *tmphdr = NULL;
+  struct Body **last;
   char tmpbody[_POSIX_PATH_MAX];
   FILE *tmpfp = NULL;
 
@@ -382,7 +382,7 @@ static void attach_forward_bodies(FILE *fp, HEADER *hdr, ATTACHPTR **idx,
 
   int rc = 0;
 
-  STATE st;
+  struct State st;
 
   /*
    * First, find the parent message.
@@ -536,15 +536,15 @@ bail:
  * while, on the attachment menu, messages are referenced through
  * the attachment index.
  */
-static void attach_forward_msgs(FILE *fp, HEADER *hdr, ATTACHPTR **idx,
-                                short idxlen, BODY *cur, int flags)
+static void attach_forward_msgs(FILE *fp, struct Header *hdr, struct AttachPtr **idx,
+                                short idxlen, struct Body *cur, int flags)
 {
-  HEADER *curhdr = NULL;
-  HEADER *tmphdr = NULL;
+  struct Header *curhdr = NULL;
+  struct Header *tmphdr = NULL;
   short i;
   int rc;
 
-  BODY **last;
+  struct Body **last;
   char tmpbody[_POSIX_PATH_MAX];
   FILE *tmpfp = NULL;
 
@@ -641,8 +641,8 @@ static void attach_forward_msgs(FILE *fp, HEADER *hdr, ATTACHPTR **idx,
   ci_send_message(flags, tmphdr, *tmpbody ? tmpbody : NULL, NULL, curhdr);
 }
 
-void mutt_attach_forward(FILE *fp, HEADER *hdr, ATTACHPTR **idx, short idxlen,
-                         BODY *cur, int flags)
+void mutt_attach_forward(FILE *fp, struct Header *hdr, struct AttachPtr **idx, short idxlen,
+                         struct Body *cur, int flags)
 {
   short nattach;
 
@@ -676,11 +676,11 @@ void mutt_attach_forward(FILE *fp, HEADER *hdr, ATTACHPTR **idx, short idxlen,
  *
  * Note that this code is horribly similar to envelope_defaults () from send.c.
  */
-static int attach_reply_envelope_defaults(ENVELOPE *env, ATTACHPTR **idx,
-                                          short idxlen, HEADER *parent, int flags)
+static int attach_reply_envelope_defaults(struct Envelope *env, struct AttachPtr **idx,
+                                          short idxlen, struct Header *parent, int flags)
 {
-  ENVELOPE *curenv = NULL;
-  HEADER *curhdr = NULL;
+  struct Envelope *curenv = NULL;
+  struct Header *curhdr = NULL;
   short i;
 
   if (!parent)
@@ -747,7 +747,7 @@ static int attach_reply_envelope_defaults(ENVELOPE *env, ATTACHPTR **idx,
     mutt_add_to_reference_headers(env, curenv, NULL, NULL);
   else
   {
-    LIST **p = NULL, **q = NULL;
+    struct List **p = NULL, **q = NULL;
 
     for (i = 0; i < idxlen; i++)
     {
@@ -761,7 +761,7 @@ static int attach_reply_envelope_defaults(ENVELOPE *env, ATTACHPTR **idx,
 
 
 /*  This is _very_ similar to send.c's include_reply(). */
-static void attach_include_reply(FILE *fp, FILE *tmpfp, HEADER *cur, int flags)
+static void attach_include_reply(FILE *fp, FILE *tmpfp, struct Header *cur, int flags)
 {
   int cmflags = MUTT_CM_PREFIX | MUTT_CM_DECODE | MUTT_CM_CHARCONV;
   int chflags = CH_DECODE;
@@ -780,17 +780,17 @@ static void attach_include_reply(FILE *fp, FILE *tmpfp, HEADER *cur, int flags)
   mutt_make_post_indent(Context, cur, tmpfp);
 }
 
-void mutt_attach_reply(FILE *fp, HEADER *hdr, ATTACHPTR **idx, short idxlen,
-                       BODY *cur, int flags)
+void mutt_attach_reply(FILE *fp, struct Header *hdr, struct AttachPtr **idx, short idxlen,
+                       struct Body *cur, int flags)
 {
   short mime_reply_any = 0;
 
   short nattach = 0;
-  HEADER *parent = NULL;
-  HEADER *tmphdr = NULL;
+  struct Header *parent = NULL;
+  struct Header *tmphdr = NULL;
   short i;
 
-  STATE st;
+  struct State st;
   char tmpbody[_POSIX_PATH_MAX];
   FILE *tmpfp = NULL;
 
@@ -858,7 +858,7 @@ void mutt_attach_reply(FILE *fp, HEADER *hdr, ATTACHPTR **idx, short idxlen,
   {
     mutt_make_attribution(Context, parent, tmpfp);
 
-    memset(&st, 0, sizeof(STATE));
+    memset(&st, 0, sizeof(struct State));
     st.fpin = fp;
     st.fpout = tmpfp;
 

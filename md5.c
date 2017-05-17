@@ -163,7 +163,7 @@ process_partial_block:
   return 0;
 }
 
-/* Compute MD5 message digest for LEN bytes beginning at BUFFER.  The
+/* Compute MD5 message digest for LEN bytes beginning at Buffer.  The
    result is always in little endian byte order, so that a byte-wise
    output yields to the wanted ASCII representation of the message
    digest.  */
@@ -256,7 +256,7 @@ void md5_process_bytes(const void *buffer, size_t len, struct md5_ctx *ctx)
 #define FH(b, c, d) (b ^ c ^ d)
 #define FI(b, c, d) (c ^ (b | ~d))
 
-/* Process LEN bytes of BUFFER, accumulating context into CTX.
+/* Process LEN bytes of Buffer, accumulating context into CTX.
    It is assumed that LEN % 64 == 0.  */
 void md5_process_block(const void *buffer, size_t len, struct md5_ctx *ctx)
 {

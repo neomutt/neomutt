@@ -25,7 +25,7 @@
 #include "mutt_sasl_plain.h"
 
 /* imap_auth_plain: SASL PLAIN support */
-imap_auth_res_t imap_auth_plain(IMAP_DATA *idata, const char *method)
+imap_auth_res_t imap_auth_plain(struct ImapData *idata, const char *method)
 {
   int rc;
   imap_auth_res_t res = IMAP_AUTH_SUCCESS;

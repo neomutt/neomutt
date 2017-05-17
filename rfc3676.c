@@ -34,12 +34,12 @@
 
 #define FLOWED_MAX 72
 
-typedef struct flowed_state
+struct FlowedState
 {
   size_t width;
   size_t spaces;
   int delsp;
-} flowed_state_t;
+};
 
 static int get_quote_level(const char *line)
 {
@@ -60,7 +60,7 @@ static int get_quote_level(const char *line)
  * becomes
  *    > > > foo
  */
-static int space_quotes(STATE *s)
+static int space_quotes(struct State *s)
 {
   /* Allow quote spacing in the pager even for OPTTEXTFLOWED,
    * but obviously not when replying.
@@ -76,7 +76,7 @@ static int space_quotes(STATE *s)
  * as opposed to
  *    >>>foo
  */
-static bool add_quote_suffix(STATE *s, int ql)
+static bool add_quote_suffix(struct State *s, int ql)
 {
   if (s->flags & MUTT_REPLYING)
     return false;
@@ -94,7 +94,7 @@ static bool add_quote_suffix(STATE *s, int ql)
   return true;
 }
 
-static size_t print_indent(int ql, STATE *s, int add_suffix)
+static size_t print_indent(int ql, struct State *s, int add_suffix)
 {
   int i;
   size_t wid = 0;
@@ -127,7 +127,7 @@ static size_t print_indent(int ql, STATE *s, int add_suffix)
   return ql + add_suffix + wid;
 }
 
-static void flush_par(STATE *s, flowed_state_t *fst)
+static void flush_par(struct State *s, struct FlowedState *fst)
 {
   if (fst->width > 0)
   {
@@ -140,7 +140,7 @@ static void flush_par(STATE *s, flowed_state_t *fst)
 /* Calculate the paragraph width based upon the current quote level. The start
  * of a quoted line will be ">>> ", so we need to subtract the space required
  * for the prefix from the terminal width. */
-static int quote_width(STATE *s, int ql)
+static int quote_width(struct State *s, int ql)
 {
   int width = mutt_window_wrap_cols(MuttIndexWindow, ReflowWrap);
   if (option(OPTTEXTFLOWED) && (s->flags & MUTT_REPLYING))
@@ -163,7 +163,7 @@ static int quote_width(STATE *s, int ql)
   return width;
 }
 
-static void print_flowed_line(char *line, STATE *s, int ql, flowed_state_t *fst, int term)
+static void print_flowed_line(char *line, struct State *s, int ql, struct FlowedState *fst, int term)
 {
   size_t width, w, words = 0;
   char *p = NULL;
@@ -232,7 +232,7 @@ static void print_flowed_line(char *line, STATE *s, int ql, flowed_state_t *fst,
     flush_par(s, fst);
 }
 
-static void print_fixed_line(const char *line, STATE *s, int ql, flowed_state_t *fst)
+static void print_fixed_line(const char *line, struct State *s, int ql, struct FlowedState *fst)
 {
   print_indent(ql, s, add_quote_suffix(s, ql));
   if (line && *line)
@@ -243,13 +243,13 @@ static void print_fixed_line(const char *line, STATE *s, int ql, flowed_state_t 
   fst->spaces = 0;
 }
 
-int rfc3676_handler(BODY *a, STATE *s)
+int rfc3676_handler(struct Body *a, struct State *s)
 {
   char *buf = NULL, *t = NULL;
   unsigned int quotelevel = 0, newql = 0, sigsep = 0;
   int buf_off = 0, delsp = 0, fixed = 0;
   size_t buf_len = 0, sz = 0;
-  flowed_state_t fst;
+  struct FlowedState fst;
 
   memset(&fst, 0, sizeof(fst));
 
@@ -325,7 +325,7 @@ int rfc3676_handler(BODY *a, STATE *s)
  * a freshly created copy in a tempfile and modifies the file's mtime
  * so we don't trigger code paths watching for mtime changes
  */
-void rfc3676_space_stuff(HEADER *hdr)
+void rfc3676_space_stuff(struct Header *hdr)
 {
 #ifdef DEBUG
   int lc = 0;

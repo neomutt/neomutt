@@ -24,39 +24,38 @@
 #include "mutt_crypt.h"
 
 
-typedef struct pgp_signature
+struct PgpSignature
 {
-  struct pgp_signature *next;
+  struct PgpSignature *next;
   unsigned char sigtype;
   unsigned long sid1;
   unsigned long sid2;
-} pgp_sig_t;
+};
 
-struct pgp_keyinfo
+struct PgpKeyInfo
 {
   char *keyid;
   char *fingerprint;
-  struct pgp_uid *address;
+  struct PgpUid *address;
   int flags;
   short keylen;
   time_t gen_time;
   int numalg;
   const char *algorithm;
-  struct pgp_keyinfo *parent;
-  struct pgp_signature *sigs;
-  struct pgp_keyinfo *next;
+  struct PgpKeyInfo *parent;
+  struct PgpSignature *sigs;
+  struct PgpKeyInfo *next;
 };
-/* Note, that pgp_key_t is now pointer and declared in crypt.h */
 
-typedef struct pgp_uid
+struct PgpUid
 {
   char *addr;
   short trust;
   int flags;
-  struct pgp_keyinfo *parent;
-  struct pgp_uid *next;
-  struct pgp_signature *sigs;
-} pgp_uid_t;
+  struct PgpKeyInfo *parent;
+  struct PgpUid *next;
+  struct PgpSignature *sigs;
+};
 
 enum pgp_version
 {
@@ -70,18 +69,18 @@ enum pgp_version
 
 const char *pgp_pkalgbytype(unsigned char type);
 
-pgp_key_t pgp_remove_key(pgp_key_t *klist, pgp_key_t key);
-pgp_uid_t *pgp_copy_uids(pgp_uid_t *up, pgp_key_t parent);
+struct PgpKeyInfo *pgp_remove_key(struct PgpKeyInfo **klist, struct PgpKeyInfo *key);
+struct PgpUid *pgp_copy_uids(struct PgpUid *up, struct PgpKeyInfo *parent);
 
 bool pgp_canencrypt(unsigned char type);
 bool pgp_cansign(unsigned char type);
 short pgp_get_abilities(unsigned char type);
 
-void pgp_free_key(pgp_key_t *kpp);
+void pgp_free_key(struct PgpKeyInfo **kpp);
 
-static inline pgp_key_t pgp_new_keyinfo(void)
+static inline struct PgpKeyInfo *pgp_new_keyinfo(void)
 {
-  return safe_calloc(1, sizeof(*((pgp_key_t) 0)));
+  return safe_calloc(1, sizeof(struct PgpKeyInfo));
 }
 
 #endif /* CRYPT_BACKEND_CLASSIC_PGP */

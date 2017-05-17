@@ -29,12 +29,12 @@ char *SearchBuffers[MENU_MAX];
 /* These are used to track the active menus, for redraw operations. */
 static size_t MenuStackCount = 0;
 static size_t MenuStackLen = 0;
-static MUTTMENU **MenuStack = NULL;
+static struct Menu **MenuStack = NULL;
 
 static int get_color(int index, unsigned char *s)
 {
-  COLOR_LINE *color = NULL;
-  HEADER *hdr = Context->hdrs[Context->v2r[index]];
+  struct ColorLine *color = NULL;
+  struct Header *hdr = Context->hdrs[Context->v2r[index]];
   int type = *s;
 
   switch (type)
@@ -239,7 +239,7 @@ static void print_enriched_string(int index, int attr, unsigned char *s, int do_
   }
 }
 
-static void menu_make_entry(char *s, int l, MUTTMENU *menu, int i)
+static void menu_make_entry(char *s, int l, struct Menu *menu, int i)
 {
   if (menu->dialog)
   {
@@ -250,7 +250,7 @@ static void menu_make_entry(char *s, int l, MUTTMENU *menu, int i)
     menu->make_entry(s, l, menu, i);
 }
 
-static void menu_pad_string(MUTTMENU *menu, char *s, size_t n)
+static void menu_pad_string(struct Menu *menu, char *s, size_t n)
 {
   char *scratch = safe_strdup(s);
   int shift = option(OPTARROWCURSOR) ? 3 : 0;
@@ -261,7 +261,7 @@ static void menu_pad_string(MUTTMENU *menu, char *s, size_t n)
   FREE(&scratch);
 }
 
-void menu_redraw_full(MUTTMENU *menu)
+void menu_redraw_full(struct Menu *menu)
 {
 #if !(defined(USE_SLANG_CURSES) || defined(HAVE_RESIZETERM))
   mutt_reflow_windows();
@@ -289,7 +289,7 @@ void menu_redraw_full(MUTTMENU *menu)
 #endif
 }
 
-void menu_redraw_status(MUTTMENU *menu)
+void menu_redraw_status(struct Menu *menu)
 {
   char buf[STRING];
 
@@ -302,14 +302,14 @@ void menu_redraw_status(MUTTMENU *menu)
 }
 
 #ifdef USE_SIDEBAR
-void menu_redraw_sidebar(MUTTMENU *menu)
+void menu_redraw_sidebar(struct Menu *menu)
 {
   menu->redraw &= ~REDRAW_SIDEBAR;
   mutt_sb_draw();
 }
 #endif
 
-void menu_redraw_index(MUTTMENU *menu)
+void menu_redraw_index(struct Menu *menu)
 {
   char buf[LONG_STRING];
   int i;
@@ -356,7 +356,7 @@ void menu_redraw_index(MUTTMENU *menu)
   menu->redraw = 0;
 }
 
-void menu_redraw_motion(MUTTMENU *menu)
+void menu_redraw_motion(struct Menu *menu)
 {
   char buf[LONG_STRING];
 
@@ -407,7 +407,7 @@ void menu_redraw_motion(MUTTMENU *menu)
   NORMAL_COLOR;
 }
 
-void menu_redraw_current(MUTTMENU *menu)
+void menu_redraw_current(struct Menu *menu)
 {
   char buf[LONG_STRING];
   int attr = menu->color(menu->current);
@@ -431,7 +431,7 @@ void menu_redraw_current(MUTTMENU *menu)
   NORMAL_COLOR;
 }
 
-static void menu_redraw_prompt(MUTTMENU *menu)
+static void menu_redraw_prompt(struct Menu *menu)
 {
   if (menu->dialog)
   {
@@ -449,7 +449,7 @@ static void menu_redraw_prompt(MUTTMENU *menu)
   }
 }
 
-void menu_check_recenter(MUTTMENU *menu)
+void menu_check_recenter(struct Menu *menu)
 {
   int c = MIN(MenuContext, menu->pagelen / 2);
   int old_top = menu->top;
@@ -491,7 +491,7 @@ void menu_check_recenter(MUTTMENU *menu)
     menu->redraw |= REDRAW_INDEX;
 }
 
-static void menu_jump(MUTTMENU *menu)
+static void menu_jump(struct Menu *menu)
 {
   int n;
   char buf[SHORT_STRING];
@@ -516,7 +516,7 @@ static void menu_jump(MUTTMENU *menu)
     mutt_error(_("No entries."));
 }
 
-void menu_next_line(MUTTMENU *menu)
+void menu_next_line(struct Menu *menu)
 {
   if (menu->max)
   {
@@ -538,7 +538,7 @@ void menu_next_line(MUTTMENU *menu)
     mutt_error(_("No entries."));
 }
 
-void menu_prev_line(MUTTMENU *menu)
+void menu_prev_line(struct Menu *menu)
 {
   if (menu->top > 0)
   {
@@ -560,7 +560,7 @@ void menu_prev_line(MUTTMENU *menu)
  * halfdown: jumplen == pagelen/2
  */
 #define DIRECTION ((neg * 2) + 1)
-static void menu_length_jump(MUTTMENU *menu, int jumplen)
+static void menu_length_jump(struct Menu *menu, int jumplen)
 {
   int tmp, neg = (jumplen >= 0) ? 0 : -1;
   int c = MIN(MenuContext, menu->pagelen / 2);
@@ -601,27 +601,27 @@ static void menu_length_jump(MUTTMENU *menu, int jumplen)
 }
 #undef DIRECTION
 
-void menu_next_page(MUTTMENU *menu)
+void menu_next_page(struct Menu *menu)
 {
   menu_length_jump(menu, MAX(menu->pagelen /* - MenuOverlap */, 0));
 }
 
-void menu_prev_page(MUTTMENU *menu)
+void menu_prev_page(struct Menu *menu)
 {
   menu_length_jump(menu, 0 - MAX(menu->pagelen /* - MenuOverlap */, 0));
 }
 
-void menu_half_down(MUTTMENU *menu)
+void menu_half_down(struct Menu *menu)
 {
   menu_length_jump(menu, menu->pagelen / 2);
 }
 
-void menu_half_up(MUTTMENU *menu)
+void menu_half_up(struct Menu *menu)
 {
   menu_length_jump(menu, 0 - menu->pagelen / 2);
 }
 
-void menu_top_page(MUTTMENU *menu)
+void menu_top_page(struct Menu *menu)
 {
   if (menu->current != menu->top)
   {
@@ -630,7 +630,7 @@ void menu_top_page(MUTTMENU *menu)
   }
 }
 
-void menu_bottom_page(MUTTMENU *menu)
+void menu_bottom_page(struct Menu *menu)
 {
   if (menu->max)
   {
@@ -643,7 +643,7 @@ void menu_bottom_page(MUTTMENU *menu)
     mutt_error(_("No entries."));
 }
 
-void menu_middle_page(MUTTMENU *menu)
+void menu_middle_page(struct Menu *menu)
 {
   int i;
 
@@ -659,7 +659,7 @@ void menu_middle_page(MUTTMENU *menu)
     mutt_error(_("No entries."));
 }
 
-void menu_first_entry(MUTTMENU *menu)
+void menu_first_entry(struct Menu *menu)
 {
   if (menu->max)
   {
@@ -670,7 +670,7 @@ void menu_first_entry(MUTTMENU *menu)
     mutt_error(_("No entries."));
 }
 
-void menu_last_entry(MUTTMENU *menu)
+void menu_last_entry(struct Menu *menu)
 {
   if (menu->max)
   {
@@ -681,7 +681,7 @@ void menu_last_entry(MUTTMENU *menu)
     mutt_error(_("No entries."));
 }
 
-void menu_current_top(MUTTMENU *menu)
+void menu_current_top(struct Menu *menu)
 {
   if (menu->max)
   {
@@ -692,7 +692,7 @@ void menu_current_top(MUTTMENU *menu)
     mutt_error(_("No entries."));
 }
 
-void menu_current_middle(MUTTMENU *menu)
+void menu_current_middle(struct Menu *menu)
 {
   if (menu->max)
   {
@@ -705,7 +705,7 @@ void menu_current_middle(MUTTMENU *menu)
     mutt_error(_("No entries."));
 }
 
-void menu_current_bottom(MUTTMENU *menu)
+void menu_current_bottom(struct Menu *menu)
 {
   if (menu->max)
   {
@@ -718,7 +718,7 @@ void menu_current_bottom(MUTTMENU *menu)
     mutt_error(_("No entries."));
 }
 
-static void menu_next_entry(MUTTMENU *menu)
+static void menu_next_entry(struct Menu *menu)
 {
   if (menu->current < menu->max - 1)
   {
@@ -729,7 +729,7 @@ static void menu_next_entry(MUTTMENU *menu)
     mutt_error(_("You are on the last entry."));
 }
 
-static void menu_prev_entry(MUTTMENU *menu)
+static void menu_prev_entry(struct Menu *menu)
 {
   if (menu->current)
   {
@@ -745,7 +745,7 @@ static int default_color(int i)
   return ColorDefs[MT_COLOR_NORMAL];
 }
 
-static int menu_search_generic(MUTTMENU *m, regex_t *re, int n)
+static int menu_search_generic(struct Menu *m, regex_t *re, int n)
 {
   char buf[LONG_STRING];
 
@@ -761,9 +761,9 @@ void mutt_menu_init(void)
     SearchBuffers[i] = NULL;
 }
 
-MUTTMENU *mutt_new_menu(int menu)
+struct Menu *mutt_new_menu(int menu)
 {
-  MUTTMENU *p = safe_calloc(1, sizeof(MUTTMENU));
+  struct Menu *p = safe_calloc(1, sizeof(struct Menu));
 
   if ((menu < 0) || (menu >= MENU_MAX))
     menu = MENU_GENERIC;
@@ -784,7 +784,7 @@ MUTTMENU *mutt_new_menu(int menu)
   return p;
 }
 
-void mutt_menu_destroy(MUTTMENU **p)
+void mutt_menu_destroy(struct Menu **p)
 {
   int i;
 
@@ -799,26 +799,26 @@ void mutt_menu_destroy(MUTTMENU **p)
   FREE(p);
 }
 
-static MUTTMENU *get_current_menu(void)
+static struct Menu *get_current_menu(void)
 {
   return MenuStackCount ? MenuStack[MenuStackCount - 1] : NULL;
 }
 
-void mutt_push_current_menu(MUTTMENU *menu)
+void mutt_push_current_menu(struct Menu *menu)
 {
   if (MenuStackCount >= MenuStackLen)
   {
     MenuStackLen += 5;
-    safe_realloc(&MenuStack, MenuStackLen * sizeof(MUTTMENU *));
+    safe_realloc(&MenuStack, MenuStackLen * sizeof(struct Menu *));
   }
 
   MenuStack[MenuStackCount++] = menu;
   CurrentMenu = menu->menu;
 }
 
-void mutt_pop_current_menu(MUTTMENU *menu)
+void mutt_pop_current_menu(struct Menu *menu)
 {
-  MUTTMENU *prev_menu;
+  struct Menu *prev_menu;
 
   if (!MenuStackCount || (MenuStack[MenuStackCount - 1] != menu))
   {
@@ -841,7 +841,7 @@ void mutt_pop_current_menu(MUTTMENU *menu)
 
 void mutt_set_current_menu_redraw(int redraw)
 {
-  MUTTMENU *current_menu;
+  struct Menu *current_menu;
 
   current_menu = get_current_menu();
   if (current_menu)
@@ -850,7 +850,7 @@ void mutt_set_current_menu_redraw(int redraw)
 
 void mutt_set_current_menu_redraw_full(void)
 {
-  MUTTMENU *current_menu;
+  struct Menu *current_menu;
 
   current_menu = get_current_menu();
   if (current_menu)
@@ -871,7 +871,7 @@ void mutt_set_menu_redraw_full(int menu_type)
 
 void mutt_current_menu_redraw()
 {
-  MUTTMENU *current_menu;
+  struct Menu *current_menu;
 
   current_menu = get_current_menu();
   if (current_menu)
@@ -889,7 +889,7 @@ void mutt_current_menu_redraw()
 #define MUTT_SEARCH_UP 1
 #define MUTT_SEARCH_DOWN 2
 
-static int menu_search(MUTTMENU *menu, int op)
+static int menu_search(struct Menu *menu, int op)
 {
   int r = 0, wrap = 0;
   int searchDir;
@@ -975,9 +975,9 @@ static int menu_dialog_translate_op(int i)
   return i;
 }
 
-static int menu_dialog_dokey(MUTTMENU *menu, int *ip)
+static int menu_dialog_dokey(struct Menu *menu, int *ip)
 {
-  event_t ch;
+  struct Event ch;
   char *p = NULL;
 
   ch = mutt_getch();
@@ -1000,7 +1000,7 @@ static int menu_dialog_dokey(MUTTMENU *menu, int *ip)
   }
 }
 
-int menu_redraw(MUTTMENU *menu)
+int menu_redraw(struct Menu *menu)
 {
   if (menu->custom_menu_redraw)
   {
@@ -1038,7 +1038,7 @@ int menu_redraw(MUTTMENU *menu)
   return OP_NULL;
 }
 
-int mutt_menu_loop(MUTTMENU *menu)
+int mutt_menu_loop(struct Menu *menu)
 {
   static int last_position = -1;
   int i = OP_NULL;

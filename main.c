@@ -173,11 +173,11 @@ int main(int argc, char **argv, char **environ)
   char *includeFile = NULL;
   char *draftFile = NULL;
   char *newMagic = NULL;
-  HEADER *msg = NULL;
-  LIST *attach = NULL;
-  LIST *commands = NULL;
-  LIST *queries = NULL;
-  LIST *alias_queries = NULL;
+  struct Header *msg = NULL;
+  struct List *attach = NULL;
+  struct List *commands = NULL;
+  struct List *queries = NULL;
+  struct List *alias_queries = NULL;
   int sendflags = 0;
   int flags = 0;
   int version = 0;
@@ -458,7 +458,7 @@ int main(int argc, char **argv, char **environ)
   if (alias_queries)
   {
     int rv = 0;
-    ADDRESS *a = NULL;
+    struct Address *a = NULL;
     for (; optind < argc; optind++)
       alias_queries = mutt_add_list(alias_queries, argv[optind]);
     for (; alias_queries; alias_queries = alias_queries->next)
@@ -647,16 +647,16 @@ int main(int argc, char **argv, char **environ)
       else
         sendflags |= SENDNOFREEHEADER;
 
-      /* Parse the draftFile into the full HEADER/BODY structure.
+      /* Parse the draftFile into the full Header/Body structure.
        * Set SENDDRAFTFILE so ci_send_message doesn't overwrite
        * our msg->content.
        */
       if (draftFile)
       {
-        HEADER *context_hdr = NULL;
-        ENVELOPE *opts_env = msg->env;
+        struct Header *context_hdr = NULL;
+        struct Envelope *opts_env = msg->env;
         struct stat st;
-        LIST *uh = NULL, **last_uhp = NULL;
+        struct List *uh = NULL, **last_uhp = NULL;
 
         sendflags |= SENDDRAFTFILE;
 
@@ -718,8 +718,8 @@ int main(int argc, char **argv, char **environ)
 
     if (attach)
     {
-      LIST *t = attach;
-      BODY *a = msg->content;
+      struct List *t = attach;
+      struct Body *a = msg->content;
 
       while (a && a->next)
         a = a->next;

@@ -66,11 +66,11 @@ static struct mapping_t FolderNewsHelp[] = {
 };
 #endif
 
-typedef struct folder_t
+struct Folder
 {
   struct folder_file *ff;
   int num;
-} FOLDER;
+};
 
 static char OldLastDir[_POSIX_PATH_MAX] = "";
 static char LastDir[_POSIX_PATH_MAX] = "";
@@ -241,7 +241,7 @@ static const char *folder_format_str(char *dest, size_t destlen, size_t col, int
   char fn[SHORT_STRING], tmp[SHORT_STRING], permission[11];
   char date[SHORT_STRING], *t_fmt = NULL;
   time_t tnow;
-  FOLDER *folder = (FOLDER *) data;
+  struct Folder *folder = (struct Folder *) data;
   struct passwd *pw = NULL;
   struct group *gr = NULL;
   int optional = (flags & MUTT_FORMAT_OPTIONAL);
@@ -462,7 +462,7 @@ static const char *newsgroup_format_str(char *dest, size_t destlen, size_t col, 
                                         unsigned long data, format_flag flags)
 {
   char fn[SHORT_STRING], tmp[SHORT_STRING];
-  FOLDER *folder = (FOLDER *) data;
+  struct Folder *folder = (struct Folder *) data;
 
   switch (op)
   {
@@ -559,8 +559,8 @@ static const char *newsgroup_format_str(char *dest, size_t destlen, size_t col, 
 }
 #endif /* USE_NNTP */
 
-static void add_folder(MUTTMENU *m, struct browser_state *state, const char *name,
-                       const char *desc, const struct stat *s, BUFFY *b, void *data)
+static void add_folder(struct Menu *m, struct browser_state *state, const char *name,
+                       const char *desc, const struct stat *s, struct Buffy *b, void *data)
 {
   if (state->entrylen == state->entrymax)
   {
@@ -600,12 +600,12 @@ static void add_folder(MUTTMENU *m, struct browser_state *state, const char *nam
 #endif
 #ifdef USE_NNTP
   if (option(OPTNEWS))
-    (state->entry)[state->entrylen].nd = (NNTP_DATA *) data;
+    (state->entry)[state->entrylen].nd = (struct NntpData *) data;
 #endif
   (state->entrylen)++;
 }
 
-static void init_state(struct browser_state *state, MUTTMENU *menu)
+static void init_state(struct browser_state *state, struct Menu *menu)
 {
   state->entrylen = 0;
   state->entrymax = 256;
@@ -618,20 +618,20 @@ static void init_state(struct browser_state *state, MUTTMENU *menu)
 }
 
 /* get list of all files/newsgroups with mask */
-static int examine_directory(MUTTMENU *menu, struct browser_state *state,
+static int examine_directory(struct Menu *menu, struct browser_state *state,
                              char *d, const char *prefix)
 {
 #ifdef USE_NNTP
   if (option(OPTNEWS))
   {
-    NNTP_SERVER *nserv = CurrentNewsSrv;
+    struct NntpServer *nserv = CurrentNewsSrv;
     unsigned int i;
 
     init_state(state, menu);
 
     for (i = 0; i < nserv->groups_num; i++)
     {
-      NNTP_DATA *nntp_data = nserv->groups_list[i];
+      struct NntpData *nntp_data = nserv->groups_list[i];
       if (!nntp_data)
         continue;
       if (prefix && *prefix && (strncmp(prefix, nntp_data->group, strlen(prefix)) != 0))
@@ -648,7 +648,7 @@ static int examine_directory(MUTTMENU *menu, struct browser_state *state,
     DIR *dp = NULL;
     struct dirent *de = NULL;
     char buffer[_POSIX_PATH_MAX + SHORT_STRING];
-    BUFFY *tmp = NULL;
+    struct Buffy *tmp = NULL;
 
     while (stat(d, &s) == -1)
     {
@@ -717,9 +717,9 @@ static int examine_directory(MUTTMENU *menu, struct browser_state *state,
 }
 
 #ifdef USE_NOTMUCH
-static int examine_vfolders(MUTTMENU *menu, struct browser_state *state)
+static int examine_vfolders(struct Menu *menu, struct browser_state *state)
 {
-  BUFFY *tmp = VirtIncoming;
+  struct Buffy *tmp = VirtIncoming;
 
   if (!VirtIncoming)
     return -1;
@@ -742,7 +742,7 @@ static int examine_vfolders(MUTTMENU *menu, struct browser_state *state)
 #endif
 
 /* get list of mailboxes/subscribed newsgroups */
-static int examine_mailboxes(MUTTMENU *menu, struct browser_state *state)
+static int examine_mailboxes(struct Menu *menu, struct browser_state *state)
 {
   struct stat s;
   char buffer[LONG_STRING];
@@ -750,14 +750,14 @@ static int examine_mailboxes(MUTTMENU *menu, struct browser_state *state)
 #ifdef USE_NNTP
   if (option(OPTNEWS))
   {
-    NNTP_SERVER *nserv = CurrentNewsSrv;
+    struct NntpServer *nserv = CurrentNewsSrv;
     unsigned int i;
 
     init_state(state, menu);
 
     for (i = 0; i < nserv->groups_num; i++)
     {
-      NNTP_DATA *nntp_data = nserv->groups_list[i];
+      struct NntpData *nntp_data = nserv->groups_list[i];
       if (nntp_data &&
           (nntp_data->new || (nntp_data->subscribed &&
                               (nntp_data->unread || !option(OPTSHOWONLYUNREAD)))))
@@ -767,7 +767,7 @@ static int examine_mailboxes(MUTTMENU *menu, struct browser_state *state)
   else
 #endif
   {
-    BUFFY *tmp = Incoming;
+    struct Buffy *tmp = Incoming;
 
     if (!Incoming)
       return -1;
@@ -835,7 +835,7 @@ static int examine_mailboxes(MUTTMENU *menu, struct browser_state *state)
   return 0;
 }
 
-static int select_file_search(MUTTMENU *menu, regex_t *re, int n)
+static int select_file_search(struct Menu *menu, regex_t *re, int n)
 {
 #ifdef USE_NNTP
   if (option(OPTNEWS))
@@ -845,15 +845,15 @@ static int select_file_search(MUTTMENU *menu, regex_t *re, int n)
 }
 
 #ifdef USE_NOTMUCH
-static int select_vfolder_search(MUTTMENU *menu, regex_t *re, int n)
+static int select_vfolder_search(struct Menu *menu, regex_t *re, int n)
 {
   return (regexec(re, ((struct folder_file *) menu->data)[n].desc, 0, NULL, 0));
 }
 #endif
 
-static void folder_entry(char *s, size_t slen, MUTTMENU *menu, int num)
+static void folder_entry(char *s, size_t slen, struct Menu *menu, int num)
 {
-  FOLDER folder;
+  struct Folder folder;
 
   folder.ff = &((struct folder_file *) menu->data)[num];
   folder.num = num;
@@ -869,9 +869,9 @@ static void folder_entry(char *s, size_t slen, MUTTMENU *menu, int num)
 }
 
 #ifdef USE_NOTMUCH
-static void vfolder_entry(char *s, size_t slen, MUTTMENU *menu, int num)
+static void vfolder_entry(char *s, size_t slen, struct Menu *menu, int num)
 {
-  FOLDER folder;
+  struct Folder folder;
 
   folder.ff = &((struct folder_file *) menu->data)[num];
   folder.num = num;
@@ -885,7 +885,7 @@ static void vfolder_entry(char *s, size_t slen, MUTTMENU *menu, int num)
  * This function takes a menu and a state and defines the current
  * entry that should be highlighted.
  */
-static void browser_highlight_default(struct browser_state *state, MUTTMENU *menu)
+static void browser_highlight_default(struct browser_state *state, struct Menu *menu)
 {
   menu->top = 0;
   /* Reset menu position to 1.
@@ -900,7 +900,7 @@ static void browser_highlight_default(struct browser_state *state, MUTTMENU *men
     menu->current = 0;
 }
 
-static void init_menu(struct browser_state *state, MUTTMENU *menu, char *title,
+static void init_menu(struct browser_state *state, struct Menu *menu, char *title,
                       size_t titlelen, int buffy)
 {
   char path[_POSIX_PATH_MAX];
@@ -987,7 +987,7 @@ static void init_menu(struct browser_state *state, MUTTMENU *menu, char *title,
   menu->redraw = REDRAW_FULL;
 }
 
-static int file_tag(MUTTMENU *menu, int n, int m)
+static int file_tag(struct Menu *menu, int n, int m)
 {
   struct folder_file *ff = &(((struct folder_file *) menu->data)[n]);
   if (S_ISDIR(ff->mode) || (S_ISLNK(ff->mode) && link_is_dir(LastDir, ff->name)))
@@ -1026,7 +1026,7 @@ void _mutt_select_file(char *f, size_t flen, int flags, char ***files, int *numf
   char helpstr[LONG_STRING];
   char title[STRING];
   struct browser_state state;
-  MUTTMENU *menu = NULL;
+  struct Menu *menu = NULL;
   struct stat st;
   int i, killPrefix = 0;
   int multiple = (flags & MUTT_SEL_MULTI) ? 1 : 0;
@@ -1049,14 +1049,14 @@ void _mutt_select_file(char *f, size_t flen, int flags, char ***files, int *numf
       strfcpy(prefix, f, sizeof(prefix));
     else
     {
-      NNTP_SERVER *nserv = CurrentNewsSrv;
+      struct NntpServer *nserv = CurrentNewsSrv;
       unsigned int j;
 
       /* default state for news reader mode is browse subscribed newsgroups */
       buffy = 0;
       for (j = 0; j < nserv->groups_num; j++)
       {
-        NNTP_DATA *nntp_data = nserv->groups_list[j];
+        struct NntpData *nntp_data = nserv->groups_list[j];
         if (nntp_data && nntp_data->subscribed)
         {
           buffy = 1;
@@ -1339,7 +1339,7 @@ void _mutt_select_file(char *f, size_t flen, int flags, char ***files, int *numf
             else if (state.imap_browse)
             {
               int n;
-              ciss_url_t url;
+              struct CissUrl url;
 
               strfcpy(LastDir, state.entry[menu->current].name, sizeof(LastDir));
               /* tack on delimiter here */
@@ -1518,7 +1518,7 @@ void _mutt_select_file(char *f, size_t flen, int flags, char ***files, int *numf
         else
         {
           char msg[SHORT_STRING];
-          IMAP_MBOX mx;
+          struct ImapMbox mx;
           int nentry = menu->current;
 
           imap_parse_path(state.entry[nentry].name, &mx);
@@ -1848,7 +1848,7 @@ void _mutt_select_file(char *f, size_t flen, int flags, char ***files, int *numf
         }
         else
         {
-          BODY *b = NULL;
+          struct Body *b = NULL;
           char buf2[_POSIX_PATH_MAX];
 
           mutt_concat_path(buf2, LastDir, state.entry[menu->current].name, sizeof(buf2));
@@ -1871,7 +1871,7 @@ void _mutt_select_file(char *f, size_t flen, int flags, char ***files, int *numf
         {
           struct folder_file *ff = &state.entry[menu->current];
           int rc;
-          NNTP_DATA *nntp_data = NULL;
+          struct NntpData *nntp_data = NULL;
 
           rc = nntp_newsrc_parse(CurrentNewsSrv);
           if (rc < 0)
@@ -1898,7 +1898,7 @@ void _mutt_select_file(char *f, size_t flen, int flags, char ***files, int *numf
       case OP_LOAD_ACTIVE:
         if (option(OPTNEWS))
         {
-          NNTP_SERVER *nserv = CurrentNewsSrv;
+          struct NntpServer *nserv = CurrentNewsSrv;
           unsigned int j;
 
           if (nntp_newsrc_parse(nserv) < 0)
@@ -1906,7 +1906,7 @@ void _mutt_select_file(char *f, size_t flen, int flags, char ***files, int *numf
 
           for (j = 0; j < nserv->groups_num; j++)
           {
-            NNTP_DATA *nntp_data = nserv->groups_list[j];
+            struct NntpData *nntp_data = nserv->groups_list[j];
             if (nntp_data)
               nntp_data->deleted = true;
           }
@@ -1933,7 +1933,7 @@ void _mutt_select_file(char *f, size_t flen, int flags, char ***files, int *numf
       case OP_UNSUBSCRIBE_PATTERN:
         if (option(OPTNEWS))
         {
-          NNTP_SERVER *nserv = CurrentNewsSrv;
+          struct NntpServer *nserv = CurrentNewsSrv;
           regex_t *rx = safe_malloc(sizeof(regex_t));
           char *s = buf;
           int rc, j = menu->current;
@@ -2002,7 +2002,7 @@ void _mutt_select_file(char *f, size_t flen, int flags, char ***files, int *numf
 
             for (k = 0; nserv && k < nserv->groups_num; k++)
             {
-              NNTP_DATA *nntp_data = nserv->groups_list[k];
+              struct NntpData *nntp_data = nserv->groups_list[k];
               if (nntp_data && nntp_data->group && !nntp_data->subscribed)
               {
                 if (regexec(rx, nntp_data->group, 0, NULL, 0) == 0)

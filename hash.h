@@ -30,7 +30,7 @@ struct hash_elem
   struct hash_elem *next;
 };
 
-typedef struct
+struct Hash
 {
   int nelem, curnelem;
   bool strdup_keys : 1; /* if set, the key->strkey is strdup'ed */
@@ -38,32 +38,32 @@ typedef struct
   struct hash_elem **table;
   unsigned int (*gen_hash)(union hash_key, unsigned int);
   int (*cmp_key)(union hash_key, union hash_key);
-} HASH;
+};
 
 /* flags for hash_create() */
 #define MUTT_HASH_STRCASECMP  (1 << 0) /* use strcasecmp() to compare keys */
 #define MUTT_HASH_STRDUP_KEYS (1 << 1) /* make a copy of the keys */
 #define MUTT_HASH_ALLOW_DUPS  (1 << 2) /* allow duplicate keys to be inserted */
 
-HASH *hash_create(int nelem, int flags);
-HASH *int_hash_create(int nelem, int flags);
+struct Hash *hash_create(int nelem, int flags);
+struct Hash *int_hash_create(int nelem, int flags);
 
-int hash_insert(HASH *table, const char *strkey, void *data);
-int int_hash_insert(HASH *table, unsigned int intkey, void *data);
-HASH *hash_resize(HASH *ptr, int nelem, int lower);
+int hash_insert(struct Hash *table, const char *strkey, void *data);
+int int_hash_insert(struct Hash *table, unsigned int intkey, void *data);
+struct Hash *hash_resize(struct Hash *ptr, int nelem, int lower);
 
-void *hash_find(const HASH *table, const char *strkey);
-struct hash_elem *hash_find_elem(const HASH *table, const char *strkey);
-void *int_hash_find(const HASH *table, unsigned int intkey);
+void *hash_find(const struct Hash *table, const char *strkey);
+struct hash_elem *hash_find_elem(const struct Hash *table, const char *strkey);
+void *int_hash_find(const struct Hash *table, unsigned int intkey);
 
-struct hash_elem *hash_find_bucket(const HASH *table, const char *strkey);
+struct hash_elem *hash_find_bucket(const struct Hash *table, const char *strkey);
 
-void hash_delete(HASH *table, const char *strkey, const void *data,
+void hash_delete(struct Hash *table, const char *strkey, const void *data,
                  void (*destroy)(void *));
-void int_hash_delete(HASH *table, unsigned int intkey, const void *data,
+void int_hash_delete(struct Hash *table, unsigned int intkey, const void *data,
                      void (*destroy)(void *));
 
-void hash_destroy(HASH **ptr, void (*destroy)(void *));
+void hash_destroy(struct Hash **ptr, void (*destroy)(void *));
 
 struct hash_walk_state
 {
@@ -71,6 +71,6 @@ struct hash_walk_state
   struct hash_elem *last;
 };
 
-struct hash_elem *hash_walk(const HASH *table, struct hash_walk_state *state);
+struct hash_elem *hash_walk(const struct Hash *table, struct hash_walk_state *state);
 
 #endif /* _MUTT_HASH_H */

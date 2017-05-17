@@ -38,18 +38,18 @@
 
 #define MUTT_DISPLAYFLAGS (MUTT_SHOW | MUTT_PAGER_NSKIP | MUTT_PAGER_MARKER)
 
-typedef struct
+struct Pager
 {
-  CONTEXT *ctx;    /* current mailbox */
-  HEADER *hdr;     /* current message */
-  BODY *bdy;       /* current attachment */
+  struct Context *ctx;    /* current mailbox */
+  struct Header *hdr;     /* current message */
+  struct Body *bdy;       /* current attachment */
   FILE *fp;        /* source stream */
-  ATTACHPTR **idx; /* attachment information */
+  struct AttachPtr **idx; /* attachment information */
   short idxlen;
-} pager_t;
+};
 
-int mutt_do_pager(const char *banner, const char *tempfile, int do_color, pager_t *info);
-int mutt_pager(const char *banner, const char *fname, int flags, pager_t *extra);
-void update_index(MUTTMENU *menu, CONTEXT *ctx, int check, int oldcount, int index_hint);
+int mutt_do_pager(const char *banner, const char *tempfile, int do_color, struct Pager *info);
+int mutt_pager(const char *banner, const char *fname, int flags, struct Pager *extra);
+void update_index(struct Menu *menu, struct Context *ctx, int check, int oldcount, int index_hint);
 
 #endif /* _MUTT_PAGER_H */

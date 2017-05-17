@@ -28,16 +28,16 @@
 int *ColorQuote;
 int ColorQuoteUsed;
 int ColorDefs[MT_COLOR_MAX];
-COLOR_LINE *ColorHdrList = NULL;
-COLOR_LINE *ColorBodyList = NULL;
-COLOR_LINE *ColorAttachList = NULL;
-COLOR_LINE *ColorStatusList = NULL;
-COLOR_LINE *ColorIndexList = NULL;
-COLOR_LINE *ColorIndexAuthorList = NULL;
-COLOR_LINE *ColorIndexFlagsList = NULL;
-COLOR_LINE *ColorIndexSubjectList = NULL;
+struct ColorLine *ColorHdrList = NULL;
+struct ColorLine *ColorBodyList = NULL;
+struct ColorLine *ColorAttachList = NULL;
+struct ColorLine *ColorStatusList = NULL;
+struct ColorLine *ColorIndexList = NULL;
+struct ColorLine *ColorIndexAuthorList = NULL;
+struct ColorLine *ColorIndexFlagsList = NULL;
+struct ColorLine *ColorIndexSubjectList = NULL;
 #ifdef USE_NOTMUCH
-COLOR_LINE *ColorIndexTagList = NULL;
+struct ColorLine *ColorIndexTagList = NULL;
 #endif
 
 /* local to this file */
@@ -47,16 +47,16 @@ static int ColorQuoteSize;
 
 #define COLOR_DEFAULT (-2)
 
-typedef struct color_list
+struct ColorList
 {
   short fg;
   short bg;
   short index;
   short count;
-  struct color_list *next;
-} COLOR_LIST;
+  struct ColorList *next;
+};
 
-static COLOR_LIST *ColorList = NULL;
+static struct ColorList *ColorList = NULL;
 static int UserColors = 0;
 
 static const struct mapping_t Colors[] = {
@@ -133,18 +133,18 @@ static const struct mapping_t ComposeFields[] = {
 
 #define COLOR_QUOTE_INIT 8
 
-static COLOR_LINE *new_color_line(void)
+static struct ColorLine *new_color_line(void)
 {
-  COLOR_LINE *p = safe_calloc(1, sizeof(COLOR_LINE));
+  struct ColorLine *p = safe_calloc(1, sizeof(struct ColorLine));
 
   p->fg = p->bg = -1;
 
   return p;
 }
 
-static void free_color_line(COLOR_LINE **l, int free_colors)
+static void free_color_line(struct ColorLine **l, int free_colors)
 {
-  COLOR_LINE *tmp = NULL;
+  struct ColorLine *tmp = NULL;
 
   if (!l || !*l)
     return;
@@ -234,7 +234,7 @@ static char *get_color_name(char *dest, size_t destlen, int val)
 
 int mutt_alloc_color(int fg, int bg)
 {
-  COLOR_LIST *p = ColorList;
+  struct ColorList *p = ColorList;
   int i;
 
 #ifdef USE_SLANG_CURSES
@@ -272,7 +272,7 @@ int mutt_alloc_color(int fg, int bg)
     i++;
   }
 
-  p = safe_malloc(sizeof(COLOR_LIST));
+  p = safe_malloc(sizeof(struct ColorList));
   p->next = ColorList;
   ColorList = p;
 
@@ -302,7 +302,7 @@ int mutt_alloc_color(int fg, int bg)
 
 void mutt_free_color(int fg, int bg)
 {
-  COLOR_LIST *p = NULL, *q = NULL;
+  struct ColorList *p = NULL, *q = NULL;
 
   p = ColorList;
   while (p)
@@ -344,7 +344,7 @@ void mutt_free_color(int fg, int bg)
 
 #ifdef HAVE_COLOR
 
-static int parse_color_name(const char *s, int *col, int *attr, int is_fg, BUFFER *err)
+static int parse_color_name(const char *s, int *col, int *attr, int is_fg, struct Buffer *err)
 {
   char *eptr = NULL;
   int is_bright = 0;
@@ -396,9 +396,9 @@ static int parse_color_name(const char *s, int *col, int *attr, int is_fg, BUFFE
 #endif
 
 
-static void do_uncolor(BUFFER *buf, BUFFER *s, COLOR_LINE **cl, int *do_cache, int parse_uncolor)
+static void do_uncolor(struct Buffer *buf, struct Buffer *s, struct ColorLine **cl, int *do_cache, int parse_uncolor)
 {
-  COLOR_LINE *tmp = NULL, *last = NULL;
+  struct ColorLine *tmp = NULL, *last = NULL;
 
   do
   {
@@ -447,8 +447,8 @@ static void do_uncolor(BUFFER *buf, BUFFER *s, COLOR_LINE **cl, int *do_cache, i
 /* usage: uncolor index pattern [pattern...]
  *        unmono  index pattern [pattern...]
  */
-static int _mutt_parse_uncolor(BUFFER *buf, BUFFER *s, unsigned long data,
-                               BUFFER *err, short parse_uncolor)
+static int _mutt_parse_uncolor(struct Buffer *buf, struct Buffer *s, unsigned long data,
+                               struct Buffer *err, short parse_uncolor)
 {
   int object = 0, do_cache = 0;
 
@@ -537,27 +537,27 @@ static int _mutt_parse_uncolor(BUFFER *buf, BUFFER *s, unsigned long data,
 
 #ifdef HAVE_COLOR
 
-int mutt_parse_uncolor(BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err)
+int mutt_parse_uncolor(struct Buffer *buf, struct Buffer *s, unsigned long data, struct Buffer *err)
 {
   return _mutt_parse_uncolor(buf, s, data, err, 1);
 }
 
 #endif
 
-int mutt_parse_unmono(BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err)
+int mutt_parse_unmono(struct Buffer *buf, struct Buffer *s, unsigned long data, struct Buffer *err)
 {
   return _mutt_parse_uncolor(buf, s, data, err, 0);
 }
 
 
-static int add_pattern(COLOR_LINE **top, const char *s, int sensitive, int fg,
-                       int bg, int attr, BUFFER *err, int is_index, int match)
+static int add_pattern(struct ColorLine **top, const char *s, int sensitive, int fg,
+                       int bg, int attr, struct Buffer *err, int is_index, int match)
 {
   /* is_index used to store compiled pattern
    * only for `index' color object
    * when called from mutt_parse_color() */
 
-  COLOR_LINE *tmp = *top;
+  struct ColorLine *tmp = *top;
 
   while (tmp)
   {
@@ -637,7 +637,7 @@ static int add_pattern(COLOR_LINE **top, const char *s, int sensitive, int fg,
   return 0;
 }
 
-static int parse_object(BUFFER *buf, BUFFER *s, int *o, int *ql, BUFFER *err)
+static int parse_object(struct Buffer *buf, struct Buffer *s, int *o, int *ql, struct Buffer *err)
 {
   int q_level = 0;
   char *eptr = NULL;
@@ -690,11 +690,11 @@ static int parse_object(BUFFER *buf, BUFFER *s, int *o, int *ql, BUFFER *err)
   return 0;
 }
 
-typedef int (*parser_callback_t)(BUFFER *, BUFFER *, int *, int *, int *, BUFFER *);
+typedef int (*parser_callback_t)(struct Buffer *, struct Buffer *, int *, int *, int *, struct Buffer *);
 
 #ifdef HAVE_COLOR
 
-static int parse_color_pair(BUFFER *buf, BUFFER *s, int *fg, int *bg, int *attr, BUFFER *err)
+static int parse_color_pair(struct Buffer *buf, struct Buffer *s, int *fg, int *bg, int *attr, struct Buffer *err)
 {
   if (!MoreArgs(s))
   {
@@ -723,7 +723,7 @@ static int parse_color_pair(BUFFER *buf, BUFFER *s, int *fg, int *bg, int *attr,
 
 #endif
 
-static int parse_attr_spec(BUFFER *buf, BUFFER *s, int *fg, int *bg, int *attr, BUFFER *err)
+static int parse_attr_spec(struct Buffer *buf, struct Buffer *s, int *fg, int *bg, int *attr, struct Buffer *err)
 {
   if (fg)
     *fg = -1;
@@ -772,7 +772,7 @@ static int fgbgattr_to_color(int fg, int bg, int attr)
 /* usage: color <object> <fg> <bg> [ <regexp> ]
  *        mono  <object> <attr> [ <regexp> ]
  */
-static int _mutt_parse_color(BUFFER *buf, BUFFER *s, BUFFER *err,
+static int _mutt_parse_color(struct Buffer *buf, struct Buffer *s, struct Buffer *err,
                              parser_callback_t callback, short dry_run)
 {
   int object = 0, attr = 0, fg = 0, bg = 0, q_level = 0;
@@ -847,8 +847,8 @@ static int _mutt_parse_color(BUFFER *buf, BUFFER *s, BUFFER *err,
 
     if (MoreArgs(s))
     {
-      BUFFER temporary;
-      memset(&temporary, 0, sizeof(BUFFER));
+      struct Buffer temporary;
+      memset(&temporary, 0, sizeof(struct Buffer));
       mutt_extract_token(&temporary, s, 0);
       match = atoi(temporary.data);
       FREE(&temporary.data);
@@ -925,7 +925,7 @@ static int _mutt_parse_color(BUFFER *buf, BUFFER *s, BUFFER *err,
 
 #ifdef HAVE_COLOR
 
-int mutt_parse_color(BUFFER *buff, BUFFER *s, unsigned long data, BUFFER *err)
+int mutt_parse_color(struct Buffer *buff, struct Buffer *s, unsigned long data, struct Buffer *err)
 {
   int dry_run = 0;
 
@@ -937,7 +937,7 @@ int mutt_parse_color(BUFFER *buff, BUFFER *s, unsigned long data, BUFFER *err)
 
 #endif
 
-int mutt_parse_mono(BUFFER *buff, BUFFER *s, unsigned long data, BUFFER *err)
+int mutt_parse_mono(struct Buffer *buff, struct Buffer *s, unsigned long data, struct Buffer *err)
 {
   int dry_run = 0;
 

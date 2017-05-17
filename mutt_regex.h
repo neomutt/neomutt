@@ -34,17 +34,17 @@
 #define REGCOMP(X, Y, Z) regcomp(X, Y, REG_WORDS | REG_EXTENDED | (Z))
 #define REGEXEC(X, Y) regexec(&X, Y, (size_t) 0, (regmatch_t *) 0, (int) 0)
 
-typedef struct
+struct Regex
 {
   char *pattern; /* printable version */
   regex_t *rx;   /* compiled expression */
   int not;       /* do not match */
-} REGEXP;
+};
 
-WHERE REGEXP Mask;
-WHERE REGEXP QuoteRegexp;
-WHERE REGEXP ReplyRegexp;
-WHERE REGEXP Smileys;
-WHERE REGEXP GecosMask;
+WHERE struct Regex Mask;
+WHERE struct Regex QuoteRegexp;
+WHERE struct Regex ReplyRegexp;
+WHERE struct Regex Smileys;
+WHERE struct Regex GecosMask;
 
 #endif /* _MUTT_REGEX_H */

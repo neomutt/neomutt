@@ -22,36 +22,36 @@
 #include "lib.h"
 #include "myvar.h"
 
-/* creates and initializes a BUFFER */
-BUFFER *mutt_buffer_new(void)
+/* creates and initializes a Buffer */
+struct Buffer *mutt_buffer_new(void)
 {
-  BUFFER *b = NULL;
+  struct Buffer *b = NULL;
 
-  b = safe_malloc(sizeof(BUFFER));
+  b = safe_malloc(sizeof(struct Buffer));
 
   mutt_buffer_init(b);
 
   return b;
 }
 
-/* initialize a new BUFFER */
-BUFFER *mutt_buffer_init(BUFFER *b)
+/* initialize a new Buffer */
+struct Buffer *mutt_buffer_init(struct Buffer *b)
 {
-  memset(b, 0, sizeof(BUFFER));
+  memset(b, 0, sizeof(struct Buffer));
   return b;
 }
 
 /*
- * Creates and initializes a BUFFER*. If passed an existing BUFFER*,
+ * Creates and initializes a Buffer*. If passed an existing Buffer*,
  * just initializes. Frees anything already in the buffer. Copies in
  * the seed string.
  *
  * Disregards the 'destroy' flag, which seems reserved for caller.
  * This is bad, but there's no apparent protocol for it.
  */
-BUFFER *mutt_buffer_from(char *seed)
+struct Buffer *mutt_buffer_from(char *seed)
 {
-  BUFFER *b = NULL;
+  struct Buffer *b = NULL;
 
   if (!seed)
     return NULL;
@@ -63,7 +63,7 @@ BUFFER *mutt_buffer_from(char *seed)
   return b;
 }
 
-void mutt_buffer_free(BUFFER **p)
+void mutt_buffer_free(struct Buffer **p)
 {
   if (!p || !*p)
     return;
@@ -73,7 +73,7 @@ void mutt_buffer_free(BUFFER **p)
   FREE(p);
 }
 
-int mutt_buffer_printf(BUFFER *buf, const char *fmt, ...)
+int mutt_buffer_printf(struct Buffer *buf, const char *fmt, ...)
 {
   va_list ap, ap_retry;
   int len, blen, doff;
@@ -113,10 +113,10 @@ int mutt_buffer_printf(BUFFER *buf, const char *fmt, ...)
   return len;
 }
 
-/* dynamically grows a BUFFER to accommodate s, in increments of 128 bytes.
+/* dynamically grows a Buffer to accommodate s, in increments of 128 bytes.
  * Always one byte bigger than necessary for the null terminator, and
  * the buffer is always null-terminated */
-static void mutt_buffer_add(BUFFER *buf, const char *s, size_t len)
+static void mutt_buffer_add(struct Buffer *buf, const char *s, size_t len)
 {
   if (!buf || !s)
     return;
@@ -135,17 +135,17 @@ static void mutt_buffer_add(BUFFER *buf, const char *s, size_t len)
   *(buf->dptr) = '\0';
 }
 
-void mutt_buffer_addstr(BUFFER *buf, const char *s)
+void mutt_buffer_addstr(struct Buffer *buf, const char *s)
 {
   mutt_buffer_add(buf, s, mutt_strlen(s));
 }
 
-void mutt_buffer_addch(BUFFER *buf, char c)
+void mutt_buffer_addch(struct Buffer *buf, char c)
 {
   mutt_buffer_add(buf, &c, 1);
 }
 
-int mutt_extract_token(BUFFER *dest, BUFFER *tok, int flags)
+int mutt_extract_token(struct Buffer *dest, struct Buffer *tok, int flags)
 {
   if (!dest || !tok)
     return -1;
@@ -238,7 +238,7 @@ int mutt_extract_token(BUFFER *dest, BUFFER *tok, int flags)
       pid_t pid;
       char *cmd = NULL, *ptr = NULL;
       size_t expnlen;
-      BUFFER expn;
+      struct Buffer expn;
       int line = 0;
 
       pc = tok->dptr;

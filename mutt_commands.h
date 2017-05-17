@@ -23,7 +23,7 @@
 struct command_t
 {
   char *name;
-  int (*func)(BUFFER *, BUFFER *, unsigned long, BUFFER *);
+  int (*func)(struct Buffer *, struct Buffer *, unsigned long, struct Buffer *);
   unsigned long data;
 };
 

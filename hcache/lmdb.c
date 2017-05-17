@@ -34,15 +34,15 @@ enum mdb_txn_mode
   txn_write
 };
 
-typedef struct
+struct HcacheLmdbCtx
 {
   MDB_env *env;
   MDB_txn *txn;
   MDB_dbi db;
   enum mdb_txn_mode txn_mode;
-} hcache_lmdb_ctx_t;
+};
 
-static int mdb_get_r_txn(hcache_lmdb_ctx_t *ctx)
+static int mdb_get_r_txn(struct HcacheLmdbCtx *ctx)
 {
   int rc;
 
@@ -63,7 +63,7 @@ static int mdb_get_r_txn(hcache_lmdb_ctx_t *ctx)
   return rc;
 }
 
-static int mdb_get_w_txn(hcache_lmdb_ctx_t *ctx)
+static int mdb_get_w_txn(struct HcacheLmdbCtx *ctx)
 {
   int rc;
 
@@ -89,7 +89,7 @@ static void *hcache_lmdb_open(const char *path)
 {
   int rc;
 
-  hcache_lmdb_ctx_t *ctx = safe_malloc(sizeof(hcache_lmdb_ctx_t));
+  struct HcacheLmdbCtx *ctx = safe_malloc(sizeof(struct HcacheLmdbCtx));
   ctx->txn = NULL;
   ctx->db = 0;
 
@@ -148,7 +148,7 @@ static void *hcache_lmdb_fetch(void *vctx, const char *key, size_t keylen)
   if (!vctx)
     return NULL;
 
-  hcache_lmdb_ctx_t *ctx = vctx;
+  struct HcacheLmdbCtx *ctx = vctx;
 
   dkey.mv_data = (void *) key;
   dkey.mv_size = keylen;
@@ -189,7 +189,7 @@ static int hcache_lmdb_store(void *vctx, const char *key, size_t keylen, void *d
   if (!vctx)
     return -1;
 
-  hcache_lmdb_ctx_t *ctx = vctx;
+  struct HcacheLmdbCtx *ctx = vctx;
 
   dkey.mv_data = (void *) key;
   dkey.mv_size = keylen;
@@ -221,7 +221,7 @@ static int hcache_lmdb_delete(void *vctx, const char *key, size_t keylen)
   if (!vctx)
     return -1;
 
-  hcache_lmdb_ctx_t *ctx = vctx;
+  struct HcacheLmdbCtx *ctx = vctx;
 
   dkey.mv_data = (void *) key;
   dkey.mv_size = keylen;
@@ -252,7 +252,7 @@ static void hcache_lmdb_close(void **vctx)
   if (!vctx || !*vctx)
     return;
 
-  hcache_lmdb_ctx_t *ctx = *vctx;
+  struct HcacheLmdbCtx *ctx = *vctx;
 
   if (ctx->txn && ctx->txn_mode == txn_write)
   {

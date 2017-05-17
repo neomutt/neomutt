@@ -42,7 +42,7 @@ static const struct mapping_t PostponeHelp[] = {
 
 
 static short PostCount = 0;
-static CONTEXT *PostContext = NULL;
+static struct Context *PostContext = NULL;
 static short UpdateNumPostponed = 0;
 
 /* Return the number of postponed messages.
@@ -52,7 +52,7 @@ static short UpdateNumPostponed = 0;
 int mutt_num_postponed(int force)
 {
   struct stat st;
-  CONTEXT ctx;
+  struct Context ctx;
 
   static time_t LastModify = 0;
   static char *OldPostponed = NULL;
@@ -149,16 +149,16 @@ void mutt_update_num_postponed(void)
   UpdateNumPostponed = 1;
 }
 
-static void post_entry(char *s, size_t slen, MUTTMENU *menu, int entry)
+static void post_entry(char *s, size_t slen, struct Menu *menu, int entry)
 {
-  CONTEXT *ctx = (CONTEXT *) menu->data;
+  struct Context *ctx = (struct Context *) menu->data;
 
   _mutt_make_string(s, slen, NONULL(HdrFmt), ctx, ctx->hdrs[entry], MUTT_FORMAT_ARROWCURSOR);
 }
 
-static HEADER *select_msg(void)
+static struct Header *select_msg(void)
 {
-  MUTTMENU *menu = NULL;
+  struct Menu *menu = NULL;
   int i, done = 0, r = -1;
   char helpstr[LONG_STRING];
   short orig_sort;
@@ -234,13 +234,13 @@ static HEADER *select_msg(void)
  *      0               normal exit
  *      SENDREPLY       recalled message is a reply
  */
-int mutt_get_postponed(CONTEXT *ctx, HEADER *hdr, HEADER **cur, char *fcc, size_t fcclen)
+int mutt_get_postponed(struct Context *ctx, struct Header *hdr, struct Header **cur, char *fcc, size_t fcclen)
 {
-  HEADER *h = NULL;
+  struct Header *h = NULL;
   int code = SENDPOSTPONED;
-  LIST *tmp = NULL;
-  LIST *last = NULL;
-  LIST *next = NULL;
+  struct List *tmp = NULL;
+  struct List *last = NULL;
+  struct List *next = NULL;
   const char *p = NULL;
   int opt_delete;
 
@@ -536,20 +536,20 @@ int mutt_parse_crypt_hdr(const char *p, int set_empty_signas, int crypt_app)
 /* args:
  *     fp      If not NULL, file containing the template
  *     ctx     If fp is NULL, the context containing the header with the template
- *     newhdr  The template is read into this HEADER
+ *     newhdr  The template is read into this Header
  *     hdr     The message to recall/resend
  *     resend  Set if resending (as opposed to recalling a postponed msg).
  *             Resent messages enable header weeding, and also
  *             discard any existing Message-ID and Mail-Followup-To.
  */
-int mutt_prepare_template(FILE *fp, CONTEXT *ctx, HEADER *newhdr, HEADER *hdr, short resend)
+int mutt_prepare_template(FILE *fp, struct Context *ctx, struct Header *newhdr, struct Header *hdr, short resend)
 {
-  MESSAGE *msg = NULL;
+  struct Message *msg = NULL;
   char file[_POSIX_PATH_MAX];
-  BODY *b = NULL;
+  struct Body *b = NULL;
   FILE *bfp = NULL;
   int rv = -1;
-  STATE s;
+  struct State s;
   int sec_type;
 
   memset(&s, 0, sizeof(s));

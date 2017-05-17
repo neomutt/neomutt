@@ -44,7 +44,7 @@
 #include "mutt_sasl.h"
 #endif
 
-static int nntp_connect_error(NNTP_SERVER *nserv)
+static int nntp_connect_error(struct NntpServer *nserv)
 {
   nserv->status = NNTP_NONE;
   mutt_error(_("Server closed connection!"));
@@ -56,9 +56,9 @@ static int nntp_connect_error(NNTP_SERVER *nserv)
  * -1 - error, connection is closed
  *  0 - mode is reader, capabilities setted up
  *  1 - need to switch to reader mode */
-static int nntp_capabilities(NNTP_SERVER *nserv)
+static int nntp_capabilities(struct NntpServer *nserv)
 {
-  CONNECTION *conn = nserv->conn;
+  struct Connection *conn = nserv->conn;
   unsigned int mode_reader = 0;
   char buf[LONG_STRING];
   char authinfo[LONG_STRING] = "";
@@ -161,9 +161,9 @@ char *OverviewFmt = "Subject:\0"
                     "\0";
 
 /* Detect supported commands */
-static int nntp_attempt_features(NNTP_SERVER *nserv)
+static int nntp_attempt_features(struct NntpServer *nserv)
 {
-  CONNECTION *conn = nserv->conn;
+  struct Connection *conn = nserv->conn;
   char buf[LONG_STRING];
 
   /* no CAPABILITIES, trying DATE, LISTGROUP, LIST NEWSGROUPS */
@@ -285,9 +285,9 @@ static int nntp_attempt_features(NNTP_SERVER *nserv)
 }
 
 /* Get login, password and authenticate */
-static int nntp_auth(NNTP_SERVER *nserv)
+static int nntp_auth(struct NntpServer *nserv)
 {
-  CONNECTION *conn = nserv->conn;
+  struct Connection *conn = nserv->conn;
   char buf[LONG_STRING];
   char authenticators[LONG_STRING] = "USER";
   char *method = NULL, *a = NULL, *p = NULL;
@@ -574,9 +574,9 @@ static int nntp_auth(NNTP_SERVER *nserv)
 }
 
 /* Connect to server, authenticate and get capabilities */
-int nntp_open_connection(NNTP_SERVER *nserv)
+int nntp_open_connection(struct NntpServer *nserv)
 {
-  CONNECTION *conn = nserv->conn;
+  struct Connection *conn = nserv->conn;
   char buf[STRING];
   int cap;
   unsigned int posting = 0, auth = 1;
@@ -727,9 +727,9 @@ int nntp_open_connection(NNTP_SERVER *nserv)
 }
 
 /* Send data from buffer and receive answer to same buffer */
-static int nntp_query(NNTP_DATA *nntp_data, char *line, size_t linelen)
+static int nntp_query(struct NntpData *nntp_data, char *line, size_t linelen)
 {
-  NNTP_SERVER *nserv = nntp_data->nserv;
+  struct NntpServer *nserv = nntp_data->nserv;
   char buf[LONG_STRING];
 
   if (nserv->status == NNTP_BYE)
@@ -792,7 +792,7 @@ static int nntp_query(NNTP_DATA *nntp_data, char *line, size_t linelen)
  *  1 - bad response (answer in query buffer)
  * -1 - connection lost
  * -2 - error in funct(*line, *data) */
-static int nntp_fetch_lines(NNTP_DATA *nntp_data, char *query, size_t qlen,
+static int nntp_fetch_lines(struct NntpData *nntp_data, char *query, size_t qlen,
                             char *msg, int (*funct)(char *, void *), void *data)
 {
   int done = false;
@@ -804,7 +804,7 @@ static int nntp_fetch_lines(NNTP_DATA *nntp_data, char *query, size_t qlen,
     char *line = NULL;
     unsigned int lines = 0;
     size_t off = 0;
-    progress_t progress;
+    struct Progress progress;
 
     if (msg)
       mutt_progress_init(&progress, msg, MUTT_PROGRESS_MSG, ReadInc, -1);
@@ -869,8 +869,8 @@ static int nntp_fetch_lines(NNTP_DATA *nntp_data, char *query, size_t qlen,
 /* Parse newsgroup description */
 static int fetch_description(char *line, void *data)
 {
-  NNTP_SERVER *nserv = data;
-  NNTP_DATA *nntp_data = NULL;
+  struct NntpServer *nserv = data;
+  struct NntpData *nntp_data = NULL;
   char *desc = NULL;
 
   if (!line)
@@ -896,9 +896,9 @@ static int fetch_description(char *line, void *data)
 
 /* Fetch newsgroups descriptions.
  * Returns the same code as nntp_fetch_lines() */
-static int get_description(NNTP_DATA *nntp_data, char *wildmat, char *msg)
+static int get_description(struct NntpData *nntp_data, char *wildmat, char *msg)
 {
-  NNTP_SERVER *nserv = NULL;
+  struct NntpServer *nserv = NULL;
   char buf[STRING];
   char *cmd = NULL;
   int rc;
@@ -925,9 +925,9 @@ static int get_description(NNTP_DATA *nntp_data, char *wildmat, char *msg)
 }
 
 /* Update read flag and set article number if empty */
-static void nntp_parse_xref(CONTEXT *ctx, HEADER *hdr)
+static void nntp_parse_xref(struct Context *ctx, struct Header *hdr)
 {
-  NNTP_DATA *nntp_data = ctx->data;
+  struct NntpData *nntp_data = ctx->data;
   char *buf = NULL, *p = NULL;
 
   buf = p = safe_strdup(hdr->env->xref);
@@ -972,23 +972,23 @@ static int fetch_tempfile(char *line, void *data)
   return 0;
 }
 
-typedef struct
+struct FetchCtx
 {
-  CONTEXT *ctx;
+  struct Context *ctx;
   anum_t first;
   anum_t last;
   int restore;
   unsigned char *messages;
-  progress_t progress;
+  struct Progress progress;
 #ifdef USE_HCACHE
   header_cache_t *hc;
 #endif
-} FETCH_CTX;
+};
 
 /* Parse article number */
 static int fetch_numbers(char *line, void *data)
 {
-  FETCH_CTX *fc = data;
+  struct FetchCtx *fc = data;
   anum_t anum;
 
   if (!line)
@@ -1004,10 +1004,10 @@ static int fetch_numbers(char *line, void *data)
 /* Parse overview line */
 static int parse_overview_line(char *line, void *data)
 {
-  FETCH_CTX *fc = data;
-  CONTEXT *ctx = fc->ctx;
-  NNTP_DATA *nntp_data = ctx->data;
-  HEADER *hdr = NULL;
+  struct FetchCtx *fc = data;
+  struct Context *ctx = fc->ctx;
+  struct NntpData *nntp_data = ctx->data;
+  struct Header *hdr = NULL;
   FILE *fp = NULL;
   char tempfile[_POSIX_PATH_MAX];
   char *header = NULL, *field = NULL;
@@ -1130,7 +1130,7 @@ static int parse_overview_line(char *line, void *data)
     hdr->read = false;
     hdr->old = false;
     hdr->deleted = false;
-    hdr->data = safe_calloc(1, sizeof(NNTP_HEADER_DATA));
+    hdr->data = safe_calloc(1, sizeof(struct NntpHeaderData));
     NHDR(hdr)->article_num = anum;
     if (fc->restore)
       hdr->changed = true;
@@ -1153,11 +1153,11 @@ static int parse_overview_line(char *line, void *data)
 }
 
 /* Fetch headers */
-static int nntp_fetch_headers(CONTEXT *ctx, void *hc, anum_t first, anum_t last, int restore)
+static int nntp_fetch_headers(struct Context *ctx, void *hc, anum_t first, anum_t last, int restore)
 {
-  NNTP_DATA *nntp_data = ctx->data;
-  FETCH_CTX fc;
-  HEADER *hdr = NULL;
+  struct NntpData *nntp_data = ctx->data;
+  struct FetchCtx fc;
+  struct Header *hdr = NULL;
   char buf[HUGE_STRING];
   int rc = 0;
   int oldmsgcount = ctx->msgcount;
@@ -1342,7 +1342,7 @@ static int nntp_fetch_headers(CONTEXT *ctx, void *hc, anum_t first, anum_t last,
     hdr->read = false;
     hdr->old = false;
     hdr->deleted = false;
-    hdr->data = safe_calloc(1, sizeof(NNTP_HEADER_DATA));
+    hdr->data = safe_calloc(1, sizeof(struct NntpHeaderData));
     NHDR(hdr)->article_num = current;
     if (restore)
       hdr->changed = true;
@@ -1384,17 +1384,17 @@ static int nntp_fetch_headers(CONTEXT *ctx, void *hc, anum_t first, anum_t last,
 }
 
 /* Open newsgroup */
-static int nntp_open_mailbox(CONTEXT *ctx)
+static int nntp_open_mailbox(struct Context *ctx)
 {
-  NNTP_SERVER *nserv = NULL;
-  NNTP_DATA *nntp_data = NULL;
+  struct NntpServer *nserv = NULL;
+  struct NntpData *nntp_data = NULL;
   char buf[HUGE_STRING];
   char server[LONG_STRING];
   char *group = NULL;
   int rc;
   void *hc = NULL;
   anum_t first, last, count = 0;
-  ciss_url_t url;
+  struct CissUrl url;
 
   strfcpy(buf, ctx->path, sizeof(buf));
   if (url_parse_ciss(&url, buf) < 0 || !url.path ||
@@ -1519,11 +1519,11 @@ static int nntp_open_mailbox(CONTEXT *ctx)
 }
 
 /* Fetch message */
-static int nntp_fetch_message(CONTEXT *ctx, MESSAGE *msg, int msgno)
+static int nntp_fetch_message(struct Context *ctx, struct Message *msg, int msgno)
 {
-  NNTP_DATA *nntp_data = ctx->data;
-  NNTP_ACACHE *acache = NULL;
-  HEADER *hdr = ctx->hdrs[msgno];
+  struct NntpData *nntp_data = ctx->data;
+  struct NntpAcache *acache = NULL;
+  struct Header *hdr = ctx->hdrs[msgno];
   char buf[_POSIX_PATH_MAX];
   char article[16];
   char *fetch_msg = _("Fetching message...");
@@ -1641,7 +1641,7 @@ static int nntp_fetch_message(CONTEXT *ctx, MESSAGE *msg, int msgno)
 }
 
 /* Close message */
-static int nntp_close_message(CONTEXT *ctx, MESSAGE *msg)
+static int nntp_close_message(struct Context *ctx, struct Message *msg)
 {
   return safe_fclose(&msg->fp);
 }
@@ -1649,7 +1649,7 @@ static int nntp_close_message(CONTEXT *ctx, MESSAGE *msg)
 /* Post article */
 int nntp_post(const char *msg)
 {
-  NNTP_DATA *nntp_data, nntp_tmp;
+  struct NntpData *nntp_data, nntp_tmp;
   FILE *fp = NULL;
   char buf[LONG_STRING];
   size_t len;
@@ -1722,7 +1722,7 @@ int nntp_post(const char *msg)
  *  1 - new articles found
  *  0 - no change
  * -1 - lost connection */
-static int nntp_group_poll(NNTP_DATA *nntp_data, int update_stat)
+static int nntp_group_poll(struct NntpData *nntp_data, int update_stat)
 {
   char buf[LONG_STRING] = "";
   anum_t count, first, last;
@@ -1741,7 +1741,7 @@ static int nntp_group_poll(NNTP_DATA *nntp_data, int update_stat)
     nntp_data->lastCached = 0;
     if (nntp_data->newsrc_len)
     {
-      safe_realloc(&nntp_data->newsrc_ent, sizeof(NEWSRC_ENTRY));
+      safe_realloc(&nntp_data->newsrc_ent, sizeof(struct NewsrcEntry));
       nntp_data->newsrc_len = 1;
       nntp_data->newsrc_ent[0].first = 1;
       nntp_data->newsrc_ent[0].last = 0;
@@ -1765,10 +1765,10 @@ static int nntp_group_poll(NNTP_DATA *nntp_data, int update_stat)
  *  MUTT_NEW_MAIL       - new articles found
  *  0           - no change
  * -1           - lost connection */
-static int nntp_check_mailbox(CONTEXT *ctx, int *index_hint)
+static int nntp_check_mailbox(struct Context *ctx, int *index_hint)
 {
-  NNTP_DATA *nntp_data = ctx->data;
-  NNTP_SERVER *nserv = nntp_data->nserv;
+  struct NntpData *nntp_data = ctx->data;
+  struct NntpServer *nserv = nntp_data->nserv;
   time_t now = time(NULL);
   int i, j;
   int rc, ret = 0;
@@ -1816,7 +1816,7 @@ static int nntp_check_mailbox(CONTEXT *ctx, int *index_hint)
     unsigned char *messages = NULL;
     char buf[16];
     void *hdata = NULL;
-    HEADER *hdr = NULL;
+    struct Header *hdr = NULL;
     anum_t first = nntp_data->firstMessage;
 
     if (NntpContext && nntp_data->lastMessage - first + 1 > NntpContext)
@@ -1910,7 +1910,7 @@ static int nntp_check_mailbox(CONTEXT *ctx, int *index_hint)
         ctx->msgcount++;
         hdr->read = false;
         hdr->old = false;
-        hdr->data = safe_calloc(1, sizeof(NNTP_HEADER_DATA));
+        hdr->data = safe_calloc(1, sizeof(struct NntpHeaderData));
         NHDR(hdr)->article_num = anum;
         nntp_article_status(ctx, hdr, NULL, anum);
         if (!hdr->read)
@@ -1976,9 +1976,9 @@ static int nntp_check_mailbox(CONTEXT *ctx, int *index_hint)
 }
 
 /* Save changes to .newsrc and cache */
-static int nntp_sync_mailbox(CONTEXT *ctx, int *index_hint)
+static int nntp_sync_mailbox(struct Context *ctx, int *index_hint)
 {
-  NNTP_DATA *nntp_data = ctx->data;
+  struct NntpData *nntp_data = ctx->data;
   int rc, i;
 #ifdef USE_HCACHE
   header_cache_t *hc = NULL;
@@ -1998,7 +1998,7 @@ static int nntp_sync_mailbox(CONTEXT *ctx, int *index_hint)
   nntp_data->unread = ctx->unread;
   for (i = 0; i < ctx->msgcount; i++)
   {
-    HEADER *hdr = ctx->hdrs[i];
+    struct Header *hdr = ctx->hdrs[i];
     char buf[16];
 
     snprintf(buf, sizeof(buf), "%d", NHDR(hdr)->article_num);
@@ -2035,9 +2035,9 @@ static int nntp_sync_mailbox(CONTEXT *ctx, int *index_hint)
 }
 
 /* Free up memory associated with the newsgroup context */
-static int nntp_fastclose_mailbox(CONTEXT *ctx)
+static int nntp_fastclose_mailbox(struct Context *ctx)
 {
-  NNTP_DATA *nntp_data = ctx->data, *nntp_tmp = NULL;
+  struct NntpData *nntp_data = ctx->data, *nntp_tmp = NULL;
 
   if (!nntp_data)
     return 0;
@@ -2053,11 +2053,11 @@ static int nntp_fastclose_mailbox(CONTEXT *ctx)
 }
 
 /* Get date and time from server */
-static int nntp_date(NNTP_SERVER *nserv, time_t *now)
+static int nntp_date(struct NntpServer *nserv, time_t *now)
 {
   if (nserv->hasDATE)
   {
-    NNTP_DATA nntp_data;
+    struct NntpData nntp_data;
     char buf[LONG_STRING];
     struct tm tm;
     memset(&tm, 0, sizeof(tm));
@@ -2086,9 +2086,9 @@ static int nntp_date(NNTP_SERVER *nserv, time_t *now)
 }
 
 /* Fetch list of all newsgroups from server */
-int nntp_active_fetch(NNTP_SERVER *nserv)
+int nntp_active_fetch(struct NntpServer *nserv)
 {
-  NNTP_DATA nntp_data;
+  struct NntpData nntp_data;
   char msg[SHORT_STRING];
   char buf[LONG_STRING];
   unsigned int i;
@@ -2120,7 +2120,7 @@ int nntp_active_fetch(NNTP_SERVER *nserv)
 
   for (i = 0; i < nserv->groups_num; i++)
   {
-    NNTP_DATA *data = nserv->groups_list[i];
+    struct NntpData *data = nserv->groups_list[i];
 
     if (data && data->deleted && !data->newsrc_ent)
     {
@@ -2138,9 +2138,9 @@ int nntp_active_fetch(NNTP_SERVER *nserv)
  *  1 - new groups found
  *  0 - no new groups
  * -1 - error */
-int nntp_check_new_groups(NNTP_SERVER *nserv)
+int nntp_check_new_groups(struct NntpServer *nserv)
 {
-  NNTP_DATA nntp_data;
+  struct NntpData nntp_data;
   time_t now;
   struct tm *tm = NULL;
   char buf[LONG_STRING];
@@ -2157,7 +2157,7 @@ int nntp_check_new_groups(NNTP_SERVER *nserv)
     mutt_message(_("Checking for new messages..."));
     for (i = 0; i < nserv->groups_num; i++)
     {
-      NNTP_DATA *data = nserv->groups_list[i];
+      struct NntpData *data = nserv->groups_list[i];
 
       if (data && data->subscribed)
       {
@@ -2172,7 +2172,7 @@ int nntp_check_new_groups(NNTP_SERVER *nserv)
     if (Context && Context->magic == MUTT_NNTP)
     {
       buf[0] = '\0';
-      if (nntp_query((NNTP_DATA *) Context->data, buf, sizeof(buf)) < 0)
+      if (nntp_query((struct NntpData *) Context->data, buf, sizeof(buf)) < 0)
         return -1;
     }
   }
@@ -2185,7 +2185,7 @@ int nntp_check_new_groups(NNTP_SERVER *nserv)
     return -1;
   nntp_data.nserv = nserv;
   if (Context && Context->magic == MUTT_NNTP)
-    nntp_data.group = ((NNTP_DATA *) Context->data)->group;
+    nntp_data.group = ((struct NntpData *) Context->data)->group;
   else
     nntp_data.group = NULL;
   i = nserv->groups_num;
@@ -2214,13 +2214,13 @@ int nntp_check_new_groups(NNTP_SERVER *nserv)
     if (option(OPTLOADDESC))
     {
       unsigned int count = 0;
-      progress_t progress;
+      struct Progress progress;
 
       mutt_progress_init(&progress, _("Loading descriptions..."),
                          MUTT_PROGRESS_MSG, ReadInc, nserv->groups_num - i);
       for (; i < nserv->groups_num; i++)
       {
-        NNTP_DATA *data = nserv->groups_list[i];
+        struct NntpData *data = nserv->groups_list[i];
 
         if (get_description(data, NULL, NULL) < 0)
           return -1;
@@ -2240,10 +2240,10 @@ int nntp_check_new_groups(NNTP_SERVER *nserv)
  *  0 - success
  *  1 - no such article
  * -1 - error */
-int nntp_check_msgid(CONTEXT *ctx, const char *msgid)
+int nntp_check_msgid(struct Context *ctx, const char *msgid)
 {
-  NNTP_DATA *nntp_data = ctx->data;
-  HEADER *hdr = NULL;
+  struct NntpData *nntp_data = ctx->data;
+  struct Header *hdr = NULL;
   FILE *fp = NULL;
   char tempfile[_POSIX_PATH_MAX];
   char buf[LONG_STRING];
@@ -2276,7 +2276,7 @@ int nntp_check_msgid(CONTEXT *ctx, const char *msgid)
   if (ctx->msgcount == ctx->hdrmax)
     mx_alloc_memory(ctx);
   hdr = ctx->hdrs[ctx->msgcount] = mutt_new_header();
-  hdr->data = safe_calloc(1, sizeof(NNTP_HEADER_DATA));
+  hdr->data = safe_calloc(1, sizeof(struct NntpHeaderData));
   hdr->env = mutt_read_rfc822_header(fp, hdr, 0, 0);
   safe_fclose(&fp);
   unlink(tempfile);
@@ -2306,18 +2306,18 @@ int nntp_check_msgid(CONTEXT *ctx, const char *msgid)
   return 0;
 }
 
-typedef struct
+struct ChildCtx
 {
-  CONTEXT *ctx;
+  struct Context *ctx;
   unsigned int num;
   unsigned int max;
   anum_t *child;
-} CHILD_CTX;
+};
 
 /* Parse XPAT line */
 static int fetch_children(char *line, void *data)
 {
-  CHILD_CTX *cc = data;
+  struct ChildCtx *cc = data;
   anum_t anum;
   unsigned int i;
 
@@ -2336,10 +2336,10 @@ static int fetch_children(char *line, void *data)
 }
 
 /* Fetch children of article with the Message-ID */
-int nntp_check_children(CONTEXT *ctx, const char *msgid)
+int nntp_check_children(struct Context *ctx, const char *msgid)
 {
-  NNTP_DATA *nntp_data = ctx->data;
-  CHILD_CTX cc;
+  struct NntpData *nntp_data = ctx->data;
+  struct ChildCtx cc;
   char buf[STRING];
   int i, rc;
   bool quiet;

@@ -54,7 +54,7 @@ static const char *Function_not_permitted_in_attach_message_mode =
 
 /* hack to return to position when returning from index to same message */
 static int TopLine = 0;
-static HEADER *OldHdr = NULL;
+static struct Header *OldHdr = NULL;
 
 #define CHECK_MODE(x)                                                          \
   if (!(x))                                                                    \
@@ -126,13 +126,13 @@ struct line_t
 #define ANSI_REVERSE (1 << 4)
 #define ANSI_COLOR (1 << 5)
 
-typedef struct _ansi_attr
+struct AnsiAttr
 {
   int attr;
   int fg;
   int bg;
   int pair;
-} ansi_attr;
+};
 
 static short InHelp = 0;
 
@@ -179,7 +179,7 @@ static int check_sig(const char *s, struct line_t *info, int n)
 }
 
 static void resolve_color(struct line_t *lineInfo, int n, int cnt, int flags,
-                          int special, ansi_attr *a)
+                          int special, struct AnsiAttr *a)
 {
   int def_color;         /* color without syntax highlight */
   int color;             /* final color */
@@ -715,7 +715,7 @@ static void resolve_types(char *buf, char *raw, struct line_t *lineInfo, int n,
                           int last, struct q_class_t **QuoteList, int *q_level,
                           int *force_redraw, int q_classify)
 {
-  COLOR_LINE *color_line = NULL;
+  struct ColorLine *color_line = NULL;
   regmatch_t pmatch[1], smatch[1];
   int found, offset, null_rx, i;
 
@@ -984,7 +984,7 @@ static int is_ansi(unsigned char *buf)
   return (*buf == 'm');
 }
 
-static int grok_ansi(unsigned char *buf, int pos, ansi_attr *a)
+static int grok_ansi(unsigned char *buf, int pos, struct AnsiAttr *a)
 {
   int x = pos;
 
@@ -1163,8 +1163,8 @@ static int fill_buffer(FILE *f, LOFF_T *last_pos, LOFF_T offset, unsigned char *
 
 
 static int format_line(struct line_t **lineInfo, int n, unsigned char *buf,
-                       int flags, ansi_attr *pa, int cnt, int *pspace, int *pvch,
-                       int *pcol, int *pspecial, mutt_window_t *pager_window)
+                       int flags, struct AnsiAttr *pa, int cnt, int *pspace, int *pvch,
+                       int *pcol, int *pspecial, struct MuttWindow *pager_window)
 {
   int space = -1; /* index of the last space or TAB */
   int col = option(OPTMARKERS) ? (*lineInfo)[n].continuation : 0;
@@ -1359,7 +1359,7 @@ static int format_line(struct line_t **lineInfo, int n, unsigned char *buf,
 static int display_line(FILE *f, LOFF_T *last_pos, struct line_t **lineInfo,
                         int n, int *last, int *max, int flags,
                         struct q_class_t **QuoteList, int *q_level, int *force_redraw,
-                        regex_t *SearchRE, mutt_window_t *pager_window)
+                        regex_t *SearchRE, struct MuttWindow *pager_window)
 {
   unsigned char *buf = NULL, *fmt = NULL;
   size_t buflen = 0;
@@ -1371,7 +1371,7 @@ static int display_line(FILE *f, LOFF_T *last_pos, struct line_t **lineInfo,
   int def_color;
   int m;
   int rc = -1;
-  ansi_attr a = { 0, 0, 0, -1 };
+  struct AnsiAttr a = { 0, 0, 0, -1 };
   regmatch_t pmatch[1];
 
   if (n == *last)
@@ -1636,10 +1636,10 @@ void mutt_clear_pager_position(void)
   OldHdr = NULL;
 }
 
-typedef struct
+struct PagerRedrawData
 {
   int flags;
-  pager_t *extra;
+  struct Pager *extra;
   int indexlen;
   int indicator; /* the indicator line of the PI */
   int oldtopline;
@@ -1655,11 +1655,11 @@ typedef struct
   struct q_class_t *QuoteList;
   LOFF_T last_pos;
   LOFF_T last_offset;
-  mutt_window_t *index_status_window;
-  mutt_window_t *index_window;
-  mutt_window_t *pager_status_window;
-  mutt_window_t *pager_window;
-  MUTTMENU *index; /* the Pager Index (PI) */
+  struct MuttWindow *index_status_window;
+  struct MuttWindow *index_window;
+  struct MuttWindow *pager_status_window;
+  struct MuttWindow *pager_window;
+  struct Menu *index; /* the Pager Index (PI) */
   regex_t SearchRE;
   int SearchCompiled;
   int SearchFlag;
@@ -1670,11 +1670,11 @@ typedef struct
   struct line_t *lineInfo;
   FILE *fp;
   struct stat sb;
-} pager_redraw_data_t;
+};
 
-static void pager_menu_redraw(MUTTMENU *pager_menu)
+static void pager_menu_redraw(struct Menu *pager_menu)
 {
-  pager_redraw_data_t *rd = pager_menu->redraw_data;
+  struct PagerRedrawData *rd = pager_menu->redraw_data;
   int i, j;
   char buffer[LONG_STRING];
 
@@ -1698,20 +1698,20 @@ static void pager_menu_redraw(MUTTMENU *pager_menu)
 
     rd->indicator = rd->indexlen / 3;
 
-    memcpy(rd->pager_window, MuttIndexWindow, sizeof(mutt_window_t));
-    memcpy(rd->pager_status_window, MuttStatusWindow, sizeof(mutt_window_t));
+    memcpy(rd->pager_window, MuttIndexWindow, sizeof(struct MuttWindow));
+    memcpy(rd->pager_status_window, MuttStatusWindow, sizeof(struct MuttWindow));
     rd->index_status_window->rows = rd->index_window->rows = 0;
 
     if (IsHeader(rd->extra) && PagerIndexLines)
     {
-      memcpy(rd->index_window, MuttIndexWindow, sizeof(mutt_window_t));
+      memcpy(rd->index_window, MuttIndexWindow, sizeof(struct MuttWindow));
       rd->index_window->rows = rd->indexlen > 0 ? rd->indexlen - 1 : 0;
 
       if (option(OPTSTATUSONTOP))
       {
-        memcpy(rd->index_status_window, MuttStatusWindow, sizeof(mutt_window_t));
+        memcpy(rd->index_status_window, MuttStatusWindow, sizeof(struct MuttWindow));
 
-        memcpy(rd->pager_status_window, MuttIndexWindow, sizeof(mutt_window_t));
+        memcpy(rd->pager_status_window, MuttIndexWindow, sizeof(struct MuttWindow));
         rd->pager_status_window->rows = 1;
         rd->pager_status_window->row_offset += rd->index_window->rows;
 
@@ -1722,7 +1722,7 @@ static void pager_menu_redraw(MUTTMENU *pager_menu)
       }
       else
       {
-        memcpy(rd->index_status_window, MuttIndexWindow, sizeof(mutt_window_t));
+        memcpy(rd->index_status_window, MuttIndexWindow, sizeof(struct MuttWindow));
         rd->index_status_window->rows = 1;
         rd->index_status_window->row_offset += rd->index_window->rows;
 
@@ -1950,7 +1950,7 @@ static void pager_menu_redraw(MUTTMENU *pager_menu)
    can be distinguished by whether or not ``hdr'' is NULL.  The ``hdr'' arg
    is there so that we can do operations on the current message without the
    need to pop back out to the main-menu.  */
-int mutt_pager(const char *banner, const char *fname, int flags, pager_t *extra)
+int mutt_pager(const char *banner, const char *fname, int flags, struct Pager *extra)
 {
   static char searchbuf[STRING] = "";
   char buffer[LONG_STRING];
@@ -1960,7 +1960,7 @@ int mutt_pager(const char *banner, const char *fname, int flags, pager_t *extra)
   int err, first = 1;
   int r = -1, wrapped = 0, searchctx = 0;
 
-  MUTTMENU *pager_menu = NULL;
+  struct Menu *pager_menu = NULL;
   int old_PagerIndexLines; /* some people want to resize it
                                          * while inside the pager... */
   int index_hint = 0;      /* used to restore cursor position */
@@ -1971,7 +1971,7 @@ int mutt_pager(const char *banner, const char *fname, int flags, pager_t *extra)
   char *followup_to = NULL;
 #endif
 
-  pager_redraw_data_t rd;
+  struct PagerRedrawData rd;
 
   if (!(flags & MUTT_SHOWCOLOR))
     flags |= MUTT_SHOWFLAT;
@@ -2036,10 +2036,10 @@ int mutt_pager(const char *banner, const char *fname, int flags, pager_t *extra)
     snprintf(helpstr, sizeof(helpstr), "%s %s", tmphelp, buffer);
   }
 
-  rd.index_status_window = safe_calloc(1, sizeof(mutt_window_t));
-  rd.index_window = safe_calloc(1, sizeof(mutt_window_t));
-  rd.pager_status_window = safe_calloc(1, sizeof(mutt_window_t));
-  rd.pager_window = safe_calloc(1, sizeof(mutt_window_t));
+  rd.index_status_window = safe_calloc(1, sizeof(struct MuttWindow));
+  rd.index_window = safe_calloc(1, sizeof(struct MuttWindow));
+  rd.pager_status_window = safe_calloc(1, sizeof(struct MuttWindow));
+  rd.pager_window = safe_calloc(1, sizeof(struct MuttWindow));
 
   pager_menu = mutt_new_menu(MENU_PAGER);
   pager_menu->custom_menu_redraw = pager_menu_redraw;
@@ -2109,7 +2109,7 @@ int mutt_pager(const char *banner, const char *fname, int flags, pager_t *extra)
         {
           for (i = oldcount; i < Context->msgcount; i++)
           {
-            HEADER *h = Context->hdrs[i];
+            struct Header *h = Context->hdrs[i];
 
             if (h && !h->read)
             {
@@ -2813,7 +2813,7 @@ int mutt_pager(const char *banner, const char *fname, int flags, pager_t *extra)
         CHECK_MODE(IsHeader(extra) && !IsAttach(extra));
         CHECK_ATTACH;
         if (extra->ctx && extra->ctx->magic == MUTT_NNTP &&
-            !((NNTP_DATA *) extra->ctx->data)->allowed && query_quadoption(OPT_TOMODERATED, _("Posting to this group not allowed, may be moderated. Continue?")) != MUTT_YES)
+            !((struct NntpData *) extra->ctx->data)->allowed && query_quadoption(OPT_TOMODERATED, _("Posting to this group not allowed, may be moderated. Continue?")) != MUTT_YES)
           break;
         ci_send_message(SENDNEWS, NULL, NULL, extra->ctx, NULL);
         pager_menu->redraw = REDRAW_FULL;
@@ -2823,7 +2823,7 @@ int mutt_pager(const char *banner, const char *fname, int flags, pager_t *extra)
         CHECK_MODE(IsHeader(extra) || IsMsgAttach(extra));
         CHECK_ATTACH;
         if (extra->ctx && extra->ctx->magic == MUTT_NNTP &&
-            !((NNTP_DATA *) extra->ctx->data)->allowed && query_quadoption(OPT_TOMODERATED, _("Posting to this group not allowed, may be moderated. Continue?")) != MUTT_YES)
+            !((struct NntpData *) extra->ctx->data)->allowed && query_quadoption(OPT_TOMODERATED, _("Posting to this group not allowed, may be moderated. Continue?")) != MUTT_YES)
           break;
         if (IsMsgAttach(extra))
           mutt_attach_forward(extra->fp, extra->hdr, extra->idx, extra->idxlen,
@@ -2847,7 +2847,7 @@ int mutt_pager(const char *banner, const char *fname, int flags, pager_t *extra)
                              _("Reply by mail as poster prefers?")) != MUTT_YES)
         {
           if (extra->ctx && extra->ctx->magic == MUTT_NNTP &&
-              !((NNTP_DATA *) extra->ctx->data)->allowed && query_quadoption(OPT_TOMODERATED, _("Posting to this group not allowed, may be moderated. Continue?")) != MUTT_YES)
+              !((struct NntpData *) extra->ctx->data)->allowed && query_quadoption(OPT_TOMODERATED, _("Posting to this group not allowed, may be moderated. Continue?")) != MUTT_YES)
             break;
           if (IsMsgAttach(extra))
             mutt_attach_reply(extra->fp, extra->hdr, extra->idx, extra->idxlen,

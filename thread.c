@@ -25,7 +25,7 @@
   (hdr->virtual >= 0 || (hdr->collapsed && (!ctx->pattern || hdr->limited)))
 
 /* determine whether a is a descendant of b */
-static int is_descendant(THREAD *a, THREAD *b)
+static int is_descendant(struct MuttThread *a, struct MuttThread *b)
 {
   while (a)
   {
@@ -37,9 +37,9 @@ static int is_descendant(THREAD *a, THREAD *b)
 }
 
 /* Determines whether to display a message's subject. */
-static int need_display_subject(CONTEXT *ctx, HEADER *hdr)
+static int need_display_subject(struct Context *ctx, struct Header *hdr)
 {
-  THREAD *tmp = NULL, *tree = hdr->thread;
+  struct MuttThread *tmp = NULL, *tree = hdr->thread;
 
   /* if the user disabled subject hiding, display it */
   if (!option(OPTHIDETHREADSUBJECT))
@@ -81,10 +81,10 @@ static int need_display_subject(CONTEXT *ctx, HEADER *hdr)
   return 1;
 }
 
-static void linearize_tree(CONTEXT *ctx)
+static void linearize_tree(struct Context *ctx)
 {
-  THREAD *tree = ctx->tree;
-  HEADER **array = ctx->hdrs + (Sort & SORT_REVERSE ? ctx->msgcount - 1 : 0);
+  struct MuttThread *tree = ctx->tree;
+  struct Header **array = ctx->hdrs + (Sort & SORT_REVERSE ? ctx->msgcount - 1 : 0);
 
   while (tree)
   {
@@ -119,9 +119,9 @@ static void linearize_tree(CONTEXT *ctx)
  * skip parts of the tree in mutt_draw_tree() if we've decided here that we
  * don't care about them any more.
  */
-static void calculate_visibility(CONTEXT *ctx, int *max_depth)
+static void calculate_visibility(struct Context *ctx, int *max_depth)
 {
-  THREAD *tmp = NULL, *tree = ctx->tree;
+  struct MuttThread *tmp = NULL, *tree = ctx->tree;
   int hide_top_missing = option(OPTHIDETOPMISSING) && !option(OPTHIDEMISSING);
   int hide_top_limited = option(OPTHIDETOPLIMITED) && !option(OPTHIDELIMITED);
   int depth = 0;
@@ -227,13 +227,13 @@ static void calculate_visibility(CONTEXT *ctx, int *max_depth)
  * graphics chars on terminals which don't support them (see the man page
  * for curs_addch).
  */
-void mutt_draw_tree(CONTEXT *ctx)
+void mutt_draw_tree(struct Context *ctx)
 {
   char *pfx = NULL, *mypfx = NULL, *arrow = NULL, *myarrow = NULL, *new_tree = NULL;
   char corner = (Sort & SORT_REVERSE) ? MUTT_TREE_ULCORNER : MUTT_TREE_LLCORNER;
   char vtee = (Sort & SORT_REVERSE) ? MUTT_TREE_BTEE : MUTT_TREE_TTEE;
   int depth = 0, start_depth = 0, max_depth = 0, width = option(OPTNARROWTREE) ? 1 : 2;
-  THREAD *nextdisp = NULL, *pseudo = NULL, *parent = NULL, *tree = ctx->tree;
+  struct MuttThread *nextdisp = NULL, *pseudo = NULL, *parent = NULL, *tree = ctx->tree;
 
   /* Do the visibility calculations and free the old thread chars.
    * From now on we can simply ignore invisible subtrees
@@ -338,16 +338,16 @@ void mutt_draw_tree(CONTEXT *ctx)
   FREE(&arrow);
 }
 
-/* since we may be trying to attach as a pseudo-thread a THREAD that
+/* since we may be trying to attach as a pseudo-thread a MuttThread that
  * has no message, we have to make a list of all the subjects of its
  * most immediate existing descendants.  we also note the earliest
  * date on any of the parents and put it in *dateptr. */
-static LIST *make_subject_list(THREAD *cur, time_t *dateptr)
+static struct List *make_subject_list(struct MuttThread *cur, time_t *dateptr)
 {
-  THREAD *start = cur;
-  ENVELOPE *env = NULL;
+  struct MuttThread *start = cur;
+  struct Envelope *env = NULL;
   time_t thisdate;
-  LIST *curlist = NULL, *oldlist = NULL, *newlist = NULL, *subjects = NULL;
+  struct List *curlist = NULL, *oldlist = NULL, *newlist = NULL, *subjects = NULL;
   int rc = 0;
 
   while (true)
@@ -375,7 +375,7 @@ static LIST *make_subject_list(THREAD *cur, time_t *dateptr)
       }
       if (!curlist || rc > 0)
       {
-        newlist = safe_calloc(1, sizeof(LIST));
+        newlist = safe_calloc(1, sizeof(struct List));
         newlist->data = env->real_subj;
         if (oldlist)
         {
@@ -406,11 +406,11 @@ static LIST *make_subject_list(THREAD *cur, time_t *dateptr)
  * if there are multiple matches, the one which was sent the latest, but
  * before the current message, is used.
  */
-static THREAD *find_subject(CONTEXT *ctx, THREAD *cur)
+static struct MuttThread *find_subject(struct Context *ctx, struct MuttThread *cur)
 {
   struct hash_elem *ptr = NULL;
-  THREAD *tmp = NULL, *last = NULL;
-  LIST *subjects = NULL, *oldlist = NULL;
+  struct MuttThread *tmp = NULL, *last = NULL;
+  struct List *subjects = NULL, *oldlist = NULL;
   time_t date = 0;
 
   subjects = make_subject_list(cur, &date);
@@ -419,7 +419,7 @@ static THREAD *find_subject(CONTEXT *ctx, THREAD *cur)
   {
     for (ptr = hash_find_bucket(ctx->subj_hash, subjects->data); ptr; ptr = ptr->next)
     {
-      tmp = ((HEADER *) ptr->data)->thread;
+      tmp = ((struct Header *) ptr->data)->thread;
       if (tmp != cur &&                    /* don't match the same message */
           !tmp->fake_thread &&             /* don't match pseudo threads */
           tmp->message->subject_changed && /* only match interesting replies */
@@ -446,9 +446,9 @@ static THREAD *find_subject(CONTEXT *ctx, THREAD *cur)
 /* remove cur and its descendants from their current location.
  * also make sure ancestors of cur no longer are sorted by the
  * fact that cur is their descendant. */
-static void unlink_message(THREAD **old, THREAD *cur)
+static void unlink_message(struct MuttThread **old, struct MuttThread *cur)
 {
-  THREAD *tmp = NULL;
+  struct MuttThread *tmp = NULL;
 
   if (cur->prev)
     cur->prev->next = cur->next;
@@ -466,7 +466,7 @@ static void unlink_message(THREAD **old, THREAD *cur)
 }
 
 /* add cur as a prior sibling of *new, with parent newparent */
-static void insert_message(THREAD **new, THREAD *newparent, THREAD *cur)
+static void insert_message(struct MuttThread **new, struct MuttThread *newparent, struct MuttThread *cur)
 {
   if (*new)
     (*new)->prev = cur;
@@ -477,11 +477,11 @@ static void insert_message(THREAD **new, THREAD *newparent, THREAD *cur)
   *new = cur;
 }
 
-static HASH *make_subj_hash(CONTEXT *ctx)
+static struct Hash *make_subj_hash(struct Context *ctx)
 {
   int i;
-  HEADER *hdr = NULL;
-  HASH *hash = NULL;
+  struct Header *hdr = NULL;
+  struct Hash *hash = NULL;
 
   hash = hash_create(ctx->msgcount * 2, MUTT_HASH_ALLOW_DUPS);
 
@@ -496,10 +496,10 @@ static HASH *make_subj_hash(CONTEXT *ctx)
 }
 
 /* thread by subject things that didn't get threaded by message-id */
-static void pseudo_threads(CONTEXT *ctx)
+static void pseudo_threads(struct Context *ctx)
 {
-  THREAD *tree = ctx->tree, *top = tree;
-  THREAD *tmp = NULL, *cur = NULL, *parent = NULL, *curchild = NULL, *nextchild = NULL;
+  struct MuttThread *tree = ctx->tree, *top = tree;
+  struct MuttThread *tmp = NULL, *cur = NULL, *parent = NULL, *curchild = NULL, *nextchild = NULL;
 
   if (!ctx->subj_hash)
     ctx->subj_hash = make_subj_hash(ctx);
@@ -556,7 +556,7 @@ static void pseudo_threads(CONTEXT *ctx)
 }
 
 
-void mutt_clear_threads(CONTEXT *ctx)
+void mutt_clear_threads(struct Context *ctx)
 {
   int i;
 
@@ -580,7 +580,7 @@ static int compare_threads(const void *a, const void *b)
   static sort_t *sort_func = NULL;
 
   if (a && b)
-    return ((*sort_func)(&(*((THREAD **) a))->sort_key, &(*((THREAD **) b))->sort_key));
+    return ((*sort_func)(&(*((struct MuttThread **) a))->sort_key, &(*((struct MuttThread **) b))->sort_key));
   /* a hack to let us reset sort_func even though we can't
    * have extra arguments because of qsort
    */
@@ -591,10 +591,10 @@ static int compare_threads(const void *a, const void *b)
   }
 }
 
-THREAD *mutt_sort_subthreads(THREAD *thread, int init)
+struct MuttThread *mutt_sort_subthreads(struct MuttThread *thread, int init)
 {
-  THREAD **array = NULL, *sort_key = NULL, *top = NULL, *tmp = NULL;
-  HEADER *oldsort_key = NULL;
+  struct MuttThread **array = NULL, *sort_key = NULL, *top = NULL, *tmp = NULL;
+  struct Header *oldsort_key = NULL;
   int i, array_size, sort_top = 0;
 
   /* we put things into the array backwards to save some cycles,
@@ -608,7 +608,7 @@ THREAD *mutt_sort_subthreads(THREAD *thread, int init)
 
   top = thread;
 
-  array = safe_calloc((array_size = 256), sizeof(THREAD *));
+  array = safe_calloc((array_size = 256), sizeof(struct MuttThread *));
   while (1)
   {
     if (init || !thread->sort_key)
@@ -647,12 +647,12 @@ THREAD *mutt_sort_subthreads(THREAD *thread, int init)
         for (i = 0; thread; i++, thread = thread->prev)
         {
           if (i >= array_size)
-            safe_realloc(&array, (array_size *= 2) * sizeof(THREAD *));
+            safe_realloc(&array, (array_size *= 2) * sizeof(struct MuttThread *));
 
           array[i] = thread;
         }
 
-        qsort((void *) array, i, sizeof(THREAD *), *compare_threads);
+        qsort((void *) array, i, sizeof(struct MuttThread *), *compare_threads);
 
         /* attach them back together.  make thread the last sibling. */
         thread = array[0];
@@ -719,10 +719,10 @@ THREAD *mutt_sort_subthreads(THREAD *thread, int init)
   }
 }
 
-static void check_subjects(CONTEXT *ctx, int init)
+static void check_subjects(struct Context *ctx, int init)
 {
-  HEADER *cur = NULL;
-  THREAD *tmp = NULL;
+  struct Header *cur = NULL;
+  struct MuttThread *tmp = NULL;
   int i;
 
   for (i = 0; i < ctx->msgcount; i++)
@@ -751,13 +751,13 @@ static void check_subjects(CONTEXT *ctx, int init)
   }
 }
 
-void mutt_sort_threads(CONTEXT *ctx, int init)
+void mutt_sort_threads(struct Context *ctx, int init)
 {
-  HEADER *cur = NULL;
+  struct Header *cur = NULL;
   int i, oldsort, using_refs = 0;
-  THREAD *thread = NULL, *new = NULL, *tmp = NULL, top;
+  struct MuttThread *thread = NULL, *new = NULL, *tmp = NULL, top;
   memset(&top, 0, sizeof(top));
-  LIST *ref = NULL;
+  struct List *ref = NULL;
 
   /* set Sort to the secondary method to support the set sort_aux=reverse-*
    * settings.  The sorting functions just look at the value of
@@ -780,10 +780,10 @@ void mutt_sort_threads(CONTEXT *ctx, int init)
   for (thread = ctx->tree; thread; thread = thread->next)
     thread->parent = &top;
 
-  /* put each new message together with the matching messageless THREAD if it
-   * exists.  otherwise, if there is a THREAD that already has a message, thread
+  /* put each new message together with the matching messageless MuttThread if it
+   * exists.  otherwise, if there is a MuttThread that already has a message, thread
    * new message as an identical child.  if we didn't attach the message to a
-   * THREAD, make a new one for it. */
+   * MuttThread, make a new one for it. */
   for (i = 0; i < ctx->msgcount; i++)
   {
     cur = ctx->hdrs[i];
@@ -836,7 +836,7 @@ void mutt_sort_threads(CONTEXT *ctx, int init)
       {
         new = (option(OPTDUPTHREADS) ? thread : NULL);
 
-        thread = safe_calloc(1, sizeof(THREAD));
+        thread = safe_calloc(1, sizeof(struct MuttThread));
         thread->message = cur;
         thread->check_subject = true;
         cur->thread = thread;
@@ -927,7 +927,7 @@ void mutt_sort_threads(CONTEXT *ctx, int init)
 
       if ((new = hash_find(ctx->thread_hash, ref->data)) == NULL)
       {
-        new = safe_calloc(1, sizeof(THREAD));
+        new = safe_calloc(1, sizeof(struct MuttThread));
         hash_insert(ctx->thread_hash, ref->data, new);
       }
       else
@@ -977,9 +977,9 @@ void mutt_sort_threads(CONTEXT *ctx, int init)
   }
 }
 
-static HEADER *find_virtual(THREAD *cur, int reverse)
+static struct Header *find_virtual(struct MuttThread *cur, int reverse)
 {
-  THREAD *top = NULL;
+  struct MuttThread *top = NULL;
 
   if (cur->message && cur->message->virtual >= 0)
     return cur->message;
@@ -1022,10 +1022,10 @@ static HEADER *find_virtual(THREAD *cur, int reverse)
 /* dir => true when moving forward, false when moving in reverse
  * subthreads => false when moving to next thread, true when moving to next subthread
  */
-int _mutt_aside_thread(HEADER *hdr, short dir, short subthreads)
+int _mutt_aside_thread(struct Header *hdr, short dir, short subthreads)
 {
-  THREAD *cur = NULL;
-  HEADER *tmp = NULL;
+  struct MuttThread *cur = NULL;
+  struct Header *tmp = NULL;
 
   if ((Sort & SORT_MASK) != SORT_THREADS)
   {
@@ -1078,10 +1078,10 @@ int _mutt_aside_thread(HEADER *hdr, short dir, short subthreads)
   return tmp->virtual;
 }
 
-int mutt_parent_message(CONTEXT *ctx, HEADER *hdr, int find_root)
+int mutt_parent_message(struct Context *ctx, struct Header *hdr, int find_root)
 {
-  THREAD *thread = NULL;
-  HEADER *parent = NULL;
+  struct MuttThread *thread = NULL;
+  struct Header *parent = NULL;
 
   if ((Sort & SORT_MASK) != SORT_THREADS)
   {
@@ -1119,10 +1119,10 @@ int mutt_parent_message(CONTEXT *ctx, HEADER *hdr, int find_root)
   return parent->virtual;
 }
 
-void mutt_set_virtual(CONTEXT *ctx)
+void mutt_set_virtual(struct Context *ctx)
 {
   int i;
-  HEADER *cur = NULL;
+  struct Header *cur = NULL;
 
   ctx->vcount = 0;
   ctx->vsize = 0;
@@ -1141,10 +1141,10 @@ void mutt_set_virtual(CONTEXT *ctx)
   }
 }
 
-int _mutt_traverse_thread(CONTEXT *ctx, HEADER *cur, int flag)
+int _mutt_traverse_thread(struct Context *ctx, struct Header *cur, int flag)
 {
-  THREAD *thread = NULL, *top = NULL;
-  HEADER *roothdr = NULL;
+  struct MuttThread *thread = NULL, *top = NULL;
+  struct Header *roothdr = NULL;
   int final, reverse = (Sort & SORT_REVERSE), minmsgno;
   int num_hidden = 0, new = 0, old = 0;
   int min_unread_msgno = INT_MAX, min_unread = cur->virtual;
@@ -1300,9 +1300,9 @@ int _mutt_traverse_thread(CONTEXT *ctx, HEADER *cur, int flag)
 /* if flag is 0, we want to know how many messages
  * are in the thread.  if flag is 1, we want to know
  * our position in the thread. */
-int mutt_messages_in_thread(CONTEXT *ctx, HEADER *hdr, int flag)
+int mutt_messages_in_thread(struct Context *ctx, struct Header *hdr, int flag)
 {
-  THREAD *threads[2];
+  struct MuttThread *threads[2];
   int i, rc;
 
   if ((Sort & SORT_MASK) != SORT_THREADS || !hdr->thread)
@@ -1333,11 +1333,11 @@ int mutt_messages_in_thread(CONTEXT *ctx, HEADER *hdr, int flag)
 }
 
 
-HASH *mutt_make_id_hash(CONTEXT *ctx)
+struct Hash *mutt_make_id_hash(struct Context *ctx)
 {
   int i;
-  HEADER *hdr = NULL;
-  HASH *hash = NULL;
+  struct Header *hdr = NULL;
+  struct Hash *hash = NULL;
 
   hash = hash_create(ctx->msgcount * 2, 0);
 
@@ -1351,10 +1351,10 @@ HASH *mutt_make_id_hash(CONTEXT *ctx)
   return hash;
 }
 
-static void clean_references(THREAD *brk, THREAD *cur)
+static void clean_references(struct MuttThread *brk, struct MuttThread *cur)
 {
-  THREAD *p = NULL;
-  LIST *ref = NULL;
+  struct MuttThread *p = NULL;
+  struct List *ref = NULL;
   int done = 0;
 
   for (; cur; cur = cur->next, done = 0)
@@ -1378,7 +1378,7 @@ static void clean_references(THREAD *brk, THREAD *cur)
 
     if (done)
     {
-      HEADER *h = cur->message;
+      struct Header *h = cur->message;
 
       /* clearing the References: header from obsolete Message-ID(s) */
       mutt_free_list(&ref->next);
@@ -1388,7 +1388,7 @@ static void clean_references(THREAD *brk, THREAD *cur)
   }
 }
 
-void mutt_break_thread(HEADER *hdr)
+void mutt_break_thread(struct Header *hdr)
 {
   mutt_free_list(&hdr->env->in_reply_to);
   mutt_free_list(&hdr->env->references);
@@ -1397,7 +1397,7 @@ void mutt_break_thread(HEADER *hdr)
   clean_references(hdr->thread, hdr->thread->child);
 }
 
-static bool link_threads(HEADER *parent, HEADER *child, CONTEXT *ctx)
+static bool link_threads(struct Header *parent, struct Header *child, struct Context *ctx)
 {
   if (child == parent)
     return false;
@@ -1413,7 +1413,7 @@ static bool link_threads(HEADER *parent, HEADER *child, CONTEXT *ctx)
   return true;
 }
 
-int mutt_link_threads(HEADER *cur, HEADER *last, CONTEXT *ctx)
+int mutt_link_threads(struct Header *cur, struct Header *last, struct Context *ctx)
 {
   int i;
   bool changed = false;

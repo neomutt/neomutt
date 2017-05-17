@@ -44,9 +44,9 @@ struct rfc2231_parameter
   struct rfc2231_parameter *next;
 };
 
-static void purge_empty_parameters(PARAMETER **headp)
+static void purge_empty_parameters(struct Parameter **headp)
 {
-  PARAMETER *p = NULL, *q = NULL, **last = NULL;
+  struct Parameter *p = NULL, *q = NULL, **last = NULL;
 
   for (last = headp, p = *headp; p; p = q)
   {
@@ -142,7 +142,7 @@ static void rfc2231_free_parameter(struct rfc2231_parameter **p)
 }
 
 /* process continuation parameters */
-static void rfc2231_join_continuations(PARAMETER **head, struct rfc2231_parameter *par)
+static void rfc2231_join_continuations(struct Parameter **head, struct rfc2231_parameter *par)
 {
   struct rfc2231_parameter *q = NULL;
 
@@ -192,11 +192,11 @@ static void rfc2231_join_continuations(PARAMETER **head, struct rfc2231_paramete
   }
 }
 
-void rfc2231_decode_parameters(PARAMETER **headp)
+void rfc2231_decode_parameters(struct Parameter **headp)
 {
-  PARAMETER *head = NULL;
-  PARAMETER **last;
-  PARAMETER *p = NULL, *q = NULL;
+  struct Parameter *head = NULL;
+  struct Parameter **last;
+  struct Parameter *p = NULL, *q = NULL;
 
   struct rfc2231_parameter *conthead = NULL;
   struct rfc2231_parameter *conttmp = NULL;

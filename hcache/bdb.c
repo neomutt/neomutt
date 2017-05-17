@@ -26,13 +26,13 @@
 #include "backend.h"
 #include "mx.h"
 
-typedef struct
+struct HcacheDbCtx
 {
   DB_ENV *env;
   DB *db;
   int fd;
   char lockfile[_POSIX_PATH_MAX];
-} hcache_db_ctx_t;
+};
 
 static void dbt_init(DBT *dbt, void *data, size_t len)
 {
@@ -56,7 +56,7 @@ static void *hcache_bdb_open(const char *path)
   u_int32_t createflags = DB_CREATE;
   int pagesize;
 
-  hcache_db_ctx_t *ctx = safe_malloc(sizeof(hcache_db_ctx_t));
+  struct HcacheDbCtx *ctx = safe_malloc(sizeof(struct HcacheDbCtx));
 
   if (mutt_atoi(HeaderCachePageSize, &pagesize) < 0 || pagesize <= 0)
     pagesize = 16384;
@@ -120,7 +120,7 @@ static void *hcache_bdb_fetch(void *vctx, const char *key, size_t keylen)
   if (!vctx)
     return NULL;
 
-  hcache_db_ctx_t *ctx = vctx;
+  struct HcacheDbCtx *ctx = vctx;
 
   dbt_init(&dkey, (void *) key, keylen);
   dbt_empty_init(&data);
@@ -144,7 +144,7 @@ static int hcache_bdb_store(void *vctx, const char *key, size_t keylen, void *da
   if (!vctx)
     return -1;
 
-  hcache_db_ctx_t *ctx = vctx;
+  struct HcacheDbCtx *ctx = vctx;
 
   dbt_init(&dkey, (void *) key, keylen);
   dbt_empty_init(&databuf);
@@ -163,7 +163,7 @@ static int hcache_bdb_delete(void *vctx, const char *key, size_t keylen)
   if (!vctx)
     return -1;
 
-  hcache_db_ctx_t *ctx = vctx;
+  struct HcacheDbCtx *ctx = vctx;
 
   dbt_init(&dkey, (void *) key, keylen);
   return ctx->db->del(ctx->db, NULL, &dkey, 0);
@@ -174,7 +174,7 @@ static void hcache_bdb_close(void **vctx)
   if (!vctx || !*vctx)
     return;
 
-  hcache_db_ctx_t *ctx = *vctx;
+  struct HcacheDbCtx *ctx = *vctx;
 
   ctx->db->close(ctx->db, 0);
   ctx->env->close(ctx->env, 0);

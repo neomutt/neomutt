@@ -21,7 +21,7 @@
 WHERE void (*mutt_error)(const char *, ...);
 WHERE void (*mutt_message)(const char *, ...);
 
-WHERE CONTEXT *Context;
+WHERE struct Context *Context;
 
 WHERE char Errorbuf[STRING];
 WHERE char AttachmentMarker[STRING];
@@ -30,8 +30,8 @@ WHERE char AttachmentMarker[STRING];
 WHERE char *MuttDotlock;
 #endif
 
-WHERE ADDRESS *EnvFrom;
-WHERE ADDRESS *From;
+WHERE struct Address *EnvFrom;
+WHERE struct Address *From;
 
 WHERE char *AliasFile;
 WHERE char *AliasFmt;
@@ -41,7 +41,7 @@ WHERE char *Attribution;
 WHERE char *AttributionLocale;
 WHERE char *AttachCharset;
 WHERE char *AttachFormat;
-WHERE REGEXP AttachKeyword;
+WHERE struct Regex AttachKeyword;
 WHERE char *Charset;
 WHERE char *ComposeFormat;
 WHERE char *ConfigCharset;
@@ -57,7 +57,7 @@ WHERE char *EscChar;
 WHERE char *FolderFormat;
 WHERE char *ForwFmt;
 WHERE char *Fqdn;
-WHERE mbchar_table *Fromchars;
+WHERE struct MbCharTable *Fromchars;
 WHERE char *HdrFmt;
 WHERE char *HistFile;
 WHERE char *Homedir;
@@ -101,7 +101,7 @@ WHERE char *Mixmaster;
 WHERE char *MixEntryFormat;
 #endif
 
-WHERE LIST *Muttrc INITVAL(0);
+WHERE struct List *Muttrc INITVAL(0);
 #ifdef USE_NNTP
 WHERE char *GroupFormat;
 WHERE char *Inews;
@@ -163,11 +163,11 @@ WHERE short SslDHPrimeBits;
 WHERE char *SslCACertFile INITVAL(NULL);
 #endif
 #endif
-WHERE mbchar_table *StChars;
+WHERE struct MbCharTable *StChars;
 WHERE char *Status;
 WHERE char *Tempdir;
-WHERE mbchar_table *Tochars;
-WHERE mbchar_table *Flagchars;
+WHERE struct MbCharTable *Tochars;
+WHERE struct MbCharTable *Flagchars;
 WHERE char *TrashPath;
 WHERE char *TSStatusFormat;
 WHERE char *TSIconFormat;
@@ -182,34 +182,34 @@ WHERE char *LastFolder;
 
 WHERE const char *GitVer;
 
-WHERE HASH *Groups;
-WHERE HASH *ReverseAlias;
+WHERE struct Hash *Groups;
+WHERE struct Hash *ReverseAlias;
 #ifdef USE_NOTMUCH
-WHERE HASH *TagTransforms;
-WHERE HASH *TagFormats;
+WHERE struct Hash *TagTransforms;
+WHERE struct Hash *TagFormats;
 #endif
 
-WHERE LIST *AutoViewList INITVAL(0);
-WHERE LIST *AlternativeOrderList INITVAL(0);
-WHERE LIST *AttachAllow INITVAL(0);
-WHERE LIST *AttachExclude INITVAL(0);
-WHERE LIST *InlineAllow INITVAL(0);
-WHERE LIST *InlineExclude INITVAL(0);
-WHERE LIST *HeaderOrderList INITVAL(0);
-WHERE LIST *Ignore INITVAL(0);
-WHERE LIST *MailtoAllow INITVAL(0);
-WHERE LIST *MimeLookupList INITVAL(0);
-WHERE LIST *UnIgnore INITVAL(0);
+WHERE struct List *AutoViewList INITVAL(0);
+WHERE struct List *AlternativeOrderList INITVAL(0);
+WHERE struct List *AttachAllow INITVAL(0);
+WHERE struct List *AttachExclude INITVAL(0);
+WHERE struct List *InlineAllow INITVAL(0);
+WHERE struct List *InlineExclude INITVAL(0);
+WHERE struct List *HeaderOrderList INITVAL(0);
+WHERE struct List *Ignore INITVAL(0);
+WHERE struct List *MailtoAllow INITVAL(0);
+WHERE struct List *MimeLookupList INITVAL(0);
+WHERE struct List *UnIgnore INITVAL(0);
 
-WHERE RX_LIST *Alternates INITVAL(0);
-WHERE RX_LIST *UnAlternates INITVAL(0);
-WHERE RX_LIST *MailLists INITVAL(0);
-WHERE RX_LIST *UnMailLists INITVAL(0);
-WHERE RX_LIST *SubscribedLists INITVAL(0);
-WHERE RX_LIST *UnSubscribedLists INITVAL(0);
-WHERE REPLACE_LIST *SpamList INITVAL(0);
-WHERE RX_LIST *NoSpamList INITVAL(0);
-WHERE REPLACE_LIST *SubjectRxList INITVAL(0);
+WHERE struct RxList *Alternates INITVAL(0);
+WHERE struct RxList *UnAlternates INITVAL(0);
+WHERE struct RxList *MailLists INITVAL(0);
+WHERE struct RxList *UnMailLists INITVAL(0);
+WHERE struct RxList *SubscribedLists INITVAL(0);
+WHERE struct RxList *UnSubscribedLists INITVAL(0);
+WHERE struct ReplaceList *SpamList INITVAL(0);
+WHERE struct RxList *NoSpamList INITVAL(0);
+WHERE struct ReplaceList *SubjectRxList INITVAL(0);
 
 
 /* bit vector for boolean variables */
@@ -261,7 +261,7 @@ WHERE short ScoreThresholdFlag;
 
 #ifdef USE_SIDEBAR
 WHERE short SidebarWidth INITVAL(0);
-WHERE LIST *SidebarWhitelist INITVAL(0);
+WHERE struct List *SidebarWhitelist INITVAL(0);
 #endif
 
 #ifdef USE_IMAP
@@ -276,12 +276,12 @@ WHERE SIG_ATOMIC_VOLATILE_T SigWinch INITVAL(0);
 
 WHERE int CurrentMenu;
 
-WHERE ALIAS *Aliases INITVAL(0);
-WHERE LIST *UserHeader INITVAL(0);
+WHERE struct Alias *Aliases INITVAL(0);
+WHERE struct List *UserHeader INITVAL(0);
 
 /* -- formerly in pgp.h -- */
-WHERE REGEXP PgpGoodSign;
-WHERE REGEXP PgpDecryptionOkay;
+WHERE struct Regex PgpGoodSign;
+WHERE struct Regex PgpDecryptionOkay;
 WHERE char *PgpSignAs;
 WHERE short PgpTimeout;
 WHERE char *PgpEntryFormat;

@@ -68,7 +68,7 @@ static void append_signature(FILE *f)
 }
 
 /* compare two e-mail addresses and return 1 if they are equivalent */
-static bool addrcmp(ADDRESS *a, ADDRESS *b)
+static bool addrcmp(struct Address *a, struct Address *b)
 {
   if (!a->mailbox || !b->mailbox)
     return false;
@@ -78,7 +78,7 @@ static bool addrcmp(ADDRESS *a, ADDRESS *b)
 }
 
 /* search an e-mail address in a list */
-static int addrsrc(ADDRESS *a, ADDRESS *lst)
+static int addrsrc(struct Address *a, struct Address *lst)
 {
   for (; lst; lst = lst->next)
   {
@@ -89,9 +89,9 @@ static int addrsrc(ADDRESS *a, ADDRESS *lst)
 }
 
 /* removes addresses from "b" which are contained in "a" */
-ADDRESS *mutt_remove_xrefs(ADDRESS *a, ADDRESS *b)
+struct Address *mutt_remove_xrefs(struct Address *a, struct Address *b)
 {
-  ADDRESS *top = NULL, *p = NULL, *prev = NULL;
+  struct Address *top = NULL, *p = NULL, *prev = NULL;
 
   top = b;
   while (b)
@@ -130,9 +130,9 @@ ADDRESS *mutt_remove_xrefs(ADDRESS *a, ADDRESS *b)
 /* remove any address which matches the current user.  if `leave_only' is
  * nonzero, don't remove the user's address if it is the only one in the list
  */
-static ADDRESS *remove_user(ADDRESS *a, int leave_only)
+static struct Address *remove_user(struct Address *a, int leave_only)
 {
-  ADDRESS *top = NULL, *last = NULL;
+  struct Address *top = NULL, *last = NULL;
 
   while (a)
   {
@@ -150,7 +150,7 @@ static ADDRESS *remove_user(ADDRESS *a, int leave_only)
     }
     else
     {
-      ADDRESS *tmp = a;
+      struct Address *tmp = a;
 
       a = a->next;
       if (!leave_only || a || last)
@@ -165,9 +165,9 @@ static ADDRESS *remove_user(ADDRESS *a, int leave_only)
   return top;
 }
 
-static ADDRESS *find_mailing_lists(ADDRESS *t, ADDRESS *c)
+static struct Address *find_mailing_lists(struct Address *t, struct Address *c)
 {
-  ADDRESS *top = NULL, *ptr = NULL;
+  struct Address *top = NULL, *ptr = NULL;
 
   for (; t || c; t = c, c = NULL)
   {
@@ -188,7 +188,7 @@ static ADDRESS *find_mailing_lists(ADDRESS *t, ADDRESS *c)
   return top;
 }
 
-static int edit_address(ADDRESS **a, /* const */ char *field)
+static int edit_address(struct Address **a, /* const */ char *field)
 {
   char buf[HUGE_STRING];
   char *err = NULL;
@@ -214,10 +214,10 @@ static int edit_address(ADDRESS **a, /* const */ char *field)
   return 0;
 }
 
-static int edit_envelope(ENVELOPE *en, int flags)
+static int edit_envelope(struct Envelope *en, int flags)
 {
   char buf[HUGE_STRING];
-  LIST *uh = UserHeader;
+  struct List *uh = UserHeader;
 
 #ifdef USE_NNTP
   if (option(OPTNEWSSEND))
@@ -305,9 +305,9 @@ static char *nntp_get_header(const char *s)
 }
 #endif
 
-static void process_user_recips(ENVELOPE *env)
+static void process_user_recips(struct Envelope *env)
 {
-  LIST *uh = UserHeader;
+  struct List *uh = UserHeader;
 
   for (; uh; uh = uh->next)
   {
@@ -328,10 +328,10 @@ static void process_user_recips(ENVELOPE *env)
   }
 }
 
-static void process_user_header(ENVELOPE *env)
+static void process_user_header(struct Envelope *env)
 {
-  LIST *uh = UserHeader;
-  LIST *last = env->userhdrs;
+  struct List *uh = UserHeader;
+  struct List *last = env->userhdrs;
 
   if (last)
     while (last->next)
@@ -385,7 +385,7 @@ static void process_user_header(ENVELOPE *env)
   }
 }
 
-void mutt_forward_intro(FILE *fp, HEADER *cur)
+void mutt_forward_intro(FILE *fp, struct Header *cur)
 {
   char buffer[STRING];
 
@@ -402,7 +402,7 @@ void mutt_forward_trailer(FILE *fp)
 }
 
 
-static int include_forward(CONTEXT *ctx, HEADER *cur, FILE *out)
+static int include_forward(struct Context *ctx, struct Header *cur, FILE *out)
 {
   int chflags = CH_DECODE, cmflags = 0;
 
@@ -439,7 +439,7 @@ static int include_forward(CONTEXT *ctx, HEADER *cur, FILE *out)
   return 0;
 }
 
-void mutt_make_attribution(CONTEXT *ctx, HEADER *cur, FILE *out)
+void mutt_make_attribution(struct Context *ctx, struct Header *cur, FILE *out)
 {
   char buffer[LONG_STRING];
   if (Attribution)
@@ -452,7 +452,7 @@ void mutt_make_attribution(CONTEXT *ctx, HEADER *cur, FILE *out)
   }
 }
 
-void mutt_make_post_indent(CONTEXT *ctx, HEADER *cur, FILE *out)
+void mutt_make_post_indent(struct Context *ctx, struct Header *cur, FILE *out)
 {
   char buffer[STRING];
   if (PostIndentString)
@@ -463,7 +463,7 @@ void mutt_make_post_indent(CONTEXT *ctx, HEADER *cur, FILE *out)
   }
 }
 
-static int include_reply(CONTEXT *ctx, HEADER *cur, FILE *out)
+static int include_reply(struct Context *ctx, struct Header *cur, FILE *out)
 {
   int cmflags = MUTT_CM_PREFIX | MUTT_CM_DECODE | MUTT_CM_CHARCONV | MUTT_CM_REPLYING;
   int chflags = CH_DECODE;
@@ -495,7 +495,7 @@ static int include_reply(CONTEXT *ctx, HEADER *cur, FILE *out)
   return 0;
 }
 
-static int default_to(ADDRESS **to, ENVELOPE *env, int flags, int hmfupto)
+static int default_to(struct Address **to, struct Envelope *env, int flags, int hmfupto)
 {
   char prompt[STRING];
 
@@ -569,10 +569,10 @@ static int default_to(ADDRESS **to, ENVELOPE *env, int flags, int hmfupto)
   return 0;
 }
 
-int mutt_fetch_recips(ENVELOPE *out, ENVELOPE *in, int flags)
+int mutt_fetch_recips(struct Envelope *out, struct Envelope *in, int flags)
 {
   char prompt[STRING];
-  ADDRESS *tmp = NULL;
+  struct Address *tmp = NULL;
   int hmfupto = -1;
 
   if ((flags & (SENDLISTREPLY | SENDGROUPREPLY)) && in->mail_followup_to)
@@ -610,9 +610,9 @@ int mutt_fetch_recips(ENVELOPE *out, ENVELOPE *in, int flags)
   return 0;
 }
 
-static LIST *make_references(ENVELOPE *e)
+static struct List *make_references(struct Envelope *e)
 {
-  LIST *t = NULL, *l = NULL;
+  struct List *t = NULL, *l = NULL;
 
   if (e->references)
     l = mutt_copy_list(e->references);
@@ -630,7 +630,7 @@ static LIST *make_references(ENVELOPE *e)
   return l;
 }
 
-void mutt_fix_reply_recipients(ENVELOPE *env)
+void mutt_fix_reply_recipients(struct Envelope *env)
 {
   if (!option(OPTMETOO))
   {
@@ -653,7 +653,7 @@ void mutt_fix_reply_recipients(ENVELOPE *env)
   }
 }
 
-void mutt_make_forward_subject(ENVELOPE *env, CONTEXT *ctx, HEADER *cur)
+void mutt_make_forward_subject(struct Envelope *env, struct Context *ctx, struct Header *cur)
 {
   if (!env)
     return;
@@ -665,7 +665,7 @@ void mutt_make_forward_subject(ENVELOPE *env, CONTEXT *ctx, HEADER *cur)
   mutt_str_replace(&env->subject, buffer);
 }
 
-void mutt_make_misc_reply_headers(ENVELOPE *env, CONTEXT *ctx, HEADER *cur, ENVELOPE *curenv)
+void mutt_make_misc_reply_headers(struct Envelope *env, struct Context *ctx, struct Header *cur, struct Envelope *curenv)
 {
   if (!env || !curenv)
     return;
@@ -683,9 +683,9 @@ void mutt_make_misc_reply_headers(ENVELOPE *env, CONTEXT *ctx, HEADER *cur, ENVE
     env->subject = safe_strdup(EmptySubject);
 }
 
-void mutt_add_to_reference_headers(ENVELOPE *env, ENVELOPE *curenv, LIST ***pp, LIST ***qq)
+void mutt_add_to_reference_headers(struct Envelope *env, struct Envelope *curenv, struct List ***pp, struct List ***qq)
 {
-  LIST **p = NULL, **q = NULL;
+  struct List **p = NULL, **q = NULL;
 
   if (pp)
     p = *pp;
@@ -721,7 +721,7 @@ void mutt_add_to_reference_headers(ENVELOPE *env, ENVELOPE *curenv, LIST ***pp, 
 #endif
 }
 
-static void make_reference_headers(ENVELOPE *curenv, ENVELOPE *env, CONTEXT *ctx)
+static void make_reference_headers(struct Envelope *curenv, struct Envelope *env, struct Context *ctx)
 {
   if (!env || !ctx)
     return;
@@ -731,8 +731,8 @@ static void make_reference_headers(ENVELOPE *curenv, ENVELOPE *env, CONTEXT *ctx
 
   if (!curenv)
   {
-    HEADER *h = NULL;
-    LIST **p = NULL, **q = NULL;
+    struct Header *h = NULL;
+    struct List **p = NULL, **q = NULL;
     int i;
 
     for (i = 0; i < ctx->vcount; i++)
@@ -752,9 +752,9 @@ static void make_reference_headers(ENVELOPE *curenv, ENVELOPE *env, CONTEXT *ctx
     mutt_free_list(&env->references);
 }
 
-static int envelope_defaults(ENVELOPE *env, CONTEXT *ctx, HEADER *cur, int flags)
+static int envelope_defaults(struct Envelope *env, struct Context *ctx, struct Header *cur, int flags)
 {
-  ENVELOPE *curenv = NULL;
+  struct Envelope *curenv = NULL;
   int i = 0, tag = 0;
 
   if (!cur)
@@ -796,7 +796,7 @@ static int envelope_defaults(ENVELOPE *env, CONTEXT *ctx, HEADER *cur, int flags
 #endif
         if (tag)
     {
-      HEADER *h = NULL;
+      struct Header *h = NULL;
 
       for (i = 0; i < ctx->vcount; i++)
       {
@@ -828,14 +828,14 @@ static int envelope_defaults(ENVELOPE *env, CONTEXT *ctx, HEADER *cur, int flags
 }
 
 static int generate_body(FILE *tempfp, /* stream for outgoing message */
-                         HEADER *msg,  /* header for outgoing message */
+                         struct Header *msg,  /* header for outgoing message */
                          int flags,    /* compose mode */
-                         CONTEXT *ctx, /* current mailbox */
-                         HEADER *cur)  /* current message */
+                         struct Context *ctx, /* current mailbox */
+                         struct Header *cur)  /* current message */
 {
   int i;
-  HEADER *h = NULL;
-  BODY *tmp = NULL;
+  struct Header *h = NULL;
+  struct Body *tmp = NULL;
 
   if (flags & SENDREPLY)
   {
@@ -869,7 +869,7 @@ static int generate_body(FILE *tempfp, /* stream for outgoing message */
   {
     if ((i = query_quadoption(OPT_MIMEFWD, _("Forward as attachment?"))) == MUTT_YES)
     {
-      BODY *last = msg->content;
+      struct Body *last = msg->content;
 
       mutt_message(_("Preparing forwarded message..."));
 
@@ -917,7 +917,7 @@ static int generate_body(FILE *tempfp, /* stream for outgoing message */
   /* if (WithCrypto && (flags & SENDKEY)) */
   else if ((WithCrypto & APPLICATION_PGP) && (flags & SENDKEY))
   {
-    BODY *b = NULL;
+    struct Body *b = NULL;
 
     if ((WithCrypto & APPLICATION_PGP) && (b = crypt_pgp_make_key_attachment(NULL)) == NULL)
       return -1;
@@ -931,10 +931,10 @@ static int generate_body(FILE *tempfp, /* stream for outgoing message */
   return 0;
 }
 
-void mutt_set_followup_to(ENVELOPE *e)
+void mutt_set_followup_to(struct Envelope *e)
 {
-  ADDRESS *t = NULL;
-  ADDRESS *from = NULL;
+  struct Address *t = NULL;
+  struct Address *from = NULL;
 
   /*
    * Only generate the Mail-Followup-To if the user has requested it, and
@@ -1003,9 +1003,9 @@ void mutt_set_followup_to(ENVELOPE *e)
 /* look through the recipients of the message we are replying to, and if
    we find an address that matches $alternates, we use that as the default
    from field */
-static ADDRESS *set_reverse_name(ENVELOPE *env)
+static struct Address *set_reverse_name(struct Envelope *env)
 {
-  ADDRESS *tmp = NULL;
+  struct Address *tmp = NULL;
 
   for (tmp = env->to; tmp; tmp = tmp->next)
   {
@@ -1034,9 +1034,9 @@ static ADDRESS *set_reverse_name(ENVELOPE *env)
   return tmp;
 }
 
-ADDRESS *mutt_default_from(void)
+struct Address *mutt_default_from(void)
 {
-  ADDRESS *adr = NULL;
+  struct Address *adr = NULL;
   const char *fqdn = mutt_fqdn(1);
 
   /*
@@ -1061,7 +1061,7 @@ ADDRESS *mutt_default_from(void)
   return adr;
 }
 
-static int send_message(HEADER *msg)
+static int send_message(struct Header *msg)
 {
   char tempfile[_POSIX_PATH_MAX];
   FILE *tempfp = NULL;
@@ -1127,9 +1127,9 @@ static int send_message(HEADER *msg)
 }
 
 /* rfc2047 encode the content-descriptions */
-void mutt_encode_descriptions(BODY *b, short recurse)
+void mutt_encode_descriptions(struct Body *b, short recurse)
 {
-  BODY *t = NULL;
+  struct Body *t = NULL;
 
   for (t = b; t; t = t->next)
   {
@@ -1143,9 +1143,9 @@ void mutt_encode_descriptions(BODY *b, short recurse)
 }
 
 /* rfc2047 decode them in case of an error */
-static void decode_descriptions(BODY *b)
+static void decode_descriptions(struct Body *b)
 {
-  BODY *t = NULL;
+  struct Body *t = NULL;
 
   for (t = b; t; t = t->next)
   {
@@ -1173,9 +1173,9 @@ static void fix_end_of_file(const char *data)
   safe_fclose(&fp);
 }
 
-int mutt_compose_to_sender(HEADER *hdr)
+int mutt_compose_to_sender(struct Header *hdr)
 {
-  HEADER *msg = mutt_new_header();
+  struct Header *msg = mutt_new_header();
 
   msg->env = mutt_new_envelope();
   if (!hdr)
@@ -1194,9 +1194,9 @@ int mutt_compose_to_sender(HEADER *hdr)
   return ci_send_message(0, msg, NULL, NULL, NULL);
 }
 
-int mutt_resend_message(FILE *fp, CONTEXT *ctx, HEADER *cur)
+int mutt_resend_message(FILE *fp, struct Context *ctx, struct Header *cur)
 {
-  HEADER *msg = mutt_new_header();
+  struct Header *msg = mutt_new_header();
 
   if (mutt_prepare_template(fp, ctx, msg, cur, 1) < 0)
   {
@@ -1228,7 +1228,7 @@ int mutt_resend_message(FILE *fp, CONTEXT *ctx, HEADER *cur)
   return ci_send_message(SENDRESEND, msg, NULL, ctx, cur);
 }
 
-static int is_reply(HEADER *reply, HEADER *orig)
+static int is_reply(struct Header *reply, struct Header *orig)
 {
   if (!reply || !reply->env || !orig || !orig->env)
     return 0;
@@ -1236,7 +1236,7 @@ static int is_reply(HEADER *reply, HEADER *orig)
          mutt_find_list(orig->env->in_reply_to, reply->env->message_id);
 }
 
-static int has_recips(ADDRESS *a)
+static int has_recips(struct Address *a)
 {
   int c = 0;
 
@@ -1282,21 +1282,21 @@ static int mutt_search_attach_keyword(char *filename)
  *         1 if the message was postponed
  */
 int ci_send_message(int flags,      /* send mode */
-                    HEADER *msg,    /* template to use for new message */
+                    struct Header *msg,    /* template to use for new message */
                     char *tempfile, /* file specified by -i or -H */
-                    CONTEXT *ctx,   /* current mailbox */
-                    HEADER *cur)    /* current message */
+                    struct Context *ctx,   /* current mailbox */
+                    struct Header *cur)    /* current message */
 {
   char buffer[LONG_STRING];
   char fcc[_POSIX_PATH_MAX] = ""; /* where to copy this message */
   FILE *tempfp = NULL;
-  BODY *pbody = NULL;
+  struct Body *pbody = NULL;
   int i, killfrom = 0;
   int fcc_error = 0;
   int free_clear_content = 0;
 
-  BODY *save_content = NULL;
-  BODY *clear_content = NULL;
+  struct Body *save_content = NULL;
+  struct Body *clear_content = NULL;
   char *pgpkeylist = NULL;
   /* save current value of "pgp_sign_as"  and "smime_default_key" */
   char *pgp_signas = NULL;
@@ -1492,7 +1492,7 @@ int ci_send_message(int flags,      /* send mode */
 
 #ifdef USE_NNTP
     if ((flags & SENDNEWS) && ctx && ctx->magic == MUTT_NNTP && !msg->env->newsgroups)
-      msg->env->newsgroups = safe_strdup(((NNTP_DATA *) ctx->data)->group);
+      msg->env->newsgroups = safe_strdup(((struct NntpData *) ctx->data)->group);
 #endif
 
     if (!(flags & (SENDMAILX | SENDBATCH)) && !(option(OPTAUTOEDIT) && option(OPTEDITHDRS)) &&
@@ -2008,9 +2008,9 @@ int ci_send_message(int flags,      /* send mode */
 
   if (*fcc && (mutt_strcmp("/dev/null", fcc) != 0))
   {
-    BODY *tmpbody = msg->content;
-    BODY *save_sig = NULL;
-    BODY *save_parts = NULL;
+    struct Body *tmpbody = msg->content;
+    struct Body *save_sig = NULL;
+    struct Body *save_parts = NULL;
 
     if (WithCrypto && (msg->security & (ENCRYPT | SIGN)) && option(OPTFCCCLEAR))
       msg->content = clear_content;

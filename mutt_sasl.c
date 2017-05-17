@@ -155,10 +155,10 @@ static int mutt_sasl_start(void)
   return SASL_OK;
 }
 
-/* mutt_sasl_cb_authname: callback to retrieve authname or user from ACCOUNT */
+/* mutt_sasl_cb_authname: callback to retrieve authname or user from Account */
 static int mutt_sasl_cb_authname(void *context, int id, const char **result, unsigned *len)
 {
-  ACCOUNT *account = (ACCOUNT *) context;
+  struct Account *account = (struct Account *) context;
 
   if (!result)
     return SASL_FAIL;
@@ -195,7 +195,7 @@ static int mutt_sasl_cb_authname(void *context, int id, const char **result, uns
 
 static int mutt_sasl_cb_pass(sasl_conn_t *conn, void *context, int id, sasl_secret_t **psecret)
 {
-  ACCOUNT *account = (ACCOUNT *) context;
+  struct Account *account = (struct Account *) context;
   int len;
 
   if (!account || !psecret)
@@ -217,7 +217,7 @@ static int mutt_sasl_cb_pass(sasl_conn_t *conn, void *context, int id, sasl_secr
   return SASL_OK;
 }
 
-static sasl_callback_t *mutt_sasl_get_callbacks(ACCOUNT *account)
+static sasl_callback_t *mutt_sasl_get_callbacks(struct Account *account)
 {
   sasl_callback_t *callback = NULL;
 
@@ -253,7 +253,7 @@ static sasl_callback_t *mutt_sasl_get_callbacks(ACCOUNT *account)
 /* mutt_sasl_client_new: wrapper for sasl_client_new which also sets various
  * security properties. If this turns out to be fine for POP too we can
  * probably stop exporting mutt_sasl_get_callbacks(). */
-int mutt_sasl_client_new(CONNECTION *conn, sasl_conn_t **saslconn)
+int mutt_sasl_client_new(struct Connection *conn, sasl_conn_t **saslconn)
 {
   sasl_security_properties_t secprops;
   struct sockaddr_storage local, remote;
@@ -384,12 +384,12 @@ int mutt_sasl_interact(sasl_interact_t *interaction)
  *   don't know in advance that a connection will use SASL, so we
  *   replace conn's methods with sasl methods when authentication
  *   is successful, using mutt_sasl_setup_conn */
-static int mutt_sasl_conn_open(CONNECTION *conn)
+static int mutt_sasl_conn_open(struct Connection *conn)
 {
-  SASL_DATA *sasldata = NULL;
+  struct SaslData *sasldata = NULL;
   int rc;
 
-  sasldata = (SASL_DATA *) conn->sockdata;
+  sasldata = (struct SaslData *) conn->sockdata;
   conn->sockdata = sasldata->sockdata;
   rc = (sasldata->msasl_open)(conn);
   conn->sockdata = sasldata;
@@ -399,12 +399,12 @@ static int mutt_sasl_conn_open(CONNECTION *conn)
 
 /* mutt_sasl_conn_close: calls underlying close function and disposes of
  *   the sasl_conn_t object, then restores connection to pre-sasl state */
-static int mutt_sasl_conn_close(CONNECTION *conn)
+static int mutt_sasl_conn_close(struct Connection *conn)
 {
-  SASL_DATA *sasldata = NULL;
+  struct SaslData *sasldata = NULL;
   int rc;
 
-  sasldata = (SASL_DATA *) conn->sockdata;
+  sasldata = (struct SaslData *) conn->sockdata;
 
   /* restore connection's underlying methods */
   conn->sockdata = sasldata->sockdata;
@@ -424,14 +424,14 @@ static int mutt_sasl_conn_close(CONNECTION *conn)
   return rc;
 }
 
-static int mutt_sasl_conn_read(CONNECTION *conn, char *buf, size_t len)
+static int mutt_sasl_conn_read(struct Connection *conn, char *buf, size_t len)
 {
-  SASL_DATA *sasldata = NULL;
+  struct SaslData *sasldata = NULL;
   int rc;
 
   unsigned int olen;
 
-  sasldata = (SASL_DATA *) conn->sockdata;
+  sasldata = (struct SaslData *) conn->sockdata;
 
   /* if we still have data in our read buffer, copy it into buf */
   if (sasldata->blen > sasldata->bpos)
@@ -485,15 +485,15 @@ out:
   return rc;
 }
 
-static int mutt_sasl_conn_write(CONNECTION *conn, const char *buf, size_t len)
+static int mutt_sasl_conn_write(struct Connection *conn, const char *buf, size_t len)
 {
-  SASL_DATA *sasldata = NULL;
+  struct SaslData *sasldata = NULL;
   int rc;
 
   const char *pbuf = NULL;
   unsigned int olen, plen;
 
-  sasldata = (SASL_DATA *) conn->sockdata;
+  sasldata = (struct SaslData *) conn->sockdata;
   conn->sockdata = sasldata->sockdata;
 
   /* encode data, if necessary */
@@ -532,9 +532,9 @@ fail:
   return -1;
 }
 
-static int mutt_sasl_conn_poll(CONNECTION *conn)
+static int mutt_sasl_conn_poll(struct Connection *conn)
 {
-  SASL_DATA *sasldata = conn->sockdata;
+  struct SaslData *sasldata = conn->sockdata;
   int rc;
 
   conn->sockdata = sasldata->sockdata;
@@ -553,15 +553,15 @@ static int mutt_sasl_conn_poll(CONNECTION *conn)
  * anything else which wishes to stack can use the same method. The only
  * disadvantage is we have to write wrappers for all the socket methods,
  * even if we only stack over read and write. Thinking about it, the
- * abstraction problem is that there is more in CONNECTION than there
+ * abstraction problem is that there is more in Connection than there
  * needs to be. Ideally it would have only (void*)data and methods. */
 
 /* mutt_sasl_setup_conn: replace connection methods, sockdata with
  *   SASL wrappers, for protection layers. Also get ssf, as a fastpath
  *   for the read/write methods. */
-void mutt_sasl_setup_conn(CONNECTION *conn, sasl_conn_t *saslconn)
+void mutt_sasl_setup_conn(struct Connection *conn, sasl_conn_t *saslconn)
 {
-  SASL_DATA *sasldata = safe_malloc(sizeof(SASL_DATA));
+  struct SaslData *sasldata = safe_malloc(sizeof(struct SaslData));
   /* work around sasl_getprop aliasing issues */
   const void *tmp = NULL;
 

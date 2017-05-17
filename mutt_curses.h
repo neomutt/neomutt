@@ -105,13 +105,13 @@ void mutt_curs_set(int);
 #define CI_is_return(c) ((c) == '\r' || (c) == '\n')
 #endif
 
-typedef struct
+struct Event
 {
   int ch; /* raw key pressed */
   int op; /* function op */
-} event_t;
+};
 
-event_t mutt_getch(void);
+struct Event mutt_getch(void);
 
 void mutt_endwin(const char *msg);
 void mutt_flushinp(void);
@@ -185,23 +185,23 @@ enum
   MT_COLOR_MAX
 };
 
-typedef struct color_line
+struct ColorLine
 {
   regex_t rx;
   int match; /* which substringmap 0 for old behaviour */
   char *pattern;
-  struct pattern_t *color_pattern; /* compiled pattern to speed up index color
+  struct Pattern *color_pattern; /* compiled pattern to speed up index color
                                       calculation */
   short fg;
   short bg;
   int pair;
-  struct color_line *next;
-} COLOR_LINE;
+  struct ColorLine *next;
+};
 
 #define MUTT_PROGRESS_SIZE (1 << 0) /* traffic-based progress */
 #define MUTT_PROGRESS_MSG  (1 << 1) /* message-based progress */
 
-typedef struct
+struct Progress
 {
   unsigned short inc;
   unsigned short flags;
@@ -210,45 +210,45 @@ typedef struct
   long size;
   unsigned int timestamp;
   char sizestr[SHORT_STRING];
-} progress_t;
+};
 
-void mutt_progress_init(progress_t *progress, const char *msg,
+void mutt_progress_init(struct Progress *progress, const char *msg,
                         unsigned short flags, unsigned short inc, long size);
 /* If percent is positive, it is displayed as percentage, otherwise
  * percentage is calculated from progress->size and pos if progress
  * was initialized with positive size, otherwise no percentage is shown */
-void mutt_progress_update(progress_t *progress, long pos, int percent);
+void mutt_progress_update(struct Progress *progress, long pos, int percent);
 
 /* Windows for different parts of the screen */
-typedef struct
+struct MuttWindow
 {
   int rows;
   int cols;
   int row_offset;
   int col_offset;
-} mutt_window_t;
+};
 
-extern mutt_window_t *MuttHelpWindow;
-extern mutt_window_t *MuttIndexWindow;
-extern mutt_window_t *MuttStatusWindow;
-extern mutt_window_t *MuttMessageWindow;
+extern struct MuttWindow *MuttHelpWindow;
+extern struct MuttWindow *MuttIndexWindow;
+extern struct MuttWindow *MuttStatusWindow;
+extern struct MuttWindow *MuttMessageWindow;
 #ifdef USE_SIDEBAR
-extern mutt_window_t *MuttSidebarWindow;
+extern struct MuttWindow *MuttSidebarWindow;
 #endif
 
 void mutt_init_windows(void);
 void mutt_free_windows(void);
 void mutt_reflow_windows(void);
-int mutt_window_move(mutt_window_t *win, int row, int col);
-int mutt_window_mvaddch(mutt_window_t *win, int row, int col, const chtype ch);
-int mutt_window_mvaddstr(mutt_window_t *win, int row, int col, const char *str);
-int mutt_window_mvprintw(mutt_window_t *win, int row, int col, const char *fmt, ...);
-void mutt_window_clrtoeol(mutt_window_t *win);
-void mutt_window_clearline(mutt_window_t *win, int row);
-void mutt_window_getyx(mutt_window_t *win, int *y, int *x);
+int mutt_window_move(struct MuttWindow *win, int row, int col);
+int mutt_window_mvaddch(struct MuttWindow *win, int row, int col, const chtype ch);
+int mutt_window_mvaddstr(struct MuttWindow *win, int row, int col, const char *str);
+int mutt_window_mvprintw(struct MuttWindow *win, int row, int col, const char *fmt, ...);
+void mutt_window_clrtoeol(struct MuttWindow *win);
+void mutt_window_clearline(struct MuttWindow *win, int row);
+void mutt_window_getyx(struct MuttWindow *win, int *y, int *x);
 
 
-static inline int mutt_window_wrap_cols(mutt_window_t *win, short wrap)
+static inline int mutt_window_wrap_cols(struct MuttWindow *win, short wrap)
 {
   if (wrap < 0)
     return win->cols > -wrap ? win->cols + wrap : win->cols;
@@ -261,17 +261,17 @@ static inline int mutt_window_wrap_cols(mutt_window_t *win, short wrap)
 extern int *ColorQuote;
 extern int ColorQuoteUsed;
 extern int ColorDefs[];
-extern COLOR_LINE *ColorHdrList;
-extern COLOR_LINE *ColorBodyList;
-extern COLOR_LINE *ColorAttachList;
-extern COLOR_LINE *ColorStatusList;
-extern COLOR_LINE *ColorIndexList;
-extern COLOR_LINE *ColorIndexAuthorList;
-extern COLOR_LINE *ColorIndexFlagsList;
-extern COLOR_LINE *ColorIndexSubjectList;
+extern struct ColorLine *ColorHdrList;
+extern struct ColorLine *ColorBodyList;
+extern struct ColorLine *ColorAttachList;
+extern struct ColorLine *ColorStatusList;
+extern struct ColorLine *ColorIndexList;
+extern struct ColorLine *ColorIndexAuthorList;
+extern struct ColorLine *ColorIndexFlagsList;
+extern struct ColorLine *ColorIndexSubjectList;
 
 #ifdef USE_NOTMUCH
-extern COLOR_LINE *ColorIndexTagList;
+extern struct ColorLine *ColorIndexTagList;
 #endif
 
 void ci_start_color(void);

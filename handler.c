@@ -37,7 +37,7 @@
 #define BUFO_SIZE 2000
 
 
-typedef int (*handler_t)(BODY *, STATE *);
+typedef int (*handler_t)(struct Body *, struct State *);
 
 // clang-format off
 const int Index_hex[128] = {
@@ -63,7 +63,7 @@ const int Index_64[128] = {
 };
 // clang-format on
 
-static void print_part_line(STATE *s, BODY *b, int n)
+static void print_part_line(struct State *s, struct Body *b, int n)
 {
   char length[5];
   mutt_pretty_size(length, sizeof(length), b->length);
@@ -78,7 +78,7 @@ static void print_part_line(STATE *s, BODY *b, int n)
                ENCODING(b->encoding), length);
 }
 
-static void state_prefix_put(const char *d, size_t dlen, STATE *s)
+static void state_prefix_put(const char *d, size_t dlen, struct State *s)
 {
   if (s->prefix)
     while (dlen--)
@@ -87,7 +87,7 @@ static void state_prefix_put(const char *d, size_t dlen, STATE *s)
     fwrite(d, dlen, 1, s->fpout);
 }
 
-static void convert_to_state(iconv_t cd, char *bufi, size_t *l, STATE *s)
+static void convert_to_state(iconv_t cd, char *bufi, size_t *l, struct State *s)
 {
   char bufo[BUFO_SIZE];
   ICONV_CONST char *ib = NULL;
@@ -126,7 +126,7 @@ static void convert_to_state(iconv_t cd, char *bufi, size_t *l, STATE *s)
   *l = ibl;
 }
 
-static void decode_xbit(STATE *s, long len, int istext, iconv_t cd)
+static void decode_xbit(struct State *s, long len, int istext, iconv_t cd)
 {
   int c, ch;
   char bufi[BUFI_SIZE];
@@ -247,7 +247,7 @@ static void qp_decode_line(char *dest, char *src, size_t *l, int last)
  * above, we just use STRING*2 for the target buffer's size.
  *
  */
-static void decode_quoted(STATE *s, long len, int istext, iconv_t cd)
+static void decode_quoted(struct State *s, long len, int istext, iconv_t cd)
 {
   char line[STRING];
   char decline[2 * STRING];
@@ -301,7 +301,7 @@ static void decode_quoted(STATE *s, long len, int istext, iconv_t cd)
   state_reset_prefix(s);
 }
 
-void mutt_decode_base64(STATE *s, long len, int istext, iconv_t cd)
+void mutt_decode_base64(struct State *s, long len, int istext, iconv_t cd)
 {
   char buf[5];
   int c1, c2, c3, c4, ch, cr = 0, i;
@@ -395,7 +395,7 @@ static unsigned char decode_byte(char ch)
   return ch - 32;
 }
 
-static void decode_uuencoded(STATE *s, long len, int istext, iconv_t cd)
+static void decode_uuencoded(struct State *s, long len, int istext, iconv_t cd)
 {
   char tmps[SHORT_STRING];
   char linelen, c, l, out;
@@ -508,7 +508,7 @@ struct enriched_state
   size_t param_len;
   int tag_level[RICH_LAST_TAG];
   int WrapMargin;
-  STATE *s;
+  struct State *s;
 };
 
 static void enriched_wrap(struct enriched_state *stte)
@@ -811,7 +811,7 @@ static void enriched_set_flags(const wchar_t *tag, struct enriched_state *stte)
   }
 }
 
-static int text_enriched_handler(BODY *a, STATE *s)
+static int text_enriched_handler(struct Body *a, struct State *s)
 {
   enum
   {
@@ -996,7 +996,7 @@ static int is_mmnoask(const char *buf)
  *
  * 0    otherwise
  */
-static int is_autoview(BODY *b)
+static int is_autoview(struct Body *b)
 {
   char type[SHORT_STRING];
   int is_av = 0;
@@ -1011,7 +1011,7 @@ static int is_autoview(BODY *b)
   else
   {
     /* determine if this type is on the user's auto_view list */
-    LIST *t = AutoViewList;
+    struct List *t = AutoViewList;
 
     mutt_check_lookup_list(b, type, sizeof(type));
     for (; t; t = t->next)
@@ -1040,11 +1040,11 @@ static int is_autoview(BODY *b)
 #define TXTPLAIN 2
 #define TXTENRICHED 3
 
-static int alternative_handler(BODY *a, STATE *s)
+static int alternative_handler(struct Body *a, struct State *s)
 {
-  BODY *choice = NULL;
-  BODY *b = NULL;
-  LIST *t = NULL;
+  struct Body *choice = NULL;
+  struct Body *b = NULL;
+  struct List *t = NULL;
   int type = 0;
   int mustfree = 0;
   int rc = 0;
@@ -1218,10 +1218,10 @@ static int alternative_handler(BODY *a, STATE *s)
 }
 
 /* handles message/rfc822 body parts */
-static int message_handler(BODY *a, STATE *s)
+static int message_handler(struct Body *a, struct State *s)
 {
   struct stat st;
-  BODY *b = NULL;
+  struct Body *b = NULL;
   LOFF_T off_start;
   int rc = 0;
 
@@ -1264,7 +1264,7 @@ static int message_handler(BODY *a, STATE *s)
 }
 
 /* returns 1 if decoding the attachment will produce output */
-int mutt_can_decode(BODY *a)
+int mutt_can_decode(struct Body *a)
 {
   if (is_autoview(a))
     return 1;
@@ -1274,7 +1274,7 @@ int mutt_can_decode(BODY *a)
     return 1;
   else if (a->type == TYPEMULTIPART)
   {
-    BODY *p = NULL;
+    struct Body *p = NULL;
 
     if (WithCrypto)
     {
@@ -1300,9 +1300,9 @@ int mutt_can_decode(BODY *a)
   return 0;
 }
 
-static int multipart_handler(BODY *a, STATE *s)
+static int multipart_handler(struct Body *a, struct State *s)
 {
-  BODY *b = NULL, *p = NULL;
+  struct Body *b = NULL, *p = NULL;
   struct stat st;
   int count;
   int rc = 0;
@@ -1364,9 +1364,9 @@ static int multipart_handler(BODY *a, STATE *s)
   return rc;
 }
 
-static int autoview_handler(BODY *a, STATE *s)
+static int autoview_handler(struct Body *a, struct State *s)
 {
-  rfc1524_entry *entry = rfc1524_new_entry();
+  struct Rfc1524MailcapEntry *entry = rfc1524_new_entry();
   char buffer[LONG_STRING];
   char type[STRING];
   char command[LONG_STRING];
@@ -1495,7 +1495,7 @@ static int autoview_handler(BODY *a, STATE *s)
   return rc;
 }
 
-static int external_body_handler(BODY *b, STATE *s)
+static int external_body_handler(struct Body *b, struct State *s)
 {
   const char *access_type = NULL;
   const char *expiration = NULL;
@@ -1589,7 +1589,7 @@ static int external_body_handler(BODY *b, STATE *s)
   return 0;
 }
 
-void mutt_decode_attachment(BODY *b, STATE *s)
+void mutt_decode_attachment(struct Body *b, struct State *s)
 {
   int istext = mutt_is_text_part(b);
   iconv_t cd = (iconv_t)(-1);
@@ -1638,7 +1638,7 @@ void mutt_decode_attachment(BODY *b, STATE *s)
  * strip all trailing spaces to improve interoperability;
  * if $text_flowed is unset, simply verbatim copy input
  */
-static int text_plain_handler(BODY *b, STATE *s)
+static int text_plain_handler(struct Body *b, struct State *s)
 {
   char *buf = NULL;
   size_t l = 0, sz = 0;
@@ -1661,7 +1661,7 @@ static int text_plain_handler(BODY *b, STATE *s)
   return 0;
 }
 
-static int run_decode_and_handler(BODY *b, STATE *s, handler_t handler, int plaintext)
+static int run_decode_and_handler(struct Body *b, struct State *s, handler_t handler, int plaintext)
 {
   int origType;
   char *savePrefix = NULL;
@@ -1799,10 +1799,10 @@ static int run_decode_and_handler(BODY *b, STATE *s, handler_t handler, int plai
   return rc;
 }
 
-static int valid_pgp_encrypted_handler(BODY *b, STATE *s)
+static int valid_pgp_encrypted_handler(struct Body *b, struct State *s)
 {
   int rc;
-  BODY *octetstream = NULL;
+  struct Body *octetstream = NULL;
 
   octetstream = b->parts->next;
   rc = crypt_pgp_encrypted_handler(octetstream, s);
@@ -1811,10 +1811,10 @@ static int valid_pgp_encrypted_handler(BODY *b, STATE *s)
   return rc;
 }
 
-static int malformed_pgp_encrypted_handler(BODY *b, STATE *s)
+static int malformed_pgp_encrypted_handler(struct Body *b, struct State *s)
 {
   int rc;
-  BODY *octetstream = NULL;
+  struct Body *octetstream = NULL;
 
   octetstream = b->parts->next->next;
   /* exchange encodes the octet-stream, so re-run it through the decoder */
@@ -1824,7 +1824,7 @@ static int malformed_pgp_encrypted_handler(BODY *b, STATE *s)
   return rc;
 }
 
-int mutt_body_handler(BODY *b, STATE *s)
+int mutt_body_handler(struct Body *b, struct State *s)
 {
   if (!b || !s)
     return -1;

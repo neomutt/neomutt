@@ -48,14 +48,14 @@ enum
   FlagCharZEmpty
 };
 
-bool mutt_is_mail_list(ADDRESS *addr)
+bool mutt_is_mail_list(struct Address *addr)
 {
   if (!mutt_match_rx_list(addr->mailbox, UnMailLists))
     return mutt_match_rx_list(addr->mailbox, MailLists);
   return false;
 }
 
-bool mutt_is_subscribed_list(ADDRESS *addr)
+bool mutt_is_subscribed_list(struct Address *addr)
 {
   if (!mutt_match_rx_list(addr->mailbox, UnMailLists) &&
       !mutt_match_rx_list(addr->mailbox, UnSubscribedLists))
@@ -67,7 +67,7 @@ bool mutt_is_subscribed_list(ADDRESS *addr)
  * If one is found, print pfx and the name of the list into buf, then
  * return 1.  Otherwise, simply return 0.
  */
-static bool check_for_mailing_list(ADDRESS *adr, const char *pfx, char *buf, int buflen)
+static bool check_for_mailing_list(struct Address *adr, const char *pfx, char *buf, int buflen)
 {
   for (; adr; adr = adr->next)
   {
@@ -85,7 +85,7 @@ static bool check_for_mailing_list(ADDRESS *adr, const char *pfx, char *buf, int
  * If one is found, print the address of the list into buf, then return 1.
  * Otherwise, simply return 0.
  */
-static bool check_for_mailing_list_addr(ADDRESS *adr, char *buf, int buflen)
+static bool check_for_mailing_list_addr(struct Address *adr, char *buf, int buflen)
 {
   for (; adr; adr = adr->next)
   {
@@ -100,7 +100,7 @@ static bool check_for_mailing_list_addr(ADDRESS *adr, char *buf, int buflen)
 }
 
 
-static bool first_mailing_list(char *buf, size_t buflen, ADDRESS *a)
+static bool first_mailing_list(char *buf, size_t buflen, struct Address *a)
 {
   for (; a; a = a->next)
   {
@@ -162,7 +162,7 @@ enum FieldType
  * If the index is invalid, then a space character will be returned.
  * If the character selected is '\n' (Ctrl-M), then "" will be returned.
  */
-static char *get_nth_wchar(mbchar_table *table, int index)
+static char *get_nth_wchar(struct MbCharTable *table, int index)
 {
   if (!table || !table->chars || (index < 0) || (index >= table->len))
     return " ";
@@ -213,14 +213,14 @@ static const char *make_from_prefix(enum FieldType disp)
  * The field can optionally be prefixed by a character from $from_chars.
  * If $from_chars is not set, the prefix will be, "To", "Cc", etc
  */
-static void make_from(ENVELOPE *env, char *buf, size_t len, int do_lists)
+static void make_from(struct Envelope *env, char *buf, size_t len, int do_lists)
 {
   if (!env || !buf)
     return;
 
   bool me;
   enum FieldType disp;
-  ADDRESS *name = NULL;
+  struct Address *name = NULL;
 
   me = mutt_addr_is_user(env->from);
 
@@ -261,7 +261,7 @@ static void make_from(ENVELOPE *env, char *buf, size_t len, int do_lists)
   snprintf(buf, len, "%s%s", make_from_prefix(disp), mutt_get_name(name));
 }
 
-static void make_from_addr(ENVELOPE *hdr, char *buf, size_t len, int do_lists)
+static void make_from_addr(struct Envelope *hdr, char *buf, size_t len, int do_lists)
 {
   if (!hdr || !buf)
     return;
@@ -286,7 +286,7 @@ static void make_from_addr(ENVELOPE *hdr, char *buf, size_t len, int do_lists)
     *buf = 0;
 }
 
-static bool user_in_addr(ADDRESS *a)
+static bool user_in_addr(struct Address *a)
 {
   for (; a; a = a->next)
     if (mutt_addr_is_user(a))
@@ -302,12 +302,12 @@ static bool user_in_addr(ADDRESS *a)
  * 4: user is originator
  * 5: sent to a subscribed mailinglist
  */
-static int user_is_recipient(HEADER *h)
+static int user_is_recipient(struct Header *h)
 {
   if (!h || !h->env)
     return 0;
 
-  ENVELOPE *env = h->env;
+  struct Envelope *env = h->env;
 
   if (!h->recip_valid)
   {
@@ -392,7 +392,7 @@ static bool get_initials(const char *name, char *buf, int buflen)
   return true;
 }
 
-static char *apply_subject_mods(ENVELOPE *env)
+static char *apply_subject_mods(struct Envelope *env)
 {
   if (env == NULL)
     return NULL;
@@ -456,8 +456,8 @@ static const char *hdr_format_str(char *dest, size_t destlen, size_t col, int co
                                   unsigned long data, format_flag flags)
 {
   struct hdr_format_info *hfi = (struct hdr_format_info *) data;
-  HEADER *hdr = NULL, *htmp = NULL;
-  CONTEXT *ctx = NULL;
+  struct Header *hdr = NULL, *htmp = NULL;
+  struct Context *ctx = NULL;
   char fmt[SHORT_STRING], buf2[LONG_STRING], *p = NULL;
   char *wch = NULL;
   int do_locales, i;
@@ -1303,8 +1303,8 @@ static const char *hdr_format_str(char *dest, size_t destlen, size_t col, int co
 #undef THREAD_OLD
 }
 
-void _mutt_make_string(char *dest, size_t destlen, const char *s, CONTEXT *ctx,
-                       HEADER *hdr, format_flag flags)
+void _mutt_make_string(char *dest, size_t destlen, const char *s, struct Context *ctx,
+                       struct Header *hdr, format_flag flags)
 {
   struct hdr_format_info hfi;
 

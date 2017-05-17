@@ -55,7 +55,7 @@ static int fetch_message(char *line, void *file)
  * -2 - invalid command or execution error,
  * -3 - error writing to tempfile
  */
-static int pop_read_header(POP_DATA *pop_data, HEADER *h)
+static int pop_read_header(struct PopData *pop_data, struct Header *h)
 {
   FILE *f = NULL;
   int ret, index;
@@ -135,8 +135,8 @@ static int pop_read_header(POP_DATA *pop_data, HEADER *h)
 static int fetch_uidl(char *line, void *data)
 {
   int i, index;
-  CONTEXT *ctx = (CONTEXT *) data;
-  POP_DATA *pop_data = (POP_DATA *) ctx->data;
+  struct Context *ctx = (struct Context *) data;
+  struct PopData *pop_data = (struct PopData *) ctx->data;
   char *endp = NULL;
 
   errno = 0;
@@ -171,15 +171,15 @@ static int fetch_uidl(char *line, void *data)
   return 0;
 }
 
-static int msg_cache_check(const char *id, body_cache_t *bcache, void *data)
+static int msg_cache_check(const char *id, struct BodyCache *bcache, void *data)
 {
-  CONTEXT *ctx = NULL;
-  POP_DATA *pop_data = NULL;
+  struct Context *ctx = NULL;
+  struct PopData *pop_data = NULL;
   int i;
 
-  if (!(ctx = (CONTEXT *) data))
+  if (!(ctx = (struct Context *) data))
     return -1;
-  if (!(pop_data = (POP_DATA *) ctx->data))
+  if (!(pop_data = (struct PopData *) ctx->data))
     return -1;
 
 #ifdef USE_HCACHE
@@ -205,9 +205,9 @@ static int pop_hcache_namer(const char *path, char *dest, size_t destlen)
   return snprintf(dest, destlen, "%s." HC_FEXT, path);
 }
 
-static header_cache_t *pop_hcache_open(POP_DATA *pop_data, const char *path)
+static header_cache_t *pop_hcache_open(struct PopData *pop_data, const char *path)
 {
-  ciss_url_t url;
+  struct CissUrl url;
   char p[LONG_STRING];
 
   if (!pop_data || !pop_data->conn)
@@ -228,12 +228,12 @@ static header_cache_t *pop_hcache_open(POP_DATA *pop_data, const char *path)
  * -2 - invalid command or execution error,
  * -3 - error writing to tempfile
  */
-static int pop_fetch_headers(CONTEXT *ctx)
+static int pop_fetch_headers(struct Context *ctx)
 {
   int i, ret, old_count, new_count, deleted;
   unsigned short hcached = 0, bcached;
-  POP_DATA *pop_data = (POP_DATA *) ctx->data;
-  progress_t progress;
+  struct PopData *pop_data = (struct PopData *) ctx->data;
+  struct Progress progress;
 
 #ifdef USE_HCACHE
   header_cache_t *hc = NULL;
@@ -311,7 +311,7 @@ static int pop_fetch_headers(CONTEXT *ctx)
          *   (the old h->data should point inside a malloc'd block from
          *   hcache so there shouldn't be a memleak here)
          */
-        HEADER *h = mutt_hcache_restore((unsigned char *) data);
+        struct Header *h = mutt_hcache_restore((unsigned char *) data);
         mutt_hcache_free(hc, &data);
         mutt_free_header(&ctx->hdrs[i]);
         ctx->hdrs[i] = h;
@@ -391,14 +391,14 @@ static int pop_fetch_headers(CONTEXT *ctx)
 }
 
 /* open POP mailbox - fetch only headers */
-static int pop_open_mailbox(CONTEXT *ctx)
+static int pop_open_mailbox(struct Context *ctx)
 {
   int ret;
   char buf[LONG_STRING];
-  CONNECTION *conn = NULL;
-  ACCOUNT acct;
-  POP_DATA *pop_data = NULL;
-  ciss_url_t url;
+  struct Connection *conn = NULL;
+  struct Account acct;
+  struct PopData *pop_data = NULL;
+  struct CissUrl url;
 
   if (pop_parse_path(ctx->path, &acct))
   {
@@ -419,7 +419,7 @@ static int pop_open_mailbox(CONTEXT *ctx)
   ctx->path = safe_strdup(buf);
   ctx->realpath = safe_strdup(ctx->path);
 
-  pop_data = safe_calloc(1, sizeof(POP_DATA));
+  pop_data = safe_calloc(1, sizeof(struct PopData));
   pop_data->conn = conn;
   ctx->data = pop_data;
 
@@ -462,7 +462,7 @@ static int pop_open_mailbox(CONTEXT *ctx)
 }
 
 /* delete all cached messages */
-static void pop_clear_cache(POP_DATA *pop_data)
+static void pop_clear_cache(struct PopData *pop_data)
 {
   int i;
 
@@ -482,9 +482,9 @@ static void pop_clear_cache(POP_DATA *pop_data)
 }
 
 /* close POP mailbox */
-static int pop_close_mailbox(CONTEXT *ctx)
+static int pop_close_mailbox(struct Context *ctx)
 {
-  POP_DATA *pop_data = (POP_DATA *) ctx->data;
+  struct PopData *pop_data = (struct PopData *) ctx->data;
 
   if (!pop_data)
     return 0;
@@ -508,16 +508,16 @@ static int pop_close_mailbox(CONTEXT *ctx)
 }
 
 /* fetch message from POP server */
-static int pop_fetch_message(CONTEXT *ctx, MESSAGE *msg, int msgno)
+static int pop_fetch_message(struct Context *ctx, struct Message *msg, int msgno)
 {
   int ret;
   void *uidl = NULL;
   char buf[LONG_STRING];
   char path[_POSIX_PATH_MAX];
-  progress_t progressbar;
-  POP_DATA *pop_data = (POP_DATA *) ctx->data;
-  POP_CACHE *cache = NULL;
-  HEADER *h = ctx->hdrs[msgno];
+  struct Progress progressbar;
+  struct PopData *pop_data = (struct PopData *) ctx->data;
+  struct PopCache *cache = NULL;
+  struct Header *h = ctx->hdrs[msgno];
   unsigned short bcache = 1;
 
   /* see if we already have the message in body cache */
@@ -655,18 +655,18 @@ static int pop_fetch_message(CONTEXT *ctx, MESSAGE *msg, int msgno)
   return 0;
 }
 
-static int pop_close_message(CONTEXT *ctx, MESSAGE *msg)
+static int pop_close_message(struct Context *ctx, struct Message *msg)
 {
   return safe_fclose(&msg->fp);
 }
 
 /* update POP mailbox - delete messages from server */
-static int pop_sync_mailbox(CONTEXT *ctx, int *index_hint)
+static int pop_sync_mailbox(struct Context *ctx, int *index_hint)
 {
   int i, j, ret = 0;
   char buf[LONG_STRING];
-  POP_DATA *pop_data = (POP_DATA *) ctx->data;
-  progress_t progress;
+  struct PopData *pop_data = (struct PopData *) ctx->data;
+  struct Progress progress;
 #ifdef USE_HCACHE
   header_cache_t *hc = NULL;
 #endif
@@ -739,10 +739,10 @@ static int pop_sync_mailbox(CONTEXT *ctx, int *index_hint)
 }
 
 /* Check for new messages and fetch headers */
-static int pop_check_mailbox(CONTEXT *ctx, int *index_hint)
+static int pop_check_mailbox(struct Context *ctx, int *index_hint)
 {
   int ret;
-  POP_DATA *pop_data = (POP_DATA *) ctx->data;
+  struct PopData *pop_data = (struct PopData *) ctx->data;
 
   if ((pop_data->check_time + PopCheckTimeout) > time(NULL))
     return 0;
@@ -777,11 +777,11 @@ void pop_fetch_mail(void)
   char msgbuf[SHORT_STRING];
   char *url = NULL, *p = NULL;
   int i, delanswer, last = 0, msgs, bytes, rset = 0, ret;
-  CONNECTION *conn = NULL;
-  CONTEXT ctx;
-  MESSAGE *msg = NULL;
-  ACCOUNT acct;
-  POP_DATA *pop_data = NULL;
+  struct Connection *conn = NULL;
+  struct Context ctx;
+  struct Message *msg = NULL;
+  struct Account acct;
+  struct PopData *pop_data = NULL;
 
   if (!PopHost)
   {
@@ -809,7 +809,7 @@ void pop_fetch_mail(void)
   if (!conn)
     return;
 
-  pop_data = safe_calloc(1, sizeof(POP_DATA));
+  pop_data = safe_calloc(1, sizeof(struct PopData));
   pop_data->conn = conn;
 
   if (pop_open_connection(pop_data) < 0)

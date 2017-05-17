@@ -47,23 +47,23 @@ WHERE short DefaultMagic INITVAL(MUTT_MBOX);
 #define MAXLOCKATTEMPT 5
 
 int mbox_check_empty(const char *path);
-void mbox_reset_atime(CONTEXT *ctx, struct stat *st);
+void mbox_reset_atime(struct Context *ctx, struct stat *st);
 
 int mh_check_empty(const char *path);
 
 int maildir_check_empty(const char *path);
 
-HEADER *maildir_parse_message(int magic, const char *fname, int is_old, HEADER *h);
-HEADER *maildir_parse_stream(int magic, FILE *f, const char *fname, int is_old, HEADER *_h);
-void maildir_parse_flags(HEADER *h, const char *path);
-bool maildir_update_flags(CONTEXT *ctx, HEADER *o, HEADER *n);
-void maildir_flags(char *dest, size_t destlen, HEADER *hdr);
+struct Header *maildir_parse_message(int magic, const char *fname, int is_old, struct Header *h);
+struct Header *maildir_parse_stream(int magic, FILE *f, const char *fname, int is_old, struct Header *_h);
+void maildir_parse_flags(struct Header *h, const char *path);
+bool maildir_update_flags(struct Context *ctx, struct Header *o, struct Header *n);
+void maildir_flags(char *dest, size_t destlen, struct Header *hdr);
 
 #ifdef USE_HCACHE
 #include "hcache/hcache.h"
-int mh_sync_mailbox_message(CONTEXT *ctx, int msgno, header_cache_t *hc);
+int mh_sync_mailbox_message(struct Context *ctx, int msgno, header_cache_t *hc);
 #else
-int mh_sync_mailbox_message(CONTEXT *ctx, int msgno);
+int mh_sync_mailbox_message(struct Context *ctx, int msgno);
 #endif
 
 #ifdef USE_NOTMUCH
@@ -72,11 +72,11 @@ bool mx_is_notmuch(const char *p);
 
 FILE *maildir_open_find_message(const char *folder, const char *msg, char **newname);
 
-int mbox_strict_cmp_headers(const HEADER *h1, const HEADER *h2);
+int mbox_strict_cmp_headers(const struct Header *h1, const struct Header *h2);
 
-void mx_alloc_memory(CONTEXT *ctx);
-void mx_update_context(CONTEXT *ctx, int new_messages);
-void mx_update_tables(CONTEXT *ctx, int committing);
+void mx_alloc_memory(struct Context *ctx);
+void mx_update_context(struct Context *ctx, int new_messages);
+void mx_update_tables(struct Context *ctx, int committing);
 
 
 int mx_lock_file(const char *path, int fd, int excl, int dot, int timeout);

@@ -131,10 +131,10 @@ static char *fsl = "\007";
  * threads. In the second case, the @toggle parameter is 0, actually turning
  * this function into a one-way collapse.
  */
-static void collapse_all(MUTTMENU *menu, int toggle)
+static void collapse_all(struct Menu *menu, int toggle)
 {
-  HEADER *h = NULL, *base = NULL;
-  THREAD *thread = NULL, *top = NULL;
+  struct Header *h = NULL, *base = NULL;
+  struct MuttThread *thread = NULL, *top = NULL;
   int final;
 
   if (!Context || (Context->msgcount == 0))
@@ -242,7 +242,7 @@ static int ci_first_message(void)
 }
 
 /* This should be in mx.c, but it only gets used here. */
-static int mx_toggle_write(CONTEXT *ctx)
+static int mx_toggle_write(struct Context *ctx)
 {
   if (!ctx)
     return -1;
@@ -267,10 +267,10 @@ static int mx_toggle_write(CONTEXT *ctx)
   return 0;
 }
 
-static void resort_index(MUTTMENU *menu)
+static void resort_index(struct Menu *menu)
 {
   int i;
-  HEADER *current = CURHDR;
+  struct Header *current = CURHDR;
 
   menu->current = -1;
   mutt_sort_headers(Context, 0);
@@ -294,10 +294,10 @@ static void resort_index(MUTTMENU *menu)
   menu->redraw |= REDRAW_INDEX | REDRAW_STATUS;
 }
 
-void update_index(MUTTMENU *menu, CONTEXT *ctx, int check, int oldcount, int index_hint)
+void update_index(struct Menu *menu, struct Context *ctx, int check, int oldcount, int index_hint)
 {
   /* store pointers to the newly added messages */
-  HEADER **save_new = NULL;
+  struct Header **save_new = NULL;
   int j;
 
   if (!menu || !ctx)
@@ -341,7 +341,7 @@ void update_index(MUTTMENU *menu, CONTEXT *ctx, int check, int oldcount, int ind
   if (option(OPTUNCOLLAPSENEW) && oldcount && check != MUTT_REOPENED &&
       ((Sort & SORT_MASK) == SORT_THREADS))
   {
-    save_new = safe_malloc(sizeof(HEADER *) * (ctx->msgcount - oldcount));
+    save_new = safe_malloc(sizeof(struct Header *) * (ctx->msgcount - oldcount));
     for (j = oldcount; j < ctx->msgcount; j++)
       save_new[j - oldcount] = ctx->hdrs[j];
   }
@@ -354,7 +354,7 @@ void update_index(MUTTMENU *menu, CONTEXT *ctx, int check, int oldcount, int ind
   {
     if (check == MUTT_REOPENED)
     {
-      THREAD *h = NULL, *k = NULL;
+      struct MuttThread *h = NULL, *k = NULL;
 
       ctx->collapsed = false;
 
@@ -374,7 +374,7 @@ void update_index(MUTTMENU *menu, CONTEXT *ctx, int check, int oldcount, int ind
 
         for (k = 0; k < ctx->msgcount; k++)
         {
-          HEADER *h = ctx->hdrs[k];
+          struct Header *h = ctx->hdrs[k];
           if (h == save_new[j] && (!ctx->pattern || h->limited))
             mutt_uncollapse_thread(ctx, h);
         }
@@ -402,7 +402,7 @@ void update_index(MUTTMENU *menu, CONTEXT *ctx, int check, int oldcount, int ind
     menu->current = ci_first_message();
 }
 
-static int main_change_folder(MUTTMENU *menu, int op, char *buf, size_t bufsz,
+static int main_change_folder(struct Menu *menu, int op, char *buf, size_t bufsz,
                               int *oldcount, int *index_hint, int flags)
 {
 #ifdef USE_NNTP
@@ -557,18 +557,18 @@ void mutt_ts_icon(char *str)
   fprintf(stderr, "\033]1;%s\007", str);
 }
 
-void index_make_entry(char *s, size_t l, MUTTMENU *menu, int num)
+void index_make_entry(char *s, size_t l, struct Menu *menu, int num)
 {
   if (!Context || !menu || (num < 0) || (num >= Context->hdrmax))
     return;
 
-  HEADER *h = Context->hdrs[Context->v2r[num]];
+  struct Header *h = Context->hdrs[Context->v2r[num]];
   if (!h)
     return;
 
   format_flag flag = MUTT_FORMAT_MAKEPRINT | MUTT_FORMAT_ARROWCURSOR | MUTT_FORMAT_INDEX;
   int edgemsgno, reverse = Sort & SORT_REVERSE;
-  THREAD *tmp = NULL;
+  struct MuttThread *tmp = NULL;
 
   if ((Sort & SORT_MASK) == SORT_THREADS && h->tree)
   {
@@ -630,7 +630,7 @@ int index_color(int index_no)
   if (!Context || (index_no < 0))
     return 0;
 
-  HEADER *h = Context->hdrs[Context->v2r[index_no]];
+  struct Header *h = Context->hdrs[Context->v2r[index_no]];
 
   if (h && h->pair)
     return h->pair;
@@ -673,7 +673,7 @@ void mutt_draw_statusline(int cols, const char *buf, int buflen)
 
   do
   {
-    COLOR_LINE *cl = NULL;
+    struct ColorLine *cl = NULL;
     found = 0;
 
     if (!buf[offset])
@@ -802,7 +802,7 @@ struct mapping_t IndexNewsHelp[] = {
 };
 #endif
 
-static void index_menu_redraw(MUTTMENU *menu)
+static void index_menu_redraw(struct Menu *menu)
 {
   char buf[LONG_STRING];
 
@@ -869,7 +869,7 @@ int mutt_index_menu(void)
   int newcount = -1;
   int oldcount = -1;
   int rc = -1;
-  MUTTMENU *menu = NULL;
+  struct Menu *menu = NULL;
   char *cp = NULL; /* temporary variable. */
   int index_hint;  /* used to restore cursor position */
   int do_buffy_notify = 1;
@@ -1204,7 +1204,7 @@ int mutt_index_menu(void)
         CHECK_ATTACH;
         if (Context->magic == MUTT_NNTP)
         {
-          HEADER *hdr = NULL;
+          struct Header *hdr = NULL;
 
           if (op == OP_GET_MESSAGE)
           {
@@ -1215,7 +1215,7 @@ int mutt_index_menu(void)
           }
           else
           {
-            LIST *ref = CURHDR->env->references;
+            struct List *ref = CURHDR->env->references;
             if (!ref)
             {
               mutt_error(_("Article has no parent reference."));
@@ -1288,7 +1288,7 @@ int mutt_index_menu(void)
           /* trying to find msgid of the root message */
           if (op == OP_RECONSTRUCT_THREAD)
           {
-            LIST *ref = CURHDR->env->references;
+            struct List *ref = CURHDR->env->references;
             while (ref)
             {
               if (hash_find(Context->id_hash, ref->data) == NULL)
@@ -1312,8 +1312,8 @@ int mutt_index_menu(void)
           /* at least one message has been loaded */
           if (Context->msgcount > oldmsgcount)
           {
-            HEADER *oldcur = CURHDR;
-            HEADER *hdr = NULL;
+            struct Header *oldcur = CURHDR;
+            struct Header *hdr = NULL;
             int k;
             bool quiet = Context->quiet;
 
@@ -1704,7 +1704,7 @@ int mutt_index_menu(void)
           int ovc = Context->vcount;
           int oc = Context->msgcount;
           int check, newidx;
-          HEADER *newhdr = NULL;
+          struct Header *newhdr = NULL;
 
           /* don't attempt to move the cursor if there are no visible messages in the current limit */
           if (menu->current < Context->vcount)
@@ -1797,7 +1797,7 @@ int mutt_index_menu(void)
         }
         if (oc < Context->msgcount)
         {
-          HEADER *oldcur = CURHDR;
+          struct Header *oldcur = CURHDR;
 
           if ((Sort & SORT_MASK) == SORT_THREADS)
             mutt_sort_headers(Context, 0);
@@ -1837,7 +1837,7 @@ int mutt_index_menu(void)
         if (tag)
         {
           char msgbuf[STRING];
-          progress_t progress;
+          struct Progress progress;
           int px;
 
           if (!Context->quiet)
@@ -2159,7 +2159,7 @@ int mutt_index_menu(void)
         else if (CURHDR->env->in_reply_to || CURHDR->env->references)
         {
           {
-            HEADER *oldcur = CURHDR;
+            struct Header *oldcur = CURHDR;
 
             mutt_break_thread(CURHDR);
             mutt_sort_headers(Context, 1);
@@ -2199,7 +2199,7 @@ int mutt_index_menu(void)
           mutt_error(_("First, please tag a message to be linked here"));
         else
         {
-          HEADER *oldcur = CURHDR;
+          struct Header *oldcur = CURHDR;
 
           if (mutt_link_threads(CURHDR, tag ? NULL : Context->last_tag, Context))
           {
@@ -2790,7 +2790,7 @@ int mutt_index_menu(void)
         CHECK_ATTACH
         if (Context && Context->magic == MUTT_NNTP)
         {
-          NNTP_DATA *nntp_data = Context->data;
+          struct NntpData *nntp_data = Context->data;
           if (mutt_newsgroup_catchup(nntp_data->nserv, nntp_data->group))
             menu->redraw = REDRAW_INDEX | REDRAW_STATUS;
         }
@@ -3073,7 +3073,7 @@ int mutt_index_menu(void)
                              _("Reply by mail as poster prefers?")) != MUTT_YES)
         {
           if (Context && Context->magic == MUTT_NNTP &&
-              !((NNTP_DATA *) Context->data)->allowed && query_quadoption(OPT_TOMODERATED, _("Posting to this group not allowed, may be moderated. Continue?")) != MUTT_YES)
+              !((struct NntpData *) Context->data)->allowed && query_quadoption(OPT_TOMODERATED, _("Posting to this group not allowed, may be moderated. Continue?")) != MUTT_YES)
             break;
           if (op == OP_POST)
             ci_send_message(SENDNEWS, NULL, NULL, Context, NULL);
@@ -3255,10 +3255,10 @@ int mutt_index_menu(void)
   return close;
 }
 
-void mutt_set_header_color(CONTEXT *ctx, HEADER *curhdr)
+void mutt_set_header_color(struct Context *ctx, struct Header *curhdr)
 {
-  COLOR_LINE *color = NULL;
-  pattern_cache_t cache;
+  struct ColorLine *color = NULL;
+  struct PatternCache cache;
 
   if (!curhdr)
     return;

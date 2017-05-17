@@ -56,9 +56,9 @@ static const char *xdg_defaults[] = {
       [kXDGConfigHome] = "~/.config", [kXDGConfigDirs] = "/etc/xdg",
 };
 
-BODY *mutt_new_body(void)
+struct Body *mutt_new_body(void)
 {
-  BODY *p = safe_calloc(1, sizeof(BODY));
+  struct Body *p = safe_calloc(1, sizeof(struct Body));
 
   p->disposition = DISPATTACH;
   p->use_disp = true;
@@ -100,15 +100,15 @@ void mutt_adv_mktemp(char *s, size_t l)
 }
 
 /* create a send-mode duplicate from a receive-mode body */
-int mutt_copy_body(FILE *fp, BODY **tgt, BODY *src)
+int mutt_copy_body(FILE *fp, struct Body **tgt, struct Body *src)
 {
   if (!tgt || !src)
     return -1;
 
   char tmp[_POSIX_PATH_MAX];
-  BODY *b = NULL;
+  struct Body *b = NULL;
 
-  PARAMETER *par = NULL, **ppar = NULL;
+  struct Parameter *par = NULL, **ppar = NULL;
 
   bool use_disp;
 
@@ -130,7 +130,7 @@ int mutt_copy_body(FILE *fp, BODY **tgt, BODY *src)
   *tgt = mutt_new_body();
   b = *tgt;
 
-  memcpy(b, src, sizeof(BODY));
+  memcpy(b, src, sizeof(struct Body));
   b->parts = NULL;
   b->next = NULL;
 
@@ -152,7 +152,7 @@ int mutt_copy_body(FILE *fp, BODY **tgt, BODY *src)
   b->description = safe_strdup(b->description);
 
   /*
-   * we don't seem to need the HEADER structure currently.
+   * we don't seem to need the Header structure currently.
    * XXX - this may change in the future
    */
 
@@ -173,9 +173,9 @@ int mutt_copy_body(FILE *fp, BODY **tgt, BODY *src)
 }
 
 
-void mutt_free_body(BODY **p)
+void mutt_free_body(struct Body **p)
 {
-  BODY *a = *p, *b = NULL;
+  struct Body *a = *p, *b = NULL;
 
   while (a)
   {
@@ -217,10 +217,10 @@ void mutt_free_body(BODY **p)
   *p = 0;
 }
 
-void mutt_free_parameter(PARAMETER **p)
+void mutt_free_parameter(struct Parameter **p)
 {
-  PARAMETER *t = *p;
-  PARAMETER *o = NULL;
+  struct Parameter *t = *p;
+  struct Parameter *o = NULL;
 
   while (t)
   {
@@ -233,26 +233,26 @@ void mutt_free_parameter(PARAMETER **p)
   *p = 0;
 }
 
-LIST *mutt_add_list(LIST *head, const char *data)
+struct List *mutt_add_list(struct List *head, const char *data)
 {
   size_t len = mutt_strlen(data);
 
   return mutt_add_list_n(head, data, len ? len + 1 : 0);
 }
 
-LIST *mutt_add_list_n(LIST *head, const void *data, size_t len)
+struct List *mutt_add_list_n(struct List *head, const void *data, size_t len)
 {
-  LIST *tmp = NULL;
+  struct List *tmp = NULL;
 
   for (tmp = head; tmp && tmp->next; tmp = tmp->next)
     ;
   if (tmp)
   {
-    tmp->next = safe_malloc(sizeof(LIST));
+    tmp->next = safe_malloc(sizeof(struct List));
     tmp = tmp->next;
   }
   else
-    head = tmp = safe_malloc(sizeof(LIST));
+    head = tmp = safe_malloc(sizeof(struct List));
 
   tmp->data = safe_malloc(len);
   if (len)
@@ -261,9 +261,9 @@ LIST *mutt_add_list_n(LIST *head, const void *data, size_t len)
   return head;
 }
 
-LIST *mutt_find_list(LIST *l, const char *data)
+struct List *mutt_find_list(struct List *l, const char *data)
 {
-  LIST *p = l;
+  struct List *p = l;
 
   while (p)
   {
@@ -276,18 +276,18 @@ LIST *mutt_find_list(LIST *l, const char *data)
   return NULL;
 }
 
-void mutt_push_list(LIST **head, const char *data)
+void mutt_push_list(struct List **head, const char *data)
 {
-  LIST *tmp = NULL;
-  tmp = safe_malloc(sizeof(LIST));
+  struct List *tmp = NULL;
+  tmp = safe_malloc(sizeof(struct List));
   tmp->data = safe_strdup(data);
   tmp->next = *head;
   *head = tmp;
 }
 
-bool mutt_pop_list(LIST **head)
+bool mutt_pop_list(struct List **head)
 {
-  LIST *elt = *head;
+  struct List *elt = *head;
   if (!elt)
     return false;
   *head = elt->next;
@@ -296,16 +296,16 @@ bool mutt_pop_list(LIST **head)
   return true;
 }
 
-const char *mutt_front_list(LIST *head)
+const char *mutt_front_list(struct List *head)
 {
   if (!head || !head->data)
     return "";
   return head->data;
 }
 
-int mutt_remove_from_rx_list(RX_LIST **l, const char *str)
+int mutt_remove_from_rx_list(struct RxList **l, const char *str)
 {
-  RX_LIST *p = NULL, *last = NULL;
+  struct RxList *p = NULL, *last = NULL;
   int rv = -1;
 
   if (mutt_strcmp("*", str) == 0)
@@ -339,9 +339,9 @@ int mutt_remove_from_rx_list(RX_LIST **l, const char *str)
   return rv;
 }
 
-void mutt_free_list(LIST **list)
+void mutt_free_list(struct List **list)
 {
-  LIST *p = NULL;
+  struct List *p = NULL;
 
   if (!list)
     return;
@@ -354,13 +354,13 @@ void mutt_free_list(LIST **list)
   }
 }
 
-LIST *mutt_copy_list(LIST *p)
+struct List *mutt_copy_list(struct List *p)
 {
-  LIST *t = NULL, *r = NULL, *l = NULL;
+  struct List *t = NULL, *r = NULL, *l = NULL;
 
   for (; p; p = p->next)
   {
-    t = safe_malloc(sizeof(LIST));
+    t = safe_malloc(sizeof(struct List));
     t->data = safe_strdup(p->data);
     t->next = NULL;
     if (l)
@@ -374,7 +374,7 @@ LIST *mutt_copy_list(LIST *p)
   return l;
 }
 
-void mutt_free_header(HEADER **h)
+void mutt_free_header(struct Header **h)
 {
   if (!h || !*h)
     return;
@@ -395,7 +395,7 @@ void mutt_free_header(HEADER **h)
 }
 
 /* returns true if the header contained in "s" is in list "t" */
-bool mutt_matches_list(const char *s, LIST *t)
+bool mutt_matches_list(const char *s, struct List *t)
 {
   for (; t; t = t->next)
   {
@@ -497,8 +497,8 @@ char *_mutt_expand_path(char *s, size_t slen, int rx)
 
       case '@':
       {
-        HEADER *h = NULL;
-        ADDRESS *alias = NULL;
+        struct Header *h = NULL;
+        struct Address *alias = NULL;
 
         if ((alias = mutt_lookup_alias(s + 1)))
         {
@@ -635,7 +635,7 @@ char *mutt_gecos_name(char *dest, size_t destlen, struct passwd *pw)
 }
 
 
-char *mutt_get_parameter(const char *s, PARAMETER *p)
+char *mutt_get_parameter(const char *s, struct Parameter *p)
 {
   for (; p; p = p->next)
     if (ascii_strcasecmp(s, p->attribute) == 0)
@@ -644,9 +644,9 @@ char *mutt_get_parameter(const char *s, PARAMETER *p)
   return NULL;
 }
 
-void mutt_set_parameter(const char *attribute, const char *value, PARAMETER **p)
+void mutt_set_parameter(const char *attribute, const char *value, struct Parameter **p)
 {
-  PARAMETER *q = NULL;
+  struct Parameter *q = NULL;
 
   if (!value)
   {
@@ -670,9 +670,9 @@ void mutt_set_parameter(const char *attribute, const char *value, PARAMETER **p)
   *p = q;
 }
 
-void mutt_delete_parameter(const char *attribute, PARAMETER **p)
+void mutt_delete_parameter(const char *attribute, struct Parameter **p)
 {
-  PARAMETER *q = NULL;
+  struct Parameter *q = NULL;
 
   for (q = *p; q; p = &q->next, q = q->next)
   {
@@ -687,7 +687,7 @@ void mutt_delete_parameter(const char *attribute, PARAMETER **p)
 }
 
 /* returns 1 if Mutt can't display this type of data, 0 otherwise */
-bool mutt_needs_mailcap(BODY *m)
+bool mutt_needs_mailcap(struct Body *m)
 {
   switch (m->type)
   {
@@ -710,7 +710,7 @@ bool mutt_needs_mailcap(BODY *m)
   return true;
 }
 
-bool mutt_is_text_part(BODY *b)
+bool mutt_is_text_part(struct Body *b)
 {
   int t = b->type;
   char *s = b->subtype;
@@ -736,7 +736,7 @@ bool mutt_is_text_part(BODY *b)
   return false;
 }
 
-void mutt_free_envelope(ENVELOPE **p)
+void mutt_free_envelope(struct Envelope **p)
 {
   if (!*p)
     return;
@@ -774,7 +774,7 @@ void mutt_free_envelope(ENVELOPE **p)
 }
 
 /* move all the headers from extra not present in base into base */
-void mutt_merge_envelopes(ENVELOPE *base, ENVELOPE **extra)
+void mutt_merge_envelopes(struct Envelope *base, struct Envelope **extra)
 {
 /* copies each existing element if necessary, and sets the element
   * to NULL in the source so that mutt_free_envelope doesn't leave us
@@ -912,9 +912,9 @@ void _mutt_mktemp(char *s, size_t slen, const char *prefix, const char *suffix,
                strerror(errno), errno);
 }
 
-void mutt_free_alias(ALIAS **p)
+void mutt_free_alias(struct Alias **p)
 {
-  ALIAS *t = NULL;
+  struct Alias *t = NULL;
 
   while (*p)
   {
@@ -1148,7 +1148,7 @@ int mutt_check_overwrite(const char *attname, const char *path, char *fname,
   return 0;
 }
 
-void mutt_save_path(char *d, size_t dsize, ADDRESS *a)
+void mutt_save_path(char *d, size_t dsize, struct Address *a)
 {
   if (a && a->mailbox)
   {
@@ -1166,7 +1166,7 @@ void mutt_save_path(char *d, size_t dsize, ADDRESS *a)
     *d = 0;
 }
 
-void mutt_safe_path(char *s, size_t l, ADDRESS *a)
+void mutt_safe_path(char *s, size_t l, struct Address *a)
 {
   char *p = NULL;
 
@@ -1178,9 +1178,9 @@ void mutt_safe_path(char *s, size_t l, ADDRESS *a)
 
 /* Note this function uses a fixed size buffer of LONG_STRING and so
  * should only be used for visual modifications, such as disp_subj. */
-char *mutt_apply_replace(char *dbuf, size_t dlen, char *sbuf, REPLACE_LIST *rlist)
+char *mutt_apply_replace(char *dbuf, size_t dlen, char *sbuf, struct ReplaceList *rlist)
 {
-  REPLACE_LIST *l = NULL;
+  struct ReplaceList *l = NULL;
   static regmatch_t *pmatch = NULL;
   static int nmatch = 0;
   static char twinbuf[2][LONG_STRING];
@@ -1310,7 +1310,7 @@ void mutt_FormatString(char *dest,     /* output buffer */
     /* n-off is the number of backslashes. */
     if (off > 0 && ((n - off) % 2) == 0)
     {
-      BUFFER *srcbuf = NULL, *word = NULL, *command = NULL;
+      struct Buffer *srcbuf = NULL, *word = NULL, *command = NULL;
       char srccopy[LONG_STRING];
 #ifdef DEBUG
       int i = 0;
@@ -1867,7 +1867,7 @@ int mutt_save_confirm(const char *s, struct stat *st)
   return ret;
 }
 
-void state_prefix_putc(char c, STATE *s)
+void state_prefix_putc(char c, struct State *s)
 {
   if (s->flags & MUTT_PENDINGPREFIX)
   {
@@ -1882,7 +1882,7 @@ void state_prefix_putc(char c, STATE *s)
     state_set_prefix(s);
 }
 
-int state_printf(STATE *s, const char *fmt, ...)
+int state_printf(struct State *s, const char *fmt, ...)
 {
   int rv;
   va_list ap;
@@ -1894,7 +1894,7 @@ int state_printf(STATE *s, const char *fmt, ...)
   return rv;
 }
 
-void state_mark_attach(STATE *s)
+void state_mark_attach(struct State *s)
 {
   if (!s || !s->fpout)
     return;
@@ -1902,7 +1902,7 @@ void state_mark_attach(STATE *s)
     state_puts(AttachmentMarker, s);
 }
 
-void state_attach_puts(const char *t, STATE *s)
+void state_attach_puts(const char *t, struct State *s)
 {
   if (!t || !s || !s->fpout)
     return;
@@ -1918,7 +1918,7 @@ void state_attach_puts(const char *t, STATE *s)
   }
 }
 
-static int state_putwc(wchar_t wc, STATE *s)
+static int state_putwc(wchar_t wc, struct State *s)
 {
   char mb[MB_LEN_MAX] = "";
   int rc;
@@ -1930,7 +1930,7 @@ static int state_putwc(wchar_t wc, STATE *s)
   return 0;
 }
 
-int state_putws(const wchar_t *ws, STATE *s)
+int state_putws(const wchar_t *ws, struct State *s)
 {
   const wchar_t *p = ws;
 
@@ -2007,9 +2007,9 @@ const char *mutt_make_version(void)
   return vstring;
 }
 
-REGEXP *mutt_compile_regexp(const char *s, int flags)
+struct Regex *mutt_compile_regexp(const char *s, int flags)
 {
-  REGEXP *pp = safe_calloc(sizeof(REGEXP), 1);
+  struct Regex *pp = safe_calloc(sizeof(struct Regex), 1);
   pp->pattern = safe_strdup(s);
   pp->rx = safe_calloc(sizeof(regex_t), 1);
   if (REGCOMP(pp->rx, NONULL(s), flags) != 0)
@@ -2018,7 +2018,7 @@ REGEXP *mutt_compile_regexp(const char *s, int flags)
   return pp;
 }
 
-void mutt_free_regexp(REGEXP **pp)
+void mutt_free_regexp(struct Regex **pp)
 {
   FREE(&(*pp)->pattern);
   regfree((*pp)->rx);
@@ -2026,9 +2026,9 @@ void mutt_free_regexp(REGEXP **pp)
   FREE(pp);
 }
 
-void mutt_free_rx_list(RX_LIST **list)
+void mutt_free_rx_list(struct RxList **list)
 {
-  RX_LIST *p = NULL;
+  struct RxList *p = NULL;
 
   if (!list)
     return;
@@ -2041,9 +2041,9 @@ void mutt_free_rx_list(RX_LIST **list)
   }
 }
 
-void mutt_free_replace_list(REPLACE_LIST **list)
+void mutt_free_replace_list(struct ReplaceList **list)
 {
-  REPLACE_LIST *p = NULL;
+  struct ReplaceList *p = NULL;
 
   if (!list)
     return;
@@ -2057,7 +2057,7 @@ void mutt_free_replace_list(REPLACE_LIST **list)
   }
 }
 
-bool mutt_match_rx_list(const char *s, RX_LIST *l)
+bool mutt_match_rx_list(const char *s, struct RxList *l)
 {
   if (!s)
     return 0;
@@ -2081,7 +2081,7 @@ bool mutt_match_rx_list(const char *s, RX_LIST *l)
  *
  * Returns true if the argument `s` matches a pattern in the spam list, otherwise
  * false. */
-bool mutt_match_spam_list(const char *s, REPLACE_LIST *l, char *text, int textsize)
+bool mutt_match_spam_list(const char *s, struct ReplaceList *l, char *text, int textsize)
 {
   static regmatch_t *pmatch = NULL;
   static int nmatch = 0;

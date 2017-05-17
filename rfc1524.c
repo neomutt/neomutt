@@ -49,7 +49,7 @@
  * In addition, this function returns a 0 if the command works on a file,
  * and 1 if the command works on a pipe.
  */
-int rfc1524_expand_command(BODY *a, char *filename, char *_type, char *command, int clen)
+int rfc1524_expand_command(struct Body *a, char *filename, char *_type, char *command, int clen)
 {
   int x = 0, y = 0;
   int needspipe = true;
@@ -159,8 +159,8 @@ static int get_field_text(char *field, char **entry, char *type, char *filename,
   }
 }
 
-static int rfc1524_mailcap_parse(BODY *a, char *filename, char *type,
-                                 rfc1524_entry *entry, int opt)
+static int rfc1524_mailcap_parse(struct Body *a, char *filename, char *type,
+                                 struct Rfc1524MailcapEntry *entry, int opt)
 {
   FILE *fp = NULL;
   char *buf = NULL;
@@ -339,14 +339,14 @@ static int rfc1524_mailcap_parse(BODY *a, char *filename, char *type,
   return found;
 }
 
-rfc1524_entry *rfc1524_new_entry(void)
+struct Rfc1524MailcapEntry *rfc1524_new_entry(void)
 {
-  return safe_calloc(1, sizeof(rfc1524_entry));
+  return safe_calloc(1, sizeof(struct Rfc1524MailcapEntry));
 }
 
-void rfc1524_free_entry(rfc1524_entry **entry)
+void rfc1524_free_entry(struct Rfc1524MailcapEntry **entry)
 {
-  rfc1524_entry *p = *entry;
+  struct Rfc1524MailcapEntry *p = *entry;
 
   FREE(&p->command);
   FREE(&p->testcommand);
@@ -364,7 +364,7 @@ void rfc1524_free_entry(rfc1524_entry **entry)
  * in *entry, and returns 1.  On failure (not found), returns 0.
  * If entry == NULL just return 1 if the given type is found.
  */
-int rfc1524_mailcap_lookup(BODY *a, char *type, rfc1524_entry *entry, int opt)
+int rfc1524_mailcap_lookup(struct Body *a, char *type, struct Rfc1524MailcapEntry *entry, int opt)
 {
   char path[_POSIX_PATH_MAX];
   int x;

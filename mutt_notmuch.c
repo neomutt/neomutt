@@ -24,7 +24,7 @@
  *
  * ## Notes
  *
- * - notmuch uses private CONTEXT->data and private HEADER->data
+ * - notmuch uses private Context->data and private Header->data
  *
  * - all exported functions are usable within notmuch context only
  *
@@ -116,7 +116,7 @@ struct nm_hdrtag
  *
  * This stores all the NotMuch data associated with an email.
  *
- * @sa HEADER#data, MUTT_MBOX
+ * @sa Header#data, MUTT_MBOX
  */
 struct nm_hdrdata
 {
@@ -134,7 +134,7 @@ struct nm_hdrdata
  *
  * This stores the global NotMuch data, such as the database connection.
  *
- * @sa CONTEXT#data, NotmuchDBLimit, NM_QUERY_TYPE_MESGS
+ * @sa Context#data, NotmuchDBLimit, NM_QUERY_TYPE_MESGS
  */
 struct nm_ctxdata
 {
@@ -147,7 +147,7 @@ struct nm_ctxdata
 
   struct uri_tag *query_items;
 
-  progress_t progress; /**< A progress bar */
+  struct Progress progress; /**< A progress bar */
   int oldmsgcount;
   int ignmsgcount; /**< Ignored messages */
 
@@ -372,7 +372,7 @@ static struct nm_ctxdata *new_ctxdata(char *uri)
   return data;
 }
 
-static int init_context(CONTEXT *ctx)
+static int init_context(struct Context *ctx)
 {
   if (!ctx || (ctx->magic != MUTT_NOTMUCH))
     return -1;
@@ -387,18 +387,18 @@ static int init_context(CONTEXT *ctx)
   return 0;
 }
 
-static char *header_get_id(HEADER *h)
+static char *header_get_id(struct Header *h)
 {
   return (h && h->data) ? ((struct nm_hdrdata *) h->data)->virtual_id : NULL;
 }
 
-static char *header_get_fullpath(HEADER *h, char *buf, size_t bufsz)
+static char *header_get_fullpath(struct Header *h, char *buf, size_t bufsz)
 {
   snprintf(buf, bufsz, "%s/%s", nm_header_get_folder(h), h->path);
   return buf;
 }
 
-static struct nm_ctxdata *get_ctxdata(CONTEXT *ctx)
+static struct nm_ctxdata *get_ctxdata(struct Context *ctx)
 {
   if (ctx && (ctx->magic == MUTT_NOTMUCH))
     return ctx->data;
@@ -839,7 +839,7 @@ static void append_str_item(char **str, const char *item, int sep)
   memcpy(p, item, sz + 1);
 }
 
-static int update_header_tags(HEADER *h, notmuch_message_t *msg)
+static int update_header_tags(struct Header *h, notmuch_message_t *msg)
 {
   struct nm_hdrdata *data = h->data;
   notmuch_tags_t *tags = NULL;
@@ -911,7 +911,7 @@ static int update_header_tags(HEADER *h, notmuch_message_t *msg)
   return 0;
 }
 
-static int update_message_path(HEADER *h, const char *path)
+static int update_message_path(struct Header *h, const char *path)
 {
   struct nm_hdrdata *data = h->data;
   char *p = NULL;
@@ -961,7 +961,7 @@ static char *get_folder_from_path(const char *path)
   return NULL;
 }
 
-static void deinit_header(HEADER *h)
+static void deinit_header(struct Header *h)
 {
   if (h)
   {
@@ -984,7 +984,7 @@ static char *nm2mutt_message_id(const char *id)
   return mid;
 }
 
-static int init_header(HEADER *h, const char *path, notmuch_message_t *msg)
+static int init_header(struct Header *h, const char *path, notmuch_message_t *msg)
 {
   const char *id = NULL;
 
@@ -998,7 +998,7 @@ static int init_header(HEADER *h, const char *path, notmuch_message_t *msg)
 
   /*
    * Notmuch ensures that message Id exists (if not notmuch Notmuch will
-   * generate an ID), so it's more safe than use mutt HEADER->env->id
+   * generate an ID), so it's more safe than use mutt Header->env->id
    */
   ((struct nm_hdrdata *) h->data)->virtual_id = safe_strdup(id);
 
@@ -1030,7 +1030,7 @@ static const char *get_message_last_filename(notmuch_message_t *msg)
   return name;
 }
 
-static void progress_reset(CONTEXT *ctx)
+static void progress_reset(struct Context *ctx)
 {
   struct nm_ctxdata *data = NULL;
 
@@ -1048,7 +1048,7 @@ static void progress_reset(CONTEXT *ctx)
   data->progress_ready = false;
 }
 
-static void progress_update(CONTEXT *ctx, notmuch_query_t *q)
+static void progress_update(struct Context *ctx, notmuch_query_t *q)
 {
   struct nm_ctxdata *data = get_ctxdata(ctx);
 
@@ -1076,11 +1076,11 @@ static void progress_update(CONTEXT *ctx, notmuch_query_t *q)
                          ctx->msgcount + data->ignmsgcount - data->oldmsgcount, -1);
 }
 
-static HEADER *get_mutt_header(CONTEXT *ctx, notmuch_message_t *msg)
+static struct Header *get_mutt_header(struct Context *ctx, notmuch_message_t *msg)
 {
   char *mid = NULL;
   const char *id = NULL;
-  HEADER *h = NULL;
+  struct Header *h = NULL;
 
   if (!ctx || !msg)
     return NULL;
@@ -1107,11 +1107,11 @@ static HEADER *get_mutt_header(CONTEXT *ctx, notmuch_message_t *msg)
   return h;
 }
 
-static void append_message(CONTEXT *ctx, notmuch_query_t *q, notmuch_message_t *msg, int dedup)
+static void append_message(struct Context *ctx, notmuch_query_t *q, notmuch_message_t *msg, int dedup)
 {
   char *newpath = NULL;
   const char *path = NULL;
-  HEADER *h = NULL;
+  struct Header *h = NULL;
 
   struct nm_ctxdata *data = get_ctxdata(ctx);
   if (!data)
@@ -1194,7 +1194,7 @@ done:
   FREE(&newpath);
 }
 
-static void append_replies(CONTEXT *ctx, notmuch_query_t *q, notmuch_message_t *top, int dedup)
+static void append_replies(struct Context *ctx, notmuch_query_t *q, notmuch_message_t *top, int dedup)
 {
   notmuch_messages_t *msgs = NULL;
 
@@ -1209,7 +1209,7 @@ static void append_replies(CONTEXT *ctx, notmuch_query_t *q, notmuch_message_t *
   }
 }
 
-static void append_thread(CONTEXT *ctx, notmuch_query_t *q, notmuch_thread_t *thread, int dedup)
+static void append_thread(struct Context *ctx, notmuch_query_t *q, notmuch_thread_t *thread, int dedup)
 {
   notmuch_messages_t *msgs = NULL;
 
@@ -1223,7 +1223,7 @@ static void append_thread(CONTEXT *ctx, notmuch_query_t *q, notmuch_thread_t *th
   }
 }
 
-static bool read_mesgs_query(CONTEXT *ctx, notmuch_query_t *q, int dedup)
+static bool read_mesgs_query(struct Context *ctx, notmuch_query_t *q, int dedup)
 {
   struct nm_ctxdata *data = get_ctxdata(ctx);
   int limit;
@@ -1256,7 +1256,7 @@ static bool read_mesgs_query(CONTEXT *ctx, notmuch_query_t *q, int dedup)
   return true;
 }
 
-static bool read_threads_query(CONTEXT *ctx, notmuch_query_t *q, int dedup, int limit)
+static bool read_threads_query(struct Context *ctx, notmuch_query_t *q, int dedup, int limit)
 {
   struct nm_ctxdata *data = get_ctxdata(ctx);
   notmuch_threads_t *threads = NULL;
@@ -1286,7 +1286,7 @@ static bool read_threads_query(CONTEXT *ctx, notmuch_query_t *q, int dedup, int 
   return true;
 }
 
-static notmuch_message_t *get_nm_message(notmuch_database_t *db, HEADER *hdr)
+static notmuch_message_t *get_nm_message(notmuch_database_t *db, struct Header *hdr)
 {
   notmuch_message_t *msg = NULL;
   char *id = header_get_id(hdr);
@@ -1373,7 +1373,7 @@ static int update_tags(notmuch_message_t *msg, const char *tags)
   return 0;
 }
 
-static int update_header_flags(CONTEXT *ctx, HEADER *hdr, const char *tags)
+static int update_header_flags(struct Context *ctx, struct Header *hdr, const char *tags)
 {
   char *tag = NULL, *end = NULL, *p = NULL;
   char *buf = safe_strdup(tags);
@@ -1425,7 +1425,7 @@ static int update_header_flags(CONTEXT *ctx, HEADER *hdr, const char *tags)
   return 0;
 }
 
-static int rename_maildir_filename(const char *old, char *newpath, size_t newsz, HEADER *h)
+static int rename_maildir_filename(const char *old, char *newpath, size_t newsz, struct Header *h)
 {
   char filename[_POSIX_PATH_MAX];
   char suffix[_POSIX_PATH_MAX];
@@ -1527,7 +1527,7 @@ static int remove_filename(struct nm_ctxdata *data, const char *path)
 }
 
 static int rename_filename(struct nm_ctxdata *data, const char *old,
-                           const char *new, HEADER *h)
+                           const char *new, struct Header *h)
 {
   int rc = -1;
   notmuch_status_t st;
@@ -1630,22 +1630,22 @@ static unsigned count_query(notmuch_database_t *db, const char *qstr)
 }
 
 
-char *nm_header_get_folder(HEADER *h)
+char *nm_header_get_folder(struct Header *h)
 {
   return (h && h->data) ? ((struct nm_hdrdata *) h->data)->folder : NULL;
 }
 
-char *nm_header_get_tags(HEADER *h)
+char *nm_header_get_tags(struct Header *h)
 {
   return (h && h->data) ? ((struct nm_hdrdata *) h->data)->tags : NULL;
 }
 
-char *nm_header_get_tags_transformed(HEADER *h)
+char *nm_header_get_tags_transformed(struct Header *h)
 {
   return (h && h->data) ? ((struct nm_hdrdata *) h->data)->tags_transformed : NULL;
 }
 
-char *nm_header_get_tag_transformed(char *tag, HEADER *h)
+char *nm_header_get_tag_transformed(char *tag, struct Header *h)
 {
   struct nm_hdrtag *tmp = NULL;
 
@@ -1661,7 +1661,7 @@ char *nm_header_get_tag_transformed(char *tag, HEADER *h)
   return NULL;
 }
 
-void nm_longrun_init(CONTEXT *ctx, int writable)
+void nm_longrun_init(struct Context *ctx, int writable)
 {
   struct nm_ctxdata *data = get_ctxdata(ctx);
 
@@ -1672,7 +1672,7 @@ void nm_longrun_init(CONTEXT *ctx, int writable)
   }
 }
 
-void nm_longrun_done(CONTEXT *ctx)
+void nm_longrun_done(struct Context *ctx)
 {
   struct nm_ctxdata *data = get_ctxdata(ctx);
 
@@ -1680,7 +1680,7 @@ void nm_longrun_done(CONTEXT *ctx)
     mutt_debug(2, "nm: long run deinitialized\n");
 }
 
-void nm_debug_check(CONTEXT *ctx)
+void nm_debug_check(struct Context *ctx)
 {
   struct nm_ctxdata *data = get_ctxdata(ctx);
   if (!data)
@@ -1693,7 +1693,7 @@ void nm_debug_check(CONTEXT *ctx)
   }
 }
 
-int nm_read_entire_thread(CONTEXT *ctx, HEADER *h)
+int nm_read_entire_thread(struct Context *ctx, struct Header *h)
 {
   struct nm_ctxdata *data = get_ctxdata(ctx);
   const char *id = NULL;
@@ -1746,7 +1746,7 @@ done:
   return rc;
 }
 
-char *nm_uri_from_query(CONTEXT *ctx, char *buf, size_t bufsz)
+char *nm_uri_from_query(struct Context *ctx, char *buf, size_t bufsz)
 {
   mutt_debug(2, "nm_uri_from_query (%s)\n", buf);
   struct nm_ctxdata *data = get_ctxdata(ctx);
@@ -1790,7 +1790,7 @@ bool nm_normalize_uri(char *new_uri, const char *orig_uri, size_t new_uri_sz)
   mutt_debug(2, "nm_normalize_uri (%s)\n", orig_uri);
   char buf[LONG_STRING];
 
-  CONTEXT tmp_ctx;
+  struct Context tmp_ctx;
   struct nm_ctxdata tmp_ctxdata;
 
   tmp_ctx.magic = MUTT_NOTMUCH;
@@ -1861,7 +1861,7 @@ void nm_query_window_backward(void)
   mutt_debug(2, "nm_query_window_backward (%d)\n", NotmuchQueryWindowCurrentPosition);
 }
 
-int nm_modify_message_tags(CONTEXT *ctx, HEADER *hdr, char *buf)
+int nm_modify_message_tags(struct Context *ctx, struct Header *hdr, char *buf)
 {
   struct nm_ctxdata *data = get_ctxdata(ctx);
   notmuch_database_t *db = NULL;
@@ -1892,7 +1892,7 @@ done:
   return rc;
 }
 
-int nm_update_filename(CONTEXT *ctx, const char *old, const char *new, HEADER *h)
+int nm_update_filename(struct Context *ctx, const char *old, const char *new, struct Header *h)
 {
   char buf[PATH_MAX];
   int rc;
@@ -1997,9 +1997,9 @@ done:
   return rc;
 }
 
-char *nm_get_description(CONTEXT *ctx)
+char *nm_get_description(struct Context *ctx)
 {
-  BUFFY *p = NULL;
+  struct Buffy *p = NULL;
 
   for (p = VirtIncoming; p; p = p->next)
     if (p->desc && (strcmp(p->path, ctx->path) == 0))
@@ -2010,7 +2010,7 @@ char *nm_get_description(CONTEXT *ctx)
 
 int nm_description_to_path(const char *desc, char *buf, size_t bufsz)
 {
-  BUFFY *p = NULL;
+  struct Buffy *p = NULL;
 
   if (!desc || !buf || !bufsz)
     return -EINVAL;
@@ -2026,7 +2026,7 @@ int nm_description_to_path(const char *desc, char *buf, size_t bufsz)
   return -1;
 }
 
-int nm_record_message(CONTEXT *ctx, char *path, HEADER *h)
+int nm_record_message(struct Context *ctx, char *path, struct Header *h)
 {
   notmuch_database_t *db = NULL;
   notmuch_status_t st;
@@ -2073,7 +2073,7 @@ done:
   return rc;
 }
 
-int nm_get_all_tags(CONTEXT *ctx, char **tag_list, int *tag_count)
+int nm_get_all_tags(struct Context *ctx, char **tag_list, int *tag_count)
 {
   struct nm_ctxdata *data = get_ctxdata(ctx);
   notmuch_database_t *db = NULL;
@@ -2116,7 +2116,7 @@ done:
 }
 
 
-static int nm_open_mailbox(CONTEXT *ctx)
+static int nm_open_mailbox(struct Context *ctx)
 {
   notmuch_query_t *q = NULL;
   struct nm_ctxdata *data = NULL;
@@ -2163,7 +2163,7 @@ static int nm_open_mailbox(CONTEXT *ctx)
   return rc;
 }
 
-static int nm_close_mailbox(CONTEXT *ctx)
+static int nm_close_mailbox(struct Context *ctx)
 {
   int i;
 
@@ -2172,7 +2172,7 @@ static int nm_close_mailbox(CONTEXT *ctx)
 
   for (i = 0; i < ctx->msgcount; i++)
   {
-    HEADER *h = ctx->hdrs[i];
+    struct Header *h = ctx->hdrs[i];
 
     if (h)
     {
@@ -2186,7 +2186,7 @@ static int nm_close_mailbox(CONTEXT *ctx)
   return 0;
 }
 
-static int nm_check_mailbox(CONTEXT *ctx, int *index_hint)
+static int nm_check_mailbox(struct Context *ctx, int *index_hint)
 {
   struct nm_ctxdata *data = get_ctxdata(ctx);
   time_t mtime = 0;
@@ -2232,7 +2232,7 @@ static int nm_check_mailbox(CONTEXT *ctx, int *index_hint)
     const char *new = NULL;
 
     notmuch_message_t *m = notmuch_messages_get(msgs);
-    HEADER *h = get_mutt_header(ctx, m);
+    struct Header *h = get_mutt_header(ctx, m);
 
     if (!h)
     {
@@ -2260,7 +2260,7 @@ static int nm_check_mailbox(CONTEXT *ctx, int *index_hint)
        * this message, update the flags we just
        * detected.
        */
-      HEADER tmp;
+      struct Header tmp;
       memset(&tmp, 0, sizeof(tmp));
       maildir_parse_flags(&tmp, new);
       maildir_update_flags(ctx, h, &tmp);
@@ -2300,12 +2300,12 @@ done:
                                                         new_flags ? MUTT_FLAGS : 0;
 }
 
-static int nm_sync_mailbox(CONTEXT *ctx, int *index_hint)
+static int nm_sync_mailbox(struct Context *ctx, int *index_hint)
 {
   struct nm_ctxdata *data = get_ctxdata(ctx);
   int i, rc = 0;
   char msgbuf[STRING];
-  progress_t progress;
+  struct Progress progress;
   char *uri = ctx->path;
   int changed = 0;
 
@@ -2324,7 +2324,7 @@ static int nm_sync_mailbox(CONTEXT *ctx, int *index_hint)
   for (i = 0; i < ctx->msgcount; i++)
   {
     char old[_POSIX_PATH_MAX], new[_POSIX_PATH_MAX];
-    HEADER *h = ctx->hdrs[i];
+    struct Header *h = ctx->hdrs[i];
     struct nm_hdrdata *hd = h->data;
 
     if (!ctx->quiet)
@@ -2380,11 +2380,11 @@ static int nm_sync_mailbox(CONTEXT *ctx, int *index_hint)
   return rc;
 }
 
-static int nm_open_message(CONTEXT *ctx, MESSAGE *msg, int msgno)
+static int nm_open_message(struct Context *ctx, struct Message *msg, int msgno)
 {
   if (!ctx || !msg)
     return 1;
-  HEADER *cur = ctx->hdrs[msgno];
+  struct Header *cur = ctx->hdrs[msgno];
   char *folder = ctx->path;
   char path[_POSIX_PATH_MAX];
   folder = nm_header_get_folder(cur);
@@ -2400,7 +2400,7 @@ static int nm_open_message(CONTEXT *ctx, MESSAGE *msg, int msgno)
   return !msg->fp;
 }
 
-static int nm_close_message(CONTEXT *ctx, MESSAGE *msg)
+static int nm_close_message(struct Context *ctx, struct Message *msg)
 {
   if (!msg)
     return 1;
@@ -2408,7 +2408,7 @@ static int nm_close_message(CONTEXT *ctx, MESSAGE *msg)
   return 0;
 }
 
-static int nm_commit_message(CONTEXT *ctx, MESSAGE *msg)
+static int nm_commit_message(struct Context *ctx, struct Message *msg)
 {
   mutt_error(_("Can't write to virtual folder."));
   return -1;

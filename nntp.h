@@ -47,7 +47,7 @@ enum
   NNTP_BYE
 };
 
-typedef struct
+struct NntpServer
 {
   bool hasCAPABILITIES : 1;
   bool hasSTARTTLS : 1;
@@ -73,23 +73,23 @@ typedef struct
   unsigned int groups_num;
   unsigned int groups_max;
   void **groups_list;
-  HASH *groups_hash;
-  CONNECTION *conn;
-} NNTP_SERVER;
+  struct Hash *groups_hash;
+  struct Connection *conn;
+};
 
-typedef struct
+struct NewsrcEntry
 {
   anum_t first;
   anum_t last;
-} NEWSRC_ENTRY;
+};
 
-typedef struct
+struct NntpAcache
 {
   unsigned int index;
   char *path;
-} NNTP_ACACHE;
+};
 
-typedef struct
+struct NntpData
 {
   char *group;
   char *desc;
@@ -103,59 +103,59 @@ typedef struct
   bool allowed : 1;
   bool deleted : 1;
   unsigned int newsrc_len;
-  NEWSRC_ENTRY *newsrc_ent;
-  NNTP_SERVER *nserv;
-  NNTP_ACACHE acache[NNTP_ACACHE_LEN];
-  body_cache_t *bcache;
-} NNTP_DATA;
+  struct NewsrcEntry *newsrc_ent;
+  struct NntpServer *nserv;
+  struct NntpAcache acache[NNTP_ACACHE_LEN];
+  struct BodyCache *bcache;
+};
 
-typedef struct
+struct NntpHeaderData
 {
   anum_t article_num;
   bool parsed : 1;
-} NNTP_HEADER_DATA;
+};
 
-#define NHDR(hdr) ((NNTP_HEADER_DATA *) ((hdr)->data))
+#define NHDR(hdr) ((struct NntpHeaderData *) ((hdr)->data))
 
 /* internal functions */
 int nntp_add_group(char *line, void *data);
-int nntp_active_save_cache(NNTP_SERVER *nserv);
-int nntp_check_new_groups(NNTP_SERVER *nserv);
-int nntp_open_connection(NNTP_SERVER *nserv);
-void nntp_newsrc_gen_entries(CONTEXT *ctx);
-void nntp_bcache_update(NNTP_DATA *nntp_data);
-void nntp_article_status(CONTEXT *ctx, HEADER *hdr, char *group, anum_t anum);
-void nntp_group_unread_stat(NNTP_DATA *nntp_data);
+int nntp_active_save_cache(struct NntpServer *nserv);
+int nntp_check_new_groups(struct NntpServer *nserv);
+int nntp_open_connection(struct NntpServer *nserv);
+void nntp_newsrc_gen_entries(struct Context *ctx);
+void nntp_bcache_update(struct NntpData *nntp_data);
+void nntp_article_status(struct Context *ctx, struct Header *hdr, char *group, anum_t anum);
+void nntp_group_unread_stat(struct NntpData *nntp_data);
 void nntp_data_free(void *data);
-void nntp_acache_free(NNTP_DATA *nntp_data);
-void nntp_delete_group_cache(NNTP_DATA *nntp_data);
+void nntp_acache_free(struct NntpData *nntp_data);
+void nntp_delete_group_cache(struct NntpData *nntp_data);
 
 /* exposed interface */
-NNTP_SERVER *nntp_select_server(char *server, int leave_lock);
-NNTP_DATA *mutt_newsgroup_subscribe(NNTP_SERVER *nserv, char *group);
-NNTP_DATA *mutt_newsgroup_unsubscribe(NNTP_SERVER *nserv, char *group);
-NNTP_DATA *mutt_newsgroup_catchup(NNTP_SERVER *nserv, char *group);
-NNTP_DATA *mutt_newsgroup_uncatchup(NNTP_SERVER *nserv, char *group);
-int nntp_active_fetch(NNTP_SERVER *nserv);
-int nntp_newsrc_update(NNTP_SERVER *nserv);
+struct NntpServer *nntp_select_server(char *server, int leave_lock);
+struct NntpData *mutt_newsgroup_subscribe(struct NntpServer *nserv, char *group);
+struct NntpData *mutt_newsgroup_unsubscribe(struct NntpServer *nserv, char *group);
+struct NntpData *mutt_newsgroup_catchup(struct NntpServer *nserv, char *group);
+struct NntpData *mutt_newsgroup_uncatchup(struct NntpServer *nserv, char *group);
+int nntp_active_fetch(struct NntpServer *nserv);
+int nntp_newsrc_update(struct NntpServer *nserv);
 int nntp_post(const char *msg);
-int nntp_check_msgid(CONTEXT *ctx, const char *msgid);
-int nntp_check_children(CONTEXT *ctx, const char *msgid);
-int nntp_newsrc_parse(NNTP_SERVER *nserv);
-void nntp_newsrc_close(NNTP_SERVER *nserv);
+int nntp_check_msgid(struct Context *ctx, const char *msgid);
+int nntp_check_children(struct Context *ctx, const char *msgid);
+int nntp_newsrc_parse(struct NntpServer *nserv);
+void nntp_newsrc_close(struct NntpServer *nserv);
 void nntp_buffy(char *buf, size_t len);
-void nntp_expand_path(char *line, size_t len, ACCOUNT *acct);
-void nntp_clear_cache(NNTP_SERVER *nserv);
+void nntp_expand_path(char *line, size_t len, struct Account *acct);
+void nntp_clear_cache(struct NntpServer *nserv);
 const char *nntp_format_str(char *dest, size_t destlen, size_t col, int cols,
                             char op, const char *src, const char *fmt,
                             const char *ifstring, const char *elsestring,
                             unsigned long data, format_flag flags);
 
-NNTP_SERVER *CurrentNewsSrv INITVAL(NULL);
+struct NntpServer *CurrentNewsSrv INITVAL(NULL);
 
 #ifdef USE_HCACHE
-header_cache_t *nntp_hcache_open(NNTP_DATA *nntp_data);
-void nntp_hcache_update(NNTP_DATA *nntp_data, header_cache_t *hc);
+header_cache_t *nntp_hcache_open(struct NntpData *nntp_data);
+void nntp_hcache_update(struct NntpData *nntp_data, header_cache_t *hc);
 #endif
 
 extern struct mx_ops mx_nntp_ops;

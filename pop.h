@@ -48,15 +48,15 @@ typedef enum {
   POP_A_UNAVAIL
 } pop_auth_res_t;
 
-typedef struct
+struct PopCache
 {
   unsigned int index;
   char *path;
-} POP_CACHE;
+};
 
-typedef struct
+struct PopData
 {
-  CONNECTION *conn;
+  struct Connection *conn;
   unsigned int status : 2;
   bool capabilities : 1;
   unsigned int use_stls : 2;
@@ -73,34 +73,34 @@ typedef struct
   time_t login_delay; /* minimal login delay  capability */
   char *auth_list;    /* list of auth mechanisms */
   char *timestamp;
-  body_cache_t *bcache; /* body cache */
+  struct BodyCache *bcache; /* body cache */
   char err_msg[POP_CMD_RESPONSE];
-  POP_CACHE cache[POP_CACHE_LEN];
-} POP_DATA;
+  struct PopCache cache[POP_CACHE_LEN];
+};
 
-typedef struct
+struct PopAuth
 {
   /* do authentication, using named method or any available if method is NULL */
-  pop_auth_res_t (*authenticate)(POP_DATA *, const char *);
+  pop_auth_res_t (*authenticate)(struct PopData *, const char *);
   /* name of authentication method supported, NULL means variable. If this
    * is not null, authenticate may ignore the second parameter. */
   const char *method;
-} pop_auth_t;
+};
 
 /* pop_auth.c */
-int pop_authenticate(POP_DATA *pop_data);
-void pop_apop_timestamp(POP_DATA *pop_data, char *buf);
+int pop_authenticate(struct PopData *pop_data);
+void pop_apop_timestamp(struct PopData *pop_data, char *buf);
 
 /* pop_lib.c */
 #define pop_query(A, B, C) pop_query_d(A, B, C, NULL)
-int pop_parse_path(const char *path, ACCOUNT *acct);
-int pop_connect(POP_DATA *pop_data);
-int pop_open_connection(POP_DATA *pop_data);
-int pop_query_d(POP_DATA *pop_data, char *buf, size_t buflen, char *msg);
-int pop_fetch_data(POP_DATA *pop_data, char *query, progress_t *progressbar,
+int pop_parse_path(const char *path, struct Account *acct);
+int pop_connect(struct PopData *pop_data);
+int pop_open_connection(struct PopData *pop_data);
+int pop_query_d(struct PopData *pop_data, char *buf, size_t buflen, char *msg);
+int pop_fetch_data(struct PopData *pop_data, char *query, struct Progress *progressbar,
                    int (*funct)(char *, void *), void *data);
-int pop_reconnect(CONTEXT *ctx);
-void pop_logout(CONTEXT *ctx);
+int pop_reconnect(struct Context *ctx);
+void pop_logout(struct Context *ctx);
 
 /* pop.c */
 void pop_fetch_mail(void);

@@ -28,26 +28,26 @@
 #include "compress.h"
 #endif
 
-typedef struct hook
+struct Hook
 {
   int type;           /* hook type */
-  REGEXP rx;          /* regular expression */
+  struct Regex rx;          /* regular expression */
   char *command;      /* filename, command or pattern to execute */
-  pattern_t *pattern; /* used for fcc,save,send-hook */
-  struct hook *next;
-} HOOK;
+  struct Pattern *pattern; /* used for fcc,save,send-hook */
+  struct Hook *next;
+};
 
-static HOOK *Hooks = NULL;
+static struct Hook *Hooks = NULL;
 
 static int current_hook_type = 0;
 
-int mutt_parse_hook(BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err)
+int mutt_parse_hook(struct Buffer *buf, struct Buffer *s, unsigned long data, struct Buffer *err)
 {
-  HOOK *ptr = NULL;
-  BUFFER command, pattern;
+  struct Hook *ptr = NULL;
+  struct Buffer command, pattern;
   int rc, not = 0;
   regex_t *rx = NULL;
-  pattern_t *pat = NULL;
+  struct Pattern *pat = NULL;
   char path[_POSIX_PATH_MAX];
 
   mutt_buffer_init(&pattern);
@@ -223,11 +223,11 @@ int mutt_parse_hook(BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err)
 
   if (ptr)
   {
-    ptr->next = safe_calloc(1, sizeof(HOOK));
+    ptr->next = safe_calloc(1, sizeof(struct Hook));
     ptr = ptr->next;
   }
   else
-    Hooks = ptr = safe_calloc(1, sizeof(HOOK));
+    Hooks = ptr = safe_calloc(1, sizeof(struct Hook));
   ptr->type = data;
   ptr->command = command.data;
   ptr->pattern = pat;
@@ -243,7 +243,7 @@ error:
   return -1;
 }
 
-static void delete_hook(HOOK *h)
+static void delete_hook(struct Hook *h)
 {
   FREE(&h->command);
   FREE(&h->rx.pattern);
@@ -258,8 +258,8 @@ static void delete_hook(HOOK *h)
 /* Deletes all hooks of type ``type'', or all defined hooks if ``type'' is 0 */
 static void delete_hooks(int type)
 {
-  HOOK *h = NULL;
-  HOOK *prev = NULL;
+  struct Hook *h = NULL;
+  struct Hook *prev = NULL;
 
   while (h = Hooks, h && (type == 0 || type == h->type))
   {
@@ -282,7 +282,7 @@ static void delete_hooks(int type)
   }
 }
 
-int mutt_parse_unhook(BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err)
+int mutt_parse_unhook(struct Buffer *buf, struct Buffer *s, unsigned long data, struct Buffer *err)
 {
   while (MoreArgs(s))
   {
@@ -320,8 +320,8 @@ int mutt_parse_unhook(BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err)
 
 void mutt_folder_hook(char *path)
 {
-  HOOK *tmp = Hooks;
-  BUFFER err, token;
+  struct Hook *tmp = Hooks;
+  struct Buffer err, token;
 
   current_hook_type = MUTT_FOLDERHOOK;
 
@@ -359,7 +359,7 @@ void mutt_folder_hook(char *path)
 
 char *mutt_find_hook(int type, const char *pat)
 {
-  HOOK *tmp = Hooks;
+  struct Hook *tmp = Hooks;
 
   for (; tmp; tmp = tmp->next)
     if (tmp->type & type)
@@ -370,11 +370,11 @@ char *mutt_find_hook(int type, const char *pat)
   return NULL;
 }
 
-void mutt_message_hook(CONTEXT *ctx, HEADER *hdr, int type)
+void mutt_message_hook(struct Context *ctx, struct Header *hdr, int type)
 {
-  BUFFER err, token;
-  HOOK *hook = NULL;
-  pattern_cache_t cache;
+  struct Buffer err, token;
+  struct Hook *hook = NULL;
+  struct PatternCache cache;
 
   current_hook_type = type;
 
@@ -412,10 +412,10 @@ void mutt_message_hook(CONTEXT *ctx, HEADER *hdr, int type)
   current_hook_type = 0;
 }
 
-static int addr_hook(char *path, size_t pathlen, int type, CONTEXT *ctx, HEADER *hdr)
+static int addr_hook(char *path, size_t pathlen, int type, struct Context *ctx, struct Header *hdr)
 {
-  HOOK *hook = NULL;
-  pattern_cache_t cache;
+  struct Hook *hook = NULL;
+  struct PatternCache cache;
 
   memset(&cache, 0, sizeof(cache));
   /* determine if a matching hook exists */
@@ -435,14 +435,14 @@ static int addr_hook(char *path, size_t pathlen, int type, CONTEXT *ctx, HEADER 
   return -1;
 }
 
-void mutt_default_save(char *path, size_t pathlen, HEADER *hdr)
+void mutt_default_save(char *path, size_t pathlen, struct Header *hdr)
 {
   *path = 0;
   if (addr_hook(path, pathlen, MUTT_SAVEHOOK, Context, hdr) != 0)
   {
     char tmp[_POSIX_PATH_MAX];
-    ADDRESS *adr = NULL;
-    ENVELOPE *env = hdr->env;
+    struct Address *adr = NULL;
+    struct Envelope *env = hdr->env;
     bool fromMe = mutt_addr_is_user(env->from);
 
     if (!fromMe && env->reply_to && env->reply_to->mailbox)
@@ -463,11 +463,11 @@ void mutt_default_save(char *path, size_t pathlen, HEADER *hdr)
   }
 }
 
-void mutt_select_fcc(char *path, size_t pathlen, HEADER *hdr)
+void mutt_select_fcc(char *path, size_t pathlen, struct Header *hdr)
 {
-  ADDRESS *adr = NULL;
+  struct Address *adr = NULL;
   char buf[_POSIX_PATH_MAX];
-  ENVELOPE *env = hdr->env;
+  struct Envelope *env = hdr->env;
 
   if (addr_hook(path, pathlen, MUTT_FCCHOOK, NULL, hdr) != 0)
   {
@@ -487,7 +487,7 @@ void mutt_select_fcc(char *path, size_t pathlen, HEADER *hdr)
 
 static char *_mutt_string_hook(const char *match, int hook)
 {
-  HOOK *tmp = Hooks;
+  struct Hook *tmp = Hooks;
 
   for (; tmp; tmp = tmp->next)
   {
@@ -498,10 +498,10 @@ static char *_mutt_string_hook(const char *match, int hook)
   return NULL;
 }
 
-static LIST *_mutt_list_hook(const char *match, int hook)
+static struct List *_mutt_list_hook(const char *match, int hook)
 {
-  HOOK *tmp = Hooks;
-  LIST *matches = NULL;
+  struct Hook *tmp = Hooks;
+  struct List *matches = NULL;
 
   for (; tmp; tmp = tmp->next)
   {
@@ -522,7 +522,7 @@ char *mutt_iconv_hook(const char *chs)
   return _mutt_string_hook(chs, MUTT_ICONVHOOK);
 }
 
-LIST *mutt_crypt_hook(ADDRESS *adr)
+struct List *mutt_crypt_hook(struct Address *adr)
 {
   return _mutt_list_hook(adr->mailbox, MUTT_CRYPTHOOK);
 }
@@ -535,9 +535,9 @@ void mutt_account_hook(const char *url)
    * belong in a folder-hook -- perhaps we should warn the user. */
   static int inhook = 0;
 
-  HOOK *hook = NULL;
-  BUFFER token;
-  BUFFER err;
+  struct Hook *hook = NULL;
+  struct Buffer token;
+  struct Buffer err;
 
   if (inhook)
     return;
@@ -578,9 +578,9 @@ void mutt_account_hook(const char *url)
 
 void mutt_timeout_hook(void)
 {
-  HOOK *hook = NULL;
-  BUFFER token;
-  BUFFER err;
+  struct Hook *hook = NULL;
+  struct Buffer token;
+  struct Buffer err;
   char buf[STRING];
 
   err.data = buf;
@@ -613,9 +613,9 @@ void mutt_timeout_hook(void)
  */
 void mutt_startup_shutdown_hook(int type)
 {
-  HOOK *hook = NULL;
-  BUFFER token;
-  BUFFER err;
+  struct Hook *hook = NULL;
+  struct Buffer token;
+  struct Buffer err;
   char buf[STRING];
 
   err.data = buf;

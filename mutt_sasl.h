@@ -24,12 +24,12 @@
 
 #include "mutt_socket.h"
 
-int mutt_sasl_client_new(CONNECTION *conn, sasl_conn_t **saslconn);
+int mutt_sasl_client_new(struct Connection *conn, sasl_conn_t **saslconn);
 int mutt_sasl_interact(sasl_interact_t *interaction);
-void mutt_sasl_setup_conn(CONNECTION *conn, sasl_conn_t *saslconn);
+void mutt_sasl_setup_conn(struct Connection *conn, sasl_conn_t *saslconn);
 void mutt_sasl_done(void);
 
-typedef struct
+struct SaslData
 {
   sasl_conn_t *saslconn;
   const sasl_ssf_t *ssf;
@@ -42,11 +42,11 @@ typedef struct
 
   /* underlying socket data */
   void *sockdata;
-  int (*msasl_open)(CONNECTION *conn);
-  int (*msasl_close)(CONNECTION *conn);
-  int (*msasl_read)(CONNECTION *conn, char *buf, size_t len);
-  int (*msasl_write)(CONNECTION *conn, const char *buf, size_t count);
-  int (*msasl_poll)(CONNECTION *conn);
-} SASL_DATA;
+  int (*msasl_open)(struct Connection *conn);
+  int (*msasl_close)(struct Connection *conn);
+  int (*msasl_read)(struct Connection *conn, char *buf, size_t len);
+  int (*msasl_write)(struct Connection *conn, const char *buf, size_t count);
+  int (*msasl_poll)(struct Connection *conn);
+};
 
 #endif /* _MUTT_SASL_H */

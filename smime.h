@@ -23,7 +23,7 @@
 
 #include "mutt_crypt.h"
 
-typedef struct smime_key
+struct SmimeKey
 {
   char *email;
   char *hash;
@@ -31,34 +31,34 @@ typedef struct smime_key
   char *issuer;
   char trust; /* i=Invalid r=revoked e=expired u=unverified v=verified t=trusted */
   int flags;
-  struct smime_key *next;
-} smime_key_t;
+  struct SmimeKey *next;
+};
 
 
 void smime_void_passphrase(void);
 int smime_valid_passphrase(void);
 
-int smime_decrypt_mime(FILE *fpin, FILE **fpout, BODY *b, BODY **cur);
+int smime_decrypt_mime(FILE *fpin, FILE **fpout, struct Body *b, struct Body **cur);
 
-int smime_application_smime_handler(BODY *m, STATE *s);
-
-
-BODY *smime_sign_message(BODY *a);
-
-BODY *smime_build_smime_entity(BODY *a, char *certlist);
-
-int smime_verify_one(BODY *sigbdy, STATE *s, const char *tempfile);
+int smime_application_smime_handler(struct Body *m, struct State *s);
 
 
-int smime_verify_sender(HEADER *h);
+struct Body *smime_sign_message(struct Body *a);
 
-void smime_getkeys(ENVELOPE *env);
+struct Body *smime_build_smime_entity(struct Body *a, char *certlist);
 
-char *smime_find_keys(ADDRESS *adrlist, int oppenc_mode);
+int smime_verify_one(struct Body *sigbdy, struct State *s, const char *tempfile);
+
+
+int smime_verify_sender(struct Header *h);
+
+void smime_getkeys(struct Envelope *env);
+
+char *smime_find_keys(struct Address *adrlist, int oppenc_mode);
 
 void smime_invoke_import(char *infile, char *mailbox);
 
-int smime_send_menu(HEADER *msg);
+int smime_send_menu(struct Header *msg);
 
 #endif
 

@@ -96,7 +96,7 @@ bool pgp_use_gpg_agent(void)
   return true;
 }
 
-static pgp_key_t _pgp_parent(pgp_key_t k)
+static struct PgpKeyInfo *_pgp_parent(struct PgpKeyInfo *k)
 {
   if ((k->flags & KEYFLAG_SUBKEY) && k->parent && option(OPTPGPIGNORESUB))
     k = k->parent;
@@ -104,28 +104,28 @@ static pgp_key_t _pgp_parent(pgp_key_t k)
   return k;
 }
 
-char *pgp_long_keyid(pgp_key_t k)
+char *pgp_long_keyid(struct PgpKeyInfo *k)
 {
   k = _pgp_parent(k);
 
   return k->keyid;
 }
 
-char *pgp_short_keyid(pgp_key_t k)
+char *pgp_short_keyid(struct PgpKeyInfo *k)
 {
   k = _pgp_parent(k);
 
   return k->keyid + 8;
 }
 
-char *pgp_keyid(pgp_key_t k)
+char *pgp_keyid(struct PgpKeyInfo *k)
 {
   k = _pgp_parent(k);
 
   return _pgp_keyid(k);
 }
 
-char *_pgp_keyid(pgp_key_t k)
+char *_pgp_keyid(struct PgpKeyInfo *k)
 {
   if (option(OPTPGPLONGIDS))
     return k->keyid;
@@ -133,7 +133,7 @@ char *_pgp_keyid(pgp_key_t k)
     return (k->keyid + 8);
 }
 
-static char *pgp_fingerprint(pgp_key_t k)
+static char *pgp_fingerprint(struct PgpKeyInfo *k)
 {
   k = _pgp_parent(k);
 
@@ -146,7 +146,7 @@ static char *pgp_fingerprint(pgp_key_t k)
  * The longest available should be used for internally identifying
  * the key and for invoking pgp commands.
  */
-char *pgp_fpr_or_lkeyid(pgp_key_t k)
+char *pgp_fpr_or_lkeyid(struct PgpKeyInfo *k)
 {
   char *fingerprint = NULL;
 
@@ -247,7 +247,7 @@ static int pgp_check_decryption_okay(FILE *fpin)
  * note that we can successfully handle anything produced by any
  * existing versions of mutt.)
  */
-static void pgp_copy_clearsigned(FILE *fpin, STATE *s, char *charset)
+static void pgp_copy_clearsigned(FILE *fpin, struct State *s, char *charset)
 {
   char buf[HUGE_STRING];
   short complete, armor_header;
@@ -297,7 +297,7 @@ static void pgp_copy_clearsigned(FILE *fpin, STATE *s, char *charset)
 
 
 /* Support for the Application/PGP Content Type. */
-int pgp_application_pgp_handler(BODY *m, STATE *s)
+int pgp_application_pgp_handler(struct Body *m, struct State *s)
 {
   int could_not_decrypt = 0;
   int needpass = -1, pgp_keyblock = 0;
@@ -588,7 +588,7 @@ out:
   return rc;
 }
 
-static int pgp_check_traditional_one_body(FILE *fp, BODY *b, int tagged_only)
+static int pgp_check_traditional_one_body(FILE *fp, struct Body *b, int tagged_only)
 {
   char tempfile[_POSIX_PATH_MAX];
   char buf[HUGE_STRING];
@@ -648,7 +648,7 @@ static int pgp_check_traditional_one_body(FILE *fp, BODY *b, int tagged_only)
   return 1;
 }
 
-int pgp_check_traditional(FILE *fp, BODY *b, int tagged_only)
+int pgp_check_traditional(FILE *fp, struct Body *b, int tagged_only)
 {
   int rv = 0;
   int r;
@@ -669,7 +669,7 @@ int pgp_check_traditional(FILE *fp, BODY *b, int tagged_only)
 }
 
 
-int pgp_verify_one(BODY *sigbdy, STATE *s, const char *tempfile)
+int pgp_verify_one(struct Body *sigbdy, struct State *s, const char *tempfile)
 {
   char sigfile[_POSIX_PATH_MAX], pgperrfile[_POSIX_PATH_MAX];
   FILE *fp = NULL, *pgpout = NULL, *pgperr = NULL;
@@ -733,9 +733,9 @@ int pgp_verify_one(BODY *sigbdy, STATE *s, const char *tempfile)
 
 
 /* Extract pgp public keys from messages or attachments */
-static void pgp_extract_keys_from_attachment(FILE *fp, BODY *top)
+static void pgp_extract_keys_from_attachment(FILE *fp, struct Body *top)
 {
-  STATE s;
+  struct State s;
   FILE *tempfp = NULL;
   char tempfname[_POSIX_PATH_MAX];
 
@@ -746,7 +746,7 @@ static void pgp_extract_keys_from_attachment(FILE *fp, BODY *top)
     return;
   }
 
-  memset(&s, 0, sizeof(STATE));
+  memset(&s, 0, sizeof(struct State));
 
   s.fpin = fp;
   s.fpout = tempfp;
@@ -761,7 +761,7 @@ static void pgp_extract_keys_from_attachment(FILE *fp, BODY *top)
   mutt_unlink(tempfname);
 }
 
-void pgp_extract_keys_from_attachment_list(FILE *fp, int tag, BODY *top)
+void pgp_extract_keys_from_attachment_list(FILE *fp, int tag, struct Body *top)
 {
   if (!fp)
   {
@@ -784,7 +784,7 @@ void pgp_extract_keys_from_attachment_list(FILE *fp, int tag, BODY *top)
   unset_option(OPTDONTHANDLEPGPKEYS);
 }
 
-static BODY *pgp_decrypt_part(BODY *a, STATE *s, FILE *fpout, BODY *p)
+static struct Body *pgp_decrypt_part(struct Body *a, struct State *s, FILE *fpout, struct Body *p)
 {
   if (!a || !s || !fpout || !p)
     return NULL;
@@ -792,7 +792,7 @@ static BODY *pgp_decrypt_part(BODY *a, STATE *s, FILE *fpout, BODY *p)
   char buf[LONG_STRING];
   FILE *pgpin = NULL, *pgpout = NULL, *pgperr = NULL, *pgptmp = NULL;
   struct stat info;
-  BODY *tattach = NULL;
+  struct Body *tattach = NULL;
   int len;
   char pgperrfile[_POSIX_PATH_MAX];
   char pgptmpfile[_POSIX_PATH_MAX];
@@ -908,11 +908,11 @@ static BODY *pgp_decrypt_part(BODY *a, STATE *s, FILE *fpout, BODY *p)
   return tattach;
 }
 
-int pgp_decrypt_mime(FILE *fpin, FILE **fpout, BODY *b, BODY **cur)
+int pgp_decrypt_mime(FILE *fpin, FILE **fpout, struct Body *b, struct Body **cur)
 {
   char tempfile[_POSIX_PATH_MAX];
-  STATE s;
-  BODY *p = b;
+  struct State s;
+  struct Body *p = b;
   int need_decode = 0;
   int saved_type;
   LOFF_T saved_offset;
@@ -989,11 +989,11 @@ bail:
  * This handler is passed the application/octet-stream directly.
  * The caller must propagate a->goodsig to its parent.
  */
-int pgp_encrypted_handler(BODY *a, STATE *s)
+int pgp_encrypted_handler(struct Body *a, struct State *s)
 {
   char tempfile[_POSIX_PATH_MAX];
   FILE *fpout = NULL, *fpin = NULL;
-  BODY *tattach = NULL;
+  struct Body *tattach = NULL;
   int rc = 0;
 
   mutt_mktemp(tempfile, sizeof(tempfile));
@@ -1058,9 +1058,9 @@ int pgp_encrypted_handler(BODY *a, STATE *s)
  */
 
 
-BODY *pgp_sign_message(BODY *a)
+struct Body *pgp_sign_message(struct Body *a)
 {
-  BODY *t = NULL;
+  struct Body *t = NULL;
   char buffer[LONG_STRING];
   char sigfile[_POSIX_PATH_MAX], signedfile[_POSIX_PATH_MAX];
   FILE *pgpin = NULL, *pgpout = NULL, *pgperr = NULL, *fp = NULL, *sfp = NULL;
@@ -1184,15 +1184,15 @@ BODY *pgp_sign_message(BODY *a)
  * If oppenc_mode is true, only keys that can be determined without
  * prompting will be used.
  */
-char *pgp_find_keys(ADDRESS *adrlist, int oppenc_mode)
+char *pgp_find_keys(struct Address *adrlist, int oppenc_mode)
 {
-  LIST *crypt_hook_list = NULL, *crypt_hook = NULL;
+  struct List *crypt_hook_list = NULL, *crypt_hook = NULL;
   char *keyID = NULL, *keylist = NULL;
   size_t keylist_size = 0;
   size_t keylist_used = 0;
-  ADDRESS *addr = NULL;
-  ADDRESS *p = NULL, *q = NULL;
-  pgp_key_t k_info = NULL;
+  struct Address *addr = NULL;
+  struct Address *p = NULL, *q = NULL;
+  struct PgpKeyInfo *k_info = NULL;
   char buf[LONG_STRING];
   int r;
   int key_selected;
@@ -1301,13 +1301,13 @@ char *pgp_find_keys(ADDRESS *adrlist, int oppenc_mode)
 
 /* Warning: "a" is no longer freed in this routine, you need
  * to free it later.  This is necessary for $fcc_attach. */
-BODY *pgp_encrypt_message(BODY *a, char *keylist, int sign)
+struct Body *pgp_encrypt_message(struct Body *a, char *keylist, int sign)
 {
   char buf[LONG_STRING];
   char tempfile[_POSIX_PATH_MAX], pgperrfile[_POSIX_PATH_MAX];
   char pgpinfile[_POSIX_PATH_MAX];
   FILE *pgpin = NULL, *pgperr = NULL, *fpout = NULL, *fptmp = NULL;
-  BODY *t = NULL;
+  struct Body *t = NULL;
   int err = 0;
   int empty = 0;
   pid_t thepid;
@@ -1425,9 +1425,9 @@ BODY *pgp_encrypt_message(BODY *a, char *keylist, int sign)
   return t;
 }
 
-BODY *pgp_traditional_encryptsign(BODY *a, int flags, char *keylist)
+struct Body *pgp_traditional_encryptsign(struct Body *a, int flags, char *keylist)
 {
-  BODY *b = NULL;
+  struct Body *b = NULL;
 
   char pgpoutfile[_POSIX_PATH_MAX];
   char pgperrfile[_POSIX_PATH_MAX];
@@ -1598,9 +1598,9 @@ BODY *pgp_traditional_encryptsign(BODY *a, int flags, char *keylist)
   return b;
 }
 
-int pgp_send_menu(HEADER *msg)
+int pgp_send_menu(struct Header *msg)
 {
-  pgp_key_t p;
+  struct PgpKeyInfo *p = NULL;
   char input_signas[SHORT_STRING];
   char *prompt = NULL, *letters = NULL, *choices = NULL;
   char promptbuf[LONG_STRING];

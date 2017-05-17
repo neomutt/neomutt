@@ -19,7 +19,7 @@
 #ifndef _MUTT_COMPRESS_H
 #define _MUTT_COMPRESS_H 1
 
-bool mutt_comp_can_append(CONTEXT *ctx);
+bool mutt_comp_can_append(struct Context *ctx);
 bool mutt_comp_can_read(const char *path);
 int mutt_comp_valid_command(const char *cmd);
 

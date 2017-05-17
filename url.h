@@ -38,7 +38,7 @@ typedef enum url_scheme {
 #define U_DECODE_PASSWD (1)
 #define U_PATH (1 << 1)
 
-typedef struct ciss_url
+struct CissUrl
 {
   url_scheme_t scheme;
   char *user;
@@ -46,12 +46,12 @@ typedef struct ciss_url
   char *host;
   unsigned short port;
   char *path;
-} ciss_url_t;
+};
 
 url_scheme_t url_check_scheme(const char *s);
-int url_parse_ciss(ciss_url_t *ciss, char *src);
-int url_ciss_tostring(ciss_url_t *ciss, char *dest, size_t len, int flags);
-int url_parse_mailto(ENVELOPE *e, char **body, const char *src);
+int url_parse_ciss(struct CissUrl *ciss, char *src);
+int url_ciss_tostring(struct CissUrl *ciss, char *dest, size_t len, int flags);
+int url_parse_mailto(struct Envelope *e, char **body, const char *src);
 int url_pct_decode(char *s);
 
 #endif /* _MUTT_URL_H */

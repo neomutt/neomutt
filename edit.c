@@ -189,7 +189,7 @@ static char **be_include_messages(char *msg, char **buf, int *bufmax,
   return buf;
 }
 
-static void be_print_header(ENVELOPE *env)
+static void be_print_header(struct Envelope *env)
 {
   char tmp[HUGE_STRING];
 
@@ -229,7 +229,7 @@ static void be_print_header(ENVELOPE *env)
 /* args:
  *      force   override the $ask* vars (used for the ~h command)
  */
-static void be_edit_header(ENVELOPE *e, int force)
+static void be_edit_header(struct Envelope *e, int force)
 {
   char tmp[HUGE_STRING];
 
@@ -311,7 +311,7 @@ static void be_edit_header(ENVELOPE *e, int force)
   }
 }
 
-int mutt_builtin_editor(const char *path, HEADER *msg, HEADER *cur)
+int mutt_builtin_editor(const char *path, struct Header *msg, struct Header *cur)
 {
   char **buf = NULL;
   int bufmax = 0, buflen = 0;

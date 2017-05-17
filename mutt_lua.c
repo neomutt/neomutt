@@ -46,7 +46,7 @@ static int _handle_error(lua_State *l)
 static int _lua_mutt_call(lua_State *l)
 {
   mutt_debug(2, " * _lua_mutt_call()\n");
-  BUFFER token, expn, err;
+  struct Buffer token, expn, err;
   char buffer[LONG_STRING] = "";
   const struct command_t *command = NULL;
   int rv = 0;
@@ -104,7 +104,7 @@ static int _lua_mutt_call(lua_State *l)
 static int _lua_mutt_set(lua_State *l)
 {
   int rv = -1;
-  BUFFER err;
+  struct Buffer err;
   const char *param = lua_tostring(l, -2);
   mutt_debug(2, " * _lua_mutt_set(%s)\n", param);
   struct option_t *value = safe_malloc(sizeof(struct option_t));
@@ -198,13 +198,13 @@ static int _lua_mutt_get(lua_State *l)
       case DT_ADDR:
       {
         char value[LONG_STRING] = "";
-        rfc822_write_address(value, LONG_STRING, *((ADDRESS **) opt->data), 0);
+        rfc822_write_address(value, LONG_STRING, *((struct Address **) opt->data), 0);
         lua_pushstring(l, value);
         return 1;
       }
       case DT_MBCHARTBL:
       {
-        mbchar_table *tbl = *(mbchar_table **) opt->data;
+        struct MbCharTable *tbl = *(struct MbCharTable **) opt->data;
         lua_pushstring(l, tbl->orig_str);
         return 1;
       }
@@ -259,7 +259,7 @@ static int _lua_mutt_get(lua_State *l)
 static int _lua_mutt_enter(lua_State *l)
 {
   mutt_debug(2, " * _lua_mutt_enter()\n");
-  BUFFER token, err;
+  struct Buffer token, err;
   char *buffer = safe_strdup(lua_tostring(l, -1));
   int rv = 0;
 
@@ -376,7 +376,7 @@ static bool _lua_init(lua_State **l)
 
 lua_State *Lua = NULL;
 
-int mutt_lua_parse(BUFFER *tmp, BUFFER *s, unsigned long data, BUFFER *err)
+int mutt_lua_parse(struct Buffer *tmp, struct Buffer *s, unsigned long data, struct Buffer *err)
 {
   _lua_init(&Lua);
   mutt_debug(2, " * mutt_lua_parse(%s)\n", tmp->data);
@@ -393,7 +393,7 @@ int mutt_lua_parse(BUFFER *tmp, BUFFER *s, unsigned long data, BUFFER *err)
   return 2;
 }
 
-int mutt_lua_source_file(BUFFER *tmp, BUFFER *s, unsigned long data, BUFFER *err)
+int mutt_lua_source_file(struct Buffer *tmp, struct Buffer *s, unsigned long data, struct Buffer *err)
 {
   mutt_debug(2, " * mutt_lua_source()\n");
 

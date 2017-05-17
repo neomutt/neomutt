@@ -595,73 +595,73 @@ enum
 #define toggle_option(x) mutt_bit_toggle(Options, x)
 #define option(x) mutt_bit_isset(Options, x)
 
-typedef struct list_t
+struct List
 {
   char *data;
-  struct list_t *next;
-} LIST;
+  struct List *next;
+};
 
-typedef struct rx_list_t
+struct RxList
 {
-  REGEXP *rx;
-  struct rx_list_t *next;
-} RX_LIST;
+  struct Regex *rx;
+  struct RxList *next;
+};
 
-typedef struct replace_list_t
+struct ReplaceList
 {
-  REGEXP *rx;
+  struct Regex *rx;
   int nmatch;
   char *template;
-  struct replace_list_t *next;
-} REPLACE_LIST;
+  struct ReplaceList *next;
+};
 
-static inline LIST *mutt_new_list(void)
+static inline struct List *mutt_new_list(void)
 {
-  return safe_calloc(1, sizeof(LIST));
+  return safe_calloc(1, sizeof(struct List));
 }
 
-void mutt_free_list(LIST **list);
-void mutt_free_rx_list(RX_LIST **list);
-void mutt_free_replace_list(REPLACE_LIST **list);
-LIST *mutt_copy_list(LIST *p);
+void mutt_free_list(struct List **list);
+void mutt_free_rx_list(struct RxList **list);
+void mutt_free_replace_list(struct ReplaceList **list);
+struct List *mutt_copy_list(struct List *p);
 int mutt_matches_ignore(const char *s);
-bool mutt_matches_list(const char *s, LIST *t);
+bool mutt_matches_list(const char *s, struct List *t);
 
 /* add an element to a list */
-LIST *mutt_add_list(LIST *head, const char *data);
-LIST *mutt_add_list_n(LIST *head, const void *data, size_t len);
-LIST *mutt_find_list(LIST *l, const char *data);
-int mutt_remove_from_rx_list(RX_LIST **l, const char *str);
+struct List *mutt_add_list(struct List *head, const char *data);
+struct List *mutt_add_list_n(struct List *head, const void *data, size_t len);
+struct List *mutt_find_list(struct List *l, const char *data);
+int mutt_remove_from_rx_list(struct RxList **l, const char *str);
 
 /* handle stack */
-void mutt_push_list(LIST **head, const char *data);
-bool mutt_pop_list(LIST **head);
-const char *mutt_front_list(LIST *head);
+void mutt_push_list(struct List **head, const char *data);
+bool mutt_pop_list(struct List **head);
+const char *mutt_front_list(struct List *head);
 
-void mutt_init(int skip_sys_rc, LIST *commands);
+void mutt_init(int skip_sys_rc, struct List *commands);
 
-typedef struct alias
+struct Alias
 {
-  struct alias *self; /* XXX - ugly hack */
+  struct Alias *self; /* XXX - ugly hack */
   char *name;
-  ADDRESS *addr;
-  struct alias *next;
+  struct Address *addr;
+  struct Alias *next;
   bool tagged;
   bool del;
   short num;
-} ALIAS;
+};
 
-typedef struct envelope
+struct Envelope
 {
-  ADDRESS *return_path;
-  ADDRESS *from;
-  ADDRESS *to;
-  ADDRESS *cc;
-  ADDRESS *bcc;
-  ADDRESS *sender;
-  ADDRESS *reply_to;
-  ADDRESS *mail_followup_to;
-  ADDRESS *x_original_to;
+  struct Address *return_path;
+  struct Address *from;
+  struct Address *to;
+  struct Address *cc;
+  struct Address *bcc;
+  struct Address *sender;
+  struct Address *reply_to;
+  struct Address *mail_followup_to;
+  struct Address *x_original_to;
   char *list_post; /* this stores a mailto URL, or nothing */
   char *subject;
   char *real_subj; /* offset of the real subject */
@@ -677,35 +677,35 @@ typedef struct envelope
   char *followup_to;
   char *x_comment_to;
 #endif
-  BUFFER *spam;
-  LIST *references;  /* message references (in reverse order) */
-  LIST *in_reply_to; /* in-reply-to header content */
-  LIST *userhdrs;    /* user defined headers */
+  struct Buffer *spam;
+  struct List *references;  /* message references (in reverse order) */
+  struct List *in_reply_to; /* in-reply-to header content */
+  struct List *userhdrs;    /* user defined headers */
   int kwtypes;
 
   bool irt_changed : 1;  /* In-Reply-To changed to link/break threads */
   bool refs_changed : 1; /* References changed to break thread */
-} ENVELOPE;
+};
 
-static inline ENVELOPE *mutt_new_envelope(void)
+static inline struct Envelope *mutt_new_envelope(void)
 {
-  return safe_calloc(1, sizeof(ENVELOPE));
+  return safe_calloc(1, sizeof(struct Envelope));
 }
 
-typedef struct parameter
+struct Parameter
 {
   char *attribute;
   char *value;
-  struct parameter *next;
-} PARAMETER;
+  struct Parameter *next;
+};
 
-static inline PARAMETER *mutt_new_parameter(void)
+static inline struct Parameter *mutt_new_parameter(void)
 {
-  return safe_calloc(1, sizeof(PARAMETER));
+  return safe_calloc(1, sizeof(struct Parameter));
 }
 
 /* Information that helps in determining the Content-* of an attachment */
-typedef struct content
+struct Content
 {
   long hibin;      /* 8-bit characters */
   long lobin;      /* unprintable 7-bit chars (eg., control chars) */
@@ -717,13 +717,13 @@ typedef struct content
   bool from : 1;   /* has a line beginning with "From "? */
   bool dot : 1;    /* has a line consisting of a single dot? */
   bool cr : 1;     /* has CR, even when in a CRLF pair */
-} CONTENT;
+};
 
-typedef struct body
+struct Body
 {
   char *xtype;          /* content-type if x-unknown */
   char *subtype;        /* content-type subtype */
-  PARAMETER *parameter; /* parameters of the content-type */
+  struct Parameter *parameter; /* parameters of the content-type */
   char *description;    /* content-description */
   char *form_name;      /* Content-Disposition form-data name param */
   long hdr_offset;      /* offset in stream where the headers begin.
@@ -742,16 +742,16 @@ typedef struct body
                          * instead.
                          */
   char *charset;        /* charset of attached file */
-  CONTENT *content;     /* structure used to store detailed info about
+  struct Content *content;     /* structure used to store detailed info about
                          * the content of the attachment.  this is used
                          * to determine what content-transfer-encoding
                          * is required when sending mail.
                          */
-  struct body *next;    /* next attachment in the list */
-  struct body *parts;   /* parts of a multipart or message/rfc822 */
-  struct header *hdr;   /* header information for message/rfc822 */
+  struct Body *next;    /* next attachment in the list */
+  struct Body *parts;   /* parts of a multipart or message/rfc822 */
+  struct Header *hdr;   /* header information for message/rfc822 */
 
-  struct attachptr *aptr; /* Menu information, used in recvattach.c */
+  struct AttachPtr *aptr; /* Menu information, used in recvattach.c */
 
   signed short attach_count;
 
@@ -794,12 +794,9 @@ typedef struct body
   bool collapsed : 1; /* used by recvattach */
   bool attach_qualifies : 1;
 
-} BODY;
+};
 
-/* #3279: AIX defines conflicting struct thread */
-typedef struct mutt_thread THREAD;
-
-typedef struct header
+struct Header
 {
   unsigned int security : 12; /* bit 0-8: flags, bit 9,10: application.
                                  see: mutt_crypt.h pgplib.h, smime.h */
@@ -857,18 +854,18 @@ typedef struct header
   int msgno;          /* number displayed to the user */
   int virtual;        /* virtual message number */
   int score;
-  ENVELOPE *env;      /* envelope information */
-  BODY *content;      /* list of MIME parts */
+  struct Envelope *env;      /* envelope information */
+  struct Body *content;      /* list of MIME parts */
   char *path;
 
   char *tree; /* character string to print thread tree */
-  THREAD *thread;
+  struct MuttThread *thread;
 
   /* Number of qualifying attachments in message, if attach_valid */
   short attach_total;
 
 #ifdef MIXMASTER
-  LIST *chain;
+  struct List *chain;
 #endif
 
 #ifdef USE_POP
@@ -877,18 +874,18 @@ typedef struct header
 
 #if defined(USE_POP) || defined(USE_IMAP) || defined(USE_NNTP) || defined(USE_NOTMUCH)
   void *data;                       /* driver-specific data */
-  void (*free_cb)(struct header *); /* driver-specific data free function */
+  void (*free_cb)(struct Header *); /* driver-specific data free function */
 #endif
 
   char *maildir_flags; /* unknown maildir flags */
-} HEADER;
+};
 
-static inline HEADER *mutt_new_header(void)
+static inline struct Header *mutt_new_header(void)
 {
-  return safe_calloc(1, sizeof(HEADER));
+  return safe_calloc(1, sizeof(struct Header));
 }
 
-struct mutt_thread
+struct MuttThread
 {
   bool fake_thread : 1;
   bool duplicate_thread : 1;
@@ -898,12 +895,12 @@ struct mutt_thread
   bool deep : 1;
   unsigned int subtree_visible : 2;
   bool next_subtree_visible : 1;
-  THREAD *parent;
-  THREAD *child;
-  THREAD *next;
-  THREAD *prev;
-  HEADER *message;
-  HEADER *sort_key;
+  struct MuttThread *parent;
+  struct MuttThread *child;
+  struct MuttThread *next;
+  struct MuttThread *prev;
+  struct Header *message;
+  struct Header *sort_key;
 };
 
 
@@ -914,20 +911,20 @@ typedef enum {
   MUTT_MATCH_FULL_ADDRESS = 1
 } pattern_exec_flag;
 
-typedef struct group_t
+struct Group
 {
-  ADDRESS *as;
-  RX_LIST *rs;
+  struct Address *as;
+  struct RxList *rs;
   char *name;
-} group_t;
+};
 
-typedef struct group_context_t
+struct GroupContext
 {
-  group_t *g;
-  struct group_context_t *next;
-} group_context_t;
+  struct Group *g;
+  struct GroupContext *next;
+};
 
-typedef struct pattern_t
+struct Pattern
 {
   short op;
   bool not : 1;
@@ -938,21 +935,21 @@ typedef struct pattern_t
   bool isalias : 1;
   int min;
   int max;
-  struct pattern_t *next;
-  struct pattern_t *child; /* arguments to logical op */
+  struct Pattern *next;
+  struct Pattern *child; /* arguments to logical op */
   union {
     regex_t *rx;
-    group_t *g;
+    struct Group *g;
     char *str;
   } p;
-} pattern_t;
+};
 
 /* This is used when a message is repeatedly pattern matched against.
  * e.g. for color, scoring, hooks.  It caches a few of the potentially slow
  * operations.
  * Each entry has a value of 0 = unset, 1 = false, 2 = true
  */
-typedef struct
+struct PatternCache
 {
   int list_all;       /* ^~l */
   int list_one;       /*  ~l */
@@ -962,7 +959,7 @@ typedef struct
   int pers_recip_one; /*  ~p */
   int pers_from_all;  /* ^~P */
   int pers_from_one;  /*  ~P */
-} pattern_cache_t;
+};
 
 /* ACL Rights */
 enum
@@ -982,8 +979,8 @@ enum
   RIGHTSMAX
 };
 
-struct _context;
-struct _message;
+struct Context;
+struct Message;
 
 /*
  * struct mx_ops - a structure to store operations on a mailbox
@@ -997,20 +994,20 @@ struct _message;
  */
 struct mx_ops
 {
-  int (*open)(struct _context *ctx);
-  int (*open_append)(struct _context *ctx, int flags);
-  int (*close)(struct _context *ctx);
-  int (*check)(struct _context *ctx, int *index_hint);
-  int (*sync)(struct _context *ctx, int *index_hint);
-  int (*open_msg)(struct _context *ctx, struct _message *msg, int msgno);
-  int (*close_msg)(struct _context *ctx, struct _message *msg);
-  int (*commit_msg)(struct _context *ctx, struct _message *msg);
-  int (*open_new_msg)(struct _message *msg, struct _context *ctx, HEADER *hdr);
+  int (*open)(struct Context *ctx);
+  int (*open_append)(struct Context *ctx, int flags);
+  int (*close)(struct Context *ctx);
+  int (*check)(struct Context *ctx, int *index_hint);
+  int (*sync)(struct Context *ctx, int *index_hint);
+  int (*open_msg)(struct Context *ctx, struct Message *msg, int msgno);
+  int (*close_msg)(struct Context *ctx, struct Message *msg);
+  int (*commit_msg)(struct Context *ctx, struct Message *msg);
+  int (*open_new_msg)(struct Message *msg, struct Context *ctx, struct Header *hdr);
 };
 
 #include "mutt_menu.h"
 
-typedef struct _context
+struct Context
 {
   char *path;
   char *realpath; /* used for buffy comparison and the sidebar */
@@ -1020,14 +1017,14 @@ typedef struct _context
   off_t size;
   off_t vsize;
   char *pattern;            /* limit pattern string */
-  pattern_t *limit_pattern; /* compiled limit pattern */
-  HEADER **hdrs;
-  HEADER *last_tag;  /* last tagged msg. used to link threads */
-  THREAD *tree;      /* top of thread tree */
-  HASH *id_hash;     /* hash table by msg id */
-  HASH *subj_hash;   /* hash table by subject */
-  HASH *thread_hash; /* hash table for threading */
-  HASH *label_hash;  /* hash table for x-labels */
+  struct Pattern *limit_pattern; /* compiled limit pattern */
+  struct Header **hdrs;
+  struct Header *last_tag;  /* last tagged msg. used to link threads */
+  struct MuttThread *tree;      /* top of thread tree */
+  struct Hash *id_hash;     /* hash table by msg id */
+  struct Hash *subj_hash;   /* hash table by subject */
+  struct Hash *thread_hash; /* hash table for threading */
+  struct Hash *label_hash;  /* hash table for x-labels */
   int *v2r;          /* mapping from virtual to real msgno */
   int hdrmax;        /* number of pointers in hdrs */
   int msgcount;      /* number of messages in the mailbox */
@@ -1039,7 +1036,7 @@ typedef struct _context
   int flagged;       /* how many flagged messages */
   int msgnotreadyet; /* which msg "new" in pager, -1 if none */
 
-  MUTTMENU *menu; /* needed for pattern compilation */
+  struct Menu *menu; /* needed for pattern compilation */
 
   short magic; /* mailbox type */
 
@@ -1062,19 +1059,19 @@ typedef struct _context
   /* driver hooks */
   void *data; /* driver specific data */
   struct mx_ops *mx_ops;
-} CONTEXT;
+};
 
-typedef struct
+struct State
 {
   FILE *fpin;
   FILE *fpout;
   char *prefix;
   int flags;
-} STATE;
+};
 
 /* used by enter.c */
 
-typedef struct
+struct EnterState
 {
   wchar_t *wbuf;
   size_t wbuflen;
@@ -1082,14 +1079,14 @@ typedef struct
   size_t curpos;
   size_t begin;
   int tabs;
-} ENTER_STATE;
+};
 
-static inline ENTER_STATE *mutt_new_enter_state(void)
+static inline struct EnterState *mutt_new_enter_state(void)
 {
-  return safe_calloc(1, sizeof(ENTER_STATE));
+  return safe_calloc(1, sizeof(struct EnterState));
 }
 
-/* flags for the STATE struct */
+/* flags for the State struct */
 #define MUTT_DISPLAY       (1 << 0) /* output is displayed to the user */
 #define MUTT_VERIFY        (1 << 1) /* perform signature verification */
 #define MUTT_PENDINGPREFIX (1 << 2) /* prefix to write, but character must follow */
@@ -1104,32 +1101,32 @@ static inline ENTER_STATE *mutt_new_enter_state(void)
 #define state_puts(x, y) fputs(x, (y)->fpout)
 #define state_putc(x, y) fputc(x, (y)->fpout)
 
-void state_mark_attach(STATE *s);
-void state_attach_puts(const char *t, STATE *s);
-void state_prefix_putc(char c, STATE *s);
-int state_printf(STATE *s, const char *fmt, ...);
-int state_putws(const wchar_t *ws, STATE *s);
+void state_mark_attach(struct State *s);
+void state_attach_puts(const char *t, struct State *s);
+void state_prefix_putc(char c, struct State *s);
+int state_printf(struct State *s, const char *fmt, ...);
+int state_putws(const wchar_t *ws, struct State *s);
 
 /* for attachment counter */
-typedef struct
+struct AttachMatch
 {
   char *major;
   int major_int;
   char *minor;
   regex_t minor_rx;
-} ATTACH_MATCH;
+};
 
 /* multibyte character table.
  * Allows for direct access to the individual multibyte characters in a
  * string.  This is used for the Flagchars, Fromchars, StChars and Tochars
  * option types. */
-typedef struct
+struct MbCharTable
 {
   int len;             /* number of characters */
   char **chars;        /* the array of multibyte character strings */
   char *segmented_str; /* each chars entry points inside this string */
   char *orig_str;
-} mbchar_table;
+};
 
 #define MUTT_PARTS_TOPLEVEL (1 << 0) /* is the top-level part */
 

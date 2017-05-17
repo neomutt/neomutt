@@ -88,7 +88,7 @@ url_scheme_t url_check_scheme(const char *s)
 /* ciss_parse_userhost: fill in components of ciss with info from src. Note
  *   these are pointers into src, which is altered with '\0's. Port of 0
  *   means no port given. */
-static int ciss_parse_userhost(ciss_url_t *ciss, char *src)
+static int ciss_parse_userhost(struct CissUrl *ciss, char *src)
 {
   char *t = NULL, *p = NULL;
 
@@ -153,9 +153,9 @@ static int ciss_parse_userhost(ciss_url_t *ciss, char *src)
              -1;
 }
 
-/* url_parse_ciss: Fill in ciss_url_t. char* elements are pointers into src,
+/* url_parse_ciss: Fill in CissUrl. char* elements are pointers into src,
  *   which is modified by this call (duplicate it first if you need to). */
-int url_parse_ciss(ciss_url_t *ciss, char *src)
+int url_parse_ciss(struct CissUrl *ciss, char *src)
 {
   char *tmp = NULL;
 
@@ -189,7 +189,7 @@ static void url_pct_encode(char *dst, size_t l, const char *src)
 }
 
 /* url_ciss_tostring: output the URL string for a given CISS object. */
-int url_ciss_tostring(ciss_url_t *ciss, char *dest, size_t len, int flags)
+int url_ciss_tostring(struct CissUrl *ciss, char *dest, size_t len, int flags)
 {
   long l;
 
@@ -243,7 +243,7 @@ int url_ciss_tostring(ciss_url_t *ciss, char *dest, size_t len, int flags)
   return 0;
 }
 
-int url_parse_mailto(ENVELOPE *e, char **body, const char *src)
+int url_parse_mailto(struct Envelope *e, char **body, const char *src)
 {
   char *t = NULL, *p = NULL;
   char *tmp = NULL;
@@ -252,7 +252,7 @@ int url_parse_mailto(ENVELOPE *e, char **body, const char *src)
 
   int rc = -1;
 
-  LIST *last = NULL;
+  struct List *last = NULL;
 
   if (!(t = strchr(src, ':')))
     return -1;

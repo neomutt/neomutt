@@ -87,7 +87,7 @@ static bool valid_smtp_code(char *buf, size_t len, int *n)
  * 0    on success (2xx code) or continue (354 code)
  * -1   write error, or any other response code
  */
-static int smtp_get_resp(CONNECTION *conn)
+static int smtp_get_resp(struct Connection *conn)
 {
   int n;
   char buf[1024];
@@ -128,7 +128,7 @@ static int smtp_get_resp(CONNECTION *conn)
   return -1;
 }
 
-static int smtp_rcpt_to(CONNECTION *conn, const ADDRESS *a)
+static int smtp_rcpt_to(struct Connection *conn, const struct Address *a)
 {
   char buf[1024];
   int r;
@@ -155,11 +155,11 @@ static int smtp_rcpt_to(CONNECTION *conn, const ADDRESS *a)
   return 0;
 }
 
-static int smtp_data(CONNECTION *conn, const char *msgfile)
+static int smtp_data(struct Connection *conn, const char *msgfile)
 {
   char buf[1024];
   FILE *fp = NULL;
-  progress_t progress;
+  struct Progress progress;
   struct stat st;
   int r, term = 0;
   size_t buflen = 0;
@@ -247,7 +247,7 @@ static bool address_uses_unicode(const char *a)
 /* Returns 1 if any address in a contains at least one 8-bit
  * character, 0 if none do.
  */
-static bool addresses_use_unicode(const ADDRESS *a)
+static bool addresses_use_unicode(const struct Address *a)
 {
   while (a)
   {
@@ -259,12 +259,12 @@ static bool addresses_use_unicode(const ADDRESS *a)
 }
 
 
-static int smtp_fill_account(ACCOUNT *account)
+static int smtp_fill_account(struct Account *account)
 {
   static unsigned short SmtpPort = 0;
 
   struct servent *service = NULL;
-  ciss_url_t url;
+  struct CissUrl url;
   char *urlstr = NULL;
 
   account->flags = 0;
@@ -308,7 +308,7 @@ static int smtp_fill_account(ACCOUNT *account)
   return 0;
 }
 
-static int smtp_helo(CONNECTION *conn)
+static int smtp_helo(struct Connection *conn)
 {
   char buf[LONG_STRING];
   const char *fqdn = NULL;
@@ -340,7 +340,7 @@ static int smtp_helo(CONNECTION *conn)
 }
 
 #ifdef USE_SASL
-static int smtp_auth_sasl(CONNECTION *conn, const char *mechlist)
+static int smtp_auth_sasl(struct Connection *conn, const char *mechlist)
 {
   sasl_conn_t *saslconn = NULL;
   sasl_interact_t *interaction = NULL;
@@ -442,7 +442,7 @@ fail:
   return SMTP_AUTH_FAIL;
 }
 
-static int smtp_auth(CONNECTION *conn)
+static int smtp_auth(struct Connection *conn)
 {
   int r = SMTP_AUTH_UNAVAIL;
 
@@ -497,7 +497,7 @@ static int smtp_auth(CONNECTION *conn)
 
 #else  /* USE_SASL */
 
-static int smtp_auth_plain(CONNECTION *conn)
+static int smtp_auth_plain(struct Connection *conn)
 {
   char buf[LONG_STRING];
   size_t len;
@@ -551,7 +551,7 @@ error:
   return -1;
 }
 #endif /* USE_SASL */
-static int smtp_open(CONNECTION *conn)
+static int smtp_open(struct Connection *conn)
 {
   int rc;
 
@@ -614,11 +614,11 @@ static int smtp_open(CONNECTION *conn)
   return 0;
 }
 
-int mutt_smtp_send(const ADDRESS *from, const ADDRESS *to, const ADDRESS *cc,
-                   const ADDRESS *bcc, const char *msgfile, int eightbit)
+int mutt_smtp_send(const struct Address *from, const struct Address *to, const struct Address *cc,
+                   const struct Address *bcc, const char *msgfile, int eightbit)
 {
-  CONNECTION *conn = NULL;
-  ACCOUNT account;
+  struct Connection *conn = NULL;
+  struct Account account;
   const char *envfrom = NULL;
   char buf[1024];
   int ret = -1;

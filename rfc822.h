@@ -32,7 +32,7 @@ enum
   ERR_BAD_ADDR_SPEC
 };
 
-typedef struct address_t
+struct Address
 {
 #ifdef EXACT_ADDRESS
   char *val;      /* value of address as parsed */
@@ -40,33 +40,33 @@ typedef struct address_t
   char *personal; /* real name of address */
   char *mailbox;  /* mailbox and host address */
   int group;      /* group mailbox? */
-  struct address_t *next;
+  struct Address *next;
   bool is_intl : 1;
   bool intl_checked : 1;
-} ADDRESS;
+};
 
 void rfc822_dequote_comment(char *s);
-void rfc822_free_address(ADDRESS **p);
-void rfc822_qualify(ADDRESS *addr, const char *host);
-ADDRESS *rfc822_parse_adrlist(ADDRESS *top, const char *s);
-ADDRESS *rfc822_cpy_adr(ADDRESS *addr, int prune);
-ADDRESS *rfc822_cpy_adr_real(ADDRESS *addr);
-ADDRESS *rfc822_append(ADDRESS **a, ADDRESS *b, int prune);
-int rfc822_write_address(char *buf, size_t buflen, ADDRESS *addr, int display);
-void rfc822_write_address_single(char *buf, size_t buflen, ADDRESS *addr, int display);
-void rfc822_free_address(ADDRESS **p);
+void rfc822_free_address(struct Address **p);
+void rfc822_qualify(struct Address *addr, const char *host);
+struct Address *rfc822_parse_adrlist(struct Address *top, const char *s);
+struct Address *rfc822_cpy_adr(struct Address *addr, int prune);
+struct Address *rfc822_cpy_adr_real(struct Address *addr);
+struct Address *rfc822_append(struct Address **a, struct Address *b, int prune);
+int rfc822_write_address(char *buf, size_t buflen, struct Address *addr, int display);
+void rfc822_write_address_single(char *buf, size_t buflen, struct Address *addr, int display);
+void rfc822_free_address(struct Address **p);
 void rfc822_cat(char *buf, size_t buflen, const char *value, const char *specials);
 bool rfc822_valid_msgid(const char *msgid);
-int rfc822_remove_from_adrlist(ADDRESS **a, const char *mailbox);
+int rfc822_remove_from_adrlist(struct Address **a, const char *mailbox);
 
 extern int RFC822Error;
 extern const char *const RFC822Errors[];
 
 #define rfc822_error(x) RFC822Errors[x]
 
-static inline ADDRESS *rfc822_new_address(void)
+static inline struct Address *rfc822_new_address(void)
 {
-  return safe_calloc(1, sizeof(ADDRESS));
+  return safe_calloc(1, sizeof(struct Address));
 }
 
 #endif /* _MUTT_RFC822_H */

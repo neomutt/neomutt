@@ -22,14 +22,14 @@
 #define MUTT_MAILBOXES   1
 #define MUTT_UNMAILBOXES 2
 
-typedef struct buffy_t
+struct Buffy
 {
   char path[_POSIX_PATH_MAX];
   char realpath[_POSIX_PATH_MAX]; /* used for duplicate detection, context comparison,
                                      and the sidebar */
   char *desc;
   off_t size;
-  struct buffy_t *next;
+  struct Buffy *next;
   bool new; /* mailbox has new mail */
 
   /* These next three are only set when OPTMAILCHECKSTATS is set */
@@ -42,21 +42,21 @@ typedef struct buffy_t
   bool newly_created;        /* mbox or mmdf just popped into existence */
   time_t last_visited;       /* time of last exit from this mailbox */
   time_t stats_last_checked; /* mtime of mailbox the last time stats where checked. */
-} BUFFY;
+};
 
-WHERE BUFFY *Incoming INITVAL(0);
+WHERE struct Buffy *Incoming INITVAL(0);
 WHERE short BuffyTimeout INITVAL(3);
 WHERE short BuffyCheckStatsInterval INITVAL(60);
 
 #ifdef USE_NOTMUCH
-WHERE BUFFY *VirtIncoming INITVAL(0);
+WHERE struct Buffy *VirtIncoming INITVAL(0);
 void mutt_buffy_vfolder(char *s, size_t slen);
 #endif
 
 extern time_t BuffyDoneTime; /* last time we knew for sure how much mail there was */
 
-BUFFY *mutt_find_mailbox(const char *path);
-void mutt_update_mailbox(BUFFY *b);
+struct Buffy *mutt_find_mailbox(const char *path);
+void mutt_update_mailbox(struct Buffy *b);
 
 /* fixes up atime + mtime after mbox/mmdf mailbox was modified
    according to stat() info taken before a modification */
@@ -65,6 +65,6 @@ void mutt_buffy_cleanup(const char *buf, struct stat *st);
 /* mark mailbox just left as already notified */
 void mutt_buffy_setnotified(const char *path);
 
-int mh_buffy(BUFFY *mailbox, int check_stats);
+int mh_buffy(struct Buffy *mailbox, int check_stats);
 
 #endif /* _MUTT_BUFFY_H */

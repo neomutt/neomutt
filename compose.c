@@ -119,17 +119,17 @@ static struct mapping_t ComposeNewsHelp[] = {
 };
 #endif
 
-static void snd_entry(char *b, size_t blen, MUTTMENU *menu, int num)
+static void snd_entry(char *b, size_t blen, struct Menu *menu, int num)
 {
   mutt_FormatString(b, blen, 0, MuttIndexWindow->cols, NONULL(AttachFormat), mutt_attach_fmt,
-                    (unsigned long) (((ATTACHPTR **) menu->data)[num]),
+                    (unsigned long) (((struct AttachPtr **) menu->data)[num]),
                     MUTT_FORMAT_STAT_FILE | MUTT_FORMAT_ARROWCURSOR);
 }
 
 
 #include "mutt_crypt.h"
 
-static void redraw_crypt_lines(HEADER *msg)
+static void redraw_crypt_lines(struct Header *msg)
 {
   SETCOLOR(MT_COLOR_COMPOSE_HEADER);
   mutt_window_mvprintw(MuttIndexWindow, HDR_CRYPT, 0, TITLE_FMT, "Security: ");
@@ -216,7 +216,7 @@ static void redraw_crypt_lines(HEADER *msg)
 
 #ifdef MIXMASTER
 
-static void redraw_mix_line(LIST *chain)
+static void redraw_mix_line(struct List *chain)
 {
   int c;
   char *t = NULL;
@@ -251,7 +251,7 @@ static void redraw_mix_line(LIST *chain)
 }
 #endif /* MIXMASTER */
 
-static int check_attachments(ATTACHPTR **idx, short idxlen)
+static int check_attachments(struct AttachPtr **idx, short idxlen)
 {
   int i, r;
   struct stat st;
@@ -282,7 +282,7 @@ static int check_attachments(ATTACHPTR **idx, short idxlen)
   return 0;
 }
 
-static void draw_envelope_addr(int line, ADDRESS *addr)
+static void draw_envelope_addr(int line, struct Address *addr)
 {
   char buf[LONG_STRING];
 
@@ -294,7 +294,7 @@ static void draw_envelope_addr(int line, ADDRESS *addr)
   mutt_paddstr(W, buf);
 }
 
-static void draw_envelope(HEADER *msg, char *fcc)
+static void draw_envelope(struct Header *msg, char *fcc)
 {
   draw_envelope_addr(HDR_FROM, msg->env->from);
 #ifdef USE_NNTP
@@ -349,7 +349,7 @@ static void draw_envelope(HEADER *msg, char *fcc)
   NORMAL_COLOR;
 }
 
-static void edit_address_list(int line, ADDRESS **addr)
+static void edit_address_list(int line, struct Address **addr)
 {
   char buf[HUGE_STRING] = ""; /* needs to be large for alias expansion */
   char *err = NULL;
@@ -377,9 +377,9 @@ static void edit_address_list(int line, ADDRESS **addr)
   mutt_paddstr(W, buf);
 }
 
-static int delete_attachment(MUTTMENU *menu, short *idxlen, int x)
+static int delete_attachment(struct Menu *menu, short *idxlen, int x)
 {
-  ATTACHPTR **idx = (ATTACHPTR **) menu->data;
+  struct AttachPtr **idx = (struct AttachPtr **) menu->data;
   int y;
 
   menu->redraw = REDRAW_INDEX | REDRAW_STATUS;
@@ -413,7 +413,7 @@ static int delete_attachment(MUTTMENU *menu, short *idxlen, int x)
   return 0;
 }
 
-static void update_idx(MUTTMENU *menu, ATTACHPTR **idx, short idxlen)
+static void update_idx(struct Menu *menu, struct AttachPtr **idx, short idxlen)
 {
   idx[idxlen]->level = (idxlen > 0) ? idx[idxlen - 1]->level : 0;
   if (idxlen)
@@ -425,20 +425,20 @@ static void update_idx(MUTTMENU *menu, ATTACHPTR **idx, short idxlen)
   return;
 }
 
-typedef struct
+struct ComposeRedrawData
 {
-  HEADER *msg;
+  struct Header *msg;
   char *fcc;
-} compose_redraw_data_t;
+};
 
 /* prototype for use below */
 static void compose_status_line(char *buf, size_t buflen, size_t col, int cols,
-                                MUTTMENU *menu, const char *p);
+                                struct Menu *menu, const char *p);
 
-static void compose_menu_redraw(MUTTMENU *menu)
+static void compose_menu_redraw(struct Menu *menu)
 {
   char buf[LONG_STRING];
-  compose_redraw_data_t *rd = menu->redraw_data;
+  struct ComposeRedrawData *rd = menu->redraw_data;
 
   if (!rd)
     return;
@@ -487,13 +487,13 @@ static void compose_menu_redraw(MUTTMENU *menu)
  * applied.
  *
  */
-static unsigned long cum_attachs_size(MUTTMENU *menu)
+static unsigned long cum_attachs_size(struct Menu *menu)
 {
   size_t s;
   unsigned short i;
-  ATTACHPTR **idx = menu->data;
-  CONTENT *info = NULL;
-  BODY *b = NULL;
+  struct AttachPtr **idx = menu->data;
+  struct Content *info = NULL;
+  struct Body *b = NULL;
 
   for (i = 0, s = 0; i < menu->max; i++)
   {
@@ -540,7 +540,7 @@ static const char *compose_format_str(char *buf, size_t buflen, size_t col, int 
 {
   char fmt[SHORT_STRING], tmp[SHORT_STRING];
   int optional = (flags & MUTT_FORMAT_OPTIONAL);
-  MUTTMENU *menu = (MUTTMENU *) data;
+  struct Menu *menu = (struct Menu *) data;
 
   *buf = 0;
   switch (op)
@@ -584,7 +584,7 @@ static const char *compose_format_str(char *buf, size_t buflen, size_t col, int 
 }
 
 static void compose_status_line(char *buf, size_t buflen, size_t col, int cols,
-                                MUTTMENU *menu, const char *p)
+                                struct Menu *menu, const char *p)
 {
   mutt_FormatString(buf, buflen, col, cols, p, compose_format_str, (unsigned long) menu, 0);
 }
@@ -595,16 +595,16 @@ static void compose_status_line(char *buf, size_t buflen, size_t col, int cols,
  * 0    normal exit
  * -1   abort message
  */
-int mutt_compose_menu(HEADER *msg, /* structure for new message */
+int mutt_compose_menu(struct Header *msg, /* structure for new message */
                       char *fcc,   /* where to save a copy of the message */
-                      size_t fcclen, HEADER *cur, /* current message */
+                      size_t fcclen, struct Header *cur, /* current message */
                       int flags)
 {
   char helpstr[LONG_STRING];
   char buf[LONG_STRING];
   char fname[_POSIX_PATH_MAX];
-  MUTTMENU *menu = NULL;
-  ATTACHPTR **idx = NULL;
+  struct Menu *menu = NULL;
+  struct AttachPtr **idx = NULL;
   short idxlen = 0;
   short idxmax = 0;
   int i, close = 0;
@@ -612,11 +612,11 @@ int mutt_compose_menu(HEADER *msg, /* structure for new message */
   int op = 0;
   int loop = 1;
   int fccSet = 0; /* has the user edited the Fcc: field ? */
-  CONTEXT *ctx = NULL, *this = NULL;
+  struct Context *ctx = NULL, *this = NULL;
   /* Sort, SortAux could be changed in mutt_index_menu() */
   int oldSort, oldSortAux;
   struct stat st;
-  compose_redraw_data_t rd;
+  struct ComposeRedrawData rd;
 #ifdef USE_NNTP
   int news = 0; /* is it a news article ? */
 
@@ -844,11 +844,11 @@ int mutt_compose_menu(HEADER *msg, /* structure for new message */
           break;
         if (idxlen == idxmax)
         {
-          safe_realloc(&idx, sizeof(ATTACHPTR *) * (idxmax += 5));
+          safe_realloc(&idx, sizeof(struct AttachPtr *) * (idxmax += 5));
           menu->data = idx;
         }
 
-        idx[idxlen] = safe_calloc(1, sizeof(ATTACHPTR));
+        idx[idxlen] = safe_calloc(1, sizeof(struct AttachPtr));
         if ((idx[idxlen]->content = crypt_pgp_make_key_attachment(NULL)) != NULL)
         {
           update_idx(menu, idx, idxlen++);
@@ -880,7 +880,7 @@ int mutt_compose_menu(HEADER *msg, /* structure for new message */
 
         if (idxlen + numfiles >= idxmax)
         {
-          safe_realloc(&idx, sizeof(ATTACHPTR *) * (idxmax += 5 + numfiles));
+          safe_realloc(&idx, sizeof(struct AttachPtr *) * (idxmax += 5 + numfiles));
           menu->data = idx;
         }
 
@@ -890,7 +890,7 @@ int mutt_compose_menu(HEADER *msg, /* structure for new message */
         for (i = 0; i < numfiles; i++)
         {
           char *att = files[i];
-          idx[idxlen] = safe_calloc(1, sizeof(ATTACHPTR));
+          idx[idxlen] = safe_calloc(1, sizeof(struct AttachPtr));
           idx[idxlen]->unowned = true;
           idx[idxlen]->content = mutt_make_file_attach(att);
           if (idx[idxlen]->content != NULL)
@@ -919,7 +919,7 @@ int mutt_compose_menu(HEADER *msg, /* structure for new message */
 #endif
       {
         char *prompt = NULL;
-        HEADER *h = NULL;
+        struct Header *h = NULL;
 
         fname[0] = 0;
         prompt = _("Open mailbox to attach message from");
@@ -1010,7 +1010,7 @@ int mutt_compose_menu(HEADER *msg, /* structure for new message */
 
         if (idxlen + Context->tagged >= idxmax)
         {
-          safe_realloc(&idx, sizeof(ATTACHPTR *) * (idxmax += 5 + Context->tagged));
+          safe_realloc(&idx, sizeof(struct AttachPtr *) * (idxmax += 5 + Context->tagged));
           menu->data = idx;
         }
 
@@ -1019,7 +1019,7 @@ int mutt_compose_menu(HEADER *msg, /* structure for new message */
           h = Context->hdrs[i];
           if (h->tagged)
           {
-            idx[idxlen] = safe_calloc(1, sizeof(ATTACHPTR));
+            idx[idxlen] = safe_calloc(1, sizeof(struct AttachPtr));
             idx[idxlen]->content = mutt_make_message_attach(Context, h, 1);
             if (idx[idxlen]->content != NULL)
               update_idx(menu, idx, idxlen++);
@@ -1109,7 +1109,7 @@ int mutt_compose_menu(HEADER *msg, /* structure for new message */
         CHECK_COUNT;
         if (menu->tagprefix)
         {
-          BODY *top = NULL;
+          struct Body *top = NULL;
           for (top = msg->content; top; top = top->next)
           {
             if (top->tagged)
@@ -1213,7 +1213,7 @@ int mutt_compose_menu(HEADER *msg, /* structure for new message */
         CHECK_COUNT;
         if (menu->tagprefix)
         {
-          BODY *top = NULL;
+          struct Body *top = NULL;
           for (top = msg->content; top; top = top->next)
           {
             if (top->tagged)
@@ -1311,7 +1311,7 @@ int mutt_compose_menu(HEADER *msg, /* structure for new message */
         }
         if (idxlen == idxmax)
         {
-          safe_realloc(&idx, sizeof(ATTACHPTR *) * (idxmax += 5));
+          safe_realloc(&idx, sizeof(struct AttachPtr *) * (idxmax += 5));
           menu->data = idx;
         }
 
@@ -1323,7 +1323,7 @@ int mutt_compose_menu(HEADER *msg, /* structure for new message */
         }
         safe_fclose(&fp);
 
-        idx[idxlen] = safe_calloc(1, sizeof(ATTACHPTR));
+        idx[idxlen] = safe_calloc(1, sizeof(struct AttachPtr));
         if ((idx[idxlen]->content = mutt_make_file_attach(fname)) == NULL)
         {
           mutt_error(_("What we have here is a failure to make an attachment"));

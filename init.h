@@ -4417,48 +4417,48 @@ const struct mapping_t SortSidebarMethods[] = {
 
 /* functions used to parse commands in a rc file */
 
-static int parse_list(BUFFER *, BUFFER *, unsigned long, BUFFER *);
-static int parse_spam_list(BUFFER *, BUFFER *, unsigned long, BUFFER *);
-static int parse_unlist(BUFFER *, BUFFER *, unsigned long, BUFFER *);
+static int parse_list(struct Buffer *, struct Buffer *, unsigned long, struct Buffer *);
+static int parse_spam_list(struct Buffer *, struct Buffer *, unsigned long, struct Buffer *);
+static int parse_unlist(struct Buffer *, struct Buffer *, unsigned long, struct Buffer *);
 #ifdef USE_SIDEBAR
-static int parse_path_list(BUFFER *, BUFFER *, unsigned long, BUFFER *);
-static int parse_path_unlist(BUFFER *, BUFFER *, unsigned long, BUFFER *);
+static int parse_path_list(struct Buffer *, struct Buffer *, unsigned long, struct Buffer *);
+static int parse_path_unlist(struct Buffer *, struct Buffer *, unsigned long, struct Buffer *);
 #endif
 
-static int parse_group(BUFFER *, BUFFER *, unsigned long, BUFFER *);
+static int parse_group(struct Buffer *, struct Buffer *, unsigned long, struct Buffer *);
 
-static int parse_lists(BUFFER *, BUFFER *, unsigned long, BUFFER *);
-static int parse_unlists(BUFFER *, BUFFER *, unsigned long, BUFFER *);
-static int parse_alias(BUFFER *, BUFFER *, unsigned long, BUFFER *);
-static int parse_unalias(BUFFER *, BUFFER *, unsigned long, BUFFER *);
-static int finish_source(BUFFER *, BUFFER *, unsigned long, BUFFER *);
-static int parse_ifdef(BUFFER *, BUFFER *, unsigned long, BUFFER *);
-static int parse_ignore(BUFFER *, BUFFER *, unsigned long, BUFFER *);
-static int parse_unignore(BUFFER *, BUFFER *, unsigned long, BUFFER *);
-static int parse_source(BUFFER *, BUFFER *, unsigned long, BUFFER *);
-static int parse_set(BUFFER *, BUFFER *, unsigned long, BUFFER *);
-static int parse_setenv(BUFFER *, BUFFER *, unsigned long, BUFFER *);
-static int parse_my_hdr(BUFFER *, BUFFER *, unsigned long, BUFFER *);
-static int parse_unmy_hdr(BUFFER *, BUFFER *, unsigned long, BUFFER *);
-static int parse_subscribe(BUFFER *, BUFFER *, unsigned long, BUFFER *);
-static int parse_unsubscribe(BUFFER *, BUFFER *, unsigned long, BUFFER *);
-static int parse_attachments(BUFFER *, BUFFER *, unsigned long, BUFFER *);
-static int parse_unattachments(BUFFER *, BUFFER *, unsigned long, BUFFER *);
+static int parse_lists(struct Buffer *, struct Buffer *, unsigned long, struct Buffer *);
+static int parse_unlists(struct Buffer *, struct Buffer *, unsigned long, struct Buffer *);
+static int parse_alias(struct Buffer *, struct Buffer *, unsigned long, struct Buffer *);
+static int parse_unalias(struct Buffer *, struct Buffer *, unsigned long, struct Buffer *);
+static int finish_source(struct Buffer *, struct Buffer *, unsigned long, struct Buffer *);
+static int parse_ifdef(struct Buffer *, struct Buffer *, unsigned long, struct Buffer *);
+static int parse_ignore(struct Buffer *, struct Buffer *, unsigned long, struct Buffer *);
+static int parse_unignore(struct Buffer *, struct Buffer *, unsigned long, struct Buffer *);
+static int parse_source(struct Buffer *, struct Buffer *, unsigned long, struct Buffer *);
+static int parse_set(struct Buffer *, struct Buffer *, unsigned long, struct Buffer *);
+static int parse_setenv(struct Buffer *, struct Buffer *, unsigned long, struct Buffer *);
+static int parse_my_hdr(struct Buffer *, struct Buffer *, unsigned long, struct Buffer *);
+static int parse_unmy_hdr(struct Buffer *, struct Buffer *, unsigned long, struct Buffer *);
+static int parse_subscribe(struct Buffer *, struct Buffer *, unsigned long, struct Buffer *);
+static int parse_unsubscribe(struct Buffer *, struct Buffer *, unsigned long, struct Buffer *);
+static int parse_attachments(struct Buffer *, struct Buffer *, unsigned long, struct Buffer *);
+static int parse_unattachments(struct Buffer *, struct Buffer *, unsigned long, struct Buffer *);
 
-static int parse_replace_list(BUFFER *, BUFFER *, unsigned long, BUFFER *);
-static int parse_unreplace_list(BUFFER *, BUFFER *, unsigned long, BUFFER *);
-static int parse_subjectrx_list(BUFFER *, BUFFER *, unsigned long, BUFFER *);
-static int parse_unsubjectrx_list(BUFFER *, BUFFER *, unsigned long, BUFFER *);
-static int parse_alternates(BUFFER *, BUFFER *, unsigned long, BUFFER *);
-static int parse_unalternates(BUFFER *, BUFFER *, unsigned long, BUFFER *);
+static int parse_replace_list(struct Buffer *, struct Buffer *, unsigned long, struct Buffer *);
+static int parse_unreplace_list(struct Buffer *, struct Buffer *, unsigned long, struct Buffer *);
+static int parse_subjectrx_list(struct Buffer *, struct Buffer *, unsigned long, struct Buffer *);
+static int parse_unsubjectrx_list(struct Buffer *, struct Buffer *, unsigned long, struct Buffer *);
+static int parse_alternates(struct Buffer *, struct Buffer *, unsigned long, struct Buffer *);
+static int parse_unalternates(struct Buffer *, struct Buffer *, unsigned long, struct Buffer *);
 
 /* Parse -group arguments */
-static int parse_group_context(group_context_t **ctx, BUFFER *buf, BUFFER *s,
-                               unsigned long data, BUFFER *err);
+static int parse_group_context(struct GroupContext **ctx, struct Buffer *buf, struct Buffer *s,
+                               unsigned long data, struct Buffer *err);
 
 #ifdef USE_NOTMUCH
-static int parse_tag_transforms(BUFFER *, BUFFER *, unsigned long, BUFFER *);
-static int parse_tag_formats(BUFFER *, BUFFER *, unsigned long, BUFFER *);
+static int parse_tag_transforms(struct Buffer *, struct Buffer *, unsigned long, struct Buffer *);
+static int parse_tag_formats(struct Buffer *, struct Buffer *, unsigned long, struct Buffer *);
 #endif
 
 const struct command_t Commands[] = {

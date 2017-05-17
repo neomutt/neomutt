@@ -24,27 +24,27 @@
 #include "mailbox.h"
 
 /* -- data structures -- */
-typedef struct
+struct ImapMbox
 {
-  ACCOUNT account;
+  struct Account account;
   char *mbox;
-} IMAP_MBOX;
+};
 
 /* imap.c */
 int imap_access(const char *, int);
-int imap_check_mailbox(CONTEXT *ctx, int force);
-int imap_delete_mailbox(CONTEXT *ctx, IMAP_MBOX *mx);
-int imap_sync_mailbox(CONTEXT *ctx, int expunge);
-int imap_close_mailbox(CONTEXT *ctx);
+int imap_check_mailbox(struct Context *ctx, int force);
+int imap_delete_mailbox(struct Context *ctx, struct ImapMbox *mx);
+int imap_sync_mailbox(struct Context *ctx, int expunge);
+int imap_close_mailbox(struct Context *ctx);
 int imap_buffy_check(int force, int check_stats);
 int imap_status(char *path, int queue);
-int imap_search(CONTEXT *ctx, const pattern_t *pat);
+int imap_search(struct Context *ctx, const struct Pattern *pat);
 int imap_subscribe(char *path, int subscribe);
 int imap_complete(char *dest, size_t dlen, char *path);
-int imap_fast_trash(CONTEXT *ctx, char *dest);
+int imap_fast_trash(struct Context *ctx, char *dest);
 
-void imap_allow_reopen(CONTEXT *ctx);
-void imap_disallow_reopen(CONTEXT *ctx);
+void imap_allow_reopen(struct Context *ctx);
+void imap_disallow_reopen(struct Context *ctx);
 
 extern struct mx_ops mx_imap_ops;
 
@@ -54,21 +54,21 @@ int imap_mailbox_create(const char *folder);
 int imap_mailbox_rename(const char *mailbox);
 
 /* message.c */
-int imap_append_message(CONTEXT *ctx, MESSAGE *msg);
-int imap_copy_messages(CONTEXT *ctx, HEADER *h, char *dest, int delete);
+int imap_append_message(struct Context *ctx, struct Message *msg);
+int imap_copy_messages(struct Context *ctx, struct Header *h, char *dest, int delete);
 
 /* socket.c */
 void imap_logout_all(void);
 
 /* util.c */
 int imap_expand_path(char *path, size_t len);
-int imap_parse_path(const char *path, IMAP_MBOX *mx);
+int imap_parse_path(const char *path, struct ImapMbox *mx);
 void imap_pretty_mailbox(char *path);
 
 int imap_wait_keepalive(pid_t pid);
 void imap_keepalive(void);
 
-int imap_account_match(const ACCOUNT *a1, const ACCOUNT *a2);
+int imap_account_match(const struct Account *a1, const struct Account *a2);
 void imap_get_parent(char *output, const char *mbox, size_t olen, char delim);
 void imap_get_parent_path(char *output, const char *path, size_t olen);
 void imap_clean_path(char *path, size_t plen);

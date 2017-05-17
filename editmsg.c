@@ -33,7 +33,7 @@
  * 0    message edited successfully
  * -1   error
  */
-static int edit_one_message(CONTEXT *ctx, HEADER *cur)
+static int edit_one_message(struct Context *ctx, struct Header *cur)
 {
   char tmp[_POSIX_PATH_MAX];
   char buff[STRING];
@@ -46,8 +46,8 @@ static int edit_one_message(CONTEXT *ctx, HEADER *cur)
 
   int of, cf;
 
-  CONTEXT tmpctx;
-  MESSAGE *msg = NULL;
+  struct Context tmpctx;
+  struct Message *msg = NULL;
 
   FILE *fp = NULL;
 
@@ -206,7 +206,7 @@ bail:
   return rc;
 }
 
-int mutt_edit_message(CONTEXT *ctx, HEADER *hdr)
+int mutt_edit_message(struct Context *ctx, struct Header *hdr)
 {
   int i, j;
 

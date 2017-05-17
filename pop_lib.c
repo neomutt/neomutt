@@ -31,9 +31,9 @@
 #endif
 
 /* given an POP mailbox name, return host, port, username and password */
-int pop_parse_path(const char *path, ACCOUNT *acct)
+int pop_parse_path(const char *path, struct Account *acct)
 {
-  ciss_url_t url;
+  struct CissUrl url;
   char *c = NULL;
   struct servent *service = NULL;
 
@@ -71,7 +71,7 @@ int pop_parse_path(const char *path, ACCOUNT *acct)
 }
 
 /* Copy error message to err_msg buffer */
-static void pop_error(POP_DATA *pop_data, char *msg)
+static void pop_error(struct PopData *pop_data, char *msg)
 {
   char *t = NULL, *c = NULL, *c2 = NULL;
 
@@ -93,7 +93,7 @@ static void pop_error(POP_DATA *pop_data, char *msg)
 /* Parse CAPA output */
 static int fetch_capa(char *line, void *data)
 {
-  POP_DATA *pop_data = (POP_DATA *) data;
+  struct PopData *pop_data = (struct PopData *) data;
   char *c = NULL;
 
   if (ascii_strncasecmp(line, "SASL", 4) == 0)
@@ -121,7 +121,7 @@ static int fetch_capa(char *line, void *data)
 /* Fetch list of the authentication mechanisms */
 static int fetch_auth(char *line, void *data)
 {
-  POP_DATA *pop_data = (POP_DATA *) data;
+  struct PopData *pop_data = (struct PopData *) data;
 
   if (!pop_data->auth_list)
   {
@@ -144,7 +144,7 @@ static int fetch_auth(char *line, void *data)
  * -1 - connection lost,
  * -2 - execution error.
 */
-static int pop_capabilities(POP_DATA *pop_data, int mode)
+static int pop_capabilities(struct PopData *pop_data, int mode)
 {
   char buf[LONG_STRING];
 
@@ -222,7 +222,7 @@ static int pop_capabilities(POP_DATA *pop_data, int mode)
  * -1 - connection lost,
  * -2 - invalid response.
 */
-int pop_connect(POP_DATA *pop_data)
+int pop_connect(struct PopData *pop_data)
 {
   char buf[LONG_STRING];
 
@@ -256,7 +256,7 @@ int pop_connect(POP_DATA *pop_data)
  * -2 - invalid command or execution error,
  * -3 - authentication canceled.
 */
-int pop_open_connection(POP_DATA *pop_data)
+int pop_open_connection(struct PopData *pop_data)
 {
   int ret;
   unsigned int n, size;
@@ -375,11 +375,11 @@ err_conn:
 }
 
 /* logout from POP server */
-void pop_logout(CONTEXT *ctx)
+void pop_logout(struct Context *ctx)
 {
   int ret = 0;
   char buf[LONG_STRING];
-  POP_DATA *pop_data = (POP_DATA *) ctx->data;
+  struct PopData *pop_data = (struct PopData *) ctx->data;
 
   if (pop_data->status == POP_CONNECTED)
   {
@@ -413,7 +413,7 @@ void pop_logout(CONTEXT *ctx)
  * -1 - connection lost,
  * -2 - invalid command or execution error.
 */
-int pop_query_d(POP_DATA *pop_data, char *buf, size_t buflen, char *msg)
+int pop_query_d(struct PopData *pop_data, char *buf, size_t buflen, char *msg)
 {
   int dbg = MUTT_SOCK_LOG_CMD;
   char *c = NULL;
@@ -458,7 +458,7 @@ int pop_query_d(POP_DATA *pop_data, char *buf, size_t buflen, char *msg)
  * -2 - invalid command or execution error,
  * -3 - error in funct(*line, *data)
  */
-int pop_fetch_data(POP_DATA *pop_data, char *query, progress_t *progressbar,
+int pop_fetch_data(struct PopData *pop_data, char *query, struct Progress *progressbar,
                    int (*funct)(char *, void *), void *data)
 {
   char buf[LONG_STRING];
@@ -522,7 +522,7 @@ static int check_uidl(char *line, void *data)
 {
   int i;
   unsigned int index;
-  CONTEXT *ctx = (CONTEXT *) data;
+  struct Context *ctx = (struct Context *) data;
   char *endp = NULL;
 
   errno = 0;
@@ -546,11 +546,11 @@ static int check_uidl(char *line, void *data)
 }
 
 /* reconnect and verify indexes if connection was lost */
-int pop_reconnect(CONTEXT *ctx)
+int pop_reconnect(struct Context *ctx)
 {
   int ret;
-  POP_DATA *pop_data = (POP_DATA *) ctx->data;
-  progress_t progressbar;
+  struct PopData *pop_data = (struct PopData *) ctx->data;
+  struct Progress progressbar;
 
   if (pop_data->status == POP_CONNECTED)
     return 0;
