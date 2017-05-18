@@ -1,55 +1,17 @@
 notifications:
-  email:
-    recipients:
-      - rich@flatcap.org
-    on_success: change
-    on_failure: always
+  email: false
 
 sudo: false
 dist: trusty
 
 language: c
 compiler: gcc
-cache: ccache
 
 addons:
   apt:
     packages:
-      - libgpgme11-dev
-      - libnotmuch-dev
-      - libtokyocabinet-dev
-      - libkyotocabinet-dev
-      - libgdbm-dev
-      - libdb-dev
-      - liblmdb-dev
-      - libqdbm-dev
-      - libslang2-dev
-      - libgnutls-dev
-      - libssl-dev
-      - libsasl2-dev
-      - libgss-dev
-      - xsltproc
-      - lynx
-      - docbook-simple
-      - docbook-xsl
-      - libxml2-utils
       - gettext
-      - lua5.2
-      - liblua5.2-dev
-      - autopoint
-
-git:
-  depth: 3
-
-install:
-  - git clone --depth 1 https://github.com/neomutt/travis-build.git ~/config
-
-before_script:
-  - ccache --zero-stats
 
 script:
-  - ~/config/build
-
-after_script:
-  - ccache --show-stats
+  - cd po && for i in *.po; do echo -ne "${i%.po}:\t"; msgfmt --statistics -c -o /dev/null $i; done
 
