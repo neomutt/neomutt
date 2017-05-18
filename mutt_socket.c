@@ -20,7 +20,6 @@
 #include "config.h"
 #include <errno.h>
 #include <fcntl.h>
-#include <idna.h>
 #include <netdb.h>
 #include <netinet/in.h>
 #include <stdio.h>
@@ -28,6 +27,7 @@
 #include <sys/select.h>
 #include <sys/socket.h>
 #include <unistd.h>
+#include "mutt_idna.h"
 #include "mutt_socket.h"
 #include "globals.h"
 #include "mutt_tunnel.h"

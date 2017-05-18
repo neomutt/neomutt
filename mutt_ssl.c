@@ -17,7 +17,6 @@
 
 #include "config.h"
 #include <errno.h>
-#include <idna.h>
 #include <limits.h>
 #include <openssl/asn1.h>
 #include <openssl/bio.h>
@@ -38,6 +37,7 @@
 #include <sys/stat.h>
 #include <unistd.h>
 #include "mutt.h"
+#include "mutt_idna.h"
 #include "mutt_ssl.h"
 #include "account.h"
 #include "globals.h"

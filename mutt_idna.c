@@ -16,7 +16,6 @@
  */
 
 #include "config.h"
-#include <idna.h>
 #include <stdbool.h>
 #include <stdio.h>
 #include <string.h>
