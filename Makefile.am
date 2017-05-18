@@ -6,9 +6,15 @@ AUTOMAKE_OPTIONS = 1.6 foreign
 EXTRA_PROGRAMS = mutt_dotlock pgpring pgpewrap mutt_md5
 
 # Test the .tar file by building everything
-AM_DISTCHECK_CONFIGURE_FLAGS = --enable-debug --enable-gpgme --enable-notmuch \
-	--with-bdb --with-gdbm --with-gnutls --with-gss --with-kyotocabinet \
-	--with-lmdb --with-qdbm --with-sasl --with-tokyocabinet
+AM_DISTCHECK_CONFIGURE_FLAGS = --enable-debug --enable-flock --enable-gpgme \
+	--enable-mailtool --enable-nfs-fix --enable-notmuch --with-bdb \
+	--with-gdbm --with-gnutls --with-gss --with-kyotocabinet --with-lmdb \
+	--with-mixmaster --with-qdbm --with-sasl --with-tokyocabinet
+
+AM_V_COPY = $(am__v_COPY_$(V))
+am__v_COPY_ = $(am__v_COPY_$(AM_DEFAULT_VERBOSITY))
+am__v_COPY_0 = @echo "  COPY    " $@;
+am__v_COPY_1 = 
 
 SUBDIRS = m4 contrib imap
 
@@ -57,10 +63,10 @@ LIBIMAP = -Limap -limap
 LIBIMAPDEPS = $(top_srcdir)/imap/imap.h imap/libimap.a
 
 mutt_LDADD = $(MUTT_LIB_OBJECTS) $(LIBOBJS) $(LIBIMAP) $(MUTTLIBS) \
-	$(INTLLIBS) $(LIBICONV) $(GPGME_LIBS) $(HCACHE_LIBS)
+	$(LIBICONV) $(GPGME_LIBS) $(HCACHE_LIBS)
 
 mutt_DEPENDENCIES = $(MUTT_LIB_OBJECTS) $(LIBOBJS) $(LIBIMAPDEPS) \
-	$(INTLDEPS) $(HCACHE_DEPS)
+	$(HCACHE_DEPS)
 
 DEFS=-DPKGDATADIR=\"$(pkgdatadir)\" -DSYSCONFDIR=\"$(sysconfdir)\" \
 	-DBINDIR=\"$(bindir)\" -DMUTTLOCALEDIR=\"$(datadir)/locale\"
@@ -77,7 +83,7 @@ EXTRA_mutt_SOURCES = browser.h crypt_gpgme.c crypt_mod_pgp_classic.c \
 
 EXTRA_DIST = account.h ascii.h attach.h bcache.h browser.h buffer.h buffy.h \
 	ChangeLog ChangeLog.neomutt ChangeLog.nntp charset.h compress.h \
-	config.rpath copy.h COPYRIGHT crypt_gpgme.h depcomp \
+	copy.h COPYRIGHT crypt_gpgme.h \
 	dotlock.h extlib.c filter.h functions.h gen_defs globals.h group.h \
 	hash.h history.h init.h keymap.h lib.h LICENSE.md mailbox.h mapping.h \
 	mbyte.h md5.h mime.h mime.types mutt.h mutt_commands.h mutt_crypt.h \
@@ -98,8 +104,8 @@ mutt_dotlock_DEPENDENCIES = $(LIBOBJS)
 
 pgpring_SOURCES = ascii.c extlib.c lib.c md5.c pgplib.c pgppacket.c \
 	pgppubring.c sha1.c
-pgpring_LDADD = $(LIBOBJS) $(INTLLIBS)
-pgpring_DEPENDENCIES = $(LIBOBJS) $(INTLDEPS)
+pgpring_LDADD = $(LIBOBJS)
+pgpring_DEPENDENCIES = $(LIBOBJS)
 
 mutt_md5_SOURCES = md5.c
 mutt_md5_CFLAGS = -DMD5UTIL
@@ -110,21 +116,22 @@ txt2c_LDADD =
 
 noinst_PROGRAMS = $(MUTT_MD5) txt2c
 
-mutt_dotlock.c: dotlock.c
-	cp $(srcdir)/dotlock.c mutt_dotlock.c
+mutt_dotlock.c: $(srcdir)/dotlock.c
+	$(AM_V_COPY)cp $(srcdir)/dotlock.c mutt_dotlock.c
 
 conststrings.c: txt2c config.status
-	( \
+	$(AM_V_GEN)( \
 		($(CC) -v >/dev/null 2>&1 && $(CC) -v) || \
 		($(CC) --version >/dev/null 2>&1 && $(CC) --version) || \
 		($(CC) -V >/dev/null 2>&1 && $(CC) -V) || \
 		echo "unknown compiler"; \
-	) 2>&1 | ${srcdir}/txt2c.sh cc_version >conststrings_c
-	echo "$(CFLAGS)" | ${srcdir}/txt2c.sh cc_cflags >>conststrings_c
-	grep ac_cs_config= config.status | \
-	cut -d= -f2- | \
-	sed -e 's/^"//' -e 's/"$$//' | ${srcdir}/txt2c.sh configure_options >>conststrings_c
-	mv -f conststrings_c conststrings.c
+	) 2>&1 | ${srcdir}/txt2c.sh cc_version >conststrings_c;
+	$(AM_V_at)echo "$(CFLAGS)" | ${srcdir}/txt2c.sh cc_cflags >>conststrings_c
+	$(AM_V_at)grep ac_cs_config= config.status | \
+		cut -d= -f2- | \
+		sed -e 's/^"//' -e 's/"$$//' | \
+		${srcdir}/txt2c.sh configure_options >> conststrings_c
+	$(AM_V_at)mv -f conststrings_c conststrings.c
 
 CLEANFILES = mutt_dotlock.c keymap_alldefs.h $(BUILT_SOURCES)
 
@@ -132,29 +139,31 @@ DISTCLEANFILES= smime_keys txt2c
 
 ACLOCAL_AMFLAGS = -I m4
 
-LDADD = $(LIBOBJS) $(INTLLIBS)
+LDADD = $(LIBOBJS)
 
 dist-hook:
 	echo $(VERSION) > $(distdir)/.tarball-version
 
 smime_keys: $(srcdir)/smime_keys.pl
-	cp $(srcdir)/smime_keys.pl smime_keys
-	chmod +x smime_keys
+	$(AM_V_COPY)cp $(srcdir)/smime_keys.pl smime_keys
+	$(AM_V_at)chmod +x smime_keys
 
 keymap_defs.h: $(OPS) $(srcdir)/gen_defs
-	$(srcdir)/gen_defs $(OPS) > keymap_defs.h
+	$(AM_V_GEN)$(srcdir)/gen_defs $(OPS) > $@
 
 keymap_alldefs.h: $(srcdir)/OPS $(srcdir)/OPS.SIDEBAR $(srcdir)/OPS.NOTMUCH $(srcdir)/OPS.MIX $(srcdir)/OPS.PGP $(srcdir)/OPS.SMIME $(srcdir)/OPS.CRYPT $(srcdir)/gen_defs config.h
-	rm -f $@
-	$(srcdir)/gen_defs $(srcdir)/OPS $(srcdir)/OPS.SIDEBAR $(srcdir)/OPS.NOTMUCH \
+	$(AM_V_GEN)$(srcdir)/gen_defs $(srcdir)/OPS $(srcdir)/OPS.SIDEBAR $(srcdir)/OPS.NOTMUCH \
 		$(srcdir)/OPS.MIX $(srcdir)/OPS.PGP $(srcdir)/OPS.SMIME $(srcdir)/OPS.CRYPT \
-		> keymap_alldefs.h
+		> $@
 
 git_ver.h: $(mutt_SOURCES) $(SUBDIRS)
-	@version=`git describe --dirty --abbrev=6 --match "neomutt-*" 2> /dev/null | sed -e 's/^neomutt-[0-9]\{8\}//' -e 's/g//'`; \
-	echo 'const char *GitVer = "'$$version'";' > git_ver.h.tmp; \
-	if ! cmp -s git_ver.h.tmp git_ver.h; then echo "  GEN      git_ver.h"; mv git_ver.h.tmp git_ver.h; fi; \
-	rm -f git_ver.h.tmp
+	$(AM_V_at)version=`git describe --dirty --abbrev=6 --match "neomutt-*" 2> /dev/null | sed -e 's/^neomutt-[0-9]\{8\}//' -e 's/g//'`
+	$(AM_V_at)echo 'const char *GitVer = "'$$version'";' > git_ver.h.tmp
+	$(AM_V_at)if ! cmp -s git_ver.h.tmp git_ver.h; then \
+		mv git_ver.h.tmp git_ver.h; \
+		echo "  GEN      git_ver.h"; \
+	fi
+	$(AM_V_at)rm -f git_ver.h.tmp
 
 install-exec-hook:
 	if test -f $(DESTDIR)$(bindir)/mutt.dotlock && test -f $(DESTDIR)$(bindir)/mutt_dotlock ; then	\

@@ -1,14 +1,12 @@
 dnl To create the configure script, run:
 dnl     autoreconf -i
 
-dnl !!! WHEN ADDING NEW CONFIGURE TESTS, PLEASE ADD CODE TO MAIN.C !!!
-dnl !!! TO DUMP THEIR RESULTS WHEN MUTT -V IS CALLED               !!!
-
 CFLAGS=$CFLAGS
 LDFLAGS=$LDFLAGS
 
 AC_INIT([NeoMutt], [20170428], [neomutt-devel@neomutt.org], [mutt], [https://www.neomutt.org])
 AC_CONFIG_SRCDIR(mutt.h)
+AC_CONFIG_AUX_DIR([.build-aux])
 AM_INIT_AUTOMAKE
 AC_CONFIG_HEADERS([config.h])
 
@@ -43,9 +41,6 @@ if test "x$U" != "x"; then
 	AC_MSG_ERROR(Compiler not ANSI compliant)
 fi
 
-# Non-verbose make
-m4_ifdef([AM_SILENT_RULES], [AM_SILENT_RULES([yes])])
-
 AC_PROG_CPP
 AC_PROG_MAKE_SET
 AC_PROG_INSTALL
@@ -57,22 +52,6 @@ AC_C_BIGENDIAN
 
 AC_SYS_LARGEFILE
 AC_CHECK_SIZEOF(off_t)
-
-AC_PATH_PROG(DBX, dbx, no)
-AC_PATH_PROG(GDB, gdb, no)
-AC_PATH_PROG(SDB, sdb, no)
-
-if test $GDB != no; then
-	DEBUGGER=$GDB
-elif test $DBX != no; then
-	DEBUGGER=$DBX
-elif test $SDB != no; then
-	DEBUGGER=$SDB
-else
-	DEBUGGER=no
-fi
-
-AC_SUBST([DEBUGGER])
 
 AH_TEMPLATE([sig_atomic_t],
 	[Define to `int' if <signal.h> doesn't define.])
@@ -113,7 +92,6 @@ AC_DEFINE_UNQUOTED(SENDMAIL,"$ac_cv_path_SENDMAIL", [Where to find sendmail on y
 
 OPS='$(srcdir)/OPS $(srcdir)/OPS.SIDEBAR'
 
-
 dnl Define the option to enable everything before any feature / option is declared
 dnl This is important because it allows us to set a default value for the options
 dnl that can later be overridden by the user's command line options.
@@ -147,7 +125,6 @@ AS_IF([test x$enable_everything = "xyes"], [
 	use_notmuch="no"
 	use_lua="no"
 ])
-
 
 dnl : A note about the organization of this file
 dnl : =========================================================================
@@ -193,7 +170,6 @@ AC_ARG_WITH(mixmaster,
 	[alongwith_mixmaster=$withval], [alongwith_mixmaster=no])
 
 dnl == End of Features and Options Definitions ==
-
 
 dnl == Declare all the checks and code for options / features below this line ==
 
@@ -278,7 +254,6 @@ AS_IF([test "$alongwith_mixmaster" != "no"], [
 	MUTT_LIB_OBJECTS="$MUTT_LIB_OBJECTS remailer.o"
 	AC_DEFINE_UNQUOTED(MIXMASTER, "$MIXMASTER", [Where to find mixmaster on your system.])
 ])
-
 
 # We now require all OPS
 OPS="$OPS \$(srcdir)/OPS.PGP \$(srcdir)/OPS.SMIME \$(srcdir)/OPS.CRYPT "
@@ -426,7 +401,6 @@ AC_CHECK_DECLS([sys_siglist],[],[],[#include <signal.h>
 /* NetBSD declares sys_siglist in unistd.h.  */
 # include <unistd.h>
 ])
-
 
 AC_REPLACE_FUNCS([wcscasecmp strcasestr])
 
