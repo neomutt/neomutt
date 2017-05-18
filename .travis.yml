@@ -10,46 +10,32 @@ dist: trusty
 
 language: c
 compiler: gcc
-cache: ccache
 
 addons:
   apt:
     packages:
-      - libgpgme11-dev
-      - libnotmuch-dev
-      - libtokyocabinet-dev
-      - libkyotocabinet-dev
-      - libgdbm-dev
-      - libdb-dev
-      - liblmdb-dev
-      - libqdbm-dev
-      - libslang2-dev
-      - libgnutls-dev
-      - libssl-dev
-      - libsasl2-dev
-      - libgss-dev
-      - xsltproc
-      - lynx
-      - docbook-simple
-      - docbook-xsl
-      - libxml2-utils
       - gettext
-      - lua5.2
-      - liblua5.2-dev
-      - autopoint
 
 git:
   depth: 3
 
-install:
-  - git clone --depth 1 https://github.com/neomutt/travis-build.git ~/config
-
-before_script:
-  - ccache --zero-stats
+env:
+  global:
+  - DEPLOY_REPO="git@github.com:neomutt/neomutt.github.io.git"
+  - DEPLOY_DIR="~/website"
+  - DEPLOY_FILE="translate.html"
 
 script:
-  - ~/config/build
+- .travis/stats.sh po/*.po
 
-after_script:
-  - ccache --show-stats
+after_success:
+- .travis/prep.sh
+- eval "$(ssh-agent -s)"
+- ssh-add .travis/travis-deploy-github.pem
+- git clone "$DEPLOY_REPO" "$DEPLOY_DIR"
+- .travis/generate-webpage.sh po/*.po > "$DEPLOY_DIR/$DEPLOY_FILE"
+- cd "$DEPLOY_DIR"
+    && git add "$DEPLOY_FILE"
+    && git commit -m "[AUTO] update translations leaderboard" -m "[ci skip]"
+    && git push origin
 
