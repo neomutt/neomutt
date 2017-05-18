@@ -62,10 +62,10 @@ LIBIMAP = -Limap -limap
 LIBIMAPDEPS = $(top_srcdir)/imap/imap.h imap/libimap.a
 
 mutt_LDADD = $(MUTT_LIB_OBJECTS) $(LIBOBJS) $(HCACHE_LIBS) $(NCRYPT_LIBS) \
-	$(LIBIMAP) $(MUTTLIBS) $(LIBICONV) $(GPGME_LIBS)
+	$(LIBIMAP) $(MUTTLIBS) $(LIBICONV) $(GPGME_LIBS) $(INTLLIBS)
 
 mutt_DEPENDENCIES = $(MUTT_LIB_OBJECTS) $(LIBOBJS) $(LIBIMAPDEPS) \
-	$(HCACHE_DEPS) $(NCRYPT_DEPS)
+	$(HCACHE_DEPS) $(NCRYPT_DEPS) $(INTLDEPS)
 
 DEFS=-DPKGDATADIR=\"$(pkgdatadir)\" -DSYSCONFDIR=\"$(sysconfdir)\" \
 	-DBINDIR=\"$(bindir)\" -DMUTTLOCALEDIR=\"$(datadir)/locale\"
@@ -97,8 +97,8 @@ mutt_dotlock_LDADD = $(LIBOBJS)
 mutt_dotlock_DEPENDENCIES = $(LIBOBJS)
 
 pgpring_SOURCES = ascii.c extlib.c lib.c md5.c pgppubring.c sha1.c
-pgpring_LDADD = $(LIBOBJS) $(NCRYPT_LIBS)
-pgpring_DEPENDENCIES = $(LIBOBJS) $(NCRYPT_DEPS)
+pgpring_LDADD = $(LIBOBJS) $(NCRYPT_LIBS) $(INTLLIBS)
+pgpring_DEPENDENCIES = $(LIBOBJS) $(NCRYPT_DEPS) $(INTLDEPS)
 
 mutt_md5_SOURCES = md5.c
 mutt_md5_CFLAGS = -DMD5UTIL
@@ -132,7 +132,7 @@ DISTCLEANFILES= smime_keys txt2c
 
 ACLOCAL_AMFLAGS = -I m4
 
-LDADD = $(LIBOBJS)
+LDADD = $(LIBOBJS) $(INTLLIBS)
 
 dist-hook:
 	echo $(VERSION) > $(distdir)/.tarball-version
