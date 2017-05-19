@@ -33,19 +33,19 @@ int km_dokey(int menu);
 void init_extended_keys(void);
 
 /* entry in the keymap tree */
-struct keymap_t
+struct Keymap
 {
   char *macro;           /* macro expansion (op == OP_MACRO) */
   char *descr;           /* description of a macro for the help menu */
-  struct keymap_t *next; /* next key in map */
+  struct Keymap *next; /* next key in map */
   short op;              /* operation to perform */
   short eq;              /* number of leading keys equal to next entry */
   short len;             /* length of key sequence (unit: sizeof (keycode_t)) */
   keycode_t *keys;       /* key sequence */
 };
 
-int km_expand_key(char *s, size_t len, struct keymap_t *map);
-struct keymap_t *km_find_func(int menu, int func);
+int km_expand_key(char *s, size_t len, struct Keymap *map);
+struct Keymap *km_find_func(int menu, int func);
 void km_init(void);
 void km_error_key(int menu);
 void mutt_what_key(void);
@@ -80,39 +80,39 @@ enum
 };
 
 /* the keymap trees (one for each menu) */
-extern struct keymap_t *Keymaps[];
+extern struct Keymap *Keymaps[];
 
 /* dokey() records the last real key pressed  */
 extern int LastKey;
 
-extern const struct mapping_t Menus[];
+extern const struct Mapping Menus[];
 
-struct binding_t
+struct Binding
 {
   char *name; /* name of the function */
   int op;     /* function id number */
   char *seq;  /* default key binding */
 };
 
-const struct binding_t *km_get_table(int menu);
+const struct Binding *km_get_table(int menu);
 
-extern const struct binding_t OpGeneric[];
-extern const struct binding_t OpPost[];
-extern const struct binding_t OpMain[];
-extern const struct binding_t OpAttach[];
-extern const struct binding_t OpPager[];
-extern const struct binding_t OpCompose[];
-extern const struct binding_t OpBrowser[];
-extern const struct binding_t OpEditor[];
-extern const struct binding_t OpQuery[];
-extern const struct binding_t OpAlias[];
+extern const struct Binding OpGeneric[];
+extern const struct Binding OpPost[];
+extern const struct Binding OpMain[];
+extern const struct Binding OpAttach[];
+extern const struct Binding OpPager[];
+extern const struct Binding OpCompose[];
+extern const struct Binding OpBrowser[];
+extern const struct Binding OpEditor[];
+extern const struct Binding OpQuery[];
+extern const struct Binding OpAlias[];
 
-extern const struct binding_t OpPgp[];
+extern const struct Binding OpPgp[];
 
-extern const struct binding_t OpSmime[];
+extern const struct Binding OpSmime[];
 
 #ifdef MIXMASTER
-extern const struct binding_t OpMix[];
+extern const struct Binding OpMix[];
 #endif
 
 #endif /* _MUTT_KEYMAP_H */

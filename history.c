@@ -66,7 +66,7 @@
  *                  next oldest entry
  *         HistSize entry
  */
-struct history
+struct History
 {
   char **hist;
   short cur;
@@ -75,12 +75,12 @@ struct history
 
 /* global vars used for the string-history routines */
 
-static struct history History[HC_LAST];
+static struct History History[HC_LAST];
 static int OldSize = 0;
 
 #define GET_HISTORY(CLASS) ((CLASS >= HC_LAST) ? NULL : &History[CLASS])
 
-static void init_history(struct history *h)
+static void init_history(struct History *h)
 {
   int i;
 
@@ -139,7 +139,7 @@ void mutt_read_histfile(void)
 
 static int dup_hash_dec(struct Hash *dup_hash, char *s)
 {
-  struct hash_elem *elem;
+  struct HashElem *elem;
   uintptr_t count;
 
   elem = hash_find_elem(dup_hash, s);
@@ -160,7 +160,7 @@ static int dup_hash_dec(struct Hash *dup_hash, char *s)
 
 static int dup_hash_inc(struct Hash *dup_hash, char *s)
 {
-  struct hash_elem *elem;
+  struct HashElem *elem;
   uintptr_t count;
 
   elem = hash_find_elem(dup_hash, s);
@@ -315,12 +315,12 @@ static void save_history(history_class_t hclass, const char *s)
 }
 
 /* When removing dups, we want the created "blanks" to be right below the
- * resulting h->last position.  See the comment section above 'struct history'.
+ * resulting h->last position.  See the comment section above 'struct History'.
  */
 static void remove_history_dups(history_class_t hclass, const char *s)
 {
   int source, dest, old_last;
-  struct history *h = GET_HISTORY(hclass);
+  struct History *h = GET_HISTORY(hclass);
 
   if (!HistSize || !h)
     return; /* disabled */
@@ -375,7 +375,7 @@ void mutt_init_history(void)
 void mutt_history_add(history_class_t hclass, const char *s, int save)
 {
   int prev;
-  struct history *h = GET_HISTORY(hclass);
+  struct History *h = GET_HISTORY(hclass);
 
   if (!HistSize || !h)
     return; /* disabled */
@@ -407,7 +407,7 @@ void mutt_history_add(history_class_t hclass, const char *s, int save)
 char *mutt_history_next(history_class_t hclass)
 {
   int next;
-  struct history *h = GET_HISTORY(hclass);
+  struct History *h = GET_HISTORY(hclass);
 
   if (!HistSize || !h)
     return ""; /* disabled */
@@ -429,7 +429,7 @@ char *mutt_history_next(history_class_t hclass)
 char *mutt_history_prev(history_class_t hclass)
 {
   int prev;
-  struct history *h = GET_HISTORY(hclass);
+  struct History *h = GET_HISTORY(hclass);
 
   if (!HistSize || !h)
     return ""; /* disabled */
@@ -450,7 +450,7 @@ char *mutt_history_prev(history_class_t hclass)
 
 void mutt_reset_history_state(history_class_t hclass)
 {
-  struct history *h = GET_HISTORY(hclass);
+  struct History *h = GET_HISTORY(hclass);
 
   if (!HistSize || !h)
     return; /* disabled */
@@ -460,7 +460,7 @@ void mutt_reset_history_state(history_class_t hclass)
 
 int mutt_history_at_scratch(history_class_t hclass)
 {
-  struct history *h = GET_HISTORY(hclass);
+  struct History *h = GET_HISTORY(hclass);
 
   if (!HistSize || !h)
     return 0; /* disabled */
@@ -470,7 +470,7 @@ int mutt_history_at_scratch(history_class_t hclass)
 
 void mutt_history_save_scratch(history_class_t hclass, const char *s)
 {
-  struct history *h = GET_HISTORY(hclass);
+  struct History *h = GET_HISTORY(hclass);
 
   if (!HistSize || !h)
     return; /* disabled */

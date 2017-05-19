@@ -111,33 +111,33 @@ static struct Header *OldHdr = NULL;
     break;                                                                     \
   }
 
-struct q_class_t
+struct QClass
 {
   int length;
   int index;
   int color;
   char *prefix;
-  struct q_class_t *next, *prev;
-  struct q_class_t *down, *up;
+  struct QClass *next, *prev;
+  struct QClass *down, *up;
 };
 
-struct syntax_t
+struct Syntax
 {
   int color;
   int first;
   int last;
 };
 
-struct line_t
+struct Line
 {
   LOFF_T offset;
   short type;
   short continuation;
   short chunks;
   short search_cnt;
-  struct syntax_t *syntax;
-  struct syntax_t *search;
-  struct q_class_t *quote;
+  struct Syntax *syntax;
+  struct Syntax *search;
+  struct QClass *quote;
   unsigned int is_cont_hdr; /* this line is a continuation of the previous header line */
 };
 
@@ -159,7 +159,7 @@ struct AnsiAttr
 static short InHelp = 0;
 
 #if defined(USE_SLANG_CURSES) || defined(HAVE_RESIZETERM)
-static struct resize
+static struct Resize
 {
   int line;
   int SearchCompiled;
@@ -169,7 +169,7 @@ static struct resize
 
 #define NumSigLines 4
 
-static int check_sig(const char *s, struct line_t *info, int n)
+static int check_sig(const char *s, struct Line *info, int n)
 {
   int count = 0;
 
@@ -200,7 +200,7 @@ static int check_sig(const char *s, struct line_t *info, int n)
   return 0;
 }
 
-static void resolve_color(struct line_t *lineInfo, int n, int cnt, int flags,
+static void resolve_color(struct Line *lineInfo, int n, int cnt, int flags,
                           int special, struct AnsiAttr *a)
 {
   int def_color;         /* color without syntax highlight */
@@ -233,7 +233,7 @@ static void resolve_color(struct line_t *lineInfo, int n, int cnt, int flags,
 
   if ((flags & MUTT_SHOWCOLOR) && lineInfo[m].type == MT_COLOR_QUOTED)
   {
-    struct q_class_t *class = lineInfo[m].quote;
+    struct QClass *class = lineInfo[m].quote;
 
     if (class)
     {
@@ -333,7 +333,7 @@ static void resolve_color(struct line_t *lineInfo, int n, int cnt, int flags,
   }
 }
 
-static void append_line(struct line_t *lineInfo, int n, int cnt)
+static void append_line(struct Line *lineInfo, int n, int cnt)
 {
   int m;
 
@@ -351,16 +351,16 @@ static void append_line(struct line_t *lineInfo, int n, int cnt)
       (lineInfo[n].continuation) ? cnt + (lineInfo[n].syntax)[0].last : cnt;
 }
 
-static void new_class_color(struct q_class_t *class, int *q_level)
+static void new_class_color(struct QClass *class, int *q_level)
 {
   class->index = (*q_level)++;
   class->color = ColorQuote[class->index % ColorQuoteUsed];
 }
 
-static void shift_class_colors(struct q_class_t *QuoteList,
-                               struct q_class_t *new_class, int index, int *q_level)
+static void shift_class_colors(struct QClass *QuoteList,
+                               struct QClass *new_class, int index, int *q_level)
 {
-  struct q_class_t *q_list = NULL;
+  struct QClass *q_list = NULL;
 
   q_list = QuoteList;
   new_class->index = -1;
@@ -394,9 +394,9 @@ static void shift_class_colors(struct q_class_t *QuoteList,
   (*q_level)++;
 }
 
-static void cleanup_quote(struct q_class_t **QuoteList)
+static void cleanup_quote(struct QClass **QuoteList)
 {
-  struct q_class_t *ptr = NULL;
+  struct QClass *ptr = NULL;
 
   while (*QuoteList)
   {
@@ -412,11 +412,11 @@ static void cleanup_quote(struct q_class_t **QuoteList)
   return;
 }
 
-static struct q_class_t *classify_quote(struct q_class_t **QuoteList, const char *qptr,
+static struct QClass *classify_quote(struct QClass **QuoteList, const char *qptr,
                                         int length, int *force_redraw, int *q_level)
 {
-  struct q_class_t *q_list = *QuoteList;
-  struct q_class_t *class = NULL, *tmp = NULL, *ptr, *save = NULL;
+  struct QClass *q_list = *QuoteList;
+  struct QClass *class = NULL, *tmp = NULL, *ptr, *save = NULL;
   char *tail_qptr = NULL;
   int offset, tail_lng;
   int index = -1;
@@ -427,7 +427,7 @@ static struct q_class_t *classify_quote(struct q_class_t **QuoteList, const char
 
     if (*QuoteList == NULL)
     {
-      class = safe_calloc(1, sizeof(struct q_class_t));
+      class = safe_calloc(1, sizeof(struct QClass));
       class->color = ColorQuote[0];
       *QuoteList = class;
     }
@@ -452,7 +452,7 @@ static struct q_class_t *classify_quote(struct q_class_t **QuoteList, const char
         if (tmp == NULL)
         {
           /* add a node above q_list */
-          tmp = safe_calloc(1, sizeof(struct q_class_t));
+          tmp = safe_calloc(1, sizeof(struct QClass));
           tmp->prefix = safe_calloc(1, length + 1);
           strncpy(tmp->prefix, qptr, length);
           tmp->length = length;
@@ -562,7 +562,7 @@ static struct q_class_t *classify_quote(struct q_class_t **QuoteList, const char
               if (tmp == NULL)
               {
                 /* add a node above q_list */
-                tmp = safe_calloc(1, sizeof(struct q_class_t));
+                tmp = safe_calloc(1, sizeof(struct QClass));
                 tmp->prefix = safe_calloc(1, length + 1);
                 strncpy(tmp->prefix, qptr, length);
                 tmp->length = length;
@@ -664,7 +664,7 @@ static struct q_class_t *classify_quote(struct q_class_t **QuoteList, const char
         /* still not found so far: add it as a sibling to the current node */
         if (class == NULL)
         {
-          tmp = safe_calloc(1, sizeof(struct q_class_t));
+          tmp = safe_calloc(1, sizeof(struct QClass));
           tmp->prefix = safe_calloc(1, length + 1);
           strncpy(tmp->prefix, qptr, length);
           tmp->length = length;
@@ -701,7 +701,7 @@ static struct q_class_t *classify_quote(struct q_class_t **QuoteList, const char
   if (class == NULL)
   {
     /* not found so far: add it as a top level class */
-    class = safe_calloc(1, sizeof(struct q_class_t));
+    class = safe_calloc(1, sizeof(struct QClass));
     class->prefix = safe_calloc(1, length + 1);
     strncpy(class->prefix, qptr, length);
     class->length = length;
@@ -733,8 +733,8 @@ static int check_attachment_marker(char *p)
   return (int) (*p - *q);
 }
 
-static void resolve_types(char *buf, char *raw, struct line_t *lineInfo, int n,
-                          int last, struct q_class_t **QuoteList, int *q_level,
+static void resolve_types(char *buf, char *raw, struct Line *lineInfo, int n,
+                          int last, struct QClass **QuoteList, int *q_level,
                           int *force_redraw, int q_classify)
 {
   struct ColorLine *color_line = NULL;
@@ -818,7 +818,7 @@ static void resolve_types(char *buf, char *raw, struct line_t *lineInfo, int n,
       if (lineInfo[i].chunks)
       {
         lineInfo[i].chunks = 0;
-        safe_realloc(&(lineInfo[n].syntax), sizeof(struct syntax_t));
+        safe_realloc(&(lineInfo[n].syntax), sizeof(struct Syntax));
       }
       lineInfo[i++].type = MT_COLOR_SIGNATURE;
     }
@@ -907,7 +907,7 @@ static void resolve_types(char *buf, char *raw, struct line_t *lineInfo, int n,
               }
               if (++(lineInfo[n].chunks) > 1)
                 safe_realloc(&(lineInfo[n].syntax),
-                             (lineInfo[n].chunks) * sizeof(struct syntax_t));
+                             (lineInfo[n].chunks) * sizeof(struct Syntax));
             }
             i = lineInfo[n].chunks - 1;
             pmatch[0].rm_so += offset;
@@ -968,7 +968,7 @@ static void resolve_types(char *buf, char *raw, struct line_t *lineInfo, int n,
             {
               if (++(lineInfo[n].chunks) > 1)
                 safe_realloc(&(lineInfo[n].syntax),
-                             (lineInfo[n].chunks) * sizeof(struct syntax_t));
+                             (lineInfo[n].chunks) * sizeof(struct Syntax));
             }
             i = lineInfo[n].chunks - 1;
             pmatch[0].rm_so += offset;
@@ -1178,7 +1178,7 @@ static int fill_buffer(FILE *f, LOFF_T *last_pos, LOFF_T offset, unsigned char *
   return b_read;
 }
 
-static int format_line(struct line_t **lineInfo, int n, unsigned char *buf,
+static int format_line(struct Line **lineInfo, int n, unsigned char *buf,
                        int flags, struct AnsiAttr *pa, int cnt, int *pspace, int *pvch,
                        int *pcol, int *pspecial, struct MuttWindow *pager_window)
 {
@@ -1372,9 +1372,9 @@ static int format_line(struct line_t **lineInfo, int n, unsigned char *buf,
  *      0       normal exit, line was not displayed
  *      >0      normal exit, line was displayed
  */
-static int display_line(FILE *f, LOFF_T *last_pos, struct line_t **lineInfo,
+static int display_line(FILE *f, LOFF_T *last_pos, struct Line **lineInfo,
                         int n, int *last, int *max, int flags,
-                        struct q_class_t **QuoteList, int *q_level, int *force_redraw,
+                        struct QClass **QuoteList, int *q_level, int *force_redraw,
                         regex_t *SearchRE, struct MuttWindow *pager_window)
 {
   unsigned char *buf = NULL, *fmt = NULL;
@@ -1398,13 +1398,13 @@ static int display_line(FILE *f, LOFF_T *last_pos, struct line_t **lineInfo,
 
   if (*last == *max)
   {
-    safe_realloc(lineInfo, sizeof(struct line_t) * (*max += LINES));
+    safe_realloc(lineInfo, sizeof(struct Line) * (*max += LINES));
     for (ch = *last; ch < *max; ch++)
     {
-      memset(&((*lineInfo)[ch]), 0, sizeof(struct line_t));
+      memset(&((*lineInfo)[ch]), 0, sizeof(struct Line));
       (*lineInfo)[ch].type = -1;
       (*lineInfo)[ch].search_cnt = -1;
-      (*lineInfo)[ch].syntax = safe_malloc(sizeof(struct syntax_t));
+      (*lineInfo)[ch].syntax = safe_malloc(sizeof(struct Syntax));
       ((*lineInfo)[ch].syntax)[0].first = ((*lineInfo)[ch].syntax)[0].last = -1;
     }
   }
@@ -1473,9 +1473,9 @@ static int display_line(FILE *f, LOFF_T *last_pos, struct line_t **lineInfo,
     {
       if (++((*lineInfo)[n].search_cnt) > 1)
         safe_realloc(&((*lineInfo)[n].search),
-                     ((*lineInfo)[n].search_cnt) * sizeof(struct syntax_t));
+                     ((*lineInfo)[n].search_cnt) * sizeof(struct Syntax));
       else
-        (*lineInfo)[n].search = safe_malloc(sizeof(struct syntax_t));
+        (*lineInfo)[n].search = safe_malloc(sizeof(struct Syntax));
       pmatch[0].rm_so += offset;
       pmatch[0].rm_eo += offset;
       ((*lineInfo)[n].search)[(*lineInfo)[n].search_cnt - 1].first = pmatch[0].rm_so;
@@ -1613,7 +1613,7 @@ out:
   return rc;
 }
 
-static int up_n_lines(int nlines, struct line_t *info, int cur, int hiding)
+static int up_n_lines(int nlines, struct Line *info, int cur, int hiding)
 {
   while (cur > 0 && nlines > 0)
   {
@@ -1625,10 +1625,10 @@ static int up_n_lines(int nlines, struct line_t *info, int cur, int hiding)
   return cur;
 }
 
-static const struct mapping_t PagerHelp[] = {
+static const struct Mapping PagerHelp[] = {
   { N_("Exit"), OP_EXIT }, { N_("PrevPg"), OP_PREV_PAGE }, { N_("NextPg"), OP_NEXT_PAGE }, { NULL, 0 },
 };
-static const struct mapping_t PagerHelpExtra[] = {
+static const struct Mapping PagerHelpExtra[] = {
   { N_("View Attachm."), OP_VIEW_ATTACHMENTS },
   { N_("Del"), OP_DELETE },
   { N_("Reply"), OP_REPLY },
@@ -1637,7 +1637,7 @@ static const struct mapping_t PagerHelpExtra[] = {
 };
 
 #ifdef USE_NNTP
-static struct mapping_t PagerNewsHelpExtra[] = {
+static struct Mapping PagerNewsHelpExtra[] = {
   { N_("Post"), OP_POST },
   { N_("Followup"), OP_FOLLOWUP },
   { N_("Del"), OP_DELETE },
@@ -1668,7 +1668,7 @@ struct PagerRedrawData
   int has_types;
   int hideQuoted;
   int q_level;
-  struct q_class_t *QuoteList;
+  struct QClass *QuoteList;
   LOFF_T last_pos;
   LOFF_T last_offset;
   struct MuttWindow *index_status_window;
@@ -1683,7 +1683,7 @@ struct PagerRedrawData
   const char *banner;
   char *helpstr;
   char *searchbuf;
-  struct line_t *lineInfo;
+  struct Line *lineInfo;
   FILE *fp;
   struct stat sb;
 };
@@ -1827,7 +1827,7 @@ static void pager_menu_redraw(struct Menu *pager_menu)
         rd->lineInfo[i].search_cnt = -1;
         rd->lineInfo[i].quote = NULL;
 
-        safe_realloc(&(rd->lineInfo[i].syntax), sizeof(struct syntax_t));
+        safe_realloc(&(rd->lineInfo[i].syntax), sizeof(struct Syntax));
         if (rd->SearchCompiled && rd->lineInfo[i].search)
           FREE(&(rd->lineInfo[i].search));
       }
@@ -1900,7 +1900,7 @@ static void pager_menu_redraw(struct Menu *pager_menu)
 
   if (pager_menu->redraw & REDRAW_STATUS)
   {
-    struct hdr_format_info hfi;
+    struct HdrFormatInfo hfi;
     char pager_progress_str[4];
 
     hfi.ctx = Context;
@@ -2024,13 +2024,13 @@ int mutt_pager(const char *banner, const char *fname, int flags, struct Pager *e
     mutt_set_flag(Context, extra->hdr, MUTT_READ, 1);
   }
 
-  rd.lineInfo = safe_malloc(sizeof(struct line_t) * (rd.maxLine = LINES));
+  rd.lineInfo = safe_malloc(sizeof(struct Line) * (rd.maxLine = LINES));
   for (i = 0; i < rd.maxLine; i++)
   {
-    memset(&rd.lineInfo[i], 0, sizeof(struct line_t));
+    memset(&rd.lineInfo[i], 0, sizeof(struct Line));
     rd.lineInfo[i].type = -1;
     rd.lineInfo[i].search_cnt = -1;
-    rd.lineInfo[i].syntax = safe_malloc(sizeof(struct syntax_t));
+    rd.lineInfo[i].syntax = safe_malloc(sizeof(struct Syntax));
     (rd.lineInfo[i].syntax)[0].first = (rd.lineInfo[i].syntax)[0].last = -1;
   }
 
@@ -2192,7 +2192,7 @@ int mutt_pager(const char *banner, const char *fname, int flags, struct Pager *e
           if (!rd.lineInfo[i].continuation)
             rd.lines++;
 
-        Resize = safe_malloc(sizeof(struct resize));
+        Resize = safe_malloc(sizeof(struct Resize));
 
         Resize->line = rd.lines;
         Resize->SearchCompiled = rd.SearchCompiled;

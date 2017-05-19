@@ -92,7 +92,7 @@ struct Context
 
   /* driver hooks */
   void *data; /* driver specific data */
-  struct mx_ops *mx_ops;
+  struct MxOps *mx_ops;
 };
 
 #endif /* _MUTT_CONTEXT_H */

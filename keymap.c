@@ -38,7 +38,7 @@
 #include "imap/imap.h"
 #endif
 
-const struct mapping_t Menus[] = {
+const struct Mapping Menus[] = {
   { "alias", MENU_ALIAS },
   { "attach", MENU_ATTACH },
   { "browser", MENU_FOLDER },
@@ -64,7 +64,7 @@ const struct mapping_t Menus[] = {
   { NULL, 0 },
 };
 
-static struct mapping_t KeyNames[] = {
+static struct Mapping KeyNames[] = {
   { "<PageUp>", KEY_PPAGE },
   { "<PageDown>", KEY_NPAGE },
   { "<Up>", KEY_UP },
@@ -126,13 +126,13 @@ static struct mapping_t KeyNames[] = {
 /* contains the last key the user pressed */
 int LastKey;
 
-struct keymap_t *Keymaps[MENU_MAX];
+struct Keymap *Keymaps[MENU_MAX];
 
-static struct keymap_t *alloc_keys(int len, keycode_t *keys)
+static struct Keymap *alloc_keys(int len, keycode_t *keys)
 {
-  struct keymap_t *p = NULL;
+  struct Keymap *p = NULL;
 
-  p = safe_calloc(1, sizeof(struct keymap_t));
+  p = safe_calloc(1, sizeof(struct Keymap));
   p->len = len;
   p->keys = safe_malloc(len * sizeof(keycode_t));
   memcpy(p->keys, keys, len * sizeof(keycode_t));
@@ -235,7 +235,7 @@ static int parsekeys(const char *str, keycode_t *d, int max)
 int km_bind_err(char *s, int menu, int op, char *macro, char *descr, struct Buffer *err)
 {
   int retval = 0;
-  struct keymap_t *map = NULL, *tmp = NULL, *last = NULL, *next = NULL;
+  struct Keymap *map = NULL, *tmp = NULL, *last = NULL, *next = NULL;
   keycode_t buf[MAX_SEQ];
   int len, pos = 0, lastpos = 0;
 
@@ -335,7 +335,7 @@ static int km_bindkey(char *s, int menu, int op)
   return km_bindkey_err(s, menu, op, NULL);
 }
 
-static int get_op(const struct binding_t *bindings, const char *start, size_t len)
+static int get_op(const struct Binding *bindings, const char *start, size_t len)
 {
   int i;
 
@@ -349,7 +349,7 @@ static int get_op(const struct binding_t *bindings, const char *start, size_t le
   return OP_NULL;
 }
 
-static char *get_func(const struct binding_t *bindings, int op)
+static char *get_func(const struct Binding *bindings, int op)
 {
   int i;
 
@@ -407,7 +407,7 @@ static void generic_tokenize_push_string(char *s, void (*generic_push)(int, int)
          * skip the '<' and the '>' when comparing */
         for (i = 0; Menus[i].name; i++)
         {
-          const struct binding_t *binding = km_get_table(Menus[i].value);
+          const struct Binding *binding = km_get_table(Menus[i].value);
           if (binding)
           {
             op = get_op(binding, pp + 1, l - 2);
@@ -461,7 +461,7 @@ static int retry_generic(int menu, keycode_t *keys, int keyslen, int lastkey)
 int km_dokey(int menu)
 {
   struct Event tmp;
-  struct keymap_t *map = Keymaps[menu];
+  struct Keymap *map = Keymaps[menu];
   int pos = 0;
   int n = 0;
   int i;
@@ -515,7 +515,7 @@ int km_dokey(int menu)
     if (tmp.op)
     {
       char *func = NULL;
-      const struct binding_t *bindings = NULL;
+      const struct Binding *bindings = NULL;
 
       /* is this a valid op for this menu? */
       if ((bindings = km_get_table(menu)) && (func = get_func(bindings, tmp.op)))
@@ -592,7 +592,7 @@ int km_dokey(int menu)
   /* not reached */
 }
 
-static void create_bindings(const struct binding_t *map, int menu)
+static void create_bindings(const struct Binding *map, int menu)
 {
   int i;
 
@@ -632,7 +632,7 @@ static const char *km_keyname(int c)
   return buf;
 }
 
-int km_expand_key(char *s, size_t len, struct keymap_t *map)
+int km_expand_key(char *s, size_t len, struct Keymap *map)
 {
   size_t l;
   int p = 0;
@@ -654,9 +654,9 @@ int km_expand_key(char *s, size_t len, struct keymap_t *map)
   /* not reached */
 }
 
-struct keymap_t *km_find_func(int menu, int func)
+struct Keymap *km_find_func(int menu, int func)
 {
-  struct keymap_t *map = Keymaps[menu];
+  struct Keymap *map = Keymaps[menu];
 
   for (; map; map = map->next)
     if (map->op == func)
@@ -665,13 +665,13 @@ struct keymap_t *km_find_func(int menu, int func)
 }
 
 #ifdef NCURSES_VERSION
-struct extkey
+struct Extkey
 {
   const char *name;
   const char *sym;
 };
 
-static const struct extkey ExtKeys[] = {
+static const struct Extkey ExtKeys[] = {
   { "<c-up>", "kUP5" },
   { "<s-up>", "kUP" },
   { "<a-up>", "kUP3" },
@@ -758,7 +758,7 @@ void init_extended_keys(void)
 
 void km_init(void)
 {
-  memset(Keymaps, 0, sizeof(struct keymap_t *) * MENU_MAX);
+  memset(Keymaps, 0, sizeof(struct Keymap *) * MENU_MAX);
 
   create_bindings(OpAttach, MENU_ATTACH);
   create_bindings(OpBrowser, MENU_FOLDER);
@@ -879,7 +879,7 @@ void km_init(void)
 void km_error_key(int menu)
 {
   char buf[SHORT_STRING];
-  struct keymap_t *key = NULL;
+  struct Keymap *key = NULL;
   int p, op;
 
   key = km_find_func(menu, OP_HELP);
@@ -999,7 +999,7 @@ error:
 }
 
 static int try_bind(char *key, int menu, char *func,
-                    const struct binding_t *bindings, struct Buffer *err)
+                    const struct Binding *bindings, struct Buffer *err)
 {
   int i;
 
@@ -1019,7 +1019,7 @@ static int try_bind(char *key, int menu, char *func,
   return -1; /* Couldn't find an existing function with this name */
 }
 
-const struct binding_t *km_get_table(int menu)
+const struct Binding *km_get_table(int menu)
 {
   switch (menu)
   {
@@ -1065,9 +1065,9 @@ const struct binding_t *km_get_table(int menu)
 /* bind menu-name '<key_sequence>' function-name */
 int mutt_parse_bind(struct Buffer *buf, struct Buffer *s, unsigned long data, struct Buffer *err)
 {
-  const struct binding_t *bindings = NULL;
+  const struct Binding *bindings = NULL;
   char *key = NULL;
-  int menu[sizeof(Menus) / sizeof(struct mapping_t) - 1], r = 0, nummenus, i;
+  int menu[sizeof(Menus) / sizeof(struct Mapping) - 1], r = 0, nummenus, i;
 
   if ((key = parse_keymap(menu, s, sizeof(menu) / sizeof(menu[0]), &nummenus, err)) == NULL)
     return -1;
@@ -1117,7 +1117,7 @@ int mutt_parse_bind(struct Buffer *buf, struct Buffer *s, unsigned long data, st
 /* macro <menu> <key> <macro> <description> */
 int mutt_parse_macro(struct Buffer *buf, struct Buffer *s, unsigned long data, struct Buffer *err)
 {
-  int menu[sizeof(Menus) / sizeof(struct mapping_t) - 1], r = -1, nummenus, i;
+  int menu[sizeof(Menus) / sizeof(struct Mapping) - 1], r = -1, nummenus, i;
   char *seq = NULL;
   char *key = NULL;
 
@@ -1168,7 +1168,7 @@ int mutt_parse_exec(struct Buffer *buf, struct Buffer *s, unsigned long data, st
 {
   int ops[128];
   int nops = 0;
-  const struct binding_t *bindings = NULL;
+  const struct Binding *bindings = NULL;
   char *function = NULL;
 
   if (!MoreArgs(s))

@@ -22,7 +22,7 @@
 #include <sys/types.h>
 #include <time.h>
 
-struct folder_file
+struct FolderFile
 {
   mode_t mode;
   off_t size;
@@ -53,9 +53,9 @@ struct folder_file
   bool tagged : 1;
 };
 
-struct browser_state
+struct BrowserState
 {
-  struct folder_file *entry;
+  struct FolderFile *entry;
   unsigned int entrylen; /* number of real entries */
   unsigned int entrymax; /* max entry */
 #ifdef USE_IMAP

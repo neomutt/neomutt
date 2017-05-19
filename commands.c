@@ -146,7 +146,7 @@ int mutt_display_message(struct Header *cur)
     builtin = 1;
   else
   {
-    struct hdr_format_info hfi;
+    struct HdrFormatInfo hfi;
     hfi.ctx = Context;
     hfi.pager_progress = ExtPagerProgress;
     hfi.hdr = cur;

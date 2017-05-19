@@ -46,7 +46,7 @@ struct Buffer;
 #define DT_SORT_AUX     0x80
 #define DT_SORT_SIDEBAR 0x100
 
-struct option_t
+struct Option
 {
   char *option;
   short type;
@@ -55,9 +55,9 @@ struct option_t
   unsigned long init; /* initial value */
 };
 
-int mutt_option_to_string(const struct option_t *opt, char *val, size_t len);
+int mutt_option_to_string(const struct Option *opt, char *val, size_t len);
 
-const struct option_t *mutt_option_get(const char *s);
-int mutt_option_set(const struct option_t *val, struct Buffer *err);
+const struct Option *mutt_option_get(const char *s);
+int mutt_option_set(const struct Option *val, struct Buffer *err);
 
 #endif /* _MUTT_OPTIONS_H */

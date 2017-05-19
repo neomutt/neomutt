@@ -37,7 +37,7 @@ struct Message;
 struct stat;
 
 /*
- * struct mx_ops - a structure to store operations on a mailbox
+ * struct MxOps - a structure to store operations on a mailbox
  * The following operations are mandatory:
  *  - open
  *  - close
@@ -46,7 +46,7 @@ struct stat;
  * Optional operations
  *  - open_new_msg
  */
-struct mx_ops
+struct MxOps
 {
   int (*open)(struct Context *ctx);
   int (*open_append)(struct Context *ctx, int flags);
@@ -113,10 +113,10 @@ void mx_update_tables(struct Context *ctx, int committing);
 int mx_lock_file(const char *path, int fd, int excl, int dot, int timeout);
 int mx_unlock_file(const char *path, int fd, int dot);
 
-struct mx_ops *mx_get_ops(int magic);
-extern struct mx_ops mx_maildir_ops;
-extern struct mx_ops mx_mbox_ops;
-extern struct mx_ops mx_mh_ops;
-extern struct mx_ops mx_mmdf_ops;
+struct MxOps *mx_get_ops(int magic);
+extern struct MxOps mx_maildir_ops;
+extern struct MxOps mx_mbox_ops;
+extern struct MxOps mx_mh_ops;
+extern struct MxOps mx_mmdf_ops;
 
 #endif /* _MUTT_MX_H */

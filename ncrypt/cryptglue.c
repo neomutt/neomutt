@@ -49,16 +49,16 @@ struct State;
 */
 
 #ifdef CRYPT_BACKEND_CLASSIC_PGP
-extern struct crypt_module_specs crypt_mod_pgp_classic;
+extern struct CryptModuleSpecs crypt_mod_pgp_classic;
 #endif
 
 #ifdef CRYPT_BACKEND_CLASSIC_SMIME
-extern struct crypt_module_specs crypt_mod_smime_classic;
+extern struct CryptModuleSpecs crypt_mod_smime_classic;
 #endif
 
 #ifdef CRYPT_BACKEND_GPGME
-extern struct crypt_module_specs crypt_mod_pgp_gpgme;
-extern struct crypt_module_specs crypt_mod_smime_gpgme;
+extern struct CryptModuleSpecs crypt_mod_pgp_gpgme;
+extern struct CryptModuleSpecs crypt_mod_smime_gpgme;
 #endif
 
 void crypt_init(void)

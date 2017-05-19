@@ -86,7 +86,7 @@ static int crypt_mod_smime_verify_sender(struct Header *h)
   return smime_gpgme_verify_sender(h);
 }
 
-struct crypt_module_specs crypt_mod_smime_gpgme = {
+struct CryptModuleSpecs crypt_mod_smime_gpgme = {
   APPLICATION_SMIME,
   {
       crypt_mod_smime_init,

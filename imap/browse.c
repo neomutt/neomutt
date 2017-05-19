@@ -44,7 +44,7 @@
  * imap_unmunge_mbox_name().
  */
 static void imap_add_folder(char delim, char *folder, int noselect, int noinferiors,
-                            struct browser_state *state, short isparent)
+                            struct BrowserState *state, short isparent)
 {
   char tmp[LONG_STRING];
   char relpath[LONG_STRING];
@@ -56,9 +56,9 @@ static void imap_add_folder(char delim, char *folder, int noselect, int noinferi
 
   if (state->entrylen + 1 == state->entrymax)
   {
-    safe_realloc(&state->entry, sizeof(struct folder_file) * (state->entrymax += 256));
+    safe_realloc(&state->entry, sizeof(struct FolderFile) * (state->entrymax += 256));
     memset(state->entry + state->entrylen, 0,
-           (sizeof(struct folder_file) * (state->entrymax - state->entrylen)));
+           (sizeof(struct FolderFile) * (state->entrymax - state->entrylen)));
   }
 
   /* render superiors as unix-standard ".." */
@@ -121,7 +121,7 @@ static void imap_add_folder(char delim, char *folder, int noselect, int noinferi
 }
 
 static int browse_add_list_result(struct ImapData *idata, const char *cmd,
-                                  struct browser_state *state, short isparent)
+                                  struct BrowserState *state, short isparent)
 {
   struct ImapList list;
   struct ImapMbox mx;
@@ -161,7 +161,7 @@ static int browse_add_list_result(struct ImapData *idata, const char *cmd,
 
 /* imap_browse: IMAP hook into the folder browser, fills out browser_state,
  *   given a current folder to browse */
-int imap_browse(char *path, struct browser_state *state)
+int imap_browse(char *path, struct BrowserState *state)
 {
   struct ImapData *idata = NULL;
   struct ImapList list;

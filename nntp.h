@@ -164,6 +164,6 @@ header_cache_t *nntp_hcache_open(struct NntpData *nntp_data);
 void nntp_hcache_update(struct NntpData *nntp_data, header_cache_t *hc);
 #endif
 
-extern struct mx_ops mx_nntp_ops;
+extern struct MxOps mx_nntp_ops;
 
 #endif /* _MUTT_NNTP_H */

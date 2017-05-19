@@ -56,6 +56,6 @@ char *nm_header_get_tag_transformed(char *tag, struct Header *h);
 char *nm_header_get_tags_transformed(struct Header *h);
 char *nm_header_get_tags(struct Header *h);
 
-extern struct mx_ops mx_notmuch_ops;
+extern struct MxOps mx_notmuch_ops;
 
 #endif /* _MUTT_NOTMUCH_H */

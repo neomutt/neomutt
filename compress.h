@@ -28,6 +28,6 @@ bool mutt_comp_can_append(struct Context *ctx);
 bool mutt_comp_can_read(const char *path);
 int mutt_comp_valid_command(const char *cmd);
 
-extern struct mx_ops mx_comp_ops;
+extern struct MxOps mx_comp_ops;
 
 #endif /* _MUTT_COMPRESS_H */

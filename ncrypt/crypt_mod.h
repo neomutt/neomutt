@@ -67,7 +67,7 @@ typedef void (*crypt_func_set_sender_t)(const char *sender);
 /*
    A structure to keep all crypto module functions together.
  */
-typedef struct crypt_module_functions
+typedef struct CryptModuleFunctions
 {
   /* Common/General functions.  */
   crypt_func_init_t                init;
@@ -101,7 +101,7 @@ typedef struct crypt_module_functions
 /*
    A structure to describe a crypto module.
  */
-typedef struct crypt_module_specs
+typedef struct CryptModuleSpecs
 {
   int identifier; /* Identifying bit.  */
   crypt_module_functions_t functions;

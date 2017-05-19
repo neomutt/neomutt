@@ -44,7 +44,7 @@
 #define EX_OK 0
 #endif
 
-static const struct sysexits
+static const struct Sysexits
 {
   int v;
   const char *str;

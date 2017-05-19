@@ -43,7 +43,7 @@ static const unsigned char fillbuf[64] = { 0x80, 0 /* , 0, 0, ...  */ };
 
 /* Initialize structure containing state of computation.
    (RFC 1321, 3.3: Step 3)  */
-void md5_init_ctx(struct md5_ctx *ctx)
+void md5_init_ctx(struct Md5Ctx *ctx)
 {
   ctx->A = 0x67452301;
   ctx->B = 0xefcdab89;
@@ -64,7 +64,7 @@ static inline void set_uint32(char *cp, md5_uint32 v)
 
 /* Put result from CTX in first 16 bytes following RESBUF.  The result
    must be in little endian byte order.  */
-void *md5_read_ctx(const struct md5_ctx *ctx, void *resbuf)
+void *md5_read_ctx(const struct Md5Ctx *ctx, void *resbuf)
 {
   char *r = resbuf;
   set_uint32(r + 0 * sizeof(ctx->A), SWAP(ctx->A));
@@ -77,7 +77,7 @@ void *md5_read_ctx(const struct md5_ctx *ctx, void *resbuf)
 
 /* Process the remaining bytes in the internal buffer and the usual
    prolog according to the standard and write the result to RESBUF.  */
-void *md5_finish_ctx(struct md5_ctx *ctx, void *resbuf)
+void *md5_finish_ctx(struct Md5Ctx *ctx, void *resbuf)
 {
   /* Take yet unprocessed bytes into account.  */
   md5_uint32 bytes = ctx->buflen;
@@ -105,7 +105,7 @@ void *md5_finish_ctx(struct md5_ctx *ctx, void *resbuf)
    beginning at RESBLOCK.  */
 int md5_stream(FILE *stream, void *resblock)
 {
-  struct md5_ctx ctx;
+  struct Md5Ctx ctx;
   char buffer[BLOCKSIZE + 72];
   size_t sum;
 
@@ -169,7 +169,7 @@ process_partial_block:
    digest.  */
 void *md5_buffer(const char *buffer, size_t len, void *resblock)
 {
-  struct md5_ctx ctx;
+  struct Md5Ctx ctx;
 
   /* Initialize the computation context.  */
   md5_init_ctx(&ctx);
@@ -182,7 +182,7 @@ void *md5_buffer(const char *buffer, size_t len, void *resblock)
 }
 
 
-void md5_process_bytes(const void *buffer, size_t len, struct md5_ctx *ctx)
+void md5_process_bytes(const void *buffer, size_t len, struct Md5Ctx *ctx)
 {
   /* When we already have some bits in our internal buffer concatenate both
    * inputs first.  */
@@ -258,7 +258,7 @@ void md5_process_bytes(const void *buffer, size_t len, struct md5_ctx *ctx)
 
 /* Process LEN bytes of Buffer, accumulating context into CTX.
    It is assumed that LEN % 64 == 0.  */
-void md5_process_block(const void *buffer, size_t len, struct md5_ctx *ctx)
+void md5_process_block(const void *buffer, size_t len, struct Md5Ctx *ctx)
 {
   md5_uint32 correct_words[16];
   const md5_uint32 *words = buffer;

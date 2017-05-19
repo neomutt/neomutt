@@ -509,7 +509,7 @@ static const struct
   { NULL, -1 },
 };
 
-struct enriched_state
+struct EnrichedState
 {
   wchar_t *buffer;
   wchar_t *line;
@@ -528,7 +528,7 @@ struct enriched_state
   struct State *s;
 };
 
-static void enriched_wrap(struct enriched_state *stte)
+static void enriched_wrap(struct EnrichedState *stte)
 {
   int x;
   int extra;
@@ -638,7 +638,7 @@ static void enriched_wrap(struct enriched_state *stte)
   }
 }
 
-static void enriched_flush(struct enriched_state *stte, int wrap)
+static void enriched_flush(struct EnrichedState *stte, int wrap)
 {
   if (!stte->tag_level[RICH_NOFILL] &&
       (stte->line_len + stte->word_len >
@@ -665,7 +665,7 @@ static void enriched_flush(struct enriched_state *stte, int wrap)
 }
 
 
-static void enriched_putwc(wchar_t c, struct enriched_state *stte)
+static void enriched_putwc(wchar_t c, struct EnrichedState *stte)
 {
   if (stte->tag_level[RICH_PARAM])
   {
@@ -731,7 +731,7 @@ static void enriched_putwc(wchar_t c, struct enriched_state *stte)
   }
 }
 
-static void enriched_puts(const char *s, struct enriched_state *stte)
+static void enriched_puts(const char *s, struct EnrichedState *stte)
 {
   const char *c = NULL;
 
@@ -748,7 +748,7 @@ static void enriched_puts(const char *s, struct enriched_state *stte)
   }
 }
 
-static void enriched_set_flags(const wchar_t *tag, struct enriched_state *stte)
+static void enriched_set_flags(const wchar_t *tag, struct EnrichedState *stte)
 {
   const wchar_t *tagptr = tag;
   int i, j;
@@ -842,7 +842,7 @@ static int text_enriched_handler(struct Body *a, struct State *s)
   } state = TEXT;
 
   long bytes = a->length;
-  struct enriched_state stte;
+  struct EnrichedState stte;
   wchar_t wc = 0;
   int tag_len = 0;
   wchar_t tag[LONG_STRING + 1];

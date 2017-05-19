@@ -25,11 +25,11 @@ union hash_key {
   unsigned int intkey;
 };
 
-struct hash_elem
+struct HashElem
 {
   union hash_key key;
   void *data;
-  struct hash_elem *next;
+  struct HashElem *next;
 };
 
 struct Hash
@@ -37,7 +37,7 @@ struct Hash
   int nelem, curnelem;
   bool strdup_keys : 1; /* if set, the key->strkey is strdup'ed */
   bool allow_dups  : 1; /* if set, duplicate keys are allowed */
-  struct hash_elem **table;
+  struct HashElem **table;
   unsigned int (*gen_hash)(union hash_key, unsigned int);
   int (*cmp_key)(union hash_key, union hash_key);
 };
@@ -55,10 +55,10 @@ int int_hash_insert(struct Hash *table, unsigned int intkey, void *data);
 struct Hash *hash_resize(struct Hash *ptr, int nelem, int lower);
 
 void *hash_find(const struct Hash *table, const char *strkey);
-struct hash_elem *hash_find_elem(const struct Hash *table, const char *strkey);
+struct HashElem *hash_find_elem(const struct Hash *table, const char *strkey);
 void *int_hash_find(const struct Hash *table, unsigned int intkey);
 
-struct hash_elem *hash_find_bucket(const struct Hash *table, const char *strkey);
+struct HashElem *hash_find_bucket(const struct Hash *table, const char *strkey);
 
 void hash_delete(struct Hash *table, const char *strkey, const void *data,
                  void (*destroy)(void *));
@@ -67,12 +67,12 @@ void int_hash_delete(struct Hash *table, unsigned int intkey, const void *data,
 
 void hash_destroy(struct Hash **ptr, void (*destroy)(void *));
 
-struct hash_walk_state
+struct HashWalkState
 {
   int index;
-  struct hash_elem *last;
+  struct HashElem *last;
 };
 
-struct hash_elem *hash_walk(const struct Hash *table, struct hash_walk_state *state);
+struct HashElem *hash_walk(const struct Hash *table, struct HashWalkState *state);
 
 #endif /* _MUTT_HASH_H */

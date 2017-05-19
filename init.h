@@ -76,7 +76,7 @@ struct Buffer;
 #define ISPELL "ispell"
 #endif
 
-struct option_t MuttVars[] = {
+struct Option MuttVars[] = {
   /*++*/
 
   { "abort_noattach", DT_QUAD, R_NONE, OPT_ATTACH, MUTT_NO },
@@ -4355,7 +4355,7 @@ struct option_t MuttVars[] = {
   { NULL, 0, 0, 0, 0 },
 };
 
-const struct mapping_t SortMethods[] = {
+const struct Mapping SortMethods[] = {
   { "date",             SORT_DATE },
   { "date-sent",        SORT_DATE },
   { "date-received",    SORT_RECEIVED },
@@ -4373,7 +4373,7 @@ const struct mapping_t SortMethods[] = {
 
 /* same as SortMethods, but with "threads" replaced by "date" */
 
-const struct mapping_t SortAuxMethods[] = {
+const struct Mapping SortAuxMethods[] = {
   { "date",             SORT_DATE },
   { "date-sent",        SORT_DATE },
   { "date-received",    SORT_RECEIVED },
@@ -4391,7 +4391,7 @@ const struct mapping_t SortAuxMethods[] = {
   { NULL,               0 },
 };
 
-const struct mapping_t SortBrowserMethods[] = {
+const struct Mapping SortBrowserMethods[] = {
   { "alpha",    SORT_SUBJECT },
   { "count",    SORT_COUNT },
   { "date",     SORT_DATE },
@@ -4402,14 +4402,14 @@ const struct mapping_t SortBrowserMethods[] = {
   { NULL,       0 },
 };
 
-const struct mapping_t SortAliasMethods[] = {
+const struct Mapping SortAliasMethods[] = {
   { "alias",    SORT_ALIAS },
   { "address",  SORT_ADDRESS },
   { "unsorted", SORT_ORDER },
   { NULL,       0 },
 };
 
-const struct mapping_t SortKeyMethods[] = {
+const struct Mapping SortKeyMethods[] = {
   { "address",  SORT_ADDRESS },
   { "date",     SORT_DATE },
   { "keyid",    SORT_KEYID },
@@ -4417,7 +4417,7 @@ const struct mapping_t SortKeyMethods[] = {
   { NULL,       0 },
 };
 
-const struct mapping_t SortSidebarMethods[] = {
+const struct Mapping SortSidebarMethods[] = {
   { "alpha",            SORT_PATH },
   { "count",            SORT_COUNT },
   { "desc",             SORT_DESC },
@@ -4477,7 +4477,7 @@ static int parse_tag_transforms(struct Buffer *, struct Buffer *, unsigned long,
 static int parse_tag_formats(struct Buffer *, struct Buffer *, unsigned long, struct Buffer *);
 #endif
 
-const struct command_t Commands[] = {
+const struct Command Commands[] = {
   { "alternates",       parse_alternates,       0 },
   { "unalternates",     parse_unalternates,     0 },
 #ifdef USE_SOCKET

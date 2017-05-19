@@ -72,7 +72,7 @@
 #include "dotlock.h"
 #endif
 
-struct mx_ops *mx_get_ops(int magic)
+struct MxOps *mx_get_ops(int magic)
 {
   switch (magic)
   {

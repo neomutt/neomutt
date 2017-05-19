@@ -214,7 +214,7 @@ static const char *get_date(const char *s, struct tm *t, struct Buffer *err)
 
 #define RANGE_RX_GROUPS 5
 
-struct range_regexp
+struct RangeRegex
 {
   const char *raw; /* regexp as string */
   int lgrp;        /* paren group matching the left side */
@@ -234,7 +234,7 @@ enum
   RANGE_K_INVALID
 };
 
-static struct range_regexp range_regexps[] = {
+static struct RangeRegex range_regexps[] = {
       [RANGE_K_REL] = {.raw = RANGE_REL_RX, .lgrp = 1, .rgrp = 3, .ready = 0 },
       [RANGE_K_ABS] = {.raw = RANGE_ABS_RX, .lgrp = 1, .rgrp = 3, .ready = 0 },
       [RANGE_K_LT] = {.raw = RANGE_LT_RX, .lgrp = 1, .rgrp = 2, .ready = 0 },
@@ -711,7 +711,7 @@ static int eat_range_by_regexp(struct Pattern *pat, struct Buffer *s, int kind, 
 {
   int regerr;
   regmatch_t pmatch[RANGE_RX_GROUPS];
-  struct range_regexp *pspec = &range_regexps[kind];
+  struct RangeRegex *pspec = &range_regexps[kind];
 
   /* First time through, compile the big regexp */
   if (!pspec->ready)
@@ -798,7 +798,7 @@ static bool eat_message_range(struct Pattern *pat, struct Buffer *s, struct Buff
   return false;
 }
 
-static const struct pattern_flags
+static const struct PatternFlags
 {
   int tag; /* character used to represent this op */
   int op;  /* operation to perform */
@@ -1049,7 +1049,7 @@ static int msg_search(struct Context *ctx, struct Pattern *pat, int msgno)
   return match;
 }
 
-static const struct pattern_flags *lookup_tag(char tag)
+static const struct PatternFlags *lookup_tag(char tag)
 {
   int i;
 
@@ -1112,7 +1112,7 @@ struct Pattern *mutt_pattern_comp(/* const */ char *s, int flags, struct Buffer 
   bool or = false;
   bool implicit = true; /* used to detect logical AND operator */
   bool isalias = false;
-  const struct pattern_flags *entry = NULL;
+  const struct PatternFlags *entry = NULL;
   char *p = NULL;
   char *buf = NULL;
   struct Buffer ps;

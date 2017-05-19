@@ -57,7 +57,7 @@ static int _lua_mutt_call(lua_State *l)
   mutt_debug(2, " * _lua_mutt_call()\n");
   struct Buffer token, expn, err;
   char buffer[LONG_STRING] = "";
-  const struct command_t *command = NULL;
+  const struct Command *command = NULL;
   int rv = 0;
 
   mutt_buffer_init(&token);
@@ -116,15 +116,15 @@ static int _lua_mutt_set(lua_State *l)
   struct Buffer err;
   const char *param = lua_tostring(l, -2);
   mutt_debug(2, " * _lua_mutt_set(%s)\n", param);
-  struct option_t *value = safe_malloc(sizeof(struct option_t));
-  const struct option_t *tmp = mutt_option_get(param);
+  struct Option *value = safe_malloc(sizeof(struct Option));
+  const struct Option *tmp = mutt_option_get(param);
   if (tmp == NULL)
   {
     luaL_error(l, "Error getting parameter %s", param);
     return -1;
   }
 
-  memcpy(value, tmp, sizeof(struct option_t));
+  memcpy(value, tmp, sizeof(struct Option));
   if (value)
   {
     rv = 0;
@@ -200,7 +200,7 @@ static int _lua_mutt_get(lua_State *l)
 {
   const char *param = lua_tostring(l, -1);
   mutt_debug(2, " * _lua_mutt_get(%s)\n", param);
-  const struct option_t *opt = mutt_option_get(param);
+  const struct Option *opt = mutt_option_get(param);
   if (opt)
     switch (opt->type & DT_MASK)
     {
@@ -315,7 +315,7 @@ static int _lua_mutt_error(lua_State *l)
   return 0;
 }
 
-static void _lua_expose_command(void *p, const struct command_t *cmd)
+static void _lua_expose_command(void *p, const struct Command *cmd)
 {
   lua_State *l = (lua_State *) p;
   char buf[LONG_STRING];

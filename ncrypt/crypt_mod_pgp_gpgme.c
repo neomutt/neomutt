@@ -108,7 +108,7 @@ static void crypt_mod_pgp_set_sender(const char *sender)
   mutt_gpgme_set_sender(sender);
 }
 
-struct crypt_module_specs crypt_mod_pgp_gpgme = {
+struct CryptModuleSpecs crypt_mod_pgp_gpgme = {
   APPLICATION_PGP,
   {
       /* Common.  */

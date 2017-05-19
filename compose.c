@@ -114,7 +114,7 @@ static const char *const Prompts[] = {
 #endif
 };
 
-static const struct mapping_t ComposeHelp[] = {
+static const struct Mapping ComposeHelp[] = {
   { N_("Send"), OP_COMPOSE_SEND_MESSAGE },
   { N_("Abort"), OP_EXIT },
   { "To", OP_COMPOSE_EDIT_TO },
@@ -127,7 +127,7 @@ static const struct mapping_t ComposeHelp[] = {
 };
 
 #ifdef USE_NNTP
-static struct mapping_t ComposeNewsHelp[] = {
+static struct Mapping ComposeNewsHelp[] = {
   { N_("Send"), OP_COMPOSE_SEND_MESSAGE },
   { N_("Abort"), OP_EXIT },
   { "Newsgroups", OP_COMPOSE_EDIT_NEWSGROUPS },

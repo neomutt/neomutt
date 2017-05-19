@@ -80,7 +80,7 @@ typedef gnutls_x509_crt gnutls_x509_crt_t;
 #endif
 
 
-typedef struct _tlssockdata
+typedef struct TlsSockData
 {
   gnutls_session_t state;
   gnutls_certificate_credentials_t xcred;

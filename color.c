@@ -72,7 +72,7 @@ struct ColorList
 static struct ColorList *ColorList = NULL;
 static int UserColors = 0;
 
-static const struct mapping_t Colors[] = {
+static const struct Mapping Colors[] = {
   { "black", COLOR_BLACK },
   { "blue", COLOR_BLUE },
   { "cyan", COLOR_CYAN },
@@ -89,7 +89,7 @@ static const struct mapping_t Colors[] = {
 
 #endif /* HAVE_COLOR */
 
-static const struct mapping_t Fields[] = {
+static const struct Mapping Fields[] = {
   { "hdrdefault", MT_COLOR_HDEFAULT },
   { "quoted", MT_COLOR_QUOTED },
   { "signature", MT_COLOR_SIGNATURE },
@@ -135,7 +135,7 @@ static const struct mapping_t Fields[] = {
   { NULL, 0 },
 };
 
-static const struct mapping_t ComposeFields[] = {
+static const struct Mapping ComposeFields[] = {
   { "header", MT_COLOR_COMPOSE_HEADER },
   { "security_encrypt", MT_COLOR_COMPOSE_SECURITY_ENCRYPT },
   { "security_sign", MT_COLOR_COMPOSE_SECURITY_SIGN },

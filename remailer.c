@@ -45,7 +45,7 @@
 #include "protos.h"
 #include "rfc822.h"
 
-struct coord
+struct Coord
 {
   short r, c;
 };
@@ -210,16 +210,16 @@ static void mix_free_type2_list(struct Remailer ***ttlp)
 #define MIX_MAXROW (MuttIndexWindow->rows - 1)
 
 
-static void mix_screen_coordinates(struct Remailer **type2_list, struct coord **coordsp,
+static void mix_screen_coordinates(struct Remailer **type2_list, struct Coord **coordsp,
                                    struct MixChain *chain, int i)
 {
   short c, r, oc;
-  struct coord *coords = NULL;
+  struct Coord *coords = NULL;
 
   if (!chain->cl)
     return;
 
-  safe_realloc(coordsp, sizeof(struct coord) * chain->cl);
+  safe_realloc(coordsp, sizeof(struct Coord) * chain->cl);
 
   coords = *coordsp;
 
@@ -251,7 +251,7 @@ static void mix_screen_coordinates(struct Remailer **type2_list, struct coord **
   }
 }
 
-static void mix_redraw_ce(struct Remailer **type2_list, struct coord *coords,
+static void mix_redraw_ce(struct Remailer **type2_list, struct Coord *coords,
                           struct MixChain *chain, int i, short selected)
 {
   if (!coords || !chain)
@@ -273,7 +273,7 @@ static void mix_redraw_ce(struct Remailer **type2_list, struct coord *coords,
   }
 }
 
-static void mix_redraw_chain(struct Remailer **type2_list, struct coord *coords,
+static void mix_redraw_chain(struct Remailer **type2_list, struct Coord *coords,
                              struct MixChain *chain, int cur)
 {
   int i;
@@ -441,7 +441,7 @@ static int mix_chain_add(struct MixChain *chain, const char *s, struct Remailer 
   return 0;
 }
 
-static const struct mapping_t RemailerHelp[] = {
+static const struct Mapping RemailerHelp[] = {
   { N_("Append"), OP_MIX_APPEND }, { N_("Insert"), OP_MIX_INSERT },
   { N_("Delete"), OP_MIX_DELETE }, { N_("Abort"), OP_EXIT },
   { N_("OK"), OP_MIX_USE },        { NULL, 0 },
@@ -458,7 +458,7 @@ void mix_make_chain(struct List **chainp)
   struct Remailer **type2_list = NULL;
   size_t ttll = 0;
 
-  struct coord *coords = NULL;
+  struct Coord *coords = NULL;
 
   struct Menu *menu = NULL;
   char helpstr[LONG_STRING];

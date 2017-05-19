@@ -111,7 +111,7 @@ static void crypt_mod_pgp_extract_keys_from_attachment_list(FILE *fp, int tag, s
   pgp_extract_keys_from_attachment_list(fp, tag, top);
 }
 
-struct crypt_module_specs crypt_mod_pgp_classic = {
+struct CryptModuleSpecs crypt_mod_pgp_classic = {
   APPLICATION_PGP,
   {
       NULL, /* init */

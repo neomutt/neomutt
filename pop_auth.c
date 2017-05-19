@@ -203,7 +203,7 @@ void pop_apop_timestamp(struct PopData *pop_data, char *buf)
 /* APOP authenticator */
 static pop_auth_res_t pop_auth_apop(struct PopData *pop_data, const char *method)
 {
-  struct md5_ctx ctx;
+  struct Md5Ctx ctx;
   unsigned char digest[16];
   char hash[33];
   char buf[LONG_STRING];

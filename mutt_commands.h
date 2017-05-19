@@ -20,14 +20,14 @@
 
 struct Buffer;
 
-struct command_t
+struct Command
 {
   char *name;
   int (*func)(struct Buffer *, struct Buffer *, unsigned long, struct Buffer *);
   unsigned long data;
 };
 
-const struct command_t *mutt_command_get(const char *s);
-void mutt_commands_apply(void *data, void (*application)(void *, const struct command_t *));
+const struct Command *mutt_command_get(const char *s);
+void mutt_commands_apply(void *data, void (*application)(void *, const struct Command *));
 
 #endif /* _MUTT_COMMANDS_H */

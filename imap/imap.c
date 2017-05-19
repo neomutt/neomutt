@@ -2181,7 +2181,7 @@ out:
   return rc < 0 ? -1 : rc;
 }
 
-struct mx_ops mx_imap_ops = {
+struct MxOps mx_imap_ops = {
   .open = imap_open_mailbox,
   .open_append = imap_open_mailbox_append,
   .close = imap_close_mailbox,

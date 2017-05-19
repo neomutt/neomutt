@@ -88,14 +88,14 @@ static const char *Notice =
        "Mutt is free software, and you are welcome to redistribute it\n"
        "under certain conditions; type `mutt -vv' for details.\n");
 
-struct compile_options
+struct CompileOptions
 {
   const char *name;
   bool enabled;
 };
 
 /* These are sorted by the display string */
-static struct compile_options comp_opts[] = {
+static struct CompileOptions comp_opts[] = {
   { "attach_headers_color", 1 },
 #ifdef HAVE_BKGDSET
   { "bkgdset", 1 },
@@ -465,7 +465,7 @@ void print_copyright(void)
  *
  * Many of the larger features of mutt can be disabled at compile time.
  * They define a symbol and use #ifdef's around their code.
- * The symbols are mirrored in "struct compile_options comp_opts[]" in this
+ * The symbols are mirrored in "CompileOptions comp_opts[]" in this
  * file.
  *
  * This function checks if one of these symbols is present in the code.

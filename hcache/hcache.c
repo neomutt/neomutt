@@ -63,7 +63,7 @@ static unsigned int hcachever = 0x0;
  * delete and close function pointers in hcache_open, and MAY store
  * backend-specific context in the ctx pointer.
  */
-struct header_cache
+struct HeaderCache
 {
   char *folder;
   unsigned int crc;
@@ -748,7 +748,7 @@ header_cache_t *mutt_hcache_open(const char *path, const char *folder, hcache_na
       unsigned char charval[16];
       unsigned int intval;
     } digest;
-    struct md5_ctx ctx;
+    struct Md5Ctx ctx;
     struct ReplaceList *spam = NULL;
     struct RxList *nospam = NULL;
 

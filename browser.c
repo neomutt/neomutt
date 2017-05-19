@@ -66,7 +66,7 @@
 #include "mutt_notmuch.h"
 #endif
 
-static const struct mapping_t FolderHelp[] = {
+static const struct Mapping FolderHelp[] = {
   { N_("Exit"), OP_EXIT },
   { N_("Chdir"), OP_CHANGE_DIRECTORY },
   { N_("Goto"), OP_BROWSER_GOTO_FOLDER },
@@ -76,7 +76,7 @@ static const struct mapping_t FolderHelp[] = {
 };
 
 #ifdef USE_NNTP
-static struct mapping_t FolderNewsHelp[] = {
+static struct Mapping FolderNewsHelp[] = {
   { N_("Exit"), OP_EXIT },
   { N_("List"), OP_TOGGLE_MAILBOXES },
   { N_("Subscribe"), OP_BROWSER_SUBSCRIBE },
@@ -90,7 +90,7 @@ static struct mapping_t FolderNewsHelp[] = {
 
 struct Folder
 {
-  struct folder_file *ff;
+  struct FolderFile *ff;
   int num;
 };
 
@@ -98,7 +98,7 @@ static char OldLastDir[_POSIX_PATH_MAX] = "";
 static char LastDir[_POSIX_PATH_MAX] = "";
 
 /* Frees up the memory allocated for the local-global variables.  */
-static void destroy_state(struct browser_state *state)
+static void destroy_state(struct BrowserState *state)
 {
   int c;
 
@@ -115,8 +115,8 @@ static void destroy_state(struct browser_state *state)
 
 static int browser_compare_subject(const void *a, const void *b)
 {
-  struct folder_file *pa = (struct folder_file *) a;
-  struct folder_file *pb = (struct folder_file *) b;
+  struct FolderFile *pa = (struct FolderFile *) a;
+  struct FolderFile *pb = (struct FolderFile *) b;
 
   /* inbox should be sorted ahead of its siblings */
   int r = mutt_inbox_cmp(pa->name, pb->name);
@@ -127,8 +127,8 @@ static int browser_compare_subject(const void *a, const void *b)
 
 static int browser_compare_desc(const void *a, const void *b)
 {
-  struct folder_file *pa = (struct folder_file *) a;
-  struct folder_file *pb = (struct folder_file *) b;
+  struct FolderFile *pa = (struct FolderFile *) a;
+  struct FolderFile *pb = (struct FolderFile *) b;
 
   int r = mutt_strcoll(pa->desc, pb->desc);
 
@@ -137,8 +137,8 @@ static int browser_compare_desc(const void *a, const void *b)
 
 static int browser_compare_date(const void *a, const void *b)
 {
-  struct folder_file *pa = (struct folder_file *) a;
-  struct folder_file *pb = (struct folder_file *) b;
+  struct FolderFile *pa = (struct FolderFile *) a;
+  struct FolderFile *pb = (struct FolderFile *) b;
 
   int r = pa->mtime - pb->mtime;
 
@@ -147,8 +147,8 @@ static int browser_compare_date(const void *a, const void *b)
 
 static int browser_compare_size(const void *a, const void *b)
 {
-  struct folder_file *pa = (struct folder_file *) a;
-  struct folder_file *pb = (struct folder_file *) b;
+  struct FolderFile *pa = (struct FolderFile *) a;
+  struct FolderFile *pb = (struct FolderFile *) b;
 
   int r = pa->size - pb->size;
 
@@ -157,8 +157,8 @@ static int browser_compare_size(const void *a, const void *b)
 
 static int browser_compare_count(const void *a, const void *b)
 {
-  struct folder_file *pa = (struct folder_file *) a;
-  struct folder_file *pb = (struct folder_file *) b;
+  struct FolderFile *pa = (struct FolderFile *) a;
+  struct FolderFile *pb = (struct FolderFile *) b;
 
   int r = 0;
   if (pa->has_buffy && pb->has_buffy)
@@ -173,8 +173,8 @@ static int browser_compare_count(const void *a, const void *b)
 
 static int browser_compare_count_new(const void *a, const void *b)
 {
-  struct folder_file *pa = (struct folder_file *) a;
-  struct folder_file *pb = (struct folder_file *) b;
+  struct FolderFile *pa = (struct FolderFile *) a;
+  struct FolderFile *pb = (struct FolderFile *) b;
 
   int r = 0;
   if (pa->has_buffy && pb->has_buffy)
@@ -193,8 +193,8 @@ static int browser_compare_count_new(const void *a, const void *b)
  */
 static int browser_compare(const void *a, const void *b)
 {
-  struct folder_file *pa = (struct folder_file *) a;
-  struct folder_file *pb = (struct folder_file *) b;
+  struct FolderFile *pa = (struct FolderFile *) a;
+  struct FolderFile *pb = (struct FolderFile *) b;
 
   if ((mutt_strcoll(pa->desc, "../") == 0) || (mutt_strcoll(pa->desc, "..") == 0))
     return -1;
@@ -222,7 +222,7 @@ static int browser_compare(const void *a, const void *b)
 /* Call to qsort using browser_compare function. Some
  * specific sort methods are not used via NNTP.
  */
-static void browser_sort(struct browser_state *state)
+static void browser_sort(struct BrowserState *state)
 {
   switch (BrowserSort & SORT_MASK)
   {
@@ -239,7 +239,7 @@ static void browser_sort(struct browser_state *state)
       break;
   }
 
-  qsort(state->entry, state->entrylen, sizeof(struct folder_file), browser_compare);
+  qsort(state->entry, state->entrylen, sizeof(struct FolderFile), browser_compare);
 }
 
 static int link_is_dir(const char *folder, const char *path)
@@ -581,14 +581,14 @@ static const char *newsgroup_format_str(char *dest, size_t destlen, size_t col, 
 }
 #endif /* USE_NNTP */
 
-static void add_folder(struct Menu *m, struct browser_state *state, const char *name,
+static void add_folder(struct Menu *m, struct BrowserState *state, const char *name,
                        const char *desc, const struct stat *s, struct Buffy *b, void *data)
 {
   if (state->entrylen == state->entrymax)
   {
     /* need to allocate more space */
-    safe_realloc(&state->entry, sizeof(struct folder_file) * (state->entrymax += 256));
-    memset(&state->entry[state->entrylen], 0, sizeof(struct folder_file) * 256);
+    safe_realloc(&state->entry, sizeof(struct FolderFile) * (state->entrymax += 256));
+    memset(&state->entry[state->entrylen], 0, sizeof(struct FolderFile) * 256);
     if (m)
       m->data = state->entry;
   }
@@ -627,11 +627,11 @@ static void add_folder(struct Menu *m, struct browser_state *state, const char *
   (state->entrylen)++;
 }
 
-static void init_state(struct browser_state *state, struct Menu *menu)
+static void init_state(struct BrowserState *state, struct Menu *menu)
 {
   state->entrylen = 0;
   state->entrymax = 256;
-  state->entry = safe_calloc(state->entrymax, sizeof(struct folder_file));
+  state->entry = safe_calloc(state->entrymax, sizeof(struct FolderFile));
 #ifdef USE_IMAP
   state->imap_browse = false;
 #endif
@@ -640,7 +640,7 @@ static void init_state(struct browser_state *state, struct Menu *menu)
 }
 
 /* get list of all files/newsgroups with mask */
-static int examine_directory(struct Menu *menu, struct browser_state *state,
+static int examine_directory(struct Menu *menu, struct BrowserState *state,
                              char *d, const char *prefix)
 {
 #ifdef USE_NNTP
@@ -739,7 +739,7 @@ static int examine_directory(struct Menu *menu, struct browser_state *state,
 }
 
 #ifdef USE_NOTMUCH
-static int examine_vfolders(struct Menu *menu, struct browser_state *state)
+static int examine_vfolders(struct Menu *menu, struct BrowserState *state)
 {
   struct Buffy *tmp = VirtIncoming;
 
@@ -764,7 +764,7 @@ static int examine_vfolders(struct Menu *menu, struct browser_state *state)
 #endif
 
 /* get list of mailboxes/subscribed newsgroups */
-static int examine_mailboxes(struct Menu *menu, struct browser_state *state)
+static int examine_mailboxes(struct Menu *menu, struct BrowserState *state)
 {
   struct stat s;
   char buffer[LONG_STRING];
@@ -861,15 +861,15 @@ static int select_file_search(struct Menu *menu, regex_t *re, int n)
 {
 #ifdef USE_NNTP
   if (option(OPTNEWS))
-    return (regexec(re, ((struct folder_file *) menu->data)[n].desc, 0, NULL, 0));
+    return (regexec(re, ((struct FolderFile *) menu->data)[n].desc, 0, NULL, 0));
 #endif
-  return (regexec(re, ((struct folder_file *) menu->data)[n].name, 0, NULL, 0));
+  return (regexec(re, ((struct FolderFile *) menu->data)[n].name, 0, NULL, 0));
 }
 
 #ifdef USE_NOTMUCH
 static int select_vfolder_search(struct Menu *menu, regex_t *re, int n)
 {
-  return (regexec(re, ((struct folder_file *) menu->data)[n].desc, 0, NULL, 0));
+  return (regexec(re, ((struct FolderFile *) menu->data)[n].desc, 0, NULL, 0));
 }
 #endif
 
@@ -877,7 +877,7 @@ static void folder_entry(char *s, size_t slen, struct Menu *menu, int num)
 {
   struct Folder folder;
 
-  folder.ff = &((struct folder_file *) menu->data)[num];
+  folder.ff = &((struct FolderFile *) menu->data)[num];
   folder.num = num;
 
 #ifdef USE_NNTP
@@ -895,7 +895,7 @@ static void vfolder_entry(char *s, size_t slen, struct Menu *menu, int num)
 {
   struct Folder folder;
 
-  folder.ff = &((struct folder_file *) menu->data)[num];
+  folder.ff = &((struct FolderFile *) menu->data)[num];
   folder.num = num;
 
   mutt_FormatString(s, slen, 0, MuttIndexWindow->cols, NONULL(VirtFolderFormat),
@@ -907,7 +907,7 @@ static void vfolder_entry(char *s, size_t slen, struct Menu *menu, int num)
  * This function takes a menu and a state and defines the current
  * entry that should be highlighted.
  */
-static void browser_highlight_default(struct browser_state *state, struct Menu *menu)
+static void browser_highlight_default(struct BrowserState *state, struct Menu *menu)
 {
   menu->top = 0;
   /* Reset menu position to 1.
@@ -922,7 +922,7 @@ static void browser_highlight_default(struct browser_state *state, struct Menu *
     menu->current = 0;
 }
 
-static void init_menu(struct browser_state *state, struct Menu *menu, char *title,
+static void init_menu(struct BrowserState *state, struct Menu *menu, char *title,
                       size_t titlelen, int buffy)
 {
   char path[_POSIX_PATH_MAX];
@@ -1011,7 +1011,7 @@ static void init_menu(struct browser_state *state, struct Menu *menu, char *titl
 
 static int file_tag(struct Menu *menu, int n, int m)
 {
-  struct folder_file *ff = &(((struct folder_file *) menu->data)[n]);
+  struct FolderFile *ff = &(((struct FolderFile *) menu->data)[n]);
   if (S_ISDIR(ff->mode) || (S_ISLNK(ff->mode) && link_is_dir(LastDir, ff->name)))
   {
     mutt_error(_("Can't attach a directory!"));
@@ -1047,7 +1047,7 @@ void _mutt_select_file(char *f, size_t flen, int flags, char ***files, int *numf
   char prefix[_POSIX_PATH_MAX] = "";
   char helpstr[LONG_STRING];
   char title[STRING];
-  struct browser_state state;
+  struct BrowserState state;
   struct Menu *menu = NULL;
   struct stat st;
   int i, killPrefix = 0;
@@ -1062,7 +1062,7 @@ void _mutt_select_file(char *f, size_t flen, int flags, char ***files, int *numf
 
   buffy = buffy && folder;
 
-  memset(&state, 0, sizeof(struct browser_state));
+  memset(&state, 0, sizeof(struct BrowserState));
 
 #ifdef USE_NNTP
   if (option(OPTNEWS))
@@ -1451,7 +1451,7 @@ void _mutt_select_file(char *f, size_t flen, int flags, char ***files, int *numf
             tfiles = safe_calloc(*numfiles, sizeof(char *));
             for (j = 0, k = 0; j < state.entrylen; j++)
             {
-              struct folder_file ff = state.entry[j];
+              struct FolderFile ff = state.entry[j];
               char full[_POSIX_PATH_MAX];
               if (ff.tagged)
               {
@@ -1560,8 +1560,8 @@ void _mutt_select_file(char *f, size_t flen, int flags, char ***files, int *numf
               /* and move all other entries up */
               if (nentry + 1 < state.entrylen)
                 memmove(state.entry + nentry, state.entry + nentry + 1,
-                        sizeof(struct folder_file) * (state.entrylen - (nentry + 1)));
-              memset(&state.entry[state.entrylen - 1], 0, sizeof(struct folder_file));
+                        sizeof(struct FolderFile) * (state.entrylen - (nentry + 1)));
+              memset(&state.entry[state.entrylen - 1], 0, sizeof(struct FolderFile));
               state.entrylen--;
               mutt_message(_("Mailbox deleted."));
               init_menu(&state, menu, title, sizeof(title), buffy);
@@ -1891,7 +1891,7 @@ void _mutt_select_file(char *f, size_t flen, int flags, char ***files, int *numf
       case OP_UNCATCHUP:
         if (option(OPTNEWS))
         {
-          struct folder_file *ff = &state.entry[menu->current];
+          struct FolderFile *ff = &state.entry[menu->current];
           int rc;
           struct NntpData *nntp_data = NULL;
 
@@ -2000,7 +2000,7 @@ void _mutt_select_file(char *f, size_t flen, int flags, char ***files, int *numf
 
           for (; j < state.entrylen; j++)
           {
-            struct folder_file *ff = &state.entry[j];
+            struct FolderFile *ff = &state.entry[j];
 
             if (i == OP_BROWSER_SUBSCRIBE || i == OP_BROWSER_UNSUBSCRIBE ||
                 regexec(rx, ff->name, 0, NULL, 0) == 0)

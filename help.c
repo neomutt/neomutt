@@ -36,10 +36,10 @@
 #include "pager.h"
 #include "protos.h"
 
-static const struct binding_t *help_lookup_function(int op, int menu)
+static const struct Binding *help_lookup_function(int op, int menu)
 {
   int i;
-  const struct binding_t *map = NULL;
+  const struct Binding *map = NULL;
 
   if (menu != MENU_PAGER)
   {
@@ -70,7 +70,7 @@ void mutt_make_help(char *d, size_t dlen, const char *txt, int menu, int op)
     d[0] = 0;
 }
 
-char *mutt_compile_help(char *buf, size_t buflen, int menu, const struct mapping_t *items)
+char *mutt_compile_help(char *buf, size_t buflen, int menu, const struct Mapping *items)
 {
   int i;
   size_t len;
@@ -287,8 +287,8 @@ static void format_line(FILE *f, int ismacro, const char *t1, const char *t2, co
 
 static void dump_menu(FILE *f, int menu)
 {
-  struct keymap_t *map = NULL;
-  const struct binding_t *b = NULL;
+  struct Keymap *map = NULL;
+  const struct Binding *b = NULL;
   char buf[SHORT_STRING];
 
   /* browse through the keymap table */
@@ -316,7 +316,7 @@ static void dump_menu(FILE *f, int menu)
   }
 }
 
-static bool is_bound(struct keymap_t *map, int op)
+static bool is_bound(struct Keymap *map, int op)
 {
   for (; map; map = map->next)
     if (map->op == op)
@@ -324,8 +324,8 @@ static bool is_bound(struct keymap_t *map, int op)
   return false;
 }
 
-static void dump_unbound(FILE *f, const struct binding_t *funcs,
-                         struct keymap_t *map, struct keymap_t *aux)
+static void dump_unbound(FILE *f, const struct Binding *funcs,
+                         struct Keymap *map, struct Keymap *aux)
 {
   int i;
 
@@ -342,7 +342,7 @@ void mutt_help(int menu)
   char buf[SHORT_STRING];
   const char *desc = NULL;
   FILE *f = NULL;
-  const struct binding_t *funcs = NULL;
+  const struct Binding *funcs = NULL;
 
   mutt_mktemp(t, sizeof(t));
 

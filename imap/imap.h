@@ -27,7 +27,7 @@ struct Header;
 struct Pattern;
 struct Context;
 struct Message;
-struct browser_state;
+struct BrowserState;
 
 /* -- data structures -- */
 struct ImapMbox
@@ -52,10 +52,10 @@ int imap_fast_trash(struct Context *ctx, char *dest);
 void imap_allow_reopen(struct Context *ctx);
 void imap_disallow_reopen(struct Context *ctx);
 
-extern struct mx_ops mx_imap_ops;
+extern struct MxOps mx_imap_ops;
 
 /* browse.c */
-int imap_browse(char *path, struct browser_state *state);
+int imap_browse(char *path, struct BrowserState *state);
 int imap_mailbox_create(const char *folder);
 int imap_mailbox_rename(const char *mailbox);
 

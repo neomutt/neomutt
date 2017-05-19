@@ -241,7 +241,7 @@ int mutt_option_index(const char *s)
 }
 
 #ifdef USE_LUA
-int mutt_option_to_string(const struct option_t *opt, char *val, size_t len)
+int mutt_option_to_string(const struct Option *opt, char *val, size_t len)
 {
   mutt_debug(2, " * mutt_option_to_string(%s)\n", NONULL((char *) opt->data));
   int idx = mutt_option_index((const char *) opt->option);
@@ -250,7 +250,7 @@ int mutt_option_to_string(const struct option_t *opt, char *val, size_t len)
   return 0;
 }
 
-const struct option_t *mutt_option_get(const char *s)
+const struct Option *mutt_option_get(const char *s)
 {
   mutt_debug(2, " * mutt_option_get(%s)\n", s);
   int idx = mutt_option_index(s);
@@ -258,7 +258,7 @@ const struct option_t *mutt_option_get(const char *s)
     return &MuttVars[idx];
   else if (mutt_strncmp("my_", s, 3) == 0)
   {
-    struct option_t *opt = safe_malloc(sizeof(struct option_t));
+    struct Option *opt = safe_malloc(sizeof(struct Option));
     if (!myvar_get(s))
       return NULL;
     opt->data = (unsigned long) safe_strdup(myvar_get(s));
@@ -326,7 +326,7 @@ static struct MbCharTable *parse_mbchar_table(const char *s)
   return t;
 }
 
-static int parse_sort(short *val, const char *s, const struct mapping_t *map, struct Buffer *err)
+static int parse_sort(short *val, const char *s, const struct Mapping *map, struct Buffer *err)
 {
   int i, flags = 0;
 
@@ -354,7 +354,7 @@ static int parse_sort(short *val, const char *s, const struct mapping_t *map, st
 }
 
 #ifdef USE_LUA
-int mutt_option_set(const struct option_t *val, struct Buffer *err)
+int mutt_option_set(const struct Option *val, struct Buffer *err)
 {
   mutt_debug(2, " * mutt_option_set()\n");
   int idx = mutt_option_index(val->option);
@@ -403,7 +403,7 @@ int mutt_option_set(const struct option_t *val, struct Buffer *err)
       }
       case DT_SORT:
       {
-        const struct mapping_t *map = NULL;
+        const struct Mapping *map = NULL;
         struct Buffer *err2 = safe_malloc(sizeof(struct Buffer));
 
         switch (MuttVars[idx].type & DT_SUBTYPE_MASK)
@@ -497,7 +497,7 @@ int mutt_option_set(const struct option_t *val, struct Buffer *err)
 }
 #endif
 
-static void free_opt(struct option_t *p)
+static void free_opt(struct Option *p)
 {
   struct Regex *pp = NULL;
 
@@ -785,7 +785,7 @@ static void remove_from_list(struct List **l, const char *str)
  * finish_source - 'finish' command: stop processing current config file
  * @tmp:  Temporary space shared by all command handlers
  * @s:    Current line of the config file
- * @data: data field from init.h:struct command_t
+ * @data: data field from init.h:struct Command
  * @err:  Buffer for any error message
  *
  * If the 'finish' command is found, we should stop reading the current file.
@@ -809,7 +809,7 @@ static int finish_source(struct Buffer *tmp, struct Buffer *s, unsigned long dat
  * parse_ifdef - 'ifdef' command: conditional config
  * @tmp:  Temporary space shared by all command handlers
  * @s:    Current line of the config file
- * @data: data field from init.h:struct command_t
+ * @data: data field from init.h:struct Command
  * @err:  Buffer for any error message
  *
  * The 'ifdef' command allows conditional elements in the config file.
@@ -849,7 +849,7 @@ static int parse_ifdef(struct Buffer *tmp, struct Buffer *s, unsigned long data,
   {
     for (i = 0; !res && (i < MENU_MAX); i++)
     {
-      const struct binding_t *b = km_get_table(Menus[i].value);
+      const struct Binding *b = km_get_table(Menus[i].value);
       if (!b)
         continue;
 
@@ -1885,7 +1885,7 @@ static int parse_my_hdr(struct Buffer *buf, struct Buffer *s, unsigned long data
   return 0;
 }
 
-static void set_default(struct option_t *p)
+static void set_default(struct Option *p)
 {
   switch (p->type & DT_MASK)
   {
@@ -1920,7 +1920,7 @@ static void set_default(struct option_t *p)
   }
 }
 
-static void restore_default(struct option_t *p)
+static void restore_default(struct Option *p)
 {
   switch (p->type & DT_MASK)
   {
@@ -2102,7 +2102,7 @@ static void pretty_var(char *dst, size_t len, const char *option, const char *va
   *p = 0;
 }
 
-static int check_charset(struct option_t *opt, const char *val)
+static int check_charset(struct Option *opt, const char *val)
 {
   char *p = NULL, *q = NULL, *s = safe_strdup(val);
   int rc = 0;
@@ -2821,7 +2821,7 @@ static int parse_set(struct Buffer *tmp, struct Buffer *s, unsigned long data, s
     }
     else if (DTYPE(MuttVars[idx].type) == DT_SORT)
     {
-      const struct mapping_t *map = NULL;
+      const struct Mapping *map = NULL;
 
       switch (MuttVars[idx].type & DT_SUBTYPE_MASK)
       {
@@ -3248,7 +3248,7 @@ static void candidate(char *dest, char *try, const char *src, int len)
 }
 
 #ifdef USE_LUA
-const struct command_t *mutt_command_get(const char *s)
+const struct Command *mutt_command_get(const char *s)
 {
   for (int i = 0; Commands[i].name; i++)
     if (mutt_strcmp(s, Commands[i].name) == 0)
@@ -3257,7 +3257,7 @@ const struct command_t *mutt_command_get(const char *s)
 }
 #endif
 
-void mutt_commands_apply(void *data, void (*application)(void *, const struct command_t *))
+void mutt_commands_apply(void *data, void (*application)(void *, const struct Command *))
 {
   for (int i = 0; Commands[i].name; i++)
     application(data, &Commands[i]);
@@ -3367,7 +3367,7 @@ int mutt_command_complete(char *buffer, size_t len, int pos, int numtabs)
   }
   else if (mutt_strncmp(buffer, "exec", 4) == 0)
   {
-    const struct binding_t *menu = km_get_table(CurrentMenu);
+    const struct Binding *menu = km_get_table(CurrentMenu);
 
     if (!menu && CurrentMenu != MENU_PAGER)
       menu = OpGeneric;
@@ -3676,7 +3676,7 @@ int var_to_string(int idx, char *val, size_t len)
   }
   else if (DTYPE(MuttVars[idx].type) == DT_SORT)
   {
-    const struct mapping_t *map = NULL;
+    const struct Mapping *map = NULL;
     const char *p = NULL;
 
     switch (MuttVars[idx].type & DT_SUBTYPE_MASK)
@@ -3813,7 +3813,7 @@ int mutt_dump_variables(int hide_sensitive)
   return 0;
 }
 
-const char *mutt_getnamebyvalue(int val, const struct mapping_t *map)
+const char *mutt_getnamebyvalue(int val, const struct Mapping *map)
 {
   int i;
 
@@ -3823,7 +3823,7 @@ const char *mutt_getnamebyvalue(int val, const struct mapping_t *map)
   return NULL;
 }
 
-int mutt_getvaluebyname(const char *name, const struct mapping_t *map)
+int mutt_getvaluebyname(const char *name, const struct Mapping *map)
 {
   int i;
 
@@ -4268,7 +4268,7 @@ void mutt_init(int skip_sys_rc, struct List *commands)
 
 int mutt_get_hook_type(const char *name)
 {
-  const struct command_t *c = NULL;
+  const struct Command *c = NULL;
 
   for (c = Commands; c->name; c++)
     if (c->func == mutt_parse_hook && (ascii_strcasecmp(c->name, name) == 0))
@@ -4404,8 +4404,8 @@ int mutt_label_complete(char *buffer, size_t len, int numtabs)
   /* first TAB. Collect all the matches */
   if (numtabs == 1)
   {
-    struct hash_elem *entry = NULL;
-    struct hash_walk_state state;
+    struct HashElem *entry = NULL;
+    struct HashWalkState state;
 
     Num_matched = 0;
     strfcpy(User_typed, buffer, sizeof(User_typed));

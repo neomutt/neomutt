@@ -31,7 +31,7 @@
 typedef uint32_t md5_uint32;
 
 /* Structure to save state of computation between the single steps.  */
-struct md5_ctx
+struct Md5Ctx
 {
   md5_uint32 A;
   md5_uint32 B;
@@ -50,30 +50,30 @@ struct md5_ctx
 
 /* Initialize structure containing state of computation.
  * (RFC 1321, 3.3: Step 3)  */
-void md5_init_ctx(struct md5_ctx *ctx);
+void md5_init_ctx(struct Md5Ctx *ctx);
 
 /* Starting with the result of former calls of this function (or the
  * initialization function update the context for the next LEN bytes
  * starting at Buffer.
  * It is necessary that LEN is a multiple of 64!!! */
-void md5_process_block(const void *buffer, size_t len, struct md5_ctx *ctx);
+void md5_process_block(const void *buffer, size_t len, struct Md5Ctx *ctx);
 
 /* Starting with the result of former calls of this function (or the
  * initialization function update the context for the next LEN bytes
  * starting at Buffer.
  * It is NOT required that LEN is a multiple of 64.  */
-void md5_process_bytes(const void *buffer, size_t len, struct md5_ctx *ctx);
+void md5_process_bytes(const void *buffer, size_t len, struct Md5Ctx *ctx);
 
 /* Process the remaining bytes in the buffer and put result from CTX
  * in first 16 bytes following RESBUF.  The result is always in little
  * endian byte order, so that a byte-wise output yields to the wanted
  * ASCII representation of the message digest.  */
-void *md5_finish_ctx(struct md5_ctx *ctx, void *resbuf);
+void *md5_finish_ctx(struct Md5Ctx *ctx, void *resbuf);
 
 /* Put result from CTX in first 16 bytes following RESBUF.  The result is
  * always in little endian byte order, so that a byte-wise output yields
  * to the wanted ASCII representation of the message digest.  */
-void *md5_read_ctx(const struct md5_ctx *ctx, void *resbuf);
+void *md5_read_ctx(const struct Md5Ctx *ctx, void *resbuf);
 
 /* Compute MD5 message digest for bytes read from STREAM.  The
  * resulting message digest number will be written into the 16 bytes

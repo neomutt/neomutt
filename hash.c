@@ -78,7 +78,7 @@ static struct Hash *new_hash(int nelem)
     nelem = 2;
   table->nelem = nelem;
   table->curnelem = 0;
-  table->table = safe_calloc(nelem, sizeof(struct hash_elem *));
+  table->table = safe_calloc(nelem, sizeof(struct HashElem *));
   return table;
 }
 
@@ -115,7 +115,7 @@ struct Hash *int_hash_create(int nelem, int flags)
 struct Hash *hash_resize(struct Hash *ptr, int nelem, int lower)
 {
   struct Hash *table = NULL;
-  struct hash_elem *elem = NULL, *tmp = NULL;
+  struct HashElem *elem = NULL, *tmp = NULL;
   int i;
 
   table = hash_create(nelem, lower);
@@ -142,10 +142,10 @@ struct Hash *hash_resize(struct Hash *ptr, int nelem, int lower)
  */
 static int union_hash_insert(struct Hash *table, union hash_key key, void *data)
 {
-  struct hash_elem *ptr = NULL;
+  struct HashElem *ptr = NULL;
   unsigned int h;
 
-  ptr = safe_malloc(sizeof(struct hash_elem));
+  ptr = safe_malloc(sizeof(struct HashElem));
   h = table->gen_hash(key, table->nelem);
   ptr->key = key;
   ptr->data = data;
@@ -158,7 +158,7 @@ static int union_hash_insert(struct Hash *table, union hash_key key, void *data)
   }
   else
   {
-    struct hash_elem *tmp = NULL, *last = NULL;
+    struct HashElem *tmp = NULL, *last = NULL;
     int r;
 
     for (tmp = table->table[h], last = NULL; tmp; last = tmp, tmp = tmp->next)
@@ -196,10 +196,10 @@ int int_hash_insert(struct Hash *table, unsigned int intkey, void *data)
   return union_hash_insert(table, key, data);
 }
 
-static struct hash_elem *union_hash_find_elem(const struct Hash *table, union hash_key key)
+static struct HashElem *union_hash_find_elem(const struct Hash *table, union hash_key key)
 {
   int hash;
-  struct hash_elem *ptr = NULL;
+  struct HashElem *ptr = NULL;
 
   if (!table)
     return NULL;
@@ -216,7 +216,7 @@ static struct hash_elem *union_hash_find_elem(const struct Hash *table, union ha
 
 static void *union_hash_find(const struct Hash *table, union hash_key key)
 {
-  struct hash_elem *ptr = union_hash_find_elem(table, key);
+  struct HashElem *ptr = union_hash_find_elem(table, key);
   if (ptr)
     return ptr->data;
   else
@@ -230,7 +230,7 @@ void *hash_find(const struct Hash *table, const char *strkey)
   return union_hash_find(table, key);
 }
 
-struct hash_elem *hash_find_elem(const struct Hash *table, const char *strkey)
+struct HashElem *hash_find_elem(const struct Hash *table, const char *strkey)
 {
   union hash_key key;
   key.strkey = strkey;
@@ -244,7 +244,7 @@ void *int_hash_find(const struct Hash *table, unsigned int intkey)
   return union_hash_find(table, key);
 }
 
-struct hash_elem *hash_find_bucket(const struct Hash *table, const char *strkey)
+struct HashElem *hash_find_bucket(const struct Hash *table, const char *strkey)
 {
   union hash_key key;
   int hash;
@@ -261,7 +261,7 @@ static void union_hash_delete(struct Hash *table, union hash_key key, const void
                               void (*destroy)(void *))
 {
   int hash;
-  struct hash_elem *ptr, **last;
+  struct HashElem *ptr, **last;
 
   if (!table)
     return;
@@ -314,7 +314,7 @@ void hash_destroy(struct Hash **ptr, void (*destroy)(void *))
 {
   int i;
   struct Hash *pptr = NULL;
-  struct hash_elem *elem = NULL, *tmp = NULL;
+  struct HashElem *elem = NULL, *tmp = NULL;
 
   if (!ptr || !*ptr)
     return;
@@ -337,7 +337,7 @@ void hash_destroy(struct Hash **ptr, void (*destroy)(void *))
   FREE(ptr);
 }
 
-struct hash_elem *hash_walk(const struct Hash *table, struct hash_walk_state *state)
+struct HashElem *hash_walk(const struct Hash *table, struct HashWalkState *state)
 {
   if (state->last && state->last->next)
   {

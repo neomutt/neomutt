@@ -41,13 +41,13 @@
 #include "protos.h"
 #include "rfc2047.h"
 
-struct rfc2231_parameter
+struct Rfc2231Parameter
 {
   char *attribute;
   char *value;
   int index;
   int encoded;
-  struct rfc2231_parameter *next;
+  struct Rfc2231Parameter *next;
 };
 
 static void purge_empty_parameters(struct Parameter **headp)
@@ -107,9 +107,9 @@ static void rfc2231_decode_one(char *dest, char *src)
   *d = '\0';
 }
 
-static struct rfc2231_parameter *rfc2231_new_parameter(void)
+static struct Rfc2231Parameter *rfc2231_new_parameter(void)
 {
-  return safe_calloc(sizeof(struct rfc2231_parameter), 1);
+  return safe_calloc(sizeof(struct Rfc2231Parameter), 1);
 }
 
 /* insert parameter into an ordered list.
@@ -117,10 +117,10 @@ static struct rfc2231_parameter *rfc2231_new_parameter(void)
  * Primary sorting key: attribute
  * Secondary sorting key: index
  */
-static void rfc2231_list_insert(struct rfc2231_parameter **list, struct rfc2231_parameter *par)
+static void rfc2231_list_insert(struct Rfc2231Parameter **list, struct Rfc2231Parameter *par)
 {
-  struct rfc2231_parameter **last = list;
-  struct rfc2231_parameter *p = *list;
+  struct Rfc2231Parameter **last = list;
+  struct Rfc2231Parameter *p = *list;
   int c;
 
   while (p)
@@ -137,7 +137,7 @@ static void rfc2231_list_insert(struct rfc2231_parameter **list, struct rfc2231_
   *last = par;
 }
 
-static void rfc2231_free_parameter(struct rfc2231_parameter **p)
+static void rfc2231_free_parameter(struct Rfc2231Parameter **p)
 {
   if (*p)
   {
@@ -148,9 +148,9 @@ static void rfc2231_free_parameter(struct rfc2231_parameter **p)
 }
 
 /* process continuation parameters */
-static void rfc2231_join_continuations(struct Parameter **head, struct rfc2231_parameter *par)
+static void rfc2231_join_continuations(struct Parameter **head, struct Rfc2231Parameter *par)
 {
-  struct rfc2231_parameter *q = NULL;
+  struct Rfc2231Parameter *q = NULL;
 
   char attribute[STRING];
   char charset[STRING];
@@ -204,8 +204,8 @@ void rfc2231_decode_parameters(struct Parameter **headp)
   struct Parameter **last;
   struct Parameter *p = NULL, *q = NULL;
 
-  struct rfc2231_parameter *conthead = NULL;
-  struct rfc2231_parameter *conttmp = NULL;
+  struct Rfc2231Parameter *conthead = NULL;
+  struct Rfc2231Parameter *conttmp = NULL;
 
   char *s = NULL, *t = NULL;
   char charset[STRING];

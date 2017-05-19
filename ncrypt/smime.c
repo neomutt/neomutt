@@ -51,7 +51,7 @@
 #include "rfc822.h"
 #include "state.h"
 
-struct smime_command_context
+struct SmimeCommandContext
 {
   const char *key;           /* %k */
   const char *cryptalg;      /* %a */
@@ -152,7 +152,7 @@ static const char *_mutt_fmt_smime_command(char *dest, size_t destlen, size_t co
                                            unsigned long data, format_flag flags)
 {
   char fmt[16];
-  struct smime_command_context *cctx = (struct smime_command_context *) data;
+  struct SmimeCommandContext *cctx = (struct SmimeCommandContext *) data;
   int optional = (flags & MUTT_FORMAT_OPTIONAL);
 
   switch (op)
@@ -281,7 +281,7 @@ static const char *_mutt_fmt_smime_command(char *dest, size_t destlen, size_t co
 }
 
 static void smime_command(char *d, size_t dlen,
-                          struct smime_command_context *cctx, const char *fmt)
+                          struct SmimeCommandContext *cctx, const char *fmt)
 {
   mutt_FormatString(d, dlen, 0, MuttIndexWindow->cols, NONULL(fmt),
                     _mutt_fmt_smime_command, (unsigned long) cctx, 0);
@@ -294,7 +294,7 @@ static pid_t smime_invoke(FILE **smimein, FILE **smimeout, FILE **smimeerr,
                           const char *digestalg, const char *key, const char *certificates,
                           const char *intermediates, const char *format)
 {
-  struct smime_command_context cctx;
+  struct SmimeCommandContext cctx;
   char cmd[HUGE_STRING];
 
   memset(&cctx, 0, sizeof(cctx));

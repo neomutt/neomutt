@@ -79,14 +79,14 @@
  * Type definitions.
  */
 
-struct crypt_cache
+struct CryptCache
 {
   char *what;
   char *dflt;
-  struct crypt_cache *next;
+  struct CryptCache *next;
 };
 
-struct dn_array_s
+struct DnArrayS
 {
   char *key;
   char *value;
@@ -110,7 +110,7 @@ struct CryptEntry
   struct CryptKeyinfo *key;
 };
 
-static struct crypt_cache *id_defaults = NULL;
+static struct CryptCache *id_defaults = NULL;
 static gpgme_key_t signature_key = NULL;
 static char *current_sender = NULL;
 
@@ -3038,7 +3038,7 @@ static int crypt_compare_trust(const void *a, const void *b)
 
 /* Print the X.500 Distinguished Name part KEY from the array of parts
    DN to FP. */
-static int print_dn_part(FILE *fp, struct dn_array_s *dn, const char *key)
+static int print_dn_part(FILE *fp, struct DnArrayS *dn, const char *key)
 {
   int any = 0;
 
@@ -3056,7 +3056,7 @@ static int print_dn_part(FILE *fp, struct dn_array_s *dn, const char *key)
 }
 
 /* Print all parts of a DN in a standard sequence. */
-static void print_dn_parts(FILE *fp, struct dn_array_s *dn)
+static void print_dn_parts(FILE *fp, struct DnArrayS *dn)
 {
   static const char *const stdpart[] = {
     "CN", "OU", "O", "STREET", "L", "ST", "C", NULL,
@@ -3092,7 +3092,7 @@ static void print_dn_parts(FILE *fp, struct dn_array_s *dn)
 }
 
 /* Parse an RDN; this is a helper to parse_dn(). */
-static const char *parse_dn_part(struct dn_array_s *array, const char *string)
+static const char *parse_dn_part(struct DnArrayS *array, const char *string)
 {
   const char *s = NULL, *s1 = NULL;
   size_t n;
@@ -3180,9 +3180,9 @@ static const char *parse_dn_part(struct dn_array_s *array, const char *string)
 /* Parse a DN and return an array-ized one.  This is not a validating
    parser and it does not support any old-stylish syntax; gpgme is
    expected to return only rfc2253 compatible strings. */
-static struct dn_array_s *parse_dn(const char *string)
+static struct DnArrayS *parse_dn(const char *string)
 {
-  struct dn_array_s *array = NULL;
+  struct DnArrayS *array = NULL;
   size_t arrayidx, arraysize;
   int i;
 
@@ -3197,7 +3197,7 @@ static struct dn_array_s *parse_dn(const char *string)
       break; /* ready */
     if (arrayidx >= arraysize)
     { /* mutt lacks a real safe_realoc - so we need to copy */
-      struct dn_array_s *a2 = NULL;
+      struct DnArrayS *a2 = NULL;
 
       arraysize += 5;
       a2 = safe_malloc((arraysize + 1) * sizeof(*array));
@@ -3257,7 +3257,7 @@ static void parse_and_print_user_id(FILE *fp, const char *userid)
     fputs(_("[Can't display this user ID (invalid encoding)]"), fp);
   else
   {
-    struct dn_array_s *dn = parse_dn(userid);
+    struct DnArrayS *dn = parse_dn(userid);
     if (!dn)
       fputs(_("[Can't display this user ID (invalid DN)]"), fp);
     else
@@ -4253,7 +4253,7 @@ static struct CryptKeyinfo *crypt_ask_for_key(char *tag, char *whatfor, short ab
 {
   struct CryptKeyinfo *key = NULL;
   char resp[SHORT_STRING];
-  struct crypt_cache *l = NULL;
+  struct CryptCache *l = NULL;
   int dummy;
 
   if (!forced_valid)
@@ -4285,7 +4285,7 @@ static struct CryptKeyinfo *crypt_ask_for_key(char *tag, char *whatfor, short ab
         mutt_str_replace(&l->dflt, resp);
       else
       {
-        l = safe_malloc(sizeof(struct crypt_cache));
+        l = safe_malloc(sizeof(struct CryptCache));
         l->next = id_defaults;
         id_defaults = l;
         l->what = safe_strdup(whatfor);

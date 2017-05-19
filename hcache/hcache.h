@@ -24,7 +24,7 @@
 #include <stddef.h>
 
 struct Header;
-typedef struct header_cache header_cache_t;
+typedef struct HeaderCache header_cache_t;
 
 typedef int (*hcache_namer_t)(const char *path, char *dest, size_t dlen);
 

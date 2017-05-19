@@ -135,7 +135,7 @@ bail:
 /* hmac_md5: produce CRAM-MD5 challenge response. */
 static void hmac_md5(const char *password, char *challenge, unsigned char *response)
 {
-  struct md5_ctx ctx;
+  struct Md5Ctx ctx;
   unsigned char ipad[MD5_BLOCK_LEN], opad[MD5_BLOCK_LEN];
   unsigned char secret[MD5_BLOCK_LEN + 1];
   unsigned char hash_passwd[MD5_DIGEST_LEN];

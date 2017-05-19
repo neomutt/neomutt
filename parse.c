@@ -693,7 +693,7 @@ static const char *uncomment_timezone(char *buf, size_t buflen, const char *tz)
   return buf;
 }
 
-static const struct tz_t
+static const struct Tz
 {
   char tzname[5];
   unsigned char zhours;
@@ -849,10 +849,10 @@ time_t mutt_parse_date(const char *s, struct Header *h)
         }
         else
         {
-          struct tz_t *tz = NULL;
+          struct Tz *tz = NULL;
 
-          tz = bsearch(ptz, TimeZones, sizeof(TimeZones) / sizeof(struct tz_t),
-                       sizeof(struct tz_t), (int (*)(const void *, const void *)) ascii_strcasecmp
+          tz = bsearch(ptz, TimeZones, sizeof(TimeZones) / sizeof(struct Tz),
+                       sizeof(struct Tz), (int (*)(const void *, const void *)) ascii_strcasecmp
                        /* This is safe to do: A pointer to a struct equals
                         * a pointer to its first element */);
 

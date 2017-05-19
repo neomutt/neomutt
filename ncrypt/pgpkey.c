@@ -54,14 +54,14 @@
 
 struct List;
 
-struct pgp_cache
+struct PgpCache
 {
   char *what;
   char *dflt;
-  struct pgp_cache *next;
+  struct PgpCache *next;
 };
 
-static struct pgp_cache *id_defaults = NULL;
+static struct PgpCache *id_defaults = NULL;
 
 static const char trust_flags[] = "?- +";
 
@@ -652,7 +652,7 @@ struct PgpKeyInfo *pgp_ask_for_key(char *tag, char *whatfor, short abilities, pg
 {
   struct PgpKeyInfo *key = NULL;
   char resp[SHORT_STRING];
-  struct pgp_cache *l = NULL;
+  struct PgpCache *l = NULL;
 
   mutt_clear_error();
 
@@ -679,7 +679,7 @@ struct PgpKeyInfo *pgp_ask_for_key(char *tag, char *whatfor, short abilities, pg
         mutt_str_replace(&l->dflt, resp);
       else
       {
-        l = safe_malloc(sizeof(struct pgp_cache));
+        l = safe_malloc(sizeof(struct PgpCache));
         l->next = id_defaults;
         id_defaults = l;
         l->what = safe_strdup(whatfor);

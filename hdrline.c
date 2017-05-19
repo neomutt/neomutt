@@ -472,7 +472,7 @@ static const char *hdr_format_str(char *dest, size_t destlen, size_t col, int co
                                   const char *ifstring, const char *elsestring,
                                   unsigned long data, format_flag flags)
 {
-  struct hdr_format_info *hfi = (struct hdr_format_info *) data;
+  struct HdrFormatInfo *hfi = (struct HdrFormatInfo *) data;
   struct Header *hdr = NULL, *htmp = NULL;
   struct Context *ctx = NULL;
   char fmt[SHORT_STRING], buf2[LONG_STRING], *p = NULL;
@@ -1323,7 +1323,7 @@ static const char *hdr_format_str(char *dest, size_t destlen, size_t col, int co
 void _mutt_make_string(char *dest, size_t destlen, const char *s, struct Context *ctx,
                        struct Header *hdr, format_flag flags)
 {
-  struct hdr_format_info hfi;
+  struct HdrFormatInfo hfi;
 
   hfi.hdr = hdr;
   hfi.ctx = ctx;
@@ -1334,7 +1334,7 @@ void _mutt_make_string(char *dest, size_t destlen, const char *s, struct Context
 }
 
 void mutt_make_string_info(char *dst, size_t dstlen, int cols, const char *s,
-                           struct hdr_format_info *hfi, format_flag flags)
+                           struct HdrFormatInfo *hfi, format_flag flags)
 {
   mutt_FormatString(dst, dstlen, 0, cols, s, hdr_format_str, (unsigned long) hfi, flags);
 }

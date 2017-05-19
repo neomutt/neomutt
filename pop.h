@@ -108,6 +108,6 @@ void pop_logout(struct Context *ctx);
 /* pop.c */
 void pop_fetch_mail(void);
 
-extern struct mx_ops mx_pop_ops;
+extern struct MxOps mx_pop_ops;
 
 #endif /* _MUTT_POP_H */

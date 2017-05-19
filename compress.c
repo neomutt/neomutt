@@ -53,7 +53,7 @@ struct CompressInfo
   const char *close;        /* close-hook  command */
   const char *open;         /* open-hook   command */
   off_t size;               /* size of the compressed file */
-  struct mx_ops *child_ops; /* callbacks of de-compressed file */
+  struct MxOps *child_ops; /* callbacks of de-compressed file */
   int locked;               /* if realpath is locked */
   FILE *lockfp;             /* fp used for locking */
 };
@@ -607,7 +607,7 @@ static int comp_close_mailbox(struct Context *ctx)
   if (!ci)
     return -1;
 
-  struct mx_ops *ops = ci->child_ops;
+  struct MxOps *ops = ci->child_ops;
   if (!ops)
   {
     free_compress_info(ctx);
@@ -688,7 +688,7 @@ static int comp_check_mailbox(struct Context *ctx, int *index_hint)
   if (!ci)
     return -1;
 
-  struct mx_ops *ops = ci->child_ops;
+  struct MxOps *ops = ci->child_ops;
   if (!ops)
     return -1;
 
@@ -724,7 +724,7 @@ static int comp_open_message(struct Context *ctx, struct Message *msg, int msgno
   if (!ci)
     return -1;
 
-  struct mx_ops *ops = ci->child_ops;
+  struct MxOps *ops = ci->child_ops;
   if (!ops)
     return -1;
 
@@ -744,7 +744,7 @@ static int comp_close_message(struct Context *ctx, struct Message *msg)
   if (!ci)
     return -1;
 
-  struct mx_ops *ops = ci->child_ops;
+  struct MxOps *ops = ci->child_ops;
   if (!ops)
     return -1;
 
@@ -764,7 +764,7 @@ static int comp_commit_message(struct Context *ctx, struct Message *msg)
   if (!ci)
     return -1;
 
-  struct mx_ops *ops = ci->child_ops;
+  struct MxOps *ops = ci->child_ops;
   if (!ops)
     return -1;
 
@@ -784,7 +784,7 @@ static int comp_open_new_message(struct Message *msg, struct Context *ctx, struc
   if (!ci)
     return -1;
 
-  struct mx_ops *ops = ci->child_ops;
+  struct MxOps *ops = ci->child_ops;
   if (!ops)
     return -1;
 
@@ -874,7 +874,7 @@ static int comp_sync_mailbox(struct Context *ctx, int *index_hint)
     return -1;
   }
 
-  struct mx_ops *ops = ci->child_ops;
+  struct MxOps *ops = ci->child_ops;
   if (!ops)
     return -1;
 
@@ -933,7 +933,7 @@ int mutt_comp_valid_command(const char *cmd)
  * Compress only uses open, close and check.
  * The message functions are delegated to mbox.
  */
-struct mx_ops mx_comp_ops = {
+struct MxOps mx_comp_ops = {
   .open = comp_open_mailbox,
   .open_append = comp_open_append_mailbox,
   .close = comp_close_mailbox,

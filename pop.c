@@ -949,7 +949,7 @@ fail:
   FREE(&pop_data);
 }
 
-struct mx_ops mx_pop_ops = {
+struct MxOps mx_pop_ops = {
   .open = pop_open_mailbox,
   .open_append = NULL,
   .close = pop_close_mailbox,

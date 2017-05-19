@@ -54,7 +54,7 @@ struct passwd;
 void _mutt_make_string(char *dest, size_t destlen, const char *s, struct Context *ctx,
                        struct Header *hdr, format_flag flags);
 
-struct hdr_format_info
+struct HdrFormatInfo
 {
   struct Context *ctx;
   struct Header *hdr;
@@ -67,7 +67,7 @@ typedef enum {
 } XDGType;
 
 void mutt_make_string_info(char *dst, size_t dstlen, int cols, const char *s,
-                           struct hdr_format_info *hfi, format_flag flags);
+                           struct HdrFormatInfo *hfi, format_flag flags);
 
 void mutt_free_opts(void);
 

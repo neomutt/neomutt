@@ -226,7 +226,7 @@ void mutt_edit_headers(const char *editor, const char *body, struct Header *msg,
 
 static void label_ref_dec(struct Context *ctx, char *label)
 {
-  struct hash_elem *elem = NULL;
+  struct HashElem *elem = NULL;
   uintptr_t count;
 
   elem = hash_find_elem(ctx->label_hash, label);
@@ -246,7 +246,7 @@ static void label_ref_dec(struct Context *ctx, char *label)
 
 static void label_ref_inc(struct Context *ctx, char *label)
 {
-  struct hash_elem *elem = NULL;
+  struct HashElem *elem = NULL;
   uintptr_t count;
 
   elem = hash_find_elem(ctx->label_hash, label);

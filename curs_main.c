@@ -677,7 +677,7 @@ void mutt_draw_statusline(int cols, const char *buf, int buflen)
   int chunks = 0;
   int len = 0;
 
-  struct syntax_t
+  struct Syntax
   {
     int color;
     int first;
@@ -712,7 +712,7 @@ void mutt_draw_statusline(int cols, const char *buf, int buflen)
       if (!found)
       {
         chunks++;
-        safe_realloc(&syntax, chunks * sizeof(struct syntax_t));
+        safe_realloc(&syntax, chunks * sizeof(struct Syntax));
       }
 
       i = chunks - 1;
@@ -792,7 +792,7 @@ dsl_finish:
   FREE(&syntax);
 }
 
-static const struct mapping_t IndexHelp[] = {
+static const struct Mapping IndexHelp[] = {
   { N_("Quit"), OP_QUIT },
   { N_("Del"), OP_DELETE },
   { N_("Undel"), OP_UNDELETE },
@@ -805,7 +805,7 @@ static const struct mapping_t IndexHelp[] = {
 };
 
 #ifdef USE_NNTP
-struct mapping_t IndexNewsHelp[] = {
+struct Mapping IndexNewsHelp[] = {
   { N_("Quit"), OP_QUIT },
   { N_("Del"), OP_DELETE },
   { N_("Undel"), OP_UNDELETE },

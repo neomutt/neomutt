@@ -50,7 +50,7 @@
 #include "thread.h"
 
 /* struct used by mutt_sync_mailbox() to store new offsets */
-struct m_update_t
+struct MUpdate
 {
   short valid;
   LOFF_T hdr;
@@ -1021,8 +1021,8 @@ static int mbox_sync_mailbox(struct Context *ctx, int *index_hint)
   int first = -1;    /* first message to be written */
   LOFF_T offset;     /* location in mailbox to write changed messages */
   struct stat statbuf;
-  struct m_update_t *newOffset = NULL;
-  struct m_update_t *oldOffset = NULL;
+  struct MUpdate *newOffset = NULL;
+  struct MUpdate *oldOffset = NULL;
   FILE *fp = NULL;
   struct Progress progress;
   char msgbuf[STRING];
@@ -1117,8 +1117,8 @@ static int mbox_sync_mailbox(struct Context *ctx, int *index_hint)
     offset -= (sizeof(MMDF_SEP) - 1);
 
   /* allocate space for the new offsets */
-  newOffset = safe_calloc(ctx->msgcount - first, sizeof(struct m_update_t));
-  oldOffset = safe_calloc(ctx->msgcount - first, sizeof(struct m_update_t));
+  newOffset = safe_calloc(ctx->msgcount - first, sizeof(struct MUpdate));
+  oldOffset = safe_calloc(ctx->msgcount - first, sizeof(struct MUpdate));
 
   if (!ctx->quiet)
   {
@@ -1396,7 +1396,7 @@ int mbox_check_empty(const char *path)
   return ((st.st_size == 0));
 }
 
-struct mx_ops mx_mbox_ops = {
+struct MxOps mx_mbox_ops = {
   .open = mbox_open_mailbox,
   .open_append = mbox_open_mailbox_append,
   .close = mbox_close_mailbox,
@@ -1408,7 +1408,7 @@ struct mx_ops mx_mbox_ops = {
   .sync = mbox_sync_mailbox,
 };
 
-struct mx_ops mx_mmdf_ops = {
+struct MxOps mx_mmdf_ops = {
   .open = mbox_open_mailbox,
   .open_append = mbox_open_mailbox_append,
   .close = mbox_close_mailbox,

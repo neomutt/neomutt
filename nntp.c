@@ -2404,7 +2404,7 @@ int nntp_check_children(struct Context *ctx, const char *msgid)
   return rc < 0 ? -1 : 0;
 }
 
-struct mx_ops mx_nntp_ops = {
+struct MxOps mx_nntp_ops = {
   .open = nntp_open_mailbox,
   .open_append = NULL,
   .close = nntp_fastclose_mailbox,

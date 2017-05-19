@@ -43,7 +43,7 @@
  * The actual command line formatter.
  */
 
-struct pgp_command_context
+struct PgpCommandContext
 {
   short need_passphrase; /* %p */
   const char *fname;     /* %f */
@@ -59,7 +59,7 @@ static const char *_mutt_fmt_pgp_command(char *dest, size_t destlen, size_t col,
                                          unsigned long data, format_flag flags)
 {
   char fmt[16];
-  struct pgp_command_context *cctx = (struct pgp_command_context *) data;
+  struct PgpCommandContext *cctx = (struct PgpCommandContext *) data;
   int optional = (flags & MUTT_FORMAT_OPTIONAL);
 
   switch (op)
@@ -139,7 +139,7 @@ static const char *_mutt_fmt_pgp_command(char *dest, size_t destlen, size_t col,
 }
 
 static void mutt_pgp_command(char *d, size_t dlen,
-                             struct pgp_command_context *cctx, const char *fmt)
+                             struct PgpCommandContext *cctx, const char *fmt)
 {
   mutt_FormatString(d, dlen, 0, MuttIndexWindow->cols, NONULL(fmt),
                     _mutt_fmt_pgp_command, (unsigned long) cctx, 0);
@@ -155,7 +155,7 @@ static pid_t pgp_invoke(FILE **pgpin, FILE **pgpout, FILE **pgperr, int pgpinfd,
                         const char *fname, const char *sig_fname,
                         const char *signas, const char *ids, const char *format)
 {
-  struct pgp_command_context cctx;
+  struct PgpCommandContext cctx;
   char cmd[HUGE_STRING];
 
   memset(&cctx, 0, sizeof(cctx));
@@ -238,7 +238,7 @@ void pgp_invoke_import(const char *fname)
 {
   char _fname[_POSIX_PATH_MAX + SHORT_STRING];
   char cmd[HUGE_STRING];
-  struct pgp_command_context cctx;
+  struct PgpCommandContext cctx;
 
   memset(&cctx, 0, sizeof(cctx));
 
@@ -259,7 +259,7 @@ void pgp_invoke_getkeys(struct Address *addr)
 
   char *personal = NULL;
 
-  struct pgp_command_context cctx;
+  struct PgpCommandContext cctx;
 
   if (!PgpGetkeysCommand)
     return;

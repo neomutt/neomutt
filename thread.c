@@ -421,7 +421,7 @@ static struct List *make_subject_list(struct MuttThread *cur, time_t *dateptr)
  */
 static struct MuttThread *find_subject(struct Context *ctx, struct MuttThread *cur)
 {
-  struct hash_elem *ptr = NULL;
+  struct HashElem *ptr = NULL;
   struct MuttThread *tmp = NULL, *last = NULL;
   struct List *subjects = NULL, *oldlist = NULL;
   time_t date = 0;

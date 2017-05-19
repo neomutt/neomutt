@@ -90,7 +90,7 @@ static void crypt_mod_smime_invoke_import(char *infile, char *mailbox)
   smime_invoke_import(infile, mailbox);
 }
 
-struct crypt_module_specs crypt_mod_smime_classic = {
+struct CryptModuleSpecs crypt_mod_smime_classic = {
   APPLICATION_SMIME,
   {
       NULL, /* init */

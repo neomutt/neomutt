@@ -77,7 +77,7 @@ WHERE short SidebarSortMethod INITVAL(SORT_ORDER);
 /* FIXME: This one does not belong to here */
 WHERE short PgpSortKeys INITVAL(SORT_ADDRESS);
 
-extern const struct mapping_t SortMethods[];
+extern const struct Mapping SortMethods[];
 
 const char *mutt_get_name(struct Address *a);
 

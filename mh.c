@@ -64,22 +64,22 @@
 
 #define INS_SORT_THRESHOLD 6
 
-struct maildir
+struct Maildir
 {
   struct Header *h;
   char *canon_fname;
   unsigned header_parsed : 1;
   ino_t inode;
-  struct maildir *next;
+  struct Maildir *next;
 };
 
-struct mh_sequences
+struct MhSequences
 {
   int max;
   short *flags;
 };
 
-struct mh_data
+struct MhData
 {
   time_t mtime_cur;
   mode_t mh_umask;
@@ -91,12 +91,12 @@ struct mh_data
 #define MH_SEQ_REPLIED (1 << 1)
 #define MH_SEQ_FLAGGED (1 << 2)
 
-static inline struct mh_data *mh_data(struct Context *ctx)
+static inline struct MhData *mh_data(struct Context *ctx)
 {
-  return (struct mh_data *) ctx->data;
+  return (struct MhData *) ctx->data;
 }
 
-static void mhs_alloc(struct mh_sequences *mhs, int i)
+static void mhs_alloc(struct MhSequences *mhs, int i)
 {
   int j;
   int newmax;
@@ -113,12 +113,12 @@ static void mhs_alloc(struct mh_sequences *mhs, int i)
   }
 }
 
-static void mhs_free_sequences(struct mh_sequences *mhs)
+static void mhs_free_sequences(struct MhSequences *mhs)
 {
   FREE(&mhs->flags);
 }
 
-static short mhs_check(struct mh_sequences *mhs, int i)
+static short mhs_check(struct MhSequences *mhs, int i)
 {
   if (!mhs->flags || i > mhs->max)
     return 0;
@@ -126,7 +126,7 @@ static short mhs_check(struct mh_sequences *mhs, int i)
     return mhs->flags[i];
 }
 
-static short mhs_set(struct mh_sequences *mhs, int i, short f)
+static short mhs_set(struct MhSequences *mhs, int i, short f)
 {
   mhs_alloc(mhs, i);
   mhs->flags[i] |= f;
@@ -151,7 +151,7 @@ static int mh_read_token(char *t, int *first, int *last)
   return 0;
 }
 
-static int mh_read_sequences(struct mh_sequences *mhs, const char *path)
+static int mh_read_sequences(struct MhSequences *mhs, const char *path)
 {
   FILE *fp = NULL;
   int line = 1;
@@ -206,7 +206,7 @@ out:
 static inline mode_t mh_umask(struct Context *ctx)
 {
   struct stat st;
-  struct mh_data *data = mh_data(ctx);
+  struct MhData *data = mh_data(ctx);
 
   if (data && data->mh_umask)
     return data->mh_umask;
@@ -273,7 +273,7 @@ static bool mh_valid_message(const char *s)
 int mh_buffy(struct Buffy *mailbox, int check_stats)
 {
   int i;
-  struct mh_sequences mhs;
+  struct MhSequences mhs;
   int check_new = 1;
   int rc = 0;
   DIR *dirp = NULL;
@@ -386,7 +386,7 @@ static int mh_mkstemp(struct Context *dest, FILE **fp, char **tgt)
   return 0;
 }
 
-static void mhs_write_one_sequence(FILE *fp, struct mh_sequences *mhs, short f,
+static void mhs_write_one_sequence(FILE *fp, struct MhSequences *mhs, short f,
                                    const char *tag)
 {
   int i;
@@ -450,7 +450,7 @@ static void mh_update_sequences(struct Context *ctx)
   char seq_flagged[STRING];
 
 
-  struct mh_sequences mhs;
+  struct MhSequences mhs;
   memset(&mhs, 0, sizeof(mhs));
 
   snprintf(seq_unseen, sizeof(seq_unseen), "%s:", NONULL(MhUnseen));
@@ -607,7 +607,7 @@ static void mh_sequences_add_one(struct Context *ctx, int n, short unseen, short
   FREE(&tmpfname);
 }
 
-static void mh_update_maildir(struct maildir *md, struct mh_sequences *mhs)
+static void mh_update_maildir(struct Maildir *md, struct MhSequences *mhs)
 {
   int i;
   short f;
@@ -631,7 +631,7 @@ static void mh_update_maildir(struct maildir *md, struct mh_sequences *mhs)
 }
 
 /* maildir support */
-static void maildir_free_entry(struct maildir **md)
+static void maildir_free_entry(struct Maildir **md)
 {
   if (!md || !*md)
     return;
@@ -643,9 +643,9 @@ static void maildir_free_entry(struct maildir **md)
   FREE(md);
 }
 
-static void maildir_free_maildir(struct maildir **md)
+static void maildir_free_maildir(struct Maildir **md)
 {
-  struct maildir *p = NULL, *q = NULL;
+  struct Maildir *p = NULL, *q = NULL;
 
   if (!md || !*md)
     return;
@@ -717,7 +717,7 @@ static void maildir_update_mtime(struct Context *ctx)
 {
   char buf[_POSIX_PATH_MAX];
   struct stat st;
-  struct mh_data *data = mh_data(ctx);
+  struct MhData *data = mh_data(ctx);
 
   if (ctx->magic == MUTT_MAILDIR)
   {
@@ -792,14 +792,14 @@ struct Header *maildir_parse_message(int magic, const char *fname, int is_old, s
   return NULL;
 }
 
-static int maildir_parse_dir(struct Context *ctx, struct maildir ***last,
+static int maildir_parse_dir(struct Context *ctx, struct Maildir ***last,
                              const char *subdir, int *count, struct Progress *progress)
 {
   DIR *dirp = NULL;
   struct dirent *de = NULL;
   char buf[_POSIX_PATH_MAX];
   int is_old = 0;
-  struct maildir *entry = NULL;
+  struct Maildir *entry = NULL;
   struct Header *h = NULL;
 
   if (subdir)
@@ -843,7 +843,7 @@ static int maildir_parse_dir(struct Context *ctx, struct maildir ***last,
     else
       h->path = safe_strdup(de->d_name);
 
-    entry = safe_calloc(sizeof(struct maildir), 1);
+    entry = safe_calloc(sizeof(struct Maildir), 1);
     entry->h = h;
     entry->inode = de->d_ino;
     **last = entry;
@@ -861,7 +861,7 @@ static int maildir_parse_dir(struct Context *ctx, struct maildir ***last,
   return 0;
 }
 
-static bool maildir_add_to_context(struct Context *ctx, struct maildir *md)
+static bool maildir_add_to_context(struct Context *ctx, struct Maildir *md)
 {
   int oldmsgcount = ctx->msgcount;
 
@@ -898,7 +898,7 @@ static bool maildir_add_to_context(struct Context *ctx, struct maildir *md)
   return false;
 }
 
-static int maildir_move_to_context(struct Context *ctx, struct maildir **md)
+static int maildir_move_to_context(struct Context *ctx, struct Maildir **md)
 {
   int r;
   r = maildir_add_to_context(ctx, *md);
@@ -914,12 +914,12 @@ static size_t maildir_hcache_keylen(const char *fn)
 }
 #endif
 
-static int md_cmp_inode(struct maildir *a, struct maildir *b)
+static int md_cmp_inode(struct Maildir *a, struct Maildir *b)
 {
   return a->inode - b->inode;
 }
 
-static int md_cmp_path(struct maildir *a, struct maildir *b)
+static int md_cmp_path(struct Maildir *a, struct Maildir *b)
 {
   return strcmp(a->h->path, b->h->path);
 }
@@ -927,11 +927,11 @@ static int md_cmp_path(struct maildir *a, struct maildir *b)
 /*
  * Merge two maildir lists according to the inode numbers.
  */
-static struct maildir *maildir_merge_lists(struct maildir *left, struct maildir *right,
-                                           int (*cmp)(struct maildir *, struct maildir *))
+static struct Maildir *maildir_merge_lists(struct Maildir *left, struct Maildir *right,
+                                           int (*cmp)(struct Maildir *, struct Maildir *))
 {
-  struct maildir *head = NULL;
-  struct maildir *tail = NULL;
+  struct Maildir *head = NULL;
+  struct Maildir *tail = NULL;
 
   if (left && right)
   {
@@ -983,10 +983,10 @@ static struct maildir *maildir_merge_lists(struct maildir *left, struct maildir 
   return head;
 }
 
-static struct maildir *maildir_ins_sort(struct maildir *list,
-                                        int (*cmp)(struct maildir *, struct maildir *))
+static struct Maildir *maildir_ins_sort(struct Maildir *list,
+                                        int (*cmp)(struct Maildir *, struct Maildir *))
 {
-  struct maildir *tmp = NULL, *last = NULL, *ret = NULL, *back = NULL;
+  struct Maildir *tmp = NULL, *last = NULL, *ret = NULL, *back = NULL;
 
   ret = list;
   list = list->next;
@@ -1014,11 +1014,11 @@ static struct maildir *maildir_ins_sort(struct maildir *list,
 /*
  * Sort maildir list according to inode.
  */
-static struct maildir *maildir_sort(struct maildir *list, size_t len,
-                                    int (*cmp)(struct maildir *, struct maildir *))
+static struct Maildir *maildir_sort(struct Maildir *list, size_t len,
+                                    int (*cmp)(struct Maildir *, struct Maildir *))
 {
-  struct maildir *left = list;
-  struct maildir *right = list;
+  struct Maildir *left = list;
+  struct Maildir *right = list;
   size_t c = 0;
 
   if (!list || !list->next)
@@ -1049,7 +1049,7 @@ static struct maildir *maildir_sort(struct maildir *list, size_t len,
 /* Sorts mailbox into its natural order.
  * Currently only defined for MH where files are numbered.
  */
-static void mh_sort_natural(struct Context *ctx, struct maildir **md)
+static void mh_sort_natural(struct Context *ctx, struct Maildir **md)
 {
   if (!ctx || !md || !*md || ctx->magic != MUTT_MH || Sort != SORT_ORDER)
     return;
@@ -1057,7 +1057,7 @@ static void mh_sort_natural(struct Context *ctx, struct maildir **md)
   *md = maildir_sort(*md, (size_t) -1, md_cmp_path);
 }
 
-static struct maildir *skip_duplicates(struct maildir *p, struct maildir **last)
+static struct Maildir *skip_duplicates(struct Maildir *p, struct Maildir **last)
 {
   /*
    * Skip ahead to the next non-duplicate message.
@@ -1080,9 +1080,9 @@ static struct maildir *skip_duplicates(struct maildir *p, struct maildir **last)
 /*
  * This function does the second parsing pass
  */
-static void maildir_delayed_parsing(struct Context *ctx, struct maildir **md, struct Progress *progress)
+static void maildir_delayed_parsing(struct Context *ctx, struct Maildir **md, struct Progress *progress)
 {
-  struct maildir *p, *last = NULL;
+  struct Maildir *p, *last = NULL;
   char fn[_POSIX_PATH_MAX];
   int count;
   int sort = 0;
@@ -1220,10 +1220,10 @@ static int mh_close_mailbox(struct Context *ctx)
  */
 static int mh_read_dir(struct Context *ctx, const char *subdir)
 {
-  struct maildir *md = NULL;
-  struct mh_sequences mhs;
-  struct maildir **last;
-  struct mh_data *data = NULL;
+  struct Maildir *md = NULL;
+  struct MhSequences mhs;
+  struct Maildir **last;
+  struct MhData *data = NULL;
   int count;
   char msgbuf[STRING];
   struct Progress progress;
@@ -1237,7 +1237,7 @@ static int mh_read_dir(struct Context *ctx, const char *subdir)
 
   if (!ctx->data)
   {
-    ctx->data = safe_calloc(sizeof(struct mh_data), 1);
+    ctx->data = safe_calloc(sizeof(struct MhData), 1);
   }
   data = mh_data(ctx);
 
@@ -1997,12 +1997,12 @@ static int maildir_check_mailbox(struct Context *ctx, int *index_hint)
   int occult = 0;             /* messages were removed from the mailbox */
   int have_new = 0;           /* messages were added to the mailbox */
   bool flags_changed = false; /* message flags were changed in the mailbox */
-  struct maildir *md = NULL;  /* list of messages in the mailbox */
-  struct maildir **last = NULL, *p = NULL;
+  struct Maildir *md = NULL;  /* list of messages in the mailbox */
+  struct Maildir **last = NULL, *p = NULL;
   int i;
   struct Hash *fnames = NULL; /* hash table for quickly looking up the base filename
                                    for a maildir message */
-  struct mh_data *data = mh_data(ctx);
+  struct MhData *data = mh_data(ctx);
 
   /* XXX seems like this check belongs in mx_check_mailbox()
    * rather than here.
@@ -2149,12 +2149,12 @@ static int mh_check_mailbox(struct Context *ctx, int *index_hint)
   char buf[_POSIX_PATH_MAX];
   struct stat st, st_cur;
   bool modified = false, have_new = false, occult = false, flags_changed = false;
-  struct maildir *md = NULL, *p = NULL;
-  struct maildir **last = NULL;
-  struct mh_sequences mhs;
+  struct Maildir *md = NULL, *p = NULL;
+  struct Maildir **last = NULL;
+  struct MhSequences mhs;
   struct Hash *fnames = NULL;
   int i;
-  struct mh_data *data = mh_data(ctx);
+  struct MhData *data = mh_data(ctx);
 
   if (!option(OPTCHECKNEW))
     return 0;
@@ -2569,7 +2569,7 @@ bool mx_is_mh(const char *path)
   return false;
 }
 
-struct mx_ops mx_maildir_ops = {
+struct MxOps mx_maildir_ops = {
   .open = maildir_open_mailbox,
   .open_append = maildir_open_mailbox_append,
   .close = mh_close_mailbox,
@@ -2581,7 +2581,7 @@ struct mx_ops mx_maildir_ops = {
   .sync = mh_sync_mailbox,
 };
 
-struct mx_ops mx_mh_ops = {
+struct MxOps mx_mh_ops = {
   .open = mh_open_mailbox,
   .open_append = mh_open_mailbox_append,
   .close = mh_close_mailbox,

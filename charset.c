@@ -479,7 +479,7 @@ int mutt_convert_string(char **ps, const char *from, const char *to, int flags)
  * Used in sendlib.c for converting from mutt's Charset
  */
 
-struct fgetconv_s
+struct FgetConvS
 {
   FILE *file;
   iconv_t cd;
@@ -492,7 +492,7 @@ struct fgetconv_s
   ICONV_CONST char **inrepls;
 };
 
-struct fgetconv_not
+struct FgetConvNot
 {
   FILE *file;
   iconv_t cd;
@@ -504,7 +504,7 @@ struct fgetconv_not
  */
 FGETCONV *fgetconv_open(FILE *file, const char *from, const char *to, int flags)
 {
-  struct fgetconv_s *fc = NULL;
+  struct FgetConvS *fc = NULL;
   iconv_t cd = (iconv_t) -1;
   static ICONV_CONST char *repls[] = { "\357\277\275", "?", 0 };
 
@@ -513,14 +513,14 @@ FGETCONV *fgetconv_open(FILE *file, const char *from, const char *to, int flags)
 
   if (cd != (iconv_t) -1)
   {
-    fc = safe_malloc(sizeof(struct fgetconv_s));
+    fc = safe_malloc(sizeof(struct FgetConvS));
     fc->p = fc->ob = fc->bufo;
     fc->ib = fc->bufi;
     fc->ibl = 0;
     fc->inrepls = mutt_is_utf8(to) ? repls : repls + 1;
   }
   else
-    fc = safe_malloc(sizeof(struct fgetconv_not));
+    fc = safe_malloc(sizeof(struct FgetConvNot));
   fc->file = file;
   fc->cd = cd;
   return (FGETCONV *) fc;
@@ -549,7 +549,7 @@ char *fgetconvs(char *buf, size_t l, FGETCONV *_fc)
 
 int fgetconv(FGETCONV *_fc)
 {
-  struct fgetconv_s *fc = (struct fgetconv_s *) _fc;
+  struct FgetConvS *fc = (struct FgetConvS *) _fc;
 
   if (!fc)
     return EOF;
@@ -602,7 +602,7 @@ int fgetconv(FGETCONV *_fc)
 
 void fgetconv_close(FGETCONV **_fc)
 {
-  struct fgetconv_s *fc = (struct fgetconv_s *) *_fc;
+  struct FgetConvS *fc = (struct FgetConvS *) *_fc;
 
   if (fc->cd != (iconv_t) -1)
     iconv_close(fc->cd);

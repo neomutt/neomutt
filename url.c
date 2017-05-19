@@ -35,7 +35,7 @@
 #include "rfc2047.h"
 #include "rfc822.h"
 
-static const struct mapping_t UrlMap[] = {
+static const struct Mapping UrlMap[] = {
   { "file", U_FILE },       { "imap", U_IMAP },     { "imaps", U_IMAPS },
   { "pop", U_POP },         { "pops", U_POPS },     { "news", U_NNTP },
   { "snews", U_NNTPS },     { "mailto", U_MAILTO },

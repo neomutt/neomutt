@@ -56,7 +56,7 @@ struct Entry
   struct Query *data;
 };
 
-static const struct mapping_t QueryHelp[] = {
+static const struct Mapping QueryHelp[] = {
   { N_("Exit"), OP_EXIT },
   { N_("Mail"), OP_MAIL },
   { N_("New Query"), OP_QUERY },

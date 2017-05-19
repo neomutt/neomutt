@@ -217,14 +217,14 @@ static void encode_quoted(FGETCONV *fc, FILE *fout, int istext)
   }
 }
 
-struct b64_context
+struct B64Context
 {
   char buffer[3];
   short size;
   short linelen;
 };
 
-static int b64_init(struct b64_context *ctx)
+static int b64_init(struct B64Context *ctx)
 {
   memset(ctx->buffer, '\0', sizeof(ctx->buffer));
   ctx->size = 0;
@@ -233,7 +233,7 @@ static int b64_init(struct b64_context *ctx)
   return 0;
 }
 
-static void b64_flush(struct b64_context *ctx, FILE *fout)
+static void b64_flush(struct B64Context *ctx, FILE *fout)
 {
   /* for some reasons, mutt_to_base64 expects the
    * output buffer to be larger than 10B */
@@ -263,7 +263,7 @@ static void b64_flush(struct b64_context *ctx, FILE *fout)
 }
 
 
-static void b64_putc(struct b64_context *ctx, char c, FILE *fout)
+static void b64_putc(struct B64Context *ctx, char c, FILE *fout)
 {
   if (ctx->size == 3)
     b64_flush(ctx, fout);
@@ -274,7 +274,7 @@ static void b64_putc(struct b64_context *ctx, char c, FILE *fout)
 
 static void encode_base64(FGETCONV *fc, FILE *fout, int istext)
 {
-  struct b64_context ctx;
+  struct B64Context ctx;
   int ch, ch1 = EOF;
 
   b64_init(&ctx);
