@@ -678,7 +678,7 @@ int mbox_strict_cmp_headers(const struct Header *h1, const struct Header *h2)
 static int reopen_mailbox(struct Context *ctx, int *index_hint)
 {
   int (*cmp_headers)(const struct Header *, const struct Header *) = NULL;
-  struct Header **old_hdrs;
+  struct Header **old_hdrs = NULL;
   int old_msgcount;
   int msg_mod = 0;
   int index_hint_set;

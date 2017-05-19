@@ -84,7 +84,7 @@ enum
 };
 
 enum output_formats_t OutputFormat = F_NONE;
-char *Progname;
+char *Progname = NULL;
 short Debug = 0;
 
 /* skip whitespace */

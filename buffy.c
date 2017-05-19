@@ -604,7 +604,7 @@ int mutt_parse_virtual_mailboxes(struct Buffer *path, struct Buffer *s,
   if (!path || !s)
     return -1;
 
-  struct Buffy **tmp;
+  struct Buffy **tmp = NULL;
   char buf[_POSIX_PATH_MAX + LONG_STRING + 32]; /* path to DB + query + URI "decoration" */
 
   while (MoreArgs(s))

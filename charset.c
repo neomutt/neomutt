@@ -375,7 +375,7 @@ size_t mutt_iconv(iconv_t cd, ICONV_CONST char **inbuf, size_t *inbytesleft,
       if (inrepls)
       {
         /* Try replacing the input */
-        ICONV_CONST char **t;
+        ICONV_CONST char **t = NULL;
         for (t = inrepls; *t; t++)
         {
           ICONV_CONST char *ib1 = *t;

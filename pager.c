@@ -416,7 +416,7 @@ static struct QClass *classify_quote(struct QClass **QuoteList, const char *qptr
                                      int length, int *force_redraw, int *q_level)
 {
   struct QClass *q_list = *QuoteList;
-  struct QClass *class = NULL, *tmp = NULL, *ptr, *save = NULL;
+  struct QClass *class = NULL, *tmp = NULL, *ptr = NULL, *save = NULL;
   char *tail_qptr = NULL;
   int offset, tail_lng;
   int index = -1;

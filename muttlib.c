@@ -1299,7 +1299,7 @@ void mutt_FormatString(char *dest,     /* output buffer */
                        unsigned long data, /* callback data */
                        format_flag flags)  /* callback flags */
 {
-  char prefix[SHORT_STRING], buf[LONG_STRING], *cp, *wptr = dest, ch;
+  char prefix[SHORT_STRING], buf[LONG_STRING], *cp = NULL, *wptr = dest, ch;
   char ifstring[SHORT_STRING], elsestring[SHORT_STRING];
   size_t wlen, count, len, wid;
   pid_t pid;

@@ -385,7 +385,7 @@ static void attach_forward_bodies(FILE *fp, struct Header *hdr,
   short mime_fwd_any = 1;
   struct Header *parent = NULL;
   struct Header *tmphdr = NULL;
-  struct Body **last;
+  struct Body **last = NULL;
   char tmpbody[_POSIX_PATH_MAX];
   FILE *tmpfp = NULL;
 
@@ -555,7 +555,7 @@ static void attach_forward_msgs(FILE *fp, struct Header *hdr, struct AttachPtr *
   short i;
   int rc;
 
-  struct Body **last;
+  struct Body **last = NULL;
   char tmpbody[_POSIX_PATH_MAX];
   FILE *tmpfp = NULL;
 

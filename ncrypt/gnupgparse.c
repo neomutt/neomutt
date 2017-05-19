@@ -410,7 +410,7 @@ struct PgpKeyInfo *pgp_get_candidates(pgp_ring_t keyring, struct List *hints)
 
       if (is_sub)
       {
-        struct PgpUid **l;
+        struct PgpUid **l = NULL;
 
         k->flags |= KEYFLAG_SUBKEY;
         k->parent = mainkey;

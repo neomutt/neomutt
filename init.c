@@ -87,7 +87,7 @@ static struct MyVar *MyVars;
 
 static void myvar_set(const char *var, const char *val)
 {
-  struct MyVar **cur;
+  struct MyVar **cur = NULL;
 
   for (cur = &MyVars; *cur; cur = &((*cur)->next))
     if (mutt_strcmp((*cur)->name, var) == 0)
@@ -104,7 +104,7 @@ static void myvar_set(const char *var, const char *val)
 
 static void myvar_del(const char *var)
 {
-  struct MyVar **cur;
+  struct MyVar **cur = NULL;
   struct MyVar *tmp = NULL;
 
 
@@ -1524,7 +1524,7 @@ static int parse_attachments(struct Buffer *buf, struct Buffer *s,
                              unsigned long data, struct Buffer *err)
 {
   char op, *category = NULL;
-  struct List **listp;
+  struct List **listp = NULL;
 
   mutt_extract_token(buf, s, 0);
   if (!buf->data || *buf->data == '\0')
@@ -1581,7 +1581,7 @@ static int parse_unattachments(struct Buffer *buf, struct Buffer *s,
                                unsigned long data, struct Buffer *err)
 {
   char op, *p = NULL;
-  struct List **listp;
+  struct List **listp = NULL;
 
   mutt_extract_token(buf, s, 0);
   if (!buf->data || *buf->data == '\0')

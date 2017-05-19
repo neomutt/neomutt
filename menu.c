@@ -832,7 +832,7 @@ void mutt_push_current_menu(struct Menu *menu)
 
 void mutt_pop_current_menu(struct Menu *menu)
 {
-  struct Menu *prev_menu;
+  struct Menu *prev_menu = NULL;
 
   if (!MenuStackCount || (MenuStack[MenuStackCount - 1] != menu))
   {
@@ -855,7 +855,7 @@ void mutt_pop_current_menu(struct Menu *menu)
 
 void mutt_set_current_menu_redraw(int redraw)
 {
-  struct Menu *current_menu;
+  struct Menu *current_menu = NULL;
 
   current_menu = get_current_menu();
   if (current_menu)
@@ -864,7 +864,7 @@ void mutt_set_current_menu_redraw(int redraw)
 
 void mutt_set_current_menu_redraw_full(void)
 {
-  struct Menu *current_menu;
+  struct Menu *current_menu = NULL;
 
   current_menu = get_current_menu();
   if (current_menu)
@@ -885,7 +885,7 @@ void mutt_set_menu_redraw_full(int menu_type)
 
 void mutt_current_menu_redraw()
 {
-  struct Menu *current_menu;
+  struct Menu *current_menu = NULL;
 
   current_menu = get_current_menu();
   if (current_menu)

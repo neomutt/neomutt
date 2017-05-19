@@ -201,7 +201,7 @@ static void rfc2231_join_continuations(struct Parameter **head, struct Rfc2231Pa
 void rfc2231_decode_parameters(struct Parameter **headp)
 {
   struct Parameter *head = NULL;
-  struct Parameter **last;
+  struct Parameter **last = NULL;
   struct Parameter *p = NULL, *q = NULL;
 
   struct Rfc2231Parameter *conthead = NULL;

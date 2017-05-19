@@ -443,7 +443,7 @@ static int main_change_folder(struct Menu *menu, int op, char *buf, size_t bufsz
   if (Context)
   {
     int check;
-    char *new_last_folder;
+    char *new_last_folder = NULL;
 
 #ifdef USE_COMPRESSED
     if (Context->compress_info && Context->realpath)
@@ -514,7 +514,7 @@ bool mutt_ts_capability(void)
 #ifdef HAVE_USE_EXTENDED_NAMES
   int tcapi;
 #endif
-  char **termp;
+  char **termp = NULL;
   char *known[] = {
     "color-xterm", "cygwin", "eterm",  "kterm", "nxterm",
     "putty",       "rxvt",   "screen", "xterm", NULL,

@@ -66,7 +66,7 @@
 #include "nntp.h"
 #endif
 
-char **envlist;
+char **envlist = NULL;
 
 void mutt_exit(int code)
 {

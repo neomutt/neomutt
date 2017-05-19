@@ -1205,7 +1205,7 @@ void smime_invoke_import(char *infile, char *mailbox)
 
 int smime_verify_sender(struct Header *h)
 {
-  char *mbox = NULL, *certfile, tempfname[_POSIX_PATH_MAX];
+  char *mbox = NULL, *certfile = NULL, tempfname[_POSIX_PATH_MAX];
   FILE *fpout = NULL;
   int retval = 1;
 

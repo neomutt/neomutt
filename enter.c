@@ -801,7 +801,7 @@ int _mutt_enter_string(char *buf, size_t buflen, int col, int flags, int multipl
 
         if (multiple)
         {
-          char **tfiles;
+          char **tfiles = NULL;
           *numfiles = 1;
           tfiles = safe_calloc(*numfiles, sizeof(char *));
           mutt_expand_path(buf, buflen);

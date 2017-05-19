@@ -38,7 +38,7 @@
 #include "protos.h"
 
 /* globals */
-int *ColorQuote;
+int *ColorQuote = NULL;
 int ColorQuoteUsed;
 int ColorDefs[MT_COLOR_MAX];
 struct ColorLine *ColorHdrList = NULL;

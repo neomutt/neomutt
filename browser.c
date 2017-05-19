@@ -1438,7 +1438,7 @@ void _mutt_select_file(char *f, size_t flen, int flags, char ***files, int *numf
 
         if (multiple)
         {
-          char **tfiles;
+          char **tfiles = NULL;
           int j, k;
 
           if (menu->tagged)

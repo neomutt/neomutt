@@ -62,7 +62,7 @@ int mutt_copy_hdr(FILE *in, FILE *out, LOFF_T off_start, LOFF_T off_end,
   char buf[LONG_STRING]; /* should be long enough to get most fields in one pass */
   char *nl = NULL;
   struct List *t = NULL;
-  char **headers;
+  char **headers = NULL;
   int hdr_count;
   int x;
   char *this_one = NULL;

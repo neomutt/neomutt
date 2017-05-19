@@ -443,7 +443,7 @@ static struct PgpKeyInfo *pgp_select_key(struct PgpKeyInfo *keys,
                                          struct Address *p, const char *s)
 {
   int keymax;
-  struct PgpUid **KeyTable;
+  struct PgpUid **KeyTable = NULL;
   struct Menu *menu = NULL;
   int i, done = 0;
   char helpstr[LONG_STRING], buf[LONG_STRING], tmpbuf[STRING];

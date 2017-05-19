@@ -1223,7 +1223,7 @@ static int mh_read_dir(struct Context *ctx, const char *subdir)
 {
   struct Maildir *md = NULL;
   struct MhSequences mhs;
-  struct Maildir **last;
+  struct Maildir **last = NULL;
   struct MhData *data = NULL;
   int count;
   char msgbuf[STRING];

@@ -3702,7 +3702,7 @@ static struct CryptKeyinfo *get_candidates(struct List *hints, unsigned int app,
          keylist_ext_start function. */
     struct List *l = NULL;
     size_t n;
-    char **patarr;
+    char **patarr = NULL;
 
     for (l = hints, n = 0; l; l = l->next)
     {
@@ -3843,7 +3843,7 @@ static struct CryptKeyinfo *crypt_select_key(struct CryptKeyinfo *keys,
                                              unsigned int app, int *forced_valid)
 {
   int keymax;
-  struct CryptKeyinfo **key_table;
+  struct CryptKeyinfo **key_table = NULL;
   struct Menu *menu = NULL;
   int i, done = 0;
   char helpstr[LONG_STRING], buf[LONG_STRING];

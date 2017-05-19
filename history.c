@@ -139,7 +139,7 @@ void mutt_read_histfile(void)
 
 static int dup_hash_dec(struct Hash *dup_hash, char *s)
 {
-  struct HashElem *elem;
+  struct HashElem *elem = NULL;
   uintptr_t count;
 
   elem = hash_find_elem(dup_hash, s);
@@ -160,7 +160,7 @@ static int dup_hash_dec(struct Hash *dup_hash, char *s)
 
 static int dup_hash_inc(struct Hash *dup_hash, char *s)
 {
-  struct HashElem *elem;
+  struct HashElem *elem = NULL;
   uintptr_t count;
 
   elem = hash_find_elem(dup_hash, s);

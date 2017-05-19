@@ -155,7 +155,7 @@ int mutt_extract_token(struct Buffer *dest, struct Buffer *tok, int flags)
 
   char ch;
   char qc = 0; /* quote char */
-  char *pc;
+  char *pc = NULL;
 
   /* reset the destination pointer to the beginning of the buffer */
   dest->dptr = dest->data;
@@ -237,7 +237,7 @@ int mutt_extract_token(struct Buffer *dest, struct Buffer *tok, int flags)
     }
     else if (ch == '`' && (!qc || qc == '"'))
     {
-      FILE *fp;
+      FILE *fp = NULL;
       pid_t pid;
       char *cmd = NULL, *ptr = NULL;
       size_t expnlen;

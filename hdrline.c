@@ -1086,7 +1086,7 @@ static const char *hdr_format_str(char *dest, size_t destlen, size_t col, int co
     case 'z':
       if (src[0] == 's') /* status: deleted/new/old/replied */
       {
-        char *ch;
+        char *ch = NULL;
         if (hdr->deleted)
           ch = get_nth_wchar(Flagchars, FlagCharDeleted);
         else if (hdr->attach_del)
@@ -1115,7 +1115,7 @@ static const char *hdr_format_str(char *dest, size_t destlen, size_t col, int co
       }
       else if (src[0] == 'c') /* crypto */
       {
-        char *ch;
+        char *ch = NULL;
         if (WithCrypto && (hdr->security & GOODSIGN))
           ch = "S";
         else if (WithCrypto && (hdr->security & ENCRYPT))
@@ -1132,7 +1132,7 @@ static const char *hdr_format_str(char *dest, size_t destlen, size_t col, int co
       }
       else if (src[0] == 't') /* tagged, flagged, recipient */
       {
-        char *ch;
+        char *ch = NULL;
         if (hdr->tagged)
           ch = get_nth_wchar(Flagchars, FlagCharTagged);
         else if (hdr->flagged)

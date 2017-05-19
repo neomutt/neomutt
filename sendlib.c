@@ -797,7 +797,7 @@ static size_t convert_file_from_to(FILE *file, const char *fromcodes, const char
                                    char **fromcode, char **tocode, struct Content *info)
 {
   char *fcode = NULL;
-  char **tcode;
+  char **tcode = NULL;
   const char *c = NULL, *c1 = NULL;
   size_t ret;
   int ncodes, i, cn;
