@@ -398,7 +398,7 @@ int mutt_wctoutf8(char *s, unsigned int c, size_t buflen);
 #define IsWPrint(wc) (iswprint(wc) || (option(OPTLOCALES) ? 0 : (wc >= 0xa0)))
 #endif
 
-int getdnsdomainname(char *, size_t);
+int getdnsdomainname(char *d, size_t len);
 
 /* unsorted */
 void ci_bounce_message(struct Header *h);

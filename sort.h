@@ -62,7 +62,7 @@ struct Context;
 #define SORT_REVERSE (1 << 8)
 #define SORT_LAST    (1 << 9)
 
-typedef int sort_t(const void *, const void *);
+typedef int sort_t(const void *a, const void *b);
 sort_t *mutt_get_sort_func(int method);
 
 void mutt_sort_headers(struct Context *ctx, int init);

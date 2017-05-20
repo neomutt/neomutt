@@ -32,9 +32,12 @@ typedef enum {
   MUTT_FORMAT_NOFILTER    = (1 << 7)  /* do not allow filtering on this pass */
 } format_flag;
 
-typedef const char *format_t(char *, size_t, size_t, int, char, const char *,
-                             const char *, const char *, const char *,
-                             unsigned long, format_flag);
+typedef const char *format_t(char *dest, size_t destlen, size_t col,
+			     int cols, char op, 
+			     const char *src, const char *prefix,
+			     const char *ifstring, 
+			     const char *elsestring, unsigned long data,
+			     format_flag flags);
 
 void mutt_FormatString(char *dest,         /* output buffer */
                        size_t destlen,     /* output buffer len */

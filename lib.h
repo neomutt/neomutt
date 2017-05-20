@@ -101,8 +101,7 @@ static inline int is_email_wsp(char c)
 extern void (*mutt_error)(const char *, ...);
 #endif
 
-void mutt_exit(int);
-
+void mutt_exit(int code);
 
 #ifdef DEBUG
 extern char debugfilename[_POSIX_PATH_MAX];
@@ -148,42 +147,42 @@ char *strfcpy(char *dest, const char *src, size_t dlen);
  *      -2 overflow (for int and short)
  * the int pointer may be NULL to test only without conversion
  */
-int mutt_atos(const char *, short *);
-int mutt_atoi(const char *, int *);
+int mutt_atos(const char *str, short *dst);
+int mutt_atoi(const char *str, int *dst);
 
-const char *mutt_stristr(const char *, const char *);
-const char *mutt_basename(const char *);
+const char *mutt_stristr(const char *haystack, const char *needle);
+const char *mutt_basename(const char *f);
 
-int mutt_copy_stream(FILE *, FILE *);
-int mutt_copy_bytes(FILE *, FILE *, size_t);
-int mutt_rx_sanitize_string(char *, size_t, const char *);
-int mutt_strcasecmp(const char *, const char *);
-int mutt_strcmp(const char *, const char *);
-int mutt_strncasecmp(const char *, const char *, size_t);
-int mutt_strncmp(const char *, const char *, size_t);
-int mutt_strcoll(const char *, const char *);
+int mutt_copy_stream(FILE *fin, FILE *fout);
+int mutt_copy_bytes(FILE *in, FILE *out, size_t size);
+int mutt_rx_sanitize_string(char *dest, size_t destlen, const char *src);
+int mutt_strcasecmp(const char *a, const char *b);
+int mutt_strcmp(const char *a, const char *b);
+int mutt_strncasecmp(const char *a, const char *b, size_t l);
+int mutt_strncmp(const char *a, const char *b, size_t l);
+int mutt_strcoll(const char *a, const char *b);
 int safe_asprintf(char **, const char *, ...);
-int safe_open(const char *, int);
-int safe_rename(const char *, const char *);
-int safe_symlink(const char *, const char *);
-int safe_fclose(FILE **);
-int safe_fsync_close(FILE **);
-int mutt_rmtree(const char *);
+int safe_open(const char *path, int flags);
+int safe_rename(const char *src, const char *target);
+int safe_symlink(const char *oldpath, const char *newpath);
+int safe_fclose(FILE **f);
+int safe_fsync_close(FILE **f);
+int mutt_rmtree(const char *path);
 int mutt_mkdir(const char *path, mode_t mode);
 
-size_t mutt_quote_filename(char *, size_t, const char *);
-size_t mutt_strlen(const char *);
+size_t mutt_quote_filename(char *d, size_t l, const char *f);
+size_t mutt_strlen(const char *a);
 
-void *safe_calloc(size_t, size_t);
-void *safe_malloc(size_t);
+void *safe_calloc(size_t nmemb, size_t size);
+void *safe_malloc(size_t siz);
 void mutt_nocurses_error(const char *, ...);
-void mutt_remove_trailing_ws(char *);
-void mutt_sanitize_filename(char *, short);
+void mutt_remove_trailing_ws(char *s);
+void mutt_sanitize_filename(char *f, short slash);
 void mutt_str_replace(char **p, const char *s);
 void mutt_str_adjust(char **p);
-void mutt_unlink(const char *);
-void safe_free(void *);
-void safe_realloc(void *, size_t);
+void mutt_unlink(const char *s);
+void safe_free(void *ptr);
+void safe_realloc(void *ptr, size_t siz);
 int mutt_inbox_cmp(const char *a, const char *b);
 
 const char *mutt_strsysexit(int e);

@@ -123,8 +123,8 @@ void mutt_ts_icon(char *str);
 
 struct Menu *mutt_new_menu(int menu);
 void mutt_menu_destroy(struct Menu **p);
-void mutt_push_current_menu(struct Menu *);
-void mutt_pop_current_menu(struct Menu *);
+void mutt_push_current_menu(struct Menu *menu);
+void mutt_pop_current_menu(struct Menu *menu);
 void mutt_set_current_menu_redraw(int redraw);
 void mutt_set_current_menu_redraw_full(void);
 void mutt_set_menu_redraw(int menu_type, int redraw);

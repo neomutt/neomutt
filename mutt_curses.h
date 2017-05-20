@@ -94,7 +94,7 @@
 #endif
 
 #if (defined(USE_SLANG_CURSES) || defined(HAVE_CURS_SET))
-void mutt_curs_set(int);
+void mutt_curs_set(int cursor);
 #else
 #define mutt_curs_set(x)
 #endif
