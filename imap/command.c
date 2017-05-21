@@ -589,12 +589,13 @@ static void cmd_parse_capability (IMAP_DATA* idata, char* s)
  *   be reopened at our earliest convenience */
 static void cmd_parse_expunge (IMAP_DATA* idata, const char* s)
 {
-  int expno, cur;
+  unsigned int exp_msn;
+  int cur;
   HEADER* h;
 
   dprint (2, (debugfile, "Handling EXPUNGE\n"));
 
-  expno = atoi (s);
+  exp_msn = atoi (s);
 
   /* walk headers, zero seqno of expunged message, decrement seqno of those
    * above. Possibly we could avoid walking the whole list by resorting
@@ -604,10 +605,16 @@ static void cmd_parse_expunge (IMAP_DATA* idata, const char* s)
   {
     h = idata->ctx->hdrs[cur];
 
-    if (h->index+1 == expno)
-      h->index = -1;
-    else if (h->index+1 > expno)
-      h->index--;
+    if (HEADER_DATA(h)->msn == exp_msn)
+    {
+      /* imap_expunge_mailbox() will rewrite h->index.
+       * It needs to resort using SORT_ORDER anyway, so setting to INT_MAX
+       * makes the code simpler and possibly more efficient. */
+      h->index = INT_MAX;
+      HEADER_DATA(h)->msn = 0;
+    }
+    else if (HEADER_DATA(h)->msn > exp_msn)
+      HEADER_DATA(h)->msn--;
   }
 
   idata->reopen |= IMAP_EXPUNGE_PENDING;

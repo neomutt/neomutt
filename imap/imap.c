@@ -250,16 +250,21 @@ void imap_expunge_mailbox (IMAP_DATA* idata)
 {
   HEADER* h;
   int i, cacheno;
+  short old_sort;
 
 #ifdef USE_HCACHE
   idata->hcache = imap_hcache_open (idata, NULL);
 #endif
 
+  old_sort = Sort;
+  Sort = SORT_ORDER;
+  mutt_sort_headers (idata->ctx, 0);
+
   for (i = 0; i < idata->ctx->msgcount; i++)
   {
     h = idata->ctx->hdrs[i];
 
-    if (h->index == -1)
+    if (h->index == INT_MAX)
     {
       dprint (2, (debugfile, "Expunging message UID %d.\n", HEADER_DATA (h)->uid));
 
@@ -284,6 +289,8 @@ void imap_expunge_mailbox (IMAP_DATA* idata)
 
       imap_free_header_data ((IMAP_HEADER_DATA**)&h->data);
     }
+    else
+      h->index = i;
   }
 
 #if USE_HCACHE
@@ -293,6 +300,7 @@ void imap_expunge_mailbox (IMAP_DATA* idata)
   /* We may be called on to expunge at any time. We can't rely on the caller
    * to always know to rethread */
   mx_update_tables (idata->ctx, 0);
+  Sort = old_sort;
   mutt_sort_headers (idata->ctx, 1);
 }
 
