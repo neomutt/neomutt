@@ -218,20 +218,22 @@ static void cmd_parse_expunge(struct ImapData *idata, const char *s)
  *   Of course, a lot of code here duplicates code in message.c. */
 static void cmd_parse_fetch(struct ImapData *idata, char *s)
 {
-  int msgno, cur;
+  unsigned int msn;
+  int cur;
   struct Header *h = NULL;
 
   mutt_debug(3, "Handling FETCH\n");
 
-  msgno = atoi(s);
+  msn = atoi(s);
 
-  if (msgno <= idata->ctx->msgcount)
+  /* TODO: this is wrong.  Should compare to idata->max_msn, to be added. */
+  if (msn <= idata->ctx->msgcount)
     /* see cmd_parse_expunge */
     for (cur = 0; cur < idata->ctx->msgcount; cur++)
     {
       h = idata->ctx->hdrs[cur];
 
-      if (h && h->active && h->index + 1 == msgno)
+      if (h && h->active && HEADER_DATA(h)->msn == msn)
       {
         mutt_debug(2, "Message UID %d updated\n", HEADER_DATA(h)->uid);
         break;
