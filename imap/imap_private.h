@@ -264,7 +264,7 @@ int imap_cmd_idle (IMAP_DATA* idata);
 /* message.c */
 void imap_add_keywords (char* s, HEADER* keywords, LIST* mailbox_flags, size_t slen);
 void imap_free_header_data (IMAP_HEADER_DATA** data);
-int imap_read_headers (IMAP_DATA* idata, int msgbegin, int msgend);
+int imap_read_headers (IMAP_DATA* idata, int msn_begin, int msn_end);
 char* imap_set_flags (IMAP_DATA* idata, HEADER* h, char* s);
 int imap_cache_del (IMAP_DATA* idata, HEADER* h);
 int imap_cache_clean (IMAP_DATA* idata);
