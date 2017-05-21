@@ -325,7 +325,7 @@ int imap_read_headers (IMAP_DATA* idata, unsigned int msn_begin, unsigned int ms
         /* make sure we don't get remnants from older larger message headers */
         fputs ("\n\n", fp);
 
-        if (h.data->msn < msn_begin || h.data->msn > fetch_msn_end)
+        if (h.data->msn < 1 || h.data->msn > fetch_msn_end)
         {
           dprint (1, (debugfile, "imap_read_headers: skipping FETCH response for "
                       "unknown message number %d\n", h.data->msn));
@@ -392,10 +392,17 @@ int imap_read_headers (IMAP_DATA* idata, unsigned int msn_begin, unsigned int ms
       }
     }
 
-    /* in case we get new mail while fetching the headers */
+    /* In case we get new mail while fetching the headers.
+     *
+     * Note: it is possible to handle EXPUNGE responses while pulling
+     * down the headers.  Therefore, we need to use the current state
+     * of max_msn, not fetch_msn_end to set the start range.
+     */
     if (idata->reopen & IMAP_NEWMAIL_PENDING)
     {
-      msn_begin = fetch_msn_end + 1;
+      /* update to the last value we actually pulled down */
+      fetch_msn_end = idata->max_msn;
+      msn_begin = idata->max_msn + 1;
       msn_end = idata->newMailCount;
       while (msn_end > ctx->hdrmax)
         mx_alloc_memory (ctx);
