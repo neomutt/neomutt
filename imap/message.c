@@ -80,6 +80,7 @@ int imap_read_headers (IMAP_DATA* idata, int msgbegin, int msgend)
   char *hdrreq = NULL;
   FILE *fp;
   char tempfile[_POSIX_PATH_MAX];
+  /* TODO: idx should start at ctx->msgcount */
   int msgno, idx = msgbegin - 1;
   IMAP_HEADER h;
   IMAP_STATUS* status;
@@ -197,7 +198,7 @@ int imap_read_headers (IMAP_DATA* idata, int msgbegin, int msgend)
         if (!h.data->uid)
         {
           dprint (2, (debugfile, "imap_read_headers: skipping hcache FETCH "
-                      "response for unknown message number %d\n", h.sid));
+                      "response for unknown message number %d\n", h.data->msn));
           mfhrc = -1;
           continue;
         }
@@ -225,7 +226,7 @@ int imap_read_headers (IMAP_DATA* idata, int msgbegin, int msgend)
 	else
         {
 	  /* bad header in the cache, we'll have to refetch. */
-          dprint (3, (debugfile, "bad cache entry at %d, giving up\n", h.sid - 1));
+          dprint (3, (debugfile, "bad cache entry at MSN %d, giving up\n", h.data->msn));
           imap_free_header_data(&h.data);
           evalhc = 0;
           idx--;
@@ -301,7 +302,7 @@ int imap_read_headers (IMAP_DATA* idata, int msgbegin, int msgend)
       if (idx > msgend)
       {
         dprint (1, (debugfile, "imap_read_headers: skipping FETCH response for "
-                    "unknown message number %d\n", h.sid));
+                    "unknown message number %d\n", h.data->msn));
         mfhrc = -1;
         idx--;
         continue;
@@ -310,14 +311,14 @@ int imap_read_headers (IMAP_DATA* idata, int msgbegin, int msgend)
       if (idx < ctx->msgcount)
       {
 	dprint (2, (debugfile, "imap_read_headers: message %d is not new\n",
-		    h.sid));
+		    h.data->msn));
         idx--;
 	continue;
       }
 
       ctx->hdrs[idx] = mutt_new_header ();
 
-      ctx->hdrs[idx]->index = h.sid - 1;
+      ctx->hdrs[idx]->index = idx;
       /* messages which have not been expunged are ACTIVE (borrowed from mh
        * folders) */
       ctx->hdrs[idx]->active = 1;
@@ -1139,7 +1140,7 @@ static int msg_fetch_header (CONTEXT* ctx, IMAP_HEADER* h, char* buf, FILE* fp)
 
   /* skip to message number */
   buf = imap_next_word (buf);
-  h->sid = atoi (buf);
+  h->data->msn = atoi (buf);
 
   /* find FETCH tag */
   buf = imap_next_word (buf);
