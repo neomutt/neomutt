@@ -39,13 +39,12 @@ struct ImapHeaderData
   bool parsed : 1;
 
   unsigned int uid; /* 32-bit Message UID */
+  unsigned int msn; /* Message Sequence Number */
   struct List *keywords;
 };
 
 struct ImapHeader
 {
-  unsigned int sid;
-
   struct ImapHeaderData *data;
 
   time_t received;

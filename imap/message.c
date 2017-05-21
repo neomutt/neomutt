@@ -316,7 +316,7 @@ static int msg_fetch_header(struct Context *ctx, struct ImapHeader *h, char *buf
 
   /* skip to message number */
   buf = imap_next_word(buf);
-  h->sid = atoi(buf);
+  h->data->msn = atoi(buf);
 
   /* find FETCH tag */
   buf = imap_next_word(buf);
@@ -375,6 +375,7 @@ int imap_read_headers(struct ImapData *idata, int msgbegin, int msgend)
   char *hdrreq = NULL;
   FILE *fp = NULL;
   char tempfile[_POSIX_PATH_MAX];
+  /* TODO: idx should start at ctx->msgcount */
   int msgno, idx = msgbegin - 1;
   struct ImapHeader h;
   struct ImapStatus *status = NULL;
@@ -495,7 +496,7 @@ int imap_read_headers(struct ImapData *idata, int msgbegin, int msgend)
         {
           mutt_debug(2, "imap_read_headers: skipping hcache FETCH "
                         "response for unknown message number %d\n",
-                     h.sid);
+                     h.data->msn);
           mfhrc = -1;
           continue;
         }
@@ -523,7 +524,7 @@ int imap_read_headers(struct ImapData *idata, int msgbegin, int msgend)
         else
         {
           /* bad header in the cache, we'll have to refetch. */
-          mutt_debug(3, "bad cache entry at %d, giving up\n", h.sid - 1);
+          mutt_debug(3, "bad cache entry at MSN %d, giving up\n", h.data->msn);
           imap_free_header_data(&h.data);
           evalhc = 0;
           idx--;
@@ -600,7 +601,7 @@ int imap_read_headers(struct ImapData *idata, int msgbegin, int msgend)
       {
         mutt_debug(1, "imap_read_headers: skipping FETCH response for "
                       "unknown message number %d\n",
-                   h.sid);
+                   h.data->msn);
         mfhrc = -1;
         idx--;
         continue;
@@ -608,14 +609,14 @@ int imap_read_headers(struct ImapData *idata, int msgbegin, int msgend)
       /* May receive FLAGS updates in a separate untagged response (#2935) */
       if (idx < ctx->msgcount)
       {
-        mutt_debug(2, "imap_read_headers: message %d is not new\n", h.sid);
+        mutt_debug(2, "imap_read_headers: message %d is not new\n", h.data->msn);
         idx--;
         continue;
       }
 
       ctx->hdrs[idx] = mutt_new_header();
 
-      ctx->hdrs[idx]->index = h.sid - 1;
+      ctx->hdrs[idx]->index = idx;
       /* messages which have not been expunged are ACTIVE (borrowed from mh
        * folders) */
       ctx->hdrs[idx]->active = true;
