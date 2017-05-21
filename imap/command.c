@@ -626,20 +626,22 @@ static void cmd_parse_expunge (IMAP_DATA* idata, const char* s)
  *   Of course, a lot of code here duplicates code in message.c. */
 static void cmd_parse_fetch (IMAP_DATA* idata, char* s)
 {
-  int msgno, cur;
+  unsigned int msn;
+  int cur;
   HEADER* h = NULL;
 
   dprint (3, (debugfile, "Handling FETCH\n"));
 
-  msgno = atoi (s);
-  
-  if (msgno <= idata->ctx->msgcount)
+  msn = atoi (s);
+
+  /* TODO: this is wrong.  Should compare to idata->max_msn, to be added. */
+  if (msn <= idata->ctx->msgcount)
   /* see cmd_parse_expunge */
     for (cur = 0; cur < idata->ctx->msgcount; cur++)
     {
       h = idata->ctx->hdrs[cur];
       
-      if (h && h->active && h->index+1 == msgno)
+      if (h && h->active && HEADER_DATA(h)->msn == msn)
       {
 	dprint (2, (debugfile, "Message UID %d updated\n", HEADER_DATA(h)->uid));
 	break;
