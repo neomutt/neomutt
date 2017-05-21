@@ -608,6 +608,7 @@ static int imap_open_mailbox (CONTEXT* ctx)
   idata->status = 0;
   memset (idata->ctx->rights, 0, sizeof (idata->ctx->rights));
   idata->newMailCount = 0;
+  idata->max_msn = 0;
 
   mutt_message (_("Selecting %s..."), idata->mailbox);
   imap_munge_mbox_name (idata, buf, sizeof(buf), idata->mailbox);
@@ -1406,6 +1407,8 @@ int imap_close_mailbox (CONTEXT* ctx)
     if (ctx->hdrs[i] && ctx->hdrs[i]->data)
       imap_free_header_data ((IMAP_HEADER_DATA**)&(ctx->hdrs[i]->data));
   hash_destroy (&idata->uid_hash, NULL);
+  FREE (&idata->msn_index);
+  idata->msn_index_size = 0;
 
   for (i = 0; i < IMAP_CACHE_LEN; i++)
   {

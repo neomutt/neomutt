@@ -69,12 +69,34 @@ static void imap_update_context (IMAP_DATA *idata, int oldmsgcount)
   }
 }
 
+static void imap_alloc_msn_index (IMAP_DATA *idata, unsigned int msn_count)
+{
+  unsigned int new_size;
+
+  if (msn_count <= idata->msn_index_size)
+    return;
+
+  /* Add a little padding, like mx_allloc_memory() */
+  new_size = msn_count + 25;
+
+  if (!idata->msn_index)
+    idata->msn_index = safe_calloc (new_size, sizeof (HEADER *));
+  else
+  {
+    safe_realloc (&idata->msn_index, sizeof (HEADER *) * new_size);
+    memset (idata->msn_index + idata->msn_index_size, 0,
+            sizeof (HEADER *) * (new_size - idata->msn_index_size));
+  }
+
+  idata->msn_index_size = new_size;
+}
+
 /* imap_read_headers:
  * Changed to read many headers instead of just one. It will return the
  * msn of the last message read. It will return a value other than
  * msn_end if mail comes in while downloading headers (in theory).
  */
-int imap_read_headers (IMAP_DATA* idata, int msn_begin, int msn_end)
+int imap_read_headers (IMAP_DATA* idata, unsigned int msn_begin, unsigned int msn_end)
 {
   CONTEXT* ctx;
   char *hdrreq = NULL;
@@ -131,6 +153,7 @@ int imap_read_headers (IMAP_DATA* idata, int msn_begin, int msn_end)
   /* make sure context has room to hold the mailbox */
   while (msn_end > ctx->hdrmax)
     mx_alloc_memory (ctx);
+  imap_alloc_msn_index (idata, msn_end);
 
   idx = ctx->msgcount;
   oldmsgcount = ctx->msgcount;
@@ -190,7 +213,21 @@ int imap_read_headers (IMAP_DATA* idata, int msn_begin, int msn_end)
         if (!h.data->uid)
         {
           dprint (2, (debugfile, "imap_read_headers: skipping hcache FETCH "
+                      "response for message number %d missing a UID\n", h.data->msn));
+          continue;
+        }
+
+        if (h.data->msn < 1 || h.data->msn > msn_end)
+        {
+          dprint (1, (debugfile, "imap_read_headers: skipping hcache FETCH "
                       "response for unknown message number %d\n", h.data->msn));
+          continue;
+        }
+
+        if (idata->msn_index[h.data->msn - 1])
+        {
+          dprint (2, (debugfile, "imap_read_headers: skipping hcache FETCH "
+                      "for duplicate message %d\n", h.data->msn));
           continue;
         }
 
@@ -201,6 +238,9 @@ int imap_read_headers (IMAP_DATA* idata, int msn_begin, int msn_end)
            *       That is not guaranteed, but the code already has that
            *       assumption.  */
           msn_begin = MAX (msn_begin, h.data->msn + 1);
+
+          idata->max_msn = MAX (idata->max_msn, h.data->msn);
+          idata->msn_index[h.data->msn - 1] = ctx->hdrs[idx];
 
   	  ctx->hdrs[idx]->index = idx;
   	  /* messages which have not been expunged are ACTIVE (borrowed from mh
@@ -293,20 +333,17 @@ int imap_read_headers (IMAP_DATA* idata, int msn_begin, int msn_end)
         }
 
         /* May receive FLAGS updates in a separate untagged response (#2935) */
-        /*
-         * TODO: This check was introduced in e5c2befbf0f5
-         *       But was broken in 0e4f1782ea2e
-         *       We need to check against idata->msn_index to see if
-         *       we already have a header downloaded, when that is introduced.
-        if (idx < ctx->msgcount)
+        if (idata->msn_index[h.data->msn - 1])
         {
-          dprint (2, (debugfile, "imap_read_headers: message %d is not new\n",
-                      h.data->msn));
+          dprint (2, (debugfile, "imap_read_headers: skipping FETCH response for "
+                      "duplicate message %d\n", h.data->msn));
           continue;
         }
-        */
 
         ctx->hdrs[idx] = mutt_new_header ();
+
+        idata->max_msn = MAX (idata->max_msn, h.data->msn);
+        idata->msn_index[h.data->msn - 1] = ctx->hdrs[idx];
 
         ctx->hdrs[idx]->index = idx;
         /* messages which have not been expunged are ACTIVE (borrowed from mh
@@ -362,6 +399,7 @@ int imap_read_headers (IMAP_DATA* idata, int msn_begin, int msn_end)
       msn_end = idata->newMailCount;
       while (msn_end > ctx->hdrmax)
         mx_alloc_memory (ctx);
+      imap_alloc_msn_index (idata, msn_end);
       idata->reopen &= ~IMAP_NEWMAIL_PENDING;
       idata->newMailCount = 0;
     }
