@@ -76,15 +76,18 @@ static void imap_alloc_msn_index (IMAP_DATA *idata, unsigned int msn_count)
   if (msn_count <= idata->msn_index_size)
     return;
 
-  /* Add a little padding, like mx_allloc_memory() */
-  new_size = msn_count + 25;
-
-  if (new_size * sizeof (HEADER *) < idata->msn_index_size * sizeof (HEADER *))
+  /* This is a conservative check to protect against a malicious imap
+   * server.  Most likely size_t is bigger than an unsigned int, but
+   * if msn_count is this big, we have a serious problem. */
+  if (msn_count >= (UINT_MAX / sizeof (HEADER *)))
   {
     mutt_error _("Integer overflow -- can't allocate memory.");
     sleep (1);
     mutt_exit (1);
   }
+
+  /* Add a little padding, like mx_allloc_memory() */
+  new_size = msn_count + 25;
 
   if (!idata->msn_index)
     idata->msn_index = safe_calloc (new_size, sizeof (HEADER *));
@@ -167,7 +170,7 @@ int imap_read_headers (IMAP_DATA* idata, unsigned int msn_begin, unsigned int ms
   int msgno, idx;
   IMAP_HEADER h;
   IMAP_STATUS* status;
-  int rc, mfhrc, oldmsgcount;
+  int rc, mfhrc = 0, oldmsgcount;
   int fetch_msn_end = 0;
   unsigned int maxuid = 0;
   static const char * const want_headers = "DATE FROM SUBJECT TO CC MESSAGE-ID REFERENCES CONTENT-TYPE CONTENT-DESCRIPTION IN-REPLY-TO REPLY-TO LINES LIST-POST X-LABEL";
