@@ -611,7 +611,14 @@ struct Context *mx_open_mailbox(const char *path, int flags, struct Context *pct
   if (!ctx)
     ctx = safe_malloc(sizeof(struct Context));
   memset(ctx, 0, sizeof(struct Context));
+
   ctx->path = safe_strdup(path);
+  if (!ctx->path)
+  {
+    if (!pctx)
+      FREE(&ctx);
+    return NULL;
+  }
   if (!(ctx->realpath = realpath(ctx->path, NULL)))
     ctx->realpath = safe_strdup(ctx->path);
 
