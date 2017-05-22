@@ -2080,7 +2080,7 @@ void mutt_free_replace_list(struct ReplaceList **list)
 bool mutt_match_rx_list(const char *s, struct RxList *l)
 {
   if (!s)
-    return 0;
+    return false;
 
   for (; l; l = l->next)
   {

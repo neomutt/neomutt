@@ -302,10 +302,10 @@ static bool is_parent(short i, struct AttachPtr **idx, short idxlen, struct Body
   while ((++i < idxlen) && idx[i]->level > level)
   {
     if (idx[i]->content == cur)
-      return 1;
+      return true;
   }
 
-  return 0;
+  return false;
 }
 
 static struct Header *find_parent(struct AttachPtr **idx, short idxlen,

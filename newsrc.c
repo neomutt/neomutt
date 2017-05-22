@@ -540,7 +540,7 @@ int nntp_add_group(char *line, void *data)
   nntp_data->deleted = false;
   nntp_data->firstMessage = first;
   nntp_data->lastMessage = last;
-  nntp_data->allowed = (mod == 'y') || (mod == 'm') ? true : false;
+  nntp_data->allowed = (mod == 'y') || (mod == 'm');
   mutt_str_replace(&nntp_data->desc, desc);
   if (nntp_data->newsrc_ent || nntp_data->lastCached)
     nntp_group_unread_stat(nntp_data);
