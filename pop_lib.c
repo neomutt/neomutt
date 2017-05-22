@@ -530,7 +530,6 @@ int pop_fetch_data(struct PopData *pop_data, char *query, struct Progress *progr
 /* find message with this UIDL and set refno */
 static int check_uidl(char *line, void *data)
 {
-  int i;
   unsigned int index;
   struct Context *ctx = (struct Context *) data;
   char *endp = NULL;
@@ -543,7 +542,7 @@ static int check_uidl(char *line, void *data)
     endp++;
   memmove(line, endp, strlen(endp) + 1);
 
-  for (i = 0; i < ctx->msgcount; i++)
+  for (int i = 0; i < ctx->msgcount; i++)
   {
     if (mutt_strcmp(ctx->hdrs[i]->data, line) == 0)
     {

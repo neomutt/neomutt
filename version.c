@@ -310,13 +310,12 @@ static struct CompileOptions comp_opts[] = {
  */
 static void print_compile_options(void)
 {
-  int i;
   int len;
   int used = 2;
   bool tty = stdout ? isatty(fileno(stdout)) : false;
 
   printf("  ");
-  for (i = 0; comp_opts[i].name; i++)
+  for (int i = 0; comp_opts[i].name; i++)
   {
     len = strlen(comp_opts[i].name) + 2; /* +/- and a space */
     if ((used + len) > SCREEN_WIDTH)
@@ -480,9 +479,7 @@ bool feature_enabled(const char *name)
 {
   if (!name)
     return false;
-
-  int i;
-  for (i = 0; comp_opts[i].name; i++)
+  for (int i = 0; comp_opts[i].name; i++)
   {
     if (mutt_strcmp(name, comp_opts[i].name) == 0)
     {

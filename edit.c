@@ -129,7 +129,6 @@ static char **be_snarf_file(const char *path, char **buf, int *max, int *len, in
 static int be_barf_file(const char *path, char **buf, int buflen)
 {
   FILE *f = NULL;
-  int i;
 
   if ((f = fopen(path, "w")) == NULL)
   {
@@ -137,7 +136,7 @@ static int be_barf_file(const char *path, char **buf, int buflen)
     addch('\n');
     return -1;
   }
-  for (i = 0; i < buflen; i++)
+  for (int i = 0; i < buflen; i++)
     fputs(buf[i], f);
   if (fclose(f) == 0)
     return 0;

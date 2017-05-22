@@ -750,9 +750,7 @@ static void make_reference_headers(struct Envelope *curenv,
   {
     struct Header *h = NULL;
     struct List **p = NULL, **q = NULL;
-    int i;
-
-    for (i = 0; i < ctx->vcount; i++)
+    for (int i = 0; i < ctx->vcount; i++)
     {
       h = ctx->hdrs[ctx->v2r[i]];
       if (h->tagged)
@@ -1198,8 +1196,7 @@ int mutt_compose_to_sender(struct Header *hdr)
   msg->env = mutt_new_envelope();
   if (!hdr)
   {
-    int i;
-    for (i = 0; i < Context->vcount; i++)
+    for (int i = 0; i < Context->vcount; i++)
     {
       hdr = Context->hdrs[Context->v2r[(i)]];
       if (hdr->tagged)

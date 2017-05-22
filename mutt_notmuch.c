@@ -2174,12 +2174,10 @@ static int nm_open_mailbox(struct Context *ctx)
 
 static int nm_close_mailbox(struct Context *ctx)
 {
-  int i;
-
   if (!ctx || (ctx->magic != MUTT_NOTMUCH))
     return -1;
 
-  for (i = 0; i < ctx->msgcount; i++)
+  for (int i = 0; i < ctx->msgcount; i++)
   {
     struct Header *h = ctx->hdrs[i];
 
@@ -2312,7 +2310,7 @@ done:
 static int nm_sync_mailbox(struct Context *ctx, int *index_hint)
 {
   struct NmCtxdata *data = get_ctxdata(ctx);
-  int i, rc = 0;
+  int rc = 0;
   char msgbuf[STRING];
   struct Progress progress;
   char *uri = ctx->path;
@@ -2330,7 +2328,7 @@ static int nm_sync_mailbox(struct Context *ctx, int *index_hint)
     mutt_progress_init(&progress, msgbuf, MUTT_PROGRESS_MSG, WriteInc, ctx->msgcount);
   }
 
-  for (i = 0; i < ctx->msgcount; i++)
+  for (int i = 0; i < ctx->msgcount; i++)
   {
     char old[_POSIX_PATH_MAX], new[_POSIX_PATH_MAX];
     struct Header *h = ctx->hdrs[i];

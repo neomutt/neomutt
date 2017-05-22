@@ -223,7 +223,6 @@ void mutt_set_langinfo_charset(void)
    canonicalizes the charset and re-adds the extension */
 void mutt_canonical_charset(char *dest, size_t dlen, const char *name)
 {
-  size_t i;
   char *p = NULL, *ext = NULL;
   char in[LONG_STRING], scratch[LONG_STRING];
 
@@ -249,7 +248,7 @@ void mutt_canonical_charset(char *dest, size_t dlen, const char *name)
   else
     strfcpy(scratch, in, sizeof(scratch));
 
-  for (i = 0; PreferredMIMENames[i].key; i++)
+  for (size_t i = 0; PreferredMIMENames[i].key; i++)
     if ((ascii_strcasecmp(scratch, PreferredMIMENames[i].key) == 0) ||
         (mutt_strcasecmp(scratch, PreferredMIMENames[i].key) == 0))
     {

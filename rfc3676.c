@@ -101,7 +101,6 @@ static bool add_quote_suffix(struct State *s, int ql)
 
 static size_t print_indent(int ql, struct State *s, int add_suffix)
 {
-  int i;
   size_t wid = 0;
 
   if (s->prefix)
@@ -117,7 +116,7 @@ static size_t print_indent(int ql, struct State *s, int add_suffix)
       wid = mutt_strwidth(s->prefix);
     }
   }
-  for (i = 0; i < ql; i++)
+  for (int i = 0; i < ql; i++)
   {
     state_putc('>', s);
     if (space_quotes(s))

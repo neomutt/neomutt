@@ -493,13 +493,12 @@ static void insert_message(struct MuttThread **new,
 
 static struct Hash *make_subj_hash(struct Context *ctx)
 {
-  int i;
   struct Header *hdr = NULL;
   struct Hash *hash = NULL;
 
   hash = hash_create(ctx->msgcount * 2, MUTT_HASH_ALLOW_DUPS);
 
-  for (i = 0; i < ctx->msgcount; i++)
+  for (int i = 0; i < ctx->msgcount; i++)
   {
     hdr = ctx->hdrs[i];
     if (hdr->env->real_subj)
@@ -573,9 +572,7 @@ static void pseudo_threads(struct Context *ctx)
 
 void mutt_clear_threads(struct Context *ctx)
 {
-  int i;
-
-  for (i = 0; i < ctx->msgcount; i++)
+  for (int i = 0; i < ctx->msgcount; i++)
   {
     /* mailbox may have been only partially read */
     if (ctx->hdrs[i])
@@ -739,9 +736,7 @@ static void check_subjects(struct Context *ctx, int init)
 {
   struct Header *cur = NULL;
   struct MuttThread *tmp = NULL;
-  int i;
-
-  for (i = 0; i < ctx->msgcount; i++)
+  for (int i = 0; i < ctx->msgcount; i++)
   {
     cur = ctx->hdrs[i];
     if (cur->thread->check_subject)
@@ -1137,13 +1132,12 @@ int mutt_parent_message(struct Context *ctx, struct Header *hdr, int find_root)
 
 void mutt_set_virtual(struct Context *ctx)
 {
-  int i;
   struct Header *cur = NULL;
 
   ctx->vcount = 0;
   ctx->vsize = 0;
 
-  for (i = 0; i < ctx->msgcount; i++)
+  for (int i = 0; i < ctx->msgcount; i++)
   {
     cur = ctx->hdrs[i];
     if (cur->virtual >= 0)
@@ -1319,7 +1313,7 @@ int _mutt_traverse_thread(struct Context *ctx, struct Header *cur, int flag)
 int mutt_messages_in_thread(struct Context *ctx, struct Header *hdr, int flag)
 {
   struct MuttThread *threads[2];
-  int i, rc;
+  int rc;
 
   if ((Sort & SORT_MASK) != SORT_THREADS || !hdr->thread)
     return 1;
@@ -1330,7 +1324,7 @@ int mutt_messages_in_thread(struct Context *ctx, struct Header *hdr, int flag)
 
   threads[1] = flag ? hdr->thread : threads[0]->next;
 
-  for (i = 0; i < ((flag || !threads[1]) ? 1 : 2); i++)
+  for (int i = 0; i < ((flag || !threads[1]) ? 1 : 2); i++)
   {
     while (!threads[i]->message)
       threads[i] = threads[i]->child;
@@ -1351,13 +1345,12 @@ int mutt_messages_in_thread(struct Context *ctx, struct Header *hdr, int flag)
 
 struct Hash *mutt_make_id_hash(struct Context *ctx)
 {
-  int i;
   struct Header *hdr = NULL;
   struct Hash *hash = NULL;
 
   hash = hash_create(ctx->msgcount * 2, 0);
 
-  for (i = 0; i < ctx->msgcount; i++)
+  for (int i = 0; i < ctx->msgcount; i++)
   {
     hdr = ctx->hdrs[i];
     if (hdr->env->message_id)

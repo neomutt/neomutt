@@ -218,14 +218,13 @@ void imap_logout_all(void)
  *   Apparently even literals use \r\n-terminated strings ?! */
 int imap_read_literal(FILE *fp, struct ImapData *idata, long bytes, struct Progress *pbar)
 {
-  long pos;
   char c;
 
   int r = 0;
 
   mutt_debug(2, "imap_read_literal: reading %ld bytes\n", bytes);
 
-  for (pos = 0; pos < bytes; pos++)
+  for (long pos = 0; pos < bytes; pos++)
   {
     if (mutt_socket_readchar(idata->conn, &c) != 1)
     {
@@ -265,13 +264,13 @@ int imap_read_literal(FILE *fp, struct ImapData *idata, long bytes, struct Progr
 void imap_expunge_mailbox(struct ImapData *idata)
 {
   struct Header *h = NULL;
-  int i, cacheno;
+  int cacheno;
 
 #ifdef USE_HCACHE
   idata->hcache = imap_hcache_open(idata, NULL);
 #endif
 
-  for (i = 0; i < idata->ctx->msgcount; i++)
+  for (int i = 0; i < idata->ctx->msgcount; i++)
   {
     h = idata->ctx->hdrs[i];
 
@@ -1847,9 +1846,7 @@ int imap_search(struct Context *ctx, const struct Pattern *pat)
 {
   struct Buffer buf;
   struct ImapData *idata = ctx->data;
-  int i;
-
-  for (i = 0; i < ctx->msgcount; i++)
+  for (int i = 0; i < ctx->msgcount; i++)
     ctx->hdrs[i]->matched = false;
 
   if (!do_search(pat, 1))

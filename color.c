@@ -540,10 +540,9 @@ static int _mutt_parse_uncolor(struct Buffer *buf, struct Buffer *s, unsigned lo
 
   if (do_cache && !option(OPTNOCURSES))
   {
-    int i;
     mutt_set_menu_redraw_full(MENU_MAIN);
     /* force re-caching of index colors */
-    for (i = 0; Context && i < Context->msgcount; i++)
+    for (int i = 0; Context && i < Context->msgcount; i++)
       Context->hdrs[i]->pair = 0;
   }
   return 0;
@@ -616,8 +615,6 @@ static int add_pattern(struct ColorLine **top, const char *s, int sensitive, int
     tmp = new_color_line();
     if (is_index)
     {
-      int i;
-
       strfcpy(buf, NONULL(s), sizeof(buf));
       mutt_check_simple(buf, sizeof(buf), NONULL(SimpleSearch));
       if ((tmp->color_pattern = mutt_pattern_comp(buf, MUTT_FULL_MSG, err)) == NULL)
@@ -626,7 +623,7 @@ static int add_pattern(struct ColorLine **top, const char *s, int sensitive, int
         return -1;
       }
       /* force re-caching of index colors */
-      for (i = 0; Context && i < Context->msgcount; i++)
+      for (int i = 0; Context && i < Context->msgcount; i++)
         Context->hdrs[i]->pair = 0;
     }
     else if ((r = REGCOMP(&tmp->rx, s, (sensitive ? mutt_which_case(s) : REG_ICASE))) != 0)

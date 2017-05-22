@@ -556,9 +556,7 @@ static void enriched_wrap(struct EnrichedState *stte)
           y++;
         if (y)
         {
-          size_t z;
-
-          for (z = y; z <= stte->line_used; z++)
+          for (size_t z = y; z <= stte->line_used; z++)
           {
             stte->line[z - y] = stte->line[z];
           }

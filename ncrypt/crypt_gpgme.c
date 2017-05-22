@@ -1237,7 +1237,7 @@ static int show_sig_summary(unsigned long sum, gpgme_ctx_t ctx, gpgme_key_t key,
 static void show_fingerprint(gpgme_key_t key, struct State *state)
 {
   const char *s = NULL;
-  int i, is_pgp;
+  int is_pgp;
   char *buf = NULL, *p = NULL;
   const char *prefix = _("Fingerprint: ");
 
@@ -1253,7 +1253,7 @@ static void show_fingerprint(gpgme_key_t key, struct State *state)
   p = buf + strlen(buf);
   if (is_pgp && strlen(s) == 40)
   { /* PGP v4 style formatted. */
-    for (i = 0; *s && s[1] && s[2] && s[3] && s[4]; s += 4, i++)
+    for (int i = 0; *s && s[1] && s[2] && s[3] && s[4]; s += 4, i++)
     {
       *p++ = s[0];
       *p++ = s[1];
@@ -1266,7 +1266,7 @@ static void show_fingerprint(gpgme_key_t key, struct State *state)
   }
   else
   {
-    for (i = 0; *s && s[1] && s[2]; s += 2, i++)
+    for (int i = 0; *s && s[1] && s[2]; s += 2, i++)
     {
       *p++ = s[0];
       *p++ = s[1];

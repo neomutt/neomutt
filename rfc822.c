@@ -862,7 +862,7 @@ bool rfc822_valid_msgid(const char *msgid)
    * domain-literal = "[" *(dtext / quoted-pair) "]"
    */
 
-  unsigned int l, i;
+  unsigned int l;
 
   if (!msgid || !*msgid)
     return false;
@@ -876,7 +876,7 @@ bool rfc822_valid_msgid(const char *msgid)
     return false;
 
   /* TODO: complete parser */
-  for (i = 0; i < l; i++)
+  for (unsigned int i = 0; i < l; i++)
     if ((unsigned char) msgid[i] > 127)
       return false;
 

@@ -326,9 +326,7 @@ void _mutt_set_flag(struct Context *ctx, struct Header *h, int flag, int bf, int
 
 void mutt_tag_set_flag(int flag, int bf)
 {
-  int j;
-
-  for (j = 0; j < Context->vcount; j++)
+  for (int j = 0; j < Context->vcount; j++)
     if (Context->hdrs[Context->v2r[j]]->tagged)
       mutt_set_flag(Context, Context->hdrs[Context->v2r[j]], flag, bf);
 }

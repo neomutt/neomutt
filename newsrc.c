@@ -83,9 +83,7 @@ static struct NntpData *nntp_data_find(struct NntpServer *nserv, const char *gro
 /* Remove all temporarily cache files */
 void nntp_acache_free(struct NntpData *nntp_data)
 {
-  int i;
-
-  for (i = 0; i < NNTP_ACACHE_LEN; i++)
+  for (int i = 0; i < NNTP_ACACHE_LEN; i++)
   {
     if (nntp_data->acache[i].path)
     {
@@ -123,7 +121,6 @@ void nntp_newsrc_close(struct NntpServer *nserv)
 /* calculate number of unread articles using .newsrc data */
 void nntp_group_unread_stat(struct NntpData *nntp_data)
 {
-  unsigned int i;
   anum_t first, last;
 
   nntp_data->unread = 0;
@@ -131,7 +128,7 @@ void nntp_group_unread_stat(struct NntpData *nntp_data)
     return;
 
   nntp_data->unread = nntp_data->lastMessage - nntp_data->firstMessage + 1;
-  for (i = 0; i < nntp_data->newsrc_len; i++)
+  for (unsigned int i = 0; i < nntp_data->newsrc_len; i++)
   {
     first = nntp_data->newsrc_ent[i].first;
     if (first < nntp_data->firstMessage)
@@ -150,7 +147,6 @@ void nntp_group_unread_stat(struct NntpData *nntp_data)
  * -1 - error */
 int nntp_newsrc_parse(struct NntpServer *nserv)
 {
-  unsigned int i;
   char *line = NULL;
   struct stat sb;
 
@@ -200,7 +196,7 @@ int nntp_newsrc_parse(struct NntpServer *nserv)
   mutt_debug(1, "Parsing %s\n", nserv->newsrc_file);
 
   /* .newsrc has been externally modified or hasn't been loaded yet */
-  for (i = 0; i < nserv->groups_num; i++)
+  for (unsigned int i = 0; i < nserv->groups_num; i++)
   {
     struct NntpData *nntp_data = nserv->groups_list[i];
 
@@ -286,7 +282,7 @@ void nntp_newsrc_gen_entries(struct Context *ctx)
 {
   struct NntpData *nntp_data = ctx->data;
   anum_t last = 0, first = 1;
-  int series, i;
+  int series;
   int save_sort = SORT_ORDER;
   unsigned int entries;
 
@@ -308,7 +304,7 @@ void nntp_newsrc_gen_entries(struct Context *ctx)
    * first article in our list */
   nntp_data->newsrc_len = 0;
   series = 1;
-  for (i = 0; i < ctx->msgcount; i++)
+  for (int i = 0; i < ctx->msgcount; i++)
   {
     /* search for first unread */
     if (series)
@@ -415,7 +411,6 @@ int nntp_newsrc_update(struct NntpServer *nserv)
 {
   char *buf = NULL;
   size_t buflen, off;
-  unsigned int i;
   int rc = -1;
 
   if (!nserv)
@@ -426,7 +421,7 @@ int nntp_newsrc_update(struct NntpServer *nserv)
   off = 0;
 
   /* we will generate full newsrc here */
-  for (i = 0; i < nserv->groups_num; i++)
+  for (unsigned int i = 0; i < nserv->groups_num; i++)
   {
     struct NntpData *nntp_data = nserv->groups_list[i];
     unsigned int n;
@@ -592,7 +587,6 @@ int nntp_active_save_cache(struct NntpServer *nserv)
   char file[_POSIX_PATH_MAX];
   char *buf = NULL;
   size_t buflen, off;
-  unsigned int i;
   int rc;
 
   if (!nserv->cacheable)
@@ -603,7 +597,7 @@ int nntp_active_save_cache(struct NntpServer *nserv)
   snprintf(buf, buflen, "%lu\n", (unsigned long) nserv->newgroups_time);
   off = strlen(buf);
 
-  for (i = 0; i < nserv->groups_num; i++)
+  for (unsigned int i = 0; i < nserv->groups_num; i++)
   {
     struct NntpData *nntp_data = nserv->groups_list[i];
 
@@ -1079,7 +1073,6 @@ struct NntpServer *nntp_select_server(char *server, int leave_lock)
 void nntp_article_status(struct Context *ctx, struct Header *hdr, char *group, anum_t anum)
 {
   struct NntpData *nntp_data = ctx->data;
-  unsigned int i;
 
   if (group)
     nntp_data = hash_find(nntp_data->nserv->groups_hash, group);
@@ -1087,7 +1080,7 @@ void nntp_article_status(struct Context *ctx, struct Header *hdr, char *group, a
   if (!nntp_data)
     return;
 
-  for (i = 0; i < nntp_data->newsrc_len; i++)
+  for (unsigned int i = 0; i < nntp_data->newsrc_len; i++)
   {
     if ((anum >= nntp_data->newsrc_ent[i].first) &&
         (anum <= nntp_data->newsrc_ent[i].last))
@@ -1171,9 +1164,7 @@ struct NntpData *mutt_newsgroup_catchup(struct NntpServer *nserv, char *group)
   nntp_data->unread = 0;
   if (Context && Context->data == nntp_data)
   {
-    unsigned int i;
-
-    for (i = 0; i < Context->msgcount; i++)
+    for (unsigned int i = 0; i < Context->msgcount; i++)
       mutt_set_flag(Context, Context->hdrs[i], MUTT_READ, 1);
   }
   return nntp_data;
@@ -1200,10 +1191,8 @@ struct NntpData *mutt_newsgroup_uncatchup(struct NntpServer *nserv, char *group)
   }
   if (Context && Context->data == nntp_data)
   {
-    unsigned int i;
-
     nntp_data->unread = Context->msgcount;
-    for (i = 0; i < Context->msgcount; i++)
+    for (unsigned int i = 0; i < Context->msgcount; i++)
       mutt_set_flag(Context, Context->hdrs[i], MUTT_READ, 0);
   }
   else
@@ -1218,9 +1207,7 @@ struct NntpData *mutt_newsgroup_uncatchup(struct NntpServer *nserv, char *group)
 /* Get first newsgroup with new messages */
 void nntp_buffy(char *buf, size_t len)
 {
-  unsigned int i;
-
-  for (i = 0; i < CurrentNewsSrv->groups_num; i++)
+  for (unsigned int i = 0; i < CurrentNewsSrv->groups_num; i++)
   {
     struct NntpData *nntp_data = CurrentNewsSrv->groups_list[i];
 

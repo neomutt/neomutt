@@ -865,14 +865,14 @@ static void format_address_header(char **h, struct Address *a)
   char cbuf[STRING];
   char c2buf[STRING];
   char *p = NULL;
-  int l, linelen, buflen, count, cbuflen, c2buflen, plen;
+  int l, linelen, buflen, cbuflen, c2buflen, plen;
 
   linelen = mutt_strlen(*h);
   plen = linelen;
   buflen = linelen + 3;
 
   safe_realloc(h, buflen);
-  for (count = 0; a; a = a->next, count++)
+  for (int count = 0; a; a = a->next, count++)
   {
     struct Address *tmp = a->next;
     a->next = NULL;

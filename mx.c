@@ -699,7 +699,6 @@ struct Context *mx_open_mailbox(const char *path, int flags, struct Context *pct
 /* free up memory associated with the mailbox context */
 void mx_fastclose_mailbox(struct Context *ctx)
 {
-  int i;
   struct utimbuf ut;
 
   if (!ctx)
@@ -727,7 +726,7 @@ void mx_fastclose_mailbox(struct Context *ctx)
     hash_destroy(&ctx->id_hash, NULL);
   hash_destroy(&ctx->label_hash, NULL);
   mutt_clear_threads(ctx);
-  for (i = 0; i < ctx->msgcount; i++)
+  for (int i = 0; i < ctx->msgcount; i++)
     mutt_free_header(&ctx->hdrs[i]);
   FREE(&ctx->hdrs);
   FREE(&ctx->v2r);
@@ -1409,7 +1408,6 @@ int mx_close_message(struct Context *ctx, struct Message **msg)
 
 void mx_alloc_memory(struct Context *ctx)
 {
-  int i;
   size_t s = MAX(sizeof(struct Header *), sizeof(int));
 
   if ((ctx->hdrmax + 25) * s < ctx->hdrmax * s)
@@ -1429,7 +1427,7 @@ void mx_alloc_memory(struct Context *ctx)
     ctx->hdrs = safe_calloc((ctx->hdrmax += 25), sizeof(struct Header *));
     ctx->v2r = safe_calloc(ctx->hdrmax, sizeof(int));
   }
-  for (i = ctx->msgcount; i < ctx->hdrmax; i++)
+  for (int i = ctx->msgcount; i < ctx->hdrmax; i++)
   {
     ctx->hdrs[i] = NULL;
     ctx->v2r[i] = -1;
@@ -1442,9 +1440,7 @@ void mx_alloc_memory(struct Context *ctx)
 void mx_update_context(struct Context *ctx, int new_messages)
 {
   struct Header *h = NULL;
-  int msgno;
-
-  for (msgno = ctx->msgcount - new_messages; msgno < ctx->msgcount; msgno++)
+  for (int msgno = ctx->msgcount - new_messages; msgno < ctx->msgcount; msgno++)
   {
     h = ctx->hdrs[msgno];
 

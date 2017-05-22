@@ -179,12 +179,10 @@ static void pgpring_dump_keyblock(struct PgpKeyInfo *p)
 
 static bool pgpring_string_matches_hint(const char *s, const char *hints[], int nhints)
 {
-  int i;
-
   if (!hints || !nhints)
     return true;
 
-  for (i = 0; i < nhints; i++)
+  for (int i = 0; i < nhints; i++)
   {
     if (mutt_stristr(s, hints[i]) != NULL)
       return true;
@@ -220,12 +218,11 @@ static void pgp_make_pgp2_fingerprint(unsigned char *buff, unsigned char *digest
 
 static char *binary_fingerprint_to_string(unsigned char *buff, size_t length)
 {
-  int i;
   char *fingerprint = NULL, *pf = NULL;
 
   pf = fingerprint = safe_malloc((length * 2) + 1);
 
-  for (i = 0; i < length; i++)
+  for (int i = 0; i < length; i++)
   {
     sprintf(pf, "%02X", buff[i]);
     pf += 2;
@@ -245,7 +242,7 @@ static struct PgpKeyInfo *pgp_parse_pgp2_key(unsigned char *buff, size_t l)
   time_t gen_time = 0;
   unsigned short exp_days = 0;
   size_t j;
-  int i, k;
+  int i;
   unsigned char scratch[LONG_STRING];
 
   if (l < 12)
@@ -290,7 +287,7 @@ static struct PgpKeyInfo *pgp_parse_pgp2_key(unsigned char *buff, size_t l)
 
   j += expl - 8;
 
-  for (k = 0; k < 2; k++)
+  for (int k = 0; k < 2; k++)
   {
     for (id = 0, i = 0; i < 4; i++)
       id = (id << 8) + buff[j++];
@@ -352,7 +349,7 @@ static struct PgpKeyInfo *pgp_parse_pgp3_key(unsigned char *buff, size_t l)
   unsigned char scratch[LONG_STRING];
   time_t gen_time = 0;
   unsigned long id;
-  int i, k;
+  int i;
   short len;
   size_t j;
 
@@ -386,7 +383,7 @@ static struct PgpKeyInfo *pgp_parse_pgp3_key(unsigned char *buff, size_t l)
     p->fingerprint = binary_fingerprint_to_string(digest, SHA_DIGEST_LENGTH);
   }
 
-  for (k = 0; k < 2; k++)
+  for (int k = 0; k < 2; k++)
   {
     for (id = 0, i = SHA_DIGEST_LENGTH - 8 + k * 4;
          i < SHA_DIGEST_LENGTH + (k - 1) * 4; i++)
@@ -471,7 +468,6 @@ static int pgp_parse_pgp3_sig(unsigned char *buff, size_t l,
   size_t ml;
   size_t j;
   int i;
-  short ii;
   short have_critical_spks = 0;
 
   if (l < 7)
@@ -482,7 +478,7 @@ static int pgp_parse_pgp3_sig(unsigned char *buff, size_t l,
   sigtype = buff[j++];
   j += 2; /* pkalg, hashalg */
 
-  for (ii = 0; ii < 2; ii++)
+  for (short ii = 0; ii < 2; ii++)
   {
     size_t skl;
     size_t nextone;

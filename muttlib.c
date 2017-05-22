@@ -621,7 +621,6 @@ char *mutt_gecos_name(char *dest, size_t destlen, struct passwd *pw)
 {
   regmatch_t pat_match[1];
   size_t pwnl;
-  int idx;
   char *p = NULL;
 
   if (!pw || !pw->pw_gecos)
@@ -642,7 +641,7 @@ char *mutt_gecos_name(char *dest, size_t destlen, struct passwd *pw)
 
   pwnl = strlen(pw->pw_name);
 
-  for (idx = 0; dest[idx]; idx++)
+  for (int idx = 0; dest[idx]; idx++)
   {
     if (dest[idx] == '&')
     {
@@ -893,11 +892,10 @@ static const unsigned char base32[] = "abcdefghijklmnopqrstuvwxyz234567";
 
 void mutt_rand_base32(void *out, size_t len)
 {
-  size_t pos;
   uint8_t *p = out;
 
   mutt_randbuf(p, len);
-  for (pos = 0; pos < len; pos++)
+  for (size_t pos = 0; pos < len; pos++)
     p[pos] = base32[p[pos] % 32];
 }
 

@@ -1990,7 +1990,7 @@ static int nntp_check_mailbox(struct Context *ctx, int *index_hint)
 static int nntp_sync_mailbox(struct Context *ctx, int *index_hint)
 {
   struct NntpData *nntp_data = ctx->data;
-  int rc, i;
+  int rc;
 #ifdef USE_HCACHE
   header_cache_t *hc = NULL;
 #endif
@@ -2007,7 +2007,7 @@ static int nntp_sync_mailbox(struct Context *ctx, int *index_hint)
 #endif
 
   nntp_data->unread = ctx->unread;
-  for (i = 0; i < ctx->msgcount; i++)
+  for (int i = 0; i < ctx->msgcount; i++)
   {
     struct Header *hdr = ctx->hdrs[i];
     char buf[16];
@@ -2102,7 +2102,6 @@ int nntp_active_fetch(struct NntpServer *nserv)
   struct NntpData nntp_data;
   char msg[SHORT_STRING];
   char buf[LONG_STRING];
-  unsigned int i;
   int rc;
 
   snprintf(msg, sizeof(msg), _("Loading list of groups from server %s..."),
@@ -2129,7 +2128,7 @@ int nntp_active_fetch(struct NntpServer *nserv)
       get_description(&nntp_data, "*", _("Loading descriptions...")) < 0)
     return -1;
 
-  for (i = 0; i < nserv->groups_num; i++)
+  for (unsigned int i = 0; i < nserv->groups_num; i++)
   {
     struct NntpData *data = nserv->groups_list[i];
 
@@ -2330,11 +2329,10 @@ static int fetch_children(char *line, void *data)
 {
   struct ChildCtx *cc = data;
   anum_t anum;
-  unsigned int i;
 
   if (!line || sscanf(line, ANUM, &anum) != 1)
     return 0;
-  for (i = 0; i < cc->ctx->msgcount; i++)
+  for (unsigned int i = 0; i < cc->ctx->msgcount; i++)
     if (NHDR(cc->ctx->hdrs[i])->article_num == anum)
       return 0;
   if (cc->num >= cc->max)
@@ -2352,7 +2350,7 @@ int nntp_check_children(struct Context *ctx, const char *msgid)
   struct NntpData *nntp_data = ctx->data;
   struct ChildCtx cc;
   char buf[STRING];
-  int i, rc;
+  int rc;
   bool quiet;
   void *hc = NULL;
 
@@ -2391,7 +2389,7 @@ int nntp_check_children(struct Context *ctx, const char *msgid)
 #ifdef USE_HCACHE
   hc = nntp_hcache_open(nntp_data);
 #endif
-  for (i = 0; i < cc.num; i++)
+  for (int i = 0; i < cc.num; i++)
   {
     rc = nntp_fetch_headers(ctx, hc, cc.child[i], cc.child[i], 1);
     if (rc < 0)

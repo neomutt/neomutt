@@ -838,7 +838,7 @@ char *mutt_substrdup(const char *begin, const char *end)
  */
 size_t mutt_quote_filename(char *d, size_t l, const char *f)
 {
-  size_t i, j = 0;
+  size_t j = 0;
 
   if (!f)
   {
@@ -851,7 +851,7 @@ size_t mutt_quote_filename(char *d, size_t l, const char *f)
 
   d[j++] = '\'';
 
-  for (i = 0; j < l && f[i]; i++)
+  for (size_t i = 0; j < l && f[i]; i++)
   {
     if (f[i] == '\'' || f[i] == '`')
     {

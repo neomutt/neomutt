@@ -100,9 +100,7 @@ static char LastDir[_POSIX_PATH_MAX] = "";
 /* Frees up the memory allocated for the local-global variables.  */
 static void destroy_state(struct BrowserState *state)
 {
-  int c;
-
-  for (c = 0; c < state->entrylen; c++)
+  for (int c = 0; c < state->entrylen; c++)
   {
     FREE(&((state->entry)[c].name));
     FREE(&((state->entry)[c].desc));
@@ -647,11 +645,10 @@ static int examine_directory(struct Menu *menu, struct BrowserState *state,
   if (option(OPTNEWS))
   {
     struct NntpServer *nserv = CurrentNewsSrv;
-    unsigned int i;
 
     init_state(state, menu);
 
-    for (i = 0; i < nserv->groups_num; i++)
+    for (unsigned int i = 0; i < nserv->groups_num; i++)
     {
       struct NntpData *nntp_data = nserv->groups_list[i];
       if (!nntp_data)
@@ -773,11 +770,10 @@ static int examine_mailboxes(struct Menu *menu, struct BrowserState *state)
   if (option(OPTNEWS))
   {
     struct NntpServer *nserv = CurrentNewsSrv;
-    unsigned int i;
 
     init_state(state, menu);
 
-    for (i = 0; i < nserv->groups_num; i++)
+    for (unsigned int i = 0; i < nserv->groups_num; i++)
     {
       struct NntpData *nntp_data = nserv->groups_list[i];
       if (nntp_data &&
@@ -990,8 +986,8 @@ static void init_menu(struct BrowserState *state, struct Menu *menu,
     /* If we get here, it means that LastDir is the parent directory of
      * OldLastDir.  I.e., we're returning from a subdirectory, and we want
      * to position the cursor on the directory we're returning from. */
-    unsigned int i, matched = 0;
-    for (i = 0; i < state->entrylen; i++)
+    unsigned int matched = 0;
+    for (unsigned int i = 0; i < state->entrylen; i++)
     {
       if (mutt_strcmp(state->entry[i].name, TargetDir) == 0)
       {

@@ -335,9 +335,7 @@ static int print_it(int special, char *str, FILE *out, int docstat)
           fputs(str, out);
           if (docstat & D_DT)
           {
-            int i;
-
-            for (i = strlen(str); i < 8; i++)
+            for (int i = strlen(str); i < 8; i++)
               putc(' ', out);
             docstat &= ~D_DT;
             docstat |= D_NL;
@@ -969,9 +967,7 @@ struct
 
 static int buff2type(const char *s)
 {
-  int type;
-
-  for (type = DT_NONE; types[type].machine; type++)
+  for (int type = DT_NONE; types[type].machine; type++)
     if (strcmp(types[type].machine, s) == 0)
       return type;
 

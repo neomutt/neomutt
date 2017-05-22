@@ -207,7 +207,6 @@ static pop_auth_res_t pop_auth_apop(struct PopData *pop_data, const char *method
   unsigned char digest[16];
   char hash[33];
   char buf[LONG_STRING];
-  size_t i;
 
   if (!pop_data->timestamp)
     return POP_A_UNAVAIL;
@@ -228,7 +227,7 @@ static pop_auth_res_t pop_auth_apop(struct PopData *pop_data, const char *method
                     strlen(pop_data->conn->account.pass), &ctx);
   md5_finish_ctx(&ctx, digest);
 
-  for (i = 0; i < sizeof(digest); i++)
+  for (size_t i = 0; i < sizeof(digest); i++)
     sprintf(hash + 2 * i, "%02x", digest[i]);
 
   /* Send APOP command to server */

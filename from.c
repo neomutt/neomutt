@@ -36,9 +36,7 @@ static const char *next_word(const char *s)
 
 int mutt_check_month(const char *s)
 {
-  int i;
-
-  for (i = 0; i < 12; i++)
+  for (int i = 0; i < 12; i++)
     if (mutt_strncasecmp(s, Months[i], 3) == 0)
       return i;
   return -1; /* error */
@@ -46,11 +44,9 @@ int mutt_check_month(const char *s)
 
 static bool is_day_name(const char *s)
 {
-  int i;
-
   if ((strlen(s) < 3) || !*(s + 3) || !ISSPACE(*(s + 3)))
     return false;
-  for (i = 0; i < 7; i++)
+  for (int i = 0; i < 7; i++)
     if (mutt_strncasecmp(s, Weekdays[i], 3) == 0)
       return true;
   return false;

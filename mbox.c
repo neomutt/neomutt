@@ -972,9 +972,7 @@ static int mbox_check_mailbox(struct Context *ctx, int *index_hint)
  */
 static bool mbox_has_new(struct Context *ctx)
 {
-  int i;
-
-  for (i = 0; i < ctx->msgcount; i++)
+  for (int i = 0; i < ctx->msgcount; i++)
     if (!ctx->hdrs[i]->deleted && !ctx->hdrs[i]->read && !ctx->hdrs[i]->old)
       return true;
   return false;

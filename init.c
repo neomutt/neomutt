@@ -230,9 +230,7 @@ int query_quadoption(int opt, const char *prompt)
    matches, or -1 if the variable is not found.  */
 int mutt_option_index(const char *s)
 {
-  int i;
-
-  for (i = 0; MuttVars[i].option; i++)
+  for (int i = 0; MuttVars[i].option; i++)
     if (mutt_strcmp(s, MuttVars[i].option) == 0)
       return (MuttVars[i].type == DT_SYN ?
                   mutt_option_index((char *) MuttVars[i].data) :
@@ -376,10 +374,9 @@ int mutt_option_set(const struct Option *val, struct Buffer *err)
               (mutt_strcmp(MuttVars[idx].option, "reply_regexp") == 0))
           {
             regmatch_t pmatch[1];
-            int i;
 
 #define CUR_ENV Context->hdrs[i]->env
-            for (i = 0; i < Context->msgcount; i++)
+            for (int i = 0; i < Context->msgcount; i++)
             {
               if (CUR_ENV && CUR_ENV->subject)
               {
@@ -525,9 +522,7 @@ static void free_opt(struct Option *p)
 /* clean up before quitting */
 void mutt_free_opts(void)
 {
-  int i;
-
-  for (i = 0; MuttVars[i].option; i++)
+  for (int i = 0; MuttVars[i].option; i++)
     free_opt(MuttVars + i);
 
   mutt_free_rx_list(&Alternates);
@@ -2176,11 +2171,10 @@ char **mutt_envlist(void)
  */
 static void start_debug(void)
 {
-  int i;
   char buf[_POSIX_PATH_MAX];
 
   /* rotate the old debug logs */
-  for (i = 3; i >= 0; i--)
+  for (int i = 3; i >= 0; i--)
   {
     snprintf(debugfilename, sizeof(debugfilename), "%s%d", DebugFile, i);
     snprintf(buf, sizeof(buf), "%s%d", DebugFile, i + 1);
@@ -3507,7 +3501,6 @@ int mutt_var_value_complete(char *buffer, size_t len, int pos)
  */
 static int complete_all_nm_tags(const char *pt)
 {
-  int num;
   int tag_count_1 = 0;
   int tag_count_2 = 0;
 
@@ -3525,8 +3518,7 @@ static int complete_all_nm_tags(const char *pt)
   /* Free the old list, if any. */
   if (nm_tags != NULL)
   {
-    int i;
-    for (i = 0; nm_tags[i] != NULL; i++)
+    for (int i = 0; nm_tags[i] != NULL; i++)
       FREE(&nm_tags[i]);
     FREE(&nm_tags);
   }
@@ -3544,7 +3536,7 @@ static int complete_all_nm_tags(const char *pt)
   }
 
   /* Put them into the completion machinery. */
-  for (num = 0; num < tag_count_1; num++)
+  for (int num = 0; num < tag_count_1; num++)
   {
     candidate(Completed, User_typed, nm_tags[num], sizeof(Completed));
   }
@@ -3568,8 +3560,7 @@ static const char *rstrnstr(const char *haystack, size_t haystack_length, const 
 
   for (p = haystack_end; p >= haystack; --p)
   {
-    size_t i;
-    for (i = 0; i < needle_length; ++i)
+    for (size_t i = 0; i < needle_length; ++i)
     {
       if (p[i] != needle[i])
         goto next;
@@ -3807,8 +3798,6 @@ int mutt_query_variables(struct List *queries)
 /* dump out the value of all the variables we have */
 int mutt_dump_variables(int hide_sensitive)
 {
-  int i;
-
   char command[STRING];
 
   struct Buffer err, token;
@@ -3819,7 +3808,7 @@ int mutt_dump_variables(int hide_sensitive)
   err.dsize = STRING;
   err.data = safe_malloc(err.dsize);
 
-  for (i = 0; MuttVars[i].option; i++)
+  for (int i = 0; MuttVars[i].option; i++)
   {
     if (MuttVars[i].type == DT_SYN)
       continue;
@@ -3849,9 +3838,7 @@ int mutt_dump_variables(int hide_sensitive)
 
 const char *mutt_getnamebyvalue(int val, const struct Mapping *map)
 {
-  int i;
-
-  for (i = 0; map[i].name; i++)
+  for (int i = 0; map[i].name; i++)
     if (map[i].value == val)
       return map[i].name;
   return NULL;
@@ -3859,9 +3846,7 @@ const char *mutt_getnamebyvalue(int val, const struct Mapping *map)
 
 int mutt_getvaluebyname(const char *name, const struct Mapping *map)
 {
-  int i;
-
-  for (i = 0; map[i].name; i++)
+  for (int i = 0; map[i].name; i++)
     if (ascii_strcasecmp(map[i].name, name) == 0)
       return map[i].value;
   return -1;
@@ -3912,10 +3897,7 @@ static char *find_cfg(const char *home, const char *xdg_cfg_home)
     { home, ".mutt/" },
     { NULL, NULL },
   };
-
-  int i;
-
-  for (i = 0; locations[i][0] || locations[i][1]; i++)
+  for (int i = 0; locations[i][0] || locations[i][1]; i++)
   {
     int j;
 
@@ -3941,7 +3923,7 @@ void mutt_init(int skip_sys_rc, struct List *commands)
   struct passwd *pw = NULL;
   struct utsname utsname;
   char *p, buffer[STRING];
-  int i, need_pause = 0;
+  int need_pause = 0;
   struct Buffer err;
 
   mutt_buffer_init(&err);
@@ -4001,7 +3983,7 @@ void mutt_init(int skip_sys_rc, struct List *commands)
   }
 
   /* Set standard defaults */
-  for (i = 0; MuttVars[i].option; i++)
+  for (int i = 0; MuttVars[i].option; i++)
   {
     set_default(&MuttVars[i]);
     restore_default(&MuttVars[i]);

@@ -74,12 +74,10 @@ static bool check_all_msg(struct AttachPtr **idx, short idxlen, struct Body *cur
 /* can we decode all tagged attachments? */
 static short check_can_decode(struct AttachPtr **idx, short idxlen, struct Body *cur)
 {
-  short i;
-
   if (cur)
     return mutt_can_decode(cur);
 
-  for (i = 0; i < idxlen; i++)
+  for (short i = 0; i < idxlen; i++)
     if (idx[i]->content->tagged && !mutt_can_decode(idx[i]->content))
       return 0;
 
@@ -89,9 +87,7 @@ static short check_can_decode(struct AttachPtr **idx, short idxlen, struct Body 
 static short count_tagged(struct AttachPtr **idx, short idxlen)
 {
   short count = 0;
-  short i;
-
-  for (i = 0; i < idxlen; i++)
+  for (short i = 0; i < idxlen; i++)
     if (idx[i]->content->tagged)
       count++;
 
@@ -364,9 +360,7 @@ static struct Body **copy_problematic_attachments(FILE *fp, struct Body **last,
                                                   struct AttachPtr **idx,
                                                   short idxlen, short force)
 {
-  short i;
-
-  for (i = 0; i < idxlen; i++)
+  for (short i = 0; i < idxlen; i++)
   {
     if (idx[i]->content->tagged && (force || !mutt_can_decode(idx[i]->content)))
     {

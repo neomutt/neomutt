@@ -52,7 +52,7 @@ int ascii_strcasecmp(const char *a, const char *b)
 
 int ascii_strncasecmp(const char *a, const char *b, int n)
 {
-  int i, j;
+  int i;
 
   if (a == b)
     return 0;
@@ -61,7 +61,7 @@ int ascii_strncasecmp(const char *a, const char *b, int n)
   if (b == NULL && a)
     return 1;
 
-  for (j = 0; (*a || *b) && j < n; a++, b++, j++)
+  for (int j = 0; (*a || *b) && j < n; a++, b++, j++)
   {
     if ((i = tolower(*a) - tolower(*b)))
       return i;

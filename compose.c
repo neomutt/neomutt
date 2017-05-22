@@ -235,7 +235,6 @@ static void redraw_crypt_lines(struct Header *msg)
 
 static void redraw_mix_line(struct List *chain)
 {
-  int c;
   char *t = NULL;
 
   SETCOLOR(MT_COLOR_COMPOSE_HEADER);
@@ -250,7 +249,7 @@ static void redraw_mix_line(struct List *chain)
     return;
   }
 
-  for (c = 12; chain; chain = chain->next)
+  for (int c = 12; chain; chain = chain->next)
   {
     t = chain->data;
     if (t && t[0] == '0' && t[1] == '\0')
@@ -270,11 +269,11 @@ static void redraw_mix_line(struct List *chain)
 
 static int check_attachments(struct AttachPtr **idx, short idxlen)
 {
-  int i, r;
+  int r;
   struct stat st;
   char pretty[_POSIX_PATH_MAX], msg[_POSIX_PATH_MAX + SHORT_STRING];
 
-  for (i = 0; i < idxlen; i++)
+  for (int i = 0; i < idxlen; i++)
   {
     strfcpy(pretty, idx[i]->content->filename, sizeof(pretty));
     if (stat(idx[i]->content->filename, &st) != 0)
@@ -397,7 +396,6 @@ static void edit_address_list(int line, struct Address **addr)
 static int delete_attachment(struct Menu *menu, short *idxlen, int x)
 {
   struct AttachPtr **idx = (struct AttachPtr **) menu->data;
-  int y;
 
   menu->redraw = REDRAW_INDEX | REDRAW_STATUS;
 
@@ -408,7 +406,7 @@ static int delete_attachment(struct Menu *menu, short *idxlen, int x)
     return -1;
   }
 
-  for (y = 0; y < *idxlen; y++)
+  for (int y = 0; y < *idxlen; y++)
   {
     if (idx[y]->content->next == idx[x]->content)
     {

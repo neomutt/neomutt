@@ -140,7 +140,6 @@ static void hmac_md5(const char *password, char *challenge, unsigned char *respo
   unsigned char secret[MD5_BLOCK_LEN + 1];
   unsigned char hash_passwd[MD5_DIGEST_LEN];
   unsigned int secret_len, chal_len;
-  int i;
 
   secret_len = strlen(password);
   chal_len = strlen(challenge);
@@ -161,7 +160,7 @@ static void hmac_md5(const char *password, char *challenge, unsigned char *respo
   memcpy(ipad, secret, secret_len);
   memcpy(opad, secret, secret_len);
 
-  for (i = 0; i < MD5_BLOCK_LEN; i++)
+  for (int i = 0; i < MD5_BLOCK_LEN; i++)
   {
     ipad[i] ^= 0x36;
     opad[i] ^= 0x5c;

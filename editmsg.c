@@ -219,13 +219,13 @@ bail:
 
 int mutt_edit_message(struct Context *ctx, struct Header *hdr)
 {
-  int i, j;
+  int j;
 
   if (hdr)
     return edit_one_message(ctx, hdr);
 
 
-  for (i = 0; i < ctx->vcount; i++)
+  for (int i = 0; i < ctx->vcount; i++)
   {
     j = ctx->v2r[i];
     if (ctx->hdrs[j]->tagged)

@@ -498,7 +498,6 @@ int raw_socket_open(struct Connection *conn)
 
   struct sockaddr_in sin;
   struct hostent *he = NULL;
-  int i;
 
   memset(&sin, 0, sizeof(sin));
   sin.sin_port = htons(conn->account.port);
@@ -534,7 +533,7 @@ int raw_socket_open(struct Connection *conn)
     mutt_message(_("Connecting to %s..."), conn->account.host);
 
   rc = -1;
-  for (i = 0; he->h_addr_list[i] != NULL; i++)
+  for (int i = 0; he->h_addr_list[i] != NULL; i++)
   {
     memcpy(&sin.sin_addr, he->h_addr_list[i], he->h_length);
     fd = socket(PF_INET, SOCK_STREAM, IPPROTO_IP);

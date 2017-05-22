@@ -329,11 +329,10 @@ void menu_redraw_sidebar(struct Menu *menu)
 void menu_redraw_index(struct Menu *menu)
 {
   char buf[LONG_STRING];
-  int i;
   int do_color;
   int attr;
 
-  for (i = menu->top; i < menu->top + menu->pagelen; i++)
+  for (int i = menu->top; i < menu->top + menu->pagelen; i++)
   {
     if (i < menu->max)
     {
@@ -772,9 +771,7 @@ static int menu_search_generic(struct Menu *m, regex_t *re, int n)
 
 void mutt_menu_init(void)
 {
-  int i;
-
-  for (i = 0; i < MENU_MAX; i++)
+  for (int i = 0; i < MENU_MAX; i++)
     SearchBuffers[i] = NULL;
 }
 

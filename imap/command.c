@@ -182,7 +182,7 @@ static int cmd_status(const char *s)
  *   be reopened at our earliest convenience */
 static void cmd_parse_expunge(struct ImapData *idata, const char *s)
 {
-  int expno, cur;
+  int expno;
   struct Header *h = NULL;
 
   mutt_debug(2, "Handling EXPUNGE\n");
@@ -193,7 +193,7 @@ static void cmd_parse_expunge(struct ImapData *idata, const char *s)
    * above. Possibly we could avoid walking the whole list by resorting
    * and guessing a good starting point, but I'm guessing the resort would
    * nullify the gains */
-  for (cur = 0; cur < idata->ctx->msgcount; cur++)
+  for (int cur = 0; cur < idata->ctx->msgcount; cur++)
   {
     h = idata->ctx->hdrs[cur];
 

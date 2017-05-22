@@ -356,9 +356,7 @@ static void update_entries_visibility(void)
 {
   short new_only = option(OPTSIDEBARNEWMAILONLY);
   struct SbEntry *sbe = NULL;
-  int i;
-
-  for (i = 0; i < EntryCount; i++)
+  for (int i = 0; i < EntryCount; i++)
   {
     sbe = Entries[i];
 
@@ -612,7 +610,6 @@ static int select_page_up(void)
  */
 static bool prepare_sidebar(int page_size)
 {
-  int i;
   struct SbEntry *opn_entry = NULL, *hil_entry = NULL;
   int page_entries;
 
@@ -627,7 +624,7 @@ static bool prepare_sidebar(int page_size)
   update_entries_visibility();
   sort_entries();
 
-  for (i = 0; i < EntryCount; i++)
+  for (int i = 0; i < EntryCount; i++)
   {
     if (opn_entry == Entries[i])
       OpnIndex = i;
@@ -790,9 +787,7 @@ static void fill_empty_space(int first_row, int num_rows, int div_width, int num
 
   if (!option(OPTSIDEBARONRIGHT))
     div_width = 0;
-
-  int r;
-  for (r = 0; r < num_rows; r++)
+  for (int r = 0; r < num_rows; r++)
   {
     mutt_window_move(MuttSidebarWindow, first_row + r, div_width);
 
@@ -825,7 +820,6 @@ static void fill_empty_space(int first_row, int num_rows, int div_width, int num
  */
 static void draw_sidebar(int num_rows, int num_cols, int div_width)
 {
-  int entryidx;
   struct SbEntry *entry = NULL;
   struct Buffy *b = NULL;
   if (TopIndex < 0)
@@ -833,7 +827,7 @@ static void draw_sidebar(int num_rows, int num_cols, int div_width)
 
   int w = MIN(num_cols, (SidebarWidth - div_width));
   int row = 0;
-  for (entryidx = TopIndex; (entryidx < EntryCount) && (row < num_rows); entryidx++)
+  for (int entryidx = TopIndex; (entryidx < EntryCount) && (row < num_rows); entryidx++)
   {
     entry = Entries[entryidx];
     if (entry->is_hidden)
@@ -1112,14 +1106,12 @@ const char *mutt_sb_get_highlight(void)
  */
 void mutt_sb_set_open_buffy(void)
 {
-  int entry;
-
   OpnIndex = -1;
 
   if (!Context)
     return;
 
-  for (entry = 0; entry < EntryCount; entry++)
+  for (int entry = 0; entry < EntryCount; entry++)
   {
     if (mutt_strcmp(Entries[entry]->buffy->realpath, Context->realpath) == 0)
     {

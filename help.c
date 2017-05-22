@@ -72,11 +72,10 @@ void mutt_make_help(char *d, size_t dlen, const char *txt, int menu, int op)
 
 char *mutt_compile_help(char *buf, size_t buflen, int menu, const struct Mapping *items)
 {
-  int i;
   size_t len;
   char *pbuf = buf;
 
-  for (i = 0; items[i].name && buflen > 2; i++)
+  for (int i = 0; items[i].name && buflen > 2; i++)
   {
     if (i)
     {
@@ -327,9 +326,7 @@ static bool is_bound(struct Keymap *map, int op)
 static void dump_unbound(FILE *f, const struct Binding *funcs,
                          struct Keymap *map, struct Keymap *aux)
 {
-  int i;
-
-  for (i = 0; funcs[i].name; i++)
+  for (int i = 0; funcs[i].name; i++)
   {
     if (!is_bound(map, funcs[i].op) && (!aux || !is_bound(aux, funcs[i].op)))
       format_line(f, 0, funcs[i].name, "", _(HelpStrings[funcs[i].op]));

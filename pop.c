@@ -191,7 +191,6 @@ static int msg_cache_check(const char *id, struct BodyCache *bcache, void *data)
 {
   struct Context *ctx = NULL;
   struct PopData *pop_data = NULL;
-  int i;
 
   if (!(ctx = (struct Context *) data))
     return -1;
@@ -204,7 +203,7 @@ static int msg_cache_check(const char *id, struct BodyCache *bcache, void *data)
     return 0;
 #endif
 
-  for (i = 0; i < ctx->msgcount; i++)
+  for (int i = 0; i < ctx->msgcount; i++)
     /* if the id we get is known for a header: done (i.e. keep in cache) */
     if (ctx->hdrs[i]->data && (mutt_strcmp(ctx->hdrs[i]->data, id) == 0))
       return 0;
@@ -480,14 +479,12 @@ static int pop_open_mailbox(struct Context *ctx)
 /* delete all cached messages */
 static void pop_clear_cache(struct PopData *pop_data)
 {
-  int i;
-
   if (!pop_data->clear_cache)
     return;
 
   mutt_debug(1, "pop_clear_cache: delete cached messages\n");
 
-  for (i = 0; i < POP_CACHE_LEN; i++)
+  for (int i = 0; i < POP_CACHE_LEN; i++)
   {
     if (pop_data->cache[i].path)
     {
@@ -792,7 +789,7 @@ void pop_fetch_mail(void)
   char buffer[LONG_STRING];
   char msgbuf[SHORT_STRING];
   char *url = NULL, *p = NULL;
-  int i, delanswer, last = 0, msgs, bytes, rset = 0, ret;
+  int delanswer, last = 0, msgs, bytes, rset = 0, ret;
   struct Connection *conn = NULL;
   struct Context ctx;
   struct Message *msg = NULL;
@@ -878,7 +875,7 @@ void pop_fetch_mail(void)
   snprintf(msgbuf, sizeof(msgbuf), _("Reading new messages (%d bytes)..."), bytes);
   mutt_message("%s", msgbuf);
 
-  for (i = last + 1; i <= msgs; i++)
+  for (int i = last + 1; i <= msgs; i++)
   {
     if ((msg = mx_open_new_message(&ctx, NULL, MUTT_ADD_FROM)) == NULL)
       ret = -3;

@@ -68,9 +68,7 @@ void mutt_update_tree(struct AttachPtr **idx, short idxlen)
 {
   char buf[STRING];
   char *s = NULL;
-  int x;
-
-  for (x = 0; x < idxlen; x++)
+  for (int x = 0; x < idxlen; x++)
   {
     idx[x]->num = x;
     if (2 * (idx[x]->level + 2) < sizeof(buf))

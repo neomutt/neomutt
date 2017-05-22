@@ -272,7 +272,6 @@ static bool mh_valid_message(const char *s)
  */
 int mh_buffy(struct Buffy *mailbox, int check_stats)
 {
-  int i;
   struct MhSequences mhs;
   int check_new = 1;
   int rc = 0;
@@ -301,7 +300,7 @@ int mh_buffy(struct Buffy *mailbox, int check_stats)
     mailbox->msg_flagged = 0;
   }
 
-  for (i = mhs.max; i > 0; i--)
+  for (int i = mhs.max; i > 0; i--)
   {
     if (check_stats && (mhs_check(&mhs, i) & MH_SEQ_FLAGGED))
       mailbox->msg_flagged++;
@@ -388,14 +387,13 @@ static int mh_mkstemp(struct Context *dest, FILE **fp, char **tgt)
 
 static void mhs_write_one_sequence(FILE *fp, struct MhSequences *mhs, short f, const char *tag)
 {
-  int i;
   int first, last;
   fprintf(fp, "%s:", tag);
 
   first = -1;
   last = -1;
 
-  for (i = 0; i <= mhs->max; i++)
+  for (int i = 0; i <= mhs->max; i++)
   {
     if ((mhs_check(mhs, i) & f))
     {
@@ -2005,7 +2003,6 @@ static int maildir_check_mailbox(struct Context *ctx, int *index_hint)
   bool flags_changed = false; /* message flags were changed in the mailbox */
   struct Maildir *md = NULL;  /* list of messages in the mailbox */
   struct Maildir **last = NULL, *p = NULL;
-  int i;
   struct Hash *fnames = NULL; /* hash table for quickly looking up the base filename
                                    for a maildir message */
   struct MhData *data = mh_data(ctx);
@@ -2061,7 +2058,7 @@ static int maildir_check_mailbox(struct Context *ctx, int *index_hint)
   }
 
   /* check for modifications and adjust flags */
-  for (i = 0; i < ctx->msgcount; i++)
+  for (int i = 0; i < ctx->msgcount; i++)
   {
     ctx->hdrs[i]->active = false;
     maildir_canon_filename(buf, ctx->hdrs[i]->path, sizeof(buf));

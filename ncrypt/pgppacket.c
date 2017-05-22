@@ -166,14 +166,12 @@ unsigned char *pgp_read_packet(FILE *fp, size_t *len)
 
       case 2:
       {
-        int i;
-
         if (!bytes)
           bytes = 4;
 
         material = 0;
 
-        for (i = 0; i < bytes; i++)
+        for (int i = 0; i < bytes; i++)
         {
           if (fread(&b, 1, 1, fp) < 1)
           {

@@ -760,7 +760,6 @@ static int eat_range_by_regexp(struct Pattern *pat, struct Buffer *s, int kind,
 static bool eat_message_range(struct Pattern *pat, struct Buffer *s, struct Buffer *err)
 {
   int skip_quote = 0;
-  int i_kind;
 
   /* We need a Context for pretty much anything. */
   if (!Context)
@@ -779,7 +778,7 @@ static bool eat_message_range(struct Pattern *pat, struct Buffer *s, struct Buff
     skip_quote = 1;
   }
 
-  for (i_kind = 0; i_kind != RANGE_K_INVALID; ++i_kind)
+  for (int i_kind = 0; i_kind != RANGE_K_INVALID; ++i_kind)
   {
     switch (eat_range_by_regexp(pat, s, i_kind, err))
     {
@@ -1053,9 +1052,7 @@ static int msg_search(struct Context *ctx, struct Pattern *pat, int msgno)
 
 static const struct PatternFlags *lookup_tag(char tag)
 {
-  int i;
-
-  for (i = 0; Flags[i].tag; i++)
+  for (int i = 0; Flags[i].tag; i++)
     if (Flags[i].tag == tag)
       return (&Flags[i]);
   return NULL;
@@ -1756,7 +1753,6 @@ static struct MuttThread *top_of_thread(struct Header *h)
  */
 bool mutt_limit_current_thread(struct Header *h)
 {
-  int i;
   struct MuttThread *me = NULL;
 
   if (!h)
@@ -1770,7 +1766,7 @@ bool mutt_limit_current_thread(struct Header *h)
   Context->vsize = 0;
   Context->collapsed = false;
 
-  for (i = 0; i < Context->msgcount; i++)
+  for (int i = 0; i < Context->msgcount; i++)
   {
     Context->hdrs[i]->virtual = -1;
     Context->hdrs[i]->limited = false;
@@ -1796,7 +1792,6 @@ int mutt_pattern_func(int op, char *prompt)
   struct Pattern *pat = NULL;
   char buf[LONG_STRING] = "", *simple = NULL;
   struct Buffer err;
-  int i;
   struct Progress progress;
 
   strfcpy(buf, NONULL(Context->pattern), sizeof(buf));
@@ -1837,7 +1832,7 @@ int mutt_pattern_func(int op, char *prompt)
     Context->vsize = 0;
     Context->collapsed = false;
 
-    for (i = 0; i < Context->msgcount; i++)
+    for (int i = 0; i < Context->msgcount; i++)
     {
       mutt_progress_update(&progress, i, -1);
       /* new limit pattern implicitly uncollapses all threads */
@@ -1857,7 +1852,7 @@ int mutt_pattern_func(int op, char *prompt)
   }
   else
   {
-    for (i = 0; i < Context->vcount; i++)
+    for (int i = 0; i < Context->vcount; i++)
     {
       mutt_progress_update(&progress, i, -1);
       if (mutt_pattern_exec(pat, MUTT_MATCH_FULL_ADDRESS, Context,

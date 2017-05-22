@@ -779,7 +779,7 @@ static int interactive_check_cert(X509 *cert, int idx, int len, SSL *ssl, int al
   char buf[STRING];
   char title[STRING];
   struct Menu *menu = mutt_new_menu(MENU_GENERIC);
-  int done, row, i;
+  int done, row;
   unsigned u;
   FILE *fp = NULL;
   int allow_skip = 0;
@@ -788,7 +788,7 @@ static int interactive_check_cert(X509 *cert, int idx, int len, SSL *ssl, int al
 
   menu->max = mutt_array_size(part) * 2 + 10;
   menu->dialog = safe_calloc(1, menu->max * sizeof(char *));
-  for (i = 0; i < menu->max; i++)
+  for (int i = 0; i < menu->max; i++)
     menu->dialog[i] = safe_calloc(1, SHORT_STRING * sizeof(char));
 
   row = 0;

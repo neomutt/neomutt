@@ -238,7 +238,7 @@ static void b64_flush(struct B64Context *ctx, FILE *fout)
   /* for some reasons, mutt_to_base64 expects the
    * output buffer to be larger than 10B */
   char encoded[11];
-  size_t ret, i;
+  size_t ret;
 
   if (!ctx->size)
     return;
@@ -253,7 +253,7 @@ static void b64_flush(struct B64Context *ctx, FILE *fout)
    * is a value between 1 and 3 (included), but let's not hardcode it
    * and prefer the return value of the function */
   ret = mutt_to_base64(encoded, ctx->buffer, ctx->size, sizeof(encoded));
-  for (i = 0; i < ret; i++)
+  for (size_t i = 0; i < ret; i++)
   {
     fputc(encoded[i], fout);
     ctx->linelen++;
@@ -954,7 +954,6 @@ int mutt_lookup_mime_type(struct Body *att, const char *path)
   char *p = NULL, *q = NULL, *ct = NULL;
   char buf[LONG_STRING];
   char subtype[STRING], xtype[STRING];
-  int count;
   int szf, sze, cur_sze;
   int type;
 
@@ -965,7 +964,7 @@ int mutt_lookup_mime_type(struct Body *att, const char *path)
 
   szf = mutt_strlen(path);
 
-  for (count = 0; count < 3; count++)
+  for (int count = 0; count < 3; count++)
   {
     /*
      * can't use strtok() because we use it in an inner loop below, so use

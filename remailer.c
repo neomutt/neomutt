@@ -196,10 +196,9 @@ static struct Remailer **mix_type2_list(size_t *l)
 
 static void mix_free_type2_list(struct Remailer ***ttlp)
 {
-  int i;
   struct Remailer **type2_list = *ttlp;
 
-  for (i = 0; type2_list[i]; i++)
+  for (int i = 0; type2_list[i]; i++)
     mix_free_remailer(&type2_list[i]);
 
   FREE(type2_list);

@@ -337,9 +337,7 @@ static int km_bindkey(char *s, int menu, int op)
 
 static int get_op(const struct Binding *bindings, const char *start, size_t len)
 {
-  int i;
-
-  for (i = 0; bindings[i].name; i++)
+  for (int i = 0; bindings[i].name; i++)
   {
     if ((ascii_strncasecmp(start, bindings[i].name, len) == 0) &&
         mutt_strlen(bindings[i].name) == len)
@@ -351,9 +349,7 @@ static int get_op(const struct Binding *bindings, const char *start, size_t len)
 
 static char *get_func(const struct Binding *bindings, int op)
 {
-  int i;
-
-  for (i = 0; bindings[i].name; i++)
+  for (int i = 0; bindings[i].name; i++)
   {
     if (bindings[i].op == op)
       return bindings[i].name;
@@ -594,9 +590,7 @@ int km_dokey(int menu)
 
 static void create_bindings(const struct Binding *map, int menu)
 {
-  int i;
-
-  for (i = 0; map[i].name; i++)
+  for (int i = 0; map[i].name; i++)
     if (map[i].seq)
       km_bindkey(map[i].seq, menu, map[i].op);
 }
@@ -710,9 +704,7 @@ static const struct Extkey ExtKeys[] = {
 /* Look up Mutt's name for a key and find the ncurses extended name for it */
 static const char *find_ext_name(const char *key)
 {
-  int j;
-
-  for (j = 0; ExtKeys[j].name; ++j)
+  for (int j = 0; ExtKeys[j].name; ++j)
   {
     if (strcasecmp(key, ExtKeys[j].name) == 0)
       return ExtKeys[j].sym;
@@ -731,11 +723,10 @@ static const char *find_ext_name(const char *key)
 void init_extended_keys(void)
 {
 #ifdef NCURSES_VERSION
-  int j;
 
   use_extended_names(true);
 
-  for (j = 0; KeyNames[j].name; ++j)
+  for (int j = 0; KeyNames[j].name; ++j)
   {
     if (KeyNames[j].value == -1)
     {
@@ -1002,9 +993,7 @@ error:
 static int try_bind(char *key, int menu, char *func,
                     const struct Binding *bindings, struct Buffer *err)
 {
-  int i;
-
-  for (i = 0; bindings[i].name; i++)
+  for (int i = 0; bindings[i].name; i++)
   {
     if (mutt_strcmp(func, bindings[i].name) == 0)
     {

@@ -116,11 +116,10 @@ struct Hash *hash_resize(struct Hash *ptr, int nelem, int lower)
 {
   struct Hash *table = NULL;
   struct HashElem *elem = NULL, *tmp = NULL;
-  int i;
 
   table = hash_create(nelem, lower);
 
-  for (i = 0; i < ptr->nelem; i++)
+  for (int i = 0; i < ptr->nelem; i++)
   {
     for (elem = ptr->table[i]; elem;)
     {
@@ -313,7 +312,6 @@ void int_hash_delete(struct Hash *table, unsigned int intkey, const void *data,
  */
 void hash_destroy(struct Hash **ptr, void (*destroy)(void *))
 {
-  int i;
   struct Hash *pptr = NULL;
   struct HashElem *elem = NULL, *tmp = NULL;
 
@@ -321,7 +319,7 @@ void hash_destroy(struct Hash **ptr, void (*destroy)(void *))
     return;
 
   pptr = *ptr;
-  for (i = 0; i < pptr->nelem; i++)
+  for (int i = 0; i < pptr->nelem; i++)
   {
     for (elem = pptr->table[i]; elem;)
     {
