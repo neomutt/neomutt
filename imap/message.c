@@ -79,6 +79,13 @@ static void imap_alloc_msn_index (IMAP_DATA *idata, unsigned int msn_count)
   /* Add a little padding, like mx_allloc_memory() */
   new_size = msn_count + 25;
 
+  if (new_size * sizeof (HEADER *) < idata->msn_index_size * sizeof (HEADER *))
+  {
+    mutt_error _("Integer overflow -- can't allocate memory.");
+    sleep (1);
+    mutt_exit (1);
+  }
+
   if (!idata->msn_index)
     idata->msn_index = safe_calloc (new_size, sizeof (HEADER *));
   else
@@ -394,9 +401,9 @@ int imap_read_headers (IMAP_DATA* idata, unsigned int msn_begin, unsigned int ms
 
     /* In case we get new mail while fetching the headers.
      *
-     * Note: it is possible to handle EXPUNGE responses while pulling
-     * down the headers.  Therefore, we need to use the current state
-     * of max_msn, not fetch_msn_end to set the start range.
+     * Note: The RFC says we shouldn't get any EXPUNGE responses in the
+     * middle of a FETCH.  But just to be cautious, use the current state
+     * of max_msn, not fetch_msn_end to set the next start range.
      */
     if (idata->reopen & IMAP_NEWMAIL_PENDING)
     {
