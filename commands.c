@@ -382,8 +382,8 @@ static void pipe_msg(struct Header *h, FILE *fp, int decode, int print)
 
 
 /* the following code is shared between printing and piping */
-static int _mutt_pipe_message(struct Header *h, char *cmd, int decode, int print,
-                              int split, char *sep)
+static int _mutt_pipe_message(struct Header *h, char *cmd, int decode,
+                              int print, int split, char *sep)
 {
   int i, rc = 0;
   pid_t thepid;
@@ -664,7 +664,8 @@ void mutt_display_address(struct Envelope *env)
   mutt_message("%s: %s", pfx, buf);
 }
 
-static void set_copy_flags(struct Header *hdr, int decode, int decrypt, int *cmflags, int *chflags)
+static void set_copy_flags(struct Header *hdr, int decode, int decrypt,
+                           int *cmflags, int *chflags)
 {
   *cmflags = 0;
   *chflags = CH_UPDATE_LEN;

@@ -367,7 +367,8 @@ void rfc1524_free_entry(struct Rfc1524MailcapEntry **entry)
  * in *entry, and returns 1.  On failure (not found), returns 0.
  * If entry == NULL just return 1 if the given type is found.
  */
-int rfc1524_mailcap_lookup(struct Body *a, char *type, struct Rfc1524MailcapEntry *entry, int opt)
+int rfc1524_mailcap_lookup(struct Body *a, char *type,
+                           struct Rfc1524MailcapEntry *entry, int opt)
 {
   char path[_POSIX_PATH_MAX];
   int x;

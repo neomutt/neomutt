@@ -160,7 +160,8 @@ int mutt_group_context_remove_adrlist(struct GroupContext *ctx, struct Address *
   return rv;
 }
 
-int mutt_group_context_add_rx(struct GroupContext *ctx, const char *s, int flags, struct Buffer *err)
+int mutt_group_context_add_rx(struct GroupContext *ctx, const char *s,
+                              int flags, struct Buffer *err)
 {
   int rv = 0;
 

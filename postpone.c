@@ -253,7 +253,8 @@ static struct Header *select_msg(void)
  *      0               normal exit
  *      SENDREPLY       recalled message is a reply
  */
-int mutt_get_postponed(struct Context *ctx, struct Header *hdr, struct Header **cur, char *fcc, size_t fcclen)
+int mutt_get_postponed(struct Context *ctx, struct Header *hdr,
+                       struct Header **cur, char *fcc, size_t fcclen)
 {
   struct Header *h = NULL;
   int code = SENDPOSTPONED;
@@ -561,7 +562,8 @@ int mutt_parse_crypt_hdr(const char *p, int set_empty_signas, int crypt_app)
  *             Resent messages enable header weeding, and also
  *             discard any existing Message-ID and Mail-Followup-To.
  */
-int mutt_prepare_template(FILE *fp, struct Context *ctx, struct Header *newhdr, struct Header *hdr, short resend)
+int mutt_prepare_template(FILE *fp, struct Context *ctx, struct Header *newhdr,
+                          struct Header *hdr, short resend)
 {
   struct Message *msg = NULL;
   char file[_POSIX_PATH_MAX];

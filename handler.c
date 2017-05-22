@@ -1678,7 +1678,8 @@ static int text_plain_handler(struct Body *b, struct State *s)
   return 0;
 }
 
-static int run_decode_and_handler(struct Body *b, struct State *s, handler_t handler, int plaintext)
+static int run_decode_and_handler(struct Body *b, struct State *s,
+                                  handler_t handler, int plaintext)
 {
   int origType;
   char *savePrefix = NULL;

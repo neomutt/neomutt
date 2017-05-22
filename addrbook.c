@@ -82,7 +82,8 @@ static const char *alias_format_str(char *dest, size_t destlen, size_t col, int 
 static void alias_entry(char *s, size_t slen, struct Menu *m, int num)
 {
   mutt_FormatString(s, slen, 0, MuttIndexWindow->cols, NONULL(AliasFmt), alias_format_str,
-                    (unsigned long) ((struct Alias **) m->data)[num], MUTT_FORMAT_ARROWCURSOR);
+                    (unsigned long) ((struct Alias **) m->data)[num],
+                    MUTT_FORMAT_ARROWCURSOR);
 }
 
 static int alias_tag(struct Menu *menu, int n, int m)

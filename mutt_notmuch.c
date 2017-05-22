@@ -1111,7 +1111,8 @@ static struct Header *get_mutt_header(struct Context *ctx, notmuch_message_t *ms
   return h;
 }
 
-static void append_message(struct Context *ctx, notmuch_query_t *q, notmuch_message_t *msg, int dedup)
+static void append_message(struct Context *ctx, notmuch_query_t *q,
+                           notmuch_message_t *msg, int dedup)
 {
   char *newpath = NULL;
   const char *path = NULL;
@@ -1198,7 +1199,8 @@ done:
   FREE(&newpath);
 }
 
-static void append_replies(struct Context *ctx, notmuch_query_t *q, notmuch_message_t *top, int dedup)
+static void append_replies(struct Context *ctx, notmuch_query_t *q,
+                           notmuch_message_t *top, int dedup)
 {
   notmuch_messages_t *msgs = NULL;
 
@@ -1213,7 +1215,8 @@ static void append_replies(struct Context *ctx, notmuch_query_t *q, notmuch_mess
   }
 }
 
-static void append_thread(struct Context *ctx, notmuch_query_t *q, notmuch_thread_t *thread, int dedup)
+static void append_thread(struct Context *ctx, notmuch_query_t *q,
+                          notmuch_thread_t *thread, int dedup)
 {
   notmuch_messages_t *msgs = NULL;
 
@@ -1429,7 +1432,8 @@ static int update_header_flags(struct Context *ctx, struct Header *hdr, const ch
   return 0;
 }
 
-static int rename_maildir_filename(const char *old, char *newpath, size_t newsz, struct Header *h)
+static int rename_maildir_filename(const char *old, char *newpath, size_t newsz,
+                                   struct Header *h)
 {
   char filename[_POSIX_PATH_MAX];
   char suffix[_POSIX_PATH_MAX];
@@ -1896,7 +1900,8 @@ done:
   return rc;
 }
 
-int nm_update_filename(struct Context *ctx, const char *old, const char *new, struct Header *h)
+int nm_update_filename(struct Context *ctx, const char *old, const char *new,
+                       struct Header *h)
 {
   char buf[PATH_MAX];
   int rc;

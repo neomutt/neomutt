@@ -353,7 +353,8 @@ static int crypt_id_is_valid(struct CryptKeyinfo *key)
 
 /* Return a bit vector describing how well the addresses ADDR and
    U_ADDR match and whether KEY is valid. */
-static int crypt_id_matches_addr(struct Address *addr, struct Address *u_addr, struct CryptKeyinfo *key)
+static int crypt_id_matches_addr(struct Address *addr, struct Address *u_addr,
+                                 struct CryptKeyinfo *key)
 {
   int rv = 0;
 
@@ -1640,7 +1641,8 @@ int smime_gpgme_verify_one(struct Body *sigbdy, struct State *s, const char *tem
    a flag in R_IS_SIGNED to indicate whether this is a combined
    encrypted and signed message, for S/MIME it returns true when it is
    not a encrypted but a signed message.  */
-static struct Body *decrypt_part(struct Body *a, struct State *s, FILE *fpout, int is_smime, int *r_is_signed)
+static struct Body *decrypt_part(struct Body *a, struct State *s, FILE *fpout,
+                                 int is_smime, int *r_is_signed)
 {
   if (!a || !s || !fpout)
     return NULL;
@@ -3836,8 +3838,9 @@ static struct List *crypt_add_string_to_hints(struct List *hints, const char *st
 /* Display a menu to select a key from the array KEYS. FORCED_VALID
    will be set to true on return if the user did override the
    key's validity. */
-static struct CryptKeyinfo *crypt_select_key(struct CryptKeyinfo *keys, struct Address *p, const char *s,
-                                     unsigned int app, int *forced_valid)
+static struct CryptKeyinfo *crypt_select_key(struct CryptKeyinfo *keys,
+                                             struct Address *p, const char *s,
+                                             unsigned int app, int *forced_valid)
 {
   int keymax;
   struct CryptKeyinfo **key_table;
@@ -4030,8 +4033,9 @@ static struct CryptKeyinfo *crypt_select_key(struct CryptKeyinfo *keys, struct A
   return k;
 }
 
-static struct CryptKeyinfo *crypt_getkeybyaddr(struct Address *a, short abilities, unsigned int app,
-                                       int *forced_valid, int oppenc_mode)
+static struct CryptKeyinfo *crypt_getkeybyaddr(struct Address *a,
+                                               short abilities, unsigned int app,
+                                               int *forced_valid, int oppenc_mode)
 {
   struct Address *r = NULL, *p = NULL;
   struct List *hints = NULL;
@@ -4179,7 +4183,8 @@ static struct CryptKeyinfo *crypt_getkeybyaddr(struct Address *a, short abilitie
   return k;
 }
 
-static struct CryptKeyinfo *crypt_getkeybystr(char *p, short abilities, unsigned int app, int *forced_valid)
+static struct CryptKeyinfo *crypt_getkeybystr(char *p, short abilities,
+                                              unsigned int app, int *forced_valid)
 {
   struct List *hints = NULL;
   struct CryptKeyinfo *keys = NULL;
@@ -4249,7 +4254,7 @@ static struct CryptKeyinfo *crypt_getkeybystr(char *p, short abilities, unsigned
    encrypt) and APP the type of the requested key; ether S/MIME or
    PGP.  Return a copy of the key or NULL if not found. */
 static struct CryptKeyinfo *crypt_ask_for_key(char *tag, char *whatfor, short abilities,
-                                      unsigned int app, int *forced_valid)
+                                              unsigned int app, int *forced_valid)
 {
   struct CryptKeyinfo *key = NULL;
   char resp[SHORT_STRING];

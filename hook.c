@@ -44,9 +44,9 @@
 
 struct Hook
 {
-  int type;           /* hook type */
-  struct Regex rx;          /* regular expression */
-  char *command;      /* filename, command or pattern to execute */
+  int type;                /* hook type */
+  struct Regex rx;         /* regular expression */
+  char *command;           /* filename, command or pattern to execute */
   struct Pattern *pattern; /* used for fcc,save,send-hook */
   struct Hook *next;
 };
@@ -55,7 +55,8 @@ static struct Hook *Hooks = NULL;
 
 static int current_hook_type = 0;
 
-int mutt_parse_hook(struct Buffer *buf, struct Buffer *s, unsigned long data, struct Buffer *err)
+int mutt_parse_hook(struct Buffer *buf, struct Buffer *s, unsigned long data,
+                    struct Buffer *err)
 {
   struct Hook *ptr = NULL;
   struct Buffer command, pattern;
@@ -296,7 +297,8 @@ static void delete_hooks(int type)
   }
 }
 
-int mutt_parse_unhook(struct Buffer *buf, struct Buffer *s, unsigned long data, struct Buffer *err)
+int mutt_parse_unhook(struct Buffer *buf, struct Buffer *s, unsigned long data,
+                      struct Buffer *err)
 {
   while (MoreArgs(s))
   {
@@ -426,7 +428,8 @@ void mutt_message_hook(struct Context *ctx, struct Header *hdr, int type)
   current_hook_type = 0;
 }
 
-static int addr_hook(char *path, size_t pathlen, int type, struct Context *ctx, struct Header *hdr)
+static int addr_hook(char *path, size_t pathlen, int type, struct Context *ctx,
+                     struct Header *hdr)
 {
   struct Hook *hook = NULL;
   struct PatternCache cache;

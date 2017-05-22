@@ -104,8 +104,9 @@ void mutt_update_tree(struct AttachPtr **idx, short idxlen)
   }
 }
 
-struct AttachPtr **mutt_gen_attach_list(struct Body *m, int parent_type, struct AttachPtr **idx,
-                                 short *idxlen, short *idxmax, int level, int compose)
+struct AttachPtr **mutt_gen_attach_list(struct Body *m, int parent_type,
+                                        struct AttachPtr **idx, short *idxlen,
+                                        short *idxmax, int level, int compose)
 {
   struct AttachPtr *new = NULL;
   int i;
@@ -424,7 +425,8 @@ static void prepend_curdir(char *dst, size_t dstlen)
   dst[l + 2] = 0;
 }
 
-static int query_save_attachment(FILE *fp, struct Body *body, struct Header *hdr, char **directory)
+static int query_save_attachment(FILE *fp, struct Body *body,
+                                 struct Header *hdr, char **directory)
 {
   char *prompt = NULL;
   char buf[_POSIX_PATH_MAX], tfile[_POSIX_PATH_MAX];
@@ -505,7 +507,8 @@ static int query_save_attachment(FILE *fp, struct Body *body, struct Header *hdr
   return 0;
 }
 
-void mutt_save_attachment_list(FILE *fp, int tag, struct Body *top, struct Header *hdr, struct Menu *menu)
+void mutt_save_attachment_list(FILE *fp, int tag, struct Body *top,
+                               struct Header *hdr, struct Menu *menu)
 {
   char buf[_POSIX_PATH_MAX], tfile[_POSIX_PATH_MAX];
   char *directory = NULL;
@@ -647,8 +650,8 @@ static void pipe_attachment(FILE *fp, struct Body *b, struct State *state)
   }
 }
 
-static void pipe_attachment_list(char *command, FILE *fp, int tag, struct Body *top,
-                                 int filter, struct State *state)
+static void pipe_attachment_list(char *command, FILE *fp, int tag,
+                                 struct Body *top, int filter, struct State *state)
 {
   for (; top; top = top->next)
   {
@@ -801,8 +804,8 @@ void mutt_print_attachment_list(FILE *fp, int tag, struct Body *top)
     print_attachment_list(fp, tag, top, &state);
 }
 
-static void update_attach_index(struct Body *cur, struct AttachPtr ***idxp, short *idxlen,
-                                short *idxmax, struct Menu *menu)
+static void update_attach_index(struct Body *cur, struct AttachPtr ***idxp,
+                                short *idxlen, short *idxmax, struct Menu *menu)
 {
   struct AttachPtr **idx = *idxp;
   while (--(*idxlen) >= 0)
@@ -821,8 +824,9 @@ static void update_attach_index(struct Body *cur, struct AttachPtr ***idxp, shor
 }
 
 
-int mutt_attach_display_loop(struct Menu *menu, int op, FILE *fp, struct Header *hdr, struct Body *cur,
-                             struct AttachPtr ***idxp, short *idxlen, short *idxmax, int recv)
+int mutt_attach_display_loop(struct Menu *menu, int op, FILE *fp, struct Header *hdr,
+                             struct Body *cur, struct AttachPtr ***idxp,
+                             short *idxlen, short *idxmax, int recv)
 {
   struct AttachPtr **idx = *idxp;
 

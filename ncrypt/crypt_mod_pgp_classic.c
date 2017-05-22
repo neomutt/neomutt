@@ -23,9 +23,9 @@
 #include <stdio.h>
 #include "crypt_mod.h"
 #include "ncrypt.h"
+#include "pgp.h"
 #include "pgpinvoke.h"
 #include "pgpkey.h"
-#include "pgp.h"
 
 struct Address;
 struct Body;
@@ -86,7 +86,8 @@ static int crypt_mod_pgp_check_traditional(FILE *fp, struct Body *b, int tagged_
   return pgp_check_traditional(fp, b, tagged_only);
 }
 
-static struct Body *crypt_mod_pgp_traditional_encryptsign(struct Body *a, int flags, char *keylist)
+static struct Body *crypt_mod_pgp_traditional_encryptsign(struct Body *a,
+                                                          int flags, char *keylist)
 {
   return pgp_traditional_encryptsign(a, flags, keylist);
 }
@@ -106,7 +107,8 @@ static void crypt_mod_pgp_invoke_import(const char *fname)
   pgp_invoke_import(fname);
 }
 
-static void crypt_mod_pgp_extract_keys_from_attachment_list(FILE *fp, int tag, struct Body *top)
+static void crypt_mod_pgp_extract_keys_from_attachment_list(FILE *fp, int tag,
+                                                            struct Body *top)
 {
   pgp_extract_keys_from_attachment_list(fp, tag, top);
 }

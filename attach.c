@@ -329,7 +329,8 @@ void mutt_check_lookup_list(struct Body *b, char *type, int len)
 }
 
 /* returns -1 on error, 0 or the return code from mutt_do_pager() on success */
-int mutt_view_attachment(FILE *fp, struct Body *a, int flag, struct Header *hdr, struct AttachPtr **idx, short idxlen)
+int mutt_view_attachment(FILE *fp, struct Body *a, int flag, struct Header *hdr,
+                         struct AttachPtr **idx, short idxlen)
 {
   char tempfile[_POSIX_PATH_MAX] = "";
   char pagerfile[_POSIX_PATH_MAX] = "";

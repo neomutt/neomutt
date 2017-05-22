@@ -519,7 +519,8 @@ struct ContentState
 };
 
 
-static void update_content_info(struct Content *info, struct ContentState *s, char *d, size_t dlen)
+static void update_content_info(struct Content *info, struct ContentState *s,
+                                char *d, size_t dlen)
 {
   int from = s->from;
   int whitespace = s->whitespace;
@@ -1938,7 +1939,8 @@ out:
  */
 
 
-int mutt_write_rfc822_header(FILE *fp, struct Envelope *env, struct Body *attach, int mode, int privacy)
+int mutt_write_rfc822_header(FILE *fp, struct Envelope *env,
+                             struct Body *attach, int mode, int privacy)
 {
   char buffer[LONG_STRING];
   char *p = NULL, *q = NULL;
@@ -2812,8 +2814,8 @@ int mutt_write_multiple_fcc(const char *path, struct Header *hdr, const char *ms
   return 0;
 }
 
-int mutt_write_fcc(const char *path, struct Header *hdr, const char *msgid, int post,
-                   char *fcc, char **finalpath)
+int mutt_write_fcc(const char *path, struct Header *hdr, const char *msgid,
+                   int post, char *fcc, char **finalpath)
 {
   struct Context f;
   struct Message *msg = NULL;

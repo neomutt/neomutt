@@ -1320,8 +1320,8 @@ static const char *hdr_format_str(char *dest, size_t destlen, size_t col, int co
 #undef THREAD_OLD
 }
 
-void _mutt_make_string(char *dest, size_t destlen, const char *s, struct Context *ctx,
-                       struct Header *hdr, format_flag flags)
+void _mutt_make_string(char *dest, size_t destlen, const char *s,
+                       struct Context *ctx, struct Header *hdr, format_flag flags)
 {
   struct HdrFormatInfo hfi;
 

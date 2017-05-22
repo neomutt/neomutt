@@ -37,13 +37,13 @@
 #include <sys/stat.h>
 #include <unistd.h>
 #include "mutt.h"
-#include "mutt_idna.h"
 #include "mutt_ssl.h"
 #include "account.h"
 #include "globals.h"
 #include "keymap.h"
 #include "keymap_defs.h"
 #include "lib.h"
+#include "mutt_idna.h"
 #include "mutt_menu.h"
 #include "mutt_socket.h"
 #include "options.h"

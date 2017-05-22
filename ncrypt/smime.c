@@ -608,7 +608,7 @@ static struct SmimeKey *smime_get_key_by_hash(char *hash, short public)
 }
 
 static struct SmimeKey *smime_get_key_by_addr(char *mailbox, short abilities,
-                                          short public, short may_ask)
+                                              short public, short may_ask)
 {
   struct SmimeKey *results = NULL, *result = NULL;
   struct SmimeKey *matches = NULL;

@@ -409,7 +409,8 @@ static int parse_color_name(const char *s, int *col, int *attr, int is_fg, struc
 #endif
 
 
-static void do_uncolor(struct Buffer *buf, struct Buffer *s, struct ColorLine **cl, int *do_cache, int parse_uncolor)
+static void do_uncolor(struct Buffer *buf, struct Buffer *s,
+                       struct ColorLine **cl, int *do_cache, int parse_uncolor)
 {
   struct ColorLine *tmp = NULL, *last = NULL;
 
@@ -550,14 +551,16 @@ static int _mutt_parse_uncolor(struct Buffer *buf, struct Buffer *s, unsigned lo
 
 #ifdef HAVE_COLOR
 
-int mutt_parse_uncolor(struct Buffer *buf, struct Buffer *s, unsigned long data, struct Buffer *err)
+int mutt_parse_uncolor(struct Buffer *buf, struct Buffer *s, unsigned long data,
+                       struct Buffer *err)
 {
   return _mutt_parse_uncolor(buf, s, data, err, 1);
 }
 
 #endif
 
-int mutt_parse_unmono(struct Buffer *buf, struct Buffer *s, unsigned long data, struct Buffer *err)
+int mutt_parse_unmono(struct Buffer *buf, struct Buffer *s, unsigned long data,
+                      struct Buffer *err)
 {
   return _mutt_parse_uncolor(buf, s, data, err, 0);
 }
@@ -650,7 +653,8 @@ static int add_pattern(struct ColorLine **top, const char *s, int sensitive, int
   return 0;
 }
 
-static int parse_object(struct Buffer *buf, struct Buffer *s, int *o, int *ql, struct Buffer *err)
+static int parse_object(struct Buffer *buf, struct Buffer *s, int *o, int *ql,
+                        struct Buffer *err)
 {
   int q_level = 0;
   char *eptr = NULL;
@@ -703,11 +707,13 @@ static int parse_object(struct Buffer *buf, struct Buffer *s, int *o, int *ql, s
   return 0;
 }
 
-typedef int (*parser_callback_t)(struct Buffer *, struct Buffer *, int *, int *, int *, struct Buffer *);
+typedef int (*parser_callback_t)(struct Buffer *, struct Buffer *, int *, int *,
+                                 int *, struct Buffer *);
 
 #ifdef HAVE_COLOR
 
-static int parse_color_pair(struct Buffer *buf, struct Buffer *s, int *fg, int *bg, int *attr, struct Buffer *err)
+static int parse_color_pair(struct Buffer *buf, struct Buffer *s, int *fg,
+                            int *bg, int *attr, struct Buffer *err)
 {
   if (!MoreArgs(s))
   {
@@ -736,7 +742,8 @@ static int parse_color_pair(struct Buffer *buf, struct Buffer *s, int *fg, int *
 
 #endif
 
-static int parse_attr_spec(struct Buffer *buf, struct Buffer *s, int *fg, int *bg, int *attr, struct Buffer *err)
+static int parse_attr_spec(struct Buffer *buf, struct Buffer *s, int *fg,
+                           int *bg, int *attr, struct Buffer *err)
 {
   if (fg)
     *fg = -1;
@@ -938,7 +945,8 @@ static int _mutt_parse_color(struct Buffer *buf, struct Buffer *s, struct Buffer
 
 #ifdef HAVE_COLOR
 
-int mutt_parse_color(struct Buffer *buff, struct Buffer *s, unsigned long data, struct Buffer *err)
+int mutt_parse_color(struct Buffer *buff, struct Buffer *s, unsigned long data,
+                     struct Buffer *err)
 {
   int dry_run = 0;
 
@@ -950,7 +958,8 @@ int mutt_parse_color(struct Buffer *buff, struct Buffer *s, unsigned long data, 
 
 #endif
 
-int mutt_parse_mono(struct Buffer *buff, struct Buffer *s, unsigned long data, struct Buffer *err)
+int mutt_parse_mono(struct Buffer *buff, struct Buffer *s, unsigned long data,
+                    struct Buffer *err)
 {
   int dry_run = 0;
 

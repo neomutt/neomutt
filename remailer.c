@@ -88,7 +88,8 @@ static int mix_get_caps(const char *capstr)
   return caps;
 }
 
-static void mix_add_entry(struct Remailer ***type2_list, struct Remailer *entry, size_t *slots, size_t *used)
+static void mix_add_entry(struct Remailer ***type2_list, struct Remailer *entry,
+                          size_t *slots, size_t *used)
 {
   if (*used == *slots)
   {

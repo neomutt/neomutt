@@ -417,7 +417,8 @@ static struct PgpKeyInfo *pgp_parse_keyinfo(unsigned char *buff, size_t l)
   }
 }
 
-static int pgp_parse_pgp2_sig(unsigned char *buff, size_t l, struct PgpKeyInfo *p, struct PgpSignature *s)
+static int pgp_parse_pgp2_sig(unsigned char *buff, size_t l,
+                              struct PgpKeyInfo *p, struct PgpSignature *s)
 {
   unsigned char sigtype;
   time_t sig_gen_time;
@@ -457,7 +458,8 @@ static int pgp_parse_pgp2_sig(unsigned char *buff, size_t l, struct PgpKeyInfo *
   return 0;
 }
 
-static int pgp_parse_pgp3_sig(unsigned char *buff, size_t l, struct PgpKeyInfo *p, struct PgpSignature *s)
+static int pgp_parse_pgp3_sig(unsigned char *buff, size_t l,
+                              struct PgpKeyInfo *p, struct PgpSignature *s)
 {
   unsigned char sigtype;
   unsigned char skt;
@@ -596,7 +598,8 @@ static int pgp_parse_pgp3_sig(unsigned char *buff, size_t l, struct PgpKeyInfo *
   return 0;
 }
 
-static int pgp_parse_sig(unsigned char *buff, size_t l, struct PgpKeyInfo *p, struct PgpSignature *sig)
+static int pgp_parse_sig(unsigned char *buff, size_t l, struct PgpKeyInfo *p,
+                         struct PgpSignature *sig)
 {
   if (!buff || l < 2 || !p)
     return -1;

@@ -168,7 +168,8 @@ static int quote_width(struct State *s, int ql)
   return width;
 }
 
-static void print_flowed_line(char *line, struct State *s, int ql, struct FlowedState *fst, int term)
+static void print_flowed_line(char *line, struct State *s, int ql,
+                              struct FlowedState *fst, int term)
 {
   size_t width, w, words = 0;
   char *p = NULL;

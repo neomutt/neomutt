@@ -42,6 +42,7 @@
 #include "body.h"
 #include "charset.h"
 #include "crypt.h"
+#include "cryptglue.h"
 #include "filter.h"
 #include "globals.h"
 #include "header.h"
@@ -56,7 +57,6 @@
 #include "pgplib.h"
 #include "pgpmicalg.h"
 #include "protos.h"
-#include "cryptglue.h"
 #include "rfc822.h"
 #include "state.h"
 
@@ -792,7 +792,8 @@ void pgp_extract_keys_from_attachment_list(FILE *fp, int tag, struct Body *top)
   unset_option(OPTDONTHANDLEPGPKEYS);
 }
 
-static struct Body *pgp_decrypt_part(struct Body *a, struct State *s, FILE *fpout, struct Body *p)
+static struct Body *pgp_decrypt_part(struct Body *a, struct State *s,
+                                     FILE *fpout, struct Body *p)
 {
   if (!a || !s || !fpout || !p)
     return NULL;

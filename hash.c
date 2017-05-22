@@ -257,8 +257,8 @@ struct HashElem *hash_find_bucket(const struct Hash *table, const char *strkey)
   return table->table[hash];
 }
 
-static void union_hash_delete(struct Hash *table, union hash_key key, const void *data,
-                              void (*destroy)(void *))
+static void union_hash_delete(struct Hash *table, union hash_key key,
+                              const void *data, void (*destroy)(void *))
 {
   int hash;
   struct HashElem *ptr, **last;
@@ -292,7 +292,8 @@ static void union_hash_delete(struct Hash *table, union hash_key key, const void
   }
 }
 
-void hash_delete(struct Hash *table, const char *strkey, const void *data, void (*destroy)(void *))
+void hash_delete(struct Hash *table, const char *strkey, const void *data,
+                 void (*destroy)(void *))
 {
   union hash_key key;
   key.strkey = strkey;

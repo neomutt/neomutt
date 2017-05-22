@@ -892,8 +892,8 @@ bool imap_has_flag(struct List *flag_list, const char *flag)
 
 /* Note: headers must be in SORT_ORDER. See imap_exec_msgset for args.
  * Pos is an opaque pointer a la strtok. It should be 0 at first call. */
-static int imap_make_msg_set(struct ImapData *idata, struct Buffer *buf, int flag,
-                             int changed, int invert, int *pos)
+static int imap_make_msg_set(struct ImapData *idata, struct Buffer *buf,
+                             int flag, int changed, int invert, int *pos)
 {
   struct Header **hdrs = idata->ctx->hdrs;
   int count = 0; /* number of messages in message set */
@@ -1069,7 +1069,8 @@ static bool compare_flags(struct Header *h)
 }
 
 /* Update the IMAP server to reflect the flags a single message.  */
-int imap_sync_message(struct ImapData *idata, struct Header *hdr, struct Buffer *cmd, int *err_continue)
+int imap_sync_message(struct ImapData *idata, struct Header *hdr,
+                      struct Buffer *cmd, int *err_continue)
 {
   char flags[LONG_STRING];
   char uid[11];

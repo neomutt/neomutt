@@ -479,7 +479,8 @@ static void unlink_message(struct MuttThread **old, struct MuttThread *cur)
 }
 
 /* add cur as a prior sibling of *new, with parent newparent */
-static void insert_message(struct MuttThread **new, struct MuttThread *newparent, struct MuttThread *cur)
+static void insert_message(struct MuttThread **new,
+                           struct MuttThread *newparent, struct MuttThread *cur)
 {
   if (*new)
     (*new)->prev = cur;
@@ -512,7 +513,8 @@ static struct Hash *make_subj_hash(struct Context *ctx)
 static void pseudo_threads(struct Context *ctx)
 {
   struct MuttThread *tree = ctx->tree, *top = tree;
-  struct MuttThread *tmp = NULL, *cur = NULL, *parent = NULL, *curchild = NULL, *nextchild = NULL;
+  struct MuttThread *tmp = NULL, *cur = NULL, *parent = NULL, *curchild = NULL,
+                    *nextchild = NULL;
 
   if (!ctx->subj_hash)
     ctx->subj_hash = make_subj_hash(ctx);
@@ -593,7 +595,8 @@ static int compare_threads(const void *a, const void *b)
   static sort_t *sort_func = NULL;
 
   if (a && b)
-    return ((*sort_func)(&(*((struct MuttThread **) a))->sort_key, &(*((struct MuttThread **) b))->sort_key));
+    return ((*sort_func)(&(*((struct MuttThread **) a))->sort_key,
+                         &(*((struct MuttThread **) b))->sort_key));
   /* a hack to let us reset sort_func even though we can't
    * have extra arguments because of qsort
    */

@@ -679,7 +679,8 @@ void mutt_make_forward_subject(struct Envelope *env, struct Context *ctx, struct
   mutt_str_replace(&env->subject, buffer);
 }
 
-void mutt_make_misc_reply_headers(struct Envelope *env, struct Context *ctx, struct Header *cur, struct Envelope *curenv)
+void mutt_make_misc_reply_headers(struct Envelope *env, struct Context *ctx,
+                                  struct Header *cur, struct Envelope *curenv)
 {
   if (!env || !curenv)
     return;
@@ -697,7 +698,8 @@ void mutt_make_misc_reply_headers(struct Envelope *env, struct Context *ctx, str
     env->subject = safe_strdup(EmptySubject);
 }
 
-void mutt_add_to_reference_headers(struct Envelope *env, struct Envelope *curenv, struct List ***pp, struct List ***qq)
+void mutt_add_to_reference_headers(struct Envelope *env, struct Envelope *curenv,
+                                   struct List ***pp, struct List ***qq)
 {
   struct List **p = NULL, **q = NULL;
 
@@ -735,7 +737,8 @@ void mutt_add_to_reference_headers(struct Envelope *env, struct Envelope *curenv
 #endif
 }
 
-static void make_reference_headers(struct Envelope *curenv, struct Envelope *env, struct Context *ctx)
+static void make_reference_headers(struct Envelope *curenv,
+                                   struct Envelope *env, struct Context *ctx)
 {
   if (!env || !ctx)
     return;
@@ -766,7 +769,8 @@ static void make_reference_headers(struct Envelope *curenv, struct Envelope *env
     mutt_free_list(&env->references);
 }
 
-static int envelope_defaults(struct Envelope *env, struct Context *ctx, struct Header *cur, int flags)
+static int envelope_defaults(struct Envelope *env, struct Context *ctx,
+                             struct Header *cur, int flags)
 {
   struct Envelope *curenv = NULL;
   int i = 0, tag = 0;
@@ -841,9 +845,9 @@ static int envelope_defaults(struct Envelope *env, struct Context *ctx, struct H
   return 0;
 }
 
-static int generate_body(FILE *tempfp, /* stream for outgoing message */
+static int generate_body(FILE *tempfp,        /* stream for outgoing message */
                          struct Header *msg,  /* header for outgoing message */
-                         int flags,    /* compose mode */
+                         int flags,           /* compose mode */
                          struct Context *ctx, /* current mailbox */
                          struct Header *cur)  /* current message */
 {
@@ -1295,11 +1299,11 @@ static int mutt_search_attach_keyword(char *filename)
  *        -1 if the message was aborted or an error occurred
  *         1 if the message was postponed
  */
-int ci_send_message(int flags,      /* send mode */
-                    struct Header *msg,    /* template to use for new message */
-                    char *tempfile, /* file specified by -i or -H */
-                    struct Context *ctx,   /* current mailbox */
-                    struct Header *cur)    /* current message */
+int ci_send_message(int flags,           /* send mode */
+                    struct Header *msg,  /* template to use for new message */
+                    char *tempfile,      /* file specified by -i or -H */
+                    struct Context *ctx, /* current mailbox */
+                    struct Header *cur)  /* current message */
 {
   char buffer[LONG_STRING];
   char fcc[_POSIX_PATH_MAX] = ""; /* where to copy this message */

@@ -634,7 +634,8 @@ static const char *hcache_per_folder(const char *path, const char *folder, hcach
 /* This function transforms a header into a char so that it is useable by
  * db_store.
  */
-static void *hcache_dump(header_cache_t *h, struct Header *header, int *off, unsigned int uidvalidity)
+static void *hcache_dump(header_cache_t *h, struct Header *header, int *off,
+                         unsigned int uidvalidity)
 {
   unsigned char *d = NULL;
   struct Header nh;

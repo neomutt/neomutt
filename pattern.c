@@ -612,7 +612,8 @@ static int report_regerror(int regerr, regex_t *preg, struct Buffer *err)
   return RANGE_E_SYNTAX;
 }
 
-static bool is_context_available(struct Buffer *s, regmatch_t pmatch[], int kind, struct Buffer *err)
+static bool is_context_available(struct Buffer *s, regmatch_t pmatch[],
+                                 int kind, struct Buffer *err)
 {
   char *context_loc = NULL;
   const char *context_req_chars[] = {
@@ -707,7 +708,8 @@ static void order_range(struct Pattern *pat)
   pat->max = num;
 }
 
-static int eat_range_by_regexp(struct Pattern *pat, struct Buffer *s, int kind, struct Buffer *err)
+static int eat_range_by_regexp(struct Pattern *pat, struct Buffer *s, int kind,
+                               struct Buffer *err)
 {
   int regerr;
   regmatch_t pmatch[RANGE_RX_GROUPS];
@@ -856,7 +858,7 @@ static const struct PatternFlags
   { 0, 0, 0, NULL },
 };
 
-static struct Pattern *SearchPattern = NULL;          /* current search pattern */
+static struct Pattern *SearchPattern = NULL;     /* current search pattern */
 static char LastSearch[STRING] = { 0 };          /* last pattern searched for */
 static char LastSearchExpn[LONG_STRING] = { 0 }; /* expanded version of
                                                     LastSearch */
@@ -1331,8 +1333,8 @@ static bool perform_and(struct Pattern *pat, pattern_exec_flag flags, struct Con
   return true;
 }
 
-static int perform_or(struct Pattern *pat, pattern_exec_flag flags,
-                      struct Context *ctx, struct Header *hdr, struct PatternCache *cache)
+static int perform_or(struct Pattern *pat, pattern_exec_flag flags, struct Context *ctx,
+                      struct Header *hdr, struct PatternCache *cache)
 {
   for (; pat; pat = pat->next)
     if (mutt_pattern_exec(pat, flags, ctx, hdr, cache) > 0)
@@ -1413,8 +1415,8 @@ static int match_user(int alladdr, struct Address *a1, struct Address *a2)
 }
 
 static int match_threadcomplete(struct Pattern *pat, pattern_exec_flag flags,
-                                struct Context *ctx, struct MuttThread *t, int left, int up,
-                                int right, int down)
+                                struct Context *ctx, struct MuttThread *t,
+                                int left, int up, int right, int down)
 {
   int a;
   struct Header *h = NULL;

@@ -28,11 +28,14 @@
 #include <time.h>
 #include <unistd.h>
 #include "mutt.h"
+#include "pgpkey.h"
 #include "address.h"
 #include "body.h"
+#include "crypt.h"
 #include "filter.h"
 #include "format_flags.h"
 #include "globals.h"
+#include "gnupgparse.h"
 #include "keymap.h"
 #include "keymap_defs.h"
 #include "lib.h"
@@ -41,12 +44,9 @@
 #include "mutt_menu.h"
 #include "ncrypt.h"
 #include "options.h"
-#include "crypt.h"
 #include "pager.h"
 #include "pgp.h"
 #include "pgpinvoke.h"
-#include "gnupgparse.h"
-#include "pgpkey.h"
 #include "pgplib.h"
 #include "protos.h"
 #include "rfc822.h"
@@ -439,7 +439,8 @@ static int pgp_id_matches_addr(struct Address *addr, struct Address *u_addr, str
   return rv;
 }
 
-static struct PgpKeyInfo *pgp_select_key(struct PgpKeyInfo *keys, struct Address *p, const char *s)
+static struct PgpKeyInfo *pgp_select_key(struct PgpKeyInfo *keys,
+                                         struct Address *p, const char *s)
 {
   int keymax;
   struct PgpUid **KeyTable;
@@ -797,7 +798,8 @@ static struct PgpKeyInfo **pgp_get_lastp(struct PgpKeyInfo *p)
   return NULL;
 }
 
-struct PgpKeyInfo *pgp_getkeybyaddr(struct Address *a, short abilities, pgp_ring_t keyring, int oppenc_mode)
+struct PgpKeyInfo *pgp_getkeybyaddr(struct Address *a, short abilities,
+                                    pgp_ring_t keyring, int oppenc_mode)
 {
   struct Address *r = NULL, *p = NULL;
   struct List *hints = NULL;

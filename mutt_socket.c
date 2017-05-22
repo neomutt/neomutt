@@ -27,9 +27,9 @@
 #include <sys/select.h>
 #include <sys/socket.h>
 #include <unistd.h>
-#include "mutt_idna.h"
 #include "mutt_socket.h"
 #include "globals.h"
+#include "mutt_idna.h"
 #include "mutt_tunnel.h"
 #include "options.h"
 #include "protos.h"

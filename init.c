@@ -794,7 +794,8 @@ static void remove_from_list(struct List **l, const char *str)
  *       1 Stop processing the current file
  *      -1 Failed
  */
-static int finish_source(struct Buffer *tmp, struct Buffer *s, unsigned long data, struct Buffer *err)
+static int finish_source(struct Buffer *tmp, struct Buffer *s,
+                         unsigned long data, struct Buffer *err)
 {
   if (MoreArgs(s))
   {
@@ -826,7 +827,8 @@ static int finish_source(struct Buffer *tmp, struct Buffer *s, unsigned long dat
  *       0 Success
  *      -1 Failed
  */
-static int parse_ifdef(struct Buffer *tmp, struct Buffer *s, unsigned long data, struct Buffer *err)
+static int parse_ifdef(struct Buffer *tmp, struct Buffer *s, unsigned long data,
+                       struct Buffer *err)
 {
   int i, j;
   bool res = 0;
@@ -901,7 +903,8 @@ static int parse_ifdef(struct Buffer *tmp, struct Buffer *s, unsigned long data,
   return 0;
 }
 
-static int parse_unignore(struct Buffer *buf, struct Buffer *s, unsigned long data, struct Buffer *err)
+static int parse_unignore(struct Buffer *buf, struct Buffer *s,
+                          unsigned long data, struct Buffer *err)
 {
   do
   {
@@ -917,7 +920,8 @@ static int parse_unignore(struct Buffer *buf, struct Buffer *s, unsigned long da
   return 0;
 }
 
-static int parse_ignore(struct Buffer *buf, struct Buffer *s, unsigned long data, struct Buffer *err)
+static int parse_ignore(struct Buffer *buf, struct Buffer *s,
+                        unsigned long data, struct Buffer *err)
 {
   do
   {
@@ -929,7 +933,8 @@ static int parse_ignore(struct Buffer *buf, struct Buffer *s, unsigned long data
   return 0;
 }
 
-static int parse_list(struct Buffer *buf, struct Buffer *s, unsigned long data, struct Buffer *err)
+static int parse_list(struct Buffer *buf, struct Buffer *s, unsigned long data,
+                      struct Buffer *err)
 {
   do
   {
@@ -950,7 +955,8 @@ static void _alternates_clean(void)
   }
 }
 
-static int parse_alternates(struct Buffer *buf, struct Buffer *s, unsigned long data, struct Buffer *err)
+static int parse_alternates(struct Buffer *buf, struct Buffer *s,
+                            unsigned long data, struct Buffer *err)
 {
   struct GroupContext *gc = NULL;
 
@@ -980,7 +986,8 @@ bail:
   return -1;
 }
 
-static int parse_unalternates(struct Buffer *buf, struct Buffer *s, unsigned long data, struct Buffer *err)
+static int parse_unalternates(struct Buffer *buf, struct Buffer *s,
+                              unsigned long data, struct Buffer *err)
 {
   _alternates_clean();
   do
@@ -997,7 +1004,8 @@ static int parse_unalternates(struct Buffer *buf, struct Buffer *s, unsigned lon
   return 0;
 }
 
-static int parse_replace_list(struct Buffer *buf, struct Buffer *s, unsigned long data, struct Buffer *err)
+static int parse_replace_list(struct Buffer *buf, struct Buffer *s,
+                              unsigned long data, struct Buffer *err)
 {
   struct ReplaceList **list = (struct ReplaceList **) data;
   struct Buffer templ;
@@ -1030,7 +1038,8 @@ static int parse_replace_list(struct Buffer *buf, struct Buffer *s, unsigned lon
   return 0;
 }
 
-static int parse_unreplace_list(struct Buffer *buf, struct Buffer *s, unsigned long data, struct Buffer *err)
+static int parse_unreplace_list(struct Buffer *buf, struct Buffer *s,
+                                unsigned long data, struct Buffer *err)
 {
   struct ReplaceList **list = (struct ReplaceList **) data;
 
@@ -1066,7 +1075,8 @@ static void clear_subject_mods(void)
 }
 
 
-static int parse_subjectrx_list(struct Buffer *buf, struct Buffer *s, unsigned long data, struct Buffer *err)
+static int parse_subjectrx_list(struct Buffer *buf, struct Buffer *s,
+                                unsigned long data, struct Buffer *err)
 {
   int rc;
 
@@ -1077,7 +1087,8 @@ static int parse_subjectrx_list(struct Buffer *buf, struct Buffer *s, unsigned l
 }
 
 
-static int parse_unsubjectrx_list(struct Buffer *buf, struct Buffer *s, unsigned long data, struct Buffer *err)
+static int parse_unsubjectrx_list(struct Buffer *buf, struct Buffer *s,
+                                  unsigned long data, struct Buffer *err)
 {
   int rc;
 
@@ -1088,7 +1099,8 @@ static int parse_unsubjectrx_list(struct Buffer *buf, struct Buffer *s, unsigned
 }
 
 
-static int parse_spam_list(struct Buffer *buf, struct Buffer *s, unsigned long data, struct Buffer *err)
+static int parse_spam_list(struct Buffer *buf, struct Buffer *s,
+                           unsigned long data, struct Buffer *err)
 {
   struct Buffer templ;
 
@@ -1163,7 +1175,8 @@ static int parse_spam_list(struct Buffer *buf, struct Buffer *s, unsigned long d
 }
 
 
-static int parse_unlist(struct Buffer *buf, struct Buffer *s, unsigned long data, struct Buffer *err)
+static int parse_unlist(struct Buffer *buf, struct Buffer *s,
+                        unsigned long data, struct Buffer *err)
 {
   do
   {
@@ -1183,7 +1196,8 @@ static int parse_unlist(struct Buffer *buf, struct Buffer *s, unsigned long data
 }
 
 #ifdef USE_SIDEBAR
-static int parse_path_list(struct Buffer *buf, struct Buffer *s, unsigned long data, struct Buffer *err)
+static int parse_path_list(struct Buffer *buf, struct Buffer *s,
+                           unsigned long data, struct Buffer *err)
 {
   char path[_POSIX_PATH_MAX];
 
@@ -1198,7 +1212,8 @@ static int parse_path_list(struct Buffer *buf, struct Buffer *s, unsigned long d
   return 0;
 }
 
-static int parse_path_unlist(struct Buffer *buf, struct Buffer *s, unsigned long data, struct Buffer *err)
+static int parse_path_unlist(struct Buffer *buf, struct Buffer *s,
+                             unsigned long data, struct Buffer *err)
 {
   char path[_POSIX_PATH_MAX];
 
@@ -1222,7 +1237,8 @@ static int parse_path_unlist(struct Buffer *buf, struct Buffer *s, unsigned long
 }
 #endif
 
-static int parse_lists(struct Buffer *buf, struct Buffer *s, unsigned long data, struct Buffer *err)
+static int parse_lists(struct Buffer *buf, struct Buffer *s, unsigned long data,
+                       struct Buffer *err)
 {
   struct GroupContext *gc = NULL;
 
@@ -1252,7 +1268,8 @@ bail:
 
 typedef enum group_state_t { NONE, RX, ADDR } group_state_t;
 
-static int parse_group(struct Buffer *buf, struct Buffer *s, unsigned long data, struct Buffer *err)
+static int parse_group(struct Buffer *buf, struct Buffer *s, unsigned long data,
+                       struct Buffer *err)
 {
   struct GroupContext *gc = NULL;
   group_state_t state = NONE;
@@ -1334,7 +1351,8 @@ static void _attachments_clean(void)
   }
 }
 
-static int parse_attach_list(struct Buffer *buf, struct Buffer *s, struct List **ldata, struct Buffer *err)
+static int parse_attach_list(struct Buffer *buf, struct Buffer *s,
+                             struct List **ldata, struct Buffer *err)
 {
   struct AttachMatch *a = NULL;
   struct List *listp = NULL, *lastp = NULL;
@@ -1422,7 +1440,8 @@ static int parse_attach_list(struct Buffer *buf, struct Buffer *s, struct List *
   return 0;
 }
 
-static int parse_unattach_list(struct Buffer *buf, struct Buffer *s, struct List **ldata, struct Buffer *err)
+static int parse_unattach_list(struct Buffer *buf, struct Buffer *s,
+                               struct List **ldata, struct Buffer *err)
 {
   struct AttachMatch *a = NULL;
   struct List *lp = NULL, *lastp = NULL, *newlp = NULL;
@@ -1497,7 +1516,8 @@ static int print_attach_list(struct List *lp, char op, char *name)
   while (lp)
   {
     printf("attachments %c%s %s/%s\n", op, name,
-           ((struct AttachMatch *) lp->data)->major, ((struct AttachMatch *) lp->data)->minor);
+           ((struct AttachMatch *) lp->data)->major,
+           ((struct AttachMatch *) lp->data)->minor);
     lp = lp->next;
   }
 
@@ -1505,7 +1525,8 @@ static int print_attach_list(struct List *lp, char op, char *name)
 }
 
 
-static int parse_attachments(struct Buffer *buf, struct Buffer *s, unsigned long data, struct Buffer *err)
+static int parse_attachments(struct Buffer *buf, struct Buffer *s,
+                             unsigned long data, struct Buffer *err)
 {
   char op, *category = NULL;
   struct List **listp;
@@ -1561,7 +1582,8 @@ static int parse_attachments(struct Buffer *buf, struct Buffer *s, unsigned long
   return parse_attach_list(buf, s, listp, err);
 }
 
-static int parse_unattachments(struct Buffer *buf, struct Buffer *s, unsigned long data, struct Buffer *err)
+static int parse_unattachments(struct Buffer *buf, struct Buffer *s,
+                               unsigned long data, struct Buffer *err)
 {
   char op, *p = NULL;
   struct List **listp;
@@ -1603,7 +1625,8 @@ static int parse_unattachments(struct Buffer *buf, struct Buffer *s, unsigned lo
   return parse_unattach_list(buf, s, listp, err);
 }
 
-static int parse_unlists(struct Buffer *buf, struct Buffer *s, unsigned long data, struct Buffer *err)
+static int parse_unlists(struct Buffer *buf, struct Buffer *s,
+                         unsigned long data, struct Buffer *err)
 {
   do
   {
@@ -1619,7 +1642,8 @@ static int parse_unlists(struct Buffer *buf, struct Buffer *s, unsigned long dat
   return 0;
 }
 
-static int parse_subscribe(struct Buffer *buf, struct Buffer *s, unsigned long data, struct Buffer *err)
+static int parse_subscribe(struct Buffer *buf, struct Buffer *s,
+                           unsigned long data, struct Buffer *err)
 {
   struct GroupContext *gc = NULL;
 
@@ -1649,7 +1673,8 @@ bail:
   return -1;
 }
 
-static int parse_unsubscribe(struct Buffer *buf, struct Buffer *s, unsigned long data, struct Buffer *err)
+static int parse_unsubscribe(struct Buffer *buf, struct Buffer *s,
+                             unsigned long data, struct Buffer *err)
 {
   do
   {
@@ -1664,7 +1689,8 @@ static int parse_unsubscribe(struct Buffer *buf, struct Buffer *s, unsigned long
   return 0;
 }
 
-static int parse_unalias(struct Buffer *buf, struct Buffer *s, unsigned long data, struct Buffer *err)
+static int parse_unalias(struct Buffer *buf, struct Buffer *s,
+                         unsigned long data, struct Buffer *err)
 {
   struct Alias *tmp = NULL, *last = NULL;
 
@@ -1710,7 +1736,8 @@ static int parse_unalias(struct Buffer *buf, struct Buffer *s, unsigned long dat
   return 0;
 }
 
-static int parse_alias(struct Buffer *buf, struct Buffer *s, unsigned long data, struct Buffer *err)
+static int parse_alias(struct Buffer *buf, struct Buffer *s, unsigned long data,
+                       struct Buffer *err)
 {
   struct Alias *tmp = Aliases;
   struct Alias *last = NULL;
@@ -1797,7 +1824,8 @@ bail:
   return -1;
 }
 
-static int parse_unmy_hdr(struct Buffer *buf, struct Buffer *s, unsigned long data, struct Buffer *err)
+static int parse_unmy_hdr(struct Buffer *buf, struct Buffer *s,
+                          unsigned long data, struct Buffer *err)
 {
   struct List *last = NULL;
   struct List *tmp = UserHeader;
@@ -1842,7 +1870,8 @@ static int parse_unmy_hdr(struct Buffer *buf, struct Buffer *s, unsigned long da
   return 0;
 }
 
-static int parse_my_hdr(struct Buffer *buf, struct Buffer *s, unsigned long data, struct Buffer *err)
+static int parse_my_hdr(struct Buffer *buf, struct Buffer *s,
+                        unsigned long data, struct Buffer *err)
 {
   struct List *tmp = NULL;
   size_t keylen;
@@ -2246,7 +2275,8 @@ void mutt_envlist_set(const char *name, const char *value, bool overwrite)
   }
 }
 
-static int parse_setenv(struct Buffer *tmp, struct Buffer *s, unsigned long data, struct Buffer *err)
+static int parse_setenv(struct Buffer *tmp, struct Buffer *s,
+                        unsigned long data, struct Buffer *err)
 {
   int query, unset, len;
   char *name = NULL, **save = NULL, **envp = envlist;
@@ -2344,7 +2374,8 @@ static int parse_setenv(struct Buffer *tmp, struct Buffer *s, unsigned long data
   return 0;
 }
 
-static int parse_set(struct Buffer *tmp, struct Buffer *s, unsigned long data, struct Buffer *err)
+static int parse_set(struct Buffer *tmp, struct Buffer *s, unsigned long data,
+                     struct Buffer *err)
 {
   int query, unset, inv, reset, r = 0;
   int idx = -1;
@@ -2512,7 +2543,8 @@ static int parse_set(struct Buffer *tmp, struct Buffer *s, unsigned long data, s
         else if (DTYPE(MuttVars[idx].type) == DT_ADDR)
         {
           _tmp[0] = '\0';
-          rfc822_write_address(_tmp, sizeof(_tmp), *((struct Address **) MuttVars[idx].data), 0);
+          rfc822_write_address(_tmp, sizeof(_tmp),
+                               *((struct Address **) MuttVars[idx].data), 0);
           val = _tmp;
         }
         else if (DTYPE(MuttVars[idx].type) == DT_PATH)
@@ -2612,7 +2644,8 @@ static int parse_set(struct Buffer *tmp, struct Buffer *s, unsigned long data, s
         else
         {
           rfc822_free_address((struct Address **) MuttVars[idx].data);
-          *((struct Address **) MuttVars[idx].data) = rfc822_parse_adrlist(NULL, tmp->data);
+          *((struct Address **) MuttVars[idx].data) =
+              rfc822_parse_adrlist(NULL, tmp->data);
         }
       }
     }
@@ -3110,7 +3143,8 @@ static int source_rc(const char *rcfile_path, struct Buffer *err)
 
 #undef MAXERRS
 
-static int parse_source(struct Buffer *tmp, struct Buffer *s, unsigned long data, struct Buffer *err)
+static int parse_source(struct Buffer *tmp, struct Buffer *s,
+                        unsigned long data, struct Buffer *err)
 {
   char path[_POSIX_PATH_MAX];
 
@@ -4276,8 +4310,8 @@ int mutt_get_hook_type(const char *name)
   return 0;
 }
 
-static int parse_group_context(struct GroupContext **ctx, struct Buffer *buf, struct Buffer *s,
-                               unsigned long data, struct Buffer *err)
+static int parse_group_context(struct GroupContext **ctx, struct Buffer *buf,
+                               struct Buffer *s, unsigned long data, struct Buffer *err)
 {
   while (mutt_strcasecmp(buf->data, "-group") == 0)
   {
@@ -4308,7 +4342,8 @@ bail:
 }
 
 #ifdef USE_NOTMUCH
-static int parse_tag_transforms(struct Buffer *b, struct Buffer *s, unsigned long data, struct Buffer *err)
+static int parse_tag_transforms(struct Buffer *b, struct Buffer *s,
+                                unsigned long data, struct Buffer *err)
 {
   if (!b || !s)
     return -1;
@@ -4343,7 +4378,8 @@ static int parse_tag_transforms(struct Buffer *b, struct Buffer *s, unsigned lon
   return 0;
 }
 
-static int parse_tag_formats(struct Buffer *b, struct Buffer *s, unsigned long data, struct Buffer *err)
+static int parse_tag_formats(struct Buffer *b, struct Buffer *s,
+                             unsigned long data, struct Buffer *err)
 {
   if (!b || !s)
     return -1;

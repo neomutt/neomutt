@@ -39,7 +39,8 @@
 #include "options.h"
 #include "protos.h"
 
-void mutt_edit_headers(const char *editor, const char *body, struct Header *msg, char *fcc, size_t fcclen)
+void mutt_edit_headers(const char *editor, const char *body, struct Header *msg,
+                       char *fcc, size_t fcclen)
 {
   char path[_POSIX_PATH_MAX]; /* tempfile used to edit headers + body */
   char buffer[LONG_STRING];

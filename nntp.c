@@ -1163,7 +1163,8 @@ static int parse_overview_line(char *line, void *data)
 }
 
 /* Fetch headers */
-static int nntp_fetch_headers(struct Context *ctx, void *hc, anum_t first, anum_t last, int restore)
+static int nntp_fetch_headers(struct Context *ctx, void *hc, anum_t first,
+                              anum_t last, int restore)
 {
   struct NntpData *nntp_data = ctx->data;
   struct FetchCtx fc;

@@ -413,7 +413,7 @@ static void cleanup_quote(struct QClass **QuoteList)
 }
 
 static struct QClass *classify_quote(struct QClass **QuoteList, const char *qptr,
-                                        int length, int *force_redraw, int *q_level)
+                                     int length, int *force_redraw, int *q_level)
 {
   struct QClass *q_list = *QuoteList;
   struct QClass *class = NULL, *tmp = NULL, *ptr, *save = NULL;
@@ -1178,8 +1178,8 @@ static int fill_buffer(FILE *f, LOFF_T *last_pos, LOFF_T offset, unsigned char *
   return b_read;
 }
 
-static int format_line(struct Line **lineInfo, int n, unsigned char *buf,
-                       int flags, struct AnsiAttr *pa, int cnt, int *pspace, int *pvch,
+static int format_line(struct Line **lineInfo, int n, unsigned char *buf, int flags,
+                       struct AnsiAttr *pa, int cnt, int *pspace, int *pvch,
                        int *pcol, int *pspecial, struct MuttWindow *pager_window)
 {
   int space = -1; /* index of the last space or TAB */
@@ -1372,10 +1372,10 @@ static int format_line(struct Line **lineInfo, int n, unsigned char *buf,
  *      0       normal exit, line was not displayed
  *      >0      normal exit, line was displayed
  */
-static int display_line(FILE *f, LOFF_T *last_pos, struct Line **lineInfo,
-                        int n, int *last, int *max, int flags,
-                        struct QClass **QuoteList, int *q_level, int *force_redraw,
-                        regex_t *SearchRE, struct MuttWindow *pager_window)
+static int display_line(FILE *f, LOFF_T *last_pos, struct Line **lineInfo, int n,
+                        int *last, int *max, int flags, struct QClass **QuoteList,
+                        int *q_level, int *force_redraw, regex_t *SearchRE,
+                        struct MuttWindow *pager_window)
 {
   unsigned char *buf = NULL, *fmt = NULL;
   size_t buflen = 0;

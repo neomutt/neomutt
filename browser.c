@@ -922,8 +922,8 @@ static void browser_highlight_default(struct BrowserState *state, struct Menu *m
     menu->current = 0;
 }
 
-static void init_menu(struct BrowserState *state, struct Menu *menu, char *title,
-                      size_t titlelen, int buffy)
+static void init_menu(struct BrowserState *state, struct Menu *menu,
+                      char *title, size_t titlelen, int buffy)
 {
   char path[_POSIX_PATH_MAX];
 

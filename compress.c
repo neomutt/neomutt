@@ -49,13 +49,13 @@ struct Header;
  */
 struct CompressInfo
 {
-  const char *append;       /* append-hook command */
-  const char *close;        /* close-hook  command */
-  const char *open;         /* open-hook   command */
-  off_t size;               /* size of the compressed file */
+  const char *append;      /* append-hook command */
+  const char *close;       /* close-hook  command */
+  const char *open;        /* open-hook   command */
+  off_t size;              /* size of the compressed file */
   struct MxOps *child_ops; /* callbacks of de-compressed file */
-  int locked;               /* if realpath is locked */
-  FILE *lockfp;             /* fp used for locking */
+  int locked;              /* if realpath is locked */
+  FILE *lockfp;            /* fp used for locking */
 };
 
 

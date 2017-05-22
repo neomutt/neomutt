@@ -613,7 +613,7 @@ static void compose_status_line(char *buf, size_t buflen, size_t col, int cols,
  * -1   abort message
  */
 int mutt_compose_menu(struct Header *msg, /* structure for new message */
-                      char *fcc,   /* where to save a copy of the message */
+                      char *fcc, /* where to save a copy of the message */
                       size_t fcclen, struct Header *cur, /* current message */
                       int flags)
 {
