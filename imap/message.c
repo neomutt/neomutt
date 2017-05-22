@@ -98,6 +98,61 @@ static void imap_alloc_msn_index (IMAP_DATA *idata, unsigned int msn_count)
   idata->msn_index_size = new_size;
 }
 
+/* Generates a more complicated sequence set after using the header cache,
+ * in case there are missing MSNs in the middle.
+ *
+ * There is a suggested limit of 1000 bytes for an IMAP client request.
+ * Ideally, we would generate multiple requests if the number of ranges
+ * is too big, but for now just abort to using the whole range.
+ */
+static void imap_generate_seqset (BUFFER *b, IMAP_DATA *idata, unsigned int msn_begin,
+                                  unsigned int msn_end)
+{
+  int chunks = 0;
+  int state = 0;  /* 1: single msn, 2: range of msn */
+  unsigned int msn, range_begin, range_end;
+
+  for (msn = msn_begin; msn <= msn_end + 1; msn++)
+  {
+    if (msn <= msn_end && !idata->msn_index[msn-1])
+    {
+      switch (state)
+      {
+        case 1:            /* single: convert to a range */
+          state = 2;
+          /* fall through */
+        case 2:            /* extend range ending */
+          range_end = msn;
+          break;
+        default:
+          state = 1;
+          range_begin = msn;
+          break;
+      }
+    }
+    else if (state)
+    {
+      if (chunks++)
+        mutt_buffer_addch (b, ',');
+      if (chunks == 150)
+        break;
+
+      if (state == 1)
+        mutt_buffer_printf (b, "%u", range_begin);
+      else if (state == 2)
+        mutt_buffer_printf (b, "%u:%u", range_begin, range_end);
+      state = 0;
+    }
+  }
+
+  /* Too big.  Just query the whole range then. */
+  if (chunks == 150 || mutt_strlen (b->data) > 500)
+  {
+    b->dptr = b->data;
+    mutt_buffer_printf (b, "%u:%u", msn_begin, msn_end);
+  }
+}
+
 /* imap_read_headers:
  * Changed to read many headers instead of just one. It will return the
  * msn of the last message read. It will return a value other than
@@ -118,13 +173,13 @@ int imap_read_headers (IMAP_DATA* idata, unsigned int msn_begin, unsigned int ms
   static const char * const want_headers = "DATE FROM SUBJECT TO CC MESSAGE-ID REFERENCES CONTENT-TYPE CONTENT-DESCRIPTION IN-REPLY-TO REPLY-TO LINES LIST-POST X-LABEL";
   progress_t progress;
   int retval = -1;
+  int evalhc = 0;
 
 #if USE_HCACHE
   char buf[LONG_STRING];
   unsigned int *uid_validity = NULL;
   unsigned int *puidnext = NULL;
   unsigned int uidnext = 0;
-  int evalhc = 0;
 #endif /* USE_HCACHE */
 
   ctx = idata->ctx;
@@ -204,15 +259,9 @@ int imap_read_headers (IMAP_DATA* idata, unsigned int msn_begin, unsigned int ms
       h.data = safe_calloc (1, sizeof (IMAP_HEADER_DATA));
       do
       {
-        mfhrc = -1;
-
         rc = imap_cmd_step (idata);
         if (rc != IMAP_CMD_CONTINUE)
           break;
-
-        /* hole in the header cache */
-        if (!evalhc)
-          continue;
 
         if ((mfhrc = msg_fetch_header (ctx, &h, idata->buf, NULL)) < 0)
           continue;
@@ -241,11 +290,6 @@ int imap_read_headers (IMAP_DATA* idata, unsigned int msn_begin, unsigned int ms
         ctx->hdrs[idx] = imap_hcache_get (idata, h.data->uid);
         if (ctx->hdrs[idx])
         {
-          /* TODO: This assumes the results arrive in ascending MSN order.
-           *       That is not guaranteed, but the code already has that
-           *       assumption.  */
-          msn_begin = MAX (msn_begin, h.data->msn + 1);
-
           idata->max_msn = MAX (idata->max_msn, h.data->msn);
           idata->msn_index[h.data->msn - 1] = ctx->hdrs[idx];
 
@@ -268,12 +312,6 @@ int imap_read_headers (IMAP_DATA* idata, unsigned int msn_begin, unsigned int ms
           h.data = NULL;
           idx++;
         }
-	else
-        {
-	  /* bad header in the cache, we'll have to refetch. */
-          dprint (3, (debugfile, "bad cache entry at MSN %d, giving up\n", h.data->msn));
-          evalhc = 0;
-        }
       }
       while (mfhrc == -1);
 
@@ -285,6 +323,14 @@ int imap_read_headers (IMAP_DATA* idata, unsigned int msn_begin, unsigned int ms
 	goto error_out_1;
       }
     }
+
+    /* Look for the first empty MSN and start there */
+    while (msn_begin <= msn_end)
+    {
+      if (!idata->msn_index[msn_begin -1])
+        break;
+      msn_begin++;
+    }
   }
 #endif /* USE_HCACHE */
 
@@ -294,12 +340,24 @@ int imap_read_headers (IMAP_DATA* idata, unsigned int msn_begin, unsigned int ms
   while (msn_begin <= msn_end && fetch_msn_end < msn_end)
   {
     char *cmd;
+    BUFFER *b;
+
+    b = mutt_buffer_new ();
+    if (evalhc)
+    {
+      /* In case there are holes in the header cache. */
+      evalhc = 0;
+      imap_generate_seqset (b, idata, msn_begin, msn_end);
+    }
+    else
+      mutt_buffer_printf (b, "%u:%u", msn_begin, msn_end);
 
     fetch_msn_end = msn_end;
-    safe_asprintf (&cmd, "FETCH %d:%d (UID FLAGS INTERNALDATE RFC822.SIZE %s)",
-                   msn_begin, fetch_msn_end, hdrreq);
+    safe_asprintf (&cmd, "FETCH %s (UID FLAGS INTERNALDATE RFC822.SIZE %s)",
+                   b->data, hdrreq);
     imap_cmd_start (idata, cmd);
     FREE (&cmd);
+    mutt_buffer_free (&b);
 
     rc = IMAP_CMD_CONTINUE;
     for (msgno = msn_begin; rc == IMAP_CMD_CONTINUE; msgno++)
