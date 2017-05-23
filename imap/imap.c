@@ -1409,6 +1409,9 @@ int imap_close_mailbox (CONTEXT* ctx)
     idata->ctx = NULL;
 
     hash_destroy (&idata->uid_hash, NULL);
+    FREE (&idata->msn_index);
+    idata->msn_index_size = 0;
+    idata->max_msn = 0;
 
     for (i = 0; i < IMAP_CACHE_LEN; i++)
     {
@@ -1427,8 +1430,6 @@ int imap_close_mailbox (CONTEXT* ctx)
     /* mailbox may not have fully loaded */
     if (ctx->hdrs[i] && ctx->hdrs[i]->data)
       imap_free_header_data ((IMAP_HEADER_DATA**)&(ctx->hdrs[i]->data));
-  FREE (&idata->msn_index);
-  idata->msn_index_size = 0;
 
   return 0;
 }
