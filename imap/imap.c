@@ -1386,6 +1386,14 @@ int imap_close_mailbox(struct Context *ctx)
   if (!idata)
     return 0;
 
+  /* imap_open_mailbox_append() borrows the struct ImapData temporarily,
+   * just for the connection, but does not set idata->ctx to the
+   * open-append ctx.
+   *
+   * So when these are equal, it means we are actually closing the
+   * mailbox and should clean up idata.  Otherwise, we don't want to
+   * touch idata - it's still being used.
+   */
   if (ctx == idata->ctx)
   {
     if (idata->status != IMAP_FATAL && idata->state >= IMAP_SELECTED)
@@ -1401,6 +1409,19 @@ int imap_close_mailbox(struct Context *ctx)
     FREE(&(idata->mailbox));
     mutt_free_list(&idata->flags);
     idata->ctx = NULL;
+
+    hash_destroy(&idata->uid_hash, NULL);
+
+    for (i = 0; i < IMAP_CACHE_LEN; i++)
+    {
+      if (idata->cache[i].path)
+      {
+        unlink(idata->cache[i].path);
+        FREE(&idata->cache[i].path);
+      }
+    }
+
+    mutt_bcache_close(&idata->bcache);
   }
 
   /* free IMAP part of headers */
@@ -1408,20 +1429,6 @@ int imap_close_mailbox(struct Context *ctx)
     /* mailbox may not have fully loaded */
     if (ctx->hdrs[i] && ctx->hdrs[i]->data)
       imap_free_header_data((struct ImapHeaderData **) &(ctx->hdrs[i]->data));
-  hash_destroy(&idata->uid_hash, NULL);
-  FREE(&idata->msn_index);
-  idata->msn_index_size = 0;
-
-  for (i = 0; i < IMAP_CACHE_LEN; i++)
-  {
-    if (idata->cache[i].path)
-    {
-      unlink(idata->cache[i].path);
-      FREE(&idata->cache[i].path);
-    }
-  }
-
-  mutt_bcache_close(&idata->bcache);
 
   return 0;
 }
