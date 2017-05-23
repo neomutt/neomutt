@@ -381,7 +381,7 @@ static void shift_class_colors(struct QClass *QuoteList,
       while (!q_list->next)
       {
         q_list = q_list->up;
-        if (q_list == NULL)
+        if (!q_list)
           break;
       }
       if (q_list)
@@ -449,7 +449,7 @@ static struct QClass *classify_quote(struct QClass **QuoteList, const char *qptr
           return q_list; /* same prefix: return the current class */
 
         /* found shorter prefix */
-        if (tmp == NULL)
+        if (!tmp)
         {
           /* add a node above q_list */
           tmp = safe_calloc(1, sizeof(struct QClass));
@@ -559,7 +559,7 @@ static struct QClass *classify_quote(struct QClass **QuoteList, const char *qptr
                 return q_list;
 
               /* found shorter common prefix */
-              if (tmp == NULL)
+              if (!tmp)
               {
                 /* add a node above q_list */
                 tmp = safe_calloc(1, sizeof(struct QClass));
@@ -662,7 +662,7 @@ static struct QClass *classify_quote(struct QClass **QuoteList, const char *qptr
         }
 
         /* still not found so far: add it as a sibling to the current node */
-        if (class == NULL)
+        if (!class)
         {
           tmp = safe_calloc(1, sizeof(struct QClass));
           tmp->prefix = safe_calloc(1, length + 1);
@@ -698,7 +698,7 @@ static struct QClass *classify_quote(struct QClass **QuoteList, const char *qptr
     }
   }
 
-  if (class == NULL)
+  if (!class)
   {
     /* not found so far: add it as a top level class */
     class = safe_calloc(1, sizeof(struct QClass));
@@ -1758,7 +1758,7 @@ static void pager_menu_redraw(struct Menu *pager_menu)
     }
 
 #if defined(USE_SLANG_CURSES) || defined(HAVE_RESIZETERM)
-    if (Resize != NULL)
+    if (Resize)
     {
       if ((rd->SearchCompiled = Resize->SearchCompiled))
       {
@@ -1775,7 +1775,7 @@ static void pager_menu_redraw(struct Menu *pager_menu)
 
     if (IsHeader(rd->extra) && PagerIndexLines)
     {
-      if (rd->index == NULL)
+      if (!rd->index)
       {
         /* only allocate the space if/when we need the index.
            Initialise the menu as per the main index */

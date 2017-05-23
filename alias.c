@@ -364,7 +364,7 @@ retry_name:
       mutt_sleep(2);
       continue;
     }
-  } while (new->addr == NULL);
+  } while (!new->addr);
 
   if (adr && adr->personal && !mutt_is_mail_list(adr))
     strfcpy(buf, adr->personal, sizeof(buf));

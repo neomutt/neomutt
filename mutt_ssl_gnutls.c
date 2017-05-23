@@ -328,7 +328,7 @@ static int tls_compare_certificates(const gnutls_datum_t *peercert)
   b64_data.data = b64_data_data;
 
   fd1 = fopen(SslCertFile, "r");
-  if (fd1 == NULL)
+  if (!fd1)
   {
     return 0;
   }
@@ -371,7 +371,7 @@ static int tls_compare_certificates(const gnutls_datum_t *peercert)
     }
 
     gnutls_free(cert.data);
-  } while (ptr != NULL);
+  } while (ptr);
 
   /* no match found */
   FREE(&b64_data_data);

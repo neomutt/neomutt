@@ -71,7 +71,7 @@ static void pgp_dearmor(FILE *in, FILE *out)
     if (strncmp(line, "-----BEGIN", 10) == 0)
       break;
   }
-  if (r == NULL)
+  if (!r)
   {
     mutt_debug(1, "pgp_dearmor: Can't find begin of ASCII armor.\n");
     return;
@@ -85,7 +85,7 @@ static void pgp_dearmor(FILE *in, FILE *out)
     if (!*r)
       break;
   }
-  if (r == NULL)
+  if (!r)
   {
     mutt_debug(1, "pgp_dearmor: Armor header doesn't end.\n");
     return;
@@ -103,7 +103,7 @@ static void pgp_dearmor(FILE *in, FILE *out)
     if (*line == '=' || (strncmp(line, "-----END", 8) == 0))
       break;
   }
-  if (r == NULL)
+  if (!r)
   {
     mutt_debug(1, "pgp_dearmor: Can't find end of ASCII armor.\n");
     return;

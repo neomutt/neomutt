@@ -405,7 +405,7 @@ int mutt_view_attachment(FILE *fp, struct Body *a, int flag, struct Header *hdr,
           unlink_tempfile = 1;
       }
     }
-    else if (fp == NULL) /* send case */
+    else if (!fp) /* send case */
       strfcpy(tempfile, a->filename, sizeof(tempfile));
 
     if (fp)
@@ -831,13 +831,13 @@ int mutt_decode_save_attachment(FILE *fp, struct Body *m, char *path, int displa
   else
     s.fpout = safe_fopen(path, "w");
 
-  if (s.fpout == NULL)
+  if (!s.fpout)
   {
     mutt_perror("fopen");
     return -1;
   }
 
-  if (fp == NULL)
+  if (!fp)
   {
     /* When called from the compose menu, the attachment isn't parsed,
      * so we need to do it here. */
@@ -882,7 +882,7 @@ int mutt_decode_save_attachment(FILE *fp, struct Body *m, char *path, int displa
     mutt_perror("fclose");
     ret = -1;
   }
-  if (fp == NULL)
+  if (!fp)
   {
     m->length = 0;
     m->encoding = saved_encoding;

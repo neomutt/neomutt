@@ -257,7 +257,7 @@ static void shrink_histfile(void)
 cleanup:
   safe_fclose(&f);
   FREE(&linebuf);
-  if (tmp != NULL)
+  if (tmp)
   {
     if (fflush(tmp) == 0 && (f = fopen(HistFile, "w")) != NULL)
     {

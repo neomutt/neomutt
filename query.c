@@ -129,7 +129,7 @@ static struct Query *run_query(char *s, int quiet)
   {
     if ((p = strtok(buf, "\t\n")))
     {
-      if (first == NULL)
+      if (!first)
       {
         first = safe_calloc(1, sizeof(struct Query));
         cur = first;
@@ -275,7 +275,7 @@ static void query_menu(char *buf, size_t buflen, struct Query *results, int retb
   char helpstr[LONG_STRING];
   char title[STRING];
 
-  if (results == NULL)
+  if (!results)
   {
     /* Prompt for Query */
     if (mutt_get_field(_("Query: "), buf, buflen, 0) == 0 && buf[0])
@@ -507,7 +507,7 @@ int mutt_query_complete(char *buf, size_t buflen)
   if (results)
   {
     /* only one response? */
-    if (results->next == NULL)
+    if (!results->next)
     {
       tmpa = result_to_addr(results);
       mutt_addrlist_to_local(tmpa);
@@ -532,7 +532,7 @@ void mutt_query_menu(char *buf, size_t buflen)
     return;
   }
 
-  if (buf == NULL)
+  if (!buf)
   {
     char buffer[STRING] = "";
 

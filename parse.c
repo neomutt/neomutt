@@ -355,7 +355,7 @@ void mutt_parse_content_type(char *s, struct Body *ct)
     ct->xtype = safe_strdup(s);
   }
 
-  if (ct->subtype == NULL)
+  if (!ct->subtype)
   {
     /* Some older non-MIME mailers (i.e., mailtool, elm) have a content-type
      * field, so we can attempt to convert the type to Body here.
@@ -1397,7 +1397,7 @@ struct Envelope *mutt_read_rfc822_header(FILE *f, struct Header *hdr,
 
   if (hdr)
   {
-    if (hdr->content == NULL)
+    if (!hdr->content)
     {
       hdr->content = mutt_new_body();
 
@@ -1605,7 +1605,7 @@ static int count_body_parts(struct Body *body, int flags)
   bool shallcount, shallrecurse;
   struct Body *bp = NULL;
 
-  if (body == NULL)
+  if (!body)
     return 0;
 
   for (bp = body; bp != NULL; bp = bp->next)

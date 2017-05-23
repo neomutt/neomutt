@@ -166,7 +166,7 @@ int mutt_display_message(struct Header *cur)
   if ((safe_fclose(&fpout) != 0 && errno != EPIPE) || res < 0)
   {
     mutt_error(_("Could not copy message"));
-    if (fpfilterout != NULL)
+    if (fpfilterout)
     {
       mutt_wait_filter(filterpid);
       safe_fclose(&fpfilterout);

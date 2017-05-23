@@ -853,7 +853,7 @@ char *smime_find_keys(struct Address *adrlist, int oppenc_mode)
     q = p;
 
     key = smime_get_key_by_addr(q->mailbox, KEYFLAG_CANENCRYPT, 1, !oppenc_mode);
-    if ((key == NULL) && (!oppenc_mode))
+    if (!key && !oppenc_mode)
     {
       snprintf(buf, sizeof(buf), _("Enter keyID for %s: "), q->mailbox);
       key = smime_ask_for_key(buf, KEYFLAG_CANENCRYPT, 1);

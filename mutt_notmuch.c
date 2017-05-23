@@ -2105,7 +2105,7 @@ int nm_get_all_tags(struct Context *ctx, char **tag_list, int *tag_count)
     /* Skip empty string */
     if (*tag)
     {
-      if (tag_list != NULL)
+      if (tag_list)
         tag_list[*tag_count] = safe_strdup(tag);
       (*tag_count)++;
     }
@@ -2399,7 +2399,7 @@ static int nm_open_message(struct Context *ctx, struct Message *msg, int msgno)
   snprintf(path, sizeof(path), "%s/%s", folder, cur->path);
 
   msg->fp = fopen(path, "r");
-  if ((msg->fp == NULL) && (errno == ENOENT) &&
+  if (!msg->fp && (errno == ENOENT) &&
       ((ctx->magic == MUTT_MAILDIR) || (ctx->magic == MUTT_NOTMUCH)))
     msg->fp = maildir_open_find_message(folder, cur->path, NULL);
 

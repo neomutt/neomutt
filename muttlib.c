@@ -871,10 +871,10 @@ static void mutt_randbuf(void *out, size_t len)
 /* let's try urandom in case we're on an old kernel, or the user has
    * configured selinux, seccomp or something to not allow getrandom */
 #endif
-  if (frandom == NULL)
+  if (!frandom)
   {
     frandom = fopen("/dev/urandom", "rb");
-    if (frandom == NULL)
+    if (!frandom)
     {
       mutt_error(_("open /dev/urandom: %s"), strerror(errno));
       exit(1);

@@ -280,7 +280,7 @@ int mutt_alloc_color(int fg, int bg)
         break;
       p = p->next;
     }
-    if (p == NULL)
+    if (!p)
       break;
     i++;
   }

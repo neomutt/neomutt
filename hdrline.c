@@ -411,10 +411,10 @@ static bool get_initials(const char *name, char *buf, int buflen)
 
 static char *apply_subject_mods(struct Envelope *env)
 {
-  if (env == NULL)
+  if (!env)
     return NULL;
 
-  if (SubjectRxList == NULL)
+  if (!SubjectRxList)
     return env->subject;
 
   if (env->subject == NULL || *env->subject == '\0')
@@ -1275,7 +1275,7 @@ static const char *hdr_format_str(char *dest, size_t destlen, size_t col, int co
         format[2] = 0;
 
         tag = hash_find(TagFormats, format);
-        if (tag != NULL)
+        if (tag)
         {
           tag_transformed = nm_header_get_tag_transformed(tag, hdr);
 
@@ -1294,7 +1294,7 @@ static const char *hdr_format_str(char *dest, size_t destlen, size_t col, int co
         format[2] = 0;
 
         tag = hash_find(TagFormats, format);
-        if (tag != NULL)
+        if (tag)
           if (nm_header_get_tag_transformed(tag, hdr) == NULL)
             optional = 0;
       }

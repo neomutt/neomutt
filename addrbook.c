@@ -113,9 +113,9 @@ static int alias_sort_address(const void *a, const void *b)
 
   if (pa == pb)
     r = 0;
-  else if (pa == NULL)
+  else if (!pa)
     r = -1;
-  else if (pb == NULL)
+  else if (!pb)
     r = 1;
   else if (pa->personal)
   {

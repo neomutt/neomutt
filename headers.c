@@ -268,7 +268,7 @@ static void label_ref_inc(struct Context *ctx, char *label)
  */
 static int label_message(struct Context *ctx, struct Header *hdr, char *new)
 {
-  if (hdr == NULL)
+  if (!hdr)
     return 0;
   if (mutt_strcmp(hdr->env->x_label, new) == 0)
     return 0;
@@ -306,7 +306,7 @@ int mutt_label_message(struct Header *hdr)
     new = NULL;
 
   changed = 0;
-  if (hdr != NULL)
+  if (hdr)
   {
     if (label_message(Context, hdr, new))
     {

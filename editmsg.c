@@ -176,7 +176,7 @@ static int edit_one_message(struct Context *ctx, struct Header *cur)
   cur->read = o_read;
   cur->old = o_old;
 
-  if (msg == NULL)
+  if (!msg)
   {
     mutt_error(_("Can't append to folder: %s"), strerror(errno));
     mx_close_mailbox(&tmpctx, NULL);

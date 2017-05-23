@@ -1216,7 +1216,7 @@ char *pgp_find_keys(struct Address *adrlist, int oppenc_mode)
       q = p;
       k_info = NULL;
 
-      if (crypt_hook != NULL)
+      if (crypt_hook)
       {
         keyID = crypt_hook->data;
         r = MUTT_YES;
@@ -1248,7 +1248,7 @@ char *pgp_find_keys(struct Address *adrlist, int oppenc_mode)
         }
         else if (r == MUTT_NO)
         {
-          if (key_selected || (crypt_hook->next != NULL))
+          if (key_selected || crypt_hook->next)
           {
             crypt_hook = crypt_hook->next;
             continue;
@@ -1263,19 +1263,19 @@ char *pgp_find_keys(struct Address *adrlist, int oppenc_mode)
         }
       }
 
-      if (k_info == NULL)
+      if (!k_info)
       {
         pgp_invoke_getkeys(q);
         k_info = pgp_getkeybyaddr(q, KEYFLAG_CANENCRYPT, PGP_PUBRING, oppenc_mode);
       }
 
-      if ((k_info == NULL) && (!oppenc_mode))
+      if (!k_info && !oppenc_mode)
       {
         snprintf(buf, sizeof(buf), _("Enter keyID for %s: "), q->mailbox);
         k_info = pgp_ask_for_key(buf, q->mailbox, KEYFLAG_CANENCRYPT, PGP_PUBRING);
       }
 
-      if (k_info == NULL)
+      if (!k_info)
       {
         FREE(&keylist);
         rfc822_free_address(&addr);
@@ -1296,10 +1296,10 @@ char *pgp_find_keys(struct Address *adrlist, int oppenc_mode)
       pgp_free_key(&k_info);
       rfc822_free_address(&addr);
 
-      if (crypt_hook != NULL)
+      if (crypt_hook)
         crypt_hook = crypt_hook->next;
 
-    } while (crypt_hook != NULL);
+    } while (crypt_hook);
 
     mutt_free_list(&crypt_hook_list);
   }

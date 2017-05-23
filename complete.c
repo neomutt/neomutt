@@ -184,7 +184,7 @@ int mutt_complete(char *s, size_t slen)
     }
   }
 
-  if (dirp == NULL)
+  if (!dirp)
   {
     mutt_debug(1, "mutt_complete(): %s: %s (errno %d).\n", exp_dirpart,
                strerror(errno), errno);

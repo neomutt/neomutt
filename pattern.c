@@ -628,7 +628,7 @@ static bool is_context_available(struct Buffer *s, regmatch_t pmatch[],
    * Relative patterns need it iff they contain a dot or a number.
    * Absolute patterns only need it if they contain a dot. */
   context_loc = strpbrk(s->dptr + pmatch[0].rm_so, context_req_chars[kind]);
-  if ((context_loc == NULL) || (context_loc >= &s->dptr[pmatch[0].rm_eo]))
+  if (!context_loc || (context_loc >= &s->dptr[pmatch[0].rm_eo]))
     return true;
 
   /* We need a current message.  Do we actually have one? */

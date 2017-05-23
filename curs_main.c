@@ -1933,7 +1933,7 @@ int mutt_index_menu(void)
           mutt_message(_("Windowed queries disabled."));
           break;
         }
-        if (NotmuchQueryWindowCurrentSearch == NULL)
+        if (!NotmuchQueryWindowCurrentSearch)
         {
           mutt_message(_("No notmuch vfolder currently loaded."));
           break;
@@ -1952,7 +1952,7 @@ int mutt_index_menu(void)
           mutt_message(_("Windowed queries disabled."));
           break;
         }
-        if (NotmuchQueryWindowCurrentSearch == NULL)
+        if (!NotmuchQueryWindowCurrentSearch)
         {
           mutt_message(_("No notmuch vfolder currently loaded."));
           break;

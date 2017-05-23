@@ -980,7 +980,7 @@ void mutt_sb_draw(void)
   int div_width = draw_divider(num_rows, num_cols);
 
   struct Buffy *b = NULL;
-  if (Entries == NULL)
+  if (!Entries)
     for (b = get_incoming(); b; b = b->next)
       mutt_sb_notify_mailbox(b, 1);
 

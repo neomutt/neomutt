@@ -2153,7 +2153,7 @@ static int check_charset(struct Option *opt, const char *val)
 static bool valid_show_multipart_alternative(const char *val)
 {
   return ((mutt_strcmp(val, "inline") == 0) ||
-          (mutt_strcmp(val, "info") == 0) || (val == NULL) || (*val == 0));
+          (mutt_strcmp(val, "info") == 0) || !val || (*val == 0));
 }
 
 char **mutt_envlist(void)
@@ -3516,7 +3516,7 @@ static int complete_all_nm_tags(const char *pt)
     goto done;
 
   /* Free the old list, if any. */
-  if (nm_tags != NULL)
+  if (nm_tags)
   {
     for (int i = 0; nm_tags[i] != NULL; i++)
       FREE(&nm_tags[i]);
@@ -3582,7 +3582,7 @@ bool mutt_nm_query_complete(char *buffer, size_t len, int pos, int numtabs)
   spaces = buffer - pt;
 
   pt = (char *) rstrnstr((char *) buffer, pos, "tag:");
-  if (pt != NULL)
+  if (pt)
   {
     pt += 4;
     if (numtabs == 1)

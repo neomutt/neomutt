@@ -128,7 +128,7 @@ static void redraw_if_needed(gpgme_ctx_t ctx)
   mutt_need_hard_redraw();
 #else
   const char *s = gpgme_get_ctx_flag(ctx, "redraw");
-  if ((s == NULL) /* flag not known */ || *s /* flag true */)
+  if (!s /* flag not known */ || *s /* flag true */)
   {
     mutt_need_hard_redraw();
   }
@@ -4337,7 +4337,7 @@ static char *find_keys(struct Address *adrlist, unsigned int app, int oppenc_mod
       forced_valid = 0;
       k_info = NULL;
 
-      if (crypt_hook != NULL)
+      if (crypt_hook)
       {
         crypt_hook_val = crypt_hook->data;
         r = MUTT_YES;
@@ -4372,7 +4372,7 @@ static char *find_keys(struct Address *adrlist, unsigned int app, int oppenc_mod
         }
         else if (r == MUTT_NO)
         {
-          if (key_selected || (crypt_hook->next != NULL))
+          if (key_selected || crypt_hook->next)
           {
             crypt_hook = crypt_hook->next;
             continue;
@@ -4387,19 +4387,19 @@ static char *find_keys(struct Address *adrlist, unsigned int app, int oppenc_mod
         }
       }
 
-      if (k_info == NULL)
+      if (!k_info)
       {
         k_info = crypt_getkeybyaddr(q, KEYFLAG_CANENCRYPT, app, &forced_valid, oppenc_mode);
       }
 
-      if ((k_info == NULL) && (!oppenc_mode))
+      if (!k_info && !oppenc_mode)
       {
         snprintf(buf, sizeof(buf), _("Enter keyID for %s: "), q->mailbox);
 
         k_info = crypt_ask_for_key(buf, q->mailbox, KEYFLAG_CANENCRYPT, app, &forced_valid);
       }
 
-      if (k_info == NULL)
+      if (!k_info)
       {
         FREE(&keylist);
         rfc822_free_address(&addr);
@@ -4421,10 +4421,10 @@ static char *find_keys(struct Address *adrlist, unsigned int app, int oppenc_mod
       crypt_free_key(&k_info);
       rfc822_free_address(&addr);
 
-      if (crypt_hook != NULL)
+      if (crypt_hook)
         crypt_hook = crypt_hook->next;
 
-    } while (crypt_hook != NULL);
+    } while (crypt_hook);
 
     mutt_free_list(&crypt_hook_list);
   }
@@ -4766,7 +4766,7 @@ static int verify_sender(struct Header *h, gpgme_protocol_t protocol)
             (uid_length == sender_length + 2))
         {
           const char *at_sign = strchr(uid->email + 1, '@');
-          if (at_sign == NULL)
+          if (!at_sign)
           {
             if (strncmp(uid->email + 1, sender->mailbox, sender_length) == 0)
               ret = 0;

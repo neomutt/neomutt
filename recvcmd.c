@@ -403,8 +403,7 @@ static void attach_forward_bodies(FILE *fp, struct Header *hdr,
 
 
   parent = find_parent(idx, idxlen, cur, nattach);
-
-  if (parent == NULL)
+  if (!parent)
     parent = hdr;
 
 

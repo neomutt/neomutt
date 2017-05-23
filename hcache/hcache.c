@@ -171,7 +171,7 @@ static unsigned char *dump_char_size(char *c, unsigned char *d, int *off,
 {
   char *p = c;
 
-  if (c == NULL)
+  if (!c)
   {
     size = 0;
     d = dump_int(size, d, off);

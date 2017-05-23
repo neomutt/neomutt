@@ -988,7 +988,7 @@ int mutt_compose_menu(struct Header *msg, /* structure for new message */
         menu->redraw = REDRAW_FULL;
 
         ctx = mx_open_mailbox(fname, MUTT_READONLY, NULL);
-        if (ctx == NULL)
+        if (!ctx)
         {
           mutt_error(_("Unable to open mailbox %s"), fname);
           break;

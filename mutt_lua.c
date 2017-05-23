@@ -118,7 +118,7 @@ static int _lua_mutt_set(lua_State *l)
   mutt_debug(2, " * _lua_mutt_set(%s)\n", param);
   struct Option *value = safe_malloc(sizeof(struct Option));
   const struct Option *tmp = mutt_option_get(param);
-  if (tmp == NULL)
+  if (!tmp)
   {
     luaL_error(l, "Error getting parameter %s", param);
     return -1;
@@ -301,7 +301,7 @@ static int _lua_mutt_message(lua_State *l)
 {
   mutt_debug(2, " * _lua_mutt_message()\n");
   const char *msg = lua_tostring(l, -1);
-  if (msg != NULL)
+  if (msg)
     mutt_message(msg);
   return 0;
 }
@@ -310,7 +310,7 @@ static int _lua_mutt_error(lua_State *l)
 {
   mutt_debug(2, " * _lua_mutt_error()\n");
   const char *msg = lua_tostring(l, -1);
-  if (msg != NULL)
+  if (msg)
     mutt_error(msg);
   return 0;
 }

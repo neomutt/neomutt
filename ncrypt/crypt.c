@@ -843,7 +843,7 @@ void crypt_opportunistic_encrypt(struct Header *msg)
     return;
 
   crypt_get_keys(msg, &pgpkeylist, 1);
-  if (pgpkeylist != NULL)
+  if (pgpkeylist)
   {
     msg->security |= ENCRYPT;
     FREE(&pgpkeylist);

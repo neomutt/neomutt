@@ -591,7 +591,7 @@ static void add_folder(struct Menu *m, struct BrowserState *state, const char *n
       m->data = state->entry;
   }
 
-  if (s != NULL)
+  if (s)
   {
     (state->entry)[state->entrylen].mode = s->st_mode;
     (state->entry)[state->entrylen].mtime = s->st_mtime;
@@ -1871,7 +1871,7 @@ void _mutt_select_file(char *f, size_t flen, int flags, char ***files, int *numf
 
           mutt_concat_path(buf2, LastDir, state.entry[menu->current].name, sizeof(buf2));
           b = mutt_make_file_attach(buf2);
-          if (b != NULL)
+          if (b)
           {
             mutt_view_attachment(NULL, b, MUTT_REGULAR, NULL, NULL, 0);
             mutt_free_body(&b);
