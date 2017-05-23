@@ -1411,6 +1411,9 @@ int imap_close_mailbox(struct Context *ctx)
     idata->ctx = NULL;
 
     hash_destroy(&idata->uid_hash, NULL);
+    FREE(&idata->msn_index);
+    idata->msn_index_size = 0;
+    idata->max_msn = 0;
 
     for (i = 0; i < IMAP_CACHE_LEN; i++)
     {
