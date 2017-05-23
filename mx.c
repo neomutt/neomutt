@@ -994,6 +994,8 @@ int mx_close_mailbox (CONTEXT *ctx, int *index_hint)
 #ifdef USE_SIDEBAR
   if (purge && ctx->deleted)
   {
+    int orig_msgcount = ctx->msgcount;
+
     for (i = 0; i < ctx->msgcount; i++)
     {
       if (ctx->hdrs[i]->deleted && !ctx->hdrs[i]->read)
@@ -1002,8 +1004,9 @@ int mx_close_mailbox (CONTEXT *ctx, int *index_hint)
         ctx->flagged--;
     }
     ctx->msgcount -= ctx->deleted;
+    mutt_sb_set_buffystats (ctx);
+    ctx->msgcount = orig_msgcount;
   }
-  mutt_sb_set_buffystats (ctx);
 #endif
 
   mx_fastclose_mailbox (ctx);
