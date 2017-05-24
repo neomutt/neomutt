@@ -125,16 +125,8 @@ static int msg_cache_clean_cb(const char *id, struct BodyCache *bcache, void *da
     return 0;
 
   /* bad UID */
-  if (uv != idata->uid_validity)
+  if (uv != idata->uid_validity || !int_hash_find(idata->uid_hash, uid))
     mutt_bcache_del(bcache, id);
-
-  /* TODO: presort UIDs, walk in order */
-  for (unsigned int n = 0; n < idata->ctx->msgcount; n++)
-  {
-    if (uid == HEADER_DATA(idata->ctx->hdrs[n])->uid)
-      return 0;
-  }
-  mutt_bcache_del(bcache, id);
 
   return 0;
 }
