@@ -131,6 +131,11 @@ static const char *No_visible = N_("No visible messages.");
 
 #define CURHDR Context->hdrs[Context->v2r[menu->current]]
 #define UNREAD(h) mutt_thread_contains_unread(Context, h)
+#define FLAGGED(h) mutt_thread_contains_flagged (Context, h)
+
+#define CAN_COLLAPSE(header)                                                   \
+  ((option(OPTCOLLAPSEUNREAD) || !UNREAD(header)) &&                           \
+   (option(OPTCOLLAPSEFLAGGED) || !FLAGGED(header)))
 
 /* de facto standard escapes for tsl/fsl */
 static char *tsl = "\033]0;";
@@ -160,7 +165,7 @@ static void collapse_all(struct Menu *menu, int toggle)
    * so that we can restore the cursor in a sane way afterwards. */
   if (CURHDR->collapsed && toggle)
     final = mutt_uncollapse_thread(Context, CURHDR);
-  else if (option(OPTCOLLAPSEUNREAD) || !UNREAD(CURHDR))
+  else if (CAN_COLLAPSE(CURHDR))
     final = mutt_collapse_thread(Context, CURHDR);
   else
     final = CURHDR->virtual;
@@ -180,7 +185,7 @@ static void collapse_all(struct Menu *menu, int toggle)
     {
       if (h->collapsed)
         mutt_uncollapse_thread(Context, h);
-      else if (option(OPTCOLLAPSEUNREAD) || !UNREAD(h))
+      else if (CAN_COLLAPSE(h))
         mutt_collapse_thread(Context, h);
     }
     top = top->next;
@@ -2664,14 +2669,14 @@ int mutt_index_menu(void)
           if (option(OPTUNCOLLAPSEJUMP))
             menu->current = mutt_thread_next_unread(Context, CURHDR);
         }
-        else if (option(OPTCOLLAPSEUNREAD) || !UNREAD(CURHDR))
+        else if (CAN_COLLAPSE(CURHDR))
         {
           menu->current = mutt_collapse_thread(Context, CURHDR);
           mutt_set_virtual(Context);
         }
         else
         {
-          mutt_error(_("Thread contains unread messages."));
+          mutt_error(_("Thread contains unread or flagged messages."));
           break;
         }
 

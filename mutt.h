@@ -121,6 +121,7 @@ struct State;
 #define MUTT_THREAD_GET_HIDDEN  (1 << 2)
 #define MUTT_THREAD_UNREAD      (1 << 3)
 #define MUTT_THREAD_NEXT_UNREAD (1 << 4)
+#define MUTT_THREAD_FLAGGED     (1 << 5)
 
 enum
 {
