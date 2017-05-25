@@ -219,11 +219,14 @@ struct ImapData
   char *mailbox;
   unsigned short check_status;
   unsigned char reopen;
-  unsigned int newMailCount;
+  unsigned int newMailCount; /* Set when EXISTS notifies of new mail */
   struct ImapCache cache[IMAP_CACHE_LEN];
   struct Hash *uid_hash;
   unsigned int uid_validity;
   unsigned int uidnext;
+  struct Header **msn_index;   /* look up headers by (MSN-1) */
+  unsigned int msn_index_size; /* allocation size */
+  unsigned int max_msn;        /* the largest MSN fetched so far */
   struct BodyCache *bcache;
 
   /* all folder flags - system flags AND keywords */
@@ -267,7 +270,7 @@ int imap_cmd_idle(struct ImapData *idata);
 /* message.c */
 void imap_add_keywords(char *s, struct Header *keywords, struct List *mailbox_flags, size_t slen);
 void imap_free_header_data(struct ImapHeaderData **data);
-int imap_read_headers(struct ImapData *idata, int msgbegin, int msgend);
+int imap_read_headers(struct ImapData *idata, unsigned int msn_begin, unsigned int msn_end);
 char *imap_set_flags(struct ImapData *idata, struct Header *h, char *s);
 int imap_cache_del(struct ImapData *idata, struct Header *h);
 int imap_cache_clean(struct ImapData *idata);

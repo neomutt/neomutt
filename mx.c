@@ -611,7 +611,14 @@ struct Context *mx_open_mailbox(const char *path, int flags, struct Context *pct
   if (!ctx)
     ctx = safe_malloc(sizeof(struct Context));
   memset(ctx, 0, sizeof(struct Context));
+
   ctx->path = safe_strdup(path);
+  if (!ctx->path)
+  {
+    if (!pctx)
+      FREE(&ctx);
+    return NULL;
+  }
   if (!(ctx->realpath = realpath(ctx->path, NULL)))
     ctx->realpath = safe_strdup(ctx->path);
 
@@ -1046,6 +1053,8 @@ int mx_close_mailbox(struct Context *ctx, int *index_hint)
 #ifdef USE_SIDEBAR
   if (purge && ctx->deleted)
   {
+    int orig_msgcount = ctx->msgcount;
+
     for (i = 0; i < ctx->msgcount; i++)
     {
       if (ctx->hdrs[i]->deleted && !ctx->hdrs[i]->read)
@@ -1054,8 +1063,9 @@ int mx_close_mailbox(struct Context *ctx, int *index_hint)
         ctx->flagged--;
     }
     ctx->msgcount -= ctx->deleted;
+    mutt_sb_set_buffystats (ctx);
+    ctx->msgcount = orig_msgcount;
   }
-  mutt_sb_set_buffystats(ctx);
 #endif
 
   mx_fastclose_mailbox(ctx);

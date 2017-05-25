@@ -265,16 +265,21 @@ void imap_expunge_mailbox(struct ImapData *idata)
 {
   struct Header *h = NULL;
   int cacheno;
+  short old_sort;
 
 #ifdef USE_HCACHE
   idata->hcache = imap_hcache_open(idata, NULL);
 #endif
 
+  old_sort = Sort;
+  Sort = SORT_ORDER;
+  mutt_sort_headers(idata->ctx, 0);
+
   for (int i = 0; i < idata->ctx->msgcount; i++)
   {
     h = idata->ctx->hdrs[i];
 
-    if (h->index == -1)
+    if (h->index == INT_MAX)
     {
       mutt_debug(2, "Expunging message UID %d.\n", HEADER_DATA(h)->uid);
 
@@ -299,6 +304,8 @@ void imap_expunge_mailbox(struct ImapData *idata)
 
       imap_free_header_data((struct ImapHeaderData **) &h->data);
     }
+    else
+      h->index = i;
   }
 
 #ifdef USE_HCACHE
@@ -308,6 +315,7 @@ void imap_expunge_mailbox(struct ImapData *idata)
   /* We may be called on to expunge at any time. We can't rely on the caller
    * to always know to rethread */
   mx_update_tables(idata->ctx, 0);
+  Sort = old_sort;
   mutt_sort_headers(idata->ctx, 1);
 }
 
@@ -613,6 +621,7 @@ static int imap_open_mailbox(struct Context *ctx)
   idata->status = false;
   memset(idata->ctx->rights, 0, sizeof(idata->ctx->rights));
   idata->newMailCount = 0;
+  idata->max_msn = 0;
 
   mutt_message(_("Selecting %s..."), idata->mailbox);
   imap_munge_mbox_name(idata, buf, sizeof(buf), idata->mailbox);
@@ -766,7 +775,7 @@ static int imap_open_mailbox(struct Context *ctx)
   ctx->v2r = safe_calloc(count, sizeof(int));
   ctx->msgcount = 0;
 
-  if (count && (imap_read_headers(idata, 0, count - 1) < 0))
+  if (count && (imap_read_headers(idata, 1, count) < 0))
   {
     mutt_error(_("Error opening mailbox"));
     mutt_sleep(1);
@@ -1377,6 +1386,14 @@ int imap_close_mailbox(struct Context *ctx)
   if (!idata)
     return 0;
 
+  /* imap_open_mailbox_append() borrows the struct ImapData temporarily,
+   * just for the connection, but does not set idata->ctx to the
+   * open-append ctx.
+   *
+   * So when these are equal, it means we are actually closing the
+   * mailbox and should clean up idata.  Otherwise, we don't want to
+   * touch idata - it's still being used.
+   */
   if (ctx == idata->ctx)
   {
     if (idata->status != IMAP_FATAL && idata->state >= IMAP_SELECTED)
@@ -1392,6 +1409,22 @@ int imap_close_mailbox(struct Context *ctx)
     FREE(&(idata->mailbox));
     mutt_free_list(&idata->flags);
     idata->ctx = NULL;
+
+    hash_destroy(&idata->uid_hash, NULL);
+    FREE(&idata->msn_index);
+    idata->msn_index_size = 0;
+    idata->max_msn = 0;
+
+    for (i = 0; i < IMAP_CACHE_LEN; i++)
+    {
+      if (idata->cache[i].path)
+      {
+        unlink(idata->cache[i].path);
+        FREE(&idata->cache[i].path);
+      }
+    }
+
+    mutt_bcache_close(&idata->bcache);
   }
 
   /* free IMAP part of headers */
@@ -1399,18 +1432,6 @@ int imap_close_mailbox(struct Context *ctx)
     /* mailbox may not have fully loaded */
     if (ctx->hdrs[i] && ctx->hdrs[i]->data)
       imap_free_header_data((struct ImapHeaderData **) &(ctx->hdrs[i]->data));
-  hash_destroy(&idata->uid_hash, NULL);
-
-  for (i = 0; i < IMAP_CACHE_LEN; i++)
-  {
-    if (idata->cache[i].path)
-    {
-      unlink(idata->cache[i].path);
-      FREE(&idata->cache[i].path);
-    }
-  }
-
-  mutt_bcache_close(&idata->bcache);
 
   return 0;
 }

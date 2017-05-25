@@ -125,16 +125,8 @@ static int msg_cache_clean_cb(const char *id, struct BodyCache *bcache, void *da
     return 0;
 
   /* bad UID */
-  if (uv != idata->uid_validity)
+  if (uv != idata->uid_validity || !int_hash_find(idata->uid_hash, uid))
     mutt_bcache_del(bcache, id);
-
-  /* TODO: presort UIDs, walk in order */
-  for (unsigned int n = 0; n < idata->ctx->msgcount; n++)
-  {
-    if (uid == HEADER_DATA(idata->ctx->hdrs[n])->uid)
-      return 0;
-  }
-  mutt_bcache_del(bcache, id);
 
   return 0;
 }
@@ -223,7 +215,13 @@ static char *msg_parse_flags(struct ImapHeader *h, char *s)
   return s;
 }
 
-/* msg_parse_fetch: handle headers returned from header fetch */
+/* msg_parse_fetch: handle headers returned from header fetch.
+ * Returns:
+ *   0 on success
+ *   -1 if the string is corrupted
+ *   -2 if the fetch contains a body or header lines
+ *      that still need to be parsed.
+ */
 static int msg_parse_fetch(struct ImapHeader *h, char *s)
 {
   char tmp[SHORT_STRING];
@@ -308,6 +306,7 @@ static int msg_fetch_header(struct Context *ctx, struct ImapHeader *h, char *buf
   struct ImapData *idata = NULL;
   long bytes;
   int rc = -1; /* default now is that string isn't FETCH response */
+ int parse_rc;
 
   idata = ctx->data;
 
@@ -316,7 +315,7 @@ static int msg_fetch_header(struct Context *ctx, struct ImapHeader *h, char *buf
 
   /* skip to message number */
   buf = imap_next_word(buf);
-  h->sid = atoi(buf);
+  h->data->msn = atoi(buf);
 
   /* find FETCH tag */
   buf = imap_next_word(buf);
@@ -330,7 +329,10 @@ static int msg_fetch_header(struct Context *ctx, struct ImapHeader *h, char *buf
 
   /* FIXME: current implementation - call msg_parse_fetch - if it returns -2,
    *   read header lines and call it again. Silly. */
-  if ((rc = msg_parse_fetch(h, buf)) != -2 || !fp)
+  parse_rc = msg_parse_fetch(h, buf);
+  if (!parse_rc)
+    return 0;
+  if (parse_rc != -2 || !fp)
     return rc;
 
   if (imap_get_literal_count(buf, &bytes) == 0)
@@ -364,36 +366,123 @@ static void flush_buffer(char *buf, size_t *len, struct Connection *conn)
   *len = 0;
 }
 
+static void imap_alloc_msn_index(struct ImapData *idata, unsigned int msn_count)
+{
+  unsigned int new_size;
+
+  if (msn_count <= idata->msn_index_size)
+    return;
+
+  /* This is a conservative check to protect against a malicious imap
+   * server.  Most likely size_t is bigger than an unsigned int, but
+   * if msn_count is this big, we have a serious problem. */
+  if (msn_count >= (UINT_MAX / sizeof(struct Header *)))
+  {
+    mutt_error(_("Integer overflow -- can't allocate memory."));
+    sleep(1);
+    mutt_exit(1);
+  }
+
+  /* Add a little padding, like mx_allloc_memory() */
+  new_size = msn_count + 25;
+
+  if (!idata->msn_index)
+    idata->msn_index = safe_calloc(new_size, sizeof(struct Header *));
+  else
+  {
+    safe_realloc(&idata->msn_index, sizeof(struct Header *) * new_size);
+    memset(idata->msn_index + idata->msn_index_size, 0,
+           sizeof(struct Header *) * (new_size - idata->msn_index_size));
+  }
+
+  idata->msn_index_size = new_size;
+}
+
+/* Generates a more complicated sequence set after using the header cache,
+ * in case there are missing MSNs in the middle.
+ *
+ * There is a suggested limit of 1000 bytes for an IMAP client request.
+ * Ideally, we would generate multiple requests if the number of ranges
+ * is too big, but for now just abort to using the whole range.
+ */
+static void imap_generate_seqset(struct Buffer *b, struct ImapData *idata,
+                                 unsigned int msn_begin, unsigned int msn_end)
+{
+  int chunks = 0;
+  int state = 0; /* 1: single msn, 2: range of msn */
+  unsigned int msn, range_begin, range_end;
+
+  for (msn = msn_begin; msn <= msn_end + 1; msn++)
+  {
+    if (msn <= msn_end && !idata->msn_index[msn - 1])
+    {
+      switch (state)
+      {
+        case 1: /* single: convert to a range */
+          state = 2;
+        /* fall through */
+        case 2: /* extend range ending */
+          range_end = msn;
+          break;
+        default:
+          state = 1;
+          range_begin = msn;
+          break;
+      }
+    }
+    else if (state)
+    {
+      if (chunks++)
+        mutt_buffer_addch(b, ',');
+      if (chunks == 150)
+        break;
+
+      if (state == 1)
+        mutt_buffer_printf(b, "%u", range_begin);
+      else if (state == 2)
+        mutt_buffer_printf(b, "%u:%u", range_begin, range_end);
+      state = 0;
+    }
+  }
+
+  /* Too big.  Just query the whole range then. */
+  if (chunks == 150 || mutt_strlen(b->data) > 500)
+  {
+    b->dptr = b->data;
+    mutt_buffer_printf(b, "%u:%u", msn_begin, msn_end);
+  }
+}
+
 /* imap_read_headers:
  * Changed to read many headers instead of just one. It will return the
- * msgno of the last message read. It will return a value other than
- * msgend if mail comes in while downloading headers (in theory).
+ * msn of the last message read. It will return a value other than
+ * msn_end if mail comes in while downloading headers (in theory).
  */
-int imap_read_headers(struct ImapData *idata, int msgbegin, int msgend)
+int imap_read_headers(struct ImapData *idata, unsigned int msn_begin, unsigned int msn_end)
 {
   struct Context *ctx = NULL;
   char *hdrreq = NULL;
   FILE *fp = NULL;
   char tempfile[_POSIX_PATH_MAX];
-  int msgno, idx = msgbegin - 1;
+  int msgno, idx;
   struct ImapHeader h;
   struct ImapStatus *status = NULL;
-  int rc, mfhrc, oldmsgcount;
-  int fetchlast = 0;
-  int maxuid = 0;
+  int rc, mfhrc = 0, oldmsgcount;
+  int fetch_msn_end = 0;
+  unsigned int maxuid = 0;
   static const char *const want_headers =
       "DATE FROM SUBJECT TO CC MESSAGE-ID REFERENCES CONTENT-TYPE "
       "CONTENT-DESCRIPTION IN-REPLY-TO REPLY-TO LINES LIST-POST X-LABEL "
       "X-KEYWORDS X-MOZILLA-KEYS KEYWORDS X-ORIGINAL-TO";
   struct Progress progress;
   int retval = -1;
+  int evalhc = 0;
 
 #ifdef USE_HCACHE
   char buf[LONG_STRING];
   void *uid_validity = NULL;
   void *puidnext = NULL;
   unsigned int uidnext = 0;
-  int evalhc = 0;
 #endif /* USE_HCACHE */
 
   ctx = idata->ctx;
@@ -427,9 +516,11 @@ int imap_read_headers(struct ImapData *idata, int msgbegin, int msgend)
   unlink(tempfile);
 
   /* make sure context has room to hold the mailbox */
-  while ((msgend) >= idata->ctx->hdrmax)
-    mx_alloc_memory(idata->ctx);
+  while (msn_end > ctx->hdrmax)
+    mx_alloc_memory(ctx);
+  imap_alloc_msn_index(idata, msn_end);
 
+  idx = ctx->msgcount;
   oldmsgcount = ctx->msgcount;
   idata->reopen &= ~(IMAP_REOPEN_ALLOW | IMAP_NEWMAIL_PENDING);
   idata->newMailCount = 0;
@@ -437,7 +528,7 @@ int imap_read_headers(struct ImapData *idata, int msgbegin, int msgend)
 #ifdef USE_HCACHE
   idata->hcache = imap_hcache_open(idata, NULL);
 
-  if (idata->hcache && !msgbegin)
+  if (idata->hcache && (msn_begin == 1))
   {
     uid_validity = mutt_hcache_fetch_raw(idata->hcache, "/UIDVALIDITY", 12);
     puidnext = mutt_hcache_fetch_raw(idata->hcache, "/UIDNEXT", 8);
@@ -455,55 +546,57 @@ int imap_read_headers(struct ImapData *idata, int msgbegin, int msgend)
     /* L10N:
        Comparing the cached data with the IMAP server's data */
     mutt_progress_init(&progress, _("Evaluating cache..."), MUTT_PROGRESS_MSG,
-                       ReadInc, msgend + 1);
+                       ReadInc, msn_end);
 
     snprintf(buf, sizeof(buf), "UID FETCH 1:%u (UID FLAGS)", uidnext - 1);
 
     imap_cmd_start(idata, buf);
 
     rc = IMAP_CMD_CONTINUE;
-    for (msgno = msgbegin; rc == IMAP_CMD_CONTINUE; msgno++)
+    for (msgno = 1; rc == IMAP_CMD_CONTINUE; msgno++)
     {
-      mutt_progress_update(&progress, msgno + 1, -1);
+      mutt_progress_update(&progress, msgno, -1);
 
       memset(&h, 0, sizeof(h));
       h.data = safe_calloc(1, sizeof(struct ImapHeaderData));
       do
       {
-        mfhrc = 0;
-
         rc = imap_cmd_step(idata);
         if (rc != IMAP_CMD_CONTINUE)
-        {
-          imap_free_header_data(&h.data);
           break;
-        }
 
-        /* hole in the header cache */
-        if (!evalhc)
+        if ((mfhrc = msg_fetch_header(ctx, &h, idata->buf, NULL)) < 0)
           continue;
-
-        if ((mfhrc = msg_fetch_header(ctx, &h, idata->buf, NULL)) == -1)
-          continue;
-        else if (mfhrc < 0)
-        {
-          imap_free_header_data(&h.data);
-          break;
-        }
 
         if (!h.data->uid)
         {
           mutt_debug(2, "imap_read_headers: skipping hcache FETCH "
-                        "response for unknown message number %d\n",
-                     h.sid);
-          mfhrc = -1;
+                 "response for message number %d missing a UID\n",
+                 h.data->msn);
           continue;
         }
 
-        idx++;
+        if (h.data->msn < 1 || h.data->msn > msn_end)
+        {
+          mutt_debug(1, "imap_read_headers: skipping hcache FETCH "
+                        "response for unknown message number %d\n",
+                     h.data->msn);
+          continue;
+        }
+
+        if (idata->msn_index[h.data->msn - 1])
+        {
+          mutt_debug(2, "imap_read_headers: skipping hcache FETCH "
+                        "for duplicate message %d\n", h.data->msn);
+          continue;
+        }
+
         ctx->hdrs[idx] = imap_hcache_get(idata, h.data->uid);
         if (ctx->hdrs[idx])
         {
+          idata->max_msn = MAX(idata->max_msn, h.data->msn);
+          idata->msn_index[h.data->msn - 1] = ctx->hdrs[idx];
+
           ctx->hdrs[idx]->index = idx;
           /* messages which have not been expunged are ACTIVE (borrowed from mh
            * folders) */
@@ -519,148 +612,167 @@ int imap_read_headers(struct ImapData *idata, int msgbegin, int msgend)
 
           ctx->msgcount++;
           ctx->size += ctx->hdrs[idx]->content->length;
+
+          h.data = NULL;
+          idx++;
         }
-        else
-        {
-          /* bad header in the cache, we'll have to refetch. */
-          mutt_debug(3, "bad cache entry at %d, giving up\n", h.sid - 1);
-          imap_free_header_data(&h.data);
-          evalhc = 0;
-          idx--;
-        }
-      } while (rc != IMAP_CMD_OK && mfhrc == -1);
-      if (rc == IMAP_CMD_OK)
-        break;
+      } while (mfhrc == -1);
+
+      imap_free_header_data(&h.data);
+
       if ((mfhrc < -1) || ((rc != IMAP_CMD_CONTINUE) && (rc != IMAP_CMD_OK)))
       {
-        imap_free_header_data(&h.data);
         imap_hcache_close(idata);
         goto error_out_1;
       }
     }
-    /* could also look for first null header in case hcache is holey */
-    msgbegin = ctx->msgcount;
+
+    /* Look for the first empty MSN and start there */
+    while (msn_begin <= msn_end)
+    {
+      if (!idata->msn_index[msn_begin - 1])
+        break;
+      msn_begin++;
+    }
   }
 #endif /* USE_HCACHE */
 
   mutt_progress_init(&progress, _("Fetching message headers..."),
-                     MUTT_PROGRESS_MSG, ReadInc, msgend + 1);
+                     MUTT_PROGRESS_MSG, ReadInc, msn_end);
 
-  for (msgno = msgbegin; msgno <= msgend; msgno++)
+  while (msn_begin <= msn_end && fetch_msn_end < msn_end)
   {
-    mutt_progress_update(&progress, msgno + 1, -1);
+    char *cmd = NULL;
+    struct Buffer *b = NULL;
 
-    /* we may get notification of new mail while fetching headers */
-    if (msgno + 1 > fetchlast)
+    b = mutt_buffer_new();
+    if (evalhc)
     {
-      char *cmd = NULL;
-
-      fetchlast = msgend + 1;
-      safe_asprintf(&cmd, "FETCH %d:%d (UID FLAGS INTERNALDATE RFC822.SIZE %s)",
-                    msgno + 1, fetchlast, hdrreq);
-      imap_cmd_start(idata, cmd);
-      FREE(&cmd);
+      /* In case there are holes in the header cache. */
+      evalhc = 0;
+      imap_generate_seqset(b, idata, msn_begin, msn_end);
     }
+    else
+      mutt_buffer_printf(b, "%u:%u", msn_begin, msn_end);
 
-    rewind(fp);
-    memset(&h, 0, sizeof(h));
-    h.data = safe_calloc(1, sizeof(struct ImapHeaderData));
+    fetch_msn_end = msn_end;
+    safe_asprintf(&cmd, "FETCH %s (UID FLAGS INTERNALDATE RFC822.SIZE %s)", b->data, hdrreq);
+    imap_cmd_start(idata, cmd);
+    FREE(&cmd);
+    mutt_buffer_free(&b);
 
-    /* this DO loop does two things:
-     * 1. handles untagged messages, so we can try again on the same msg
-     * 2. fetches the tagged response at the end of the last message.
-     */
-    do
+    rc = IMAP_CMD_CONTINUE;
+    for (msgno = msn_begin; rc == IMAP_CMD_CONTINUE; msgno++)
     {
-      mfhrc = 0;
-
-      rc = imap_cmd_step(idata);
-      if (rc != IMAP_CMD_CONTINUE)
-        break;
-
-      if ((mfhrc = msg_fetch_header(ctx, &h, idata->buf, fp)) == -1)
-        continue;
-      else if (mfhrc < 0)
-        break;
-
-      if (!ftello(fp))
-      {
-        mutt_debug(2,
-                   "msg_fetch_header: ignoring fetch response with no body\n");
-        mfhrc = -1;
-        msgend--;
-        continue;
-      }
-
-      /* make sure we don't get remnants from older larger message headers */
-      fputs("\n\n", fp);
-
-      idx++;
-      if (idx > msgend)
-      {
-        mutt_debug(1, "imap_read_headers: skipping FETCH response for "
-                      "unknown message number %d\n",
-                   h.sid);
-        mfhrc = -1;
-        idx--;
-        continue;
-      }
-      /* May receive FLAGS updates in a separate untagged response (#2935) */
-      if (idx < ctx->msgcount)
-      {
-        mutt_debug(2, "imap_read_headers: message %d is not new\n", h.sid);
-        idx--;
-        continue;
-      }
-
-      ctx->hdrs[idx] = mutt_new_header();
-
-      ctx->hdrs[idx]->index = h.sid - 1;
-      /* messages which have not been expunged are ACTIVE (borrowed from mh
-       * folders) */
-      ctx->hdrs[idx]->active = true;
-      ctx->hdrs[idx]->read = h.data->read;
-      ctx->hdrs[idx]->old = h.data->old;
-      ctx->hdrs[idx]->deleted = h.data->deleted;
-      ctx->hdrs[idx]->flagged = h.data->flagged;
-      ctx->hdrs[idx]->replied = h.data->replied;
-      ctx->hdrs[idx]->changed = h.data->changed;
-      ctx->hdrs[idx]->received = h.received;
-      ctx->hdrs[idx]->data = (void *) (h.data);
-
-      if (maxuid < h.data->uid)
-        maxuid = h.data->uid;
+      mutt_progress_update(&progress, msgno, -1);
 
       rewind(fp);
-      /* NOTE: if Date: header is missing, mutt_read_rfc822_header depends
-       *   on h.received being set */
-      ctx->hdrs[idx]->env = mutt_read_rfc822_header(fp, ctx->hdrs[idx], 0, 0);
-      /* content built as a side-effect of mutt_read_rfc822_header */
-      ctx->hdrs[idx]->content->length = h.content_length;
-      ctx->size += h.content_length;
+      memset(&h, 0, sizeof(h));
+      h.data = safe_calloc(1, sizeof(struct ImapHeaderData));
+
+      /* this DO loop does two things:
+       * 1. handles untagged messages, so we can try again on the same msg
+       * 2. fetches the tagged response at the end of the last message.
+       */
+      do
+      {
+        rc = imap_cmd_step(idata);
+        if (rc != IMAP_CMD_CONTINUE)
+          break;
+
+        if ((mfhrc = msg_fetch_header(ctx, &h, idata->buf, fp)) < 0)
+          continue;
+
+        if (!ftello(fp))
+        {
+          mutt_debug(2,
+                  "msg_fetch_header: ignoring fetch response with no body\n");
+          continue;
+        }
+
+        /* make sure we don't get remnants from older larger message headers */
+        fputs("\n\n", fp);
+
+        if (h.data->msn < 1 || h.data->msn > fetch_msn_end)
+        {
+          mutt_debug(1, "imap_read_headers: skipping FETCH response for "
+                 "unknown message number %d\n", h.data->msn);
+          continue;
+        }
+
+        /* May receive FLAGS updates in a separate untagged response (#2935) */
+        if (idata->msn_index[h.data->msn - 1])
+        {
+          mutt_debug(2, "imap_read_headers: skipping FETCH response for "
+                        "duplicate message %d\n", h.data->msn);
+          continue;
+        }
+
+        ctx->hdrs[idx] = mutt_new_header();
+
+        idata->max_msn = MAX(idata->max_msn, h.data->msn);
+        idata->msn_index[h.data->msn - 1] = ctx->hdrs[idx];
+
+        ctx->hdrs[idx]->index = idx;
+        /* messages which have not been expunged are ACTIVE (borrowed from mh
+         * folders) */
+        ctx->hdrs[idx]->active = true;
+        ctx->hdrs[idx]->read = h.data->read;
+        ctx->hdrs[idx]->old = h.data->old;
+        ctx->hdrs[idx]->deleted = h.data->deleted;
+        ctx->hdrs[idx]->flagged = h.data->flagged;
+        ctx->hdrs[idx]->replied = h.data->replied;
+        ctx->hdrs[idx]->changed = h.data->changed;
+        ctx->hdrs[idx]->received = h.received;
+        ctx->hdrs[idx]->data = (void *) (h.data);
+
+        if (maxuid < h.data->uid)
+          maxuid = h.data->uid;
+
+        rewind(fp);
+        /* NOTE: if Date: header is missing, mutt_read_rfc822_header depends
+         *   on h.received being set */
+        ctx->hdrs[idx]->env = mutt_read_rfc822_header(fp, ctx->hdrs[idx], 0, 0);
+        /* content built as a side-effect of mutt_read_rfc822_header */
+        ctx->hdrs[idx]->content->length = h.content_length;
+        ctx->size += h.content_length;
 
 #ifdef USE_HCACHE
-      imap_hcache_put(idata, ctx->hdrs[idx]);
+        imap_hcache_put(idata, ctx->hdrs[idx]);
 #endif /* USE_HCACHE */
 
-      ctx->msgcount++;
-    } while ((rc != IMAP_CMD_OK) && ((mfhrc == -1) || ((msgno + 1) >= fetchlast)));
+        ctx->msgcount++;
 
-    if ((mfhrc < -1) || ((rc != IMAP_CMD_CONTINUE) && (rc != IMAP_CMD_OK)))
-    {
+        h.data = NULL;
+        idx++;
+      } while (mfhrc == -1);
+
       imap_free_header_data(&h.data);
+
+      if ((mfhrc < -1) || ((rc != IMAP_CMD_CONTINUE) && (rc != IMAP_CMD_OK)))
+      {
 #ifdef USE_HCACHE
-      imap_hcache_close(idata);
+        imap_hcache_close(idata);
 #endif
-      goto error_out_1;
+        goto error_out_1;
+      }
     }
 
-    /* in case we get new mail while fetching the headers */
+    /* In case we get new mail while fetching the headers.
+     *
+     * Note: The RFC says we shouldn't get any EXPUNGE responses in the
+     * middle of a FETCH.  But just to be cautious, use the current state
+     * of max_msn, not fetch_msn_end to set the next start range.
+     */
     if (idata->reopen & IMAP_NEWMAIL_PENDING)
     {
-      msgend = idata->newMailCount - 1;
-      while ((msgend) >= ctx->hdrmax)
+      /* update to the last value we actually pulled down */
+      fetch_msn_end = idata->max_msn;
+      msn_begin = idata->max_msn + 1;
+      msn_end = idata->newMailCount;
+      while (msn_end > ctx->hdrmax)
         mx_alloc_memory(ctx);
+      imap_alloc_msn_index(idata, msn_end);
       idata->reopen &= ~IMAP_NEWMAIL_PENDING;
       idata->newMailCount = 0;
     }
@@ -687,6 +799,8 @@ int imap_read_headers(struct ImapData *idata, int msgbegin, int msgend)
 
   if (ctx->msgcount > oldmsgcount)
   {
+    /* TODO: it's not clear to me why we are calling mx_alloc_memory
+     *       yet again. */
     mx_alloc_memory(ctx);
     mx_update_context(ctx, ctx->msgcount - oldmsgcount);
     imap_update_context(idata, oldmsgcount);
@@ -694,7 +808,7 @@ int imap_read_headers(struct ImapData *idata, int msgbegin, int msgend)
 
   idata->reopen |= IMAP_REOPEN_ALLOW;
 
-  retval = msgend;
+  retval = msn_end;
 
 error_out_1:
   safe_fclose(&fp);

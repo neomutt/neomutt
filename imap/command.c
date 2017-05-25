@@ -182,26 +182,36 @@ static int cmd_status(const char *s)
  *   be reopened at our earliest convenience */
 static void cmd_parse_expunge(struct ImapData *idata, const char *s)
 {
-  int expno;
+  unsigned int exp_msn;
   struct Header *h = NULL;
 
   mutt_debug(2, "Handling EXPUNGE\n");
 
-  expno = atoi(s);
+  exp_msn = atoi(s);
+  if (exp_msn < 1 || exp_msn > idata->max_msn)
+    return;
 
-  /* walk headers, zero seqno of expunged message, decrement seqno of those
-   * above. Possibly we could avoid walking the whole list by resorting
-   * and guessing a good starting point, but I'm guessing the resort would
-   * nullify the gains */
-  for (int cur = 0; cur < idata->ctx->msgcount; cur++)
+  h = idata->msn_index[exp_msn - 1];
+  if (h)
   {
-    h = idata->ctx->hdrs[cur];
-
-    if (h->index + 1 == expno)
-      h->index = -1;
-    else if (h->index + 1 > expno)
-      h->index--;
+    /* imap_expunge_mailbox() will rewrite h->index.
+     * It needs to resort using SORT_ORDER anyway, so setting to INT_MAX
+     * makes the code simpler and possibly more efficient. */
+    h->index = INT_MAX;
+    HEADER_DATA(h)->msn = 0;
   }
+
+  /* decrement seqno of those above. */
+  for (unsigned int cur = exp_msn; cur < idata->max_msn; cur++)
+  {
+    h = idata->msn_index[cur];
+    if (h)
+      HEADER_DATA(h)->msn--;
+    idata->msn_index[cur - 1] = h;
+  }
+
+  idata->msn_index[idata->max_msn - 1] = NULL;
+  idata->max_msn--;
 
   idata->reopen |= IMAP_EXPUNGE_PENDING;
 }
@@ -212,34 +222,26 @@ static void cmd_parse_expunge(struct ImapData *idata, const char *s)
  *   Of course, a lot of code here duplicates code in message.c. */
 static void cmd_parse_fetch(struct ImapData *idata, char *s)
 {
-  int msgno, cur;
+  unsigned int msn;
   struct Header *h = NULL;
 
   mutt_debug(3, "Handling FETCH\n");
 
-  msgno = atoi(s);
-
-  if (msgno <= idata->ctx->msgcount)
-    /* see cmd_parse_expunge */
-    for (cur = 0; cur < idata->ctx->msgcount; cur++)
-    {
-      h = idata->ctx->hdrs[cur];
-
-      if (h && h->active && h->index + 1 == msgno)
-      {
-        mutt_debug(2, "Message UID %d updated\n", HEADER_DATA(h)->uid);
-        break;
-      }
-
-      h = NULL;
-    }
-
-  if (!h)
+  msn = atoi(s);
+  if (msn < 1 || msn > idata->max_msn)
   {
     mutt_debug(3, "FETCH response ignored for this message\n");
     return;
   }
 
+  h = idata->msn_index[msn - 1];
+  if (!h || !h->active)
+  {
+    mutt_debug(3, "FETCH response ignored for this message\n");
+    return;
+  }
+
+  mutt_debug(2, "Message UID %d updated\n", HEADER_DATA(h)->uid);
   /* skip FETCH */
   s = imap_next_word(s);
   s = imap_next_word(s);
@@ -669,7 +671,7 @@ static int cmd_handle_untagged(struct ImapData *idata)
 {
   char *s = NULL;
   char *pn = NULL;
-  int count;
+  unsigned int count;
 
   s = imap_next_word(idata->buf);
   pn = imap_next_word(s);
@@ -689,7 +691,7 @@ static int cmd_handle_untagged(struct ImapData *idata)
       /* new mail arrived */
       count = atoi(pn);
 
-      if (!(idata->reopen & IMAP_EXPUNGE_PENDING) && count < idata->ctx->msgcount)
+      if (!(idata->reopen & IMAP_EXPUNGE_PENDING) && count < idata->max_msn)
       {
         /* Notes 6.0.3 has a tendency to report fewer messages exist than
          * it should. */
@@ -698,7 +700,7 @@ static int cmd_handle_untagged(struct ImapData *idata)
       }
       /* at least the InterChange server sends EXISTS messages freely,
        * even when there is no new mail */
-      else if (count == idata->ctx->msgcount)
+      else if (count == idata->max_msn)
         mutt_debug(3, "cmd_handle_untagged: superfluous EXISTS message.\n");
       else
       {
@@ -972,17 +974,17 @@ void imap_cmd_finish(struct ImapData *idata)
 
   if (idata->reopen & IMAP_REOPEN_ALLOW)
   {
-    int count = idata->newMailCount;
+    unsigned int count = idata->newMailCount;
 
     if (!(idata->reopen & IMAP_EXPUNGE_PENDING) &&
-        (idata->reopen & IMAP_NEWMAIL_PENDING) && count > idata->ctx->msgcount)
+        (idata->reopen & IMAP_NEWMAIL_PENDING) && count > idata->max_msn)
     {
       /* read new mail messages */
       mutt_debug(2, "imap_cmd_finish: Fetching new mail\n");
       /* check_status: curs_main uses imap_check_mailbox to detect
        *   whether the index needs updating */
       idata->check_status = IMAP_NEWMAIL_PENDING;
-      imap_read_headers(idata, idata->ctx->msgcount, count - 1);
+      imap_read_headers(idata, idata->max_msn + 1, count);
     }
     else if (idata->reopen & IMAP_EXPUNGE_PENDING)
     {
