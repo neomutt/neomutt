@@ -8,16 +8,6 @@ subdir = doc
 DEFS = -DSYSCONFDIR=\"$(sysconfdir)\" -DBINDIR=\"$(bindir)\"
 AM_CPPFLAGS = -I. -I.. -I$(includedir) -I$(top_srcdir)
 
-AM_V_COPY = $(am__v_COPY_$(V))
-am__v_COPY_ = $(am__v_COPY_$(AM_DEFAULT_VERBOSITY))
-am__v_COPY_0 = @echo "  COPY    " $< "->" $@;
-am__v_COPY_1 = 
-
-AM_V_XSLT = $(am__v_XSLT_$(V))
-am__v_XSLT_ = $(am__v_XSLT_$(AM_DEFAULT_VERBOSITY))
-am__v_XSLT_0 = @echo "  XSLT    " $@;
-am__v_XSLT_1 = 
-
 MAKEDOC_CPP = $(CPP) $(AM_CPPFLAGS) $(DEFS) $(CPPFLAGS) -D_MAKEDOC -C
 
 noinst_PROGRAMS = makedoc
@@ -116,21 +106,21 @@ uninstall-local:
 
 check:
 manual.txt: manual.html
-	$(AM_V_GEN)LC_ALL=C w3m -dump -O UTF8 manual.html > $@ || \
+	LC_ALL=C w3m -dump -O UTF8 manual.html > $@ || \
 	LC_ALL=C lynx -dump -nolist -with_backspaces -display_charset=us-ascii manual.html > $@ || \
 	LC_ALL=C elinks -dump -no-numbering -no-references manual.html | sed -e 's,\\001, ,g' > $@
 
 Muttrc: $(top_srcdir)/init.h makedoc$(EXEEXT) $(srcdir)/Muttrc.head
-	$(AM_V_GEN)sed -e 's,[@]docdir[@],$(docdir),' $(srcdir)/Muttrc.head > Muttrc
-	$(AM_V_at)$(CPP) $(AM_CPPFLAGS) $(DEFS) $(CPPFLAGS) -D_MAKEDOC -C $(top_srcdir)/init.h | ./makedoc$(EXEEXT) -c >> Muttrc
+	sed -e 's,[@]docdir[@],$(docdir),' $(srcdir)/Muttrc.head > Muttrc
+	$(CPP) $(AM_CPPFLAGS) $(DEFS) $(CPPFLAGS) -D_MAKEDOC -C $(top_srcdir)/init.h | ./makedoc$(EXEEXT) -c >> Muttrc
 
 manual.html: manual.xml $(srcdir)/html.xsl $(srcdir)/mutt.xsl $(srcdir)/mutt.css
-	$(AM_V_XSLT)xsltproc --nonet -o $@ $(srcdir)/html.xsl manual.xml
+	xsltproc --nonet -o $@ $(srcdir)/html.xsl manual.xml
 
 $(CHUNKED_DOCFILES): index.html
 
 index.html: $(srcdir)/chunk.xsl $(srcdir)/mutt.xsl manual.xml $(srcdir)/mutt.css
-	$(AM_V_XSLT)xsltproc --nonet $(srcdir)/chunk.xsl manual.xml > /dev/null 2>&1
+	xsltproc --nonet $(srcdir)/chunk.xsl manual.xml > /dev/null 2>&1
 
 validate: manual.xml
 	xmllint --noout --noblanks --postvalid $<
@@ -154,11 +144,11 @@ DISTCLEANFILES=manual.txt manual.html manual.xml manual.pdf html \
 	       instdoc Muttrc
 
 instdoc: instdoc.sh
-	$(AM_V_COPY)cp instdoc.sh instdoc
-	$(AM_V_at)chmod a+x instdoc
+	cp instdoc.sh instdoc
+	chmod a+x instdoc
 
 muttrc.man: makedoc$(EXEEXT) $(top_srcdir)/init.h muttrc.man.head muttrc.man.tail
-	$(AM_V_GEN)$(MAKEDOC_CPP) $(top_srcdir)/init.h | \
+	$(MAKEDOC_CPP) $(top_srcdir)/init.h | \
 		./makedoc$(EXEEXT) -m | \
 		cat $(srcdir)/muttrc.man.head - $(srcdir)/muttrc.man.tail > $@
 
@@ -167,21 +157,21 @@ EDIT = sed -e 's,@sysconfdir\@,$(sysconfdir),g' \
 	-e 's,@docdir\@,$(docdir),g'
 
 mutt.1: $(srcdir)/mutt.man
-	$(AM_V_GEN)$(EDIT) $(srcdir)/mutt.man > $@
+	$(EDIT) $(srcdir)/mutt.man > $@
 
 pgpewrap.1: $(srcdir)/pgpewrap.man
-	$(AM_V_GEN)$(EDIT) $(srcdir)/pgpewrap.man > $@
+	$(EDIT) $(srcdir)/pgpewrap.man > $@
 
 pgpring.1: $(srcdir)/pgpring.man
-	$(AM_V_GEN)$(EDIT) $(srcdir)/pgpring.man > $@
+	$(EDIT) $(srcdir)/pgpring.man > $@
 
 smime_keys.1: $(srcdir)/smime_keys.man
-	$(AM_V_GEN)$(EDIT) $(srcdir)/smime_keys.man > $@
+	$(EDIT) $(srcdir)/smime_keys.man > $@
 
 manual.xml: makedoc$(EXEEXT) ../config.h $(top_srcdir)/init.h \
                manual.xml.head $(top_srcdir)/functions.h $(top_srcdir)/OPS* manual.xml.tail \
                $(srcdir)/gen-map-doc
-	$(AM_V_GEN)( mutt_ver=`sed -n -e '/MUTT_VERSION/s/.*"\(.*\)".*/\1/p' ../config.h` && \
+	( mutt_ver=`sed -n -e '/MUTT_VERSION/s/.*"\(.*\)".*/\1/p' ../config.h` && \
 		sed -e "s/@VERSION\@/$(PACKAGE_VERSION) ($$mutt_ver)/" $(srcdir)/manual.xml.head && \
 		$(MAKEDOC_CPP) $(top_srcdir)/init.h | ./makedoc$(EXEEXT) -s && \
 		$(MAKEDOC_CPP) $(top_srcdir)/functions.h | \

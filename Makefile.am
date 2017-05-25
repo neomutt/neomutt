@@ -11,11 +11,6 @@ AM_DISTCHECK_CONFIGURE_FLAGS = --enable-debug --enable-flock --enable-gpgme \
 	--with-gdbm --with-gnutls --with-gss --with-kyotocabinet --with-lmdb \
 	--with-mixmaster --with-qdbm --with-sasl --with-tokyocabinet
 
-AM_V_COPY = $(am__v_COPY_$(V))
-am__v_COPY_ = $(am__v_COPY_$(AM_DEFAULT_VERBOSITY))
-am__v_COPY_0 = @echo "  COPY    " $@;
-am__v_COPY_1 = 
-
 SUBDIRS = m4 contrib imap ncrypt
 
 if BUILD_HCACHE
@@ -110,21 +105,21 @@ txt2c_LDADD =
 noinst_PROGRAMS = $(MUTT_MD5) txt2c
 
 mutt_dotlock.c: $(srcdir)/dotlock.c
-	$(AM_V_COPY)cp $(srcdir)/dotlock.c mutt_dotlock.c
+	cp $(srcdir)/dotlock.c mutt_dotlock.c
 
 conststrings.c: txt2c config.status
-	$(AM_V_GEN)( \
+	( \
 		($(CC) -v >/dev/null 2>&1 && $(CC) -v) || \
 		($(CC) --version >/dev/null 2>&1 && $(CC) --version) || \
 		($(CC) -V >/dev/null 2>&1 && $(CC) -V) || \
 		echo "unknown compiler"; \
 	) 2>&1 | ${srcdir}/txt2c.sh cc_version >conststrings_c;
-	$(AM_V_at)echo "$(CFLAGS)" | ${srcdir}/txt2c.sh cc_cflags >>conststrings_c
-	$(AM_V_at)grep ac_cs_config= config.status | \
+	echo "$(CFLAGS)" | ${srcdir}/txt2c.sh cc_cflags >>conststrings_c
+	grep ac_cs_config= config.status | \
 		cut -d= -f2- | \
 		sed -e 's/^"//' -e 's/"$$//' | \
 		${srcdir}/txt2c.sh configure_options >> conststrings_c
-	$(AM_V_at)mv -f conststrings_c conststrings.c
+	mv -f conststrings_c conststrings.c
 
 CLEANFILES = mutt_dotlock.c keymap_alldefs.h $(BUILT_SOURCES)
 
@@ -138,25 +133,25 @@ dist-hook:
 	echo $(VERSION) > $(distdir)/.tarball-version
 
 smime_keys: $(srcdir)/smime_keys.pl
-	$(AM_V_COPY)cp $(srcdir)/smime_keys.pl smime_keys
-	$(AM_V_at)chmod +x smime_keys
+	cp $(srcdir)/smime_keys.pl smime_keys
+	chmod +x smime_keys
 
 keymap_defs.h: $(OPS) $(srcdir)/gen_defs
-	$(AM_V_GEN)$(srcdir)/gen_defs $(OPS) > $@
+	$(srcdir)/gen_defs $(OPS) > $@
 
 keymap_alldefs.h: $(srcdir)/OPS $(srcdir)/OPS.SIDEBAR $(srcdir)/OPS.NOTMUCH $(srcdir)/OPS.MIX $(srcdir)/OPS.PGP $(srcdir)/OPS.SMIME $(srcdir)/OPS.CRYPT $(srcdir)/gen_defs config.h
-	$(AM_V_GEN)$(srcdir)/gen_defs $(srcdir)/OPS $(srcdir)/OPS.SIDEBAR $(srcdir)/OPS.NOTMUCH \
+	$(srcdir)/gen_defs $(srcdir)/OPS $(srcdir)/OPS.SIDEBAR $(srcdir)/OPS.NOTMUCH \
 		$(srcdir)/OPS.MIX $(srcdir)/OPS.PGP $(srcdir)/OPS.SMIME $(srcdir)/OPS.CRYPT \
 		> $@
 
 git_ver.h: $(mutt_SOURCES) $(SUBDIRS)
-	$(AM_V_at)version=`git describe --dirty --abbrev=6 --match "neomutt-*" 2> /dev/null | sed -e 's/^neomutt-[0-9]\{8\}//' -e 's/g//'`
-	$(AM_V_at)echo 'const char *GitVer = "'$$version'";' > git_ver.h.tmp
-	$(AM_V_at)if ! cmp -s git_ver.h.tmp git_ver.h; then \
+	version=`git describe --dirty --abbrev=6 --match "neomutt-*" 2> /dev/null | sed -e 's/^neomutt-[0-9]\{8\}//' -e 's/g//'`
+	echo 'const char *GitVer = "'$$version'";' > git_ver.h.tmp
+	if ! cmp -s git_ver.h.tmp git_ver.h; then \
 		mv git_ver.h.tmp git_ver.h; \
 		echo "  GEN      git_ver.h"; \
 	fi
-	$(AM_V_at)rm -f git_ver.h.tmp
+	rm -f git_ver.h.tmp
 
 install-exec-hook:
 	if test -f $(DESTDIR)$(bindir)/mutt.dotlock && test -f $(DESTDIR)$(bindir)/mutt_dotlock ; then	\
