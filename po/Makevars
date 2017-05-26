@@ -13,9 +13,3 @@ XGETTEXT_OPTIONS = --keyword=_ --keyword=N_ --no-wrap --add-comments=L10N
 COPYRIGHT_HOLDER = NeoMutt Project
 MSGID_BUGS_ADDRESS = neomutt-devel@neomutt.org
 
-all-custom: $(GMOFILES)
-
-$(GMOFILES): %.gmo : %.po 
-	@echo "  MSGFMT  " $@
-	@$(MSGFMT) -c -o $@ $<
-
