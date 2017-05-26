@@ -3591,17 +3591,6 @@ struct Option MuttVars[] = {
   ** Valid choices are ``md5'', ``sha1'', ``sha224'', ``sha256'', ``sha384'', ``sha512''.
   ** (S/MIME only)
   */
-  { "smime_sign_opaque_command",        DT_STR, R_NONE, UL &SmimeSignOpaqueCommand, 0 },
-  /*
-  ** .pp
-  ** This command is used to created S/MIME signatures of type
-  ** \fCapplication/x-pkcs7-signature\fP, which can only be handled by mail
-  ** clients supporting the S/MIME extension.
-  ** .pp
-  ** This is a format string, see the $$smime_decrypt_command command for
-  ** possible \fCprintf(3)\fP-like sequences.
-  ** (S/MIME only)
-  */
   { "smime_timeout",            DT_NUM,  R_NONE, UL &SmimeTimeout, 300 },
   /*
   ** .pp
