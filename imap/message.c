@@ -306,7 +306,7 @@ static int msg_fetch_header(struct Context *ctx, struct ImapHeader *h, char *buf
   struct ImapData *idata = NULL;
   long bytes;
   int rc = -1; /* default now is that string isn't FETCH response */
- int parse_rc;
+  int parse_rc;
 
   idata = ctx->data;
 
@@ -571,8 +571,8 @@ int imap_read_headers(struct ImapData *idata, unsigned int msn_begin, unsigned i
         if (!h.data->uid)
         {
           mutt_debug(2, "imap_read_headers: skipping hcache FETCH "
-                 "response for message number %d missing a UID\n",
-                 h.data->msn);
+                        "response for message number %d missing a UID\n",
+                     h.data->msn);
           continue;
         }
 
@@ -587,7 +587,8 @@ int imap_read_headers(struct ImapData *idata, unsigned int msn_begin, unsigned i
         if (idata->msn_index[h.data->msn - 1])
         {
           mutt_debug(2, "imap_read_headers: skipping hcache FETCH "
-                        "for duplicate message %d\n", h.data->msn);
+                        "for duplicate message %d\n",
+                     h.data->msn);
           continue;
         }
 
@@ -685,8 +686,8 @@ int imap_read_headers(struct ImapData *idata, unsigned int msn_begin, unsigned i
 
         if (!ftello(fp))
         {
-          mutt_debug(2,
-                  "msg_fetch_header: ignoring fetch response with no body\n");
+          mutt_debug(
+              2, "msg_fetch_header: ignoring fetch response with no body\n");
           continue;
         }
 
@@ -696,7 +697,8 @@ int imap_read_headers(struct ImapData *idata, unsigned int msn_begin, unsigned i
         if (h.data->msn < 1 || h.data->msn > fetch_msn_end)
         {
           mutt_debug(1, "imap_read_headers: skipping FETCH response for "
-                 "unknown message number %d\n", h.data->msn);
+                        "unknown message number %d\n",
+                     h.data->msn);
           continue;
         }
 
@@ -704,7 +706,8 @@ int imap_read_headers(struct ImapData *idata, unsigned int msn_begin, unsigned i
         if (idata->msn_index[h.data->msn - 1])
         {
           mutt_debug(2, "imap_read_headers: skipping FETCH response for "
-                        "duplicate message %d\n", h.data->msn);
+                        "duplicate message %d\n",
+                     h.data->msn);
           continue;
         }
 
