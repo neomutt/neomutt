@@ -1063,7 +1063,7 @@ int mx_close_mailbox(struct Context *ctx, int *index_hint)
         ctx->flagged--;
     }
     ctx->msgcount -= ctx->deleted;
-    mutt_sb_set_buffystats (ctx);
+    mutt_sb_set_buffystats(ctx);
     ctx->msgcount = orig_msgcount;
   }
 #endif
