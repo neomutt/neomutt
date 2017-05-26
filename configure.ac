@@ -357,6 +357,9 @@ main ()
 	do
 		AC_CHECK_LIB($lib, waddnwstr, [cf_ncurses="$lib"; break])
 	done
+	if test -z $cf_ncurses; then
+		AC_MSG_ERROR([Unable to find ncursesw library])
+	fi
 	AC_CHECK_LIB($cf_ncurses, initscr,
 		[MUTTLIBS="$MUTTLIBS -l$cf_ncurses"
 
@@ -374,7 +377,7 @@ main ()
 			[AC_CHECK_HEADERS(ncurses.h,[cf_cv_ncurses_header="ncurses.h"])])
 		fi],
 
-		[CF_CURSES_LIBS])
+		)
 		])
 
 	old_LIBS="$LIBS"
