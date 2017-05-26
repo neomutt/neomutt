@@ -1507,6 +1507,7 @@ struct Option MuttVars[] = {
   ** .dt %g .dd newsgroup name (if compiled with NNTP support)
   ** .dt %g .dd message labels (e.g. notmuch tags)
   ** .dt %H .dd spam attribute(s) of this message
+  ** .dt %I .dd initials of author
   ** .dt %i .dd message-id of the current message
   ** .dt %K .dd the list to which the letter was sent (if any; otherwise: empty).
   ** .dt %l .dd number of lines in the message (does not work with maildir,
@@ -1522,6 +1523,7 @@ struct Option MuttVars[] = {
   **            stashed the message: list name or recipient name
   **            if not sent to a list
   ** .dt %P .dd progress indicator for the built-in pager (how much of the file has been displayed)
+  ** .dt %q .dd newsgroup name (if compiled with NNTP support)
   ** .dt %r .dd comma separated list of ``To:'' recipients
   ** .dt %R .dd comma separated list of ``Cc:'' recipients
   ** .dt %s .dd subject of the message
@@ -2295,6 +2297,7 @@ struct Option MuttVars[] = {
   ** .dt %u     .dd user id
   ** .dt %a     .dd algorithm
   ** .dt %l     .dd key length
+  ** .dt %p     .dd protocol
   ** .dt %f     .dd flags
   ** .dt %c     .dd capabilities
   ** .dt %t     .dd trust/validity of the key-uid association
@@ -3416,6 +3419,7 @@ struct Option MuttVars[] = {
   ** .dt %s .dd Expands to the name of a file containing the signature part
   ** .          of a \fCmultipart/signed\fP attachment when verifying it.
   ** .dt %k .dd The key-pair specified with $$smime_default_key
+  ** .dt %i .dd Intermediate certificates
   ** .dt %c .dd One or more certificate IDs.
   ** .dt %a .dd The algorithm used for encryption.
   ** .dt %d .dd The message digest algorithm specified with $$smime_sign_digest_alg.

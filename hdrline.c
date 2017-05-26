@@ -437,7 +437,6 @@ static char *apply_subject_mods(struct Envelope *env)
  * %E = number of messages in current thread
  * %f = entire from line
  * %F = like %n, unless from self
- * %g = newsgroup name (if compiled with NNTP support)
  * %g = message labels (e.g. notmuch tags)
  * %i = message-id
  * %I = initials of author
@@ -449,6 +448,7 @@ static char *apply_subject_mods(struct Envelope *env)
  * %N = score
  * %O = like %L, except using address instead of name
  * %P = progress indicator for builtin pager
+ * %q = newsgroup name (if compiled with NNTP support)
  * %r = comma separated list of To: recipients
  * %R = comma separated list of Cc: recipients
  * %s = subject
