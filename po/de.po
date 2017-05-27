@@ -11,11 +11,11 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: neomutt-20161104\n"
+"Project-Id-Version: neomutt-20160526\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
 "POT-Creation-Date: 2017-05-26 13:20+0100\n"
 "PO-Revision-Date: 2017-02-13 20:19+0100\n"
-"Last-Translator: André Berger <andre.berger@web.de>\n"
+"Last-Translator: Elimar Riesebieter <riesebie@lxtec.de>\n"
 "Language-Team: none\n"
 "Language: de\n"
 "MIME-Version: 1.0\n"
@@ -4780,7 +4780,7 @@ msgstr ""
 #. The 'f' is undocumented. Please DO NOT translate it.
 #: ncrypt/crypt_gpgme.c:4583
 msgid "sapfco"
-msgstr ""
+msgstr "sapuw"
 
 #: ncrypt/crypt_gpgme.c:4590
 msgid "PGP (s)ign, sign (a)s, s/(m)ime, (c)lear, or (o)ppenc mode off? "
@@ -4792,7 +4792,7 @@ msgstr ""
 #. The 'f' is undocumented. Please DO NOT translate it.
 #: ncrypt/crypt_gpgme.c:4593
 msgid "samfco"
-msgstr ""
+msgstr "samuw"
 
 #. L10N: S/MIME options (opportunistic encryption is off)
 #: ncrypt/crypt_gpgme.c:4606
@@ -4928,7 +4928,7 @@ msgstr ""
 #. The 'f' is undocumented. Please DO NOT translate it.
 #: ncrypt/pgp.c:1658
 msgid "safcoi"
-msgstr ""
+msgstr "sauw"
 
 #. L10N: PGP options (opportunistic encryption is on)
 #: ncrypt/pgp.c:1664
@@ -4939,7 +4939,7 @@ msgstr "PGP (s)ign., sign. (a)ls, (u)nverschl., oder kein (w)ie-mögl.-Modus? "
 #. The 'f' is undocumented. Please DO NOT translate it.
 #: ncrypt/pgp.c:1667
 msgid "safco"
-msgstr ""
+msgstr "sauw"
 
 #. L10N: PGP options (inline) (opportunistic encryption is off)
 #: ncrypt/pgp.c:1684
@@ -5162,7 +5162,7 @@ msgstr ""
 #. The 'f' is undocumented. Please DO NOT translate it.
 #: ncrypt/smime.c:1988
 msgid "swafco"
-msgstr ""
+msgstr "smauw"
 
 #. L10N: S/MIME options (opportunistic encryption is off)
 #: ncrypt/smime.c:1998
