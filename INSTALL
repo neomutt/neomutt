@@ -45,8 +45,6 @@ systems:
 
 - For building the manual, mutt needs the DocBook XSL stylesheets
   as well as the DocBook DTD as of version 4.2 installed locally.
-  For details, please see the section "Generating Mutt Documentation
-  From Source" in doc/devel-notes.txt.
 
 
 Installation
