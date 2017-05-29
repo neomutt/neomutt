@@ -1828,26 +1828,37 @@ int ci_send_message(int flags,           /* send mode */
       if (msg->content->next)
         msg->content = mutt_make_multipart(msg->content);
 
-      if (WithCrypto && option(OPTPOSTPONEENCRYPT) && PostponeEncryptAs &&
-          (msg->security & ENCRYPT))
+      if (WithCrypto && option(OPTPOSTPONEENCRYPT) && (msg->security & ENCRYPT))
       {
-        int is_signed = msg->security & SIGN;
-        if (is_signed)
-          msg->security &= ~SIGN;
+        char *encrypt_as = NULL;
 
-        pgpkeylist = safe_strdup(PostponeEncryptAs);
-        if (mutt_protect(msg, pgpkeylist) == -1)
+        if ((WithCrypto & APPLICATION_PGP) && (msg->security & APPLICATION_PGP))
+          encrypt_as = PgpSelfEncryptAs;
+        else if ((WithCrypto & APPLICATION_SMIME) && (msg->security & APPLICATION_SMIME))
+          encrypt_as = SmimeSelfEncryptAs;
+        if (!(encrypt_as && *encrypt_as))
+          encrypt_as = PostponeEncryptAs;
+
+        if (encrypt_as && *encrypt_as)
         {
+          int is_signed = msg->security & SIGN;
+          if (is_signed)
+            msg->security &= ~SIGN;
+
+          pgpkeylist = safe_strdup(encrypt_as);
+          if (mutt_protect(msg, pgpkeylist) == -1)
+          {
+            if (is_signed)
+              msg->security |= SIGN;
+            FREE(&pgpkeylist);
+            msg->content = mutt_remove_multipart(msg->content);
+            goto main_loop;
+          }
+
           if (is_signed)
             msg->security |= SIGN;
           FREE(&pgpkeylist);
-          msg->content = mutt_remove_multipart(msg->content);
-          goto main_loop;
         }
-
-        if (is_signed)
-          msg->security |= SIGN;
-        FREE(&pgpkeylist);
       }
 
       /*
