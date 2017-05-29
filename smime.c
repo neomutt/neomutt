@@ -911,11 +911,11 @@ char *smime_findKeys (ADDRESS *adrlist, int oppenc_mode)
       FREE (&keylist);
       return NULL;
     }
-    
+
     keyID = key->hash;
     keylist_size += mutt_strlen (keyID) + 2;
     safe_realloc (&keylist, keylist_size);
-    sprintf (keylist + keylist_used, "%s\n", keyID);	/* __SPRINTF_CHECKED__ */
+    sprintf (keylist + keylist_used, "%s%s", keylist_used ? " " : "", keyID);	/* __SPRINTF_CHECKED__ */
     keylist_used = mutt_strlen (keylist);
 
     smime_free_key (&key);
@@ -1374,10 +1374,10 @@ BODY *smime_build_smime_entity (BODY *a, char *certlist)
   char buf[LONG_STRING], certfile[LONG_STRING];
   char tempfile[_POSIX_PATH_MAX], smimeerrfile[_POSIX_PATH_MAX];
   char smimeinfile[_POSIX_PATH_MAX];
-  char *cert_start = certlist, *cert_end = certlist;
+  char *cert_start, *cert_end;
   FILE *smimein = NULL, *smimeerr = NULL, *fpout = NULL, *fptmp = NULL;
   BODY *t;
-  int err = 0, empty;
+  int err = 0, empty, off;
   pid_t thepid;
   
   mutt_mktemp (tempfile, sizeof (tempfile));
@@ -1408,17 +1408,18 @@ BODY *smime_build_smime_entity (BODY *a, char *certlist)
   }
 
   *certfile = '\0';
-  while (1)
+  for (cert_start = certlist; cert_start; cert_start = cert_end)
   {
-    int off = mutt_strlen (certfile);
-    while (*++cert_end && *cert_end != '\n');
-    if (!*cert_end) break;
-    *cert_end = '\0';
-    snprintf (certfile+off, sizeof (certfile)-off, " %s/%s",
-	      NONULL(SmimeCertificates), cert_start);
-    *cert_end = '\n';
-    cert_start = cert_end;
-    cert_start++;
+    if ((cert_end = strchr (cert_start, ' ')))
+      *cert_end = '\0';
+    if (*cert_start)
+    {
+      off = mutt_strlen (certfile);
+      snprintf (certfile+off, sizeof (certfile)-off, "%s%s/%s",
+                off ? " " : "", NONULL(SmimeCertificates), cert_start);
+    }
+    if (cert_end)
+      *cert_end++ = ' ';
   }
 
   /* write a MIME entity */
