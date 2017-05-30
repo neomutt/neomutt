@@ -274,7 +274,6 @@ enum
   OPTMAX
 };
 
-#define mutt_bit_alloc(n)     calloc((n + 7) / 8, sizeof(char))
 #define mutt_bit_set(v, n)    v[n / 8] |= (1 << (n % 8))
 #define mutt_bit_unset(v, n)  v[n / 8] &= ~(1 << (n % 8))
 #define mutt_bit_toggle(v, n) v[n / 8] ^= (1 << (n % 8))
