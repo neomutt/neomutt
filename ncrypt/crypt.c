@@ -181,11 +181,20 @@ int mutt_protect(struct Header *msg, char *keylist)
   if (option(OPTCRYPTUSEPKA) && (msg->security & SIGN))
   {
     /* Set sender (necessary for e.g. PKA).  */
+    const char *mailbox = NULL;
+    const struct Address *from = msg->env->from;
+
+    if (!from)
+      from = mutt_default_from();
+
+    mailbox = from->mailbox;
+    if (!mailbox && EnvFrom)
+      mailbox = EnvFrom->mailbox;
 
     if ((WithCrypto & APPLICATION_SMIME) && (msg->security & APPLICATION_SMIME))
-      crypt_smime_set_sender(msg->env->from->mailbox);
+      crypt_smime_set_sender(mailbox);
     else if ((WithCrypto & APPLICATION_PGP) && (msg->security & APPLICATION_PGP))
-      crypt_pgp_set_sender(msg->env->from->mailbox);
+      crypt_pgp_set_sender(mailbox);
   }
 
   if (msg->security & SIGN)
