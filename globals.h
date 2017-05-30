@@ -21,6 +21,7 @@
 #include <signal.h>
 #include "lib.h"
 #include "where.h"
+#include "mutt_regex.h"
 
 #ifdef MAIN_C
 /* so that global vars get included */
