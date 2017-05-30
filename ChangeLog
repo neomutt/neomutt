@@ -1,3 +1,167 @@
+2017-05-23 15:53 -0700  Kevin McCarthy  <kevin@8t8.us>  (fa0c2155ab8f)
+
+	* mx.c: Fix memory leak when closing mailbox and using the sidebar.
+
+	The code updating the sidebar counts decremented the msgcount, but
+	did not set it back to the original value. Which means fastclose was
+	not freeing all the headers.
+
+	Update the sidebar only when something is deleted, since I don't
+	believe it's required otherwise and the code is a bit cleaner that
+	way.
+
+2017-05-22 18:18 -0700  Kevin McCarthy  <kevin@8t8.us>  (59a2125b49f2)
+
+	* imap/imap.c: Don't clean up idata when closing an open-append
+	mailbox.
+
+	open-append borrows the idata just for the connection. The "mailbox
+	specific" part of the idata may be being used by a normal open-
+	mailbox.
+
+	Don't free the idata "mailbox specific" part when closing an open-
+	append mailbox.
+
+	Thanks to Will Yardley for discovering the bug as part of testing
+	the revised IMAP fetch_headers code (in the default branch).
+
+2017-05-22 05:08 -0700  TAKAHASHI Tamotsu  <ttakah@lapis.plala.or.jp>  (1ddf2641f369)
+
+	* mx.c: Fix potential segv if mx_open_mailbox is passed an empty
+	string. (closes #3945)
+
+	If path is "", ctx->path will be NULL. realpath() generally will
+	segv if the first parameter is NULL.
+
+2017-05-12 09:15 -0700  Kevin McCarthy  <kevin@8t8.us>  (a97afb72d892)
+
+	* imap/imap.c: Turn IMAP_EXPUNGE_EXPECTED back off when syncing.
+	(closes #3940).
+
+	imap_sync_mailbox() turned on IMAP_EXPUNGE_EXPECTED when issuing a
+	EXPUNGE command during a sync. However, it forgot to turn it back
+	off.
+
+	That meant that an unexpected EXPUNGE that occurred during a
+	mx_check_mailbox -> imap_check_mailbox() -> imap_cmd_finish() call
+	was not setting idata->check_status = IMAP_EXPUNGE_PENDING; and so
+	imap_check_mailbox() was not returning MUTT_REOPENED.
+
+	This meant that although the Context had been changed, the index did
+	not run update_index(), resulting in a possible segfault.
+
+	Thanks to Uroš Juvan for reporting the issue, and his invaluable
+	description of how to reproduce the problem.
+
+2017-05-05 13:55 -0700  Kevin McCarthy  <kevin@8t8.us>  (71cb68efe98e)
+
+	* curs_main.c: Don't modify LastFolder/CurrentFolder upon aborting a
+	change folder operation.
+
+	Set LastFolder and CurrentFolder after mx_close_mailbox() has
+	successfully completed. Otherwise, if the close is aborted, they
+	will have incorrect values.
+
+2017-05-04 18:05 -0700  Kevin McCarthy  <kevin@8t8.us>  (c08c72a0e24c)
+
+	* mx.c: Fix sidebar count updates when closing mailbox. (closes #3938)
+
+	The context unread and flagged counts were being updated too early
+	in mx_close_mailbox(). Cancelling at any of the following prompts
+	would leave them in an incorrect state. Additionally, $move could
+	increase the delete count (for flagged messages), and $delete, if
+	answered no, could turn off message deletion.
+
+	Move all the sidebar buffy stat updating to the bottom of the
+	function, after all the prompts and processing.
+
+2017-04-30 15:20 -0700  Kevin McCarthy  <kevin@8t8.us>  (829584614fd6)
+
+	* headers.c: Refresh header color when updating label. (closes #3935)
+
+	color index with a '~y' pattern were not being updated after
+	adding/removing labels.
+
+2017-04-30 14:24 -0700  Kevin McCarthy  <kevin@8t8.us>  (c54ac874a32b)
+
+	* init.c, init.h: Fix unused function warnings when sidebar is
+	disabled. (closes #3936)
+
+	parse_path_list/unlist are currently only used by the
+	un/sidebar_whitelist commands. Add an ifdef around them to stop an
+	unused function warning. Add a comment too, so it's clear why they
+	are ifdef'ed.
+
+2017-04-30 13:32 -0700  Kevin McCarthy  <kevin@8t8.us>  (deb66bd24b9d)
+
+	* doc/manual.xml.head: Note that mbox-hooks are dependent on $move.
+
+	Add a note to the "Using Multiple Spool Mailboxes" section.
+
+2017-04-27 21:22 -0700  Kevin McCarthy  <kevin@8t8.us>  (b8952095b583)
+
+	* curs_lib.c, keymap.c, mutt_curses.h: Fix km_error_key() infinite
+	loop and unget buffer pollution.
+
+	'bind pager \Ch help' produces an infinite loop when an unbound key
+	is pressed in the pager. The reason is because km_error_key() tries
+	to verify that the key sequence is really bound to the OP_HELP
+	operation. It does this by using km_expand_key(),
+	tokenize_unget_string() on the resulting buffer, then checking if
+	the next km_dokey() returns OP_HELP.
+
+	The problem is that km_expand_key() does not always produce a string
+	that is properly reparsed by tokenize_unget_string(). Control-h
+	sequences are expanded to ^H. tokenize_unget_string() recognizes
+	this as two characters '^' and 'H'. km_error_key() checks the OP
+	returned, which is OP_PAGER_TOP for the '^'. This is not OP_HELP, so
+	it prints a generic error and returns. This leaves the 'H' in the
+	input buffer! Since 'H' (by default) is unbound in the pager, it
+	retriggers km_error_key(), resulting in an infinite loop.
+
+	The same issues can occur without control sequences: bind generic ?
+	noop bind generic dq help In the index, hitting an unbound key will
+	end up leaving 'q' in the unget buffer, because 'd' is bound in the
+	index menu and will be read by km_dokey().
+
+	A simple approach to fix this would be to just use the same code as
+	in mutt_make_help(), which has no double-check. This would be no
+	worse than the help menu, but can generate an inaccurate error
+	message (e.g if '?' were bound to noop)
+
+	This patch instead uses OP_END_COND as a barrier in the unget
+	buffer. It directly inserts the keys in the OP_HELP keymap, instead
+	of using km_expand_key() + tokenize_unget_string(). After calling
+	km_dokey() it flushes the unget buffer to the OP_END_COND barrier.
+
+	Thanks to Walter Alejandro Iglesias for reporting the bug.
+
+2017-04-26 15:40 -0700  Roger Cornelius  <rac@tenzing.org>  (9a0afe7815d1)
+
+	* mx.c: Fix error message when opening a mailbox with no read
+	permission. (closes #3934)
+
+	ctx->mx_ops ends up being NULL for both the case that ctx->magic is
+	0 and -1. This meant the mutt_perror() error message was never being
+	printed, because the check for ctx->mx_ops == NULL was taking place
+	first.
+
+	Move the "ctx->magic == -1" check first, so mutt will print out an
+	appropriate perror message in that case.
+
+2017-04-18 16:15 -0700  Kevin McCarthy  <kevin@8t8.us>  (2c57a7b4dc0b)
+
+	* .hgsigs: mutt-1.8.2 signed
+
+2017-04-18 16:14 -0700  Kevin McCarthy  <kevin@8t8.us>  (455a698f274b)
+
+	* .hgtags: Added tag mutt-1-8-2-rel for changeset c6ea4aed6bec
+
+2017-04-18 16:14 -0700  Kevin McCarthy  <kevin@8t8.us>  (c6ea4aed6bec)
+
+	* ChangeLog, UPDATING, VERSION: automatic post-release commit for
+	mutt-1.8.2
+
 2017-04-18 12:25 -0700  Kevin McCarthy  <kevin@8t8.us>  (33995363e723)
 
 	* filter.c, init.c, pgp.c, protos.h: Fix GPG_TTY to be added to
