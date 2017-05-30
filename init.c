@@ -4049,8 +4049,8 @@ void mutt_init(int skip_sys_rc, struct List *commands)
 
     if ((f = safe_fopen(SYSCONFDIR "/nntpserver", "r")))
     {
-      buffer[0] = '\0';
-      fgets(buffer, sizeof(buffer), f);
+      if (fgets(buffer, sizeof(buffer), f) == NULL)
+        buffer[0] = '\0';
       p = buffer;
       SKIPWS(p);
       c = p;
