@@ -856,7 +856,7 @@ static void index_menu_redraw(struct Menu *menu)
     menu_status_line(buf, sizeof(buf), menu, NONULL(Status));
     mutt_window_move(MuttStatusWindow, 0, 0);
     SETCOLOR(MT_COLOR_STATUS);
-    mutt_paddstr(MuttStatusWindow->cols, buf);
+    mutt_draw_statusline(MuttStatusWindow->cols, buf, sizeof(buf));
     NORMAL_COLOR;
     menu->redraw &= ~REDRAW_STATUS;
     if (option(OPTTSENABLED) && TSSupported)
