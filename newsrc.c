@@ -514,8 +514,8 @@ void nntp_expand_path(char *line, size_t len, struct Account *acct)
 {
   struct CissUrl url;
 
-  url.path = safe_strdup(line);
   mutt_account_tourl(acct, &url);
+  url.path = safe_strdup(line);
   url_ciss_tostring(&url, line, len, 0);
   FREE(&url.path);
 }
