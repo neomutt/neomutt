@@ -44,7 +44,6 @@
 #include <stdio.h>
 #include <string.h>
 #include <sys/stat.h>
-#include <sys/sysmacros.h>
 #include <time.h>
 #include <unistd.h>
 #include "mutt.h"
@@ -69,11 +68,11 @@
 #endif
 
 /* @def The definition in <notmuch.h> is broken */
-#define LIBNOTMUCH_CHECK_VERSION(major, minor, micro)                             \
-  (LIBNOTMUCH_MAJOR_VERSION > (major) ||                                          \
-   (LIBNOTMUCH_MAJOR_VERSION == (major) && LIBNOTMUCH_MINOR_VERSION > (minor)) || \
-   (LIBNOTMUCH_MAJOR_VERSION == (major) &&                                        \
-    LIBNOTMUCH_MINOR_VERSION == (minor) && LIBNOTMUCH_MICRO_VERSION >= (micro)))
+#define LIBNOTMUCH_CHECK_VERSION(_major, _minor, _micro)                            \
+  (LIBNOTMUCH_MAJOR_VERSION > (_major) ||                                           \
+   (LIBNOTMUCH_MAJOR_VERSION == (_major) && LIBNOTMUCH_MINOR_VERSION > (_minor)) || \
+   (LIBNOTMUCH_MAJOR_VERSION == (_major) && LIBNOTMUCH_MINOR_VERSION == (_minor) && \
+    LIBNOTMUCH_MICRO_VERSION >= (_micro)))
 
 /**
  * enum anonymous - Query Types
