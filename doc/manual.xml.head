@@ -5066,6 +5066,17 @@ message-hook '~f freshmeat-news' 'set pager="less \"+/^  subject: .*\""'
       <command>score</command>command for it to be removed. The pattern
       <quote>*</quote>is a special token which means to clear the list of all
       score entries.</para>
+
+      <para>Scoring occurs as the messages are read in, before the mailbox is
+      sorted. Because of this, patterns which depend on threading, such as 
+      <emphasis>~=</emphasis>, 
+      <emphasis>~$</emphasis>, and 
+      <emphasis>~()</emphasis>, will not work by default. A workaround is to push
+      the scoring command in a folder hook. This will cause the mailbox to be
+      rescored after it is opened and input starts being processed:</para>
+      <screen>
+folder-hook . 'push "&lt;enter-command&gt;score ~= 10&lt;enter&gt;"'
+</screen>
     </sect1>
 
     <sect1 id="spam">
@@ -15962,7 +15973,7 @@ folder-hook ^pop 'set read_inc=1'</screen>
         <listitem>
           <cmdsynopsis>
             <command>
-              <link linkend="score">score</link>
+              <link linkend="score-command">score</link>
             </command>
             <arg choice="plain">
               <replaceable class="parameter">pattern</replaceable>
@@ -15971,7 +15982,7 @@ folder-hook ^pop 'set read_inc=1'</screen>
               <replaceable class="parameter">value</replaceable>
             </arg>
             <command>
-              <link linkend="score">unscore</link>
+              <link linkend="score-command">unscore</link>
             </command>
             <group choice="req">
               <arg choice="plain">
