@@ -979,19 +979,30 @@ int mutt_menuLoop (MUTTMENU *menu)
       unset_option (OPTMENUCALLER);
       return OP_NULL;
     }
-    
-    
+
+    /* Clear the tag prefix unless we just started it.  Don't clear
+     * the prefix on a timeout (i==-2), but do clear on an abort (i==-1)
+     */
+    if (menu->tagprefix &&
+        i != OP_TAG_PREFIX && i != OP_TAG_PREFIX_COND && i != -2)
+      menu->tagprefix = 0;
+
     mutt_curs_set (0);
 
     if (menu_redraw (menu) == OP_REDRAW)
       return OP_REDRAW;
-    
+
+    /* give visual indication that the next command is a tag- command */
+    if (menu->tagprefix)
+    {
+      mutt_window_mvaddstr (menu->messagewin, 0, 0, "tag-");
+      mutt_window_clrtoeol (menu->messagewin);
+    }
+
     menu->oldcurrent = menu->current;
 
 
     /* move the cursor out of the way */
-    
-    
     if (option (OPTARROWCURSOR))
       mutt_window_move (menu->indexwin, menu->current - menu->top + menu->offset, 2);
     else if (option (OPTBRAILLEFRIENDLY))
@@ -1001,21 +1012,25 @@ int mutt_menuLoop (MUTTMENU *menu)
                         menu->indexwin->cols - 1);
 
     mutt_refresh ();
-    
+
     /* try to catch dialog keys before ops */
     if (menu->dialog && menu_dialog_dokey (menu, &i) == 0)
       return i;
-		    
+
     i = km_dokey (menu->menu);
     if (i == OP_TAG_PREFIX || i == OP_TAG_PREFIX_COND)
     {
+      if (menu->tagprefix)
+      {
+        menu->tagprefix = 0;
+        mutt_window_clearline (menu->messagewin, 0);
+        continue;
+      }
+
       if (menu->tagged)
       {
-        mutt_window_mvaddstr (menu->messagewin, 0, 0, "Tag-");
-	mutt_window_clrtoeol (menu->messagewin);
-	i = km_dokey (menu->menu);
 	menu->tagprefix = 1;
-        mutt_window_clearline (menu->messagewin, 0);
+        continue;
       }
       else if (i == OP_TAG_PREFIX)
       {
@@ -1031,8 +1046,6 @@ int mutt_menuLoop (MUTTMENU *menu)
     }
     else if (menu->tagged && option (OPTAUTOTAG))
       menu->tagprefix = 1;
-    else
-      menu->tagprefix = 0;
 
     mutt_curs_set (1);
 
@@ -1046,7 +1059,11 @@ int mutt_menuLoop (MUTTMENU *menu)
 #endif
 
     if (i < 0)
+    {
+      if (menu->tagprefix)
+        mutt_window_clearline (menu->messagewin, 0);
       continue;
+    }
 
     if (!menu->dialog)
       mutt_clear_error ();
