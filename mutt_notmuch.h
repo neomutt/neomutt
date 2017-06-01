@@ -32,6 +32,7 @@ int nm_update_filename(struct Context *ctx, const char *old, const char *new, st
 bool nm_normalize_uri(char *new_uri, const char *orig_uri, size_t new_uri_sz);
 char *nm_uri_from_query(struct Context *ctx, char *buf, size_t bufsz);
 int nm_modify_message_tags(struct Context *ctx, struct Header *hdr, char *buf);
+bool nm_message_is_still_queried(struct Context *ctx, struct Header *hdr);
 
 void nm_query_window_backward(void);
 void nm_query_window_forward(void);

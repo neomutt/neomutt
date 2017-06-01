@@ -1899,6 +1899,66 @@ done:
   return rc;
 }
 
+bool nm_message_is_still_queried(struct Context *ctx, struct Header *hdr)
+{
+  char *orig_str = NULL;
+  char *new_str = NULL;
+  struct NmCtxdata *data = get_ctxdata(ctx);
+  notmuch_database_t *db = NULL;
+  notmuch_query_t *q = NULL;
+  bool result = false;
+
+  db = get_db(data, false);
+  orig_str = get_query_string(data, true);
+
+  if (!db || !orig_str)
+    return false;
+
+  if (safe_asprintf(&new_str, "id:%s and (%s)", header_get_id(hdr), orig_str) < 0)
+    return false;
+
+  mutt_debug(2, "nm: checking if message is still queried: %s\n", new_str);
+
+  q = notmuch_query_create(db, new_str);
+
+  switch (get_query_type(data))
+  {
+    case NM_QUERY_TYPE_MESGS:
+    {
+      notmuch_messages_t *messages = NULL;
+#if LIBNOTMUCH_CHECK_VERSION(4, 3, 0)
+      if (notmuch_query_search_messages_st(q, &messages) != NOTMUCH_STATUS_SUCCESS)
+        return false;
+#else
+      messages = notmuch_query_search_messages(q);
+#endif
+      result = notmuch_messages_valid(messages);
+      notmuch_messages_destroy(messages);
+      break;
+    }
+    case NM_QUERY_TYPE_THREADS:
+    {
+      notmuch_threads_t *threads = NULL;
+#if LIBNOTMUCH_CHECK_VERSION(4, 3, 0)
+      if (notmuch_query_search_threads_st(q, &threads) != NOTMUCH_STATUS_SUCCESS)
+        return false;
+#else
+      threads = notmuch_query_search_threads(q);
+#endif
+      result = notmuch_threads_valid(threads);
+      notmuch_threads_destroy(threads);
+      break;
+    }
+  }
+
+  notmuch_query_destroy(q);
+
+  mutt_debug(2, "nm: checking if message is still queried: %s = %s\n", new_str,
+             result ? "true" : "false");
+
+  return result;
+}
+
 int nm_update_filename(struct Context *ctx, const char *old, const char *new,
                        struct Header *h)
 {

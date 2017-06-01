@@ -1864,9 +1864,12 @@ int mutt_index_menu(void)
               if (!Context->quiet)
                 mutt_progress_update(&progress, ++px, -1);
               nm_modify_message_tags(Context, Context->hdrs[Context->v2r[j]], buf);
+
+              bool still_queried =
+                  nm_message_is_still_queried(Context, Context->hdrs[Context->v2r[j]]);
               if (op == OP_MAIN_MODIFY_LABELS_THEN_HIDE)
               {
-                Context->hdrs[Context->v2r[j]]->quasi_deleted = true;
+                Context->hdrs[Context->v2r[j]]->quasi_deleted = !still_queried;
                 Context->changed = true;
               }
             }
@@ -1883,7 +1886,8 @@ int mutt_index_menu(void)
           }
           if (op == OP_MAIN_MODIFY_LABELS_THEN_HIDE)
           {
-            CURHDR->quasi_deleted = true;
+            bool still_queried = nm_message_is_still_queried(Context, CURHDR);
+            CURHDR->quasi_deleted = !still_queried;
             Context->changed = true;
           }
           if (menu->menu == MENU_PAGER)
