@@ -274,7 +274,7 @@ static pop_auth_res_t pop_auth_user (POP_DATA *pop_data, const char *method)
       pop_data->cmd_user = 0;
 
       dprint (1, (debugfile, "pop_auth_user: unset USER capability\n"));
-      snprintf (pop_data->err_msg, sizeof (pop_data->err_msg),
+      snprintf (pop_data->err_msg, sizeof (pop_data->err_msg), "%s",
               _("Command USER is not supported by server."));
     }
   }

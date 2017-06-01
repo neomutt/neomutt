@@ -275,7 +275,7 @@ int mutt_parse_unhook (BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err)
     {
       if (current_hook_type)
       {
-	snprintf (err->data, err->dsize,
+	snprintf (err->data, err->dsize, "%s",
 		  _("unhook: Can't do unhook * from within a hook."));
 	return -1;
       }

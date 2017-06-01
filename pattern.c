@@ -268,7 +268,7 @@ static int eat_regexp (pattern_t *pat, BUFFER *s, BUFFER *err)
   }
   if (!*buf.data)
   {
-    snprintf (err->data, err->dsize, _("Empty expression"));
+    snprintf (err->data, err->dsize, "%s", _("Empty expression"));
     return (-1);
   }
 
@@ -588,7 +588,7 @@ static int eat_date (pattern_t *pat, BUFFER *s, BUFFER *err)
   }
   if (!*buffer.data)
   {
-    snprintf (err->data, err->dsize, _("Empty expression"));
+    snprintf (err->data, err->dsize, "%s", _("Empty expression"));
     return (-1);
   }
 
@@ -931,7 +931,7 @@ pattern_t *mutt_pattern_comp (/* const */ char *s, int flags, BUFFER *err)
 	{
 	  if (!*ps.dptr)
 	  {
-	    snprintf (err->data, err->dsize, _("missing parameter"));
+	    snprintf (err->data, err->dsize, "%s", _("missing parameter"));
 	    mutt_pattern_free (&curlist);
 	    return NULL;
 	  }

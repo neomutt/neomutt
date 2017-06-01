@@ -98,7 +98,7 @@ static int pop_read_header (POP_DATA *pop_data, HEADER *h)
 	pop_data->cmd_top = 0;
 
 	dprint (1, (debugfile, "pop_read_header: unset TOP capability\n"));
-	snprintf (pop_data->err_msg, sizeof (pop_data->err_msg),
+	snprintf (pop_data->err_msg, sizeof (pop_data->err_msg), "%s",
 		_("Command TOP is not supported by server."));
       }
     }
@@ -272,7 +272,7 @@ static int pop_fetch_headers (CONTEXT *ctx)
       pop_data->cmd_uidl = 0;
 
       dprint (1, (debugfile, "pop_fetch_headers: unset UIDL capability\n"));
-      snprintf (pop_data->err_msg, sizeof (pop_data->err_msg),
+      snprintf (pop_data->err_msg, sizeof (pop_data->err_msg), "%s",
 	      _("Command UIDL is not supported by server."));
     }
   }

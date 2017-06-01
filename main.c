@@ -699,7 +699,7 @@ int main (int argc, char **argv, char **environ)
 	}
 	printf (_("Debugging at level %d.\n"), debuglevel);
 #else
-	printf _("DEBUG was not defined during compilation.  Ignored.\n");
+	printf ("%s", _("DEBUG was not defined during compilation.  Ignored.\n"));
 #endif
 	break;
 

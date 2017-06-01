@@ -56,7 +56,7 @@
   if ((CurrentMenu == MENU_PAGER) && (idx >= 0) &&	\
 	    (MuttVars[idx].flags & R_RESORT)) \
 	{ \
-	  snprintf (err->data, err->dsize, \
+	  snprintf (err->data, err->dsize, "%s", \
 	    _("Not available in this menu.")); \
 	  return (-1); \
 	}
@@ -524,7 +524,7 @@ static int add_to_replace_list (REPLACE_LIST **list, const char *pat, const char
 
   if (t->nmatch > t->rx->rx->re_nsub)
   {
-    snprintf (err->data, err->dsize, _("Not enough subexpressions for "
+    snprintf (err->data, err->dsize, "%s", _("Not enough subexpressions for "
                                        "template"));
     remove_from_replace_list(list, pat);
     return -1;
@@ -2097,13 +2097,13 @@ static int parse_set (BUFFER *tmp, BUFFER *s, unsigned long data, BUFFER *err)
     {
       if (query || unset || inv)
       {
-	snprintf (err->data, err->dsize, _("prefix is illegal with reset"));
+	snprintf (err->data, err->dsize, "%s", _("prefix is illegal with reset"));
 	return (-1);
       }
 
       if (s && *s->dptr == '=')
       {
-	snprintf (err->data, err->dsize, _("value is illegal with reset"));
+	snprintf (err->data, err->dsize, "%s", _("value is illegal with reset"));
 	return (-1);
       }
      
@@ -2111,7 +2111,7 @@ static int parse_set (BUFFER *tmp, BUFFER *s, unsigned long data, BUFFER *err)
       {
 	if (CurrentMenu == MENU_PAGER)
 	{
-	  snprintf (err->data, err->dsize, _("Not available in this menu."));
+	  snprintf (err->data, err->dsize, "%s", _("Not available in this menu."));
 	  return (-1);
 	}
 	for (idx = 0; MuttVars[idx].option; idx++)
@@ -2138,7 +2138,7 @@ static int parse_set (BUFFER *tmp, BUFFER *s, unsigned long data, BUFFER *err)
       {
 	if (unset || inv || query)
 	{
-	  snprintf (err->data, err->dsize, _("Usage: set variable=yes|no"));
+	  snprintf (err->data, err->dsize, "%s", _("Usage: set variable=yes|no"));
 	  return (-1);
 	}
 
@@ -2150,7 +2150,7 @@ static int parse_set (BUFFER *tmp, BUFFER *s, unsigned long data, BUFFER *err)
 	  unset = 1;
 	else
 	{
-	  snprintf (err->data, err->dsize, _("Usage: set variable=yes|no"));
+	  snprintf (err->data, err->dsize, "%s", _("Usage: set variable=yes|no"));
 	  return (-1);
 	}
       }
