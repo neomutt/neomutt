@@ -3381,7 +3381,7 @@ static void print_key_info(gpgme_key_t key, FILE *fp)
   fprintf(fp, _("Key Type ..: %s, %lu bit %s\n"), s2, aval, s);
 
   /* L10N: DOTFILL */
-  fprintf(fp, _("Key Usage .: "));
+  fprintf(fp, "%s", _("Key Usage .: "));
   delim = "";
 
   if (key_check_cap(key, KEY_CAP_CAN_ENCRYPT))
@@ -3450,7 +3450,7 @@ static void print_key_info(gpgme_key_t key, FILE *fp)
     if (s)
     {
       /* L10N: DOTFILL */
-      fprintf(fp, _("Issued By .: "));
+      fprintf(fp, "%s", _("Issued By .: "));
       parse_and_print_user_id(fp, s);
       putc('\n', fp);
     }
@@ -3520,7 +3520,7 @@ static void print_key_info(gpgme_key_t key, FILE *fp)
       fprintf(fp, _("Key Type ..: %s, %lu bit %s\n"), "PGP", aval, s);
 
       /* L10N: DOTFILL */
-      fprintf(fp, _("Key Usage .: "));
+      fprintf(fp, "%s", _("Key Usage .: "));
       delim = "";
 
       if (subkey->can_encrypt)

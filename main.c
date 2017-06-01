@@ -309,7 +309,7 @@ int main(int argc, char **argv, char **env)
           }
           printf(_("Debugging at level %d.\n"), debuglevel_cmdline);
 #else
-          printf(_("DEBUG was not defined during compilation. -d Ignored.\n"));
+          printf("%s", _("DEBUG was not defined during compilation. -d Ignored.\n"));
 #endif
           break;
 
