@@ -369,9 +369,7 @@ bind index,pager \CO sidebar-open       <emphasis role="comment"># Ctrl-Shift-O 
 Fruit [1]     3/8|  1      Jan 03  Tia Gibson       (362)  Caiman
 <emphasis role="indicator">Animals [1]   2/6</emphasis>|  2    + Jan 22  Rhys Lee         ( 48)  Dolphin
 Cars            4|  3    ! Aug 16  Ewan Brown       (333)  Hummingbird
-
-          <emphasis role="highlight">
-          Seas          1/7</emphasis>|  4      Sep 25  Grace Hall       ( 27)  Capybara
+<emphasis role="highlight">Seas          1/7</emphasis>|  4      Sep 25  Grace Hall       ( 27)  Capybara
                  |<emphasis role="indicator">  5 N  + Nov 12  Evelyn Rogers    (453)  Tapir              </emphasis>
                  |  6 N  + Nov 16  Callum Harrison  (498)  Hedgehog
                  |
@@ -395,8 +393,7 @@ Cars            4|  3    ! Aug 16  Ewan Brown       (333)  Hummingbird
 Fruit [1]     3/8|  1    ! Mar 07  Finley Jones     (139)  Molucca Sea
 Animals [1]   2/6|  2    + Mar 24  Summer Jackson   ( 25)  Arafura Sea
 Cars            4|  3    + Feb 28  Imogen Baker     (193)  Pechora Sea
-
-          <emphasis role="indicator">Seas          1/7</emphasis>|<emphasis role="indicator">  4 N  + Feb 23  Isla Hussain     (348)  Balearic Sea       </emphasis>
+<emphasis role="indicator">Seas          1/7</emphasis>|<emphasis role="indicator">  4 N  + Feb 23  Isla Hussain     (348)  Balearic Sea       </emphasis>
                  |
                  |
                  |
