@@ -324,9 +324,9 @@ int _mutt_enter_string(char *buf, size_t buflen, int col, int flags, int multipl
     }
     mutt_refresh();
 
-    if ((ch = km_dokey(MENU_EDITOR)) == -1)
+    if ((ch = km_dokey(MENU_EDITOR)) < 0)
     {
-      rv = SigWinch ? 1 : -1;
+      rv = (SigWinch && ch == -2) ? 1 : -1;
       goto bye;
     }
 
