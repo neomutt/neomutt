@@ -504,19 +504,23 @@ int main(int argc, char **argv, char **environ)
 
     strfcpy(fpath, Maildir, sizeof(fpath));
     mutt_expand_path(fpath, sizeof(fpath));
+    bool skip = false;
 #ifdef USE_IMAP
     /* we're not connected yet - skip mail folder creation */
-    if (!mx_is_imap(fpath))
+    skip |= mx_is_imap(fpath);
 #endif
-      if (stat(fpath, &sb) == -1 && errno == ENOENT)
+#ifdef USE_NNTP
+    skip |= mx_is_nntp(fpath);
+#endif
+    if (!skip && stat(fpath, &sb) == -1 && errno == ENOENT)
+    {
+      snprintf(msg2, sizeof(msg2), _("%s does not exist. Create it?"), Maildir);
+      if (mutt_yesorno(msg2, MUTT_YES) == MUTT_YES)
       {
-        snprintf(msg2, sizeof(msg2), _("%s does not exist. Create it?"), Maildir);
-        if (mutt_yesorno(msg2, MUTT_YES) == MUTT_YES)
-        {
-          if (mkdir(fpath, 0700) == -1 && errno != EEXIST)
-            mutt_error(_("Can't create %s: %s."), Maildir, strerror(errno));
-        }
+        if (mkdir(fpath, 0700) == -1 && errno != EEXIST)
+          mutt_error(_("Can't create %s: %s."), Maildir, strerror(errno));
       }
+    }
   }
 
   if (batch_mode)
