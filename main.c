@@ -211,9 +211,15 @@ int main(int argc, char **argv, char **env)
   setlocale(LC_ALL, "");
 
 #ifdef ENABLE_NLS
-  /* FIXME what about init.c:1439 ? */
-  bindtextdomain(PACKAGE, MUTTLOCALEDIR);
-  textdomain(PACKAGE);
+  /* FIXME what about the LOCALES_HACK in mutt_init() [init.c] ? */
+  {
+    char *domdir = getenv("TEXTDOMAINDIR");
+    if (domdir && domdir[0])
+      bindtextdomain(PACKAGE, domdir);
+    else
+      bindtextdomain(PACKAGE, MUTTLOCALEDIR);
+    textdomain(PACKAGE);
+  }
 #endif
 
   mutt_error = mutt_nocurses_error;
