@@ -2448,6 +2448,21 @@ struct Option MuttVars[] = {
   ** removed, while the inner \fCmultipart/signed\fP part is retained.
   ** (PGP only)
   */
+  { "pgp_self_encrypt",    DT_BOOL, R_NONE, OPTPGPSELFENCRYPT, 0 },
+  /*
+  ** .pp
+  ** When \fIset\fP, PGP encrypted messages will also be encrypted
+  ** using the key in $$pgp_self_encrypt_as.
+  ** (PGP only)
+  */
+  { "pgp_self_encrypt_as", DT_STR,  R_NONE, UL &PgpSelfEncryptAs, 0 },
+  /*
+  ** .pp
+  ** This is an additional key used to encrypt messages when $$pgp_self_encrypt
+  ** is \fIset\fP.  It is also used to specify the key for $$postpone_encrypt.
+  ** It should be in keyid or fingerprint form (e.g. 0x00112233).
+  ** (PGP only)
+  */
   { "pgp_show_unusable", DT_BOOL, R_NONE, OPTPGPSHOWUNUSABLE, 1 },
   /*
   ** .pp
@@ -2677,15 +2692,16 @@ struct Option MuttVars[] = {
   /*
   ** .pp
   ** When \fIset\fP, postponed messages that are marked for encryption will be
-  ** encrypted using the key in $$postpone_encrypt_as before saving.
+  ** self-encrypted.  Mutt will first try to encrypt using the value specified
+  ** in $$pgp_self_encrypt_as or $$smime_self_encrypt_as.  If those are not
+  ** set, it will try the deprecated $$postpone_encrypt_as.
   ** (Crypto only)
   */
   { "postpone_encrypt_as", DT_STR,  R_NONE, UL &PostponeEncryptAs, 0 },
   /*
   ** .pp
-  ** This is the key used to encrypt postponed messages.  It should be in
-  ** keyid or fingerprint form (e.g. 0x00112233 for PGP or the
-  ** hash-value that OpenSSL generates for S/MIME).
+  ** This is a deprecated fall-back variable for $$postpone_encrypt.
+  ** Please use $$pgp_self_encrypt_as or $$smime_self_encrypt_as.
   ** (Crypto only)
   */
 #ifdef USE_SOCKET
@@ -3540,6 +3556,22 @@ struct Option MuttVars[] = {
   ** .pp
   ** This is a format string, see the $$smime_decrypt_command command for
   ** possible \fCprintf(3)\fP-like sequences.
+  ** (S/MIME only)
+  */
+  { "smime_self_encrypt",    DT_BOOL, R_NONE, OPTSMIMESELFENCRYPT, 0 },
+  /*
+  ** .pp
+  ** When \fIset\fP, S/MIME encrypted messages will also be encrypted
+  ** using the certificate in $$smime_self_encrypt_as.
+  ** (S/MIME only)
+  */
+  { "smime_self_encrypt_as", DT_STR,  R_NONE, UL &SmimeSelfEncryptAs, 0 },
+  /*
+  ** .pp
+  ** This is an additional certificate used to encrypt messages when
+  ** $$smime_self_encrypt is \fIset\fP.  It is also used to specify the
+  ** certficate for $$postpone_encrypt.  It should be the hash-value that
+  ** OpenSSL generates.
   ** (S/MIME only)
   */
   { "smime_sign_command",       DT_STR, R_NONE, UL &SmimeSignCommand, 0 },

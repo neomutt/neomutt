@@ -303,6 +303,7 @@ WHERE char *PgpVerifyKeyCommand;
 WHERE char *PgpListSecringCommand;
 WHERE char *PgpListPubringCommand;
 WHERE char *PgpGetkeysCommand;
+WHERE char *PgpSelfEncryptAs;
 
 /* -- formerly in smime.h -- */
 WHERE char *SmimeDefaultKey;
@@ -323,6 +324,7 @@ WHERE char *SmimePk7outCommand;
 WHERE char *SmimeGetCertCommand;
 WHERE char *SmimeImportCertCommand;
 WHERE char *SmimeGetCertEmailCommand;
+WHERE char *SmimeSelfEncryptAs;
 
 #ifdef USE_NOTMUCH
 WHERE int NotmuchOpenTimeout;
