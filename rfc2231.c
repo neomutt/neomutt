@@ -109,7 +109,7 @@ static void rfc2231_decode_one(char *dest, char *src)
 
 static struct Rfc2231Parameter *rfc2231_new_parameter(void)
 {
-  return safe_calloc(sizeof(struct Rfc2231Parameter), 1);
+  return safe_calloc(1, sizeof(struct Rfc2231Parameter));
 }
 
 /* insert parameter into an ordered list.

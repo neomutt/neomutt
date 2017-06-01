@@ -175,7 +175,7 @@ static void start_curses(void)
 #define MUTT_NEWS (1 << 5) /* -g and -G */
 #endif
 
-int main(int argc, char **argv, char **environ)
+int main(int argc, char **argv, char **env)
 {
   char folder[_POSIX_PATH_MAX] = "";
   char *subject = NULL;
@@ -228,10 +228,10 @@ int main(int argc, char **argv, char **environ)
   {
     char **srcp, **dstp;
     int count = 0;
-    for (srcp = environ; srcp && *srcp; srcp++)
+    for (srcp = env; srcp && *srcp; srcp++)
       count++;
     envlist = safe_calloc(count + 1, sizeof(char *));
-    for (srcp = environ, dstp = envlist; srcp && *srcp; srcp++, dstp++)
+    for (srcp = env, dstp = envlist; srcp && *srcp; srcp++, dstp++)
       *dstp = safe_strdup(*srcp);
   }
 

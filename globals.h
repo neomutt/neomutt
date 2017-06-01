@@ -317,7 +317,6 @@ WHERE char *SmimeVerifyOpaqueCommand;
 WHERE char *SmimeDecryptCommand;
 WHERE char *SmimeSignCommand;
 WHERE char *SmimeDigestAlg;
-WHERE char *SmimeSignOpaqueCommand;
 WHERE char *SmimeEncryptCommand;
 WHERE char *SmimeGetSignerCertCommand;
 WHERE char *SmimePk7outCommand;

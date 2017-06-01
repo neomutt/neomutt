@@ -685,7 +685,7 @@ static struct PgpKeyInfo *pgp_parse_keyblock(FILE *fp)
       {
         if (lsig)
         {
-          struct PgpSignature *signature = safe_calloc(sizeof(struct PgpSignature), 1);
+          struct PgpSignature *signature = safe_calloc(1, sizeof(struct PgpSignature));
           *lsig = signature;
           lsig = &signature->next;
 

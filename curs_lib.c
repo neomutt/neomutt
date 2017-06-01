@@ -601,12 +601,12 @@ out:
 
 void mutt_init_windows(void)
 {
-  MuttHelpWindow = safe_calloc(sizeof(struct MuttWindow), 1);
-  MuttIndexWindow = safe_calloc(sizeof(struct MuttWindow), 1);
-  MuttStatusWindow = safe_calloc(sizeof(struct MuttWindow), 1);
-  MuttMessageWindow = safe_calloc(sizeof(struct MuttWindow), 1);
+  MuttHelpWindow = safe_calloc(1, sizeof(struct MuttWindow));
+  MuttIndexWindow = safe_calloc(1, sizeof(struct MuttWindow));
+  MuttStatusWindow = safe_calloc(1, sizeof(struct MuttWindow));
+  MuttMessageWindow = safe_calloc(1, sizeof(struct MuttWindow));
 #ifdef USE_SIDEBAR
-  MuttSidebarWindow = safe_calloc(sizeof(struct MuttWindow), 1);
+  MuttSidebarWindow = safe_calloc(1, sizeof(struct MuttWindow));
 #endif
 }
 

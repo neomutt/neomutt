@@ -474,7 +474,7 @@ void mix_make_chain(struct List **chainp)
     return;
   }
 
-  chain = safe_calloc(sizeof(struct MixChain), 1);
+  chain = safe_calloc(1, sizeof(struct MixChain));
   for (p = *chainp; p; p = p->next)
     mix_chain_add(chain, (char *) p->data, type2_list);
 

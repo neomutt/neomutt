@@ -843,7 +843,7 @@ static int maildir_parse_dir(struct Context *ctx, struct Maildir ***last,
     else
       h->path = safe_strdup(de->d_name);
 
-    entry = safe_calloc(sizeof(struct Maildir), 1);
+    entry = safe_calloc(1, sizeof(struct Maildir));
     entry->h = h;
     entry->inode = de->d_ino;
     **last = entry;
@@ -1238,7 +1238,7 @@ static int mh_read_dir(struct Context *ctx, const char *subdir)
 
   if (!ctx->data)
   {
-    ctx->data = safe_calloc(sizeof(struct MhData), 1);
+    ctx->data = safe_calloc(1, sizeof(struct MhData));
   }
   data = mh_data(ctx);
 

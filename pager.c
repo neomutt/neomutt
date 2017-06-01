@@ -63,8 +63,6 @@
 #define ISHEADER(x) ((x) == MT_COLOR_HEADER || (x) == MT_COLOR_HDEFAULT)
 
 #define IsAttach(x) (x && (x)->bdy)
-#define IsRecvAttach(x) (x && (x)->bdy && (x)->fp)
-#define IsSendAttach(x) (x && (x)->bdy && !(x)->fp)
 #define IsMsgAttach(x) (x && (x)->fp && (x)->bdy && (x)->bdy->hdr)
 #define IsHeader(x) (x && (x)->hdr && !(x)->bdy)
 
