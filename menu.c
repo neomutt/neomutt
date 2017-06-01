@@ -1045,7 +1045,7 @@ int mutt_menuLoop (MUTTMENU *menu)
     }
 #endif
 
-    if (i == -1)
+    if (i < 0)
       continue;
 
     if (!menu->dialog)

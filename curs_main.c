@@ -664,7 +664,7 @@ int mutt_index_menu (void)
        do_buffy_notify = 1;
     }
 
-    if (op != -1)
+    if (op >= 0)
       mutt_curs_set (0);
 
     if (menu->menu == MENU_MAIN)
@@ -705,7 +705,7 @@ int mutt_index_menu (void)
 
       dprint(4, (debugfile, "mutt_index_menu[%d]: Got op %d\n", __LINE__, op));
 
-      if (op == -1)
+      if (op < 0)
 	continue; /* either user abort or timeout */
 
       mutt_curs_set (1);
@@ -1342,7 +1342,7 @@ int mutt_index_menu (void)
          * set CurrentMenu incorrectly when we return back to the index menu. */
         menu->menu = MENU_MAIN;
 
-        if ((op = mutt_display_message (CURHDR)) == -1)
+        if ((op = mutt_display_message (CURHDR)) < 0)
 	{
 	  unset_option (OPTNEEDRESORT);
 	  break;
