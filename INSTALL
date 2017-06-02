@@ -1,33 +1,5 @@
-Supported platforms
-===================
-
-Mutt has been reported to compile and run under the following Unix operating
-systems:
-
-	AIX
-	BSDI
-	Convex
-	Data General Unix (DG/UX)
-	Digital Unix (OSF/1)
-	DYNIX/ptx
-	FreeBSD
-	HP-UX
-	IRIX
-	Linux
-	Mac OS X
-	Atari MiNT
-	MkLinux
-	NetBSD
-	OpenBSD
-	QNX
-	SCO Unix 3.2v4/5
-	Solaris
-	SunOS
-	Ultrix
-	UnixWare
-
-- If you are building from Mercurial, or if you are changing parts of mutt,
-  particularly the build system, do read doc/devel-notes.txt.
+Notes
+=====
 
 - A C99 compiler (such as GCC) is required.
 
@@ -292,8 +264,3 @@ Sparc Linux
 	include files when building mutt.  Configuring mutt with the
 	--disable-warnings switch is said to help against this problem.
 
-
-Digital Unix (OSF/1)
-
-	The system curses library is said to be badly broken.  Use GNU
-	ncurses or SLang instead.
