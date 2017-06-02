@@ -211,8 +211,6 @@ with the S-Lang library, however.
 Resizing the screen while using an external pager causes Mutt to go haywire
 on some systems.
 .PP
-Suspend/resume does not work under Ultrix.
-.PP
 The help line for the index menu is not updated if you change the bindings
 for one of the functions listed while Mutt is running.
 .PP
