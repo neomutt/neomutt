@@ -2904,7 +2904,7 @@ color sidebar_divider   color8  default
               <entry>neomuttrc</entry>
             </row>
             <row>
-              <entry>muttrc-1.8.2</entry>
+              <entry>muttrc-1.8.3</entry>
             </row>
             <row>
               <entry>muttrc</entry>
@@ -2949,7 +2949,7 @@ color sidebar_divider   color8  default
                 <entry>/etc/xdg/mutt/neomuttrc</entry>
               </row>
               <row>
-                <entry>/etc/xdg/mutt/Muttrc-1.8.2</entry>
+                <entry>/etc/xdg/mutt/Muttrc-1.8.3</entry>
                 <entry>Mutt release version, Note the case of the
                 filename</entry>
               </row>
@@ -2965,7 +2965,7 @@ color sidebar_divider   color8  default
                 <entry>/etc/mutt/neomuttrc</entry>
               </row>
               <row>
-                <entry>/etc/mutt/Muttrc-1.8.2</entry>
+                <entry>/etc/mutt/Muttrc-1.8.3</entry>
                 <entry>Mutt release version, Note the case of the
                 filename</entry>
               </row>
@@ -2981,7 +2981,7 @@ color sidebar_divider   color8  default
                 <entry>/usr/share/mutt/neomuttrc</entry>
               </row>
               <row>
-                <entry>/usr/share/mutt/Muttrc-1.8.2</entry>
+                <entry>/usr/share/mutt/Muttrc-1.8.3</entry>
                 <entry>Mutt release version, Note the case of the
                 filename</entry>
               </row>
@@ -3028,7 +3028,7 @@ color sidebar_divider   color8  default
                 <entry>~/.config/mutt/neomuttrc</entry>
               </row>
               <row>
-                <entry>~/.config/mutt/muttrc-1.8.2</entry>
+                <entry>~/.config/mutt/muttrc-1.8.3</entry>
                 <entry>Mutt release version</entry>
               </row>
               <row>
@@ -3042,7 +3042,7 @@ color sidebar_divider   color8  default
                 <entry>~/.neomuttrc</entry>
               </row>
               <row>
-                <entry>~/.muttrc-1.8.2</entry>
+                <entry>~/.muttrc-1.8.3</entry>
                 <entry>Mutt release version</entry>
               </row>
               <row>
@@ -3056,7 +3056,7 @@ color sidebar_divider   color8  default
                 <entry>~/.mutt/neomuttrc</entry>
               </row>
               <row>
-                <entry>~/.mutt/muttrc-1.8.2</entry>
+                <entry>~/.mutt/muttrc-1.8.3</entry>
                 <entry>Mutt release version</entry>
               </row>
               <row>
