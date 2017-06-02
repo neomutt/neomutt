@@ -72,13 +72,6 @@
 
 #endif /* USE_SLANG_CURSES */
 
-/* AIX defines ``lines'' in <term.h>, but it's used as a var name in
- * various places in Mutt
- */
-#ifdef lines
-#undef lines
-#endif /* lines */
-
 #define BEEP()                                                                 \
   do                                                                           \
   {                                                                            \
