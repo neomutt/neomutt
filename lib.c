@@ -161,14 +161,7 @@ void safe_realloc(void *ptr, size_t siz)
     return;
   }
 
-  if (*p)
-    r = realloc(*p, siz);
-  else
-  {
-    /* realloc(NULL, nbytes) doesn't seem to work under SunOS 4.1.x */
-    r = malloc(siz);
-  }
-
+  r = realloc(*p, siz);
   if (!r)
   {
     mutt_error(_("Out of memory!"));

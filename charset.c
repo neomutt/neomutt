@@ -173,11 +173,6 @@ PreferredMIMENames[] =
   { "iso_8859-16",           "iso-8859-16"   },
   { "latin10",               "iso-8859-16"   },  /* this is not a bug */
 
-  /*
-   * David Champion <dgc@uchicago.edu> has observed this with
-   * nl_langinfo under SunOS 5.8.
-   */
-
   { "646",                   "us-ascii"      },
 
   /*

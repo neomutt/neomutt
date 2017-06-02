@@ -204,10 +204,6 @@ The Mutt manual.
 None.  Mutts have fleas, not bugs.
 .SH FLEAS
 .PP
-Suspend/resume while editing a file with an external editor does not work
-under SunOS 4.x if you use the curses lib in /usr/5lib.  It \fIdoes\fP work
-with the S-Lang library, however.
-.PP
 Resizing the screen while using an external pager causes Mutt to go haywire
 on some systems.
 .PP
