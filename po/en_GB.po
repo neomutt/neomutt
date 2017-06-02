@@ -2176,7 +2176,7 @@ msgstr "%s is set"
 
 #: init.c:2588
 msgid "set debug_file ignored, it have been overridden with cmdline"
-msgstr ""
+msgstr "set debug_file ignored, it have been overridden with cmdline"
 
 #: init.c:2613 init.c:2628
 #, c-format
@@ -2203,7 +2203,7 @@ msgstr "number overflow"
 
 #: init.c:2766
 msgid "set debug_level ignored, it have been overridden with cmdline"
-msgstr ""
+msgstr "set debug_level ignored, it have been overridden with cmdline"
 
 #: init.c:2834
 #, c-format
@@ -4750,7 +4750,7 @@ msgstr "S/MIME (s)ign, sign (a)s, (p)gp, (c)lear, or (o)ppenc mode off? "
 #. The 'f' is undocumented. Please DO NOT translate it.
 #: ncrypt/crypt_gpgme.c:4583
 msgid "sapfco"
-msgstr ""
+msgstr "sapfco"
 
 #: ncrypt/crypt_gpgme.c:4590
 msgid "PGP (s)ign, sign (a)s, s/(m)ime, (c)lear, or (o)ppenc mode off? "
@@ -4760,7 +4760,7 @@ msgstr "PGP (s)ign, sign (a)s, s/(m)ime, (c)lear, or (o)ppenc mode off? "
 #. The 'f' is undocumented. Please DO NOT translate it.
 #: ncrypt/crypt_gpgme.c:4593
 msgid "samfco"
-msgstr ""
+msgstr "samfco"
 
 #. L10N: S/MIME options (opportunistic encryption is off)
 #: ncrypt/crypt_gpgme.c:4606
@@ -4892,7 +4892,7 @@ msgstr "PGP (s)ign, sign (a)s, %s format, (c)lear, or (o)ppenc mode off? "
 #. The 'f' is undocumented. Please DO NOT translate it.
 #: ncrypt/pgp.c:1658
 msgid "safcoi"
-msgstr ""
+msgstr "safcoi"
 
 #. L10N: PGP options (opportunistic encryption is on)
 #: ncrypt/pgp.c:1664
@@ -4903,7 +4903,7 @@ msgstr "PGP (s)ign, sign (a)s, (c)lear, or (o)ppenc mode off? "
 #. The 'f' is undocumented. Please DO NOT translate it.
 #: ncrypt/pgp.c:1667
 msgid "safco"
-msgstr ""
+msgstr "safco"
 
 #. L10N: PGP options (inline) (opportunistic encryption is off)
 #: ncrypt/pgp.c:1684
@@ -5119,7 +5119,7 @@ msgstr ""
 #. The 'f' is undocumented. Please DO NOT translate it.
 #: ncrypt/smime.c:1988
 msgid "swafco"
-msgstr ""
+msgstr "swafco"
 
 #. L10N: S/MIME options (opportunistic encryption is off)
 #: ncrypt/smime.c:1998
