@@ -4459,90 +4459,79 @@ const struct Mapping SortSidebarMethods[] = {
 /* functions used to parse commands in a rc file */
 
 static int parse_list(struct Buffer *buf, struct Buffer *s, unsigned long data,
-		      struct Buffer *err);
-static int parse_spam_list(struct Buffer *buf, struct Buffer *s, unsigned long data, 
-			   struct Buffer *err);
-static int parse_unlist(struct Buffer *buf, struct Buffer *s, unsigned long data,
-			struct Buffer *err);
+                      struct Buffer *err);
+static int parse_spam_list(struct Buffer *buf, struct Buffer *s,
+                           unsigned long data, struct Buffer *err);
+static int parse_unlist(struct Buffer *buf, struct Buffer *s,
+                        unsigned long data, struct Buffer *err);
 #ifdef USE_SIDEBAR
-static int parse_path_list(struct Buffer *buf, struct Buffer *s, unsigned long data, 
-			   struct Buffer *err);
+static int parse_path_list(struct Buffer *buf, struct Buffer *s,
+                           unsigned long data, struct Buffer *err);
 static int parse_path_unlist(struct Buffer *buf, struct Buffer *s,
-			     unsigned long data, 
-			     struct Buffer *err);
+                             unsigned long data, struct Buffer *err);
 #endif
 
 static int parse_group(struct Buffer *buf, struct Buffer *s, unsigned long data,
-		       struct Buffer *err);
+                       struct Buffer *err);
 
 static int parse_lists(struct Buffer *buf, struct Buffer *s, unsigned long data,
-		       struct Buffer *err);
-static int parse_unlists(struct Buffer *buf, struct Buffer *s, unsigned long data, 
-			 struct Buffer *err);
+                       struct Buffer *err);
+static int parse_unlists(struct Buffer *buf, struct Buffer *s,
+                         unsigned long data, struct Buffer *err);
 static int parse_alias(struct Buffer *buf, struct Buffer *s, unsigned long data,
-		       struct Buffer *err);
-static int parse_unalias(struct Buffer *buf, struct Buffer *s, unsigned long data, 
-			 struct Buffer *err);
-static int finish_source(struct Buffer *buf, struct Buffer *s, unsigned long data, 
-			 struct Buffer *err);
+                       struct Buffer *err);
+static int parse_unalias(struct Buffer *buf, struct Buffer *s,
+                         unsigned long data, struct Buffer *err);
+static int finish_source(struct Buffer *buf, struct Buffer *s,
+                         unsigned long data, struct Buffer *err);
 static int parse_ifdef(struct Buffer *buf, struct Buffer *s, unsigned long data,
-		       struct Buffer *err);
-static int parse_ignore(struct Buffer *buf, struct Buffer *s, unsigned long data,
-			struct Buffer *err);
-static int parse_unignore(struct Buffer *buf, struct Buffer *s, unsigned long data, 
-			  struct Buffer *err);
-static int parse_source(struct Buffer *buf, struct Buffer *s, unsigned long data,
-			struct Buffer *err);
+                       struct Buffer *err);
+static int parse_ignore(struct Buffer *buf, struct Buffer *s,
+                        unsigned long data, struct Buffer *err);
+static int parse_unignore(struct Buffer *buf, struct Buffer *s,
+                          unsigned long data, struct Buffer *err);
+static int parse_source(struct Buffer *buf, struct Buffer *s,
+                        unsigned long data, struct Buffer *err);
 static int parse_set(struct Buffer *buf, struct Buffer *s, unsigned long data,
-		     struct Buffer *err);
-static int parse_setenv(struct Buffer *buf, struct Buffer *s, unsigned long data,
-			struct Buffer *err);
-static int parse_my_hdr(struct Buffer *buf, struct Buffer *s, unsigned long data,
-			struct Buffer *err);
-static int parse_unmy_hdr(struct Buffer *buf, struct Buffer *s, unsigned long data, 
-			  struct Buffer *err);
-static int parse_subscribe(struct Buffer *buf, struct Buffer *s, unsigned long data, 
-			   struct Buffer *err);
+                     struct Buffer *err);
+static int parse_setenv(struct Buffer *buf, struct Buffer *s,
+                        unsigned long data, struct Buffer *err);
+static int parse_my_hdr(struct Buffer *buf, struct Buffer *s,
+                        unsigned long data, struct Buffer *err);
+static int parse_unmy_hdr(struct Buffer *buf, struct Buffer *s,
+                          unsigned long data, struct Buffer *err);
+static int parse_subscribe(struct Buffer *buf, struct Buffer *s,
+                           unsigned long data, struct Buffer *err);
 static int parse_unsubscribe(struct Buffer *buf, struct Buffer *s,
-			     unsigned long data, 
-			     struct Buffer *err);
+                             unsigned long data, struct Buffer *err);
 static int parse_attachments(struct Buffer *buf, struct Buffer *s,
-			     unsigned long data, 
-			     struct Buffer *err);
+                             unsigned long data, struct Buffer *err);
 static int parse_unattachments(struct Buffer *buf, struct Buffer *s,
-			       unsigned long data, 
-			       struct Buffer *err);
+                               unsigned long data, struct Buffer *err);
 
 static int parse_replace_list(struct Buffer *buf, struct Buffer *s,
-			      unsigned long data, 
-			      struct Buffer *err);
+                              unsigned long data, struct Buffer *err);
 static int parse_unreplace_list(struct Buffer *buf, struct Buffer *s,
-				unsigned long data, 
-				struct Buffer *err);
+                                unsigned long data, struct Buffer *err);
 static int parse_subjectrx_list(struct Buffer *buf, struct Buffer *s,
-				unsigned long data, 
-				struct Buffer *err);
+                                unsigned long data, struct Buffer *err);
 static int parse_unsubjectrx_list(struct Buffer *buf, struct Buffer *s,
-				  unsigned long data, 
-				  struct Buffer *err);
+                                  unsigned long data, struct Buffer *err);
 static int parse_alternates(struct Buffer *buf, struct Buffer *s, unsigned long data,
-			    
-			    struct Buffer *err);
+
+                            struct Buffer *err);
 static int parse_unalternates(struct Buffer *buf, struct Buffer *s,
-			      unsigned long data, 
-			      struct Buffer *err);
+                              unsigned long data, struct Buffer *err);
 
 /* Parse -group arguments */
-static int parse_group_context(struct GroupContext **ctx, struct Buffer *buf, struct Buffer *s,
-                               unsigned long data, struct Buffer *err);
+static int parse_group_context(struct GroupContext **ctx, struct Buffer *buf,
+                               struct Buffer *s, unsigned long data, struct Buffer *err);
 
 #ifdef USE_NOTMUCH
 static int parse_tag_transforms(struct Buffer *buf, struct Buffer *s,
-				unsigned long data, 
-				struct Buffer *err);
+                                unsigned long data, struct Buffer *err);
 static int parse_tag_formats(struct Buffer *buf, struct Buffer *s,
-			     unsigned long data, 
-			     struct Buffer *err);
+                             unsigned long data, struct Buffer *err);
 #endif
 
 const struct Command Commands[] = {

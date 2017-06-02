@@ -3014,7 +3014,7 @@ static int to_absolute_path(char *path, const char *reference)
 
 #define MAXERRS 128
 
-/* reads the specified initialization file. 
+/* reads the specified initialization file.
  * Returns negative if mutt should pause to let the user know...  */
 static int source_rc(const char *rcfile_path, struct Buffer *err)
 {
