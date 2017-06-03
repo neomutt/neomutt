@@ -106,7 +106,7 @@ uninstall-local:
 
 check:
 manual.txt: manual.html
-	LC_ALL=C w3m -dump -O UTF8 manual.html > $@ || \
+	-LC_ALL=C w3m -dump -O UTF8 manual.html > $@ || \
 	LC_ALL=C lynx -dump -nolist -with_backspaces -display_charset=us-ascii manual.html > $@ || \
 	LC_ALL=C elinks -dump -no-numbering -no-references manual.html | sed -e 's,\\001, ,g' > $@
 
@@ -115,12 +115,12 @@ Muttrc: $(top_srcdir)/init.h makedoc$(EXEEXT) $(srcdir)/Muttrc.head
 	$(CPP) $(AM_CPPFLAGS) $(DEFS) $(CPPFLAGS) -D_MAKEDOC -C $(top_srcdir)/init.h | ./makedoc$(EXEEXT) -c >> Muttrc
 
 manual.html: manual.xml $(srcdir)/html.xsl $(srcdir)/mutt.xsl $(srcdir)/mutt.css
-	xsltproc --nonet -o $@ $(srcdir)/html.xsl manual.xml
+	-xsltproc --nonet -o $@ $(srcdir)/html.xsl manual.xml
 
 $(CHUNKED_DOCFILES): index.html
 
 index.html: $(srcdir)/chunk.xsl $(srcdir)/mutt.xsl manual.xml $(srcdir)/mutt.css
-	xsltproc --nonet $(srcdir)/chunk.xsl manual.xml > /dev/null 2>&1
+	-xsltproc --nonet $(srcdir)/chunk.xsl manual.xml > /dev/null 2>&1
 
 validate: manual.xml
 	xmllint --noout --noblanks --postvalid $<
