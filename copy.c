@@ -181,6 +181,14 @@ int mutt_copy_hdr(FILE *in, FILE *out, LOFF_T off_start, LOFF_T off_end,
           if (!address_header_decode(&this_one))
             rfc2047_decode(&this_one);
           this_one_len = mutt_strlen(this_one);
+
+          /* Convert CRLF line endings to LF */
+          if ((this_one_len > 2) && (this_one[this_one_len - 2] == '\r') &&
+              (this_one[this_one_len - 1] == '\n'))
+          {
+            this_one[this_one_len - 2] = '\n';
+            this_one[this_one_len - 1] = 0;
+          }
         }
 
         if (!headers[x])
