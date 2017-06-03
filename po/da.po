@@ -4110,11 +4110,6 @@ msgstr "Fejl i tunnel under kommunikation med %s: %s"
 msgid "Lock count exceeded, remove lock for %s?"
 msgstr "Fil blokeret af gammel lås. Fjern låsen på  %s?"
 
-#: mx.c:164
-#, c-format
-msgid "Can't dotlock %s.\n"
-msgstr "Kan ikke låse %s.\n"
-
 #: mx.c:219
 msgid "Timeout exceeded while attempting fcntl lock!"
 msgstr "Udløbstid overskredet under forsøg på at bruge fcntl-lås!"
@@ -5103,6 +5098,7 @@ msgstr "Certifikatets etiket: "
 msgid "no certfile"
 msgstr "ingen certfil"
 
+<<<<<<< c23b47cf1363cd9f07111507973168220ae588aa
 #: ncrypt/smime.c:1258
 msgid "no mbox"
 msgstr "ingen afsender-adresse"
@@ -5110,6 +5106,11 @@ msgstr "ingen afsender-adresse"
 #: ncrypt/smime.c:1382 ncrypt/smime.c:1527
 msgid "No output from OpenSSL..."
 msgstr "Ingen uddata fra OpenSSL ..."
+=======
+#: mx.c:215
+msgid "Timeout exceeded while attempting fcntl lock!"
+msgstr "Udløbstid overskredet under forsøg på at bruge fcntl-lås!"
+>>>>>>> update translation files
 
 #: ncrypt/smime.c:1446
 msgid "Can't sign: No key specified. Use Sign As."

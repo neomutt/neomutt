@@ -4147,11 +4147,6 @@ msgstr "%s へのトンネル交信エラー: %s"
 msgid "Lock count exceeded, remove lock for %s?"
 msgstr "ロック回数が満了、%s のロックをはずすか?"
 
-#: mx.c:164
-#, c-format
-msgid "Can't dotlock %s.\n"
-msgstr "%s のドットロックができない。\n"
-
 #: mx.c:219
 msgid "Timeout exceeded while attempting fcntl lock!"
 msgstr "fcntl ロック中にタイムアウト発生!"
@@ -5147,6 +5142,7 @@ msgstr "OpenSSL から出力がない..."
 msgid "Can't sign: No key specified. Use Sign As."
 msgstr "鍵が未指定のため署名不能: 「署名鍵選択」をせよ。"
 
+<<<<<<< c23b47cf1363cd9f07111507973168220ae588aa
 #: ncrypt/smime.c:1492
 msgid "Can't open OpenSSL subprocess!"
 msgstr "OpenSSL 子プロセスオープン不能!"
@@ -5158,6 +5154,11 @@ msgid ""
 msgstr ""
 "[-- OpenSSL 出力終了 --]\n"
 "\n"
+=======
+#: mx.c:215
+msgid "Timeout exceeded while attempting fcntl lock!"
+msgstr "fcntl ロック中にタイムアウト発生!"
+>>>>>>> update translation files
 
 #: ncrypt/smime.c:1752 ncrypt/smime.c:1764
 msgid "[-- Error: unable to create OpenSSL subprocess! --]\n"

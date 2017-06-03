@@ -4255,11 +4255,6 @@ msgstr "Hiba a %s kapcsolat közben (%s)"
 msgid "Lock count exceeded, remove lock for %s?"
 msgstr "A lock számláló túlhaladt, eltávolítsam a(z) %s lockfájlt?"
 
-#: mx.c:164
-#, c-format
-msgid "Can't dotlock %s.\n"
-msgstr "Nem lehet dotlock-olni: %s.\n"
-
 #: mx.c:219
 msgid "Timeout exceeded while attempting fcntl lock!"
 msgstr "Lejárt a maximális várakozási idő az fcntl lock-ra!"
@@ -5282,6 +5277,7 @@ msgstr "Hiba: nem lehet létrehozni az OpenSSL alfolyamatot!"
 msgid "Label for certificate: "
 msgstr "A szervertől nem lehet tanusítványt kapni"
 
+<<<<<<< c23b47cf1363cd9f07111507973168220ae588aa
 #: ncrypt/smime.c:1255
 msgid "no certfile"
 msgstr "nincs tanúsítványfájl"
@@ -5289,6 +5285,11 @@ msgstr "nincs tanúsítványfájl"
 #: ncrypt/smime.c:1258
 msgid "no mbox"
 msgstr "nincs postafiók"
+=======
+#: mx.c:215
+msgid "Timeout exceeded while attempting fcntl lock!"
+msgstr "Lejárt a maximális várakozási idő az fcntl lock-ra!"
+>>>>>>> update translation files
 
 #: ncrypt/smime.c:1382 ncrypt/smime.c:1527
 msgid "No output from OpenSSL..."

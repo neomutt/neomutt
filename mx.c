@@ -68,9 +68,6 @@
 #ifdef USE_NOTMUCH
 #include "mutt_notmuch.h"
 #endif
-#ifdef USE_DOTLOCK
-#include "dotlock.h"
-#endif
 
 struct MxOps *mx_get_ops(int magic)
 {
@@ -111,75 +108,11 @@ struct MxOps *mx_get_ops(int magic)
 
 #define mutt_is_spool(s) (mutt_strcmp(Spoolfile, s) == 0)
 
-#ifdef USE_DOTLOCK
-/* parameters:
- * path - file to lock
- * retry - should retry if unable to lock?
- */
-static int invoke_dotlock(const char *path, int dummy, int flags, int retry)
-{
-  char cmd[LONG_STRING + _POSIX_PATH_MAX];
-  char f[SHORT_STRING + _POSIX_PATH_MAX];
-  char r[SHORT_STRING];
-
-  if (flags & DL_FL_RETRY)
-    snprintf(r, sizeof(r), "-r %d ", retry ? MAXLOCKATTEMPT : 0);
-
-  mutt_quote_filename(f, sizeof(f), path);
-
-  snprintf(cmd, sizeof(cmd), "%s %s%s%s%s%s%s%s", NONULL(MuttDotlock),
-           flags & DL_FL_TRY ? "-t " : "", flags & DL_FL_UNLOCK ? "-u " : "",
-           flags & DL_FL_USEPRIV ? "-p " : "", flags & DL_FL_FORCE ? "-f " : "",
-           flags & DL_FL_UNLINK ? "-d " : "", flags & DL_FL_RETRY ? r : "", f);
-
-  return mutt_system(cmd);
-}
-
-static int dotlock_file(const char *path, int fd, int retry)
-{
-  int r;
-  int flags = DL_FL_USEPRIV | DL_FL_RETRY;
-
-  if (retry)
-    retry = 1;
-
-retry_lock:
-  if ((r = invoke_dotlock(path, fd, flags, retry)) == DL_EX_EXIST)
-  {
-    if (!option(OPTNOCURSES))
-    {
-      char msg[LONG_STRING];
-
-      snprintf(msg, sizeof(msg), _("Lock count exceeded, remove lock for %s?"), path);
-      if (retry && mutt_yesorno(msg, MUTT_YES) == MUTT_YES)
-      {
-        flags |= DL_FL_FORCE;
-        retry--;
-        mutt_clear_error();
-        goto retry_lock;
-      }
-    }
-    else
-    {
-      mutt_error(_("Can't dotlock %s.\n"), path);
-    }
-  }
-  return (r == DL_EX_OK ? 0 : -1);
-}
-
-static int undotlock_file(const char *path, int fd)
-{
-  return (invoke_dotlock(path, fd, DL_FL_USEPRIV | DL_FL_UNLOCK, 0) == DL_EX_OK ? 0 : -1);
-}
-
-#endif /* USE_DOTLOCK */
-
 /* Args:
  *      excl            if excl != 0, request an exclusive lock
- *      dot             if dot != 0, try to dotlock the file
  *      timeout         should retry locking?
  */
-int mx_lock_file(const char *path, int fd, int excl, int dot, int timeout)
+int mx_lock_file(const char *path, int fd, int excl, int timeout)
 {
 #if defined(USE_FCNTL) || defined(USE_FLOCK)
   int count;
@@ -261,11 +194,6 @@ int mx_lock_file(const char *path, int fd, int excl, int dot, int timeout)
   }
 #endif /* USE_FLOCK */
 
-#ifdef USE_DOTLOCK
-  if (r == 0 && dot)
-    r = dotlock_file(path, fd, timeout);
-#endif /* USE_DOTLOCK */
-
   if (r != 0)
   {
 /* release any other locks obtained in this routine */
@@ -298,36 +226,25 @@ int mx_unlock_file(const char *path, int fd, int dot)
   flock(fd, LOCK_UN);
 #endif
 
-#ifdef USE_DOTLOCK
-  if (dot)
-    undotlock_file(path, fd);
-#endif
-
   return 0;
 }
 
 static void mx_unlink_empty(const char *path)
 {
   int fd;
-#ifndef USE_DOTLOCK
   struct stat sb;
-#endif
 
   if ((fd = open(path, O_RDWR)) == -1)
     return;
 
-  if (mx_lock_file(path, fd, 1, 0, 1) == -1)
+  if (mx_lock_file(path, fd, 1, 1) == -1)
   {
     close(fd);
     return;
   }
 
-#ifdef USE_DOTLOCK
-  invoke_dotlock(path, fd, DL_FL_UNLINK, 1);
-#else
   if (fstat(fd, &sb) == 0 && sb.st_size == 0)
     unlink(path);
-#endif
 
   mx_unlock_file(path, fd, 0);
   close(fd);

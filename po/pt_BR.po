@@ -4280,11 +4280,6 @@ msgstr "Conectando a %s"
 msgid "Lock count exceeded, remove lock for %s?"
 msgstr "Limite de travas excedido, remover a trava para %s?"
 
-#: mx.c:164
-#, c-format
-msgid "Can't dotlock %s.\n"
-msgstr "Não é possível travar %s.\n"
-
 #: mx.c:219
 msgid "Timeout exceeded while attempting fcntl lock!"
 msgstr "Limite de tempo excedido durante uma tentativa de trava com fcntl!"
@@ -5363,12 +5358,47 @@ msgstr ""
 "[-- Os dados a seguir estão encriptados com S/MIME --]\n"
 "\n"
 
+<<<<<<< c23b47cf1363cd9f07111507973168220ae588aa
 #: ncrypt/smime.c:1801
 #, fuzzy
 msgid "[-- The following data is S/MIME signed --]\n"
 msgstr ""
 "[-- Os dados a seguir estão assinados --]\n"
 "\n"
+=======
+#: mutt_tunnel.c:140 mutt_tunnel.c:155
+#, fuzzy, c-format
+msgid "Tunnel error talking to %s: %s"
+msgstr "Conectando a %s"
+
+#: mx.c:149
+#, c-format
+msgid "Lock count exceeded, remove lock for %s?"
+msgstr "Limite de travas excedido, remover a trava para %s?"
+
+#: mx.c:215
+msgid "Timeout exceeded while attempting fcntl lock!"
+msgstr "Limite de tempo excedido durante uma tentativa de trava com fcntl!"
+
+#: mx.c:221
+#, c-format
+msgid "Waiting for fcntl lock... %d"
+msgstr "Esperando pela trava fcntl... %d"
+
+#: mx.c:248
+msgid "Timeout exceeded while attempting flock lock!"
+msgstr "Limite de tempo excedido durante uma tentativa trava com flock!"
+
+#: mx.c:255
+#, c-format
+msgid "Waiting for flock attempt... %d"
+msgstr "Esperando pela tentativa de flock... %d"
+
+#: mx.c:682
+#, fuzzy, c-format
+msgid "Reading from %s interrupted..."
+msgstr "Busca interrompida."
+>>>>>>> update translation files
 
 #: ncrypt/smime.c:1865
 #, fuzzy

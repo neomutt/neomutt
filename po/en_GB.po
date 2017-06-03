@@ -4070,11 +4070,6 @@ msgstr "Tunnel error talking to %s: %s"
 msgid "Lock count exceeded, remove lock for %s?"
 msgstr "Lock count exceeded, remove lock for %s?"
 
-#: mx.c:164
-#, c-format
-msgid "Can't dotlock %s.\n"
-msgstr "Can't dotlock %s.\n"
-
 #: mx.c:219
 msgid "Timeout exceeded while attempting fcntl lock!"
 msgstr "Timeout exceeded while attempting fcntl lock!"
@@ -5068,6 +5063,7 @@ msgstr "No output from OpenSSL..."
 msgid "Can't sign: No key specified. Use Sign As."
 msgstr "Can't sign: No key specified. Use Sign As."
 
+<<<<<<< c23b47cf1363cd9f07111507973168220ae588aa
 #: ncrypt/smime.c:1492
 msgid "Can't open OpenSSL subprocess!"
 msgstr "Can't open OpenSSL subprocess!"
@@ -5079,6 +5075,11 @@ msgid ""
 msgstr ""
 "[-- End of OpenSSL output --]\n"
 "\n"
+=======
+#: mx.c:215
+msgid "Timeout exceeded while attempting fcntl lock!"
+msgstr "Timeout exceeded while attempting fcntl lock!"
+>>>>>>> update translation files
 
 #: ncrypt/smime.c:1752 ncrypt/smime.c:1764
 msgid "[-- Error: unable to create OpenSSL subprocess! --]\n"

@@ -4156,11 +4156,6 @@ msgstr "与 %s 通话时隧道错误：%s"
 msgid "Lock count exceeded, remove lock for %s?"
 msgstr "超过锁计数上限，将 %s 的锁移除吗？"
 
-#: mx.c:164
-#, c-format
-msgid "Can't dotlock %s.\n"
-msgstr "无法 dotlock %s。\n"
-
 #: mx.c:219
 msgid "Timeout exceeded while attempting fcntl lock!"
 msgstr "尝试 fcntl 加锁时超时！"
@@ -5135,6 +5130,7 @@ msgstr "未找到可用于 %s 的(有效)证书。"
 msgid "Error: unable to create OpenSSL subprocess!"
 msgstr "错误：无法创建 OpenSSL 子进程！"
 
+<<<<<<< c23b47cf1363cd9f07111507973168220ae588aa
 #: ncrypt/smime.c:1163
 #, fuzzy
 msgid "Label for certificate: "
@@ -5143,6 +5139,11 @@ msgstr "无法从节点获得证书"
 #: ncrypt/smime.c:1255
 msgid "no certfile"
 msgstr "无证书文件"
+=======
+#: mx.c:215
+msgid "Timeout exceeded while attempting fcntl lock!"
+msgstr "尝试 fcntl 加锁时超时！"
+>>>>>>> update translation files
 
 #: ncrypt/smime.c:1258
 msgid "no mbox"

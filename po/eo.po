@@ -4109,11 +4109,6 @@ msgstr "Tuneleraro dum komunikado kun %s: %s"
 msgid "Lock count exceeded, remove lock for %s?"
 msgstr "Tro da ŝlosoj; ĉu forigi la ŝloson por %s?"
 
-#: mx.c:164
-#, c-format
-msgid "Can't dotlock %s.\n"
-msgstr "Ne eblas ŝlosi %s.\n"
-
 #: mx.c:219
 msgid "Timeout exceeded while attempting fcntl lock!"
 msgstr "Tro da tempo pasis dum provado akiri fcntl-ŝloson!"
@@ -5116,6 +5111,7 @@ msgstr "Nenia eliro de OpenSSL..."
 msgid "Can't sign: No key specified. Use Sign As."
 msgstr "Ne eblas subskribi: neniu ŝlosilo specifita.  Uzu \"subskribi kiel\"."
 
+<<<<<<< c23b47cf1363cd9f07111507973168220ae588aa
 #: ncrypt/smime.c:1492
 msgid "Can't open OpenSSL subprocess!"
 msgstr "Ne eblas malfermi OpenSSL-subprocezon!"
@@ -5127,6 +5123,11 @@ msgid ""
 msgstr ""
 "[-- Fino de OpenSSL-eligo --]\n"
 "\n"
+=======
+#: mx.c:215
+msgid "Timeout exceeded while attempting fcntl lock!"
+msgstr "Tro da tempo pasis dum provado akiri fcntl-ŝloson!"
+>>>>>>> update translation files
 
 #: ncrypt/smime.c:1752 ncrypt/smime.c:1764
 msgid "[-- Error: unable to create OpenSSL subprocess! --]\n"

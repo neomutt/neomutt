@@ -4221,11 +4221,6 @@ msgstr "Pripájam sa na %s"
 msgid "Lock count exceeded, remove lock for %s?"
 msgstr "Počet zámkov prekročený, vymazať zámok pre %s?"
 
-#: mx.c:164
-#, fuzzy, c-format
-msgid "Can't dotlock %s.\n"
-msgstr "Nemožno zistiť stav: %s.\n"
-
 #: mx.c:219
 msgid "Timeout exceeded while attempting fcntl lock!"
 msgstr "Vypršal čas na uzamknutie pomocou fcntl!"
@@ -5228,6 +5223,7 @@ msgstr "[-- Chyba: nemožno vytvoriť podproces OpenSSL! --]\n"
 msgid "Label for certificate: "
 msgstr "nemožno určiť domáci adresár"
 
+<<<<<<< c23b47cf1363cd9f07111507973168220ae588aa
 #: ncrypt/smime.c:1255
 #, fuzzy
 msgid "no certfile"
@@ -5237,6 +5233,11 @@ msgstr "Nemožno vytvoriť filter."
 #, fuzzy
 msgid "no mbox"
 msgstr "(žiadna schránka)"
+=======
+#: mx.c:215
+msgid "Timeout exceeded while attempting fcntl lock!"
+msgstr "Vypršal čas na uzamknutie pomocou fcntl!"
+>>>>>>> update translation files
 
 #: ncrypt/smime.c:1382 ncrypt/smime.c:1527
 msgid "No output from OpenSSL..."

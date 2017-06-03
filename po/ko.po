@@ -4232,11 +4232,6 @@ msgstr "%s (%s) 오류"
 msgid "Lock count exceeded, remove lock for %s?"
 msgstr "잠금 수가 한도를 넘었음, %s의 잠금을 없앨까요?"
 
-#: mx.c:164
-#, c-format
-msgid "Can't dotlock %s.\n"
-msgstr "dotlock %s를 할 수 없음.\n"
-
 #: mx.c:219
 msgid "Timeout exceeded while attempting fcntl lock!"
 msgstr "fcntl 잠금 시도 중 시간 제한을 초과함!"
@@ -5186,6 +5181,7 @@ msgstr "%s 이 키를 정말로 사용을 하겠습니까?"
 msgid "PGP Key %s."
 msgstr "PGP 키 %s."
 
+<<<<<<< c23b47cf1363cd9f07111507973168220ae588aa
 #: ncrypt/smime.c:132
 msgid "Enter S/MIME passphrase:"
 msgstr "S/MIME 암호 문구 입력:"
@@ -5209,6 +5205,11 @@ msgstr "만기됨  "
 #: ncrypt/smime.c:362
 msgid "Revoked   "
 msgstr "취소됨   "
+=======
+#: mx.c:215
+msgid "Timeout exceeded while attempting fcntl lock!"
+msgstr "fcntl 잠금 시도 중 시간 제한을 초과함!"
+>>>>>>> update translation files
 
 #: ncrypt/smime.c:365
 msgid "Invalid   "

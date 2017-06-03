@@ -94,7 +94,7 @@ static int lock_realpath(struct Context *ctx, int excl)
     return 0;
   }
 
-  int r = mx_lock_file(ctx->realpath, fileno(ci->lockfp), excl, 1, 1);
+  int r = mx_lock_file(ctx->realpath, fileno(ci->lockfp), excl, 1);
 
   if (r == 0)
     ci->locked = 1;

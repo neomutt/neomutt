@@ -4123,11 +4123,6 @@ msgstr "Fout in tunnel in communicatie met %s: %s"
 msgid "Lock count exceeded, remove lock for %s?"
 msgstr "Claim-timeout overschreden, oude claim voor %s verwijderen?"
 
-#: mx.c:164
-#, c-format
-msgid "Can't dotlock %s.\n"
-msgstr "Kan %s niet claimen met \"dotlock\".\n"
-
 #: mx.c:219
 msgid "Timeout exceeded while attempting fcntl lock!"
 msgstr "De fcntl-claim kon niet binnen de toegestane tijd worden verkregen."
@@ -5125,6 +5120,7 @@ msgid "Can't sign: No key specified. Use Sign As."
 msgstr ""
 "Kan niet ondertekenen: geen sleutel gegeven.  Gebruik Ondertekenen Als."
 
+<<<<<<< c23b47cf1363cd9f07111507973168220ae588aa
 #: ncrypt/smime.c:1492
 msgid "Can't open OpenSSL subprocess!"
 msgstr "Kan OpenSSL-subproces niet starten!"
@@ -5136,6 +5132,11 @@ msgid ""
 msgstr ""
 "[-- Einde van OpenSSL-uitvoer --]\n"
 "\n"
+=======
+#: mx.c:215
+msgid "Timeout exceeded while attempting fcntl lock!"
+msgstr "De fcntl-claim kon niet binnen de toegestane tijd worden verkregen."
+>>>>>>> update translation files
 
 #: ncrypt/smime.c:1752 ncrypt/smime.c:1764
 msgid "[-- Error: unable to create OpenSSL subprocess! --]\n"

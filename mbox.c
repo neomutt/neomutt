@@ -68,7 +68,7 @@ static int mbox_lock_mailbox(struct Context *ctx, int excl, int retry)
 {
   int r;
 
-  if ((r = mx_lock_file(ctx->path, fileno(ctx->fp), excl, 1, retry)) == 0)
+  if ((r = mx_lock_file(ctx->path, fileno(ctx->fp), excl, retry)) == 0)
     ctx->locked = true;
   else if (retry && !excl)
   {

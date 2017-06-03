@@ -358,7 +358,7 @@ syn match muttrcVPrefix		contained /[?&]/ nextgroup=muttrcVarBool,muttrcVarQuad,
 syn match muttrcVarStr		contained skipwhite 'my_[a-zA-Z0-9_]\+' nextgroup=muttrcSetStrAssignment,muttrcVPrefix,muttrcVarBool,muttrcVarQuad,muttrcVarNum,muttrcVarStr
 syn keyword muttrcVarStr	contained skipwhite
 			\ alias_file assumed_charset attach_charset attach_sep certificate_file charset
-			\ config_charset content_type default_hook display_filter dotlock_program
+			\ config_charset content_type default_hook display_filter
 			\ dsn_notify dsn_return editor entropy_file envelope_from_address escape folder
 			\ forw_format forward_format from gecos_mask hdr_format header_cache
 			\ header_cache_compress header_cache_pagesize history_file hostname

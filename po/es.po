@@ -4265,11 +4265,6 @@ msgstr "Error al hablar con %s (%s)"
 msgid "Lock count exceeded, remove lock for %s?"
 msgstr "Cuenta de bloqueo excedida, ¿quitar bloqueo de %s?"
 
-#: mx.c:164
-#, c-format
-msgid "Can't dotlock %s.\n"
-msgstr "No se pudo bloquear %s con dotlock.\n"
-
 #: mx.c:219
 msgid "Timeout exceeded while attempting fcntl lock!"
 msgstr "¡Bloqueo fcntl tardó demasiado!"
@@ -5349,12 +5344,57 @@ msgstr ""
 "[-- Lo siguiente está cifrado con S/MIME --]\n"
 "\n"
 
+<<<<<<< c23b47cf1363cd9f07111507973168220ae588aa
 #: ncrypt/smime.c:1801
 #, fuzzy
 msgid "[-- The following data is S/MIME signed --]\n"
 msgstr ""
 "[-- Los siguientes datos están firmados --]\n"
 "\n"
+=======
+#: mutt_ssl_gnutls.c:1113
+#, fuzzy, c-format
+msgid "SSL/TLS connection using %s (%s/%s/%s)"
+msgstr "Conectando por SSL con %s (%s)"
+
+#: mutt_tunnel.c:49
+#, fuzzy, c-format
+msgid "Connecting with \"%s\"..."
+msgstr "Conectando a %s..."
+
+#: mutt_tunnel.c:123
+#, c-format
+msgid "Tunnel to %s returned error %d (%s)"
+msgstr "El túnel a %s devolvió el error %d (%s)"
+
+#: mutt_tunnel.c:140 mutt_tunnel.c:155
+#, fuzzy, c-format
+msgid "Tunnel error talking to %s: %s"
+msgstr "Error al hablar con %s (%s)"
+
+#: mx.c:149
+#, c-format
+msgid "Lock count exceeded, remove lock for %s?"
+msgstr "Cuenta de bloqueo excedida, ¿quitar bloqueo de %s?"
+
+#: mx.c:215
+msgid "Timeout exceeded while attempting fcntl lock!"
+msgstr "¡Bloqueo fcntl tardó demasiado!"
+
+#: mx.c:221
+#, c-format
+msgid "Waiting for fcntl lock... %d"
+msgstr "Esperando bloqueo fcntl... %d"
+
+#: mx.c:248
+msgid "Timeout exceeded while attempting flock lock!"
+msgstr "¡Bloqueo flock tardó demasiado!"
+
+#: mx.c:255
+#, c-format
+msgid "Waiting for flock attempt... %d"
+msgstr "Esperando bloqueo flock... %d"
+>>>>>>> update translation files
 
 #: ncrypt/smime.c:1865
 #, fuzzy

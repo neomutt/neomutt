@@ -4244,11 +4244,6 @@ msgstr "Viga serveriga %s suhtlemisel (%s)"
 msgid "Lock count exceeded, remove lock for %s?"
 msgstr "Lukustamise arv on ületatud, eemaldan %s lukufaili? "
 
-#: mx.c:164
-#, c-format
-msgid "Can't dotlock %s.\n"
-msgstr "%s punktfailiga lukustamine ei õnnestu.\n"
-
 #: mx.c:219
 msgid "Timeout exceeded while attempting fcntl lock!"
 msgstr "fcntl luku seadmine aegus!"
@@ -5288,9 +5283,30 @@ msgstr ""
 "[-- OpenSSL väljundi lõpp --]\n"
 "\n"
 
+<<<<<<< c23b47cf1363cd9f07111507973168220ae588aa
 #: ncrypt/smime.c:1752 ncrypt/smime.c:1764
 msgid "[-- Error: unable to create OpenSSL subprocess! --]\n"
 msgstr "[-- Viga: ei õnnestu luua OpenSSL alamprotsessi! --]\n"
+=======
+#: mutt_tunnel.c:140 mutt_tunnel.c:155
+#, fuzzy, c-format
+msgid "Tunnel error talking to %s: %s"
+msgstr "Viga serveriga %s suhtlemisel (%s)"
+
+#: mx.c:149
+#, c-format
+msgid "Lock count exceeded, remove lock for %s?"
+msgstr "Lukustamise arv on ületatud, eemaldan %s lukufaili? "
+
+#: mx.c:215
+msgid "Timeout exceeded while attempting fcntl lock!"
+msgstr "fcntl luku seadmine aegus!"
+
+#: mx.c:221
+#, c-format
+msgid "Waiting for fcntl lock... %d"
+msgstr "Ootan fcntl lukku... %d"
+>>>>>>> update translation files
 
 #: ncrypt/smime.c:1797
 msgid "[-- The following data is S/MIME encrypted --]\n"

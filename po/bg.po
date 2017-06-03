@@ -4276,11 +4276,6 @@ msgstr ""
 "Преминат е допустимият брой заключвания. Желаете ли да премахнете "
 "заключването за %s?"
 
-#: mx.c:164
-#, c-format
-msgid "Can't dotlock %s.\n"
-msgstr "Невъзможно dot-заключване за %s.\n"
-
 #: mx.c:219
 msgid "Timeout exceeded while attempting fcntl lock!"
 msgstr "fcntl заключване не е получено в определеното време (timeout)!"
@@ -5311,6 +5306,7 @@ msgstr "Няма резултат от дъщерния OpenSSL процес..."
 msgid "Can't sign: No key specified. Use Sign As."
 msgstr ""
 
+<<<<<<< c23b47cf1363cd9f07111507973168220ae588aa
 #: ncrypt/smime.c:1492
 msgid "Can't open OpenSSL subprocess!"
 msgstr "Не може да бъде стартиран дъщерен OpenSSL процес!"
@@ -5322,6 +5318,11 @@ msgid ""
 msgstr ""
 "[-- Край на OpenSSL-резултата --]\n"
 "\n"
+=======
+#: mx.c:215
+msgid "Timeout exceeded while attempting fcntl lock!"
+msgstr "fcntl заключване не е получено в определеното време (timeout)!"
+>>>>>>> update translation files
 
 #: ncrypt/smime.c:1752 ncrypt/smime.c:1764
 msgid "[-- Error: unable to create OpenSSL subprocess! --]\n"

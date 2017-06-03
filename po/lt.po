@@ -4260,11 +4260,6 @@ msgstr "Klaida jungiantis prie IMAP serverio: %s"
 msgid "Lock count exceeded, remove lock for %s?"
 msgstr "Užraktų skaičius viršytas, pašalinti užraktą nuo %s?"
 
-#: mx.c:164
-#, c-format
-msgid "Can't dotlock %s.\n"
-msgstr "Negaliu tašku užrakinti %s.\n"
-
 #: mx.c:219
 msgid "Timeout exceeded while attempting fcntl lock!"
 msgstr "Viršytas leistinas laikas siekiant fcntl užrakto!"
@@ -5359,7 +5354,44 @@ msgstr ""
 "\n"
 "[-- S/MIME užšifruotų duomenų pabaiga --]\n"
 
+<<<<<<< c23b47cf1363cd9f07111507973168220ae588aa
 #: ncrypt/smime.c:1867
+=======
+#: mutt_tunnel.c:140 mutt_tunnel.c:155
+#, fuzzy, c-format
+msgid "Tunnel error talking to %s: %s"
+msgstr "Klaida jungiantis prie IMAP serverio: %s"
+
+#: mx.c:149
+#, c-format
+msgid "Lock count exceeded, remove lock for %s?"
+msgstr "Užraktų skaičius viršytas, pašalinti užraktą nuo %s?"
+
+#: mx.c:215
+msgid "Timeout exceeded while attempting fcntl lock!"
+msgstr "Viršytas leistinas laikas siekiant fcntl užrakto!"
+
+#: mx.c:221
+#, c-format
+msgid "Waiting for fcntl lock... %d"
+msgstr "Laukiu fcntl užrakto... %d"
+
+#: mx.c:248
+msgid "Timeout exceeded while attempting flock lock!"
+msgstr "Viršytas leistinas laikas siekiant flock užrakto!"
+
+#: mx.c:255
+#, c-format
+msgid "Waiting for flock attempt... %d"
+msgstr "Laukiu fcntl užrakto... %d"
+
+#: mx.c:682
+#, fuzzy, c-format
+msgid "Reading from %s interrupted..."
+msgstr "Paieška pertraukta."
+
+#: mx.c:777
+>>>>>>> update translation files
 #, fuzzy
 msgid ""
 "\n"
