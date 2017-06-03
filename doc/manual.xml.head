@@ -299,7 +299,7 @@
         <link linkend="sidebar-muttrc">Sidebar muttrc</link>.</para>
         <para>To check if Mutt supports
         <quote>Sidebar</quote>, look for the string
-        <literal>+USE_SIDEBAR</literal>in the mutt version.</para>
+        <literal>+sidebar</literal>in the mutt version.</para>
         <screen>mutt -v</screen>
         <para>
           <emphasis role="bold">Let's turn on the Sidebar:</emphasis>
@@ -2898,7 +2898,7 @@ color sidebar_divider   color8  default
         <tgroup cols="1">
           <tbody>
             <row>
-              <entry>neomuttrc-20170421</entry>
+              <entry>neomuttrc-20170602</entry>
             </row>
             <row>
               <entry>neomuttrc</entry>
@@ -2942,7 +2942,7 @@ color sidebar_divider   color8  default
             </thead>
             <tbody>
               <row>
-                <entry>/etc/xdg/mutt/neomuttrc-20170421</entry>
+                <entry>/etc/xdg/mutt/neomuttrc-20170602</entry>
                 <entry>NeoMutt release version</entry>
               </row>
               <row>
@@ -2958,7 +2958,7 @@ color sidebar_divider   color8  default
                 <entry>Note the case of the filename</entry>
               </row>
               <row>
-                <entry>/etc/mutt/neomuttrc-20170421</entry>
+                <entry>/etc/mutt/neomuttrc-20170602</entry>
                 <entry>NeoMutt release version</entry>
               </row>
               <row>
@@ -2974,7 +2974,7 @@ color sidebar_divider   color8  default
                 <entry>Note the case of the filename</entry>
               </row>
               <row>
-                <entry>/usr/share/mutt/neomuttrc-20170421</entry>
+                <entry>/usr/share/mutt/neomuttrc-20170602</entry>
                 <entry>NeoMutt release version</entry>
               </row>
               <row>
@@ -3021,7 +3021,7 @@ color sidebar_divider   color8  default
             </thead>
             <tbody>
               <row>
-                <entry>~/.config/mutt/neomuttrc-20170421</entry>
+                <entry>~/.config/mutt/neomuttrc-20170602</entry>
                 <entry>NeoMutt release version</entry>
               </row>
               <row>
@@ -3035,7 +3035,7 @@ color sidebar_divider   color8  default
                 <entry>~/.config/mutt/muttrc</entry>
               </row>
               <row>
-                <entry>~/.neomuttrc-20170421</entry>
+                <entry>~/.neomuttrc-20170602</entry>
                 <entry>NeoMutt release version</entry>
               </row>
               <row>
@@ -3049,7 +3049,7 @@ color sidebar_divider   color8  default
                 <entry>~/.muttrc</entry>
               </row>
               <row>
-                <entry>~/.mutt/neomuttrc-20170421</entry>
+                <entry>~/.mutt/neomuttrc-20170602</entry>
                 <entry>NeoMutt release version</entry>
               </row>
               <row>
@@ -9047,7 +9047,7 @@ attachments   -I message/external-body
         <quote>-</quote>. For example, if Mutt was compiled using GnuTLS for
         encrypted communication instead of OpenSSL,
         <literal>mutt -v</literal>would contain:</para>
-        <screen>-USE_SSL_OPENSSL +USE_SSL_GNUTLS</screen>
+        <screen>-openssl +gnutls</screen>
       </sect2>
 
       <sect2 id="url-syntax">
@@ -9484,7 +9484,7 @@ folder-hook imap://user@host2/ 'set folder=imap://host2/ ; set record=+INBOX/Sen
       messages. The
       <emphasis>--enable-exact-address</emphasis>switch can be given to
       configure to build it with write-support for the latter syntax.
-      <literal>EXACT_ADDRESS</literal>in the output of
+      <literal>+exact_address</literal>in the output of
       <literal>mutt -v</literal>indicates whether it's supported.</para>
     </sect1>
 
@@ -10976,13 +10976,16 @@ finish                                  <emphasis role="comment"># Finish readin
         <link linkend="variables">$variable</link>,
         <link linkend="functions">&lt;function&gt;</link>,
         <link linkend="commands">command</link>or compile-time symbol, such as
-        <quote>USE_IMAP</quote>.</para>
+        <quote>imap</quote>.</para>
+        <para>A list of compile-time symbols can be seen in the output of the
+        command <screen>mutt -v</screen> (in the <quote>Compile options</quote>
+        section).</para>
         <para>
         <literal>finish</literal>is particularly useful when combined with
         <literal>ifndef</literal>. e.g.</para>
         <screen>
 <emphasis role="comment"># Sidebar config file</emphasis>
-ifndef USE_SIDEBAR finish
+ifndef sidebar finish
 </screen>
       </sect2>
 
@@ -11036,9 +11039,9 @@ ifdef trash 'set trash=~/Mail/trash'
 ifdef tag-pattern 'bind index &lt;F6&gt; tag-pattern'
 <emphasis role="comment"># If the 'imap-fetch-mail' command exists, read my IMAP config.</emphasis>
 ifdef imap-fetch-mail 'source ~/.mutt/imap.rc'
-<emphasis role="comment"># If the compile-time symbol 'USE_SIDEBAR' does not exist, then
+<emphasis role="comment"># If the compile-time symbol 'sidebar' does not exist, then
 # stop reading the current config file.</emphasis>
-ifndef USE_SIDEBAR finish
+ifndef sidebar finish
 
         <emphasis role="comment"># vim: syntax=muttrc</emphasis>
 </screen>
@@ -11644,7 +11647,7 @@ bind index,pager y edit-label
           </listitem>
           <listitem>
             <para>
-            <quote>+USE_HCACHE</quote>in the compile options</para>
+            <quote>+hcache</quote>in the compile options</para>
           </listitem>
           <listitem>
             <para>
@@ -15046,8 +15049,8 @@ folder-hook ^pop 'set read_inc=1'</screen>
             <row>
               <entry>-d</entry>
               <entry>log debugging output to ~/.muttdebug0 if mutt was compiled
-              with +DEBUG; it can range from 1-5 and affects verbosity (a value
-              of 2 is recommended)</entry>
+              with <literal>+debug</literal>; it can range from 1-5 and affects
+              verbosity (a value of 2 is recommended)</entry>
             </row>
             <row>
               <entry>-D</entry>

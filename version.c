@@ -110,21 +110,6 @@ static struct CompileOptions comp_opts[] = {
   { "compose_to_sender", 1 },
   { "compress", 1 },
   { "cond_date", 1 },
-#ifdef CRYPT_BACKEND_CLASSIC_PGP
-  { "crypt_pgp", 1 },
-#else
-  { "crypt_pgp", 0 },
-#endif
-#ifdef CRYPT_BACKEND_CLASSIC_SMIME
-  { "crypt_smime", 1 },
-#else
-  { "crypt_smime", 0 },
-#endif
-#ifdef CRYPT_BACKEND_GPGME
-  { "crypt_gpgme", 1 },
-#else
-  { "crypt_gpgme", 0 },
-#endif
 #ifdef HAVE_CURS_SET
   { "curs_set", 1 },
 #else
@@ -139,11 +124,6 @@ static struct CompileOptions comp_opts[] = {
   { "dotlock", 1 },
 #else
   { "dotlock", 0 },
-#endif
-#ifdef ENABLE_NLS
-  { "enable_nls", 1 },
-#else
-  { "enable_nls", 0 },
 #endif
   { "encrypt_to_self", 1 },
 #ifdef EXACT_ADDRESS
@@ -179,6 +159,16 @@ static struct CompileOptions comp_opts[] = {
   { "getaddrinfo", 0 },
 #endif
   { "getsid", 1 },
+#ifdef USE_SSL_GNUTLS
+  { "gnutls", 1 },
+#else
+  { "gnutls", 0 },
+#endif
+#ifdef CRYPT_BACKEND_GPGME
+  { "gpgme", 1 },
+#else
+  { "gpgme", 0 },
+#endif
 #ifdef USE_GSS
   { "gss", 1 },
 #else
@@ -234,11 +224,26 @@ static struct CompileOptions comp_opts[] = {
   { "multiple_fcc", 1 },
   { "nested_if", 1 },
   { "new_mail", 1 },
+#ifdef ENABLE_NLS
+  { "nls", 1 },
+#else
+  { "nls", 0 },
+#endif
   { "nntp", 1 },
 #ifdef USE_NOTMUCH
   { "notmuch", 1 },
 #else
   { "notmuch", 0 },
+#endif
+#ifdef USE_SSL_OPENSSL
+  { "openssl", 1 },
+#else
+  { "openssl", 0 },
+#endif
+#ifdef CRYPT_BACKEND_CLASSIC_PGP
+  { "pgp", 1 },
+#else
+  { "pgp", 0 },
 #endif
   { "pop", 1 },
   { "progress", 1 },
@@ -263,17 +268,12 @@ static struct CompileOptions comp_opts[] = {
 #endif
   { "sidebar", 1 },
   { "skip_quoted", 1 },
+#ifdef CRYPT_BACKEND_CLASSIC_SMIME
+  { "smime", 1 },
+#else
+  { "smime", 0 },
+#endif
   { "smtp", 1 },
-#ifdef USE_SSL_GNUTLS
-  { "ssl_gnutls", 1 },
-#else
-  { "ssl_gnutls", 0 },
-#endif
-#ifdef USE_SSL_OPENSSL
-  { "ssl_openssl", 1 },
-#else
-  { "ssl_openssl", 0 },
-#endif
 #ifdef HAVE_START_COLOR
   { "start_color", 1 },
 #else
@@ -459,7 +459,7 @@ void print_copyright(void)
 }
 
 /**
- * feature_enabled - Test is a compile-time feature is enabled
+ * feature_enabled - Test if a compile-time feature is enabled
  * @name:  Compile-time symbol of the feature
  *
  * Many of the larger features of mutt can be disabled at compile time.
@@ -483,7 +483,7 @@ bool feature_enabled(const char *name)
   {
     if (mutt_strcmp(name, comp_opts[i].name) == 0)
     {
-      return true;
+      return comp_opts[i].enabled;
     }
   }
   return false;
