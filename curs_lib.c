@@ -900,10 +900,12 @@ int _mutt_enter_fname(const char *prompt, char *buf, size_t blen, int buffy,
   {
     mutt_refresh();
     buf[0] = 0;
-    if (!flags)
-      flags = MUTT_SEL_FOLDER | (multiple ? MUTT_SEL_MULTI : 0);
-
-    _mutt_select_file(buf, blen, flags, files, numfiles);
+    flags = MUTT_SEL_FOLDER;
+    if (multiple)
+      flags |= MUTT_SEL_MULTI;
+    if (buffy)
+      flags |= MUTT_SEL_BUFFY;
+    _mutt_select_file (buf, blen, flags, files, numfiles);
   }
   else
   {

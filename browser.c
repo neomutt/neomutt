@@ -787,11 +787,11 @@ static int examine_mailboxes(struct Menu *menu, struct BrowserState *state)
   {
     struct Buffy *tmp = Incoming;
 
+    init_state(state, menu);
+
     if (!Incoming)
       return -1;
     mutt_buffy_check(false);
-
-    init_state(state, menu);
 
     do
     {
@@ -1248,8 +1248,7 @@ void _mutt_select_file(char *f, size_t flen, int flags, char ***files, int *numf
 #endif
       if (buffy)
   {
-    if (examine_mailboxes(NULL, &state) == -1)
-      goto bail;
+    examine_mailboxes (NULL, &state);
   }
   else
 #ifdef USE_IMAP
@@ -1809,8 +1808,7 @@ void _mutt_select_file(char *f, size_t flen, int flags, char ***files, int *numf
 
         if (buffy)
         {
-          if (examine_mailboxes(menu, &state) == -1)
-            goto bail;
+	        examine_mailboxes (menu, &state);
         }
 #ifdef USE_IMAP
         else if (mx_is_imap(LastDir))
