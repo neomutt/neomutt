@@ -410,8 +410,4 @@ int ci_send_message(int flags, struct Header *msg, char *tempfile, struct Contex
 int wcscasecmp(const wchar_t *a, const wchar_t *b);
 #endif
 
-#ifndef HAVE_STRCASESTR
-char *strcasestr(const char *s1, const char *s2);
-#endif
-
 #endif /* _MUTT_PROTOS_H */

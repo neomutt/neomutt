@@ -124,7 +124,6 @@ signal.c
 smtp.c
 sort.c
 status.c
-strcasestr.c
 system.c
 thread.c
 txt2c.c
