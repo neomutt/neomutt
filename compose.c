@@ -170,13 +170,13 @@ static void redraw_crypt_lines(struct Header *msg)
   }
   else if (msg->security & SIGN)
   {
-    SETCOLOR(MT_COLOR_COMPOSE_SECURITY_ENCRYPT);
+    SETCOLOR(MT_COLOR_COMPOSE_SECURITY_SIGN);
     addstr(_("Sign"));
   }
   else
   {
     /* L10N: This refers to the encryption of the email, e.g. "Security: None" */
-    SETCOLOR(MT_COLOR_COMPOSE_SECURITY_ENCRYPT);
+    SETCOLOR(MT_COLOR_COMPOSE_SECURITY_NONE);
     addstr(_("None"));
   }
   NORMAL_COLOR;
