@@ -9484,19 +9484,6 @@ folder-hook imap://user@host2/ 'set folder=imap://host2/ ; set record=+INBOX/Sen
       </sect2>
     </sect1>
 
-    <sect1 id="exact-address">
-      <title>Exact Address Generation</title>
-      <para>Mutt supports the
-      <quote>Name &lt;user@host&gt;</quote>address syntax for reading and
-      writing messages, the older
-      <quote>user@host (Name)</quote>syntax is only supported when reading
-      messages. The
-      <emphasis>--enable-exact-address</emphasis> switch can be given to
-      configure to build it with write-support for the latter syntax.
-      <literal>+exact_address</literal> in the output of
-      <literal>mutt -v</literal> indicates whether it's supported.</para>
-    </sect1>
-
     <sect1 id="sending-mixmaster">
       <title>Sending Anonymous Messages via Mixmaster</title>
       <para>You may also have compiled Mutt to co-operate with Mixmaster, an

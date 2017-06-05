@@ -89,9 +89,6 @@ static void free_address(struct Address *a)
 {
   FREE(&a->personal);
   FREE(&a->mailbox);
-#ifdef EXACT_ADDRESS
-  FREE(&a->val);
-#endif
   FREE(&a);
 }
 
@@ -133,9 +130,6 @@ void rfc822_free_address(struct Address **p)
   {
     t = *p;
     *p = (*p)->next;
-#ifdef EXACT_ADDRESS
-    FREE(&t->val);
-#endif
     FREE(&t->personal);
     FREE(&t->mailbox);
     FREE(&t);
@@ -367,9 +361,6 @@ static void add_addrspec(struct Address **top, struct Address **last, const char
 struct Address *rfc822_parse_adrlist(struct Address *top, const char *s)
 {
   int ws_pending, nl;
-#ifdef EXACT_ADDRESS
-  const char *begin = NULL;
-#endif
   const char *ps = NULL;
   char comment[LONG_STRING], phrase[LONG_STRING];
   size_t phraselen = 0, commentlen = 0;
@@ -386,9 +377,6 @@ struct Address *rfc822_parse_adrlist(struct Address *top, const char *s)
     nl = s[nl - 1] == '\n';
 
   s = skip_email_wsp(s);
-#ifdef EXACT_ADDRESS
-  begin = s;
-#endif
   while (*s)
   {
     if (*s == ',')
@@ -404,16 +392,9 @@ struct Address *rfc822_parse_adrlist(struct Address *top, const char *s)
         last->personal = safe_strdup(comment);
       }
 
-#ifdef EXACT_ADDRESS
-      if (last && !last->val)
-        last->val = mutt_substrdup(begin, s);
-#endif
       commentlen = 0;
       phraselen = 0;
       s++;
-#ifdef EXACT_ADDRESS
-      begin = skip_email_wsp(s);
-#endif
     }
     else if (*s == '(')
     {
@@ -450,16 +431,9 @@ struct Address *rfc822_parse_adrlist(struct Address *top, const char *s)
         top = cur;
       last = cur;
 
-#ifdef EXACT_ADDRESS
-      last->val = mutt_substrdup(begin, s);
-#endif
-
       phraselen = 0;
       commentlen = 0;
       s++;
-#ifdef EXACT_ADDRESS
-      begin = skip_email_wsp(s);
-#endif
     }
     else if (*s == ';')
     {
@@ -473,10 +447,6 @@ struct Address *rfc822_parse_adrlist(struct Address *top, const char *s)
         terminate_buffer(comment, commentlen);
         last->personal = safe_strdup(comment);
       }
-#ifdef EXACT_ADDRESS
-      if (last && !last->val)
-        last->val = mutt_substrdup(begin, s);
-#endif
 
       /* add group terminator */
       cur = rfc822_new_address();
@@ -489,9 +459,6 @@ struct Address *rfc822_parse_adrlist(struct Address *top, const char *s)
       phraselen = 0;
       commentlen = 0;
       s++;
-#ifdef EXACT_ADDRESS
-      begin = skip_email_wsp(s);
-#endif
     }
     else if (*s == '<')
     {
@@ -542,10 +509,6 @@ struct Address *rfc822_parse_adrlist(struct Address *top, const char *s)
     terminate_buffer(comment, commentlen);
     last->personal = safe_strdup(comment);
   }
-#ifdef EXACT_ADDRESS
-  if (last)
-    last->val = mutt_substrdup(begin, s - nl < begin ? begin : s - nl);
-#endif
 
   return top;
 }
@@ -600,27 +563,6 @@ void rfc822_write_address_single(char *buf, size_t buflen, struct Address *addr,
     return;
 
   buflen--; /* save room for the terminal nul */
-
-#ifdef EXACT_ADDRESS
-  if (addr->val)
-  {
-    if (!buflen)
-      goto done;
-    strfcpy(pbuf, addr->val, buflen);
-    len = mutt_strlen(pbuf);
-    pbuf += len;
-    buflen -= len;
-    if (addr->group)
-    {
-      if (!buflen)
-        goto done;
-      *pbuf++ = ':';
-      buflen--;
-      *pbuf = 0;
-    }
-    return;
-  }
-#endif
 
   if (addr->personal)
   {
@@ -787,9 +729,6 @@ struct Address *rfc822_cpy_adr_real(struct Address *addr)
 {
   struct Address *p = rfc822_new_address();
 
-#ifdef EXACT_ADDRESS
-  p->val = safe_strdup(addr->val);
-#endif
   p->personal = safe_strdup(addr->personal);
   p->mailbox = safe_strdup(addr->mailbox);
   p->group = addr->group;

@@ -116,13 +116,6 @@ to ``configure'' to help it out, or change the default behavior:
 	LC_CTYPE correctly, then you might find you can solve the problem
 	with either or both of --enable-locales-fix and --without-wc-funcs.
 
---enable-exact-address
-	By default, Mutt will rewrite all addresses in the form
-		Personal Name <user@host.domain>
-	regardless of the input.  By enabling this option, Mutt will write
-	addresses in the same form they are parsed.  NOTE: this requires
-	significantly more memory.
-
 Once ``configure'' has completed, simply type ``make install.''
 
 Mutt should compile cleanly (without errors) and you should end up with a

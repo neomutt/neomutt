@@ -126,11 +126,6 @@ static struct CompileOptions comp_opts[] = {
   { "dotlock", 0 },
 #endif
   { "encrypt_to_self", 1 },
-#ifdef EXACT_ADDRESS
-  { "exact_address", 1 },
-#else
-  { "exact_address", 0 },
-#endif
 #ifdef USE_FCNTL
   { "fcntl", 1 },
 #else

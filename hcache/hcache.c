@@ -241,9 +241,6 @@ static unsigned char *dump_address(struct Address *a, unsigned char *d, int *off
 
   while (a)
   {
-#ifdef EXACT_ADDRESS
-    d = dump_char(a->val, d, off, convert);
-#endif
     d = dump_char(a->personal, d, off, convert);
     d = dump_char(a->mailbox, d, off, 0);
     d = dump_int(a->group, d, off);
@@ -265,9 +262,6 @@ static void restore_address(struct Address **a, const unsigned char *d, int *off
   while (counter)
   {
     *a = rfc822_new_address();
-#ifdef EXACT_ADDRESS
-    restore_char(&(*a)->val, d, off, convert);
-#endif
     restore_char(&(*a)->personal, d, off, convert);
     restore_char(&(*a)->mailbox, d, off, 0);
     restore_int((unsigned int *) &(*a)->group, d, off);

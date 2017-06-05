@@ -630,14 +630,6 @@ AC_ARG_ENABLE(locales-fix, AS_HELP_STRING([--enable-locales-fix],[The result of 
 		AC_DEFINE(LOCALES_HACK,1,[ Define if the result of isprint() is unreliable. ])
 	fi])
 
-AC_ARG_ENABLE(exact-address, AS_HELP_STRING([--enable-exact-address],[Enable regeneration of email addresses]),
-	[if test $enableval = yes; then
-		AC_DEFINE(EXACT_ADDRESS,1,
-			[Enable exact regeneration of email addresses as parsed?
-			NOTE: this requires significant more memory when defined.])
-
-	fi])
-
 dnl -- start cache --
 hcache_db_used=
 AC_ARG_WITH(gdbm,
