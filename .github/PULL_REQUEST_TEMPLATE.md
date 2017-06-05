@@ -2,8 +2,6 @@
 
 * **Are there points in the code the reviewer needs to double check?**
 
-* **Why was this PR needed?**
-
 * **Screenshots (if relevant)**
 
 * **Does this PR meet the acceptance criteria?** (This is just a reminder for you,
