@@ -36,6 +36,8 @@ if test "$CC" = "gcc"; then
 	CFLAGS="$CFLAGS -fno-delete-null-pointer-checks"
 fi
 
+CFLAGS="-Wall -pedantic -Wno-long-long $CFLAGS"
+
 AC_SEARCH_LIBS([strerror],[cposix])
 if test "x$U" != "x"; then
 	AC_MSG_ERROR(Compiler not ANSI compliant)
@@ -621,16 +623,6 @@ AC_ARG_ENABLE(fcntl, AS_HELP_STRING([--disable-fcntl],[Do NOT use fcntl() to loc
 
 if test $mutt_cv_fcntl = yes; then
 	AC_DEFINE(USE_FCNTL,1, [ Define to use fcntl() to lock folders. ])
-fi
-
-mutt_cv_warnings=yes
-AC_ARG_ENABLE(warnings, AS_HELP_STRING([--disable-warnings],[Turn off compiler warnings (not recommended)]),
-	[if test $enableval = no; then
-		mutt_cv_warnings=no
-	fi])
-
-if test x$GCC = xyes && test $mutt_cv_warnings = yes; then
-	CFLAGS="-Wall -pedantic -Wno-long-long $CFLAGS"
 fi
 
 AC_ARG_ENABLE(nfs-fix, AS_HELP_STRING([--enable-nfs-fix],[Work around an NFS with broken attributes caching]),
