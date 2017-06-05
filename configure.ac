@@ -625,14 +625,6 @@ if test $mutt_cv_fcntl = yes; then
 	AC_DEFINE(USE_FCNTL,1, [ Define to use fcntl() to lock folders. ])
 fi
 
-AC_ARG_ENABLE(nfs-fix, AS_HELP_STRING([--enable-nfs-fix],[Work around an NFS with broken attributes caching]),
-	[if test x$enableval = xyes; then
-		AC_DEFINE(NFS_ATTRIBUTE_HACK,1,
-			[Define if you have problems with mutt not detecting
-			new/old mailboxes over NFS.  Some NFS implementations
-			incorrectly cache the attributes of small files.])
-	fi])
-
 AC_ARG_ENABLE(locales-fix, AS_HELP_STRING([--enable-locales-fix],[The result of isprint() is unreliable]),
 	[if test x$enableval = xyes; then
 		AC_DEFINE(LOCALES_HACK,1,[ Define if the result of isprint() is unreliable. ])

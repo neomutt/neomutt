@@ -90,13 +90,6 @@ to ``configure'' to help it out, or change the default behavior:
 	result in poor performance on read/write.  Note that using this
 	option could be dangerous if dotlocking is also disabled.
 
---enable-nfs-fix
-	some implementations of NFS do not always write the
-	atime/mtime of small files.  This means that Mutt's ``mailboxes''
-	feature does not always work properly, as it uses these
-	attributes to work out whether the file has new mail.  This
-	option enables a workaround to this bug.
-
 --enable-locales-fix
 	on some systems, the result of isprint() can't be used reliably
 	to decide which characters are printable, even if you set the
