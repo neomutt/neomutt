@@ -56,12 +56,6 @@ to ``configure'' to help it out, or change the default behavior:
 	that this is *not* the full pathname, but relative to the user's
 	home directory.  Defaults to "mailbox" if FILE is not specified.
 
---enable-pop
-	enable POP3 support
-
---enable-imap
-	enable IMAP support
-
 --with-gss[=PFX]
 	Enable GSSAPI authentication to IMAP servers. This should work with
 	both MIT and Heimdal GSSAPI implementations - others haven't been
@@ -87,18 +81,6 @@ to ``configure'' to help it out, or change the default behavior:
 
 --disable-nls
 	This switch disables mutt's native language support.
-
---with-included-gettext
-	Mutt will be built using the GNU gettext library included in
-	the intl/ sub-directory.  You may need to use this switch if
-	your machine has something which looks like gettext to the
-	configure script, but isn't able to cope with mutt's catalog
-	files.
-
---with-regex
-	use GNU regex instead of local regexp routines.  Many systems
-	don't have the POSIX compliant regcomp/regexec/regfree
-	routines, so this provides a way to support them.
 
 --enable-flock
 	use flock() to lock files.
@@ -212,55 +194,4 @@ into your system's global Muttrc, which normally resides in /etc or
 
 If you really want to, you can configure Mutt --disable-iconv, but
 there will then be no character set conversion.
-
-
-Platform Notes
-==============
-
-All platforms
-
-	There is a bug in most (if not all) S-Lang versions which
-	prevents the Meta key from working with mutt.  A patch can
-	be found in the file contrib/patch.slang-1.2.2.keypad.1 in
-	this mutt distribution.
-
-
-Solaris 2.4
-
-	The system regcomp() and regexec() routines are very badly
-	broken.  This should be automatically detected by the
-	configure script.  If not, use the --with-regex switch when
-	configuring mutt.
-
-	We are also hearing reports that Solaris 2.4's NLS libraries
-	dump core with mutt when using a locale different from "C".
-	Use the --with-included-gettext configuration switch if you
-	experience this problem.
-
-	Color does not work right with Solaris curses.  You will
-	have to compile with either ncurses or slang to get working
-	color support.
-
-Solaris 2.6
-
-	There are reports that mutt behaves strangely when linked with
-	the system regexp library.  Please use the --with-regex switch
-	when configuring on this platform.
-
- 	For the real fix, applying Sun patches # 105490-05 (linker
-	patch) and # 105210-17 (libc and malloc patch) from
-	sunsolve.sun.com has been reported to stop these problems
-	from occurring.
-
-Linux
-
-	On recent Linux systems, flock() and fcntl() locks don't mix.  If
-	you use the --enable-flock switch on such systems, be sure to
-	give the --disable-fcntl argument as well.
-
-Sparc Linux
-
-	Redhat 4.2 Sparc users reported problems with some system
-	include files when building mutt.  Configuring mutt with the
-	--disable-warnings switch is said to help against this problem.
 

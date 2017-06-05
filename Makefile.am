@@ -7,7 +7,7 @@ EXTRA_PROGRAMS = mutt_dotlock pgpring pgpewrap mutt_md5
 
 # Test the .tar file by building everything
 AM_DISTCHECK_CONFIGURE_FLAGS = --enable-debug --enable-flock --enable-gpgme \
-	--enable-mailtool --enable-nfs-fix --enable-notmuch --with-bdb \
+	--enable-nfs-fix --enable-notmuch --with-bdb \
 	--with-gdbm --with-gnutls --with-gss --with-kyotocabinet --with-lmdb \
 	--with-mixmaster --with-qdbm --with-sasl --with-tokyocabinet
 

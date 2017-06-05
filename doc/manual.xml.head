@@ -9131,10 +9131,8 @@ smtp://user@host:587/
 
     <sect1 id="pop">
       <title>POP3 Support</title>
-      <para>If Mutt is compiled with POP3 support (by running the
-      <emphasis>configure</emphasis> script with the
-      <emphasis>--enable-pop</emphasis> flag), it has the ability to work with
-      mailboxes located on a remote POP3 server and fetch mail for local
+      <para>Mutt has POP3 support and has the ability to work with mailboxes
+      located on a remote POP3 server and fetch mail for local
       browsing.</para>
       <para>Remote POP3 servers can be accessed using URLs with the
       <literal>pop</literal> protocol for unencrypted and
@@ -9171,10 +9169,8 @@ smtp://user@host:587/
 
     <sect1 id="imap">
       <title>IMAP Support</title>
-      <para>If Mutt was compiled with IMAP support (by running the
-      <emphasis>configure</emphasis> script with the
-      <emphasis>--enable-imap</emphasis> flag), it has the ability to work with
-      folders located on a remote IMAP server.</para>
+      <para>Mutt has IMAP support and has the ability to work with folders
+      located on a remote IMAP server.</para>
       <para>You can access the remote inbox by selecting the folder by its URL
       (see
       <xref linkend="url-syntax" />for details) using the
@@ -9298,9 +9294,7 @@ set timeout=15
     <sect1 id="smtp">
       <title>SMTP Support</title>
       <para>Besides supporting traditional mail delivery through a
-      sendmail-compatible program, Mutt supports delivery through SMTP if it
-      was configured and built with
-      <literal>--enable-smtp</literal>.</para>
+      sendmail-compatible program, Mutt supports delivery through SMTP.</para>
       <para>If the configuration variable
       <link linkend="smtp-url">$smtp_url</link> is set, Mutt will contact the
       given SMTP server to deliver messages; if it is unset, Mutt will use the
@@ -9419,11 +9413,9 @@ folder-hook imap://user@host2/ 'set folder=imap://host2/ ; set record=+INBOX/Sen
         and MH, reading the headers from a single file is much faster than
         looking at possibly thousands of single files (since Maildir and MH use
         one file per message.)</para>
-        <para>Header caching can be enabled via the configure script and the
-        <emphasis>--enable-hcache</emphasis> option. It's not turned on by
-        default because external database libraries are required: one of
-        tokyocabinet, kyotocabinet, qdbm, gdbm, lmdb or bdb must be
-        present.</para>
+        <para>Header caching can be enabled by configuring one of the database
+        backends.  One of tokyocabinet, kyotocabinet, qdbm, gdbm, lmdb or
+        bdb.</para>
         <para>If enabled,
         <link linkend="header-cache">$header_cache</link> can be used to either
         point to a file or a directory. If set to point to a file, one database
@@ -12193,9 +12185,7 @@ set new_mail_command = ""
       <sect2 id="nntp-intro">
         <title>Introduction</title>
         <para>Reading news via NNTP</para>
-        <para>If Mutt is compiled with the
-        <emphasis>--enable-nntp</emphasis> option, it can read from a news
-        server using NNTP.</para>
+        <para>Mutt can read from a news server using NNTP.</para>
         <para>The default news server can be obtained from the
         <literal>$NNTPSERVER</literal> environment variable or from the
         <literal>/etc/nntpserver</literal> file. Like in other news readers,
