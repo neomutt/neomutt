@@ -4263,11 +4263,6 @@ msgstr "Σφάλμα στη συνομιλία με το %s (%s)"
 msgid "Lock count exceeded, remove lock for %s?"
 msgstr "Ο αριθμός κλειδωμάτων ξεπεράστηκε, ξεκλείδωμα του %s;"
 
-#: mx.c:164
-#, c-format
-msgid "Can't dotlock %s.\n"
-msgstr "Αδυναμία dotlock του %s.\n"
-
 #: mx.c:219
 msgid "Timeout exceeded while attempting fcntl lock!"
 msgstr "Το όριο χρόνου ξεπεράστηκε κατά την προσπάθεια κλειδώματος με fcntl!"

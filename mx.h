@@ -110,8 +110,8 @@ void mx_update_context(struct Context *ctx, int new_messages);
 void mx_update_tables(struct Context *ctx, int committing);
 
 
-int mx_lock_file(const char *path, int fd, int excl, int dot, int timeout);
-int mx_unlock_file(const char *path, int fd, int dot);
+int mx_lock_file(const char *path, int fd, int excl, int timeout);
+int mx_unlock_file(const char *path, int fd);
 
 struct MxOps *mx_get_ops(int magic);
 extern struct MxOps mx_maildir_ops;

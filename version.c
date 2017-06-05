@@ -120,11 +120,6 @@ static struct CompileOptions comp_opts[] = {
 #else
   { "debug", 0 },
 #endif
-#ifdef USE_DOTLOCK
-  { "dotlock", 1 },
-#else
-  { "dotlock", 0 },
-#endif
   { "encrypt_to_self", 1 },
 #ifdef USE_FCNTL
   { "fcntl", 1 },

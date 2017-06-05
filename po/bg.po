@@ -4267,11 +4267,6 @@ msgstr ""
 "Преминат е допустимият брой заключвания. Желаете ли да премахнете "
 "заключването за %s?"
 
-#: mx.c:164
-#, c-format
-msgid "Can't dotlock %s.\n"
-msgstr "Невъзможно dot-заключване за %s.\n"
-
 #: mx.c:219
 msgid "Timeout exceeded while attempting fcntl lock!"
 msgstr "fcntl заключване не е получено в определеното време (timeout)!"

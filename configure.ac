@@ -443,13 +443,6 @@ else
 	AC_DEFINE_UNQUOTED(MAILPATH,"$mutt_cv_mailpath",[ Where new mail is spooled. ])
 fi
 
-AC_ARG_ENABLE(dotlock, AS_HELP_STRING([--enable-dotlock],[Define to build mutt_dotlock.]), [build_dotlock=$enableval])
-if test "x$build_dotlock" = "xyes"; then
-	AC_DEFINE(USE_DOTLOCK,1, [ Define to use dotlock to lock mailboxes. ])
-	DOTLOCK_TARGET="mutt_dotlock\$(EXEEXT)"
-fi
-AC_SUBST(DOTLOCK_TARGET)
-
 dnl autoconf <2.60 compatibility
 if test -z "$datarootdir"; then
 	datarootdir='${prefix}/share'

@@ -49,9 +49,6 @@
 #ifndef USE_SOCKET
 #define USE_SOCKET
 #endif
-#ifndef USE_DOTLOCK
-#define USE_DOTLOCK
-#endif
 #ifndef USE_HCACHE
 #define USE_HCACHE
 #endif

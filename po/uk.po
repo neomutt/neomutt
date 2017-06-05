@@ -4103,11 +4103,6 @@ msgstr "Помилка тунелю у з’єднанні з сервером %
 msgid "Lock count exceeded, remove lock for %s?"
 msgstr "Всі спроби блокування вичерпано, зняти блокування з %s?"
 
-#: mx.c:164
-#, c-format
-msgid "Can't dotlock %s.\n"
-msgstr "Не вийшло заблокувати %s за допомогою dotlock.\n"
-
 #: mx.c:219
 msgid "Timeout exceeded while attempting fcntl lock!"
 msgstr "Вичерпано час на блокування через fctnl!"

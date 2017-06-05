@@ -4329,13 +4329,6 @@ msgstr "Error al túnel establert amb «%s»: %s"
 msgid "Lock count exceeded, remove lock for %s?"
 msgstr "Voleu eliminar un forrellat sobrant de «%s»?"
 
-# ivb (2001/11/27)
-# ivb  «dotlock» és el programa emprat per a blocar.
-#: mx.c:164
-#, c-format
-msgid "Can't dotlock %s.\n"
-msgstr "No s’ha pogut blocar «%s» amb «dotlock».\n"
-
 #: mx.c:219
 msgid "Timeout exceeded while attempting fcntl lock!"
 msgstr "S’ha excedit el temps d’espera en intentar blocar amb fcntl()."

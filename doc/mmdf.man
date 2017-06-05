@@ -94,23 +94,6 @@ seems the only way to reliably invalidate NFS clients' caches.
 .IP "\(bu"
 .BR flock (2)
 locking is mostly used on BSD-based systems.
-.IP "\(bu"
-Dotlocking is used on all kinds of systems. In order to lock an
-.B MMDF
-file named \fIfolder\fR, an application first creates a temporary file
-with a unique name in the directory in which the
-\fIfolder\fR resides. The application then tries to use the
-.BR link (2)
-system call to create a hard link named \fIfolder.lock\fR
-to the temporary file. The success of the
-.BR link (2)
-system call should be additionally verified using
-.BR stat (2)
-calls. If the link has succeeded, the mail folder is considered
-dotlocked. The temporary file can then safely be unlinked.
-.IP ""
-In order to release the lock, an application just unlinks the
-\fIfolder.lock\fR file.
 .PP
 If multiple methods are combined, implementors should make sure to
 use the non-blocking variants of the

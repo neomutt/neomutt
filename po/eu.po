@@ -4154,11 +4154,6 @@ msgstr "Tunel errorea %s-rekiko konexioan: %s"
 msgid "Lock count exceeded, remove lock for %s?"
 msgstr "Blokeo kontua gainditua, %s-ren blokeoa ezabatu?"
 
-#: mx.c:164
-#, c-format
-msgid "Can't dotlock %s.\n"
-msgstr "Ezin izan da dotlock bidez %s blokeatu.\n"
-
 #: mx.c:219
 msgid "Timeout exceeded while attempting fcntl lock!"
 msgstr "fcntl lock itxaroten denbora amaitu da!"

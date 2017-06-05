@@ -87,8 +87,7 @@ to ``configure'' to help it out, or change the default behavior:
 
 --disable-fcntl
 	by default, Mutt uses fcntl() to lock files.  Over NFS this can
-	result in poor performance on read/write.  Note that using this
-	option could be dangerous if dotlocking is also disabled.
+	result in poor performance on read/write.
 
 --enable-locales-fix
 	on some systems, the result of isprint() can't be used reliably

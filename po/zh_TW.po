@@ -4252,11 +4252,6 @@ msgstr "連線到 %s (%s) 時失敗"
 msgid "Lock count exceeded, remove lock for %s?"
 msgstr "鎖進數量超過限額，將 %s 的鎖移除？"
 
-#: mx.c:164
-#, c-format
-msgid "Can't dotlock %s.\n"
-msgstr "無法用 dotlock 鎖住 %s。\n"
-
 #: mx.c:219
 msgid "Timeout exceeded while attempting fcntl lock!"
 msgstr "嘗試 fcntl 的鎖定時超過時間!"

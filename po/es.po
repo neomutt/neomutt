@@ -4257,11 +4257,6 @@ msgstr "Error al hablar con %s (%s)"
 msgid "Lock count exceeded, remove lock for %s?"
 msgstr "Cuenta de bloqueo excedida, ¿quitar bloqueo de %s?"
 
-#: mx.c:164
-#, c-format
-msgid "Can't dotlock %s.\n"
-msgstr "No se pudo bloquear %s con dotlock.\n"
-
 #: mx.c:219
 msgid "Timeout exceeded while attempting fcntl lock!"
 msgstr "¡Bloqueo fcntl tardó demasiado!"
