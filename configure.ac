@@ -630,15 +630,6 @@ AC_ARG_ENABLE(locales-fix, AS_HELP_STRING([--enable-locales-fix],[The result of 
 		AC_DEFINE(LOCALES_HACK,1,[ Define if the result of isprint() is unreliable. ])
 	fi])
 
-AC_ARG_WITH(exec-shell, AS_HELP_STRING([--with-exec-shell=SHELL],[Specify alternate shell (ONLY if /bin/sh is broken)]),
-	[if test $withval != yes; then
-		AC_DEFINE_UNQUOTED(EXECSHELL, "$withval",
-		[program to use for shell commands])
-	else
-		AC_DEFINE_UNQUOTED(EXECSHELL, "/bin/sh")
-	fi],
-	[AC_DEFINE_UNQUOTED(EXECSHELL, "/bin/sh")])
-
 AC_ARG_ENABLE(exact-address, AS_HELP_STRING([--enable-exact-address],[Enable regeneration of email addresses]),
 	[if test $enableval = yes; then
 		AC_DEFINE(EXACT_ADDRESS,1,

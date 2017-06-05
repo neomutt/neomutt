@@ -116,22 +116,6 @@ to ``configure'' to help it out, or change the default behavior:
 	LC_CTYPE correctly, then you might find you can solve the problem
 	with either or both of --enable-locales-fix and --without-wc-funcs.
 
---with-exec-shell=SHELL
-	on some versions of unix, /bin/sh has a bug that makes using emacs
-	with mutt very difficult.  If you have the problem that whenever
-	you press control-G in emacs, mutt and emacs become very confused,
-	you may want to try using a Bourne-derived shell other than
-	/bin/sh here.  Some shells that may work are bash, zsh, and ksh.
-	C shells such as csh and tcsh will amost certainly not work right.
-	Note that this option is unrelated to what shell mutt gives you
-	when you press '!'.  Only use this option to solve the above problem,
-	and only specify one of the above shells as its argument.
-
-	(If you encounter this problem with your platform's native
-	Bourne shell, please send a short report to mutt-dev@mutt.org,
-	so a short note on this topic can be added to the Platform notes
-	section below.)
-
 --enable-exact-address
 	By default, Mutt will rewrite all addresses in the form
 		Personal Name <user@host.domain>

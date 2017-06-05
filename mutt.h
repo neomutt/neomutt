@@ -348,4 +348,6 @@ struct AttachMatch
 
 #define MUTT_PARTS_TOPLEVEL (1 << 0) /* is the top-level part */
 
+#define EXECSHELL "/bin/sh"
+
 #endif /* _MUTT_H */

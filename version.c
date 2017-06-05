@@ -425,7 +425,6 @@ void print_version(void)
 #ifdef DOMAIN
   printf("DOMAIN=\"%s\"\n", DOMAIN);
 #endif
-  printf("EXECSHELL=\"%s\"\n", EXECSHELL);
 #ifdef ISPELL
   printf("ISPELL=\"%s\"\n", ISPELL);
 #endif
