@@ -273,10 +273,20 @@ void ci_start_color(void);
  * right column.
  */
 #ifdef HAVE_BKGDSET
-#define SETCOLOR(X) bkgdset(ColorDefs[X] | ' ')
+#define SETCOLOR(X)                                                            \
+  do                                                                           \
+  {                                                                            \
+    if (ColorDefs[X] != 0)                                                     \
+      bkgdset(ColorDefs[X] | ' ');                                             \
+  } while (0)
 #define ATTRSET(X) bkgdset(X | ' ')
 #else
-#define SETCOLOR(X) attrset(ColorDefs[X])
+#define SETCOLOR(X)                                                            \
+  do                                                                           \
+  {                                                                            \
+    if (ColorDefs[X] != 0)                                                     \
+      attrset(ColorDefs[X]);                                                   \
+  } while (0)
 #define ATTRSET attrset
 #endif
 
