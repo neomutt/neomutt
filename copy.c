@@ -340,7 +340,7 @@ int mutt_copy_hdr(FILE *in, FILE *out, LOFF_T off_start, LOFF_T off_end,
         CH_NOLEN        don't write Content-Length: and Lines:
         CH_NONEWLINE    don't output a newline after the header
         CH_NOSTATUS     ignore the Status: and X-Status:
-        CH_PREFIX       quote header with $indent_str
+        CH_PREFIX       quote header with $indent_string
         CH_REORDER      output header in order specified by `hdr_order'
         CH_TXTPLAIN     generate text/plain MIME headers [hack alert.]
         CH_UPDATE       write new Status: and X-Status:

@@ -1,7 +1,7 @@
 How to use mutt's S/MIME capabilities
 
 - Add the contents of contrib/smime.rc to your .muttrc. Don't worry about
-  changing the smime_sign_as line at this point -- you'll change it later.
+  changing the smime_default_key line at this point -- you'll change it later.
 
 - Run 'smime_keys init'.
 
@@ -35,7 +35,7 @@ How to use mutt's S/MIME capabilities
       The number (including the ".0" at the end) is your keyid. You will
       need this number in the next step.
 
-- Edit the smime_sign_as line in your muttrc, replacing the keyid with your
+- Edit the smime_default_key line in your muttrc, replacing the keyid with your
   own.
 
 - You probably want to import trusted root certificates from Mozilla or

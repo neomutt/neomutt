@@ -295,8 +295,7 @@ The keys used are:
 
 1.5.11 (2005-09-15):
 
-  ! $envelope_from_address has been added, $envelope_from has been renamed
-    to $use_envelope_from
+  ! $envelope_from_address has been added
   + Progress bar via $net_inc
   + IMAP server-side simple string search
   + Simple string matches instead of full regex matches for '=' instead
@@ -373,9 +372,8 @@ Mutt 1.5.7 (2005-01-28):
 
   + IDNA support
   + $bounce
-  ! $crypt_replyencrypt and $pgp_replyencrypt now default
-    to "yes" instead of "no"
-  + $pgp_auto_traditional
+  ! $crypt_replyencrypt now defaults to "yes" instead of "no"
+  + $pgp_replyinline
   + %A for $index_format
 
 1.5.3 (2002-12-17):

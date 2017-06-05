@@ -111,7 +111,7 @@ The old answer to this question used to be this:
 	x-action=sign\n"
 
 
-There's a new answer, though: Set the $pgp_create_traditional
+There's a new answer, though: Set the $pgp_autoinline
 configuration variable (it's a quad-option) to something different
 from "no" (that's the default).  Mutt will then try to use
 application/pgp wherever it makes sense.  In particular, it does

@@ -103,7 +103,7 @@ set tilde			# virtual lines to pad blank lines in the pager
 set nouse_domain		# don't qualify local addresses with $domain
 #set use_from			# always generate the `From:' header field
 set implicit_autoview=yes	# pager shows parts having a mailcap viewer
-set pgp_verify_sig=no		# don't automatically verify message signatures
+set crypt_verify_sig=no		# don't automatically verify message signatures
 #set visual=vim			# editor invoked by ~v in the builtin editor
 #set nowait_key			# prompt when a pipe returns normal status
 set write_inc=25		# show progress while writing mailboxes
