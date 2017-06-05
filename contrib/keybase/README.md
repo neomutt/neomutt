@@ -40,6 +40,6 @@ Opening the email, you'll need to navigate to the actual attachment. (Press "V" 
 
 Then pipe ("|") it through the one of the scripts. (like "pgpverify.sh" or "decrypt.sh")
 
-Please note, using an attachment is very important when decrypting emails that include html. The scripts are unable to seperate html and text.
+Please note, using an attachment is very important when decrypting emails that include html. The scripts are unable to separate html and text.
 
 Make sure that the attachment is "text/plain" rather than "text/html".
