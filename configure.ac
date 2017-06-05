@@ -417,7 +417,7 @@ AC_CHECK_DECLS([sys_siglist],[],[],[#include <signal.h>
 # include <unistd.h>
 ])
 
-AC_REPLACE_FUNCS([wcscasecmp strcasestr])
+AC_REPLACE_FUNCS([wcscasecmp])
 
 dnl Set the atime of files
 AC_CHECK_FUNCS(futimens)

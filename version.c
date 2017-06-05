@@ -381,9 +381,7 @@ void print_version(void)
 
   uname(&uts);
 
-#ifdef _AIX
-  printf("System: %s %s.%s", uts.sysname, uts.version, uts.release);
-#elif defined(SCO)
+#ifdef SCO
   printf("System: SCO %s", uts.release);
 #else
   printf("System: %s %s", uts.sysname, uts.release);
