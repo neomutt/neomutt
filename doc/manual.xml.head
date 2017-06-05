@@ -6593,7 +6593,7 @@ mailboxes $my_mx +mailbox3</screen>
         <literal>~m</literal>) are even more general and powerful than the
         other types of ranges. Read on and see
         <xref linkend="message-ranges" />below.</para>
-        <para>Special attention has to be payed when using regular expressions
+        <para>Special attention has to be paid when using regular expressions
         inside of patterns. Specifically, Mutt's parser for these patterns will
         strip one level of backslash (
         <quote>\</quote>), which is normally used for quoting. If it is your
