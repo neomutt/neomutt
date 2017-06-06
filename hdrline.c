@@ -143,6 +143,10 @@ static size_t add_index_color(char *buf, size_t buflen, format_flag flags, char 
   if (!(flags & MUTT_FORMAT_INDEX))
     return 0;
 
+  /* this item is going to be passed to an external filter */
+  if (flags & MUTT_FORMAT_NOFILTER)
+    return 0;
+
   if (color == MT_COLOR_INDEX)
   { /* buf might be uninitialized other cases */
     len = mutt_strlen(buf);
