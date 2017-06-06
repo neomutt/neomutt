@@ -82,7 +82,7 @@ EXTRA_DIST = account.h ascii.h attach.h bcache.h browser.h buffer.h buffy.h \
 	OPS.CRYPT OPS.MIX OPS.NOTMUCH OPS.PGP OPS.SIDEBAR OPS.SMIME pager.h \
 	pgpewrap.c pop.h protos.h README.md README.SSL remailer.c remailer.h \
 	rfc1524.h rfc2047.h rfc2231.h rfc3676.h rfc822.h sha1.h sidebar.h \
-	smime_keys.pl sort.h txt2c.c txt2c.sh UPDATING version.h \
+	smime_keys.pl sort.h txt2c.c txt2c.sh version.h \
 	keymap_alldefs.h
 
 EXTRA_SCRIPTS = smime_keys
