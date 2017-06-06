@@ -145,12 +145,9 @@ keymap_alldefs.h: $(srcdir)/OPS $(srcdir)/OPS.SIDEBAR $(srcdir)/OPS.NOTMUCH $(sr
 		> $@
 
 git_ver.h: $(mutt_SOURCES) $(SUBDIRS)
-	version=`git describe --dirty --abbrev=6 --match "neomutt-*" 2> /dev/null | sed -e 's/^neomutt-[0-9]\{8\}//' -e 's/g//'`
-	echo 'const char *GitVer = "'$$version'";' > git_ver.h.tmp
-	if ! cmp -s git_ver.h.tmp git_ver.h; then \
-		mv git_ver.h.tmp git_ver.h; \
-		echo "  GEN      git_ver.h"; \
-	fi
+	version=`git describe --dirty --abbrev=6 --match "neomutt-*" 2> /dev/null | sed -e 's/^neomutt-[0-9]\{8\}//' -e 's/g//'`; \
+	echo 'const char *GitVer = "'$$version'";' > git_ver.h.tmp; \
+	cmp -s git_ver.h.tmp git_ver.h || mv git_ver.h.tmp git_ver.h; \
 	rm -f git_ver.h.tmp
 
 install-exec-hook:
