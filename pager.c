@@ -2092,7 +2092,7 @@ int mutt_pager(const char *banner, const char *fname, int flags, struct Pager *e
       OldHdr = NULL;
 
     ch = km_dokey(MENU_PAGER);
-    if (ch != -1)
+    if (ch >= 0)
     {
       mutt_clear_error();
     }
@@ -2208,7 +2208,7 @@ int mutt_pager(const char *banner, const char *fname, int flags, struct Pager *e
       continue;
     }
 #endif
-    if (ch == -1)
+    if (ch < 0)
     {
       ch = 0;
       mutt_timeout_hook();

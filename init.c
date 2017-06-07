@@ -72,7 +72,7 @@
 #define CHECK_PAGER                                                                  \
   if ((CurrentMenu == MENU_PAGER) && (idx >= 0) && (MuttVars[idx].flags & R_RESORT)) \
   {                                                                                  \
-    snprintf(err->data, err->dsize, _("Not available in this menu."));               \
+    snprintf(err->data, err->dsize, "%s", _("Not available in this menu."));         \
     return -1;                                                                       \
   }
 
@@ -734,8 +734,8 @@ static int add_to_replace_list(struct ReplaceList **list, const char *pat,
 
   if (t->nmatch > t->rx->rx->re_nsub)
   {
-    snprintf(err->data, err->dsize, _("Not enough subexpressions for "
-                                      "template"));
+    snprintf(err->data, err->dsize, "%s", _("Not enough subexpressions for "
+                                            "template"));
     remove_from_replace_list(list, pat);
     return -1;
   }
@@ -2423,13 +2423,13 @@ static int parse_set(struct Buffer *tmp, struct Buffer *s, unsigned long data,
     {
       if (query || unset || inv)
       {
-        snprintf(err->data, err->dsize, _("prefix is illegal with reset"));
+        snprintf(err->data, err->dsize, "%s", _("prefix is illegal with reset"));
         return -1;
       }
 
       if (*s->dptr == '=')
       {
-        snprintf(err->data, err->dsize, _("value is illegal with reset"));
+        snprintf(err->data, err->dsize, "%s", _("value is illegal with reset"));
         return -1;
       }
 
@@ -2437,7 +2437,7 @@ static int parse_set(struct Buffer *tmp, struct Buffer *s, unsigned long data,
       {
         if (CurrentMenu == MENU_PAGER)
         {
-          snprintf(err->data, err->dsize, _("Not available in this menu."));
+          snprintf(err->data, err->dsize, "%s", _("Not available in this menu."));
           return -1;
         }
         for (idx = 0; MuttVars[idx].option; idx++)
@@ -2464,7 +2464,7 @@ static int parse_set(struct Buffer *tmp, struct Buffer *s, unsigned long data,
       {
         if (unset || inv || query)
         {
-          snprintf(err->data, err->dsize, _("Usage: set variable=yes|no"));
+          snprintf(err->data, err->dsize, "%s", _("Usage: set variable=yes|no"));
           return -1;
         }
 
@@ -2476,7 +2476,7 @@ static int parse_set(struct Buffer *tmp, struct Buffer *s, unsigned long data,
           unset = 1;
         else
         {
-          snprintf(err->data, err->dsize, _("Usage: set variable=yes|no"));
+          snprintf(err->data, err->dsize, "%s", _("Usage: set variable=yes|no"));
           return -1;
         }
       }
@@ -3924,6 +3924,7 @@ void mutt_init(int skip_sys_rc, struct List *commands)
   char *p, buffer[STRING];
   int need_pause = 0;
   struct Buffer err;
+  char *tty;
 
   mutt_buffer_init(&err);
   err.dsize = STRING;
@@ -4141,6 +4142,20 @@ void mutt_init(int skip_sys_rc, struct List *commands)
   if (getsid(0) == getpid())
     unset_option(OPTSUSPEND);
 #endif
+
+  /* GPG_TTY is used by the ncurses pinentry program for GPG.  GPG is
+   * sometimes also used to decrypt passwords in programs launched by
+   * mutt, such as using msmtp as $sendmail, so we set it here as
+   * opposed to inside pgp.c
+   *
+   * We also call setenv() because send_msg() is not converted to use
+   * the mutt envlist.
+   */
+  if ((tty = ttyname(0)))
+  {
+    setenv("GPG_TTY", tty, 0);
+    mutt_envlist_set("GPG_TTY", tty, 0);
+  }
 
   mutt_init_history();
 

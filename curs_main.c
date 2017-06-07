@@ -916,7 +916,11 @@ int mutt_index_menu(void)
 
   while (true)
   {
-    tag = 0; /* clear the tag-prefix */
+    /* Clear the tag prefix unless we just started it.  Don't clear
+     * the prefix on a timeout (op==-2), but do clear on an abort (op==-1)
+     */
+    if (tag && op != OP_TAG_PREFIX && op != OP_TAG_PREFIX_COND && op != -2)
+      tag = 0;
 
     /* check if we need to resort the index because just about
      * any 'op' below could do mutt_enter_command(), either here or
@@ -1030,12 +1034,19 @@ int mutt_index_menu(void)
         do_buffy_notify = 1;
     }
 
-    if (op != -1)
+    if (op >= 0)
       mutt_curs_set(0);
 
     if (menu->menu == MENU_MAIN)
     {
       index_menu_redraw(menu);
+
+      /* give visual indication that the next command is a tag- command */
+      if (tag)
+      {
+        mutt_window_mvaddstr(MuttMessageWindow, 0, 0, "tag-");
+        mutt_window_clrtoeol(MuttMessageWindow);
+      }
 
       if (menu->current < menu->max)
         menu->oldcurrent = menu->current;
@@ -1071,17 +1082,28 @@ int mutt_index_menu(void)
 
       mutt_debug(4, "mutt_index_menu[%d]: Got op %d\n", __LINE__, op);
 
-      if (op == -1)
+      /* either user abort or timeout */
+      if (op < 0)
       {
         mutt_timeout_hook();
-        continue; /* either user abort or timeout */
+        if (tag)
+          mutt_window_clearline(MuttMessageWindow, 0);
+        continue;
       }
 
       mutt_curs_set(1);
 
       /* special handling for the tag-prefix function */
-      if (op == OP_TAG_PREFIX)
+      if (op == OP_TAG_PREFIX || op == OP_TAG_PREFIX_COND)
       {
+        /* A second tag-prefix command aborts */
+        if (tag)
+        {
+          tag = 0;
+          mutt_window_clearline(MuttMessageWindow, 0);
+          continue;
+        }
+
         if (!Context)
         {
           mutt_error(_("No mailbox is open."));
@@ -1090,54 +1112,22 @@ int mutt_index_menu(void)
 
         if (!Context->tagged)
         {
-          mutt_error(_("No tagged messages."));
+          if (op == OP_TAG_PREFIX)
+            mutt_error(_("No tagged messages."));
+          else if (op == OP_TAG_PREFIX_COND)
+          {
+            mutt_flush_macro_to_endcond();
+            mutt_message(_("Nothing to do."));
+          }
           continue;
         }
-        tag = 1;
-
-        /* give visual indication that the next command is a tag- command */
-        mutt_window_mvaddstr(MuttMessageWindow, 0, 0, "tag-");
-        mutt_window_clrtoeol(MuttMessageWindow);
 
         /* get the real command */
-        if ((op = km_dokey(MENU_MAIN)) == OP_TAG_PREFIX)
-        {
-          /* abort tag sequence */
-          mutt_window_clearline(MuttMessageWindow, 0);
-          continue;
-        }
+        tag = 1;
+        continue;
       }
       else if (option(OPTAUTOTAG) && Context && Context->tagged)
         tag = 1;
-
-      if (op == OP_TAG_PREFIX_COND)
-      {
-        if (!Context)
-        {
-          mutt_error(_("No mailbox is open."));
-          continue;
-        }
-
-        if (!Context->tagged)
-        {
-          mutt_flush_macro_to_endcond();
-          mutt_message(_("Nothing to do."));
-          continue;
-        }
-        tag = 1;
-
-        /* give visual indication that the next command is a tag- command */
-        mutt_window_mvaddstr(MuttMessageWindow, 0, 0, "tag-");
-        mutt_window_clrtoeol(MuttMessageWindow);
-
-        /* get the real command */
-        if ((op = km_dokey(MENU_MAIN)) == OP_TAG_PREFIX)
-        {
-          /* abort tag sequence */
-          mutt_window_clearline(MuttMessageWindow, 0);
-          continue;
-        }
-      }
 
       mutt_clear_error();
     }
@@ -2126,7 +2116,7 @@ int mutt_index_menu(void)
          * set CurrentMenu incorrectly when we return back to the index menu. */
         menu->menu = MENU_MAIN;
 
-        if ((op = mutt_display_message(CURHDR)) == -1)
+        if ((op = mutt_display_message(CURHDR)) < 0)
         {
           unset_option(OPTNEEDRESORT);
           break;

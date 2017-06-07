@@ -109,7 +109,7 @@ static int pop_read_header(struct PopData *pop_data, struct Header *h)
         pop_data->cmd_top = 0;
 
         mutt_debug(1, "pop_read_header: unset TOP capability\n");
-        snprintf(pop_data->err_msg, sizeof(pop_data->err_msg),
+        snprintf(pop_data->err_msg, sizeof(pop_data->err_msg), "%s",
                  _("Command TOP is not supported by server."));
       }
     }
@@ -282,7 +282,7 @@ static int pop_fetch_headers(struct Context *ctx)
       pop_data->cmd_uidl = 0;
 
       mutt_debug(1, "pop_fetch_headers: unset UIDL capability\n");
-      snprintf(pop_data->err_msg, sizeof(pop_data->err_msg),
+      snprintf(pop_data->err_msg, sizeof(pop_data->err_msg), "%s",
                _("Command UIDL is not supported by server."));
     }
   }

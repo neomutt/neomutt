@@ -96,18 +96,13 @@ int pgp_valid_passphrase(void)
   return 0;
 }
 
+/* This function used to do more: check GPG_AGENT_INFO,
+ * set GPG_TTY.  GPG_AGENT_INFO is no longer exported, and GPG_TTY
+ * is now set in mutt_init().
+ */
 bool pgp_use_gpg_agent(void)
 {
-  char *tty = NULL;
-
-  /* GnuPG 2.1 no longer exports GPG_AGENT_INFO */
-  if (!option(OPTUSEGPGAGENT))
-    return false;
-
-  if ((tty = ttyname(0)))
-    mutt_envlist_set("GPG_TTY", tty, false);
-
-  return true;
+  return option (OPTUSEGPGAGENT);
 }
 
 static struct PgpKeyInfo *_pgp_parent(struct PgpKeyInfo *k)
