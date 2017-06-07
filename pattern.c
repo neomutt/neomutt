@@ -854,6 +854,7 @@ static const struct PatternFlags
   { 'z', MUTT_SIZE, 0, eat_range },
   { '=', MUTT_DUPLICATED, 0, NULL },
   { '$', MUTT_UNREFERENCED, 0, NULL },
+  { '#', MUTT_BROKEN, 0, NULL },
   { 0, 0, 0, NULL },
 };
 
@@ -1644,6 +1645,8 @@ int mutt_pattern_exec(struct Pattern *pat, pattern_exec_flag flags,
       }
     case MUTT_UNREFERENCED:
       return (pat->not ^ (h->thread && !h->thread->child));
+    case MUTT_BROKEN:
+      return (pat->not ^ (h->thread && h->thread->fake_thread));
 #ifdef USE_NNTP
     case MUTT_NEWSGROUPS:
       return (pat->not ^ (h->env->newsgroups && patmatch(pat, h->env->newsgroups) == 0));
