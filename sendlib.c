@@ -2446,6 +2446,7 @@ mutt_invoke_sendmail (ADDRESS *from,	/* the sender */
 
   args[argslen++] = NULL;
 
+  mutt_endwin (NULL);
   if ((i = send_msg (path, args, msg, option(OPTNOCURSES) ? NULL : &childout)) != (EX_OK & 0xff))
   {
     if (i != S_BKG)
