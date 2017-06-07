@@ -869,11 +869,11 @@ msgid "Message written."
 msgstr "Laiškas įrašytas."
 
 #: compose.c:1499
-msgid "S/MIME already selected. Clear & continue ? "
+msgid "S/MIME already selected. Clear and continue ? "
 msgstr ""
 
 #: compose.c:1530
-msgid "PGP already selected. Clear & continue ? "
+msgid "PGP already selected. Clear and continue ? "
 msgstr ""
 
 #: compress.c:474 compress.c:543 compress.c:701 compress.c:883 mbox.c:1054
@@ -4923,11 +4923,6 @@ msgstr "Šis ID yra nepatikimas."
 msgid "ID is only marginally valid."
 msgstr "Šis ID yra tik vos vos patikimas."
 
-#: ncrypt/crypt_gpgme.c:4008 ncrypt/smime.c:445
-#, fuzzy, c-format
-msgid "%s Do you really want to use the key?"
-msgstr "%s Ar tikrai nori jį naudoti?"
-
 #: ncrypt/crypt_gpgme.c:4067 ncrypt/crypt_gpgme.c:4196 ncrypt/pgpkey.c:823
 #: ncrypt/pgpkey.c:945
 #, c-format
@@ -4978,10 +4973,9 @@ msgstr ""
 "(u)žšifruot, pa(s)irašyt, pasirašyt k(a)ip, a(b)u, (l)aiške, ar (p)amiršti?"
 
 #. L10N: S/MIME options (opportunistic encryption is on)
-#. The 'f' is undocumented. Please DO NOT translate it.
 #: ncrypt/crypt_gpgme.c:4583
-msgid "sapfco"
-msgstr ""
+msgid "sapco"
+msgstr "usablp"
 
 #: ncrypt/crypt_gpgme.c:4590
 #, fuzzy
@@ -4990,10 +4984,9 @@ msgstr ""
 "(u)žšifruot, pa(s)irašyt, pasirašyt k(a)ip, a(b)u, (l)aiške, ar (p)amiršti?"
 
 #. L10N: PGP options (opportunistic encryption is on)
-#. The 'f' is undocumented. Please DO NOT translate it.
 #: ncrypt/crypt_gpgme.c:4593
-msgid "samfco"
-msgstr ""
+msgid "samco"
+msgstr "usablp"
 
 #. L10N: S/MIME options (opportunistic encryption is off)
 #: ncrypt/crypt_gpgme.c:4606
@@ -5005,10 +4998,9 @@ msgstr ""
 "(u)žšifruot, pa(s)irašyt, pasirašyt k(a)ip, a(b)u, (l)aiške, ar (p)amiršti?"
 
 #. L10N: S/MIME options (opportunistic encryption is off)
-#. The 'f' is undocumented. Please DO NOT translate it.
 #: ncrypt/crypt_gpgme.c:4610
-msgid "esabpfco"
-msgstr ""
+msgid "esabpco"
+msgstr "usablp"
 
 #. L10N: PGP options (opportunistic encryption is off)
 #: ncrypt/crypt_gpgme.c:4616
@@ -5020,10 +5012,9 @@ msgstr ""
 "(u)žšifruot, pa(s)irašyt, pasirašyt k(a)ip, a(b)u, (l)aiške, ar (p)amiršti?"
 
 #. L10N: PGP options (opportunistic encryption is off)
-#. The 'f' is undocumented. Please DO NOT translate it.
 #: ncrypt/crypt_gpgme.c:4620
-msgid "esabmfco"
-msgstr ""
+msgid "esabmco"
+msgstr "usablp"
 
 #: ncrypt/crypt_gpgme.c:4633
 #, fuzzy
@@ -5032,10 +5023,9 @@ msgstr ""
 "(u)žšifruot, pa(s)irašyt, pasirašyt k(a)ip, a(b)u, (l)aiške, ar (p)amiršti?"
 
 #. L10N: S/MIME options
-#. The 'f' is undocumented. Please DO NOT translate it.
 #: ncrypt/crypt_gpgme.c:4636
-msgid "esabpfc"
-msgstr ""
+msgid "esabpc"
+msgstr "usablp"
 
 #: ncrypt/crypt_gpgme.c:4643
 #, fuzzy
@@ -5044,10 +5034,9 @@ msgstr ""
 "(u)žšifruot, pa(s)irašyt, pasirašyt k(a)ip, a(b)u, (l)aiške, ar (p)amiršti?"
 
 #. L10N: PGP options
-#. The 'f' is undocumented. Please DO NOT translate it.
 #: ncrypt/crypt_gpgme.c:4646
-msgid "esabmfc"
-msgstr ""
+msgid "esabmc"
+msgstr "usablp"
 
 #: ncrypt/crypt_gpgme.c:4671 ncrypt/pgp.c:1757 ncrypt/smime.c:2098
 #: ncrypt/smime.c:2113
@@ -5125,10 +5114,9 @@ msgstr ""
 
 #. L10N: PGP options (inline) (opportunistic encryption is on)
 #. The 'i' is from the "PGP/M(i)ME" or "(i)nline", above.
-#. The 'f' is undocumented. Please DO NOT translate it.
 #: ncrypt/pgp.c:1658
-msgid "safcoi"
-msgstr ""
+msgid "saico"
+msgstr "usablp"
 
 #. L10N: PGP options (opportunistic encryption is on)
 #: ncrypt/pgp.c:1664
@@ -5138,10 +5126,9 @@ msgstr ""
 "(u)žšifruot, pa(s)irašyt, pasirašyt k(a)ip, a(b)u, (l)aiške, ar (p)amiršti?"
 
 #. L10N: PGP options (opportunistic encryption is on)
-#. The 'f' is undocumented. Please DO NOT translate it.
 #: ncrypt/pgp.c:1667
-msgid "safco"
-msgstr ""
+msgid "saco"
+msgstr "usablp"
 
 #. L10N: PGP options (inline) (opportunistic encryption is off)
 #: ncrypt/pgp.c:1684
@@ -5154,10 +5141,9 @@ msgstr ""
 
 #. L10N: PGP options (inline) (opportunistic encryption is off)
 #. The 'i' is from the "PGP/M(i)ME" or "(i)nline", above.
-#. The 'f' is undocumented. Please DO NOT translate it.
 #: ncrypt/pgp.c:1691
-msgid "esabfcoi"
-msgstr ""
+msgid "esabico"
+msgstr "usablp"
 
 #. L10N: PGP options (opportunistic encryption is off)
 #: ncrypt/pgp.c:1697
@@ -5167,10 +5153,9 @@ msgstr ""
 "(u)žšifruot, pa(s)irašyt, pasirašyt k(a)ip, a(b)u, (l)aiške, ar (p)amiršti?"
 
 #. L10N: PGP options (opportunistic encryption is off)
-#. The 'f' is undocumented. Please DO NOT translate it.
 #: ncrypt/pgp.c:1701
-msgid "esabfco"
-msgstr ""
+msgid "esabco"
+msgstr "usablp"
 
 #. L10N: PGP options (inline)
 #: ncrypt/pgp.c:1714
@@ -5181,10 +5166,9 @@ msgstr ""
 
 #. L10N: PGP options (inline)
 #. The 'i' is from the "PGP/M(i)ME" or "(i)nline", above.
-#. The 'f' is undocumented. Please DO NOT translate it.
 #: ncrypt/pgp.c:1721
-msgid "esabfci"
-msgstr ""
+msgid "esabic"
+msgstr "usablp"
 
 #. L10N: PGP options
 #: ncrypt/pgp.c:1727
@@ -5194,10 +5178,9 @@ msgstr ""
 "(u)žšifruot, pa(s)irašyt, pasirašyt k(a)ip, a(b)u, (l)aiške, ar (p)amiršti?"
 
 #. L10N: PGP options
-#. The 'f' is undocumented. Please DO NOT translate it.
 #: ncrypt/pgp.c:1730
-msgid "esabfc"
-msgstr ""
+msgid "esabc"
+msgstr "usablp"
 
 #: ncrypt/pgpinvoke.c:286
 msgid "Fetching PGP key..."
@@ -5224,7 +5207,7 @@ msgstr "Negaliu atidaryti /dev/null"
 
 #: ncrypt/pgpkey.c:624
 #, fuzzy, c-format
-msgid "%str Do you really want to use the key?"
+msgid "%s Do you really want to use the key?"
 msgstr "%s Ar tikrai nori jį naudoti?"
 
 #: ncrypt/pgpkey.c:764
@@ -5378,10 +5361,9 @@ msgstr ""
 "(p)amiršti?"
 
 #. L10N: S/MIME options (opportunistic encryption is on)
-#. The 'f' is undocumented. Please DO NOT translate it.
 #: ncrypt/smime.c:1987
-msgid "swafco"
-msgstr ""
+msgid "swaco"
+msgstr "ustabp"
 
 #. L10N: S/MIME options (opportunistic encryption is off)
 #: ncrypt/smime.c:1997
@@ -5394,10 +5376,9 @@ msgstr ""
 "(p)amiršti?"
 
 #. L10N: S/MIME options (opportunistic encryption is off)
-#. The 'f' is undocumented. Please DO NOT translate it.
 #: ncrypt/smime.c:2001
 #, fuzzy
-msgid "eswabfco"
+msgid "eswabco"
 msgstr "ustabp"
 
 #. L10N: S/MIME options
@@ -5410,10 +5391,9 @@ msgstr ""
 "(p)amiršti?"
 
 #. L10N: S/MIME options
-#. The 'f' is undocumented. Please DO NOT translate it.
 #: ncrypt/smime.c:2014
 #, fuzzy
-msgid "eswabfc"
+msgid "eswabc"
 msgstr "ustabp"
 
 #: ncrypt/smime.c:2034
@@ -6428,5 +6408,3 @@ msgstr ""
 "\n"
 "Kompiliavimo parinktys:"
 
-#~ msgid "%s: no such function in map"
-#~ msgstr "%s: čia nėra tokios funkcijos"

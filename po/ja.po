@@ -849,11 +849,11 @@ msgid "Message written."
 msgstr "メッセージは書き込まれた。"
 
 #: compose.c:1499
-msgid "S/MIME already selected. Clear & continue ? "
+msgid "S/MIME already selected. Clear and continue ? "
 msgstr "S/MIME が既に選択されている。解除して継続?"
 
 #: compose.c:1530
-msgid "PGP already selected. Clear & continue ? "
+msgid "PGP already selected. Clear and continue ? "
 msgstr "PGP が既に選択されている。解除して継続?"
 
 #: compress.c:474 compress.c:543 compress.c:701 compress.c:883 mbox.c:1054
@@ -4824,20 +4824,18 @@ msgid "S/MIME (s)ign, sign (a)s, (p)gp, (c)lear, or (o)ppenc mode off? "
 msgstr "S/MIME s:署名, a:署名鍵選択, p:PGP, c:なし, o:日和見暗号オフ "
 
 #. L10N: S/MIME options (opportunistic encryption is on)
-#. The 'f' is undocumented. Please DO NOT translate it.
 #: ncrypt/crypt_gpgme.c:4583
-msgid "sapfco"
-msgstr ""
+msgid "sapco"
+msgstr "sapco"
 
 #: ncrypt/crypt_gpgme.c:4590
 msgid "PGP (s)ign, sign (a)s, s/(m)ime, (c)lear, or (o)ppenc mode off? "
 msgstr "PGP s:署名, a:署名鍵選択, m:S/MIME, c:なし, o:日和見暗号オフ "
 
 #. L10N: PGP options (opportunistic encryption is on)
-#. The 'f' is undocumented. Please DO NOT translate it.
 #: ncrypt/crypt_gpgme.c:4593
-msgid "samfco"
-msgstr ""
+msgid "samco"
+msgstr "samco"
 
 # 80-columns 幅にギリギリおさまるか？
 #. L10N: S/MIME options (opportunistic encryption is off)
@@ -4850,10 +4848,8 @@ msgstr ""
 "号 "
 
 #. L10N: S/MIME options (opportunistic encryption is off)
-#. The 'f' is undocumented. Please DO NOT translate it.
 #: ncrypt/crypt_gpgme.c:4610
-#, fuzzy
-msgid "esabpfco"
+msgid "esabpco"
 msgstr "esabpco"
 
 #. L10N: PGP options (opportunistic encryption is off)
@@ -4866,10 +4862,8 @@ msgstr ""
 "号 "
 
 #. L10N: PGP options (opportunistic encryption is off)
-#. The 'f' is undocumented. Please DO NOT translate it.
 #: ncrypt/crypt_gpgme.c:4620
-#, fuzzy
-msgid "esabmfco"
+msgid "esabmco"
 msgstr "esabmco"
 
 #: ncrypt/crypt_gpgme.c:4633
@@ -4877,10 +4871,8 @@ msgid "S/MIME (e)ncrypt, (s)ign, sign (a)s, (b)oth, (p)gp or (c)lear? "
 msgstr "S/MIME e:暗号化, s:署名, a:署名鍵選択, b:暗号+署名, p:PGP, c:なし "
 
 #. L10N: S/MIME options
-#. The 'f' is undocumented. Please DO NOT translate it.
 #: ncrypt/crypt_gpgme.c:4636
-#, fuzzy
-msgid "esabpfc"
+msgid "esabpc"
 msgstr "esabpc"
 
 #: ncrypt/crypt_gpgme.c:4643
@@ -4888,10 +4880,8 @@ msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, s/(m)ime or (c)lear? "
 msgstr "PGP e:暗号化, s:署名, a:署名鍵選択, b:暗号+署名, m:S/MIME, c:なし "
 
 #. L10N: PGP options
-#. The 'f' is undocumented. Please DO NOT translate it.
 #: ncrypt/crypt_gpgme.c:4646
-#, fuzzy
-msgid "esabmfc"
+msgid "esabmc"
 msgstr "esabmc"
 
 #: ncrypt/crypt_gpgme.c:4671 ncrypt/pgp.c:1757 ncrypt/smime.c:2098
@@ -4967,10 +4957,9 @@ msgstr "PGP s:署名, a:署名鍵選択, %s形式, c:なし, o:日和見暗号�
 
 #. L10N: PGP options (inline) (opportunistic encryption is on)
 #. The 'i' is from the "PGP/M(i)ME" or "(i)nline", above.
-#. The 'f' is undocumented. Please DO NOT translate it.
 #: ncrypt/pgp.c:1658
-msgid "safcoi"
-msgstr ""
+msgid "saico"
+msgstr "saico"
 
 #. L10N: PGP options (opportunistic encryption is on)
 #: ncrypt/pgp.c:1664
@@ -4978,10 +4967,9 @@ msgid "PGP (s)ign, sign (a)s, (c)lear, or (o)ppenc mode off? "
 msgstr "PGP s:署名, a:署名鍵選択, c:なし, o:日和見暗号オフ "
 
 #. L10N: PGP options (opportunistic encryption is on)
-#. The 'f' is undocumented. Please DO NOT translate it.
 #: ncrypt/pgp.c:1667
-msgid "safco"
-msgstr ""
+msgid "saco"
+msgstr "saco"
 
 #. L10N: PGP options (inline) (opportunistic encryption is off)
 #: ncrypt/pgp.c:1684
@@ -4995,11 +4983,9 @@ msgstr ""
 
 #. L10N: PGP options (inline) (opportunistic encryption is off)
 #. The 'i' is from the "PGP/M(i)ME" or "(i)nline", above.
-#. The 'f' is undocumented. Please DO NOT translate it.
 #: ncrypt/pgp.c:1691
-#, fuzzy
-msgid "esabfcoi"
-msgstr "esabco"
+msgid "esabico"
+msgstr "esabico"
 
 #. L10N: PGP options (opportunistic encryption is off)
 #: ncrypt/pgp.c:1697
@@ -5007,10 +4993,8 @@ msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, (c)lear, or (o)ppenc mode? "
 msgstr "PGP e:暗号化, s:署名, a:署名鍵選択, b:暗号+署名, c:なし, o:日和見暗号 "
 
 #. L10N: PGP options (opportunistic encryption is off)
-#. The 'f' is undocumented. Please DO NOT translate it.
 #: ncrypt/pgp.c:1701
-#, fuzzy
-msgid "esabfco"
+msgid "esabco"
 msgstr "esabco"
 
 #. L10N: PGP options (inline)
@@ -5021,11 +5005,9 @@ msgstr "PGP e:暗号化, s:署名, a:署名鍵選択, b:暗号+署名, %s形式,
 
 #. L10N: PGP options (inline)
 #. The 'i' is from the "PGP/M(i)ME" or "(i)nline", above.
-#. The 'f' is undocumented. Please DO NOT translate it.
 #: ncrypt/pgp.c:1721
-#, fuzzy
-msgid "esabfci"
-msgstr "esabc"
+msgid "esabic"
+msgstr "esabic"
 
 #. L10N: PGP options
 #: ncrypt/pgp.c:1727
@@ -5033,10 +5015,8 @@ msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, or (c)lear? "
 msgstr "PGP e:暗号化, s:署名, a:署名鍵選択, b:暗号+署名, c:なし "
 
 #. L10N: PGP options
-#. The 'f' is undocumented. Please DO NOT translate it.
 #: ncrypt/pgp.c:1730
-#, fuzzy
-msgid "esabfc"
+msgid "esabc"
 msgstr "esabc"
 
 #: ncrypt/pgpinvoke.c:286
@@ -5060,11 +5040,6 @@ msgstr "PGP 鍵は \"%s\" に一致。"
 #: ncrypt/pgpkey.c:550 ncrypt/pgpkey.c:734
 msgid "Can't open /dev/null"
 msgstr "/dev/null をオープンできない"
-
-#: ncrypt/pgpkey.c:624
-#, fuzzy, c-format
-msgid "%str Do you really want to use the key?"
-msgstr "%s 本当にこの鍵を使用?"
 
 #: ncrypt/pgpkey.c:764
 #, c-format
@@ -5194,10 +5169,9 @@ msgid ""
 msgstr "S/MIME s:署名, w:暗号選択, a:署名鍵選択, c:なし, o:日和見暗号オフ "
 
 #. L10N: S/MIME options (opportunistic encryption is on)
-#. The 'f' is undocumented. Please DO NOT translate it.
 #: ncrypt/smime.c:1987
-msgid "swafco"
-msgstr ""
+msgid "swaco"
+msgstr "swaco"
 
 # 80-column 幅に入りきらないのでスペースなし
 #. L10N: S/MIME options (opportunistic encryption is off)
@@ -5210,10 +5184,8 @@ msgstr ""
 "号 "
 
 #. L10N: S/MIME options (opportunistic encryption is off)
-#. The 'f' is undocumented. Please DO NOT translate it.
 #: ncrypt/smime.c:2001
-#, fuzzy
-msgid "eswabfco"
+msgid "eswabco"
 msgstr "eswabco"
 
 #. L10N: S/MIME options
@@ -5224,10 +5196,8 @@ msgstr ""
 "S/MIME e:暗号化, s:署名, w:暗号選択, a:署名鍵選択, b:暗号+署名, c:なし "
 
 #. L10N: S/MIME options
-#. The 'f' is undocumented. Please DO NOT translate it.
 #: ncrypt/smime.c:2014
-#, fuzzy
-msgid "eswabfc"
+msgid "eswabc"
 msgstr "eswabc"
 
 #: ncrypt/smime.c:2034
@@ -6232,26 +6202,3 @@ msgstr ""
 "\n"
 "コンパイル時オプション:"
 
-#~ msgid "%s: no such function in map"
-#~ msgstr "%s という機能はマップ中にない"
-
-#~ msgid "sapco"
-#~ msgstr "sapco"
-
-#~ msgid "samco"
-#~ msgstr "samco"
-
-#~ msgid "saico"
-#~ msgstr "saico"
-
-#~ msgid "saco"
-#~ msgstr "saco"
-
-#~ msgid "esabico"
-#~ msgstr "esabico"
-
-#~ msgid "esabic"
-#~ msgstr "esabic"
-
-#~ msgid "swaco"
-#~ msgstr "swaco"

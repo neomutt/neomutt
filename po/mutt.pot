@@ -829,11 +829,11 @@ msgid "Message written."
 msgstr ""
 
 #: compose.c:1499
-msgid "S/MIME already selected. Clear & continue ? "
+msgid "S/MIME already selected. Clear and continue ? "
 msgstr ""
 
 #: compose.c:1530
-msgid "PGP already selected. Clear & continue ? "
+msgid "PGP already selected. Clear and continue ? "
 msgstr ""
 
 #: compress.c:474 compress.c:543 compress.c:701 compress.c:883 mbox.c:1054
@@ -4611,9 +4611,8 @@ msgid "S/MIME (s)ign, sign (a)s, (p)gp, (c)lear, or (o)ppenc mode off? "
 msgstr ""
 
 #. L10N: S/MIME options (opportunistic encryption is on)
-#. The 'f' is undocumented. Please DO NOT translate it.
 #: ncrypt/crypt_gpgme.c:4583
-msgid "sapfco"
+msgid "sapco"
 msgstr ""
 
 #: ncrypt/crypt_gpgme.c:4590
@@ -4621,9 +4620,8 @@ msgid "PGP (s)ign, sign (a)s, s/(m)ime, (c)lear, or (o)ppenc mode off? "
 msgstr ""
 
 #. L10N: PGP options (opportunistic encryption is on)
-#. The 'f' is undocumented. Please DO NOT translate it.
 #: ncrypt/crypt_gpgme.c:4593
-msgid "samfco"
+msgid "samco"
 msgstr ""
 
 #. L10N: S/MIME options (opportunistic encryption is off)
@@ -4632,9 +4630,8 @@ msgid "S/MIME (e)ncrypt, (s)ign, sign (a)s, (b)oth, (p)gp, (c)lear, or (o)ppenc 
 msgstr ""
 
 #. L10N: S/MIME options (opportunistic encryption is off)
-#. The 'f' is undocumented. Please DO NOT translate it.
 #: ncrypt/crypt_gpgme.c:4610
-msgid "esabpfco"
+msgid "esabpco"
 msgstr ""
 
 #. L10N: PGP options (opportunistic encryption is off)
@@ -4643,9 +4640,8 @@ msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, s/(m)ime, (c)lear, or (o)ppenc 
 msgstr ""
 
 #. L10N: PGP options (opportunistic encryption is off)
-#. The 'f' is undocumented. Please DO NOT translate it.
 #: ncrypt/crypt_gpgme.c:4620
-msgid "esabmfco"
+msgid "esabmco"
 msgstr ""
 
 #: ncrypt/crypt_gpgme.c:4633
@@ -4653,9 +4649,8 @@ msgid "S/MIME (e)ncrypt, (s)ign, sign (a)s, (b)oth, (p)gp or (c)lear? "
 msgstr ""
 
 #. L10N: S/MIME options
-#. The 'f' is undocumented. Please DO NOT translate it.
 #: ncrypt/crypt_gpgme.c:4636
-msgid "esabpfc"
+msgid "esabpc"
 msgstr ""
 
 #: ncrypt/crypt_gpgme.c:4643
@@ -4663,9 +4658,8 @@ msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, s/(m)ime or (c)lear? "
 msgstr ""
 
 #. L10N: PGP options
-#. The 'f' is undocumented. Please DO NOT translate it.
 #: ncrypt/crypt_gpgme.c:4646
-msgid "esabmfc"
+msgid "esabmc"
 msgstr ""
 
 #: ncrypt/crypt_gpgme.c:4671 ncrypt/pgp.c:1757 ncrypt/smime.c:2098
@@ -4737,9 +4731,8 @@ msgstr ""
 
 #. L10N: PGP options (inline) (opportunistic encryption is on)
 #. The 'i' is from the "PGP/M(i)ME" or "(i)nline", above.
-#. The 'f' is undocumented. Please DO NOT translate it.
 #: ncrypt/pgp.c:1658
-msgid "safcoi"
+msgid "saico"
 msgstr ""
 
 #. L10N: PGP options (opportunistic encryption is on)
@@ -4748,9 +4741,8 @@ msgid "PGP (s)ign, sign (a)s, (c)lear, or (o)ppenc mode off? "
 msgstr ""
 
 #. L10N: PGP options (opportunistic encryption is on)
-#. The 'f' is undocumented. Please DO NOT translate it.
 #: ncrypt/pgp.c:1667
-msgid "safco"
+msgid "saco"
 msgstr ""
 
 #. L10N: PGP options (inline) (opportunistic encryption is off)
@@ -4761,9 +4753,8 @@ msgstr ""
 
 #. L10N: PGP options (inline) (opportunistic encryption is off)
 #. The 'i' is from the "PGP/M(i)ME" or "(i)nline", above.
-#. The 'f' is undocumented. Please DO NOT translate it.
 #: ncrypt/pgp.c:1691
-msgid "esabfcoi"
+msgid "esabico"
 msgstr ""
 
 #. L10N: PGP options (opportunistic encryption is off)
@@ -4772,9 +4763,8 @@ msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, (c)lear, or (o)ppenc mode? "
 msgstr ""
 
 #. L10N: PGP options (opportunistic encryption is off)
-#. The 'f' is undocumented. Please DO NOT translate it.
 #: ncrypt/pgp.c:1701
-msgid "esabfco"
+msgid "esabco"
 msgstr ""
 
 #. L10N: PGP options (inline)
@@ -4785,9 +4775,8 @@ msgstr ""
 
 #. L10N: PGP options (inline)
 #. The 'i' is from the "PGP/M(i)ME" or "(i)nline", above.
-#. The 'f' is undocumented. Please DO NOT translate it.
 #: ncrypt/pgp.c:1721
-msgid "esabfci"
+msgid "esabic"
 msgstr ""
 
 #. L10N: PGP options
@@ -4796,9 +4785,8 @@ msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, or (c)lear? "
 msgstr ""
 
 #. L10N: PGP options
-#. The 'f' is undocumented. Please DO NOT translate it.
 #: ncrypt/pgp.c:1730
-msgid "esabfc"
+msgid "esabc"
 msgstr ""
 
 #: ncrypt/pgpinvoke.c:286
@@ -4825,7 +4813,7 @@ msgstr ""
 
 #: ncrypt/pgpkey.c:624
 #, c-format
-msgid "%str Do you really want to use the key?"
+msgid "%s Do you really want to use the key?"
 msgstr ""
 
 #: ncrypt/pgpkey.c:764
@@ -4948,9 +4936,8 @@ msgid "S/MIME (s)ign, encrypt (w)ith, sign (a)s, (c)lear, or (o)ppenc mode off? 
 msgstr ""
 
 #. L10N: S/MIME options (opportunistic encryption is on)
-#. The 'f' is undocumented. Please DO NOT translate it.
 #: ncrypt/smime.c:1987
-msgid "swafco"
+msgid "swaco"
 msgstr ""
 
 #. L10N: S/MIME options (opportunistic encryption is off)
@@ -4959,9 +4946,8 @@ msgid "S/MIME (e)ncrypt, (s)ign, encrypt (w)ith, sign (a)s, (b)oth, (c)lear, or 
 msgstr ""
 
 #. L10N: S/MIME options (opportunistic encryption is off)
-#. The 'f' is undocumented. Please DO NOT translate it.
 #: ncrypt/smime.c:2001
-msgid "eswabfco"
+msgid "eswabco"
 msgstr ""
 
 #. L10N: S/MIME options
@@ -4970,9 +4956,8 @@ msgid "S/MIME (e)ncrypt, (s)ign, encrypt (w)ith, sign (a)s, (b)oth, or (c)lear? 
 msgstr ""
 
 #. L10N: S/MIME options
-#. The 'f' is undocumented. Please DO NOT translate it.
 #: ncrypt/smime.c:2014
-msgid "eswabfc"
+msgid "eswabc"
 msgstr ""
 
 #: ncrypt/smime.c:2034

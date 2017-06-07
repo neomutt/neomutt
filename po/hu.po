@@ -863,11 +863,11 @@ msgid "Message written."
 msgstr "Levél elmentve."
 
 #: compose.c:1499
-msgid "S/MIME already selected. Clear & continue ? "
+msgid "S/MIME already selected. Clear and continue ? "
 msgstr "S/MIME már ki van jelölve. Törlés & folytatás ?"
 
 #: compose.c:1530
-msgid "PGP already selected. Clear & continue ? "
+msgid "PGP already selected. Clear and continue ? "
 msgstr "PGP már ki van jelölve. Törlés & folytatás ?"
 
 #: compress.c:474 compress.c:543 compress.c:701 compress.c:883 mbox.c:1054
@@ -4957,10 +4957,9 @@ msgstr ""
 "mé(g)se? "
 
 #. L10N: S/MIME options (opportunistic encryption is on)
-#. The 'f' is undocumented. Please DO NOT translate it.
 #: ncrypt/crypt_gpgme.c:4583
-msgid "sapfco"
-msgstr ""
+msgid "sapco"
+msgstr "tamsbg"
 
 #: ncrypt/crypt_gpgme.c:4590
 #, fuzzy
@@ -4970,10 +4969,9 @@ msgstr ""
 "mé(g)se? "
 
 #. L10N: PGP options (opportunistic encryption is on)
-#. The 'f' is undocumented. Please DO NOT translate it.
 #: ncrypt/crypt_gpgme.c:4593
-msgid "samfco"
-msgstr ""
+msgid "samco"
+msgstr "tamsbg"
 
 #. L10N: S/MIME options (opportunistic encryption is off)
 #: ncrypt/crypt_gpgme.c:4606
@@ -4986,10 +4984,9 @@ msgstr ""
 "mé(g)se? "
 
 #. L10N: S/MIME options (opportunistic encryption is off)
-#. The 'f' is undocumented. Please DO NOT translate it.
 #: ncrypt/crypt_gpgme.c:4610
-msgid "esabpfco"
-msgstr ""
+msgid "esabpco"
+msgstr "tamsbg"
 
 #. L10N: PGP options (opportunistic encryption is off)
 #: ncrypt/crypt_gpgme.c:4616
@@ -5002,9 +4999,8 @@ msgstr ""
 "mé(g)se? "
 
 #. L10N: PGP options (opportunistic encryption is off)
-#. The 'f' is undocumented. Please DO NOT translate it.
 #: ncrypt/crypt_gpgme.c:4620
-msgid "esabmfco"
+msgid "esabmco"
 msgstr ""
 
 #: ncrypt/crypt_gpgme.c:4633
@@ -5015,9 +5011,8 @@ msgstr ""
 "mé(g)se? "
 
 #. L10N: S/MIME options
-#. The 'f' is undocumented. Please DO NOT translate it.
 #: ncrypt/crypt_gpgme.c:4636
-msgid "esabpfc"
+msgid "esabpc"
 msgstr ""
 
 #: ncrypt/crypt_gpgme.c:4643
@@ -5028,10 +5023,9 @@ msgstr ""
 "mé(g)se? "
 
 #. L10N: PGP options
-#. The 'f' is undocumented. Please DO NOT translate it.
 #: ncrypt/crypt_gpgme.c:4646
-msgid "esabmfc"
-msgstr ""
+msgid "esabmc"
+msgstr "tamsbg"
 
 #: ncrypt/crypt_gpgme.c:4671 ncrypt/pgp.c:1757 ncrypt/smime.c:2098
 #: ncrypt/smime.c:2113
@@ -5110,10 +5104,9 @@ msgstr ""
 
 #. L10N: PGP options (inline) (opportunistic encryption is on)
 #. The 'i' is from the "PGP/M(i)ME" or "(i)nline", above.
-#. The 'f' is undocumented. Please DO NOT translate it.
 #: ncrypt/pgp.c:1658
-msgid "safcoi"
-msgstr ""
+msgid "saico"
+msgstr "tamsbg"
 
 #. L10N: PGP options (opportunistic encryption is on)
 #: ncrypt/pgp.c:1664
@@ -5124,10 +5117,9 @@ msgstr ""
 "mé(g)se? "
 
 #. L10N: PGP options (opportunistic encryption is on)
-#. The 'f' is undocumented. Please DO NOT translate it.
 #: ncrypt/pgp.c:1667
-msgid "safco"
-msgstr ""
+msgid "saco"
+msgstr "tamsbg"
 
 #. L10N: PGP options (inline) (opportunistic encryption is off)
 #: ncrypt/pgp.c:1684
@@ -5141,10 +5133,9 @@ msgstr ""
 
 #. L10N: PGP options (inline) (opportunistic encryption is off)
 #. The 'i' is from the "PGP/M(i)ME" or "(i)nline", above.
-#. The 'f' is undocumented. Please DO NOT translate it.
 #: ncrypt/pgp.c:1691
-msgid "esabfcoi"
-msgstr ""
+msgid "esabico"
+msgstr "tamsbg"
 
 #. L10N: PGP options (opportunistic encryption is off)
 #: ncrypt/pgp.c:1697
@@ -5155,10 +5146,9 @@ msgstr ""
 "mé(g)se? "
 
 #. L10N: PGP options (opportunistic encryption is off)
-#. The 'f' is undocumented. Please DO NOT translate it.
 #: ncrypt/pgp.c:1701
-msgid "esabfco"
-msgstr ""
+msgid "esabco"
+msgstr "tamsbg"
 
 #. L10N: PGP options (inline)
 #: ncrypt/pgp.c:1714
@@ -5170,10 +5160,9 @@ msgstr ""
 
 #. L10N: PGP options (inline)
 #. The 'i' is from the "PGP/M(i)ME" or "(i)nline", above.
-#. The 'f' is undocumented. Please DO NOT translate it.
 #: ncrypt/pgp.c:1721
-msgid "esabfci"
-msgstr ""
+msgid "esabic"
+msgstr "tamsbg"
 
 #. L10N: PGP options
 #: ncrypt/pgp.c:1727
@@ -5184,10 +5173,9 @@ msgstr ""
 "mé(g)se? "
 
 #. L10N: PGP options
-#. The 'f' is undocumented. Please DO NOT translate it.
 #: ncrypt/pgp.c:1730
-msgid "esabfc"
-msgstr ""
+msgid "esabc"
+msgstr "tamsbg"
 
 #: ncrypt/pgpinvoke.c:286
 msgid "Fetching PGP key..."
@@ -5210,11 +5198,6 @@ msgstr "PGP kulcsok egyeznek \"%s\"."
 #: ncrypt/pgpkey.c:550 ncrypt/pgpkey.c:734
 msgid "Can't open /dev/null"
 msgstr "Nem lehet a /dev/null-t megnyitni"
-
-#: ncrypt/pgpkey.c:624
-#, fuzzy, c-format
-msgid "%str Do you really want to use the key?"
-msgstr "%s Valóban szeretnéd használni ezt a kulcsot?"
 
 #: ncrypt/pgpkey.c:764
 #, c-format
@@ -5348,10 +5331,9 @@ msgstr ""
 "aláír, mé(g)se? "
 
 #. L10N: S/MIME options (opportunistic encryption is on)
-#. The 'f' is undocumented. Please DO NOT translate it.
 #: ncrypt/smime.c:1987
-msgid "swafco"
-msgstr ""
+msgid "swaco"
+msgstr "tapmsg"
 
 #. L10N: S/MIME options (opportunistic encryption is off)
 #: ncrypt/smime.c:1997
@@ -5364,10 +5346,9 @@ msgstr ""
 "aláír, mé(g)se? "
 
 #. L10N: S/MIME options (opportunistic encryption is off)
-#. The 'f' is undocumented. Please DO NOT translate it.
 #: ncrypt/smime.c:2001
 #, fuzzy
-msgid "eswabfco"
+msgid "eswabco"
 msgstr "tapmsg"
 
 #. L10N: S/MIME options
@@ -5380,10 +5361,9 @@ msgstr ""
 "aláír, mé(g)se? "
 
 #. L10N: S/MIME options
-#. The 'f' is undocumented. Please DO NOT translate it.
 #: ncrypt/smime.c:2014
 #, fuzzy
-msgid "eswabfc"
+msgid "eswabc"
 msgstr "tapmsg"
 
 #: ncrypt/smime.c:2034
@@ -6393,5 +6373,3 @@ msgstr ""
 "\n"
 "Fordítási opciók:"
 
-#~ msgid "%s: no such function in map"
-#~ msgstr "%s: ismeretlen funkció"

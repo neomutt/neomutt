@@ -855,11 +855,11 @@ msgid "Message written."
 msgstr "Zpráva uložena."
 
 #: compose.c:1499
-msgid "S/MIME already selected. Clear & continue ? "
+msgid "S/MIME already selected. Clear and continue ? "
 msgstr "Je aktivní S/MIME, zrušit jej a pokračovat?"
 
 #: compose.c:1530
-msgid "PGP already selected. Clear & continue ? "
+msgid "PGP already selected. Clear and continue ? "
 msgstr "Je aktivní PGP, zrušit jej a pokračovat?"
 
 #: compress.c:474 compress.c:543 compress.c:701 compress.c:883 mbox.c:1054
@@ -4798,10 +4798,9 @@ msgstr ""
 "S/MIME (p)odepsat, podepsat (j)ako, p(g)p, (n)ic či vypnout pří(l)ež. šifr.? "
 
 #. L10N: S/MIME options (opportunistic encryption is on)
-#. The 'f' is undocumented. Please DO NOT translate it.
 #: ncrypt/crypt_gpgme.c:4583
-msgid "sapfco"
-msgstr ""
+msgid "sapco"
+msgstr "pjgnl"
 
 #: ncrypt/crypt_gpgme.c:4590
 msgid "PGP (s)ign, sign (a)s, s/(m)ime, (c)lear, or (o)ppenc mode off? "
@@ -4809,10 +4808,9 @@ msgstr ""
 "PGP (p)odepsat, podepsat (j)ako, s/(m)ime, (n)ic či vypnout pří(l)ež. šifr.? "
 
 #. L10N: PGP options (opportunistic encryption is on)
-#. The 'f' is undocumented. Please DO NOT translate it.
 #: ncrypt/crypt_gpgme.c:4593
-msgid "samfco"
-msgstr ""
+msgid "samco"
+msgstr "pjmnl"
 
 #. L10N: S/MIME options (opportunistic encryption is off)
 #: ncrypt/crypt_gpgme.c:4606
@@ -4824,10 +4822,9 @@ msgstr ""
 "šifr.? "
 
 #. L10N: S/MIME options (opportunistic encryption is off)
-#. The 'f' is undocumented. Please DO NOT translate it.
 #: ncrypt/crypt_gpgme.c:4610
 #, fuzzy
-msgid "esabpfco"
+msgid "esabpco"
 msgstr "rpjognl"
 
 #. L10N: PGP options (opportunistic encryption is off)
@@ -4840,10 +4837,9 @@ msgstr ""
 "šifr.? "
 
 #. L10N: PGP options (opportunistic encryption is off)
-#. The 'f' is undocumented. Please DO NOT translate it.
 #: ncrypt/crypt_gpgme.c:4620
 #, fuzzy
-msgid "esabmfco"
+msgid "esabmco"
 msgstr "rpjomnl"
 
 #: ncrypt/crypt_gpgme.c:4633
@@ -4852,10 +4848,9 @@ msgstr ""
 "S/MIME šif(r)ovat, (p)odepsat, podepsat (j)ako, (o)bojí, p(g)p či (n)ic? "
 
 #. L10N: S/MIME options
-#. The 'f' is undocumented. Please DO NOT translate it.
 #: ncrypt/crypt_gpgme.c:4636
 #, fuzzy
-msgid "esabpfc"
+msgid "esabpc"
 msgstr "rpjogn"
 
 #: ncrypt/crypt_gpgme.c:4643
@@ -4864,10 +4859,9 @@ msgstr ""
 "PGP šif(r)ovat, (p)odepsat, podepsat (j)ako, (o)bojí, s/(m)ime, či (n)ic? "
 
 #. L10N: PGP options
-#. The 'f' is undocumented. Please DO NOT translate it.
 #: ncrypt/crypt_gpgme.c:4646
 #, fuzzy
-msgid "esabmfc"
+msgid "esabmc"
 msgstr "rpjomn"
 
 #: ncrypt/crypt_gpgme.c:4671 ncrypt/pgp.c:1757 ncrypt/smime.c:2098
@@ -4944,10 +4938,9 @@ msgstr "PGP (p)odepsat, pod.(j)ako, formát %s, (n)ic, vypnout pří(l).šifr.? 
 
 #. L10N: PGP options (inline) (opportunistic encryption is on)
 #. The 'i' is from the "PGP/M(i)ME" or "(i)nline", above.
-#. The 'f' is undocumented. Please DO NOT translate it.
 #: ncrypt/pgp.c:1658
-msgid "safcoi"
-msgstr ""
+msgid "saico"
+msgstr "pjinl"
 
 #. L10N: PGP options (opportunistic encryption is on)
 #: ncrypt/pgp.c:1664
@@ -4955,10 +4948,9 @@ msgid "PGP (s)ign, sign (a)s, (c)lear, or (o)ppenc mode off? "
 msgstr "PGP (p)odepsat, podepsat (j)ako, (n)ic, vypnout pří(l). šifr.? "
 
 #. L10N: PGP options (opportunistic encryption is on)
-#. The 'f' is undocumented. Please DO NOT translate it.
 #: ncrypt/pgp.c:1667
-msgid "safco"
-msgstr ""
+msgid "saco"
+msgstr "pjnl"
 
 # XXX: %s is "PGP/M(i)ME" or "(i)nline"
 #. L10N: PGP options (inline) (opportunistic encryption is off)
@@ -4972,11 +4964,10 @@ msgstr ""
 
 #. L10N: PGP options (inline) (opportunistic encryption is off)
 #. The 'i' is from the "PGP/M(i)ME" or "(i)nline", above.
-#. The 'f' is undocumented. Please DO NOT translate it.
 #: ncrypt/pgp.c:1691
 #, fuzzy
-msgid "esabfcoi"
-msgstr "rpjonl"
+msgid "esabico"
+msgstr "rpjoinl"
 
 #. L10N: PGP options (opportunistic encryption is off)
 #: ncrypt/pgp.c:1697
@@ -4985,10 +4976,9 @@ msgstr ""
 "PGP šif(r)ovat, (p)odepsat, podepsat (j)ako, (o)bojí, (n)ic, pří(l). šifr.? "
 
 #. L10N: PGP options (opportunistic encryption is off)
-#. The 'f' is undocumented. Please DO NOT translate it.
 #: ncrypt/pgp.c:1701
 #, fuzzy
-msgid "esabfco"
+msgid "esabco"
 msgstr "rpjonl"
 
 # XXX: %s is "PGP/M(i)ME" or "(i)nline"
@@ -5000,11 +4990,10 @@ msgstr "PGP šif(r)ovat, (p)odepsat, podp (j)ako, (o)bojí, formát %s, či (n)i
 
 #. L10N: PGP options (inline)
 #. The 'i' is from the "PGP/M(i)ME" or "(i)nline", above.
-#. The 'f' is undocumented. Please DO NOT translate it.
 #: ncrypt/pgp.c:1721
 #, fuzzy
-msgid "esabfci"
-msgstr "rpjon"
+msgid "esabic"
+msgstr "rpjoin"
 
 #. L10N: PGP options
 #: ncrypt/pgp.c:1727
@@ -5012,10 +5001,9 @@ msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, or (c)lear? "
 msgstr "PGP šif(r)ovat, (p)odepsat, podepsat (j)ako, (o)bojí, či (n)ic?"
 
 #. L10N: PGP options
-#. The 'f' is undocumented. Please DO NOT translate it.
 #: ncrypt/pgp.c:1730
 #, fuzzy
-msgid "esabfc"
+msgid "esabc"
 msgstr "rpjon"
 
 #: ncrypt/pgpinvoke.c:286
@@ -5040,11 +5028,6 @@ msgstr "klíče PGP vyhovující \"%s\"."
 #: ncrypt/pgpkey.c:550 ncrypt/pgpkey.c:734
 msgid "Can't open /dev/null"
 msgstr "Nelze otevřít /dev/null"
-
-#: ncrypt/pgpkey.c:624
-#, fuzzy, c-format
-msgid "%str Do you really want to use the key?"
-msgstr "%s Opravdu chcete tento klíč použít?"
 
 #: ncrypt/pgpkey.c:764
 #, c-format
@@ -5175,10 +5158,9 @@ msgstr ""
 "šifr.? "
 
 #. L10N: S/MIME options (opportunistic encryption is on)
-#. The 'f' is undocumented. Please DO NOT translate it.
 #: ncrypt/smime.c:1987
-msgid "swafco"
-msgstr ""
+msgid "swaco"
+msgstr "pmjnl"
 
 #. L10N: S/MIME options (opportunistic encryption is off)
 #: ncrypt/smime.c:1997
@@ -5190,10 +5172,9 @@ msgstr ""
 "šif.? "
 
 #. L10N: S/MIME options (opportunistic encryption is off)
-#. The 'f' is undocumented. Please DO NOT translate it.
 #: ncrypt/smime.c:2001
 #, fuzzy
-msgid "eswabfco"
+msgid "eswabco"
 msgstr "rpmjonl"
 
 #. L10N: S/MIME options
@@ -5205,10 +5186,9 @@ msgstr ""
 "(n)ic? "
 
 #. L10N: S/MIME options
-#. The 'f' is undocumented. Please DO NOT translate it.
 #: ncrypt/smime.c:2014
 #, fuzzy
-msgid "eswabfc"
+msgid "eswabc"
 msgstr "rpmjon"
 
 #: ncrypt/smime.c:2034
@@ -6229,26 +6209,3 @@ msgstr ""
 "\n"
 "Přeloženo s volbami:"
 
-#~ msgid "%s: no such function in map"
-#~ msgstr "funkce %s není v mapě"
-
-#~ msgid "sapco"
-#~ msgstr "pjgnl"
-
-#~ msgid "samco"
-#~ msgstr "pjmnl"
-
-#~ msgid "saico"
-#~ msgstr "pjinl"
-
-#~ msgid "saco"
-#~ msgstr "pjnl"
-
-#~ msgid "esabico"
-#~ msgstr "rpjoinl"
-
-#~ msgid "esabic"
-#~ msgstr "rpjoin"
-
-#~ msgid "swaco"
-#~ msgstr "pmjnl"

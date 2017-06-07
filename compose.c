@@ -1496,7 +1496,7 @@ int mutt_compose_menu(struct Header *msg, /* structure for new message */
         {
           if (msg->security & (ENCRYPT | SIGN))
           {
-            if (mutt_yesorno(_("S/MIME already selected. Clear & continue ? "), MUTT_YES) != MUTT_YES)
+            if (mutt_yesorno(_("S/MIME already selected. Clear and continue ? "), MUTT_YES) != MUTT_YES)
             {
               mutt_clear_error();
               break;
@@ -1527,7 +1527,7 @@ int mutt_compose_menu(struct Header *msg, /* structure for new message */
         {
           if (msg->security & (ENCRYPT | SIGN))
           {
-            if (mutt_yesorno(_("PGP already selected. Clear & continue ? "), MUTT_YES) != MUTT_YES)
+            if (mutt_yesorno(_("PGP already selected. Clear and continue ? "), MUTT_YES) != MUTT_YES)
             {
               mutt_clear_error();
               break;

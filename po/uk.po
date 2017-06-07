@@ -853,11 +853,11 @@ msgid "Message written."
 msgstr "Лист записано."
 
 #: compose.c:1499
-msgid "S/MIME already selected. Clear & continue ? "
+msgid "S/MIME already selected. Clear and continue ? "
 msgstr "S/MIME вже вибрано. Очистити і продовжити? "
 
 #: compose.c:1530
-msgid "PGP already selected. Clear & continue ? "
+msgid "PGP already selected. Clear and continue ? "
 msgstr "PGP вже вибрано. Очистити і продовжити? "
 
 #: compress.c:474 compress.c:543 compress.c:701 compress.c:883 mbox.c:1054
@@ -4785,20 +4785,18 @@ msgid "S/MIME (s)ign, sign (a)s, (p)gp, (c)lear, or (o)ppenc mode off? "
 msgstr "S/MIME (s)підп., (a)підп. як, (p)gp, (c)відміна, вимкнути (o)ppenc? "
 
 #. L10N: S/MIME options (opportunistic encryption is on)
-#. The 'f' is undocumented. Please DO NOT translate it.
 #: ncrypt/crypt_gpgme.c:4583
-msgid "sapfco"
-msgstr ""
+msgid "sapco"
+msgstr "sapco"
 
 #: ncrypt/crypt_gpgme.c:4590
 msgid "PGP (s)ign, sign (a)s, s/(m)ime, (c)lear, or (o)ppenc mode off? "
 msgstr "PGP (s)підп., (a)підп. як, s/(m)ime, (c)відміна, вимкнути (o)ppenc? "
 
 #. L10N: PGP options (opportunistic encryption is on)
-#. The 'f' is undocumented. Please DO NOT translate it.
 #: ncrypt/crypt_gpgme.c:4593
-msgid "samfco"
-msgstr ""
+msgid "samco"
+msgstr "samco"
 
 #. L10N: S/MIME options (opportunistic encryption is off)
 #: ncrypt/crypt_gpgme.c:4606
@@ -4810,10 +4808,9 @@ msgstr ""
 "(o)ppenc? "
 
 #. L10N: S/MIME options (opportunistic encryption is off)
-#. The 'f' is undocumented. Please DO NOT translate it.
 #: ncrypt/crypt_gpgme.c:4610
 #, fuzzy
-msgid "esabpfco"
+msgid "esabpco"
 msgstr "esabpco"
 
 #. L10N: PGP options (opportunistic encryption is off)
@@ -4826,10 +4823,9 @@ msgstr ""
 "(o)ppenc? "
 
 #. L10N: PGP options (opportunistic encryption is off)
-#. The 'f' is undocumented. Please DO NOT translate it.
 #: ncrypt/crypt_gpgme.c:4620
 #, fuzzy
-msgid "esabmfco"
+msgid "esabmco"
 msgstr "esabmco"
 
 #: ncrypt/crypt_gpgme.c:4633
@@ -4837,10 +4833,9 @@ msgid "S/MIME (e)ncrypt, (s)ign, sign (a)s, (b)oth, (p)gp or (c)lear? "
 msgstr "S/MIME (e)шифр., (s)підп., (a)підп. як, (b)усе, (p)gp, (c)відміна? "
 
 #. L10N: S/MIME options
-#. The 'f' is undocumented. Please DO NOT translate it.
 #: ncrypt/crypt_gpgme.c:4636
 #, fuzzy
-msgid "esabpfc"
+msgid "esabpc"
 msgstr "esabpc"
 
 #: ncrypt/crypt_gpgme.c:4643
@@ -4848,10 +4843,9 @@ msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, s/(m)ime or (c)lear? "
 msgstr "PGP (e)шифр., (s)підп., (a)підп. як, (b)усе, s/(m)ime, (c)відміна? "
 
 #. L10N: PGP options
-#. The 'f' is undocumented. Please DO NOT translate it.
 #: ncrypt/crypt_gpgme.c:4646
 #, fuzzy
-msgid "esabmfc"
+msgid "esabmc"
 msgstr "esabmc"
 
 #: ncrypt/crypt_gpgme.c:4671 ncrypt/pgp.c:1757 ncrypt/smime.c:2098
@@ -4923,14 +4917,13 @@ msgstr "(i)PGP/текст"
 #: ncrypt/pgp.c:1651
 #, c-format
 msgid "PGP (s)ign, sign (a)s, %s format, (c)lear, or (o)ppenc mode off? "
-msgstr "PGP (s)підп., (a)підп. як, %s, (с)відміна, вимкнути (o)ppenc? "
+msgstr "PGP (s)підп., (a)підп. як, %s, (c)відміна, вимкнути (o)ppenc? "
 
 #. L10N: PGP options (inline) (opportunistic encryption is on)
 #. The 'i' is from the "PGP/M(i)ME" or "(i)nline", above.
-#. The 'f' is undocumented. Please DO NOT translate it.
 #: ncrypt/pgp.c:1658
-msgid "safcoi"
-msgstr ""
+msgid "saico"
+msgstr "saco"
 
 #. L10N: PGP options (opportunistic encryption is on)
 #: ncrypt/pgp.c:1664
@@ -4938,10 +4931,9 @@ msgid "PGP (s)ign, sign (a)s, (c)lear, or (o)ppenc mode off? "
 msgstr "PGP (s)підп., (a)підп. як, (c)відміна, вимкнути (o)ppenc? "
 
 #. L10N: PGP options (opportunistic encryption is on)
-#. The 'f' is undocumented. Please DO NOT translate it.
 #: ncrypt/pgp.c:1667
-msgid "safco"
-msgstr ""
+msgid "saco"
+msgstr "saco"
 
 #. L10N: PGP options (inline) (opportunistic encryption is off)
 #: ncrypt/pgp.c:1684
@@ -4950,15 +4942,14 @@ msgid ""
 "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, %s format, (c)lear, or (o)ppenc "
 "mode? "
 msgstr ""
-"PGP (e)шифр, (s)підп, (a)підп. як, (b)усе, %s, (с)відм, вимк. (o)ppenc? "
+"PGP (e)шифр, (s)підп, (a)підп. як, (b)усе, %s, (c)відм, вимк. (o)ppenc? "
 
 #. L10N: PGP options (inline) (opportunistic encryption is off)
 #. The 'i' is from the "PGP/M(i)ME" or "(i)nline", above.
-#. The 'f' is undocumented. Please DO NOT translate it.
 #: ncrypt/pgp.c:1691
 #, fuzzy
-msgid "esabfcoi"
-msgstr "esabco"
+msgid "esabico"
+msgstr "esabico"
 
 #. L10N: PGP options (opportunistic encryption is off)
 #: ncrypt/pgp.c:1697
@@ -4966,25 +4957,23 @@ msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, (c)lear, or (o)ppenc mode? "
 msgstr "PGP (e)шифр, (s)підп, (a)підп. як, (b)усе, (c)відм, вимк. (o)ppenc? "
 
 #. L10N: PGP options (opportunistic encryption is off)
-#. The 'f' is undocumented. Please DO NOT translate it.
 #: ncrypt/pgp.c:1701
 #, fuzzy
-msgid "esabfco"
+msgid "esabco"
 msgstr "esabco"
 
 #. L10N: PGP options (inline)
 #: ncrypt/pgp.c:1714
 #, c-format
 msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, %s format, or (c)lear? "
-msgstr "PGP (e)шифр., (s)підп., (a)підп. як, (b)усе, %s, (с)відміна? "
+msgstr "PGP (e)шифр., (s)підп., (a)підп. як, (b)усе, %s, (c)відміна? "
 
 #. L10N: PGP options (inline)
 #. The 'i' is from the "PGP/M(i)ME" or "(i)nline", above.
-#. The 'f' is undocumented. Please DO NOT translate it.
 #: ncrypt/pgp.c:1721
 #, fuzzy
-msgid "esabfci"
-msgstr "esabc"
+msgid "esabic"
+msgstr "esabic"
 
 #. L10N: PGP options
 #: ncrypt/pgp.c:1727
@@ -4992,10 +4981,9 @@ msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, or (c)lear? "
 msgstr "PGP (e)шифр., (s)підп., (a)підп. як, (b)усе, (c)відміна? "
 
 #. L10N: PGP options
-#. The 'f' is undocumented. Please DO NOT translate it.
 #: ncrypt/pgp.c:1730
 #, fuzzy
-msgid "esabfc"
+msgid "esabc"
 msgstr "esabc"
 
 #: ncrypt/pgpinvoke.c:286
@@ -5019,11 +5007,6 @@ msgstr "PGP ключі, що відповідають \"%s\"."
 #: ncrypt/pgpkey.c:550 ncrypt/pgpkey.c:734
 msgid "Can't open /dev/null"
 msgstr "Неможливо відкрити /dev/null"
-
-#: ncrypt/pgpkey.c:624
-#, fuzzy, c-format
-msgid "%str Do you really want to use the key?"
-msgstr "%s Ви справді бажаєте використовувати ключ?"
 
 #: ncrypt/pgpkey.c:764
 #, c-format
@@ -5154,10 +5137,9 @@ msgstr ""
 "S/MIME (s)підп., (w)шифр. з, (a)підп. як, (c)відм., вимкнути (o)ppenc? "
 
 #. L10N: S/MIME options (opportunistic encryption is on)
-#. The 'f' is undocumented. Please DO NOT translate it.
 #: ncrypt/smime.c:1987
-msgid "swafco"
-msgstr ""
+msgid "swaco"
+msgstr "swaco"
 
 #. L10N: S/MIME options (opportunistic encryption is off)
 #: ncrypt/smime.c:1997
@@ -5169,10 +5151,9 @@ msgstr ""
 "(o)ppenc?"
 
 #. L10N: S/MIME options (opportunistic encryption is off)
-#. The 'f' is undocumented. Please DO NOT translate it.
 #: ncrypt/smime.c:2001
 #, fuzzy
-msgid "eswabfco"
+msgid "eswabco"
 msgstr "eswabco"
 
 #. L10N: S/MIME options
@@ -5183,10 +5164,9 @@ msgstr ""
 "S/MIME (e)шифр., (s)підп., (w)шифр. з, (a)підп. як, (b)усе, (c)відміна? "
 
 #. L10N: S/MIME options
-#. The 'f' is undocumented. Please DO NOT translate it.
 #: ncrypt/smime.c:2014
 #, fuzzy
-msgid "eswabfc"
+msgid "eswabc"
 msgstr "eswabc"
 
 #: ncrypt/smime.c:2034
@@ -6206,26 +6186,3 @@ msgstr ""
 "\n"
 "Параметри компіляції:"
 
-#~ msgid "%s: no such function in map"
-#~ msgstr "функція \"%s\" не існує в карті"
-
-#~ msgid "sapco"
-#~ msgstr "sapco"
-
-#~ msgid "samco"
-#~ msgstr "samco"
-
-#~ msgid "saico"
-#~ msgstr "saico"
-
-#~ msgid "saco"
-#~ msgstr "saco"
-
-#~ msgid "esabico"
-#~ msgstr "esabico"
-
-#~ msgid "esabic"
-#~ msgstr "esabic"
-
-#~ msgid "swaco"
-#~ msgstr "swaco"

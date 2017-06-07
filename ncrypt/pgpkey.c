@@ -621,7 +621,7 @@ static struct PgpKeyInfo *pgp_select_key(struct PgpKeyInfo *keys,
             }
 
           snprintf(buff, sizeof(buff),
-                   _("%str Do you really want to use the key?"), _(str));
+                   _("%s Do you really want to use the key?"), _(str));
 
           if (mutt_yesorno(buff, MUTT_NO) != MUTT_YES)
           {

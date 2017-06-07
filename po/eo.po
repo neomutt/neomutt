@@ -852,11 +852,11 @@ msgid "Message written."
 msgstr "Mesaĝo skribita."
 
 #: compose.c:1499
-msgid "S/MIME already selected. Clear & continue ? "
+msgid "S/MIME already selected. Clear and continue ? "
 msgstr "S/MIME jam elektita.  Ĉu nuligi kaj daŭrigi? "
 
 #: compose.c:1530
-msgid "PGP already selected. Clear & continue ? "
+msgid "PGP already selected. Clear and continue ? "
 msgstr "PGP jam elektita.  Ĉu nuligi kaj daŭrigi? "
 
 #: compress.c:474 compress.c:543 compress.c:701 compress.c:883 mbox.c:1054
@@ -4785,10 +4785,9 @@ msgstr ""
 "moduso? "
 
 #. L10N: S/MIME options (opportunistic encryption is on)
-#. The 'f' is undocumented. Please DO NOT translate it.
 #: ncrypt/crypt_gpgme.c:4583
-msgid "sapfco"
-msgstr ""
+msgid "sapco"
+msgstr "skpfo"
 
 #: ncrypt/crypt_gpgme.c:4590
 msgid "PGP (s)ign, sign (a)s, s/(m)ime, (c)lear, or (o)ppenc mode off? "
@@ -4797,10 +4796,9 @@ msgstr ""
 "moduso? "
 
 #. L10N: PGP options (opportunistic encryption is on)
-#. The 'f' is undocumented. Please DO NOT translate it.
 #: ncrypt/crypt_gpgme.c:4593
-msgid "samfco"
-msgstr ""
+msgid "samco"
+msgstr "skmfo"
 
 #. L10N: S/MIME options (opportunistic encryption is off)
 #: ncrypt/crypt_gpgme.c:4606
@@ -4812,10 +4810,8 @@ msgstr ""
 "moduso? "
 
 #. L10N: S/MIME options (opportunistic encryption is off)
-#. The 'f' is undocumented. Please DO NOT translate it.
 #: ncrypt/crypt_gpgme.c:4610
-#, fuzzy
-msgid "esabpfco"
+msgid "esabpco"
 msgstr "iskapfo"
 
 #. L10N: PGP options (opportunistic encryption is off)
@@ -4828,10 +4824,9 @@ msgstr ""
 "moduso? "
 
 #. L10N: PGP options (opportunistic encryption is off)
-#. The 'f' is undocumented. Please DO NOT translate it.
 #: ncrypt/crypt_gpgme.c:4620
 #, fuzzy
-msgid "esabmfco"
+msgid "esabmco"
 msgstr "iskamfo"
 
 #: ncrypt/crypt_gpgme.c:4633
@@ -4841,10 +4836,9 @@ msgstr ""
 "(f)orgesi? "
 
 #. L10N: S/MIME options
-#. The 'f' is undocumented. Please DO NOT translate it.
 #: ncrypt/crypt_gpgme.c:4636
 #, fuzzy
-msgid "esabpfc"
+msgid "esabpc"
 msgstr "iskapf"
 
 #: ncrypt/crypt_gpgme.c:4643
@@ -4854,10 +4848,9 @@ msgstr ""
 "(f)orgesi? "
 
 #. L10N: PGP options
-#. The 'f' is undocumented. Please DO NOT translate it.
 #: ncrypt/crypt_gpgme.c:4646
 #, fuzzy
-msgid "esabmfc"
+msgid "esabmc"
 msgstr "iskamf"
 
 #: ncrypt/crypt_gpgme.c:4671 ncrypt/pgp.c:1757 ncrypt/smime.c:2098
@@ -4934,10 +4927,9 @@ msgstr ""
 
 #. L10N: PGP options (inline) (opportunistic encryption is on)
 #. The 'i' is from the "PGP/M(i)ME" or "(i)nline", above.
-#. The 'f' is undocumented. Please DO NOT translate it.
 #: ncrypt/pgp.c:1658
-msgid "safcoi"
-msgstr ""
+msgid "saico"
+msgstr "skifo"
 
 #. L10N: PGP options (opportunistic encryption is on)
 #: ncrypt/pgp.c:1664
@@ -4945,10 +4937,9 @@ msgid "PGP (s)ign, sign (a)s, (c)lear, or (o)ppenc mode off? "
 msgstr "PGP (s)ubskribi, subskribi (k)iel, (f)orgesi, aŭ ne (o)ppenc-moduso? "
 
 #. L10N: PGP options (opportunistic encryption is on)
-#. The 'f' is undocumented. Please DO NOT translate it.
 #: ncrypt/pgp.c:1667
-msgid "safco"
-msgstr ""
+msgid "saco"
+msgstr "skfo"
 
 #. L10N: PGP options (inline) (opportunistic encryption is off)
 #: ncrypt/pgp.c:1684
@@ -4961,11 +4952,10 @@ msgstr ""
 
 #. L10N: PGP options (inline) (opportunistic encryption is off)
 #. The 'i' is from the "PGP/M(i)ME" or "(i)nline", above.
-#. The 'f' is undocumented. Please DO NOT translate it.
 #: ncrypt/pgp.c:1691
 #, fuzzy
-msgid "esabfcoi"
-msgstr "iskafo"
+msgid "esabico"
+msgstr "iskaifo"
 
 #. L10N: PGP options (opportunistic encryption is off)
 #: ncrypt/pgp.c:1697
@@ -4975,10 +4965,9 @@ msgstr ""
 "moduso? "
 
 #. L10N: PGP options (opportunistic encryption is off)
-#. The 'f' is undocumented. Please DO NOT translate it.
 #: ncrypt/pgp.c:1701
 #, fuzzy
-msgid "esabfco"
+msgid "esabco"
 msgstr "iskafo"
 
 #. L10N: PGP options (inline)
@@ -4990,11 +4979,9 @@ msgstr ""
 
 #. L10N: PGP options (inline)
 #. The 'i' is from the "PGP/M(i)ME" or "(i)nline", above.
-#. The 'f' is undocumented. Please DO NOT translate it.
 #: ncrypt/pgp.c:1721
-#, fuzzy
-msgid "esabfci"
-msgstr "iskaf"
+msgid "esabic"
+msgstr "iskaif"
 
 #. L10N: PGP options
 #: ncrypt/pgp.c:1727
@@ -5002,10 +4989,8 @@ msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, or (c)lear? "
 msgstr "PGP ĉ(i)fri, (s)ubskribi, subskribi (k)iel, (a)mbaŭ, aŭ (f)orgesi? "
 
 #. L10N: PGP options
-#. The 'f' is undocumented. Please DO NOT translate it.
 #: ncrypt/pgp.c:1730
-#, fuzzy
-msgid "esabfc"
+msgid "esabc"
 msgstr "iskaf"
 
 #: ncrypt/pgpinvoke.c:286
@@ -5030,11 +5015,6 @@ msgstr "PGP-ŝlosiloj kiuj kongruas kun \"%s\"."
 #: ncrypt/pgpkey.c:550 ncrypt/pgpkey.c:734
 msgid "Can't open /dev/null"
 msgstr "Ne eblas malfermi /dev/null"
-
-#: ncrypt/pgpkey.c:624
-#, fuzzy, c-format
-msgid "%str Do you really want to use the key?"
-msgstr "%s Ĉu vi vere volas uzi la ŝlosilon?"
 
 #: ncrypt/pgpkey.c:764
 #, c-format
@@ -5165,10 +5145,9 @@ msgstr ""
 "S/MIME (s)ubskribi, (k)iel, ĉifri (p)er, (f)orgesi, aŭ ne (o)ppenc-moduso? "
 
 #. L10N: S/MIME options (opportunistic encryption is on)
-#. The 'f' is undocumented. Please DO NOT translate it.
 #: ncrypt/smime.c:1987
-msgid "swafco"
-msgstr ""
+msgid "swaco"
+msgstr "skpfo"
 
 # Atentu -- mi ŝanĝis la ordon, sed la literoj devas sekvi la originalan.
 #. L10N: S/MIME options (opportunistic encryption is off)
@@ -5181,10 +5160,8 @@ msgstr ""
 "moduso? "
 
 #. L10N: S/MIME options (opportunistic encryption is off)
-#. The 'f' is undocumented. Please DO NOT translate it.
 #: ncrypt/smime.c:2001
-#, fuzzy
-msgid "eswabfco"
+msgid "eswabco"
 msgstr "ipskafo"
 
 #. L10N: S/MIME options
@@ -5196,10 +5173,8 @@ msgstr ""
 "(f)orgesi? "
 
 #. L10N: S/MIME options
-#. The 'f' is undocumented. Please DO NOT translate it.
 #: ncrypt/smime.c:2014
-#, fuzzy
-msgid "eswabfc"
+msgid "eswabc"
 msgstr "ispkaf"
 
 #: ncrypt/smime.c:2034
@@ -6217,26 +6192,3 @@ msgstr ""
 "\n"
 "Parametroj de la tradukaĵo:"
 
-#~ msgid "%s: no such function in map"
-#~ msgstr "%s: nekonata funkcio"
-
-#~ msgid "sapco"
-#~ msgstr "skpfo"
-
-#~ msgid "samco"
-#~ msgstr "skmfo"
-
-#~ msgid "saico"
-#~ msgstr "skefo"
-
-#~ msgid "saco"
-#~ msgstr "skfo"
-
-#~ msgid "esabico"
-#~ msgstr "iskaefo"
-
-#~ msgid "esabic"
-#~ msgstr "iskaef"
-
-#~ msgid "swaco"
-#~ msgstr "skpfo"

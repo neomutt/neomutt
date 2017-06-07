@@ -851,11 +851,11 @@ msgid "Message written."
 msgstr "Brevet skrevet."
 
 #: compose.c:1499
-msgid "S/MIME already selected. Clear & continue ? "
+msgid "S/MIME already selected. Clear and continue ? "
 msgstr "S/MIME allerede valgt. Ryd & fortsæt ? "
 
 #: compose.c:1530
-msgid "PGP already selected. Clear & continue ? "
+msgid "PGP already selected. Clear and continue ? "
 msgstr "PGP allerede valgt. Ryd & fortsæt ? "
 
 #: compress.c:474 compress.c:543 compress.c:701 compress.c:883 mbox.c:1054
@@ -4782,10 +4782,9 @@ msgstr ""
 "fra? "
 
 #. L10N: S/MIME options (opportunistic encryption is on)
-#. The 'f' is undocumented. Please DO NOT translate it.
 #: ncrypt/crypt_gpgme.c:4583
-msgid "sapfco"
-msgstr ""
+msgid "sapco"
+msgstr "uspyo"
 
 #: ncrypt/crypt_gpgme.c:4590
 msgid "PGP (s)ign, sign (a)s, s/(m)ime, (c)lear, or (o)ppenc mode off? "
@@ -4794,10 +4793,9 @@ msgstr ""
 "fra? "
 
 #. L10N: PGP options (opportunistic encryption is on)
-#. The 'f' is undocumented. Please DO NOT translate it.
 #: ncrypt/crypt_gpgme.c:4593
-msgid "samfco"
-msgstr ""
+msgid "samco"
+msgstr "usmyo"
 
 #. L10N: S/MIME options (opportunistic encryption is off)
 #: ncrypt/crypt_gpgme.c:4606
@@ -4809,10 +4807,9 @@ msgstr ""
 "eller (o)ppenc-tilstand fra? "
 
 #. L10N: S/MIME options (opportunistic encryption is off)
-#. The 'f' is undocumented. Please DO NOT translate it.
 #: ncrypt/crypt_gpgme.c:4610
 #, fuzzy
-msgid "esabpfco"
+msgid "esabpco"
 msgstr "kusbpyo"
 
 #. L10N: PGP options (opportunistic encryption is off)
@@ -4825,10 +4822,9 @@ msgstr ""
 "eller (o)ppenc-tilstand? "
 
 #. L10N: PGP options (opportunistic encryption is off)
-#. The 'f' is undocumented. Please DO NOT translate it.
 #: ncrypt/crypt_gpgme.c:4620
 #, fuzzy
-msgid "esabmfco"
+msgid "esabmco"
 msgstr "kusbmyo"
 
 #: ncrypt/crypt_gpgme.c:4633
@@ -4838,10 +4834,9 @@ msgstr ""
 "r(y)d? "
 
 #. L10N: S/MIME options
-#. The 'f' is undocumented. Please DO NOT translate it.
 #: ncrypt/crypt_gpgme.c:4636
 #, fuzzy
-msgid "esabpfc"
+msgid "esabpc"
 msgstr "kusbpy"
 
 #: ncrypt/crypt_gpgme.c:4643
@@ -4851,10 +4846,9 @@ msgstr ""
 "r(y)d? "
 
 #. L10N: PGP options
-#. The 'f' is undocumented. Please DO NOT translate it.
 #: ncrypt/crypt_gpgme.c:4646
 #, fuzzy
-msgid "esabmfc"
+msgid "esabmc"
 msgstr "kusbmy"
 
 #: ncrypt/crypt_gpgme.c:4671 ncrypt/pgp.c:1757 ncrypt/smime.c:2098
@@ -4932,10 +4926,9 @@ msgstr ""
 
 #. L10N: PGP options (inline) (opportunistic encryption is on)
 #. The 'i' is from the "PGP/M(i)ME" or "(i)nline", above.
-#. The 'f' is undocumented. Please DO NOT translate it.
 #: ncrypt/pgp.c:1658
-msgid "safcoi"
-msgstr ""
+msgid "saico"
+msgstr "usiyo"
 
 #. L10N: PGP options (opportunistic encryption is on)
 #: ncrypt/pgp.c:1664
@@ -4944,10 +4937,9 @@ msgstr ""
 "PGP (u)nderskriv, underskriv (s)om, r(y)d eller (o)ppenc-tilstand fra? "
 
 #. L10N: PGP options (opportunistic encryption is on)
-#. The 'f' is undocumented. Please DO NOT translate it.
 #: ncrypt/pgp.c:1667
-msgid "safco"
-msgstr ""
+msgid "saco"
+msgstr "usyo"
 
 #. L10N: PGP options (inline) (opportunistic encryption is off)
 #: ncrypt/pgp.c:1684
@@ -4961,11 +4953,10 @@ msgstr ""
 
 #. L10N: PGP options (inline) (opportunistic encryption is off)
 #. The 'i' is from the "PGP/M(i)ME" or "(i)nline", above.
-#. The 'f' is undocumented. Please DO NOT translate it.
 #: ncrypt/pgp.c:1691
 #, fuzzy
-msgid "esabfcoi"
-msgstr "kusbyo"
+msgid "esabico"
+msgstr "kusbiyo"
 
 #. L10N: PGP options (opportunistic encryption is off)
 #: ncrypt/pgp.c:1697
@@ -4975,10 +4966,9 @@ msgstr ""
 "tilstand? "
 
 #. L10N: PGP options (opportunistic encryption is off)
-#. The 'f' is undocumented. Please DO NOT translate it.
 #: ncrypt/pgp.c:1701
 #, fuzzy
-msgid "esabfco"
+msgid "esabco"
 msgstr "kusbyo"
 
 #. L10N: PGP options (inline)
@@ -4990,11 +4980,10 @@ msgstr ""
 
 #. L10N: PGP options (inline)
 #. The 'i' is from the "PGP/M(i)ME" or "(i)nline", above.
-#. The 'f' is undocumented. Please DO NOT translate it.
 #: ncrypt/pgp.c:1721
 #, fuzzy
-msgid "esabfci"
-msgstr "kusby"
+msgid "esabic"
+msgstr "kusbiy"
 
 #. L10N: PGP options
 #: ncrypt/pgp.c:1727
@@ -5002,10 +4991,9 @@ msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, or (c)lear? "
 msgstr "PGP (k)ryptér, (u)nderskriv, underskriv (s)om, (b)egge eller r(y)d? "
 
 #. L10N: PGP options
-#. The 'f' is undocumented. Please DO NOT translate it.
 #: ncrypt/pgp.c:1730
 #, fuzzy
-msgid "esabfc"
+msgid "esabc"
 msgstr "kusby"
 
 #: ncrypt/pgpinvoke.c:286
@@ -5029,11 +5017,6 @@ msgstr "PGP-nøgler som matcher \"%s\"."
 #: ncrypt/pgpkey.c:550 ncrypt/pgpkey.c:734
 msgid "Can't open /dev/null"
 msgstr "Kan ikke åbne /dev/null"
-
-#: ncrypt/pgpkey.c:624
-#, fuzzy, c-format
-msgid "%str Do you really want to use the key?"
-msgstr "%s Vil du virkelig anvende nøglen?"
 
 #: ncrypt/pgpkey.c:764
 #, c-format
@@ -5164,10 +5147,9 @@ msgstr ""
 "tilstand fra? "
 
 #. L10N: S/MIME options (opportunistic encryption is on)
-#. The 'f' is undocumented. Please DO NOT translate it.
 #: ncrypt/smime.c:1987
-msgid "swafco"
-msgstr ""
+msgid "swaco"
+msgstr "umsyo"
 
 #. L10N: S/MIME options (opportunistic encryption is off)
 #: ncrypt/smime.c:1997
@@ -5179,10 +5161,9 @@ msgstr ""
 "eller (o)ppenc-tilstand? "
 
 #. L10N: S/MIME options (opportunistic encryption is off)
-#. The 'f' is undocumented. Please DO NOT translate it.
 #: ncrypt/smime.c:2001
 #, fuzzy
-msgid "eswabfco"
+msgid "eswabco"
 msgstr "kumsbyo"
 
 #. L10N: S/MIME options
@@ -5193,10 +5174,9 @@ msgstr ""
 "S/MIME (k)ryptér, (u).skriv, kryptér (m)ed, u.skriv (s)om, (b)egge, r(y)d? "
 
 #. L10N: S/MIME options
-#. The 'f' is undocumented. Please DO NOT translate it.
 #: ncrypt/smime.c:2014
 #, fuzzy
-msgid "eswabfc"
+msgid "eswabc"
 msgstr "kumsby"
 
 #: ncrypt/smime.c:2034
@@ -6216,26 +6196,3 @@ msgstr ""
 "\n"
 "Tilvalg ved oversættelsen:"
 
-#~ msgid "%s: no such function in map"
-#~ msgstr "%s: ukendt funktion"
-
-#~ msgid "sapco"
-#~ msgstr "uspyo"
-
-#~ msgid "samco"
-#~ msgstr "usmyo"
-
-#~ msgid "saico"
-#~ msgstr "usiyo"
-
-#~ msgid "saco"
-#~ msgstr "usyo"
-
-#~ msgid "esabico"
-#~ msgstr "kusbiyo"
-
-#~ msgid "esabic"
-#~ msgstr "kusbiy"
-
-#~ msgid "swaco"
-#~ msgstr "umsyo"

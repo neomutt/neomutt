@@ -855,11 +855,11 @@ msgid "Message written."
 msgstr "Nachricht geschrieben."
 
 #: compose.c:1499
-msgid "S/MIME already selected. Clear & continue ? "
+msgid "S/MIME already selected. Clear and continue ? "
 msgstr "S/MIME bereits ausgewählt. Löschen und fortfahren?"
 
 #: compose.c:1530
-msgid "PGP already selected. Clear & continue ? "
+msgid "PGP already selected. Clear and continue ? "
 msgstr "PGP bereits ausgewählt. Löschen und fortfahren?"
 
 #: compress.c:474 compress.c:543 compress.c:701 compress.c:883 mbox.c:1054
@@ -4777,9 +4777,8 @@ msgstr ""
 "Modus? "
 
 #. L10N: S/MIME options (opportunistic encryption is on)
-#. The 'f' is undocumented. Please DO NOT translate it.
 #: ncrypt/crypt_gpgme.c:4583
-msgid "sapfco"
+msgid "sapco"
 msgstr "sapuw"
 
 #: ncrypt/crypt_gpgme.c:4590
@@ -4789,9 +4788,8 @@ msgstr ""
 "Modus? "
 
 #. L10N: PGP options (opportunistic encryption is on)
-#. The 'f' is undocumented. Please DO NOT translate it.
 #: ncrypt/crypt_gpgme.c:4593
-msgid "samfco"
+msgid "samco"
 msgstr "samuw"
 
 #. L10N: S/MIME options (opportunistic encryption is off)
@@ -4804,10 +4802,8 @@ msgstr ""
 "(w)ie-mögl.-Modus? "
 
 #. L10N: S/MIME options (opportunistic encryption is off)
-#. The 'f' is undocumented. Please DO NOT translate it.
 #: ncrypt/crypt_gpgme.c:4610
-#, fuzzy
-msgid "esabpfco"
+msgid "esabpco"
 msgstr "vsabpuw"
 
 #. L10N: PGP options (opportunistic encryption is off)
@@ -4820,10 +4816,8 @@ msgstr ""
 "(w)ie-mögl.-Modus? "
 
 #. L10N: PGP options (opportunistic encryption is off)
-#. The 'f' is undocumented. Please DO NOT translate it.
 #: ncrypt/crypt_gpgme.c:4620
-#, fuzzy
-msgid "esabmfco"
+msgid "esabmco"
 msgstr "vsabmuw"
 
 #: ncrypt/crypt_gpgme.c:4633
@@ -4832,10 +4826,8 @@ msgstr ""
 "S/MIME (v)erschl., (s)ign., sign. (a)ls, (b)eides, (p)gp oder (u)nverschl.? "
 
 #. L10N: S/MIME options
-#. The 'f' is undocumented. Please DO NOT translate it.
 #: ncrypt/crypt_gpgme.c:4636
-#, fuzzy
-msgid "esabpfc"
+msgid "esabpc"
 msgstr "vsabpu"
 
 #: ncrypt/crypt_gpgme.c:4643
@@ -4844,10 +4836,8 @@ msgstr ""
 "PGP (v)erschl., (s)ign., sign. (a)ls, (b)eides, s/(m)ime oder (u)nverschl.? "
 
 #. L10N: PGP options
-#. The 'f' is undocumented. Please DO NOT translate it.
 #: ncrypt/crypt_gpgme.c:4646
-#, fuzzy
-msgid "esabmfc"
+msgid "esabmc"
 msgstr "vsabmu"
 
 #: ncrypt/crypt_gpgme.c:4671 ncrypt/pgp.c:1757 ncrypt/smime.c:2098
@@ -4925,10 +4915,9 @@ msgstr ""
 
 #. L10N: PGP options (inline) (opportunistic encryption is on)
 #. The 'i' is from the "PGP/M(i)ME" or "(i)nline", above.
-#. The 'f' is undocumented. Please DO NOT translate it.
 #: ncrypt/pgp.c:1658
-msgid "safcoi"
-msgstr "sauw"
+msgid "saico"
+msgstr "saiuw"
 
 #. L10N: PGP options (opportunistic encryption is on)
 #: ncrypt/pgp.c:1664
@@ -4936,9 +4925,8 @@ msgid "PGP (s)ign, sign (a)s, (c)lear, or (o)ppenc mode off? "
 msgstr "PGP (s)ign., sign. (a)ls, (u)nverschl., oder kein (w)ie-mögl.-Modus? "
 
 #. L10N: PGP options (opportunistic encryption is on)
-#. The 'f' is undocumented. Please DO NOT translate it.
 #: ncrypt/pgp.c:1667
-msgid "safco"
+msgid "saco"
 msgstr "sauw"
 
 #. L10N: PGP options (inline) (opportunistic encryption is off)
@@ -4953,11 +4941,9 @@ msgstr ""
 
 #. L10N: PGP options (inline) (opportunistic encryption is off)
 #. The 'i' is from the "PGP/M(i)ME" or "(i)nline", above.
-#. The 'f' is undocumented. Please DO NOT translate it.
 #: ncrypt/pgp.c:1691
-#, fuzzy
-msgid "esabfcoi"
-msgstr "vsabuw"
+msgid "esabico"
+msgstr "vsabiuw"
 
 #. L10N: PGP options (opportunistic encryption is off)
 #: ncrypt/pgp.c:1697
@@ -4967,10 +4953,8 @@ msgstr ""
 "mögl.-Modus? "
 
 #. L10N: PGP options (opportunistic encryption is off)
-#. The 'f' is undocumented. Please DO NOT translate it.
 #: ncrypt/pgp.c:1701
-#, fuzzy
-msgid "esabfco"
+msgid "esabco"
 msgstr "vsabuw"
 
 #. L10N: PGP options (inline)
@@ -4983,11 +4967,9 @@ msgstr ""
 
 #. L10N: PGP options (inline)
 #. The 'i' is from the "PGP/M(i)ME" or "(i)nline", above.
-#. The 'f' is undocumented. Please DO NOT translate it.
 #: ncrypt/pgp.c:1721
-#, fuzzy
-msgid "esabfci"
-msgstr "vsabu"
+msgid "esabic"
+msgstr "vsabiu"
 
 #. L10N: PGP options
 #: ncrypt/pgp.c:1727
@@ -4995,10 +4977,8 @@ msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, or (c)lear? "
 msgstr "PGP (v)erschl., (s)ign., sign. (a)ls, (b)eides, oder (u)nverschl.?"
 
 #. L10N: PGP options
-#. The 'f' is undocumented. Please DO NOT translate it.
 #: ncrypt/pgp.c:1730
-#, fuzzy
-msgid "esabfc"
+msgid "esabc"
 msgstr "vsabu"
 
 #: ncrypt/pgpinvoke.c:286
@@ -5023,11 +5003,6 @@ msgstr "PGP-Schlüssel, die zu \"%s\" passen."
 #: ncrypt/pgpkey.c:550 ncrypt/pgpkey.c:734
 msgid "Can't open /dev/null"
 msgstr "Kann /dev/null nicht öffnen"
-
-#: ncrypt/pgpkey.c:624
-#, fuzzy, c-format
-msgid "%str Do you really want to use the key?"
-msgstr "%s Soll dieser Schlüssel wirklich benutzt werden?"
 
 #: ncrypt/pgpkey.c:764
 #, c-format
@@ -5159,9 +5134,8 @@ msgstr ""
 "mögl.-Modus?"
 
 #. L10N: S/MIME options (opportunistic encryption is on)
-#. The 'f' is undocumented. Please DO NOT translate it.
 #: ncrypt/smime.c:1987
-msgid "swafco"
+msgid "swaco"
 msgstr "smauw"
 
 #. L10N: S/MIME options (opportunistic encryption is off)
@@ -5174,10 +5148,8 @@ msgstr ""
 "(u)nverschl., oder (w)ie-mögl.-Modus?"
 
 #. L10N: S/MIME options (opportunistic encryption is off)
-#. The 'f' is undocumented. Please DO NOT translate it.
 #: ncrypt/smime.c:2001
-#, fuzzy
-msgid "eswabfco"
+msgid "eswabco"
 msgstr "vsmabuw"
 
 #. L10N: S/MIME options
@@ -5189,10 +5161,8 @@ msgstr ""
 "(u)nverschlüsselt? "
 
 #. L10N: S/MIME options
-#. The 'f' is undocumented. Please DO NOT translate it.
 #: ncrypt/smime.c:2014
-#, fuzzy
-msgid "eswabfc"
+msgid "eswabc"
 msgstr "vsmabu"
 
 #: ncrypt/smime.c:2034
@@ -6223,30 +6193,5 @@ msgstr ""
 "\n"
 "Einstellungen bei der Kompilierung:"
 
-#~ msgid "%s: no such function in map"
-#~ msgstr "%s: Funktion unbekannt"
-
 #, fuzzy
-#~ msgid "generate virtual folder from query and time window"
-#~ msgstr "Erzeuge virtuelle Mailbox aus der Abfrage"
 
-#~ msgid "sapco"
-#~ msgstr "sapuw"
-
-#~ msgid "samco"
-#~ msgstr "samuw"
-
-#~ msgid "saico"
-#~ msgstr "saiuw"
-
-#~ msgid "saco"
-#~ msgstr "sauw"
-
-#~ msgid "esabico"
-#~ msgstr "vsabiuw"
-
-#~ msgid "esabic"
-#~ msgstr "vsabiu"
-
-#~ msgid "swaco"
-#~ msgstr "smauw"

@@ -1982,10 +1982,9 @@ int smime_send_menu(struct Header *msg)
     /* L10N: S/MIME options (opportunistic encryption is on) */
     prompt = _("S/MIME (s)ign, encrypt (w)ith, sign (a)s, (c)lear, or (o)ppenc "
                "mode off? ");
-    /* L10N: S/MIME options (opportunistic encryption is on)
-        The 'f' is undocumented. Please DO NOT translate it. */
-    letters = _("swafco");
-    choices = "SwaFCo";
+    /* L10N: S/MIME options (opportunistic encryption is on) */
+    letters = _("swaco");
+    choices = "SwaCo";
   }
   /*
    * Opportunistic encryption option is set, but is toggled off
@@ -1996,10 +1995,9 @@ int smime_send_menu(struct Header *msg)
     /* L10N: S/MIME options (opportunistic encryption is off) */
     prompt = _("S/MIME (e)ncrypt, (s)ign, encrypt (w)ith, sign (a)s, (b)oth, "
                "(c)lear, or (o)ppenc mode? ");
-    /* L10N: S/MIME options (opportunistic encryption is off)
-        The 'f' is undocumented. Please DO NOT translate it. */
-    letters = _("eswabfco");
-    choices = "eswabfcO";
+    /* L10N: S/MIME options (opportunistic encryption is off) */
+    letters = _("eswabco");
+    choices = "eswabcO";
   }
   /*
    * Opportunistic encryption is unset
@@ -2009,10 +2007,9 @@ int smime_send_menu(struct Header *msg)
     /* L10N: S/MIME options */
     prompt = _("S/MIME (e)ncrypt, (s)ign, encrypt (w)ith, sign (a)s, (b)oth, "
                "or (c)lear? ");
-    /* L10N: S/MIME options
-        The 'f' is undocumented. Please DO NOT translate it. */
-    letters = _("eswabfc");
-    choices = "eswabfc";
+    /* L10N: S/MIME options */
+    letters = _("eswabc");
+    choices = "eswabc";
   }
 
   choice = mutt_multi_choice(prompt, letters);

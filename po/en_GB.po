@@ -847,12 +847,12 @@ msgid "Message written."
 msgstr "Message written."
 
 #: compose.c:1499
-msgid "S/MIME already selected. Clear & continue ? "
-msgstr "S/MIME already selected. Clear & continue ? "
+msgid "S/MIME already selected. Clear and continue ? "
+msgstr "S/MIME already selected. Clear and continue ? "
 
 #: compose.c:1530
-msgid "PGP already selected. Clear & continue ? "
-msgstr "PGP already selected. Clear & continue ? "
+msgid "PGP already selected. Clear and continue ? "
+msgstr "PGP already selected. Clear and continue ? "
 
 #: compress.c:474 compress.c:543 compress.c:701 compress.c:883 mbox.c:1054
 msgid "Unable to lock mailbox!"
@@ -2226,9 +2226,8 @@ msgid "Error in %s, line %d: %s"
 msgstr "Error in %s, line %d: %s"
 
 #: init.c:3093
-#, fuzzy, c-format
 msgid "Warning in %s, line %d: %s"
-msgstr "Error in %s, line %d: %s"
+msgstr "Warning in %s, line %d: %s"
 
 #: init.c:3118
 #, c-format
@@ -2241,9 +2240,8 @@ msgid "source: reading aborted due to too many errors in %s"
 msgstr "source: reading aborted due to too many errors in %s"
 
 #: init.c:3128
-#, fuzzy, c-format
 msgid "source: %d warnings in %s"
-msgstr "source: errors in %s"
+msgstr "source: %d warnings in %s"
 
 #: init.c:3147 mutt_lua.c:416
 #, c-format
@@ -2285,14 +2283,13 @@ msgid "out of arguments"
 msgstr "out of arguments"
 
 #: keymap.c:270
-#, fuzzy, c-format
 msgid "Binding '%s' will alias '%s'"
-msgstr "Warning: Bad IDN '%s' in alias '%s'.\n"
+msgstr "Binding '%s' will alias '%s'"
 
 #: keymap.c:276
-#, fuzzy, c-format
+#, c-format
 msgid "Warning: For menu '%s', binding '%s' will alias '%s'"
-msgstr "Warning: Bad IDN '%s' in alias '%s'.\n"
+msgstr "Warning: For menu '%s', binding '%s' will alias '%s'"
 
 #: keymap.c:571
 msgid "Macros are currently disabled."
@@ -2325,9 +2322,9 @@ msgid "null key sequence"
 msgstr "null key sequence"
 
 #: keymap.c:1006
-#, fuzzy, c-format
+#, c-format
 msgid "Function '%s' not available for menu '%s'"
-msgstr "No decryption engine available for message"
+msgstr "Function '%s' not available for menu '%s'"
 
 #: keymap.c:1070
 msgid "bind: too many arguments"
@@ -3454,19 +3451,19 @@ msgid "Debugging at level %d.\n"
 msgstr "Debugging at level %d.\n"
 
 #: main.c:312
-#, fuzzy, c-format
+#, c-format
 msgid "DEBUG was not defined during compilation. -d Ignored.\n"
-msgstr "DEBUG was not defined during compilation.  Ignored.\n"
+msgstr "DEBUG was not defined during compilation. -d Ignored.\n"
 
 #: main.c:335
-#, fuzzy, c-format
+#, c-format
 msgid "Debugging at file %s.\n"
-msgstr "Debugging at level %d.\n"
+msgstr "Debugging at file %s.\n"
 
 #: main.c:337
-#, fuzzy, c-format
+#, c-format
 msgid "DEBUG was not defined during compilation. -l Ignored.\n"
-msgstr "DEBUG was not defined during compilation.  Ignored.\n"
+msgstr "DEBUG was not defined during compilation. -l Ignored.\n"
 
 #: main.c:517
 #, c-format
@@ -4747,20 +4744,18 @@ msgid "S/MIME (s)ign, sign (a)s, (p)gp, (c)lear, or (o)ppenc mode off? "
 msgstr "S/MIME (s)ign, sign (a)s, (p)gp, (c)lear, or (o)ppenc mode off? "
 
 #. L10N: S/MIME options (opportunistic encryption is on)
-#. The 'f' is undocumented. Please DO NOT translate it.
 #: ncrypt/crypt_gpgme.c:4583
-msgid "sapfco"
-msgstr "sapfco"
+msgid "sapco"
+msgstr "sapco"
 
 #: ncrypt/crypt_gpgme.c:4590
 msgid "PGP (s)ign, sign (a)s, s/(m)ime, (c)lear, or (o)ppenc mode off? "
 msgstr "PGP (s)ign, sign (a)s, s/(m)ime, (c)lear, or (o)ppenc mode off? "
 
 #. L10N: PGP options (opportunistic encryption is on)
-#. The 'f' is undocumented. Please DO NOT translate it.
 #: ncrypt/crypt_gpgme.c:4593
-msgid "samfco"
-msgstr "samfco"
+msgid "samco"
+msgstr "samco"
 
 #. L10N: S/MIME options (opportunistic encryption is off)
 #: ncrypt/crypt_gpgme.c:4606
@@ -4772,10 +4767,8 @@ msgstr ""
 "mode? "
 
 #. L10N: S/MIME options (opportunistic encryption is off)
-#. The 'f' is undocumented. Please DO NOT translate it.
 #: ncrypt/crypt_gpgme.c:4610
-#, fuzzy
-msgid "esabpfco"
+msgid "esabpco"
 msgstr "esabpco"
 
 #. L10N: PGP options (opportunistic encryption is off)
@@ -4788,10 +4781,8 @@ msgstr ""
 "mode? "
 
 #. L10N: PGP options (opportunistic encryption is off)
-#. The 'f' is undocumented. Please DO NOT translate it.
 #: ncrypt/crypt_gpgme.c:4620
-#, fuzzy
-msgid "esabmfco"
+msgid "esabmco"
 msgstr "esabmco"
 
 #: ncrypt/crypt_gpgme.c:4633
@@ -4799,10 +4790,8 @@ msgid "S/MIME (e)ncrypt, (s)ign, sign (a)s, (b)oth, (p)gp or (c)lear? "
 msgstr "S/MIME (e)ncrypt, (s)ign, sign (a)s, (b)oth, (p)gp or (c)lear? "
 
 #. L10N: S/MIME options
-#. The 'f' is undocumented. Please DO NOT translate it.
 #: ncrypt/crypt_gpgme.c:4636
-#, fuzzy
-msgid "esabpfc"
+msgid "esabpc"
 msgstr "esabpc"
 
 #: ncrypt/crypt_gpgme.c:4643
@@ -4810,10 +4799,8 @@ msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, s/(m)ime or (c)lear? "
 msgstr "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, s/(m)ime or (c)lear? "
 
 #. L10N: PGP options
-#. The 'f' is undocumented. Please DO NOT translate it.
 #: ncrypt/crypt_gpgme.c:4646
-#, fuzzy
-msgid "esabmfc"
+msgid "esabmc"
 msgstr "esabmc"
 
 #: ncrypt/crypt_gpgme.c:4671 ncrypt/pgp.c:1757 ncrypt/smime.c:2098
@@ -4889,10 +4876,9 @@ msgstr "PGP (s)ign, sign (a)s, %s format, (c)lear, or (o)ppenc mode off? "
 
 #. L10N: PGP options (inline) (opportunistic encryption is on)
 #. The 'i' is from the "PGP/M(i)ME" or "(i)nline", above.
-#. The 'f' is undocumented. Please DO NOT translate it.
 #: ncrypt/pgp.c:1658
-msgid "safcoi"
-msgstr "safcoi"
+msgid "saico"
+msgstr "saico"
 
 #. L10N: PGP options (opportunistic encryption is on)
 #: ncrypt/pgp.c:1664
@@ -4900,10 +4886,9 @@ msgid "PGP (s)ign, sign (a)s, (c)lear, or (o)ppenc mode off? "
 msgstr "PGP (s)ign, sign (a)s, (c)lear, or (o)ppenc mode off? "
 
 #. L10N: PGP options (opportunistic encryption is on)
-#. The 'f' is undocumented. Please DO NOT translate it.
 #: ncrypt/pgp.c:1667
-msgid "safco"
-msgstr "safco"
+msgid "saco"
+msgstr "saco"
 
 #. L10N: PGP options (inline) (opportunistic encryption is off)
 #: ncrypt/pgp.c:1684
@@ -4917,11 +4902,9 @@ msgstr ""
 
 #. L10N: PGP options (inline) (opportunistic encryption is off)
 #. The 'i' is from the "PGP/M(i)ME" or "(i)nline", above.
-#. The 'f' is undocumented. Please DO NOT translate it.
 #: ncrypt/pgp.c:1691
-#, fuzzy
-msgid "esabfcoi"
-msgstr "esabco"
+msgid "esabico"
+msgstr "esabico"
 
 #. L10N: PGP options (opportunistic encryption is off)
 #: ncrypt/pgp.c:1697
@@ -4929,10 +4912,8 @@ msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, (c)lear, or (o)ppenc mode? "
 msgstr "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, (c)lear, or (o)ppenc mode? "
 
 #. L10N: PGP options (opportunistic encryption is off)
-#. The 'f' is undocumented. Please DO NOT translate it.
 #: ncrypt/pgp.c:1701
-#, fuzzy
-msgid "esabfco"
+msgid "esabco"
 msgstr "esabco"
 
 #. L10N: PGP options (inline)
@@ -4943,11 +4924,9 @@ msgstr "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, %s format, or (c)lear? "
 
 #. L10N: PGP options (inline)
 #. The 'i' is from the "PGP/M(i)ME" or "(i)nline", above.
-#. The 'f' is undocumented. Please DO NOT translate it.
 #: ncrypt/pgp.c:1721
-#, fuzzy
-msgid "esabfci"
-msgstr "esabc"
+msgid "esabic"
+msgstr "esabic"
 
 #. L10N: PGP options
 #: ncrypt/pgp.c:1727
@@ -4955,10 +4934,8 @@ msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, or (c)lear? "
 msgstr "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, or (c)lear? "
 
 #. L10N: PGP options
-#. The 'f' is undocumented. Please DO NOT translate it.
 #: ncrypt/pgp.c:1730
-#, fuzzy
-msgid "esabfc"
+msgid "esabc"
 msgstr "esabc"
 
 #: ncrypt/pgpinvoke.c:286
@@ -4982,11 +4959,6 @@ msgstr "PGP keys matching \"%s\"."
 #: ncrypt/pgpkey.c:550 ncrypt/pgpkey.c:734
 msgid "Can't open /dev/null"
 msgstr "Can't open /dev/null"
-
-#: ncrypt/pgpkey.c:624
-#, c-format
-msgid "%str Do you really want to use the key?"
-msgstr "%str Do you really want to use the key?"
 
 #: ncrypt/pgpkey.c:764
 #, c-format
@@ -5116,10 +5088,9 @@ msgstr ""
 "S/MIME (s)ign, encrypt (w)ith, sign (a)s, (c)lear, or (o)ppenc mode off? "
 
 #. L10N: S/MIME options (opportunistic encryption is on)
-#. The 'f' is undocumented. Please DO NOT translate it.
 #: ncrypt/smime.c:1987
-msgid "swafco"
-msgstr "swafco"
+msgid "swaco"
+msgstr "swaco"
 
 #. L10N: S/MIME options (opportunistic encryption is off)
 #: ncrypt/smime.c:1997
@@ -5131,10 +5102,8 @@ msgstr ""
 "(o)ppenc mode? "
 
 #. L10N: S/MIME options (opportunistic encryption is off)
-#. The 'f' is undocumented. Please DO NOT translate it.
 #: ncrypt/smime.c:2001
-#, fuzzy
-msgid "eswabfco"
+msgid "eswabco"
 msgstr "eswabco"
 
 #. L10N: S/MIME options
@@ -5145,10 +5114,8 @@ msgstr ""
 "S/MIME (e)ncrypt, (s)ign, encrypt (w)ith, sign (a)s, (b)oth, or (c)lear? "
 
 #. L10N: S/MIME options
-#. The 'f' is undocumented. Please DO NOT translate it.
 #: ncrypt/smime.c:2014
-#, fuzzy
-msgid "eswabfc"
+msgid "eswabc"
 msgstr "eswabc"
 
 #: ncrypt/smime.c:2034
@@ -6160,29 +6127,3 @@ msgstr ""
 "\n"
 "Compile options:"
 
-#~ msgid "%s: no such function in map"
-#~ msgstr "%s: no such function in map"
-
-#~ msgid "generate virtual folder from query and time window"
-#~ msgstr "generate virtual folder from query and time window"
-
-#~ msgid "sapco"
-#~ msgstr "sapco"
-
-#~ msgid "samco"
-#~ msgstr "samco"
-
-#~ msgid "saico"
-#~ msgstr "saico"
-
-#~ msgid "saco"
-#~ msgstr "saco"
-
-#~ msgid "esabico"
-#~ msgstr "esabico"
-
-#~ msgid "esabic"
-#~ msgstr "esabic"
-
-#~ msgid "swaco"
-#~ msgstr "swaco"

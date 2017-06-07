@@ -4578,20 +4578,18 @@ static int gpgme_send_menu(struct Header *msg, int is_smime)
       /* L10N: S/MIME options (opportunistic encryption is on) */
       prompt =
           _("S/MIME (s)ign, sign (a)s, (p)gp, (c)lear, or (o)ppenc mode off? ");
-      /* L10N: S/MIME options (opportunistic encryption is on)
-         The 'f' is undocumented. Please DO NOT translate it. */
-      letters = _("sapfco");
-      choices = "SapFCo";
+      /* L10N: S/MIME options (opportunistic encryption is on) */
+      letters = _("sapco");
+      choices = "SapCo";
     }
     else
     {
       /* L10N: PGP options (opportunistic encryption is on) */
       prompt =
           _("PGP (s)ign, sign (a)s, s/(m)ime, (c)lear, or (o)ppenc mode off? ");
-      /* L10N: PGP options (opportunistic encryption is on)
-         The 'f' is undocumented. Please DO NOT translate it. */
-      letters = _("samfco");
-      choices = "SamFCo";
+      /* L10N: PGP options (opportunistic encryption is on) */
+      letters = _("samco");
+      choices = "SamCo";
     }
   }
   /*
@@ -4605,20 +4603,18 @@ static int gpgme_send_menu(struct Header *msg, int is_smime)
       /* L10N: S/MIME options (opportunistic encryption is off) */
       prompt = _("S/MIME (e)ncrypt, (s)ign, sign (a)s, (b)oth, (p)gp, (c)lear, "
                  "or (o)ppenc mode? ");
-      /* L10N: S/MIME options (opportunistic encryption is off)
-         The 'f' is undocumented. Please DO NOT translate it. */
-      letters = _("esabpfco");
-      choices = "esabpfcO";
+      /* L10N: S/MIME options (opportunistic encryption is off) */
+      letters = _("esabpco");
+      choices = "esabpcO";
     }
     else
     {
       /* L10N: PGP options (opportunistic encryption is off) */
       prompt = _("PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, s/(m)ime, (c)lear, "
                  "or (o)ppenc mode? ");
-      /* L10N: PGP options (opportunistic encryption is off)
-         The 'f' is undocumented. Please DO NOT translate it. */
-      letters = _("esabmfco");
-      choices = "esabmfcO";
+      /* L10N: PGP options (opportunistic encryption is off) */
+      letters = _("esabmco");
+      choices = "esabmcO";
     }
   }
   /*
@@ -4631,20 +4627,18 @@ static int gpgme_send_menu(struct Header *msg, int is_smime)
       /* L10N: S/MIME options */
       prompt =
           _("S/MIME (e)ncrypt, (s)ign, sign (a)s, (b)oth, (p)gp or (c)lear? ");
-      /* L10N: S/MIME options
-         The 'f' is undocumented. Please DO NOT translate it. */
-      letters = _("esabpfc");
-      choices = "esabpfc";
+      /* L10N: S/MIME options */
+      letters = _("esabpc");
+      choices = "esabpc";
     }
     else
     {
       /* L10N: PGP options */
       prompt =
           _("PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, s/(m)ime or (c)lear? ");
-      /* L10N: PGP options
-         The 'f' is undocumented. Please DO NOT translate it. */
-      letters = _("esabmfc");
-      choices = "esabmfc";
+      /* L10N: PGP options */
+      letters = _("esabmc");
+      choices = "esabmc";
     }
   }
 
