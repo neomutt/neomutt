@@ -4811,11 +4811,6 @@ msgstr ""
 msgid "Can't open /dev/null"
 msgstr ""
 
-#: ncrypt/pgpkey.c:624
-#, c-format
-msgid "%s Do you really want to use the key?"
-msgstr ""
-
 #: ncrypt/pgpkey.c:764
 #, c-format
 msgid "PGP Key %s."
