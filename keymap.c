@@ -267,14 +267,14 @@ int km_bind_err(char *s, int menu, int op, char *macro, char *descr, struct Buff
           if (err)
           {
             /* err was passed, put the string there */
-            snprintf(err->data, err->dsize, _("Binding '%s' will alias '%s'"),
-                     old_binding, new_binding);
+            snprintf(err->data, err->dsize, _("Binding '%s' will alias '%s'  Before, try: 'bind %s %s noop'  https://neomutt.org/guide/configuration.html#bind-warnings"),
+                     old_binding, new_binding, mutt_getnamebyvalue(menu, Menus), new_binding);
           }
           else
           {
             mutt_error(
-                _("Warning: For menu '%s', binding '%s' will alias '%s'"),
-                mutt_getnamebyvalue(menu, Menus), old_binding, new_binding);
+                _("Binding '%s' will alias '%s'  Before, try: 'bind %s %s noop'  https://neomutt.org/guide/configuration.html#bind-warnings"),
+                old_binding, new_binding, mutt_getnamebyvalue(menu, Menus), new_binding);
           }
           retval = -2;
         }
