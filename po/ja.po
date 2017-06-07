@@ -11,7 +11,7 @@ msgstr ""
 "Project-Id-Version: neomutt-20161104\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
 "POT-Creation-Date: 2017-06-02 12:34+0100\n"
-"PO-Revision-Date: 2017-02-23 20:20+0900\n"
+"PO-Revision-Date: 2017-06-01 13:00+0900\n"
 "Last-Translator: TAKAHASHI Tamotsu <ttakah@lapis.plala.or.jp>\n"
 "Language-Team: mutt-j <mutt-j-users@lists.osdn.me>\n"
 "Language: ja\n"
@@ -2570,9 +2570,8 @@ msgstr "このメッセージを「書きかけ」にする"
 
 # OP_COMPOSE_RENAME_ATTACHMENT つまり名前を変えるとき
 #: keymap_alldefs.h:52
-#, fuzzy
 msgid "send attachment with a different name"
-msgstr "添付ファイルを別の名前で送る: "
+msgstr "添付ファイルを別の名前で送る"
 
 #: keymap_alldefs.h:53
 msgid "rename/move an attached file"
@@ -2661,7 +2660,7 @@ msgstr "メッセージを表示"
 
 #: keymap_alldefs.h:74
 msgid "add, change, or delete a message's label"
-msgstr ""
+msgstr "メッセージのラベルを追加、編集、削除"
 
 #: keymap_alldefs.h:75
 msgid "edit the raw message"
@@ -2785,9 +2784,8 @@ msgid "followup to newsgroup"
 msgstr "%s%s へのフォローアップ?"
 
 #: keymap_alldefs.h:105
-#, fuzzy
 msgid "forward to newsgroup"
-msgstr "%s%s へのフォローアップ?"
+msgstr ""
 
 #: keymap_alldefs.h:106
 msgid "forward a message with comments"
@@ -2798,9 +2796,8 @@ msgid "select the current entry"
 msgstr "現在のエントリを選択"
 
 #: keymap_alldefs.h:108
-#, fuzzy
 msgid "get all children of the current message"
-msgstr "すでに最初のメッセージ。"
+msgstr ""
 
 #: keymap_alldefs.h:109
 #, fuzzy
@@ -2808,9 +2805,8 @@ msgid "get message with Message-Id"
 msgstr "メッセージをヘッダごと編集"
 
 #: keymap_alldefs.h:110
-#, fuzzy
 msgid "get parent of the current message"
-msgstr "すでに最初のメッセージ。"
+msgstr ""
 
 #: keymap_alldefs.h:111
 msgid "reply to all recipients"
@@ -2841,9 +2837,8 @@ msgid "reply to specified mailing list"
 msgstr "指定済みメーリングリスト宛てに返信"
 
 #: keymap_alldefs.h:118
-#, fuzzy
 msgid "load list of all newsgroups from NNTP server"
-msgstr "サーバからメッセージを削除中..."
+msgstr ""
 
 #: keymap_alldefs.h:119
 msgid "execute a macro"
@@ -2968,9 +2963,8 @@ msgid "mark the current subthread as read"
 msgstr "現在のサブスレッドを既読にする"
 
 #: keymap_alldefs.h:149
-#, fuzzy
 msgid "jump to root message in thread"
-msgstr "スレッドの親メッセージに移動"
+msgstr "スレッドのルートメッセージに移動"
 
 #: keymap_alldefs.h:150
 msgid "set a status flag on a message"
@@ -2997,9 +2991,8 @@ msgid "untag messages matching a pattern"
 msgstr "パターンに一致したメッセージのタグをはずす"
 
 #: keymap_alldefs.h:156
-#, fuzzy
 msgid "create a hotkey macro for the current message"
-msgstr "すでに最初のメッセージ。"
+msgstr "現在のメッセージに戻るホットキーマクロを作成"
 
 #: keymap_alldefs.h:157
 msgid "move to the middle of the page"
@@ -3060,11 +3053,11 @@ msgstr "現在のエントリを印刷"
 
 #: keymap_alldefs.h:171
 msgid "really delete the current entry, bypassing the trash folder"
-msgstr ""
+msgstr "ごみ箱に入れず、現在のエントリを即座に削除"
 
 #: keymap_alldefs.h:172
 msgid "really delete the current thread, bypassing the trash folder"
-msgstr ""
+msgstr "ごみ箱に入れず、現在のエントリを即座に削除"
 
 #: keymap_alldefs.h:173
 msgid "query external program for addresses"
@@ -3245,39 +3238,32 @@ msgid "collapse/uncollapse all threads"
 msgstr "すべてのスレッドを展開/非展開"
 
 #: keymap_alldefs.h:216
-#, fuzzy
 msgid "move the highlight to next mailbox"
-msgstr "前のページに移動"
+msgstr "(サイドバー) 次のメールボックスを選択"
 
 #: keymap_alldefs.h:217
-#, fuzzy
 msgid "move the highlight to next mailbox with new mail"
-msgstr "新着のある次のメールボックスを開く"
+msgstr "(サイドバー) 次の新着ありメールボックスを選択"
 
 #: keymap_alldefs.h:218
-#, fuzzy
 msgid "open highlighted mailbox"
-msgstr "メールボックス再オープン中..."
+msgstr "(サイドバー) 選択したメールボックスをオープン"
 
 #: keymap_alldefs.h:219
-#, fuzzy
 msgid "scroll the sidebar down 1 page"
-msgstr "半ページ下にスクロール"
+msgstr "(サイドバー) 1ページ下にスクロール"
 
 #: keymap_alldefs.h:220
-#, fuzzy
 msgid "scroll the sidebar up 1 page"
-msgstr "半ページ上にスクロール"
+msgstr "(サイドバー) 1ページ上にスクロール"
 
 #: keymap_alldefs.h:221
-#, fuzzy
 msgid "move the highlight to previous mailbox"
-msgstr "前のページに移動"
+msgstr "(サイドバー) 前のメールボックスを選択"
 
 #: keymap_alldefs.h:222
-#, fuzzy
 msgid "move the highlight to previous mailbox with new mail"
-msgstr "新着のある次のメールボックスを開く"
+msgstr "(サイドバー) 前の新着ありメールボックスを選択"
 
 #: keymap_alldefs.h:223
 #, fuzzy
@@ -3286,7 +3272,7 @@ msgstr "閲覧法を「メールボックス/全ファイル」間で切替"
 
 #: keymap_alldefs.h:224
 msgid "make the sidebar (in)visible"
-msgstr ""
+msgstr "サイドバーを(不)可にする"
 
 #: keymap_alldefs.h:225
 #, fuzzy
@@ -3294,9 +3280,8 @@ msgid "open a different virtual folder"
 msgstr "別のフォルダをオープン"
 
 #: keymap_alldefs.h:226
-#, fuzzy
 msgid "generate virtual folder from query"
-msgstr "別のフォルダをオープン"
+msgstr ""
 
 #: keymap_alldefs.h:227
 msgid "shifts virtual folder time window forwards"
@@ -3316,38 +3301,31 @@ msgid "modify labels and then hide message"
 msgstr "すでに最初のメッセージ。"
 
 #: keymap_alldefs.h:231
-#, fuzzy
 msgid "read entire thread of the current message"
-msgstr "すでに最初のメッセージ。"
+msgstr ""
 
 # remailer.c の OP_MIX_USE つまり「OK」の説明
 #: keymap_alldefs.h:232
-#, fuzzy
 msgid "accept the chain constructed"
 msgstr "構築されたチェーンを受容"
 
 #: keymap_alldefs.h:233
-#, fuzzy
 msgid "append a remailer to the chain"
 msgstr "チェーンに remailer を追加"
 
 #: keymap_alldefs.h:234
-#, fuzzy
 msgid "insert a remailer into the chain"
 msgstr "チェーンに remailer を挿入"
 
 #: keymap_alldefs.h:235
-#, fuzzy
 msgid "delete a remailer from the chain"
 msgstr "チェーンから remailer を削除"
 
 #: keymap_alldefs.h:236
-#, fuzzy
 msgid "select the previous element of the chain"
 msgstr "前のチェーンエレメントを選択"
 
 #: keymap_alldefs.h:237
-#, fuzzy
 msgid "select the next element of the chain"
 msgstr "次のチェーンエレメントを選択"
 
@@ -3992,21 +3970,19 @@ msgstr "SSL 証明書検査 (連鎖内 %2$d のうち %1$d 個目)"
 #.
 #: mutt_ssl.c:848
 msgid "roas"
-msgstr ""
+msgstr "roas"
 
 #: mutt_ssl.c:852
-#, fuzzy
 msgid "(r)eject, accept (o)nce, (a)ccept always, (s)kip"
-msgstr "r:拒否, o:今回のみ承認, a:常に承認"
+msgstr "r:拒否, o:今回のみ承認, a:常に承認, s:無視"
 
 #: mutt_ssl.c:854 mutt_ssl_gnutls.c:710
 msgid "(r)eject, accept (o)nce, (a)ccept always"
 msgstr "r:拒否, o:今回のみ承認, a:常に承認"
 
 #: mutt_ssl.c:859
-#, fuzzy
 msgid "(r)eject, accept (o)nce, (s)kip"
-msgstr "r:拒否, o:今回のみ承認"
+msgstr "r:拒否, o:今回のみ承認, s:無視"
 
 #: mutt_ssl.c:861 mutt_ssl_gnutls.c:715
 msgid "(r)eject, accept (o)nce"
@@ -4035,7 +4011,7 @@ msgstr "証明書ホスト検査に不合格: %s"
 #. * the correct certificate if it supports multiple hosts.
 #: mutt_ssl.c:1085 mutt_ssl_gnutls.c:1070
 msgid "Warning: unable to set TLS SNI host name"
-msgstr ""
+msgstr "警告: TLS SNI のホスト名が設定不能"
 
 #: mutt_ssl.c:1096
 msgid "I/O error"
@@ -4055,7 +4031,7 @@ msgstr "SSL コンテクスト作成不能"
 
 #: mutt_ssl.c:1187 mutt_ssl.c:1281
 msgid "Warning: error enabling ssl_verify_partial_chains"
-msgstr ""
+msgstr "警告: ssl_verify_partial_chains エラー"
 
 #: mutt_ssl_gnutls.c:116 mutt_ssl_gnutls.c:143
 msgid "Error: no TLS socket open"
