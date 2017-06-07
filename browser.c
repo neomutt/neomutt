@@ -323,14 +323,20 @@ static const char *folder_format_str(char *dest, size_t destlen, size_t col, int
 #endif
         s = NONULL(folder->ff->name);
 
-      snprintf(fn, sizeof(fn), "%s%s", s,
-               folder->ff->local ?
-                   (S_ISLNK(folder->ff->mode) ?
-                        "@" :
-                        (S_ISDIR(folder->ff->mode) ?
-                             "/" :
-                             ((folder->ff->mode & S_IXUSR) != 0 ? "*" : ""))) :
-                   "");
+      char *filetype_symbol = "";
+      if (folder->ff->local)
+      {
+        if (S_ISLNK(folder->ff->mode))
+          filetype_symbol = "@";
+        else
+        {
+          if (S_ISDIR(folder->ff->mode))
+            filetype_symbol = "/";
+          else if ((folder->ff->mode & S_IXUSR) != 0)
+            filetype_symbol = "*";
+        }
+      }
+      snprintf(fn, sizeof(fn), "%s%s", s, filetype_symbol);
 
       mutt_format_s(dest, destlen, fmt, fn);
       break;
