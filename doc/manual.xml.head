@@ -3671,6 +3671,23 @@ set alias_file=~/.mail_aliases
       brackets.</para>
       <para>The special function
       <literal>&lt;noop&gt;</literal>unbinds the specified key sequence.</para>
+
+      <sect2 id="bind-warnings">
+        <title>Warnings about Duplicated Bindings</title>
+        <para>Due to a limitation of Mutt, creating key bindings, or macros,
+        will overwrite existing mappings with similar, shorter, names.</para>
+        <screen>
+bind index g  group-reply
+bind index gg first-entry</screen>
+        <para>In this example, the <literal>g</literal> binding will be
+        overwritten and cannot be used.  Newer versions of Mutt will warn the
+        user about this.</para>
+        <para>To avoid warnings on startup, first set the shorter binding to
+        <literal>noop</literal> (no operation).</para>
+        <screen>
+bind index g  noop
+bind index gg first-entry</screen>
+      </sect2>
     </sect1>
 
     <sect1 id="charset-hook">
