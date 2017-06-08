@@ -20,13 +20,14 @@
 
 #include "config.h"
 #include <stddef.h>
+#include <errno.h>
 #include <lmdb.h>
 #include "backend.h"
 #include "lib.h"
 
 /* The maximum size of the database file (2GiB).
  * The file is mmap(2)'d into memory. */
-const size_t LMDB_DB_SIZE = 2147483648;
+static size_t LMDB_DB_SIZE = 2147483648;
 
 enum mdb_txn_mode
 {
@@ -102,9 +103,18 @@ static void *hcache_lmdb_open(const char *path)
     return NULL;
   }
 
-  mdb_env_set_mapsize(ctx->env, LMDB_DB_SIZE);
+  rc = ENOMEM;
+  while (LMDB_DB_SIZE)
+  {
+    mdb_env_set_mapsize(ctx->env, LMDB_DB_SIZE);
+    rc = mdb_env_open(ctx->env, path, MDB_NOSUBDIR, 0644);
+    if (rc != ENOMEM)
+      break;
 
-  rc = mdb_env_open(ctx->env, path, MDB_NOSUBDIR, 0644);
+    LMDB_DB_SIZE >>= 1;
+    mutt_debug(2, "hcache_open_lmdb: reducing dbsize to %zu", LMDB_DB_SIZE);
+  }
+
   if (rc != MDB_SUCCESS)
   {
     mutt_debug(2, "hcache_open_lmdb: mdb_env_open: %s\n", mdb_strerror(rc));
