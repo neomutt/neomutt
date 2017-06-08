@@ -107,14 +107,13 @@ struct AttachPtr **mutt_gen_attach_list(struct Body *m, int parent_type,
                                         short *idxmax, int level, int compose)
 {
   struct AttachPtr *new = NULL;
-  int i;
 
   for (; m; m = m->next)
   {
     if (*idxlen == *idxmax)
     {
       safe_realloc(&idx, sizeof(struct AttachPtr *) * ((*idxmax) += 5));
-      for (i = *idxlen; i < *idxmax; i++)
+      for (int i = *idxlen; i < *idxmax; i++)
         idx[i] = NULL;
     }
 

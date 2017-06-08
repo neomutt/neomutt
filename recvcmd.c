@@ -52,13 +52,11 @@ static bool check_msg(struct Body *b, bool err)
 
 static bool check_all_msg(struct AttachPtr **idx, short idxlen, struct Body *cur, bool err)
 {
-  short i;
-
   if (cur && !check_msg(cur, err))
     return false;
   else if (!cur)
   {
-    for (i = 0; i < idxlen; i++)
+    for (short i = 0; i < idxlen; i++)
     {
       if (idx[i]->content->tagged)
       {
@@ -118,7 +116,6 @@ static short count_tagged_children(struct AttachPtr **idx, short idxlen, short i
 void mutt_attach_bounce(FILE *fp, struct Header *hdr, struct AttachPtr **idx,
                         short idxlen, struct Body *cur)
 {
-  short i;
   char prompt[STRING];
   char buf[HUGE_STRING];
   char *err = NULL;
@@ -145,7 +142,7 @@ void mutt_attach_bounce(FILE *fp, struct Header *hdr, struct AttachPtr **idx,
   }
   else
   {
-    for (i = 0; i < idxlen; i++)
+    for (short i = 0; i < idxlen; i++)
     {
       if (idx[i]->content->tagged)
       {
@@ -218,7 +215,7 @@ void mutt_attach_bounce(FILE *fp, struct Header *hdr, struct AttachPtr **idx,
     ret = mutt_bounce_message(fp, cur->hdr, adr);
   else
   {
-    for (i = 0; i < idxlen; i++)
+    for (short i = 0; i < idxlen; i++)
     {
       if (idx[i]->content->tagged)
         if (mutt_bounce_message(fp, idx[i]->content->hdr, adr))
@@ -243,8 +240,6 @@ void mutt_attach_bounce(FILE *fp, struct Header *hdr, struct AttachPtr **idx,
 void mutt_attach_resend(FILE *fp, struct Header *hdr, struct AttachPtr **idx,
                         short idxlen, struct Body *cur)
 {
-  short i;
-
   if (!check_all_msg(idx, idxlen, cur, true))
     return;
 
@@ -252,7 +247,7 @@ void mutt_attach_resend(FILE *fp, struct Header *hdr, struct AttachPtr **idx,
     mutt_resend_message(fp, Context, cur->hdr);
   else
   {
-    for (i = 0; i < idxlen; i++)
+    for (short i = 0; i < idxlen; i++)
       if (idx[i]->content->tagged)
         mutt_resend_message(fp, Context, idx[i]->content->hdr);
   }
@@ -311,12 +306,11 @@ static bool is_parent(short i, struct AttachPtr **idx, short idxlen, struct Body
 static struct Header *find_parent(struct AttachPtr **idx, short idxlen,
                                   struct Body *cur, short nattach)
 {
-  short i;
   struct Header *parent = NULL;
 
   if (cur)
   {
-    for (i = 0; i < idxlen; i++)
+    for (short i = 0; i < idxlen; i++)
     {
       if (mutt_is_message_type(idx[i]->content->type, idx[i]->content->subtype) &&
           is_parent(i, idx, idxlen, cur))
@@ -380,7 +374,6 @@ static void attach_forward_bodies(FILE *fp, struct Header *hdr,
                                   struct AttachPtr **idx, short idxlen,
                                   struct Body *cur, short nattach, int flags)
 {
-  short i;
   short mime_fwd_all = 0;
   short mime_fwd_any = 1;
   struct Header *parent = NULL;
@@ -500,7 +493,7 @@ static void attach_forward_bodies(FILE *fp, struct Header *hdr,
 
     if (!mime_fwd_all)
     {
-      for (i = 0; i < idxlen; i++)
+      for (int i = 0; i < idxlen; i++)
       {
         if (idx[i]->content->tagged && mutt_can_decode(idx[i]->content))
         {
@@ -551,7 +544,6 @@ static void attach_forward_msgs(FILE *fp, struct Header *hdr, struct AttachPtr *
 {
   struct Header *curhdr = NULL;
   struct Header *tmphdr = NULL;
-  short i;
   int rc;
 
   struct Body **last = NULL;
@@ -565,7 +557,7 @@ static void attach_forward_msgs(FILE *fp, struct Header *hdr, struct AttachPtr *
     curhdr = cur->hdr;
   else
   {
-    for (i = 0; i < idxlen; i++)
+    for (short i = 0; i < idxlen; i++)
       if (idx[i]->content->tagged)
       {
         curhdr = idx[i]->content->hdr;
@@ -617,7 +609,7 @@ static void attach_forward_msgs(FILE *fp, struct Header *hdr, struct AttachPtr *
     }
     else
     {
-      for (i = 0; i < idxlen; i++)
+      for (short i = 0; i < idxlen; i++)
       {
         if (idx[i]->content->tagged)
         {
@@ -637,7 +629,7 @@ static void attach_forward_msgs(FILE *fp, struct Header *hdr, struct AttachPtr *
       mutt_copy_body(fp, last, cur);
     else
     {
-      for (i = 0; i < idxlen; i++)
+      for (short i = 0; i < idxlen; i++)
         if (idx[i]->content->tagged)
         {
           mutt_copy_body(fp, last, idx[i]->content);
@@ -691,11 +683,10 @@ static int attach_reply_envelope_defaults(struct Envelope *env, struct AttachPtr
 {
   struct Envelope *curenv = NULL;
   struct Header *curhdr = NULL;
-  short i;
 
   if (!parent)
   {
-    for (i = 0; i < idxlen; i++)
+    for (short i = 0; i < idxlen; i++)
     {
       if (idx[i]->content->tagged)
       {
@@ -735,7 +726,7 @@ static int attach_reply_envelope_defaults(struct Envelope *env, struct AttachPtr
     }
     else
     {
-      for (i = 0; i < idxlen; i++)
+      for (short i = 0; i < idxlen; i++)
       {
         if (idx[i]->content->tagged &&
             mutt_fetch_recips(env, idx[i]->content->hdr->env, flags) == -1)
@@ -759,7 +750,7 @@ static int attach_reply_envelope_defaults(struct Envelope *env, struct AttachPtr
   {
     struct List **p = NULL, **q = NULL;
 
-    for (i = 0; i < idxlen; i++)
+    for (short i = 0; i < idxlen; i++)
     {
       if (idx[i]->content->tagged)
         mutt_add_to_reference_headers(env, idx[i]->content->hdr->env, &p, &q);
@@ -798,7 +789,6 @@ void mutt_attach_reply(FILE *fp, struct Header *hdr, struct AttachPtr **idx,
   short nattach = 0;
   struct Header *parent = NULL;
   struct Header *tmphdr = NULL;
-  short i;
 
   struct State st;
   char tmpbody[_POSIX_PATH_MAX];
@@ -857,7 +847,7 @@ void mutt_attach_reply(FILE *fp, struct Header *hdr, struct AttachPtr **idx,
       attach_include_reply(fp, tmpfp, cur->hdr, flags);
     else
     {
-      for (i = 0; i < idxlen; i++)
+      for (short i = 0; i < idxlen; i++)
       {
         if (idx[i]->content->tagged)
           attach_include_reply(fp, tmpfp, idx[i]->content->hdr, flags);
@@ -898,7 +888,7 @@ void mutt_attach_reply(FILE *fp, struct Header *hdr, struct AttachPtr **idx,
     }
     else
     {
-      for (i = 0; i < idxlen; i++)
+      for (short i = 0; i < idxlen; i++)
       {
         if (idx[i]->content->tagged && mutt_can_decode(idx[i]->content))
         {

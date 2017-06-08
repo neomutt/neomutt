@@ -327,7 +327,6 @@ int mutt_builtin_editor(const char *path, struct Header *msg, struct Header *cur
   char tmp[LONG_STRING];
   int abort = 0;
   int done = 0;
-  int i;
   char *p = NULL;
 
   scrollok(stdscr, true);
@@ -398,7 +397,7 @@ int mutt_builtin_editor(const char *path, struct Header *msg, struct Header *cur
           addstr("-----\n");
           addstr(_("Message contains:\n"));
           be_print_header(msg->env);
-          for (i = 0; i < buflen; i++)
+          for (int i = 0; i < buflen; i++)
             addstr(buf[i]);
           /* L10N:
              This entry is shown AFTER the message content,
