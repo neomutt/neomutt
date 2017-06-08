@@ -3317,7 +3317,6 @@ void mutt_init (int skip_sys_rc, LIST *commands)
   char *domain = NULL;
   int i, need_pause = 0;
   BUFFER err;
-  char *tty;
 
   mutt_buffer_init (&err);
   err.dsize = STRING;
@@ -3510,20 +3509,6 @@ void mutt_init (int skip_sys_rc, LIST *commands)
   if (getsid(0) == getpid())
     unset_option (OPTSUSPEND);
 #endif
-
-  /* GPG_TTY is used by the ncurses pinentry program for GPG.  GPG is
-   * sometimes also used to decrypt passwords in programs launched by
-   * mutt, such as using msmtp as $sendmail, so we set it here as
-   * opposed to inside pgp.c
-   *
-   * We also call setenv() because send_msg() is not converted to use
-   * the mutt envlist.
-   */
-  if ((tty = ttyname(0)))
-  {
-    setenv("GPG_TTY", tty, 0);
-    mutt_envlist_set ("GPG_TTY", tty, 0);
-  }
 
   mutt_init_history ();
 
