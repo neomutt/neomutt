@@ -182,7 +182,7 @@ int mutt_protect(struct Header *msg, char *keylist)
   {
     /* Set sender (necessary for e.g. PKA).  */
     const char *mailbox = NULL;
-    const struct Address *from = msg->env->from;
+    struct Address *from = msg->env->from;
 
     if (!from)
       from = mutt_default_from();
@@ -195,6 +195,9 @@ int mutt_protect(struct Header *msg, char *keylist)
       crypt_smime_set_sender(mailbox);
     else if ((WithCrypto & APPLICATION_PGP) && (msg->security & APPLICATION_PGP))
       crypt_pgp_set_sender(mailbox);
+
+    if (!msg->env->from)
+      rfc822_free_address(&from);
   }
 
   if (msg->security & SIGN)

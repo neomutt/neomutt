@@ -1412,8 +1412,11 @@ struct Envelope *mutt_read_rfc822_header(FILE *f, struct Header *hdr,
     }
   }
 
-  while ((loc = ftello(f)), *(line = mutt_read_rfc822_line(f, line, &linelen)) != 0)
+  while ((loc = ftello(f)) != -1)
   {
+    line = mutt_read_rfc822_line(f, line, &linelen);
+    if (*line == '\0')
+      break;
     if ((p = strpbrk(line, ": \t")) == NULL || *p != ':')
     {
       char return_path[LONG_STRING];
