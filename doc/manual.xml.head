@@ -5485,8 +5485,7 @@ set spam_separator=", "
             readability</title>
             <screen>
 set my_cfgdir = $HOME/mutt/config
-source $my_cfgdir/hooks
-source $my_cfgdir/macros
+source $my_cfgdir/hooks $my_cfgdir/macros
 <emphasis role="comment"># more source commands...</emphasis>
 </screen>
           </example>
@@ -5593,8 +5592,8 @@ mailboxes $my_mx +mailbox3</screen>
       <para>Usage:</para>
       <cmdsynopsis>
         <command>source</command>
-        <arg choice="plain">
-          <replaceable class="parameter">filename</replaceable>
+        <arg choice="plain" rep="repeat">
+          <replaceable class="parameter">file</replaceable>
         </arg>
       </cmdsynopsis>
       <para>This command allows the inclusion of initialization commands from

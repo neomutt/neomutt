@@ -4482,7 +4482,7 @@ static int parse_ignore(struct Buffer *buf, struct Buffer *s,
                         unsigned long data, struct Buffer *err);
 static int parse_unignore(struct Buffer *buf, struct Buffer *s,
                           unsigned long data, struct Buffer *err);
-static int parse_source(struct Buffer *buf, struct Buffer *s,
+static int parse_source(struct Buffer *buf, struct Buffer *token,
                         unsigned long data, struct Buffer *err);
 static int parse_set(struct Buffer *buf, struct Buffer *s, unsigned long data,
                      struct Buffer *err);

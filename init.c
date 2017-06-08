@@ -3136,24 +3136,31 @@ static int source_rc(const char *rcfile_path, struct Buffer *err)
 
 #undef MAXERRS
 
-static int parse_source(struct Buffer *tmp, struct Buffer *s,
+static int parse_source(struct Buffer *tmp, struct Buffer *token,
                         unsigned long data, struct Buffer *err)
 {
   char path[_POSIX_PATH_MAX];
 
-  if (mutt_extract_token(tmp, s, 0) != 0)
+  do
   {
-    snprintf(err->data, err->dsize, _("source: error at %s"), s->dptr);
-    return -1;
-  }
-  if (MoreArgs(s))
-  {
-    strfcpy(err->data, _("source: too many arguments"), err->dsize);
-    return -1;
-  }
-  strfcpy(path, tmp->data, sizeof(path));
-  mutt_expand_path(path, sizeof(path));
-  return source_rc(path, err);
+    if (mutt_extract_token(tmp, token, 0) != 0)
+    {
+      snprintf(err->data, err->dsize, _("source: error at %s"), token->dptr);
+      return -1;
+    }
+    strfcpy(path, tmp->data, sizeof(path));
+    mutt_expand_path(path, sizeof(path));
+
+    if (source_rc(path, err) < 0)
+    {
+      snprintf(err->data, err->dsize,
+               _("source: file %s could not be sourced."), path);
+      return -1;
+    }
+
+  } while (MoreArgs(token));
+
+  return 0;
 }
 
 /* line         command to execute
