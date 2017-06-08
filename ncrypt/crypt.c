@@ -195,6 +195,9 @@ int mutt_protect(struct Header *msg, char *keylist)
       crypt_smime_set_sender(mailbox);
     else if ((WithCrypto & APPLICATION_PGP) && (msg->security & APPLICATION_PGP))
       crypt_pgp_set_sender(mailbox);
+
+    if (!msg->env->from)
+      FREE(&from);
   }
 
   if (msg->security & SIGN)
