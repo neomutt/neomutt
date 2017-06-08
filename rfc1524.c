@@ -437,7 +437,7 @@ int rfc1524_expand_filename(char *nametemplate, char *oldfile, char *newfile, si
 {
   int i, j, k, ps;
   char *s = NULL;
-  short lmatch = 0, rmatch = 0;
+  bool lmatch = false, rmatch = false;
   char left[_POSIX_PATH_MAX];
   char right[_POSIX_PATH_MAX];
 
@@ -467,7 +467,7 @@ int rfc1524_expand_filename(char *nametemplate, char *oldfile, char *newfile, si
      * (if there is one).
      */
 
-    lmatch = 1;
+    lmatch = true;
     ps = 0;
     for (i = 0; nametemplate[i]; i++)
     {
@@ -480,7 +480,7 @@ int rfc1524_expand_filename(char *nametemplate, char *oldfile, char *newfile, si
       /* note that the following will _not_ read beyond oldfile's end. */
 
       if (lmatch && nametemplate[i] != oldfile[i])
-        lmatch = 0;
+        lmatch = false;
     }
 
     if (ps)
@@ -500,14 +500,14 @@ int rfc1524_expand_filename(char *nametemplate, char *oldfile, char *newfile, si
        *   condition (j >= (lmatch ? i : 0)).
        */
 
-      rmatch = 1;
+      rmatch = true;
 
       for (j = mutt_strlen(oldfile) - 1, k = mutt_strlen(nametemplate) - 1;
            j >= (lmatch ? i : 0) && k >= i + 2; j--, k--)
       {
         if (nametemplate[k] != oldfile[j])
         {
-          rmatch = 0;
+          rmatch = false;
           break;
         }
       }
@@ -515,7 +515,7 @@ int rfc1524_expand_filename(char *nametemplate, char *oldfile, char *newfile, si
       /* Now, check if we had a full match. */
 
       if (k >= i + 2)
-        rmatch = 0;
+        rmatch = false;
 
       if (lmatch)
         *left = 0;

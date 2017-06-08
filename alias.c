@@ -55,7 +55,7 @@ static struct Address *expand_aliases_r(struct Address *a, struct List **expn)
 {
   struct Address *head = NULL, *last = NULL, *t = NULL, *w = NULL;
   struct List *u = NULL;
-  char i;
+  bool i;
   const char *fqdn = NULL;
 
   while (a)
@@ -66,13 +66,13 @@ static struct Address *expand_aliases_r(struct Address *a, struct List **expn)
 
       if (t)
       {
-        i = 0;
+        i = false;
         for (u = *expn; u; u = u->next)
         {
           if (mutt_strcmp(a->mailbox, u->data) == 0) /* alias already found */
           {
             mutt_debug(1, "expand_aliases_r(): loop in alias found for '%s'\n", a->mailbox);
-            i = 1;
+            i = true;
             break;
           }
         }

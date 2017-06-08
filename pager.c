@@ -204,7 +204,8 @@ static void resolve_color(struct Line *lineInfo, int n, int cnt, int flags,
   int def_color;         /* color without syntax highlight */
   int color;             /* final color */
   static int last_color; /* last color set */
-  int search = 0, i, m;
+  bool search = false;
+  int i, m;
 
   if (!cnt)
     last_color = -1; /* force attrset() */
@@ -276,7 +277,7 @@ static void resolve_color(struct Line *lineInfo, int n, int cnt, int flags,
       if (cnt != (lineInfo[m].search)[i].last)
       {
         color = ColorDefs[MT_COLOR_SEARCH];
-        search = 1;
+        search = true;
         break;
       }
     }
@@ -737,7 +738,9 @@ static void resolve_types(char *buf, char *raw, struct Line *lineInfo, int n,
 {
   struct ColorLine *color_line = NULL;
   regmatch_t pmatch[1], smatch[1];
-  int found, offset, null_rx, i;
+  bool found;
+  bool null_rx;
+  int offset, i;
 
   if (n == 0 || ISHEADER(lineInfo[n - 1].type))
   {
@@ -882,8 +885,8 @@ static void resolve_types(char *buf, char *raw, struct Line *lineInfo, int n,
       if (!buf[offset])
         break;
 
-      found = 0;
-      null_rx = 0;
+      found = false;
+      null_rx = false;
       if (lineInfo[n].type == MT_COLOR_HDEFAULT)
         color_line = ColorHdrList;
       else
@@ -900,7 +903,7 @@ static void resolve_types(char *buf, char *raw, struct Line *lineInfo, int n,
                * Yes, this really happened. See #3888 */
               if (lineInfo[n].chunks == SHRT_MAX)
               {
-                null_rx = 0;
+                null_rx = false;
                 break;
               }
               if (++(lineInfo[n].chunks) > 1)
@@ -918,11 +921,11 @@ static void resolve_types(char *buf, char *raw, struct Line *lineInfo, int n,
               (lineInfo[n].syntax)[i].first = pmatch[0].rm_so;
               (lineInfo[n].syntax)[i].last = pmatch[0].rm_eo;
             }
-            found = 1;
-            null_rx = 0;
+            found = true;
+            null_rx = false;
           }
           else
-            null_rx = 1; /* empty regexp; don't add it, but keep looking */
+            null_rx = true; /* empty regexp; don't add it, but keep looking */
         }
         color_line = color_line->next;
       }
@@ -954,8 +957,8 @@ static void resolve_types(char *buf, char *raw, struct Line *lineInfo, int n,
       if (!buf[offset])
         break;
 
-      found = 0;
-      null_rx = 0;
+      found = false;
+      null_rx = false;
       for (color_line = ColorAttachList; color_line; color_line = color_line->next)
       {
         if (regexec(&color_line->rx, buf + offset, 1, pmatch, (offset ? REG_NOTBOL : 0)) == 0)
@@ -1379,7 +1382,8 @@ static int display_line(FILE *f, LOFF_T *last_pos, struct Line **lineInfo, int n
   size_t buflen = 0;
   unsigned char *buf_ptr = buf;
   int ch, vch, col, cnt, b_read;
-  int buf_ready = 0, change_last = 0;
+  int buf_ready = 0;
+  bool change_last = false;
   int special;
   int offset;
   int def_color;
@@ -1391,7 +1395,7 @@ static int display_line(FILE *f, LOFF_T *last_pos, struct Line **lineInfo, int n
   if (n == *last)
   {
     (*last)++;
-    change_last = 1;
+    change_last = true;
   }
 
   if (*last == *max)
@@ -1972,7 +1976,8 @@ int mutt_pager(const char *banner, const char *fname, int flags, struct Pager *e
   char tmphelp[SHORT_STRING * 2];
   int i, ch = 0, rc = -1;
   int err, first = 1;
-  int r = -1, wrapped = 0, searchctx = 0;
+  int r = -1, searchctx = 0;
+  bool wrapped = false;
 
   struct Menu *pager_menu = NULL;
   int old_PagerIndexLines; /* some people want to resize it
@@ -2098,7 +2103,7 @@ int mutt_pager(const char *banner, const char *fname, int flags, struct Pager *e
     }
     mutt_curs_set(1);
 
-    int do_new_mail = 0;
+    bool do_new_mail = false;
 
     if (Context && !option(OPTATTACHMSG))
     {
@@ -2128,7 +2133,7 @@ int mutt_pager(const char *banner, const char *fname, int flags, struct Pager *e
             if (h && !h->read)
             {
               mutt_message(_("New mail in this mailbox."));
-              do_new_mail = 1;
+              do_new_mail = true;
               break;
             }
           }
@@ -2320,7 +2325,7 @@ int mutt_pager(const char *banner, const char *fname, int flags, struct Pager *e
       case OP_SEARCH_OPPOSITE:
         if (rd.SearchCompiled)
         {
-          wrapped = 0;
+          wrapped = false;
 
           if (SearchContext > 0 && SearchContext < rd.pager_window->rows)
             searchctx = SearchContext;
@@ -2346,7 +2351,7 @@ int mutt_pager(const char *banner, const char *fname, int flags, struct Pager *e
             else
             {
               mutt_message(_("Search wrapped to top."));
-              wrapped = 1;
+              wrapped = true;
               goto search_next;
             }
           }
@@ -2367,7 +2372,7 @@ int mutt_pager(const char *banner, const char *fname, int flags, struct Pager *e
             else
             {
               mutt_message(_("Search wrapped to bottom."));
-              wrapped = 1;
+              wrapped = true;
               goto search_next;
             }
           }
@@ -2403,7 +2408,7 @@ int mutt_pager(const char *banner, const char *fname, int flags, struct Pager *e
             else
               ch = OP_SEARCH_OPPOSITE;
 
-            wrapped = 0;
+            wrapped = false;
             goto search_next;
           }
         }

@@ -16,6 +16,7 @@
  */
 
 #include "config.h"
+#include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include "lib.h"
@@ -85,7 +86,7 @@ unsigned char *pgp_read_packet(FILE *fp, size_t *len)
 
   if (ctb & 0x40) /* handle PGP 5.0 packets. */
   {
-    int partial = 0;
+    bool partial = false;
     pbuf[0] = ctb;
     used++;
 
@@ -100,7 +101,7 @@ unsigned char *pgp_read_packet(FILE *fp, size_t *len)
       if (b < 192)
       {
         material = b;
-        partial = 0;
+        partial = false;
       }
       else if (192 <= b && b <= 223)
       {
@@ -111,12 +112,12 @@ unsigned char *pgp_read_packet(FILE *fp, size_t *len)
           goto bail;
         }
         material += b + 192;
-        partial = 0;
+        partial = false;
       }
       else if (b < 255)
       {
         material = 1 << (b & 0x1f);
-        partial = 1;
+        partial = true;
       }
       else
       /* b == 255 */
@@ -131,7 +132,7 @@ unsigned char *pgp_read_packet(FILE *fp, size_t *len)
         material |= buf[1] << 16;
         material |= buf[2] << 8;
         material |= buf[3];
-        partial = 0;
+        partial = false;
       }
 
       if (read_material(material, &used, fp) == -1)

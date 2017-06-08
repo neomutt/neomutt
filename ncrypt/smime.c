@@ -383,7 +383,7 @@ static struct SmimeKey *smime_select_key(struct SmimeKey *keys, char *query)
   char title[256];
   struct Menu *menu = NULL;
   char *s = "";
-  int done = 0;
+  bool done = false;
 
   for (table_index = 0, key = keys; key; key = key->next)
   {
@@ -419,7 +419,7 @@ static struct SmimeKey *smime_select_key(struct SmimeKey *keys, char *query)
 
   mutt_clear_error();
 
-  done = 0;
+  done = false;
   while (!done)
   {
     switch (mutt_menu_loop(menu))
@@ -452,10 +452,10 @@ static struct SmimeKey *smime_select_key(struct SmimeKey *keys, char *query)
         }
 
         selected_key = table[menu->current];
-        done = 1;
+        done = true;
         break;
       case OP_EXIT:
-        done = 1;
+        done = true;
         break;
     }
   }
@@ -802,7 +802,7 @@ static void _smime_getkeys(char *mailbox)
 void smime_getkeys(struct Envelope *env)
 {
   struct Address *t = NULL;
-  int found = 0;
+  bool found = false;
 
   if (option(OPTSDEFAULTDECRYPTKEY) && SmimeDefaultKey && *SmimeDefaultKey)
   {
@@ -817,13 +817,13 @@ void smime_getkeys(struct Envelope *env)
   for (t = env->to; !found && t; t = t->next)
     if (mutt_addr_is_user(t))
     {
-      found = 1;
+      found = true;
       _smime_getkeys(t->mailbox);
     }
   for (t = env->cc; !found && t; t = t->next)
     if (mutt_addr_is_user(t))
     {
-      found = 1;
+      found = true;
       _smime_getkeys(t->mailbox);
     }
   if (!found && (t = mutt_default_from()))

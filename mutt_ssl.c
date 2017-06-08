@@ -482,7 +482,7 @@ static bool hostname_match(const char *hostname, const char *certname)
 static int ssl_init(void)
 {
   char path[_POSIX_PATH_MAX];
-  static unsigned char init_complete = 0;
+  static bool init_complete = false;
 
   if (init_complete)
     return 0;
@@ -516,7 +516,7 @@ static int ssl_init(void)
    * itself might clobber the last SSL error. */
   SSL_load_error_strings();
   SSL_library_init();
-  init_complete = 1;
+  init_complete = true;
   return 0;
 }
 
@@ -676,7 +676,7 @@ static int check_host(X509 *x509cert, const char *hostname, char *err, size_t er
 #endif
 
   /* Try the DNS subjectAltNames. */
-  match_found = 0;
+  match_found = false;
   if ((subj_alt_names = X509_get_ext_d2i(x509cert, NID_subject_alt_name, NULL, NULL)))
   {
     subj_alt_names_count = sk_GENERAL_NAME_num(subj_alt_names);

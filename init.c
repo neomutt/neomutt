@@ -148,7 +148,7 @@ static int parse_regex(int idx, struct Buffer *tmp, struct Buffer *err)
 
   if (!ptr->pattern || (mutt_strcmp(ptr->pattern, tmp->data) != 0))
   {
-    int not = 0;
+    bool not = false;
 
     /* $mask is case-sensitive */
     if (mutt_strcmp(MuttVars[idx].option, "mask") != 0)
@@ -159,7 +159,7 @@ static int parse_regex(int idx, struct Buffer *tmp, struct Buffer *err)
     {
       if (*p == '!')
       {
-        not = 1;
+        not = true;
         p++;
       }
     }

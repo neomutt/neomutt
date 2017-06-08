@@ -29,6 +29,7 @@
 #include "config.h"
 #include <ctype.h>
 #include <errno.h>
+#include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -104,7 +105,7 @@ static char single_char_tokens[] = "[]{},;|";
 static char *get_token(char *d, size_t l, char *s)
 {
   char *t = NULL;
-  short is_quoted = 0;
+  bool is_quoted = false;
   char *dd = d;
 
   if (Debug)
@@ -141,7 +142,7 @@ static char *get_token(char *d, size_t l, char *s)
     }
 
     s++;
-    is_quoted = 1;
+    is_quoted = true;
   }
 
   for (t = s; *t && --l > 0; t++)
@@ -889,14 +890,14 @@ static int handle_docline(char *l, FILE *out, int docstat)
     }
     else if (*s == '$')
     {
-      int output_dollar = 0;
+      bool output_dollar = false;
       char *ref = NULL;
       char save;
 
       ++s;
       if (*s == '$')
       {
-        output_dollar = 1;
+        output_dollar = true;
         ++s;
       }
       if (*s == '$')

@@ -933,8 +933,8 @@ static const char *Function_not_permitted =
 
 void mutt_view_attachments(struct Header *hdr)
 {
-  int secured = 0;
-  int need_secured = 0;
+  bool secured = false;
+  bool need_secured = false;
 
   char helpstr[LONG_STRING];
   struct Menu *menu = NULL;
@@ -959,7 +959,7 @@ void mutt_view_attachments(struct Header *hdr)
   if (WithCrypto && ((hdr->security & ENCRYPT) ||
                      (mutt_is_application_smime(hdr->content) & SMIMEOPAQUE)))
   {
-    need_secured = 1;
+    need_secured = true;
 
     if ((hdr->security & ENCRYPT) && !crypt_valid_passphrase(hdr->security))
     {
@@ -990,7 +990,7 @@ void mutt_view_attachments(struct Header *hdr)
         }
       }
       else
-        need_secured = 0;
+        need_secured = false;
     }
     if ((WithCrypto & APPLICATION_PGP) && (hdr->security & APPLICATION_PGP))
     {
@@ -998,7 +998,7 @@ void mutt_view_attachments(struct Header *hdr)
           mutt_is_malformed_multipart_pgp_encrypted(hdr->content))
         secured = !crypt_pgp_decrypt_mime(msg->fp, &fp, hdr->content, &cur);
       else
-        need_secured = 0;
+        need_secured = false;
     }
 
     if (need_secured && !secured)

@@ -185,7 +185,7 @@ static void shrink_histfile(void)
   int line, hclass, read;
   char *linebuf = NULL, *p = NULL;
   size_t buflen;
-  int regen_file = 0;
+  bool regen_file = false;
   struct Hash *dup_hashes[HC_LAST] = { 0 };
 
   if ((f = fopen(HistFile, "r")) == NULL)
@@ -210,7 +210,7 @@ static void shrink_histfile(void)
     *p = '\0';
     if (option(OPTHISTREMOVEDUPS) && (dup_hash_inc(dup_hashes[hclass], linebuf + read) > 1))
     {
-      regen_file = 1;
+      regen_file = true;
       continue;
     }
     n[hclass]++;
@@ -220,7 +220,7 @@ static void shrink_histfile(void)
     for (hclass = HC_FIRST; hclass < HC_LAST; hclass++)
       if (n[hclass] > SaveHist)
       {
-        regen_file = 1;
+        regen_file = true;
         break;
       }
 

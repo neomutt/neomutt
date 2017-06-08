@@ -445,7 +445,8 @@ static struct PgpKeyInfo *pgp_select_key(struct PgpKeyInfo *keys,
   int keymax;
   struct PgpUid **KeyTable = NULL;
   struct Menu *menu = NULL;
-  int i, done = 0;
+  int i;
+  bool done = false;
   char helpstr[LONG_STRING], buf[LONG_STRING], tmpbuf[STRING];
   char cmd[LONG_STRING], tempfile[_POSIX_PATH_MAX];
   FILE *fp = NULL, *devnull = NULL;
@@ -454,7 +455,7 @@ static struct PgpKeyInfo *pgp_select_key(struct PgpKeyInfo *keys,
   struct PgpUid *a = NULL;
   int (*f)(const void *, const void *);
 
-  int unusable = 0;
+  bool unusable = false;
 
   keymax = 0;
   KeyTable = NULL;
@@ -463,7 +464,7 @@ static struct PgpKeyInfo *pgp_select_key(struct PgpKeyInfo *keys,
   {
     if (!option(OPTPGPSHOWUNUSABLE) && (kp->flags & KEYFLAG_CANTUSE))
     {
-      unusable = 1;
+      unusable = true;
       continue;
     }
 
@@ -471,7 +472,7 @@ static struct PgpKeyInfo *pgp_select_key(struct PgpKeyInfo *keys,
     {
       if (!option(OPTPGPSHOWUNUSABLE) && (a->flags & KEYFLAG_CANTUSE))
       {
-        unusable = 1;
+        unusable = true;
         continue;
       }
 
@@ -631,13 +632,13 @@ static struct PgpKeyInfo *pgp_select_key(struct PgpKeyInfo *keys,
         }
 
         kp = KeyTable[menu->current]->parent;
-        done = 1;
+        done = true;
         break;
 
       case OP_EXIT:
 
         kp = NULL;
-        done = 1;
+        done = true;
         break;
     }
   }
@@ -804,8 +805,7 @@ struct PgpKeyInfo *pgp_getkeybyaddr(struct Address *a, short abilities,
   struct Address *r = NULL, *p = NULL;
   struct List *hints = NULL;
 
-  int multi = 0;
-  int match;
+  bool multi = false;
 
   struct PgpKeyInfo *keys = NULL, *k = NULL, *kn = NULL;
   struct PgpKeyInfo *the_strong_valid_key = NULL;
@@ -842,7 +842,7 @@ struct PgpKeyInfo *pgp_getkeybyaddr(struct Address *a, short abilities,
       continue;
     }
 
-    match = 0; /* any match              */
+    bool match = false; /* any match */
 
     for (q = k->address; q; q = q->next)
     {
@@ -853,14 +853,14 @@ struct PgpKeyInfo *pgp_getkeybyaddr(struct Address *a, short abilities,
         int validity = pgp_id_matches_addr(a, p, q);
 
         if (validity & PGP_KV_MATCH) /* something matches */
-          match = 1;
+          match = true;
 
         if ((validity & PGP_KV_VALID) && (validity & PGP_KV_ADDR))
         {
           if (validity & PGP_KV_STRONGID)
           {
             if (the_strong_valid_key && the_strong_valid_key != k)
-              multi = 1;
+              multi = true;
             the_strong_valid_key = k;
           }
           else
@@ -935,7 +935,6 @@ struct PgpKeyInfo *pgp_getkeybystr(char *p, short abilities, pgp_ring_t keyring)
   struct PgpKeyInfo **last = &matches;
   struct PgpKeyInfo *k = NULL, *kn = NULL;
   struct PgpUid *a = NULL;
-  short match;
   size_t l;
   const char *ps = NULL, *pl = NULL, *pfcopy = NULL, *phint = NULL;
 
@@ -964,7 +963,7 @@ struct PgpKeyInfo *pgp_getkeybystr(char *p, short abilities, pgp_ring_t keyring)
     if (!k->address)
       continue;
 
-    match = 0;
+    bool match = false;
 
     mutt_debug(5, "pgp_getkeybystr: matching \"%s\" against key %s:\n", p,
                pgp_long_keyid(k));
@@ -974,7 +973,7 @@ struct PgpKeyInfo *pgp_getkeybystr(char *p, short abilities, pgp_ring_t keyring)
         (ps && (mutt_strcasecmp(ps, pgp_short_keyid(k)) == 0)))
     {
       mutt_debug(5, "\t\tmatch.\n");
-      match = 1;
+      match = true;
     }
     else
     {
@@ -986,7 +985,7 @@ struct PgpKeyInfo *pgp_getkeybystr(char *p, short abilities, pgp_ring_t keyring)
         if (mutt_stristr(a->addr, p))
         {
           mutt_debug(5, "\t\tmatch.\n");
-          match = 1;
+          match = true;
           break;
         }
       }

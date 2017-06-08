@@ -242,7 +242,8 @@ int mutt_yesorno(const char *msg, int def)
   char *answer_string = NULL;
   int answer_string_wid, msg_wid;
   size_t trunc_msg_len;
-  int redraw = 1, prompt_lines = 1;
+  bool redraw = true;
+  int prompt_lines = 1;
 
   char *expr = NULL;
   regex_t reyes;
@@ -273,7 +274,7 @@ int mutt_yesorno(const char *msg, int def)
   {
     if (redraw || SigWinch)
     {
-      redraw = 0;
+      redraw = false;
 #if defined(USE_SLANG_CURSES) || defined(HAVE_RESIZETERM)
       if (SigWinch)
       {
@@ -533,7 +534,7 @@ static void message_bar(int percent, const char *fmt, ...)
 void mutt_progress_update(struct Progress *progress, long pos, int percent)
 {
   char posstr[SHORT_STRING];
-  short update = 0;
+  bool update = false;
   struct timeval tv = { 0, 0 };
   unsigned int now = 0;
 
@@ -545,21 +546,21 @@ void mutt_progress_update(struct Progress *progress, long pos, int percent)
 
   /* refresh if size > inc */
   if (progress->flags & MUTT_PROGRESS_SIZE && (pos >= progress->pos + (progress->inc << 10)))
-    update = 1;
+    update = true;
   else if (pos >= progress->pos + progress->inc)
-    update = 1;
+    update = true;
 
   /* skip refresh if not enough time has passed */
   if (update && progress->timestamp && !gettimeofday(&tv, NULL))
   {
     now = ((unsigned int) tv.tv_sec * 1000) + (unsigned int) (tv.tv_usec / 1000);
     if (now && now - progress->timestamp < TimeInc)
-      update = 0;
+      update = false;
   }
 
   /* always show the first update */
   if (!pos)
-    update = 1;
+    update = true;
 
   if (update)
   {
@@ -1019,14 +1020,15 @@ int mutt_multi_choice(char *prompt, char *letters)
 {
   struct Event ch;
   int choice;
-  int redraw = 1, prompt_lines = 1;
+  bool redraw = true;
+  int prompt_lines = 1;
   char *p = NULL;
 
   while (true)
   {
     if (redraw || SigWinch)
     {
-      redraw = 0;
+      redraw = false;
 #if defined(USE_SLANG_CURSES) || defined(HAVE_RESIZETERM)
       if (SigWinch)
       {

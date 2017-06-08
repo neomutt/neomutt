@@ -246,7 +246,7 @@ static header_cache_t *pop_hcache_open(struct PopData *pop_data, const char *pat
 static int pop_fetch_headers(struct Context *ctx)
 {
   int i, ret, old_count, new_count, deleted;
-  unsigned short hcached = 0, bcached;
+  bool hcached = false, bcached;
   struct PopData *pop_data = (struct PopData *) ctx->data;
   struct Progress progress;
 
@@ -334,7 +334,7 @@ static int pop_fetch_headers(struct Context *ctx)
         ctx->hdrs[i]->index = index;
         ctx->hdrs[i]->data = uidl;
         ret = 0;
-        hcached = 1;
+        hcached = true;
       }
       else
 #endif
@@ -350,17 +350,17 @@ static int pop_fetch_headers(struct Context *ctx)
 
       /*
        * faked support for flags works like this:
-       * - if 'hcached' is 1, we have the message in our hcache:
+       * - if 'hcached' is true, we have the message in our hcache:
        *        - if we also have a body: read
        *        - if we don't have a body: old
        *          (if $mark_old is set which is maybe wrong as
        *          $mark_old should be considered for syncing the
        *          folder and not when opening it XXX)
-       * - if 'hcached' is 0, we don't have the message in our hcache:
+       * - if 'hcached' is false, we don't have the message in our hcache:
        *        - if we also have a body: read
        *        - if we don't have a body: new
        */
-      bcached = mutt_bcache_exists(pop_data->bcache, ctx->hdrs[i]->data) == 0;
+      bcached = (mutt_bcache_exists(pop_data->bcache, ctx->hdrs[i]->data) == 0);
       ctx->hdrs[i]->old = false;
       ctx->hdrs[i]->read = false;
       if (hcached)

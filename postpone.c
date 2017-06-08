@@ -178,7 +178,8 @@ static void post_entry(char *s, size_t slen, struct Menu *menu, int entry)
 static struct Header *select_msg(void)
 {
   struct Menu *menu = NULL;
-  int i, done = 0, r = -1;
+  int i, r = -1;
+  bool done = false;
   char helpstr[LONG_STRING];
   short orig_sort;
 
@@ -224,11 +225,11 @@ static struct Header *select_msg(void)
 
       case OP_GENERIC_SELECT_ENTRY:
         r = menu->current;
-        done = 1;
+        done = true;
         break;
 
       case OP_EXIT:
-        done = 1;
+        done = true;
         break;
     }
   }

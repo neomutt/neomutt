@@ -1720,7 +1720,7 @@ static int mh_rewrite_message(struct Context *ctx, int msgno)
   struct Message *dest = NULL;
 
   int rc;
-  short restore = 1;
+  bool restore = true;
   char oldpath[_POSIX_PATH_MAX];
   char newpath[_POSIX_PATH_MAX];
   char partpath[_POSIX_PATH_MAX];
@@ -1747,7 +1747,7 @@ static int mh_rewrite_message(struct Context *ctx, int msgno)
     if (rc == 0)
     {
       unlink(oldpath);
-      restore = 0;
+      restore = false;
     }
 
     /*
@@ -1998,7 +1998,7 @@ static int maildir_check_mailbox(struct Context *ctx, int *index_hint)
   char buf[_POSIX_PATH_MAX];
   int changed = 0;            /* bitmask representing which subdirectories
                                  have changed.  0x1 = new, 0x2 = cur */
-  int occult = 0;             /* messages were removed from the mailbox */
+  bool occult = false;        /* messages were removed from the mailbox */
   int have_new = 0;           /* messages were added to the mailbox */
   bool flags_changed = false; /* message flags were changed in the mailbox */
   struct Maildir *md = NULL;  /* list of messages in the mailbox */
@@ -2103,7 +2103,7 @@ static int maildir_check_mailbox(struct Context *ctx, int *index_hint)
        * event.  We know it disappeared because we just scanned the
        * subdirectory it used to reside in.
        */
-      occult = 1;
+      occult = true;
     }
     else
     {

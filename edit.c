@@ -325,8 +325,8 @@ int mutt_builtin_editor(const char *path, struct Header *msg, struct Header *cur
   char **buf = NULL;
   int bufmax = 0, buflen = 0;
   char tmp[LONG_STRING];
-  int abort = 0;
-  int done = 0;
+  bool abort = false;
+  bool done = false;
   char *p = NULL;
 
   scrollok(stdscr, true);
@@ -407,7 +407,7 @@ int mutt_builtin_editor(const char *path, struct Header *msg, struct Header *cur
           addstr(_("(continue)\n"));
           break;
         case 'q':
-          done = 1;
+          done = true;
           break;
         case 'r':
           if (*p)
@@ -470,8 +470,8 @@ int mutt_builtin_editor(const char *path, struct Header *msg, struct Header *cur
           be_barf_file(*p ? p : path, buf, buflen);
           break;
         case 'x':
-          abort = 1;
-          done = 1;
+          abort = true;
+          done = true;
           break;
         default:
           printw(_("%s: unknown editor command (~? for help)\n"), tmp);
@@ -479,7 +479,7 @@ int mutt_builtin_editor(const char *path, struct Header *msg, struct Header *cur
       }
     }
     else if (mutt_strcmp(".", tmp) == 0)
-      done = 1;
+      done = true;
     else
     {
       safe_strcat(tmp, sizeof(tmp), "\n");

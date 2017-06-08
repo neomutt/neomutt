@@ -69,7 +69,7 @@ static int nntp_connect_error(struct NntpServer *nserv)
 static int nntp_capabilities(struct NntpServer *nserv)
 {
   struct Connection *conn = nserv->conn;
-  unsigned int mode_reader = 0;
+  bool mode_reader = false;
   char buf[LONG_STRING];
   char authinfo[LONG_STRING] = "";
 
@@ -99,7 +99,7 @@ static int nntp_capabilities(struct NntpServer *nserv)
     if (mutt_strcmp("STARTTLS", buf) == 0)
       nserv->hasSTARTTLS = true;
     else if (mutt_strcmp("MODE-READER", buf) == 0)
-      mode_reader = 1;
+      mode_reader = true;
     else if (mutt_strcmp("READER", buf) == 0)
     {
       nserv->hasDATE = true;
@@ -589,7 +589,7 @@ int nntp_open_connection(struct NntpServer *nserv)
   struct Connection *conn = nserv->conn;
   char buf[STRING];
   int cap;
-  unsigned int posting = 0, auth = 1;
+  bool posting = false, auth = true;
 
   if (nserv->status == NNTP_OK)
     return 0;
@@ -604,7 +604,7 @@ int nntp_open_connection(struct NntpServer *nserv)
     return nntp_connect_error(nserv);
 
   if (mutt_strncmp("200", buf, 3) == 0)
-    posting = 1;
+    posting = true;
   else if (mutt_strncmp("201", buf, 3) != 0)
   {
     mutt_socket_close(conn);
@@ -627,9 +627,9 @@ int nntp_open_connection(struct NntpServer *nserv)
       return nntp_connect_error(nserv);
 
     if (mutt_strncmp("200", buf, 3) == 0)
-      posting = 1;
+      posting = true;
     else if (mutt_strncmp("201", buf, 3) == 0)
-      posting = 0;
+      posting = false;
     /* error if has capabilities, ignore result if no capabilities */
     else if (nserv->hasCAPABILITIES)
     {
@@ -698,7 +698,7 @@ int nntp_open_connection(struct NntpServer *nserv)
   if (conn->account.flags & MUTT_ACCT_USER)
   {
     if (!conn->account.user[0])
-      auth = 0;
+      auth = false;
   }
   else
   {
@@ -706,7 +706,7 @@ int nntp_open_connection(struct NntpServer *nserv)
         mutt_socket_readln(buf, sizeof(buf), conn) < 0)
       return nntp_connect_error(nserv);
     if (mutt_strncmp("480", buf, 3) != 0)
-      auth = 0;
+      auth = false;
   }
 
   /* authenticate */
@@ -1021,7 +1021,7 @@ static int parse_overview_line(char *line, void *data)
   FILE *fp = NULL;
   char tempfile[_POSIX_PATH_MAX];
   char *header = NULL, *field = NULL;
-  int save = 1;
+  bool save = true;
   anum_t anum;
 
   if (!line)
@@ -1121,7 +1121,7 @@ static int parse_overview_line(char *line, void *data)
           mutt_debug(2, "parse_overview_line: mutt_bcache_del %s\n", buf);
           mutt_bcache_del(nntp_data->bcache, buf);
         }
-        save = 0;
+        save = false;
       }
     }
 

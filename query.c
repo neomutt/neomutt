@@ -358,7 +358,7 @@ static void query_menu(char *buf, size_t buflen, struct Query *results, int retb
               }
               else
               {
-                int clear = 0;
+                bool clear = false;
 
                 /* append */
                 safe_realloc(&QueryTable, menu->max * sizeof(struct Entry));
@@ -369,7 +369,7 @@ static void query_menu(char *buf, size_t buflen, struct Query *results, int retb
                 {
                   /* once we hit new entries, clear/init the tag */
                   if (queryp == newresults)
-                    clear = 1;
+                    clear = true;
 
                   QueryTable[i].data = queryp;
                   if (clear)
@@ -442,7 +442,7 @@ static void query_menu(char *buf, size_t buflen, struct Query *results, int retb
     /* if we need to return the selected entries */
     if (retbuf && (done == 2))
     {
-      int tagged = 0;
+      bool tagged = false;
       size_t curpos = 0;
 
       memset(buf, 0, buflen);
@@ -456,7 +456,7 @@ static void query_menu(char *buf, size_t buflen, struct Query *results, int retb
           {
             struct Address *tmpa = result_to_addr(QueryTable[i].data);
             mutt_addrlist_to_local(tmpa);
-            tagged = 1;
+            tagged = true;
             rfc822_write_address(buf, buflen, tmpa, 0);
             curpos = mutt_strlen(buf);
             rfc822_free_address(&tmpa);

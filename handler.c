@@ -204,7 +204,7 @@ static void qp_decode_line(char *dest, char *src, size_t *l, int last)
   char c = 0;
 
   int kind = -1;
-  int soft = 0;
+  bool soft = false;
 
   /* decode the line */
 
@@ -220,7 +220,7 @@ static void qp_decode_line(char *dest, char *src, size_t *l, int last)
         *d++ = *s++;
         break; /* single character */
       case 1:
-        soft = 1;
+        soft = true;
         s++;
         break; /* soft line break */
     }
@@ -1061,14 +1061,14 @@ static int alternative_handler(struct Body *a, struct State *s)
   struct Body *b = NULL;
   struct List *t = NULL;
   int type = 0;
-  int mustfree = 0;
+  bool mustfree = false;
   int rc = 0;
   int count = 0;
 
   if (a->encoding == ENCBASE64 || a->encoding == ENCQUOTEDPRINTABLE || a->encoding == ENCUUENCODED)
   {
     struct stat st;
-    mustfree = 1;
+    mustfree = true;
     fstat(fileno(s->fpin), &st);
     b = mutt_new_body();
     b->length = (long) st.st_size;
@@ -1087,7 +1087,7 @@ static int alternative_handler(struct Body *a, struct State *s)
   {
     char *c = NULL;
     int btlen; /* length of basetype */
-    int wild;  /* do we have a wildcard to match all subtypes? */
+    bool wild;  /* do we have a wildcard to match all subtypes? */
 
     c = strchr(t->data, '/');
     if (c)
@@ -1097,7 +1097,7 @@ static int alternative_handler(struct Body *a, struct State *s)
     }
     else
     {
-      wild = 1;
+      wild = true;
       btlen = mutt_strlen(t->data);
     }
 
@@ -1845,7 +1845,7 @@ int mutt_body_handler(struct Body *b, struct State *s)
   if (!b || !s)
     return -1;
 
-  int plaintext = 0;
+  bool plaintext = false;
   handler_t handler = NULL;
   int rc = 0;
 
@@ -1876,14 +1876,14 @@ int mutt_body_handler(struct Body *b, struct State *s)
     else if (ascii_strcasecmp("enriched", b->subtype) == 0)
       handler = text_enriched_handler;
     else /* text body type without a handler */
-      plaintext = 0;
+      plaintext = false;
   }
   else if (b->type == TYPEMESSAGE)
   {
     if (mutt_is_message_type(b->type, b->subtype))
       handler = message_handler;
     else if (ascii_strcasecmp("delivery-status", b->subtype) == 0)
-      plaintext = 1;
+      plaintext = true;
     else if (ascii_strcasecmp("external-body", b->subtype) == 0)
       handler = external_body_handler;
   }
@@ -1924,7 +1924,7 @@ int mutt_body_handler(struct Body *b, struct State *s)
     if (option(OPTDONTHANDLEPGPKEYS) && (ascii_strcasecmp("pgp-keys", b->subtype) == 0))
     {
       /* pass raw part through for key extraction */
-      plaintext = 1;
+      plaintext = true;
     }
     else if ((WithCrypto & APPLICATION_PGP) && mutt_is_application_pgp(b))
       handler = crypt_pgp_application_pgp_handler;

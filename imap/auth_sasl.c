@@ -45,7 +45,7 @@ imap_auth_res_t imap_auth_sasl(struct ImapData *idata, const char *method)
   const char *mech = NULL;
   const char *pc = NULL;
   unsigned int len, olen;
-  unsigned char client_start;
+  bool client_start;
 
   if (mutt_sasl_client_new(idata->conn, &saslconn) < 0)
   {
@@ -115,7 +115,8 @@ imap_auth_res_t imap_auth_sasl(struct ImapData *idata, const char *method)
       mutt_debug(1, "imap_auth_sasl: error base64-encoding client response.\n");
       goto bail;
     }
-    client_start = olen = 0;
+    client_start = false;
+    olen = 0;
   }
   imap_cmd_start(idata, buf);
   irc = IMAP_CMD_CONTINUE;
@@ -170,7 +171,7 @@ imap_auth_res_t imap_auth_sasl(struct ImapData *idata, const char *method)
       } while (rc == SASL_INTERACT);
     }
     else
-      client_start = 0;
+      client_start = false;
 
     /* send out response, or line break if none needed */
     if (olen)

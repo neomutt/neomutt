@@ -656,8 +656,8 @@ static int reopen_mailbox(struct Context *ctx, int *index_hint)
   int (*cmp_headers)(const struct Header *, const struct Header *) = NULL;
   struct Header **old_hdrs = NULL;
   int old_msgcount;
-  int msg_mod = 0;
-  int index_hint_set;
+  bool msg_mod = false;
+  bool index_hint_set;
   int i, j;
   int rc = -1;
 
@@ -754,7 +754,7 @@ static int reopen_mailbox(struct Context *ctx, int *index_hint)
   {
     for (i = 0; i < ctx->msgcount; i++)
     {
-      int found = 0;
+      bool found = false;
 
       /* some messages have been deleted, and new  messages have been
        * appended at the end; the heuristic is that old messages have then
@@ -767,7 +767,7 @@ static int reopen_mailbox(struct Context *ctx, int *index_hint)
           continue;
         if (cmp_headers(ctx->hdrs[i], old_hdrs[j]))
         {
-          found = 1;
+          found = true;
           break;
         }
       }
@@ -779,7 +779,7 @@ static int reopen_mailbox(struct Context *ctx, int *index_hint)
             continue;
           if (cmp_headers(ctx->hdrs[i], old_hdrs[j]))
           {
-            found = 1;
+            found = true;
             break;
           }
         }
@@ -817,7 +817,7 @@ static int reopen_mailbox(struct Context *ctx, int *index_hint)
       if (old_hdrs[j])
       {
         mutt_free_header(&(old_hdrs[j]));
-        msg_mod = 1;
+        msg_mod = true;
       }
     }
     FREE(&old_hdrs);
@@ -841,8 +841,8 @@ static int mbox_check_mailbox(struct Context *ctx, int *index_hint)
 {
   struct stat st;
   char buffer[LONG_STRING];
-  int unlock = 0;
-  int modified = 0;
+  bool unlock = false;
+  bool modified = false;
 
   if (stat(ctx->path, &st) == 0)
   {
@@ -908,16 +908,16 @@ static int mbox_check_mailbox(struct Context *ctx, int *index_hint)
           return MUTT_NEW_MAIL; /* signal that new mail arrived */
         }
         else
-          modified = 1;
+          modified = true;
       }
       else
       {
         mutt_debug(1, "mbox_check_mailbox: fgets returned NULL.\n");
-        modified = 1;
+        modified = true;
       }
     }
     else
-      modified = 1;
+      modified = true;
   }
 
   if (modified)

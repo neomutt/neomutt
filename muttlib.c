@@ -447,11 +447,11 @@ char *_mutt_expand_path(char *s, size_t slen, int rx)
 
   char *tail = "";
 
-  int recurse = 0;
+  bool recurse = false;
 
   do
   {
-    recurse = 0;
+    recurse = false;
 
     switch (*s)
     {
@@ -532,7 +532,7 @@ char *_mutt_expand_path(char *s, size_t slen, int rx)
           mutt_free_header(&h);
           /* Avoid infinite recursion if the resulting folder starts with '@' */
           if (*p != '@')
-            recurse = 1;
+            recurse = true;
 
           tail = "";
         }
@@ -1052,7 +1052,7 @@ void mutt_expand_fmt(char *dest, size_t destlen, const char *fmt, const char *sr
   const char *p = NULL;
   char *d = NULL;
   size_t slen;
-  int found = 0;
+  bool found = false;
 
   slen = mutt_strlen(src);
   destlen--;
@@ -1068,7 +1068,7 @@ void mutt_expand_fmt(char *dest, size_t destlen, const char *fmt, const char *sr
           destlen--;
           break;
         case 's':
-          found = 1;
+          found = true;
           strfcpy(d, src, destlen + 1);
           d += destlen > slen ? slen : destlen;
           destlen -= destlen > slen ? slen : destlen;
@@ -1688,15 +1688,15 @@ void mutt_FormatString(char *dest,     /* output buffer */
       }
       else
       {
-        short tolower = 0;
-        short nodots = 0;
+        bool tolower = false;
+        bool nodots = false;
 
         while (ch == '_' || ch == ':')
         {
           if (ch == '_')
-            tolower = 1;
+            tolower = true;
           else if (ch == ':')
-            nodots = 1;
+            nodots = true;
 
           ch = *src++;
         }

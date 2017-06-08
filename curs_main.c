@@ -498,7 +498,7 @@ static int main_change_folder(struct Menu *menu, int op, char *buf, size_t bufsz
 #endif
 
   mutt_clear_error();
-  mutt_buffy_check(1); /* force the buffy check after we have changed the folder */
+  mutt_buffy_check(true); /* force the buffy check after we have changed the folder */
   menu->redraw = REDRAW_FULL;
   set_option(OPTSEARCHINVALID);
 
@@ -673,7 +673,7 @@ void mutt_draw_statusline(int cols, const char *buf, int buflen)
 {
   int i = 0;
   int offset = 0;
-  int found = 0;
+  bool found = false;
   int chunks = 0;
   int len = 0;
 
@@ -690,7 +690,7 @@ void mutt_draw_statusline(int cols, const char *buf, int buflen)
   do
   {
     struct ColorLine *cl = NULL;
-    found = 0;
+    found = false;
 
     if (!buf[offset])
       break;
@@ -723,7 +723,7 @@ void mutt_draw_statusline(int cols, const char *buf, int buflen)
         syntax[i].first = first;
         syntax[i].last = last;
       }
-      found = 1;
+      found = true;
     }
 
     if (syntax)
@@ -879,16 +879,16 @@ int mutt_index_menu(void)
   char buf[LONG_STRING], helpstr[LONG_STRING];
   int flags;
   int op = OP_NULL;
-  int done = 0; /* controls when to exit the "event" loop */
+  bool done = false; /* controls when to exit the "event" loop */
   int i = 0, j;
-  int tag = 0; /* has the tag-prefix command been pressed? */
+  bool tag = false; /* has the tag-prefix command been pressed? */
   int newcount = -1;
   int oldcount = -1;
   int rc = -1;
   struct Menu *menu = NULL;
   char *cp = NULL; /* temporary variable. */
   int index_hint;  /* used to restore cursor position */
-  int do_buffy_notify = 1;
+  bool do_buffy_notify = true;
   int close = 0; /* did we OP_QUIT or OP_EXIT out of this menu? */
   int attach_msg = option(OPTATTACHMSG);
 
@@ -906,7 +906,7 @@ int mutt_index_menu(void)
   mutt_push_current_menu(menu);
 
   if (!attach_msg)
-    mutt_buffy_check(1); /* force the buffy check after we enter the folder */
+    mutt_buffy_check(true); /* force the buffy check after we enter the folder */
 
   if (((Sort & SORT_MASK) == SORT_THREADS) && option(OPTCOLLAPSEALL))
   {
@@ -920,7 +920,7 @@ int mutt_index_menu(void)
      * the prefix on a timeout (op==-2), but do clear on an abort (op==-1)
      */
     if (tag && op != OP_TAG_PREFIX && op != OP_TAG_PREFIX_COND && op != -2)
-      tag = 0;
+      tag = false;
 
     /* check if we need to resort the index because just about
      * any 'op' below could do mutt_enter_command(), either here or
@@ -995,7 +995,7 @@ int mutt_index_menu(void)
           mutt_message(_("Mailbox was externally modified."));
 
         /* avoid the message being overwritten by buffy */
-        do_buffy_notify = 0;
+        do_buffy_notify = false;
 
         bool q = Context->quiet;
         Context->quiet = true;
@@ -1013,7 +1013,7 @@ int mutt_index_menu(void)
     {
       /* check for new mail in the incoming folders */
       oldcount = newcount;
-      if ((newcount = mutt_buffy_check(0)) != oldcount)
+      if ((newcount = mutt_buffy_check(false)) != oldcount)
         menu->redraw |= REDRAW_STATUS;
       if (do_buffy_notify)
       {
@@ -1031,7 +1031,7 @@ int mutt_index_menu(void)
         }
       }
       else
-        do_buffy_notify = 1;
+        do_buffy_notify = true;
     }
 
     if (op >= 0)
@@ -1099,7 +1099,7 @@ int mutt_index_menu(void)
         /* A second tag-prefix command aborts */
         if (tag)
         {
-          tag = 0;
+          tag = false;
           mutt_window_clearline(MuttMessageWindow, 0);
           continue;
         }
@@ -1123,11 +1123,11 @@ int mutt_index_menu(void)
         }
 
         /* get the real command */
-        tag = 1;
+        tag = true;
         continue;
       }
       else if (option(OPTAUTOTAG) && Context && Context->tagged)
-        tag = 1;
+        tag = true;
 
       mutt_clear_error();
     }
@@ -1541,7 +1541,7 @@ int mutt_index_menu(void)
         close = op;
         if (attach_msg)
         {
-          done = 1;
+          done = true;
           break;
         }
 
@@ -1554,7 +1554,7 @@ int mutt_index_menu(void)
           mutt_startup_shutdown_hook(MUTT_SHUTDOWNHOOK);
 
           if (!Context || (check = mx_close_mailbox(Context, &index_hint)) == 0)
-            done = 1;
+            done = true;
           else
           {
             if (check == MUTT_NEW_MAIL || check == MUTT_REOPENED)
@@ -2137,7 +2137,7 @@ int mutt_index_menu(void)
         close = op;
         if (menu->menu == MENU_MAIN && attach_msg)
         {
-          done = 1;
+          done = true;
           break;
         }
 
@@ -2149,7 +2149,7 @@ int mutt_index_menu(void)
             mx_fastclose_mailbox(Context);
             FREE(&Context);
           }
-          done = 1;
+          done = true;
         }
         break;
 

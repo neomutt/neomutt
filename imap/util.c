@@ -417,7 +417,7 @@ void imap_pretty_mailbox(char *path)
   char *delim = NULL;
   int tlen;
   int hlen = 0;
-  char home_match = 0;
+  bool home_match = false;
 
   if (imap_parse_path(path, &target) < 0)
     return;
@@ -431,11 +431,11 @@ void imap_pretty_mailbox(char *path)
         (mutt_strncmp(home.mbox, target.mbox, hlen) == 0))
     {
       if (!hlen)
-        home_match = 1;
+        home_match = true;
       else if (ImapDelimChars)
         for (delim = ImapDelimChars; *delim != '\0'; delim++)
           if (target.mbox[hlen] == *delim)
-            home_match = 1;
+            home_match = true;
     }
     FREE(&home.mbox);
   }

@@ -709,12 +709,12 @@ int mutt_parse_unvirtual_mailboxes(struct Buffer *path, struct Buffer *s,
 /* Check all Incoming for new mail and total/new/flagged messages
  * force: if true, ignore BuffyTimeout and check for new mail anyway
  */
-int mutt_buffy_check(int force)
+int mutt_buffy_check(bool force)
 {
   struct Buffy *tmp = NULL;
   struct stat contex_sb;
   time_t t;
-  int check_stats = 0;
+  bool check_stats = false;
   contex_sb.st_dev = 0;
   contex_sb.st_ino = 0;
 
@@ -738,7 +738,7 @@ int mutt_buffy_check(int force)
 
   if (option(OPTMAILCHECKSTATS) && (t - BuffyStatsTime >= BuffyCheckStatsInterval))
   {
-    check_stats = 1;
+    check_stats = true;
     BuffyStatsTime = t;
   }
 
@@ -841,7 +841,7 @@ void mutt_buffy_setnotified(const char *path)
 
 int mutt_buffy_notify(void)
 {
-  if (mutt_buffy_check(0) && BuffyNotify)
+  if (mutt_buffy_check(false) && BuffyNotify)
   {
     return (mutt_buffy_list());
   }
@@ -861,7 +861,7 @@ void mutt_buffy(char *s, size_t slen)
 
   mutt_expand_path(s, slen);
 
-  if (mutt_buffy_check(0))
+  if (mutt_buffy_check(false))
   {
     for (pass = 0; pass < 2; pass++)
       for (tmp = Incoming; tmp; tmp = tmp->next)
@@ -877,7 +877,7 @@ void mutt_buffy(char *s, size_t slen)
           found = 1;
       }
 
-    mutt_buffy_check(1); /* buffy was wrong - resync things */
+    mutt_buffy_check(true); /* buffy was wrong - resync things */
   }
 
   /* no folders with new mail */
@@ -890,7 +890,7 @@ void mutt_buffy_vfolder(char *s, size_t slen)
   struct Buffy *tmp = NULL;
   int pass, found = 0;
 
-  if (mutt_buffy_check(0))
+  if (mutt_buffy_check(false))
   {
     for (pass = 0; pass < 2; pass++)
     {
@@ -906,7 +906,7 @@ void mutt_buffy_vfolder(char *s, size_t slen)
       }
     }
 
-    mutt_buffy_check(1); /* buffy was wrong - resync things */
+    mutt_buffy_check(true); /* buffy was wrong - resync things */
   }
 
   /* no folders with new mail */

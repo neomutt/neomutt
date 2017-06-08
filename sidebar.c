@@ -884,11 +884,11 @@ static void draw_sidebar(int num_rows, int num_cols, int div_width)
       maildirlen--;
 
     /* check whether Maildir is a prefix of the current folder's path */
-    short maildir_is_prefix = 0;
+    bool maildir_is_prefix = false;
     if ((mutt_strlen(b->path) > maildirlen) &&
         (mutt_strncmp(Maildir, b->path, maildirlen) == 0) &&
         SidebarDelimChars && strchr(SidebarDelimChars, b->path[maildirlen]))
-      maildir_is_prefix = 1;
+      maildir_is_prefix = true;
 
     /* calculate depth of current folder and generate its display name with indented spaces */
     int sidebar_folder_depth = 0;

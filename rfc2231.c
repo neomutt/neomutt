@@ -212,10 +212,8 @@ void rfc2231_decode_parameters(struct Parameter **headp)
 
   int encoded;
   int index;
-  short dirty = 0; /* set to 1 when we may have created
-                         * empty parameters.
-                         */
-
+  bool dirty = false; /* set to 1 when we may have created
+                       * empty parameters. */
   if (!headp)
     return;
 
@@ -256,7 +254,7 @@ void rfc2231_decode_parameters(struct Parameter **headp)
       last = &p->next;
       p->next = NULL;
 
-      dirty = 1;
+      dirty = true;
     }
     else
     {
@@ -286,7 +284,7 @@ void rfc2231_decode_parameters(struct Parameter **headp)
   if (conthead)
   {
     rfc2231_join_continuations(last, conthead);
-    dirty = 1;
+    dirty = true;
   }
 
   *headp = head;

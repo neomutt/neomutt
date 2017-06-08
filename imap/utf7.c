@@ -150,7 +150,7 @@ static char *utf8_to_utf7(const char *u8, size_t u8len, char **u7, size_t *u7len
   char *buf = NULL, *p = NULL;
   int ch;
   int n, i, b = 0, k = 0;
-  int base64 = 0;
+  bool base64 = false;
 
   /*
    * In the worst case we convert 2 chars to 7 chars. For example:
@@ -197,7 +197,7 @@ static char *utf8_to_utf7(const char *u8, size_t u8len, char **u7, size_t *u7len
       if (!base64)
       {
         *p++ = '&';
-        base64 = 1;
+        base64 = true;
         b = 0;
         k = 10;
       }
@@ -217,7 +217,7 @@ static char *utf8_to_utf7(const char *u8, size_t u8len, char **u7, size_t *u7len
         if (k > 10)
           *p++ = B64Chars[b];
         *p++ = '-';
-        base64 = 0;
+        base64 = false;
       }
       *p++ = ch;
       if (ch == '&')

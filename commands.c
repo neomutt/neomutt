@@ -70,7 +70,8 @@ static char LastSaveFolder[_POSIX_PATH_MAX] = "";
 int mutt_display_message(struct Header *cur)
 {
   char tempfile[_POSIX_PATH_MAX], buf[LONG_STRING];
-  int rc = 0, builtin = 0;
+  int rc = 0;
+  bool builtin = false;
   int cmflags = MUTT_CM_DECODE | MUTT_CM_DISPLAY | MUTT_CM_CHARCONV;
   int chflags;
   FILE *fpout = NULL;
@@ -143,7 +144,7 @@ int mutt_display_message(struct Header *cur)
   }
 
   if (!Pager || (mutt_strcmp(Pager, "builtin") == 0))
-    builtin = 1;
+    builtin = true;
   else
   {
     struct HdrFormatInfo hfi;
@@ -606,7 +607,7 @@ void mutt_shell_escape(void)
       fflush(stdout);
       if (mutt_system(buf) != 0 || option(OPTWAITKEY))
         mutt_any_key_to_continue(NULL);
-      mutt_buffy_check(1);
+      mutt_buffy_check(true);
     }
   }
 }

@@ -1276,13 +1276,13 @@ int _mutt_traverse_thread(struct Context *ctx, struct Header *cur, int flag)
       thread = thread->next;
     else
     {
-      int done = 0;
+      bool done = false;
       while (!thread->next)
       {
         thread = thread->parent;
         if (thread == top)
         {
-          done = 1;
+          done = true;
           break;
         }
       }
@@ -1364,9 +1364,9 @@ static void clean_references(struct MuttThread *brk, struct MuttThread *cur)
 {
   struct MuttThread *p = NULL;
   struct List *ref = NULL;
-  int done = 0;
+  bool done = false;
 
-  for (; cur; cur = cur->next, done = 0)
+  for (; cur; cur = cur->next, done = false)
   {
     /* parse subthread recursively */
     clean_references(brk, cur->child);
@@ -1381,7 +1381,7 @@ static void clean_references(struct MuttThread *brk, struct MuttThread *cur)
       for (ref = cur->message->env->references; p->message && ref; ref = ref->next)
         if (mutt_strcasecmp(ref->data, p->message->env->message_id) == 0)
         {
-          done = 1;
+          done = true;
           break;
         }
 
