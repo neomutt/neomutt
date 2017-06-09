@@ -136,11 +136,10 @@ static void init_header_padding (void)
   /* TODO: mark for translation */
   calc_header_width_padding (HDR_CRYPT, "Security: ", 1);
 
-  /* TODO: convert to "Sign as: " */
   /* L10N:
    * This string is used by the compose menu.  It is suggested that it not
    * be wider than 20 character cells, if possible. */
-  calc_header_width_padding (HDR_CRYPTINFO, _("sign as: "), 0);
+  calc_header_width_padding (HDR_CRYPTINFO, _("Sign as: "), 0);
 
   for (i = 0; i <= HDR_CRYPTINFO; i++)
   {
@@ -221,7 +220,7 @@ static void redraw_crypt_lines (HEADER *msg)
       && (msg->security & APPLICATION_PGP) && (msg->security & SIGN))
   {
     SETCOLOR (MT_COLOR_COMPOSE_HEADER);
-    printw ("%*s", HeaderPadding[HDR_CRYPTINFO], _("sign as: "));
+    printw ("%*s", HeaderPadding[HDR_CRYPTINFO], _("Sign as: "));
     NORMAL_COLOR;
     printw ("%s", PgpSignAs ? PgpSignAs : _("<default>"));
   }
@@ -230,7 +229,7 @@ static void redraw_crypt_lines (HEADER *msg)
       && (msg->security & APPLICATION_SMIME) && (msg->security & SIGN))
   {
     SETCOLOR (MT_COLOR_COMPOSE_HEADER);
-    printw ("%*s", HeaderPadding[HDR_CRYPTINFO], _("sign as: "));
+    printw ("%*s", HeaderPadding[HDR_CRYPTINFO], _("Sign as: "));
     NORMAL_COLOR;
     printw ("%s", SmimeDefaultKey ? SmimeDefaultKey : _("<default>"));
   }
