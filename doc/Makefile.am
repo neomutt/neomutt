@@ -41,7 +41,7 @@ HTML_DOCFILES = manual.html index.html $(CHUNKED_DOCFILES)
 
 BUILT_DISTFILES = manual.txt $(HTML_DOCFILES)
 
-srcdir_DOCFILES = PGP-Notes.txt devel-notes.txt smime-notes.txt
+srcdir_DOCFILES = PGP-Notes.txt smime-notes.txt
 
 topsrcdir_DOCFILES = COPYRIGHT LICENSE.md INSTALL ChangeLog ChangeLog.neomutt	\
 	README.SSL README.md
