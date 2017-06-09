@@ -8,9 +8,9 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: neomutt-20161104\n"
+"Project-Id-Version: neomutt-20170609\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
-"POT-Creation-Date: 2017-06-02 12:34+0100\n"
+"POT-Creation-Date: 2017-06-09 10:47+0100\n"
 "PO-Revision-Date: 2008-05-20 22:39+0200\n"
 "Last-Translator: Piarres Beobide <pi@beobide.net>\n"
 "Language-Team: Euskara <debian-l10n-basque@lists.debian.org>\n"
@@ -407,7 +407,7 @@ msgstr "mono: argumentu gutxiegi"
 msgid "%s: no such attribute"
 msgstr "%s: ez da atributua aurkitu"
 
-#: color.c:816 hook.c:84 hook.c:96 init.c:2284 init.c:2359 keymap.c:986
+#: color.c:816 hook.c:84 hook.c:96 init.c:2283 init.c:2358 keymap.c:987
 msgid "too few arguments"
 msgstr "argumentu gutxiegi"
 
@@ -961,27 +961,27 @@ msgstr "Mezua ezin da erantsia bidali.  PGP/MIME erabiltzea itzuli?"
 msgid "Mail not sent."
 msgstr "Eposta ez da bidali."
 
-#: ncrypt/crypt.c:224
+#: ncrypt/crypt.c:236
 msgid "Encrypt message to S/MIME Default Key also?"
 msgstr ""
 
-#: ncrypt/crypt.c:259
+#: ncrypt/crypt.c:271
 msgid "Encrypt message to PGP Default Key also?"
 msgstr ""
 
-#: ncrypt/crypt.c:497
+#: ncrypt/crypt.c:509
 msgid "S/MIME messages with no hints on content are unsupported."
 msgstr "S/MIME mezuak ez dira onartzen edukian gomendiorik ez badute."
 
-#: ncrypt/crypt.c:701 ncrypt/crypt.c:742
+#: ncrypt/crypt.c:713 ncrypt/crypt.c:754
 msgid "Trying to extract PGP keys...\n"
 msgstr "PGP-gakoak ateratzen saiatzen...\n"
 
-#: ncrypt/crypt.c:723 ncrypt/crypt.c:763
+#: ncrypt/crypt.c:735 ncrypt/crypt.c:775
 msgid "Trying to extract S/MIME certificates...\n"
 msgstr "S/MIME ziurtagiria ateratzen saiatzen...\n"
 
-#: ncrypt/crypt.c:913
+#: ncrypt/crypt.c:925
 #, c-format
 msgid ""
 "[-- Error: Unknown multipart/signed protocol %s! --]\n"
@@ -990,7 +990,7 @@ msgstr ""
 "[-- Errorea: zatianitz/sinatutako protokolo ezezaguna %s! --]\n"
 "\n"
 
-#: ncrypt/crypt.c:947
+#: ncrypt/crypt.c:959
 msgid ""
 "[-- Error: Inconsistent multipart/signed structure! --]\n"
 "\n"
@@ -998,7 +998,7 @@ msgstr ""
 "[-- Errorea: konsistentzi gabeko zatianitz/sinaturiko estruktura! --]\n"
 "\n"
 
-#: ncrypt/crypt.c:983
+#: ncrypt/crypt.c:995
 #, c-format
 msgid ""
 "[-- Warning: We can't verify %s/%s signatures. --]\n"
@@ -1007,7 +1007,7 @@ msgstr ""
 "[-- Kontuz: Ezin dira %s/%s sinadurak egiaztatu. --]\n"
 "\n"
 
-#: ncrypt/crypt.c:995
+#: ncrypt/crypt.c:1007
 msgid ""
 "[-- The following data is signed --]\n"
 "\n"
@@ -1015,7 +1015,7 @@ msgstr ""
 "[-- Hurrengo datuak sinaturik daude --]\n"
 "\n"
 
-#: ncrypt/crypt.c:1000
+#: ncrypt/crypt.c:1012
 msgid ""
 "[-- Warning: Can't find any signatures. --]\n"
 "\n"
@@ -1023,7 +1023,7 @@ msgstr ""
 "[-- Kontuz: Ez da sinadurarik aurkitu. --]\n"
 "\n"
 
-#: ncrypt/crypt.c:1006
+#: ncrypt/crypt.c:1018
 msgid ""
 "\n"
 "[-- End of signed data --]\n"
@@ -1063,7 +1063,7 @@ msgstr "Edozein tekla jo jarraitzeko..."
 msgid " ('?' for list): "
 msgstr " (? zerrendarako): "
 
-#: curs_main.c:69 curs_main.c:1087 curs_main.c:1117
+#: curs_main.c:69 curs_main.c:1109
 msgid "No mailbox is open."
 msgstr "Ez da postakutxarik irekirik."
 
@@ -1135,323 +1135,323 @@ msgstr ""
 msgid "Followup"
 msgstr "Jarraitu %s%s-ra?"
 
-#: curs_main.c:970
+#: curs_main.c:974
 msgid "Mailbox was externally modified.  Flags may be wrong."
 msgstr "Posta-kutxa kanpoaldetik aldaturik.  Banderak gaizki egon litezke."
 
-#: curs_main.c:977 pager.c:2130
+#: curs_main.c:981 pager.c:2130
 msgid "New mail in this mailbox."
 msgstr "Eposta berria posta-kutxa honetan."
 
-#: curs_main.c:991
+#: curs_main.c:995
 msgid "Mailbox was externally modified."
 msgstr "Postakutxa kanpokoaldetik aldatua."
 
-#: curs_main.c:1093
+#: curs_main.c:1116
 msgid "No tagged messages."
 msgstr "Ez dago mezu markaturik."
 
-#: curs_main.c:1124 menu.c:1121
+#: curs_main.c:1120 menu.c:1135
 msgid "Nothing to do."
 msgstr "Ez dago ezer egiterik."
 
-#: curs_main.c:1228
+#: curs_main.c:1218
 #, fuzzy
 msgid "Enter Message-Id: "
 msgstr "IDgakoa sartu: "
 
-#: curs_main.c:1237
+#: curs_main.c:1227
 msgid "Article has no parent reference."
 msgstr ""
 
-#: curs_main.c:1260
+#: curs_main.c:1250
 #, fuzzy
 msgid "Message is not visible in limited view."
 msgstr "Jatorrizko mezua ez da ikusgarria bistaratze mugatu honetan."
 
-#: curs_main.c:1266
+#: curs_main.c:1256
 #, fuzzy, c-format
 msgid "Fetching %s from server..."
 msgstr "Mezuak zerbitzaritik ezabatzen..."
 
-#: curs_main.c:1276
+#: curs_main.c:1266
 #, c-format
 msgid "Article %s not found on the server."
 msgstr ""
 
-#: curs_main.c:1295
+#: curs_main.c:1285
 msgid "No Message-Id. Unable to perform operation."
 msgstr ""
 
-#: curs_main.c:1299 imap/message.c:641 nntp.c:1240 pop.c:291
+#: curs_main.c:1289 imap/message.c:641 nntp.c:1240 pop.c:291
 msgid "Fetching message headers..."
 msgstr "Mezu burukoak eskuratzen..."
 
-#: curs_main.c:1375
+#: curs_main.c:1365
 #, fuzzy
 msgid "No deleted messages found in the thread."
 msgstr "hari honetako mezu guztiak ezabatu"
 
-#: curs_main.c:1395
+#: curs_main.c:1385
 msgid "Jump to message: "
 msgstr "Mezura salto egin: "
 
-#: curs_main.c:1407
+#: curs_main.c:1397
 msgid "Argument must be a message number."
 msgstr "Argumentua mezu zenbaki bat izan behar da."
 
-#: curs_main.c:1439
+#: curs_main.c:1429
 msgid "That message is not visible."
 msgstr "Mezu hau ez da ikusgarria."
 
-#: curs_main.c:1442
+#: curs_main.c:1432
 msgid "Invalid message number."
 msgstr "Mezu zenbaki okerra."
 
 #. L10N: CHECK_ACL
-#: curs_main.c:1456 curs_main.c:2779 pager.c:2721
+#: curs_main.c:1446 curs_main.c:2769 pager.c:2721
 #, fuzzy
 msgid "Cannot delete message(s)"
 msgstr "desezabatu mezua(k)"
 
-#: curs_main.c:1459
+#: curs_main.c:1449
 msgid "Delete messages matching: "
 msgstr "Horrelako mezuak ezabatu: "
 
-#: curs_main.c:1481
+#: curs_main.c:1471
 msgid "No limit pattern is in effect."
 msgstr "Ez da muga patroirik funtzionamenduan."
 
 #. L10N: ask for a limit to apply
-#: curs_main.c:1486
+#: curs_main.c:1476
 #, c-format
 msgid "Limit: %s"
 msgstr "Muga: %s"
 
-#: curs_main.c:1524
+#: curs_main.c:1514
 msgid "Limit to messages matching: "
 msgstr "Hau duten mezuetara mugatu: "
 
-#: curs_main.c:1546
+#: curs_main.c:1536
 msgid "To view all messages, limit to \"all\"."
 msgstr "Mezu guztiak ikusteko, \"dena\" bezala mugatu."
 
-#: curs_main.c:1558 pager.c:2228
+#: curs_main.c:1548 pager.c:2228
 msgid "Quit Mutt?"
 msgstr "Mutt Itxi?"
 
-#: curs_main.c:1651
+#: curs_main.c:1641
 msgid "Tag messages matching: "
 msgstr "Horrelako mezuak markatu: "
 
 #. L10N: CHECK_ACL
-#: curs_main.c:1661 curs_main.c:3183 pager.c:3036
+#: curs_main.c:1651 curs_main.c:3173 pager.c:3036
 #, fuzzy
 msgid "Cannot undelete message(s)"
 msgstr "desezabatu mezua(k)"
 
-#: curs_main.c:1664
+#: curs_main.c:1654
 msgid "Undelete messages matching: "
 msgstr "Hau betetzen duten mezua desezabatu: "
 
-#: curs_main.c:1672
+#: curs_main.c:1662
 msgid "Untag messages matching: "
 msgstr "Horrelako mezuen marka ezabatzen: "
 
-#: curs_main.c:1706
+#: curs_main.c:1696
 msgid "Logged out of IMAP servers."
 msgstr ""
 
-#: curs_main.c:1803 curs_main.c:1842
+#: curs_main.c:1793 curs_main.c:1832
 #, fuzzy
 msgid "No virtual folder, aborting."
 msgstr "Ez du gairik, ezeztatzen."
 
-#: curs_main.c:1811
+#: curs_main.c:1801
 msgid "Failed to read thread, aborting."
 msgstr ""
 
-#: curs_main.c:1850
+#: curs_main.c:1840
 #, fuzzy
 msgid "No label specified, aborting."
 msgstr "Ez du gairik, ezeztatzen."
 
-#: curs_main.c:1861
+#: curs_main.c:1851
 #, c-format
 msgid "Update labels..."
 msgstr ""
 
-#: curs_main.c:1886
+#: curs_main.c:1876
 msgid "Failed to modify labels, aborting."
 msgstr ""
 
-#: curs_main.c:1920
+#: curs_main.c:1910
 #, fuzzy
 msgid "No query, aborting."
 msgstr "Ez du gairik, ezeztatzen."
 
-#: curs_main.c:1924 curs_main.c:1944 curs_main.c:1963
+#: curs_main.c:1914 curs_main.c:1934 curs_main.c:1953
 msgid "Failed to create query, aborting."
 msgstr ""
 
-#: curs_main.c:1933 curs_main.c:1952
+#: curs_main.c:1923 curs_main.c:1942
 msgid "Windowed queries disabled."
 msgstr ""
 
-#: curs_main.c:1938 curs_main.c:1957
+#: curs_main.c:1928 curs_main.c:1947
 msgid "No notmuch vfolder currently loaded."
 msgstr ""
 
-#: curs_main.c:1995
+#: curs_main.c:1985
 msgid "Open mailbox in read-only mode"
 msgstr "Postakutxa irakurtzeko bakarrik ireki"
 
-#: curs_main.c:1998
+#: curs_main.c:1988
 #, fuzzy
 msgid "Open virtual folder"
 msgstr "beste karpeta bat ireki"
 
-#: curs_main.c:2001
+#: curs_main.c:1991
 msgid "Open mailbox"
 msgstr "Postakutxa ireki"
 
-#: curs_main.c:2011
+#: curs_main.c:2001
 msgid "No mailboxes have new mail"
 msgstr "Ez dago posta berririk duen postakutxarik"
 
-#: curs_main.c:2053
+#: curs_main.c:2043
 #, fuzzy
 msgid "Open newsgroup in read-only mode"
 msgstr "Postakutxa irakurtzeko bakarrik ireki"
 
-#: curs_main.c:2055
+#: curs_main.c:2045
 msgid "Open newsgroup"
 msgstr ""
 
-#: curs_main.c:2155
+#: curs_main.c:2145
 #, fuzzy
 msgid "Exit NeoMutt without saving?"
 msgstr "Mutt gorde gabe itxi?"
 
-#: curs_main.c:2171
+#: curs_main.c:2161
 #, fuzzy
 msgid "Cannot break thread"
 msgstr "hariak lotu"
 
-#: curs_main.c:2174 curs_main.c:2211 curs_main.c:2666 curs_main.c:2698
+#: curs_main.c:2164 curs_main.c:2201 curs_main.c:2656 curs_main.c:2688
 #: flags.c:339 thread.c:1043 thread.c:1099 thread.c:1165
 msgid "Threading is not enabled."
 msgstr "Hari bihurketa ez dago gaiturik."
 
-#: curs_main.c:2186
+#: curs_main.c:2176
 msgid "Thread broken"
 msgstr "Haria apurturik"
 
-#: curs_main.c:2198
+#: curs_main.c:2188
 msgid "Thread cannot be broken, message is not part of a thread"
 msgstr ""
 
 #. L10N: CHECK_ACL
-#: curs_main.c:2208
+#: curs_main.c:2198
 #, fuzzy
 msgid "Cannot link threads"
 msgstr "hariak lotu"
 
-#: curs_main.c:2213
+#: curs_main.c:2203
 msgid "No Message-ID: header available to link thread"
 msgstr "Ez da Mezu-ID burua jaso harira lotzeko"
 
-#: curs_main.c:2215
+#: curs_main.c:2205
 msgid "First, please tag a message to be linked here"
 msgstr "Lehenengo, markatu mezu bat hemen lotzeko"
 
-#: curs_main.c:2226
+#: curs_main.c:2216
 msgid "Threads linked"
 msgstr "Hariak loturik"
 
-#: curs_main.c:2229
+#: curs_main.c:2219
 msgid "No thread linked"
 msgstr "Hariak ez dira lotu"
 
-#: curs_main.c:2265 curs_main.c:2290
+#: curs_main.c:2255 curs_main.c:2280
 msgid "You are on the last message."
 msgstr "Azkenengo mezuan zaude."
 
-#: curs_main.c:2272 curs_main.c:2316
+#: curs_main.c:2262 curs_main.c:2306
 msgid "No undeleted messages."
 msgstr "Ez dago desezabatutako mezurik."
 
-#: curs_main.c:2309 curs_main.c:2334
+#: curs_main.c:2299 curs_main.c:2324
 msgid "You are on the first message."
 msgstr "Lehenengo mezuan zaude."
 
-#: curs_main.c:2406 menu.c:949 pager.c:2348 pattern.c:1984
+#: curs_main.c:2396 menu.c:949 pager.c:2348 pattern.c:1984
 msgid "Search wrapped to top."
 msgstr "Bilaketa berriz hasieratik hasi da."
 
-#: curs_main.c:2415 pager.c:2369 pattern.c:1995
+#: curs_main.c:2405 pager.c:2369 pattern.c:1995
 msgid "Search wrapped to bottom."
 msgstr "Bilaketa berriz amaieratik hasi da."
 
-#: curs_main.c:2458
+#: curs_main.c:2448
 #, fuzzy
 msgid "No new messages in this limited view."
 msgstr "Jatorrizko mezua ez da ikusgarria bistaratze mugatu honetan."
 
-#: curs_main.c:2460
+#: curs_main.c:2450
 #, fuzzy
 msgid "No new messages."
 msgstr "Ez dago mezu berririk"
 
-#: curs_main.c:2465
+#: curs_main.c:2455
 #, fuzzy
 msgid "No unread messages in this limited view."
 msgstr "Jatorrizko mezua ez da ikusgarria bistaratze mugatu honetan."
 
-#: curs_main.c:2467
+#: curs_main.c:2457
 #, fuzzy
 msgid "No unread messages."
 msgstr "Ez dago irakurgabeko mezurik"
 
 #. L10N: CHECK_ACL
-#: curs_main.c:2485
+#: curs_main.c:2475
 #, fuzzy
 msgid "Cannot flag message"
 msgstr "markatu mezua"
 
 #. L10N: CHECK_ACL
-#: curs_main.c:2523 pager.c:2999
+#: curs_main.c:2513 pager.c:2999
 #, fuzzy
 msgid "Cannot toggle new"
 msgstr "txandakatu berria"
 
-#: curs_main.c:2600
+#: curs_main.c:2590
 msgid "No more threads."
 msgstr "Ez dago hari gehiagorik."
 
-#: curs_main.c:2602
+#: curs_main.c:2592
 msgid "You are on the first thread."
 msgstr "Lehenengo harian zaude."
 
-#: curs_main.c:2684
+#: curs_main.c:2674
 msgid "Thread contains unread messages."
 msgstr "Irakurgabeko mezuak dituen haria."
 
 #. L10N: CHECK_ACL
-#: curs_main.c:2734 pager.c:2687
+#: curs_main.c:2724 pager.c:2687
 #, fuzzy
 msgid "Cannot delete message"
 msgstr "desezabatu mezua"
 
 #. L10N: CHECK_ACL
-#: curs_main.c:2836
+#: curs_main.c:2826
 #, fuzzy
 msgid "Cannot edit message"
 msgstr "Ezin da mezua idatzi"
 
 #. L10N: This is displayed when the x-label on one or more
 #. * messages is edited.
-#: curs_main.c:2884 pager.c:3099
+#: curs_main.c:2874 pager.c:3099
 #, fuzzy, c-format
 msgid "%d labels changed."
 msgstr "Postakutxak ez du aldaketarik."
@@ -1459,13 +1459,13 @@ msgstr "Postakutxak ez du aldaketarik."
 #. L10N: This is displayed when editing an x-label, but no messages
 #. * were updated.  Possibly due to canceling at the prompt or if the new
 #. * label is the same as the old label.
-#: curs_main.c:2891 pager.c:3103
+#: curs_main.c:2881 pager.c:3103
 #, fuzzy
 msgid "No labels changed."
 msgstr "Postakutxak ez du aldaketarik."
 
 #. L10N: CHECK_ACL
-#: curs_main.c:2990
+#: curs_main.c:2980
 #, fuzzy
 msgid "Cannot mark message(s) as read"
 msgstr "markatu mezua(k) irakurri gisa"
@@ -1473,14 +1473,14 @@ msgstr "markatu mezua(k) irakurri gisa"
 #. L10N: This is the prompt for <mark-message>.  Whatever they
 #. enter will be prefixed by $mark_macro_prefix and will become
 #. a macro hotkey to jump to the currently selected message.
-#: curs_main.c:3026
+#: curs_main.c:3016
 #, fuzzy
 msgid "Enter macro stroke: "
 msgstr "IDgakoa sartu: "
 
 #. L10N: "message hotkey" is the key bindings menu description of a
 #. macro created by <mark-message>.
-#: curs_main.c:3033
+#: curs_main.c:3023
 #, fuzzy
 msgid "message hotkey"
 msgstr "Mezua atzeraturik."
@@ -1488,28 +1488,28 @@ msgstr "Mezua atzeraturik."
 #. L10N: This is echoed after <mark-message> creates a new hotkey
 #. macro.  %s is the hotkey string ($mark_macro_prefix followed
 #. by whatever they typed at the prompt.)
-#: curs_main.c:3038
+#: curs_main.c:3028
 #, fuzzy, c-format
 msgid "Message bound to %s."
 msgstr "Mezua errebotaturik."
 
 #. L10N: This error is printed if <mark-message> cannot find a
 #. Message-ID for the currently selected message in the index.
-#: curs_main.c:3046
+#: curs_main.c:3036
 #, fuzzy
 msgid "No message ID to macro."
 msgstr "Ez dago mezurik karpeta honetan."
 
-#: curs_main.c:3089 pager.c:2861 recvattach.c:1244
+#: curs_main.c:3079 pager.c:2861 recvattach.c:1244
 msgid "Reply by mail as poster prefers?"
 msgstr ""
 
-#: curs_main.c:3092 pager.c:2830 pager.c:2840 pager.c:2864
+#: curs_main.c:3082 pager.c:2830 pager.c:2840 pager.c:2864
 msgid "Posting to this group not allowed, may be moderated. Continue?"
 msgstr ""
 
 #. L10N: CHECK_ACL
-#: curs_main.c:3153 pager.c:3019
+#: curs_main.c:3143 pager.c:3019
 #, fuzzy
 msgid "Cannot undelete message"
 msgstr "desezabatu mezua"
@@ -1777,7 +1777,7 @@ msgstr "('%s' erabili zati hau ikusteko)"
 msgid "(need 'view-attachments' bound to key!)"
 msgstr "(lotu 'view-attachments' tekla bati!)"
 
-#: hcache/hcache.c:556 main.c:521 newsrc.c:966
+#: hcache/hcache.c:556 main.c:527 newsrc.c:966
 #, c-format
 msgid "Can't create %s: %s."
 msgstr "Ezin da %s sortu: %s."
@@ -1838,7 +1838,6 @@ msgid "badly formatted command string"
 msgstr ""
 
 #: hook.c:311
-#, c-format
 msgid "unhook: Can't do unhook * from within a hook."
 msgstr "unhook: Ezin da gantxoaren barnekaldetik desengatxatu."
 
@@ -2094,8 +2093,7 @@ msgstr "%d mezua %s-ra kopiatzen..."
 msgid "Continue?"
 msgstr "Jarraitu?"
 
-#: init.c:75 init.c:2441 pager.c:70
-#, c-format
+#: init.c:75 init.c:2440 pager.c:70
 msgid "Not available in this menu."
 msgstr "Menu honetan ezin da egin."
 
@@ -2104,7 +2102,7 @@ msgstr "Menu honetan ezin da egin."
 msgid "%s: unknown sorting method"
 msgstr "%s: sailkatze modu ezezaguna"
 
-#: init.c:394 init.c:431 init.c:2878
+#: init.c:394 init.c:431 init.c:2877
 #, c-format
 msgid "%s: Unknown type."
 msgstr "%s Mota ezezaguna."
@@ -2115,7 +2113,7 @@ msgid "Bad regexp: %s"
 msgstr "Okerreko espresio erregularra: %s"
 
 #: init.c:737
-#, fuzzy, c-format
+#, fuzzy
 msgid "Not enough subexpressions for template"
 msgstr "Ez dago zabor-posta txantiloirako aski azpiespresio"
 
@@ -2189,218 +2187,212 @@ msgstr "baliogabeko mezu burua"
 msgid "restore_default(%s): error in regexp: %s\n"
 msgstr "mutt_restore_default(%s): errorea espresio erregularrean: %s\n"
 
-#: init.c:2321 init.c:2488
+#: init.c:2320 init.c:2487
 #, c-format
 msgid "%s is unset"
 msgstr "%s ezarri gabe dago"
 
-#: init.c:2418 init.c:2533
+#: init.c:2417 init.c:2532
 #, c-format
 msgid "%s: unknown variable"
 msgstr "%s: aldagai ezezaguna"
 
-#: init.c:2427
-#, c-format
+#: init.c:2426
 msgid "prefix is illegal with reset"
 msgstr "aurrizkia legezkanpokoa da reset-ekin"
 
-#: init.c:2433
-#, c-format
+#: init.c:2432
 msgid "value is illegal with reset"
 msgstr "balioa legezkanpokoa da reset-ekin"
 
-#: init.c:2468 init.c:2480
-#, c-format
+#: init.c:2467 init.c:2479
 msgid "Usage: set variable=yes|no"
 msgstr "Erabilera: set variable=yes|no"
 
-#: init.c:2488
+#: init.c:2487
 #, c-format
 msgid "%s is set"
 msgstr "%s ezarririk dago"
 
-#: init.c:2588
+#: init.c:2587
 msgid "set debug_file ignored, it have been overridden with cmdline"
 msgstr ""
 
-#: init.c:2613 init.c:2628
+#: init.c:2612 init.c:2627
 #, fuzzy, c-format
 msgid "Invalid value for option %s: \"%s\""
 msgstr "Baliogabeko hilabete eguna: %s"
 
-#: init.c:2726
+#: init.c:2725
 #, c-format
 msgid "%s: invalid mailbox type"
 msgstr "%s: posta-kutxa mota okerra"
 
-#: init.c:2757
+#: init.c:2756
 #, fuzzy, c-format
 msgid "%s: invalid value (%s)"
 msgstr "%s: balio okerra"
 
-#: init.c:2758
+#: init.c:2757
 msgid "format error"
 msgstr ""
 
-#: init.c:2758
+#: init.c:2757
 msgid "number overflow"
 msgstr ""
 
-#: init.c:2766
+#: init.c:2765
 msgid "set debug_level ignored, it have been overridden with cmdline"
 msgstr ""
 
-#: init.c:2834
+#: init.c:2833
 #, c-format
 msgid "%s: invalid value"
 msgstr "%s: balio okerra"
 
-#: init.c:2924
+#: init.c:2923
 #, fuzzy, c-format
 msgid "%s: invalid backend"
 msgstr "%s: balio okerra"
 
-#: init.c:2932
+#: init.c:2931
 #, c-format
 msgid "%s: unknown type"
 msgstr "%s: mota ezezaguna"
 
-#: init.c:3082
+#: init.c:3081
 #, c-format
 msgid "Error in %s, line %d: %s"
 msgstr "Errorea %s-n, %d lerroan: %s"
 
-#: init.c:3093
+#: init.c:3092
 #, fuzzy, c-format
 msgid "Warning in %s, line %d: %s"
 msgstr "Errorea %s-n, %d lerroan: %s"
 
-#: init.c:3118
+#: init.c:3117
 #, c-format
 msgid "source: errors in %s"
 msgstr "jatorria: erroreak %s-n"
 
-#: init.c:3119
+#: init.c:3118
 #, fuzzy, c-format
 msgid "source: reading aborted due to too many errors in %s"
 msgstr "jatorria: %s-n akats gehiegiengatik irakurketa ezeztatua"
 
-#: init.c:3128
+#: init.c:3127
 #, fuzzy, c-format
 msgid "source: %d warnings in %s"
 msgstr "jatorria: erroreak %s-n"
 
-#: init.c:3147 mutt_lua.c:416
+#: init.c:3146 mutt_lua.c:416
 #, c-format
 msgid "source: error at %s"
 msgstr "jatorria: %s-n errorea"
 
-#: init.c:3152 mutt_lua.c:421
+#: init.c:3151 mutt_lua.c:421
 msgid "source: too many arguments"
 msgstr "jatorria : argumentu gutxiegi"
 
-#: init.c:3209
+#: init.c:3208
 #, c-format
 msgid "%s: unknown command"
 msgstr "%s: komando ezezaguna"
 
-#: init.c:3867
+#: init.c:3866
 #, c-format
 msgid "Error in command line: %s\n"
 msgstr "Komando lerroan errorea: %s\n"
 
-#: init.c:3971
+#: init.c:3970
 msgid "unable to determine home directory"
 msgstr "ezin da \"home\" karpeta aukeratu"
 
-#: init.c:3979
+#: init.c:3978
 msgid "unable to determine username"
 msgstr "ezinda erabiltzaile izena aurkitu"
 
-#: init.c:4011
+#: init.c:4010
 #, fuzzy
 msgid "unable to determine nodename via uname()"
 msgstr "ezinda erabiltzaile izena aurkitu"
 
-#: init.c:4302
+#: init.c:4301
 msgid "-group: no group name"
 msgstr "-group: ez dago talde izenik"
 
-#: init.c:4312
+#: init.c:4311
 msgid "out of arguments"
 msgstr "argumentu gehiegi"
 
-#: keymap.c:270
-#, fuzzy, c-format
-msgid "Binding '%s' will alias '%s'"
-msgstr "Kontuz: '%s' IDN okerra '%s' ezizenean.\n"
+#: keymap.c:270 keymap.c:276
+#, c-format
+msgid ""
+"Binding '%s' will alias '%s'  Before, try: 'bind %s %s noop'  https://"
+"neomutt.org/guide/configuration.html#bind-warnings"
+msgstr ""
 
-#: keymap.c:276
-#, fuzzy, c-format
-msgid "Warning: For menu '%s', binding '%s' will alias '%s'"
-msgstr "Kontuz: '%s' IDN okerra '%s' ezizenean.\n"
-
-#: keymap.c:571
+#: keymap.c:572
 msgid "Macros are currently disabled."
 msgstr ""
 
-#: keymap.c:578
+#: keymap.c:579
 msgid "Macro loop detected."
 msgstr "Makro begizta aurkitua."
 
-#: keymap.c:881 keymap.c:916
+#: keymap.c:882 keymap.c:917
 msgid "Key is not bound."
 msgstr "Letra ez dago mugaturik."
 
-#: keymap.c:921
+#: keymap.c:922
 #, c-format
 msgid "Key is not bound.  Press '%s' for help."
 msgstr "Letra ez dago mugaturik.  %s jo laguntzarako."
 
-#: keymap.c:933
+#: keymap.c:934
 msgid "push: too many arguments"
 msgstr "push: argumentu gutxiegi"
 
-#: keymap.c:964
+#: keymap.c:965
 #, c-format
 msgid "%s: no such menu"
 msgstr "%s: ez da menurik"
 
-#: keymap.c:979
+#: keymap.c:980
 msgid "null key sequence"
 msgstr "baloigabeko sekuentzi gakoa"
 
-#: keymap.c:1006
+#: keymap.c:1007
 #, c-format
 msgid "Function '%s' not available for menu '%s'"
 msgstr ""
 
-#: keymap.c:1070
+#: keymap.c:1071
 msgid "bind: too many arguments"
 msgstr "bind:argumentu gehiegi"
 
-#: keymap.c:1123
+#: keymap.c:1124
 msgid "macro: empty key sequence"
 msgstr "macro: sekuentzi gako hutsa"
 
-#: keymap.c:1134
+#: keymap.c:1135
 msgid "macro: too many arguments"
 msgstr "makro: argumentu gutxiegi"
 
-#: keymap.c:1169
+#: keymap.c:1170
 msgid "exec: no arguments"
 msgstr "exec: ez da argumenturik"
 
-#: keymap.c:1188
+#: keymap.c:1189
 #, c-format
 msgid "%s: no such function"
 msgstr "%s: ez da funtziorik"
 
-#: keymap.c:1209
+#: keymap.c:1210
 msgid "Enter keys (^G to abort): "
 msgstr "Sartu gakoak (^G uzteko): "
 
-#: keymap.c:1215
+#: keymap.c:1216
 #, c-format
 msgid "Char = %s, Octal = %o, Decimal = %d"
 msgstr "Kar = %s, Zortziko = %o, hamarreko = %d"
@@ -3416,7 +3408,7 @@ msgstr "onartutako gako publikoak atera"
 msgid "Integer overflow -- can't allocate memory!"
 msgstr "Osoko zenbakia iraultzea - ezin da memoria esleitu!"
 
-#: lib.c:127 lib.c:142 lib.c:174 safe_asprintf.c:42
+#: lib.c:127 lib.c:142 lib.c:167 safe_asprintf.c:42
 msgid "Out of memory!"
 msgstr "Memoriaz kanpo!"
 
@@ -3523,62 +3515,62 @@ msgstr ""
 msgid "Error initializing terminal."
 msgstr "Errorea terminala abiaraztekoan."
 
-#: main.c:307
+#: main.c:313
 #, fuzzy, c-format
 msgid "Error: value '%s' is invalid for -d.\n"
 msgstr "Errorea: '%s' IDN okerra da."
 
-#: main.c:310
+#: main.c:316
 #, c-format
 msgid "Debugging at level %d.\n"
 msgstr "%d. mailan arazten.\n"
 
-#: main.c:312
-#, fuzzy, c-format
+#: main.c:318
+#, fuzzy
 msgid "DEBUG was not defined during compilation. -d Ignored.\n"
 msgstr "DEBUG ez dago kopiatzerakoan definiturik.  Alde batetara uzten.\n"
 
-#: main.c:335
+#: main.c:341
 #, fuzzy, c-format
 msgid "Debugging at file %s.\n"
 msgstr "%d. mailan arazten.\n"
 
-#: main.c:337
+#: main.c:343
 #, fuzzy, c-format
 msgid "DEBUG was not defined during compilation. -l Ignored.\n"
 msgstr "DEBUG ez dago kopiatzerakoan definiturik.  Alde batetara uzten.\n"
 
-#: main.c:517
+#: main.c:523
 #, c-format
 msgid "%s does not exist. Create it?"
 msgstr "%s ez da existitzen. Sortu?"
 
-#: main.c:563
+#: main.c:569
 msgid "Failed to parse mailto: link\n"
 msgstr "Huts maito: lotura analizatzean\n"
 
-#: main.c:575
+#: main.c:581
 msgid "No recipients specified.\n"
 msgstr "Ez da jasotzailerik eman.\n"
 
-#: main.c:601
+#: main.c:607
 msgid "Cannot use -E flag with stdin\n"
 msgstr ""
 
-#: main.c:753
+#: main.c:759
 #, c-format
 msgid "%s: unable to attach file.\n"
 msgstr "%s: ezin da fitxategia txertatu.\n"
 
-#: main.c:834
+#: main.c:840
 msgid "No mailbox with new mail."
 msgstr "Ez dago posta berririk duen postakutxarik."
 
-#: main.c:856
+#: main.c:862
 msgid "No incoming mailboxes defined."
 msgstr "Ez da sarrera postakutxarik ezarri."
 
-#: main.c:899
+#: main.c:905
 msgid "Mailbox is empty."
 msgstr "Postakutxa hutsik dago."
 
@@ -3644,7 +3636,7 @@ msgid "Invalid index number."
 msgstr "Baliogabeko sarrera zenbakia."
 
 #: menu.c:532 menu.c:554 menu.c:616 menu.c:659 menu.c:675 menu.c:686 menu.c:697
-#: menu.c:708 menu.c:721 menu.c:734 menu.c:1250
+#: menu.c:708 menu.c:721 menu.c:734 menu.c:1266
 msgid "No entries."
 msgstr "Ez dago sarrerarik."
 
@@ -3684,19 +3676,19 @@ msgstr "Bilatu hau atzetik-aurrera: "
 msgid "Not found."
 msgstr "Ez da aurkitu."
 
-#: menu.c:1115
+#: menu.c:1129
 msgid "No tagged entries."
 msgstr "Ez dago markaturiko sarrerarik."
 
-#: menu.c:1214
+#: menu.c:1230
 msgid "Search is not implemented for this menu."
 msgstr "Menu honek ez du bilaketarik inplementaturik."
 
-#: menu.c:1219
+#: menu.c:1235
 msgid "Jumping is not implemented for dialogs."
 msgstr "Elkarrizketetan ez da saltorik inplementatu."
 
-#: menu.c:1253
+#: menu.c:1269
 msgid "Tagging is not supported."
 msgstr "Markatzea ez da onartzen."
 
@@ -4499,7 +4491,7 @@ msgstr "Errorea: desenkriptazio/egiaztapenak huts egin du: %s\n"
 msgid "Error: copy data failed\n"
 msgstr "Errorea: huts datuak kopiatzerakoan\n"
 
-#: ncrypt/crypt_gpgme.c:2486 ncrypt/pgp.c:505
+#: ncrypt/crypt_gpgme.c:2486 ncrypt/pgp.c:509
 msgid ""
 "[-- BEGIN PGP MESSAGE --]\n"
 "\n"
@@ -4507,11 +4499,11 @@ msgstr ""
 "[-- PGP MEZU HASIERA --]\n"
 "\n"
 
-#: ncrypt/crypt_gpgme.c:2488 ncrypt/pgp.c:507
+#: ncrypt/crypt_gpgme.c:2488 ncrypt/pgp.c:511
 msgid "[-- BEGIN PGP PUBLIC KEY BLOCK --]\n"
 msgstr "[-- PGP PUBLIKO GAKO BLOKE HASIERA --]\n"
 
-#: ncrypt/crypt_gpgme.c:2490 ncrypt/pgp.c:509
+#: ncrypt/crypt_gpgme.c:2490 ncrypt/pgp.c:513
 msgid ""
 "[-- BEGIN PGP SIGNED MESSAGE --]\n"
 "\n"
@@ -4519,19 +4511,19 @@ msgstr ""
 "[-- PGP SINATUTAKO MEZUAREN HASIERA --]\n"
 "\n"
 
-#: ncrypt/crypt_gpgme.c:2516 ncrypt/pgp.c:552
+#: ncrypt/crypt_gpgme.c:2516 ncrypt/pgp.c:556
 msgid "[-- END PGP MESSAGE --]\n"
 msgstr "[-- PGP MEZU BUKAERA--]\n"
 
-#: ncrypt/crypt_gpgme.c:2518 ncrypt/pgp.c:559
+#: ncrypt/crypt_gpgme.c:2518 ncrypt/pgp.c:563
 msgid "[-- END PGP PUBLIC KEY BLOCK --]\n"
 msgstr "[-- PGP PUBLIKO GAKO BLOKE AMAIERA --]\n"
 
-#: ncrypt/crypt_gpgme.c:2520 ncrypt/pgp.c:561
+#: ncrypt/crypt_gpgme.c:2520 ncrypt/pgp.c:565
 msgid "[-- END PGP SIGNED MESSAGE --]\n"
 msgstr "[-- PGP SINATUTAKO MEZU BUKAERA --]\n"
 
-#: ncrypt/crypt_gpgme.c:2543 ncrypt/pgp.c:595
+#: ncrypt/crypt_gpgme.c:2543 ncrypt/pgp.c:599
 msgid ""
 "[-- Error: could not find beginning of PGP message! --]\n"
 "\n"
@@ -4539,7 +4531,7 @@ msgstr ""
 "[-- Errorea: ezin da PGP mezuaren hasiera aurkitu! --]\n"
 "\n"
 
-#: ncrypt/crypt_gpgme.c:2575 ncrypt/crypt_gpgme.c:2650 ncrypt/pgp.c:1012
+#: ncrypt/crypt_gpgme.c:2575 ncrypt/crypt_gpgme.c:2650 ncrypt/pgp.c:1016
 msgid "[-- Error: could not create temporary file! --]\n"
 msgstr "[-- Errorea: ezin da behin-behineko fitxategi sortu! --]\n"
 
@@ -4551,7 +4543,7 @@ msgstr ""
 "[-- Hurrengo datuak PGP/MIME bidez sinatu eta enkriptaturik daude --]\n"
 "\n"
 
-#: ncrypt/crypt_gpgme.c:2590 ncrypt/pgp.c:1023
+#: ncrypt/crypt_gpgme.c:2590 ncrypt/pgp.c:1027
 msgid ""
 "[-- The following data is PGP/MIME encrypted --]\n"
 "\n"
@@ -4563,16 +4555,16 @@ msgstr ""
 msgid "[-- End of PGP/MIME signed and encrypted data --]\n"
 msgstr "[-- PGP/MIME bidez sinatu eta enkriptaturiko datuen amaiera --]\n"
 
-#: ncrypt/crypt_gpgme.c:2613 ncrypt/pgp.c:1043
+#: ncrypt/crypt_gpgme.c:2613 ncrypt/pgp.c:1047
 msgid "[-- End of PGP/MIME encrypted data --]\n"
 msgstr "[-- PGP/MIME bidez enkriptaturiko datuen amaiera --]\n"
 
-#: ncrypt/crypt_gpgme.c:2618 ncrypt/pgp.c:556 ncrypt/pgp.c:1048
+#: ncrypt/crypt_gpgme.c:2618 ncrypt/pgp.c:560 ncrypt/pgp.c:1052
 msgid "PGP message successfully decrypted."
 msgstr "PGP mezua arrakastatsuki desenkriptatu da."
 
-#: ncrypt/crypt_gpgme.c:2622 ncrypt/pgp.c:491 ncrypt/pgp.c:554
-#: ncrypt/pgp.c:1052
+#: ncrypt/crypt_gpgme.c:2622 ncrypt/pgp.c:495 ncrypt/pgp.c:558
+#: ncrypt/pgp.c:1056
 msgid "Could not decrypt PGP message"
 msgstr "Ezin da PGP mezua desenkriptatu"
 
@@ -4645,7 +4637,6 @@ msgstr "Gako mota ..: %s, %lu bit %s\n"
 
 #. L10N: DOTFILL
 #: ncrypt/crypt_gpgme.c:3384 ncrypt/crypt_gpgme.c:3523
-#, c-format
 msgid "Key Usage .: "
 msgstr "Tekla Erabilera .: "
 
@@ -4675,7 +4666,6 @@ msgstr "Serial-Zb .: 0x%s\n"
 
 #. L10N: DOTFILL
 #: ncrypt/crypt_gpgme.c:3453
-#, c-format
 msgid "Issued By .: "
 msgstr "Emana : "
 
@@ -4795,7 +4785,7 @@ msgstr "ID-a ez da baliozkoa."
 msgid "ID is only marginally valid."
 msgstr "ID bakarrik marginalki erabilgarria da."
 
-#: ncrypt/crypt_gpgme.c:4008 ncrypt/smime.c:445
+#: ncrypt/crypt_gpgme.c:4008 ncrypt/pgpkey.c:624 ncrypt/smime.c:445
 #, c-format
 msgid "%s Do you really want to use the key?"
 msgstr "%sZihur zaude gakoa erabili nahi duzula?"
@@ -4806,12 +4796,12 @@ msgstr "%sZihur zaude gakoa erabili nahi duzula?"
 msgid "Looking for keys matching \"%s\"..."
 msgstr "\"%s\" duten gakoen bila..."
 
-#: ncrypt/crypt_gpgme.c:4346 ncrypt/pgp.c:1225
+#: ncrypt/crypt_gpgme.c:4346 ncrypt/pgp.c:1229
 #, c-format
 msgid "Use keyID = \"%s\" for %s?"
 msgstr "ID-gakoa=\"%s\" %s-rako erabili?"
 
-#: ncrypt/crypt_gpgme.c:4397 ncrypt/pgp.c:1274 ncrypt/smime.c:758
+#: ncrypt/crypt_gpgme.c:4397 ncrypt/pgp.c:1278 ncrypt/smime.c:758
 #: ncrypt/smime.c:858
 #, c-format
 msgid "Enter keyID for %s: "
@@ -4849,22 +4839,22 @@ msgid "S/MIME (s)ign, sign (a)s, (p)gp, (c)lear, or (o)ppenc mode off? "
 msgstr "S/MIME (e)nkript, (s)ina, sin (a) honela, (b)iak, (p)gp or (g)arbitu?"
 
 #. L10N: S/MIME options (opportunistic encryption is on)
-#: ncrypt/crypt_gpgme.c:4583
+#: ncrypt/crypt_gpgme.c:4582
 msgid "sapco"
 msgstr "esabpg"
 
-#: ncrypt/crypt_gpgme.c:4590
+#: ncrypt/crypt_gpgme.c:4589
 #, fuzzy
 msgid "PGP (s)ign, sign (a)s, s/(m)ime, (c)lear, or (o)ppenc mode off? "
 msgstr "PGP (e)nkrippt, (s)ina, sin(a)tu hola, (b)iak, s/(m)ime edo (g)abitu?"
 
 #. L10N: PGP options (opportunistic encryption is on)
-#: ncrypt/crypt_gpgme.c:4593
+#: ncrypt/crypt_gpgme.c:4591
 msgid "samco"
 msgstr "esabmg"
 
 #. L10N: S/MIME options (opportunistic encryption is off)
-#: ncrypt/crypt_gpgme.c:4606
+#: ncrypt/crypt_gpgme.c:4604
 #, fuzzy
 msgid ""
 "S/MIME (e)ncrypt, (s)ign, sign (a)s, (b)oth, (p)gp, (c)lear, or (o)ppenc "
@@ -4872,13 +4862,13 @@ msgid ""
 msgstr "S/MIME (e)nkript, (s)ina, sin (a) honela, (b)iak, (p)gp or (g)arbitu?"
 
 #. L10N: S/MIME options (opportunistic encryption is off)
-#: ncrypt/crypt_gpgme.c:4610
+#: ncrypt/crypt_gpgme.c:4607
 #, fuzzy
 msgid "esabpco"
 msgstr "esabpg"
 
 #. L10N: PGP options (opportunistic encryption is off)
-#: ncrypt/crypt_gpgme.c:4616
+#: ncrypt/crypt_gpgme.c:4613
 #, fuzzy
 msgid ""
 "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, s/(m)ime, (c)lear, or (o)ppenc "
@@ -4886,55 +4876,55 @@ msgid ""
 msgstr "PGP (e)nkrippt, (s)ina, sin(a)tu hola, (b)iak, s/(m)ime edo (g)abitu?"
 
 #. L10N: PGP options (opportunistic encryption is off)
-#: ncrypt/crypt_gpgme.c:4620
+#: ncrypt/crypt_gpgme.c:4616
 #, fuzzy
 msgid "esabmco"
 msgstr "esabmg"
 
-#: ncrypt/crypt_gpgme.c:4633
+#: ncrypt/crypt_gpgme.c:4629
 #, fuzzy
 msgid "S/MIME (e)ncrypt, (s)ign, sign (a)s, (b)oth, (p)gp or (c)lear? "
 msgstr "S/MIME (e)nkript, (s)ina, sin (a) honela, (b)iak, (p)gp or (g)arbitu?"
 
 #. L10N: S/MIME options
-#: ncrypt/crypt_gpgme.c:4636
+#: ncrypt/crypt_gpgme.c:4631
 #, fuzzy
 msgid "esabpc"
 msgstr "esabpg"
 
-#: ncrypt/crypt_gpgme.c:4643
+#: ncrypt/crypt_gpgme.c:4638
 #, fuzzy
 msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, s/(m)ime or (c)lear? "
 msgstr "PGP (e)nkrippt, (s)ina, sin(a)tu hola, (b)iak, s/(m)ime edo (g)abitu?"
 
 #. L10N: PGP options
-#: ncrypt/crypt_gpgme.c:4646
+#: ncrypt/crypt_gpgme.c:4640
 #, fuzzy
 msgid "esabmc"
 msgstr "esabmg"
 
-#: ncrypt/crypt_gpgme.c:4671 ncrypt/pgp.c:1757 ncrypt/smime.c:2098
-#: ncrypt/smime.c:2113
+#: ncrypt/crypt_gpgme.c:4665 ncrypt/pgp.c:1755 ncrypt/smime.c:2095
+#: ncrypt/smime.c:2110
 msgid "Sign as: "
 msgstr "Honela sinatu: "
 
-#: ncrypt/crypt_gpgme.c:4798
+#: ncrypt/crypt_gpgme.c:4792
 msgid "Failed to verify sender"
 msgstr "Huts bidaltzailea egiaztatzerakoan"
 
-#: ncrypt/crypt_gpgme.c:4801
+#: ncrypt/crypt_gpgme.c:4795
 msgid "Failed to figure out sender"
 msgstr "Ezin izan da biltzailea atzeman"
 
-#: ncrypt/pgp.c:88
+#: ncrypt/pgp.c:89
 msgid "Enter PGP passphrase:"
 msgstr "Sar PGP pasahitza:"
 
-#: ncrypt/pgp.c:432
+#: ncrypt/pgp.c:436
 msgid "[-- Error: unable to create PGP subprocess! --]\n"
 msgstr "[-- Errorea: Ezin da PGP azpiprozesua sortu! --]\n"
 
-#: ncrypt/pgp.c:469 ncrypt/pgp.c:733 ncrypt/pgp.c:885
+#: ncrypt/pgp.c:473 ncrypt/pgp.c:737 ncrypt/pgp.c:889
 msgid ""
 "[-- End of PGP output --]\n"
 "\n"
@@ -4942,11 +4932,11 @@ msgstr ""
 "[-- PGP irteeraren amaiera --]\n"
 "\n"
 
-#: ncrypt/pgp.c:776
+#: ncrypt/pgp.c:780
 msgid "Internal error.  Please submit a bug report."
 msgstr ""
 
-#: ncrypt/pgp.c:842
+#: ncrypt/pgp.c:846
 msgid ""
 "[-- Error: could not create a PGP subprocess! --]\n"
 "\n"
@@ -4954,55 +4944,55 @@ msgstr ""
 "[-- Errorea: ezin da PGP azpiprozesua sortu! --]\n"
 "\n"
 
-#: ncrypt/pgp.c:873 ncrypt/pgp.c:897
+#: ncrypt/pgp.c:877 ncrypt/pgp.c:901
 msgid "Decryption failed"
 msgstr "Desenkriptazio hutsa"
 
-#: ncrypt/pgp.c:1103
+#: ncrypt/pgp.c:1107
 msgid "Can't open PGP subprocess!"
 msgstr "Ezin da PGP azpiprozesua ireki!"
 
-#: ncrypt/pgp.c:1533
+#: ncrypt/pgp.c:1537
 msgid "Can't invoke PGP"
 msgstr "Ezin da PGP deitu"
 
 #. L10N: These next string MUST have the same highlighted letter
 #. One of them will appear in each of the three strings marked "(inline"), below.
-#: ncrypt/pgp.c:1631
+#: ncrypt/pgp.c:1635
 msgid "PGP/M(i)ME"
 msgstr "PGP/M(i)ME"
 
 #. L10N: These previous string MUST have the same highlighted letter
 #. One of them will appear in each of the three strings marked "(inline"), below.
-#: ncrypt/pgp.c:1637
+#: ncrypt/pgp.c:1641
 msgid "(i)nline"
 msgstr "(i)barnean"
 
 #. L10N: PGP options (inline) (opportunistic encryption is on)
-#: ncrypt/pgp.c:1651
+#: ncrypt/pgp.c:1655
 #, fuzzy, c-format
 msgid "PGP (s)ign, sign (a)s, %s format, (c)lear, or (o)ppenc mode off? "
 msgstr "PGP (e)nkript, (s)ina, sign (a)tu hola, (b)iak, %s, edo (g)arbitu? "
 
 #. L10N: PGP options (inline) (opportunistic encryption is on)
 #. The 'i' is from the "PGP/M(i)ME" or "(i)nline", above.
-#: ncrypt/pgp.c:1658
+#: ncrypt/pgp.c:1661
 msgid "saico"
 msgstr "esabg"
 
 #. L10N: PGP options (opportunistic encryption is on)
-#: ncrypt/pgp.c:1664
+#: ncrypt/pgp.c:1667
 #, fuzzy
 msgid "PGP (s)ign, sign (a)s, (c)lear, or (o)ppenc mode off? "
 msgstr "PGP (e)nkript, (s)ina, sign (a)tu hola, (b)iak, %s, edo (g)arbitu? "
 
 #. L10N: PGP options (opportunistic encryption is on)
-#: ncrypt/pgp.c:1667
+#: ncrypt/pgp.c:1669
 msgid "saco"
 msgstr "esabg"
 
 #. L10N: PGP options (inline) (opportunistic encryption is off)
-#: ncrypt/pgp.c:1684
+#: ncrypt/pgp.c:1686
 #, fuzzy, c-format
 msgid ""
 "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, %s format, (c)lear, or (o)ppenc "
@@ -5011,13 +5001,13 @@ msgstr "PGP (e)nkript, (s)ina, sign (a)tu hola, (b)iak, %s, edo (g)arbitu? "
 
 #. L10N: PGP options (inline) (opportunistic encryption is off)
 #. The 'i' is from the "PGP/M(i)ME" or "(i)nline", above.
-#: ncrypt/pgp.c:1691
+#: ncrypt/pgp.c:1692
 #, fuzzy
 msgid "esabico"
 msgstr "esabg"
 
 #. L10N: PGP options (opportunistic encryption is off)
-#: ncrypt/pgp.c:1697
+#: ncrypt/pgp.c:1698
 #, fuzzy
 msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, (c)lear, or (o)ppenc mode? "
 msgstr "PGP (e)nkript, (s)ina, sign (a)tu hola, (b)iak, %s, edo (g)arbitu? "
@@ -5036,19 +5026,19 @@ msgstr "PGP (e)nkript, (s)ina, sign (a)tu hola, (b)iak, %s, edo (g)arbitu? "
 
 #. L10N: PGP options (inline)
 #. The 'i' is from the "PGP/M(i)ME" or "(i)nline", above.
-#: ncrypt/pgp.c:1721
+#: ncrypt/pgp.c:1720
 #, fuzzy
 msgid "esabic"
 msgstr "esabig"
 
 #. L10N: PGP options
-#: ncrypt/pgp.c:1727
+#: ncrypt/pgp.c:1726
 #, fuzzy
 msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, or (c)lear? "
 msgstr "PGP (e)nkript, (s)ina, sign (a)tu hola, (b)iak, %s, edo (g)arbitu? "
 
 #. L10N: PGP options
-#: ncrypt/pgp.c:1730
+#: ncrypt/pgp.c:1728
 #, fuzzy
 msgid "esabc"
 msgstr "esabg"
@@ -5209,12 +5199,12 @@ msgstr ""
 "(g)arbitu? "
 
 #. L10N: S/MIME options (opportunistic encryption is on)
-#: ncrypt/smime.c:1987
+#: ncrypt/smime.c:1986
 msgid "swaco"
 msgstr "eshabg"
 
 #. L10N: S/MIME options (opportunistic encryption is off)
-#: ncrypt/smime.c:1997
+#: ncrypt/smime.c:1996
 #, fuzzy
 msgid ""
 "S/MIME (e)ncrypt, (s)ign, encrypt (w)ith, sign (a)s, (b)oth, (c)lear, or "
@@ -5224,13 +5214,13 @@ msgstr ""
 "(g)arbitu? "
 
 #. L10N: S/MIME options (opportunistic encryption is off)
-#: ncrypt/smime.c:2001
+#: ncrypt/smime.c:1999
 #, fuzzy
 msgid "eswabco"
 msgstr "eshabg"
 
 #. L10N: S/MIME options
-#: ncrypt/smime.c:2010
+#: ncrypt/smime.c:2008
 msgid ""
 "S/MIME (e)ncrypt, (s)ign, encrypt (w)ith, sign (a)s, (b)oth, or (c)lear? "
 msgstr ""
@@ -5238,40 +5228,40 @@ msgstr ""
 "(g)arbitu? "
 
 #. L10N: S/MIME options
-#: ncrypt/smime.c:2014
+#: ncrypt/smime.c:2011
 #, fuzzy
 msgid "eswabc"
 msgstr "eshabg"
 
-#: ncrypt/smime.c:2034
+#: ncrypt/smime.c:2031
 msgid "Choose algorithm family: 1: DES, 2: RC2, 3: AES, or (c)lear? "
 msgstr "Hautatu algoritmo familia: 1: DES, 2: RC2, 3: AES, edo (g)arbitu? "
 
-#: ncrypt/smime.c:2037
+#: ncrypt/smime.c:2034
 msgid "drac"
 msgstr "drag"
 
-#: ncrypt/smime.c:2040
+#: ncrypt/smime.c:2037
 msgid "1: DES, 2: Triple-DES "
 msgstr "1: DES, 2: DES-Hirukoitza "
 
-#: ncrypt/smime.c:2040
+#: ncrypt/smime.c:2037
 msgid "dt"
 msgstr "dh"
 
-#: ncrypt/smime.c:2053
+#: ncrypt/smime.c:2050
 msgid "1: RC2-40, 2: RC2-64, 3: RC2-128 "
 msgstr "1: RC2-40, 2: RC2-64, 3: RC2-128 "
 
-#: ncrypt/smime.c:2053
+#: ncrypt/smime.c:2050
 msgid "468"
 msgstr "468"
 
-#: ncrypt/smime.c:2069
+#: ncrypt/smime.c:2066
 msgid "1: AES128, 2: AES192, 3: AES256 "
 msgstr "1: AES128, 2: AES192, 3: AES256 "
 
-#: ncrypt/smime.c:2069
+#: ncrypt/smime.c:2066
 msgid "895"
 msgstr "895"
 
@@ -5427,7 +5417,6 @@ msgid "Error in expression: %s"
 msgstr "Espresioan errorea: %s"
 
 #: pattern.c:90 pattern.c:398
-#, c-format
 msgid "Empty expression"
 msgstr "Espresio hutsa"
 
@@ -5496,7 +5485,6 @@ msgid "%c: not supported in this mode"
 msgstr "%c: ez da onartzen modu honetan"
 
 #: pattern.c:1261
-#, c-format
 msgid "missing parameter"
 msgstr "galdutako parametroa"
 
@@ -5543,7 +5531,6 @@ msgid "Search interrupted."
 msgstr "Bilaketa geldiarazirik."
 
 #: pop.c:113 pop_lib.c:215
-#, c-format
 msgid "Command TOP is not supported by server."
 msgstr "TOP komandoa ez du zerbitzariak onartzen."
 
@@ -5552,7 +5539,6 @@ msgid "Can't write header to temporary file!"
 msgstr "Ezin da burua fitxategi tenporalean gorde!"
 
 #: pop.c:286 pop_lib.c:217
-#, c-format
 msgid "Command UIDL is not supported by server."
 msgstr "UIDL komandoa ez du zerbitzariak onartzen."
 
@@ -5621,7 +5607,6 @@ msgid "APOP authentication failed."
 msgstr "APOP autentifikazioak huts egin du."
 
 #: pop_auth.c:279
-#, c-format
 msgid "Command USER is not supported by server."
 msgstr "USER komandoa ez du zerbitzariak onartzen."
 
@@ -6076,16 +6061,16 @@ msgstr "Ezin da %s ireki"
 msgid "$sendmail must be set in order to send mail."
 msgstr ""
 
-#: sendlib.c:2511
+#: sendlib.c:2512
 #, c-format
 msgid "Error sending message, child exited %d (%s)."
 msgstr "Errorea mezua bidaltzerakoan, azpiprozesua irteten %d (%s)."
 
-#: sendlib.c:2517
+#: sendlib.c:2518
 msgid "Output of the delivery process"
 msgstr "Postaketa prozesuaren irteera"
 
-#: sendlib.c:2696
+#: sendlib.c:2697
 #, c-format
 msgid "Bad IDN %s while preparing resent-from."
 msgstr "%s berbidalketa inprimakia prestatzerakoan IDN okerra."
@@ -6239,7 +6224,7 @@ msgid ""
 "under certain conditions; type `mutt -vv' for details.\n"
 msgstr ""
 
-#: version.c:424
+#: version.c:422
 msgid ""
 "\n"
 "Compile options:"
@@ -6248,3 +6233,9 @@ msgstr ""
 "Konpilazio aukerak:"
 
 #, fuzzy
+#~ msgid "Binding '%s' will alias '%s'"
+#~ msgstr "Kontuz: '%s' IDN okerra '%s' ezizenean.\n"
+
+#, fuzzy
+#~ msgid "Warning: For menu '%s', binding '%s' will alias '%s'"
+#~ msgstr "Kontuz: '%s' IDN okerra '%s' ezizenean.\n"

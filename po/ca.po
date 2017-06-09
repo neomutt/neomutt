@@ -52,9 +52,9 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: neomutt-20161104\n"
+"Project-Id-Version: neomutt-20170609\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
-"POT-Creation-Date: 2017-06-02 12:34+0100\n"
+"POT-Creation-Date: 2017-06-09 10:47+0100\n"
 "PO-Revision-Date: 2017-02-18 01:24+0100\n"
 "Last-Translator: Ivan Vilata i Balaguer <ivan@selidor.net>\n"
 "Language-Team: Catalan <ca@dodds.net>\n"
@@ -462,7 +462,7 @@ msgstr "%s: L’atribut no existeix."
 
 # ivb (2001/12/08)
 # ivb  També apareix com a error aïllat.
-#: color.c:816 hook.c:84 hook.c:96 init.c:2284 init.c:2359 keymap.c:986
+#: color.c:816 hook.c:84 hook.c:96 init.c:2283 init.c:2358 keymap.c:987
 msgid "too few arguments"
 msgstr "Manquen arguments."
 
@@ -1042,27 +1042,27 @@ msgstr "No s’ha pogut enviar el missatge en línia.  Emprar PGP/MIME?"
 msgid "Mail not sent."
 msgstr "No s’ha enviat el missatge."
 
-#: ncrypt/crypt.c:224
+#: ncrypt/crypt.c:236
 msgid "Encrypt message to S/MIME Default Key also?"
 msgstr ""
 
-#: ncrypt/crypt.c:259
+#: ncrypt/crypt.c:271
 msgid "Encrypt message to PGP Default Key also?"
 msgstr ""
 
-#: ncrypt/crypt.c:497
+#: ncrypt/crypt.c:509
 msgid "S/MIME messages with no hints on content are unsupported."
 msgstr "No es permeten els misatges S/MIME sense pistes sobre el contingut."
 
-#: ncrypt/crypt.c:701 ncrypt/crypt.c:742
+#: ncrypt/crypt.c:713 ncrypt/crypt.c:754
 msgid "Trying to extract PGP keys...\n"
 msgstr "S’està provant d’extreure les claus PGP…\n"
 
-#: ncrypt/crypt.c:723 ncrypt/crypt.c:763
+#: ncrypt/crypt.c:735 ncrypt/crypt.c:775
 msgid "Trying to extract S/MIME certificates...\n"
 msgstr "S’està provant d’extreure els certificats S/MIME…\n"
 
-#: ncrypt/crypt.c:913
+#: ncrypt/crypt.c:925
 #, c-format
 msgid ""
 "[-- Error: Unknown multipart/signed protocol %s! --]\n"
@@ -1071,7 +1071,7 @@ msgstr ""
 "[-- Error: El protocol «%s» de «multipart/signed» no és conegut. --]\n"
 "\n"
 
-#: ncrypt/crypt.c:947
+#: ncrypt/crypt.c:959
 msgid ""
 "[-- Error: Inconsistent multipart/signed structure! --]\n"
 "\n"
@@ -1079,7 +1079,7 @@ msgstr ""
 "[-- Error: L’estructura «multipart/signed» no és consistent. --]\n"
 "\n"
 
-#: ncrypt/crypt.c:983
+#: ncrypt/crypt.c:995
 #, c-format
 msgid ""
 "[-- Warning: We can't verify %s/%s signatures. --]\n"
@@ -1088,7 +1088,7 @@ msgstr ""
 "[-- Avís: No es poden verificar les signatures «%s/%s». --]\n"
 "\n"
 
-#: ncrypt/crypt.c:995
+#: ncrypt/crypt.c:1007
 msgid ""
 "[-- The following data is signed --]\n"
 "\n"
@@ -1096,7 +1096,7 @@ msgstr ""
 "[-- Les dades següents es troben signades: --]\n"
 "\n"
 
-#: ncrypt/crypt.c:1000
+#: ncrypt/crypt.c:1012
 msgid ""
 "[-- Warning: Can't find any signatures. --]\n"
 "\n"
@@ -1104,7 +1104,7 @@ msgstr ""
 "[-- Avís: No s’ha trobat cap signatura. --]\n"
 "\n"
 
-#: ncrypt/crypt.c:1006
+#: ncrypt/crypt.c:1018
 msgid ""
 "\n"
 "[-- End of signed data --]\n"
@@ -1149,7 +1149,7 @@ msgstr "Premeu qualsevol tecla per a continuar…"
 msgid " ('?' for list): "
 msgstr " («?» llista): "
 
-#: curs_main.c:69 curs_main.c:1087 curs_main.c:1117
+#: curs_main.c:69 curs_main.c:1109
 msgid "No mailbox is open."
 msgstr "No hi ha cap bústia oberta."
 
@@ -1225,326 +1225,326 @@ msgstr ""
 msgid "Followup"
 msgstr "Voleu escriure un seguiment a %s%s?"
 
-#: curs_main.c:970
+#: curs_main.c:974
 msgid "Mailbox was externally modified.  Flags may be wrong."
 msgstr ""
 "S’ha modificat la bústia des de fora.  Els senyaladors poden ser incorrectes."
 
-#: curs_main.c:977 pager.c:2130
+#: curs_main.c:981 pager.c:2130
 msgid "New mail in this mailbox."
 msgstr "Hi ha correu nou en aquesta bústia."
 
-#: curs_main.c:991
+#: curs_main.c:995
 msgid "Mailbox was externally modified."
 msgstr "S’ha modificat la bústia des de fora."
 
-#: curs_main.c:1093
+#: curs_main.c:1116
 msgid "No tagged messages."
 msgstr "No hi ha cap missatge marcat."
 
-#: curs_main.c:1124 menu.c:1121
+#: curs_main.c:1120 menu.c:1135
 msgid "Nothing to do."
 msgstr "No hi ha res per fer."
 
-#: curs_main.c:1228
+#: curs_main.c:1218
 #, fuzzy
 msgid "Enter Message-Id: "
 msgstr "Entreu l’ID de clau: "
 
-#: curs_main.c:1237
+#: curs_main.c:1227
 msgid "Article has no parent reference."
 msgstr ""
 
-#: curs_main.c:1260
+#: curs_main.c:1250
 #, fuzzy
 msgid "Message is not visible in limited view."
 msgstr "El missatge pare no és visible en aquesta vista limitada."
 
-#: curs_main.c:1266
+#: curs_main.c:1256
 #, fuzzy, c-format
 msgid "Fetching %s from server..."
 msgstr "S’estan eliminant missatges del servidor…"
 
-#: curs_main.c:1276
+#: curs_main.c:1266
 #, c-format
 msgid "Article %s not found on the server."
 msgstr ""
 
-#: curs_main.c:1295
+#: curs_main.c:1285
 msgid "No Message-Id. Unable to perform operation."
 msgstr ""
 
-#: curs_main.c:1299 imap/message.c:641 nntp.c:1240 pop.c:291
+#: curs_main.c:1289 imap/message.c:641 nntp.c:1240 pop.c:291
 msgid "Fetching message headers..."
 msgstr "S’estan recollint les capçaleres dels missatges…"
 
-#: curs_main.c:1375
+#: curs_main.c:1365
 #, fuzzy
 msgid "No deleted messages found in the thread."
 msgstr "Esborra tots els missatges d’un fil."
 
-#: curs_main.c:1395
+#: curs_main.c:1385
 msgid "Jump to message: "
 msgstr "Salta al missatge: "
 
-#: curs_main.c:1407
+#: curs_main.c:1397
 msgid "Argument must be a message number."
 msgstr "L’argument ha de ser un número de missatge."
 
-#: curs_main.c:1439
+#: curs_main.c:1429
 msgid "That message is not visible."
 msgstr "El missatge no és visible."
 
-#: curs_main.c:1442
+#: curs_main.c:1432
 msgid "Invalid message number."
 msgstr "El número de missatge no és vàlid."
 
 # Al darrere porta dos punts.  ivb
 #. L10N: CHECK_ACL
-#: curs_main.c:1456 curs_main.c:2779 pager.c:2721
+#: curs_main.c:1446 curs_main.c:2769 pager.c:2721
 msgid "Cannot delete message(s)"
 msgstr "No es poden esborrar els missatges"
 
-#: curs_main.c:1459
+#: curs_main.c:1449
 msgid "Delete messages matching: "
 msgstr "Esborra els missatges que concorden amb: "
 
-#: curs_main.c:1481
+#: curs_main.c:1471
 msgid "No limit pattern is in effect."
 msgstr "No hi ha cap patró limitant en efecte."
 
 # ivb (2001/12/08)
 # ivb  Nooop!  Només mostra el límit actual.
 #. L10N: ask for a limit to apply
-#: curs_main.c:1486
+#: curs_main.c:1476
 #, c-format
 msgid "Limit: %s"
 msgstr "Límit: %s"
 
-#: curs_main.c:1524
+#: curs_main.c:1514
 msgid "Limit to messages matching: "
 msgstr "Limita als missatges que concorden amb: "
 
-#: curs_main.c:1546
+#: curs_main.c:1536
 msgid "To view all messages, limit to \"all\"."
 msgstr "Per a veure tots els missatges, limiteu a «all»."
 
-#: curs_main.c:1558 pager.c:2228
+#: curs_main.c:1548 pager.c:2228
 msgid "Quit Mutt?"
 msgstr "Voleu abandonar Mutt?"
 
-#: curs_main.c:1651
+#: curs_main.c:1641
 msgid "Tag messages matching: "
 msgstr "Marca els missatges que concorden amb: "
 
 # Al darrere porta dos punts.  ivb
 #. L10N: CHECK_ACL
-#: curs_main.c:1661 curs_main.c:3183 pager.c:3036
+#: curs_main.c:1651 curs_main.c:3173 pager.c:3036
 msgid "Cannot undelete message(s)"
 msgstr "No es poden restaurar els missatges"
 
-#: curs_main.c:1664
+#: curs_main.c:1654
 msgid "Undelete messages matching: "
 msgstr "Restaura els missatges que concorden amb: "
 
-#: curs_main.c:1672
+#: curs_main.c:1662
 msgid "Untag messages matching: "
 msgstr "Desmarca els missatges que concorden amb: "
 
-#: curs_main.c:1706
+#: curs_main.c:1696
 msgid "Logged out of IMAP servers."
 msgstr "S’ha eixit dels servidors IMAP."
 
-#: curs_main.c:1803 curs_main.c:1842
+#: curs_main.c:1793 curs_main.c:1832
 #, fuzzy
 msgid "No virtual folder, aborting."
 msgstr "S’avorta el missatge sense assumpte."
 
-#: curs_main.c:1811
+#: curs_main.c:1801
 msgid "Failed to read thread, aborting."
 msgstr ""
 
-#: curs_main.c:1850
+#: curs_main.c:1840
 #, fuzzy
 msgid "No label specified, aborting."
 msgstr "S’avorta el missatge sense assumpte."
 
-#: curs_main.c:1861
+#: curs_main.c:1851
 #, c-format
 msgid "Update labels..."
 msgstr ""
 
-#: curs_main.c:1886
+#: curs_main.c:1876
 msgid "Failed to modify labels, aborting."
 msgstr ""
 
-#: curs_main.c:1920
+#: curs_main.c:1910
 #, fuzzy
 msgid "No query, aborting."
 msgstr "S’avorta el missatge sense assumpte."
 
-#: curs_main.c:1924 curs_main.c:1944 curs_main.c:1963
+#: curs_main.c:1914 curs_main.c:1934 curs_main.c:1953
 msgid "Failed to create query, aborting."
 msgstr ""
 
-#: curs_main.c:1933 curs_main.c:1952
+#: curs_main.c:1923 curs_main.c:1942
 msgid "Windowed queries disabled."
 msgstr ""
 
-#: curs_main.c:1938 curs_main.c:1957
+#: curs_main.c:1928 curs_main.c:1947
 msgid "No notmuch vfolder currently loaded."
 msgstr ""
 
 # És una pregunta.  -- ivb
-#: curs_main.c:1995
+#: curs_main.c:1985
 msgid "Open mailbox in read-only mode"
 msgstr "Obri en mode de només lectura la bústia"
 
-#: curs_main.c:1998
+#: curs_main.c:1988
 #, fuzzy
 msgid "Open virtual folder"
 msgstr "Obri una carpeta diferent."
 
 # És una pregunta.  -- ivb
-#: curs_main.c:2001
+#: curs_main.c:1991
 msgid "Open mailbox"
 msgstr "Obri la bústia"
 
-#: curs_main.c:2011
+#: curs_main.c:2001
 msgid "No mailboxes have new mail"
 msgstr "No hi ha cap bústia amb correu nou."
 
 # És una pregunta.  -- ivb
-#: curs_main.c:2053
+#: curs_main.c:2043
 #, fuzzy
 msgid "Open newsgroup in read-only mode"
 msgstr "Obri en mode de només lectura la bústia"
 
-#: curs_main.c:2055
+#: curs_main.c:2045
 msgid "Open newsgroup"
 msgstr ""
 
-#: curs_main.c:2155
+#: curs_main.c:2145
 #, fuzzy
 msgid "Exit NeoMutt without saving?"
 msgstr "Voleu abandonar Mutt sense desar els canvis?"
 
 # Al darrere porta dos punts.  ivb
-#: curs_main.c:2171
+#: curs_main.c:2161
 #, fuzzy
 msgid "Cannot break thread"
 msgstr "No es poden enllaçar els fils"
 
-#: curs_main.c:2174 curs_main.c:2211 curs_main.c:2666 curs_main.c:2698
+#: curs_main.c:2164 curs_main.c:2201 curs_main.c:2656 curs_main.c:2688
 #: flags.c:339 thread.c:1043 thread.c:1099 thread.c:1165
 msgid "Threading is not enabled."
 msgstr "No s’ha habilitat l’ús de fils."
 
-#: curs_main.c:2186
+#: curs_main.c:2176
 msgid "Thread broken"
 msgstr "S’ha trencat el fil."
 
-#: curs_main.c:2198
+#: curs_main.c:2188
 msgid "Thread cannot be broken, message is not part of a thread"
 msgstr "No es pot trencar el fil, el missatge no n’és part de cap."
 
 # Al darrere porta dos punts.  ivb
 #. L10N: CHECK_ACL
-#: curs_main.c:2208
+#: curs_main.c:2198
 msgid "Cannot link threads"
 msgstr "No es poden enllaçar els fils"
 
-#: curs_main.c:2213
+#: curs_main.c:2203
 msgid "No Message-ID: header available to link thread"
 msgstr "No hi ha capçalera «Message-ID:» amb què enllaçar el fil."
 
-#: curs_main.c:2215
+#: curs_main.c:2205
 msgid "First, please tag a message to be linked here"
 msgstr "Per favor, marqueu un missatge per a enllaçar‐lo ací."
 
-#: curs_main.c:2226
+#: curs_main.c:2216
 msgid "Threads linked"
 msgstr "S’han enllaçat els fils."
 
-#: curs_main.c:2229
+#: curs_main.c:2219
 msgid "No thread linked"
 msgstr "No s’ha enllaçat cap fil."
 
-#: curs_main.c:2265 curs_main.c:2290
+#: curs_main.c:2255 curs_main.c:2280
 msgid "You are on the last message."
 msgstr "Vos trobeu sobre el darrer missatge."
 
-#: curs_main.c:2272 curs_main.c:2316
+#: curs_main.c:2262 curs_main.c:2306
 msgid "No undeleted messages."
 msgstr "No hi ha cap missatge no esborrat."
 
-#: curs_main.c:2309 curs_main.c:2334
+#: curs_main.c:2299 curs_main.c:2324
 msgid "You are on the first message."
 msgstr "Vos trobeu sobre el primer missatge."
 
-#: curs_main.c:2406 menu.c:949 pager.c:2348 pattern.c:1984
+#: curs_main.c:2396 menu.c:949 pager.c:2348 pattern.c:1984
 msgid "Search wrapped to top."
 msgstr "La cerca ha tornat al principi."
 
-#: curs_main.c:2415 pager.c:2369 pattern.c:1995
+#: curs_main.c:2405 pager.c:2369 pattern.c:1995
 msgid "Search wrapped to bottom."
 msgstr "La cerca ha tornat al final."
 
-#: curs_main.c:2458
+#: curs_main.c:2448
 msgid "No new messages in this limited view."
 msgstr "No hi ha cap missatge nou en aquesta vista limitada."
 
-#: curs_main.c:2460
+#: curs_main.c:2450
 msgid "No new messages."
 msgstr "No hi ha cap missatge nou."
 
-#: curs_main.c:2465
+#: curs_main.c:2455
 msgid "No unread messages in this limited view."
 msgstr "No hi ha cap missatge no llegit en aquesta vista limitada."
 
-#: curs_main.c:2467
+#: curs_main.c:2457
 msgid "No unread messages."
 msgstr "No hi ha cap missatge no llegit."
 
 # Al darrere porta dos punts.  ivb
 #. L10N: CHECK_ACL
-#: curs_main.c:2485
+#: curs_main.c:2475
 msgid "Cannot flag message"
 msgstr "No es pot senyalar el missatge"
 
 # Al darrere porta dos punts.  ivb
 #. L10N: CHECK_ACL
-#: curs_main.c:2523 pager.c:2999
+#: curs_main.c:2513 pager.c:2999
 msgid "Cannot toggle new"
 msgstr "No es pot canviar el senyalador «nou»"
 
-#: curs_main.c:2600
+#: curs_main.c:2590
 msgid "No more threads."
 msgstr "No hi ha més fils."
 
-#: curs_main.c:2602
+#: curs_main.c:2592
 msgid "You are on the first thread."
 msgstr "Vos trobeu al primer fil."
 
-#: curs_main.c:2684
+#: curs_main.c:2674
 msgid "Thread contains unread messages."
 msgstr "El fil conté missatges no llegits."
 
 # Al darrere porta dos punts.  ivb
 #. L10N: CHECK_ACL
-#: curs_main.c:2734 pager.c:2687
+#: curs_main.c:2724 pager.c:2687
 msgid "Cannot delete message"
 msgstr "No es pot esborrar el missatge"
 
 # Al darrere porta dos punts.  ivb
 #. L10N: CHECK_ACL
-#: curs_main.c:2836
+#: curs_main.c:2826
 msgid "Cannot edit message"
 msgstr "No es pot editar el missatge."
 
 #. L10N: This is displayed when the x-label on one or more
 #. * messages is edited.
-#: curs_main.c:2884 pager.c:3099
+#: curs_main.c:2874 pager.c:3099
 #, c-format
 msgid "%d labels changed."
 msgstr "S’han canviat %d etiquetes."
@@ -1552,54 +1552,54 @@ msgstr "S’han canviat %d etiquetes."
 #. L10N: This is displayed when editing an x-label, but no messages
 #. * were updated.  Possibly due to canceling at the prompt or if the new
 #. * label is the same as the old label.
-#: curs_main.c:2891 pager.c:3103
+#: curs_main.c:2881 pager.c:3103
 msgid "No labels changed."
 msgstr "No s’ha canviat cap etiqueta."
 
 # Al darrere porta dos punts.  ivb
 #. L10N: CHECK_ACL
-#: curs_main.c:2990
+#: curs_main.c:2980
 msgid "Cannot mark message(s) as read"
 msgstr "No es poden marcar els missatges com a llegits"
 
 #. L10N: This is the prompt for <mark-message>.  Whatever they
 #. enter will be prefixed by $mark_macro_prefix and will become
 #. a macro hotkey to jump to the currently selected message.
-#: curs_main.c:3026
+#: curs_main.c:3016
 msgid "Enter macro stroke: "
 msgstr "Entreu una pulsació per a la drecera: "
 
 #. L10N: "message hotkey" is the key bindings menu description of a
 #. macro created by <mark-message>.
-#: curs_main.c:3033
+#: curs_main.c:3023
 msgid "message hotkey"
 msgstr "Drecera de teclat per a un missatge."
 
 #. L10N: This is echoed after <mark-message> creates a new hotkey
 #. macro.  %s is the hotkey string ($mark_macro_prefix followed
 #. by whatever they typed at the prompt.)
-#: curs_main.c:3038
+#: curs_main.c:3028
 #, c-format
 msgid "Message bound to %s."
 msgstr "S’ha vinculat el missatge amb la drecera «%s»."
 
 #. L10N: This error is printed if <mark-message> cannot find a
 #. Message-ID for the currently selected message in the index.
-#: curs_main.c:3046
+#: curs_main.c:3036
 msgid "No message ID to macro."
 msgstr "El missatge no té identificador per a ser vinculat amb la drecera."
 
-#: curs_main.c:3089 pager.c:2861 recvattach.c:1244
+#: curs_main.c:3079 pager.c:2861 recvattach.c:1244
 msgid "Reply by mail as poster prefers?"
 msgstr ""
 
-#: curs_main.c:3092 pager.c:2830 pager.c:2840 pager.c:2864
+#: curs_main.c:3082 pager.c:2830 pager.c:2840 pager.c:2864
 msgid "Posting to this group not allowed, may be moderated. Continue?"
 msgstr ""
 
 # Al darrere porta dos punts.  ivb
 #. L10N: CHECK_ACL
-#: curs_main.c:3153 pager.c:3019
+#: curs_main.c:3143 pager.c:3019
 msgid "Cannot undelete message"
 msgstr "No es pot restaurar el missatge"
 
@@ -1882,7 +1882,7 @@ msgstr " (Useu «%s» per a veure aquesta part.)"
 msgid "(need 'view-attachments' bound to key!)"
 msgstr " (Vinculeu «view-attachents» a una tecla.)"
 
-#: hcache/hcache.c:556 main.c:521 newsrc.c:966
+#: hcache/hcache.c:556 main.c:527 newsrc.c:966
 #, c-format
 msgid "Can't create %s: %s."
 msgstr "No s’ha pogut crear «%s»: %s"
@@ -1947,7 +1947,6 @@ msgid "badly formatted command string"
 msgstr "La cadena d’ordre no té un format vàlid."
 
 #: hook.c:311
-#, c-format
 msgid "unhook: Can't do unhook * from within a hook."
 msgstr "unhook: No es pot fer «unhook *» des d’un «hook»."
 
@@ -2203,8 +2202,7 @@ msgstr "S’està copiant el missatge %d a «%s»…"
 msgid "Continue?"
 msgstr "Voleu continuar?"
 
-#: init.c:75 init.c:2441 pager.c:70
-#, c-format
+#: init.c:75 init.c:2440 pager.c:70
 msgid "Not available in this menu."
 msgstr "No es troba disponible en aquest menú."
 
@@ -2213,7 +2211,7 @@ msgstr "No es troba disponible en aquest menú."
 msgid "%s: unknown sorting method"
 msgstr "%s: El mètode d’ordenació no és conegut."
 
-#: init.c:394 init.c:431 init.c:2878
+#: init.c:394 init.c:431 init.c:2877
 #, c-format
 msgid "%s: Unknown type."
 msgstr "%s: El tipus no és conegut."
@@ -2231,7 +2229,7 @@ msgstr "L’expressió regular no és vàlida: %s"
 # Una regla usa més referències cap enrere al «format» o «reemplaçament» que
 # es defineixen al «patró».  ivb
 #: init.c:737
-#, fuzzy, c-format
+#, fuzzy
 msgid "Not enough subexpressions for template"
 msgstr "spam: Hi ha més referències cap enrere que subexpressions definides."
 
@@ -2310,97 +2308,94 @@ msgstr "mutt_restore_default(%s): Error a l’expressió regular: %s\n"
 
 # ivb (2001/11/24)
 # ivb  Es refereix a una variable lògica.
-#: init.c:2321 init.c:2488
+#: init.c:2320 init.c:2487
 #, c-format
 msgid "%s is unset"
 msgstr "«%s» no està activada."
 
-#: init.c:2418 init.c:2533
+#: init.c:2417 init.c:2532
 #, c-format
 msgid "%s: unknown variable"
 msgstr "%s: La variable no és coneguda."
 
-#: init.c:2427
-#, c-format
+#: init.c:2426
 msgid "prefix is illegal with reset"
 msgstr "El prefix emprat en «reset» no és permès."
 
-#: init.c:2433
-#, c-format
+#: init.c:2432
 msgid "value is illegal with reset"
 msgstr "El valor emprat en «reset» no és permès."
 
 # Açò és sintaxi, no té traducció.  ivb
-#: init.c:2468 init.c:2480
-#, c-format
+#: init.c:2467 init.c:2479
 msgid "Usage: set variable=yes|no"
 msgstr "Forma d’ús: set variable=yes|no"
 
 # ivb (2001/11/24)
 # ivb  Es refereix a una variable lògica.
-#: init.c:2488
+#: init.c:2487
 #, c-format
 msgid "%s is set"
 msgstr "«%s» està activada."
 
-#: init.c:2588
+#: init.c:2587
 msgid "set debug_file ignored, it have been overridden with cmdline"
 msgstr ""
 
-#: init.c:2613 init.c:2628
+#: init.c:2612 init.c:2627
 #, c-format
 msgid "Invalid value for option %s: \"%s\""
 msgstr "El valor de l’opció «%s» no és vàlid: «%s»"
 
-#: init.c:2726
+#: init.c:2725
 #, c-format
 msgid "%s: invalid mailbox type"
 msgstr "%s: El tipus de bústia no és vàlid."
 
 # La cadena entre parèntesis és un dels missatges següents.  ivb
-#: init.c:2757
+#: init.c:2756
 #, c-format
 msgid "%s: invalid value (%s)"
 msgstr "%s: El valor no és vàlid (%s)."
 
-#: init.c:2758
+#: init.c:2757
 msgid "format error"
 msgstr "error de format"
 
-#: init.c:2758
+#: init.c:2757
 msgid "number overflow"
 msgstr "desbordament numèric"
 
-#: init.c:2766
+#: init.c:2765
 msgid "set debug_level ignored, it have been overridden with cmdline"
 msgstr ""
 
-#: init.c:2834
+#: init.c:2833
 #, c-format
 msgid "%s: invalid value"
 msgstr "%s: El valor no és vàlid."
 
-#: init.c:2924
+#: init.c:2923
 #, fuzzy, c-format
 msgid "%s: invalid backend"
 msgstr "%s: El valor no és vàlid."
 
-#: init.c:2932
+#: init.c:2931
 #, c-format
 msgid "%s: unknown type"
 msgstr "%s: El tipus no és conegut."
 
-#: init.c:3082
+#: init.c:3081
 #, c-format
 msgid "Error in %s, line %d: %s"
 msgstr "Error a «%s», línia %d: %s"
 
-#: init.c:3093
+#: init.c:3092
 #, fuzzy, c-format
 msgid "Warning in %s, line %d: %s"
 msgstr "Error a «%s», línia %d: %s"
 
-#: init.c:3118
+#: init.c:3117
 #, c-format
 msgid "source: errors in %s"
 msgstr "source: Hi ha errors a «%s»."
@@ -2408,126 +2403,123 @@ msgstr "source: Hi ha errors a «%s»."
 # ivb (2001/12/08)
 # ivb  ABREUJAT!
 # ivb  source: S’avorta la lectura de «%s» perquè conté massa errors.
-#: init.c:3119
+#: init.c:3118
 #, c-format
 msgid "source: reading aborted due to too many errors in %s"
 msgstr "source: «%s» conté massa errors: s’avorta la lectura."
 
-#: init.c:3128
+#: init.c:3127
 #, fuzzy, c-format
 msgid "source: %d warnings in %s"
 msgstr "source: Hi ha errors a «%s»."
 
-#: init.c:3147 mutt_lua.c:416
+#: init.c:3146 mutt_lua.c:416
 #, c-format
 msgid "source: error at %s"
 msgstr "source: Error a «%s»."
 
-#: init.c:3152 mutt_lua.c:421
+#: init.c:3151 mutt_lua.c:421
 msgid "source: too many arguments"
 msgstr "source: Sobren arguments."
 
-#: init.c:3209
+#: init.c:3208
 #, c-format
 msgid "%s: unknown command"
 msgstr "%s: L’ordre no és coneguda."
 
-#: init.c:3867
+#: init.c:3866
 #, c-format
 msgid "Error in command line: %s\n"
 msgstr "Error a la línia d’ordres: %s\n"
 
-#: init.c:3971
+#: init.c:3970
 msgid "unable to determine home directory"
 msgstr "No s’ha pogut determinar el directori de l’usuari."
 
-#: init.c:3979
+#: init.c:3978
 msgid "unable to determine username"
 msgstr "No s’ha pogut determinar el nom de l’usuari."
 
-#: init.c:4011
+#: init.c:4010
 msgid "unable to determine nodename via uname()"
 msgstr "No s’ha pogut determinar el nom de l’estació amb uname()."
 
-#: init.c:4302
+#: init.c:4301
 msgid "-group: no group name"
 msgstr "-group: No s’ha indicat el nom del grup."
 
-#: init.c:4312
+#: init.c:4311
 msgid "out of arguments"
 msgstr "Manquen arguments."
 
-#: keymap.c:270
-#, fuzzy, c-format
-msgid "Binding '%s' will alias '%s'"
-msgstr "Avís: L’IDN de l’àlies «%2$s» no és vàlid: %1$s\n"
+#: keymap.c:270 keymap.c:276
+#, c-format
+msgid ""
+"Binding '%s' will alias '%s'  Before, try: 'bind %s %s noop'  https://"
+"neomutt.org/guide/configuration.html#bind-warnings"
+msgstr ""
 
-#: keymap.c:276
-#, fuzzy, c-format
-msgid "Warning: For menu '%s', binding '%s' will alias '%s'"
-msgstr "Avís: L’IDN de l’àlies «%2$s» no és vàlid: %1$s\n"
-
-#: keymap.c:571
+#: keymap.c:572
 msgid "Macros are currently disabled."
 msgstr "Les macros es troben inhabilitades en aquest moment."
 
-#: keymap.c:578
+#: keymap.c:579
 msgid "Macro loop detected."
 msgstr "S’ha detectat un bucle entre macros."
 
-#: keymap.c:881 keymap.c:916
+#: keymap.c:882 keymap.c:917
 msgid "Key is not bound."
 msgstr "La tecla no està vinculada."
 
-#: keymap.c:921
+#: keymap.c:922
 #, c-format
 msgid "Key is not bound.  Press '%s' for help."
 msgstr "La tecla no està vinculada.  Premeu «%s» per a obtenir ajuda."
 
-#: keymap.c:933
+#: keymap.c:934
 msgid "push: too many arguments"
 msgstr "push: Sobren arguments."
 
-#: keymap.c:964
+#: keymap.c:965
 #, c-format
 msgid "%s: no such menu"
 msgstr "%s: El menú no existeix."
 
-#: keymap.c:979
+#: keymap.c:980
 msgid "null key sequence"
 msgstr "La seqüència de tecles és nul·la."
 
-#: keymap.c:1006
+#: keymap.c:1007
 #, c-format
 msgid "Function '%s' not available for menu '%s'"
 msgstr ""
 
-#: keymap.c:1070
+#: keymap.c:1071
 msgid "bind: too many arguments"
 msgstr "bind: Sobren arguments."
 
-#: keymap.c:1123
+#: keymap.c:1124
 msgid "macro: empty key sequence"
 msgstr "macro: La seqüència de tecles és buida."
 
-#: keymap.c:1134
+#: keymap.c:1135
 msgid "macro: too many arguments"
 msgstr "macro: Sobren arguments."
 
-#: keymap.c:1169
+#: keymap.c:1170
 msgid "exec: no arguments"
 msgstr "exec: Manquen arguments."
 
-#: keymap.c:1188
+#: keymap.c:1189
 #, c-format
 msgid "%s: no such function"
 msgstr "%s: La funció no existeix."
 
-#: keymap.c:1209
+#: keymap.c:1210
 msgid "Enter keys (^G to abort): "
 msgstr "Premeu les tecles («^G» avorta): "
 
-#: keymap.c:1215
+#: keymap.c:1216
 #, c-format
 msgid "Char = %s, Octal = %o, Decimal = %d"
 msgstr "Caràcter = %s, Octal = %o, Decimal = %d"
@@ -3552,7 +3544,7 @@ msgstr "Extreu totes les claus públiques possibles."
 msgid "Integer overflow -- can't allocate memory!"
 msgstr "Desbordament enter, no s’ha pogut reservar memòria."
 
-#: lib.c:127 lib.c:142 lib.c:174 safe_asprintf.c:42
+#: lib.c:127 lib.c:142 lib.c:167 safe_asprintf.c:42
 msgid "Out of memory!"
 msgstr "No resta memòria."
 
@@ -3670,65 +3662,65 @@ msgstr ""
 msgid "Error initializing terminal."
 msgstr "Error en inicialitzar el terminal."
 
-#: main.c:307
+#: main.c:313
 #, c-format
 msgid "Error: value '%s' is invalid for -d.\n"
 msgstr "Error: L’argument de l’opció «-d» no és vàlid: %s\n"
 
-#: main.c:310
+#: main.c:316
 #, c-format
 msgid "Debugging at level %d.\n"
 msgstr "S’activa la depuració a nivell %d.\n"
 
-#: main.c:312
-#, fuzzy, c-format
+#: main.c:318
+#, fuzzy
 msgid "DEBUG was not defined during compilation. -d Ignored.\n"
 msgstr "No es va definir «DEBUG» a la compilació.  Es descarta l’opció.\n"
 
-#: main.c:335
+#: main.c:341
 #, fuzzy, c-format
 msgid "Debugging at file %s.\n"
 msgstr "S’activa la depuració a nivell %d.\n"
 
-#: main.c:337
+#: main.c:343
 #, fuzzy, c-format
 msgid "DEBUG was not defined during compilation. -l Ignored.\n"
 msgstr "No es va definir «DEBUG» a la compilació.  Es descarta l’opció.\n"
 
 # ivb (2001/11/27)
 # ivb  Es refereix al directori «Maildir» -> masculí.
-#: main.c:517
+#: main.c:523
 #, c-format
 msgid "%s does not exist. Create it?"
 msgstr "«%s» no existeix.  Voleu crear‐lo?"
 
 # Es refereix a l’esquema d’URL.  ivb
-#: main.c:563
+#: main.c:569
 msgid "Failed to parse mailto: link\n"
 msgstr "No s’ha pogut interpretar l’enllaç de tipus «mailto:».\n"
 
-#: main.c:575
+#: main.c:581
 msgid "No recipients specified.\n"
 msgstr "No s’ha indicat cap destinatari.\n"
 
-#: main.c:601
+#: main.c:607
 msgid "Cannot use -E flag with stdin\n"
 msgstr "No es pot emprar l’opció «-E» amb l’entrada estàndard.\n"
 
-#: main.c:753
+#: main.c:759
 #, c-format
 msgid "%s: unable to attach file.\n"
 msgstr "%s: No s’ha pogut adjuntar el fitxer.\n"
 
-#: main.c:834
+#: main.c:840
 msgid "No mailbox with new mail."
 msgstr "No hi ha cap bústia amb correu nou."
 
-#: main.c:856
+#: main.c:862
 msgid "No incoming mailboxes defined."
 msgstr "No s’ha definit cap bústia d’entrada."
 
-#: main.c:899
+#: main.c:905
 msgid "Mailbox is empty."
 msgstr "La bústia és buida."
 
@@ -3800,7 +3792,7 @@ msgid "Invalid index number."
 msgstr "El número d’índex no és vàlid."
 
 #: menu.c:532 menu.c:554 menu.c:616 menu.c:659 menu.c:675 menu.c:686 menu.c:697
-#: menu.c:708 menu.c:721 menu.c:734 menu.c:1250
+#: menu.c:708 menu.c:721 menu.c:734 menu.c:1266
 msgid "No entries."
 msgstr "No hi ha cap entrada."
 
@@ -3840,19 +3832,19 @@ msgstr "Cerca cap enrere: "
 msgid "Not found."
 msgstr "No s’ha trobat."
 
-#: menu.c:1115
+#: menu.c:1129
 msgid "No tagged entries."
 msgstr "No hi ha cap entrada marcada."
 
-#: menu.c:1214
+#: menu.c:1230
 msgid "Search is not implemented for this menu."
 msgstr "No es pot cercar en aquest menú."
 
-#: menu.c:1219
+#: menu.c:1235
 msgid "Jumping is not implemented for dialogs."
 msgstr "No es pot saltar en un diàleg."
 
-#: menu.c:1253
+#: menu.c:1269
 msgid "Tagging is not supported."
 msgstr "No es pot marcar."
 
@@ -4686,7 +4678,7 @@ msgstr "Error: La còpia de les dades ha fallat.\n"
 
 # Aquests texts en majúscules reprodueixen els marcadors dels fitxers PGP,
 # així que no té molt de sentit mantenir les majúscules en la traducció.  ivb
-#: ncrypt/crypt_gpgme.c:2486 ncrypt/pgp.c:505
+#: ncrypt/crypt_gpgme.c:2486 ncrypt/pgp.c:509
 msgid ""
 "[-- BEGIN PGP MESSAGE --]\n"
 "\n"
@@ -4694,11 +4686,11 @@ msgstr ""
 "[-- Inici del missatge PGP. --]\n"
 "\n"
 
-#: ncrypt/crypt_gpgme.c:2488 ncrypt/pgp.c:507
+#: ncrypt/crypt_gpgme.c:2488 ncrypt/pgp.c:511
 msgid "[-- BEGIN PGP PUBLIC KEY BLOCK --]\n"
 msgstr "[-- Inici del bloc de clau pública PGP. --]\n"
 
-#: ncrypt/crypt_gpgme.c:2490 ncrypt/pgp.c:509
+#: ncrypt/crypt_gpgme.c:2490 ncrypt/pgp.c:513
 msgid ""
 "[-- BEGIN PGP SIGNED MESSAGE --]\n"
 "\n"
@@ -4706,19 +4698,19 @@ msgstr ""
 "[-- Inici del missatge PGP signat. --]\n"
 "\n"
 
-#: ncrypt/crypt_gpgme.c:2516 ncrypt/pgp.c:552
+#: ncrypt/crypt_gpgme.c:2516 ncrypt/pgp.c:556
 msgid "[-- END PGP MESSAGE --]\n"
 msgstr "[-- Final del missatge PGP. --]\n"
 
-#: ncrypt/crypt_gpgme.c:2518 ncrypt/pgp.c:559
+#: ncrypt/crypt_gpgme.c:2518 ncrypt/pgp.c:563
 msgid "[-- END PGP PUBLIC KEY BLOCK --]\n"
 msgstr "[-- Final del bloc de clau pública PGP. --]\n"
 
-#: ncrypt/crypt_gpgme.c:2520 ncrypt/pgp.c:561
+#: ncrypt/crypt_gpgme.c:2520 ncrypt/pgp.c:565
 msgid "[-- END PGP SIGNED MESSAGE --]\n"
 msgstr "[-- Final del missatge PGP signat. --]\n"
 
-#: ncrypt/crypt_gpgme.c:2543 ncrypt/pgp.c:595
+#: ncrypt/crypt_gpgme.c:2543 ncrypt/pgp.c:599
 msgid ""
 "[-- Error: could not find beginning of PGP message! --]\n"
 "\n"
@@ -4726,7 +4718,7 @@ msgstr ""
 "[-- Error: No s’ha trobat l’inici del missatge PGP. --]\n"
 "\n"
 
-#: ncrypt/crypt_gpgme.c:2575 ncrypt/crypt_gpgme.c:2650 ncrypt/pgp.c:1012
+#: ncrypt/crypt_gpgme.c:2575 ncrypt/crypt_gpgme.c:2650 ncrypt/pgp.c:1016
 msgid "[-- Error: could not create temporary file! --]\n"
 msgstr "[-- Error: No s’ha pogut crear un fitxer temporal. --]\n"
 
@@ -4738,7 +4730,7 @@ msgstr ""
 "[-- Les dades següents es troben signades i xifrades amb PGP/MIME: --]\n"
 "\n"
 
-#: ncrypt/crypt_gpgme.c:2590 ncrypt/pgp.c:1023
+#: ncrypt/crypt_gpgme.c:2590 ncrypt/pgp.c:1027
 msgid ""
 "[-- The following data is PGP/MIME encrypted --]\n"
 "\n"
@@ -4750,16 +4742,16 @@ msgstr ""
 msgid "[-- End of PGP/MIME signed and encrypted data --]\n"
 msgstr "[-- Final de les dades signades i xifrades amb PGP/MIME. --]\n"
 
-#: ncrypt/crypt_gpgme.c:2613 ncrypt/pgp.c:1043
+#: ncrypt/crypt_gpgme.c:2613 ncrypt/pgp.c:1047
 msgid "[-- End of PGP/MIME encrypted data --]\n"
 msgstr "[-- Final de les dades xifrades amb PGP/MIME. --]\n"
 
-#: ncrypt/crypt_gpgme.c:2618 ncrypt/pgp.c:556 ncrypt/pgp.c:1048
+#: ncrypt/crypt_gpgme.c:2618 ncrypt/pgp.c:560 ncrypt/pgp.c:1052
 msgid "PGP message successfully decrypted."
 msgstr "S’ha pogut desxifrar amb èxit el missatge PGP."
 
-#: ncrypt/crypt_gpgme.c:2622 ncrypt/pgp.c:491 ncrypt/pgp.c:554
-#: ncrypt/pgp.c:1052
+#: ncrypt/crypt_gpgme.c:2622 ncrypt/pgp.c:495 ncrypt/pgp.c:558
+#: ncrypt/pgp.c:1056
 msgid "Could not decrypt PGP message"
 msgstr "No s’ha pogut desxifrar el missatge PGP."
 
@@ -4845,7 +4837,6 @@ msgstr "Tipus de clau ........: %1$s, %3$s de %2$lu bits\n"
 # Alineat amb «  també conegut com a : ».  ivb
 #. L10N: DOTFILL
 #: ncrypt/crypt_gpgme.c:3384 ncrypt/crypt_gpgme.c:3523
-#, c-format
 msgid "Key Usage .: "
 msgstr "Utilitat de la clau ..: "
 
@@ -4880,7 +4871,6 @@ msgstr "Número de sèrie ......: 0x%s\n"
 # Alineat amb «  també conegut com a : ».  ivb
 #. L10N: DOTFILL
 #: ncrypt/crypt_gpgme.c:3453
-#, c-format
 msgid "Issued By .: "
 msgstr "Lliurada per .........: "
 
@@ -5026,7 +5016,7 @@ msgstr "L’ID és lleugerament vàlid."
 
 # ivb (2001/12/08)
 # ivb  Davant d’açò pot anar una de les quatre anteriors.
-#: ncrypt/crypt_gpgme.c:4008 ncrypt/smime.c:445
+#: ncrypt/crypt_gpgme.c:4008 ncrypt/pgpkey.c:624 ncrypt/smime.c:445
 #, c-format
 msgid "%s Do you really want to use the key?"
 msgstr "%s  Voleu realment emprar la clau?"
@@ -5037,12 +5027,12 @@ msgstr "%s  Voleu realment emprar la clau?"
 msgid "Looking for keys matching \"%s\"..."
 msgstr "S’estan cercant les claus que concorden amb «%s»…"
 
-#: ncrypt/crypt_gpgme.c:4346 ncrypt/pgp.c:1225
+#: ncrypt/crypt_gpgme.c:4346 ncrypt/pgp.c:1229
 #, c-format
 msgid "Use keyID = \"%s\" for %s?"
 msgstr "Voleu emprar l’ID de clau «%s» per a %s?"
 
-#: ncrypt/crypt_gpgme.c:4397 ncrypt/pgp.c:1274 ncrypt/smime.c:758
+#: ncrypt/crypt_gpgme.c:4397 ncrypt/pgp.c:1278 ncrypt/smime.c:758
 #: ncrypt/smime.c:858
 #, c-format
 msgid "Enter keyID for %s: "
@@ -5079,21 +5069,21 @@ msgid "S/MIME (s)ign, sign (a)s, (p)gp, (c)lear, or (o)ppenc mode off? "
 msgstr "S/MIME: (s)igna, si(g)na com a, (p)gp, (c)lar, no (o)portunista? "
 
 #. L10N: S/MIME options (opportunistic encryption is on)
-#: ncrypt/crypt_gpgme.c:4583
+#: ncrypt/crypt_gpgme.c:4582
 msgid "sapco"
 msgstr "sgpco"
 
-#: ncrypt/crypt_gpgme.c:4590
+#: ncrypt/crypt_gpgme.c:4589
 msgid "PGP (s)ign, sign (a)s, s/(m)ime, (c)lear, or (o)ppenc mode off? "
 msgstr "PGP: (s)igna, si(g)na com a, s/(m)ime, (c)lar, no (o)portunista? "
 
 #. L10N: PGP options (opportunistic encryption is on)
-#: ncrypt/crypt_gpgme.c:4593
+#: ncrypt/crypt_gpgme.c:4591
 msgid "samco"
 msgstr "sgmco"
 
 #. L10N: S/MIME options (opportunistic encryption is off)
-#: ncrypt/crypt_gpgme.c:4606
+#: ncrypt/crypt_gpgme.c:4604
 msgid ""
 "S/MIME (e)ncrypt, (s)ign, sign (a)s, (b)oth, (p)gp, (c)lear, or (o)ppenc "
 "mode? "
@@ -5104,13 +5094,13 @@ msgstr ""
 # (x)ifra, (s)igna, si(g)na com a, (a)mbdós, (p)gp, (c)lar, (o)portunista
 # La «f» i la «c» originals s’agafen en el mateix cas en el codi.  ivb
 #. L10N: S/MIME options (opportunistic encryption is off)
-#: ncrypt/crypt_gpgme.c:4610
+#: ncrypt/crypt_gpgme.c:4607
 #, fuzzy
 msgid "esabpco"
 msgstr "xsgapco"
 
 #. L10N: PGP options (opportunistic encryption is off)
-#: ncrypt/crypt_gpgme.c:4616
+#: ncrypt/crypt_gpgme.c:4613
 msgid ""
 "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, s/(m)ime, (c)lear, or (o)ppenc "
 "mode? "
@@ -5121,57 +5111,57 @@ msgstr ""
 # (x)ifra, (s)igna, si(g)na com a, (a)mbdós, s/(m)ime, (c)lar, (o)portunista
 # La «f» i la «c» originals s’agafen en el mateix cas en el codi.  ivb
 #. L10N: PGP options (opportunistic encryption is off)
-#: ncrypt/crypt_gpgme.c:4620
+#: ncrypt/crypt_gpgme.c:4616
 #, fuzzy
 msgid "esabmco"
 msgstr "xsgamco"
 
-#: ncrypt/crypt_gpgme.c:4633
+#: ncrypt/crypt_gpgme.c:4629
 msgid "S/MIME (e)ncrypt, (s)ign, sign (a)s, (b)oth, (p)gp or (c)lear? "
 msgstr "S/MIME: (x)ifra, (s)igna, si(g)na com a, (a)mbdós, (p)gp, (c)lar? "
 
 # (x)ifra, (s)igna, si(g)na com a, (a)mbdós, (p)gp, (c)lar
 # La «f» i la «c» originals s’agafen en el mateix cas en el codi.  ivb
 #. L10N: S/MIME options
-#: ncrypt/crypt_gpgme.c:4636
+#: ncrypt/crypt_gpgme.c:4631
 #, fuzzy
 msgid "esabpc"
 msgstr "xsgapc"
 
-#: ncrypt/crypt_gpgme.c:4643
+#: ncrypt/crypt_gpgme.c:4638
 msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, s/(m)ime or (c)lear? "
 msgstr "PGP: (x)ifra, (s)igna, si(g)na com a, (a)mbdós, s/(m)ime, (c)lar? "
 
 # (x)ifra, (s)igna, si(g)na com a, (a)mbdós, s/(m)ime, (c)lar
 # La «f» i la «c» originals s’agafen en el mateix cas en el codi.  ivb
 #. L10N: PGP options
-#: ncrypt/crypt_gpgme.c:4646
+#: ncrypt/crypt_gpgme.c:4640
 #, fuzzy
 msgid "esabmc"
 msgstr "xsgamc"
 
-#: ncrypt/crypt_gpgme.c:4671 ncrypt/pgp.c:1757 ncrypt/smime.c:2098
-#: ncrypt/smime.c:2113
+#: ncrypt/crypt_gpgme.c:4665 ncrypt/pgp.c:1755 ncrypt/smime.c:2095
+#: ncrypt/smime.c:2110
 msgid "Sign as: "
 msgstr "Signa com a: "
 
-#: ncrypt/crypt_gpgme.c:4798
+#: ncrypt/crypt_gpgme.c:4792
 msgid "Failed to verify sender"
 msgstr "No s’ha pogut verificar el remitent."
 
-#: ncrypt/crypt_gpgme.c:4801
+#: ncrypt/crypt_gpgme.c:4795
 msgid "Failed to figure out sender"
 msgstr "No s’ha pogut endevinar el remitent."
 
-#: ncrypt/pgp.c:88
+#: ncrypt/pgp.c:89
 msgid "Enter PGP passphrase:"
 msgstr "Entreu la frase clau de PGP:"
 
-#: ncrypt/pgp.c:432
+#: ncrypt/pgp.c:436
 msgid "[-- Error: unable to create PGP subprocess! --]\n"
 msgstr "[-- Error: No s’ha pogut crear el subprocés PGP. --]\n"
 
-#: ncrypt/pgp.c:469 ncrypt/pgp.c:733 ncrypt/pgp.c:885
+#: ncrypt/pgp.c:473 ncrypt/pgp.c:737 ncrypt/pgp.c:889
 msgid ""
 "[-- End of PGP output --]\n"
 "\n"
@@ -5179,11 +5169,11 @@ msgstr ""
 "[-- Final de l’eixida de PGP. --]\n"
 "\n"
 
-#: ncrypt/pgp.c:776
+#: ncrypt/pgp.c:780
 msgid "Internal error.  Please submit a bug report."
 msgstr "Error intern.  Per favor, informeu d’aquest error."
 
-#: ncrypt/pgp.c:842
+#: ncrypt/pgp.c:846
 msgid ""
 "[-- Error: could not create a PGP subprocess! --]\n"
 "\n"
@@ -5191,60 +5181,60 @@ msgstr ""
 "[-- Error: No s’ha pogut crear el subprocés PGP. --]\n"
 "\n"
 
-#: ncrypt/pgp.c:873 ncrypt/pgp.c:897
+#: ncrypt/pgp.c:877 ncrypt/pgp.c:901
 msgid "Decryption failed"
 msgstr "El desxifratge ha fallat."
 
-#: ncrypt/pgp.c:1103
+#: ncrypt/pgp.c:1107
 msgid "Can't open PGP subprocess!"
 msgstr "No s’ha pogut obrir el subprocés PGP."
 
-#: ncrypt/pgp.c:1533
+#: ncrypt/pgp.c:1537
 msgid "Can't invoke PGP"
 msgstr "No s’ha pogut invocar PGP."
 
 # Ull!  La mateixa clau que «en línia».  ivb
 #. L10N: These next string MUST have the same highlighted letter
 #. One of them will appear in each of the three strings marked "(inline"), below.
-#: ncrypt/pgp.c:1631
+#: ncrypt/pgp.c:1635
 msgid "PGP/M(i)ME"
 msgstr "PGP/M(i)ME"
 
 # Ull!  La mateixa clau que «PGP/MIME».  ivb
 #. L10N: These previous string MUST have the same highlighted letter
 #. One of them will appear in each of the three strings marked "(inline"), below.
-#: ncrypt/pgp.c:1637
+#: ncrypt/pgp.c:1641
 msgid "(i)nline"
 msgstr "en lín(i)a"
 
 # Prescindesc de la paraula «format» perquè en reemplaçar‐hi les cadenes
 # següents la línia esdevé massa llarga.  ivb
 #. L10N: PGP options (inline) (opportunistic encryption is on)
-#: ncrypt/pgp.c:1651
+#: ncrypt/pgp.c:1655
 #, c-format
 msgid "PGP (s)ign, sign (a)s, %s format, (c)lear, or (o)ppenc mode off? "
 msgstr "PGP: (s)igna, si(g)na com a, %s, (c)lar, no (o)portunista? "
 
 #. L10N: PGP options (inline) (opportunistic encryption is on)
 #. The 'i' is from the "PGP/M(i)ME" or "(i)nline", above.
-#: ncrypt/pgp.c:1658
+#: ncrypt/pgp.c:1661
 msgid "saico"
 msgstr "sgico"
 
 #. L10N: PGP options (opportunistic encryption is on)
-#: ncrypt/pgp.c:1664
+#: ncrypt/pgp.c:1667
 msgid "PGP (s)ign, sign (a)s, (c)lear, or (o)ppenc mode off? "
 msgstr "PGP: (s)igna, si(g)na com a, (c)lar, no (o)portunista? "
 
 #. L10N: PGP options (opportunistic encryption is on)
-#: ncrypt/pgp.c:1667
+#: ncrypt/pgp.c:1669
 msgid "saco"
 msgstr "sgco"
 
 # Prescindesc de la paraula «format» perquè en reemplaçar‐hi les cadenes
 # següents la línia esdevé massa llarga.  ivb
 #. L10N: PGP options (inline) (opportunistic encryption is off)
-#: ncrypt/pgp.c:1684
+#: ncrypt/pgp.c:1686
 #, c-format
 msgid ""
 "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, %s format, (c)lear, or (o)ppenc "
@@ -5256,13 +5246,13 @@ msgstr ""
 # La «f» i la «c» originals s’agafen en el mateix cas en el codi.  ivb
 #. L10N: PGP options (inline) (opportunistic encryption is off)
 #. The 'i' is from the "PGP/M(i)ME" or "(i)nline", above.
-#: ncrypt/pgp.c:1691
+#: ncrypt/pgp.c:1692
 #, fuzzy
 msgid "esabico"
 msgstr "xsgaico"
 
 #. L10N: PGP options (opportunistic encryption is off)
-#: ncrypt/pgp.c:1697
+#: ncrypt/pgp.c:1698
 msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, (c)lear, or (o)ppenc mode? "
 msgstr ""
 "PGP: (x)ifra, (s)igna, si(g)na com a, (a)mbdós, (c)lar, (o)portunista? "
@@ -5287,20 +5277,20 @@ msgstr "PGP: (x)ifra, (s)igna, si(g)na com a, (a)mbdós, %s, (c)lar? "
 # La «f» i la «c» originals s’agafen en el mateix cas en el codi.  ivb
 #. L10N: PGP options (inline)
 #. The 'i' is from the "PGP/M(i)ME" or "(i)nline", above.
-#: ncrypt/pgp.c:1721
+#: ncrypt/pgp.c:1720
 #, fuzzy
 msgid "esabic"
 msgstr "xsgaic"
 
 #. L10N: PGP options
-#: ncrypt/pgp.c:1727
+#: ncrypt/pgp.c:1726
 msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, or (c)lear? "
 msgstr "PGP: (x)ifra, (s)igna, si(g)na com a, (a)mbdós, (c)lar? "
 
 # (x)ifra, (s)igna, si(g)na com a, (a)mbdós, (c)lar
 # La «f» i la «c» originals s’agafen en el mateix cas en el codi.  ivb
 #. L10N: PGP options
-#: ncrypt/pgp.c:1730
+#: ncrypt/pgp.c:1728
 #, fuzzy
 msgid "esabc"
 msgstr "xsgac"
@@ -5466,12 +5456,12 @@ msgstr ""
 "S/MIME: (s)igna, xi(f)ra amb, si(g)na com a, (c)lar, no (o)portunista? "
 
 #. L10N: S/MIME options (opportunistic encryption is on)
-#: ncrypt/smime.c:1987
+#: ncrypt/smime.c:1986
 msgid "swaco"
 msgstr "sfgco"
 
 #. L10N: S/MIME options (opportunistic encryption is off)
-#: ncrypt/smime.c:1997
+#: ncrypt/smime.c:1996
 msgid ""
 "S/MIME (e)ncrypt, (s)ign, encrypt (w)ith, sign (a)s, (b)oth, (c)lear, or "
 "(o)ppenc mode? "
@@ -5482,13 +5472,13 @@ msgstr ""
 # (x)ifra, (s)igna, xi(f)ra amb, si(g)na com a, (a)mbdós, (c)lar, (o)portunista
 # La «f» i la «c» originals s’agafen en el mateix cas en el codi.  ivb
 #. L10N: S/MIME options (opportunistic encryption is off)
-#: ncrypt/smime.c:2001
+#: ncrypt/smime.c:1999
 #, fuzzy
 msgid "eswabco"
 msgstr "xsfgaco"
 
 #. L10N: S/MIME options
-#: ncrypt/smime.c:2010
+#: ncrypt/smime.c:2008
 msgid ""
 "S/MIME (e)ncrypt, (s)ign, encrypt (w)ith, sign (a)s, (b)oth, or (c)lear? "
 msgstr ""
@@ -5498,45 +5488,45 @@ msgstr ""
 # ivb  (x)ifra, (s)igna, xi(f)ra amb, si(g)na com a, (a)mbdós, (c)lar
 # La «f» i la «c» originals s’agafen en el mateix cas en el codi.  ivb
 #. L10N: S/MIME options
-#: ncrypt/smime.c:2014
+#: ncrypt/smime.c:2011
 #, fuzzy
 msgid "eswabc"
 msgstr "xsfgac"
 
 # Més coherent que l’original.  ivb
-#: ncrypt/smime.c:2034
+#: ncrypt/smime.c:2031
 msgid "Choose algorithm family: 1: DES, 2: RC2, 3: AES, or (c)lear? "
 msgstr "Trieu la família d’algorismes: (D)ES, (R)C2, (A)ES, (c)lar? "
 
 # (D)ES, (R)C2, (A)ES, (c)lar  ivb
-#: ncrypt/smime.c:2037
+#: ncrypt/smime.c:2034
 msgid "drac"
 msgstr "drac"
 
-#: ncrypt/smime.c:2040
+#: ncrypt/smime.c:2037
 msgid "1: DES, 2: Triple-DES "
 msgstr "(D)ES, DES (t)riple "
 
 # (D)ES, DES (t)riple  ivb
-#: ncrypt/smime.c:2040
+#: ncrypt/smime.c:2037
 msgid "dt"
 msgstr "dt"
 
-#: ncrypt/smime.c:2053
+#: ncrypt/smime.c:2050
 msgid "1: RC2-40, 2: RC2-64, 3: RC2-128 "
 msgstr "RC2‐(4)0, RC2‐(6)4, RC2‐12(8) "
 
 # RC2-(4)0, RC2-(6)4, RC2-12(8)  ivb
-#: ncrypt/smime.c:2053
+#: ncrypt/smime.c:2050
 msgid "468"
 msgstr "468"
 
-#: ncrypt/smime.c:2069
+#: ncrypt/smime.c:2066
 msgid "1: AES128, 2: AES192, 3: AES256 "
 msgstr "AES12(8), AES1(9)2, AES2(5)6 "
 
 # AES12(8), AES1(9)2, AES2(5)6  ivb
-#: ncrypt/smime.c:2069
+#: ncrypt/smime.c:2066
 msgid "895"
 msgstr "895"
 
@@ -5699,7 +5689,6 @@ msgid "Error in expression: %s"
 msgstr "Error a l’expressió: %s"
 
 #: pattern.c:90 pattern.c:398
-#, c-format
 msgid "Empty expression"
 msgstr "L’expressió és buida."
 
@@ -5769,7 +5758,6 @@ msgid "%c: not supported in this mode"
 msgstr "%c: No es permet en aquest mode."
 
 #: pattern.c:1261
-#, c-format
 msgid "missing parameter"
 msgstr "Manca un paràmetre."
 
@@ -5816,7 +5804,6 @@ msgid "Search interrupted."
 msgstr "S’ha interromput la cerca."
 
 #: pop.c:113 pop_lib.c:215
-#, c-format
 msgid "Command TOP is not supported by server."
 msgstr "El servidor no permet l’ordre «TOP»."
 
@@ -5825,7 +5812,6 @@ msgid "Can't write header to temporary file!"
 msgstr "No s’ha pogut escriure la capçalera en un fitxer temporal."
 
 #: pop.c:286 pop_lib.c:217
-#, c-format
 msgid "Command UIDL is not supported by server."
 msgstr "El servidor no permet l’ordre «UIDL»."
 
@@ -5898,7 +5884,6 @@ msgid "APOP authentication failed."
 msgstr "L’autenticació APOP ha fallat."
 
 #: pop_auth.c:279
-#, c-format
 msgid "Command USER is not supported by server."
 msgstr "El servidor no permet l’ordre «USER»."
 
@@ -6376,16 +6361,16 @@ msgstr "$sendmail ha d’estar establerta per a poder enviar correu."
 # ivb (2001/12/08)
 # ivb  ABREUJAT!
 # ivb  Error en enviar el missatge, el procés fill ha exit amb codi %d (%s).
-#: sendlib.c:2511
+#: sendlib.c:2512
 #, c-format
 msgid "Error sending message, child exited %d (%s)."
 msgstr "Error en enviament, el fill isqué amb codi %d (%s)."
 
-#: sendlib.c:2517
+#: sendlib.c:2518
 msgid "Output of the delivery process"
 msgstr "Eixida del procés de repartiment"
 
-#: sendlib.c:2696
+#: sendlib.c:2697
 #, c-format
 msgid "Bad IDN %s while preparing resent-from."
 msgstr "En preparar «Resent-From»: L’IDN no és vàlid: %s"
@@ -6560,7 +6545,7 @@ msgstr ""
 "sota\n"
 "certes condicions; useu «mutt -vv» per a obtenir‐ne més detalls.\n"
 
-#: version.c:424
+#: version.c:422
 msgid ""
 "\n"
 "Compile options:"
@@ -6568,23 +6553,10 @@ msgstr ""
 "\n"
 "Opcions de compilació:"
 
-# (s)igna, si(g)na com a, (p)gp, (c)lar, no (o)portunista
-# La «f» i la «c» originals s’agafen en el mateix cas en el codi.  ivb
+#, fuzzy
+#~ msgid "Binding '%s' will alias '%s'"
+#~ msgstr "Avís: L’IDN de l’àlies «%2$s» no és vàlid: %1$s\n"
 
-# (s)igna, si(g)na com a, s/(m)ime, (c)lar, no (o)portunista
-# La «f» i la «c» originals s’agafen en el mateix cas en el codi.  ivb
-
-# (s)igna, si(g)na com a, %s, (c)lar, no (o)portunista
-# La «f» i la «c» originals s’agafen en el mateix cas en el codi.  ivb
-
-# (s)igna, si(g)na com a, (c)lar, no (o)portunista
-# La «f» i la «c» originals s’agafen en el mateix cas en el codi.  ivb
-
-# (x)ifra, (s)igna, si(g)na com a, (a)mbdós, %s, (c)lar, (o)portunista
-# La «f» i la «c» originals s’agafen en el mateix cas en el codi.  ivb
-
-# (x)ifra, (s)igna, si(g)na com a, (a)mbdós, %s, (c)lar
-# La «f» i la «c» originals s’agafen en el mateix cas en el codi.  ivb
-
-# (s)igna, xi(f)ra amb, si(g)na com a, (c)lar, no (o)portunista
-# La «f» i la «c» originals s’agafen en el mateix cas en el codi.  ivb
+#, fuzzy
+#~ msgid "Warning: For menu '%s', binding '%s' will alias '%s'"
+#~ msgstr "Avís: L’IDN de l’àlies «%2$s» no és vàlid: %1$s\n"
