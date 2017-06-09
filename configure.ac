@@ -760,22 +760,19 @@ if test -n "$hcache_bdb" && test "$hcache_bdb" != "no"; then
 	if test "$hcache_bdb" != "yes"; then
 		ac_bdb_prefix="$hcache_bdb $mutt_cv_prefix"
 	fi
-	BDB_VERSIONS="db-5.3 db53 db-5 db5 db-4.8 db48 db-4 db4"
+	BDB_VERSIONS="$BDB_VERSIONS db-5.3 db53 db5.3 db-5 db5"
+	BDB_VERSIONS="$BDB_VERSIONS db-6.2 db62 db6.2 db-6 db6"
+	BDB_VERSIONS="$BDB_VERSIONS db-4.8 db48 db4.8 db-4 db4"
 	for d in $ac_bdb_prefix; do
 		for v in / $BDB_VERSIONS; do
 			AC_MSG_CHECKING([for BerkeleyDB in $d/include/$v])
 			if test -r "$d/include/$v/db.h"; then
 				BDB_INCLUDE_DIR="$d/include/$v"
 				BDB_INCLUDE_FILE="$d/include/$v/db.h"
-				BDB_VERSION_MAJOR=$(awk '/DB_VERSION_MAJOR/{print $NF}' \
-						$BDB_INCLUDE_FILE)
-				BDB_VERSION_MINOR=$(awk '/DB_VERSION_MINOR/{print $NF}' \
-						$BDB_INCLUDE_FILE)
-				if test -z "$BDB_VERSION_MAJOR" || \
-					test -z "$BDB_VERSION_MINOR"; then
-						AC_MSG_RESULT(yes, missing DB_VERSION_MAJOR / DB_VERSION_MINOR)
-						continue
-				fi
+				AC_COMPUTE_INT(BDB_VERSION_MAJOR, DB_VERSION_MAJOR,
+					[#include "$BDB_INCLUDE_FILE"], continue)
+				AC_COMPUTE_INT(BDB_VERSION_MINOR, DB_VERSION_MINOR,
+					[#include "$BDB_INCLUDE_FILE"], continue)
 				AC_MSG_RESULT(yes)
 				BDB_LIB_DIR="$d/lib/$v"
 				BDB_LIB_NAME="db-$BDB_VERSION_MAJOR.$BDB_VERSION_MINOR"
