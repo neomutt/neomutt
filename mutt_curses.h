@@ -278,6 +278,8 @@ void ci_start_color(void);
   {                                                                            \
     if (ColorDefs[X] != 0)                                                     \
       bkgdset(ColorDefs[X] | ' ');                                             \
+    else                                                                       \
+      bkgdset(ColorDefs[MT_COLOR_NORMAL] | ' ');                               \
   } while (0)
 #define ATTRSET(X) bkgdset(X | ' ')
 #else
@@ -286,6 +288,8 @@ void ci_start_color(void);
   {                                                                            \
     if (ColorDefs[X] != 0)                                                     \
       attrset(ColorDefs[X]);                                                   \
+    else                                                                       \
+      attrset(ColorDefs[MT_COLOR_NORMAL]);                                     \
   } while (0)
 #define ATTRSET attrset
 #endif
