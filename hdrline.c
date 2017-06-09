@@ -591,7 +591,6 @@ static const char *hdr_format_str(char *dest, size_t destlen, size_t col, int co
     case '[':
     case '(':
     case '<':
-
       /* preprocess $date_format to handle %Z */
       {
         const char *cp = NULL;
@@ -822,6 +821,45 @@ static const char *hdr_format_str(char *dest, size_t destlen, size_t col, int co
       else if (!nm_header_get_tags_transformed(hdr))
         optional = 0;
       break;
+
+    case 'G':
+    {
+      char *tag_transformed = NULL;
+      char format[3];
+      char *tag = NULL;
+
+      if (!optional)
+      {
+        format[0] = op;
+        format[1] = *src;
+        format[2] = 0;
+
+        tag = hash_find(TagFormats, format);
+        if (tag)
+        {
+          tag_transformed = nm_header_get_tag_transformed(tag, hdr);
+
+          colorlen = add_index_color(dest, destlen, flags, MT_COLOR_INDEX_TAG);
+          mutt_format_s(dest + colorlen, destlen - colorlen, prefix,
+                        (tag_transformed) ? tag_transformed : "");
+          add_index_color(dest + colorlen, destlen - colorlen, flags, MT_COLOR_INDEX);
+        }
+
+        src++;
+      }
+      else
+      {
+        format[0] = op;
+        format[1] = *prefix;
+        format[2] = 0;
+
+        tag = hash_find(TagFormats, format);
+        if (tag)
+          if (nm_header_get_tag_transformed(tag, hdr) == NULL)
+            optional = 0;
+      }
+      break;
+    }
 #endif
 
     case 'H':
@@ -833,14 +871,7 @@ static const char *hdr_format_str(char *dest, size_t destlen, size_t col, int co
         mutt_format_s(dest, destlen, prefix, NONULL(hdr->env->spam->data));
       else
         mutt_format_s(dest, destlen, prefix, "");
-
       break;
-
-#ifdef USE_NNTP
-    case 'q':
-      mutt_format_s(dest, destlen, prefix, hdr->env->newsgroups ? hdr->env->newsgroups : "");
-      break;
-#endif
 
     case 'i':
       mutt_format_s(dest, destlen, prefix,
@@ -891,6 +922,31 @@ static const char *hdr_format_str(char *dest, size_t destlen, size_t col, int co
       add_index_color(dest + colorlen, destlen - colorlen, flags, MT_COLOR_INDEX);
       break;
 
+    case 'M':
+      snprintf(fmt, sizeof(fmt), "%%%sd", prefix);
+      if (!optional)
+      {
+        colorlen = add_index_color(dest, destlen, flags, MT_COLOR_INDEX_COLLAPSED);
+        if (threads && is_index && hdr->collapsed && hdr->num_hidden > 1)
+        {
+          snprintf(dest + colorlen, destlen - colorlen, fmt, hdr->num_hidden);
+          add_index_color(dest, destlen - colorlen, flags, MT_COLOR_INDEX);
+        }
+        else if (is_index && threads)
+        {
+          mutt_format_s(dest + colorlen, destlen - colorlen, prefix, " ");
+          add_index_color(dest, destlen - colorlen, flags, MT_COLOR_INDEX);
+        }
+        else
+          *dest = '\0';
+      }
+      else
+      {
+        if (!(threads && is_index && hdr->collapsed && hdr->num_hidden > 1))
+          optional = 0;
+      }
+      break;
+
     case 'N':
       if (!optional)
       {
@@ -919,34 +975,15 @@ static const char *hdr_format_str(char *dest, size_t destlen, size_t col, int co
       }
       break;
 
-    case 'M':
-      snprintf(fmt, sizeof(fmt), "%%%sd", prefix);
-      if (!optional)
-      {
-        colorlen = add_index_color(dest, destlen, flags, MT_COLOR_INDEX_COLLAPSED);
-        if (threads && is_index && hdr->collapsed && hdr->num_hidden > 1)
-        {
-          snprintf(dest + colorlen, destlen - colorlen, fmt, hdr->num_hidden);
-          add_index_color(dest, destlen - colorlen, flags, MT_COLOR_INDEX);
-        }
-        else if (is_index && threads)
-        {
-          mutt_format_s(dest + colorlen, destlen - colorlen, prefix, " ");
-          add_index_color(dest, destlen - colorlen, flags, MT_COLOR_INDEX);
-        }
-        else
-          *dest = '\0';
-      }
-      else
-      {
-        if (!(threads && is_index && hdr->collapsed && hdr->num_hidden > 1))
-          optional = 0;
-      }
-      break;
-
     case 'P':
       strfcpy(dest, NONULL(hfi->pager_progress), destlen);
       break;
+
+#ifdef USE_NNTP
+    case 'q':
+      mutt_format_s(dest, destlen, prefix, hdr->env->newsgroups ? hdr->env->newsgroups : "");
+      break;
+#endif
 
     case 'r':
       buf2[0] = 0;
@@ -1087,6 +1124,58 @@ static const char *hdr_format_str(char *dest, size_t destlen, size_t col, int co
       break;
 #endif
 
+    case 'X':
+    {
+      int count = mutt_count_body_parts(ctx, hdr);
+
+      /* The recursion allows messages without depth to return 0. */
+      if (optional)
+        optional = count != 0;
+
+      snprintf(fmt, sizeof(fmt), "%%%sd", prefix);
+      snprintf(dest, destlen, fmt, count);
+    }
+    break;
+
+    case 'y':
+      if (optional)
+        optional = hdr->env->x_label ? 1 : 0;
+
+      colorlen = add_index_color(dest, destlen, flags, MT_COLOR_INDEX_LABEL);
+      mutt_format_s(dest + colorlen, destlen - colorlen, prefix, NONULL(hdr->env->x_label));
+      add_index_color(dest + colorlen, destlen - colorlen, flags, MT_COLOR_INDEX);
+      break;
+
+    case 'Y':
+      if (hdr->env->x_label)
+      {
+        i = 1; /* reduce reuse recycle */
+        htmp = NULL;
+        if (flags & MUTT_FORMAT_TREE && (hdr->thread->prev && hdr->thread->prev->message &&
+                                         hdr->thread->prev->message->env->x_label))
+          htmp = hdr->thread->prev->message;
+        else if (flags & MUTT_FORMAT_TREE &&
+                 (hdr->thread->parent && hdr->thread->parent->message &&
+                  hdr->thread->parent->message->env->x_label))
+          htmp = hdr->thread->parent->message;
+        if (htmp && (mutt_strcasecmp(hdr->env->x_label, htmp->env->x_label) == 0))
+          i = 0;
+      }
+      else
+        i = 0;
+
+      if (optional)
+        optional = i;
+
+      colorlen = add_index_color(dest, destlen, flags, MT_COLOR_INDEX_LABEL);
+      if (i)
+        mutt_format_s(dest + colorlen, destlen - colorlen, prefix,
+                      NONULL(hdr->env->x_label));
+      else
+        mutt_format_s(dest + colorlen, destlen - colorlen, prefix, "");
+      add_index_color(dest + colorlen, destlen - colorlen, flags, MT_COLOR_INDEX);
+      break;
+
     case 'z':
       if (src[0] == 's') /* status: deleted/new/old/replied */
       {
@@ -1211,101 +1300,6 @@ static const char *hdr_format_str(char *dest, size_t destlen, size_t col, int co
       mutt_format_s(dest + colorlen, destlen - colorlen, prefix, buf2);
       add_index_color(dest + colorlen, destlen - colorlen, flags, MT_COLOR_INDEX);
       break;
-
-    case 'X':
-    {
-      int count = mutt_count_body_parts(ctx, hdr);
-
-      /* The recursion allows messages without depth to return 0. */
-      if (optional)
-        optional = count != 0;
-
-      snprintf(fmt, sizeof(fmt), "%%%sd", prefix);
-      snprintf(dest, destlen, fmt, count);
-    }
-    break;
-
-    case 'y':
-      if (optional)
-        optional = hdr->env->x_label ? 1 : 0;
-
-      colorlen = add_index_color(dest, destlen, flags, MT_COLOR_INDEX_LABEL);
-      mutt_format_s(dest + colorlen, destlen - colorlen, prefix, NONULL(hdr->env->x_label));
-      add_index_color(dest + colorlen, destlen - colorlen, flags, MT_COLOR_INDEX);
-      break;
-
-    case 'Y':
-      if (hdr->env->x_label)
-      {
-        i = 1; /* reduce reuse recycle */
-        htmp = NULL;
-        if (flags & MUTT_FORMAT_TREE && (hdr->thread->prev && hdr->thread->prev->message &&
-                                         hdr->thread->prev->message->env->x_label))
-          htmp = hdr->thread->prev->message;
-        else if (flags & MUTT_FORMAT_TREE &&
-                 (hdr->thread->parent && hdr->thread->parent->message &&
-                  hdr->thread->parent->message->env->x_label))
-          htmp = hdr->thread->parent->message;
-        if (htmp && (mutt_strcasecmp(hdr->env->x_label, htmp->env->x_label) == 0))
-          i = 0;
-      }
-      else
-        i = 0;
-
-      if (optional)
-        optional = i;
-
-      colorlen = add_index_color(dest, destlen, flags, MT_COLOR_INDEX_LABEL);
-      if (i)
-        mutt_format_s(dest + colorlen, destlen - colorlen, prefix,
-                      NONULL(hdr->env->x_label));
-      else
-        mutt_format_s(dest + colorlen, destlen - colorlen, prefix, "");
-      add_index_color(dest + colorlen, destlen - colorlen, flags, MT_COLOR_INDEX);
-
-      break;
-
-#ifdef USE_NOTMUCH
-    case 'G':
-    {
-      char *tag_transformed = NULL;
-      char format[3];
-      char *tag = NULL;
-
-      if (!optional)
-      {
-        format[0] = op;
-        format[1] = *src;
-        format[2] = 0;
-
-        tag = hash_find(TagFormats, format);
-        if (tag)
-        {
-          tag_transformed = nm_header_get_tag_transformed(tag, hdr);
-
-          colorlen = add_index_color(dest, destlen, flags, MT_COLOR_INDEX_TAG);
-          mutt_format_s(dest + colorlen, destlen - colorlen, prefix,
-                        (tag_transformed) ? tag_transformed : "");
-          add_index_color(dest + colorlen, destlen - colorlen, flags, MT_COLOR_INDEX);
-        }
-
-        src++;
-      }
-      else
-      {
-        format[0] = op;
-        format[1] = *prefix;
-        format[2] = 0;
-
-        tag = hash_find(TagFormats, format);
-        if (tag)
-          if (nm_header_get_tag_transformed(tag, hdr) == NULL)
-            optional = 0;
-      }
-
-      break;
-    }
-#endif
 
     default:
       snprintf(dest, destlen, "%%%s%c", prefix, op);
