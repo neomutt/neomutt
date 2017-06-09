@@ -1,3 +1,30 @@
+2017-06-09  Richard Russon  <rich@flatcap.org>
+* Contrib
+  - unbind mappings before overwriting in vim-keys
+* Bug Fixes
+  - latest coverity issues (#624)
+  - don't pass colour-codes to filters
+  - Don't set a colour unless it's been defined.
+  - crash if no from is set or founds
+  - ifdef command
+* Translations
+  - fix translations
+  - fix some remaining translation problems
+* Docs
+  - explain binding warnings
+  - don't document unsupported arches
+* Build
+  - fix make git_ver.h
+  - allow xsltproc and w3m calls to fail
+  - fix make dist
+* Upstream
+  - Add a mutt_endwin() before invoking $sendmail
+  - Restore setenv function
+  - Fix tag-prefix to not abort on $timeout
+  - Change km_dokey() to return -2 on a timeout/sigwinch
+  - Enable TEXTDOMAINDIR override to make translation testing easier
+  - Fix "format string is not a string literal" warnings
+
 2017-06-02  Richard Russon  <rich@flatcap.org>
 * Features
   - Warn on bindkey aliasing

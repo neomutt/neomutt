@@ -21,7 +21,7 @@ sorted through them, fixed them up and documented them.
 ## What Features does NeoMutt have?
 
 | Name                 | Description
-|----------------------|-------------------------------------------------------
+| -------------------- | ------------------------------------------------------
 | Attach Headers Color | Color attachment headers using regexp, just like mail bodies
 | Compose to Sender    | Send new mail to the sender of the current mail
 | Compressed Folders   | Read from/write to compressed mailboxes
@@ -54,8 +54,13 @@ sorted through them, fixed them up and documented them.
 
 ## Contributed Scripts and Config
 
-- Keybase Integration (Joshua Jordi)
-- vim-keys - Mutt config for vim users (Ivan Tham)
+| Name                   | Description
+| ---------------------- | ---------------------------------------------
+| Header Cache Benchmark | Script to test the speed of the header cache
+| Keybase                | Keybase Integration
+| Useful programs        | List of useful programs interacting with mutt
+| Vi Keys                | Easy and clean Vi-keys for Mutt
+| Vim Syntax             | Vim Syntax File
 
 ## Where is NeoMutt?
 
@@ -64,9 +69,9 @@ sorted through them, fixed them up and documented them.
 - Questions/Bugs:  https://github.com/neomutt/neomutt/issues
 - Website:         http://www.neomutt.org/
 - IRC:             irc://irc.freenode.net/neomutt - please be patient. 
-We're a small group, so our answer might take some time.
+  We're a small group, so our answer might take some time.
 - Mailinglists:    [neomutt-users](mailto:neomutt-users-request@neomutt.org?subject=subscribe)
-and [neomutt-devel](mailto:neomutt-devel-request@neomutt.org?subject=subscribe)
+  and [neomutt-devel](mailto:neomutt-devel-request@neomutt.org?subject=subscribe)
 - Development:     http://www.neomutt.org/dev.html
 
 ## NeoMutt Developers
@@ -74,19 +79,19 @@ and [neomutt-devel](mailto:neomutt-devel-request@neomutt.org?subject=subscribe)
 Here's a list of everyone who's helped NeoMutt:
 
 Adam Borowski, Alex Pearce, Alok Singh, Ander Punnar, André Berger,
-Antonio Radici, Baptiste Daroussin, Bernard Pratz, Bryan Bennett,
-Chris Czettel, Chris Salzberg, Christian Dröge, Christoph Berg, Clemens Lang,
+Antonio Radici, Baptiste Daroussin, Bernard Pratz, Bo Yu, Bryan Bennett,
+Christian Dröge, Christoph Berg, Chris Czettel, Chris Salzberg, Clemens Lang,
 Damien Riegel, Darshit Shah, David Sterba, Doug Stone-Weaver, Edward Betts,
 Elimar Riesebieter, Evgeni Golov, Fabian Groffen, Fabio Alessandro Locati,
-Faidon Liambotis, František Hájik, Guillaume Brogi, Ian Zimmerman,
-Ismaël Bouya, Ivan Tham, Jack Stratton, Johannes Frankenau, Johannes Weißl,
-Joshua Jordi, Karel Zak, Kevin Velghe, Kurt Jaeger, Marcin Rajner, Marco Hinz,
-Matteo Vescovi, Mehdi Abaakouk, Olaf Lessenich, Philipp Marek,
-Pierre-Elliott Bécue, Pietro Cerutti, Riad Wahby, Richard Hartmann,
-Richard Russon, Rubén Llorente, Santiago Torres, Serge Gebhardt, Somini,
-Stephen Gilles, Steven Ragnarök, Sven Guckes, Thomas Adam, Thomas Klausner,
-Tobias Angele, Udo Schweigert, Vsevolod Volkov, Werner Fink, Wieland Hoffmann,
-William Pettersson, Yoshiki Vázquez Baeza.
+Faidon Liambotis, František Hájik, Guillaume Brogi, Ian Zimmerman, Ismaël Bouya,
+Ivan Tham, Jack Stratton, Johannes Frankenau, Johannes Weißl, Joshua Jordi,
+Karel Zak, Kevin Velghe, Kurt Jaeger, Marcin Rajner, Marco Hinz, Matteo Vescovi,
+Mehdi Abaakouk, Olaf Lessenich, Peter Hogg, Philipp Marek, Pierre-Elliott Bécue,
+Pietro Cerutti, Riad Wahby, Richard Hartmann, Richard Russon, Rubén Llorente,
+Santiago Torres, Serge Gebhardt, Somini, Stefan Assmann, Stephen Gilles,
+Steven Ragnarök, Sven Guckes, Thomas Adam, Thomas Klausner, Tobias Angele,
+Udo Schweigert, Vsevolod Volkov, Werner Fink, Wieland Hoffmann,
+William Pettersson, Yoshiki Vázquez Baeza, Zero King.
 
 ## Original Patch Authors
 
