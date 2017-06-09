@@ -98,19 +98,22 @@ enum
   HDR_ATTACH = (HDR_FCC + 5) /* where to start printing the attachments */
 };
 
-#define HDR_XOFFSET 14
-#define TITLE_FMT "%14s" /* Used for Prompts, which are ASCII */
-#define W (MuttIndexWindow->cols - HDR_XOFFSET)
+int HeaderPadding[HDR_XCOMMENTTO + 1] = { 0 };
+int MaxHeaderWidth = 0;
+
+#define HDR_XOFFSET MaxHeaderWidth
+#define W (MuttIndexWindow->cols - MaxHeaderWidth)
 
 static const char *const Prompts[] = {
   "From: ", "To: ", "Cc: ", "Bcc: ", "Subject: ", "Reply-To: ", "Fcc: "
-#ifdef USE_NNTP
 #ifdef MIXMASTER
   ,
   ""
 #endif
+  ,"", ""
+#ifdef USE_NNTP
   ,
-  "", "Newsgroups: ", "Followup-To: ", "X-Comment-To: "
+  "Newsgroups: ", "Followup-To: ", "X-Comment-To: "
 #endif
 };
 
@@ -139,6 +142,57 @@ static struct Mapping ComposeNewsHelp[] = {
 };
 #endif
 
+static void calc_header_width_padding(int idx, const char *header, int calc_max)
+{
+  int width;
+
+  HeaderPadding[idx] = mutt_strlen(header);
+  width = mutt_strwidth(header);
+  if (calc_max && MaxHeaderWidth < width)
+    MaxHeaderWidth = width;
+  HeaderPadding[idx] -= width;
+}
+
+
+/* The padding needed for each header is strlen() + max_width - strwidth().
+ *
+ * calc_header_width_padding sets each entry in HeaderPadding to
+ * strlen - width.  Then, afterwards, we go through and add max_width
+ * to each entry.
+ */
+static void init_header_padding(void)
+{
+  static short done = 0;
+  int i;
+
+  if (done)
+    return;
+  done = 1;
+
+  for (i = 0; i <= HDR_XCOMMENTTO; i++)
+    calc_header_width_padding(i, Prompts[i], 1);
+
+#ifdef MIXMASTER
+  calc_header_width_padding(HDR_MIX, _("Mix: "), 1);
+#endif
+
+  /* TODO: mark for translation */
+  calc_header_width_padding(HDR_CRYPT, "Security: ", 1);
+
+  /* TODO: convert to "Sign as: " */
+  /* L10N:
+   * This string is used by the compose menu.  It is suggested that it not
+   * be wider than 20 character cells, if possible. */
+  calc_header_width_padding(HDR_CRYPTINFO, _("sign as: "), 0);
+
+  for (i = 0; i <= HDR_XCOMMENTTO; i++)
+  {
+    HeaderPadding[i] += MaxHeaderWidth;
+    if (HeaderPadding[i] < 0)
+      HeaderPadding[i] = 0;
+  }
+}
+
 static void snd_entry(char *b, size_t blen, struct Menu *menu, int num)
 {
   mutt_FormatString(b, blen, 0, MuttIndexWindow->cols, NONULL(AttachFormat), mutt_attach_fmt,
@@ -149,7 +203,8 @@ static void snd_entry(char *b, size_t blen, struct Menu *menu, int num)
 static void redraw_crypt_lines(struct Header *msg)
 {
   SETCOLOR(MT_COLOR_COMPOSE_HEADER);
-  mutt_window_mvprintw(MuttIndexWindow, HDR_CRYPT, 0, TITLE_FMT, "Security: ");
+  mutt_window_mvprintw(MuttIndexWindow, HDR_CRYPT, 0, "%*s",
+                       HeaderPadding[HDR_CRYPT], "Security: ");
   NORMAL_COLOR;
 
   if ((WithCrypto & (APPLICATION_PGP | APPLICATION_SMIME)) == 0)
@@ -205,7 +260,7 @@ static void redraw_crypt_lines(struct Header *msg)
       (msg->security & SIGN))
   {
     SETCOLOR(MT_COLOR_COMPOSE_HEADER);
-    printw(TITLE_FMT, _("sign as: "));
+    printw("%*s", HeaderPadding[HDR_CRYPTINFO], _("sign as: "));
     NORMAL_COLOR;
     printw("%s", PgpSignAs ? PgpSignAs : _("<default>"));
   }
@@ -214,7 +269,7 @@ static void redraw_crypt_lines(struct Header *msg)
       (msg->security & SIGN))
   {
     SETCOLOR(MT_COLOR_COMPOSE_HEADER);
-    printw(TITLE_FMT, _("sign as: "));
+    printw("%*s", HeaderPadding[HDR_CRYPTINFO], _("sign as: "));
     NORMAL_COLOR;
     printw("%s", SmimeDefaultKey ? SmimeDefaultKey : _("<default>"));
   }
@@ -238,8 +293,9 @@ static void redraw_mix_line(struct List *chain)
   char *t = NULL;
 
   SETCOLOR(MT_COLOR_COMPOSE_HEADER);
-  /* L10N: "Mix" refers to the MixMaster chain for anonymous email */
-  mutt_window_mvprintw(MuttIndexWindow, HDR_MIX, 0, TITLE_FMT, _("Mix: "));
+  mutt_window_mvprintw(MuttIndexWindow, HDR_MIX, 0,
+                       /* L10N: "Mix" refers to the MixMaster chain for anonymous email */
+                       "%*s", HeaderPadding[HDR_MIX], _("Mix: "));
   NORMAL_COLOR;
 
   if (!chain)
@@ -305,7 +361,7 @@ static void draw_envelope_addr(int line, struct Address *addr)
   buf[0] = 0;
   rfc822_write_address(buf, sizeof(buf), addr, 1);
   SETCOLOR(MT_COLOR_COMPOSE_HEADER);
-  mutt_window_mvprintw(MuttIndexWindow, line, 0, TITLE_FMT, Prompts[line]);
+  mutt_window_mvprintw(MuttIndexWindow, line, 0, "%*s", HeaderPadding[line], Prompts[line]);
   NORMAL_COLOR;
   mutt_paddstr(W, buf);
 }
@@ -324,30 +380,29 @@ static void draw_envelope(struct Header *msg, char *fcc)
   }
   else
   {
-    mutt_window_mvprintw(MuttIndexWindow, HDR_TO, 0, TITLE_FMT,
-                         Prompts[HDR_NEWSGROUPS - 1]);
+    mutt_window_mvprintw(MuttIndexWindow, HDR_TO, 0, "%*s", HeaderPadding[HDR_NEWSGROUPS], Prompts[HDR_NEWSGROUPS]);
     mutt_paddstr(W, NONULL(msg->env->newsgroups));
-    mutt_window_mvprintw(MuttIndexWindow, HDR_CC, 0, TITLE_FMT,
-                         Prompts[HDR_FOLLOWUPTO - 1]);
+    mutt_window_mvprintw(MuttIndexWindow, HDR_CC, 0, "%*s", HeaderPadding[HDR_FOLLOWUPTO], Prompts[HDR_FOLLOWUPTO]);
     mutt_paddstr(W, NONULL(msg->env->followup_to));
     if (option(OPTXCOMMENTTO))
     {
-      mutt_window_mvprintw(MuttIndexWindow, HDR_BCC, 0, TITLE_FMT,
-                           Prompts[HDR_XCOMMENTTO - 1]);
+      mutt_window_mvprintw(MuttIndexWindow, HDR_BCC, 0, "%*s", HeaderPadding[HDR_XCOMMENTTO], Prompts[HDR_XCOMMENTTO]);
       mutt_paddstr(W, NONULL(msg->env->x_comment_to));
     }
   }
 #endif
 
   SETCOLOR(MT_COLOR_COMPOSE_HEADER);
-  mutt_window_mvprintw(MuttIndexWindow, HDR_SUBJECT, 0, TITLE_FMT, Prompts[HDR_SUBJECT]);
+  mutt_window_mvprintw(MuttIndexWindow, HDR_SUBJECT, 0, "%*s",
+                       HeaderPadding[HDR_SUBJECT], Prompts[HDR_SUBJECT]);
   NORMAL_COLOR;
   mutt_paddstr(W, NONULL(msg->env->subject));
 
   draw_envelope_addr(HDR_REPLYTO, msg->env->reply_to);
 
   SETCOLOR(MT_COLOR_COMPOSE_HEADER);
-  mutt_window_mvprintw(MuttIndexWindow, HDR_FCC, 0, TITLE_FMT, Prompts[HDR_FCC]);
+  mutt_window_mvprintw(MuttIndexWindow, HDR_FCC, 0, "%*s",
+                       HeaderPadding[HDR_FCC], Prompts[HDR_FCC]);
   NORMAL_COLOR;
   mutt_paddstr(W, fcc);
 
@@ -638,6 +693,8 @@ int mutt_compose_menu(struct Header *msg, /* structure for new message */
   if (option(OPTNEWSSEND))
     news++;
 #endif
+
+  init_header_padding();
 
   rd.msg = msg;
   rd.fcc = fcc;
