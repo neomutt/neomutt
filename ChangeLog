@@ -4711,7 +4711,7 @@
 	mutt.h, mutt_curses.h, mutt_ssl.c, mutt_ssl_gnutls.c: Create a
 	separate macro/push/exec event buffer. (closes #3779)
 
-	Currently, the SSL and TLS certficate prompts turn on
+	Currently, the SSL and TLS certificate prompts turn on
 	OPTUNBUFFEREDINPUT, (to prevent macros and such from running right
 	through the dialog). Unfortunately, the menu dialog processing in
 	menu_dialog_dokey() is using mutt_ungetch() to forward non-dialog
