@@ -92,8 +92,7 @@ void crypt_forget_passphrase(void)
     mutt_message(_("Passphrase(s) forgotten."));
 }
 
-#if (!defined(DEBUG))
-
+#ifndef DEBUG
 #include <sys/resource.h>
 static void disable_coredumps(void)
 {
@@ -106,7 +105,6 @@ static void disable_coredumps(void)
     done = true;
   }
 }
-
 #endif
 
 /**
@@ -116,7 +114,7 @@ int crypt_valid_passphrase(int flags)
 {
   int rc = 0;
 
-#if !defined(DEBUG)
+#ifndef DEBUG
   disable_coredumps();
 #endif
 

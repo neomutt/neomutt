@@ -71,13 +71,11 @@ enum ImapAuthRes imap_auth_login(struct ImapData *idata, const char *method)
   imap_quote_string(q_user, sizeof(q_user), idata->conn->account.user);
   imap_quote_string(q_pass, sizeof(q_pass), idata->conn->account.pass);
 
-#ifdef DEBUG
   /* don't print the password unless we're at the ungodly debugging level
    * of 5 or higher */
 
   if (debuglevel < IMAP_LOG_PASS)
     mutt_debug(2, "Sending LOGIN command for %s...\n", idata->conn->account.user);
-#endif
 
   snprintf(buf, sizeof(buf), "LOGIN %s %s", q_user, q_pass);
   rc = imap_exec(idata, buf, IMAP_CMD_FAIL_OK | IMAP_CMD_PASS);

@@ -109,6 +109,7 @@ static struct CompileOptions comp_opts_default[] = {
   { "compose_to_sender", 1 },
   { "compress", 1 },
   { "cond_date", 1 },
+  { "debug", 1 },
   { "encrypt_to_self", 1 },
   { "forgotten_attachments", 1 },
   { "forwref", 1 },
@@ -152,11 +153,6 @@ static struct CompileOptions comp_opts[] = {
   { "curs_set", 1 },
 #else
   { "curs_set", 0 },
-#endif
-#ifdef DEBUG
-  { "debug", 1 },
-#else
-  { "debug", 0 },
 #endif
 #ifdef USE_FCNTL
   { "fcntl", 1 },

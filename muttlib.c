@@ -930,9 +930,7 @@ void mutt_expando_format(char *buf, size_t buflen, size_t col, int cols, const c
     {
       struct Buffer *srcbuf = NULL, *word = NULL, *command = NULL;
       char srccopy[LONG_STRING];
-#ifdef DEBUG
       int i = 0;
-#endif
 
       mutt_debug(3, "fmtpipe = %s\n", src);
 
@@ -1782,7 +1780,6 @@ void mutt_get_parent_path(char *output, char *path, size_t olen)
   }
 }
 
-#ifdef DEBUG
 char debugfilename[_POSIX_PATH_MAX];
 FILE *debugfile = NULL;
 int debuglevel;
@@ -1813,7 +1810,6 @@ int mutt_debug_real(const char *function, const char *file, int line, int level,
   va_end(ap);
   return ret;
 }
-#endif
 
 /**
  * mutt_inbox_cmp - do two folders share the same path and one is an inbox

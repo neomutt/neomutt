@@ -222,10 +222,8 @@ WHERE short NntpPoll;
 WHERE short NntpContext;
 #endif
 
-#ifdef DEBUG
 WHERE short DebugLevel;
 WHERE char *DebugFile;
-#endif
 
 WHERE short History;
 WHERE short MenuContext;

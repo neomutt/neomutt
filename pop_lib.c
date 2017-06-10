@@ -469,14 +469,12 @@ int pop_query_d(struct PopData *pop_data, char *buf, size_t buflen, char *msg)
   if (pop_data->status != POP_CONNECTED)
     return -1;
 
-#ifdef DEBUG
   /* print msg instead of real command */
   if (msg)
   {
     dbg = MUTT_SOCK_LOG_FULL;
     mutt_debug(MUTT_SOCK_LOG_CMD, "> %s", msg);
   }
-#endif
 
   mutt_socket_write_d(pop_data->conn, buf, -1, dbg);
 

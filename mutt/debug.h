@@ -23,11 +23,7 @@
 #ifndef _MUTT_DEBUG_H
 #define _MUTT_DEBUG_H
 
-#ifdef DEBUG
 int mutt_debug_real(const char *function, const char *file, int line, int level, ...);
 #define mutt_debug(LEVEL, ...) mutt_debug_real(__func__, __FILE__, __LINE__, LEVEL, __VA_ARGS__)
-#else
-#define mutt_debug(...) do { } while (0)
-#endif
 
 #endif /* _MUTT_DEBUG_H */

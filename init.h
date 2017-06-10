@@ -671,7 +671,6 @@ struct Option MuttVars[] = {
   ** rest of the string are expanded in the \fIC\fP locale (that is in US
   ** English).
   */
-#ifdef DEBUG
   { "debug_level", DT_NUMBER, R_NONE, UL &DebugLevel, 0 },
   /*
   ** .pp
@@ -687,7 +686,6 @@ struct Option MuttVars[] = {
   ** Old debug files are renamed with the prefix 1, 2, 3 and 4.
   ** See ``debug_level'' for more detail.
   */
-#endif
   { "default_hook",     DT_STRING,  R_NONE, UL &DefaultHook, UL "~f %s !~P | (~P ~C %s)" },
   /*
   ** .pp

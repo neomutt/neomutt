@@ -689,9 +689,7 @@ err:
 
 static int update_header_tags(struct Header *h, notmuch_message_t *msg)
 {
-#ifdef DEBUG
   struct NmHdrData *data = h->data;
-#endif
   notmuch_tags_t *tags = NULL;
   char *new_tags = NULL;
   char *old_tags = NULL;

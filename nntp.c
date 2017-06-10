@@ -406,10 +406,8 @@ static int nntp_auth(struct NntpServer *nserv)
         /* username accepted, sending password */
         if (mutt_str_strncmp("381", buf, 3) == 0)
         {
-#ifdef DEBUG
           if (debuglevel < MUTT_SOCK_LOG_FULL)
             mutt_debug(MUTT_SOCK_LOG_CMD, "%d> AUTHINFO PASS *\n", conn->fd);
-#endif
           snprintf(buf, sizeof(buf), "AUTHINFO PASS %s\r\n", conn->account.pass);
           if (mutt_socket_write_d(conn, buf, -1, MUTT_SOCK_LOG_FULL) < 0 ||
               mutt_socket_readln(buf, sizeof(buf), conn) < 0)
@@ -468,7 +466,6 @@ static int nntp_auth(struct NntpServer *nserv)
           /* send out client response */
           if (client_len)
           {
-#ifdef DEBUG
             if (debuglevel >= MUTT_SOCK_LOG_FULL)
             {
               char tmp[LONG_STRING];
@@ -481,7 +478,6 @@ static int nntp_auth(struct NntpServer *nserv)
               *p = '\0';
               mutt_debug(1, "SASL> %s\n", tmp);
             }
-#endif
 
             if (*buf)
               mutt_str_strcat(buf, sizeof(buf), " ");
@@ -495,7 +491,6 @@ static int nntp_auth(struct NntpServer *nserv)
           }
 
           mutt_str_strcat(buf, sizeof(buf), "\r\n");
-#ifdef DEBUG
           if (debuglevel < MUTT_SOCK_LOG_FULL)
           {
             if (strchr(buf, ' '))
@@ -504,7 +499,6 @@ static int nntp_auth(struct NntpServer *nserv)
             else
               mutt_debug(MUTT_SOCK_LOG_CMD, "%d> sasl_data\n", conn->fd);
           }
-#endif
           client_len = 0;
           if (mutt_socket_write_d(conn, buf, -1, MUTT_SOCK_LOG_FULL) < 0 ||
               mutt_socket_readln_d(inbuf, sizeof(inbuf), conn, MUTT_SOCK_LOG_FULL) < 0)
@@ -514,19 +508,15 @@ static int nntp_auth(struct NntpServer *nserv)
           if ((mutt_str_strncmp(inbuf, "283 ", 4) != 0) &&
               (mutt_str_strncmp(inbuf, "383 ", 4) != 0))
           {
-#ifdef DEBUG
             if (debuglevel < MUTT_SOCK_LOG_FULL)
               mutt_debug(MUTT_SOCK_LOG_CMD, "%d< %s\n", conn->fd, inbuf);
-#endif
             break;
           }
-#ifdef DEBUG
           if (debuglevel < MUTT_SOCK_LOG_FULL)
           {
             inbuf[3] = '\0';
             mutt_debug(MUTT_SOCK_LOG_CMD, "%d< %s sasl_data\n", conn->fd, inbuf);
           }
-#endif
 
           if (strcmp("=", inbuf + 4) == 0)
             len = 0;
@@ -536,7 +526,6 @@ static int nntp_auth(struct NntpServer *nserv)
             mutt_debug(1, "error base64-decoding server response.\n");
             break;
           }
-#ifdef DEBUG
           else if (debuglevel >= MUTT_SOCK_LOG_FULL)
           {
             char tmp[LONG_STRING];
@@ -549,7 +538,6 @@ static int nntp_auth(struct NntpServer *nserv)
             *p = '\0';
             mutt_debug(1, "SASL< %s\n", tmp);
           }
-#endif
 
           while (true)
           {

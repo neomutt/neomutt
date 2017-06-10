@@ -130,9 +130,7 @@ static int ssl_load_certificates(SSL_CTX *ctx)
   X509 *cert = NULL;
   X509_STORE *store = NULL;
   int rc = 1;
-#ifdef DEBUG
   char buf[STRING];
-#endif
 
   mutt_debug(2, "loading trusted certificates\n");
   store = SSL_CTX_get_cert_store(ctx);
@@ -265,7 +263,7 @@ static void ssl_err(struct SslSockData *data, int err)
       data->isopen = 0;
       break;
   }
-#ifdef DEBUG
+
   const char *errmsg = NULL;
   unsigned long sslerr;
 
@@ -315,15 +313,13 @@ static void ssl_err(struct SslSockData *data, int err)
   }
 
   mutt_debug(1, "SSL error: %s\n", errmsg);
-#endif
 }
 
 /**
- * ssl_dprint_err_stack - Dump the SSL error stack (DEBUG only)
+ * ssl_dprint_err_stack - Dump the SSL error stack
  */
 static void ssl_dprint_err_stack(void)
 {
-#ifdef DEBUG
   BIO *bio = NULL;
   char *buf = NULL;
   long buflen;
@@ -343,7 +339,6 @@ static void ssl_dprint_err_stack(void)
     FREE(&output);
   }
   BIO_free(bio);
-#endif
 }
 
 /**
@@ -1223,14 +1218,10 @@ static int ssl_verify_callback(int preverify_ok, X509_STORE_CTX *ctx)
       return 1;
     }
 
-#ifdef DEBUG
     /* log verification error */
-    {
-      int err = X509_STORE_CTX_get_error(ctx);
-      snprintf(buf, sizeof(buf), "%s (%d)", X509_verify_cert_error_string(err), err);
-      mutt_debug(2, "X509_verify_cert: %s\n", buf);
-    }
-#endif
+    int err = X509_STORE_CTX_get_error(ctx);
+    snprintf(buf, sizeof(buf), "%s (%d)", X509_verify_cert_error_string(err), err);
+    mutt_debug(2, "X509_verify_cert: %s\n", buf);
 
     /* prompt user */
     return interactive_check_cert(cert, pos, len, ssl, 1);
