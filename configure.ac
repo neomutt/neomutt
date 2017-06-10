@@ -591,12 +591,6 @@ AM_CONDITIONAL(USE_SASL, test x$need_sasl = xyes)
 
 dnl -- end socket --
 
-AC_ARG_ENABLE(debug, AS_HELP_STRING([--enable-debug],[Enable debugging support]),
-	[ if test x$enableval = xyes; then
-		AC_DEFINE(DEBUG,1,[ Define to enable debugging info. ])
-	fi
-])
-
 AC_ARG_ENABLE(flock, AS_HELP_STRING([--enable-flock],[Use flock() to lock files]),
 	[if test $enableval = yes; then
 		AC_DEFINE(USE_FLOCK,1, [ Define to use flock() to lock mailboxes. ])

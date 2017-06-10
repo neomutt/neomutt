@@ -27,7 +27,6 @@ options {
   with-ncurses:path         => "Location of ncurses"
   with-slang:path           => "Location of S-Lang"
 # Features w/o 3rd party dependencies
-  logging=0                 => "Enable debug logging"
   doc=1                     => "Disable building the documentation"
   full-doc=0                => "Build the full documentation set"
   docdir:path               => "Documentation root"
@@ -96,7 +95,7 @@ if {1} {
   # Keep sorted, please.
   foreach opt {
     bdb doc everything fcntl flock fmemopen full-doc gdbm gnutls gpgme gss
-    homespool idn kyotocabinet lmdb locales-fix logging lua mixmaster nls
+    homespool idn kyotocabinet lmdb locales-fix lua mixmaster nls
     notmuch pgp qdbm sasl smime ssl tokyocabinet
   } {
     define want-$opt [opt-bool $opt]
@@ -304,10 +303,6 @@ if {[get-define want-everything]} {
 } else {
   set conf_options "$::argv"
 }
-
-###############################################################################
-# Debug
-if {[get-define want-logging]} {define DEBUG}
 
 ###############################################################################
 # flock(1)
@@ -826,7 +821,6 @@ set auto_rep {
   BINDIR
   BUILD_DOC
   CRYPT_*
-  DEBUG
   DOMAIN
   ENABLE_*
   HAVE_*
