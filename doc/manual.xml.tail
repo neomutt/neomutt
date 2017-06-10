@@ -6,7 +6,7 @@
     mapping in which they are available. The default key setting is given, and
     an explanation of what the function does. The key bindings of these
     functions can be changed with the
-    <link linkend="bind">bind</link>command.</para>
+    <link linkend="bind">bind</link> command.</para>
 
 __print_map(generic)
 __print_map(index)
@@ -31,7 +31,7 @@ __print_map(editor)
     <sect1 id="acknowledgements">
       <title>Acknowledgements</title>
       <para>Kari Hurtta
-      <email>kari.hurtta@fmi.fi</email>co-developed the original MIME parsing
+      <email>kari.hurtta@fmi.fi</email> co-developed the original MIME parsing
       code back in the ELM-ME days.</para>
       <para>The following people have been very helpful to the development of
       Mutt:</para>
@@ -147,7 +147,7 @@ __print_map(editor)
         </listitem>
         <listitem>
           <para>Thomas
-          <quote>Mike</quote>Michlmayr
+          <quote>Mike</quote> Michlmayr
           <email>mike@cosy.sbg.ac.at</email></para>
         </listitem>
         <listitem>
