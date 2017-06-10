@@ -36,6 +36,8 @@ if test "$CC" = "gcc"; then
 	CFLAGS="$CFLAGS -fno-delete-null-pointer-checks"
 fi
 
+CFLAGS="-Wall -pedantic -Wno-long-long $CFLAGS"
+
 AC_SEARCH_LIBS([strerror],[cposix])
 if test "x$U" != "x"; then
 	AC_MSG_ERROR(Compiler not ANSI compliant)
@@ -441,13 +443,6 @@ else
 	AC_DEFINE_UNQUOTED(MAILPATH,"$mutt_cv_mailpath",[ Where new mail is spooled. ])
 fi
 
-AC_ARG_ENABLE(dotlock, AS_HELP_STRING([--enable-dotlock],[Define to build mutt_dotlock.]), [build_dotlock=$enableval])
-if test "x$build_dotlock" = "xyes"; then
-	AC_DEFINE(USE_DOTLOCK,1, [ Define to use dotlock to lock mailboxes. ])
-	DOTLOCK_TARGET="mutt_dotlock\$(EXEEXT)"
-fi
-AC_SUBST(DOTLOCK_TARGET)
-
 dnl autoconf <2.60 compatibility
 if test -z "$datarootdir"; then
 	datarootdir='${prefix}/share'
@@ -623,44 +618,9 @@ if test $mutt_cv_fcntl = yes; then
 	AC_DEFINE(USE_FCNTL,1, [ Define to use fcntl() to lock folders. ])
 fi
 
-mutt_cv_warnings=yes
-AC_ARG_ENABLE(warnings, AS_HELP_STRING([--disable-warnings],[Turn off compiler warnings (not recommended)]),
-	[if test $enableval = no; then
-		mutt_cv_warnings=no
-	fi])
-
-if test x$GCC = xyes && test $mutt_cv_warnings = yes; then
-	CFLAGS="-Wall -pedantic -Wno-long-long $CFLAGS"
-fi
-
-AC_ARG_ENABLE(nfs-fix, AS_HELP_STRING([--enable-nfs-fix],[Work around an NFS with broken attributes caching]),
-	[if test x$enableval = xyes; then
-		AC_DEFINE(NFS_ATTRIBUTE_HACK,1,
-			[Define if you have problems with mutt not detecting
-			new/old mailboxes over NFS.  Some NFS implementations
-			incorrectly cache the attributes of small files.])
-	fi])
-
 AC_ARG_ENABLE(locales-fix, AS_HELP_STRING([--enable-locales-fix],[The result of isprint() is unreliable]),
 	[if test x$enableval = xyes; then
 		AC_DEFINE(LOCALES_HACK,1,[ Define if the result of isprint() is unreliable. ])
-	fi])
-
-AC_ARG_WITH(exec-shell, AS_HELP_STRING([--with-exec-shell=SHELL],[Specify alternate shell (ONLY if /bin/sh is broken)]),
-	[if test $withval != yes; then
-		AC_DEFINE_UNQUOTED(EXECSHELL, "$withval",
-		[program to use for shell commands])
-	else
-		AC_DEFINE_UNQUOTED(EXECSHELL, "/bin/sh")
-	fi],
-	[AC_DEFINE_UNQUOTED(EXECSHELL, "/bin/sh")])
-
-AC_ARG_ENABLE(exact-address, AS_HELP_STRING([--enable-exact-address],[Enable regeneration of email addresses]),
-	[if test $enableval = yes; then
-		AC_DEFINE(EXACT_ADDRESS,1,
-			[Enable exact regeneration of email addresses as parsed?
-			NOTE: this requires significant more memory when defined.])
-
 	fi])
 
 dnl -- start cache --

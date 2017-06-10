@@ -202,7 +202,7 @@ set   confirmcreate			# Ask me about creating new files
 unset confirmappend			# Don't ask me about appending to files
 set   delete=yes			# Don't ask me whether or not I meant to delete messages
 # set   display_filter="tr '\240\204\223\226' ' \"\"-'" # fix some funny characters
-set   edit_hdrs				# I want to edit the headers.
+set   edit_headers			# I want to edit the headers.
 set   editor="/usr/bin/jed %s -f 'mail_mode();'"
  					# Invoke jed with mail_mode.  This may
 	                                # or may not work for you.
@@ -218,20 +218,20 @@ set   include=yes			# Always include a copy when replying.
 set   mark_old			# Distinguish between seen (but unread) and new messages
 set   mbox=+mbox			# The (unused) mbox file.
 unset metoo	 			# Remove me from CC headers.
-set   mime_fwd=ask-no			# Ask me whether or not to create a MIME-encapsulated forward
+set   mime_forward_rest=ask-no		# Ask me whether or not to create a MIME-encapsulated forward
 set   move=no				# Don't use mbox
 set   pager_stop			# Don't fall through to the next message in the pager
 set   pager_index_lines=0		# The pager index is ugly.
-set   pgp_replyencrypt			# Encrypt when replying to encrypted messages.
-set   pgp_replysignencrypted		# Sign when replying to encrypted messages.
+set   crypt_replyencrypt		# Encrypt when replying to encrypted messages.
+set   crypt_replysignencrypted		# Sign when replying to encrypted messages.
 set   pgp_show_unusable="no"		# Don't display unusable keys.
 set   pgp_sort_keys="keyid"		# Sort keys by key ID
-set   pgp_replysign			# Sign when replying to signed messages.
+set   crypt_replysign			# Sign when replying to signed messages.
 set   pgp_timeout=3600			# Forget the PGP passphrase after an hour.
 set   pipe_decode			# Decode messages I pipe to commands, typically to patch(1).
 set   postponed=~/.mutt/postponed	# Where to put postponed messages
 set   print=ask-no			# Don't waste paper
-set   print_cmd="enscript -2Gr -Email"	# Two columns, landscape, fancy header.
+set   print_command="enscript -2Gr -Email"	# Two columns, landscape, fancy header.
 set   print_split=yes			# Invoke enscript once per message
 set   quit=yes				# Don't ask me whether or not I want to quit.
 set   quote_regexp="^ *[a-zA-Z]*[>|][>:|]*"	# Recognize quotes in the pager.
@@ -264,7 +264,7 @@ set   query_command="lbdb2q.pl %s"		# Use the Little Brother's Database with the
 set   sendmail_wait=-1			# Don't put sendmail into the background.
 set   encode_from			# "From " in the beginning of a line triggers quoted-printable
 set   nowait_key			# Return immediately from external programs
-set   forw_format="[fwd] %s (from: %a)"	# A different subject for forwarded messages
+set   forward_format="[fwd] %s (from: %a)"	# A different subject for forwarded messages
 set   nobeep				# Shut up. ;-)
 set   reply_regexp="^((re([\\[0-9\\]+])*|aw):[ \t]*)+[ \t]*"	# A regular expression to detect replies
 set   header				# Include the message header when replying.

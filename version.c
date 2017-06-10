@@ -120,17 +120,7 @@ static struct CompileOptions comp_opts[] = {
 #else
   { "debug", 0 },
 #endif
-#ifdef USE_DOTLOCK
-  { "dotlock", 1 },
-#else
-  { "dotlock", 0 },
-#endif
   { "encrypt_to_self", 1 },
-#ifdef EXACT_ADDRESS
-  { "exact_address", 1 },
-#else
-  { "exact_address", 0 },
-#endif
 #ifdef USE_FCNTL
   { "fcntl", 1 },
 #else
@@ -425,7 +415,6 @@ void print_version(void)
 #ifdef DOMAIN
   printf("DOMAIN=\"%s\"\n", DOMAIN);
 #endif
-  printf("EXECSHELL=\"%s\"\n", EXECSHELL);
 #ifdef ISPELL
   printf("ISPELL=\"%s\"\n", ISPELL);
 #endif

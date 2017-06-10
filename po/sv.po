@@ -4153,11 +4153,6 @@ msgstr "Tunnelfel vid förbindelsen till %s: %s"
 msgid "Lock count exceeded, remove lock for %s?"
 msgstr "Låsningsantal överskridet, ta bort låsning för %s?"
 
-#: mx.c:164
-#, c-format
-msgid "Can't dotlock %s.\n"
-msgstr "Kan inte \"dotlock\" %s.\n"
-
 #: mx.c:219
 msgid "Timeout exceeded while attempting fcntl lock!"
 msgstr "Maxtiden överskreds när \"fcntl\"-låsning försöktes!"

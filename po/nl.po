@@ -4114,11 +4114,6 @@ msgstr "Fout in tunnel in communicatie met %s: %s"
 msgid "Lock count exceeded, remove lock for %s?"
 msgstr "Claim-timeout overschreden, oude claim voor %s verwijderen?"
 
-#: mx.c:164
-#, c-format
-msgid "Can't dotlock %s.\n"
-msgstr "Kan %s niet claimen met \"dotlock\".\n"
-
 #: mx.c:219
 msgid "Timeout exceeded while attempting fcntl lock!"
 msgstr "De fcntl-claim kon niet binnen de toegestane tijd worden verkregen."

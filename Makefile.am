@@ -3,11 +3,11 @@
 include $(top_srcdir)/flymake.am
 
 AUTOMAKE_OPTIONS = 1.6 foreign
-EXTRA_PROGRAMS = mutt_dotlock pgpring pgpewrap mutt_md5
+EXTRA_PROGRAMS = pgpring pgpewrap mutt_md5
 
 # Test the .tar file by building everything
 AM_DISTCHECK_CONFIGURE_FLAGS = --enable-debug --enable-flock --enable-gpgme \
-	--enable-mailtool --enable-nfs-fix --enable-notmuch --with-bdb \
+	--enable-notmuch --with-bdb \
 	--with-gdbm --with-gnutls --with-gss --with-kyotocabinet --with-lmdb \
 	--with-mixmaster --with-qdbm --with-sasl --with-tokyocabinet
 
@@ -27,14 +27,11 @@ endif
 
 bin_SCRIPTS = $(SMIMEAUX_TARGET)
 
-DOTLOCK_GROUP='mail'
-DOTLOCK_PERMISSION='2755'
-
 distdir = neo$(PACKAGE)-$(VERSION)
 
 BUILT_SOURCES = keymap_defs.h keymap_alldefs.h git_ver.h conststrings.c
 
-bin_PROGRAMS = mutt $(DOTLOCK_TARGET) $(PGPAUX_TARGET)
+bin_PROGRAMS = mutt $(PGPAUX_TARGET)
 
 mutt_SOURCES = account.c addrbook.c address.h alias.c alias.h ascii.c attach.c \
 	base64.c bcache.c body.h browser.c buffer.c buffy.c charset.c color.c \
@@ -67,13 +64,13 @@ DEFS=-DPKGDATADIR=\"$(pkgdatadir)\" -DSYSCONFDIR=\"$(sysconfdir)\" \
 
 AM_CPPFLAGS=-I. -I$(top_srcdir) $(GPGME_CFLAGS)
 
-EXTRA_mutt_SOURCES = browser.h dotlock.c mbyte.h mutt_idna.c mutt_idna.h \
+EXTRA_mutt_SOURCES = browser.h mbyte.h mutt_idna.c mutt_idna.h \
 	mutt_lua.c mutt_sasl.c mutt_notmuch.c mutt_ssl.c mutt_ssl_gnutls.c \
 	remailer.c remailer.h resize.c sha1.c url.h utf8.c wcwidth.c 
 
 EXTRA_DIST = account.h ascii.h attach.h bcache.h browser.h buffer.h buffy.h \
-	ChangeLog ChangeLog.neomutt ChangeLog.nntp charset.h compress.h copy.h \
-	COPYRIGHT dotlock.h extlib.c filter.h functions.h gen_defs globals.h \
+	ChangeLog.md charset.h compress.h copy.h \
+	COPYRIGHT extlib.c filter.h functions.h gen_defs globals.h \
 	group.h hash.h history.h init.h keymap.h lib.h LICENSE.md mailbox.h \
 	mapping.h mbyte.h md5.h mime.h mime.types mutt.h mutt_commands.h \
 	mutt_curses.h mutt_idna.h mutt_lua.h mutt_menu.h mutt_notmuch.h \
@@ -82,14 +79,10 @@ EXTRA_DIST = account.h ascii.h attach.h bcache.h browser.h buffer.h buffy.h \
 	OPS.CRYPT OPS.MIX OPS.NOTMUCH OPS.PGP OPS.SIDEBAR OPS.SMIME pager.h \
 	pgpewrap.c pop.h protos.h README.md README.SSL remailer.c remailer.h \
 	rfc1524.h rfc2047.h rfc2231.h rfc3676.h rfc822.h sha1.h sidebar.h \
-	smime_keys.pl sort.h txt2c.c txt2c.sh UPDATING version.h \
+	smime_keys.pl sort.h txt2c.c txt2c.sh version.h \
 	keymap_alldefs.h
 
 EXTRA_SCRIPTS = smime_keys
-
-mutt_dotlock_SOURCES = mutt_dotlock.c
-mutt_dotlock_LDADD = $(LIBOBJS)
-mutt_dotlock_DEPENDENCIES = $(LIBOBJS)
 
 pgpring_SOURCES = ascii.c extlib.c lib.c md5.c pgppubring.c sha1.c
 pgpring_LDADD = $(LIBOBJS) $(NCRYPT_LIBS) $(INTLLIBS)
@@ -103,9 +96,6 @@ txt2c_SOURCES = txt2c.c
 txt2c_LDADD =
 
 noinst_PROGRAMS = $(MUTT_MD5) txt2c
-
-mutt_dotlock.c: $(srcdir)/dotlock.c
-	cp $(srcdir)/dotlock.c mutt_dotlock.c
 
 conststrings.c: txt2c config.status
 	( \
@@ -121,7 +111,7 @@ conststrings.c: txt2c config.status
 		${srcdir}/txt2c.sh configure_options >> conststrings_c
 	mv -f conststrings_c conststrings.c
 
-CLEANFILES = mutt_dotlock.c keymap_alldefs.h $(BUILT_SOURCES)
+CLEANFILES = keymap_alldefs.h $(BUILT_SOURCES)
 
 DISTCLEANFILES= smime_keys txt2c
 
@@ -149,17 +139,6 @@ git_ver.h: $(mutt_SOURCES) $(SUBDIRS)
 	echo 'const char *GitVer = "'$$version'";' > git_ver.h.tmp; \
 	cmp -s git_ver.h.tmp git_ver.h || mv git_ver.h.tmp git_ver.h; \
 	rm -f git_ver.h.tmp
-
-install-exec-hook:
-	if test -f $(DESTDIR)$(bindir)/mutt.dotlock && test -f $(DESTDIR)$(bindir)/mutt_dotlock ; then	\
-		rm -f $(DESTDIR)$(bindir)/mutt.dotlock ;		\
-		ln -sf $(DESTDIR)$(bindir)/mutt_dotlock $(DESTDIR)$(bindir)/mutt.dotlock ; \
-	fi
-	if test -f $(DESTDIR)$(bindir)/mutt_dotlock && test x$(DOTLOCK_GROUP) != x ; then \
-		chgrp $(DOTLOCK_GROUP) $(DESTDIR)$(bindir)/mutt_dotlock && \
-		chmod $(DOTLOCK_PERMISSION) $(DESTDIR)$(bindir)/mutt_dotlock || \
-		{ echo "Can't fix mutt_dotlock's permissions!  This is required to lock mailboxes in the mail spool directory." >&2 ; exit 1 ; } \
-	fi
 
 install-data-local:
 	$(MKDIR_P) $(DESTDIR)$(sysconfdir)

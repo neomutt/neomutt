@@ -37,4 +37,4 @@ set folder=~/mail
 set record=+sent-mail
 set nosave_name
 set postponed=~/postponed-msgs
-set hdr_format="%Z %3C %{%b %d} %-19.19L (%5c) %s"
+set index_format="%Z %3C %{%b %d} %-19.19L (%5c) %s"

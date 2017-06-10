@@ -4266,12 +4266,6 @@ msgstr "Erreur de tunnel en parlant à %s : %s"
 msgid "Lock count exceeded, remove lock for %s?"
 msgstr "Nombre d'essais de verrouillage dépassé, enlever le verrou pour %s ?"
 
-# , c-format
-#: mx.c:164
-#, c-format
-msgid "Can't dotlock %s.\n"
-msgstr "Impossible de verrouiller %s avec dotlock.\n"
-
 #: mx.c:219
 msgid "Timeout exceeded while attempting fcntl lock!"
 msgstr "Délai dépassé lors de la tentative de verrouillage fcntl !"

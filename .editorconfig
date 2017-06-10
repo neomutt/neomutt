@@ -10,12 +10,10 @@ trim_trailing_whitespace = false
 indent_size = 2
 indent_style = space
 
-
-
-[ChangeLog.neomutt]
-indent_size = 1
-
+[ChangeLog.md]
+indent_size = 2
 
 [{[mM]akefile*,*.am}]
 indent_size = 4
 indent_style = tab
+

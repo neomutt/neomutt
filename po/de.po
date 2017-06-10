@@ -4086,11 +4086,6 @@ msgstr "Tunnel-Fehler bei Verbindung mit %s: %s"
 msgid "Lock count exceeded, remove lock for %s?"
 msgstr "Lock-Datei für %s entfernen?"
 
-#: mx.c:164
-#, c-format
-msgid "Can't dotlock %s.\n"
-msgstr "Kann %s nicht (dot-)locken.\n"
-
 #: mx.c:219
 msgid "Timeout exceeded while attempting fcntl lock!"
 msgstr "Konnte fcntl-Lock nicht innerhalb akzeptabler Zeit erhalten."

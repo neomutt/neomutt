@@ -4171,11 +4171,6 @@ msgstr "%s ile konuşurken tünel hatası oluştu: %s"
 msgid "Lock count exceeded, remove lock for %s?"
 msgstr "Maksimum kilit sayısı aşıldı, %s için varolan kilit silinsin mi?"
 
-#: mx.c:164
-#, c-format
-msgid "Can't dotlock %s.\n"
-msgstr "%s kilitlenemedi.\n"
-
 #: mx.c:219
 msgid "Timeout exceeded while attempting fcntl lock!"
 msgstr "\"fcntl\" kilitlemesi zaman aşımına uğradı!"

@@ -4148,11 +4148,6 @@ msgstr "与 %s 通话时隧道错误：%s"
 msgid "Lock count exceeded, remove lock for %s?"
 msgstr "超过锁计数上限，将 %s 的锁移除吗？"
 
-#: mx.c:164
-#, c-format
-msgid "Can't dotlock %s.\n"
-msgstr "无法 dotlock %s。\n"
-
 #: mx.c:219
 msgid "Timeout exceeded while attempting fcntl lock!"
 msgstr "尝试 fcntl 加锁时超时！"

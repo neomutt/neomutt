@@ -108,10 +108,6 @@ static struct Address *expand_aliases_r(struct Address *a, struct List **expn)
 
           mutt_gecos_name(namebuf, sizeof(namebuf), pw);
           mutt_str_replace(&a->personal, namebuf);
-
-#ifdef EXACT_ADDRESS
-          FREE(&a->val);
-#endif
         }
       }
     }

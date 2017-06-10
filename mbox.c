@@ -68,7 +68,7 @@ static int mbox_lock_mailbox(struct Context *ctx, int excl, int retry)
 {
   int r;
 
-  if ((r = mx_lock_file(ctx->path, fileno(ctx->fp), excl, 1, retry)) == 0)
+  if ((r = mx_lock_file(ctx->path, fileno(ctx->fp), excl, retry)) == 0)
     ctx->locked = true;
   else if (retry && !excl)
   {
@@ -85,7 +85,7 @@ static void mbox_unlock_mailbox(struct Context *ctx)
   {
     fflush(ctx->fp);
 
-    mx_unlock_file(ctx->path, fileno(ctx->fp), 1);
+    mx_unlock_file(ctx->path, fileno(ctx->fp));
     ctx->locked = false;
   }
 }
@@ -100,9 +100,6 @@ static int mmdf_parse_mailbox(struct Context *ctx)
   LOFF_T loc, tmploc;
   struct Header *hdr = NULL;
   struct stat sb;
-#ifdef NFS_ATTRIBUTE_HACK
-  struct utimbuf newtime;
-#endif
   struct Progress progress;
   char msgbuf[STRING];
 
@@ -114,15 +111,6 @@ static int mmdf_parse_mailbox(struct Context *ctx)
   ctx->atime = sb.st_atime;
   ctx->mtime = sb.st_mtime;
   ctx->size = sb.st_size;
-
-#ifdef NFS_ATTRIBUTE_HACK
-  if (sb.st_mtime > sb.st_atime)
-  {
-    newtime.modtime = sb.st_mtime;
-    newtime.actime = time(NULL);
-    utime(ctx->path, &newtime);
-  }
-#endif
 
   buf[sizeof(buf) - 1] = 0;
 
@@ -263,9 +251,6 @@ static int mbox_parse_mailbox(struct Context *ctx)
   time_t t;
   int count = 0, lines = 0;
   LOFF_T loc;
-#ifdef NFS_ATTRIBUTE_HACK
-  struct utimbuf newtime;
-#endif
   struct Progress progress;
   char msgbuf[STRING];
 
@@ -279,15 +264,6 @@ static int mbox_parse_mailbox(struct Context *ctx)
   ctx->size = sb.st_size;
   ctx->mtime = sb.st_mtime;
   ctx->atime = sb.st_atime;
-
-#ifdef NFS_ATTRIBUTE_HACK
-  if (sb.st_mtime > sb.st_atime)
-  {
-    newtime.modtime = sb.st_mtime;
-    newtime.actime = time(NULL);
-    utime(ctx->path, &newtime);
-  }
-#endif
 
   if (!ctx->readonly)
     ctx->readonly = access(ctx->path, W_OK) ? true : false;
@@ -509,7 +485,7 @@ static int mbox_close_mailbox(struct Context *ctx)
 
   if (ctx->append)
   {
-    mx_unlock_file(ctx->path, fileno(ctx->fp), 1);
+    mx_unlock_file(ctx->path, fileno(ctx->fp));
     mutt_unblock_signals();
   }
 

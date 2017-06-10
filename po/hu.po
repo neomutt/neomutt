@@ -4246,11 +4246,6 @@ msgstr "Hiba a %s kapcsolat közben (%s)"
 msgid "Lock count exceeded, remove lock for %s?"
 msgstr "A lock számláló túlhaladt, eltávolítsam a(z) %s lockfájlt?"
 
-#: mx.c:164
-#, c-format
-msgid "Can't dotlock %s.\n"
-msgstr "Nem lehet dotlock-olni: %s.\n"
-
 #: mx.c:219
 msgid "Timeout exceeded while attempting fcntl lock!"
 msgstr "Lejárt a maximális várakozási idő az fcntl lock-ra!"

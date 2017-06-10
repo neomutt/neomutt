@@ -8,7 +8,7 @@ If you want to have SSL support in mutt, you need to install OpenSSL
 OpenSSL versions 0.9.3 through 1.0.1c have been tested.
 
 For SSL support to be enabled, you need to run the ``configure''
-script with ``--enable-imap --with-ssl[=PFX]'' parameters.  If the
+script with ``--with-ssl[=PFX]'' parameters.  If the
 OpenSSL headers and libraries are not in the default system search
 paths (usually /usr/include and /usr/lib) you can use the optional PFX
 argument to define the root directory of your installation.  The

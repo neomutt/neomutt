@@ -1927,7 +1927,7 @@ out:
  *
  * Likewise, all IDN processing should happen outside of this routine.
  *
- * mode == 1  => "lite" mode (used for edit_hdrs)
+ * mode == 1  => "lite" mode (used for edit_headers)
  * mode == 0  => normal mode.  write full header + MIME headers
  * mode == -1 => write just the envelope info (used for postponing messages)
  *

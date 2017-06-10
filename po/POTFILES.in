@@ -22,7 +22,6 @@ curs_lib.c
 curs_main.c
 date.c
 doc/makedoc.c
-dotlock.c
 edit.c
 editmsg.c
 enter.c

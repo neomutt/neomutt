@@ -12,8 +12,7 @@ MAKEDOC_CPP = $(CPP) $(AM_CPPFLAGS) $(DEFS) $(CPPFLAGS) -D_MAKEDOC -C
 
 noinst_PROGRAMS = makedoc
 
-EXTRA_DIST = dotlock.man		\
-        smime_keys.man                  \
+EXTRA_DIST = smime_keys.man             \
 	mutt.man			\
 	pgpewrap.man			\
 	pgpring.man			\
@@ -43,7 +42,7 @@ BUILT_DISTFILES = manual.txt $(HTML_DOCFILES)
 
 srcdir_DOCFILES = PGP-Notes.txt smime-notes.txt
 
-topsrcdir_DOCFILES = COPYRIGHT LICENSE.md INSTALL ChangeLog ChangeLog.neomutt	\
+topsrcdir_DOCFILES = COPYRIGHT LICENSE.md INSTALL ChangeLog.md \
 	README.SSL README.md
 
 all: makedoc-all
@@ -58,8 +57,6 @@ install-data-local: makedoc-all instdoc
 	./instdoc smime_keys.1 $(DESTDIR)$(mandir)/man1/smime_keys.1
 	./instdoc pgpewrap.1 $(DESTDIR)$(mandir)/man1/pgpewrap.1
 	./instdoc pgpring.1 $(DESTDIR)$(mandir)/man1/pgpring.1
-	test x$(DOTLOCK_TARGET) = x || ./instdoc $(srcdir)/dotlock.man \
-		$(DESTDIR)$(mandir)/man1/mutt_dotlock.1
 	./instdoc muttrc.man $(DESTDIR)$(mandir)/man5/muttrc.5
 	./instdoc $(srcdir)/mbox.man $(DESTDIR)$(mandir)/man5/mbox.5
 	./instdoc $(srcdir)/mmdf.man $(DESTDIR)$(mandir)/man5/mmdf.5
@@ -85,7 +82,7 @@ install-data-local: makedoc-all instdoc
 	-$(INSTALL) -m 644 $(srcdir)/neomutt-syntax.vim $(DESTDIR)$(docdir)
 
 uninstall-local:
-	for f in mutt.1 mutt_dotlock.1 smime_keys.1 pgpewrap.1 pgpring.1; do \
+	for f in mutt.1 smime_keys.1 pgpewrap.1 pgpring.1; do \
 		rm -f $(DESTDIR)$(mandir)/man1/$$f ; \
 	done
 	for f in muttrc.5 mbox.5 mmdf.5 ; do \

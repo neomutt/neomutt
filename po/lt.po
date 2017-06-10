@@ -4251,11 +4251,6 @@ msgstr "Klaida jungiantis prie IMAP serverio: %s"
 msgid "Lock count exceeded, remove lock for %s?"
 msgstr "Užraktų skaičius viršytas, pašalinti užraktą nuo %s?"
 
-#: mx.c:164
-#, c-format
-msgid "Can't dotlock %s.\n"
-msgstr "Negaliu tašku užrakinti %s.\n"
-
 #: mx.c:219
 msgid "Timeout exceeded while attempting fcntl lock!"
 msgstr "Viršytas leistinas laikas siekiant fcntl užrakto!"

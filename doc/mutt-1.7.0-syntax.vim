@@ -108,9 +108,9 @@ syn keyword muttrcVarBool	skipwhite contained
 			\ crypt_autoencrypt crypt_autopgp crypt_autosign crypt_autosmime
 			\ crypt_confirmhook crypt_opportunistic_encrypt crypt_replyencrypt
 			\ crypt_replysign crypt_replysignencrypted crypt_timestamp crypt_use_gpgme
-			\ crypt_use_pka delete_untag digest_collapse duplicate_threads edit_hdrs
-			\ edit_headers encode_from envelope_from fast_reply fcc_clear followup_to
-			\ force_name forw_decode forw_decrypt forw_quote forward_decode forward_decrypt
+			\ crypt_use_pka delete_untag digest_collapse duplicate_threads
+			\ edit_headers encode_from fast_reply fcc_clear followup_to
+			\ force_name forward_decode forward_decrypt
 			\ forward_quote hdrs header help hidden_host hide_limited hide_missing
 			\ hide_thread_subject hide_top_limited hide_top_missing honor_disposition
 			\ idn_decode idn_encode ignore_linear_white_space ignore_list_reply_to
@@ -119,10 +119,10 @@ syn keyword muttrcVarBool	skipwhite contained
 			\ mail_check_recent mail_check_stats mailcap_sanitize maildir_check_cur
 			\ maildir_header_cache_verify maildir_trash mark_old markers menu_move_off
 			\ menu_scroll message_cache_clean meta_key metoo mh_purge mime_forward_decode
-			\ narrow_tree pager_stop pgp_auto_decode pgp_auto_traditional pgp_autoencrypt
-			\ pgp_autoinline pgp_autosign pgp_check_exit pgp_create_traditional
-			\ pgp_ignore_subkeys pgp_long_ids pgp_replyencrypt pgp_replyinline pgp_replysign
-			\ pgp_replysignencrypted pgp_retainable_sigs pgp_show_unusable pgp_strict_enc
+			\ narrow_tree pager_stop pgp_auto_decode
+			\ pgp_autoinline pgp_check_exit
+			\ pgp_ignore_subkeys pgp_long_ids pgp_replyinline
+			\ pgp_retainable_sigs pgp_show_unusable pgp_strict_enc
 			\ pgp_use_gpg_agent pipe_decode pipe_split pop_auth_try_all pop_last
 			\ postpone_encrypt postpone_encrypt_as print_decode print_split prompt_after
 			\ read_only reflow_space_quotes reflow_text reflow_wrap reply_self resolve
@@ -215,7 +215,7 @@ syn keyword muttrcVarBool	skipwhite contained
 syn keyword muttrcVarQuad	skipwhite contained
 			\ abort_nosubject abort_unmodified bounce copy crypt_verify_sig delete
 			\ fcc_attach forward_edit honor_followup_to include mime_forward
-			\ mime_forward_rest mime_fwd move pgp_mime_auto pgp_verify_sig pop_delete
+			\ mime_forward_rest move pgp_mime_auto pop_delete
 			\ pop_reconnect postpone print quit recall reply_to ssl_starttls
 			\ nextgroup=muttrcSetQuadAssignment,muttrcVPrefix,muttrcVarBool,muttrcVarQuad,muttrcVarNum,muttrcVarStr
 
@@ -358,31 +358,30 @@ syn match muttrcVPrefix		contained /[?&]/ nextgroup=muttrcVarBool,muttrcVarQuad,
 syn match muttrcVarStr		contained skipwhite 'my_[a-zA-Z0-9_]\+' nextgroup=muttrcSetStrAssignment,muttrcVPrefix,muttrcVarBool,muttrcVarQuad,muttrcVarNum,muttrcVarStr
 syn keyword muttrcVarStr	contained skipwhite
 			\ alias_file assumed_charset attach_charset attach_sep certificate_file charset
-			\ config_charset content_type default_hook display_filter dotlock_program
+			\ config_charset content_type default_hook display_filter
 			\ dsn_notify dsn_return editor entropy_file envelope_from_address escape folder
-			\ forw_format forward_format from gecos_mask hdr_format header_cache
+			\ forward_format from gecos_mask header_cache
 			\ header_cache_compress header_cache_pagesize history_file hostname
 			\ imap_authenticators imap_delim_chars imap_headers imap_idle imap_login
-			\ imap_pass imap_user indent_str indent_string ispell locale mailcap_path mask
+			\ imap_pass imap_user indent_string ispell locale mailcap_path mask
 			\ mbox mbox_type message_cachedir mh_seq_flagged mh_seq_replied mh_seq_unseen
-			\ mixmaster msg_format pager pgp_decryption_okay pgp_good_sign
+			\ mixmaster pager pgp_decryption_okay pgp_good_sign
 			\ pgp_mime_signature_description pgp_mime_signature_filename pgp_sign_as
 			\ pgp_sort_keys pipe_sep pop_authenticators pop_host pop_pass pop_user
-			\ post_indent_str post_indent_string postpone_encrypt_as postponed preconnect
-			\ print_cmd print_command query_command quote_regexp realname record
+			\ post_indent_string postpone_encrypt_as postponed preconnect
+			\ print_command query_command quote_regexp realname record
 			\ reply_regexp send_charset sendmail shell sidebar_delim sidebar_delim_chars
 			\ sidebar_divider_char sidebar_format sidebar_indent_string sidebar_sort_method
 			\ signature simple_search smileys smime_ca_location smime_certificates
-			\ smime_default_key smime_encrypt_with smime_keys smime_sign_as
+			\ smime_default_key smime_encrypt_with smime_keys
 			\ smime_sign_digest_alg smtp_authenticators smtp_pass smtp_url sort sort_alias
 			\ sort_aux sort_browser spam_separator spoolfile ssl_ca_certificates_file
 			\ ssl_ciphers ssl_client_cert status_chars tmpdir to_chars trash ts_icon_format
 			\ ts_status_format tunnel visual
 			\ nextgroup=muttrcSetStrAssignment,muttrcVPrefix,muttrcVarBool,muttrcVarQuad,muttrcVarNum,muttrcVarStr
 
-" Present in 1.4.2.1 (pgp_create_traditional was a bool then)
 syn keyword muttrcVarBool	contained skipwhite imap_force_ssl noimap_force_ssl invimap_force_ssl nextgroup=muttrcSetBoolAssignment,muttrcVPrefix,muttrcVarBool,muttrcVarQuad,muttrcVarNum,muttrcVarStr
-"syn keyword muttrcVarQuad	contained pgp_create_traditional nopgp_create_traditional invpgp_create_traditional
+"syn keyword muttrcVarQuad	contained nopgp_create_traditional invpgp_create_traditional
 syn keyword muttrcVarStr	contained skipwhite alternates nextgroup=muttrcSetStrAssignment,muttrcVPrefix,muttrcVarBool,muttrcVarQuad,muttrcVarNum,muttrcVarStr
 
 syn keyword muttrcMenu		contained alias attach browser compose editor index pager postpone pgp mix query generic
