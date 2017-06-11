@@ -66,7 +66,7 @@ AM_CPPFLAGS=-I. -I$(top_srcdir) $(GPGME_CFLAGS)
 
 EXTRA_mutt_SOURCES = browser.h mbyte.h mutt_idna.c mutt_idna.h \
 	mutt_lua.c mutt_sasl.c mutt_notmuch.c mutt_ssl.c mutt_ssl_gnutls.c \
-	remailer.c remailer.h resize.c sha1.c url.h utf8.c wcwidth.c 
+	remailer.c remailer.h resize.c sha1.c url.h utf8.c wcwidth.c
 
 EXTRA_DIST = account.h ascii.h attach.h bcache.h browser.h buffer.h buffy.h \
 	ChangeLog.md charset.h compress.h copy.h \
