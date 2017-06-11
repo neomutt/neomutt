@@ -812,11 +812,11 @@ static int finish_source(struct Buffer *tmp, struct Buffer *s,
  * If a given variable, function, command or compile-time symbol exists, then
  * read the rest of the line of config commands.
  * e.g.
- *      ifdef USE_SIDEBAR source ~/.mutt/sidebar.rc
+ *      ifdef sidebar source ~/.mutt/sidebar.rc
  *
  * If (data == 1) then it means use the 'ifndef' (if-not-defined) command.
  * e.g.
- *      ifndef USE_IMAP finish
+ *      ifndef imap finish
  *
  * Returns:
  *       0 Success
