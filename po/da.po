@@ -1,4 +1,4 @@
-# Danish messages for 
+# Danish messages for NeoMutt
 #
 # Copyright (c) 2000-2016 NeoMutt project.
 # This file is distributed under the same license as the NeoMutt package.
