@@ -366,7 +366,7 @@ static int update_file(char *filename, char *buf)
   char tmpfile[_POSIX_PATH_MAX];
   int rc = -1;
 
-  while (1)
+  while (true)
   {
     snprintf(tmpfile, sizeof(tmpfile), "%s.tmp", filename);
     fp = safe_fopen(tmpfile, "w");

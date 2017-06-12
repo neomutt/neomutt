@@ -622,7 +622,7 @@ struct MuttThread *mutt_sort_subthreads(struct MuttThread *thread, int init)
   top = thread;
 
   array = safe_calloc((array_size = 256), sizeof(struct MuttThread *));
-  while (1)
+  while (true)
   {
     if (init || !thread->sort_key)
     {
@@ -897,7 +897,7 @@ void mutt_sort_threads(struct Context *ctx, int init)
     thread = cur->thread;
     using_refs = 0;
 
-    while (1)
+    while (true)
     {
       if (using_refs == 0)
       {

@@ -243,7 +243,7 @@ static int nntp_attempt_features(struct NntpServer *nserv)
         FREE(&nserv->overview_fmt);
       nserv->overview_fmt = safe_malloc(buflen);
 
-      while (1)
+      while (true)
       {
         if (buflen - off < LONG_STRING)
         {
@@ -303,7 +303,7 @@ static int nntp_auth(struct NntpServer *nserv)
   char *method = NULL, *a = NULL, *p = NULL;
   unsigned char flags = conn->account.flags;
 
-  while (1)
+  while (true)
   {
     /* get login and password */
     if (mutt_account_getuser(&conn->account) || !conn->account.user[0] ||
@@ -333,7 +333,7 @@ static int nntp_auth(struct NntpServer *nserv)
 
     mutt_debug(1, "nntp_auth: available methods: %s\n", nserv->authenticators);
     a = authenticators;
-    while (1)
+    while (true)
     {
       if (!a)
       {
@@ -417,7 +417,7 @@ static int nntp_auth(struct NntpServer *nserv)
           continue;
         }
 
-        while (1)
+        while (true)
         {
           rc = sasl_client_start(saslconn, method, &interaction, &client_out,
                                  &client_len, &mech);
@@ -525,7 +525,7 @@ static int nntp_auth(struct NntpServer *nserv)
           }
 #endif
 
-          while (1)
+          while (true)
           {
             rc = sasl_client_step(saslconn, buf, len, &interaction, &client_out, &client_len);
             if (rc != SASL_INTERACT)
@@ -745,7 +745,7 @@ static int nntp_query(struct NntpData *nntp_data, char *line, size_t linelen)
   if (nserv->status == NNTP_BYE)
     return -1;
 
-  while (1)
+  while (true)
   {
     if (nserv->status == NNTP_OK)
     {
@@ -765,7 +765,7 @@ static int nntp_query(struct NntpData *nntp_data, char *line, size_t linelen)
     }
 
     /* reconnect */
-    while (1)
+    while (true)
     {
       nserv->status = NNTP_NONE;
       if (nntp_open_connection(nserv) == 0)
@@ -831,7 +831,7 @@ static int nntp_fetch_lines(struct NntpData *nntp_data, char *query, size_t qlen
     line = safe_malloc(sizeof(buf));
     rc = 0;
 
-    while (1)
+    while (true)
     {
       char *p = NULL;
       int chunk = mutt_socket_readln_d(buf, sizeof(buf), nntp_data->nserv->conn,

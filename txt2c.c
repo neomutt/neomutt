@@ -13,6 +13,7 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <stdbool.h>
 #include <stdio.h>
 
 #define per_line 12
@@ -24,7 +25,7 @@ static void txt2c(char *sym, FILE *fp)
   int sz = 0;
 
   printf("unsigned char %s[] = {\n", sym);
-  while (1)
+  while (true)
   {
     sz = fread(buf, sizeof(unsigned char), per_line, fp);
     if (sz == 0)

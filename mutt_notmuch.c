@@ -665,7 +665,7 @@ static notmuch_database_t *do_database_open(const char *filename, int writable, 
       mutt_error(_("Waiting for notmuch DB... (%d sec)"), ct / 2);
     usleep(500000);
     ct++;
-  } while (1);
+  } while (true);
 
   if (verbose)
   {

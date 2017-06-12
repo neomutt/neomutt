@@ -1276,7 +1276,7 @@ static void handle_confline(char *s, FILE *out)
 
   /* redraw, comma */
 
-  while (1)
+  while (true)
   {
     if (!(s = get_token(buff, sizeof(buff), s)))
       return;
