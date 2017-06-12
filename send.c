@@ -1265,7 +1265,7 @@ static int has_recips(struct Address *a)
   return c;
 }
 
-static int mutt_search_attach_keyword(char *filename)
+static int search_attach_keyword(char *filename)
 {
   /* Search for the regex in AttachKeyword within a file */
   if (!AttachKeyword.rx)
@@ -1942,7 +1942,7 @@ int ci_send_message(int flags,           /* send mode */
 #endif
 
   if (quadoption(OPT_ATTACH) != MUTT_NO && !msg->content->next &&
-      mutt_search_attach_keyword(msg->content->filename) &&
+      search_attach_keyword(msg->content->filename) &&
       query_quadoption(OPT_ATTACH, _("No attachments, cancel sending?")) != MUTT_NO)
   {
     /* if the abort is automatic, print an error message */
