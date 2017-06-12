@@ -1097,23 +1097,6 @@ static void maildir_delayed_parsing(struct Context *ctx, struct Maildir **md,
   int ret;
 #endif
 
-#define DO_SORT()                                                              \
-  do                                                                           \
-  {                                                                            \
-    if (!sort)                                                                 \
-    {                                                                          \
-      mutt_debug(4, "maildir: need to sort %s by inode\n", ctx->path);         \
-      p = maildir_sort(p, (size_t) -1, md_cmp_inode);                          \
-      if (!last)                                                               \
-        *md = p;                                                               \
-      else                                                                     \
-        last->next = p;                                                        \
-      sort = 1;                                                                \
-      p = skip_duplicates(p, &last);                                           \
-      snprintf(fn, sizeof(fn), "%s/%s", ctx->path, p->h->path);                \
-    }                                                                          \
-  } while (0)
-
 #ifdef USE_HCACHE
   hc = mutt_hcache_open(HeaderCache, ctx->path, NULL);
 #endif
@@ -1129,7 +1112,18 @@ static void maildir_delayed_parsing(struct Context *ctx, struct Maildir **md,
     if (!ctx->quiet && progress)
       mutt_progress_update(progress, count, -1);
 
-    DO_SORT();
+    if (!sort)
+    {
+      mutt_debug(4, "maildir: need to sort %s by inode\n", ctx->path);
+      p = maildir_sort(p, (size_t) -1, md_cmp_inode);
+      if (!last)
+        *md = p;
+      else
+        last->next = p;
+      sort = 1;
+      p = skip_duplicates(p, &last);
+      snprintf(fn, sizeof(fn), "%s/%s", ctx->path, p->h->path);
+    }
 
     snprintf(fn, sizeof(fn), "%s/%s", ctx->path, p->h->path);
 
@@ -1199,8 +1193,6 @@ static void maildir_delayed_parsing(struct Context *ctx, struct Maildir **md,
 #ifdef USE_HCACHE
   mutt_hcache_close(hc);
 #endif
-
-#undef DO_SORT
 
   mh_sort_natural(ctx, md);
 }
