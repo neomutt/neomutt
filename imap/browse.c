@@ -171,8 +171,8 @@ int imap_browse(char *path, struct BrowserState *state)
   char list_cmd[5];
   int n;
   char ctmp;
-  short showparents = 0;
-  int save_lsub;
+  bool showparents = false;
+  bool save_lsub;
   struct ImapMbox mx;
 
   if (imap_parse_path(path, &mx))
@@ -233,7 +233,7 @@ int imap_browse(char *path, struct BrowserState *state)
     /* if we're descending a folder, mark it as current in browser_state */
     if (mbox[n - 1] == list.delim)
     {
-      showparents = 1;
+      showparents = true;
       imap_qualify_path(buf, sizeof(buf), &mx, mbox);
       state->folder = safe_strdup(buf);
       n--;

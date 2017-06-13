@@ -87,12 +87,12 @@ void crypt_forget_passphrase(void)
 static void disable_coredumps(void)
 {
   struct rlimit rl = { 0, 0 };
-  static short done = 0;
+  static bool done = false;
 
   if (!done)
   {
     setrlimit(RLIMIT_CORE, &rl);
-    done = 1;
+    done = true;
   }
 }
 
@@ -465,7 +465,8 @@ int mutt_is_application_pgp(struct Body *m)
 int mutt_is_application_smime(struct Body *m)
 {
   char *t = NULL;
-  int len, complain = 0;
+  int len;
+  bool complain = false;
 
   if (!m)
     return 0;
@@ -491,7 +492,7 @@ int mutt_is_application_smime(struct Body *m)
        */
       if (ascii_strcasecmp(m->description, "S/MIME Encrypted Message") == 0)
         return SMIMEENCRYPT;
-      complain = 1;
+      complain = true;
     }
     else if (ascii_strcasecmp(m->subtype, "octet-stream") != 0)
       return 0;
@@ -596,7 +597,7 @@ int crypt_write_signed(struct Body *a, struct State *s, const char *tempfile)
 {
   FILE *fp = NULL;
   int c;
-  short hadcr;
+  bool hadcr;
   size_t bytes;
 
   if (!WithCrypto)
@@ -610,7 +611,7 @@ int crypt_write_signed(struct Body *a, struct State *s, const char *tempfile)
 
   fseeko(s->fpin, a->hdr_offset, SEEK_SET);
   bytes = a->length + a->offset - a->hdr_offset;
-  hadcr = 0;
+  hadcr = false;
   while (bytes > 0)
   {
     if ((c = fgetc(s->fpin)) == EOF)
@@ -619,13 +620,13 @@ int crypt_write_signed(struct Body *a, struct State *s, const char *tempfile)
     bytes--;
 
     if (c == '\r')
-      hadcr = 1;
+      hadcr = true;
     else
     {
       if (c == '\n' && !hadcr)
         fputc('\r', fp);
 
-      hadcr = 0;
+      hadcr = false;
     }
 
     fputc(c, fp);
@@ -905,7 +906,7 @@ int mutt_signed_handler(struct Body *a, struct State *s)
 {
   char tempfile[_POSIX_PATH_MAX];
   int signed_type;
-  int inconsistent = 0;
+  bool inconsistent = false;
 
   struct Body *b = a;
   struct Body **signatures = NULL;
@@ -929,7 +930,7 @@ int mutt_signed_handler(struct Body *a, struct State *s)
   }
 
   if (!(a && a->next))
-    inconsistent = 1;
+    inconsistent = true;
   else
   {
     switch (signed_type)
@@ -937,21 +938,21 @@ int mutt_signed_handler(struct Body *a, struct State *s)
       case SIGN:
         if (a->next->type != TYPEMULTIPART ||
             (ascii_strcasecmp(a->next->subtype, "mixed") != 0))
-          inconsistent = 1;
+          inconsistent = true;
         break;
       case PGPSIGN:
         if (a->next->type != TYPEAPPLICATION ||
             (ascii_strcasecmp(a->next->subtype, "pgp-signature") != 0))
-          inconsistent = 1;
+          inconsistent = true;
         break;
       case SMIMESIGN:
         if (a->next->type != TYPEAPPLICATION ||
             ((ascii_strcasecmp(a->next->subtype, "x-pkcs7-signature") != 0) &&
              (ascii_strcasecmp(a->next->subtype, "pkcs7-signature") != 0)))
-          inconsistent = 1;
+          inconsistent = true;
         break;
       default:
-        inconsistent = 1;
+        inconsistent = true;
     }
   }
   if (inconsistent)

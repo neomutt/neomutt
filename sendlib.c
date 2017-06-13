@@ -1944,7 +1944,7 @@ int mutt_write_rfc822_header(FILE *fp, struct Envelope *env,
   char buffer[LONG_STRING];
   char *p = NULL, *q = NULL;
   struct List *tmp = env->userhdrs;
-  int has_agent = 0; /* user defined user-agent header field exists */
+  bool has_agent = false; /* user defined user-agent header field exists */
 
   if (mode == 0 && !privacy)
     fputs(mutt_make_date(buffer, sizeof(buffer)), fp);
@@ -2085,7 +2085,7 @@ int mutt_write_rfc822_header(FILE *fp, struct Envelope *env,
       /* check to see if the user has overridden the user-agent field */
       if (ascii_strncasecmp("user-agent", tmp->data, 10) == 0)
       {
-        has_agent = 1;
+        has_agent = true;
         if (privacy)
         {
           *q = ':';
@@ -2727,16 +2727,16 @@ struct Address *mutt_remove_duplicates(struct Address *addr)
   struct Address *top = addr;
   struct Address **last = &top;
   struct Address *tmp = NULL;
-  int dup;
+  bool dup;
 
   while (addr)
   {
-    for (tmp = top, dup = 0; tmp && tmp != addr; tmp = tmp->next)
+    for (tmp = top, dup = false; tmp && tmp != addr; tmp = tmp->next)
     {
       if (tmp->mailbox && addr->mailbox &&
           (ascii_strcasecmp(addr->mailbox, tmp->mailbox) == 0))
       {
-        dup = 1;
+        dup = true;
         break;
       }
     }
@@ -2821,7 +2821,8 @@ int mutt_write_fcc(const char *path, struct Header *hdr, const char *msgid,
   struct Message *msg = NULL;
   char tempfile[_POSIX_PATH_MAX];
   FILE *tempfp = NULL;
-  int r, need_buffy_cleanup = 0;
+  int r;
+  bool need_buffy_cleanup = false;
   struct stat st;
   char buf[SHORT_STRING];
   int onm_flags;
@@ -2850,7 +2851,7 @@ int mutt_write_fcc(const char *path, struct Header *hdr, const char *msgid,
       return -1;
     }
     /* remember new mail status before appending message */
-    need_buffy_cleanup = 1;
+    need_buffy_cleanup = true;
     stat(path, &st);
   }
 

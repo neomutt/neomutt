@@ -282,7 +282,7 @@ void nntp_newsrc_gen_entries(struct Context *ctx)
 {
   struct NntpData *nntp_data = ctx->data;
   anum_t last = 0, first = 1;
-  int series;
+  bool series;
   int save_sort = SORT_ORDER;
   unsigned int entries;
 
@@ -303,7 +303,7 @@ void nntp_newsrc_gen_entries(struct Context *ctx)
   /* Set up to fake initial sequence from 1 to the article before the
    * first article in our list */
   nntp_data->newsrc_len = 0;
-  series = 1;
+  series = true;
   for (int i = 0; i < ctx->msgcount; i++)
   {
     /* search for first unread */
@@ -323,7 +323,7 @@ void nntp_newsrc_gen_entries(struct Context *ctx)
         nntp_data->newsrc_ent[nntp_data->newsrc_len].first = first;
         nntp_data->newsrc_ent[nntp_data->newsrc_len].last = last - 1;
         nntp_data->newsrc_len++;
-        series = 0;
+        series = false;
       }
     }
 
@@ -333,7 +333,7 @@ void nntp_newsrc_gen_entries(struct Context *ctx)
       if (ctx->hdrs[i]->deleted || ctx->hdrs[i]->read)
       {
         first = last + 1;
-        series = 1;
+        series = true;
       }
       last = NHDR(ctx->hdrs[i])->article_num;
     }
@@ -366,7 +366,7 @@ static int update_file(char *filename, char *buf)
   char tmpfile[_POSIX_PATH_MAX];
   int rc = -1;
 
-  while (1)
+  while (true)
   {
     snprintf(tmpfile, sizeof(tmpfile), "%s.tmp", filename);
     fp = safe_fopen(tmpfile, "w");
@@ -651,7 +651,7 @@ header_cache_t *nntp_hcache_open(struct NntpData *nntp_data)
 void nntp_hcache_update(struct NntpData *nntp_data, header_cache_t *hc)
 {
   char buf[16];
-  int old = 0;
+  bool old = false;
   void *hdata = NULL;
   anum_t first, last, current;
 
@@ -665,7 +665,7 @@ void nntp_hcache_update(struct NntpData *nntp_data, header_cache_t *hc)
     mutt_debug(2, "nntp_hcache_update: mutt_hcache_fetch index: %s\n", (char *) hdata);
     if (sscanf(hdata, ANUM " " ANUM, &first, &last) == 2)
     {
-      old = 1;
+      old = true;
       nntp_data->lastCached = last;
 
       /* clean removed headers from cache */

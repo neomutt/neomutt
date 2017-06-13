@@ -1328,7 +1328,8 @@ static void print_smime_keyinfo(const char *msg, gpgme_signature_t sig,
 {
   int msgwid;
   gpgme_user_id_t uids = NULL;
-  int i, aka = 0;
+  int i;
+  bool aka = false;
 
   state_puts(msg, s);
   state_puts(" ", s);
@@ -1351,7 +1352,7 @@ static void print_smime_keyinfo(const char *msg, gpgme_signature_t sig,
       state_puts(uids->uid, s);
       state_puts("\n", s);
 
-      aka = 1;
+      aka = true;
     }
   }
   else
@@ -1387,7 +1388,8 @@ static int show_one_sig_status(gpgme_ctx_t ctx, int idx, struct State *s)
 {
   const char *fpr = NULL;
   gpgme_key_t key = NULL;
-  int i, anybad = 0, anywarn = 0;
+  int i;
+  bool anybad = false, anywarn = false;
   unsigned int sum;
   gpgme_verify_result_t result;
   gpgme_signature_t sig;
@@ -1416,7 +1418,7 @@ static int show_one_sig_status(gpgme_ctx_t ctx, int idx, struct State *s)
     sum = sig->summary;
 
     if (gpg_err_code(sig->status) != GPG_ERR_NO_ERROR)
-      anybad = 1;
+      anybad = true;
 
     if (gpg_err_code(sig->status) != GPG_ERR_NO_PUBKEY)
     {
@@ -1445,13 +1447,13 @@ static int show_one_sig_status(gpgme_ctx_t ctx, int idx, struct State *s)
                _("Error getting key information for KeyID %s: %s\n"), fpr,
                gpgme_strerror(err));
       state_puts(buf, s);
-      anybad = 1;
+      anybad = true;
     }
     else if ((sum & GPGME_SIGSUM_GREEN))
     {
       print_smime_keyinfo(_("Good signature from:"), sig, key, s);
       if (show_sig_summary(sum, ctx, key, idx, s, sig))
-        anywarn = 1;
+        anywarn = true;
       show_one_sig_validity(ctx, idx, s);
     }
     else if ((sum & GPGME_SIGSUM_RED))
@@ -1468,7 +1470,7 @@ static int show_one_sig_status(gpgme_ctx_t ctx, int idx, struct State *s)
       show_one_sig_validity(ctx, idx, s);
       show_fingerprint(key, s);
       if (show_sig_summary(sum, ctx, key, idx, s, sig))
-        anywarn = 1;
+        anywarn = true;
     }
     else /* can't decide (yellow) */
     {
@@ -1484,7 +1486,7 @@ static int show_one_sig_status(gpgme_ctx_t ctx, int idx, struct State *s)
         state_puts("\n", s);
       }
       show_sig_summary(sum, ctx, key, idx, s, sig);
-      anywarn = 1;
+      anywarn = true;
     }
 
     if (key != signature_key)
@@ -1792,7 +1794,7 @@ int pgp_gpgme_decrypt_mime(FILE *fpin, FILE **fpout, struct Body *b, struct Body
   struct State s;
   struct Body *first_part = b;
   int is_signed = 0;
-  int need_decode = 0;
+  bool need_decode = false;
   int saved_type;
   LOFF_T saved_offset;
   size_t saved_length;
@@ -1807,7 +1809,7 @@ int pgp_gpgme_decrypt_mime(FILE *fpin, FILE **fpout, struct Body *b, struct Body
   else if (mutt_is_malformed_multipart_pgp_encrypted(b))
   {
     b = b->parts->next->next;
-    need_decode = 1;
+    need_decode = true;
   }
   else
     return -1;
@@ -2259,7 +2261,7 @@ void pgp_gpgme_invoke_import(const char *fname)
 static void copy_clearsigned(gpgme_data_t data, struct State *s, char *charset)
 {
   char buf[HUGE_STRING];
-  short complete, armor_header;
+  bool complete, armor_header;
   FGETCONV *fc = NULL;
   char *fname = NULL;
   FILE *fp = NULL;
@@ -2279,8 +2281,8 @@ static void copy_clearsigned(gpgme_data_t data, struct State *s, char *charset)
    */
   fc = fgetconv_open(fp, charset, Charset, MUTT_ICONV_HOOK_FROM);
 
-  for (complete = 1, armor_header = 1; fgetconvs(buf, sizeof(buf), fc) != NULL;
-       complete = strchr(buf, '\n') != NULL)
+  for (complete = true, armor_header = true; fgetconvs(buf, sizeof(buf), fc) != NULL;
+       complete = (strchr(buf, '\n') != NULL))
   {
     if (!complete)
     {
@@ -2295,7 +2297,7 @@ static void copy_clearsigned(gpgme_data_t data, struct State *s, char *charset)
     if (armor_header)
     {
       if (buf[0] == '\n')
-        armor_header = 0;
+        armor_header = false;
       continue;
     }
 
@@ -2315,8 +2317,9 @@ static void copy_clearsigned(gpgme_data_t data, struct State *s, char *charset)
 /* Support for classic_application/pgp */
 int pgp_gpgme_application_handler(struct Body *m, struct State *s)
 {
-  int needpass = -1, pgp_keyblock = 0;
-  int clearsign = 0;
+  int needpass = -1;
+  bool pgp_keyblock = false;
+  bool clearsign = false;
   long bytes;
   LOFF_T last_pos, offset;
   char buf[HUGE_STRING];
@@ -2352,19 +2355,19 @@ int pgp_gpgme_application_handler(struct Body *m, struct State *s)
 
     if (mutt_strncmp("-----BEGIN PGP ", buf, 15) == 0)
     {
-      clearsign = 0;
+      clearsign = false;
 
       if (MESSAGE(buf + 15))
         needpass = 1;
       else if (SIGNED_MESSAGE(buf + 15))
       {
-        clearsign = 1;
+        clearsign = true;
         needpass = 0;
       }
       else if (PUBLIC_KEY_BLOCK(buf + 15))
       {
         needpass = 0;
-        pgp_keyblock = 1;
+        pgp_keyblock = true;
       }
       else
       {
@@ -2386,7 +2389,7 @@ int pgp_gpgme_application_handler(struct Body *m, struct State *s)
       }
       else if (!clearsign || (s->flags & MUTT_VERIFY))
       {
-        unsigned int sig_stat = 0;
+        bool sig_stat = false;
         gpgme_data_t plaintext;
         gpgme_ctx_t ctx;
 
@@ -2431,7 +2434,7 @@ int pgp_gpgme_application_handler(struct Body *m, struct State *s)
 
             verify_result = gpgme_op_verify_result(ctx);
             if (verify_result->signatures)
-              sig_stat = 1;
+              sig_stat = true;
           }
 
           have_any_sigs = false;
@@ -2439,7 +2442,7 @@ int pgp_gpgme_application_handler(struct Body *m, struct State *s)
           if ((s->flags & MUTT_DISPLAY) && sig_stat)
           {
             int res, idx;
-            int anybad = 0;
+            bool anybad = false;
 
             state_attach_puts(_("[-- Begin signature "
                                 "information --]\n"),
@@ -2448,7 +2451,7 @@ int pgp_gpgme_application_handler(struct Body *m, struct State *s)
             for (idx = 0; (res = show_one_sig_status(ctx, idx, s)) != -1; idx++)
             {
               if (res == 1)
-                anybad = 1;
+                anybad = true;
             }
             if (!anybad && idx)
               maybe_goodsig = true;
@@ -3845,12 +3848,13 @@ static struct CryptKeyinfo *crypt_select_key(struct CryptKeyinfo *keys,
   int keymax;
   struct CryptKeyinfo **key_table = NULL;
   struct Menu *menu = NULL;
-  int i, done = 0;
+  int i;
+  bool done = false;
   char helpstr[LONG_STRING], buf[LONG_STRING];
   struct CryptKeyinfo *k = NULL;
   int (*f)(const void *, const void *);
   int menu_to_use = 0;
-  int unusable = 0;
+  bool unusable = false;
 
   *forced_valid = 0;
 
@@ -3861,7 +3865,7 @@ static struct CryptKeyinfo *crypt_select_key(struct CryptKeyinfo *keys,
   {
     if (!option(OPTPGPSHOWUNUSABLE) && (k->flags & KEYFLAG_CANTUSE))
     {
-      unusable = 1;
+      unusable = true;
       continue;
     }
 
@@ -4016,12 +4020,12 @@ static struct CryptKeyinfo *crypt_select_key(struct CryptKeyinfo *keys,
         }
 
         k = crypt_copy_key(key_table[menu->current]);
-        done = 1;
+        done = true;
         break;
 
       case OP_EXIT:
         k = NULL;
-        done = 1;
+        done = true;
         break;
     }
   }
@@ -4035,20 +4039,20 @@ static struct CryptKeyinfo *crypt_select_key(struct CryptKeyinfo *keys,
 
 static struct CryptKeyinfo *crypt_getkeybyaddr(struct Address *a,
                                                short abilities, unsigned int app,
-                                               int *forced_valid, int oppenc_mode)
+                                               int *forced_valid, bool oppenc_mode)
 {
   struct Address *r = NULL, *p = NULL;
   struct List *hints = NULL;
 
-  int weak = 0;
-  int invalid = 0;
-  int addr_match = 0;
-  int multi = 0;
-  int this_key_has_strong;
-  int this_key_has_addr_match;
-  int this_key_has_weak;
-  int this_key_has_invalid;
-  int match;
+  int weak = false;
+  int invalid = false;
+  int addr_match = false;
+  int multi = false;
+  int this_key_has_strong = false;
+  int this_key_has_addr_match = false;
+  int this_key_has_weak = false;
+  int this_key_has_invalid = false;
+  int match = false;
 
   struct CryptKeyinfo *keys = NULL, *k = NULL;
   struct CryptKeyinfo *the_strong_valid_key = NULL;
@@ -4084,11 +4088,11 @@ static struct CryptKeyinfo *crypt_getkeybyaddr(struct Address *a,
       continue;
     }
 
-    this_key_has_weak = 0;    /* weak but valid match   */
-    this_key_has_invalid = 0; /* invalid match          */
-    this_key_has_strong = 0;  /* strong and valid match */
-    this_key_has_addr_match = 0;
-    match = 0; /* any match            */
+    this_key_has_weak = false;    /* weak but valid match   */
+    this_key_has_invalid = false; /* invalid match          */
+    this_key_has_strong = false;  /* strong and valid match */
+    this_key_has_addr_match = false;
+    match = false; /* any match */
 
     r = rfc822_parse_adrlist(NULL, k->uid);
     for (p = r; p; p = p->next)
@@ -4097,7 +4101,7 @@ static struct CryptKeyinfo *crypt_getkeybyaddr(struct Address *a,
 
       if (validity & CRYPT_KV_MATCH) /* something matches */
       {
-        match = 1;
+        match = true;
 
         if (validity & CRYPT_KV_VALID)
         {
@@ -4106,17 +4110,17 @@ static struct CryptKeyinfo *crypt_getkeybyaddr(struct Address *a,
             if (validity & CRYPT_KV_STRONGID)
             {
               if (the_strong_valid_key && the_strong_valid_key->kobj != k->kobj)
-                multi = 1;
-              this_key_has_strong = 1;
+                multi = true;
+              this_key_has_strong = true;
             }
             else
-              this_key_has_addr_match = 1;
+              this_key_has_addr_match = true;
           }
           else
-            this_key_has_weak = 1;
+            this_key_has_weak = true;
         }
         else
-          this_key_has_invalid = 1;
+          this_key_has_invalid = true;
       }
     }
     rfc822_free_address(&r);
@@ -4132,13 +4136,13 @@ static struct CryptKeyinfo *crypt_getkeybyaddr(struct Address *a,
         the_strong_valid_key = tmp;
       else if (this_key_has_addr_match)
       {
-        addr_match = 1;
+        addr_match = true;
         a_valid_addrmatch_key = tmp;
       }
       else if (this_key_has_invalid)
-        invalid = 1;
+        invalid = true;
       else if (this_key_has_weak)
-        weak = 1;
+        weak = true;
     }
   }
 
@@ -4325,11 +4329,11 @@ static char *find_keys(struct Address *adrlist, unsigned int app, int oppenc_mod
   char buf[LONG_STRING];
   int forced_valid;
   int r;
-  int key_selected;
+  bool key_selected;
 
   for (p = adrlist; p; p = p->next)
   {
-    key_selected = 0;
+    key_selected = false;
     crypt_hook_list = crypt_hook = mutt_crypt_hook(p);
     do
     {
@@ -4416,7 +4420,7 @@ static char *find_keys(struct Address *adrlist, unsigned int app, int oppenc_mod
               keyID, forced_valid ? "!" : "");
       keylist_used = mutt_strlen(keylist);
 
-      key_selected = 1;
+      key_selected = true;
 
       crypt_free_key(&k_info);
       rfc822_free_address(&addr);
@@ -4513,7 +4517,7 @@ static void init_common(void)
 {
   /* this initialization should only run one time, but it may be called by
    * either pgp_gpgme_init or smime_gpgme_init */
-  static bool has_run = 0;
+  static bool has_run = false;
   if (!has_run)
   {
     gpgme_check_version(NULL);
@@ -4521,8 +4525,7 @@ static void init_common(void)
 #ifdef ENABLE_NLS
     gpgme_set_locale(NULL, LC_MESSAGES, setlocale(LC_MESSAGES, NULL));
 #endif
-    has_run = 1; /* note use of 1 here is intentional to avoid requiring "true"
-                    to be defined.  see #3657 */
+    has_run = true;
   }
 }
 

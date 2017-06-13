@@ -46,7 +46,8 @@ void mutt_edit_headers(const char *editor, const char *body, struct Header *msg,
   char buffer[LONG_STRING];
   const char *p = NULL;
   FILE *ifp = NULL, *ofp = NULL;
-  int i, keep;
+  int i;
+  bool keep;
   struct Envelope *n = NULL;
   time_t mtime;
   struct stat st;
@@ -149,7 +150,7 @@ void mutt_edit_headers(const char *editor, const char *body, struct Header *msg,
   last = &msg->env->userhdrs;
   while (cur)
   {
-    keep = 1;
+    keep = true;
 
     if (fcc && (ascii_strncasecmp("fcc:", cur->data, 4) == 0))
     {
@@ -159,7 +160,7 @@ void mutt_edit_headers(const char *editor, const char *body, struct Header *msg,
         strfcpy(fcc, p, fcclen);
         mutt_pretty_mailbox(fcc, fcclen);
       }
-      keep = 0;
+      keep = false;
     }
     else if (ascii_strncasecmp("attach:", cur->data, 7) == 0)
     {
@@ -198,7 +199,7 @@ void mutt_edit_headers(const char *editor, const char *body, struct Header *msg,
           mutt_error(_("%s: unable to attach file"), path);
         }
       }
-      keep = 0;
+      keep = false;
     }
     else if ((WithCrypto & APPLICATION_PGP) &&
              (ascii_strncasecmp("pgp:", cur->data, 4) == 0))
@@ -206,7 +207,7 @@ void mutt_edit_headers(const char *editor, const char *body, struct Header *msg,
       msg->security = mutt_parse_crypt_hdr(cur->data + 4, 0, APPLICATION_PGP);
       if (msg->security)
         msg->security |= APPLICATION_PGP;
-      keep = 0;
+      keep = false;
     }
 
     if (keep)

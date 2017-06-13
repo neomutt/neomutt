@@ -219,8 +219,7 @@ void imap_logout_all(void)
 int imap_read_literal(FILE *fp, struct ImapData *idata, long bytes, struct Progress *pbar)
 {
   char c;
-
-  int r = 0;
+  bool r = false;
 
   mutt_debug(2, "imap_read_literal: reading %ld bytes\n", bytes);
 
@@ -234,16 +233,16 @@ int imap_read_literal(FILE *fp, struct ImapData *idata, long bytes, struct Progr
       return -1;
     }
 
-    if (r == 1 && c != '\n')
+    if (r && c != '\n')
       fputc('\r', fp);
 
     if (c == '\r')
     {
-      r = 1;
+      r = true;
       continue;
     }
     else
-      r = 0;
+      r = false;
 
     fputc(c, fp);
 
@@ -348,7 +347,7 @@ struct ImapData *imap_conn_find(const struct Account *account, int flags)
   struct Connection *conn = NULL;
   struct Account *creds = NULL;
   struct ImapData *idata = NULL;
-  int new = 0;
+  bool new = false;
 
   while ((conn = mutt_conn_find(conn, account)))
   {
@@ -389,7 +388,7 @@ struct ImapData *imap_conn_find(const struct Account *account, int flags)
 
     conn->data = idata;
     idata->conn = conn;
-    new = 1;
+    new = true;
   }
 
   if (idata->state == IMAP_DISCONNECTED)
@@ -400,7 +399,7 @@ struct ImapData *imap_conn_find(const struct Account *account, int flags)
     {
       idata->state = IMAP_AUTHENTICATED;
       FREE(&idata->capstr);
-      new = 1;
+      new = true;
       if (idata->conn->ssf)
         mutt_debug(2, "Communication encrypted at %d bits\n", idata->conn->ssf);
     }
@@ -901,20 +900,20 @@ bool imap_has_flag(struct List *flag_list, const char *flag)
 /* Note: headers must be in SORT_ORDER. See imap_exec_msgset for args.
  * Pos is an opaque pointer a la strtok. It should be 0 at first call. */
 static int imap_make_msg_set(struct ImapData *idata, struct Buffer *buf,
-                             int flag, int changed, int invert, int *pos)
+                             int flag, bool changed, bool invert, int *pos)
 {
   struct Header **hdrs = idata->ctx->hdrs;
   int count = 0; /* number of messages in message set */
-  int match = 0; /* whether current message matches flag condition */
+  bool match = false; /* whether current message matches flag condition */
   unsigned int setstart = 0; /* start of current message range */
   int n;
-  int started = 0;
+  bool started = false;
 
   hdrs = idata->ctx->hdrs;
 
   for (n = *pos; n < idata->ctx->msgcount && buf->dptr - buf->data < IMAP_MAX_CMDLEN; n++)
   {
-    match = 0;
+    match = false;
     /* don't include pending expunged messages */
     if (hdrs[n]->active)
       switch (flag)
@@ -942,11 +941,11 @@ static int imap_make_msg_set(struct ImapData *idata, struct Buffer *buf,
 
         case MUTT_TAG:
           if (hdrs[n]->tagged)
-            match = 1;
+            match = true;
           break;
         case MUTT_TRASH:
           if (hdrs[n]->deleted && !hdrs[n]->purge)
-            match = 1;
+            match = true;
           break;
       }
 
@@ -956,10 +955,10 @@ static int imap_make_msg_set(struct ImapData *idata, struct Buffer *buf,
       if (setstart == 0)
       {
         setstart = HEADER_DATA(hdrs[n])->uid;
-        if (started == 0)
+        if (!started)
         {
           mutt_buffer_printf(buf, "%u", HEADER_DATA(hdrs[n])->uid);
-          started = 1;
+          started = true;
         }
         else
           mutt_buffer_printf(buf, ",%u", HEADER_DATA(hdrs[n])->uid);
@@ -2114,7 +2113,7 @@ int imap_fast_trash(struct Context *ctx, char *dest)
   char prompt[LONG_STRING];
   int rc;
   struct ImapMbox mx;
-  int triedcreate = 0;
+  bool triedcreate = false;
 
   idata = ctx->data;
 
@@ -2182,7 +2181,7 @@ int imap_fast_trash(struct Context *ctx, char *dest)
       }
       if (imap_create_mailbox(idata, mbox) < 0)
         break;
-      triedcreate = 1;
+      triedcreate = true;
     }
   } while (rc == -2);
 

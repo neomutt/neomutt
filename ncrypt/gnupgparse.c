@@ -115,9 +115,10 @@ static void fix_uid(char *uid)
 static struct PgpKeyInfo *parse_pub_line(char *buf, int *is_subkey, struct PgpKeyInfo *k)
 {
   struct PgpUid *uid = NULL;
-  int field = 0, is_uid = 0;
-  int is_pub = 0;
-  int is_fpr = 0;
+  int field = 0;
+  bool is_uid = false;
+  bool is_pub = false;
+  bool is_fpr = false;
   char *pend = NULL, *p = NULL;
   int trust = 0;
   int flags = 0;
@@ -155,7 +156,7 @@ static struct PgpKeyInfo *parse_pub_line(char *buf, int *is_subkey, struct PgpKe
         mutt_debug(2, "record type: %s\n", p);
 
         if (mutt_strcmp(p, "pub") == 0)
-          is_pub = 1;
+          is_pub = true;
         else if (mutt_strcmp(p, "sub") == 0)
           *is_subkey = 1;
         else if (mutt_strcmp(p, "sec") == 0)
@@ -163,9 +164,9 @@ static struct PgpKeyInfo *parse_pub_line(char *buf, int *is_subkey, struct PgpKe
         else if (mutt_strcmp(p, "ssb") == 0)
           *is_subkey = 1;
         else if (mutt_strcmp(p, "uid") == 0)
-          is_uid = 1;
+          is_uid = true;
         else if (mutt_strcmp(p, "fpr") == 0)
-          is_fpr = 1;
+          is_fpr = true;
         else
           return NULL;
 

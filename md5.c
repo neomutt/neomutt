@@ -24,6 +24,7 @@
 /* Written by Ulrich Drepper <drepper@gnu.ai.mit.edu>, 1995.  */
 
 #include "config.h"
+#include <stdbool.h>
 #include <stddef.h>
 #include <string.h>
 #include "md5.h"
@@ -113,7 +114,7 @@ int md5_stream(FILE *stream, void *resblock)
   md5_init_ctx(&ctx);
 
   /* Iterate over full file contents.  */
-  while (1)
+  while (true)
   {
     /* We read the file in blocks of BLOCKSIZE bytes.  One call of the
      * computation function processes the whole buffer so that with the next
@@ -122,7 +123,7 @@ int md5_stream(FILE *stream, void *resblock)
     sum = 0;
 
     /* Read block.  Take care for partial reads.  */
-    while (1)
+    while (true)
     {
       n = fread(buffer + sum, 1, BLOCKSIZE - sum, stream);
 

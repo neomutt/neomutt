@@ -1097,23 +1097,6 @@ static void maildir_delayed_parsing(struct Context *ctx, struct Maildir **md,
   int ret;
 #endif
 
-#define DO_SORT()                                                              \
-  do                                                                           \
-  {                                                                            \
-    if (!sort)                                                                 \
-    {                                                                          \
-      mutt_debug(4, "maildir: need to sort %s by inode\n", ctx->path);         \
-      p = maildir_sort(p, (size_t) -1, md_cmp_inode);                          \
-      if (!last)                                                               \
-        *md = p;                                                               \
-      else                                                                     \
-        last->next = p;                                                        \
-      sort = 1;                                                                \
-      p = skip_duplicates(p, &last);                                           \
-      snprintf(fn, sizeof(fn), "%s/%s", ctx->path, p->h->path);                \
-    }                                                                          \
-  } while (0)
-
 #ifdef USE_HCACHE
   hc = mutt_hcache_open(HeaderCache, ctx->path, NULL);
 #endif
@@ -1129,7 +1112,18 @@ static void maildir_delayed_parsing(struct Context *ctx, struct Maildir **md,
     if (!ctx->quiet && progress)
       mutt_progress_update(progress, count, -1);
 
-    DO_SORT();
+    if (!sort)
+    {
+      mutt_debug(4, "maildir: need to sort %s by inode\n", ctx->path);
+      p = maildir_sort(p, (size_t) -1, md_cmp_inode);
+      if (!last)
+        *md = p;
+      else
+        last->next = p;
+      sort = 1;
+      p = skip_duplicates(p, &last);
+      snprintf(fn, sizeof(fn), "%s/%s", ctx->path, p->h->path);
+    }
 
     snprintf(fn, sizeof(fn), "%s/%s", ctx->path, p->h->path);
 
@@ -1199,8 +1193,6 @@ static void maildir_delayed_parsing(struct Context *ctx, struct Maildir **md,
 #ifdef USE_HCACHE
   mutt_hcache_close(hc);
 #endif
-
-#undef DO_SORT
 
   mh_sort_natural(ctx, md);
 }
@@ -1720,7 +1712,7 @@ static int mh_rewrite_message(struct Context *ctx, int msgno)
   struct Message *dest = NULL;
 
   int rc;
-  short restore = 1;
+  bool restore = true;
   char oldpath[_POSIX_PATH_MAX];
   char newpath[_POSIX_PATH_MAX];
   char partpath[_POSIX_PATH_MAX];
@@ -1747,7 +1739,7 @@ static int mh_rewrite_message(struct Context *ctx, int msgno)
     if (rc == 0)
     {
       unlink(oldpath);
-      restore = 0;
+      restore = false;
     }
 
     /*
@@ -1998,7 +1990,7 @@ static int maildir_check_mailbox(struct Context *ctx, int *index_hint)
   char buf[_POSIX_PATH_MAX];
   int changed = 0;            /* bitmask representing which subdirectories
                                  have changed.  0x1 = new, 0x2 = cur */
-  int occult = 0;             /* messages were removed from the mailbox */
+  bool occult = false;        /* messages were removed from the mailbox */
   int have_new = 0;           /* messages were added to the mailbox */
   bool flags_changed = false; /* message flags were changed in the mailbox */
   struct Maildir *md = NULL;  /* list of messages in the mailbox */
@@ -2103,7 +2095,7 @@ static int maildir_check_mailbox(struct Context *ctx, int *index_hint)
        * event.  We know it disappeared because we just scanned the
        * subdirectory it used to reside in.
        */
-      occult = 1;
+      occult = true;
     }
     else
     {

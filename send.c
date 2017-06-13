@@ -771,11 +771,12 @@ static int envelope_defaults(struct Envelope *env, struct Context *ctx,
                              struct Header *cur, int flags)
 {
   struct Envelope *curenv = NULL;
-  int i = 0, tag = 0;
+  int i = 0;
+  bool tag = false;
 
   if (!cur)
   {
-    tag = 1;
+    tag = true;
     for (i = 0; i < ctx->vcount; i++)
       if (ctx->hdrs[ctx->v2r[i]]->tagged)
       {
@@ -1264,7 +1265,7 @@ static int has_recips(struct Address *a)
   return c;
 }
 
-static int mutt_search_attach_keyword(char *filename)
+static int search_attach_keyword(char *filename)
 {
   /* Search for the regex in AttachKeyword within a file */
   if (!AttachKeyword.rx)
@@ -1306,9 +1307,10 @@ int ci_send_message(int flags,           /* send mode */
   char fcc[_POSIX_PATH_MAX] = ""; /* where to copy this message */
   FILE *tempfp = NULL;
   struct Body *pbody = NULL;
-  int i, killfrom = 0;
-  int fcc_error = 0;
-  int free_clear_content = 0;
+  int i;
+  bool killfrom = false;
+  bool fcc_error = false;
+  bool free_clear_content = false;
 
   struct Body *save_content = NULL;
   struct Body *clear_content = NULL;
@@ -1525,7 +1527,7 @@ int ci_send_message(int flags,           /* send mode */
     if (!msg->env->from)
     {
       msg->env->from = mutt_default_from();
-      killfrom = 1;
+      killfrom = true;
     }
 
     if ((flags & SENDREPLY) && cur)
@@ -1566,7 +1568,7 @@ int ci_send_message(int flags,           /* send mode */
       rfc822_free_address(&msg->env->from);
       if (option(OPTUSEFROM) && !(flags & (SENDPOSTPONED | SENDRESEND)))
         msg->env->from = mutt_default_from();
-      killfrom = 0;
+      killfrom = false;
     }
 
     if (option(OPTHDRS))
@@ -1789,14 +1791,14 @@ int ci_send_message(int flags,           /* send mode */
     if (!msg->env->from)
     {
       msg->env->from = mutt_default_from();
-      killfrom = 1; /* no need to check $use_from because if the user specified
+      killfrom = true; /* no need to check $use_from because if the user specified
                        a from address it would have already been set by now */
     }
     mutt_select_fcc(fcc, sizeof(fcc), msg);
     if (killfrom)
     {
       rfc822_free_address(&msg->env->from);
-      killfrom = 0;
+      killfrom = false;
     }
   }
 
@@ -1807,7 +1809,7 @@ int ci_send_message(int flags,           /* send mode */
   {
   main_loop:
 
-    fcc_error = 0; /* reset value since we may have failed before */
+    fcc_error = false; /* reset value since we may have failed before */
     mutt_pretty_mailbox(fcc, sizeof(fcc));
     i = mutt_compose_menu(msg, fcc, sizeof(fcc), cur,
                           (flags & SENDNOFREEHEADER ? MUTT_COMPOSE_NOFREEHEADER : 0));
@@ -1940,7 +1942,7 @@ int ci_send_message(int flags,           /* send mode */
 #endif
 
   if (quadoption(OPT_ATTACH) != MUTT_NO && !msg->content->next &&
-      mutt_search_attach_keyword(msg->content->filename) &&
+      search_attach_keyword(msg->content->filename) &&
       query_quadoption(OPT_ATTACH, _("No attachments, cancel sending?")) != MUTT_NO)
   {
     /* if the abort is automatic, print an error message */
@@ -1972,7 +1974,7 @@ int ci_send_message(int flags,           /* send mode */
    */
 
   clear_content = NULL;
-  free_clear_content = 0;
+  free_clear_content = false;
 
   if (WithCrypto)
   {
@@ -2005,7 +2007,7 @@ int ci_send_message(int flags,           /* send mode */
     /* This is ugly -- lack of "reporting back" from mutt_protect(). */
 
     if (clear_content && (msg->content != clear_content) && (msg->content->parts != clear_content))
-      free_clear_content = 1;
+      free_clear_content = true;
   }
 
   if (!option(OPTNOCURSES) && !(flags & SENDMAILX))
@@ -2091,7 +2093,7 @@ int ci_send_message(int flags,           /* send mode */
         /*
          * Error writing FCC, we should abort sending.
          */
-        fcc_error = 1;
+        fcc_error = true;
       }
     }
 

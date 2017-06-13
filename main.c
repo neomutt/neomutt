@@ -191,11 +191,11 @@ int main(int argc, char **argv, char **env)
   int flags = 0;
   int version = 0;
   int i;
-  int explicit_folder = 0;
-  int dump_variables = 0;
-  int hide_sensitive = 0;
-  int batch_mode = 0;
-  int edit_infile = 0;
+  bool explicit_folder = false;
+  bool dump_variables = false;
+  bool hide_sensitive = false;
+  bool batch_mode = false;
+  bool edit_infile = false;
   extern char *optarg;
   extern int optind;
   int double_dash = argc, nargc = 1;
@@ -283,7 +283,7 @@ int main(int argc, char **argv, char **env)
 
         case 'f':
           strfcpy(folder, optarg, sizeof(folder));
-          explicit_folder = 1;
+          explicit_folder = true;
           break;
 
         case 'b':
@@ -299,11 +299,11 @@ int main(int argc, char **argv, char **env)
           break;
 
         case 'D':
-          dump_variables = 1;
+          dump_variables = true;
           break;
 
         case 'B':
-          batch_mode = 1;
+          batch_mode = true;
           break;
 
         case 'd':
@@ -320,7 +320,7 @@ int main(int argc, char **argv, char **env)
           break;
 
         case 'E':
-          edit_infile = 1;
+          edit_infile = true;
           break;
 
         case 'e':
@@ -366,7 +366,7 @@ int main(int argc, char **argv, char **env)
           break;
 
         case 'S':
-          hide_sensitive = 1;
+          hide_sensitive = true;
           break;
 
         case 's':
@@ -593,7 +593,7 @@ int main(int argc, char **argv, char **env)
     else if (includeFile)
       infile = includeFile;
     else
-      edit_infile = 0;
+      edit_infile = false;
 
     if (infile || bodytext)
     {
@@ -835,7 +835,7 @@ int main(int argc, char **argv, char **env)
   {
     if (flags & MUTT_BUFFY)
     {
-      if (!mutt_buffy_check(0))
+      if (!mutt_buffy_check(false))
       {
         mutt_endwin(_("No mailbox with new mail."));
         exit(1);

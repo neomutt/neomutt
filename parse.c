@@ -193,7 +193,7 @@ static struct Parameter *parse_parameters(const char *s)
 
       if (*s == '"')
       {
-        int state_ascii = 1;
+        bool state_ascii = true;
         s++;
         for (i = 0; *s && i < sizeof(buffer) - 1; i++, s++)
         {
@@ -204,9 +204,9 @@ static struct Parameter *parse_parameters(const char *s)
             if (*s == 0x1b && i < sizeof(buffer) - 2)
             {
               if (s[1] == '(' && (s[2] == 'B' || s[2] == 'J'))
-                state_ascii = 1;
+                state_ascii = true;
               else
-                state_ascii = 0;
+                state_ascii = false;
             }
           }
           if (state_ascii && *s == '"')
@@ -590,7 +590,7 @@ struct Body *mutt_parse_multipart(FILE *fp, const char *boundary, LOFF_T end_off
   char buffer[LONG_STRING];
   struct Body *head = NULL, *last = NULL, *new = NULL;
   int i;
-  int final = 0; /* did we see the ending boundary? */
+  bool final = false; /* did we see the ending boundary? */
 
   if (!boundary)
   {
@@ -625,7 +625,7 @@ struct Body *mutt_parse_multipart(FILE *fp, const char *boundary, LOFF_T end_off
       /* Check for the end boundary */
       if (mutt_strcmp(buffer + blen + 2, "--") == 0)
       {
-        final = 1;
+        final = true;
         break; /* done parsing */
       }
       else if (buffer[2 + blen] == 0)
@@ -1697,13 +1697,13 @@ static int count_body_parts(struct Body *body, int flags)
 
 int mutt_count_body_parts(struct Context *ctx, struct Header *hdr)
 {
-  short keep_parts = 0;
+  bool keep_parts = false;
 
   if (hdr->attach_valid)
     return hdr->attach_total;
 
   if (hdr->content->parts)
-    keep_parts = 1;
+    keep_parts = true;
   else
     mutt_parse_mime_message(ctx, hdr);
 

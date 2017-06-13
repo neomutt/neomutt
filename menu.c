@@ -329,7 +329,7 @@ void menu_redraw_sidebar(struct Menu *menu)
 void menu_redraw_index(struct Menu *menu)
 {
   char buf[LONG_STRING];
-  int do_color;
+  bool do_color;
   int attr;
 
   for (int i = menu->top; i < menu->top + menu->pagelen; i++)
@@ -343,7 +343,7 @@ void menu_redraw_index(struct Menu *menu)
 
       ATTRSET(attr);
       mutt_window_move(menu->indexwin, i - menu->top + menu->offset, 0);
-      do_color = 1;
+      do_color = true;
 
       if (i == menu->current)
       {
@@ -355,7 +355,7 @@ void menu_redraw_index(struct Menu *menu)
           addch(' ');
         }
         else
-          do_color = 0;
+          do_color = false;
       }
       else if (option(OPTARROWCURSOR))
         addstr("   ");

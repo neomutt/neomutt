@@ -410,7 +410,7 @@ static int parse_color_name(const char *s, int *col, int *attr, int is_fg, struc
 
 
 static void do_uncolor(struct Buffer *buf, struct Buffer *s,
-                       struct ColorLine **cl, int *do_cache, int parse_uncolor)
+                       struct ColorLine **cl, int *do_cache, bool parse_uncolor)
 {
   struct ColorLine *tmp = NULL, *last = NULL;
 
@@ -790,7 +790,7 @@ static int fgbgattr_to_color(int fg, int bg, int attr)
  *        mono  <object> <attr> [ <regexp> ]
  */
 static int _mutt_parse_color(struct Buffer *buf, struct Buffer *s, struct Buffer *err,
-                             parser_callback_t callback, short dry_run)
+                             parser_callback_t callback, bool dry_run)
 {
   int object = 0, attr = 0, fg = 0, bg = 0, q_level = 0;
   int r = 0, match = 0;
@@ -945,10 +945,10 @@ static int _mutt_parse_color(struct Buffer *buf, struct Buffer *s, struct Buffer
 int mutt_parse_color(struct Buffer *buff, struct Buffer *s, unsigned long data,
                      struct Buffer *err)
 {
-  int dry_run = 0;
+  bool dry_run = false;
 
   if (option(OPTNOCURSES) || !has_colors())
-    dry_run = 1;
+    dry_run = true;
 
   return _mutt_parse_color(buff, s, err, parse_color_pair, dry_run);
 }
@@ -958,14 +958,14 @@ int mutt_parse_color(struct Buffer *buff, struct Buffer *s, unsigned long data,
 int mutt_parse_mono(struct Buffer *buff, struct Buffer *s, unsigned long data,
                     struct Buffer *err)
 {
-  int dry_run = 0;
+  bool dry_run = false;
 
 #ifdef HAVE_COLOR
   if (option(OPTNOCURSES) || has_colors())
-    dry_run = 1;
+    dry_run = true;
 #else
   if (option(OPTNOCURSES))
-    dry_run = 1;
+    dry_run = true;
 #endif
 
   return _mutt_parse_color(buff, s, err, parse_attr_spec, dry_run);

@@ -101,13 +101,13 @@ static void pgpring_dump_signatures(struct PgpSignature *sig)
 static void pgpring_dump_keyblock(struct PgpKeyInfo *p)
 {
   struct PgpUid *uid = NULL;
-  short first;
+  bool first;
   struct tm *tp = NULL;
   time_t t;
 
   for (; p; p = p->next)
   {
-    first = 1;
+    first = true;
 
     if (p->flags & KEYFLAG_SECRET)
     {
@@ -131,7 +131,7 @@ static void pgpring_dump_keyblock(struct PgpKeyInfo *p)
     if (p->flags & KEYFLAG_DISABLED)
       putchar('d');
 
-    for (uid = p->address; uid; uid = uid->next, first = 0)
+    for (uid = p->address; uid; uid = uid->next, first = false)
     {
       if (!first)
       {

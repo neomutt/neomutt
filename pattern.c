@@ -520,8 +520,8 @@ static bool eat_date(struct Pattern *pat, struct Buffer *s, struct Buffer *err)
 static bool eat_range(struct Pattern *pat, struct Buffer *s, struct Buffer *err)
 {
   char *tmp = NULL;
-  int do_exclusive = 0;
-  int skip_quote = 0;
+  bool do_exclusive = false;
+  bool skip_quote = false;
 
   /*
    * If simple_search is set to "~m %s", the range will have double quotes
@@ -530,10 +530,10 @@ static bool eat_range(struct Pattern *pat, struct Buffer *s, struct Buffer *err)
   if (*s->dptr == '"')
   {
     s->dptr++;
-    skip_quote = 1;
+    skip_quote = true;
   }
   if (*s->dptr == '<')
-    do_exclusive = 1;
+    do_exclusive = true;
   if ((*s->dptr != '-') && (*s->dptr != '<'))
   {
     /* range minimum */
@@ -759,7 +759,7 @@ static int eat_range_by_regexp(struct Pattern *pat, struct Buffer *s, int kind,
 
 static bool eat_message_range(struct Pattern *pat, struct Buffer *s, struct Buffer *err)
 {
-  int skip_quote = 0;
+  bool skip_quote = false;
 
   /* We need a Context for pretty much anything. */
   if (!Context)
@@ -775,7 +775,7 @@ static bool eat_message_range(struct Pattern *pat, struct Buffer *s, struct Buff
   if (*s->dptr == '"')
   {
     s->dptr++;
-    skip_quote = 1;
+    skip_quote = true;
   }
 
   for (int i_kind = 0; i_kind != RANGE_K_INVALID; ++i_kind)
@@ -1672,7 +1672,7 @@ static void quote_simple(char *tmp, size_t len, const char *p)
 void mutt_check_simple(char *s, size_t len, const char *simple)
 {
   char tmp[LONG_STRING];
-  int do_simple = 1;
+  bool do_simple = true;
   char *p = NULL;
 
   for (p = s; p && *p; p++)
@@ -1681,7 +1681,7 @@ void mutt_check_simple(char *s, size_t len, const char *simple)
       p++;
     else if (*p == '~' || *p == '=' || *p == '%')
     {
-      do_simple = 0;
+      do_simple = false;
       break;
     }
   }

@@ -775,7 +775,7 @@ void rfc2047_decode(char **pd)
 {
   const char *p = NULL, *q = NULL;
   size_t m, n;
-  int found_encoded = 0;
+  bool found_encoded = false;
   char *d0 = NULL, *d = NULL;
   const char *s = *pd;
   size_t dlen;
@@ -861,7 +861,7 @@ void rfc2047_decode(char **pd)
       /* could not decode word, fall back to displaying the raw string */
       strfcpy(d, p, dlen);
     }
-    found_encoded = 1;
+    found_encoded = true;
     s = q;
     n = mutt_strlen(d);
     dlen -= n;

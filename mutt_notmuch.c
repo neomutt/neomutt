@@ -665,7 +665,7 @@ static notmuch_database_t *do_database_open(const char *filename, int writable, 
       mutt_error(_("Waiting for notmuch DB... (%d sec)"), ct / 2);
     usleep(500000);
     ct++;
-  } while (1);
+  } while (true);
 
   if (verbose)
   {
@@ -1928,7 +1928,8 @@ int nm_nonctx_get_count(char *path, int *all, int *new)
   struct UriTag *query_items = NULL, *item = NULL;
   char *db_filename = NULL, *db_query = NULL;
   notmuch_database_t *db = NULL;
-  int rc = -1, dflt = 0;
+  int rc = -1;
+  bool dflt = false;
 
   mutt_debug(1, "nm: count\n");
 
@@ -1963,7 +1964,7 @@ int nm_nonctx_get_count(char *path, int *all, int *new)
     }
     else if (Maildir)
       db_filename = Maildir;
-    dflt = 1;
+    dflt = true;
   }
 
   /* don't be verbose about connection, as we're called from
@@ -2198,7 +2199,8 @@ static int nm_check_mailbox(struct Context *ctx, int *index_hint)
   time_t mtime = 0;
   notmuch_query_t *q = NULL;
   notmuch_messages_t *msgs = NULL;
-  int i, limit, occult = 0, new_flags = 0;
+  int i, limit, new_flags = 0;
+  bool occult = false;
 
   if (!data || (get_database_mtime(data, &mtime) != 0))
     return -1;
@@ -2282,7 +2284,7 @@ static int nm_check_mailbox(struct Context *ctx, int *index_hint)
   {
     if (!ctx->hdrs[i]->active)
     {
-      occult = 1;
+      occult = true;
       break;
     }
   }
@@ -2313,7 +2315,7 @@ static int nm_sync_mailbox(struct Context *ctx, int *index_hint)
   char msgbuf[STRING];
   struct Progress progress;
   char *uri = ctx->path;
-  int changed = 0;
+  bool changed = false;
 
   if (!data)
     return -1;
@@ -2366,9 +2368,9 @@ static int nm_sync_mailbox(struct Context *ctx, int *index_hint)
     if (h->deleted || (strcmp(old, new) != 0))
     {
       if (h->deleted && (remove_filename(data, old) == 0))
-        changed = 1;
+        changed = true;
       else if (*new &&*old && (rename_filename(data, old, new, h) == 0))
-        changed = 1;
+        changed = true;
     }
 
     FREE(&hd->oldpath);

@@ -128,7 +128,7 @@ static int mutt_sasl_cb_log(void *context, int priority, const char *message)
  *   (if necessary). */
 static int mutt_sasl_start(void)
 {
-  static unsigned char sasl_init = 0;
+  static bool sasl_init = false;
 
   static sasl_callback_t callbacks[2];
   int rc;
@@ -153,7 +153,7 @@ static int mutt_sasl_start(void)
     return SASL_FAIL;
   }
 
-  sasl_init = 1;
+  sasl_init = true;
 
   return SASL_OK;
 }

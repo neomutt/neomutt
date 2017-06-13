@@ -88,7 +88,7 @@ typedef struct TlsSockData
 
 static int tls_init(void)
 {
-  static unsigned char init_complete = 0;
+  static bool init_complete = false;
   int err;
 
   if (init_complete)
@@ -102,7 +102,7 @@ static int tls_init(void)
     return -1;
   }
 
-  init_complete = 1;
+  init_complete = true;
   return 0;
 }
 

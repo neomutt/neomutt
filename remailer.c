@@ -453,7 +453,7 @@ void mix_make_chain(struct List **chainp)
   struct List *p = NULL;
   struct MixChain *chain = NULL;
   int c_cur = 0, c_old = 0;
-  short c_redraw = 1;
+  bool c_redraw = true;
 
   struct Remailer **type2_list = NULL;
   size_t ttll = 0;
@@ -462,7 +462,7 @@ void mix_make_chain(struct List **chainp)
 
   struct Menu *menu = NULL;
   char helpstr[LONG_STRING];
-  short loop = 1;
+  bool loop = true;
   int op;
 
   int i, j;
@@ -511,7 +511,7 @@ void mix_make_chain(struct List **chainp)
     {
       mix_redraw_head(chain);
       mix_redraw_chain(type2_list, coords, chain, c_cur);
-      c_redraw = 0;
+      c_redraw = false;
     }
     else if (c_cur != c_old)
     {
@@ -536,7 +536,7 @@ void mix_make_chain(struct List **chainp)
       case OP_EXIT:
       {
         chain->cl = 0;
-        loop = 0;
+        loop = false;
         break;
       }
 
@@ -547,7 +547,7 @@ void mix_make_chain(struct List **chainp)
           chain->cl++;
           chain->ch[0] = menu->current;
           mix_screen_coordinates(type2_list, &coords, chain, c_cur);
-          c_redraw = 1;
+          c_redraw = true;
         }
 
         if (chain->cl && chain->ch[chain->cl - 1] &&
@@ -559,7 +559,7 @@ void mix_make_chain(struct List **chainp)
         }
         else
         {
-          loop = 0;
+          loop = false;
         }
         break;
       }
@@ -581,7 +581,7 @@ void mix_make_chain(struct List **chainp)
 
           chain->ch[c_cur] = menu->current;
           mix_screen_coordinates(type2_list, &coords, chain, c_cur);
-          c_redraw = 1;
+          c_redraw = true;
         }
         else
           mutt_error(_("Mixmaster chains are limited to %d elements."), MAXMIXES);
@@ -602,7 +602,7 @@ void mix_make_chain(struct List **chainp)
             c_cur--;
 
           mix_screen_coordinates(type2_list, &coords, chain, c_cur);
-          c_redraw = 1;
+          c_redraw = true;
         }
         else
         {
@@ -660,7 +660,7 @@ void mix_make_chain(struct List **chainp)
 int mix_check_message(struct Header *msg)
 {
   const char *fqdn = NULL;
-  short need_hostname = 0;
+  bool need_hostname = false;
   struct Address *p = NULL;
 
   if (msg->env->cc || msg->env->bcc)
@@ -679,7 +679,7 @@ int mix_check_message(struct Header *msg)
   {
     if (!p->group && strchr(p->mailbox, '@') == NULL)
     {
-      need_hostname = 1;
+      need_hostname = true;
       break;
     }
   }

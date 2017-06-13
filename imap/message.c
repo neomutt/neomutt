@@ -476,7 +476,7 @@ int imap_read_headers(struct ImapData *idata, unsigned int msn_begin, unsigned i
       "X-KEYWORDS X-MOZILLA-KEYS KEYWORDS X-ORIGINAL-TO";
   struct Progress progress;
   int retval = -1;
-  int evalhc = 0;
+  bool evalhc = false;
 
 #ifdef USE_HCACHE
   char buf[LONG_STRING];
@@ -538,7 +538,7 @@ int imap_read_headers(struct ImapData *idata, unsigned int msn_begin, unsigned i
       mutt_hcache_free(idata->hcache, &puidnext);
     }
     if (uid_validity && uidnext && *(unsigned int *) uid_validity == idata->uid_validity)
-      evalhc = 1;
+      evalhc = true;
     mutt_hcache_free(idata->hcache, &uid_validity);
   }
   if (evalhc)
@@ -650,7 +650,7 @@ int imap_read_headers(struct ImapData *idata, unsigned int msn_begin, unsigned i
     if (evalhc)
     {
       /* In case there are holes in the header cache. */
-      evalhc = 0;
+      evalhc = false;
       imap_generate_seqset(b, idata, msn_begin, msn_end);
     }
     else
@@ -840,7 +840,7 @@ int imap_fetch_message(struct Context *ctx, struct Message *msg, int msgno)
 
   /* Sam's weird courier server returns an OK response even when FETCH
    * fails. Thanks Sam. */
-  short fetched = 0;
+  bool fetched = false;
   int output_progress;
 
   idata = ctx->data;
@@ -946,7 +946,7 @@ int imap_fetch_message(struct Context *ctx, struct Message *msg, int msgno)
             goto bail;
           pc = idata->buf;
 
-          fetched = 1;
+          fetched = true;
         }
         /* UW-IMAP will provide a FLAGS update here if the FETCH causes a
          * change (eg from \Unseen to \Seen).

@@ -137,7 +137,8 @@ void mutt_alias_menu(char *buf, size_t buflen, struct Alias *aliases)
   struct Menu *menu = NULL;
   struct Alias **AliasTable = NULL;
   int t = -1;
-  int i, done = 0;
+  int i;
+  bool done = false;
   int op;
   char helpstr[LONG_STRING];
 
@@ -221,10 +222,10 @@ new_aliases:
         break;
       case OP_GENERIC_SELECT_ENTRY:
         t = menu->current;
-        done = 1;
+        done = true;
         break;
       case OP_EXIT:
-        done = 1;
+        done = true;
         break;
     }
   }

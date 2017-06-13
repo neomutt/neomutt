@@ -56,9 +56,9 @@ static int copy_delete_attach(struct Body *b, FILE *fpin, FILE *fpout, char *dat
 int mutt_copy_hdr(FILE *in, FILE *out, LOFF_T off_start, LOFF_T off_end,
                   int flags, const char *prefix)
 {
-  int from = 0;
-  int this_is_from;
-  int ignore = 0;
+  bool from = false;
+  bool this_is_from = false;
+  bool ignore = false;
   char buf[LONG_STRING]; /* should be long enough to get most fields in one pass */
   char *nl = NULL;
   struct List *t = NULL;
@@ -94,12 +94,12 @@ int mutt_copy_hdr(FILE *in, FILE *out, LOFF_T off_start, LOFF_T off_end,
       /* Is it the beginning of a header? */
       if (nl && buf[0] != ' ' && buf[0] != '\t')
       {
-        ignore = 1;
+        ignore = true;
         if (!from && (mutt_strncmp("From ", buf, 5) == 0))
         {
           if ((flags & CH_FROM) == 0)
             continue;
-          from = 1;
+          from = true;
         }
         else if (flags & (CH_NOQFROM) && (ascii_strncasecmp(">From ", buf, 6) == 0))
           continue;
@@ -122,7 +122,7 @@ int mutt_copy_hdr(FILE *in, FILE *out, LOFF_T off_start, LOFF_T off_end,
         if (flags & CH_UPDATE_LABEL && (ascii_strncasecmp("X-Label:", buf, 8) == 0))
           continue;
 
-        ignore = 0;
+        ignore = false;
       }
 
       if (flags & CH_UPDATE_LABEL)
@@ -197,13 +197,13 @@ int mutt_copy_hdr(FILE *in, FILE *out, LOFF_T off_start, LOFF_T off_end,
         this_one = NULL;
       }
 
-      ignore = 1;
-      this_is_from = 0;
+      ignore = true;
+      this_is_from = false;
       if (!from && (mutt_strncmp("From ", buf, 5) == 0))
       {
         if ((flags & CH_FROM) == 0)
           continue;
-        this_is_from = from = 1;
+        this_is_from = from = true;
       }
       else if (buf[0] == '\n' || (buf[0] == '\r' && buf[1] == '\n'))
         break; /* end of header */
@@ -246,7 +246,7 @@ int mutt_copy_hdr(FILE *in, FILE *out, LOFF_T off_start, LOFF_T off_end,
         }
       }
 
-      ignore = 0;
+      ignore = false;
     } /* If beginning of header */
 
     if (!ignore)
@@ -921,7 +921,8 @@ static void format_address_header(char **h, struct Address *a)
 static int address_header_decode(char **h)
 {
   char *s = *h;
-  int l, rp = 0;
+  int l;
+  bool rp = false;
 
   struct Address *a = NULL;
   struct Address *cur = NULL;
@@ -933,7 +934,7 @@ static int address_header_decode(char **h)
       if (ascii_strncasecmp(s, "return-path:", 12) == 0)
       {
         l = 12;
-        rp = 1;
+        rp = true;
         break;
       }
       else if (ascii_strncasecmp(s, "reply-to:", 9) == 0)

@@ -266,7 +266,7 @@ static int pgp_check_decryption_okay(FILE *fpin)
 static void pgp_copy_clearsigned(FILE *fpin, struct State *s, char *charset)
 {
   char buf[HUGE_STRING];
-  short complete, armor_header;
+  bool complete, armor_header;
 
   FGETCONV *fc = NULL;
 
@@ -278,8 +278,8 @@ static void pgp_copy_clearsigned(FILE *fpin, struct State *s, char *charset)
    */
   fc = fgetconv_open(fpin, charset, Charset, MUTT_ICONV_HOOK_FROM);
 
-  for (complete = 1, armor_header = 1; fgetconvs(buf, sizeof(buf), fc) != NULL;
-       complete = strchr(buf, '\n') != NULL)
+  for (complete = true, armor_header = true; fgetconvs(buf, sizeof(buf), fc) != NULL;
+       complete = (strchr(buf, '\n') != NULL))
   {
     if (!complete)
     {
@@ -295,7 +295,7 @@ static void pgp_copy_clearsigned(FILE *fpin, struct State *s, char *charset)
     {
       char *p = mutt_skip_whitespace(buf);
       if (*p == '\0')
-        armor_header = 0;
+        armor_header = false;
       continue;
     }
 
@@ -314,9 +314,11 @@ static void pgp_copy_clearsigned(FILE *fpin, struct State *s, char *charset)
 /* Support for the Application/PGP Content Type. */
 int pgp_application_pgp_handler(struct Body *m, struct State *s)
 {
-  int could_not_decrypt = 0;
-  int needpass = -1, pgp_keyblock = 0;
-  int clearsign = 0, rv, rc;
+  bool could_not_decrypt = false;
+  int needpass = -1;
+  bool pgp_keyblock = false;
+  bool clearsign = false;
+  int rv, rc;
   int c = 1; /* silence GCC warning */
   long bytes;
   LOFF_T last_pos, offset;
@@ -327,8 +329,8 @@ int pgp_application_pgp_handler(struct Body *m, struct State *s)
   FILE *tmpfp = NULL;
   pid_t thepid;
 
-  short maybe_goodsig = 1;
-  short have_any_sigs = 0;
+  bool maybe_goodsig = true;
+  bool have_any_sigs = false;
 
   char *gpgcharset = NULL;
   char body_charset[STRING];
@@ -350,19 +352,19 @@ int pgp_application_pgp_handler(struct Body *m, struct State *s)
 
     if (mutt_strncmp("-----BEGIN PGP ", buf, 15) == 0)
     {
-      clearsign = 0;
+      clearsign = false;
 
       if (mutt_strcmp("MESSAGE-----\n", buf + 15) == 0)
         needpass = 1;
       else if (mutt_strcmp("SIGNED MESSAGE-----\n", buf + 15) == 0)
       {
-        clearsign = 1;
+        clearsign = true;
         needpass = 0;
       }
       else if (mutt_strcmp("PUBLIC KEY BLOCK-----\n", buf + 15) == 0)
       {
         needpass = 0;
-        pgp_keyblock = 1;
+        pgp_keyblock = true;
       }
       else
       {
@@ -429,7 +431,7 @@ int pgp_application_pgp_handler(struct Body *m, struct State *s)
                                         -1, tmpfname, needpass)) == -1)
         {
           safe_fclose(&pgpout);
-          maybe_goodsig = 0;
+          maybe_goodsig = false;
           pgpin = NULL;
           pgperr = NULL;
           state_attach_puts(
@@ -460,7 +462,7 @@ int pgp_application_pgp_handler(struct Body *m, struct State *s)
           if (s->flags & MUTT_DISPLAY)
           {
             if (rc == 0)
-              have_any_sigs = 1;
+              have_any_sigs = true;
             /*
              * Sig is bad if
              * gpg_good_sign-pattern did not match || pgp_decode_command returned not 0
@@ -468,7 +470,7 @@ int pgp_application_pgp_handler(struct Body *m, struct State *s)
              *  gpg_good_sign="" && pgp_decode_command returned 0
              */
             if (rc == -1 || rv)
-              maybe_goodsig = 0;
+              maybe_goodsig = false;
 
             state_attach_puts(_("[-- End of PGP output --]\n\n"), s);
           }
@@ -486,7 +488,7 @@ int pgp_application_pgp_handler(struct Body *m, struct State *s)
         }
         if (!clearsign && (!pgpout || c == EOF))
         {
-          could_not_decrypt = 1;
+          could_not_decrypt = true;
           pgp_void_passphrase();
         }
 
@@ -926,7 +928,7 @@ int pgp_decrypt_mime(FILE *fpin, FILE **fpout, struct Body *b, struct Body **cur
   char tempfile[_POSIX_PATH_MAX];
   struct State s;
   struct Body *p = b;
-  int need_decode = 0;
+  bool need_decode = false;
   int saved_type;
   LOFF_T saved_offset;
   size_t saved_length;
@@ -938,7 +940,7 @@ int pgp_decrypt_mime(FILE *fpin, FILE **fpout, struct Body *b, struct Body **cur
   else if (mutt_is_malformed_multipart_pgp_encrypted(b))
   {
     b = b->parts->next->next;
-    need_decode = 1;
+    need_decode = true;
   }
   else
     return -1;
@@ -1076,8 +1078,8 @@ struct Body *pgp_sign_message(struct Body *a)
   char buffer[LONG_STRING];
   char sigfile[_POSIX_PATH_MAX], signedfile[_POSIX_PATH_MAX];
   FILE *pgpin = NULL, *pgpout = NULL, *pgperr = NULL, *fp = NULL, *sfp = NULL;
-  int err = 0;
-  int empty = 1;
+  bool err = false;
+  bool empty = true;
   pid_t thepid;
 
   convert_to_7bit(a); /* Signed data _must_ be in 7-bit format. */
@@ -1128,19 +1130,19 @@ struct Body *pgp_sign_message(struct Body *a)
       fputs("-----END PGP SIGNATURE-----\n", fp);
     else
       fputs(buffer, fp);
-    empty = 0; /* got some output, so we're ok */
+    empty = false; /* got some output, so we're ok */
   }
 
   /* check for errors from PGP */
-  err = 0;
+  err = false;
   while (fgets(buffer, sizeof(buffer) - 1, pgperr) != NULL)
   {
-    err = 1;
+    err = true;
     fputs(buffer, stdout);
   }
 
   if (mutt_wait_filter(thepid) && option(OPTPGPCHECKEXIT))
-    empty = 1;
+    empty = true;
 
   safe_fclose(&pgperr);
   safe_fclose(&pgpout);
@@ -1207,13 +1209,13 @@ char *pgp_find_keys(struct Address *adrlist, int oppenc_mode)
   struct PgpKeyInfo *k_info = NULL;
   char buf[LONG_STRING];
   int r;
-  int key_selected;
+  bool key_selected;
 
   const char *fqdn = mutt_fqdn(1);
 
   for (p = adrlist; p; p = p->next)
   {
-    key_selected = 0;
+    key_selected = false;
     crypt_hook_list = crypt_hook = mutt_crypt_hook(p);
     do
     {
@@ -1295,7 +1297,7 @@ char *pgp_find_keys(struct Address *adrlist, int oppenc_mode)
       sprintf(keylist + keylist_used, "%s0x%s", keylist_used ? " " : "", keyID);
       keylist_used = mutt_strlen(keylist);
 
-      key_selected = 1;
+      key_selected = true;
 
       pgp_free_key(&k_info);
       rfc822_free_address(&addr);
@@ -1451,8 +1453,8 @@ struct Body *pgp_traditional_encryptsign(struct Body *a, int flags, char *keylis
   FILE *pgpout = NULL, *pgperr = NULL, *pgpin = NULL;
   FILE *fp = NULL;
 
-  int empty = 0;
-  int err;
+  bool empty = false;
+  bool err;
 
   char buff[STRING];
 
@@ -1549,7 +1551,7 @@ struct Body *pgp_traditional_encryptsign(struct Body *a, int flags, char *keylis
   safe_fclose(&pgpin);
 
   if (mutt_wait_filter(thepid) && option(OPTPGPCHECKEXIT))
-    empty = 1;
+    empty = true;
 
   mutt_unlink(pgpinfile);
 
@@ -1563,11 +1565,11 @@ struct Body *pgp_traditional_encryptsign(struct Body *a, int flags, char *keylis
     empty = (fgetc(pgpout) == EOF);
   safe_fclose(&pgpout);
 
-  err = 0;
+  err = false;
 
   while (fgets(buff, sizeof(buff), pgperr))
   {
-    err = 1;
+    err = true;
     fputs(buff, stdout);
   }
 

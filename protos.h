@@ -259,7 +259,7 @@ void mutt_alias_delete_reverse(struct Alias *t);
 int mutt_alloc_color(int fg, int bg);
 int mutt_any_key_to_continue(const char *s);
 char *mutt_apply_replace(char *dbuf, size_t dlen, char *sbuf, struct ReplaceList *rlist);
-int mutt_buffy_check(int force);
+int mutt_buffy_check(bool force);
 int mutt_buffy_notify(void);
 int mutt_builtin_editor(const char *path, struct Header *msg, struct Header *cur);
 int mutt_can_decode(struct Body *a);
