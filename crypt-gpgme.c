@@ -4154,14 +4154,9 @@ static crypt_key_t *crypt_getkeybyaddr (ADDRESS * a, short abilities,
   ADDRESS *r, *p;
   LIST *hints = NULL;
 
-  int weak    = 0;
-  int invalid = 0;
-  int addr_match = 0;
   int multi   = 0;
   int this_key_has_strong;
   int this_key_has_addr_match;
-  int this_key_has_weak;
-  int this_key_has_invalid;
   int match;
 
   crypt_key_t *keys, *k;
@@ -4201,8 +4196,6 @@ static crypt_key_t *crypt_getkeybyaddr (ADDRESS * a, short abilities,
           continue;
         }
 
-      this_key_has_weak    = 0;	/* weak but valid match   */
-      this_key_has_invalid = 0;   /* invalid match          */
       this_key_has_strong  = 0;	/* strong and valid match */
       this_key_has_addr_match = 0;
       match                = 0;   /* any match 		  */
@@ -4216,9 +4209,8 @@ static crypt_key_t *crypt_getkeybyaddr (ADDRESS * a, short abilities,
           {
             match = 1;
 
-            if (validity & CRYPT_KV_VALID)
-            {
-              if (validity & CRYPT_KV_ADDR)
+            if ((validity & CRYPT_KV_VALID) &&
+                (validity & CRYPT_KV_ADDR))
               {
                 if (validity & CRYPT_KV_STRONGID)
                 {
@@ -4230,11 +4222,6 @@ static crypt_key_t *crypt_getkeybyaddr (ADDRESS * a, short abilities,
                 else
                   this_key_has_addr_match = 1;
               }
-              else
-                this_key_has_weak = 1;
-            }
-            else
-              this_key_has_invalid = 1;
           }
         }
       rfc822_free_address (&r);
@@ -4249,14 +4236,7 @@ static crypt_key_t *crypt_getkeybyaddr (ADDRESS * a, short abilities,
           if (this_key_has_strong)
             the_strong_valid_key = tmp;
           else if (this_key_has_addr_match)
-          {
-            addr_match = 1;
             a_valid_addrmatch_key = tmp;
-          }
-          else if (this_key_has_invalid)
-            invalid = 1;
-          else if (this_key_has_weak)
-            weak = 1;
         }
     }
   
@@ -4273,13 +4253,10 @@ static crypt_key_t *crypt_getkeybyaddr (ADDRESS * a, short abilities,
           else
             k = NULL;
         }
-      else if (the_strong_valid_key && !multi && !weak && !addr_match
-          && !(invalid && option (OPTPGPSHOWUNUSABLE)))
+      else if (the_strong_valid_key && !multi)
         {	
           /* 
-           * There was precisely one strong match on a valid ID, there
-           * were no valid keys with weak matches, and we aren't
-           * interested in seeing invalid keys.
+           * There was precisely one strong match on a valid ID.
            * 
            * Proceed without asking the user.
            */
