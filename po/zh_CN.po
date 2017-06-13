@@ -7,6 +7,7 @@
 # Weichung Chau <weichung@mail.cynix.com.tw>, 2001
 # Anthony Wong <ypwong@debian.org>, 2001
 # Deng Xiyue <manphiz@gmail.com>, 2009
+# Bo Yu <tsu.yubo@gmail.com>, 2017
 #
 msgid ""
 msgstr ""
@@ -14,7 +15,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
 "POT-Creation-Date: 2017-06-09 10:47+0100\n"
 "PO-Revision-Date: 2009-06-28 14:30+0800\n"
-"Last-Translator: Deng Xiyue <manphiz@gmail.com>\n"
+"Last-Translator: Bo Yu <tsu.yubo@gmail.com>\n"
 "Language-Team: i18n-zh <i18n-zh@googlegroups.com>\n"
 "Language: zh_CN\n"
 "MIME-Version: 1.0\n"
@@ -217,7 +218,7 @@ msgstr "改变目录"
 
 #: browser.c:72
 msgid "Goto"
-msgstr ""
+msgstr "转到"
 
 #: browser.c:73 browser.c:85
 msgid "Mask"
@@ -225,7 +226,7 @@ msgstr "掩码"
 
 #: browser.c:81
 msgid "List"
-msgstr ""
+msgstr "列表"
 
 #: browser.c:82
 #, fuzzy
@@ -239,7 +240,7 @@ msgstr "已取消订阅 %s..."
 
 #: browser.c:84 curs_main.c:815
 msgid "Catchup"
-msgstr ""
+msgstr "捕捉"
 
 #: browser.c:691 browser.c:1641
 #, c-format
@@ -254,7 +255,7 @@ msgstr "已订阅 %s..."
 #: browser.c:943
 #, c-format
 msgid "Newsgroups on server [%s]"
-msgstr ""
+msgstr "新闻组服务器[%s]"
 
 #: browser.c:952
 #, c-format
@@ -679,12 +680,12 @@ msgstr "签名"
 
 #: compose.c:180
 msgid "None"
-msgstr ""
+msgstr "无操作"
 
 #: compose.c:189
 #, fuzzy
 msgid " (inline PGP)"
-msgstr " (嵌入)"
+msgstr " (嵌入PGP)"
 
 #: compose.c:191
 msgid " (PGP/MIME)"
@@ -697,7 +698,7 @@ msgstr " (PGP/MIME)"
 
 #: compose.c:198
 msgid " (OppEnc mode)"
-msgstr ""
+msgstr "OppEnc 模式"
 
 #: compose.c:208 compose.c:217
 #, fuzzy
@@ -719,7 +720,7 @@ msgstr ""
 
 #: compose.c:247
 msgid "<no chain defined>"
-msgstr ""
+msgstr "没有列表被定义"
 
 #: compose.c:282
 #, c-format
@@ -831,7 +832,7 @@ msgstr "内容类型(Content-Type)的格式是 base/sub"
 #: compose.c:1324
 #, c-format
 msgid "Unknown Content-Type %s"
-msgstr "不明的内容类型(Content-Type)%s"
+msgstr "未知的内容类型(Content-Type)%s"
 
 #: compose.c:1336
 #, c-format
@@ -874,21 +875,21 @@ msgstr "无法锁住信箱！"
 #: compress.c:478 compress.c:550 compress.c:705
 #, c-format
 msgid "Decompressing %s"
-msgstr ""
+msgstr "解压中...%s"
 
 #: compress.c:487
 msgid "Can't identify the contents of the compressed file"
-msgstr ""
+msgstr "不能鉴别这个被压缩文件的内容"
 
 #: compress.c:494 compress.c:571
 #, c-format
 msgid "Can't find mailbox ops for mailbox type %d"
-msgstr ""
+msgstr "没有找到对应信箱类型的操作 %d"
 
 #: compress.c:532 compress.c:824
 #, c-format
 msgid "Cannot append without an append-hook or close-hook : %s"
-msgstr ""
+msgstr "没有append-hook或者close-hook不能够追加 : %s"
 
 #: compress.c:553
 #, fuzzy, c-format
@@ -897,7 +898,7 @@ msgstr "预连接命令失败。"
 
 #: compress.c:564
 msgid "Unsupported mailbox type for appending."
-msgstr ""
+msgstr "不支持的信箱类型追加操作"
 
 #: compress.c:641
 #, fuzzy, c-format
@@ -916,16 +917,16 @@ msgstr "错误。保留临时文件：%s"
 
 #: compress.c:873
 msgid "Can't sync a compressed file without a close-hook"
-msgstr ""
+msgstr "没有一个close-hook不能够同步一件压缩文件"
 
 #: compress.c:895
 #, fuzzy, c-format
 msgid "Compressing %s"
-msgstr "正在复制到 %s..."
+msgstr "正在压缩中 %s..."
 
 #: copy.c:677
 msgid "No decryption engine available for message"
-msgstr ""
+msgstr "对于信件没有解密引擎"
 
 #: ncrypt/crypt.c:63
 #, c-format
@@ -948,7 +949,7 @@ msgstr "无法将信件嵌入发送。返回使用 PGP/MIME 吗？"
 
 #: ncrypt/crypt.c:144
 msgid "Mail not sent: inline PGP can't be used with attachments."
-msgstr ""
+msgstr "信件无法发送：内置PGP不能用于附件"
 
 #: ncrypt/crypt.c:152 ncrypt/cryptglue.c:115 ncrypt/pgpkey.c:560
 #: ncrypt/pgpkey.c:741
@@ -965,11 +966,11 @@ msgstr "信件没有寄出。"
 
 #: ncrypt/crypt.c:236
 msgid "Encrypt message to S/MIME Default Key also?"
-msgstr ""
+msgstr "将信件加密到S/MIME默认密匙？"
 
 #: ncrypt/crypt.c:271
 msgid "Encrypt message to PGP Default Key also?"
-msgstr ""
+msgstr "将信件加密到PGP默认密匙？"
 
 #: ncrypt/crypt.c:509
 msgid "S/MIME messages with no hints on content are unsupported."
@@ -1132,7 +1133,7 @@ msgstr "群组"
 
 #: curs_main.c:813 pager.c:1639
 msgid "Post"
-msgstr ""
+msgstr "发表"
 
 #: curs_main.c:814 pager.c:1640
 #, fuzzy
@@ -1162,11 +1163,11 @@ msgstr "无事可做。"
 #: curs_main.c:1218
 #, fuzzy
 msgid "Enter Message-Id: "
-msgstr "请输入密钥 ID："
+msgstr "请输入信件 ID："
 
 #: curs_main.c:1227
 msgid "Article has no parent reference."
-msgstr ""
+msgstr "文本没有父索引"
 
 #: curs_main.c:1250
 #, fuzzy
@@ -1181,11 +1182,11 @@ msgstr "正在服务器上执行信件删除..."
 #: curs_main.c:1266
 #, c-format
 msgid "Article %s not found on the server."
-msgstr ""
+msgstr "文本 %s 没有在服务器上找到"
 
 #: curs_main.c:1285
 msgid "No Message-Id. Unable to perform operation."
-msgstr ""
+msgstr "没有信件 Id。不能够执行操作"
 
 #: curs_main.c:1289 imap/message.c:641 nntp.c:1240 pop.c:291
 msgid "Fetching message headers..."
@@ -1274,38 +1275,38 @@ msgstr "没有标题，正在中止。"
 
 #: curs_main.c:1801
 msgid "Failed to read thread, aborting."
-msgstr ""
+msgstr "不能够读取thread，中止"
 
 #: curs_main.c:1840
 #, fuzzy
 msgid "No label specified, aborting."
-msgstr "没有标题，正在中止。"
+msgstr "没有标签，正在中止。"
 
 #: curs_main.c:1851
 #, c-format
 msgid "Update labels..."
-msgstr ""
+msgstr "更新标签中..."
 
 #: curs_main.c:1876
 msgid "Failed to modify labels, aborting."
-msgstr ""
+msgstr "不能够修改标签。正在中止"
 
 #: curs_main.c:1910
 #, fuzzy
 msgid "No query, aborting."
-msgstr "没有标题，正在中止。"
+msgstr "没有查询，正在中止。"
 
 #: curs_main.c:1914 curs_main.c:1934 curs_main.c:1953
 msgid "Failed to create query, aborting."
-msgstr ""
+msgstr "不能查，正在中止"
 
 #: curs_main.c:1923 curs_main.c:1942
 msgid "Windowed queries disabled."
-msgstr ""
+msgstr "禁用窗口查询"
 
 #: curs_main.c:1928 curs_main.c:1947
 msgid "No notmuch vfolder currently loaded."
-msgstr ""
+msgstr "现在没有加载notmuch vfolder"
 
 #: curs_main.c:1985
 msgid "Open mailbox in read-only mode"
@@ -1331,7 +1332,7 @@ msgstr "用只读模式打开信箱"
 
 #: curs_main.c:2045
 msgid "Open newsgroup"
-msgstr ""
+msgstr "打开新闻组"
 
 #: curs_main.c:2145
 #, fuzzy
@@ -1341,7 +1342,7 @@ msgstr "不保存便退出 Mutt 吗？"
 #: curs_main.c:2161
 #, fuzzy
 msgid "Cannot break thread"
-msgstr "链接线索"
+msgstr "不能中断线索"
 
 #: curs_main.c:2164 curs_main.c:2201 curs_main.c:2656 curs_main.c:2688
 #: flags.c:339 thread.c:1043 thread.c:1099 thread.c:1165
@@ -1354,13 +1355,13 @@ msgstr "线索有误"
 
 #: curs_main.c:2188
 msgid "Thread cannot be broken, message is not part of a thread"
-msgstr ""
+msgstr "线索不能够打破，信件不是该线索的一部分"
 
 #. L10N: CHECK_ACL
 #: curs_main.c:2198
 #, fuzzy
 msgid "Cannot link threads"
-msgstr "链接线索"
+msgstr "不能够链接线索"
 
 #: curs_main.c:2203
 msgid "No Message-ID: header available to link thread"
@@ -1496,14 +1497,14 @@ msgstr "信件被延迟寄出。"
 #: curs_main.c:3028
 #, fuzzy, c-format
 msgid "Message bound to %s."
-msgstr "信件已回退。"
+msgstr "信件已回退 %s"
 
 #. L10N: This error is printed if <mark-message> cannot find a
 #. Message-ID for the currently selected message in the index.
 #: curs_main.c:3036
 #, fuzzy
 msgid "No message ID to macro."
-msgstr "文件夹中没有信件。"
+msgstr "没有信件Id对应的宏。"
 
 #: curs_main.c:3079 pager.c:2861 recvattach.c:1244
 msgid "Reply by mail as poster prefers?"
@@ -1511,13 +1512,13 @@ msgstr ""
 
 #: curs_main.c:3082 pager.c:2830 pager.c:2840 pager.c:2864
 msgid "Posting to this group not allowed, may be moderated. Continue?"
-msgstr ""
+msgstr "不能够在这个组里发文，也许可以修改，继续？"
 
 #. L10N: CHECK_ACL
 #: curs_main.c:3143 pager.c:3019
 #, fuzzy
 msgid "Cannot undelete message"
-msgstr "反删除信件"
+msgstr "不能反删除信件"
 
 #: edit.c:48
 #, fuzzy
@@ -1653,11 +1654,11 @@ msgstr "清除标记"
 #: handler.c:90
 #, c-format
 msgid "[-- Alternative Type #%d: "
-msgstr ""
+msgstr "[-- 输入另一种 #%d: "
 
 #: handler.c:92
 msgid "[-- Type: "
-msgstr ""
+msgstr "[-- 输入："
 
 #: handler.c:93
 #, fuzzy, c-format
@@ -1829,15 +1830,15 @@ msgstr "错误的历史文件格式 (第 %d 行)"
 
 #: hook.c:112
 msgid "current mailbox shortcut '^' is unset"
-msgstr ""
+msgstr "目前信箱快捷键 '^' 没有设置"
 
 #: hook.c:123
 msgid "mailbox shortcut expanded to empty regexp"
-msgstr ""
+msgstr "信箱快捷键扩展到空白的regexp"
 
 #: hook.c:136
 msgid "badly formatted command string"
-msgstr ""
+msgstr "坏的格式化命令字符串"
 
 #: hook.c:311
 msgid "unhook: Can't do unhook * from within a hook."
@@ -2367,7 +2368,7 @@ msgstr "空的键值序列"
 #: keymap.c:1007
 #, c-format
 msgid "Function '%s' not available for menu '%s'"
-msgstr ""
+msgstr "函数 '%s' 不可用对于菜单 '%s'"
 
 #: keymap.c:1071
 msgid "bind: too many arguments"
@@ -2463,7 +2464,7 @@ msgstr "列出有新邮件的信箱"
 
 #: keymap_alldefs.h:23
 msgid "mark all articles in newsgroup as read"
-msgstr ""
+msgstr "标记所有在新闻组的帖子已读"
 
 #: keymap_alldefs.h:24
 msgid "change directories"
@@ -2673,7 +2674,7 @@ msgstr "显示信件"
 
 #: keymap_alldefs.h:74
 msgid "add, change, or delete a message's label"
-msgstr ""
+msgstr "增加，改变，或者删除一个信件的标签"
 
 #: keymap_alldefs.h:75
 msgid "edit the raw message"
@@ -2798,7 +2799,7 @@ msgstr "发送后续信件到 %s%s？"
 
 #: keymap_alldefs.h:105
 msgid "forward to newsgroup"
-msgstr ""
+msgstr "转发到新闻组"
 
 #: keymap_alldefs.h:106
 msgid "forward a message with comments"
@@ -2853,7 +2854,7 @@ msgstr "回覆给指定的邮件列表"
 
 #: keymap_alldefs.h:118
 msgid "load list of all newsgroups from NNTP server"
-msgstr ""
+msgstr "加载所有的新闻组列表从NNTP服务器"
 
 #: keymap_alldefs.h:119
 msgid "execute a macro"
@@ -2899,7 +2900,7 @@ msgstr "强制从 IMAP 服务器取回邮件"
 
 #: keymap_alldefs.h:129
 msgid "logout from all IMAP servers"
-msgstr ""
+msgstr "从所有的IMAP服务器中退出"
 
 #: keymap_alldefs.h:130
 msgid "retrieve mail from POP server"
@@ -2996,7 +2997,7 @@ msgstr "标记符合某个模式的信件"
 
 #: keymap_alldefs.h:153
 msgid "delete from mutt, don't touch on disk"
-msgstr ""
+msgstr "从mutt中删除，不在磁盘上创建"
 
 #: keymap_alldefs.h:154
 msgid "undelete messages matching a pattern"
@@ -3070,11 +3071,11 @@ msgstr "打印当前条目"
 
 #: keymap_alldefs.h:171
 msgid "really delete the current entry, bypassing the trash folder"
-msgstr ""
+msgstr "真的删除了目前的项，没有归到回收站"
 
 #: keymap_alldefs.h:172
 msgid "really delete the current thread, bypassing the trash folder"
-msgstr ""
+msgstr "真的产出目前的线索， 没有归到回收站"
 
 #: keymap_alldefs.h:173
 msgid "query external program for addresses"
@@ -3201,7 +3202,7 @@ msgstr "移到页首"
 
 #: keymap_alldefs.h:203
 msgid "mark all articles in newsgroup as unread"
-msgstr ""
+msgstr "标记所有新闻组的帖子为未读"
 
 #: keymap_alldefs.h:204
 msgid "undelete the current entry"
@@ -3255,7 +3256,7 @@ msgstr "折叠/展开 所有线索"
 
 #: keymap_alldefs.h:216
 msgid "move the highlight to next mailbox"
-msgstr ""
+msgstr "移动光标到下一个信箱"
 
 #: keymap_alldefs.h:217
 #, fuzzy
@@ -3294,7 +3295,7 @@ msgstr "切换是否浏览信箱或所有文件"
 
 #: keymap_alldefs.h:224
 msgid "make the sidebar (in)visible"
-msgstr ""
+msgstr "使侧边栏(不)可见"
 
 #: keymap_alldefs.h:225
 #, fuzzy
@@ -3303,19 +3304,19 @@ msgstr "打开另一个文件夹"
 
 #: keymap_alldefs.h:226
 msgid "generate virtual folder from query"
-msgstr ""
+msgstr "产生虚拟文件夹从查询"
 
 #: keymap_alldefs.h:227
 msgid "shifts virtual folder time window forwards"
-msgstr ""
+msgstr "转发虚拟文件时间窗口"
 
 #: keymap_alldefs.h:228
 msgid "shifts virtual folder time window backwards"
-msgstr ""
+msgstr "向后移动虚拟文件夹时间窗口"
 
 #: keymap_alldefs.h:229
 msgid "modify (notmuch) tags"
-msgstr ""
+msgstr "修改 (notmuch) 标签"
 
 #: keymap_alldefs.h:230
 #, fuzzy
@@ -3324,7 +3325,7 @@ msgstr "您已经在第一封信了。"
 
 #: keymap_alldefs.h:231
 msgid "read entire thread of the current message"
-msgstr ""
+msgstr "读目前信件的整个线索"
 
 #: keymap_alldefs.h:232
 #, fuzzy
@@ -3554,7 +3555,7 @@ msgstr "没有指定接收者。\n"
 
 #: main.c:607
 msgid "Cannot use -E flag with stdin\n"
-msgstr ""
+msgstr "不能够使用 -E 选项在stdin情况下\n"
 
 #: main.c:759
 #, c-format
@@ -3707,17 +3708,17 @@ msgstr "maildir_commit_message(): 无法给文件设置时间"
 #: muttlib.c:859
 #, c-format
 msgid "mutt_randbuf len=%zu"
-msgstr ""
+msgstr "mutt_randbuf len=%zu"
 
 #: muttlib.c:879
 #, c-format
 msgid "open /dev/urandom: %s"
-msgstr ""
+msgstr "打开 /dev/urandom: %s"
 
 #: muttlib.c:886
 #, c-format
 msgid "read /dev/urandom: %s"
-msgstr ""
+msgstr "读取 /dev/urandom: %s"
 
 #. L10N:
 #. Means "The path you specified as the destination file is a directory."
@@ -3771,7 +3772,7 @@ msgstr "%s 不是信箱！"
 #: mutt_lua.c:396
 #, c-format
 msgid "%s: %s"
-msgstr ""
+msgstr "%s: %s"
 
 #: mutt_notmuch.c:370 mutt_notmuch.c:1809 mutt_notmuch.c:1818
 #: mutt_notmuch.c:1829 mutt_notmuch.c:1937
@@ -3782,13 +3783,13 @@ msgstr "解析 mailto: 链接失败\n"
 #: mutt_notmuch.c:424
 #, c-format
 msgid "failed to parse notmuch query type: %s"
-msgstr ""
+msgstr "无法解析 notmuch 查询类型: %s"
 
 #: mutt_notmuch.c:524
 msgid ""
 "Invalid nm_query_window_timebase value (valid values are: hour, day, week, "
 "month or year)."
-msgstr ""
+msgstr "非法的 nm_query_window_timebase 值(合法值是：小时，天，周，月或者年)"
 
 #: mutt_notmuch.c:578
 #, fuzzy, c-format
@@ -3803,12 +3804,12 @@ msgstr "正在等待 fcntl 加锁... %d"
 #: mutt_notmuch.c:673
 #, c-format
 msgid "Cannot open notmuch database: %s: %s"
-msgstr ""
+msgstr "不能够打开 notmuch 数据库: %s: %s"
 
 #: mutt_notmuch.c:674
 #, fuzzy
 msgid "unknown reason"
-msgstr "未知错误"
+msgstr "未知原因"
 
 #: mutt_notmuch.c:1065
 #, fuzzy, c-format
@@ -3992,7 +3993,7 @@ msgstr "SSL 证书检查 (检查链中有 %d 个证书，共 %d 个)"
 #.
 #: mutt_ssl.c:848
 msgid "roas"
-msgstr ""
+msgstr "roas"
 
 #: mutt_ssl.c:852
 #, fuzzy
@@ -4035,7 +4036,7 @@ msgstr "证书主机检查失败：%s"
 #. * the correct certificate if it supports multiple hosts.
 #: mutt_ssl.c:1085 mutt_ssl_gnutls.c:1070
 msgid "Warning: unable to set TLS SNI host name"
-msgstr ""
+msgstr "警告： 无法设置 TLS SNI 主机名"
 
 #: mutt_ssl.c:1096
 msgid "I/O error"
@@ -4056,7 +4057,7 @@ msgstr "错误：无法创建 OpenSSL 子进程！"
 
 #: mutt_ssl.c:1187 mutt_ssl.c:1281
 msgid "Warning: error enabling ssl_verify_partial_chains"
-msgstr ""
+msgstr "警告： 错误导致ssl_verify_partial_chains"
 
 #: mutt_ssl_gnutls.c:116 mutt_ssl_gnutls.c:143
 msgid "Error: no TLS socket open"
@@ -4121,7 +4122,7 @@ msgstr "所有用于 TLS/SSL 连接的可用协议已禁用"
 
 #: mutt_ssl_gnutls.c:1006
 msgid "Explicit ciphersuite selection via $ssl_ciphers not supported"
-msgstr ""
+msgstr "明确的密码套件通过$ssl_ciphers 是不支持的"
 
 #: mutt_ssl_gnutls.c:1122
 #, c-format
@@ -4183,7 +4184,7 @@ msgstr "无法添加到文件夹末尾：%s"
 
 #: mx.c:855
 msgid "Mark all articles read?"
-msgstr ""
+msgstr "标记所有的帖子已经阅读？"
 
 #: mx.c:892
 #, c-format
@@ -4265,7 +4266,7 @@ msgstr "复卷数据对象时出错：%s\n"
 
 #: ncrypt/crypt_gpgme.c:537
 msgid "[tempfile]"
-msgstr ""
+msgstr "[临时文件]"
 
 #: ncrypt/crypt_gpgme.c:543 ncrypt/crypt_gpgme.c:595
 #, c-format
@@ -4314,7 +4315,7 @@ msgstr "签署数据时出错：%s\n"
 
 #: ncrypt/crypt_gpgme.c:925
 msgid "$pgp_sign_as unset and no default key specified in ~/.gnupg/gpg.conf"
-msgstr ""
+msgstr "$pgp_sign_as 没有设置并且没有默认的特别钥匙在 ~/.gnupg/pgp.conf"
 
 #: ncrypt/crypt_gpgme.c:1125
 msgid "Warning: One of the keys has been revoked\n"
@@ -4390,7 +4391,7 @@ msgstr "亦即："
 
 #: ncrypt/crypt_gpgme.c:1359
 msgid "KeyID "
-msgstr ""
+msgstr "KeyID"
 
 #: ncrypt/crypt_gpgme.c:1368 ncrypt/crypt_gpgme.c:1373
 msgid "created: "
@@ -4806,11 +4807,11 @@ msgstr "PGP 钥匙 %s。"
 
 #: ncrypt/crypt_gpgme.c:4533
 msgid "GPGME: OpenPGP protocol not available"
-msgstr ""
+msgstr "GPGME: OpenPGP协议不可用"
 
 #: ncrypt/crypt_gpgme.c:4541
 msgid "GPGME: CMS protocol not available"
-msgstr ""
+msgstr "GPGME: CMS协议不可用"
 
 #: ncrypt/crypt_gpgme.c:4580
 #, fuzzy
@@ -5280,7 +5281,7 @@ msgstr "无事可做。"
 
 #: nntp.c:652
 msgid "Posting is NOT ok."
-msgstr ""
+msgstr "发帖不成功"
 
 #: nntp.c:774
 #, fuzzy, c-format
@@ -5300,17 +5301,17 @@ msgstr "%s 是无效的 POP 路径"
 #: nntp.c:1432
 #, c-format
 msgid "Newsgroup %s not found on the server."
-msgstr ""
+msgstr "新闻组 %s 没有在服务器上找到"
 
 #: nntp.c:1453
 #, c-format
 msgid "Newsgroup %s has been removed from the server."
-msgstr ""
+msgstr "新闻组 %s 已经从服务器上被移除"
 
 #: nntp.c:1606
 #, c-format
 msgid "Article %d not found on the server."
-msgstr ""
+msgstr "帖子 %d 没有在服务器上找到"
 
 #: nntp.c:1696 nntp.c:1726
 #, fuzzy, c-format
@@ -5339,7 +5340,7 @@ msgstr "正在检查新邮件..."
 #: nntp.c:2380
 msgid ""
 "Unable to find child articles because server does not support XPAT command."
-msgstr ""
+msgstr "不能够找到子贴因为服务器不支持XPAT命令"
 
 #: pager.c:1627
 msgid "PrevPg"
@@ -5412,7 +5413,7 @@ msgstr "没有尚未读取的信件"
 
 #: pattern.c:767
 msgid "No Context"
-msgstr ""
+msgstr "没有内容"
 
 #: pattern.c:928
 #, fuzzy
@@ -5788,7 +5789,7 @@ msgstr "无法解码所有已标记的附件。通过 MIME 封装其它的吗？
 
 #: remailer.c:150
 msgid "<random>"
-msgstr ""
+msgstr "<随机>"
 
 #: remailer.c:445
 msgid "Append"
@@ -6025,7 +6026,7 @@ msgstr "无法打开 %s"
 
 #: sendlib.c:2412
 msgid "$sendmail must be set in order to send mail."
-msgstr ""
+msgstr "$sendmail 必须配置为了发送邮件"
 
 #: sendlib.c:2512
 #, c-format

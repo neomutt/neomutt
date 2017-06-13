@@ -1,6 +1,10 @@
-# French messages for Mutt.
-# Copyright (C) 1998-2016 Marc Baudoin <babafou@babafou.eu.org>, Vincent Lefevre <vincent@vinc17.net>
-# Marc Baudoin <babafou@babafou.eu.org>, Vincent Lefevre <vincent@vinc17.net>, 1998-2016
+# French messages for NeoMutt
+#
+# Copyright (c) 2016 NeoMutt project.
+# This file is distributed under the same license as the NeoMutt package.
+#
+# Marc Baudoin <babafou@babafou.eu.org>, 1998-2016
+# Vincent Lefevre <vincent@vinc17.net>, 1998-2017
 #
 # Note [VL]. In case you need it, you may find the latest temporary version
 #            at this URL:   https://www.vinc17.net/mutt/fr.po

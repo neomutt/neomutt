@@ -1,9 +1,9 @@
-# English (British) messages for NeoMutt.
+# English (British) messages for NeoMutt
 #
 # Copyright (c) 2016 NeoMutt project.
 # This file is distributed under the same license as the NeoMutt package.
 #
-# Richard Russon <rich@flatcap.org>, 2016
+# Richard Russon <rich@flatcap.org>, 2016-2017
 #
 msgid ""
 msgstr ""
@@ -2284,6 +2284,8 @@ msgid ""
 "Binding '%s' will alias '%s'  Before, try: 'bind %s %s noop'  https://"
 "neomutt.org/guide/configuration.html#bind-warnings"
 msgstr ""
+"Binding '%s' will alias '%s'  Before, try: 'bind %s %s noop'  https://"
+"neomutt.org/guide/configuration.html#bind-warnings"
 
 #: keymap.c:572
 msgid "Macros are currently disabled."
@@ -6108,8 +6110,3 @@ msgstr ""
 "\n"
 "Compile options:"
 
-#~ msgid "Binding '%s' will alias '%s'"
-#~ msgstr "Binding '%s' will alias '%s'"
-
-#~ msgid "Warning: For menu '%s', binding '%s' will alias '%s'"
-#~ msgstr "Warning: For menu '%s', binding '%s' will alias '%s'"

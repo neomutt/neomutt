@@ -1,4 +1,4 @@
-# Ukrainian translation for Mutt.
+# Ukrainian messages for NeoMutt
 #
 # Copyright (c) 1998-2001, 2013, 2016 NeoMutt project.
 # This file is distributed under the same license as the NeoMutt package.
