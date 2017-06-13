@@ -4044,14 +4044,9 @@ static struct CryptKeyinfo *crypt_getkeybyaddr(struct Address *a,
   struct Address *r = NULL, *p = NULL;
   struct List *hints = NULL;
 
-  int weak = false;
-  int invalid = false;
-  int addr_match = false;
   int multi = false;
   int this_key_has_strong = false;
   int this_key_has_addr_match = false;
-  int this_key_has_weak = false;
-  int this_key_has_invalid = false;
   int match = false;
 
   struct CryptKeyinfo *keys = NULL, *k = NULL;
@@ -4088,9 +4083,7 @@ static struct CryptKeyinfo *crypt_getkeybyaddr(struct Address *a,
       continue;
     }
 
-    this_key_has_weak = false;    /* weak but valid match   */
-    this_key_has_invalid = false; /* invalid match          */
-    this_key_has_strong = false;  /* strong and valid match */
+    this_key_has_strong = false; /* strong and valid match */
     this_key_has_addr_match = false;
     match = false; /* any match */
 
@@ -4103,24 +4096,17 @@ static struct CryptKeyinfo *crypt_getkeybyaddr(struct Address *a,
       {
         match = true;
 
-        if (validity & CRYPT_KV_VALID)
+        if ((validity & CRYPT_KV_VALID) && (validity & CRYPT_KV_ADDR))
         {
-          if (validity & CRYPT_KV_ADDR)
+          if (validity & CRYPT_KV_STRONGID)
           {
-            if (validity & CRYPT_KV_STRONGID)
-            {
-              if (the_strong_valid_key && the_strong_valid_key->kobj != k->kobj)
-                multi = true;
-              this_key_has_strong = true;
-            }
-            else
-              this_key_has_addr_match = true;
+            if (the_strong_valid_key && the_strong_valid_key->kobj != k->kobj)
+              multi = true;
+            this_key_has_strong = true;
           }
           else
-            this_key_has_weak = true;
+            this_key_has_addr_match = true;
         }
-        else
-          this_key_has_invalid = true;
       }
     }
     rfc822_free_address(&r);
@@ -4135,14 +4121,7 @@ static struct CryptKeyinfo *crypt_getkeybyaddr(struct Address *a,
       if (this_key_has_strong)
         the_strong_valid_key = tmp;
       else if (this_key_has_addr_match)
-      {
-        addr_match = true;
         a_valid_addrmatch_key = tmp;
-      }
-      else if (this_key_has_invalid)
-        invalid = true;
-      else if (this_key_has_weak)
-        weak = true;
     }
   }
 
@@ -4159,13 +4138,10 @@ static struct CryptKeyinfo *crypt_getkeybyaddr(struct Address *a,
       else
         k = NULL;
     }
-    else if (the_strong_valid_key && !multi && !weak && !addr_match &&
-             !(invalid && option(OPTPGPSHOWUNUSABLE)))
+    else if (the_strong_valid_key && !multi)
     {
       /*
-           * There was precisely one strong match on a valid ID, there
-           * were no valid keys with weak matches, and we aren't
-           * interested in seeing invalid keys.
+           * There was precisely one strong match on a valid ID.
            *
            * Proceed without asking the user.
            */
