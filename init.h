@@ -672,12 +672,18 @@ struct Option MuttVars[] = {
   ** debug_level/debug_file are ignored until it's read from the configuration
   ** file.
   */
-  { "debug_file", DT_PATH, R_NONE, UL &DebugFile, UL "~/.neomuttdebug" },
+  { "debug_dir", DT_PATH, R_NONE, UL &DebugDir, UL "~/.neomutt/log/" },
   /*
   ** .pp
-  ** The location prefix of the debug file, 0 is append to the debug file
-  ** Old debug files are renamed with the prefix 1, 2, 3 and 4.
-  ** See ``debug_level'' for more detail.
+  ** The location to save all debug files, whose format is controlled by
+  ** ``debug_file''.
+  */
+  { "debug_file", DT_PATH, R_NONE, UL &DebugFile, UL "%F_-_%R.log" },
+  /*
+  ** .pp
+  ** The filename of the debug file. It uses per default the ISO 8601 date format
+  ** (%Y-%m-%d).
+  ** See ``debug_level'' and ``debug_dir'' for more detail.
   */
   { "default_hook",     DT_STRING,  R_NONE, UL &DefaultHook, UL "~f %s !~P | (~P ~C %s)" },
   /*

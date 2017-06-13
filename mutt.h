@@ -294,7 +294,6 @@ const char *mutt_str_sysexit(int e);
 
 char *mutt_compile_help(char *buf, size_t buflen, int menu, const struct Mapping *items);
 
-extern char debugfilename[_POSIX_PATH_MAX];
 extern FILE *debugfile;
 extern int debuglevel;
 extern char *debugfile_cmdline;
