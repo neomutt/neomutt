@@ -137,8 +137,7 @@ clean-local:
 	rm -f *~ *.html *.orig *.rej  *.ps mutt.1 smime_keys.1 muttrc.man pgpewrap.1 pgpring.1
 	rm -f *.aux *.log *.tex *.out
 
-DISTCLEANFILES=manual.txt manual.html manual.xml manual.pdf html \
-	       instdoc Muttrc
+DISTCLEANFILES=manual.txt manual.html manual.xml instdoc Muttrc
 
 instdoc: instdoc.sh
 	cp instdoc.sh instdoc
