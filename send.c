@@ -219,11 +219,11 @@ static int edit_envelope (ENVELOPE *en)
   char buf[HUGE_STRING];
   LIST *uh = UserHeader;
 
-  if (edit_address (&en->to, "To: ") == -1 || en->to == NULL)
+  if (edit_address (&en->to, _("To: ")) == -1 || en->to == NULL)
     return (-1);
-  if (option (OPTASKCC) && edit_address (&en->cc, "Cc: ") == -1)
+  if (option (OPTASKCC) && edit_address (&en->cc, _("Cc: ")) == -1)
     return (-1);
-  if (option (OPTASKBCC) && edit_address (&en->bcc, "Bcc: ") == -1)
+  if (option (OPTASKBCC) && edit_address (&en->bcc, _("Bcc: ")) == -1)
     return (-1);
 
   if (en->subject)
@@ -248,7 +248,7 @@ static int edit_envelope (ENVELOPE *en)
     }
   }
   
-  if (mutt_get_field ("Subject: ", buf, sizeof (buf), 0) != 0 ||
+  if (mutt_get_field (_("Subject: "), buf, sizeof (buf), 0) != 0 ||
       (!buf[0] && query_quadoption (OPT_SUBJECT, _("No subject, abort?")) != MUTT_NO))
   {
     mutt_message _("No subject, aborting.");

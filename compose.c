@@ -78,21 +78,41 @@ int MaxHeaderWidth = 0;
 
 static const char * const Prompts[] =
 {
-  "From: ",
-  "To: ",
-  "Cc: ",
-  "Bcc: ",
-  "Subject: ",
-  "Reply-To: ",
-  "Fcc: "
+  /* L10N: Compose menu field.  May not want to translate. */
+  N_("From: "),
+  /* L10N: Compose menu field.  May not want to translate. */
+  N_("To: "),
+  /* L10N: Compose menu field.  May not want to translate. */
+  N_("Cc: "),
+  /* L10N: Compose menu field.  May not want to translate. */
+  N_("Bcc: "),
+  /* L10N: Compose menu field.  May not want to translate. */
+  N_("Subject: "),
+  /* L10N: Compose menu field.  May not want to translate. */
+  N_("Reply-To: "),
+  /* L10N: Compose menu field.  May not want to translate. */
+  N_("Fcc: "),
+#ifdef MIXMASTER
+  /* L10N: "Mix" refers to the MixMaster chain for anonymous email */
+  N_("Mix: "),
+#endif
+  /* L10N: Compose menu field.  Holds "Encrypt", "Sign" related information */
+  N_("Security: "),
+  /* L10N:
+   * This string is used by the compose menu.  It is suggested that it not
+   * be wider than 20 character cells, if possible. */
+  N_("Sign as: ")
 };
 
 static const struct mapping_t ComposeHelp[] = {
   { N_("Send"),    OP_COMPOSE_SEND_MESSAGE },
   { N_("Abort"),   OP_EXIT },
-  { "To",      OP_COMPOSE_EDIT_TO },
-  { "CC",      OP_COMPOSE_EDIT_CC },
-  { "Subj",    OP_COMPOSE_EDIT_SUBJECT },
+  /* L10N: compose menu help line entry */
+  { N_("To"),      OP_COMPOSE_EDIT_TO },
+  /* L10N: compose menu help line entry */
+  { N_("CC"),      OP_COMPOSE_EDIT_CC },
+  /* L10N: compose menu help line entry */
+  { N_("Subj"),    OP_COMPOSE_EDIT_SUBJECT },
   { N_("Attach file"),  OP_COMPOSE_ATTACH_FILE },
   { N_("Descrip"), OP_COMPOSE_EDIT_DESCRIPTION },
   { N_("Help"),    OP_HELP },
@@ -126,20 +146,13 @@ static void init_header_padding (void)
     return;
   done = 1;
 
-  for (i = 0; i <= HDR_FCC; i++)
-    calc_header_width_padding (i, Prompts[i], 1);
+  for (i = 0; i <= HDR_CRYPT; i++)
+    calc_header_width_padding (i, _(Prompts[i]), 1);
 
-#ifdef MIXMASTER
-  calc_header_width_padding (HDR_MIX,  _("Mix: "), 1);
-#endif
-
-  /* TODO: mark for translation */
-  calc_header_width_padding (HDR_CRYPT, "Security: ", 1);
-
-  /* L10N:
-   * This string is used by the compose menu.  It is suggested that it not
-   * be wider than 20 character cells, if possible. */
-  calc_header_width_padding (HDR_CRYPTINFO, _("Sign as: "), 0);
+  /* Don't include "Sign as: " in the MaxHeaderWidth calculation.  It
+   * doesn't show up by default, and so can make the indentation of
+   * the other fields look funny. */
+  calc_header_width_padding (HDR_CRYPTINFO, _(Prompts[HDR_CRYPTINFO]), 0);
 
   for (i = 0; i <= HDR_CRYPTINFO; i++)
   {
@@ -164,7 +177,7 @@ static void redraw_crypt_lines (HEADER *msg)
 {
   SETCOLOR (MT_COLOR_COMPOSE_HEADER);
   mutt_window_mvprintw (MuttIndexWindow, HDR_CRYPT, 0,
-                        "%*s", HeaderPadding[HDR_CRYPT], "Security: ");
+                        "%*s", HeaderPadding[HDR_CRYPT], _(Prompts[HDR_CRYPT]));
   NORMAL_COLOR;
 
   if ((WithCrypto & (APPLICATION_PGP | APPLICATION_SMIME)) == 0)
@@ -220,7 +233,7 @@ static void redraw_crypt_lines (HEADER *msg)
       && (msg->security & APPLICATION_PGP) && (msg->security & SIGN))
   {
     SETCOLOR (MT_COLOR_COMPOSE_HEADER);
-    printw ("%*s", HeaderPadding[HDR_CRYPTINFO], _("Sign as: "));
+    printw ("%*s", HeaderPadding[HDR_CRYPTINFO], _(Prompts[HDR_CRYPTINFO]));
     NORMAL_COLOR;
     printw ("%s", PgpSignAs ? PgpSignAs : _("<default>"));
   }
@@ -229,7 +242,7 @@ static void redraw_crypt_lines (HEADER *msg)
       && (msg->security & APPLICATION_SMIME) && (msg->security & SIGN))
   {
     SETCOLOR (MT_COLOR_COMPOSE_HEADER);
-    printw ("%*s", HeaderPadding[HDR_CRYPTINFO], _("Sign as: "));
+    printw ("%*s", HeaderPadding[HDR_CRYPTINFO], _(Prompts[HDR_CRYPTINFO]));
     NORMAL_COLOR;
     printw ("%s", SmimeDefaultKey ? SmimeDefaultKey : _("<default>"));
   }
@@ -257,8 +270,7 @@ static void redraw_mix_line (LIST *chain)
 
   SETCOLOR (MT_COLOR_COMPOSE_HEADER);
   mutt_window_mvprintw (MuttIndexWindow, HDR_MIX, 0,
-  /* L10N: "Mix" refers to the MixMaster chain for anonymous email */
-                        "%*s", HeaderPadding[HDR_MIX], _("Mix: "));
+                        "%*s", HeaderPadding[HDR_MIX], _(Prompts[HDR_MIX]));
   NORMAL_COLOR;
 
   if (!chain)
@@ -328,7 +340,7 @@ static void draw_envelope_addr (int line, ADDRESS *addr)
   rfc822_write_address (buf, sizeof (buf), addr, 1);
   SETCOLOR (MT_COLOR_COMPOSE_HEADER);
   mutt_window_mvprintw (MuttIndexWindow, line, 0,
-                        "%*s", HeaderPadding[line], Prompts[line]);
+                        "%*s", HeaderPadding[line], _(Prompts[line]));
   NORMAL_COLOR;
   mutt_paddstr (W, buf);
 }
@@ -342,7 +354,7 @@ static void draw_envelope (HEADER *msg, char *fcc)
 
   SETCOLOR (MT_COLOR_COMPOSE_HEADER);
   mutt_window_mvprintw (MuttIndexWindow, HDR_SUBJECT, 0,
-                        "%*s", HeaderPadding[HDR_SUBJECT], Prompts[HDR_SUBJECT]);
+                        "%*s", HeaderPadding[HDR_SUBJECT], _(Prompts[HDR_SUBJECT]));
   NORMAL_COLOR;
   mutt_paddstr (W, NONULL (msg->env->subject));
 
@@ -350,7 +362,7 @@ static void draw_envelope (HEADER *msg, char *fcc)
 
   SETCOLOR (MT_COLOR_COMPOSE_HEADER);
   mutt_window_mvprintw (MuttIndexWindow, HDR_FCC, 0,
-                        "%*s", HeaderPadding[HDR_FCC], Prompts[HDR_FCC]);
+                        "%*s", HeaderPadding[HDR_FCC], _(Prompts[HDR_FCC]));
   NORMAL_COLOR;
   mutt_paddstr (W, fcc);
 
@@ -375,7 +387,7 @@ static void edit_address_list (int line, ADDRESS **addr)
   
   mutt_addrlist_to_local (*addr);
   rfc822_write_address (buf, sizeof (buf), *addr, 0);
-  if (mutt_get_field (Prompts[line], buf, sizeof (buf), MUTT_ALIAS) == 0)
+  if (mutt_get_field (_(Prompts[line]), buf, sizeof (buf), MUTT_ALIAS) == 0)
   {
     rfc822_free_address (addr);
     *addr = mutt_parse_adrlist (*addr, buf);
@@ -701,7 +713,7 @@ int mutt_compose_menu (HEADER *msg,   /* structure for new message */
 	  strfcpy (buf, msg->env->subject, sizeof (buf));
 	else
 	  buf[0] = 0;
-	if (mutt_get_field ("Subject: ", buf, sizeof (buf), 0) == 0)
+	if (mutt_get_field (_("Subject: "), buf, sizeof (buf), 0) == 0)
 	{
 	  mutt_str_replace (&msg->env->subject, buf);
 	  mutt_window_move (MuttIndexWindow, HDR_SUBJECT, HDR_XOFFSET);
@@ -718,7 +730,7 @@ int mutt_compose_menu (HEADER *msg,   /* structure for new message */
 	break;
       case OP_COMPOSE_EDIT_FCC:
 	strfcpy (buf, fcc, sizeof (buf));
-	if (mutt_get_field ("Fcc: ", buf, sizeof (buf), MUTT_FILE | MUTT_CLEAR) == 0)
+	if (mutt_get_field (_("Fcc: "), buf, sizeof (buf), MUTT_FILE | MUTT_CLEAR) == 0)
 	{
 	  strfcpy (fcc, buf, fcclen);
 	  mutt_pretty_mailbox (fcc, fcclen);

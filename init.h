@@ -725,6 +725,13 @@ struct option_t MuttVars[] = {
   ** This option allows you to edit the header of your outgoing messages
   ** along with the body of your message.
   ** .pp
+  ** Although the compose menu may have localized header labels, the
+  ** labels passed to your editor will be standard RFC 2822 headers,
+  ** (e.g. To:, Cc:, Subject:).  Headers added in your editor must
+  ** also be RFC 2822 headers, or one of the pseudo headers listed in
+  ** ``$edit-header''.  Mutt will not understand localized header
+  ** labels, just as it would not when parsing an actual email.
+  ** .pp
   ** \fBNote\fP that changes made to the References: and Date: headers are
   ** ignored for interoperability reasons.
   */
