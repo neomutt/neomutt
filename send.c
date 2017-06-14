@@ -267,11 +267,11 @@ static int edit_envelope(struct Envelope *en, int flags)
   else
 #endif
   {
-    if (edit_address(&en->to, "To: ") == -1 || en->to == NULL)
+    if (edit_address(&en->to, _("To: ")) == -1 || en->to == NULL)
       return -1;
-    if (option(OPTASKCC) && edit_address(&en->cc, "Cc: ") == -1)
+    if (option(OPTASKCC) && edit_address(&en->cc, _("Cc: ")) == -1)
       return -1;
-    if (option(OPTASKBCC) && edit_address(&en->bcc, "Bcc: ") == -1)
+    if (option(OPTASKBCC) && edit_address(&en->bcc, _("Bcc: ")) == -1)
       return -1;
     if (option(OPTREPLYWITHXORIG) && (flags & (SENDREPLY | SENDLISTREPLY | SENDGROUPREPLY)) &&
         (edit_address(&en->from, "From: ") == -1))
@@ -300,7 +300,7 @@ static int edit_envelope(struct Envelope *en, int flags)
     }
   }
 
-  if (mutt_get_field("Subject: ", buf, sizeof(buf), 0) != 0 ||
+  if (mutt_get_field(_("Subject: "), buf, sizeof(buf), 0) != 0 ||
       (!buf[0] && query_quadoption(OPT_SUBJECT, _("No subject, abort?")) != MUTT_NO))
   {
     mutt_message(_("No subject, aborting."));
