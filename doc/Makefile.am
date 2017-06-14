@@ -42,8 +42,8 @@ BUILT_DISTFILES = manual.txt $(HTML_DOCFILES)
 
 srcdir_DOCFILES = PGP-Notes.txt smime-notes.txt
 
-topsrcdir_DOCFILES = COPYRIGHT LICENSE.md INSTALL ChangeLog.md \
-	README.SSL README.md
+topsrcdir_DOCFILES = CODE_OF_CONDUCT.md COPYRIGHT LICENSE.md INSTALL \
+	ChangeLog.md README.SSL README.md
 
 all: makedoc-all
 
