@@ -3314,6 +3314,33 @@ static unsigned int key_check_cap(gpgme_key_t key, key_cap_t cap)
   return ret;
 }
 
+enum
+{
+  KIP_NAME = 0,
+  KIP_AKA,
+  KIP_VALID_FROM,
+  KIP_VALID_TO,
+  KIP_KEY_TYPE,
+  KIP_KEY_USAGE,
+  KIP_FINGERPRINT,
+  KIP_SERIAL_NO,
+  KIP_ISSUED_BY,
+  KIP_SUBKEY,
+  KIP_END
+};
+
+static const char *const KeyInfoPrompts[] = {
+  /* L10N:
+   * The following are the headers for the "verify key" output from the
+   * GPGME key selection menu (bound to "c" in the key selection menu).
+   * They will be automatically aligned. */
+  N_("Name: "),      N_("aka: "),       N_("Valid From: "),  N_("Valid To: "),
+  N_("Key Type: "),  N_("Key Usage: "), N_("Fingerprint: "), N_("Serial-No: "),
+  N_("Issued By: "), N_("Subkey: ")
+};
+
+int KeyInfoPadding[KIP_END] = { 0 };
+
 /* Print verbose information about a key or certificate to FP. */
 static void print_key_info(gpgme_key_t key, FILE *fp)
 {
@@ -3327,6 +3354,22 @@ static void print_key_info(gpgme_key_t key, FILE *fp)
   int is_pgp = 0;
   int i;
   gpgme_user_id_t uid = NULL;
+  static int max_header_width = 0;
+  int width;
+
+  if (!max_header_width)
+  {
+    for (i = 0; i < KIP_END; i++)
+    {
+      KeyInfoPadding[i] = mutt_strlen(_(KeyInfoPrompts[i]));
+      width = mutt_strwidth(_(KeyInfoPrompts[i]));
+      if (max_header_width < width)
+        max_header_width = width;
+      KeyInfoPadding[i] -= width;
+    }
+    for (i = 0; i < KIP_END; i++)
+      KeyInfoPadding[i] += max_header_width;
+  }
 
   is_pgp = key->protocol == GPGME_PROTOCOL_OpenPGP;
 
@@ -3337,9 +3380,14 @@ static void print_key_info(gpgme_key_t key, FILE *fp)
 
     s = uid->uid;
     /* L10N: DOTFILL */
-    fputs(idx ? _(" aka ......: ") : _("Name ......: "), fp);
+
+    if (!idx)
+      fprintf(fp, "%*s", KeyInfoPadding[KIP_NAME], _(KeyInfoPrompts[KIP_NAME]));
+    else
+      fprintf(fp, "%*s", KeyInfoPadding[KIP_AKA], _(KeyInfoPrompts[KIP_AKA]));
     if (uid->invalid)
     {
+      /* L10N: comes after the Name or aka if the key is invalid */
       fputs(_("[Invalid]"), fp);
       putc(' ', fp);
     }
@@ -3356,8 +3404,8 @@ static void print_key_info(gpgme_key_t key, FILE *fp)
 
     tm = localtime(&tt);
     strftime(shortbuf, sizeof(shortbuf), nl_langinfo(D_T_FMT), tm);
-    /* L10N: DOTFILL */
-    fprintf(fp, _("Valid From : %s\n"), shortbuf);
+    fprintf(fp, "%*s%s\n", KeyInfoPadding[KIP_VALID_FROM],
+            _(KeyInfoPrompts[KIP_VALID_FROM]), shortbuf);
   }
 
   if (key->subkeys && (key->subkeys->expires > 0))
@@ -3366,8 +3414,8 @@ static void print_key_info(gpgme_key_t key, FILE *fp)
 
     tm = localtime(&tt);
     strftime(shortbuf, sizeof(shortbuf), nl_langinfo(D_T_FMT), tm);
-    /* L10N: DOTFILL */
-    fprintf(fp, _("Valid To ..: %s\n"), shortbuf);
+    fprintf(fp, "%*s%s\n", KeyInfoPadding[KIP_VALID_TO],
+            _(KeyInfoPrompts[KIP_VALID_TO]), shortbuf);
   }
 
   if (key->subkeys)
@@ -3380,25 +3428,29 @@ static void print_key_info(gpgme_key_t key, FILE *fp)
   if (key->subkeys)
     aval = key->subkeys->length;
 
-  /* L10N: DOTFILL */
-  fprintf(fp, _("Key Type ..: %s, %lu bit %s\n"), s2, aval, s);
+  fprintf(fp, "%*s", KeyInfoPadding[KIP_KEY_TYPE], _(KeyInfoPrompts[KIP_KEY_TYPE]));
+  /* L10N: This is printed after "Key Type: " and looks like this:
+   *       PGP, 2048 bit RSA */
+  fprintf(fp, _("%s, %lu bit %s\n"), s2, aval, s);
 
-  /* L10N: DOTFILL */
-  fprintf(fp, "%s", _("Key Usage .: "));
+  fprintf(fp, "%*s", KeyInfoPadding[KIP_KEY_USAGE], _(KeyInfoPrompts[KIP_KEY_USAGE]));
   delim = "";
 
   if (key_check_cap(key, KEY_CAP_CAN_ENCRYPT))
   {
+    /* L10N: value in Key Usage: field */
     fprintf(fp, "%s%s", delim, _("encryption"));
     delim = _(", ");
   }
   if (key_check_cap(key, KEY_CAP_CAN_SIGN))
   {
+    /* L10N: value in Key Usage: field */
     fprintf(fp, "%s%s", delim, _("signing"));
     delim = _(", ");
   }
   if (key_check_cap(key, KEY_CAP_CAN_CERTIFY))
   {
+    /* L10N: value in Key Usage: field */
     fprintf(fp, "%s%s", delim, _("certification"));
     delim = _(", ");
   }
@@ -3407,11 +3459,7 @@ static void print_key_info(gpgme_key_t key, FILE *fp)
   if (key->subkeys)
   {
     s = key->subkeys->fpr;
-    /* L10N: DOTFILL
-         Fill dots to make the DOTFILL entries the same length.
-         In English, msgid "Fingerprint: " is the longest entry for this menu.
-         Your language may vary. */
-    fputs(_("Fingerprint: "), fp);
+    fprintf(fp, "%*s", KeyInfoPadding[KIP_FINGERPRINT], _(KeyInfoPrompts[KIP_FINGERPRINT]));
     if (is_pgp && strlen(s) == 40)
     {
       for (i = 0; *s && s[1] && s[2] && s[3] && s[4]; s += 4, i++)
@@ -3443,8 +3491,8 @@ static void print_key_info(gpgme_key_t key, FILE *fp)
   {
     s = key->issuer_serial;
     if (s)
-      /* L10N: DOTFILL */
-      fprintf(fp, _("Serial-No .: 0x%s\n"), s);
+      fprintf(fp, "%*s0x%s\n", KeyInfoPadding[KIP_SERIAL_NO],
+              _(KeyInfoPrompts[KIP_SERIAL_NO]), s);
   }
 
   if (key->issuer_name)
@@ -3452,8 +3500,7 @@ static void print_key_info(gpgme_key_t key, FILE *fp)
     s = key->issuer_name;
     if (s)
     {
-      /* L10N: DOTFILL */
-      fprintf(fp, "%s", _("Issued By .: "));
+      fprintf(fp, "%*s", KeyInfoPadding[KIP_ISSUED_BY], _(KeyInfoPrompts[KIP_ISSUED_BY]));
       parse_and_print_user_id(fp, s);
       putc('\n', fp);
     }
@@ -3471,26 +3518,29 @@ static void print_key_info(gpgme_key_t key, FILE *fp)
       putc('\n', fp);
       if (strlen(s) == 16)
         s += 8; /* display only the short keyID */
-      /* L10N: DOTFILL */
-      fprintf(fp, _("Subkey ....: 0x%s"), s);
+      fprintf(fp, "%*s0x%s", KeyInfoPadding[KIP_SUBKEY], _(KeyInfoPrompts[KIP_SUBKEY]), s);
       if (subkey->revoked)
       {
         putc(' ', fp);
+        /* L10N: describes a subkey */
         fputs(_("[Revoked]"), fp);
       }
       if (subkey->invalid)
       {
         putc(' ', fp);
+        /* L10N: describes a subkey */
         fputs(_("[Invalid]"), fp);
       }
       if (subkey->expired)
       {
         putc(' ', fp);
+        /* L10N: describes a subkey */
         fputs(_("[Expired]"), fp);
       }
       if (subkey->disabled)
       {
         putc(' ', fp);
+        /* L10N: describes a subkey */
         fputs(_("[Disabled]"), fp);
       }
       putc('\n', fp);
@@ -3501,8 +3551,8 @@ static void print_key_info(gpgme_key_t key, FILE *fp)
 
         tm = localtime(&tt);
         strftime(shortbuf, sizeof(shortbuf), nl_langinfo(D_T_FMT), tm);
-        /* L10N: DOTFILL */
-        fprintf(fp, _("Valid From : %s\n"), shortbuf);
+        fprintf(fp, "%*s%s\n", KeyInfoPadding[KIP_VALID_FROM],
+                _(KeyInfoPrompts[KIP_VALID_FROM]), shortbuf);
       }
 
       if (subkey->expires > 0)
@@ -3511,19 +3561,18 @@ static void print_key_info(gpgme_key_t key, FILE *fp)
 
         tm = localtime(&tt);
         strftime(shortbuf, sizeof(shortbuf), nl_langinfo(D_T_FMT), tm);
-        /* L10N: DOTFILL */
-        fprintf(fp, _("Valid To ..: %s\n"), shortbuf);
+        fprintf(fp, "%*s%s\n", KeyInfoPadding[KIP_VALID_TO],
+                _(KeyInfoPrompts[KIP_VALID_TO]), shortbuf);
       }
 
       s = gpgme_pubkey_algo_name(subkey->pubkey_algo);
 
       aval = subkey->length;
 
-      /* L10N: DOTFILL */
-      fprintf(fp, _("Key Type ..: %s, %lu bit %s\n"), "PGP", aval, s);
+      fprintf(fp, "%*s", KeyInfoPadding[KIP_KEY_TYPE], _(KeyInfoPrompts[KIP_KEY_TYPE]));
+      fprintf(fp, _("%s, %lu bit %s\n"), "PGP", aval, s);
 
-      /* L10N: DOTFILL */
-      fprintf(fp, "%s", _("Key Usage .: "));
+      fprintf(fp, "%*s", KeyInfoPadding[KIP_KEY_USAGE], _(KeyInfoPrompts[KIP_KEY_USAGE]));
       delim = "";
 
       if (subkey->can_encrypt)
