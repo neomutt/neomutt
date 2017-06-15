@@ -148,7 +148,6 @@ static struct CompileOptions comp_opts[] = {
 #else
   { "getaddrinfo", 0 },
 #endif
-  { "getsid", 1 },
 #ifdef USE_SSL_GNUTLS
   { "gnutls", 1 },
 #else
@@ -173,11 +172,6 @@ static struct CompileOptions comp_opts[] = {
   { "homespool", 1 },
 #else
   { "homespool", 0 },
-#endif
-#ifdef ICONV_NONTRANS
-  { "iconv_nontrans", 1 },
-#else
-  { "iconv_nontrans", 0 },
 #endif
   { "ifdef", 1 },
   { "imap", 1 },
@@ -251,11 +245,6 @@ static struct CompileOptions comp_opts[] = {
   { "sasl", 0 },
 #endif
   { "sensible_browser", 1 },
-#ifdef USE_SETGID
-  { "setgid", 1 },
-#else
-  { "setgid", 0 },
-#endif
   { "sidebar", 1 },
   { "skip_quoted", 1 },
 #ifdef CRYPT_BACKEND_CLASSIC_SMIME
@@ -264,11 +253,6 @@ static struct CompileOptions comp_opts[] = {
   { "smime", 0 },
 #endif
   { "smtp", 1 },
-#ifdef HAVE_START_COLOR
-  { "start_color", 1 },
-#else
-  { "start_color", 0 },
-#endif
   { "status_color", 1 },
 #ifdef SUN_ATTACHMENT
   { "sun_attachment", 1 },
