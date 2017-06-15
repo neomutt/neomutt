@@ -1,8 +1,4 @@
----
-layout: concertina
-title: Code of Conduct
----
-# {{ page.title }}
+# Code of Conduct
 
 NeoMutt's community is made up from developers and enthusiasts around the globe.
 We come from different countries and cultures, we speak different languages.
