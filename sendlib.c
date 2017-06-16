@@ -956,6 +956,7 @@ int mutt_lookup_mime_type(struct Body *att, const char *path)
   char subtype[STRING], xtype[STRING];
   int szf, sze, cur_sze;
   int type;
+  bool found_mimetypes = false;
 
   *subtype = '\0';
   *xtype = '\0';
@@ -964,7 +965,7 @@ int mutt_lookup_mime_type(struct Body *att, const char *path)
 
   szf = mutt_strlen(path);
 
-  for (int count = 0; count < 3; count++)
+  for (int count = 0; count < 4; count++)
   {
     /*
      * can't use strtok() because we use it in an inner loop below, so use
@@ -972,14 +973,21 @@ int mutt_lookup_mime_type(struct Body *att, const char *path)
      */
     switch (count)
     {
+      /* last file with last entry to match wins type/xtype */
       case 0:
-        snprintf(buf, sizeof(buf), "%s/.mime.types", NONULL(Homedir));
+        /*
+         * check default unix mimetypes location first
+         */
+        strfcpy(buf, "/etc/mime.types", sizeof(buf));
         break;
       case 1:
         strfcpy(buf, SYSCONFDIR "/mime.types", sizeof(buf));
         break;
       case 2:
         strfcpy(buf, PKGDATADIR "/mime.types", sizeof(buf));
+        break;
+      case 3:
+        snprintf(buf, sizeof(buf), "%s/.mime.types", NONULL(Homedir));
         break;
       default:
         mutt_debug(1, "mutt_lookup_mime_type: Internal error, count = %d.\n", count);
@@ -988,6 +996,8 @@ int mutt_lookup_mime_type(struct Body *att, const char *path)
 
     if ((f = fopen(buf, "r")) != NULL)
     {
+      found_mimetypes = true;
+
       while (fgets(buf, sizeof(buf) - 1, f) != NULL)
       {
         /* weed out any comments */
@@ -1040,6 +1050,12 @@ int mutt_lookup_mime_type(struct Body *att, const char *path)
   }
 
 bye:
+
+  /* no mime.types file found */
+  if (!found_mimetypes)
+  {
+    mutt_error(_("Could not find any mime.types file."));
+  }
 
   if (type != TYPEOTHER || *xtype != '\0')
   {
@@ -2501,7 +2517,7 @@ int mutt_invoke_sendmail(struct Address *from, /* the sender */
 
   args[argslen++] = NULL;
 
-  mutt_endwin (NULL);
+  mutt_endwin(NULL);
   if ((i = send_msg(path, args, msg, option(OPTNOCURSES) ? NULL : &childout)) != (EX_OK & 0xff))
   {
     if (i != S_BKG)
