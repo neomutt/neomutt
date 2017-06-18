@@ -9,9 +9,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: 1.8.3\n"
-"Report-Msgid-Bugs-To: mutt-j <mutt-j-users@lists.osdn.me>\n"
-"POT-Creation-Date: 2017-06-01 12:43+0900\n"
-"PO-Revision-Date: 2017-06-01 13:00+0900\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2017-06-17 16:23+0900\n"
+"PO-Revision-Date: 2017-06-17 16:00+0900\n"
 "Last-Translator: TAKAHASHI Tamotsu <ttakah@lapis.plala.or.jp>\n"
 "Language-Team: mutt-j <mutt-j-users@lists.osdn.me>\n"
 "Language: Japanese\n"
@@ -46,7 +46,7 @@ msgstr "削除を取り消し"
 msgid "Select"
 msgstr "選択"
 
-#: addrbook.c:41 browser.c:49 compose.c:96 crypt-gpgme.c:4026 curs_main.c:493
+#: addrbook.c:41 browser.c:49 compose.c:119 crypt-gpgme.c:4088 curs_main.c:493
 #: mutt_ssl.c:1257 mutt_ssl_gnutls.c:1011 pager.c:1973 pgpkey.c:522
 #: postpone.c:44 query.c:53 recvattach.c:57 smime.c:440
 msgid "Help"
@@ -117,7 +117,7 @@ msgstr "名前のテンプレートに一致させられない。続行?"
 msgid "Mailcap compose entry requires %%s"
 msgstr "Mailcap 編集エントリに %%s が必要"
 
-#: attach.c:134 attach.c:266 commands.c:223 compose.c:1306 compress.c:444
+#: attach.c:134 attach.c:266 commands.c:223 compose.c:1378 compress.c:444
 #: curs_lib.c:218 curs_lib.c:809
 #, c-format
 msgid "Error running \"%s\"!"
@@ -342,7 +342,7 @@ msgstr "mono: 引数が少なすぎる"
 msgid "%s: no such attribute"
 msgstr "%s という属性はない"
 
-#: color.c:763 hook.c:73 hook.c:81 init.c:1958 init.c:2033 keymap.c:950
+#: color.c:763 hook.c:73 hook.c:81 init.c:1958 init.c:2033 keymap.c:951
 msgid "too few arguments"
 msgstr "引数が少なすぎる"
 
@@ -572,214 +572,273 @@ msgstr "変換あり"
 msgid "There are no attachments."
 msgstr "添付ファイルがない。"
 
-#: compose.c:89
-msgid "Send"
-msgstr "送信"
+#. L10N: Compose menu field.  May not want to translate.
+#: compose.c:82
+msgid "From: "
+msgstr "From: "
 
-#: compose.c:90 remailer.c:484
-msgid "Abort"
-msgstr "中止"
+#. L10N: Compose menu field.  May not want to translate.
+#: compose.c:84 send.c:222
+msgid "To: "
+msgstr "To: "
 
-#: compose.c:94 compose.c:759
-msgid "Attach file"
-msgstr "ファイル添付"
+#. L10N: Compose menu field.  May not want to translate.
+#: compose.c:86 send.c:224
+msgid "Cc: "
+msgstr "Cc: "
 
-#: compose.c:95
-msgid "Descrip"
-msgstr "内容説明"
+#. L10N: Compose menu field.  May not want to translate.
+#: compose.c:88 send.c:226
+msgid "Bcc: "
+msgstr "Bcc: "
 
-#: compose.c:119
-msgid "Not supported"
-msgstr "サポートされていない"
+#. L10N: Compose menu field.  May not want to translate.
+#: compose.c:90 compose.c:717 send.c:251
+msgid "Subject: "
+msgstr "Subject: "
 
-#: compose.c:126
-msgid "Sign, Encrypt"
-msgstr "署名 + 暗号化"
+#. L10N: Compose menu field.  May not want to translate.
+#: compose.c:92
+msgid "Reply-To: "
+msgstr "Reply-To: "
 
-#: compose.c:131
-msgid "Encrypt"
-msgstr "暗号化"
-
-#: compose.c:136
-msgid "Sign"
-msgstr "署名"
-
-#: compose.c:141
-msgid "None"
-msgstr "なし"
-
-#: compose.c:150
-msgid " (inline PGP)"
-msgstr " (インライン PGP)"
-
-#: compose.c:152
-msgid " (PGP/MIME)"
-msgstr " (PGP/MIME)"
-
-#: compose.c:156
-msgid " (S/MIME)"
-msgstr " (S/MIME)"
-
-#: compose.c:160
-msgid " (OppEnc mode)"
-msgstr " (日和見暗号)"
-
-#: compose.c:170 compose.c:179
-msgid "sign as: "
-msgstr " 署名鍵: "
-
-#: compose.c:172 compose.c:181
-msgid "<default>"
-msgstr "<既定値>"
-
-#: compose.c:191
-msgid "Encrypt with: "
-msgstr "  暗号化方式: "
+#. L10N: Compose menu field.  May not want to translate.
+#: compose.c:94 compose.c:734
+msgid "Fcc: "
+msgstr "Fcc: "
 
 #. L10N: "Mix" refers to the MixMaster chain for anonymous email
-#: compose.c:207
+#: compose.c:97
 msgid "Mix: "
 msgstr "Mix: "
 
-#: compose.c:248
+#. L10N: Compose menu field.  Holds "Encrypt", "Sign" related information
+#: compose.c:100
+msgid "Security: "
+msgstr "暗号と署名: "
+
+#. L10N:
+#. * This string is used by the compose menu.  It is suggested that it not
+#. * be wider than 20 character cells, if possible. Also, it should not be
+#. * wider than other fields because init_header_padding ignores it.
+#: compose.c:105 crypt-gpgme.c:4837 pgp.c:1821 smime.c:2222 smime.c:2237
+msgid "Sign as: "
+msgstr "署名鍵: "
+
+#: compose.c:109
+msgid "Send"
+msgstr "送信"
+
+#: compose.c:110 remailer.c:484
+msgid "Abort"
+msgstr "中止"
+
+#. L10N: compose menu help line entry
+#: compose.c:112
+msgid "To"
+msgstr "宛先"
+
+#. L10N: compose menu help line entry
+#: compose.c:114
+msgid "CC"
+msgstr "CC"
+
+#. L10N: compose menu help line entry
+#: compose.c:116
+msgid "Subj"
+msgstr "件名"
+
+#: compose.c:117 compose.c:831
+msgid "Attach file"
+msgstr "ファイル添付"
+
+#: compose.c:118
+msgid "Descrip"
+msgstr "内容説明"
+
+#: compose.c:186
+msgid "Not supported"
+msgstr "サポートされていない"
+
+#: compose.c:193
+msgid "Sign, Encrypt"
+msgstr "署名 + 暗号化"
+
+#: compose.c:198
+msgid "Encrypt"
+msgstr "暗号化"
+
+#: compose.c:203
+msgid "Sign"
+msgstr "署名"
+
+#: compose.c:208
+msgid "None"
+msgstr "なし"
+
+#: compose.c:217
+msgid " (inline PGP)"
+msgstr " (インライン PGP)"
+
+#: compose.c:219
+msgid " (PGP/MIME)"
+msgstr " (PGP/MIME)"
+
+#: compose.c:223
+msgid " (S/MIME)"
+msgstr " (S/MIME)"
+
+#: compose.c:227
+msgid " (OppEnc mode)"
+msgstr " (日和見暗号)"
+
+#: compose.c:239 compose.c:248
+msgid "<default>"
+msgstr "<既定値>"
+
+#: compose.c:258
+msgid "Encrypt with: "
+msgstr "  暗号化方式: "
+
+#: compose.c:315
 #, c-format
 msgid "%s [#%d] no longer exists!"
 msgstr "%s [#%d] はもはや存在しない!"
 
-#: compose.c:256
+#: compose.c:323
 #, c-format
 msgid "%s [#%d] modified. Update encoding?"
 msgstr "%s [#%d] は変更された。エンコード更新?"
 
-#: compose.c:308
+#: compose.c:378
 msgid "-- Attachments"
 msgstr "-- 添付ファイル"
 
-#: compose.c:330
+#: compose.c:400
 #, c-format
 msgid "Warning: '%s' is a bad IDN."
 msgstr "警告: '%s' は不正な IDN."
 
-#: compose.c:351
+#: compose.c:421
 msgid "You may not delete the only attachment."
 msgstr "唯一の添付ファイルを削除してはいけない。"
 
-#: compose.c:693 send.c:1676
+#: compose.c:765 send.c:1676
 #, c-format
 msgid "Bad IDN in \"%s\": '%s'"
 msgstr "\"%s\" 中に不正な IDN: '%s'"
 
-#: compose.c:775
+#: compose.c:847
 msgid "Attaching selected files..."
 msgstr "選択されたファイルを添付中..."
 
-#: compose.c:787
+#: compose.c:859
 #, c-format
 msgid "Unable to attach %s!"
 msgstr "%s は添付できない!"
 
-#: compose.c:807
+#: compose.c:879
 msgid "Open mailbox to attach message from"
 msgstr "中のメッセージを添付するためにメールボックスをオープン"
 
-#: compose.c:837
+#: compose.c:909
 #, c-format
 msgid "Unable to open mailbox %s"
 msgstr "メールボックス %s がオープンできない"
 
-#: compose.c:845
+#: compose.c:917
 msgid "No messages in that folder."
 msgstr "そのフォルダにはメッセージがない。"
 
-#: compose.c:854
+#: compose.c:926
 msgid "Tag the messages you want to attach!"
 msgstr "添付したいメッセージにタグを付けよ!"
 
-#: compose.c:886
+#: compose.c:958
 msgid "Unable to attach!"
 msgstr "添付できない!"
 
-#: compose.c:937
+#: compose.c:1009
 msgid "Recoding only affects text attachments."
 msgstr "コード変換はテキスト型添付ファイルにのみ有効。"
 
-#: compose.c:942
+#: compose.c:1014
 msgid "The current attachment won't be converted."
 msgstr "現在の添付ファイルは変換されない。"
 
-#: compose.c:944
+#: compose.c:1016
 msgid "The current attachment will be converted."
 msgstr "現在の添付ファイルは変換される。"
 
-#: compose.c:1019
+#: compose.c:1091
 msgid "Invalid encoding."
 msgstr "不正なエンコード法。"
 
-#: compose.c:1045
+#: compose.c:1117
 msgid "Save a copy of this message?"
 msgstr "このメッセージのコピーを保存?"
 
 # OP_COMPOSE_RENAME_ATTACHMENT つまり名前を変えるとき
-#: compose.c:1108
+#: compose.c:1180
 msgid "Send attachment with name: "
 msgstr "添付ファイルを別の名前で送る: "
 
-#: compose.c:1126
+#: compose.c:1198
 msgid "Rename to: "
 msgstr "リネーム (移動) 先: "
 
 # system call の stat() を「属性調査」と訳している
 #. L10N:
 #. "stat" is a system call. Do "man 2 stat" for more information.
-#: compose.c:1133 editmsg.c:96 editmsg.c:121 sendlib.c:872
+#: compose.c:1205 editmsg.c:96 editmsg.c:121 sendlib.c:872
 #, c-format
 msgid "Can't stat %s: %s"
 msgstr "%s を属性調査できない: %s"
 
-#: compose.c:1160
+#: compose.c:1232
 msgid "New file: "
 msgstr "新規ファイル: "
 
-#: compose.c:1173
+#: compose.c:1245
 msgid "Content-Type is of the form base/sub"
 msgstr "Content-Type は base/sub という形式にすること"
 
-#: compose.c:1179
+#: compose.c:1251
 #, c-format
 msgid "Unknown Content-Type %s"
 msgstr "%s は不明な Content-Type"
 
-#: compose.c:1192
+#: compose.c:1264
 #, c-format
 msgid "Can't create file %s"
 msgstr "ファイル %s を作成できない"
 
-#: compose.c:1200
+#: compose.c:1272
 msgid "What we have here is a failure to make an attachment"
 msgstr "つまり添付ファイルの作成に失敗したということだ"
 
-#: compose.c:1260
+#: compose.c:1332
 msgid "Postpone this message?"
 msgstr "このメッセージを書きかけで保留?"
 
-#: compose.c:1324
+#: compose.c:1396
 msgid "Write message to mailbox"
 msgstr "メッセージをメールボックスに書き込む"
 
-#: compose.c:1327
+#: compose.c:1399
 #, c-format
 msgid "Writing message to %s ..."
 msgstr "メッセージを %s に書き込み中..."
 
-#: compose.c:1336
+#: compose.c:1408
 msgid "Message written."
 msgstr "メッセージは書き込まれた。"
 
-#: compose.c:1350
+#: compose.c:1422
 msgid "S/MIME already selected. Clear & continue ? "
 msgstr "S/MIME が既に選択されている。解除して継続?"
 
-#: compose.c:1383
+#: compose.c:1455
 msgid "PGP already selected. Clear & continue ? "
 msgstr "PGP が既に選択されている。解除して継続?"
 
@@ -869,7 +928,7 @@ msgstr "データオブジェクト巻き戻しエラー: %s\n"
 msgid "error reading data object: %s\n"
 msgstr "データオブジェクト読み出しエラー: %s\n"
 
-#: crypt-gpgme.c:573 crypt-gpgme.c:3640 pgpkey.c:560 pgpkey.c:740
+#: crypt-gpgme.c:573 crypt-gpgme.c:3702 pgpkey.c:560 pgpkey.c:740
 msgid "Can't create temporary file"
 msgstr "一時ファイルを作成できない"
 
@@ -956,8 +1015,7 @@ msgstr "警告: PKA エントリが署名者アドレスと一致しない: "
 msgid "PKA verified signer's address is: "
 msgstr "PKA で検証された署名者アドレス: "
 
-#. L10N: DOTFILL
-#: crypt-gpgme.c:1264 crypt-gpgme.c:3474
+#: crypt-gpgme.c:1264 crypt-gpgme.c:3395
 msgid "Fingerprint: "
 msgstr "フィンガープリント: "
 
@@ -977,7 +1035,7 @@ msgid ""
 "above\n"
 msgstr "警告: この鍵が確実に上記の人物のものだとは言えない\n"
 
-#: crypt-gpgme.c:1365 crypt-gpgme.c:1370
+#: crypt-gpgme.c:1365 crypt-gpgme.c:1370 crypt-gpgme.c:3390
 msgid "aka: "
 msgstr "別名: "
 
@@ -1061,7 +1119,7 @@ msgstr "エラー: 復号化/検証が失敗した: %s\n"
 msgid "Error: copy data failed\n"
 msgstr "エラー: データのコピーに失敗した\n"
 
-#: crypt-gpgme.c:2517 pgp.c:519
+#: crypt-gpgme.c:2517 pgp.c:522
 msgid ""
 "[-- BEGIN PGP MESSAGE --]\n"
 "\n"
@@ -1069,11 +1127,11 @@ msgstr ""
 "[-- PGP メッセージ開始 --]\n"
 "\n"
 
-#: crypt-gpgme.c:2519 pgp.c:521
+#: crypt-gpgme.c:2519 pgp.c:524
 msgid "[-- BEGIN PGP PUBLIC KEY BLOCK --]\n"
 msgstr "[-- PGP 公開鍵ブロック開始 --]\n"
 
-#: crypt-gpgme.c:2522 pgp.c:523
+#: crypt-gpgme.c:2522 pgp.c:526
 msgid ""
 "[-- BEGIN PGP SIGNED MESSAGE --]\n"
 "\n"
@@ -1081,19 +1139,19 @@ msgstr ""
 "[-- PGP 署名メッセージ開始 --]\n"
 "\n"
 
-#: crypt-gpgme.c:2549 pgp.c:566
+#: crypt-gpgme.c:2549 pgp.c:569
 msgid "[-- END PGP MESSAGE --]\n"
 msgstr "[-- PGPメッセージ終了 --]\n"
 
-#: crypt-gpgme.c:2551 pgp.c:573
+#: crypt-gpgme.c:2551 pgp.c:576
 msgid "[-- END PGP PUBLIC KEY BLOCK --]\n"
 msgstr "[-- PGP 公開鍵ブロック終了 --]\n"
 
-#: crypt-gpgme.c:2553 pgp.c:575
+#: crypt-gpgme.c:2553 pgp.c:578
 msgid "[-- END PGP SIGNED MESSAGE --]\n"
 msgstr "[-- PGP 署名メッセージ終了 --]\n"
 
-#: crypt-gpgme.c:2576 pgp.c:608
+#: crypt-gpgme.c:2576 pgp.c:611
 msgid ""
 "[-- Error: could not find beginning of PGP message! --]\n"
 "\n"
@@ -1101,7 +1159,7 @@ msgstr ""
 "[-- エラー: PGP メッセージの開始点を発見できなかった! --]\n"
 "\n"
 
-#: crypt-gpgme.c:2607 crypt-gpgme.c:2680 pgp.c:1091
+#: crypt-gpgme.c:2607 crypt-gpgme.c:2680 pgp.c:1094
 msgid "[-- Error: could not create temporary file! --]\n"
 msgstr "[-- エラー: 一時ファイルを作成できなかった! --]\n"
 
@@ -1113,7 +1171,7 @@ msgstr ""
 "[-- 以下のデータは PGP/MIME で署名および暗号化されている --]\n"
 "\n"
 
-#: crypt-gpgme.c:2620 pgp.c:1100
+#: crypt-gpgme.c:2620 pgp.c:1103
 msgid ""
 "[-- The following data is PGP/MIME encrypted --]\n"
 "\n"
@@ -1125,15 +1183,15 @@ msgstr ""
 msgid "[-- End of PGP/MIME signed and encrypted data --]\n"
 msgstr "[-- PGP/MIME 署名および暗号化データ終了 --]\n"
 
-#: crypt-gpgme.c:2643 pgp.c:1120
+#: crypt-gpgme.c:2643 pgp.c:1123
 msgid "[-- End of PGP/MIME encrypted data --]\n"
 msgstr "[-- PGP/MIME 暗号化データ終了 --]\n"
 
-#: crypt-gpgme.c:2648 pgp.c:570 pgp.c:1125
+#: crypt-gpgme.c:2648 pgp.c:573 pgp.c:1128
 msgid "PGP message successfully decrypted."
 msgstr "PGP メッセージの復号化に成功した。"
 
-#: crypt-gpgme.c:2652 pgp.c:505 pgp.c:568 pgp.c:1129
+#: crypt-gpgme.c:2652 pgp.c:508 pgp.c:571 pgp.c:1132
 msgid "Could not decrypt PGP message"
 msgstr "PGP メッセージを復号化できなかった"
 
@@ -1173,158 +1231,153 @@ msgstr "[このユーザ ID は表示できない (文字コードが不正)]"
 msgid "[Can't display this user ID (invalid DN)]"
 msgstr "[このユーザ ID は表示できない (DN が不正)]"
 
-# "シリアル番号" == 全角 6 文字
-# "フィンガープリント" == 全角 9 文字
 #. L10N:
-#. Fill dots to make the DOTFILL entries the same length.
-#. In English, msgid "Fingerprint: " is the longest entry for this menu.
-#. Your language may vary.
-#: crypt-gpgme.c:3395
-msgid " aka ......: "
-msgstr " 別名 ............: "
+#. * The following are the headers for the "verify key" output from the
+#. * GPGME key selection menu (bound to "c" in the key selection menu).
+#. * They will be automatically aligned.
+#: crypt-gpgme.c:3389
+msgid "Name: "
+msgstr "名前: "
 
-#: crypt-gpgme.c:3395
-msgid "Name ......: "
-msgstr "名前 .............: "
+#: crypt-gpgme.c:3391
+msgid "Valid From: "
+msgstr "発効期日: "
 
-#: crypt-gpgme.c:3398 crypt-gpgme.c:3545
+#: crypt-gpgme.c:3392
+msgid "Valid To: "
+msgstr "有効期限: "
+
+#: crypt-gpgme.c:3393
+msgid "Key Type: "
+msgstr "鍵種別: "
+
+#: crypt-gpgme.c:3394
+msgid "Key Usage: "
+msgstr "鍵能力: "
+
+#: crypt-gpgme.c:3396
+msgid "Serial-No: "
+msgstr "シリアル番号: "
+
+#: crypt-gpgme.c:3397
+msgid "Issued By: "
+msgstr "発行者: "
+
+#: crypt-gpgme.c:3398
+msgid "Subkey: "
+msgstr "副鍵: "
+
+#. L10N: comes after the Name or aka if the key is invalid
+#. L10N: describes a subkey
+#: crypt-gpgme.c:3449 crypt-gpgme.c:3604
 msgid "[Invalid]"
 msgstr "[不正]"
 
-#. L10N: DOTFILL
-#: crypt-gpgme.c:3419 crypt-gpgme.c:3570
+#. L10N: This is printed after "Key Type: " and looks like this:
+#. *       PGP, 2048 bit RSA
+#: crypt-gpgme.c:3501 crypt-gpgme.c:3660
 #, c-format
-msgid "Valid From : %s\n"
-msgstr "発効期日 .........: %s\n"
+msgid "%s, %lu bit %s\n"
+msgstr "%s, %lu ビット %s\n"
 
-#. L10N: DOTFILL
-#: crypt-gpgme.c:3433 crypt-gpgme.c:3584
-#, c-format
-msgid "Valid To ..: %s\n"
-msgstr "有効期限 .........: %s\n"
-
-#. L10N: DOTFILL
-#: crypt-gpgme.c:3447 crypt-gpgme.c:3598
-#, c-format
-msgid "Key Type ..: %s, %lu bit %s\n"
-msgstr "鍵種別 ...........: %s, %lu ビット %s\n"
-
-#. L10N: DOTFILL
-#: crypt-gpgme.c:3450 crypt-gpgme.c:3601
-#, c-format
-msgid "Key Usage .: "
-msgstr "鍵能力 ...........: "
-
-#: crypt-gpgme.c:3455 crypt-gpgme.c:3606
+#. L10N: value in Key Usage: field
+#: crypt-gpgme.c:3510 crypt-gpgme.c:3668
 msgid "encryption"
 msgstr "暗号化"
 
-#: crypt-gpgme.c:3456 crypt-gpgme.c:3461 crypt-gpgme.c:3466 crypt-gpgme.c:3607
-#: crypt-gpgme.c:3612 crypt-gpgme.c:3617
+#: crypt-gpgme.c:3511 crypt-gpgme.c:3517 crypt-gpgme.c:3523 crypt-gpgme.c:3669
+#: crypt-gpgme.c:3674 crypt-gpgme.c:3679
 msgid ", "
-msgstr "、"
+msgstr " + "
 
-#: crypt-gpgme.c:3460 crypt-gpgme.c:3611
+#. L10N: value in Key Usage: field
+#: crypt-gpgme.c:3516 crypt-gpgme.c:3673
 msgid "signing"
 msgstr "署名"
 
-#: crypt-gpgme.c:3465 crypt-gpgme.c:3616
+#. L10N: value in Key Usage: field
+#: crypt-gpgme.c:3522 crypt-gpgme.c:3678
 msgid "certification"
 msgstr "証明"
 
-#. L10N: DOTFILL
-#: crypt-gpgme.c:3507
-#, c-format
-msgid "Serial-No .: 0x%s\n"
-msgstr "シリアル番号 .....: 0x%s\n"
-
-#. L10N: DOTFILL
-#: crypt-gpgme.c:3516
-#, c-format
-msgid "Issued By .: "
-msgstr "発行者 ...........: "
-
-#. L10N: DOTFILL
-#: crypt-gpgme.c:3536
-#, c-format
-msgid "Subkey ....: 0x%s"
-msgstr "副鍵 .............: 0x%s"
-
-#: crypt-gpgme.c:3540
+#. L10N: describes a subkey
+#: crypt-gpgme.c:3598
 msgid "[Revoked]"
 msgstr "[廃棄済み]"
 
-#: crypt-gpgme.c:3550
+#. L10N: describes a subkey
+#: crypt-gpgme.c:3610
 msgid "[Expired]"
 msgstr "[期限切れ]"
 
-#: crypt-gpgme.c:3555
+#. L10N: describes a subkey
+#: crypt-gpgme.c:3616
 msgid "[Disabled]"
 msgstr "[使用不可]"
 
-#: crypt-gpgme.c:3643
+#: crypt-gpgme.c:3705
 msgid "Collecting data..."
 msgstr "データ収集中..."
 
-#: crypt-gpgme.c:3669
+#: crypt-gpgme.c:3731
 #, c-format
 msgid "Error finding issuer key: %s\n"
 msgstr "発行者鍵の取得エラー: %s\n"
 
-#: crypt-gpgme.c:3679
+#: crypt-gpgme.c:3741
 msgid "Error: certification chain too long - stopping here\n"
 msgstr "エラー: 証明書の連鎖が長すぎる - ここでやめておく\n"
 
-#: crypt-gpgme.c:3690 pgpkey.c:582
+#: crypt-gpgme.c:3752 pgpkey.c:582
 #, c-format
 msgid "Key ID: 0x%s"
 msgstr "鍵 ID: 0x%s"
 
-#: crypt-gpgme.c:3773
+#: crypt-gpgme.c:3835
 #, c-format
 msgid "gpgme_new failed: %s"
 msgstr "gpgme_new 失敗: %s"
 
-#: crypt-gpgme.c:3812 crypt-gpgme.c:3887
+#: crypt-gpgme.c:3874 crypt-gpgme.c:3949
 #, c-format
 msgid "gpgme_op_keylist_start failed: %s"
 msgstr "gpgme_op_keylist_start 失敗: %s"
 
-#: crypt-gpgme.c:3874 crypt-gpgme.c:3918
+#: crypt-gpgme.c:3936 crypt-gpgme.c:3980
 #, c-format
 msgid "gpgme_op_keylist_next failed: %s"
 msgstr "gpgme_op_keylist_next 失敗: %s"
 
-#: crypt-gpgme.c:3989
+#: crypt-gpgme.c:4051
 msgid "All matching keys are marked expired/revoked."
 msgstr "一致した鍵はすべて期限切れか廃棄済み。"
 
-#: crypt-gpgme.c:4018 mutt_ssl.c:1255 mutt_ssl_gnutls.c:1009 pgpkey.c:515
+#: crypt-gpgme.c:4080 mutt_ssl.c:1255 mutt_ssl_gnutls.c:1009 pgpkey.c:515
 #: smime.c:435
 msgid "Exit  "
 msgstr "終了  "
 
-#: crypt-gpgme.c:4020 pgpkey.c:517 smime.c:437
+#: crypt-gpgme.c:4082 pgpkey.c:517 smime.c:437
 msgid "Select  "
 msgstr "選択  "
 
-#: crypt-gpgme.c:4023 pgpkey.c:520
+#: crypt-gpgme.c:4085 pgpkey.c:520
 msgid "Check key  "
 msgstr "鍵検査  "
 
-#: crypt-gpgme.c:4040
+#: crypt-gpgme.c:4102
 msgid "PGP and S/MIME keys matching"
 msgstr "一致する PGP および S/MIME 鍵"
 
-#: crypt-gpgme.c:4042
+#: crypt-gpgme.c:4104
 msgid "PGP keys matching"
 msgstr "一致する PGP 鍵"
 
-#: crypt-gpgme.c:4044
+#: crypt-gpgme.c:4106
 msgid "S/MIME keys matching"
 msgstr "一致する S/MIME 鍵"
 
-#: crypt-gpgme.c:4046
+#: crypt-gpgme.c:4108
 msgid "keys matching"
 msgstr "一致する鍵"
 
@@ -1333,63 +1386,63 @@ msgstr "一致する鍵"
 #. %1$s is one of the previous four entries.
 #. %2$s is an address.
 #. e.g. "S/MIME keys matching <me@mutt.org>."
-#: crypt-gpgme.c:4053
+#: crypt-gpgme.c:4115
 #, c-format
 msgid "%s <%s>."
 msgstr "<%2$s> に%1$s。"
 
 #. L10N:
 #. e.g. 'S/MIME keys matching "Michael Elkins".'
-#: crypt-gpgme.c:4057
+#: crypt-gpgme.c:4119
 #, c-format
 msgid "%s \"%s\"."
 msgstr "「%2$s」に%1$s。"
 
-#: crypt-gpgme.c:4084 pgpkey.c:602
+#: crypt-gpgme.c:4146 pgpkey.c:602
 msgid "This key can't be used: expired/disabled/revoked."
 msgstr "この鍵は期限切れか使用不可か廃棄済みのため、使えない。"
 
-#: crypt-gpgme.c:4098 pgpkey.c:614 smime.c:468
+#: crypt-gpgme.c:4160 pgpkey.c:614 smime.c:468
 msgid "ID is expired/disabled/revoked."
 msgstr "ID は期限切れか使用不可か廃棄済み。"
 
-#: crypt-gpgme.c:4106 pgpkey.c:618 smime.c:471
+#: crypt-gpgme.c:4168 pgpkey.c:618 smime.c:471
 msgid "ID has undefined validity."
 msgstr "ID は信用度が未定義。"
 
-#: crypt-gpgme.c:4109 pgpkey.c:621
+#: crypt-gpgme.c:4171 pgpkey.c:621
 msgid "ID is not valid."
 msgstr "ID は信用されていない。"
 
-#: crypt-gpgme.c:4112 pgpkey.c:624
+#: crypt-gpgme.c:4174 pgpkey.c:624
 msgid "ID is only marginally valid."
 msgstr "ID はかろうじて信用されている。"
 
-#: crypt-gpgme.c:4121 pgpkey.c:628 smime.c:478
+#: crypt-gpgme.c:4183 pgpkey.c:628 smime.c:478
 #, c-format
 msgid "%s Do you really want to use the key?"
 msgstr "%s 本当にこの鍵を使用?"
 
-#: crypt-gpgme.c:4181 crypt-gpgme.c:4315 pgpkey.c:838 pgpkey.c:965
+#: crypt-gpgme.c:4238 crypt-gpgme.c:4354 pgpkey.c:838 pgpkey.c:965
 #, c-format
 msgid "Looking for keys matching \"%s\"..."
 msgstr "\"%s\" に一致する鍵を検索中..."
 
-#: crypt-gpgme.c:4470 pgp.c:1304
+#: crypt-gpgme.c:4509 pgp.c:1307
 #, c-format
 msgid "Use keyID = \"%s\" for %s?"
 msgstr "鍵 ID = \"%s\" を %s に使う?"
 
-#: crypt-gpgme.c:4528 pgp.c:1353 smime.c:797 smime.c:903
+#: crypt-gpgme.c:4567 pgp.c:1356 smime.c:797 smime.c:903
 #, c-format
 msgid "Enter keyID for %s: "
 msgstr "%s の鍵 ID 入力: "
 
-#: crypt-gpgme.c:4605 pgpkey.c:725
+#: crypt-gpgme.c:4644 pgpkey.c:725
 msgid "Please enter the key ID: "
 msgstr "鍵 ID を入力: "
 
-#: crypt-gpgme.c:4618
+#: crypt-gpgme.c:4657
 #, c-format
 msgid "Error exporting key: %s\n"
 msgstr "鍵の抽出エラー: %s\n"
@@ -1399,20 +1452,20 @@ msgstr "鍵の抽出エラー: %s\n"
 #. MIME description for exported (attached) keys.
 #. You can translate this entry to a non-ASCII string (it will be encoded),
 #. but it may be safer to keep it untranslated.
-#: crypt-gpgme.c:4638
+#: crypt-gpgme.c:4677
 #, c-format
 msgid "PGP Key 0x%s."
 msgstr "PGP Key 0x%s."
 
-#: crypt-gpgme.c:4680
+#: crypt-gpgme.c:4719
 msgid "GPGME: OpenPGP protocol not available"
 msgstr "GPGME: OpenPGP プロトコルが利用できない"
 
-#: crypt-gpgme.c:4688
+#: crypt-gpgme.c:4727
 msgid "GPGME: CMS protocol not available"
 msgstr "GPGME: CMS プロトコルが利用できない"
 
-#: crypt-gpgme.c:4725
+#: crypt-gpgme.c:4764
 msgid "S/MIME (s)ign, sign (a)s, (p)gp, (c)lear, or (o)ppenc mode off? "
 msgstr "S/MIME s:署名, a:署名鍵選択, p:PGP, c:なし, o:日和見暗号オフ "
 
@@ -1420,20 +1473,20 @@ msgstr "S/MIME s:署名, a:署名鍵選択, p:PGP, c:なし, o:日和見暗号�
 #. 'clear'.  Please use a corresponding letter in your language.
 #. Alternatively, you may duplicate the letter 'c' is translated to.
 #. This comment also applies to the five following letter sequences.
-#: crypt-gpgme.c:4730
+#: crypt-gpgme.c:4769
 msgid "sapfco"
 msgstr "sapfco"
 
-#: crypt-gpgme.c:4735
+#: crypt-gpgme.c:4774
 msgid "PGP (s)ign, sign (a)s, s/(m)ime, (c)lear, or (o)ppenc mode off? "
 msgstr "PGP s:署名, a:署名鍵選択, m:S/MIME, c:なし, o:日和見暗号オフ "
 
-#: crypt-gpgme.c:4736
+#: crypt-gpgme.c:4775
 msgid "samfco"
 msgstr "samfco"
 
 # 80-columns 幅にギリギリおさまるか？
-#: crypt-gpgme.c:4748
+#: crypt-gpgme.c:4787
 msgid ""
 "S/MIME (e)ncrypt, (s)ign, sign (a)s, (b)oth, (p)gp, (c)lear, or (o)ppenc "
 "mode? "
@@ -1441,11 +1494,11 @@ msgstr ""
 "S/MIME e:暗号化, s:署名, a:署名鍵選択, b:暗号+署名, p:PGP, c:なし, o:日和見暗"
 "号 "
 
-#: crypt-gpgme.c:4749
+#: crypt-gpgme.c:4788
 msgid "esabpfco"
 msgstr "esabpfco"
 
-#: crypt-gpgme.c:4754
+#: crypt-gpgme.c:4793
 msgid ""
 "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, s/(m)ime, (c)lear, or (o)ppenc "
 "mode? "
@@ -1453,35 +1506,31 @@ msgstr ""
 "PGP e:暗号化, s:署名, a:署名鍵選択, b:暗号+署名, m:S/MIME, c:なし, o:日和見暗"
 "号 "
 
-#: crypt-gpgme.c:4755
+#: crypt-gpgme.c:4794
 msgid "esabmfco"
 msgstr "esabmfco"
 
-#: crypt-gpgme.c:4766
+#: crypt-gpgme.c:4805
 msgid "S/MIME (e)ncrypt, (s)ign, sign (a)s, (b)oth, (p)gp or (c)lear? "
 msgstr "S/MIME e:暗号化, s:署名, a:署名鍵選択, b:暗号+署名, p:PGP, c:なし "
 
-#: crypt-gpgme.c:4767
+#: crypt-gpgme.c:4806
 msgid "esabpfc"
 msgstr "esabpfc"
 
-#: crypt-gpgme.c:4772
+#: crypt-gpgme.c:4811
 msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, s/(m)ime or (c)lear? "
 msgstr "PGP e:暗号化, s:署名, a:署名鍵選択, b:暗号+署名, m:S/MIME, c:なし "
 
-#: crypt-gpgme.c:4773
+#: crypt-gpgme.c:4812
 msgid "esabmfc"
 msgstr "esabmfc"
 
-#: crypt-gpgme.c:4798 pgp.c:1818 smime.c:2222 smime.c:2237
-msgid "Sign as: "
-msgstr "署名に使う鍵: "
-
-#: crypt-gpgme.c:4932
+#: crypt-gpgme.c:4971
 msgid "Failed to verify sender"
 msgstr "送信者の検証に失敗した"
 
-#: crypt-gpgme.c:4935
+#: crypt-gpgme.c:4974
 msgid "Failed to figure out sender"
 msgstr "送信者の識別に失敗した"
 
@@ -1616,7 +1665,7 @@ msgstr "続けるには何かキーを..."
 msgid " ('?' for list): "
 msgstr "('?' で一覧): "
 
-#: curs_main.c:57 curs_main.c:718 curs_main.c:748
+#: curs_main.c:57 curs_main.c:742
 msgid "No mailbox is open."
 msgstr "開いているメールボックスがない。"
 
@@ -1675,220 +1724,220 @@ msgid "Group"
 msgstr "全員に返信"
 
 # 「不正な可能性あり」だと重大なことのように思えてしまうので変更した。
-#: curs_main.c:629
+#: curs_main.c:633
 msgid "Mailbox was externally modified.  Flags may be wrong."
 msgstr "メールボックスが外部から変更された。フラグが正確でないかもしれない。"
 
-#: curs_main.c:632
+#: curs_main.c:636
 msgid "New mail in this mailbox."
 msgstr "このメールボックスに新着メール。"
 
-#: curs_main.c:636
+#: curs_main.c:640
 msgid "Mailbox was externally modified."
 msgstr "メールボックスが外部から変更された。"
 
-#: curs_main.c:724
+#: curs_main.c:749
 msgid "No tagged messages."
 msgstr "タグ付きメッセージがない。"
 
-#: curs_main.c:755 menu.c:1028
+#: curs_main.c:753 menu.c:1043
 msgid "Nothing to do."
 msgstr "何もしない。"
 
-#: curs_main.c:841
+#: curs_main.c:833
 msgid "Jump to message: "
 msgstr "メッセージ番号を指定: "
 
-#: curs_main.c:854
+#: curs_main.c:846
 msgid "Argument must be a message number."
 msgstr "引数はメッセージ番号でなければならない。"
 
-#: curs_main.c:886
+#: curs_main.c:878
 msgid "That message is not visible."
 msgstr "そのメッセージは可視ではない。"
 
-#: curs_main.c:889
+#: curs_main.c:881
 msgid "Invalid message number."
 msgstr "不正なメッセージ番号。"
 
 #. L10N: CHECK_ACL
-#: curs_main.c:903 curs_main.c:2039 pager.c:2532
+#: curs_main.c:895 curs_main.c:2031 pager.c:2532
 msgid "Cannot delete message(s)"
 msgstr "メッセージを削除できない"
 
-#: curs_main.c:906
+#: curs_main.c:898
 msgid "Delete messages matching: "
 msgstr "メッセージを削除するためのパターン: "
 
-#: curs_main.c:928
+#: curs_main.c:920
 msgid "No limit pattern is in effect."
 msgstr "現在有効な制限パターンはない。"
 
 #. L10N: ask for a limit to apply
-#: curs_main.c:933
+#: curs_main.c:925
 #, c-format
 msgid "Limit: %s"
 msgstr "制限パターン: %s"
 
-#: curs_main.c:943
+#: curs_main.c:935
 msgid "Limit to messages matching: "
 msgstr "メッセージの表示を制限するパターン: "
 
-#: curs_main.c:964
+#: curs_main.c:956
 msgid "To view all messages, limit to \"all\"."
 msgstr "メッセージをすべて見るには制限を \"all\" にする。"
 
-#: curs_main.c:976 pager.c:2069
+#: curs_main.c:968 pager.c:2069
 msgid "Quit Mutt?"
 msgstr "Mutt を中止?"
 
-#: curs_main.c:1066
+#: curs_main.c:1058
 msgid "Tag messages matching: "
 msgstr "メッセージにタグを付けるためのパターン: "
 
 #. L10N: CHECK_ACL
-#: curs_main.c:1076 curs_main.c:2390 pager.c:2787
+#: curs_main.c:1068 curs_main.c:2382 pager.c:2787
 msgid "Cannot undelete message(s)"
 msgstr "メッセージの削除状態を解除できない"
 
-#: curs_main.c:1078
+#: curs_main.c:1070
 msgid "Undelete messages matching: "
 msgstr "メッセージの削除を解除するためのパターン: "
 
-#: curs_main.c:1086
+#: curs_main.c:1078
 msgid "Untag messages matching: "
 msgstr "メッセージのタグを外すためのパターン: "
 
-#: curs_main.c:1112
+#: curs_main.c:1104
 msgid "Logged out of IMAP servers."
 msgstr "IMAP サーバからログアウトした。"
 
-#: curs_main.c:1197
+#: curs_main.c:1189
 msgid "Open mailbox in read-only mode"
 msgstr "読み出し専用モードでメールボックスをオープン"
 
-#: curs_main.c:1199
+#: curs_main.c:1191
 msgid "Open mailbox"
 msgstr "メールボックスをオープン"
 
-#: curs_main.c:1209
+#: curs_main.c:1201
 msgid "No mailboxes have new mail"
 msgstr "新着メールのあるメールボックスはない"
 
-#: curs_main.c:1246 mx.c:516 mx.c:614
+#: curs_main.c:1238 mx.c:516 mx.c:614
 #, c-format
 msgid "%s is not a mailbox."
 msgstr "%s はメールボックスではない。"
 
-#: curs_main.c:1369
+#: curs_main.c:1361
 msgid "Exit Mutt without saving?"
 msgstr "保存しないで Mutt を抜ける?"
 
-#: curs_main.c:1387 curs_main.c:1423 curs_main.c:1883 curs_main.c:1915
+#: curs_main.c:1379 curs_main.c:1415 curs_main.c:1875 curs_main.c:1907
 #: flags.c:303 thread.c:1025 thread.c:1081 thread.c:1148
 msgid "Threading is not enabled."
 msgstr "スレッド表示が有効になっていない。"
 
-#: curs_main.c:1399
+#: curs_main.c:1391
 msgid "Thread broken"
 msgstr "スレッドが外された"
 
-#: curs_main.c:1410
+#: curs_main.c:1402
 msgid "Thread cannot be broken, message is not part of a thread"
 msgstr "スレッドを外せない。メッセージがスレッドの一部ではない"
 
 #. L10N: CHECK_ACL
-#: curs_main.c:1420
+#: curs_main.c:1412
 msgid "Cannot link threads"
 msgstr "スレッドをつなげられない"
 
-#: curs_main.c:1425
+#: curs_main.c:1417
 msgid "No Message-ID: header available to link thread"
 msgstr "Message-ID ヘッダが利用できないのでスレッドをつなげられない"
 
-#: curs_main.c:1427
+#: curs_main.c:1419
 msgid "First, please tag a message to be linked here"
 msgstr "その前に、ここへつなげたいメッセージにタグを付けておくこと"
 
-#: curs_main.c:1439
+#: curs_main.c:1431
 msgid "Threads linked"
 msgstr "スレッドがつながった"
 
-#: curs_main.c:1442
+#: curs_main.c:1434
 msgid "No thread linked"
 msgstr "スレッドはつながらなかった"
 
-#: curs_main.c:1478 curs_main.c:1503
+#: curs_main.c:1470 curs_main.c:1495
 msgid "You are on the last message."
 msgstr "すでに最後のメッセージ。"
 
-#: curs_main.c:1485 curs_main.c:1529
+#: curs_main.c:1477 curs_main.c:1521
 msgid "No undeleted messages."
 msgstr "未削除メッセージがない。"
 
-#: curs_main.c:1522 curs_main.c:1546
+#: curs_main.c:1514 curs_main.c:1538
 msgid "You are on the first message."
 msgstr "すでに最初のメッセージ。"
 
-#: curs_main.c:1621 menu.c:867 pager.c:2187 pattern.c:1575
+#: curs_main.c:1613 menu.c:867 pager.c:2187 pattern.c:1575
 msgid "Search wrapped to top."
 msgstr "検索は一番上に戻った。"
 
-#: curs_main.c:1630 pager.c:2209 pattern.c:1586
+#: curs_main.c:1622 pager.c:2209 pattern.c:1586
 msgid "Search wrapped to bottom."
 msgstr "検索は一番下に戻った。"
 
-#: curs_main.c:1674
+#: curs_main.c:1666
 msgid "No new messages in this limited view."
 msgstr "この制限された表示範囲には新着メッセージがない。"
 
-#: curs_main.c:1676
+#: curs_main.c:1668
 msgid "No new messages."
 msgstr "新着メッセージがない。"
 
-#: curs_main.c:1681
+#: curs_main.c:1673
 msgid "No unread messages in this limited view."
 msgstr "この制限された表示範囲には未読メッセージがない。"
 
-#: curs_main.c:1683
+#: curs_main.c:1675
 msgid "No unread messages."
 msgstr "未読メッセージがない。"
 
 #. L10N: CHECK_ACL
-#: curs_main.c:1701
+#: curs_main.c:1693
 msgid "Cannot flag message"
 msgstr "メッセージにフラグを設定できない"
 
 #. L10N: CHECK_ACL
-#: curs_main.c:1739 pager.c:2750
+#: curs_main.c:1731 pager.c:2750
 msgid "Cannot toggle new"
 msgstr "新着フラグを切替できない"
 
-#: curs_main.c:1816
+#: curs_main.c:1808
 msgid "No more threads."
 msgstr "もうスレッドがない。"
 
-#: curs_main.c:1818
+#: curs_main.c:1810
 msgid "You are on the first thread."
 msgstr "すでに最初のスレッド。"
 
-#: curs_main.c:1901
+#: curs_main.c:1893
 msgid "Thread contains unread messages."
 msgstr "スレッド中に未読メッセージがある。"
 
 #. L10N: CHECK_ACL
-#: curs_main.c:1995 pager.c:2499
+#: curs_main.c:1987 pager.c:2499
 msgid "Cannot delete message"
 msgstr "メッセージを削除できない"
 
 #. L10N: CHECK_ACL
-#: curs_main.c:2076
+#: curs_main.c:2068
 msgid "Cannot edit message"
 msgstr "メッセージを編集できない"
 
 #. L10N: This is displayed when the x-label on one or more
 #. * messages is edited.
-#: curs_main.c:2122 pager.c:2838
+#: curs_main.c:2114 pager.c:2838
 #, c-format
 msgid "%d labels changed."
 msgstr "%d 個のラベルが変更された。"
@@ -1896,12 +1945,12 @@ msgstr "%d 個のラベルが変更された。"
 #. L10N: This is displayed when editing an x-label, but no messages
 #. * were updated.  Possibly due to canceling at the prompt or if the new
 #. * label is the same as the old label.
-#: curs_main.c:2128 pager.c:2841
+#: curs_main.c:2120 pager.c:2841
 msgid "No labels changed."
 msgstr "ラベルは変更されなかった。"
 
 #. L10N: CHECK_ACL
-#: curs_main.c:2227
+#: curs_main.c:2219
 msgid "Cannot mark message(s) as read"
 msgstr "メッセージを既読にマークできない"
 
@@ -1909,32 +1958,32 @@ msgstr "メッセージを既読にマークできない"
 #. L10N: This is the prompt for <mark-message>.  Whatever they
 #. enter will be prefixed by $mark_macro_prefix and will become
 #. a macro hotkey to jump to the currently selected message.
-#: curs_main.c:2263
+#: curs_main.c:2255
 msgid "Enter macro stroke: "
 msgstr "マクロ名を入力: "
 
 #. L10N: "message hotkey" is the key bindings menu description of a
 #. macro created by <mark-message>.
-#: curs_main.c:2271
+#: curs_main.c:2263
 msgid "message hotkey"
 msgstr "(mark-message キー)"
 
 #. L10N: This is echoed after <mark-message> creates a new hotkey
 #. macro.  %s is the hotkey string ($mark_macro_prefix followed
 #. by whatever they typed at the prompt.)
-#: curs_main.c:2276
+#: curs_main.c:2268
 #, c-format
 msgid "Message bound to %s."
 msgstr "メッセージは %s に割り当てられた。"
 
 #. L10N: This error is printed if <mark-message> cannot find a
 #. Message-ID for the currently selected message in the index.
-#: curs_main.c:2284
+#: curs_main.c:2276
 msgid "No message ID to macro."
 msgstr "マクロ化するための Message-ID がない。"
 
 #. L10N: CHECK_ACL
-#: curs_main.c:2360 pager.c:2770
+#: curs_main.c:2352 pager.c:2770
 msgid "Cannot undelete message"
 msgstr "メッセージの削除状態を解除できない"
 
@@ -2242,7 +2291,6 @@ msgid "badly formatted command string"
 msgstr "不適切なコマンド文字列"
 
 #: hook.c:279
-#, c-format
 msgid "unhook: Can't do unhook * from within a hook."
 msgstr "unhook: フック内からは unhook * できない"
 
@@ -2503,7 +2551,6 @@ msgid "Continue?"
 msgstr "継続?"
 
 #: init.c:60 init.c:2114 pager.c:54
-#, c-format
 msgid "Not available in this menu."
 msgstr "このメニューでは利用できない。"
 
@@ -2514,7 +2561,6 @@ msgstr "不正な正規表現: %s"
 
 # 前の引数で (...) と括弧でくくった部分を後の引数で %1 や %2 として参照するやつ
 #: init.c:527
-#, c-format
 msgid "Not enough subexpressions for template"
 msgstr "テンプレートに括弧が足りない"
 
@@ -2590,17 +2636,14 @@ msgid "%s: unknown variable"
 msgstr "%s は不明な変数"
 
 #: init.c:2100
-#, c-format
 msgid "prefix is illegal with reset"
 msgstr "reset と共に使う接頭辞が不正"
 
 #: init.c:2106
-#, c-format
 msgid "value is illegal with reset"
 msgstr "reset と共に使う値が不正"
 
 #: init.c:2141 init.c:2153
-#, c-format
 msgid "Usage: set variable=yes|no"
 msgstr "使用法: set 変数=yes|no"
 
@@ -2701,67 +2744,67 @@ msgstr "-group: グループ名がない"
 msgid "out of arguments"
 msgstr "引数が少なすぎる"
 
-#: keymap.c:538
+#: keymap.c:539
 msgid "Macros are currently disabled."
 msgstr "マクロは現在無効。"
 
-#: keymap.c:545
+#: keymap.c:546
 msgid "Macro loop detected."
 msgstr "マクロのループが検出された。"
 
-#: keymap.c:847 keymap.c:882
+#: keymap.c:848 keymap.c:883
 msgid "Key is not bound."
 msgstr "キーはバインドされていない。"
 
-#: keymap.c:887
+#: keymap.c:888
 #, c-format
 msgid "Key is not bound.  Press '%s' for help."
 msgstr "キーはバインドされていない。'%s' を押すとヘルプ"
 
-#: keymap.c:898
+#: keymap.c:899
 msgid "push: too many arguments"
 msgstr "push: 引数が多すぎる"
 
-#: keymap.c:928
+#: keymap.c:929
 #, c-format
 msgid "%s: no such menu"
 msgstr "%s というメニューはない"
 
-#: keymap.c:943
+#: keymap.c:944
 msgid "null key sequence"
 msgstr "キーシーケンスがない"
 
-#: keymap.c:1030
+#: keymap.c:1031
 msgid "bind: too many arguments"
 msgstr "bind: 引数が多すぎる"
 
-#: keymap.c:1053
+#: keymap.c:1054
 #, c-format
 msgid "%s: no such function in map"
 msgstr "%s という機能はマップ中にない"
 
-#: keymap.c:1077
+#: keymap.c:1078
 msgid "macro: empty key sequence"
 msgstr "macro: キーシーケンスがない"
 
-#: keymap.c:1088
+#: keymap.c:1089
 msgid "macro: too many arguments"
 msgstr "macro: 引数が多すぎる"
 
-#: keymap.c:1124
+#: keymap.c:1125
 msgid "exec: no arguments"
 msgstr "exec: 引数がない"
 
-#: keymap.c:1144
+#: keymap.c:1145
 #, c-format
 msgid "%s: no such function"
 msgstr "%s という機能はない"
 
-#: keymap.c:1165
+#: keymap.c:1166
 msgid "Enter keys (^G to abort): "
 msgstr "キーを押すと開始 (終了は ^G): "
 
-#: keymap.c:1170
+#: keymap.c:1171
 #, c-format
 msgid "Char = %s, Octal = %o, Decimal = %d"
 msgstr "文字 = %s, 8進 = %o, 10進 = %d"
@@ -2943,56 +2986,56 @@ msgstr ""
 msgid "Error initializing terminal."
 msgstr "端末初期化エラー"
 
-#: main.c:697
+#: main.c:703
 #, c-format
 msgid "Error: value '%s' is invalid for -d.\n"
 msgstr "エラー: 値 '%s' は -d には不正。\n"
 
-#: main.c:700
+#: main.c:706
 #, c-format
 msgid "Debugging at level %d.\n"
 msgstr "レベル %d でデバッグ中。\n"
 
-#: main.c:702
+#: main.c:708
 msgid "DEBUG was not defined during compilation.  Ignored.\n"
 msgstr "DEBUG がコンパイル時に定義されていなかった。無視する。\n"
 
-#: main.c:880
+#: main.c:886
 #, c-format
 msgid "%s does not exist. Create it?"
 msgstr "%s が存在しない。作成?"
 
-#: main.c:884
+#: main.c:890
 #, c-format
 msgid "Can't create %s: %s."
 msgstr "%s が %s のために作成できない。"
 
-#: main.c:924
+#: main.c:930
 msgid "Failed to parse mailto: link\n"
 msgstr "\"mailto:\" リンクの解析に失敗\n"
 
-#: main.c:936
+#: main.c:942
 msgid "No recipients specified.\n"
 msgstr "受信者が指定されていない。\n"
 
-#: main.c:962
+#: main.c:968
 msgid "Cannot use -E flag with stdin\n"
 msgstr "標準入力には -E フラグを使用できない\n"
 
-#: main.c:1115
+#: main.c:1121
 #, c-format
 msgid "%s: unable to attach file.\n"
 msgstr "%s: ファイルを添付できない。\n"
 
-#: main.c:1196
+#: main.c:1202
 msgid "No mailbox with new mail."
 msgstr "新着メールのあるメールボックスはない。"
 
-#: main.c:1205
+#: main.c:1211
 msgid "No incoming mailboxes defined."
 msgstr "到着用メールボックスが未定義。"
 
-#: main.c:1233
+#: main.c:1239
 msgid "Mailbox is empty."
 msgstr "メールボックスが空。"
 
@@ -3058,7 +3101,7 @@ msgid "Invalid index number."
 msgstr "不正なインデックス番号。"
 
 #: menu.c:448 menu.c:469 menu.c:534 menu.c:577 menu.c:593 menu.c:604 menu.c:615
-#: menu.c:626 menu.c:639 menu.c:652 menu.c:1157
+#: menu.c:626 menu.c:639 menu.c:652 menu.c:1174
 msgid "No entries."
 msgstr "エントリがない。"
 
@@ -3098,19 +3141,19 @@ msgstr "逆順検索パターン: "
 msgid "Not found."
 msgstr "見つからなかった。"
 
-#: menu.c:1022
+#: menu.c:1037
 msgid "No tagged entries."
 msgstr "タグ付きエントリがない。"
 
-#: menu.c:1121
+#: menu.c:1138
 msgid "Search is not implemented for this menu."
 msgstr "このメニューでは検索機能が実装されていない。"
 
-#: menu.c:1126
+#: menu.c:1143
 msgid "Jumping is not implemented for dialogs."
 msgstr "ジャンプ機能はダイアログでは実装されていない。"
 
-#: menu.c:1160
+#: menu.c:1177
 msgid "Tagging is not supported."
 msgstr "タグ付け機能がサポートされていない。"
 
@@ -3622,7 +3665,6 @@ msgid "Error in expression: %s"
 msgstr "右記の式中にエラー: %s"
 
 #: pattern.c:271 pattern.c:591
-#, c-format
 msgid "Empty expression"
 msgstr "空の正規表現"
 
@@ -3667,7 +3709,6 @@ msgid "%c: not supported in this mode"
 msgstr "%c はこのモードではサポートされていない"
 
 #: pattern.c:934
-#, c-format
 msgid "missing parameter"
 msgstr "パラメータがない"
 
@@ -3721,11 +3762,11 @@ msgstr "PGP パスフレーズ入力:"
 msgid "PGP passphrase forgotten."
 msgstr "PGP パスフレーズがメモリから消去された。"
 
-#: pgp.c:449
+#: pgp.c:452
 msgid "[-- Error: unable to create PGP subprocess! --]\n"
 msgstr "[-- エラー: PGP 子プロセスを作成できなかった! --]\n"
 
-#: pgp.c:483 pgp.c:752 pgp.c:964
+#: pgp.c:486 pgp.c:755 pgp.c:967
 msgid ""
 "[-- End of PGP output --]\n"
 "\n"
@@ -3733,11 +3774,11 @@ msgstr ""
 "[-- PGP 出力終了 --]\n"
 "\n"
 
-#: pgp.c:860
+#: pgp.c:863
 msgid "Internal error.  Please submit a bug report."
 msgstr "内部エラー。バグレポートを提出せよ。"
 
-#: pgp.c:921
+#: pgp.c:924
 msgid ""
 "[-- Error: could not create a PGP subprocess! --]\n"
 "\n"
@@ -3745,28 +3786,28 @@ msgstr ""
 "[-- エラー: PGP 子プロセスを作成できなかった! --]\n"
 "\n"
 
-#: pgp.c:952 pgp.c:976
+#: pgp.c:955 pgp.c:979
 msgid "Decryption failed"
 msgstr "復号化に失敗した"
 
-#: pgp.c:1182
+#: pgp.c:1185
 msgid "Can't open PGP subprocess!"
 msgstr "PGP 子プロセスをオープンできない!"
 
-#: pgp.c:1616
+#: pgp.c:1619
 msgid "Can't invoke PGP"
 msgstr "PGP 起動できない"
 
-#: pgp.c:1730
+#: pgp.c:1733
 #, c-format
 msgid "PGP (s)ign, sign (a)s, %s format, (c)lear, or (o)ppenc mode off? "
 msgstr "PGP s:署名, a:署名鍵選択, %s形式, c:なし, o:日和見暗号オフ "
 
-#: pgp.c:1731 pgp.c:1761 pgp.c:1783
+#: pgp.c:1734 pgp.c:1764 pgp.c:1786
 msgid "PGP/M(i)ME"
 msgstr "i:PGP/MIME"
 
-#: pgp.c:1731 pgp.c:1761 pgp.c:1783
+#: pgp.c:1734 pgp.c:1764 pgp.c:1786
 msgid "(i)nline"
 msgstr "i:インライン"
 
@@ -3774,19 +3815,19 @@ msgstr "i:インライン"
 #. 'clear'.  Please use a corresponding letter in your language.
 #. Alternatively, you may duplicate the letter 'c' is translated to.
 #. This comment also applies to the five following letter sequences.
-#: pgp.c:1737
+#: pgp.c:1740
 msgid "safcoi"
 msgstr "safcoi"
 
-#: pgp.c:1742
+#: pgp.c:1745
 msgid "PGP (s)ign, sign (a)s, (c)lear, or (o)ppenc mode off? "
 msgstr "PGP s:署名, a:署名鍵選択, c:なし, o:日和見暗号オフ "
 
-#: pgp.c:1743
+#: pgp.c:1746
 msgid "safco"
 msgstr "safco"
 
-#: pgp.c:1760
+#: pgp.c:1763
 #, c-format
 msgid ""
 "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, %s format, (c)lear, or (o)ppenc "
@@ -3795,32 +3836,32 @@ msgstr ""
 "PGP e:暗号化, s:署名, a:署名鍵選択, b:暗号+署名, %s形式, c:なし, o:日和見暗"
 "号 "
 
-#: pgp.c:1763
+#: pgp.c:1766
 msgid "esabfcoi"
 msgstr "esabfcoi"
 
-#: pgp.c:1768
+#: pgp.c:1771
 msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, (c)lear, or (o)ppenc mode? "
 msgstr "PGP e:暗号化, s:署名, a:署名鍵選択, b:暗号+署名, c:なし, o:日和見暗号 "
 
-#: pgp.c:1769
+#: pgp.c:1772
 msgid "esabfco"
 msgstr "esabfco"
 
-#: pgp.c:1782
+#: pgp.c:1785
 #, c-format
 msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, %s format, or (c)lear? "
 msgstr "PGP e:暗号化, s:署名, a:署名鍵選択, b:暗号+署名, %s形式, c:なし "
 
-#: pgp.c:1785
+#: pgp.c:1788
 msgid "esabfci"
 msgstr "esabfci"
 
-#: pgp.c:1790
+#: pgp.c:1793
 msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, or (c)lear? "
 msgstr "PGP e:暗号化, s:署名, a:署名鍵選択, b:暗号+署名, c:なし "
 
-#: pgp.c:1791
+#: pgp.c:1794
 msgid "esabfc"
 msgstr "esabfc"
 
@@ -3852,7 +3893,6 @@ msgid "PGP Key %s."
 msgstr "PGP 鍵 %s"
 
 #: pop.c:102 pop_lib.c:210
-#, c-format
 msgid "Command TOP is not supported by server."
 msgstr "コマンド TOP をサーバがサポートしていない。"
 
@@ -3861,7 +3901,6 @@ msgid "Can't write header to temporary file!"
 msgstr "ヘッダを一時ファイルに書き込めない!"
 
 #: pop.c:276 pop_lib.c:212
-#, c-format
 msgid "Command UIDL is not supported by server."
 msgstr "コマンド UIDL をサーバがサポートしていない。"
 
@@ -3938,7 +3977,6 @@ msgid "APOP authentication failed."
 msgstr "APOP 認証に失敗した。"
 
 #: pop_auth.c:278
-#, c-format
 msgid "Command USER is not supported by server."
 msgstr "コマンド USER はサーバがサポートしていない。"
 
@@ -4357,16 +4395,16 @@ msgstr "%s をオープンできなかった"
 msgid "$sendmail must be set in order to send mail."
 msgstr "$sendmail を設定しないとメールを送信できない。"
 
-#: sendlib.c:2456
+#: sendlib.c:2463
 #, c-format
 msgid "Error sending message, child exited %d (%s)."
 msgstr "メッセージ送信エラー。子プロセスが %d (%s) で終了した。"
 
-#: sendlib.c:2462
+#: sendlib.c:2469
 msgid "Output of the delivery process"
 msgstr "配信プロセスの出力"
 
-#: sendlib.c:2637
+#: sendlib.c:2644
 #, c-format
 msgid "Bad IDN %s while preparing resent-from."
 msgstr "不正な IDN %s を resent-from の準備中に発見。"
@@ -5485,6 +5523,14 @@ msgstr "サポートされている公開鍵を抽出"
 #: ../keymap_alldefs.h:214
 msgid "show S/MIME options"
 msgstr "S/MIME オプションを表示"
+
+#~ msgid "sign as: "
+#~ msgstr "署名鍵: "
+
+# "シリアル番号" == 全角 6 文字
+# "フィンガープリント" == 全角 9 文字
+#~ msgid " aka ......: "
+#~ msgstr " 別名 ............: "
 
 #~ msgid "Query"
 #~ msgstr "問い合わせ"
