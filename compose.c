@@ -99,8 +99,14 @@ static const char * const Prompts[] =
   /* L10N: Compose menu field.  Holds "Encrypt", "Sign" related information */
   N_("Security: "),
   /* L10N:
-   * This string is used by the compose menu.  It is suggested that it not
-   * be wider than 20 character cells, if possible. */
+   * This string is used by the compose menu.
+   * Since it is hidden by default, it does not increase the
+   * indentation of other compose menu fields.  However, if possible,
+   * it should not be longer than the other compose menu fields.
+   *
+   * Since it shares the row with "Encrypt with:", it should not be longer
+   * than 15-20 character cells.
+   */
   N_("Sign as: ")
 };
 
