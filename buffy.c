@@ -456,13 +456,12 @@ static struct Buffy *buffy_get(const char *path)
 void mutt_buffy_cleanup(const char *buf, struct stat *st)
 {
   struct utimbuf ut;
-  struct Buffy *tmp = NULL;
 
   if (option(OPTCHECKMBOXSIZE))
   {
-    tmp = mutt_find_mailbox(buf);
-    if (tmp && !tmp->new)
-      mutt_update_mailbox(tmp);
+    struct Buffy *b = mutt_find_mailbox(buf);
+    if (b && !b->new)
+      mutt_update_mailbox(b);
   }
   else
   {
@@ -480,20 +479,19 @@ void mutt_buffy_cleanup(const char *buf, struct stat *st)
 
 struct Buffy *mutt_find_mailbox(const char *path)
 {
-  struct Buffy *tmp = NULL;
   struct stat sb;
   struct stat tmp_sb;
 
   if (stat(path, &sb) != 0)
     return NULL;
 
-  for (tmp = Incoming; tmp; tmp = tmp->next)
+  for (struct Buffy *b = Incoming; b; b = b->next)
   {
-    if (stat(tmp->path, &tmp_sb) == 0 && sb.st_dev == tmp_sb.st_dev &&
+    if (stat(b->path, &tmp_sb) == 0 && sb.st_dev == tmp_sb.st_dev &&
         sb.st_ino == tmp_sb.st_ino)
-      break;
+      return b;
   }
-  return tmp;
+  return NULL;
 }
 
 void mutt_update_mailbox(struct Buffy *b)
@@ -513,7 +511,7 @@ void mutt_update_mailbox(struct Buffy *b)
 int mutt_parse_mailboxes(struct Buffer *path, struct Buffer *s,
                          unsigned long data, struct Buffer *err)
 {
-  struct Buffy **tmp = NULL, *tmp1 = NULL;
+  struct Buffy **b = NULL, *tmp1 = NULL;
   char buf[_POSIX_PATH_MAX];
   struct stat sb;
   char f1[PATH_MAX];
@@ -526,14 +524,14 @@ int mutt_parse_mailboxes(struct Buffer *path, struct Buffer *s,
 
     if (data == MUTT_UNMAILBOXES && (mutt_strcmp(buf, "*") == 0))
     {
-      for (tmp = &Incoming; *tmp;)
+      for (b = &Incoming; *b;)
       {
-        tmp1 = (*tmp)->next;
+        tmp1 = (*b)->next;
 #ifdef USE_SIDEBAR
-        mutt_sb_notify_mailbox(*tmp, 0);
+        mutt_sb_notify_mailbox(*b, 0);
 #endif
-        buffy_free(tmp);
-        *tmp = tmp1;
+        buffy_free(b);
+        *b = tmp1;
       }
       return 0;
     }
@@ -546,53 +544,53 @@ int mutt_parse_mailboxes(struct Buffer *path, struct Buffer *s,
 
     /* avoid duplicates */
     p = realpath(buf, f1);
-    for (tmp = &Incoming; *tmp; tmp = &((*tmp)->next))
+    for (b = &Incoming; *b; b = &((*b)->next))
     {
-      if (mutt_strcmp(p ? p : buf, (*tmp)->realpath) == 0)
+      if (mutt_strcmp(p ? p : buf, (*b)->realpath) == 0)
       {
-        mutt_debug(3, "mailbox '%s' already registered as '%s'\n", buf, (*tmp)->path);
+        mutt_debug(3, "mailbox '%s' already registered as '%s'\n", buf, (*b)->path);
         break;
       }
     }
 
     if (data == MUTT_UNMAILBOXES)
     {
-      if (*tmp)
+      if (*b)
       {
-        tmp1 = (*tmp)->next;
+        tmp1 = (*b)->next;
 #ifdef USE_SIDEBAR
-        mutt_sb_notify_mailbox(*tmp, 0);
+        mutt_sb_notify_mailbox(*b, 0);
 #endif
-        buffy_free(tmp);
-        *tmp = tmp1;
+        buffy_free(b);
+        *b = tmp1;
       }
       continue;
     }
 
-    if (!*tmp)
+    if (!*b)
     {
-      *tmp = buffy_new(buf);
+      *b = buffy_new(buf);
 #ifdef USE_SIDEBAR
-      mutt_sb_notify_mailbox(*tmp, 1);
+      mutt_sb_notify_mailbox(*b, 1);
 #endif
     }
 
-    (*tmp)->new = false;
-    (*tmp)->notified = true;
-    (*tmp)->newly_created = false;
+    (*b)->new = false;
+    (*b)->notified = true;
+    (*b)->newly_created = false;
 
     /* for check_mbox_size, it is important that if the folder is new (tested by
      * reading it), the size is set to 0 so that later when we check we see
      * that it increased .  without check_mbox_size we probably don't care.
      */
-    if (option(OPTCHECKMBOXSIZE) && stat((*tmp)->path, &sb) == 0 &&
-        !test_new_folder((*tmp)->path))
+    if (option(OPTCHECKMBOXSIZE) && stat((*b)->path, &sb) == 0 &&
+        !test_new_folder((*b)->path))
     {
       /* some systems out there don't have an off_t type */
-      (*tmp)->size = (off_t) sb.st_size;
+      (*b)->size = (off_t) sb.st_size;
     }
     else
-      (*tmp)->size = 0;
+      (*b)->size = 0;
   }
   return 0;
 }
@@ -604,7 +602,7 @@ int mutt_parse_virtual_mailboxes(struct Buffer *path, struct Buffer *s,
   if (!path || !s)
     return -1;
 
-  struct Buffy **tmp = NULL;
+  struct Buffy **b = NULL;
   char buf[_POSIX_PATH_MAX + LONG_STRING + 32]; /* path to DB + query + URI "decoration" */
 
   while (MoreArgs(s))
@@ -628,27 +626,27 @@ int mutt_parse_virtual_mailboxes(struct Buffer *path, struct Buffer *s,
     }
 
     /* avoid duplicates */
-    for (tmp = &VirtIncoming; *tmp; tmp = &((*tmp)->next))
+    for (b = &VirtIncoming; *b; b = &((*b)->next))
     {
-      if (mutt_strcmp(buf, (*tmp)->path) == 0)
+      if (mutt_strcmp(buf, (*b)->path) == 0)
       {
         mutt_debug(3, "virtual mailbox '%s' already registered as '%s'\n", buf,
-                   (*tmp)->path);
+                   (*b)->path);
         break;
       }
     }
 
-    if (!*tmp)
-      *tmp = buffy_new(buf);
+    if (!*b)
+      *b = buffy_new(buf);
 
-    (*tmp)->magic = MUTT_NOTMUCH;
-    (*tmp)->new = false;
-    (*tmp)->notified = true;
-    (*tmp)->newly_created = false;
-    (*tmp)->size = 0;
-    (*tmp)->desc = desc;
+    (*b)->magic = MUTT_NOTMUCH;
+    (*b)->new = false;
+    (*b)->notified = true;
+    (*b)->newly_created = false;
+    (*b)->size = 0;
+    (*b)->desc = desc;
 #ifdef USE_SIDEBAR
-    mutt_sb_notify_mailbox(*tmp, 1);
+    mutt_sb_notify_mailbox(*b, 1);
 #endif
   }
 #ifdef USE_SIDEBAR
@@ -660,7 +658,7 @@ int mutt_parse_virtual_mailboxes(struct Buffer *path, struct Buffer *s,
 int mutt_parse_unvirtual_mailboxes(struct Buffer *path, struct Buffer *s,
                                    unsigned long data, struct Buffer *err)
 {
-  struct Buffy **tmp = NULL, *tmp1 = NULL;
+  struct Buffy **b = NULL, *tmp1 = NULL;
 
   while (MoreArgs(s))
   {
@@ -668,14 +666,14 @@ int mutt_parse_unvirtual_mailboxes(struct Buffer *path, struct Buffer *s,
 
     if (mutt_strcmp(path->data, "*") == 0)
     {
-      for (tmp = &VirtIncoming; *tmp;)
+      for (b = &VirtIncoming; *b;)
       {
-        tmp1 = (*tmp)->next;
+        tmp1 = (*b)->next;
 #ifdef USE_SIDEBAR
-        mutt_sb_notify_mailbox(*tmp, 0);
+        mutt_sb_notify_mailbox(*b, 0);
 #endif
-        buffy_free(tmp);
-        *tmp = tmp1;
+        buffy_free(b);
+        *b = tmp1;
       }
 #ifdef USE_SIDEBAR
       mutt_sb_draw();
@@ -683,17 +681,17 @@ int mutt_parse_unvirtual_mailboxes(struct Buffer *path, struct Buffer *s,
       return 0;
     }
 
-    for (tmp = &VirtIncoming; *tmp; tmp = &((*tmp)->next))
+    for (b = &VirtIncoming; *b; b = &((*b)->next))
     {
-      if ((mutt_strcasecmp(path->data, (*tmp)->path) == 0) ||
-          (mutt_strcasecmp(path->data, (*tmp)->desc) == 0))
+      if ((mutt_strcasecmp(path->data, (*b)->path) == 0) ||
+          (mutt_strcasecmp(path->data, (*b)->desc) == 0))
       {
-        tmp1 = (*tmp)->next;
+        tmp1 = (*b)->next;
 #ifdef USE_SIDEBAR
-        mutt_sb_notify_mailbox(*tmp, 0);
+        mutt_sb_notify_mailbox(*b, 0);
 #endif
-        buffy_free(tmp);
-        *tmp = tmp1;
+        buffy_free(b);
+        *b = tmp1;
         break;
       }
     }
@@ -711,7 +709,6 @@ int mutt_parse_unvirtual_mailboxes(struct Buffer *path, struct Buffer *s,
  */
 int mutt_buffy_check(bool force)
 {
-  struct Buffy *tmp = NULL;
   struct stat contex_sb;
   time_t t;
   bool check_stats = false;
@@ -761,12 +758,12 @@ int mutt_buffy_check(bool force)
     contex_sb.st_ino = 0;
   }
 
-  for (tmp = Incoming; tmp; tmp = tmp->next)
-    buffy_check(tmp, &contex_sb, check_stats);
+  for (struct Buffy *b = Incoming; b; b = b->next)
+    buffy_check(b, &contex_sb, check_stats);
 
 #ifdef USE_NOTMUCH
-  for (tmp = VirtIncoming; tmp; tmp = tmp->next)
-    buffy_check(tmp, &contex_sb, check_stats);
+  for (struct Buffy *b = VirtIncoming; b; b = b->next)
+    buffy_check(b, &contex_sb, check_stats);
 #endif
 
   BuffyDoneTime = BuffyTime;
@@ -775,7 +772,7 @@ int mutt_buffy_check(bool force)
 
 int mutt_buffy_list(void)
 {
-  struct Buffy *tmp = NULL;
+  struct Buffy *b = NULL;
   char path[_POSIX_PATH_MAX];
   char buffylist[2 * STRING];
   size_t pos = 0;
@@ -785,13 +782,13 @@ int mutt_buffy_list(void)
 
   buffylist[0] = 0;
   pos += strlen(strncat(buffylist, _("New mail in "), sizeof(buffylist) - 1 - pos));
-  for (tmp = Incoming; tmp; tmp = tmp->next)
+  for (b = Incoming; b; b = b->next)
   {
     /* Is there new mail in this mailbox? */
-    if (!tmp->new || (have_unnotified && tmp->notified))
+    if (!b->new || (have_unnotified && b->notified))
       continue;
 
-    strfcpy(path, tmp->path, sizeof(path));
+    strfcpy(path, b->path, sizeof(path));
     mutt_pretty_mailbox(path, sizeof(path));
 
     if (!first && (MuttMessageWindow->cols >= 7) &&
@@ -802,16 +799,16 @@ int mutt_buffy_list(void)
       pos += strlen(strncat(buffylist + pos, ", ", sizeof(buffylist) - 1 - pos));
 
     /* Prepend an asterisk to mailboxes not already notified */
-    if (!tmp->notified)
+    if (!b->notified)
     {
       /* pos += strlen (strncat(buffylist + pos, "*", sizeof(buffylist)-1-pos)); */
-      tmp->notified = true;
+      b->notified = true;
       BuffyNotify--;
     }
     pos += strlen(strncat(buffylist + pos, path, sizeof(buffylist) - 1 - pos));
     first = 0;
   }
-  if (!first && tmp)
+  if (!first && b)
   {
     strncat(buffylist + pos, ", ...", sizeof(buffylist) - 1 - pos);
   }
@@ -856,7 +853,6 @@ int mutt_buffy_notify(void)
  */
 void mutt_buffy(char *s, size_t slen)
 {
-  struct Buffy *tmp = Incoming;
   int pass, found = 0;
 
   mutt_expand_path(s, slen);
@@ -864,18 +860,20 @@ void mutt_buffy(char *s, size_t slen)
   if (mutt_buffy_check(false))
   {
     for (pass = 0; pass < 2; pass++)
-      for (tmp = Incoming; tmp; tmp = tmp->next)
+    {
+      for (struct Buffy *b = Incoming; b; b = b->next)
       {
-        mutt_expand_path(tmp->path, sizeof(tmp->path));
-        if ((found || pass) && tmp->new)
+        mutt_expand_path(b->path, sizeof(b->path));
+        if ((found || pass) && b->new)
         {
-          strfcpy(s, tmp->path, slen);
+          strfcpy(s, b->path, slen);
           mutt_pretty_mailbox(s, slen);
           return;
         }
-        if (mutt_strcmp(s, tmp->path) == 0)
+        if (mutt_strcmp(s, b->path) == 0)
           found = 1;
       }
+    }
 
     mutt_buffy_check(true); /* buffy was wrong - resync things */
   }
@@ -887,22 +885,21 @@ void mutt_buffy(char *s, size_t slen)
 #ifdef USE_NOTMUCH
 void mutt_buffy_vfolder(char *s, size_t slen)
 {
-  struct Buffy *tmp = NULL;
-  int pass, found = 0;
+  bool found = false;
 
   if (mutt_buffy_check(false))
   {
-    for (pass = 0; pass < 2; pass++)
+    for (int pass = 0; pass < 2; pass++)
     {
-      for (tmp = VirtIncoming; tmp; tmp = tmp->next)
+      for (struct Buffy *b = VirtIncoming; b; b = b->next)
       {
-        if ((found || pass) && tmp->new)
+        if ((found || pass) && b->new)
         {
-          strfcpy(s, tmp->desc, slen);
+          strfcpy(s, b->desc, slen);
           return;
         }
-        if (mutt_strcmp(s, tmp->path) == 0)
-          found = 1;
+        if (mutt_strcmp(s, b->path) == 0)
+          found = true;
       }
     }
 

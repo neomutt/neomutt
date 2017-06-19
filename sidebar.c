@@ -51,7 +51,7 @@ struct SbEntry
 {
   char box[STRING]; /* formatted mailbox name */
   struct Buffy *buffy;
-  short is_hidden;
+  bool is_hidden;
 };
 
 static int EntryCount = 0;
@@ -71,13 +71,12 @@ enum div_type
   SB_DIV_UTF8
 };
 
-enum
+enum sb_src
 {
   SB_SRC_NONE = 0,
+  SB_SRC_INCOMING,
   SB_SRC_VIRT,
-  SB_SRC_INCOMING
-};
-static int sidebar_source = SB_SRC_NONE;
+} sidebar_source = SB_SRC_NONE;
 
 static struct Buffy *get_incoming(void)
 {
@@ -360,7 +359,7 @@ static void update_entries_visibility(void)
   {
     sbe = Entries[i];
 
-    sbe->is_hidden = 0;
+    sbe->is_hidden = false;
 
     if (!new_only)
       continue;
@@ -378,7 +377,7 @@ static void update_entries_visibility(void)
       /* Explicitly asked to be visible */
       continue;
 
-    sbe->is_hidden = 1;
+    sbe->is_hidden = true;
   }
 }
 
@@ -979,9 +978,8 @@ void mutt_sb_draw(void)
 
   int div_width = draw_divider(num_rows, num_cols);
 
-  struct Buffy *b = NULL;
   if (!Entries)
-    for (b = get_incoming(); b; b = b->next)
+    for (struct Buffy *b = get_incoming(); b; b = b->next)
       mutt_sb_notify_mailbox(b, 1);
 
   if (!get_incoming())
