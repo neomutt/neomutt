@@ -801,6 +801,15 @@ int mutt_save_message(struct Header *h, int delete, int decode, int decrypt)
   else
     strfcpy(LastSaveFolder, buf, sizeof(LastSaveFolder));
 
+  /* check if path is a filename by comparing last character
+   * (mboxes need filenames, not directories)
+   */
+  if (DefaultMagic == MUTT_MBOX && buf[strlen(buf) - 1] == '/')
+  {
+    mutt_error(_("'%s' is a directory, need a filename for mbox."), buf);
+    return -1;
+  }
+
   mutt_expand_path(buf, sizeof(buf));
 
   /* check to make sure that this file is really the one the user wants */

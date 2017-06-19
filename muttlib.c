@@ -21,6 +21,7 @@
 #include <ctype.h>
 #include <errno.h>
 #include <inttypes.h>
+#include <libgen.h>
 #include <libintl.h>
 #include <limits.h>
 #include <pwd.h>
@@ -1865,6 +1866,7 @@ int mutt_save_confirm(const char *s, struct stat *st)
     st->st_mtime = 0;
     st->st_atime = 0;
 
+    /* pathname does not exist */
     if (errno == ENOENT)
     {
       if (option(OPTCONFIRMCREATE))
@@ -1874,6 +1876,20 @@ int mutt_save_confirm(const char *s, struct stat *st)
           ret = 1;
         else if (rc == MUTT_ABORT)
           ret = -1;
+      }
+
+      /* user confirmed with MUTT_YES or set OPTCONFIRMCREATE */
+      if (ret == 0)
+      {
+        strncpy(tmp, s, sizeof(tmp) - 1);
+
+        /* create dir recursively */
+        if (mutt_mkdir(dirname(tmp), S_IRWXU) == -1)
+        {
+          /* report failure & abort */
+          mutt_perror(s);
+          return 1;
+        }
       }
     }
     else
