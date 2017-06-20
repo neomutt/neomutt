@@ -73,38 +73,9 @@ enum div_type
 
 enum sb_src
 {
-  SB_SRC_NONE = 0,
   SB_SRC_INCOMING,
   SB_SRC_VIRT,
-} sidebar_source = SB_SRC_NONE;
-
-static struct Buffy *get_incoming(void)
-{
-  switch (sidebar_source)
-  {
-    case SB_SRC_NONE:
-      sidebar_source = SB_SRC_INCOMING;
-
-#ifdef USE_NOTMUCH
-      if (option(OPTVIRTSPOOLFILE) && VirtIncoming)
-      {
-        sidebar_source = SB_SRC_VIRT;
-        return VirtIncoming;
-      }
-      break;
-    case SB_SRC_VIRT:
-      if (VirtIncoming)
-      {
-        return VirtIncoming;
-      }
-      break;
-#endif
-    case SB_SRC_INCOMING:
-      break;
-  }
-
-  return Incoming; /* default */
-}
+} sidebar_source = SB_SRC_INCOMING;
 
 /**
  * cb_format_str - Create the string to show in the sidebar
@@ -361,6 +332,15 @@ static void update_entries_visibility(void)
 
     sbe->is_hidden = false;
 
+#ifdef USE_NOTMUCH
+    if (((sbe->buffy->magic != MUTT_NOTMUCH) && (sidebar_source == SB_SRC_VIRT)) ||
+        ((sbe->buffy->magic == MUTT_NOTMUCH) && (sidebar_source == SB_SRC_INCOMING)))
+    {
+      sbe->is_hidden = true;
+      continue;
+    }
+#endif
+
     if (!new_only)
       continue;
 
@@ -386,7 +366,7 @@ static void update_entries_visibility(void)
  */
 static void unsort_entries(void)
 {
-  struct Buffy *cur = get_incoming();
+  struct Buffy *cur = Incoming;
   int i = 0, j;
   struct SbEntry *tmp = NULL;
 
@@ -909,7 +889,11 @@ static void draw_sidebar(int num_rows, int num_cols, int div_width)
     else
       sidebar_folder_name = b->path + maildir_is_prefix * (maildirlen + 1);
 
-    if (maildir_is_prefix && option(OPTSIDEBARFOLDERINDENT))
+    if (b->desc)
+    {
+      sidebar_folder_name = b->desc;
+    }
+    else if (maildir_is_prefix && option(OPTSIDEBARFOLDERINDENT))
     {
       const char *tmp_folder_name = NULL;
       int lastsep = 0;
@@ -936,12 +920,6 @@ static void draw_sidebar(int num_rows, int num_cols, int div_width)
         safe_strcat(sidebar_folder_name, sfn_len, tmp_folder_name);
       }
     }
-#ifdef USE_NOTMUCH
-    else if (b->magic == MUTT_NOTMUCH)
-    {
-      sidebar_folder_name = b->desc;
-    }
-#endif
     char str[STRING];
     make_sidebar_entry(str, sizeof(str), w, sidebar_folder_name, entry);
     printw("%s", str);
@@ -979,17 +957,14 @@ void mutt_sb_draw(void)
   int div_width = draw_divider(num_rows, num_cols);
 
   if (!Entries)
-    for (struct Buffy *b = get_incoming(); b; b = b->next)
+    for (struct Buffy *b = Incoming; b; b = b->next)
       mutt_sb_notify_mailbox(b, 1);
 
-  if (!get_incoming())
+  if (!prepare_sidebar(num_rows))
   {
     fill_empty_space(0, num_rows, div_width, num_cols - div_width);
     return;
   }
-
-  if (!prepare_sidebar(num_rows))
-    return;
 
   draw_sidebar(num_rows, num_cols, div_width);
   move(y, x);
@@ -1061,7 +1036,7 @@ void mutt_sb_set_buffystats(const struct Context *ctx)
 {
   /* Even if the sidebar's hidden,
    * we should take note of the new data. */
-  struct Buffy *b = get_incoming();
+  struct Buffy *b = Incoming;
   if (!ctx || !b)
     return;
 
@@ -1136,9 +1111,6 @@ void mutt_sb_notify_mailbox(struct Buffy *b, int created)
   if (!b)
     return;
 
-  if (sidebar_source == SB_SRC_NONE)
-    return;
-
   /* Any new/deleted mailboxes will cause a refresh.  As long as
    * they're valid, our pointers will be updated in prepare_sidebar() */
 
@@ -1194,11 +1166,8 @@ void mutt_sb_notify_mailbox(struct Buffy *b, int created)
  */
 void mutt_sb_toggle_virtual(void)
 {
-  if (sidebar_source == -1)
-    get_incoming();
-
 #ifdef USE_NOTMUCH
-  if ((sidebar_source == SB_SRC_INCOMING) && VirtIncoming)
+  if (sidebar_source == SB_SRC_INCOMING)
     sidebar_source = SB_SRC_VIRT;
   else
 #endif
@@ -1209,13 +1178,19 @@ void mutt_sb_toggle_virtual(void)
   HilIndex = -1;
   BotIndex = -1;
 
-  struct Buffy *b = NULL;
-
+  /* First clear all the sidebar entries */
   EntryCount = 0;
   FREE(&Entries);
   EntryLen = 0;
-  for (b = get_incoming(); b; b = b->next)
-    mutt_sb_notify_mailbox(b, 1);
+  for (struct Buffy *b = Incoming; b; b = b->next)
+  {
+    /* and reintroduce the ones that are visible */
+    if (((b->magic == MUTT_NOTMUCH) && (sidebar_source == SB_SRC_VIRT)) ||
+        ((b->magic != MUTT_NOTMUCH) && (sidebar_source == SB_SRC_INCOMING)))
+    {
+      mutt_sb_notify_mailbox(b, true);
+    }
+  }
 
   mutt_set_current_menu_redraw(REDRAW_SIDEBAR);
 }

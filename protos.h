@@ -81,7 +81,6 @@ void mutt_set_parameter(const char *attribute, const char *value, struct Paramet
 
 #ifdef USE_NOTMUCH
 int mutt_parse_virtual_mailboxes(struct Buffer *path, struct Buffer *s, unsigned long data, struct Buffer *err);
-int mutt_parse_unvirtual_mailboxes(struct Buffer *path, struct Buffer *s, unsigned long data, struct Buffer *err);
 #endif
 
 FILE *mutt_open_read(const char *path, pid_t *thepid);

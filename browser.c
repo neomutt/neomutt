@@ -738,10 +738,10 @@ static int examine_directory(struct Menu *menu, struct BrowserState *state,
 #ifdef USE_NOTMUCH
 static int examine_vfolders(struct Menu *menu, struct BrowserState *state)
 {
-  struct Buffy *tmp = VirtIncoming;
-
-  if (!VirtIncoming)
+  struct Buffy *tmp = Incoming;
+  if (!tmp)
     return -1;
+
   mutt_buffy_check(false);
 
   init_state(state, menu);

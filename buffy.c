@@ -519,8 +519,24 @@ int mutt_parse_mailboxes(struct Buffer *path, struct Buffer *s,
 
   while (MoreArgs(s))
   {
+    char *desc = NULL;
+
+    if (data & MUTT_NAMED)
+    {
+      mutt_extract_token(path, s, 0);
+      if (path->data && *path->data)
+        desc = safe_strdup(path->data);
+      else
+        continue;
+    }
+
     mutt_extract_token(path, s, 0);
-    strfcpy(buf, path->data, sizeof(buf));
+#ifdef USE_NOTMUCH
+    if (mx_is_notmuch(path->data))
+      nm_normalize_uri(buf, path->data, sizeof(buf));
+    else
+#endif
+      strfcpy(buf, path->data, sizeof(buf));
 
     mutt_expand_path(buf, sizeof(buf));
 
@@ -545,19 +561,29 @@ int mutt_parse_mailboxes(struct Buffer *path, struct Buffer *s,
     (*b)->new = false;
     (*b)->notified = true;
     (*b)->newly_created = false;
-
-    /* for check_mbox_size, it is important that if the folder is new (tested by
-     * reading it), the size is set to 0 so that later when we check we see
-     * that it increased. without check_mbox_size we probably don't care.
-     */
-    if (option(OPTCHECKMBOXSIZE) && stat((*b)->path, &sb) == 0 &&
-        !test_new_folder((*b)->path))
+    (*b)->desc = desc;
+#ifdef USE_NOTMUCH
+    if (mx_is_notmuch((*b)->path))
     {
-      /* some systems out there don't have an off_t type */
-      (*b)->size = (off_t) sb.st_size;
+      (*b)->magic = MUTT_NOTMUCH;
+      (*b)->size = 0;
     }
     else
-      (*b)->size = 0;
+#endif
+    {
+      /* for check_mbox_size, it is important that if the folder is new (tested by
+       * reading it), the size is set to 0 so that later when we check we see
+       * that it increased. without check_mbox_size we probably don't care.
+       */
+      if (option(OPTCHECKMBOXSIZE) && stat((*b)->path, &sb) == 0 &&
+          !test_new_folder((*b)->path))
+      {
+        /* some systems out there don't have an off_t type */
+        (*b)->size = (off_t) sb.st_size;
+      }
+      else
+        (*b)->size = 0;
+    }
 
 #ifdef USE_SIDEBAR
     mutt_sb_notify_mailbox(*b, 1);
@@ -582,14 +608,27 @@ int mutt_parse_unmailboxes(struct Buffer *path, struct Buffer *s,
     }
     else
     {
-      strfcpy(buf, path->data, sizeof(buf));
-      mutt_expand_path(buf, sizeof(buf));
+#ifdef USE_NOTMUCH
+      if (mx_is_notmuch(path->data))
+      {
+        nm_normalize_uri(buf, path->data, sizeof(buf));
+      }
+      else
+#endif
+      {
+        strfcpy(buf, path->data, sizeof(buf));
+        mutt_expand_path(buf, sizeof(buf));
+      }
     }
 
     for (struct Buffy **b = &Incoming; *b;)
     {
-      if (clear_all ||
-          (mutt_strcasecmp(buf, (*b)->path) == 0) ||
+      /* Decide whether to delete all normal mailboxes or all virtual */
+      bool virt = (((*b)->magic == MUTT_NOTMUCH) && (data & MUTT_VIRTUAL));
+      bool norm = (((*b)->magic != MUTT_NOTMUCH) && !(data & MUTT_VIRTUAL));
+      bool clear_this = clear_all && (virt | norm);
+
+      if (clear_this || (mutt_strcasecmp(buf, (*b)->path) == 0) ||
           (mutt_strcasecmp(buf, (*b)->desc) == 0))
       {
         struct Buffy *next = (*b)->next;
@@ -606,115 +645,6 @@ int mutt_parse_unmailboxes(struct Buffer *path, struct Buffer *s,
   }
   return 0;
 }
-
-#ifdef USE_NOTMUCH
-int mutt_parse_virtual_mailboxes(struct Buffer *path, struct Buffer *s,
-                                 unsigned long data, struct Buffer *err)
-{
-  if (!path || !s)
-    return -1;
-
-  struct Buffy **b = NULL;
-  char buf[_POSIX_PATH_MAX + LONG_STRING + 32]; /* path to DB + query + URI "decoration" */
-
-  while (MoreArgs(s))
-  {
-    char *desc = NULL;
-
-    mutt_extract_token(path, s, 0);
-    if (path->data && *path->data)
-      desc = safe_strdup(path->data);
-    else
-      continue;
-
-    mutt_extract_token(path, s, 0);
-    nm_normalize_uri(buf, path->data, sizeof(buf));
-
-    /* Skip empty tokens. */
-    if (!*buf)
-    {
-      FREE(&desc);
-      continue;
-    }
-
-    /* avoid duplicates */
-    for (b = &VirtIncoming; *b; b = &((*b)->next))
-    {
-      if (mutt_strcmp(buf, (*b)->path) == 0)
-      {
-        mutt_debug(3, "virtual mailbox '%s' already registered as '%s'\n", buf,
-                   (*b)->path);
-        break;
-      }
-    }
-
-    if (!*b)
-      *b = buffy_new(buf);
-
-    (*b)->magic = MUTT_NOTMUCH;
-    (*b)->new = false;
-    (*b)->notified = true;
-    (*b)->newly_created = false;
-    (*b)->size = 0;
-    (*b)->desc = desc;
-#ifdef USE_SIDEBAR
-    mutt_sb_notify_mailbox(*b, 1);
-#endif
-  }
-#ifdef USE_SIDEBAR
-  mutt_sb_draw();
-#endif
-  return 0;
-}
-
-int mutt_parse_unvirtual_mailboxes(struct Buffer *path, struct Buffer *s,
-                                   unsigned long data, struct Buffer *err)
-{
-  struct Buffy **b = NULL, *tmp1 = NULL;
-
-  while (MoreArgs(s))
-  {
-    mutt_extract_token(path, s, 0);
-
-    if (mutt_strcmp(path->data, "*") == 0)
-    {
-      for (b = &VirtIncoming; *b;)
-      {
-        tmp1 = (*b)->next;
-#ifdef USE_SIDEBAR
-        mutt_sb_notify_mailbox(*b, 0);
-#endif
-        buffy_free(b);
-        *b = tmp1;
-      }
-#ifdef USE_SIDEBAR
-      mutt_sb_draw();
-#endif
-      return 0;
-    }
-
-    for (b = &VirtIncoming; *b; b = &((*b)->next))
-    {
-      if ((mutt_strcasecmp(path->data, (*b)->path) == 0) ||
-          (mutt_strcasecmp(path->data, (*b)->desc) == 0))
-      {
-        tmp1 = (*b)->next;
-#ifdef USE_SIDEBAR
-        mutt_sb_notify_mailbox(*b, 0);
-#endif
-        buffy_free(b);
-        *b = tmp1;
-        break;
-      }
-    }
-  }
-
-#ifdef USE_SIDEBAR
-  mutt_sb_draw();
-#endif
-  return 0;
-}
-#endif
 
 /* Check all Incoming for new mail and total/new/flagged messages
  * force: if true, ignore BuffyTimeout and check for new mail anyway
@@ -733,14 +663,10 @@ int mutt_buffy_check(bool force)
     mutt_update_num_postponed();
 #endif
 
-/* fastest return if there are no mailboxes */
-#ifdef USE_NOTMUCH
-  if (!Incoming && !VirtIncoming)
-    return 0;
-#else
+  /* fastest return if there are no mailboxes */
   if (!Incoming)
     return 0;
-#endif
+
   t = time(NULL);
   if (!force && (t - BuffyTime < BuffyTimeout))
     return BuffyCount;
@@ -772,11 +698,6 @@ int mutt_buffy_check(bool force)
 
   for (struct Buffy *b = Incoming; b; b = b->next)
     buffy_check(b, &contex_sb, check_stats);
-
-#ifdef USE_NOTMUCH
-  for (struct Buffy *b = VirtIncoming; b; b = b->next)
-    buffy_check(b, &contex_sb, check_stats);
-#endif
 
   BuffyDoneTime = BuffyTime;
   return BuffyCount;
@@ -903,8 +824,10 @@ void mutt_buffy_vfolder(char *s, size_t slen)
   {
     for (int pass = 0; pass < 2; pass++)
     {
-      for (struct Buffy *b = VirtIncoming; b; b = b->next)
+      for (struct Buffy *b = Incoming; b; b = b->next)
       {
+        if (b->magic != MUTT_NOTMUCH)
+          continue;
         if ((found || pass) && b->new)
         {
           strfcpy(s, b->desc, slen);
