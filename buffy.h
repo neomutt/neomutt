@@ -26,10 +26,6 @@
 
 struct stat;
 
-/* parameter to mutt_parse_mailboxes */
-#define MUTT_MAILBOXES   1
-#define MUTT_UNMAILBOXES 2
-
 struct Buffy
 {
   char path[_POSIX_PATH_MAX];

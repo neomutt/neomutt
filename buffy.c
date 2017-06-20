@@ -511,7 +511,7 @@ void mutt_update_mailbox(struct Buffy *b)
 int mutt_parse_mailboxes(struct Buffer *path, struct Buffer *s,
                          unsigned long data, struct Buffer *err)
 {
-  struct Buffy **b = NULL, *tmp1 = NULL;
+  struct Buffy **b = NULL;
   char buf[_POSIX_PATH_MAX];
   struct stat sb;
   char f1[PATH_MAX];
@@ -521,20 +521,6 @@ int mutt_parse_mailboxes(struct Buffer *path, struct Buffer *s,
   {
     mutt_extract_token(path, s, 0);
     strfcpy(buf, path->data, sizeof(buf));
-
-    if (data == MUTT_UNMAILBOXES && (mutt_strcmp(buf, "*") == 0))
-    {
-      for (b = &Incoming; *b;)
-      {
-        tmp1 = (*b)->next;
-#ifdef USE_SIDEBAR
-        mutt_sb_notify_mailbox(*b, 0);
-#endif
-        buffy_free(b);
-        *b = tmp1;
-      }
-      return 0;
-    }
 
     mutt_expand_path(buf, sizeof(buf));
 
@@ -553,27 +539,8 @@ int mutt_parse_mailboxes(struct Buffer *path, struct Buffer *s,
       }
     }
 
-    if (data == MUTT_UNMAILBOXES)
-    {
-      if (*b)
-      {
-        tmp1 = (*b)->next;
-#ifdef USE_SIDEBAR
-        mutt_sb_notify_mailbox(*b, 0);
-#endif
-        buffy_free(b);
-        *b = tmp1;
-      }
-      continue;
-    }
-
     if (!*b)
-    {
       *b = buffy_new(buf);
-#ifdef USE_SIDEBAR
-      mutt_sb_notify_mailbox(*b, 1);
-#endif
-    }
 
     (*b)->new = false;
     (*b)->notified = true;
@@ -581,7 +548,7 @@ int mutt_parse_mailboxes(struct Buffer *path, struct Buffer *s,
 
     /* for check_mbox_size, it is important that if the folder is new (tested by
      * reading it), the size is set to 0 so that later when we check we see
-     * that it increased .  without check_mbox_size we probably don't care.
+     * that it increased. without check_mbox_size we probably don't care.
      */
     if (option(OPTCHECKMBOXSIZE) && stat((*b)->path, &sb) == 0 &&
         !test_new_folder((*b)->path))
@@ -591,6 +558,51 @@ int mutt_parse_mailboxes(struct Buffer *path, struct Buffer *s,
     }
     else
       (*b)->size = 0;
+
+#ifdef USE_SIDEBAR
+    mutt_sb_notify_mailbox(*b, 1);
+#endif
+  }
+  return 0;
+}
+
+int mutt_parse_unmailboxes(struct Buffer *path, struct Buffer *s,
+                           unsigned long data, struct Buffer *err)
+{
+  char buf[_POSIX_PATH_MAX];
+  bool clear_all = false;
+
+  while (!clear_all && MoreArgs(s))
+  {
+    mutt_extract_token(path, s, 0);
+
+    if (mutt_strcmp(path->data, "*") == 0)
+    {
+      clear_all = true;
+    }
+    else
+    {
+      strfcpy(buf, path->data, sizeof(buf));
+      mutt_expand_path(buf, sizeof(buf));
+    }
+
+    for (struct Buffy **b = &Incoming; *b;)
+    {
+      if (clear_all ||
+          (mutt_strcasecmp(buf, (*b)->path) == 0) ||
+          (mutt_strcasecmp(buf, (*b)->desc) == 0))
+      {
+        struct Buffy *next = (*b)->next;
+#ifdef USE_SIDEBAR
+        mutt_sb_notify_mailbox(*b, 0);
+#endif
+        buffy_free(b);
+        *b = next;
+        continue;
+      }
+
+      b = &((*b)->next);
+    }
   }
   return 0;
 }
