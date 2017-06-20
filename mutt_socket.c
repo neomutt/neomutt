@@ -22,6 +22,7 @@
 #include <fcntl.h>
 #include <netdb.h>
 #include <netinet/in.h>
+#include <signal.h>
 #include <stdio.h>
 #include <string.h>
 #include <sys/select.h>
@@ -383,6 +384,7 @@ static int socket_connect(int fd, struct sockaddr *sa)
 {
   int sa_size;
   int save_errno;
+  sigset_t set;
 
   if (sa->sa_family == AF_INET)
     sa_size = sizeof(struct sockaddr_in);
@@ -401,6 +403,12 @@ static int socket_connect(int fd, struct sockaddr *sa)
 
   mutt_allow_interrupt(1);
 
+  /* FreeBSD's connect() does not respect SA_RESTART, meaning
+   * a SIGWINCH will cause the connect to fail. */
+  sigemptyset (&set);
+  sigaddset (&set, SIGWINCH);
+  sigprocmask (SIG_BLOCK, &set, NULL);
+
   save_errno = 0;
 
   if (connect(fd, sa, sa_size) < 0)
@@ -413,6 +421,7 @@ static int socket_connect(int fd, struct sockaddr *sa)
   if (ConnectTimeout > 0)
     alarm(0);
   mutt_allow_interrupt(0);
+  sigprocmask (SIG_UNBLOCK, &set, NULL);
 
   return save_errno;
 }
