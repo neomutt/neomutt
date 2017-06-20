@@ -35,6 +35,7 @@
 #include <netinet/in.h>
 #include <netdb.h>
 #include <stdlib.h>
+#include <signal.h>
 #include <fcntl.h>
 #include <sys/types.h>
 #ifdef HAVE_SYS_TIME_H
@@ -344,6 +345,7 @@ static int socket_connect (int fd, struct sockaddr* sa)
 {
   int sa_size;
   int save_errno;
+  sigset_t set;
 
   if (sa->sa_family == AF_INET)
     sa_size = sizeof (struct sockaddr_in);
@@ -356,11 +358,17 @@ static int socket_connect (int fd, struct sockaddr* sa)
     dprint (1, (debugfile, "Unknown address family!\n"));
     return -1;
   }
-  
+
   if (ConnectTimeout > 0)
       alarm (ConnectTimeout);
 
   mutt_allow_interrupt (1);
+
+  /* FreeBSD's connect() does not respect SA_RESTART, meaning
+   * a SIGWINCH will cause the connect to fail. */
+  sigemptyset (&set);
+  sigaddset (&set, SIGWINCH);
+  sigprocmask (SIG_BLOCK, &set, NULL);
 
   save_errno = 0;
 
@@ -374,6 +382,7 @@ static int socket_connect (int fd, struct sockaddr* sa)
   if (ConnectTimeout > 0)
       alarm (0);
   mutt_allow_interrupt (0);
+  sigprocmask (SIG_UNBLOCK, &set, NULL);
 
   return save_errno;
 }
