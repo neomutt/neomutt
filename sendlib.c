@@ -2517,7 +2517,13 @@ int mutt_invoke_sendmail(struct Address *from, /* the sender */
 
   args[argslen++] = NULL;
 
-  mutt_endwin(NULL);
+  /* Some user's $sendmail command uses gpg for password decryption,
+   * and is set up to prompt using ncurses pinentry.  If we
+   * mutt_endwin() it leaves other users staring at a blank screen.
+   * So instead, just force a hard redraw on the next refresh. */
+  if (!option(OPTNOCURSES))
+    mutt_need_hard_redraw();
+
   if ((i = send_msg(path, args, msg, option(OPTNOCURSES) ? NULL : &childout)) != (EX_OK & 0xff))
   {
     if (i != S_BKG)
