@@ -13004,7 +13004,8 @@ virtual-mailboxes "My INBOX" "notmuch://?query=tag:inbox"
                 </entry>
                 <entry>add, remove, or toggle notmuch tags; [+]&lt;tag&gt; to
                   add, -&lt;tag&gt; to remove, !&lt;tag&gt; to togglelabels and
-                  then hide message by applying the "quasi-deleted" state.
+                  then hide or unhide the message by changing the "quasi-deleted"
+                  to match if it would be shown when requerying.
                   Normal redisplay rules apply here, so the user must call
                   &lt;sync-mailbox&gt; for the changes to be displayed. Note:
                   Tab completion of tag names is available.</entry>
