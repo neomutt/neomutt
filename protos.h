@@ -81,7 +81,6 @@ void mutt_set_parameter(const char *attribute, const char *value, struct Paramet
 
 #ifdef USE_NOTMUCH
 int mutt_parse_virtual_mailboxes(struct Buffer *path, struct Buffer *s, unsigned long data, struct Buffer *err);
-int mutt_parse_unvirtual_mailboxes(struct Buffer *path, struct Buffer *s, unsigned long data, struct Buffer *err);
 #endif
 
 FILE *mutt_open_read(const char *path, pid_t *thepid);
@@ -328,6 +327,7 @@ int mutt_parse_uncolor(struct Buffer *buf, struct Buffer *s, unsigned long data,
 int mutt_parse_hook(struct Buffer *buf, struct Buffer *s, unsigned long data, struct Buffer *err);
 int mutt_parse_macro(struct Buffer *buf, struct Buffer *s, unsigned long data, struct Buffer *err);
 int mutt_parse_mailboxes(struct Buffer *path, struct Buffer *s, unsigned long data, struct Buffer *err);
+int mutt_parse_unmailboxes(struct Buffer *path, struct Buffer *s, unsigned long data, struct Buffer *err);
 int mutt_parse_mono(struct Buffer *buff, struct Buffer *s, unsigned long data, struct Buffer *err);
 int mutt_parse_unmono(struct Buffer *buf, struct Buffer *s, unsigned long data, struct Buffer *err);
 int mutt_parse_push(struct Buffer *buf, struct Buffer *s, unsigned long data, struct Buffer *err);

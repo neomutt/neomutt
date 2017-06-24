@@ -64,6 +64,7 @@
 #include "options.h"
 #include "pattern.h"
 #include "rfc822.h"
+#include "sidebar.h"
 #include "version.h"
 #ifdef USE_NOTMUCH
 #include "mutt_notmuch.h"
@@ -4281,8 +4282,19 @@ void mutt_init(int skip_sys_rc, struct List *commands)
   mutt_read_histfile();
 
 #ifdef USE_NOTMUCH
-  if (option(OPTVIRTSPOOLFILE) && VirtIncoming)
-    mutt_str_replace(&Spoolfile, VirtIncoming->path);
+  if (option(OPTVIRTSPOOLFILE))
+  {
+    /* Find the first virtual folder and open it */
+    for (struct Buffy *b = Incoming; b; b = b->next)
+    {
+      if (b->magic == MUTT_NOTMUCH)
+      {
+        mutt_str_replace(&Spoolfile, b->path);
+        mutt_sb_toggle_virtual();
+        break;
+      }
+    }
+  }
 #endif
 
   FREE(&err.data);

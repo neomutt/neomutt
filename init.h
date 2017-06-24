@@ -4566,11 +4566,11 @@ const struct Command Commands[] = {
   { "lua-source",       mutt_lua_source_file,   0 },
 #endif
   { "macro",            mutt_parse_macro,       0 },
-  { "mailboxes",        mutt_parse_mailboxes,   MUTT_MAILBOXES },
-  { "unmailboxes",      mutt_parse_mailboxes,   MUTT_UNMAILBOXES },
+  { "mailboxes",        mutt_parse_mailboxes,   0 },
+  { "unmailboxes",      mutt_parse_unmailboxes, 0 },
 #ifdef USE_NOTMUCH
-  { "virtual-mailboxes",mutt_parse_virtual_mailboxes, 0 },
-  { "unvirtual-mailboxes",mutt_parse_unvirtual_mailboxes, 0 },
+  { "virtual-mailboxes",mutt_parse_mailboxes,   MUTT_VIRTUAL | MUTT_NAMED },
+  { "unvirtual-mailboxes",mutt_parse_unmailboxes, MUTT_VIRTUAL },
   { "tag-transforms",   parse_tag_transforms,   0 },
   { "tag-formats",      parse_tag_formats,      0 },
 #endif

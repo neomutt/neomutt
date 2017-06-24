@@ -2008,29 +2008,27 @@ done:
 
 char *nm_get_description(struct Context *ctx)
 {
-  struct Buffy *p = NULL;
-
-  for (p = VirtIncoming; p; p = p->next)
-    if (p->desc && (strcmp(p->path, ctx->path) == 0))
-      return p->desc;
+  for (struct Buffy *b = Incoming; b; b = b->next)
+    if (b->desc && (strcmp(b->path, ctx->path) == 0))
+      return b->desc;
 
   return NULL;
 }
 
 int nm_description_to_path(const char *desc, char *buf, size_t bufsz)
 {
-  struct Buffy *p = NULL;
-
   if (!desc || !buf || !bufsz)
     return -EINVAL;
 
-  for (p = VirtIncoming; p; p = p->next)
-    if (p->desc && (strcmp(desc, p->desc) == 0))
+  for (struct Buffy *b = Incoming; b; b = b->next)
+  {
+    if ((b->magic != MUTT_NOTMUCH) && b->desc && (strcmp(desc, b->desc) == 0))
     {
-      strncpy(buf, p->path, bufsz);
+      strncpy(buf, b->path, bufsz);
       buf[bufsz - 1] = '\0';
       return 0;
     }
+  }
 
   return -1;
 }

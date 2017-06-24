@@ -27,8 +27,8 @@
 struct stat;
 
 /* parameter to mutt_parse_mailboxes */
-#define MUTT_MAILBOXES   1
-#define MUTT_UNMAILBOXES 2
+#define MUTT_NAMED   1
+#define MUTT_VIRTUAL 2
 
 struct Buffy
 {
@@ -57,7 +57,6 @@ WHERE short BuffyTimeout INITVAL(3);
 WHERE short BuffyCheckStatsInterval INITVAL(60);
 
 #ifdef USE_NOTMUCH
-WHERE struct Buffy *VirtIncoming INITVAL(0);
 void mutt_buffy_vfolder(char *s, size_t slen);
 #endif
 
