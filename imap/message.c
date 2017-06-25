@@ -182,7 +182,7 @@ static char *msg_parse_flags(struct ImapHeader *h, char *s)
     else if (ascii_strncasecmp("old", s, 3) == 0)
     {
       s += 3;
-      hd->old = true;
+      hd->old = option(OPTMARKOLD) ? true : false;
     }
     else
     {

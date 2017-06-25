@@ -1253,7 +1253,7 @@ int mutt_parse_rfc822_line(struct Envelope *e, struct Header *hdr, char *line,
                 hdr->replied = true;
                 break;
               case 'O':
-                hdr->old = true;
+                hdr->old = option(OPTMARKOLD) ? true: false;
                 break;
               case 'R':
                 hdr->read = true;
