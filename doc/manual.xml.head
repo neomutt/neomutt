@@ -5869,7 +5869,10 @@ mailboxes $my_mx +mailbox3</screen>
       <literal>Subject</literal> and
       <literal>Body</literal> header fields, which are the only requirement
       specified by the
-      <literal>mailto:</literal>specification in RFC2368.</para>
+      <literal>mailto:</literal>specification in RFC2368, and
+      the <literal>Cc</literal>, <literal>In-Reply-To</literal>,
+      <literal>References</literal> headers to aid with replies to
+      mailing lists.</para>
     </sect1>
   </chapter>
 
