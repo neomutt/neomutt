@@ -4161,6 +4161,11 @@ void mutt_init(int skip_sys_rc, struct List *commands)
    */
   add_to_list(&MailtoAllow, "body");
   add_to_list(&MailtoAllow, "subject");
+  /* Cc, In-Reply-To, and References help with not breaking threading on
+   * mailing lists, see https://github.com/neomutt/neomutt/issues/115 */
+  add_to_list(&MailtoAllow, "cc");
+  add_to_list(&MailtoAllow, "in-reply-to");
+  add_to_list(&MailtoAllow, "references");
 
   if (!Muttrc)
   {

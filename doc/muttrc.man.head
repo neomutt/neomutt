@@ -453,8 +453,10 @@ can be any of the \fB-hook\fP commands documented above.
 .IP
 These commands allow the user to modify the list of allowed header
 fields in a \fImailto:\fP URL that Mutt will include in the
-the generated message.  By default the list contains only
-\fBsubject\fP and \fBbody\fP, as specified by RFC2368.
+the generated message.  By default the list contains
+\fBsubject\fP and \fBbody\fP, as specified by RFC2368; and
+\fBcc\fP, \fBin-reply-to\fP, and \fBreferences\fP to aid with
+mailto links from mailing lists.
 .SH PATTERNS
 .PP
 In various places with mutt, including some of the above mentioned
