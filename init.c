@@ -3989,13 +3989,6 @@ void mutt_init(int skip_sys_rc, struct List *commands)
     Shell = safe_strdup((p = getenv("SHELL")) ? p : "/bin/sh");
   }
 
-  /* Set standard defaults */
-  for (int i = 0; MuttVars[i].option; i++)
-  {
-    set_default(&MuttVars[i]);
-    restore_default(&MuttVars[i]);
-  }
-
 #ifdef DEBUG
   /* Start up debugging mode if requested from cmdline */
   if (debuglevel_cmdline > 0)
@@ -4133,6 +4126,13 @@ void mutt_init(int skip_sys_rc, struct List *commands)
   mutt_set_charset(Charset);
 
   Matches = safe_calloc(Matches_listsize, sizeof(char *));
+
+  /* Set standard defaults */
+  for (int i = 0; MuttVars[i].option; i++)
+  {
+    set_default(&MuttVars[i]);
+    restore_default(&MuttVars[i]);
+  }
 
   CurrentMenu = MENU_MAIN;
 
