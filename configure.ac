@@ -57,8 +57,6 @@ AC_CHECK_SIZEOF(off_t)
 
 AH_TEMPLATE([sig_atomic_t],
 	[Define to `int' if <signal.h> doesn't define.])
-AH_TEMPLATE([HAVE_START_COLOR],
-	[Define if you have start_color, as a function or macro.])
 AH_TEMPLATE([HAVE_TYPEAHEAD],
 	[Define if you have typeahead, as a function or macro.])
 AH_TEMPLATE([HAVE_BKGDSET],
@@ -75,9 +73,6 @@ AH_TEMPLATE([SIG_ATOMIC_VOLATILE_T],
 	[Some systems declare sig_atomic_t as volatile, some others -- no.
 	This define will have value `sig_atomic_t' or
 	`volatile sig_atomic_t' accordingly.])
-AH_TEMPLATE([ICONV_NONTRANS],
-	[Define as 1 if iconv() only converts exactly and we should treat
-	all return values other than (size_t)(-1) as equivalent.])
 
 AH_BOTTOM([/* fseeko portability defines */
 #define LOFF_T off_t
@@ -385,7 +380,7 @@ main ()
 	old_LIBS="$LIBS"
 	LIBS="$LIBS $MUTTLIBS"
 	CF_CHECK_FUNCDECLS([#include <${cf_cv_ncurses_header-curses.h}>],
-		[start_color typeahead bkgdset curs_set meta use_default_colors resizeterm])
+		[start_color resizeterm])
 	if test "$ac_cv_func_decl_start_color" = yes; then
 		AC_DEFINE(HAVE_COLOR,1,[ Define if your curses library supports color. ])
 	fi
