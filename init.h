@@ -608,12 +608,6 @@ struct Option MuttVars[] = {
   ** to find out whether an encrypted message is also signed.
   ** (Crypto only)
   */
-  { "pgp_encrypt_self",         DT_QUAD,         R_NONE, OPT_PGPENCRYPTSELF, MUTT_NO },
-  /*
-  ** .pp
-  ** Encrypt the message to $$pgp_sign_as too.
-  ** (PGP only)
-  */
   { "crypt_timestamp", DT_BOOL, R_NONE, OPTCRYPTTIMESTAMP, 1 },
   /*
   ** .pp
@@ -3480,7 +3474,6 @@ struct Option MuttVars[] = {
   ** possible \fCprintf(3)\fP-like sequences.
   ** (S/MIME only)
   */
-  { "smime_encrypt_self",               DT_QUAD,         R_NONE, OPT_SMIMEENCRYPTSELF, MUTT_NO },
   /*
   ** .pp
   ** Encrypt the message to $$smime_default_key too.
@@ -4383,6 +4376,8 @@ struct Option MuttVars[] = {
   ** When \fIset\fP, Mutt will collapse all threads when entering a folder.
   */
   /*--*/
+  { "pgp_encrypt_self",   DT_QUAD, R_NONE, OPT_PGPENCRYPTSELF,   MUTT_NO },
+  { "smime_encrypt_self", DT_QUAD, R_NONE, OPT_SMIMEENCRYPTSELF, MUTT_NO },
   { NULL, 0, 0, 0, 0 },
 };
 

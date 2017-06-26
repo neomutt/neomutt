@@ -229,22 +229,7 @@ int mutt_protect(struct Header *msg, char *keylist)
   {
     if ((WithCrypto & APPLICATION_SMIME) && (msg->security & APPLICATION_SMIME))
     {
-      char *new_keylist = keylist;
-
-      if (SmimeDefaultKey &&
-          query_quadoption(OPT_SMIMEENCRYPTSELF,
-                           _("Encrypt message to S/MIME Default Key also?")) == MUTT_YES)
-      {
-        /* +1 for NULL, +1 for \n */
-        int size = mutt_strlen(keylist) + mutt_strlen(SmimeDefaultKey) + 2;
-        new_keylist = safe_malloc(size);
-        snprintf(new_keylist, size, "%s%s\n", keylist, SmimeDefaultKey);
-      }
-
-      tmp_pbody = crypt_smime_build_smime_entity(tmp_smime_pbody, new_keylist);
-      if (new_keylist != keylist)
-        FREE(&new_keylist);
-
+      tmp_pbody = crypt_smime_build_smime_entity(tmp_smime_pbody, keylist);
       if (!tmp_pbody)
       {
         /* signed ? free it! */
@@ -264,21 +249,7 @@ int mutt_protect(struct Header *msg, char *keylist)
 
     if ((WithCrypto & APPLICATION_PGP) && (msg->security & APPLICATION_PGP))
     {
-      char *new_keylist = keylist;
-
-      if (PgpSignAs &&
-          query_quadoption(OPT_PGPENCRYPTSELF,
-                           _("Encrypt message to PGP Default Key also?")) == MUTT_YES)
-      {
-        /* +1 for SPACE, +1 for NULL */
-        int size = mutt_strlen(keylist) + mutt_strlen(PgpSignAs) + 2;
-        new_keylist = safe_malloc(size);
-        snprintf(new_keylist, size, "%s %s", keylist, PgpSignAs);
-      }
-
-      pbody = crypt_pgp_encrypt_message(tmp_pgp_pbody, new_keylist, flags & SIGN);
-      if (new_keylist != keylist)
-        FREE(&new_keylist);
+      pbody = crypt_pgp_encrypt_message(tmp_pgp_pbody, keylist, flags & SIGN);
       if (!pbody)
       {
         /* did we perform a retainable signature? */
@@ -827,7 +798,7 @@ int crypt_get_keys(struct Header *msg, char **keylist, int oppenc_mode)
         return -1;
       }
       unset_option(OPTPGPCHECKTRUST);
-      if (option(OPTPGPSELFENCRYPT))
+      if (option(OPTPGPSELFENCRYPT) || (quadoption(OPT_PGPENCRYPTSELF) == MUTT_YES))
         self_encrypt = PgpSelfEncryptAs;
     }
     if ((WithCrypto & APPLICATION_SMIME) && (msg->security & APPLICATION_SMIME))
@@ -837,7 +808,7 @@ int crypt_get_keys(struct Header *msg, char **keylist, int oppenc_mode)
         rfc822_free_address(&adrlist);
         return -1;
       }
-      if (option(OPTSMIMESELFENCRYPT))
+      if (option(OPTSMIMESELFENCRYPT) || (quadoption(OPT_SMIMEENCRYPTSELF) == MUTT_YES))
         self_encrypt = SmimeSelfEncryptAs;
     }
   }

@@ -3897,19 +3897,19 @@ folder-hook mutt "set sort=threads"
         <arg choice="plain">
           <replaceable class="parameter">pattern</replaceable>
         </arg>
-	<command>color</command>
-	<arg choice="plain">
-	  <option>compose</option>
-	</arg>
-	<arg choice="plain">
-	  <replaceable class="parameter">composeobject</replaceable>
-	</arg>
-	<arg choice="plain">
-	  <replaceable class="parameter">foreground</replaceable>
-	</arg>
-	<arg choice="plain">
-	  <replaceable class="parameter">background</replaceable>
-	</arg>
+        <command>color</command>
+        <arg choice="plain">
+          <option>compose</option>
+        </arg>
+        <arg choice="plain">
+          <replaceable class="parameter">composeobject</replaceable>
+        </arg>
+        <arg choice="plain">
+          <replaceable class="parameter">foreground</replaceable>
+        </arg>
+        <arg choice="plain">
+          <replaceable class="parameter">background</replaceable>
+        </arg>
         <command>uncolor</command>
         <group choice="req">
           <arg choice="plain">
@@ -4054,21 +4054,21 @@ folder-hook mutt "set sort=threads"
       <para>
       <emphasis>composeobject</emphasis> can be one of:</para>
       <itemizedlist>
-	<listitem>
-	  <para>header</para>
-	</listitem>
-	<listitem>
-	  <para>security_encrypt</para>
-	</listitem>
-	<listitem>
-	  <para>security_sign</para>
-	</listitem>
-	<listitem>
-	  <para>security_both</para>
-	</listitem>
-	<listitem>
-	  <para>security_none</para>
-	</listitem>
+        <listitem>
+          <para>header</para>
+        </listitem>
+        <listitem>
+          <para>security_encrypt</para>
+        </listitem>
+        <listitem>
+          <para>security_sign</para>
+        </listitem>
+        <listitem>
+          <para>security_both</para>
+        </listitem>
+        <listitem>
+          <para>security_none</para>
+        </listitem>
       </itemizedlist>
       <para>
       <emphasis>index-object</emphasis> can be one of the following:</para>
@@ -10509,20 +10509,20 @@ set index_format='%4C %Z %&lt;[y?%&lt;[m?%&lt;[d?%[%H:%M ]&amp;%[%a %d]&gt;&amp;
         copy of an encrypted email you could set
         <link linkend="fcc-clear">$fcc_clear</link>.</para>
         <para>A better option is to enable
-        <link linkend="smime-encrypt-self">$smime_encrypt_self</link>, then set
-        <link linkend="smime-default-key">$smime_default_key</link> to your
+        <link linkend="smime-self-encrypt">$smime_self_encrypt</link>, then set
+        <link linkend="smime-self-encrypt-as">$smime_self_encrypt_as</link> to your
         personal S/MIME key id.</para>
         <screen>
-set smime_encrypt_self = yes
-set smime_default_key  = bb345e23.0
+set smime_self_encrypt     = yes
+set smime_self_encrypt_as  = bb345e23.0
 </screen>
         <para>Or, if you use PGP,
-        <link linkend="pgp-encrypt-self">$pgp_encrypt_self</link>, then set
-        <link linkend="pgp-sign-as">$pgp_sign_as</link> to your personal PGP key
+        <link linkend="pgp-self-encrypt">$pgp_self_encrypt</link>, then set
+        <link linkend="pgp-self-encrypt-as">$pgp_self_encrypt_as</link> to your personal PGP key
         id.</para>
         <screen>
-set pgp_encrypt_self = yes
-set pgp_sign_as      = A4AF18C5582473BD35A1E9CE78BB3D480042198E
+set pgp_self_encrypt    = yes
+set pgp_self_encrypt_as = A4AF18C5582473BD35A1E9CE78BB3D480042198E
 </screen>
       </sect2>
 
@@ -10542,17 +10542,31 @@ set pgp_sign_as      = A4AF18C5582473BD35A1E9CE78BB3D480042198E
             <tbody>
               <row>
                 <entry>
-                  <literal>smime_encrypt_self</literal>
+                  <literal>smime_self_encrypt</literal>
                 </entry>
-                <entry>quad</entry>
-                <entry>No</entry>
+                <entry>boolean</entry>
+                <entry><literal>no</literal></entry>
               </row>
               <row>
                 <entry>
-                  <literal>pgp_encrypt_self</literal>
+                  <literal>smime_self_encrypt_as</literal>
                 </entry>
-                <entry>quad</entry>
-                <entry>No</entry>
+                <entry>string</entry>
+                <entry>(empty)</entry>
+              </row>
+              <row>
+                <entry>
+                  <literal>pgp_self_encrypt</literal>
+                </entry>
+                <entry>boolean</entry>
+                <entry><literal>no</literal></entry>
+              </row>
+              <row>
+                <entry>
+                  <literal>pgp_self_encrypt_as</literal>
+                </entry>
+                <entry>string</entry>
+                <entry>(empty)</entry>
               </row>
             </tbody>
           </tgroup>
@@ -10568,11 +10582,14 @@ set pgp_sign_as      = A4AF18C5582473BD35A1E9CE78BB3D480042198E
 # VARIABLES - shown with their default values
 # --------------------------------------------------------------------------
 # Save a copy of outgoing email, encrypted to yourself</emphasis>
-set smime_encrypt_self = "no"
-<emphasis role="comment"># Save a copy of outgoing email, encrypted to yourself</emphasis>
-set pgp_encrypt_self = "no"
+set smime_self_encrypt = "no"
+<emphasis role="comment"># set smime_self_encrypt_as = "SMIME-KEY"
 
-        <emphasis role="comment"># vim: syntax=muttrc</emphasis>
+# Save a copy of outgoing email, encrypted to yourself</emphasis>
+set pgp_self_encrypt = "no"
+<emphasis role="comment">set pgp_self_encrypt_as = "PGP-KEY"
+
+# vim: syntax=muttrc</emphasis>
 </screen>
       </sect2>
 
