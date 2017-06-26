@@ -13,9 +13,10 @@ EXTRA_DIST = language.txt language50.txt  \
 	vim-keys \
 	keybase \
 	lua \
-	hcache-bench
+	hcache-bench \
+	logo
 
-CONTRIB_DIRS = vim-keys keybase lua hcache-bench
+CONTRIB_DIRS = vim-keys keybase lua hcache-bench logo
 
 install-data-local:
 	$(INSTALL) -d -m 755 $(DESTDIR)$(docdir)/samples $(DESTDIR)$(docdir)/samples/iconv
