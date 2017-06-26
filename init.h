@@ -3132,7 +3132,7 @@ struct option_t MuttVars[] = {
   ** .pp
   ** This is an additional certificate used to encrypt messages when
   ** $$smime_self_encrypt is \fIset\fP.  It is also used to specify the
-  ** certficate for $$postpone_encrypt.  It should be the hash-value that
+  ** certificate for $$postpone_encrypt.  It should be the hash-value that
   ** OpenSSL generates.
   ** (S/MIME only)
   */
