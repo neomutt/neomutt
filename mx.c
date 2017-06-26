@@ -788,7 +788,13 @@ int mx_close_mailbox(struct Context *ctx, int *index_hint)
       read_msgs++;
   }
 
-  if (read_msgs && quadoption(OPT_MOVE) != MUTT_NO && ctx->magic != MUTT_NNTP)
+#ifdef USE_NNTP
+  /* don't need to move articles from newsgroup */
+  if (ctx->magic == MUTT_NNTP)
+    read_msgs = 0;
+#endif
+
+  if (read_msgs && quadoption(OPT_MOVE) != MUTT_NO)
   {
     char *p = NULL;
 

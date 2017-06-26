@@ -77,7 +77,6 @@ static struct Hash *new_hash(int nelem)
   if (nelem == 0)
     nelem = 2;
   table->nelem = nelem;
-  table->curnelem = 0;
   table->table = safe_calloc(nelem, sizeof(struct HashElem *));
   return table;
 }
@@ -112,28 +111,6 @@ struct Hash *int_hash_create(int nelem, int flags)
   return table;
 }
 
-struct Hash *hash_resize(struct Hash *ptr, int nelem, int lower)
-{
-  struct Hash *table = NULL;
-  struct HashElem *elem = NULL, *tmp = NULL;
-
-  table = hash_create(nelem, lower);
-
-  for (int i = 0; i < ptr->nelem; i++)
-  {
-    for (elem = ptr->table[i]; elem;)
-    {
-      tmp = elem;
-      elem = elem->next;
-      hash_insert(table, tmp->key.strkey, tmp->data);
-      FREE(&tmp);
-    }
-  }
-  FREE(&ptr->table);
-  FREE(&ptr);
-  return table;
-}
-
 /* table        hash table to update
  * key          key to hash on
  * data         data to associate with `key'
@@ -153,7 +130,6 @@ static int union_hash_insert(struct Hash *table, union HashKey key, void *data)
   {
     ptr->next = table->table[h];
     table->table[h] = ptr;
-    table->curnelem++;
   }
   else
   {
@@ -176,7 +152,6 @@ static int union_hash_insert(struct Hash *table, union HashKey key, void *data)
     else
       table->table[h] = ptr;
     ptr->next = tmp;
-    table->curnelem++;
   }
   return h;
 }
@@ -279,7 +254,6 @@ static void union_hash_delete(struct Hash *table, union HashKey key,
       if (table->strdup_keys)
         FREE(&ptr->key.strkey);
       FREE(&ptr);
-      table->curnelem--;
 
       ptr = *last;
     }

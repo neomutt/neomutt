@@ -1,7 +1,7 @@
 /**
  * Copyright (C) 1998 Brandon Long <blong@fiction.net>
  * Copyright (C) 1999 Andrej Gritsenko <andrej@lucky.net>
- * Copyright (C) 2000-2012 Vsevolod Volkov <vvv@mutt.org.ua>
+ * Copyright (C) 2000-2017 Vsevolod Volkov <vvv@mutt.org.ua>
  *
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
@@ -64,9 +64,6 @@ static struct NntpData *nntp_data_find(struct NntpServer *nserv, const char *gro
     strfcpy(nntp_data->group, group, len);
     nntp_data->nserv = nserv;
     nntp_data->deleted = true;
-    if (nserv->groups_hash->nelem < nserv->groups_hash->curnelem * 2)
-      nserv->groups_hash =
-          hash_resize(nserv->groups_hash, nserv->groups_hash->nelem * 2, 0);
     hash_insert(nserv->groups_hash, nntp_data->group, nntp_data);
 
     /* add NntpData to list */
@@ -987,7 +984,7 @@ struct NntpServer *nntp_select_server(char *server, int leave_lock)
 
     /* load list of newsgroups from server */
     else
-      rc = nntp_active_fetch(nserv);
+      rc = nntp_active_fetch(nserv, 0);
   }
 
   if (rc >= 0)

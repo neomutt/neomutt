@@ -34,7 +34,7 @@ struct HashElem
 
 struct Hash
 {
-  int nelem, curnelem;
+  int nelem;
   bool strdup_keys : 1; /**< if set, the key->strkey is strdup'ed */
   bool allow_dups  : 1; /**< if set, duplicate keys are allowed */
   struct HashElem **table;
@@ -52,7 +52,6 @@ struct Hash *int_hash_create(int nelem, int flags);
 
 int hash_insert(struct Hash *table, const char *strkey, void *data);
 int int_hash_insert(struct Hash *table, unsigned int intkey, void *data);
-struct Hash *hash_resize(struct Hash *ptr, int nelem, int lower);
 
 void *hash_find(const struct Hash *table, const char *strkey);
 struct HashElem *hash_find_elem(const struct Hash *table, const char *strkey);

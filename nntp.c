@@ -1,7 +1,7 @@
 /**
  * Copyright (C) 1998 Brandon Long <blong@fiction.net>
  * Copyright (C) 1999 Andrej Gritsenko <andrej@lucky.net>
- * Copyright (C) 2000-2012 Vsevolod Volkov <vvv@mutt.org.ua>
+ * Copyright (C) 2000-2017 Vsevolod Volkov <vvv@mutt.org.ua>
  *
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
@@ -1530,7 +1530,7 @@ static int nntp_open_mailbox(struct Context *ctx)
 }
 
 /* Fetch message */
-static int nntp_fetch_message(struct Context *ctx, struct Message *msg, int msgno)
+static int nntp_open_message(struct Context *ctx, struct Message *msg, int msgno)
 {
   struct NntpData *nntp_data = ctx->data;
   struct NntpAcache *acache = NULL;
@@ -1771,12 +1771,12 @@ static int nntp_group_poll(struct NntpData *nntp_data, int update_stat)
   return 1;
 }
 
-/* Check current newsgroup for new articles:
- *  MUTT_REOPENED       - articles have been renumbered or removed from server
- *  MUTT_NEW_MAIL       - new articles found
- *  0           - no change
- * -1           - lost connection */
-static int nntp_check_mailbox(struct Context *ctx, int *index_hint)
+/* Check current newsgroup for new articles, leave newsrc locked:
+ *  MUTT_REOPENED - articles have been renumbered or removed from server
+ *  MUTT_NEW_MAIL - new articles found
+ *  0             - no change
+ * -1             - lost connection */
+static int check_mailbox(struct Context *ctx)
 {
   struct NntpData *nntp_data = ctx->data;
   struct NntpServer *nserv = nntp_data->nserv;
@@ -1979,10 +1979,26 @@ static int nntp_check_mailbox(struct Context *ctx, int *index_hint)
 #ifdef USE_HCACHE
   mutt_hcache_close(hc);
 #endif
-  /* If there's an error, or we've been called from nntp_sync_mailbox() */
-  if (ret || !index_hint)
+  if (ret)
     nntp_newsrc_close(nserv);
   mutt_clear_error();
+  return ret;
+}
+
+/* Check current newsgroup for new articles:
+ *  MUTT_REOPENED - articles have been renumbered or removed from server
+ *  MUTT_NEW_MAIL - new articles found
+ *  0             - no change
+ * -1             - lost connection */
+static int nntp_check_mailbox(struct Context *ctx, int *index_hint)
+{
+  int ret = check_mailbox(ctx);
+  if (ret == 0)
+  {
+    struct NntpData *nntp_data = ctx->data;
+    struct NntpServer *nserv = nntp_data->nserv;
+    nntp_newsrc_close(nserv);
+  }
   return ret;
 }
 
@@ -1997,7 +2013,7 @@ static int nntp_sync_mailbox(struct Context *ctx, int *index_hint)
 
   /* check for new articles */
   nntp_data->nserv->check_time = 0;
-  rc = nntp_check_mailbox(ctx, index_hint);
+  rc = check_mailbox(ctx);
   if (rc)
     return rc;
 
@@ -2006,7 +2022,6 @@ static int nntp_sync_mailbox(struct Context *ctx, int *index_hint)
   hc = nntp_hcache_open(nntp_data);
 #endif
 
-  nntp_data->unread = ctx->unread;
   for (int i = 0; i < ctx->msgcount; i++)
   {
     struct Header *hdr = ctx->hdrs[i];
@@ -2046,12 +2061,14 @@ static int nntp_sync_mailbox(struct Context *ctx, int *index_hint)
 }
 
 /* Free up memory associated with the newsgroup context */
-static int nntp_fastclose_mailbox(struct Context *ctx)
+static int nntp_close_mailbox(struct Context *ctx)
 {
   struct NntpData *nntp_data = ctx->data, *nntp_tmp = NULL;
 
   if (!nntp_data)
     return 0;
+
+  nntp_data->unread = ctx->unread;
 
   nntp_acache_free(nntp_data);
   if (!nntp_data->nserv || !nntp_data->nserv->groups_hash || !nntp_data->group)
@@ -2097,11 +2114,12 @@ static int nntp_date(struct NntpServer *nserv, time_t *now)
 }
 
 /* Fetch list of all newsgroups from server */
-int nntp_active_fetch(struct NntpServer *nserv)
+int nntp_active_fetch(struct NntpServer *nserv, unsigned int new)
 {
   struct NntpData nntp_data;
   char msg[SHORT_STRING];
   char buf[LONG_STRING];
+  unsigned int i;
   int rc;
 
   snprintf(msg, sizeof(msg), _("Loading list of groups from server %s..."),
@@ -2112,6 +2130,7 @@ int nntp_active_fetch(struct NntpServer *nserv)
 
   nntp_data.nserv = nserv;
   nntp_data.group = NULL;
+  i = nserv->groups_num;
   strfcpy(buf, "LIST\r\n", sizeof(buf));
   rc = nntp_fetch_lines(&nntp_data, buf, sizeof(buf), msg, nntp_add_group, nserv);
   if (rc)
@@ -2124,11 +2143,16 @@ int nntp_active_fetch(struct NntpServer *nserv)
     return -1;
   }
 
-  if (option(OPTLOADDESC) &&
-      get_description(&nntp_data, "*", _("Loading descriptions...")) < 0)
-    return -1;
+  if (new)
+  {
+    for (; i < nserv->groups_num; i++)
+    {
+      struct NntpData *data = nserv->groups_list[i];
+      data->new = 1;
+    }
+  }
 
-  for (unsigned int i = 0; i < nserv->groups_num; i++)
+  for (i = 0; i < nserv->groups_num; i++)
   {
     struct NntpData *data = nserv->groups_list[i];
 
@@ -2139,7 +2163,13 @@ int nntp_active_fetch(struct NntpServer *nserv)
       nserv->groups_list[i] = NULL;
     }
   }
+
+  if (option(OPTLOADDESC))
+    rc = get_description(&nntp_data, "*", _("Loading descriptions..."));
+
   nntp_active_save_cache(nserv);
+  if (rc < 0)
+    return -1;
   mutt_clear_error();
   return 0;
 }
@@ -2154,7 +2184,7 @@ int nntp_check_new_groups(struct NntpServer *nserv)
   time_t now;
   struct tm *tm = NULL;
   char buf[LONG_STRING];
-  char *msg = (_("Checking for new newsgroups..."));
+  char *msg = _("Checking for new newsgroups...");
   unsigned int i;
   int rc, update_active = false;
 
@@ -2218,7 +2248,14 @@ int nntp_check_new_groups(struct NntpServer *nserv)
   rc = 0;
   if (nserv->groups_num != i)
   {
+    int groups_num = i;
+
     nserv->newgroups_time = now;
+    for (; i < nserv->groups_num; i++)
+    {
+      struct NntpData *data = nserv->groups_list[i];
+      data->new = 1;
+    }
 
     /* loading descriptions */
     if (option(OPTLOADDESC))
@@ -2228,7 +2265,7 @@ int nntp_check_new_groups(struct NntpServer *nserv)
 
       mutt_progress_init(&progress, _("Loading descriptions..."),
                          MUTT_PROGRESS_MSG, ReadInc, nserv->groups_num - i);
-      for (; i < nserv->groups_num; i++)
+      for (i = groups_num; i < nserv->groups_num; i++)
       {
         struct NntpData *data = nserv->groups_list[i];
 
@@ -2406,10 +2443,10 @@ int nntp_check_children(struct Context *ctx, const char *msgid)
 struct MxOps mx_nntp_ops = {
   .open = nntp_open_mailbox,
   .open_append = NULL,
-  .close = nntp_fastclose_mailbox,
+  .close = nntp_close_mailbox,
   .check = nntp_check_mailbox,
   .sync = nntp_sync_mailbox,
-  .open_msg = nntp_fetch_message,
+  .open_msg = nntp_open_message,
   .close_msg = nntp_close_message,
   .commit_msg = NULL,
   .open_new_msg = NULL,
