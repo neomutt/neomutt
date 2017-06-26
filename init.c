@@ -2171,6 +2171,9 @@ char **mutt_envlist(void)
  */
 static void start_debug(void)
 {
+  if (!DebugFile)
+    return;
+
   char buf[_POSIX_PATH_MAX];
 
   /* rotate the old debug logs */
@@ -2178,6 +2181,9 @@ static void start_debug(void)
   {
     snprintf(debugfilename, sizeof(debugfilename), "%s%d", DebugFile, i);
     snprintf(buf, sizeof(buf), "%s%d", DebugFile, i + 1);
+
+    mutt_expand_path (debugfilename, sizeof (debugfilename));
+    mutt_expand_path (buf, sizeof (buf));
     rename(debugfilename, buf);
   }
 
@@ -3994,6 +4000,16 @@ void mutt_init(int skip_sys_rc, struct List *commands)
   if (debuglevel_cmdline > 0)
   {
     debuglevel = debuglevel_cmdline;
+    if (debugfile_cmdline)
+    {
+      DebugFile = safe_strdup(debugfile_cmdline);
+    }
+    else
+    {
+      int i = mutt_option_index("debug_file");
+      if ((i >= 0) && (MuttVars[i].init != 0))
+        DebugFile = safe_strdup((const char*) MuttVars[i].init);
+    }
     start_debug();
   }
 #endif
