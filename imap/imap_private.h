@@ -123,6 +123,7 @@ enum
   IDLE,          /* RFC 2177: IDLE */
   SASL_IR,       /* SASL initial response draft */
   ENABLE,        /* RFC 5161 */
+  X_GM_EXT1,     /* https://developers.google.com/gmail/imap/imap-extensions */
 
   CAPMAX
 };

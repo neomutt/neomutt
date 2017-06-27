@@ -52,7 +52,18 @@
 static const char *const Capabilities[] = {
   "IMAP4",         "IMAP4rev1",   "STATUS",         "ACL",      "NAMESPACE",
   "AUTH=CRAM-MD5", "AUTH=GSSAPI", "AUTH=ANONYMOUS", "STARTTLS", "LOGINDISABLED",
-  "IDLE",          "SASL-IR",     "ENABLE",         NULL,
+  "IDLE",          "SASL-IR",     "X-GM-EXT1",      "ENABLE",   NULL,
+};
+
+/* Gmail document one string but use another.  Support both. */
+struct Capability_Alias
+{
+  char *name;
+  unsigned int value;
+};
+
+static struct Capability_Alias Capability_Aliases[] = {
+  { "X-GM-EXT-1", X_GM_EXT1 }, { NULL, 0 },
 };
 
 static bool cmd_queue_full(struct ImapData *idata)
@@ -274,6 +285,7 @@ static void cmd_parse_fetch(struct ImapData *idata, char *s)
 static void cmd_parse_capability(struct ImapData *idata, char *s)
 {
   int x;
+  bool found;
   char *bracket = NULL;
 
   mutt_debug(3, "Handling CAPABILITY\n");
@@ -288,12 +300,29 @@ static void cmd_parse_capability(struct ImapData *idata, char *s)
 
   while (*s)
   {
+    found = false;
     for (x = 0; x < CAPMAX; x++)
       if (imap_wordcasecmp(Capabilities[x], s) == 0)
       {
         mutt_bit_set(idata->capabilities, x);
+        mutt_debug(4, " Found capability \"%s\": %d\n", Capabilities[x], x);
+        found = true;
         break;
       }
+    if (!found)
+    {
+      for (x = 0; Capability_Aliases[x].name != NULL; x++)
+      {
+        if (imap_wordcasecmp(Capability_Aliases[x].name, s) == 0)
+        {
+          mutt_bit_set(idata->capabilities, Capability_Aliases[x].value);
+          mutt_debug(4, " Found capability \"%s\": %d\n",
+                     Capability_Aliases[x].name, Capability_Aliases[x].value);
+          found = true;
+          break;
+        }
+      }
+    }
     s = imap_next_word(s);
   }
 }

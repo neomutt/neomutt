@@ -6571,6 +6571,14 @@ mailboxes $my_mx +mailbox3</screen>
                 <emphasis>MAX</emphasis>*) **)</entry>
               </row>
               <row>
+                <entry>=/
+                <emphasis>STRING</emphasis></entry>
+                <entry>IMAP custom server-side search for
+                <emphasis>STRING</emphasis>. Currently only defined for Gmail.
+                See: <link linkend="gmail-patterns">GMail Patterns</link>
+                </entry>
+              </row>
+              <row>
                 <entry>~=</entry>
                 <entry>duplicated messages (see
                 <link linkend="duplicate-threads">
@@ -7066,6 +7074,52 @@ mailboxes $my_mx +mailbox3</screen>
             <emphasis>not</emphasis> the dates shown in the main index.</para>
           </note>
         </sect3>
+      </sect2>
+      <sect2 id="gmail-patterns">
+        <title>GMail Patterns</title>
+        <para>
+          <literal>=/ "search terms"</literal> invokes server-side search,
+          passing along the search terms provided. Search results are
+          constrained by IMAP to be within the current folder. At present this
+          only supports Gmail's search API IMAP extension. The search language
+          is entirely up to the mail provider and changes at their discretion.
+          Using <literal>~/</literal> will silently fail.
+        </para>
+        <para>
+          For up-to-date information about searching, see:
+          <ulink url="https://support.google.com/mail/answer/7190?hl=en">GMail's Support Page</ulink>.
+          You will need to (once) use a web-browser to visit Settings/Labels
+          and enable "Show in IMAP" for "All Mail". When searching, visit that
+          folder in mutt to most closely match Gmail search semantics.
+        </para>
+        <table id="gmail-example-patterns">
+          <title>GMail Example Patterns</title>
+          <tgroup cols="2">
+            <thead>
+              <row>
+                <entry>Pattern</entry>
+                <entry>Matches</entry>
+              </row>
+            </thead>
+            <tbody>
+              <row>
+                <entry>
+                  <literal>=/ "list:foo.example.org has:attachment is:important"</literal>
+                </entry>
+                <entry>the foo.example.org mailing-list per Gmail's
+                  definitions, and has an attachment, and has been marked as
+                  important</entry>
+              </row>
+              <row>
+                <entry>
+                  <literal>=/ "{has:purple-star has:yellow-star} older_than:2m"</literal>
+                </entry>
+                <entry>is older than two months and has either a purple-star or
+                  a yellow-star</entry>
+              </row>
+            </tbody>
+          </tgroup>
+        </table>
       </sect2>
     </sect1>
 
