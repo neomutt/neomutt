@@ -257,9 +257,9 @@ const struct Option *mutt_option_get(const char *s)
     return &MuttVars[idx];
   else if (mutt_strncmp("my_", s, 3) == 0)
   {
-    struct Option *opt = safe_malloc(sizeof(struct Option));
     if (!myvar_get(s))
       return NULL;
+    struct Option *opt = safe_malloc(sizeof(struct Option));
     opt->data = (unsigned long) safe_strdup(myvar_get(s));
     if (*((char **) opt->data))
     {

@@ -116,7 +116,6 @@ static int _lua_mutt_set(lua_State *l)
   struct Buffer err;
   const char *param = lua_tostring(l, -2);
   mutt_debug(2, " * _lua_mutt_set(%s)\n", param);
-  struct Option *value = safe_malloc(sizeof(struct Option));
   const struct Option *tmp = mutt_option_get(param);
   if (!tmp)
   {
@@ -124,6 +123,7 @@ static int _lua_mutt_set(lua_State *l)
     return -1;
   }
 
+  struct Option *value = safe_malloc(sizeof(struct Option));
   memcpy(value, tmp, sizeof(struct Option));
   if (value)
   {
