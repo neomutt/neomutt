@@ -148,7 +148,6 @@ static struct CompileOptions comp_opts[] = {
 #else
   { "getaddrinfo", 0 },
 #endif
-  { "getsid", 1 },
 #ifdef USE_SSL_GNUTLS
   { "gnutls", 1 },
 #else
@@ -185,9 +184,9 @@ static struct CompileOptions comp_opts[] = {
   { "initials", 1 },
   { "keywords", 1 },
 #ifdef HAVE_LIBIDN
-  { "libidn", 1 },
+  { "idn", 1 },
 #else
-  { "libidn", 0 },
+  { "idn", 0 },
 #endif
   { "limit_current_thread", 1 },
   { "lmdb", 1 },
@@ -251,11 +250,6 @@ static struct CompileOptions comp_opts[] = {
   { "sasl", 0 },
 #endif
   { "sensible_browser", 1 },
-#ifdef USE_SETGID
-  { "setgid", 1 },
-#else
-  { "setgid", 0 },
-#endif
   { "sidebar", 1 },
   { "skip_quoted", 1 },
 #ifdef CRYPT_BACKEND_CLASSIC_SMIME
