@@ -111,10 +111,14 @@ static int _lua_mutt_call(lua_State *l)
 static int _lua_mutt_set(lua_State *l)
 {
   int rv = -1;
-  struct Buffer err;
   const char *param = lua_tostring(l, -2);
   mutt_debug(2, " * _lua_mutt_set(%s)\n", param);
   struct Option opt;
+  char err_str[LONG_STRING];
+  struct Buffer err;
+  err.data = err_str;
+  err.dsize = sizeof(err_str);
+
   if (!mutt_option_get(param, &opt))
   {
     luaL_error(l, "Error getting parameter %s", param);

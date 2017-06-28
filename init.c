@@ -368,12 +368,16 @@ int mutt_option_set(const struct Option *val, struct Buffer *err)
     {
       case DT_RX:
       {
-        struct Buffer *err2 = safe_malloc(sizeof(struct Buffer));
+        char err_str[LONG_STRING] = "";
+        struct Buffer err2;
+        err2.data = err_str;
+        err2.dsize = sizeof(err_str);
+
         struct Buffer tmp;
-        tmp.data = safe_strdup((char *) val->data);
+        tmp.data = (char *)val->data;
         tmp.dsize = strlen((char *) val->data);
 
-        if (parse_regex(idx, &tmp, err2))
+        if (parse_regex(idx, &tmp, &err2))
         {
           /* $reply_regexp and $alternates require special treatment */
           if (Context && Context->msgcount &&
@@ -397,17 +401,15 @@ int mutt_option_set(const struct Option *val, struct Buffer *err)
         }
         else
         {
-          snprintf(err2->data, err2->dsize, _("%s: Unknown type."),
+          snprintf(err->data, err->dsize, _("%s: Unknown type."),
                    MuttVars[idx].option);
           return -1;
         }
-        FREE(&tmp.data);
         break;
       }
       case DT_SORT:
       {
         const struct Mapping *map = NULL;
-        struct Buffer *err2 = safe_malloc(sizeof(struct Buffer));
 
         switch (MuttVars[idx].type & DT_SUBTYPE_MASK)
         {
@@ -434,14 +436,16 @@ int mutt_option_set(const struct Option *val, struct Buffer *err)
 
         if (!map)
         {
-          snprintf(err2->data, err2->dsize, _("%s: Unknown type."),
+          snprintf(err->data, err->dsize, _("%s: Unknown type."),
                    MuttVars[idx].option);
           return -1;
         }
 
         if (parse_sort((short *) MuttVars[idx].data, (const char *) val->data,
-                       map, err2) == -1)
+                       map, err) == -1)
+        {
           return -1;
+        }
       }
       break;
       case DT_MBCHARTBL:
