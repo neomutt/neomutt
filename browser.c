@@ -1142,9 +1142,9 @@ void _mutt_select_file(char *f, size_t flen, int flags, char ***files, int *numf
   else
 #endif
   {
-    if (!*LastDir)
+    if (!folder)
       getcwd(LastDir, sizeof(LastDir));
-    if (folder)
+    else
     {
       /* Whether we use the tracking feature of the browser depends
        * on which sort method we chose to use. This variable is defined
@@ -1193,6 +1193,7 @@ void _mutt_select_file(char *f, size_t flen, int flags, char ***files, int *numf
             case MUTT_MMDF:
             case MUTT_MH:
             case MUTT_MAILDIR:
+            case MUTT_IMAP:
               if (Maildir)
                 strfcpy(LastDir, NONULL(Maildir), sizeof(LastDir));
               else if (Spoolfile)
