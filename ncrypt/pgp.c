@@ -878,6 +878,7 @@ static struct Body *pgp_decrypt_part(struct Body *a, struct State *s,
   {
     mutt_error(_("Decryption failed"));
     pgp_void_passphrase();
+    safe_fclose(&pgperr);
     return NULL;
   }
 

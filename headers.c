@@ -68,6 +68,7 @@ void mutt_edit_headers(const char *editor, const char *body, struct Header *msg,
   if ((ifp = fopen(body, "r")) == NULL)
   {
     mutt_perror(body);
+    safe_fclose(&ofp);
     return;
   }
 
