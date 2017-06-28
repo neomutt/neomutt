@@ -440,7 +440,7 @@ struct Option MuttVars[] = {
   ** When \fIunset\fP, Mutt will not collapse a thread if it contains any
   ** unread messages.
   */
-  { "collapse_flagged",	DT_BOOL, R_NONE, OPTCOLLAPSEFLAGGED, 1 },
+  { "collapse_flagged", DT_BOOL, R_NONE, OPTCOLLAPSEFLAGGED, 1 },
   /*
   ** .pp
   ** When \fIunset\fP, Mutt will not collapse a thread if it contains any

@@ -310,13 +310,13 @@ main ()
 			mutt_cv_slang=yes
 		fi
 	else
-		dnl ---Check to see if $withval is a source directory
+		dnl -- Check to see if $withval is a source directory
 		if test -f $withval/src/slang.h; then
 			mutt_cv_slang=$withval/src
 			CPPFLAGS="$CPPFLAGS -I${mutt_cv_slang}"
 			LDFLAGS="$LDFLAGS -L${mutt_cv_slang}/objs"
 		else
-			dnl ---Must be installed somewhere
+			dnl -- Must be installed somewhere
 			mutt_cv_slang=$withval
 			if test -d $withval/include/slang; then
 				CPPFLAGS="$CPPFLAGS -I${withval}/include/slang"

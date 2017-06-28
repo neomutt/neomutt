@@ -22,9 +22,9 @@ for mode in help defs; do
 		sed -e '/^\/\*/d' -e "$expr" < $i
 	done
 	if test $mode = help; then
-		echo '	NULL'
+		echo '  NULL'
 	else
-		echo '	OP_MAX'
+		echo '  OP_MAX'
 	fi
 	echo "};"
 	if test $mode = help; then
