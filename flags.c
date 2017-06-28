@@ -345,15 +345,15 @@ int mutt_thread_set_flag(struct Header *hdr, int flag, int bf, int subthread)
       cur = cur->parent;
   start = cur;
 
-  if (cur->message)
+  if (cur->message && cur != hdr->thread)
     mutt_set_flag(Context, cur->message, flag, bf);
 
   if ((cur = cur->child) == NULL)
-    return 0;
+    goto done;
 
   while (true)
   {
-    if (cur->message)
+    if (cur->message && cur != hdr->thread)
       mutt_set_flag(Context, cur->message, flag, bf);
 
     if (cur->child)
@@ -366,12 +366,16 @@ int mutt_thread_set_flag(struct Header *hdr, int flag, int bf, int subthread)
       {
         cur = cur->parent;
         if (cur == start)
-          return 0;
+          goto done;
       }
       cur = cur->next;
     }
   }
-  /* not reached */
+done:
+  cur = hdr->thread;
+  if (cur->message)
+    mutt_set_flag(Context, cur->message, flag, bf);
+  return 0;
 }
 
 int mutt_change_flag(struct Header *h, int bf)
