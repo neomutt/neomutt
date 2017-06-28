@@ -48,7 +48,7 @@ struct Buffer;
 
 struct Option
 {
-  char *option;
+  const char *option;
   short type;
   short flags;
   unsigned long data;
@@ -57,7 +57,7 @@ struct Option
 
 int mutt_option_to_string(const struct Option *opt, char *val, size_t len);
 
-const struct Option *mutt_option_get(const char *s);
+bool mutt_option_get(const char *s, struct Option *opt);
 int mutt_option_set(const struct Option *val, struct Buffer *err);
 
 #endif /* _MUTT_OPTIONS_H */

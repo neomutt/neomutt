@@ -249,27 +249,32 @@ int mutt_option_to_string(const struct Option *opt, char *val, size_t len)
   return 0;
 }
 
-const struct Option *mutt_option_get(const char *s)
+bool mutt_option_get(const char *s, struct Option *opt)
 {
   mutt_debug(2, " * mutt_option_get(%s)\n", s);
   int idx = mutt_option_index(s);
   if (idx != -1)
-    return &MuttVars[idx];
-  else if (mutt_strncmp("my_", s, 3) == 0)
   {
-    if (!myvar_get(s))
-      return NULL;
-    struct Option *opt = safe_malloc(sizeof(struct Option));
-    opt->data = (unsigned long) safe_strdup(myvar_get(s));
-    if (*((char **) opt->data))
-    {
-      opt->option = safe_strdup(s);
-      opt->type = DT_STR;
-      return opt;
-    }
-    FREE(&opt);
+    if (opt)
+      *opt = MuttVars[idx];
+    return true;
   }
-  return NULL;
+
+  if (mutt_strncmp("my_", s, 3) == 0)
+  {
+    const char *mv = myvar_get(s);
+    if (!mv)
+      return false;
+
+    if (opt)
+    {
+      memset(opt, 0, sizeof(*opt));
+      opt->option = s;
+      opt->type = DT_STR;
+    }
+    return true;
+  }
+  return false;
 }
 #endif
 
