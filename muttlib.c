@@ -1308,6 +1308,10 @@ void mutt_FormatString(char *dest,     /* output buffer */
   int n;
   char *recycler = NULL;
 
+  char src2[STRING];
+  strfcpy(src2, src, mutt_strlen(src) + 1);
+  src = src2;
+
   prefix[0] = '\0';
   destlen--; /* save room for the terminal \0 */
   wlen = ((flags & MUTT_FORMAT_ARROWCURSOR) && option(OPTARROWCURSOR)) ? 3 : 0;
