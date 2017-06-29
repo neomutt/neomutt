@@ -1528,6 +1528,15 @@ void mutt_FormatString(char *dest,     /* output buffer */
         lrbalance = 1;
         while ((lrbalance > 0) && (count < sizeof(ifstring)) && *src)
         {
+          if ((src[0] == '%') && (src[1] == '>'))
+          {
+            /* This is a padding expando; copy two chars and carry on */
+            *cp++ = *src++;
+            *cp++ = *src++;
+            count += 2;
+            continue;
+          }
+
           if (*src == '\\')
           {
             src++;
@@ -1557,6 +1566,15 @@ void mutt_FormatString(char *dest,     /* output buffer */
         count = 0;
         while ((lrbalance > 0) && (count < sizeof(elsestring)) && *src)
         {
+          if ((src[0] == '%') && (src[1] == '>'))
+          {
+            /* This is a padding expando; copy two chars and carry on */
+            *cp++ = *src++;
+            *cp++ = *src++;
+            count += 2;
+            continue;
+          }
+
           if (*src == '\\')
           {
             src++;
