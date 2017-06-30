@@ -489,7 +489,7 @@ if test "$gss_prefix" != "no"; then
 		AC_CACHE_SAVE
 		AC_MSG_RESULT([GSSAPI libraries not found])
 	fi
-	if test "$GSSAPI_IMPL" = "Heimdal"; then
+	if test "$GSSAPI_IMPL" = "Heimdal" || test "$GSSAPI_IMPL" = "Solaris"; then
 		AC_DEFINE(HAVE_HEIMDAL,1,[ Define if your GSSAPI implementation is Heimdal ])
 	fi
 	CPPFLAGS="$CPPFLAGS $GSSAPI_CFLAGS"

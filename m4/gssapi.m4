@@ -28,6 +28,7 @@ AC_DEFUN([MUTT_AM_PATH_GSSAPI],
     case "`$KRB5CFGPATH --version`" in
       "Kerberos 5 "*)	GSSAPI_IMPL="MIT";;
       ?eimdal*)		GSSAPI_IMPL="Heimdal";;
+      Solaris*)		GSSAPI_IMPL="Solaris";;
       *)		GSSAPI_IMPL="Unknown";;
    esac
   else
