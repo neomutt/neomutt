@@ -12103,16 +12103,20 @@ set index_format='%4C %Z %{%b %d} %-25.25n %&lt;M?[%M] %s&amp;%s%* %&lt;l?%l&amp
         used to execute a custom script (e.g., a notification handler) upon
         receiving a new mail.</para>
         <para>The command string can contain expandos, such as
-        <literal>%f</literal> for the folder name. For a complete list, see:
+        <literal>%n</literal> for the number of new messages. For a complete list, see:
         <link linkend="status-format">$status_format</link>.</para>
+        <note>
+        <para>When the notification is sent, the folder of the new mail is no longer known.
+          This is a limitation of Mutt.  The `%f` expando will show the open folder.</para>
+        </note>
         <para>For example in Linux you can use (most distributions already
         provide notify-send):</para>
-        <screen>set new_mail_command="notify-send --icon='/home/santiago/Pictures/mutt.png' 'New Email in %f' '%n new messages, %u unread.' &amp;"</screen>
+        <screen>set new_mail_command="notify-send --icon='/home/santiago/Pictures/mutt.png' 'New Email' '%n new messages, %u unread.' &amp;"</screen>
         <para>And in OS X you will need to install a command line interface for
         Notification Center, for example
         <ulink url="https://github.com/julienXX/terminal-notifier">
         terminal-notifier</ulink>:</para>
-        <screen>set new_mail_command="terminal-notifier -title '%v' -subtitle 'New Mail in %f' -message '%n new messages, %u unread.' -activate 'com.apple.Terminal'"</screen>
+        <screen>set new_mail_command="terminal-notifier -title '%v' -subtitle 'New Mail' -message '%n new messages, %u unread.' -activate 'com.apple.Terminal'"</screen>
       </sect2>
 
       <sect2 id="new-mail-variables">
