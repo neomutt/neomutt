@@ -355,7 +355,7 @@ main ()
 
 	AC_CHECK_FUNC(initscr,,[
 	cf_ncurses=""
-	for lib in ncursesw ncurses
+	for lib in ncursesw ncurses curses
 	do
 		AC_CHECK_LIB($lib, waddnwstr, [cf_ncurses="$lib"; break])
 	done
