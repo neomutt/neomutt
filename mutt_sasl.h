@@ -23,9 +23,6 @@
 #include <stddef.h>
 #include <sasl/sasl.h>
 
-typedef struct sasl_conn sasl_conn_t;
-typedef struct sasl_interact  sasl_interact_t;
-typedef unsigned sasl_ssf_t;
 struct Connection;
 
 int mutt_sasl_client_new(struct Connection *conn, sasl_conn_t **saslconn);
