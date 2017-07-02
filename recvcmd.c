@@ -442,7 +442,7 @@ static void attach_forward_bodies (FILE * fp, HEADER * hdr,
     return;
   }
 
-  mutt_forward_intro (tmpfp, parent);
+  mutt_forward_intro (Context, parent, tmpfp);
 
   /* prepare the prefix here since we'll need it later. */
 
@@ -541,7 +541,7 @@ _("Can't decode all tagged attachments.  MIME-forward the others?"))) == -1)
       goto bail;
   }
   
-  mutt_forward_trailer (tmpfp);
+  mutt_forward_trailer (Context, parent, tmpfp);
   
   safe_fclose (&tmpfp);
   tmpfp = NULL;
@@ -641,9 +641,9 @@ static void attach_forward_msgs (FILE * fp, HEADER * hdr,
     if (cur)
     {
       /* mutt_message_hook (cur->hdr, MUTT_MESSAGEHOOK); */ 
-      mutt_forward_intro (tmpfp, cur->hdr);
+      mutt_forward_intro (Context, cur->hdr, tmpfp);
       _mutt_copy_message (tmpfp, fp, cur->hdr, cur->hdr->content, cmflags, chflags);
-      mutt_forward_trailer (tmpfp);
+      mutt_forward_trailer (Context, cur->hdr, tmpfp);
     }
     else
     {
@@ -652,10 +652,10 @@ static void attach_forward_msgs (FILE * fp, HEADER * hdr,
 	if (idx[i]->content->tagged)
 	{
 	  /* mutt_message_hook (idx[i]->content->hdr, MUTT_MESSAGEHOOK); */ 
-	  mutt_forward_intro (tmpfp, idx[i]->content->hdr);
+	  mutt_forward_intro (Context, idx[i]->content->hdr, tmpfp);
 	  _mutt_copy_message (tmpfp, fp, idx[i]->content->hdr,
 			      idx[i]->content->hdr->content, cmflags, chflags);
-	  mutt_forward_trailer (tmpfp);
+	  mutt_forward_trailer (Context, idx[i]->content->hdr, tmpfp);
 	}
       }
     }

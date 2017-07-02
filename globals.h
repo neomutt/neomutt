@@ -51,6 +51,8 @@ WHERE char *DsnReturn;
 WHERE char *Editor;
 WHERE char *EscChar;
 WHERE char *FolderFormat;
+WHERE char *ForwardAttrIntro;
+WHERE char *ForwardAttrTrailer;
 WHERE char *ForwFmt;
 WHERE char *Fqdn;
 WHERE char *HdrFmt;

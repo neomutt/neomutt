@@ -888,6 +888,22 @@ struct option_t MuttVars[] = {
   ** .pp
   ** Also see the $$record variable.
   */
+  { "forward_attribution_intro", DT_STR, R_NONE, UL &ForwardAttrIntro, UL "----- Forwarded message from %f -----" },
+  /*
+  ** .pp
+  ** This is the string that will precede a message which has been forwarded
+  ** in the main body of a message (when $$mime_forward is unset).
+  ** For a full listing of defined \fCprintf(3)\fP-like sequences see
+  ** the section on $$index_format.  See also $$attribution_locale.
+  */
+  { "forward_attribution_trailer", DT_STR, R_NONE, UL &ForwardAttrTrailer, UL "----- End forwarded message -----" },
+  /*
+  ** .pp
+  ** This is the string that will follow a message which has been forwarded
+  ** in the main body of a message (when $$mime_forward is unset).
+  ** For a full listing of defined \fCprintf(3)\fP-like sequences see
+  ** the section on $$index_format.  See also $$attribution_locale.
+  */
   { "forward_decode",	DT_BOOL, R_NONE, OPTFORWDECODE, 1 },
   /*
   ** .pp
