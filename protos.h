@@ -191,8 +191,8 @@ void mutt_format_string(char *dest, size_t destlen, int min_width, int max_width
                         char m_pad_char, const char *s, size_t n, int arboreal);
 void mutt_format_s(char *dest, size_t destlen, const char *prefix, const char *s);
 void mutt_format_s_tree(char *dest, size_t destlen, const char *prefix, const char *s);
-void mutt_forward_intro(FILE *fp, struct Header *cur);
-void mutt_forward_trailer(FILE *fp);
+void mutt_forward_intro(struct Context *ctx, struct Header *cur, FILE *fp);
+void mutt_forward_trailer(struct Context *ctx, struct Header *cur, FILE *fp);
 void mutt_free_alias(struct Alias **p);
 void mutt_free_body(struct Body **p);
 void mutt_free_color(int fg, int bg);

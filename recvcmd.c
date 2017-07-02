@@ -412,7 +412,7 @@ static void attach_forward_bodies(FILE *fp, struct Header *hdr,
     return;
   }
 
-  mutt_forward_intro(tmpfp, parent);
+  mutt_forward_intro(Context, parent, tmpfp);
 
   /* prepare the prefix here since we'll need it later. */
 
@@ -508,7 +508,7 @@ static void attach_forward_bodies(FILE *fp, struct Header *hdr,
       goto bail;
   }
 
-  mutt_forward_trailer(tmpfp);
+  mutt_forward_trailer(Context, parent, tmpfp);
 
   safe_fclose(&tmpfp);
   tmpfp = NULL;
@@ -603,9 +603,9 @@ static void attach_forward_msgs(FILE *fp, struct Header *hdr, struct AttachPtr *
 
     if (cur)
     {
-      mutt_forward_intro(tmpfp, cur->hdr);
+      mutt_forward_intro(Context, cur->hdr, tmpfp);
       _mutt_copy_message(tmpfp, fp, cur->hdr, cur->hdr->content, cmflags, chflags);
-      mutt_forward_trailer(tmpfp);
+      mutt_forward_trailer(Context, cur->hdr, tmpfp);
     }
     else
     {
@@ -613,10 +613,10 @@ static void attach_forward_msgs(FILE *fp, struct Header *hdr, struct AttachPtr *
       {
         if (idx[i]->content->tagged)
         {
-          mutt_forward_intro(tmpfp, idx[i]->content->hdr);
+          mutt_forward_intro(Context, idx[i]->content->hdr, tmpfp);
           _mutt_copy_message(tmpfp, fp, idx[i]->content->hdr,
                              idx[i]->content->hdr->content, cmflags, chflags);
-          mutt_forward_trailer(tmpfp);
+          mutt_forward_trailer(Context, idx[i]->content->hdr, tmpfp);
         }
       }
     }

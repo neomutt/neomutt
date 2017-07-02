@@ -399,20 +399,33 @@ static void process_user_header(struct Envelope *env)
   }
 }
 
-void mutt_forward_intro(FILE *fp, struct Header *cur)
+void mutt_forward_intro(struct Context *ctx, struct Header *cur, FILE *fp)
 {
-  char buffer[STRING];
+  char buffer[LONG_STRING];
 
-  fputs("----- Forwarded message from ", fp);
-  buffer[0] = 0;
-  rfc822_write_address(buffer, sizeof(buffer), cur->env->from, 1);
-  fputs(buffer, fp);
-  fputs(" -----\n\n", fp);
+  if (ForwardAttrIntro)
+  {
+    setlocale(LC_TIME, NONULL(AttributionLocale));
+    mutt_make_string(buffer, sizeof(buffer), ForwardAttrIntro, ctx, cur);
+    setlocale(LC_TIME, "");
+    fputs(buffer, fp);
+    fputs("\n\n", fp);
+  }
 }
 
-void mutt_forward_trailer(FILE *fp)
+void mutt_forward_trailer(struct Context *ctx, struct Header *cur, FILE *fp)
 {
-  fputs("\n----- End forwarded message -----\n", fp);
+  char buffer[LONG_STRING];
+
+  if (ForwardAttrTrailer)
+  {
+    setlocale(LC_TIME, NONULL(AttributionLocale));
+    mutt_make_string(buffer, sizeof(buffer), ForwardAttrTrailer, ctx, cur);
+    setlocale(LC_TIME, "");
+    fputc('\n', fp);
+    fputs(buffer, fp);
+    fputc('\n', fp);
+  }
 }
 
 
@@ -430,7 +443,7 @@ static int include_forward(struct Context *ctx, struct Header *cur, FILE *out)
       return -1;
   }
 
-  mutt_forward_intro(out, cur);
+  mutt_forward_intro(ctx, cur, out);
 
   if (option(OPTFORWDECODE))
   {
@@ -449,7 +462,7 @@ static int include_forward(struct Context *ctx, struct Header *cur, FILE *out)
   chflags |= CH_DISPLAY;
 
   mutt_copy_message(out, ctx, cur, cmflags, chflags);
-  mutt_forward_trailer(out);
+  mutt_forward_trailer(ctx, cur, out);
   return 0;
 }
 
