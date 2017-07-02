@@ -50,6 +50,9 @@
 #include "protos.h"
 #include "sort.h"
 #include "thread.h"
+#ifndef USE_SLANG_CURSES
+#include <term.h>
+#endif
 #ifdef USE_SIDEBAR
 #include "sidebar.h"
 #endif
