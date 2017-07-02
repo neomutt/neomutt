@@ -285,16 +285,25 @@ static int cb_qsort_sbe(const void *a, const void *b)
   switch ((SidebarSortMethod & SORT_MASK))
   {
     case SORT_COUNT:
-      result = (b2->msg_count - b1->msg_count);
+      if (b2->msg_count == b1->msg_count)
+        result = mutt_strcoll(b1->path, b2->path);
+      else
+        result = (b2->msg_count - b1->msg_count);
       break;
     case SORT_UNREAD:
-      result = (b2->msg_unread - b1->msg_unread);
+      if (b2->msg_unread == b1->msg_unread)
+        result = mutt_strcoll(b1->path, b2->path);
+      else
+        result = (b2->msg_unread - b1->msg_unread);
       break;
     case SORT_DESC:
       result = mutt_strcmp(b1->desc, b2->desc);
       break;
     case SORT_FLAGGED:
-      result = (b2->msg_flagged - b1->msg_flagged);
+      if (b2->msg_flagged == b1->msg_flagged)
+        result = mutt_strcoll(b1->path, b2->path);
+      else
+        result = (b2->msg_flagged - b1->msg_flagged);
       break;
     case SORT_PATH:
     {
