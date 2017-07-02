@@ -3143,6 +3143,9 @@ int mutt_pager(const char *banner, const char *fname, int flags, struct Pager *e
         mutt_reflow_windows();
         break;
 #endif
+      case OP_MAIN_SYNC_FOLDER:
+        /* This key-press is side-effect.  Ignore it. */
+        break;
 
       default:
         ch = -1;
