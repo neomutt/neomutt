@@ -15,7 +15,8 @@ EXTRA_DIST = language.txt language50.txt  \
 	lua \
 	hcache-bench \
 	logo \
-	colorschemes
+	colorschemes \
+	smime_keys
 
 CONTRIB_DIRS = vim-keys keybase lua hcache-bench logo colorschemes
 

@@ -22,7 +22,6 @@ mutt
 mutt_md5
 pgpewrap
 pgpring
-smime_keys
 txt2c
 
 # ./configure

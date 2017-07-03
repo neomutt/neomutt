@@ -479,7 +479,7 @@ static struct SmimeKey *smime_parse_key(char *buf)
   {
     /* Some users manually maintain their .index file, and use a tab
      * as a delimiter, which the old parsing code (using fscanf)
-     * happened to allow.  smime_keys.pl uses a space, so search for both.
+     * happened to allow.  smime_keys uses a space, so search for both.
      */
     if ((pend = strchr(p, ' ')) || (pend = strchr(p, '\t')) || (pend = strchr(p, '\n')))
       *pend++ = 0;
