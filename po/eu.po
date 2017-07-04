@@ -3420,20 +3420,20 @@ msgstr ""
 #: mutt_ssl.c:1242
 #, fuzzy
 msgid "(r)eject, accept (o)nce, (a)ccept always, (s)kip"
-msgstr "(u)katu, behin (o)nartu, (b)etirko onartu"
+msgstr ""
 
 #: mutt_ssl.c:1244 mutt_ssl_gnutls.c:999
 msgid "(r)eject, accept (o)nce, (a)ccept always"
-msgstr "(u)katu, behin (o)nartu, (b)etirko onartu"
+msgstr ""
 
 #: mutt_ssl.c:1249
 #, fuzzy
 msgid "(r)eject, accept (o)nce, (s)kip"
-msgstr "(u)katu, behin (o)nartu"
+msgstr ""
 
 #: mutt_ssl.c:1251 mutt_ssl_gnutls.c:1010
 msgid "(r)eject, accept (o)nce"
-msgstr "(u)katu, behin (o)nartu"
+msgstr ""
 
 #: mutt_ssl.c:1284 mutt_ssl_gnutls.c:1066
 msgid "Warning: Couldn't save certificate"
@@ -3500,7 +3500,7 @@ msgstr "KONTUZ:: Zerbitzari ziurtagiri sinatzailea ez da CA"
 #.
 #: mutt_ssl_gnutls.c:1006
 msgid "roa"
-msgstr "uob"
+msgstr ""
 
 #. L10N:
 #. * These two letters correspond to the choices in the string:
@@ -3510,7 +3510,7 @@ msgstr "uob"
 #.
 #: mutt_ssl_gnutls.c:1017
 msgid "ro"
-msgstr "uo"
+msgstr ""
 
 #: mutt_ssl_gnutls.c:1100 mutt_ssl_gnutls.c:1135 mutt_ssl_gnutls.c:1145
 msgid "Unable to get certificate from peer"

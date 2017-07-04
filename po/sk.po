@@ -3616,7 +3616,7 @@ msgstr ""
 #: mutt_ssl_gnutls.c:1006
 #, fuzzy
 msgid "roa"
-msgstr "oac"
+msgstr ""
 
 #. L10N:
 #. * These two letters correspond to the choices in the string:

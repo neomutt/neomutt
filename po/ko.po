@@ -3487,18 +3487,16 @@ msgid "roas"
 msgstr ""
 
 #: mutt_ssl.c:1242
-#, fuzzy
 msgid "(r)eject, accept (o)nce, (a)ccept always, (s)kip"
-msgstr "거부(r), 이번만 허가(o), 언제나 허가(a)"
+msgstr ""
 
 #: mutt_ssl.c:1244 mutt_ssl_gnutls.c:999
 msgid "(r)eject, accept (o)nce, (a)ccept always"
 msgstr "거부(r), 이번만 허가(o), 언제나 허가(a)"
 
 #: mutt_ssl.c:1249
-#, fuzzy
 msgid "(r)eject, accept (o)nce, (s)kip"
-msgstr "거부(r), 이번만 허가(o)"
+msgstr ""
 
 #: mutt_ssl.c:1251 mutt_ssl_gnutls.c:1010
 msgid "(r)eject, accept (o)nce"

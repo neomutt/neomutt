@@ -3429,7 +3429,7 @@ msgstr ""
 #: mutt_ssl.c:1242
 #, fuzzy
 msgid "(r)eject, accept (o)nce, (a)ccept always, (s)kip"
-msgstr "拒绝(r)，接受一次(o)，总是接受(a)"
+msgstr ""
 
 #: mutt_ssl.c:1244 mutt_ssl_gnutls.c:999
 msgid "(r)eject, accept (o)nce, (a)ccept always"
@@ -3438,7 +3438,7 @@ msgstr "拒绝(r)，接受一次(o)，总是接受(a)"
 #: mutt_ssl.c:1249
 #, fuzzy
 msgid "(r)eject, accept (o)nce, (s)kip"
-msgstr "拒绝(r)，接受一次(o)"
+msgstr ""
 
 #: mutt_ssl.c:1251 mutt_ssl_gnutls.c:1010
 msgid "(r)eject, accept (o)nce"

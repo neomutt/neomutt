@@ -3438,20 +3438,20 @@ msgstr ""
 #: mutt_ssl.c:1242
 #, fuzzy
 msgid "(r)eject, accept (o)nce, (a)ccept always, (s)kip"
-msgstr "(t)olak, terima (s)ekali, terima selal(u)"
+msgstr ""
 
 #: mutt_ssl.c:1244 mutt_ssl_gnutls.c:999
 msgid "(r)eject, accept (o)nce, (a)ccept always"
-msgstr "(t)olak, terima (s)ekali, terima selal(u)"
+msgstr ""
 
 #: mutt_ssl.c:1249
 #, fuzzy
 msgid "(r)eject, accept (o)nce, (s)kip"
-msgstr "(t)olak, terima (s)ekali"
+msgstr ""
 
 #: mutt_ssl.c:1251 mutt_ssl_gnutls.c:1010
 msgid "(r)eject, accept (o)nce"
-msgstr "(t)olak, terima (s)ekali"
+msgstr ""
 
 #: mutt_ssl.c:1284 mutt_ssl_gnutls.c:1066
 msgid "Warning: Couldn't save certificate"
@@ -3518,7 +3518,7 @@ msgstr "PERHATIAN: Penandatangan sertifikat server bukan CA"
 #.
 #: mutt_ssl_gnutls.c:1006
 msgid "roa"
-msgstr "tsu"
+msgstr ""
 
 #. L10N:
 #. * These two letters correspond to the choices in the string:
@@ -3528,7 +3528,7 @@ msgstr "tsu"
 #.
 #: mutt_ssl_gnutls.c:1017
 msgid "ro"
-msgstr "ts"
+msgstr ""
 
 #: mutt_ssl_gnutls.c:1100 mutt_ssl_gnutls.c:1135 mutt_ssl_gnutls.c:1145
 msgid "Unable to get certificate from peer"

@@ -3515,21 +3515,19 @@ msgstr ""
 #.
 #: mutt_ssl.c:1238
 msgid "roas"
-msgstr ""
+msgstr "1234"
 
 #: mutt_ssl.c:1242
-#, fuzzy
 msgid "(r)eject, accept (o)nce, (a)ccept always, (s)kip"
-msgstr "(1)不接受，(2)只是這次接受，(3)永遠接受"
+msgstr "(1)不接受，(2)只是這次接受，(3)永遠接受，(4)跳過"
 
 #: mutt_ssl.c:1244 mutt_ssl_gnutls.c:999
 msgid "(r)eject, accept (o)nce, (a)ccept always"
 msgstr "(1)不接受，(2)只是這次接受，(3)永遠接受"
 
 #: mutt_ssl.c:1249
-#, fuzzy
 msgid "(r)eject, accept (o)nce, (s)kip"
-msgstr "(1)不接受，(2)只是這次接受"
+msgstr "(1)不接受，(2)只是這次接受，(4)跳過"
 
 #: mutt_ssl.c:1251 mutt_ssl_gnutls.c:1010
 msgid "(r)eject, accept (o)nce"

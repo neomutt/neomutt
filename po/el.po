@@ -4057,9 +4057,8 @@ msgid "roas"
 msgstr ""
 
 #: mutt_ssl.c:1242
-#, fuzzy
 msgid "(r)eject, accept (o)nce, (a)ccept always, (s)kip"
-msgstr "(r)απόρριψη, (o)αποδοχή μια φορά, (a)αποδοχή πάντα"
+msgstr ""
 
 #: mutt_ssl.c:1244 mutt_ssl_gnutls.c:999
 msgid "(r)eject, accept (o)nce, (a)ccept always"
@@ -4068,7 +4067,7 @@ msgstr "(r)απόρριψη, (o)αποδοχή μια φορά, (a)αποδοχή πάντα"
 #: mutt_ssl.c:1249
 #, fuzzy
 msgid "(r)eject, accept (o)nce, (s)kip"
-msgstr "(r)απόρριψη, (o)αποδοχή μια φορά"
+msgstr ""
 
 #: mutt_ssl.c:1251 mutt_ssl_gnutls.c:1010
 msgid "(r)eject, accept (o)nce"

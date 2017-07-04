@@ -3448,20 +3448,20 @@ msgstr ""
 #: mutt_ssl.c:1242
 #, fuzzy
 msgid "(r)eject, accept (o)nce, (a)ccept always, (s)kip"
-msgstr "(f)örkasta, (g)odkänn den här gången, godkänn (v)arje gång"
+msgstr ""
 
 #: mutt_ssl.c:1244 mutt_ssl_gnutls.c:999
 msgid "(r)eject, accept (o)nce, (a)ccept always"
-msgstr "(f)örkasta, (g)odkänn den här gången, godkänn (v)arje gång"
+msgstr ""
 
 #: mutt_ssl.c:1249
 #, fuzzy
 msgid "(r)eject, accept (o)nce, (s)kip"
-msgstr "(f)örkasta, (g)odkänn den här gången"
+msgstr ""
 
 #: mutt_ssl.c:1251 mutt_ssl_gnutls.c:1010
 msgid "(r)eject, accept (o)nce"
-msgstr "(f)örkasta, (g)odkänn den här gången"
+msgstr ""
 
 #: mutt_ssl.c:1284 mutt_ssl_gnutls.c:1066
 msgid "Warning: Couldn't save certificate"
@@ -3528,7 +3528,7 @@ msgstr "VARNING: Signerare av servercertifikat är inte en CA"
 #.
 #: mutt_ssl_gnutls.c:1006
 msgid "roa"
-msgstr "fgv"
+msgstr ""
 
 #. L10N:
 #. * These two letters correspond to the choices in the string:
@@ -3538,7 +3538,7 @@ msgstr "fgv"
 #.
 #: mutt_ssl_gnutls.c:1017
 msgid "ro"
-msgstr "fg"
+msgstr ""
 
 #: mutt_ssl_gnutls.c:1100 mutt_ssl_gnutls.c:1135 mutt_ssl_gnutls.c:1145
 msgid "Unable to get certificate from peer"

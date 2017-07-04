@@ -3417,18 +3417,16 @@ msgid "roas"
 msgstr ""
 
 #: mutt_ssl.c:1242
-#, fuzzy
 msgid "(r)eject, accept (o)nce, (a)ccept always, (s)kip"
-msgstr "(r)ifiuta, accetta questa v(o)lta, (a)ccetta sempre"
+msgstr ""
 
 #: mutt_ssl.c:1244 mutt_ssl_gnutls.c:999
 msgid "(r)eject, accept (o)nce, (a)ccept always"
 msgstr "(r)ifiuta, accetta questa v(o)lta, (a)ccetta sempre"
 
 #: mutt_ssl.c:1249
-#, fuzzy
 msgid "(r)eject, accept (o)nce, (s)kip"
-msgstr "(r)ifiuta, accetta questa v(o)lta"
+msgstr ""
 
 #: mutt_ssl.c:1251 mutt_ssl_gnutls.c:1010
 msgid "(r)eject, accept (o)nce"
