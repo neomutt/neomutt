@@ -1705,6 +1705,9 @@ restart:
       {
         maybe_signed = true;
         gpgme_data_release(plaintext);
+        /* gpgsm ends the session after an error; restart it */
+        gpgme_release(ctx);
+        ctx = create_gpgme_context(is_smime);
         goto restart;
       }
     }
