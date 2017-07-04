@@ -997,11 +997,23 @@ static int tls_check_one_certificate (const gnutls_datum_t *certdata,
                         | CERTERR_REVOKED)))
   {
     menu->prompt = _("(r)eject, accept (o)nce, (a)ccept always");
+  /* L10N:
+   * These three letters correspond to the choices in the string:
+   * (r)eject, accept (o)nce, (a)ccept always.
+   * This is an interactive certificate confirmation prompt for
+   * a GNUTLS connection.
+   */
     menu->keys = _("roa");
   }
   else
   {
     menu->prompt = _("(r)eject, accept (o)nce");
+  /* L10N:
+   * These two letters correspond to the choices in the string:
+   * (r)eject, accept (o)nce.
+   * These is an interactive certificate confirmation prompt for
+   * a GNUTLS connection.
+   */
     menu->keys = _("ro");
   }
 
