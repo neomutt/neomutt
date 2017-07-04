@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 1.8.3\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-06-17 16:23+0900\n"
+"POT-Creation-Date: 2017-07-03 18:37-0700\n"
 "PO-Revision-Date: 2017-06-17 16:00+0900\n"
 "Last-Translator: TAKAHASHI Tamotsu <ttakah@lapis.plala.or.jp>\n"
 "Language-Team: mutt-j <mutt-j-users@lists.osdn.me>\n"
@@ -46,8 +46,8 @@ msgstr "削除を取り消し"
 msgid "Select"
 msgstr "選択"
 
-#: addrbook.c:41 browser.c:49 compose.c:119 crypt-gpgme.c:4088 curs_main.c:493
-#: mutt_ssl.c:1257 mutt_ssl_gnutls.c:1011 pager.c:1973 pgpkey.c:522
+#: addrbook.c:41 browser.c:49 compose.c:124 crypt-gpgme.c:4088 curs_main.c:493
+#: mutt_ssl.c:1257 mutt_ssl_gnutls.c:1023 pager.c:1973 pgpkey.c:522
 #: postpone.c:44 query.c:53 recvattach.c:57 smime.c:440
 msgid "Help"
 msgstr "ヘルプ"
@@ -117,7 +117,7 @@ msgstr "名前のテンプレートに一致させられない。続行?"
 msgid "Mailcap compose entry requires %%s"
 msgstr "Mailcap 編集エントリに %%s が必要"
 
-#: attach.c:134 attach.c:266 commands.c:223 compose.c:1378 compress.c:444
+#: attach.c:134 attach.c:266 commands.c:223 compose.c:1383 compress.c:444
 #: curs_lib.c:218 curs_lib.c:809
 #, c-format
 msgid "Error running \"%s\"!"
@@ -593,7 +593,7 @@ msgid "Bcc: "
 msgstr "Bcc: "
 
 #. L10N: Compose menu field.  May not want to translate.
-#: compose.c:90 compose.c:717 send.c:251
+#: compose.c:90 compose.c:722 send.c:251
 msgid "Subject: "
 msgstr "Subject: "
 
@@ -603,7 +603,7 @@ msgid "Reply-To: "
 msgstr "Reply-To: "
 
 #. L10N: Compose menu field.  May not want to translate.
-#: compose.c:94 compose.c:734
+#: compose.c:94 compose.c:739
 msgid "Fcc: "
 msgstr "Fcc: "
 
@@ -618,227 +618,232 @@ msgid "Security: "
 msgstr "暗号と署名: "
 
 #. L10N:
-#. * This string is used by the compose menu.  It is suggested that it not
-#. * be wider than 20 character cells, if possible. Also, it should not be
-#. * wider than other fields because init_header_padding ignores it.
-#: compose.c:105 crypt-gpgme.c:4837 pgp.c:1821 smime.c:2222 smime.c:2237
+#. * This string is used by the compose menu.
+#. * Since it is hidden by default, it does not increase the
+#. * indentation of other compose menu fields.  However, if possible,
+#. * it should not be longer than the other compose menu fields.
+#. *
+#. * Since it shares the row with "Encrypt with:", it should not be longer
+#. * than 15-20 character cells.
+#.
+#: compose.c:110 crypt-gpgme.c:4837 pgp.c:1821 smime.c:2222 smime.c:2237
 msgid "Sign as: "
 msgstr "署名鍵: "
 
-#: compose.c:109
+#: compose.c:114
 msgid "Send"
 msgstr "送信"
 
-#: compose.c:110 remailer.c:484
+#: compose.c:115 remailer.c:484
 msgid "Abort"
 msgstr "中止"
 
 #. L10N: compose menu help line entry
-#: compose.c:112
+#: compose.c:117
 msgid "To"
 msgstr "宛先"
 
 #. L10N: compose menu help line entry
-#: compose.c:114
+#: compose.c:119
 msgid "CC"
 msgstr "CC"
 
 #. L10N: compose menu help line entry
-#: compose.c:116
+#: compose.c:121
 msgid "Subj"
 msgstr "件名"
 
-#: compose.c:117 compose.c:831
+#: compose.c:122 compose.c:836
 msgid "Attach file"
 msgstr "ファイル添付"
 
-#: compose.c:118
+#: compose.c:123
 msgid "Descrip"
 msgstr "内容説明"
 
-#: compose.c:186
+#: compose.c:191
 msgid "Not supported"
 msgstr "サポートされていない"
 
-#: compose.c:193
+#: compose.c:198
 msgid "Sign, Encrypt"
 msgstr "署名 + 暗号化"
 
-#: compose.c:198
+#: compose.c:203
 msgid "Encrypt"
 msgstr "暗号化"
 
-#: compose.c:203
+#: compose.c:208
 msgid "Sign"
 msgstr "署名"
 
-#: compose.c:208
+#: compose.c:213
 msgid "None"
 msgstr "なし"
 
-#: compose.c:217
+#: compose.c:222
 msgid " (inline PGP)"
 msgstr " (インライン PGP)"
 
-#: compose.c:219
+#: compose.c:224
 msgid " (PGP/MIME)"
 msgstr " (PGP/MIME)"
 
-#: compose.c:223
+#: compose.c:228
 msgid " (S/MIME)"
 msgstr " (S/MIME)"
 
-#: compose.c:227
+#: compose.c:232
 msgid " (OppEnc mode)"
 msgstr " (日和見暗号)"
 
-#: compose.c:239 compose.c:248
+#: compose.c:244 compose.c:253
 msgid "<default>"
 msgstr "<既定値>"
 
-#: compose.c:258
+#: compose.c:263
 msgid "Encrypt with: "
 msgstr "  暗号化方式: "
 
-#: compose.c:315
+#: compose.c:320
 #, c-format
 msgid "%s [#%d] no longer exists!"
 msgstr "%s [#%d] はもはや存在しない!"
 
-#: compose.c:323
+#: compose.c:328
 #, c-format
 msgid "%s [#%d] modified. Update encoding?"
 msgstr "%s [#%d] は変更された。エンコード更新?"
 
-#: compose.c:378
+#: compose.c:383
 msgid "-- Attachments"
 msgstr "-- 添付ファイル"
 
-#: compose.c:400
+#: compose.c:405
 #, c-format
 msgid "Warning: '%s' is a bad IDN."
 msgstr "警告: '%s' は不正な IDN."
 
-#: compose.c:421
+#: compose.c:426
 msgid "You may not delete the only attachment."
 msgstr "唯一の添付ファイルを削除してはいけない。"
 
-#: compose.c:765 send.c:1676
+#: compose.c:770 send.c:1689
 #, c-format
 msgid "Bad IDN in \"%s\": '%s'"
 msgstr "\"%s\" 中に不正な IDN: '%s'"
 
-#: compose.c:847
+#: compose.c:852
 msgid "Attaching selected files..."
 msgstr "選択されたファイルを添付中..."
 
-#: compose.c:859
+#: compose.c:864
 #, c-format
 msgid "Unable to attach %s!"
 msgstr "%s は添付できない!"
 
-#: compose.c:879
+#: compose.c:884
 msgid "Open mailbox to attach message from"
 msgstr "中のメッセージを添付するためにメールボックスをオープン"
 
-#: compose.c:909
+#: compose.c:914
 #, c-format
 msgid "Unable to open mailbox %s"
 msgstr "メールボックス %s がオープンできない"
 
-#: compose.c:917
+#: compose.c:922
 msgid "No messages in that folder."
 msgstr "そのフォルダにはメッセージがない。"
 
-#: compose.c:926
+#: compose.c:931
 msgid "Tag the messages you want to attach!"
 msgstr "添付したいメッセージにタグを付けよ!"
 
-#: compose.c:958
+#: compose.c:963
 msgid "Unable to attach!"
 msgstr "添付できない!"
 
-#: compose.c:1009
+#: compose.c:1014
 msgid "Recoding only affects text attachments."
 msgstr "コード変換はテキスト型添付ファイルにのみ有効。"
 
-#: compose.c:1014
+#: compose.c:1019
 msgid "The current attachment won't be converted."
 msgstr "現在の添付ファイルは変換されない。"
 
-#: compose.c:1016
+#: compose.c:1021
 msgid "The current attachment will be converted."
 msgstr "現在の添付ファイルは変換される。"
 
-#: compose.c:1091
+#: compose.c:1096
 msgid "Invalid encoding."
 msgstr "不正なエンコード法。"
 
-#: compose.c:1117
+#: compose.c:1122
 msgid "Save a copy of this message?"
 msgstr "このメッセージのコピーを保存?"
 
 # OP_COMPOSE_RENAME_ATTACHMENT つまり名前を変えるとき
-#: compose.c:1180
+#: compose.c:1185
 msgid "Send attachment with name: "
 msgstr "添付ファイルを別の名前で送る: "
 
-#: compose.c:1198
+#: compose.c:1203
 msgid "Rename to: "
 msgstr "リネーム (移動) 先: "
 
 # system call の stat() を「属性調査」と訳している
 #. L10N:
 #. "stat" is a system call. Do "man 2 stat" for more information.
-#: compose.c:1205 editmsg.c:96 editmsg.c:121 sendlib.c:872
+#: compose.c:1210 editmsg.c:96 editmsg.c:121 sendlib.c:872
 #, c-format
 msgid "Can't stat %s: %s"
 msgstr "%s を属性調査できない: %s"
 
-#: compose.c:1232
+#: compose.c:1237
 msgid "New file: "
 msgstr "新規ファイル: "
 
-#: compose.c:1245
+#: compose.c:1250
 msgid "Content-Type is of the form base/sub"
 msgstr "Content-Type は base/sub という形式にすること"
 
-#: compose.c:1251
+#: compose.c:1256
 #, c-format
 msgid "Unknown Content-Type %s"
 msgstr "%s は不明な Content-Type"
 
-#: compose.c:1264
+#: compose.c:1269
 #, c-format
 msgid "Can't create file %s"
 msgstr "ファイル %s を作成できない"
 
-#: compose.c:1272
+#: compose.c:1277
 msgid "What we have here is a failure to make an attachment"
 msgstr "つまり添付ファイルの作成に失敗したということだ"
 
-#: compose.c:1332
+#: compose.c:1337
 msgid "Postpone this message?"
 msgstr "このメッセージを書きかけで保留?"
 
-#: compose.c:1396
+#: compose.c:1401
 msgid "Write message to mailbox"
 msgstr "メッセージをメールボックスに書き込む"
 
-#: compose.c:1399
+#: compose.c:1404
 #, c-format
 msgid "Writing message to %s ..."
 msgstr "メッセージを %s に書き込み中..."
 
-#: compose.c:1408
+#: compose.c:1413
 msgid "Message written."
 msgstr "メッセージは書き込まれた。"
 
-#: compose.c:1422
+#: compose.c:1427
 msgid "S/MIME already selected. Clear & continue ? "
 msgstr "S/MIME が既に選択されている。解除して継続?"
 
-#: compose.c:1455
+#: compose.c:1460
 msgid "PGP already selected. Clear & continue ? "
 msgstr "PGP が既に選択されている。解除して継続?"
 
@@ -1352,7 +1357,7 @@ msgstr "gpgme_op_keylist_next 失敗: %s"
 msgid "All matching keys are marked expired/revoked."
 msgstr "一致した鍵はすべて期限切れか廃棄済み。"
 
-#: crypt-gpgme.c:4080 mutt_ssl.c:1255 mutt_ssl_gnutls.c:1009 pgpkey.c:515
+#: crypt-gpgme.c:4080 mutt_ssl.c:1255 mutt_ssl_gnutls.c:1021 pgpkey.c:515
 #: smime.c:435
 msgid "Exit  "
 msgstr "終了  "
@@ -1565,7 +1570,7 @@ msgstr "PGP 起動中..."
 msgid "Message can't be sent inline.  Revert to using PGP/MIME?"
 msgstr "メッセージをインラインで送信できない。PGP/MIME を使う?"
 
-#: crypt.c:170 send.c:1593
+#: crypt.c:170 send.c:1606
 msgid "Mail not sent."
 msgstr "メールは送信されなかった。"
 
@@ -1653,7 +1658,7 @@ msgstr "no"
 msgid "Exit Mutt?"
 msgstr "Mutt を抜ける?"
 
-#: curs_lib.c:761 mutt_socket.c:577 mutt_ssl.c:577
+#: curs_lib.c:761 mutt_socket.c:586 mutt_ssl.c:577
 msgid "unknown error"
 msgstr "不明なエラー"
 
@@ -3190,45 +3195,45 @@ msgstr "SASL 外部セキュリティ強度の設定エラー"
 msgid "Error setting SASL external user name"
 msgstr "SASL 外部ユーザ名の設定エラー"
 
-#: mutt_socket.c:103 mutt_socket.c:181
+#: mutt_socket.c:104 mutt_socket.c:182
 #, c-format
 msgid "Connection to %s closed"
 msgstr "%s への接続を終了した"
 
-#: mutt_socket.c:300
+#: mutt_socket.c:301
 msgid "SSL is unavailable."
 msgstr "SSL が利用できない。"
 
-#: mutt_socket.c:332
+#: mutt_socket.c:333
 msgid "Preconnect command failed."
 msgstr "事前接続コマンドが失敗。"
 
-#: mutt_socket.c:403 mutt_socket.c:417
+#: mutt_socket.c:412 mutt_socket.c:426
 #, c-format
 msgid "Error talking to %s (%s)"
 msgstr "%s への交信エラー (%s)。"
 
-#: mutt_socket.c:470 mutt_socket.c:529
+#: mutt_socket.c:479 mutt_socket.c:538
 #, c-format
 msgid "Bad IDN \"%s\"."
 msgstr "不正な IDN \"%s\"."
 
-#: mutt_socket.c:478 mutt_socket.c:537
+#: mutt_socket.c:487 mutt_socket.c:546
 #, c-format
 msgid "Looking up %s..."
 msgstr "%s 検索中..."
 
-#: mutt_socket.c:488 mutt_socket.c:546
+#: mutt_socket.c:497 mutt_socket.c:555
 #, c-format
 msgid "Could not find the host \"%s\""
 msgstr "ホスト \"%s\" が見つからなかった"
 
-#: mutt_socket.c:494 mutt_socket.c:552
+#: mutt_socket.c:503 mutt_socket.c:561
 #, c-format
 msgid "Connecting to %s..."
 msgstr "%s に接続中..."
 
-#: mutt_socket.c:576
+#: mutt_socket.c:585
 #, c-format
 msgid "Could not connect to %s (%s)."
 msgstr "%s に接続できなかった (%s)。"
@@ -3388,15 +3393,15 @@ msgstr "r:拒否, o:今回のみ承認, a:常に承認"
 msgid "(r)eject, accept (o)nce, (s)kip"
 msgstr "r:拒否, o:今回のみ承認, s:無視"
 
-#: mutt_ssl.c:1251 mutt_ssl_gnutls.c:1004
+#: mutt_ssl.c:1251 mutt_ssl_gnutls.c:1010
 msgid "(r)eject, accept (o)nce"
 msgstr "r:拒否, o:今回のみ承認"
 
-#: mutt_ssl.c:1284 mutt_ssl_gnutls.c:1054
+#: mutt_ssl.c:1284 mutt_ssl_gnutls.c:1066
 msgid "Warning: Couldn't save certificate"
 msgstr "警告: 証明書を保存できなかった"
 
-#: mutt_ssl.c:1289 mutt_ssl_gnutls.c:1059
+#: mutt_ssl.c:1289 mutt_ssl_gnutls.c:1071
 msgid "Certificate saved"
 msgstr "証明書を保存した"
 
@@ -3449,24 +3454,36 @@ msgstr "警告: サーバのホスト名が証明書と一致しない"
 msgid "WARNING: Signer of server certificate is not a CA"
 msgstr "警告: サーバの証明書は署名者が CA でない"
 
-#: mutt_ssl_gnutls.c:1000
+#. L10N:
+#. * These three letters correspond to the choices in the string:
+#. * (r)eject, accept (o)nce, (a)ccept always.
+#. * This is an interactive certificate confirmation prompt for
+#. * a GNUTLS connection.
+#.
+#: mutt_ssl_gnutls.c:1006
 msgid "roa"
 msgstr "roa"
 
-#: mutt_ssl_gnutls.c:1005
+#. L10N:
+#. * These two letters correspond to the choices in the string:
+#. * (r)eject, accept (o)nce.
+#. * These is an interactive certificate confirmation prompt for
+#. * a GNUTLS connection.
+#.
+#: mutt_ssl_gnutls.c:1017
 msgid "ro"
 msgstr "ro"
 
-#: mutt_ssl_gnutls.c:1088 mutt_ssl_gnutls.c:1123 mutt_ssl_gnutls.c:1133
+#: mutt_ssl_gnutls.c:1100 mutt_ssl_gnutls.c:1135 mutt_ssl_gnutls.c:1145
 msgid "Unable to get certificate from peer"
 msgstr "接続先から証明書を得られなかった"
 
-#: mutt_ssl_gnutls.c:1094
+#: mutt_ssl_gnutls.c:1106
 #, c-format
 msgid "Certificate verification error (%s)"
 msgstr "証明書の検証エラー (%s)"
 
-#: mutt_ssl_gnutls.c:1103
+#: mutt_ssl_gnutls.c:1115
 msgid "Certificate is not X.509"
 msgstr "証明書が X.509 でない"
 
@@ -4172,7 +4189,7 @@ msgstr "%s を作成できない。"
 msgid "Can't find any tagged messages."
 msgstr "タグ付きメッセージが一つも見つからない。"
 
-#: recvcmd.c:773 send.c:724
+#: recvcmd.c:773 send.c:737
 msgid "No mailing lists found!"
 msgstr "メーリングリストが見つからなかった!"
 
@@ -4282,93 +4299,93 @@ msgstr "無題で中止する。"
 #. L10N:
 #. Asks whether the user respects the reply-to header.
 #. If she says no, mutt will reply to the from header's address instead.
-#: send.c:487
+#: send.c:500
 #, c-format
 msgid "Reply to %s%s?"
 msgstr "%s%s への返信?"
 
-#: send.c:521
+#: send.c:534
 #, c-format
 msgid "Follow-up to %s%s?"
 msgstr "%s%s へのフォローアップ?"
 
-#: send.c:699
+#: send.c:712
 msgid "No tagged messages are visible!"
 msgstr "可視なタグ付きメッセージがない!"
 
-#: send.c:750
+#: send.c:763
 msgid "Include message in reply?"
 msgstr "返信にメッセージを含めるか?"
 
-#: send.c:755
+#: send.c:768
 msgid "Including quoted message..."
 msgstr "引用メッセージを取り込み中..."
 
-#: send.c:765
+#: send.c:778
 msgid "Could not include all requested messages!"
 msgstr "すべての要求されたメッセージを取り込めなかった!"
 
-#: send.c:779
+#: send.c:792
 msgid "Forward as attachment?"
 msgstr "添付ファイルとして転送?"
 
-#: send.c:783
+#: send.c:796
 msgid "Preparing forwarded message..."
 msgstr "転送メッセージを準備中..."
 
-#: send.c:1160
+#: send.c:1173
 msgid "Recall postponed message?"
 msgstr "書きかけのメッセージを呼び出す?"
 
-#: send.c:1410
+#: send.c:1423
 msgid "Edit forwarded message?"
 msgstr "転送メッセージを編集?"
 
-#: send.c:1459
+#: send.c:1472
 msgid "Abort unmodified message?"
 msgstr "メッセージは未変更。中止?"
 
-#: send.c:1461
+#: send.c:1474
 msgid "Aborted unmodified message."
 msgstr "未変更のメッセージを中止した。"
 
-#: send.c:1653
+#: send.c:1666
 msgid "Message postponed."
 msgstr "メッセージは書きかけで保留された。"
 
-#: send.c:1664
+#: send.c:1677
 msgid "No recipients are specified!"
 msgstr "受信者が指定されていない!"
 
-#: send.c:1669
+#: send.c:1682
 msgid "No recipients were specified."
 msgstr "受信者が指定されていなかった。"
 
-#: send.c:1685
+#: send.c:1698
 msgid "No subject, abort sending?"
 msgstr "題名がない。送信を中止?"
 
-#: send.c:1689
+#: send.c:1702
 msgid "No subject specified."
 msgstr "題名が指定されていない。"
 
-#: send.c:1751 smtp.c:188
+#: send.c:1764 smtp.c:188
 msgid "Sending message..."
 msgstr "送信中..."
 
-#: send.c:1784
+#: send.c:1797
 msgid "Save attachments in Fcc?"
 msgstr "Fcc に添付ファイルも保存?"
 
-#: send.c:1894
+#: send.c:1907
 msgid "Could not send the message."
 msgstr "メッセージを送信できなかった。"
 
-#: send.c:1899
+#: send.c:1912
 msgid "Mail sent."
 msgstr "メールを送信した。"
 
-#: send.c:1899
+#: send.c:1912
 msgid "Sending in background."
 msgstr "バックグラウンドで送信。"
 
