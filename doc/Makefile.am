@@ -24,7 +24,6 @@ EXTRA_DIST = smime_keys.man             \
 	mmdf.man			\
 	manual.xml.head			\
 	manual.xml.tail			\
-	instdoc.sh.in			\
 	smime-notes.txt			\
 	Muttrc Muttrc.head \
 	makedoc.c makedoc_defs.h 	\
@@ -49,17 +48,17 @@ all: makedoc-all
 
 makedoc-all: mutt.1 smime_keys.1 muttrc.man manual.html Muttrc index.html $(CHUNKED_DOCFILES) manual.txt pgpewrap.1 pgpring.1 neomutt-syntax.vim
 
-install-data-local: makedoc-all instdoc
+install-data-local: makedoc-all
 	$(MKDIR_P) $(DESTDIR)$(mandir)/man1
 	$(MKDIR_P) $(DESTDIR)$(mandir)/man5
 	$(MKDIR_P) $(DESTDIR)$(sysconfdir)
-	./instdoc mutt.1 $(DESTDIR)$(mandir)/man1/mutt.1
-	./instdoc smime_keys.1 $(DESTDIR)$(mandir)/man1/smime_keys.1
-	./instdoc pgpewrap.1 $(DESTDIR)$(mandir)/man1/pgpewrap.1
-	./instdoc pgpring.1 $(DESTDIR)$(mandir)/man1/pgpring.1
-	./instdoc muttrc.man $(DESTDIR)$(mandir)/man5/muttrc.5
-	./instdoc $(srcdir)/mbox.man $(DESTDIR)$(mandir)/man5/mbox.5
-	./instdoc $(srcdir)/mmdf.man $(DESTDIR)$(mandir)/man5/mmdf.5
+	$(INSTALL) -m 644 mutt.1 $(DESTDIR)$(mandir)/man1/mutt.1
+	$(INSTALL) -m 644 smime_keys.1 $(DESTDIR)$(mandir)/man1/smime_keys.1
+	$(INSTALL) -m 644 pgpewrap.1 $(DESTDIR)$(mandir)/man1/pgpewrap.1
+	$(INSTALL) -m 644 pgpring.1 $(DESTDIR)$(mandir)/man1/pgpring.1
+	$(INSTALL) -m 644 muttrc.man $(DESTDIR)$(mandir)/man5/muttrc.5
+	$(INSTALL) -m 644 $(srcdir)/mbox.man $(DESTDIR)$(mandir)/man5/mbox.5
+	$(INSTALL) -m 644 $(srcdir)/mmdf.man $(DESTDIR)$(mandir)/man5/mmdf.5
 	$(MKDIR_P) $(DESTDIR)$(docdir)
 	for f in $(topsrcdir_DOCFILES) ; do \
 		$(INSTALL) -m 644 $(top_srcdir)/$$f $(DESTDIR)$(docdir) ; \
@@ -137,11 +136,7 @@ clean-local:
 	rm -f *~ *.html *.orig *.rej  *.ps mutt.1 smime_keys.1 muttrc.man pgpewrap.1 pgpring.1
 	rm -f *.aux *.log *.tex *.out
 
-DISTCLEANFILES=manual.txt manual.html manual.xml instdoc Muttrc
-
-instdoc: instdoc.sh
-	cp instdoc.sh instdoc
-	chmod a+x instdoc
+DISTCLEANFILES=manual.txt manual.html manual.xml Muttrc
 
 muttrc.man: makedoc$(EXEEXT) $(top_srcdir)/init.h muttrc.man.head muttrc.man.tail
 	$(MAKEDOC_CPP) $(top_srcdir)/init.h | \

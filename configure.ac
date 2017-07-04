@@ -966,7 +966,7 @@ if test x$full_doc != xno; then
 fi
 
 AC_CONFIG_FILES(Makefile contrib/Makefile doc/Makefile imap/Makefile
-	m4/Makefile po/Makefile.in hcache/Makefile doc/instdoc.sh ncrypt/Makefile)
+	m4/Makefile po/Makefile.in hcache/Makefile ncrypt/Makefile)
 AC_OUTPUT
 
 AC_MSG_NOTICE([Summary of build options:

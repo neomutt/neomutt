@@ -33,7 +33,6 @@ stamp-h1
 # Ignored within subdirectories
 doc/*.1
 doc/*.html
-doc/instdoc.sh
 doc/makedoc
 doc/manual.txt
 doc/manual.xml
