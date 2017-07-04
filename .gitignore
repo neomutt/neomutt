@@ -31,7 +31,7 @@ config.status
 stamp-h1
 
 # Ignored within subdirectories
-doc/*.1
+doc/mutt.1
 doc/*.html
 doc/makedoc
 doc/manual.txt

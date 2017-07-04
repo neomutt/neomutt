@@ -12,16 +12,14 @@ MAKEDOC_CPP = $(CPP) $(AM_CPPFLAGS) $(DEFS) $(CPPFLAGS) -D_MAKEDOC -C
 
 noinst_PROGRAMS = makedoc
 
-EXTRA_DIST = smime_keys.man             \
+EXTRA_DIST = \
 	mutt.man			\
-	pgpewrap.man			\
-	pgpring.man			\
 	PGP-Notes.txt			\
 	gen-map-doc			\
 	muttrc.man.head			\
 	muttrc.man.tail			\
-	mbox.man			\
-	mmdf.man			\
+	mbox.5			\
+	mmdf.5			\
 	manual.xml.head			\
 	manual.xml.tail			\
 	smime-notes.txt			\
@@ -29,7 +27,8 @@ EXTRA_DIST = smime_keys.man             \
 	makedoc.c makedoc_defs.h 	\
 	mutt.css mutt.xsl html.xsl chunk.xsl \
 	$(BUILT_DISTFILES) neomutt-syntax.vim \
-	mutt-1.7.0-syntax.vim
+	mutt-1.7.0-syntax.vim \
+	pgpewrap.1 pgpring.1 smime_keys.1
 
 CHUNKED_DOCFILES = intro.html gettingstarted.html \
 	configuration.html mimesupport.html advancedusage.html \
@@ -46,19 +45,19 @@ topsrcdir_DOCFILES = CODE_OF_CONDUCT.md COPYRIGHT LICENSE.md INSTALL \
 
 all: makedoc-all
 
-makedoc-all: mutt.1 smime_keys.1 muttrc.man manual.html Muttrc index.html $(CHUNKED_DOCFILES) manual.txt pgpewrap.1 pgpring.1 neomutt-syntax.vim
+makedoc-all: mutt.1 muttrc.man manual.html Muttrc index.html $(CHUNKED_DOCFILES) manual.txt neomutt-syntax.vim
 
 install-data-local: makedoc-all
 	$(MKDIR_P) $(DESTDIR)$(mandir)/man1
 	$(MKDIR_P) $(DESTDIR)$(mandir)/man5
 	$(MKDIR_P) $(DESTDIR)$(sysconfdir)
 	$(INSTALL) -m 644 mutt.1 $(DESTDIR)$(mandir)/man1/mutt.1
-	$(INSTALL) -m 644 smime_keys.1 $(DESTDIR)$(mandir)/man1/smime_keys.1
-	$(INSTALL) -m 644 pgpewrap.1 $(DESTDIR)$(mandir)/man1/pgpewrap.1
-	$(INSTALL) -m 644 pgpring.1 $(DESTDIR)$(mandir)/man1/pgpring.1
 	$(INSTALL) -m 644 muttrc.man $(DESTDIR)$(mandir)/man5/muttrc.5
-	$(INSTALL) -m 644 $(srcdir)/mbox.man $(DESTDIR)$(mandir)/man5/mbox.5
-	$(INSTALL) -m 644 $(srcdir)/mmdf.man $(DESTDIR)$(mandir)/man5/mmdf.5
+	$(INSTALL) -m 644 $(srcdir)/smime_keys.1 $(DESTDIR)$(mandir)/man1/smime_keys.1
+	$(INSTALL) -m 644 $(srcdir)/pgpewrap.1 $(DESTDIR)$(mandir)/man1/pgpewrap.1
+	$(INSTALL) -m 644 $(srcdir)/pgpring.1 $(DESTDIR)$(mandir)/man1/pgpring.1
+	$(INSTALL) -m 644 $(srcdir)/mbox.5 $(DESTDIR)$(mandir)/man5/mbox.5
+	$(INSTALL) -m 644 $(srcdir)/mmdf.5 $(DESTDIR)$(mandir)/man5/mmdf.5
 	$(MKDIR_P) $(DESTDIR)$(docdir)
 	for f in $(topsrcdir_DOCFILES) ; do \
 		$(INSTALL) -m 644 $(top_srcdir)/$$f $(DESTDIR)$(docdir) ; \
@@ -133,7 +132,7 @@ sortcheck: manual.xml
 	rm -rf vars.tmp.1 vars.tmp.2
 
 clean-local:
-	rm -f *~ *.html *.orig *.rej  *.ps mutt.1 smime_keys.1 muttrc.man pgpewrap.1 pgpring.1
+	rm -f *~ *.html *.orig *.rej  *.ps mutt.1 muttrc.man
 	rm -f *.aux *.log *.tex *.out
 
 DISTCLEANFILES=manual.txt manual.html manual.xml Muttrc
@@ -149,15 +148,6 @@ EDIT = sed -e 's,@sysconfdir\@,$(sysconfdir),g' \
 
 mutt.1: $(srcdir)/mutt.man
 	$(EDIT) $(srcdir)/mutt.man > $@
-
-pgpewrap.1: $(srcdir)/pgpewrap.man
-	$(EDIT) $(srcdir)/pgpewrap.man > $@
-
-pgpring.1: $(srcdir)/pgpring.man
-	$(EDIT) $(srcdir)/pgpring.man > $@
-
-smime_keys.1: $(srcdir)/smime_keys.man
-	$(EDIT) $(srcdir)/smime_keys.man > $@
 
 manual.xml: makedoc$(EXEEXT) ../config.h $(top_srcdir)/init.h \
                manual.xml.head $(top_srcdir)/functions.h $(top_srcdir)/OPS* manual.xml.tail \
