@@ -3,13 +3,24 @@
 include $(top_srcdir)/flymake.am
 
 AUTOMAKE_OPTIONS = 1.6 foreign
-EXTRA_PROGRAMS = pgpring pgpewrap mutt_md5
+EXTRA_PROGRAMS = mutt_md5 pgpewrap pgpring
 
 # Test the .tar file by building everything
-AM_DISTCHECK_CONFIGURE_FLAGS = --enable-debug --enable-flock --enable-gpgme \
-	--enable-notmuch --with-bdb \
-	--with-gdbm --with-gnutls --with-gss --with-kyotocabinet --with-lmdb \
-	--with-mixmaster --with-qdbm --with-sasl --with-tokyocabinet
+AM_DISTCHECK_CONFIGURE_FLAGS = \
+	--enable-debug \
+	--enable-flock \
+	--enable-gpgme \
+	--enable-notmuch \
+	--with-bdb \
+	--with-gdbm \
+	--with-gnutls \
+	--with-gss \
+	--with-kyotocabinet \
+	--with-lmdb \
+	--with-mixmaster \
+	--with-qdbm \
+	--with-sasl \
+	--with-tokyocabinet
 
 SUBDIRS = m4 contrib imap ncrypt
 
@@ -29,7 +40,7 @@ bin_SCRIPTS = $(SMIMEAUX_TARGET)
 
 distdir = neo$(PACKAGE)-$(VERSION)
 
-BUILT_SOURCES = keymap_defs.h keymap_alldefs.h git_ver.h conststrings.c
+BUILT_SOURCES = conststrings.c git_ver.h keymap_alldefs.h keymap_defs.h
 
 bin_PROGRAMS = mutt $(PGPAUX_TARGET)
 
@@ -144,10 +155,10 @@ install-data-local:
 	fi
 
 uninstall-local:
-	for i in mime.types ; do \
-		if cmp -s $(DESTDIR)$(sysconfdir)/$$i.dist $(DESTDIR)$(sysconfdir)/$$i ; then \
-			rm $(DESTDIR)$(sysconfdir)/$$i ; \
-		fi ; \
-		rm $(DESTDIR)$(sysconfdir)/$${i}.dist ; \
+	for i in mime.types; do \
+		if cmp -s $(DESTDIR)$(sysconfdir)/$$i.dist $(DESTDIR)$(sysconfdir)/$$i; then \
+			rm $(DESTDIR)$(sysconfdir)/$$i; \
+		fi; \
+		rm $(DESTDIR)$(sysconfdir)/$${i}.dist; \
 	done
 
