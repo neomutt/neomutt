@@ -6647,7 +6647,7 @@ mailboxes $my_mx +mailbox3</screen>
         intention to use a backslash in the regular expression, you will need
         to use two backslashes instead (
         <quote>\\</quote>). You can force Mutt to treat
-        <emphasis>EXPR</emphasis> as a simple string instead of a regular
+        <emphasis>EXPR</emphasis> as a simple substring instead of a regular
         expression by using = instead of ~ in the pattern name. For example,
         <literal>=b *.*</literal>will find all messages that contain the
         literal string
