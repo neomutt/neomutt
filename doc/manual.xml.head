@@ -5213,6 +5213,12 @@ shows several ways to select messages.
 <row><entry>~(<emphasis>PATTERN</emphasis>)</entry><entry>messages in threads
 containing messages matching <emphasis>PATTERN</emphasis>, e.g. all
 threads containing messages from you: ~(~P)</entry></row>
+<row><entry>~&lt;(<emphasis>PATTERN</emphasis>)</entry><entry>messages
+whose immediate parent matches <emphasis>PATTERN</emphasis>,
+e.g. replies to your messages: ~&lt;(~P)</entry></row>
+<row><entry>~&gt;(<emphasis>PATTERN</emphasis>)</entry><entry>messages
+having an immediate child matching <emphasis>PATTERN</emphasis>,
+e.g. messages you replied to: ~&gt;(~P)</entry></row>
 </tbody>
 </tgroup>
 </table>

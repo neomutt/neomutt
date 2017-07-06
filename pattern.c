@@ -784,6 +784,7 @@ pattern_t *mutt_pattern_comp (/* const */ char *s, int flags, BUFFER *err)
   int or = 0;
   int implicit = 1;	/* used to detect logical AND operator */
   int isalias = 0;
+  short thread_op;
   const struct pattern_flags *entry;
   char *p;
   char *buf;
@@ -846,9 +847,18 @@ pattern_t *mutt_pattern_comp (/* const */ char *s, int flags, BUFFER *err)
 	  mutt_pattern_free (&curlist);
 	  return NULL;
 	}
+        thread_op = 0;
 	if (*(ps.dptr + 1) == '(')
+          thread_op = MUTT_THREAD;
+        else if ((*(ps.dptr + 1) == '<') && (*(ps.dptr + 2) == '('))
+          thread_op = MUTT_PARENT;
+        else if ((*(ps.dptr + 1) == '>') && (*(ps.dptr + 2) == '('))
+          thread_op = MUTT_CHILDREN;
+        if (thread_op)
         {
-	  ps.dptr ++; /* skip ~ */
+	  ps.dptr++; /* skip ~ */
+          if (thread_op == MUTT_PARENT || thread_op == MUTT_CHILDREN)
+            ps.dptr++;
 	  p = find_matching_paren (ps.dptr + 1);
 	  if (*p != ')')
 	  {
@@ -857,7 +867,7 @@ pattern_t *mutt_pattern_comp (/* const */ char *s, int flags, BUFFER *err)
 	    return NULL;
 	  }
 	  tmp = new_pattern ();
-	  tmp->op = MUTT_THREAD;
+	  tmp->op = thread_op;
 	  if (last)
 	    last->next = tmp;
 	  else
@@ -1108,6 +1118,26 @@ static int match_threadcomplete(struct pattern_t *pat, pattern_exec_flag flags, 
   return 0;
 }
 
+static int match_threadparent(struct pattern_t *pat, pattern_exec_flag flags, CONTEXT *ctx, THREAD *t)
+{
+  if (!t || !t->parent || !t->parent->message)
+    return 0;
+
+  return mutt_pattern_exec(pat, flags, ctx, t->parent->message, NULL);
+}
+
+static int match_threadchildren(struct pattern_t *pat, pattern_exec_flag flags, CONTEXT *ctx, THREAD *t)
+{
+  if (!t || !t->child)
+    return 0;
+
+  for (t = t->child; t; t = t->next)
+    if (t->message && mutt_pattern_exec(pat, flags, ctx, t->message, NULL))
+      return 1;
+
+  return 0;
+}
+
 
 /* Sets a value in the pattern_cache_t cache entry.
  * Normalizes the "true" value to 2. */
@@ -1148,6 +1178,10 @@ mutt_pattern_exec (struct pattern_t *pat, pattern_exec_flag flags, CONTEXT *ctx,
       return (pat->not ^ (perform_or (pat->child, flags, ctx, h, cache) > 0));
     case MUTT_THREAD:
       return (pat->not ^ match_threadcomplete(pat->child, flags, ctx, h->thread, 1, 1, 1, 1));
+    case MUTT_PARENT:
+      return (pat->not ^ match_threadparent(pat->child, flags, ctx, h->thread));
+    case MUTT_CHILDREN:
+      return (pat->not ^ match_threadchildren(pat->child, flags, ctx, h->thread));
     case MUTT_ALL:
       return (!pat->not);
     case MUTT_EXPIRED:
