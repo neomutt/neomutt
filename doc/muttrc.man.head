@@ -636,6 +636,12 @@ unreferenced message (requires threaded view)
 .TP
 ~(PATTERN)
 messages in threads containing messages matching a certain pattern, e.g. all threads containing messages from you: ~(~P)
+.TP
+~<(PATTERN)
+messages whose immediate parent matches PATTERN, e.g. replies to your messages: ~<(~P)
+.TP
+~>(PATTERN)
+messages having an immediate child matching PATTERN, e.g. messages you replied to: ~>(~P)
 .PD 1
 .DT
 .PP

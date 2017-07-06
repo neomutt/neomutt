@@ -1543,7 +1543,7 @@ struct Option MuttVars[] = {
   ** .dt %r .dd comma separated list of ``To:'' recipients
   ** .dt %R .dd comma separated list of ``Cc:'' recipients
   ** .dt %s .dd subject of the message
-  ** .dt %S .dd status of the message (``N''/``D''/``d''/``!''/``r''/\(as)
+  ** .dt %S .dd single character status of the message (``N''/``O''/``D''/``d''/``!''/``r''/``\(as'')
   ** .dt %t .dd ``To:'' field (recipients)
   ** .dt %T .dd the appropriate character from the $$to_chars string
   ** .dt %u .dd user (login) name of the author
@@ -1556,7 +1556,11 @@ struct Option MuttVars[] = {
   ** .dt %Y .dd ``X-Label:'' field, if present, and \fI(1)\fP not at part of a thread tree,
   **            \fI(2)\fP at the top of a thread, or \fI(3)\fP ``X-Label:'' is different from
   **            preceding message's ``X-Label:''.
-  ** .dt %Z .dd Combined message flags
+  ** .dt %Z .dd a three character set of message status flags.
+  **            the first character is new/read/replied flags (``n''/``o''/``r''/``O''/``N'').
+  **            the second is deleted or encryption flags (``D''/``d''/``S''/``P''/``s''/``K'').
+  **            the third is either tagged/flagged (``\(as''/``!''), or one of the characters
+  **            listed in $$to_chars.
   ** .dt %zs .dd message status flags
   ** .dt %zc .dd message crypto flags
   ** .dt %zt .dd message tag flags
