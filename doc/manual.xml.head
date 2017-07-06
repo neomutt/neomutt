@@ -6601,6 +6601,20 @@ mailboxes $my_mx +mailbox3</screen>
                 <emphasis>PATTERN</emphasis>, e.g. all threads containing
                 messages from you: ~(~P)</entry>
               </row>
+              <row>
+                <entry>~&lt;(
+                <emphasis>PATTERN</emphasis>)</entry>
+                <entry>messages whose immediate parent matches
+                <emphasis>PATTERN</emphasis>, e.g. replies to your messages:
+                ~&lt;(~P)</entry>
+              </row>
+              <row>
+                <entry>~&gt;(
+                <emphasis>PATTERN</emphasis>)</entry>
+                <entry>messages having an immediate child matching
+                <emphasis>PATTERN</emphasis>, e.g. messages you replied to:
+                ~&gt;(~P)</entry>
+              </row>
             </tbody>
           </tgroup>
         </table>

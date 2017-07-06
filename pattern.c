@@ -1113,6 +1113,7 @@ struct Pattern *mutt_pattern_comp(/* const */ char *s, int flags, struct Buffer 
   bool or = false;
   bool implicit = true; /* used to detect logical AND operator */
   bool isalias = false;
+  short thread_op;
   const struct PatternFlags *entry = NULL;
   char *p = NULL;
   char *buf = NULL;
@@ -1175,9 +1176,18 @@ struct Pattern *mutt_pattern_comp(/* const */ char *s, int flags, struct Buffer 
           mutt_pattern_free(&curlist);
           return NULL;
         }
+        thread_op = 0;
         if (*(ps.dptr + 1) == '(')
+          thread_op = MUTT_THREAD;
+        else if ((*(ps.dptr + 1) == '<') && (*(ps.dptr + 2) == '('))
+          thread_op = MUTT_PARENT;
+        else if ((*(ps.dptr + 1) == '>') && (*(ps.dptr + 2) == '('))
+          thread_op = MUTT_CHILDREN;
+        if (thread_op)
         {
           ps.dptr++; /* skip ~ */
+          if (thread_op == MUTT_PARENT || thread_op == MUTT_CHILDREN)
+            ps.dptr++;
           p = find_matching_paren(ps.dptr + 1);
           if (*p != ')')
           {
@@ -1186,7 +1196,7 @@ struct Pattern *mutt_pattern_comp(/* const */ char *s, int flags, struct Buffer 
             return NULL;
           }
           tmp = new_pattern();
-          tmp->op = MUTT_THREAD;
+          tmp->op = thread_op;
           if (last)
             last->next = tmp;
           else
@@ -1440,6 +1450,28 @@ static int match_threadcomplete(struct Pattern *pat, pattern_exec_flag flags,
   return 0;
 }
 
+static int match_threadparent(struct Pattern *pat, pattern_exec_flag flags,
+                              struct Context *ctx, struct MuttThread *t)
+{
+  if (!t || !t->parent || !t->parent->message)
+    return 0;
+
+  return mutt_pattern_exec(pat, flags, ctx, t->parent->message, NULL);
+}
+
+static int match_threadchildren(struct Pattern *pat, pattern_exec_flag flags,
+                                struct Context *ctx, struct MuttThread *t)
+{
+  if (!t || !t->child)
+    return 0;
+
+  for (t = t->child; t; t = t->next)
+    if (t->message && mutt_pattern_exec(pat, flags, ctx, t->message, NULL))
+      return 1;
+
+  return 0;
+}
+
 
 /* Sets a value in the PatternCache cache entry.
  * Normalizes the "true" value to 2. */
@@ -1480,6 +1512,10 @@ int mutt_pattern_exec(struct Pattern *pat, pattern_exec_flag flags,
     case MUTT_THREAD:
       return (pat->not ^
               match_threadcomplete(pat->child, flags, ctx, h->thread, 1, 1, 1, 1));
+    case MUTT_PARENT:
+      return (pat->not ^ match_threadparent(pat->child, flags, ctx, h->thread));
+    case MUTT_CHILDREN:
+      return (pat->not ^ match_threadchildren(pat->child, flags, ctx, h->thread));
     case MUTT_ALL:
       return !pat->not;
     case MUTT_EXPIRED:
