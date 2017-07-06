@@ -199,7 +199,7 @@ AS_IF([test x$use_pgp != "xno"], [
 dnl --enable-smime
 AS_IF([test x$use_smime != "xno"], [
 	AC_DEFINE(CRYPT_BACKEND_CLASSIC_SMIME, 1, [Define if you want classic S/MIME support.])
-	SMIMEAUX_TARGET="smime_keys"
+	SMIMEAUX_TARGET='$(top_srcdir)/contrib/smime_keys'
 	build_ncrypt_smime="yes"
 ])
 
@@ -966,7 +966,7 @@ if test x$full_doc != xno; then
 fi
 
 AC_CONFIG_FILES(Makefile contrib/Makefile doc/Makefile imap/Makefile
-	m4/Makefile po/Makefile.in hcache/Makefile doc/instdoc.sh ncrypt/Makefile)
+	m4/Makefile po/Makefile.in hcache/Makefile ncrypt/Makefile)
 AC_OUTPUT
 
 AC_MSG_NOTICE([Summary of build options:

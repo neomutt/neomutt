@@ -3,13 +3,24 @@
 include $(top_srcdir)/flymake.am
 
 AUTOMAKE_OPTIONS = 1.6 foreign
-EXTRA_PROGRAMS = pgpring pgpewrap mutt_md5
+EXTRA_PROGRAMS = mutt_md5 pgpewrap pgpring
 
 # Test the .tar file by building everything
-AM_DISTCHECK_CONFIGURE_FLAGS = --enable-debug --enable-flock --enable-gpgme \
-	--enable-notmuch --with-bdb \
-	--with-gdbm --with-gnutls --with-gss --with-kyotocabinet --with-lmdb \
-	--with-mixmaster --with-qdbm --with-sasl --with-tokyocabinet
+AM_DISTCHECK_CONFIGURE_FLAGS = \
+	--enable-debug \
+	--enable-flock \
+	--enable-gpgme \
+	--enable-notmuch \
+	--with-bdb \
+	--with-gdbm \
+	--with-gnutls \
+	--with-gss \
+	--with-kyotocabinet \
+	--with-lmdb \
+	--with-mixmaster \
+	--with-qdbm \
+	--with-sasl \
+	--with-tokyocabinet
 
 SUBDIRS = m4 contrib imap ncrypt
 
@@ -29,7 +40,7 @@ bin_SCRIPTS = $(SMIMEAUX_TARGET)
 
 distdir = neo$(PACKAGE)-$(VERSION)
 
-BUILT_SOURCES = keymap_defs.h keymap_alldefs.h git_ver.h conststrings.c
+BUILT_SOURCES = conststrings.c git_ver.h keymap_alldefs.h keymap_defs.h
 
 bin_PROGRAMS = mutt $(PGPAUX_TARGET)
 
@@ -79,10 +90,10 @@ EXTRA_DIST = account.h ascii.h attach.h bcache.h browser.h buffer.h buffy.h \
 	OPS.CRYPT OPS.MIX OPS.NOTMUCH OPS.PGP OPS.SIDEBAR OPS.SMIME pager.h \
 	pgpewrap.c pop.h protos.h README.md README.SSL remailer.c remailer.h \
 	rfc1524.h rfc2047.h rfc2231.h rfc3676.h rfc822.h sha1.h sidebar.h \
-	smime_keys.pl sort.h txt2c.c txt2c.sh version.h \
+	sort.h txt2c.c txt2c.sh version.h \
 	keymap_alldefs.h
 
-EXTRA_SCRIPTS = smime_keys
+EXTRA_SCRIPTS =
 
 pgpring_SOURCES = ascii.c extlib.c lib.c md5.c pgppubring.c sha1.c
 pgpring_LDADD = $(LIBOBJS) $(NCRYPT_LIBS) $(INTLLIBS)
@@ -113,7 +124,7 @@ conststrings.c: txt2c config.status
 
 CLEANFILES = keymap_alldefs.h $(BUILT_SOURCES)
 
-DISTCLEANFILES= smime_keys txt2c
+DISTCLEANFILES= txt2c
 
 ACLOCAL_AMFLAGS = -I m4
 
@@ -121,10 +132,6 @@ LDADD = $(LIBOBJS) $(INTLLIBS)
 
 dist-hook:
 	echo $(VERSION) > $(distdir)/.tarball-version
-
-smime_keys: $(srcdir)/smime_keys.pl
-	cp $(srcdir)/smime_keys.pl smime_keys
-	chmod +x smime_keys
 
 keymap_defs.h: $(OPS) $(srcdir)/gen_defs
 	$(srcdir)/gen_defs $(OPS) > $@
@@ -148,10 +155,10 @@ install-data-local:
 	fi
 
 uninstall-local:
-	for i in mime.types ; do \
-		if cmp -s $(DESTDIR)$(sysconfdir)/$$i.dist $(DESTDIR)$(sysconfdir)/$$i ; then \
-			rm $(DESTDIR)$(sysconfdir)/$$i ; \
-		fi ; \
-		rm $(DESTDIR)$(sysconfdir)/$${i}.dist ; \
+	for i in mime.types; do \
+		if cmp -s $(DESTDIR)$(sysconfdir)/$$i.dist $(DESTDIR)$(sysconfdir)/$$i; then \
+			rm $(DESTDIR)$(sysconfdir)/$$i; \
+		fi; \
+		rm $(DESTDIR)$(sysconfdir)/$${i}.dist; \
 	done
 

@@ -22,7 +22,6 @@ mutt
 mutt_md5
 pgpewrap
 pgpring
-smime_keys
 txt2c
 
 # ./configure
@@ -32,9 +31,8 @@ config.status
 stamp-h1
 
 # Ignored within subdirectories
-doc/*.1
+doc/mutt.1
 doc/*.html
-doc/instdoc.sh
 doc/makedoc
 doc/manual.txt
 doc/manual.xml
