@@ -508,8 +508,8 @@ void mutt_print_message(struct Header *h)
     return;
   }
 
-  if (query_quadoption(OPT_PRINT, h ? _("Print message?") :
-                                      _("Print tagged messages?")) != MUTT_YES)
+  if (query_quadoption(OPT_PRINT,
+                       h ? _("Print message?") : _("Print tagged messages?")) != MUTT_YES)
     return;
 
   if (_mutt_pipe_message(h, PrintCmd, option(OPTPRINTDECODE), 1,

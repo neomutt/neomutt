@@ -905,7 +905,7 @@ int _mutt_enter_fname(const char *prompt, char *buf, size_t blen, int buffy,
       flags |= MUTT_SEL_MULTI;
     if (buffy)
       flags |= MUTT_SEL_BUFFY;
-    _mutt_select_file (buf, blen, flags, files, numfiles);
+    _mutt_select_file(buf, blen, flags, files, numfiles);
   }
   else
   {

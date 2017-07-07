@@ -372,7 +372,6 @@ void mutt_help(int menu)
     safe_fclose(&f);
 
     snprintf(buf, sizeof(buf), _("Help for %s"), desc);
-  } while (mutt_do_pager(buf, t, MUTT_PAGER_RETWINCH | MUTT_PAGER_MARKER |
-                                     MUTT_PAGER_NSKIP | MUTT_PAGER_NOWRAP,
+  } while (mutt_do_pager(buf, t, MUTT_PAGER_RETWINCH | MUTT_PAGER_MARKER | MUTT_PAGER_NSKIP | MUTT_PAGER_NOWRAP,
                          NULL) == OP_REFORMAT_WINCH);
 }

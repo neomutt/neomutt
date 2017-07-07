@@ -87,10 +87,11 @@ int mutt_parse_hook(struct Buffer *buf, struct Buffer *s, unsigned long data,
     }
   }
 
-  mutt_extract_token(&command, s, (data & (MUTT_FOLDERHOOK | MUTT_SENDHOOK | MUTT_SEND2HOOK |
-                                           MUTT_ACCOUNTHOOK | MUTT_REPLYHOOK)) ?
-                                      MUTT_TOKEN_SPACE :
-                                      0);
+  mutt_extract_token(&command, s,
+                     (data & (MUTT_FOLDERHOOK | MUTT_SENDHOOK | MUTT_SEND2HOOK |
+                              MUTT_ACCOUNTHOOK | MUTT_REPLYHOOK)) ?
+                         MUTT_TOKEN_SPACE :
+                         0);
 
   if (!command.data)
   {

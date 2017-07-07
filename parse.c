@@ -382,9 +382,10 @@ void mutt_parse_content_type(char *s, struct Body *ct)
   if (ct->type == TYPETEXT)
   {
     if (!(pc = mutt_get_parameter("charset", ct->parameter)))
-      mutt_set_parameter("charset", (AssumedCharset && *AssumedCharset) ?
-                                        (const char *) mutt_get_default_charset() :
-                                        "us-ascii",
+      mutt_set_parameter("charset",
+                         (AssumedCharset && *AssumedCharset) ?
+                             (const char *) mutt_get_default_charset() :
+                             "us-ascii",
                          &ct->parameter);
   }
 }
@@ -1253,7 +1254,7 @@ int mutt_parse_rfc822_line(struct Envelope *e, struct Header *hdr, char *line,
                 hdr->replied = true;
                 break;
               case 'O':
-                hdr->old = option(OPTMARKOLD) ? true: false;
+                hdr->old = option(OPTMARKOLD) ? true : false;
                 break;
               case 'R':
                 hdr->read = true;

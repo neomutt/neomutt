@@ -740,7 +740,7 @@ int nntp_open_connection(struct NntpServer *nserv)
 static int nntp_query(struct NntpData *nntp_data, char *line, size_t linelen)
 {
   struct NntpServer *nserv = nntp_data->nserv;
-  char buf[LONG_STRING] = {0};
+  char buf[LONG_STRING] = { 0 };
 
   if (nserv->status == NNTP_BYE)
     return -1;

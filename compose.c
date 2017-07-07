@@ -403,13 +403,16 @@ static void draw_envelope(struct Header *msg, char *fcc)
   }
   else
   {
-    mutt_window_mvprintw(MuttIndexWindow, HDR_TO, 0, "%*s", HeaderPadding[HDR_NEWSGROUPS], Prompts[HDR_NEWSGROUPS]);
+    mutt_window_mvprintw(MuttIndexWindow, HDR_TO, 0, "%*s",
+                         HeaderPadding[HDR_NEWSGROUPS], Prompts[HDR_NEWSGROUPS]);
     mutt_paddstr(W, NONULL(msg->env->newsgroups));
-    mutt_window_mvprintw(MuttIndexWindow, HDR_CC, 0, "%*s", HeaderPadding[HDR_FOLLOWUPTO], Prompts[HDR_FOLLOWUPTO]);
+    mutt_window_mvprintw(MuttIndexWindow, HDR_CC, 0, "%*s",
+                         HeaderPadding[HDR_FOLLOWUPTO], Prompts[HDR_FOLLOWUPTO]);
     mutt_paddstr(W, NONULL(msg->env->followup_to));
     if (option(OPTXCOMMENTTO))
     {
-      mutt_window_mvprintw(MuttIndexWindow, HDR_BCC, 0, "%*s", HeaderPadding[HDR_XCOMMENTTO], Prompts[HDR_XCOMMENTTO]);
+      mutt_window_mvprintw(MuttIndexWindow, HDR_BCC, 0, "%*s",
+                           HeaderPadding[HDR_XCOMMENTTO], Prompts[HDR_XCOMMENTTO]);
       mutt_paddstr(W, NONULL(msg->env->x_comment_to));
     }
   }
@@ -1187,9 +1190,10 @@ int mutt_compose_menu(struct Header *msg, /* structure for new message */
 
       case OP_COMPOSE_EDIT_DESCRIPTION:
         CHECK_COUNT;
-        strfcpy(buf, idx[menu->current]->content->description ?
-                         idx[menu->current]->content->description :
-                         "",
+        strfcpy(buf,
+                idx[menu->current]->content->description ?
+                    idx[menu->current]->content->description :
+                    "",
                 sizeof(buf));
         /* header names should not be translated */
         if (mutt_get_field("Description: ", buf, sizeof(buf), 0) == 0)
@@ -1576,7 +1580,8 @@ int mutt_compose_menu(struct Header *msg, /* structure for new message */
         {
           if (msg->security & (ENCRYPT | SIGN))
           {
-            if (mutt_yesorno(_("S/MIME already selected. Clear and continue ? "), MUTT_YES) != MUTT_YES)
+            if (mutt_yesorno(
+                    _("S/MIME already selected. Clear and continue ? "), MUTT_YES) != MUTT_YES)
             {
               mutt_clear_error();
               break;

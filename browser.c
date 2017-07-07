@@ -1248,7 +1248,7 @@ void _mutt_select_file(char *f, size_t flen, int flags, char ***files, int *numf
 #endif
       if (buffy)
   {
-    examine_mailboxes (NULL, &state);
+    examine_mailboxes(NULL, &state);
   }
   else
 #ifdef USE_IMAP
@@ -1808,7 +1808,7 @@ void _mutt_select_file(char *f, size_t flen, int flags, char ***files, int *numf
 
         if (buffy)
         {
-	        examine_mailboxes (menu, &state);
+          examine_mailboxes(menu, &state);
         }
 #ifdef USE_IMAP
         else if (mx_is_imap(LastDir))

@@ -146,7 +146,7 @@ static int _lua_mutt_set(lua_State *l)
         luaL_error(l, "Invalid opt for quad option %s (one of "
                       "mutt.QUAD_YES, mutt.QUAD_NO, mutt.QUAD_ASKYES, "
                       "mutt.QUAD_ASKNO",
-                    param);
+                   param);
         rv = -1;
       }
       else

@@ -781,8 +781,9 @@ void mutt_print_attachment_list(FILE *fp, int tag, struct Body *top)
   struct State state;
 
   pid_t thepid;
-  if (query_quadoption(OPT_PRINT, tag ? _("Print tagged attachment(s)?") :
-                                        _("Print attachment?")) != MUTT_YES)
+  if (query_quadoption(OPT_PRINT,
+                       tag ? _("Print tagged attachment(s)?") :
+                             _("Print attachment?")) != MUTT_YES)
     return;
 
   if (!option(OPTATTACHSPLIT))

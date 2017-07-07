@@ -134,7 +134,7 @@ static const char *No_visible = N_("No visible messages.");
 
 #define CURHDR Context->hdrs[Context->v2r[menu->current]]
 #define UNREAD(h) mutt_thread_contains_unread(Context, h)
-#define FLAGGED(h) mutt_thread_contains_flagged (Context, h)
+#define FLAGGED(h) mutt_thread_contains_flagged(Context, h)
 
 #define CAN_COLLAPSE(header)                                                   \
   ((option(OPTCOLLAPSEUNREAD) || !UNREAD(header)) &&                           \

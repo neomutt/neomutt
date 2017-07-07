@@ -405,9 +405,9 @@ static int socket_connect(int fd, struct sockaddr *sa)
 
   /* FreeBSD's connect() does not respect SA_RESTART, meaning
    * a SIGWINCH will cause the connect to fail. */
-  sigemptyset (&set);
-  sigaddset (&set, SIGWINCH);
-  sigprocmask (SIG_BLOCK, &set, NULL);
+  sigemptyset(&set);
+  sigaddset(&set, SIGWINCH);
+  sigprocmask(SIG_BLOCK, &set, NULL);
 
   save_errno = 0;
 
@@ -421,7 +421,7 @@ static int socket_connect(int fd, struct sockaddr *sa)
   if (ConnectTimeout > 0)
     alarm(0);
   mutt_allow_interrupt(0);
-  sigprocmask (SIG_UNBLOCK, &set, NULL);
+  sigprocmask(SIG_UNBLOCK, &set, NULL);
 
   return save_errno;
 }

@@ -374,7 +374,7 @@ int mutt_option_set(const struct Option *val, struct Buffer *err)
         err2.dsize = sizeof(err_str);
 
         struct Buffer tmp;
-        tmp.data = (char *)val->data;
+        tmp.data = (char *) val->data;
         tmp.dsize = strlen((char *) val->data);
 
         if (parse_regex(idx, &tmp, &err2))
@@ -401,8 +401,7 @@ int mutt_option_set(const struct Option *val, struct Buffer *err)
         }
         else
         {
-          snprintf(err->data, err->dsize, _("%s: Unknown type."),
-                   MuttVars[idx].option);
+          snprintf(err->data, err->dsize, _("%s: Unknown type."), MuttVars[idx].option);
           return -1;
         }
         break;
@@ -436,13 +435,11 @@ int mutt_option_set(const struct Option *val, struct Buffer *err)
 
         if (!map)
         {
-          snprintf(err->data, err->dsize, _("%s: Unknown type."),
-                   MuttVars[idx].option);
+          snprintf(err->data, err->dsize, _("%s: Unknown type."), MuttVars[idx].option);
           return -1;
         }
 
-        if (parse_sort((short *) MuttVars[idx].data, (const char *) val->data,
-                       map, err) == -1)
+        if (parse_sort((short *) MuttVars[idx].data, (const char *) val->data, map, err) == -1)
         {
           return -1;
         }
@@ -2191,8 +2188,8 @@ static void start_debug(void)
     snprintf(debugfilename, sizeof(debugfilename), "%s%d", DebugFile, i);
     snprintf(buf, sizeof(buf), "%s%d", DebugFile, i + 1);
 
-    mutt_expand_path (debugfilename, sizeof (debugfilename));
-    mutt_expand_path (buf, sizeof (buf));
+    mutt_expand_path(debugfilename, sizeof(debugfilename));
+    mutt_expand_path(buf, sizeof(buf));
     rename(debugfilename, buf);
   }
 
@@ -2439,7 +2436,8 @@ static int parse_set(struct Buffer *tmp, struct Buffer *s, unsigned long data,
     {
       if (query || unset || inv)
       {
-        snprintf(err->data, err->dsize, "%s", _("prefix is illegal with reset"));
+        snprintf(err->data, err->dsize, "%s",
+                 _("prefix is illegal with reset"));
         return -1;
       }
 
@@ -2453,7 +2451,8 @@ static int parse_set(struct Buffer *tmp, struct Buffer *s, unsigned long data,
       {
         if (CurrentMenu == MENU_PAGER)
         {
-          snprintf(err->data, err->dsize, "%s", _("Not available in this menu."));
+          snprintf(err->data, err->dsize, "%s",
+                   _("Not available in this menu."));
           return -1;
         }
         for (idx = 0; MuttVars[idx].option; idx++)
@@ -2480,7 +2479,8 @@ static int parse_set(struct Buffer *tmp, struct Buffer *s, unsigned long data,
       {
         if (unset || inv || query)
         {
-          snprintf(err->data, err->dsize, "%s", _("Usage: set variable=yes|no"));
+          snprintf(err->data, err->dsize, "%s",
+                   _("Usage: set variable=yes|no"));
           return -1;
         }
 
@@ -2492,7 +2492,8 @@ static int parse_set(struct Buffer *tmp, struct Buffer *s, unsigned long data,
           unset = 1;
         else
         {
-          snprintf(err->data, err->dsize, "%s", _("Usage: set variable=yes|no"));
+          snprintf(err->data, err->dsize, "%s",
+                   _("Usage: set variable=yes|no"));
           return -1;
         }
       }
@@ -3902,11 +3903,7 @@ static int execute_commands(struct List *p)
 static char *find_cfg(const char *home, const char *xdg_cfg_home)
 {
   const char *names[] = {
-    "neomuttrc-" PACKAGE_VERSION,
-    "neomuttrc",
-    "muttrc-" MUTT_VERSION,
-    "muttrc",
-    NULL,
+    "neomuttrc-" PACKAGE_VERSION, "neomuttrc", "muttrc-" MUTT_VERSION, "muttrc", NULL,
   };
 
   const char *locations[][2] = {
@@ -3955,8 +3952,7 @@ void mutt_init(int skip_sys_rc, struct List *commands)
 
   Groups = hash_create(1031, 0);
   /* reverse alias keys need to be strdup'ed because of idna conversions */
-  ReverseAlias = hash_create(1031, MUTT_HASH_STRCASECMP | MUTT_HASH_STRDUP_KEYS |
-                                       MUTT_HASH_ALLOW_DUPS);
+  ReverseAlias = hash_create(1031, MUTT_HASH_STRCASECMP | MUTT_HASH_STRDUP_KEYS | MUTT_HASH_ALLOW_DUPS);
 #ifdef USE_NOTMUCH
   TagTransforms = hash_create(64, 1);
   TagFormats = hash_create(64, 0);
@@ -4017,7 +4013,7 @@ void mutt_init(int skip_sys_rc, struct List *commands)
     {
       int i = mutt_option_index("debug_file");
       if ((i >= 0) && (MuttVars[i].init != 0))
-        DebugFile = safe_strdup((const char*) MuttVars[i].init);
+        DebugFile = safe_strdup((const char *) MuttVars[i].init);
     }
     start_debug();
   }
