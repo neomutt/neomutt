@@ -236,7 +236,7 @@ AS_IF([test x$enable_lua = "xyes"], [
 	AC_DEFINE(USE_LUA, 1, [Define if you want support for LUA.])
 	MUTT_LIB_OBJECTS="$MUTT_LIB_OBJECTS mutt_lua.o"
 	CPPFLAGS="$CPPFLAGS $LUA_INCLUDE"
-	MUTTLIBS="$MUTTLIBS $LUA_LIB"
+	LIBS="$LIBS $LUA_LIB"
 ])
 
 dnl --enable-notmuch
@@ -245,7 +245,7 @@ AS_IF([test x$use_notmuch = "xyes"], [
 		AC_MSG_ERROR([Unable to find Notmuch library]))
 	AC_DEFINE(USE_NOTMUCH,1,[ Define if you want support for the notmuch. ])
 	MUTT_LIB_OBJECTS="$MUTT_LIB_OBJECTS mutt_notmuch.o"
-	MUTTLIBS="$MUTTLIBS -lnotmuch"
+	LIBS="$LIBS -lnotmuch"
 	OPS="$OPS \$(srcdir)/OPS.NOTMUCH"
 
 	AC_MSG_CHECKING([for notmuch api version 3])
@@ -338,7 +338,7 @@ main ()
 	dnl --- now that we've found it, check the link
 
 	AC_CHECK_LIB(slang, SLtt_get_terminfo,
-		[MUTTLIBS="$MUTTLIBS -lslang -lm"],
+		[LIBS="$LIBS -lslang -lm"],
 		[AC_MSG_ERROR(unable to compile.  check config.log)], -lm)
 
 	],
@@ -363,10 +363,10 @@ main ()
 		AC_MSG_ERROR([Unable to find ncursesw library])
 	fi
 	AC_CHECK_LIB($cf_ncurses, initscr,
-		[MUTTLIBS="$MUTTLIBS -l$cf_ncurses"
+		[LIBS="$LIBS -l$cf_ncurses"
 
 		AC_CHECK_LIB($cf_ncurses, tgetent, [:], [
-			AC_CHECK_LIB(tinfo, tgetent, [MUTTLIBS="$MUTTLIBS -ltinfo"])
+			AC_CHECK_LIB(tinfo, tgetent, [LIBS="$LIBS -ltinfo"])
 		])
 
 		if test "$cf_ncurses" = ncursesw; then
@@ -382,8 +382,6 @@ main ()
 		)
 		])
 
-	old_LIBS="$LIBS"
-	LIBS="$LIBS $MUTTLIBS"
 	CF_CHECK_FUNCDECLS([#include <${cf_cv_ncurses_header-curses.h}>],
 		[start_color typeahead bkgdset curs_set meta use_default_colors resizeterm])
 	if test "$ac_cv_func_decl_start_color" = yes; then
@@ -393,7 +391,6 @@ main ()
 		MUTT_LIB_OBJECTS="$MUTT_LIB_OBJECTS resize.o"
 	fi
 	AC_CHECK_FUNCS([use_extended_names])
-	LIBS="$old_LIBS"
 	])
 
 AC_HEADER_STDC
@@ -493,7 +490,7 @@ if test "$gss_prefix" != "no"; then
 		AC_DEFINE(HAVE_HEIMDAL,1,[ Define if your GSSAPI implementation is Heimdal ])
 	fi
 	CPPFLAGS="$CPPFLAGS $GSSAPI_CFLAGS"
-	MUTTLIBS="$MUTTLIBS $GSSAPI_LIBS"
+	LIBS="$LIBS $GSSAPI_LIBS"
 	AC_DEFINE(USE_GSS,1,[ Define if you have GSSAPI libraries available ])
 	need_gss="yes"
 fi
@@ -517,7 +514,7 @@ AC_ARG_WITH(ssl, AS_HELP_STRING([--with-ssl@<:@=PFX@:>@],[Enable TLS support usi
 		AC_CHECK_LIB(ssl, SSL_new,,
 			AC_MSG_ERROR([Unable to find SSL library]), [$crypto_libs])
 
-		LIBS="$LIBS $crypto_libs"
+		LIBS="$saved_LIBS -lssl $crypto_libs"
 		AC_CHECK_FUNCS(RAND_status RAND_egd)
 		AC_CHECK_DECLS([SSL_set_mode, SSL_MODE_AUTO_RETRY],,
 			AC_MSG_ERROR([Unable to find decent SSL header]), [[#include <openssl/ssl.h>]])
@@ -528,8 +525,6 @@ AC_ARG_WITH(ssl, AS_HELP_STRING([--with-ssl@<:@=PFX@:>@],[Enable TLS support usi
 
 		AC_DEFINE(USE_SSL,1,[ Define if you want support for SSL. ])
 		AC_DEFINE(USE_SSL_OPENSSL,1,[ Define if you want support for SSL via OpenSSL. ])
-		LIBS="$saved_LIBS"
-		MUTTLIBS="$MUTTLIBS -lssl $crypto_libs"
 		MUTT_LIB_OBJECTS="$MUTT_LIB_OBJECTS mutt_ssl.o"
 		need_ssl=yes
 	fi
@@ -542,7 +537,6 @@ if test "$gnutls_prefix" != "no" && test x"$need_ssl" != xyes; then
 		LDFLAGS="$LDFLAGS -L$gnutls_prefix/lib"
 		CPPFLAGS="$CPPFLAGS -I$gnutls_prefix/include"
 	fi
-	saved_LIBS="$LIBS"
 
 	AC_CHECK_LIB(gnutls, gnutls_check_version,
 		[dnl GNUTLS found
@@ -558,9 +552,6 @@ if test "$gnutls_prefix" != "no" && test x"$need_ssl" != xyes; then
 			gnutls_session_t,
 			gnutls_transport_ptr_t,
 			gnutls_x509_crt_t], [], [], [[#include <gnutls/gnutls.h>]])
-
-		LIBS="$saved_LIBS"
-		MUTTLIBS="$MUTTLIBS -lgnutls"
 
 		AC_DEFINE(USE_SSL, 1, [ Define if you want support for SSL. ])
 		AC_DEFINE(USE_SSL_GNUTLS, 1, [ Define if you want support for SSL via GNUTLS. ])
@@ -578,17 +569,12 @@ AC_ARG_WITH(sasl, AS_HELP_STRING([--with-sasl@<:@=PFX@:>@],[Use SASL network sec
 			LDFLAGS="$LDFLAGS -L$with_sasl/lib"
 		fi
 
-		saved_LIBS="$LIBS"
-		LIBS=
-
 		# OpenSolaris provides a SASL2 interface in libsasl
 		sasl_libs="sasl2 sasl"
 		AC_SEARCH_LIBS(sasl_encode64, [$sasl_libs],,
 			AC_MSG_ERROR([could not find sasl lib]),)
 
-		MUTTLIBS="$MUTTLIBS $LIBS"
 		MUTT_LIB_OBJECTS="$MUTT_LIB_OBJECTS mutt_sasl.o"
-		LIBS="$saved_LIBS"
 
 		AC_DEFINE(USE_SASL,1,
 			[ Define if want to use the SASL library for POP/IMAP authentication. ])
@@ -842,7 +828,6 @@ dnl -- end cache --
 MUTT_MD5="mutt_md5$EXEEXT"
 
 AC_SUBST(MUTT_MD5)
-AC_SUBST(MUTTLIBS)
 AC_SUBST(MUTT_LIB_OBJECTS)
 AC_SUBST(HCACHE_LIBS)
 AC_SUBST(HCACHE_DEPS)
@@ -879,20 +864,14 @@ if test "x$with_idn" != "xno"; then
                 have_idna_h=yes
                 break])
 
-    mutt_save_LIBS="$LIBS"
-    LIBS=
-
     AC_SEARCH_LIBS([stringprep_check_version], [idn], [
         AC_DEFINE([HAVE_LIBIDN], 1, [Define to 1 if you have the GNU idn library])
-        MUTTLIBS="$MUTTLIBS -lidn"
 
         LIBS="$LIBS $LIBICONV"
         AC_CHECK_FUNCS(idna_to_unicode_utf8_from_utf8 idna_to_unicode_8z8z)
         AC_CHECK_FUNCS(idna_to_ascii_from_utf8 idna_to_ascii_8z)
         AC_CHECK_FUNCS(idna_to_ascii_lz idna_to_ascii_from_locale)
     ])
-
-    LIBS="$mutt_save_LIBS"
 
     if test "$with_idn" != auto; then
         if test $have_stringprep_h = no || test $have_idna_h = no || test $ac_cv_search_stringprep_check_version = no; then
@@ -978,7 +957,7 @@ AC_MSG_NOTICE([Summary of build options:
   CFlags:            ${CFLAGS} ${CPPFLAGS}
   LDFlags:           ${LDFLAGS}
   Libs:              ${LIBS}
-  Mutt libs:         ${MUTTLIBS} ${HCACHE_LIBS}
+  Header cache libs: ${HCACHE_LIBS}
 
   GPGME:             $use_gpgme
   PGP:               $use_pgp
