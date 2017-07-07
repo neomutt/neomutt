@@ -335,7 +335,7 @@ msgstr "按日期(d)，字母表(a)，大小(z)排序或不排序(n)? "
 #. L10N: These must match the highlighted letters from "Sort" and "Reverse Sort"
 #: browser.c:1730
 msgid "dazecwn"
-msgstr ""
+msgstr "dazecwn"
 
 #: browser.c:1836
 msgid "New file name: "
@@ -716,7 +716,7 @@ msgstr "加密采用："
 #. L10N: "Mix" refers to the MixMaster chain for anonymous email
 #: compose.c:242
 msgid "Mix: "
-msgstr ""
+msgstr "混合模式："
 
 #: compose.c:247
 msgid "<no chain defined>"
@@ -2219,7 +2219,7 @@ msgstr "%s 已被设定"
 
 #: init.c:2587
 msgid "set debug_file ignored, it have been overridden with cmdline"
-msgstr ""
+msgstr "设置 debug_file 被忽略， 它已经被命令行所覆盖"
 
 #: init.c:2612 init.c:2627
 #, c-format
@@ -2246,7 +2246,7 @@ msgstr "数字溢出"
 
 #: init.c:2765
 msgid "set debug_level ignored, it have been overridden with cmdline"
-msgstr ""
+msgstr "设置 debug_level 被忽略， 它已经被命令行所覆盖"
 
 #: init.c:2833
 #, c-format
@@ -2334,10 +2334,13 @@ msgid ""
 "Binding '%s' will alias '%s'  Before, try: 'bind %s %s noop'  https://"
 "neomutt.org/guide/configuration.html#bind-warnings"
 msgstr ""
+"绑定 '%s' 将会为'%s'设置别名，在这之前，请尝试: 'bind %s %s noop'"
+"https://neomutt.org/guide/configuration.html#bind-warnings"
+
 
 #: keymap.c:572
 msgid "Macros are currently disabled."
-msgstr ""
+msgstr "宏目前被禁用"
 
 #: keymap.c:579
 msgid "Macro loop detected."
@@ -2430,7 +2433,7 @@ msgstr "将信件转发给另一用户"
 
 #: keymap_alldefs.h:15
 msgid "swap the current folder position with $folder if it exists"
-msgstr ""
+msgstr "交换目前所在文件夹位置在$folder存在的情况下"
 
 #: keymap_alldefs.h:16
 msgid "select a new file in this directory"
@@ -5979,7 +5982,7 @@ msgstr "编辑附件的传输编码"
 
 #: send.c:1950
 msgid "Message contains text matching \"$attach_keyword\". Not sending."
-msgstr ""
+msgstr "信件内容匹配 \"$attach_keyword\". 没有发送"
 
 #: send.c:2012 smtp.c:186
 msgid "Sending message..."
@@ -5999,7 +6002,7 @@ msgstr "正在后台发送。"
 
 #: send.c:2160
 msgid "Article posted."
-msgstr ""
+msgstr "信件发送"
 
 #: send.c:2161
 msgid "Mail sent."
@@ -6191,6 +6194,10 @@ msgid ""
 "    https://github.com/neomutt/neomutt/issues\n"
 "or send an email to: <neomutt-devel@neomutt.org>\n"
 msgstr ""
+"为了更多的了解有关NeoMutt的事务，请访问: https://www.neomutt.org/\n"
+"在使用NeoMutt中，你如果发现了一个bug，请发起一个issue在：\n"
+"    https://github.com/neomutt/neomutt/issues\n"
+"或者发送一封邮件到 : <neomutt-devel@neomutt.org>\n"
 
 #: version.c:86
 #, fuzzy
