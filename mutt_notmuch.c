@@ -651,12 +651,12 @@ static notmuch_database_t *do_database_open(const char *filename, int writable, 
   do
   {
 #ifdef NOTMUCH_API_3
-    st = notmuch_database_open(filename, writable ? NOTMUCH_DATABASE_MODE_READ_WRITE :
-                                                    NOTMUCH_DATABASE_MODE_READ_ONLY,
+    st = notmuch_database_open(filename, writable ? NOTMUCH_DATABASE_MODE_READ_WRITE : NOTMUCH_DATABASE_MODE_READ_ONLY,
                                &db);
 #else
-    db = notmuch_database_open(filename, writable ? NOTMUCH_DATABASE_MODE_READ_WRITE :
-                                                    NOTMUCH_DATABASE_MODE_READ_ONLY);
+    db = notmuch_database_open(filename,
+                               writable ? NOTMUCH_DATABASE_MODE_READ_WRITE :
+                                          NOTMUCH_DATABASE_MODE_READ_ONLY);
 #endif
     if (db || !NotmuchOpenTimeout || ((ct / 2) > NotmuchOpenTimeout))
       break;

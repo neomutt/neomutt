@@ -671,8 +671,9 @@ int _mutt_enter_string(char *buf, size_t buflen, int col, int flags, int multipl
                 (tempbuf && templen == state->lastchar &&
                  !memcmp(tempbuf, state->wbuf, state->lastchar * sizeof(wchar_t))))
             {
-              _mutt_select_file(buf, buflen, ((flags & MUTT_EFILE) ? MUTT_SEL_FOLDER : 0) |
-                                                 (multiple ? MUTT_SEL_MULTI : 0),
+              _mutt_select_file(buf, buflen,
+                                ((flags & MUTT_EFILE) ? MUTT_SEL_FOLDER : 0) |
+                                    (multiple ? MUTT_SEL_MULTI : 0),
                                 files, numfiles);
               if (*buf)
               {

@@ -6,7 +6,7 @@ SAMPLES = colors.default colors.linux gpg.rc Mush.rc pgp2.rc pgp5.rc pgp6.rc \
 
 EXTRA_DIST = $(SAMPLES) colorschemes hcache-bench iconv/make.sh iconv/README \
 	keybase language.txt language50.txt logo lua \
-	patch.slang-1.2.2.keypad.1 smime_keys vim-keys 
+	patch.slang-1.2.2.keypad.1 smime_keys vim-keys
 
 CONTRIB_DIRS = colorschemes hcache-bench keybase logo lua vim-keys
 

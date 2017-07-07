@@ -19,8 +19,8 @@
 #include <stdlib.h>
 #include <sys/wait.h>
 #include <unistd.h>
-#include "filter.h"
 #include "mutt.h"
+#include "filter.h"
 #include "mutt_curses.h"
 #include "protos.h"
 

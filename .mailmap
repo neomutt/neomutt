@@ -26,6 +26,7 @@ Edward Betts <edward@4angle.com>                                Edward Betts <ed
 Elimar Riesebieter <riesebie@lxtec.de>                          Elimar Riesebieter <riesebie@lxtec.de>                   # @riesebie
 Fabian Groffen <grobian@gentoo.org>                             Fabian Groffen <grobian@gentoo.org>                      # @grobian
 Fabian Groffen <grobian@gentoo.org>                             Fabian Groffen <grobian@orakel.ods.org>                  # @grobian
+Fabrice Bellet <fabrice@bellet.info>                            Fabrice Bellet <fabrice@bellet.info>                     # @fbellet
 František Hájik <ferko.hajik@gmail.com>                         František Hájik <ferko.hajik@gmail.com>                  #
 Guillaume Brogi <gui-gui@netcourrier.com>                       Guillaume Brogi <gui-gui@netcourrier.com>                # @guiniol
 Guillaume Brogi <gui-gui@netcourrier.com>                       guiniol <gui-gui@netcourrier.com>                        # @guiniol
@@ -36,18 +37,21 @@ Ismaël Bouya <ismael.bouya@normalesup.org>                      Ismaël Bouya <
 Ivan Tham <pickfire@riseup.net>                                 Ivan Tham <pickfire@riseup.net>                          # @pickfire
 Jack Stratton <jack@phroa.net>                                  Jack Stratton <jack@phroa.net>                           # @phroa
 Johannes Weißl <jargon@molb.org>                                Johannes Weißl <jargon@molb.org>                         # @weisslj
+Jonathan Perkin <jperkin@netbsd.org>                            Jonathan Perkin <jperkin@netbsd.org>                     # @jperkin
 Joshua Jordi <dracogoyle@gmail.com>                             Jakkin <dracogoyle@gmail.com>                            # @JakkinStewart
 Joshua Jordi <dracogoyle@gmail.com>                             Joshua Jordi <JakkinStewart@users.noreply.github.com>    # @JakkinStewart
 Julian Andres Klode <jak@jak-linux.org>                         Julian Andres Klode <jak@jak-linux.org>                  # @julian-klode
 Karel Zak <kzak@redhat.com>                                     Karel Zak <kzak@redhat.com>                              # @karelzak
 Kevin Decherf <kevin@kdecherf.com>                              Kevin Decherf <kevin@kdecherf.com>                       # @kdecherf
 Kevin Velghe <kevin@paretje.be>                                 Kevin Velghe <kevin@paretje.be>                          # @paretje
+Manos Pitsidianakis <el13635@mail.ntua.gr>                      Manos Pitsidianakis <el13635@mail.ntua.gr>               # @epilys
 Marcin Rajner <mrajner@gik.pw.edu.pl>                           Marcin Rajner lenovo <mrajner@gik.pw.edu.pl>             # @mrajner
 Marco Hinz <mh.codebro@gmail.com>                               Marco Hinz <mh.codebro@gmail.com>                        # @mhinz
 Mehdi Abaakouk <sileht@sileht.net>                              Mehdi ABAAKOUK <sileht@sileht.net>                       # @sileht
 Mehdi Abaakouk <sileht@sileht.net>                              Mehdi Abaakouk <sileht@sileht.net>                       # @sileht
 Peter Hogg <pm@pig-monkey.com>                                  Pig Monkey <pm@pig-monkey.com>                           # @pigmonkey
 Peter Lewis <pete@muddygoat.org>                                Peter Lewis <pete@muddygoat.org>                         # @petelewis
+Phil Pennock <phil@pennock-tech.com>                            Phil Pennock <phil@pennock-tech.com>                     # @philpennock
 Pierre-Elliott Bécue <becue@crans.org>                          Pierre-Elliott Bécue <becue@crans.org>                   # @p-eb
 Pierre-Elliott Bécue <becue@crans.org>                          Pierre-Elliott Bécue <P-EB@users.noreply.github.com>     # @p-eb
 Pietro Cerutti <gahr@gahr.ch>                                   Pietro Cerutti <gahr@gahr.ch>                            # @gahr
@@ -62,9 +66,11 @@ Somini <somini29@yandex.com>                                    somini <somini@u
 Stefan Assmann <sassmann@kpanic.de>                             sassmann <sassmann@users.noreply.github.com>             # @sassmann
 Stefan Assmann <sassmann@kpanic.de>                             Stefan Assmann <sassmann@kpanic.de>                      # @sassmann
 Stefan Assmann <sassmann@kpanic.de>                             Stefan Assmann <sassmann@redhat.com>                     # @sassmann
+Stefan Bühler <stbuehler@web.de>                                Stefan Bühler <stbuehler@web.de>                         # @stbuehler
 Stephen Gilles <sgilles@math.umd.edu>                           S. Gilles <sgilles@math.umd.edu>                         #
 Steven Ragnarök <steven@nuclearsandwich.com>                    Steven! Ragnarök <steven@nuclearsandwich.com>            # @nuclearsandwich
 Thomas Adam <thomas@xteddy.org>                                 Thomas Adam <thomas@xteddy.org>                          # @ThomasAdam
+Thomas Klausner <wiz@netbsd.org>                                Thomas Klausner <wiz@netbsd.org>                         # @0-wiz-0
 Tobias Angele <toogley@mailbox.org>                             Tobias Angele <toogley@mailbox.org>                      # @toogley
 Tobias Angele <toogley@mailbox.org>                             toogley <toogley@mailbox.org>                            # @toogley
 Udo Schweigert <mutt@cert.siemens.de>                           Udo Schweigert <mutt@cert.siemens.de>                    #
@@ -338,4 +344,3 @@ Will Fiveash <will.fiveash@oracle.com>                          Will Fiveash <Wi
 Will Fiveash <will.fiveash@oracle.com>                          Will Fiveash <william.fiveash@sun.com>
 Wouter Verheijen <wv@xs2mail.com>                               Wouter Verheijen <wv@xs2mail.com>
 Yasuhiro Matsumoto <mattn_jp@hotmail.com>                       Yasuhiro Matsumoto <mattn_jp@hotmail.com>
-

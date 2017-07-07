@@ -943,8 +943,9 @@ static struct Body *sign_message(struct Body *a, int use_smime)
   t->disposition = DISPINLINE;
 
   mutt_generate_boundary(&t->parameter);
-  mutt_set_parameter("protocol", use_smime ? "application/pkcs7-signature" :
-                                             "application/pgp-signature",
+  mutt_set_parameter("protocol",
+                     use_smime ? "application/pkcs7-signature" :
+                                 "application/pgp-signature",
                      &t->parameter);
   /* Get the micalg from gpgme.  Old gpgme versions don't support this
      for S/MIME so we assume sha-1 in this case. */

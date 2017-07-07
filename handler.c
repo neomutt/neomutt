@@ -1087,7 +1087,7 @@ static int alternative_handler(struct Body *a, struct State *s)
   {
     char *c = NULL;
     int btlen; /* length of basetype */
-    bool wild;  /* do we have a wildcard to match all subtypes? */
+    bool wild; /* do we have a wildcard to match all subtypes? */
 
     c = strchr(t->data, '/');
     if (c)
@@ -1624,23 +1624,23 @@ void mutt_decode_attachment(struct Body *b, struct State *s)
   switch (b->encoding)
   {
     case ENCQUOTEDPRINTABLE:
-      decode_quoted(s, b->length, istext || ((WithCrypto & APPLICATION_PGP) &&
-                                             mutt_is_application_pgp(b)),
-                    cd);
+      decode_quoted(
+          s, b->length,
+          istext || ((WithCrypto & APPLICATION_PGP) && mutt_is_application_pgp(b)), cd);
       break;
     case ENCBASE64:
-      mutt_decode_base64(s, b->length, istext || ((WithCrypto & APPLICATION_PGP) &&
-                                                  mutt_is_application_pgp(b)),
-                         cd);
+      mutt_decode_base64(
+          s, b->length,
+          istext || ((WithCrypto & APPLICATION_PGP) && mutt_is_application_pgp(b)), cd);
       break;
     case ENCUUENCODED:
-      decode_uuencoded(s, b->length, istext || ((WithCrypto & APPLICATION_PGP) &&
-                                                mutt_is_application_pgp(b)),
-                       cd);
+      decode_uuencoded(
+          s, b->length,
+          istext || ((WithCrypto & APPLICATION_PGP) && mutt_is_application_pgp(b)), cd);
       break;
     default:
-      decode_xbit(s, b->length, istext || ((WithCrypto & APPLICATION_PGP) &&
-                                           mutt_is_application_pgp(b)),
+      decode_xbit(s, b->length,
+                  istext || ((WithCrypto & APPLICATION_PGP) && mutt_is_application_pgp(b)),
                   cd);
       break;
   }

@@ -2455,9 +2455,8 @@ int mutt_pager(const char *banner, const char *fname, int flags, struct Pager *e
           rd.SearchCompiled = 1;
           /* update the search pointers */
           i = 0;
-          while (display_line(rd.fp, &rd.last_pos, &rd.lineInfo, i, &rd.lastLine,
-                              &rd.maxLine, MUTT_SEARCH | (flags & MUTT_PAGER_NSKIP) |
-                                               (flags & MUTT_PAGER_NOWRAP),
+          while (display_line(rd.fp, &rd.last_pos, &rd.lineInfo, i, &rd.lastLine, &rd.maxLine,
+                              MUTT_SEARCH | (flags & MUTT_PAGER_NSKIP) | (flags & MUTT_PAGER_NOWRAP),
                               &rd.QuoteList, &rd.q_level, &rd.force_redraw,
                               &rd.SearchRE, rd.pager_window) == 0)
             i++;
@@ -2955,10 +2954,10 @@ int mutt_pager(const char *banner, const char *fname, int flags, struct Pager *e
           break;
         }
         CHECK_MODE(IsHeader(extra));
-        if (mutt_save_message(extra->hdr, (ch == OP_DECRYPT_SAVE) || (ch == OP_SAVE) ||
-                                              (ch == OP_DECODE_SAVE),
-                              (ch == OP_DECODE_SAVE) || (ch == OP_DECODE_COPY),
-                              (ch == OP_DECRYPT_SAVE) || (ch == OP_DECRYPT_COPY) || 0) == 0 &&
+        if (mutt_save_message(
+                extra->hdr, (ch == OP_DECRYPT_SAVE) || (ch == OP_SAVE) || (ch == OP_DECODE_SAVE),
+                (ch == OP_DECODE_SAVE) || (ch == OP_DECODE_COPY),
+                (ch == OP_DECRYPT_SAVE) || (ch == OP_DECRYPT_COPY) || 0) == 0 &&
             (ch == OP_SAVE || ch == OP_DECODE_SAVE || ch == OP_DECRYPT_SAVE))
         {
           if (option(OPTRESOLVE))

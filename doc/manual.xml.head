@@ -2898,7 +2898,7 @@ color sidebar_divider   color8  default
         <tgroup cols="1">
           <tbody>
             <row>
-              <entry>neomuttrc-20170609</entry>
+              <entry>neomuttrc-20170707</entry>
             </row>
             <row>
               <entry>neomuttrc</entry>
@@ -2942,7 +2942,7 @@ color sidebar_divider   color8  default
             </thead>
             <tbody>
               <row>
-                <entry>/etc/xdg/mutt/neomuttrc-20170609</entry>
+                <entry>/etc/xdg/mutt/neomuttrc-20170707</entry>
                 <entry>NeoMutt release version</entry>
               </row>
               <row>
@@ -2958,7 +2958,7 @@ color sidebar_divider   color8  default
                 <entry>Note the case of the filename</entry>
               </row>
               <row>
-                <entry>/etc/mutt/neomuttrc-20170609</entry>
+                <entry>/etc/mutt/neomuttrc-20170707</entry>
                 <entry>NeoMutt release version</entry>
               </row>
               <row>
@@ -2974,7 +2974,7 @@ color sidebar_divider   color8  default
                 <entry>Note the case of the filename</entry>
               </row>
               <row>
-                <entry>/usr/share/mutt/neomuttrc-20170609</entry>
+                <entry>/usr/share/mutt/neomuttrc-20170707</entry>
                 <entry>NeoMutt release version</entry>
               </row>
               <row>
@@ -3021,7 +3021,7 @@ color sidebar_divider   color8  default
             </thead>
             <tbody>
               <row>
-                <entry>~/.config/mutt/neomuttrc-20170609</entry>
+                <entry>~/.config/mutt/neomuttrc-20170707</entry>
                 <entry>NeoMutt release version</entry>
               </row>
               <row>
@@ -3035,7 +3035,7 @@ color sidebar_divider   color8  default
                 <entry>~/.config/mutt/muttrc</entry>
               </row>
               <row>
-                <entry>~/.neomuttrc-20170609</entry>
+                <entry>~/.neomuttrc-20170707</entry>
                 <entry>NeoMutt release version</entry>
               </row>
               <row>
@@ -3049,7 +3049,7 @@ color sidebar_divider   color8  default
                 <entry>~/.muttrc</entry>
               </row>
               <row>
-                <entry>~/.mutt/neomuttrc-20170609</entry>
+                <entry>~/.mutt/neomuttrc-20170707</entry>
                 <entry>NeoMutt release version</entry>
               </row>
               <row>

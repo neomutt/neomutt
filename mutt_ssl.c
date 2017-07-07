@@ -808,7 +808,8 @@ static int interactive_check_cert(X509 *cert, int idx, int len, SSL *ssl, int al
              x509_get_part(x509_issuer, part[u]));
 
   row++;
-  snprintf(menu->dialog[row++], SHORT_STRING, "%s", _("This certificate is valid"));
+  snprintf(menu->dialog[row++], SHORT_STRING, "%s",
+           _("This certificate is valid"));
   snprintf(menu->dialog[row++], SHORT_STRING, _("   from %s"),
            asn1time_to_string(X509_get_notBefore(cert)));
   snprintf(menu->dialog[row++], SHORT_STRING, _("     to %s"),

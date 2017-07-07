@@ -1,4 +1,4 @@
-		     USING PGP FROM WITHIN MUTT
+                     USING PGP FROM WITHIN MUTT
 
 
 WARNING: The configuration interface has completely changed as of
@@ -6,7 +6,7 @@ WARNING: The configuration interface has completely changed as of
 
 
 
-			    USERS' GUIDE
+                            USERS' GUIDE
 
 
 How do I use mutt with PGP, PGP5, or GnuPG?
@@ -40,7 +40,7 @@ The old way is to configure your mail filter so it fixes headers:
 Add the following lines to your ~/.procmailrc (you are
 using procmail, aren't you?):
 
-		   ------------------------------
+                   ------------------------------
 
 ##
 ## PGP
@@ -66,12 +66,12 @@ using procmail, aren't you?):
 }
 
 
-		   ------------------------------
+                   ------------------------------
 
 For users of maildrop, "Mark Weinem"
 <mark.weinem@unidui.uni-duisburg.de> suggests the following recipe:
 
-		   ------------------------------
+                   ------------------------------
 
 BPGPM="-----BEGIN PGP MESSAGE-----"
 EPGPM="-----END PGP MESSAGE-----"
@@ -79,18 +79,18 @@ BPGPS="-----BEGIN PGP SIGNATURE-----"
 EPGPS="-----END PGP SIGNATURE-----"
 
 if (!/^Content-Type: message/ && !/^Content-Type: multipart/ \
-	&& !/^Content-Type: application\/pgp/)
+        && !/^Content-Type: application\/pgp/)
 {
 if (/^$BPGPM/:b && /^$EPGPM/:b)
-	xfilter "reformail -A 'Content-Type: application/pgp; format=text; \
-		x-action=encrypt'"
+        xfilter "reformail -A 'Content-Type: application/pgp; format=text; \
+                x-action=encrypt'"
 
 if (/^$BPGPS/:b && /^$EPGPS/:b)
-	xfilter "reformail -A 'Content-Type: application/pgp; format=text; \
-		x-action=sign'"
+        xfilter "reformail -A 'Content-Type: application/pgp; format=text; \
+                x-action=sign'"
 }
 
-		   ------------------------------
+                   ------------------------------
 
 
 
@@ -107,8 +107,8 @@ The old answer to this question used to be this:
   this is actually one line):
 
   macro compose S "Fpgp +verbose=0 -fast
-  	+clearsig=on\ny^T^Uapplication/pgp; format=text;
-	x-action=sign\n"
+        +clearsig=on\ny^T^Uapplication/pgp; format=text;
+        x-action=sign\n"
 
 
 There's a new answer, though: Set the $pgp_autoinline
@@ -151,7 +151,7 @@ or exim.
 
 
 
-			     BACKGROUND
+                             BACKGROUND
 
 
 Auxiliary Programs
@@ -172,17 +172,17 @@ You'll need this program with PGP 2 and PGP 5.
 
 Command line options:
 
-	-k <key ring>	Dump the contents of the key ring specified
-			as an argument to -k.
+        -k <key ring>   Dump the contents of the key ring specified
+                        as an argument to -k.
 
-	-2, -5	 	Use the default key ring for PGP 2 or 5,
-			respectively.
+        -2, -5          Use the default key ring for PGP 2 or 5,
+                        respectively.
 
-	-s		Dump the secret key ring.
+        -s              Dump the secret key ring.
 
-	-S		Dump signatures.
+        -S              Dump signatures.
 
-	-f		Dump fingerprints.
+        -f              Dump fingerprints.
 
 
 
@@ -196,11 +196,11 @@ arguments.
 
 Example:
 
-	pgpewrap pgpe file -- -r a b c
+        pgpewrap pgpe file -- -r a b c
 
 will execute:
 
-	pgpe file -r a -r b -r c
+        pgpe file -r a -r b -r c
 
 This script is needed with PGP 5 and with GPG, since their command
 line interfaces can't be properly served by mutt's format mechanism.
@@ -214,57 +214,57 @@ As usual within mutt, the configuration interface for the PGP
 commands relies on printf-like formats.  For all PGP commands, the
 following %-sequences are defined.
 
-  %p	The empty string when no passphrase is needed,
-  	the string "PGPPASSFD=0" if one is needed.
+  %p    The empty string when no passphrase is needed,
+        the string "PGPPASSFD=0" if one is needed.
 
-	This is mostly used in conditional % sequences.
+        This is mostly used in conditional % sequences.
 
-  %f	Most PGP commands operate on a single file or a file
-  	containing a message.  %f expands to this file's name.
+  %f    Most PGP commands operate on a single file or a file
+        containing a message.  %f expands to this file's name.
 
-  %s	When verifying signatures, there is another temporary file
-	containing the detached signature.  %s expands to this
-	file's name.
+  %s    When verifying signatures, there is another temporary file
+        containing the detached signature.  %s expands to this
+        file's name.
 
-  %a	In "signing" contexts, this expands to the value of the
-	configuration variable $pgp_sign_as.  You probably need to
-	use this within a conditional % sequence.
+  %a    In "signing" contexts, this expands to the value of the
+        configuration variable $pgp_sign_as.  You probably need to
+        use this within a conditional % sequence.
 
-  %r	In many contexts, mutt passes key IDs to pgp.  %r expands to
-	a list of key IDs.
+  %r    In many contexts, mutt passes key IDs to pgp.  %r expands to
+        a list of key IDs.
 
 The following command formats are defined:
 
-  $pgp_decode_command	Decode application/pgp messages.  This
-  			command operates with and without pass phrases.
+  $pgp_decode_command   Decode application/pgp messages.  This
+                        command operates with and without pass phrases.
 
-  $pgp_verify_command	Verify a PGP/MIME signature.
+  $pgp_verify_command   Verify a PGP/MIME signature.
 
-  $pgp_decrypt_command	Decrypt a PGP/MIME encrypted MIME body.
-   			This command always gets a pass phrase.
+  $pgp_decrypt_command  Decrypt a PGP/MIME encrypted MIME body.
+                        This command always gets a pass phrase.
 
-  $pgp_sign_command	Sign a PGP/MIME body.  This command always
-  			gets a pass phrase.
+  $pgp_sign_command     Sign a PGP/MIME body.  This command always
+                        gets a pass phrase.
 
 
   $pgp_encrypt_sign_command Encrypt and sign a MIME body.  This
-  			command always gets a pass phrase.
+                        command always gets a pass phrase.
 
   $pgp_encrypt_only_command Encrypt a MIME body, but don't sign it.
 
-  $pgp_import_command	Import PGP keys from a file.
+  $pgp_import_command   Import PGP keys from a file.
 
-  $pgp_export_command	Export PGP keys to a file.  The output must
-  			be ASCII armored.
+  $pgp_export_command   Export PGP keys to a file.  The output must
+                        be ASCII armored.
 
   $pgp_verify_key_command Check a public key. This is used from the
-  			key selection menu.
+                        key selection menu.
 
   $pgp_list_secring_command List the secret keys matching some hints
-  			given in %r.
+                        given in %r.
 
   $pgp_list_pubring_command List the public keys matching some hints
-  			given in %r.
+                        given in %r.
 
 The passphrase is always passed on stdin; all commands must send
 their output to stdout and stderr.
