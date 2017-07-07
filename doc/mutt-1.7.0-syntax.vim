@@ -644,7 +644,7 @@ hi def link muttrcAddrDef		muttrcGroupFlag
 hi def link muttrcRXDef		muttrcGroupFlag
 hi def link muttrcRXPat		String
 hi def link muttrcAliasGroupName	Macro
-hi def link muttrcAliasKey	        Identifier
+hi def link muttrcAliasKey		Identifier
 hi def link muttrcUnAliasKey	Identifier
 hi def link muttrcAliasEncEmail	Identifier
 hi def link muttrcAliasParens	Type

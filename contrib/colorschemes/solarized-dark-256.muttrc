@@ -24,16 +24,16 @@
 # base03, bg, black, any of the non brights
 
 # basic colors ---------------------------------------------------------
-color normal        color241        color234        
-color error         color160        color234        
-color tilde         color235        color234        
-color message       color37         color234        
-color markers       color160        color254        
-color attachment    color254        color234        
-color search        color61         color234        
-#color status        J_black         J_status        
-color status        color241        color235        
-color indicator     color234        color136        
+color normal        color241        color234
+color error         color160        color234
+color tilde         color235        color234
+color message       color37         color234
+color markers       color160        color254
+color attachment    color254        color234
+color search        color61         color234
+#color status        J_black         J_status
+color status        color241        color235
+color indicator     color234        color136
 color tree          color136        color234                                    # arrow in threads
 
 # basic monocolor screen
@@ -88,22 +88,22 @@ color index         color136        color160        "~v~(~D)"                   
 # message headers ------------------------------------------------------
 
 #color header        color240        color234        "^"
-color hdrdefault    color240        color234        
+color hdrdefault    color240        color234
 color header        color241        color234        "^(From)"
 color header        color33         color234        "^(Subject)"
 
 # body -----------------------------------------------------------------
 
-color quoted        color33         color234        
-color quoted1       color37         color234        
-color quoted2       color136        color234        
-color quoted3       color160        color234        
-color quoted4       color166        color234        
+color quoted        color33         color234
+color quoted1       color37         color234
+color quoted2       color136        color234
+color quoted3       color160        color234
+color quoted4       color166        color234
 
-color signature     color240        color234        
-color bold          color235        color234        
-color underline     color235        color234        
-color normal        color244        color234        
+color signature     color240        color234
+color bold          color235        color234
+color underline     color235        color234
+color normal        color244        color234
 #
 color body          color245        color234        "[;:][-o][)/(|]"    # emoticons
 color body          color245        color234        "[;:][)(|]"         # emoticons
