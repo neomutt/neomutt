@@ -1,3 +1,88 @@
+2017-07-07  Richard Russon  <rich@flatcap.org>
+* Features
+  - Support Gmail's X-GM-RAW server-side search
+  - Include pattern for broken threads
+  - Allow sourcing of multiple files
+* Contrib
+  - vombatidae colorscheme
+  - zenburn colorscheme
+  - black 256 solarized colorscheme
+  - neonwolf colorscheme
+  - Mutt logos
+* Bug Fixes
+  - flags: update the hdr message last
+  - gpgme S/MIME non-detached signature handling
+  - menu: the thread tree color
+  - Uses CurrentFolder to populate LastDir with IMAP
+  - stabilise sidebar sort order
+  - colour emails with a '+' in them
+  - the padding expando '%>'
+  - Do not set old flag if mark_old is false
+  - maildir creation
+  - Decode CRLF line endings to LF when copying headers
+  - score address pattern do not match personal name
+  - open attachments in read-only mode
+  - Add Cc, In-Reply-To, and References to default mailto_allow
+  - Improve search for mime.types
+* Translations
+  - Update Chinese (Simplified) translation
+* Coverity defects
+  - dodgy buffers
+  - leaks in lua get/set options
+  - some resource leaks
+* Docs
+  - update credits
+  - limitations of new-mail %f expando
+  - escape <>'s in nested conditions
+  - add code of conduct
+  - fix ifdef examples
+  - update mailmap
+  - Update modify-labels-then-hide
+  - fix mailmap
+  - drop UPDATING files
+* Website
+  - Changes pages (diff)
+  - Update Arch distro page
+  - Update NixOS distro page
+  - Add new Exherbo distro page
+  - Update translation hi-score table
+  - Update code of conduct
+  - Update Newbies page
+  - Add page about Rebuilding the Documentation
+  - Add page of hard problems
+* Build
+  - remove unnecessary steps
+  - drop instdoc script
+  - move smime_keys into contrib
+  - fixes for Solaris
+  - don't delete non-existent files
+  - remove another reference to devel-notes.txt
+  - Handle native Solaris GSSAPI.
+  - drop configure options --enable-exact-address
+  - drop configure option --with-exec-shell
+  - drop configure option --enable-nfs-fix
+  - drop configure option --disable-warnings
+  - Completely remove dotlock
+  - More sophisticated check for BDB version + support for DB6 (non default)
+* Tidy
+  - drop VirtIncoming
+  - split mutt_parse_mailboxes into mutt_parse_unmailboxes
+  - tidy some buffy code
+  - tidy the version strings
+* Upstream
+  - Add ~<() and ~>() immediate parent/children patterns
+  - Add L10N comments to the GNUTLS certificate prompt
+  - Add more description for the %S and %Z $index_format characters
+  - Add config vars for forwarded message attribution intro/trailer
+  - Block SIGWINCH during connect()
+  - Improve the L10N comment about Sign as
+  - Auto-pad translation for the GPGME key selection "verify key" headers
+  - Enable all header fields in the compose menu to be translated
+  - Force hard redraw after $sendmail instead of calling mutt_endwin
+  - Make GPGME key selection behavior the same as classic-PGP
+  - Rename 'sign as' to 'Sign as'; makes compose menu more consistent
+  - Change the compose menu fields to be dynamically padded
+
 2017-06-09  Richard Russon  <rich@flatcap.org>
 * Contrib
   - unbind mappings before overwriting in vim-keys
