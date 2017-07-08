@@ -555,8 +555,10 @@ int mutt_parse_mailboxes(struct Buffer *path, struct Buffer *s,
       }
     }
 
-    if (!*b)
-      *b = buffy_new(buf);
+    if (*b)
+      continue;
+
+    *b = buffy_new(buf);
 
     (*b)->new = false;
     (*b)->notified = true;
