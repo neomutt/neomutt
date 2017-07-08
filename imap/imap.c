@@ -1965,9 +1965,9 @@ fail:
 
 /* trim dest to the length of the longest prefix it shares with src,
  * returning the length of the trimmed string */
-static int longest_common_prefix(char *dest, const char *src, int start, size_t dlen)
+static size_t longest_common_prefix(char *dest, const char *src, size_t start, size_t dlen)
 {
-  int pos = start;
+  size_t pos = start;
 
   while (pos < dlen && dest[pos] && dest[pos] == src[pos])
     pos++;
@@ -1983,7 +1983,7 @@ static int imap_complete_hosts(char *dest, size_t len)
   struct Buffy *mailbox = NULL;
   struct Connection *conn = NULL;
   int rc = -1;
-  int matchlen;
+  size_t matchlen;
 
   matchlen = mutt_strlen(dest);
   for (mailbox = Incoming; mailbox; mailbox = mailbox->next)
@@ -2037,7 +2037,8 @@ int imap_complete(char *dest, size_t dlen, char *path)
   char buf[LONG_STRING];
   struct ImapList listresp;
   char completion[LONG_STRING];
-  int clen, matchlen = 0;
+  int clen;
+  size_t matchlen = 0;
   int completions = 0;
   struct ImapMbox mx;
   int rc;
