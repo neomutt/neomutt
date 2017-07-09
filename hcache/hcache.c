@@ -607,8 +607,9 @@ static const char *hcache_per_folder(const char *path, const char *folder, hcach
   else
   {
     unsigned char m[16]; /* binary md5sum */
-    char name[33];
-    md5_buffer(folder, strlen(folder), &m);
+    char name[_POSIX_PATH_MAX];
+    snprintf(name, sizeof(name), "%s|%s", hcache_get_ops()->name, folder);
+    md5_buffer(name, strlen(name), &m);
     snprintf(name, sizeof(name),
              "%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x",
              m[0], m[1], m[2], m[3], m[4], m[5], m[6], m[7], m[8], m[9], m[10],
