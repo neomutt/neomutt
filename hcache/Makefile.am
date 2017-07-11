@@ -44,7 +44,14 @@ BUILT_SOURCES = $(HCVERSION)
 $(top_srcdir)/keymap_defs.h:
 	+$(MAKE) -C $(top_srcdir) keymap_defs.h
 
-hcversion.h: $(top_srcdir)/mutt.h $(top_srcdir)/rfc822.h $(srcdir)/hcachever.sh ../$(MUTT_MD5)
-	( echo '#include "config.h"'; echo '#include "mutt.h"'; ) \
-	| $(CPP) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) - | sh $(srcdir)/hcachever.sh hcversion.h
+hcversion.h: $(top_srcdir)/mutt.h $(top_srcdir)/address.h $(top_srcdir)/list.h \
+		$(top_srcdir)/buffer.h $(top_srcdir)/parameter.h \
+		$(top_srcdir)/body.h $(top_srcdir)/envelope.h \
+		$(top_srcdir)/header.h $(srcdir)/hcachever.sh ../$(MUTT_MD5)
+	( echo '#include "config.h"'; echo '#include "mutt.h"'; \
+	echo '#include "address.h"'; echo '#include "list.h"'; \
+	echo '#include "buffer.h"'; echo '#include "parameter.h"'; \
+	echo '#include "body.h"'; echo '#include "envelope.h"'; \
+	echo '#include "header.h"'; \
+	) | $(CPP) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) - | sh $(srcdir)/hcachever.sh hcversion.h
 

@@ -3,7 +3,7 @@
 BASEVERSION=2
 
 cleanstruct () {
-  echo "$1" | sed -e 's/} *//' -e 's/;$//'
+  echo "$1" | sed -e 's/.* //'
 }
 
 cleanbody () {
@@ -19,6 +19,8 @@ getstruct () {
     *';') return ;;
   esac
 
+  STRUCT=`cleanstruct "$1"`
+
   while read line
   do
     if test $inbody -eq 0
@@ -30,13 +32,7 @@ getstruct () {
     fi
 
     case "$line" in
-      '} '*)
-        STRUCT=`cleanstruct "$line"`
-        break
-      ;;
-      '}')
-        read line
-        STRUCT=`cleanstruct "$line"`
+      '};'*)
         break
       ;;
       '#'*) continue ;;
@@ -50,7 +46,7 @@ getstruct () {
   done
 
   case $STRUCT in
-    ADDRESS|LIST|BUFFER|PARAMETER|BODY|ENVELOPE|HEADER)
+    Address|List|Buffer|Parameter|Body|Envelope|Header)
       BODY=`cleanbody "$BODY"`
       echo "$STRUCT: $BODY"
     ;;
@@ -67,7 +63,7 @@ echo "/* base version: $BASEVERSION" > $TMPD
 while read line
 do
   case "$line" in
-    'typedef struct'*)
+    'struct'*)
        STRUCT=`getstruct "$line"`
        if test -n "$STRUCT"
        then
