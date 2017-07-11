@@ -162,3 +162,10 @@ uninstall-local:
 		rm $(DESTDIR)$(sysconfdir)/$${i}.dist; \
 	done
 
+distclean-local:
+	rm -fr html
+
+html:
+	doxygen doxygen/doxygen.conf
+
+.PHONY: html
