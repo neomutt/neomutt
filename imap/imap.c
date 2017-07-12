@@ -1627,8 +1627,11 @@ int imap_status (char* path, int queue)
   if (imap_get_mailbox (path, &idata, buf, sizeof (buf)) < 0)
     return -1;
 
-  if (!imap_mxcmp (buf, idata->mailbox))
-    /* We are in the folder we're polling - just return the mailbox count */
+  /* We are in the folder we're polling - just return the mailbox count.
+   *
+   * Note that imap_mxcmp() converts NULL to "INBOX", so we need to
+   * make sure the idata really is open to a folder. */
+  if (idata->ctx && !imap_mxcmp (buf, idata->mailbox))
     return idata->ctx->msgcount;
   else if (mutt_bit_isset(idata->capabilities,IMAP4REV1) ||
 	   mutt_bit_isset(idata->capabilities,STATUS))
