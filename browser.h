@@ -1,6 +1,11 @@
 /**
+ * @file
+ * GUI component for displaying/selecting items from a list
+ *
+ * @authors
  * Copyright (C) 1996-2000 Michael R. Elkins <me@mutt.org>
  *
+ * @copyright
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 2 of the License, or (at your option) any later
@@ -16,7 +21,7 @@
  */
 
 #ifndef _MUTT_BROWSER_H
-#define _MUTT_BROWSER_H 1
+#define _MUTT_BROWSER_H
 
 #include <stdbool.h>
 #include <sys/types.h>

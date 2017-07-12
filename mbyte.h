@@ -1,4 +1,9 @@
 /**
+ * @file
+ * Convert strings between multibyte and utf8 encodings
+ *
+ * @authors
+ * @copyright
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 2 of the License, or (at your option) any later
@@ -14,7 +19,7 @@
  */
 
 #ifndef _MUTT_MBYTE_H
-#define _MUTT_MBYTE_H 1
+#define _MUTT_MBYTE_H
 
 #include <stdbool.h>
 #include <stddef.h>

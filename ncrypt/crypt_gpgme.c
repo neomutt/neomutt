@@ -1,4 +1,8 @@
 /**
+ * @file
+ * Wrapper for PGP/SMIME calls to GPGME
+ *
+ * @authors
  * Copyright (C) 1996-1997,2007 Michael R. Elkins <me@cs.hmc.edu>
  * Copyright (C) 1998-2000 Thomas Roessler <roessler@does-not-exist.org>
  * Copyright (C) 2001 Thomas Roessler <roessler@does-not-exist.org>
@@ -6,6 +10,7 @@
  * Copyright (C) 2002-2004 g10 Code GmbH
  * Copyright (C) 2010,2012-2013 Michael R. Elkins <me@sigpipe.org>
  *
+ * @copyright
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 2 of the License, or (at your option) any later

@@ -1,6 +1,11 @@
 /**
+ * @file
+ * Account object used by POP and IMAP
+ *
+ * @authors
  * Copyright (C) 2000-2007,2012 Brendan Cully <brendan@kublai.com>
  *
+ * @copyright
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 2 of the License, or (at your option) any later
@@ -18,7 +23,7 @@
 /* remote host account manipulation (POP/IMAP) */
 
 #ifndef _MUTT_ACCOUNT_H
-#define _MUTT_ACCOUNT_H 1
+#define _MUTT_ACCOUNT_H
 
 struct CissUrl;
 

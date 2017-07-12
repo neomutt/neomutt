@@ -1,8 +1,13 @@
 /**
+ * @file
+ * Usenet network mailbox type; talk to an NNTP server
+ *
+ * @authors
  * Copyright (C) 1998 Brandon Long <blong@fiction.net>
  * Copyright (C) 1999 Andrej Gritsenko <andrej@lucky.net>
  * Copyright (C) 2000-2017 Vsevolod Volkov <vvv@mutt.org.ua>
  *
+ * @copyright
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 2 of the License, or (at your option) any later

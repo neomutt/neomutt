@@ -1,7 +1,12 @@
 /**
+ * @file
+ * IMAP network mailbox
+ *
+ * @authors
  * Copyright (C) 1996-1998 Michael R. Elkins <me@mutt.org>
  * Copyright (C) 2000-2007 Brendan Cully <brendan@kublai.com>
  *
+ * @copyright
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 2 of the License, or (at your option) any later
@@ -17,7 +22,7 @@
  */
 
 #ifndef _MUTT_IMAP_H
-#define _MUTT_IMAP_H 1
+#define _MUTT_IMAP_H
 
 #include <stddef.h>
 #include <sys/types.h>

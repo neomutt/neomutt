@@ -1,4 +1,7 @@
 /**
+ * @file
+ * Calculate the SHA1 checksum of a buffer
+ *
  * SHA-1 in C
  *
  * By Steve Reid <steve@edmweb.com>, with small changes to make it

@@ -1,4 +1,7 @@
 /**
+ * @file
+ * Standalone tool to manipulate a program's command line
+ *
  * C version by Wessel Dankers <wsl@fruit.eu.org>
  *
  * This code is in the public domain.

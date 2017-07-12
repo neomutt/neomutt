@@ -1,8 +1,13 @@
 /**
+ * @file
+ * Low-level socket handling
+ *
+ * @authors
  * Copyright (C) 1998,2000 Michael R. Elkins <me@mutt.org>
  * Copyright (C) 1999-2006,2008 Brendan Cully <brendan@kublai.com>
  * Copyright (C) 1999-2000 Tommi Komulainen <Tommi.Komulainen@iki.fi>
  *
+ * @copyright
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 2 of the License, or (at your option) any later

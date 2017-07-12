@@ -1,6 +1,11 @@
 /**
+ * @file
+ * Constants/structs for handling (lists of) regular expressions
+ *
+ * @authors
  * Copyright (C) 1996-2000 Michael R. Elkins <me@mutt.org>
  *
+ * @copyright
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 2 of the License, or (at your option) any later
@@ -20,7 +25,7 @@
  */
 
 #ifndef _MUTT_REGEX_H
-#define _MUTT_REGEX_H 1
+#define _MUTT_REGEX_H
 
 #include <regex.h>
 #include "where.h"

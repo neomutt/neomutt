@@ -1,6 +1,11 @@
 /**
+ * @file
+ * Hash table data structure
+ *
+ * @authors
  * Copyright (C) 1996-2009 Michael R. Elkins <me@mutt.org>
  *
+ * @copyright
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 2 of the License, or (at your option) any later
@@ -16,7 +21,7 @@
  */
 
 #ifndef _MUTT_HASH_H
-#define _MUTT_HASH_H 1
+#define _MUTT_HASH_H
 
 #include <stdbool.h>
 

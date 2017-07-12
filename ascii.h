@@ -1,6 +1,11 @@
 /**
+ * @file
+ * ASCII string comparison routines
+ *
+ * @authors
  * Copyright (C) 2001-2002 Thomas Roessler <roessler@does-not-exist.org>
  *
+ * @copyright
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 2 of the License, or (at your option) any later
@@ -21,7 +26,7 @@
  */
 
 #ifndef _MUTT_ASCII_H
-#define _MUTT_ASCII_H 1
+#define _MUTT_ASCII_H
 
 #include <ctype.h>
 

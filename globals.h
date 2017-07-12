@@ -1,6 +1,11 @@
 /**
+ * @file
+ * Hundreds of global variables to back the user variables
+ *
+ * @authors
  * Copyright (C) 1996-2002,2010,2016 Michael R. Elkins <me@mutt.org>
  *
+ * @copyright
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 2 of the License, or (at your option) any later
@@ -16,7 +21,7 @@
  */
 
 #ifndef _MUTT_GLOBALS_H
-#define _MUTT_GLOBALS_H 1
+#define _MUTT_GLOBALS_H
 
 #include <signal.h>
 #include "lib.h"
