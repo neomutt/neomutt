@@ -29,7 +29,9 @@
 #include "address.h"
 #include "lib.h"
 
-/* possible values for RFC822Error */
+/**
+ * enum AddressError - possible values for RFC822Error
+ */
 enum AddressError
 {
   ERR_MEMORY = 1,

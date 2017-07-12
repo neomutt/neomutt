@@ -23,10 +23,13 @@
 #ifndef _MUTT_MBYTE_TABLE_H
 #define _MUTT_MBYTE_TABLE_H
 
-/* multibyte character table.
+/**
+ * struct MbCharTable - multibyte character table
+ *
  * Allows for direct access to the individual multibyte characters in a
  * string.  This is used for the Flagchars, Fromchars, StChars and Tochars
- * option types. */
+ * option types.
+ */
 struct MbCharTable
 {
   int len;             /**< number of characters */

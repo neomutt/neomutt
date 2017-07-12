@@ -39,7 +39,9 @@
 #include "options.h"
 #include "protos.h"
 
-/* redraw flags for mutt_enter_string() */
+/**
+ * enum RedrawFlags - redraw flags for mutt_enter_string()
+ */
 enum RedrawFlags
 {
   MUTT_REDRAW_INIT = 1, /**< go to end of line and redraw */

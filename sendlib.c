@@ -222,6 +222,9 @@ static void encode_quoted(FGETCONV *fc, FILE *fout, int istext)
   }
 }
 
+/**
+ * struct B64Context - Cursor for the Base64 conversion
+ */
 struct B64Context
 {
   char buffer[3];
@@ -514,6 +517,9 @@ void mutt_generate_boundary(struct Parameter **parm)
   mutt_set_parameter("boundary", rs, parm);
 }
 
+/**
+ * struct ContentState - Info about the body of an email
+ */
 struct ContentState
 {
   int from;

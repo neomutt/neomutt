@@ -23,6 +23,9 @@
 #ifndef _MUTT_HISTORY_H
 #define _MUTT_HISTORY_H
 
+/**
+ * enum HistoryClass - Type to differentiate different histories
+ */
 enum HistoryClass
 {
   HC_CMD,

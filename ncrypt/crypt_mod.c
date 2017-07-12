@@ -24,7 +24,11 @@
 #include "crypt_mod.h"
 #include "lib.h"
 
-/* A type of a variable to keep track of registered crypto modules. */
+/**
+ * struct CryptModule - A crypto plugin module
+ *
+ * A type of a variable to keep track of registered crypto modules.
+ */
 struct CryptModule
 {
   crypt_module_specs_t specs;

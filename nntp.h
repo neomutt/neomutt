@@ -51,6 +51,9 @@ struct Context;
 #define anum_t uint32_t
 #define ANUM "%u"
 
+/**
+ * enum NntpStatus - NNTP server return values
+ */
 enum NntpStatus
 {
   NNTP_NONE = 0,
@@ -58,6 +61,9 @@ enum NntpStatus
   NNTP_BYE
 };
 
+/**
+ * struct NntpServer - NNTP-specific server data
+ */
 struct NntpServer
 {
   bool hasCAPABILITIES : 1;
@@ -88,18 +94,27 @@ struct NntpServer
   struct Connection *conn;
 };
 
+/**
+ * struct NewsrcEntry - An entry in a .newsrc (subscribed newsgroups)
+ */
 struct NewsrcEntry
 {
   anum_t first;
   anum_t last;
 };
 
+/**
+ * struct NntpAcache - NNTP article cache
+ */
 struct NntpAcache
 {
   unsigned int index;
   char *path;
 };
 
+/**
+ * struct NntpData - NNTP-specific server data
+ */
 struct NntpData
 {
   char *group;
@@ -120,6 +135,9 @@ struct NntpData
   struct BodyCache *bcache;
 };
 
+/**
+ * struct NntpHeaderData - NNTP-specific header data
+ */
 struct NntpHeaderData
 {
   anum_t article_num;

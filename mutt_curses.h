@@ -102,6 +102,9 @@ void mutt_curs_set(int cursor);
 #define CI_is_return(c) ((c) == '\r' || (c) == '\n')
 #endif
 
+/**
+ * struct Event - An event such as a keypress
+ */
 struct Event
 {
   int ch; /**< raw key pressed */
@@ -126,6 +129,9 @@ void mutt_need_hard_redraw(void);
  * Support for color
  */
 
+/**
+ * enum ColorId - List of all colored objects
+ */
 enum ColorId
 {
   MT_COLOR_HDEFAULT = 0,
@@ -182,6 +188,9 @@ enum ColorId
   MT_COLOR_MAX
 };
 
+/**
+ * struct ColorLine - A regular expression and a color to highlight a line
+ */
 struct ColorLine
 {
   regex_t rx;
@@ -198,6 +207,9 @@ struct ColorLine
 #define MUTT_PROGRESS_SIZE (1 << 0) /**< traffic-based progress */
 #define MUTT_PROGRESS_MSG  (1 << 1) /**< message-based progress */
 
+/**
+ * struct Progress - A progress bar
+ */
 struct Progress
 {
   unsigned short inc;
@@ -216,7 +228,11 @@ void mutt_progress_init(struct Progress *progress, const char *msg,
  * was initialized with positive size, otherwise no percentage is shown */
 void mutt_progress_update(struct Progress *progress, long pos, int percent);
 
-/* Windows for different parts of the screen */
+/**
+ * struct MuttWindow - A division of the screen
+ *
+ * Windows for different parts of the screen
+ */
 struct MuttWindow
 {
   int rows;

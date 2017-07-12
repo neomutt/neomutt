@@ -32,6 +32,9 @@ struct Buffer;
 #define MUTT_GROUP   0
 #define MUTT_UNGROUP 1
 
+/**
+ * struct Group - A set of email addresses
+ */
 struct Group
 {
   struct Address *as;
@@ -39,6 +42,9 @@ struct Group
   char *name;
 };
 
+/**
+ * struct GroupContext - A set of Groups
+ */
 struct GroupContext
 {
   struct Group *g;

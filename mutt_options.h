@@ -51,12 +51,15 @@ struct Buffer;
 #define DT_SORT_AUX     0x80
 #define DT_SORT_SIDEBAR 0x100
 
+/**
+ * struct Option - Definition of a user-variable
+ */
 struct Option
 {
-  const char *option;
-  short type;
-  short flags;
-  unsigned long data;
+  const char *option; /**< user-visible name */
+  short type;         /**< varible type, e.g. *DT_STR */
+  short flags;        /**< notification flags, e.g. R_PAGER */
+  unsigned long data; /**< pointer to the global variable */
   unsigned long init; /**< initial value */
 };
 

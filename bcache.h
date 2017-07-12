@@ -61,7 +61,7 @@ FILE *mutt_bcache_get(struct BodyCache *bcache, const char *id);
  * mutt_bcache_put - Create a file in the Body Cache
  * @param bcache Body Cache from mutt_bcache_open()
  * @param id     Per-mailbox unique identifier for the message
- * @param tmp    Returned FILE* is in a temporary location.
+ * @param tmp    Returned FILE* is in a temporary location
  *               If set, use mutt_bcache_commit to put it into place
  * @return FILE* on success, NULL on failure
  */

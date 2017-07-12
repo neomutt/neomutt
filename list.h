@@ -25,6 +25,9 @@
 
 #include "lib.h"
 
+/**
+ * struct List - Singly-linked List type
+ */
 struct List
 {
   char *data;

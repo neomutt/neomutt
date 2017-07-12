@@ -33,6 +33,9 @@ struct Buffer;
 struct Header;
 struct Context;
 
+/**
+ * struct Pattern - A simple (non-regex) pattern
+ */
 struct Pattern
 {
   short op;
@@ -53,12 +56,18 @@ struct Pattern
   } p;
 };
 
+/**
+ * enum PatternExecFlag - Flags for mutt_pattern_exec()
+ */
 enum PatternExecFlag
 {
   MUTT_MATCH_FULL_ADDRESS = 1
 };
 
-/* This is used when a message is repeatedly pattern matched against.
+/**
+ * struct PatternCache - Cache commonly-used patterns
+ *
+ * This is used when a message is repeatedly pattern matched against.
  * e.g. for color, scoring, hooks.  It caches a few of the potentially slow
  * operations.
  * Each entry has a value of 0 = unset, 1 = false, 2 = true

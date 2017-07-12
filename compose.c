@@ -76,7 +76,9 @@ static const char *There_are_no_attachments = N_("There are no attachments.");
     break;                                                                     \
   }
 
-
+/**
+ * enum HeaderField - Ordered list of headers for the compose screen
+ */
 enum HeaderField
 {
   HDR_FROM = 0,
@@ -526,6 +528,9 @@ static void update_idx(struct Menu *menu, struct AttachPtr **idx, short idxlen)
   return;
 }
 
+/**
+ * struct ComposeRedrawData - Keep track when the compose screen needs redrawing
+ */
 struct ComposeRedrawData
 {
   struct Header *msg;

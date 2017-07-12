@@ -75,6 +75,9 @@ struct HeaderCache
   void *ctx;
 };
 
+/**
+ * union Validate - Header cache validity
+ */
 union Validate {
   struct timeval timeval;
   unsigned int uidvalidity;

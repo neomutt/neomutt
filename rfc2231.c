@@ -45,6 +45,9 @@
 #include "protos.h"
 #include "rfc2047.h"
 
+/**
+ * struct Rfc2231Parameter - MIME section parameter
+ */
 struct Rfc2231Parameter
 {
   char *attribute;

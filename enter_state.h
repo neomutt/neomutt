@@ -26,6 +26,9 @@
 #include <stddef.h>
 #include "lib.h"
 
+/**
+ * struct EnterState - Keep our place when entering a string
+ */
 struct EnterState
 {
   wchar_t *wbuf;

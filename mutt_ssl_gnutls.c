@@ -84,7 +84,9 @@ typedef gnutls_transport_ptr gnutls_transport_ptr_t;
 typedef gnutls_x509_crt gnutls_x509_crt_t;
 #endif
 
-
+/**
+ * struct TlsSockData - TLS socket data
+ */
 typedef struct TlsSockData
 {
   gnutls_session_t state;
@@ -514,7 +516,7 @@ static char *tls_make_date(time_t t, char *s, size_t len)
 }
 
 /**
- * tls_check_one_certificate - 
+ * tls_check_one_certificate - Check a GnuTLS certificate
  * @param certdata List of GnuTLS certificates
  * @param certstat GnuTLS certificate status
  * @param hostname Hostname

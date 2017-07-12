@@ -25,11 +25,17 @@
 
 #include <stdbool.h>
 
+/**
+ * union HashKey - The data item stored in a HashElem
+ */
 union HashKey {
   const char *strkey;
   unsigned int intkey;
 };
 
+/**
+ * struct HashElem - The item stored in a Hash Table
+ */
 struct HashElem
 {
   union HashKey key;
@@ -37,6 +43,9 @@ struct HashElem
   struct HashElem *next;
 };
 
+/**
+ * struct Hash - A Hash Table
+ */
 struct Hash
 {
   int nelem;
@@ -71,6 +80,9 @@ void int_hash_delete(struct Hash *table, unsigned int intkey, const void *data,
 
 void hash_destroy(struct Hash **ptr, void (*destroy)(void *));
 
+/**
+ * struct HashWalkState - Cursor to iterate through a Hash Table
+ */
 struct HashWalkState
 {
   int index;

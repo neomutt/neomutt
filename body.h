@@ -27,6 +27,9 @@
 #include <time.h>
 #include <sys/types.h>
 
+/**
+ * struct Body - The body of an email
+ */
 struct Body
 {
   char *xtype;                  /**< content-type if x-unknown */

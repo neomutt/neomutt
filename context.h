@@ -28,7 +28,9 @@
 #include <sys/types.h>
 #include <time.h>
 
-/* ACL Rights */
+/**
+ * enum AclRights - ACL Rights
+ */
 enum AclRights
 {
   MUTT_ACL_LOOKUP = 0,
@@ -46,6 +48,9 @@ enum AclRights
   RIGHTSMAX
 };
 
+/**
+ * struct Context - The "current" mailbox
+ */
 struct Context
 {
   char *path;

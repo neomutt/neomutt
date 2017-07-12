@@ -35,7 +35,11 @@
 
 typedef uint32_t md5_uint32;
 
-/* Structure to save state of computation between the single steps.  */
+/**
+ * struct Md5Ctx - Cursor for the MD5 hashing
+ *
+ * Structure to save state of computation between the single steps.
+ */
 struct Md5Ctx
 {
   md5_uint32 A;

@@ -26,6 +26,9 @@
 #include <stdbool.h>
 #include "lib.h"
 
+/**
+ * struct Envelope - The header of an email
+ */
 struct Envelope
 {
   struct Address *return_path;

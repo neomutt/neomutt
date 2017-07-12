@@ -65,6 +65,9 @@ static int ColorQuoteSize;
 
 #define COLOR_DEFAULT (-2)
 
+/**
+ * struct ColorList - A set of colors
+ */
 struct ColorList
 {
   short fg;

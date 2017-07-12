@@ -30,6 +30,9 @@
 #include <time.h>
 #include "lib.h"
 
+/**
+ * struct PgpSignature - PGP Signature
+ */
 struct PgpSignature
 {
   struct PgpSignature *next;
@@ -38,6 +41,9 @@ struct PgpSignature
   unsigned long sid2;
 };
 
+/**
+ * struct PgpUid - PGP User ID
+ */
 struct PgpUid
 {
   char *addr;
@@ -48,6 +54,9 @@ struct PgpUid
   struct PgpSignature *sigs;
 };
 
+/**
+ * struct PgpKeyInfo - Information about a PGP key
+ */
 struct PgpKeyInfo
 {
   char *keyid;

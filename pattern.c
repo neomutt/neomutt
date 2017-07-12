@@ -68,7 +68,9 @@
 #include "mutt_notmuch.h"
 #endif
 
-/* Error codes for eat_range_by_regexp */
+/**
+ * enum EatRangeError - Error codes for eat_range_by_regexp()
+ */
 enum EatRangeError
 {
   RANGE_E_OK,
@@ -219,6 +221,9 @@ static const char *get_date(const char *s, struct tm *t, struct Buffer *err)
 
 #define RANGE_RX_GROUPS 5
 
+/**
+ * struct RangeRegex - Regular expression representing a range
+ */
 struct RangeRegex
 {
   const char *raw; /**< regexp as string */
@@ -228,6 +233,9 @@ struct RangeRegex
   regex_t cooked;  /**< compiled form */
 };
 
+/**
+ * enum RangeType - Type of range
+ */
 enum RangeType
 {
   RANGE_K_REL,
@@ -270,7 +278,9 @@ static struct RangeRegex range_regexps[] = {
 #define RANGE_LT '<'
 #define RANGE_GT '>'
 
-/* range sides: left or right */
+/**
+ * enum RangeSide - Which side of the range
+ */
 enum RangeSide
 {
   RANGE_S_LEFT,
@@ -804,6 +814,9 @@ static bool eat_message_range(struct Pattern *pat, struct Buffer *s, struct Buff
   return false;
 }
 
+/**
+ * struct PatternFlags - Mapping between user character and internal constant
+ */
 static const struct PatternFlags
 {
   int tag; /**< character used to represent this op */

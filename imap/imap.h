@@ -34,7 +34,9 @@ struct Context;
 struct Message;
 struct BrowserState;
 
-/* -- data structures -- */
+/**
+ * struct ImapMbox - An IMAP mailbox
+ */
 struct ImapMbox
 {
   struct Account account;

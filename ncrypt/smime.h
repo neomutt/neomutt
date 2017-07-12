@@ -34,6 +34,9 @@ struct Envelope;
 struct Header;
 struct State;
 
+/**
+ * struct SmimeKey - An SIME key
+ */
 struct SmimeKey
 {
   char *email;

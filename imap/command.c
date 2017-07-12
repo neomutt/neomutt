@@ -61,6 +61,10 @@ static const char *const Capabilities[] = {
 };
 
 /* Gmail document one string but use another.  Support both. */
+
+/**
+ * struct CapabilityAlias - Alternative names for capabilities
+ */
 struct CapabilityAlias
 {
   char *name;

@@ -28,6 +28,9 @@
 struct Context;
 struct Header;
 
+/**
+ * struct MuttThread - An email conversation
+ */
 struct MuttThread
 {
   bool fake_thread : 1;

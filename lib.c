@@ -49,6 +49,9 @@
 #define EX_OK 0
 #endif
 
+/**
+ * struct SysExits - Lookup table of error messages
+ */
 static const struct SysExits
 {
   int v;

@@ -54,9 +54,11 @@
 #include "mutt_notmuch.h"
 #endif
 
+/**
+ * enum FlagChars - Index into the FlagChars variable ($flag_chars)
+ */
 enum FlagChars
 {
-  /* Indexing into the Flagchars variable ($flag_chars) */
   FlagCharTagged,
   FlagCharImportant,
   FlagCharDeleted,
@@ -181,6 +183,9 @@ static size_t add_index_color(char *buf, size_t buflen, enum FormatFlag flags, c
   return 2;
 }
 
+/**
+ * enum FieldType - Header types
+ */
 enum FieldType
 {
   DISP_TO,

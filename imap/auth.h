@@ -28,6 +28,9 @@
 
 struct ImapData;
 
+/**
+ * enum ImapAuthRes - Results of IMAP Authentication
+ */
 enum ImapAuthRes
 {
   IMAP_AUTH_SUCCESS = 0,
@@ -35,6 +38,9 @@ enum ImapAuthRes
   IMAP_AUTH_UNAVAIL
 };
 
+/**
+ * struct ImapAuth - IMAP authentication multiplexor
+ */
 struct ImapAuth
 {
   /* do authentication, using named method or any available if method is NULL */

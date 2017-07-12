@@ -45,6 +45,9 @@ extern int optind;
 
 #define BUFFSIZE 2048
 
+/**
+ * enum OutputFormats - Documentation output formats
+ */
 enum OutputFormats
 {
   F_CONF,
@@ -66,6 +69,9 @@ enum OutputFormats
 #define D_IL (1 << 10)
 #define D_TT (1 << 11)
 
+/**
+ * enum SpecialChars - All specially-treated characters
+ */
 enum SpecialChars
 {
   SP_START_EM,
@@ -935,6 +941,9 @@ static int handle_docline(char *l, FILE *out, int docstat)
  * following string definitions!
  */
 
+/**
+ * enum DataType - User-variable types
+ */
 enum DataType
 {
   DT_NONE = 0,
@@ -951,7 +960,7 @@ enum DataType
   DT_MBCHARTBL
 };
 
-struct
+struct VariableTypes
 {
   char *machine;
   char *human;

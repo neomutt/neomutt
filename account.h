@@ -27,7 +27,9 @@
 
 struct CissUrl;
 
-/* account types */
+/**
+ * enum AccountType - account types
+ */
 enum AccountType
 {
   MUTT_ACCT_TYPE_NONE = 0,
@@ -44,6 +46,9 @@ enum AccountType
 #define MUTT_ACCT_PASS (1 << 3)
 #define MUTT_ACCT_SSL (1 << 4)
 
+/**
+ * struct Account - Login details for a remote server
+ */
 struct Account
 {
   char user[64];

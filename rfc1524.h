@@ -28,6 +28,9 @@
 
 struct Body;
 
+/**
+ * struct Rfc1524MailcapEntry - A mailcap entry
+ */
 struct Rfc1524MailcapEntry
 {
   char *command;

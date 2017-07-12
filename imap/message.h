@@ -21,16 +21,17 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-/* message.c data structures */
-
 #ifndef _MUTT_IMAP_MESSAGE_H
 #define _MUTT_IMAP_MESSAGE_H
 
 #include <stdbool.h>
 #include <time.h>
 
-/* -- data structures -- */
-/* IMAP-specific header data, stored as Header->data */
+/**
+ * struct ImapHeaderData - IMAP-specific header data
+ *
+ * IMAP-specific header data, stored as Header->data
+ */
 struct ImapHeaderData
 {
   /* server-side flags */
@@ -48,6 +49,9 @@ struct ImapHeaderData
   struct List *keywords;
 };
 
+/**
+ * struct ImapHeader - IMAP-specific header
+ */
 struct ImapHeader
 {
   struct ImapHeaderData *data;
@@ -56,7 +60,6 @@ struct ImapHeader
   long content_length;
 };
 
-/* -- macros -- */
 #define HEADER_DATA(ph) ((struct ImapHeaderData *) ((ph)->data))
 
 #endif /* _MUTT_IMAP_MESSAGE_H */

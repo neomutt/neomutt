@@ -68,7 +68,9 @@ static int OpnIndex = -1; /* Current (open) mailbox */
 static int HilIndex = -1; /* Highlighted mailbox */
 static int BotIndex = -1; /* Last mailbox visible in sidebar */
 
-/* The source of the sidebar divider character. */
+/**
+ * enum DivType - Source of the sidebar divider character
+ */
 enum DivType
 {
   SB_DIV_USER,
@@ -76,6 +78,9 @@ enum DivType
   SB_DIV_UTF8
 };
 
+/**
+ * enum SidebarSrc - Display real or virtual mailboxes in the sidebar
+ */
 enum SidebarSrc
 {
   SB_SRC_INCOMING,

@@ -35,6 +35,9 @@ struct stat;
 #define MUTT_NAMED   1
 #define MUTT_VIRTUAL 2
 
+/**
+ * struct Buffy - A mailbox
+ */
 struct Buffy
 {
   char path[_POSIX_PATH_MAX];

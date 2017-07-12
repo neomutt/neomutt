@@ -95,6 +95,9 @@ typedef void (*hcache_close_t)(void **ctx);
  */
 typedef const char *(*hcache_backend_t)(void);
 
+/**
+ * struct HcacheOps - Header Cache API
+ */
 struct HcacheOps
 {
   const char       *name;

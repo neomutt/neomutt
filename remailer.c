@@ -50,9 +50,13 @@
 #include "protos.h"
 #include "rfc822.h"
 
+/**
+ * struct Coord - Screen coordindates
+ */
 struct Coord
 {
-  short r, c;
+  short r; /**< row */
+  short c; /**< column */
 };
 
 static int mix_get_caps(const char *capstr)

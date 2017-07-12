@@ -69,6 +69,9 @@
 
 #define INS_SORT_THRESHOLD 6
 
+/**
+ * struct Maildir - A Maildir mailbox
+ */
 struct Maildir
 {
   struct Header *h;
@@ -78,12 +81,18 @@ struct Maildir
   struct Maildir *next;
 };
 
+/**
+ * struct MhSequences - Set of MH sequence numbers
+ */
 struct MhSequences
 {
   int max;
   short *flags;
 };
 
+/**
+ * struct MhData - MH-specific mailbox data
+ */
 struct MhData
 {
   time_t mtime_cur;

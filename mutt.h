@@ -128,6 +128,9 @@ struct State;
 #define MUTT_THREAD_NEXT_UNREAD (1 << 4)
 #define MUTT_THREAD_FLAGGED     (1 << 5)
 
+/**
+ * enum MuttMisc - Unsorted flags
+ */
 enum MuttMisc
 {
   /* modes for mutt_view_attachment() */
@@ -218,7 +221,9 @@ enum MuttMisc
   MUTT_SAVE_OVERWRITE
 };
 
-/* possible arguments to set_quadoption() */
+/**
+ * enum QuadOptionResponse - Possible values of a QuadOption
+ */
 enum QuadOptionResponse
 {
   MUTT_ABORT = -1,
@@ -228,7 +233,9 @@ enum QuadOptionResponse
   MUTT_ASKYES
 };
 
-/* quad-option vars */
+/**
+ * enum QuadOptionVars - Index of all QuadOptions
+ */
 enum QuadOptionVars
 {
   OPT_ABORT,
@@ -347,7 +354,11 @@ void state_prefix_putc(char c, struct State *s);
 int state_printf(struct State *s, const char *fmt, ...);
 int state_putws(const wchar_t *ws, struct State *s);
 
-/* for attachment counter */
+/**
+ * struct AttachMatch - An attachment matching a regex
+ *
+ * for attachment counter
+ */
 struct AttachMatch
 {
   char *major;

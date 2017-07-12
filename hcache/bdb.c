@@ -37,6 +37,9 @@
 #include "lib.h"
 #include "mx.h"
 
+/**
+ * struct HcacheDbCtx - Berkeley DB context
+ */
 struct HcacheDbCtx
 {
   DB_ENV *env;

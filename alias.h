@@ -28,6 +28,9 @@
 struct Envelope;
 struct Address;
 
+/**
+ * struct Alias - A shortcut for an email address
+ */
 struct Alias
 {
   struct Alias *self; /* XXX - ugly hack */

@@ -44,10 +44,11 @@
 #include "protos.h"
 #include "rfc822.h"
 
-/*
+/**
+ * struct PgpCommandContext - Data for a PGP command
+ *
  * The actual command line formatter.
  */
-
 struct PgpCommandContext
 {
   short need_passphrase; /**< %p */

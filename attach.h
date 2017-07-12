@@ -32,6 +32,9 @@ struct Menu;
 struct Header;
 struct Body;
 
+/**
+ * struct AttachPtr - An email to which things will be attached
+ */
 struct AttachPtr
 {
   struct Body *content;

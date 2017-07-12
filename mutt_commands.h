@@ -25,6 +25,9 @@
 
 struct Buffer;
 
+/**
+ * struct Command - A user-callable command
+ */
 struct Command
 {
   char *name;

@@ -71,6 +71,10 @@
  *                  next oldest entry
  *         HistSize entry
  */
+
+/**
+ * struct History - Saved list of user-entered commands/searches
+ */
 struct History
 {
   char **hist;

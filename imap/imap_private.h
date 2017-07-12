@@ -86,12 +86,18 @@ struct Progress;
 /* length of "DD-MMM-YYYY HH:MM:SS +ZZzz" (null-terminated) */
 #define IMAP_DATELEN 27
 
+/**
+ * enum ImapFlags - IMAP server responses
+ */
 enum ImapFlags
 {
   IMAP_FATAL = 1,
   IMAP_BYE
 };
 
+/**
+ * enum ImapState - IMAP connection state
+ */
 enum ImapState
 {
   /* States */
@@ -104,15 +110,19 @@ enum ImapState
   IMAP_IDLE
 };
 
+/**
+ * enum ImapNamespace - IMAP namespace types
+ */
 enum ImapNamespace
 {
-  /* Namespace types */
   IMAP_NS_PERSONAL = 0,
   IMAP_NS_OTHER,
   IMAP_NS_SHARED
 };
 
-/* Capabilities we are interested in */
+/**
+ * enum ImapCaps - Capabilities we are interested in
+ */
 enum ImapCaps
 {
   IMAP4 = 0,
@@ -137,13 +147,18 @@ enum ImapCaps
 #define MUTT_IMAP_CONN_NONEW    (1 << 0)
 #define MUTT_IMAP_CONN_NOSELECT (1 << 1)
 
-/* -- data structures -- */
+/**
+ * struct ImapCache - IMAP-specific message cache
+ */
 struct ImapCache
 {
   unsigned int uid;
   char *path;
 };
 
+/**
+ * struct ImapStatus - Status of an IMAP mailbox
+ */
 struct ImapStatus
 {
   char *name;
@@ -155,6 +170,9 @@ struct ImapStatus
   unsigned int unseen;
 };
 
+/**
+ * struct ImapList - Items in an IMAP browser
+ */
 struct ImapList
 {
   char *name;
@@ -163,13 +181,18 @@ struct ImapList
   bool noinferiors;
 };
 
-/* IMAP command structure */
+/**
+ * struct ImapCommand - IMAP command structure
+ */
 struct ImapCommand
 {
   char seq[SEQLEN + 1];
   int state;
 };
 
+/**
+ * enum ImapCommandType - IMAP command type
+ */
 enum ImapCommandType
 {
   IMAP_CT_NONE = 0,
@@ -177,9 +200,13 @@ enum ImapCommandType
   IMAP_CT_STATUS
 };
 
+/**
+ * struct ImapData - IMAP-specific server data
+ *
+ * This data is specific to a Connection to an IMAP server
+ */
 struct ImapData
 {
-  /* This data is specific to a Connection to an IMAP server */
   struct Connection *conn;
   bool recovering;
   unsigned char state;

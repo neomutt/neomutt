@@ -40,6 +40,9 @@ struct Progress;
 /* maximal length of the server response (RFC1939) */
 #define POP_CMD_RESPONSE 512
 
+/**
+ * enum PopStatus - POP server responses
+ */
 enum PopStatus
 {
   /* Status */
@@ -49,6 +52,9 @@ enum PopStatus
   POP_BYE
 };
 
+/**
+ * enum PopAuthRes - POP authentication responses
+ */
 enum PopAuthRes
 {
   POP_A_SUCCESS = 0,
@@ -57,12 +63,18 @@ enum PopAuthRes
   POP_A_UNAVAIL
 };
 
+/**
+ * struct PopCache - POP-specific email cache
+ */
 struct PopCache
 {
   unsigned int index;
   char *path;
 };
 
+/**
+ * struct PopData - POP-specific server data
+ */
 struct PopData
 {
   struct Connection *conn;
@@ -87,6 +99,9 @@ struct PopData
   struct PopCache cache[POP_CACHE_LEN];
 };
 
+/**
+ * struct PopAuth - POP authentication multiplexor
+ */
 struct PopAuth
 {
   /* do authentication, using named method or any available if method is NULL */

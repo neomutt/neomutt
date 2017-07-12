@@ -478,6 +478,9 @@ int mutt_convert_string(char **ps, const char *from, const char *to, int flags)
  * Used in sendlib.c for converting from mutt's Charset
  */
 
+/**
+ * struct FgetConv - Cursor for converting a file's encoding
+ */
 struct FgetConv
 {
   FILE *file;
@@ -491,6 +494,9 @@ struct FgetConv
   ICONV_CONST char **inrepls;
 };
 
+/**
+ * struct FgetConvNot - A dummy converter
+ */
 struct FgetConvNot
 {
   FILE *file;

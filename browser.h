@@ -27,6 +27,9 @@
 #include <sys/types.h>
 #include <time.h>
 
+/**
+ * struct FolderFile - Browser entry representing a folder/dir
+ */
 struct FolderFile
 {
   mode_t mode;
@@ -58,6 +61,9 @@ struct FolderFile
   bool tagged : 1;
 };
 
+/**
+ * struct BrowserState - State of the file/mailbox browser
+ */
 struct BrowserState
 {
   struct FolderFile *entry;

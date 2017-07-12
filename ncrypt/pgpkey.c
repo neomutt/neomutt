@@ -59,6 +59,9 @@
 
 struct List;
 
+/**
+ * struct PgpCache - List of cached PGP keys
+ */
 struct PgpCache
 {
   char *what;
@@ -129,6 +132,9 @@ static struct PgpKeyInfo *pgp_principal_key(struct PgpKeyInfo *key)
  * %[...] date of key using strftime(3)
  */
 
+/**
+ * struct PgpEntry - An entry in a PGP key menu
+ */
 struct PgpEntry
 {
   size_t num;

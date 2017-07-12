@@ -93,6 +93,9 @@ static const char *Notice =
        "Mutt is free software, and you are welcome to redistribute it\n"
        "under certain conditions; type `mutt -vv' for details.\n");
 
+/**
+ * struct CompileOptions - List of built-in capabilities
+ */
 struct CompileOptions
 {
   const char *name;

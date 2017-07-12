@@ -40,6 +40,9 @@
 #define REGCOMP(X, Y, Z) regcomp(X, Y, REG_WORDS | REG_EXTENDED | (Z))
 #define REGEXEC(X, Y) regexec(&X, Y, (size_t) 0, (regmatch_t *) 0, (int) 0)
 
+/**
+ * struct Regex - Cached regular expression
+ */
 struct Regex
 {
   char *pattern; /**< printable version */
@@ -47,12 +50,18 @@ struct Regex
   int not;       /**< do not match */
 };
 
+/**
+ * struct RxList - List of regular expressions
+ */
 struct RxList
 {
   struct Regex *rx;
   struct RxList *next;
 };
 
+/**
+ * struct ReplaceList - List of regular expressions
+ */
 struct ReplaceList
 {
   struct Regex *rx;

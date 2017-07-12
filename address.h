@@ -25,6 +25,9 @@
 
 #include <stdbool.h>
 
+/**
+ * struct Address - An email address
+ */
 struct Address
 {
   char *personal; /**< real name of address */

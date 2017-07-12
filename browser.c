@@ -93,6 +93,9 @@ static struct Mapping FolderNewsHelp[] = {
 };
 #endif
 
+/**
+ * struct Folder - A folder/dir in the browser
+ */
 struct Folder
 {
   struct FolderFile *ff;

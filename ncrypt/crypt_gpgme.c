@@ -80,10 +80,9 @@
 #define CRYPT_KV_STRONGID 8
 #define CRYPT_KV_MATCH (CRYPT_KV_ADDR | CRYPT_KV_STRING)
 
-/*
- * Type definitions.
+/**
+ * struct CryptCache - Internal cache for GPGME
  */
-
 struct CryptCache
 {
   char *what;
@@ -91,6 +90,9 @@ struct CryptCache
   struct CryptCache *next;
 };
 
+/**
+ * struct DnArray - An X500 Distinguished Name
+ */
 struct DnArray
 {
   char *key;
@@ -99,6 +101,9 @@ struct DnArray
 
 /* We work based on user IDs, getting from a user ID to the key is
    check and does not need any memory (gpgme uses reference counting). */
+/**
+ * struct CryptKeyInfo - A stored PGP key
+ */
 struct CryptKeyInfo
 {
   struct CryptKeyInfo *next;
@@ -109,6 +114,9 @@ struct CryptKeyInfo
   gpgme_validity_t validity; /**< uid validity (cached for convenience) */
 };
 
+/**
+ * struct CryptEntry - An entry in the Select-Key menu
+ */
 struct CryptEntry
 {
   size_t num;
@@ -3297,6 +3305,9 @@ static void parse_and_print_user_id(FILE *fp, const char *userid)
   }
 }
 
+/**
+ * enum KeyCap - PGP/SMIME Key Capabilities
+ */
 enum KeyCap
 {
   KEY_CAP_CAN_ENCRYPT,
@@ -3334,6 +3345,9 @@ static unsigned int key_check_cap(gpgme_key_t key, enum KeyCap cap)
   return ret;
 }
 
+/**
+ * enum KeyInfo - PGP Key info
+ */
 enum KeyInfo
 {
   KIP_NAME = 0,

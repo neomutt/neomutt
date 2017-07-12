@@ -59,6 +59,9 @@ struct passwd;
 void _mutt_make_string(char *dest, size_t destlen, const char *s, struct Context *ctx,
                        struct Header *hdr, enum FormatFlag flags);
 
+/**
+ * struct HdrFormatInfo - Data passed to hdr_format_str()
+ */
 struct HdrFormatInfo
 {
   struct Context *ctx;
@@ -66,6 +69,9 @@ struct HdrFormatInfo
   const char *pager_progress;
 };
 
+/**
+ * enum XdgType - XDG variable types
+ */
 enum XdgType
 {
   XDG_CONFIG_HOME,

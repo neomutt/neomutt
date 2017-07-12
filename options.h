@@ -23,7 +23,9 @@
 #ifndef _MUTT_OPTIONS_H_
 #define _MUTT_OPTIONS_H_
 
-/* boolean vars */
+/**
+ * enum GlobalBool - boolean vars
+ */
 enum GlobalBool
 {
   OPTALLOW8BIT,

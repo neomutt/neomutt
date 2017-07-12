@@ -671,6 +671,10 @@ struct Keymap *km_find_func(int menu, int func)
 }
 
 #ifdef NCURSES_VERSION
+
+/**
+ * struct Extkey - Map key names from NeoMutt's style to Curses style
+ */
 struct Extkey
 {
   const char *name;

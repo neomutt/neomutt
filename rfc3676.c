@@ -44,6 +44,9 @@
 
 #define FLOWED_MAX 72
 
+/**
+ * struct FlowedState - State of a Format-Flowed line of text
+ */
 struct FlowedState
 {
   size_t width;

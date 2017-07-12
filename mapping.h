@@ -25,6 +25,9 @@
 
 #include <stddef.h>
 
+/**
+ * struct Mapping - Mapping between user-readable string and a constant
+ */
 struct Mapping
 {
   const char *name;

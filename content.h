@@ -25,7 +25,11 @@
 
 #include <stdbool.h>
 
-/* Information that helps in determining the Content-* of an attachment */
+/**
+ * struct Content - Info about an attachment
+ *
+ * Information that helps in determining the Content-* of an attachment
+ */
 struct Content
 {
   long hibin;      /**< 8-bit characters */

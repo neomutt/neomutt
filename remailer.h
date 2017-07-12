@@ -43,6 +43,9 @@ struct Header;
 
 #define MAXMIXES 19
 
+/**
+ * struct Remailer - A Mixmaster remailer
+ */
 struct Remailer
 {
   int num;
@@ -52,6 +55,9 @@ struct Remailer
   int caps;
 };
 
+/**
+ * struct MixChain - A Mixmaster chain
+ */
 struct MixChain
 {
   size_t cl;

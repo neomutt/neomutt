@@ -25,6 +25,9 @@
 
 #include <stdio.h>
 
+/**
+ * struct State - Keep track when processing files
+ */
 struct State
 {
   FILE *fpin;

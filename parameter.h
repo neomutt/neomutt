@@ -25,6 +25,9 @@
 
 #include "lib.h"
 
+/**
+ * struct Parameter - Attribute associated with a MIME part
+ */
 struct Parameter
 {
   char *attribute;

@@ -46,6 +46,9 @@
 #include "protos.h"
 #include "rfc822.h"
 
+/**
+ * struct Query - An entry from an external address-book
+ */
 struct Query
 {
   int num;
@@ -55,6 +58,9 @@ struct Query
   struct Query *next;
 };
 
+/**
+ * struct Entry - An entry in a selectable list of Query's
+ */
 struct Entry
 {
   bool tagged;

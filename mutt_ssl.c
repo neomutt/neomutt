@@ -83,6 +83,9 @@ static int SkipModeExDataIndex = -1;
  * open up another connection to the same server in this session */
 static STACK_OF(X509) *SslSessionCerts = NULL;
 
+/**
+ * struct SslSockData - SSL socket data
+ */
 struct SslSockData
 {
   SSL_CTX *ctx;

@@ -45,6 +45,9 @@
 
 #define MUTT_MODEFMT "-- Mutt: %s"
 
+/**
+ * struct Menu - GUI selectable list of items
+ */
 struct Menu
 {
   char *title; /**< the title of this menu */

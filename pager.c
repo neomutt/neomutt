@@ -114,6 +114,9 @@ static struct Header *OldHdr = NULL;
     break;                                                                     \
   }
 
+/**
+ * struct QClass - Style of quoted text
+ */
 struct QClass
 {
   int length;
@@ -124,6 +127,9 @@ struct QClass
   struct QClass *down, *up;
 };
 
+/**
+ * struct Syntax - Highlighting for a line of text
+ */
 struct Syntax
 {
   int color;
@@ -131,6 +137,9 @@ struct Syntax
   int last;
 };
 
+/**
+ * struct Line - A line of text in the pager
+ */
 struct Line
 {
   LOFF_T offset;
@@ -151,6 +160,9 @@ struct Line
 #define ANSI_REVERSE (1 << 4)
 #define ANSI_COLOR (1 << 5)
 
+/**
+ * struct AnsiAttr - An ANSI escape sequence
+ */
 struct AnsiAttr
 {
   int attr;
@@ -162,6 +174,9 @@ struct AnsiAttr
 static short InHelp = 0;
 
 #if defined(USE_SLANG_CURSES) || defined(HAVE_RESIZETERM)
+/**
+ * struct Resize - Keep track of screen resizing
+ */
 static struct Resize
 {
   int line;
@@ -1672,6 +1687,9 @@ void mutt_clear_pager_position(void)
   OldHdr = NULL;
 }
 
+/**
+ * struct PagerRedrawData - Keep track when the pager needs redrawing
+ */
 struct PagerRedrawData
 {
   int flags;

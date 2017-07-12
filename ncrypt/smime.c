@@ -56,6 +56,9 @@
 #include "rfc822.h"
 #include "state.h"
 
+/**
+ * struct SmimeCommandContext - Data for a SIME command
+ */
 struct SmimeCommandContext
 {
   const char *key;           /**< %k */

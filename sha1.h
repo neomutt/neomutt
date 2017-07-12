@@ -13,6 +13,9 @@
 
 #include <stdint.h>
 
+/**
+ * struct Sha1Ctx - Cursor for the SHA1 hashing
+ */
 struct Sha1Ctx
 {
   uint32_t state[5];

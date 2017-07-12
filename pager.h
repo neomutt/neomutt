@@ -46,6 +46,9 @@ struct Menu;
 
 #define MUTT_DISPLAYFLAGS (MUTT_SHOW | MUTT_PAGER_NSKIP | MUTT_PAGER_MARKER)
 
+/**
+ * struct Pager - An email being displayed
+ */
 struct Pager
 {
   struct Context *ctx;    /**< current mailbox */

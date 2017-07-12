@@ -38,7 +38,9 @@
 #include "mutt_socket.h"
 #include "protos.h"
 
-/* -- data types -- */
+/**
+ * struct TunnelData - A network tunnel (pair of sockets)
+ */
 struct TunnelData
 {
   pid_t pid;

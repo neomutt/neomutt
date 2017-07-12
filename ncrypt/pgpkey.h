@@ -27,7 +27,11 @@ struct Address;
 struct Body;
 struct PgpKeyInfo;
 
-enum PgpRing {
+/**
+ * enum PgpRing - PGP ring type
+ */
+enum PgpRing
+{
   PGP_PUBRING,
   PGP_SECRING,
 };

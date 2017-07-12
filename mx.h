@@ -41,8 +41,9 @@ struct Context;
 struct Message;
 struct stat;
 
-/*
+/**
  * struct MxOps - a structure to store operations on a mailbox
+ *
  * The following operations are mandatory:
  *  - open
  *  - close
@@ -64,7 +65,9 @@ struct MxOps
   int (*open_new_msg)(struct Message *msg, struct Context *ctx, struct Header *hdr);
 };
 
-/* supported mailbox formats */
+/**
+ * enum MailboxFormat - Supported mailbox formats
+ */
 enum MailboxFormat
 {
   MUTT_MBOX = 1,

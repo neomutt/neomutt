@@ -46,7 +46,9 @@ struct Context;
 #define MUTT_ADD_FROM  (1 << 0) /**< add a From_ line */
 #define MUTT_SET_DRAFT (1 << 1) /**< set the message draft flag */
 
-/* return values from mx_check_mailbox() */
+/**
+ * enum MxCheckReturns - Return values from mx_check_mailbox()
+ */
 enum MxCheckReturns
 {
   MUTT_NEW_MAIL = 1, /**< new mail received in mailbox */
@@ -55,6 +57,9 @@ enum MxCheckReturns
   MUTT_FLAGS         /**< nondestructive flags change (IMAP) */
 };
 
+/**
+ * struct Message - A local copy of an email
+ */
 struct Message
 {
   FILE *fp;            /**< pointer to the message data */

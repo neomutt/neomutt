@@ -30,6 +30,9 @@
 
 #include <stdio.h>
 
+/**
+ * enum PacketTags - PGP packet types
+ */
 enum PacketTags
 {
   PT_RES0 = 0,   /**< reserved */

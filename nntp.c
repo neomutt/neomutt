@@ -996,6 +996,9 @@ static int fetch_tempfile(char *line, void *data)
   return 0;
 }
 
+/**
+ * struct FetchCtx - Keep track when getting data from a server
+ */
 struct FetchCtx
 {
   struct Context *ctx;
@@ -2367,6 +2370,9 @@ int nntp_check_msgid(struct Context *ctx, const char *msgid)
   return 0;
 }
 
+/**
+ * struct ChildCtx - Keep track of the children of an article
+ */
 struct ChildCtx
 {
   struct Context *ctx;

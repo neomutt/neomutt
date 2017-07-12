@@ -474,6 +474,9 @@ static void decode_uuencoded(struct State *s, long len, int istext, iconv_t cd)
 
 #define IndentSize (4)
 
+/**
+ * enum RichAttribs - Rich text attributes
+ */
 enum RichAttribs
 {
   RICH_PARAM = 0,
@@ -513,6 +516,9 @@ static const struct
   { NULL, -1 },
 };
 
+/**
+ * struct EnrichedState - State of enriched-text parser
+ */
 struct EnrichedState
 {
   wchar_t *buffer;

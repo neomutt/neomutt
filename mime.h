@@ -23,7 +23,9 @@
 #ifndef _MUTT_MIME_H
 #define _MUTT_MIME_H
 
-/* Content-Type */
+/**
+ * enum ContentType - Content-Type
+ */
 enum ContentType
 {
   TYPEOTHER,
@@ -38,7 +40,9 @@ enum ContentType
   TYPEANY
 };
 
-/* Content-Transfer-Encoding */
+/**
+ * enum ContentEncoding - Content-Transfer-Encoding
+ */
 enum ContentEncoding
 {
   ENCOTHER,
@@ -50,7 +54,9 @@ enum ContentEncoding
   ENCUUENCODED
 };
 
-/* Content-Disposition values */
+/**
+ * enum ContentDisposition - Content-Disposition values
+ */
 enum ContentDisposition
 {
   DISPINLINE,

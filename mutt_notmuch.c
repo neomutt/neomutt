@@ -75,7 +75,7 @@
     LIBNOTMUCH_MICRO_VERSION >= (_micro)))
 
 /**
- * enum NmQueryType - Query Types
+ * enum NmQueryType - NotMuch Query Types
  *
  * Read whole-thread or matching messages only?
  */

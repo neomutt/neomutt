@@ -36,6 +36,9 @@
 #include "protos.h"
 #include "sort.h"
 
+/**
+ * struct Score - Scoring rule for email
+ */
 struct Score
 {
   char *str;

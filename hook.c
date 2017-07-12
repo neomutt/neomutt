@@ -47,6 +47,9 @@
 #include "compress.h"
 #endif
 
+/**
+ * struct Hook - A list of user hooks
+ */
 struct Hook
 {
   int type;                /**< hook type */

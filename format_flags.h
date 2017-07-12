@@ -25,7 +25,9 @@
 
 #include <stddef.h>
 
-/* flags for mutt_FormatString() */
+/**
+ * enum FormatFlag - Control the behaviour of mutt_FormatString()
+ */
 enum FormatFlag
 {
   MUTT_FORMAT_FORCESUBJ   = (1 << 0), /**< print the subject even if unchanged */

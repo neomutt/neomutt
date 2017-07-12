@@ -699,6 +699,9 @@ static const char *uncomment_timezone(char *buf, size_t buflen, const char *tz)
   return buf;
 }
 
+/**
+ * struct Tz - Lookup table of Time Zones
+ */
 static const struct Tz
 {
   char tzname[5];

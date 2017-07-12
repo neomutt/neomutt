@@ -28,6 +28,9 @@
 #include <time.h>
 #include "lib.h"
 
+/**
+ * struct Header - The header/envelope of an email
+ */
 struct Header
 {
   unsigned int security : 12; /**< bit 0-8: flags, bit 9,10: application.

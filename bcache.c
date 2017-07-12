@@ -38,6 +38,9 @@
 
 static int mutt_bcache_move(struct BodyCache *bcache, const char *id, const char *newid);
 
+/**
+ * struct BodyCache - Local cache of email bodies
+ */
 struct BodyCache
 {
   char path[_POSIX_PATH_MAX];

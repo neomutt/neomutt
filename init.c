@@ -82,6 +82,9 @@
     return -1;                                                                       \
   }
 
+/**
+ * struct MyVar - A user-set variable
+ */
 struct MyVar
 {
   char *name;
@@ -1271,6 +1274,9 @@ bail:
   return -1;
 }
 
+/**
+ * enum GroupState - Type of email address group
+ */
 enum GroupState
 {
   GS_NONE,
@@ -2179,8 +2185,6 @@ char **mutt_envlist(void)
 /**
  * start_debug - prepare the debugging file
  *
- * @return nothing
- *
  * This method prepares and opens a new debug file for mutt_debug.
  */
 static void start_debug(void)
@@ -2211,8 +2215,6 @@ static void start_debug(void)
 
 /**
  * restart_debug - reload the debugging configuration
- *
- * @return nothing
  *
  * This method closes the old debug file is debug was enabled,
  * then reconfigure the debugging system from the configuration options

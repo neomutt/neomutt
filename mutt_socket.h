@@ -33,11 +33,13 @@
 #define MUTT_SOCK_LOG_HDR  3
 #define MUTT_SOCK_LOG_FULL 4
 
+/**
+ * struct Connection - An open network connection (socket)
+ */
 struct Connection
 {
   struct Account account;
-  /* security strength factor, in bits */
-  unsigned int ssf;
+  unsigned int ssf; /**< security strength factor, in bits */
   void *data;
 
   char inbuf[LONG_STRING];

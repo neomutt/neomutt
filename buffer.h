@@ -23,6 +23,9 @@
 
 #include <stddef.h>
 
+/**
+ * struct Buffer - String manipulation buffer
+ */
 struct Buffer
 {
   char *data;   /**< pointer to data */

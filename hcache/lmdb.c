@@ -33,6 +33,9 @@
  * The file is mmap(2)'d into memory. */
 const size_t LMDB_DB_SIZE = 2147483648;
 
+/**
+ * enum MdbTxnMode - LMDB transaction state
+ */
 enum MdbTxnMode
 {
   TXN_UNINITIALIZED,
@@ -40,6 +43,9 @@ enum MdbTxnMode
   TXN_WRITE
 };
 
+/**
+ * struct HcacheLmdbCtx - LMDB context
+ */
 struct HcacheLmdbCtx
 {
   MDB_env *env;
