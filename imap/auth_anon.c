@@ -28,7 +28,7 @@
 #include "protos.h"
 
 /* this is basically a stripped-down version of the cram-md5 method. */
-imap_auth_res_t imap_auth_anon(struct ImapData *idata, const char *method)
+enum ImapAuthRes imap_auth_anon(struct ImapData *idata, const char *method)
 {
   int rc;
 

@@ -21,7 +21,8 @@
 #include <stddef.h>
 
 /* flags for mutt_FormatString() */
-typedef enum {
+enum FormatFlag
+{
   MUTT_FORMAT_FORCESUBJ   = (1 << 0), /* print the subject even if unchanged */
   MUTT_FORMAT_TREE        = (1 << 1), /* draw the thread tree */
   MUTT_FORMAT_MAKEPRINT   = (1 << 2), /* make sure that all chars are printable */
@@ -30,12 +31,12 @@ typedef enum {
   MUTT_FORMAT_ARROWCURSOR = (1 << 5), /* reserve space for arrow_cursor */
   MUTT_FORMAT_INDEX       = (1 << 6), /* this is a main index entry */
   MUTT_FORMAT_NOFILTER    = (1 << 7)  /* do not allow filtering on this pass */
-} format_flag;
+};
 
 typedef const char *format_t(char *dest, size_t destlen, size_t col, int cols,
                              char op, const char *src, const char *prefix,
                              const char *ifstring, const char *elsestring,
-                             unsigned long data, format_flag flags);
+                             unsigned long data, enum FormatFlag flags);
 
 void mutt_FormatString(char *dest,         /* output buffer */
                        size_t destlen,     /* output buffer len */
@@ -44,6 +45,6 @@ void mutt_FormatString(char *dest,         /* output buffer */
                        const char *src,    /* template string */
                        format_t *callback, /* callback for processing */
                        unsigned long data, /* callback data */
-                       format_flag flags); /* callback flags */
+                       enum FormatFlag flags); /* callback flags */
 
 #endif /* _MUTT_FORMAT_FLAGS_H */

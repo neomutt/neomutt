@@ -72,7 +72,7 @@ int url_pct_decode(char *s)
   return 0;
 }
 
-url_scheme_t url_check_scheme(const char *s)
+enum UrlScheme url_check_scheme(const char *s)
 {
   char sbuf[STRING];
   char *t = NULL;
@@ -90,7 +90,7 @@ url_scheme_t url_check_scheme(const char *s)
   if ((i = mutt_getvaluebyname(sbuf, UrlMap)) == -1)
     return U_UNKNOWN;
   else
-    return (url_scheme_t) i;
+    return (enum UrlScheme) i;
 }
 
 /* ciss_parse_userhost: fill in components of ciss with info from src. Note

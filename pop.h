@@ -44,12 +44,13 @@ enum
   POP_BYE
 };
 
-typedef enum {
+enum PopAuthRes
+{
   POP_A_SUCCESS = 0,
   POP_A_SOCKET,
   POP_A_FAILURE,
   POP_A_UNAVAIL
-} pop_auth_res_t;
+};
 
 struct PopCache
 {
@@ -84,7 +85,7 @@ struct PopData
 struct PopAuth
 {
   /* do authentication, using named method or any available if method is NULL */
-  pop_auth_res_t (*authenticate)(struct PopData *, const char *);
+  enum PopAuthRes (*authenticate)(struct PopData *, const char *);
   /* name of authentication method supported, NULL means variable. If this
    * is not null, authenticate may ignore the second parameter. */
   const char *method;

@@ -170,7 +170,7 @@ struct AttachPtr **mutt_gen_attach_list(struct Body *m, int parent_type,
 const char *mutt_attach_fmt(char *dest, size_t destlen, size_t col, int cols,
                             char op, const char *src, const char *prefix,
                             const char *ifstring, const char *elsestring,
-                            unsigned long data, format_flag flags)
+                            unsigned long data, enum FormatFlag flags)
 {
   char fmt[16];
   char tmp[SHORT_STRING];

@@ -52,7 +52,7 @@ struct passwd;
 
 #define mutt_make_string(A, B, C, D, E) _mutt_make_string(A, B, C, D, E, 0)
 void _mutt_make_string(char *dest, size_t destlen, const char *s, struct Context *ctx,
-                       struct Header *hdr, format_flag flags);
+                       struct Header *hdr, enum FormatFlag flags);
 
 struct HdrFormatInfo
 {
@@ -61,13 +61,14 @@ struct HdrFormatInfo
   const char *pager_progress;
 };
 
-typedef enum {
-  kXDGConfigHome, /* $XDG_CONFIG_HOME */
-  kXDGConfigDirs, /* $XDG_CONFIG_DIRS */
-} XDGType;
+enum XdgType
+{
+  XDG_CONFIG_HOME,
+  XDG_CONFIG_DIRS,
+};
 
 void mutt_make_string_info(char *dst, size_t dstlen, int cols, const char *s,
-                           struct HdrFormatInfo *hfi, format_flag flags);
+                           struct HdrFormatInfo *hfi, enum FormatFlag flags);
 
 void mutt_free_opts(void);
 
@@ -121,7 +122,7 @@ void mutt_touch_atime(int f);
 const char *mutt_attach_fmt(char *dest, size_t destlen, size_t col, int cols,
                             char op, const char *src, const char *prefix,
                             const char *ifstring, const char *elsestring,
-                            unsigned long data, format_flag flags);
+                            unsigned long data, enum FormatFlag flags);
 
 
 char *mutt_charset_hook(const char *chs);
@@ -136,7 +137,7 @@ struct List *mutt_crypt_hook(struct Address *adr);
 char *mutt_make_date(char *s, size_t len);
 void mutt_timeout_hook(void);
 void mutt_startup_shutdown_hook(int type);
-int mutt_set_xdg_path(const XDGType type, char *buf, size_t bufsize);
+int mutt_set_xdg_path(enum XdgType type, char *buf, size_t bufsize);
 
 const char *mutt_make_version(void);
 

@@ -523,7 +523,7 @@ int imap_read_headers(struct ImapData *idata, unsigned int msn_begin, unsigned i
   idx = ctx->msgcount;
   oldmsgcount = ctx->msgcount;
   idata->reopen &= ~(IMAP_REOPEN_ALLOW | IMAP_NEWMAIL_PENDING);
-  idata->newMailCount = 0;
+  idata->new_mail_count = 0;
 
 #ifdef USE_HCACHE
   idata->hcache = imap_hcache_open(idata, NULL);
@@ -772,12 +772,12 @@ int imap_read_headers(struct ImapData *idata, unsigned int msn_begin, unsigned i
       /* update to the last value we actually pulled down */
       fetch_msn_end = idata->max_msn;
       msn_begin = idata->max_msn + 1;
-      msn_end = idata->newMailCount;
+      msn_end = idata->new_mail_count;
       while (msn_end > ctx->hdrmax)
         mx_alloc_memory(ctx);
       imap_alloc_msn_index(idata, msn_end);
       idata->reopen &= ~IMAP_NEWMAIL_PENDING;
-      idata->newMailCount = 0;
+      idata->new_mail_count = 0;
     }
   }
 

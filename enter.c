@@ -256,7 +256,7 @@ int _mutt_enter_string(char *buf, size_t buflen, int col, int flags, int multipl
   size_t i;
   wchar_t *tempbuf = NULL;
   size_t templen = 0;
-  history_class_t hclass;
+  enum HistoryClass hclass;
   wchar_t wc;
   mbstate_t mbstate;
 

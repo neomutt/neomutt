@@ -1333,7 +1333,7 @@ struct Pattern *mutt_pattern_comp(/* const */ char *s, int flags, struct Buffer 
   return curlist;
 }
 
-static bool perform_and(struct Pattern *pat, pattern_exec_flag flags, struct Context *ctx,
+static bool perform_and(struct Pattern *pat, enum PatternExecFlag flags, struct Context *ctx,
                         struct Header *hdr, struct PatternCache *cache)
 {
   for (; pat; pat = pat->next)
@@ -1342,7 +1342,7 @@ static bool perform_and(struct Pattern *pat, pattern_exec_flag flags, struct Con
   return true;
 }
 
-static int perform_or(struct Pattern *pat, pattern_exec_flag flags, struct Context *ctx,
+static int perform_or(struct Pattern *pat, enum PatternExecFlag flags, struct Context *ctx,
                       struct Header *hdr, struct PatternCache *cache)
 {
   for (; pat; pat = pat->next)
@@ -1423,7 +1423,7 @@ static int match_user(int alladdr, struct Address *a1, struct Address *a2)
   return alladdr;
 }
 
-static int match_threadcomplete(struct Pattern *pat, pattern_exec_flag flags,
+static int match_threadcomplete(struct Pattern *pat, enum PatternExecFlag flags,
                                 struct Context *ctx, struct MuttThread *t,
                                 int left, int up, int right, int down)
 {
@@ -1450,7 +1450,7 @@ static int match_threadcomplete(struct Pattern *pat, pattern_exec_flag flags,
   return 0;
 }
 
-static int match_threadparent(struct Pattern *pat, pattern_exec_flag flags,
+static int match_threadparent(struct Pattern *pat, enum PatternExecFlag flags,
                               struct Context *ctx, struct MuttThread *t)
 {
   if (!t || !t->parent || !t->parent->message)
@@ -1459,7 +1459,7 @@ static int match_threadparent(struct Pattern *pat, pattern_exec_flag flags,
   return mutt_pattern_exec(pat, flags, ctx, t->parent->message, NULL);
 }
 
-static int match_threadchildren(struct Pattern *pat, pattern_exec_flag flags,
+static int match_threadchildren(struct Pattern *pat, enum PatternExecFlag flags,
                                 struct Context *ctx, struct MuttThread *t)
 {
   if (!t || !t->child)
@@ -1497,7 +1497,7 @@ static int is_pattern_cache_set(int cache_entry)
  * flags: MUTT_MATCH_FULL_ADDRESS - match both personal and machine address
  * cache: For repeated matches against the same Header, passing in non-NULL will
  *        store some of the cacheable pattern matches in this structure. */
-int mutt_pattern_exec(struct Pattern *pat, pattern_exec_flag flags,
+int mutt_pattern_exec(struct Pattern *pat, enum PatternExecFlag flags,
                       struct Context *ctx, struct Header *h, struct PatternCache *cache)
 {
   int result;

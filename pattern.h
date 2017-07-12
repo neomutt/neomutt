@@ -48,9 +48,10 @@ struct Pattern
   } p;
 };
 
-typedef enum {
+enum PatternExecFlag
+{
   MUTT_MATCH_FULL_ADDRESS = 1
-} pattern_exec_flag;
+};
 
 /* This is used when a message is repeatedly pattern matched against.
  * e.g. for color, scoring, hooks.  It caches a few of the potentially slow
@@ -74,7 +75,7 @@ static inline struct Pattern *new_pattern(void)
   return safe_calloc(1, sizeof(struct Pattern));
 }
 
-int mutt_pattern_exec(struct Pattern *pat, pattern_exec_flag flags,
+int mutt_pattern_exec(struct Pattern *pat, enum PatternExecFlag flags,
                       struct Context *ctx, struct Header *h, struct PatternCache *cache);
 struct Pattern *mutt_pattern_comp(/* const */ char *s, int flags, struct Buffer *err);
 void mutt_check_simple(char *s, size_t len, const char *simple);

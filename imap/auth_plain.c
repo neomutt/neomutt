@@ -29,10 +29,10 @@
 #include "protos.h"
 
 /* imap_auth_plain: SASL PLAIN support */
-imap_auth_res_t imap_auth_plain(struct ImapData *idata, const char *method)
+enum ImapAuthRes imap_auth_plain(struct ImapData *idata, const char *method)
 {
   int rc;
-  imap_auth_res_t res = IMAP_AUTH_SUCCESS;
+  enum ImapAuthRes res = IMAP_AUTH_SUCCESS;
   char buf[STRING];
 
   if (mutt_account_getuser(&idata->conn->account))

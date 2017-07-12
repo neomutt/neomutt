@@ -25,7 +25,7 @@
 
 #include <stdio.h>
 
-enum packet_tags
+enum PacketTags
 {
   PT_RES0 = 0,   /* reserved */
   PT_ESK,        /* Encrypted Session Key */

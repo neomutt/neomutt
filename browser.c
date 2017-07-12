@@ -256,7 +256,7 @@ static int link_is_dir(const char *folder, const char *path)
 static const char *folder_format_str(char *dest, size_t destlen, size_t col, int cols,
                                      char op, const char *src, const char *fmt,
                                      const char *ifstring, const char *elsestring,
-                                     unsigned long data, format_flag flags)
+                                     unsigned long data, enum FormatFlag flags)
 {
   char fn[SHORT_STRING], tmp[SHORT_STRING], permission[11];
   char date[SHORT_STRING], *t_fmt = NULL;
@@ -479,7 +479,7 @@ static const char *folder_format_str(char *dest, size_t destlen, size_t col, int
 static const char *newsgroup_format_str(char *dest, size_t destlen, size_t col, int cols,
                                         char op, const char *src, const char *fmt,
                                         const char *ifstring, const char *elsestring,
-                                        unsigned long data, format_flag flags)
+                                        unsigned long data, enum FormatFlag flags)
 {
   char fn[SHORT_STRING], tmp[SHORT_STRING];
   struct Folder *folder = (struct Folder *) data;
@@ -542,12 +542,12 @@ static const char *newsgroup_format_str(char *dest, size_t destlen, size_t col, 
         snprintf(dest, destlen, tmp, Context->new);
       }
       else if (option(OPTMARKOLD) &&
-               folder->ff->nd->lastCached >= folder->ff->nd->firstMessage &&
-               folder->ff->nd->lastCached <= folder->ff->nd->lastMessage)
+               folder->ff->nd->last_cached >= folder->ff->nd->first_message &&
+               folder->ff->nd->last_cached <= folder->ff->nd->last_message)
       {
         snprintf(tmp, sizeof(tmp), "%%%sd", fmt);
         snprintf(dest, destlen, tmp,
-                 folder->ff->nd->lastMessage - folder->ff->nd->lastCached);
+                 folder->ff->nd->last_message - folder->ff->nd->last_cached);
       }
       else
       {

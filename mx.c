@@ -262,7 +262,7 @@ static void mx_unlink_empty(const char *path)
 
 bool mx_is_imap(const char *p)
 {
-  url_scheme_t scheme;
+  enum UrlScheme scheme;
 
   if (!p)
     return false;
@@ -282,7 +282,7 @@ bool mx_is_imap(const char *p)
 #ifdef USE_POP
 bool mx_is_pop(const char *p)
 {
-  url_scheme_t scheme;
+  enum UrlScheme scheme;
 
   if (!p)
     return false;
@@ -298,7 +298,7 @@ bool mx_is_pop(const char *p)
 #ifdef USE_NNTP
 bool mx_is_nntp(const char *p)
 {
-  url_scheme_t scheme;
+  enum UrlScheme scheme;
 
   if (!p)
     return false;
@@ -314,7 +314,7 @@ bool mx_is_nntp(const char *p)
 #ifdef USE_NOTMUCH
 bool mx_is_notmuch(const char *p)
 {
-  url_scheme_t scheme;
+  enum UrlScheme scheme;
 
   if (!p)
     return false;

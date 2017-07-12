@@ -167,11 +167,12 @@ struct ImapCommand
   int state;
 };
 
-typedef enum {
+enum ImapCommandType
+{
   IMAP_CT_NONE = 0,
   IMAP_CT_LIST,
   IMAP_CT_STATUS
-} IMAP_COMMAND_TYPE;
+};
 
 struct ImapData
 {
@@ -201,7 +202,7 @@ struct ImapData
 
   /* if set, the response parser will store results for complicated commands
    * here. */
-  IMAP_COMMAND_TYPE cmdtype;
+  enum ImapCommandType cmdtype;
   void *cmddata;
 
   /* command queue */
@@ -220,7 +221,7 @@ struct ImapData
   char *mailbox;
   unsigned short check_status;
   unsigned char reopen;
-  unsigned int newMailCount; /* Set when EXISTS notifies of new mail */
+  unsigned int new_mail_count; /* Set when EXISTS notifies of new mail */
   struct ImapCache cache[IMAP_CACHE_LEN];
   struct Hash *uid_hash;
   unsigned int uid_validity;

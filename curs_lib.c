@@ -668,7 +668,7 @@ void mutt_reflow_windows(void)
 #endif
 
   mutt_set_current_menu_redraw_full();
-  /* the pager menu needs this flag set to recalc lineInfo */
+  /* the pager menu needs this flag set to recalc line_info */
   mutt_set_current_menu_redraw(REDRAW_FLOW);
 }
 

@@ -87,7 +87,7 @@ struct Menu
   /* the following are used only by mutt_menu_loop() */
   int top;        /* entry that is the top of the current page */
   int oldcurrent; /* for driver use only. */
-  int searchDir;  /* direction of search */
+  int search_dir;  /* direction of search */
   int tagged;     /* number of tagged entries */
 };
 

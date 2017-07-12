@@ -56,13 +56,13 @@ static const char *const Capabilities[] = {
 };
 
 /* Gmail document one string but use another.  Support both. */
-struct Capability_Alias
+struct CapabilityAlias
 {
   char *name;
   unsigned int value;
 };
 
-static struct Capability_Alias Capability_Aliases[] = {
+static struct CapabilityAlias CapabilityAliases[] = {
   { "X-GM-EXT-1", X_GM_EXT1 }, { NULL, 0 },
 };
 
@@ -311,13 +311,13 @@ static void cmd_parse_capability(struct ImapData *idata, char *s)
       }
     if (!found)
     {
-      for (x = 0; Capability_Aliases[x].name != NULL; x++)
+      for (x = 0; CapabilityAliases[x].name != NULL; x++)
       {
-        if (imap_wordcasecmp(Capability_Aliases[x].name, s) == 0)
+        if (imap_wordcasecmp(CapabilityAliases[x].name, s) == 0)
         {
-          mutt_bit_set(idata->capabilities, Capability_Aliases[x].value);
+          mutt_bit_set(idata->capabilities, CapabilityAliases[x].value);
           mutt_debug(4, " Found capability \"%s\": %d\n",
-                     Capability_Aliases[x].name, Capability_Aliases[x].value);
+                     CapabilityAliases[x].name, CapabilityAliases[x].value);
           found = true;
           break;
         }
@@ -740,7 +740,7 @@ static int cmd_handle_untagged(struct ImapData *idata)
               idata->mailbox, count);
           idata->reopen |= IMAP_NEWMAIL_PENDING;
         }
-        idata->newMailCount = count;
+        idata->new_mail_count = count;
       }
     }
     /* pn vs. s: need initial seqno */
@@ -1003,7 +1003,7 @@ void imap_cmd_finish(struct ImapData *idata)
 
   if (idata->reopen & IMAP_REOPEN_ALLOW)
   {
-    unsigned int count = idata->newMailCount;
+    unsigned int count = idata->new_mail_count;
 
     if (!(idata->reopen & IMAP_EXPUNGE_PENDING) &&
         (idata->reopen & IMAP_NEWMAIL_PENDING) && count > idata->max_msn)

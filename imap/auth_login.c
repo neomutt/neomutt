@@ -29,7 +29,7 @@
 #include "protos.h"
 
 /* imap_auth_login: Plain LOGIN support */
-imap_auth_res_t imap_auth_login(struct ImapData *idata, const char *method)
+enum ImapAuthRes imap_auth_login(struct ImapData *idata, const char *method)
 {
   char q_user[SHORT_STRING], q_pass[SHORT_STRING];
   char buf[STRING];

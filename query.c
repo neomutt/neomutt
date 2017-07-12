@@ -192,7 +192,7 @@ static int query_search(struct Menu *m, regex_t *re, int n)
 static const char *query_format_str(char *dest, size_t destlen, size_t col, int cols,
                                     char op, const char *src, const char *fmt,
                                     const char *ifstring, const char *elsestring,
-                                    unsigned long data, format_flag flags)
+                                    unsigned long data, enum FormatFlag flags)
 {
   struct Entry *entry = (struct Entry *) data;
   struct Query *query = entry->data;

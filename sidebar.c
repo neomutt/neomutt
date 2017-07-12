@@ -64,14 +64,14 @@ static int HilIndex = -1; /* Highlighted mailbox */
 static int BotIndex = -1; /* Last mailbox visible in sidebar */
 
 /* The source of the sidebar divider character. */
-enum div_type
+enum DivType
 {
   SB_DIV_USER,
   SB_DIV_ASCII,
   SB_DIV_UTF8
 };
 
-enum sb_src
+enum SidebarSrc
 {
   SB_SRC_INCOMING,
   SB_SRC_VIRT,
@@ -101,7 +101,7 @@ enum sb_src
 static const char *cb_format_str(char *dest, size_t destlen, size_t col, int cols,
                                  char op, const char *src, const char *prefix,
                                  const char *ifstring, const char *elsestring,
-                                 unsigned long data, format_flag flags)
+                                 unsigned long data, enum FormatFlag flags)
 {
   struct SbEntry *sbe = (struct SbEntry *) data;
   unsigned int optional;
@@ -690,7 +690,7 @@ static int draw_divider(int num_rows, int num_cols)
 
   int i;
   int delim_len;
-  enum div_type altchar = SB_DIV_UTF8;
+  enum DivType altchar = SB_DIV_UTF8;
 
   /* Calculate the width of the delimiter in screen cells */
   delim_len = mutt_strwidth(SidebarDividerChar);

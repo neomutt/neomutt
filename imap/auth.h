@@ -23,33 +23,34 @@
 
 struct ImapData;
 
-typedef enum {
+enum ImapAuthRes
+{
   IMAP_AUTH_SUCCESS = 0,
   IMAP_AUTH_FAILURE,
   IMAP_AUTH_UNAVAIL
-} imap_auth_res_t;
+};
 
 struct ImapAuth
 {
   /* do authentication, using named method or any available if method is NULL */
-  imap_auth_res_t (*authenticate)(struct ImapData *idata, const char *method);
+  enum ImapAuthRes (*authenticate)(struct ImapData *idata, const char *method);
   /* name of authentication method supported, NULL means variable. If this
    * is not null, authenticate may ignore the second parameter. */
   const char *method;
 };
 
 /* external authenticator prototypes */
-imap_auth_res_t imap_auth_plain(struct ImapData *idata, const char *method);
+enum ImapAuthRes imap_auth_plain(struct ImapData *idata, const char *method);
 #ifndef USE_SASL
-imap_auth_res_t imap_auth_anon(struct ImapData *idata, const char *method);
-imap_auth_res_t imap_auth_cram_md5(struct ImapData *idata, const char *method);
+enum ImapAuthRes imap_auth_anon(struct ImapData *idata, const char *method);
+enum ImapAuthRes imap_auth_cram_md5(struct ImapData *idata, const char *method);
 #endif
-imap_auth_res_t imap_auth_login(struct ImapData *idata, const char *method);
+enum ImapAuthRes imap_auth_login(struct ImapData *idata, const char *method);
 #ifdef USE_GSS
-imap_auth_res_t imap_auth_gss(struct ImapData *idata, const char *method);
+enum ImapAuthRes imap_auth_gss(struct ImapData *idata, const char *method);
 #endif
 #ifdef USE_SASL
-imap_auth_res_t imap_auth_sasl(struct ImapData *idata, const char *method);
+enum ImapAuthRes imap_auth_sasl(struct ImapData *idata, const char *method);
 #endif
 
 #endif /* _MUTT_IMAP_AUTH_H */

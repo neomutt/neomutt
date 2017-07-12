@@ -124,18 +124,18 @@ void nntp_group_unread_stat(struct NntpData *nntp_data)
   anum_t first, last;
 
   nntp_data->unread = 0;
-  if (nntp_data->lastMessage == 0 || nntp_data->firstMessage > nntp_data->lastMessage)
+  if (nntp_data->last_message == 0 || nntp_data->first_message > nntp_data->last_message)
     return;
 
-  nntp_data->unread = nntp_data->lastMessage - nntp_data->firstMessage + 1;
+  nntp_data->unread = nntp_data->last_message - nntp_data->first_message + 1;
   for (unsigned int i = 0; i < nntp_data->newsrc_len; i++)
   {
     first = nntp_data->newsrc_ent[i].first;
-    if (first < nntp_data->firstMessage)
-      first = nntp_data->firstMessage;
+    if (first < nntp_data->first_message)
+      first = nntp_data->first_message;
     last = nntp_data->newsrc_ent[i].last;
-    if (last > nntp_data->lastMessage)
-      last = nntp_data->lastMessage;
+    if (last > nntp_data->last_message)
+      last = nntp_data->last_message;
     if (first <= last)
       nntp_data->unread -= last - first + 1;
   }
@@ -266,8 +266,8 @@ int nntp_newsrc_parse(struct NntpServer *nserv)
       nntp_data->newsrc_ent[j].last = 0;
       j++;
     }
-    if (nntp_data->lastMessage == 0)
-      nntp_data->lastMessage = nntp_data->newsrc_ent[j - 1].last;
+    if (nntp_data->last_message == 0)
+      nntp_data->last_message = nntp_data->newsrc_ent[j - 1].last;
     nntp_data->newsrc_len = j;
     safe_realloc(&nntp_data->newsrc_ent, j * sizeof(struct NewsrcEntry));
     nntp_group_unread_stat(nntp_data);
@@ -312,7 +312,7 @@ void nntp_newsrc_gen_entries(struct Context *ctx)
       /* We don't actually check sequential order, since we mark
        * "missing" entries as read/deleted */
       last = NHDR(ctx->hdrs[i])->article_num;
-      if (last >= nntp_data->firstMessage && !ctx->hdrs[i]->deleted &&
+      if (last >= nntp_data->first_message && !ctx->hdrs[i]->deleted &&
           !ctx->hdrs[i]->read)
       {
         if (nntp_data->newsrc_len >= entries)
@@ -339,7 +339,7 @@ void nntp_newsrc_gen_entries(struct Context *ctx)
     }
   }
 
-  if (series && first <= nntp_data->lastLoaded)
+  if (series && first <= nntp_data->last_loaded)
   {
     if (nntp_data->newsrc_len >= entries)
     {
@@ -347,7 +347,7 @@ void nntp_newsrc_gen_entries(struct Context *ctx)
       safe_realloc(&nntp_data->newsrc_ent, entries * sizeof(struct NewsrcEntry));
     }
     nntp_data->newsrc_ent[nntp_data->newsrc_len].first = first;
-    nntp_data->newsrc_ent[nntp_data->newsrc_len].last = nntp_data->lastLoaded;
+    nntp_data->newsrc_ent[nntp_data->newsrc_len].last = nntp_data->last_loaded;
     nntp_data->newsrc_len++;
   }
   safe_realloc(&nntp_data->newsrc_ent, nntp_data->newsrc_len * sizeof(struct NewsrcEntry));
@@ -538,14 +538,14 @@ int nntp_add_group(char *line, void *data)
 
   nntp_data = nntp_data_find(nserv, group);
   nntp_data->deleted = false;
-  nntp_data->firstMessage = first;
-  nntp_data->lastMessage = last;
+  nntp_data->first_message = first;
+  nntp_data->last_message = last;
   nntp_data->allowed = (mod == 'y') || (mod == 'm');
   mutt_str_replace(&nntp_data->desc, desc);
-  if (nntp_data->newsrc_ent || nntp_data->lastCached)
+  if (nntp_data->newsrc_ent || nntp_data->last_cached)
     nntp_group_unread_stat(nntp_data);
-  else if (nntp_data->lastMessage && nntp_data->firstMessage <= nntp_data->lastMessage)
-    nntp_data->unread = nntp_data->lastMessage - nntp_data->firstMessage + 1;
+  else if (nntp_data->last_message && nntp_data->first_message <= nntp_data->last_message)
+    nntp_data->unread = nntp_data->last_message - nntp_data->first_message + 1;
   else
     nntp_data->unread = 0;
   return 0;
@@ -610,7 +610,7 @@ int nntp_active_save_cache(struct NntpServer *nserv)
       safe_realloc(&buf, buflen);
     }
     snprintf(buf + off, buflen - off, "%s %d %d %c%s%s\n", nntp_data->group,
-             nntp_data->lastMessage, nntp_data->firstMessage,
+             nntp_data->last_message, nntp_data->first_message,
              nntp_data->allowed ? 'y' : 'n', nntp_data->desc ? " " : "",
              nntp_data->desc ? nntp_data->desc : "");
     off += strlen(buf + off);
@@ -666,12 +666,12 @@ void nntp_hcache_update(struct NntpData *nntp_data, header_cache_t *hc)
     if (sscanf(hdata, ANUM " " ANUM, &first, &last) == 2)
     {
       old = true;
-      nntp_data->lastCached = last;
+      nntp_data->last_cached = last;
 
       /* clean removed headers from cache */
       for (current = first; current <= last; current++)
       {
-        if (current >= nntp_data->firstMessage && current <= nntp_data->lastMessage)
+        if (current >= nntp_data->first_message && current <= nntp_data->last_message)
           continue;
 
         snprintf(buf, sizeof(buf), "%d", current);
@@ -683,9 +683,9 @@ void nntp_hcache_update(struct NntpData *nntp_data, header_cache_t *hc)
   }
 
   /* store current values of first and last */
-  if (!old || nntp_data->firstMessage != first || nntp_data->lastMessage != last)
+  if (!old || nntp_data->first_message != first || nntp_data->last_message != last)
   {
-    snprintf(buf, sizeof(buf), "%u %u", nntp_data->firstMessage, nntp_data->lastMessage);
+    snprintf(buf, sizeof(buf), "%u %u", nntp_data->first_message, nntp_data->last_message);
     mutt_debug(2, "nntp_hcache_update: mutt_hcache_store index: %s\n", buf);
     mutt_hcache_store_raw(hc, "index", 5, buf, strlen(buf));
   }
@@ -700,7 +700,7 @@ static int nntp_bcache_delete(const char *id, struct BodyCache *bcache, void *da
   char c;
 
   if (!nntp_data || sscanf(id, ANUM "%c", &anum, &c) != 1 ||
-      anum < nntp_data->firstMessage || anum > nntp_data->lastMessage)
+      anum < nntp_data->first_message || anum > nntp_data->last_message)
   {
     if (nntp_data)
       mutt_debug(2, "nntp_bcache_delete: mutt_bcache_del %s\n", id);
@@ -726,7 +726,7 @@ void nntp_delete_group_cache(struct NntpData *nntp_data)
   nntp_hcache_namer(nntp_data->group, file, sizeof(file));
   cache_expand(file, sizeof(file), &nntp_data->nserv->conn->account, file);
   unlink(file);
-  nntp_data->lastCached = 0;
+  nntp_data->last_cached = 0;
   mutt_debug(2, "nntp_delete_group_cache: %s\n", file);
 #endif
 
@@ -816,7 +816,7 @@ void nntp_clear_cache(struct NntpServer *nserv)
  * %u = username */
 const char *nntp_format_str(char *dest, size_t destlen, size_t col, int cols, char op,
                             const char *src, const char *fmt, const char *ifstring,
-                            const char *elsestring, unsigned long data, format_flag flags)
+                            const char *elsestring, unsigned long data, enum FormatFlag flags)
 {
   struct NntpServer *nserv = (struct NntpServer *) data;
   struct Account *acct = &nserv->conn->account;
@@ -1029,13 +1029,13 @@ struct NntpServer *nntp_select_server(char *server, int leave_lock)
           {
             if (nntp_data->deleted)
             {
-              nntp_data->firstMessage = first;
-              nntp_data->lastMessage = last;
+              nntp_data->first_message = first;
+              nntp_data->last_message = last;
             }
-            if (last >= nntp_data->firstMessage && last <= nntp_data->lastMessage)
+            if (last >= nntp_data->first_message && last <= nntp_data->last_message)
             {
-              nntp_data->lastCached = last;
-              mutt_debug(2, "nntp_select_server: %s lastCached=%u\n", nntp_data->group, last);
+              nntp_data->last_cached = last;
+              mutt_debug(2, "nntp_select_server: %s last_cached=%u\n", nntp_data->group, last);
             }
           }
           mutt_hcache_free(hc, &hdata);
@@ -1093,7 +1093,7 @@ void nntp_article_status(struct Context *ctx, struct Header *hdr, char *group, a
   }
 
   /* article was not cached yet, it's new */
-  if (anum > nntp_data->lastCached)
+  if (anum > nntp_data->last_cached)
     return;
 
   /* article isn't read but cached, it's old */
@@ -1159,7 +1159,7 @@ struct NntpData *mutt_newsgroup_catchup(struct NntpServer *nserv, char *group)
     safe_realloc(&nntp_data->newsrc_ent, sizeof(struct NewsrcEntry));
     nntp_data->newsrc_len = 1;
     nntp_data->newsrc_ent[0].first = 1;
-    nntp_data->newsrc_ent[0].last = nntp_data->lastMessage;
+    nntp_data->newsrc_ent[0].last = nntp_data->last_message;
   }
   nntp_data->unread = 0;
   if (Context && Context->data == nntp_data)
@@ -1187,7 +1187,7 @@ struct NntpData *mutt_newsgroup_uncatchup(struct NntpServer *nserv, char *group)
     safe_realloc(&nntp_data->newsrc_ent, sizeof(struct NewsrcEntry));
     nntp_data->newsrc_len = 1;
     nntp_data->newsrc_ent[0].first = 1;
-    nntp_data->newsrc_ent[0].last = nntp_data->firstMessage - 1;
+    nntp_data->newsrc_ent[0].last = nntp_data->first_message - 1;
   }
   if (Context && Context->data == nntp_data)
   {
@@ -1197,7 +1197,7 @@ struct NntpData *mutt_newsgroup_uncatchup(struct NntpServer *nserv, char *group)
   }
   else
   {
-    nntp_data->unread = nntp_data->lastMessage;
+    nntp_data->unread = nntp_data->last_message;
     if (nntp_data->newsrc_ent)
       nntp_data->unread -= nntp_data->newsrc_ent[0].last;
   }

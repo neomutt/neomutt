@@ -96,7 +96,7 @@ typedef void (*hcache_close_t)(void **ctx);
  */
 typedef const char *(*hcache_backend_t)(void);
 
-typedef struct
+struct HcacheOps
 {
   const char       *name;
   hcache_open_t    open;
@@ -106,7 +106,7 @@ typedef struct
   hcache_delete_t  delete;
   hcache_close_t   close;
   hcache_backend_t backend;
-} hcache_ops_t;
+};
 
 #define HCACHE_BACKEND_LIST                                                    \
   HCACHE_BACKEND(bdb)                                                          \
@@ -117,15 +117,15 @@ typedef struct
   HCACHE_BACKEND(tokyocabinet)
 
 #define HCACHE_BACKEND_OPS(_name)                                              \
-  const hcache_ops_t hcache_##_name##_ops = {                                  \
-      .name    = #_name,                                                       \
-      .open    = hcache_##_name##_open,                                        \
-      .fetch   = hcache_##_name##_fetch,                                       \
-      .free    = hcache_##_name##_free,                                        \
-      .store   = hcache_##_name##_store,                                       \
-      .delete  = hcache_##_name##_delete,                                      \
-      .close   = hcache_##_name##_close,                                       \
-      .backend = hcache_##_name##_backend,                                     \
+  const struct HcacheOps hcache_##_name##_ops = {                              \
+    .name = #_name,                                                            \
+    .open = hcache_##_name##_open,                                             \
+    .fetch = hcache_##_name##_fetch,                                           \
+    .free = hcache_##_name##_free,                                             \
+    .store = hcache_##_name##_store,                                           \
+    .delete = hcache_##_name##_delete,                                         \
+    .close = hcache_##_name##_close,                                           \
+    .backend = hcache_##_name##_backend,                                       \
   };
 
 #endif /* _MUTT_HCACHE_BACKEND_H */

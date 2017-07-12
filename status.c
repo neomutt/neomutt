@@ -66,7 +66,7 @@ static void _menu_status_line(char *buf, size_t buflen, size_t col, int cols,
 static const char *status_format_str(char *buf, size_t buflen, size_t col, int cols,
                                      char op, const char *src, const char *prefix,
                                      const char *ifstring, const char *elsestring,
-                                     unsigned long data, format_flag flags)
+                                     unsigned long data, enum FormatFlag flags)
 {
   char fmt[SHORT_STRING], tmp[SHORT_STRING], *cp = NULL;
   int count, optional = (flags & MUTT_FORMAT_OPTIONAL);

@@ -99,10 +99,10 @@ struct NntpData
 {
   char *group;
   char *desc;
-  anum_t firstMessage;
-  anum_t lastMessage;
-  anum_t lastLoaded;
-  anum_t lastCached;
+  anum_t first_message;
+  anum_t last_message;
+  anum_t last_loaded;
+  anum_t last_cached;
   anum_t unread;
   bool subscribed : 1;
   bool new : 1;
@@ -155,7 +155,7 @@ void nntp_clear_cache(struct NntpServer *nserv);
 const char *nntp_format_str(char *dest, size_t destlen, size_t col, int cols,
                             char op, const char *src, const char *fmt,
                             const char *ifstring, const char *elsestring,
-                            unsigned long data, format_flag flags);
+                            unsigned long data, enum FormatFlag flags);
 
 struct NntpServer *CurrentNewsSrv INITVAL(NULL);
 

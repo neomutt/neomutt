@@ -1268,13 +1268,18 @@ bail:
   return -1;
 }
 
-typedef enum group_state_t { NONE, RX, ADDR } group_state_t;
+enum GroupState
+{
+  GS_NONE,
+  GS_RX,
+  GS_ADDR
+};
 
 static int parse_group(struct Buffer *buf, struct Buffer *s, unsigned long data,
                        struct Buffer *err)
 {
   struct GroupContext *gc = NULL;
-  group_state_t state = NONE;
+  enum GroupState state = GS_NONE;
   struct Address *addr = NULL;
   char *estr = NULL;
 
@@ -1292,19 +1297,19 @@ static int parse_group(struct Buffer *buf, struct Buffer *s, unsigned long data,
     }
 
     if (mutt_strcasecmp(buf->data, "-rx") == 0)
-      state = RX;
+      state = GS_RX;
     else if (mutt_strcasecmp(buf->data, "-addr") == 0)
-      state = ADDR;
+      state = GS_ADDR;
     else
     {
       switch (state)
       {
-        case NONE:
+        case GS_NONE:
           snprintf(err->data, err->dsize, _("%sgroup: missing -rx or -addr."),
                    data == MUTT_UNGROUP ? "un" : "");
           goto bail;
 
-        case RX:
+        case GS_RX:
           if (data == MUTT_GROUP &&
               mutt_group_context_add_rx(gc, buf->data, REG_ICASE, err) != 0)
             goto bail;
@@ -1312,7 +1317,7 @@ static int parse_group(struct Buffer *buf, struct Buffer *s, unsigned long data,
             goto bail;
           break;
 
-        case ADDR:
+        case GS_ADDR:
           if ((addr = mutt_parse_adrlist(NULL, buf->data)) == NULL)
             goto bail;
           if (mutt_addrlist_to_intl(addr, &estr))
@@ -4234,7 +4239,7 @@ void mutt_init(int skip_sys_rc, struct List *commands)
   {
     do
     {
-      if (mutt_set_xdg_path(kXDGConfigDirs, buffer, sizeof(buffer)))
+      if (mutt_set_xdg_path(XDG_CONFIG_DIRS, buffer, sizeof(buffer)))
         break;
 
       snprintf(buffer, sizeof(buffer), "%s/neomuttrc-%s", SYSCONFDIR, PACKAGE_VERSION);

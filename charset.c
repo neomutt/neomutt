@@ -473,7 +473,7 @@ int mutt_convert_string(char **ps, const char *from, const char *to, int flags)
  * Used in sendlib.c for converting from mutt's Charset
  */
 
-struct FgetConvS
+struct FgetConv
 {
   FILE *file;
   iconv_t cd;
@@ -498,7 +498,7 @@ struct FgetConvNot
  */
 FGETCONV *fgetconv_open(FILE *file, const char *from, const char *to, int flags)
 {
-  struct FgetConvS *fc = NULL;
+  struct FgetConv *fc = NULL;
   iconv_t cd = (iconv_t) -1;
   static ICONV_CONST char *repls[] = { "\357\277\275", "?", 0 };
 
@@ -507,7 +507,7 @@ FGETCONV *fgetconv_open(FILE *file, const char *from, const char *to, int flags)
 
   if (cd != (iconv_t) -1)
   {
-    fc = safe_malloc(sizeof(struct FgetConvS));
+    fc = safe_malloc(sizeof(struct FgetConv));
     fc->p = fc->ob = fc->bufo;
     fc->ib = fc->bufi;
     fc->ibl = 0;
@@ -543,7 +543,7 @@ char *fgetconvs(char *buf, size_t l, FGETCONV *_fc)
 
 int fgetconv(FGETCONV *_fc)
 {
-  struct FgetConvS *fc = (struct FgetConvS *) _fc;
+  struct FgetConv *fc = (struct FgetConv *) _fc;
 
   if (!fc)
     return EOF;
@@ -596,7 +596,7 @@ int fgetconv(FGETCONV *_fc)
 
 void fgetconv_close(FGETCONV **_fc)
 {
-  struct FgetConvS *fc = (struct FgetConvS *) *_fc;
+  struct FgetConv *fc = (struct FgetConv *) *_fc;
 
   if (fc->cd != (iconv_t) -1)
     iconv_close(fc->cd);

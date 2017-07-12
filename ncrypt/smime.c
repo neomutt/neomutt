@@ -149,7 +149,7 @@ static const char *_mutt_fmt_smime_command(char *dest, size_t destlen, size_t co
                                            int cols, char op, const char *src,
                                            const char *prefix, const char *ifstring,
                                            const char *elsestring,
-                                           unsigned long data, format_flag flags)
+                                           unsigned long data, enum FormatFlag flags)
 {
   char fmt[16];
   struct SmimeCommandContext *cctx = (struct SmimeCommandContext *) data;

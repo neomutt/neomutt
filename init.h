@@ -53,7 +53,7 @@ struct Buffer;
 #define R_NONE        0
 #define R_INDEX       (1 << 0) /* redraw the index menu (MENU_MAIN) */
 #define R_PAGER       (1 << 1) /* redraw the pager menu */
-#define R_PAGER_FLOW  (1 << 2) /* reflow lineInfo and redraw the pager menu */
+#define R_PAGER_FLOW  (1 << 2) /* reflow line_info and redraw the pager menu */
 #define R_RESORT      (1 << 3) /* resort the mailbox */
 #define R_RESORT_SUB  (1 << 4) /* resort subthreads */
 #define R_RESORT_INIT (1 << 5) /* resort from scratch */

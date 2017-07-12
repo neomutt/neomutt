@@ -37,7 +37,7 @@
 
 #ifdef USE_SASL
 /* SASL authenticator */
-static pop_auth_res_t pop_auth_sasl(struct PopData *pop_data, const char *method)
+static enum PopAuthRes pop_auth_sasl(struct PopData *pop_data, const char *method)
 {
   sasl_conn_t *saslconn = NULL;
   sasl_interact_t *interaction = NULL;
@@ -201,7 +201,7 @@ void pop_apop_timestamp(struct PopData *pop_data, char *buf)
 }
 
 /* APOP authenticator */
-static pop_auth_res_t pop_auth_apop(struct PopData *pop_data, const char *method)
+static enum PopAuthRes pop_auth_apop(struct PopData *pop_data, const char *method)
 {
   struct Md5Ctx ctx;
   unsigned char digest[16];
@@ -248,7 +248,7 @@ static pop_auth_res_t pop_auth_apop(struct PopData *pop_data, const char *method
 }
 
 /* USER authenticator */
-static pop_auth_res_t pop_auth_user(struct PopData *pop_data, const char *method)
+static enum PopAuthRes pop_auth_user(struct PopData *pop_data, const char *method)
 {
   char buf[LONG_STRING];
   int ret;

@@ -22,15 +22,15 @@ struct Address;
 struct Body;
 struct PgpKeyInfo;
 
-typedef enum pgp_ring {
+enum PgpRing {
   PGP_PUBRING,
   PGP_SECRING,
-} pgp_ring_t;
+};
 
 struct Body *pgp_make_key_attachment(char *tempf);
 
-struct PgpKeyInfo * pgp_ask_for_key(char *tag, char *whatfor, short abilities, pgp_ring_t keyring);
-struct PgpKeyInfo * pgp_getkeybyaddr(struct Address *a, short abilities, pgp_ring_t keyring, int oppenc_mode);
-struct PgpKeyInfo * pgp_getkeybystr(char *p, short abilities, pgp_ring_t keyring);
+struct PgpKeyInfo * pgp_ask_for_key(char *tag, char *whatfor, short abilities, enum PgpRing keyring);
+struct PgpKeyInfo * pgp_getkeybyaddr(struct Address *a, short abilities, enum PgpRing keyring, int oppenc_mode);
+struct PgpKeyInfo * pgp_getkeybystr(char *p, short abilities, enum PgpRing keyring);
 
 #endif /* _NCRYPT_PGPKEY_H */

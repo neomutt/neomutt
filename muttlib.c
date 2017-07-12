@@ -71,12 +71,12 @@
 #endif
 
 static const char *xdg_env_vars[] = {
-      [kXDGConfigHome] = "XDG_CONFIG_HOME",
-      [kXDGConfigDirs] = "XDG_CONFIG_DIRS",
+      [XDG_CONFIG_HOME] = "XDG_CONFIG_HOME",
+      [XDG_CONFIG_DIRS] = "XDG_CONFIG_DIRS",
 };
 
 static const char *xdg_defaults[] = {
-      [kXDGConfigHome] = "~/.config", [kXDGConfigDirs] = "/etc/xdg",
+      [XDG_CONFIG_HOME] = "~/.config", [XDG_CONFIG_DIRS] = "/etc/xdg",
 };
 
 struct Body *mutt_new_body(void)
@@ -953,7 +953,7 @@ void mutt_pretty_mailbox(char *s, size_t buflen)
 {
   char *p = s, *q = s;
   size_t len;
-  url_scheme_t scheme;
+  enum UrlScheme scheme;
   char tmp[PATH_MAX];
 
   scheme = url_check_scheme(s);
@@ -1298,7 +1298,7 @@ void mutt_FormatString(char *dest,     /* output buffer */
                        const char *src,    /* template string */
                        format_t *callback, /* callback for processing */
                        unsigned long data, /* callback data */
-                       format_flag flags)  /* callback flags */
+                       enum FormatFlag flags)  /* callback flags */
 {
   char prefix[SHORT_STRING], buf[LONG_STRING], *cp = NULL, *wptr = dest, ch;
   char ifstring[SHORT_STRING], elsestring[SHORT_STRING];
@@ -2225,7 +2225,7 @@ void mutt_encode_path(char *dest, size_t dlen, const char *src)
  *
  * Return 1 if an entry was found that actually exists on disk and 0 otherwise.
  */
-int mutt_set_xdg_path(const XDGType type, char *buf, size_t bufsize)
+int mutt_set_xdg_path(enum XdgType type, char *buf, size_t bufsize)
 {
   char *xdg_env = getenv(xdg_env_vars[type]);
   char *xdg = (xdg_env && *xdg_env) ? safe_strdup(xdg_env) :

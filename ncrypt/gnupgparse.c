@@ -374,7 +374,7 @@ bail:
   return NULL;
 }
 
-struct PgpKeyInfo *pgp_get_candidates(pgp_ring_t keyring, struct List *hints)
+struct PgpKeyInfo *pgp_get_candidates(enum PgpRing keyring, struct List *hints)
 {
   FILE *fp = NULL;
   pid_t thepid;

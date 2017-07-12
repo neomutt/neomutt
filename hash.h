@@ -20,14 +20,14 @@
 
 #include <stdbool.h>
 
-union hash_key {
+union HashKey {
   const char *strkey;
   unsigned int intkey;
 };
 
 struct HashElem
 {
-  union hash_key key;
+  union HashKey key;
   void *data;
   struct HashElem *next;
 };
@@ -38,8 +38,8 @@ struct Hash
   bool strdup_keys : 1; /* if set, the key->strkey is strdup'ed */
   bool allow_dups  : 1; /* if set, duplicate keys are allowed */
   struct HashElem **table;
-  unsigned int (*gen_hash)(union hash_key, unsigned int);
-  int (*cmp_key)(union hash_key, union hash_key);
+  unsigned int (*gen_hash)(union HashKey, unsigned int);
+  int (*cmp_key)(union HashKey, union HashKey);
 };
 
 /* flags for hash_create() */

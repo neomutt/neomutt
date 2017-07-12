@@ -135,7 +135,7 @@ static bool first_mailing_list(char *buf, size_t buflen, struct Address *a)
  * arguments.
  * Returns the number of chars written.
  */
-static size_t add_index_color(char *buf, size_t buflen, format_flag flags, char color)
+static size_t add_index_color(char *buf, size_t buflen, enum FormatFlag flags, char color)
 {
   int len;
 
@@ -474,7 +474,7 @@ static char *apply_subject_mods(struct Envelope *env)
 static const char *hdr_format_str(char *dest, size_t destlen, size_t col, int cols,
                                   char op, const char *src, const char *prefix,
                                   const char *ifstring, const char *elsestring,
-                                  unsigned long data, format_flag flags)
+                                  unsigned long data, enum FormatFlag flags)
 {
   struct HdrFormatInfo *hfi = (struct HdrFormatInfo *) data;
   struct Header *hdr = NULL, *htmp = NULL;
@@ -1319,7 +1319,7 @@ static const char *hdr_format_str(char *dest, size_t destlen, size_t col, int co
 }
 
 void _mutt_make_string(char *dest, size_t destlen, const char *s,
-                       struct Context *ctx, struct Header *hdr, format_flag flags)
+                       struct Context *ctx, struct Header *hdr, enum FormatFlag flags)
 {
   struct HdrFormatInfo hfi;
 
@@ -1332,7 +1332,7 @@ void _mutt_make_string(char *dest, size_t destlen, const char *s,
 }
 
 void mutt_make_string_info(char *dst, size_t dstlen, int cols, const char *s,
-                           struct HdrFormatInfo *hfi, format_flag flags)
+                           struct HdrFormatInfo *hfi, enum FormatFlag flags)
 {
   mutt_FormatString(dst, dstlen, 0, cols, s, hdr_format_str, (unsigned long) hfi, flags);
 }

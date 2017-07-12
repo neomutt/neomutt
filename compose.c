@@ -632,7 +632,7 @@ static unsigned long cum_attachs_size(struct Menu *menu)
 static const char *compose_format_str(char *buf, size_t buflen, size_t col, int cols,
                                       char op, const char *src, const char *prefix,
                                       const char *ifstring, const char *elsestring,
-                                      unsigned long data, format_flag flags)
+                                      unsigned long data, enum FormatFlag flags)
 {
   char fmt[SHORT_STRING], tmp[SHORT_STRING];
   int optional = (flags & MUTT_FORMAT_OPTIONAL);

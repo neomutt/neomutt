@@ -56,7 +56,7 @@ static const char *_mutt_fmt_pgp_command(char *dest, size_t destlen, size_t col,
                                          int cols, char op, const char *src,
                                          const char *prefix, const char *ifstring,
                                          const char *elsestring,
-                                         unsigned long data, format_flag flags)
+                                         unsigned long data, enum FormatFlag flags)
 {
   char fmt[16];
   struct PgpCommandContext *cctx = (struct PgpCommandContext *) data;
@@ -310,7 +310,7 @@ pid_t pgp_invoke_verify_key(FILE **pgpin, FILE **pgpout, FILE **pgperr, int pgpi
 
 pid_t pgp_invoke_list_keys(FILE **pgpin, FILE **pgpout, FILE **pgperr,
                            int pgpinfd, int pgpoutfd, int pgperrfd,
-                           pgp_ring_t keyring, struct List *hints)
+                           enum PgpRing keyring, struct List *hints)
 {
   char uids[HUGE_STRING];
   char tmpuids[HUGE_STRING];

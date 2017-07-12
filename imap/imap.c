@@ -619,7 +619,7 @@ static int imap_open_mailbox(struct Context *ctx)
   /* clear mailbox status */
   idata->status = false;
   memset(idata->ctx->rights, 0, sizeof(idata->ctx->rights));
-  idata->newMailCount = 0;
+  idata->new_mail_count = 0;
   idata->max_msn = 0;
 
   mutt_message(_("Selecting %s..."), idata->mailbox);
@@ -713,8 +713,8 @@ static int imap_open_mailbox(struct Context *ctx)
       pc = imap_next_word(pc);
       if (ascii_strncasecmp("EXISTS", pc, 6) == 0)
       {
-        count = idata->newMailCount;
-        idata->newMailCount = 0;
+        count = idata->new_mail_count;
+        idata->new_mail_count = 0;
       }
     }
   } while (rc == IMAP_CMD_CONTINUE);

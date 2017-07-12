@@ -56,7 +56,7 @@
 static unsigned int hcachever = 0x0;
 
 /**
- * header_cache_t - header cache structure.
+ * struct HeaderCache - header cache structure
  *
  * This struct holds both the backend-agnostic and the backend-specific parts
  * of the header cache. Backend code MUST initialize the fetch, store,
@@ -70,18 +70,18 @@ struct HeaderCache
   void *ctx;
 };
 
-typedef union {
+union Validate {
   struct timeval timeval;
   unsigned int uidvalidity;
-} validate;
+};
 
-#define HCACHE_BACKEND(name) extern const hcache_ops_t hcache_##name##_ops;
+#define HCACHE_BACKEND(name) extern const struct HcacheOps hcache_##name##_ops;
 HCACHE_BACKEND_LIST
 #undef HCACHE_BACKEND
 
 /* Keep this list sorted as it is in configure.ac to avoid user surprise if no
  * header_cache_backend is specified. */
-const hcache_ops_t *hcache_ops[] = {
+const struct HcacheOps *hcache_ops[] = {
 #ifdef HAVE_TC
   &hcache_tokyocabinet_ops,
 #endif
@@ -103,9 +103,9 @@ const hcache_ops_t *hcache_ops[] = {
   NULL,
 };
 
-static const hcache_ops_t *hcache_get_backend_ops(const char *backend)
+static const struct HcacheOps *hcache_get_backend_ops(const char *backend)
 {
-  const hcache_ops_t **ops = hcache_ops;
+  const struct HcacheOps **ops = hcache_ops;
 
   if (!backend || !*backend)
   {
@@ -513,7 +513,7 @@ static void restore_envelope(struct Envelope *e, const unsigned char *d, int *of
 
 static int crc_matches(const char *d, unsigned int crc)
 {
-  int off = sizeof(validate);
+  int off = sizeof(union Validate);
   unsigned int mycrc = 0;
 
   if (!d)
@@ -636,7 +636,7 @@ static void *hcache_dump(header_cache_t *h, struct Header *header, int *off,
   int convert = !Charset_is_utf8;
 
   *off = 0;
-  d = lazy_malloc(sizeof(validate));
+  d = lazy_malloc(sizeof(union Validate));
 
   if (uidvalidity == 0)
   {
@@ -646,7 +646,7 @@ static void *hcache_dump(header_cache_t *h, struct Header *header, int *off,
   }
   else
     memcpy(d, &uidvalidity, sizeof(uidvalidity));
-  *off += sizeof(validate);
+  *off += sizeof(union Validate);
 
   d = dump_int(h->crc, d, off);
 
@@ -693,7 +693,7 @@ struct Header *mutt_hcache_restore(const unsigned char *d)
   int convert = !Charset_is_utf8;
 
   /* skip validate */
-  off += sizeof(validate);
+  off += sizeof(union Validate);
 
   /* skip crc */
   off += sizeof(unsigned int);
@@ -730,7 +730,7 @@ static char *get_foldername(const char *folder)
 
 header_cache_t *mutt_hcache_open(const char *path, const char *folder, hcache_namer_t namer)
 {
-  const hcache_ops_t *ops = hcache_get_ops();
+  const struct HcacheOps *ops = hcache_get_ops();
   if (!ops)
     return NULL;
 
@@ -805,7 +805,7 @@ header_cache_t *mutt_hcache_open(const char *path, const char *folder, hcache_na
 
 void mutt_hcache_close(header_cache_t *h)
 {
-  const hcache_ops_t *ops = hcache_get_ops();
+  const struct HcacheOps *ops = hcache_get_ops();
   if (!h || !ops)
     return;
 
@@ -836,7 +836,7 @@ void *mutt_hcache_fetch(header_cache_t *h, const char *key, size_t keylen)
 void *mutt_hcache_fetch_raw(header_cache_t *h, const char *key, size_t keylen)
 {
   char path[_POSIX_PATH_MAX];
-  const hcache_ops_t *ops = hcache_get_ops();
+  const struct HcacheOps *ops = hcache_get_ops();
 
   if (!h || !ops)
     return NULL;
@@ -848,7 +848,7 @@ void *mutt_hcache_fetch_raw(header_cache_t *h, const char *key, size_t keylen)
 
 void mutt_hcache_free(header_cache_t *h, void **data)
 {
-  const hcache_ops_t *ops = hcache_get_ops();
+  const struct HcacheOps *ops = hcache_get_ops();
 
   if (!h || !ops)
     return;
@@ -878,7 +878,7 @@ int mutt_hcache_store_raw(header_cache_t *h, const char *key, size_t keylen,
                           void *data, size_t dlen)
 {
   char path[_POSIX_PATH_MAX];
-  const hcache_ops_t *ops = hcache_get_ops();
+  const struct HcacheOps *ops = hcache_get_ops();
 
   if (!h || !ops)
     return -1;
@@ -891,7 +891,7 @@ int mutt_hcache_store_raw(header_cache_t *h, const char *key, size_t keylen,
 int mutt_hcache_delete(header_cache_t *h, const char *key, size_t keylen)
 {
   char path[_POSIX_PATH_MAX];
-  const hcache_ops_t *ops = hcache_get_ops();
+  const struct HcacheOps *ops = hcache_get_ops();
 
   if (!h)
     return -1;
@@ -904,7 +904,7 @@ int mutt_hcache_delete(header_cache_t *h, const char *key, size_t keylen)
 const char *mutt_hcache_backend_list(void)
 {
   char tmp[STRING] = { 0 };
-  const hcache_ops_t **ops = hcache_ops;
+  const struct HcacheOps **ops = hcache_ops;
   size_t len = 0;
 
   for (; *ops; ++ops)

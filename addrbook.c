@@ -46,7 +46,7 @@ static const struct Mapping AliasHelp[] = {
 static const char *alias_format_str(char *dest, size_t destlen, size_t col, int cols,
                                     char op, const char *src, const char *fmt,
                                     const char *ifstring, const char *elsestring,
-                                    unsigned long data, format_flag flags)
+                                    unsigned long data, enum FormatFlag flags)
 {
   char tmp[SHORT_STRING], adr[SHORT_STRING];
   struct Alias *alias = (struct Alias *) data;

@@ -23,7 +23,7 @@
 
 #define SOMEPRIME 149711
 
-static unsigned int gen_string_hash(union hash_key key, unsigned int n)
+static unsigned int gen_string_hash(union HashKey key, unsigned int n)
 {
   unsigned int h = 0;
   unsigned char *s = (unsigned char *) key.strkey;
@@ -35,12 +35,12 @@ static unsigned int gen_string_hash(union hash_key key, unsigned int n)
   return h;
 }
 
-static int cmp_string_key(union hash_key a, union hash_key b)
+static int cmp_string_key(union HashKey a, union HashKey b)
 {
   return mutt_strcmp(a.strkey, b.strkey);
 }
 
-static unsigned int gen_case_string_hash(union hash_key key, unsigned int n)
+static unsigned int gen_case_string_hash(union HashKey key, unsigned int n)
 {
   unsigned int h = 0;
   unsigned char *s = (unsigned char *) key.strkey;
@@ -52,17 +52,17 @@ static unsigned int gen_case_string_hash(union hash_key key, unsigned int n)
   return h;
 }
 
-static int cmp_case_string_key(union hash_key a, union hash_key b)
+static int cmp_case_string_key(union HashKey a, union HashKey b)
 {
   return mutt_strcasecmp(a.strkey, b.strkey);
 }
 
-static unsigned int gen_int_hash(union hash_key key, unsigned int n)
+static unsigned int gen_int_hash(union HashKey key, unsigned int n)
 {
   return key.intkey % n;
 }
 
-static int cmp_int_key(union hash_key a, union hash_key b)
+static int cmp_int_key(union HashKey a, union HashKey b)
 {
   if (a.intkey == b.intkey)
     return 0;
@@ -139,7 +139,7 @@ struct Hash *hash_resize(struct Hash *ptr, int nelem, int lower)
  * data         data to associate with `key'
  * allow_dup    if nonzero, duplicate keys are allowed in the table
  */
-static int union_hash_insert(struct Hash *table, union hash_key key, void *data)
+static int union_hash_insert(struct Hash *table, union HashKey key, void *data)
 {
   struct HashElem *ptr = NULL;
   unsigned int h;
@@ -183,19 +183,19 @@ static int union_hash_insert(struct Hash *table, union hash_key key, void *data)
 
 int hash_insert(struct Hash *table, const char *strkey, void *data)
 {
-  union hash_key key;
+  union HashKey key;
   key.strkey = table->strdup_keys ? safe_strdup(strkey) : strkey;
   return union_hash_insert(table, key, data);
 }
 
 int int_hash_insert(struct Hash *table, unsigned int intkey, void *data)
 {
-  union hash_key key;
+  union HashKey key;
   key.intkey = intkey;
   return union_hash_insert(table, key, data);
 }
 
-static struct HashElem *union_hash_find_elem(const struct Hash *table, union hash_key key)
+static struct HashElem *union_hash_find_elem(const struct Hash *table, union HashKey key)
 {
   int hash;
   struct HashElem *ptr = NULL;
@@ -213,7 +213,7 @@ static struct HashElem *union_hash_find_elem(const struct Hash *table, union has
   return NULL;
 }
 
-static void *union_hash_find(const struct Hash *table, union hash_key key)
+static void *union_hash_find(const struct Hash *table, union HashKey key)
 {
   struct HashElem *ptr = union_hash_find_elem(table, key);
   if (ptr)
@@ -224,28 +224,28 @@ static void *union_hash_find(const struct Hash *table, union hash_key key)
 
 void *hash_find(const struct Hash *table, const char *strkey)
 {
-  union hash_key key;
+  union HashKey key;
   key.strkey = strkey;
   return union_hash_find(table, key);
 }
 
 struct HashElem *hash_find_elem(const struct Hash *table, const char *strkey)
 {
-  union hash_key key;
+  union HashKey key;
   key.strkey = strkey;
   return union_hash_find_elem(table, key);
 }
 
 void *int_hash_find(const struct Hash *table, unsigned int intkey)
 {
-  union hash_key key;
+  union HashKey key;
   key.intkey = intkey;
   return union_hash_find(table, key);
 }
 
 struct HashElem *hash_find_bucket(const struct Hash *table, const char *strkey)
 {
-  union hash_key key;
+  union HashKey key;
   int hash;
 
   if (!table)
@@ -256,7 +256,7 @@ struct HashElem *hash_find_bucket(const struct Hash *table, const char *strkey)
   return table->table[hash];
 }
 
-static void union_hash_delete(struct Hash *table, union hash_key key,
+static void union_hash_delete(struct Hash *table, union HashKey key,
                               const void *data, void (*destroy)(void *))
 {
   int hash;
@@ -294,7 +294,7 @@ static void union_hash_delete(struct Hash *table, union hash_key key,
 void hash_delete(struct Hash *table, const char *strkey, const void *data,
                  void (*destroy)(void *))
 {
-  union hash_key key;
+  union HashKey key;
   key.strkey = strkey;
   union_hash_delete(table, key, data, destroy);
 }
@@ -302,7 +302,7 @@ void hash_delete(struct Hash *table, const char *strkey, const void *data,
 void int_hash_delete(struct Hash *table, unsigned int intkey, const void *data,
                      void (*destroy)(void *))
 {
-  union hash_key key;
+  union HashKey key;
   key.intkey = intkey;
   union_hash_delete(table, key, data, destroy);
 }

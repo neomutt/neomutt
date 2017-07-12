@@ -524,7 +524,7 @@ struct EnrichedState
   size_t param_used;
   size_t param_len;
   int tag_level[RICH_LAST_TAG];
-  int WrapMargin;
+  int wrap_margin;
   struct State *s;
 };
 
@@ -567,7 +567,7 @@ static void enriched_wrap(struct EnrichedState *stte)
       }
     }
 
-    extra = stte->WrapMargin - stte->line_len - stte->indent_len -
+    extra = stte->wrap_margin - stte->line_len - stte->indent_len -
             (stte->tag_level[RICH_INDENT_RIGHT] * IndentSize);
     if (extra > 0)
     {
@@ -640,7 +640,7 @@ static void enriched_flush(struct EnrichedState *stte, int wrap)
 {
   if (!stte->tag_level[RICH_NOFILL] &&
       (stte->line_len + stte->word_len >
-       (stte->WrapMargin - (stte->tag_level[RICH_INDENT_RIGHT] * IndentSize) - stte->indent_len)))
+       (stte->wrap_margin - (stte->tag_level[RICH_INDENT_RIGHT] * IndentSize) - stte->indent_len)))
     enriched_wrap(stte);
 
   if (stte->buff_used)
@@ -847,11 +847,11 @@ static int text_enriched_handler(struct Body *a, struct State *s)
 
   memset(&stte, 0, sizeof(stte));
   stte.s = s;
-  stte.WrapMargin =
+  stte.wrap_margin =
       ((s->flags & MUTT_DISPLAY) ?
            (MuttIndexWindow->cols - 4) :
            ((MuttIndexWindow->cols - 4) < 72) ? (MuttIndexWindow->cols - 4) : 72);
-  stte.line_max = stte.WrapMargin * 4;
+  stte.line_max = stte.wrap_margin * 4;
   stte.line = safe_calloc(1, (stte.line_max + 1) * sizeof(wchar_t));
   stte.param = safe_calloc(1, (STRING) * sizeof(wchar_t));
 

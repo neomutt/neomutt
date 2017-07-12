@@ -18,7 +18,7 @@
 #ifndef _MUTT_HISTORY_H
 #define _MUTT_HISTORY_H 1
 
-typedef enum history_class
+enum HistoryClass
 {
   HC_CMD,
   HC_ALIAS,
@@ -29,17 +29,17 @@ typedef enum history_class
   HC_MBOX,
   /* insert new items here to keep history file working */
   HC_LAST
-} history_class_t;
+};
 
 #define HC_FIRST HC_CMD
 
 void mutt_init_history(void);
 void mutt_read_histfile(void);
-void mutt_history_add(history_class_t hclass, const char *s, int save);
-char *mutt_history_next(history_class_t hclass);
-char *mutt_history_prev(history_class_t hclass);
-void mutt_reset_history_state(history_class_t hclass);
-int mutt_history_at_scratch(history_class_t hclass);
-void mutt_history_save_scratch(history_class_t hclass, const char *s);
+void mutt_history_add(enum HistoryClass hclass, const char *s, int save);
+char *mutt_history_next(enum HistoryClass hclass);
+char *mutt_history_prev(enum HistoryClass hclass);
+void mutt_reset_history_state(enum HistoryClass hclass);
+int mutt_history_at_scratch(enum HistoryClass hclass);
+void mutt_history_save_scratch(enum HistoryClass hclass, const char *s);
 
 #endif /* _MUTT_HISTORY_H */

@@ -133,7 +133,7 @@ struct PgpEntry
 static const char *pgp_entry_fmt(char *dest, size_t destlen, size_t col, int cols,
                                  char op, const char *src, const char *prefix,
                                  const char *ifstring, const char *elsestring,
-                                 unsigned long data, format_flag flags)
+                                 unsigned long data, enum FormatFlag flags)
 {
   char fmt[16];
   struct PgpEntry *entry = NULL;
@@ -650,7 +650,7 @@ static struct PgpKeyInfo *pgp_select_key(struct PgpKeyInfo *keys,
   return kp;
 }
 
-struct PgpKeyInfo *pgp_ask_for_key(char *tag, char *whatfor, short abilities, pgp_ring_t keyring)
+struct PgpKeyInfo *pgp_ask_for_key(char *tag, char *whatfor, short abilities, enum PgpRing keyring)
 {
   struct PgpKeyInfo *key = NULL;
   char resp[SHORT_STRING];
@@ -800,7 +800,7 @@ static struct PgpKeyInfo **pgp_get_lastp(struct PgpKeyInfo *p)
 }
 
 struct PgpKeyInfo *pgp_getkeybyaddr(struct Address *a, short abilities,
-                                    pgp_ring_t keyring, int oppenc_mode)
+                                    enum PgpRing keyring, int oppenc_mode)
 {
   struct Address *r = NULL, *p = NULL;
   struct List *hints = NULL;
@@ -927,7 +927,7 @@ struct PgpKeyInfo *pgp_getkeybyaddr(struct Address *a, short abilities,
   return NULL;
 }
 
-struct PgpKeyInfo *pgp_getkeybystr(char *p, short abilities, pgp_ring_t keyring)
+struct PgpKeyInfo *pgp_getkeybystr(char *p, short abilities, enum PgpRing keyring)
 {
   struct List *hints = NULL;
   struct PgpKeyInfo *keys = NULL;

@@ -1150,8 +1150,8 @@ static int parse_overview_line(char *line, void *data)
       if (!hdr->read)
         nntp_parse_xref(ctx, hdr);
     }
-    if (anum > nntp_data->lastLoaded)
-      nntp_data->lastLoaded = anum;
+    if (anum > nntp_data->last_loaded)
+      nntp_data->last_loaded = anum;
   }
   else
     mutt_free_header(&hdr);
@@ -1363,8 +1363,8 @@ static int nntp_fetch_headers(struct Context *ctx, void *hc, anum_t first,
       if (!hdr->read)
         nntp_parse_xref(ctx, hdr);
     }
-    if (current > nntp_data->lastLoaded)
-      nntp_data->lastLoaded = current;
+    if (current > nntp_data->last_loaded)
+      nntp_data->last_loaded = current;
     first_over = current + 1;
   }
 
@@ -1476,8 +1476,8 @@ static int nntp_open_mailbox(struct Context *ctx)
       mutt_sleep(2);
       return -1;
     }
-    nntp_data->firstMessage = first;
-    nntp_data->lastMessage = last;
+    nntp_data->first_message = first;
+    nntp_data->last_message = last;
     nntp_data->deleted = false;
 
     /* get description if empty */
@@ -1500,14 +1500,14 @@ static int nntp_open_mailbox(struct Context *ctx)
     nntp_data->bcache = mutt_bcache_open(&nserv->conn->account, nntp_data->group);
 
   /* strip off extra articles if adding context is greater than $nntp_context */
-  first = nntp_data->firstMessage;
-  if (NntpContext && nntp_data->lastMessage - first + 1 > NntpContext)
-    first = nntp_data->lastMessage - NntpContext + 1;
-  nntp_data->lastLoaded = first ? first - 1 : 0;
-  count = nntp_data->firstMessage;
-  nntp_data->firstMessage = first;
+  first = nntp_data->first_message;
+  if (NntpContext && nntp_data->last_message - first + 1 > NntpContext)
+    first = nntp_data->last_message - NntpContext + 1;
+  nntp_data->last_loaded = first ? first - 1 : 0;
+  count = nntp_data->first_message;
+  nntp_data->first_message = first;
   nntp_bcache_update(nntp_data);
-  nntp_data->firstMessage = count;
+  nntp_data->first_message = count;
 #ifdef USE_HCACHE
   hc = nntp_hcache_open(nntp_data);
   nntp_hcache_update(nntp_data, hc);
@@ -1518,13 +1518,13 @@ static int nntp_open_mailbox(struct Context *ctx)
     mutt_bit_unset(ctx->rights, MUTT_ACL_DELETE);
   }
   nntp_newsrc_close(nserv);
-  rc = nntp_fetch_headers(ctx, hc, first, nntp_data->lastMessage, 0);
+  rc = nntp_fetch_headers(ctx, hc, first, nntp_data->last_message, 0);
 #ifdef USE_HCACHE
   mutt_hcache_close(hc);
 #endif
   if (rc < 0)
     return -1;
-  nntp_data->lastLoaded = nntp_data->lastMessage;
+  nntp_data->last_loaded = nntp_data->last_message;
   nserv->newsrc_modified = false;
   return 0;
 }
@@ -1743,13 +1743,13 @@ static int nntp_group_poll(struct NntpData *nntp_data, int update_stat)
     return -1;
   if (sscanf(buf, "211 " ANUM " " ANUM " " ANUM, &count, &first, &last) != 3)
     return 0;
-  if (first == nntp_data->firstMessage && last == nntp_data->lastMessage)
+  if (first == nntp_data->first_message && last == nntp_data->last_message)
     return 0;
 
   /* articles have been renumbered */
-  if (last < nntp_data->lastMessage)
+  if (last < nntp_data->last_message)
   {
-    nntp_data->lastCached = 0;
+    nntp_data->last_cached = 0;
     if (nntp_data->newsrc_len)
     {
       safe_realloc(&nntp_data->newsrc_ent, sizeof(struct NewsrcEntry));
@@ -1758,13 +1758,13 @@ static int nntp_group_poll(struct NntpData *nntp_data, int update_stat)
       nntp_data->newsrc_ent[0].last = 0;
     }
   }
-  nntp_data->firstMessage = first;
-  nntp_data->lastMessage = last;
+  nntp_data->first_message = first;
+  nntp_data->last_message = last;
   if (!update_stat)
     return 1;
 
   /* update counters */
-  else if (!last || (!nntp_data->newsrc_ent && !nntp_data->lastCached))
+  else if (!last || (!nntp_data->newsrc_ent && !nntp_data->last_cached))
     nntp_data->unread = count;
   else
     nntp_group_unread_stat(nntp_data);
@@ -1803,18 +1803,18 @@ static int nntp_check_mailbox(struct Context *ctx, int *index_hint)
     nntp_active_save_cache(nserv);
 
   /* articles have been renumbered, remove all headers */
-  if (nntp_data->lastMessage < nntp_data->lastLoaded)
+  if (nntp_data->last_message < nntp_data->last_loaded)
   {
     for (i = 0; i < ctx->msgcount; i++)
       mutt_free_header(&ctx->hdrs[i]);
     ctx->msgcount = 0;
     ctx->tagged = 0;
 
-    if (nntp_data->lastMessage < nntp_data->lastLoaded)
+    if (nntp_data->last_message < nntp_data->last_loaded)
     {
-      nntp_data->lastLoaded = nntp_data->firstMessage - 1;
-      if (NntpContext && nntp_data->lastMessage - nntp_data->lastLoaded > NntpContext)
-        nntp_data->lastLoaded = nntp_data->lastMessage - NntpContext;
+      nntp_data->last_loaded = nntp_data->first_message - 1;
+      if (NntpContext && nntp_data->last_message - nntp_data->last_loaded > NntpContext)
+        nntp_data->last_loaded = nntp_data->last_message - NntpContext;
     }
     ret = MUTT_REOPENED;
   }
@@ -1828,11 +1828,11 @@ static int nntp_check_mailbox(struct Context *ctx, int *index_hint)
     char buf[16];
     void *hdata = NULL;
     struct Header *hdr = NULL;
-    anum_t first = nntp_data->firstMessage;
+    anum_t first = nntp_data->first_message;
 
-    if (NntpContext && nntp_data->lastMessage - first + 1 > NntpContext)
-      first = nntp_data->lastMessage - NntpContext + 1;
-    messages = safe_calloc(nntp_data->lastLoaded - first + 1, sizeof(unsigned char));
+    if (NntpContext && nntp_data->last_message - first + 1 > NntpContext)
+      first = nntp_data->last_message - NntpContext + 1;
+    messages = safe_calloc(nntp_data->last_loaded - first + 1, sizeof(unsigned char));
     hc = nntp_hcache_open(nntp_data);
     nntp_hcache_update(nntp_data, hc);
 #endif
@@ -1847,7 +1847,7 @@ static int nntp_check_mailbox(struct Context *ctx, int *index_hint)
       /* check hcache for flagged and deleted flags */
       if (hc)
       {
-        if (anum >= first && anum <= nntp_data->lastLoaded)
+        if (anum >= first && anum <= nntp_data->last_loaded)
           messages[anum - first] = 1;
 
         snprintf(buf, sizeof(buf), "%d", anum);
@@ -1891,7 +1891,7 @@ static int nntp_check_mailbox(struct Context *ctx, int *index_hint)
     ctx->msgcount = j;
 
     /* restore headers without "deleted" flag */
-    for (anum = first; anum <= nntp_data->lastLoaded; anum++)
+    for (anum = first; anum <= nntp_data->last_loaded; anum++)
     {
       if (messages[anum - first])
         continue;
@@ -1956,7 +1956,7 @@ static int nntp_check_mailbox(struct Context *ctx, int *index_hint)
   }
 
   /* fetch headers of new articles */
-  if (nntp_data->lastMessage > nntp_data->lastLoaded)
+  if (nntp_data->last_message > nntp_data->last_loaded)
   {
     int oldmsgcount = ctx->msgcount;
     bool quiet = ctx->quiet;
@@ -1968,10 +1968,10 @@ static int nntp_check_mailbox(struct Context *ctx, int *index_hint)
       nntp_hcache_update(nntp_data, hc);
     }
 #endif
-    rc = nntp_fetch_headers(ctx, hc, nntp_data->lastLoaded + 1, nntp_data->lastMessage, 0);
+    rc = nntp_fetch_headers(ctx, hc, nntp_data->last_loaded + 1, nntp_data->last_message, 0);
     ctx->quiet = quiet;
     if (rc >= 0)
-      nntp_data->lastLoaded = nntp_data->lastMessage;
+      nntp_data->last_loaded = nntp_data->last_message;
     if (ret == 0 && ctx->msgcount > oldmsgcount)
       ret = MUTT_NEW_MAIL;
   }
@@ -2002,7 +2002,7 @@ static int nntp_sync_mailbox(struct Context *ctx, int *index_hint)
     return rc;
 
 #ifdef USE_HCACHE
-  nntp_data->lastCached = 0;
+  nntp_data->last_cached = 0;
   hc = nntp_hcache_open(nntp_data);
 #endif
 
@@ -2034,7 +2034,7 @@ static int nntp_sync_mailbox(struct Context *ctx, int *index_hint)
   if (hc)
   {
     mutt_hcache_close(hc);
-    nntp_data->lastCached = nntp_data->lastLoaded;
+    nntp_data->last_cached = nntp_data->last_loaded;
   }
 #endif
 
@@ -2356,7 +2356,7 @@ int nntp_check_children(struct Context *ctx, const char *msgid)
 
   if (!nntp_data || !nntp_data->nserv)
     return -1;
-  if (nntp_data->firstMessage > nntp_data->lastLoaded)
+  if (nntp_data->first_message > nntp_data->last_loaded)
     return 0;
 
   /* init context */
@@ -2367,7 +2367,7 @@ int nntp_check_children(struct Context *ctx, const char *msgid)
 
   /* fetch numbers of child messages */
   snprintf(buf, sizeof(buf), "XPAT References %d-%d *%s*\r\n",
-           nntp_data->firstMessage, nntp_data->lastLoaded, msgid);
+           nntp_data->first_message, nntp_data->last_loaded, msgid);
   rc = nntp_fetch_lines(nntp_data, buf, sizeof(buf), NULL, fetch_children, &cc);
   if (rc)
   {
