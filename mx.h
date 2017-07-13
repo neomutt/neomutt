@@ -60,7 +60,7 @@ struct MxOps
 };
 
 /* supported mailbox formats */
-enum
+enum MailboxFormat
 {
   MUTT_MBOX = 1,
   MUTT_MMDF,

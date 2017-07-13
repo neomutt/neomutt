@@ -63,7 +63,7 @@
 #define SMTP_AUTH_UNAVAIL 1
 #define SMTP_AUTH_FAIL -1
 
-enum
+enum SmtpCapability
 {
   STARTTLS,
   AUTH,

@@ -121,7 +121,7 @@ void mutt_need_hard_redraw(void);
  * Support for color
  */
 
-enum
+enum ColorId
 {
   MT_COLOR_HDEFAULT = 0,
   MT_COLOR_QUOTED,

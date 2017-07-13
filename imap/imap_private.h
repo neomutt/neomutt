@@ -81,7 +81,7 @@ struct Progress;
 /* length of "DD-MMM-YYYY HH:MM:SS +ZZzz" (null-terminated) */
 #define IMAP_DATELEN 27
 
-enum
+enum ImapFlags
 {
   IMAP_FATAL = 1,
   IMAP_BYE

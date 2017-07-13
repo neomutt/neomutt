@@ -470,7 +470,7 @@ static void decode_uuencoded(struct State *s, long len, int istext, iconv_t cd)
 
 #define IndentSize (4)
 
-enum
+enum RichAttribs
 {
   RICH_PARAM = 0,
   RICH_BOLD,

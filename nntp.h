@@ -46,7 +46,7 @@ struct Context;
 #define anum_t uint32_t
 #define ANUM "%u"
 
-enum
+enum NntpStatus
 {
   NNTP_NONE = 0,
   NNTP_OK,

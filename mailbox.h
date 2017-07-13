@@ -42,7 +42,7 @@ struct Context;
 #define MUTT_SET_DRAFT (1 << 1) /* set the message draft flag */
 
 /* return values from mx_check_mailbox() */
-enum
+enum MxCheckReturns
 {
   MUTT_NEW_MAIL = 1, /* new mail received in mailbox */
   MUTT_LOCKED,       /* couldn't lock the mailbox */

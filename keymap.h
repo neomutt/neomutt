@@ -50,7 +50,7 @@ void km_init(void);
 void km_error_key(int menu);
 void mutt_what_key(void);
 
-enum
+enum MenuTypes
 {
   MENU_ALIAS,
   MENU_ATTACH,

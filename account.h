@@ -23,7 +23,7 @@
 struct CissUrl;
 
 /* account types */
-enum
+enum AccountType
 {
   MUTT_ACCT_TYPE_NONE = 0,
   MUTT_ACCT_TYPE_IMAP,

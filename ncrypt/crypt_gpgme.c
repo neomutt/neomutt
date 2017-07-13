@@ -3319,7 +3319,7 @@ static unsigned int key_check_cap(gpgme_key_t key, enum KeyCap cap)
   return ret;
 }
 
-enum
+enum KeyInfo
 {
   KIP_NAME = 0,
   KIP_AKA,

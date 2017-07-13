@@ -25,7 +25,7 @@
 #include "lib.h"
 
 /* possible values for RFC822Error */
-enum
+enum AddressError
 {
   ERR_MEMORY = 1,
   ERR_MISMATCH_PAREN,

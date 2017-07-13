@@ -35,7 +35,7 @@ struct Progress;
 /* maximal length of the server response (RFC1939) */
 #define POP_CMD_RESPONSE 512
 
-enum
+enum PopStatus
 {
   /* Status */
   POP_NONE = 0,

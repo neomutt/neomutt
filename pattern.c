@@ -64,7 +64,7 @@
 #endif
 
 /* Error codes for eat_range_by_regexp */
-enum
+enum EatRangeError
 {
   RANGE_E_OK,
   RANGE_E_SYNTAX,

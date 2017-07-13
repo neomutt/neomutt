@@ -123,7 +123,7 @@ struct State;
 #define MUTT_THREAD_NEXT_UNREAD (1 << 4)
 #define MUTT_THREAD_FLAGGED     (1 << 5)
 
-enum
+enum MuttMisc
 {
   /* modes for mutt_view_attachment() */
   MUTT_REGULAR = 1,

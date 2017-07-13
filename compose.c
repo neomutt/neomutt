@@ -72,7 +72,7 @@ static const char *There_are_no_attachments = N_("There are no attachments.");
   }
 
 
-enum
+enum HeaderField
 {
   HDR_FROM = 0,
   HDR_TO,

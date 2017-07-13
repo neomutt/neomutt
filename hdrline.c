@@ -49,7 +49,7 @@
 #include "mutt_notmuch.h"
 #endif
 
-enum
+enum FlagChars
 {
   /* Indexing into the Flagchars variable ($flag_chars) */
   FlagCharTagged,

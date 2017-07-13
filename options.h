@@ -19,7 +19,7 @@
 #define _MUTT_OPTIONS_H_ 1
 
 /* boolean vars */
-enum
+enum GlobalBool
 {
   OPTALLOW8BIT,
   OPTALLOWANSI,

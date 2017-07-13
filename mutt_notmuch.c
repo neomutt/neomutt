@@ -75,11 +75,11 @@
     LIBNOTMUCH_MICRO_VERSION >= (_micro)))
 
 /**
- * enum anonymous - Query Types
+ * enum NmQueryType - Query Types
  *
  * Read whole-thread or matching messages only?
  */
-enum
+enum NmQueryType
 {
   NM_QUERY_TYPE_MESGS = 1, /**< Default: Messages only */
   NM_QUERY_TYPE_THREADS    /**< Whole threads */

@@ -19,7 +19,7 @@
 #define _MUTT_MIME_H 1
 
 /* Content-Type */
-enum
+enum ContentType
 {
   TYPEOTHER,
   TYPEAUDIO,

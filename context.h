@@ -24,7 +24,7 @@
 #include <time.h>
 
 /* ACL Rights */
-enum
+enum AclRights
 {
   MUTT_ACL_LOOKUP = 0,
   MUTT_ACL_READ,
