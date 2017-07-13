@@ -71,7 +71,7 @@ static int bcache_path(ACCOUNT *account, const char *mailbox,
 
   dprint (3, (debugfile, "bcache_path: rc: %d, path: '%s'\n", len, dst));
 
-  if (len < 0 || len >= dstlen-1)
+  if (len < 0 || (size_t)len >= dstlen-1)
     return -1;
 
   dprint (3, (debugfile, "bcache_path: directory: '%s'\n", dst));
