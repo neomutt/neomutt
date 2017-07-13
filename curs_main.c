@@ -150,9 +150,9 @@ static char *fsl = "\007";
  * @param toggle toggle collapsed state
  *
  * This function is called by the OP_MAIN_COLLAPSE_ALL command and on folder
- * enter if the OPTCOLLAPSEALL option is set. In the first case, the @toggle
+ * enter if the OPTCOLLAPSEALL option is set. In the first case, the @a toggle
  * parameter is 1 to actually toggle collapsed/uncollapsed state on all
- * threads. In the second case, the @toggle parameter is 0, actually turning
+ * threads. In the second case, the @a toggle parameter is 0, actually turning
  * this function into a one-way collapse.
  */
 static void collapse_all(struct Menu *menu, int toggle)
@@ -668,8 +668,9 @@ int index_color(int index_no)
 
 /**
  * mutt_draw_statusline - Draw a highlighted status bar
- * @cols:  Maximum number of screen columns
- * @buf:   Message to be displayed
+ * @param cols   Maximum number of screen columns
+ * @param buf    Message to be displayed
+ * @param buflen Length of the buffer
  *
  * Users configure the highlighting of the status bar, e.g.
  *     color status red default "[0-9][0-9]:[0-9][0-9]"

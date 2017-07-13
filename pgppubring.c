@@ -27,7 +27,6 @@
  *
  * You can actually use this to put together some fairly general
  * PGP key management applications.
- *
  */
 
 #include "config.h"

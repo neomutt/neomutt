@@ -44,10 +44,10 @@
 
 struct Hook
 {
-  int type;                /* hook type */
-  struct Regex rx;         /* regular expression */
-  char *command;           /* filename, command or pattern to execute */
-  struct Pattern *pattern; /* used for fcc,save,send-hook */
+  int type;                /**< hook type */
+  struct Regex rx;         /**< regular expression */
+  char *command;           /**< filename, command or pattern to execute */
+  struct Pattern *pattern; /**< used for fcc,save,send-hook */
   struct Hook *next;
 };
 
@@ -625,7 +625,7 @@ void mutt_timeout_hook(void)
 
 /**
  * mutt_startup_shutdown_hook - Execute any startup/shutdown hooks
- * @type: Hook type: MUTT_STARTUPHOOK or MUTT_SHUTDOWNHOOK
+ * @param type Hook type: MUTT_STARTUPHOOK or MUTT_SHUTDOWNHOOK
  *
  * The user can configure hooks to be run on startup/shutdown.
  * This function finds all the matching hooks and executes them.

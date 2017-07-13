@@ -49,7 +49,7 @@ static short PreviousSort = SORT_ORDER; /* sidebar_sort_method */
  */
 struct SbEntry
 {
-  char box[STRING]; /* formatted mailbox name */
+  char box[STRING]; /**< formatted mailbox name */
   struct Buffy *buffy;
   bool is_hidden;
 };
@@ -79,24 +79,24 @@ enum SidebarSrc
 
 /**
  * cb_format_str - Create the string to show in the sidebar
- * @dest:        Buffer in which to save string
- * @destlen:     Buffer length
- * @col:         Starting column, UNUSED
- * @op:          printf-like operator, e.g. 'B'
- * @src:         printf-like format string
- * @prefix:      Field formatting string, UNUSED
- * @ifstring:    If condition is met, display this string
- * @elsestring:  Otherwise, display this string
- * @data:        Pointer to our sidebar_entry
- * @flags:       Format flags, e.g. MUTT_FORMAT_OPTIONAL
+ * @param dest        Buffer in which to save string
+ * @param destlen     Buffer length
+ * @param col         Starting column, UNUSED
+ * @param cols        Maximum columns, UNUSED
+ * @param op          printf-like operator, e.g. 'B'
+ * @param src         printf-like format string
+ * @param prefix      Field formatting string, UNUSED
+ * @param ifstring    If condition is met, display this string
+ * @param elsestring  Otherwise, display this string
+ * @param data        Pointer to our sidebar_entry
+ * @param flags       Format flags, e.g. MUTT_FORMAT_OPTIONAL
+ * @return src (unchanged)
  *
  * cb_format_str is a callback function for mutt_FormatString.  It understands
  * six operators. '%B' : Mailbox name, '%F' : Number of flagged messages,
  * '%N' : Number of new messages, '%S' : Size (total number of messages),
  * '%!' : Icon denoting number of flagged messages.
  * '%n' : N if folder has new mail, blank otherwise.
- *
- * Returns: src (unchanged)
  */
 static const char *cb_format_str(char *dest, size_t destlen, size_t col, int cols,
                                  char op, const char *src, const char *prefix,
@@ -224,11 +224,11 @@ static const char *cb_format_str(char *dest, size_t destlen, size_t col, int col
 
 /**
  * make_sidebar_entry - Turn mailbox data into a sidebar string
- * @buf:     Buffer in which to save string
- * @buflen:  Buffer length
- * @width:   Desired width in screen cells
- * @box:     Mailbox name
- * @sbe:     Mailbox object
+ * @param buf     Buffer in which to save string
+ * @param buflen  Buffer length
+ * @param width   Desired width in screen cells
+ * @param box     Mailbox name
+ * @param sbe     Mailbox object
  *
  * Take all the relevant mailbox data and the desired screen width and then get
  * mutt_FormatString to do the actual work. mutt_FormatString will callback to
@@ -265,13 +265,12 @@ static void make_sidebar_entry(char *buf, unsigned int buflen, int width,
 
 /**
  * cb_qsort_sbe - qsort callback to sort SBENTRYs
- * @a: First  SbEntry to compare
- * @b: Second SbEntry to compare
- *
- * Returns:
- *      -1: a precedes b
- *       0: a and b are identical
- *       1: b precedes a
+ * @param a First  SbEntry to compare
+ * @param b Second SbEntry to compare
+ * @return
+ * * -1: a precedes b
+ * *  0: a and b are identical
+ * *  1: b precedes a
  */
 static int cb_qsort_sbe(const void *a, const void *b)
 {
@@ -399,7 +398,7 @@ static void unsort_entries(void)
 }
 
 /**
- * sort_entries - Sort Entries array.
+ * sort_entries - Sort Entries array
  *
  * Sort the Entries array according to the current sort config
  * option "sidebar_sort_method". This calls qsort to do the work which calls our
@@ -584,17 +583,16 @@ static int select_page_up(void)
 
 /**
  * prepare_sidebar - Prepare the list of SBENTRYs for the sidebar display
- * @page_size:  The number of lines on a page
+ * @param page_size  The number of lines on a page
+ * @return
+ * * false: No, don't draw the sidebar
+ * * true: Yes, draw the sidebar
  *
  * Before painting the sidebar, we determine which are visible, sort
  * them and set up our page pointers.
  *
  * This is a lot of work to do each refresh, but there are many things that
  * can change outside of the sidebar that we don't hear about.
- *
- * Returns:
- *      false: No, don't draw the sidebar
- *      true: Yes, draw the sidebar
  */
 static bool prepare_sidebar(int page_size)
 {
@@ -669,8 +667,11 @@ static bool prepare_sidebar(int page_size)
 
 /**
  * draw_divider - Draw a line between the sidebar and the rest of mutt
- * @num_rows:   Height of the Sidebar
- * @num_cols:   Width of the Sidebar
+ * @param num_rows   Height of the Sidebar
+ * @param num_cols   Width of the Sidebar
+ * @return
+ * *    0:  Empty string
+ * *    n:  Character occupies n screen columns
  *
  * Draw a divider using characters from the config option "sidebar_divider_char".
  * This can be an ASCII or Unicode character.
@@ -678,10 +679,6 @@ static bool prepare_sidebar(int page_size)
  *
  * If the user hasn't set $sidebar_divider_char we pick a character for them,
  * respecting the value of $ascii_chars.
- *
- * @return:
- * *    0:  Empty string
- * *    n:  Character occupies n screen columns
  */
 static int draw_divider(int num_rows, int num_cols)
 {
@@ -761,10 +758,10 @@ static int draw_divider(int num_rows, int num_cols)
 
 /**
  * fill_empty_space - Wipe the remaining Sidebar space
- * @first_row:  Window line to start (0-based)
- * @num_rows:   Number of rows to fill
- * @div_width:  Width in screen characters taken by the divider
- * @num_cols:   Number of columns to fill
+ * @param first_row  Window line to start (0-based)
+ * @param num_rows   Number of rows to fill
+ * @param div_width  Width in screen characters taken by the divider
+ * @param num_cols   Number of columns to fill
  *
  * Write spaces over the area the sidebar isn't using.
  */
@@ -787,9 +784,9 @@ static void fill_empty_space(int first_row, int num_rows, int div_width, int num
 
 /**
  * draw_sidebar - Write out a list of mailboxes, on the left
- * @num_rows:   Height of the Sidebar
- * @num_cols:   Width of the Sidebar
- * @div_width:  Width in screen characters taken by the divider
+ * @param num_rows   Height of the Sidebar
+ * @param num_cols   Width of the Sidebar
+ * @param div_width  Width in screen characters taken by the divider
  *
  * Display a list of mailboxes in a panel on the left.  What's displayed will
  * depend on our index markers: TopBuffy, OpnBuffy, HilBuffy, BotBuffy.
@@ -981,7 +978,7 @@ void mutt_sb_draw(void)
 
 /**
  * mutt_sb_change_mailbox - Change the selected mailbox
- * @op: Operation code
+ * @param op Operation code
  *
  * Change the selected mailbox, e.g. "Next mailbox", "Previous Mailbox
  * with new mail". The operations are listed OPS.SIDEBAR which is built
@@ -1036,7 +1033,7 @@ void mutt_sb_change_mailbox(int op)
 
 /**
  * mutt_sb_set_buffystats - Update the Buffy's message counts from the Context
- * @ctx:  A mailbox Context
+ * @param ctx  A mailbox Context
  *
  * Given a mailbox Context, find a matching mailbox Buffy and copy the message
  * counts into it.

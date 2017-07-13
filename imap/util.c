@@ -840,7 +840,6 @@ int imap_wordcasecmp(const char *a, const char *b)
 /*
  * Imap keepalive: poll the current folder to keep the
  * connection alive.
- *
  */
 
 static void alrm_handler(int sig)

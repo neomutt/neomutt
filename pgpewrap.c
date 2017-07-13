@@ -2,7 +2,6 @@
  * C version by Wessel Dankers <wsl@fruit.eu.org>
  *
  * This code is in the public domain.
- *
  */
 
 #include "config.h"

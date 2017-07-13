@@ -1950,7 +1950,6 @@ out:
  * privacy != 0 => will omit any headers which may identify the user.
  *               Output generated is suitable for being sent through
  *               anonymous remailer chains.
- *
  */
 
 

@@ -44,54 +44,54 @@ enum AclRights
 struct Context
 {
   char *path;
-  char *realpath; /* used for buffy comparison and the sidebar */
+  char *realpath; /**< used for buffy comparison and the sidebar */
   FILE *fp;
   time_t atime;
   time_t mtime;
   off_t size;
   off_t vsize;
-  char *pattern;            /* limit pattern string */
-  struct Pattern *limit_pattern; /* compiled limit pattern */
+  char *pattern;                 /**< limit pattern string */
+  struct Pattern *limit_pattern; /**< compiled limit pattern */
   struct Header **hdrs;
-  struct Header *last_tag;  /* last tagged msg. used to link threads */
-  struct MuttThread *tree;      /* top of thread tree */
-  struct Hash *id_hash;     /* hash table by msg id */
-  struct Hash *subj_hash;   /* hash table by subject */
-  struct Hash *thread_hash; /* hash table for threading */
-  struct Hash *label_hash;  /* hash table for x-labels */
-  int *v2r;          /* mapping from virtual to real msgno */
-  int hdrmax;        /* number of pointers in hdrs */
-  int msgcount;      /* number of messages in the mailbox */
-  int vcount;        /* the number of virtual messages */
-  int tagged;        /* how many messages are tagged? */
-  int new;           /* how many new messages? */
-  int unread;        /* how many unread messages? */
-  int deleted;       /* how many deleted messages */
-  int flagged;       /* how many flagged messages */
-  int msgnotreadyet; /* which msg "new" in pager, -1 if none */
+  struct Header *last_tag;  /**< last tagged msg. used to link threads */
+  struct MuttThread *tree;  /**< top of thread tree */
+  struct Hash *id_hash;     /**< hash table by msg id */
+  struct Hash *subj_hash;   /**< hash table by subject */
+  struct Hash *thread_hash; /**< hash table for threading */
+  struct Hash *label_hash;  /**< hash table for x-labels */
+  int *v2r;                 /**< mapping from virtual to real msgno */
+  int hdrmax;               /**< number of pointers in hdrs */
+  int msgcount;             /**< number of messages in the mailbox */
+  int vcount;               /**< the number of virtual messages */
+  int tagged;               /**< how many messages are tagged? */
+  int new;                  /**< how many new messages? */
+  int unread;               /**< how many unread messages? */
+  int deleted;              /**< how many deleted messages */
+  int flagged;              /**< how many flagged messages */
+  int msgnotreadyet;        /**< which msg "new" in pager, -1 if none */
 
-  struct Menu *menu; /* needed for pattern compilation */
+  struct Menu *menu; /**< needed for pattern compilation */
 
-  short magic; /* mailbox type */
+  short magic; /**< mailbox type */
 
-  unsigned char rights[(RIGHTSMAX + 7) / 8]; /* ACL bits */
+  unsigned char rights[(RIGHTSMAX + 7) / 8]; /**< ACL bits */
 
-  bool locked : 1;    /* is the mailbox locked? */
-  bool changed : 1;   /* mailbox has been modified */
-  bool readonly : 1;  /* don't allow changes to the mailbox */
-  bool dontwrite : 1; /* don't write the mailbox on close */
-  bool append : 1;    /* mailbox is opened in append mode */
-  bool quiet : 1;     /* inhibit status messages? */
-  bool collapsed : 1; /* are all threads collapsed? */
-  bool closing : 1;   /* mailbox is being closed */
-  bool peekonly : 1;  /* just taking a glance, revert atime */
+  bool locked : 1;    /**< is the mailbox locked? */
+  bool changed : 1;   /**< mailbox has been modified */
+  bool readonly : 1;  /**< don't allow changes to the mailbox */
+  bool dontwrite : 1; /**< don't write the mailbox on close */
+  bool append : 1;    /**< mailbox is opened in append mode */
+  bool quiet : 1;     /**< inhibit status messages? */
+  bool collapsed : 1; /**< are all threads collapsed? */
+  bool closing : 1;   /**< mailbox is being closed */
+  bool peekonly : 1;  /**< just taking a glance, revert atime */
 
 #ifdef USE_COMPRESSED
-  void *compress_info; /* compressed mbox module private data */
-#endif /* USE_COMPRESSED */
+  void *compress_info; /**< compressed mbox module private data */
+#endif                 /**< USE_COMPRESSED */
 
   /* driver hooks */
-  void *data; /* driver specific data */
+  void *data; /**< driver specific data */
   struct MxOps *mx_ops;
 };
 

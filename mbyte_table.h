@@ -24,9 +24,9 @@
  * option types. */
 struct MbCharTable
 {
-  int len;             /* number of characters */
-  char **chars;        /* the array of multibyte character strings */
-  char *segmented_str; /* each chars entry points inside this string */
+  int len;             /**< number of characters */
+  char **chars;        /**< the array of multibyte character strings */
+  char *segmented_str; /**< each chars entry points inside this string */
   char *orig_str;
 };
 

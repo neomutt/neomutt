@@ -38,8 +38,8 @@ struct ImapHeaderData
 
   bool parsed : 1;
 
-  unsigned int uid; /* 32-bit Message UID */
-  unsigned int msn; /* Message Sequence Number */
+  unsigned int uid; /**< 32-bit Message UID */
+  unsigned int msn; /**< Message Sequence Number */
   struct List *keywords;
 };
 

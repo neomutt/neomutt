@@ -526,10 +526,10 @@ static int crc_matches(const char *d, unsigned int crc)
 
 /**
  * create_hcache_dir - Create parent dirs for the hcache database
- * @path: Database filename
- *
- * @retval true Success
- * @retval false Failure (errno set)
+ * @param path Database filename
+ * @return
+ * * true Success
+ * * false Failure (errno set)
  */
 static bool create_hcache_dir(const char *path)
 {
@@ -557,25 +557,24 @@ static bool create_hcache_dir(const char *path)
  * @param path   Base directory, from $header_cache
  * @param folder Mailbox name (including protocol)
  * @param namer  Callback to generate database filename
- *
  * @return Full pathname to the database (to be generated)
  *         (path must be freed by the caller)
  *
  * Generate the pathname for the hcache database, it will be of the form:
  *     BASE/FOLDER/NAME-SUFFIX
  *
- * BASE :  Base directory (@path)
- * FOLDER: Mailbox name (@folder)
- * NAME:   Create by @namer, or md5sum of @folder
+ * BASE :  Base directory (@a path)
+ * FOLDER: Mailbox name (@a folder)
+ * NAME:   Create by @a namer, or md5sum of @a folder
  * SUFFIX: Character set (if ICONV isn't being used)
  *
  * This function will create any parent directories needed, so the caller just
  * needs to create the database file.
  *
- * If @path exists and is a directory, it is used.
- * If @path has a trailing '/' it is assumed to be a directory.
+ * If @a path exists and is a directory, it is used.
+ * If @a path has a trailing '/' it is assumed to be a directory.
  * If ICONV isn't being used, then a suffix is added to the path, e.g. '-utf-8'.
- * Otherise @path is assumed to be a file.
+ * Otherise @a path is assumed to be a file.
  */
 static const char *hcache_per_folder(const char *path, const char *folder, hcache_namer_t namer)
 {

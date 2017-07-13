@@ -1445,7 +1445,6 @@ static int mh_close_message(struct Context *ctx, struct Message *msg)
  *
  * Note that this uses _almost_ the maildir file name format, but
  * with a {cur,new} prefix.
- *
  */
 static int maildir_open_new_message(struct Message *msg, struct Context *dest,
                                     struct Header *hdr)
@@ -1529,7 +1528,6 @@ static int maildir_open_new_message(struct Message *msg, struct Context *dest,
  *    tmp/{cur,new}.mutt-HOSTNAME-PID-COUNTER:flags
  *
  * See also maildir_open_new_message().
- *
  */
 static int _maildir_commit_message(struct Context *ctx, struct Message *msg, struct Header *hdr)
 {
@@ -1615,7 +1613,6 @@ static int maildir_commit_message(struct Context *ctx, struct Message *msg)
 
 /*
  * commit a message to an MH folder.
- *
  */
 
 
@@ -2137,7 +2134,6 @@ static int maildir_check_mailbox(struct Context *ctx, int *index_hint)
  *
  * Don't change this code unless you _really_ understand what
  * happens.
- *
  */
 static int mh_check_mailbox(struct Context *ctx, int *index_hint)
 {

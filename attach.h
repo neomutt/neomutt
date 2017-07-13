@@ -34,7 +34,7 @@ struct AttachPtr
   char *tree;
   int level;
   int num;
-  bool unowned : 1; /* don't unlink on detach */
+  bool unowned : 1; /**< don't unlink on detach */
 };
 
 struct AttachPtr **mutt_gen_attach_list(struct Body *m, int parent_type, struct AttachPtr **idx,

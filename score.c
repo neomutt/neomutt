@@ -36,7 +36,7 @@ struct Score
   char *str;
   struct Pattern *pat;
   int val;
-  int exact; /* if this rule matches, don't evaluate any more */
+  int exact; /**< if this rule matches, don't evaluate any more */
   struct Score *next;
 };
 

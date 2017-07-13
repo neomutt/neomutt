@@ -216,11 +216,11 @@ static const char *get_date(const char *s, struct tm *t, struct Buffer *err)
 
 struct RangeRegex
 {
-  const char *raw; /* regexp as string */
-  int lgrp;        /* paren group matching the left side */
-  int rgrp;        /* paren group matching the right side */
-  int ready;       /* compiled yet? */
-  regex_t cooked;  /* compiled form */
+  const char *raw; /**< regexp as string */
+  int lgrp;        /**< paren group matching the left side */
+  int rgrp;        /**< paren group matching the right side */
+  int ready;       /**< compiled yet? */
+  regex_t cooked;  /**< compiled form */
 };
 
 enum
@@ -801,8 +801,8 @@ static bool eat_message_range(struct Pattern *pat, struct Buffer *s, struct Buff
 
 static const struct PatternFlags
 {
-  int tag; /* character used to represent this op */
-  int op;  /* operation to perform */
+  int tag; /**< character used to represent this op */
+  int op;  /**< operation to perform */
   int class;
   bool (*eat_arg)(struct Pattern *, struct Buffer *, struct Buffer *);
 } Flags[] = {
@@ -1778,11 +1778,10 @@ void mutt_check_simple(char *s, size_t len, const char *simple)
 
 /**
  * top_of_thread - Find the first email in the current thread
- * @h: Header of current email
- *
- * Returns:
- *  MuttThread*: success, email found
- *  NULL:    on error
+ * @param h Header of current email
+ * @return
+ * * MuttThread*: success, email found
+ * * NULL:    on error
  */
 static struct MuttThread *top_of_thread(struct Header *h)
 {
@@ -1801,11 +1800,10 @@ static struct MuttThread *top_of_thread(struct Header *h)
 
 /**
  * mutt_limit_current_thread - Limit the email view to the current thread
- * @h: Header of current email
- *
- * Returns:
- *  true: Success
- *  false: Failure
+ * @param h Header of current email
+ * @return
+ * * true: Success
+ * * false: Failure
  */
 bool mutt_limit_current_thread(struct Header *h)
 {

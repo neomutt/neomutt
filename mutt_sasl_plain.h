@@ -22,14 +22,13 @@
 
 /**
  * mutt_sasl_plain_msg - construct a base64 encoded SASL PLAIN message
- * @param buf    Destination buffer.
- * @param buflen Available space in the destination buffer.
- * @param cmd    Protocol-specific string the prepend to the PLAIN message.
- * @param authz  Authorization identity.
- * @param user   Authentication identity (username).
- * @param pass   Password.
- *
- * @return The number of bytes written to buf.
+ * @param buf    Destination buffer
+ * @param buflen Available space in the destination buffer
+ * @param cmd    Protocol-specific string the prepend to the PLAIN message
+ * @param authz  Authorization identity
+ * @param user   Authentication identity (username)
+ * @param pass   Password
+ * @return The number of bytes written to buf
  *
  * This function can be used to build a protocol-specific SASL Response message
  * using the PLAIN mechanism. The protocol specific command is given in the cmd
@@ -37,7 +36,6 @@
  * authz\0user\0pass using base64 encoding, and stores the result in buf.
  *
  * Example usages for IMAP and SMTP, respectively:
- *
  */
 size_t mutt_sasl_plain_msg(char *buf, size_t buflen, const char *cmd,
                            const char *authz, const char *user, const char *pass);

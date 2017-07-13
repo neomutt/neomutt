@@ -42,15 +42,15 @@
 
 struct Menu
 {
-  char *title; /* the title of this menu */
-  char *help;  /* quickref for the current menu */
-  void *data;  /* extra data for the current menu */
-  int current; /* current entry */
-  int max;     /* the number of entries in the menu */
-  int redraw;  /* when to redraw the screen */
-  int menu;    /* menu definition for keymap entries. */
-  int offset;  /* row offset within the window to start the index */
-  int pagelen; /* number of entries per screen */
+  char *title; /**< the title of this menu */
+  char *help;  /**< quickref for the current menu */
+  void *data;  /**< extra data for the current menu */
+  int current; /**< current entry */
+  int max;     /**< the number of entries in the menu */
+  int redraw;  /**< when to redraw the screen */
+  int menu;    /**< menu definition for keymap entries. */
+  int offset;  /**< row offset within the window to start the index */
+  int pagelen; /**< number of entries per screen */
   int tagprefix;
   int is_mailbox_list;
   struct MuttWindow *indexwin;
@@ -63,9 +63,9 @@ struct Menu
    * normal menu movement keys. This can cause problems with scrolling, if
    * prompt keys override movement keys.
    */
-  char **dialog; /* dialog lines themselves */
-  char *prompt;  /* prompt for user, similar to mutt_multi_choice */
-  char *keys;    /* keys used in the prompt */
+  char **dialog; /**< dialog lines themselves */
+  char *prompt;  /**< prompt for user, similar to mutt_multi_choice */
+  char *keys;    /**< keys used in the prompt */
 
   /* callback to generate an index line for the requested element */
   void (*make_entry)(char *, size_t, struct Menu *, int);
@@ -85,10 +85,10 @@ struct Menu
   int (*color)(int i);
 
   /* the following are used only by mutt_menu_loop() */
-  int top;        /* entry that is the top of the current page */
-  int oldcurrent; /* for driver use only. */
-  int search_dir;  /* direction of search */
-  int tagged;     /* number of tagged entries */
+  int top;        /**< entry that is the top of the current page */
+  int oldcurrent; /**< for driver use only. */
+  int search_dir;  /**< direction of search */
+  int tagged;     /**< number of tagged entries */
 };
 
 void mutt_menu_init(void);

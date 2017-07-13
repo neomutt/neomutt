@@ -29,7 +29,6 @@
  *
  * - The magic "map:" comments define how the map will be called in the
  * manual. Lines starting with "**" will be included in the manual.
- *
  */
 
 #ifdef _MAKEDOC

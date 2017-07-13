@@ -45,11 +45,11 @@
 
 struct PgpCommandContext
 {
-  short need_passphrase; /* %p */
-  const char *fname;     /* %f */
-  const char *sig_fname; /* %s */
-  const char *signas;    /* %a */
-  const char *ids;       /* %r */
+  short need_passphrase; /**< %p */
+  const char *fname;     /**< %f */
+  const char *sig_fname; /**< %s */
+  const char *signas;    /**< %a */
+  const char *ids;       /**< %r */
 };
 
 static const char *_mutt_fmt_pgp_command(char *dest, size_t destlen, size_t col,
@@ -178,7 +178,6 @@ static pid_t pgp_invoke(FILE **pgpin, FILE **pgpout, FILE **pgperr, int pgpinfd,
  * The exported interface.
  *
  * This is historic and may be removed at some point.
- *
  */
 
 pid_t pgp_invoke_decode(FILE **pgpin, FILE **pgpout, FILE **pgperr, int pgpinfd,

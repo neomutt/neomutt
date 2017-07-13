@@ -328,7 +328,7 @@ static void print_compile_options(void)
 
 /**
  * rstrip_in_place - Strip a trailing carriage return
- * @s:  String to be modified
+ * @param s  String to be modified
  *
  * The string has its last carriage return set to NUL.
  * Returns:
@@ -441,20 +441,19 @@ void print_copyright(void)
 
 /**
  * feature_enabled - Test if a compile-time feature is enabled
- * @name:  Compile-time symbol of the feature
+ * @param name  Compile-time symbol of the feature
+ * @return
+ * * true:  Feature enabled
+ * * false: Feature not enabled, or not compiled in
  *
  * Many of the larger features of mutt can be disabled at compile time.
- * They define a symbol and use #ifdef's around their code.
+ * They define a symbol and use ifdef's around their code.
  * The symbols are mirrored in "CompileOptions comp_opts[]" in this
  * file.
  *
  * This function checks if one of these symbols is present in the code.
  *
  * These symbols are also seen in the output of "mutt -v".
- *
- * Returns:
- *      true:  Feature enabled
- *      false: Feature not enabled, or not compiled in
  */
 bool feature_enabled(const char *name)
 {

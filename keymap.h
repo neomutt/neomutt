@@ -35,13 +35,13 @@ void init_extended_keys(void);
 /* entry in the keymap tree */
 struct Keymap
 {
-  char *macro;           /* macro expansion (op == OP_MACRO) */
-  char *descr;           /* description of a macro for the help menu */
-  struct Keymap *next; /* next key in map */
-  short op;              /* operation to perform */
-  short eq;              /* number of leading keys equal to next entry */
-  short len;             /* length of key sequence (unit: sizeof (keycode_t)) */
-  keycode_t *keys;       /* key sequence */
+  char *macro;         /**< macro expansion (op == OP_MACRO) */
+  char *descr;         /**< description of a macro for the help menu */
+  struct Keymap *next; /**< next key in map */
+  short op;            /**< operation to perform */
+  short eq;            /**< number of leading keys equal to next entry */
+  short len;           /**< length of key sequence (unit: sizeof (keycode_t)) */
+  keycode_t *keys;     /**< key sequence */
 };
 
 int km_expand_key(char *s, size_t len, struct Keymap *map);
@@ -89,9 +89,9 @@ extern const struct Mapping Menus[];
 
 struct Binding
 {
-  char *name; /* name of the function */
-  int op;     /* function id number */
-  char *seq;  /* default key binding */
+  char *name; /**< name of the function */
+  int op;     /**< function id number */
+  char *seq;  /**< default key binding */
 };
 
 const struct Binding *km_get_table(int menu);

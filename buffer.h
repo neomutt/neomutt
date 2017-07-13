@@ -20,10 +20,10 @@
 
 struct Buffer
 {
-  char *data;   /* pointer to data */
-  char *dptr;   /* current read/write position */
-  size_t dsize; /* length of data */
-  int destroy;  /* destroy `data' when done? */
+  char *data;   /**< pointer to data */
+  char *dptr;   /**< current read/write position */
+  size_t dsize; /**< length of data */
+  int destroy;  /**< destroy `data' when done? */
 };
 
 /* flags for mutt_extract_token() */

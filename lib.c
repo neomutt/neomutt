@@ -296,9 +296,9 @@ char *mutt_strlower(char *s)
 
 /**
  * mutt_strchrnul - find first occurrence of character in string
- * @param s Haystack.
- * @param c Needle.
- * @return Pointer to the first occurrence if found or to the NULL character.
+ * @param s Haystack
+ * @param c Needle
+ * @return Pointer to the first occurrence if found or to the NULL character
  *
  * This function is like GNU's strchrnul, which is similar to the standard
  * strchr function: it looks for the c character in the NULL-terminated string
@@ -1094,12 +1094,9 @@ int mutt_atoi(const char *str, int *dst)
 }
 
 /**
- * mutt_inbox_cmp - check whether two folders share the same path and one is
- * an inbox.
- *
- * @param a First path.
- * @param b Second path.
- *
+ * mutt_inbox_cmp - do two folders share the same path and one is an inbox
+ * @param a First path
+ * @param b Second path
  * @return -1 if a is INBOX of b, 0 if none is INBOX, 1 if b is INBOX for a
  *
  * This function compares two folder paths. It first looks for the position of
@@ -1111,10 +1108,10 @@ int mutt_atoi(const char *str, int *dst)
  * paths are considered equivalent and this function returns 0.
  *
  * Examples:
- *   mutt_inbox_cmp("/foo/bar",      "/foo/baz") --> 0
- *   mutt_inbox_cmp("/foo/bar/",     "/foo/bar/inbox") --> 0
- *   mutt_inbox_cmp("/foo/bar/sent", "/foo/bar/inbox") --> 1
- *   mutt_inbox_cmp("=INBOX",        "=Drafts") --> -1
+ * * mutt_inbox_cmp("/foo/bar",      "/foo/baz") --> 0
+ * * mutt_inbox_cmp("/foo/bar/",     "/foo/bar/inbox") --> 0
+ * * mutt_inbox_cmp("/foo/bar/sent", "/foo/bar/inbox") --> 1
+ * * mutt_inbox_cmp("=INBOX",        "=Drafts") --> -1
  */
 int mutt_inbox_cmp(const char *a, const char *b)
 {
@@ -1166,15 +1163,15 @@ char *strfcpy(char *dest, const char *src, size_t dlen)
 
 /**
  * mutt_mkdir - Recursively create directories
- * @path: Directories to create
- * @mode: Permissions for final directory
- * @return:
+ * @param path Directories to create
+ * @param mode Permissions for final directory
+ * @return
  * *    0  Success
  * *   -1  Error (errno set)
  *
  * Create a directory, creating the parents if necessary. (like mkdir -p)
  *
- * Note: The permissions are only set on the final directory.
+ * @note The permissions are only set on the final directory.
  *       The permissions of any parent directories are determined by the umask.
  *       (This is how "mkdir -p" behaves)
  */

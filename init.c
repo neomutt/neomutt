@@ -785,16 +785,15 @@ static void remove_from_list(struct List **l, const char *str)
 
 /**
  * finish_source - 'finish' command: stop processing current config file
- * @tmp:  Temporary space shared by all command handlers
- * @s:    Current line of the config file
- * @data: data field from init.h:struct Command
- * @err:  Buffer for any error message
+ * @param tmp  Temporary space shared by all command handlers
+ * @param s    Current line of the config file
+ * @param data data field from init.h:struct Command
+ * @param err  Buffer for any error message
+ * @return
+ * *  1 Stop processing the current file
+ * * -1 Failed
  *
  * If the 'finish' command is found, we should stop reading the current file.
- *
- * Returns:
- *       1 Stop processing the current file
- *      -1 Failed
  */
 static int finish_source(struct Buffer *tmp, struct Buffer *s,
                          unsigned long data, struct Buffer *err)
@@ -810,10 +809,13 @@ static int finish_source(struct Buffer *tmp, struct Buffer *s,
 
 /**
  * parse_ifdef - 'ifdef' command: conditional config
- * @tmp:  Temporary space shared by all command handlers
- * @s:    Current line of the config file
- * @data: data field from init.h:struct Command
- * @err:  Buffer for any error message
+ * @param tmp  Temporary space shared by all command handlers
+ * @param s    Current line of the config file
+ * @param data data field from init.h:struct Command
+ * @param err  Buffer for any error message
+ * @return
+ * *  0 Success
+ * * -1 Failed
  *
  * The 'ifdef' command allows conditional elements in the config file.
  * If a given variable, function, command or compile-time symbol exists, then
@@ -824,10 +826,6 @@ static int finish_source(struct Buffer *tmp, struct Buffer *s,
  * If (data == 1) then it means use the 'ifndef' (if-not-defined) command.
  * e.g.
  *      ifndef imap finish
- *
- * Returns:
- *       0 Success
- *      -1 Failed
  */
 static int parse_ifdef(struct Buffer *tmp, struct Buffer *s, unsigned long data,
                        struct Buffer *err)
@@ -2240,13 +2238,13 @@ static void restart_debug(void)
 }
 #endif
 
-/* Helper function for parse_setenv().
+/* mutt_envlist_set - Helper function for parse_setenv()
+ * @param name      Name of the environment variable
+ * @param value     Value the envionment variable should have
+ * @param overwrite Whether the environment variable should be overwritten
+ *
  * It's broken out because some other parts of mutt (filter.c) need
  * to set/overwrite environment variables in envlist before execing.
- *
- * @param name pointer to the name of the environment variable
- * @param value pointer to the value the envionment variable should have
- * @param overwrite whether the environment variable should be overwritten
  */
 void mutt_envlist_set(const char *name, const char *value, bool overwrite)
 {

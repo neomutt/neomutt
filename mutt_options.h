@@ -52,7 +52,7 @@ struct Option
   short type;
   short flags;
   unsigned long data;
-  unsigned long init; /* initial value */
+  unsigned long init; /**< initial value */
 };
 
 int mutt_option_to_string(const struct Option *opt, char *val, size_t len);

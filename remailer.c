@@ -346,7 +346,6 @@ static const char *mix_format_caps(struct Remailer *r)
  * %c   capabilities
  * %s   short name
  * %a   address
- *
  */
 static const char *mix_entry_fmt(char *dest, size_t destlen, size_t col, int cols,
                                  char op, const char *src, const char *prefix,

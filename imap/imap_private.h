@@ -153,9 +153,7 @@ struct ImapStatus
 struct ImapList
 {
   char *name;
-
   char delim;
-  /* if we end up storing a lot of these we could turn this into a bitfield */
   bool noselect;
   bool noinferiors;
 };
@@ -192,7 +190,7 @@ struct ImapData
   char *capstr;
   unsigned char capabilities[(CAPMAX + 7) / 8];
   unsigned int seqno;
-  time_t lastread; /* last time we read a command for the server */
+  time_t lastread; /**< last time we read a command for the server */
   char *buf;
   unsigned int blen;
 
@@ -221,14 +219,14 @@ struct ImapData
   char *mailbox;
   unsigned short check_status;
   unsigned char reopen;
-  unsigned int new_mail_count; /* Set when EXISTS notifies of new mail */
+  unsigned int new_mail_count; /**< Set when EXISTS notifies of new mail */
   struct ImapCache cache[IMAP_CACHE_LEN];
   struct Hash *uid_hash;
   unsigned int uid_validity;
   unsigned int uidnext;
-  struct Header **msn_index;   /* look up headers by (MSN-1) */
-  unsigned int msn_index_size; /* allocation size */
-  unsigned int max_msn;        /* the largest MSN fetched so far */
+  struct Header **msn_index;   /**< look up headers by (MSN-1) */
+  unsigned int msn_index_size; /**< allocation size */
+  unsigned int max_msn;        /**< the largest MSN fetched so far */
   struct BodyCache *bcache;
 
   /* all folder flags - system flags AND keywords */

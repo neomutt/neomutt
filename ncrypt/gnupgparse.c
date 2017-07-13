@@ -23,7 +23,6 @@
  *
  * Nowadays, we are using an external pubring lister with PGP which mimics
  * gpg's output format.
- *
  */
 
 #include "config.h"

@@ -43,11 +43,11 @@ struct Menu;
 
 struct Pager
 {
-  struct Context *ctx;    /* current mailbox */
-  struct Header *hdr;     /* current message */
-  struct Body *bdy;       /* current attachment */
-  FILE *fp;        /* source stream */
-  struct AttachPtr **idx; /* attachment information */
+  struct Context *ctx;    /**< current mailbox */
+  struct Header *hdr;     /**< current message */
+  struct Body *bdy;       /**< current attachment */
+  FILE *fp;               /**< source stream */
+  struct AttachPtr **idx; /**< attachment information */
   short idxlen;
 };
 

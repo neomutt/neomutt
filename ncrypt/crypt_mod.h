@@ -103,7 +103,7 @@ typedef struct CryptModuleFunctions
  */
 typedef struct CryptModuleSpecs
 {
-  int identifier; /* Identifying bit.  */
+  int identifier; /**< Identifying bit */
   crypt_module_functions_t functions;
 } * crypt_module_specs_t;
 

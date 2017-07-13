@@ -35,12 +35,12 @@ struct Pattern
   bool alladdr : 1;
   bool stringmatch : 1;
   bool groupmatch : 1;
-  bool ign_case : 1; /* ignore case for local stringmatch searches */
+  bool ign_case : 1; /**< ignore case for local stringmatch searches */
   bool isalias : 1;
   int min;
   int max;
   struct Pattern *next;
-  struct Pattern *child; /* arguments to logical op */
+  struct Pattern *child; /**< arguments to logical op */
   union {
     regex_t *rx;
     struct Group *g;
@@ -60,14 +60,14 @@ enum PatternExecFlag
  */
 struct PatternCache
 {
-  int list_all;       /* ^~l */
-  int list_one;       /*  ~l */
-  int sub_all;        /* ^~u */
-  int sub_one;        /*  ~u */
-  int pers_recip_all; /* ^~p */
-  int pers_recip_one; /*  ~p */
-  int pers_from_all;  /* ^~P */
-  int pers_from_one;  /*  ~P */
+  int list_all;       /**< ^~l */
+  int list_one;       /**<  ~l */
+  int sub_all;        /**< ^~u */
+  int sub_one;        /**<  ~u */
+  int pers_recip_all; /**< ^~p */
+  int pers_recip_one; /**<  ~p */
+  int pers_from_all;  /**< ^~P */
+  int pers_from_one;  /**<  ~P */
 };
 
 static inline struct Pattern *new_pattern(void)

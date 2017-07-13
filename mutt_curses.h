@@ -99,8 +99,8 @@ void mutt_curs_set(int cursor);
 
 struct Event
 {
-  int ch; /* raw key pressed */
-  int op; /* function op */
+  int ch; /**< raw key pressed */
+  int op; /**< function op */
 };
 
 struct Event mutt_getch(void);
@@ -180,9 +180,9 @@ enum ColorId
 struct ColorLine
 {
   regex_t rx;
-  int match; /* which substringmap 0 for old behaviour */
+  int match; /**< which substringmap 0 for old behaviour */
   char *pattern;
-  struct Pattern *color_pattern; /* compiled pattern to speed up index color
+  struct Pattern *color_pattern; /**< compiled pattern to speed up index color
                                       calculation */
   short fg;
   short bg;

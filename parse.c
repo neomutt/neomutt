@@ -699,7 +699,7 @@ static const struct Tz
   char tzname[5];
   unsigned char zhours;
   unsigned char zminutes;
-  bool zoccident; /* west of UTC? */
+  bool zoccident; /**< west of UTC? */
 } TimeZones[] = {
   { "aat", 1, 0, true },           /* Atlantic Africa Time */
   { "adt", 4, 0, false },          /* Arabia DST */

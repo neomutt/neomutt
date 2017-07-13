@@ -37,9 +37,9 @@
 
 struct Regex
 {
-  char *pattern; /* printable version */
-  regex_t *rx;   /* compiled expression */
-  int not;       /* do not match */
+  char *pattern; /**< printable version */
+  regex_t *rx;   /**< compiled expression */
+  int not;       /**< do not match */
 };
 
 struct RxList

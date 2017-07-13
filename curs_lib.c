@@ -473,9 +473,9 @@ void mutt_progress_init(struct Progress *progress, const char *msg,
 
 /**
  * message_bar - Draw a colourful progress bar
- * @percent: %age complete
- * @fmt:     printf(1)-like formatting string
- * @...:     Arguments to formatting string
+ * @param percent %age complete
+ * @param fmt     printf(1)-like formatting string
+ * @param ...     Arguments to formatting string
  */
 static void message_bar(int percent, const char *fmt, ...)
 {

@@ -581,7 +581,6 @@ static void compose_menu_redraw(struct Menu *menu)
  * Returns the total number of bytes used by the attachments in the
  * attachment list _after_ content-transfer-encodings have been
  * applied.
- *
  */
 static unsigned long cum_attachs_size(struct Menu *menu)
 {

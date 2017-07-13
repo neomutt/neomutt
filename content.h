@@ -23,16 +23,16 @@
 /* Information that helps in determining the Content-* of an attachment */
 struct Content
 {
-  long hibin;      /* 8-bit characters */
-  long lobin;      /* unprintable 7-bit chars (eg., control chars) */
-  long crlf;       /* '\r' and '\n' characters */
-  long ascii;      /* number of ascii chars */
-  long linemax;    /* length of the longest line in the file */
-  bool space : 1;  /* whitespace at the end of lines? */
-  bool binary : 1; /* long lines, or CR not in CRLF pair */
-  bool from : 1;   /* has a line beginning with "From "? */
-  bool dot : 1;    /* has a line consisting of a single dot? */
-  bool cr : 1;     /* has CR, even when in a CRLF pair */
+  long hibin;      /**< 8-bit characters */
+  long lobin;      /**< unprintable 7-bit chars (eg., control chars) */
+  long crlf;       /**< `\r` and `\n` characters */
+  long ascii;      /**< number of ascii chars */
+  long linemax;    /**< length of the longest line in the file */
+  bool space : 1;  /**< whitespace at the end of lines? */
+  bool binary : 1; /**< long lines, or CR not in CRLF pair */
+  bool from : 1;   /**< has a line beginning with "From "? */
+  bool dot : 1;    /**< has a line consisting of a single dot? */
+  bool cr : 1;     /**< has CR, even when in a CRLF pair */
 };
 
 #endif /* _MUTT_CONTENT_H */

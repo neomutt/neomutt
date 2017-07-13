@@ -175,9 +175,9 @@ enum FieldType
 
 /**
  * get_nth_wchar - Extract one char from a multi-byte table
- * @table:  Multi-byte table
- * @index:  Select this character
- * @return: String pointer to the character
+ * @param table  Multi-byte table
+ * @param index  Select this character
+ * @return String pointer to the character
  *
  * Extract one multi-byte character from a string table.
  * If the index is invalid, then a space character will be returned.
@@ -196,8 +196,8 @@ static char *get_nth_wchar(struct MbCharTable *table, int index)
 
 /**
  * make_from_prefix - Create a prefix for an author field
- * @disp:   Type of field
- * @return: Prefix string (do not free it)
+ * @param disp   Type of field
+ * @return Prefix string (do not free it)
  *
  * If $from_chars is set, pick an appropriate character from it.
  * If not, use the default prefix: "To", "Cc", etc
@@ -223,10 +223,10 @@ static const char *make_from_prefix(enum FieldType disp)
 
 /**
  * make_from - Generate a From: field (with optional prefix)
- * @env:      Envelope of the email
- * @buf:      Buffer to store the result
- * @len:      Size of the buffer
- * @do_lists: Should we check for mailing lists?
+ * @param env      Envelope of the email
+ * @param buf      Buffer to store the result
+ * @param len      Size of the buffer
+ * @param do_lists Should we check for mailing lists?
  *
  * Generate the %F or %L field in $index_format.
  * This is the author, or recipient of the email.
@@ -358,10 +358,10 @@ static int user_is_recipient(struct Header *h)
 
 /**
  * get_initials - Turn a name into initials
- * @name:   String to be converted
- * @buf:    Buffer for the result
- * @buflen: Size of the buffer
- * @return: 1 on Success, 0 on Failure
+ * @param name   String to be converted
+ * @param buf    Buffer for the result
+ * @param buflen Size of the buffer
+ * @return 1 on Success, 0 on Failure
  *
  * Take a name, e.g. "John F. Kennedy" and reduce it to initials "JFK".
  * The function saves the first character from each word.  Words are delimited

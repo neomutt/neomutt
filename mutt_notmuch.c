@@ -222,16 +222,16 @@ static void url_free_tags(struct UriTag *tags)
  * @param[in]  url      URI to parse
  * @param[out] filename Save the filename
  * @param[out] tags     Save the list of tags
- *
- * @retval true  Success
- * @retval false Error: Bad format
+ * @return
+ * * true  Success
+ * * false Error: Bad format
  *
  * Parse a NotMuch URI, such as:
  * *    notmuch:///path/to/db?query=tag:lkml&limit=1000
  * *    notmuch://?query=neomutt
  *
  * Extract the database filename (optional) and any search parameters (tags).
- * The tags will be saved in a linked list (#uri_tag).
+ * The tags will be saved in a linked list (#UriTag).
  */
 static bool url_parse_query(const char *url, char **filename, struct UriTag **tags)
 {
@@ -428,14 +428,12 @@ static int string_to_query_type(const char *str)
 /**
  * query_window_check_timebase - Checks if a given timebase string is valid
  * @param[in] timebase: string containing a time base
- *
  * @return true if the given time base is valid
  *
- * this function returns whether a given timebase string is valid or not,
+ * This function returns whether a given timebase string is valid or not,
  * which is used to validate the user settable configuration setting:
  *
  *     nm_query_window_timebase
- *
  */
 static bool query_window_check_timebase(const char *timebase)
 {
@@ -466,9 +464,8 @@ static void query_window_reset(void)
  * @param[in]  query vfolder search string
  * @param[out] buf   allocated string buffer to receive the modified search query
  * @param[in]  bufsz allocated maximum size of the buf string buffer
- *
  * @return boolean value set to true if a transformed search query is available as
- *  a string in buf, otherwise if the search query shall not be transformed.
+ *         a string in buf, otherwise if the search query shall not be transformed.
  *
  * This is where the magic of windowed queries happens. Taking a vfolder search
  * query string as parameter, it will use the following two user settings:
@@ -543,9 +540,8 @@ static bool windowed_query_from_query(const char *query, char *buf, size_t bufsz
  * get_query_string - builds the notmuch vfolder search string
  * @param data   internal notmuch context
  * @param window if true enable application of the window on the search string
- *
  * @return string containing a notmuch search query, or a NULL pointer
- * if none can be generated.
+ *         if none can be generated.
  *
  * This function parses the internal representation of a search, and returns
  * a search query string ready to be fed to the notmuch API, given the search
@@ -1780,9 +1776,9 @@ char *nm_uri_from_query(struct Context *ctx, char *buf, size_t bufsz)
  * @param new_uri    allocated string receiving the reformatted URI
  * @param orig_uri   original URI to be parsed
  * @param new_uri_sz size of the allocated new_uri string
- *
- * @return false if orig_uri contains an invalid query, true if new_uri contains a
- *  normalized version of the query.
+ * @return
+ * * true if new_uri contains a normalized version of the query
+ * * false if orig_uri contains an invalid query
  *
  * This function aims at making notmuch searches URI representations deterministic,
  * so that when comparing two equivalent searches they will be the same. It works

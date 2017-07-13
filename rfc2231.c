@@ -22,7 +22,6 @@
  *
  * Additionally, continuations and encoding are mixed in an, errrm,
  * interesting manner.
- *
  */
 
 #include "config.h"

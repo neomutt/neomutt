@@ -33,23 +33,23 @@ struct stat;
 struct Buffy
 {
   char path[_POSIX_PATH_MAX];
-  char realpath[_POSIX_PATH_MAX]; /* used for duplicate detection, context comparison,
-                                     and the sidebar */
+  char realpath[_POSIX_PATH_MAX]; /**< used for duplicate detection, context
+                                   * comparison, and the sidebar */
   char *desc;
   off_t size;
   struct Buffy *next;
-  bool new; /* mailbox has new mail */
+  bool new; /**< mailbox has new mail */
 
   /* These next three are only set when OPTMAILCHECKSTATS is set */
-  int msg_count;             /* total number of messages */
-  int msg_unread;            /* number of unread messages */
-  int msg_flagged;           /* number of flagged messages */
+  int msg_count;             /**< total number of messages */
+  int msg_unread;            /**< number of unread messages */
+  int msg_flagged;           /**< number of flagged messages */
 
-  bool notified;             /* user has been notified */
-  short magic;               /* mailbox type */
-  bool newly_created;        /* mbox or mmdf just popped into existence */
-  time_t last_visited;       /* time of last exit from this mailbox */
-  time_t stats_last_checked; /* mtime of mailbox the last time stats where checked. */
+  bool notified;             /**< user has been notified */
+  short magic;               /**< mailbox type */
+  bool newly_created;        /**< mbox or mmdf just popped into existence */
+  time_t last_visited;       /**< time of last exit from this mailbox */
+  time_t stats_last_checked; /**< mtime of mailbox the last time stats where checked. */
 };
 
 WHERE struct Buffy *Incoming INITVAL(0);
