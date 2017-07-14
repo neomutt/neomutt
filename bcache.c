@@ -74,7 +74,7 @@ static int bcache_path(struct Account *account, const char *mailbox, char *dst, 
 
   mutt_debug(3, "bcache_path: rc: %d, path: '%s'\n", len, dst);
 
-  if (len < 0 || len >= dstlen - 1)
+  if (len < 0 || (size_t) len >= dstlen - 1)
     return -1;
 
   mutt_debug(3, "bcache_path: directory: '%s'\n", dst);

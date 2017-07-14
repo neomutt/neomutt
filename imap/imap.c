@@ -71,7 +71,7 @@ static void imap_set_flag(struct ImapData *idata, int aclbit, int flag,
 /* imap_access: Check permissions on an IMAP mailbox.
  * TODO: ACL checks. Right now we assume if it exists we can
  *       mess with it. */
-int imap_access(const char *path, int flags)
+int imap_access(const char *path)
 {
   struct ImapData *idata = NULL;
   struct ImapMbox mx;
@@ -820,8 +820,7 @@ static int imap_open_mailbox_append(struct Context *ctx, int flags)
     strfcpy(mailbox, "INBOX", sizeof(mailbox));
   FREE(&mx.mbox);
 
-  /* really we should also check for W_OK */
-  if ((rc = imap_access(ctx->path, F_OK)) == 0)
+  if ((rc = imap_access(ctx->path)) == 0)
     return 0;
 
   if (rc == -1)
@@ -1642,8 +1641,11 @@ int imap_status(char *path, int queue)
   if (imap_get_mailbox(path, &idata, buf, sizeof(buf)) < 0)
     return -1;
 
-  if (imap_mxcmp(buf, idata->mailbox) == 0)
-    /* We are in the folder we're polling - just return the mailbox count */
+  /* We are in the folder we're polling - just return the mailbox count.
+   *
+   * Note that imap_mxcmp() converts NULL to "INBOX", so we need to
+   * make sure the idata really is open to a folder. */
+  if (idata->ctx && !imap_mxcmp(buf, idata->mailbox))
     return idata->ctx->msgcount;
   else if (mutt_bit_isset(idata->capabilities, IMAP4REV1) ||
            mutt_bit_isset(idata->capabilities, STATUS))
@@ -1965,9 +1967,9 @@ fail:
 
 /* trim dest to the length of the longest prefix it shares with src,
  * returning the length of the trimmed string */
-static int longest_common_prefix(char *dest, const char *src, int start, size_t dlen)
+static size_t longest_common_prefix(char *dest, const char *src, size_t start, size_t dlen)
 {
-  int pos = start;
+  size_t pos = start;
 
   while (pos < dlen && dest[pos] && dest[pos] == src[pos])
     pos++;
@@ -1983,7 +1985,7 @@ static int imap_complete_hosts(char *dest, size_t len)
   struct Buffy *mailbox = NULL;
   struct Connection *conn = NULL;
   int rc = -1;
-  int matchlen;
+  size_t matchlen;
 
   matchlen = mutt_strlen(dest);
   for (mailbox = Incoming; mailbox; mailbox = mailbox->next)
@@ -2037,7 +2039,8 @@ int imap_complete(char *dest, size_t dlen, char *path)
   char buf[LONG_STRING];
   struct ImapList listresp;
   char completion[LONG_STRING];
-  int clen, matchlen = 0;
+  int clen;
+  size_t matchlen = 0;
   int completions = 0;
   struct ImapMbox mx;
   int rc;
