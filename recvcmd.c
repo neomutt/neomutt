@@ -202,7 +202,7 @@ void mutt_attach_bounce(FILE *fp, struct Header *hdr, struct AttachPtr **idx,
 
   if (mutt_strwidth(prompt) > MuttMessageWindow->cols - extra_space)
   {
-    mutt_format_string(prompt, sizeof(prompt) - 4, 0, MuttMessageWindow->cols - extra_space,
+    mutt_simple_format(prompt, sizeof(prompt) - 4, 0, MuttMessageWindow->cols - extra_space,
                        FMT_LEFT, 0, prompt, sizeof(prompt), 0);
     safe_strcat(prompt, sizeof(prompt), "...?");
   }

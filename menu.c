@@ -286,7 +286,7 @@ static void menu_pad_string(struct Menu *menu, char *s, size_t n)
   int shift = option(OPTARROWCURSOR) ? 3 : 0;
   int cols = menu->indexwin->cols - shift;
 
-  mutt_format_string(s, n, cols, cols, FMT_LEFT, ' ', scratch, mutt_strlen(scratch), 1);
+  mutt_simple_format(s, n, cols, cols, FMT_LEFT, ' ', scratch, mutt_strlen(scratch), 1);
   s[n - 1] = 0;
   FREE(&scratch);
 }

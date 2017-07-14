@@ -406,7 +406,7 @@ static void curses_message(int error, const char *fmt, va_list ap)
   vsnprintf(scratch, sizeof(scratch), fmt, ap);
 
   mutt_debug(1, "%s\n", scratch);
-  mutt_format_string(Errorbuf, sizeof(Errorbuf), 0, MuttMessageWindow->cols,
+  mutt_simple_format(Errorbuf, sizeof(Errorbuf), 0, MuttMessageWindow->cols,
                      FMT_LEFT, 0, scratch, sizeof(scratch), 0);
 
   if (!option(OPTKEEPQUIET))
@@ -501,7 +501,7 @@ static void message_bar(int percent, const char *fmt, ...)
   l = mutt_strwidth(buf);
   va_end(ap);
 
-  mutt_format_string(buf2, sizeof(buf2), 0, COLS - 2, FMT_LEFT, 0, buf, sizeof(buf), 0);
+  mutt_simple_format(buf2, sizeof(buf2), 0, COLS - 2, FMT_LEFT, 0, buf, sizeof(buf), 0);
 
   move(LINES - 1, 0);
 
@@ -1147,7 +1147,7 @@ int mutt_addwch(wchar_t wc)
  * min_width, max_width, s), except that the widths refer to the number of
  * character cells when printed.
  */
-void mutt_format_string(char *dest, size_t destlen, int min_width, int max_width,
+void mutt_simple_format(char *dest, size_t destlen, int min_width, int max_width,
                         int justify, char m_pad_char, const char *s, size_t n, int arboreal)
 {
   char *p = NULL;
@@ -1277,7 +1277,7 @@ static void format_s_x(char *dest, size_t destlen, const char *prefix,
       max_width = INT_MAX;
   }
 
-  mutt_format_string(dest, destlen, min_width, max_width, justify, ' ', s,
+  mutt_simple_format(dest, destlen, min_width, max_width, justify, ' ', s,
                      mutt_strlen(s), arboreal);
 }
 

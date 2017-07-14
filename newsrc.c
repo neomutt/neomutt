@@ -1030,7 +1030,7 @@ struct NntpServer *nntp_select_server(char *server, int leave_lock)
   /* load .newsrc */
   if (rc >= 0)
   {
-    mutt_FormatString(file, sizeof(file), 0, MuttIndexWindow->cols,
+    mutt_expando_format(file, sizeof(file), 0, MuttIndexWindow->cols,
                       NONULL(NewsRc), nntp_format_str, (unsigned long) nserv, 0);
     mutt_expand_path(file, sizeof(file));
     nserv->newsrc_file = safe_strdup(file);

@@ -486,9 +486,9 @@ static const char *folder_format_str(char *dest, size_t destlen, size_t col, int
   }
 
   if (optional)
-    mutt_FormatString(dest, destlen, col, cols, ifstring, folder_format_str, data, 0);
+    mutt_expando_format(dest, destlen, col, cols, ifstring, folder_format_str, data, 0);
   else if (flags & MUTT_FORMAT_OPTIONAL)
-    mutt_FormatString(dest, destlen, col, cols, elsestring, folder_format_str, data, 0);
+    mutt_expando_format(dest, destlen, col, cols, elsestring, folder_format_str, data, 0);
 
   return src;
 }
@@ -535,10 +535,10 @@ static const char *newsgroup_format_str(char *dest, size_t destlen, size_t col, 
       if (flags & MUTT_FORMAT_OPTIONAL)
       {
         if (folder->ff->nd->unread != 0)
-          mutt_FormatString(dest, destlen, col, cols, ifstring,
+          mutt_expando_format(dest, destlen, col, cols, ifstring,
                             newsgroup_format_str, data, flags);
         else
-          mutt_FormatString(dest, destlen, col, cols, elsestring,
+          mutt_expando_format(dest, destlen, col, cols, elsestring,
                             newsgroup_format_str, data, flags);
       }
       else if (Context && Context->data == folder->ff->nd)
@@ -900,11 +900,11 @@ static void folder_entry(char *s, size_t slen, struct Menu *menu, int num)
 
 #ifdef USE_NNTP
   if (option(OPTNEWS))
-    mutt_FormatString(s, slen, 0, MuttIndexWindow->cols, NONULL(GroupFormat), newsgroup_format_str,
+    mutt_expando_format(s, slen, 0, MuttIndexWindow->cols, NONULL(GroupFormat), newsgroup_format_str,
                       (unsigned long) &folder, MUTT_FORMAT_ARROWCURSOR);
   else
 #endif
-    mutt_FormatString(s, slen, 0, MuttIndexWindow->cols, NONULL(FolderFormat),
+    mutt_expando_format(s, slen, 0, MuttIndexWindow->cols, NONULL(FolderFormat),
                       folder_format_str, (unsigned long) &folder, MUTT_FORMAT_ARROWCURSOR);
 }
 
@@ -916,7 +916,7 @@ static void vfolder_entry(char *s, size_t slen, struct Menu *menu, int num)
   folder.ff = &((struct FolderFile *) menu->data)[num];
   folder.num = num;
 
-  mutt_FormatString(s, slen, 0, MuttIndexWindow->cols, NONULL(VirtFolderFormat),
+  mutt_expando_format(s, slen, 0, MuttIndexWindow->cols, NONULL(VirtFolderFormat),
                     folder_format_str, (unsigned long) &folder, MUTT_FORMAT_ARROWCURSOR);
 }
 #endif

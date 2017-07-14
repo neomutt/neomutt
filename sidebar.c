@@ -102,7 +102,7 @@ enum SidebarSrc
  * @param flags       Format flags, e.g. MUTT_FORMAT_OPTIONAL
  * @return src (unchanged)
  *
- * cb_format_str is a callback function for mutt_FormatString.  It understands
+ * cb_format_str is a callback function for mutt_expando_format.  It understands
  * six operators. '%B' : Mailbox name, '%F' : Number of flagged messages,
  * '%N' : Number of new messages, '%S' : Size (total number of messages),
  * '%!' : Icon denoting number of flagged messages.
@@ -222,10 +222,10 @@ static const char *cb_format_str(char *dest, size_t destlen, size_t col, int col
   }
 
   if (optional)
-    mutt_FormatString(dest, destlen, col, SidebarWidth, ifstring, cb_format_str,
+    mutt_expando_format(dest, destlen, col, SidebarWidth, ifstring, cb_format_str,
                       (unsigned long) sbe, flags);
   else if (flags & MUTT_FORMAT_OPTIONAL)
-    mutt_FormatString(dest, destlen, col, SidebarWidth, elsestring,
+    mutt_expando_format(dest, destlen, col, SidebarWidth, elsestring,
                       cb_format_str, (unsigned long) sbe, flags);
 
   /* We return the format string, unchanged */
@@ -241,7 +241,7 @@ static const char *cb_format_str(char *dest, size_t destlen, size_t col, int col
  * @param sbe     Mailbox object
  *
  * Take all the relevant mailbox data and the desired screen width and then get
- * mutt_FormatString to do the actual work. mutt_FormatString will callback to
+ * mutt_expando_format to do the actual work. mutt_expando_format will callback to
  * us using cb_format_str() for the sidebar specific formatting characters.
  */
 static void make_sidebar_entry(char *buf, unsigned int buflen, int width,
@@ -252,7 +252,7 @@ static void make_sidebar_entry(char *buf, unsigned int buflen, int width,
 
   strfcpy(sbe->box, box, sizeof(sbe->box));
 
-  mutt_FormatString(buf, buflen, 0, width, NONULL(SidebarFormat), cb_format_str,
+  mutt_expando_format(buf, buflen, 0, width, NONULL(SidebarFormat), cb_format_str,
                     (unsigned long) sbe, 0);
 
   /* Force string to be exactly the right width */

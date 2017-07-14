@@ -246,9 +246,9 @@ static const char *query_format_str(char *dest, size_t destlen, size_t col, int 
   }
 
   if (optional)
-    mutt_FormatString(dest, destlen, col, cols, ifstring, query_format_str, data, 0);
+    mutt_expando_format(dest, destlen, col, cols, ifstring, query_format_str, data, 0);
   else if (flags & MUTT_FORMAT_OPTIONAL)
-    mutt_FormatString(dest, destlen, col, cols, elsestring, query_format_str, data, 0);
+    mutt_expando_format(dest, destlen, col, cols, elsestring, query_format_str, data, 0);
 
   return src;
 }
@@ -258,7 +258,7 @@ static void query_entry(char *s, size_t slen, struct Menu *m, int num)
   struct Entry *entry = &((struct Entry *) m->data)[num];
 
   entry->data->num = num;
-  mutt_FormatString(s, slen, 0, MuttIndexWindow->cols, NONULL(QueryFormat),
+  mutt_expando_format(s, slen, 0, MuttIndexWindow->cols, NONULL(QueryFormat),
                     query_format_str, (unsigned long) entry, MUTT_FORMAT_ARROWCURSOR);
 }
 

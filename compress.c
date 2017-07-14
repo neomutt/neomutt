@@ -348,7 +348,7 @@ static char *escape_path(char *src)
  * @param flags       Format flags, UNUSED
  * @return src (unchanged)
  *
- * cb_format_str is a callback function for mutt_FormatString.  It understands
+ * cb_format_str is a callback function for mutt_expando_format.  It understands
  * two operators. '%f' : 'from' filename, '%t' : 'to' filename.
  */
 static const char *cb_format_str(char *dest, size_t destlen, size_t col, int cols,
@@ -383,7 +383,7 @@ static const char *cb_format_str(char *dest, size_t destlen, size_t col, int col
  * @param buflen Size of the buffer
  *
  * This function takes a hook command and expands the filename placeholders
- * within it.  The function calls mutt_FormatString() to do the replacement
+ * within it.  The function calls mutt_expando_format() to do the replacement
  * which calls our callback function cb_format_str(). e.g.
  *
  * Template command:
@@ -397,7 +397,7 @@ static void expand_command_str(const struct Context *ctx, const char *cmd, char 
   if (!ctx || !cmd || !buf)
     return;
 
-  mutt_FormatString(buf, buflen, 0, buflen, cmd, cb_format_str, (unsigned long) ctx, 0);
+  mutt_expando_format(buf, buflen, 0, buflen, cmd, cb_format_str, (unsigned long) ctx, 0);
 }
 
 /**

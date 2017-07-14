@@ -407,9 +407,9 @@ static const char *mix_entry_fmt(char *dest, size_t destlen, size_t col, int col
   }
 
   if (optional)
-    mutt_FormatString(dest, destlen, col, cols, ifstring, mutt_attach_fmt, data, 0);
+    mutt_expando_format(dest, destlen, col, cols, ifstring, mutt_attach_fmt, data, 0);
   else if (flags & MUTT_FORMAT_OPTIONAL)
-    mutt_FormatString(dest, destlen, col, cols, elsestring, mutt_attach_fmt, data, 0);
+    mutt_expando_format(dest, destlen, col, cols, elsestring, mutt_attach_fmt, data, 0);
   return src;
 }
 
@@ -417,7 +417,7 @@ static const char *mix_entry_fmt(char *dest, size_t destlen, size_t col, int col
 static void mix_entry(char *b, size_t blen, struct Menu *menu, int num)
 {
   struct Remailer **type2_list = (struct Remailer **) menu->data;
-  mutt_FormatString(b, blen, 0, MuttIndexWindow->cols, NONULL(MixEntryFormat), mix_entry_fmt,
+  mutt_expando_format(b, blen, 0, MuttIndexWindow->cols, NONULL(MixEntryFormat), mix_entry_fmt,
                     (unsigned long) type2_list[num], MUTT_FORMAT_ARROWCURSOR);
 }
 
