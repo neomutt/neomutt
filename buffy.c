@@ -542,7 +542,10 @@ int mutt_parse_mailboxes(struct Buffer *path, struct Buffer *s,
 
     /* Skip empty tokens. */
     if (!*buf)
+    {
+      FREE(&desc);
       continue;
+    }
 
     /* avoid duplicates */
     p = realpath(buf, f1);
@@ -556,7 +559,10 @@ int mutt_parse_mailboxes(struct Buffer *path, struct Buffer *s,
     }
 
     if (*b)
+    {
+      FREE(&desc);
       continue;
+    }
 
     *b = buffy_new(buf);
 

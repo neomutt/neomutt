@@ -318,7 +318,6 @@ static void cmd_parse_capability(struct ImapData *idata, char *s)
           mutt_bit_set(idata->capabilities, CapabilityAliases[x].value);
           mutt_debug(4, " Found capability \"%s\": %d\n",
                      CapabilityAliases[x].name, CapabilityAliases[x].value);
-          found = true;
           break;
         }
       }
