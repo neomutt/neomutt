@@ -1,3 +1,15 @@
+2017-07-14  Richard Russon  <rich@flatcap.org>
+* Translations
+  - Update German translation
+* Docs
+  - compile-time output: use two lists
+  - doxygen: add config file
+  - doxygen: tidy existing comments
+* Build
+  - fix hcachever.sh script
+* Upstream
+  - Fix crash when $postponed is on another server.
+
 2017-07-07  Richard Russon  <rich@flatcap.org>
 * Features
   - Support Gmail's X-GM-RAW server-side search
