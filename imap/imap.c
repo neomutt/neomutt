@@ -55,7 +55,7 @@ static void imap_set_flag (IMAP_DATA* idata, int aclbit, int flag,
 /* imap_access: Check permissions on an IMAP mailbox.
  * TODO: ACL checks. Right now we assume if it exists we can
  *       mess with it. */
-int imap_access (const char* path, int flags)
+int imap_access (const char* path)
 {
   IMAP_DATA* idata;
   IMAP_MBOX mx;
@@ -809,8 +809,7 @@ static int imap_open_mailbox_append (CONTEXT *ctx, int flags)
     strfcpy (mailbox, "INBOX", sizeof (mailbox));
   FREE (&mx.mbox);
 
-  /* really we should also check for W_OK */
-  if ((rc = imap_access (ctx->path, F_OK)) == 0)
+  if ((rc = imap_access (ctx->path)) == 0)
     return 0;
 
   if (rc == -1)
