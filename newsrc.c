@@ -814,9 +814,10 @@ void nntp_clear_cache(struct NntpServer *nserv)
  * %s = news server name
  * %S = url schema
  * %u = username */
-const char *nntp_format_str(char *dest, size_t destlen, size_t col, int cols, char op,
-                            const char *src, const char *fmt, const char *ifstring,
-                            const char *elsestring, unsigned long data, enum FormatFlag flags)
+const char *nntp_format_str(char *dest, size_t destlen, size_t col, int cols,
+                            char op, const char *src, const char *fmt,
+                            const char *ifstring, const char *elsestring,
+                            unsigned long data, enum FormatFlag flags)
 {
   struct NntpServer *nserv = (struct NntpServer *) data;
   struct Account *acct = &nserv->conn->account;
@@ -1035,7 +1036,8 @@ struct NntpServer *nntp_select_server(char *server, int leave_lock)
             if (last >= nntp_data->first_message && last <= nntp_data->last_message)
             {
               nntp_data->last_cached = last;
-              mutt_debug(2, "nntp_select_server: %s last_cached=%u\n", nntp_data->group, last);
+              mutt_debug(2, "nntp_select_server: %s last_cached=%u\n",
+                         nntp_data->group, last);
             }
           }
           mutt_hcache_free(hc, &hdata);

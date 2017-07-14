@@ -1333,8 +1333,8 @@ struct Pattern *mutt_pattern_comp(/* const */ char *s, int flags, struct Buffer 
   return curlist;
 }
 
-static bool perform_and(struct Pattern *pat, enum PatternExecFlag flags, struct Context *ctx,
-                        struct Header *hdr, struct PatternCache *cache)
+static bool perform_and(struct Pattern *pat, enum PatternExecFlag flags,
+                        struct Context *ctx, struct Header *hdr, struct PatternCache *cache)
 {
   for (; pat; pat = pat->next)
     if (mutt_pattern_exec(pat, flags, ctx, hdr, cache) <= 0)
@@ -1342,8 +1342,8 @@ static bool perform_and(struct Pattern *pat, enum PatternExecFlag flags, struct 
   return true;
 }
 
-static int perform_or(struct Pattern *pat, enum PatternExecFlag flags, struct Context *ctx,
-                      struct Header *hdr, struct PatternCache *cache)
+static int perform_or(struct Pattern *pat, enum PatternExecFlag flags,
+                      struct Context *ctx, struct Header *hdr, struct PatternCache *cache)
 {
   for (; pat; pat = pat->next)
     if (mutt_pattern_exec(pat, flags, ctx, hdr, cache) > 0)

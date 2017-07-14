@@ -842,8 +842,8 @@ static void resolve_types(char *buf, char *raw, struct Line *line_info, int n,
         {
           if (q_classify && line_info[n].quote == NULL)
             line_info[n].quote = classify_quote(quote_list, buf + pmatch[0].rm_so,
-                                               pmatch[0].rm_eo - pmatch[0].rm_so,
-                                               force_redraw, q_level);
+                                                pmatch[0].rm_eo - pmatch[0].rm_so,
+                                                force_redraw, q_level);
           line_info[n].type = MT_COLOR_QUOTED;
         }
         else
@@ -858,8 +858,8 @@ static void resolve_types(char *buf, char *raw, struct Line *line_info, int n,
     {
       if (q_classify && line_info[n].quote == NULL)
         line_info[n].quote = classify_quote(quote_list, buf + pmatch[0].rm_so,
-                                           pmatch[0].rm_eo - pmatch[0].rm_so,
-                                           force_redraw, q_level);
+                                            pmatch[0].rm_eo - pmatch[0].rm_so,
+                                            force_redraw, q_level);
       line_info[n].type = MT_COLOR_QUOTED;
     }
   }
@@ -1373,10 +1373,10 @@ static int format_line(struct Line **line_info, int n, unsigned char *buf, int f
  *      0       normal exit, line was not displayed
  *      >0      normal exit, line was displayed
  */
-static int display_line(FILE *f, LOFF_T *last_pos, struct Line **line_info, int n,
-                        int *last, int *max, int flags, struct QClass **quote_list,
-                        int *q_level, int *force_redraw, regex_t *search_re,
-                        struct MuttWindow *pager_window)
+static int display_line(FILE *f, LOFF_T *last_pos, struct Line **line_info,
+                        int n, int *last, int *max, int flags,
+                        struct QClass **quote_list, int *q_level, int *force_redraw,
+                        regex_t *search_re, struct MuttWindow *pager_window)
 {
   unsigned char *buf = NULL, *fmt = NULL;
   size_t buflen = 0;
@@ -1424,8 +1424,8 @@ static int display_line(FILE *f, LOFF_T *last_pos, struct Line **line_info, int 
         goto out;
       }
 
-      resolve_types((char *) fmt, (char *) buf, *line_info, n, *last, quote_list,
-                    q_level, force_redraw, flags & MUTT_SHOWCOLOR);
+      resolve_types((char *) fmt, (char *) buf, *line_info, n, *last,
+                    quote_list, q_level, force_redraw, flags & MUTT_SHOWCOLOR);
 
       /* avoid race condition for continuation lines when scrolling up */
       for (m = n + 1; m < *last && (*line_info)[m].offset && (*line_info)[m].continuation; m++)
@@ -1471,7 +1471,8 @@ static int display_line(FILE *f, LOFF_T *last_pos, struct Line **line_info, int 
 
     offset = 0;
     (*line_info)[n].search_cnt = 0;
-    while (regexec(search_re, (char *) fmt + offset, 1, pmatch, (offset ? REG_NOTBOL : 0)) == 0)
+    while (regexec(search_re, (char *) fmt + offset, 1, pmatch,
+                   (offset ? REG_NOTBOL : 0)) == 0)
     {
       if (++((*line_info)[n].search_cnt) > 1)
         safe_realloc(&((*line_info)[n].search),
@@ -1839,8 +1840,8 @@ static void pager_menu_redraw(struct Menu *pager_menu)
     }
     i = -1;
     j = -1;
-    while (display_line(rd->fp, &rd->last_pos, &rd->line_info, ++i, &rd->last_line, &rd->max_line,
-                        rd->has_types | rd->search_flag | (rd->flags & MUTT_PAGER_NOWRAP),
+    while (display_line(rd->fp, &rd->last_pos, &rd->line_info, ++i, &rd->last_line,
+                        &rd->max_line, rd->has_types | rd->search_flag | (rd->flags & MUTT_PAGER_NOWRAP),
                         &rd->quote_list, &rd->q_level, &rd->force_redraw,
                         &rd->search_re, rd->pager_window) == 0)
       if (!rd->line_info[i].continuation && ++j == rd->lines)

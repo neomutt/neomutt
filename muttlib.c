@@ -1294,11 +1294,11 @@ char *mutt_apply_replace(char *dbuf, size_t dlen, char *sbuf, struct ReplaceList
 void mutt_FormatString(char *dest,     /* output buffer */
                        size_t destlen, /* output buffer len */
                        size_t col, /* starting column (nonzero when called recursively) */
-                       int cols,           /* maximum columns */
-                       const char *src,    /* template string */
-                       format_t *callback, /* callback for processing */
-                       unsigned long data, /* callback data */
-                       enum FormatFlag flags)  /* callback flags */
+                       int cols,              /* maximum columns */
+                       const char *src,       /* template string */
+                       format_t *callback,    /* callback for processing */
+                       unsigned long data,    /* callback data */
+                       enum FormatFlag flags) /* callback flags */
 {
   char prefix[SHORT_STRING], buf[LONG_STRING], *cp = NULL, *wptr = dest, ch;
   char ifstring[SHORT_STRING], elsestring[SHORT_STRING];
