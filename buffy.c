@@ -786,11 +786,12 @@ int mutt_buffy_notify(void)
   return 0;
 }
 
-/*
- * mutt_buffy() -- incoming folders completion routine
+/**
+ * mutt_buffy - incoming folders completion routine
+ * @param s    Buffer containing name of current mailbox
+ * @param slen Buffer length
  *
- * given a folder name, this routine gives the next incoming folder with new
- * mail.
+ * Given a folder name, find the next incoming folder with new mail.
  */
 void mutt_buffy(char *s, size_t slen)
 {
@@ -804,6 +805,8 @@ void mutt_buffy(char *s, size_t slen)
     {
       for (struct Buffy *b = Incoming; b; b = b->next)
       {
+        if (b->magic == MUTT_NOTMUCH) /* only match real mailboxes */
+          continue;
         mutt_expand_path(b->path, sizeof(b->path));
         if ((found || pass) && b->new)
         {
