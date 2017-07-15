@@ -471,7 +471,7 @@ static void decode_uuencoded(struct State *s, long len, int istext, iconv_t cd)
  * A (not so) minimal implementation of RFC1563.
  */
 
-#define IndentSize (4)
+#define INDENT_SIZE 4
 
 /**
  * enum RichAttribs - Rich text attributes
@@ -577,7 +577,7 @@ static void enriched_wrap(struct EnrichedState *stte)
     }
 
     extra = stte->wrap_margin - stte->line_len - stte->indent_len -
-            (stte->tag_level[RICH_INDENT_RIGHT] * IndentSize);
+            (stte->tag_level[RICH_INDENT_RIGHT] * INDENT_SIZE);
     if (extra > 0)
     {
       if (stte->tag_level[RICH_CENTER])
@@ -635,7 +635,7 @@ static void enriched_wrap(struct EnrichedState *stte)
     stte->indent_len = 0;
   if (stte->tag_level[RICH_INDENT])
   {
-    x = stte->tag_level[RICH_INDENT] * IndentSize;
+    x = stte->tag_level[RICH_INDENT] * INDENT_SIZE;
     stte->indent_len += x;
     while (x)
     {
@@ -649,7 +649,7 @@ static void enriched_flush(struct EnrichedState *stte, int wrap)
 {
   if (!stte->tag_level[RICH_NOFILL] &&
       (stte->line_len + stte->word_len >
-       (stte->wrap_margin - (stte->tag_level[RICH_INDENT_RIGHT] * IndentSize) - stte->indent_len)))
+       (stte->wrap_margin - (stte->tag_level[RICH_INDENT_RIGHT] * INDENT_SIZE) - stte->indent_len)))
     enriched_wrap(stte);
 
   if (stte->buff_used)

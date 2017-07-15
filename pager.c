@@ -185,13 +185,13 @@ static struct Resize
 } *Resize = NULL;
 #endif
 
-#define NumSigLines 4
+#define NUM_SIG_LINES 4
 
 static int check_sig(const char *s, struct Line *info, int n)
 {
   int count = 0;
 
-  while (n > 0 && count <= NumSigLines)
+  while (n > 0 && count <= NUM_SIG_LINES)
   {
     if (info[n].type != MT_COLOR_SIGNATURE)
       break;
@@ -202,7 +202,7 @@ static int check_sig(const char *s, struct Line *info, int n)
   if (count == 0)
     return -1;
 
-  if (count > NumSigLines)
+  if (count > NUM_SIG_LINES)
   {
     /* check for a blank line */
     while (*s)

@@ -21,18 +21,18 @@
 #include <stdbool.h>
 #include <stdio.h>
 
-#define per_line 12
+#define PER_LINE 12
 
 static void txt2c(char *sym, FILE *fp)
 {
-  unsigned char buf[per_line];
+  unsigned char buf[PER_LINE];
   int i;
   int sz = 0;
 
   printf("unsigned char %s[] = {\n", sym);
   while (true)
   {
-    sz = fread(buf, sizeof(unsigned char), per_line, fp);
+    sz = fread(buf, sizeof(unsigned char), PER_LINE, fp);
     if (sz == 0)
       break;
     printf("\t");

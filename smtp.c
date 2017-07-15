@@ -54,12 +54,12 @@
 #endif
 
 #define smtp_success(x) ((x) / 100 == 2)
-#define smtp_ready 334
-#define smtp_continue 354
+#define SMTP_READY 334
+#define SMTP_CONTINUE 354
 
-#define smtp_err_read -2
-#define smtp_err_write -3
-#define smtp_err_code -4
+#define SMTP_ERR_READ -2
+#define SMTP_ERR_WRITE -3
+#define SMTP_ERR_CODE -4
 
 #define SMTP_PORT 25
 #define SMTPS_PORT 465
@@ -119,7 +119,7 @@ static int smtp_get_resp(struct Connection *conn)
     if (n < 4)
     {
       /* read error, or no response code */
-      return smtp_err_read;
+      return SMTP_ERR_READ;
     }
 
     if (ascii_strncasecmp("8BITMIME", buf + 4, 8) == 0)
@@ -138,11 +138,11 @@ static int smtp_get_resp(struct Connection *conn)
       mutt_bit_set(Capabilities, SMTPUTF8);
 
     if (!valid_smtp_code(buf, n, &n))
-      return smtp_err_code;
+      return SMTP_ERR_CODE;
 
   } while (buf[3] == '-');
 
-  if (smtp_success(n) || n == smtp_continue)
+  if (smtp_success(n) || n == SMTP_CONTINUE)
     return 0;
 
   mutt_error(_("SMTP session failed: %s"), buf);
@@ -167,7 +167,7 @@ static int smtp_rcpt_to(struct Connection *conn, const struct Address *a)
     else
       snprintf(buf, sizeof(buf), "RCPT TO:<%s>\r\n", a->mailbox);
     if (mutt_socket_write(conn, buf) == -1)
-      return smtp_err_write;
+      return SMTP_ERR_WRITE;
     if ((r = smtp_get_resp(conn)))
       return r;
     a = a->next;
@@ -200,7 +200,7 @@ static int smtp_data(struct Connection *conn, const char *msgfile)
   if (mutt_socket_write(conn, buf) == -1)
   {
     safe_fclose(&fp);
-    return smtp_err_write;
+    return SMTP_ERR_WRITE;
   }
   if ((r = smtp_get_resp(conn)))
   {
@@ -219,26 +219,26 @@ static int smtp_data(struct Connection *conn, const char *msgfile)
       if (mutt_socket_write_d(conn, ".", -1, MUTT_SOCK_LOG_FULL) == -1)
       {
         safe_fclose(&fp);
-        return smtp_err_write;
+        return SMTP_ERR_WRITE;
       }
     }
     if (mutt_socket_write_d(conn, buf, -1, MUTT_SOCK_LOG_FULL) == -1)
     {
       safe_fclose(&fp);
-      return smtp_err_write;
+      return SMTP_ERR_WRITE;
     }
     mutt_progress_update(&progress, ftell(fp), -1);
   }
   if (!term && buflen && mutt_socket_write_d(conn, "\r\n", -1, MUTT_SOCK_LOG_FULL) == -1)
   {
     safe_fclose(&fp);
-    return smtp_err_write;
+    return SMTP_ERR_WRITE;
   }
   safe_fclose(&fp);
 
   /* terminate the message body */
   if (mutt_socket_write(conn, ".\r\n") == -1)
-    return smtp_err_write;
+    return SMTP_ERR_WRITE;
 
   if ((r = smtp_get_resp(conn)))
     return r;
@@ -359,7 +359,7 @@ static int smtp_helo(struct Connection *conn)
     * currently doesn't check for a short write.
     */
   if (mutt_socket_write(conn, buf) == -1)
-    return smtp_err_write;
+    return SMTP_ERR_WRITE;
   return smtp_get_resp(conn);
 }
 
@@ -420,7 +420,7 @@ static int smtp_auth_sasl(struct Connection *conn, const char *mechlist)
     if (!valid_smtp_code(buf, rc, &rc))
       goto fail;
 
-    if (rc != smtp_ready)
+    if (rc != SMTP_READY)
       break;
 
     if (sasl_decode64(buf + 4, strlen(buf + 4), buf, bufsize - 1, &len) != SASL_OK)
@@ -451,7 +451,7 @@ static int smtp_auth_sasl(struct Connection *conn, const char *mechlist)
       }
     }
     strfcpy(buf + len, "\r\n", bufsize - len);
-  } while (rc == smtp_ready && saslrc != SASL_FAIL);
+  } while (rc == SMTP_READY && saslrc != SASL_FAIL);
 
   if (smtp_success(rc))
   {
@@ -603,7 +603,7 @@ static int smtp_open(struct Connection *conn)
   if (rc == MUTT_YES)
   {
     if (mutt_socket_write(conn, "STARTTLS\r\n") < 0)
-      return smtp_err_write;
+      return SMTP_ERR_WRITE;
     if ((rc = smtp_get_resp(conn)))
       return rc;
 
@@ -692,7 +692,7 @@ int mutt_smtp_send(const struct Address *from, const struct Address *to,
     safe_strncat(buf, sizeof(buf), "\r\n", 3);
     if (mutt_socket_write(conn, buf) == -1)
     {
-      ret = smtp_err_write;
+      ret = SMTP_ERR_WRITE;
       break;
     }
     if ((ret = smtp_get_resp(conn)))
@@ -715,11 +715,11 @@ int mutt_smtp_send(const struct Address *from, const struct Address *to,
   if (conn)
     mutt_socket_close(conn);
 
-  if (ret == smtp_err_read)
+  if (ret == SMTP_ERR_READ)
     mutt_error(_("SMTP session failed: read error"));
-  else if (ret == smtp_err_write)
+  else if (ret == SMTP_ERR_WRITE)
     mutt_error(_("SMTP session failed: write error"));
-  else if (ret == smtp_err_code)
+  else if (ret == SMTP_ERR_CODE)
     mutt_error(_("Invalid server response"));
 
   return ret;

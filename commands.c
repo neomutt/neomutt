@@ -318,13 +318,13 @@ void ci_bounce_message(struct Header *h)
   buf[0] = 0;
   rfc822_write_address(buf, sizeof(buf), adr, 1);
 
-#define extra_space (15 + 7 + 2)
+#define EXTRA_SPACE (15 + 7 + 2)
   snprintf(scratch, sizeof(scratch),
            (h ? _("Bounce message to %s") : _("Bounce messages to %s")), buf);
 
-  if (mutt_strwidth(prompt) > MuttMessageWindow->cols - extra_space)
+  if (mutt_strwidth(prompt) > MuttMessageWindow->cols - EXTRA_SPACE)
   {
-    mutt_simple_format(prompt, sizeof(prompt), 0, MuttMessageWindow->cols - extra_space,
+    mutt_simple_format(prompt, sizeof(prompt), 0, MuttMessageWindow->cols - EXTRA_SPACE,
                        FMT_LEFT, 0, scratch, sizeof(scratch), 0);
     safe_strcat(prompt, sizeof(prompt), "...?");
   }
