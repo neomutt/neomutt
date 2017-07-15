@@ -18,8 +18,6 @@
  * 34AA973C D4C4DAA4 F61EEB2B DBAD2731 6534016F
  */
 
-#define SHA1HANDSOFF
-
 #include "config.h"
 #include <string.h>
 #include "sha1.h"
@@ -70,17 +68,8 @@ void sha1_transform(uint32_t state[5], const unsigned char buffer[64])
     unsigned char c[64];
     uint32_t l[16];
   } CHAR64LONG16;
-#ifdef SHA1HANDSOFF
   CHAR64LONG16 block[1]; /* use array to appear as a pointer */
   memcpy(block, buffer, 64);
-#else
-  /* The following had better never be used because it causes the
-     * pointer-to-const buffer to be cast into a pointer to non-const.
-     * And the result is written through.  I threw a "const" in, hoping
-     * this will cause a diagnostic.
-     */
-  CHAR64LONG16 *block = (const CHAR64LONG16 *) buffer;
-#endif
   /* Copy context->state[] to working vars */
   a = state[0];
   b = state[1];
@@ -176,9 +165,7 @@ void sha1_transform(uint32_t state[5], const unsigned char buffer[64])
   state[4] += e;
   /* Wipe variables */
   a = b = c = d = e = 0;
-#ifdef SHA1HANDSOFF
   memset(block, '\0', sizeof(block));
-#endif
 }
 
 
