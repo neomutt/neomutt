@@ -28,11 +28,6 @@ void sha1_init(struct Sha1Ctx *context);
 void sha1_update(struct Sha1Ctx *context, const unsigned char *data, uint32_t len);
 void sha1_final(unsigned char digest[20], struct Sha1Ctx *context);
 
-#define SHA1_Transform sha1_transform
-#define SHA1_Init sha1_init
-#define SHA1_Update sha1_update
-#define SHA1_Final sha1_final
-
 #define SHA_DIGEST_LENGTH 20
 
 #endif /* _MUTT_SHA1_H */
